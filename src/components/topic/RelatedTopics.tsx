@@ -24,7 +24,7 @@ export default function RelatedTopics({ slugs }: RelatedTopicsProps) {
             href={`/topics/${topic.slug}`}
             className="rounded-full bg-accent-light px-4 py-1.5 text-sm font-medium text-teal-700 transition-colors hover:bg-accent/20"
           >
-            {topic.title}
+            {topic.title} — {topic.titleVi}
           </Link>
         ))}
       </div>
