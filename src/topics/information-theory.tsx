@@ -6,46 +6,46 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "information-theory", title: "Information Theory", titleVi: "Ly thuyet thong tin", description: "Entropy, cross-entropy va KL divergence — do luong thong tin va so sanh phan phoi xac suat", category: "math-foundations", tags: ["entropy", "kl-divergence", "cross-entropy"], difficulty: "intermediate", relatedSlugs: ["loss-functions", "probability-statistics", "vae"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "information-theory", title: "Information Theory", titleVi: "Lý thuyết thông tin", description: "Entropy, cross-entropy và KL divergence — đo lường thông tin và so sánh phân phối xác suất", category: "math-foundations", tags: ["entropy", "kl-divergence", "cross-entropy"], difficulty: "intermediate", relatedSlugs: ["loss-functions", "probability-statistics", "vae"], vizType: "interactive" };
 
 const TOTAL_STEPS = 6;
 export default function InformationTheoryTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(() => [
-    { question: "Entropy H(X) cao nghia la gi?", options: ["Data co nhieu noise", "DO BAT DINH CAO: kho du doan ket qua. Dong xu cong bang: H=1 bit (bat dinh nhat). Dong xu 2 mat giong nhau: H=0 (chac chan)", "Model tot"], correct: 1, explanation: "Entropy = do bat dinh / luong thong tin trung binh. H cao = bat dinh cao = can nhieu bit de ma hoa. Dong xu: H=1. Xuc xac: H=2.58 (bat dinh hon). Su kien chac chan: H=0. Trong ML: decision tree chon feature giam entropy nhieu nhat (information gain)." },
-    { question: "Cross-Entropy H(p,q) do gi?", options: ["Entropy cua p", "So BITS CAN de ma hoa data tu phan phoi p DUNG phan phoi q. Cang gan: CE thap. Cang xa: CE cao. Day la loss function cho classification!", "Entropy cua q"], correct: 1, explanation: "H(p,q) = -sum(p*log(q)). Neu q = p (model perfect): H(p,q) = H(p) (minimum). Neu q khac p: H(p,q) > H(p). 'Phan thua' = KL divergence = H(p,q) - H(p). Minimize CE loss = lam q (model) gan p (true distribution) nhat co the." },
-    { question: "KL Divergence KL(p||q) dung cho gi?", options: ["Tinh khoang cach Euclid", "Do su KHAC BIET giua 2 phan phoi. KL=0: giong het. KL lon: rat khac. Dung trong: VAE loss, data drift detection, distillation", "Tinh trung binh"], correct: 1, explanation: "KL(p||q) = sum(p*log(p/q)) = H(p,q) - H(p). KHONG doi xung: KL(p||q) ≠ KL(q||p). Dung: (1) VAE: KL(q(z|x)||p(z)) ≈ 0 → latent ~ prior, (2) Distillation: KL(student||teacher) → student hoc tu teacher, (3) Data drift: KL(train||production) → phat hien drift." },
+    { question: "Entropy H(X) cao nghĩa là gì?", options: ["Data có nhiều noise", "ĐỘ BẤT ĐỊNH CAO: khó dự đoán kết quả. Đồng xu công bằng: H=1 bit (bất định nhất). Đồng xu 2 mặt giống nhau: H=0 (chắc chắn)", "Model tốt"], correct: 1, explanation: "Entropy = độ bất định / lượng thông tin trung bình. H cao = bất định cao = cần nhiều bit để mã hoá. Đồng xu: H=1. Xúc xắc: H=2.58 (bất định hơn). Sự kiện chắc chắn: H=0. Trong ML: decision tree chọn feature giảm entropy nhiều nhất (information gain)." },
+    { question: "Cross-Entropy H(p,q) đo gì?", options: ["Entropy của p", "Số BITS CẦN để mã hoá data từ phân phối p DÙNG phân phối q. Càng gần: CE thấp. Càng xa: CE cao. Đây là loss function cho classification!", "Entropy của q"], correct: 1, explanation: "H(p,q) = -sum(p*log(q)). Nếu q = p (model perfect): H(p,q) = H(p) (minimum). Nếu q khác p: H(p,q) > H(p). 'Phần thừa' = KL divergence = H(p,q) - H(p). Minimize CE loss = làm q (model) gần p (true distribution) nhất có thể." },
+    { question: "KL Divergence KL(p||q) dùng cho gì?", options: ["Tính khoảng cách Euclid", "Đo sự KHÁC BIỆT giữa 2 phân phối. KL=0: giống hệt. KL lớn: rất khác. Dùng trong: VAE loss, data drift detection, distillation", "Tính trung bình"], correct: 1, explanation: "KL(p||q) = sum(p*log(p/q)) = H(p,q) - H(p). KHÔNG đối xứng: KL(p||q) ≠ KL(q||p). Dùng: (1) VAE: KL(q(z|x)||p(z)) ≈ 0 → latent ~ prior, (2) Distillation: KL(student||teacher) → student học từ teacher, (3) Data drift: KL(train||production) → phát hiện drift." },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
-        <PredictionGate question="2 su kien: (A) Ngay mai mat troi moc, (B) Ngay mai co dong dat. Su kien nao chua NHIEU THONG TIN hon khi xay ra?" options={["A — vi quan trong hon", "B — su kien HIEM co nhieu thong tin hon su kien chac chan. 'Mat troi moc' = 0 thong tin (ai cung biet). 'Dong dat' = nhieu thong tin (bat ngo)", "Bang nhau"]} correct={1} explanation="Information = -log(P). Mat troi moc: P≈1 → -log(1)=0 bits (khong co thong tin moi). Dong dat: P≈0.001 → -log(0.001)≈10 bits (rat nhieu thong tin). Tin tuc bao chi: chi dua tin BAT NGO vi no co nhieu thong tin. Day la truc giac cua Shannon!">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+        <PredictionGate question="2 sự kiện: (A) Ngày mai mặt trời mọc, (B) Ngày mai có động đất. Sự kiện nào chứa NHIỀU THÔNG TIN hơn khi xảy ra?" options={["A — vì quan trọng hơn", "B — sự kiện HIẾM có nhiều thông tin hơn sự kiện chắc chắn. 'Mặt trời mọc' = 0 thông tin (ai cũng biết). 'Động đất' = nhiều thông tin (bất ngờ)", "Bằng nhau"]} correct={1} explanation="Information = -log(P). Mặt trời mọc: P≈1 → -log(1)=0 bits (không có thông tin mới). Động đất: P≈0.001 → -log(0.001)≈10 bits (rất nhiều thông tin). Tin tức báo chí: chỉ đưa tin BẤT NGỜ vì nó có nhiều thông tin. Đây là trực giác của Shannon!">
           <p className="text-sm text-muted mt-2">
-            Hay tiep tuc de kham pha entropy, cross-entropy va KL divergence.
+            Hãy tiếp tục để khám phá entropy, cross-entropy và KL divergence.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
-        <AhaMoment><p>Entropy = <strong>do bat dinh trung binh</strong>. Cross-Entropy = <strong>loss function cua classification</strong>. KL Divergence = <strong>do khac biet giua 2 phan phoi</strong>. Ba concept nay xuat hien KHAP NOI trong ML: decision trees (information gain), neural networks (CE loss), VAE (KL loss), distillation (KL student→teacher). <strong>Information Theory = ngon ngu cua ML!</strong></p></AhaMoment>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment><p>Entropy = <strong>độ bất định trung bình</strong>. Cross-Entropy = <strong>loss function của classification</strong>. KL Divergence = <strong>độ khác biệt giữa 2 phân phối</strong>. Ba concept này xuất hiện KHẮP NƠI trong ML: decision trees (information gain), neural networks (CE loss), VAE (KL loss), distillation (KL student→teacher). <strong>Information Theory = ngôn ngữ của ML!</strong></p></AhaMoment>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach">
-        <InlineChallenge question="Dong xu cong bang: P(H)=P(T)=0.5. Dong xu gian lan: P(H)=0.9, P(T)=0.1. Entropy nao cao hon?" options={["Dong xu cong bang: H = -0.5*log(0.5)*2 = 1 bit (bat dinh nhat, cao nhat)", "Dong xu gian lan: bat dinh hon vi gan 1 → cao hon", "Bang nhau"]} correct={0} explanation="Cong bang: H = -0.5*log2(0.5) - 0.5*log2(0.5) = 1 bit (maximum entropy cho binary). Gian lan: H = -0.9*log2(0.9) - 0.1*log2(0.1) = 0.47 bits (it bat dinh vi gan nhu chac chan H). Entropy MAX khi DONG DEU (bat dinh nhat). MAX entropy = hardest to predict." />
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge question="Đồng xu công bằng: P(H)=P(T)=0.5. Đồng xu gian lận: P(H)=0.9, P(T)=0.1. Entropy nào cao hơn?" options={["Đồng xu công bằng: H = -0.5*log(0.5)*2 = 1 bit (bất định nhất, cao nhất)", "Đồng xu gian lận: bất định hơn vì gần 1 → cao hơn", "Bằng nhau"]} correct={0} explanation="Công bằng: H = -0.5*log2(0.5) - 0.5*log2(0.5) = 1 bit (maximum entropy cho binary). Gian lận: H = -0.9*log2(0.9) - 0.1*log2(0.1) = 0.47 bits (ít bất định vì gần như chắc chắn H). Entropy MAX khi ĐỒNG ĐỀU (bất định nhất). MAX entropy = hardest to predict." />
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Information Theory</strong>{" "}(Shannon, 1948) do luong thong tin va bat dinh — nen tang cua loss functions va nhieu thuat toan ML.</p>
-          <p><strong>Information (tu thong tin):</strong></p>
-          <LaTeX block>{"I(x) = -\\log_2 P(x) \\quad \\text{(bits — su kien hiem = nhieu thong tin)}"}</LaTeX>
-          <p><strong>Entropy (bat dinh trung binh):</strong></p>
-          <LaTeX block>{"H(X) = -\\sum_{x} P(x) \\log_2 P(x) \\quad \\text{(cao = bat dinh, thap = chac chan)}"}</LaTeX>
+          <p><strong>Information Theory</strong>{" "}(Shannon, 1948) đo lường thông tin và bất định — nền tảng của loss functions và nhiều thuật toán ML.</p>
+          <p><strong>Information (tự thông tin):</strong></p>
+          <LaTeX block>{"I(x) = -\\log_2 P(x) \\quad \\text{(bits — sự kiện hiếm = nhiều thông tin)}"}</LaTeX>
+          <p><strong>Entropy (bất định trung bình):</strong></p>
+          <LaTeX block>{"H(X) = -\\sum_{x} P(x) \\log_2 P(x) \\quad \\text{(cao = bất định, thấp = chắc chắn)}"}</LaTeX>
           <p><strong>Cross-Entropy (loss function):</strong></p>
           <LaTeX block>{"H(p, q) = -\\sum_{x} p(x) \\log q(x) = H(p) + D_{KL}(p \\| q)"}</LaTeX>
-          <p><strong>KL Divergence (khac biet phan phoi):</strong></p>
+          <p><strong>KL Divergence (khác biệt phân phối):</strong></p>
           <LaTeX block>{"D_{KL}(p \\| q) = \\sum_{x} p(x) \\log \\frac{p(x)}{q(x)} \\geq 0 \\quad \\text{(= 0 khi p = q)}"}</LaTeX>
-          <Callout variant="tip" title="Cross-Entropy = Loss Function">Minimize CE H(p,q) = minimize KL(p||q) + H(p). Vi H(p) la constant → minimize CE = minimize KL = lam q (model) GAN p (true) nhat. Day la ly do CE la default loss cho classification!</Callout>
+          <Callout variant="tip" title="Cross-Entropy = Loss Function">Minimize CE H(p,q) = minimize KL(p||q) + H(p). Vì H(p) là constant → minimize CE = minimize KL = làm q (model) GẦN p (true) nhất. Đây là lý do CE là default loss cho classification!</Callout>
           <CodeBlock language="python" title="Information Theory trong Python">{`import numpy as np
 from scipy.stats import entropy
 
@@ -64,7 +64,7 @@ print(f"Cross-Entropy: {ce:.3f}")  # 0.357
 # KL Divergence
 p = [0.4, 0.3, 0.3]
 q = [0.5, 0.3, 0.2]
-kl = entropy(p, q)  # scipy dung natural log
+kl = entropy(p, q)  # scipy dùng natural log
 print(f"KL(p||q): {kl:.4f}")  # 0.0246
 
 # VAE loss = Reconstruction + KL(q(z|x) || p(z))
@@ -72,11 +72,11 @@ print(f"KL(p||q): {kl:.4f}")  # 0.0246
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat">
-        <MiniSummary points={["Information: -log P(x). Su kien hiem = nhieu thong tin. Su kien chac chan = 0 thong tin.", "Entropy: do bat dinh trung binh. Max khi dong deu (hardest to predict). Decision tree dung information gain.", "Cross-Entropy: loss function cua classification. Minimize CE = lam model gan true distribution.", "KL Divergence: do khac biet giua 2 phan phoi. Dung trong VAE, distillation, drift detection.", "Information Theory = ngon ngu cua ML: loss functions, decision trees, compression, coding."]} />
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+        <MiniSummary points={["Information: -log P(x). Sự kiện hiếm = nhiều thông tin. Sự kiện chắc chắn = 0 thông tin.", "Entropy: độ bất định trung bình. Max khi đồng đều (hardest to predict). Decision tree dùng information gain.", "Cross-Entropy: loss function của classification. Minimize CE = làm model gần true distribution.", "KL Divergence: đo khác biệt giữa 2 phân phối. Dùng trong VAE, distillation, drift detection.", "Information Theory = ngôn ngữ của ML: loss functions, decision trees, compression, coding."]} />
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>
