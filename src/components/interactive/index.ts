@@ -29,3 +29,4 @@ export { default as TabView } from "./TabView";
 export { default as CollapsibleDetail } from "./CollapsibleDetail";
 export { default as CodeBlock } from "./CodeBlock";
 export { default as LaTeX } from "./LaTeX";
+export { default as LessonSection } from "./LessonSection";

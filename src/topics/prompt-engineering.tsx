@@ -12,6 +12,7 @@ import {
   Callout,
   TabView,
   LaTeX,
+  LessonSection,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -180,6 +181,7 @@ export default function PromptEngineeringTopic() {
   return (
     <>
       {/* ━━━ HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="Bạn nhờ AI viết email xin việc. Hai prompt dưới đây, prompt nào cho kết quả tốt hơn?"
         options={[
@@ -195,7 +197,10 @@ export default function PromptEngineeringTopic() {
         </p>
       </PredictionGate>
 
+      </LessonSection>
+
       {/* ━━━ KHÁM PHÁ — Xem prompt cải thiện từng bước ━━━ */}
+      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Cải thiện prompt từng bước
@@ -296,7 +301,10 @@ export default function PromptEngineeringTopic() {
         )}
       </VisualizationSection>
 
+      </LessonSection>
+
       {/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         Bạn vừa thấy cùng một nhiệm vụ, chỉ bằng cách viết prompt tốt hơn, chất lượng
         output tăng từ <strong>25%</strong> lên <strong>96%</strong>.
@@ -304,7 +312,10 @@ export default function PromptEngineeringTopic() {
         giao tiếp hiệu quả với AI.
       </AhaMoment>
 
+      </LessonSection>
+
       {/* ━━━ ĐI SÂU — 4 kỹ thuật chính ━━━ */}
+      <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           4 kỹ thuật prompt phổ biến nhất
@@ -349,7 +360,10 @@ export default function PromptEngineeringTopic() {
         />
       </VisualizationSection>
 
-      {/* ━━━ THỬ THÁCH ━━━ */}
+      </LessonSection>
+
+      {/* ━━━ THỬ THÁCH + GIẢI THÍCH ━━━ */}
+      <LessonSection step={5} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Bạn muốn AI giải bài toán: 'Một cửa hàng giảm giá 20%, sau đó giảm thêm 10%. Tổng giảm giá là bao nhiêu phần trăm?' Kỹ thuật nào phù hợp nhất?"
         options={[
@@ -413,7 +427,10 @@ response = client.messages.create(
 )`}</CodeBlock>
       </ExplanationSection>
 
-      {/* ━━━ TÓM TẮT ━━━ */}
+      </LessonSection>
+
+      {/* ━━━ TÓM TẮT + QUIZ ━━━ */}
+      <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <MiniSummary
         points={[
           "Prompt Engineering là kỹ năng giao tiếp hiệu quả với AI — cụ thể, rõ ràng, có cấu trúc",
@@ -425,6 +442,7 @@ response = client.messages.create(
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }
