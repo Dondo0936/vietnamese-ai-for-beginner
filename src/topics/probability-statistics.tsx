@@ -1,309 +1,64 @@
 "use client";
-
-import { useState } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
-import VisualizationSection from "@/components/topic/VisualizationSection";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "probability-statistics",
-  title: "Probability & Statistics",
-  titleVi: "Xác suất & Thống kê cơ bản",
-  description:
-    "Phân phối xác suất, kỳ vọng, phương sai và định lý Bayes — công cụ cốt lõi cho ML",
-  category: "math-foundations",
-  tags: ["probability", "distribution", "bayes"],
-  difficulty: "beginner",
-  relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "probability-statistics", title: "Probability & Statistics", titleVi: "Xac suat & Thong ke co ban", description: "Phan phoi xac suat, ky vong, phuong sai va dinh ly Bayes — cong cu cot loi cho ML", category: "math-foundations", tags: ["probability", "distribution", "bayes"], difficulty: "beginner", relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"], vizType: "interactive" };
 
-function normalPdf(x: number, mu: number, sigma: number): number {
-  const coeff = 1 / (sigma * Math.sqrt(2 * Math.PI));
-  const exponent = -0.5 * ((x - mu) / sigma) ** 2;
-  return coeff * Math.exp(exponent);
-}
-
+const TOTAL_STEPS = 7;
 export default function ProbabilityStatisticsTopic() {
-  const [mean, setMean] = useState(0);
-  const [stdDev, setStdDev] = useState(1);
-
-  const svgW = 600;
-  const svgH = 300;
-  const pad = 40;
-  const xMin = -6;
-  const xMax = 6;
-
-  // Generate curve
-  const steps = 200;
-  const maxY = normalPdf(mean, mean, stdDev);
-  const yMax = maxY * 1.3;
-
-  const toX = (x: number) =>
-    pad + ((x - xMin) / (xMax - xMin)) * (svgW - 2 * pad);
-  const toY = (y: number) =>
-    svgH - pad - (y / yMax) * (svgH - 2 * pad);
-
-  const curvePoints: string[] = [];
-  for (let i = 0; i <= steps; i++) {
-    const x = xMin + (i / steps) * (xMax - xMin);
-    const y = normalPdf(x, mean, stdDev);
-    curvePoints.push(`${toX(x)},${toY(y)}`);
-  }
-
-  // Area under +/- 1 std dev
-  const areaPoints: string[] = [];
-  const aStart = Math.max(xMin, mean - stdDev);
-  const aEnd = Math.min(xMax, mean + stdDev);
-  areaPoints.push(`${toX(aStart)},${toY(0)}`);
-  for (let i = 0; i <= 80; i++) {
-    const x = aStart + (i / 80) * (aEnd - aStart);
-    const y = normalPdf(x, mean, stdDev);
-    areaPoints.push(`${toX(x)},${toY(y)}`);
-  }
-  areaPoints.push(`${toX(aEnd)},${toY(0)}`);
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Bayes theorem dung cho gi trong ML?", options: ["Tinh trung binh", "CAP NHAT niem tin (belief) khi co bang chung moi: P(benh|trieu chung) = P(trieu chung|benh) * P(benh) / P(trieu chung)", "Tinh variance"], correct: 1, explanation: "Bayes: prior (niem tin ban dau) + evidence (bang chung moi) → posterior (niem tin cap nhat). VD: P(spam|tu 'free') = P('free'|spam) * P(spam) / P('free'). Naive Bayes classifier, Bayesian Neural Networks, va toan bo Bayesian ML dua tren dinh ly nay." },
+    { question: "Normal distribution (Gaussian) quan trong cho ML vi sao?", options: ["Vi dep", "Central Limit Theorem: trung binh cua nhieu random variables → Gaussian. Nhieu hien tuong tu nhien va nhieu ML algorithms (linear regression, GP) gia dinh Gaussian", "Chi dung cho thong ke"], correct: 1, explanation: "CLT: bat ke distribution goc, trung binh cua N samples → Gaussian khi N lon. Linear regression gia dinh: error ~ N(0, sigma^2). Batch Normalization: normalize activations ve ~Gaussian. Weight initialization: sample tu Gaussian. Gaussian la 'default' distribution cua ML." },
+    { question: "MLE (Maximum Likelihood Estimation) va cross-entropy loss co lien quan khong?", options: ["Khong lien quan", "MLE toi da hoa likelihood = toi thieu hoa negative log-likelihood = toi thieu hoa cross-entropy loss. GIONG NHAU!", "Chi giong nhau ve ten"], correct: 1, explanation: "minimize cross-entropy H(p,q) = -sum(p*log(q)) = maximize log-likelihood cua du lieu. Khi p = one-hot label, q = model prediction: CE loss chinh la negative log-likelihood. Day la ly do cross-entropy la default loss cho classification — no chinh la MLE!" },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn đang <strong>dự báo thời tiết ở TP. Hồ Chí Minh</strong>.
-          Khi nghe &quot;70% khả năng mưa vào buổi chiều&quot;, đó chính là một{" "}
-          <strong>phân phối xác suất</strong> — một cách gán con số cho mức độ chắc
-          chắn của sự kiện.
-        </p>
-        <p>
-          Bây giờ, nếu bạn nhìn ra ngoài thấy <strong>trời đang u ám</strong>, bạn
-          cập nhật: &quot;Hmm, có mây rồi, chắc 90% sẽ mưa.&quot; Đó chính là{" "}
-          <strong>định lý Bayes</strong> — cập nhật niềm tin khi có bằng chứng mới.
-          P(mưa | mây) &gt; P(mưa) vì bằng chứng &quot;mây&quot; làm tăng xác suất mưa.
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="Email chua tu 'free' va 'money'. La spam hay khong? P(spam)=0.3, P('free'|spam)=0.8, P('free'|ham)=0.1. Dung gi de tinh P(spam|'free')?" options={["Dem so email", "Bayes Theorem: P(spam|free) = P(free|spam)*P(spam) / P(free) = 0.8*0.3 / (0.8*0.3+0.1*0.7) = 0.77", "Doan"]} correct={1} explanation="Bayes cho phep UPDATE xac suat khi co bang chung moi. Truoc khi thay 'free': P(spam)=30%. Sau khi thay 'free': P(spam|free)=77%. Tu 'free' la bang chung manh cho spam. Day la co che cua Naive Bayes classifier — don gian nhung hieu qua cho spam filtering!">
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Điều chỉnh trung bình (&mu;) và độ lệch chuẩn (&sigma;) để xem phân phối
-            chuẩn thay đổi. Vùng tô màu = 68.2% dữ liệu nằm trong &plusmn;1&sigma;.
-          </p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Toan bo ML la <strong>xac suat</strong>: Classification = P(class|input). Loss function = <strong>negative log-likelihood</strong>. Regularization = <strong>prior</strong>{" "}(Bayesian). Dropout = <strong>sampling</strong>. GAN = 2 distributions. Diffusion = <strong>adding/removing noise</strong>. Hieu xac suat = hieu TAI SAO ML hoat dong!</p></AhaMoment></LessonSection>
 
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-2xl mx-auto">
-            {/* X axis */}
-            <line
-              x1={pad}
-              y1={toY(0)}
-              x2={svgW - pad}
-              y2={toY(0)}
-              stroke="#64748b"
-              strokeWidth={1}
-            />
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="Model output: P(cho)=0.7, P(meo)=0.2, P(chim)=0.1. Label that: cho. Cross-entropy loss = ?" options={["-log(0.7) = 0.357", "-log(0.2) = 1.609", "-(0.7*log(0.7) + 0.2*log(0.2) + 0.1*log(0.1))"]} correct={0} explanation="CE voi one-hot label [1,0,0] va prediction [0.7, 0.2, 0.1]: H = -1*log(0.7) - 0*log(0.2) - 0*log(0.1) = -log(0.7) = 0.357. Chi quan tam xac suat cua class DUNG (0.7). Neu model confident hon (0.99) → loss thap hon (-log(0.99) = 0.01). Day la ly do CE loss 'thuong' model confident dung." /></LessonSection>
 
-            {/* Tick marks */}
-            {[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((v) => (
-              <g key={`tick-${v}`}>
-                <line
-                  x1={toX(v)}
-                  y1={toY(0)}
-                  x2={toX(v)}
-                  y2={toY(0) + 5}
-                  stroke="#64748b"
-                  strokeWidth={1}
-                />
-                <text
-                  x={toX(v)}
-                  y={toY(0) + 18}
-                  textAnchor="middle"
-                  fill="#94a3b8"
-                  fontSize="9"
-                >
-                  {v}
-                </text>
-              </g>
-            ))}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Probability & Statistics</strong>{" "}la nen tang cua moi thuat toan ML — tu loss function den model architecture.</p>
+        <p><strong>Bayes Theorem:</strong></p>
+        <LaTeX block>{"P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)} \\quad \\text{(posterior = likelihood × prior / evidence)}"}</LaTeX>
+        <p><strong>Distributions quan trong:</strong></p>
+        <LaTeX block>{"\\text{Gaussian: } p(x) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}} \\exp\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"}</LaTeX>
+        <LaTeX block>{"\\text{Bernoulli: } P(X=1) = p, \\quad P(X=0) = 1-p \\quad \\text{(binary outcomes)}"}</LaTeX>
+        <p><strong>Cross-Entropy Loss = Negative Log-Likelihood:</strong></p>
+        <LaTeX block>{"H(p, q) = -\\sum_x p(x) \\log q(x) \\quad \\text{(p = true, q = predicted)}"}</LaTeX>
+        <Callout variant="tip" title="MLE = Minimize CE">Maximize likelihood = minimize negative log-likelihood = minimize cross-entropy. Day la ly do TOAN BO classification models dung CE loss — no chinh la MLE duoi dang khac!</Callout>
+        <CodeBlock language="python" title="Xac suat trong ML">{`import numpy as np
+from scipy import stats
 
-            {/* Shaded area ±1σ */}
-            <polygon
-              points={areaPoints.join(" ")}
-              fill="#3b82f6"
-              opacity={0.2}
-            />
+# Bayes Theorem: P(spam|'free')
+p_spam = 0.3
+p_free_given_spam = 0.8
+p_free_given_ham = 0.1
+p_free = p_free_given_spam * p_spam + p_free_given_ham * (1 - p_spam)
+p_spam_given_free = p_free_given_spam * p_spam / p_free
+print(f"P(spam|'free') = {p_spam_given_free:.2f}")  # 0.77
 
-            {/* Bell curve */}
-            <polyline
-              points={curvePoints.join(" ")}
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-            />
+# Cross-Entropy Loss
+y_true = np.array([1, 0, 0])  # One-hot: cho
+y_pred = np.array([0.7, 0.2, 0.1])  # Predictions
+ce_loss = -np.sum(y_true * np.log(y_pred))
+print(f"CE Loss = {ce_loss:.3f}")  # 0.357
 
-            {/* Mean line */}
-            <line
-              x1={toX(mean)}
-              y1={toY(0)}
-              x2={toX(mean)}
-              y2={toY(maxY)}
-              stroke="#f97316"
-              strokeWidth={1.5}
-              strokeDasharray="4 3"
-            />
-            <text
-              x={toX(mean)}
-              y={toY(maxY) - 8}
-              textAnchor="middle"
-              fill="#f97316"
-              fontSize="10"
-              fontWeight="bold"
-            >
-              &mu; = {mean.toFixed(1)}
-            </text>
+# Gaussian distribution
+x = np.linspace(-4, 4, 100)
+pdf = stats.norm.pdf(x, loc=0, scale=1)  # mean=0, std=1`}</CodeBlock>
+      </ExplanationSection></LessonSection>
 
-            {/* Std dev markers */}
-            {mean - stdDev >= xMin && (
-              <line
-                x1={toX(mean - stdDev)}
-                y1={toY(0)}
-                x2={toX(mean - stdDev)}
-                y2={toY(normalPdf(mean - stdDev, mean, stdDev))}
-                stroke="#22c55e"
-                strokeWidth={1}
-                strokeDasharray="3 2"
-              />
-            )}
-            {mean + stdDev <= xMax && (
-              <line
-                x1={toX(mean + stdDev)}
-                y1={toY(0)}
-                x2={toX(mean + stdDev)}
-                y2={toY(normalPdf(mean + stdDev, mean, stdDev))}
-                stroke="#22c55e"
-                strokeWidth={1}
-                strokeDasharray="3 2"
-              />
-            )}
-
-            {/* Label for 68.2% */}
-            <text
-              x={toX(mean)}
-              y={toY(maxY * 0.3)}
-              textAnchor="middle"
-              fill="#3b82f6"
-              fontSize="11"
-              fontWeight="bold"
-            >
-              68.2%
-            </text>
-
-            {/* Labels */}
-            <text x={svgW / 2} y={svgH - 5} textAnchor="middle" fill="#64748b" fontSize="10">
-              Giá trị (x)
-            </text>
-            <text
-              x={15}
-              y={svgH / 2}
-              textAnchor="middle"
-              fill="#64748b"
-              fontSize="10"
-              transform={`rotate(-90, 15, ${svgH / 2})`}
-            >
-              Mật độ xác suất
-            </text>
-
-            {/* Info box */}
-            <rect x={svgW - 170} y={10} width={155} height={50} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-            <text x={svgW - 92} y={30} textAnchor="middle" fill="#e2e8f0" fontSize="10">
-              &sigma; = {stdDev.toFixed(1)}
-            </text>
-            <text x={svgW - 92} y={48} textAnchor="middle" fill="#94a3b8" fontSize="9">
-              Phương sai = {(stdDev * stdDev).toFixed(2)}
-            </text>
-          </svg>
-
-          {/* Controls */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Trung bình (&mu;):{" "}
-                <strong className="text-foreground">{mean.toFixed(1)}</strong>
-              </label>
-              <input
-                type="range"
-                min={-3}
-                max={3}
-                step={0.1}
-                value={mean}
-                onChange={(e) => setMean(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Độ lệch chuẩn (&sigma;):{" "}
-                <strong className="text-foreground">{stdDev.toFixed(1)}</strong>
-              </label>
-              <input
-                type="range"
-                min={0.3}
-                max={3}
-                step={0.1}
-                value={stdDev}
-                onChange={(e) => setStdDev(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-              <div className="flex justify-between text-xs text-muted">
-                <span>Tập trung</span>
-                <span>Phân tán</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Xác suất và thống kê</strong> là ngôn ngữ toán học mà machine
-          learning sử dụng để mô hình hóa sự không chắc chắn trong dữ liệu và dự
-          đoán.
-        </p>
-
-        <p>Các khái niệm quan trọng:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Biến ngẫu nhiên (Random Variable):</strong> Đại lượng mà giá trị
-            phụ thuộc vào kết quả ngẫu nhiên. Ví dụ: nhiệt độ ngày mai ở Đà Nẵng.
-          </li>
-          <li>
-            <strong>Phân phối chuẩn (Normal Distribution):</strong> Đường cong hình
-            chuông — mô hình hóa nhiều hiện tượng tự nhiên. 68.2% dữ liệu nằm trong
-            &plusmn;1&sigma; và 95.4% nằm trong &plusmn;2&sigma;.
-          </li>
-          <li>
-            <strong>Phân phối nhị thức (Binomial):</strong> Đếm số lần &quot;thành
-            công&quot; trong n phép thử. Ví dụ: tung đồng xu 10 lần, bao nhiêu lần
-            ra mặt ngửa?
-          </li>
-          <li>
-            <strong>Kỳ vọng (Mean) &amp; Phương sai (Variance):</strong> Kỳ vọng là
-            giá trị trung bình dài hạn, phương sai đo mức độ dao động quanh kỳ vọng.
-          </li>
-          <li>
-            <strong>Định lý Bayes:</strong> P(A|B) = P(B|A) &times; P(A) / P(B). Cho
-            phép cập nhật niềm tin khi có bằng chứng mới. Đây là nền tảng của{" "}
-            <strong>Naive Bayes classifier</strong> và nhiều mô hình sinh (generative
-            models).
-          </li>
-          <li>
-            <strong>Xác suất có điều kiện:</strong> P(mưa | mây) — xác suất mưa BIẾT
-            RẰNG trời đã có mây. Khác với P(mưa) vì đã có thêm thông tin.
-          </li>
-        </ul>
-        <p>
-          Trong ML, hàm loss <strong>cross-entropy</strong> chính là từ lý thuyết xác
-          suất, và quá trình training thực chất là tìm phân phối xác suất phù hợp
-          nhất với dữ liệu.
-        </p>
-      </ExplanationSection>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Bayes Theorem: cap nhat xac suat khi co bang chung moi. Core cua Naive Bayes, Bayesian ML.", "Gaussian (Normal): default distribution trong ML. CLT: trung binh nhieu samples → Gaussian.", "Cross-Entropy = Negative Log-Likelihood = MLE. Default loss cho classification.", "Expectation E[X] = trung binh. Variance Var[X] = do phan tan. Bias-Variance trade-off.", "Toan bo ML la xac suat: model = P(output|input). Training = tim params toi uu hoa likelihood."]} /></LessonSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }

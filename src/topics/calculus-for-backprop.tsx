@@ -1,319 +1,65 @@
 "use client";
-
-import { useState } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
-import VisualizationSection from "@/components/topic/VisualizationSection";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "calculus-for-backprop",
-  title: "Calculus for Backpropagation",
-  titleVi: "Giải tích cho lan truyền ngược",
-  description:
-    "Đạo hàm, quy tắc chuỗi và gradient — toán học đằng sau quá trình huấn luyện mạng nơ-ron",
-  category: "math-foundations",
-  tags: ["derivatives", "chain-rule", "gradient"],
-  difficulty: "intermediate",
-  relatedSlugs: ["backpropagation", "gradient-descent", "loss-functions"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "calculus-for-backprop", title: "Calculus for Backpropagation", titleVi: "Giai tich cho lan truyen nguoc", description: "Dao ham, quy tac chuoi va gradient — toan hoc dang sau qua trinh huan luyen mang no-ron", category: "math-foundations", tags: ["derivatives", "chain-rule", "gradient"], difficulty: "intermediate", relatedSlugs: ["backpropagation", "gradient-descent", "loss-functions"], vizType: "interactive" };
 
-// Loss curve: f(x) = (x-2)^2 + 0.5*sin(3x) + 2
-function lossFunc(x: number) {
-  return (x - 2) * (x - 2) + 0.5 * Math.sin(3 * x) + 2;
-}
-
-function lossDerivative(x: number) {
-  return 2 * (x - 2) + 1.5 * Math.cos(3 * x);
-}
-
+const TOTAL_STEPS = 7;
 export default function CalculusForBackpropTopic() {
-  const [pointX, setPointX] = useState(0);
-  const [lr, setLr] = useState(0.15);
-
-  const svgW = 600;
-  const svgH = 300;
-  const pad = 45;
-  const xMin = -1.5;
-  const xMax = 5.5;
-  const yMin = 0;
-  const yMax = 14;
-
-  const toX = (x: number) =>
-    pad + ((x - xMin) / (xMax - xMin)) * (svgW - 2 * pad);
-  const toY = (y: number) =>
-    svgH - pad - ((y - yMin) / (yMax - yMin)) * (svgH - 2 * pad);
-
-  // Generate loss curve
-  const steps = 200;
-  const curvePoints: string[] = [];
-  for (let i = 0; i <= steps; i++) {
-    const x = xMin + (i / steps) * (xMax - xMin);
-    const y = lossFunc(x);
-    curvePoints.push(`${toX(x)},${toY(y)}`);
-  }
-
-  const yAtPoint = lossFunc(pointX);
-  const deriv = lossDerivative(pointX);
-
-  // Tangent line endpoints
-  const tangentLen = 1.2;
-  const t1x = pointX - tangentLen;
-  const t1y = yAtPoint - tangentLen * deriv;
-  const t2x = pointX + tangentLen;
-  const t2y = yAtPoint + tangentLen * deriv;
-
-  // Gradient descent step
-  const nextX = pointX - lr * deriv;
-  const nextY = lossFunc(nextX);
-
-  const handleStep = () => {
-    const nx = pointX - lr * deriv;
-    setPointX(Math.max(xMin, Math.min(xMax, nx)));
-  };
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Dao ham f'(x) cho biet gi?", options: ["Gia tri cua f tai x", "TOC DO THAY DOI cua f khi x thay doi. Trong ML: loss thay doi bao nhieu khi weight thay doi 1 chut → huong dieu chinh weight", "Dien tich duoi f"], correct: 1, explanation: "f'(x) = lim (f(x+h) - f(x)) / h. Trong ML: dL/dw = loss thay doi bao nhieu khi weight w thay doi. Gradient descent: w_new = w - lr * dL/dw. Dieu chinh weight NGUOC HUONG gradient → loss giam. Day la cach neural network 'hoc'!" },
+    { question: "Chain Rule quan trong cho backprop vi sao?", options: ["De tinh nhanh", "Neural network = chuoi ham: y = f3(f2(f1(x))). Chain rule cho phep tinh dao ham 'NGUOC LAI' qua tung layer ma khong can tinh toan bo", "Chi dung cho RNN"], correct: 1, explanation: "y = f(g(h(x))). dy/dx = dy/dg * dg/dh * dh/dx. Moi layer tinh local gradient, nhan nguoc lai → gradient cho moi weight. 100 layers × local gradient thay vi differentiate ham 100 lop truc tiep. Day la 'back' trong 'backpropagation'!" },
+    { question: "Vanishing gradient xay ra khi nao?", options: ["Gradient qua lon", "Chain rule NHAN nhieu gradient nho (vi du sigmoid: max gradient = 0.25). 100 layers: 0.25^100 ≈ 0 → weights dau KHONG DUOC CAP NHAT", "Khi learning rate qua lon"], correct: 1, explanation: "Sigmoid gradient max = 0.25. 50 layers nhan nhau: 0.25^50 ≈ 10^-30 → gradient = 0 → layers dau khong hoc. Giai phap: ReLU (gradient = 1 hoac 0), residual connections (skip connections), batch normalization. Day la ly do ReLU thay the sigmoid cho deep networks." },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn đang dùng một <strong>ứng dụng đi bộ leo núi</strong>{" "}
-          mà luôn chỉ cho bạn <strong>hướng dốc xuống</strong>. Tại mỗi vị trí, ứng
-          dụng đo <strong>độ dốc</strong> (đạo hàm) dưới chân bạn và bảo bạn đi ngược
-          hướng dốc.
-        </p>
-        <p>
-          Nhưng nếu bạn phải đi qua <strong>nhiều ngọn đồi nối tiếp</strong> (nhiều
-          lớp trong mạng nơ-ron), bạn cần biết: &quot;Nếu tôi thay đổi vị trí ở đồi
-          đầu tiên, nó ảnh hưởng thế nào đến vị trí cuối cùng?&quot; Đó chính là{" "}
-          <strong>quy tắc chuỗi (chain rule)</strong> — kết nối độ dốc qua nhiều lớp,
-          cho phép tính gradient từ đầu ra ngược về đầu vào.
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="Neural network co 1 trieu weights. Training = tim gia tri toi uu cho 1 trieu bien so. Lam sao biet dieu chinh moi weight theo huong nao?" options={["Thu random", "Dao ham (gradient): tinh 'huong doc nhat' cho moi weight → dieu chinh nguoc huong doc → loss giam. Backpropagation tinh gradient HIEU QUA cho tat ca weights cung luc", "Dung cong thuc"]} correct={1} explanation="Gradient = 'ban do dia hinh' cua loss landscape. Tai moi diem, gradient chi huong doc nhat (loss tang). Di NGUOC gradient = di huong loss giam nhanh nhat. Backprop = chain rule tinh gradient cho 1 trieu weights HIEU QUA (O(N) thay vi O(N^2) finite differences).">
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Nhấn vào đường cong hoặc kéo thanh trượt để chọn vị trí. Đường tiếp tuyến
-            (cam) thể hiện đạo hàm tại điểm đó. Nhấn &quot;Bước gradient&quot; để
-            thực hiện một bước gradient descent.
-          </p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Gradient descent giong <strong>di xuong nui trong suong mu</strong>: khong nhin thay dinh nhung <strong>cam nhan doc</strong>{" "}(gradient) roi buoc nguoc lai. Chain rule la <strong>chuyen phat nhanh</strong>: moi layer chi can tinh local gradient, <strong>chuyen nguoc</strong>{" "}cho layer truoc. 100 layers × local = efficient. Day la toan dang sau <strong>moi neural network</strong>!</p></AhaMoment></LessonSection>
 
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-2xl mx-auto">
-            {/* Axes */}
-            <line x1={pad} y1={svgH - pad} x2={svgW - pad} y2={svgH - pad} stroke="#64748b" strokeWidth={1} />
-            <line x1={pad} y1={pad} x2={pad} y2={svgH - pad} stroke="#64748b" strokeWidth={1} />
-            <text x={svgW / 2} y={svgH - 5} textAnchor="middle" fill="#64748b" fontSize="10">
-              Trọng số (w)
-            </text>
-            <text
-              x={12}
-              y={svgH / 2}
-              textAnchor="middle"
-              fill="#64748b"
-              fontSize="10"
-              transform={`rotate(-90, 12, ${svgH / 2})`}
-            >
-              Loss L(w)
-            </text>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="f(x) = (3x + 2)^2. Tinh f'(x) tai x=1 bang chain rule." options={["f'(1) = 50", "f'(x) = 2(3x+2)*3 = 6(3x+2). f'(1) = 6*(3+2) = 30", "f'(1) = 25"]} correct={1} explanation="Chain rule: f = u^2, u = 3x+2. df/dx = df/du * du/dx = 2u * 3 = 6(3x+2). Tai x=1: f'(1) = 6*5 = 30. Trong neural network: u = linear layer, f = activation. Backprop tinh df/dx bang cach nhan local gradients: df/du (activation grad) * du/dx (linear grad)." /></LessonSection>
 
-            {/* Loss curve */}
-            <polyline
-              points={curvePoints.join(" ")}
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-            />
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Calculus for Backpropagation</strong>{" "}— dao ham va chain rule la co che neural network 'hoc' tu data.</p>
+        <p><strong>Dao ham (derivative):</strong></p>
+        <LaTeX block>{"f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h} \\quad \\text{(toc do thay doi)}"}</LaTeX>
+        <p><strong>Chain Rule (quy tac chuoi):</strong></p>
+        <LaTeX block>{"\\frac{\\partial L}{\\partial w} = \\frac{\\partial L}{\\partial y} \\cdot \\frac{\\partial y}{\\partial h} \\cdot \\frac{\\partial h}{\\partial w} \\quad \\text{(nhan local gradients nguoc lai)}"}</LaTeX>
+        <p><strong>Gradient Descent:</strong></p>
+        <LaTeX block>{"w_{t+1} = w_t - \\eta \\cdot \\frac{\\partial L}{\\partial w_t} \\quad \\text{(di nguoc gradient)}"}</LaTeX>
+        <Callout variant="tip" title="Autograd">Trong thuc te, ban KHONG can tinh dao ham thu cong. PyTorch autograd tu dong tinh gradient cho bat ky computation graph nao. loss.backward() tinh gradient cho TAT CA parameters. Ban chi can hieu CONCEPT, khong can tinh tay.</Callout>
+        <p><strong>Dao ham cac activation pho bien:</strong></p>
+        <LaTeX block>{"\\text{ReLU: } f'(x) = \\begin{cases} 1 & x > 0 \\\\ 0 & x \\leq 0 \\end{cases} \\quad \\text{Sigmoid: } f'(x) = f(x)(1 - f(x))"}</LaTeX>
+        <CodeBlock language="python" title="Backpropagation thu cong vs autograd">{`import torch
 
-            {/* Tangent line */}
-            <line
-              x1={toX(t1x)}
-              y1={toY(t1y)}
-              x2={toX(t2x)}
-              y2={toY(t2y)}
-              stroke="#f97316"
-              strokeWidth={2}
-              strokeDasharray="6 3"
-            />
+# Autograd: PyTorch tu dong tinh gradient
+x = torch.tensor(2.0, requires_grad=True)
+y = (3*x + 2)**2  # f(x) = (3x+2)^2
+y.backward()       # Tinh gradient tu dong
+print(f"df/dx tai x=2: {x.grad}")  # 48.0 = 6*(3*2+2)
 
-            {/* Gradient arrow */}
-            {Math.abs(deriv) > 0.1 && (
-              <line
-                x1={toX(pointX)}
-                y1={toY(yAtPoint) + 15}
-                x2={toX(nextX)}
-                y2={toY(yAtPoint) + 15}
-                stroke="#22c55e"
-                strokeWidth={2}
-                markerEnd="url(#gArrow)"
-              />
-            )}
-            <defs>
-              <marker id="gArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-                <polygon points="0 0, 8 3, 0 6" fill="#22c55e" />
-              </marker>
-            </defs>
+# Neural network training (autograd lam tat ca)
+model = torch.nn.Linear(784, 10)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
-            {/* Current point */}
-            <circle
-              cx={toX(pointX)}
-              cy={toY(yAtPoint)}
-              r={7}
-              fill="#ef4444"
-              stroke="#fff"
-              strokeWidth={2}
-            />
-            <text
-              x={toX(pointX)}
-              y={toY(yAtPoint) - 14}
-              textAnchor="middle"
-              fill="#ef4444"
-              fontSize="10"
-              fontWeight="bold"
-            >
-              w = {pointX.toFixed(2)}
-            </text>
+output = model(input_data)           # Forward pass
+loss = torch.nn.functional.cross_entropy(output, labels)
+loss.backward()                      # Backprop: tinh gradient cho TAT CA weights
+optimizer.step()                     # Gradient descent: update weights
+optimizer.zero_grad()                # Reset gradients
 
-            {/* Next point preview */}
-            {nextX >= xMin && nextX <= xMax && (
-              <circle
-                cx={toX(nextX)}
-                cy={toY(nextY)}
-                r={5}
-                fill="none"
-                stroke="#22c55e"
-                strokeWidth={2}
-                strokeDasharray="3 2"
-              />
-            )}
+# Ban chi can goi .backward() — PyTorch tu tinh dao ham
+# cho TOAN BO computation graph bang chain rule!`}</CodeBlock>
+      </ExplanationSection></LessonSection>
 
-            {/* Info box */}
-            <rect x={svgW - 195} y={8} width={180} height={70} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-            <text x={svgW - 105} y={26} textAnchor="middle" fill="#f97316" fontSize="10" fontWeight="bold">
-              Đạo hàm: dL/dw = {deriv.toFixed(3)}
-            </text>
-            <text x={svgW - 105} y={43} textAnchor="middle" fill="#94a3b8" fontSize="9">
-              Loss = {yAtPoint.toFixed(3)}
-            </text>
-            <text x={svgW - 105} y={58} textAnchor="middle" fill="#22c55e" fontSize="9">
-              Bước tiếp: w = {nextX.toFixed(3)}
-            </text>
-
-            {/* Chain rule illustration */}
-            <rect x={pad + 5} y={8} width={200} height={28} rx={6} fill="#1e293b" stroke="#8b5cf6" strokeWidth={1} />
-            <text x={pad + 105} y={26} textAnchor="middle" fill="#8b5cf6" fontSize="9">
-              Chain rule: dL/dw = dL/dy &times; dy/dw
-            </text>
-          </svg>
-
-          {/* Controls */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Vị trí w:{" "}
-                <strong className="text-foreground">{pointX.toFixed(2)}</strong>
-              </label>
-              <input
-                type="range"
-                min={xMin}
-                max={xMax}
-                step={0.05}
-                value={pointX}
-                onChange={(e) => setPointX(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Learning rate:{" "}
-                <strong className="text-foreground">{lr.toFixed(2)}</strong>
-              </label>
-              <input
-                type="range"
-                min={0.01}
-                max={0.5}
-                step={0.01}
-                value={lr}
-                onChange={(e) => setLr(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-3">
-            <button
-              onClick={() => setPointX(0)}
-              className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-            >
-              Đặt lại
-            </button>
-            <button
-              onClick={handleStep}
-              className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              Bước gradient
-            </button>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Đạo hàm (dL/dw)</p>
-              <p className="text-lg font-bold text-foreground">{deriv.toFixed(3)}</p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Loss hiện tại</p>
-              <p className="text-lg font-bold text-foreground">{yAtPoint.toFixed(3)}</p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Hướng di chuyển</p>
-              <p className="text-lg font-bold text-foreground">
-                {deriv > 0.01 ? "Sang trái" : deriv < -0.01 ? "Sang phải" : "Tại cực trị"}
-              </p>
-            </div>
-          </div>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Giải tích (Calculus)</strong> là công cụ toán học cho phép mạng
-          nơ-ron &quot;học&quot; bằng cách tối ưu hóa hàm mất mát. Không có giải
-          tích, không có backpropagation.
-        </p>
-
-        <p>Các khái niệm cốt lõi:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Đạo hàm (Derivative):</strong> Đo tốc độ thay đổi của hàm số.
-            Tại điểm w, đạo hàm dL/dw cho biết: nếu tăng w một chút, loss thay đổi
-            bao nhiêu? Đạo hàm dương nghĩa là loss đang tăng &rarr; cần giảm w.
-          </li>
-          <li>
-            <strong>Đạo hàm riêng (Partial Derivative):</strong> Khi hàm có nhiều
-            biến (nhiều trọng số), ta tính đạo hàm theo từng biến trong khi giữ các
-            biến khác cố định. Tập hợp tất cả đạo hàm riêng tạo thành{" "}
-            <strong>gradient</strong>.
-          </li>
-          <li>
-            <strong>Quy tắc chuỗi (Chain Rule):</strong> Nếu y = f(g(x)), thì
-            dy/dx = dy/dg &times; dg/dx. Đây là trái tim của backpropagation —
-            cho phép tính gradient qua nhiều lớp nối tiếp nhau. Mỗi lớp chỉ cần
-            biết đạo hàm cục bộ, rồi nhân ngược lại.
-          </li>
-          <li>
-            <strong>Gradient Descent:</strong> Cập nhật trọng số theo hướng ngược
-            gradient: w_mới = w_cũ - &alpha; &times; dL/dw. &alpha; là learning rate
-            quyết định bước đi lớn hay nhỏ.
-          </li>
-        </ol>
-        <p>
-          <strong>Backpropagation</strong> áp dụng chain rule từ lớp cuối (output)
-          ngược về lớp đầu (input), tính gradient cho mọi trọng số trong mạng. Nhờ
-          đó, mạng nơ-ron hàng triệu tham số vẫn có thể được huấn luyện hiệu quả.
-        </p>
-      </ExplanationSection>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Dao ham = toc do thay doi. Trong ML: dL/dw = loss thay doi bao nhieu khi weight thay doi.", "Chain rule: nhan local gradients nguoc lai qua tung layer. Day la 'back' trong 'backpropagation'.", "Gradient descent: w_new = w - lr * gradient. Di nguoc huong doc nhat → loss giam.", "Vanishing gradient: sigmoid (max 0.25) nhan nhieu layers → 0. ReLU (gradient 1) giai quyet.", "Autograd (PyTorch): tu dong tinh gradient. Ban chi can hieu concept, khong can tinh tay."]} /></LessonSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }
