@@ -47,7 +47,7 @@ export default function BookmarksPage() {
     <>
       <Navbar />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="mx-auto max-w-6xl px-4 py-10">
           <div className="mb-8 flex items-center gap-3">
             <Bookmark className="h-6 w-6 text-accent" />
