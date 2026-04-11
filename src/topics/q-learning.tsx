@@ -8,7 +8,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "q-learning", title: "Q-Learning", titleVi: "Q-Learning", description: "Thuat toan hoc tang cuong co ban hoc gia tri hanh dong toi uu tu trai nghiem", category: "reinforcement-learning", tags: ["reinforcement", "q-table", "reward"], difficulty: "beginner", relatedSlugs: ["deep-q-network", "multi-armed-bandit", "supervised-unsupervised-rl"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "q-learning", title: "Q-Learning", titleVi: "Q-Learning", description: "Thuật toán học tăng cường cơ bản học giá trị hành động tối ưu từ trải nghiệm", category: "reinforcement-learning", tags: ["reinforcement", "q-table", "reward"], difficulty: "beginner", relatedSlugs: ["deep-q-network", "multi-armed-bandit", "supervised-unsupervised-rl"], vizType: "interactive" };
 
 /* ── Grid World ── */
 const GRID = 4;
@@ -53,28 +53,28 @@ export default function QLearningTopic() {
   const runMany = useCallback(() => { for (let i = 0; i < 100; i++) trainStep(); }, [trainStep]);
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
-    { question: "Q(s,a) dai dien cho gi?", options: ["Xac suat hanh dong a thanh cong", "GIA TRI KY VONG cua tong reward tuong lai neu thuc hien hanh dong a tai state s roi theo chinh sach toi uu", "So lan da thuc hien hanh dong a"], correct: 1, explanation: "Q(s,a) = 'hanh dong a tai state s tot den dau?' Gia tri cao = hanh dong tot (dan den nhieu reward). Agent chon action co Q cao nhat tai moi state → chinh sach toi uu. Q-Learning hoc Q table tu trai nghiem (trial-and-error)." },
-    { question: "Epsilon-greedy: tai sao can random action (explore)?", options: ["De cham hon", "Neu luon chon action co Q cao nhat (exploit) → co the bi ket o local optimum, bo lo duong tot hon. Can explore de tim", "Vi model chua hoc xong"], correct: 1, explanation: "Explore vs Exploit dilemma: luon exploit = co the miss duong tat (local optimum). Luon explore = khong tan dung kien thuc da hoc. Epsilon-greedy: 90% exploit (chon best Q), 10% explore (random) → can bang hoc va khai thac." },
-    { question: "Discount factor gamma (0.9) lam gi?", options: ["Giam learning rate", "Can bang reward NGAY (gan) va reward TUONG LAI (xa). Gamma cao (0.99) = nhin xa. Gamma thap (0.5) = nhin gan", "Giam so episodes"], correct: 1, explanation: "Gamma = 0.9: reward 1 buoc sau giam 10%, 2 buoc: 19%, 10 buoc: 65%. Nghia la agent 'quan tam' reward gan nhieu hon reward xa. Gamma = 0.99: nhin xa (tot cho planning). Gamma = 0.5: nhin gan (tot cho reactive). Grab dung gamma cao de toi uu route dai." },
+    { question: "Q(s,a) đại diện cho gì?", options: ["Xác suất hành động a thành công", "GIÁ TRỊ KỲ VỌNG của tổng reward tương lai nếu thực hiện hành động a tại state s rồi theo chính sách tối ưu", "Số lần đã thực hiện hành động a"], correct: 1, explanation: "Q(s,a) = 'hành động a tại state s tốt đến đâu?' Giá trị cao = hành động tốt (dẫn đến nhiều reward). Agent chọn action có Q cao nhất tại mỗi state → chính sách tối ưu. Q-Learning học Q table từ trải nghiệm (trial-and-error)." },
+    { question: "Epsilon-greedy: tại sao cần random action (explore)?", options: ["Để chậm hơn", "Nếu luôn chọn action có Q cao nhất (exploit) → có thể bị kẹt ở local optimum, bỏ lỡ đường tốt hơn. Cần explore để tìm", "Vì model chưa học xong"], correct: 1, explanation: "Explore vs Exploit dilemma: luôn exploit = có thể miss đường tắt (local optimum). Luôn explore = không tận dụng kiến thức đã học. Epsilon-greedy: 90% exploit (chọn best Q), 10% explore (random) → cân bằng học và khai thác." },
+    { question: "Discount factor gamma (0.9) làm gì?", options: ["Giảm learning rate", "Cân bằng reward NGAY (gần) và reward TƯƠNG LAI (xa). Gamma cao (0.99) = nhìn xa. Gamma thấp (0.5) = nhìn gần", "Giảm số episodes"], correct: 1, explanation: "Gamma = 0.9: reward 1 bước sau giảm 10%, 2 bước: 19%, 10 bước: 65%. Nghĩa là agent 'quan tâm' reward gần nhiều hơn reward xa. Gamma = 0.99: nhìn xa (tốt cho planning). Gamma = 0.5: nhìn gần (tốt cho reactive). Grab dùng gamma cao để tối ưu route dài." },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
-        <PredictionGate question="Grab can tim duong ngan nhat cho tai xe. Moi nga tu co nhieu huong, khong biet truoc duong nao ket. Tai xe hoc bang cach nao?" options={["Lap trinh moi nga tu bang tay", "Thu nhieu duong, nho duong nao nhanh (reward cao), lan sau uu tien duong do — day la Q-Learning!", "Luon di thang"]} correct={1} explanation="Q-Learning: tai moi nga tu (state), thu hanh dong (re trai/phai/thang), nhan reward (nhanh = +, cham = -). Dan dan xay dung 'ban do gia tri' (Q-table): tai moi nga tu, biet re huong nao co gia tri cao nhat. Grab dung RL tuong tu cho 30 trieu chuyen/ngay!">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+        <PredictionGate question="Grab cần tìm đường ngắn nhất cho tài xế. Mỗi ngã tư có nhiều hướng, không biết trước đường nào kẹt. Tài xế học bằng cách nào?" options={["Lập trình mỗi ngã tư bằng tay", "Thử nhiều đường, nhớ đường nào nhanh (reward cao), lần sau ưu tiên đường đó — đây là Q-Learning!", "Luôn đi thẳng"]} correct={1} explanation="Q-Learning: tại mỗi ngã tư (state), thử hành động (rẽ trái/phải/thẳng), nhận reward (nhanh = +, chậm = -). Dần dần xây dựng 'bản đồ giá trị' (Q-table): tại mỗi ngã tư, biết rẽ hướng nào có giá trị cao nhất. Grab dùng RL tương tự cho 30 triệu chuyến/ngày!">
           <p className="text-sm text-muted mt-2">
-            Hay tiep tuc de tu huan luyen mot agent Q-Learning.
+            Hãy tiếp tục để tự huấn luyện một agent Q-Learning.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
-        <p className="mb-4 text-sm text-muted leading-relaxed">Click <strong className="text-foreground">Train 1 buoc</strong>{" "}hoac <strong className="text-foreground">Train 100 buoc</strong>{" "}de xem agent hoc cach di den dich (goc duoi-phai).</p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
+        <p className="mb-4 text-sm text-muted leading-relaxed">Click <strong className="text-foreground">Train 1 bước</strong>{" "}hoặc <strong className="text-foreground">Train 100 bước</strong>{" "}để xem agent học cách đi đến đích (góc dưới-phải).</p>
         <VisualizationSection>
           <div className="space-y-4">
             <div className="flex gap-3 justify-center">
-              <button onClick={trainStep} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Train 1 buoc</button>
-              <button onClick={runMany} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Train 100 buoc</button>
+              <button onClick={trainStep} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Train 1 bước</button>
+              <button onClick={runMany} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Train 100 bước</button>
               <button onClick={() => { setQTable(initQ()); setPos({ r: 0, c: 0 }); setEpisodes(0); }} className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted hover:text-foreground">Reset</button>
             </div>
             <svg viewBox="0 0 400 400" className="w-full max-w-sm mx-auto">
@@ -85,33 +85,33 @@ export default function QLearningTopic() {
                 const isAgent = pos.r === r && pos.c === c;
                 return (<g key={`${r}${c}`}>
                   <rect x={x + 2} y={y + 2} width={96} height={96} rx={8} fill={fill} opacity={0.3} stroke={isAgent ? "#f59e0b" : "#475569"} strokeWidth={isAgent ? 3 : 1} />
-                  {r === GOAL.r && c === GOAL.c && <text x={x + 50} y={y + 55} textAnchor="middle" fill="#22c55e" fontSize={12} fontWeight="bold">DICH</text>}
-                  {r === TRAP.r && c === TRAP.c && <text x={x + 50} y={y + 55} textAnchor="middle" fill="#ef4444" fontSize={12} fontWeight="bold">BAY</text>}
+                  {r === GOAL.r && c === GOAL.c && <text x={x + 50} y={y + 55} textAnchor="middle" fill="#22c55e" fontSize={12} fontWeight="bold">ĐÍCH</text>}
+                  {r === TRAP.r && c === TRAP.c && <text x={x + 50} y={y + 55} textAnchor="middle" fill="#ef4444" fontSize={12} fontWeight="bold">BẪY</text>}
                   {isAgent && <circle cx={x + 50} cy={y + 50} r={15} fill="#f59e0b" />}
                   <text x={x + 50} y={y + 92} textAnchor="middle" fill="#64748b" fontSize={7}>Q:{maxQ.toFixed(1)}</text>
                 </g>);
               }))}
             </svg>
-            <p className="text-center text-sm text-muted">Episodes hoan thanh: <strong>{episodes}</strong></p>
+            <p className="text-center text-sm text-muted">Episodes hoàn thành: <strong>{episodes}</strong></p>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
-        <AhaMoment><p>Sau nhieu lan thu, agent <strong>hoc duoc ban do gia tri</strong>{" "}(Q-table): tai moi o, biet di huong nao co gia tri cao nhat. Q values <strong>lan nguoc tu dich</strong>{" "}— o gan dich co Q cao, o xa Q thap hon. Agent di theo gradient cua Q values den dich — giong nuoc chay tu nui xuong thung lung!</p></AhaMoment>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment><p>Sau nhiều lần thử, agent <strong>học được bản đồ giá trị</strong>{" "}(Q-table): tại mỗi ô, biết đi hướng nào có giá trị cao nhất. Q values <strong>lan ngược từ đích</strong>{" "}— ô gần đích có Q cao, ô xa Q thấp hơn. Agent đi theo gradient của Q values đến đích — giống nước chảy từ núi xuống thung lũng!</p></AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
-        <InlineChallenge question="Agent co epsilon=0.3 (30% random). Sau 1000 episodes, agent da hoc tot. Nen giam epsilon xuong 0.05 khong?" options={["Khong — giu 0.3 de tiep tuc explore", "CO — agent da hoc → nen exploit nhieu hon (0.05 = 95% chon best action). Giam dan epsilon la chien luoc chuan", "Dat epsilon = 0 (khong explore)"]} correct={1} explanation="Epsilon decay: ban dau explore nhieu (0.3-1.0) de kham pha. Dan dan giam (0.05-0.01) de khai thac kien thuc da hoc. Epsilon = 0 nguy hiem: moi truong thay doi thi khong adapt duoc. Giu 0.01-0.05 de van explore chut it." />
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge question="Agent có epsilon=0.3 (30% random). Sau 1000 episodes, agent đã học tốt. Nên giảm epsilon xuống 0.05 không?" options={["Không — giữ 0.3 để tiếp tục explore", "CÓ — agent đã học → nên exploit nhiều hơn (0.05 = 95% chọn best action). Giảm dần epsilon là chiến lược chuẩn", "Đặt epsilon = 0 (không explore)"]} correct={1} explanation="Epsilon decay: ban đầu explore nhiều (0.3-1.0) để khám phá. Dần dần giảm (0.05-0.01) để khai thác kiến thức đã học. Epsilon = 0 nguy hiểm: môi trường thay đổi thì không adapt được. Giữ 0.01-0.05 để vẫn explore chút ít." />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Q-Learning</strong>{" "}la thuat toan RL hoc gia tri Q(s,a) — 'hanh dong a tai state s tot den dau?' — tu trai nghiem (off-policy, model-free).</p>
+          <p><strong>Q-Learning</strong>{" "}là thuật toán RL học giá trị Q(s,a) — 'hành động a tại state s tốt đến đâu?' — từ trải nghiệm (off-policy, model-free).</p>
           <p><strong>Q-value update rule:</strong></p>
           <LaTeX block>{"Q(s_t, a_t) \\leftarrow Q(s_t, a_t) + \\alpha \\left[ r_t + \\gamma \\max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \\right]"}</LaTeX>
-          <p>Trong do: <LaTeX>{"\\alpha"}</LaTeX> = learning rate, <LaTeX>{"\\gamma"}</LaTeX> = discount factor, <LaTeX>{"r_t"}</LaTeX> = reward.</p>
-          <Callout variant="tip" title="Off-policy">Q-Learning la off-policy: update Q dua tren best action (max Q), khong phai action thuc su da thuc hien. Uu diem: hoc tu bat ky data nao (replay buffer). Nhuoc diem: co the overestimate Q values.</Callout>
+          <p>Trong đó: <LaTeX>{"\\alpha"}</LaTeX> = learning rate, <LaTeX>{"\\gamma"}</LaTeX> = discount factor, <LaTeX>{"r_t"}</LaTeX> = reward.</p>
+          <Callout variant="tip" title="Off-policy">Q-Learning là off-policy: update Q dựa trên best action (max Q), không phải action thực sự đã thực hiện. Ưu điểm: học từ bất kỳ data nào (replay buffer). Nhược điểm: có thể overestimate Q values.</Callout>
           <CodeBlock language="python" title="Q-Learning cho grid world">{`import numpy as np
 
 # Q-table: states x actions
@@ -139,16 +139,16 @@ for episode in range(1000):
     # Epsilon decay
     epsilon = max(0.01, epsilon * 0.995)
 
-# Sau 1000 episodes: agent hoc duong toi uu
-# Policy: tai moi state, chon action co Q cao nhat`}</CodeBlock>
+# Sau 1000 episodes: agent học đường tối ưu
+# Policy: tại mỗi state, chọn action có Q cao nhất`}</CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
-        <MiniSummary points={["Q(s,a) = gia tri ky vong neu thuc hien action a tai state s. Agent chon action co Q cao nhat.", "Update rule: Q moi = Q cu + alpha * (reward + gamma * max Q tiep theo - Q cu).", "Epsilon-greedy: explore (random) vs exploit (best Q). Giam epsilon dan theo thoi gian.", "Off-policy: hoc tu best action (max Q) khong phai action thuc hien → linh hoat hon.", "Han che: Q-table chi cho state/action nho. State lon (hinh anh) → can Deep Q-Network (DQN)."]} />
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+        <MiniSummary points={["Q(s,a) = giá trị kỳ vọng nếu thực hiện action a tại state s. Agent chọn action có Q cao nhất.", "Update rule: Q mới = Q cũ + alpha * (reward + gamma * max Q tiếp theo - Q cũ).", "Epsilon-greedy: explore (random) vs exploit (best Q). Giảm epsilon dần theo thời gian.", "Off-policy: học từ best action (max Q) không phải action thực hiện → linh hoạt hơn.", "Hạn chế: Q-table chỉ cho state/action nhỏ. State lớn (hình ảnh) → cần Deep Q-Network (DQN)."]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>

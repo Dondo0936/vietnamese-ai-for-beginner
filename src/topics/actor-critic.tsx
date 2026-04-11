@@ -7,21 +7,21 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "actor-critic", title: "Actor-Critic (A2C/A3C)", titleVi: "Actor-Critic", description: "Kien truc ket hop mang chinh sach (Actor) va mang danh gia (Critic) de hoc on dinh hon", category: "reinforcement-learning", tags: ["a2c", "a3c", "advantage"], difficulty: "advanced", relatedSlugs: ["policy-gradient", "deep-q-network", "rlhf"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "actor-critic", title: "Actor-Critic (A2C/A3C)", titleVi: "Actor-Critic", description: "Kiến trúc kết hợp mạng chính sách (Actor) và mạng đánh giá (Critic) để học ổn định hơn", category: "reinforcement-learning", tags: ["a2c", "a3c", "advantage"], difficulty: "advanced", relatedSlugs: ["policy-gradient", "deep-q-network", "rlhf"], vizType: "interactive" };
 
 const TOTAL_STEPS = 7;
 export default function ActorCriticTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(() => [
-    { question: "Actor va Critic lam gi?", options: ["Actor va Critic la 2 ten goi cua cung 1 network", "Actor: chon action (policy). Critic: danh gia action do tot hay xau (value function). Giong dien vien va dao dien", "Actor xu ly anh, Critic xu ly text"], correct: 1, explanation: "Actor = dien vien: hanh dong (chon action). Critic = dao dien: danh gia (tot/xau, cho diem). Actor hoc tu feedback cua Critic. Critic hoc tu reward that. Ket hop: on dinh hon REINFORCE (Actor only) va hieu qua hon DQN (Critic only)." },
-    { question: "Advantage function A(s,a) = Q(s,a) - V(s) co y nghia gi?", options: ["Do accuracy cua model", "Action a TAI state s tot/xau hon TRUNG BINH bao nhieu. A > 0: tot hon TB → tang xac suat. A < 0: xau hon TB → giam", "Khoang cach giua 2 states"], correct: 1, explanation: "V(s) = gia tri trung binh cua state s. Q(s,a) = gia tri neu thuc hien action a. A(s,a) = Q(s,a) - V(s) = action a tot/xau hon average bao nhieu. Dung A thay vi Q giam variance (vi da tru baseline V). Day la 'Advantage' trong A2C." },
-    { question: "PPO (dung trong ChatGPT RLHF) cai thien Actor-Critic the nao?", options: ["Dung model lon hon", "CLIP ratio cua policy change → ngan policy thay doi qua nhieu moi step → training on dinh, khong bi collapse", "Dung nhieu data hon"], correct: 1, explanation: "Policy gradient co the thay doi policy nhieu trong 1 step → hoc khong on dinh. PPO clip: ratio = pi_new/pi_old, gioi han trong [1-eps, 1+eps] (eps=0.2). Policy chi thay doi toi da 20%/step. On dinh + don gian → algorithm mac dinh cho RLHF (ChatGPT, Claude)." },
+    { question: "Actor và Critic làm gì?", options: ["Actor và Critic là 2 tên gọi của cùng 1 network", "Actor: chọn action (policy). Critic: đánh giá action đó tốt hay xấu (value function). Giống diễn viên và đạo diễn", "Actor xử lý ảnh, Critic xử lý text"], correct: 1, explanation: "Actor = diễn viên: hành động (chọn action). Critic = đạo diễn: đánh giá (tốt/xấu, cho điểm). Actor học từ feedback của Critic. Critic học từ reward thật. Kết hợp: ổn định hơn REINFORCE (Actor only) và hiệu quả hơn DQN (Critic only)." },
+    { question: "Advantage function A(s,a) = Q(s,a) - V(s) có ý nghĩa gì?", options: ["Đo accuracy của model", "Action a TẠI state s tốt/xấu hơn TRUNG BÌNH bao nhiêu. A > 0: tốt hơn TB → tăng xác suất. A < 0: xấu hơn TB → giảm", "Khoảng cách giữa 2 states"], correct: 1, explanation: "V(s) = giá trị trung bình của state s. Q(s,a) = giá trị nếu thực hiện action a. A(s,a) = Q(s,a) - V(s) = action a tốt/xấu hơn average bao nhiêu. Dùng A thay vì Q giảm variance (vì đã trừ baseline V). Đây là 'Advantage' trong A2C." },
+    { question: "PPO (dùng trong ChatGPT RLHF) cải thiện Actor-Critic thế nào?", options: ["Dùng model lớn hơn", "CLIP ratio của policy change → ngăn policy thay đổi quá nhiều mỗi step → training ổn định, không bị collapse", "Dùng nhiều data hơn"], correct: 1, explanation: "Policy gradient có thể thay đổi policy nhiều trong 1 step → học không ổn định. PPO clip: ratio = pi_new/pi_old, giới hạn trong [1-eps, 1+eps] (eps=0.2). Policy chỉ thay đổi tối đa 20%/step. Ổn định + đơn giản → algorithm mặc định cho RLHF (ChatGPT, Claude)." },
   ], []);
 
   return (
-    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
-      <PredictionGate question="REINFORCE (Policy Gradient) co variance cao vi chi dung return lam tin hieu hoc. DQN chi hoc value, khong hoc policy truc tiep. Co cach ket hop uu diem ca hai?" options={["Khong — phai chon 1 trong 2", "Actor-Critic: Actor (policy) chon action, Critic (value) danh gia → variance thap + policy truc tiep", "Dung model lon hon"]} correct={1} explanation="Actor-Critic = best of both worlds! Actor hoc policy (nhu REINFORCE nhung variance thap hon vi Critic danh gia). Critic hoc value function (nhu DQN nhung ho tro Actor). PPO (variant cua Actor-Critic) la thuat toan dung cho RLHF trong ChatGPT va Claude!">
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+      <PredictionGate question="REINFORCE (Policy Gradient) có variance cao vì chỉ dùng return làm tín hiệu học. DQN chỉ học value, không học policy trực tiếp. Có cách kết hợp ưu điểm cả hai?" options={["Không — phải chọn 1 trong 2", "Actor-Critic: Actor (policy) chọn action, Critic (value) đánh giá → variance thấp + policy trực tiếp", "Dùng model lớn hơn"]} correct={1} explanation="Actor-Critic = best of both worlds! Actor học policy (như REINFORCE nhưng variance thấp hơn vì Critic đánh giá). Critic học value function (như DQN nhưng hỗ trợ Actor). PPO (variant của Actor-Critic) là thuật toán dùng cho RLHF trong ChatGPT và Claude!">
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection><div className="space-y-4">
           <svg viewBox="0 0 600 130" className="w-full max-w-2xl mx-auto">
             <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Actor-Critic Architecture</text>
@@ -34,25 +34,25 @@ export default function ActorCriticTopic() {
             <rect x={430} y={40} width={150} height={50} rx={8} fill="#8b5cf6" opacity={0.3} stroke="#8b5cf6" strokeWidth={1.5} />
             <text x={505} y={60} textAnchor="middle" fill="#8b5cf6" fontSize={9} fontWeight="bold">Advantage</text>
             <text x={505} y={78} textAnchor="middle" fill="#94a3b8" fontSize={8}>A = r + gamma*V(s') - V(s)</text>
-            <text x={300} y={120} textAnchor="middle" fill="#64748b" fontSize={9}>Actor hoc tu Advantage. Critic hoc tu TD error. On dinh hon REINFORCE.</text>
+            <text x={300} y={120} textAnchor="middle" fill="#64748b" fontSize={9}>Actor học từ Advantage. Critic học từ TD error. Ổn định hơn REINFORCE.</text>
           </svg>
         </div></VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Actor = <strong>dien vien</strong>{" "}(hanh dong). Critic = <strong>dao dien</strong>{" "}(danh gia). Dien vien hoc tu feedback dao dien, dao dien hoc tu khan gia (reward). Ket hop tao <strong>system on dinh va hieu qua</strong>. PPO (Actor-Critic variant) la thuat toan <strong>dung trong RLHF cho ChatGPT va Claude!</strong></p></AhaMoment></LessonSection>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha"><AhaMoment><p>Actor = <strong>diễn viên</strong>{" "}(hành động). Critic = <strong>đạo diễn</strong>{" "}(đánh giá). Diễn viên học từ feedback đạo diễn, đạo diễn học từ khán giả (reward). Kết hợp tạo <strong>system ổn định và hiệu quả</strong>. PPO (Actor-Critic variant) là thuật toán <strong>dùng trong RLHF cho ChatGPT và Claude!</strong></p></AhaMoment></LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="PPO clip ratio trong [0.8, 1.2]. Nghia la policy chi thay doi toi da 20% moi step. Tai sao khong cho thay doi nhieu hon (50%?)?" options={["Tiet kiem compute", "Thay doi lon = mat on dinh. Policy A tot → thay doi 50% → policy B co the te vi reward landscape phuc tap. Small steps an toan hon", "Khong co ly do"]} correct={1} explanation="Trust region: policy landscape phuc tap, thay doi lon co the 'nhay' tu vung tot sang vung te. PPO gioi han moi step → bao dam cai thien dan dan. Epsilon=0.2 la sweet spot: du nhanh de hoc, du nho de on dinh. Day la ly do PPO la default cho RLHF." /></LessonSection>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách"><InlineChallenge question="PPO clip ratio trong [0.8, 1.2]. Nghĩa là policy chỉ thay đổi tối đa 20% mỗi step. Tại sao không cho thay đổi nhiều hơn (50%?)?" options={["Tiết kiệm compute", "Thay đổi lớn = mất ổn định. Policy A tốt → thay đổi 50% → policy B có thể tệ vì reward landscape phức tạp. Small steps an toàn hơn", "Không có lý do"]} correct={1} explanation="Trust region: policy landscape phức tạp, thay đổi lớn có thể 'nhảy' từ vùng tốt sang vùng tệ. PPO giới hạn mỗi step → bảo đảm cải thiện dần dần. Epsilon=0.2 là sweet spot: đủ nhanh để học, đủ nhỏ để ổn định. Đây là lý do PPO là default cho RLHF." /></LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
-        <p><strong>Actor-Critic</strong>{" "}ket hop policy optimization (Actor) voi value estimation (Critic) — on dinh va hieu qua hon dung rieng.</p>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết"><ExplanationSection>
+        <p><strong>Actor-Critic</strong>{" "}kết hợp policy optimization (Actor) với value estimation (Critic) — ổn định và hiệu quả hơn dùng riêng.</p>
         <p><strong>Advantage Actor-Critic (A2C):</strong></p>
-        <LaTeX block>{"\\text{Advantage: } A(s,a) = r + \\gamma V(s') - V(s) \\quad \\text{(TD error lam advantage estimate)}"}</LaTeX>
+        <LaTeX block>{"\\text{Advantage: } A(s,a) = r + \\gamma V(s') - V(s) \\quad \\text{(TD error làm advantage estimate)}"}</LaTeX>
         <LaTeX block>{"\\nabla_\\theta J = \\mathbb{E}[\\nabla_\\theta \\log \\pi_\\theta(a|s) \\cdot A(s,a)] \\quad \\text{(Actor update)}"}</LaTeX>
         <LaTeX block>{"\\mathcal{L}_{\\text{critic}} = (r + \\gamma V(s') - V(s))^2 \\quad \\text{(Critic update)}"}</LaTeX>
         <p><strong>PPO (Proximal Policy Optimization):</strong></p>
         <LaTeX block>{"\\mathcal{L}^{\\text{CLIP}} = \\mathbb{E}\\left[\\min\\left(r_t(\\theta) A_t, \\text{clip}(r_t(\\theta), 1-\\epsilon, 1+\\epsilon) A_t\\right)\\right]"}</LaTeX>
-        <Callout variant="tip" title="PPO = Default cho RLHF">PPO la thuat toan dung cho RLHF trong ChatGPT, Claude, Gemini. On dinh, don gian implement, hieu qua. GRPO (DeepSeek) la variant khong can Critic rieng — sinh nhieu responses, rank, update policy.</Callout>
-        <CodeBlock language="python" title="A2C voi PyTorch">{`import torch
+        <Callout variant="tip" title="PPO = Default cho RLHF">PPO là thuật toán dùng cho RLHF trong ChatGPT, Claude, Gemini. Ổn định, đơn giản implement, hiệu quả. GRPO (DeepSeek) là variant không cần Critic riêng — sinh nhiều responses, rank, update policy.</Callout>
+        <CodeBlock language="python" title="A2C với PyTorch">{`import torch
 import torch.nn as nn
 
 class ActorCritic(nn.Module):
@@ -68,7 +68,7 @@ class ActorCritic(nn.Module):
 
 model = ActorCritic(4, 2)
 
-# Training: Actor hoc tu Advantage, Critic hoc tu TD error
+# Training: Actor học từ Advantage, Critic học từ TD error
 probs, value = model(state)
 _, next_value = model(next_state)
 advantage = reward + 0.99 * next_value - value  # TD error
@@ -78,8 +78,8 @@ loss = actor_loss + 0.5 * critic_loss
 loss.backward()`}</CodeBlock>
       </ExplanationSection></LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Actor-Critic: Actor (policy) chon action, Critic (value) danh gia. Ket hop uu diem PG + DQN.", "Advantage A(s,a) = action tot/xau hon trung binh bao nhieu → giam variance dang ke.", "PPO clip ratio [1-eps, 1+eps] → policy thay doi nho moi step → training on dinh.", "PPO la default cho RLHF (ChatGPT, Claude). GRPO la variant khong can Critic rieng.", "A3C: async parallel training. A2C: synchronous. PPO: trust region. SAC: maximum entropy."]} /></LessonSection>
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt"><MiniSummary points={["Actor-Critic: Actor (policy) chọn action, Critic (value) đánh giá. Kết hợp ưu điểm PG + DQN.", "Advantage A(s,a) = action tốt/xấu hơn trung bình bao nhiêu → giảm variance đáng kể.", "PPO clip ratio [1-eps, 1+eps] → policy thay đổi nhỏ mỗi step → training ổn định.", "PPO là default cho RLHF (ChatGPT, Claude). GRPO là variant không cần Critic riêng.", "A3C: async parallel training. A2C: synchronous. PPO: trust region. SAC: maximum entropy."]} /></LessonSection>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra"><QuizSection questions={quizQuestions} /></LessonSection>
       </PredictionGate></LessonSection>
     </>
   );
