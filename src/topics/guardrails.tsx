@@ -116,11 +116,11 @@ export default function GuardrailsTopic() {
               <line x1={170} y1={70} x2={215} y2={70} stroke="#475569" strokeWidth={2} />
               <rect x={215} y={35} width={180} height={70} rx={12} fill="#1e293b" stroke={ex.safe ? "#22c55e" : "#ef4444"} strokeWidth={3} />
               <text x={305} y={60} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">Rào chắn</text>
-              <text x={305} y={80} textAnchor="middle" fill={ex.safe ? "#22c55e" : "#ef4444"} fontSize={10} fontWeight="bold">{ex.safe ? "CHO PHEP" : "CHAN"}</text>
+              <text x={305} y={80} textAnchor="middle" fill={ex.safe ? "#22c55e" : "#ef4444"} fontSize={10} fontWeight="bold">{ex.safe ? "CHO PHÉP" : "CHẶN"}</text>
               <line x1={395} y1={70} x2={435} y2={70} stroke={ex.safe ? "#22c55e" : "#ef4444"} strokeWidth={2} />
               <rect x={435} y={45} width={165} height={50} rx={8} fill={ex.safe ? "#22c55e" : "#ef4444"} opacity={0.8} />
-              <text x={517} y={67} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">{ex.safe ? "Tra loi" : "Tu choi"}</text>
-              <text x={517} y={82} textAnchor="middle" fill="white" fontSize={7}>{ex.safe ? "Mo hinh xu ly" : "Khong gui den mo hinh"}</text>
+              <text x={517} y={67} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">{ex.safe ? "Trả lời" : "Từ chối"}</text>
+              <text x={517} y={82} textAnchor="middle" fill="white" fontSize={7}>{ex.safe ? "Mô hình xử lý" : "Không gửi đến mô hình"}</text>
             </svg>
             <div className="rounded-lg bg-background/50 border border-border p-3 space-y-1">
               <p className="text-sm text-foreground"><strong>{ex.guardType}</strong></p>
