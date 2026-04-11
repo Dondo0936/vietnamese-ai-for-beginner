@@ -145,7 +145,6 @@ export default function HallucinationTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={6} label="Thử đoán">
-      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="AI nói: 'Theo nghiên cứu của ĐH Stanford năm 2024, uống 3 ly cà phê mỗi ngày giúp tăng IQ 15 điểm.' Bạn tin không?"
         options={[
@@ -161,12 +160,9 @@ export default function HallucinationTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ — Trò chơi phát hiện ảo giác ━━━ */}
-      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -294,12 +290,9 @@ export default function HallucinationTopic() {
         )}
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         AI không <em>cố tình</em>{" "}nói dối — nó chỉ chọn từ &quot;nghe hợp lý nhất&quot; dựa trên
@@ -307,12 +300,9 @@ export default function HallucinationTopic() {
         câu trả lời nghe hoàn hảo nhưng hoàn toàn bịa đặt. Đó là <strong>Hallucination</strong>{" "}— ảo giác của AI.
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={4} totalSteps={6} label="Thử thách">
       <LessonSection step={4} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Bạn dùng AI để viết bài nghiên cứu. AI trích dẫn: 'Theo Smith et al. (2023), Nature, vol. 612, pp. 45-52.' Bước tiếp theo đúng nhất là gì?"
@@ -326,12 +316,9 @@ export default function HallucinationTopic() {
         explanation="Luôn kiểm chứng trích dẫn! AI tạo trích dẫn giả với format hoàn hảo (tên, tạp chí, số trang) nhưng bài báo có thể không tồn tại. Nhiều luật sư và sinh viên đã gặp rắc rối nghiêm trọng vì dùng trích dẫn AI bịa."
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={5} totalSteps={6} label="Giải thích">
       <LessonSection step={5} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -391,12 +378,9 @@ qa_chain = RetrievalQA.from_chain_type(
 )`}</CodeBlock>
       </ExplanationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ TÓM TẮT ━━━ */}
-      <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <MiniSummary
         points={[
@@ -409,7 +393,6 @@ qa_chain = RetrievalQA.from_chain_type(
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );

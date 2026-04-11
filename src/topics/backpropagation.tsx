@@ -390,8 +390,9 @@ export default function BackpropagationTopic() {
       <LessonSection step={6} totalSteps={7} label="Giải thích">
       <ExplanationSection>
         <p>
-          <strong>Backpropagation</strong> (lan truyền ngược) được Frank Rosenblatt giới thiệu
-          ý tưởng, nhưng phiên bản hiện đại được Rumelhart, Hinton & Williams công bố năm 1986.
+          <strong>Backpropagation</strong> (lan truyền ngược) có nguồn gốc từ công trình của
+          Seppo Linnainmaa (1970) về vi phân tự động và Paul Werbos (1974), nhưng phiên bản
+          hiện đại áp dụng cho mạng nơ-ron được Rumelhart, Hinton & Williams công bố năm 1986.
           Đây là thuật toán nền tảng để huấn luyện mọi mạng nơ-ron ngày nay.
         </p>
 

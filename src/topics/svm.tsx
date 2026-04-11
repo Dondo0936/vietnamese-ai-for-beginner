@@ -95,7 +95,7 @@ export default function SvmTopic() {
         "Giảm số support vectors",
       ],
       correct: 1,
-      explanation: "Kernel trick tính dot product trong không gian chiều cao MÀ KHÔNG thực sự chiếu. Ví dụ: dữ liệu hình tròn (không tách tuyến tính) → chiếu lên 3D → tách được bằng mặt phẳng.",
+      explanation: "Kernel trick tính dot product trong không gian chiều cao MÀ KHÔNG thực sự chiếu. Ví dụ: RBF kernel ngầm chiếu dữ liệu lên không gian vô hạn chiều — dữ liệu hình tròn (không tách tuyến tính) trở thành tách được bằng siêu phẳng.",
     },
     {
       question: "Tham số C trong SVM (soft margin) kiểm soát gì?",
@@ -276,7 +276,7 @@ export default function SvmTopic() {
             "Không — SVM không xử lý được trường hợp này",
           ]}
           correct={1}
-          explanation="Dữ liệu vòng tròn không tách tuyến tính! Kernel RBF chiếu lên 3D: thêm chiều z = x² + y² → lớp A 'nổi' lên cao, lớp B ở thấp → tách bằng mặt phẳng ngang!"
+          explanation="Dữ liệu vòng tròn không tách tuyến tính! Kernel RBF ngầm chiếu dữ liệu lên không gian vô hạn chiều (ví dụ đơn giản: thêm chiều z = x² + y² → lớp A 'nổi' lên cao, lớp B ở thấp → tách bằng siêu phẳng). Thực tế, RBF kernel tính dot product trong không gian này mà không cần chiếu thật."
         />
       </LessonSection>
 

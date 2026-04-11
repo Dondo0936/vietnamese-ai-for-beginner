@@ -111,7 +111,6 @@ export default function ContextWindowTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={7} label="Thử đoán">
-      <LessonSection step={1} totalSteps={7} label="Thử đoán">
       <PredictionGate
         question="Bạn nói chuyện với AI: 'Tên tôi là Minh, sống ở Đà Nẵng.' Sau 8 tin nhắn về chủ đề khác, bạn hỏi: 'Tên tôi là gì?' AI sẽ trả lời sao?"
         options={[
@@ -127,12 +126,9 @@ export default function ContextWindowTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ — Hội thoại bị cắt ━━━ */}
-      <LessonSection step={2} totalSteps={7} label="Khám phá">
       <LessonSection step={2} totalSteps={7} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -218,12 +214,9 @@ export default function ContextWindowTopic() {
         </div>
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={7} label="Khám phá">
       <LessonSection step={3} totalSteps={7} label="Khám phá">
       <AhaMoment>
         <strong>Context window</strong>{" "}là &quot;bộ nhớ ngắn hạn&quot; của LLM —
@@ -231,12 +224,9 @@ export default function ContextWindowTopic() {
         Mọi thứ ngoài cửa sổ bị xóa hoàn toàn — AI không biết nó từng tồn tại!
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ ĐI SÂU — So sánh context window các model ━━━ */}
-      <LessonSection step={4} totalSteps={7} label="Đi sâu">
       <LessonSection step={4} totalSteps={7} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -278,12 +268,9 @@ export default function ContextWindowTopic() {
         </Callout>
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={5} totalSteps={7} label="Thử thách">
       <LessonSection step={5} totalSteps={7} label="Thử thách">
       <InlineChallenge
         question="Bạn muốn AI tóm tắt một cuốn sách 500 trang. Model nào đủ context window?"
@@ -297,12 +284,9 @@ export default function ContextWindowTopic() {
         explanation="Gemini 1.5 Pro với 1M context có thể đọc nguyên cuốn sách 500 trang trong một lần! GPT-4 Turbo (128K) cần chia thành 3 phần. GPT-3.5 (4K) chỉ đọc được ~6 trang — gần như vô dụng cho task này."
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={6} totalSteps={7} label="Giải thích">
       <LessonSection step={6} totalSteps={7} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -361,12 +345,9 @@ print(f"Output tokens: {response.usage.output_tokens}")
 # Tổng phải < context window (200K cho Claude)`}</CodeBlock>
       </ExplanationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ TÓM TẮT ━━━ */}
-      <LessonSection step={7} totalSteps={7} label="Tổng kết">
       <LessonSection step={7} totalSteps={7} label="Tổng kết">
       <MiniSummary
         points={[
@@ -380,7 +361,6 @@ print(f"Output tokens: {response.usage.output_tokens}")
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );

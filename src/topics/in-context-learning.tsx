@@ -123,7 +123,6 @@ export default function InContextLearningTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={5} label="Thử đoán">
-      <LessonSection step={1} totalSteps={5} label="Thử đoán">
       <PredictionGate
         question="Bạn muốn AI phân loại cảm xúc review tiếng Việt. Cách nào hiệu quả nhất MÀ KHÔNG CẦN huấn luyện lại model?"
         options={[
@@ -139,12 +138,9 @@ export default function InContextLearningTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ — Thêm/bớt ví dụ, xem output đổi ━━━ */}
-      <LessonSection step={2} totalSteps={5} label="Khám phá">
       <LessonSection step={2} totalSteps={5} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -238,24 +234,18 @@ export default function InContextLearningTopic() {
         </div>
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={5} label="Khám phá">
       <LessonSection step={3} totalSteps={5} label="Khám phá">
       <AhaMoment>
         Bạn vừa thấy AI &quot;học&quot; một task mới chỉ từ vài ví dụ — <strong>không cần huấn luyện lại, không cần code, không cần data lớn</strong>.
         Đây là <strong>In-Context Learning</strong>{" "}— khả năng kỳ diệu của LLM: hiểu task từ ví dụ mẫu trong prompt.
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={4} totalSteps={5} label="Thử thách">
       <LessonSection step={4} totalSteps={5} label="Thử thách">
       <InlineChallenge
         question="Nếu bạn cho AI 4 ví dụ phân loại cảm xúc, xong hỏi nó dịch tiếng Anh — nó sẽ dịch hay phân loại?"
@@ -268,12 +258,9 @@ export default function InContextLearningTopic() {
         explanation="LLM nhìn toàn bộ context — nếu câu hỏi cuối rõ ràng yêu cầu dịch, nó sẽ dịch. Ví dụ mẫu là 'gợi ý' format, không phải 'lệnh cứng'. Đó là lý do prompt engineering quan trọng!"
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={5} totalSteps={5} label="Giải thích">
       <LessonSection step={5} totalSteps={5} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -331,7 +318,6 @@ response = llm(prompt)
       />
 
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );

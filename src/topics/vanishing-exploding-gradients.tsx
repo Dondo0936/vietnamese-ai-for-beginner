@@ -329,7 +329,7 @@ export default function VanishingExplodingGradientsTopic() {
           question="Đạo hàm sigmoid tối đa = 0.25. Qua 20 lớp sigmoid, gradient còn bao nhiêu % so với ban đầu?"
           options={[
             "25% — chỉ giảm 1 lần",
-            "0.25^20 ≈ 0.0000000001 — gần bằng 0, mạng KHÔNG THỂ HỌC",
+            "0.25^20 ≈ 9.1 × 10⁻¹³ — gần bằng 0, mạng KHÔNG THỂ HỌC",
             "5% — giảm dần tuyến tính",
           ]}
           correct={1}

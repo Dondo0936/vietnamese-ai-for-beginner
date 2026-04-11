@@ -113,7 +113,6 @@ export default function TopKTopPTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={6} label="Thử đoán">
-      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="AI đang chọn từ tiếp theo. Có 50.000 từ trong từ điển. Nên cho AI chọn từ TẤT CẢ 50.000 từ hay chỉ từ vài từ xác suất cao nhất?"
         options={[
@@ -129,12 +128,9 @@ export default function TopKTopPTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ ━━━ */}
-      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -257,12 +253,9 @@ export default function TopKTopPTopic() {
         </div>
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         <strong>Top-K</strong>{" "}giữ đúng K từ xác suất cao nhất (cố định).
@@ -271,12 +264,9 @@ export default function TopKTopPTopic() {
         tự điều chỉnh theo mức tự tin của model.
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ ĐI SÂU — So sánh K vs P ━━━ */}
-      <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -312,12 +302,9 @@ export default function TopKTopPTopic() {
         />
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={5} totalSteps={6} label="Thử thách">
       <LessonSection step={5} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Trong thực tế, API như Claude và GPT thường dùng cả temperature LẪN top_p. Nếu đặt temperature = 0, top_p = 0.9 — cái nào thắng?"
@@ -331,12 +318,9 @@ export default function TopKTopPTopic() {
         explanation="Temperature = 0 khiến phân phối thành argmax (1 từ = 100%), nên Top-P không có gì để lọc thêm. Trong thực tế, hầu hết API khuyên: chỉnh temperature HOẶC top_p, không nên chỉnh cả hai."
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={6} totalSteps={6} label="Giải thích">
       <LessonSection step={6} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -406,7 +390,6 @@ export default function TopKTopPTopic() {
       />
 
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );

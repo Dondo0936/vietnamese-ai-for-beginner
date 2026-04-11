@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react";
 import HeroSearch from "./HeroSearch";
+import ProfessionPaths from "./ProfessionPaths";
 import TopicGrid from "./TopicGrid";
 import CategorySection from "./CategorySection";
 import { getUserProgress, toggleBookmark } from "@/lib/database";
@@ -61,10 +62,6 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
     return map;
   }, [filtered]);
 
-  const interactiveCount = useMemo(
-    () => topics.filter((t) => t.vizType === "interactive").length,
-    [topics]
-  );
 
   return (
     <>
@@ -80,9 +77,9 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
         <div className="flex items-center justify-center gap-8 text-[13px] text-tertiary">
           <span><strong className="text-foreground">{topics.length}</strong>{" "}chủ đề</span>
           <span className="w-px h-3 bg-border" />
-          <span><strong className="text-foreground">{interactiveCount}</strong>{" "}tương tác</span>
-          <span className="w-px h-3 bg-border" />
           <span><strong className="text-foreground">{categories.length}</strong>{" "}danh mục</span>
+          <span className="w-px h-3 bg-border" />
+          <span><strong className="text-foreground">4</strong>{" "}lộ trình</span>
         </div>
       </section>
 
@@ -107,6 +104,14 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
           </div>
         </section>
       )}
+
+      {/* Profession paths */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-12">
+        <h2 className="text-xl font-semibold text-foreground mb-5 tracking-[-0.01em]">
+          Lộ trình theo nghề nghiệp
+        </h2>
+        <ProfessionPaths topics={topics} readTopics={readTopics} />
+      </section>
 
       {/* Category cards */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-12">

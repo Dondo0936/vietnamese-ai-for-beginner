@@ -121,7 +121,6 @@ export default function ChainOfThoughtTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={6} label="Thử đoán">
-      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="Cửa hàng giảm giá 20%, sau đó giảm thêm 10%. Tổng giảm bao nhiêu phần trăm?"
         options={["30%", "28%", "25%", "32%"]}
@@ -133,12 +132,9 @@ export default function ChainOfThoughtTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ — So sánh có/không CoT ━━━ */}
-      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -222,23 +218,17 @@ export default function ChainOfThoughtTopic() {
         />
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         <strong>Chain-of-Thought</strong>{" "}buộc AI &quot;show your work&quot; — trình bày từng bước suy luận thay vì nhảy thẳng đến đáp án. Mỗi bước trung gian trở thành <em>input</em>{" "}cho bước tiếp theo, giúp AI xử lý bài toán phức tạp bằng chuỗi bước đơn giản.
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={4} totalSteps={6} label="Thử thách">
       <LessonSection step={4} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Bạn muốn AI dịch 'Hello' sang tiếng Việt. Có cần dùng Chain-of-Thought không?"
@@ -251,12 +241,9 @@ export default function ChainOfThoughtTopic() {
         explanation="CoT chỉ hữu ích cho task CẦN SUY LUẬN: toán, logic, phân tích. Với task đơn giản như dịch một từ, CoT chỉ thêm token (tốn tiền) mà không cải thiện kết quả."
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={5} totalSteps={6} label="Giải thích">
       <LessonSection step={5} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -319,12 +306,9 @@ final = most_common(answers)  # → 28%`}</CodeBlock>
         </Callout>
       </ExplanationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ TÓM TẮT ━━━ */}
-      <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <MiniSummary
         points={[
@@ -336,7 +320,6 @@ final = most_common(answers)  # → 28%`}</CodeBlock>
       />
 
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );

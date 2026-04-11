@@ -62,6 +62,11 @@ export default function QLearningTopic() {
     <>
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
         <PredictionGate question="Grab can tim duong ngan nhat cho tai xe. Moi nga tu co nhieu huong, khong biet truoc duong nao ket. Tai xe hoc bang cach nao?" options={["Lap trinh moi nga tu bang tay", "Thu nhieu duong, nho duong nao nhanh (reward cao), lan sau uu tien duong do — day la Q-Learning!", "Luon di thang"]} correct={1} explanation="Q-Learning: tai moi nga tu (state), thu hanh dong (re trai/phai/thang), nhan reward (nhanh = +, cham = -). Dan dan xay dung 'ban do gia tri' (Q-table): tai moi nga tu, biet re huong nao co gia tri cao nhat. Grab dung RL tuong tu cho 30 trieu chuyen/ngay!">
+          <p className="text-sm text-muted mt-2">
+            Hay tiep tuc de tu huan luyen mot agent Q-Learning.
+          </p>
+        </PredictionGate>
+      </LessonSection>
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
         <p className="mb-4 text-sm text-muted leading-relaxed">Click <strong className="text-foreground">Train 1 buoc</strong>{" "}hoac <strong className="text-foreground">Train 100 buoc</strong>{" "}de xem agent hoc cach di den dich (goc duoi-phai).</p>
@@ -143,8 +148,8 @@ for episode in range(1000):
         <MiniSummary points={["Q(s,a) = gia tri ky vong neu thuc hien action a tai state s. Agent chon action co Q cao nhat.", "Update rule: Q moi = Q cu + alpha * (reward + gamma * max Q tiep theo - Q cu).", "Epsilon-greedy: explore (random) vs exploit (best Q). Giam epsilon dan theo thoi gian.", "Off-policy: hoc tu best action (max Q) khong phai action thuc hien → linh hoat hon.", "Han che: Q-table chi cho state/action nho. State lon (hinh anh) → can Deep Q-Network (DQN)."]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
-        </PredictionGate>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+        <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>
   );
