@@ -34,11 +34,11 @@ interface PipelineStage {
 }
 
 const INITIAL_STAGES: PipelineStage[] = [
-  { name: "Thu thập (Ingest)", status: "idle", duration: "2 phut", inputRows: 0, outputRows: 1000000 },
-  { name: "Xac thuc (Validate)", status: "idle", duration: "30s", inputRows: 1000000, outputRows: 985000 },
-  { name: "Bien doi (Transform)", status: "idle", duration: "5 phut", inputRows: 985000, outputRows: 985000 },
-  { name: "Luu tru (Store)", status: "idle", duration: "1 phut", inputRows: 985000, outputRows: 985000 },
-  { name: "Phuc vu (Serve)", status: "idle", duration: "10s", inputRows: 985000, outputRows: 985000 },
+  { name: "Thu thập (Ingest)", status: "idle", duration: "2 phút", inputRows: 0, outputRows: 1000000 },
+  { name: "Xác thực (Validate)", status: "idle", duration: "30s", inputRows: 1000000, outputRows: 985000 },
+  { name: "Biến đổi (Transform)", status: "idle", duration: "5 phút", inputRows: 985000, outputRows: 985000 },
+  { name: "Lưu trữ (Store)", status: "idle", duration: "1 phút", inputRows: 985000, outputRows: 985000 },
+  { name: "Phục vụ (Serve)", status: "idle", duration: "10s", inputRows: 985000, outputRows: 985000 },
 ];
 
 const TOTAL_STEPS = 7;
@@ -74,57 +74,57 @@ export default function DataPipelinesTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "ETL va ELT khac nhau o diem nao?",
+      question: "ETL và ELT khác nhau ở điểm nào?",
       options: [
-        "ETL: Transform truoc khi Load vao warehouse. ELT: Load raw data truoc, Transform trong warehouse",
-        "Chung giong nhau, chi khac ten",
+        "ETL: Transform trước khi Load vào warehouse. ELT: Load raw data trước, Transform trong warehouse",
+        "Chúng giống nhau, chỉ khác tên",
         "ETL cho batch, ELT cho streaming",
       ],
       correct: 0,
-      explanation: "ETL (Extract-Transform-Load): transform tren pipeline server truoc khi luu. ELT (Extract-Load-Transform): load raw data vao warehouse (BigQuery, Snowflake), transform bang SQL trong warehouse. ELT pho bien hon vi warehouse hien dai rat manh.",
+      explanation: "ETL (Extract-Transform-Load): transform trên pipeline server trước khi lưu. ELT (Extract-Load-Transform): load raw data vào warehouse (BigQuery, Snowflake), transform bằng SQL trong warehouse. ELT phổ biến hơn vì warehouse hiện đại rất mạnh.",
     },
     {
-      question: "Data validation o dau trong pipeline quan trong nhat?",
+      question: "Data validation ở đâu trong pipeline quan trọng nhất?",
       options: [
-        "Chi o cuoi pipeline khi data da hoan thanh",
-        "Ngay sau ingestion (dau vao) VA truoc khi serve (dau ra) — 'garbage in, garbage out'",
-        "Khong can validate, model tu hoc tu data",
+        "Chỉ ở cuối pipeline khi data đã hoàn thành",
+        "Ngay sau ingestion (đầu vào) VÀ trước khi serve (đầu ra) — 'garbage in, garbage out'",
+        "Không cần validate, model tự học từ data",
       ],
       correct: 1,
-      explanation: "Validate som bat loi som: schema violations, missing values, outliers. Validate truoc serve dam bao data sach cho model. 'Garbage in, garbage out' — model tot nhat cung cho ket qua te neu data ban.",
+      explanation: "Validate sớm bắt lỗi sớm: schema violations, missing values, outliers. Validate trước serve đảm bảo data sạch cho model. 'Garbage in, garbage out' — model tốt nhất cũng cho kết quả tệ nếu data bẩn.",
     },
     {
-      question: "Apache Airflow dung de lam gi trong data pipeline?",
+      question: "Apache Airflow dùng để làm gì trong data pipeline?",
       options: [
-        "Xu ly du lieu song song nhu Spark",
-        "Dieu phoi (orchestrate) cac buoc pipeline: len lich, quan ly thu tu, retry khi loi",
-        "Luu tru du lieu nhu database",
+        "Xử lý dữ liệu song song như Spark",
+        "Điều phối (orchestrate) các bước pipeline: lên lịch, quản lý thứ tự, retry khi lỗi",
+        "Lưu trữ dữ liệu như database",
       ],
       correct: 1,
-      explanation: "Airflow la orchestrator, khong xu ly data truc tiep. No len lich chay cac task (DAG), quan ly dependencies giua cac buoc, retry khi fail, alert khi error. Tuong tu nhu 'quan ly nha may' — khong tu tay lam ma dieu phoi.",
+      explanation: "Airflow là orchestrator, không xử lý data trực tiếp. Nó lên lịch chạy các task (DAG), quản lý dependencies giữa các bước, retry khi fail, alert khi error. Tương tự như 'quản lý nhà máy' — không tự tay làm mà điều phối.",
     },
   ], []);
 
   return (
     <>
       {/* STEP 1: PREDICTION GATE */}
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Model goi y san pham Shopee can data mua sam cua 50 trieu user. Data nam rai o 5 database khac nhau, cap nhat moi phut. Ban can gi de model luon co data moi nhat?"
+          question="Model gợi ý sản phẩm Shopee cần data mua sắm của 50 triệu user. Data nằm rải ở 5 database khác nhau, cập nhật mỗi phút. Bạn cần gì để model luôn có data mới nhất?"
           options={[
-            "Export CSV thu cong moi tuan roi upload len server",
-            "Data pipeline tu dong: thu thap tu 5 nguon, lam sach, bien doi, dua vao feature store real-time",
-            "Model tu biet tim data minh can",
+            "Export CSV thủ công mỗi tuần rồi upload lên server",
+            "Data pipeline tự động: thu thập từ 5 nguồn, làm sạch, biến đổi, đưa vào feature store real-time",
+            "Model tự biết tìm data mình cần",
           ]}
           correct={1}
-          explanation="Dung! Data Pipeline la 'nha may che bien' tu dong — nguyen lieu tho (raw data) tu nhieu nguon duoc thu thap, lam sach, bien doi, va giao den model san sang su dung. Khong co pipeline = data stale, model te!"
+          explanation="Đúng! Data Pipeline là 'nhà máy chế biến' tự động — nguyên liệu thô (raw data) từ nhiều nguồn được thu thập, làm sạch, biến đổi, và giao đến model sẵn sàng sử dụng. Không có pipeline = data stale, model tệ!"
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Click <strong className="text-foreground">Chay Pipeline</strong>{" "}
-          de xem data di qua tung giai doan — tu thu thap den phuc vu.
+          Click <strong className="text-foreground">Chạy Pipeline</strong>{" "}
+          để xem data đi qua từng giai đoạn — từ thu thập đến phục vụ.
         </p>
 
         <VisualizationSection>
@@ -138,7 +138,7 @@ export default function DataPipelinesTopic() {
                   : "bg-blue-600 text-white hover:bg-blue-700"
               }`}
             >
-              {running ? "Dang chay..." : "Chay Pipeline"}
+              {running ? "Đang chạy..." : "Chạy Pipeline"}
             </button>
 
             <svg viewBox="0 0 600 180" className="w-full max-w-2xl mx-auto">
@@ -176,7 +176,7 @@ export default function DataPipelinesTopic() {
 
               {/* Data sources */}
               <text x={300} y={110} textAnchor="middle" fill="#94a3b8" fontSize={9} fontWeight="bold">
-                Nguon du lieu
+                Nguồn dữ liệu
               </text>
               {["PostgreSQL", "Kafka Stream", "CSV/API", "S3 Files"].map((src, i) => (
                 <g key={i}>
@@ -196,64 +196,64 @@ export default function DataPipelinesTopic() {
       </LessonSection>
 
       {/* STEP 3: AHA */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            80% thoi gian cua du an ML la <strong>xu ly du lieu</strong>, chi 20% la train model!{" "}
-            Data pipeline tot = model tot. Pipeline te = &quot;garbage in, garbage out&quot;.
-            Giong nha may che bien thuc pham: nguyen lieu tuoi + quy trinh sach = san pham chat luong.
-            <strong>{" "}Dau tu vao pipeline la dau tu khon ngoan nhat!</strong>
+            80% thời gian của dự án ML là <strong>xử lý dữ liệu</strong>, chỉ 20% là train model!{" "}
+            Data pipeline tốt = model tốt. Pipeline tệ = 'garbage in, garbage out'.
+            Giống nhà máy chế biến thực phẩm: nguyên liệu tươi + quy trình sạch = sản phẩm chất lượng.
+            <strong>{" "}Đầu tư vào pipeline là đầu tư khôn ngoan nhất!</strong>
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* STEP 4: CHALLENGE */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Pipeline chay hang dem luc 2h sang. Mot dem, buoc Transform fail vi data co cot moi (schema change). Sang hom sau team moi biet. Thieu gi trong pipeline?"
+          question="Pipeline chạy hàng đêm lúc 2h sáng. Một đêm, bước Transform fail vì data có cột mới (schema change). Sáng hôm sau team mới biết. Thiếu gì trong pipeline?"
           options={[
-            "Thieu GPU manh hon de xu ly nhanh",
-            "Thieu data validation + alerting: check schema truoc transform, alert Slack khi fail",
-            "Thieu nhieu data hon",
+            "Thiếu GPU mạnh hơn để xử lý nhanh",
+            "Thiếu data validation + alerting: check schema trước transform, alert Slack khi fail",
+            "Thiếu nhiều data hơn",
           ]}
           correct={1}
-          explanation="Data validation (Great Expectations, Pandera) check schema, data types, value ranges TRUOC khi transform. Khi fail: alert Slack/PagerDuty ngay lap tuc, khong doi den sang. Pipeline robustness = validation + alerting + retry + fallback."
+          explanation="Data validation (Great Expectations, Pandera) check schema, data types, value ranges TRƯỚC khi transform. Khi fail: alert Slack/PagerDuty ngay lập tức, không đợi đến sáng. Pipeline robustness = validation + alerting + retry + fallback."
         />
       </LessonSection>
 
       {/* STEP 5: EXPLANATION */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Data Pipeline</strong>{" "}
-            la quy trinh tu dong hoa thu thap, xu ly, va chuan bi du lieu tu nguon den dich — thanh phan khong the thieu trong moi he thong AI/ML.
+            là quy trình tự động hoá thu thập, xử lý, và chuẩn bị dữ liệu từ nguồn đến đích — thành phần không thể thiếu trong mọi hệ thống AI/ML.
           </p>
 
-          <p><strong>5 giai doan cot loi:</strong></p>
+          <p><strong>5 giai đoạn cốt lõi:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Ingestion (Thu thap):</strong>{" "}Pull/Push tu databases, APIs, files, streaming (Kafka)</li>
-            <li><strong>Validation (Xac thuc):</strong>{" "}Check schema, data quality, detect anomalies</li>
-            <li><strong>Transformation (Bien doi):</strong>{" "}Clean, normalize, feature engineering</li>
-            <li><strong>Storage (Luu tru):</strong>{" "}Data lake (raw), warehouse (structured), feature store (ML)</li>
-            <li><strong>Serving (Phuc vu):</strong>{" "}API cho training pipeline hoac real-time inference</li>
+            <li><strong>Ingestion (Thu thập):</strong>{" "}Pull/Push từ databases, APIs, files, streaming (Kafka)</li>
+            <li><strong>Validation (Xác thực):</strong>{" "}Check schema, data quality, detect anomalies</li>
+            <li><strong>Transformation (Biến đổi):</strong>{" "}Clean, normalize, feature engineering</li>
+            <li><strong>Storage (Lưu trữ):</strong>{" "}Data lake (raw), warehouse (structured), feature store (ML)</li>
+            <li><strong>Serving (Phục vụ):</strong>{" "}API cho training pipeline hoặc real-time inference</li>
           </ul>
 
           <p><strong>Batch vs Streaming Pipeline:</strong></p>
           <LaTeX block>{"\\text{Batch: } \\Delta t_{\\text{freshness}} = \\text{hours/days} \\quad vs \\quad \\text{Streaming: } \\Delta t = \\text{seconds}"}</LaTeX>
 
           <Callout variant="tip" title="ETL vs ELT">
-            ETL (Extract-Transform-Load): transform truoc khi luu — khi warehouse yeu. ELT (Extract-Load-Transform): load raw, transform trong warehouse (BigQuery, Snowflake, Databricks) — xu huong hien dai vi warehouse rat manh.
+            ETL (Extract-Transform-Load): transform trước khi lưu — khi warehouse yếu. ELT (Extract-Load-Transform): load raw, transform trong warehouse (BigQuery, Snowflake, Databricks) — xu hướng hiện đại vì warehouse rất mạnh.
           </Callout>
 
           <p><strong>Data Quality dimensions:</strong></p>
           <LaTeX block>{"\\text{Quality} = f(\\text{Completeness}, \\text{Accuracy}, \\text{Timeliness}, \\text{Consistency}, \\text{Uniqueness})"}</LaTeX>
 
-          <CodeBlock language="python" title="Data Pipeline voi Apache Airflow">
+          <CodeBlock language="python" title="Data Pipeline với Apache Airflow">
 {`from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 
-# Pipeline chay moi ngay luc 2h sang
+# Pipeline chạy mỗi ngày lúc 2h sáng
 dag = DAG(
     "ml_data_pipeline",
     schedule_interval="0 2 * * *",  # Cron: 2:00 AM daily
@@ -264,7 +264,7 @@ dag = DAG(
     },
 )
 
-# Buoc 1: Thu thap tu nhieu nguon
+# Bước 1: Thu thập từ nhiều nguồn
 ingest = PythonOperator(
     task_id="ingest",
     python_callable=ingest_from_sources,
@@ -272,22 +272,22 @@ ingest = PythonOperator(
     dag=dag,
 )
 
-# Buoc 2: Validate data quality
+# Bước 2: Validate data quality
 validate = PythonOperator(
     task_id="validate",
     python_callable=validate_with_great_expectations,
-    # Fail pipeline neu data khong dat chuan
+    # Fail pipeline nếu data không đạt chuẩn
     dag=dag,
 )
 
-# Buoc 3: Transform + Feature Engineering
+# Bước 3: Transform + Feature Engineering
 transform = PythonOperator(
     task_id="transform",
     python_callable=run_dbt_transform,
     dag=dag,
 )
 
-# Buoc 4: Load vao Feature Store
+# Bước 4: Load vào Feature Store
 serve = PythonOperator(
     task_id="serve_features",
     python_callable=update_feature_store,
@@ -298,25 +298,25 @@ serve = PythonOperator(
 ingest >> validate >> transform >> serve`}
           </CodeBlock>
 
-          <Callout variant="info" title="Data Pipeline tai Viet Nam">
-            Shopee, Tiki, VNG xu ly hang trieu events/giay qua Kafka + Spark. Startup nho hon dung Airflow + dbt + BigQuery. FPT Cloud cung cap managed Kafka va Spark cho doanh nghiep Viet.
+          <Callout variant="info" title="Data Pipeline tại Việt Nam">
+            Shopee, Tiki, VNG xử lý hàng triệu events/giây qua Kafka + Spark. Startup nhỏ hơn dùng Airflow + dbt + BigQuery. FPT Cloud cung cấp managed Kafka và Spark cho doanh nghiệp Việt.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
       {/* STEP 6: SUMMARY */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Data Pipeline tu dong hoa 5 buoc: Ingest → Validate → Transform → Store → Serve.",
-          "80% thoi gian ML la xu ly data. Pipeline tot = model tot. 'Garbage in, garbage out'.",
-          "Validation bat buoc o dau vao va dau ra — Great Expectations, Pandera detect anomalies som.",
+          "Data Pipeline tự động hoá 5 bước: Ingest → Validate → Transform → Store → Serve.",
+          "80% thời gian ML là xử lý data. Pipeline tốt = model tốt. 'Garbage in, garbage out'.",
+          "Validation bắt buộc ở đầu vào và đầu ra — Great Expectations, Pandera detect anomalies sớm.",
           "Batch pipeline (hours) cho analytics, Streaming pipeline (seconds) cho real-time features.",
-          "Orchestrator (Airflow, Dagster) quan ly thu tu, retry, alerting — 'quan doc nha may' du lieu.",
+          "Orchestrator (Airflow, Dagster) quản lý thứ tự, retry, alerting — 'quản đốc nhà máy' dữ liệu.",
         ]} />
       </LessonSection>
 
       {/* STEP 7: QUIZ */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
