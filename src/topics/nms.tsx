@@ -78,7 +78,7 @@ const QUIZ: QuizQuestion[] = [
       "Tăng confidence của box tốt nhất",
     ],
     correct: 1,
-    explanation: "NMS cứng: loại hoàn toàn box trùng. Soft-NMS: giảm confidence theo mức IoU (trùng ít -> giảm ít). Tốt hơn khi đối tượng che khuất nhau (occlusion).",
+    explanation: "NMS cứng: loại hoàn toàn box trùng. Soft-NMS: giảm confidence theo mức IoU (trùng ít → giảm ít). Tốt hơn khi đối tượng che khuất nhau (occlusion).",
   },
 ];
 
@@ -263,7 +263,7 @@ keep = batched_nms(boxes, scores, classes, iou_threshold=0.5)`}
       <LessonSection step={6} totalSteps={8} label="Tóm tắt">
         <MiniSummary points={[
           "NMS loại bỏ box trùng lặp: giữ box confidence cao nhất, loại box có IoU > ngưỡng",
-          "Thuật toán: sắp xếp -> chọn tốt nhất -> loại trùng -> lặp lại",
+          "Thuật toán: sắp xếp → chọn tốt nhất → loại trùng → lặp lại",
           "Ngưỡng IoU cao = giữ nhiều box (tốt khi đối tượng gần nhau), thấp = lọc mạnh",
           "Soft-NMS giảm confidence thay vì loại bỏ -- tốt hơn khi đối tượng che khuất nhau",
         ]} />

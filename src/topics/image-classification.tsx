@@ -297,7 +297,7 @@ print(f"Top-1: class {top5.indices[0][0]}, prob {top5.values[0][0]:.2%}")`}
       <LessonSection step={6} totalSteps={8} label="Tóm tắt">
         <MiniSummary points={[
           "Image Classification gán DUY NHẤT 1 nhãn cho toàn bộ ảnh (không tìm vị trí)",
-          "CNN trích xuất đặc trưng theo thứ bậc: cạnh -> hình dạng -> bộ phận -> đối tượng",
+          "CNN trích xuất đặc trưng theo thứ bậc: cạnh → hình dạng → bộ phận → đối tượng",
           "Softmax chuyển logits thành xác suất, Cross-Entropy dùng làm hàm mất mát",
           "ImageNet (1000 lớp, 1.2M ảnh) là benchmark chuẩn; ResNet là kiến trúc phổ biến nhất",
         ]} />

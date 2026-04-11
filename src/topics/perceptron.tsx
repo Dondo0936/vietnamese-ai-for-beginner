@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge,
   MiniSummary, CodeBlock, Callout, CollapsibleDetail,
-} from "@/components/interactive";
+  LessonSection,} from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";

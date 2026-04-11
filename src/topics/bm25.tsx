@@ -111,13 +111,13 @@ export default function BM25Topic() {
                 VD: Tìm 'luật lao động' trên VnExpress
               </text>
               <text x="350" y="210" textAnchor="middle" fill="#22c55e" fontSize="10">
-                Bài A: 'luật lao động' x5, 200 từ -> BM25 = 3.8 (mật độ cao)
+                Bài A: 'luật lao động' x5, 200 từ → BM25 = 3.8 (mật độ cao)
               </text>
               <text x="350" y="230" textAnchor="middle" fill="#94a3b8" fontSize="10">
-                Bài B: 'luật lao động' x3, 5000 từ -> BM25 = 1.2 (mật độ thấp)
+                Bài B: 'luật lao động' x3, 5000 từ → BM25 = 1.2 (mật độ thấp)
               </text>
               <text x="350" y="250" textAnchor="middle" fill="#64748b" fontSize="10">
-                Bài C: 'luật giao thông' x8, 300 từ -> BM25 = 0.0 (không có 'lao động')
+                Bài C: 'luật giao thông' x8, 300 từ → BM25 = 0.0 (không có 'lao động')
               </text>
             </svg>
 

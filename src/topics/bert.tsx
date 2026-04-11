@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge, ToggleCompare,
   MiniSummary, CodeBlock, Callout,
-} from "@/components/interactive";
+  LessonSection,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";

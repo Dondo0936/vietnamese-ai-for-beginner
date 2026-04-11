@@ -71,7 +71,7 @@ const QUIZ: QuizQuestion[] = [
       "Chuyển vector sang GPU",
     ],
     correct: 1,
-    explanation: "PQ chia vector 768-d thành 8 nhóm x 96-d, mỗi nhóm quantize thành 1 byte (256 centroids). 768 floats (3072 bytes) -> 8 bytes! Giảm bộ nhớ > 100x với chỉ mất chút chính xác.",
+    explanation: "PQ chia vector 768-d thành 8 nhóm x 96-d, mỗi nhóm quantize thành 1 byte (256 centroids). 768 floats (3072 bytes) → 8 bytes! Giảm bộ nhớ > 100x với chỉ mất chút chính xác.",
   },
 ];
 
@@ -216,7 +216,7 @@ export default function FAISSTopic() {
           <LaTeX block>{"\\mathbf{x} \\in \\mathbb{R}^d \\rightarrow (q_1, q_2, \\ldots, q_m) \\in \\{1,\\ldots,k\\}^m"}</LaTeX>
           <p className="text-sm text-muted">
             Chia vector d-chiều thành m nhóm, mỗi nhóm quantize thành 1 byte (k=256 centroids).
-            Vector 768-d (3072 bytes) -> 8 bytes!
+            Vector 768-d (3072 bytes) → 8 bytes!
           </p>
 
           <CodeBlock language="python" title="FAISS: từ Flat đến IVF+PQ">
@@ -263,7 +263,7 @@ gpu_index = faiss.index_cpu_to_gpu(res, 0, index_flat)`}
         <MiniSummary points={[
           "FAISS: thư viện Meta cho similarity search. Hỗ trợ CPU + GPU, scale tỷ vector.",
           "Flat: exact, chậm. IVF: phân cụm, nhanh ~100x. HNSW: đồ thị, recall cao nhất.",
-          "Product Quantization nén vector 100x: 768 floats (3KB) -> 8 bytes!",
+          "Product Quantization nén vector 100x: 768 floats (3KB) → 8 bytes!",
           "nprobe (IVF) là trade-off chính: nprobe cao = recall cao nhưng chậm hơn",
         ]} />
       </LessonSection>

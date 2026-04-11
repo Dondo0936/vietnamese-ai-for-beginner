@@ -11,7 +11,7 @@ import {
   CodeBlock,
   Callout,
   LaTeX,
-} from "@/components/interactive";
+  LessonSection,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -154,6 +154,7 @@ export default function BackpropagationTopic() {
   return (
     <>
       {/* ━━━ BƯỚC 1: HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={7} label="Thử đoán">
       <PredictionGate
         question="Mạng nơ-ron đưa ra dự đoán SAI. Bạn cần sửa các trọng số để nó dự đoán đúng hơn. Làm sao biết trọng số nào cần sửa, và sửa bao nhiêu?"
         options={[
@@ -170,7 +171,10 @@ export default function BackpropagationTopic() {
         </p>
       </PredictionGate>
 
-      {/* ━━━ BƯỚC 2: KHÁM PHÁ — Người dùng tự tay tối ưu ━━━ */}
+            </LessonSection>
+
+{/* ━━━ BƯỚC 2: KHÁM PHÁ — Người dùng tự tay tối ưu ━━━ */}
+      <LessonSection step={2} totalSteps={7} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Thử điều chỉnh trọng số thủ công!
@@ -265,14 +269,20 @@ export default function BackpropagationTopic() {
         )}
       </VisualizationSection>
 
-      {/* ━━━ BƯỚC 3: AHA MOMENT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ BƯỚC 3: AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={7} label="Khám phá">
       <AhaMoment>
         Thay vì thử từng chút như bạn vừa làm, <strong>Backpropagation</strong> tính
         <em> chính xác </em> mỗi trọng số cần thay đổi bao nhiêu — chỉ bằng một lần
         duyệt ngược qua mạng, dùng <strong>quy tắc chuỗi</strong> (chain rule) trong đạo hàm.
       </AhaMoment>
 
-      {/* ━━━ BƯỚC 4: ĐI SÂU — Xem backprop hoạt động ━━━ */}
+            </LessonSection>
+
+{/* ━━━ BƯỚC 4: ĐI SÂU — Xem backprop hoạt động ━━━ */}
+      <LessonSection step={4} totalSteps={7} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-2">
           Xem Backpropagation tự động tối ưu
@@ -358,7 +368,10 @@ export default function BackpropagationTopic() {
         </StepReveal>
       </VisualizationSection>
 
-      {/* ━━━ BƯỚC 5: THỬ THÁCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ BƯỚC 5: THỬ THÁCH ━━━ */}
+      <LessonSection step={5} totalSteps={7} label="Thử thách">
       <InlineChallenge
         question="Trong mạng 100 lớp, gradient phải nhân qua 100 đạo hàm. Nếu mỗi đạo hàm có giá trị khoảng 0.5, gradient ở lớp đầu tiên sẽ như thế nào?"
         options={[
@@ -371,7 +384,10 @@ export default function BackpropagationTopic() {
         explanation="0.5 nhân 100 lần ≈ 0. Gradient 'biến mất' khiến các lớp đầu không được cập nhật. Đây là vanishing gradient — lý do LSTM và ResNet ra đời!"
       />
 
-      {/* ━━━ BƯỚC 6: GIẢI THÍCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ BƯỚC 6: GIẢI THÍCH ━━━ */}
+      <LessonSection step={6} totalSteps={7} label="Giải thích">
       <ExplanationSection>
         <p>
           <strong>Backpropagation</strong> (lan truyền ngược) được Frank Rosenblatt giới thiệu
@@ -430,7 +446,10 @@ for name, param in model.named_parameters():
         </Callout>
       </ExplanationSection>
 
-      {/* ━━━ BƯỚC 7: TÓM TẮT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ BƯỚC 7: TÓM TẮT ━━━ */}
+      <LessonSection step={7} totalSteps={7} label="Tổng kết">
       <MiniSummary
         points={[
           "Backpropagation tính chính xác gradient (hướng + độ lớn cần thay đổi) cho mọi trọng số trong một lần duyệt ngược",
@@ -442,6 +461,7 @@ for name, param in model.named_parameters():
 
       {/* ━━━ BƯỚC 8: KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }

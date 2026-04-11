@@ -33,7 +33,7 @@ export default function AIInEducationTopic() {
           <li><strong>Auto Assessment:</strong>{" "}Cham bai tu dong (code, toan, essay draft). AI assist, khong thay the giao vien</li>
           <li><strong>Content Generation:</strong>{" "}Tao bai tap, de thi, flashcards tu dong theo trinh do</li>
         </ul>
-        <Callout variant="tip" title="Knowledge Tracing">Bayesian Knowledge Tracing (BKT): model xac suat hoc sinh DA BIET concept X hay chua dua tren lich su tra loi. P(known|correct answers) tang dan. Khi P > 0.95 → mastered, chuyen concept moi. Day la co che dang sau Duolingo, Khan Academy.</Callout>
+        <Callout variant="tip" title="Knowledge Tracing">Bayesian Knowledge Tracing (BKT): model xac suat hoc sinh DA BIET concept X hay chua dua tren lich su tra loi. P(known|correct answers) tang dan. Khi P lớn hơn 0.95 → mastered, chuyen concept moi. Day la co che dang sau Duolingo, Khan Academy.</Callout>
         <LaTeX block>{"P(L_t | \\text{evidence}) = \\frac{P(\\text{evidence} | L_t) \\cdot P(L_t)}{P(\\text{evidence})} \\quad \\text{(Bayesian Knowledge Tracing)}"}</LaTeX>
         <Callout variant="info" title="EdTech Viet Nam">Mien phi: app nay (ai-edu)! Thuong mai: ELSA (phat am tieng Anh — startup VN #1 EdTech), Vuihoc, Topica. Co hoi lon: 25 trieu hoc sinh VN can ca nhan hoa. AI + tieng Viet = thi truong chua duoc khai thac nhieu.</Callout>
       </ExplanationSection></LessonSection>

@@ -62,7 +62,7 @@ const QUIZ: QuizQuestion[] = [
       "Không có sự khác biệt",
     ],
     correct: 1,
-    explanation: "Bi-encoder: embed query và doc riêng -> so sánh vector. Nhanh (precompute doc vectors). Cross-encoder: concat(query, doc) -> 1 score. Chậm hơn 100x nhưng chính xác hơn (dùng cho re-ranking).",
+    explanation: "Bi-encoder: embed query và doc riêng → so sánh vector. Nhanh (precompute doc vectors). Cross-encoder: concat(query, doc) → 1 score. Chậm hơn 100x nhưng chính xác hơn (dùng cho re-ranking).",
   },
   {
     question: "Semantic search yếu ở bài toán nào?",
@@ -212,7 +212,7 @@ export default function SemanticSearchTopic() {
           <Callout variant="insight" title="Bi-Encoder vs Cross-Encoder">
             <div className="space-y-2 text-sm">
               <p><strong>Bi-Encoder:</strong>{" "}Encode query và doc RIÊNG RẼ. Precompute doc vectors. So sánh cosine. Nhanh (ms). Dùng cho first-stage retrieval.</p>
-              <p><strong>Cross-Encoder:</strong>{" "}Concat(query, doc) -> Transformer -> 1 score. Chính xác hơn nhưng O(N). Dùng cho re-ranking (stage 2).</p>
+              <p><strong>Cross-Encoder:</strong>{" "}Concat(query, doc) → Transformer → 1 score. Chính xác hơn nhưng O(N). Dùng cho re-ranking (stage 2).</p>
             </div>
           </Callout>
 

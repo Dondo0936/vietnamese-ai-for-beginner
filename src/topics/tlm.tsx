@@ -241,7 +241,7 @@ export default function TLMTopic() {
               </p>
               <p>
                 <strong>Self-consistency:</strong>{" "}
-                Chạy N lần với temperature > 0, đếm tỷ lệ câu trả lời giống nhau. Nhất quán cao = confidence cao.
+                Chạy N lần với temperature lớn hơn 0, đếm tỷ lệ câu trả lời giống nhau. Nhất quán cao = confidence cao.
               </p>
             </div>
           </Callout>

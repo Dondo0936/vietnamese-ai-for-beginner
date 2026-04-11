@@ -60,7 +60,7 @@ const QUIZ: QuizQuestion[] = [
       "Vì kernel phải có tổng bằng 0",
     ],
     correct: 1,
-    explanation: "Cạnh = nơi pixel thay đổi đột ngột (sáng -> tối). Kernel edge: tâm dương (+8) trừ đi lân cận âm (-1). Vùng đồng nhất cho kết quả ~0, vùng có cạnh cho giá trị lớn!",
+    explanation: "Cạnh = nơi pixel thay đổi đột ngột (sáng → tối). Kernel edge: tâm dương (+8) trừ đi lân cận âm (-1). Vùng đồng nhất cho kết quả ~0, vùng có cạnh cho giá trị lớn!",
   },
   {
     question: "Trong CNN hiện đại, kernel được tạo ra bằng cách nào?",
@@ -211,7 +211,7 @@ export default function ImageKernelsTopic() {
             "Vì kernel có kích thước 3x3 nên ảnh bị nén",
           ]}
           correct={1}
-          explanation="Kernel blur lấy trung bình cục bộ (local average). Mỗi pixel mới = trung bình 9 pixel xung quanh. Chi tiết nhỏ (cạnh, nhiễu) bị san phẳng -> ảnh mờ hơn!"
+          explanation="Kernel blur lấy trung bình cục bộ (local average). Mỗi pixel mới = trung bình 9 pixel xung quanh. Chi tiết nhỏ (cạnh, nhiễu) bị san phẳng → ảnh mờ hơn!"
         />
       </LessonSection>
 

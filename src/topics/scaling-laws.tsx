@@ -134,6 +134,7 @@ export default function ScalingLawsTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={6} label="Thử đoán">
+      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="GPT-3 có 175 tỷ tham số. GPT-4 có ~1.700 tỷ (gấp 10 lần). GPT-4 giỏi hơn GPT-3 bao nhiêu lần?"
         options={[
@@ -152,7 +153,10 @@ export default function ScalingLawsTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ KHÁM PHÁ — Biểu đồ scaling ━━━ */}
+      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -251,7 +255,10 @@ export default function ScalingLawsTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         Hiệu suất LLM tuân theo <strong>power law</strong>{" "}— một quy luật toán học dự đoán được!
@@ -261,7 +268,10 @@ export default function ScalingLawsTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ ĐI SÂU — Slider dự đoán ━━━ */}
+      <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -281,7 +291,10 @@ export default function ScalingLawsTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={5} totalSteps={6} label="Thử thách">
       <LessonSection step={5} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Chinchilla (70B params, train trên 1.4T tokens) vs GPT-3 (175B params, train trên 300B tokens). Ai thắng?"
@@ -297,7 +310,10 @@ export default function ScalingLawsTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={6} totalSteps={6} label="Giải thích">
       <LessonSection step={6} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -367,6 +383,7 @@ print(f"  Cần ≈ {optimal_tokens(1700)/1000:.1f}T tokens")`}</CodeBlock>
       />
 
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
       </LessonSection>
     </>
   );

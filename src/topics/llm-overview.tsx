@@ -155,6 +155,7 @@ export default function LLMOverviewTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
+      <LessonSection step={1} totalSteps={8} label="Thử đoán">
       <PredictionGate
         question="Hoàn thành câu: 'Sáng nay tôi uống một ly ___'. Bạn đã suy nghĩ gì khi đoán từ còn thiếu?"
         options={[
@@ -172,7 +173,10 @@ export default function LLMOverviewTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ KHÁM PHÁ — Trò chơi dự đoán từ tiếp theo ━━━ */}
+      <LessonSection step={2} totalSteps={8} label="Khám phá">
       <LessonSection step={2} totalSteps={8} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -307,7 +311,10 @@ export default function LLMOverviewTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={8} label="Khám phá">
       <LessonSection step={3} totalSteps={8} label="Khám phá">
       <AhaMoment>
         Bạn vừa làm chính xác điều mà <strong>Mô hình Ngôn ngữ Lớn (LLM)</strong>{" "}làm:
@@ -318,7 +325,10 @@ export default function LLMOverviewTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ ĐI SÂU — Xây dựng một LLM ━━━ */}
+      <LessonSection step={4} totalSteps={8} label="Đi sâu">
       <LessonSection step={4} totalSteps={8} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -435,7 +445,10 @@ export default function LLMOverviewTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ TIMELINE ━━━ */}
+      <LessonSection step={5} totalSteps={8} label="Dòng thời gian">
       <LessonSection step={5} totalSteps={8} label="Dòng thời gian">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -468,7 +481,10 @@ export default function LLMOverviewTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={6} totalSteps={8} label="Thử thách">
       <LessonSection step={6} totalSteps={8} label="Thử thách">
       <InlineChallenge
         question="LLM chỉ được dạy dự đoán từ tiếp theo. Vậy tại sao nó có thể viết thơ, giải toán, viết code — những thứ chưa bao giờ được dạy trực tiếp?"
@@ -484,7 +500,10 @@ export default function LLMOverviewTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={7} totalSteps={8} label="Giải thích">
       <LessonSection step={7} totalSteps={8} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -540,7 +559,10 @@ print(response.content[0].text)
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ TÓM TẮT ━━━ */}
+      <LessonSection step={8} totalSteps={8} label="Tổng kết">
       <LessonSection step={8} totalSteps={8} label="Tổng kết">
       <MiniSummary
         points={[
@@ -554,6 +576,7 @@ print(response.content[0].text)
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
       </LessonSection>
     </>
   );

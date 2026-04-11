@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, StepReveal, AhaMoment, InlineChallenge,
   Callout, MiniSummary, CodeBlock,
-} from "@/components/interactive";
+  LessonSection,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -297,7 +297,7 @@ export default function GanTopic() {
           Vòng huấn luyện GAN: nhấn từng bước để thấy cách Generator và Discriminator học lẫn nhau.
         </p>
         <StepReveal labels={[
-          "1. Noise -> Generator", "2. Discriminator phân biệt",
+          "1. Noise → Generator", "2. Discriminator phân biệt",
           "3. Tính loss & cập nhật", "4. Lặp lại nhiều lần",
         ]}>
           <div className="rounded-xl border border-border bg-surface p-4">

@@ -72,7 +72,7 @@ const QUIZ: QuizQuestion[] = [
       "Số parameter tăng lên",
     ],
     correct: 0,
-    explanation: "Receptive field là vùng pixel trên ảnh gốc mà 1 neuron 'nhìn thấy'. Lớp sâu hơn có receptive field lớn hơn, nên có thể nhận biết cấu trúc lớn hơn (từ cạnh -> bộ phận -> đối tượng).",
+    explanation: "Receptive field là vùng pixel trên ảnh gốc mà 1 neuron 'nhìn thấy'. Lớp sâu hơn có receptive field lớn hơn, nên có thể nhận biết cấu trúc lớn hơn (từ cạnh → bộ phận → đối tượng).",
   },
 ];
 
@@ -87,11 +87,11 @@ export default function FeatureExtractionCnnTopic() {
           question="Bạn nhìn ảnh chụp phố cổ Hội An và nhận ra ngay: mái ngói, đèn lồng, du khách. Bộ não bạn xử lý thế nào?"
           options={[
             "Nhận ra ngay toàn bộ cảnh trong 1 bước",
-            "Xử lý từ chi tiết nhỏ (cạnh, màu) -> hình dạng -> bộ phận -> đối tượng",
+            "Xử lý từ chi tiết nhỏ (cạnh, màu) → hình dạng → bộ phận → đối tượng",
             "So sánh với mọi ảnh đã thấy từ trước",
           ]}
           correct={1}
-          explanation="Thị giác con người (và CNN) xử lý theo thứ bậc: từ cạnh/góc đơn giản -> kết cấu/hình dạng -> bộ phận -> nhận ra đối tượng hoàn chỉnh. Đây là Feature Hierarchy!"
+          explanation="Thị giác con người (và CNN) xử lý theo thứ bậc: từ cạnh/góc đơn giản → kết cấu/hình dạng → bộ phận → nhận ra đối tượng hoàn chỉnh. Đây là Feature Hierarchy!"
         >
 
       <LessonSection step={2} totalSteps={8} label="Khám phá">
@@ -262,7 +262,7 @@ optimizer = torch.optim.Adam(resnet.fc.parameters(), lr=1e-3)`}
 
       <LessonSection step={6} totalSteps={8} label="Tóm tắt">
         <MiniSummary points={[
-          "CNN trích xuất đặc trưng theo thứ bậc: cạnh -> kết cấu -> bộ phận -> đối tượng",
+          "CNN trích xuất đặc trưng theo thứ bậc: cạnh → kết cấu → bộ phận → đối tượng",
           "Tất cả đều tự học qua backpropagation -- không cần thiết kế thủ công",
           "Receptive field tăng dần: lớp sâu 'nhìn' vùng ảnh gốc lớn hơn",
           "Transfer Learning: giữ lớp đầu (đặc trưng chung), fine-tune lớp cuối cho tác vụ mới",

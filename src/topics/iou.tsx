@@ -96,7 +96,7 @@ export default function IoUTopic() {
             "So sánh chiều rộng 2 box",
           ]}
           correct={1}
-          explanation="IoU = Giao / Hợp. Đo cả VỊ TRÍ lẫn KÍCH THƯỚC: 2 box trùng hoàn hảo -> IoU = 1.0, không chạm nhau -> IoU = 0. Đơn giản, trực giác, và scale-invariant!"
+          explanation="IoU = Giao / Hợp. Đo cả VỊ TRÍ lẫn KÍCH THƯỚC: 2 box trùng hoàn hảo → IoU = 1.0, không chạm nhau → IoU = 0. Đơn giản, trực giác, và scale-invariant!"
         >
 
       <LessonSection step={2} totalSteps={8} label="Khám phá">

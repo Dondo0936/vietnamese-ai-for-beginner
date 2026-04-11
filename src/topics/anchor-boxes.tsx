@@ -250,7 +250,7 @@ print(f"Shape: {anchors.shape}")          # (14400, 4)`}
         <MiniSummary points={[
           "Anchor box = hộp mẫu đặt sẵn trên feature map, nhiều tỷ lệ + kích thước",
           "Mô hình dự đoán offset (dx, dy, dw, dh) từ anchor gần nhất -- dễ học hơn dự đoán tuyệt đối",
-          "Faster R-CNN: 9 anchors/vị trí -> hàng ngàn anchors tổng cộng, cần NMS lọc",
+          "Faster R-CNN: 9 anchors/vị trí → hàng ngàn anchors tổng cộng, cần NMS lọc",
           "Xu hướng mới: anchor-free (FCOS, YOLOv8) -- dự đoán trực tiếp, ít hyperparameter",
         ]} />
       </LessonSection>

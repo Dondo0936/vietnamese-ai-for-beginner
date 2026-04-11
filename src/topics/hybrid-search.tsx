@@ -45,7 +45,7 @@ const QUIZ: QuizQuestion[] = [
       "Hybrid Search tự động chọn phương pháp tốt hơn",
     ],
     correct: 1,
-    explanation: "BM25 tìm 'luật lao động' (exact match). Semantic tìm 'quyền lợi người đi làm' (đồng nghĩa). Hybrid kết hợp cả 2 -> không bỏ lỡ kết quả nào!",
+    explanation: "BM25 tìm 'luật lao động' (exact match). Semantic tìm 'quyền lợi người đi làm' (đồng nghĩa). Hybrid kết hợp cả 2 → không bỏ lỡ kết quả nào!",
   },
   {
     question: "Reciprocal Rank Fusion (RRF) hoạt động thế nào?",
@@ -172,7 +172,7 @@ export default function HybridSearchTopic() {
             "Chỉ dùng Semantic vì score đẹp hơn",
           ]}
           correct={1}
-          explanation="RRF: RRF_score = 1/(k + rank_bm25) + 1/(k + rank_semantic). Dùng thứ hạng thay vì điểm số -> không cần normalize. Đơn giản, robust, hiệu quả. k=60 là mặc định phổ biến."
+          explanation="RRF: RRF_score = 1/(k + rank_bm25) + 1/(k + rank_semantic). Dùng thứ hạng thay vì điểm số → không cần normalize. Đơn giản, robust, hiệu quả. k=60 là mặc định phổ biến."
         />
       </LessonSection>
 
@@ -189,7 +189,7 @@ export default function HybridSearchTopic() {
           <p><strong>Reciprocal Rank Fusion (RRF):</strong></p>
           <LaTeX block>{"\\text{RRF}(d) = \\sum_{r \\in R} \\frac{1}{k + r(d)}"}</LaTeX>
           <p className="text-sm text-muted">
-            <LaTeX>{"r(d)"}</LaTeX> = thứ hạng tài liệu d trong danh sách r. k = 60 (constant). Dùng rank thay vì score -> không cần normalize.
+            <LaTeX>{"r(d)"}</LaTeX> = thứ hạng tài liệu d trong danh sách r. k = 60 (constant). Dùng rank thay vì score → không cần normalize.
           </p>
 
           <Callout variant="insight" title="3 cách kết hợp phổ biến">
