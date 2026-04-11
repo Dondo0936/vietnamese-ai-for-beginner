@@ -36,6 +36,18 @@ export default function SearchBar({ topics }: SearchBarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Cmd+K / Ctrl+K shortcut to focus search
+  useEffect(() => {
+    function handleGlobalKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", handleGlobalKeyDown);
+    return () => document.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
   const handleSearch = useCallback((value: string) => {
     setQuery(value);
     if (value.trim().length < 2) {
@@ -80,22 +92,26 @@ export default function SearchBar({ topics }: SearchBarProps) {
         <input
           ref={inputRef}
           type="text"
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-controls="search-results"
+          aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
           value={query}
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => {
             if (results.length > 0) setIsOpen(true);
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Tìm kiếm chủ đề..."
+          placeholder="Tìm kiếm chủ đề... (⌘K)"
           className="w-full rounded-lg border border-border bg-white pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-shadow"
         />
       </div>
 
       {isOpen && (
         results.length > 0 ? (
-          <ul className="absolute z-40 mt-1.5 w-full rounded-lg border border-border bg-white shadow-lg overflow-hidden">
+          <ul id="search-results" role="listbox" className="absolute z-40 mt-1.5 w-full rounded-lg border border-border bg-white shadow-lg overflow-hidden">
             {results.map((topic, i) => (
-              <li key={topic.slug}>
+              <li key={topic.slug} id={`search-result-${i}`} role="option" aria-selected={i === activeIndex}>
                 <button
                   type="button"
                   onClick={() => navigate(topic.slug)}
