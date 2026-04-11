@@ -8,29 +8,29 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "hyperparameter-tuning", title: "Hyperparameter Tuning", titleVi: "Tinh chinh sieu tham so — Tim cong thuc vang", description: "Qua trinh tim kiem bo sieu tham so toi uu (learning rate, batch size, layers...) de mo hinh dat hieu suat cao nhat.", category: "foundations", tags: ["hyperparameter", "tuning", "optimization", "grid-search"], difficulty: "intermediate", relatedSlugs: ["learning-rate", "train-val-test", "overfitting-underfitting"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "hyperparameter-tuning", title: "Hyperparameter Tuning", titleVi: "Tinh chỉnh siêu tham số — Tìm công thức vàng", description: "Quá trình tìm kiếm bộ siêu tham số tối ưu (learning rate, batch size, layers...) để mô hình đạt hiệu suất cao nhất.", category: "foundations", tags: ["hyperparameter", "tuning", "optimization", "grid-search"], difficulty: "intermediate", relatedSlugs: ["learning-rate", "train-val-test", "overfitting-underfitting"], vizType: "interactive" };
 
 const TOTAL_STEPS = 7;
 
 export default function HyperparameterTuningTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(() => [
-    { question: "Hyperparameter khac parameter (weights) the nao?", options: ["Giong nhau", "Hyperparameters dat TRUOC training (lr, layers, batch_size). Parameters (weights) duoc HOC trong training", "Hyperparameters luon lon hon"], correct: 1, explanation: "Parameters: weights, biases — model tu hoc tu data (gradient descent). Hyperparameters: learning rate, so layers, dropout rate — NGUOI DAT truoc training. Hyperparameter tuning = tim bo config tot nhat de model hoc hieu qua nhat." },
-    { question: "Grid Search vs Random Search: cai nao tot hon?", options: ["Grid Search vi thu tat ca combinations", "Random Search — tim tot hon voi cung budget vi khong bi ket o grid, explore nhieu gia tri hon", "Giong nhau"], correct: 1, explanation: "Grid search: thu 10x10=100 combinations co dinh. Random search: thu 100 random combinations. Voi cung budget, random 'kham pha' nhieu gia tri hon (nhat la khi chi 1-2 hyperparams thuc su quan trong). Bergstra & Bengio (2012) chung minh random tot hon grid!" },
-    { question: "Bayesian Optimization uu viet hon random search the nao?", options: ["Nhanh hon vi dung GPU", "Dung surrogate model (GP) de DU DOAN vung nao co the cho ket qua tot → tim thong minh hon, can it trials hon", "Khong uu viet hon"], correct: 1, explanation: "Bayesian Opt: dung Gaussian Process lam surrogate model. Sau moi trial, update GP → du doan vung nao hua hen → chon trial tiep theo thong minh (acquisition function). 3-5x hieu qua hon random search cho cung budget." },
+    { question: "Hyperparameter khác parameter (weights) thế nào?", options: ["Giống nhau", "Hyperparameters đặt TRƯỚC training (lr, layers, batch_size). Parameters (weights) được HỌC trong training", "Hyperparameters luôn lớn hơn"], correct: 1, explanation: "Parameters: weights, biases — model tự học từ data (gradient descent). Hyperparameters: learning rate, số layers, dropout rate — NGƯỜI ĐẶT trước training. Hyperparameter tuning = tìm bộ config tốt nhất để model học hiệu quả nhất." },
+    { question: "Grid Search vs Random Search: cái nào tốt hơn?", options: ["Grid Search vì thử tất cả combinations", "Random Search — tìm tốt hơn với cùng budget vì không bị kẹt ở grid, explore nhiều giá trị hơn", "Giống nhau"], correct: 1, explanation: "Grid search: thử 10x10=100 combinations cố định. Random search: thử 100 random combinations. Với cùng budget, random 'khám phá' nhiều giá trị hơn (nhất là khi chỉ 1-2 hyperparams thực sự quan trọng). Bergstra & Bengio (2012) chứng minh random tốt hơn grid!" },
+    { question: "Bayesian Optimization ưu việt hơn random search thế nào?", options: ["Nhanh hơn vì dùng GPU", "Dùng surrogate model (GP) để DỰ ĐOÁN vùng nào có thể cho kết quả tốt → tìm thông minh hơn, cần ít trials hơn", "Không ưu việt hơn"], correct: 1, explanation: "Bayesian Opt: dùng Gaussian Process làm surrogate model. Sau mỗi trial, update GP → dự đoán vùng nào hứa hẹn → chọn trial tiếp theo thông minh (acquisition function). 3-5x hiệu quả hơn random search cho cùng budget." },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
-        <PredictionGate question="Ban train model: learning_rate=0.1 → accuracy 70%, lr=0.01 → 85%, lr=0.001 → 80%. Co 10 hyperparams khac can tune. Thu moi combination mat 1 gio. Cach nao tim bo toi uu?" options={["Thu tat ca combinations (Grid Search) — nhung 10^10 combinations?!", "Dung Bayesian Optimization: thong minh du doan vung nao hua hen → tim toi uu voi 50-100 trials", "Random chon va hy vong"]} correct={1} explanation="Grid search: 10 gia tri x 10 hyperparams = 10 ty combinations — bat kha thi! Random search: tot hon nhung van 'mu'. Bayesian Opt: dung GP model du doan vung nao tot → chi can 50-100 trials thay vi hang ngan. Giong GPS thay vi thu moi con duong!">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+        <PredictionGate question="Bạn train model: learning_rate=0.1 → accuracy 70%, lr=0.01 → 85%, lr=0.001 → 80%. Có 10 hyperparams khác cần tune. Thử mỗi combination mất 1 giờ. Cách nào tìm bộ tối ưu?" options={["Thử tất cả combinations (Grid Search) — nhưng 10^10 combinations?!", "Dùng Bayesian Optimization: thông minh dự đoán vùng nào hứa hẹn → tìm tối ưu với 50-100 trials", "Random chọn và hy vọng"]} correct={1} explanation="Grid search: 10 giá trị x 10 hyperparams = 10 tỷ combinations — bất khả thi! Random search: tốt hơn nhưng vẫn 'mù'. Bayesian Opt: dùng GP model dự đoán vùng nào tốt → chỉ cần 50-100 trials thay vì hàng nghìn. Giống GPS thay vì thử mọi con đường!">
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
           <div className="space-y-4">
             <svg viewBox="0 0 600 150" className="w-full max-w-2xl mx-auto">
-              <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">3 chien luoc Hyperparameter Tuning</text>
+              <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">3 chiến lược Hyperparameter Tuning</text>
               {[
-                { name: "Grid Search", trials: "10^N (het)", efficiency: 20, color: "#ef4444" },
+                { name: "Grid Search", trials: "10^N (hết)", efficiency: 20, color: "#ef4444" },
                 { name: "Random Search", trials: "~100", efficiency: 55, color: "#f59e0b" },
                 { name: "Bayesian Opt", trials: "~30-50", efficiency: 90, color: "#22c55e" },
               ].map((s, i) => {
@@ -42,26 +42,26 @@ export default function HyperparameterTuningTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
-        <AhaMoment><p>Bayesian Optimization giong <strong>GPS thong minh</strong>{" "}— moi lan thu xong, no <strong>hoc</strong>{" "}va <strong>du doan</strong>{" "}vung nao co the cho ket qua tot hon. Tim toi uu voi 50 trials thay vi 10.000 trials random. <strong>Optuna</strong>{" "}la tool mien phi tot nhat cho Bayesian HP tuning!</p></AhaMoment>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment><p>Bayesian Optimization giống <strong>GPS thông minh</strong>{" "}— mỗi lần thử xong, nó <strong>học</strong>{" "}và <strong>dự đoán</strong>{" "}vùng nào có thể cho kết quả tốt hơn. Tìm tối ưu với 50 trials thay vì 10.000 trials random. <strong>Optuna</strong>{" "}là tool miễn phí tốt nhất cho Bayesian HP tuning!</p></AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
-        <InlineChallenge question="Ban co budget 100 GPU-hours cho HP tuning. Moi trial mat 1 gio. 5 hyperparameters can tune. Grid search can 10^5 = 100K trials. Random can ~300. Bayesian?" options={["100 trials (1 per GPU-hour)", "30-50 trials — Bayesian Opt hieu qua hon 3-5x random, tim toi uu voi 30-50 trials", "Van can 100K trials"]} correct={1} explanation="Bayesian Opt: 30-50 trials thuong du de tim near-optimal. Budget 100 GPU-hours: chay 50 trials, con 50 hours cho re-training final model. Hieu qua hon random 3-5x, hon grid vo han lan. Tools: Optuna, W&B Sweeps, Ray Tune." />
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge question="Bạn có budget 100 GPU-hours cho HP tuning. Mỗi trial mất 1 giờ. 5 hyperparameters cần tune. Grid search cần 10^5 = 100K trials. Random cần ~300. Bayesian?" options={["100 trials (1 per GPU-hour)", "30-50 trials — Bayesian Opt hiệu quả hơn 3-5x random, tìm tối ưu với 30-50 trials", "Vẫn cần 100K trials"]} correct={1} explanation="Bayesian Opt: 30-50 trials thường đủ để tìm near-optimal. Budget 100 GPU-hours: chạy 50 trials, còn 50 hours cho re-training final model. Hiệu quả hơn random 3-5x, hơn grid vô hạn lần. Tools: Optuna, W&B Sweeps, Ray Tune." />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Hyperparameter Tuning</strong>{" "}tim bo sieu tham so (learning rate, batch size, regularization...) toi uu cho model.</p>
+          <p><strong>Hyperparameter Tuning</strong>{" "}tìm bộ siêu tham số (learning rate, batch size, regularization...) tối ưu cho model.</p>
           <p><strong>Bayesian Optimization:</strong></p>
           <LaTeX block>{"x_{\\text{next}} = \\arg\\max_x \\alpha(x | \\mathcal{D}_{1:t}) \\quad \\text{(acquisition function: Expected Improvement)}"}</LaTeX>
-          <LaTeX block>{"\\text{EI}(x) = \\mathbb{E}[\\max(f(x) - f^*, 0)] \\quad \\text{(chon x co ky vong cai thien lon nhat)}"}</LaTeX>
-          <Callout variant="tip" title="Hyperparams quan trong nhat">Learning rate: quan trong nhat (ảnh huong 10x). Batch size: anh huong generalization. Regularization (dropout, weight decay): kiem soat overfitting. So layers/hidden units: capacity. Tune theo thu tu quan trong!</Callout>
-          <CodeBlock language="python" title="Bayesian HP Tuning voi Optuna">{`import optuna
+          <LaTeX block>{"\\text{EI}(x) = \\mathbb{E}[\\max(f(x) - f^*, 0)] \\quad \\text{(chọn x có kỳ vọng cải thiện lớn nhất)}"}</LaTeX>
+          <Callout variant="tip" title="Hyperparams quan trọng nhất">Learning rate: quan trọng nhất (ảnh hưởng 10x). Batch size: ảnh hưởng generalization. Regularization (dropout, weight decay): kiểm soát overfitting. Số layers/hidden units: capacity. Tune theo thứ tự quan trọng!</Callout>
+          <CodeBlock language="python" title="Bayesian HP Tuning với Optuna">{`import optuna
 from sklearn.ensemble import GradientBoostingClassifier
 
 def objective(trial):
-    # Optuna de xuat hyperparameters thong minh
+    # Optuna đề xuất hyperparameters thông minh
     params = {
         "n_estimators": trial.suggest_int("n_estimators", 50, 500),
         "max_depth": trial.suggest_int("max_depth", 3, 10),
@@ -79,15 +79,15 @@ study.optimize(objective, n_trials=50)
 
 print(f"Best accuracy: {study.best_value:.3f}")
 print(f"Best params: {study.best_params}")
-# Thuong tim near-optimal trong 30-50 trials`}</CodeBlock>
+# Thường tìm near-optimal trong 30-50 trials`}</CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
-        <MiniSummary points={["Hyperparameters (lr, batch_size) dat TRUOC training. Parameters (weights) duoc HOC trong training.", "Grid Search: bat kha thi cho nhieu HPs. Random: tot hon 3x. Bayesian Opt: tot hon 3-5x random.", "Bayesian Opt dung surrogate model du doan vung hua hen → tim toi uu voi 30-50 trials.", "Tue tu quan trong: learning rate > regularization > batch size > architecture.", "Tools: Optuna (free, tot nhat), W&B Sweeps, Ray Tune."]} />
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+        <MiniSummary points={["Hyperparameters (lr, batch_size) đặt TRƯỚC training. Parameters (weights) được HỌC trong training.", "Grid Search: bất khả thi cho nhiều HPs. Random: tốt hơn 3x. Bayesian Opt: tốt hơn 3-5x random.", "Bayesian Opt dùng surrogate model dự đoán vùng hứa hẹn → tìm tối ưu với 30-50 trials.", "Thứ tự quan trọng: learning rate > regularization > batch size > architecture.", "Tools: Optuna (free, tốt nhất), W&B Sweeps, Ray Tune."]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra"><QuizSection questions={quizQuestions} /></LessonSection>
         </PredictionGate>
       </LessonSection>
     </>
