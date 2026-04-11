@@ -26,12 +26,15 @@ export default function HeroSearch({
       <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
 
       <div className="relative">
-        {/* Editorial heading */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
-          Hiểu AI qua{" "}
-          <span className="gradient-text">hình ảnh</span>
-          <br />
-          và ví dụ đơn giản
+        {/* Editorial serif heading */}
+        <h1 className="text-foreground leading-[1.1]" style={{ fontFamily: "var(--font-editorial), Georgia, serif" }}>
+          <span className="block text-4xl sm:text-5xl lg:text-6xl font-extrabold italic tracking-tight">
+            Hiểu AI qua{" "}
+            <span className="gradient-text not-italic">hình ảnh</span>
+          </span>
+          <span className="block text-3xl sm:text-4xl lg:text-5xl font-bold mt-2 tracking-tight">
+            và ví dụ đơn giản
+          </span>
         </h1>
 
         <p className="mt-5 text-base sm:text-lg text-muted max-w-lg mx-auto leading-relaxed">
