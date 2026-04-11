@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { ChevronDown } from "lucide-react";
 import HeroSearch from "./HeroSearch";
 import ProfessionPaths from "./ProfessionPaths";
 import TopicGrid from "./TopicGrid";
@@ -125,30 +126,71 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
         />
       </section>
 
-      {/* All topics grid */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16">
-        <div className="flex items-baseline justify-between mb-5">
-          <h2 className="text-xl font-semibold text-foreground tracking-[-0.01em]">
-            {difficulty === "all"
-              ? "Tất cả chủ đề"
-              : `Chủ đề ${
-                  difficulty === "beginner"
-                    ? "cơ bản"
-                    : difficulty === "intermediate"
-                    ? "trung bình"
-                    : "nâng cao"
-                }`}
-          </h2>
-          <span className="text-[13px] text-tertiary">{filtered.length} chủ đề</span>
-        </div>
-        <TopicGrid
-          topics={filtered}
-          readTopics={readTopics}
-          bookmarks={bookmarks}
-          onToggleBookmark={handleToggleBookmark}
-        />
-      </section>
+      {/* All topics grid — collapsed by default, expand on click */}
+      <AllTopicsSection
+        difficulty={difficulty}
+        filtered={filtered}
+        readTopics={readTopics}
+        bookmarks={bookmarks}
+        onToggleBookmark={handleToggleBookmark}
+      />
 
     </>
+  );
+}
+
+// ─── Collapsed "All Topics" section ───
+function AllTopicsSection({
+  difficulty,
+  filtered,
+  readTopics,
+  bookmarks,
+  onToggleBookmark,
+}: {
+  difficulty: Difficulty | "all";
+  filtered: TopicMeta[];
+  readTopics: string[];
+  bookmarks: string[];
+  onToggleBookmark: (slug: string) => void;
+}) {
+  const [showAll, setShowAll] = useState(false);
+  const INITIAL_COUNT = 12;
+  const displayed = showAll ? filtered : filtered.slice(0, INITIAL_COUNT);
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16">
+      <div className="flex items-baseline justify-between mb-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-[-0.01em]">
+          {difficulty === "all"
+            ? "Tất cả chủ đề"
+            : `Chủ đề ${
+                difficulty === "beginner"
+                  ? "cơ bản"
+                  : difficulty === "intermediate"
+                  ? "trung bình"
+                  : "nâng cao"
+              }`}
+        </h2>
+        <span className="text-[13px] text-tertiary">{filtered.length} chủ đề</span>
+      </div>
+      <TopicGrid
+        topics={displayed}
+        readTopics={readTopics}
+        bookmarks={bookmarks}
+        onToggleBookmark={onToggleBookmark}
+      />
+      {!showAll && filtered.length > INITIAL_COUNT && (
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-6 py-2.5 text-[13px] font-medium text-muted transition-all hover:text-foreground hover:bg-card hover:shadow-sm"
+          >
+            Xem tất cả {filtered.length} chủ đề
+            <ChevronDown size={14} />
+          </button>
+        </div>
+      )}
+    </section>
   );
 }
