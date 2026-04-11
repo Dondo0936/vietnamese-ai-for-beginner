@@ -1,14 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import {
   GraduationCap,
   Briefcase,
   Code2,
   FlaskConical,
-  ChevronDown,
-  ChevronUp,
   ArrowRight,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
@@ -61,8 +58,7 @@ export const professions: Profession[] = [
     icon: Code2,
     topicSlugs: [
       "transformer", "self-attention", "multi-head-attention", "positional-encoding",
-      "cnn", "rnn", "lstm",
-      "gpt", "bert", "tokenization", "tokenizer-comparison", "kv-cache",
+      "cnn", "rnn", "lstm", "gpt", "bert", "tokenization", "tokenizer-comparison", "kv-cache",
       "temperature", "top-k-top-p", "beam-search", "context-window",
       "fine-tuning", "lora", "qlora", "fine-tuning-vs-prompting",
       "quantization", "distillation", "pruning", "mixed-precision",
@@ -111,7 +107,6 @@ export default function ProfessionPaths({
   topics,
   readTopics = [],
 }: ProfessionPathsProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const topicMap = new Map(topics.map((t) => [t.slug, t]));
 
   return (
@@ -123,25 +118,21 @@ export default function ProfessionPaths({
         const readCount = resolved.filter((t) =>
           readTopics.includes(t.slug)
         ).length;
-        const isExpanded = expandedId === prof.id;
         const Icon = prof.icon;
         const pct = resolved.length > 0 ? Math.round((readCount / resolved.length) * 100) : 0;
 
         return (
-          <div
+          <Link
             key={prof.id}
-            className="rounded-[16px] border border-border bg-card/50 backdrop-blur-sm overflow-hidden transition-all hover:bg-card hover:shadow-sm"
+            href={`/paths/${prof.id}`}
+            className="group rounded-[16px] border border-border bg-card/50 backdrop-blur-sm overflow-hidden transition-all hover:bg-card hover:shadow-sm hover:-translate-y-0.5"
           >
-            <button
-              type="button"
-              onClick={() => setExpandedId(isExpanded ? null : prof.id)}
-              className="w-full flex items-center gap-3 p-4 text-left"
-            >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface text-muted">
-                <Icon size={18} />
+            <div className="flex items-center gap-3 p-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted group-hover:text-accent transition-colors">
+                <Icon size={20} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-[13px] font-semibold text-foreground truncate leading-snug">
+                <h3 className="text-[13px] font-semibold text-foreground truncate leading-snug group-hover:text-accent transition-colors">
                   {prof.nameVi}
                 </h3>
                 <p className="text-[11px] text-tertiary mt-0.5 line-clamp-1">
@@ -152,17 +143,13 @@ export default function ProfessionPaths({
                 <span className="text-[11px] text-tertiary">
                   {resolved.length} chủ đề
                 </span>
-                {isExpanded ? (
-                  <ChevronUp size={14} className="text-tertiary" />
-                ) : (
-                  <ChevronDown size={14} className="text-tertiary" />
-                )}
+                <ArrowRight size={14} className="text-tertiary group-hover:text-accent transition-colors" />
               </div>
-            </button>
+            </div>
 
             {/* Progress */}
             {readCount > 0 && (
-              <div className="px-4 pb-2">
+              <div className="px-4 pb-3">
                 <div className="h-[3px] w-full rounded-full bg-surface">
                   <div
                     className="h-[3px] rounded-full bg-accent transition-all"
@@ -174,38 +161,7 @@ export default function ProfessionPaths({
                 </p>
               </div>
             )}
-
-            {/* Expanded topic list */}
-            {isExpanded && (
-              <div className="px-4 pb-4">
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {resolved.map((topic) => {
-                    const isRead = readTopics.includes(topic.slug);
-                    return (
-                      <Link
-                        key={topic.slug}
-                        href={`/topics/${topic.slug}`}
-                        className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors ${
-                          isRead
-                            ? "bg-accent/10 text-accent"
-                            : "bg-surface text-muted hover:text-foreground hover:bg-surface-hover"
-                        }`}
-                      >
-                        {topic.titleVi}
-                      </Link>
-                    );
-                  })}
-                </div>
-                <Link
-                  href={`/paths/${prof.id}`}
-                  className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-accent hover:underline"
-                >
-                  Xem lộ trình
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
-            )}
-          </div>
+          </Link>
         );
       })}
     </div>
