@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { BookOpen, Zap, Eye } from "lucide-react";
 import HeroSearch from "./HeroSearch";
 import TopicGrid from "./TopicGrid";
 import CategorySection from "./CategorySection";
@@ -76,48 +75,32 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
         counts={counts}
       />
 
-      {/* Stats banner */}
-      <section className="mx-auto max-w-6xl px-4 pb-6">
-        <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg border border-border bg-card p-3 text-center">
-            <div className="flex items-center justify-center gap-1.5 text-accent mb-1">
-              <BookOpen size={16} />
-            </div>
-            <div className="text-xl font-bold text-foreground">{topics.length}</div>
-            <div className="text-[11px] text-muted">chủ đề</div>
-          </div>
-          <div className="rounded-lg border border-border bg-card p-3 text-center">
-            <div className="flex items-center justify-center gap-1.5 text-accent mb-1">
-              <Eye size={16} />
-            </div>
-            <div className="text-xl font-bold text-foreground">{interactiveCount}</div>
-            <div className="text-[11px] text-muted">tương tác</div>
-          </div>
-          <div className="rounded-lg border border-border bg-card p-3 text-center">
-            <div className="flex items-center justify-center gap-1.5 text-accent mb-1">
-              <Zap size={16} />
-            </div>
-            <div className="text-xl font-bold text-foreground">{categories.length}</div>
-            <div className="text-[11px] text-muted">danh mục</div>
-          </div>
+      {/* Stats — inline, minimal */}
+      <section className="mx-auto max-w-6xl px-4 pb-8">
+        <div className="flex items-center justify-center gap-8 text-[13px] text-tertiary">
+          <span><strong className="text-foreground">{topics.length}</strong>{" "}chủ đề</span>
+          <span className="w-px h-3 bg-border" />
+          <span><strong className="text-foreground">{interactiveCount}</strong>{" "}tương tác</span>
+          <span className="w-px h-3 bg-border" />
+          <span><strong className="text-foreground">{categories.length}</strong>{" "}danh mục</span>
         </div>
       </section>
 
       {/* Progress bar */}
       {readTopics.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 pb-6">
-          <div className="rounded-lg border border-border bg-card p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-foreground">
+        <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-10">
+          <div className="rounded-[16px] border border-border bg-card/50 p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[13px] font-medium text-foreground">
                 Tiến độ học tập
               </span>
-              <span className="text-sm text-muted">
-                {readTopics.length}/{topics.length} chủ đề đã đọc
+              <span className="text-[13px] text-tertiary">
+                {readTopics.length}/{topics.length}
               </span>
             </div>
-            <div className="h-2 w-full rounded-full bg-surface">
+            <div className="h-[3px] w-full rounded-full bg-surface">
               <div
-                className="h-2 rounded-full bg-accent transition-all duration-500"
+                className="h-[3px] rounded-full bg-accent transition-all duration-500"
                 style={{ width: `${(readTopics.length / topics.length) * 100}%` }}
               />
             </div>
@@ -126,8 +109,8 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
       )}
 
       {/* Category cards */}
-      <section className="mx-auto max-w-6xl px-4 pb-8">
-        <h2 className="text-lg font-semibold text-foreground mb-4">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-12">
+        <h2 className="text-xl font-semibold text-foreground mb-5 tracking-[-0.01em]">
           Theo danh mục
         </h2>
         <CategorySection
@@ -138,9 +121,9 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
       </section>
 
       {/* All topics grid */}
-      <section className="mx-auto max-w-6xl px-4 pb-12">
-        <div className="flex items-baseline justify-between mb-4">
-          <h2 className="text-lg font-semibold text-foreground">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16">
+        <div className="flex items-baseline justify-between mb-5">
+          <h2 className="text-xl font-semibold text-foreground tracking-[-0.01em]">
             {difficulty === "all"
               ? "Tất cả chủ đề"
               : `Chủ đề ${
@@ -151,7 +134,7 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
                     : "nâng cao"
                 }`}
           </h2>
-          <span className="text-sm text-muted">{filtered.length} chủ đề</span>
+          <span className="text-[13px] text-tertiary">{filtered.length} chủ đề</span>
         </div>
         <TopicGrid
           topics={filtered}

@@ -26,7 +26,7 @@ export default function TopicCard({
   const BookmarkIcon = isBookmarked ? BookmarkCheck : Bookmark;
 
   return (
-    <div className={`relative card ${isRead ? "topic-card-read" : ""}`}>
+    <div className={`relative rounded-[16px] border border-border bg-card/50 backdrop-blur-sm transition-all duration-200 hover:bg-card hover:shadow-sm hover:-translate-y-0.5 ${isRead ? "topic-card-read" : ""}`}>
       {onToggleBookmark && (
         <button
           type="button"
