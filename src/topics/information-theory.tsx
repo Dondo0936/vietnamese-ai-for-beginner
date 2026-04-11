@@ -1,290 +1,68 @@
 "use client";
-
-import { useState } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
-import VisualizationSection from "@/components/topic/VisualizationSection";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "information-theory",
-  title: "Information Theory",
-  titleVi: "Lý thuyết thông tin",
-  description:
-    "Entropy, cross-entropy và KL divergence — đo lường thông tin và so sánh phân phối xác suất",
-  category: "math-foundations",
-  tags: ["entropy", "kl-divergence", "cross-entropy"],
-  difficulty: "intermediate",
-  relatedSlugs: ["loss-functions", "probability-statistics", "vae"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "information-theory", title: "Information Theory", titleVi: "Ly thuyet thong tin", description: "Entropy, cross-entropy va KL divergence — do luong thong tin va so sanh phan phoi xac suat", category: "math-foundations", tags: ["entropy", "kl-divergence", "cross-entropy"], difficulty: "intermediate", relatedSlugs: ["loss-functions", "probability-statistics", "vae"], vizType: "interactive" };
 
-function entropy(probs: number[]): number {
-  let h = 0;
-  for (const p of probs) {
-    if (p > 0) h -= p * Math.log2(p);
-  }
-  return h;
-}
-
-function klDivergence(p: number[], q: number[]): number {
-  let kl = 0;
-  for (let i = 0; i < p.length; i++) {
-    if (p[i] > 0 && q[i] > 0) {
-      kl += p[i] * Math.log2(p[i] / q[i]);
-    }
-  }
-  return kl;
-}
-
+const TOTAL_STEPS = 7;
 export default function InformationTheoryTopic() {
-  const [pA, setPa] = useState(0.7);
-  const [qA, setQa] = useState(0.5);
-
-  // Two-outcome distributions
-  const distP = [pA, 1 - pA];
-  const distQ = [qA, 1 - qA];
-
-  const entropyP = entropy(distP);
-  const entropyQ = entropy(distQ);
-  const kl = klDivergence(distP, distQ);
-
-  const svgW = 600;
-  const svgH = 280;
-  const pad = 40;
-  const barW = 60;
-  const maxBarH = 180;
-
-  const labels = ["Sự kiện A", "Sự kiện B"];
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Entropy H(X) cao nghia la gi?", options: ["Data co nhieu noise", "DO BAT DINH CAO: kho du doan ket qua. Dong xu cong bang: H=1 bit (bat dinh nhat). Dong xu 2 mat giong nhau: H=0 (chac chan)", "Model tot"], correct: 1, explanation: "Entropy = do bat dinh / luong thong tin trung binh. H cao = bat dinh cao = can nhieu bit de ma hoa. Dong xu: H=1. Xuc xac: H=2.58 (bat dinh hon). Su kien chac chan: H=0. Trong ML: decision tree chon feature giam entropy nhieu nhat (information gain)." },
+    { question: "Cross-Entropy H(p,q) do gi?", options: ["Entropy cua p", "So BITS CAN de ma hoa data tu phan phoi p DUNG phan phoi q. Cang gan: CE thap. Cang xa: CE cao. Day la loss function cho classification!", "Entropy cua q"], correct: 1, explanation: "H(p,q) = -sum(p*log(q)). Neu q = p (model perfect): H(p,q) = H(p) (minimum). Neu q khac p: H(p,q) > H(p). 'Phan thua' = KL divergence = H(p,q) - H(p). Minimize CE loss = lam q (model) gan p (true distribution) nhat co the." },
+    { question: "KL Divergence KL(p||q) dung cho gi?", options: ["Tinh khoang cach Euclid", "Do su KHAC BIET giua 2 phan phoi. KL=0: giong het. KL lon: rat khac. Dung trong: VAE loss, data drift detection, distillation", "Tinh trung binh"], correct: 1, explanation: "KL(p||q) = sum(p*log(p/q)) = H(p,q) - H(p). KHONG doi xung: KL(p||q) ≠ KL(q||p). Dung: (1) VAE: KL(q(z|x)||p(z)) ≈ 0 → latent ~ prior, (2) Distillation: KL(student||teacher) → student hoc tu teacher, (3) Data drift: KL(train||production) → phat hien drift." },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy nghĩ về <strong>độ bất ngờ</strong>. Nếu ai đó nói{" "}
-          &quot;<strong>Hà Nội nóng vào tháng 7</strong>&quot;, bạn không ngạc nhiên
-          chút nào — đó là thông tin ít giá trị (low information). Nhưng nếu nghe{" "}
-          &quot;<strong>Hà Nội có tuyết vào tháng 7</strong>&quot;, bạn sẽ sốc — đó
-          là thông tin cực kỳ giá trị vì rất bất ngờ (high information).
-        </p>
-        <p>
-          <strong>Entropy</strong> đo <em>độ bất ngờ trung bình</em> của một nguồn
-          thông tin. Nếu mọi sự kiện đều có xác suất bằng nhau (như tung đồng xu công
-          bằng), entropy cao nhất — bạn hoàn toàn không biết kết quả. Nếu kết quả gần
-          như chắc chắn (xác suất 99%), entropy rất thấp — ít bất ngờ.
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="2 su kien: (A) Ngay mai mat troi moc, (B) Ngay mai co dong dat. Su kien nao chua NHIEU THONG TIN hon khi xay ra?" options={["A — vi quan trong hon", "B — su kien HIEM co nhieu thong tin hon su kien chac chan. 'Mat troi moc' = 0 thong tin (ai cung biet). 'Dong dat' = nhieu thong tin (bat ngo)", "Bang nhau"]} correct={1} explanation="Information = -log(P). Mat troi moc: P≈1 → -log(1)=0 bits (khong co thong tin moi). Dong dat: P≈0.001 → -log(0.001)≈10 bits (rat nhieu thong tin). Tin tuc bao chi: chi dua tin BAT NGO vi no co nhieu thong tin. Day la truc giac cua Shannon!">
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Điều chỉnh hai phân phối P (xanh) và Q (cam). Quan sát entropy của mỗi
-            phân phối và KL divergence giữa chúng.
-          </p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Entropy = <strong>do bat dinh trung binh</strong>. Cross-Entropy = <strong>loss function cua classification</strong>. KL Divergence = <strong>do khac biet giua 2 phan phoi</strong>. Ba concept nay xuat hien KHAP NOI trong ML: decision trees (information gain), neural networks (CE loss), VAE (KL loss), distillation (KL student→teacher). <strong>Information Theory = ngon ngu cua ML!</strong></p></AhaMoment></LessonSection>
 
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-2xl mx-auto">
-            {/* Title */}
-            <text x={svgW / 2} y={20} textAnchor="middle" fill="#e2e8f0" fontSize="12" fontWeight="bold">
-              So sánh phân phối P và Q
-            </text>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="Dong xu cong bang: P(H)=P(T)=0.5. Dong xu gian lan: P(H)=0.9, P(T)=0.1. Entropy nao cao hon?" options={["Dong xu cong bang: H = -0.5*log(0.5)*2 = 1 bit (bat dinh nhat, cao nhat)", "Dong xu gian lan: bat dinh hon vi gan 1 → cao hon", "Bang nhau"]} correct={0} explanation="Cong bang: H = -0.5*log2(0.5) - 0.5*log2(0.5) = 1 bit (maximum entropy cho binary). Gian lan: H = -0.9*log2(0.9) - 0.1*log2(0.1) = 0.47 bits (it bat dinh vi gan nhu chac chan H). Entropy MAX khi DONG DEU (bat dinh nhat). MAX entropy = hardest to predict." /></LessonSection>
 
-            {/* P distribution bars */}
-            {distP.map((p, i) => {
-              const x = 80 + i * 150;
-              const h = p * maxBarH;
-              return (
-                <g key={`p-${i}`}>
-                  <rect
-                    x={x}
-                    y={svgH - pad - h}
-                    width={barW}
-                    height={h}
-                    rx={4}
-                    fill="#3b82f6"
-                    opacity={0.7}
-                  />
-                  <text
-                    x={x + barW / 2}
-                    y={svgH - pad - h - 8}
-                    textAnchor="middle"
-                    fill="#3b82f6"
-                    fontSize="11"
-                    fontWeight="bold"
-                  >
-                    {(p * 100).toFixed(0)}%
-                  </text>
-                  <text
-                    x={x + barW / 2}
-                    y={svgH - pad + 16}
-                    textAnchor="middle"
-                    fill="#94a3b8"
-                    fontSize="9"
-                  >
-                    {labels[i]}
-                  </text>
-                </g>
-              );
-            })}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Information Theory</strong>{" "}(Shannon, 1948) do luong thong tin va bat dinh — nen tang cua loss functions va nhieu thuat toan ML.</p>
+        <p><strong>Information (tu thong tin):</strong></p>
+        <LaTeX block>{"I(x) = -\\log_2 P(x) \\quad \\text{(bits — su kien hiem = nhieu thong tin)}"}</LaTeX>
+        <p><strong>Entropy (bat dinh trung binh):</strong></p>
+        <LaTeX block>{"H(X) = -\\sum_{x} P(x) \\log_2 P(x) \\quad \\text{(cao = bat dinh, thap = chac chan)}"}</LaTeX>
+        <p><strong>Cross-Entropy (loss function):</strong></p>
+        <LaTeX block>{"H(p, q) = -\\sum_{x} p(x) \\log q(x) = H(p) + D_{KL}(p \\| q)"}</LaTeX>
+        <p><strong>KL Divergence (khac biet phan phoi):</strong></p>
+        <LaTeX block>{"D_{KL}(p \\| q) = \\sum_{x} p(x) \\log \\frac{p(x)}{q(x)} \\geq 0 \\quad \\text{(= 0 khi p = q)}"}</LaTeX>
+        <Callout variant="tip" title="Cross-Entropy = Loss Function">Minimize CE H(p,q) = minimize KL(p||q) + H(p). Vi H(p) la constant → minimize CE = minimize KL = lam q (model) GAN p (true) nhat. Day la ly do CE la default loss cho classification!</Callout>
+        <CodeBlock language="python" title="Information Theory trong Python">{`import numpy as np
+from scipy.stats import entropy
 
-            {/* Q distribution bars */}
-            {distQ.map((q, i) => {
-              const x = 80 + i * 150 + barW + 10;
-              const h = q * maxBarH;
-              return (
-                <g key={`q-${i}`}>
-                  <rect
-                    x={x}
-                    y={svgH - pad - h}
-                    width={barW}
-                    height={h}
-                    rx={4}
-                    fill="#f97316"
-                    opacity={0.7}
-                  />
-                  <text
-                    x={x + barW / 2}
-                    y={svgH - pad - h - 8}
-                    textAnchor="middle"
-                    fill="#f97316"
-                    fontSize="11"
-                    fontWeight="bold"
-                  >
-                    {(q * 100).toFixed(0)}%
-                  </text>
-                </g>
-              );
-            })}
+# Entropy
+p_fair = [0.5, 0.5]
+p_biased = [0.9, 0.1]
+print(f"Entropy fair: {entropy(p_fair, base=2):.3f} bits")    # 1.0
+print(f"Entropy biased: {entropy(p_biased, base=2):.3f} bits") # 0.469
 
-            {/* Baseline */}
-            <line x1={pad} y1={svgH - pad} x2={svgW - pad} y2={svgH - pad} stroke="#475569" strokeWidth={1} />
+# Cross-Entropy (classification loss)
+y_true = [1, 0, 0]  # One-hot: class 0
+y_pred = [0.7, 0.2, 0.1]
+ce = -sum(t * np.log(p) for t, p in zip(y_true, y_pred) if t > 0)
+print(f"Cross-Entropy: {ce:.3f}")  # 0.357
 
-            {/* Legend */}
-            <rect x={400} y={35} width={15} height={15} rx={3} fill="#3b82f6" opacity={0.7} />
-            <text x={420} y={47} fill="#94a3b8" fontSize="10">P (thực tế)</text>
-            <rect x={400} y={55} width={15} height={15} rx={3} fill="#f97316" opacity={0.7} />
-            <text x={420} y={67} fill="#94a3b8" fontSize="10">Q (mô hình)</text>
+# KL Divergence
+p = [0.4, 0.3, 0.3]
+q = [0.5, 0.3, 0.2]
+kl = entropy(p, q)  # scipy dung natural log
+print(f"KL(p||q): {kl:.4f}")  # 0.0246
 
-            {/* Entropy / KL info */}
-            <rect x={400} y={85} width={180} height={80} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-            <text x={490} y={105} textAnchor="middle" fill="#3b82f6" fontSize="10">
-              H(P) = {entropyP.toFixed(3)} bit
-            </text>
-            <text x={490} y={122} textAnchor="middle" fill="#f97316" fontSize="10">
-              H(Q) = {entropyQ.toFixed(3)} bit
-            </text>
-            <text x={490} y={142} textAnchor="middle" fill="#22c55e" fontSize="10" fontWeight="bold">
-              KL(P||Q) = {kl.toFixed(4)}
-            </text>
-            <text x={490} y={158} textAnchor="middle" fill="#94a3b8" fontSize="8">
-              KL = 0 khi P = Q
-            </text>
-          </svg>
+# VAE loss = Reconstruction + KL(q(z|x) || p(z))
+# Data drift detection: KL(train_dist || production_dist) > threshold → ALERT`}</CodeBlock>
+      </ExplanationSection></LessonSection>
 
-          {/* Controls */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                P(A) ={" "}
-                <strong className="text-blue-400">{(pA * 100).toFixed(0)}%</strong>
-                {" / "}P(B) = {((1 - pA) * 100).toFixed(0)}%
-              </label>
-              <input
-                type="range"
-                min={0.01}
-                max={0.99}
-                step={0.01}
-                value={pA}
-                onChange={(e) => setPa(parseFloat(e.target.value))}
-                className="w-full accent-blue-500"
-              />
-              <div className="flex justify-between text-xs text-muted">
-                <span>Chắc chắn A</span>
-                <span>Cân bằng</span>
-                <span>Chắc chắn B</span>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Q(A) ={" "}
-                <strong className="text-orange-400">{(qA * 100).toFixed(0)}%</strong>
-                {" / "}Q(B) = {((1 - qA) * 100).toFixed(0)}%
-              </label>
-              <input
-                type="range"
-                min={0.01}
-                max={0.99}
-                step={0.01}
-                value={qA}
-                onChange={(e) => setQa(parseFloat(e.target.value))}
-                className="w-full accent-orange-500"
-              />
-              <div className="flex justify-between text-xs text-muted">
-                <span>Chắc chắn A</span>
-                <span>Cân bằng</span>
-                <span>Chắc chắn B</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Entropy P</p>
-              <p className="text-lg font-bold text-blue-400">{entropyP.toFixed(3)}</p>
-              <p className="text-xs text-muted">bit</p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Entropy Q</p>
-              <p className="text-lg font-bold text-orange-400">{entropyQ.toFixed(3)}</p>
-              <p className="text-xs text-muted">bit</p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">KL Divergence</p>
-              <p className="text-lg font-bold text-green-400">{kl.toFixed(4)}</p>
-              <p className="text-xs text-muted">{kl < 0.01 ? "P ~ Q" : kl < 0.1 ? "Khá gần" : "Khá xa"}</p>
-            </div>
-          </div>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Lý thuyết thông tin</strong> do Claude Shannon sáng lập, cung cấp
-          cách đo lường lượng thông tin và so sánh các phân phối xác suất — hai thứ
-          cốt lõi trong machine learning.
-        </p>
-
-        <p>Các khái niệm quan trọng:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Entropy H(P):</strong> Đo độ bất định trung bình của phân phối P.
-            Công thức: H(P) = -&Sigma; p(x) log&sub2; p(x). Entropy cao nhất khi mọi
-            sự kiện xác suất bằng nhau. Entropy = 0 khi kết quả chắc chắn 100%.
-          </li>
-          <li>
-            <strong>Cross-Entropy H(P, Q):</strong> Đo chi phí mã hóa dữ liệu từ
-            phân phối thực P bằng phân phối dự đoán Q. Đây chính là{" "}
-            <strong>hàm loss</strong> phổ biến nhất trong classification! Công thức:
-            H(P, Q) = -&Sigma; p(x) log q(x).
-          </li>
-          <li>
-            <strong>KL Divergence D_KL(P||Q):</strong> Đo khoảng cách giữa hai phân
-            phối. KL = Cross-Entropy - Entropy = H(P,Q) - H(P). KL = 0 khi và chỉ
-            khi P = Q. Lưu ý: KL không đối xứng — D_KL(P||Q) khác D_KL(Q||P).
-          </li>
-          <li>
-            <strong>Mutual Information I(X;Y):</strong> Đo lượng thông tin mà X cho
-            biết về Y (và ngược lại). I(X;Y) = H(X) + H(Y) - H(X,Y). Dùng trong
-            feature selection và Information Bottleneck.
-          </li>
-        </ul>
-        <p>
-          <strong>Kết nối với ML:</strong> Khi huấn luyện mô hình phân loại, tối
-          thiểu hóa cross-entropy loss tương đương với tối thiểu hóa KL divergence
-          giữa phân phối thực và phân phối dự đoán. Nói cách khác, ta đang dạy mô
-          hình &quot;dự đoán giống thực tế nhất có thể.&quot;
-        </p>
-      </ExplanationSection>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Information: -log P(x). Su kien hiem = nhieu thong tin. Su kien chac chan = 0 thong tin.", "Entropy: do bat dinh trung binh. Max khi dong deu (hardest to predict). Decision tree dung information gain.", "Cross-Entropy: loss function cua classification. Minimize CE = lam model gan true distribution.", "KL Divergence: do khac biet giua 2 phan phoi. Dung trong VAE, distillation, drift detection.", "Information Theory = ngon ngu cua ML: loss functions, decision trees, compression, coding."]} /></LessonSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }

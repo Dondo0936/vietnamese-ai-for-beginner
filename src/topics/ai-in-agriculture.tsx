@@ -1,231 +1,63 @@
 "use client";
-
-import AnalogyCard from "@/components/topic/AnalogyCard";
-import VisualizationSection from "@/components/topic/VisualizationSection";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "ai-in-agriculture",
-  title: "AI in Agriculture",
-  titleVi: "AI trong Nông nghiệp",
-  description:
-    "Ứng dụng AI trong phát hiện sâu bệnh, dự báo mùa vụ và nông nghiệp chính xác tại Việt Nam",
-  category: "applied-ai",
-  tags: ["crop", "pest-detection", "precision-farming"],
-  difficulty: "beginner",
-  relatedSlugs: ["image-classification", "object-detection", "edge-ai"],
-  vizType: "static",
-};
+export const metadata: TopicMeta = { slug: "ai-in-agriculture", title: "AI in Agriculture", titleVi: "AI trong Nong nghiep", description: "Ung dung AI trong phat hien sau benh, du bao mua vu va nong nghiep chinh xac tai Viet Nam", category: "applied-ai", tags: ["crop", "pest-detection", "precision-farming"], difficulty: "beginner", relatedSlugs: ["image-classification", "object-detection", "edge-ai"], vizType: "interactive" };
 
+const TOTAL_STEPS = 7;
 export default function AIInAgricultureTopic() {
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "AI phat hien benh lua bang cach nao?", options: ["Do do am dat", "Chup anh la lua bang dien thoai → CNN phan loai benh (dao on, vang la, kho van) → goi y cach tri voi accuracy 90%+", "Do nhiet do khong khi"], correct: 1, explanation: "CNN (MobileNet/EfficientNet) nhan dien trieu chung benh tu anh la: mau sac (vang, nau), hinh dang vet benh, vi tri. App tren dien thoai: nong dan chup anh → AI phan loai → goi y thuoc/cach xu ly. Da co apps nhu PlantVillage, Plantix dung o VN." },
+    { question: "Precision farming la gi?", options: ["Farming chinh xac tung cm", "Dung AI + sensors + drone de TOI UU tai tung vung nho: bao nhieu nuoc, bao nhieu phan, khi nao thu hoach — thay vi 'lam dong deu' toan canh dong", "Chi dung trong nha kinh"], correct: 1, explanation: "Precision farming: khong phun thuoc deu toan ruong ma chi phun cho nay bi sau. Khong tuoi deu ma tuoi theo do am tung vung. Giam 30-50% nuoc + phan + thuoc, tang 15-25% nang suat. Drones + sensors + AI = farming 4.0. Viet Nam dang pilot o Dong bang song Cuu Long." },
+    { question: "Thach thuc lon nhat cua AI nong nghiep tai Viet Nam?", options: ["Thieu GPU", "Ha tang: internet khong on dinh o nong thon, nong dan chua quen cong nghe, data cu the cho giong cay VN con thieu", "Thieu dat nong nghiep"], correct: 1, explanation: "3 thach thuc chinh: (1) Internet o nong thon khong on dinh → can Edge AI (chay tren dien thoai offline), (2) Nong dan can app don gian (tieng Viet, giao dien de dung), (3) Data giong cay VN (lua, ca phe, thanh long) khong nhieu nhu data cay tay Au. Can tu collect va label." },
+  ], []);
+
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng người nông dân Việt Nam có{" "}
-          <strong>một đội chuyên gia nông nghiệp theo dõi từng cây lúa 24/7</strong>.
-          Đội chuyên gia này có thể phát hiện bệnh đạo ôn trên ruộng lúa từ rất sớm,
-          dự đoán chính xác thời điểm thu hoạch tối ưu, và cho biết{" "}
-          <strong>chính xác bao nhiêu nước, bao nhiêu phân bón</strong> cần cho từng
-          khu vực ruộng.
-        </p>
-        <p>
-          <em>
-            &quot;Như có một đội chuyên gia nông nghiệp theo dõi từng cây lúa.&quot;
-          </em>{" "}
-          Trước đây, nông dân phải dựa vào kinh nghiệm và mắt thường. Giờ đây, AI kết
-          hợp với drone và vệ tinh có thể quét <strong>hàng nghìn hecta</strong> trong
-          vài phút, phát hiện vùng cây bị stress trước cả khi mắt thường nhận ra.
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="Nong dan Dong Thap trong 10 ha lua. Mot vung bi dao on nhung chua nhin thay ro. Khi phat hien thi da lan 3 ha. AI giup the nao?" options={["AI khong lien quan den nong nghiep", "Drone bay quet + AI phan tich anh → phat hien benh SOM (truoc mat thuong 1-2 tuan) → chi can xu ly 0.5 ha thay vi 3 ha", "AI du bao thoi tiet"]} correct={1} explanation="Drone + multispectral camera chup ruong → AI phan tich: vung nao stress (chua co trieu chung mat thuong nhung spectral signature khac). Phat hien som 1-2 tuan → xu ly 0.5 ha thay vi 3 ha → tiet kiem 80% thuoc + cuu 70% nang suat. Da duoc pilot o Can Tho, An Giang!">
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <svg viewBox="0 0 600 420" className="w-full max-w-2xl mx-auto">
-            <text x={300} y={22} textAnchor="middle" fill="#e2e8f0" fontSize={13} fontWeight="bold">
-              AI trong Nông nghiệp Việt Nam
-            </text>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>AI nong nghiep la <strong>nong dan 4.0</strong>: thay vi nhin troi doan thoi tiet, dung <strong>AI du bao</strong>. Thay vi phun thuoc toan ruong, dung <strong>drone chi phun cho bi benh</strong>. Thay vi thu hoach theo lich, dung <strong>AI phan tich do chin</strong>. Giam 30-50% chi phi, tang 15-25% nang suat. Viet Nam — nuoc nong nghiep — co the huong loi RAT LON!</p></AhaMoment></LessonSection>
 
-            {/* === Top section: Data Collection === */}
-            <rect x={150} y={40} width={300} height={55} rx={12} fill="#1e293b" stroke="#22c55e" strokeWidth={2} />
-            <text x={300} y={62} textAnchor="middle" fill="#22c55e" fontSize={11} fontWeight="bold">
-              Thu thập dữ liệu
-            </text>
-            <text x={300} y={80} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-              Drone / Vệ tinh / Cảm biến IoT / Ảnh điện thoại
-            </text>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="App AI phat hien benh cay can chay tren dien thoai nong dan (RAM 2-3GB, khong co internet on dinh). Chon model nao?" options={["ResNet-152 (230MB, can internet)", "MobileNet V3 quantized INT8 (5MB, chay offline, 50ms tren dien thoai cu)", "GPT-4 Vision API"]} correct={1} explanation="Nong thon VN: internet khong on dinh → can offline. Dien thoai cu 2-3GB RAM → model phai nho. MobileNet V3 INT8: 5MB, accuracy 88% (du cho 90% use cases), chay 50ms, offline. Edge AI la giai phap duy nhat cho nong nghiep nong thon!" /></LessonSection>
 
-            {/* Arrows from data collection to 4 applications */}
-            <line x1={200} y1={95} x2={100} y2={125} stroke="#475569" strokeWidth={1.5} />
-            <line x1={260} y1={95} x2={240} y2={125} stroke="#475569" strokeWidth={1.5} />
-            <line x1={340} y1={95} x2={360} y2={125} stroke="#475569" strokeWidth={1.5} />
-            <line x1={400} y1={95} x2={500} y2={125} stroke="#475569" strokeWidth={1.5} />
-
-            {/* === App 1: Crop Health Analysis === */}
-            <g>
-              <rect x={20} y={125} width={160} height={120} rx={10} fill="#1e293b" stroke="#22c55e" strokeWidth={2} />
-              <text x={100} y={148} textAnchor="middle" fill="#22c55e" fontSize={10} fontWeight="bold">
-                Sức khoẻ cây trồng
-              </text>
-              {/* Simple plant icon using shapes */}
-              <circle cx={100} cy={175} r={18} fill="#22c55e" fillOpacity={0.15} stroke="#22c55e" strokeWidth={1} />
-              <text x={100} y={180} textAnchor="middle" fill="#22c55e" fontSize={16}>
-                🌾
-              </text>
-              <text x={100} y={210} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                Phát hiện bệnh đạo ôn
-              </text>
-              <text x={100} y={222} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                bệnh bạc lá trên lúa
-              </text>
-              <text x={100} y={236} textAnchor="middle" fill="#64748b" fontSize={7}>
-                NDVI analysis từ ảnh vệ tinh
-              </text>
-            </g>
-
-            {/* === App 2: Pest Detection === */}
-            <g>
-              <rect x={190} y={125} width={130} height={120} rx={10} fill="#1e293b" stroke="#f59e0b" strokeWidth={2} />
-              <text x={255} y={148} textAnchor="middle" fill="#f59e0b" fontSize={10} fontWeight="bold">
-                Phát hiện sâu bệnh
-              </text>
-              <circle cx={255} cy={175} r={18} fill="#f59e0b" fillOpacity={0.15} stroke="#f59e0b" strokeWidth={1} />
-              <text x={255} y={180} textAnchor="middle" fill="#f59e0b" fontSize={16}>
-                🐛
-              </text>
-              <text x={255} y={210} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                Rầy nâu, sâu cuốn lá
-              </text>
-              <text x={255} y={222} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                trên lúa, cà phê, thanh long
-              </text>
-              <text x={255} y={236} textAnchor="middle" fill="#64748b" fontSize={7}>
-                Object detection từ ảnh drone
-              </text>
-            </g>
-
-            {/* === App 3: Precision Irrigation === */}
-            <g>
-              <rect x={330} y={125} width={130} height={120} rx={10} fill="#1e293b" stroke="#3b82f6" strokeWidth={2} />
-              <text x={395} y={148} textAnchor="middle" fill="#3b82f6" fontSize={10} fontWeight="bold">
-                Tưới tiêu chính xác
-              </text>
-              <circle cx={395} cy={175} r={18} fill="#3b82f6" fillOpacity={0.15} stroke="#3b82f6" strokeWidth={1} />
-              <text x={395} y={180} textAnchor="middle" fill="#3b82f6" fontSize={16}>
-                💧
-              </text>
-              <text x={395} y={210} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                Tối ưu lượng nước
-              </text>
-              <text x={395} y={222} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                cho từng khu vực ruộng
-              </text>
-              <text x={395} y={236} textAnchor="middle" fill="#64748b" fontSize={7}>
-                Cảm biến độ ẩm + thời tiết
-              </text>
-            </g>
-
-            {/* === App 4: Yield Prediction === */}
-            <g>
-              <rect x={470} y={125} width={115} height={120} rx={10} fill="#1e293b" stroke="#8b5cf6" strokeWidth={2} />
-              <text x={527} y={148} textAnchor="middle" fill="#8b5cf6" fontSize={10} fontWeight="bold">
-                Dự báo năng suất
-              </text>
-              <circle cx={527} cy={175} r={18} fill="#8b5cf6" fillOpacity={0.15} stroke="#8b5cf6" strokeWidth={1} />
-              <text x={527} y={180} textAnchor="middle" fill="#8b5cf6" fontSize={16}>
-                📊
-              </text>
-              <text x={527} y={210} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                Dự đoán sản lượng
-              </text>
-              <text x={527} y={222} textAnchor="middle" fill="#94a3b8" fontSize={8}>
-                thời điểm thu hoạch
-              </text>
-              <text x={527} y={236} textAnchor="middle" fill="#64748b" fontSize={7}>
-                Time series + thời tiết
-              </text>
-            </g>
-
-            {/* === Bottom: Vietnam Context === */}
-            <rect x={40} y={265} width={520} height={70} rx={10} fill="#22c55e" fillOpacity={0.08} stroke="#22c55e" strokeWidth={1.5} strokeDasharray="6,3" />
-            <text x={300} y={288} textAnchor="middle" fill="#22c55e" fontSize={11} fontWeight="bold">
-              Bối cảnh Việt Nam — Đồng bằng sông Cửu Long
-            </text>
-            <text x={300} y={305} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-              🌾 Lúa gạo: 7 triệu hecta | ☕ Cà phê: xuất khẩu top 2 thế giới
-            </text>
-            <text x={300} y={320} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-              🐉 Thanh long: Bình Thuận | 🦐 Thuỷ sản: nuôi tôm thông minh
-            </text>
-
-            {/* Challenge section */}
-            <rect x={40} y={350} width={520} height={55} rx={10} fill="#f59e0b" fillOpacity={0.08} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="6,3" />
-            <text x={300} y={373} textAnchor="middle" fill="#f59e0b" fontSize={10} fontWeight="bold">
-              Thách thức: Nông hộ nhỏ lẻ • Hạ tầng Internet hạn chế • Chi phí công nghệ
-            </text>
-            <text x={300} y={392} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-              Giải pháp: AI trên điện thoại (Edge AI) + Ứng dụng đơn giản cho nông dân
-            </text>
-          </svg>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>AI trong Nông nghiệp (AI in Agriculture)</strong> là việc ứng dụng trí
-          tuệ nhân tạo để giúp nông dân canh tác hiệu quả hơn, giảm lãng phí và tăng
-          năng suất. Đây là lĩnh vực đặc biệt quan trọng với Việt Nam — quốc gia có{" "}
-          <strong>nông nghiệp chiếm tỷ trọng lớn</strong> trong nền kinh tế.
-        </p>
-        <p>Các ứng dụng chính:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Nông nghiệp chính xác (Precision Farming):</strong> Thay vì bón phân,
-            tưới nước đồng đều cho cả cánh đồng, AI phân tích ảnh vệ tinh và cảm biến
-            để xác định <strong>chính xác từng khu vực</strong> cần bao nhiêu nước, phân
-            bón — giảm chi phí 20–30% và giảm ô nhiễm môi trường.
-          </li>
-          <li>
-            <strong>Phát hiện sâu bệnh cây trồng:</strong> AI sử dụng Computer Vision để
-            phát hiện bệnh trên lá, thân cây từ ảnh chụp điện thoại hoặc drone. Đặc biệt
-            quan trọng cho cây lúa (bệnh đạo ôn, bạc lá), cà phê (bệnh gỉ sắt), và
-            thanh long — các cây trồng chủ lực của Việt Nam.
-          </li>
-          <li>
-            <strong>Dự báo năng suất (Yield Prediction):</strong> AI kết hợp dữ liệu thời
-            tiết, ảnh vệ tinh, lịch sử mùa vụ để dự đoán sản lượng thu hoạch. Giúp nông
-            dân và doanh nghiệp lên kế hoạch bán hàng, xuất khẩu tốt hơn.
-          </li>
-          <li>
-            <strong>Giám sát bằng drone:</strong> Drone bay quét ruộng, chụp ảnh đa phổ
-            (multispectral) giúp phát hiện vùng cây bị stress, thiếu dinh dưỡng, hoặc
-            ngập úng — đặc biệt hữu ích ở vùng Đồng bằng sông Cửu Long.
-          </li>
-        </ol>
-        <p>
-          <strong>Ví dụ cụ thể — Đồng bằng sông Cửu Long:</strong> Vùng sản xuất lúa
-          gạo lớn nhất Việt Nam đang đối mặt với xâm nhập mặn do biến đổi khí hậu. AI
-          có thể dự báo mức độ nhiễm mặn, giúp nông dân chọn giống lúa phù hợp và
-          điều chỉnh lịch gieo sạ tối ưu.
-        </p>
-        <p>Thách thức riêng của Việt Nam:</p>
-        <ul className="list-disc list-inside space-y-1 pl-2">
-          <li>
-            <strong>Nông hộ nhỏ lẻ:</strong> Phần lớn nông dân Việt Nam canh tác trên
-            diện tích nhỏ (dưới 1 hecta), khó đầu tư công nghệ đắt tiền. Cần giải pháp
-            AI giá rẻ chạy trên điện thoại.
-          </li>
-          <li>
-            <strong>Hạ tầng:</strong> Nhiều vùng nông thôn còn hạn chế Internet — cần
-            Edge AI (chạy AI trên thiết bị, không cần kết nối mạng liên tục).
-          </li>
-          <li>
-            <strong>Dữ liệu:</strong> Thiếu bộ dữ liệu cây trồng Việt Nam được gán nhãn
-            chất lượng — cần sự hợp tác giữa viện nghiên cứu và nông dân.
-          </li>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>AI in Agriculture</strong>{" "}ung dung AI de phat hien benh, toi uu tuoi tieu, du bao nang suat — nong nghiep chinh xac (precision farming).</p>
+        <p><strong>4 ung dung chinh:</strong></p>
+        <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
+          <li><strong>Phat hien sau benh:</strong>{" "}CNN tu anh la → phan loai benh (accuracy 90%+)</li>
+          <li><strong>Precision farming:</strong>{" "}Sensors + AI toi uu nuoc, phan, thuoc tung vung</li>
+          <li><strong>Du bao nang suat:</strong>{" "}Satellite + weather + soil data → predict yield</li>
+          <li><strong>Robot thu hoach:</strong>{" "}Computer vision + robotics cho thu hoach tu dong</li>
         </ul>
-      </ExplanationSection>
+        <Callout variant="info" title="AI Nong nghiep tai Viet Nam">VNPT: platform nong nghiep thong minh cho Dong bang song Cuu Long. FPT: AI du bao thoi tiet cho nong nghiep. Nhieu startup: CropX VN, AgriConnect. Mekong delta (lua), Tay Nguyen (ca phe), Ninh Thuan (nho) dang pilot.</Callout>
+        <CodeBlock language="python" title="Phat hien benh cay tren dien thoai">{`import tensorflow as tf
+
+# Model nho cho dien thoai: MobileNet V3
+model = tf.keras.applications.MobileNetV3Small(
+    input_shape=(224, 224, 3),
+    classes=10,  # 10 loai benh lua
+    weights=None,
+)
+model.load_weights("disease_model.h5")
+
+# Quantize cho dien thoai (5MB, offline)
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
+tflite_model = converter.convert()
+# Ket qua: 5MB, 50ms tren dien thoai, accuracy 88%
+
+# Nong dan chup anh la → model phan loai:
+# "Dao on (70%), Kho van (20%), Binh thuong (10%)"
+# + Goi y: "Phun thuoc Tricyclazole, lieu 1g/lit"`}</CodeBlock>
+      </ExplanationSection></LessonSection>
+
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["4 ung dung: Phat hien benh (CNN), Precision farming (sensors+AI), Du bao nang suat, Robot thu hoach.", "Edge AI bat buoc: nong thon khong co internet on dinh → model chay offline tren dien thoai.", "Precision farming: giam 30-50% nuoc/thuoc/phan, tang 15-25% nang suat.", "VN co loi the: nuoc nong nghiep lon, nhieu bai toan (lua, ca phe, thuy san) can AI.", "Thach thuc: internet nong thon, data giong cay VN con thieu, nong dan can app don gian."]} /></LessonSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }

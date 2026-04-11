@@ -1,291 +1,65 @@
 "use client";
-
-import { useState } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
-import VisualizationSection from "@/components/topic/VisualizationSection";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "linear-algebra-for-ml",
-  title: "Linear Algebra for ML",
-  titleVi: "Đại số tuyến tính cho ML",
-  description:
-    "Vector, ma trận, phép nhân ma trận và trị riêng — nền tảng toán học cho mọi mô hình AI",
-  category: "math-foundations",
-  tags: ["vectors", "matrices", "eigenvalues"],
-  difficulty: "beginner",
-  relatedSlugs: ["pca", "word-embeddings", "neural-network-overview"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "linear-algebra-for-ml", title: "Linear Algebra for ML", titleVi: "Dai so tuyen tinh cho ML", description: "Vector, ma tran, phep nhan ma tran va tri rieng — nen tang toan hoc cho moi mo hinh AI", category: "math-foundations", tags: ["vectors", "matrices", "eigenvalues"], difficulty: "beginner", relatedSlugs: ["pca", "word-embeddings", "neural-network-overview"], vizType: "interactive" };
 
-function toSvgX(val: number, min: number, max: number, w: number, pad: number) {
-  return pad + ((val - min) / (max - min)) * (w - 2 * pad);
-}
-
-function toSvgY(val: number, min: number, max: number, h: number, pad: number) {
-  return h - pad - ((val - min) / (max - min)) * (h - 2 * pad);
-}
-
-export default function LinearAlgebraForMlTopic() {
-  const [vx, setVx] = useState(3);
-  const [vy, setVy] = useState(2);
-  const [matA, setMatA] = useState(1.5);
-  const [matD, setMatD] = useState(0.8);
-
-  const svgW = 500;
-  const svgH = 400;
-  const pad = 50;
-  const gMin = -5;
-  const gMax = 5;
-
-  // Original vector
-  const ox = toSvgX(0, gMin, gMax, svgW, pad);
-  const oy = toSvgY(0, gMin, gMax, svgH, pad);
-  const ax = toSvgX(vx, gMin, gMax, svgW, pad);
-  const ay = toSvgY(vy, gMin, gMax, svgH, pad);
-
-  // Transformed vector (matrix [[matA, 0], [0, matD]])
-  const tvx = matA * vx;
-  const tvy = matD * vy;
-  const tx = toSvgX(tvx, gMin, gMax, svgW, pad);
-  const ty = toSvgY(tvy, gMin, gMax, svgH, pad);
-
-  // Dot product with unit vector (1,0)
-  const dotProduct = vx;
-
-  // Grid lines
-  const gridLines: { x1: number; y1: number; x2: number; y2: number }[] = [];
-  for (let i = gMin; i <= gMax; i++) {
-    gridLines.push({
-      x1: toSvgX(i, gMin, gMax, svgW, pad),
-      y1: pad,
-      x2: toSvgX(i, gMin, gMax, svgW, pad),
-      y2: svgH - pad,
-    });
-    gridLines.push({
-      x1: pad,
-      y1: toSvgY(i, gMin, gMax, svgH, pad),
-      x2: svgW - pad,
-      y2: toSvgY(i, gMin, gMax, svgH, pad),
-    });
-  }
+const TOTAL_STEPS = 7;
+export default function LinearAlgebraForMLTopic() {
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Tai sao neural network la 'chi la phep nhan ma tran'?", options: ["Khong dung", "Moi layer: output = activation(W * input + b). W la ma tran weights, input la vector. Forward pass = chuoi phep nhan ma tran + activation", "Chi dung cho CNN"], correct: 1, explanation: "Layer 1: h = ReLU(W1 * x + b1). Layer 2: y = softmax(W2 * h + b2). W1 la ma tran (128x784), x la vector (784), h la vector (128). Toan bo neural network = chuoi mat mul + activation. Day la ly do GPU (gioi mat mul) tot cho AI!" },
+    { question: "Eigenvalues/eigenvectors dung cho gi trong ML?", options: ["Khong dung", "PCA: tim eigenvectors cua covariance matrix → huong co nhieu variance nhat → giam chieu giu thong tin", "Chi dung cho physics"], correct: 1, explanation: "PCA: covariance matrix C = X^T * X / n. Eigendecomposition: C = V * Lambda * V^T. Eigenvectors V = huong chinh cua data (principal components). Eigenvalues Lambda = bao nhieu variance moi huong. Chon top-k eigenvectors → giam chieu tu 1000 xuong 50 giu 95% thong tin!" },
+    { question: "Dot product (tich vo huong) dung cho gi trong AI?", options: ["Chi la phep toan co ban", "Do TUONG TU giua 2 vectors: cosine similarity = dot(a,b) / (|a|*|b|). Dung trong: attention, embedding similarity, recommendation", "Tinh dien tich"], correct: 1, explanation: "Dot product = do goc giua 2 vectors. Vectors cung huong → dot product lon (tuong tu). Vuong goc → 0 (khong lien quan). Nguoc huong → am (doi lap). Attention: Q*K^T = do tuong tu giua query va key. Embedding search: cosine(user, item) → recommendation." },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn đang quản lý một <strong>nhà kho lớn</strong>. Mỗi
-          sản phẩm được đặt trên một <strong>kệ</strong> tại vị trí xác định — đó
-          chính là <strong>vector</strong> (tọa độ trong không gian).
-        </p>
-        <p>
-          Khi bạn muốn <strong>sắp xếp lại</strong> toàn bộ nhà kho — xoay các kệ,
-          kéo giãn khoảng cách, hoặc thu nhỏ lại — thao tác đó chính là
-          <strong> phép nhân ma trận</strong>. Ma trận là &quot;bản hướng dẫn&quot;
-          cho phép biến đổi tất cả các kệ cùng lúc.
-        </p>
-        <p>
-          Khi bạn kết hợp nhiều lần sắp xếp (xoay rồi kéo giãn), đó là{" "}
-          <strong>nhân ma trận liên tiếp</strong>. Và <strong>eigenvalue/eigenvector</strong>{" "}
-          là những hướng kệ đặc biệt mà khi biến đổi, chúng chỉ bị kéo dài hoặc co lại
-          mà không đổi hướng.
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="GPT-4 co 1.8 nghin ty tham so, stored trong matrices. Moi lan sinh 1 token, can nhan hang trieu matrices. GPU gioi gi ma lam duoc?" options={["GPU gioi graphics", "GPU gioi NHAN MA TRAN SONG SONG — va neural network CHI LA chuoi phep nhan ma tran. Day la ly do GPU tot cho AI!", "GPU nhanh hon CPU o moi thu"]} correct={1} explanation="Neural network = chuoi matrix multiplication. GPU co hang nghin cores chay song song → nhan ma tran cuc nhanh (10-100x nhanh hon CPU). Day khong phai tinh co — linear algebra la NGON NGU cua AI. Hieu linear algebra = hieu cach AI hoat dong!">
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Kéo thanh trượt để thay đổi vector và ma trận biến đổi. Quan sát vector
-            gốc (xanh) và vector sau biến đổi (cam).
-          </p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Moi thu trong AI la <strong>linear algebra</strong>: Embedding = <strong>vector</strong>. Neural network = <strong>matrix multiplication</strong>. Attention = <strong>dot product</strong>. PCA = <strong>eigendecomposition</strong>. GPU = <strong>matrix multiplication accelerator</strong>. Hieu linear algebra = hieu 80% cua AI!</p></AhaMoment></LessonSection>
 
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-2xl mx-auto">
-            {/* Grid */}
-            {gridLines.map((l, i) => (
-              <line
-                key={`grid-${i}`}
-                x1={l.x1}
-                y1={l.y1}
-                x2={l.x2}
-                y2={l.y2}
-                stroke="#334155"
-                strokeWidth={0.5}
-                opacity={0.3}
-              />
-            ))}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="Ma tran W co size (128, 784). Input vector x co size (784,). Output y = W @ x co size gi?" options={["(784,)", "(128,) — ma tran (128, 784) nhan vector (784,) → vector (128,). Giam tu 784 features xuong 128 features", "(128, 784)"]} correct={1} explanation="Matrix multiplication: (m, n) @ (n,) → (m,). W (128, 784) @ x (784,) → y (128,). Ma tran W 'bien doi' vector 784 chieu thanh vector 128 chieu. Day chinh la 1 layer neural network: giam dimensionality, trich xuat features!" /></LessonSection>
 
-            {/* Axes */}
-            <line x1={pad} y1={oy} x2={svgW - pad} y2={oy} stroke="#64748b" strokeWidth={1} />
-            <line x1={ox} y1={pad} x2={ox} y2={svgH - pad} stroke="#64748b" strokeWidth={1} />
-            <text x={svgW - pad + 5} y={oy + 4} fill="#64748b" fontSize="10">x</text>
-            <text x={ox + 5} y={pad - 5} fill="#64748b" fontSize="10">y</text>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Linear Algebra</strong>{" "}la ngon ngu cua AI — vector, ma tran, va cac phep toan tren chung.</p>
+        <p><strong>Vector (1D):</strong></p>
+        <LaTeX block>{"\\mathbf{x} = [x_1, x_2, ..., x_n] \\in \\mathbb{R}^n \\quad \\text{(diem trong khong gian n chieu)}"}</LaTeX>
+        <p><strong>Matrix multiplication (core cua neural network):</strong></p>
+        <LaTeX block>{"\\mathbf{y} = W\\mathbf{x} + \\mathbf{b} \\quad W \\in \\mathbb{R}^{m \\times n}, \\mathbf{x} \\in \\mathbb{R}^n \\rightarrow \\mathbf{y} \\in \\mathbb{R}^m"}</LaTeX>
+        <p><strong>Dot product (tuong tu):</strong></p>
+        <LaTeX block>{"\\text{cosine}(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{\\|\\mathbf{a}\\| \\|\\mathbf{b}\\|} \\quad \\text{(do tuong tu giua 2 vectors)}"}</LaTeX>
+        <p><strong>Eigendecomposition (PCA):</strong></p>
+        <LaTeX block>{"A\\mathbf{v} = \\lambda \\mathbf{v} \\quad \\text{(eigenvector } \\mathbf{v} \\text{ khong doi huong khi nhan A)}"}</LaTeX>
+        <Callout variant="tip" title="Attention = Linear Algebra">Transformer Attention: Q, K, V la matrices. Attention = softmax(Q * K^T / sqrt(d)) * V. Toan bo chi la matrix operations! Self-attention = moi token 'hoi' tat ca tokens khac bang dot product.</Callout>
+        <CodeBlock language="python" title="Linear Algebra co ban voi NumPy">{`import numpy as np
 
-            {/* Original vector */}
-            <line x1={ox} y1={oy} x2={ax} y2={ay} stroke="#3b82f6" strokeWidth={2.5} />
-            <circle cx={ax} cy={ay} r={5} fill="#3b82f6" stroke="#fff" strokeWidth={1.5} />
-            <text x={ax + 8} y={ay - 8} fill="#3b82f6" fontSize="10" fontWeight="bold">
-              v = ({vx}, {vy})
-            </text>
+# Vector (embedding)
+x = np.array([0.1, 0.5, -0.3, 0.8])  # 4D embedding
 
-            {/* Transformed vector */}
-            <line x1={ox} y1={oy} x2={tx} y2={ty} stroke="#f97316" strokeWidth={2.5} strokeDasharray="6 3" />
-            <circle cx={tx} cy={ty} r={5} fill="#f97316" stroke="#fff" strokeWidth={1.5} />
-            <text x={tx + 8} y={ty - 8} fill="#f97316" fontSize="10" fontWeight="bold">
-              Av = ({tvx.toFixed(1)}, {tvy.toFixed(1)})
-            </text>
+# Matrix multiplication (1 neural network layer)
+W = np.random.randn(3, 4)  # Weight matrix (3, 4)
+b = np.zeros(3)             # Bias
+y = W @ x + b               # Output (3,) — giam tu 4D xuong 3D
 
-            {/* Matrix label */}
-            <rect x={10} y={10} width={130} height={55} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-            <text x={75} y={28} textAnchor="middle" fill="#e2e8f0" fontSize="10" fontWeight="bold">
-              Ma trận A:
-            </text>
-            <text x={75} y={43} textAnchor="middle" fill="#f97316" fontSize="10" fontFamily="monospace">
-              [{matA.toFixed(1)}, 0]
-            </text>
-            <text x={75} y={57} textAnchor="middle" fill="#f97316" fontSize="10" fontFamily="monospace">
-              [0, {matD.toFixed(1)}]
-            </text>
+# Cosine similarity (embedding search)
+a = np.array([1, 0, 1])
+b = np.array([1, 1, 0])
+cosine = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+print(f"Cosine similarity: {cosine:.3f}")  # 0.5
 
-            {/* Dot product info */}
-            <rect x={svgW - 160} y={10} width={150} height={35} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-            <text x={svgW - 85} y={32} textAnchor="middle" fill="#22c55e" fontSize="10">
-              Dot(v, e_x) = {dotProduct}
-            </text>
+# Eigendecomposition (PCA)
+C = np.cov(X.T)  # Covariance matrix
+eigenvalues, eigenvectors = np.linalg.eigh(C)
+# Top-k eigenvectors = principal components`}</CodeBlock>
+      </ExplanationSection></LessonSection>
 
-            {/* Legend */}
-            <line x1={15} y1={svgH - 25} x2={35} y2={svgH - 25} stroke="#3b82f6" strokeWidth={2.5} />
-            <text x={40} y={svgH - 21} fill="#94a3b8" fontSize="9">Vector gốc</text>
-            <line x1={130} y1={svgH - 25} x2={150} y2={svgH - 25} stroke="#f97316" strokeWidth={2.5} strokeDasharray="6 3" />
-            <text x={155} y={svgH - 21} fill="#94a3b8" fontSize="9">Sau biến đổi</text>
-          </svg>
-
-          {/* Controls */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Vector x: <strong className="text-foreground">{vx}</strong>
-              </label>
-              <input
-                type="range"
-                min={-4}
-                max={4}
-                step={0.5}
-                value={vx}
-                onChange={(e) => setVx(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Vector y: <strong className="text-foreground">{vy}</strong>
-              </label>
-              <input
-                type="range"
-                min={-4}
-                max={4}
-                step={0.5}
-                value={vy}
-                onChange={(e) => setVy(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Kéo giãn trục x (a11): <strong className="text-foreground">{matA.toFixed(1)}</strong>
-              </label>
-              <input
-                type="range"
-                min={-2}
-                max={3}
-                step={0.1}
-                value={matA}
-                onChange={(e) => setMatA(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Kéo giãn trục y (a22): <strong className="text-foreground">{matD.toFixed(1)}</strong>
-              </label>
-              <input
-                type="range"
-                min={-2}
-                max={3}
-                step={0.1}
-                value={matD}
-                onChange={(e) => setMatD(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-              />
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Độ dài vector gốc</p>
-              <p className="text-lg font-bold text-foreground">
-                {Math.sqrt(vx * vx + vy * vy).toFixed(2)}
-              </p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Độ dài sau biến đổi</p>
-              <p className="text-lg font-bold text-foreground">
-                {Math.sqrt(tvx * tvx + tvy * tvy).toFixed(2)}
-              </p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Eigenvalue</p>
-              <p className="text-lg font-bold text-foreground">
-                {matA.toFixed(1)}, {matD.toFixed(1)}
-              </p>
-            </div>
-          </div>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Đại số tuyến tính</strong> là nền tảng toán học quan trọng nhất
-          trong machine learning. Mọi dữ liệu đều được biểu diễn dưới dạng vector
-          và ma trận.
-        </p>
-
-        <p>Các khái niệm cốt lõi:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Vector:</strong> Một danh sách có thứ tự các số. Trong ML, mỗi
-            điểm dữ liệu là một vector. Ví dụ: một bức ảnh 28&times;28 pixel là
-            vector 784 chiều.
-          </li>
-          <li>
-            <strong>Ma trận (Matrix):</strong> Bảng số 2 chiều, đại diện cho phép
-            biến đổi tuyến tính. Trọng số (weights) của mạng nơ-ron được lưu trong
-            các ma trận.
-          </li>
-          <li>
-            <strong>Tích vô hướng (Dot Product):</strong> Phép đo &quot;độ tương
-            đồng&quot; giữa hai vector. Khi hai vector cùng hướng, dot product lớn
-            nhất. Đây là cốt lõi của cơ chế Attention trong Transformer.
-          </li>
-          <li>
-            <strong>Phép nhân ma trận:</strong> Kết hợp nhiều phép biến đổi tuyến
-            tính. Forward pass trong neural network chính là một chuỗi nhân ma trận:
-            y = Wx + b.
-          </li>
-          <li>
-            <strong>Eigenvalue &amp; Eigenvector:</strong> Eigenvector là hướng mà khi
-            ma trận tác động, nó chỉ bị co giãn (theo eigenvalue) chứ không đổi
-            hướng. PCA sử dụng eigen decomposition để tìm các hướng quan trọng nhất
-            trong dữ liệu.
-          </li>
-        </ul>
-        <p>
-          Trong thực tế, thư viện như <strong>NumPy</strong> và <strong>PyTorch</strong>{" "}
-          giúp thực hiện các phép tính đại số tuyến tính trên GPU với tốc độ cực nhanh,
-          cho phép huấn luyện mô hình với hàng tỷ tham số.
-        </p>
-      </ExplanationSection>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Moi thu trong AI la linear algebra: embedding = vector, NN = mat mul, attention = dot product.", "Matrix multiplication (m,n)@(n,k)=(m,k): core operation cua neural networks.", "Dot product do tuong tu: cosine similarity dung trong embedding search, attention, recommendation.", "Eigendecomposition: PCA tim huong co nhieu variance nhat → giam chieu giu thong tin.", "GPU gioi mat mul song song → tot cho AI. Hieu linear algebra = hieu 80% AI."]} /></LessonSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }
