@@ -21,7 +21,7 @@ export default function DifficultyFilter({
   counts,
 }: DifficultyFilterProps) {
   return (
-    <div className="flex items-center justify-center gap-2 flex-wrap">
+    <div className="flex items-center justify-center gap-1 flex-wrap">
       {filters.map((f) => {
         const isActive = selected === f.value;
         const count = f.value === "all" ? counts.all : (counts[f.value] ?? 0);
@@ -32,18 +32,14 @@ export default function DifficultyFilter({
             type="button"
             aria-pressed={isActive}
             onClick={() => onChange(f.value)}
-            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-[7px] text-[13px] font-medium transition-all ${
               isActive
-                ? "bg-accent text-white shadow-sm"
-                : "bg-card border border-border text-muted hover:border-accent hover:text-accent"
+                ? "bg-foreground text-background shadow-sm"
+                : "text-muted hover:text-foreground"
             }`}
           >
             {f.label}
-            <span
-              className={`text-xs ${
-                isActive ? "text-white/70" : "text-tertiary"
-              }`}
-            >
+            <span className={`text-[11px] ${isActive ? "opacity-60" : "text-tertiary"}`}>
               {count}
             </span>
           </button>
