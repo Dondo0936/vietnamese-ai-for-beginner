@@ -174,7 +174,7 @@ export default function ScalingLawsTopic() {
             const params = 1 + i * 40;
             const loss = predictLoss(params);
             const x = 60 + (Math.log10(params) / Math.log10(2000)) * 370;
-            const y = 240 - ((4 - loss) / 3) * 220;
+            const y = 20 + ((4 - loss) / 3) * 220;
             return { x, y };
           }).map((p, i, arr) => {
             if (i === 0) return null;
@@ -217,7 +217,7 @@ export default function ScalingLawsTopic() {
             );
           })}
 
-          {/* Axis labels */}
+          {/* X-axis labels */}
           {[1, 10, 100, 1000].map(p => {
             const x = 60 + (Math.log10(p) / Math.log10(2000)) * 370;
             return (
@@ -225,6 +225,19 @@ export default function ScalingLawsTopic() {
                 <line x1={x} y1={240} x2={x} y2={244} stroke="var(--text-tertiary)" strokeWidth={1} />
                 <text x={x} y={255} textAnchor="middle" fontSize={8} fill="var(--text-tertiary)">
                   {p >= 1000 ? `${p / 1000}T` : `${p}B`}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Y-axis labels */}
+          {[1.0, 2.0, 3.0, 4.0].map(l => {
+            const y = 20 + ((4 - l) / 3) * 220;
+            return (
+              <g key={l}>
+                <line x1={56} y1={y} x2={60} y2={y} stroke="var(--text-tertiary)" strokeWidth={1} />
+                <text x={50} y={y + 3} textAnchor="end" fontSize={8} fill="var(--text-tertiary)">
+                  {l.toFixed(1)}
                 </text>
               </g>
             );
