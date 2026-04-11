@@ -319,6 +319,9 @@ export default function RAGTopic() {
         correct={0}
         explanation="LLM chỉ biết dữ liệu đến thời điểm huấn luyện. Để trả lời chính xác, nó cần TRA CỨU thông tin mới!"
       >
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          LLM không biết thông tin mới nhất — đó là vấn đề thật. Bây giờ hãy xem điều gì xảy ra khi bạn hỏi <strong className="text-foreground">MỘT</strong> câu hỏi, với và không có tài liệu tham khảo.
+        </p>
 
       {/* Step 2: DISCOVER */}
       <VisualizationSection>

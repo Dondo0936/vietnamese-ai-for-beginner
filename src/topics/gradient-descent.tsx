@@ -181,6 +181,10 @@ export default function GradientDescentTopic() {
         correct={1}
         explanation="Bước theo hướng dốc nhất chính là ý tưởng cốt lõi của gradient descent!"
       >
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          Bạn đã chọn đúng — bước theo hướng dốc nhất. Bây giờ hãy <strong className="text-foreground">THỬ</strong> làm điều đó trên một hàm mất mát thực sự. Nhấp vào đường cong để đặt vị trí, rồi bắt đầu đi xuống.
+        </p>
+
         {/* ====== STEP 2: DISCOVER — User IS the Optimizer ====== */}
         <VisualizationSection>
           <div className="space-y-4">
