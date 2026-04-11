@@ -1,331 +1,225 @@
 "use client";
 
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useState, useMemo } from "react";
+import {
+  PredictionGate, LessonSection, AhaMoment, InlineChallenge,
+  MiniSummary, Callout, CodeBlock, LaTeX,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
   slug: "ai-coding-assistants",
   title: "AI Coding Assistants",
-  titleVi: "Trợ lý lập trình AI",
+  titleVi: "Tro ly lap trinh AI",
   description:
-    "Các công cụ AI hỗ trợ viết code, debug và review — từ autocomplete đến agentic coding",
+    "Cac cong cu AI ho tro viet code, debug va review — tu autocomplete den agentic coding",
   category: "emerging",
   tags: ["copilot", "code-generation", "developer-tools"],
   difficulty: "beginner",
   relatedSlugs: ["llm-overview", "function-calling", "agentic-workflows"],
-  vizType: "static",
+  vizType: "interactive",
 };
 
 const LEVELS = [
-  {
-    name: "Autocomplete",
-    year: "2021",
-    color: "#3b82f6",
-    tools: "GitHub Copilot, TabNine",
-    desc: "Gợi ý hoàn thành dòng code hiện tại",
-  },
-  {
-    name: "Chat-based",
-    year: "2022",
-    color: "#8b5cf6",
-    tools: "ChatGPT, Gemini",
-    desc: "Hỏi đáp, giải thích, sinh code từ mô tả",
-  },
-  {
-    name: "Inline + Context",
-    year: "2023",
-    color: "#f59e0b",
-    tools: "Cursor, Copilot Chat",
-    desc: "Hiểu toàn bộ dự án, sửa inline",
-  },
-  {
-    name: "Agentic Coding",
-    year: "2024-25",
-    color: "#22c55e",
-    tools: "Claude Code, Cursor Agent",
-    desc: "Tự lập kế hoạch, sửa nhiều file, chạy test",
-  },
+  { name: "Autocomplete", year: "2021", tools: "GitHub Copilot, TabNine", capability: 30, desc: "Goi y hoan thanh dong code hien tai" },
+  { name: "Chat-based", year: "2023", tools: "ChatGPT, Claude", capability: 55, desc: "Hoi-dap, giai thich, sinh code block" },
+  { name: "Inline Edit", year: "2024", tools: "Cursor, Copilot Edit", capability: 70, desc: "Sua code truc tiep trong editor theo prompt" },
+  { name: "Agentic", year: "2025", tools: "Claude Code, Devin, Cursor Agent", capability: 90, desc: "Tu dong: doc codebase, plan, implement, test, commit" },
 ];
 
-export default function AiCodingAssistantsTopic() {
-  const svgW = 700;
-  const svgH = 380;
+const TOTAL_STEPS = 7;
+
+export default function AICodingAssistantsTopic() {
+  const [activeLevel, setActiveLevel] = useState(3);
+  const level = LEVELS[activeLevel];
+
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    {
+      question: "Agentic coding assistant khac chat-based assistant the nao?",
+      options: [
+        "Dung model lon hon",
+        "TU DONG thuc hien nhieu buoc: doc codebase → plan → code → test → fix → commit. Khong can copy-paste",
+        "Chi ho tro 1 ngon ngu",
+      ],
+      correct: 1,
+      explanation: "Chat-based: ban hoi, AI tra loi code, ban copy-paste vao editor. Agentic: ban mo ta yeu cau, AI tu doc codebase hieu context, plan changes, implement across files, chay tests, fix errors, tao commit. Tu 'tro ly tra loi' sang 'dong nghiep tu lam'.",
+    },
+    {
+      question: "AI coding assistant lam developer mat viec khong?",
+      options: [
+        "Co — AI se viet code thay nguoi hoan toan",
+        "Khong — AI tang nang suat 2-5x nhung van can developer thiet ke, review, va giai quyet bai toan phuc tap",
+        "Chi anh huong junior developers",
+      ],
+      correct: 1,
+      explanation: "AI viet code nhanh nhung van can nguoi: hieu business requirements, thiet ke system architecture, review code quality, xu ly edge cases, debug logic phuc tap. Developer + AI = 2-5x nang suat. Giong may tinh khong thay the ke toan — no lam ke toan manh hon.",
+    },
+    {
+      question: "Rui ro lon nhat khi dung AI coding assistant la gi?",
+      options: [
+        "Code chay cham hon",
+        "Security vulnerabilities: AI co the sinh code co lo hong (SQL injection, hardcoded secrets) ma developer khong nhan ra neu khong review ky",
+        "AI hoc code cua ban va ban cho nguoi khac",
+      ],
+      correct: 1,
+      explanation: "AI sinh code nhanh nhung KHONG dam bao secure. Nghien cuu chi ra: AI-generated code co ty le vulnerabilities tuong duong human code, nhung developers tin tuong AI nen IT REVIEW hon. Can: security linting, code review, va hieu ro code truoc khi merge.",
+    },
+  ], []);
 
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn có một <strong>lập trình viên senior ngồi cạnh
-          24/7</strong>. Ở mức cơ bản, họ giúp bạn <strong>hoàn thành câu
-          code</strong> đang gõ. Ở mức cao hơn, họ có thể <strong>giải thích
-          bug</strong>, gợi ý refactor, và thậm chí <strong>viết cả tính năng</strong>{" "}
-          từ mô tả.
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+        <PredictionGate
+          question="Ban can implement tinh nang authentication cho app Next.js. Cach nao nhanh nhat?"
+          options={[
+            "Doc documentation va viet tu dau — mat 2-3 ngay",
+            "Dung AI coding assistant: mo ta yeu cau, AI doc codebase, plan, implement across files, chay tests — mat 2-3 gio",
+            "Copy code tu Stack Overflow",
+          ]}
+          correct={1}
+          explanation="AI coding assistants giam thoi gian 5-10x cho nhieu tasks. Tu doc docs, hieu codebase context, implement multi-file changes, fix errors. Nhung van can developer: review code, hieu logic, va dam bao chat luong. AI la 'pair programmer sieu nhanh'."
+        >
+
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          Xem <strong className="text-foreground">4 the he</strong>{" "}
+          AI coding assistants — tu autocomplete den agentic.
         </p>
-        <p>
-          Gần đây, trợ lý AI đã tiến hóa thành <strong>agentic coding</strong> — như
-          một đồng nghiệp senior có thể tự lập kế hoạch, sửa nhiều file cùng lúc,
-          chạy test, và thậm chí tự debug khi code lỗi. Từ một trợ lý autocomplete
-          đơn giản đến một &quot;junior developer AI&quot; thực thụ.
-        </p>
-      </AnalogyCard>
-
-      <VisualizationSection>
-        <div className="space-y-4">
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-3xl mx-auto">
-            <text
-              x={svgW / 2}
-              y={22}
-              textAnchor="middle"
-              fill="#e2e8f0"
-              fontSize="13"
-              fontWeight="bold"
-            >
-              Sự tiến hóa của trợ lý lập trình AI
-            </text>
-
-            {/* Timeline line */}
-            <line x1={80} y1={65} x2={620} y2={65} stroke="#475569" strokeWidth={2} />
-
-            {/* Timeline dots & labels */}
-            {LEVELS.map((level, i) => {
-              const x = 100 + i * 160;
-              return (
-                <g key={level.name}>
-                  {/* Timeline dot */}
-                  <circle cx={x} cy={65} r={8} fill={level.color} />
-                  <text
-                    x={x}
-                    y={55}
-                    textAnchor="middle"
-                    fill={level.color}
-                    fontSize="9"
-                    fontWeight="bold"
-                  >
-                    {level.year}
-                  </text>
-
-                  {/* Card */}
-                  <rect
-                    x={x - 70}
-                    y={85}
-                    width={140}
-                    height={120}
-                    rx={8}
-                    fill="#1e293b"
-                    stroke={level.color}
-                    strokeWidth={1.5}
-                  />
-
-                  {/* Level name */}
-                  <text
-                    x={x}
-                    y={108}
-                    textAnchor="middle"
-                    fill={level.color}
-                    fontSize="10"
-                    fontWeight="bold"
-                  >
-                    {level.name}
-                  </text>
-
-                  {/* Divider */}
-                  <line
-                    x1={x - 55}
-                    y1={115}
-                    x2={x + 55}
-                    y2={115}
-                    stroke="#334155"
-                    strokeWidth={0.5}
-                  />
-
-                  {/* Description */}
-                  {level.desc.split(", ").length > 1 ? (
-                    <>
-                      <text
-                        x={x}
-                        y={132}
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="8"
-                      >
-                        {level.desc.split(",")[0]},
-                      </text>
-                      <text
-                        x={x}
-                        y={144}
-                        textAnchor="middle"
-                        fill="#e2e8f0"
-                        fontSize="8"
-                      >
-                        {level.desc.split(",").slice(1).join(",").trim()}
-                      </text>
-                    </>
-                  ) : (
-                    <text
-                      x={x}
-                      y={136}
-                      textAnchor="middle"
-                      fill="#e2e8f0"
-                      fontSize="8"
-                    >
-                      {level.desc}
+        <VisualizationSection>
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {LEVELS.map((l, i) => (
+                <button key={i} onClick={() => setActiveLevel(i)}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${activeLevel === i ? "bg-accent text-white" : "bg-card border border-border text-muted hover:text-foreground"}`}
+                >{l.name} ({l.year})</button>
+              ))}
+            </div>
+            <svg viewBox="0 0 600 150" className="w-full max-w-2xl mx-auto">
+              {LEVELS.map((l, i) => {
+                const y = 10 + i * 33;
+                const isActive = i === activeLevel;
+                return (
+                  <g key={i}>
+                    <text x={15} y={y + 16} fill={isActive ? "#e2e8f0" : "#64748b"} fontSize={8} fontWeight={isActive ? "bold" : "normal"}>
+                      {l.name}
                     </text>
-                  )}
-
-                  {/* Tools */}
-                  <text
-                    x={x}
-                    y={170}
-                    textAnchor="middle"
-                    fill="#94a3b8"
-                    fontSize="7"
-                  >
-                    {level.tools.split(", ")[0]}
-                  </text>
-                  {level.tools.split(", ")[1] && (
-                    <text
-                      x={x}
-                      y={182}
-                      textAnchor="middle"
-                      fill="#94a3b8"
-                      fontSize="7"
-                    >
-                      {level.tools.split(", ")[1]}
-                    </text>
-                  )}
-
-                  {/* Progress arrows between levels */}
-                  {i < LEVELS.length - 1 && (
-                    <polygon
-                      points={`${x + 75},${145} ${x + 90},${140} ${x + 75},${135}`}
-                      fill="#475569"
+                    <rect x={110} y={y} width={380} height={24} rx={3} fill="#1e293b" />
+                    <rect x={110} y={y} width={380 * l.capability / 100} height={24} rx={3}
+                      fill={isActive ? "#22c55e" : "#475569"} opacity={isActive ? 1 : 0.3}
                     />
-                  )}
-                </g>
-              );
-            })}
+                    <text x={115 + 380 * l.capability / 100} y={y + 16} fill="white" fontSize={9} fontWeight="bold">
+                      {l.capability}%
+                    </text>
+                    <text x={520} y={y + 16} fill="#94a3b8" fontSize={7}>{l.year}</text>
+                  </g>
+                );
+              })}
+            </svg>
+            <div className="rounded-lg border border-border bg-card p-3 text-center">
+              <p className="text-sm font-semibold">{level.name} ({level.year})</p>
+              <p className="text-xs text-muted mt-1">{level.desc}</p>
+              <p className="text-xs text-muted">{level.tools}</p>
+            </div>
+          </div>
+        </VisualizationSection>
+      </LessonSection>
 
-            {/* How it works section */}
-            <rect x={40} y={225} width={620} height={130} rx={10} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-            <text x={svgW / 2} y={248} textAnchor="middle" fill="#e2e8f0" fontSize="11" fontWeight="bold">
-              Cách hoạt động bên trong
-            </text>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+        <AhaMoment>
+          <p>
+            Tu <strong>goi y 1 dong</strong>{" "}(2021) den <strong>tu implement ca feature</strong>{" "}(2025)
+            chi trong 4 nam! Agentic assistants giong <strong>dong nghiep junior rat nhanh</strong>{" "}
+            — doc codebase, plan, implement, test, commit. Developer chuyen tu &quot;viet code&quot;
+            sang <strong>&quot;thiet ke va review code&quot;</strong>.
+          </p>
+        </AhaMoment>
+      </LessonSection>
 
-            {/* FIM box */}
-            <rect x={60} y={260} width={140} height={50} rx={6} fill="#334155" stroke="#3b82f6" strokeWidth={1} />
-            <text x={130} y={278} textAnchor="middle" fill="#3b82f6" fontSize="9" fontWeight="bold">
-              Fill-in-the-Middle
-            </text>
-            <text x={130} y={292} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              Prefix + Suffix &rarr; Middle
-            </text>
-            <text x={130} y={302} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              Gợi ý code tại vị trí con trỏ
-            </text>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+        <InlineChallenge
+          question="AI sinh code nhanh nhung ban phat hien: code co SQL injection vulnerability. AI khong canh bao. Ban nen lam gi?"
+          options={[
+            "Trust AI — no thong minh hon minh",
+            "LUON review AI-generated code, dung security linting (Semgrep, CodeQL), va hieu ro code truoc khi merge",
+            "Bo AI va viet code thu cong",
+          ]}
+          correct={1}
+          explanation="AI sinh code nhanh nhung KHONG dam bao an toan. Developer phai: (1) review moi line AI sinh, (2) chay security linting tu dong, (3) hieu ro logic truoc khi merge. AI la tool, khong phai replacement cho judgment. Trust but verify!"
+        />
+      </LessonSection>
 
-            {/* Context box */}
-            <rect x={220} y={260} width={140} height={50} rx={6} fill="#334155" stroke="#8b5cf6" strokeWidth={1} />
-            <text x={290} y={278} textAnchor="middle" fill="#8b5cf6" fontSize="9" fontWeight="bold">
-              Context Gathering
-            </text>
-            <text x={290} y={292} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              Đọc file liên quan, imports,
-            </text>
-            <text x={290} y={302} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              cấu trúc dự án
-            </text>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+        <ExplanationSection>
+          <p>
+            <strong>AI Coding Assistants</strong>{" "}
+            la cong cu AI ho tro developer viet code — tu autocomplete den agentic coding tu dong.
+          </p>
+          <p><strong>4 the he:</strong></p>
+          <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
+            <li><strong>Gen 1 - Autocomplete (2021):</strong>{" "}Goi y hoan thanh code. Copilot, TabNine</li>
+            <li><strong>Gen 2 - Chat (2023):</strong>{" "}Hoi-dap, sinh code block, giai thich. ChatGPT, Claude</li>
+            <li><strong>Gen 3 - Inline Edit (2024):</strong>{" "}Sua code truc tiep trong editor. Cursor, Copilot Edit</li>
+            <li><strong>Gen 4 - Agentic (2025):</strong>{" "}Tu dong multi-step: plan → code → test → fix. Claude Code, Devin</li>
+          </ul>
 
-            {/* Fine-tuned LLM box */}
-            <rect x={380} y={260} width={140} height={50} rx={6} fill="#334155" stroke="#f59e0b" strokeWidth={1} />
-            <text x={450} y={278} textAnchor="middle" fill="#f59e0b" fontSize="9" fontWeight="bold">
-              Code-tuned LLM
-            </text>
-            <text x={450} y={292} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              LLM huấn luyện trên hàng tỷ
-            </text>
-            <text x={450} y={302} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              dòng code mã nguồn mở
-            </text>
+          <Callout variant="tip" title="Nang suat thuc te">
+            Nghien cuu GitHub (2024): Copilot tang toc 55% cho coding tasks. Nhung: (1) chi cho well-defined tasks, (2) review time tang 20%, (3) complex architecture tasks — AI it giup. Net productivity gain: 30-40% cho typical dev work.
+          </Callout>
 
-            {/* Agentic loop box */}
-            <rect x={540} y={260} width={100} height={50} rx={6} fill="#334155" stroke="#22c55e" strokeWidth={1} />
-            <text x={590} y={278} textAnchor="middle" fill="#22c55e" fontSize="9" fontWeight="bold">
-              Agent Loop
-            </text>
-            <text x={590} y={292} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              Plan &rarr; Code &rarr;
-            </text>
-            <text x={590} y={302} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              Test &rarr; Fix
-            </text>
+          <p><strong>Best practices:</strong></p>
+          <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
+            <li><strong>Review moi dong:</strong>{" "}AI sinh code nhanh nhung co the co bugs, security issues</li>
+            <li><strong>Context la vua:</strong>{" "}Cang nhieu context (codebase, docs, tests) → AI cang chinh xac</li>
+            <li><strong>Iterative:</strong>{" "}Sinh → review → refine → test. Khong expect perfect code tu lan dau</li>
+            <li><strong>Security first:</strong>{" "}Chay Semgrep/CodeQL tren AI-generated code truoc khi merge</li>
+          </ul>
 
-            {/* Connecting arrows */}
-            <line x1={200} y1={285} x2={220} y2={285} stroke="#475569" strokeWidth={1} markerEnd="url(#codeArrow)" />
-            <line x1={360} y1={285} x2={380} y2={285} stroke="#475569" strokeWidth={1} markerEnd="url(#codeArrow)" />
-            <line x1={520} y1={285} x2={540} y2={285} stroke="#475569" strokeWidth={1} markerEnd="url(#codeArrow)" />
-            <defs>
-              <marker id="codeArrow" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
-                <polygon points="0 0, 6 2, 0 4" fill="#475569" />
-              </marker>
-            </defs>
-          </svg>
-        </div>
-      </VisualizationSection>
+          <CodeBlock language="bash" title="AI coding workflow thuc te">
+{`# 1. Claude Code: agentic coding trong terminal
+# Mo ta yeu cau bang tieng Viet
+claude "Them authentication middleware cho Express app,
+       dung JWT, luu refresh token trong Redis,
+       viet unit tests voi Jest"
 
-      <ExplanationSection>
-        <p>
-          <strong>Trợ lý lập trình AI</strong> là các công cụ sử dụng mô hình ngôn
-          ngữ lớn (LLM) được tinh chỉnh trên code để hỗ trợ lập trình viên viết
-          code nhanh hơn, ít lỗi hơn, và hiệu quả hơn.
-        </p>
+# Claude Code se:
+# - Doc codebase hieu structure
+# - Plan: middleware file, redis config, tests
+# - Implement across 4-5 files
+# - Chay tests, fix errors
+# - Tao commit voi message ro rang
 
-        <p>Các cấp độ hỗ trợ:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Code completion (Gợi ý code):</strong> Dự đoán và hoàn thành dòng
-            code tiếp theo. Sử dụng kỹ thuật Fill-in-the-Middle (FIM): cho mô hình
-            biết code trước và sau con trỏ, sinh phần ở giữa.
-          </li>
-          <li>
-            <strong>Chat-based coding:</strong> Hỏi đáp bằng ngôn ngữ tự nhiên: &quot;Viết
-            hàm sắp xếp mảng&quot;, &quot;Giải thích đoạn code này&quot;, &quot;Tìm bug
-            trong hàm X&quot;.
-          </li>
-          <li>
-            <strong>Inline + Context-aware:</strong> Hiểu cấu trúc toàn bộ dự án,
-            gợi ý phù hợp với codebase của bạn, không chỉ file đang mở.
-          </li>
-          <li>
-            <strong>Agentic coding:</strong> AI tự lập kế hoạch thay đổi, sửa nhiều
-            file, chạy test, sửa lỗi, tạo commit. Ví dụ: <strong>Claude Code</strong>{" "}
-            và <strong>Cursor Agent</strong> có thể nhận một feature request và tự
-            triển khai hoàn chỉnh.
-          </li>
-        </ol>
+# 2. Cursor: AI-powered editor
+# Cmd+K: inline edit
+# Cmd+L: chat voi context cua file
+# Tab: accept autocomplete
 
-        <p>Công nghệ đằng sau:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Code-tuned LLMs:</strong> Mô hình được huấn luyện trên hàng tỷ
-            dòng code từ GitHub, Stack Overflow, tài liệu kỹ thuật.
-          </li>
-          <li>
-            <strong>Context gathering:</strong> Thu thập thông tin từ file đang mở,
-            imports, cấu trúc dự án, lịch sử git để tạo context phù hợp.
-          </li>
-          <li>
-            <strong>Tool integration:</strong> Agentic coding tích hợp terminal, file
-            system, browser, git, và test runner để tự động hóa workflow.
-          </li>
-        </ul>
-        <p>
-          Trợ lý AI không thay thế lập trình viên mà giúp họ tập trung vào{" "}
-          <strong>tư duy thiết kế</strong> và <strong>logic nghiệp vụ</strong>, trong
-          khi AI xử lý phần code boilerplate và repetitive.
-        </p>
-      </ExplanationSection>
+# 3. Security check sau khi AI sinh code
+npx semgrep --config=p/javascript-security .
+# Check SQL injection, XSS, hardcoded secrets`}
+          </CodeBlock>
+        </ExplanationSection>
+      </LessonSection>
+
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+        <MiniSummary points={[
+          "4 the he: Autocomplete → Chat → Inline Edit → Agentic. Tu 'goi y 1 dong' den 'tu implement ca feature'.",
+          "Agentic assistants (Claude Code, Devin): doc codebase, plan, implement, test, fix, commit tu dong.",
+          "Tang nang suat 30-55% cho typical tasks. Complex architecture va design van can developer.",
+          "LUON review AI code: security linting (Semgrep), unit tests, va hieu logic truoc merge.",
+          "Developer chuyen tu 'viet code' sang 'thiet ke + review code' — AI la dong nghiep, khong phai replacement.",
+        ]} />
+      </LessonSection>
+
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+        <QuizSection questions={quizQuestions} />
+      </LessonSection>
+
+        </PredictionGate>
+      </LessonSection>
     </>
   );
 }
