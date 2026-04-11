@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────── */
-/* Light theme                                     */
+/* Light theme — Brilliance warm neutrals          */
 /* ─────────────────────────────────────────────── */
 :root {
-  --bg-primary: #FAFAFA;
+  --bg-primary: #F7F5F3;
   --bg-card: #FFFFFF;
-  --bg-dark: #09090B;
-  --bg-surface: #F4F4F5;
-  --bg-surface-hover: #E4E4E7;
-  --text-primary: #09090B;
-  --text-secondary: #3F3F46;
-  --text-tertiary: #71717A;
+  --bg-dark: #37322F;
+  --bg-surface: #F0EDEB;
+  --bg-surface-hover: #E8E5E3;
+  --text-primary: #37322F;
+  --text-secondary: #605A57;
+  --text-tertiary: #8A847F;
   --accent: #0D9488;
-  --accent-light: #CCFBF1;
+  --accent-light: #E6FAF7;
   --accent-dark: #0F766E;
-  --border: #E4E4E7;
-  --analogy-bg: #F0FDFA;
+  --border: rgba(55, 50, 47, 0.12);
+  --analogy-bg: #F0FAF8;
   --shadow-color: 0 0% 0%;
   --ring: #0D9488;
   --hero-gradient-from: #0D9488;
@@ -100,9 +100,7 @@ p, li, span, label {
   background-size: 24px 24px;
 }
 
-/* ─────────────────────────────────────────────── */
-/* Hero gradient text                              */
-/* ─────────────────────────────────────────────── */
+/* Hero gradient text */
 .gradient-text {
   background: linear-gradient(135deg, var(--hero-gradient-from), var(--hero-gradient-to));
   -webkit-background-clip: text;
@@ -111,17 +109,17 @@ p, li, span, label {
 }
 
 /* ─────────────────────────────────────────────── */
-/* Cards — shadow-first, not border-first          */
+/* Cards — Brilliance shadow-first style           */
 /* ─────────────────────────────────────────────── */
 .card {
   background: var(--bg-card);
   border-radius: 0.75rem;
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 3px rgba(55, 50, 47, 0.06), 0 1px 2px rgba(55, 50, 47, 0.04);
   transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
 }
 .card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(55, 50, 47, 0.08), 0 2px 4px rgba(55, 50, 47, 0.04);
   transform: translateY(-1px);
 }
 .dark .card {
@@ -135,18 +133,9 @@ p, li, span, label {
 /* ─────────────────────────────────────────────── */
 /* Solid tags — high contrast in both modes        */
 /* ─────────────────────────────────────────────── */
-.tag-beginner {
-  background: #059669;
-  color: #FFFFFF;
-}
-.tag-intermediate {
-  background: #D97706;
-  color: #FFFFFF;
-}
-.tag-advanced {
-  background: #DC2626;
-  color: #FFFFFF;
-}
+.tag-beginner { background: #059669; color: #FFFFFF; }
+.tag-intermediate { background: #D97706; color: #FFFFFF; }
+.tag-advanced { background: #DC2626; color: #FFFFFF; }
 
 /* ─────────────────────────────────────────────── */
 /* Analogy card                                    */
@@ -169,6 +158,14 @@ html[data-scroll-behavior="smooth"] {
 }
 
 /* ─────────────────────────────────────────────── */
+/* Section dividers — Brilliance embossed style    */
+/* ─────────────────────────────────────────────── */
+.section-divider {
+  border-top: 1px solid var(--border);
+  box-shadow: 0px 1px 0px var(--bg-card);
+}
+
+/* ─────────────────────────────────────────────── */
 /* Reading progress bar                            */
 /* ─────────────────────────────────────────────── */
 .reading-progress {
@@ -181,11 +178,9 @@ html[data-scroll-behavior="smooth"] {
   transition: width 50ms linear;
 }
 
-/* ─────────────────────────────────────────────── */
-/* Command palette backdrop                        */
-/* ─────────────────────────────────────────────── */
+/* Command palette backdrop */
 .cmd-backdrop {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(55, 50, 47, 0.4);
   backdrop-filter: blur(8px);
 }
 .dark .cmd-backdrop {
@@ -197,7 +192,7 @@ html[data-scroll-behavior="smooth"] {
 /* ─────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--bg-surface-hover); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
 /* Bottom nav spacing */
@@ -216,9 +211,7 @@ html[data-scroll-behavior="smooth"] {
 .quiz-correct { border-color: #059669 !important; background: rgba(5, 150, 105, 0.08) !important; }
 .quiz-wrong { border-color: #DC2626 !important; background: rgba(220, 38, 38, 0.08) !important; }
 
-/* ─────────────────────────────────────────────── */
-/* Code block                                      */
-/* ─────────────────────────────────────────────── */
+/* Code block */
 .code-block {
   font-family: var(--font-geist-mono), 'Fira Code', monospace;
   font-size: 13px;
@@ -226,21 +219,12 @@ html[data-scroll-behavior="smooth"] {
   tab-size: 2;
 }
 
-/* ─────────────────────────────────────────────── */
-/* KaTeX overrides                                 */
-/* ─────────────────────────────────────────────── */
-.katex-display {
-  margin: 1rem 0 !important;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0.5rem 0;
-}
+/* KaTeX overrides */
+.katex-display { margin: 1rem 0 !important; overflow-x: auto; overflow-y: hidden; padding: 0.5rem 0; }
 .katex { font-size: 1.05em !important; }
 .katex-display > .katex { font-size: 1.15em !important; }
 
-/* ─────────────────────────────────────────────── */
-/* Skeleton loading                                */
-/* ─────────────────────────────────────────────── */
+/* Skeleton loading */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
