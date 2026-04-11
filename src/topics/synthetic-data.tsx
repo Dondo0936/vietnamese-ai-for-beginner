@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "synthetic-data",
   title: "Synthetic Data",
-  titleVi: "Du lieu tong hop — AI tao du lieu cho AI",
+  titleVi: "Dữ liệu tổng hợp — AI tạo dữ liệu cho AI",
   description:
-    "Du lieu duoc tao bang AI hoac mo phong, dung de huan luyen mo hinh khi du lieu that khan hiem, dat do hoac nhay cam.",
+    "Dữ liệu được tạo bằng AI hoặc mô phỏng, dùng để huấn luyện mô hình khi dữ liệu thật khan hiếm, đắt đỏ hoặc nhạy cảm.",
   category: "emerging",
   tags: ["synthetic-data", "generation", "augmentation", "privacy"],
   difficulty: "intermediate",
@@ -35,10 +35,10 @@ interface DataSource {
 }
 
 const SOURCES: DataSource[] = [
-  { name: "Du lieu that (human)", quality: 95, cost: "$10-50/sample", volume: "Thap (100-10K)", privacy: "Dinh danh duoc", risk: "Bias tu nguoi label" },
-  { name: "LLM distillation", quality: 85, cost: "$0.01/sample", volume: "Cao (1M+)", privacy: "Khong dinh danh", risk: "Khuech dai loi model goc" },
-  { name: "Self-instruct", quality: 75, cost: "$0.005/sample", volume: "Rat cao", privacy: "Khong dinh danh", risk: "Model collapse neu lap nhieu" },
-  { name: "Rule-based augment", quality: 70, cost: "$0.001/sample", volume: "Rat cao", privacy: "Khong dinh danh", risk: "Thieu da dang" },
+  { name: "Dữ liệu thật (human)", quality: 95, cost: "$10-50/sample", volume: "Thấp (100-10K)", privacy: "Định danh được", risk: "Bias từ người label" },
+  { name: "LLM distillation", quality: 85, cost: "$0.01/sample", volume: "Cao (1M+)", privacy: "Không định danh", risk: "Khuếch đại lỗi model gốc" },
+  { name: "Self-instruct", quality: 75, cost: "$0.005/sample", volume: "Rất cao", privacy: "Không định danh", risk: "Model collapse nếu lặp nhiều" },
+  { name: "Rule-based augment", quality: 70, cost: "$0.001/sample", volume: "Rất cao", privacy: "Không định danh", risk: "Thiếu đa dạng" },
 ];
 
 const TOTAL_STEPS = 7;
@@ -49,57 +49,57 @@ export default function SyntheticDataTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "Model collapse xay ra khi nao?",
+      question: "Model collapse xảy ra khi nào?",
       options: [
-        "Model qua lon khong vua GPU",
-        "Train model tren du lieu SYNTHETIC cua chinh no hoac model tuong tu — mat da dang, suy giam chat luong dan",
-        "Du lieu training qua nhieu",
+        "Model quá lớn không vừa GPU",
+        "Train model trên dữ liệu SYNTHETIC của chính nó hoặc model tương tự — mất đa dạng, suy giảm chất lượng dần",
+        "Dữ liệu training quá nhiều",
       ],
       correct: 1,
-      explanation: "Model A sinh data → train Model B → Model B sinh data → train Model C... Qua moi the he, du lieu mat da dang (mode collapse), loi duoc khuech dai. Giong photocopy cua photocopy — moi ban sao te hon ban truoc. Can tron du lieu that + synthetic de tranh.",
+      explanation: "Model A sinh data → train Model B → Model B sinh data → train Model C... Qua mỗi thế hệ, dữ liệu mất đa dạng (mode collapse), lỗi được khuếch đại. Giống photocopy của photocopy — mỗi bản sao tệ hơn bản trước. Cần trộn dữ liệu thật + synthetic để tránh.",
     },
     {
-      question: "Tai sao Phi-3 (Microsoft) dung textbook-quality synthetic data thay vi web scraping?",
+      question: "Tại sao Phi-3 (Microsoft) dùng textbook-quality synthetic data thay vì web scraping?",
       options: [
-        "Web data mien phi nen khong tot",
-        "Synthetic data chat luong cao, co cau truc, giai thich ro rang → model hoc hieu qua hon du it data hon",
-        "Microsoft khong co quyen dung web data",
+        "Web data miễn phí nên không tốt",
+        "Synthetic data chất lượng cao, có cấu trúc, giải thích rõ ràng → model học hiệu quả hơn dù ít data hơn",
+        "Microsoft không có quyền dùng web data",
       ],
       correct: 1,
-      explanation: "Web data: nhieu nhung loan (spam, sai, trung lap). Textbook synthetic: sach, co cau truc, giai thich buoc buoc. Phi-3 3.8B train tren 3.3T textbook tokens → MMLU 69% (ngang GPT-3.5 175B train tren 300B web tokens). Chat luong data > so luong data!",
+      explanation: "Web data: nhiều nhưng loạn (spam, sai, trùng lặp). Textbook synthetic: sạch, có cấu trúc, giải thích bước bước. Phi-3 3.8B train trên 3.3T textbook tokens → MMLU 69% (ngang GPT-3.5 175B train trên 300B web tokens). Chất lượng data > số lượng data!",
     },
     {
-      question: "Dung GPT-4 sinh training data cho model khac co van de phap ly gi?",
+      question: "Dùng GPT-4 sinh training data cho model khác có vấn đề pháp lý gì?",
       options: [
-        "Khong van de gi",
-        "Vi pham Terms of Service: OpenAI cam dung output de train model canh tranh",
-        "Chi vi pham neu ban du lieu",
+        "Không vấn đề gì",
+        "Vi phạm Terms of Service: OpenAI cấm dùng output để train model cạnh tranh",
+        "Chỉ vi phạm nếu bán dữ liệu",
       ],
       correct: 1,
-      explanation: "OpenAI ToS cam dung output de 'develop models that compete'. Nhieu mo hinh open-source (Alpaca, Vicuna) da bi chi trich vi train tren GPT output. Giai phap: dung model open-source (Llama, Mistral) de sinh data, hoac tu xay pipeline tu scratch.",
+      explanation: "OpenAI ToS cấm dùng output để 'develop models that compete'. Nhiều mô hình open-source (Alpaca, Vicuna) đã bị chỉ trích vì train trên GPT output. Giải pháp: dùng model open-source (Llama, Mistral) để sinh data, hoặc tự xây pipeline từ scratch.",
     },
   ], []);
 
   return (
     <>
       {/* STEP 1: PREDICTION GATE */}
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Ban can 100K cap Q&A tieng Viet ve y te de train chatbot. Thue bac si label: $30/cap = $3 trieu, mat 6 thang. Co cach nao re hon 100x va nhanh hon 10x?"
+          question="Bạn cần 100K cặp Q&A tiếng Việt về y tế để train chatbot. Thuê bác sĩ label: $30/cặp = $3 triệu, mất 6 tháng. Có cách nào rẻ hơn 100x và nhanh hơn 10x?"
           options={[
-            "Khong — du lieu y te phai do chuyen gia tao",
-            "Dung LLM sinh du lieu tong hop: $0.01/cap = $1000, mat 1 ngay. Bac si chi can verify 10% sample",
-            "Lay du lieu tu internet la du",
+            "Không — dữ liệu y tế phải do chuyên gia tạo",
+            "Dùng LLM sinh dữ liệu tổng hợp: $0.01/cặp = $1000, mất 1 ngày. Bác sĩ chỉ cần verify 10% sample",
+            "Lấy dữ liệu từ internet là đủ",
           ]}
           correct={1}
-          explanation="Dung! Synthetic data cach mang hoa: LLM sinh 100K cap Q&A, bac si verify 10K sample (quality control). Chi phi giam 3000x, thoi gian giam 180x. Giong buong mo phong bay — phi cong khong can bay that de luyen tap!"
+          explanation="Đúng! Synthetic data cách mạng hoá: LLM sinh 100K cặp Q&A, bác sĩ verify 10K sample (quality control). Chi phí giảm 3000x, thời gian giảm 180x. Giống buồng mô phỏng bay — phi công không cần bay thật để luyện tập!"
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          So sanh <strong className="text-foreground">cac nguon du lieu</strong>{" "}
-          ve chat luong, chi phi, va rui ro.
+          So sánh <strong className="text-foreground">các nguồn dữ liệu</strong>{" "}
+          về chất lượng, chi phí, và rủi ro.
         </p>
 
         <VisualizationSection>
@@ -155,7 +155,7 @@ export default function SyntheticDataTopic() {
                 <p className="text-sm font-bold text-green-400">{source.privacy}</p>
               </div>
               <div className="rounded-lg border border-border bg-card p-2 col-span-2">
-                <p className="text-xs text-muted">Rui ro chinh</p>
+                <p className="text-xs text-muted">Rủi ro chính</p>
                 <p className="text-sm font-bold text-amber-400">{source.risk}</p>
               </div>
             </div>
@@ -164,65 +164,65 @@ export default function SyntheticDataTopic() {
       </LessonSection>
 
       {/* STEP 3: AHA */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Synthetic data la <strong>buong mo phong bay</strong>{" "}cho AI — tao tinh huong &quot;gia nhung huu ich&quot;
-            khi du lieu that khan hiem, dat, hoac nhay cam. Phi-3 da chung minh:{" "}
+            Synthetic data là <strong>buồng mô phỏng bay</strong>{" "}cho AI — tạo tình huống 'giả nhưng hữu ích'
+            khi dữ liệu thật khan hiếm, đắt, hoặc nhạy cảm. Phi-3 đã chứng minh:{" "}
             <strong>3.8B params + textbook synthetic data &gt; 175B params + web data</strong>.
-            Nhung can quyen: <strong>model collapse</strong>{" "}xay ra neu chi train tren synthetic — can tron du lieu that!
+            Nhưng cẩn quyền: <strong>model collapse</strong>{" "}xảy ra nếu chỉ train trên synthetic — cần trộn dữ liệu thật!
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* STEP 4: CHALLENGE */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Ban dung GPT-4 sinh 1M samples train model Viet. Sau 3 the he (model A sinh data → train B → B sinh data → train C), chat luong C giam 30% so voi A. Nguyen nhan?"
+          question="Bạn dùng GPT-4 sinh 1M samples train model Việt. Sau 3 thế hệ (model A sinh data → train B → B sinh data → train C), chất lượng C giảm 30% so với A. Nguyên nhân?"
           options={[
-            "GPU khong du manh",
-            "Model collapse: moi the he mat da dang, loi khuech dai, phan phoi thu hep dan",
-            "1M samples khong du nhieu",
+            "GPU không đủ mạnh",
+            "Model collapse: mỗi thế hệ mất đa dạng, lỗi khuếch đại, phân phối thu hẹp dần",
+            "1M samples không đủ nhiều",
           ]}
           correct={1}
-          explanation="Model collapse dien hinh! The he 1: da dang. The he 2: it da dang hon (mode collapse). The he 3: chi con vai pattern chu dao. Giong photocopy cua photocopy. Giai phap: LUON tron du lieu that (it nhat 10-20%), diversity filtering, va KHONG train qua nhieu the he."
+          explanation="Model collapse điển hình! Thế hệ 1: đa dạng. Thế hệ 2: ít đa dạng hơn (mode collapse). Thế hệ 3: chỉ còn vài pattern chủ đạo. Giống photocopy của photocopy. Giải pháp: LUÔN trộn dữ liệu thật (ít nhất 10-20%), diversity filtering, và KHÔNG train quá nhiều thế hệ."
         />
       </LessonSection>
 
       {/* STEP 5: EXPLANATION */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Synthetic Data</strong>{" "}
-            la du lieu duoc tao bang AI hoac mo phong, dung thay the hoac bo sung du lieu that khi du lieu that khan hiem, dat, hoac nhay cam.
+            là dữ liệu được tạo bằng AI hoặc mô phỏng, dùng thay thế hoặc bổ sung dữ liệu thật khi dữ liệu thật khan hiếm, đắt, hoặc nhạy cảm.
           </p>
 
-          <p><strong>3 phuong phap tao chinh:</strong></p>
+          <p><strong>3 phương pháp tạo chính:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>LLM Distillation:</strong>{" "}Model lon (GPT-4) sinh data → train model nho. Chat luong 85-90% model goc</li>
-            <li><strong>Self-Instruct:</strong>{" "}Model tu sinh instruction → answer pairs. Re nhung de bi loop</li>
-            <li><strong>Evol-Instruct:</strong>{" "}Bat dau tu instruction don gian, LLM tang do kho dan → da dang hon</li>
+            <li><strong>LLM Distillation:</strong>{" "}Model lớn (GPT-4) sinh data → train model nhỏ. Chất lượng 85-90% model gốc</li>
+            <li><strong>Self-Instruct:</strong>{" "}Model tự sinh instruction → answer pairs. Rẻ nhưng dễ bị loop</li>
+            <li><strong>Evol-Instruct:</strong>{" "}Bắt đầu từ instruction đơn giản, LLM tăng độ khó dần → đa dạng hơn</li>
           </ul>
 
-          <p><strong>Model Collapse — rui ro lon nhat:</strong></p>
+          <p><strong>Model Collapse — rủi ro lớn nhất:</strong></p>
           <LaTeX block>{"P_{n+1}(x) = \\int P_{\\text{model}}(x|\\theta_n) \\, d\\theta_n \\rightarrow \\text{mode collapse khi } n \\to \\infty"}</LaTeX>
           <p>
-            Qua moi the he, phan phoi du lieu thu hep (mat tail), da dang giam, loi khuech dai.
+            Qua mỗi thế hệ, phân phối dữ liệu thu hẹp (mất tail), đa dạng giảm, lỗi khuếch đại.
           </p>
 
-          <Callout variant="warning" title="Ngay cang nghiem trong">
-            Nghien cuu Shumailov et al. (2024) chung minh: model train 100% tren synthetic data cua model truoc SE suy giam khong the phuc hoi. Can IT NHAT 10% du lieu that de giu da dang va ngan model collapse.
+          <Callout variant="warning" title="Ngày càng nghiêm trọng">
+            Nghiên cứu Shumailov et al. (2024) chứng minh: model train 100% trên synthetic data của model trước SẼ suy giảm không thể phục hồi. Cần ÍT NHẤT 10% dữ liệu thật để giữ đa dạng và ngăn model collapse.
           </Callout>
 
           <p><strong>Quality control cho synthetic data:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Human verification:</strong>{" "}Verify 5-10% samples — phat hien pattern loi</li>
-            <li><strong>Diversity metrics:</strong>{" "}Do n-gram diversity, embedding spread, topic coverage</li>
-            <li><strong>Contamination check:</strong>{" "}Dam bao synthetic data khong trung voi test set</li>
-            <li><strong>Reward model filtering:</strong>{" "}Chi giu samples co quality score cao</li>
+            <li><strong>Human verification:</strong>{" "}Verify 5-10% samples — phát hiện pattern lỗi</li>
+            <li><strong>Diversity metrics:</strong>{" "}Đo n-gram diversity, embedding spread, topic coverage</li>
+            <li><strong>Contamination check:</strong>{" "}Đảm bảo synthetic data không trùng với test set</li>
+            <li><strong>Reward model filtering:</strong>{" "}Chỉ giữ samples có quality score cao</li>
           </ul>
 
-          <CodeBlock language="python" title="Sinh synthetic training data voi LLM">
+          <CodeBlock language="python" title="Sinh synthetic training data với LLM">
 {`import anthropic
 import json
 from typing import List
@@ -230,28 +230,28 @@ from typing import List
 client = anthropic.Anthropic()
 
 def generate_qa_pairs(topic: str, n: int = 100) -> List[dict]:
-    """Sinh Q&A pairs chat luong cao."""
-    prompt = f"""Tao {n} cap hoi-dap ve {topic} cho hoc sinh Viet Nam.
-Yeu cau:
-- Cau hoi da dang (kien thuc, ung dung, phan tich)
-- Tra loi chi tiet, co giai thich
-- Dung tieng Viet tu nhien
-- Moi cap la JSON: {{"q": "...", "a": "..."}}
+    """Sinh Q&A pairs chất lượng cao."""
+    prompt = f"""Tạo {n} cặp hỏi-đáp về {topic} cho học sinh Việt Nam.
+Yêu cầu:
+- Câu hỏi đa dạng (kiến thức, ứng dụng, phân tích)
+- Trả lời chi tiết, có giải thích
+- Dùng tiếng Việt tự nhiên
+- Mỗi cặp là JSON: {{"q": "...", "a": "..."}}
 
-Tra ve JSON array:"""
+Trả về JSON array:"""
 
     resp = client.messages.create(
         model="claude-sonnet-4-20250514",
         max_tokens=8000,
-        temperature=0.9,  # Da dang hoa
+        temperature=0.9,  # Đa dạng hoá
         messages=[{"role": "user", "content": prompt}],
     )
     return json.loads(resp.content[0].text)
 
-# Sinh + loc chat luong
-pairs = generate_qa_pairs("sot xuat huyet", n=1000)
+# Sinh + lọc chất lượng
+pairs = generate_qa_pairs("sốt xuất huyết", n=1000)
 
-# Quality filtering: chi giu samples tot
+# Quality filtering: chỉ giữ samples tốt
 def score_quality(pair: dict) -> float:
     resp = client.messages.create(
         model="claude-sonnet-4-20250514",
@@ -261,30 +261,30 @@ def score_quality(pair: dict) -> float:
     )
     return float(resp.content[0].text.strip())
 
-# Chi giu samples score >= 8
+# Chỉ giữ samples score >= 8
 high_quality = [p for p in pairs if score_quality(p) >= 8]
-# Giam tu 1000 → ~700 high-quality pairs`}
+# Giảm từ 1000 → ~700 high-quality pairs`}
           </CodeBlock>
 
-          <Callout variant="info" title="Synthetic data tai Viet Nam">
-            Tieng Viet la &quot;low-resource language&quot; — it du lieu chat luong. Nhieu team Viet dung Claude/GPT-4 sinh du lieu tieng Viet cho chatbot, NER, sentiment analysis. VinAI dung synthetic data de train PhoGPT. Chi phi giam 100x so voi thue nguoi label.
+          <Callout variant="info" title="Synthetic data tại Việt Nam">
+            Tiếng Việt là 'low-resource language' — ít dữ liệu chất lượng. Nhiều team Việt dùng Claude/GPT-4 sinh dữ liệu tiếng Việt cho chatbot, NER, sentiment analysis. VinAI dùng synthetic data để train PhoGPT. Chi phí giảm 100x so với thuê người label.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
       {/* STEP 6: SUMMARY */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Synthetic data la 'buong mo phong bay' — tao du lieu 'gia nhung huu ich' khi du lieu that khan hiem hoac dat.",
-          "3 phuong phap: LLM Distillation (85% quality), Self-Instruct (75%), Rule-based augment (70%).",
-          "Model collapse: train nhieu the he tren synthetic → mat da dang, loi khuech dai. Can tron 10%+ du lieu that.",
+          "Synthetic data là 'buồng mô phỏng bay' — tạo dữ liệu 'giả nhưng hữu ích' khi dữ liệu thật khan hiếm hoặc đắt.",
+          "3 phương pháp: LLM Distillation (85% quality), Self-Instruct (75%), Rule-based augment (70%).",
+          "Model collapse: train nhiều thế hệ trên synthetic → mất đa dạng, lỗi khuếch đại. Cần trộn 10%+ dữ liệu thật.",
           "Quality control: human verify 5-10%, diversity metrics, reward model filtering.",
-          "Phi-3 chung minh: textbook-quality synthetic data + SLM 3.8B > web data + LLM 175B.",
+          "Phi-3 chứng minh: textbook-quality synthetic data + SLM 3.8B > web data + LLM 175B.",
         ]} />
       </LessonSection>
 
       {/* STEP 7: QUIZ */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 

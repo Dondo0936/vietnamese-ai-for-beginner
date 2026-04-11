@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-for-science",
   title: "AI for Science",
-  titleVi: "AI cho Khoa hoc — Phong thi nghiem ao",
+  titleVi: "AI cho Khoa học — Phòng thí nghiệm ảo",
   description:
-    "Ung dung AI de day nhanh kham pha khoa hoc, tu du doan cau truc protein den thiet ke vat lieu moi.",
+    "Ứng dụng AI để đẩy nhanh khám phá khoa học, từ dự đoán cấu trúc protein đến thiết kế vật liệu mới.",
   category: "emerging",
   tags: ["science", "protein", "drug-discovery", "materials"],
   difficulty: "advanced",
@@ -25,10 +25,10 @@ export const metadata: TopicMeta = {
 };
 
 const BREAKTHROUGHS = [
-  { year: "2020", name: "AlphaFold 2", field: "Sinh hoc", impact: "Du doan cau truc 200M+ protein", speedup: "Tu hang nam xuong phut", color: "#22c55e" },
-  { year: "2023", name: "GNoME", field: "Vat lieu", impact: "Kham pha 2.2M vat lieu moi", speedup: "800 nam nghien cuu → 1 nam", color: "#3b82f6" },
-  { year: "2024", name: "AlphaFold 3", field: "Thuoc", impact: "Du doan tuong tac protein-drug", speedup: "Giam 90% thoi gian drug design", color: "#f59e0b" },
-  { year: "2024", name: "AlphaProof", field: "Toan", impact: "Huy chuong vang IMO 2024", speedup: "Giai bai toan mo hang thap ky", color: "#8b5cf6" },
+  { year: "2020", name: "AlphaFold 2", field: "Sinh học", impact: "Dự đoán cấu trúc 200M+ protein", speedup: "Từ hàng năm xuống phút", color: "#22c55e" },
+  { year: "2023", name: "GNoME", field: "Vật liệu", impact: "Khám phá 2.2M vật liệu mới", speedup: "800 năm nghiên cứu → 1 năm", color: "#3b82f6" },
+  { year: "2024", name: "AlphaFold 3", field: "Thuốc", impact: "Dự đoán tương tác protein-drug", speedup: "Giảm 90% thời gian drug design", color: "#f59e0b" },
+  { year: "2024", name: "AlphaProof", field: "Toán", impact: "Huy chương vàng IMO 2024", speedup: "Giải bài toán mở hàng thập kỷ", color: "#8b5cf6" },
 ];
 
 const TOTAL_STEPS = 7;
@@ -36,57 +36,57 @@ const TOTAL_STEPS = 7;
 export default function AIForScienceTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "AlphaFold 2 giai quyet van de gi ma nha khoa hoc mat 50 nam?",
+      question: "AlphaFold 2 giải quyết vấn đề gì mà nhà khoa học mất 50 năm?",
       options: [
-        "Tao protein moi",
-        "Du doan cau truc 3D cua protein tu chuoi amino acid — 'protein folding problem'",
-        "Tim thuoc tri COVID",
+        "Tạo protein mới",
+        "Dự đoán cấu trúc 3D của protein từ chuỗi amino acid — 'protein folding problem'",
+        "Tìm thuốc trị COVID",
       ],
       correct: 1,
-      explanation: "Protein folding: tu chuoi amino acid (1D) → cau truc 3D. Truoc AlphaFold: X-ray crystallography mat hang thang/trieu USD cho 1 protein. AlphaFold: phut, mien phi. Da du doan 200M+ protein (gan nhu toan bo protein da biet).",
+      explanation: "Protein folding: từ chuỗi amino acid (1D) → cấu trúc 3D. Trước AlphaFold: X-ray crystallography mất hàng tháng/triệu USD cho 1 protein. AlphaFold: phút, miễn phí. Đã dự đoán 200M+ protein (gần như toàn bộ protein đã biết).",
     },
     {
-      question: "Tai sao AI for Science khac voi AI cho nganh khac?",
+      question: "Tại sao AI for Science khác với AI cho ngành khác?",
       options: [
-        "Dung GPU dat hon",
-        "Can hieu va ton trong quy luat vat ly (symmetry, conservation laws) — khong chi pattern matching",
-        "Chi dung cho nghien cuu, khong cho ung dung",
+        "Dùng GPU đắt hơn",
+        "Cần hiểu và tôn trọng quy luật vật lý (symmetry, conservation laws) — không chỉ pattern matching",
+        "Chỉ dùng cho nghiên cứu, không cho ứng dụng",
       ],
       correct: 1,
-      explanation: "AI cho science can 'physics-informed': hieu symmetry (phep doi xung), conservation laws (bao toan nang luong), equivariance (xoay phan tu khong doi tinh chat). GNN (Graph Neural Networks) va equivariant architectures duoc thiet ke dac biet cho dieu nay.",
+      explanation: "AI cho science cần 'physics-informed': hiểu symmetry (phép đối xứng), conservation laws (bảo toàn năng lượng), equivariance (xoay phân tử không đổi tính chất). GNN (Graph Neural Networks) và equivariant architectures được thiết kế đặc biệt cho điều này.",
     },
     {
-      question: "AI co the thay the nha khoa hoc khong?",
+      question: "AI có thể thay thế nhà khoa học không?",
       options: [
-        "Co — AI da giai duoc IMO",
-        "Khong hoan toan — AI accelerate nghien cuu (hypothesis generation, simulation) nhung can nha khoa hoc validate va interpret",
-        "Khong — AI chi xu ly data",
+        "Có — AI đã giải được IMO",
+        "Không hoàn toàn — AI accelerate nghiên cứu (hypothesis generation, simulation) nhưng cần nhà khoa học validate và interpret",
+        "Không — AI chỉ xử lý data",
       ],
       correct: 1,
-      explanation: "AI la 'postdoc sieu nang': du doan nhanh, kham pha hypothesis, simulate experiments. Nhung can nha khoa hoc: dat cau hoi dung, thiet ke experiment, validate ket qua, interpret y nghia. AI + Human scientist = discovery nhanh hon 100x.",
+      explanation: "AI là 'postdoc siêu năng': dự đoán nhanh, khám phá hypothesis, simulate experiments. Nhưng cần nhà khoa học: đặt câu hỏi đúng, thiết kế experiment, validate kết quả, interpret ý nghĩa. AI + Human scientist = discovery nhanh hơn 100x.",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="De tim ra 1 loai thuoc moi, truyen thong mat 10-15 nam va 2.6 ty USD. AI co the giam bao nhieu?"
+          question="Để tìm ra 1 loại thuốc mới, truyền thống mất 10-15 năm và 2.6 tỷ USD. AI có thể giảm bao nhiêu?"
           options={[
-            "Giam 10% — AI chi ho tro phan nho",
-            "Giam 50-70% thoi gian va chi phi — AI accelerate moi giai doan tu target identification den clinical trials",
-            "Giam 100% — AI tu thiet ke thuoc hoan chinh",
+            "Giảm 10% — AI chỉ hỗ trợ phần nhỏ",
+            "Giảm 50-70% thời gian và chi phí — AI accelerate mọi giai đoạn từ target identification đến clinical trials",
+            "Giảm 100% — AI tự thiết kế thuốc hoàn chỉnh",
           ]}
           correct={1}
-          explanation="AI giam tu 10-15 nam xuong 3-5 nam, tu 2.6 ty USD xuong 500M-1B. AlphaFold du doan target structure, ML screen trieu hop chat, AI optimize lead compounds. Nhung van can clinical trials (con nguoi) de validate. Giong buong mo phong: bay gia truoc, bay that sau."
+          explanation="AI giảm từ 10-15 năm xuống 3-5 năm, từ 2.6 tỷ USD xuống 500M-1B. AlphaFold dự đoán target structure, ML screen triệu hợp chất, AI optimize lead compounds. Nhưng vẫn cần clinical trials (con người) để validate. Giống buồng mô phỏng: bay giả trước, bay thật sau."
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
           <div className="space-y-4">
             <svg viewBox="0 0 600 200" className="w-full max-w-2xl mx-auto">
               <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
-                Cac dot pha AI for Science
+                Các đột phá AI for Science
               </text>
               {BREAKTHROUGHS.map((b, i) => {
                 const y = 30 + i * 42;
@@ -106,90 +106,90 @@ export default function AIForScienceTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            AlphaFold du doan cau truc <strong>200 trieu protein</strong>{" "}
-            — nhieu hon tong so protein da duoc giai boi nha khoa hoc trong lich su! GNoME kham pha{" "}
-            <strong>2.2 trieu vat lieu moi</strong>{" "}— tuong duong 800 nam nghien cuu truyen thong.
-            AI khong thay the nha khoa hoc — no cho ho <strong>sieu nang luc</strong>.
+            AlphaFold dự đoán cấu trúc <strong>200 triệu protein</strong>{" "}
+            — nhiều hơn tổng số protein đã được giải bởi nhà khoa học trong lịch sử! GNoME khám phá{" "}
+            <strong>2.2 triệu vật liệu mới</strong>{" "}— tương đương 800 năm nghiên cứu truyền thống.
+            AI không thay thế nhà khoa học — nó cho họ <strong>siêu năng lực</strong>.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Ban muon dung AI thiet ke vat lieu pin mat troi moi. Can mo hinh hieu: doi xung tinh the, lien ket hoa hoc, tinh chat dien tu. Kien truc ML nao phu hop?"
+          question="Bạn muốn dùng AI thiết kế vật liệu pin mặt trời mới. Cần mô hình hiểu: đối xứng tinh thể, liên kết hoá học, tính chất điện tử. Kiến trúc ML nào phù hợp?"
           options={[
-            "CNN — nhan dien anh tinh the",
-            "Equivariant GNN — hieu do thi phan tu, ton trong doi xung vat ly (xoay/tich phan tu → tinh chat khong doi)",
-            "Transformer — xu ly chuoi SMILES",
+            "CNN — nhận diện ảnh tinh thể",
+            "Equivariant GNN — hiểu đồ thị phân tử, tôn trọng đối xứng vật lý (xoay/tịnh tiến phân tử → tính chất không đổi)",
+            "Transformer — xử lý chuỗi SMILES",
           ]}
           correct={1}
-          explanation="Equivariant GNN (vi du: MACE, NequIP) duoc thiet ke dac biet cho molecular systems. Equivariance: xoay phan tu → predictions xoay theo (khong thay doi tinh chat scalar). Bao toan doi xung vat ly → model chinh xac hon, generalize tot hon, can it data hon."
+          explanation="Equivariant GNN (ví dụ: MACE, NequIP) được thiết kế đặc biệt cho molecular systems. Equivariance: xoay phân tử → predictions xoay theo (không thay đổi tính chất scalar). Bảo toàn đối xứng vật lý → model chính xác hơn, generalize tốt hơn, cần ít data hơn."
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>AI for Science</strong>{" "}
-            ung dung AI de day nhanh kham pha khoa hoc — tu du doan cau truc protein den thiet ke vat lieu va giai toan.
+            ứng dụng AI để đẩy nhanh khám phá khoa học — từ dự đoán cấu trúc protein đến thiết kế vật liệu và giải toán.
           </p>
           <p><strong>Physics-Informed ML:</strong></p>
           <LaTeX block>{"\\mathcal{L} = \\underbrace{\\mathcal{L}_{\\text{data}}}_{\\text{fit observations}} + \\underbrace{\\lambda \\cdot \\mathcal{L}_{\\text{physics}}}_{\\text{satisfy physical laws}}"}</LaTeX>
 
           <Callout variant="tip" title="Equivariance">
-            Equivariant architecture: neu input bi xoay/dich chuyen, output cung xoay/dich chuyen tuong ung. Quan trong cho molecules (xoay phan tu khong doi tinh chat) va physics (doi xung bao toan). Khong equivariant → model can nhieu data hon de 'hoc' luat nay.
+            Equivariant architecture: nếu input bị xoay/dịch chuyển, output cũng xoay/dịch chuyển tương ứng. Quan trọng cho molecules (xoay phân tử không đổi tính chất) và physics (đối xứng bảo toàn). Không equivariant → model cần nhiều data hơn để 'học' luật này.
           </Callout>
 
           <p><strong>4 lĩnh vực chính:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Protein/Drug:</strong>{" "}AlphaFold (structure), RFDiffusion (design), molecular docking</li>
             <li><strong>Materials:</strong>{" "}GNoME (discovery), ML potentials (simulation nhanh 1000x)</li>
-            <li><strong>Climate:</strong>{" "}GenCast (du bao thoi tiet chinh xac hon physics models)</li>
-            <li><strong>Math:</strong>{" "}AlphaProof (theorem proving), AlphaGeometry (hinh hoc)</li>
+            <li><strong>Climate:</strong>{" "}GenCast (dự báo thời tiết chính xác hơn physics models)</li>
+            <li><strong>Math:</strong>{" "}AlphaProof (theorem proving), AlphaGeometry (hình học)</li>
           </ul>
 
-          <CodeBlock language="python" title="Du doan cau truc protein voi AlphaFold">
+          <CodeBlock language="python" title="Dự đoán cấu trúc protein với AlphaFold">
 {`# AlphaFold inference (simplified)
 from alphafold.model import model
 from alphafold.data import pipeline
 
-# Input: chuoi amino acid
+# Input: chuỗi amino acid
 sequence = "MKFLILLFNILCLFPVLAADNHGVS..."  # Protein sequence
 
 # Pipeline: MSA search + template search + feature extraction
 features = pipeline.process(sequence)
 
-# Du doan cau truc 3D
+# Dự đoán cấu trúc 3D
 prediction = model.predict(features)
-# Output: toa do 3D cua moi atom
+# Output: toạ độ 3D của mỗi atom
 # Confidence: pLDDT score (0-100)
 
 print(f"Predicted structure: {prediction['atom_positions'].shape}")
 print(f"Confidence: {prediction['plddt'].mean():.1f}/100")
-# Tu chuoi amino acid → cau truc 3D trong vai phut
-# Truoc day: X-ray crystallography mat hang thang + trieu USD`}
+# Từ chuỗi amino acid → cấu trúc 3D trong vài phút
+# Trước đây: X-ray crystallography mất hàng tháng + triệu USD`}
           </CodeBlock>
 
-          <Callout variant="info" title="AI for Science tai Viet Nam">
-            VinAI nghien cuu AI cho y te (X-ray analysis, drug repurposing). Dai hoc Bach Khoa HN ung dung ML cho materials science. Nhieu lab Viet dung AlphaFold mien phi cho nghien cuu protein. Co hoi lon cho Viet Nam: it can big data, can hieu biet domain.
+          <Callout variant="info" title="AI for Science tại Việt Nam">
+            VinAI nghiên cứu AI cho y tế (X-ray analysis, drug repurposing). Đại học Bách Khoa HN ứng dụng ML cho materials science. Nhiều lab Việt dùng AlphaFold miễn phí cho nghiên cứu protein. Cơ hội lớn cho Việt Nam: ít cần big data, cần hiểu biết domain.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "AI for Science: day nhanh kham pha 100-1000x — AlphaFold, GNoME, GenCast, AlphaProof.",
-          "Physics-informed ML: ket hop data-driven voi quy luat vat ly (symmetry, conservation).",
-          "Equivariant architectures (GNN) ton trong doi xung vat ly — chinh xac hon, can it data hon.",
-          "AI la 'postdoc sieu nang': du doan nhanh, simulate, kham pha. Nhung can nha khoa hoc validate.",
-          "Drug discovery: tu 15 nam/2.6B USD xuong 3-5 nam/500M. Materials: 800 nam → 1 nam.",
+          "AI for Science: đẩy nhanh khám phá 100-1000x — AlphaFold, GNoME, GenCast, AlphaProof.",
+          "Physics-informed ML: kết hợp data-driven với quy luật vật lý (symmetry, conservation).",
+          "Equivariant architectures (GNN) tôn trọng đối xứng vật lý — chính xác hơn, cần ít data hơn.",
+          "AI là 'postdoc siêu năng': dự đoán nhanh, simulate, khám phá. Nhưng cần nhà khoa học validate.",
+          "Drug discovery: từ 15 năm/2.6B USD xuống 3-5 năm/500M. Materials: 800 năm → 1 năm.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
