@@ -130,7 +130,6 @@ export default function TemperatureTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={7} label="Thử đoán">
-      <LessonSection step={1} totalSteps={7} label="Thử đoán">
       <PredictionGate
         question="Bạn yêu cầu AI hoàn thành câu: 'Sáng nay tôi ăn ___'. Chạy 3 lần — nhưng AI trả lời khác nhau mỗi lần! Tại sao cùng câu hỏi mà kết quả khác nhau?"
         options={[
@@ -147,12 +146,9 @@ export default function TemperatureTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ — Biểu đồ xác suất trực tiếp ━━━ */}
-      <LessonSection step={2} totalSteps={7} label="Khám phá">
       <LessonSection step={2} totalSteps={7} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -245,12 +241,9 @@ export default function TemperatureTopic() {
         </div>
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={7} label="Khám phá">
       <LessonSection step={3} totalSteps={7} label="Khám phá">
       <AhaMoment>
         Temperature kiểm soát <strong>độ nhọn</strong>{" "}của phân phối xác suất.
@@ -258,12 +251,9 @@ export default function TemperatureTopic() {
         Cao → phân phối phẳng, mọi từ đều có cơ hội — sáng tạo nhưng rủi ro hơn.
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ ĐI SÂU — So sánh output thực tế ━━━ */}
-      <LessonSection step={4} totalSteps={7} label="Đi sâu">
       <LessonSection step={4} totalSteps={7} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -300,12 +290,9 @@ export default function TemperatureTopic() {
         />
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={5} totalSteps={7} label="Thử thách">
       <LessonSection step={5} totalSteps={7} label="Thử thách">
       <InlineChallenge
         question="Bạn muốn AI viết code Python chính xác. Nên đặt temperature bao nhiêu?"
@@ -319,12 +306,9 @@ export default function TemperatureTopic() {
         explanation="Code cần chính xác, không cần sáng tạo. Temperature thấp (0–0.2) giúp AI chọn token có xác suất cao nhất, giảm lỗi. Đó là lý do Cursor và GitHub Copilot thường dùng temperature rất thấp."
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={6} totalSteps={7} label="Giải thích">
       <LessonSection step={6} totalSteps={7} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -395,12 +379,9 @@ creative = client.messages.create(
 )`}</CodeBlock>
       </ExplanationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ TÓM TẮT ━━━ */}
-      <LessonSection step={7} totalSteps={7} label="Tổng kết">
       <LessonSection step={7} totalSteps={7} label="Tổng kết">
       <MiniSummary
         points={[
@@ -413,7 +394,6 @@ creative = client.messages.create(
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );

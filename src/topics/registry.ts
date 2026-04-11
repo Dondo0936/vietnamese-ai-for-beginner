@@ -1,7 +1,7 @@
 import type { TopicMeta, Category } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────
-// 14 Categories
+// 17 Categories
 // ─────────────────────────────────────────────────────────
 
 export const categories: Category[] = [
@@ -110,7 +110,7 @@ export const categories: Category[] = [
 ];
 
 // ─────────────────────────────────────────────────────────
-// 158 Topics — Full Metadata
+// 185 Topics — Full Metadata
 // ─────────────────────────────────────────────────────────
 
 export const topicList: TopicMeta[] = [
@@ -1511,7 +1511,7 @@ export const topicList: TopicMeta[] = [
     title: "Trustworthy Language Models",
     titleVi: "Mô hình ngôn ngữ đáng tin cậy",
     description: "Mô hình ngôn ngữ với khả năng đánh giá độ tin cậy và mức độ chắc chắn của câu trả lời",
-    category: "multimodal",
+    category: "ai-safety",
     tags: ["trustworthy", "confidence", "reliability"],
     difficulty: "intermediate",
     relatedSlugs: ["hallucination", "guardrails", "llm-overview"],

@@ -78,8 +78,8 @@ const ACTIVATIONS: Record<ActivationName, ActivationDef> = {
     range: "(-1, 1)",
   },
   "leaky-relu": {
-    fn: (x) => (x > 0 ? x : 0.1 * x),
-    deriv: (x) => (x > 0 ? 1 : 0.1),
+    fn: (x) => (x > 0 ? x : 0.01 * x),
+    deriv: (x) => (x > 0 ? 1 : 0.01),
     color: "#ef4444",
     label: "Leaky ReLU",
     formula: "f(x) = \\begin{cases} x & x > 0 \\\\ 0.01x & x \\leq 0 \\end{cases}",

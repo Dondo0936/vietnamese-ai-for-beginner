@@ -96,7 +96,6 @@ export default function EmbeddingModelTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={5} label="Thử đoán">
-      <LessonSection step={1} totalSteps={5} label="Thử đoán">
       <PredictionGate
         question="Máy tính chỉ hiểu số. Làm sao để nó biết 'Phở ngon' và 'Bún chả tuyệt vời' có nghĩa GIỐNG nhau, trong khi 'Phở ngon' và 'Python dễ học' thì KHÁC nhau?"
         options={[
@@ -112,12 +111,9 @@ export default function EmbeddingModelTopic() {
         </p>
       </PredictionGate>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ KHÁM PHÁ — Bản đồ ngữ nghĩa ━━━ */}
-      <LessonSection step={2} totalSteps={5} label="Khám phá">
       <LessonSection step={2} totalSteps={5} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -210,12 +206,9 @@ export default function EmbeddingModelTopic() {
         </div>
       </VisualizationSection>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={5} label="Khám phá">
       <LessonSection step={3} totalSteps={5} label="Khám phá">
       <AhaMoment>
         <strong>Embedding model</strong>{" "}chuyển text thành vector trong không gian nhiều chiều.
@@ -223,12 +216,9 @@ export default function EmbeddingModelTopic() {
         Đây là nền tảng cho <em>semantic search</em>, <em>RAG</em>, và mọi ứng dụng AI hiểu ngôn ngữ.
       </AhaMoment>
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ THỬ THÁCH ━━━ */}
-      <LessonSection step={4} totalSteps={5} label="Thử thách">
       <LessonSection step={4} totalSteps={5} label="Thử thách">
       <InlineChallenge
         question="'Phở bò Hà Nội' và 'Beef pho from Hanoi' — cosine similarity sẽ như thế nào?"
@@ -242,12 +232,9 @@ export default function EmbeddingModelTopic() {
         explanation="Multilingual embedding models (ví dụ: Cohere multilingual, BGE-M3) hiểu ngữ nghĩa XUYÊN ngôn ngữ. 'Phở bò Hà Nội' và 'Beef pho from Hanoi' sẽ có vector rất gần nhau dù khác ngôn ngữ!"
       />
 
-            </LessonSection>
-
       </LessonSection>
 
 {/* ━━━ GIẢI THÍCH ━━━ */}
-      <LessonSection step={5} totalSteps={5} label="Giải thích">
       <LessonSection step={5} totalSteps={5} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -331,7 +318,6 @@ print(f"Similarity: {similarity:.4f}")
       />
 
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
       </LessonSection>
     </>
   );
