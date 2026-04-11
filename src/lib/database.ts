@@ -14,8 +14,17 @@ const readTopicCache = new Set<string>();
 let lastBookmarkToggle = 0;
 const BOOKMARK_THROTTLE_MS = 300;
 
+// Local-only fallback when Supabase is not configured
+let localProgress: UserProgress = { ...DEFAULT_PROGRESS };
+
+function isOffline() {
+  return createClient() === null;
+}
+
 export async function ensureAnonymousAuth() {
   const supabase = createClient();
+  if (!supabase) return null;
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -28,8 +37,12 @@ export async function ensureAnonymousAuth() {
 }
 
 export async function getUserProgress(): Promise<UserProgress> {
+  if (isOffline()) return localProgress;
+
   try {
     const supabase = await ensureAnonymousAuth();
+    if (!supabase) return localProgress;
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -54,21 +67,31 @@ export async function getUserProgress(): Promise<UserProgress> {
 }
 
 export async function markTopicRead(slug: string) {
-  // Skip if already marked this session (avoids redundant DB round-trips)
   if (readTopicCache.has(slug)) return;
+  readTopicCache.add(slug);
+
+  if (isOffline()) {
+    if (!localProgress.readTopics.includes(slug)) {
+      localProgress = {
+        ...localProgress,
+        readTopics: [...localProgress.readTopics, slug],
+        lastVisited: slug,
+      };
+    }
+    return;
+  }
 
   try {
     const supabase = await ensureAnonymousAuth();
+    if (!supabase) return;
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return;
 
     const progress = await getUserProgress();
-    if (progress.readTopics.includes(slug)) {
-      readTopicCache.add(slug);
-      return;
-    }
+    if (progress.readTopics.includes(slug)) return;
 
     const updatedReadTopics = [...progress.readTopics, slug];
 
@@ -81,21 +104,31 @@ export async function markTopicRead(slug: string) {
       },
       { onConflict: "user_id" }
     );
-
-    readTopicCache.add(slug);
   } catch {
-    // Fail silently — user experience shouldn't break
+    // Fail silently
   }
 }
 
 export async function toggleBookmark(slug: string): Promise<boolean> {
-  // Throttle rapid calls
   const now = Date.now();
   if (now - lastBookmarkToggle < BOOKMARK_THROTTLE_MS) return false;
   lastBookmarkToggle = now;
 
+  if (isOffline()) {
+    const isBookmarked = localProgress.bookmarks.includes(slug);
+    localProgress = {
+      ...localProgress,
+      bookmarks: isBookmarked
+        ? localProgress.bookmarks.filter((s) => s !== slug)
+        : [...localProgress.bookmarks, slug],
+    };
+    return !isBookmarked;
+  }
+
   try {
     const supabase = await ensureAnonymousAuth();
+    if (!supabase) return false;
+
     const {
       data: { user },
     } = await supabase.auth.getUser();

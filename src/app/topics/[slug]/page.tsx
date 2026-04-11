@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTopicBySlug, getAllTopics } from "@/topics/registry";
 import TopicLoader from "@/topics/topic-loader";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import AppShell from "@/components/layout/AppShell";
 
 export function generateStaticParams() {
   return getAllTopics().map((t) => ({ slug: t.slug }));
@@ -41,12 +40,8 @@ export default async function TopicPage({
   }
 
   return (
-    <>
-      <Navbar />
-      <main id="main-content" className="flex-1">
-        <TopicLoader meta={topic} />
-      </main>
-      <Footer />
-    </>
+    <AppShell>
+      <TopicLoader meta={topic} />
+    </AppShell>
   );
 }
