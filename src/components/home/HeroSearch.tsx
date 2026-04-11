@@ -21,32 +21,28 @@ export default function HeroSearch({
   counts,
 }: HeroSearchProps) {
   return (
-    <section className="relative py-20 px-4 text-center overflow-hidden">
-      {/* Subtle dot grid background */}
-      <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
+    <section className="relative py-20 sm:py-24 px-4 text-center overflow-hidden">
+      {/* Subtle dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
 
       <div className="relative">
-        {/* Perplexity-inspired editorial heading — tight tracking, large serif */}
-        <h1
-          className="text-foreground"
-          style={{ fontFamily: "var(--font-editorial), Georgia, serif" }}
-        >
-          <span className="block text-[40px] sm:text-[56px] lg:text-[72px] font-bold leading-[1.05] tracking-[-0.03em]">
-            Hiểu AI qua{" "}
-            <span className="gradient-text italic">hình ảnh</span>
+        {/* Sans-serif editorial heading — Apple-style tight tracking */}
+        <h1 className="text-foreground font-extrabold leading-[1.0] tracking-[-0.04em]">
+          <span className="block text-[36px] sm:text-[48px] lg:text-[64px]">
+            Hiểu AI qua
           </span>
-          <span className="block text-[32px] sm:text-[44px] lg:text-[56px] font-bold leading-[1.1] tracking-[-0.025em] mt-1">
-            và ví dụ đơn giản
+          <span className="block text-[36px] sm:text-[48px] lg:text-[64px] gradient-text mt-1">
+            hình ảnh trực quan
           </span>
         </h1>
 
-        <p className="mt-6 text-[15px] sm:text-base text-muted max-w-[480px] mx-auto leading-[1.6]">
+        <p className="mt-6 text-[15px] text-muted max-w-[440px] mx-auto leading-[1.65]">
           Khám phá AI/ML qua minh họa tương tác và ví dụ thực tế bằng tiếng Việt.
           Không cần nền tảng kỹ thuật.
         </p>
 
-        {/* Search trigger */}
-        <div className="mt-10 max-w-[420px] mx-auto">
+        {/* Search trigger — rounded pill */}
+        <div className="mt-10 max-w-[400px] mx-auto">
           <button
             type="button"
             onClick={triggerCmdK}
