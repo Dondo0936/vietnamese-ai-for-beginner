@@ -95,6 +95,7 @@ export default function EmbeddingModelTopic() {
   return (
     <>
       {/* ━━━ HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={5} label="Thử đoán">
       <PredictionGate
         question="Máy tính chỉ hiểu số. Làm sao để nó biết 'Phở ngon' và 'Bún chả tuyệt vời' có nghĩa GIỐNG nhau, trong khi 'Phở ngon' và 'Python dễ học' thì KHÁC nhau?"
         options={[
@@ -110,7 +111,10 @@ export default function EmbeddingModelTopic() {
         </p>
       </PredictionGate>
 
-      {/* ━━━ KHÁM PHÁ — Bản đồ ngữ nghĩa ━━━ */}
+            </LessonSection>
+
+{/* ━━━ KHÁM PHÁ — Bản đồ ngữ nghĩa ━━━ */}
+      <LessonSection step={2} totalSteps={5} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Bản đồ ngữ nghĩa — Câu giống nghĩa ở gần nhau
@@ -202,14 +206,20 @@ export default function EmbeddingModelTopic() {
         </div>
       </VisualizationSection>
 
-      {/* ━━━ AHA MOMENT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={5} label="Khám phá">
       <AhaMoment>
         <strong>Embedding model</strong>{" "}chuyển text thành vector trong không gian nhiều chiều.
         Câu giống nghĩa → vector gần nhau → cosine similarity cao.
         Đây là nền tảng cho <em>semantic search</em>, <em>RAG</em>, và mọi ứng dụng AI hiểu ngôn ngữ.
       </AhaMoment>
 
-      {/* ━━━ THỬ THÁCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={4} totalSteps={5} label="Thử thách">
       <InlineChallenge
         question="'Phở bò Hà Nội' và 'Beef pho from Hanoi' — cosine similarity sẽ như thế nào?"
         options={[
@@ -222,7 +232,10 @@ export default function EmbeddingModelTopic() {
         explanation="Multilingual embedding models (ví dụ: Cohere multilingual, BGE-M3) hiểu ngữ nghĩa XUYÊN ngôn ngữ. 'Phở bò Hà Nội' và 'Beef pho from Hanoi' sẽ có vector rất gần nhau dù khác ngôn ngữ!"
       />
 
-      {/* ━━━ GIẢI THÍCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={5} totalSteps={5} label="Giải thích">
       <ExplanationSection>
         <p>
           <strong>Embedding model</strong>{" "}chuyển đổi text (từ, câu, đoạn văn) thành vector
@@ -305,6 +318,7 @@ print(f"Similarity: {similarity:.4f}")
       />
 
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }

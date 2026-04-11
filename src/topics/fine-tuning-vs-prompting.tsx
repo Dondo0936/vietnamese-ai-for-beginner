@@ -133,6 +133,7 @@ export default function FineTuningVsPromptingTopic() {
   return (
     <>
       {/* ━━━ HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={5} label="Thử đoán">
       <PredictionGate
         question="Bạn cần AI viết email khách hàng cho công ty. Nên fine-tune model riêng hay chỉ cần viết prompt tốt?"
         options={[
@@ -148,7 +149,10 @@ export default function FineTuningVsPromptingTopic() {
         </p>
       </PredictionGate>
 
-      {/* ━━━ KHÁM PHÁ — Game phân loại kịch bản ━━━ */}
+            </LessonSection>
+
+{/* ━━━ KHÁM PHÁ — Game phân loại kịch bản ━━━ */}
+      <LessonSection step={2} totalSteps={5} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Prompting hay Fine-tuning?
@@ -223,14 +227,20 @@ export default function FineTuningVsPromptingTopic() {
         )}
       </VisualizationSection>
 
-      {/* ━━━ AHA MOMENT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={5} label="Khám phá">
       <AhaMoment>
         <strong>Prompting</strong>{" "}= &quot;dạy AI bằng hướng dẫn&quot; (nhanh, rẻ, linh hoạt).
         <strong> Fine-tuning</strong>{" "}= &quot;đào tạo AI chuyên gia&quot; (tốn kém, mạnh cho domain specific).
         Luôn thử prompting trước — fine-tune chỉ khi prompting không đủ!
       </AhaMoment>
 
-      {/* ━━━ THỬ THÁCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={4} totalSteps={5} label="Thử thách">
       <InlineChallenge
         question="GPT-5 vừa ra mắt, mạnh hơn GPT-4 nhiều. Bạn đã fine-tune GPT-4 cho task của mình. Muốn dùng GPT-5, bạn cần làm gì?"
         options={[
@@ -243,7 +253,10 @@ export default function FineTuningVsPromptingTopic() {
         explanation="Fine-tuning gắn liền với phiên bản model cụ thể. Model mới = fine-tune lại! Đây là nhược điểm lớn — prompting thì chỉ cần copy prompt sang model mới là xong."
       />
 
-      {/* ━━━ GIẢI THÍCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={5} totalSteps={5} label="Giải thích">
       <ExplanationSection>
         <p>
           <strong>Prompting</strong>{" "}và <strong>Fine-tuning</strong>{" "}là hai chiến lược chính
@@ -323,6 +336,7 @@ trainer.train(dataset)  # 1.000+ ví dụ y tế`}</CodeBlock>
       />
 
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }

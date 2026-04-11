@@ -26,14 +26,10 @@ export default function HeroSearch({
       <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
 
       <div className="relative">
-        {/* Sans-serif editorial heading — Apple-style tight tracking */}
-        <h1 className="text-foreground font-extrabold leading-[1.0] tracking-[-0.04em]">
-          <span className="block text-[36px] sm:text-[48px] lg:text-[64px]">
-            Hiểu AI qua
-          </span>
-          <span className="block text-[36px] sm:text-[48px] lg:text-[64px] gradient-text mt-1">
-            hình ảnh trực quan
-          </span>
+        {/* Sans-serif heading — MoMo-inspired: bold, readable Vietnamese */}
+        <h1 className="text-foreground font-bold leading-[1.15] tracking-[-0.02em] text-[32px] sm:text-[44px] lg:text-[56px]">
+          Hiểu AI qua{" "}
+          <span className="gradient-text">hình ảnh trực quan</span>
         </h1>
 
         <p className="mt-6 text-[15px] text-muted max-w-[440px] mx-auto leading-[1.65]">
