@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "long-context",
   title: "Long Context",
-  titleVi: "Ngu canh dai — AI doc ca cuon sach",
+  titleVi: "Ngữ cảnh dài — AI đọc cả cuốn sách",
   description:
-    "Kha nang mo hinh xu ly hang tram nghin den hang trieu token trong mot lan, cho phep phan tich tai lieu dai.",
+    "Khả năng mô hình xử lý hàng trăm nghìn đến hàng triệu token trong một lần, cho phép phân tích tài liệu dài.",
   category: "emerging",
   tags: ["long-context", "context-window", "retrieval", "attention"],
   difficulty: "intermediate",
@@ -39,55 +39,55 @@ export default function LongContextTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "Tai sao KV cache la bottleneck chinh cua long context?",
+      question: "Tại sao KV cache là bottleneck chính của long context?",
       options: [
-        "KV cache lam cham CPU",
-        "KV cache tang tuyen tinh theo context length: 1M tokens co the can 50-100GB VRAM chi cho cache",
-        "KV cache lam model khong chinh xac",
+        "KV cache làm chậm CPU",
+        "KV cache tăng tuyến tính theo context length: 1M tokens có thể cần 50-100GB VRAM chỉ cho cache",
+        "KV cache làm model không chính xác",
       ],
       correct: 1,
-      explanation: "KV cache = 2 x layers x heads x d_head x seq_len x bytes. Voi Llama 70B, 1M tokens: KV cache ~ 80GB VRAM — hon ca model weights! PagedAttention, GQA, quantized KV giam duoc 4-8x nhung van la bottleneck chinh.",
+      explanation: "KV cache = 2 x layers x heads x d_head x seq_len x bytes. Với Llama 70B, 1M tokens: KV cache ~ 80GB VRAM — hơn cả model weights! PagedAttention, GQA, quantized KV giảm được 4-8x nhưng vẫn là bottleneck chính.",
     },
     {
-      question: "'Lost in the middle' problem la gi?",
+      question: "'Lost in the middle' problem là gì?",
       options: [
-        "Model quen thong tin o GIUA context dai — nho tot dau va cuoi, quen giua",
-        "Model mat context khi context qua dai",
-        "Token o giua bi xoa de tiet kiem memory",
+        "Model quên thông tin ở GIỮA context dài — nhớ tốt đầu và cuối, quên giữa",
+        "Model mất context khi context quá dài",
+        "Token ở giữa bị xoá để tiết kiệm memory",
       ],
       correct: 0,
-      explanation: "Nghien cuu (Liu et al. 2023) chi ra: model nho tot thong tin o dau va cuoi context, nhung accuracy giam 20-30% cho thong tin nam o giua. Khi context 100K+, van de nay nghiem trong hon. Giai phap: document ordering, chunked retrieval.",
+      explanation: "Nghiên cứu (Liu et al. 2023) chỉ ra: model nhớ tốt thông tin ở đầu và cuối context, nhưng accuracy giảm 20-30% cho thông tin nằm ở giữa. Khi context 100K+, vấn đề này nghiêm trọng hơn. Giải pháp: document ordering, chunked retrieval.",
     },
     {
-      question: "Khi nao nen dung RAG thay vi long context?",
+      question: "Khi nào nên dùng RAG thay vì long context?",
       options: [
-        "Luon dung long context vi don gian hon",
-        "Khi corpus > 10M tokens, can freshness, hoac can chi phi thap cho nhieu queries tren cung corpus",
-        "Khi corpus nho hon 1000 tokens",
+        "Luôn dùng long context vì đơn giản hơn",
+        "Khi corpus > 10M tokens, cần freshness, hoặc cần chi phí thấp cho nhiều queries trên cùng corpus",
+        "Khi corpus nhỏ hơn 1000 tokens",
       ],
       correct: 1,
-      explanation: "Long context: don gian, khong can index, tot cho 1 tai lieu. RAG: scale toi hang ty documents, chi phi per-query thap (chi lay top-K chunks), freshness (update index khong can re-process). Rule of thumb: < 200K tokens → long context. > 1M → RAG. O giua → tuy use case.",
+      explanation: "Long context: đơn giản, không cần index, tốt cho 1 tài liệu. RAG: scale tới hàng tỷ documents, chi phí per-query thấp (chỉ lấy top-K chunks), freshness (update index không cần re-process). Rule of thumb: < 200K tokens → long context. > 1M → RAG. Ở giữa → tuỳ use case.",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Ban can AI phan tich hop dong 500 trang (250K tokens) de tim dieu khoan bat loi. Cach nao hieu qua nhat?"
+          question="Bạn cần AI phân tích hợp đồng 500 trang (250K tokens) để tìm điều khoản bất lợi. Cách nào hiệu quả nhất?"
           options={[
-            "Cat nho thanh 100 phan, hoi AI tung phan mot",
-            "Cho toan bo 500 trang vao context window cua model ho tro 1M tokens",
-            "Doc thu cong — AI khong xu ly duoc tai lieu dai",
+            "Cắt nhỏ thành 100 phần, hỏi AI từng phần một",
+            "Cho toàn bộ 500 trang vào context window của model hỗ trợ 1M tokens",
+            "Đọc thủ công — AI không xử lý được tài liệu dài",
           ]}
           correct={1}
-          explanation="Long context models (Claude, Gemini) doc ca 500 trang trong 1 lan — hieu toan canh, khong bi mat context giua cac phan. Giong doc nguyen cuon sach thay vi doc tung trang roi. Dieu khoan o trang 3 lien quan den trang 487? Long context bat duoc!"
+          explanation="Long context models (Claude, Gemini) đọc cả 500 trang trong 1 lần — hiểu toàn cảnh, không bị mất context giữa các phần. Giống đọc nguyên cuốn sách thay vì đọc từng trang rời. Điều khoản ở trang 3 liên quan đến trang 487? Long context bắt được!"
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          So sanh <strong className="text-foreground">context window</strong>{" "}
-          cua cac model — tu 4K tokens den 1M tokens.
+          So sánh <strong className="text-foreground">context window</strong>{" "}
+          của các model — từ 4K tokens đến 1M tokens.
         </p>
         <VisualizationSection>
           <div className="space-y-4">
@@ -122,58 +122,58 @@ export default function LongContextTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Tu 4K tokens (5 trang) den 1M tokens (1250 trang) chi trong 2 nam!
-            Nhu tu doc <strong>1 bai bao</strong>{" "}sang doc <strong>ca cuon tieu thuyet</strong>{" "}
-            trong 1 lan. Long context khong chi la &quot;nhieu hon&quot; — no cho phep <strong>hieu toan canh</strong>{" "}
-            thay vi ghep nhieu manh nho.
+            Từ 4K tokens (5 trang) đến 1M tokens (1250 trang) chỉ trong 2 năm!
+            Như từ đọc <strong>1 bài báo</strong>{" "}sang đọc <strong>cả cuốn tiểu thuyết</strong>{" "}
+            trong 1 lần. Long context không chỉ là 'nhiều hơn' — nó cho phép <strong>hiểu toàn cảnh</strong>{" "}
+            thay vì ghép nhiều mảnh nhỏ.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="KV cache cua Llama 70B voi 1M tokens context mat khoang 80GB VRAM. Model weights FP16 = 140GB. Tong can bao nhieu GPU A100 (80GB)?"
+          question="KV cache của Llama 70B với 1M tokens context mất khoảng 80GB VRAM. Model weights FP16 = 140GB. Tổng cần bao nhiêu GPU A100 (80GB)?"
           options={[
             "2 GPU (140GB weights)",
-            "3 GPU (220GB tong = weights + KV cache)",
-            "1 GPU neu dung quantization",
+            "3 GPU (220GB tổng = weights + KV cache)",
+            "1 GPU nếu dùng quantization",
           ]}
           correct={1}
-          explanation="Weights 140GB + KV cache 80GB = 220GB. A100 80GB → can 3 GPU minimum. KV cache la 'chi phi an' cua long context — tang tuyen tinh voi seq_len. Giai phap: GQA giam KV 4-8x, quantized KV cache (INT8), PagedAttention giam fragmentation."
+          explanation="Weights 140GB + KV cache 80GB = 220GB. A100 80GB → cần 3 GPU minimum. KV cache là 'chi phí ẩn' của long context — tăng tuyến tính với seq_len. Giải pháp: GQA giảm KV 4-8x, quantized KV cache (INT8), PagedAttention giảm fragmentation."
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Long Context</strong>{" "}
-            la kha nang model xu ly hang tram nghin den hang trieu tokens trong 1 lan — cho phep phan tich tai lieu dai, codebase, video.
+            là khả năng model xử lý hàng trăm nghìn đến hàng triệu tokens trong 1 lần — cho phép phân tích tài liệu dài, codebase, video.
           </p>
           <p><strong>Attention complexity:</strong></p>
           <LaTeX block>{"\\text{Attention FLOPs} = O(N^2 \\cdot d) \\quad \\text{KV Cache} = O(N \\cdot d \\cdot L)"}</LaTeX>
-          <p><strong>Ky thuat mo rong context:</strong></p>
+          <p><strong>Kỹ thuật mở rộng context:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>RoPE scaling:</strong>{" "}Noi suy vi tri tuong doi, mo rong tu 4K → 128K+ khong can retrain</li>
-            <li><strong>Flash Attention:</strong>{" "}Giam memory tu O(N^2) xuong O(N) bang tiling</li>
-            <li><strong>GQA (Grouped Query Attention):</strong>{" "}Giam KV heads 4-8x, giam KV cache tuong ung</li>
-            <li><strong>Ring Attention:</strong>{" "}Phan phoi sequence qua nhieu GPU, overlap compute va communication</li>
+            <li><strong>RoPE scaling:</strong>{" "}Nội suy vị trí tương đối, mở rộng từ 4K → 128K+ không cần retrain</li>
+            <li><strong>Flash Attention:</strong>{" "}Giảm memory từ O(N^2) xuống O(N) bằng tiling</li>
+            <li><strong>GQA (Grouped Query Attention):</strong>{" "}Giảm KV heads 4-8x, giảm KV cache tương ứng</li>
+            <li><strong>Ring Attention:</strong>{" "}Phân phối sequence qua nhiều GPU, overlap compute và communication</li>
           </ul>
 
           <Callout variant="tip" title="Long context vs RAG">
-            Long context: don gian (dump all docs), tot cho reasoning across documents. RAG: scale tot hon (ty documents), chi phi per-query thap, freshness. Hybrid: RAG chon top-50 documents → long context xu ly toan bo.
+            Long context: đơn giản (dump all docs), tốt cho reasoning across documents. RAG: scale tốt hơn (tỷ documents), chi phí per-query thấp, freshness. Hybrid: RAG chọn top-50 documents → long context xử lý toàn bộ.
           </Callout>
 
           <LaTeX block>{"\\text{KV Cache} = 2 \\times n_{\\text{layers}} \\times n_{\\text{kv\\_heads}} \\times d_{\\text{head}} \\times N \\times \\text{bytes}"}</LaTeX>
 
-          <CodeBlock language="python" title="Long context analysis voi Claude">
+          <CodeBlock language="python" title="Long context analysis với Claude">
 {`import anthropic
 
 client = anthropic.Anthropic()
 
-# Doc toan bo tai lieu 500 trang
+# Đọc toàn bộ tài liệu 500 trang
 with open("contract_500_pages.txt") as f:
     full_document = f.read()  # ~250K tokens
 
@@ -182,32 +182,32 @@ response = client.messages.create(
     max_tokens=4096,
     messages=[{
         "role": "user",
-        "content": f"""Phan tich hop dong sau va liet ke:
-1. Cac dieu khoan bat loi cho ben mua
-2. Cac mau thuan giua cac dieu khoan
-3. Cac rui ro phap ly tiem an
+        "content": f"""Phân tích hợp đồng sau và liệt kê:
+1. Các điều khoản bất lợi cho bên mua
+2. Các mâu thuẫn giữa các điều khoản
+3. Các rủi ro pháp lý tiềm ẩn
 
-Hop dong:
+Hợp đồng:
 {full_document}"""
     }],
 )
-# Model doc toan bo 500 trang, hieu cross-references
-# giua trang 3 va trang 487`}
+# Model đọc toàn bộ 500 trang, hiểu cross-references
+# giữa trang 3 và trang 487`}
           </CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Long context: tu 4K (2023) den 1M tokens (2025) — doc ca cuon sach trong 1 lan.",
-          "KV cache la bottleneck chinh: tang tuyen tinh voi seq_len, co the > model weights.",
-          "Ky thuat: RoPE scaling, Flash Attention, GQA, Ring Attention giam chi phi O(N^2).",
-          "'Lost in the middle': model nho tot dau/cuoi, quen giua. Can document ordering strategy.",
-          "Long context vs RAG: complementary. Long context cho reasoning, RAG cho scale va freshness.",
+          "Long context: từ 4K (2023) đến 1M tokens (2025) — đọc cả cuốn sách trong 1 lần.",
+          "KV cache là bottleneck chính: tăng tuyến tính với seq_len, có thể > model weights.",
+          "Kỹ thuật: RoPE scaling, Flash Attention, GQA, Ring Attention giảm chi phí O(N^2).",
+          "'Lost in the middle': model nhớ tốt đầu/cuối, quên giữa. Cần document ordering strategy.",
+          "Long context vs RAG: complementary. Long context cho reasoning, RAG cho scale và freshness.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
