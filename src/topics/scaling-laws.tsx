@@ -133,6 +133,7 @@ export default function ScalingLawsTopic() {
   return (
     <>
       {/* ━━━ HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="GPT-3 có 175 tỷ tham số. GPT-4 có ~1.700 tỷ (gấp 10 lần). GPT-4 giỏi hơn GPT-3 bao nhiêu lần?"
         options={[
@@ -149,7 +150,10 @@ export default function ScalingLawsTopic() {
         </p>
       </PredictionGate>
 
-      {/* ━━━ KHÁM PHÁ — Biểu đồ scaling ━━━ */}
+            </LessonSection>
+
+{/* ━━━ KHÁM PHÁ — Biểu đồ scaling ━━━ */}
+      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Biểu đồ Scaling: Model lớn hơn → Loss thấp hơn (nhưng chậm dần)
@@ -245,14 +249,20 @@ export default function ScalingLawsTopic() {
         </svg>
       </VisualizationSection>
 
-      {/* ━━━ AHA MOMENT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         Hiệu suất LLM tuân theo <strong>power law</strong>{" "}— một quy luật toán học dự đoán được!
         Gấp 10× tham số chỉ giảm ~40% loss (không phải 10×). Biết quy luật này, các lab AI
         có thể <em>tính trước</em>{" "}cần bao nhiêu compute để đạt hiệu suất mong muốn trước khi bỏ hàng triệu đô.
       </AhaMoment>
 
-      {/* ━━━ ĐI SÂU — Slider dự đoán ━━━ */}
+            </LessonSection>
+
+{/* ━━━ ĐI SÂU — Slider dự đoán ━━━ */}
+      <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Dự đoán hiệu suất model
@@ -269,7 +279,10 @@ export default function ScalingLawsTopic() {
         />
       </VisualizationSection>
 
-      {/* ━━━ THỬ THÁCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={5} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Chinchilla (70B params, train trên 1.4T tokens) vs GPT-3 (175B params, train trên 300B tokens). Ai thắng?"
         options={[
@@ -282,7 +295,10 @@ export default function ScalingLawsTopic() {
         explanation="Chinchilla thắng! Dù nhỏ hơn 2.5×, nó train trên 4.7× nhiều data hơn. GPT-3 bị 'under-trained' — có budget compute đủ train 175B nhưng không cho đủ data. Chinchilla rule: cân bằng model size và data."
       />
 
-      {/* ━━━ GIẢI THÍCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={6} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
           <strong>Scaling Laws</strong>{" "}là các quy luật toán học mô tả mối quan hệ giữa
@@ -351,6 +367,7 @@ print(f"  Cần ≈ {optimal_tokens(1700)/1000:.1f}T tokens")`}</CodeBlock>
       />
 
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }

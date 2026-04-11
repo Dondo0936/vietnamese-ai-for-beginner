@@ -154,6 +154,7 @@ export default function LLMOverviewTopic() {
   return (
     <>
       {/* ━━━ HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={8} label="Thử đoán">
       <PredictionGate
         question="Hoàn thành câu: 'Sáng nay tôi uống một ly ___'. Bạn đã suy nghĩ gì khi đoán từ còn thiếu?"
         options={[
@@ -169,7 +170,10 @@ export default function LLMOverviewTopic() {
         </p>
       </PredictionGate>
 
-      {/* ━━━ KHÁM PHÁ — Trò chơi dự đoán từ tiếp theo ━━━ */}
+            </LessonSection>
+
+{/* ━━━ KHÁM PHÁ — Trò chơi dự đoán từ tiếp theo ━━━ */}
+      <LessonSection step={2} totalSteps={8} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Bạn là LLM: Đoán từ tiếp theo
@@ -301,7 +305,10 @@ export default function LLMOverviewTopic() {
         )}
       </VisualizationSection>
 
-      {/* ━━━ AHA MOMENT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={8} label="Khám phá">
       <AhaMoment>
         Bạn vừa làm chính xác điều mà <strong>Mô hình Ngôn ngữ Lớn (LLM)</strong>{" "}làm:
         nhìn vào ngữ cảnh, suy ra từ tiếp theo phù hợp nhất. Chỉ từ nhiệm vụ đơn giản
@@ -309,7 +316,10 @@ export default function LLMOverviewTopic() {
         năng viết, dịch, sáng tạo, và suy luận!
       </AhaMoment>
 
-      {/* ━━━ ĐI SÂU — Xây dựng một LLM ━━━ */}
+            </LessonSection>
+
+{/* ━━━ ĐI SÂU — Xây dựng một LLM ━━━ */}
+      <LessonSection step={4} totalSteps={8} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Hành trình xây dựng một LLM
@@ -423,7 +433,10 @@ export default function LLMOverviewTopic() {
         </StepReveal>
       </VisualizationSection>
 
-      {/* ━━━ TIMELINE ━━━ */}
+            </LessonSection>
+
+{/* ━━━ TIMELINE ━━━ */}
+      <LessonSection step={5} totalSteps={8} label="Dòng thời gian">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Cuộc đua LLM: 2017 → Nay
@@ -453,7 +466,10 @@ export default function LLMOverviewTopic() {
         </div>
       </VisualizationSection>
 
-      {/* ━━━ THỬ THÁCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={6} totalSteps={8} label="Thử thách">
       <InlineChallenge
         question="LLM chỉ được dạy dự đoán từ tiếp theo. Vậy tại sao nó có thể viết thơ, giải toán, viết code — những thứ chưa bao giờ được dạy trực tiếp?"
         options={[
@@ -466,7 +482,10 @@ export default function LLMOverviewTopic() {
         explanation="Đây gọi là 'emergent abilities' — khả năng nổi lên. Khi dự đoán từ tiếp theo ở quy mô hàng tỷ tham số và hàng nghìn tỷ từ, model phải 'hiểu' logic, ngữ pháp, suy luận, code... để đoán chính xác. Hiểu biết này không được dạy trực tiếp — nó tự phát triển."
       />
 
-      {/* ━━━ GIẢI THÍCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={7} totalSteps={8} label="Giải thích">
       <ExplanationSection>
         <p>
           <strong>Mô hình Ngôn ngữ Lớn (LLM)</strong> là hệ thống AI được huấn luyện
@@ -519,7 +538,10 @@ print(response.content[0].text)
 # → "Hà Nội. Hà Nội nằm ở..."`}</CodeBlock>
       </ExplanationSection>
 
-      {/* ━━━ TÓM TẮT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ TÓM TẮT ━━━ */}
+      <LessonSection step={8} totalSteps={8} label="Tổng kết">
       <MiniSummary
         points={[
           "LLM = máy dự đoán từ tiếp theo, được huấn luyện trên hàng nghìn tỷ từ",
@@ -532,6 +554,7 @@ print(response.content[0].text)
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }

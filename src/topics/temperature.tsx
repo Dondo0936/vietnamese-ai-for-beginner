@@ -129,6 +129,7 @@ export default function TemperatureTopic() {
   return (
     <>
       {/* ━━━ HOOK ━━━ */}
+      <LessonSection step={1} totalSteps={7} label="Thử đoán">
       <PredictionGate
         question="Bạn yêu cầu AI hoàn thành câu: 'Sáng nay tôi ăn ___'. Chạy 3 lần — nhưng AI trả lời khác nhau mỗi lần! Tại sao cùng câu hỏi mà kết quả khác nhau?"
         options={[
@@ -145,7 +146,10 @@ export default function TemperatureTopic() {
         </p>
       </PredictionGate>
 
-      {/* ━━━ KHÁM PHÁ — Biểu đồ xác suất trực tiếp ━━━ */}
+            </LessonSection>
+
+{/* ━━━ KHÁM PHÁ — Biểu đồ xác suất trực tiếp ━━━ */}
+      <LessonSection step={2} totalSteps={7} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Xác suất chọn từ tiếp theo
@@ -237,14 +241,20 @@ export default function TemperatureTopic() {
         </div>
       </VisualizationSection>
 
-      {/* ━━━ AHA MOMENT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={7} label="Khám phá">
       <AhaMoment>
         Temperature kiểm soát <strong>độ nhọn</strong>{" "}của phân phối xác suất.
         Thấp → phân phối nhọn, luôn chọn từ xác suất cao nhất.
         Cao → phân phối phẳng, mọi từ đều có cơ hội — sáng tạo nhưng rủi ro hơn.
       </AhaMoment>
 
-      {/* ━━━ ĐI SÂU — So sánh output thực tế ━━━ */}
+            </LessonSection>
+
+{/* ━━━ ĐI SÂU — So sánh output thực tế ━━━ */}
+      <LessonSection step={4} totalSteps={7} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Output thực tế ở 3 mức temperature
@@ -280,7 +290,10 @@ export default function TemperatureTopic() {
         />
       </VisualizationSection>
 
-      {/* ━━━ THỬ THÁCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={5} totalSteps={7} label="Thử thách">
       <InlineChallenge
         question="Bạn muốn AI viết code Python chính xác. Nên đặt temperature bao nhiêu?"
         options={[
@@ -293,7 +306,10 @@ export default function TemperatureTopic() {
         explanation="Code cần chính xác, không cần sáng tạo. Temperature thấp (0–0.2) giúp AI chọn token có xác suất cao nhất, giảm lỗi. Đó là lý do Cursor và GitHub Copilot thường dùng temperature rất thấp."
       />
 
-      {/* ━━━ GIẢI THÍCH ━━━ */}
+            </LessonSection>
+
+{/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={6} totalSteps={7} label="Giải thích">
       <ExplanationSection>
         <p>
           <strong>Temperature</strong>{" "}là tham số chia logits (điểm thô) trước khi đưa
@@ -363,7 +379,10 @@ creative = client.messages.create(
 )`}</CodeBlock>
       </ExplanationSection>
 
-      {/* ━━━ TÓM TẮT ━━━ */}
+            </LessonSection>
+
+{/* ━━━ TÓM TẮT ━━━ */}
+      <LessonSection step={7} totalSteps={7} label="Tổng kết">
       <MiniSummary
         points={[
           "Temperature chia logits trước softmax: T thấp → phân phối nhọn (chính xác), T cao → phẳng (sáng tạo)",
@@ -375,6 +394,7 @@ creative = client.messages.create(
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }
