@@ -41,7 +41,7 @@ export default function DifficultyFilter({
             {f.label}
             <span
               className={`text-xs ${
-                isActive ? "text-white/70" : "text-muted/60"
+                isActive ? "text-white/70" : "text-tertiary"
               }`}
             >
               {count}

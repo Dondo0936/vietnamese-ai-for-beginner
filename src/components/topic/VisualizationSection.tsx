@@ -8,7 +8,7 @@ export default function VisualizationSection({
   children,
 }: VisualizationSectionProps) {
   return (
-    <section className="my-8">
+    <section id="visualization" className="my-8 scroll-mt-20">
       <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
         <Eye size={20} className="text-accent" />
         Hình minh họa

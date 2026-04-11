@@ -346,7 +346,7 @@ print("Inertia:", kmeans.inertia_)`}
 
         {/* STEP 7: SUMMARY */}
         <MiniSummary points={[
-          "K-Means chia dữ liệu thành K cụm bằng cách lặp: gán điểm \u2192 dời tâm \u2192 lặp lại.",
+          "K-Means chia dữ liệu thành K cụm bằng cách lặp: gán điểm → dời tâm → lặp lại.",
           "Khởi tạo tâm ảnh hưởng lớn — K-Means++ giúp chọn tâm ban đầu thông minh hơn.",
           "Phải chọn K trước — dùng phương pháp Elbow để tìm K tối ưu.",
           "Chỉ hiệu quả với cụm hình cầu — dùng DBSCAN cho cụm hình dạng phức tạp.",

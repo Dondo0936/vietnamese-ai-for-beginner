@@ -1,16 +1,51 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────── */
+/* Light theme                                     */
+/* ─────────────────────────────────────────────── */
 :root {
-  --bg-primary: #F8FAFC;
+  --bg-primary: #FAFAFA;
   --bg-card: #FFFFFF;
-  --bg-dark: #0F172A;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --accent: #14B8A6;
+  --bg-dark: #09090B;
+  --bg-surface: #F4F4F5;
+  --bg-surface-hover: #E4E4E7;
+  --text-primary: #09090B;
+  --text-secondary: #3F3F46;
+  --text-tertiary: #71717A;
+  --accent: #0D9488;
   --accent-light: #CCFBF1;
-  --accent-dark: #0D9488;
-  --border: #E2E8F0;
+  --accent-dark: #0F766E;
+  --border: #E4E4E7;
   --analogy-bg: #F0FDFA;
+  --shadow-color: 0 0% 0%;
+  --ring: #0D9488;
+  --hero-gradient-from: #0D9488;
+  --hero-gradient-to: #2563EB;
+  color-scheme: light;
+}
+
+/* ─────────────────────────────────────────────── */
+/* Dark theme                                      */
+/* ─────────────────────────────────────────────── */
+.dark {
+  --bg-primary: #09090B;
+  --bg-card: #18181B;
+  --bg-dark: #000000;
+  --bg-surface: #27272A;
+  --bg-surface-hover: #3F3F46;
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-tertiary: #71717A;
+  --accent: #2DD4BF;
+  --accent-light: rgba(45, 212, 191, 0.1);
+  --accent-dark: #14B8A6;
+  --border: #27272A;
+  --analogy-bg: rgba(20, 184, 166, 0.06);
+  --shadow-color: 220 60% 2%;
+  --ring: #2DD4BF;
+  --hero-gradient-from: #2DD4BF;
+  --hero-gradient-to: #818CF8;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -22,8 +57,12 @@
   --color-card: var(--bg-card);
   --color-dark: var(--bg-dark);
   --color-muted: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
   --color-border: var(--border);
   --color-analogy: var(--analogy-bg);
+  --color-surface: var(--bg-surface);
+  --color-surface-hover: var(--bg-surface-hover);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -34,19 +73,76 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Vietnamese diacritics need generous line height */
+/* Vietnamese diacritics */
 p, li, span, label {
   line-height: 1.7;
 }
 
-/* Editorial max-width for content readability */
 .content-width {
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Analogy callout card */
+/* ─────────────────────────────────────────────── */
+/* Brilliance-style dot grid background            */
+/* ─────────────────────────────────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─────────────────────────────────────────────── */
+/* Hero gradient text                              */
+/* ─────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--hero-gradient-from), var(--hero-gradient-to));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─────────────────────────────────────────────── */
+/* Cards — shadow-first, not border-first          */
+/* ─────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+}
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03);
+  transform: translateY(-1px);
+}
+.dark .card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.dark .card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent);
+}
+
+/* ─────────────────────────────────────────────── */
+/* Solid tags — high contrast in both modes        */
+/* ─────────────────────────────────────────────── */
+.tag-beginner {
+  background: #059669;
+  color: #FFFFFF;
+}
+.tag-intermediate {
+  background: #D97706;
+  color: #FFFFFF;
+}
+.tag-advanced {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+
+/* ─────────────────────────────────────────────── */
+/* Analogy card                                    */
+/* ─────────────────────────────────────────────── */
 .analogy-card {
   background: var(--analogy-bg);
   border-left: 3px solid var(--accent);
@@ -60,6 +156,90 @@ p, li, span, label {
 }
 
 /* Smooth scrolling */
-html {
+html[data-scroll-behavior="smooth"] {
   scroll-behavior: smooth;
+}
+
+/* ─────────────────────────────────────────────── */
+/* Reading progress bar                            */
+/* ─────────────────────────────────────────────── */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 100;
+  transition: width 50ms linear;
+}
+
+/* ─────────────────────────────────────────────── */
+/* Command palette backdrop                        */
+/* ─────────────────────────────────────────────── */
+.cmd-backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+.dark .cmd-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* ─────────────────────────────────────────────── */
+/* Scrollbar                                       */
+/* ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* Bottom nav spacing */
+@media (max-width: 768px) {
+  .has-bottom-nav { padding-bottom: 4.5rem; }
+}
+
+/* ─────────────────────────────────────────────── */
+/* Quiz                                            */
+/* ─────────────────────────────────────────────── */
+.quiz-option { transition: all 0.2s ease; }
+.quiz-option:hover:not(.quiz-selected):not(.quiz-disabled) {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.quiz-correct { border-color: #059669 !important; background: rgba(5, 150, 105, 0.08) !important; }
+.quiz-wrong { border-color: #DC2626 !important; background: rgba(220, 38, 38, 0.08) !important; }
+
+/* ─────────────────────────────────────────────── */
+/* Code block                                      */
+/* ─────────────────────────────────────────────── */
+.code-block {
+  font-family: var(--font-geist-mono), 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+/* ─────────────────────────────────────────────── */
+/* KaTeX overrides                                 */
+/* ─────────────────────────────────────────────── */
+.katex-display {
+  margin: 1rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+.katex { font-size: 1.05em !important; }
+.katex-display > .katex { font-size: 1.15em !important; }
+
+/* ─────────────────────────────────────────────── */
+/* Skeleton loading                                */
+/* ─────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-surface-hover) 50%, var(--bg-surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 0.5rem;
 }

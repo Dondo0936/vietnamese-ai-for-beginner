@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { BookOpen, Zap, Eye } from "lucide-react";
 import HeroSearch from "./HeroSearch";
 import TopicGrid from "./TopicGrid";
 import CategorySection from "./CategorySection";
@@ -16,7 +17,6 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
   const [difficulty, setDifficulty] = useState<Difficulty | "all">("all");
   const [readTopics, setReadTopics] = useState<string[]>([]);
   const [bookmarks, setBookmarks] = useState<string[]>([]);
-
   useEffect(() => {
     getUserProgress().then((progress) => {
       setReadTopics(progress.readTopics);
@@ -62,6 +62,11 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
     return map;
   }, [filtered]);
 
+  const interactiveCount = useMemo(
+    () => topics.filter((t) => t.vizType === "interactive").length,
+    [topics]
+  );
+
   return (
     <>
       <HeroSearch
@@ -71,6 +76,34 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
         counts={counts}
       />
 
+      {/* Stats banner */}
+      <section className="mx-auto max-w-6xl px-4 pb-6">
+        <div className="grid grid-cols-3 gap-3">
+          <div className="rounded-lg border border-border bg-card p-3 text-center">
+            <div className="flex items-center justify-center gap-1.5 text-accent mb-1">
+              <BookOpen size={16} />
+            </div>
+            <div className="text-xl font-bold text-foreground">{topics.length}</div>
+            <div className="text-[11px] text-muted">chủ đề</div>
+          </div>
+          <div className="rounded-lg border border-border bg-card p-3 text-center">
+            <div className="flex items-center justify-center gap-1.5 text-accent mb-1">
+              <Eye size={16} />
+            </div>
+            <div className="text-xl font-bold text-foreground">{interactiveCount}</div>
+            <div className="text-[11px] text-muted">tương tác</div>
+          </div>
+          <div className="rounded-lg border border-border bg-card p-3 text-center">
+            <div className="flex items-center justify-center gap-1.5 text-accent mb-1">
+              <Zap size={16} />
+            </div>
+            <div className="text-xl font-bold text-foreground">{categories.length}</div>
+            <div className="text-[11px] text-muted">danh mục</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Progress bar */}
       {readTopics.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 pb-6">
           <div className="rounded-lg border border-border bg-card p-4">
@@ -82,7 +115,7 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
                 {readTopics.length}/{topics.length} chủ đề đã đọc
               </span>
             </div>
-            <div className="h-2 w-full rounded-full bg-slate-200">
+            <div className="h-2 w-full rounded-full bg-surface">
               <div
                 className="h-2 rounded-full bg-accent transition-all duration-500"
                 style={{ width: `${(readTopics.length / topics.length) * 100}%` }}
@@ -92,6 +125,19 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
         </section>
       )}
 
+      {/* Category cards */}
+      <section className="mx-auto max-w-6xl px-4 pb-8">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
+          Theo danh mục
+        </h2>
+        <CategorySection
+          categories={categories}
+          topicsByCategory={topicsByCategory}
+          readTopics={readTopics}
+        />
+      </section>
+
+      {/* All topics grid */}
       <section className="mx-auto max-w-6xl px-4 pb-12">
         <div className="flex items-baseline justify-between mb-4">
           <h2 className="text-lg font-semibold text-foreground">
@@ -115,15 +161,6 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
         />
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-16">
-        <h2 className="text-lg font-semibold text-foreground mb-6">
-          Theo danh mục
-        </h2>
-        <CategorySection
-          categories={categories}
-          topicsByCategory={topicsByCategory}
-        />
-      </section>
     </>
   );
 }

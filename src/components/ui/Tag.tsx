@@ -5,22 +5,30 @@ interface TagProps {
   variant?: "default" | "difficulty";
 }
 
-const difficultyColors: Record<Difficulty, string> = {
-  beginner: "bg-green-100 text-green-700",
-  intermediate: "bg-amber-100 text-amber-700",
-  advanced: "bg-red-100 text-red-700",
+const difficultyLabels: Record<string, string> = {
+  beginner: "Cơ bản",
+  intermediate: "Trung bình",
+  advanced: "Nâng cao",
 };
 
 export default function Tag({ label, variant = "default" }: TagProps) {
-  const base = "inline-block rounded-full px-3 py-1 text-sm font-medium";
+  const base = "inline-block rounded-full px-3 py-0.5 text-xs font-semibold";
 
   if (variant === "difficulty") {
-    const colors =
-      difficultyColors[label as Difficulty] ?? "bg-gray-100 text-gray-700";
-    return <span className={`${base} ${colors}`}>{label}</span>;
+    const tagClass =
+      label === "beginner" ? "tag-beginner" :
+      label === "intermediate" ? "tag-intermediate" :
+      label === "advanced" ? "tag-advanced" :
+      "bg-surface text-muted";
+
+    return (
+      <span className={`${base} ${tagClass}`}>
+        {difficultyLabels[label] ?? label}
+      </span>
+    );
   }
 
   return (
-    <span className={`${base} bg-accent-light text-teal-700`}>{label}</span>
+    <span className={`${base} bg-surface text-muted`}>{label}</span>
   );
 }
