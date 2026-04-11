@@ -243,9 +243,9 @@ export default function PromptEngineeringTopic() {
                   Prompt
                 </span>
               </div>
-              <pre className="text-sm text-foreground whitespace-pre-wrap font-mono leading-relaxed">
+              <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
                 {current.prompt}
-              </pre>
+              </p>
             </div>
 
             {/* Output */}
@@ -329,9 +329,9 @@ export default function PromptEngineeringTopic() {
                   <span className="text-[10px] font-semibold text-tertiary uppercase tracking-wider block mb-2">
                     Prompt
                   </span>
-                  <pre className="text-xs text-foreground whitespace-pre-wrap font-mono leading-relaxed">
+                  <p className="text-xs text-foreground whitespace-pre-wrap leading-relaxed">
                     {tech.prompt}
-                  </pre>
+                  </p>
                 </div>
 
                 {/* Output */}
@@ -339,9 +339,9 @@ export default function PromptEngineeringTopic() {
                   <span className="text-[10px] font-semibold text-accent uppercase tracking-wider block mb-2">
                     Output
                   </span>
-                  <pre className="text-xs text-foreground whitespace-pre-wrap font-mono leading-relaxed">
+                  <p className="text-xs text-foreground whitespace-pre-wrap leading-relaxed">
                     {tech.output}
-                  </pre>
+                  </p>
                 </div>
               </div>
             ),
@@ -377,7 +377,7 @@ export default function PromptEngineeringTopic() {
 
         <p><strong>Công thức prompt hiệu quả:</strong></p>
         <div className="rounded-lg bg-surface p-4 my-3">
-          <p className="text-sm font-mono text-foreground">
+          <p className="text-sm font-semibold text-foreground">
             <strong>Vai trò</strong> + <strong>Nhiệm vụ cụ thể</strong> + <strong>Ngữ cảnh</strong> + <strong>Format output</strong> + <strong>Ví dụ mẫu</strong> (nếu cần)
           </p>
         </div>

@@ -303,7 +303,7 @@ export default function LLMOverviewTopic() {
 
       {/* ━━━ AHA MOMENT ━━━ */}
       <AhaMoment>
-        Bạn vừa làm chính xác điều mà <strong>Mô hình Ngôn ngữ Lớn (LLM)</strong> làm:
+        Bạn vừa làm chính xác điều mà <strong>Mô hình Ngôn ngữ Lớn (LLM)</strong>{" "}làm:
         nhìn vào ngữ cảnh, suy ra từ tiếp theo phù hợp nhất. Chỉ từ nhiệm vụ đơn giản
         &quot;dự đoán từ tiếp theo&quot; lặp lại hàng nghìn tỷ lần, LLM phát triển khả
         năng viết, dịch, sáng tạo, và suy luận!
@@ -437,7 +437,7 @@ export default function LLMOverviewTopic() {
               transition={{ delay: i * 0.08 }}
               className="flex items-center gap-3 rounded-lg bg-surface p-3"
             >
-              <span className="text-xs font-mono text-tertiary w-10 shrink-0">{item.year}</span>
+              <span className="text-xs tabular-nums text-tertiary w-10 shrink-0">{item.year}</span>
               <div className="h-2 w-2 rounded-full bg-accent shrink-0" />
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-semibold text-foreground">{item.name}</span>
@@ -483,7 +483,7 @@ export default function LLMOverviewTopic() {
         <p>Công thức cốt lõi:</p>
         <LaTeX block>{"P(w_{\\text{next}} \\mid w_1, w_2, ..., w_n) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right) V"}</LaTeX>
         <p>
-          Đây là cơ chế <strong>self-attention</strong> trong Transformer — cho phép mỗi từ
+          Đây là cơ chế <strong>self-attention</strong>{" "}trong Transformer — cho phép mỗi từ
           &quot;nhìn&quot; mọi từ khác để hiểu ngữ cảnh trước khi dự đoán.
         </p>
 
