@@ -8,6 +8,9 @@ export default function Footer() {
         <p className="mt-2 text-xs text-slate-500">
           Một dự án mã nguồn mở giúp bạn tiếp cận AI dễ dàng hơn.
         </p>
+        <p className="mt-3 text-xs text-slate-500">
+          Created by Tien Dat Do
+        </p>
       </div>
     </footer>
   );

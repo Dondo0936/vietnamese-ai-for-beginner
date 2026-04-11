@@ -45,7 +45,7 @@ export default function SearchBar({ topics }: SearchBarProps) {
     }
     const found = searchTopics(value);
     setResults(found.slice(0, 6));
-    setIsOpen(found.length > 0);
+    setIsOpen(true);
     setActiveIndex(-1);
   }, []);
 
@@ -91,26 +91,32 @@ export default function SearchBar({ topics }: SearchBarProps) {
         />
       </div>
 
-      {isOpen && results.length > 0 && (
-        <ul className="absolute z-40 mt-1.5 w-full rounded-lg border border-border bg-white shadow-lg overflow-hidden">
-          {results.map((topic, i) => (
-            <li key={topic.slug}>
-              <button
-                type="button"
-                onClick={() => navigate(topic.slug)}
-                onMouseEnter={() => setActiveIndex(i)}
-                className={`w-full text-left px-4 py-3 flex flex-col gap-0.5 transition-colors ${
-                  i === activeIndex ? "bg-accent-light" : "hover:bg-slate-50"
-                }`}
-              >
-                <span className="text-sm font-medium text-foreground">
-                  {topic.title}
-                </span>
-                <span className="text-xs text-muted">{topic.titleVi}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
+      {isOpen && (
+        results.length > 0 ? (
+          <ul className="absolute z-40 mt-1.5 w-full rounded-lg border border-border bg-white shadow-lg overflow-hidden">
+            {results.map((topic, i) => (
+              <li key={topic.slug}>
+                <button
+                  type="button"
+                  onClick={() => navigate(topic.slug)}
+                  onMouseEnter={() => setActiveIndex(i)}
+                  className={`w-full text-left px-4 py-3 flex flex-col gap-0.5 transition-colors ${
+                    i === activeIndex ? "bg-accent-light" : "hover:bg-slate-50"
+                  }`}
+                >
+                  <span className="text-sm font-medium text-foreground">
+                    {topic.title}
+                  </span>
+                  <span className="text-xs text-muted">{topic.titleVi}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="absolute z-40 mt-1.5 w-full rounded-lg border border-border bg-white shadow-lg px-4 py-3 text-sm text-muted">
+            Không tìm thấy kết quả
+          </div>
+        )
       )}
     </div>
   );
