@@ -137,7 +137,7 @@ export default function RegularizationTopic() {
       ],
       correct: 1,
       explanation:
-        "Mỗi training step, 50% nơ-ron bị \"tắt\" (output = 0). Bước tiếp theo, bộ nơ-ron bị tắt lại khác. Khi inference, TẤT CẢ nơ-ron đều hoạt động (output × 0.5 để bù).",
+        "Mỗi training step, 50% nơ-ron bị 'tắt' (output = 0). Bước tiếp theo, bộ nơ-ron bị tắt lại khác. Khi inference, TẤT CẢ nơ-ron đều hoạt động (output × 0.5 để bù).",
     },
     {
       question:
@@ -162,12 +162,12 @@ export default function RegularizationTopic() {
           question="Đội bóng có 1 ngôi sao ghi 90% bàn thắng. Khi ngôi sao chấn thương, đội thua liên tục. Huấn luyện viên nên làm gì?"
           options={[
             "Tìm ngôi sao mới giỏi hơn",
-            "Bắt cả đội tập đều nhau, không ai được \"ôm\" quá nhiều bóng — ai cũng phải biết ghi bàn",
+            "Bắt cả đội tập đều nhau, không ai được 'ôm' quá nhiều bóng — ai cũng phải biết ghi bàn",
             "Cho ngôi sao chơi nhiều hơn để bù",
             "Không làm gì — phụ thuộc ngôi sao là bình thường",
           ]}
           correct={1}
-          explanation="Buộc mọi cầu thủ đóng góp đều = Regularization! Trong mạng nơ-ron, nó ngăn vài trọng số quá lớn (\"ngôi sao\") chi phối toàn bộ mô hình."
+          explanation="Buộc mọi cầu thủ đóng góp đều = Regularization! Trong mạng nơ-ron, nó ngăn vài trọng số quá lớn ('ngôi sao') chi phối toàn bộ mô hình."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Regularization ép mạng &quot;chia sẻ vai trò&quot; đều hơn.

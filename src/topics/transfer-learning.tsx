@@ -60,7 +60,7 @@ const quizQuestions: QuizQuestion[] = [
       "Không cần — dùng LR bình thường",
     ],
     correct: 1,
-    explanation: "Trọng số pretrained đã \"biết\" phát hiện cạnh, hình dạng, vật thể. LR lớn (ví dụ 0.01) sẽ thay đổi quá mạnh → phá hỏng kiến thức. LR nhỏ (ví dụ 1e-5) tinh chỉnh nhẹ nhàng → giữ kiến thức cũ + thích nghi bài toán mới.",
+    explanation: "Trọng số pretrained đã 'biết' phát hiện cạnh, hình dạng, vật thể. LR lớn (ví dụ 0.01) sẽ thay đổi quá mạnh → phá hỏng kiến thức. LR nhỏ (ví dụ 1e-5) tinh chỉnh nhẹ nhàng → giữ kiến thức cũ + thích nghi bài toán mới.",
   },
   {
     question: "GPT, BERT, LLaMA đều là mô hình pretrained. Đây là ví dụ transfer learning ở đâu?",
@@ -70,7 +70,7 @@ const quizQuestions: QuizQuestion[] = [
       "Chỉ trong Reinforcement Learning",
     ],
     correct: 1,
-    explanation: "Mô hình NLP lớn pretrain trên hàng tỷ từ → học \"hiểu ngôn ngữ\" tổng quát. Fine-tune cho chatbot (ChatGPT), dịch máy, tóm tắt, phân loại... Paradigm \"pretrain once, fine-tune many\" thống trị AI hiện đại.",
+    explanation: "Mô hình NLP lớn pretrain trên hàng tỷ từ → học 'hiểu ngôn ngữ' tổng quát. Fine-tune cho chatbot (ChatGPT), dịch máy, tóm tắt, phân loại... Paradigm 'pretrain once, fine-tune many' thống trị AI hiện đại.",
   },
 ];
 
@@ -249,7 +249,7 @@ optimizer = torch.optim.Adam([
         <MiniSummary
           title="Ghi nhớ về Transfer Learning"
           points={[
-            "Tận dụng pretrained model → tiết kiệm 99% dữ liệu và thời gian. \"Pre-train once, fine-tune many\".",
+            "Tận dụng pretrained model → tiết kiệm 99% dữ liệu và thời gian. 'Pre-train once, fine-tune many'.",
             "Feature Extraction: đóng băng toàn bộ, chỉ train lớp cuối (ít dữ liệu, nhanh).",
             "Fine-tuning: mở đông vài lớp trên, train với LR nhỏ (trung bình dữ liệu).",
             "Lớp nông = đặc trưng universal (cạnh, kết cấu). Lớp sâu = task-specific (cần thay đổi).",

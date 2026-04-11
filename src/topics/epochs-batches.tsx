@@ -537,7 +537,7 @@ for i, (x, y) in enumerate(loader):
             "Mô hình train nhanh hơn vì không tốn thời gian shuffle",
           ]}
           correct={1}
-          explanation="Không shuffle → mỗi epoch batch giống hệt nhau → gradient cùng pattern → mô hình có thể \"nhớ\" thứ tự thay vì học nội dung. Luôn shuffle=True cho training data!"
+          explanation="Không shuffle → mỗi epoch batch giống hệt nhau → gradient cùng pattern → mô hình có thể 'nhớ' thứ tự thay vì học nội dung. Luôn shuffle=True cho training data!"
         />
       </LessonSection>
 

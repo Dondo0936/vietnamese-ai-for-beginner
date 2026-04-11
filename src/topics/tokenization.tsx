@@ -259,8 +259,8 @@ export default function TokenizationTopic() {
               BPE bắt đầu từ các ký tự đơn, rồi lặp lại ghép cặp xuất hiện nhiều nhất. Ví dụ: nếu {'"e"'} và {'"s"'} thường đi cùng nhau, BPE sẽ tạo token {'"es"'}.
             </p>
             <div className="mt-2">
-              <LaTeX display>{`V^{(0)} = \\{\\text{tất cả ký tự}\\}`}</LaTeX>
-              <LaTeX display>{`V^{(t+1)} = V^{(t)} \\cup \\{\\text{cặp xuất hiện nhiều nhất}\\}`}</LaTeX>
+              <LaTeX block>{`V^{(0)} = \\{\\text{tất cả ký tự}\\}`}</LaTeX>
+              <LaTeX block>{`V^{(t+1)} = V^{(t)} \\cup \\{\\text{cặp xuất hiện nhiều nhất}\\}`}</LaTeX>
             </div>
             <p className="mt-2 text-sm">
               Lặp cho đến khi đạt kích thước từ vựng mong muốn (GPT-4 dùng ~100K token).

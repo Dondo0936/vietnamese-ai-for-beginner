@@ -305,7 +305,7 @@ export default function NerTopic() {
                 <strong>CRF (Conditional Random Field):</strong>{" "}
                 Đảm bảo nhãn hợp lệ (I-PER không xuất hiện sau B-LOC).
               </p>
-              <LaTeX display>{`P(\\mathbf{y}|\\mathbf{x}) = \\frac{\\exp(\\sum_t s(y_t, \\mathbf{x}) + T(y_{t-1}, y_t))}{\\sum_{\\mathbf{y'}} \\exp(\\sum_t s(y'_t, \\mathbf{x}) + T(y'_{t-1}, y'_t))}`}</LaTeX>
+              <LaTeX block>{`P(\\mathbf{y}|\\mathbf{x}) = \\frac{\\exp(\\sum_t s(y_t, \\mathbf{x}) + T(y_{t-1}, y_t))}{\\sum_{\\mathbf{y'}} \\exp(\\sum_t s(y'_t, \\mathbf{x}) + T(y'_{t-1}, y'_t))}`}</LaTeX>
               <p className="text-sm">
                 Trong đó s = emission score (BERT), T = transition score (CRF). CRF học rằng I-PER chỉ hợp lệ sau B-PER hoặc I-PER.
               </p>

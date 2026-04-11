@@ -191,7 +191,7 @@ export default function GradientDescentTopic() {
             <p className="text-sm text-muted text-center">
               {pos === null
                 ? "Nhấp vào đường cong để đặt vị trí xuất phát, rồi tự tay tối ưu!"
-                : "Nhấn \"Bước tiếp\" để đi theo hướng gradient. Thử thay đổi learning rate!"}
+                : "Nhấn 'Bước tiếp' để đi theo hướng gradient. Thử thay đổi learning rate!"}
             </p>
 
             {/* SVG loss curve */}

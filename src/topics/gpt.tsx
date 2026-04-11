@@ -270,7 +270,7 @@ export default function GptTopic() {
 
           <Callout variant="insight" title="Mục tiêu huấn luyện">
             <p>Tối đa xác suất chuỗi (language modeling objective):</p>
-            <LaTeX display>{`\\max_{\\theta} \\sum_{t=1}^{T} \\log P(w_t | w_1, w_2, \\ldots, w_{t-1}; \\theta)`}</LaTeX>
+            <LaTeX block>{`\\max_{\\theta} \\sum_{t=1}^{T} \\log P(w_t | w_1, w_2, \\ldots, w_{t-1}; \\theta)`}</LaTeX>
             <p className="mt-2 text-sm">
               Với mỗi token, mô hình dự đoán phân phối xác suất trên toàn bộ từ vựng. Token có xác suất cao nhất (hoặc được sampling) trở thành output.
             </p>

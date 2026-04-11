@@ -280,7 +280,7 @@ export default function GloveTopic() {
 
           <Callout variant="insight" title="Hàm mất mát GloVe">
             <p>GloVe tối ưu để tích vô hướng vector xấp xỉ logarithm đồng xuất hiện:</p>
-            <LaTeX display>{`J = \\sum_{i,j=1}^{V} f(X_{ij}) \\left( \\mathbf{w}_i^{\\top} \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j - \\log X_{ij} \\right)^2`}</LaTeX>
+            <LaTeX block>{`J = \\sum_{i,j=1}^{V} f(X_{ij}) \\left( \\mathbf{w}_i^{\\top} \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j - \\log X_{ij} \\right)^2`}</LaTeX>
             <p className="mt-2 text-sm">
               Trong đó <LaTeX>{`X_{ij}`}</LaTeX>{" "}
               là số lần từ i và j đồng xuất hiện, <LaTeX>{`f(X_{ij})`}</LaTeX>{" "}
@@ -289,7 +289,7 @@ export default function GloveTopic() {
           </Callout>
 
           <Callout variant="info" title="Hàm trọng số f(x)">
-            <LaTeX display>{`f(x) = \\begin{cases} (x/x_{\\max})^{\\alpha} & \\text{nếu } x < x_{\\max} \\\\ 1 & \\text{nếu } x \\geq x_{\\max} \\end{cases}`}</LaTeX>
+            <LaTeX block>{`f(x) = \\begin{cases} (x/x_{\\max})^{\\alpha} & \\text{nếu } x < x_{\\max} \\\\ 1 & \\text{nếu } x \\geq x_{\\max} \\end{cases}`}</LaTeX>
             <p className="mt-2 text-sm">
               Với <LaTeX>{`x_{\\max} = 100`}</LaTeX>{" "}
               và <LaTeX>{`\\alpha = 0.75`}</LaTeX>. Cặp từ đồng xuất hiện ít được đánh trọng số nhỏ hơn (vì thống kê không đáng tin cậy).

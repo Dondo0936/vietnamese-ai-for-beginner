@@ -35,7 +35,7 @@ const quizQuestions: QuizQuestion[] = [
       "Học cách mã hóa nhị phân 0/1",
     ],
     correct: 1,
-    explanation: "Bottleneck buộc mạng phải \"ép\" 784 chiều vào 2 số. Nó sẽ tự học 2 đặc trưng quan trọng nhất — ví dụ: nghiêng trái/phải và nét đậm/nhạt. Đây là giảm chiều phi tuyến!",
+    explanation: "Bottleneck buộc mạng phải 'ép' 784 chiều vào 2 số. Nó sẽ tự học 2 đặc trưng quan trọng nhất — ví dụ: nghiêng trái/phải và nét đậm/nhạt. Đây là giảm chiều phi tuyến!",
   },
   {
     question: "Denoising Autoencoder nhận input bị nhiễu nhưng target là ảnh sạch. Tại sao?",
@@ -46,13 +46,13 @@ const quizQuestions: QuizQuestion[] = [
       "Để giảm kích thước bottleneck",
     ],
     correct: 1,
-    explanation: "Nếu input có nhiễu mà output phải sạch, mạng không thể \"copy\" trực tiếp — phải hiểu bản chất dữ liệu để lọc nhiễu. Biểu diễn latent sẽ robust hơn autoencoder thường.",
+    explanation: "Nếu input có nhiễu mà output phải sạch, mạng không thể 'copy' trực tiếp — phải hiểu bản chất dữ liệu để lọc nhiễu. Biểu diễn latent sẽ robust hơn autoencoder thường.",
   },
   {
     question: "Autoencoder thường có loss thấp nhưng không thể sinh dữ liệu mới tốt. Tại sao?",
     options: [
       "Vì loss quá thấp = overfitting",
-      "Vì latent space không liên tục — lấy mẫu ngẫu nhiên sẽ rơi vào vùng \"trống\" không có nghĩa",
+      "Vì latent space không liên tục — lấy mẫu ngẫu nhiên sẽ rơi vào vùng 'trống' không có nghĩa",
       "Vì decoder quá yếu",
       "Vì bottleneck quá lớn",
     ],
@@ -197,7 +197,7 @@ export default function AutoencoderTopic() {
               {bottleneck <= 2 && "Nén cực mạnh → chỉ giữ bản chất nhất"}
               {bottleneck === 3 && "Nén tốt → cân bằng giữa nén và chất lượng"}
               {bottleneck >= 4 && bottleneck <= 5 && "Nén nhẹ → giữ nhiều chi tiết"}
-              {bottleneck >= 6 && "Gần như không nén → dễ \"copy\" thay vì học"}
+              {bottleneck >= 6 && "Gần như không nén → dễ 'copy' thay vì học"}
             </span>
           </div>
         </VisualizationSection>
@@ -275,11 +275,11 @@ export default function AutoencoderTopic() {
           question="Autoencoder bottleneck bằng kích thước input (ví dụ: 784 → 784 → 784). Mạng sẽ học gì?"
           options={[
             "Học biểu diễn nén hiệu quả như bình thường",
-            "Có thể chỉ \"copy\" input → output mà không học gì hữu ích (identity function)",
+            "Có thể chỉ 'copy' input → output mà không học gì hữu ích (identity function)",
             "Không thể train được — loss luôn bằng 0",
           ]}
           correct={1}
-          explanation="Khi bottleneck = input size, mạng có thể đơn giản copy input → output (identity mapping). Bottleneck phải NHỎ HƠN input để buộc mạng nén — đây là nguồn gốc tên \"cổ chai\". Denoising AE giải quyết bằng cách thêm nhiễu."
+          explanation="Khi bottleneck = input size, mạng có thể đơn giản copy input → output (identity mapping). Bottleneck phải NHỎ HƠN input để buộc mạng nén — đây là nguồn gốc tên 'cổ chai'. Denoising AE giải quyết bằng cách thêm nhiễu."
         />
       </LessonSection>
 

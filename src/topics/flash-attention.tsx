@@ -46,7 +46,7 @@ const quizQuestions: QuizQuestion[] = [
     explanation: "GPU A100: 312 TFLOPS compute nhưng chỉ 2TB/s HBM bandwidth. Attention matrix N×N phải đọc từ HBM → SRAM, tính softmax, ghi lại HBM → nhiều trips. Flash Attention giữ data trong SRAM, giảm HBM trips → nhanh 2-4×.",
   },
   {
-    question: "Flash Attention dùng \"online softmax\". Tại sao cần kỹ thuật này?",
+    question: "Flash Attention dùng 'online softmax'. Tại sao cần kỹ thuật này?",
     options: [
       "Để softmax chính xác hơn",
       "Vì softmax cần max(row) trước khi tính — nhưng ta chỉ có 1 block, chưa thấy cả hàng. Online softmax tích lũy max/sum dần → kết quả chính xác",
@@ -262,7 +262,7 @@ export default function FlashAttentionTopic() {
             "~32GB (giảm một nửa)",
           ]}
           correct={1}
-          explanation="Flash Attention không lưu ma trận N×N! Chỉ cần: 1 block Q, K, V (~vài KB mỗi cái) + running max, sum cho online softmax (~vài KB). Tổng ~0.5MB thay vì 64GB. Giảm ~130.000×! Đây là lý do LLM có context window 128K+ tokens.",
+          explanation="Flash Attention không lưu ma trận NxN. Chỉ cần 1 block Q, K, V và running stats cho online softmax. Tổng khoảng 0.5MB thay vì 64GB — giảm hơn 100.000 lần! Đây là lý do LLM có context window 128K+ tokens."
         />
       </LessonSection>
 

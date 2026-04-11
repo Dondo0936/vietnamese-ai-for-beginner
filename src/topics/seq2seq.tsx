@@ -287,10 +287,10 @@ export default function Seq2SeqTopic() {
           <Callout variant="insight" title="Kiến trúc Seq2Seq">
             <div className="space-y-3">
               <p className="font-medium">Encoder: nén input thành context vector c</p>
-              <LaTeX display>{`h_t = f(h_{t-1}, x_t), \\quad c = h_T`}</LaTeX>
+              <LaTeX block>{`h_t = f(h_{t-1}, x_t), \\quad c = h_T`}</LaTeX>
               <p className="font-medium">Decoder: sinh output từng token một</p>
-              <LaTeX display>{`s_t = g(s_{t-1}, y_{t-1}, c)`}</LaTeX>
-              <LaTeX display>{`P(y_t | y_{<t}, x) = \\text{softmax}(W_o \\cdot s_t)`}</LaTeX>
+              <LaTeX block>{`s_t = g(s_{t-1}, y_{t-1}, c)`}</LaTeX>
+              <LaTeX block>{`P(y_t | y_{<t}, x) = \\text{softmax}(W_o \\cdot s_t)`}</LaTeX>
             </div>
           </Callout>
 

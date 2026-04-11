@@ -29,7 +29,7 @@ type Choice = "yes" | "no" | null;
 
 interface TreeNode {
   id: string;
-  question: string;
+  question?: string;
   yesChild?: string;
   noChild?: string;
   result?: string;

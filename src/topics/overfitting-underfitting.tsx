@@ -144,7 +144,7 @@ export default function OverfittingUnderfittingTopic() {
     return {
       text: "Quá khớp (Overfitting)",
       color: "#ef4444",
-      desc: "Mô hình quá phức tạp — \"thuộc lòng\" cả nhiễu trong dữ liệu huấn luyện",
+      desc: "Mô hình quá phức tạp — 'thuộc lòng' cả nhiễu trong dữ liệu huấn luyện",
     };
   }, [complexity]);
 
@@ -179,7 +179,7 @@ export default function OverfittingUnderfittingTopic() {
       ],
       correct: 1,
       explanation:
-        "Khoảng cách lớn giữa train loss (0.01) và val loss (2.5) là dấu hiệu rõ ràng của overfitting. Mô hình \"thuộc lòng\" train data nhưng không tổng quát hóa được.",
+        "Khoảng cách lớn giữa train loss (0.01) và val loss (2.5) là dấu hiệu rõ ràng của overfitting. Mô hình 'thuộc lòng' train data nhưng không tổng quát hóa được.",
     },
     {
       question:
@@ -221,7 +221,7 @@ export default function OverfittingUnderfittingTopic() {
             "Không ảnh hưởng",
           ]}
           correct={1}
-          explanation="Thuộc lòng mà không hiểu = Overfitting! Mô hình \"thuộc\" dữ liệu huấn luyện (kể cả nhiễu) nhưng thất bại trên dữ liệu mới. Giống sinh viên học vẹt vậy."
+          explanation="Thuộc lòng mà không hiểu = Overfitting! Mô hình 'thuộc' dữ liệu huấn luyện (kể cả nhiễu) nhưng thất bại trên dữ liệu mới. Giống sinh viên học vẹt vậy."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Bây giờ hãy <strong className="text-foreground">kéo thanh phức tạp</strong>{" "}
@@ -705,7 +705,7 @@ model.load_state_dict(torch.load('best_model.pt'))`}
           title="Overfitting & Underfitting — Điểm chốt"
           points={[
             "Underfitting: mô hình quá đơn giản → train error cao, test error cao. Cần mạng lớn hơn hoặc train lâu hơn.",
-            "Overfitting: mô hình \"thuộc lòng\" dữ liệu → train error thấp nhưng test error cao. Cần regularization.",
+            "Overfitting: mô hình 'thuộc lòng' dữ liệu → train error thấp nhưng test error cao. Cần regularization.",
             "Dấu hiệu rõ nhất: val loss tăng lại sau khi giảm = bắt đầu overfit.",
             "Early stopping: lưu mô hình tại val loss thấp nhất — kỹ thuật đơn giản nhất chống overfitting.",
             "Quy trình: bắt đầu overfit (mạng lớn) → sau đó giảm overfit (regularization, thêm dữ liệu).",

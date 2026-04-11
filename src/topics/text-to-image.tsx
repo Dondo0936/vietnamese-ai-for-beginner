@@ -20,7 +20,7 @@ export const metadata: TopicMeta = {
 };
 
 const STEPS = [
-  { label: "Nhập prompt", desc: "\"Một chú mèo đang ngồi trên mặt trăng\"", color: "#3b82f6" },
+  { label: "Nhập prompt", desc: "'Một chú mèo đang ngồi trên mặt trăng'", color: "#3b82f6" },
   { label: "Mã hoá văn bản", desc: "Chuyển từ ngữ thành vector đặc trưng", color: "#8b5cf6" },
   { label: "Khởi tạo nhiễu", desc: "Bắt đầu từ ảnh hoàn toàn ngẫu nhiên", color: "#ef4444" },
   { label: "Khử nhiễu dần", desc: "Lặp lại 20-50 bước, ảnh rõ nét dần", color: "#f59e0b" },

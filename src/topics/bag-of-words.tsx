@@ -287,7 +287,7 @@ export default function BagOfWordsTopic() {
 
           <Callout variant="insight" title="Công thức BoW">
             <p>Cho từ vựng gồm V từ duy nhất, mỗi tài liệu d được biểu diễn bằng vector:</p>
-            <LaTeX display>{`\\mathbf{d} = [c(w_1, d),\\ c(w_2, d),\\ \\ldots,\\ c(w_V, d)]`}</LaTeX>
+            <LaTeX block>{`\\mathbf{d} = [c(w_1, d),\\ c(w_2, d),\\ \\ldots,\\ c(w_V, d)]`}</LaTeX>
             <p className="mt-2 text-sm">
               Trong đó <LaTeX>{`c(w_i, d)`}</LaTeX>{" "}
               là số lần từ <LaTeX>{`w_i`}</LaTeX>{" "}

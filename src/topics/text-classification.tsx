@@ -272,7 +272,7 @@ export default function TextClassificationTopic() {
 
           <Callout variant="insight" title="Softmax — đầu ra phân loại">
             <p>Mô hình tính xác suất cho mỗi nhãn bằng softmax:</p>
-            <LaTeX display>{`P(y = k | x) = \\frac{\\exp(\\mathbf{w}_k^{\\top} \\mathbf{h} + b_k)}{\\sum_{j=1}^{K} \\exp(\\mathbf{w}_j^{\\top} \\mathbf{h} + b_j)}`}</LaTeX>
+            <LaTeX block>{`P(y = k | x) = \\frac{\\exp(\\mathbf{w}_k^{\\top} \\mathbf{h} + b_k)}{\\sum_{j=1}^{K} \\exp(\\mathbf{w}_j^{\\top} \\mathbf{h} + b_j)}`}</LaTeX>
             <p className="mt-2 text-sm">
               Với <LaTeX>{`\\mathbf{h}`}</LaTeX>{" "}
               = biểu diễn văn b��n (từ BERT/BoW), K = số nhãn. Chọn nhãn có xác suất cao nhất.

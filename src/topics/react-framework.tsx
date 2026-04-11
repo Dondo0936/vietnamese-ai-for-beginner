@@ -26,10 +26,10 @@ interface Step {
 
 const DEMO_STEPS: Step[] = [
   { type: "thought", text: "Người dùng hỏi dân số Hà Nội. Tôi cần tra cứu thông tin này." },
-  { type: "action", text: "search(\"dân số Hà Nội 2024\")" },
+  { type: "action", text: "search('dân số Hà Nội 2024')" },
   { type: "observation", text: "Kết quả: Dân số Hà Nội khoảng 8,5 triệu người (2024)." },
   { type: "thought", text: "Đã có thông tin. Tôi sẽ trả lời người dùng." },
-  { type: "action", text: "respond(\"Dân số Hà Nội khoảng 8,5 triệu người.\")" },
+  { type: "action", text: "respond('Dân số Hà Nội khoảng 8,5 triệu người.')" },
 ];
 
 const COLOR_MAP = {

@@ -116,7 +116,7 @@ export default function InstanceSegmentationTopic() {
           {/* Comparison diagram */}
           <div className="flex flex-wrap gap-4 justify-center">
             {[
-              { name: "Phân loại ảnh", desc: "\"Có người và xe\"", color: "#3b82f6" },
+              { name: "Phân loại ảnh", desc: "'Có người và xe'", color: "#3b82f6" },
               { name: "Phát hiện đối tượng", desc: "Bounding box", color: "#22c55e" },
               { name: "Phân đoạn ngữ nghĩa", desc: "Pixel-level nhưng cùng màu", color: "#f59e0b" },
               { name: "Phân đoạn thể hiện", desc: "Pixel-level, màu riêng biệt", color: "#8b5cf6" },

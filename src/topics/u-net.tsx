@@ -49,7 +49,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Encoder U-Net giảm 256×256 xuống 16×16 (4 lần pooling). Decoder cần gì để phóng lên lại?",
     options: [
       "Chỉ dùng upsampling (nearest neighbor) là đủ",
-      "Transposed convolution (\"Conv ngược\") hoặc bilinear upsampling + conv, kết hợp skip features từ encoder",
+      "Transposed convolution ('Conv ngược') hoặc bilinear upsampling + conv, kết hợp skip features từ encoder",
       "Không thể phóng to lại — chỉ output 16×16",
     ],
     correct: 1,
@@ -80,7 +80,7 @@ export default function UNetTopic() {
             "Dùng autoencoder lớn hơn",
           ]}
           correct={1}
-          explanation="U-Net! Encoder nén để hiểu \"bức tranh tổng thể\" (đâu là đường, đâu là nhà). Decoder phóng to lại, nhưng nhận thêm chi tiết pixel từ encoder qua skip connections. Kết quả: phân đoạn chính xác đến từng pixel!"
+          explanation="U-Net! Encoder nén để hiểu 'bức tranh tổng thể' (đâu là đường, đâu là nhà). Decoder phóng to lại, nhưng nhận thêm chi tiết pixel từ encoder qua skip connections. Kết quả: phân đoạn chính xác đến từng pixel!"
         />
       </LessonSection>
 

@@ -68,7 +68,7 @@ const quizQuestions: QuizQuestion[] = [
       "Concat: 4096. W^O giảm xuống 512",
     ],
     correct: 0,
-    explanation: "Concat 8 heads: [head₁; head₂; ...; head₈] = 512 chiều (vì 8 × 64 = 512 = d_model). W^O (512×512) là ma trận \"trộn\" cho model tự học cách kết hợp thông tin từ các heads khác nhau.",
+    explanation: "Concat 8 heads: [head₁; head₂; ...; head₈] = 512 chiều (vì 8 × 64 = 512 = d_model). W^O (512×512) là ma trận 'trộn' cho model tự học cách kết hợp thông tin từ các heads khác nhau.",
   },
 ];
 

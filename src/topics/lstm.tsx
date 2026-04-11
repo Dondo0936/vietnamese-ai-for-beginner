@@ -53,7 +53,7 @@ const MEMORY_STATES = [
 
 const quizQuestions: QuizQuestion[] = [
   {
-    question: "LSTM có 3 cổng. Cổng nào cho phép \"nhớ\" thông tin qua hàng trăm bước?",
+    question: "LSTM có 3 cổng. Cổng nào cho phép 'nhớ' thông tin qua hàng trăm bước?",
     options: [
       "Cổng xuất (Output Gate) — vì nó tạo output",
       "Cổng quên (Forget Gate) — khi f ≈ 1, thông tin truyền thẳng qua cell state",
@@ -61,7 +61,7 @@ const quizQuestions: QuizQuestion[] = [
       "Không cổng nào — LSTM vẫn bị vanishing gradient",
     ],
     correct: 1,
-    explanation: "Khi Forget Gate output gần 1, cell state truyền thẳng qua (nhân với ~1 = giữ nguyên). Gradient cũng truyền thẳng qua phép nhân này → không bị biến mất. Đây là \"đường cao tốc\" cho gradient!",
+    explanation: "Khi Forget Gate output gần 1, cell state truyền thẳng qua (nhân với ~1 = giữ nguyên). Gradient cũng truyền thẳng qua phép nhân này → không bị biến mất. Đây là 'đường cao tốc' cho gradient!",
   },
   {
     question: "LSTM cell state và hidden state khác nhau thế nào?",
@@ -72,7 +72,7 @@ const quizQuestions: QuizQuestion[] = [
       "Hidden state lớn hơn cell state",
     ],
     correct: 1,
-    explanation: "Cell state (C) là \"băng chuyền\" bộ nhớ dài hạn, chỉ bị thay đổi bởi phép nhân/cộng nhẹ nhàng. Hidden state (h) = tanh(C) × output gate — là phiên bản \"lọc\" của cell state, dùng cho output và truyền sang bước tiếp.",
+    explanation: "Cell state (C) là 'băng chuyền' bộ nhớ dài hạn, chỉ bị thay đổi bởi phép nhân/cộng nhẹ nhàng. Hidden state (h) = tanh(C) × output gate — là phiên bản 'lọc' của cell state, dùng cho output và truyền sang bước tiếp.",
   },
   {
     question: "LSTM có khoảng bao nhiêu tham số so với RNN thông thường (cùng hidden size)?",
@@ -382,7 +382,7 @@ class LSTMClassifier(nn.Module):
         <MiniSummary
           title="Ghi nhớ về LSTM"
           points={[
-            "LSTM giải quyết vanishing gradient bằng cell state — \"đường cao tốc\" cho gradient truyền thẳng qua.",
+            "LSTM giải quyết vanishing gradient bằng cell state — 'đường cao tốc' cho gradient truyền thẳng qua.",
             "3 cổng sigmoid (forget, input, output) kiểm soát luồng thông tin: xóa gì, ghi gì, xuất gì.",
             "Cell state = bộ nhớ dài hạn (truyền trực tiếp). Hidden state = output ngắn hạn (qua cổng xuất).",
             "Tham số gấp ~4× RNN (4 bộ trọng số riêng), nhưng đổi lại nhớ xa hàng trăm bước.",

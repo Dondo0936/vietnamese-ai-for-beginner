@@ -177,7 +177,7 @@ export default function SGDTopic() {
       ],
       correct: 1,
       explanation:
-        "Dao động ngẫu nhiên giúp mô hình \"nhảy\" ra khỏi các cực tiểu nông, tìm được cực tiểu sâu hơn với khả năng tổng quát hóa tốt hơn.",
+        "Dao động ngẫu nhiên giúp mô hình 'nhảy' ra khỏi các cực tiểu nông, tìm được cực tiểu sâu hơn với khả năng tổng quát hóa tốt hơn.",
     },
     {
       question: "Mini-batch size = 1 tương đương với phương pháp nào?",
