@@ -37,10 +37,10 @@ export default function PredictionGate({
 
     // After reveal
     if (index === correct) {
-      return `${base} border-green-400 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`;
+      return `${base} border-emerald-600 bg-emerald-50 text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-200 dark:border-emerald-600`;
     }
     if (selected === index && index !== correct) {
-      return `${base} border-red-400 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
+      return `${base} border-red-500 bg-red-50 text-red-900 dark:bg-red-900/30 dark:text-red-200 dark:border-red-600`;
     }
     return `${base} border-border bg-card text-muted opacity-60`;
   }
@@ -97,8 +97,8 @@ export default function PredictionGate({
             <div
               className={`rounded-xl border p-4 text-sm leading-relaxed ${
                 isCorrect
-                  ? "border-green-300 bg-green-50 text-green-800 dark:border-green-700 dark:bg-green-900/20 dark:text-green-300"
-                  : "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-300"
+                  ? "border-emerald-600 bg-emerald-50 text-emerald-900 dark:border-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-200"
+                  : "border-amber-500 bg-amber-50 text-amber-900 dark:border-amber-600 dark:bg-amber-900/20 dark:text-amber-200"
               }`}
             >
               <span className="font-semibold">
