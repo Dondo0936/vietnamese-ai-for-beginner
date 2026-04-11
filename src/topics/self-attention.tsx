@@ -41,12 +41,12 @@ const quizQuestions: QuizQuestion[] = [
     question: "Mỗi token tạo ra 3 vector: Q, K, V. Chúng có vai trò gì?",
     options: [
       "Q = input, K = output, V = hidden state",
-      "Q = \"tôi hỏi gì?\", K = \"tôi chứa gì?\", V = \"nội dung của tôi\" — attention = softmax(QK^T/√d) × V",
+      "Q = 'tôi hỏi gì?', K = 'tôi chứa gì?', V = 'nội dung của tôi' — attention = softmax(QK^T/√d) × V",
       "Q = query SQL, K = primary key, V = value trong database",
       "Q, K, V chỉ là tên khác của embedding",
     ],
     correct: 1,
-    explanation: "Query (hỏi): từ này đang tìm gì? Key (khóa): từ kia có gì phù hợp? Tích QK^T cho biết mức độ \"khớp\". Value (giá trị): nội dung thật sự mà từ kia cung cấp. Softmax chuẩn hóa thành xác suất → nhân với V → output có ngữ cảnh.",
+    explanation: "Query (hỏi): từ này đang tìm gì? Key (khóa): từ kia có gì phù hợp? Tích QK^T cho biết mức độ 'khớp'. Value (giá trị): nội dung thật sự mà từ kia cung cấp. Softmax chuẩn hóa thành xác suất → nhân với V → output có ngữ cảnh.",
   },
   {
     question: "Self-attention xử lý chuỗi n token. Độ phức tạp là gì? Tại sao?",

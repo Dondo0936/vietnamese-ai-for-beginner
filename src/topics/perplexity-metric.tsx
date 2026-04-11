@@ -246,9 +246,9 @@ export default function PerplexityMetricTopic() {
           <Callout variant="insight" title="Công thức Perplexity">
             <div className="space-y-3">
               <p className="font-medium">Cross-entropy:</p>
-              <LaTeX display>{`H(p, q) = -\\frac{1}{N} \\sum_{i=1}^{N} \\log_2 P(w_i | w_1, \\ldots, w_{i-1})`}</LaTeX>
+              <LaTeX block>{`H(p, q) = -\\frac{1}{N} \\sum_{i=1}^{N} \\log_2 P(w_i | w_1, \\ldots, w_{i-1})`}</LaTeX>
               <p className="font-medium">Perplexity = 2 mũ cross-entropy:</p>
-              <LaTeX display>{`\\text{PPL} = 2^{H(p,q)} = \\exp\\left(-\\frac{1}{N} \\sum_{i=1}^{N} \\ln P(w_i | w_{<i})\\right)`}</LaTeX>
+              <LaTeX block>{`\\text{PPL} = 2^{H(p,q)} = \\exp\\left(-\\frac{1}{N} \\sum_{i=1}^{N} \\ln P(w_i | w_{<i})\\right)`}</LaTeX>
               <p className="text-sm">
                 N = số token. <LaTeX>{`P(w_i | w_{<i})`}</LaTeX>{" "}
                 = xác suất mô hình gán cho token thứ i. PPL thấp = xác suất cao = mô hình tốt.

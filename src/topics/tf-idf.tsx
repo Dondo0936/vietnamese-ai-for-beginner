@@ -286,15 +286,15 @@ export default function TfIdfTopic() {
             <div className="space-y-3">
               <div>
                 <p className="font-medium mb-1">Term Frequency (tần suất từ):</p>
-                <LaTeX display>{`\\text{TF}(t, d) = \\frac{\\text{số lần từ } t \\text{ xuất hiện trong } d}{\\text{tổng số từ trong } d}`}</LaTeX>
+                <LaTeX block>{`\\text{TF}(t, d) = \\frac{\\text{số lần từ } t \\text{ xuất hiện trong } d}{\\text{tổng số từ trong } d}`}</LaTeX>
               </div>
               <div>
                 <p className="font-medium mb-1">Inverse Document Frequency (nghịch đảo tần suất tài liệu):</p>
-                <LaTeX display>{`\\text{IDF}(t) = \\log\\frac{N}{\\text{DF}(t)}`}</LaTeX>
+                <LaTeX block>{`\\text{IDF}(t) = \\log\\frac{N}{\\text{DF}(t)}`}</LaTeX>
               </div>
               <div>
                 <p className="font-medium mb-1">Kết hợp:</p>
-                <LaTeX display>{`\\text{TF-IDF}(t, d) = \\text{TF}(t, d) \\times \\text{IDF}(t)`}</LaTeX>
+                <LaTeX block>{`\\text{TF-IDF}(t, d) = \\text{TF}(t, d) \\times \\text{IDF}(t)`}</LaTeX>
               </div>
             </div>
           </Callout>

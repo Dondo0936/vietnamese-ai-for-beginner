@@ -167,7 +167,7 @@ export default function MLPTopic() {
     },
     {
       question:
-        "\"Fully connected\" nghĩa là gì trong ngữ cảnh MLP?",
+        "'Fully connected' nghĩa là gì trong ngữ cảnh MLP?",
       options: [
         "Mỗi nơ-ron kết nối với tất cả nơ-ron ở mọi lớp khác",
         "Mỗi nơ-ron ở lớp trước kết nối với mỗi nơ-ron ở lớp kế tiếp",

@@ -40,7 +40,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Tại sao Transformer cần positional encoding? Self-attention không tự biết thứ tự sao?",
     options: [
       "Self-attention biết thứ tự qua Q, K, V",
-      "Self-attention xử lý song song, coi mọi từ như tập hợp không thứ tự — \"mèo bắt chuột\" = \"chuột bắt mèo\"",
+      "Self-attention xử lý song song, coi mọi từ như tập hợp không thứ tự — 'mèo bắt chuột' = 'chuột bắt mèo'",
       "Chỉ cần cho chuỗi dài, chuỗi ngắn không cần",
       "Positional encoding chỉ dùng cho decoder, encoder không cần",
     ],
@@ -51,7 +51,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Sinusoidal PE dùng nhiều tần số khác nhau. Tại sao?",
     options: [
       "Để ảnh hưởng mỗi chiều embedding khác nhau",
-      "Tần số thấp phân biệt vị trí xa (\"đầu vs cuối\"), tần số cao phân biệt vị trí gần (\"từ 5 vs từ 6\")",
+      "Tần số thấp phân biệt vị trí xa ('đầu vs cuối'), tần số cao phân biệt vị trí gần ('từ 5 vs từ 6')",
       "Để tương thích với FFT",
       "Không có lý do — chỉ là convention",
     ],
@@ -301,7 +301,7 @@ x = pe(x)  # embedding + positional encoding`}
         <MiniSummary
           title="Ghi nhớ về Positional Encoding"
           points={[
-            "Self-attention không biết thứ tự → cần PE để phân biệt \"mèo bắt chuột\" vs \"chuột bắt mèo\".",
+            "Self-attention không biết thứ tự → cần PE để phân biệt 'mèo bắt chuột' vs 'chuột bắt mèo'.",
             "Sinusoidal PE dùng sin/cos ở nhiều tần số: cao phân biệt gần, thấp phân biệt xa — giống hệ nhị phân.",
             "input = word_embedding + positional_encoding. PE được cộng trực tiếp vào embedding.",
             "Biến thể: Learned PE (BERT), RoPE (LLaMA — xoay Q,K theo vị trí), ALiBi (bias khoảng cách).",

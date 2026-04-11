@@ -82,10 +82,10 @@ const quizQuestions: QuizQuestion[] = [
       "Vì một kernel không đủ tham số",
     ],
     correct: 1,
-    explanation: "Mỗi kernel là một \"mắt\" chuyên tìm một kiểu pattern. Kernel cạnh dọc thì tìm cạnh dọc, kernel góc thì tìm góc. Kết hợp nhiều kernel → mô tả đầy đủ đặc trưng của ảnh.",
+    explanation: "Mỗi kernel là một 'mắt' chuyên tìm một kiểu pattern. Kernel cạnh dọc thì tìm cạnh dọc, kernel góc thì tìm góc. Kết hợp nhiều kernel → mô tả đầy đủ đặc trưng của ảnh.",
   },
   {
-    question: "Padding \"same\" trong tích chập có tác dụng gì?",
+    question: "Padding 'same' trong tích chập có tác dụng gì?",
     options: [
       "Tăng gấp đôi kích thước output",
       "Giữ kích thước output bằng input bằng cách thêm viền 0",
@@ -142,7 +142,7 @@ export default function ConvolutionTopic() {
       {/* ═══ Step 1: HOOK ═══ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn có ma trận 5×5 (ảnh) và một \"cửa sổ\" 3×3 (bộ lọc). Tại mỗi vị trí, bạn nhân từng cặp số rồi cộng tất cả lại. Khi trượt cửa sổ qua toàn bộ ma trận, output có kích thước bao nhiêu?"
+          question="Bạn có ma trận 5×5 (ảnh) và một 'cửa sổ' 3×3 (bộ lọc). Tại mỗi vị trí, bạn nhân từng cặp số rồi cộng tất cả lại. Khi trượt cửa sổ qua toàn bộ ma trận, output có kích thước bao nhiêu?"
           options={["5×5 (bằng input)", "3×3 (nhỏ hơn)", "7×7 (lớn hơn)"]}
           correct={1}
           explanation="Output là 3×3! Cửa sổ 3×3 trượt trên ma trận 5×5: vị trí đầu tiên ở (0,0), cuối cùng ở (2,2). Tổng cộng 3 hàng × 3 cột = 9 vị trí. Đây chính là phép tích chập!"

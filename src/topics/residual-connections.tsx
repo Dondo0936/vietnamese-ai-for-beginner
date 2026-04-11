@@ -43,7 +43,7 @@ const quizQuestions: QuizQuestion[] = [
       "Phụ thuộc vào activation function",
     ],
     correct: 1,
-    explanation: "Đây là insight cốt lõi! Khi F(x) = 0 → output = x. Thêm lớp residual không bao giờ làm XOẮN hơn. Trường hợp xấu nhất = giữ nguyên input. Mạng chỉ cần học phần \"thay đổi\" (residual) F(x) = H(x) - x.",
+    explanation: "Đây là insight cốt lõi! Khi F(x) = 0 → output = x. Thêm lớp residual không bao giờ làm XOẮN hơn. Trường hợp xấu nhất = giữ nguyên input. Mạng chỉ cần học phần 'thay đổi' (residual) F(x) = H(x) - x.",
   },
   {
     question: "ResNet-152 có 152 lớp nhưng train tốt. Mạng 20 lớp không có skip connection thì sao?",
@@ -87,7 +87,7 @@ export default function ResidualConnectionsTopic() {
             "Accuracy giữ nguyên 90%",
           ]}
           correct={1}
-          explanation="Đây là \"degradation problem\" — mạng sâu hơn lại tệ hơn mạng nông, KHÔNG phải do overfitting (cả train accuracy cũng giảm). ResNet giải quyết bằng skip connection: output = F(x) + x. Gradient chảy thẳng qua đường tắt!"
+          explanation="Đây là 'degradation problem' — mạng sâu hơn lại tệ hơn mạng nông, KHÔNG phải do overfitting (cả train accuracy cũng giảm). ResNet giải quyết bằng skip connection: output = F(x) + x. Gradient chảy thẳng qua đường tắt!"
         />
       </LessonSection>
 

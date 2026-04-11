@@ -268,11 +268,11 @@ export default function Word2VecTopic() {
           <Callout variant="insight" title="Mục tiêu huấn luyện">
             <div className="space-y-3">
               <p className="font-medium">Skip-gram tối đa hóa xác suất ngữ cảnh cho trước từ trung tâm:</p>
-              <LaTeX display>{`\\max \\frac{1}{T} \\sum_{t=1}^{T} \\sum_{-c \\leq j \\leq c, j \\neq 0} \\log P(w_{t+j} | w_t)`}</LaTeX>
+              <LaTeX block>{`\\max \\frac{1}{T} \\sum_{t=1}^{T} \\sum_{-c \\leq j \\leq c, j \\neq 0} \\log P(w_{t+j} | w_t)`}</LaTeX>
               <p className="text-sm">
                 Với T = tổng số từ, c = kích thước cửa sổ. Xác suất tính bằng softmax:
               </p>
-              <LaTeX display>{`P(w_O | w_I) = \\frac{\\exp(\\mathbf{v'}_{w_O}^{\\top} \\mathbf{v}_{w_I})}{\\sum_{w=1}^{V} \\exp(\\mathbf{v'}_w^{\\top} \\mathbf{v}_{w_I})}`}</LaTeX>
+              <LaTeX block>{`P(w_O | w_I) = \\frac{\\exp(\\mathbf{v'}_{w_O}^{\\top} \\mathbf{v}_{w_I})}{\\sum_{w=1}^{V} \\exp(\\mathbf{v'}_w^{\\top} \\mathbf{v}_{w_I})}`}</LaTeX>
             </div>
           </Callout>
 
@@ -280,7 +280,7 @@ export default function Word2VecTopic() {
             <p>
               Tính softmax trên cả từ vựng V (hàng triệu từ) quá chậm. Negative Sampling chỉ cần phân biệt từ đúng với k từ {'"nhiễu"'} ngẫu nhiên:
             </p>
-            <LaTeX display>{`\\log \\sigma(\\mathbf{v'}_{w_O}^{\\top} \\mathbf{v}_{w_I}) + \\sum_{i=1}^{k} \\mathbb{E}_{w_i \\sim P_n(w)} \\left[ \\log \\sigma(-\\mathbf{v'}_{w_i}^{\\top} \\mathbf{v}_{w_I}) \\right]`}</LaTeX>
+            <LaTeX block>{`\\log \\sigma(\\mathbf{v'}_{w_O}^{\\top} \\mathbf{v}_{w_I}) + \\sum_{i=1}^{k} \\mathbb{E}_{w_i \\sim P_n(w)} \\left[ \\log \\sigma(-\\mathbf{v'}_{w_i}^{\\top} \\mathbf{v}_{w_I}) \\right]`}</LaTeX>
             <p className="mt-2 text-sm">
               Thường k = 5-20 cho tập nhỏ, k = 2-5 cho tập lớn. Nhanh hơn softmax đầy đủ hàng trăm lần!
             </p>

@@ -164,7 +164,7 @@ export default function ActivationFunctionsTopic() {
         "ReLU chỉ cần phép so sánh max(0,x), cực kỳ nhanh. Gradient ở vùng dương luôn bằng 1, tránh triệt tiêu gradient — vấn đề nghiêm trọng của sigmoid/tanh.",
     },
     {
-      question: "\"Dying ReLU\" xảy ra khi nào?",
+      question: "'Dying ReLU' xảy ra khi nào?",
       options: [
         "Khi đầu vào luôn dương",
         "Khi learning rate quá nhỏ",
@@ -173,7 +173,7 @@ export default function ActivationFunctionsTopic() {
       ],
       correct: 2,
       explanation:
-        "Nếu đầu vào luôn âm, ReLU trả về 0 và gradient cũng bằng 0. Nơ-ron \"chết\" vĩnh viễn. Leaky ReLU giải quyết bằng cách cho gradient nhỏ (0.01) ở vùng âm.",
+        "Nếu đầu vào luôn âm, ReLU trả về 0 và gradient cũng bằng 0. Nơ-ron 'chết' vĩnh viễn. Leaky ReLU giải quyết bằng cách cho gradient nhỏ (0.01) ở vùng âm.",
     },
     {
       question:
@@ -542,11 +542,11 @@ export default function ActivationFunctionsTopic() {
           question="Nơ-ron dùng ReLU luôn nhận đầu vào âm (ví dụ: z = -3). Điều gì xảy ra?"
           options={[
             "Đầu ra = -3 và gradient = 1 — học bình thường",
-            "Đầu ra = 0 và gradient = 0 — nơ-ron \"chết\" vĩnh viễn",
+            "Đầu ra = 0 và gradient = 0 — nơ-ron 'chết' vĩnh viễn",
             "Đầu ra = 0.5 — ReLU trung bình hóa",
           ]}
           correct={1}
-          explanation="ReLU(x<0) = 0 và gradient = 0. Nơ-ron không bao giờ cập nhật được trọng số nữa — gọi là \"dying ReLU\". Leaky ReLU giải quyết bằng f(x) = 0.01x khi x < 0."
+          explanation="ReLU(x<0) = 0 và gradient = 0. Nơ-ron không bao giờ cập nhật được trọng số nữa — gọi là 'dying ReLU'. Leaky ReLU giải quyết bằng f(x) = 0.01x khi x < 0."
         />
       </LessonSection>
 

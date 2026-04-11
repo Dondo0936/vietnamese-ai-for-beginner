@@ -61,12 +61,12 @@ const quizQuestions: QuizQuestion[] = [
     question: "Reparameterization trick: z = μ + σ × ε (ε ~ N(0,1)). Tại sao cần trick này?",
     options: [
       "Để z luôn dương",
-      "Vì \"lấy mẫu\" không có gradient, nhưng z = μ + σε thì gradient chảy qua μ và σ được",
+      "Vì 'lấy mẫu' không có gradient, nhưng z = μ + σε thì gradient chảy qua μ và σ được",
       "Để giảm variance khi training",
       "Vì sampling từ N(μ, σ²) quá chậm",
     ],
     correct: 1,
-    explanation: "Backprop không thể đi qua phép \"sampling\" (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường. ε chỉ là constant random — không cần gradient!",
+    explanation: "Backprop không thể đi qua phép 'sampling' (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường. ε chỉ là constant random — không cần gradient!",
   },
 ];
 
@@ -126,11 +126,11 @@ export default function VaeTopic() {
           question="Autoencoder nén ảnh mèo thành 1 điểm trong latent space, ảnh chó thành điểm khác. Nếu bạn lấy điểm GIỮA hai điểm đó và decode, kết quả sẽ là gì?"
           options={[
             "Ảnh nửa mèo nửa chó — nội suy mượt",
-            "Ảnh vô nghĩa — vì giữa hai điểm là vùng \"trống\" không có dữ liệu",
+            "Ảnh vô nghĩa — vì giữa hai điểm là vùng 'trống' không có dữ liệu",
             "Ảnh mèo hoặc chó ngẫu nhiên",
           ]}
           correct={1}
-          explanation="Autoencoder thường: mỗi ảnh → 1 điểm cô lập. Giữa các điểm là \"sa mạc\" → output vô nghĩa. VAE giải quyết bằng cách biến mỗi điểm thành \"đám mây\" (phân bố Gaussian) → các đám mây overlap → nội suy mượt!"
+          explanation="Autoencoder thường: mỗi ảnh → 1 điểm cô lập. Giữa các điểm là 'sa mạc' → output vô nghĩa. VAE giải quyết bằng cách biến mỗi điểm thành 'đám mây' (phân bố Gaussian) → các đám mây overlap → nội suy mượt!"
         />
       </LessonSection>
 
@@ -279,7 +279,7 @@ export default function VaeTopic() {
             "Training nhanh hơn vì loss giảm nhanh",
           ]}
           correct={1}
-          explanation="β quá lớn → KL loss chi phối → encoder ép phân bố về N(0,1) cho mọi ảnh → tất cả ảnh cùng 1 phân bố → latent code không mang thông tin → decoder phải \"đoán\" → output mờ nhòe. Đây gọi là posterior collapse."
+          explanation="β quá lớn → KL loss chi phối → encoder ép phân bố về N(0,1) cho mọi ảnh → tất cả ảnh cùng 1 phân bố → latent code không mang thông tin → decoder phải 'đoán' → output mờ nhòe. Đây gọi là posterior collapse."
         />
       </LessonSection>
 

@@ -30,11 +30,11 @@ const W_COLORS = ["#3b82f6", "#8b5cf6", "#f97316", "#22c55e", "#ec4899", "#ef444
 
 const HIDDEN_DESC = [
   "h₀: chưa có context",
-  "h₁: biết \"Tôi\" → ai đó nói về bản thân",
-  "h₂: biết \"Tôi thích\" → đang nói về sở thích",
-  "h₃: biết \"Tôi thích ăn\" → sở thích về đồ ăn",
-  "h₄: biết \"Tôi thích ăn phở\" → thích phở cụ thể",
-  "h₅: biết \"Tôi thích ăn phở bò\" → loại phở bò",
+  "h₁: biết 'Tôi' → ai đó nói về bản thân",
+  "h₂: biết 'Tôi thích' → đang nói về sở thích",
+  "h₃: biết 'Tôi thích ăn' → sở thích về đồ ăn",
+  "h₄: biết 'Tôi thích ăn phở' → thích phở cụ thể",
+  "h₅: biết 'Tôi thích ăn phở bò' → loại phở bò",
 ];
 
 const quizQuestions: QuizQuestion[] = [
@@ -42,7 +42,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "RNN xử lý câu 100 từ. Tại từ thứ 100, trạng thái ẩn h₁₀₀ chứa thông tin gì?",
     options: [
       "Chỉ chứa thông tin từ thứ 100",
-      "Về lý thuyết chứa thông tin từ tất cả 100 từ, nhưng thực tế các từ đầu bị \"phai nhạt\"",
+      "Về lý thuyết chứa thông tin từ tất cả 100 từ, nhưng thực tế các từ đầu bị 'phai nhạt'",
       "Chứa đầy đủ thông tin từ tất cả 100 từ",
       "Chỉ chứa thông tin 10 từ gần nhất",
     ],
@@ -50,7 +50,7 @@ const quizQuestions: QuizQuestion[] = [
     explanation: "Trạng thái ẩn hₜ lý thuyết tóm tắt toàn bộ lịch sử. Nhưng thực tế, gradient bị biến mất qua nhiều bước (vanishing gradient), nên thông tin từ xa bị phai nhạt. Đây là động lực ra đời LSTM và GRU.",
   },
   {
-    question: "Tại sao RNN gọi là \"recurrent\" (hồi quy)?",
+    question: "Tại sao RNN gọi là 'recurrent' (hồi quy)?",
     options: [
       "Vì nó dùng regression (hồi quy tuyến tính)",
       "Vì output được đưa ngược lại làm input cho bước tiếp theo",
@@ -58,7 +58,7 @@ const quizQuestions: QuizQuestion[] = [
       "Vì cấu trúc giống vòng lặp for",
     ],
     correct: 1,
-    explanation: "\"Recurrent\" = hồi quy, quay lại. Trạng thái ẩn hₜ (output nội bộ) được truyền ngược lại làm input cho bước t+1. Cùng một bộ trọng số được dùng lặp lại ở mọi bước thời gian.",
+    explanation: "'Recurrent' = hồi quy, quay lại. Trạng thái ẩn hₜ (output nội bộ) được truyền ngược lại làm input cho bước t+1. Cùng một bộ trọng số được dùng lặp lại ở mọi bước thời gian.",
   },
   {
     question: "Transformer đã thay thế RNN trong hầu hết bài toán NLP. Vậy RNN còn dùng ở đâu?",
@@ -111,7 +111,7 @@ export default function RnnTopic() {
         <PredictionGate
           question={`Câu "Tôi thích ăn phở bò ___". Từ tiếp theo có thể là gì? Để đoán đúng, bạn cần nhớ gì?`}
           options={[
-            "Chỉ cần biết từ cuối cùng \"bò\" là đủ",
+            "Chỉ cần biết từ cuối cùng 'bò' là đủ",
             "Cần nhớ cả câu trước đó để hiểu ngữ cảnh",
             "Không cần nhớ gì — đoán ngẫu nhiên",
           ]}
@@ -402,7 +402,7 @@ rnn = SimpleRNN(input_dim=50, hidden_dim=128, output_dim=10)
         <MiniSummary
           title="Ghi nhớ về RNN"
           points={[
-            "RNN truyền trạng thái ẩn hₜ qua mỗi bước thời gian — tạo \"bộ nhớ\" cho dữ liệu tuần tự.",
+            "RNN truyền trạng thái ẩn hₜ qua mỗi bước thời gian — tạo 'bộ nhớ' cho dữ liệu tuần tự.",
             "Cùng bộ trọng số (Wxh, Whh, Why) dùng lại ở mọi bước — xử lý chuỗi bất kỳ độ dài.",
             "Vấn đề vanishing gradient: khó nhớ thông tin xa → LSTM/GRU thêm cổng để khắc phục.",
             "Xử lý tuần tự (không song song) → chậm hơn Transformer trên GPU.",

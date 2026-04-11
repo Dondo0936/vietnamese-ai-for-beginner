@@ -468,7 +468,7 @@ export default function DiffusionModelsTopic() {
                 <p className="text-xs text-center text-accent font-medium">
                   {denoiseT === MAX_T && "Nhiễu thuần túy — AI bắt đầu khử nhiễu..."}
                   {denoiseT > 0 && denoiseT < MAX_T && `Đã khử ${MAX_T - denoiseT}/${MAX_T} bước — hình dần hiện ra!`}
-                  {denoiseT === 0 && "Ảnh gốc đã tái tạo hoàn toàn! AI học cách \"quay ngược\" nhiễu."}
+                  {denoiseT === 0 && "Ảnh gốc đã tái tạo hoàn toàn! AI học cách 'quay ngược' nhiễu."}
                 </p>
               </div>
 

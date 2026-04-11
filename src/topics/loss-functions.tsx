@@ -128,7 +128,7 @@ export default function LossFunctionsTopic() {
       question: "Mô hình dự đoán xác suất spam = 0.99 nhưng email thực tế KHÔNG phải spam (y=0). Cross-Entropy loss sẽ như thế nào?",
       options: [
         "Rất thấp — dự đoán gần 1 nên tốt",
-        "Rất cao — mô hình \"tự tin sai\", CE phạt cực nặng",
+        "Rất cao — mô hình 'tự tin sai', CE phạt cực nặng",
         "Bằng 0 — CE chỉ xem dự đoán đúng sai",
         "Âm — loss không bao giờ âm",
       ],
@@ -520,10 +520,10 @@ loss_hub = nn.HuberLoss(delta=1.0)
         <MiniSummary
           title="Loss Functions — Điểm chốt"
           points={[
-            "Loss function là \"la bàn\" — đo sai lệch giữa dự đoán và thực tế, hướng dẫn gradient descent.",
+            "Loss function là 'la bàn' — đo sai lệch giữa dự đoán và thực tế, hướng dẫn gradient descent.",
             "Hồi quy: dùng MSE (phạt nặng sai lệch lớn) hoặc MAE (robust với outlier).",
             "Phân loại nhị phân: Binary Cross-Entropy. Đa lớp: Categorical Cross-Entropy + Softmax.",
-            "Cross-Entropy phạt cực nặng khi mô hình \"tự tin sai\" → gradient lớn → học nhanh.",
+            "Cross-Entropy phạt cực nặng khi mô hình 'tự tin sai' → gradient lớn → học nhanh.",
             "Chọn loss sai = mô hình tối ưu sai mục tiêu — bước quan trọng nhất khi thiết kế.",
           ]}
         />

@@ -75,11 +75,11 @@ export default function VisionTransformerTopic() {
           question="Transformer thống trị NLP (text). Nhưng ảnh không phải chuỗi từ — làm sao áp dụng Transformer cho ảnh?"
           options={[
             "Không thể — Transformer chỉ cho text",
-            "Chia ảnh thành mảnh nhỏ (patches), mỗi patch = 1 \"từ\", rồi dùng Transformer bình thường!",
+            "Chia ảnh thành mảnh nhỏ (patches), mỗi patch = 1 'từ', rồi dùng Transformer bình thường!",
             "Chuyển ảnh thành text mô tả rồi dùng Transformer",
           ]}
           correct={1}
-          explanation="Vision Transformer (ViT): chia ảnh 224×224 thành lưới patches 16×16, mỗi patch flatten → linear projection → embedding. 196 patches = 196 \"tokens\". Thêm [CLS] token + positional encoding → đưa vào Transformer encoder. Patches = tokens!"
+          explanation="Vision Transformer (ViT): chia ảnh 224×224 thành lưới patches 16×16, mỗi patch flatten → linear projection → embedding. 196 patches = 196 'tokens'. Thêm [CLS] token + positional encoding → đưa vào Transformer encoder. Patches = tokens!"
         />
       </LessonSection>
 

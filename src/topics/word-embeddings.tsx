@@ -266,7 +266,7 @@ export default function WordEmbeddingsTopic() {
 
           <Callout variant="insight" title="Tại sao embeddings hoạt động?">
             <p>Dựa trên giả thuyết phân phối (distributional hypothesis):</p>
-            <LaTeX display>{`\\text{"Từ ngữ được hiểu qua bạn đồng hành của chúng"}`}</LaTeX>
+            <LaTeX block>{`\\text{"Từ ngữ được hiểu qua bạn đồng hành của chúng"}`}</LaTeX>
             <p className="mt-2 text-sm">
               Từ xuất hiện trong ngữ cảnh giống nhau → vector gần nhau. {'"Phở"'} và {'"bún chả"'} đều hay đi cùng {'"ngon"'}, {'"Việt Nam"'}, {'"ăn"'} → nằm gần nhau.
             </p>
@@ -275,7 +275,7 @@ export default function WordEmbeddingsTopic() {
           <Callout variant="info" title="Đo khoảng cách giữa các từ">
             <div className="space-y-2">
               <p>Cosine similarity đo góc giữa 2 vector (từ -1 đến 1):</p>
-              <LaTeX display>{`\\text{cosine}(\\mathbf{u}, \\mathbf{v}) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|}`}</LaTeX>
+              <LaTeX block>{`\\text{cosine}(\\mathbf{u}, \\mathbf{v}) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|}`}</LaTeX>
               <p className="text-sm">
                 cosine({'"phở"'}, {'"bún chả"'}) = 0.85 (rất gần). cosine({'"phở"'}, {'"xe máy"'}) = 0.12 (rất xa).
               </p>

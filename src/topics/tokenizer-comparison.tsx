@@ -354,7 +354,7 @@ export default function TokenizerComparisonTopic() {
           <Callout variant="insight" title="BPE (Byte Pair Encoding)">
             <div className="space-y-2">
               <p>Thuật toán nén dữ liệu áp dụng cho NLP (Sennrich et al., 2016):</p>
-              <LaTeX display>{`\\text{Merge}(\\text{vocab}) = \\text{vocab} \\cup \\{\\text{cặp byte phổ biến nhất}\\}`}</LaTeX>
+              <LaTeX block>{`\\text{Merge}(\\text{vocab}) = \\text{vocab} \\cup \\{\\text{cặp byte phổ biến nhất}\\}`}</LaTeX>
               <p className="text-sm">
                 Bắt đầu từ byte đơn, lặp lại ghép cặp phổ biến nhất. GPT-4 dùng ~100K token BPE. {'"Tokenization"'} → {'"Token"'} + {'"ization"'} vì cặp này phổ biến.
               </p>

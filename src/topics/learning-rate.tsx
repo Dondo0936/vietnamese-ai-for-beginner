@@ -184,7 +184,7 @@ export default function LearningRateTopic() {
             "Xe tự động giảm tốc",
           ]}
           correct={1}
-          explanation="Giống hệt learning rate! Quá lớn → vượt qua cực tiểu → quay lại → vượt tiếp → dao động mãi. Learning rate là \"tốc độ\" của gradient descent."
+          explanation="Giống hệt learning rate! Quá lớn → vượt qua cực tiểu → quay lại → vượt tiếp → dao động mãi. Learning rate là 'tốc độ' của gradient descent."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Learning rate quyết định bước nhảy bao xa theo hướng gradient. Hãy tự tay{" "}

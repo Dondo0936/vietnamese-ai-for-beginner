@@ -233,7 +233,7 @@ export default function AttentionMechanismTopic() {
             <div key={item.step} className="rounded-xl border p-4 space-y-2" style={{ borderColor: item.color + "40" }}>
               <p className="text-sm font-semibold" style={{ color: item.color }}>{item.step}</p>
               <p className="text-sm text-foreground">{item.desc}</p>
-              <LaTeX display>{item.formula}</LaTeX>
+              <LaTeX block>{item.formula}</LaTeX>
             </div>
           ))}
         </div>

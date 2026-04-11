@@ -116,13 +116,13 @@ export default function VanishingExplodingGradientsTopic() {
         "ResNet (Residual Network) dùng kỹ thuật gì để huấn luyện mạng 152 lớp?",
       options: [
         "Dùng learning rate cực nhỏ",
-        "Skip connections — cho gradient \"đi tắt\" qua các lớp, tránh triệt tiêu",
+        "Skip connections — cho gradient 'đi tắt' qua các lớp, tránh triệt tiêu",
         "Không dùng hàm kích hoạt",
         "Huấn luyện từng lớp riêng lẻ",
       ],
       correct: 1,
       explanation:
-        "Skip connection: output = F(x) + x. Gradient luôn có đường đi trực tiếp qua \"+x\", không bị nhân nhỏ đi. Đây là đột phá cho phép mạng sâu hàng trăm lớp.",
+        "Skip connection: output = F(x) + x. Gradient luôn có đường đi trực tiếp qua '+x', không bị nhân nhỏ đi. Đây là đột phá cho phép mạng sâu hàng trăm lớp.",
     },
   ];
 
@@ -131,7 +131,7 @@ export default function VanishingExplodingGradientsTopic() {
       {/* ===== STEP 1: PREDICTION GATE ===== */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <PredictionGate
-          question="Trò chơi \"truyền tin\" qua 10 người: mỗi người thì thầm lại cho người kế tiếp. Nếu mỗi người chỉ nghe được 50% rồi truyền lại, người thứ 10 nghe được bao nhiêu % tin gốc?"
+          question="Trò chơi 'truyền tin' qua 10 người: mỗi người thì thầm lại cho người kế tiếp. Nếu mỗi người chỉ nghe được 50% rồi truyền lại, người thứ 10 nghe được bao nhiêu % tin gốc?"
           options={[
             "50% — chỉ giảm 1 lần",
             "Khoảng 0.1% — giảm theo cấp số nhân (0.5^10)",
@@ -477,7 +477,7 @@ class ResBlock(nn.Module):
           points={[
             "Gradient qua N lớp = tích N hệ số. Hệ số < 1 → triệt tiêu (0.5^10 ≈ 0.001). Hệ số > 1 → bùng nổ (2^10 = 1024).",
             "Sigmoid/Tanh có đạo hàm ≤ 0.25 → nguyên nhân chính gây vanishing. ReLU (đạo hàm = 1) giải quyết.",
-            "Skip connections (ResNet) cho gradient đi tắt qua \"+x\" — đột phá cho mạng sâu 100+ lớp.",
+            "Skip connections (ResNet) cho gradient đi tắt qua '+x' — đột phá cho mạng sâu 100+ lớp.",
             "Gradient clipping cắt norm gradient tối đa — first aid cho exploding gradient.",
             "Combo: ReLU + BatchNorm + He Init + Skip Connections = mạng sâu ổn định.",
           ]}

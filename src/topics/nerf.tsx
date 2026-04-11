@@ -70,7 +70,7 @@ export default function NerfTopic() {
             "Không thể — chỉ xem được góc đã chụp",
           ]}
           correct={1}
-          explanation="NeRF! Nó học một \"hàm 3D\": cho mọi điểm (x,y,z) và hướng nhìn (θ,φ), trả về màu (RGB) và mật độ (σ). Từ đó render ảnh từ BẤT KỲ góc nhìn nào — như bạn có camera ảo bay quanh cảnh."
+          explanation="NeRF! Nó học một 'hàm 3D': cho mọi điểm (x,y,z) và hướng nhìn (θ,φ), trả về màu (RGB) và mật độ (σ). Từ đó render ảnh từ BẤT KỲ góc nhìn nào — như bạn có camera ảo bay quanh cảnh."
         />
       </LessonSection>
 

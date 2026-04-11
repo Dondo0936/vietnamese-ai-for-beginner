@@ -77,10 +77,10 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "Zero-shot CoT sử dụng prompt đơn giản nào?",
     options: [
-      "\"Trả lời nhanh nhất có thể\"",
-      "\"Hãy suy nghĩ từng bước\" (Let's think step by step)",
-      "\"Cho tôi 3 ví dụ trước\"",
-      "\"Tóm tắt trong 1 câu\"",
+      "'Trả lời nhanh nhất có thể'",
+      "'Hãy suy nghĩ từng bước' (Let's think step by step)",
+      "'Cho tôi 3 ví dụ trước'",
+      "'Tóm tắt trong 1 câu'",
     ],
     correct: 1,
     explanation: "Chỉ cần thêm 'Let's think step by step' hoặc 'Hãy suy nghĩ từng bước' vào cuối prompt → cải thiện đáng kể! Paper Google 2022 chứng minh điều này.",

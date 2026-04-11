@@ -134,7 +134,7 @@ export default function BatchNormalizationTopic() {
       ],
       correct: 0,
       explanation:
-        "Nếu chuẩn hóa về (0,1) là tối ưu, mạng sẽ học γ=1, β=0. Nhưng nếu phân phối khác tốt hơn, mạng có thể \"undo\" BN bằng cách học γ=σ_cũ, β=μ_cũ. Tối đa linh hoạt!",
+        "Nếu chuẩn hóa về (0,1) là tối ưu, mạng sẽ học γ=1, β=0. Nhưng nếu phân phối khác tốt hơn, mạng có thể 'undo' BN bằng cách học γ=σ_cũ, β=μ_cũ. Tối đa linh hoạt!",
     },
     {
       question:

@@ -73,7 +73,7 @@ const quizQuestions: QuizQuestion[] = [
       "Reset gradient về 0",
     ],
     correct: 1,
-    explanation: "h̃ₜ = tanh(W·[rₜ ⊙ hₜ₋₁, xₜ]). Khi rₜ→0: bỏ qua quá khứ, candidate chỉ dựa vào input hiện tại (\"quên sạch rồi nhìn mới\"). Khi rₜ→1: dùng đầy đủ quá khứ.",
+    explanation: "h̃ₜ = tanh(W·[rₜ ⊙ hₜ₋₁, xₜ]). Khi rₜ→0: bỏ qua quá khứ, candidate chỉ dựa vào input hiện tại ('quên sạch rồi nhìn mới'). Khi rₜ→1: dùng đầy đủ quá khứ.",
   },
 ];
 
@@ -338,7 +338,7 @@ output_lstm, (h_lstm, c_lstm) = lstm(x)  # thêm cell state c
             "Update gate kiêm cả forget + input: zₜ × cũ + (1-zₜ) × mới. Tổng luôn bằng 1 — ràng buộc chặt hơn LSTM.",
             "Ít tham số hơn ~25% → train nhanh hơn, ít overfitting hơn trên dataset nhỏ.",
             "Hiệu suất thường ngang LSTM — chọn tùy bài toán (nhỏ → GRU, lớn → LSTM, NLP → Transformer).",
-            "Reset gate cho phép \"quên sạch\" quá khứ khi cần bắt đầu context mới.",
+            "Reset gate cho phép 'quên sạch' quá khứ khi cần bắt đầu context mới.",
           ]}
         />
       </LessonSection>

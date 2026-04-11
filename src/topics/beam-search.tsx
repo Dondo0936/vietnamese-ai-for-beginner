@@ -275,7 +275,7 @@ export default function BeamSearchTopic() {
           <Callout variant="insight" title="Thuật toán Beam Search">
             <div className="space-y-2">
               <p className="font-medium">Score cho mỗi chuỗi (có length penalty):</p>
-              <LaTeX display>{`\\text{score}(Y) = \\frac{1}{|Y|^{\\alpha}} \\sum_{t=1}^{|Y|} \\log P(y_t | y_{<t}, X)`}</LaTeX>
+              <LaTeX block>{`\\text{score}(Y) = \\frac{1}{|Y|^{\\alpha}} \\sum_{t=1}^{|Y|} \\log P(y_t | y_{<t}, X)`}</LaTeX>
               <p className="text-sm">
                 Với <LaTeX>{`\\alpha`}</LaTeX>{" "}
                 = length penalty (thường 0.6-1.0). <LaTeX>{`\\alpha = 0`}</LaTeX>{" "}
@@ -287,7 +287,7 @@ export default function BeamSearchTopic() {
 
           <Callout variant="info" title="Nucleus Sampling (Top-p)">
             <p>Thay vì chọn k tốt nhất, sampling chọn ngẫu nhiên từ phân phối:</p>
-            <LaTeX display>{`p'(w) = \\frac{p(w)}{\\sum_{w' \\in V_p} p(w')} \\quad \\text{với } V_p = \\{w : \\sum_{w' \\leq w} p(w') \\leq p\\}`}</LaTeX>
+            <LaTeX block>{`p'(w) = \\frac{p(w)}{\\sum_{w' \\in V_p} p(w')} \\quad \\text{với } V_p = \\{w : \\sum_{w' \\leq w} p(w') \\leq p\\}`}</LaTeX>
             <p className="mt-2 text-sm">
               Top-p = 0.9: chỉ chọn từ top 90% xác suất. Kết hợp temperature (T) điều chỉnh {'"độ sáng tạo"'}.
             </p>
