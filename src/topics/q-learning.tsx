@@ -1,35 +1,21 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useState, useCallback, useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "q-learning",
-  title: "Q-Learning",
-  titleVi: "Q-Learning",
-  description:
-    "Thuật toán học tăng cường cơ bản học giá trị hành động tối ưu từ trải nghiệm",
-  category: "reinforcement-learning",
-  tags: ["reinforcement", "q-table", "reward"],
-  difficulty: "beginner",
-  relatedSlugs: ["deep-q-network", "multi-armed-bandit", "supervised-unsupervised-rl"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "q-learning", title: "Q-Learning", titleVi: "Q-Learning", description: "Thuat toan hoc tang cuong co ban hoc gia tri hanh dong toi uu tu trai nghiem", category: "reinforcement-learning", tags: ["reinforcement", "q-table", "reward"], difficulty: "beginner", relatedSlugs: ["deep-q-network", "multi-armed-bandit", "supervised-unsupervised-rl"], vizType: "interactive" };
 
+/* ── Grid World ── */
 const GRID = 4;
-const ACTIONS = ["↑", "→", "↓", "←"] as const;
-const ACTION_DELTAS: Record<string, [number, number]> = {
-  "↑": [-1, 0],
-  "→": [0, 1],
-  "↓": [1, 0],
-  "←": [0, -1],
-};
-
 const GOAL = { r: 3, c: 3 };
 const TRAP = { r: 1, c: 2 };
+const ACTIONS = ["Up", "Right", "Down", "Left"] as const;
+const DELTAS: Record<string, [number, number]> = { Up: [-1, 0], Right: [0, 1], Down: [1, 0], Left: [0, -1] };
 
 function getReward(r: number, c: number): number {
   if (r === GOAL.r && c === GOAL.c) return 10;
@@ -37,339 +23,129 @@ function getReward(r: number, c: number): number {
   return -0.1;
 }
 
-function qColor(val: number): string {
-  if (val > 5) return "#22c55e";
-  if (val > 1) return "#86efac";
-  if (val > 0) return "#d1fae5";
-  if (val < -2) return "#ef4444";
-  if (val < 0) return "#fecaca";
-  return "#e2e8f0";
+function initQ(): number[][][] {
+  return Array.from({ length: GRID }, () => Array.from({ length: GRID }, () => [0, 0, 0, 0]));
 }
 
-function initQTable(): number[][][] {
-  return Array.from({ length: GRID }, () =>
-    Array.from({ length: GRID }, () => [0, 0, 0, 0])
-  );
-}
+const TOTAL_STEPS = 7;
 
 export default function QLearningTopic() {
-  const [qTable, setQTable] = useState<number[][][]>(initQTable);
-  const [selectedCell, setSelectedCell] = useState<{ r: number; c: number } | null>(null);
-  const [agentPos, setAgentPos] = useState({ r: 0, c: 0 });
-  const [episode, setEpisode] = useState(0);
-  const [totalReward, setTotalReward] = useState(0);
-  const [epsilon] = useState(0.3);
-  const [alpha] = useState(0.5);
-  const [gamma] = useState(0.9);
+  const [qTable, setQTable] = useState(initQ);
+  const [pos, setPos] = useState({ r: 0, c: 0 });
+  const [episodes, setEpisodes] = useState(0);
 
-  const step = useCallback(() => {
-    setQTable((prev) => {
-      const qt = prev.map((row) => row.map((cell) => [...cell]));
-      const { r, c } = agentPos;
-
-      // Epsilon-greedy action selection
-      let actionIdx: number;
-      if (Math.random() < epsilon) {
-        actionIdx = Math.floor(Math.random() * 4);
-      } else {
-        actionIdx = qt[r][c].indexOf(Math.max(...qt[r][c]));
-      }
-
-      const [dr, dc] = ACTION_DELTAS[ACTIONS[actionIdx]];
+  const trainStep = useCallback(() => {
+    setQTable(prev => {
+      const qt = prev.map(row => row.map(cell => [...cell]));
+      const { r, c } = pos;
+      const aIdx = Math.random() < 0.3 ? Math.floor(Math.random() * 4) : qt[r][c].indexOf(Math.max(...qt[r][c]));
+      const [dr, dc] = DELTAS[ACTIONS[aIdx]];
       const nr = Math.max(0, Math.min(GRID - 1, r + dr));
       const nc = Math.max(0, Math.min(GRID - 1, c + dc));
-
       const reward = getReward(nr, nc);
-      const maxNextQ = Math.max(...qt[nr][nc]);
-
-      // Bellman update
-      qt[r][c][actionIdx] =
-        qt[r][c][actionIdx] + alpha * (reward + gamma * maxNextQ - qt[r][c][actionIdx]);
-
-      setTotalReward((prev) => prev + reward);
-
-      // Move agent, reset if reached goal or trap
-      if ((nr === GOAL.r && nc === GOAL.c) || (nr === TRAP.r && nc === TRAP.c)) {
-        setAgentPos({ r: 0, c: 0 });
-        setEpisode((e) => e + 1);
-      } else {
-        setAgentPos({ r: nr, c: nc });
-      }
-
+      qt[r][c][aIdx] += 0.5 * (reward + 0.9 * Math.max(...qt[nr][nc]) - qt[r][c][aIdx]);
+      setPos(nr === GOAL.r && nc === GOAL.c ? { r: 0, c: 0 } : { r: nr, c: nc });
+      if (nr === GOAL.r && nc === GOAL.c) setEpisodes(e => e + 1);
       return qt;
     });
-  }, [agentPos, epsilon, alpha, gamma]);
+  }, [pos]);
 
-  const runEpisode = useCallback(() => {
-    for (let i = 0; i < 20; i++) {
-      setTimeout(() => step(), i * 100);
-    }
-  }, [step]);
+  const runMany = useCallback(() => { for (let i = 0; i < 100; i++) trainStep(); }, [trainStep]);
 
-  const reset = useCallback(() => {
-    setQTable(initQTable());
-    setAgentPos({ r: 0, c: 0 });
-    setEpisode(0);
-    setTotalReward(0);
-    setSelectedCell(null);
-  }, []);
-
-  const cellSize = 120;
-  const padding = 10;
-  const svgW = GRID * cellSize + 2 * padding;
-  const svgH = GRID * cellSize + 2 * padding;
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Q(s,a) dai dien cho gi?", options: ["Xac suat hanh dong a thanh cong", "GIA TRI KY VONG cua tong reward tuong lai neu thuc hien hanh dong a tai state s roi theo chinh sach toi uu", "So lan da thuc hien hanh dong a"], correct: 1, explanation: "Q(s,a) = 'hanh dong a tai state s tot den dau?' Gia tri cao = hanh dong tot (dan den nhieu reward). Agent chon action co Q cao nhat tai moi state → chinh sach toi uu. Q-Learning hoc Q table tu trai nghiem (trial-and-error)." },
+    { question: "Epsilon-greedy: tai sao can random action (explore)?", options: ["De cham hon", "Neu luon chon action co Q cao nhat (exploit) → co the bi ket o local optimum, bo lo duong tot hon. Can explore de tim", "Vi model chua hoc xong"], correct: 1, explanation: "Explore vs Exploit dilemma: luon exploit = co the miss duong tat (local optimum). Luon explore = khong tan dung kien thuc da hoc. Epsilon-greedy: 90% exploit (chon best Q), 10% explore (random) → can bang hoc va khai thac." },
+    { question: "Discount factor gamma (0.9) lam gi?", options: ["Giam learning rate", "Can bang reward NGAY (gan) va reward TUONG LAI (xa). Gamma cao (0.99) = nhin xa. Gamma thap (0.5) = nhin gan", "Giam so episodes"], correct: 1, explanation: "Gamma = 0.9: reward 1 buoc sau giam 10%, 2 buoc: 19%, 10 buoc: 65%. Nghia la agent 'quan tam' reward gan nhieu hon reward xa. Gamma = 0.99: nhin xa (tot cho planning). Gamma = 0.5: nhin gan (tot cho reactive). Grab dung gamma cao de toi uu route dai." },
+  ], []);
 
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn mới chuyển đến một thành phố và muốn tìm{" "}
-          <strong>quán ăn ngon nhất</strong>. Bạn xây dựng một{" "}
-          <strong>&quot;bảng đánh giá&quot;</strong> — ghi lại mỗi quán (trạng thái) với
-          mỗi món (hành động) cho bạn bao nhiêu sự hài lòng (phần thưởng).
-        </p>
-        <p>
-          Ban đầu bảng trống — bạn thử ngẫu nhiên. Mỗi lần ăn, bạn cập nhật điểm:{" "}
-          <strong>&quot;Quán A, món phở = 9 điểm&quot;</strong>. Dần dần, bạn biết chính
-          xác nên đi đâu và gọi gì. Đó chính là cách <strong>Q-Learning</strong> hoạt
-          động — xây dựng bảng Q (Q-table) từ trải nghiệm.
-        </p>
-      </AnalogyCard>
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+        <PredictionGate question="Grab can tim duong ngan nhat cho tai xe. Moi nga tu co nhieu huong, khong biet truoc duong nao ket. Tai xe hoc bang cach nao?" options={["Lap trinh moi nga tu bang tay", "Thu nhieu duong, nho duong nao nhanh (reward cao), lan sau uu tien duong do — day la Q-Learning!", "Luon di thang"]} correct={1} explanation="Q-Learning: tai moi nga tu (state), thu hanh dong (re trai/phai/thang), nhan reward (nhanh = +, cham = -). Dan dan xay dung 'ban do gia tri' (Q-table): tai moi nga tu, biet re huong nao co gia tri cao nhat. Grab dung RL tuong tu cho 30 trieu chuyen/ngay!">
 
-      <VisualizationSection>
-        <p className="mb-3 text-sm text-muted">
-          Nhấp vào ô để xem Q-values. Nhấn &quot;Bước tiếp&quot; để agent di chuyển và
-          học, hoặc &quot;Chạy 20 bước&quot; để chạy nhanh. Ô xanh lá = đích (thưởng +10),
-          ô đỏ = bẫy (phạt -5).
-        </p>
-
-        <svg
-          viewBox={`0 0 ${svgW} ${svgH}`}
-          className="w-full max-w-2xl mx-auto rounded-lg border border-border bg-background"
-        >
-          {Array.from({ length: GRID }, (_, r) =>
-            Array.from({ length: GRID }, (_, c) => {
-              const x = padding + c * cellSize;
-              const y = padding + r * cellSize;
-              const maxQ = Math.max(...qTable[r][c]);
-              const isGoal = r === GOAL.r && c === GOAL.c;
-              const isTrap = r === TRAP.r && c === TRAP.c;
-              const isAgent = r === agentPos.r && c === agentPos.c;
-              const isSelected =
-                selectedCell !== null && selectedCell.r === r && selectedCell.c === c;
-
-              return (
-                <g
-                  key={`cell-${r}-${c}`}
-                  onClick={() => setSelectedCell({ r, c })}
-                  style={{ cursor: "pointer" }}
-                >
-                  {/* Cell background */}
-                  <rect
-                    x={x + 2}
-                    y={y + 2}
-                    width={cellSize - 4}
-                    height={cellSize - 4}
-                    rx={8}
-                    fill={isGoal ? "#bbf7d0" : isTrap ? "#fecaca" : qColor(maxQ)}
-                    stroke={isSelected ? "#3b82f6" : "#94a3b8"}
-                    strokeWidth={isSelected ? 3 : 1}
-                  />
-
-                  {/* Goal / Trap labels */}
-                  {isGoal && (
-                    <text
-                      x={x + cellSize / 2}
-                      y={y + 20}
-                      textAnchor="middle"
-                      fontSize="12"
-                      fontWeight="bold"
-                      fill="#16a34a"
-                    >
-                      🎯 ĐÍCH
-                    </text>
-                  )}
-                  {isTrap && (
-                    <text
-                      x={x + cellSize / 2}
-                      y={y + 20}
-                      textAnchor="middle"
-                      fontSize="12"
-                      fontWeight="bold"
-                      fill="#dc2626"
-                    >
-                      ⚠️ BẪY
-                    </text>
-                  )}
-
-                  {/* Q-values for each action (arrows) */}
-                  {ACTIONS.map((action, ai) => {
-                    const val = qTable[r][c][ai];
-                    const positions = [
-                      { tx: x + cellSize / 2, ty: y + 35 }, // up
-                      { tx: x + cellSize - 18, ty: y + cellSize / 2 + 4 }, // right
-                      { tx: x + cellSize / 2, ty: y + cellSize - 15 }, // down
-                      { tx: x + 18, ty: y + cellSize / 2 + 4 }, // left
-                    ];
-                    return (
-                      <text
-                        key={`q-${r}-${c}-${ai}`}
-                        x={positions[ai].tx}
-                        y={positions[ai].ty}
-                        textAnchor="middle"
-                        fontSize="10"
-                        fill={val > 0 ? "#16a34a" : val < 0 ? "#dc2626" : "#64748b"}
-                      >
-                        {action} {val.toFixed(1)}
-                      </text>
-                    );
-                  })}
-
-                  {/* Max Q in center */}
-                  <text
-                    x={x + cellSize / 2}
-                    y={y + cellSize / 2 + 5}
-                    textAnchor="middle"
-                    fontSize="14"
-                    fontWeight="bold"
-                    fill="#1e293b"
-                  >
-                    {maxQ.toFixed(1)}
-                  </text>
-
-                  {/* Agent marker */}
-                  {isAgent && (
-                    <circle
-                      cx={x + cellSize / 2}
-                      cy={y + cellSize - 30}
-                      r={10}
-                      fill="#3b82f6"
-                      stroke="#fff"
-                      strokeWidth={2}
-                    />
-                  )}
-                </g>
-              );
-            })
-          )}
-        </svg>
-
-        {/* Selected cell detail */}
-        {selectedCell && (
-          <div className="mt-3 rounded-lg bg-background/50 border border-border p-3">
-            <p className="text-sm font-medium text-foreground">
-              Ô ({selectedCell.r}, {selectedCell.c}) — Q-values:
-            </p>
-            <div className="mt-1 grid grid-cols-4 gap-2 text-sm">
-              {ACTIONS.map((a, i) => (
-                <div key={a} className="text-center">
-                  <span className="text-muted">{a}</span>{" "}
-                  <strong>{qTable[selectedCell.r][selectedCell.c][i].toFixed(2)}</strong>
-                </div>
-              ))}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <p className="mb-4 text-sm text-muted leading-relaxed">Click <strong className="text-foreground">Train 1 buoc</strong>{" "}hoac <strong className="text-foreground">Train 100 buoc</strong>{" "}de xem agent hoc cach di den dich (goc duoi-phai).</p>
+        <VisualizationSection>
+          <div className="space-y-4">
+            <div className="flex gap-3 justify-center">
+              <button onClick={trainStep} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Train 1 buoc</button>
+              <button onClick={runMany} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Train 100 buoc</button>
+              <button onClick={() => { setQTable(initQ()); setPos({ r: 0, c: 0 }); setEpisodes(0); }} className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted hover:text-foreground">Reset</button>
             </div>
+            <svg viewBox="0 0 400 400" className="w-full max-w-sm mx-auto">
+              {Array.from({ length: GRID }, (_, r) => Array.from({ length: GRID }, (_, c) => {
+                const x = c * 100; const y = r * 100;
+                const maxQ = Math.max(...qTable[r][c]);
+                const fill = r === GOAL.r && c === GOAL.c ? "#22c55e" : r === TRAP.r && c === TRAP.c ? "#ef4444" : maxQ > 3 ? "#3b82f6" : "#1e293b";
+                const isAgent = pos.r === r && pos.c === c;
+                return (<g key={`${r}${c}`}>
+                  <rect x={x + 2} y={y + 2} width={96} height={96} rx={8} fill={fill} opacity={0.3} stroke={isAgent ? "#f59e0b" : "#475569"} strokeWidth={isAgent ? 3 : 1} />
+                  {r === GOAL.r && c === GOAL.c && <text x={x + 50} y={y + 55} textAnchor="middle" fill="#22c55e" fontSize={12} fontWeight="bold">DICH</text>}
+                  {r === TRAP.r && c === TRAP.c && <text x={x + 50} y={y + 55} textAnchor="middle" fill="#ef4444" fontSize={12} fontWeight="bold">BAY</text>}
+                  {isAgent && <circle cx={x + 50} cy={y + 50} r={15} fill="#f59e0b" />}
+                  <text x={x + 50} y={y + 92} textAnchor="middle" fill="#64748b" fontSize={7}>Q:{maxQ.toFixed(1)}</text>
+                </g>);
+              }))}
+            </svg>
+            <p className="text-center text-sm text-muted">Episodes hoan thanh: <strong>{episodes}</strong></p>
           </div>
-        )}
+        </VisualizationSection>
+      </LessonSection>
 
-        {/* Stats */}
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Episode</p>
-            <p className="text-lg font-bold text-foreground">{episode}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tổng thưởng</p>
-            <p className="text-lg font-bold text-foreground">{totalReward.toFixed(1)}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Epsilon (ε)</p>
-            <p className="text-lg font-bold text-foreground">{epsilon}</p>
-          </div>
-        </div>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+        <AhaMoment><p>Sau nhieu lan thu, agent <strong>hoc duoc ban do gia tri</strong>{" "}(Q-table): tai moi o, biet di huong nao co gia tri cao nhat. Q values <strong>lan nguoc tu dich</strong>{" "}— o gan dich co Q cao, o xa Q thap hon. Agent di theo gradient cua Q values den dich — giong nuoc chay tu nui xuong thung lung!</p></AhaMoment>
+      </LessonSection>
 
-        {/* Controls */}
-        <div className="mt-4 flex items-center gap-3">
-          <button
-            onClick={step}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Bước tiếp
-          </button>
-          <button
-            onClick={runEpisode}
-            className="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            Chạy 20 bước
-          </button>
-          <button
-            onClick={reset}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Đặt lại
-          </button>
-        </div>
-      </VisualizationSection>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+        <InlineChallenge question="Agent co epsilon=0.3 (30% random). Sau 1000 episodes, agent da hoc tot. Nen giam epsilon xuong 0.05 khong?" options={["Khong — giu 0.3 de tiep tuc explore", "CO — agent da hoc → nen exploit nhieu hon (0.05 = 95% chon best action). Giam dan epsilon la chien luoc chuan", "Dat epsilon = 0 (khong explore)"]} correct={1} explanation="Epsilon decay: ban dau explore nhieu (0.3-1.0) de kham pha. Dan dan giam (0.05-0.01) de khai thac kien thuc da hoc. Epsilon = 0 nguy hiem: moi truong thay doi thi khong adapt duoc. Giu 0.01-0.05 de van explore chut it." />
+      </LessonSection>
 
-      <ExplanationSection>
-        <p>
-          <strong>Q-Learning</strong> là thuật toán <strong>học tăng cường</strong> cơ bản
-          nhất, thuộc nhóm phương pháp <strong>off-policy</strong> và{" "}
-          <strong>model-free</strong>. Agent học cách hành động tối ưu mà không cần biết
-          trước mô hình của môi trường.
-        </p>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+        <ExplanationSection>
+          <p><strong>Q-Learning</strong>{" "}la thuat toan RL hoc gia tri Q(s,a) — 'hanh dong a tai state s tot den dau?' — tu trai nghiem (off-policy, model-free).</p>
+          <p><strong>Q-value update rule:</strong></p>
+          <LaTeX block>{"Q(s_t, a_t) \\leftarrow Q(s_t, a_t) + \\alpha \\left[ r_t + \\gamma \\max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \\right]"}</LaTeX>
+          <p>Trong do: <LaTeX>{"\\alpha"}</LaTeX> = learning rate, <LaTeX>{"\\gamma"}</LaTeX> = discount factor, <LaTeX>{"r_t"}</LaTeX> = reward.</p>
+          <Callout variant="tip" title="Off-policy">Q-Learning la off-policy: update Q dua tren best action (max Q), khong phai action thuc su da thuc hien. Uu diem: hoc tu bat ky data nao (replay buffer). Nhuoc diem: co the overestimate Q values.</Callout>
+          <CodeBlock language="python" title="Q-Learning cho grid world">{`import numpy as np
 
-        <p>
-          Ý tưởng cốt lõi là xây dựng một <strong>bảng Q (Q-table)</strong> — với mỗi cặp
-          (trạng thái, hành động), ta lưu một giá trị Q thể hiện &quot;phần thưởng kỳ vọng
-          tổng cộng nếu thực hiện hành động đó tại trạng thái đó&quot;.
-        </p>
+# Q-table: states x actions
+q_table = np.zeros((16, 4))  # 4x4 grid, 4 actions
+alpha, gamma, epsilon = 0.5, 0.9, 0.3
 
-        <p>
-          Công thức cập nhật dựa trên <strong>phương trình Bellman</strong>:
-        </p>
-        <div className="rounded-lg bg-background/50 border border-border p-3 text-center font-mono text-foreground text-sm">
-          Q(s,a) ← Q(s,a) + α [r + γ max Q(s&apos;,a&apos;) − Q(s,a)]
-        </div>
-        <p>Trong đó:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>α (alpha)</strong>: tốc độ học — mức độ tin tưởng thông tin mới so với
-            thông tin cũ
-          </li>
-          <li>
-            <strong>γ (gamma)</strong>: hệ số chiết khấu — mức độ quan tâm đến phần thưởng
-            tương lai (0 = chỉ quan tâm hiện tại, 1 = quan tâm xa)
-          </li>
-          <li>
-            <strong>r</strong>: phần thưởng nhận được ngay sau khi thực hiện hành động
-          </li>
-          <li>
-            <strong>max Q(s&apos;,a&apos;)</strong>: giá trị Q lớn nhất tại trạng thái
-            tiếp theo — đây là phần &quot;tham lam&quot; (greedy)
-          </li>
-        </ul>
+for episode in range(1000):
+    state = 0  # Start
+    while state != 15:  # Goal
+        # Epsilon-greedy action selection
+        if np.random.random() < epsilon:
+            action = np.random.randint(4)  # Explore
+        else:
+            action = np.argmax(q_table[state])  # Exploit
 
-        <p>
-          <strong>Chiến lược Epsilon-Greedy (ε-greedy)</strong> giúp cân bằng giữa{" "}
-          <strong>khám phá</strong> (exploration) và <strong>khai thác</strong>{" "}
-          (exploitation):
-        </p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            Với xác suất <strong>ε</strong>: chọn hành động ngẫu nhiên (khám phá đường mới)
-          </li>
-          <li>
-            Với xác suất <strong>1-ε</strong>: chọn hành động có Q-value cao nhất (khai thác
-            kinh nghiệm)
-          </li>
-        </ul>
+        next_state, reward = env.step(state, action)
 
-        <p>
-          Khi đủ trải nghiệm, bảng Q sẽ <strong>hội tụ</strong> — các giá trị Q ổn định
-          và phản ánh chính sách tối ưu. Lúc này, agent chỉ cần chọn hành động có Q-value
-          cao nhất tại mỗi trạng thái để hành động tốt nhất.
-        </p>
-      </ExplanationSection>
+        # Q-Learning update
+        q_table[state, action] += alpha * (
+            reward + gamma * np.max(q_table[next_state])
+            - q_table[state, action]
+        )
+        state = next_state
+
+    # Epsilon decay
+    epsilon = max(0.01, epsilon * 0.995)
+
+# Sau 1000 episodes: agent hoc duong toi uu
+# Policy: tai moi state, chon action co Q cao nhat`}</CodeBlock>
+        </ExplanationSection>
+      </LessonSection>
+
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+        <MiniSummary points={["Q(s,a) = gia tri ky vong neu thuc hien action a tai state s. Agent chon action co Q cao nhat.", "Update rule: Q moi = Q cu + alpha * (reward + gamma * max Q tiep theo - Q cu).", "Epsilon-greedy: explore (random) vs exploit (best Q). Giam epsilon dan theo thoi gian.", "Off-policy: hoc tu best action (max Q) khong phai action thuc hien → linh hoat hon.", "Han che: Q-table chi cho state/action nho. State lon (hinh anh) → can Deep Q-Network (DQN)."]} />
+      </LessonSection>
+
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+        </PredictionGate>
+      </LessonSection>
     </>
   );
 }
