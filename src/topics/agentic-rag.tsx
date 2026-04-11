@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "agentic-rag",
   title: "Agentic RAG",
-  titleVi: "RAG tang cuong voi Agent",
+  titleVi: "RAG tăng cường với Agent",
   description:
-    "Ket hop RAG voi AI Agent de tu quyet dinh khi nao truy xuat, xac minh va tong hop thong tin",
+    "Kết hợp RAG với AI Agent để tự quyết định khi nào truy xuất, xác minh và tổng hợp thông tin",
   category: "emerging",
   tags: ["rag", "agent", "adaptive-retrieval"],
   difficulty: "intermediate",
@@ -31,55 +31,55 @@ export default function AgenticRAGTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "Agentic RAG khac Basic RAG o diem nao?",
+      question: "Agentic RAG khác Basic RAG ở điểm nào?",
       options: [
-        "Dung model lon hon",
-        "Agent TU QUYET DINH: co can retrieve khong, retrieve tu dau, bao nhieu lan, co can verify khong",
-        "Dung vector database tot hon",
+        "Dùng model lớn hơn",
+        "Agent TỰ QUYẾT ĐỊNH: có cần retrieve không, retrieve từ đâu, bao nhiêu lần, có cần verify không",
+        "Dùng vector database tốt hơn",
       ],
       correct: 1,
-      explanation: "Basic RAG: luon retrieve → generate (1 buoc co dinh). Agentic RAG: agent danh gia cau hoi → quyet dinh co can retrieve? → retrieve tu nguon nao? → ket qua du tot? → can retrieve them? → verify thong tin? Linh hoat va chinh xac hon nhieu.",
+      explanation: "Basic RAG: luôn retrieve → generate (1 bước cố định). Agentic RAG: agent đánh giá câu hỏi → quyết định có cần retrieve? → retrieve từ nguồn nào? → kết quả đủ tốt? → cần retrieve thêm? → verify thông tin? Linh hoạt và chính xác hơn nhiều.",
     },
     {
-      question: "Khi nao Agentic RAG quyet dinh KHONG retrieve?",
+      question: "Khi nào Agentic RAG quyết định KHÔNG retrieve?",
       options: [
-        "Khong bao gio — luon retrieve de an toan",
-        "Khi cau hoi thuoc kien thuc chung ma model da biet (vi du: '1+1=?'), retrieve se lang phi va co the gay nhieu",
-        "Khi database trong",
+        "Không bao giờ — luôn retrieve để an toàn",
+        "Khi câu hỏi thuộc kiến thức chung mà model đã biết (ví dụ: '1+1=?'), retrieve sẽ lãng phí và có thể gây nhiễu",
+        "Khi database trống",
       ],
       correct: 1,
-      explanation: "Adaptive retrieval: cau hoi kien thuc chung → tra loi truc tiep (nhanh, re). Cau hoi can thong tin cu the → retrieve. Cau hoi phuc tap → multi-step retrieve. Khong phai moi cau deu can retrieve — giong khong can tra Google cho '1+1=?'.",
+      explanation: "Adaptive retrieval: câu hỏi kiến thức chung → trả lời trực tiếp (nhanh, rẻ). Câu hỏi cần thông tin cụ thể → retrieve. Câu hỏi phức tạp → multi-step retrieve. Không phải mọi câu đều cần retrieve — giống không cần tra Google cho '1+1=?'.",
     },
     {
-      question: "Self-RAG technique hoat dong the nao?",
+      question: "Self-RAG technique hoạt động thế nào?",
       options: [
-        "Model tu danh gia: (1) co can retrieve? (2) retrieved docs co relevance? (3) response co supported by docs?",
-        "Model tu tao database rieng",
-        "Model retrieve tu chinh output cua minh",
+        "Model tự đánh giá: (1) có cần retrieve? (2) retrieved docs có relevance? (3) response có supported by docs?",
+        "Model tự tạo database riêng",
+        "Model retrieve từ chính output của mình",
       ],
       correct: 0,
-      explanation: "Self-RAG (Asai et al. 2023): model tu sinh 'reflection tokens' de tu danh gia tung buoc. [Retrieve]: co can retrieve? [ISREL]: doc co relevant? [ISSUP]: answer co duoc support? [ISUSE]: answer co huu ich? Moi buoc co quyet dinh → ket qua chinh xac hon.",
+      explanation: "Self-RAG (Asai et al. 2023): model tự sinh 'reflection tokens' để tự đánh giá từng bước. [Retrieve]: có cần retrieve? [ISREL]: doc có relevant? [ISSUP]: answer có được support? [ISUSE]: answer có hữu ích? Mỗi bước có quyết định → kết quả chính xác hơn.",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Chatbot cong ty ban dung Basic RAG. User hoi 'Chinh sach nghi phep nam 2025 la gi?' — RAG tra ve document 2024 (chua update). Chatbot tra loi sai. Giai phap?"
+          question="Chatbot công ty bạn dùng Basic RAG. User hỏi 'Chính sách nghỉ phép năm 2025 là gì?' — RAG trả về document 2024 (chưa update). Chatbot trả lời sai. Giải pháp?"
           options={[
-            "Update document thuong xuyen hon",
-            "Dung Agentic RAG: agent kiem tra document date, nhan biet outdated, tu dong tim document moi hon hoac bao cho user",
-            "Thay doi LLM manh hon",
+            "Update document thường xuyên hơn",
+            "Dùng Agentic RAG: agent kiểm tra document date, nhận biết outdated, tự động tìm document mới hơn hoặc báo cho user",
+            "Thay đổi LLM mạnh hơn",
           ]}
           correct={1}
-          explanation="Agentic RAG thong minh hon: kiem tra metadata (date, version), cross-check nhieu nguon, tu nhan biet 'document nay tu 2024, cau hoi ve 2025 — co the outdated'. Agent tu quyet dinh: retrieve them, canh bao user, hoac tu choi tra loi thay vi dua thong tin sai."
+          explanation="Agentic RAG thông minh hơn: kiểm tra metadata (date, version), cross-check nhiều nguồn, tự nhận biết 'document này từ 2024, câu hỏi về 2025 — có thể outdated'. Agent tự quyết định: retrieve thêm, cảnh báo user, hoặc từ chối trả lời thay vì đưa thông tin sai."
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          So sanh <strong className="text-foreground">Basic RAG vs Agentic RAG</strong>{" "}
-          — tu pipeline co dinh sang agent linh hoat.
+          So sánh <strong className="text-foreground">Basic RAG vs Agentic RAG</strong>{" "}
+          — từ pipeline cố định sang agent linh hoạt.
         </p>
         <VisualizationSection>
           <div className="space-y-4">
@@ -104,8 +104,8 @@ export default function AgenticRAGTopic() {
                       </g>
                     );
                   })}
-                  <text x={300} y={130} textAnchor="middle" fill="#94a3b8" fontSize={10}>Pipeline co dinh: luon retrieve 1 lan → generate</text>
-                  <text x={300} y={150} textAnchor="middle" fill="#ef4444" fontSize={9}>Van de: khong verify, khong retry, khong adaptive</text>
+                  <text x={300} y={130} textAnchor="middle" fill="#94a3b8" fontSize={10}>Pipeline cố định: luôn retrieve 1 lần → generate</text>
+                  <text x={300} y={150} textAnchor="middle" fill="#ef4444" fontSize={9}>Vấn đề: không verify, không retry, không adaptive</text>
                 </>
               ) : (
                 <>
@@ -123,9 +123,9 @@ export default function AgenticRAGTopic() {
                     </g>
                   ))}
                   <path d="M 360 75 C 360 110, 260 110, 260 75" fill="none" stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="4,3" />
-                  <text x={310} y={120} textAnchor="middle" fill="#f59e0b" fontSize={8}>Retry neu khong du tot</text>
-                  <text x={300} y={145} textAnchor="middle" fill="#22c55e" fontSize={10}>Agent tu quyet dinh moi buoc — adaptive va self-correcting</text>
-                  <text x={300} y={165} textAnchor="middle" fill="#94a3b8" fontSize={9}>Co the skip retrieve, multi-source, verify before answer</text>
+                  <text x={310} y={120} textAnchor="middle" fill="#f59e0b" fontSize={8}>Retry nếu không đủ tốt</text>
+                  <text x={300} y={145} textAnchor="middle" fill="#22c55e" fontSize={10}>Agent tự quyết định mỗi bước — adaptive và self-correcting</text>
+                  <text x={300} y={165} textAnchor="middle" fill="#94a3b8" fontSize={9}>Có thể skip retrieve, multi-source, verify before answer</text>
                 </>
               )}
             </svg>
@@ -133,49 +133,49 @@ export default function AgenticRAGTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Basic RAG giong <strong>may tra cuu tu dong</strong>{" "}— luon tim, luon tra.
-            Agentic RAG giong <strong>nha nghien cuu thong minh</strong>{" "}— suy nghi truoc khi tim,
-            kiem tra nguon, cross-check, va biet noi &quot;toi khong chac chan&quot; khi thong tin khong du.
-            Buoc nhay tu &quot;retrieve and read&quot; sang <strong>&quot;think, retrieve, verify, synthesize&quot;</strong>.
+            Basic RAG giống <strong>máy tra cứu tự động</strong>{" "}— luôn tìm, luôn trả.
+            Agentic RAG giống <strong>nhà nghiên cứu thông minh</strong>{" "}— suy nghĩ trước khi tìm,
+            kiểm tra nguồn, cross-check, và biết nói 'tôi không chắc chắn' khi thông tin không đủ.
+            Bước nhảy từ 'retrieve and read' sang <strong>'think, retrieve, verify, synthesize'</strong>.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="User hoi: 'So sanh doanh thu Q3 2024 cua FPT va Viettel.' Basic RAG retrieve 2 documents rieng. Nhung 2 docs dung don vi khac nhau (trieu vs ty VND). Agentic RAG xu ly the nao?"
+          question="User hỏi: 'So sánh doanh thu Q3 2024 của FPT và Viettel.' Basic RAG retrieve 2 documents riêng. Nhưng 2 docs dùng đơn vị khác nhau (triệu vs tỷ VND). Agentic RAG xử lý thế nào?"
           options={[
-            "Tra ve 2 con so va de user tu so sanh",
-            "Agent nhan biet don vi khac nhau, tu chuyen doi, cross-check voi nguon thu 3, tra ve so sanh chuẩn hoá",
-            "Bao loi vi data khong tuong thich",
+            "Trả về 2 con số và để user tự so sánh",
+            "Agent nhận biết đơn vị khác nhau, tự chuyển đổi, cross-check với nguồn thứ 3, trả về so sánh chuẩn hoá",
+            "Báo lỗi vì data không tương thích",
           ]}
           correct={1}
-          explanation="Agentic RAG: (1) retrieve FPT doc + Viettel doc, (2) nhan biet don vi khac nhau, (3) chuyen doi ve cung don vi, (4) cross-check voi bao cao tong hop, (5) tra ve bang so sanh chuan hoa + ghi chu nguon. Multi-step reasoning + tool use!"
+          explanation="Agentic RAG: (1) retrieve FPT doc + Viettel doc, (2) nhận biết đơn vị khác nhau, (3) chuyển đổi về cùng đơn vị, (4) cross-check với báo cáo tổng hợp, (5) trả về bảng so sánh chuẩn hoá + ghi chú nguồn. Multi-step reasoning + tool use!"
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Agentic RAG</strong>{" "}
-            ket hop RAG voi AI Agent — agent tu quyet dinh khi nao retrieve, tu nguon nao, bao nhieu lan, va co can verify khong.
+            kết hợp RAG với AI Agent — agent tự quyết định khi nào retrieve, từ nguồn nào, bao nhiêu lần, và có cần verify không.
           </p>
-          <p><strong>4 kha nang cot loi:</strong></p>
+          <p><strong>4 khả năng cốt lõi:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Adaptive Retrieval:</strong>{" "}Quyet dinh CO CAN retrieve hay khong (skip cho cau don gian)</li>
-            <li><strong>Multi-source:</strong>{" "}Retrieve tu nhieu nguon: vector DB, SQL, web search, API</li>
-            <li><strong>Self-reflection:</strong>{" "}Tu danh gia: retrieved docs co relevant? answer co supported?</li>
-            <li><strong>Iterative refinement:</strong>{" "}Khong du tot → reformulate query → retrieve lai</li>
+            <li><strong>Adaptive Retrieval:</strong>{" "}Quyết định CÓ CẦN retrieve hay không (skip cho câu đơn giản)</li>
+            <li><strong>Multi-source:</strong>{" "}Retrieve từ nhiều nguồn: vector DB, SQL, web search, API</li>
+            <li><strong>Self-reflection:</strong>{" "}Tự đánh giá: retrieved docs có relevant? answer có supported?</li>
+            <li><strong>Iterative refinement:</strong>{" "}Không đủ tốt → reformulate query → retrieve lại</li>
           </ul>
 
           <Callout variant="tip" title="CRAG - Corrective RAG">
-            CRAG (Yan et al. 2024): sau khi retrieve, evaluator danh gia relevance. Correct → dung. Ambiguous → web search bo sung. Incorrect → bo retrieved docs, dung web search thay the. Ket qua: +15% accuracy so voi basic RAG.
+            CRAG (Yan et al. 2024): sau khi retrieve, evaluator đánh giá relevance. Correct → dùng. Ambiguous → web search bổ sung. Incorrect → bỏ retrieved docs, dùng web search thay thế. Kết quả: +15% accuracy so với basic RAG.
           </Callout>
 
-          <CodeBlock language="python" title="Agentic RAG voi tool use">
+          <CodeBlock language="python" title="Agentic RAG với tool use">
 {`import anthropic
 
 client = anthropic.Anthropic()
@@ -183,7 +183,7 @@ client = anthropic.Anthropic()
 tools = [
     {
         "name": "search_docs",
-        "description": "Tim tai lieu trong knowledge base",
+        "description": "Tìm tài liệu trong knowledge base",
         "input_schema": {"type": "object", "properties": {
             "query": {"type": "string"},
             "source": {"type": "string", "enum": ["internal", "web", "database"]},
@@ -191,43 +191,43 @@ tools = [
     },
     {
         "name": "verify_fact",
-        "description": "Verify thong tin voi nguon thu 3",
+        "description": "Verify thông tin với nguồn thứ 3",
         "input_schema": {"type": "object", "properties": {
             "claim": {"type": "string"},
         }},
     },
 ]
 
-# Agent tu quyet dinh: can retrieve? tu nguon nao? can verify?
+# Agent tự quyết định: cần retrieve? từ nguồn nào? cần verify?
 response = client.messages.create(
     model="claude-sonnet-4-20250514",
     max_tokens=4096,
     tools=tools,
     messages=[{
         "role": "user",
-        "content": "So sanh chinh sach nghi phep cua FPT va VNG nam 2025"
+        "content": "So sánh chính sách nghỉ phép của FPT và VNG năm 2025"
     }],
 )
-# Agent co the:
-# 1. search_docs("chinh sach nghi phep FPT 2025", "internal")
-# 2. search_docs("chinh sach nghi phep VNG 2025", "internal")
-# 3. verify_fact("FPT cho 15 ngay nghi phep/nam")
-# 4. Synthesize va so sanh`}
+# Agent có thể:
+# 1. search_docs("chính sách nghỉ phép FPT 2025", "internal")
+# 2. search_docs("chính sách nghỉ phép VNG 2025", "internal")
+# 3. verify_fact("FPT cho 15 ngày nghỉ phép/năm")
+# 4. Synthesize và so sánh`}
           </CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Agentic RAG: agent TU QUYET DINH retrieve hay khong, tu nguon nao, bao nhieu lan, co verify khong.",
-          "4 kha nang: Adaptive Retrieval, Multi-source, Self-reflection, Iterative Refinement.",
-          "CRAG: evaluator danh gia relevance sau retrieve — correct/ambiguous/incorrect → hành dong khac nhau.",
-          "Self-RAG: model tu sinh reflection tokens de tu danh gia tung buoc.",
-          "Tu 'may tra cuu' sang 'nha nghien cuu': suy nghi, tim, kiem tra, tong hop — chinh xac hon 15-30%.",
+          "Agentic RAG: agent TỰ QUYẾT ĐỊNH retrieve hay không, từ nguồn nào, bao nhiêu lần, có verify không.",
+          "4 khả năng: Adaptive Retrieval, Multi-source, Self-reflection, Iterative Refinement.",
+          "CRAG: evaluator đánh giá relevance sau retrieve — correct/ambiguous/incorrect → hành động khác nhau.",
+          "Self-RAG: model tự sinh reflection tokens để tự đánh giá từng bước.",
+          "Từ 'máy tra cứu' sang 'nhà nghiên cứu': suy nghĩ, tìm, kiểm tra, tổng hợp — chính xác hơn 15-30%.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
