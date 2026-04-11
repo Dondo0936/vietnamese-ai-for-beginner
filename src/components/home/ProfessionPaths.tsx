@@ -9,6 +9,7 @@ import {
   FlaskConical,
   ChevronDown,
   ChevronUp,
+  ArrowRight,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 
@@ -195,6 +196,13 @@ export default function ProfessionPaths({
                     );
                   })}
                 </div>
+                <Link
+                  href={`/paths/${prof.id}`}
+                  className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-accent hover:underline"
+                >
+                  Xem lộ trình
+                  <ArrowRight size={13} />
+                </Link>
               </div>
             )}
           </div>
