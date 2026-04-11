@@ -1,9 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useState, useMemo, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  PredictionGate, AhaMoment, InlineChallenge,
+  Callout, MiniSummary, CodeBlock,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
@@ -18,148 +24,459 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
+/* ── Patient data for classification game ── */
+interface Patient {
+  id: number;
+  name: string;
+  symptoms: string[];
+  hasDisease: boolean;
+}
+
+const PATIENTS: Patient[] = [
+  { id: 1, name: "Bệnh nhân A", symptoms: ["sốt cao", "ho kéo dài", "khó thở"], hasDisease: true },
+  { id: 2, name: "Bệnh nhân B", symptoms: ["bình thường", "không triệu chứng"], hasDisease: false },
+  { id: 3, name: "Bệnh nhân C", symptoms: ["sốt nhẹ", "mệt mỏi"], hasDisease: true },
+  { id: 4, name: "Bệnh nhân D", symptoms: ["ho nhẹ", "sổ mũi"], hasDisease: false },
+  { id: 5, name: "Bệnh nhân E", symptoms: ["sốt cao", "đau ngực", "ho ra máu"], hasDisease: true },
+  { id: 6, name: "Bệnh nhân F", symptoms: ["bình thường", "hơi mệt"], hasDisease: false },
+  { id: 7, name: "Bệnh nhân G", symptoms: ["sốt cao", "ho", "đau đầu"], hasDisease: true },
+  { id: 8, name: "Bệnh nhân H", symptoms: ["sổ mũi", "hắt hơi"], hasDisease: false },
+  { id: 9, name: "Bệnh nhân I", symptoms: ["ho kéo dài", "sụt cân"], hasDisease: true },
+  { id: 10, name: "Bệnh nhân K", symptoms: ["bình thường", "ho nhẹ"], hasDisease: false },
+];
+
+/* ── Synthetic data for threshold slider ── */
+const SYNTHETIC_DATA = Array.from({ length: 50 }, (_, i) => {
+  const isPositive = i < 20;
+  const score = isPositive
+    ? 0.45 + Math.sin(i * 0.7) * 0.25 + 0.2
+    : 0.15 + Math.sin(i * 0.5) * 0.2 + 0.1;
+  return { score: Math.max(0.01, Math.min(0.99, score)), actual: isPositive };
+});
+
+function computeMatrix(threshold: number) {
+  let tp = 0, fp = 0, fn = 0, tn = 0;
+  for (const d of SYNTHETIC_DATA) {
+    const predicted = d.score >= threshold;
+    if (predicted && d.actual) tp++;
+    else if (predicted && !d.actual) fp++;
+    else if (!predicted && d.actual) fn++;
+    else tn++;
+  }
+  const precision = tp + fp > 0 ? tp / (tp + fp) : 0;
+  const recall = tp + fn > 0 ? tp / (tp + fn) : 0;
+  const accuracy = (tp + tn) / (tp + tn + fp + fn);
+  const f1 = precision + recall > 0 ? 2 * (precision * recall) / (precision + recall) : 0;
+  return { tp, fp, fn, tn, precision, recall, accuracy, f1 };
+}
+
+/* ── Symptom tag colors ── */
+function symptomColor(s: string): string {
+  if (s.includes("sốt cao") || s.includes("đau ngực") || s.includes("ho ra máu")) return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";
+  if (s.includes("sốt") || s.includes("ho kéo") || s.includes("sụt cân") || s.includes("mệt mỏi")) return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300";
+  if (s.includes("bình thường") || s.includes("không triệu")) return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300";
+  return "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300";
+}
+
+/* ── Reusable matrix cell ── */
+const CELL_META = [
+  { label: "TP", color: "#22c55e" },
+  { label: "FP", color: "#f97316" },
+  { label: "FN", color: "#ef4444" },
+  { label: "TN", color: "#3b82f6" },
+] as const;
+
+function MatrixCell({ idx, value, revealed }: { idx: number; value: number; revealed: boolean }) {
+  const { label, color } = CELL_META[idx];
+  if (!revealed) return <div className="rounded-lg border-2 border-dashed border-border px-6 py-4 min-w-[90px] text-muted text-xs">?</div>;
+  return (
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      className="rounded-lg border-2 px-6 py-4 min-w-[90px]"
+      style={{ borderColor: color, backgroundColor: `${color}15` }}
+    >
+      <motion.div key={value} initial={{ scale: 1.3 }} animate={{ scale: 1 }} className="text-2xl font-bold" style={{ color }}>{value}</motion.div>
+      <div className="text-[10px] font-medium" style={{ color }}>{label}</div>
+    </motion.div>
+  );
+}
+
+function MetricsRow({ m, decimals = 0 }: { m: { accuracy: number; precision: number; recall: number; f1: number }; decimals?: number }) {
+  const items = [
+    { label: "Accuracy", value: m.accuracy, color: "text-foreground" },
+    { label: "Precision", value: m.precision, color: "text-green-500" },
+    { label: "Recall", value: m.recall, color: "text-blue-500" },
+    { label: "F1 Score", value: m.f1, color: "text-purple-500" },
+  ];
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {items.map(({ label, value, color }) => (
+        <div key={label} className="rounded-lg border border-border bg-surface p-3 text-center">
+          <div className={`text-lg font-bold ${color}`}>{(value * 100).toFixed(decimals)}%</div>
+          <div className="text-xs text-muted">{label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Shared matrix table header ── */
+function MatrixHeader({ posLabel, negLabel }: { posLabel: string; negLabel: string }) {
+  return (
+    <thead>
+      <tr>
+        <th className="p-2" /><th className="p-2" />
+        <th colSpan={2} className="px-4 pb-2 font-semibold text-foreground">Thực tế</th>
+      </tr>
+      <tr>
+        <th className="p-2" /><th className="p-2" />
+        <th className="px-4 pb-2 text-xs font-medium" style={{ color: "#22c55e" }}>{posLabel}</th>
+        <th className="px-4 pb-2 text-xs font-medium" style={{ color: "#ef4444" }}>{negLabel}</th>
+      </tr>
+    </thead>
+  );
+}
+
+/* ═══════════════ MAIN ═══════════════ */
 export default function ConfusionMatrixTopic() {
-  const [threshold, setThreshold] = useState(50);
+  /* Classification game state */
+  const [predictions, setPredictions] = useState<Record<number, boolean>>({});
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [gamePhase, setGamePhase] = useState<"playing" | "building" | "done">("playing");
+  const [revealStep, setRevealStep] = useState(0);
 
-  const metrics = useMemo(() => {
-    const tp = Math.round(40 + (50 - threshold) * 0.6);
-    const fn = Math.round(10 + (threshold - 50) * 0.6);
-    const fp = Math.round(5 + (50 - threshold) * 0.4);
-    const tn = Math.round(45 + (threshold - 50) * 0.4);
+  /* Threshold slider state */
+  const [threshold, setThreshold] = useState(0.5);
 
-    const precision = tp / Math.max(1, tp + fp);
-    const recall = tp / Math.max(1, tp + fn);
-    const accuracy = (tp + tn) / Math.max(1, tp + tn + fp + fn);
-    const f1 = 2 * (precision * recall) / Math.max(0.001, precision + recall);
+  const gameFinished = Object.keys(predictions).length === PATIENTS.length;
 
-    return { tp, fn, fp, tn, precision, recall, accuracy, f1 };
-  }, [threshold]);
+  /* Compute user's confusion matrix */
+  const userMatrix = useMemo(() => {
+    if (!gameFinished) return { tp: 0, fp: 0, fn: 0, tn: 0, precision: 0, recall: 0, accuracy: 0, f1: 0 };
+    let tp = 0, fp = 0, fn = 0, tn = 0;
+    for (const p of PATIENTS) {
+      const pred = predictions[p.id];
+      if (pred && p.hasDisease) tp++;
+      else if (pred && !p.hasDisease) fp++;
+      else if (!pred && p.hasDisease) fn++;
+      else tn++;
+    }
+    const precision = tp + fp > 0 ? tp / (tp + fp) : 0;
+    const recall = tp + fn > 0 ? tp / (tp + fn) : 0;
+    const accuracy = (tp + tn) / PATIENTS.length;
+    const f1 = precision + recall > 0 ? 2 * (precision * recall) / (precision + recall) : 0;
+    return { tp, fp, fn, tn, precision, recall, accuracy, f1 };
+  }, [predictions, gameFinished]);
 
-  const cellW = 100;
-  const cellH = 70;
-  const startX = 170;
-  const startY = 70;
+  /* Threshold-based matrix */
+  const thresholdMatrix = useMemo(() => computeMatrix(threshold), [threshold]);
+
+  const handleClassify = useCallback((hasDis: boolean) => {
+    const patient = PATIENTS[currentIdx];
+    setPredictions((prev) => ({ ...prev, [patient.id]: hasDis }));
+    if (currentIdx < PATIENTS.length - 1) {
+      setCurrentIdx((i) => i + 1);
+    } else {
+      setGamePhase("building");
+    }
+  }, [currentIdx]);
+
+  const handleBuildNext = useCallback(() => {
+    if (revealStep < 4) {
+      setRevealStep((s) => s + 1);
+    } else {
+      setGamePhase("done");
+    }
+  }, [revealStep]);
+
+  const handleResetGame = useCallback(() => {
+    setPredictions({});
+    setCurrentIdx(0);
+    setGamePhase("playing");
+    setRevealStep(0);
+  }, []);
+
+  const cellValues = [userMatrix.tp, userMatrix.fp, userMatrix.fn, userMatrix.tn];
+
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    {
+      question: "Mô hình spam filter có 95% accuracy nhưng chỉ 10% email là spam. Nếu mô hình luôn đoán 'Không spam', accuracy sẽ là bao nhiêu?",
+      options: ["50%", "90%", "95%", "10%"],
+      correct: 1,
+      explanation: "Nếu 10% là spam mà mô hình luôn đoán 'Không spam', nó đúng 90% trường hợp! Đây là bẫy accuracy với dữ liệu mất cân bằng — cần xem Precision, Recall, F1.",
+    },
+    {
+      question: "F1 Score là gì?",
+      options: ["Trung bình cộng của Precision và Recall", "Trung bình điều hòa của Precision và Recall", "Tích của Precision và Recall", "Tỷ lệ dự đoán đúng trên tổng số"],
+      correct: 1,
+      explanation: "F1 = 2 × (P × R) / (P + R) — trung bình điều hòa, thiên về giá trị thấp hơn. Nếu Precision hoặc Recall rất thấp, F1 cũng thấp.",
+    },
+    {
+      question: "Khi tăng ngưỡng quyết định (threshold) từ 0.3 lên 0.8, điều gì xảy ra?",
+      options: ["Precision và Recall đều tăng", "Precision tăng, Recall giảm", "Precision giảm, Recall tăng", "Cả hai đều giảm"],
+      correct: 1,
+      explanation: "Ngưỡng cao hơn → mô hình 'khó tính' hơn → ít dự đoán dương → Precision tăng (ít FP) nhưng Recall giảm (nhiều FN hơn).",
+    },
+  ], []);
+
+  const btnPrimary = "rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+  const btnSecondary = "rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground";
 
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng hệ thống phát hiện cháy rừng. Có 4 tình huống: (1) <strong>Đúng
-          Dương (TP)</strong>: có cháy, hệ thống báo đúng. (2) <strong>Sai Âm (FN)</strong>:
-          có cháy nhưng hệ thống bỏ sót &mdash; nguy hiểm nhất! (3) <strong>Sai Dương
-          (FP)</strong>: không cháy nhưng hệ thống báo nhầm. (4) <strong>Đúng Âm (TN)</strong>:
-          không cháy, hệ thống đúng.
-        </p>
-        <p>
-          <strong>Ma trận nhầm lẫn</strong> tổng hợp 4 ô này, giúp ta thấy mô hình sai ở đâu.
-        </p>
-      </AnalogyCard>
+      {/* ── STEP 1: HOOK ── */}
+      <PredictionGate
+        question="Bạn là bác sĩ. Xét nghiệm cho kết quả dương tính với bệnh X. Nhưng xét nghiệm này đúng 90% thời gian. Bạn có chắc bệnh nhân thực sự mắc bệnh không?"
+        options={[
+          "Có, 90% chính xác mà",
+          "Không chắc, cần biết thêm",
+          "Chắc chắn không",
+        ]}
+        correct={1}
+        explanation="90% chính xác nghe cao, nhưng LOẠI SAI nào mới quan trọng. Đó là lý do cần confusion matrix!"
+      >
+        {/* ── STEP 2: DISCOVER — User IS the Classifier ── */}
+        <VisualizationSection>
+          <div className="space-y-4">
+            {gamePhase === "playing" && (
+              <>
+                <p className="text-sm text-muted">
+                  Bạn là bác sĩ! Khám <strong className="text-foreground">{PATIENTS.length} bệnh nhân</strong> và chẩn đoán từng người.
+                  Bệnh nhân <strong className="text-foreground">{currentIdx + 1}/{PATIENTS.length}</strong>:
+                </p>
 
-      <VisualizationSection>
-        <p className="mb-3 text-sm text-muted">
-          Kéo thanh trượt ngưỡng (threshold) để thấy sự đánh đổi giữa precision và recall.
-        </p>
-        <svg
-          viewBox="0 0 500 320"
-          className="w-full rounded-lg border border-border bg-background"
-        >
-          {/* Column headers */}
-          <text x={startX + cellW / 2} y={startY - 15} fontSize={11} fill="#22c55e" textAnchor="middle" fontWeight={600}>
-            Thực: Dương
-          </text>
-          <text x={startX + cellW + cellW / 2 + 5} y={startY - 15} fontSize={11} fill="#ef4444" textAnchor="middle" fontWeight={600}>
-            Thực: Âm
-          </text>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIdx}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.3 }}
+                    className="rounded-xl border border-border bg-surface p-5 space-y-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-lg">
+                        {PATIENTS[currentIdx].hasDisease ? "🤒" : "😊"}
+                      </div>
+                      <span className="font-semibold text-foreground">{PATIENTS[currentIdx].name}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {PATIENTS[currentIdx].symptoms.map((s) => (
+                        <span key={s} className={`rounded-full px-3 py-1 text-xs font-medium ${symptomColor(s)}`}>
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex gap-3 pt-1">
+                      <button onClick={() => handleClassify(true)} className={btnPrimary}>
+                        Bệnh
+                      </button>
+                      <button onClick={() => handleClassify(false)} className={btnSecondary}>
+                        Không bệnh
+                      </button>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
 
-          {/* Row headers */}
-          <text x={startX - 10} y={startY + cellH / 2 + 3} fontSize={11} fill="#3b82f6" textAnchor="end" fontWeight={600}>
-            Dự đoán: Dương
-          </text>
-          <text x={startX - 10} y={startY + cellH + cellH / 2 + 8} fontSize={11} fill="#f97316" textAnchor="end" fontWeight={600}>
-            Dự đoán: Âm
-          </text>
+                {/* Progress bar */}
+                <div className="flex gap-1">
+                  {PATIENTS.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1.5 flex-1 rounded-full transition-colors ${
+                        i < currentIdx ? "bg-accent" : i === currentIdx ? "bg-accent/50" : "bg-surface-hover"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
 
-          {/* TP */}
-          <rect x={startX} y={startY} width={cellW} height={cellH} rx={8} fill="#22c55e" opacity={0.15} stroke="#22c55e" strokeWidth={2} />
-          <text x={startX + cellW / 2} y={startY + 28} fontSize={24} fill="#22c55e" textAnchor="middle" fontWeight={700}>
-            {metrics.tp}
-          </text>
-          <text x={startX + cellW / 2} y={startY + 50} fontSize={10} fill="#22c55e" textAnchor="middle">
-            True Positive
-          </text>
+            {/* Building the matrix cell by cell */}
+            {(gamePhase === "building" || gamePhase === "done") && (
+              <div className="space-y-4">
+                <p className="text-sm text-muted">
+                  {gamePhase === "building"
+                    ? "Kết quả chẩn đoán! Hãy nhấn để xây dựng bảng từng ô một..."
+                    : "Ma trận nhầm lẫn của bạn hoàn chỉnh!"}
+                </p>
 
-          {/* FP */}
-          <rect x={startX + cellW + 5} y={startY} width={cellW} height={cellH} rx={8} fill="#f97316" opacity={0.15} stroke="#f97316" strokeWidth={2} />
-          <text x={startX + cellW + 5 + cellW / 2} y={startY + 28} fontSize={24} fill="#f97316" textAnchor="middle" fontWeight={700}>
-            {metrics.fp}
-          </text>
-          <text x={startX + cellW + 5 + cellW / 2} y={startY + 50} fontSize={10} fill="#f97316" textAnchor="middle">
-            False Positive
-          </text>
+                {/* The 2x2 matrix */}
+                <div className="overflow-x-auto">
+                  <table className="mx-auto border-collapse text-center text-sm">
+                    <MatrixHeader posLabel="Bệnh" negLabel="Không bệnh" />
+                    <tbody>
+                      <tr>
+                        <th rowSpan={2} className="pr-2 text-xs font-semibold text-foreground" style={{ writingMode: "vertical-lr", transform: "rotate(180deg)" }}>Dự đoán</th>
+                        <th className="px-2 py-1 text-xs font-medium text-blue-500">Bệnh</th>
+                        <td className="p-1"><MatrixCell idx={0} value={cellValues[0]} revealed={revealStep >= 1} /></td>
+                        <td className="p-1"><MatrixCell idx={1} value={cellValues[1]} revealed={revealStep >= 2} /></td>
+                      </tr>
+                      <tr>
+                        <th className="px-2 py-1 text-xs font-medium text-orange-500">Không bệnh</th>
+                        <td className="p-1"><MatrixCell idx={2} value={cellValues[2]} revealed={revealStep >= 3} /></td>
+                        <td className="p-1"><MatrixCell idx={3} value={cellValues[3]} revealed={revealStep >= 4} /></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-          {/* FN */}
-          <rect x={startX} y={startY + cellH + 5} width={cellW} height={cellH} rx={8} fill="#ef4444" opacity={0.15} stroke="#ef4444" strokeWidth={2} />
-          <text x={startX + cellW / 2} y={startY + cellH + 33} fontSize={24} fill="#ef4444" textAnchor="middle" fontWeight={700}>
-            {metrics.fn}
-          </text>
-          <text x={startX + cellW / 2} y={startY + cellH + 55} fontSize={10} fill="#ef4444" textAnchor="middle">
-            False Negative
-          </text>
+                {/* Metrics — appear after all cells revealed */}
+                <AnimatePresence>
+                  {gamePhase === "done" && (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+                      <MetricsRow m={userMatrix} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-          {/* TN */}
-          <rect x={startX + cellW + 5} y={startY + cellH + 5} width={cellW} height={cellH} rx={8} fill="#3b82f6" opacity={0.15} stroke="#3b82f6" strokeWidth={2} />
-          <text x={startX + cellW + 5 + cellW / 2} y={startY + cellH + 33} fontSize={24} fill="#3b82f6" textAnchor="middle" fontWeight={700}>
-            {metrics.tn}
-          </text>
-          <text x={startX + cellW + 5 + cellW / 2} y={startY + cellH + 55} fontSize={10} fill="#3b82f6" textAnchor="middle">
-            True Negative
-          </text>
+                {/* Controls */}
+                <div className="flex flex-wrap gap-3">
+                  {gamePhase === "building" && (
+                    <button onClick={handleBuildNext} className={btnPrimary}>
+                      Hiện ô tiếp theo ({revealStep}/4)
+                    </button>
+                  )}
+                  <button onClick={handleResetGame} className={btnSecondary}>
+                    Chơi lại
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </VisualizationSection>
 
-          {/* Metrics */}
-          <text x={20} y={250} fontSize={11} fill="currentColor" className="text-foreground">
-            Accuracy: {(metrics.accuracy * 100).toFixed(1)}%
-          </text>
-          <text x={20} y={270} fontSize={11} fill="#22c55e">
-            Precision: {(metrics.precision * 100).toFixed(1)}%
-          </text>
-          <text x={20} y={290} fontSize={11} fill="#3b82f6">
-            Recall: {(metrics.recall * 100).toFixed(1)}%
-          </text>
-          <text x={20} y={310} fontSize={11} fill="#8b5cf6">
-            F1 Score: {(metrics.f1 * 100).toFixed(1)}%
-          </text>
-        </svg>
-        <div className="mt-4 flex items-center gap-4">
-          <label className="text-sm font-medium text-foreground">Ngưỡng quyết định:</label>
-          <input
-            type="range"
-            min={20}
-            max={80}
-            value={threshold}
-            onChange={(e) => setThreshold(Number(e.target.value))}
-            className="flex-1 accent-accent"
-          />
-          <span className="w-10 text-center text-sm font-bold text-accent">{threshold}%</span>
-        </div>
-      </VisualizationSection>
+        {/* ── STEP 3: REVEAL ── */}
+        <AhaMoment>
+          <p>
+            Bảng 2x2 bạn vừa xây chính là <strong>Confusion Matrix</strong> — công cụ đánh giá mọi mô hình phân loại!
+          </p>
+        </AhaMoment>
 
-      <ExplanationSection>
-        <p>
-          <strong>Ma trận nhầm lẫn (Confusion Matrix)</strong> là bảng 2&times;2 tóm tắt
-          hiệu suất mô hình phân loại nhị phân. Từ 4 ô TP, TN, FP, FN, ta tính được nhiều
-          chỉ số quan trọng.
-        </p>
-        <p>
-          <strong>Precision</strong> = TP/(TP+FP): trong số dự đoán dương, bao nhiêu đúng?
-          <strong> Recall</strong> = TP/(TP+FN): trong số thực sự dương, ta tìm được bao nhiêu?
-          <strong> F1</strong>: trung bình điều hòa của precision và recall.
-        </p>
-        <p>
-          Khi hạ ngưỡng: recall tăng (tìm được nhiều hơn) nhưng precision giảm (nhiều báo
-          nhầm hơn). Tùy bài toán mà ưu tiên: y tế thường ưu tiên recall cao (không bỏ sót
-          bệnh), lọc spam ưu tiên precision cao (không xóa email quan trọng).
-        </p>
-      </ExplanationSection>
+        {/* ── STEP 4: DEEPEN — Threshold Slider ── */}
+        <VisualizationSection>
+          <div className="space-y-4">
+            <p className="text-sm text-muted">
+              Kéo ngưỡng (threshold) để thấy sự đánh đổi giữa Precision và Recall. Dữ liệu mô phỏng 50 mẫu.
+            </p>
+
+            {/* Interactive threshold matrix */}
+            <div className="overflow-x-auto">
+              <table className="mx-auto border-collapse text-center text-sm">
+                <MatrixHeader posLabel="Dương" negLabel="Âm" />
+                <tbody>
+                  <tr>
+                    <th rowSpan={2} className="pr-2 text-xs font-semibold text-foreground" style={{ writingMode: "vertical-lr", transform: "rotate(180deg)" }}>Dự đoán</th>
+                    <th className="px-2 py-1 text-xs font-medium text-blue-500">Dương</th>
+                    <td className="p-1"><MatrixCell idx={0} value={thresholdMatrix.tp} revealed /></td>
+                    <td className="p-1"><MatrixCell idx={1} value={thresholdMatrix.fp} revealed /></td>
+                  </tr>
+                  <tr>
+                    <th className="px-2 py-1 text-xs font-medium text-orange-500">Âm</th>
+                    <td className="p-1"><MatrixCell idx={2} value={thresholdMatrix.fn} revealed /></td>
+                    <td className="p-1"><MatrixCell idx={3} value={thresholdMatrix.tn} revealed /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Metrics row */}
+            <MetricsRow m={thresholdMatrix} decimals={1} />
+
+            {/* Threshold slider */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-foreground">Ngưỡng quyết định (threshold)</label>
+                <span className="font-mono text-sm font-bold text-accent">{threshold.toFixed(2)}</span>
+              </div>
+              <input
+                type="range"
+                min={0.05}
+                max={0.95}
+                step={0.01}
+                value={threshold}
+                onChange={(e) => setThreshold(Number(e.target.value))}
+                className="w-full h-2 rounded-full appearance-none cursor-pointer accent-accent"
+                style={{
+                  background: `linear-gradient(to right, var(--color-accent) ${((threshold - 0.05) / 0.9) * 100}%, var(--bg-surface-hover, #E2E8F0) ${((threshold - 0.05) / 0.9) * 100}%)`,
+                }}
+              />
+              <div className="flex justify-between text-xs text-muted">
+                <span>0.05</span>
+                <span>0.95</span>
+              </div>
+            </div>
+
+            {/* Tradeoff insight */}
+            <div className="rounded-lg border border-accent/30 bg-accent-light p-3 text-sm text-foreground">
+              <strong>Quy luật:</strong> Threshold &#8593; &#8594; Precision &#8593; nhưng Recall &#8595;.
+              Ngưỡng thấp bắt nhiều bệnh nhân hơn (ít bỏ sót) nhưng cũng báo nhầm nhiều hơn.
+            </div>
+          </div>
+        </VisualizationSection>
+
+        {/* ── STEP 5: CHALLENGE ── */}
+        <InlineChallenge
+          question="Trong hệ thống phát hiện ung thư, metric nào quan trọng nhất?"
+          options={["Accuracy", "Precision", "Recall", "F1"]}
+          correct={2}
+          explanation="Bỏ sót bệnh nhân ung thư (FN) nguy hiểm hơn báo nhầm (FP). Recall đo tỷ lệ phát hiện đúng trong số tất cả ca thực sự dương tính!"
+        />
+
+        {/* ── STEP 6: EXPLAIN ── */}
+        <ExplanationSection>
+          <p>
+            <strong>Ma trận nhầm lẫn (Confusion Matrix)</strong> là bảng 2&times;2 tóm tắt hiệu suất mô hình phân loại nhị phân.
+            Từ 4 ô TP, TN, FP, FN, ta tính được các chỉ số quan trọng:
+          </p>
+          <div className="rounded-lg bg-surface p-4 space-y-2 font-mono text-sm">
+            <p><strong>Precision</strong> = TP / (TP + FP) — Trong số dự đoán dương, bao nhiêu đúng?</p>
+            <p><strong>Recall</strong> = TP / (TP + FN) — Trong số thực sự dương, ta tìm được bao nhiêu?</p>
+            <p><strong>Accuracy</strong> = (TP + TN) / (TP + TN + FP + FN) — Tỷ lệ đúng tổng thể</p>
+            <p><strong>F1 Score</strong> = 2 &times; (P &times; R) / (P + R) — Trung bình điều hòa</p>
+          </div>
+          <CodeBlock language="python" title="Confusion Matrix với scikit-learn">
+{`from sklearn.metrics import (confusion_matrix,
+    precision_score, recall_score, f1_score,
+    classification_report)
+
+y_true = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0]
+y_pred = [1, 0, 0, 1, 0, 1, 1, 0, 1, 0]
+
+cm = confusion_matrix(y_true, y_pred)
+print("Confusion Matrix:")
+print(cm)
+# [[3, 1],   # TN=3, FP=1
+#  [1, 4]]   # FN=1, TP=4
+
+print(f"Precision: {precision_score(y_true, y_pred):.2f}")
+print(f"Recall:    {recall_score(y_true, y_pred):.2f}")
+print(f"F1 Score:  {f1_score(y_true, y_pred):.2f}")
+print(classification_report(y_true, y_pred))`}
+          </CodeBlock>
+          <Callout variant="tip" title="Khi nào ưu tiên Precision vs Recall?">
+            <strong>Ưu tiên Recall</strong> khi bỏ sót (FN) nguy hiểm: phát hiện ung thư, phát hiện gian lận, cảnh báo cháy rừng.
+            <br />
+            <strong>Ưu tiên Precision</strong> khi báo nhầm (FP) tốn kém: lọc spam email (xóa nhầm email quan trọng), đề xuất sản phẩm.
+          </Callout>
+          <Callout variant="warning" title="Bẫy Accuracy">
+            Với dữ liệu mất cân bằng (99% âm, 1% dương), mô hình luôn đoán &quot;âm&quot; có 99% accuracy nhưng Recall = 0%.
+            Luôn kiểm tra Precision, Recall và F1 cùng Accuracy!
+          </Callout>
+        </ExplanationSection>
+
+        {/* ── STEP 7: SUMMARY ── */}
+        <MiniSummary points={[
+          "Confusion Matrix là bảng 2x2 với 4 ô: TP, FP, FN, TN — cho thấy mô hình sai ở đâu.",
+          "Precision đo độ chính xác dự đoán dương, Recall đo tỷ lệ phát hiện đúng ca dương thực sự.",
+          "Threshold thay đổi sự đánh đổi: ngưỡng cao → Precision cao nhưng Recall thấp, và ngược lại.",
+          "Chọn metric phù hợp bài toán: y tế ưu tiên Recall, lọc spam ưu tiên Precision.",
+        ]} />
+
+        {/* ── STEP 8: QUIZ ── */}
+        <QuizSection questions={quizQuestions} />
+      </PredictionGate>
     </>
   );
 }
