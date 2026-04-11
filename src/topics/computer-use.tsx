@@ -1,17 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useState, useMemo } from "react";
+import {
+  PredictionGate, LessonSection, AhaMoment, InlineChallenge,
+  MiniSummary, Callout, CodeBlock, LaTeX,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
   slug: "computer-use",
   title: "Computer Use",
-  titleVi: "AI sử dụng máy tính",
+  titleVi: "AI su dung may tinh",
   description:
-    "Khả năng AI Agent điều khiển giao diện người dùng — click, gõ phím, chụp ảnh màn hình",
+    "Kha nang AI Agent dieu khien giao dien nguoi dung — click, go phim, chup anh man hinh",
   category: "emerging",
   tags: ["browser-use", "gui-agent", "automation"],
   difficulty: "intermediate",
@@ -19,469 +24,189 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-const AGENT_STEPS = [
-  {
-    label: "Quan sát",
-    desc: "AI chụp screenshot màn hình hiện tại",
-    screen: "search",
-    action: "Chụp screenshot & phân tích giao diện",
-    color: "#3b82f6",
-  },
-  {
-    label: "Nhận diện",
-    desc: "AI xác định các phần tử UI: nút bấm, ô nhập liệu, menu",
-    screen: "search",
-    action: "Tìm thấy: ô tìm kiếm tại (250, 45), nút Search tại (450, 45)",
-    color: "#8b5cf6",
-  },
-  {
-    label: "Hành động",
-    desc: "AI click vào ô tìm kiếm và gõ nội dung",
-    screen: "typing",
-    action: "Click (250, 45) → Type 'Thời tiết Hà Nội'",
-    color: "#f59e0b",
-  },
-  {
-    label: "Quan sát lại",
-    desc: "AI chụp screenshot mới sau hành động",
-    screen: "results",
-    action: "Chụp screenshot mới → Phân tích kết quả",
-    color: "#22c55e",
-  },
-  {
-    label: "Hoàn thành",
-    desc: "AI đọc kết quả và tổng hợp thông tin",
-    screen: "results",
-    action: "Đọc kết quả: 'Hà Nội: 32°C, có mưa rào chiều'",
-    color: "#ec4899",
-  },
+const STEPS = [
+  { action: "Chup man hinh", desc: "AI 'nhin' man hinh hien tai", color: "#3b82f6" },
+  { action: "Phan tich", desc: "Vision model hieu UI elements", color: "#8b5cf6" },
+  { action: "Quyet dinh", desc: "Chon action: click, type, scroll", color: "#f59e0b" },
+  { action: "Thuc hien", desc: "Dieu khien chuot/ban phim", color: "#22c55e" },
+  { action: "Xac nhan", desc: "Chup lai man hinh, kiem tra ket qua", color: "#ef4444" },
 ];
 
+const TOTAL_STEPS = 7;
+
 export default function ComputerUseTopic() {
-  const [step, setStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
-  const currentStep = AGENT_STEPS[step];
-
-  const nextStep = () => {
-    if (step < AGENT_STEPS.length - 1) setStep(step + 1);
-  };
-
-  const reset = () => setStep(0);
-
-  const svgW = 600;
-  const svgH = 350;
-
-  // Simulated browser screen elements
-  const renderScreen = (screenType: string) => {
-    const screenX = 100;
-    const screenY = 50;
-    const screenW = 400;
-    const screenH = 250;
-
-    return (
-      <g>
-        {/* Browser frame */}
-        <rect
-          x={screenX}
-          y={screenY}
-          width={screenW}
-          height={screenH}
-          rx={8}
-          fill="#0f172a"
-          stroke="#475569"
-          strokeWidth={2}
-        />
-
-        {/* Title bar */}
-        <rect
-          x={screenX}
-          y={screenY}
-          width={screenW}
-          height={25}
-          rx={8}
-          fill="#1e293b"
-        />
-        <rect
-          x={screenX}
-          y={screenY + 17}
-          width={screenW}
-          height={8}
-          fill="#1e293b"
-        />
-        {/* Traffic lights */}
-        <circle cx={screenX + 15} cy={screenY + 12} r={4} fill="#ef4444" />
-        <circle cx={screenX + 30} cy={screenY + 12} r={4} fill="#f59e0b" />
-        <circle cx={screenX + 45} cy={screenY + 12} r={4} fill="#22c55e" />
-
-        {/* URL bar */}
-        <rect
-          x={screenX + 60}
-          y={screenY + 5}
-          width={screenW - 80}
-          height={15}
-          rx={3}
-          fill="#334155"
-        />
-        <text
-          x={screenX + 70}
-          y={screenY + 16}
-          fill="#94a3b8"
-          fontSize="7"
-          fontFamily="monospace"
-        >
-          https://search.example.com
-        </text>
-
-        {/* Search bar */}
-        <rect
-          x={screenX + 80}
-          y={screenY + 55}
-          width={240}
-          height={28}
-          rx={14}
-          fill="#1e293b"
-          stroke={step >= 2 ? "#3b82f6" : "#475569"}
-          strokeWidth={step >= 2 ? 2 : 1}
-        />
-
-        {/* Search text */}
-        {screenType === "typing" || screenType === "results" ? (
-          <text
-            x={screenX + 95}
-            y={screenY + 73}
-            fill="#e2e8f0"
-            fontSize="9"
-          >
-            Thời tiết Hà Nội
-          </text>
-        ) : (
-          <text
-            x={screenX + 95}
-            y={screenY + 73}
-            fill="#64748b"
-            fontSize="9"
-          >
-            Tìm kiếm...
-          </text>
-        )}
-
-        {/* Search button */}
-        <rect
-          x={screenX + 330}
-          y={screenY + 57}
-          width={50}
-          height={24}
-          rx={12}
-          fill="#3b82f6"
-        />
-        <text
-          x={screenX + 355}
-          y={screenY + 73}
-          textAnchor="middle"
-          fill="white"
-          fontSize="8"
-          fontWeight="bold"
-        >
-          Tìm
-        </text>
-
-        {/* Search results (only in results state) */}
-        {screenType === "results" && (
-          <g>
-            <rect
-              x={screenX + 30}
-              y={screenY + 100}
-              width={340}
-              height={55}
-              rx={6}
-              fill="#1e293b"
-              stroke="#334155"
-              strokeWidth={1}
-            />
-            <text
-              x={screenX + 45}
-              y={screenY + 118}
-              fill="#3b82f6"
-              fontSize="9"
-              fontWeight="bold"
-            >
-              Thời tiết Hà Nội hôm nay
-            </text>
-            <text
-              x={screenX + 45}
-              y={screenY + 133}
-              fill="#e2e8f0"
-              fontSize="8"
-            >
-              Nhiệt độ: 32°C | Độ ẩm: 75%
-            </text>
-            <text
-              x={screenX + 45}
-              y={screenY + 146}
-              fill="#94a3b8"
-              fontSize="8"
-            >
-              Có mưa rào vào buổi chiều
-            </text>
-
-            <rect
-              x={screenX + 30}
-              y={screenY + 165}
-              width={340}
-              height={45}
-              rx={6}
-              fill="#1e293b"
-              stroke="#334155"
-              strokeWidth={1}
-            />
-            <text
-              x={screenX + 45}
-              y={screenY + 183}
-              fill="#3b82f6"
-              fontSize="9"
-              fontWeight="bold"
-            >
-              Dự báo 7 ngày - Hà Nội
-            </text>
-            <text
-              x={screenX + 45}
-              y={screenY + 198}
-              fill="#94a3b8"
-              fontSize="8"
-            >
-              Chi tiết dự báo thời tiết theo giờ...
-            </text>
-          </g>
-        )}
-
-        {/* AI cursor indicator */}
-        {step === 2 && (
-          <g>
-            {/* Cursor arrow pointing to search box */}
-            <polygon
-              points={`${screenX + 200},${screenY + 90} ${screenX + 200},${screenY + 105} ${screenX + 210},${screenY + 100}`}
-              fill="#ef4444"
-            />
-            <text
-              x={screenX + 215}
-              y={screenY + 102}
-              fill="#ef4444"
-              fontSize="8"
-              fontWeight="bold"
-            >
-              AI cursor
-            </text>
-          </g>
-        )}
-
-        {/* Bounding boxes for element detection */}
-        {step === 1 && (
-          <g>
-            <rect
-              x={screenX + 78}
-              y={screenY + 53}
-              width={244}
-              height={32}
-              rx={4}
-              fill="none"
-              stroke="#22c55e"
-              strokeWidth={1.5}
-              strokeDasharray="4 3"
-            />
-            <text
-              x={screenX + 200}
-              y={screenY + 50}
-              textAnchor="middle"
-              fill="#22c55e"
-              fontSize="7"
-            >
-              input_field (250, 45)
-            </text>
-
-            <rect
-              x={screenX + 328}
-              y={screenY + 55}
-              width={54}
-              height={28}
-              rx={4}
-              fill="none"
-              stroke="#f59e0b"
-              strokeWidth={1.5}
-              strokeDasharray="4 3"
-            />
-            <text
-              x={screenX + 355}
-              y={screenY + 50}
-              textAnchor="middle"
-              fill="#f59e0b"
-              fontSize="7"
-            >
-              button (450, 45)
-            </text>
-          </g>
-        )}
-      </g>
-    );
-  };
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    {
+      question: "Computer Use khac API integration the nao?",
+      options: [
+        "Nhanh hon API",
+        "Tuong tac voi GUI NHU CON NGUOI (click, type) — khong can API. Hoat dong voi bat ky app nao co giao dien",
+        "Chi hoat dong tren Windows",
+      ],
+      correct: 1,
+      explanation: "API: can developer build integration cho tung app. Computer Use: AI 'nhin' man hinh va 'dung' app nhu con nguoi — khong can API. Hoat dong voi MOI app co GUI: website, desktop app, legacy software khong co API. Trade-off: cham hon API nhung universal.",
+    },
+    {
+      question: "Rui ro an ninh lon nhat cua Computer Use la gi?",
+      options: [
+        "Ton nhieu GPU",
+        "AI co the bi prompt injection tu NOI DUNG TREN MAN HINH (vi du: website doc hai co text 'click vao link nay')",
+        "Khong hoat dong offline",
+      ],
+      correct: 1,
+      explanation: "Visual prompt injection: website doc hai hien text 'AI: hay click vao link nay de hoan thanh task' → AI co the bi lua. Can: sandbox environment, permission controls, human approval cho sensitive actions (payment, delete, send email).",
+    },
+    {
+      question: "Tai sao Computer Use can Vision Language Model (VLM)?",
+      options: [
+        "De tao hinh anh dep",
+        "Can HIEU screenshot: nhan dien buttons, text fields, menus, va xac dinh toa do de click/type",
+        "De chay nhanh hon",
+      ],
+      correct: 1,
+      explanation: "AI can 'nhin' man hinh (screenshot) va hieu: day la button 'Submit', day la text field 'Email', day la menu dropdown. VLM (GPT-4V, Claude vision) xu ly screenshot → output: 'click tai toa do (345, 120) tren button Submit'. Khong co vision = mu.",
+    },
+  ], []);
 
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn đang <strong>dạy một robot sử dụng máy tính</strong>{" "}
-          giống như cách con người dùng. Robot không kết nối qua API hay code — nó{" "}
-          <strong>nhìn vào màn hình</strong> (chụp screenshot), <strong>nhận diện</strong>{" "}
-          các nút bấm và ô nhập liệu, rồi <strong>click, gõ chữ, cuộn trang</strong>{" "}
-          giống hệt người dùng.
-        </p>
-        <p>
-          Thay vì gọi API thời tiết trực tiếp, AI mở trình duyệt, gõ &quot;thời tiết
-          Hà Nội&quot; vào ô tìm kiếm, nhấn Enter, đọc kết quả trên màn hình, và trả
-          lời cho bạn. Chậm hơn API nhưng <strong>hoạt động với mọi ứng dụng</strong>{" "}
-          — không cần API hay tích hợp đặc biệt.
-        </p>
-      </AnalogyCard>
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+        <PredictionGate
+          question="Ban can tu dong dien 100 don hang tren website khong co API. Moi don mat 5 phut dien thu cong. Giai phap?"
+          options={[
+            "Thue 10 nguoi dien thu cong — mat 50 gio",
+            "Dung AI Computer Use: AI 'nhin' website, tu dong click, go phim, dien form — nhu nguoi nhung 24/7",
+            "Viet web scraper — nhung website thay doi layout la hong",
+          ]}
+          correct={1}
+          explanation="Computer Use: AI chup man hinh, hieu layout, click vao dung vi tri, go phim dien form — nhu thue nguoi nhung nhanh hon 10x va 24/7. Khong can API, khong can scraper. Hoat dong voi MOI website vi tuong tac nhu con nguoi!"
+        >
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Nhấn &quot;Bước tiếp&quot; để xem AI Agent thao tác trên giao diện: quan sát
-            &rarr; nhận diện &rarr; hành động &rarr; quan sát lại.
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          Xem <strong className="text-foreground">5 buoc</strong>{" "}
+          AI Computer Use tuong tac voi may tinh — tu 'nhin' den 'lam'.
+        </p>
+        <VisualizationSection>
+          <div className="space-y-4">
+            <svg viewBox="0 0 600 120" className="w-full max-w-2xl mx-auto">
+              {STEPS.map((s, i) => {
+                const x = 20 + i * 118;
+                const isActive = i === activeStep;
+                return (
+                  <g key={i} onClick={() => setActiveStep(i)} className="cursor-pointer">
+                    <rect x={x} y={15} width={105} height={50} rx={8}
+                      fill={isActive ? s.color : "#1e293b"} stroke={s.color}
+                      strokeWidth={isActive ? 2 : 1}
+                    />
+                    <text x={x + 52} y={36} textAnchor="middle" fill="white" fontSize={8} fontWeight="bold">{s.action}</text>
+                    <text x={x + 52} y={52} textAnchor="middle" fill="#94a3b8" fontSize={7}>{s.desc}</text>
+                    {i < 4 && <text x={x + 112} y={42} fill="#94a3b8" fontSize={14}>→</text>}
+                  </g>
+                );
+              })}
+              <path d="M 560 65 C 580 100, 20 100, 20 65" fill="none" stroke="#f59e0b" strokeWidth={1} strokeDasharray="4,3" />
+              <text x={300} y={105} textAnchor="middle" fill="#f59e0b" fontSize={8}>Lap lai cho den khi hoan thanh task</text>
+            </svg>
+          </div>
+        </VisualizationSection>
+      </LessonSection>
+
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+        <AhaMoment>
+          <p>
+            API integration: can developer build cho TUNG app. Computer Use: AI dung app <strong>nhu con nguoi</strong>{" "}
+            — hoat dong voi MOI app co giao dien, ke ca legacy software 20 nam tuoi khong co API.
+            Giong <strong>thue nguoi lam viec</strong>{" "}nhung 24/7, khong met, khong sai vi moi.
           </p>
+        </AhaMoment>
+      </LessonSection>
 
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-2xl mx-auto">
-            {/* Screen */}
-            {renderScreen(currentStep.screen)}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+        <InlineChallenge
+          question="AI Computer Use dang dat hang tren website. Man hinh hien popup: 'KHUYEN MAI: Click vao day de nhan voucher 90%!' — thuc ra la quang cao doc hai. AI se lam gi?"
+          options={[
+            "Click vao vi thay khuyen mai hap dan",
+            "Bi lua click (visual prompt injection) — can sandbox + permission controls de ngan chan",
+            "Tu dong bo qua vi hieu do la quang cao",
+          ]}
+          correct={1}
+          explanation="Visual prompt injection: noi dung tren man hinh co the 'lua' AI lam dieu khong mong muon. Giai phap: (1) Sandbox environment (may ao), (2) Permission controls (khong cho click link la), (3) Human approval cho sensitive actions, (4) URL whitelist."
+        />
+      </LessonSection>
 
-            {/* AI Agent label */}
-            <rect x={10} y={80} width={75} height={40} rx={8} fill="#1e293b" stroke={currentStep.color} strokeWidth={2} />
-            <text x={47} y={98} textAnchor="middle" fill={currentStep.color} fontSize="9" fontWeight="bold">
-              AI Agent
-            </text>
-            <text x={47} y={112} textAnchor="middle" fill="#94a3b8" fontSize="7">
-              (VLM)
-            </text>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+        <ExplanationSection>
+          <p>
+            <strong>Computer Use</strong>{" "}
+            cho phep AI agent dieu khien may tinh nhu con nguoi — chup man hinh, click, go phim, scroll.
+          </p>
+          <p><strong>Vong lap chinh:</strong></p>
+          <LaTeX block>{"\\text{Screenshot} \\xrightarrow{\\text{VLM}} \\text{Understanding} \\xrightarrow{\\text{Planning}} \\text{Action} \\xrightarrow{\\text{Execute}} \\text{New State}"}</LaTeX>
 
-            {/* Arrow from AI to screen */}
-            <line x1={85} y1={100} x2={100} y2={100} stroke={currentStep.color} strokeWidth={1.5} markerEnd="url(#cuArrow)" />
-            <defs>
-              <marker id="cuArrow" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
-                <polygon points="0 0, 6 2, 0 4" fill="#60a5fa" />
-              </marker>
-            </defs>
+          <p><strong>3 kha nang chinh:</strong></p>
+          <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
+            <li><strong>Screen understanding:</strong>{" "}VLM hieu screenshot: buttons, text fields, menus, content</li>
+            <li><strong>Action execution:</strong>{" "}Click (x,y), type text, scroll, key press, drag-drop</li>
+            <li><strong>State verification:</strong>{" "}Chup lai man hinh, kiem tra action co thanh cong khong</li>
+          </ul>
 
-            {/* Step indicator */}
-            <rect x={10} y={svgH - 55} width={svgW - 20} height={45} rx={8} fill="#1e293b" stroke={currentStep.color} strokeWidth={1} />
-            <text x={30} y={svgH - 30} fill={currentStep.color} fontSize="10" fontWeight="bold">
-              Bước {step + 1}: {currentStep.label}
-            </text>
-            <text x={30} y={svgH - 17} fill="#94a3b8" fontSize="8">
-              {currentStep.action}
-            </text>
+          <Callout variant="warning" title="Security">
+            Computer Use can: sandbox (Docker/VM), permission controls, human-in-the-loop cho sensitive actions (payment, delete, send). Visual prompt injection la rui ro thuc te — website doc hai co the 'lua' AI.
+          </Callout>
 
-            {/* Step progress dots */}
-            {AGENT_STEPS.map((_, i) => (
-              <circle
-                key={`dot-${i}`}
-                cx={svgW - 80 + i * 14}
-                cy={svgH - 33}
-                r={4}
-                fill={i <= step ? AGENT_STEPS[i].color : "#334155"}
-                stroke={i === step ? "white" : "none"}
-                strokeWidth={i === step ? 1.5 : 0}
-              />
-            ))}
-          </svg>
+          <CodeBlock language="python" title="Computer Use voi Claude">
+{`import anthropic
 
-          <div className="flex justify-center gap-3">
-            <button
-              onClick={reset}
-              className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-            >
-              Đặt lại
-            </button>
-            <button
-              onClick={nextStep}
-              disabled={step >= AGENT_STEPS.length - 1}
-              className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
-            >
-              Bước tiếp theo
-            </button>
-          </div>
+client = anthropic.Anthropic()
 
-          {/* Action space */}
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { name: "Click", icon: "Click(x, y)", active: step === 2 },
-              { name: "Type", icon: "Type('text')", active: step === 2 },
-              { name: "Scroll", icon: "Scroll(dx, dy)", active: false },
-              { name: "Screenshot", icon: "Screenshot()", active: step === 0 || step === 3 },
-            ].map((action) => (
-              <div
-                key={action.name}
-                className={`rounded-lg border p-2 text-center ${
-                  action.active
-                    ? "border-accent bg-accent/10"
-                    : "border-border bg-background/50"
-                }`}
-              >
-                <p className="text-xs font-bold text-foreground">{action.name}</p>
-                <p className="text-xs text-muted font-mono">{action.icon}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </VisualizationSection>
+# Computer Use: AI dieu khien may tinh
+response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=4096,
+    tools=[
+        {
+            "type": "computer_20250124",
+            "name": "computer",
+            "display_width_px": 1920,
+            "display_height_px": 1080,
+        },
+    ],
+    messages=[{
+        "role": "user",
+        "content": "Mo Chrome, vao trang web shopee.vn, tim 'tai nghe bluetooth', sap xep theo gia thap nhat"
+    }],
+)
 
-      <ExplanationSection>
-        <p>
-          <strong>Computer Use</strong> (AI sử dụng máy tính) cho phép AI Agent
-          tương tác với máy tính qua <strong>giao diện người dùng</strong> thay vì
-          API — nhìn vào màn hình, click, gõ phím, cuộn trang giống người dùng.
-        </p>
+# AI se:
+# 1. Chup man hinh → thay desktop
+# 2. Click vao Chrome icon
+# 3. Go "shopee.vn" vao address bar
+# 4. Tim thanh search, go "tai nghe bluetooth"
+# 5. Tim nut "Sap xep", click → chon "Gia thap nhat"
+# 6. Xac nhan ket qua tren man hinh`}
+          </CodeBlock>
+        </ExplanationSection>
+      </LessonSection>
 
-        <p>Cách hoạt động:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Quan sát (Observe):</strong> AI chụp screenshot màn hình hiện tại
-            và sử dụng mô hình thị giác (Vision Language Model) để hiểu nội dung.
-          </li>
-          <li>
-            <strong>Nhận diện (Identify):</strong> Xác định các phần tử UI — nút bấm,
-            ô nhập liệu, menu, link — và tọa độ của chúng trên màn hình.
-          </li>
-          <li>
-            <strong>Hành động (Act):</strong> Thực hiện thao tác: click tại tọa độ
-            (x, y), gõ văn bản, cuộn trang, kéo thả, nhấn tổ hợp phím.
-          </li>
-          <li>
-            <strong>Quan sát lại (Re-observe):</strong> Chụp screenshot mới để xem
-            kết quả hành động, rồi lặp lại vòng lặp.
-          </li>
-        </ol>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+        <MiniSummary points={[
+          "Computer Use: AI tuong tac voi GUI nhu con nguoi — click, type, scroll. Khong can API.",
+          "Vong lap: Screenshot → VLM hieu → Plan action → Execute → Verify. Lap lai cho den xong.",
+          "Universal: hoat dong voi MOI app co giao dien, ke ca legacy software khong co API.",
+          "Security: sandbox, permissions, human approval. Visual prompt injection la rui ro thuc te.",
+          "Use cases: data entry tu dong, testing, web automation, xu ly app legacy khong co API.",
+        ]} />
+      </LessonSection>
 
-        <p>Thách thức:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Độ trễ (Latency):</strong> Mỗi hành động cần chụp screenshot,
-            gửi lên model, đợi phân tích — chậm hơn nhiều so với API trực tiếp.
-          </li>
-          <li>
-            <strong>Khôi phục lỗi:</strong> Nếu click sai vị trí hoặc trang load lỗi,
-            AI cần nhận biết và tự sửa — đòi hỏi khả năng suy luận tốt.
-          </li>
-          <li>
-            <strong>Bảo mật:</strong> AI truy cập giao diện giống người dùng, cần
-            kiểm soát quyền truy cập cẩn thận.
-          </li>
-        </ul>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+        <QuizSection questions={quizQuestions} />
+      </LessonSection>
 
-        <p>
-          <strong>Ứng dụng:</strong> Tự động hóa web (điền form, đặt vé), test giao
-          diện ứng dụng, hỗ trợ người dùng không thành thạo công nghệ, và tự động hóa
-          quy trình nội bộ mà không cần xây API riêng.
-        </p>
-      </ExplanationSection>
+        </PredictionGate>
+      </LessonSection>
     </>
   );
 }
