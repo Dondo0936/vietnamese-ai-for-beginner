@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "model-context-protocol",
   title: "Model Context Protocol (MCP)",
-  titleVi: "Giao thuc ngu canh mo hinh",
+  titleVi: "Giao thức ngữ cảnh mô hình",
   description:
-    "Giao thuc chuan hoa ket noi LLM voi cong cu va nguon du lieu ben ngoai",
+    "Giao thức chuẩn hoá kết nối LLM với công cụ và nguồn dữ liệu bên ngoài",
   category: "emerging",
   tags: ["protocol", "tools", "standardization"],
   difficulty: "intermediate",
@@ -40,55 +40,55 @@ export default function ModelContextProtocolTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "MCP giai quyet van de gi ma function calling thong thuong khong giai quyet?",
+      question: "MCP giải quyết vấn đề gì mà function calling thông thường không giải quyết?",
       options: [
-        "Goi function nhanh hon",
-        "CHUAN HOA giao thuc: moi LLM (Claude, GPT, Gemini) va moi tool (Slack, DB, GitHub) noi cung 'ngon ngu' → build 1 lan, dung moi noi",
-        "Ho tro nhieu ngon ngu lap trinh hon",
+        "Gọi function nhanh hơn",
+        "CHUẨN HOÁ giao thức: mọi LLM (Claude, GPT, Gemini) và mọi tool (Slack, DB, GitHub) nói cùng 'ngôn ngữ' → build 1 lần, dùng mọi nơi",
+        "Hỗ trợ nhiều ngôn ngữ lập trình hơn",
       ],
       correct: 1,
-      explanation: "Truoc MCP: moi LLM co cach goi tool rieng, moi tool can adapter rieng cho moi LLM → N x M integrations. MCP: chuan hoa → moi tool build 1 MCP server, moi LLM connect toi bat ky MCP server nao → N + M integrations. Giong USB cho AI!",
+      explanation: "Trước MCP: mỗi LLM có cách gọi tool riêng, mỗi tool cần adapter riêng cho mỗi LLM → N x M integrations. MCP: chuẩn hoá → mỗi tool build 1 MCP server, mỗi LLM connect tới bất kỳ MCP server nào → N + M integrations. Giống USB cho AI!",
     },
     {
-      question: "MCP Server va MCP Client la gi?",
+      question: "MCP Server và MCP Client là gì?",
       options: [
         "Server = LLM, Client = tool",
-        "Server = cung cap tools/resources/prompts. Client = ung dung AI ket noi den servers (vi du: Claude Desktop)",
-        "Server va Client giong nhau",
+        "Server = cung cấp tools/resources/prompts. Client = ứng dụng AI kết nối đến servers (ví dụ: Claude Desktop)",
+        "Server và Client giống nhau",
       ],
       correct: 1,
-      explanation: "MCP Server: wrap tool/data thanh giao dien chuan (expose tools, resources, prompts). MCP Client: AI app (Claude Desktop, Cursor) ket noi den nhieu servers. 1 Client ket noi nhieu Servers — giong 1 laptop cam nhieu USB devices.",
+      explanation: "MCP Server: wrap tool/data thành giao diện chuẩn (expose tools, resources, prompts). MCP Client: AI app (Claude Desktop, Cursor) kết nối đến nhiều servers. 1 Client kết nối nhiều Servers — giống 1 laptop cắm nhiều USB devices.",
     },
     {
-      question: "MCP transport dung gi de giao tiep?",
+      question: "MCP transport dùng gì để giao tiếp?",
       options: [
-        "REST API thong thuong",
-        "JSON-RPC 2.0 qua stdio (local) hoac SSE (remote) — bidirectional, async",
+        "REST API thông thường",
+        "JSON-RPC 2.0 qua stdio (local) hoặc SSE (remote) — bidirectional, async",
         "GraphQL",
       ],
       correct: 1,
-      explanation: "MCP dung JSON-RPC 2.0: lightweight, bidirectional. Stdio transport: cho local servers (Claude Desktop ↔ local tool). SSE (Server-Sent Events): cho remote servers. Khong dung REST vi can bidirectional communication (server co the push notifications).",
+      explanation: "MCP dùng JSON-RPC 2.0: lightweight, bidirectional. Stdio transport: cho local servers (Claude Desktop ↔ local tool). SSE (Server-Sent Events): cho remote servers. Không dùng REST vì cần bidirectional communication (server có thể push notifications).",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Ban muon Claude ket noi voi Slack, Google Calendar, va PostgreSQL. Moi tool can adapter rieng. Neu chuyen sang GPT, phai viet lai het. Co cach nao build 1 lan dung moi noi?"
+          question="Bạn muốn Claude kết nối với Slack, Google Calendar, và PostgreSQL. Mỗi tool cần adapter riêng. Nếu chuyển sang GPT, phải viết lại hết. Có cách nào build 1 lần dùng mọi nơi?"
           options={[
-            "Khong — moi LLM co cach goi tool khac nhau",
-            "MCP (Model Context Protocol): chuan hoa giao thuc, moi tool build 1 MCP server, moi LLM client deu ket noi duoc",
-            "Dung REST API la du",
+            "Không — mỗi LLM có cách gọi tool khác nhau",
+            "MCP (Model Context Protocol): chuẩn hoá giao thức, mỗi tool build 1 MCP server, mỗi LLM client đều kết nối được",
+            "Dùng REST API là đủ",
           ]}
           correct={1}
-          explanation="MCP la 'USB cho AI'! Truoc day: N LLMs x M tools = N*M integrations. Voi MCP: N + M. Moi tool build 1 MCP server (chuan), moi AI app (Claude, Cursor) la MCP client → ket noi bat ky server nao. Build once, use everywhere!"
+          explanation="MCP là 'USB cho AI'! Trước đây: N LLMs x M tools = N*M integrations. Với MCP: N + M. Mỗi tool build 1 MCP server (chuẩn), mỗi AI app (Claude, Cursor) là MCP client → kết nối bất kỳ server nào. Build once, use everywhere!"
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Click vao <strong className="text-foreground">tool</strong>{" "}
-          de xem cach MCP ket noi LLM voi cac dich vu ben ngoai.
+          Click vào <strong className="text-foreground">tool</strong>{" "}
+          để xem cách MCP kết nối LLM với các dịch vụ bên ngoài.
         </p>
         <VisualizationSection>
           <div className="space-y-4">
@@ -120,61 +120,61 @@ export default function ModelContextProtocolTopic() {
               })}
 
               <text x={300} y={165} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Moi tool = 1 MCP Server | AI app ket noi bat ky server nao qua MCP
+                Mỗi tool = 1 MCP Server | AI app kết nối bất kỳ server nào qua MCP
               </text>
               <text x={300} y={180} textAnchor="middle" fill="#64748b" fontSize={8}>
-                Build 1 lan, dung cho Claude, GPT, Gemini, Cursor, ... — giong USB cho AI
+                Build 1 lần, dùng cho Claude, GPT, Gemini, Cursor, ... — giống USB cho AI
               </text>
             </svg>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Truoc MCP: moi LLM x moi tool = integration rieng. 5 LLMs x 10 tools = 50 integrations.
-            Voi MCP: 5 LLMs + 10 tools = <strong>15 implementations</strong>{" "}(5 clients + 10 servers).
-            Giong cach USB chuan hoa ket noi thiet bi — <strong>build once, connect everywhere</strong>!
+            Trước MCP: mỗi LLM x mỗi tool = integration riêng. 5 LLMs x 10 tools = 50 integrations.
+            Với MCP: 5 LLMs + 10 tools = <strong>15 implementations</strong>{" "}(5 clients + 10 servers).
+            Giống cách USB chuẩn hoá kết nối thiết bị — <strong>build once, connect everywhere</strong>!
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Ban build MCP server cho PostgreSQL database noi bo cong ty. Ai co the dung server nay?"
+          question="Bạn build MCP server cho PostgreSQL database nội bộ công ty. Ai có thể dùng server này?"
           options={[
-            "Chi Claude Desktop (vi Anthropic tao MCP)",
-            "Bat ky MCP client nao: Claude Desktop, Cursor, Windsurf, hoac app tu build — vi MCP la open standard",
-            "Chi cac app cua Anthropic",
+            "Chỉ Claude Desktop (vì Anthropic tạo MCP)",
+            "Bất kỳ MCP client nào: Claude Desktop, Cursor, Windsurf, hoặc app tự build — vì MCP là open standard",
+            "Chỉ các app của Anthropic",
           ]}
           correct={1}
-          explanation="MCP la open standard (MIT license)! Bat ky ai cung co the build client hoac server. Da co: Claude Desktop, Cursor, Windsurf, Continue, Sourcegraph Cody lam MCP clients. 1000+ community MCP servers tren GitHub. Ecosystem dang phat trien rat nhanh."
+          explanation="MCP là open standard (MIT license)! Bất kỳ ai cũng có thể build client hoặc server. Đã có: Claude Desktop, Cursor, Windsurf, Continue, Sourcegraph Cody làm MCP clients. 1000+ community MCP servers trên GitHub. Ecosystem đang phát triển rất nhanh."
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Model Context Protocol (MCP)</strong>{" "}
-            la giao thuc chuan hoa de ket noi LLM voi tools va data sources — 'USB cho AI'.
+            là giao thức chuẩn hoá để kết nối LLM với tools và data sources — 'USB cho AI'.
           </p>
-          <p><strong>3 primitives chinh:</strong></p>
+          <p><strong>3 primitives chính:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Tools:</strong>{" "}Functions ma LLM co the goi (query DB, send Slack, create file)</li>
-            <li><strong>Resources:</strong>{" "}Data ma LLM co the doc (files, database records, API responses)</li>
-            <li><strong>Prompts:</strong>{" "}Template prompts co tham so (reusable workflows)</li>
+            <li><strong>Tools:</strong>{" "}Functions mà LLM có thể gọi (query DB, send Slack, create file)</li>
+            <li><strong>Resources:</strong>{" "}Data mà LLM có thể đọc (files, database records, API responses)</li>
+            <li><strong>Prompts:</strong>{" "}Template prompts có tham số (reusable workflows)</li>
           </ul>
 
           <Callout variant="tip" title="MCP vs Function Calling">
-            Function calling: LLM-specific (OpenAI format khac Anthropic format). MCP: chuan hoa cho TAT CA LLMs. Function calling la cach LLM goi tool. MCP la cach TOOLS expose chuc nang cho bat ky LLM nao.
+            Function calling: LLM-specific (OpenAI format khác Anthropic format). MCP: chuẩn hoá cho TẤT CẢ LLMs. Function calling là cách LLM gọi tool. MCP là cách TOOLS expose chức năng cho bất kỳ LLM nào.
           </Callout>
 
           <p><strong>Architecture:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>MCP Client:</strong>{" "}AI app (Claude Desktop, Cursor) — initiate connections</li>
             <li><strong>MCP Server:</strong>{" "}Wrap tool/data — expose tools, resources, prompts</li>
-            <li><strong>Transport:</strong>{" "}stdio (local) hoac SSE (remote). JSON-RPC 2.0</li>
+            <li><strong>Transport:</strong>{" "}stdio (local) hoặc SSE (remote). JSON-RPC 2.0</li>
           </ul>
 
           <CodeBlock language="python" title="Build MCP Server cho PostgreSQL">
@@ -189,7 +189,7 @@ async def list_tools():
     return [
         Tool(
             name="query",
-            description="Chay SQL query tren PostgreSQL",
+            description="Chạy SQL query trên PostgreSQL",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -207,7 +207,7 @@ async def call_tool(name: str, arguments: dict):
         rows = await conn.fetch(arguments["sql"])
         return [TextContent(type="text", text=str(rows))]
 
-# Chay server — bat ky MCP client nao deu ket noi duoc
+# Chạy server — bất kỳ MCP client nào đều kết nối được
 # Claude Desktop, Cursor, Windsurf, custom app...
 if __name__ == "__main__":
     import mcp
@@ -216,17 +216,17 @@ if __name__ == "__main__":
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "MCP chuan hoa ket noi LLM voi tools — 'USB cho AI'. Build 1 lan, dung moi noi.",
+          "MCP chuẩn hoá kết nối LLM với tools — 'USB cho AI'. Build 1 lần, dùng mọi nơi.",
           "3 primitives: Tools (functions), Resources (data), Prompts (templates).",
-          "Client (AI app) ↔ Server (tool wrapper) qua JSON-RPC 2.0. Stdio (local) hoac SSE (remote).",
-          "Open standard (MIT): 1000+ community servers, nhieu clients (Claude, Cursor, Windsurf).",
-          "Giam tu N x M integrations xuong N + M — giong USB chuan hoa thiet bi.",
+          "Client (AI app) ↔ Server (tool wrapper) qua JSON-RPC 2.0. Stdio (local) hoặc SSE (remote).",
+          "Open standard (MIT): 1000+ community servers, nhiều clients (Claude, Cursor, Windsurf).",
+          "Giảm từ N x M integrations xuống N + M — giống USB chuẩn hoá thiết bị.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 

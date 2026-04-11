@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "feature-engineering",
   title: "Feature Engineering",
-  titleVi: "Ky thuat dac trung — Nghe thuat chon nguyen lieu",
+  titleVi: "Kỹ thuật đặc trưng — Nghệ thuật chọn nguyên liệu",
   description:
-    "Qua trinh tao, chon loc va bien doi cac dac trung dau vao de mo hinh may hoc de hoc va du doan chinh xac hon.",
+    "Quá trình tạo, chọn lọc và biến đổi các đặc trưng đầu vào để mô hình máy học dễ học và dự đoán chính xác hơn.",
   category: "foundations",
   tags: ["features", "engineering", "transformation", "selection"],
   difficulty: "beginner",
@@ -29,52 +29,52 @@ const TOTAL_STEPS = 7;
 export default function FeatureEngineeringTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "Tai sao feature engineering quan trong hon chon algorithm?",
+      question: "Tại sao feature engineering quan trọng hơn chọn algorithm?",
       options: [
-        "Khong dung — algorithm quan trong hon",
-        "Features tot giup MODEL DON GIAN cung du doan tot. Features te thi model phuc tap cung khong cuu duoc",
-        "Feature engineering nhanh hon training",
+        "Không đúng — algorithm quan trọng hơn",
+        "Features tốt giúp MODEL ĐƠN GIẢN cũng dự đoán tốt. Features tệ thì model phức tạp cũng không cứu được",
+        "Feature engineering nhanh hơn training",
       ],
       correct: 1,
-      explanation: "'Garbage features in, garbage predictions out.' Linear regression voi features tot thuong thang deep learning voi features te. Andrew Ng: '80% thoi gian ML la feature engineering.' Features la NGUYEN LIEU — nguyen lieu tuoi thi mon an ngon, du bep gioi nao.",
+      explanation: "'Garbage features in, garbage predictions out.' Linear regression với features tốt thường thắng deep learning với features tệ. Andrew Ng: '80% thời gian ML là feature engineering.' Features là NGUYÊN LIỆU — nguyên liệu tươi thì món ăn ngon, dù bếp giỏi nào.",
     },
     {
-      question: "Du doan gia nha tai Ha Noi. Feature 'so nha' (vi du: 42) co huu ich khong?",
+      question: "Dự đoán giá nhà tại Hà Nội. Feature 'số nhà' (ví dụ: 42) có hữu ích không?",
       options: [
-        "Co — so nha anh huong gia",
-        "KHONG — so nha la ID, khong co quan he voi gia. Them feature noise → model overfit",
-        "Tuy thuoc model",
+        "Có — số nhà ảnh hưởng giá",
+        "KHÔNG — số nhà là ID, không có quan hệ với giá. Thêm feature noise → model overfit",
+        "Tuỳ thuộc model",
       ],
       correct: 1,
-      explanation: "So nha la identifier, khong phai feature co y nghia. Nha so 42 khong dat hon nha so 41. Them features vo nghia → model hoc noise → overfit. Features tot: dien tich, so phong, khoang cach Metro, quan/huyen. Chon features = loai bo nhieu!",
+      explanation: "Số nhà là identifier, không phải feature có ý nghĩa. Nhà số 42 không đắt hơn nhà số 41. Thêm features vô nghĩa → model học noise → overfit. Features tốt: diện tích, số phòng, khoảng cách Metro, quận/huyện. Chọn features = loại bỏ nhiễu!",
     },
     {
-      question: "Feature 'ngay sinh' cua user co giup du doan so thich am nhac khong? Nen xu ly the nao?",
+      question: "Feature 'ngày sinh' của user có giúp dự đoán sở thích âm nhạc không? Nên xử lý thế nào?",
       options: [
-        "Dung truc tiep ngay sinh lam feature",
-        "Tao features moi: tuoi (2025 - nam_sinh), the_he (Gen Z/Millennial/Gen X), thang_sinh (zodiac effect)",
-        "Bo di vi ngay sinh khong lien quan",
+        "Dùng trực tiếp ngày sinh làm feature",
+        "Tạo features mới: tuổi (2025 - năm_sinh), thế_hệ (Gen Z/Millennial/Gen X), tháng_sinh (zodiac effect)",
+        "Bỏ đi vì ngày sinh không liên quan",
       ],
       correct: 1,
-      explanation: "Ngay sinh raw khong huu ich (30/05/1995 ≠ pattern). Nhung FEATURES DUOC TAO TU ngay sinh rat huu ich: tuoi (30) → Gen Z, the_he → correlated voi so thich nhac. Day la core cua feature engineering: bien doi raw data thanh features co y nghia!",
+      explanation: "Ngày sinh raw không hữu ích (30/05/1995 ≠ pattern). Nhưng FEATURES ĐƯỢC TẠO TỪ ngày sinh rất hữu ích: tuổi (30) → Gen Z, thế_hệ → correlated với sở thích nhạc. Đây là core của feature engineering: biến đổi raw data thành features có ý nghĩa!",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Ban du doan gia nha o Ha Noi. Data co: dien tich, so phong, nam xay, dia chi text ('42 Ly Thuong Kiet, Hoan Kiem'). Model accuracy chi 60%. Thieu gi?"
+          question="Bạn dự đoán giá nhà ở Hà Nội. Data có: diện tích, số phòng, năm xây, địa chỉ text ('42 Lý Thường Kiệt, Hoàn Kiếm'). Model accuracy chỉ 60%. Thiếu gì?"
           options={[
-            "Can model phuc tap hon (deep learning)",
-            "Can feature engineering: tu dia chi text → extract quan/huyen, khoang cach trung tam, gan Metro? → accuracy tang 85%+",
-            "Can nhieu data hon",
+            "Cần model phức tạp hơn (deep learning)",
+            "Cần feature engineering: từ địa chỉ text → extract quận/huyện, khoảng cách trung tâm, gần Metro? → accuracy tăng 85%+",
+            "Cần nhiều data hơn",
           ]}
           correct={1}
-          explanation="Dia chi text '42 Ly Thuong Kiet' model khong hieu. Feature engineering: extract 'Hoan Kiem' (quan), tinh khoang cach Ho Guom (2km), gan Metro (500m), mat pho (co). Features nay CO Y NGHIA → model hieu 'nha o trung tam, gan Metro = dat'. Accuracy tang 25%+!"
+          explanation="Địa chỉ text '42 Lý Thường Kiệt' model không hiểu. Feature engineering: extract 'Hoàn Kiếm' (quận), tính khoảng cách Hồ Gươm (2km), gần Metro (500m), mặt phố (có). Features này CÓ Ý NGHĨA → model hiểu 'nhà ở trung tâm, gần Metro = đắt'. Accuracy tăng 25%+!"
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
           <div className="space-y-4">
             <svg viewBox="0 0 600 160" className="w-full max-w-2xl mx-auto">
@@ -84,18 +84,18 @@ export default function FeatureEngineeringTopic() {
               {/* Raw data */}
               <rect x={20} y={30} width={160} height={90} rx={8} fill="#1e293b" stroke="#ef4444" strokeWidth={1.5} />
               <text x={100} y={50} textAnchor="middle" fill="#ef4444" fontSize={9} fontWeight="bold">Raw Data</text>
-              <text x={100} y={68} textAnchor="middle" fill="#94a3b8" fontSize={7}>ngay_sinh: 30/05/1995</text>
-              <text x={100} y={82} textAnchor="middle" fill="#94a3b8" fontSize={7}>dia_chi: 42 Ly Thuong Kiet</text>
-              <text x={100} y={96} textAnchor="middle" fill="#94a3b8" fontSize={7}>gia: 5.2 ty VND</text>
+              <text x={100} y={68} textAnchor="middle" fill="#94a3b8" fontSize={7}>ngày_sinh: 30/05/1995</text>
+              <text x={100} y={82} textAnchor="middle" fill="#94a3b8" fontSize={7}>địa_chỉ: 42 Lý Thường Kiệt</text>
+              <text x={100} y={96} textAnchor="middle" fill="#94a3b8" fontSize={7}>giá: 5.2 tỷ VND</text>
 
               <text x={235} y={75} fill="#f59e0b" fontSize={20}>→</text>
 
               {/* Engineered features */}
               <rect x={260} y={30} width={160} height={90} rx={8} fill="#1e293b" stroke="#22c55e" strokeWidth={1.5} />
               <text x={340} y={50} textAnchor="middle" fill="#22c55e" fontSize={9} fontWeight="bold">Engineered</text>
-              <text x={340} y={68} textAnchor="middle" fill="#94a3b8" fontSize={7}>tuoi: 30, the_he: GenZ</text>
-              <text x={340} y={82} textAnchor="middle" fill="#94a3b8" fontSize={7}>quan: Hoan Kiem, gan_metro: 1</text>
-              <text x={340} y={96} textAnchor="middle" fill="#94a3b8" fontSize={7}>log_gia: 22.37</text>
+              <text x={340} y={68} textAnchor="middle" fill="#94a3b8" fontSize={7}>tuổi: 30, thế_hệ: GenZ</text>
+              <text x={340} y={82} textAnchor="middle" fill="#94a3b8" fontSize={7}>quận: Hoàn Kiếm, gần_metro: 1</text>
+              <text x={340} y={96} textAnchor="middle" fill="#94a3b8" fontSize={7}>log_giá: 22.37</text>
 
               <text x={475} y={75} fill="#f59e0b" fontSize={20}>→</text>
 
@@ -103,59 +103,59 @@ export default function FeatureEngineeringTopic() {
               <text x={540} y={75} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">Model</text>
 
               <text x={300} y={145} textAnchor="middle" fill="#64748b" fontSize={9}>
-                Features tot = model don gian cung chinh xac. Features te = model phuc tap cung te.
+                Features tốt = model đơn giản cũng chính xác. Features tệ = model phức tạp cũng tệ.
               </text>
             </svg>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Feature Engineering giong <strong>chon nguyen lieu nau an</strong>.
-            Nguyen lieu tuoi, chat luong → mon an ngon du bep binh thuong.
-            Nguyen lieu te → mon an te du bep gioi. <strong>80% thoi gian ML la feature engineering</strong>{" "}
-            — khong phai training model!
+            Feature Engineering giống <strong>chọn nguyên liệu nấu ăn</strong>.
+            Nguyên liệu tươi, chất lượng → món ăn ngon dù bếp bình thường.
+            Nguyên liệu tệ → món ăn tệ dù bếp giỏi. <strong>80% thời gian ML là feature engineering</strong>{" "}
+            — không phải training model!
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Du doan khach hang Shopee co mua hang trong 7 ngay toi khong. Feature nao HUU ICH NHAT?"
+          question="Dự đoán khách hàng Shopee có mua hàng trong 7 ngày tới không. Feature nào HỮU ÍCH NHẤT?"
           options={[
-            "User ID (ma khach hang)",
-            "so_ngay_tu_lan_mua_cuoi, tan_suat_mua_30_ngay, gia_trung_binh_don, so_san_pham_trong_gio",
-            "mau_avatar (mau hinh dai dien)",
+            "User ID (mã khách hàng)",
+            "số_ngày_từ_lần_mua_cuối, tần_suất_mua_30_ngày, giá_trung_bình_đơn, số_sản_phẩm_trong_giỏ",
+            "màu_avatar (màu hình đại diện)",
           ]}
           correct={1}
-          explanation="User ID la identifier (khong co pattern). Mau avatar khong lien quan. Nhung: so_ngay_tu_lan_mua_cuoi (recency), tan_suat_mua (frequency), gia_trung_binh (monetary) = RFM features — kinh dien trong e-commerce. so_san_pham_trong_gio = intent signal manh!"
+          explanation="User ID là identifier (không có pattern). Màu avatar không liên quan. Nhưng: số_ngày_từ_lần_mua_cuối (recency), tần_suất_mua (frequency), giá_trung_bình (monetary) = RFM features — kinh điển trong e-commerce. số_sản_phẩm_trong_giỏ = intent signal mạnh!"
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Feature Engineering</strong>{" "}
-            la qua trinh bien doi raw data thanh features co y nghia giup model hoc hieu qua hon.
+            là quá trình biến đổi raw data thành features có ý nghĩa giúp model học hiệu quả hơn.
           </p>
-          <p><strong>5 ky thuat chinh:</strong></p>
+          <p><strong>5 kỹ thuật chính:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Tao feature moi:</strong>{" "}ngay_sinh → tuoi, the_he. dia_chi → quan, khoang_cach</li>
+            <li><strong>Tạo feature mới:</strong>{" "}ngày_sinh → tuổi, thế_hệ. địa_chỉ → quận, khoảng_cách</li>
             <li><strong>Encoding:</strong>{" "}Categorical → one-hot, target encoding. Text → TF-IDF, embeddings</li>
             <li><strong>Scaling:</strong>{" "}StandardScaler (mean=0, std=1), MinMaxScaler (0-1)</li>
-            <li><strong>Feature selection:</strong>{" "}Loai features vo nghia, giam chieu, giam overfitting</li>
-            <li><strong>Interaction features:</strong>{" "}dien_tich x so_tang = tong_dien_tich_san</li>
+            <li><strong>Feature selection:</strong>{" "}Loại features vô nghĩa, giảm chiều, giảm overfitting</li>
+            <li><strong>Interaction features:</strong>{" "}diện_tích x số_tầng = tổng_diện_tích_sàn</li>
           </ul>
 
           <LaTeX block>{"\\text{StandardScaler: } x' = \\frac{x - \\mu}{\\sigma} \\quad \\text{MinMax: } x' = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}"}</LaTeX>
 
           <Callout variant="tip" title="Target Encoding">
-            Categorical feature co nhieu gia tri (1000 quan/huyen) → one-hot tao 1000 cot (qua nhieu!). Target encoding: thay moi category bang mean(target) cua category do. Vi du: Hoan Kiem → mean(gia) = 8.5 ty. Giam chieu + giu thong tin!
+            Categorical feature có nhiều giá trị (1000 quận/huyện) → one-hot tạo 1000 cột (quá nhiều!). Target encoding: thay mỗi category bằng mean(target) của category đó. Ví dụ: Hoàn Kiếm → mean(giá) = 8.5 tỷ. Giảm chiều + giữ thông tin!
           </Callout>
 
-          <CodeBlock language="python" title="Feature Engineering cho du doan gia nha">
+          <CodeBlock language="python" title="Feature Engineering cho dự đoán giá nhà">
 {`import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
@@ -178,26 +178,26 @@ scaler = StandardScaler()
 numeric_cols = ["dien_tich", "tuoi_nha", "khoang_cach_tt"]
 df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
 
-# Feature selection: loai features tuong quan cao
+# Feature selection: loại features tương quan cao
 # cor_matrix = df.corr()
-# Drop features co correlation > 0.95
+# Drop features có correlation > 0.95
 
 # Accuracy: 60% (raw) → 85% (engineered features)`}
           </CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Feature engineering bien doi raw data thanh features co y nghia — 80% thoi gian ML.",
-          "5 ky thuat: tao feature moi, encoding, scaling, selection, interaction features.",
-          "Features tot + model don gian > Features te + model phuc tap. 'Nguyen lieu quyet dinh mon an.'",
-          "Loai features vo nghia (ID, noise) giam overfitting. Them features co y nghia tang accuracy.",
-          "Xu huong: deep learning tu hoc features (end-to-end), nhung tabular data van can manual engineering.",
+          "Feature engineering biến đổi raw data thành features có ý nghĩa — 80% thời gian ML.",
+          "5 kỹ thuật: tạo feature mới, encoding, scaling, selection, interaction features.",
+          "Features tốt + model đơn giản > Features tệ + model phức tạp. 'Nguyên liệu quyết định món ăn.'",
+          "Loại features vô nghĩa (ID, noise) giảm overfitting. Thêm features có ý nghĩa tăng accuracy.",
+          "Xu hướng: deep learning tự học features (end-to-end), nhưng tabular data vẫn cần manual engineering.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
