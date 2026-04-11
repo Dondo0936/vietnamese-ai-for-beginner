@@ -1,8 +1,13 @@
 "use client";
 
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import {
+  PredictionGate, LessonSection, AhaMoment, InlineChallenge,
+  MiniSummary, Callout, CodeBlock, LaTeX,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
@@ -14,167 +19,263 @@ export const metadata: TopicMeta = {
   tags: ["3d", "computer-vision", "rendering"],
   difficulty: "advanced",
   relatedSlugs: ["cnn", "positional-encoding", "transfer-learning"],
-  vizType: "static",
+  vizType: "interactive",
 };
 
+const quizQuestions: QuizQuestion[] = [
+  {
+    question: "NeRF nhận input (x, y, z, θ, φ) và output (r, g, b, σ). Tại sao cần hướng nhìn (θ, φ)?",
+    options: [
+      "Để tăng tốc render",
+      "Vì cùng 1 điểm nhìn từ góc khác nhau có màu khác nhau (phản xạ, bóng sáng) — view-dependent effects",
+      "Để biết camera ở đâu",
+      "Không cần — chỉ là thừa",
+    ],
+    correct: 1,
+    explanation: "Mặt nước phản chiếu: nhìn từ trên → xanh, nhìn xiên → phản chiếu trời. Kim loại bóng: nhìn thẳng → sáng, nhìn xiên → tối. (θ, φ) cho phép NeRF mô tả hiệu ứng phụ thuộc góc nhìn — tạo ảnh thực hơn.",
+  },
+  {
+    question: "NeRF dùng positional encoding cho input (x,y,z). Tại sao?",
+    options: [
+      "Để MLP biết thứ tự các điểm",
+      "MLP với input liên tục khó học chi tiết tần số cao (cạnh sắc, texture). PE biến (x,y,z) thành sin/cos ở nhiều tần số → MLP học được chi tiết",
+      "Để giảm kích thước input",
+    ],
+    correct: 1,
+    explanation: "MLP thiên hướng học hàm smooth (tần số thấp). Nhưng cảnh 3D có cạnh sắc, texture chi tiết (tần số cao). Positional encoding: γ(x) = [sin(2⁰πx), cos(2⁰πx), ..., sin(2ᴸπx), cos(2ᴸπx)] giúp MLP nắm được cả chi tiết lẫn tổng thể.",
+  },
+  {
+    question: "NeRF gốc render 1 ảnh mất ~30 giây. Instant-NGP giảm xuống bao nhiêu?",
+    options: [
+      "~10 giây (nhanh hơn 3×)",
+      "~5ms — nhanh hơn ~6000× nhờ hash encoding thay PE + CUDA optimizations",
+      "~1 phút (chậm hơn vì phức tạp hơn)",
+    ],
+    correct: 1,
+    explanation: "Instant-NGP (NVIDIA, 2022) thay positional encoding bằng multiresolution hash table + tiny MLP. Kết hợp với CUDA kernels tối ưu → train trong vài giây, render realtime. 3D Gaussian Splatting (2023) còn nhanh hơn nữa.",
+  },
+];
+
 export default function NerfTopic() {
+  const TOTAL_STEPS = 8;
+
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn chụp <strong>vài chục bức ảnh</strong> của một chiếc cốc từ
-          nhiều góc khác nhau. Giờ bạn muốn xem chiếc cốc từ <strong>một góc chưa chụp
-          bao giờ</strong> &mdash; NeRF có thể tạo ra ảnh đó!
-        </p>
-        <p>
-          Nó học một <strong>&quot;hàm 3D&quot;</strong>: cho biết tại mọi điểm (x, y, z)
-          trong không gian, nhìn từ hướng (θ, φ), ánh sáng có màu gì và đậm nhạt ra sao.
-          Như thể bạn đang nhìn vào một thế giới ảo được xây từ các bức ảnh thật.
-        </p>
-      </AnalogyCard>
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+        <PredictionGate
+          question="Bạn chụp 50 ảnh chiếc xe máy từ nhiều góc. Giờ muốn xem xe từ góc chưa chụp bao giờ. Cần gì?"
+          options={[
+            "Chụp thêm ảnh ở góc đó",
+            "Dùng AI xây dựng mô hình 3D từ 50 ảnh, rồi render ảnh mới từ góc bất kỳ",
+            "Không thể — chỉ xem được góc đã chụp",
+          ]}
+          correct={1}
+          explanation="NeRF! Nó học một \"hàm 3D\": cho mọi điểm (x,y,z) và hướng nhìn (θ,φ), trả về màu (RGB) và mật độ (σ). Từ đó render ảnh từ BẤT KỲ góc nhìn nào — như bạn có camera ảo bay quanh cảnh."
+        />
+      </LessonSection>
 
-      <VisualizationSection>
-        <svg
-          viewBox="0 0 500 300"
-          className="w-full rounded-lg border border-border bg-background"
-        >
-          <text x={250} y={20} fontSize={12} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
-            NeRF: Từ ảnh 2D &rarr; Cảnh 3D
-          </text>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá NeRF">
+        <p className="text-sm text-foreground leading-relaxed mb-3">
+          Hãy tưởng tượng bạn dùng Google Maps để xem phố cổ Hội An. Từ ảnh 2D đã chụp, AI xây dựng &quot;thế giới 3D&quot; — bạn &quot;bay&quot; quanh, zoom vào ngóc ngách chưa ai chụp. Đó là công nghệ đằng sau{" "}
+          <strong>NeRF</strong>.
+        </p>
 
-          {/* Input photos (left) */}
-          <text x={70} y={45} fontSize={10} fill="#3b82f6" textAnchor="middle" fontWeight={600}>
-            Ảnh đầu vào
-          </text>
-          {[0, 1, 2].map((i) => {
-            const y = 55 + i * 50;
-            const rot = -10 + i * 10;
-            return (
-              <g key={i} transform={`rotate(${rot}, ${70}, ${y + 18})`}>
-                <rect x={35} y={y} width={70} height={45} rx={4}
-                  fill="#3b82f6" opacity={0.1} stroke="#3b82f6" strokeWidth={1.5} />
-                <text x={70} y={y + 20} fontSize={8} fill="#3b82f6" textAnchor="middle">
-                  Góc {i + 1}
-                </text>
-                {/* Camera icon */}
-                <circle cx={70} cy={y + 32} r={6} fill="none" stroke="#3b82f6" strokeWidth={1} />
-                <circle cx={70} cy={y + 32} r={2} fill="#3b82f6" />
+        <VisualizationSection>
+          <svg viewBox="0 0 500 280" className="w-full rounded-lg border border-border bg-background">
+            <text x={250} y={18} fontSize={11} fill="currentColor" className="text-foreground"
+              textAnchor="middle" fontWeight={600}>
+              NeRF Pipeline: Ảnh 2D &rarr; MLP &rarr; Góc nhìn mới
+            </text>
+
+            {/* Input photos */}
+            <text x={60} y={42} fontSize={9} fill="#3b82f6" textAnchor="middle" fontWeight={600}>Ảnh đầu vào</text>
+            {[0, 1, 2].map((i) => {
+              const y = 50 + i * 42;
+              return (
+                <g key={i} transform={`rotate(${-8 + i * 8}, 60, ${y + 16})`}>
+                  <rect x={25} y={y} width={70} height={36} rx={4}
+                    fill="#3b82f6" opacity={0.12} stroke="#3b82f6" strokeWidth={1.5} />
+                  <text x={60} y={y + 22} fontSize={9} fill="#3b82f6" textAnchor="middle">
+                    Góc {i + 1}
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* Arrow to MLP */}
+            <line x1={110} y1={110} x2={145} y2={110} stroke="#888" strokeWidth={2} />
+            <polygon points="150,110 143,105 143,115" fill="#888" />
+
+            {/* MLP */}
+            <rect x={155} y={50} width={155} height={130} rx={12}
+              fill="#f97316" opacity={0.08} stroke="#f97316" strokeWidth={2} />
+            <text x={232} y={72} fontSize={11} fill="#f97316" textAnchor="middle" fontWeight={700}>
+              MLP (mạng nơ-ron)
+            </text>
+            <text x={232} y={92} fontSize={8} fill="#f97316" textAnchor="middle">
+              Input: (x, y, z, &theta;, &phi;)
+            </text>
+            <text x={232} y={105} fontSize={7} fill="#f97316" textAnchor="middle" opacity={0.7}>
+              Vị trí 3D + Hướng nhìn
+            </text>
+            <rect x={175} y={112} width={115} height={16} rx={4}
+              fill="#8b5cf6" opacity={0.1} stroke="#8b5cf6" strokeWidth={1} />
+            <text x={232} y={124} fontSize={7} fill="#8b5cf6" textAnchor="middle">
+              + Positional Encoding
+            </text>
+            <text x={232} y={148} fontSize={8} fill="#f97316" textAnchor="middle">
+              Output: (r, g, b, &sigma;)
+            </text>
+            <text x={232} y={162} fontSize={7} fill="#f97316" textAnchor="middle" opacity={0.7}>
+              Màu sắc + Mật độ
+            </text>
+
+            {/* Arrow to rendering */}
+            <line x1={310} y1={110} x2={345} y2={110} stroke="#888" strokeWidth={2} />
+            <polygon points="350,110 343,105 343,115" fill="#888" />
+
+            {/* Volume rendering */}
+            <rect x={355} y={65} width={120} height={42} rx={8}
+              fill="#22c55e" opacity={0.12} stroke="#22c55e" strokeWidth={1.5} />
+            <text x={415} y={83} fontSize={9} fill="#22c55e" textAnchor="middle" fontWeight={600}>
+              Volume Rendering
+            </text>
+            <text x={415} y={99} fontSize={7} fill="#22c55e" textAnchor="middle">
+              Tích phân dọc tia nhìn
+            </text>
+
+            {/* Output */}
+            <rect x={365} y={120} width={100} height={55} rx={8}
+              fill="#ec4899" opacity={0.12} stroke="#ec4899" strokeWidth={2} />
+            <text x={415} y={142} fontSize={10} fill="#ec4899" textAnchor="middle" fontWeight={700}>
+              Góc nhìn mới!
+            </text>
+            <text x={415} y={158} fontSize={8} fill="#ec4899" textAnchor="middle">
+              (chưa từng chụp)
+            </text>
+
+            {/* Ray diagram */}
+            <text x={250} y={210} fontSize={9} fill="currentColor" className="text-foreground"
+              textAnchor="middle" fontWeight={600}>
+              Volume Rendering: bắn tia qua cảnh, lấy mẫu nhiều điểm
+            </text>
+            <circle cx={60} cy={242} r={7} fill="none" stroke="#3b82f6" strokeWidth={2} />
+            <circle cx={60} cy={242} r={2.5} fill="#3b82f6" />
+            <line x1={68} y1={242} x2={440} y2={242} stroke="#f59e0b" strokeWidth={1.5} />
+            {[0, 1, 2, 3, 4].map((i) => (
+              <g key={`s-${i}`}>
+                <circle cx={115 + i * 70} cy={242} r={4}
+                  fill="#f97316" opacity={0.2 + i * 0.15} />
+                <text x={115 + i * 70} y={262} fontSize={6} fill="currentColor" className="text-muted"
+                  textAnchor="middle">(rgb, &sigma;)</text>
               </g>
-            );
-          })}
+            ))}
+            <text x={455} y={246} fontSize={8} fill="#22c55e" fontWeight={600}>&sum; &rarr; pixel</text>
+          </svg>
+        </VisualizationSection>
+      </LessonSection>
 
-          {/* Arrow: photos -> MLP */}
-          <line x1={120} y1={130} x2={160} y2={130} stroke="#888" strokeWidth={2} />
-          <polygon points="165,130 158,125 158,135" fill="#888" />
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>NeRF</strong>{" "}
+            biến bài toán 3D thành bài toán hàm số: F(x,y,z,&theta;,&phi;) &rarr; (r,g,b,&sigma;). Một MLP đơn giản mã hóa TOÀN BỘ cảnh 3D! Không cần mesh, point cloud, hay voxel — chỉ cần weights của neural network.
+          </p>
+        </AhaMoment>
+      </LessonSection>
 
-          {/* MLP (center) */}
-          <rect x={170} y={60} width={160} height={140} rx={12}
-            fill="#f97316" opacity={0.08} stroke="#f97316" strokeWidth={2} />
-          <text x={250} y={85} fontSize={12} fill="#f97316" textAnchor="middle" fontWeight={700}>
-            MLP (Mạng nơ-ron)
-          </text>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Volume Rendering">
+        <VisualizationSection>
+          <Callout variant="insight" title="Volume Rendering = Tích phân dọc tia">
+            <p>
+              Để tính màu 1 pixel: bắn tia từ camera, lấy mẫu N điểm trên tia, hỏi MLP tại mỗi điểm → (rgb, &sigma;). Tích phân: C = &Sigma; T_i &middot; (1 - exp(-&sigma;_i &middot; &delta;_i)) &middot; c_i. Trong đó T_i = xác suất tia đến được điểm i (không bị chặn trước đó).
+            </p>
+          </Callout>
+          <Callout variant="info" title="Biến thể nhanh hơn">
+            <p>
+              <strong>Instant-NGP</strong>{" "}
+              (NVIDIA): hash encoding + tiny MLP → train giây, render ms.{" "}
+              <strong>3D Gaussian Splatting</strong>{" "}
+              (2023): biểu diễn cảnh bằng hàng triệu Gaussian 3D, rasterize trực tiếp → render realtime 100+ FPS. Cả hai đang thay thế NeRF gốc.
+            </p>
+          </Callout>
+        </VisualizationSection>
+      </LessonSection>
 
-          {/* Input to MLP */}
-          <text x={250} y={108} fontSize={9} fill="#f97316" textAnchor="middle">
-            Input: (x, y, z, θ, φ)
-          </text>
-          <text x={250} y={122} fontSize={9} fill="#f97316" textAnchor="middle">
-            Vị trí 3D + Hướng nhìn
-          </text>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge
+          question="Render ảnh 800×800 từ NeRF. Mỗi pixel bắn 1 tia, lấy 64 mẫu/tia. MLP được gọi bao nhiêu lần?"
+          options={[
+            "800 × 800 = 640.000 lần",
+            "800 × 800 × 64 = ~41 triệu lần — đây là lý do NeRF gốc chậm!",
+            "64 lần (mỗi mẫu 1 lần)",
+          ]}
+          correct={1}
+          explanation="640K pixels × 64 mẫu/pixel = ~41 triệu MLP forward passes cho 1 ảnh! Mỗi pass tính (r,g,b,σ). Đây là bottleneck chính → NeRF gốc ~30s/ảnh. Instant-NGP dùng hash table thay MLP → nhanh hơn 6000×."
+        />
+      </LessonSection>
 
-          {/* Positional encoding note */}
-          <rect x={190} y={130} width={120} height={18} rx={4}
-            fill="#8b5cf6" opacity={0.1} stroke="#8b5cf6" strokeWidth={1} />
-          <text x={250} y={143} fontSize={8} fill="#8b5cf6" textAnchor="middle">
-            + Positional Encoding
-          </text>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích chi tiết">
+        <ExplanationSection>
+          <p>
+            <strong>NeRF</strong>{" "}
+            (Mildenhall et al., 2020) biểu diễn cảnh 3D bằng continuous function mã hóa trong MLP.
+          </p>
+          <LaTeX block>{String.raw`F_\Theta: (\mathbf{x}, \mathbf{d}) \rightarrow (\mathbf{c}, \sigma)`}</LaTeX>
+          <p className="text-sm text-muted mt-1">
+            <LaTeX>{String.raw`\mathbf{x} = (x,y,z)`}</LaTeX> vị trí,{" "}
+            <LaTeX>{String.raw`\mathbf{d} = (\theta, \phi)`}</LaTeX> hướng nhìn,{" "}
+            <LaTeX>{String.raw`\mathbf{c} = (r,g,b)`}</LaTeX> màu,{" "}
+            <LaTeX>{String.raw`\sigma`}</LaTeX> mật độ.
+          </p>
+          <p className="mt-3 font-semibold text-foreground">Volume rendering:</p>
+          <LaTeX block>{String.raw`C(\mathbf{r}) = \sum_{i=1}^{N} T_i \cdot (1 - e^{-\sigma_i \delta_i}) \cdot \mathbf{c}_i, \quad T_i = \exp\!\left(-\sum_{j<i} \sigma_j \delta_j\right)`}</LaTeX>
 
-          {/* Output from MLP */}
-          <text x={250} y={168} fontSize={9} fill="#f97316" textAnchor="middle">
-            Output: (r, g, b, &sigma;)
-          </text>
-          <text x={250} y={182} fontSize={9} fill="#f97316" textAnchor="middle">
-            Màu sắc + Mật độ
-          </text>
+          <CodeBlock language="python" title="nerf_simplified.py">
+{`# NeRF MLP (simplified)
+class NeRF(nn.Module):
+    def __init__(self, D=8, W=256, input_ch=63, input_ch_views=27):
+        super().__init__()
+        # 8 lớp FC cho vị trí
+        self.pts_layers = nn.ModuleList(
+            [nn.Linear(input_ch, W)] +
+            [nn.Linear(W, W) for _ in range(D-1)]
+        )
+        # Output: density σ (không phụ thuộc hướng nhìn)
+        self.sigma_out = nn.Linear(W, 1)
+        # Output: color rgb (phụ thuộc hướng nhìn)
+        self.rgb_layer = nn.Linear(W + input_ch_views, W // 2)
+        self.rgb_out = nn.Linear(W // 2, 3)
 
-          {/* Arrow: MLP -> rendering */}
-          <line x1={330} y1={130} x2={360} y2={130} stroke="#888" strokeWidth={2} />
-          <polygon points="365,130 358,125 358,135" fill="#888" />
+    def forward(self, x, d):
+        # x: positional_encoding(xyz), d: positional_encoding(direction)
+        h = x
+        for layer in self.pts_layers:
+            h = F.relu(layer(h))
+        sigma = F.relu(self.sigma_out(h))    # Mật độ ≥ 0
+        h = F.relu(self.rgb_layer(torch.cat([h, d], -1)))
+        rgb = torch.sigmoid(self.rgb_out(h))  # Màu trong [0,1]
+        return rgb, sigma`}
+          </CodeBlock>
+        </ExplanationSection>
+      </LessonSection>
 
-          {/* Volume rendering (right) */}
-          <rect x={370} y={70} width={120} height={55} rx={10}
-            fill="#22c55e" opacity={0.1} stroke="#22c55e" strokeWidth={1.5} />
-          <text x={430} y={92} fontSize={10} fill="#22c55e" textAnchor="middle" fontWeight={600}>
-            Volume Rendering
-          </text>
-          <text x={430} y={108} fontSize={8} fill="#22c55e" textAnchor="middle">
-            Tích phân dọc tia nhìn
-          </text>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+        <MiniSummary
+          title="Ghi nhớ về NeRF"
+          points={[
+            "NeRF biểu diễn cảnh 3D bằng MLP: F(x,y,z,θ,φ) → (r,g,b,σ). Toàn bộ cảnh mã hóa trong weights.",
+            "Volume rendering: bắn tia từ camera, lấy mẫu nhiều điểm, tích phân → pixel color.",
+            "Positional encoding giúp MLP học chi tiết tần số cao (cạnh sắc, texture).",
+            "NeRF gốc chậm (~30s/ảnh). Instant-NGP và 3D Gaussian Splatting nhanh hơn 1000-6000×.",
+            "Ứng dụng: Google Maps immersive, VR/AR, điện ảnh VFX, bất động sản ảo, bảo tồn di sản.",
+          ]}
+        />
+      </LessonSection>
 
-          {/* Output: novel view */}
-          <rect x={380} y={140} width={100} height={70} rx={8}
-            fill="#ec4899" opacity={0.1} stroke="#ec4899" strokeWidth={2} />
-          <text x={430} y={165} fontSize={10} fill="#ec4899" textAnchor="middle" fontWeight={700}>
-            Góc nhìn mới!
-          </text>
-          <text x={430} y={180} fontSize={8} fill="#ec4899" textAnchor="middle">
-            (chưa từng chụp)
-          </text>
-          {/* Star effect */}
-          <text x={430} y={200} fontSize={16} fill="#ec4899" textAnchor="middle">
-            *
-          </text>
-          <line x1={430} y1={125} x2={430} y2={140} stroke="#22c55e" strokeWidth={1.5} />
-
-          {/* Ray diagram */}
-          <text x={250} y={225} fontSize={10} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
-            Volume Rendering: bắn tia qua cảnh
-          </text>
-
-          {/* Camera */}
-          <circle cx={80} cy={260} r={8} fill="none" stroke="#3b82f6" strokeWidth={2} />
-          <circle cx={80} cy={260} r={3} fill="#3b82f6" />
-
-          {/* Ray */}
-          <line x1={88} y1={260} x2={430} y2={260} stroke="#f59e0b" strokeWidth={1.5} />
-
-          {/* Sample points along ray */}
-          {[0, 1, 2, 3, 4].map((i) => {
-            const x = 130 + i * 70;
-            const opacity = 0.1 + Math.random() * 0.5;
-            return (
-              <g key={`sample-${i}`}>
-                <circle cx={x} cy={260} r={4} fill="#f97316" opacity={opacity} />
-                <text x={x} y={280} fontSize={7} fill="currentColor" className="text-muted" textAnchor="middle">
-                  (r,g,b,&sigma;)
-                </text>
-              </g>
-            );
-          })}
-
-          <text x={440} y={255} fontSize={9} fill="#22c55e" fontWeight={600}>
-            &sum; &rarr; pixel
-          </text>
-        </svg>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>NeRF (Neural Radiance Fields)</strong> biểu diễn cảnh 3D bằng một
-          <strong> MLP đơn giản</strong>: F(x, y, z, θ, φ) &rarr; (r, g, b, &sigma;).
-          Với mỗi điểm trong không gian và hướng nhìn, MLP trả về màu sắc và mật độ.
-        </p>
-        <p>
-          Để tạo ảnh từ góc mới: bắn tia (ray) từ camera, lấy mẫu nhiều điểm trên tia,
-          hỏi MLP tại mỗi điểm, rồi tích phân (volume rendering) dọc tia để tính màu pixel.
-          <strong> Positional encoding</strong> giúp MLP nắm bắt chi tiết tần số cao.
-        </p>
-        <p>
-          Ứng dụng: <strong>Google Maps immersive view</strong>, VR/AR, điện ảnh (VFX),
-          bất động sản ảo, bảo tồn di sản. Biến thể: <strong>Instant-NGP</strong> (nhanh
-          hơn 1000x), <strong>3D Gaussian Splatting</strong> (render realtime).
-        </p>
-      </ExplanationSection>
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+        <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }
