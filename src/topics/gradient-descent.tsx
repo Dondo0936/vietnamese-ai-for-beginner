@@ -1,10 +1,21 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  PredictionGate,
+  AhaMoment,
+  InlineChallenge,
+  ToggleCompare,
+  SliderGroup,
+  Callout,
+  MiniSummary,
+  CodeBlock,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
@@ -20,294 +31,537 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-// Loss surface: f(x) = (x-3)^2 + 1
+/* ---------- math helpers ---------- */
+const X_MIN = -3;
+const X_MAX = 7;
+const Y_MIN = 0;
+const Y_MAX = 28;
+const SVG_W = 520;
+const SVG_H = 280;
+const PAD = 40;
+const OPTIMUM = 2; // minimum of (x-2)^2 + 1
+
 function loss(x: number) {
-  return (x - 3) * (x - 3) + 1;
+  return (x - OPTIMUM) ** 2 + 1;
+}
+function grad(x: number) {
+  return 2 * (x - OPTIMUM);
+}
+function sx(x: number) {
+  return PAD + ((x - X_MIN) / (X_MAX - X_MIN)) * (SVG_W - 2 * PAD);
+}
+function sy(y: number) {
+  return SVG_H - PAD - ((y - Y_MIN) / (Y_MAX - Y_MIN)) * (SVG_H - 2 * PAD);
+}
+function svgToX(svgX: number) {
+  return X_MIN + ((svgX - PAD) / (SVG_W - 2 * PAD)) * (X_MAX - X_MIN);
 }
 
-function gradient(x: number) {
-  return 2 * (x - 3);
-}
-
-// Map x in [xMin, xMax] to SVG x
-function toSvgX(x: number, xMin: number, xMax: number, svgWidth: number, pad: number) {
-  return pad + ((x - xMin) / (xMax - xMin)) * (svgWidth - 2 * pad);
-}
-
-// Map y to SVG y (inverted)
-function toSvgY(y: number, yMin: number, yMax: number, svgHeight: number, pad: number) {
-  return svgHeight - pad - ((y - yMin) / (yMax - yMin)) * (svgHeight - 2 * pad);
-}
-
+/* ---------- main component ---------- */
 export default function GradientDescentTopic() {
-  const [learningRate, setLearningRate] = useState(0.3);
-  const [ballX, setBallX] = useState(0.5);
-  const [trail, setTrail] = useState<{ x: number; y: number }[]>([]);
-  const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  /* ---- Step 2 state: user IS the optimizer ---- */
+  const [pos, setPos] = useState<number | null>(null);
+  const [lr, setLr] = useState(0.3);
+  const [trail, setTrail] = useState<number[]>([]);
+  const [steps, setSteps] = useState(0);
+  const svgRef = useRef<SVGSVGElement>(null);
 
-  const xMin = -1;
-  const xMax = 7;
-  const yMin = 0;
-  const yMax = 18;
-  const svgW = 500;
-  const svgH = 280;
-  const pad = 40;
-
-  // Generate loss curve points
-  const curvePoints: string[] = [];
-  for (let px = 0; px <= 200; px++) {
-    const x = xMin + (px / 200) * (xMax - xMin);
-    const y = loss(x);
-    curvePoints.push(
-      `${toSvgX(x, xMin, xMax, svgW, pad)},${toSvgY(y, yMin, yMax, svgH, pad)}`
-    );
-  }
-
-  const step = useCallback(() => {
-    setBallX((prev) => {
-      const grad = gradient(prev);
-      const newX = prev - learningRate * grad;
-      const clamped = Math.max(xMin, Math.min(xMax, newX));
-      setTrail((t) => [...t.slice(-30), { x: prev, y: loss(prev) }]);
-      return clamped;
-    });
-  }, [learningRate]);
-
-  const startDescent = useCallback(() => {
-    if (isRunning) return;
-    setIsRunning(true);
-    setTrail([]);
-    setBallX(0.5);
-
-    // Small delay then start
-    setTimeout(() => {
-      intervalRef.current = setInterval(() => {
-        setBallX((prev) => {
-          const grad = gradient(prev);
-          const newX = prev - learningRate * grad;
-          const clamped = Math.max(xMin, Math.min(xMax, newX));
-          setTrail((t) => [...t.slice(-30), { x: prev, y: loss(prev) }]);
-
-          // Stop if converged
-          if (Math.abs(grad) < 0.01 || Math.abs(newX - prev) < 0.001) {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            setIsRunning(false);
-          }
-          return clamped;
-        });
-      }, 300);
-    }, 100);
-  }, [learningRate, isRunning]);
-
-  const reset = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setBallX(0.5);
-    setTrail([]);
+  const curvePoints = useMemo(() => {
+    const pts: string[] = [];
+    for (let i = 0; i <= 100; i++) {
+      const x = X_MIN + (i / 100) * (X_MAX - X_MIN);
+      pts.push(`${sx(x)},${sy(loss(x))}`);
+    }
+    return pts.join(" ");
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+  const handleCurveClick = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const svg = svgRef.current;
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      const clickX = ((e.clientX - rect.left) / rect.width) * SVG_W;
+      const dataX = Math.max(X_MIN, Math.min(X_MAX, svgToX(clickX)));
+      setPos(dataX);
+      setTrail([]);
+      setSteps(0);
+    },
+    [],
+  );
+
+  const takeStep = useCallback(() => {
+    if (pos === null) return;
+    const g = grad(pos);
+    const next = Math.max(X_MIN, Math.min(X_MAX, pos - lr * g));
+    setTrail((t) => [...t.slice(-19), pos]);
+    setPos(next);
+    setSteps((s) => s + 1);
+  }, [pos, lr]);
+
+  const resetOptimizer = useCallback(() => {
+    setPos(null);
+    setTrail([]);
+    setSteps(0);
   }, []);
 
-  const ballSvgX = toSvgX(ballX, xMin, xMax, svgW, pad);
-  const ballSvgY = toSvgY(loss(ballX), yMin, yMax, svgH, pad);
+  /* ---- Step 4: GD variant animations ---- */
+  const batchPath = useMemo(() => {
+    const pts: number[] = [];
+    let x = 6;
+    for (let i = 0; i < 40; i++) {
+      pts.push(x);
+      x = x - 0.15 * grad(x);
+      x = Math.max(X_MIN, Math.min(X_MAX, x));
+    }
+    return pts;
+  }, []);
+
+  const sgdPath = useMemo(() => {
+    const pts: number[] = [];
+    let x = 6;
+    for (let i = 0; i < 40; i++) {
+      pts.push(x);
+      const noise = (Math.sin(i * 7.3) * 0.6 + Math.cos(i * 3.1) * 0.4);
+      x = x - 0.15 * (grad(x) + noise);
+      x = Math.max(X_MIN, Math.min(X_MAX, x));
+    }
+    return pts;
+  }, []);
+
+  /* ---- gradient arrow helper ---- */
+  const arrowLen = 40;
+
+  /* ---- quiz questions ---- */
+  const quizQuestions: QuizQuestion[] = [
+    {
+      question: "Gradient tại điểm cực tiểu của hàm loss có giá trị bằng bao nhiêu?",
+      options: ["Giá trị lớn nhất", "0", "Giá trị âm lớn nhất", "1"],
+      correct: 1,
+      explanation:
+        "Tại điểm cực tiểu, độ dốc bằng 0 nên gradient = 0. Đây là dấu hiệu cho thấy thuật toán đã hội tụ.",
+    },
+    {
+      question: "Mini-batch Gradient Descent kết hợp ưu điểm của hai phương pháp nào?",
+      options: [
+        "Batch GD và Adam",
+        "Batch GD và SGD",
+        "SGD và RMSprop",
+        "Learning rate scheduling và SGD",
+      ],
+      correct: 1,
+      explanation:
+        "Mini-batch GD tính gradient trên một lô nhỏ dữ liệu, kết hợp sự ổn định của Batch GD với tốc độ của SGD.",
+    },
+    {
+      question:
+        "Nếu loss không giảm sau nhiều bước, nguyên nhân có thể nhất là gì?",
+      options: [
+        "Dữ liệu quá ít",
+        "Learning rate quá lớn, gây dao động quanh cực tiểu",
+        "Máy tính quá chậm",
+        "Hàm loss không có cực tiểu",
+      ],
+      correct: 1,
+      explanation:
+        "Learning rate quá lớn khiến bước nhảy vượt qua cực tiểu, tạo dao động qua lại mà không bao giờ hội tụ.",
+    },
+  ];
 
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn <strong>bị bịt mắt đứng trên một ngọn đồi</strong> và
-          cần tìm đường xuống thung lũng thấp nhất. Bạn không nhìn thấy gì, nhưng bạn
-          có thể <strong>cảm nhận độ dốc</strong> dưới chân mình.
-        </p>
-        <p>
-          Chiến thuật của bạn: mỗi bước, hãy <strong>đi theo hướng dốc nhất</strong>{" "}
-          xuống dưới. Bước đi lớn (learning rate cao) giúp bạn xuống nhanh nhưng có thể
-          bước quá đà, nhảy qua đáy thung lũng. Bước nhỏ (learning rate thấp) thì an
-          toàn nhưng rất chậm.
-        </p>
-        <p>
-          <strong>Gradient</strong> chính là &quot;độ dốc&quot; đó. <strong>Gradient
-          Descent</strong> là chiến thuật &quot;luôn bước theo hướng dốc xuống&quot; cho
-          đến khi đến nơi bằng phẳng nhất (cực tiểu).
-        </p>
-      </AnalogyCard>
+      {/* ====== STEP 1: HOOK ====== */}
+      <PredictionGate
+        question="Bạn đứng trên đỉnh đồi trong sương mù, không thấy gì. Cách tốt nhất để xuống thung lũng là gì?"
+        options={[
+          "Nhảy thật xa một bước",
+          "Bước nhỏ theo hướng dốc nhất",
+          "Đi ngẫu nhiên",
+          "Đứng yên chờ sương tan",
+        ]}
+        correct={1}
+        explanation="Bước theo hướng dốc nhất chính là ý tưởng cốt lõi của gradient descent!"
+      >
+        {/* ====== STEP 2: DISCOVER — User IS the Optimizer ====== */}
+        <VisualizationSection>
+          <div className="space-y-4">
+            <p className="text-sm text-muted text-center">
+              {pos === null
+                ? "Nhấp vào đường cong để đặt vị trí xuất phát, rồi tự tay tối ưu!"
+                : "Nhấn \"Bước tiếp\" để đi theo hướng gradient. Thử thay đổi learning rate!"}
+            </p>
 
-      <VisualizationSection>
-        <div className="space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="space-y-1 flex-1 min-w-[200px]">
-              <label className="text-sm font-medium text-muted">
-                Tốc độ học (Learning Rate): <strong className="text-foreground">{learningRate.toFixed(2)}</strong>
-              </label>
-              <input
-                type="range"
-                min="0.01"
-                max="1.0"
-                step="0.01"
-                value={learningRate}
-                onChange={(e) => setLearningRate(parseFloat(e.target.value))}
-                className="w-full accent-accent"
-                disabled={isRunning}
-              />
-              <div className="flex justify-between text-xs text-muted">
-                <span>Chậm & chính xác</span>
-                <span>Nhanh & rủi ro</span>
+            {/* SVG loss curve */}
+            <svg
+              ref={svgRef}
+              viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+              className="w-full max-w-2xl mx-auto cursor-crosshair select-none"
+              onClick={handleCurveClick}
+            >
+              {/* axes */}
+              <line x1={PAD} y1={SVG_H - PAD} x2={SVG_W - PAD} y2={SVG_H - PAD} stroke="#334155" strokeWidth="1" />
+              <line x1={PAD} y1={PAD} x2={PAD} y2={SVG_H - PAD} stroke="#334155" strokeWidth="1" />
+              <text x={SVG_W / 2} y={SVG_H - 8} textAnchor="middle" fill="#64748b" fontSize="11">
+                Trọng số (w)
+              </text>
+              <text x={15} y={SVG_H / 2} textAnchor="middle" fill="#64748b" fontSize="11"
+                transform={`rotate(-90, 15, ${SVG_H / 2})`}>
+                Loss
+              </text>
+
+              {/* optimum line */}
+              <line x1={sx(OPTIMUM)} y1={SVG_H - PAD} x2={sx(OPTIMUM)} y2={sy(loss(OPTIMUM))}
+                stroke="#22c55e" strokeWidth="1" strokeDasharray="4,3" opacity={0.5} />
+              <text x={sx(OPTIMUM)} y={SVG_H - PAD + 14} textAnchor="middle" fill="#22c55e" fontSize="9">
+                Cực tiểu
+              </text>
+
+              {/* loss curve */}
+              <polyline points={curvePoints} fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" />
+
+              {/* trail dots */}
+              {trail.map((tx, i) => (
+                <circle key={`t${i}`} cx={sx(tx)} cy={sy(loss(tx))} r={3}
+                  fill="#f59e0b" opacity={0.25 + (i / trail.length) * 0.75} />
+              ))}
+
+              {/* gradient arrow at current position */}
+              {pos !== null && (
+                <>
+                  {/* arrow shows direction of negative gradient */}
+                  <line
+                    x1={sx(pos)}
+                    y1={sy(loss(pos))}
+                    x2={sx(pos) - Math.sign(grad(pos)) * arrowLen}
+                    y2={sy(loss(pos))}
+                    stroke="#ef4444"
+                    strokeWidth="2"
+                    markerEnd="url(#arrowhead)"
+                  />
+                  <defs>
+                    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                      <polygon points="0 0, 8 3, 0 6" fill="#ef4444" />
+                    </marker>
+                  </defs>
+
+                  {/* ball */}
+                  <motion.circle
+                    cx={sx(pos)} cy={sy(loss(pos))} r={8}
+                    fill="#ef4444" stroke="white" strokeWidth="2"
+                    initial={false}
+                    animate={{ cx: sx(pos), cy: sy(loss(pos)) }}
+                    transition={{ type: "spring", stiffness: 120, damping: 15 }}
+                  />
+                  <motion.text
+                    x={sx(pos)} y={sy(loss(pos)) - 14}
+                    textAnchor="middle" fill="#ef4444" fontSize="10" fontWeight="bold"
+                    initial={false} animate={{ x: sx(pos), y: sy(loss(pos)) - 14 }}>
+                    loss={loss(pos).toFixed(2)}
+                  </motion.text>
+                </>
+              )}
+            </svg>
+
+            {/* controls */}
+            <div className="flex flex-wrap items-end gap-4">
+              <div className="flex-1 min-w-[180px] space-y-1">
+                <label className="text-sm font-medium text-muted">
+                  Learning rate: <strong className="text-foreground">{lr.toFixed(2)}</strong>
+                </label>
+                <input type="range" min="0.01" max="2.0" step="0.01" value={lr}
+                  onChange={(e) => setLr(parseFloat(e.target.value))}
+                  className="w-full accent-accent" />
+                <div className="flex justify-between text-xs text-muted">
+                  <span>0.01 — chậm</span>
+                  <span>2.0 — nhanh</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={resetOptimizer}
+                  className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors">
+                  Đặt lại
+                </button>
+                <button onClick={takeStep} disabled={pos === null}
+                  className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40">
+                  Bước tiếp
+                </button>
               </div>
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={reset}
-                className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-              >
-                Đặt lại
-              </button>
-              <button
-                onClick={startDescent}
-                disabled={isRunning}
-                className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-              >
-                {isRunning ? "Đang chạy..." : "Bắt đầu hạ gradient"}
-              </button>
-            </div>
+
+            {/* stats */}
+            {pos !== null && (
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
+                  <p className="text-xs text-muted">Số bước</p>
+                  <p className="text-lg font-bold text-foreground">{steps}</p>
+                </div>
+                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
+                  <p className="text-xs text-muted">Loss hiện tại</p>
+                  <p className="text-lg font-bold text-foreground">{loss(pos).toFixed(3)}</p>
+                </div>
+                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
+                  <p className="text-xs text-muted">Gradient</p>
+                  <p className="text-lg font-bold text-foreground">{grad(pos).toFixed(3)}</p>
+                </div>
+              </div>
+            )}
+
+            {steps >= 3 && (
+              <p className="text-sm text-center text-muted italic">
+                Bạn đã dùng {steps} bước để đến loss = {pos !== null ? loss(pos).toFixed(3) : "?"}.
+                {loss(pos ?? 99) < 1.1
+                  ? " Tuyệt vời, gần cực tiểu rồi!"
+                  : " Tiếp tục bước hoặc thử learning rate khác!"}
+              </p>
+            )}
+          </div>
+        </VisualizationSection>
+
+        {/* ====== STEP 3: AHA MOMENT ====== */}
+        <AhaMoment>
+          <p>
+            Quy trình bạn vừa thực hiện — đi theo hướng gradient, với bước nhảy
+            tỷ lệ thuận với learning rate — chính là{" "}
+            <strong>Gradient Descent</strong>!
+          </p>
+          <p className="text-sm mt-2 opacity-80">
+            Công thức: w_mới = w_cũ - learning_rate &times; gradient
+          </p>
+        </AhaMoment>
+
+        {/* ====== STEP 4: DEEPEN — Compare GD Variants ====== */}
+        <ToggleCompare
+          labelA="Batch GD"
+          labelB="SGD"
+          description="So sánh đường đi tối ưu: mượt mà vs. nhiễu nhưng cùng hướng"
+          childA={<VariantViz path={batchPath} curvePoints={curvePoints} color="#3b82f6" label="Batch GD: đường đi mượt mà" />}
+          childB={<VariantViz path={sgdPath} curvePoints={curvePoints} color="#f59e0b" label="SGD: đường đi zigzag nhưng nhanh" />}
+        />
+
+        <SliderGroup
+          title="Thí nghiệm: điều chỉnh tham số"
+          sliders={[
+            { key: "lr", label: "Learning rate", min: 0.01, max: 2.0, step: 0.01, defaultValue: 0.3 },
+            { key: "start", label: "Vị trí xuất phát", min: -3, max: 7, step: 0.1, defaultValue: 6 },
+          ]}
+          visualization={(vals) => (
+            <SliderViz lr={vals.lr} start={vals.start} curvePoints={curvePoints} />
+          )}
+        />
+
+        {/* ====== STEP 5: CHALLENGE ====== */}
+        <InlineChallenge
+          question="Learning rate = 5.0 trên hàm loss này sẽ gây ra điều gì?"
+          options={[
+            "Hội tụ nhanh hơn",
+            "Dao động qua lại không hội tụ",
+            "Không ảnh hưởng gì",
+          ]}
+          correct={1}
+          explanation="LR quá lớn khiến bước nhảy vượt qua điểm tối ưu, tạo dao động!"
+        />
+
+        {/* ====== STEP 6: EXPLAIN ====== */}
+        <ExplanationSection>
+          <p>
+            <strong>Gradient Descent</strong> cập nhật trọng số theo công thức:
+          </p>
+          <div className="rounded-lg bg-background/50 border border-border p-4 text-center font-mono text-foreground text-lg">
+            &theta; = &theta; &minus; &alpha; &nabla;L(&theta;)
+          </div>
+          <p>
+            Trong đó <strong>&theta;</strong> là trọng số, <strong>&alpha;</strong> là
+            learning rate, và <strong>&nabla;L(&theta;)</strong> là gradient của hàm loss.
+          </p>
+
+          {/* variants table */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 pr-4 font-semibold text-foreground">Biến thể</th>
+                  <th className="text-left py-2 pr-4 font-semibold text-foreground">Dữ liệu mỗi bước</th>
+                  <th className="text-left py-2 font-semibold text-foreground">Đặc điểm</th>
+                </tr>
+              </thead>
+              <tbody className="text-foreground/80">
+                <tr className="border-b border-border/50">
+                  <td className="py-2 pr-4 font-medium">Batch GD</td>
+                  <td className="py-2 pr-4">Toàn bộ tập dữ liệu</td>
+                  <td className="py-2">Ổn định, chậm với dữ liệu lớn</td>
+                </tr>
+                <tr className="border-b border-border/50">
+                  <td className="py-2 pr-4 font-medium">SGD</td>
+                  <td className="py-2 pr-4">1 mẫu ngẫu nhiên</td>
+                  <td className="py-2">Nhanh, dao động nhiều</td>
+                </tr>
+                <tr>
+                  <td className="py-2 pr-4 font-medium">Mini-batch GD</td>
+                  <td className="py-2 pr-4">Một lô nhỏ (32-256 mẫu)</td>
+                  <td className="py-2">Cân bằng tốc độ và ổn định</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-2xl mx-auto">
-            {/* Axes */}
-            <line x1={pad} y1={svgH - pad} x2={svgW - pad} y2={svgH - pad} stroke="#334155" strokeWidth="1" />
-            <line x1={pad} y1={pad} x2={pad} y2={svgH - pad} stroke="#334155" strokeWidth="1" />
+          <CodeBlock language="python" title="gradient_descent.py">
+{`def gradient_descent(w, lr, grad_fn, steps=100):
+    for _ in range(steps):
+        g = grad_fn(w)          # tính gradient
+        w = w - lr * g          # cập nhật trọng số
+        if abs(g) < 1e-6: break # hội tụ
+    return w`}
+          </CodeBlock>
 
-            {/* Axis labels */}
-            <text x={svgW / 2} y={svgH - 8} textAnchor="middle" fill="#64748b" fontSize="11">
-              Trọng số (w)
-            </text>
-            <text x={15} y={svgH / 2} textAnchor="middle" fill="#64748b" fontSize="11" transform={`rotate(-90, 15, ${svgH / 2})`}>
-              Loss
-            </text>
+          <Callout variant="tip" title="Learning rate scheduling">
+            Trong thực tế, learning rate thường giảm dần theo thời gian. Bắt đầu
+            với bước lớn để tiến nhanh, sau đó giảm dần để hội tụ chính xác —
+            giống như bạn chạy nhanh khi còn xa đích và đi chậm khi đến gần.
+          </Callout>
+        </ExplanationSection>
 
-            {/* Optimal point marker */}
-            <line
-              x1={toSvgX(3, xMin, xMax, svgW, pad)}
-              y1={svgH - pad}
-              x2={toSvgX(3, xMin, xMax, svgW, pad)}
-              y2={toSvgY(loss(3), yMin, yMax, svgH, pad)}
-              stroke="#22c55e"
-              strokeWidth="1"
-              strokeDasharray="4,3"
-              opacity={0.5}
-            />
-            <text
-              x={toSvgX(3, xMin, xMax, svgW, pad)}
-              y={svgH - pad + 15}
-              textAnchor="middle"
-              fill="#22c55e"
-              fontSize="9"
-            >
-              Cực tiểu
-            </text>
+        {/* ====== STEP 7: CONNECT ====== */}
+        <MiniSummary
+          title="Gradient Descent — Điểm chốt"
+          points={[
+            "Gradient chỉ hướng tăng nhanh nhất của loss; đi ngược hướng gradient để giảm loss.",
+            "Learning rate quyết định kích thước bước nhảy: quá nhỏ thì chậm, quá lớn thì dao động.",
+            "Ba biến thể chính: Batch GD (ổn định), SGD (nhanh, nhiễu), Mini-batch (cân bằng).",
+            "Mọi mô hình deep learning đều học bằng gradient descent hoặc biến thể của nó.",
+          ]}
+        />
 
-            {/* Loss curve */}
-            <polyline
-              points={curvePoints.join(" ")}
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-
-            {/* Trail */}
-            {trail.map((point, i) => (
-              <circle
-                key={`trail-${i}`}
-                cx={toSvgX(point.x, xMin, xMax, svgW, pad)}
-                cy={toSvgY(point.y, yMin, yMax, svgH, pad)}
-                r={2}
-                fill="#f59e0b"
-                opacity={0.3 + (i / trail.length) * 0.7}
-              />
-            ))}
-
-            {/* Ball */}
-            <motion.circle
-              cx={ballSvgX}
-              cy={ballSvgY}
-              r={8}
-              fill="#ef4444"
-              stroke="white"
-              strokeWidth="2"
-              initial={false}
-              animate={{ cx: ballSvgX, cy: ballSvgY }}
-              transition={{ type: "spring", stiffness: 100 }}
-            />
-
-            {/* Ball value label */}
-            <motion.text
-              x={ballSvgX}
-              y={ballSvgY - 15}
-              textAnchor="middle"
-              fill="#ef4444"
-              fontSize="10"
-              fontWeight="bold"
-              initial={false}
-              animate={{ x: ballSvgX, y: ballSvgY - 15 }}
-            >
-              w={ballX.toFixed(2)}
-            </motion.text>
-          </svg>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Vị trí hiện tại</p>
-              <p className="text-lg font-bold text-foreground">{ballX.toFixed(3)}</p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Loss</p>
-              <p className="text-lg font-bold text-foreground">{loss(ballX).toFixed(3)}</p>
-            </div>
-            <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-xs text-muted">Gradient</p>
-              <p className="text-lg font-bold text-foreground">{gradient(ballX).toFixed(3)}</p>
-            </div>
-          </div>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Gradient Descent</strong> (hạ gradient) là thuật toán tối ưu được sử dụng
-          rộng rãi nhất trong machine learning. Mục tiêu là tìm bộ trọng số w sao cho hàm
-          mất mát L(w) đạt giá trị nhỏ nhất.
-        </p>
-        <p>Công thức cập nhật cực kỳ đơn giản:</p>
-        <div className="rounded-lg bg-background/50 border border-border p-3 text-center font-mono text-foreground">
-          w_mới = w_cũ - &alpha; &times; &nabla;L(w)
-        </div>
-        <p>
-          Trong đó <strong>&alpha;</strong> là tốc độ học (learning rate) và{" "}
-          <strong>&nabla;L(w)</strong> là gradient của hàm mất mát. Gradient chỉ hướng
-          tăng nhanh nhất, nên ta đi ngược hướng gradient (dấu trừ) để giảm loss.
-        </p>
-        <p>Ba biến thể chính:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Batch GD:</strong> Tính gradient trên toàn bộ dữ liệu. Chính xác nhưng
-            chậm với dữ liệu lớn.
-          </li>
-          <li>
-            <strong>Stochastic GD (SGD):</strong> Tính gradient trên từng mẫu. Nhanh nhưng
-            dao động nhiều.
-          </li>
-          <li>
-            <strong>Mini-batch GD:</strong> Tính gradient trên một lô nhỏ. Cân bằng giữa
-            tốc độ và ổn định.
-          </li>
-        </ul>
-      </ExplanationSection>
+        {/* ====== STEP 8: QUIZ ====== */}
+        <QuizSection questions={quizQuestions} />
+      </PredictionGate>
     </>
+  );
+}
+
+/* ---------- sub-components ---------- */
+
+/** Animated variant visualization for ToggleCompare */
+function VariantViz({
+  path,
+  curvePoints,
+  color,
+  label,
+}: {
+  path: number[];
+  curvePoints: string;
+  color: string;
+  label: string;
+}) {
+  const [frame, setFrame] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    setFrame(0);
+    intervalRef.current = setInterval(() => {
+      setFrame((f) => {
+        if (f >= path.length - 1) {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          return f;
+        }
+        return f + 1;
+      });
+    }, 120);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [path]);
+
+  return (
+    <div className="space-y-2">
+      <p className="text-xs text-center text-muted">{label}</p>
+      <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full max-w-xl mx-auto">
+        <line x1={PAD} y1={SVG_H - PAD} x2={SVG_W - PAD} y2={SVG_H - PAD} stroke="#334155" strokeWidth="1" />
+        <polyline points={curvePoints} fill="none" stroke="#3b82f6" strokeWidth="2" opacity={0.4} />
+        {/* trail */}
+        {path.slice(0, frame + 1).map((x, i) => (
+          <circle key={i} cx={sx(x)} cy={sy(loss(x))} r={3}
+            fill={color} opacity={0.2 + (i / (frame + 1)) * 0.8} />
+        ))}
+        {/* path lines */}
+        {path.slice(0, frame + 1).map((x, i) =>
+          i > 0 ? (
+            <line key={`l${i}`}
+              x1={sx(path[i - 1])} y1={sy(loss(path[i - 1]))}
+              x2={sx(x)} y2={sy(loss(x))}
+              stroke={color} strokeWidth="1.5" opacity={0.5} />
+          ) : null,
+        )}
+        {/* current ball */}
+        <motion.circle
+          cx={sx(path[frame])} cy={sy(loss(path[frame]))} r={7}
+          fill={color} stroke="white" strokeWidth="2"
+          initial={false}
+          animate={{ cx: sx(path[frame]), cy: sy(loss(path[frame])) }}
+          transition={{ type: "spring", stiffness: 120 }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+/** Driven descent visualization for SliderGroup */
+function SliderViz({
+  lr,
+  start,
+  curvePoints,
+}: {
+  lr: number;
+  start: number;
+  curvePoints: string;
+}) {
+  const path = useMemo(() => {
+    const pts: number[] = [];
+    let x = start;
+    for (let i = 0; i < 30; i++) {
+      pts.push(x);
+      x = x - lr * grad(x);
+      x = Math.max(X_MIN, Math.min(X_MAX, x));
+    }
+    return pts;
+  }, [lr, start]);
+
+  const diverges = path.some((x) => loss(x) > 50);
+
+  return (
+    <div className="space-y-2 w-full">
+      <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full max-w-xl mx-auto">
+        <line x1={PAD} y1={SVG_H - PAD} x2={SVG_W - PAD} y2={SVG_H - PAD} stroke="#334155" strokeWidth="1" />
+        <polyline points={curvePoints} fill="none" stroke="#3b82f6" strokeWidth="2" opacity={0.4} />
+        {/* optimum */}
+        <line x1={sx(OPTIMUM)} y1={SVG_H - PAD} x2={sx(OPTIMUM)} y2={sy(loss(OPTIMUM))}
+          stroke="#22c55e" strokeWidth="1" strokeDasharray="4,3" opacity={0.4} />
+
+        {/* path */}
+        {path.map((x, i) => {
+          const y = Math.min(loss(x), Y_MAX);
+          return (
+            <circle key={i} cx={sx(x)} cy={sy(y)} r={i === 0 ? 6 : 3}
+              fill={i === 0 ? "#3b82f6" : "#f59e0b"}
+              opacity={i === 0 ? 1 : 0.3 + (i / path.length) * 0.7} />
+          );
+        })}
+        {path.map((x, i) =>
+          i > 0 ? (
+            <line key={`l${i}`}
+              x1={sx(path[i - 1])} y1={sy(Math.min(loss(path[i - 1]), Y_MAX))}
+              x2={sx(x)} y2={sy(Math.min(loss(x), Y_MAX))}
+              stroke="#f59e0b" strokeWidth="1" opacity={0.3} />
+          ) : null,
+        )}
+
+        {/* final ball */}
+        <circle cx={sx(path[path.length - 1])} cy={sy(Math.min(loss(path[path.length - 1]), Y_MAX))}
+          r={6} fill="#ef4444" stroke="white" strokeWidth="2" />
+      </svg>
+      <p className="text-xs text-center text-muted">
+        {diverges
+          ? "LR quá lớn — bước nhảy vượt khỏi đồ thị!"
+          : `Sau 30 bước: loss = ${loss(path[path.length - 1]).toFixed(3)}`}
+      </p>
+    </div>
   );
 }
