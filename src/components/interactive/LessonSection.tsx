@@ -72,8 +72,8 @@ export default function LessonSection({
         {children}
       </motion.div>
 
-      {/* Section divider */}
-      <div className="mt-10 border-b border-border/50" />
+      {/* Brilliance-style embossed divider */}
+      <div className="mt-10 section-divider" />
     </div>
   );
 }
