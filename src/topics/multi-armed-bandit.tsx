@@ -1,480 +1,105 @@
 "use client";
-
-import { useState, useCallback } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useState, useCallback, useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "multi-armed-bandit",
-  title: "Multi-Armed Bandit",
-  titleVi: "Bài toán máy đánh bạc nhiều tay",
-  description:
-    "Bài toán cân bằng giữa khai thác kiến thức đã có và khám phá lựa chọn mới",
-  category: "reinforcement-learning",
-  tags: ["exploration", "exploitation", "epsilon-greedy"],
-  difficulty: "beginner",
-  relatedSlugs: ["q-learning", "recommendation-systems", "supervised-unsupervised-rl"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "multi-armed-bandit", title: "Multi-Armed Bandit", titleVi: "Bai toan may danh bac nhieu tay", description: "Bai toan can bang giua khai thac kien thuc da co va kham pha lua chon moi", category: "reinforcement-learning", tags: ["exploration", "exploitation", "epsilon-greedy"], difficulty: "beginner", relatedSlugs: ["q-learning", "recommendation-systems", "supervised-unsupervised-rl"], vizType: "interactive" };
 
-// True reward probabilities (hidden from user)
-const TRUE_PROBS = [0.2, 0.55, 0.35, 0.75];
-const ARM_NAMES = ["Phở Hà Nội", "Bún bò Huế", "Cơm tấm SG", "Hủ tiếu Nam Vang"];
-const ARM_COLORS = ["#ef4444", "#f59e0b", "#3b82f6", "#22c55e"];
+const ARMS = [
+  { name: "Pho A", trueReward: 0.6, color: "#3b82f6" },
+  { name: "Pho B", trueReward: 0.8, color: "#22c55e" },
+  { name: "Pho C", trueReward: 0.4, color: "#f59e0b" },
+  { name: "Pho D", trueReward: 0.7, color: "#8b5cf6" },
+];
 
-interface ArmStats {
-  pulls: number;
-  totalReward: number;
-  avg: number;
-}
-
-function initArms(): ArmStats[] {
-  return TRUE_PROBS.map(() => ({ pulls: 0, totalReward: 0, avg: 0 }));
-}
-
+const TOTAL_STEPS = 7;
 export default function MultiArmedBanditTopic() {
-  const [arms, setArms] = useState<ArmStats[]>(initArms);
-  const [lastPull, setLastPull] = useState<{ arm: number; reward: number } | null>(null);
-  const [totalPulls, setTotalPulls] = useState(0);
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
+  const [rewards, setRewards] = useState([0, 0, 0, 0]);
   const [totalReward, setTotalReward] = useState(0);
-  const [epsilon, setEpsilon] = useState(0.2);
-  const [strategy, setStrategy] = useState<"manual" | "epsilon">("manual");
-  const [autoHistory, setAutoHistory] = useState<{ arm: number; reward: number }[]>([]);
 
-  const pullArm = useCallback(
-    (armIdx: number) => {
-      const reward = Math.random() < TRUE_PROBS[armIdx] ? 1 : 0;
-
-      setArms((prev) => {
-        const next = prev.map((a) => ({ ...a }));
-        next[armIdx].pulls += 1;
-        next[armIdx].totalReward += reward;
-        next[armIdx].avg =
-          Math.round((next[armIdx].totalReward / next[armIdx].pulls) * 100) / 100;
-        return next;
-      });
-
-      setLastPull({ arm: armIdx, reward });
-      setTotalPulls((p) => p + 1);
-      setTotalReward((p) => p + reward);
-      setAutoHistory((prev) => [...prev.slice(-19), { arm: armIdx, reward }]);
-    },
-    []
-  );
-
-  const epsilonGreedyPull = useCallback(() => {
-    let chosen: number;
-    if (Math.random() < epsilon || arms.every((a) => a.pulls === 0)) {
-      // Explore: random
-      chosen = Math.floor(Math.random() * 4);
-    } else {
-      // Exploit: best known average
-      chosen = 0;
-      let bestAvg = -Infinity;
-      arms.forEach((a, i) => {
-        if (a.avg > bestAvg) {
-          bestAvg = a.avg;
-          chosen = i;
-        }
-      });
-    }
-    pullArm(chosen);
-  }, [arms, epsilon, pullArm]);
-
-  const runMany = useCallback(() => {
-    // Run 10 epsilon-greedy pulls
-    let curArms = arms.map((a) => ({ ...a }));
-    const newHistory: { arm: number; reward: number }[] = [];
-    let addedReward = 0;
-    let lastA = 0;
-    let lastR = 0;
-
-    for (let i = 0; i < 10; i++) {
-      let chosen: number;
-      if (Math.random() < epsilon || curArms.every((a) => a.pulls === 0)) {
-        chosen = Math.floor(Math.random() * 4);
-      } else {
-        chosen = 0;
-        let bestAvg = -Infinity;
-        curArms.forEach((a, idx) => {
-          if (a.avg > bestAvg) {
-            bestAvg = a.avg;
-            chosen = idx;
-          }
-        });
-      }
-
-      const reward = Math.random() < TRUE_PROBS[chosen] ? 1 : 0;
-      curArms[chosen].pulls += 1;
-      curArms[chosen].totalReward += reward;
-      curArms[chosen].avg =
-        Math.round((curArms[chosen].totalReward / curArms[chosen].pulls) * 100) / 100;
-
-      newHistory.push({ arm: chosen, reward });
-      addedReward += reward;
-      lastA = chosen;
-      lastR = reward;
-    }
-
-    setArms(curArms);
-    setLastPull({ arm: lastA, reward: lastR });
-    setTotalPulls((p) => p + 10);
-    setTotalReward((p) => p + addedReward);
-    setAutoHistory((prev) => [...prev, ...newHistory].slice(-20));
-  }, [arms, epsilon]);
-
-  const reset = useCallback(() => {
-    setArms(initArms());
-    setLastPull(null);
-    setTotalPulls(0);
-    setTotalReward(0);
-    setAutoHistory([]);
+  const pull = useCallback((arm: number) => {
+    const r = Math.random() < ARMS[arm].trueReward ? 1 : 0;
+    setCounts(p => { const n = [...p]; n[arm]++; return n; });
+    setRewards(p => { const n = [...p]; n[arm] += r; return n; });
+    setTotalReward(p => p + r);
   }, []);
 
-  const maxPulls = Math.max(1, ...arms.map((a) => a.pulls));
-  const slotW = 110;
-  const slotGap = 20;
-  const slotStartX = 40;
-  const slotTopY = 40;
-  const slotHeight = 180;
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Explore vs Exploit dilemma la gi?", options: ["Chon model lon hay nho", "EXPLOIT: chon lua chon TOT NHAT da biet → toi da reward ngan han. EXPLORE: thu lua chon MOI → co the tim tot hon. Can can bang!", "Chon data nhieu hay it"], correct: 1, explanation: "Vi du: ban biet Pho A ngon (exploit). Nhung co Pho B chua thu — co the ngon hon! Neu chi exploit → miss Pho B. Neu chi explore → lang phi thoi gian thu nhieu quan te. Epsilon-greedy: 90% chon tot nhat, 10% thu random." },
+    { question: "UCB (Upper Confidence Bound) tot hon epsilon-greedy the nao?", options: ["Nhanh hon", "UCB uu tien explore arms IT DUOC THU (uncertainty cao). Epsilon-greedy explore RANDOM khong care da thu hay chua", "Khong tot hon"], correct: 1, explanation: "UCB = mean reward + bonus cho uncertainty. Arm chua thu nhieu → bonus lon → duoc explore. Arm da thu nhieu → bonus nho → chi exploit neu mean cao. Thong minh hon random explore: explore CO MUC DICH (giam uncertainty)." },
+    { question: "A/B testing tren Shopee la dang Bandit khong?", options: ["Khong lien quan", "Co! A/B test = 2-armed bandit. Variant A va B = 2 arms. Click rate = reward. Bandit approach (Thompson Sampling) tot hon A/B test truyen thong vi ADAPTIVE", "Chi la thong ke"], correct: 1, explanation: "A/B test: chia 50/50, doi du data, chon winner. Bandit: bat dau 50/50, DAN CHUYEN traffic sang variant tot hon. Bandit:ít user nhan variant te hon → ethical + hieu qua hon. Shopee, Grab, Netflix deu dung Bandit cho recommendation." },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn mới chuyển đến một thành phố và muốn tìm{" "}
-          <strong>quán phở ngon nhất</strong>. Có 4 quán gần nhà:{" "}
-          <strong>Phở Hà Nội</strong>, <strong>Bún bò Huế</strong>,{" "}
-          <strong>Cơm tấm Sài Gòn</strong>, và <strong>Hủ tiếu Nam Vang</strong>.
-        </p>
-        <p>
-          Mỗi lần ăn, bạn phải chọn: tiếp tục đến quán đã biết ngon (
-          <strong>khai thác — exploit</strong>), hay thử quán mới có thể ngon hơn (
-          <strong>khám phá — explore</strong>)? Nếu chỉ khai thác, bạn có thể bỏ lỡ quán
-          ngon nhất. Nếu chỉ khám phá, bạn lãng phí tiền vào quán dở. Đây chính là{" "}
-          <strong>bài toán Multi-Armed Bandit</strong> — tìm sự cân bằng tối ưu!
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="Ban moi den Ha Noi, co 4 quan pho. Lan 1 thu Pho A — ngon. Lan 2 nen lam gi?" options={["Quay lai Pho A vi da biet ngon (exploit)", "Thu Pho B — co the ngon hon (explore)", "Explore-exploit: 80% quay lai quan tot nhat, 20% thu quan moi"]} correct={2} explanation="Explore-Exploit dilemma! Chi exploit (Pho A mai) → miss Pho B ngon hon. Chi explore (thu het) → lang phi tien an pho te. Can bang: phan lon chon tot nhat da biet, thỉnh thoang thu moi. Day chinh la Multi-Armed Bandit!">
 
-      <VisualizationSection>
-        <p className="mb-3 text-sm text-muted">
-          Nhấp vào từng quán để thử (chế độ thủ công), hoặc dùng chiến lược
-          &epsilon;-greedy tự động. Mỗi quán có xác suất &quot;ngon&quot; ẩn khác nhau.
-        </p>
-
-        <svg
-          viewBox="0 0 560 340"
-          className="w-full rounded-lg border border-border bg-background"
-        >
-          {/* Title */}
-          <text x={280} y={25} textAnchor="middle" fontSize="13" fill="currentColor" fontWeight={700}>
-            Thử các quán ăn
-          </text>
-
-          {arms.map((arm, i) => {
-            const x = slotStartX + i * (slotW + slotGap);
-            const barH = arm.pulls > 0 ? (arm.pulls / maxPulls) * (slotHeight - 50) : 0;
-            const isLast = lastPull !== null && lastPull.arm === i;
-
-            return (
-              <g
-                key={`arm-${i}`}
-                onClick={() => strategy === "manual" && pullArm(i)}
-                style={{ cursor: strategy === "manual" ? "pointer" : "default" }}
-              >
-                {/* Slot machine body */}
-                <rect
-                  x={x}
-                  y={slotTopY}
-                  width={slotW}
-                  height={slotHeight}
-                  rx={10}
-                  fill={ARM_COLORS[i] + "15"}
-                  stroke={isLast ? ARM_COLORS[i] : "#94a3b8"}
-                  strokeWidth={isLast ? 2.5 : 1}
-                />
-
-                {/* Restaurant name */}
-                <text
-                  x={x + slotW / 2}
-                  y={slotTopY + 20}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill={ARM_COLORS[i]}
-                  fontWeight={700}
-                >
-                  {ARM_NAMES[i]}
-                </text>
-
-                {/* Pull count bar */}
-                <rect
-                  x={x + 15}
-                  y={slotTopY + slotHeight - 15 - barH}
-                  width={slotW - 30}
-                  height={barH}
-                  rx={4}
-                  fill={ARM_COLORS[i]}
-                  opacity={0.6}
-                />
-
-                {/* Pulls count */}
-                <text
-                  x={x + slotW / 2}
-                  y={slotTopY + 40}
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="#64748b"
-                >
-                  Lần thử: {arm.pulls}
-                </text>
-
-                {/* Average */}
-                <text
-                  x={x + slotW / 2}
-                  y={slotTopY + 55}
-                  textAnchor="middle"
-                  fontSize="11"
-                  fill={ARM_COLORS[i]}
-                  fontWeight={600}
-                >
-                  TB: {arm.pulls > 0 ? (arm.avg * 100).toFixed(0) + "%" : "?"}
-                </text>
-
-                {/* Total reward */}
-                <text
-                  x={x + slotW / 2}
-                  y={slotTopY + 70}
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="#64748b"
-                >
-                  Ngon: {arm.totalReward}/{arm.pulls}
-                </text>
-
-                {/* Last result indicator */}
-                {isLast && lastPull && (
-                  <g>
-                    <circle
-                      cx={x + slotW / 2}
-                      cy={slotTopY + slotHeight + 18}
-                      r={12}
-                      fill={lastPull.reward > 0 ? "#dcfce7" : "#fee2e2"}
-                      stroke={lastPull.reward > 0 ? "#22c55e" : "#ef4444"}
-                      strokeWidth={1.5}
-                    />
-                    <text
-                      x={x + slotW / 2}
-                      y={slotTopY + slotHeight + 22}
-                      textAnchor="middle"
-                      fontSize="10"
-                      fill={lastPull.reward > 0 ? "#16a34a" : "#dc2626"}
-                      fontWeight={700}
-                    >
-                      {lastPull.reward > 0 ? "!" : "X"}
-                    </text>
-                  </g>
-                )}
-
-                {/* Click hint */}
-                {strategy === "manual" && arm.pulls === 0 && (
-                  <text
-                    x={x + slotW / 2}
-                    y={slotTopY + slotHeight - 25}
-                    textAnchor="middle"
-                    fontSize="9"
-                    fill="#94a3b8"
-                  >
-                    Nhấp để thử
-                  </text>
-                )}
-              </g>
-            );
-          })}
-
-          {/* Running average line chart area */}
-          <text x={280} y={280} textAnchor="middle" fontSize="10" fill="#64748b">
-            {totalPulls > 0
-              ? `Tỷ lệ tổng thể: ${((totalReward / totalPulls) * 100).toFixed(0)}% ngon (${totalReward}/${totalPulls})`
-              : "Hãy bắt đầu thử các quán!"}
-          </text>
-
-          {/* History dots */}
-          {autoHistory.length > 0 && (
-            <g>
-              <text x={40} y={310} fontSize="9" fill="#64748b">Lịch sử:</text>
-              {autoHistory.map((h, i) => (
-                <circle
-                  key={`hist-${i}`}
-                  cx={90 + i * 22}
-                  cy={307}
-                  r={6}
-                  fill={h.reward > 0 ? ARM_COLORS[h.arm] : "#e2e8f0"}
-                  stroke={ARM_COLORS[h.arm]}
-                  strokeWidth={1.5}
-                />
-              ))}
-            </g>
-          )}
-        </svg>
-
-        {/* Strategy selector and epsilon */}
-        <div className="mt-4 flex items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-foreground">Chế độ:</label>
-            <button
-              onClick={() => setStrategy("manual")}
-              className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
-                strategy === "manual"
-                  ? "bg-accent text-white"
-                  : "border border-border bg-card text-foreground hover:bg-accent hover:text-white"
-              }`}
-            >
-              Thủ công
-            </button>
-            <button
-              onClick={() => setStrategy("epsilon")}
-              className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
-                strategy === "epsilon"
-                  ? "bg-accent text-white"
-                  : "border border-border bg-card text-foreground hover:bg-accent hover:text-white"
-              }`}
-            >
-              &epsilon;-Greedy
-            </button>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <p className="mb-4 text-sm text-muted leading-relaxed">Click vao <strong className="text-foreground">quan pho</strong>{" "}de thu — nhan reward (ngon=1, khong=0). Tim quan tot nhat!</p>
+        <VisualizationSection><div className="space-y-4">
+          <div className="flex gap-3 justify-center">
+            {ARMS.map((arm, i) => (<button key={i} onClick={() => pull(i)} className="rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors hover:opacity-80" style={{ backgroundColor: arm.color }}>{arm.name}</button>))}
           </div>
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-foreground">&epsilon; =</label>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={epsilon * 100}
-              onChange={(e) => setEpsilon(Number(e.target.value) / 100)}
-              className="w-24 accent-accent"
-            />
-            <span className="w-10 text-center text-sm font-bold text-accent">
-              {epsilon.toFixed(2)}
-            </span>
-          </div>
-        </div>
+          <svg viewBox="0 0 600 100" className="w-full max-w-2xl mx-auto">
+            {ARMS.map((arm, i) => {
+              const avg = counts[i] > 0 ? rewards[i] / counts[i] : 0;
+              const x = 30 + i * 145;
+              return (<g key={i}><rect x={x} y={10} width={120} height={50} rx={6} fill="#1e293b" stroke={arm.color} strokeWidth={1.5} />
+                <text x={x + 60} y={28} textAnchor="middle" fill={arm.color} fontSize={9} fontWeight="bold">{arm.name}</text>
+                <text x={x + 60} y={44} textAnchor="middle" fill="#94a3b8" fontSize={8}>Thu: {counts[i]} | Avg: {avg.toFixed(2)}</text>
+                <rect x={x + 5} y={52} width={110 * avg} height={5} rx={2} fill={arm.color} />
+              </g>);
+            })}
+            <text x={300} y={85} textAnchor="middle" fill="#e2e8f0" fontSize={10}>Tong reward: {totalReward} / {counts.reduce((a, b) => a + b, 0)} lan thu</text>
+          </svg>
+        </div></VisualizationSection>
+      </LessonSection>
 
-        {/* Stats */}
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tổng lần thử</p>
-            <p className="text-lg font-bold text-foreground">{totalPulls}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tổng phần thưởng</p>
-            <p className="text-lg font-bold text-foreground">{totalReward}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tỷ lệ thắng</p>
-            <p className="text-lg font-bold text-foreground">
-              {totalPulls > 0
-                ? ((totalReward / totalPulls) * 100).toFixed(0) + "%"
-                : "—"}
-            </p>
-          </div>
-        </div>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Ban vua giai quyet <strong>bai toan co ban nhat cua RL</strong>: explore vs exploit. Epsilon-greedy: 90% chon tot nhat, 10% random. UCB: explore arms co <strong>uncertainty cao</strong>{" "}(chua thu nhieu). Thompson Sampling: model uncertainty bang <strong>phan phoi xac suat</strong>{" "}— thong minh nhat! Shopee, Netflix, Grab deu dung Bandit hang ngay.</p></AhaMoment></LessonSection>
 
-        {/* Controls */}
-        <div className="mt-4 flex items-center gap-3 flex-wrap">
-          {strategy === "epsilon" && (
-            <>
-              <button
-                onClick={epsilonGreedyPull}
-                className="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              >
-                Thử 1 lần (&epsilon;-greedy)
-              </button>
-              <button
-                onClick={runMany}
-                className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-              >
-                Thử 10 lần
-              </button>
-            </>
-          )}
-          <button
-            onClick={reset}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Đặt lại
-          </button>
-        </div>
-      </VisualizationSection>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="Shopee test 3 thiet ke nut 'Mua ngay'. A/B/C test: chia deu 33/33/33, doi 2 tuan. Bandit approach: bat dau 33/33/33, nhanh chong chuyen traffic sang variant tot nhat. Uu diem Bandit?" options={["Nhanh hon", "IT USER NHAN VARIANT TE: A/B cham 2 tuan chia deu (nhieu user nhan variant te). Bandit chuyen nhanh → it user bi anh huong. ETHICAL + HIEU QUA hon", "Re hon"]} correct={1} explanation="A/B test: 100K users x 2 tuan x variant C (te nhat) = 33K users co trai nghiem te. Bandit: sau 1000 users nhan ra C te → giam traffic C xuong 5% → chi ~5K users nhan C. Bandit giam 6x so users bi anh huong. Day la ly do Shopee, Netflix, Google chuyen tu A/B sang Bandit." /></LessonSection>
 
-      <ExplanationSection>
-        <p>
-          <strong>Multi-Armed Bandit</strong> (Bài toán máy đánh bạc nhiều tay) là bài
-          toán nền tảng trong học tăng cường, mô tả tình huống phải{" "}
-          <strong>cân bằng giữa khám phá (exploration) và khai thác
-          (exploitation)</strong>.
-        </p>
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Multi-Armed Bandit</strong>{" "}la bai toan can bang explore (thu moi) va exploit (dung tot nhat) — co ban nhat cua RL.</p>
+        <p><strong>3 strategies chinh:</strong></p>
+        <LaTeX block>{"\\text{Epsilon-greedy: } a = \\begin{cases} \\arg\\max_a Q(a) & \\text{voi xac suat } 1-\\epsilon \\\\ \\text{random} & \\text{voi xac suat } \\epsilon \\end{cases}"}</LaTeX>
+        <LaTeX block>{"\\text{UCB: } a = \\arg\\max_a \\left[Q(a) + c\\sqrt{\\frac{\\ln t}{N(a)}}\\right] \\quad \\text{(bonus cho arms it thu)}"}</LaTeX>
+        <LaTeX block>{"\\text{Thompson Sampling: } \\theta_a \\sim \\text{Beta}(\\alpha_a, \\beta_a), \\quad a = \\arg\\max_a \\theta_a"}</LaTeX>
+        <Callout variant="tip" title="Thompson Sampling">Thompson Sampling tot nhat trong thuc te: model reward bang Beta distribution. Moi lan sample theta tu posterior → chon arm co theta cao nhat. Explore tu nhien: arm co uncertainty cao → theta dao dong nhieu → co co hoi duoc chon. Collect on va hieu qua hon UCB!</Callout>
+        <CodeBlock language="python" title="Thompson Sampling cho A/B/C test">{`import numpy as np
 
-        <p>
-          Tên gọi đến từ hình ảnh một người đứng trước nhiều{" "}
-          <strong>máy đánh bạc</strong> (slot machine), mỗi máy có xác suất thắng khác
-          nhau mà ta không biết trước. Mục tiêu: <strong>tối đa hóa tổng phần thưởng</strong>{" "}
-          sau N lần kéo.
-        </p>
+class ThompsonSampling:
+    def __init__(self, n_arms):
+        self.alpha = np.ones(n_arms)  # Successes + 1
+        self.beta = np.ones(n_arms)   # Failures + 1
 
-        <p>Các chiến lược phổ biến:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Epsilon-Greedy (&epsilon;-greedy)</strong>: Đơn giản nhất — với xác suất
-            &epsilon; chọn ngẫu nhiên (khám phá), với xác suất 1-&epsilon; chọn tay có
-            trung bình cao nhất (khai thác). &epsilon; = 0.1 nghĩa là 10% thời gian khám
-            phá.
-          </li>
-          <li>
-            <strong>Upper Confidence Bound (UCB)</strong>: Thông minh hơn — chọn tay có
-            giá trị &quot;trung bình + phần thưởng khám phá&quot; cao nhất. Tay ít được
-            thử sẽ có phần thưởng khám phá lớn hơn, tự động khuyến khích thử.
-            <div className="mt-1 rounded-lg bg-background/50 border border-border p-2 text-center font-mono text-foreground text-xs">
-              UCB(a) = Q(a) + c &sdot; &radic;(ln(t) / N(a))
-            </div>
-          </li>
-          <li>
-            <strong>Thompson Sampling</strong>: Dùng xác suất Bayesian — duy trì một
-            phân phối xác suất cho mỗi tay, lấy mẫu từ phân phối và chọn tay có mẫu
-            cao nhất. Tay chưa chắc chắn sẽ có phân phối rộng hơn, tự nhiên được khám
-            phá nhiều hơn.
-          </li>
-        </ol>
+    def select_arm(self):
+        # Sample tu Beta posterior cho moi arm
+        samples = [np.random.beta(a, b) for a, b in zip(self.alpha, self.beta)]
+        return np.argmax(samples)
 
-        <p>
-          <strong>Ứng dụng thực tế</strong> rất phong phú:
-        </p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>A/B Testing</strong>: Chọn phiên bản website tốt nhất trong khi vẫn
-            thu thập dữ liệu
-          </li>
-          <li>
-            <strong>Hệ thống gợi ý</strong>: Cân bằng giữa gợi ý nội dung quen thuộc
-            và nội dung mới
-          </li>
-          <li>
-            <strong>Quảng cáo trực tuyến</strong>: Chọn quảng cáo hiển thị để tối đa hóa
-            click
-          </li>
-          <li>
-            <strong>Y tế</strong>: Phân bổ bệnh nhân vào các phác đồ điều trị thử
-            nghiệm
-          </li>
-        </ul>
+    def update(self, arm, reward):
+        if reward: self.alpha[arm] += 1
+        else: self.beta[arm] += 1
 
-        <p>
-          Multi-Armed Bandit là <strong>trường hợp đặc biệt</strong> của học tăng cường
-          — chỉ có 1 trạng thái (không có chuyển đổi trạng thái). Hiểu bài toán này là
-          bước đệm tuyệt vời trước khi bước vào Q-Learning và các phương pháp RL phức
-          tạp hơn.
-        </p>
-      </ExplanationSection>
+# A/B/C test cho nut 'Mua ngay' tren Shopee
+ts = ThompsonSampling(3)
+for user in range(10000):
+    arm = ts.select_arm()       # Chon variant A/B/C
+    reward = show_and_track(arm) # User co click khong?
+    ts.update(arm, reward)
+    # Sau ~500 users: variant tot nhat nhan 80%+ traffic
+    # Sau ~2000 users: converge, chi variant tot nhat`}</CodeBlock>
+      </ExplanationSection></LessonSection>
+
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Multi-Armed Bandit: can bang explore (thu moi) va exploit (dung tot nhat da biet).", "3 strategies: Epsilon-greedy (don gian), UCB (explore uncertainty cao), Thompson Sampling (tot nhat).", "Ung dung: A/B testing (Shopee), recommendation (Netflix), ad placement (Google), clinical trials.", "Bandit tot hon A/B test truyen thong: adaptive, it user bi anh huong, converge nhanh hon.", "La bai toan co ban nhat cua RL — mo rong thanh full RL khi them states va transitions."]} /></LessonSection>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }

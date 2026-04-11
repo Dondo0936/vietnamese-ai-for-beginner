@@ -1,366 +1,100 @@
 "use client";
-
-import { useState, useCallback } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "policy-gradient",
-  title: "Policy Gradient",
-  titleVi: "Gradient chính sách",
-  description:
-    "Phương pháp tối ưu trực tiếp chính sách hành động bằng gradient ascent trên phần thưởng kỳ vọng",
-  category: "reinforcement-learning",
-  tags: ["reinforce", "policy", "optimization"],
-  difficulty: "intermediate",
-  relatedSlugs: ["actor-critic", "q-learning", "gradient-descent"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "policy-gradient", title: "Policy Gradient", titleVi: "Gradient chinh sach", description: "Phuong phap toi uu truc tiep chinh sach hanh dong bang gradient ascent tren phan thuong ky vong", category: "reinforcement-learning", tags: ["reinforce", "policy", "optimization"], difficulty: "intermediate", relatedSlugs: ["actor-critic", "q-learning", "gradient-descent"], vizType: "interactive" };
 
-const ACTIONS = ["Ném thẳng", "Ném vòng cung", "Ném nhanh", "Ném xoáy"];
-const ACTION_COLORS = ["#3b82f6", "#22c55e", "#f59e0b", "#ef4444"];
-
-function softmax(logits: number[]): number[] {
-  const maxL = Math.max(...logits);
-  const exps = logits.map((l) => Math.exp(l - maxL));
-  const sum = exps.reduce((a, b) => a + b, 0);
-  return exps.map((e) => e / sum);
-}
-
-function sampleAction(probs: number[]): number {
-  const r = Math.random();
-  let cum = 0;
-  for (let i = 0; i < probs.length; i++) {
-    cum += probs[i];
-    if (r < cum) return i;
-  }
-  return probs.length - 1;
-}
-
+const TOTAL_STEPS = 7;
 export default function PolicyGradientTopic() {
-  const [logits, setLogits] = useState<number[]>([1, 1, 1, 1]);
-  const [history, setHistory] = useState<{ action: number; reward: number }[]>([]);
-  const [lastAction, setLastAction] = useState<number | null>(null);
-  const [lastReward, setLastReward] = useState<number | null>(null);
-  const [totalReward, setTotalReward] = useState(0);
-
-  // True reward probabilities (hidden from user)
-  const trueRewardProbs = [0.3, 0.7, 0.5, 0.2];
-
-  const probs = softmax(logits);
-
-  const throwBall = useCallback(() => {
-    const currentProbs = softmax(logits);
-    const action = sampleAction(currentProbs);
-    const reward = Math.random() < trueRewardProbs[action] ? 1 : 0;
-
-    // Policy gradient update: increase logit of good actions, decrease bad
-    const lr = 0.3;
-    setLogits((prev) => {
-      const newLogits = [...prev];
-      for (let i = 0; i < newLogits.length; i++) {
-        if (i === action) {
-          // REINFORCE: logit += lr * reward * (1 - prob)
-          newLogits[i] += lr * (reward - 0.5) * (1 - currentProbs[i]);
-        } else {
-          // Decrease others proportionally
-          newLogits[i] -= lr * (reward - 0.5) * currentProbs[i];
-        }
-      }
-      return newLogits;
-    });
-
-    setLastAction(action);
-    setLastReward(reward);
-    setTotalReward((prev) => prev + reward);
-    setHistory((prev) => [...prev.slice(-11), { action, reward }]);
-  }, [logits]);
-
-  const throwMany = useCallback(() => {
-    let currentLogits = [...logits];
-    const newHistory: { action: number; reward: number }[] = [];
-    let addedReward = 0;
-    const lr = 0.3;
-
-    for (let step = 0; step < 10; step++) {
-      const currentProbs = softmax(currentLogits);
-      const action = sampleAction(currentProbs);
-      const reward = Math.random() < trueRewardProbs[action] ? 1 : 0;
-
-      for (let i = 0; i < currentLogits.length; i++) {
-        if (i === action) {
-          currentLogits[i] += lr * (reward - 0.5) * (1 - currentProbs[i]);
-        } else {
-          currentLogits[i] -= lr * (reward - 0.5) * currentProbs[i];
-        }
-      }
-      newHistory.push({ action, reward });
-      addedReward += reward;
-    }
-
-    setLogits(currentLogits);
-    setLastAction(newHistory[newHistory.length - 1].action);
-    setLastReward(newHistory[newHistory.length - 1].reward);
-    setTotalReward((prev) => prev + addedReward);
-    setHistory((prev) => [...prev, ...newHistory].slice(-12));
-  }, [logits]);
-
-  const reset = useCallback(() => {
-    setLogits([1, 1, 1, 1]);
-    setHistory([]);
-    setLastAction(null);
-    setLastReward(null);
-    setTotalReward(0);
-  }, []);
-
-  const barMaxHeight = 180;
-  const barWidth = 80;
-  const barGap = 30;
-  const chartStartX = 60;
-  const chartBaseY = 240;
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Policy Gradient khac Q-Learning o diem nao co ban?", options: ["Dung nhieu GPU hon", "Q-Learning hoc VALUE function roi suy ra policy. Policy Gradient hoc TRUC TIEP policy pi(a|s) — mapping state→action probabilities", "Khong khac"], correct: 1, explanation: "Q-Learning: hoc Q(s,a) → chon argmax. Policy Gradient: hoc truc tiep pi(a|s) = P(action|state). Uu diem PG: xu ly action space lien tuc (robot arm), stochastic policies (can thiet cho game). Nhuoc diem: variance cao, can nhieu samples." },
+    { question: "Tai sao Policy Gradient co variance cao?", options: ["Vi dung nhieu params", "Reward signal DELAYED va NOISY: cung action nhung khac episodes co reward khac nhau → gradient dao dong manh", "Vi learning rate qua lon"], correct: 1, explanation: "Episode 1: action A → reward 10. Episode 2: cung action A → reward 2 (do moi truong random). Gradient estimate dao dong manh. Giai phap: baseline subtraction (tru mean reward) giam variance ma khong thay doi expected gradient." },
+    { question: "REINFORCE algorithm la gi?", options: ["Ten cua deep learning framework", "Policy gradient co ban nhat: sample episode, tinh return, update policy theo gradient = return x grad(log pi)", "Ky thuat tang cuong data"], correct: 1, explanation: "REINFORCE (Williams 1992): (1) Sample toan bo episode theo policy, (2) Tinh return G_t cho moi step, (3) Update: theta += alpha * G_t * grad(log pi(a_t|s_t)). Don gian nhung variance cao. Actor-Critic cai thien bang cach dung Critic danh gia." },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn là một <strong>cầu thủ bóng rổ</strong> tập ném phạt.
-          Thay vì tính toán giá trị của mỗi vị trí trên sân (value-based), bạn{" "}
-          <strong>trực tiếp cải thiện kỹ thuật ném</strong> (policy) bằng cách luyện tập
-          và điều chỉnh.
-        </p>
-        <p>
-          Ném vào = phần thưởng tốt &#8594; tăng xác suất dùng kỹ thuật đó. Ném trượt =
-          kết quả xấu &#8594; giảm xác suất. Dần dần, bạn tự nhiên chọn cách ném hiệu
-          quả nhất. Đó chính là <strong>Policy Gradient</strong> — tối ưu trực tiếp
-          chính sách hành động!
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="Robot can dieu khien canh tay (goc xoay 0-360 do — lien tuc). Q-Learning can discretize thanh 36 bins → mat do chinh xac. Co cach nao tot hon?" options={["Discretize nhieu hon (3600 bins)", "Policy Gradient: hoc TRUC TIEP phan phoi xac suat tren action lien tuc — output mean va std cua Gaussian", "Khong the dung RL cho action lien tuc"]} correct={1} explanation="Q-Learning: output Q cho moi action roi ly tan → action lien tuc phai discretize (mat thong tin). Policy Gradient: output mean + std cua Gaussian → sample action lien tuc truc tiep. Tu nhien cho robot, xe tu lai, bat ky action space lien tuc nao.">
 
-      <VisualizationSection>
-        <p className="mb-3 text-sm text-muted">
-          Nhấn &quot;Ném bóng&quot; để thử một kỹ thuật. Quan sát xác suất thay đổi —
-          kỹ thuật thành công nhiều sẽ được chọn thường xuyên hơn.
-        </p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <VisualizationSection><div className="space-y-4">
+          <svg viewBox="0 0 600 100" className="w-full max-w-2xl mx-auto">
+            <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Q-Learning vs Policy Gradient</text>
+            <rect x={20} y={30} width={260} height={50} rx={8} fill="#3b82f6" opacity={0.3} stroke="#3b82f6" strokeWidth={1.5} />
+            <text x={150} y={50} textAnchor="middle" fill="#3b82f6" fontSize={9} fontWeight="bold">Q-Learning: hoc Q(s,a) → argmax</text>
+            <text x={150} y={68} textAnchor="middle" fill="#94a3b8" fontSize={8}>Discrete actions. Indirect policy.</text>
+            <rect x={320} y={30} width={260} height={50} rx={8} fill="#22c55e" opacity={0.3} stroke="#22c55e" strokeWidth={1.5} />
+            <text x={450} y={50} textAnchor="middle" fill="#22c55e" fontSize={9} fontWeight="bold">Policy Gradient: hoc pi(a|s) truc tiep</text>
+            <text x={450} y={68} textAnchor="middle" fill="#94a3b8" fontSize={8}>Continuous actions. Direct policy.</text>
+          </svg>
+        </div></VisualizationSection>
+      </LessonSection>
 
-        <svg
-          viewBox="0 0 520 290"
-          className="w-full rounded-lg border border-border bg-background"
-        >
-          {/* Title */}
-          <text x={260} y={22} textAnchor="middle" fontSize="13" fill="currentColor" fontWeight={700}>
-            Phân phối xác suất chính sách
-          </text>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Q-Learning: hoc <strong>ban do gia tri</strong>{" "}roi suy ra duong di. Policy Gradient: hoc <strong>truc tiep cach di</strong>. Giong hoc lai xe: Q-Learning = hoc gia tri moi nga tu roi tinh duong. PG = hoc truc tiep phan xa lai xe (bao nhieu do, nhanh/cham). PG tu nhien hon cho hanh dong lien tuc!</p></AhaMoment></LessonSection>
 
-          {/* Y axis */}
-          <line x1={50} y1={40} x2={50} y2={chartBaseY} stroke="#94a3b8" strokeWidth={1} />
-          <text x={26} y={48} fontSize="9" fill="#64748b" textAnchor="middle">100%</text>
-          <text x={26} y={chartBaseY} fontSize="9" fill="#64748b" textAnchor="middle">0%</text>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="REINFORCE co van de: variance cao vi dung toan bo episode return. Cach don gian nhat de giam variance?" options={["Tang learning rate", "Tru baseline b (vi du mean return) tu return: G_t - b. Gradient khong doi nhung variance giam dang ke", "Dung nhieu episodes hon"]} correct={1} explanation="Baseline subtraction: thay vi gradient = G_t * grad(log pi), dung (G_t - b) * grad(log pi). Neu b = mean(G), action tot hon trung binh → gradient duong (tang xac suat). Action te → gradient am (giam). Khong thay doi expected gradient nhung variance giam 50-90%!" /></LessonSection>
 
-          {/* Bars */}
-          {probs.map((p, i) => {
-            const x = chartStartX + i * (barWidth + barGap);
-            const barH = p * barMaxHeight;
-            const isLast = lastAction === i;
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Policy Gradient</strong>{" "}toi uu truc tiep policy pi_theta(a|s) bang gradient ascent tren expected return.</p>
+        <p><strong>Policy Gradient Theorem:</strong></p>
+        <LaTeX block>{"\\nabla_\\theta J(\\theta) = \\mathbb{E}_{\\pi_\\theta}\\left[\\sum_{t=0}^{T} \\nabla_\\theta \\log \\pi_\\theta(a_t|s_t) \\cdot G_t\\right]"}</LaTeX>
+        <p><strong>REINFORCE voi baseline:</strong></p>
+        <LaTeX block>{"\\nabla_\\theta J(\\theta) = \\mathbb{E}\\left[\\nabla_\\theta \\log \\pi_\\theta(a_t|s_t) \\cdot (G_t - b)\\right]"}</LaTeX>
+        <Callout variant="tip" title="Continuous Actions">Cho actions lien tuc: policy output mean mu va std sigma cua Gaussian. Sample action: a ~ N(mu, sigma^2). Gradient: grad log N(a|mu, sigma) tinh duoc closed-form. Day la cach robot, xe tu lai hoc dieu khien.</Callout>
+        <CodeBlock language="python" title="REINFORCE algorithm">{`import torch
+import torch.nn as nn
+import torch.distributions as dist
 
-            return (
-              <g key={`bar-${i}`}>
-                {/* Bar */}
-                <rect
-                  x={x}
-                  y={chartBaseY - barH}
-                  width={barWidth}
-                  height={barH}
-                  rx={4}
-                  fill={ACTION_COLORS[i]}
-                  opacity={isLast ? 1 : 0.7}
-                  stroke={isLast ? "#fff" : "none"}
-                  strokeWidth={isLast ? 2 : 0}
-                />
+class PolicyNetwork(nn.Module):
+    def __init__(self, state_dim, action_dim):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_dim, 128), nn.ReLU(),
+            nn.Linear(128, action_dim),
+            nn.Softmax(dim=-1),  # Action probabilities
+        )
+    def forward(self, state):
+        return self.net(state)
 
-                {/* Percentage label */}
-                <text
-                  x={x + barWidth / 2}
-                  y={chartBaseY - barH - 6}
-                  textAnchor="middle"
-                  fontSize="11"
-                  fill={ACTION_COLORS[i]}
-                  fontWeight={700}
-                >
-                  {(p * 100).toFixed(1)}%
-                </text>
+policy = PolicyNetwork(4, 2)
+optimizer = torch.optim.Adam(policy.parameters(), lr=0.001)
 
-                {/* Action name */}
-                <text
-                  x={x + barWidth / 2}
-                  y={chartBaseY + 16}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="currentColor"
-                  fontWeight={500}
-                >
-                  {ACTIONS[i]}
-                </text>
+# REINFORCE training
+for episode in range(1000):
+    log_probs, rewards = [], []
+    state = env.reset()
 
-                {/* Last result indicator */}
-                {isLast && lastReward !== null && (
-                  <text
-                    x={x + barWidth / 2}
-                    y={chartBaseY + 30}
-                    textAnchor="middle"
-                    fontSize="10"
-                    fill={lastReward > 0 ? "#22c55e" : "#ef4444"}
-                    fontWeight={700}
-                  >
-                    {lastReward > 0 ? "Vào!" : "Trượt!"}
-                  </text>
-                )}
-              </g>
-            );
-          })}
+    while not done:
+        probs = policy(state)
+        m = dist.Categorical(probs)
+        action = m.sample()
+        log_probs.append(m.log_prob(action))
+        state, reward, done, _ = env.step(action.item())
+        rewards.append(reward)
 
-          {/* Baseline (x axis) */}
-          <line x1={50} y1={chartBaseY} x2={500} y2={chartBaseY} stroke="#94a3b8" strokeWidth={1} />
+    # Tinh returns voi baseline
+    G, returns = 0, []
+    for r in reversed(rewards):
+        G = r + 0.99 * G
+        returns.insert(0, G)
+    returns = torch.tensor(returns)
+    returns = (returns - returns.mean()) / (returns.std() + 1e-8)  # Baseline
 
-          {/* Arrow showing gradient direction */}
-          {lastAction !== null && lastReward !== null && (
-            <g>
-              <text x={260} y={280} textAnchor="middle" fontSize="10" fill="#64748b">
-                {lastReward > 0
-                  ? `↑ Tăng xác suất "${ACTIONS[lastAction]}" (thưởng tốt)`
-                  : `↓ Giảm xác suất "${ACTIONS[lastAction]}" (thưởng xấu)`}
-              </text>
-            </g>
-          )}
-        </svg>
+    # Update policy
+    loss = -sum(lp * G for lp, G in zip(log_probs, returns))
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()`}</CodeBlock>
+      </ExplanationSection></LessonSection>
 
-        {/* History */}
-        <div className="mt-4">
-          <p className="text-sm font-medium text-foreground mb-2">
-            Lịch sử gần đây:
-          </p>
-          <div className="flex gap-1.5 flex-wrap">
-            {history.map((h, i) => (
-              <div
-                key={i}
-                className="rounded-md px-2 py-0.5 text-xs font-medium"
-                style={{
-                  backgroundColor: ACTION_COLORS[h.action] + "22",
-                  color: ACTION_COLORS[h.action],
-                  border: `1px solid ${ACTION_COLORS[h.action]}44`,
-                }}
-              >
-                {ACTIONS[h.action].substring(0, 4)} {h.reward > 0 ? "✓" : "✗"}
-              </div>
-            ))}
-            {history.length === 0 && (
-              <span className="text-xs text-muted italic">Chưa có lần ném nào</span>
-            )}
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tổng lần ném</p>
-            <p className="text-lg font-bold text-foreground">{history.length}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tổng thưởng</p>
-            <p className="text-lg font-bold text-foreground">{totalReward}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tỷ lệ thành công</p>
-            <p className="text-lg font-bold text-foreground">
-              {history.length > 0
-                ? ((totalReward / history.length) * 100).toFixed(0) + "%"
-                : "—"}
-            </p>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="mt-4 flex items-center gap-3 flex-wrap">
-          <button
-            onClick={throwBall}
-            className="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            Ném bóng
-          </button>
-          <button
-            onClick={throwMany}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Ném 10 lần
-          </button>
-          <button
-            onClick={reset}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Đặt lại
-          </button>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Policy Gradient</strong> là phương pháp học tăng cường{" "}
-          <strong>tối ưu trực tiếp chính sách</strong> (policy) thay vì học hàm giá trị
-          (value function) như Q-Learning. Chính sách &pi;(a|s) cho biết xác suất chọn
-          hành động a tại trạng thái s.
-        </p>
-
-        <p>
-          <strong>Sự khác biệt cốt lõi</strong> so với phương pháp dựa trên giá trị:
-        </p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Value-based</strong> (Q-Learning): Học Q(s,a) rồi suy ra chính sách
-            bằng cách chọn argmax — chỉ xử lý được hành động rời rạc
-          </li>
-          <li>
-            <strong>Policy-based</strong>: Tham số hóa chính sách trực tiếp bằng
-            &theta; — có thể xử lý <strong>hành động liên tục</strong> (ví dụ: góc quay
-            tay lái, lực đạp ga)
-          </li>
-        </ul>
-
-        <p>
-          Thuật toán <strong>REINFORCE</strong> (Monte Carlo Policy Gradient) cập nhật
-          theo công thức:
-        </p>
-        <div className="rounded-lg bg-background/50 border border-border p-3 text-center font-mono text-foreground text-sm">
-          &theta; &larr; &theta; + &alpha; &nabla; log &pi;(a|s; &theta;) &middot; G_t
-        </div>
-        <p>Trong đó:</p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>&nabla; log &pi;(a|s; &theta;)</strong>: hướng gradient để tăng xác
-            suất hành động a
-          </li>
-          <li>
-            <strong>G_t</strong>: tổng phần thưởng tích lũy từ bước t — đánh giá hành
-            động tốt hay xấu
-          </li>
-          <li>
-            Nếu G_t lớn (tốt) &#8594; đẩy chính sách <strong>tăng</strong> xác suất
-            hành động đó
-          </li>
-          <li>
-            Nếu G_t nhỏ (xấu) &#8594; đẩy chính sách <strong>giảm</strong> xác suất
-          </li>
-        </ul>
-
-        <p>
-          <strong>Hạn chế chính</strong> của REINFORCE là{" "}
-          <strong>phương sai cao</strong> (high variance): phần thưởng Monte Carlo dao
-          động nhiều giữa các episode, khiến quá trình học không ổn định. Giải pháp phổ
-          biến là trừ đi một <strong>baseline</strong> (thường là giá trị trung bình)
-          để giảm phương sai mà không thay đổi kỳ vọng gradient — đây chính là tiền đề
-          cho phương pháp <strong>Actor-Critic</strong>.
-        </p>
-      </ExplanationSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Policy Gradient hoc TRUC TIEP policy pi(a|s), khong qua Q-value. Tu nhien cho action lien tuc.", "REINFORCE: sample episode → tinh return → update gradient = G * grad(log pi).", "Baseline subtraction: tru mean return → giam variance 50-90% ma khong thay doi expected gradient.", "Uu: action lien tuc, stochastic policy. Nhuoc: variance cao, can nhieu samples, on-policy.", "Actor-Critic cai thien: dung Critic (value network) lam baseline → giam variance hon nua."]} /></LessonSection>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }

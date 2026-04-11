@@ -1,263 +1,84 @@
 "use client";
-
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "ai-in-healthcare",
-  title: "AI in Healthcare",
-  titleVi: "AI trong Y tế",
-  description:
-    "Ứng dụng AI trong chẩn đoán hình ảnh y khoa, phát triển thuốc và dự đoán bệnh",
-  category: "applied-ai",
-  tags: ["medical", "diagnosis", "drug-discovery"],
-  difficulty: "beginner",
-  relatedSlugs: ["image-classification", "cnn", "ai-for-science"],
-  vizType: "static",
-};
+export const metadata: TopicMeta = { slug: "ai-in-healthcare", title: "AI in Healthcare", titleVi: "AI trong Y te", description: "Ung dung AI trong chan doan hinh anh y khoa, phat trien thuoc va du doan benh", category: "applied-ai", tags: ["medical", "diagnosis", "drug-discovery"], difficulty: "beginner", relatedSlugs: ["image-classification", "cnn", "ai-for-science"], vizType: "interactive" };
 
+const TOTAL_STEPS = 7;
 export default function AIInHealthcareTopic() {
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "AI chan doan X-ray phoi dat accuracy 95%, bac si 90%. Nen thay bac si bang AI?", options: ["Co — AI chinh xac hon", "KHONG — AI ho tro bac si (AI + bac si = 98%), khong thay the. Bac si hieu context, benh su, tinh trang toan dien ma AI khong thay tu 1 tam X-ray", "Tuy benh vien"], correct: 1, explanation: "AI manh o: phat hien patterns trong anh nhanh, khong met moi, consistent. Bac si manh o: hieu context (trieu chung, benh su, thuoc dang dung), giao tiep benh nhan, quyet dinh phuc tap. AI + Bac si = tot nhat: AI loc va highlight, bac si quyet dinh cuoi cung." },
+    { question: "AlphaFold giai quyet van de gi trong y te?", options: ["Chan doan benh", "Du doan cau truc 3D protein → hieu cach protein tuong tac → thiet ke thuoc nham dung target", "Phan tich X-ray"], correct: 1, explanation: "Thuoc hoat dong bang cach gan vao protein (nhu chia khoa vao o khoa). Can biet hinh dang protein (o khoa) de thiet ke thuoc (chia khoa). AlphaFold du doan cau truc 200M+ protein → drug designers biet chinh xac 'o khoa' can nham. Giam 50-70% thoi gian drug discovery." },
+    { question: "Thach thuc lon nhat cua AI y te tai Viet Nam?", options: ["Thieu GPU", "DATA: it data co nhan chat luong, data khong chuan hoa giua benh vien, privacy concerns (PDPA)", "AI khong tot cho tieng Viet"], correct: 1, explanation: "Data la rao can lon nhat: (1) It benh vien co digital records chuan, (2) Labels can bac si chuyen khoa (dat, cham), (3) Data nhay cam (can anonymize). (4) Moi benh vien format khac nhau (khong interoperable). VinAI, FPT AI dang lam nhung con nhieu thach thuc." },
+  ], []);
+
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn có một <strong>bác sĩ đã nghiên cứu hàng triệu phim X-quang,
-          CT scan và hồ sơ bệnh án</strong>. Vị bác sĩ này có thể phát hiện những dấu hiệu
-          mà ngay cả bác sĩ giàu kinh nghiệm cũng có thể bỏ sót — ví dụ như một{" "}
-          <strong>khối u nhỏ xíu</strong> trên phim chụp X-quang ngực mà mắt thường rất
-          khó nhận ra.
-        </p>
-        <p>
-          Giống như ở bệnh viện Bạch Mai hay Chợ Rẫy, nếu mỗi bác sĩ phải đọc hàng trăm
-          phim mỗi ngày thì rất dễ mệt mỏi và sai sót. AI đóng vai trò như một{" "}
-          <strong>&quot;trợ lý đọc phim&quot; không bao giờ mệt</strong>, luôn cảnh giác
-          và giúp bác sĩ ra quyết định chính xác hơn.
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="Benh vien tai Viet Nam co 1 bac si X-quang cho 500 benh nhan/ngay. Moi phim can 5 phut doc. 500 x 5 = 2500 phut = 41 gio. Giai phap?" options={["Thue them 4 bac si", "AI loc phim: 80% binh thuong → AI confirm nhanh (2s). 20% nghi ngo → bac si doc ky. Bac si chi can doc 100 phim thay vi 500", "Benh nhan tu doc phim"]} correct={1} explanation="AI triage: loc phim nhanh, phan loai binh thuong/nghi ngo. Bac si chi doc phim nghi ngo (20%) va double-check random normal (5%). Tu 500 phim/ngay xuong 125 phim → bac si co thoi gian doc ky hon, giam sai sot. VinAI da phat trien he thong tuong tu cho benh vien Viet Nam.">
 
-      <VisualizationSection>
-        <div className="space-y-4">
-          <svg viewBox="0 0 600 360" className="w-full max-w-2xl mx-auto">
-            <text x={300} y={22} textAnchor="middle" fill="#e2e8f0" fontSize={13} fontWeight="bold">
-              3 Ứng dụng chính của AI trong Y tế
-            </text>
-
-            {/* Application 1: Medical Imaging */}
-            <g>
-              <rect x={20} y={45} width={170} height={90} rx={10} fill="#1e293b" stroke="#3b82f6" strokeWidth={2} />
-              <text x={105} y={68} textAnchor="middle" fill="#3b82f6" fontSize={11} fontWeight="bold">
-                Chẩn đoán hình ảnh
-              </text>
-              <text x={105} y={86} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                X-quang, CT, MRI
-              </text>
-              <text x={105} y={100} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Siêu âm, Nội soi
-              </text>
-              <text x={105} y={118} textAnchor="middle" fill="#64748b" fontSize={8}>
-                🏥 Phát hiện ung thư sớm
-              </text>
-            </g>
-
-            {/* Arrow 1 */}
-            <line x1={190} y1={90} x2={215} y2={90} stroke="#3b82f6" strokeWidth={2} markerEnd="url(#arrowBlue)" />
-
-            {/* AI Processing - Medical Imaging */}
-            <g>
-              <rect x={215} y={55} width={100} height={70} rx={12} fill="#3b82f6" fillOpacity={0.15} stroke="#3b82f6" strokeWidth={1.5} />
-              <text x={265} y={80} textAnchor="middle" fill="#3b82f6" fontSize={10} fontWeight="bold">
-                AI phân tích
-              </text>
-              <text x={265} y={95} textAnchor="middle" fill="#3b82f6" fontSize={9}>
-                CNN / Vision
-              </text>
-              <text x={265} y={108} textAnchor="middle" fill="#3b82f6" fontSize={9}>
-                Transformer
-              </text>
-            </g>
-
-            {/* Arrow 2 */}
-            <line x1={315} y1={90} x2={340} y2={90} stroke="#3b82f6" strokeWidth={2} markerEnd="url(#arrowBlue)" />
-
-            {/* Result - Medical Imaging */}
-            <g>
-              <rect x={340} y={55} width={240} height={70} rx={10} fill="#1e293b" stroke="#22c55e" strokeWidth={2} />
-              <text x={460} y={78} textAnchor="middle" fill="#22c55e" fontSize={10} fontWeight="bold">
-                Kết quả chẩn đoán
-              </text>
-              <text x={460} y={95} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Xác suất bệnh: 94.2%
-              </text>
-              <text x={460} y={110} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Vùng bất thường được đánh dấu trên ảnh
-              </text>
-            </g>
-
-            {/* Application 2: Drug Discovery */}
-            <g>
-              <rect x={20} y={150} width={170} height={90} rx={10} fill="#1e293b" stroke="#f59e0b" strokeWidth={2} />
-              <text x={105} y={173} textAnchor="middle" fill="#f59e0b" fontSize={11} fontWeight="bold">
-                Phát triển thuốc
-              </text>
-              <text x={105} y={191} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Cấu trúc phân tử
-              </text>
-              <text x={105} y={205} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Dữ liệu thử nghiệm
-              </text>
-              <text x={105} y={223} textAnchor="middle" fill="#64748b" fontSize={8}>
-                💊 Hàng triệu hợp chất
-              </text>
-            </g>
-
-            {/* Arrow */}
-            <line x1={190} y1={195} x2={215} y2={195} stroke="#f59e0b" strokeWidth={2} markerEnd="url(#arrowAmber)" />
-
-            {/* AI Processing - Drug Discovery */}
-            <g>
-              <rect x={215} y={160} width={100} height={70} rx={12} fill="#f59e0b" fillOpacity={0.15} stroke="#f59e0b" strokeWidth={1.5} />
-              <text x={265} y={185} textAnchor="middle" fill="#f59e0b" fontSize={10} fontWeight="bold">
-                AI sàng lọc
-              </text>
-              <text x={265} y={200} textAnchor="middle" fill="#f59e0b" fontSize={9}>
-                Mô phỏng
-              </text>
-              <text x={265} y={213} textAnchor="middle" fill="#f59e0b" fontSize={9}>
-                phân tử ảo
-              </text>
-            </g>
-
-            {/* Arrow */}
-            <line x1={315} y1={195} x2={340} y2={195} stroke="#f59e0b" strokeWidth={2} markerEnd="url(#arrowAmber)" />
-
-            {/* Result - Drug Discovery */}
-            <g>
-              <rect x={340} y={160} width={240} height={70} rx={10} fill="#1e293b" stroke="#22c55e" strokeWidth={2} />
-              <text x={460} y={183} textAnchor="middle" fill="#22c55e" fontSize={10} fontWeight="bold">
-                Ứng viên thuốc tiềm năng
-              </text>
-              <text x={460} y={200} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Giảm thời gian từ 10 năm → 2–3 năm
-              </text>
-              <text x={460} y={215} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Tiết kiệm hàng tỷ đô-la chi phí
-              </text>
-            </g>
-
-            {/* Application 3: Patient Monitoring */}
-            <g>
-              <rect x={20} y={255} width={170} height={90} rx={10} fill="#1e293b" stroke="#8b5cf6" strokeWidth={2} />
-              <text x={105} y={278} textAnchor="middle" fill="#8b5cf6" fontSize={11} fontWeight="bold">
-                Theo dõi bệnh nhân
-              </text>
-              <text x={105} y={296} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Nhịp tim, huyết áp, SpO2
-              </text>
-              <text x={105} y={310} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Hồ sơ bệnh án điện tử
-              </text>
-              <text x={105} y={328} textAnchor="middle" fill="#64748b" fontSize={8}>
-                📊 Dữ liệu liên tục 24/7
-              </text>
-            </g>
-
-            {/* Arrow */}
-            <line x1={190} y1={300} x2={215} y2={300} stroke="#8b5cf6" strokeWidth={2} markerEnd="url(#arrowPurple)" />
-
-            {/* AI Processing - Patient Monitoring */}
-            <g>
-              <rect x={215} y={265} width={100} height={70} rx={12} fill="#8b5cf6" fillOpacity={0.15} stroke="#8b5cf6" strokeWidth={1.5} />
-              <text x={265} y={290} textAnchor="middle" fill="#8b5cf6" fontSize={10} fontWeight="bold">
-                AI giám sát
-              </text>
-              <text x={265} y={305} textAnchor="middle" fill="#8b5cf6" fontSize={9}>
-                Phát hiện
-              </text>
-              <text x={265} y={318} textAnchor="middle" fill="#8b5cf6" fontSize={9}>
-                bất thường
-              </text>
-            </g>
-
-            {/* Arrow */}
-            <line x1={315} y1={300} x2={340} y2={300} stroke="#8b5cf6" strokeWidth={2} markerEnd="url(#arrowPurple)" />
-
-            {/* Result - Patient Monitoring */}
-            <g>
-              <rect x={340} y={265} width={240} height={70} rx={10} fill="#1e293b" stroke="#22c55e" strokeWidth={2} />
-              <text x={460} y={288} textAnchor="middle" fill="#22c55e" fontSize={10} fontWeight="bold">
-                Cảnh báo sớm
-              </text>
-              <text x={460} y={305} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Dự đoán biến chứng trước 6–12 giờ
-              </text>
-              <text x={460} y={320} textAnchor="middle" fill="#94a3b8" fontSize={9}>
-                Thông báo bác sĩ kịp thời can thiệp
-              </text>
-            </g>
-
-            {/* Arrow markers */}
-            <defs>
-              <marker id="arrowBlue" markerWidth={8} markerHeight={6} refX={8} refY={3} orient="auto">
-                <path d="M0,0 L8,3 L0,6" fill="#3b82f6" />
-              </marker>
-              <marker id="arrowAmber" markerWidth={8} markerHeight={6} refX={8} refY={3} orient="auto">
-                <path d="M0,0 L8,3 L0,6" fill="#f59e0b" />
-              </marker>
-              <marker id="arrowPurple" markerWidth={8} markerHeight={6} refX={8} refY={3} orient="auto">
-                <path d="M0,0 L8,3 L0,6" fill="#8b5cf6" />
-              </marker>
-            </defs>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <VisualizationSection><div className="space-y-4">
+          <svg viewBox="0 0 600 120" className="w-full max-w-2xl mx-auto">
+            <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">4 linh vuc AI Y te</text>
+            {[
+              { name: "Chan doan hinh anh", desc: "X-ray, CT, MRI, pathology", color: "#3b82f6" },
+              { name: "Drug Discovery", desc: "AlphaFold, molecular docking", color: "#22c55e" },
+              { name: "Du doan lam sang", desc: "Nguy co benh, readmission", color: "#f59e0b" },
+              { name: "Y te ca nhan hoa", desc: "Genomics, treatment planning", color: "#8b5cf6" },
+            ].map((area, i) => {
+              const x = 15 + i * 145;
+              return (<g key={i}><rect x={x} y={30} width={135} height={55} rx={6} fill={area.color} opacity={0.15} stroke={area.color} strokeWidth={1.5} /><text x={x + 67} y={50} textAnchor="middle" fill={area.color} fontSize={8} fontWeight="bold">{area.name}</text><text x={x + 67} y={68} textAnchor="middle" fill="#94a3b8" fontSize={7}>{area.desc}</text></g>);
+            })}
+            <text x={300} y={110} textAnchor="middle" fill="#64748b" fontSize={9}>AI ho tro bac si, khong thay the. AI + Bac si = tot nhat (98% accuracy).</text>
           </svg>
-        </div>
-      </VisualizationSection>
+        </div></VisualizationSection>
+      </LessonSection>
 
-      <ExplanationSection>
-        <p>
-          <strong>AI trong Y tế (AI in Healthcare)</strong> là một trong những lĩnh vực ứng
-          dụng AI có tác động lớn nhất đến cuộc sống con người. AI giúp bác sĩ chẩn đoán
-          chính xác hơn, phát triển thuốc nhanh hơn và chăm sóc bệnh nhân tốt hơn.
-        </p>
-        <p>Ba lĩnh vực ứng dụng chính:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Chẩn đoán hình ảnh y khoa:</strong> AI sử dụng mạng CNN và Vision
-            Transformer để phân tích X-quang, CT, MRI. Ví dụ, AI có thể phát hiện ung thư
-            phổi giai đoạn sớm trên phim chụp với độ chính xác tương đương hoặc cao hơn
-            bác sĩ chuyên khoa. Tại Việt Nam, các bệnh viện lớn đang bắt đầu ứng dụng
-            AI đọc phim để giảm tải cho bác sĩ.
-          </li>
-          <li>
-            <strong>Phát triển thuốc (Drug Discovery):</strong> AI mô phỏng tương tác
-            phân tử ảo, sàng lọc hàng triệu hợp chất trong vài giờ thay vì vài năm.
-            Trong đại dịch COVID-19, AI đã giúp tăng tốc quá trình phát triển vaccine
-            và thuốc điều trị đáng kể.
-          </li>
-          <li>
-            <strong>Theo dõi bệnh nhân & Hồ sơ y tế điện tử:</strong> AI phân tích dữ
-            liệu sinh hiệu liên tục, dự đoán biến chứng trước khi xảy ra, giúp bác sĩ
-            can thiệp kịp thời. AI cũng hỗ trợ khai thác hồ sơ bệnh án điện tử để phát
-            hiện xu hướng dịch bệnh.
-          </li>
-        </ol>
-        <p>Những thách thức cần giải quyết:</p>
-        <ul className="list-disc list-inside space-y-1 pl-2">
-          <li>
-            <strong>Bảo mật dữ liệu:</strong> Dữ liệu y tế rất nhạy cảm — cần tuân thủ
-            quy định bảo mật nghiêm ngặt (HIPAA, GDPR).
-          </li>
-          <li>
-            <strong>Phê duyệt pháp lý:</strong> AI y tế phải qua quy trình kiểm định
-            nghiêm ngặt trước khi được sử dụng trên bệnh nhân thật (FDA, Bộ Y tế).
-          </li>
-          <li>
-            <strong>Thiên lệch dữ liệu:</strong> Nếu dữ liệu huấn luyện chủ yếu từ
-            bệnh nhân phương Tây, AI có thể hoạt động kém chính xác trên bệnh nhân
-            Việt Nam và châu Á — đây là vấn đề cần đặc biệt quan tâm.
-          </li>
-        </ul>
-      </ExplanationSection>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>AI khong thay the bac si — no lam bac si <strong>manh hon</strong>. AI + Bac si = <strong>98% accuracy</strong>{" "}(AI don: 95%, Bac si don: 90%). Giong kinh hien vi khong thay the nha khoa hoc nhung giup <strong>nhin ro hon</strong>. Tai Viet Nam: VinAI, FPT AI dang phat trien AI y te cho X-ray, pathology, drug repurposing.</p></AhaMoment></LessonSection>
+
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="AI phat hien ung thu phoi tu CT scan. Sensitivity 98% (bat 98% ung thu), Specificity 90% (10% false alarm). 1000 benh nhan, 10 co ung thu. Bao nhieu false positive?" options={["10 nguoi", "99 nguoi: 990 khong ung thu x 10% false alarm = 99 false positive. Mac du sensitivity cao nhung NHIEU false alarm vi prevalence thap", "0 nguoi"]} correct={1} explanation="Base rate problem! 10 ung thu x 98% sensitivity = ~10 true positive. 990 khoe x 10% false alarm = 99 false positive. Tong: 109 nguoi 'duong tinh' nhung chi 10 thuc su benh. PPV = 10/109 = 9.2%. Day la ly do screening can 2 buoc: AI loc → bac si confirm." /></LessonSection>
+
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>AI in Healthcare</strong>{" "}ung dung AI ho tro chan doan, phat trien thuoc, va du doan benh — luon dung canh bac si, khong thay the.</p>
+        <p><strong>Medical Image Analysis:</strong></p>
+        <LaTeX block>{"P(\\text{disease}|\\text{image}) = \\text{CNN}(\\text{X-ray/CT/MRI}) \\quad \\text{(classification/segmentation)}"}</LaTeX>
+        <p><strong>Bayes cho screening:</strong></p>
+        <LaTeX block>{"\\text{PPV} = \\frac{\\text{Sensitivity} \\times \\text{Prevalence}}{\\text{Sensitivity} \\times \\text{Prevalence} + (1-\\text{Specificity}) \\times (1-\\text{Prevalence})}"}</LaTeX>
+        <Callout variant="warning" title="Regulatory">AI y te can FDA approval (My), CE marking (EU), hoac tuong duong. Khong the deploy AI chan doan ma khong co chung nhan. Tai Viet Nam: Bo Y te dang xay dung khung phap ly cho AI medical devices.</Callout>
+        <CodeBlock language="python" title="AI X-ray classification">{`import torch
+from torchvision import models, transforms
+
+# Fine-tune pretrained model cho X-ray classification
+model = models.resnet50(pretrained=True)
+model.fc = torch.nn.Linear(2048, 14)  # 14 findings (CheXpert)
+
+# Preprocessing X-ray
+transform = transforms.Compose([
+    transforms.Resize(224),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485], [0.229]),
+])
+
+# Inference
+model.eval()
+with torch.no_grad():
+    output = model(xray_image)
+    probs = torch.sigmoid(output)  # Multi-label probabilities
+
+# Output: P(pneumonia)=0.85, P(effusion)=0.12, ...
+# Bac si review cases co P > threshold
+# AI + Bac si = 98% accuracy`}</CodeBlock>
+        <Callout variant="info" title="AI Y te tai Viet Nam">VinAI: AI X-ray (VinDr-CXR), pathology (VinDr-Mammo). FPT AI: chatbot y te. Benh vien 108, Bach Mai dang pilot AI chan doan. Thach thuc: data chuan hoa, privacy (PDPA), regulatory framework con moi.</Callout>
+      </ExplanationSection></LessonSection>
+
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["AI ho tro bac si, khong thay the. AI + Bac si (98%) > AI don (95%) > Bac si don (90%).", "4 linh vuc: Chan doan hinh anh, Drug Discovery, Du doan lam sang, Y te ca nhan hoa.", "Base rate problem: specificity 90% + prevalence 1% → PPV chi 9%. Screening can 2 buoc.", "AlphaFold du doan 200M+ protein → giam 50-70% thoi gian thiet ke thuoc.", "Viet Nam: VinAI (VinDr), FPT AI dang phat trien. Thach thuc: data, regulatory, privacy."]} /></LessonSection>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }

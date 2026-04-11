@@ -1,483 +1,86 @@
 "use client";
-
-import { useState, useCallback } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import { useMemo } from "react";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = {
-  slug: "actor-critic",
-  title: "Actor-Critic (A2C/A3C)",
-  titleVi: "Actor-Critic",
-  description:
-    "Kiến trúc kết hợp mạng chính sách (Actor) và mạng đánh giá (Critic) để học ổn định hơn",
-  category: "reinforcement-learning",
-  tags: ["a2c", "a3c", "advantage"],
-  difficulty: "advanced",
-  relatedSlugs: ["policy-gradient", "deep-q-network", "rlhf"],
-  vizType: "interactive",
-};
+export const metadata: TopicMeta = { slug: "actor-critic", title: "Actor-Critic (A2C/A3C)", titleVi: "Actor-Critic", description: "Kien truc ket hop mang chinh sach (Actor) va mang danh gia (Critic) de hoc on dinh hon", category: "reinforcement-learning", tags: ["a2c", "a3c", "advantage"], difficulty: "advanced", relatedSlugs: ["policy-gradient", "deep-q-network", "rlhf"], vizType: "interactive" };
 
-const ACTIONS = ["Chuyền", "Sút", "Rê bóng", "Phòng ngự"];
-const ACTION_COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#f59e0b"];
-
-function softmax(logits: number[]): number[] {
-  const maxL = Math.max(...logits);
-  const exps = logits.map((l) => Math.exp(l - maxL));
-  const sum = exps.reduce((a, b) => a + b, 0);
-  return exps.map((e) => e / sum);
-}
-
-function sampleAction(probs: number[]): number {
-  const r = Math.random();
-  let cum = 0;
-  for (let i = 0; i < probs.length; i++) {
-    cum += probs[i];
-    if (r < cum) return i;
-  }
-  return probs.length - 1;
-}
-
+const TOTAL_STEPS = 7;
 export default function ActorCriticTopic() {
-  const [actorLogits, setActorLogits] = useState<number[]>([1, 1, 1, 1]);
-  const [criticValue, setCriticValue] = useState(0);
-  const [advantage, setAdvantage] = useState<number | null>(null);
-  const [lastAction, setLastAction] = useState<number | null>(null);
-  const [lastReward, setLastReward] = useState<number | null>(null);
-  const [step, setStep] = useState(0);
-  const [totalReward, setTotalReward] = useState(0);
-  const [history, setHistory] = useState<
-    { action: number; reward: number; adv: number }[]
-  >([]);
-
-  const trueRewardMeans = [0.4, 0.8, 0.5, 0.3];
-
-  const actorProbs = softmax(actorLogits);
-
-  const act = useCallback(() => {
-    const probs = softmax(actorLogits);
-    const action = sampleAction(probs);
-    const reward =
-      Math.round(
-        (trueRewardMeans[action] + (Math.random() - 0.5) * 0.6) * 10
-      ) / 10;
-
-    // Critic: TD error = reward + gamma * V(s') - V(s)
-    const gamma = 0.9;
-    const nextValue = criticValue + (reward - criticValue) * 0.1; // simple estimate
-    const tdError = reward + gamma * nextValue - criticValue;
-    const adv = Math.round(tdError * 100) / 100;
-
-    // Update critic: V(s) <- V(s) + alpha_c * td_error
-    const alphaC = 0.1;
-    setCriticValue((prev) => Math.round((prev + alphaC * tdError) * 100) / 100);
-
-    // Update actor: logit[a] += alpha_a * advantage * (1 - prob[a])
-    const alphaA = 0.2;
-    setActorLogits((prev) => {
-      const newLogits = [...prev];
-      for (let i = 0; i < newLogits.length; i++) {
-        if (i === action) {
-          newLogits[i] += alphaA * adv * (1 - probs[i]);
-        } else {
-          newLogits[i] -= alphaA * adv * probs[i];
-        }
-      }
-      return newLogits;
-    });
-
-    setAdvantage(adv);
-    setLastAction(action);
-    setLastReward(reward);
-    setTotalReward((prev) => Math.round((prev + reward) * 10) / 10);
-    setStep((s) => s + 1);
-    setHistory((prev) => [...prev.slice(-9), { action, reward, adv }]);
-  }, [actorLogits, criticValue]);
-
-  const actMany = useCallback(() => {
-    let curLogits = [...actorLogits];
-    let curCritic = criticValue;
-    const newHistory: { action: number; reward: number; adv: number }[] = [];
-    let addedReward = 0;
-    let lastA = 0;
-    let lastR = 0;
-    let lastAdv = 0;
-
-    for (let i = 0; i < 10; i++) {
-      const probs = softmax(curLogits);
-      const action = sampleAction(probs);
-      const reward =
-        Math.round(
-          (trueRewardMeans[action] + (Math.random() - 0.5) * 0.6) * 10
-        ) / 10;
-
-      const gamma = 0.9;
-      const nextValue = curCritic + (reward - curCritic) * 0.1;
-      const tdError = reward + gamma * nextValue - curCritic;
-      const adv = Math.round(tdError * 100) / 100;
-
-      curCritic = Math.round((curCritic + 0.1 * tdError) * 100) / 100;
-
-      for (let j = 0; j < curLogits.length; j++) {
-        if (j === action) {
-          curLogits[j] += 0.2 * adv * (1 - probs[j]);
-        } else {
-          curLogits[j] -= 0.2 * adv * probs[j];
-        }
-      }
-
-      newHistory.push({ action, reward, adv });
-      addedReward += reward;
-      lastA = action;
-      lastR = reward;
-      lastAdv = adv;
-    }
-
-    setActorLogits(curLogits);
-    setCriticValue(curCritic);
-    setAdvantage(lastAdv);
-    setLastAction(lastA);
-    setLastReward(lastR);
-    setTotalReward((prev) => Math.round((prev + addedReward) * 10) / 10);
-    setStep((s) => s + 10);
-    setHistory((prev) => [...prev, ...newHistory].slice(-10));
-  }, [actorLogits, criticValue]);
-
-  const reset = useCallback(() => {
-    setActorLogits([1, 1, 1, 1]);
-    setCriticValue(0);
-    setAdvantage(null);
-    setLastAction(null);
-    setLastReward(null);
-    setStep(0);
-    setTotalReward(0);
-    setHistory([]);
-  }, []);
-
-  // Layout constants for the two-network diagram
-  const actorX = 60;
-  const criticX = 340;
-  const netW = 170;
+  const quizQuestions: QuizQuestion[] = useMemo(() => [
+    { question: "Actor va Critic lam gi?", options: ["Actor va Critic la 2 ten goi cua cung 1 network", "Actor: chon action (policy). Critic: danh gia action do tot hay xau (value function). Giong dien vien va dao dien", "Actor xu ly anh, Critic xu ly text"], correct: 1, explanation: "Actor = dien vien: hanh dong (chon action). Critic = dao dien: danh gia (tot/xau, cho diem). Actor hoc tu feedback cua Critic. Critic hoc tu reward that. Ket hop: on dinh hon REINFORCE (Actor only) va hieu qua hon DQN (Critic only)." },
+    { question: "Advantage function A(s,a) = Q(s,a) - V(s) co y nghia gi?", options: ["Do accuracy cua model", "Action a TAI state s tot/xau hon TRUNG BINH bao nhieu. A > 0: tot hon TB → tang xac suat. A < 0: xau hon TB → giam", "Khoang cach giua 2 states"], correct: 1, explanation: "V(s) = gia tri trung binh cua state s. Q(s,a) = gia tri neu thuc hien action a. A(s,a) = Q(s,a) - V(s) = action a tot/xau hon average bao nhieu. Dung A thay vi Q giam variance (vi da tru baseline V). Day la 'Advantage' trong A2C." },
+    { question: "PPO (dung trong ChatGPT RLHF) cai thien Actor-Critic the nao?", options: ["Dung model lon hon", "CLIP ratio cua policy change → ngan policy thay doi qua nhieu moi step → training on dinh, khong bi collapse", "Dung nhieu data hon"], correct: 1, explanation: "Policy gradient co the thay doi policy nhieu trong 1 step → hoc khong on dinh. PPO clip: ratio = pi_new/pi_old, gioi han trong [1-eps, 1+eps] (eps=0.2). Policy chi thay doi toi da 20%/step. On dinh + don gian → algorithm mac dinh cho RLHF (ChatGPT, Claude)." },
+  ], []);
 
   return (
-    <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng một <strong>đội bóng đá</strong> với{" "}
-          <strong>cầu thủ (Actor)</strong> và <strong>huấn luyện viên (Critic)</strong>.
-          Cầu thủ quyết định hành động trên sân — chuyền, sút, hay rê bóng. Huấn luyện
-          viên ngồi ngoài đường biên, quan sát và nhận xét: &quot;Pha đó{" "}
-          <strong>tốt hơn kỳ vọng</strong>&quot; hoặc &quot;Pha đó{" "}
-          <strong>kém hơn kỳ vọng</strong>&quot;.
-        </p>
-        <p>
-          Nhờ phản hồi <strong>tương đối</strong> từ HLV (không chỉ &quot;tốt&quot; hay
-          &quot;xấu&quot; tuyệt đối), cầu thủ cải thiện nhanh hơn nhiều so với tự học
-          một mình. Đó chính là <strong>Actor-Critic</strong> — kết hợp ưu điểm của cả
-          Policy Gradient và Value-based methods!
-        </p>
-      </AnalogyCard>
+    <><LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <PredictionGate question="REINFORCE (Policy Gradient) co variance cao vi chi dung return lam tin hieu hoc. DQN chi hoc value, khong hoc policy truc tiep. Co cach ket hop uu diem ca hai?" options={["Khong — phai chon 1 trong 2", "Actor-Critic: Actor (policy) chon action, Critic (value) danh gia → variance thap + policy truc tiep", "Dung model lon hon"]} correct={1} explanation="Actor-Critic = best of both worlds! Actor hoc policy (nhu REINFORCE nhung variance thap hon vi Critic danh gia). Critic hoc value function (nhu DQN nhung ho tro Actor). PPO (variant cua Actor-Critic) la thuat toan dung cho RLHF trong ChatGPT va Claude!">
 
-      <VisualizationSection>
-        <p className="mb-3 text-sm text-muted">
-          Nhấn &quot;Hành động&quot; để Actor chọn và thực hiện. Critic đánh giá
-          advantage — tốt hơn hay kém hơn kỳ vọng.
-        </p>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+        <VisualizationSection><div className="space-y-4">
+          <svg viewBox="0 0 600 130" className="w-full max-w-2xl mx-auto">
+            <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Actor-Critic Architecture</text>
+            <rect x={20} y={35} width={100} height={50} rx={8} fill="#3b82f6" /><text x={70} y={55} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">State</text><text x={70} y={72} textAnchor="middle" fill="white" fontSize={7}>Observation</text>
+            <line x1={120} y1={55} x2={170} y2={40} stroke="#22c55e" strokeWidth={2} /><line x1={120} y1={65} x2={170} y2={80} stroke="#f59e0b" strokeWidth={2} />
+            <rect x={175} y={25} width={130} height={35} rx={8} fill="#22c55e" /><text x={240} y={47} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">Actor (Policy)</text>
+            <rect x={175} y={67} width={130} height={35} rx={8} fill="#f59e0b" /><text x={240} y={89} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">Critic (Value)</text>
+            <text x={330} y={47} fill="#22c55e" fontSize={12}>→ Action</text>
+            <text x={330} y={89} fill="#f59e0b" fontSize={12}>→ V(s)</text>
+            <rect x={430} y={40} width={150} height={50} rx={8} fill="#8b5cf6" opacity={0.3} stroke="#8b5cf6" strokeWidth={1.5} />
+            <text x={505} y={60} textAnchor="middle" fill="#8b5cf6" fontSize={9} fontWeight="bold">Advantage</text>
+            <text x={505} y={78} textAnchor="middle" fill="#94a3b8" fontSize={8}>A = r + gamma*V(s') - V(s)</text>
+            <text x={300} y={120} textAnchor="middle" fill="#64748b" fontSize={9}>Actor hoc tu Advantage. Critic hoc tu TD error. On dinh hon REINFORCE.</text>
+          </svg>
+        </div></VisualizationSection>
+      </LessonSection>
 
-        <svg
-          viewBox="0 0 560 320"
-          className="w-full rounded-lg border border-border bg-background"
-        >
-          {/* ===== ACTOR NETWORK (left) ===== */}
-          <rect x={actorX - 10} y={15} width={netW + 20} height={245} rx={10} fill="#dbeafe" fillOpacity={0.3} stroke="#3b82f6" strokeWidth={1.5} strokeDasharray="6 3" />
-          <text x={actorX + netW / 2} y={35} textAnchor="middle" fontSize="13" fill="#2563eb" fontWeight={700}>
-            Actor (Cầu thủ)
-          </text>
-          <text x={actorX + netW / 2} y={50} textAnchor="middle" fontSize="9" fill="#3b82f6">
-            Xuất xác suất hành động
-          </text>
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha"><AhaMoment><p>Actor = <strong>dien vien</strong>{" "}(hanh dong). Critic = <strong>dao dien</strong>{" "}(danh gia). Dien vien hoc tu feedback dao dien, dao dien hoc tu khan gia (reward). Ket hop tao <strong>system on dinh va hieu qua</strong>. PPO (Actor-Critic variant) la thuat toan <strong>dung trong RLHF cho ChatGPT va Claude!</strong></p></AhaMoment></LessonSection>
 
-          {/* Actor input */}
-          <circle cx={actorX + 20} cy={100} r={12} fill="#bfdbfe" stroke="#3b82f6" strokeWidth={1.5} />
-          <circle cx={actorX + 20} cy={140} r={12} fill="#bfdbfe" stroke="#3b82f6" strokeWidth={1.5} />
-          <circle cx={actorX + 20} cy={180} r={12} fill="#bfdbfe" stroke="#3b82f6" strokeWidth={1.5} />
-          <text x={actorX + 20} y={220} textAnchor="middle" fontSize="8" fill="#3b82f6">Trạng thái</text>
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach"><InlineChallenge question="PPO clip ratio trong [0.8, 1.2]. Nghia la policy chi thay doi toi da 20% moi step. Tai sao khong cho thay doi nhieu hon (50%?)?" options={["Tiet kiem compute", "Thay doi lon = mat on dinh. Policy A tot → thay doi 50% → policy B co the te vi reward landscape phuc tap. Small steps an toan hon", "Khong co ly do"]} correct={1} explanation="Trust region: policy landscape phuc tap, thay doi lon co the 'nhay' tu vung tot sang vung te. PPO gioi han moi step → bao dam cai thien dan dan. Epsilon=0.2 la sweet spot: du nhanh de hoc, du nho de on dinh. Day la ly do PPO la default cho RLHF." /></LessonSection>
 
-          {/* Actor hidden */}
-          {[105, 145, 185].map((y, i) => (
-            <g key={`ah-${i}`}>
-              {[100, 140, 180].map((iy) => (
-                <line key={`ahl-${iy}-${y}`} x1={actorX + 32} y1={iy} x2={actorX + 78} y2={y} stroke="#93c5fd" strokeWidth={0.5} opacity={0.5} />
-              ))}
-              <circle cx={actorX + 90} cy={y} r={10} fill="#eff6ff" stroke="#60a5fa" strokeWidth={1} />
-            </g>
-          ))}
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet"><ExplanationSection>
+        <p><strong>Actor-Critic</strong>{" "}ket hop policy optimization (Actor) voi value estimation (Critic) — on dinh va hieu qua hon dung rieng.</p>
+        <p><strong>Advantage Actor-Critic (A2C):</strong></p>
+        <LaTeX block>{"\\text{Advantage: } A(s,a) = r + \\gamma V(s') - V(s) \\quad \\text{(TD error lam advantage estimate)}"}</LaTeX>
+        <LaTeX block>{"\\nabla_\\theta J = \\mathbb{E}[\\nabla_\\theta \\log \\pi_\\theta(a|s) \\cdot A(s,a)] \\quad \\text{(Actor update)}"}</LaTeX>
+        <LaTeX block>{"\\mathcal{L}_{\\text{critic}} = (r + \\gamma V(s') - V(s))^2 \\quad \\text{(Critic update)}"}</LaTeX>
+        <p><strong>PPO (Proximal Policy Optimization):</strong></p>
+        <LaTeX block>{"\\mathcal{L}^{\\text{CLIP}} = \\mathbb{E}\\left[\\min\\left(r_t(\\theta) A_t, \\text{clip}(r_t(\\theta), 1-\\epsilon, 1+\\epsilon) A_t\\right)\\right]"}</LaTeX>
+        <Callout variant="tip" title="PPO = Default cho RLHF">PPO la thuat toan dung cho RLHF trong ChatGPT, Claude, Gemini. On dinh, don gian implement, hieu qua. GRPO (DeepSeek) la variant khong can Critic rieng — sinh nhieu responses, rank, update policy.</Callout>
+        <CodeBlock language="python" title="A2C voi PyTorch">{`import torch
+import torch.nn as nn
 
-          {/* Actor output - action probabilities */}
-          {actorProbs.map((p, i) => {
-            const y = 85 + i * 35;
-            // Lines from hidden to output
-            return (
-              <g key={`ao-${i}`}>
-                {[105, 145, 185].map((hy) => (
-                  <line key={`aol-${hy}-${y}`} x1={actorX + 100} y1={hy} x2={actorX + 138} y2={y} stroke="#93c5fd" strokeWidth={0.5} opacity={0.5} />
-                ))}
-                <rect
-                  x={actorX + 140}
-                  y={y - 12}
-                  width={40}
-                  height={24}
-                  rx={4}
-                  fill={lastAction === i ? ACTION_COLORS[i] + "33" : "#f8fafc"}
-                  stroke={lastAction === i ? ACTION_COLORS[i] : "#cbd5e1"}
-                  strokeWidth={lastAction === i ? 2 : 1}
-                />
-                <text
-                  x={actorX + 160}
-                  y={y + 4}
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill={ACTION_COLORS[i]}
-                  fontWeight={600}
-                >
-                  {(p * 100).toFixed(0)}%
-                </text>
-              </g>
-            );
-          })}
+class ActorCritic(nn.Module):
+    def __init__(self, state_dim, action_dim):
+        super().__init__()
+        self.shared = nn.Sequential(nn.Linear(state_dim, 128), nn.ReLU())
+        self.actor = nn.Linear(128, action_dim)   # Policy
+        self.critic = nn.Linear(128, 1)            # Value
 
-          {/* ===== CRITIC NETWORK (right) ===== */}
-          <rect x={criticX - 10} y={15} width={netW + 20} height={245} rx={10} fill="#fef3c7" fillOpacity={0.3} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="6 3" />
-          <text x={criticX + netW / 2} y={35} textAnchor="middle" fontSize="13" fill="#d97706" fontWeight={700}>
-            Critic (HLV)
-          </text>
-          <text x={criticX + netW / 2} y={50} textAnchor="middle" fontSize="9" fill="#f59e0b">
-            Xuất giá trị trạng thái V(s)
-          </text>
+    def forward(self, state):
+        h = self.shared(state)
+        return torch.softmax(self.actor(h), -1), self.critic(h)
 
-          {/* Critic input */}
-          <circle cx={criticX + 20} cy={100} r={12} fill="#fef9c3" stroke="#f59e0b" strokeWidth={1.5} />
-          <circle cx={criticX + 20} cy={140} r={12} fill="#fef9c3" stroke="#f59e0b" strokeWidth={1.5} />
-          <circle cx={criticX + 20} cy={180} r={12} fill="#fef9c3" stroke="#f59e0b" strokeWidth={1.5} />
-          <text x={criticX + 20} y={220} textAnchor="middle" fontSize="8" fill="#d97706">Trạng thái</text>
+model = ActorCritic(4, 2)
 
-          {/* Critic hidden */}
-          {[105, 145, 185].map((y, i) => (
-            <g key={`ch-${i}`}>
-              {[100, 140, 180].map((iy) => (
-                <line key={`chl-${iy}-${y}`} x1={criticX + 32} y1={iy} x2={criticX + 78} y2={y} stroke="#fcd34d" strokeWidth={0.5} opacity={0.5} />
-              ))}
-              <circle cx={criticX + 90} cy={y} r={10} fill="#fffbeb" stroke="#fbbf24" strokeWidth={1} />
-            </g>
-          ))}
+# Training: Actor hoc tu Advantage, Critic hoc tu TD error
+probs, value = model(state)
+_, next_value = model(next_state)
+advantage = reward + 0.99 * next_value - value  # TD error
+actor_loss = -(torch.log(probs[action]) * advantage.detach())
+critic_loss = advantage.pow(2)
+loss = actor_loss + 0.5 * critic_loss
+loss.backward()`}</CodeBlock>
+      </ExplanationSection></LessonSection>
 
-          {/* Critic output - single value */}
-          {[105, 145, 185].map((hy) => (
-            <line key={`col-${hy}`} x1={criticX + 100} y1={hy} x2={criticX + 138} y2={145} stroke="#fcd34d" strokeWidth={0.5} opacity={0.5} />
-          ))}
-          <rect
-            x={criticX + 140}
-            y={130}
-            width={40}
-            height={30}
-            rx={6}
-            fill="#fffbeb"
-            stroke="#f59e0b"
-            strokeWidth={2}
-          />
-          <text x={criticX + 160} y={150} textAnchor="middle" fontSize="11" fill="#b45309" fontWeight={700}>
-            {criticValue.toFixed(2)}
-          </text>
-          <text x={criticX + 160} y={175} textAnchor="middle" fontSize="8" fill="#92400e">V(s)</text>
-
-          {/* ===== ADVANTAGE ARROW (center) ===== */}
-          <line x1={270} y1={270} x2={290} y2={270} stroke="#64748b" strokeWidth={1.5} markerEnd="url(#arrowhead)" />
-          <defs>
-            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <path d="M0,0 L8,3 L0,6 Z" fill="#64748b" />
-            </marker>
-          </defs>
-
-          {/* Advantage display */}
-          <rect
-            x={205}
-            y={275}
-            width={150}
-            height={35}
-            rx={8}
-            fill={
-              advantage === null
-                ? "#f1f5f9"
-                : advantage > 0
-                ? "#dcfce7"
-                : "#fee2e2"
-            }
-            stroke={
-              advantage === null
-                ? "#94a3b8"
-                : advantage > 0
-                ? "#22c55e"
-                : "#ef4444"
-            }
-            strokeWidth={1.5}
-          />
-          <text x={280} y={290} textAnchor="middle" fontSize="9" fill="#64748b">
-            Advantage (TD Error)
-          </text>
-          <text
-            x={280}
-            y={304}
-            textAnchor="middle"
-            fontSize="12"
-            fill={
-              advantage === null
-                ? "#64748b"
-                : advantage > 0
-                ? "#16a34a"
-                : "#dc2626"
-            }
-            fontWeight={700}
-          >
-            {advantage !== null
-              ? `A = ${advantage > 0 ? "+" : ""}${advantage.toFixed(2)}`
-              : "—"}
-          </text>
-        </svg>
-
-        {/* History */}
-        <div className="mt-4">
-          <p className="text-sm font-medium text-foreground mb-2">Lịch sử:</p>
-          <div className="flex gap-1.5 flex-wrap">
-            {history.map((h, i) => (
-              <div
-                key={i}
-                className="rounded-md px-2 py-0.5 text-xs"
-                style={{
-                  backgroundColor: ACTION_COLORS[h.action] + "22",
-                  color: ACTION_COLORS[h.action],
-                  border: `1px solid ${ACTION_COLORS[h.action]}44`,
-                }}
-              >
-                {ACTIONS[h.action].substring(0, 3)} r={h.reward} A=
-                {h.adv > 0 ? "+" : ""}
-                {h.adv.toFixed(1)}
-              </div>
-            ))}
-            {history.length === 0 && (
-              <span className="text-xs text-muted italic">Chưa có hành động nào</span>
-            )}
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="mt-4 grid grid-cols-4 gap-3">
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Bước</p>
-            <p className="text-lg font-bold text-foreground">{step}</p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">V(s) Critic</p>
-            <p className="text-lg font-bold text-foreground">
-              {criticValue.toFixed(2)}
-            </p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Advantage</p>
-            <p className="text-lg font-bold text-foreground">
-              {advantage !== null ? advantage.toFixed(2) : "—"}
-            </p>
-          </div>
-          <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-            <p className="text-xs text-muted">Tổng thưởng</p>
-            <p className="text-lg font-bold text-foreground">{totalReward}</p>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="mt-4 flex items-center gap-3 flex-wrap">
-          <button
-            onClick={act}
-            className="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            Hành động
-          </button>
-          <button
-            onClick={actMany}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Chạy 10 bước
-          </button>
-          <button
-            onClick={reset}
-            className="rounded-lg border border-border bg-card px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-white"
-          >
-            Đặt lại
-          </button>
-        </div>
-      </VisualizationSection>
-
-      <ExplanationSection>
-        <p>
-          <strong>Actor-Critic</strong> kết hợp hai thành phần học cùng lúc:{" "}
-          <strong>Actor</strong> (chính sách — chọn hành động) và{" "}
-          <strong>Critic</strong> (đánh giá — ước lượng giá trị trạng thái). Đây là sự
-          kết hợp hoàn hảo của Policy Gradient và Value-based methods.
-        </p>
-
-        <p>
-          <strong>Hàm Advantage</strong> là trái tim của Actor-Critic:
-        </p>
-        <div className="rounded-lg bg-background/50 border border-border p-3 text-center font-mono text-foreground text-sm">
-          A(s,a) = r + &gamma; V(s&apos;) &minus; V(s)
-        </div>
-        <p>
-          Advantage cho biết hành động <strong>tốt hơn hay kém hơn so với kỳ
-          vọng</strong>:
-        </p>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>A &gt; 0</strong>: Hành động tốt hơn kỳ vọng &#8594; Critic nói
-            &quot;Tốt lắm!&quot; &#8594; Actor tăng xác suất hành động này
-          </li>
-          <li>
-            <strong>A &lt; 0</strong>: Hành động kém hơn kỳ vọng &#8594; Critic nói
-            &quot;Cần cải thiện!&quot; &#8594; Actor giảm xác suất hành động này
-          </li>
-          <li>
-            <strong>A &asymp; 0</strong>: Hành động đúng như kỳ vọng &#8594; Không thay
-            đổi nhiều
-          </li>
-        </ul>
-
-        <p>
-          <strong>Tại sao tốt hơn Policy Gradient thuần?</strong> REINFORCE phải đợi
-          hết episode mới cập nhật (Monte Carlo), gây phương sai cao. Actor-Critic dùng{" "}
-          <strong>TD error</strong> (Temporal Difference) từ Critic làm baseline, cho
-          phép cập nhật <strong>sau mỗi bước</strong> và giảm phương sai đáng kể.
-        </p>
-
-        <p>Hai biến thể phổ biến:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>A2C (Advantage Actor-Critic)</strong>: Chạy đồng bộ — nhiều worker
-            song song thu thập kinh nghiệm, rồi cập nhật cùng lúc. Đơn giản và ổn định.
-          </li>
-          <li>
-            <strong>A3C (Asynchronous A2C)</strong>: Mỗi worker cập nhật bất đồng bộ
-            lên model chung. Nhanh hơn nhưng phức tạp hơn — hiện nay A2C thường được ưa
-            chuộng hơn nhờ GPU song song hóa tốt.
-          </li>
-        </ol>
-
-        <p>
-          Actor-Critic là nền tảng cho các thuật toán hiện đại như{" "}
-          <strong>PPO</strong>, <strong>SAC</strong>, <strong>DDPG</strong>, và đặc biệt
-          là <strong>RLHF</strong> — phương pháp huấn luyện các mô hình ngôn ngữ lớn
-          (LLM) như ChatGPT, nơi Actor là LLM và Critic là reward model đánh giá chất
-          lượng câu trả lời.
-        </p>
-      </ExplanationSection>
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat"><MiniSummary points={["Actor-Critic: Actor (policy) chon action, Critic (value) danh gia. Ket hop uu diem PG + DQN.", "Advantage A(s,a) = action tot/xau hon trung binh bao nhieu → giam variance dang ke.", "PPO clip ratio [1-eps, 1+eps] → policy thay doi nho moi step → training on dinh.", "PPO la default cho RLHF (ChatGPT, Claude). GRPO la variant khong can Critic rieng.", "A3C: async parallel training. A2C: synchronous. PPO: trust region. SAC: maximum entropy."]} /></LessonSection>
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra"><QuizSection questions={quizQuestions} /></LessonSection>
+      </PredictionGate></LessonSection>
     </>
   );
 }
