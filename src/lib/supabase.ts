@@ -5,8 +5,11 @@ export function createClient() {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
+    console.error(
+      "Missing Supabase env vars: NEXT_PUBLIC_SUPABASE_URL and/or NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
     throw new Error(
-      "Thiếu biến môi trường Supabase: vui lòng đặt NEXT_PUBLIC_SUPABASE_URL và NEXT_PUBLIC_SUPABASE_ANON_KEY trong file .env.local"
+      "Cấu hình kết nối chưa được thiết lập. Vui lòng kiểm tra file .env.local"
     );
   }
 
