@@ -50,8 +50,11 @@ export default function TopicCard({
           <p className="mt-0.5 text-xs text-muted leading-relaxed">
             {topic.titleVi}
           </p>
+          <p className="mt-1.5 text-[11px] text-tertiary leading-relaxed line-clamp-2">
+            {topic.description}
+          </p>
 
-          <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          <div className="mt-2 flex flex-wrap items-center gap-1.5">
             <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
               topic.difficulty === "beginner" ? "tag-beginner" :
               topic.difficulty === "intermediate" ? "tag-intermediate" :

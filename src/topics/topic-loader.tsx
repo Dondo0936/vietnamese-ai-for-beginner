@@ -5,18 +5,18 @@ import dynamic from "next/dynamic";
 import type { TopicMeta } from "@/lib/types";
 import TopicLayout from "@/components/topic/TopicLayout";
 
-// Cache dynamic imports to avoid recreating on every render
 const componentCache = new Map<string, React.ComponentType>();
 
 function getTopicComponent(slug: string) {
   if (!componentCache.has(slug)) {
     const Component = dynamic(() => import(`@/topics/${slug}`), {
       loading: () => (
-        <div className="text-center py-8 text-muted">
-          <p>Đang tải...</p>
+        <div className="space-y-6 py-4">
+          <div className="skeleton h-32 w-full" />
+          <div className="skeleton h-48 w-full" />
+          <div className="skeleton h-24 w-full" />
         </div>
       ),
-      ssr: false,
     });
     componentCache.set(slug, Component);
   }
