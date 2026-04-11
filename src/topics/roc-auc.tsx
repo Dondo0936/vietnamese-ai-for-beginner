@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "roc-auc",
   title: "ROC & AUC",
-  titleVi: "ROC & AUC — Do kha nang phan biet",
+  titleVi: "ROC & AUC — Đo khả năng phân biệt",
   description:
-    "Duong cong ROC va dien tich AUC do luong kha nang mo hinh phan biet lop duong va lop am o moi nguong quyet dinh.",
+    "Đường cong ROC và diện tích AUC đo lường khả năng mô hình phân biệt lớp dương và lớp âm ở mọi ngưỡng quyết định.",
   category: "foundations",
   tags: ["roc", "auc", "classification", "metrics"],
   difficulty: "intermediate",
@@ -33,60 +33,60 @@ export default function RocAucTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "AUC = 0.5 co nghia la gi?",
+      question: "AUC = 0.5 có nghĩa là gì?",
       options: [
-        "Model tot — dung 50% truong hop",
-        "Model KHONG HON doan ngau nhien — duong ROC nam tren duong cheo, khong co kha nang phan biet",
-        "Model hoan hao cho binary classification",
+        "Model tốt — đúng 50% trường hợp",
+        "Model KHÔNG HƠN đoán ngẫu nhiên — đường ROC nằm trên đường chéo, không có khả năng phân biệt",
+        "Model hoàn hảo cho binary classification",
       ],
       correct: 1,
-      explanation: "AUC 0.5 = duong ROC trung voi duong cheo (random classifier). Model khong phan biet duoc positive va negative tot hon tung dong xu. AUC 1.0 = hoan hao. AUC < 0.5 = te hon random (dao nhan nhan!). AUC 0.7-0.8 = kha. AUC > 0.9 = tot.",
+      explanation: "AUC 0.5 = đường ROC trùng với đường chéo (random classifier). Model không phân biệt được positive và negative tốt hơn tung đồng xu. AUC 1.0 = hoàn hảo. AUC < 0.5 = tệ hơn random (đảo nhãn nhãn!). AUC 0.7-0.8 = khá. AUC > 0.9 = tốt.",
     },
     {
-      question: "Tai sao AUC tot hon accuracy cho imbalanced data?",
+      question: "Tại sao AUC tốt hơn accuracy cho imbalanced data?",
       options: [
-        "AUC nhanh hon tinh",
-        "Accuracy bi misleading khi data mat can bang (99% class A → predict A luon = 99% accuracy). AUC danh gia kha nang PHAN BIET giua classes, khong phu thuoc ty le",
-        "AUC luon lon hon accuracy",
+        "AUC nhanh hơn tính",
+        "Accuracy bị misleading khi data mất cân bằng (99% class A → predict A luôn = 99% accuracy). AUC đánh giá khả năng PHÂN BIỆT giữa classes, không phụ thuộc tỷ lệ",
+        "AUC luôn lớn hơn accuracy",
       ],
       correct: 1,
-      explanation: "Phat hien gian lan (1% fraud): model predict 'khong gian lan' cho tat ca → 99% accuracy nhung KHONG phat hien bat ky fraud nao! AUC = 0.5 (random). AUC do: voi MOI threshold, model phan biet fraud vs legit tot the nao — khong bi ty le anh huong.",
+      explanation: "Phát hiện gian lận (1% fraud): model predict 'không gian lận' cho tất cả → 99% accuracy nhưng KHÔNG phát hiện bất kỳ fraud nào! AUC = 0.5 (random). AUC đo: với MỌI threshold, model phân biệt fraud vs legit tốt thế nào — không bị tỷ lệ ảnh hưởng.",
     },
     {
-      question: "ROC curve nam o phia tren-trai la tot hay xau?",
+      question: "ROC curve nằm ở phía trên-trái là tốt hay xấu?",
       options: [
-        "Tot — TPR cao (bat nhieu positive) va FPR thap (it false alarm) = phan biet gioi",
-        "Xau — model qua tu tin",
-        "Khong lien quan den chat luong",
+        "Tốt — TPR cao (bắt nhiều positive) và FPR thấp (ít false alarm) = phân biệt giỏi",
+        "Xấu — model quá tự tin",
+        "Không liên quan đến chất lượng",
       ],
       correct: 0,
-      explanation: "Goc tren-trai: TPR=1, FPR=0 = hoan hao (bat het positive, khong false alarm nao). Duong ROC cang gan goc nay → AUC cang gan 1.0 → model phan biet cang tot. Duong cheo (TPR=FPR) = random = AUC 0.5.",
+      explanation: "Góc trên-trái: TPR=1, FPR=0 = hoàn hảo (bắt hết positive, không false alarm nào). Đường ROC càng gần góc này → AUC càng gần 1.0 → model phân biệt càng tốt. Đường chéo (TPR=FPR) = random = AUC 0.5.",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Model phat hien gian lan ngan hang: 10.000 giao dich, 100 gian lan (1%). Model predict 'khong gian lan' cho TAT CA → accuracy 99%. Model nay tot khong?"
+          question="Model phát hiện gian lận ngân hàng: 10.000 giao dịch, 100 gian lận (1%). Model predict 'không gian lận' cho TẤT CẢ → accuracy 99%. Model này tốt không?"
           options={[
-            "Tot — 99% accuracy rat cao",
-            "TE — 99% accuracy la gia tao, model khong phat hien BAT KY gian lan nao. Can metric khac: ROC-AUC",
-            "Trung binh — can cai thien them",
+            "Tốt — 99% accuracy rất cao",
+            "TỆ — 99% accuracy là giả tạo, model không phát hiện BẤT KỲ gian lận nào. Cần metric khác: ROC-AUC",
+            "Trung bình — cần cải thiện thêm",
           ]}
           correct={1}
-          explanation="Accuracy bi 'lua' boi imbalanced data! 99% accuracy nhung 0% fraud detected = vo dung. ROC-AUC do kha nang phan biet THUC SU giua fraud va legit tai MOI nguong. Model nay co AUC = 0.5 (random) du accuracy 99%."
+          explanation="Accuracy bị 'lừa' bởi imbalanced data! 99% accuracy nhưng 0% fraud detected = vô dụng. ROC-AUC đo khả năng phân biệt THỰC SỰ giữa fraud và legit tại MỌI ngưỡng. Model này có AUC = 0.5 (random) dù accuracy 99%."
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Keo <strong className="text-foreground">nguong quyet dinh</strong>{" "}
-          de xem TPR va FPR thay doi — tao ra duong cong ROC.
+          Kéo <strong className="text-foreground">ngưỡng quyết định</strong>{" "}
+          để xem TPR và FPR thay đổi — tạo ra đường cong ROC.
         </p>
         <VisualizationSection>
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-muted">Nguong: {threshold}%</label>
+              <label className="text-sm font-medium text-muted">Ngưỡng: {threshold}%</label>
               <input type="range" min={5} max={95} value={threshold} onChange={(e) => setThreshold(parseInt(e.target.value))} className="w-full accent-accent" />
             </div>
             <svg viewBox="0 0 600 250" className="w-full max-w-2xl mx-auto">
@@ -118,66 +118,66 @@ export default function RocAucTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            ROC cho thay: <strong>tang nguong</strong>{" "}→ it false alarm (FPR giam) nhung cung bo sot (TPR giam).
-            <strong>{" "}Giam nguong</strong>{" "}→ bat nhieu hon (TPR tang) nhung nhieu false alarm (FPR tang).
-            AUC do: <strong>voi MOI nguong, model phan biet gioi the nao</strong>{" "}
-            — khong phu thuoc viec chon nguong cu the!
+            ROC cho thấy: <strong>tăng ngưỡng</strong>{" "}→ ít false alarm (FPR giảm) nhưng cũng bỏ sót (TPR giảm).
+            <strong>{" "}Giảm ngưỡng</strong>{" "}→ bắt nhiều hơn (TPR tăng) nhưng nhiều false alarm (FPR tăng).
+            AUC đo: <strong>với MỌI ngưỡng, model phân biệt giỏi thế nào</strong>{" "}
+            — không phụ thuộc việc chọn ngưỡng cụ thể!
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Hai model phat hien ung thu: Model A (AUC=0.95), Model B (AUC=0.85). Nhung Model B co recall=0.98 tai threshold 0.3. Chon model nao cho screening?"
+          question="Hai model phát hiện ung thư: Model A (AUC=0.95), Model B (AUC=0.85). Nhưng Model B có recall=0.98 tại threshold 0.3. Chọn model nào cho screening?"
           options={[
-            "Model A vi AUC cao hon",
-            "Model B vi recall 0.98: trong y te, BO SOT (false negative) nguy hiem hon BAO DONG GIA (false positive). AUC cao nhung recall thap = bo sot benh nhan",
-            "Dung ca hai",
+            "Model A vì AUC cao hơn",
+            "Model B vì recall 0.98: trong y tế, BỎ SÓT (false negative) nguy hiểm hơn BÁO ĐỘNG GIẢ (false positive). AUC cao nhưng recall thấp = bỏ sót bệnh nhân",
+            "Dùng cả hai",
           ]}
           correct={1}
-          explanation="AUC do overall, nhung trong y te: false negative (bo sot ung thu) = nguy hiem. Model B voi recall 0.98 chi bo sot 2% benh nhan. Model A AUC cao hon nhung tai threshold cu the, recall co the thap hon. CONTEXT quyet dinh metric nao quan trong — khong co metric 'tot nhat' cho moi bai toan."
+          explanation="AUC đo overall, nhưng trong y tế: false negative (bỏ sót ung thư) = nguy hiểm. Model B với recall 0.98 chỉ bỏ sót 2% bệnh nhân. Model A AUC cao hơn nhưng tại threshold cụ thể, recall có thể thấp hơn. CONTEXT quyết định metric nào quan trọng — không có metric 'tốt nhất' cho mọi bài toán."
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>ROC (Receiver Operating Characteristic)</strong>{" "}
-            va <strong>AUC (Area Under Curve)</strong>{" "}
-            do kha nang mo hinh phan biet class duong va class am tai moi nguong quyet dinh.
+            và <strong>AUC (Area Under Curve)</strong>{" "}
+            đo khả năng mô hình phân biệt class dương và class âm tại mọi ngưỡng quyết định.
           </p>
-          <p><strong>Hai metric tren ROC:</strong></p>
+          <p><strong>Hai metric trên ROC:</strong></p>
           <LaTeX block>{"\\text{TPR (Sensitivity)} = \\frac{TP}{TP + FN} \\quad \\text{FPR} = \\frac{FP}{FP + TN}"}</LaTeX>
           <LaTeX block>{"\\text{AUC} = \\int_0^1 \\text{TPR}(\\text{FPR}) \\, d(\\text{FPR}) = P(\\text{score}_{\\text{pos}} > \\text{score}_{\\text{neg}})"}</LaTeX>
 
-          <p>AUC = xac suat model cho diem cao hon cho positive so voi negative.</p>
+          <p>AUC = xác suất model cho điểm cao hơn cho positive so với negative.</p>
 
-          <Callout variant="tip" title="Dieu kien dung AUC">
-            AUC tot cho: binary classification, so sanh models, imbalanced data. KHONG tot cho: multi-class (dung macro-average), khi can tim threshold cu the (dung Precision-Recall curve), ranking tasks (dung NDCG).
+          <Callout variant="tip" title="Điều kiện dùng AUC">
+            AUC tốt cho: binary classification, so sánh models, imbalanced data. KHÔNG tốt cho: multi-class (dùng macro-average), khi cần tìm threshold cụ thể (dùng Precision-Recall curve), ranking tasks (dùng NDCG).
           </Callout>
 
-          <CodeBlock language="python" title="Tinh ROC-AUC voi scikit-learn">
+          <CodeBlock language="python" title="Tính ROC-AUC với scikit-learn">
 {`from sklearn.metrics import roc_auc_score, roc_curve
 import matplotlib.pyplot as plt
 
-# y_true: labels that (0/1)
-# y_scores: xac suat du doan (0.0 - 1.0)
+# y_true: labels thật (0/1)
+# y_scores: xác suất dự đoán (0.0 - 1.0)
 auc = roc_auc_score(y_true, y_scores)
 print(f"AUC: {auc:.3f}")
 
-# Ve ROC curve
+# Vẽ ROC curve
 fpr, tpr, thresholds = roc_curve(y_true, y_scores)
 plt.plot(fpr, tpr, label=f"Model (AUC={auc:.2f})")
 plt.plot([0, 1], [0, 1], "k--", label="Random (AUC=0.5)")
 plt.xlabel("FPR (False Positive Rate)")
 plt.ylabel("TPR (True Positive Rate)")
-plt.title("ROC Curve - Phat hien gian lan")
+plt.title("ROC Curve - Phát hiện gian lận")
 plt.legend()
 
-# Tim nguong toi uu (Youden's J)
+# Tìm ngưỡng tối ưu (Youden's J)
 j_scores = tpr - fpr
 best_idx = j_scores.argmax()
 best_threshold = thresholds[best_idx]
@@ -187,17 +187,17 @@ print(f"TPR={tpr[best_idx]:.3f}, FPR={fpr[best_idx]:.3f}")`}
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "ROC curve: TPR vs FPR tai moi nguong. AUC = dien tich duoi ROC = kha nang phan biet tong the.",
-          "AUC 0.5 = random, 0.7-0.8 = kha, 0.8-0.9 = tot, > 0.9 = xuat sac.",
-          "AUC khong bi anh huong boi imbalanced data — tot hon accuracy cho fraud detection, medical diagnosis.",
-          "AUC do overall ranking. Cho bai toan cu the, can xem Precision-Recall va chon threshold phu hop.",
-          "Context quyet dinh: y te uu tien recall (khong bo sot), spam filter uu tien precision (khong an nham).",
+          "ROC curve: TPR vs FPR tại mọi ngưỡng. AUC = diện tích dưới ROC = khả năng phân biệt tổng thể.",
+          "AUC 0.5 = random, 0.7-0.8 = khá, 0.8-0.9 = tốt, > 0.9 = xuất sắc.",
+          "AUC không bị ảnh hưởng bởi imbalanced data — tốt hơn accuracy cho fraud detection, medical diagnosis.",
+          "AUC đo overall ranking. Cho bài toán cụ thể, cần xem Precision-Recall và chọn threshold phù hợp.",
+          "Context quyết định: y tế ưu tiên recall (không bỏ sót), spam filter ưu tiên precision (không ăn nhầm).",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 

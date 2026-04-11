@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-coding-assistants",
   title: "AI Coding Assistants",
-  titleVi: "Tro ly lap trinh AI",
+  titleVi: "Trợ lý lập trình AI",
   description:
-    "Cac cong cu AI ho tro viet code, debug va review — tu autocomplete den agentic coding",
+    "Các công cụ AI hỗ trợ viết code, debug và review — từ autocomplete đến agentic coding",
   category: "emerging",
   tags: ["copilot", "code-generation", "developer-tools"],
   difficulty: "beginner",
@@ -25,10 +25,10 @@ export const metadata: TopicMeta = {
 };
 
 const LEVELS = [
-  { name: "Autocomplete", year: "2021", tools: "GitHub Copilot, TabNine", capability: 30, desc: "Goi y hoan thanh dong code hien tai" },
-  { name: "Chat-based", year: "2023", tools: "ChatGPT, Claude", capability: 55, desc: "Hoi-dap, giai thich, sinh code block" },
-  { name: "Inline Edit", year: "2024", tools: "Cursor, Copilot Edit", capability: 70, desc: "Sua code truc tiep trong editor theo prompt" },
-  { name: "Agentic", year: "2025", tools: "Claude Code, Devin, Cursor Agent", capability: 90, desc: "Tu dong: doc codebase, plan, implement, test, commit" },
+  { name: "Autocomplete", year: "2021", tools: "GitHub Copilot, TabNine", capability: 30, desc: "Gợi ý hoàn thành dòng code hiện tại" },
+  { name: "Chat-based", year: "2023", tools: "ChatGPT, Claude", capability: 55, desc: "Hỏi-đáp, giải thích, sinh code block" },
+  { name: "Inline Edit", year: "2024", tools: "Cursor, Copilot Edit", capability: 70, desc: "Sửa code trực tiếp trong editor theo prompt" },
+  { name: "Agentic", year: "2025", tools: "Claude Code, Devin, Cursor Agent", capability: 90, desc: "Tự động: đọc codebase, plan, implement, test, commit" },
 ];
 
 const TOTAL_STEPS = 7;
@@ -39,55 +39,55 @@ export default function AICodingAssistantsTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "Agentic coding assistant khac chat-based assistant the nao?",
+      question: "Agentic coding assistant khác chat-based assistant thế nào?",
       options: [
-        "Dung model lon hon",
-        "TU DONG thuc hien nhieu buoc: doc codebase → plan → code → test → fix → commit. Khong can copy-paste",
-        "Chi ho tro 1 ngon ngu",
+        "Dùng model lớn hơn",
+        "TỰ ĐỘNG thực hiện nhiều bước: đọc codebase → plan → code → test → fix → commit. Không cần copy-paste",
+        "Chỉ hỗ trợ 1 ngôn ngữ",
       ],
       correct: 1,
-      explanation: "Chat-based: ban hoi, AI tra loi code, ban copy-paste vao editor. Agentic: ban mo ta yeu cau, AI tu doc codebase hieu context, plan changes, implement across files, chay tests, fix errors, tao commit. Tu 'tro ly tra loi' sang 'dong nghiep tu lam'.",
+      explanation: "Chat-based: bạn hỏi, AI trả lời code, bạn copy-paste vào editor. Agentic: bạn mô tả yêu cầu, AI tự đọc codebase hiểu context, plan changes, implement across files, chạy tests, fix errors, tạo commit. Từ 'trợ lý trả lời' sang 'đồng nghiệp tự làm'.",
     },
     {
-      question: "AI coding assistant lam developer mat viec khong?",
+      question: "AI coding assistant làm developer mất việc không?",
       options: [
-        "Co — AI se viet code thay nguoi hoan toan",
-        "Khong — AI tang nang suat 2-5x nhung van can developer thiet ke, review, va giai quyet bai toan phuc tap",
-        "Chi anh huong junior developers",
+        "Có — AI sẽ viết code thay người hoàn toàn",
+        "Không — AI tăng năng suất 2-5x nhưng vẫn cần developer thiết kế, review, và giải quyết bài toán phức tạp",
+        "Chỉ ảnh hưởng junior developers",
       ],
       correct: 1,
-      explanation: "AI viet code nhanh nhung van can nguoi: hieu business requirements, thiet ke system architecture, review code quality, xu ly edge cases, debug logic phuc tap. Developer + AI = 2-5x nang suat. Giong may tinh khong thay the ke toan — no lam ke toan manh hon.",
+      explanation: "AI viết code nhanh nhưng vẫn cần người: hiểu business requirements, thiết kế system architecture, review code quality, xử lý edge cases, debug logic phức tạp. Developer + AI = 2-5x năng suất. Giống máy tính không thay thế kế toán — nó làm kế toán mạnh hơn.",
     },
     {
-      question: "Rui ro lon nhat khi dung AI coding assistant la gi?",
+      question: "Rủi ro lớn nhất khi dùng AI coding assistant là gì?",
       options: [
-        "Code chay cham hon",
-        "Security vulnerabilities: AI co the sinh code co lo hong (SQL injection, hardcoded secrets) ma developer khong nhan ra neu khong review ky",
-        "AI hoc code cua ban va ban cho nguoi khac",
+        "Code chạy chậm hơn",
+        "Security vulnerabilities: AI có thể sinh code có lỗ hổng (SQL injection, hardcoded secrets) mà developer không nhận ra nếu không review kỹ",
+        "AI học code của bạn và bán cho người khác",
       ],
       correct: 1,
-      explanation: "AI sinh code nhanh nhung KHONG dam bao secure. Nghien cuu chi ra: AI-generated code co ty le vulnerabilities tuong duong human code, nhung developers tin tuong AI nen IT REVIEW hon. Can: security linting, code review, va hieu ro code truoc khi merge.",
+      explanation: "AI sinh code nhanh nhưng KHÔNG đảm bảo secure. Nghiên cứu chỉ ra: AI-generated code có tỷ lệ vulnerabilities tương đương human code, nhưng developers tin tưởng AI nên ÍT REVIEW hơn. Cần: security linting, code review, và hiểu rõ code trước khi merge.",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Ban can implement tinh nang authentication cho app Next.js. Cach nao nhanh nhat?"
+          question="Bạn cần implement tính năng authentication cho app Next.js. Cách nào nhanh nhất?"
           options={[
-            "Doc documentation va viet tu dau — mat 2-3 ngay",
-            "Dung AI coding assistant: mo ta yeu cau, AI doc codebase, plan, implement across files, chay tests — mat 2-3 gio",
-            "Copy code tu Stack Overflow",
+            "Đọc documentation và viết từ đầu — mất 2-3 ngày",
+            "Dùng AI coding assistant: mô tả yêu cầu, AI đọc codebase, plan, implement across files, chạy tests — mất 2-3 giờ",
+            "Copy code từ Stack Overflow",
           ]}
           correct={1}
-          explanation="AI coding assistants giam thoi gian 5-10x cho nhieu tasks. Tu doc docs, hieu codebase context, implement multi-file changes, fix errors. Nhung van can developer: review code, hieu logic, va dam bao chat luong. AI la 'pair programmer sieu nhanh'."
+          explanation="AI coding assistants giảm thời gian 5-10x cho nhiều tasks. Tự đọc docs, hiểu codebase context, implement multi-file changes, fix errors. Nhưng vẫn cần developer: review code, hiểu logic, và đảm bảo chất lượng. AI là 'pair programmer siêu nhanh'."
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Xem <strong className="text-foreground">4 the he</strong>{" "}
-          AI coding assistants — tu autocomplete den agentic.
+          Xem <strong className="text-foreground">4 thế hệ</strong>{" "}
+          AI coding assistants — từ autocomplete đến agentic.
         </p>
         <VisualizationSection>
           <div className="space-y-4">
@@ -128,73 +128,73 @@ export default function AICodingAssistantsTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Tu <strong>goi y 1 dong</strong>{" "}(2021) den <strong>tu implement ca feature</strong>{" "}(2025)
-            chi trong 4 nam! Agentic assistants giong <strong>dong nghiep junior rat nhanh</strong>{" "}
-            — doc codebase, plan, implement, test, commit. Developer chuyen tu &quot;viet code&quot;
-            sang <strong>&quot;thiet ke va review code&quot;</strong>.
+            Từ <strong>gợi ý 1 dòng</strong>{" "}(2021) đến <strong>tự implement cả feature</strong>{" "}(2025)
+            chỉ trong 4 năm! Agentic assistants giống <strong>đồng nghiệp junior rất nhanh</strong>{" "}
+            — đọc codebase, plan, implement, test, commit. Developer chuyển từ 'viết code'
+            sang <strong>'thiết kế và review code'</strong>.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="AI sinh code nhanh nhung ban phat hien: code co SQL injection vulnerability. AI khong canh bao. Ban nen lam gi?"
+          question="AI sinh code nhanh nhưng bạn phát hiện: code có SQL injection vulnerability. AI không cảnh báo. Bạn nên làm gì?"
           options={[
-            "Trust AI — no thong minh hon minh",
-            "LUON review AI-generated code, dung security linting (Semgrep, CodeQL), va hieu ro code truoc khi merge",
-            "Bo AI va viet code thu cong",
+            "Trust AI — nó thông minh hơn mình",
+            "LUÔN review AI-generated code, dùng security linting (Semgrep, CodeQL), và hiểu rõ code trước khi merge",
+            "Bỏ AI và viết code thủ công",
           ]}
           correct={1}
-          explanation="AI sinh code nhanh nhung KHONG dam bao an toan. Developer phai: (1) review moi line AI sinh, (2) chay security linting tu dong, (3) hieu ro logic truoc khi merge. AI la tool, khong phai replacement cho judgment. Trust but verify!"
+          explanation="AI sinh code nhanh nhưng KHÔNG đảm bảo an toàn. Developer phải: (1) review mọi line AI sinh, (2) chạy security linting tự động, (3) hiểu rõ logic trước khi merge. AI là tool, không phải replacement cho judgment. Trust but verify!"
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>AI Coding Assistants</strong>{" "}
-            la cong cu AI ho tro developer viet code — tu autocomplete den agentic coding tu dong.
+            là công cụ AI hỗ trợ developer viết code — từ autocomplete đến agentic coding tự động.
           </p>
-          <p><strong>4 the he:</strong></p>
+          <p><strong>4 thế hệ:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Gen 1 - Autocomplete (2021):</strong>{" "}Goi y hoan thanh code. Copilot, TabNine</li>
-            <li><strong>Gen 2 - Chat (2023):</strong>{" "}Hoi-dap, sinh code block, giai thich. ChatGPT, Claude</li>
-            <li><strong>Gen 3 - Inline Edit (2024):</strong>{" "}Sua code truc tiep trong editor. Cursor, Copilot Edit</li>
-            <li><strong>Gen 4 - Agentic (2025):</strong>{" "}Tu dong multi-step: plan → code → test → fix. Claude Code, Devin</li>
+            <li><strong>Gen 1 - Autocomplete (2021):</strong>{" "}Gợi ý hoàn thành code. Copilot, TabNine</li>
+            <li><strong>Gen 2 - Chat (2023):</strong>{" "}Hỏi-đáp, sinh code block, giải thích. ChatGPT, Claude</li>
+            <li><strong>Gen 3 - Inline Edit (2024):</strong>{" "}Sửa code trực tiếp trong editor. Cursor, Copilot Edit</li>
+            <li><strong>Gen 4 - Agentic (2025):</strong>{" "}Tự động multi-step: plan → code → test → fix. Claude Code, Devin</li>
           </ul>
 
-          <Callout variant="tip" title="Nang suat thuc te">
-            Nghien cuu GitHub (2024): Copilot tang toc 55% cho coding tasks. Nhung: (1) chi cho well-defined tasks, (2) review time tang 20%, (3) complex architecture tasks — AI it giup. Net productivity gain: 30-40% cho typical dev work.
+          <Callout variant="tip" title="Năng suất thực tế">
+            Nghiên cứu GitHub (2024): Copilot tăng tốc 55% cho coding tasks. Nhưng: (1) chỉ cho well-defined tasks, (2) review time tăng 20%, (3) complex architecture tasks — AI ít giúp. Net productivity gain: 30-40% cho typical dev work.
           </Callout>
 
           <p><strong>Best practices:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Review moi dong:</strong>{" "}AI sinh code nhanh nhung co the co bugs, security issues</li>
-            <li><strong>Context la vua:</strong>{" "}Cang nhieu context (codebase, docs, tests) → AI cang chinh xac</li>
-            <li><strong>Iterative:</strong>{" "}Sinh → review → refine → test. Khong expect perfect code tu lan dau</li>
-            <li><strong>Security first:</strong>{" "}Chay Semgrep/CodeQL tren AI-generated code truoc khi merge</li>
+            <li><strong>Review mọi dòng:</strong>{" "}AI sinh code nhanh nhưng có thể có bugs, security issues</li>
+            <li><strong>Context là vua:</strong>{" "}Càng nhiều context (codebase, docs, tests) → AI càng chính xác</li>
+            <li><strong>Iterative:</strong>{" "}Sinh → review → refine → test. Không expect perfect code từ lần đầu</li>
+            <li><strong>Security first:</strong>{" "}Chạy Semgrep/CodeQL trên AI-generated code trước khi merge</li>
           </ul>
 
-          <CodeBlock language="bash" title="AI coding workflow thuc te">
+          <CodeBlock language="bash" title="AI coding workflow thực tế">
 {`# 1. Claude Code: agentic coding trong terminal
-# Mo ta yeu cau bang tieng Viet
-claude "Them authentication middleware cho Express app,
-       dung JWT, luu refresh token trong Redis,
-       viet unit tests voi Jest"
+# Mô tả yêu cầu bằng tiếng Việt
+claude "Thêm authentication middleware cho Express app,
+       dùng JWT, lưu refresh token trong Redis,
+       viết unit tests với Jest"
 
-# Claude Code se:
-# - Doc codebase hieu structure
+# Claude Code sẽ:
+# - Đọc codebase hiểu structure
 # - Plan: middleware file, redis config, tests
 # - Implement across 4-5 files
-# - Chay tests, fix errors
-# - Tao commit voi message ro rang
+# - Chạy tests, fix errors
+# - Tạo commit với message rõ ràng
 
 # 2. Cursor: AI-powered editor
 # Cmd+K: inline edit
-# Cmd+L: chat voi context cua file
+# Cmd+L: chat với context của file
 # Tab: accept autocomplete
 
 # 3. Security check sau khi AI sinh code
@@ -204,17 +204,17 @@ npx semgrep --config=p/javascript-security .
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "4 the he: Autocomplete → Chat → Inline Edit → Agentic. Tu 'goi y 1 dong' den 'tu implement ca feature'.",
-          "Agentic assistants (Claude Code, Devin): doc codebase, plan, implement, test, fix, commit tu dong.",
-          "Tang nang suat 30-55% cho typical tasks. Complex architecture va design van can developer.",
-          "LUON review AI code: security linting (Semgrep), unit tests, va hieu logic truoc merge.",
-          "Developer chuyen tu 'viet code' sang 'thiet ke + review code' — AI la dong nghiep, khong phai replacement.",
+          "4 thế hệ: Autocomplete → Chat → Inline Edit → Agentic. Từ 'gợi ý 1 dòng' đến 'tự implement cả feature'.",
+          "Agentic assistants (Claude Code, Devin): đọc codebase, plan, implement, test, fix, commit tự động.",
+          "Tăng năng suất 30-55% cho typical tasks. Complex architecture và design vẫn cần developer.",
+          "LUÔN review AI code: security linting (Semgrep), unit tests, và hiểu logic trước merge.",
+          "Developer chuyển từ 'viết code' sang 'thiết kế + review code' — AI là đồng nghiệp, không phải replacement.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
