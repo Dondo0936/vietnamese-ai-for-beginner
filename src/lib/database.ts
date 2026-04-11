@@ -9,6 +9,11 @@ const DEFAULT_PROGRESS: UserProgress = {
   lastVisited: null,
 };
 
+// Session-level caches to avoid redundant Supabase calls
+const readTopicCache = new Set<string>();
+let lastBookmarkToggle = 0;
+const BOOKMARK_THROTTLE_MS = 300;
+
 export async function ensureAnonymousAuth() {
   const supabase = createClient();
   const {
@@ -49,6 +54,9 @@ export async function getUserProgress(): Promise<UserProgress> {
 }
 
 export async function markTopicRead(slug: string) {
+  // Skip if already marked this session (avoids redundant DB round-trips)
+  if (readTopicCache.has(slug)) return;
+
   try {
     const supabase = await ensureAnonymousAuth();
     const {
@@ -57,7 +65,10 @@ export async function markTopicRead(slug: string) {
     if (!user) return;
 
     const progress = await getUserProgress();
-    if (progress.readTopics.includes(slug)) return;
+    if (progress.readTopics.includes(slug)) {
+      readTopicCache.add(slug);
+      return;
+    }
 
     const updatedReadTopics = [...progress.readTopics, slug];
 
@@ -70,12 +81,19 @@ export async function markTopicRead(slug: string) {
       },
       { onConflict: "user_id" }
     );
+
+    readTopicCache.add(slug);
   } catch {
     // Fail silently — user experience shouldn't break
   }
 }
 
 export async function toggleBookmark(slug: string): Promise<boolean> {
+  // Throttle rapid calls
+  const now = Date.now();
+  if (now - lastBookmarkToggle < BOOKMARK_THROTTLE_MS) return false;
+  lastBookmarkToggle = now;
+
   try {
     const supabase = await ensureAnonymousAuth();
     const {

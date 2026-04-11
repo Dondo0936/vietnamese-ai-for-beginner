@@ -43,7 +43,7 @@ export default async function TopicPage({
   return (
     <>
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <TopicLoader meta={topic} />
       </main>
       <Footer />
