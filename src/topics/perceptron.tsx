@@ -140,6 +140,10 @@ export default function PerceptronTopic() {
         explanation="Thực tế, quyết định phụ thuộc vào mức độ quan trọng (trọng số) bạn gán cho mỗi tiêu chí, và ngưỡng chấp nhận của bạn. Đó chính xác là cách một Perceptron hoạt động: nhận đầu vào, gán trọng số, so với ngưỡng, rồi đưa ra quyết định Có/Không."
       />
 
+      <p className="my-4 text-sm text-muted leading-relaxed">
+        Bạn vừa thấy rằng quyết định phụ thuộc vào trọng số và ngưỡng. Bây giờ, hãy thử <strong className="text-foreground">TỰ MÌNH</strong> phân loại dữ liệu — bạn sẽ trải nghiệm chính xác điều mà một Perceptron làm.
+      </p>
+
       {/* ── Step 2: DISCOVER — Classification Game ── */}
       <section className="my-8 scroll-mt-20">
         <h2 className="mb-3 text-lg font-semibold text-foreground">Thử làm bộ phân loại</h2>

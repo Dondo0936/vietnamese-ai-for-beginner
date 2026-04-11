@@ -183,6 +183,10 @@ export default function KMeansTopic() {
         correct={2}
         explanation="Đặt kho ở trung tâm mỗi cụm — đó chính là ý tưởng K-Means!"
       >
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          Đặt kho ở trung tâm mỗi cụm — ý tưởng đơn giản nhưng mạnh mẽ. Bây giờ hãy thử với dữ liệu thật: đặt <strong className="text-foreground">3 tâm cụm</strong> trên bản đồ và xem điều kỳ diệu xảy ra.
+        </p>
+
         {/* STEP 2: DISCOVER — User IS the Algorithm */}
         <VisualizationSection>
           <div className="space-y-4">

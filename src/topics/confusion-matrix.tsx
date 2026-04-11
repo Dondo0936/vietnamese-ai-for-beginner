@@ -236,6 +236,10 @@ export default function ConfusionMatrixTopic() {
         correct={1}
         explanation="90% chính xác nghe cao, nhưng LOẠI SAI nào mới quan trọng. Đó là lý do cần confusion matrix!"
       >
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          90% nghe cao nhưng <strong className="text-foreground">LOẠI</strong> sai mới quan trọng. Hãy tự mình trải nghiệm — bạn sẽ đóng vai bác sĩ, phân loại 10 bệnh nhân, và xây confusion matrix từ quyết định của mình.
+        </p>
+
         {/* ── STEP 2: DISCOVER — User IS the Classifier ── */}
         <VisualizationSection>
           <div className="space-y-4">
