@@ -1,9 +1,14 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import AnalogyCard from "@/components/topic/AnalogyCard";
+import {
+  PredictionGate, LessonSection, AhaMoment, InlineChallenge,
+  MiniSummary, Callout, CodeBlock, LaTeX,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
+import QuizSection from "@/components/topic/QuizSection";
+import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
@@ -19,6 +24,44 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
+/* ── data ─────────────────────────────────────────────────── */
+const QUIZ: QuizQuestion[] = [
+  {
+    question: "IoU = 0.75 có nghĩa là gì?",
+    options: [
+      "Hai box trùng khớp 75% -- diện tích giao chiếm 75% diện tích hợp",
+      "Box dự đoán nhỏ hơn ground truth 75%",
+      "Mô hình đúng 75% thời gian",
+      "Ảnh có 75% pixel thuộc đối tượng",
+    ],
+    correct: 0,
+    explanation: "IoU = Giao / Hợp = 0.75 nghĩa là vùng chồng lấp chiếm 75% tổng diện tích của cả 2 box. Đây là mức rất tốt!",
+  },
+  {
+    question: "COCO benchmark dùng mAP@[0.5:0.95]. Điều này có nghĩa gì?",
+    options: [
+      "Chỉ tính detection đúng khi IoU > 0.95",
+      "Tính mAP ở nhiều ngưỡng IoU (0.5, 0.55, 0.6, ..., 0.95) rồi lấy trung bình",
+      "Đánh giá trên 50-95% dữ liệu test",
+      "IoU phải nằm giữa 0.5 và 0.95",
+    ],
+    correct: 1,
+    explanation: "COCO tính mAP trung bình trên 10 ngưỡng IoU từ 0.5 đến 0.95 (bước 0.05). Khắt khe hơn PASCAL VOC (chỉ dùng IoU=0.5) vì đòi hỏi box chính xác ở nhiều mức.",
+  },
+  {
+    question: "Tại sao GIoU tốt hơn IoU khi dùng làm loss function?",
+    options: [
+      "GIoU nhanh hơn khi tính toán",
+      "GIoU cho gradient khác 0 ngay cả khi 2 box không giao nhau",
+      "GIoU không cần bounding box",
+      "GIoU chính xác hơn cho ảnh lớn",
+    ],
+    correct: 1,
+    explanation: "Khi 2 box không giao: IoU = 0, gradient = 0 -- mô hình không học được! GIoU xét thêm diện tích bao đóng (enclosing box), cho gradient khác 0 để mô hình biết cần di chuyển box về phía nào.",
+  },
+];
+
+/* ── component ────────────────────────────────────────────── */
 export default function IoUTopic() {
   const [boxAx, setBoxAx] = useState(100);
   const [boxAy, setBoxAy] = useState(60);
@@ -44,195 +87,181 @@ export default function IoUTopic() {
 
   return (
     <>
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng bạn và bạn bè cùng vẽ <strong>vòng tròn</strong>{" "}
-          bao quanh con mèo trong ảnh. Làm sao biết ai vẽ chính xác hơn?
-        </p>
-        <p>
-          IoU cho câu trả lời: nó đo <strong>phần giao nhau</strong> (vùng
-          chồng lặp) chia cho <strong>phần hợp</strong> (tổng diện tích). Nếu
-          hai vòng tròn trùng khớp hoàn toàn → IoU = 1.0 (hoàn hảo). Nếu không
-          chạm nhau → IoU = 0 (hoàn toàn sai).
-        </p>
-        <p>
-          Giống như cho điểm bài thi — IoU ≥ 0.5 thường được coi là{" "}
-          <strong>&quot;đạt&quot;</strong> trong phát hiện đối tượng!
-        </p>
-      </AnalogyCard>
+      <LessonSection step={1} totalSteps={8} label="Dự đoán">
+        <PredictionGate
+          question="Mô hình dự đoán bounding box cho chiếc xe máy. Box dự đoán lệch sang phải một chút so với box thật. Làm sao đo mức chính xác?"
+          options={[
+            "Đo khoảng cách giữa 2 tâm box",
+            "Tính tỷ lệ diện tích GIAO NHAU chia cho diện tích HỢP",
+            "So sánh chiều rộng 2 box",
+          ]}
+          correct={1}
+          explanation="IoU = Giao / Hợp. Đo cả VỊ TRÍ lẫn KÍCH THƯỚC: 2 box trùng hoàn hảo -> IoU = 1.0, không chạm nhau -> IoU = 0. Đơn giản, trực giác, và scale-invariant!"
+        >
 
-      <VisualizationSection>
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Box A - X: {boxAx}
-              </label>
-              <input
-                type="range"
-                min="20"
-                max="350"
-                value={boxAx}
-                onChange={(e) => setBoxAx(parseInt(e.target.value))}
-                className="w-full accent-blue-500"
-              />
+      <LessonSection step={2} totalSteps={8} label="Khám phá">
+        <VisualizationSection>
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-muted">Box A - X: {boxAx}</label>
+                <input type="range" min="20" max="350" value={boxAx}
+                  onChange={(e) => setBoxAx(parseInt(e.target.value))} className="w-full accent-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-muted">Box A - Y: {boxAy}</label>
+                <input type="range" min="10" max="200" value={boxAy}
+                  onChange={(e) => setBoxAy(parseInt(e.target.value))} className="w-full accent-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-muted">Box B - X: {boxBx}</label>
+                <input type="range" min="20" max="350" value={boxBx}
+                  onChange={(e) => setBoxBx(parseInt(e.target.value))} className="w-full accent-green-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-muted">Box B - Y: {boxBy}</label>
+                <input type="range" min="10" max="200" value={boxBy}
+                  onChange={(e) => setBoxBy(parseInt(e.target.value))} className="w-full accent-green-500" />
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Box A - Y: {boxAy}
-              </label>
-              <input
-                type="range"
-                min="10"
-                max="200"
-                value={boxAy}
-                onChange={(e) => setBoxAy(parseInt(e.target.value))}
-                className="w-full accent-blue-500"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Box B - X: {boxBx}
-              </label>
-              <input
-                type="range"
-                min="20"
-                max="350"
-                value={boxBx}
-                onChange={(e) => setBoxBx(parseInt(e.target.value))}
-                className="w-full accent-green-500"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-muted">
-                Box B - Y: {boxBy}
-              </label>
-              <input
-                type="range"
-                min="10"
-                max="200"
-                value={boxBy}
-                onChange={(e) => setBoxBy(parseInt(e.target.value))}
-                className="w-full accent-green-500"
-              />
-            </div>
+
+            <svg viewBox="0 0 600 320" className="w-full max-w-2xl mx-auto">
+              <rect x="0" y="0" width="600" height="320" rx="8" fill="#0f172a" />
+              {(() => {
+                const x1 = Math.max(boxAx, boxBx);
+                const y1 = Math.max(boxAy, boxBy);
+                const x2 = Math.min(boxAx + boxW, boxBx + boxW);
+                const y2 = Math.min(boxAy + boxH, boxBy + boxH);
+                if (x2 > x1 && y2 > y1) {
+                  return <rect x={x1} y={y1} width={x2 - x1} height={y2 - y1} fill="#f59e0b" opacity={0.5} />;
+                }
+                return null;
+              })()}
+              <rect x={boxAx} y={boxAy} width={boxW} height={boxH}
+                fill="none" stroke="#3b82f6" strokeWidth="2.5" />
+              <text x={boxAx + 5} y={boxAy + 16} fill="#3b82f6" fontSize="11" fontWeight="bold">
+                Ground Truth
+              </text>
+              <rect x={boxBx} y={boxBy} width={boxW} height={boxH}
+                fill="none" stroke="#22c55e" strokeWidth="2.5" strokeDasharray="6,3" />
+              <text x={boxBx + 5} y={boxBy + boxH - 5} fill="#22c55e" fontSize="11" fontWeight="bold">
+                Dự đoán
+              </text>
+
+              <rect x="430" y="10" width="150" height="70" rx="10"
+                fill={iouColor} opacity={0.15} stroke={iouColor} strokeWidth="1.5" />
+              <text x="505" y="35" textAnchor="middle" fill="#94a3b8" fontSize="11">IoU</text>
+              <text x="505" y="60" textAnchor="middle" fill={iouColor} fontSize="22" fontWeight="bold">
+                {iou.toFixed(3)}
+              </text>
+              <text x="505" y="75" textAnchor="middle" fill={iouColor} fontSize="10">{iouLabel}</text>
+              <text x="300" y="300" textAnchor="middle" fill="#64748b" fontSize="11">
+                IoU = Diện tích giao (vàng) / Diện tích hợp
+              </text>
+            </svg>
+            <p className="text-sm text-muted text-center">
+              Kéo thanh trượt để di chuyển 2 box. Vùng vàng = diện tích giao nhau.
+            </p>
           </div>
+        </VisualizationSection>
+      </LessonSection>
 
-          <svg viewBox="0 0 600 320" className="w-full max-w-2xl mx-auto">
-            <rect x="0" y="0" width="600" height="320" rx="8" fill="#0f172a" />
+      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            IoU đo <strong>cả vị trí lẫn kích thước</strong>{" "}trong 1 con số duy nhất (0 đến 1).
+            Giống như <strong>cho điểm bài thi</strong>: IoU &ge; 0.5 là <strong>đạt</strong> (PASCAL VOC),
+            IoU &ge; 0.75 là <strong>giỏi</strong>, IoU = 1.0 là <strong>hoàn hảo</strong>.
+            Scale-invariant: box lớn hay nhỏ đều đánh giá công bằng!
+          </p>
+        </AhaMoment>
+      </LessonSection>
 
-            {/* Intersection */}
-            {(() => {
-              const x1 = Math.max(boxAx, boxBx);
-              const y1 = Math.max(boxAy, boxBy);
-              const x2 = Math.min(boxAx + boxW, boxBx + boxW);
-              const y2 = Math.min(boxAy + boxH, boxBy + boxH);
-              if (x2 > x1 && y2 > y1) {
-                return (
-                  <rect
-                    x={x1}
-                    y={y1}
-                    width={x2 - x1}
-                    height={y2 - y1}
-                    fill="#f59e0b"
-                    opacity={0.5}
-                  />
-                );
-              }
-              return null;
-            })()}
+      <LessonSection step={4} totalSteps={8} label="Thử thách">
+        <InlineChallenge
+          question="2 box không giao nhau (IoU = 0). Nếu dùng IoU làm loss function, gradient = 0 -- mô hình không học được! Giải pháp?"
+          options={[
+            "Dùng L1 loss thay vì IoU loss",
+            "Dùng GIoU: xét thêm diện tích bao đóng (enclosing box) để có gradient khác 0",
+            "Tăng learning rate lên rất cao",
+          ]}
+          correct={1}
+          explanation="GIoU = IoU - (diện tích phần thừa trong enclosing box) / (diện tích enclosing box). Khi 2 box xa nhau, GIoU < 0 nhưng gradient khác 0 -- mô hình biết cần kéo box lại gần nhau!"
+        />
+      </LessonSection>
 
-            {/* Box A */}
-            <rect
-              x={boxAx}
-              y={boxAy}
-              width={boxW}
-              height={boxH}
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="2.5"
-            />
-            <text x={boxAx + 5} y={boxAy + 16} fill="#3b82f6" fontSize="11" fontWeight="bold">
-              Ground Truth (A)
-            </text>
+      <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
+        <ExplanationSection>
+          <p>
+            <strong>IoU (Intersection over Union)</strong>{" "}là chỉ số nền tảng trong phát hiện đối tượng,
+            đo mức trùng khớp giữa box dự đoán và ground truth.
+          </p>
 
-            {/* Box B */}
-            <rect
-              x={boxBx}
-              y={boxBy}
-              width={boxW}
-              height={boxH}
-              fill="none"
-              stroke="#22c55e"
-              strokeWidth="2.5"
-              strokeDasharray="6,3"
-            />
-            <text x={boxBx + 5} y={boxBy + boxH - 5} fill="#22c55e" fontSize="11" fontWeight="bold">
-              Dự đoán (B)
-            </text>
+          <p><strong>Công thức:</strong></p>
+          <LaTeX block>{"\\text{IoU} = \\frac{|A \\cap B|}{|A \\cup B|} = \\frac{\\text{Intersection}}{\\text{Union}}"}</LaTeX>
 
-            {/* IoU display */}
-            <rect
-              x="430"
-              y="10"
-              width="150"
-              height="70"
-              rx="10"
-              fill={iouColor}
-              opacity={0.15}
-              stroke={iouColor}
-              strokeWidth="1.5"
-            />
-            <text x="505" y="35" textAnchor="middle" fill="#94a3b8" fontSize="11">
-              IoU
-            </text>
-            <text x="505" y="60" textAnchor="middle" fill={iouColor} fontSize="22" fontWeight="bold">
-              {iou.toFixed(3)}
-            </text>
-            <text x="505" y="75" textAnchor="middle" fill={iouColor} fontSize="10">
-              {iouLabel}
-            </text>
+          <Callout variant="insight" title="Các biến thể IoU dùng làm Loss">
+            <div className="space-y-2 text-sm">
+              <p><strong>GIoU:</strong>{" "}<LaTeX>{"\\text{GIoU} = \\text{IoU} - \\frac{|C \\setminus (A \\cup B)|}{|C|}"}</LaTeX> -- C là enclosing box. Gradient khác 0 khi 2 box không giao.</p>
+              <p><strong>DIoU:</strong>{" "}Thêm penalty khoảng cách tâm: <LaTeX>{"\\text{DIoU} = \\text{IoU} - \\frac{d^2}{c^2}"}</LaTeX></p>
+              <p><strong>CIoU:</strong>{" "}Thêm penalty tỷ lệ khung hình (aspect ratio) -- tốt nhất cho regression.</p>
+            </div>
+          </Callout>
 
-            {/* Formula */}
-            <text x="300" y="300" textAnchor="middle" fill="#64748b" fontSize="11">
-              IoU = Diện tích giao (vàng) / Diện tích hợp = {iou.toFixed(3)}
-            </text>
-          </svg>
-        </div>
-      </VisualizationSection>
+          <Callout variant="warning" title="IoU trong đánh giá mô hình">
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><strong>PASCAL VOC:</strong>{" "}mAP@0.5 -- detection đúng khi IoU &ge; 0.5</li>
+              <li><strong>COCO:</strong>{" "}mAP@[0.5:0.95] -- trung bình 10 ngưỡng, khắt khe hơn</li>
+              <li><strong>Trong NMS:</strong>{" "}Loại box có IoU &gt; ngưỡng với box tốt nhất</li>
+              <li><strong>Trong huấn luyện:</strong>{" "}Gán anchor với ground truth có IoU cao nhất</li>
+            </ul>
+          </Callout>
 
-      <ExplanationSection>
-        <p>
-          <strong>IoU (Intersection over Union)</strong> là chỉ số đo mức độ
-          trùng khớp giữa bounding box dự đoán và ground truth. Giá trị từ 0
-          (không trùng) đến 1 (trùng hoàn toàn).
-        </p>
-        <p>Cách tính và ứng dụng:</p>
-        <ol className="list-decimal list-inside space-y-2 pl-2">
-          <li>
-            <strong>Công thức:</strong> IoU = Diện tích giao / Diện tích hợp
-            = Intersection / Union.
-          </li>
-          <li>
-            <strong>Ngưỡng phổ biến:</strong> IoU ≥ 0.5 (PASCAL VOC),
-            IoU ≥ 0.5:0.95 (COCO mAP) để đánh giá dự đoán đúng/sai.
-          </li>
-          <li>
-            <strong>Trong NMS:</strong> Loại bỏ box có IoU cao với box tốt nhất
-            để giảm trùng lặp.
-          </li>
-          <li>
-            <strong>Trong huấn luyện:</strong> Gán anchor box với ground truth
-            có IoU cao nhất để tạo positive samples.
-          </li>
-        </ol>
-        <p>
-          Biến thể: <strong>GIoU</strong> (Generalized IoU) xử lý trường hợp
-          không giao nhau; <strong>DIoU</strong> thêm khoảng cách tâm;{" "}
-          <strong>CIoU</strong> thêm tỷ lệ khung hình — đều dùng làm loss
-          function tốt hơn L1/L2.
-        </p>
-      </ExplanationSection>
+          <CodeBlock language="python" title="Tính IoU và các biến thể">
+{`import torch
+from torchvision.ops import (
+    box_iou,
+    generalized_box_iou,
+    distance_box_iou,
+    complete_box_iou,
+)
+
+# Boxes format: [x1, y1, x2, y2]
+gt = torch.tensor([[100, 60, 280, 200]], dtype=torch.float)
+pred = torch.tensor([[200, 100, 380, 240]], dtype=torch.float)
+
+# IoU cơ bản
+iou = box_iou(gt, pred)
+print(f"IoU: {iou.item():.3f}")
+
+# GIoU (dùng làm loss)
+giou = generalized_box_iou(gt, pred)
+giou_loss = 1 - giou  # loss = 1 - GIoU
+
+# DIoU (xét khoảng cách tâm)
+diou = distance_box_iou(gt, pred)
+
+# CIoU (xét cả aspect ratio)
+ciou = complete_box_iou(gt, pred)
+ciou_loss = 1 - ciou  # loss tốt nhất cho box regression`}
+          </CodeBlock>
+        </ExplanationSection>
+      </LessonSection>
+
+      <LessonSection step={6} totalSteps={8} label="Tóm tắt">
+        <MiniSummary points={[
+          "IoU = Giao / Hợp: đo mức trùng khớp 2 box trong 1 con số (0 = không chạm, 1 = trùng hoàn hảo)",
+          "Ngưỡng phổ biến: IoU >= 0.5 (đạt), >= 0.75 (giỏi). COCO dùng trung bình 10 ngưỡng",
+          "GIoU, DIoU, CIoU: biến thể dùng làm loss function, cho gradient khác 0 khi box xa nhau",
+          "IoU dùng trong: đánh giá mAP, NMS, gán anchor, loss function -- chỉ số nền tảng nhất",
+        ]} />
+      </LessonSection>
+
+      <LessonSection step={7} totalSteps={8} label="Kiểm tra">
+        <QuizSection questions={QUIZ} />
+      </LessonSection>
+        </PredictionGate>
+      </LessonSection>
     </>
   );
 }
