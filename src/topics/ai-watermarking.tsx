@@ -141,7 +141,7 @@ export default function AIWatermarkingTopic() {
                 <rect x={15} y={30} width={540 * greenRatio} height={18} fill="#22c55e" rx={4} />
                 <text x={285} y={44} textAnchor="middle" fontSize={10} fill="white" fontWeight="bold">Tỷ lệ green: {Math.round(greenRatio * 100)}% (kỳ vọng ngẫu nhiên: 50%)</text>
                 <text x={285} y={73} textAnchor="middle" fontSize={11} fill={greenRatio > 0.6 ? "#166534" : "#64748b"} fontWeight="bold">
-                  {greenRatio > 0.6 ? "Ty le green cao bat thuong -> CO watermark (do AI viet)" : "Ty le binh thuong -> Kho xac dinh"}
+                  {greenRatio > 0.6 ? "Ty le green cao bat thuong → CO watermark (do AI viet)" : "Ty le binh thuong → Kho xac dinh"}
                 </text>
               </g>
             </svg>

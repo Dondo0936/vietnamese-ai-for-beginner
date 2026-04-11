@@ -145,6 +145,7 @@ export default function HallucinationTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={6} label="Thử đoán">
+      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="AI nói: 'Theo nghiên cứu của ĐH Stanford năm 2024, uống 3 ly cà phê mỗi ngày giúp tăng IQ 15 điểm.' Bạn tin không?"
         options={[
@@ -162,7 +163,10 @@ export default function HallucinationTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ KHÁM PHÁ — Trò chơi phát hiện ảo giác ━━━ */}
+      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -292,7 +296,10 @@ export default function HallucinationTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         AI không <em>cố tình</em>{" "}nói dối — nó chỉ chọn từ &quot;nghe hợp lý nhất&quot; dựa trên
@@ -302,7 +309,10 @@ export default function HallucinationTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={4} totalSteps={6} label="Thử thách">
       <LessonSection step={4} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="Bạn dùng AI để viết bài nghiên cứu. AI trích dẫn: 'Theo Smith et al. (2023), Nature, vol. 612, pp. 45-52.' Bước tiếp theo đúng nhất là gì?"
@@ -318,7 +328,10 @@ export default function HallucinationTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={5} totalSteps={6} label="Giải thích">
       <LessonSection step={5} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -380,7 +393,10 @@ qa_chain = RetrievalQA.from_chain_type(
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ TÓM TẮT ━━━ */}
+      <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <LessonSection step={6} totalSteps={6} label="Tổng kết">
       <MiniSummary
         points={[
@@ -393,6 +409,7 @@ qa_chain = RetrievalQA.from_chain_type(
 
       {/* ━━━ KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
       </LessonSection>
     </>
   );

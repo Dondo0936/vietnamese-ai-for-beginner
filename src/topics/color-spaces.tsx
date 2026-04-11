@@ -71,7 +71,7 @@ const QUIZ: QuizQuestion[] = [
       "Không mất gì",
     ],
     correct: 1,
-    explanation: "Grayscale giữ nguyên cấu trúc (cạnh, kết cấu, hình dạng) nhưng bỏ thông tin màu. Giảm từ 3 kênh -> 1 kênh, tính toán nhanh hơn 3 lần. Phù hợp cho edge detection, OCR.",
+    explanation: "Grayscale giữ nguyên cấu trúc (cạnh, kết cấu, hình dạng) nhưng bỏ thông tin màu. Giảm từ 3 kênh → 1 kênh, tính toán nhanh hơn 3 lần. Phù hợp cho edge detection, OCR.",
   },
 ];
 

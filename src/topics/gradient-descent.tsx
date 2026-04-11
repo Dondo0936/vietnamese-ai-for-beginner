@@ -11,7 +11,7 @@ import {
   Callout,
   MiniSummary,
   CodeBlock,
-} from "@/components/interactive";
+  LessonSection,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";

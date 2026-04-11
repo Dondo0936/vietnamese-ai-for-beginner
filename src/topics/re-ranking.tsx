@@ -45,7 +45,7 @@ const QUIZ: QuizQuestion[] = [
       "Re-ranking chỉ thêm kết quả mới",
     ],
     correct: 1,
-    explanation: "Bi-Encoder (stage 1) encode riêng query và doc -> bỏ lỡ sự tương tác chi tiết. Cross-Encoder encode CÙNG LÚC -> nắm bắt sự liên quan chính xác hơn. Thứ tự có thể thay đổi hoàn toàn!",
+    explanation: "Bi-Encoder (stage 1) encode riêng query và doc → bỏ lỡ sự tương tác chi tiết. Cross-Encoder encode CÙNG LÚC → nắm bắt sự liên quan chính xác hơn. Thứ tự có thể thay đổi hoàn toàn!",
   },
   {
     question: "Cohere Rerank API nhận input gì và trả output gì?",
@@ -84,7 +84,7 @@ export default function ReRankingTopic() {
               <rect x="20" y="30" width="190" height="260" rx="12" fill="#1e293b" stroke="#3b82f6" strokeWidth="1.5" />
               <text x="115" y="55" textAnchor="middle" fill="#3b82f6" fontSize="12" fontWeight="bold">Stage 1: Retrieval</text>
               <text x="115" y="70" textAnchor="middle" fill="#64748b" fontSize="9">(Bi-Encoder / BM25)</text>
-              <text x="115" y="85" textAnchor="middle" fill="#64748b" fontSize="8">10M docs -> top 50</text>
+              <text x="115" y="85" textAnchor="middle" fill="#64748b" fontSize="8">10M docs → top 50</text>
 
               {["Tài liệu A (0.85)", "Tài liệu B (0.78)", "Tài liệu C (0.72)", "Tài liệu D (0.65)", "Tài liệu E (0.60)"].map((d, i) => (
                 <g key={i}>
@@ -102,11 +102,11 @@ export default function ReRankingTopic() {
               <text x="365" y="90" textAnchor="middle" fill="#64748b" fontSize="9">(Cross-Encoder)</text>
 
               {[
-                { d: "Q + A -> 0.92", c: "#22c55e" },
-                { d: "Q + B -> 0.45", c: "#94a3b8" },
-                { d: "Q + C -> 0.88", c: "#22c55e" },
-                { d: "Q + D -> 0.31", c: "#64748b" },
-                { d: "Q + E -> 0.76", c: "#94a3b8" },
+                { d: "Q + A → 0.92", c: "#22c55e" },
+                { d: "Q + B → 0.45", c: "#94a3b8" },
+                { d: "Q + C → 0.88", c: "#22c55e" },
+                { d: "Q + D → 0.31", c: "#64748b" },
+                { d: "Q + E → 0.76", c: "#94a3b8" },
               ].map((item, i) => (
                 <g key={i}>
                   <rect x="280" y={100 + i * 30} width="170" height="24" rx="5" fill="#334155" />
@@ -131,7 +131,7 @@ export default function ReRankingTopic() {
               ))}
 
               <text x="595" y="255" textAnchor="middle" fill="#64748b" fontSize="8">
-                B: 2nd -> 4th, C: 3rd -> 2nd
+                B: 2nd → 4th, C: 3rd → 2nd
               </text>
 
               <defs>
@@ -144,11 +144,11 @@ export default function ReRankingTopic() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="rounded-lg bg-background/50 border border-blue-500/30 p-3">
                 <p className="text-sm font-semibold text-blue-400">Bi-Encoder (Stage 1)</p>
-                <p className="text-xs text-muted">Encode query va doc RIENG RE. So sanh vector. Nhanh (ms). 10M -> top 50.</p>
+                <p className="text-xs text-muted">Encode query va doc RIENG RE. So sanh vector. Nhanh (ms). 10M → top 50.</p>
               </div>
               <div className="rounded-lg bg-background/50 border border-yellow-500/30 p-3">
                 <p className="text-sm font-semibold text-yellow-400">Cross-Encoder (Stage 2)</p>
-                <p className="text-xs text-muted">Encode CUNG LUC (query, doc). Chinh xac hon nhieu. Cham (10ms/cap). Top 50 -> re-rank.</p>
+                <p className="text-xs text-muted">Encode CUNG LUC (query, doc). Chinh xac hon nhieu. Cham (10ms/cap). Top 50 → re-rank.</p>
               </div>
             </div>
           </div>
@@ -240,7 +240,7 @@ pairs = [
 ]
 scores = model.predict(pairs)
 # scores: [0.92, 0.03, 0.88]
-# Sort theo score -> kết quả re-ranked`}
+# Sort theo score → kết quả re-ranked`}
           </CodeBlock>
         </ExplanationSection>
       </LessonSection>

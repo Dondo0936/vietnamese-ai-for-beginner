@@ -80,6 +80,7 @@ export default function KVCacheTopic() {
     <>
       {/* ━━━ HOOK ━━━ */}
       <LessonSection step={1} totalSteps={6} label="Thử đoán">
+      <LessonSection step={1} totalSteps={6} label="Thử đoán">
       <PredictionGate
         question="LLM sinh text từng token một. Khi sinh token thứ 100, nó cần tính attention giữa token 100 với tất cả 99 token trước. Phải tính LẠI attention cho 99 token cũ không?"
         options={[
@@ -97,7 +98,10 @@ export default function KVCacheTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ KHÁM PHÁ — So sánh có/không cache ━━━ */}
+      <LessonSection step={2} totalSteps={6} label="Khám phá">
       <LessonSection step={2} totalSteps={6} label="Khám phá">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-1">
@@ -185,7 +189,10 @@ export default function KVCacheTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={6} label="Khám phá">
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         <strong>KV Cache</strong>{" "}lưu Key và Value đã tính cho mọi token cũ. Khi sinh token mới,
@@ -195,7 +202,10 @@ export default function KVCacheTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ ĐI SÂU — Cách KV Cache hoạt động ━━━ */}
+      <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
       <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
@@ -252,7 +262,10 @@ export default function KVCacheTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ THỬ THÁCH ━━━ */}
+      <LessonSection step={5} totalSteps={6} label="Thử thách">
       <LessonSection step={5} totalSteps={6} label="Thử thách">
       <InlineChallenge
         question="KV Cache tăng dần mỗi token → tốn bộ nhớ. Context 200K token sẽ tốn cache rất lớn. Giải pháp nào được dùng phổ biến?"
@@ -268,7 +281,10 @@ export default function KVCacheTopic() {
 
             </LessonSection>
 
+      </LessonSection>
+
 {/* ━━━ GIẢI THÍCH ━━━ */}
+      <LessonSection step={6} totalSteps={6} label="Giải thích">
       <LessonSection step={6} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
@@ -319,6 +335,7 @@ for token in generated_tokens:
       />
 
       <QuizSection questions={quizQuestions} />
+      </LessonSection>
       </LessonSection>
     </>
   );

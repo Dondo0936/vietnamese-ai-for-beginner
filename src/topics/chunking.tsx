@@ -69,7 +69,7 @@ const QUIZ: QuizQuestion[] = [
       "Semantic chunking không cần embedding",
     ],
     correct: 0,
-    explanation: "Semantic chunking: embed từng câu, khi cosine similarity giữa 2 câu liên tiếp giảm mạnh (chủ đề thay đổi) -> cắt chunk. Giữ nguyên ý nghĩa hoàn chỉnh thay vì cắt cơ học!",
+    explanation: "Semantic chunking: embed từng câu, khi cosine similarity giữa 2 câu liên tiếp giảm mạnh (chủ đề thay đổi) → cắt chunk. Giữ nguyên ý nghĩa hoàn chỉnh thay vì cắt cơ học!",
   },
 ];
 
