@@ -6,46 +6,46 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "probability-statistics", title: "Probability & Statistics", titleVi: "Xac suat & Thong ke co ban", description: "Phan phoi xac suat, ky vong, phuong sai va dinh ly Bayes — cong cu cot loi cho ML", category: "math-foundations", tags: ["probability", "distribution", "bayes"], difficulty: "beginner", relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "probability-statistics", title: "Probability & Statistics", titleVi: "Xác suất & Thống kê cơ bản", description: "Phân phối xác suất, kỳ vọng, phương sai và định lý Bayes — công cụ cốt lõi cho ML", category: "math-foundations", tags: ["probability", "distribution", "bayes"], difficulty: "beginner", relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"], vizType: "interactive" };
 
 const TOTAL_STEPS = 6;
 export default function ProbabilityStatisticsTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(() => [
-    { question: "Bayes theorem dung cho gi trong ML?", options: ["Tinh trung binh", "CAP NHAT niem tin (belief) khi co bang chung moi: P(benh|trieu chung) = P(trieu chung|benh) * P(benh) / P(trieu chung)", "Tinh variance"], correct: 1, explanation: "Bayes: prior (niem tin ban dau) + evidence (bang chung moi) → posterior (niem tin cap nhat). VD: P(spam|tu 'free') = P('free'|spam) * P(spam) / P('free'). Naive Bayes classifier, Bayesian Neural Networks, va toan bo Bayesian ML dua tren dinh ly nay." },
-    { question: "Normal distribution (Gaussian) quan trong cho ML vi sao?", options: ["Vi dep", "Central Limit Theorem: trung binh cua nhieu random variables → Gaussian. Nhieu hien tuong tu nhien va nhieu ML algorithms (linear regression, GP) gia dinh Gaussian", "Chi dung cho thong ke"], correct: 1, explanation: "CLT: bat ke distribution goc, trung binh cua N samples → Gaussian khi N lon. Linear regression gia dinh: error ~ N(0, sigma^2). Batch Normalization: normalize activations ve ~Gaussian. Weight initialization: sample tu Gaussian. Gaussian la 'default' distribution cua ML." },
-    { question: "MLE (Maximum Likelihood Estimation) va cross-entropy loss co lien quan khong?", options: ["Khong lien quan", "MLE toi da hoa likelihood = toi thieu hoa negative log-likelihood = toi thieu hoa cross-entropy loss. GIONG NHAU!", "Chi giong nhau ve ten"], correct: 1, explanation: "minimize cross-entropy H(p,q) = -sum(p*log(q)) = maximize log-likelihood cua du lieu. Khi p = one-hot label, q = model prediction: CE loss chinh la negative log-likelihood. Day la ly do cross-entropy la default loss cho classification — no chinh la MLE!" },
+    { question: "Bayes theorem dùng cho gì trong ML?", options: ["Tính trung bình", "CẬP NHẬT niềm tin (belief) khi có bằng chứng mới: P(bệnh|triệu chứng) = P(triệu chứng|bệnh) * P(bệnh) / P(triệu chứng)", "Tính variance"], correct: 1, explanation: "Bayes: prior (niềm tin ban đầu) + evidence (bằng chứng mới) → posterior (niềm tin cập nhật). VD: P(spam|từ 'free') = P('free'|spam) * P(spam) / P('free'). Naive Bayes classifier, Bayesian Neural Networks, và toàn bộ Bayesian ML dựa trên định lý này." },
+    { question: "Normal distribution (Gaussian) quan trọng cho ML vì sao?", options: ["Vì đẹp", "Central Limit Theorem: trung bình của nhiều random variables → Gaussian. Nhiều hiện tượng tự nhiên và nhiều ML algorithms (linear regression, GP) giả định Gaussian", "Chỉ dùng cho thống kê"], correct: 1, explanation: "CLT: bất kể distribution gốc, trung bình của N samples → Gaussian khi N lớn. Linear regression giả định: error ~ N(0, sigma^2). Batch Normalization: normalize activations về ~Gaussian. Weight initialization: sample từ Gaussian. Gaussian là 'default' distribution của ML." },
+    { question: "MLE (Maximum Likelihood Estimation) và cross-entropy loss có liên quan không?", options: ["Không liên quan", "MLE tối đa hoá likelihood = tối thiểu hoá negative log-likelihood = tối thiểu hoá cross-entropy loss. GIỐNG NHAU!", "Chỉ giống nhau về tên"], correct: 1, explanation: "minimize cross-entropy H(p,q) = -sum(p*log(q)) = maximize log-likelihood của dữ liệu. Khi p = one-hot label, q = model prediction: CE loss chính là negative log-likelihood. Đây là lý do cross-entropy là default loss cho classification — nó chính là MLE!" },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
-        <PredictionGate question="Email chua tu 'free' va 'money'. La spam hay khong? P(spam)=0.3, P('free'|spam)=0.8, P('free'|ham)=0.1. Dung gi de tinh P(spam|'free')?" options={["Dem so email", "Bayes Theorem: P(spam|free) = P(free|spam)*P(spam) / P(free) = 0.8*0.3 / (0.8*0.3+0.1*0.7) = 0.77", "Doan"]} correct={1} explanation="Bayes cho phep UPDATE xac suat khi co bang chung moi. Truoc khi thay 'free': P(spam)=30%. Sau khi thay 'free': P(spam|free)=77%. Tu 'free' la bang chung manh cho spam. Day la co che cua Naive Bayes classifier — don gian nhung hieu qua cho spam filtering!">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+        <PredictionGate question="Email chứa từ 'free' và 'money'. Là spam hay không? P(spam)=0.3, P('free'|spam)=0.8, P('free'|ham)=0.1. Dùng gì để tính P(spam|'free')?" options={["Đếm số email", "Bayes Theorem: P(spam|free) = P(free|spam)*P(spam) / P(free) = 0.8*0.3 / (0.8*0.3+0.1*0.7) = 0.77", "Đoán"]} correct={1} explanation="Bayes cho phép UPDATE xác suất khi có bằng chứng mới. Trước khi thấy 'free': P(spam)=30%. Sau khi thấy 'free': P(spam|free)=77%. Từ 'free' là bằng chứng mạnh cho spam. Đây là cơ chế của Naive Bayes classifier — đơn giản nhưng hiệu quả cho spam filtering!">
           <p className="text-sm text-muted mt-2">
-            Hay tiep tuc de kham pha xac suat va thong ke trong ML.
+            Hãy tiếp tục để khám phá xác suất và thống kê trong ML.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
-        <AhaMoment><p>Toan bo ML la <strong>xac suat</strong>: Classification = P(class|input). Loss function = <strong>negative log-likelihood</strong>. Regularization = <strong>prior</strong>{" "}(Bayesian). Dropout = <strong>sampling</strong>. GAN = 2 distributions. Diffusion = <strong>adding/removing noise</strong>. Hieu xac suat = hieu TAI SAO ML hoat dong!</p></AhaMoment>
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment><p>Toàn bộ ML là <strong>xác suất</strong>: Classification = P(class|input). Loss function = <strong>negative log-likelihood</strong>. Regularization = <strong>prior</strong>{" "}(Bayesian). Dropout = <strong>sampling</strong>. GAN = 2 distributions. Diffusion = <strong>adding/removing noise</strong>. Hiểu xác suất = hiểu TẠI SAO ML hoạt động!</p></AhaMoment>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thu thach">
-        <InlineChallenge question="Model output: P(cho)=0.7, P(meo)=0.2, P(chim)=0.1. Label that: cho. Cross-entropy loss = ?" options={["-log(0.7) = 0.357", "-log(0.2) = 1.609", "-(0.7*log(0.7) + 0.2*log(0.2) + 0.1*log(0.1))"]} correct={0} explanation="CE voi one-hot label [1,0,0] va prediction [0.7, 0.2, 0.1]: H = -1*log(0.7) - 0*log(0.2) - 0*log(0.1) = -log(0.7) = 0.357. Chi quan tam xac suat cua class DUNG (0.7). Neu model confident hon (0.99) → loss thap hon (-log(0.99) = 0.01). Day la ly do CE loss 'thuong' model confident dung." />
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge question="Model output: P(chó)=0.7, P(mèo)=0.2, P(chim)=0.1. Label thật: chó. Cross-entropy loss = ?" options={["-log(0.7) = 0.357", "-log(0.2) = 1.609", "-(0.7*log(0.7) + 0.2*log(0.2) + 0.1*log(0.1))"]} correct={0} explanation="CE với one-hot label [1,0,0] và prediction [0.7, 0.2, 0.1]: H = -1*log(0.7) - 0*log(0.2) - 0*log(0.1) = -log(0.7) = 0.357. Chỉ quan tâm xác suất của class ĐÚNG (0.7). Nếu model confident hơn (0.99) → loss thấp hơn (-log(0.99) = 0.01). Đây là lý do CE loss 'thưởng' model confident đúng." />
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Probability & Statistics</strong>{" "}la nen tang cua moi thuat toan ML — tu loss function den model architecture.</p>
+          <p><strong>Probability & Statistics</strong>{" "}là nền tảng của mọi thuật toán ML — từ loss function đến model architecture.</p>
           <p><strong>Bayes Theorem:</strong></p>
           <LaTeX block>{"P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)} \\quad \\text{(posterior = likelihood × prior / evidence)}"}</LaTeX>
-          <p><strong>Distributions quan trong:</strong></p>
+          <p><strong>Distributions quan trọng:</strong></p>
           <LaTeX block>{"\\text{Gaussian: } p(x) = \\frac{1}{\\sqrt{2\\pi\\sigma^2}} \\exp\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right)"}</LaTeX>
           <LaTeX block>{"\\text{Bernoulli: } P(X=1) = p, \\quad P(X=0) = 1-p \\quad \\text{(binary outcomes)}"}</LaTeX>
           <p><strong>Cross-Entropy Loss = Negative Log-Likelihood:</strong></p>
           <LaTeX block>{"H(p, q) = -\\sum_x p(x) \\log q(x) \\quad \\text{(p = true, q = predicted)}"}</LaTeX>
-          <Callout variant="tip" title="MLE = Minimize CE">Maximize likelihood = minimize negative log-likelihood = minimize cross-entropy. Day la ly do TOAN BO classification models dung CE loss — no chinh la MLE duoi dang khac!</Callout>
-          <CodeBlock language="python" title="Xac suat trong ML">{`import numpy as np
+          <Callout variant="tip" title="MLE = Minimize CE">Maximize likelihood = minimize negative log-likelihood = minimize cross-entropy. Đây là lý do TOÀN BỘ classification models dùng CE loss — nó chính là MLE dưới dạng khác!</Callout>
+          <CodeBlock language="python" title="Xác suất trong ML">{`import numpy as np
 from scipy import stats
 
 # Bayes Theorem: P(spam|'free')
@@ -57,7 +57,7 @@ p_spam_given_free = p_free_given_spam * p_spam / p_free
 print(f"P(spam|'free') = {p_spam_given_free:.2f}")  # 0.77
 
 # Cross-Entropy Loss
-y_true = np.array([1, 0, 0])  # One-hot: cho
+y_true = np.array([1, 0, 0])  # One-hot: chó
 y_pred = np.array([0.7, 0.2, 0.1])  # Predictions
 ce_loss = -np.sum(y_true * np.log(y_pred))
 print(f"CE Loss = {ce_loss:.3f}")  # 0.357
@@ -68,11 +68,11 @@ pdf = stats.norm.pdf(x, loc=0, scale=1)  # mean=0, std=1`}</CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tom tat">
-        <MiniSummary points={["Bayes Theorem: cap nhat xac suat khi co bang chung moi. Core cua Naive Bayes, Bayesian ML.", "Gaussian (Normal): default distribution trong ML. CLT: trung binh nhieu samples → Gaussian.", "Cross-Entropy = Negative Log-Likelihood = MLE. Default loss cho classification.", "Expectation E[X] = trung binh. Variance Var[X] = do phan tan. Bias-Variance trade-off.", "Toan bo ML la xac suat: model = P(output|input). Training = tim params toi uu hoa likelihood."]} />
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+        <MiniSummary points={["Bayes Theorem: cập nhật xác suất khi có bằng chứng mới. Core của Naive Bayes, Bayesian ML.", "Gaussian (Normal): default distribution trong ML. CLT: trung bình nhiều samples → Gaussian.", "Cross-Entropy = Negative Log-Likelihood = MLE. Default loss cho classification.", "Expectation E[X] = trung bình. Variance Var[X] = độ phân tán. Bias-Variance trade-off.", "Toàn bộ ML là xác suất: model = P(output|input). Training = tìm params tối ưu hoá likelihood."]} />
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>

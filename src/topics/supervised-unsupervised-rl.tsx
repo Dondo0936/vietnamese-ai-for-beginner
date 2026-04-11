@@ -14,9 +14,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "supervised-unsupervised-rl",
   title: "Learning Paradigms",
-  titleVi: "Ba mo hinh hoc — Co giam sat, Khong giam sat, Tang cuong",
+  titleVi: "Ba mô hình học — Có giám sát, Không giám sát, Tăng cường",
   description:
-    "Ba cach tiep can co ban trong hoc may: hoc tu nhan, hoc tu cau truc, va hoc tu phan thuong.",
+    "Ba cách tiếp cận cơ bản trong học máy: học từ nhãn, học từ cấu trúc, và học từ phần thưởng.",
   category: "foundations",
   tags: ["supervised", "unsupervised", "reinforcement-learning"],
   difficulty: "beginner",
@@ -25,9 +25,9 @@ export const metadata: TopicMeta = {
 };
 
 const PARADIGMS = [
-  { name: "Co giam sat", english: "Supervised", icon: "GV", color: "#3b82f6", analogy: "Hoc voi giao vien: co dap an dung", example: "Phan loai email spam/khong spam" },
-  { name: "Khong giam sat", english: "Unsupervised", icon: "TH", color: "#22c55e", analogy: "Tu hoc: tim pattern an trong du lieu", example: "Nhom khach hang tuong tu" },
-  { name: "Tang cuong", english: "Reinforcement", icon: "TC", color: "#f59e0b", analogy: "Hoc bang thu-va-sai: nhan thuong/phat", example: "Grab Routing toi uu duong di" },
+  { name: "Có giám sát", english: "Supervised", icon: "GV", color: "#3b82f6", analogy: "Học với giáo viên: có đáp án đúng", example: "Phân loại email spam/không spam" },
+  { name: "Không giám sát", english: "Unsupervised", icon: "TH", color: "#22c55e", analogy: "Tự học: tìm pattern ẩn trong dữ liệu", example: "Nhóm khách hàng tương tự" },
+  { name: "Tăng cường", english: "Reinforcement", icon: "TC", color: "#f59e0b", analogy: "Học bằng thử-và-sai: nhận thưởng/phạt", example: "Grab Routing tối ưu đường đi" },
 ];
 
 const TOTAL_STEPS = 7;
@@ -38,55 +38,55 @@ export default function LearningParadigmsTopic() {
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
-      question: "Ban co 10.000 anh cho va meo DA DUOC GAN NHAN. Mo hinh hoc nao phu hop?",
+      question: "Bạn có 10.000 ảnh chó và mèo ĐÃ ĐƯỢC GẮN NHÃN. Mô hình học nào phù hợp?",
       options: [
-        "Supervised Learning — co nhan (cho/meo) cho moi anh → hoc mapping input→label",
-        "Unsupervised Learning — tim nhom tu nhien",
-        "Reinforcement Learning — hoc bang thu-va-sai",
+        "Supervised Learning — có nhãn (chó/mèo) cho mỗi ảnh → học mapping input→label",
+        "Unsupervised Learning — tìm nhóm tự nhiên",
+        "Reinforcement Learning — học bằng thử-và-sai",
       ],
       correct: 0,
-      explanation: "Co data + co nhan (labels) → Supervised Learning. Model hoc: anh nay co dac diem gi → label la 'cho' hay 'meo'. Giong hoc voi giao vien: giao vien cho dap an dung, hoc sinh hoc cach tu tra loi.",
+      explanation: "Có data + có nhãn (labels) → Supervised Learning. Model học: ảnh này có đặc điểm gì → label là 'chó' hay 'mèo'. Giống học với giáo viên: giáo viên cho đáp án đúng, học sinh học cách tự trả lời.",
     },
     {
-      question: "Shopee muon nhom 50 trieu user thanh cac phan khuc khach hang. KHONG co nhan san. Dung gi?",
+      question: "Shopee muốn nhóm 50 triệu user thành các phân khúc khách hàng. KHÔNG có nhãn sẵn. Dùng gì?",
       options: [
         "Supervised Learning",
-        "Unsupervised Learning — clustering tim nhom tu nhien dua tren hanh vi mua sam",
+        "Unsupervised Learning — clustering tìm nhóm tự nhiên dựa trên hành vi mua sắm",
         "Reinforcement Learning",
       ],
       correct: 1,
-      explanation: "Khong co nhan (khong biet truoc co bao nhieu nhom) → Unsupervised. K-means hoac DBSCAN phan nhom user dua tren features: tan suat mua, gio mua, gia trung binh, danh muc. Giong tu sap xep do choi thanh nhom ma khong co huong dan.",
+      explanation: "Không có nhãn (không biết trước có bao nhiêu nhóm) → Unsupervised. K-means hoặc DBSCAN phân nhóm user dựa trên features: tần suất mua, giờ mua, giá trung bình, danh mục. Giống tự sắp xếp đồ chơi thành nhóm mà không có hướng dẫn.",
     },
     {
-      question: "Grab can toi uu duong di cho tai xe. Moi qua duong mat thoi gian khac nhau, khong biet truoc. Dung gi?",
+      question: "Grab cần tối ưu đường đi cho tài xế. Mỗi quá đường mất thời gian khác nhau, không biết trước. Dùng gì?",
       options: [
-        "Supervised Learning — hoc tu data duong di cu",
-        "Unsupervised Learning — nhom cac tuyen duong",
-        "Reinforcement Learning — thu nhieu tuyen, nhan phan thuong (thoi gian ngan) hoac phat (ket xe), tu toi uu",
+        "Supervised Learning — học từ data đường đi cũ",
+        "Unsupervised Learning — nhóm các tuyến đường",
+        "Reinforcement Learning — thử nhiều tuyến, nhận phần thưởng (thời gian ngắn) hoặc phạt (kẹt xe), tự tối ưu",
       ],
       correct: 2,
-      explanation: "Moi truong thay doi (giao thong), khong co 'dap an dung' co dinh → RL. Agent (tai xe) thu hanh dong (re trai/phai), nhan reward (nhanh = +, cham = -), dan dan hoc chinh sach toi uu. Grab dung RL de routing 30 trieu chuyen/ngay tai Viet Nam!",
+      explanation: "Môi trường thay đổi (giao thông), không có 'đáp án đúng' cố định → RL. Agent (tài xế) thử hành động (rẽ trái/phải), nhận reward (nhanh = +, chậm = -), dần dần học chính sách tối ưu. Grab dùng RL để routing 30 triệu chuyến/ngày tại Việt Nam!",
     },
   ], []);
 
   return (
     <>
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Tre em hoc noi bang cach nao? Bo me noi 'day la con cho' (chi vao cho), tre nghe nhieu lan roi tu nhan biet. Day giong paradigm ML nao?"
+          question="Trẻ em học nói bằng cách nào? Bố mẹ nói 'đây là con chó' (chỉ vào chó), trẻ nghe nhiều lần rồi tự nhận biết. Đây giống paradigm ML nào?"
           options={[
-            "Supervised Learning — co 'nhan' (bo me noi ten) cho moi 'input' (hinh anh/am thanh)",
-            "Unsupervised Learning — tre tu hoc khong can chi dan",
-            "Reinforcement Learning — tre thu-va-sai",
+            "Supervised Learning — có 'nhãn' (bố mẹ nói tên) cho mỗi 'input' (hình ảnh/âm thanh)",
+            "Unsupervised Learning — trẻ tự học không cần chỉ dẫn",
+            "Reinforcement Learning — trẻ thử-và-sai",
           ]}
           correct={0}
-          explanation="Dung! Bo me = giao vien, 'con cho' = label, hinh anh cho = input. Tre hoc mapping: thay con vat 4 chan + sung → 'cho'. Day chinh la Supervised Learning! Nhung tre con hoc kieu khac nua: tu nhom do vat (unsupervised) va hoc di bang thu-va-nga (RL)."
+          explanation="Đúng! Bố mẹ = giáo viên, 'con chó' = label, hình ảnh chó = input. Trẻ học mapping: thấy con vật 4 chân + sủng → 'chó'. Đây chính là Supervised Learning! Nhưng trẻ còn học kiểu khác nữa: tự nhóm đồ vật (unsupervised) và học đi bằng thử-và-ngã (RL)."
         >
 
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Kham pha">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Chon <strong className="text-foreground">paradigm</strong>{" "}
-          de xem su khac biet giua 3 cach hoc co ban.
+          Chọn <strong className="text-foreground">paradigm</strong>{" "}
+          để xem sự khác biệt giữa 3 cách học cơ bản.
         </p>
         <VisualizationSection>
           <div className="space-y-4">
@@ -103,100 +103,100 @@ export default function LearningParadigmsTopic() {
                 {paradigm.name} ({paradigm.english})
               </text>
               <text x={300} y={50} textAnchor="middle" fill="#94a3b8" fontSize={9}>{paradigm.analogy}</text>
-              <text x={300} y={85} textAnchor="middle" fill="#e2e8f0" fontSize={10}>Vi du: {paradigm.example}</text>
+              <text x={300} y={85} textAnchor="middle" fill="#e2e8f0" fontSize={10}>Ví dụ: {paradigm.example}</text>
               <text x={300} y={115} textAnchor="middle" fill="#64748b" fontSize={9}>
-                {activeParadigm === 0 ? "Input + Label → Hoc mapping" : activeParadigm === 1 ? "Chi co Input → Tim cau truc an" : "Action + Reward → Hoc chinh sach toi uu"}
+                {activeParadigm === 0 ? "Input + Label → Học mapping" : activeParadigm === 1 ? "Chỉ có Input → Tìm cấu trúc ẩn" : "Action + Reward → Học chính sách tối ưu"}
               </text>
             </svg>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoanh khac Aha">
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            3 paradigms giong <strong>3 cach hoc cua con nguoi</strong>:
-            Supervised = hoc voi giao vien (co dap an).
-            Unsupervised = tu kham pha (sap xep do choi).
-            RL = hoc bang thu-va-sai (tap di xe dap — nga thi biet sai).
-            Moi bai toan can paradigm phu hop — <strong>khong co cach nao tot nhat cho MOI truong hop!</strong>
+            3 paradigms giống <strong>3 cách học của con người</strong>:
+            Supervised = học với giáo viên (có đáp án).
+            Unsupervised = tự khám phá (sắp xếp đồ chơi).
+            RL = học bằng thử-và-sai (tập đi xe đạp — ngã thì biết sai).
+            Mỗi bài toán cần paradigm phù hợp — <strong>không có cách nào tốt nhất cho MỌI trường hợp!</strong>
           </p>
         </AhaMoment>
       </LessonSection>
 
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thu thach">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="FPT AI can phan loai email noi bo thanh 5 phong ban. Co 500 email DA GAN NHAN phong ban + 50.000 email CHUA GAN. Dung phuong phap nao?"
+          question="FPT AI cần phân loại email nội bộ thành 5 phòng ban. Có 500 email ĐÃ GẮN NHÃN phòng ban + 50.000 email CHƯA GẮN. Dùng phương pháp nào?"
           options={[
-            "Chi dung Supervised tren 500 email co nhan",
-            "Semi-supervised: train tren 500 co nhan, dung model de pseudo-label 50K chua gan, train lai",
-            "Chi dung Unsupervised tren 50K",
+            "Chỉ dùng Supervised trên 500 email có nhãn",
+            "Semi-supervised: train trên 500 có nhãn, dùng model để pseudo-label 50K chưa gắn, train lại",
+            "Chỉ dùng Unsupervised trên 50K",
           ]}
           correct={1}
-          explanation="Semi-supervised = ket hop tot nhat cua hai the gioi! 500 labeled data qua it cho supervised (5 classes). Semi-supervised: (1) train initial model tren 500, (2) model du doan 50K, (3) lay confident predictions lam pseudo-labels, (4) retrain. Accuracy tang 15-25%."
+          explanation="Semi-supervised = kết hợp tốt nhất của hai thế giới! 500 labeled data quá ít cho supervised (5 classes). Semi-supervised: (1) train initial model trên 500, (2) model dự đoán 50K, (3) lấy confident predictions làm pseudo-labels, (4) retrain. Accuracy tăng 15-25%."
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ly thuyet">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            <strong>Ba paradigm hoc may co ban</strong>{" "}
-            dinh nghia cach model hoc tu du lieu — moi paradigm phu hop cho loai bai toan khac nhau.
+            <strong>Ba paradigm học máy cơ bản</strong>{" "}
+            định nghĩa cách model học từ dữ liệu — mỗi paradigm phù hợp cho loại bài toán khác nhau.
           </p>
           <p><strong>1. Supervised Learning:</strong></p>
-          <LaTeX block>{"\\min_\\theta \\sum_{i=1}^{N} \\mathcal{L}(f_\\theta(x_i), y_i) \\quad \\text{(co input } x_i \\text{ va label } y_i \\text{)}"}</LaTeX>
+          <LaTeX block>{"\\min_\\theta \\sum_{i=1}^{N} \\mathcal{L}(f_\\theta(x_i), y_i) \\quad \\text{(có input } x_i \\text{ và label } y_i \\text{)}"}</LaTeX>
 
           <p><strong>2. Unsupervised Learning:</strong></p>
-          <LaTeX block>{"\\min_\\theta \\mathcal{L}(f_\\theta(X)) \\quad \\text{(chi co input } X \\text{, khong co label)}"}</LaTeX>
+          <LaTeX block>{"\\min_\\theta \\mathcal{L}(f_\\theta(X)) \\quad \\text{(chỉ có input } X \\text{, không có label)}"}</LaTeX>
 
           <p><strong>3. Reinforcement Learning:</strong></p>
-          <LaTeX block>{"\\max_\\pi \\mathbb{E}\\left[\\sum_{t=0}^{T} \\gamma^t r(s_t, a_t)\\right] \\quad \\text{(toi uu chinh sach } \\pi \\text{ theo reward)}"}</LaTeX>
+          <LaTeX block>{"\\max_\\pi \\mathbb{E}\\left[\\sum_{t=0}^{T} \\gamma^t r(s_t, a_t)\\right] \\quad \\text{(tối ưu chính sách } \\pi \\text{ theo reward)}"}</LaTeX>
 
           <Callout variant="tip" title="Self-Supervised Learning">
-            Xu huong hien dai: Self-Supervised = tu tao labels tu data. GPT: mask token tiep theo, tu du doan. BERT: mask random tokens, tu dien. Ket hop uu diem Supervised (co 'label') va Unsupervised (khong can human annotation). Day la cach GPT-4, Claude, Llama duoc train!
+            Xu hướng hiện đại: Self-Supervised = tự tạo labels từ data. GPT: mask token tiếp theo, tự dự đoán. BERT: mask random tokens, tự điền. Kết hợp ưu điểm Supervised (có 'label') và Unsupervised (không cần human annotation). Đây là cách GPT-4, Claude, Llama được train!
           </Callout>
 
-          <CodeBlock language="python" title="3 paradigms voi scikit-learn">
+          <CodeBlock language="python" title="3 paradigms với scikit-learn">
 {`from sklearn.linear_model import LogisticRegression
 from sklearn.cluster import KMeans
-# RL: dung gymnasium (khong co trong sklearn)
+# RL: dùng gymnasium (không có trong sklearn)
 
-# 1. SUPERVISED: Phan loai email spam
+# 1. SUPERVISED: Phân loại email spam
 clf = LogisticRegression()
 clf.fit(X_train, y_train)  # X=features, y=spam/not_spam
 pred = clf.predict(X_test)
 
-# 2. UNSUPERVISED: Nhom khach hang
+# 2. UNSUPERVISED: Nhóm khách hàng
 kmeans = KMeans(n_clusters=5)
-clusters = kmeans.fit_predict(X_customers)  # Chi co X, khong co y
-# Khach hang duoc chia thanh 5 nhom tu nhien
+clusters = kmeans.fit_predict(X_customers)  # Chỉ có X, không có y
+# Khách hàng được chia thành 5 nhóm tự nhiên
 
 # 3. REINFORCEMENT LEARNING (Grab routing concept)
 import gymnasium as gym
 env = gym.make("Taxi-v3")
 state, _ = env.reset()
 for _ in range(100):
-    action = agent.choose(state)      # Chon huong di
+    action = agent.choose(state)      # Chọn hướng đi
     next_state, reward, done, _, _ = env.step(action)
     agent.learn(state, action, reward, next_state)
     state = next_state
     if done: break
-# Agent hoc: hanh dong nao → reward cao (den dich nhanh)`}
+# Agent học: hành động nào → reward cao (đến đích nhanh)`}
           </CodeBlock>
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tom tat">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Supervised: co input + label → hoc mapping. Phan loai, hoi quy, du doan.",
-          "Unsupervised: chi co input → tim cau truc an. Clustering, dimensionality reduction.",
-          "RL: action + reward → hoc chinh sach toi uu. Game, routing, robot, RLHF.",
-          "Self-supervised (xu huong moi): tu tao labels tu data — cach GPT/Claude duoc train.",
-          "Chon paradigm theo bai toan: co nhan → supervised. Khong nhan → unsupervised. Moi truong dong → RL.",
+          "Supervised: có input + label → học mapping. Phân loại, hồi quy, dự đoán.",
+          "Unsupervised: chỉ có input → tìm cấu trúc ẩn. Clustering, dimensionality reduction.",
+          "RL: action + reward → học chính sách tối ưu. Game, routing, robot, RLHF.",
+          "Self-supervised (xu hướng mới): tự tạo labels từ data — cách GPT/Claude được train.",
+          "Chọn paradigm theo bài toán: có nhãn → supervised. Không nhãn → unsupervised. Môi trường động → RL.",
         ]} />
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
