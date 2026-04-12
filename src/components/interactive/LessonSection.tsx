@@ -21,19 +21,14 @@ export default function LessonSection({
 }: LessonSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const [visible, setVisible] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    // When the user prefers reduced motion, skip the scroll-triggered reveal
-    // entirely — content should be visible immediately on mount. Without this
-    // the `animate` prop stays at { opacity: 0 } until the IntersectionObserver
-    // fires, and some browsers with reduced-motion honor framer-motion's
-    // transition-skip in a way that leaves the element stuck at the initial
-    // state (audit found sections 3–8 rendering as empty blocks).
-    if (reduceMotion) {
-      setVisible(true);
-      return;
-    }
+    // Under reduced-motion we bypass the IntersectionObserver entirely and
+    // let the derived `shouldShow` below force the content visible on mount.
+    // This addresses the audit finding that sections 3–8 rendered as empty
+    // blocks for users with prefers-reduced-motion: reduce.
+    if (reduceMotion) return;
 
     const el = ref.current;
     if (!el) return;
@@ -41,7 +36,7 @@ export default function LessonSection({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          setRevealed(true);
           observer.disconnect();
         }
       },
@@ -51,6 +46,10 @@ export default function LessonSection({
     observer.observe(el);
     return () => observer.disconnect();
   }, [reduceMotion]);
+
+  // Reduced-motion users always see content. Non-reduced users only see it
+  // once the IntersectionObserver has flipped `revealed` on scroll-in.
+  const shouldShow = reduceMotion || revealed;
 
   return (
     <div ref={ref} className="lesson-section scroll-mt-20 my-10 first:mt-0">
@@ -78,7 +77,7 @@ export default function LessonSection({
       {/* Content with scroll-triggered animation (skipped under reduced motion) */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-        animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+        animate={shouldShow ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: "easeOut" }}
       >
         {children}
