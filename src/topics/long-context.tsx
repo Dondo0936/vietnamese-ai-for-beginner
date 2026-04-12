@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -67,6 +67,15 @@ export default function LongContextTopic() {
       ],
       correct: 1,
       explanation: "Long context: đơn giản, không cần index, tốt cho 1 tài liệu. RAG: scale tới hàng tỷ documents, chi phí per-query thấp (chỉ lấy top-K chunks), freshness (update index không cần re-process). Rule of thumb: < 200K tokens → long context. > 1M → RAG. Ở giữa → tuỳ use case.",
+    },
+    {
+      type: "fill-blank",
+      question: "Các model long context như Gemini 1.5 có thể xử lý tới {blank} tokens, nhưng chi phí attention vẫn tăng theo {blank} với độ dài chuỗi.",
+      blanks: [
+        { answer: "1 million", accept: ["1m", "1,000,000", "1 triệu", "million tokens", "một triệu"] },
+        { answer: "O(N^2)", accept: ["quadratic", "n^2", "bình phương"] },
+      ],
+      explanation: "Gemini 1.5 Pro và Claude (2025) hỗ trợ 1 million tokens context. Tuy nhiên, self-attention vẫn có complexity O(N^2), khiến KV cache và FLOPs trở thành bottleneck — đây là lý do cần Flash Attention, GQA, state-space models.",
     },
   ], []);
 
@@ -150,7 +159,13 @@ export default function LongContextTopic() {
         <ExplanationSection>
           <p>
             <strong>Long Context</strong>{" "}
-            là khả năng model xử lý hàng trăm nghìn đến hàng triệu tokens trong 1 lần — cho phép phân tích tài liệu dài, codebase, video.
+            là khả năng model xử lý hàng trăm nghìn đến hàng triệu tokens trong 1 lần — cho phép phân tích tài liệu dài, codebase, video. Khái niệm mở rộng của{" "}
+            <TopicLink slug="context-window">context window</TopicLink>{" "}
+            truyền thống, thường đi kèm kiến trúc thay thế như{" "}
+            <TopicLink slug="state-space-models">state-space models</TopicLink>{" "}
+            và tối ưu{" "}
+            <TopicLink slug="kv-cache">KV cache</TopicLink>{" "}
+            để kiểm soát chi phí bộ nhớ.
           </p>
           <p><strong>Attention complexity:</strong></p>
           <LaTeX block>{"\\text{Attention FLOPs} = O(N^2 \\cdot d) \\quad \\text{KV Cache} = O(N \\cdot d \\cdot L)"}</LaTeX>

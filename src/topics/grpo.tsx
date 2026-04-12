@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -62,6 +62,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Chuẩn hoá nhóm biến reward tuyệt đối thành tương đối: phản hồi tốt hơn trung bình → advantage > 0 → tăng xác suất. Kém hơn trung bình → advantage < 0 → giảm xác suất.",
+  },
+  {
+    type: "fill-blank",
+    question: "GRPO là viết tắt của Group {blank} Policy Optimization — phương pháp được DeepSeek dùng để huấn luyện mô hình {blank} R1, đạt kết quả ngang OpenAI o1 cho bài toán toán/code.",
+    blanks: [
+      { answer: "Relative", accept: ["relative", "tương đối", "relative policy"] },
+      { answer: "reasoning", accept: ["suy luận", "lập luận", "reasoning model"] },
+    ],
+    explanation: "GRPO (Group Relative Policy Optimization) chuẩn hoá advantage tương đối trong nhóm mẫu sinh ra cho cùng một prompt, thay vì dùng reward model tuyệt đối. DeepSeek-R1 dùng GRPO với verifiable reward (kiểm tra đáp án toán/code) để huấn luyện khả năng reasoning.",
   },
 ];
 
@@ -233,7 +242,12 @@ export default function GRPOTopic() {
         <ExplanationSection>
           <p>
             <strong>GRPO</strong>{" "}(Group Relative Policy Optimization, DeepSeek 2024)
-            tối ưu chính sách dựa trên so sánh tương đối trong nhóm:
+            tối ưu chính sách dựa trên so sánh tương đối trong nhóm — là bước tiến sau{" "}
+            <TopicLink slug="rlhf">RLHF</TopicLink>{" "}
+            và{" "}
+            <TopicLink slug="dpo">DPO</TopicLink>, đặc biệt mạnh cho{" "}
+            <TopicLink slug="reasoning-models">mô hình reasoning</TopicLink>{" "}
+            như DeepSeek-R1:
           </p>
 
           <p>Với mỗi prompt x, sinh G phản hồi. Tính advantage:</p>

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Cosine similarity = cos(theta) giữa 2 vector. Bằng 1 nếu cùng hướng (rất giống), 0 nếu vuông góc, -1 nếu ngược hướng. Không phụ thuộc độ dài vector!",
+  },
+  {
+    type: "fill-blank",
+    question: "Trên tập tỷ vector, brute-force quá chậm nên vector DB dùng thuật toán {blank} (Approximate Nearest Neighbor). Phổ biến nhất là {blank}, xây đồ thị phân tầng cho tìm kiếm O(log N).",
+    blanks: [
+      { answer: "ANN", accept: ["Approximate Nearest Neighbor", "approximate nearest neighbor"] },
+      { answer: "HNSW", accept: ["Hierarchical Navigable Small World", "hnsw"] },
+    ],
+    explanation: "ANN chấp nhận giảm chút recall (95-99%) để tăng tốc hàng nghìn lần. HNSW (Hierarchical Navigable Small World) xây đồ thị nhiều tầng: tầng cao nhảy xa, tầng thấp tinh chỉnh — nhanh và chính xác, được Pinecone, Qdrant, Weaviate dùng mặc định.",
   },
 ];
 
@@ -188,8 +197,8 @@ export default function VectorDatabasesTopic() {
       <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
-            <strong>Vector Database</strong>{" "}là hệ thống lưu trữ chuyên biệt cho dữ liệu dạng vector nhúng (embedding),
-            hỗ trợ tìm kiếm tương tự (similarity search) trên quy mô lớn.
+            <strong>Vector Database</strong>{" "}là hệ thống lưu trữ chuyên biệt cho dữ liệu dạng vector nhúng sinh ra từ <TopicLink slug="embedding-model">embedding model</TopicLink>,
+            hỗ trợ <TopicLink slug="semantic-search">semantic search</TopicLink> (similarity search) trên quy mô lớn. Một thư viện tiêu biểu là <TopicLink slug="faiss">FAISS</TopicLink>.
           </p>
 
           <p><strong>Cosine Similarity</strong>{" "}-- phép đo phổ biến nhất:</p>

@@ -2,7 +2,7 @@
 
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -53,6 +53,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Instant-NGP (NVIDIA, 2022) thay positional encoding bằng multiresolution hash table + tiny MLP. Kết hợp với CUDA kernels tối ưu → train trong vài giây, render realtime. 3D Gaussian Splatting (2023) còn nhanh hơn nữa.",
+  },
+  {
+    type: "fill-blank",
+    question: "Để render một pixel, NeRF bắn một {blank} từ camera xuyên qua cảnh {blank}D, lấy mẫu nhiều điểm dọc theo tia rồi tích phân màu và mật độ để tạo pixel cuối.",
+    blanks: [
+      { answer: "ray", accept: ["tia", "Ray", "tia nhìn"] },
+      { answer: "3", accept: ["ba"] },
+    ],
+    explanation: "NeRF dùng volume rendering: mỗi pixel tương ứng với một ray (tia) bắn qua cảnh 3D. MLP được hỏi tại 64-192 điểm mẫu dọc tia → trả về (rgb, sigma), sau đó tích phân theo công thức T_i · (1 - exp(-σ_i·δ_i)) · c_i để ra màu pixel.",
   },
 ];
 
@@ -219,7 +228,8 @@ export default function NerfTopic() {
         <ExplanationSection>
           <p>
             <strong>NeRF</strong>{" "}
-            (Mildenhall et al., 2020) biểu diễn cảnh 3D bằng continuous function mã hóa trong MLP.
+            (Mildenhall et al., 2020) biểu diễn cảnh 3D bằng continuous function mã hóa trong MLP — khác với cách mô hình sinh như{" "}
+            <TopicLink slug="vae">VAE</TopicLink>{" "}nén cảnh vào latent vector rời rạc, NeRF giữ cảnh như một hàm liên tục trên không gian 3D.
           </p>
           <LaTeX block>{String.raw`F_\Theta: (\mathbf{x}, \mathbf{d}) \rightarrow (\mathbf{c}, \sigma)`}</LaTeX>
           <p className="text-sm text-muted mt-1">

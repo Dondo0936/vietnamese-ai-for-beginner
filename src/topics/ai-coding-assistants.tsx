@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -67,6 +67,15 @@ export default function AICodingAssistantsTopic() {
       ],
       correct: 1,
       explanation: "AI sinh code nhanh nhưng KHÔNG đảm bảo secure. Nghiên cứu chỉ ra: AI-generated code có tỷ lệ vulnerabilities tương đương human code, nhưng developers tin tưởng AI nên ÍT REVIEW hơn. Cần: security linting, code review, và hiểu rõ code trước khi merge.",
+    },
+    {
+      type: "fill-blank",
+      question: "Gen 1 (2021) của AI coding assistant chỉ dừng ở mức {blank} từng dòng, còn Gen 4 (2025) hoạt động như một {blank} tự đọc codebase, plan, implement, test và commit.",
+      blanks: [
+        { answer: "autocomplete", accept: ["tự hoàn thành", "auto-complete", "gợi ý"] },
+        { answer: "agent", accept: ["agentic", "tác tử", "đồng nghiệp"] },
+      ],
+      explanation: "Tiến hóa: autocomplete (gợi ý dòng) → chat → inline edit → agent. Agent tự chủ thực hiện chuỗi hành động (đọc file, sửa code, chạy test) thay vì chỉ trả lời 1 lượt — đây là khác biệt lớn nhất giữa Gen 1 và Gen 4.",
     },
   ], []);
 
@@ -163,7 +172,7 @@ export default function AICodingAssistantsTopic() {
             <li><strong>Gen 1 - Autocomplete (2021):</strong>{" "}Gợi ý hoàn thành code. Copilot, TabNine</li>
             <li><strong>Gen 2 - Chat (2023):</strong>{" "}Hỏi-đáp, sinh code block, giải thích. ChatGPT, Claude</li>
             <li><strong>Gen 3 - Inline Edit (2024):</strong>{" "}Sửa code trực tiếp trong editor. Cursor, Copilot Edit</li>
-            <li><strong>Gen 4 - Agentic (2025):</strong>{" "}Tự động multi-step: plan → code → test → fix. Claude Code, Devin</li>
+            <li><strong>Gen 4 - Agentic (2025):</strong>{" "}Tự động multi-step theo <TopicLink slug="agentic-workflows">agentic workflows</TopicLink>: plan → code → test → fix. Dùng <TopicLink slug="function-calling">function calling</TopicLink>{" "}để đọc file, chạy test, commit. Claude Code, Devin.</li>
           </ul>
 
           <Callout variant="tip" title="Năng suất thực tế">
@@ -173,7 +182,7 @@ export default function AICodingAssistantsTopic() {
           <p><strong>Best practices:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Review mọi dòng:</strong>{" "}AI sinh code nhanh nhưng có thể có bugs, security issues</li>
-            <li><strong>Context là vua:</strong>{" "}Càng nhiều context (codebase, docs, tests) → AI càng chính xác</li>
+            <li><strong>Context là vua:</strong>{" "}Càng nhiều context (codebase, docs, tests) → AI càng chính xác. Học cách viết <TopicLink slug="prompt-engineering">prompt</TopicLink>{" "}rõ ràng là kỹ năng quan trọng nhất.</li>
             <li><strong>Iterative:</strong>{" "}Sinh → review → refine → test. Không expect perfect code từ lần đầu</li>
             <li><strong>Security first:</strong>{" "}Chạy Semgrep/CodeQL trên AI-generated code trước khi merge</li>
           </ul>

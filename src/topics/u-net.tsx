@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -54,6 +54,16 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Decoder dùng transposed conv (learnable upsampling) hoặc bilinear upsample + conv để tăng kích thước. Nhưng upsampling mất chi tiết → skip connections concat feature map từ encoder cùng cấp → khôi phục chi tiết pixel-level!",
+  },
+  {
+    type: "fill-blank",
+    question: "U-Net có hình chữ U gồm một nhánh {blank} để nén ảnh xuống bottleneck, một nhánh {blank} để phóng to trở lại, và các {blank} nối ngang để giữ chi tiết không gian.",
+    blanks: [
+      { answer: "encoder", accept: ["Encoder", "mã hóa"] },
+      { answer: "decoder", accept: ["Decoder", "giải mã"] },
+      { answer: "skip connections", accept: ["skip connection", "kết nối tắt", "skip"] },
+    ],
+    explanation: "Encoder nén dần độ phân giải (giảm kích thước, tăng channel). Decoder làm ngược lại. Skip connections concat feature map cùng cấp từ encoder sang decoder — giúp decoder có cả thông tin toàn cục (bottleneck) lẫn chi tiết cục bộ (encoder feature).",
   },
 ];
 
@@ -202,7 +212,9 @@ export default function UNetTopic() {
         <ExplanationSection>
           <p>
             <strong>U-Net</strong>{" "}
-            (Ronneberger et al., 2015) là kiến trúc encoder-decoder hình chữ U, ban đầu cho phân đoạn ảnh y tế, nay dùng rộng rãi trong diffusion models.
+            (Ronneberger et al., 2015) là kiến trúc encoder-decoder hình chữ U dựa trên{" "}
+            <TopicLink slug="cnn">CNN</TopicLink>, ban đầu cho phân đoạn ảnh y tế, nay là backbone chính của{" "}
+            <TopicLink slug="diffusion-models">diffusion models</TopicLink>{" "}như Stable Diffusion.
           </p>
           <CodeBlock language="python" title="unet_simple.py">
 {`import torch.nn as nn

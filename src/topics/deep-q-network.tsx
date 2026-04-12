@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -15,6 +15,15 @@ export default function DeepQNetworkTopic() {
     { question: "DQN khác Q-Learning ở điểm nào?", options: ["Dùng GPU", "Thay Q-TABLE bằng NEURAL NETWORK: input = state (pixels/features), output = Q(s,a) cho mỗi action. Xử lý được state lớn (hình ảnh)", "Không có epsilon-greedy"], correct: 1, explanation: "Q-table: bảng số, chỉ cho state/action nhỏ (4x4 grid = 16 states). DQN: neural network nhận bất kỳ state nào (210x160 pixels Atari) và output Q values. Tổng quát hoá cho states chưa thấy bao giờ!" },
     { question: "Experience Replay giải quyết vấn đề gì?", options: ["Tăng tốc training", "Phá bỏ tương quan thời gian giữa samples. Lưu transitions vào buffer, sample RANDOM để train → data i.i.d., ổn định hơn", "Giảm memory"], correct: 1, explanation: "Không có replay: train trên data tương quan (s1→s2→s3 liên tiếp) → neural network bất ổn. Replay buffer lưu 1M transitions, sample random batch 32 → phân phối đa dạng, ổn định. Giống ôn thi: đọc lại bài cũ random thay vì chỉ đọc bài mới nhất." },
     { question: "Target network trong DQN làm gì?", options: ["Tăng tốc inference", "Dùng COPY CŨ của network để tính target Q, cập nhật định kỳ. Tránh 'moving target' → training ổn định hơn", "Giảm overfitting"], correct: 1, explanation: "Không có target network: đang tối ưu Q với target = r + gamma * max Q (cùng network) → target THAY ĐỔI mỗi step → bất ổn (chase moving target). Target network: freeze copy, cập nhật mỗi 10K steps → target ổn định → training ổn định." },
+    {
+      type: "fill-blank",
+      question: "DQN ổn định nhờ hai đổi mới: {blank} network (bản sao đóng băng để tính target Q) và {blank} buffer (lưu transitions, sample random để phá correlation).",
+      blanks: [
+        { answer: "target", accept: ["muc tieu"] },
+        { answer: "replay", accept: ["experience replay", "experience-replay"] },
+      ],
+      explanation: "Target network giúp tránh 'moving target problem' khi tính TD error, còn replay buffer phá vỡ tương quan thời gian giữa các sample, giúp mạng nơ-ron hội tụ ổn định.",
+    },
   ], []);
 
   return (
@@ -42,7 +51,10 @@ export default function DeepQNetworkTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách"><InlineChallenge question="Replay buffer của bạn có 1M transitions. Mỗi step train trên batch 32 random samples. Tại sao random thay vì sample mới nhất?" options={["Random nhanh hơn", "Mới nhất = correlated (s1→s2→s3 từ 1 episode) → gradient bất ổn. Random phá correlation → i.i.d. samples → training ổn định", "Không có lý do"]} correct={1} explanation="Data từ 1 episode rất correlated (agent đi 1 đường). Train trên correlated data → network bị bias về experience gần nhất, quên kinh nghiệm cũ. Random sampling: mỗi batch có transitions đa dạng từ nhiều episodes → gradient ổn định, học đều." /></LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết"><ExplanationSection>
-        <p><strong>Deep Q-Network (DQN)</strong>{" "}thay Q-table bằng neural network, xử lý state lớn (pixels). 3 innovations chính:</p>
+        <p><strong>Deep Q-Network (DQN)</strong>{" "}thay Q-table của{" "}
+          <TopicLink slug="q-learning">Q-Learning</TopicLink>{" "}
+          bằng neural network, xử lý state lớn (pixels). 3 innovations chính. Khi action space liên tục hoặc cần học policy trực tiếp, ta chuyển sang{" "}
+          <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>.</p>
         <p><strong>Loss function:</strong></p>
         <LaTeX block>{"\\mathcal{L}(\\theta) = \\mathbb{E}\\left[\\left(r + \\gamma \\max_{a'} Q(s', a'; \\theta^-) - Q(s, a; \\theta)\\right)^2\\right]"}</LaTeX>
         <p><LaTeX>{"\\theta^-"}</LaTeX> = target network weights (cập nhật định kỳ).</p>

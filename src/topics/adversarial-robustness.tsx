@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -69,6 +69,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Adversarial training: mỗi batch, tạo adversarial examples bằng FGSM/PGD, rồi train mô hình trên CẢ ảnh gốc VÀ ảnh adversarial. Mô hình 'miễn dịch' dần với nhiễu đối kháng. Trade-off: accuracy trên dữ liệu sạch có thể giảm nhẹ.",
+  },
+  {
+    type: "fill-blank",
+    question: "Một {blank} example được tạo bằng cách thêm {blank} nhỏ (mắt thường không thấy) vào input theo hướng gradient của loss.",
+    blanks: [
+      { answer: "adversarial", accept: ["đối kháng"] },
+      { answer: "perturbation", accept: ["nhiễu", "noise"] },
+    ],
+    explanation: "Adversarial example = input gốc cộng thêm perturbation nhỏ theo sign của gradient — đủ để lừa mô hình nhưng không thay đổi nhận thức của con người.",
   },
 ];
 
@@ -153,7 +162,11 @@ export default function AdversarialRobustnessTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Adversarial Robustness</strong>{" "} là khả năng AI duy trì dự đoán chính xác khi đầu vào bị thao túng có chủ đích.</p>
+          <p><strong>Adversarial Robustness</strong>{" "} là khả năng AI duy trì dự đoán chính xác khi đầu vào bị thao túng có chủ đích. Khái niệm liên quan chặt chẽ tới{" "}
+            <TopicLink slug="red-teaming">red-teaming</TopicLink>{" "}
+            (tìm lỗ hổng chủ động) và{" "}
+            <TopicLink slug="guardrails">guardrails</TopicLink>{" "}
+            (hàng rào bảo vệ đầu ra).</p>
           <Callout variant="insight" title="FGSM — Tấn công nhanh nhất">
             <p>Fast Gradient Sign Method tạo adversarial example chỉ trong 1 bước:</p>
           </Callout>

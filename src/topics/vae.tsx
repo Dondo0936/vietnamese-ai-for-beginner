@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -67,6 +67,17 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Backprop không thể đi qua phép 'sampling' (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường. ε chỉ là constant random — không cần gradient!",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "VAE học biểu diễn trong {blank} (không gian tiềm ẩn) có cấu trúc xác suất. Loss gồm reconstruction + {blank} divergence — ép phân phối encoder gần N(0, 1).",
+    blanks: [
+      { answer: "latent space", accept: ["latent", "không gian tiềm ẩn", "latent-space"] },
+      { answer: "KL", accept: ["kl", "Kullback-Leibler", "Kullback Leibler"] },
+    ],
+    explanation:
+      "VAE nén dữ liệu vào latent space có cấu trúc liên tục — mỗi ảnh thành (μ, σ) thay vì 1 điểm cố định. KL divergence D_KL(q(z|x) || p(z)) ép phân phối encoder gần N(0, I), đảm bảo latent space mượt và có thể sinh dữ liệu mới.",
   },
 ];
 
@@ -131,7 +142,16 @@ export default function VaeTopic() {
           ]}
           correct={1}
           explanation="Autoencoder thường: mỗi ảnh → 1 điểm cô lập. Giữa các điểm là 'sa mạc' → output vô nghĩa. VAE giải quyết bằng cách biến mỗi điểm thành 'đám mây' (phân bố Gaussian) → các đám mây overlap → nội suy mượt!"
-        />
+        >
+          <p className="mt-4 text-sm text-muted leading-relaxed">
+            VAE là bước tiến hoá của{" "}
+            <TopicLink slug="autoencoder">autoencoder</TopicLink>{" "}
+            thành mô hình sinh, đi trước{" "}
+            <TopicLink slug="gan">GAN</TopicLink>{" "}
+            và{" "}
+            <TopicLink slug="diffusion-models">diffusion models</TopicLink>.
+          </p>
+        </PredictionGate>
       </LessonSection>
 
       {/* ═══ Step 2: DISCOVER — Interactive Latent Space ═══ */}

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare,
+  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -73,6 +73,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "GloVe muốn: w_i · w_j ≈ log(X_ij). Nếu phở và ngon đồng xuất hiện nhiều (X=8), tích vô hướng vector của chúng phải lớn → vector gần nhau.",
+  },
+  {
+    type: "fill-blank",
+    question: "GloVe học embedding bằng cách phân tích ma trận {blank} (co-occurrence) trên toàn bộ corpus, tận dụng thống kê {blank} thay vì chỉ nhìn cửa sổ cục bộ như Word2Vec.",
+    blanks: [
+      { answer: "đồng xuất hiện", accept: ["co-occurrence", "cooccurrence", "đồng xuất hiện"] },
+      { answer: "toàn cục", accept: ["global", "toàn cục", "global co-occurrence"] },
+    ],
+    explanation: "GloVe = Global Vectors. Bước 1: đếm X_ij (số lần từ i, j xuất hiện gần nhau) trên toàn bộ corpus. Bước 2: tối ưu để w_i · w_j ≈ log(X_ij). Nhờ thống kê toàn cục, GloVe ổn định hơn và dễ song song hóa.",
   },
 ];
 
@@ -275,7 +284,9 @@ export default function GloveTopic() {
         <ExplanationSection>
           <p>
             <strong>GloVe</strong>{" "}
-            (Global Vectors for Word Representation, Stanford 2014) kết hợp hai trường phái: phân tích ma trận toàn cục (như LSA) và học cửa sổ cục bộ (như Word2Vec).
+            (Global Vectors for Word Representation, Stanford 2014) kết hợp hai trường phái: phân tích ma trận toàn cục (như LSA) và học cửa sổ cục bộ (như{" "}
+            <TopicLink slug="word2vec">Word2Vec</TopicLink>) — cả hai đều tạo ra{" "}
+            <TopicLink slug="word-embeddings">word embeddings</TopicLink>{" "}chất lượng cao.
           </p>
 
           <Callout variant="insight" title="Hàm mất mát GloVe">

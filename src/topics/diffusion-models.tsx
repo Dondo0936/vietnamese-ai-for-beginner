@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge,
   SliderGroup, SplitView, Callout, MiniSummary, CodeBlock,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -212,6 +212,17 @@ const quizQuestions: QuizQuestion[] = [
     explanation:
       "Stable Diffusion mã hóa ảnh thành latent vector nhỏ hơn (ví dụ 64x64 thay vì 512x512), thực hiện diffusion trên không gian đó, rồi decode lại. Nhanh hơn rất nhiều.",
   },
+  {
+    type: "fill-blank",
+    question:
+      "Diffusion Model có 2 quá trình: forward thêm {blank} Gaussian dần dần (x → nhiễu thuần), và reverse dùng U-Net để {blank} (nhiễu → ảnh mới).",
+    blanks: [
+      { answer: "nhiễu", accept: ["noise", "Nhiễu", "Noise"] },
+      { answer: "khử nhiễu", accept: ["denoise", "denoising", "Khử nhiễu", "Denoise"] },
+    ],
+    explanation:
+      "Forward process: thêm nhiễu Gaussian theo β_t schedule cho đến khi x_T ≈ N(0, I). Reverse process: U-Net học dự đoán ε (nhiễu đã thêm) tại mỗi timestep, rồi khử nhiễu (denoise) ngược từ nhiễu thuần về ảnh. Loss đơn giản: ||ε - ε_θ(x_t, t)||².",
+  },
 ];
 
 /* ═══════════════════════════════════════════════════ */
@@ -359,7 +370,7 @@ export default function DiffusionModelsTopic() {
                     Bắt đầu đếm ngược 10s
                   </button>
                 ) : (
-                  <span className="text-sm font-mono text-accent">
+                  <span className="text-sm tabular-nums text-accent">
                     Còn {paintCountdown}s...
                   </span>
                 )}
@@ -551,6 +562,11 @@ export default function DiffusionModelsTopic() {
       </VisualizationSection>
 
       {/* ═══ STEP 5: CHALLENGE ═══════════════════════ */}
+      <p className="text-sm text-muted leading-relaxed mb-3">
+        So với{" "}
+        <TopicLink slug="gan">GAN</TopicLink>{" "}
+        chỉ cần 1 forward pass, diffusion phải lặp lại nhiều bước — đây là trade-off giữa chất lượng và tốc độ.
+      </p>
       <InlineChallenge
         question="Diffusion model cần bao nhiêu bước để sinh 1 ảnh? (Thường là 20-1000 bước khử nhiễu). Đây là ưu điểm hay nhược điểm so với GAN?"
         options={[
@@ -605,7 +621,9 @@ Trong đó:
           Conditional Generation — Từ văn bản thành ảnh
         </h3>
         <p>
-          Để sinh ảnh theo mô tả (text-to-image), ta thêm <strong>text embedding</strong>{" "}
+          Để sinh ảnh theo mô tả (
+          <TopicLink slug="text-to-image">text-to-image</TopicLink>
+          ), ta thêm <strong>text embedding</strong>{" "}
           (từ CLIP hoặc T5) làm đầu vào cho U-Net qua cơ chế <strong>cross-attention</strong>.
           U-Net nhận cả <em>x_t</em> lẫn text embedding, nên học khử nhiễu theo hướng
           phù hợp với mô tả.
@@ -635,7 +653,9 @@ image = decode(x)  # nếu dùng latent diffusion`}
         <Callout variant="insight" title="Stable Diffusion = Latent Diffusion">
           Stable Diffusion không khuếch tán trực tiếp trên pixel (512x512x3 = 786.432 chiều).
           Thay vào đó, ảnh được <strong>mã hóa thành latent vector</strong> nhỏ hơn (64x64x4)
-          bằng VAE, rồi diffusion xảy ra trên latent space. Khi xong, VAE decode ngược lại thành ảnh.
+          bằng{" "}
+          <TopicLink slug="vae">VAE</TopicLink>
+          , rồi diffusion xảy ra trên latent space. Khi xong, VAE decode ngược lại thành ảnh.
           Kết quả: nhanh hơn ~50 lần mà chất lượng tương đương!
         </Callout>
       </ExplanationSection>

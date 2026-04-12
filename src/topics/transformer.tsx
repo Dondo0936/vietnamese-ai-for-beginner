@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge, BuildUp,
   MiniSummary, CodeBlock, Callout, CollapsibleDetail,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -60,6 +60,16 @@ const quizQuestions: QuizQuestion[] = [
     options: ["Kích thước mô hình khác nhau", "Dùng phần khác nhau: encoder-only, decoder-only, encoder-decoder", "Ngôn ngữ lập trình khác nhau", "Hàm loss khác nhau"],
     correct: 1,
     explanation: "BERT dùng encoder-only (hiểu ngữ cảnh hai chiều), GPT dùng decoder-only (sinh text từ trái sang phải), T5 dùng encoder-decoder (biến đổi text-to-text).",
+  },
+  {
+    type: "fill-blank",
+    question: "Transformer thay thế hồi quy bằng cơ chế {blank}, kiến trúc gốc gồm hai khối {blank}, và thay vì tuần tự như RNN, mọi token được xử lý theo kiểu {blank} trên GPU.",
+    blanks: [
+      { answer: "self-attention", accept: ["self attention", "tự chú ý"] },
+      { answer: "encoder-decoder", accept: ["encoder decoder", "mã hoá-giải mã"] },
+      { answer: "song song", accept: ["parallel", "parallel computation"] },
+    ],
+    explanation: "Self-attention cho mỗi token nhìn mọi token khác cùng lúc. Kiến trúc gốc (Vaswani 2017) gồm encoder + decoder. Nhờ xử lý song song thay vì tuần tự, Transformer tận dụng tối đa GPU và huấn luyện nhanh hơn RNN/LSTM rất nhiều.",
   },
 ];
 
@@ -374,7 +384,10 @@ export default function TransformerTopic() {
           <p>
             Mỗi từ tạo ra 3 vector: <strong>Query</strong> (câu hỏi), <strong>Key</strong> (danh tính),{" "}
             <strong>Value</strong> (nội dung). Attention(Q,K,V) = softmax(QK&#x1D40; / &radic;d) &times; V.
-            Cho phép mỗi từ &quot;nhìn&quot; trực tiếp đến mọi từ khác, bất kể khoảng cách.
+            Cho phép mỗi từ &quot;nhìn&quot; trực tiếp đến mọi từ khác, bất kể khoảng cách. Xem chi tiết ở{" "}
+            <TopicLink slug="self-attention">self-attention</TopicLink>{" "}
+            và phiên bản mở rộng{" "}
+            <TopicLink slug="multi-head-attention">multi-head attention</TopicLink>.
           </p>
         </Callout>
 
@@ -385,12 +398,15 @@ export default function TransformerTopic() {
             <code className="font-mono text-xs bg-surface px-1.5 py-0.5 rounded">
               PE(pos,2i) = sin(pos/10000^(2i/d))
             </code>
+            . Xem sâu hơn tại{" "}
+            <TopicLink slug="positional-encoding">positional encoding</TopicLink>.
           </p>
         </Callout>
 
         <Callout variant="insight" title="3. Xử lý song song">
           <p>
-            RNN xử lý n từ trong O(n) bước tuần tự. Transformer xử lý tất cả cùng lúc trong O(1)
+            <TopicLink slug="rnn">RNN</TopicLink>{" "}
+            xử lý n từ trong O(n) bước tuần tự. Transformer xử lý tất cả cùng lúc trong O(1)
             bước (mỗi bước tốn O(n&sup2;) cho attention), tận dụng tối đa GPU song song.
           </p>
         </Callout>

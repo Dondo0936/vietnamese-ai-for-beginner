@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -67,6 +67,15 @@ export default function WorldModelsTopic() {
       ],
       correct: 1,
       explanation: "Xe tự lái cần: 'Nếu mình rẽ trái, xe kia sẽ làm gì? Người đi bộ sẽ đi đâu?' World model mô phỏng nhiều kịch bản trong 'tưởng tượng' → chọn hành động an toàn nhất. Tesla FSD và VinFast đều đang phát triển world model cho self-driving.",
+    },
+    {
+      type: "fill-blank",
+      question: "World model hoạt động như một {blank} nội bộ của thế giới, cho phép agent đưa ra {blank} về trạng thái tương lai trước khi hành động.",
+      blanks: [
+        { answer: "simulation", accept: ["simulator", "mô phỏng", "mo phong"] },
+        { answer: "prediction", accept: ["dự đoán", "du doan", "forecast"] },
+      ],
+      explanation: "World model = internal simulator + future state prediction. Agent 'tưởng tượng' nhiều kịch bản bằng simulation, chọn hành động tối ưu dựa trên prediction của world model thay vì thử-và-sai trong thế giới thật.",
     },
   ], []);
 
@@ -146,7 +155,11 @@ export default function WorldModelsTopic() {
         <ExplanationSection>
           <p>
             <strong>World Models</strong>{" "}
-            là AI xây dựng biểu diễn nội tại về cách thế giới vận hành — có thể dự đoán hậu quả hành động trước khi thực hiện.
+            là AI xây dựng biểu diễn nội tại về cách thế giới vận hành — có thể dự đoán hậu quả hành động trước khi thực hiện. Đây là bước tiến bổ sung cho{" "}
+            <TopicLink slug="reasoning-models">reasoning models</TopicLink>{" "}
+            (suy luận bằng ngôn ngữ) và là 'simulator tưởng tượng' cho các tác tử{" "}
+            <TopicLink slug="q-learning">reinforcement learning</TopicLink>{" "}
+            lập kế hoạch.
           </p>
           <p><strong>Core loop:</strong></p>
           <LaTeX block>{"\\hat{s}_{t+1} = f_{\\text{world}}(s_t, a_t) \\quad \\text{(dự đoán state tiếp theo)}"}</LaTeX>

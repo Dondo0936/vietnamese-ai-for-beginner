@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, TabView,
+  MiniSummary, Callout, CodeBlock, LaTeX, TabView, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -165,6 +165,18 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "GPT tokenizer (BPE) huấn luyện trên dữ liệu tiếng Anh là chủ yếu. Từ tiếng Việt hiếm → không nằm trong từ vựng → bị chia nhỏ. PhoBERT tokenizer giữ 'Phở' nguyên vẹn vì huấn luyện trên tiếng Việt!",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "GPT và LLaMA dùng {blank}. BERT và PhoBERT dùng {blank}. T5 và mBERT dùng {blank}.",
+    blanks: [
+      { answer: "BPE", accept: ["bpe", "Byte Pair Encoding"] },
+      { answer: "WordPiece", accept: ["wordpiece", "Word Piece"] },
+      { answer: "SentencePiece", accept: ["sentencepiece", "Sentence Piece"] },
+    ],
+    explanation:
+      "BPE (dấu cách ở đầu token) cho GPT/LLaMA, WordPiece (## nối subword) cho BERT/PhoBERT, SentencePiece (▁ đánh dấu đầu từ, không cần pre-tokenize) cho T5/mBERT/XLM-R.",
   },
 ];
 
@@ -348,7 +360,13 @@ export default function TokenizerComparisonTopic() {
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            Ba phương pháp tokenization subword phổ biến nhất, mỗi cái có cách xử lý khoảng trắng và từ mới khác nhau.
+            Ba phương pháp{" "}
+            <TopicLink slug="tokenization">tokenization</TopicLink>
+            {" "}subword phổ biến nhất, mỗi cái có cách xử lý khoảng trắng và từ mới khác nhau. BPE được dùng bởi{" "}
+            <TopicLink slug="gpt">GPT</TopicLink>
+            {" "}trong khi WordPiece là lựa chọn của{" "}
+            <TopicLink slug="bert">BERT</TopicLink>
+            {" "}— chọn sai tokenizer cho ngôn ngữ sẽ khiến số token tăng vọt và chi phí inference đắt hơn.
           </p>
 
           <Callout variant="insight" title="BPE (Byte Pair Encoding)">

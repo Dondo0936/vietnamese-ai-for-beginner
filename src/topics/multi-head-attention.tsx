@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -40,7 +40,7 @@ const HEADS = [
 
 const quizQuestions: QuizQuestion[] = [
   {
-    question: "d_model = 512, có 8 heads. Mỗi head có d_k bao nhiêu? Tổng tham số attention thay đổi th�� nào?",
+    question: "d_model = 512, có 8 heads. Mỗi head có d_k bao nhiêu? Tổng tham số attention thay đổi thế nào?",
     options: [
       "d_k = 512 cho mỗi head → tổng tham số gấp 8×",
       "d_k = 512/8 = 64 cho mỗi head → tổng tham số gần như KHÔNG đổi",
@@ -70,6 +70,16 @@ const quizQuestions: QuizQuestion[] = [
     correct: 0,
     explanation: "Concat 8 heads: [head₁; head₂; ...; head₈] = 512 chiều (vì 8 × 64 = 512 = d_model). W^O (512×512) là ma trận 'trộn' cho model tự học cách kết hợp thông tin từ các heads khác nhau.",
   },
+  {
+    type: "fill-blank",
+    question: "Với d_model = 512 và h = 8 heads, mỗi head hoạt động trong subspace kích thước d_k = {blank}. Output của h heads được ghép lại bằng phép {blank}, rồi nhân với ma trận chiếu {blank} để trả về d_model chiều.",
+    blanks: [
+      { answer: "64", accept: ["d_model/h", "512/8"] },
+      { answer: "concat", accept: ["concatenate", "concatenation", "nối", "ghép"] },
+      { answer: "W^O", accept: ["W_O", "WO", "W0", "output projection"] },
+    ],
+    explanation: "d_k = d_model / h = 512/8 = 64 cho mỗi head. Sau khi h heads hoàn thành, ta concat chúng (8×64 = 512) rồi nhân với W^O ∈ ℝ^{d_model × d_model} để trộn thông tin giữa các heads và đưa về đúng d_model chiều.",
+  },
 ];
 
 /* ── Component ── */
@@ -83,7 +93,7 @@ export default function MultiHeadAttentionTopic() {
 
   return (
     <>
-      {/* ═══ Step 1: HOOK ��══ */}
+      {/* ═══ Step 1: HOOK ═══ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question={`Câu "Tôi yêu Việt Nam". Self-attention chỉ dùng 1 bộ trọng số Q, K, V. Nó có thể vừa nắm cú pháp ("Tôi" → chủ ngữ), vừa nắm ngữ nghĩa ("yêu" → "Việt Nam"), vừa nắm vị trí? Có cách nào tốt hơn?`}
@@ -283,7 +293,10 @@ export default function MultiHeadAttentionTopic() {
         <ExplanationSection>
           <p>
             <strong>Multi-Head Attention</strong>{" "}
-            chạy h phép self-attention song song trong các subspace khác nhau, mỗi phép có bộ trọng số riêng:
+            chạy h phép{" "}
+            <TopicLink slug="self-attention">self-attention</TopicLink>{" "}
+            song song trong các subspace khác nhau, mỗi phép có bộ trọng số riêng. Đây là khối cốt lõi trong{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>:
           </p>
 
           <LaTeX block>{String.raw`\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h) \cdot W^O`}</LaTeX>
@@ -339,7 +352,7 @@ class MultiHeadAttention(nn.Module):
         </ExplanationSection>
       </LessonSection>
 
-      {/* ═══ Step 7: SUMMARY ���══ */}
+      {/* ═══ Step 7: SUMMARY ═══ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về Multi-Head Attention"

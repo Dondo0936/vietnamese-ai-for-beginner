@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -70,7 +70,16 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "AI rủi ro cao = ảnh hưởng trực tiếp đến cuộc sống: tín dụng (được/không được vay), y tế (chẩn đoán bệnh), tuyển dụng, tư pháp. Quyết định sai có thể gây hậu quả nghiêm trọng. Chatbot mua hàng và g��i ý nhạc là rủi ro thấp.",
+      "AI rủi ro cao = ảnh hưởng trực tiếp đến cuộc sống: tín dụng (được/không được vay), y tế (chẩn đoán bệnh), tuyển dụng, tư pháp. Quyết định sai có thể gây hậu quả nghiêm trọng. Chatbot mua hàng và gợi ý nhạc là rủi ro thấp.",
+  },
+  {
+    type: "fill-blank",
+    question: "Hai kỹ thuật XAI phổ biến nhất là {blank} (dựa trên Shapley values, chính xác toàn cục) và {blank} (xấp xỉ tuyến tính cục bộ).",
+    blanks: [
+      { answer: "SHAP", accept: ["shap"] },
+      { answer: "LIME", accept: ["lime"] },
+    ],
+    explanation: "SHAP dùng Shapley values từ lý thuyết trò chơi để phân bổ đóng góp của feature một cách công bằng. LIME xấp xỉ mô hình phức tạp bằng linear model trong vùng lân cận của một dự đoán.",
   },
 ];
 
@@ -171,7 +180,7 @@ export default function ExplainabilityTopic() {
           question="Bác sĩ dùng AI hỗ trợ chẩn đoán X-quang phổi. AI nói: 'Có khối u, confidence 87%'. Bác sĩ cần thêm gì từ AI?"
           options={[
             "Không cần gì thêm — 87% là đủ tin cậy",
-            "Heat map (attention/Grad-CAM) chỉ ra VÙNG NÀO trên X-quang AI nhìn th��y bất thường, để bác sĩ xác nhận",
+            "Heat map (attention/Grad-CAM) chỉ ra VÙNG NÀO trên X-quang AI nhìn thấy bất thường, để bác sĩ xác nhận",
             "Danh sách tất cả bệnh nhân tương tự",
             "Confidence cao hơn, ít nhất 99%",
           ]}
@@ -185,7 +194,11 @@ export default function ExplainabilityTopic() {
         <ExplanationSection>
           <p>
             <strong>Giải thích được (Explainability/XAI)</strong>{" "}
-            là khả năng hệ thống AI trình bày lý do đằng sau quyết định một cách con người có thể hiểu và kiểm chứng.
+            là khả năng hệ thống AI trình bày lý do đằng sau quyết định một cách con người có thể hiểu và kiểm chứng. XAI là công cụ cốt lõi để phát hiện{" "}
+            <TopicLink slug="bias-fairness">thiên kiến và bất công</TopicLink>{" "}
+            trong mô hình, đồng thời là yêu cầu bắt buộc của{" "}
+            <TopicLink slug="ai-governance">quản trị AI</TopicLink>{" "}
+            cho các hệ thống rủi ro cao.
           </p>
 
           <Callout variant="insight" title="Ba kỹ thuật XAI phổ biến nhất">
@@ -224,9 +237,9 @@ explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X_test)
 
 # Giải thích cho 1 khách hàng bị từ chối
-idx = 42  # Khách h��ng số 42
+idx = 42  # Khách hàng số 42
 print("Quyết định: TỪ CHỐI")
-print("\\nYếu t��� ảnh hưởng:")
+print("\\nYếu tố ảnh hưởng:")
 for feature, value in sorted(
     zip(feature_names, shap_values[idx]),
     key=lambda x: abs(x[1]),

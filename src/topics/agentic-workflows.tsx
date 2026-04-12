@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock,
+  MiniSummary, Callout, CodeBlock, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -81,6 +81,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Agent tự chủ = có thể tự mắc lỗi mà không ai phát hiện. Cần: (1) guardrails (giới hạn hành động), (2) human-in-the-loop (confirm trước hành động quan trọng), (3) monitoring (log mọi bước).",
+  },
+  {
+    type: "fill-blank",
+    question: "Agentic workflow chia nhiệm vụ phức tạp thành chuỗi {blank} bước, trong đó agent hoạt động {blank} (tự quyết định bước kế tiếp) thay vì chỉ trả lời 1 lượt.",
+    blanks: [
+      { answer: "nhiều", accept: ["multi-step", "đa", "many"] },
+      { answer: "tự chủ", accept: ["autonomous", "tự động", "autonomously"] },
+    ],
+    explanation: "Khác biệt cốt lõi của agentic workflow: (1) multi-step (chuỗi nhiều bước thay vì 1 câu trả lời), (2) autonomous (agent tự chọn bước kế tiếp dựa trên kết quả hiện tại). Cần guardrails và human-in-the-loop để đảm bảo an toàn.",
   },
 ];
 
@@ -199,7 +208,7 @@ export default function AgenticWorkflowsTopic() {
         <ExplanationSection>
           <p>
             <strong>Agentic Workflows</strong>{" "}(Andrew Ng, 2024) là 4 mẫu thiết kế tạo nên
-            AI Agent tự chủ thực sự:
+            AI Agent tự chủ thực sự — xây dựng trên nền <TopicLink slug="agent-architecture">agent architecture</TopicLink>{" "}cơ bản:
           </p>
 
           <ul className="list-disc list-inside space-y-2 pl-2">
@@ -208,8 +217,9 @@ export default function AgenticWorkflowsTopic() {
               Cải thiện chất lượng qua self-evaluation. Đơn giản nhưng hiệu quả.
             </li>
             <li>
-              <strong>Tool Use:</strong>{" "}Agent quyết định công cụ nào, khi nào, tham số gì.
-              Mở rộng khả năng vượt xa LLM thuần.
+              <strong>Tool Use:</strong>{" "}Agent quyết định công cụ nào, khi nào, tham số gì — thực hiện qua{" "}
+              <TopicLink slug="function-calling">function calling</TopicLink>{" "}và mẫu{" "}
+              <TopicLink slug="react-framework">ReAct</TopicLink>. Mở rộng khả năng vượt xa LLM thuần.
             </li>
             <li>
               <strong>Planning:</strong>{" "}Phân rã → Thực hiện → Kiểm tra → Replan.

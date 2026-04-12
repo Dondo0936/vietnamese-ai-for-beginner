@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -99,6 +99,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "BoW/TF-IDF coi mỗi từ là độc lập. Word Embeddings hiểu 'phở' gần 'bún chả' (cùng ẩm thực) nhưng xa 'xe máy' (khác ngữ nghĩa).",
+  },
+  {
+    type: "fill-blank",
+    question: "Word embeddings là một dạng {blank} (biểu diễn phân tán) của từ, trong đó các từ có ngữ nghĩa tương đồng sẽ có vector gần nhau — đây chính là cách nắm bắt {blank} giữa các từ.",
+    blanks: [
+      { answer: "distributed representation", accept: ["biểu diễn phân tán", "distributed"] },
+      { answer: "semantic similarity", accept: ["ngữ nghĩa", "tương đồng ngữ nghĩa", "độ tương đồng ngữ nghĩa"] },
+    ],
+    explanation: "Distributed representation nghĩa là thông tin về một từ được trải đều trên nhiều chiều của vector, không tập trung ở một vị trí. Các từ có ngữ cảnh tương tự sẽ có vector gần nhau, cho phép đo semantic similarity bằng cosine.",
   },
 ];
 
@@ -261,7 +270,10 @@ export default function WordEmbeddingsTopic() {
         <ExplanationSection>
           <p>
             <strong>Word Embeddings</strong>{" "}
-            biểu diễn từ dưới dạng vector số thực trong không gian liên tục (thường 100-300 chiều). Khác hoàn toàn với BoW/TF-IDF, embeddings nắm bắt được quan hệ ngữ nghĩa.
+            biểu diễn từ dưới dạng vector số thực trong không gian liên tục (thường 100-300 chiều). Các mô hình kinh điển như{" "}
+            <TopicLink slug="word2vec">Word2Vec</TopicLink>{" "}và{" "}
+            <TopicLink slug="glove">GloVe</TopicLink>{" "}đã mở đường, và ngày nay các{" "}
+            <TopicLink slug="embedding-model">embedding model</TopicLink>{" "}hiện đại học được ngữ nghĩa theo ngữ cảnh.
           </p>
 
           <Callout variant="insight" title="Tại sao embeddings hoạt động?">

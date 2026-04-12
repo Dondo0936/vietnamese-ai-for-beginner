@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock,
+  MiniSummary, Callout, CodeBlock, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -73,6 +73,16 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Chatbot: nhận câu hỏi → trả lời (1 bước). Agent: nhận nhiệm vụ → lập kế hoạch → gọi công cụ → kiểm tra → điều chỉnh → hoàn thành (nhiều bước, tự chủ). Agent 'hành động' thay vì chỉ 'phản hồi'.",
+  },
+  {
+    type: "fill-blank",
+    question: "Vòng lặp chuẩn của một AI Agent gồm ba pha lặp đi lặp lại: {blank} (lập kế hoạch bước tiếp), {blank} (gọi công cụ thực thi) và {blank} (đọc kết quả trả về).",
+    blanks: [
+      { answer: "plan", accept: ["planning", "lập kế hoạch", "kế hoạch"] },
+      { answer: "act", accept: ["action", "acting", "hành động"] },
+      { answer: "observe", accept: ["observation", "quan sát"] },
+    ],
+    explanation: "Agent hiện đại chạy theo vòng plan → act → observe. LLM lập kế hoạch (plan), gọi tool để hành động (act), nhận kết quả thực từ môi trường (observe), rồi dùng quan sát đó để lập lại kế hoạch cho bước tiếp theo.",
   },
 ];
 
@@ -150,8 +160,10 @@ export default function AgentArchitectureTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           AI Agent không phải LLM được bọc thêm API — nó là một{" "}
-          <strong>hệ thống tự chủ</strong>{" "}có vòng lặp: nhận thức → suy luận →
-          hành động → quan sát → điều chỉnh. Giống con người giải quyết vấn đề:
+          <strong>hệ thống tự chủ</strong>{" "}có vòng lặp kiểu{" "}
+          <TopicLink slug="react-framework">ReAct</TopicLink>: nhận thức → suy luận →
+          hành động (qua <TopicLink slug="function-calling">function calling</TopicLink>) → quan sát → điều chỉnh. Khi có nhiều agent cùng chạy, ta cần một tầng{" "}
+          <TopicLink slug="orchestration">điều phối</TopicLink>. Giống con người giải quyết vấn đề:
           ta không chỉ <em>nghĩ</em>, mà còn <em>làm</em>, <em>nhìn kết quả</em>,
           rồi <em>thay đổi cách làm</em>.
         </AhaMoment>

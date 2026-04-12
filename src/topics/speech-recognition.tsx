@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -71,6 +71,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "CTC (Connectionist Temporal Classification) sinh tất cả token song song — nhanh nhưng mỗi token không biết token trước/sau. Encoder-decoder sinh tuần tự — chậm hơn nhưng hiểu ngữ cảnh, tự sửa lỗi, và thêm dấu câu. Whisper dùng encoder-decoder.",
+  },
+  {
+    type: "fill-blank",
+    question: "Mô hình ASR hiện đại như {blank} (OpenAI) chuyển sóng âm thành biểu diễn trung gian gọi là {blank} — một 'ảnh' tần số-thời gian mô phỏng cách tai người nghe.",
+    blanks: [
+      { answer: "Whisper", accept: ["whisper"] },
+      { answer: "Mel-spectrogram", accept: ["mel spectrogram", "mel-spectrogram", "mel", "spectrogram"] },
+    ],
+    explanation: "Whisper là mô hình ASR mã nguồn mở phổ biến nhất của OpenAI, hỗ trợ 99 ngôn ngữ. Nó chuyển sóng âm 16kHz thành Mel-spectrogram 80 kênh — biểu diễn tần số theo Mel scale mô phỏng cảm nhận phi tuyến tính của tai người.",
   },
 ];
 
@@ -191,7 +200,9 @@ export default function SpeechRecognitionTopic() {
         <ExplanationSection>
           <p>
             <strong>Nhận dạng giọng nói (ASR — Automatic Speech Recognition)</strong>{" "}
-            chuyển đổi tín hiệu âm thanh thành văn bản. Đây là nền tảng cho trợ lý ảo (Siri, Alexa), phụ đề tự động, và ghi chú cuộc họp.
+            chuyển đổi tín hiệu âm thanh thành văn bản. Đây là nền tảng cho trợ lý ảo (Siri, Alexa), phụ đề tự động, và ghi chú cuộc họp — ngược lại với bài toán{" "}
+            <TopicLink slug="tts">tổng hợp giọng nói (TTS)</TopicLink>{" "}
+            chuyển văn bản thành âm thanh.
           </p>
 
           <Callout variant="insight" title="Kiến trúc Whisper (OpenAI)">
@@ -202,7 +213,8 @@ export default function SpeechRecognitionTopic() {
               </p>
               <p>
                 <strong>Encoder:</strong>{" "}
-                Transformer encoder với 2 lớp CNN ban đầu, xử lý spectrogram thành chuỗi hidden states.
+                <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+                encoder với 2 lớp CNN ban đầu, xử lý spectrogram thành chuỗi hidden states.
               </p>
               <p>
                 <strong>Decoder:</strong>{" "}

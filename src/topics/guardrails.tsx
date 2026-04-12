@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -70,6 +70,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Keyword guard: chặn 'hack', nhưng bỏ sót 'cách xâm nhập hệ thống'. Semantic guard: dùng embedding để hiểu MỤC ĐÍCH câu — dù diễn đạt khác vẫn phát hiện ý định tấn công. Tuy nhiên semantic tốn compute hơn và có thể false positive.",
+  },
+  {
+    type: "fill-blank",
+    question: "Guardrails dùng phòng thủ nhiều lớp: {blank} filter kiểm tra trước khi gửi cho mô hình (chặn prompt injection, nội dung cấm), còn {blank} filter kiểm tra phản hồi (lọc PII, hallucination, disclaimer).",
+    blanks: [
+      { answer: "input", accept: ["đầu vào", "dau vao"] },
+      { answer: "output", accept: ["đầu ra", "dau ra"] },
+    ],
+    explanation: "Defense in depth với input + output guards bổ trợ nhau: input chặn sớm tiết kiệm compute, output bắt những trường hợp lọt qua hoặc do mô hình tự sinh. Thiếu một trong hai = lỗ hổng.",
   },
 ];
 
@@ -211,7 +220,7 @@ response = rails.generate(
 # → "Xin lỗi, tôi không thể hỗ trợ..."`}
           </CodeBlock>
           <Callout variant="warning" title="Cân bằng an toàn và hữu ích">
-            Guardrails quá nghiêm ngặt = người dùng bực mình (hỏi nấu ăn bị chặn). Guardrails quá lỏng = rủi ro bảo mật. Tối ưu bằng cách: (1) test trên tập câu hỏi thật, (2) đo false positive rate, (3) cho phép feedback khi bị chặn nhầm.
+            Guardrails quá nghiêm ngặt = người dùng bực mình (hỏi nấu ăn bị chặn). Guardrails quá lỏng = rủi ro bảo mật. Tối ưu bằng cách: (1) test trên tập câu hỏi thật thông qua <TopicLink slug="red-teaming">red teaming</TopicLink>, (2) đo false positive rate, (3) cho phép feedback khi bị chặn nhầm. Kết hợp với <TopicLink slug="hallucination">chống hallucination</TopicLink>{" "}và tuân thủ <TopicLink slug="ai-governance">AI governance</TopicLink>.
           </Callout>
         </ExplanationSection>
       </LessonSection>

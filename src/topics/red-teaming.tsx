@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -100,6 +100,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Đây là multilingual bypass — safety training tập trung vào tiếng Anh nên AI 'quên' quy tắc khi chuyển ngôn ngữ. Giải pháp: bổ sung dữ liệu safety tiếng Việt vào training, dùng guardrails đa ngôn ngữ, và red-team riêng cho tiếng Việt.",
+  },
+  {
+    type: "fill-blank",
+    question: "Hai kỹ thuật tấn công nguy hiểm nhất với LLM: chèn lệnh ẩn vào input để chiếm quyền điều khiển gọi là {blank}, còn dùng roleplay/ngữ cảnh giả để vượt qua safety rules gọi là {blank}.",
+    blanks: [
+      { answer: "prompt injection", accept: ["injection", "prompt-injection", "chèn lệnh", "chen lenh"] },
+      { answer: "jailbreak", accept: ["bẻ khoá", "be khoa", "jailbreaking"] },
+    ],
+    explanation: "Prompt injection thường xuất hiện qua email, web, document mà AI đọc; phòng thủ bằng tách biệt system prompt và user data. Jailbreak dùng roleplay/DAN để AI 'quên' quy tắc; phòng thủ bằng constitutional AI + red teaming liên tục.",
   },
 ];
 
@@ -229,7 +238,7 @@ export default function RedTeamingTopic() {
         <ExplanationSection>
           <p>
             <strong>Red Teaming</strong>{" "}
-            là phương pháp kiểm thử bảo mật chủ động, trong đó các chuyên gia cố tình tấn công AI để phát hiện lỗ hổng trước khi triển khai. Thuật ngữ lấy từ quân sự: {'"đội đỏ"'} giả lập kẻ thù.
+            là phương pháp kiểm thử bảo mật chủ động, trong đó các chuyên gia cố tình tấn công AI để phát hiện lỗ hổng trước khi triển khai. Thuật ngữ lấy từ quân sự: {'"đội đỏ"'} giả lập kẻ thù. Kết quả red team được dùng để gia cố <TopicLink slug="guardrails">guardrails</TopicLink>, tăng <TopicLink slug="adversarial-robustness">khả năng chống tấn công</TopicLink>, và giảm <TopicLink slug="hallucination">hallucination</TopicLink>{" "}trên edge cases.
           </p>
 
           <Callout variant="insight" title="Bốn loại tấn công phổ biến nhất">

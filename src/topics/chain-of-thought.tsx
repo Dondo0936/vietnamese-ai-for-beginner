@@ -11,7 +11,9 @@ import {
   CodeBlock,
   LaTeX,
   ToggleCompare,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -95,6 +97,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Mỗi bước trung gian được sinh ra trở thành INPUT cho bước sau. Thay vì nhảy thẳng từ đề bài → đáp án (dễ sai), AI đi qua chuỗi suy luận — mỗi bước đơn giản hơn tổng thể.",
+  },
+  {
+    type: "fill-blank",
+    question: "Chain-of-Thought buộc mô hình trình bày {blank} trước khi đưa ra đáp án, giúp cải thiện chất lượng {blank} nhiều bước.",
+    blanks: [
+      { answer: "từng bước", accept: ["step-by-step", "từng-bước", "tung buoc"] },
+      { answer: "suy luận", accept: ["reasoning", "lập luận"] },
+    ],
+    explanation: "CoT yêu cầu mô hình viết ra chuỗi từng bước trung gian thay vì nhảy thẳng tới đáp án. Điều này đặc biệt hiệu quả cho các bài toán cần suy luận nhiều bước như toán, logic, lập kế hoạch.",
   },
 ];
 
@@ -247,8 +258,8 @@ export default function ChainOfThoughtTopic() {
       <LessonSection step={5} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
-          <strong>Chain-of-Thought (CoT)</strong>{" "}là kỹ thuật prompt yêu cầu LLM trình bày
-          quá trình suy luận từng bước trước khi đưa ra đáp án cuối cùng.
+          <strong>Chain-of-Thought (CoT)</strong>{" "}là kỹ thuật <TopicLink slug="prompt-engineering">prompt</TopicLink>{" "}yêu cầu LLM trình bày
+          quá trình suy luận từng bước trước khi đưa ra đáp án cuối cùng — nền tảng của các <TopicLink slug="reasoning-models">reasoning model</TopicLink>{" "}hiện đại.
         </p>
 
         <Callout variant="insight" title="Tại sao CoT hoạt động?">
@@ -265,8 +276,8 @@ export default function ChainOfThoughtTopic() {
             Đơn giản nhất, không cần ví dụ mẫu.
           </li>
           <li>
-            <strong>Few-shot CoT:</strong>{" "}Cho AI xem 2-3 ví dụ bài giải mẫu có từng bước.
-            AI học theo format và tự giải bài mới tương tự.
+            <strong>Few-shot CoT:</strong>{" "}Cho AI xem 2-3 ví dụ bài giải mẫu có từng bước — dạng{" "}
+            <TopicLink slug="in-context-learning">in-context learning</TopicLink>. AI học theo format và tự giải bài mới tương tự.
           </li>
           <li>
             <strong>Self-Consistency:</strong>{" "}Chạy CoT nhiều lần (5-10 lần), lấy đáp án

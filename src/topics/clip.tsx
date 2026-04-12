@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -43,7 +43,7 @@ const QUIZ: QuizQuestion[] = [
       "Supervised learning — con người gán nhãn từng ảnh",
       "Contrastive learning — kéo cặp ảnh-mô tả đúng lại gần, đẩy cặp sai ra xa trong không gian embedding",
       "Reinforcement learning — thử-sai để tìm cặp phù hợp",
-      "Self-supervised learning — dự đoán phần bị che trong ��nh",
+      "Self-supervised learning — dự đoán phần bị che trong ảnh",
     ],
     correct: 1,
     explanation:
@@ -73,6 +73,15 @@ const QUIZ: QuizQuestion[] = [
     explanation:
       "CLIP text encoder chuyển prompt thành vector ngữ nghĩa 768 chiều. Vector này được đưa vào U-Net qua cross-attention, dẫn dắt quá trình khử nhiễu: 'nên khử nhiễu theo hướng nào để ảnh khớp với mô tả?'. Không có CLIP, U-Net sẽ tạo ảnh ngẫu nhiên.",
   },
+  {
+    type: "fill-blank",
+    question: "CLIP dùng hai encoder song song để tạo embedding của {blank} (qua Vision Transformer) và embedding của {blank} (qua Text Transformer), rồi đặt cả hai vào cùng một không gian vector để so cosine similarity.",
+    blanks: [
+      { answer: "image", accept: ["hình ảnh", "Image", "ảnh"] },
+      { answer: "text", accept: ["văn bản", "Text", "mô tả"] },
+    ],
+    explanation: "CLIP học liên kết image ↔ text: image encoder (ViT) cho ra vector ảnh, text encoder (Transformer) cho ra vector văn bản, cả hai được chiếu vào cùng không gian 768 chiều. Nhờ đó, cosine similarity giữa image embedding và text embedding cho biết ảnh và mô tả có khớp nhau không.",
+  },
 ];
 
 export default function CLIPTopic() {
@@ -95,7 +104,7 @@ export default function CLIPTopic() {
             "Dùng mô hình đã hiểu cả ảnh lẫn ngôn ngữ — gõ 'phở bò' và tìm ảnh khớp nhất",
           ]}
           correct={2}
-          explanation="Đáp án 3 mô tả chính xác cách CLIP hoạt động! CLIP đã liên kết ảnh và văn bản trong cùng không gian vector, nên bạn chỉ cần gõ mô tả và t��m ảnh có embedding gần nhất. Không cần dữ liệu huấn luyện riêng cho 'phở' — đây là zero-shot search!"
+          explanation="Đáp án 3 mô tả chính xác cách CLIP hoạt động! CLIP đã liên kết ảnh và văn bản trong cùng không gian vector, nên bạn chỉ cần gõ mô tả và tìm ảnh có embedding gần nhất. Không cần dữ liệu huấn luyện riêng cho 'phở' — đây là zero-shot search!"
         />
       </LessonSection>
 
@@ -201,7 +210,10 @@ export default function CLIPTopic() {
             <strong>CLIP</strong>{" "}
             (Contrastive Language-Image Pre-training) là mô hình của OpenAI, học cách liên kết hình ảnh và văn bản trong cùng không gian vector thông qua{" "}
             <strong>học tương phản</strong>{" "}
-            (contrastive learning) tr��n 400 triệu cặp ảnh-mô tả từ internet.
+            (contrastive learning) trên 400 triệu cặp ảnh-mô tả từ internet. CLIP là nền tảng cho các{" "}
+            <TopicLink slug="vlm">VLM</TopicLink>, các kiến trúc{" "}
+            <TopicLink slug="unified-multimodal">unified multimodal</TopicLink>, và hầu hết hệ thống{" "}
+            <TopicLink slug="text-to-image">text-to-image</TopicLink>{" "}hiện đại.
           </p>
 
           <Callout variant="insight" title="Cách CLIP học">

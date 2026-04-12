@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -78,6 +78,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Mỉa mai rất khó cho lexicon (thấy 'chất lượng cao' = tích cực). BERT hiểu ngữ cảnh: 'hàng giả' + 'chất lượng cao' = mỉa mai → tiêu cực. Vẫn là thách thức lớn!",
+  },
+  {
+    type: "fill-blank",
+    question: "Phân tích cảm xúc cơ bản gán văn bản vào ba nhãn chính: {blank}, {blank} và trung tính.",
+    blanks: [
+      { answer: "tích cực", accept: ["positive", "tich cuc"] },
+      { answer: "tiêu cực", accept: ["negative", "tieu cuc"] },
+    ],
+    explanation: "Phân loại 3 lớp: tích cực (positive) / tiêu cực (negative) / trung tính (neutral). Mô hình phức tạp hơn có thể phân loại nhiều mức (5 sao Shopee) hoặc phân tích cảm xúc theo khía cạnh (aspect-based: đồ ăn ngon nhưng phục vụ chậm).",
   },
 ];
 
@@ -255,7 +264,7 @@ export default function SentimentAnalysisTopic() {
         <ExplanationSection>
           <p>
             <strong>Sentiment Analysis</strong>{" "}
-            xác định thái độ, ý kiến trong văn bản. Từ đếm từ đơn giản đến deep learning hiểu ngữ cảnh phức tạp.
+            xác định thái độ, ý kiến trong văn bản — là một dạng chuyên biệt của <TopicLink slug="text-classification">text classification</TopicLink>. Từ đếm từ đơn giản đến deep learning hiểu ngữ cảnh phức tạp.
           </p>
 
           <Callout variant="insight" title="Ba cấp độ phân tích">
@@ -287,7 +296,7 @@ export default function SentimentAnalysisTopic() {
               </p>
               <p>
                 <strong>Deep Learning:</strong>{" "}
-                BERT/PhoBERT fine-tuned. Hiểu ngữ cảnh, phủ định, mỉa mai → SOTA.
+                <TopicLink slug="bert">BERT</TopicLink>/PhoBERT fine-tuned. Hiểu ngữ cảnh, phủ định, mỉa mai → SOTA.
               </p>
             </div>
           </Callout>

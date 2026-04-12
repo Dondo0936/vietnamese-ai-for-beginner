@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Guardrails là bộ lọc bên ngoài — có thể bị bypass bằng prompt injection. CAI thay đổi hành vi từ bên trong: mô hình thực sự 'hiểu' và tuân theo nguyên tắc đạo đức, không chỉ bị chặn bởi bộ lọc. Kết hợp cả hai cho phòng thủ tốt nhất.",
+  },
+  {
+    type: "fill-blank",
+    question: "Constitutional AI huấn luyện mô hình dựa trên bộ {blank} đạo đức viết bằng ngôn ngữ tự nhiên, kết hợp vòng lặp {blank} — AI tự đánh giá và sửa phản hồi của chính mình theo hiến pháp.",
+    blanks: [
+      { answer: "nguyên tắc", accept: ["principles", "hiến pháp", "constitution", "quy tắc"] },
+      { answer: "tự phê bình", accept: ["self-critique", "self critique", "critique and revision", "critique", "tự đánh giá"] },
+    ],
+    explanation: "CAI dùng 2 giai đoạn: (1) Critique & Revision — AI tạo phản hồi thô rồi tự phê bình theo từng nguyên tắc trong hiến pháp và viết lại bản tốt hơn, (2) RLAIF — AI đánh giá cặp phản hồi để huấn luyện preference model thay cho con người.",
   },
 ];
 
@@ -146,7 +155,9 @@ export default function ConstitutionalAITopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Constitutional AI (CAI)</strong>{" "} là phương pháp do Anthropic phát triển, giúp mô hình tự kiểm duyệt dựa trên bộ nguyên tắc đạo đức ({'"hiến pháp"'}).</p>
+          <p><strong>Constitutional AI (CAI)</strong>{" "} là phương pháp do Anthropic phát triển, giúp mô hình tự kiểm duyệt dựa trên bộ nguyên tắc đạo đức ({'"hiến pháp"'}) — là cách tiếp cận mới cho bài toán{" "}
+          <TopicLink slug="alignment">alignment</TopicLink>, thay thế phản hồi con người trong{" "}
+          <TopicLink slug="rlhf">RLHF</TopicLink>{" "} bằng đánh giá của AI (RLAIF).</p>
           <Callout variant="insight" title="Hai giai đoạn của CAI">
             <div className="space-y-2">
               <p><strong>1. Supervised — Critique & Revision:</strong>{" "} AI tạo phản hồi thô → tự phê bình theo nguyên tắc → viết lại bản tốt hơn. Cặp (thô, tốt) trở thành dữ liệu SFT.</p>

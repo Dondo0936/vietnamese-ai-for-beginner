@@ -11,7 +11,8 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -105,6 +106,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Trích dẫn giả cực kỳ nguy hiểm vì người đọc tin tưởng 'nguồn uy tín'. Luật sư, sinh viên, nhà nghiên cứu đã gặp rắc rối nghiêm trọng vì trích dẫn AI bịa.",
+  },
+  {
+    type: "fill-blank",
+    question: "Hai kỹ thuật chính để giảm ảo giác: neo câu trả lời vào tài liệu thật gọi là {blank}, còn dùng kỹ thuật tìm tài liệu liên quan trước khi sinh gọi là {blank}.",
+    blanks: [
+      { answer: "grounding", accept: ["neo nguồn", "neo nguon", "fact grounding"] },
+      { answer: "retrieval", accept: ["rag", "truy xuất", "truy xuat", "retrieval-augmented generation"] },
+    ],
+    explanation: "Grounding buộc mô hình dựa vào nguồn đã kiểm chứng thay vì 'trí nhớ' mơ hồ. Retrieval (RAG) tìm đoạn tài liệu liên quan và đưa vào context, giảm đáng kể hallucination — đặc biệt cho câu hỏi fact-based và dữ liệu mới.",
   },
 ];
 
@@ -351,9 +361,9 @@ export default function HallucinationTopic() {
 
         <Callout variant="tip" title="5 cách giảm ảo giác">
           <ol className="list-decimal list-inside space-y-1 text-sm">
-            <li><strong>RAG:</strong>{" "}Cho AI tra cứu tài liệu thật trước khi trả lời</li>
-            <li><strong>Hạ temperature:</strong>{" "}Giảm tính ngẫu nhiên, AI chọn từ an toàn hơn</li>
-            <li><strong>Yêu cầu trích dẫn:</strong>{" "}&quot;Trả lời và chỉ rõ nguồn tham khảo&quot;</li>
+            <li><strong><TopicLink slug="rag">RAG</TopicLink>:</strong>{" "}Cho AI tra cứu tài liệu thật trước khi trả lời</li>
+            <li><strong>Hạ <TopicLink slug="temperature">temperature</TopicLink>:</strong>{" "}Giảm tính ngẫu nhiên, AI chọn từ an toàn hơn</li>
+            <li><strong>Yêu cầu trích dẫn:</strong>{" "}&quot;Trả lời và chỉ rõ nguồn tham khảo&quot; — kết hợp với <TopicLink slug="guardrails">guardrails</TopicLink>{" "}để bắt trích dẫn giả</li>
             <li><strong>Chain-of-Thought:</strong>{" "}Buộc AI giải thích từng bước suy luận</li>
             <li><strong>Kiểm chứng:</strong>{" "}Luôn fact-check thông tin quan trọng bằng nguồn khác</li>
           </ol>

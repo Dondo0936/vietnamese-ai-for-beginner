@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -79,6 +79,15 @@ export default function MLOpsTopic() {
       ],
       correct: 1,
       explanation: "Shadow deployment: model mới chạy song song với model cũ, nhận cùng input, nhưng chỉ model cũ trả kết quả cho user. So sánh output hai model để đánh giá trước khi chuyển traffic thật.",
+    },
+    {
+      type: "fill-blank",
+      question: "MLOps tự động hoá vòng đời ML. Pipeline kiểm thử + triển khai tự động gọi là {blank}, còn theo dõi mô hình trong production để phát hiện drift gọi là {blank}.",
+      blanks: [
+        { answer: "CI/CD", accept: ["ci-cd", "cicd", "ci cd"] },
+        { answer: "monitoring", accept: ["giám sát", "giam sat", "observability"] },
+      ],
+      explanation: "CI/CD (Continuous Integration/Deployment) tự động test data, train, evaluate, deploy model sau mỗi commit. Monitoring theo dõi accuracy, drift score, latency để alert khi model degradation.",
     },
   ], []);
 
@@ -220,11 +229,11 @@ export default function MLOpsTopic() {
 
           <p><strong>5 trụ cột MLOps:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Data Management:</strong>{" "}Versioning (DVC), lineage tracking, quality checks</li>
+            <li><strong>Data Management:</strong>{" "}Versioning (DVC), lineage tracking, quality checks — xem thêm <TopicLink slug="data-pipelines">data pipelines</TopicLink></li>
             <li><strong>Experiment Tracking:</strong>{" "}Log metrics, params, artifacts (MLflow, W&B)</li>
             <li><strong>Model Registry:</strong>{" "}Version models, staging/production promotion</li>
-            <li><strong>CI/CD for ML:</strong>{" "}Auto test data quality, model performance trước deploy</li>
-            <li><strong>Monitoring:</strong>{" "}Phát hiện data drift, model degradation, trigger retrain</li>
+            <li><strong>CI/CD for ML:</strong>{" "}Auto test data quality, model performance trước deploy, triển khai qua <TopicLink slug="containerization">container</TopicLink></li>
+            <li><strong>Monitoring:</strong>{" "}Phát hiện data drift, model degradation — chi tiết ở <TopicLink slug="monitoring">giám sát AI</TopicLink>, trigger retrain</li>
           </ul>
 
           <Callout variant="tip" title="Training-Serving Skew">

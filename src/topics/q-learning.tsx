@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -56,6 +56,15 @@ export default function QLearningTopic() {
     { question: "Q(s,a) đại diện cho gì?", options: ["Xác suất hành động a thành công", "GIÁ TRỊ KỲ VỌNG của tổng reward tương lai nếu thực hiện hành động a tại state s rồi theo chính sách tối ưu", "Số lần đã thực hiện hành động a"], correct: 1, explanation: "Q(s,a) = 'hành động a tại state s tốt đến đâu?' Giá trị cao = hành động tốt (dẫn đến nhiều reward). Agent chọn action có Q cao nhất tại mỗi state → chính sách tối ưu. Q-Learning học Q table từ trải nghiệm (trial-and-error)." },
     { question: "Epsilon-greedy: tại sao cần random action (explore)?", options: ["Để chậm hơn", "Nếu luôn chọn action có Q cao nhất (exploit) → có thể bị kẹt ở local optimum, bỏ lỡ đường tốt hơn. Cần explore để tìm", "Vì model chưa học xong"], correct: 1, explanation: "Explore vs Exploit dilemma: luôn exploit = có thể miss đường tắt (local optimum). Luôn explore = không tận dụng kiến thức đã học. Epsilon-greedy: 90% exploit (chọn best Q), 10% explore (random) → cân bằng học và khai thác." },
     { question: "Discount factor gamma (0.9) làm gì?", options: ["Giảm learning rate", "Cân bằng reward NGAY (gần) và reward TƯƠNG LAI (xa). Gamma cao (0.99) = nhìn xa. Gamma thấp (0.5) = nhìn gần", "Giảm số episodes"], correct: 1, explanation: "Gamma = 0.9: reward 1 bước sau giảm 10%, 2 bước: 19%, 10 bước: 65%. Nghĩa là agent 'quan tâm' reward gần nhiều hơn reward xa. Gamma = 0.99: nhìn xa (tốt cho planning). Gamma = 0.5: nhìn gần (tốt cho reactive). Grab dùng gamma cao để tối ưu route dài." },
+    {
+      type: "fill-blank",
+      question: "Công thức cập nhật Q-Learning dựa trên phương trình {blank}, sử dụng hàm giá trị hành động ký hiệu là {blank}.",
+      blanks: [
+        { answer: "Bellman", accept: ["bellman"] },
+        { answer: "Q(s,a)", accept: ["q(s,a)", "Q(s, a)"] },
+      ],
+      explanation: "Bellman equation là nền tảng của Q-Learning: Q(s,a) = E[r + gamma * max_{a'} Q(s', a')]. Học Q(s,a) = học giá trị kỳ vọng của việc thực hiện action a tại state s.",
+    },
   ], []);
 
   return (
@@ -107,7 +116,9 @@ export default function QLearningTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Q-Learning</strong>{" "}là thuật toán RL học giá trị Q(s,a) — 'hành động a tại state s tốt đến đâu?' — từ trải nghiệm (off-policy, model-free).</p>
+          <p><strong>Q-Learning</strong>{" "}là thuật toán RL học giá trị Q(s,a) — 'hành động a tại state s tốt đến đâu?' — từ trải nghiệm (off-policy, model-free). Khi state space quá lớn (hình ảnh, game), Q-table được thay bằng neural network — xem{" "}
+            <TopicLink slug="deep-q-network">Deep Q-Network (DQN)</TopicLink>. Một nhánh khác là học trực tiếp policy thay vì value function — xem{" "}
+            <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>.</p>
           <p><strong>Q-value update rule:</strong></p>
           <LaTeX block>{"Q(s_t, a_t) \\leftarrow Q(s_t, a_t) + \\alpha \\left[ r_t + \\gamma \\max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \\right]"}</LaTeX>
           <p>Trong đó: <LaTeX>{"\\alpha"}</LaTeX> = learning rate, <LaTeX>{"\\gamma"}</LaTeX> = discount factor, <LaTeX>{"r_t"}</LaTeX> = reward.</p>

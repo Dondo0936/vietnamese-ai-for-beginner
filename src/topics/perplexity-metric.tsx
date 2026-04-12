@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -75,6 +75,15 @@ const QUIZ: QuizQuestion[] = [
     explanation:
       "PPL thấp do overfitting = mô hình nhớ thuộc dữ liệu huấn luyện. PPL cũng không đo: coherence (mạch lạc), factuality (đúng sự thật), hay safety (an toàn). Cần đánh giá đa chiều!",
   },
+  {
+    type: "fill-blank",
+    question: "Perplexity là {blank} (2 mũ) của cross-entropy trung bình trên mỗi token, và quy tắc vàng là {blank} — mô hình càng ít 'bối rối' trước văn bản thật thì càng tốt.",
+    blanks: [
+      { answer: "exponent", accept: ["exponential", "lũy thừa", "mũ", "exponent of entropy"] },
+      { answer: "lower is better", accept: ["càng thấp càng tốt", "thấp hơn là tốt hơn", "thấp là tốt"] },
+    ],
+    explanation: "PPL = 2^H, trong đó H là cross-entropy trung bình. Vì H = -Σ log P(w_i) / N, xác suất P càng cao thì H càng nhỏ → PPL càng thấp. Do đó lower is better: PPL = 8 của GPT-4 tốt hơn PPL = 50 của LSTM.",
+  },
 ];
 
 /* ── Main Component ── */
@@ -98,14 +107,14 @@ export default function PerplexityMetricTopic() {
           question={`Mô hình A đoán đúng 80% từ, mô hình B đoán đúng 40% từ. Mô hình nào "bối rối" hơn?`}
           options={["Mô hình A (80%) — vì đoán quá giỏi nên bối rối", "Mô hình B (40%) — vì đoán kém nên bối rối hơn", "Không thể xác định"]}
           correct={1}
-          explanation={`Mô hình B đoán kém hơn → "bất ngờ" nhiều hơn → BỐI RỐI hơn. Perplexity đo chính xác điều này: mô hình bối rối đến mức nào khi gặp văn bản mới. Perplexity THẤP = tự tin, ĐÚng. Perplexity CAO = bối rối, sai.`}
+          explanation={`Mô hình B đoán kém hơn → "bất ngờ" nhiều hơn → BỐI RỐI hơn. Perplexity đo chính xác điều này: mô hình bối rối đến mức nào khi gặp văn bản mới. Perplexity THẤP = tự tin, đúng. Perplexity CAO = bối rối, sai.`}
         />
       </LessonSection>
 
       {/* ── Step 2: Interactive Calculator ── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Kéo thanh trượt để thay đổi xác suất mô hình gán cho mỗi từ. Xác suất cao = mô h��nh tự tin → perplexity thấp!
+          Kéo thanh trượt để thay đổi xác suất mô hình gán cho mỗi từ. Xác suất cao = mô hình tự tin → perplexity thấp!
         </p>
 
         <VisualizationSection>
@@ -240,7 +249,10 @@ export default function PerplexityMetricTopic() {
         <ExplanationSection>
           <p>
             <strong>Perplexity</strong>{" "}
-            là chỉ số đánh giá nội tại (intrinsic metric) phổ biến nhất cho mô hình ngôn ngữ, đo mức {'"bất ngờ"'} trung bình khi gặp mỗi token.
+            là chỉ số đánh giá nội tại (intrinsic metric) phổ biến nhất cho mô hình ngôn ngữ như{" "}
+            <TopicLink slug="gpt">GPT</TopicLink>{" "}và{" "}
+            <TopicLink slug="bert">BERT</TopicLink>, đo mức {'"bất ngờ"'} trung bình khi gặp mỗi token sau khi qua bước{" "}
+            <TopicLink slug="tokenization">tokenization</TopicLink>.
           </p>
 
           <Callout variant="insight" title="Công thức Perplexity">

@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -69,6 +69,18 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Khi d_k = 512, tích vô hướng QK^T có thể lớn (~500). Softmax(500) ≈ [0, 0, 1, 0, 0] — gần one-hot → gradient cực nhỏ. Chia √512 ≈ 22.6 đưa giá trị về khoảng hợp lý → softmax mềm hơn → gradient tốt hơn.",
+  },
+  {
+    type: "code",
+    question: "Hoàn thành đoạn code tính scaled dot-product self-attention. Q, K, V đã được chiếu sẵn từ X.",
+    codeTemplate: "scores = Q @ ___.T / np.sqrt(d_k)\nweights = ___(scores, axis=-1)\noutput = weights @ ___",
+    language: "python",
+    blanks: [
+      { answer: "K", accept: ["k"] },
+      { answer: "softmax", accept: [] },
+      { answer: "V", accept: ["v"] },
+    ],
+    explanation: "Công thức Attention(Q,K,V) = softmax(QKᵀ/√d_k)·V: chia QKᵀ cho √d_k để ổn định gradient, softmax chuẩn hoá thành phân phối xác suất trên mỗi hàng, rồi nhân với V để lấy tổng có trọng số.",
   },
 ];
 
@@ -203,7 +215,10 @@ export default function SelfAttentionTopic() {
             = mỗi từ &quot;hỏi&quot; tất cả từ khác: &quot;Bạn quan trọng với tôi bao nhiêu?&quot; Câu trả lời (attention score) dùng để tổng hợp thông tin. Output của mỗi từ là trung bình có trọng số của MỌI từ!
           </p>
           <p className="text-sm text-muted mt-1">
-            Khác RNN (chỉ nhìn từ trước đó), self-attention nhìn trực tiếp đến mọi từ trong câu — bất kể khoảng cách. &quot;Tôi&quot; ở đầu câu vẫn kết nối trực tiếp với &quot;tôi&quot; ở cuối câu!
+            Khác RNN (chỉ nhìn từ trước đó), self-attention nhìn trực tiếp đến mọi từ trong câu — bất kể khoảng cách. &quot;Tôi&quot; ở đầu câu vẫn kết nối trực tiếp với &quot;tôi&quot; ở cuối câu! Đây là cơ chế cốt lõi của{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>, và được mở rộng thành{" "}
+            <TopicLink slug="multi-head-attention">multi-head attention</TopicLink>{" "}
+            để nắm bắt nhiều kiểu quan hệ song song.
           </p>
         </AhaMoment>
       </LessonSection>

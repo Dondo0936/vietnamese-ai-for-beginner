@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -15,6 +15,15 @@ export default function ActorCriticTopic() {
     { question: "Actor và Critic làm gì?", options: ["Actor và Critic là 2 tên gọi của cùng 1 network", "Actor: chọn action (policy). Critic: đánh giá action đó tốt hay xấu (value function). Giống diễn viên và đạo diễn", "Actor xử lý ảnh, Critic xử lý text"], correct: 1, explanation: "Actor = diễn viên: hành động (chọn action). Critic = đạo diễn: đánh giá (tốt/xấu, cho điểm). Actor học từ feedback của Critic. Critic học từ reward thật. Kết hợp: ổn định hơn REINFORCE (Actor only) và hiệu quả hơn DQN (Critic only)." },
     { question: "Advantage function A(s,a) = Q(s,a) - V(s) có ý nghĩa gì?", options: ["Đo accuracy của model", "Action a TẠI state s tốt/xấu hơn TRUNG BÌNH bao nhiêu. A > 0: tốt hơn TB → tăng xác suất. A < 0: xấu hơn TB → giảm", "Khoảng cách giữa 2 states"], correct: 1, explanation: "V(s) = giá trị trung bình của state s. Q(s,a) = giá trị nếu thực hiện action a. A(s,a) = Q(s,a) - V(s) = action a tốt/xấu hơn average bao nhiêu. Dùng A thay vì Q giảm variance (vì đã trừ baseline V). Đây là 'Advantage' trong A2C." },
     { question: "PPO (dùng trong ChatGPT RLHF) cải thiện Actor-Critic thế nào?", options: ["Dùng model lớn hơn", "CLIP ratio của policy change → ngăn policy thay đổi quá nhiều mỗi step → training ổn định, không bị collapse", "Dùng nhiều data hơn"], correct: 1, explanation: "Policy gradient có thể thay đổi policy nhiều trong 1 step → học không ổn định. PPO clip: ratio = pi_new/pi_old, giới hạn trong [1-eps, 1+eps] (eps=0.2). Policy chỉ thay đổi tối đa 20%/step. Ổn định + đơn giản → algorithm mặc định cho RLHF (ChatGPT, Claude)." },
+    {
+      type: "fill-blank",
+      question: "Trong Actor-Critic: mạng {blank} đóng vai diễn viên chọn action theo policy, còn mạng {blank} đóng vai đạo diễn ước lượng value.",
+      blanks: [
+        { answer: "Actor", accept: ["actor", "diễn viên"] },
+        { answer: "Critic", accept: ["critic", "đạo diễn"] },
+      ],
+      explanation: "Actor học policy π(a|s) — quyết định hành động. Critic học value V(s) hoặc Q(s,a) — đánh giá xem state/action đó tốt xấu thế nào. Critic cung cấp baseline để giảm variance cho Actor.",
+    },
   ], []);
 
   return (
@@ -44,7 +53,9 @@ export default function ActorCriticTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách"><InlineChallenge question="PPO clip ratio trong [0.8, 1.2]. Nghĩa là policy chỉ thay đổi tối đa 20% mỗi step. Tại sao không cho thay đổi nhiều hơn (50%?)?" options={["Tiết kiệm compute", "Thay đổi lớn = mất ổn định. Policy A tốt → thay đổi 50% → policy B có thể tệ vì reward landscape phức tạp. Small steps an toàn hơn", "Không có lý do"]} correct={1} explanation="Trust region: policy landscape phức tạp, thay đổi lớn có thể 'nhảy' từ vùng tốt sang vùng tệ. PPO giới hạn mỗi step → bảo đảm cải thiện dần dần. Epsilon=0.2 là sweet spot: đủ nhanh để học, đủ nhỏ để ổn định. Đây là lý do PPO là default cho RLHF." /></LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết"><ExplanationSection>
-        <p><strong>Actor-Critic</strong>{" "}kết hợp policy optimization (Actor) với value estimation (Critic) — ổn định và hiệu quả hơn dùng riêng.</p>
+        <p><strong>Actor-Critic</strong>{" "}kết hợp policy optimization (Actor) với value estimation (Critic) — ổn định và hiệu quả hơn dùng riêng. Về bản chất, Actor kế thừa ý tưởng từ{" "}
+          <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>, còn Critic học value function tương tự{" "}
+          <TopicLink slug="q-learning">Q-Learning</TopicLink>.</p>
         <p><strong>Advantage Actor-Critic (A2C):</strong></p>
         <LaTeX block>{"\\text{Advantage: } A(s,a) = r + \\gamma V(s') - V(s) \\quad \\text{(TD error làm advantage estimate)}"}</LaTeX>
         <LaTeX block>{"\\nabla_\\theta J = \\mathbb{E}[\\nabla_\\theta \\log \\pi_\\theta(a|s) \\cdot A(s,a)] \\quad \\text{(Actor update)}"}</LaTeX>

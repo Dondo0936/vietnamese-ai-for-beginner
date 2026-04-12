@@ -2,7 +2,7 @@
 
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock,
+  MiniSummary, Callout, CodeBlock, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -56,6 +56,15 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Strict mode: constrained decoding theo schema. Mọi field required sẽ có, mọi field type sẽ đúng, không có field ngoài schema. 100% compliance — không cần try-catch JSON parse.",
+  },
+  {
+    type: "fill-blank",
+    question: "Để ép LLM trả về đúng cấu trúc, ta mô tả output bằng một {blank} (ví dụ sinh từ lớp {blank} trong Python) rồi bật strict mode trên API.",
+    blanks: [
+      { answer: "JSON schema", accept: ["JSON Schema", "schema", "json-schema"] },
+      { answer: "Pydantic", accept: ["pydantic", "BaseModel", "pydantic BaseModel"] },
+    ],
+    explanation: "Flow chuẩn: định nghĩa lớp Pydantic BaseModel → gọi Model.model_json_schema() để lấy JSON schema → truyền schema này cho API với strict mode. LLM sẽ bị ràng buộc sinh output khớp chính xác schema.",
   },
 ];
 
@@ -118,7 +127,9 @@ export default function StructuredOutputsTopic() {
         <AhaMoment>
           Structured outputs giống <strong>điền form</strong>{" "}thay vì <strong>viết thư</strong>.
           Form chỉ chấp nhận đúng format (tên, email, số điện thoại). Thư tự do có thể viết bất kỳ gì.
-          LLM với constrained decoding = <strong>form thông minh</strong>{" "}— luôn cho output đúng schema, 100% parseable!
+          LLM với constrained decoding = <strong>form thông minh</strong>{" "}— luôn cho output đúng schema, 100% parseable! Đây cũng chính là cơ chế dưới{" "}
+          <TopicLink slug="function-calling">function calling</TopicLink>, và là cách đáng tin cậy hơn nhiều so với chỉ dựa vào{" "}
+          <TopicLink slug="prompt-engineering">prompt engineering</TopicLink>{" "}để xin JSON.
         </AhaMoment>
       </LessonSection>
 

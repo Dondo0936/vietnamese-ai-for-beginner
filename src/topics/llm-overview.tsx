@@ -13,7 +13,9 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -113,6 +115,15 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Đây là emergent abilities — khả năng nổi lên. LLM chỉ được dạy dự đoán từ tiếp theo, nhưng khi đủ lớn và đủ dữ liệu, nó tự phát triển khả năng phức tạp.",
+  },
+  {
+    type: "fill-blank",
+    question: "Ở mỗi bước sinh văn bản, LLM dự đoán {blank} tiếp theo dựa trên phân phối {blank} trên toàn bộ từ vựng.",
+    blanks: [
+      { answer: "token", accept: ["từ", "next token"] },
+      { answer: "xác suất", accept: ["probability", "xac suat"] },
+    ],
+    explanation: "LLM tính phân phối xác suất P(token | ngữ cảnh) trên toàn bộ từ vựng (~50K token), rồi chọn token tiếp theo (greedy, sampling, top-k...). Lặp lại cho đến khi sinh đủ câu trả lời.",
   },
 ];
 
@@ -313,7 +324,8 @@ export default function LLMOverviewTopic() {
         Bạn vừa làm chính xác điều mà <strong>Mô hình Ngôn ngữ Lớn (LLM)</strong>{" "}làm:
         nhìn vào ngữ cảnh, suy ra từ tiếp theo phù hợp nhất. Chỉ từ nhiệm vụ đơn giản
         &quot;dự đoán từ tiếp theo&quot; lặp lại hàng nghìn tỷ lần, LLM phát triển khả
-        năng viết, dịch, sáng tạo, và suy luận!
+        năng viết, dịch, sáng tạo, và suy luận — và kỹ năng viết{" "}
+        <TopicLink slug="prompt-engineering">prompt</TopicLink>{" "}tốt giúp bạn điều khiển khả năng đó.
       </AhaMoment>
 
       </LessonSection>
@@ -502,7 +514,7 @@ export default function LLMOverviewTopic() {
         <p>Công thức cốt lõi:</p>
         <LaTeX block>{"P(w_{\\text{next}} \\mid w_1, w_2, ..., w_n) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right) V"}</LaTeX>
         <p>
-          Đây là cơ chế <strong>self-attention</strong>{" "}trong Transformer — cho phép mỗi từ
+          Đây là cơ chế <strong>self-attention</strong>{" "}trong <TopicLink slug="transformer">Transformer</TopicLink> — cho phép mỗi từ
           &quot;nhìn&quot; mọi từ khác để hiểu ngữ cảnh trước khi dự đoán.
         </p>
 
@@ -514,8 +526,8 @@ export default function LLMOverviewTopic() {
 
         <p><strong>Giới hạn của LLM:</strong></p>
         <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-          <li><strong>Ảo giác (Hallucination):</strong> LLM có thể tự tin nói sai vì nó dự đoán từ &quot;nghe hợp lý&quot;, không phải &quot;đúng sự thật&quot;</li>
-          <li><strong>Cửa sổ ngữ cảnh:</strong> Chỉ xử lý được một lượng text nhất định (128K–1M tokens)</li>
+          <li><strong>Ảo giác (<TopicLink slug="hallucination">Hallucination</TopicLink>):</strong> LLM có thể tự tin nói sai vì nó dự đoán từ &quot;nghe hợp lý&quot;, không phải &quot;đúng sự thật&quot;</li>
+          <li><strong><TopicLink slug="context-window">Cửa sổ ngữ cảnh</TopicLink>:</strong> Chỉ xử lý được một lượng text nhất định (128K–1M tokens)</li>
           <li><strong>Training cutoff:</strong> Không biết sự kiện xảy ra sau thời điểm huấn luyện</li>
           <li><strong>Không thật sự &quot;hiểu&quot;:</strong> Dự đoán pattern, không có trải nghiệm hay ý thức</li>
         </ul>

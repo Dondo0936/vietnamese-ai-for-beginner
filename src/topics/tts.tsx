@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -77,6 +77,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 2,
     explanation:
       "6 thanh điệu tiếng Việt là thách thức cốt lõi: 'ma' (ngang) ≠ 'má' (sắc) ≠ 'mà' (huyền) ≠ 'mả' (hỏi) ≠ 'mã' (ngã) ≠ 'mạ' (nặng). TTS phải sinh đúng F0 contour cho từng thanh, đồng thời duy trì prosody tự nhiên ở cấp câu.",
+  },
+  {
+    type: "fill-blank",
+    question: "Pipeline TTS hiện đại có hai mô-đun chính: mô hình {blank} (acoustic model) sinh Mel-spectrogram, và {blank} chuyển spectrogram thành sóng âm thực nghe được.",
+    blanks: [
+      { answer: "acoustic", accept: ["âm học", "acoustic model", "mô hình âm học"] },
+      { answer: "vocoder", accept: ["bộ mã hoá giọng", "neural vocoder", "hifi-gan", "hifigan"] },
+    ],
+    explanation: "TTS neural tách thành 2 bước: (1) Acoustic model (VITS, FastSpeech2, Tacotron2) sinh biểu diễn trung gian Mel-spectrogram từ văn bản, (2) Vocoder (HiFi-GAN phổ biến nhất) chuyển Mel-spectrogram thành sóng âm 22kHz chất lượng cao.",
   },
 ];
 
@@ -213,7 +222,9 @@ export default function TTSTopic() {
         <ExplanationSection>
           <p>
             <strong>Text-to-Speech (TTS)</strong>{" "}
-            là công nghệ chuyển đổi văn bản thành giọng nói tự nhiên. TTS hiện đại không chỉ phát âm chính xác mà còn thể hiện ngữ điệu, cảm xúc, và phong cách nói.
+            là công nghệ chuyển đổi văn bản thành giọng nói tự nhiên — ngược lại với bài toán{" "}
+            <TopicLink slug="speech-recognition">nhận dạng giọng nói (ASR)</TopicLink>{" "}
+            chuyển âm thanh thành chữ. TTS hiện đại không chỉ phát âm chính xác mà còn thể hiện ngữ điệu, cảm xúc, và phong cách nói.
           </p>
 
           <Callout variant="insight" title="Pipeline TTS hiện đại gồm 4 bước">

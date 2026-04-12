@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -15,6 +15,15 @@ export default function RecommendationSystemsTopic() {
     { question: "Collaborative Filtering hoạt động thế nào?", options: ["Phân tích nội dung sản phẩm", "Tìm USER TƯƠNG TỰ bạn (thích cùng sản phẩm) → gợi ý sản phẩm họ thích mà bạn chưa dùng", "Dùng rule-based"], correct: 1, explanation: "CF: 'Người giống bạn thích gì?' Bạn và An đều thích Phở, Bún chả. An thích Bún bò Huế nhưng bạn chưa ăn → gợi ý Bún bò Huế cho bạn. Không cần hiểu nội dung sản phẩm — chỉ dựa trên pattern tương tác của users." },
     { question: "Cold start problem là gì và giải pháp?", options: ["Server khởi động chậm", "User/item MỚI không có lịch sử tương tác → CF không hoạt động. Giải pháp: content-based (dựa trên attributes), popularity-based, hoặc hỏi user preferences", "Model quá lớn"], correct: 1, explanation: "User mới: chưa rating gì → không biết tương tự ai. Item mới: chưa ai rating → không thể CF. Giải pháp: (1) Content-based: gợi ý dựa trên attributes (thể loại, giá), (2) Popularity: gợi ý sản phẩm hot, (3) Onboarding: hỏi 'bạn thích gì?'" },
     { question: "Tại sao Shopee dùng Hybrid (CF + Content + Deep Learning)?", options: ["Vì có nhiều data", "MỖI phương pháp có điểm yếu riêng. Hybrid kết hợp: CF cho personalization, Content cho cold start, DL học patterns phức tạp từ behavior", "Để marketing"], correct: 1, explanation: "CF mạnh ở personalization nhưng cold start. Content tốt cho cold start nhưng không capture subtle preferences. DL (Two-Tower, DSSM) học embedding từ nhiều signals (click, time, scroll). Hybrid kết hợp tất cả → tốt hơn bất kỳ phương pháp đơn lẻ nào." },
+    {
+      type: "fill-blank",
+      question: "Hai phương pháp kinh điển của recommender system là {blank} filtering (tìm user tương tự) và {blank}-based filtering (dựa trên đặc trưng sản phẩm).",
+      blanks: [
+        { answer: "collaborative", accept: ["cộng tác", "hợp tác", "CF"] },
+        { answer: "content", accept: ["nội dung", "content-based"] },
+      ],
+      explanation: "Collaborative filtering: 'Người giống bạn thích gì?' — dùng ma trận user-item. Content-based: 'Sản phẩm có đặc trưng giống sản phẩm bạn từng thích' — dùng attributes/embeddings. Hybrid kết hợp cả hai để giải quyết cold start và personalization.",
+    },
   ], []);
 
   return (
@@ -47,7 +56,7 @@ export default function RecommendationSystemsTopic() {
         <p><strong>Matrix Factorization (CF):</strong></p>
         <LaTeX block>{"R \\approx U \\cdot V^T \\quad \\text{(user matrix } U \\in \\mathbb{R}^{m \\times k} \\text{, item matrix } V \\in \\mathbb{R}^{n \\times k} \\text{)}"}</LaTeX>
         <LaTeX block>{"\\hat{r}_{ui} = u_i^T \\cdot v_j + b_u + b_i + \\mu \\quad \\text{(dự đoán rating)}"}</LaTeX>
-        <Callout variant="tip" title="Two-Tower Model">Deep Learning cho RecSys: 2 neural networks (user tower + item tower) tạo embeddings. Similarity = dot product. Training: contrastive learning (positive pairs + negative sampling). Serving: ANN search (FAISS) cho real-time. Đây là kiến trúc của Shopee, YouTube, TikTok.</Callout>
+        <Callout variant="tip" title="Two-Tower Model">Deep Learning cho RecSys: 2 neural networks (user tower + item tower) tạo <TopicLink slug="embedding-model">embeddings</TopicLink>. Similarity = dot product — cùng nguyên lý với <TopicLink slug="semantic-search">semantic search</TopicLink>. Training: contrastive learning (positive pairs + negative sampling). Serving: ANN search (FAISS) cho real-time. Đây là kiến trúc của Shopee, YouTube, TikTok.</Callout>
         <CodeBlock language="python" title="Matrix Factorization với surprise">{`from surprise import SVD, Dataset, Reader
 from surprise.model_selection import cross_validate
 

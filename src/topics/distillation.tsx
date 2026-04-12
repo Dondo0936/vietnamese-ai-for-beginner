@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -65,6 +65,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 0,
     explanation:
       "DistilBERT có 66M tham số (so với BERT 110M = giảm 40%), chạy nhanh hơn 60%, mà vẫn giữ 97% hiệu suất. Đây là ví dụ kinh điển về sức mạnh của distillation.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Trong knowledge distillation, mô hình lớn đóng vai {blank} sinh ra soft labels để mô hình nhỏ hơn, gọi là {blank}, học theo.",
+    blanks: [
+      { answer: "teacher", accept: ["giáo viên", "thầy"] },
+      { answer: "student", accept: ["học sinh", "trò"] },
+    ],
+    explanation:
+      "Teacher (lớn, chính xác) chạy inference tạo soft labels chứa dark knowledge. Student (nhỏ, nhanh) học từ cả soft labels lẫn hard labels — bắt chước không chỉ đáp án mà cả quá trình suy luận của teacher.",
   },
 ];
 
@@ -209,7 +220,9 @@ export default function DistillationTopic() {
         <ExplanationSection>
           <p>
             <strong>Knowledge Distillation</strong>{" "}(Hinton et al., 2015) huấn luyện student
-            trên hỗn hợp hard label và soft label từ teacher:
+            trên hỗn hợp hard label và soft label từ teacher. Đây là một lựa chọn nén
+            mô hình thay thế cho <TopicLink slug="quantization">quantization</TopicLink>{" "}
+            và <TopicLink slug="pruning">pruning</TopicLink>:
           </p>
 
           <LaTeX block>{"\\mathcal{L} = \\alpha \\cdot \\mathcal{L}_{\\text{CE}}(y, \\hat{y}_s) + (1-\\alpha) \\cdot T^2 \\cdot D_{\\text{KL}}(\\sigma(z_t/T) \\| \\sigma(z_s/T))"}</LaTeX>
@@ -252,7 +265,8 @@ def distillation_loss(student_logits, teacher_logits, labels, T=4, alpha=0.5):
             Ngoài logit distillation cổ điển, LLM dùng nhiều kỹ thuật mới:
             synthetic data (teacher sinh dữ liệu cho student), chain-of-thought
             distillation (dạy cả quá trình suy luận), và API distillation
-            (dùng GPT-4 API để dạy mô hình nhỏ).
+            (dùng GPT-4 API để <TopicLink slug="fine-tuning">fine-tune</TopicLink>{" "}
+            mô hình nhỏ).
           </Callout>
         </ExplanationSection>
       </LessonSection>

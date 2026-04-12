@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -62,6 +62,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "RLHF (PPO) có thể khám phá không gian phản hồi mới mà dữ liệu preference không cover. DPO bị giới hạn bởi dữ liệu có sẵn. Với bài toán phức tạp cần khám phá, RLHF vẫn vượt trội.",
+  },
+  {
+    type: "fill-blank",
+    question: "DPO tối ưu trực tiếp từ dữ liệu {blank} dạng (prompt, y_win, y_lose), không cần {blank} riêng biệt như RLHF yêu cầu — biến bài toán RL phức tạp thành supervised learning đơn giản.",
+    blanks: [
+      { answer: "preference", accept: ["sở thích", "cặp sở thích", "preference data", "preferences"] },
+      { answer: "reward model", accept: ["mô hình thưởng", "rm", "reward-model"] },
+    ],
+    explanation: "DPO chứng minh nghiệm closed-form của RLHF có thể viết dưới dạng tỷ lệ xác suất giữa policy và reference model — nhờ vậy ta tối ưu trực tiếp từ preference data mà không cần huấn luyện reward model riêng hay chạy PPO bất ổn định.",
   },
 ];
 
@@ -227,8 +236,11 @@ export default function DPOTopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            <strong>DPO</strong>{" "}(Direct Preference Optimization) biến bài toán RLHF thành
-            bài toán supervised learning đơn giản. Ý tưởng cốt lõi:
+            <strong>DPO</strong>{" "}(Direct Preference Optimization) biến bài toán{" "}
+            <TopicLink slug="rlhf">RLHF</TopicLink>{" "}
+            thành bài toán supervised learning đơn giản, đạt cùng mục tiêu{" "}
+            <TopicLink slug="alignment">alignment</TopicLink>{" "}
+            nhưng không cần reward model. Ý tưởng cốt lõi:
           </p>
 
           <p>

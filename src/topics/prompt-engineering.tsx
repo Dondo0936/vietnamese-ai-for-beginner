@@ -13,6 +13,7 @@ import {
   TabView,
   LaTeX,
   LessonSection,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -162,6 +163,18 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Ví dụ mẫu hoạt động như 'bản thiết kế' cho output — AI pattern-match theo format và style bạn cho, không phải 'học' từ chúng.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Hỏi thẳng không cho ví dụ gọi là {blank}-shot, cho vài ví dụ mẫu gọi là {blank}-shot, và yêu cầu suy luận từng bước gọi là {blank}-of-thought.",
+    blanks: [
+      { answer: "zero", accept: ["Zero"] },
+      { answer: "few", accept: ["Few"] },
+      { answer: "chain", accept: ["Chain"] },
+    ],
+    explanation:
+      "Zero-shot không có ví dụ, few-shot có vài ví dụ mẫu, và chain-of-thought buộc mô hình viết ra các bước suy luận trước khi đưa đáp án.",
   },
 ];
 
@@ -381,6 +394,17 @@ export default function PromptEngineeringTopic() {
         <p>
           <strong>Prompt Engineering</strong> là kỹ năng thiết kế chỉ dẫn (prompt) sao cho
           LLM hiểu chính xác bạn muốn gì và trả lời đúng format, phong cách, nội dung bạn cần.
+        </p>
+        <p>
+          Các kỹ thuật cốt lõi bao gồm{" "}
+          <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>
+          {" "}(yêu cầu mô hình suy luận từng bước) và{" "}
+          <TopicLink slug="in-context-learning">in-context learning</TopicLink>
+          {" "}(cho ví dụ mẫu trong prompt). Ngoài ra, prompt còn kết hợp với tham số như{" "}
+          <TopicLink slug="temperature">temperature</TopicLink>
+          {" "}để kiểm soát độ sáng tạo và giảm{" "}
+          <TopicLink slug="hallucination">hallucination</TopicLink>
+          {" "}(bịa thông tin).
         </p>
 
         <Callout variant="insight" title="Tại sao prompt quan trọng đến vậy?">

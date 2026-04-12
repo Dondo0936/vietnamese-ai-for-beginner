@@ -2,7 +2,7 @@
 
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -61,6 +61,29 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "BF16 có 8 bit exponent (như FP32) → dải số rộng, ít underflow. FP16 có 5 bit exponent → dải hẹp, dễ underflow. LLM dùng BF16 vì gần như không cần loss scaling, huấn luyện ổn định hơn.",
+  },
+  {
+    type: "code",
+    question:
+      "Điền vào đoạn code PyTorch mixed precision: dùng context manager để chạy forward ở FP16, và loại dtype phù hợp cho forward pass.",
+    codeTemplate: `from torch.amp import ___, GradScaler
+
+scaler = GradScaler()
+with ___(device_type="cuda", dtype=torch.___):
+    output = model(batch)
+    loss = criterion(output, target)
+
+scaler.scale(loss).backward()
+scaler.step(optimizer)
+scaler.update()`,
+    language: "python",
+    blanks: [
+      { answer: "autocast", accept: [] },
+      { answer: "autocast", accept: [] },
+      { answer: "float16", accept: ["fp16", "half"] },
+    ],
+    explanation:
+      "autocast tự động chuyển forward pass sang FP16 để tận dụng Tensor Cores (nhanh 2x). GradScaler nhân loss lên trước backward để gradient không bị underflow, rồi chia lại trước khi cập nhật master weights FP32.",
   },
 ];
 
@@ -213,7 +236,11 @@ export default function MixedPrecisionTopic() {
         <ExplanationSection>
           <p>
             <strong>Mixed Precision Training</strong>{" "}(Micikevicius et al., 2018) kết hợp
-            FP16 và FP32 qua 3 kỹ thuật:
+            FP16 và FP32 qua 3 kỹ thuật. Khác với{" "}
+            <TopicLink slug="quantization">quantization</TopicLink>{" "}(dùng cho inference,
+            nén mô hình xuống INT8/INT4), mixed precision được dùng khi huấn luyện để
+            khai thác Tensor Cores (xem thêm{" "}
+            <TopicLink slug="gpu-optimization">tối ưu GPU</TopicLink>):
           </p>
 
           <p><strong>1. FP32 Master Weights:</strong></p>

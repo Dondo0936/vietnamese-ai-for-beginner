@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -30,7 +30,7 @@ const TOTAL_STEPS = 8;
 const MODALITIES = [
   { label: "Văn bản", color: "#3b82f6", angle: -90, examples: "Hỏi đáp, viết bài, dịch thuật" },
   { label: "Hình ảnh", color: "#22c55e", angle: -30, examples: "Tạo ảnh, phân tích ảnh, chỉnh sửa" },
-  { label: "Âm thanh", color: "#f59e0b", angle: 30, examples: "Nghe hiểu, tạo giọng nói, nh��c" },
+  { label: "Âm thanh", color: "#f59e0b", angle: 30, examples: "Nghe hiểu, tạo giọng nói, nhạc" },
   { label: "Video", color: "#ef4444", angle: 90, examples: "Tạo video, phân tích video, chú thích" },
   { label: "Mã nguồn", color: "#8b5cf6", angle: 150, examples: "Viết code, debug, review" },
   { label: "3D", color: "#06b6d4", angle: 210, examples: "Tạo vật thể 3D, scene understanding" },
@@ -48,9 +48,9 @@ const APPROACHES = [
   {
     id: "unified",
     label: "Thống nhất (Unified)",
-    desc: "M��T mô hình duy nhất hiểu và sinh TẤT CẢ loại dữ liệu. VD: GPT-4o, Gemini.",
+    desc: "MỘT mô hình duy nhất hiểu và sinh TẤT CẢ loại dữ liệu. VD: GPT-4o, Gemini.",
     pros: "Hiểu sâu mối liên hệ giữa các phương thức, nhanh, linh hoạt any-to-any",
-    cons: "C���n dữ liệu huấn luyện khổng lồ, kiến trúc phức tạp, tốn tài nguyên",
+    cons: "Cần dữ liệu huấn luyện khổng lồ, kiến trúc phức tạp, tốn tài nguyên",
     color: "#3b82f6",
   },
 ];
@@ -90,7 +90,16 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Unified model tokenize MỌI phương thức: văn bản → BPE tokens, ảnh → visual tokens (qua VQ-VAE hoặc ViT patches), audio → audio tokens (qua codec). T���t cả token được nối thành một chuỗi duy nhất và Transformer xử lý đồng nhất.",
+      "Unified model tokenize MỌI phương thức: văn bản → BPE tokens, ảnh → visual tokens (qua VQ-VAE hoặc ViT patches), audio → audio tokens (qua codec). Tất cả token được nối thành một chuỗi duy nhất và Transformer xử lý đồng nhất.",
+  },
+  {
+    type: "fill-blank",
+    question: "Unified multimodal model xử lý {blank} (text, ảnh, audio, video) trong một kiến trúc duy nhất, cho phép khả năng {blank} — bất kỳ đầu vào đổi sang bất kỳ đầu ra.",
+    blanks: [
+      { answer: "nhiều phương thức", accept: ["multiple modalities", "đa phương thức", "nhiều modality"] },
+      { answer: "any-to-any", accept: ["any to any", "bất kỳ sang bất kỳ", "any-any"] },
+    ],
+    explanation: "Sức mạnh của unified multimodal nằm ở hai đặc điểm: (1) xử lý nhiều phương thức đồng thời trong cùng không gian biểu diễn, (2) khả năng any-to-any cho phép mọi tổ hợp đầu vào → đầu ra: text→ảnh, audio→text, ảnh+audio→text...",
   },
 ];
 
@@ -166,7 +175,7 @@ export default function UnifiedMultimodalTopic() {
                     );
                   })}
                   <text x={310} y={270} textAnchor="middle" fill="#94a3b8" fontSize={10}>
-                    Any-to-any: bất kỳ đầu vào → b��t kỳ đầu ra
+                    Any-to-any: bất kỳ đầu vào → bất kỳ đầu ra
                   </text>
                 </>
               ) : (
@@ -252,7 +261,11 @@ export default function UnifiedMultimodalTopic() {
           <p>
             <strong>Mô hình đa phương thức thống nhất</strong>{" "}
             là thế hệ AI có khả năng xử lý và sinh ra nhiều loại dữ liệu trong{" "}
-            <strong>một kiến trúc duy nhất</strong>, thay vì ghép nối nhiều mô hình chuyên biệt.
+            <strong>một kiến trúc duy nhất</strong>, thay vì ghép nối nhiều mô hình chuyên biệt như{" "}
+            <TopicLink slug="clip">CLIP</TopicLink>{" "}
+            (chỉ mã hoá ảnh-văn bản) hay{" "}
+            <TopicLink slug="vlm">VLM</TopicLink>{" "}
+            (chỉ hiểu ảnh, sinh văn bản).
           </p>
 
           <Callout variant="insight" title="Kiến trúc any-to-any">
@@ -267,7 +280,7 @@ export default function UnifiedMultimodalTopic() {
               </p>
               <p>
                 <strong>Multimodal decoder:</strong>{" "}
-                Đầu ra có thể là bất kỳ loại token nào — sinh văn bản, ảnh, hoặc audio tuỳ yêu c��u.
+                Đầu ra có thể là bất kỳ loại token nào — sinh văn bản, ảnh, hoặc audio tuỳ yêu cầu.
               </p>
             </div>
           </Callout>

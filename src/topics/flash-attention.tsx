@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -55,6 +55,17 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation: "softmax(x) = exp(x - max) / sum(exp(x - max)). Cần max của cả hàng trước! Nhưng Flash Attention xử lý từng block → chưa thấy cả hàng. Online softmax: cập nhật running max + running sum khi xử lý mỗi block mới → kết quả CHÍNH XÁC (không xấp xỉ!).",
   },
+  {
+    type: "fill-blank",
+    question:
+      "Flash Attention giảm {blank} (từ O(N²) xuống O(N)) bằng kỹ thuật {blank} — chia Q, K, V thành block nhỏ vừa SRAM, tính attention từng block tại chỗ.",
+    blanks: [
+      { answer: "bộ nhớ", accept: ["memory", "VRAM", "RAM"] },
+      { answer: "tiling", accept: ["Tiling", "chia block", "block"] },
+    ],
+    explanation:
+      "Flash Attention giảm bộ nhớ O(N²) → O(N) nhờ kỹ thuật tiling: không lưu ma trận attention N×N đầy đủ, chỉ tính từng tile/block trong SRAM nhanh. Online softmax đảm bảo kết quả chính xác khi ghép các block lại.",
+  },
 ];
 
 export default function FlashAttentionTopic() {
@@ -80,7 +91,9 @@ export default function FlashAttentionTopic() {
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bạn cần so sánh 1000 hồ sơ Shopee với nhau. Cách cũ: trải hết 1000 hồ sơ ra sàn nhà khổng lồ, so từng cặp. Cách Flash: lấy ra 50 hồ sơ, so sánh trên bàn nhỏ, ghi kết quả, cất lại, lấy 50 hồ sơ tiếp. Bàn nhỏ hơn nhiều mà kết quả chính xác!
+          Hãy tưởng tượng bạn cần so sánh 1000 hồ sơ Shopee với nhau. Cách cũ (
+          <TopicLink slug="self-attention">self-attention</TopicLink>{" "}
+          gốc): trải hết 1000 hồ sơ ra sàn nhà khổng lồ, so từng cặp. Cách Flash: lấy ra 50 hồ sơ, so sánh trên bàn nhỏ, ghi kết quả, cất lại, lấy 50 hồ sơ tiếp. Bàn nhỏ hơn nhiều mà kết quả chính xác!
         </p>
 
         <VisualizationSection>
@@ -161,7 +174,7 @@ export default function FlashAttentionTopic() {
             />
             <text x={462} y={mode === "standard" ? 160 : 98}
               textAnchor="middle" fontSize={12} fill="white" fontWeight="bold">
-              {mode === "standard" ? "O(N\u00B2)" : "O(N)"}
+              {mode === "standard" ? "O(N²)" : "O(N)"}
             </text>
 
             {/* Speed comparison */}
@@ -173,7 +186,7 @@ export default function FlashAttentionTopic() {
                 transition={{ duration: 0.4 }} />
               <text x={mode === "standard" ? 50 : 95} y={24}
                 textAnchor="middle" fontSize={10} fill="white" fontWeight="bold">
-                {mode === "standard" ? "1\u00D7" : "2-4\u00D7 nhanh hơn"}
+                {mode === "standard" ? "1×" : "2-4× nhanh hơn"}
               </text>
             </g>
 
@@ -286,7 +299,11 @@ export default function FlashAttentionTopic() {
               <strong>FA2</strong>{" "}
               (2023): song song hóa tốt hơn (over sequence length), giảm non-matmul FLOPs → 2× nhanh hơn FA1.{" "}
               <strong>FA3</strong>{" "}
-              (2024): tối ưu cho H100, FP8 support, asynchronous prefetching → gần peak GPU throughput. Mọi LLM hiện đại dùng Flash Attention.
+              (2024): tối ưu cho H100, FP8 support, asynchronous prefetching → gần peak GPU throughput. Mọi LLM hiện đại dùng Flash Attention — thường kết hợp với{" "}
+              <TopicLink slug="kv-cache">KV cache</TopicLink>{" "}
+              và{" "}
+              <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+              architecture.
             </p>
           </Callout>
 

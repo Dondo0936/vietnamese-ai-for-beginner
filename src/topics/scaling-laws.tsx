@@ -11,7 +11,8 @@ import {
   CodeBlock,
   LaTeX,
   SliderGroup,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -79,6 +80,16 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation: "Scaling laws = compute-optimal: phân bổ CÂN BẰNG giữa model size và data. Chinchilla rule: nếu model có N tham số, cần ~20N token dữ liệu. Dồn lệch 1 phía = lãng phí compute.",
+  },
+  {
+    type: "fill-blank",
+    question: "Kaplan & Chinchilla scaling laws mô tả mối quan hệ giữa loss và ba yếu tố: số {blank} (N), lượng {blank} (D), và {blank} huấn luyện (C) — theo quy luật power law với diminishing returns.",
+    blanks: [
+      { answer: "tham số", accept: ["parameters", "params", "parameter", "số tham số"] },
+      { answer: "dữ liệu", accept: ["data", "tokens", "token", "dữ liệu huấn luyện"] },
+      { answer: "compute", accept: ["tính toán", "flops", "compute budget"] },
+    ],
+    explanation: "Ba yếu tố cốt lõi của scaling laws: N (parameters), D (data/tokens), C (compute/FLOPs). Công thức Kaplan: L ∝ N^(-0.076). Chinchilla rule: D ≈ 20N để tối ưu compute budget. Gấp 10× N chỉ giảm ~40% loss — diminishing returns là đặc trưng của power law.",
   },
 ];
 
@@ -328,10 +339,13 @@ export default function ScalingLawsTopic() {
             <strong>Smooth power law:</strong>{" "}Loss giảm dự đoán được khi tăng N, D, hoặc C — không có &quot;magic threshold&quot;
           </li>
           <li>
-            <strong>Compute-optimal:</strong>{" "}Phân bổ CÂN BẰNG giữa model size và data cho kết quả tốt nhất
+            <strong>Compute-optimal:</strong>{" "}Phân bổ CÂN BẰNG giữa model size và data cho kết quả tốt nhất. Kiến trúc{" "}
+            <TopicLink slug="moe">MoE (Mixture of Experts)</TopicLink>{" "}
+            mở rộng scaling laws bằng cách tăng tham số mà giữ compute gần như không đổi.
           </li>
           <li>
-            <strong>Emergent abilities:</strong>{" "}Một số khả năng (CoT, few-shot) chỉ xuất hiện ở quy mô đủ lớn — dù scaling smooth
+            <strong>Emergent abilities:</strong>{" "}Một số khả năng (CoT, few-shot,{" "}
+            <TopicLink slug="long-context">long context</TopicLink>) chỉ xuất hiện ở quy mô đủ lớn — dù scaling smooth
           </li>
         </ul>
 

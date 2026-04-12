@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -70,6 +70,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Arms race: mỗi khi detector giỏi hơn, deepfake generator cũng giỏi hơn. Detector train trên StyleGAN deepfake có thể thất bại hoàn toàn trên Diffusion-based deepfake. Cần: (1) training đa dạng loại deepfake, (2) phương pháp không phụ thuộc kiến trúc (architecture-agnostic), (3) cập nhật liên tục.",
+  },
+  {
+    type: "fill-blank",
+    question: "Deepfake detector được huấn luyện để phân biệt ảnh do AI {blank} và ảnh {blank} do camera ghi lại.",
+    blanks: [
+      { answer: "generated", accept: ["tạo", "sinh", "giả"] },
+      { answer: "real", accept: ["thật", "that"] },
+    ],
+    explanation: "Deepfake detection về bản chất là bài toán nhị phân: phân biệt nội dung generated (do AI sinh) với nội dung real (do camera chụp/quay thật).",
   },
 ];
 
@@ -182,7 +191,10 @@ export default function DeepfakeDetectionTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Deepfake Detection</strong>{" "} là các phương pháp phát hiện nội dung ảnh/video giả mạo tạo bởi AI (GAN, Diffusion).</p>
+          <p><strong>Deepfake Detection</strong>{" "} là các phương pháp phát hiện nội dung ảnh/video giả mạo tạo bởi AI ({" "}
+            <TopicLink slug="gan">GAN</TopicLink>, Diffusion). Để phòng chống toàn diện, detection thường kết hợp với{" "}
+            <TopicLink slug="ai-watermarking">AI watermarking</TopicLink>{" "}
+            để xác minh nguồn gốc nội dung ngay từ khâu sinh.</p>
           <Callout variant="insight" title="Bốn phương pháp phát hiện chính">
             <div className="space-y-2">
               <p><strong>1. Phân tích sinh trắc:</strong>{" "} Kiểm tra ánh sáng mắt, nhịp nháy, lip-sync, chuyển động đầu. Dễ hiểu nhưng deepfake mới vượt qua được.</p>

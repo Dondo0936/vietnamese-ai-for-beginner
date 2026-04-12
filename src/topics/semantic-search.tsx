@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -74,6 +74,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Embedding model ánh xạ 'SKU-12345' thành vector chung chung, không nắm bắt tính chính xác ký tự. BM25 khớp chính xác 'SKU-12345' tốt hơn nhiều. Đây là lý do cần Hybrid Search!",
+  },
+  {
+    type: "fill-blank",
+    question: "Semantic search dùng một {blank} để chuyển câu hỏi và tài liệu thành vector, rồi xếp hạng bằng {blank} — đo góc giữa hai vector, bằng 1 khi cùng hướng.",
+    blanks: [
+      { answer: "embedding", accept: ["embedding model", "mô hình embedding", "bi-encoder"] },
+      { answer: "cosine similarity", accept: ["cosine", "độ tương tự cosine", "cosine sim"] },
+    ],
+    explanation: "Embedding model (bi-encoder) tạo vector dense cho query + doc. Cosine similarity = (q · d) / (‖q‖‖d‖) = cos(θ). Khi vector đã normalize thì bằng dot product. Đây là phép đo phổ biến nhất vì không phụ thuộc độ dài vector.",
   },
 ];
 
@@ -202,7 +211,7 @@ export default function SemanticSearchTopic() {
         <ExplanationSection>
           <p>
             <strong>Semantic Search</strong>{" "}tìm kiếm dựa trên ý nghĩa nội dung thay vì khớp từ khoá.
-            Sử dụng embedding model chuyển text thành vector, rồi tìm vector gần nhất.
+            Sử dụng <TopicLink slug="embedding-model">embedding model</TopicLink> chuyển text thành vector, lưu vào <TopicLink slug="vector-databases">vector database</TopicLink>, rồi tìm vector gần nhất — là bước retrieve lõi của <TopicLink slug="rag">RAG</TopicLink>.
           </p>
 
           <p><strong>Pipeline:</strong></p>

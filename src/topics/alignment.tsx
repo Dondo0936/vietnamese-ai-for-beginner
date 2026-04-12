@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -69,6 +69,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Khi AI giỏi hơn con người ở một lĩnh vực (toán cao cấp, code phức tạp), con người không thể đánh giá đúng sai. Ví dụ: ai kiểm tra AI viết code nếu code phức tạp hơn khả năng reviewer? Đây là thách thức cốt lõi cho tương lai alignment.",
+  },
+  {
+    type: "fill-blank",
+    question: "AI Alignment là lĩnh vực đảm bảo mô hình hành động phù hợp với {blank} của con người, không chỉ tối ưu mục tiêu bề mặt. Ba trụ cột: helpful, honest, và {blank}.",
+    blanks: [
+      { answer: "giá trị", accept: ["human values", "giá trị con người", "values", "ý định", "ý định con người"] },
+      { answer: "harmless", accept: ["an toàn", "không gây hại", "vô hại", "safe"] },
+    ],
+    explanation: "Alignment không phải dạy AI biết nhiều hơn mà dạy AI hiểu giá trị con người. Anthropic HHH framework xác định 3 giá trị cốt lõi: helpful (giúp ích), honest (trung thực), harmless (không gây hại) — là khung đánh giá chuẩn cho mọi mô hình đã align.",
   },
 ];
 
@@ -195,8 +204,12 @@ export default function AlignmentTopic() {
                 Huấn luyện trên ~100K ví dụ hỏi-đáp chất lượng do con người viết. Mô hình học format: lịch sự, đầy đủ, tuân theo hướng dẫn.
               </p>
               <p>
-                <strong>3. RLHF:</strong>{" "}
-                Con người so sánh cặp phản hồi, reward model học tiêu chí {'"tốt"'}, policy model tối ưu theo reward. Kết quả: mô hình ưu tiên phản hồi an toàn, hữu ích, trung thực.
+                <strong>3. <TopicLink slug="rlhf">RLHF</TopicLink>:</strong>{" "}
+                Con người so sánh cặp phản hồi, reward model học tiêu chí {'"tốt"'}, policy model tối ưu theo reward. Kết quả: mô hình ưu tiên phản hồi an toàn, hữu ích, trung thực. Biến thể hiện đại gồm{" "}
+                <TopicLink slug="dpo">DPO</TopicLink>{" "}
+                (bỏ reward model) và{" "}
+                <TopicLink slug="constitutional-ai">Constitutional AI</TopicLink>{" "}
+                (AI tự phê bình theo nguyên tắc).
               </p>
             </div>
           </Callout>

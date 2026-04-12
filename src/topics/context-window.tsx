@@ -10,7 +10,9 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -92,6 +94,18 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation: "Context window chứa CẢ prompt lẫn output. 100K + 50K = 150K token tối thiểu. Nếu context window chỉ 128K → không đủ!",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Context window đo bằng số {blank}. Chi phí attention tăng theo O(n^{blank}), nên gấp đôi context thì tính toán tăng gấp {blank} lần.",
+    blanks: [
+      { answer: "token", accept: ["tokens", "Token", "Tokens"] },
+      { answer: "2", accept: ["²", "hai"] },
+      { answer: "4", accept: ["bốn", "four"] },
+    ],
+    explanation:
+      "Context window tính bằng số token. Self-attention có độ phức tạp O(n²) theo độ dài, nên gấp đôi số token khiến chi phí attention tăng 4 lần — đây là lý do context dài rất tốn bộ nhớ và tính toán.",
   },
 ];
 
@@ -291,7 +305,13 @@ export default function ContextWindowTopic() {
       <ExplanationSection>
         <p>
           <strong>Context window</strong>{" "}(cửa sổ ngữ cảnh) là số lượng token tối đa mà LLM
-          có thể xử lý trong một lần suy luận, bao gồm cả đầu vào và đầu ra.
+          có thể xử lý trong một lần suy luận, bao gồm cả đầu vào và đầu ra. Số lượng token được quyết định bởi{" "}
+          <TopicLink slug="tokenization">tokenization</TopicLink>
+          , còn chi phí bộ nhớ đến từ{" "}
+          <TopicLink slug="kv-cache">KV cache</TopicLink>
+          {" "}— yếu tố giới hạn thực tế khi triển khai. Các kỹ thuật kéo dài cửa sổ thêm nữa được trình bày trong{" "}
+          <TopicLink slug="long-context">long context</TopicLink>
+          .
         </p>
 
         <Callout variant="warning" title="Tại sao context lớn = tốn nhiều tiền?">

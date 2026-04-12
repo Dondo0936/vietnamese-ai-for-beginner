@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
@@ -14,6 +14,15 @@ export default function AIInAgricultureTopic() {
     { question: "AI phát hiện bệnh lúa bằng cách nào?", options: ["Đo độ ẩm đất", "Chụp ảnh lá lúa bằng điện thoại → CNN phân loại bệnh (đạo ôn, vàng lá, khô vằn) → gợi ý cách trị với accuracy 90%+", "Đo nhiệt độ không khí"], correct: 1, explanation: "CNN (MobileNet/EfficientNet) nhận diện triệu chứng bệnh từ ảnh lá: màu sắc (vàng, nâu), hình dạng vết bệnh, vị trí. App trên điện thoại: nông dân chụp ảnh → AI phân loại → gợi ý thuốc/cách xử lý. Đã có apps như PlantVillage, Plantix dùng ở VN." },
     { question: "Precision farming là gì?", options: ["Farming chính xác từng cm", "Dùng AI + sensors + drone để TỐI ƯU tại từng vùng nhỏ: bao nhiêu nước, bao nhiêu phân, khi nào thu hoạch — thay vì 'làm đồng đều' toàn cánh đồng", "Chỉ dùng trong nhà kính"], correct: 1, explanation: "Precision farming: không phun thuốc đều toàn ruộng mà chỉ phun chỗ nào bị sâu. Không tưới đều mà tưới theo độ ẩm từng vùng. Giảm 30-50% nước + phân + thuốc, tăng 15-25% năng suất. Drones + sensors + AI = farming 4.0. Việt Nam đang pilot ở Đồng bằng sông Cửu Long." },
     { question: "Thách thức lớn nhất của AI nông nghiệp tại Việt Nam?", options: ["Thiếu GPU", "Hạ tầng: internet không ổn định ở nông thôn, nông dân chưa quen công nghệ, data cụ thể cho giống cây VN còn thiếu", "Thiếu đất nông nghiệp"], correct: 1, explanation: "3 thách thức chính: (1) Internet ở nông thôn không ổn định → cần Edge AI (chạy trên điện thoại offline), (2) Nông dân cần app đơn giản (tiếng Việt, giao diện dễ dùng), (3) Data giống cây VN (lúa, cà phê, thanh long) không nhiều như data cây tây Âu. Cần tự collect và label." },
+    {
+      type: "fill-blank",
+      question: "Ứng dụng điển hình của AI trong nông nghiệp là chụp ảnh lá {blank} để {blank} sớm, giúp nông dân xử lý trước khi bệnh lan rộng.",
+      blanks: [
+        { answer: "cây trồng", accept: ["crop", "cây", "lúa", "plant"] },
+        { answer: "phát hiện bệnh", accept: ["disease detection", "phát hiện sâu bệnh", "chẩn đoán bệnh"] },
+      ],
+      explanation: "Mô hình CNN nhẹ (MobileNet) chạy trên điện thoại nông dân: chụp ảnh lá → phân loại bệnh (đạo ôn, khô vằn, vàng lá...) → gợi ý thuốc/biện pháp. Đây là ứng dụng Edge AI tiêu biểu cho nông thôn Việt Nam.",
+    },
   ], []);
 
   return (
@@ -28,10 +37,10 @@ export default function AIInAgricultureTopic() {
         <p><strong>AI in Agriculture</strong>{" "}ứng dụng AI để phát hiện bệnh, tối ưu tưới tiêu, dự báo năng suất — nông nghiệp chính xác (precision farming).</p>
         <p><strong>4 ứng dụng chính:</strong></p>
         <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-          <li><strong>Phát hiện sâu bệnh:</strong>{" "}CNN từ ảnh lá → phân loại bệnh (accuracy 90%+)</li>
+          <li><strong>Phát hiện sâu bệnh:</strong>{" "}<TopicLink slug="image-classification">Image classification</TopicLink>{" "}từ ảnh lá → phân loại bệnh (accuracy 90%+)</li>
           <li><strong>Precision farming:</strong>{" "}Sensors + AI tối ưu nước, phân, thuốc từng vùng</li>
           <li><strong>Dự báo năng suất:</strong>{" "}Satellite + weather + soil data → predict yield</li>
-          <li><strong>Robot thu hoạch:</strong>{" "}Computer vision + robotics cho thu hoạch tự động</li>
+          <li><strong>Robot thu hoạch:</strong>{" "}<TopicLink slug="object-detection">Object detection</TopicLink>{" "}+ robotics cho thu hoạch tự động, phát hiện trái chín</li>
         </ul>
         <Callout variant="info" title="AI Nông nghiệp tại Việt Nam">VNPT: platform nông nghiệp thông minh cho Đồng bằng sông Cửu Long. FPT: AI dự báo thời tiết cho nông nghiệp. Nhiều startup: CropX VN, AgriConnect. Mekong delta (lúa), Tây Nguyên (cà phê), Ninh Thuận (nho) đang pilot.</Callout>
         <CodeBlock language="python" title="Phát hiện bệnh cây trên điện thoại">{`import tensorflow as tf

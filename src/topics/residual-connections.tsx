@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -66,6 +66,17 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation: "Mỗi lớp Transformer: x + Attention(x) và x + FFN(x). Pre-Norm (GPT, LLaMA): x + Attention(LN(x)) — dễ train hơn cho mạng sâu. Post-Norm (BERT gốc): LN(x + Attention(x)) — performance tốt hơn nhưng khó train.",
   },
+  {
+    type: "fill-blank",
+    question:
+      "Công thức residual block: output = {blank}. Đường tắt này (còn gọi là {blank}) cho gradient chảy trực tiếp qua, giúp train được mạng sâu 100+ lớp.",
+    blanks: [
+      { answer: "x + F(x)", accept: ["F(x) + x", "x+F(x)", "F(x)+x"] },
+      { answer: "skip connection", accept: ["skip", "shortcut", "kết nối tắt"] },
+    ],
+    explanation:
+      "Residual block: y = x + F(x). Skip connection (hay shortcut/kết nối tắt) cộng input x trực tiếp vào output của lớp F. Gradient theo x = 1 + dF/dx → luôn có thành phần 1, không vanishing. Đây là đột phá của ResNet (He et al., 2015).",
+  },
 ];
 
 /* ── Component ── */
@@ -88,7 +99,15 @@ export default function ResidualConnectionsTopic() {
           ]}
           correct={1}
           explanation="Đây là 'degradation problem' — mạng sâu hơn lại tệ hơn mạng nông, KHÔNG phải do overfitting (cả train accuracy cũng giảm). ResNet giải quyết bằng skip connection: output = F(x) + x. Gradient chảy thẳng qua đường tắt!"
-        />
+        >
+          <p className="mt-4 text-sm text-muted leading-relaxed">
+            Đây là hệ quả trực tiếp của{" "}
+            <TopicLink slug="vanishing-exploding-gradients">
+              vanishing gradients
+            </TopicLink>
+            . Residual connections là giải pháp then chốt cho mạng sâu.
+          </p>
+        </PredictionGate>
       </LessonSection>
 
       {/* ═══ Step 2: DISCOVER — Interactive Comparison ═══ */}
@@ -271,6 +290,11 @@ export default function ResidualConnectionsTopic() {
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <p className="text-sm text-muted leading-relaxed mb-3">
+          Residual connections là thành phần cốt lõi của{" "}
+          <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+          — được dùng quanh cả attention và FFN.
+        </p>
         <InlineChallenge
           question="Transformer có 2 residual connections mỗi lớp. Chúng bao quanh gì?"
           options={[

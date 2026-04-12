@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -62,6 +62,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 2,
     explanation:
       "LoRA KHÔNG luôn tốt hơn full fine-tuning. Trên tập dữ liệu đủ lớn, full FT vẫn có thể cho kết quả cao hơn. LoRA thắng ở hiệu quả, không phải luôn thắng ở chất lượng.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "LoRA đóng băng W gốc và chỉ học hai ma trận {blank}-rank A và B. Với chiều d = 4096 và rank r = {blank}, adapter chỉ có ~65K tham số (so với 16.7M của W).",
+    blanks: [
+      { answer: "low", accept: ["hạng thấp", "thấp"] },
+      { answer: "8", accept: ["r=8"] },
+    ],
+    explanation:
+      "LoRA phân tích ΔW = BA với r << d. Với d = 4096, r = 8 → tham số LoRA = 2 × 4096 × 8 ≈ 65K, chỉ bằng 0.39% ma trận gốc. Rank r điển hình là 4-16 cho đa số tác vụ.",
   },
 ];
 
@@ -232,7 +243,8 @@ export default function LoRATopic() {
         <ExplanationSection>
           <p>
             <strong>LoRA (Low-Rank Adaptation)</strong>{" "}dựa trên giả thuyết rằng sự thay đổi
-            trọng số khi fine-tune có <strong>intrinsic rank thấp</strong>. Thay vì cập nhật
+            trọng số khi <TopicLink slug="fine-tuning">fine-tune</TopicLink> có{" "}
+            <strong>intrinsic rank thấp</strong>. Thay vì cập nhật
             toàn bộ ma trận W, LoRA phân tích:
           </p>
 
@@ -278,7 +290,9 @@ model.print_trainable_parameters()
           <Callout variant="insight" title="Nhiều adapter, một mô hình">
             Vì trọng số gốc không đổi, bạn có thể huấn luyện nhiều LoRA adapter cho
             nhiều tác vụ khác nhau (y khoa, pháp luật, lập trình) và hoán đổi nhanh
-            chóng mà không cần lưu nhiều bản sao mô hình.
+            chóng mà không cần lưu nhiều bản sao mô hình. Kết hợp với{" "}
+            <TopicLink slug="quantization">quantization</TopicLink>{" "}4-bit ta có{" "}
+            <TopicLink slug="qlora">QLoRA</TopicLink>{" "}— fine-tune mô hình 65B trên 1 GPU.
           </Callout>
         </ExplanationSection>
       </LessonSection>

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -73,6 +73,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Quy trình chuẩn: train → prune → fine-tune. Pruning gây mất chất lượng, fine-tune lại giúp phục hồi. Có thể lặp lại nhiều vòng (iterative pruning) để đạt tỷ lệ cắt tỉa cao hơn.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Tiêu chí pruning phổ biến nhất là dựa trên {blank} — loại bỏ các trọng số có giá trị tuyệt đối nhỏ. Kết quả là ma trận có tỷ lệ {blank} (sparsity) cao.",
+    blanks: [
+      { answer: "magnitude", accept: ["độ lớn", "giá trị tuyệt đối", "|w|"] },
+      { answer: "sparsity", accept: ["thưa", "sparse", "độ thưa"] },
+    ],
+    explanation:
+      "Magnitude pruning đặt mask = 0 khi |w| < τ. Ma trận kết quả có nhiều phần tử 0 (sparsity). Tỷ lệ sparsity cao (như 90%) đồng nghĩa chỉ giữ 10% trọng số quan trọng nhất.",
   },
 ];
 
@@ -256,9 +267,11 @@ for round in range(3):
     prune.l1_unstructured(model, amount=0.3)  # Cắt thêm`}</CodeBlock>
 
           <Callout variant="insight" title="Pruning + Quantization = Combo mạnh">
-            Kết hợp pruning (giảm số tham số) và quantization (giảm bit/tham số)
+            Kết hợp pruning (giảm số tham số) và{" "}
+            <TopicLink slug="quantization">quantization</TopicLink>{" "}(giảm bit/tham số)
             có thể giảm mô hình 10-40x. Ví dụ: pruning 75% + quantize INT4 =
-            giảm 16x so với gốc FP32.
+            giảm 16x so với gốc FP32. Bạn cũng có thể kết hợp với{" "}
+            <TopicLink slug="distillation">distillation</TopicLink>{" "}để phục hồi chất lượng.
           </Callout>
         </ExplanationSection>
       </LessonSection>

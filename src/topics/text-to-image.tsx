@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -71,6 +71,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 2,
     explanation:
       "CLIP Text Encoder hiểu 'tranh sơn dầu' là một phong cách thị giác cụ thể và mã hoá vào conditioning vector. Vector này sau đó dẫn dắt U-Net trong quá trình khử nhiễu, khiến ảnh tạo ra mang đặc điểm sơn dầu: nét cọ dày, màu sắc đậm, kết cấu vải canvas.",
+  },
+  {
+    type: "fill-blank",
+    question: "Hai mô hình text-to-image nổi tiếng của OpenAI và Stability AI lần lượt là {blank} (tích hợp trong ChatGPT) và {blank} (mã nguồn mở, chạy được trên GPU cá nhân).",
+    blanks: [
+      { answer: "DALL-E", accept: ["DALL·E", "dalle", "DALL E", "dall-e 3", "dall-e-3"] },
+      { answer: "Stable Diffusion", accept: ["stable-diffusion", "SD", "SDXL", "stable diffusion xl"] },
+    ],
+    explanation: "DALL-E 3 (OpenAI) được tích hợp trong ChatGPT, hiểu prompt phức tạp và hỗ trợ tiếng Việt tốt. Stable Diffusion (Stability AI) là mã nguồn mở, cộng đồng Việt Nam dùng nhiều nhất vì chạy được trên GPU 8GB VRAM.",
   },
 ];
 
@@ -216,13 +225,15 @@ export default function TextToImageTopic() {
         <ExplanationSection>
           <p>
             <strong>Text-to-Image</strong>{" "}
-            là công nghệ sử dụng mô hình khuếch tán (diffusion model) để tạo hình ảnh từ mô tả ngôn ngữ tự nhiên. Kiến trúc phổ biến nhất hiện nay là Latent Diffusion (Stable Diffusion).
+            là công nghệ sử dụng{" "}
+            <TopicLink slug="diffusion-models">mô hình khuếch tán (diffusion model)</TopicLink>{" "}
+            để tạo hình ảnh từ mô tả ngôn ngữ tự nhiên. Kiến trúc phổ biến nhất hiện nay là Latent Diffusion (Stable Diffusion).
           </p>
 
           <Callout variant="insight" title="Kiến trúc Stable Diffusion">
             <div className="space-y-2">
               <p>
-                <strong>CLIP Text Encoder:</strong>{" "}
+                <strong><TopicLink slug="clip">CLIP</TopicLink> Text Encoder:</strong>{" "}
                 Chuyển prompt thành vector ngữ nghĩa, nắm bắt ý nghĩa và phong cách.
               </p>
               <p>
@@ -230,7 +241,7 @@ export default function TextToImageTopic() {
                 Mạng dự đoán nhiễu cần loại bỏ ở mỗi bước. Nhận conditioning từ text vector.
               </p>
               <p>
-                <strong>VAE (Variational Autoencoder):</strong>{" "}
+                <strong><TopicLink slug="vae">VAE</TopicLink> (Variational Autoencoder):</strong>{" "}
                 Encoder nén ảnh vào không gian latent, Decoder giải mã ngược lại thành pixel.
               </p>
               <p>

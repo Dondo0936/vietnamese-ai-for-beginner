@@ -10,6 +10,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -149,6 +150,17 @@ export default function BatchNormalizationTopic() {
       explanation:
         "LN chuẩn hóa theo features, không phụ thuộc batch → hoạt động tốt với batch_size=1 và sequence length khác nhau. BN phụ thuộc batch nên không phù hợp cho Transformer/RNN.",
     },
+    {
+      type: "fill-blank",
+      question:
+        "Batch Normalization tính {blank} (μ) và {blank} (σ²) của từng mini-batch, rồi chuẩn hóa về phân phối (0, 1) trước khi scale & shift bằng γ, β học được.",
+      blanks: [
+        { answer: "trung bình", accept: ["mean", "mu", "μ"] },
+        { answer: "phương sai", accept: ["variance", "sigma bình phương", "σ²"] },
+      ],
+      explanation:
+        "Công thức: x̂ = (x - μ_batch) / √(σ²_batch + ε). Mỗi mini-batch có trung bình (mean) và phương sai (variance) riêng. Khi inference, dùng running statistics tích lũy từ quá trình huấn luyện thay vì batch statistics.",
+    },
   ];
 
   return (
@@ -169,7 +181,11 @@ export default function BatchNormalizationTopic() {
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Khi phân phối đầu vào thay đổi liên tục giữa các lớp (internal covariate shift),
             mạng phải liên tục thích nghi thay vì học. BN giải quyết bằng cách chuẩn hóa
-            tại mỗi lớp. Hãy <strong className="text-foreground">tự tay thử</strong> quy trình 3 bước.
+            tại mỗi lớp — đồng thời giảm{" "}
+            <TopicLink slug="vanishing-exploding-gradients">
+              vanishing/exploding gradients
+            </TopicLink>
+            . Hãy <strong className="text-foreground">tự tay thử</strong> quy trình 3 bước.
           </p>
         </PredictionGate>
       </LessonSection>
@@ -402,7 +418,10 @@ export default function BatchNormalizationTopic() {
               — huấn luyện nhanh hơn 5-10 lần.
             </li>
             <li>
-              Có tác dụng <strong>regularization nhẹ</strong>{" "}
+              Có tác dụng{" "}
+              <TopicLink slug="regularization">
+                <strong>regularization nhẹ</strong>
+              </TopicLink>{" "}
               (noise từ batch statistics).
             </li>
             <li>

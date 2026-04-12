@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 const BIAS_TYPES = [
-  { id: "data", label: "Thiên kiến dữ liệu", desc: "D��� liệu huấn luyện không đại diện đủ các nhóm. VD: hệ thống nhận dạng khuôn mặt huấn luyện chủ yếu trên người châu Âu.", pct: [72, 18, 10], groups: ["Nhóm đa số", "Nhóm thiểu số A", "Nhóm thiểu số B"] },
+  { id: "data", label: "Thiên kiến dữ liệu", desc: "Dữ liệu huấn luyện không đại diện đủ các nhóm. VD: hệ thống nhận dạng khuôn mặt huấn luyện chủ yếu trên người châu Âu.", pct: [72, 18, 10], groups: ["Nhóm đa số", "Nhóm thiểu số A", "Nhóm thiểu số B"] },
   { id: "label", label: "Thiên kiến gán nhãn", desc: "Annotator mang định kiến khi gán nhãn. VD: mô tả ảnh phụ nữ luôn gắn với nấu ăn, đàn ông gắn với công nghệ.", pct: [85, 10, 5], groups: ["Stereotype", "Trung lập", "Phản stereotype"] },
   { id: "representation", label: "Thiên kiến đại diện", desc: "Mô hình ngôn ngữ phản ánh bias xã hội trong dữ liệu. VD: 'bác sĩ' liên tưởng nam, 'y tá' liên tưởng nữ.", pct: [65, 25, 10], groups: ["Kết quả thiên vị", "Kết quả trung lập", "Kết quả ngược"] },
 ];
@@ -72,6 +72,15 @@ const QUIZ: QuizQuestion[] = [
     explanation:
       "Đây là representation bias: mô hình học association giữa tên (proxy cho ethnicity) và phong cách ngôn ngữ từ dữ liệu training. Dù có thể vô tình phù hợp văn hoá, việc phân biệt đối xử dựa trên tên vẫn là bias cần kiểm soát.",
   },
+  {
+    type: "fill-blank",
+    question: "Bias trong AI thường bắt nguồn từ {blank} không cân bằng, sau đó mô hình khuếch đại và gây ra {blank} với các nhóm yếu thế.",
+    blanks: [
+      { answer: "dữ liệu huấn luyện", accept: ["training data", "dữ liệu", "dữ liệu training", "data"] },
+      { answer: "phân biệt đối xử", accept: ["discrimination", "phân biệt", "bất công"] },
+    ],
+    explanation: "Chuỗi phổ biến: dữ liệu huấn luyện phản ánh bias xã hội (ví dụ ít hồ sơ thành công từ một nhóm) → mô hình học bias đó → triển khai ở quy mô lớn → phân biệt đối xử hệ thống. Kiểm soát cần bắt đầu từ audit dữ liệu.",
+  },
 ];
 
 export default function BiasFairnessTopic() {
@@ -94,7 +103,7 @@ export default function BiasFairnessTopic() {
             "Từ chối nhận dạng vì phát hiện giọng khác",
           ]}
           correct={1}
-          explanation="Đúng! Đây là ví dụ kinh điển của data bias tại Việt Nam. Mô hình huấn luyện chủ yếu trên giọng Bắc sẽ có WER (Word Error Rate) cho giọng Nam cao hơn 2-3 lần. Người miền Nam phải nói 'giọng Bắc' để được nh���n dạng đúng — đây là bất công về mặt công nghệ!"
+          explanation="Đúng! Đây là ví dụ kinh điển của data bias tại Việt Nam. Mô hình huấn luyện chủ yếu trên giọng Bắc sẽ có WER (Word Error Rate) cho giọng Nam cao hơn 2-3 lần. Người miền Nam phải nói 'giọng Bắc' để được nhận dạng đúng — đây là bất công về mặt công nghệ!"
         />
       </LessonSection>
 
@@ -182,7 +191,8 @@ export default function BiasFairnessTopic() {
         <ExplanationSection>
           <p>
             <strong>Thiên kiến (Bias)</strong>{" "}
-            trong AI xảy ra khi mô hình tạo ra kết quả không công bằng cho một nhóm người. Bias có thể xuất phát từ dữ liệu, thuật toán, hoặc cách đánh giá.
+            trong AI xảy ra khi mô hình tạo ra kết quả không công bằng cho một nhóm người. Bias có thể xuất phát từ dữ liệu, thuật toán, hoặc cách đánh giá — và thường được kiểm soát qua khung{" "}
+            <TopicLink slug="ai-governance">AI governance</TopicLink>.
           </p>
 
           <Callout variant="insight" title="Chuỗi bias từ dữ liệu đến quyết định">
@@ -226,7 +236,7 @@ y_true = [...]     # Kết quả thực tế (0/1)
 y_pred = [...]     # Dự đoán của AI
 region = [...]     # Vùng miền: "Bắc", "Trung", "Nam"
 
-# Tính accuracy theo vùng mi��n
+# Tính accuracy theo vùng miền
 mf = MetricFrame(
     metrics=accuracy_score,
     y_true=y_true,
@@ -261,7 +271,7 @@ print(f"Demographic Parity Gap: {dp_diff:.3f}")
         <ExplanationSection>
           <Callout variant="tip" title="Giảm thiểu bias: framework 4 bước">
             <div className="space-y-2">
-              <p><strong>1. Đo lường:</strong>{" "} Kiểm toán fairness trên TẤT CẢ nhóm nhân kh��u. Dùng fairlearn, AIF360.</p>
+              <p><strong>1. Đo lường:</strong>{" "} Kiểm toán fairness trên TẤT CẢ nhóm nhân khẩu. Dùng fairlearn, AIF360. Kết hợp với <TopicLink slug="explainability">explainability</TopicLink>{" "}(SHAP, LIME) để hiểu quyết định.</p>
               <p><strong>2. Cân bằng dữ liệu:</strong>{" "} Thu thập thêm dữ liệu nhóm thiểu số, dùng oversampling/augmentation.</p>
               <p><strong>3. Ràng buộc trong training:</strong>{" "} Thêm fairness constraints vào loss function (adversarial debiasing).</p>
               <p><strong>4. Post-processing:</strong>{" "} Điều chỉnh threshold riêng cho từng nhóm để đạt equalized odds.</p>

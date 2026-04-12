@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -79,6 +79,15 @@ export default function GPUOptimizationTopic() {
       ],
       correct: 1,
       explanation: "GPU nhanh nhưng phải đợi: data loading từ disk, CPU preprocess, copy data CPU→GPU, gradient sync giữa GPU. Giải pháp: prefetch data, overlap compute-communication, CUDA graphs. Nâng utilization từ 30% lên 85% = tăng tốc gần 3x!",
+    },
+    {
+      type: "fill-blank",
+      question: "Để tăng GPU throughput khi training, ta tăng {blank} (số sample xử lý cùng lúc) đến giới hạn VRAM. Yếu tố quyết định thường là {blank} của GPU (VD: A100 có 80GB).",
+      blanks: [
+        { answer: "batch size", accept: ["batch", "batchsize", "batch-size"] },
+        { answer: "memory", accept: ["vram", "bộ nhớ", "bo nho", "ram"] },
+      ],
+      explanation: "Batch size lớn = tận dụng Tensor Cores tốt hơn, throughput tăng gần tuyến tính. Nhưng memory (VRAM) là trần cứng — weights + gradients + optimizer + activations phải vừa GPU. Gradient checkpointing + FSDP giúp tăng batch size hiệu quả.",
     },
   ], []);
 
@@ -213,11 +222,11 @@ export default function GPUOptimizationTopic() {
             Với Adam optimizer, FP32: <LaTeX>{"O = 2W"}</LaTeX> (momentum + variance). Tổng: <LaTeX>{"4W + A"}</LaTeX>.
           </p>
 
-          <p><strong>Mixed Precision Training:</strong></p>
+          <p><strong><TopicLink slug="mixed-precision">Mixed Precision</TopicLink>{" "}Training:</strong></p>
           <LaTeX block>{"\\text{FP16: } W_{fp16} = \\frac{W_{fp32}}{2}, \\quad \\text{Tensor Core throughput} = 2 \\times \\text{FP32}"}</LaTeX>
 
           <Callout variant="tip" title="BF16 vs FP16">
-            BF16 (Brain Float 16) có range giống FP32 (8 bit exponent) nhưng precision thấp hơn FP16. Ưu điểm: không cần loss scaling, ít NaN hơn. H100/A100 đều hỗ trợ BF16. Nên dùng BF16 cho training, FP16 cho inference.
+            BF16 (Brain Float 16) có range giống FP32 (8 bit exponent) nhưng precision thấp hơn FP16. Ưu điểm: không cần loss scaling, ít NaN hơn. H100/A100 đều hỗ trợ BF16. Nên dùng BF16 cho training, FP16 cho inference. Với inference, kết hợp thêm <TopicLink slug="quantization">quantization</TopicLink>{" "}INT8/INT4 và các kỹ thuật <TopicLink slug="inference-optimization">tối ưu inference</TopicLink>{" "}để đạt tốc độ tối đa.
           </Callout>
 
           <p><strong>5 chiến lược parallelism:</strong></p>

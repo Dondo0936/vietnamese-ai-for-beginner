@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -84,6 +84,16 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "RNN có 1 bộ trọng số (W·[h,x]). LSTM có 4 bộ: forget gate, input gate, output gate, và candidate cell state. Mỗi bộ cùng kích thước → ~4× tham số. Hidden size 256: RNN ~130K, LSTM ~525K tham số.",
+  },
+  {
+    type: "fill-blank",
+    question: "LSTM có 3 cổng sigmoid: cổng {blank} quyết định xóa thông tin khỏi cell state, cổng {blank} quyết định ghi thông tin mới vào, và cổng {blank} quyết định phần nào của bộ nhớ sẽ xuất ra làm hidden state.",
+    blanks: [
+      { answer: "forget", accept: ["quên", "forget gate"] },
+      { answer: "input", accept: ["nhập", "input gate"] },
+      { answer: "output", accept: ["xuất", "output gate"] },
+    ],
+    explanation: "Forget gate (fₜ) nhân với C_{t-1} để quyết định giữ/xóa. Input gate (iₜ) nhân với candidate C̃ₜ để quyết định ghi gì. Output gate (oₜ) nhân với tanh(Cₜ) để tạo hidden state hₜ.",
   },
 ];
 
@@ -233,8 +243,12 @@ export default function LstmTopic() {
             là &quot;đường cao tốc&quot; cho thông tin — chạy thẳng qua mà chỉ bị thay đổi nhẹ nhàng bởi phép nhân/cộng. Gradient cũng chảy thẳng qua đường này → không bị vanishing!
           </p>
           <p className="text-sm text-muted mt-1">
-            RNN thường: gradient phải đi qua hàm tanh ở mỗi bước → bị nhân nhỏ dần → biến mất.{" "}
-            LSTM: gradient đi thẳng qua cell state (nhân với forget gate ≈ 1) → sống sót qua hàng trăm bước!
+            <TopicLink slug="rnn">RNN</TopicLink>{" "}
+            thường: gradient phải đi qua hàm tanh ở mỗi bước → bị nhân nhỏ dần → biến mất.{" "}
+            LSTM: gradient đi thẳng qua cell state (nhân với forget gate ≈ 1) → sống sót qua hàng trăm bước!{" "}
+            Sau này,{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+            giải quyết vấn đề này triệt để bằng self-attention song song.
           </p>
         </AhaMoment>
       </LessonSection>

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Mỗi block quantization cần hằng số scale ở FP32. Double Quantization nén các hằng số này xuống FP8, tiết kiệm thêm ~0.37 bit/tham số. Nhỏ nhưng tích luỹ đáng kể trên 65B tham số.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "QLoRA nén trọng số mô hình gốc xuống {blank}-bit (định dạng {blank}), trong khi LoRA adapter vẫn giữ ở FP16 để huấn luyện.",
+    blanks: [
+      { answer: "4", accept: ["4-bit", "four"] },
+      { answer: "nf4", accept: ["normalfloat", "normalfloat4", "NF4"] },
+    ],
+    explanation:
+      "QLoRA dùng NF4 (NormalFloat 4-bit) — kiểu dữ liệu 4 bit tối ưu cho phân bố Gaussian của trọng số. Kết quả: giảm 4x VRAM so với FP16, cho phép fine-tune mô hình 65B trên 1 GPU 48GB.",
   },
 ];
 
@@ -195,8 +206,10 @@ export default function QLoRATopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            <strong>QLoRA</strong>{" "}(Quantized LoRA) kết hợp ba đổi mới kỹ thuật để giảm bộ nhớ
-            fine-tuning xuống mức chưa từng có:
+            <strong>QLoRA</strong>{" "}(Quantized <TopicLink slug="lora">LoRA</TopicLink>)
+            kết hợp{" "}<TopicLink slug="quantization">quantization</TopicLink>{" "}và LoRA
+            để giảm bộ nhớ <TopicLink slug="fine-tuning">fine-tuning</TopicLink>{" "}
+            xuống mức chưa từng có qua ba đổi mới:
           </p>
 
           <p><strong>1. NF4 (NormalFloat 4-bit):</strong></p>

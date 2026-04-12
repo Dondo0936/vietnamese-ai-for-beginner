@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock,
+  MiniSummary, Callout, CodeBlock, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -78,6 +78,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "ReAct dừng khi: (1) AI suy luận rằng đã đủ thông tin để trả lời, hoặc (2) vượt max_steps (tránh vòng lặp vô hạn). Điều kiện dừng tốt là yếu tố thiết kế quan trọng.",
+  },
+  {
+    type: "fill-blank",
+    question: "Tên gọi ReAct là sự kết hợp của hai pha: {blank} (suy luận, lập kế hoạch trong đầu) và {blank} (gọi công cụ, tương tác với thế giới thực).",
+    blanks: [
+      { answer: "Reason", accept: ["Reasoning", "Thought", "suy luận", "reason"] },
+      { answer: "Act", accept: ["Acting", "Action", "hành động", "act"] },
+    ],
+    explanation: "ReAct = Reason + Act. Pha Reason (Thought) là suy luận nội bộ, pha Act là hành động cụ thể như gọi API, tra cứu, chạy code — kết quả trả về thành Observation cho vòng lặp tiếp theo.",
   },
 ];
 
@@ -155,8 +164,11 @@ export default function ReActFrameworkTopic() {
           Con người không giải quyết vấn đề chỉ bằng suy nghĩ thuần túy — ta{" "}
           <strong>nghĩ rồi làm, quan sát kết quả, rồi nghĩ tiếp</strong>.{" "}
           ReAct dạy AI cùng phương pháp: xen kẽ <em>reasoning</em> (suy luận)
-          với <em>acting</em> (hành động kiểm chứng). Mỗi quan sát từ thế giới
-          thực giúp điều chỉnh suy luận — giảm ảo giác một cách cấu trúc.
+          với <em>acting</em> (hành động kiểm chứng qua{" "}
+          <TopicLink slug="function-calling">function calling</TopicLink>). Mỗi quan sát từ thế giới
+          thực giúp điều chỉnh suy luận — giảm ảo giác một cách cấu trúc, và là vòng lặp lõi của{" "}
+          <TopicLink slug="agent-architecture">kiến trúc agent</TopicLink>{" "}hiện đại, được quản lý bởi tầng{" "}
+          <TopicLink slug="orchestration">điều phối</TopicLink>.
         </AhaMoment>
       </LessonSection>
 

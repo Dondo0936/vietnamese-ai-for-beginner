@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,16 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Sinusoidal PE cộng vào embedding → thông tin vị trí pha loãng qua nhiều lớp. RoPE xoay Q và K → khi tính QK^T, góc xoay tương đối = khoảng cách vị trí. Thông tin vị trí tương đối được giữ chính xác trong attention score!",
+  },
+  {
+    type: "fill-blank",
+    question: "Sinusoidal PE dùng hàm {blank} cho chiều chẵn và hàm {blank} cho chiều lẻ, ở nhiều tần số khác nhau. Kết quả PE được {blank} vào word embedding trước khi đưa vào các lớp attention.",
+    blanks: [
+      { answer: "sin", accept: ["sine"] },
+      { answer: "cos", accept: ["cosine"] },
+      { answer: "cộng", accept: ["add", "plus", "+"] },
+    ],
+    explanation: "PE(pos, 2i) = sin(pos / 10000^{2i/d}), PE(pos, 2i+1) = cos(pos / 10000^{2i/d}). Công thức này tạo ra vector vị trí duy nhất cho mỗi pos, rồi được cộng trực tiếp vào embedding (input = word_embedding + PE) để Transformer phân biệt 'mèo bắt chuột' với 'chuột bắt mèo'.",
   },
 ];
 
@@ -247,7 +257,11 @@ export default function PositionalEncodingTopic() {
         <ExplanationSection>
           <p>
             <strong>Positional Encoding</strong>{" "}
-            thêm thông tin vị trí vào word embedding vì self-attention không có khái niệm thứ tự (permutation equivariant).
+            thêm thông tin vị trí vào word embedding vì{" "}
+            <TopicLink slug="self-attention">self-attention</TopicLink>{" "}
+            không có khái niệm thứ tự (permutation equivariant). Đây là lý do{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+            luôn cần một dạng mã hoá vị trí nào đó trước khi vào các lớp attention.
           </p>
 
           <p className="mt-3 font-semibold text-foreground">Công thức sinusoidal:</p>

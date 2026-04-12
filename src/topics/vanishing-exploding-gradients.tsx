@@ -10,6 +10,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -123,6 +124,17 @@ export default function VanishingExplodingGradientsTopic() {
       correct: 1,
       explanation:
         "Skip connection: output = F(x) + x. Gradient luôn có đường đi trực tiếp qua '+x', không bị nhân nhỏ đi. Đây là đột phá cho phép mạng sâu hàng trăm lớp.",
+    },
+    {
+      type: "fill-blank",
+      question:
+        "Trong mạng {blank} (deep networks), gradient lan truyền ngược qua nhiều lớp bằng {blank} rule — tích N hệ số nhỏ hơn 1 sẽ triệt tiêu về 0.",
+      blanks: [
+        { answer: "sâu", accept: ["deep"] },
+        { answer: "chain", accept: ["dây chuyền"] },
+      ],
+      explanation:
+        "Mạng sâu (deep networks) có nhiều lớp → backpropagation dùng chain rule (quy tắc dây chuyền) nhân đạo hàm qua từng lớp. Nếu mỗi hệ số < 1, tích sẽ tiến về 0 (vanishing); nếu > 1, tích bùng nổ về vô cực.",
     },
   ];
 
@@ -318,7 +330,9 @@ export default function VanishingExplodingGradientsTopic() {
             Gradient đi qua N lớp = nhân N hệ số liên tiếp. Nếu hệ số = 0.5 →{" "}
             <LaTeX>{"0.5^{10} \\approx 0.001"}</LaTeX> (triệt tiêu). Nếu = 2.0 →{" "}
             <LaTeX>{"2^{10} = 1024"}</LaTeX> (bùng nổ). Đây là lý do mạng sâu 100+ lớp
-            cần ReLU, BatchNorm, và skip connections!
+            cần ReLU,{" "}
+            <TopicLink slug="batch-normalization">BatchNorm</TopicLink>, và{" "}
+            <TopicLink slug="residual-connections">skip connections</TopicLink>!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -341,7 +355,8 @@ export default function VanishingExplodingGradientsTopic() {
       <LessonSection step={5} totalSteps={8} label="Giải pháp">
         <ExplanationSection>
           <p>
-            Khi gradient đi qua N lớp, theo chain rule:
+            Khi gradient đi qua N lớp trong{" "}
+            <TopicLink slug="backpropagation">backpropagation</TopicLink>, theo chain rule:
           </p>
           <LaTeX block>
             {"\\frac{\\partial L}{\\partial w_1} = \\frac{\\partial L}{\\partial a_N} \\cdot \\prod_{i=1}^{N} \\frac{\\partial a_i}{\\partial a_{i-1}}"}
@@ -404,7 +419,9 @@ export default function VanishingExplodingGradientsTopic() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 pr-3 font-medium">He/Xavier Init</td>
+                  <td className="py-2 pr-3 font-medium">
+                    <TopicLink slug="weight-initialization">He/Xavier Init</TopicLink>
+                  </td>
                   <td className="py-2 pr-3">Cả hai</td>
                   <td className="py-2">
                     Khởi tạo trọng số giữ phương sai ổn định qua các lớp

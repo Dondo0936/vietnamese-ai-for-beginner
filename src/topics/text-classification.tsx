@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -126,6 +126,15 @@ const QUIZ: QuizQuestion[] = [
     explanation:
       "Fine-tuned BERT/PhoBERT đạt SOTA cho hầu hết tác vụ phân loại. Pre-training giúp mô hình hiểu ngữ cảnh, fine-tuning chỉ cần ít dữ liệu labeled!",
   },
+  {
+    type: "fill-blank",
+    question: "Text classification là bài toán supervised: cần bộ dữ liệu {blank} (văn bản kèm nhãn) để {blank} mô hình phân loại.",
+    blanks: [
+      { answer: "nhãn", accept: ["labels", "labeled data", "có nhãn", "gán nhãn", "labeled"] },
+      { answer: "huấn luyện", accept: ["training", "train", "training mô hình"] },
+    ],
+    explanation: "Supervised learning workflow: (1) thu thập văn bản, (2) gán nhãn (labels) — thường nhờ con người hoặc rule, (3) huấn luyện (training) mô hình học ánh xạ văn bản → nhãn. Chất lượng nhãn quyết định chất lượng mô hình.",
+  },
 ];
 
 /* ── Main Component ── */
@@ -213,7 +222,7 @@ export default function TextClassificationTopic() {
         <AhaMoment>
           <p>
             <strong>Text Classification</strong>{" "}
-            gán nhãn cho văn bản: chủ đề tin tức, spam/không spam, ý định người dùng... Đây là t��c vụ NLP cơ bản nhất và ứng dụng rộng rãi nhất!
+            gán nhãn cho văn bản: chủ đề tin tức, spam/không spam, ý định người dùng... Đây là tác vụ NLP cơ bản nhất và ứng dụng rộng rãi nhất!
           </p>
           <p className="text-sm text-muted mt-1">
             Giống nhân viên bưu điện phân loại thư: đọc nội dung → bỏ vào ngăn đúng. Gmail phân loại hàng tỷ email, VnExpress tự gán chuyên mục cho bài viết.
@@ -275,7 +284,7 @@ export default function TextClassificationTopic() {
             <LaTeX block>{`P(y = k | x) = \\frac{\\exp(\\mathbf{w}_k^{\\top} \\mathbf{h} + b_k)}{\\sum_{j=1}^{K} \\exp(\\mathbf{w}_j^{\\top} \\mathbf{h} + b_j)}`}</LaTeX>
             <p className="mt-2 text-sm">
               Với <LaTeX>{`\\mathbf{h}`}</LaTeX>{" "}
-              = biểu diễn văn b��n (từ BERT/BoW), K = số nhãn. Chọn nhãn có xác suất cao nhất.
+              = biểu diễn văn bản (từ BERT/BoW), K = số nhãn. Chọn nhãn có xác suất cao nhất.
             </p>
           </Callout>
 
@@ -285,6 +294,7 @@ export default function TextClassificationTopic() {
               <p><strong>Đa lớp (Multi-class):</strong>{" "}Thể thao / Kinh tế / Công nghệ / Giải trí</p>
               <p><strong>Đa nhãn (Multi-label):</strong>{" "}Bài viết vừa Thể thao VÀ Kinh tế (chuyển nhượng cầu thủ)</p>
               <p><strong>Intent (ý định):</strong>{" "}Chatbot: đặt hàng / hỏi info / khiếu nại / chào hỏi</p>
+              <p><strong>Cảm xúc:</strong>{" "}<TopicLink slug="sentiment-analysis">Sentiment analysis</TopicLink>{" "}— dạng đặc biệt của text classification với nhãn tích cực/tiêu cực/trung tính.</p>
             </div>
           </Callout>
 
@@ -314,7 +324,7 @@ for label, score in zip(result["labels"], result["scores"]):
 
           <Callout variant="tip" title="Zero-shot Classification">
             <p>
-              Mô hình lớn (XLM-RoBERTa, GPT) có thể phân loại mà KHÔNG cần dữ li���u huấn luyện cho nhãn cụ thể! Chỉ cần mô tả nhãn bằng ngôn ngữ tự nhiên. Hữu ích khi nhãn mới xuất hiện liên tục.
+              Mô hình lớn (XLM-RoBERTa, <TopicLink slug="bert">BERT</TopicLink>-family, GPT) có thể phân loại mà KHÔNG cần dữ liệu huấn luyện cho nhãn cụ thể! Chỉ cần mô tả nhãn bằng ngôn ngữ tự nhiên. Hữu ích khi nhãn mới xuất hiện liên tục.
             </p>
           </Callout>
         </ExplanationSection>
