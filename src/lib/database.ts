@@ -65,7 +65,7 @@ export async function getUserProgress(): Promise<UserProgress> {
       .from("user_progress")
       .select("read_topics, bookmarks, last_visited")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (!data) return DEFAULT_PROGRESS;
 
