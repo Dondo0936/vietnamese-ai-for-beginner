@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Brain, Bookmark, BarChart3, Search } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import AuthButton from "@/components/auth/AuthButton";
 
 function triggerCmdK() {
   document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }));
@@ -49,6 +50,7 @@ export default function Navbar() {
             <Bookmark size={18} />
           </Link>
 
+          <AuthButton />
           <ThemeToggle />
         </div>
       </div>
