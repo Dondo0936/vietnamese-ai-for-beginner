@@ -21,19 +21,32 @@ function isOffline() {
   return createClient() === null;
 }
 
+let authFailed = false;
+
 export async function ensureAnonymousAuth() {
   const supabase = createClient();
   if (!supabase) return null;
+  if (authFailed) return null;
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
 
-  if (!session) {
-    await supabase.auth.signInAnonymously();
+    if (!session) {
+      const { error } = await supabase.auth.signInAnonymously();
+      if (error) {
+        console.warn("Anonymous auth failed:", error.message);
+        authFailed = true;
+        return null;
+      }
+    }
+
+    return supabase;
+  } catch {
+    authFailed = true;
+    return null;
   }
-
-  return supabase;
 }
 
 export async function getUserProgress(): Promise<UserProgress> {

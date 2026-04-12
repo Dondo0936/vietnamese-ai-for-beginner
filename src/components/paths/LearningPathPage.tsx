@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Check, ChevronRight } from "lucide-react";
 import AppShell from "@/components/layout/AppShell";
-import { getUserProgress } from "@/lib/database";
+import { useProgress } from "@/lib/progress-context";
 import { topicMap } from "@/topics/registry";
 import type { TopicMeta, Difficulty } from "@/lib/types";
 
@@ -39,23 +38,22 @@ const difficultyColor: Record<Difficulty, string> = {
 
 /* ─── Component ─── */
 
-export default function LearningPathPage({
+export default function LearningPathPage(props: LearningPathPageProps) {
+  return (
+    <AppShell>
+      <LearningPathContent {...props} />
+    </AppShell>
+  );
+}
+
+function LearningPathContent({
   nameVi,
   descriptionVi,
   icon: Icon,
   stages,
 }: LearningPathPageProps) {
-  const [readTopics, setReadTopics] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { readTopics, loading } = useProgress();
 
-  useEffect(() => {
-    getUserProgress().then((progress) => {
-      setReadTopics(progress.readTopics);
-      setLoading(false);
-    });
-  }, []);
-
-  // Resolve all slugs to TopicMeta
   const allSlugs = stages.flatMap((s) => s.slugs);
   const totalTopics = allSlugs.length;
   const readCount = allSlugs.filter((s) => readTopics.includes(s)).length;
@@ -63,16 +61,13 @@ export default function LearningPathPage({
 
   if (loading) {
     return (
-      <AppShell>
-        <div className="flex items-center justify-center py-20">
-          <p className="text-muted">Đang tải...</p>
-        </div>
-      </AppShell>
+      <div className="flex items-center justify-center py-20">
+        <p className="text-muted">Đang tải...</p>
+      </div>
     );
   }
 
   return (
-    <AppShell>
       <div className="mx-auto max-w-3xl px-4 py-8 pb-24">
         {/* Back link */}
         <Link
@@ -227,6 +222,5 @@ export default function LearningPathPage({
           })}
         </div>
       </div>
-    </AppShell>
   );
 }

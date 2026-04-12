@@ -1,49 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { Bookmark } from "lucide-react";
 import AppShell from "@/components/layout/AppShell";
 import TopicCard from "@/components/home/TopicCard";
-import { getUserProgress, toggleBookmark } from "@/lib/database";
+import { useProgress } from "@/lib/progress-context";
 import { getTopicBySlug } from "@/topics/registry";
 import type { TopicMeta } from "@/lib/types";
 
 export default function BookmarksPage() {
-  const [bookmarkedTopics, setBookmarkedTopics] = useState<TopicMeta[]>([]);
-  const [bookmarkSlugs, setBookmarkSlugs] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  return (
+    <AppShell>
+      <BookmarksContent />
+    </AppShell>
+  );
+}
 
-  useEffect(() => {
-    async function loadBookmarks() {
-      try {
-        const progress = await getUserProgress();
-        const slugs = progress.bookmarks;
-        const topics = slugs
-          .map((slug) => getTopicBySlug(slug))
-          .filter((t): t is TopicMeta => t !== undefined);
+function BookmarksContent() {
+  const { bookmarks, toggleBookmark, loading } = useProgress();
 
-        setBookmarkSlugs(slugs);
-        setBookmarkedTopics(topics);
-      } catch {
-        // Fail silently
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadBookmarks();
-  }, []);
+  const bookmarkedTopics = useMemo(
+    () => bookmarks
+      .map((slug) => getTopicBySlug(slug))
+      .filter((t): t is TopicMeta => t !== undefined),
+    [bookmarks]
+  );
 
   async function handleToggleBookmark(slug: string) {
-    const stillBookmarked = await toggleBookmark(slug);
-    if (!stillBookmarked) {
-      setBookmarkSlugs((prev) => prev.filter((s) => s !== slug));
-      setBookmarkedTopics((prev) => prev.filter((t) => t.slug !== slug));
-    }
+    await toggleBookmark(slug);
   }
 
   return (
-    <AppShell>
       <section className="mx-auto max-w-6xl px-4 py-10">
         <div className="mb-8 flex items-center gap-3">
           <Bookmark className="h-6 w-6 text-accent" />
@@ -75,13 +62,12 @@ export default function BookmarksPage() {
               <TopicCard
                 key={topic.slug}
                 topic={topic}
-                isBookmarked={bookmarkSlugs.includes(topic.slug)}
+                isBookmarked={bookmarks.includes(topic.slug)}
                 onToggleBookmark={handleToggleBookmark}
               />
             ))}
           </div>
         )}
       </section>
-    </AppShell>
   );
 }

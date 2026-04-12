@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import {
   Brain, BarChart3, Layers, MessageSquare, Eye, Search, Bot, Settings,
   Cpu, ImageIcon, Shield, Server, TrendingUp, BookOpen, Gamepad2,
-  Briefcase, Calculator, ChevronDown, ChevronUp,
+  Briefcase, Calculator, ChevronDown, ChevronUp, ChevronsUpDown,
 } from "lucide-react";
 import type { TopicMeta, Category } from "@/lib/types";
 
@@ -40,17 +40,38 @@ export default function CategorySection({
   topicsByCategory,
   readTopics = [],
 }: CategorySectionProps) {
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  const activeSlugs = categories
+    .map((c) => c.slug)
+    .filter((s) => topicsByCategory[s]?.length);
+
+  const allExpanded = activeSlugs.length > 0 && activeSlugs.every((s) => expanded.has(s));
+
+  const toggleAll = useCallback(() => {
+    setExpanded(allExpanded ? new Set() : new Set(activeSlugs));
+  }, [allExpanded, activeSlugs]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div>
+      <div className="flex justify-end mb-3">
+        <button
+          type="button"
+          onClick={toggleAll}
+          className="inline-flex items-center gap-1.5 text-[12px] text-muted hover:text-foreground transition-colors"
+        >
+          <ChevronsUpDown size={14} />
+          {allExpanded ? "Thu gọn tất cả" : "Mở tất cả"}
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       {categories.map((cat) => {
         const topics = topicsByCategory[cat.slug];
         if (!topics || topics.length === 0) return null;
 
         const Icon = categoryIconMap[cat.slug] ?? BookOpen;
         const readCount = topics.filter((t) => readTopics.includes(t.slug)).length;
-        const isExpanded = expanded === cat.slug;
+        const isExpanded = expanded.has(cat.slug);
 
         return (
           <div
@@ -59,7 +80,12 @@ export default function CategorySection({
           >
             <button
               type="button"
-              onClick={() => setExpanded(isExpanded ? null : cat.slug)}
+              onClick={() => setExpanded((prev) => {
+                const next = new Set(prev);
+                if (isExpanded) next.delete(cat.slug);
+                else next.add(cat.slug);
+                return next;
+              })}
               className="w-full flex items-center gap-3 p-4 text-left"
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface text-muted">
@@ -121,6 +147,7 @@ export default function CategorySection({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

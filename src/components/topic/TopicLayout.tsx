@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { TopicMeta } from "@/lib/types";
 import { markTopicRead } from "@/lib/database";
@@ -34,6 +34,7 @@ function getCategoryNeighbors(slug: string, category: string) {
 export default function TopicLayout({ meta, children }: TopicLayoutProps) {
   const router = useRouter();
   const hasMarkedRead = useRef(false);
+  const [manuallyMarked, setManuallyMarked] = useState(false);
 
   // ─── Fix #3: Mark read after 70% scroll, not on mount ───
   useEffect(() => {
@@ -107,15 +108,33 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <Tag label={meta.difficulty} variant="difficulty" />
             <Tag label={meta.category} />
-            <span className="flex items-center gap-1 text-xs text-tertiary">
-              <Clock size={12} />
-              ~3-5 phút
-            </span>
           </div>
         </header>
 
         {/* Content */}
         <div>{children}</div>
+
+        {/* Mark as complete */}
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            aria-label="Đánh dấu đã đọc"
+            disabled={manuallyMarked || hasMarkedRead.current}
+            onClick={() => {
+              markTopicRead(meta.slug);
+              hasMarkedRead.current = true;
+              setManuallyMarked(true);
+            }}
+            className={`inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all ${
+              manuallyMarked
+                ? "border-accent/30 bg-accent/10 text-accent cursor-default"
+                : "border-border bg-card/50 text-muted hover:text-foreground hover:bg-card hover:shadow-sm"
+            }`}
+          >
+            <CheckCircle2 size={16} />
+            {manuallyMarked ? "Đã đánh dấu hoàn thành" : "Đánh dấu đã đọc"}
+          </button>
+        </div>
 
         {/* Related Topics */}
         <RelatedTopics slugs={meta.relatedSlugs} />

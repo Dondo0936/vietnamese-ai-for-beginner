@@ -10,11 +10,11 @@ function triggerCmdK() {
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-dark border-b border-white/10">
+    <nav className="sticky top-0 z-50 bg-card border-b border-border backdrop-blur-sm">
       <div className="mx-auto max-w-6xl flex items-center justify-between px-4 h-14">
         <Link
           href="/"
-          className="flex items-center gap-2 text-white font-semibold text-lg tracking-tight"
+          className="flex items-center gap-2 text-foreground font-semibold text-lg tracking-tight"
         >
           <Brain className="h-5 w-5 text-accent" />
           <span className="hidden sm:inline">AI Cho Mọi Người</span>
@@ -26,16 +26,16 @@ export default function Navbar() {
           <button
             type="button"
             onClick={triggerCmdK}
-            className="hidden sm:flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-300"
+            className="hidden sm:flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
           >
             <Search size={14} />
             <span>Tìm kiếm...</span>
-            <kbd className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] font-mono">⌘K</kbd>
+            <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 text-[10px] font-mono text-tertiary">⌘K</kbd>
           </button>
 
           <Link
             href="/progress"
-            className="rounded-lg p-2 text-slate-300 transition-colors hover:text-white hover:bg-white/10"
+            className="rounded-lg p-2 text-muted transition-colors hover:text-foreground hover:bg-surface"
             aria-label="Tiến độ"
           >
             <BarChart3 size={18} />
@@ -43,7 +43,7 @@ export default function Navbar() {
 
           <Link
             href="/bookmarks"
-            className="rounded-lg p-2 text-slate-300 transition-colors hover:text-white hover:bg-white/10"
+            className="rounded-lg p-2 text-muted transition-colors hover:text-foreground hover:bg-surface"
             aria-label="Đã lưu"
           >
             <Bookmark size={18} />
