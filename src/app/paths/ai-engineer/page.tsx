@@ -3,8 +3,8 @@
 import { Code2 } from "lucide-react";
 import LearningPathPage from "@/components/paths/LearningPathPage";
 import LearningObjectivesModal from "@/components/paths/LearningObjectivesModal";
-import type { Stage } from "@/components/paths/LearningPathPage";
 import type { PathObjectives } from "@/components/paths/LearningObjectivesModal";
+import { getPathStages } from "@/lib/paths";
 
 const pathObjectives: PathObjectives = {
   audience:
@@ -82,88 +82,6 @@ const pathObjectives: PathObjectives = {
   nextPath: { slug: "ai-researcher", label: "AI Researcher" },
 };
 
-const stages: Stage[] = [
-  {
-    title: "Kiến trúc",
-    slugs: [
-      "cnn",
-      "rnn",
-      "lstm",
-      "transformer",
-      "self-attention",
-      "multi-head-attention",
-      "positional-encoding",
-    ],
-  },
-  {
-    title: "LLM & NLP",
-    slugs: [
-      "prompt-engineering",
-      "gpt",
-      "bert",
-      "tokenization",
-      "tokenizer-comparison",
-      "kv-cache",
-      "temperature",
-      "top-k-top-p",
-      "beam-search",
-      "context-window",
-    ],
-  },
-  {
-    title: "Fine-tuning & Tối ưu",
-    slugs: [
-      "fine-tuning",
-      "lora",
-      "qlora",
-      "fine-tuning-vs-prompting",
-      "quantization",
-      "distillation",
-      "pruning",
-      "mixed-precision",
-    ],
-  },
-  {
-    title: "RAG & Agents",
-    slugs: [
-      "rag",
-      "agentic-rag",
-      "vector-databases",
-      "faiss",
-      "semantic-search",
-      "hybrid-search",
-      "re-ranking",
-      "chunking",
-      "embedding-model",
-      "bm25",
-      "function-calling",
-      "react-framework",
-      "agent-architecture",
-      "orchestration",
-      "structured-outputs",
-      "computer-use",
-    ],
-  },
-  {
-    title: "Hạ tầng & Vận hành",
-    slugs: [
-      "model-serving",
-      "inference-optimization",
-      "mlops",
-      "containerization",
-      "monitoring",
-      "edge-ai",
-      "gpu-optimization",
-      "cost-optimization",
-      "data-pipelines",
-    ],
-  },
-  {
-    title: "An toàn & Chất lượng",
-    slugs: ["guardrails", "red-teaming", "hallucination"],
-  },
-];
-
 export default function AIEngineerPathPage() {
   return (
     <LearningPathPage
@@ -171,7 +89,7 @@ export default function AIEngineerPathPage() {
       nameVi="AI Engineer"
       descriptionVi="Xây dựng & triển khai hệ thống AI — fine-tuning, RAG, serving, MLOps"
       icon={Code2}
-      stages={stages}
+      stages={getPathStages("ai-engineer")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
     />
   );
