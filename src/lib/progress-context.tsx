@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { getUserProgress, toggleBookmark as dbToggleBookmark, markTopicRead } from "./database";
+import { createClient } from "./supabase";
 
 interface ProgressState {
   readTopics: string[];
@@ -27,13 +28,36 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getUserProgress()
-      .then((progress) => {
+    const supabase = createClient();
+
+    async function load() {
+      setLoading(true);
+      try {
+        const progress = await getUserProgress();
         setReadTopics(progress.readTopics);
         setBookmarks(progress.bookmarks);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      } catch {
+        // ignore
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+
+    if (!supabase) return;
+
+    // Reload whenever the active user changes (sign-in, sign-out, or anon → permanent)
+    let lastUserId: string | null = null;
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      const nextUserId = session?.user?.id ?? null;
+      if (nextUserId !== lastUserId) {
+        lastUserId = nextUserId;
+        load();
+      }
+    });
+
+    return () => sub.subscription.unsubscribe();
   }, []);
 
   const toggleBookmark = useCallback(async (slug: string) => {
