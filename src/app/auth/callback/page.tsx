@@ -25,13 +25,6 @@ function CallbackContent() {
   }, [router]);
 
   useEffect(() => {
-    const code = searchParams.get("code");
-    if (!code) {
-      setStatus("error");
-      setErrorMsg("Liên kết xác nhận không hợp lệ.");
-      return;
-    }
-
     const supabase = createClient();
     if (!supabase) {
       setStatus("error");
@@ -39,15 +32,33 @@ function CallbackContent() {
       return;
     }
 
+    const code = searchParams.get("code");
+
     (async () => {
-      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-      if (error || !data.session) {
+      // Supabase's browser client auto-exchanges ?code= on page load via
+      // detectSessionInUrl: true. So first check if the session is already
+      // set. Only fall back to manual exchange if it isn't.
+      let { data: sessionData } = await supabase.auth.getSession();
+
+      if (!sessionData.session && code) {
+        const { data: exchData, error: exchErr } =
+          await supabase.auth.exchangeCodeForSession(code);
+        if (exchErr || !exchData.session) {
+          setStatus("error");
+          setErrorMsg(mapAuthError(exchErr));
+          return;
+        }
+        sessionData = { session: exchData.session };
+      }
+
+      if (!sessionData.session) {
         setStatus("error");
-        setErrorMsg(mapAuthError(error));
+        setErrorMsg("Liên kết xác nhận không hợp lệ.");
         return;
       }
 
-      const email = data.session.user.email ?? "";
+      const session = sessionData.session;
+      const email = session.user.email ?? "";
       const key = PENDING_PASSWORD_PREFIX + email.toLowerCase();
       let pending: string | null = null;
       try {
@@ -71,7 +82,7 @@ function CallbackContent() {
       }
 
       // Google OAuth users don't need a password; detect via identities
-      const hasEmailIdentity = data.session.user.identities?.some(
+      const hasEmailIdentity = session.user.identities?.some(
         (i) => i.provider === "email"
       );
       if (!hasEmailIdentity) {
