@@ -78,7 +78,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // sessionStorage unavailable — continue; user will see password form on callback page
     }
 
-    const { error } = await supabase.auth.updateUser({ email });
+    const { error } = await supabase.auth.updateUser(
+      { email },
+      { emailRedirectTo: window.location.origin + "/auth/callback" }
+    );
     if (error) {
       // Clean up stashed password if signup failed
       try {
