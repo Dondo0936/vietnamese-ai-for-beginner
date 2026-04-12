@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -61,6 +61,16 @@ export default function TrainValTestTopic() {
       ],
       correct: 1,
       explanation: "Train-Val gap = 99-75 = 24% → overfitting nghiêm trọng. Model 'học thuộc' train set thay vì học patterns chung. Giải pháp: regularization, dropout, tăng data, giảm model complexity, early stopping. Val ≈ Test (75 vs 73) cho thấy val set đại diện tốt.",
+    },
+    {
+      type: "fill-blank",
+      question: "Trong quy trình ML, ta fit (huấn luyện) StandardScaler CHỈ trên tập {blank}, sau đó chỉ dùng transform (không fit lại) trên tập {blank} và tập {blank} để tránh data leakage.",
+      blanks: [
+        { answer: "train", accept: ["training", "tập train", "tập huấn luyện"] },
+        { answer: "validation", accept: ["val", "tập val", "tập validation"] },
+        { answer: "test", accept: ["tập test", "tập kiểm tra"] },
+      ],
+      explanation: "Data leakage xảy ra khi thông tin từ val/test 'rò rỉ' vào quá trình huấn luyện. Fit scaler trên TOÀN BỘ data trước khi split là lỗi phổ biến — scaler sẽ 'biết' phân phối của test set, làm kết quả đánh giá không còn khách quan.",
     },
   ], []);
 
@@ -141,6 +151,10 @@ export default function TrainValTestTopic() {
           <p>
             <strong>Train/Validation/Test Split</strong>{" "}
             chia dữ liệu thành 3 tập để đảm bảo đánh giá model khách quan — cơ bản nhất của ML methodology.
+            Khi dữ liệu ít, nên thay thế bằng{" "}
+            <TopicLink slug="cross-validation">K-Fold Cross-Validation</TopicLink>{" "}
+            để tận dụng tối đa dữ liệu mà vẫn đánh giá được{" "}
+            <TopicLink slug="overfitting-underfitting">overfitting</TopicLink>.
           </p>
           <p><strong>3 tập và mục đích:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
@@ -152,7 +166,7 @@ export default function TrainValTestTopic() {
           <LaTeX block>{"\\text{Generalization Error} = \\text{Test Error} \\approx \\mathbb{E}[\\mathcal{L}(f(x), y)] \\text{ trên data chưa thấy}"}</LaTeX>
 
           <Callout variant="warning" title="Data Leakage">
-            Lỗi phổ biến: feature engineering TRƯỚC khi split → thông tin từ test 'rò rỉ' vào train (ví dụ: StandardScaler fit trên TOÀN BỘ data). ĐÚNG: split trước → fit scaler trên train → transform val/test bằng scaler của train.
+            Lỗi phổ biến: <TopicLink slug="data-preprocessing">feature engineering</TopicLink>{" "}TRƯỚC khi split → thông tin từ test 'rò rỉ' vào train (ví dụ: StandardScaler fit trên TOÀN BỘ data). ĐÚNG: split trước → fit scaler trên train → transform val/test bằng scaler của train.
           </Callout>
 
           <CodeBlock language="python" title="Chia dữ liệu đúng cách">

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -66,6 +66,15 @@ export default function LearningParadigmsTopic() {
       ],
       correct: 2,
       explanation: "Môi trường thay đổi (giao thông), không có 'đáp án đúng' cố định → RL. Agent (tài xế) thử hành động (rẽ trái/phải), nhận reward (nhanh = +, chậm = -), dần dần học chính sách tối ưu. Grab dùng RL để routing 30 triệu chuyến/ngày tại Việt Nam!",
+    },
+    {
+      type: "fill-blank",
+      question: "Supervised Learning cần dữ liệu có {blank}, trong khi Unsupervised Learning chỉ cần {blank} thô không có chú thích.",
+      blanks: [
+        { answer: "nhãn", accept: ["label", "labels", "đáp án", "nhãn (label)"] },
+        { answer: "dữ liệu", accept: ["data", "input"] },
+      ],
+      explanation: "Supervised Learning yêu cầu mỗi mẫu dữ liệu phải có nhãn (label) — ví dụ: ảnh kèm nhãn 'chó'/'mèo'. Unsupervised Learning chỉ cần dữ liệu thô — model tự tìm cấu trúc ẩn như nhóm khách hàng tương tự.",
     },
   ], []);
 
@@ -143,13 +152,30 @@ export default function LearningParadigmsTopic() {
             <strong>Ba paradigm học máy cơ bản</strong>{" "}
             định nghĩa cách model học từ dữ liệu — mỗi paradigm phù hợp cho loại bài toán khác nhau.
           </p>
-          <p><strong>1. Supervised Learning:</strong></p>
+          <p>
+            <strong>1. Supervised Learning</strong>{" "}
+            — ví dụ điển hình:{" "}
+            <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink>{" "}
+            (dự đoán giá trị liên tục) và{" "}
+            <TopicLink slug="logistic-regression">hồi quy logistic</TopicLink>{" "}
+            (phân loại nhị phân):
+          </p>
           <LaTeX block>{"\\min_\\theta \\sum_{i=1}^{N} \\mathcal{L}(f_\\theta(x_i), y_i) \\quad \\text{(có input } x_i \\text{ và label } y_i \\text{)}"}</LaTeX>
 
-          <p><strong>2. Unsupervised Learning:</strong></p>
+          <p>
+            <strong>2. Unsupervised Learning</strong>{" "}
+            — thuật toán phổ biến:{" "}
+            <TopicLink slug="k-means">K-means clustering</TopicLink>{" "}
+            phân nhóm dữ liệu không có nhãn:
+          </p>
           <LaTeX block>{"\\min_\\theta \\mathcal{L}(f_\\theta(X)) \\quad \\text{(chỉ có input } X \\text{, không có label)}"}</LaTeX>
 
-          <p><strong>3. Reinforcement Learning:</strong></p>
+          <p>
+            <strong>3. Reinforcement Learning</strong>{" "}
+            — agent học chính sách tối ưu theo reward. Để phân loại có giám sát,{" "}
+            <TopicLink slug="decision-trees">cây quyết định</TopicLink>{" "}
+            là ví dụ trực quan của việc học từ dữ liệu có nhãn:
+          </p>
           <LaTeX block>{"\\max_\\pi \\mathbb{E}\\left[\\sum_{t=0}^{T} \\gamma^t r(s_t, a_t)\\right] \\quad \\text{(tối ưu chính sách } \\pi \\text{ theo reward)}"}</LaTeX>
 
           <Callout variant="tip" title="Self-Supervised Learning">

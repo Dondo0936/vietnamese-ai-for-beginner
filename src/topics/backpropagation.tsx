@@ -11,7 +11,8 @@ import {
   CodeBlock,
   Callout,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -87,6 +88,12 @@ const quizQuestions: QuizQuestion[] = [
     correct: 2,
     explanation:
       "0.5 nhân 100 lần ≈ 0. Đây là vanishing gradient — các lớp đầu không được cập nhật. Giải pháp: ReLU, ResNet, LSTM.",
+  },
+  {
+    type: "fill-blank",
+    question: "Backpropagation sử dụng quy tắc {blank} để tính đạo hàm của hàm hợp, cho phép truyền gradient từ lớp đầu ra về lớp đầu vào qua nhiều phép tính liên tiếp.",
+    blanks: [{ answer: "chuỗi", accept: ["chain rule", "quy tắc chuỗi"] }],
+    explanation: "Quy tắc chuỗi (chain rule): d(f∘g)/dx = df/dg × dg/dx. Backpropagation áp dụng chain rule lặp lại cho mỗi lớp: mỗi lớp đóng góp một thừa số trong tích gradient. Đây là lý do tại sao có thể tính gradient của loss theo từng weight chỉ trong một lần duyệt ngược.",
   },
 ];
 
@@ -277,6 +284,7 @@ export default function BackpropagationTopic() {
         Thay vì thử từng chút như bạn vừa làm, <strong>Backpropagation</strong> tính
         <em> chính xác </em> mỗi trọng số cần thay đổi bao nhiêu — chỉ bằng một lần
         duyệt ngược qua mạng, dùng <strong>quy tắc chuỗi</strong> (chain rule) trong đạo hàm.
+        Đây là bước tiếp theo sau <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink> trong mỗi vòng lặp huấn luyện.
       </AhaMoment>
 
             </LessonSection>
@@ -402,12 +410,13 @@ export default function BackpropagationTopic() {
           một chuỗi domino — đổ từ cuối về đầu.
         </Callout>
 
-        <p>Công thức cập nhật trọng số:</p>
+        <p>Công thức cập nhật trọng số (<TopicLink slug="gradient-descent">gradient descent</TopicLink>):</p>
         <LaTeX block>{"w \\leftarrow w - \\alpha \\cdot \\frac{\\partial L}{\\partial w}"}</LaTeX>
         <p>
           Trong đó <LaTeX>{"\\alpha"}</LaTeX> là learning rate (tốc độ học) và{" "}
           <LaTeX>{"\\frac{\\partial L}{\\partial w}"}</LaTeX> là gradient — đạo hàm
-          riêng của hàm mất mát theo trọng số đó.
+          riêng của <TopicLink slug="loss-functions">hàm mất mát</TopicLink> theo trọng số đó.
+          Kết hợp với kỹ thuật <TopicLink slug="calculus-for-backprop">vi tích phân</TopicLink>, chain rule giúp tính gradient qua hàng trăm lớp hiệu quả.
         </p>
 
         <Callout variant="tip" title="Quy tắc chuỗi — trái tim của backprop">
@@ -442,8 +451,8 @@ for name, param in model.named_parameters():
 
         <Callout variant="warning" title="Vanishing & Exploding Gradient">
           Khi mạng quá sâu, gradient có thể biến mất (nhân nhiều số nhỏ) hoặc
-          bùng nổ (nhân nhiều số lớn). Giải pháp: dùng ReLU thay sigmoid,
-          Batch Normalization, Residual Connections (ResNet), hoặc LSTM cho chuỗi.
+          bùng nổ (nhân nhiều số lớn) — xem chi tiết tại <TopicLink slug="vanishing-exploding-gradients">Vanishing & Exploding Gradients</TopicLink>.
+          Giải pháp: dùng ReLU thay sigmoid, Batch Normalization, Residual Connections (ResNet), hoặc LSTM cho chuỗi.
         </Callout>
       </ExplanationSection>
 

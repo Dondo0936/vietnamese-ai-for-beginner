@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -82,6 +82,15 @@ export default function CrossValidationTopic() {
       ],
       correct: 1,
       explanation: "K-Fold xáo trộn → dữ liệu tương lai lọt vào training set → mô hình 'nhìn trước' được → accuracy ảo! Time Series Split luôn train trên quá khứ, test trên tương lai → thực tế hơn.",
+    },
+    {
+      type: "fill-blank",
+      question: "Với 5-Fold Cross-Validation, mỗi điểm dữ liệu được dùng làm tập test đúng {blank} lần. Kết quả cuối là {blank} của 5 lượt đánh giá.",
+      blanks: [
+        { answer: "1", accept: ["một", "1 lần"] },
+        { answer: "trung bình", accept: ["mean", "giá trị trung bình"] },
+      ],
+      explanation: "Đây là tính chất cốt lõi của K-Fold: mỗi mẫu được test đúng 1 lần (không bị bỏ qua, không bị test 2 lần). Kết quả cuối cùng là trung bình của K lượt → ổn định hơn chia 1 lần.",
     },
   ], []);
 
@@ -228,7 +237,8 @@ export default function CrossValidationTopic() {
         <ExplanationSection>
           <p>
             <strong>K-Fold Cross-Validation</strong>{" "}
-            chia dữ liệu thành K phần bằng nhau. Mỗi lượt: 1 phần test, K-1 phần train:
+            chia dữ liệu thành K phần bằng nhau. Mỗi lượt: 1 phần test, K-1 phần train.
+            Đây là giải pháp mạnh hơn{" "}<TopicLink slug="train-val-test">chia train/val/test một lần</TopicLink>:
           </p>
 
           <LaTeX block>{"\\text{CV Score} = \\frac{1}{K}\\sum_{k=1}^{K} \\text{Score}_k"}</LaTeX>
@@ -252,6 +262,13 @@ export default function CrossValidationTopic() {
               Chạy K-Fold nhiều lần (mỗi lần shuffle khác) → ổn định hơn.
             </li>
           </ul>
+
+          <Callout variant="tip" title="Cross-validation và Overfitting">
+            CV là công cụ chẩn đoán{" "}<TopicLink slug="overfitting-underfitting">overfitting/underfitting</TopicLink>{" "}
+            đáng tin cậy hơn chia 1 lần. Kết hợp với đường cong{" "}
+            <TopicLink slug="bias-variance">bias-variance</TopicLink>{" "}
+            để hiểu nguyên nhân gốc rễ.
+          </Callout>
 
           <Callout variant="tip" title="Cross-validation + Grid Search">
             Kết hợp CV với grid search để chọn hyperparameter tối ưu. Ví dụ: thử max_depth = [3, 5, 7, 10] × C = [0.1, 1, 10] → chọn tổ hợp có CV score cao nhất.

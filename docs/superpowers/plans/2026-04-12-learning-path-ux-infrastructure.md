@@ -10,6 +10,9 @@
 
 **Spec:** `docs/superpowers/specs/2026-04-12-learning-path-ux-improvement-design.md`
 
+**Rules:**
+- **Vietnamese diacritics (dấu) are mandatory.** Every Vietnamese string — UI labels, descriptions, objectives, quiz questions, explanations, comments — must use full diacritical marks (sắc, huyền, hỏi, ngã, nặng, mũ, móc, trăng). Never write ASCII-stripped Vietnamese (e.g., "Nen tang" is wrong, "Nền tảng" is correct). Double-check before committing.
+
 ---
 
 ### Task 1: TopicLink Component

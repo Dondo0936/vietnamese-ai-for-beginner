@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
@@ -14,6 +14,7 @@ export default function CalculusForBackpropTopic() {
     { question: "Đạo hàm f'(x) cho biết gì?", options: ["Giá trị của f tại x", "TỐC ĐỘ THAY ĐỔI của f khi x thay đổi. Trong ML: loss thay đổi bao nhiêu khi weight thay đổi 1 chút → hướng điều chỉnh weight", "Diện tích dưới f"], correct: 1, explanation: "f'(x) = lim (f(x+h) - f(x)) / h. Trong ML: dL/dw = loss thay đổi bao nhiêu khi weight w thay đổi. Gradient descent: w_new = w - lr * dL/dw. Điều chỉnh weight NGƯỢC HƯỚNG gradient → loss giảm. Đây là cách neural network 'học'!" },
     { question: "Chain Rule quan trọng cho backprop vì sao?", options: ["Để tính nhanh", "Neural network = chuỗi hàm: y = f3(f2(f1(x))). Chain rule cho phép tính đạo hàm 'NGƯỢC LẠI' qua từng layer mà không cần tính toàn bộ", "Chỉ dùng cho RNN"], correct: 1, explanation: "y = f(g(h(x))). dy/dx = dy/dg * dg/dh * dh/dx. Mỗi layer tính local gradient, nhân ngược lại → gradient cho mọi weight. 100 layers × local gradient thay vì differentiate hàm 100 lớp trực tiếp. Đây là 'back' trong 'backpropagation'!" },
     { question: "Vanishing gradient xảy ra khi nào?", options: ["Gradient quá lớn", "Chain rule NHÂN nhiều gradient nhỏ (ví dụ sigmoid: max gradient = 0.25). 100 layers: 0.25^100 ≈ 0 → weights đầu KHÔNG ĐƯỢC CẬP NHẬT", "Khi learning rate quá lớn"], correct: 1, explanation: "Sigmoid gradient max = 0.25. 50 layers nhân nhau: 0.25^50 ≈ 10^-30 → gradient = 0 → layers đầu không học. Giải pháp: ReLU (gradient = 1 hoặc 0), residual connections (skip connections), batch normalization. Đây là lý do ReLU thay thế sigmoid cho deep networks." },
+    { type: "fill-blank", question: "Cho f(x) = x², đạo hàm f'(x) = {blank}. Áp dụng quy tắc chuỗi: nếu g(x) = (2x + 1)², thì g'(x) = {blank}.", blanks: [{ answer: "2x", accept: ["2*x"] }, { answer: "4(2x + 1)", accept: ["4*(2x+1)", "4(2x+1)", "8x + 4", "8x+4"] }], explanation: "Đạo hàm x² = 2x (quy tắc luỹ thừa). Với g(x) = (2x+1)², áp dụng chain rule: g'(x) = 2(2x+1) × d/dx(2x+1) = 2(2x+1) × 2 = 4(2x+1). Trong neural network, chain rule này tính gradient ngược qua activation và linear layer." },
   ], []);
 
   return (
@@ -36,7 +37,7 @@ export default function CalculusForBackpropTopic() {
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Calculus for Backpropagation</strong>{" "}— đạo hàm và chain rule là cơ chế neural network 'học' từ data.</p>
+          <p><strong>Calculus for Backpropagation</strong>{" "}— đạo hàm và chain rule là cơ chế neural network 'học' từ data. Gradient tính ở đây được dùng trực tiếp trong <TopicLink slug="backpropagation">backpropagation</TopicLink> để cập nhật trọng số, và <TopicLink slug="gradient-descent">gradient descent</TopicLink> là thuật toán tối ưu hoá dùng các gradient đó. Về toán học, gradient là một vector — nên <TopicLink slug="linear-algebra-for-ml">đại số tuyến tính</TopicLink> và giải tích bổ trợ nhau. Loss function mà chúng ta lấy đạo hàm cũng có chủ đề riêng: xem <TopicLink slug="loss-functions">loss functions</TopicLink>.</p>
           <p><strong>Đạo hàm (derivative):</strong></p>
           <LaTeX block>{"f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h} \\quad \\text{(tốc độ thay đổi)}"}</LaTeX>
           <p><strong>Chain Rule (quy tắc chuỗi):</strong></p>

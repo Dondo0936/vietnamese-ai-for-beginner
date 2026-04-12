@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge,
   Callout, MiniSummary, CodeBlock, ToggleCompare,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -165,6 +165,15 @@ export default function KMeansTopic() {
       correct: 1,
       explanation: "K-Means++ chọn tâm ban đầu cách xa nhau, giúp hội tụ nhanh hơn và tránh nghiệm xấu.",
     },
+    {
+      type: "fill-blank",
+      question: "K-Means gán mỗi điểm dữ liệu vào cụm có {blank} gần nhất, sau đó cập nhật tâm cụm bằng cách tính {blank} tọa độ các điểm trong cụm.",
+      blanks: [
+        { answer: "tâm cụm", accept: ["centroid", "tâm"] },
+        { answer: "trung bình", accept: ["mean", "giá trị trung bình"] },
+      ],
+      explanation: "Hai bước lặp cốt lõi của K-Means: (1) gán điểm đến tâm cụm gần nhất, (2) cập nhật tâm bằng trung bình các điểm trong cụm.",
+    },
   ], []);
 
   const goodInit = useMemo<Pt[]>(() => [{ x: 95, y: 95 }, { x: 300, y: 75 }, { x: 200, y: 270 }], []);
@@ -305,7 +314,7 @@ export default function KMeansTopic() {
         {/* STEP 6: EXPLAIN */}
         <ExplanationSection>
           <p>
-            <strong>K-Means</strong> là thuật toán <strong>phân cụm không giám sát</strong> phổ biến nhất. Nó chia dữ liệu thành K nhóm sao cho tổng khoảng cách trong cụm là nhỏ nhất.
+            <strong>K-Means</strong> là thuật toán{" "}<TopicLink slug="supervised-unsupervised-rl"><strong>phân cụm không giám sát</strong></TopicLink>{" "}phổ biến nhất. Nó chia dữ liệu thành K nhóm sao cho tổng khoảng cách trong cụm là nhỏ nhất.
           </p>
           <p><strong>Các bước thuật toán:</strong></p>
           <ol className="list-decimal list-inside space-y-2 pl-2">
@@ -320,8 +329,9 @@ export default function KMeansTopic() {
           <p><strong>Hạn chế:</strong></p>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>Phải <strong>chọn K trước</strong> — dùng phương pháp Elbow hoặc Silhouette Score.</li>
-            <li><strong>Nhạy với khởi tạo</strong> — giải quyết bằng K-Means++ hoặc chạy nhiều lần.</li>
+            <li><strong>Nhạy với khởi tạo</strong> — giải quyết bằng K-Means++ hoặc chạy nhiều lần. Khác với <TopicLink slug="knn">KNN</TopicLink>, K-Means không cần nhãn dữ liệu.</li>
             <li>Chỉ tìm được <strong>cụm hình cầu</strong> — dùng DBSCAN cho cụm hình dạng tự do.</li>
+            <li>Kết quả phụ thuộc vào số chiều — nên dùng <TopicLink slug="feature-engineering">feature engineering</TopicLink> để giảm nhiễu trước khi phân cụm.</li>
           </ul>
           <CodeBlock language="python" title="K-Means với scikit-learn">
 {`from sklearn.cluster import KMeans

@@ -10,6 +10,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -159,6 +160,12 @@ export default function LossFunctionsTopic() {
       correct: 2,
       explanation:
         "10 lớp → cần Categorical CE (hoặc NLL Loss + Softmax). Binary CE chỉ cho 2 lớp. MSE/MAE dùng cho hồi quy, không phù hợp cho phân loại.",
+    },
+    {
+      type: "fill-blank",
+      question: "Cross-Entropy loss cho phân loại nhị phân: L = −[y·log(ŷ) + (1−y)·log(1−{blank})]. Số hạng trong ngoặc vuông cuối cùng biểu diễn loss khi nhãn thực là 0.",
+      blanks: [{ answer: "ŷ", accept: ["y_hat", "pred", "p", "xác suất dự đoán"] }],
+      explanation: "Khi nhãn y = 0, loss = −log(1−ŷ): nếu mô hình dự đoán ŷ gần 0 (đúng) → loss thấp; nếu ŷ gần 1 (sai và tự tin) → log(1−ŷ) = log(0) → loss rất cao. Đây là cơ chế phạt nặng 'tự tin sai' của Cross-Entropy.",
     },
   ];
 
@@ -378,7 +385,7 @@ export default function LossFunctionsTopic() {
         <AhaMoment>
           <p>
             <strong>Loss function</strong>{" "}
-            là &quot;la bàn&quot; của mạng nơ-ron — nó nói cho gradient descent biết:
+            là &quot;la bàn&quot; của mạng nơ-ron — nó nói cho <TopicLink slug="gradient-descent">gradient descent</TopicLink> biết:
             &quot;bạn đang sai bao xa và theo hướng nào&quot;. Không có loss, mạng
             không biết cần cải thiện gì! Giống GPS trên Grab: không có thì tài xế
             đi mù.
@@ -435,7 +442,7 @@ export default function LossFunctionsTopic() {
               <tbody className="text-foreground/80">
                 <tr className="border-b border-border/50">
                   <td className="py-2 pr-3 font-medium text-blue-400">MSE</td>
-                  <td className="py-2 pr-3">Hồi quy</td>
+                  <td className="py-2 pr-3"><TopicLink slug="linear-regression">Hồi quy</TopicLink></td>
                   <td className="py-2 pr-3">Phạt nặng sai lệch lớn</td>
                   <td className="py-2">Dự đoán giá nhà, nhiệt độ</td>
                 </tr>
@@ -449,7 +456,7 @@ export default function LossFunctionsTopic() {
                   <td className="py-2 pr-3 font-medium text-amber-400">
                     Binary CE
                   </td>
-                  <td className="py-2 pr-3">Phân loại 2 lớp</td>
+                  <td className="py-2 pr-3"><TopicLink slug="logistic-regression">Phân loại 2 lớp</TopicLink></td>
                   <td className="py-2 pr-3">Phạt cực nặng &quot;tự tin sai&quot;</td>
                   <td className="py-2">Spam detection, phát hiện gian lận</td>
                 </tr>
@@ -470,7 +477,7 @@ export default function LossFunctionsTopic() {
             sigmoid output gần 0 hoặc 1 → học chậm. Cross-Entropy có gradient lớn hơn
             khi dự đoán sai → học nhanh hơn nhiều. Đây là lý do{" "}
             <strong>CE + Softmax</strong>{" "}
-            là combo mặc định cho mọi bài toán phân loại.
+            là combo mặc định cho mọi bài toán phân loại. Loss function được <TopicLink slug="backpropagation">backpropagation</TopicLink> dùng làm điểm khởi đầu để tính gradient qua toàn bộ mạng.
           </Callout>
 
           <CodeBlock language="python" title="loss_functions.py">

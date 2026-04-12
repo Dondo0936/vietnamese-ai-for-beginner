@@ -11,7 +11,8 @@ import {
   Callout,
   MiniSummary,
   CodeBlock,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -164,6 +165,12 @@ export default function GradientDescentTopic() {
       correct: 1,
       explanation:
         "Learning rate quá lớn khiến bước nhảy vượt qua cực tiểu, tạo dao động qua lại mà không bao giờ hội tụ.",
+    },
+    {
+      type: "fill-blank",
+      question: "Công thức cập nhật trọng số: θ_mới = θ_cũ − α × {blank}, trong đó α là learning rate.",
+      blanks: [{ answer: "∇L(θ)", accept: ["gradient", "∇L", "grad", "đạo hàm", "nabla L"] }],
+      explanation: "∇L(θ) là gradient (vector đạo hàm) của hàm loss theo vector trọng số θ. Trừ đi gradient nhân learning rate có nghĩa là đi ngược chiều gradient — chiều giảm loss nhanh nhất. Đây là bản chất của gradient descent.",
     },
   ];
 
@@ -367,14 +374,15 @@ export default function GradientDescentTopic() {
         {/* ====== STEP 6: EXPLAIN ====== */}
         <ExplanationSection>
           <p>
-            <strong>Gradient Descent</strong> cập nhật trọng số theo công thức:
+            <strong>Gradient Descent</strong> cập nhật trọng số theo công thức (gradient được tính bởi <TopicLink slug="backpropagation">backpropagation</TopicLink>):
           </p>
           <div className="rounded-lg bg-background/50 border border-border p-4 text-center font-mono text-foreground text-lg">
             &theta; = &theta; &minus; &alpha; &nabla;L(&theta;)
           </div>
           <p>
             Trong đó <strong>&theta;</strong> là trọng số, <strong>&alpha;</strong> là
-            learning rate, và <strong>&nabla;L(&theta;)</strong> là gradient của hàm loss.
+            learning rate, và <strong>&nabla;L(&theta;)</strong> là gradient của <TopicLink slug="loss-functions">hàm loss</TopicLink>.
+            Việc tính đạo hàm dựa trên nền tảng <TopicLink slug="calculus-for-backprop">vi tích phân</TopicLink>, đặc biệt là đạo hàm riêng.
           </p>
 
           {/* variants table */}
@@ -420,6 +428,7 @@ export default function GradientDescentTopic() {
             Trong thực tế, learning rate thường giảm dần theo thời gian. Bắt đầu
             với bước lớn để tiến nhanh, sau đó giảm dần để hội tụ chính xác —
             giống như bạn chạy nhanh khi còn xa đích và đi chậm khi đến gần.
+            Gradient descent được dùng từ <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink> đơn giản đến các mạng nơ-ron hàng tỷ tham số.
           </Callout>
         </ExplanationSection>
 

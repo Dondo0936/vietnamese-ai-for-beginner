@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -105,6 +105,15 @@ export default function LinearRegressionTopic() {
       options: ["1", "0", "Không xác định"],
       correct: 1,
       explanation: "Khi mọi điểm nằm trên đường hồi quy, sai số tại mỗi điểm bằng 0, nên MSE = 0. Đây là trường hợp khớp hoàn hảo.",
+    },
+    {
+      type: "fill-blank",
+      question: "Công thức hồi quy tuyến tính một biến là ŷ = {blank}x + {blank}, trong đó tham số đầu tiên là hệ số góc và tham số thứ hai là hệ số chặn.",
+      blanks: [
+        { answer: "w1", accept: ["w_1", "w", "slope", "a"] },
+        { answer: "w0", accept: ["w_0", "b", "intercept", "bias"] },
+      ],
+      explanation: "ŷ = w1·x + w0 là dạng chuẩn của hồi quy tuyến tính một biến. w1 (hệ số góc) cho biết: khi x tăng 1 đơn vị, ŷ thay đổi bao nhiêu. w0 (hệ số chặn) là giá trị dự đoán khi x = 0.",
     },
     {
       question: "Khi nào hồi quy tuyến tính KHÔNG phù hợp?",
@@ -269,7 +278,11 @@ export default function LinearRegressionTopic() {
           <LaTeX block>{"\\hat{y} = w_1 x + w_0"}</LaTeX>
 
           <p>
-            Mục tiêu là tối thiểu hoá <strong>Mean Squared Error (MSE)</strong>:
+            Mục tiêu là tối thiểu hoá{" "}
+            <strong>Mean Squared Error (MSE)</strong>{" "}
+            — đây là một{" "}
+            <TopicLink slug="loss-functions">hàm mất mát</TopicLink>{" "}
+            phổ biến nhất cho bài toán hồi quy:
           </p>
 
           <LaTeX block>{"\\text{MSE} = \\frac{1}{n} \\sum_{i=1}^{n} (y_i - \\hat{y}_i)^2"}</LaTeX>
@@ -279,6 +292,12 @@ export default function LinearRegressionTopic() {
           </p>
 
           <LaTeX block>{"w_1 = \\frac{n\\sum x_i y_i - \\sum x_i \\sum y_i}{n\\sum x_i^2 - (\\sum x_i)^2}, \\quad w_0 = \\bar{y} - w_1 \\bar{x}"}</LaTeX>
+
+          <p>
+            Trong thực tế, thay vì tìm nghiệm trực tiếp, người ta thường dùng{" "}
+            <TopicLink slug="gradient-descent">gradient descent</TopicLink>{" "}
+            để tối ưu dần dần — đặc biệt khi dữ liệu quá lớn để nghịch ma trận.
+          </p>
 
           <Callout variant="tip" title="Tương tự đời thật">
             Giống như bạn bán phở và quan sát: nhiệt độ tăng → số tô giảm. Hồi quy tuyến tính giúp bạn đo chính xác mối quan hệ đó — cứ mỗi độ C tăng thêm, bán ít hơn bao nhiêu tô.
@@ -313,7 +332,11 @@ print(f"Dự đoán nhà 80m²: {model.predict([[80]])[0]:.2f} tỷ")`}
           </CodeBlock>
 
           <Callout variant="warning" title="Hạn chế cần biết">
-            Hồi quy tuyến tính nhạy cảm với outlier (điểm ngoại lai) và chỉ nắm bắt được quan hệ tuyến tính. Dữ liệu cong → cần hồi quy đa thức hoặc mô hình phức tạp hơn.
+            Hồi quy tuyến tính nhạy cảm với outlier (điểm ngoại lai) và chỉ nắm bắt được quan hệ tuyến tính. Dữ liệu cong → cần hồi quy đa thức hoặc mô hình phức tạp hơn. Cũng cần chú ý đến{" "}
+            <TopicLink slug="bias-variance">đánh đổi bias-variance</TopicLink>{" "}
+            và nguy cơ{" "}
+            <TopicLink slug="overfitting-underfitting">overfitting/underfitting</TopicLink>{" "}
+            khi thêm nhiều features.
           </Callout>
         </ExplanationSection>
       </LessonSection>

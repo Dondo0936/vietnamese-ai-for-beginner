@@ -11,6 +11,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -184,6 +185,12 @@ export default function ForwardPropagationTopic() {
       correct: 0,
       explanation:
         "Sigmoid nén đầu ra về (0,1), biểu diễn xác suất. Giá trị 0.82 nghĩa là mô hình dự đoán 82% khả năng mẫu thuộc lớp dương (positive class).",
+    },
+    {
+      type: "fill-blank",
+      question: "Trong forward propagation, tại mỗi lớp có hai bước: đầu tiên tính z = W·a + b (biến đổi tuyến tính), sau đó tính a = {blank}(z) để thêm tính phi tuyến.",
+      blanks: [{ answer: "f", accept: ["activation", "hàm kích hoạt", "relu", "sigmoid"] }],
+      explanation: "Hàm kích hoạt f(z) là bước thứ hai tại mỗi lớp, biến đổi tổng có trọng số z thành giá trị kích hoạt a. Không có bước này, toàn bộ mạng dù nhiều lớp cũng chỉ là một phép biến đổi tuyến tính.",
     },
   ];
 
@@ -495,8 +502,7 @@ export default function ForwardPropagationTopic() {
           <p>
             <strong>Forward Propagation</strong>{" "}
             chỉ là hai phép tính lặp đi lặp lại: (1) nhân trọng số + bias → z,
-            (2) hàm kích hoạt → a. Giống quán phở tự phục vụ: mỗi quầy bạn ghé qua đều
-            thêm gia vị (trọng số) rồi người kiểm tra (hàm kích hoạt) quyết định cho qua hay không!
+            (2) <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> → a. Quá trình này đi qua từng lớp của <TopicLink slug="mlp">MLP</TopicLink> để tạo ra dự đoán cuối cùng.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -528,7 +534,7 @@ export default function ForwardPropagationTopic() {
           </p>
 
           <p>
-            <strong>Bước 1 — Biến đổi tuyến tính:</strong>
+            <strong>Bước 1 — Biến đổi tuyến tính</strong> (dựa trên <TopicLink slug="linear-algebra-for-ml">đại số tuyến tính</TopicLink>):
           </p>
           <LaTeX block>{"z^{[l]} = W^{[l]} \\cdot a^{[l-1]} + b^{[l]}"}</LaTeX>
 
@@ -544,7 +550,7 @@ export default function ForwardPropagationTopic() {
 
           <Callout variant="info" title="Forward pass trong huấn luyện vs inference">
             <strong>Huấn luyện:</strong>{" "}
-            Cần lưu lại tất cả giá trị trung gian (z, a) ở mỗi lớp — backpropagation sẽ dùng chúng để tính gradient.
+            Cần lưu lại tất cả giá trị trung gian (z, a) ở mỗi lớp — <TopicLink slug="backpropagation">backpropagation</TopicLink> sẽ dùng chúng để tính gradient.
             <br />
             <strong>Inference (suy luận):</strong>{" "}
             Chỉ cần đầu ra cuối, không lưu giá trị trung gian, không tính gradient → nhanh hơn nhiều.

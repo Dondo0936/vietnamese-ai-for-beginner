@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -57,6 +57,12 @@ export default function FeatureEngineeringTopic() {
       ],
       correct: 1,
       explanation: "Ngày sinh raw không hữu ích (30/05/1995 ≠ pattern). Nhưng FEATURES ĐƯỢC TẠO TỪ ngày sinh rất hữu ích: tuổi (30) → Gen Z, thế_hệ → correlated với sở thích nhạc. Đây là core của feature engineering: biến đổi raw data thành features có ý nghĩa!",
+    },
+    {
+      type: "fill-blank",
+      question: "Interaction feature kết hợp hai features để tạo thông tin mới. Ví dụ: diện_tích × số_tầng tạo ra feature '{blank}' thể hiện tổng diện tích sử dụng của ngôi nhà.",
+      blanks: [{ answer: "tổng_diện_tích_sàn", accept: ["tổng diện tích sàn", "total_floor_area", "diện tích sàn", "floor_area"] }],
+      explanation: "Interaction features (đặc trưng tương tác) kết hợp hai hoặc nhiều features thô để tạo ra đặc trưng mới có ý nghĩa mà model khó tự học. diện_tích × số_tầng = tổng_diện_tích_sàn, một chỉ số phản ánh tốt hơn quy mô thực tế của bất động sản.",
     },
   ], []);
 
@@ -116,7 +122,7 @@ export default function FeatureEngineeringTopic() {
             Feature Engineering giống <strong>chọn nguyên liệu nấu ăn</strong>.
             Nguyên liệu tươi, chất lượng → món ăn ngon dù bếp bình thường.
             Nguyên liệu tệ → món ăn tệ dù bếp giỏi. <strong>80% thời gian ML là feature engineering</strong>{" "}
-            — không phải training model!
+            — không phải training model! Features tốt cũng giúp tránh <TopicLink slug="overfitting-underfitting">overfitting</TopicLink> bằng cách loại bỏ noise.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -139,6 +145,8 @@ export default function FeatureEngineeringTopic() {
           <p>
             <strong>Feature Engineering</strong>{" "}
             là quá trình biến đổi raw data thành features có ý nghĩa giúp model học hiệu quả hơn.
+            Thường được thực hiện sau bước <TopicLink slug="data-preprocessing">tiền xử lý dữ liệu</TopicLink> và trước khi đưa vào model.
+            Features tốt giúp cân bằng <TopicLink slug="bias-variance">bias-variance tradeoff</TopicLink> — không quá đơn giản (high bias) cũng không quá phức tạp (high variance).
           </p>
           <p><strong>5 kỹ thuật chính:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
@@ -153,6 +161,7 @@ export default function FeatureEngineeringTopic() {
 
           <Callout variant="tip" title="Target Encoding">
             Categorical feature có nhiều giá trị (1000 quận/huyện) → one-hot tạo 1000 cột (quá nhiều!). Target encoding: thay mỗi category bằng mean(target) của category đó. Ví dụ: Hoàn Kiếm → mean(giá) = 8.5 tỷ. Giảm chiều + giữ thông tin!
+            Kỹ thuật này đặc biệt hữu ích khi kết hợp với <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink> — một trong những model được hưởng lợi nhiều nhất từ feature engineering tốt.
           </Callout>
 
           <CodeBlock language="python" title="Feature Engineering cho dự đoán giá nhà">

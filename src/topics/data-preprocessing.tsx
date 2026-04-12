@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -17,6 +17,7 @@ export default function DataPreprocessingTopic() {
     { question: "Missing values: khi nào dùng mean imputation, khi nào drop?", options: ["Luôn dùng mean", "Mean cho missing < 5% random. Drop row khi > 30% missing. Domain-specific imputation cho y tế/tài chính", "Luôn drop rows có missing"], correct: 1, explanation: "< 5% missing random → mean/median imputation ok. 5-30% → advanced imputation (KNN, MICE). > 30% → drop column (không đủ thông tin). Y tế: missing lab result ≠ random (bệnh nhân không xét nghiệm = có lý do) → cần domain knowledge!" },
     { question: "Tại sao cần normalize/standardize features?", options: ["Để data đẹp hơn", "Features có scale khác nhau (tuổi: 0-100, lương: 0-1B) → gradient descent và distance-based models bị bias bởi feature lớn", "Chỉ cần cho deep learning"], correct: 1, explanation: "KNN: khoảng cách bị dominated bởi feature có range lớn (lương 1B > tuổi 100 → KNN chỉ nhìn lương). Gradient descent: features lớn → gradients lớn → học không ổn định. StandardScaler (mean=0, std=1) cân bằng mọi feature. Tree-based models không cần vì chỉ nhìn rankings." },
     { question: "Feature 'quận_huyện' có 700 giá trị. One-hot encoding tạo 700 columns. Vấn đề?", options: ["Không vấn đề", "Curse of dimensionality: 700 sparse columns. Dùng target encoding (thay category bằng mean(target)) hoặc embedding", "Chỉ dùng khi data > 1M rows"], correct: 1, explanation: "One-hot 700 categories = 700 sparse columns (hầu hết là 0). Overfit + chậm. Target encoding: thay 'Hoàn Kiếm' bằng mean(giá_nhà) của Hoàn Kiếm = 8.5 tỷ → 1 column, giữ thông tin. Hoặc: embedding (learned representation) cho deep learning." },
+    { type: "fill-blank", question: "StandardScaler biến đổi feature x thành z = (x − {blank}) / σ, đảm bảo dữ liệu có trung bình bằng 0 và độ lệch chuẩn bằng 1.", blanks: [{ answer: "μ", accept: ["mean", "trung bình", "mu"] }], explanation: "StandardScaler trừ mean (μ) và chia độ lệch chuẩn (σ): z = (x − μ) / σ. Sau khi scale, mọi feature có phân phối chuẩn hóa với mean=0 và std=1, giúp gradient descent và các thuật toán dựa trên khoảng cách hoạt động công bằng giữa các features." },
   ], []);
 
   return (
@@ -50,7 +51,8 @@ export default function DataPreprocessingTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Data Preprocessing</strong>{" "}là các bước làm sạch và chuẩn bị dữ liệu trước khi train model — bước quan trọng nhất của ML pipeline.</p>
+          <p><strong>Data Preprocessing</strong>{" "}là các bước làm sạch và chuẩn bị dữ liệu trước khi train model — bước quan trọng nhất của ML pipeline.
+          Bước tiếp theo sau preprocessing thường là <TopicLink slug="feature-engineering">feature engineering</TopicLink> để tạo thêm đặc trưng có ý nghĩa, và sau đó chia dữ liệu bằng <TopicLink slug="train-val-test">train/val/test split</TopicLink>.</p>
           <p><strong>5 bước chính:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Missing values:</strong>{" "}Mean/median imputation, KNN imputation, drop</li>
@@ -61,7 +63,7 @@ export default function DataPreprocessingTopic() {
           </ul>
           <LaTeX block>{"\\text{Z-score: } z = \\frac{x - \\mu}{\\sigma} \\quad |z| > 3 \\rightarrow \\text{outlier}"}</LaTeX>
           <LaTeX block>{"\\text{IQR method: } [Q_1 - 1.5 \\cdot \\text{IQR}, Q_3 + 1.5 \\cdot \\text{IQR}]"}</LaTeX>
-          <Callout variant="warning" title="Data Leakage">QUAN TRỌNG: fit scaler/imputer CHỈ trên train set! Đừng fit trên toàn bộ data (bao gồm test) → thông tin test 'rò rỉ' vào train → kết quả giả tạo.</Callout>
+          <Callout variant="warning" title="Data Leakage">QUAN TRỌNG: fit scaler/imputer CHỈ trên train set! Đừng fit trên toàn bộ data (bao gồm test) → thông tin test 'rò rỉ' vào train → kết quả giả tạo. Xem thêm về <TopicLink slug="python-for-ml">Python cho ML</TopicLink> để dùng sklearn Pipeline tránh data leakage tự động.</Callout>
           <CodeBlock language="python" title="Pipeline tiền xử lý đúng cách">{`from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder

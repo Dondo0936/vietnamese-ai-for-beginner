@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -112,6 +112,15 @@ export default function KnnTopic() {
       ],
       correct: 1,
       explanation: "Diện tích: 30-200 → chênh lệch ~170. Số phòng: 1-5 → chênh lệch ~4. Khoảng cách Euclidean bị diện tích chi phối! StandardScaler đưa cả hai về thang [0,1].",
+    },
+    {
+      type: "fill-blank",
+      question: "KNN là thuật toán {blank} — không có giai đoạn học, chỉ lưu dữ liệu và tính khoảng cách khi cần dự đoán. Điều này khiến KNN {blank} với tập dữ liệu lớn.",
+      blanks: [
+        { answer: "lazy learning", accept: ["lười học", "lazy", "không học"] },
+        { answer: "chậm", accept: ["tốn thời gian", "kém hiệu quả", "không hiệu quả"] },
+      ],
+      explanation: "KNN là 'lazy learner': thay vì xây mô hình trong giai đoạn train, nó chỉ lưu toàn bộ dữ liệu. Khi có điểm mới, phải tính khoảng cách đến TẤT CẢ n điểm → O(n·d) mỗi dự đoán. Với 1 triệu điểm, điều này rất chậm — cần KD-tree hoặc Approximate Nearest Neighbor.",
     },
   ], []);
 
@@ -298,9 +307,13 @@ export default function KnnTopic() {
           <LaTeX block>{"d_{\\text{Manhattan}}(x, z) = \\sum_{j=1}^{d}|x_j - z_j|"}</LaTeX>
 
           <Callout variant="tip" title="Chọn K bao nhiêu?">
-            K nhỏ (1-3): ranh giới phức tạp, nhạy noise → overfitting.{"\n"}
-            K lớn: ranh giới mượt → có thể underfitting.{"\n"}
-            Thường dùng cross-validation để chọn K. Mẹo: K lẻ tránh hoà phiếu!
+            K nhỏ (1-3): ranh giới phức tạp, nhạy noise →{" "}
+            <TopicLink slug="overfitting-underfitting">overfitting</TopicLink>.{"\n"}
+            K lớn: ranh giới mượt → có thể underfitting. Hiểu rõ{" "}
+            <TopicLink slug="bias-variance">đánh đổi bias-variance</TopicLink>{" "}
+            giúp chọn K tốt hơn.{"\n"}
+            Thường dùng <TopicLink slug="cross-validation">kiểm định chéo</TopicLink>{" "}
+            để chọn K. Mẹo: K lẻ tránh hoà phiếu!
           </Callout>
 
           <p><strong>Weighted KNN:</strong>{" "}Thay vì mỗi neighbor 1 phiếu, trọng số theo khoảng cách:</p>
@@ -337,6 +350,12 @@ for k in [1, 3, 5, 7, 9]:
     s = cross_val_score(m, X, y, cv=5).mean()
     print(f"  K={k}: {s:.1%}")`}
           </CodeBlock>
+
+          <p>
+            Ngoài ra, cần chú ý kỹ thuật{" "}
+            <TopicLink slug="feature-engineering">feature engineering</TopicLink>{" "}
+            để chọn và biến đổi features trước khi đưa vào KNN — đặc biệt quan trọng vì KNN nhạy cảm với thang đo.
+          </p>
 
           <Callout variant="warning" title="Curse of Dimensionality">
             Ở chiều cao (100+ features), mọi điểm gần như cách đều nhau → khái niệm &quot;gần nhất&quot; mất ý nghĩa. Giải pháp: giảm chiều (PCA), chọn features, hoặc dùng thuật toán khác.
