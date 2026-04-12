@@ -190,6 +190,34 @@ import QuizSection from "@/components/topic/QuizSection";
 | `CollapsibleDetail` | `@/components/interactive/CollapsibleDetail` | Expandable detail section. Props: `title: string`, `children: ReactNode`, `defaultOpen?: boolean`. |
 | `CodeBlock` | `@/components/interactive/CodeBlock` | Syntax-highlighted code with copy button. Props: `children: string` (the code), `language?: string` (default: "python"), `title?: string`. |
 
+### Cross-linking primitives
+
+| Name | Import | Description |
+|------|--------|-------------|
+| `TopicLink` | `@/components/interactive/TopicLink` | Inline link to another topic. Renders as dotted-underline accent link. Props: `slug: string` (must exist in registry), `children: ReactNode` (display text). |
+
+#### TopicLink — Liên kết chéo giữa các bài học
+
+Khi bài học đề cập đến một khái niệm đã có topic riêng, hãy dùng `TopicLink` để người học có thể quay lại ôn nếu chưa hiểu.
+
+**Cách dùng:**
+
+```tsx
+import { TopicLink } from "@/components/interactive";
+
+// Trong nội dung bài học:
+<p>
+  Khi gradient truyền qua nhiều lớp, nó có thể bị triệt tiêu — gọi là{" "}
+  <TopicLink slug="vanishing-exploding-gradients">vanishing gradient</TopicLink>.
+</p>
+```
+
+**Quy tắc:**
+- Chỉ link lần đầu xuất hiện trong bài — không link lặp lại cùng thuật ngữ
+- `slug` phải tồn tại trong `registry.ts` — component sẽ cảnh báo trong dev mode nếu không tìm thấy
+- `children` là text hiển thị, có thể khác tên topic gốc
+- Ưu tiên link các khái niệm tiên quyết (prerequisite) hơn các khái niệm nâng cao
+
 ### Topic-level wrappers
 
 | Name | Import | Description |
@@ -197,7 +225,64 @@ import QuizSection from "@/components/topic/QuizSection";
 | `AnalogyCard` | `@/components/topic/AnalogyCard` | Vietnamese real-world analogy wrapper. Props: `children: ReactNode`. |
 | `VisualizationSection` | `@/components/topic/VisualizationSection` | Container for interactive/static visualizations. Props: `children: ReactNode`. |
 | `ExplanationSection` | `@/components/topic/ExplanationSection` | Container for formal explanation text. Props: `children: ReactNode`. |
-| `QuizSection` | `@/components/topic/QuizSection` | End-of-lesson quiz with scoring. Props: `questions: QuizQuestion[]`. Each `QuizQuestion`: `{ question: string, options: string[], correct: number, explanation?: string }`. |
+| `QuizSection` | `@/components/topic/QuizSection` | End-of-lesson quiz with scoring. Props: `questions: QuizQuestion[]`. Supports 3 question types — see "Quiz Question Types" section below. |
+
+### Quiz Question Types
+
+`QuizSection` supports 3 question types via a discriminated union. Mix them freely in a single quiz.
+
+#### MCQ (mặc định — tương thích ngược)
+
+```tsx
+{
+  question: "Câu hỏi trắc nghiệm?",
+  options: ["Đáp án A", "Đáp án B", "Đáp án C"],
+  correct: 1,
+  explanation: "Giải thích..."
+}
+```
+
+Không cần trường `type` — mặc định là MCQ. Tất cả quiz hiện tại vẫn hoạt động bình thường.
+
+#### Fill-in-the-blank (điền vào chỗ trống)
+
+```tsx
+{
+  type: "fill-blank",
+  question: "Công thức MSE = {blank} trong đó n là {blank}",
+  blanks: [
+    { answer: "1/n * Σ(yi - ŷi)²", accept: ["(1/n)*sum(yi-yi_hat)^2"] },
+    { answer: "số mẫu", accept: ["số sample", "number of samples"] }
+  ],
+  explanation: "MSE là trung bình bình phương sai số..."
+}
+```
+
+Dùng `{blank}` làm placeholder trong câu hỏi. Mảng `accept` chứa các đáp án thay thế. So khớp không phân biệt hoa thường.
+
+#### Code completion (hoàn thành mã)
+
+```tsx
+{
+  type: "code",
+  question: "Hoàn thành hàm tính gradient descent:",
+  codeTemplate: "def gradient_descent(x, lr):\n    grad = compute_grad(x)\n    return x - ___ * ___",
+  language: "python",
+  blanks: [
+    { answer: "lr", accept: ["learning_rate"] },
+    { answer: "grad", accept: ["gradient"] }
+  ],
+  explanation: "Cập nhật: x_new = x - learning_rate * gradient"
+}
+```
+
+Dùng `___` làm placeholder trong code. Quy tắc so khớp giống fill-blank.
+
+**Hướng dẫn theo lộ trình:**
+- **Học sinh (toán):** dùng `fill-blank` cho công thức
+- **Học sinh (ML/mạng nơ-ron):** 5-7 câu hỏi kết hợp MCQ + fill-blank
+- **AI Engineer:** dùng `code` cho câu hỏi triển khai
+- **Nhân viên văn phòng:** MCQ với tình huống thực tế nơi công sở
 
 ---
 
