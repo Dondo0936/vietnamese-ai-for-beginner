@@ -3,17 +3,21 @@
 import { useState, useEffect } from "react";
 import { AlertTriangle } from "lucide-react";
 import { useProgress } from "@/lib/progress-context";
+import { useAuth } from "@/lib/auth-context";
 
 const DISMISSED_KEY = "auth-warning-dismissed";
 
 export default function AuthWarningBanner() {
   const { readTopics, loading } = useProgress();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [dismissed, setDismissed] = useState(true);
 
   useEffect(() => {
     setDismissed(localStorage.getItem(DISMISSED_KEY) === "true");
   }, []);
 
+  // Hide for authenticated users — their progress is already backed up
+  if (authLoading || isAuthenticated) return null;
   if (loading || dismissed || readTopics.length === 0) return null;
 
   return (
