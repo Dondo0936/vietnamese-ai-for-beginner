@@ -11,6 +11,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -243,6 +244,17 @@ export default function OptimizersTopic() {
       explanation:
         "Adam thêm L2 vào loss (gradient cũng bị ảnh hưởng). AdamW tách riêng: gradient update một đường, weight decay một đường. Cho regularization hiệu quả hơn, đặc biệt cho Transformer.",
     },
+    {
+      type: "fill-blank",
+      question:
+        "Adam = {blank} (tích lũy đà qua trung bình gradient) + {blank} (chia LR theo trung bình gradient²) + bias correction.",
+      blanks: [
+        { answer: "Momentum", accept: ["momentum", "đà"] },
+        { answer: "RMSProp", accept: ["rmsprop", "RMSprop", "rms-prop"] },
+      ],
+      explanation:
+        "Adam (Adaptive Moment Estimation) kết hợp Momentum (moment bậc 1 — trung bình m_t của gradient) với RMSProp (moment bậc 2 — trung bình v_t của gradient²), cộng thêm bias correction chia cho (1 - β^t) để sửa lệch ban đầu.",
+    },
   ];
 
   return (
@@ -263,6 +275,8 @@ export default function OptimizersTopic() {
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Hãy xem 4 optimizer <strong className="text-foreground">chạy đua</strong>{" "}
             trên bề mặt loss hình elip dài (mô phỏng thung lũng hẹp phổ biến trong deep learning).
+            Cả 4 đều là biến thể của{" "}
+            <TopicLink slug="gradient-descent">gradient descent</TopicLink>.
           </p>
         </PredictionGate>
       </LessonSection>
@@ -542,7 +556,9 @@ export default function OptimizersTopic() {
               </thead>
               <tbody className="text-foreground/80">
                 <tr className="border-b border-border/50">
-                  <td className="py-2 pr-3 font-medium">SGD + Momentum</td>
+                  <td className="py-2 pr-3 font-medium">
+                    <TopicLink slug="sgd">SGD</TopicLink> + Momentum
+                  </td>
                   <td className="py-2 pr-3">0.01 - 0.1</td>
                   <td className="py-2">
                     Vision (ResNet, EfficientNet) khi cần generalization tốt
@@ -595,7 +611,9 @@ scheduler = optim.lr_scheduler.CosineAnnealingLR(
             <strong>Bắt đầu với AdamW(lr=1e-3, weight_decay=0.01)</strong>{" "}
             — hoạt động tốt cho hầu hết bài toán. Nếu cần squeeze thêm accuracy cho
             vision: thử SGD + Momentum + Cosine Annealing. Transformer: bắt buộc AdamW
-            + warmup.
+            + warmup. Nhớ điều chỉnh{" "}
+            <TopicLink slug="learning-rate">learning rate</TopicLink>{" "}
+            phù hợp với optimizer.
           </Callout>
         </ExplanationSection>
       </LessonSection>

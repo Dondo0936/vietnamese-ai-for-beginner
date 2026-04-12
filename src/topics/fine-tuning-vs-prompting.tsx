@@ -9,7 +9,9 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -96,6 +98,17 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "RAG = đưa tài liệu liên quan vào prompt trước khi AI trả lời. Model KHÔNG bị thay đổi — RAG là một dạng prompting nâng cao.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Quy tắc chọn chiến lược: khi có ít hơn 10 ví dụ và task phổ biến, hãy chọn {blank}. Khi cần domain chuyên sâu với hơn 1.000 ví dụ chuẩn hoá, hãy chọn {blank}.",
+    blanks: [
+      { answer: "prompting", accept: ["prompt", "prompt engineering"] },
+      { answer: "fine-tuning", accept: ["fine tuning", "finetuning", "ft"] },
+    ],
+    explanation:
+      "Heuristic: thử prompting/few-shot trước vì rẻ và nhanh. Chỉ chuyển sang fine-tuning khi có đủ dữ liệu chất lượng và task quá chuyên biệt để prompting xử lý hiệu quả.",
   },
 ];
 
@@ -259,7 +272,8 @@ export default function FineTuningVsPromptingTopic() {
       <LessonSection step={5} totalSteps={5} label="Giải thích">
       <ExplanationSection>
         <p>
-          <strong>Prompting</strong>{" "}và <strong>Fine-tuning</strong>{" "}là hai chiến lược chính
+          <TopicLink slug="prompt-engineering">Prompting</TopicLink>{" "}và{" "}
+          <TopicLink slug="fine-tuning">Fine-tuning</TopicLink>{" "}là hai chiến lược chính
           để tùy chỉnh LLM cho task cụ thể. Chọn đúng chiến lược giúp tiết kiệm thời gian và tiền bạc.
         </p>
 
@@ -306,7 +320,7 @@ export default function FineTuningVsPromptingTopic() {
           <ol className="list-decimal list-inside space-y-1 text-sm">
             <li>Thử <strong>zero-shot prompting</strong>{" "}trước — đủ tốt chưa?</li>
             <li>Nếu chưa → thử <strong>few-shot + RAG</strong></li>
-            <li>Nếu vẫn chưa → <strong>fine-tuning</strong>{" "}(LoRA nếu ít GPU)</li>
+            <li>Nếu vẫn chưa → <strong>fine-tuning</strong>{" "}(<TopicLink slug="lora">LoRA</TopicLink>{" "}nếu ít GPU)</li>
             <li>Task cực kỳ chuyên biệt → <strong>full fine-tuning</strong></li>
           </ol>
         </Callout>

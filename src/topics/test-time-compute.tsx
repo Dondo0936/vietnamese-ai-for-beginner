@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -78,6 +78,15 @@ export default function TestTimeComputeTopic() {
       ],
       correct: 1,
       explanation: "Tree search: tại mỗi bước suy luận, thử nhiều hướng (branching). PRM đánh giá chất lượng từng bước → tỉa nhánh kém, đi sâu nhánh tốt. Giống AlphaGo search nhưng cho reasoning thay vì cờ vây. Tốn nhiều compute nhưng tìm được lời giải tối ưu.",
+    },
+    {
+      type: "fill-blank",
+      question: "Test-time compute cho phép model dùng thêm compute để sinh chuỗi {blank} dài hơn, tức là nhiều {blank} suy luận hơn tại inference.",
+      blanks: [
+        { answer: "reasoning", accept: ["suy luận", "chain-of-thought"] },
+        { answer: "tokens", accept: ["token"] },
+      ],
+      explanation: "Test-time compute scaling chủ yếu biểu hiện qua việc model sinh nhiều reasoning tokens hơn — nghĩ sâu và dài hơn trước khi đưa ra đáp án cuối.",
     },
   ], []);
 
@@ -182,7 +191,11 @@ export default function TestTimeComputeTopic() {
         <ExplanationSection>
           <p>
             <strong>Test-Time Compute</strong>{" "}
-            là paradigm mới cho phép model sử dụng nhiều compute hơn tại INFERENCE để cải thiện chất lượng từng câu trả lời.
+            là paradigm mới cho phép model sử dụng nhiều compute hơn tại INFERENCE để cải thiện chất lượng từng câu trả lời. Đây là nền tảng của{" "}
+            <TopicLink slug="reasoning-models">reasoning models</TopicLink>{" "}
+            thế hệ mới, mở rộng{" "}
+            <TopicLink slug="scaling-laws">scaling laws</TopicLink>{" "}
+            từ training sang inference.
           </p>
 
           <p><strong>Scaling law mới:</strong></p>

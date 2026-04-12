@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -64,6 +64,15 @@ export default function AIForScienceTopic() {
       ],
       correct: 1,
       explanation: "AI là 'postdoc siêu năng': dự đoán nhanh, khám phá hypothesis, simulate experiments. Nhưng cần nhà khoa học: đặt câu hỏi đúng, thiết kế experiment, validate kết quả, interpret ý nghĩa. AI + Human scientist = discovery nhanh hơn 100x.",
+    },
+    {
+      type: "fill-blank",
+      question: "AlphaFold đã cách mạng hoá ngành sinh học bằng cách dự đoán cấu trúc 3D của {blank}, đẩy nhanh {blank} thuốc và vật liệu hàng trăm lần.",
+      blanks: [
+        { answer: "protein", accept: ["proteins", "prô-tê-in"] },
+        { answer: "discovery", accept: ["khám phá", "kham pha", "research", "nghiên cứu"] },
+      ],
+      explanation: "AlphaFold 2 (2020) dự đoán cấu trúc 3D của 200M+ protein từ chuỗi amino acid — đột phá của '50-year grand challenge'. Kết hợp với GNoME (materials), AlphaFold 3 (drug interaction), AI tăng tốc discovery trong sinh học, hoá học, vật liệu.",
     },
   ], []);
 
@@ -134,7 +143,9 @@ export default function AIForScienceTopic() {
         <ExplanationSection>
           <p>
             <strong>AI for Science</strong>{" "}
-            ứng dụng AI để đẩy nhanh khám phá khoa học — từ dự đoán cấu trúc protein đến thiết kế vật liệu và giải toán.
+            ứng dụng AI để đẩy nhanh khám phá khoa học — từ dự đoán cấu trúc protein đến thiết kế vật liệu và giải toán. Ở những bài toán cần suy luận sâu (AlphaProof, AlphaGeometry), AI for Science tận dụng mạnh các{" "}
+            <TopicLink slug="reasoning-models">reasoning models</TopicLink>{" "}
+            để đưa ra chuỗi chứng minh dài.
           </p>
           <p><strong>Physics-Informed ML:</strong></p>
           <LaTeX block>{"\\mathcal{L} = \\underbrace{\\mathcal{L}_{\\text{data}}}_{\\text{fit observations}} + \\underbrace{\\lambda \\cdot \\mathcal{L}_{\\text{physics}}}_{\\text{satisfy physical laws}}"}</LaTeX>

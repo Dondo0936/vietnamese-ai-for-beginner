@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -94,6 +94,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 2,
     explanation:
       "Đây là suy luận thị giác — VLM không chỉ mô tả cái thấy mà còn rút ra kết luận, so sánh số liệu, và giải thích xu hướng. Đây là năng lực khó nhất và khác biệt nhất của VLM so với các mô hình thị giác truyền thống.",
+  },
+  {
+    type: "fill-blank",
+    question: "VLM là viết tắt của Vision-Language Model — kết hợp hai phương thức: {blank} (hình ảnh) và {blank} (ngôn ngữ tự nhiên) trong một kiến trúc duy nhất.",
+    blanks: [
+      { answer: "vision", accept: ["thị giác", "hình ảnh", "ảnh"] },
+      { answer: "language", accept: ["ngôn ngữ", "văn bản", "text"] },
+    ],
+    explanation: "Tên gọi Vision-Language Model chỉ ra rõ hai phương thức cốt lõi: Vision (thị giác) xử lý ảnh qua Vision Encoder, Language (ngôn ngữ) xử lý qua LLM, và hai luồng được kết nối bằng Projection Layer.",
   },
 ];
 
@@ -239,7 +248,11 @@ export default function VLMTopic() {
             <div className="space-y-2">
               <p>
                 <strong>1. Vision Encoder:</strong>{" "}
-                Thường là Vision Transformer (ViT), chuyển ảnh đầu vào thành chuỗi vector đặc trưng. Mỗi patch 16x16 pixel trở thành một token thị giác.
+                Thường là Vision{" "}
+                <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+                (ViT), chuyển ảnh đầu vào thành chuỗi vector đặc trưng. Mỗi patch 16x16 pixel trở thành một token thị giác. Nhiều VLM khởi tạo từ{" "}
+                <TopicLink slug="clip">CLIP</TopicLink>{" "}
+                encoder để tận dụng biểu diễn đã căn chỉnh với ngôn ngữ.
               </p>
               <p>
                 <strong>2. Projection Layer:</strong>{" "}
@@ -247,7 +260,9 @@ export default function VLMTopic() {
               </p>
               <p>
                 <strong>3. LLM:</strong>{" "}
-                Xử lý kết hợp token thị giác và token ngôn ngữ, tạo ra phản hồi bằng văn bản tự nhiên.
+                Xử lý kết hợp token thị giác và token ngôn ngữ, tạo ra phản hồi bằng văn bản tự nhiên. VLM là nền tảng của các{" "}
+                <TopicLink slug="unified-multimodal">mô hình đa phương thức thống nhất</TopicLink>{" "}
+                hiện đại.
               </p>
             </div>
           </Callout>

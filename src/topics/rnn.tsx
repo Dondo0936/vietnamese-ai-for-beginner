@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -70,6 +70,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation: "RNN xử lý từng token một → phù hợp streaming data (sensor, audio real-time). Trên thiết bị edge với RAM hạn chế, RNN nhỏ gọn hơn Transformer. Ngoài ra, State Space Models (Mamba) mới lấy cảm hứng từ RNN.",
+  },
+  {
+    type: "fill-blank",
+    question: "RNN duy trì một {blank} truyền qua mỗi bước thời gian, nhưng khi backprop qua nhiều bước thì gradient bị nhân lặp lại và thu nhỏ dần — hiện tượng này gọi là {blank}.",
+    blanks: [
+      { answer: "hidden state", accept: ["trạng thái ẩn", "h"] },
+      { answer: "vanishing gradient", accept: ["gradient biến mất", "gradient vanishing"] },
+    ],
+    explanation: "Hidden state hₜ tích lũy ngữ cảnh qua các bước. Khi lan truyền ngược qua nhiều bước, gradient bị nhân lặp với giá trị <1 nên thu nhỏ về 0 — lớp đầu không học được gì. Đây là động lực ra đời của LSTM/GRU.",
   },
 ];
 
@@ -307,7 +316,12 @@ export default function RnnTopic() {
           </Callout>
 
           <p className="text-sm text-muted mt-3">
-            Đây là lý do LSTM và GRU ra đời — thêm &quot;cổng&quot; để kiểm soát luồng thông tin, giúp nhớ xa hơn. Và Transformer giải quyết triệt để bằng attention trực tiếp.
+            Đây là lý do{" "}
+            <TopicLink slug="lstm">LSTM</TopicLink>{" "}
+            và GRU ra đời — thêm &quot;cổng&quot; để kiểm soát luồng thông tin, giúp nhớ xa hơn. Và{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+            giải quyết triệt để bằng attention trực tiếp. Để hiểu rõ cơ chế gradient truyền ngược ở đây, xem{" "}
+            <TopicLink slug="backpropagation">backpropagation</TopicLink>.
           </p>
         </VisualizationSection>
       </LessonSection>

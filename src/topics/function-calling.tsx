@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -71,6 +71,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 0,
     explanation:
       "AI chọn công cụ dựa trên mô tả. Nếu mô tả mơ hồ, AI có thể chọn sai (gọi search thay vì calculator) hoặc truyền sai tham số. Mô tả công cụ rõ ràng là yếu tố quan trọng nhất.",
+  },
+  {
+    type: "fill-blank",
+    question: "Trong function calling, developer khai báo mỗi {blank} cho LLM bằng một {blank} mô tả tên, mô tả, và các tham số bắt buộc.",
+    blanks: [
+      { answer: "tool", accept: ["công cụ", "function", "hàm"] },
+      { answer: "JSON schema", accept: ["JSON Schema", "schema", "json-schema"] },
+    ],
+    explanation: "Mỗi tool (công cụ) được mô tả bằng JSON Schema: tên hàm, mô tả công dụng, danh sách tham số kèm kiểu dữ liệu. LLM đọc schema này để quyết định khi nào gọi và truyền tham số gì.",
   },
 ];
 
@@ -182,10 +191,12 @@ export default function FunctionCallingTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           AI <strong>không thực sự gọi hàm</strong> — nó chỉ sinh ra JSON mô tả
-          hàm cần gọi và tham số. Hệ thống bên ngoài thực thi rồi trả kết quả lại.
-          Giống lễ tân khách sạn: không tự nấu ăn mà{" "}
-          <strong>gọi điện cho nhà hàng</strong>{" "}và chuyển món đến khách.
-          Đây là nền tảng để xây dựng AI Agent.
+          hàm cần gọi và tham số (một dạng{" "}
+          <TopicLink slug="structured-outputs">structured output</TopicLink>).
+          Hệ thống bên ngoài thực thi rồi trả kết quả lại. Giống lễ tân khách sạn: không tự nấu ăn mà{" "}
+          <strong>gọi điện cho nhà hàng</strong>{" "}và chuyển món đến khách. Đây là nền tảng để xây dựng{" "}
+          <TopicLink slug="agent-architecture">AI Agent</TopicLink>{" "}và hoạt động trơn tru trong vòng lặp{" "}
+          <TopicLink slug="react-framework">ReAct</TopicLink>.
         </AhaMoment>
       </LessonSection>
 

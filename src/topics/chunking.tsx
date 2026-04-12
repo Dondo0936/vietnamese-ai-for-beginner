@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -70,6 +70,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 0,
     explanation: "Semantic chunking: embed từng câu, khi cosine similarity giữa 2 câu liên tiếp giảm mạnh (chủ đề thay đổi) → cắt chunk. Giữ nguyên ý nghĩa hoàn chỉnh thay vì cắt cơ học!",
+  },
+  {
+    type: "fill-blank",
+    question: "Hai tham số quan trọng nhất của chunking là {blank} — thường 256-1024 token cho RAG — và {blank} 10-20% để giữ nguyên thông tin ở ranh giới giữa các chunk.",
+    blanks: [
+      { answer: "chunk size", accept: ["chunk_size", "kích thước chunk", "chunk-size"] },
+      { answer: "overlap", accept: ["chunk overlap", "chunk_overlap", "chồng lấp", "chồng lắp"] },
+    ],
+    explanation: "chunk_size giới hạn độ dài mỗi đoạn để vừa với embedding model. chunk_overlap (10-20%) cho phép câu nằm giữa 2 chunk vẫn xuất hiện đầy đủ ở một trong hai, giảm rủi ro mất ngữ cảnh ở ranh giới.",
   },
 ];
 
@@ -195,8 +204,8 @@ export default function ChunkingTopic() {
       <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
-            <strong>Chunking</strong>{" "}là bước tiền xử lý quan trọng trong pipeline RAG, chia văn bản dài thành
-            đoạn nhỏ phù hợp với giới hạn embedding model.
+            <strong>Chunking</strong>{" "}là bước tiền xử lý quan trọng trong pipeline <TopicLink slug="rag">RAG</TopicLink>, chia văn bản dài thành
+            đoạn nhỏ phù hợp với giới hạn <TopicLink slug="context-window">context window</TopicLink> của <TopicLink slug="embedding-model">embedding model</TopicLink>.
           </p>
 
           <Callout variant="insight" title="5 chiến lược chunking">

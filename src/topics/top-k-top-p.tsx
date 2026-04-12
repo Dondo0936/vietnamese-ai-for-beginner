@@ -11,7 +11,9 @@ import {
   CodeBlock,
   LaTeX,
   ToggleCompare,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -80,6 +82,19 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Đây là ưu điểm của Top-P so với Top-K: khi model tự tin (1 từ 95%), Top-P chỉ chọn 1 từ. Khi model không chắc, Top-P mở rộng tự động. Top-K luôn chọn K từ bất kể model tự tin hay không.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Top-{blank} giữ đúng một số lượng cố định {blank} token xác suất cao nhất. Top-{blank} giữ nhóm nhỏ nhất có tổng xác suất ≥ {blank}.",
+    blanks: [
+      { answer: "K", accept: ["k"] },
+      { answer: "k", accept: ["K"] },
+      { answer: "P", accept: ["p"] },
+      { answer: "p", accept: ["P"] },
+    ],
+    explanation:
+      "Top-K lọc theo k (số lượng) token đầu bảng. Top-P (nucleus sampling) lọc theo ngưỡng xác suất tích lũy p — linh hoạt hơn vì số token giữ lại thay đổi tùy độ nhọn của phân phối.",
   },
 ];
 
@@ -325,7 +340,11 @@ export default function TopKTopPTopic() {
       <ExplanationSection>
         <p>
           <strong>Top-K</strong>{" "}và <strong>Top-P</strong>{" "}là hai kỹ thuật lọc từ vựng
-          trước khi chọn token tiếp theo, bổ sung cho temperature.
+          trước khi chọn token tiếp theo, bổ sung cho{" "}
+          <TopicLink slug="temperature">temperature</TopicLink>
+          . Khác với{" "}
+          <TopicLink slug="beam-search">beam search</TopicLink>
+          {" "}(deterministic, khám phá nhiều nhánh song song), top-k/top-p giữ tính ngẫu nhiên nhưng loại bỏ các token xác suất thấp để tránh output vô nghĩa.
         </p>
 
         <Callout variant="insight" title="Pipeline sinh text đầy đủ">

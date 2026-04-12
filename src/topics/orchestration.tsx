@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock,
+  MiniSummary, Callout, CodeBlock, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Orchestrator tốt có error handling strategy: (1) retry với backoff, (2) fallback sang tool/agent khác, (3) escalate cho human nếu critical, (4) checkpoint để resume từ bước cuối thành công.",
+  },
+  {
+    type: "fill-blank",
+    question: "Tầng orchestration biến một nhiệm vụ lớn thành một {blank} gồm nhiều bước ({blank}) có thứ tự, trạng thái và xử lý lỗi rõ ràng.",
+    blanks: [
+      { answer: "workflow", accept: ["luồng công việc", "quy trình", "luồng"] },
+      { answer: "multi-step", accept: ["multi step", "đa bước", "nhiều bước", "multistep"] },
+    ],
+    explanation: "Orchestrator mô hình hoá nhiệm vụ như một workflow (luồng công việc) multi-step: mỗi node là một action của agent/tool, các edge mô tả thứ tự, điều kiện và nhánh xử lý lỗi.",
   },
 ];
 
@@ -179,8 +188,12 @@ export default function OrchestrationTopic() {
           Orchestration không phải thêm 1 layer phức tạp — nó là thứ{" "}
           <strong>biến hỗn loạn thành trật tự</strong>. Không có nhạc trưởng, 50 nhạc
           công chơi 50 bản khác nhau. Có nhạc trưởng, cùng 50 nhạc công tạo nên
-          giao hưởng hoàn hảo. Orchestration quyết định <em>ai làm gì</em>,{" "}
-          <em>khi nào</em>, <em>theo thứ tự nào</em>, và <em>xử lý ra sao khi có lỗi</em>.
+          giao hưởng hoàn hảo. Khi mỗi{" "}
+          <TopicLink slug="agent-architecture">agent</TopicLink>{" "}chạy vòng lặp{" "}
+          <TopicLink slug="react-framework">ReAct</TopicLink>{" "}riêng và cả hệ{" "}
+          <TopicLink slug="multi-agent">multi-agent</TopicLink>{" "}cần phối hợp, orchestration quyết định{" "}
+          <em>ai làm gì</em>, <em>khi nào</em>, <em>theo thứ tự nào</em>, và{" "}
+          <em>xử lý ra sao khi có lỗi</em>.
         </AhaMoment>
       </LessonSection>
 

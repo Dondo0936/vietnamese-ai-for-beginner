@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -65,6 +65,16 @@ const quizQuestions: QuizQuestion[] = [
     options: ["~25 triệu", "~150 nghìn", "~7 tỷ", "~25 tỷ"],
     correct: 3,
     explanation: "Fully-connected: 224×224×3 = 150.528 input. Nếu lớp ẩn cũng 150.528 neuron → 150.528² ≈ 22,6 tỷ tham số chỉ cho 1 lớp! CNN giảm con số này hàng nghìn lần nhờ chia sẻ trọng số.",
+  },
+  {
+    type: "fill-blank",
+    question: "Trong CNN, bộ lọc nhỏ trượt qua ảnh được gọi là {blank}, bước nhảy mỗi lần trượt là {blank}, và phần đệm viền giúp giữ kích thước output là {blank}.",
+    blanks: [
+      { answer: "kernel", accept: ["filter", "bộ lọc"] },
+      { answer: "stride", accept: ["bước nhảy"] },
+      { answer: "padding", accept: ["đệm"] },
+    ],
+    explanation: "Kernel (hay filter) là ma trận trọng số nhỏ trượt qua input. Stride là số pixel bộ lọc dịch chuyển mỗi bước. Padding thêm viền 0 quanh ảnh để kiểm soát kích thước output — padding = 1 với kernel 3×3 giữ nguyên kích thước.",
   },
 ];
 
@@ -376,6 +386,13 @@ class SimpleCNN(nn.Module):
               (2015): skip connections, huấn luyện được mạng 152 lớp.{" "}
               <strong>EfficientNet</strong>{" "}
               (2019): tối ưu cân bằng depth/width/resolution.
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              CNN chuyên cho ảnh; với dữ liệu tuần tự như văn bản hoặc chuỗi thời gian, hãy xem{" "}
+              <TopicLink slug="rnn">RNN</TopicLink>,{" "}
+              <TopicLink slug="lstm">LSTM</TopicLink>{" "}
+              và{" "}
+              <TopicLink slug="transformer">Transformer</TopicLink>.
             </p>
           </Callout>
         </ExplanationSection>

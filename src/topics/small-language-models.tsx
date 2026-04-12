@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -80,6 +80,15 @@ export default function SmallLanguageModelsTopic() {
       ],
       correct: 1,
       explanation: "Tăng epoch không giúp — model nhỏ bị overfitting nhanh. Chinook scaling law: model nhỏ cần ÍT DATA HƠN model lớn. Bí quyết: data CHẤT LƯỢNG (textbook, curated) thay vì data NHIỀU. Distillation chuyển kiến thức từ model lớn → hiệu quả hơn train từ scratch.",
+    },
+    {
+      type: "fill-blank",
+      question: "SLM được thiết kế để chạy {blank} (trên thiết bị người dùng), thường nhờ kỹ thuật {blank} (FP16 → INT4) giảm 4x bộ nhớ.",
+      blanks: [
+        { answer: "on-device", accept: ["ondevice", "on device", "trên thiết bị", "tren thiet bi"] },
+        { answer: "quantization", accept: ["lượng tử hoá", "luong tu hoa", "quantize"] },
+      ],
+      explanation: "SLM thường chạy on-device (điện thoại, laptop, edge) để đảm bảo privacy, latency thấp và offline. Quantization INT4 (GGUF, AWQ) giảm 4x bộ nhớ so với FP16 — Phi-3 Mini 3.8B chỉ cần ~2GB RAM sau quantization.",
     },
   ], []);
 
@@ -202,7 +211,11 @@ export default function SmallLanguageModelsTopic() {
         <ExplanationSection>
           <p>
             <strong>Small Language Models (SLM)</strong>{" "}
-            là model ngôn ngữ dưới 10B params, được tối ưu để chạy trên thiết bị cá nhân với chất lượng ngày càng gần model lớn.
+            là model ngôn ngữ dưới 10B params, được tối ưu để chạy trên thiết bị cá nhân với chất lượng ngày càng gần model lớn. SLM thường được tạo ra bằng cách kết hợp{" "}
+            <TopicLink slug="distillation">knowledge distillation</TopicLink>{" "}
+            từ model lớn và{" "}
+            <TopicLink slug="quantization">quantization</TopicLink>{" "}
+            (FP16 → INT4) để vừa bộ nhớ thiết bị.
           </p>
 
           <p><strong>Scaling law mới — chất lượng &gt; số lượng:</strong></p>

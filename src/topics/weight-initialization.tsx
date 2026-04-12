@@ -10,6 +10,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -188,6 +189,17 @@ export default function WeightInitializationTopic() {
       correct: 2,
       explanation:
         "He initialization thiết kế riêng cho ReLU, bù đắp việc ReLU tắt 50% nơ-ron. PyTorch mặc định dùng Kaiming uniform cho nn.Linear. ReLU + He = combo tiêu chuẩn.",
+    },
+    {
+      type: "fill-blank",
+      question:
+        "Với activation sigmoid/tanh, nên dùng {blank} initialization (Var = 1/fan_in). Với ReLU, nên dùng {blank} initialization (Var = 2/fan_in).",
+      blanks: [
+        { answer: "Xavier", accept: ["Glorot", "xavier", "glorot"] },
+        { answer: "He", accept: ["Kaiming", "he", "kaiming"] },
+      ],
+      explanation:
+        "Xavier (Glorot, 2010) giữ phương sai ổn định cho sigmoid/tanh. He (Kaiming, 2015) nhân 2 để bù việc ReLU tắt 50% nơ-ron. Quy tắc: sigmoid/tanh → Xavier, ReLU → He.",
     },
   ];
 
@@ -447,7 +459,12 @@ export default function WeightInitializationTopic() {
           <p>
             <strong>Mục tiêu:</strong>{" "}
             giữ phương sai ổn định qua các lớp — không tăng (bùng nổ) cũng
-            không giảm (triệt tiêu).
+            không giảm (triệt tiêu){" "}
+            (xem{" "}
+            <TopicLink slug="vanishing-exploding-gradients">
+              vanishing/exploding gradients
+            </TopicLink>
+            ).
           </p>
 
           <p>
@@ -466,7 +483,8 @@ export default function WeightInitializationTopic() {
 
           <p>
             Hệ số 2 trong He bù đắp việc ReLU &quot;tắt&quot; 50% output (max(0,x) loại bỏ
-            một nửa phân phối).
+            một nửa phân phối) — chọn init phụ thuộc vào{" "}
+            <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink>.
           </p>
 
           <CodeBlock language="python" title="weight_init.py">

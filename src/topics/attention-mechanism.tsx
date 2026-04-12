@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,16 @@ const QUIZ: QuizQuestion[] = [
     correct: 2,
     explanation:
       "Attention weights được chuẩn hóa bằng softmax → tổng luôn = 1. Đây là phân phối xác suất trên các vị trí nguồn: mỗi vị trí được 'quan tâm' bao nhiêu phần trăm.",
+  },
+  {
+    type: "fill-blank",
+    question: "Scaled dot-product attention hoạt động trên ba tensor: {blank} (truy vấn) dùng để hỏi, {blank} (khóa) dùng để so khớp, và {blank} (giá trị) chứa nội dung thực sự được tổng hợp lại.",
+    blanks: [
+      { answer: "query", accept: ["Query", "Q", "truy vấn"] },
+      { answer: "key", accept: ["Key", "K", "khóa"] },
+      { answer: "value", accept: ["Value", "V", "giá trị"] },
+    ],
+    explanation: "Công thức: Attention(Q, K, V) = softmax(QK^T / √d_k) · V. Q so khớp với K để tính trọng số chú ý (softmax), rồi tổng có trọng số của V tạo ra output. Đây là hạt nhân của Transformer.",
   },
 ];
 
@@ -244,7 +254,10 @@ export default function AttentionMechanismTopic() {
         <ExplanationSection>
           <p>
             <strong>Cơ chế Attention</strong>{" "}
-            (Bahdanau et al., 2014) cho phép decoder {'"nhìn lại"'} mọi vị trí encoder khi sinh mỗi token, thay vì chỉ dựa vào context vector cố định.
+            (Bahdanau et al., 2014) cho phép decoder của mô hình{" "}
+            <TopicLink slug="seq2seq">Seq2Seq</TopicLink>{" "}{'"nhìn lại"'} mọi vị trí encoder khi sinh mỗi token, thay vì chỉ dựa vào context vector cố định. Ý tưởng này được tổng quát hóa thành{" "}
+            <TopicLink slug="self-attention">self-attention</TopicLink>{" "}trong{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>.
           </p>
 
           <Callout variant="insight" title="Các loại Attention">

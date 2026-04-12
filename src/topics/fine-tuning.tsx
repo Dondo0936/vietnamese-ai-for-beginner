@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -63,6 +63,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 0,
     explanation:
       "Catastrophic forgetting xảy ra khi trọng số thay đổi quá nhiều, phá hủy kiến thức nền. Giải pháp: learning rate nhỏ, LoRA, hoặc regularization.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Có hai cách tinh chỉnh chính: {blank} fine-tuning cập nhật tất cả trọng số, trong khi {blank} fine-tuning chỉ cập nhật một phần nhỏ (ví dụ LoRA, Adapter).",
+    blanks: [
+      { answer: "full", accept: ["toàn bộ", "full-ft"] },
+      { answer: "parameter-efficient", accept: ["peft", "parameter efficient"] },
+    ],
+    explanation:
+      "Full fine-tuning cập nhật toàn bộ θ — mạnh nhưng tốn bộ nhớ. PEFT (Parameter-Efficient Fine-Tuning) như LoRA chỉ học một lượng nhỏ tham số mới, giảm 99% VRAM mà vẫn hiệu quả.",
   },
 ];
 
@@ -308,7 +319,10 @@ export default function FineTuningTopic() {
           <p>
             Trong đó <LaTeX>{"\\theta"}</LaTeX> được khởi tạo từ trọng số pre-train thay vì
             ngẫu nhiên. Đây chính là sức mạnh của <strong>transfer learning</strong>{" "}
-            — không phải bắt đầu từ số 0.
+            — không phải bắt đầu từ số 0. So với{" "}
+            <TopicLink slug="prompt-engineering">prompt engineering</TopicLink>,
+            fine-tuning thay đổi trọng số mô hình vĩnh viễn (xem thêm{" "}
+            <TopicLink slug="fine-tuning-vs-prompting">Fine-tuning vs Prompting</TopicLink>).
           </p>
 
           <p>Ba loại fine-tuning phổ biến:</p>
@@ -323,7 +337,7 @@ export default function FineTuningTopic() {
             </li>
             <li>
               <strong>PEFT (Parameter-Efficient):</strong>{" "}Chỉ cập nhật một phần nhỏ
-              trọng số (LoRA, Adapter), tiết kiệm bộ nhớ đáng kể.
+              trọng số (<TopicLink slug="lora">LoRA</TopicLink>, Adapter), tiết kiệm bộ nhớ đáng kể.
             </li>
           </ul>
 
@@ -351,7 +365,7 @@ trainer.train()`}</CodeBlock>
             Khi learning rate quá lớn hoặc fine-tune quá lâu, mô hình có thể quên
             kiến thức nền. Giống như bác sĩ tim mạch quá chuyên sâu đến mức quên
             kiến thức cơ bản về hô hấp. Giải pháp: dùng learning rate nhỏ (1-5e-5),
-            ít epoch (2-5), hoặc PEFT.
+            ít epoch (2-5), hoặc PEFT như <TopicLink slug="qlora">QLoRA</TopicLink>.
           </Callout>
         </ExplanationSection>
       </LessonSection>

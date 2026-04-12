@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge, ToggleCompare,
   MiniSummary, CodeBlock, Callout,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -62,6 +63,18 @@ const QUIZ: QuizQuestion[] = [
   { question: "Sau tiền huấn luyện, BERT được sử dụng cho tác vụ cụ thể bằng cách nào?",
     options: ["Huấn luyện lại từ đầu", "Tinh chỉnh (fine-tune) trên dữ liệu tác vụ cụ thể", "Không cần thay đổi gì", "Thêm nhiều lớp Transformer mới"],
     correct: 1, explanation: "BERT được fine-tune: giữ nguyên trọng số đã học, thêm lớp đầu ra đơn giản, rồi huấn luyện nhẹ trên dữ liệu tác vụ cụ thể." },
+  {
+    type: "fill-blank",
+    question:
+      "BERT là kiến trúc {blank}-only và được tiền huấn luyện bằng hai tác vụ: {blank} (che từ rồi đoán lại) và {blank} (dự đoán câu tiếp theo).",
+    blanks: [
+      { answer: "encoder", accept: ["Encoder"] },
+      { answer: "MLM", accept: ["mlm", "Masked Language Modeling", "masked language modeling"] },
+      { answer: "NSP", accept: ["nsp", "Next Sentence Prediction", "next sentence prediction"] },
+    ],
+    explanation:
+      "BERT là encoder-only Transformer. MLM che 15% token để học ngữ nghĩa từ ngữ cảnh hai chiều, còn NSP giúp mô hình học quan hệ giữa các câu.",
+  },
 ];
 
 /* ── Direction Arrows SVG ── */
@@ -330,8 +343,15 @@ export default function BertTopic() {
       <ExplanationSection>
         <p>
           <strong>BERT</strong> (Bidirectional Encoder Representations from Transformers) là mô hình
-          của Google (2018), sử dụng <strong>Transformer Encoder</strong> đọc hai chiều. BERT-base:
+          của Google (2018), sử dụng{" "}
+          <TopicLink slug="transformer">Transformer</TopicLink>
+          {" "}Encoder đọc hai chiều. Đầu vào được chia nhỏ bằng{" "}
+          <TopicLink slug="tokenization">tokenization</TopicLink>
+          {" "}(WordPiece) trước khi đi vào các lớp attention. BERT-base:
           12 lớp, 768 chiều ẩn, 12 attention heads — tổng <strong>110 triệu tham số</strong>.
+          Khác với{" "}
+          <TopicLink slug="gpt">GPT</TopicLink>
+          {" "}(decoder-only, đọc một chiều), BERT tối ưu cho HIỂU chứ không phải sinh.
         </p>
 
         <Callout variant="insight" title="Tiền huấn luyện: 2 tác vụ">

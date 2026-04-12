@@ -13,7 +13,9 @@ import {
   LaTeX,
   SliderGroup,
   SplitView,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -104,6 +106,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Temperature chia logits trước khi đưa vào softmax: P(w) = softmax(logit/T). T cao → phân phối phẳng hơn. T thấp → phân phối nhọn hơn.",
+  },
+  {
+    type: "code",
+    question:
+      "Điền vào đoạn softmax có temperature: chia logits cho T rồi đưa vào softmax.",
+    codeTemplate:
+      "import numpy as np\n# Softmax với temperature\nscaled = logits / ___\nexps = np.exp(scaled - scaled.max())\nprobs = exps / exps.___()",
+    language: "python",
+    blanks: [
+      { answer: "T", accept: ["temperature", "temp", "t"] },
+      { answer: "sum", accept: [] },
+    ],
+    explanation:
+      "Softmax với temperature: P(w_i) = exp(z_i / T) / sum(exp(z_j / T)). Chia logits cho T trước khi áp dụng softmax — T > 1 làm phân phối phẳng hơn (ngẫu nhiên), T < 1 làm nhọn hơn (deterministic).",
   },
 ];
 
@@ -313,7 +329,11 @@ export default function TemperatureTopic() {
       <ExplanationSection>
         <p>
           <strong>Temperature</strong>{" "}là tham số chia logits (điểm thô) trước khi đưa
-          vào hàm softmax để tạo phân phối xác suất.
+          vào hàm softmax để tạo phân phối xác suất. Nó thường đi kèm với{" "}
+          <TopicLink slug="top-k-top-p">top-k / top-p sampling</TopicLink>
+          {" "}để kiểm soát độ đa dạng output, và là một công cụ quan trọng trong{" "}
+          <TopicLink slug="prompt-engineering">prompt engineering</TopicLink>
+          {" "}để cân bằng giữa sáng tạo và chính xác.
         </p>
 
         <Callout variant="insight" title="Công thức">

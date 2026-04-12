@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback, useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -33,6 +33,15 @@ export default function MultiArmedBanditTopic() {
     { question: "Explore vs Exploit dilemma là gì?", options: ["Chọn model lớn hay nhỏ", "EXPLOIT: chọn lựa chọn TỐT NHẤT đã biết → tối đa reward ngắn hạn. EXPLORE: thử lựa chọn MỚI → có thể tìm tốt hơn. Cần cân bằng!", "Chọn data nhiều hay ít"], correct: 1, explanation: "Ví dụ: bạn biết Phở A ngon (exploit). Nhưng có Phở B chưa thử — có thể ngon hơn! Nếu chỉ exploit → miss Phở B. Nếu chỉ explore → lãng phí thời gian thử nhiều quán tệ. Epsilon-greedy: 90% chọn tốt nhất, 10% thử random." },
     { question: "UCB (Upper Confidence Bound) tốt hơn epsilon-greedy thế nào?", options: ["Nhanh hơn", "UCB ưu tiên explore arms ÍT ĐƯỢC THỬ (uncertainty cao). Epsilon-greedy explore RANDOM không care đã thử hay chưa", "Không tốt hơn"], correct: 1, explanation: "UCB = mean reward + bonus cho uncertainty. Arm chưa thử nhiều → bonus lớn → được explore. Arm đã thử nhiều → bonus nhỏ → chỉ exploit nếu mean cao. Thông minh hơn random explore: explore CÓ MỤC ĐÍCH (giảm uncertainty)." },
     { question: "A/B testing trên Shopee là dạng Bandit không?", options: ["Không liên quan", "Có! A/B test = 2-armed bandit. Variant A và B = 2 arms. Click rate = reward. Bandit approach (Thompson Sampling) tốt hơn A/B test truyền thống vì ADAPTIVE", "Chỉ là thống kê"], correct: 1, explanation: "A/B test: chia 50/50, đợi đủ data, chọn winner. Bandit: bắt đầu 50/50, DẦN CHUYỂN traffic sang variant tốt hơn. Bandit: ít user nhận variant tệ hơn → ethical + hiệu quả hơn. Shopee, Grab, Netflix đều dùng Bandit cho recommendation." },
+    {
+      type: "fill-blank",
+      question: "Bandit phải cân bằng hai mục tiêu: {blank} (thử arm mới để giảm bất định) và {blank} (khai thác arm tốt nhất đã biết).",
+      blanks: [
+        { answer: "exploration", accept: ["explore", "khám phá", "kham pha"] },
+        { answer: "exploitation", accept: ["exploit", "khai thác", "khai thac"] },
+      ],
+      explanation: "Đây là trade-off cốt lõi của mọi bài toán RL. Epsilon-greedy, UCB, Thompson Sampling là ba chiến lược phổ biến để cân bằng exploration và exploitation.",
+    },
   ], []);
 
   return (
@@ -65,7 +74,10 @@ export default function MultiArmedBanditTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách"><InlineChallenge question="Shopee test 3 thiết kế nút 'Mua ngay'. A/B/C test: chia đều 33/33/33, đợi 2 tuần. Bandit approach: bắt đầu 33/33/33, nhanh chóng chuyển traffic sang variant tốt nhất. Ưu điểm Bandit?" options={["Nhanh hơn", "ÍT USER NHẬN VARIANT TỆ: A/B chậm 2 tuần chia đều (nhiều user nhận variant tệ). Bandit chuyển nhanh → ít user bị ảnh hưởng. ETHICAL + HIỆU QUẢ hơn", "Rẻ hơn"]} correct={1} explanation="A/B test: 100K users x 2 tuần x variant C (tệ nhất) = 33K users có trải nghiệm tệ. Bandit: sau 1000 users nhận ra C tệ → giảm traffic C xuống 5% → chỉ ~5K users nhận C. Bandit giảm 6x số users bị ảnh hưởng. Đây là lý do Shopee, Netflix, Google chuyển từ A/B sang Bandit." /></LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết"><ExplanationSection>
-        <p><strong>Multi-Armed Bandit</strong>{" "}là bài toán cân bằng explore (thử mới) và exploit (dùng tốt nhất) — cơ bản nhất của RL.</p>
+        <p><strong>Multi-Armed Bandit</strong>{" "}là bài toán cân bằng explore (thử mới) và exploit (dùng tốt nhất) — cơ bản nhất của RL. Khi thêm state và transition, bandit mở rộng thành full RL như{" "}
+          <TopicLink slug="q-learning">Q-Learning</TopicLink>{" "}
+          hoặc{" "}
+          <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>.</p>
         <p><strong>3 strategies chính:</strong></p>
         <LaTeX block>{"\\text{Epsilon-greedy: } a = \\begin{cases} \\arg\\max_a Q(a) & \\text{với xác suất } 1-\\epsilon \\\\ \\text{random} & \\text{với xác suất } \\epsilon \\end{cases}"}</LaTeX>
         <LaTeX block>{"\\text{UCB: } a = \\arg\\max_a \\left[Q(a) + c\\sqrt{\\frac{\\ln t}{N(a)}}\\right] \\quad \\text{(bonus cho arms ít thử)}"}</LaTeX>

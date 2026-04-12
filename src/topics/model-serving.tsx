@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -110,6 +110,15 @@ export default function ModelServingTopic() {
       ],
       correct: 1,
       explanation: "gRPC dùng Protocol Buffers (binary) thay vì JSON (text), giảm kích thước payload và tăng tốc serialize/deserialize. Rất phù hợp cho giao tiếp nội bộ giữa các service.",
+    },
+    {
+      type: "fill-blank",
+      question: "Hai chỉ số quan trọng nhất của model serving là {blank} (thời gian phản hồi 1 request) và {blank} (số request xử lý mỗi giây).",
+      blanks: [
+        { answer: "latency", accept: ["độ trễ", "do tre"] },
+        { answer: "throughput", accept: ["thông lượng", "thong luong"] },
+      ],
+      explanation: "Latency đo thời gian xử lý 1 request (ms), throughput đo số request/giây. Batching tăng throughput nhưng thường đánh đổi latency — hệ thống tốt cân bằng cả hai theo SLA.",
     },
   ], []);
 
@@ -261,7 +270,7 @@ export default function ModelServingTopic() {
           <LaTeX block>{"\\text{Latency}_{p99} = \\text{Queue wait} + \\text{Inference time} + \\text{Network overhead}"}</LaTeX>
 
           <Callout variant="tip" title="Latency vs Throughput">
-            Hai chỉ số này thường đánh đổi nhau. Batching tăng throughput nhưng tăng latency cho request đầu tiên trong batch. Hệ thống tốt cân bằng cả hai theo yêu cầu cụ thể.
+            Hai chỉ số này thường đánh đổi nhau. Batching tăng throughput nhưng tăng latency cho request đầu tiên trong batch. Hệ thống tốt cân bằng cả hai theo yêu cầu cụ thể — xem thêm <TopicLink slug="inference-optimization">tối ưu suy luận</TopicLink>{" "}để hiểu kỹ thuật chi tiết.
           </Callout>
 
           <p><strong>Các thành phần chính:</strong></p>
@@ -301,7 +310,7 @@ for out in outputs:
           </CodeBlock>
 
           <Callout variant="info" title="FPT Cloud AI">
-            Tại Việt Nam, FPT Cloud cung cấp GPU serving infrastructure cho doanh nghiệp. Nhiều startup dùng kết hợp FPT Cloud cho production và cloud quốc tế cho dev/staging.
+            Tại Việt Nam, FPT Cloud cung cấp GPU serving infrastructure cho doanh nghiệp. Nhiều startup dùng kết hợp FPT Cloud cho production và cloud quốc tế cho dev/staging. Deploy ổn định cần <TopicLink slug="containerization">container hoá</TopicLink>{" "}và quy trình <TopicLink slug="mlops">MLOps</TopicLink>{" "}đầy đủ.
           </Callout>
         </ExplanationSection>
       </LessonSection>

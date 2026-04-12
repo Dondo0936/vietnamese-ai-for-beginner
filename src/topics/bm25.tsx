@@ -2,7 +2,7 @@
 
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -57,6 +57,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Tìm 'iPhone 16 Pro Max': BM25 khớp chính xác từng từ. Semantic search có thể trả về 'Samsung Galaxy' vì 'điện thoại cao cấp' gần nhau về nghĩa. BM25 + Semantic = Hybrid Search!",
+  },
+  {
+    type: "fill-blank",
+    question: "BM25 kết hợp 2 thành phần chính: {blank} đo tần suất từ trong tài liệu, còn {blank} đo độ hiếm của từ trên toàn bộ corpus.",
+    blanks: [
+      { answer: "TF", accept: ["term frequency", "tần suất từ"] },
+      { answer: "IDF", accept: ["inverse document frequency", "độ hiếm"] },
+    ],
+    explanation: "TF (Term Frequency) đếm tần suất từ trong một tài liệu — nhưng bão hoà để tránh thiên vị. IDF (Inverse Document Frequency) nâng điểm cho từ hiếm, hạ điểm cho từ phổ biến như 'và', 'là'. BM25 = TF x IDF + chuẩn hoá độ dài.",
   },
 ];
 
@@ -140,8 +149,10 @@ export default function BM25Topic() {
           <p>
             BM25 giống <strong>chấm bài thi tự luận</strong>: đếm số lần nhắc đến chủ đề (TF), coi trọng
             thuật ngữ chuyên ngành hơn từ phổ biến (IDF), và không thiên vị bài dài (length norm).
-            Dù ra đời từ 1994, BM25 vẫn là <strong>baseline cực mạnh</strong>{" "}mà nhiều hệ thống
-            semantic search hiện đại cũng khó thắng ở bài toán khớp chính xác!
+            Là hậu duệ trực tiếp của <TopicLink slug="tf-idf">TF-IDF</TopicLink>, BM25 vẫn là{" "}
+            <strong>baseline cực mạnh</strong>{" "}mà nhiều hệ thống{" "}
+            <TopicLink slug="semantic-search">semantic search</TopicLink>{" "}hiện đại cũng khó thắng ở bài toán khớp chính xác, nên cả hai thường được kết hợp trong{" "}
+            <TopicLink slug="hybrid-search">hybrid search</TopicLink>.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -159,7 +170,7 @@ export default function BM25Topic() {
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={8} label="Gi���i thích sâu">
+      <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
             <strong>BM25</strong>{" "}(Best Matching 25) là thuật toán xếp hạng kinh điển trong Information Retrieval,

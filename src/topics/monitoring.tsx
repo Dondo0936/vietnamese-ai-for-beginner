@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -94,6 +94,15 @@ export default function MonitoringTopic() {
       ],
       correct: 1,
       explanation: "Retrain mù quáng có thể không giải quyết vấn đề (nếu root cause là bug). Phân tích trước: xem data distribution, feature importance, error analysis. Có thể vấn đề ở pipeline chứ không phải model.",
+    },
+    {
+      type: "fill-blank",
+      question: "Khi phân phối dữ liệu production thay đổi so với training, ta gọi là data {blank}. Để phát hiện sớm, cần theo dõi {blank} như accuracy, PSI, và latency liên tục.",
+      blanks: [
+        { answer: "drift", accept: ["trôi", "troi", "shift"] },
+        { answer: "metric", accept: ["metrics", "chỉ số", "chi so"] },
+      ],
+      explanation: "Data drift là khi P(X) production khác P(X) training. Metric (chỉ số) như PSI, KL divergence, accuracy được log liên tục — alert tự động khi vượt ngưỡng để trigger retrain.",
     },
   ], []);
 
@@ -272,7 +281,7 @@ export default function MonitoringTopic() {
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Infrastructure:</strong>{" "}GPU utilization, latency, memory, error rate</li>
             <li><strong>Data Quality:</strong>{" "}Missing values, schema violations, distribution shift</li>
-            <li><strong>Model Performance:</strong>{" "}Accuracy, precision, recall, prediction distribution</li>
+            <li><strong>Model Performance:</strong>{" "}Accuracy, precision, recall, prediction distribution — với LLM còn cần đo <TopicLink slug="hallucination">ảo giác (hallucination)</TopicLink>{" "}và vi phạm <TopicLink slug="guardrails">guardrails</TopicLink></li>
             <li><strong>Business Metrics:</strong>{" "}Conversion rate, user satisfaction, revenue impact</li>
           </ul>
 
@@ -309,7 +318,7 @@ print(f"Drift detected: {drift_detected}")`}
           </CodeBlock>
 
           <Callout variant="info" title="Alerting Pipeline">
-            Monitoring mà không alert = vô nghĩa. Setup alert qua Slack/PagerDuty: PSI &gt; 0.25 → warning, accuracy &lt; threshold → critical. On-call engineer investigate và quyết định retrain hay rollback.
+            Monitoring mà không alert = vô nghĩa. Setup alert qua Slack/PagerDuty: PSI &gt; 0.25 → warning, accuracy &lt; threshold → critical. On-call engineer investigate và quyết định retrain hay rollback — khép kín vòng lặp <TopicLink slug="mlops">MLOps</TopicLink>.
           </Callout>
         </ExplanationSection>
       </LessonSection>

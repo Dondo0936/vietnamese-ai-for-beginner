@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -80,6 +80,15 @@ export default function EdgeAITopic() {
       ],
       correct: 1,
       explanation: "Federated Learning: mỗi thiết bị huấn luyện cục bộ, chỉ gửi gradient (không phải dữ liệu) lên server để tổng hợp. Dữ liệu nhạy cảm (ảnh khuôn mặt, tin nhắn) không rời thiết bị — đảm bảo quyền riêng tư.",
+    },
+    {
+      type: "fill-blank",
+      question: "Edge AI chạy mô hình {blank} (trực tiếp trên thiết bị) thay vì cloud. Để vừa RAM hạn chế, kỹ thuật phổ biến nhất là {blank} (giảm số bit/tham số).",
+      blanks: [
+        { answer: "on-device", accept: ["on device", "trên thiết bị", "tren thiet bi", "ondevice"] },
+        { answer: "quantization", accept: ["lượng tử hoá", "luong tu hoa", "int8", "int4"] },
+      ],
+      explanation: "On-device inference giảm latency xuống 10-50ms (so với 200-500ms qua cloud), bảo mật dữ liệu và hoạt động offline. Quantization INT8/INT4 giảm model 4-8x để vừa RAM điện thoại/IoT.",
     },
   ], []);
 
@@ -214,13 +223,13 @@ export default function EdgeAITopic() {
           <LaTeX block>{"\\text{Cost}_{\\text{edge}} = \\text{Hardware (one-time)} \\quad vs \\quad \\text{Cost}_{\\text{cloud}} = \\text{Pay-per-request (ongoing)}"}</LaTeX>
 
           <Callout variant="info" title="Edge AI tại Việt Nam">
-            VinAI triển khai Edge AI trên xe VinFast (nhận diện biển báo, người đi bộ). Camera giám sát giao thông ở Hà Nội, TP.HCM dùng chip AI để đếm xe, phát hiện tai nạn real-time mà không cần bandwidth lớn.
+            VinAI triển khai Edge AI trên xe VinFast (nhận diện biển báo, người đi bộ). Camera giám sát giao thông ở Hà Nội, TP.HCM dùng chip AI để đếm xe, phát hiện tai nạn real-time mà không cần bandwidth lớn — thường kết hợp với <TopicLink slug="model-serving">model serving</TopicLink>{" "}ở cloud cho các tác vụ phức tạp.
           </Callout>
 
           <p><strong>Kỹ thuật tối ưu cho Edge:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Quantization:</strong>{" "}INT8/INT4 giảm 4-8x model size, chip Edge có INT8 accelerator</li>
-            <li><strong>Knowledge Distillation:</strong>{" "}Model lớn (teacher) dạy model nhỏ (student) — giữ 95% accuracy</li>
+            <li><strong><TopicLink slug="quantization">Quantization</TopicLink>:</strong>{" "}INT8/INT4 giảm 4-8x model size, chip Edge có INT8 accelerator</li>
+            <li><strong>Knowledge <TopicLink slug="distillation">Distillation</TopicLink>:</strong>{" "}Model lớn (teacher) dạy model nhỏ (student) — giữ 95% accuracy</li>
             <li><strong>Architecture Search:</strong>{" "}Tự động thiết kế kiến trúc phù hợp chip cụ thể (NAS)</li>
           </ul>
 

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -77,6 +77,15 @@ export default function ContainerizationTopic() {
       ],
       correct: 1,
       explanation: "Docker đóng gói và chạy 1 container. Kubernetes điều phối cluster: tự restart container chết, scale up/down theo tải, phân phối traffic, rolling updates. Giống so sánh lái 1 xe vs quản lý đội xe giao hàng.",
+    },
+    {
+      type: "fill-blank",
+      question: "{blank} đóng gói model + dependencies vào image chuẩn, còn {blank} điều phối cluster hàng trăm container với auto-scaling và self-healing.",
+      blanks: [
+        { answer: "Docker", accept: ["docker", "container"] },
+        { answer: "Kubernetes", accept: ["k8s", "kubernetes"] },
+      ],
+      explanation: "Docker build image một lần, chạy mọi nơi. Kubernetes quản lý lifecycle container: deploy, scale, restart khi crash, rolling update — không thể thiếu cho production AI serving quy mô lớn.",
     },
   ], []);
 
@@ -199,7 +208,7 @@ export default function ContainerizationTopic() {
               <div className="rounded-lg border border-border bg-card p-2">
                 <p className="text-xs text-muted">GPU Support</p>
                 <p className="text-sm font-bold" style={{ color: env.gpu ? "#22c55e" : "#ef4444" }}>
-                  {env.gpu ? "Co" : "Han che"}
+                  {env.gpu ? "Có" : "Hạn chế"}
                 </p>
               </div>
             </div>
@@ -251,9 +260,9 @@ export default function ContainerizationTopic() {
 
           <p><strong>Docker cho AI workflow:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Reproducibility:</strong>{" "}Dockerfile = bản thiết kế chính xác, ai build cũng giống nhau</li>
+            <li><strong>Reproducibility:</strong>{" "}Dockerfile = bản thiết kế chính xác, ai build cũng giống nhau — nền tảng cho <TopicLink slug="mlops">MLOps</TopicLink>{" "}hoàn chỉnh</li>
             <li><strong>Isolation:</strong>{" "}Model A dùng PyTorch 2.0, Model B dùng 2.3 — không xung đột</li>
-            <li><strong>Portability:</strong>{" "}Build trên laptop, chạy trên FPT Cloud/AWS/GCP — giống hệt</li>
+            <li><strong>Portability:</strong>{" "}Build trên laptop, chạy trên FPT Cloud/AWS/GCP — giống hệt, hỗ trợ <TopicLink slug="model-serving">model serving</TopicLink>{" "}đa môi trường</li>
             <li><strong>Scaling:</strong>{" "}Kubernetes tạo 100 replica từ 1 image trong vài giây</li>
           </ul>
 

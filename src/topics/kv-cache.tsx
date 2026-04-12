@@ -11,7 +11,9 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -66,6 +68,17 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "MQA (dùng trong PaLM, Falcon) và GQA (Grouped-Query Attention, dùng trong Llama 2+) chia sẻ K,V giữa nhiều attention head, giảm KV cache 4-8 lần.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "KV Cache lưu Key và Value đã được {blank} lại cho các token cũ, đánh đổi {blank} để tăng tốc độ inference.",
+    blanks: [
+      { answer: "cached", accept: ["cache", "lưu", "tính toán", "tính"] },
+      { answer: "memory", accept: ["bộ nhớ", "VRAM", "RAM", "vram"] },
+    ],
+    explanation:
+      "KV Cache tránh tính lại Key/Value cho token đã sinh bằng cách lưu (cached) chúng — đổi thêm bộ nhớ (memory/VRAM) lấy tốc độ inference cao hơn.",
   },
 ];
 
@@ -272,8 +285,13 @@ export default function KVCacheTopic() {
       <LessonSection step={6} totalSteps={6} label="Giải thích">
       <ExplanationSection>
         <p>
-          <strong>KV Cache</strong>{" "}là kỹ thuật tối ưu inference cho Transformer, lưu lại
-          Key và Value tensor đã tính để tránh tính lại khi sinh mỗi token mới.
+          <strong>KV Cache</strong>{" "}là kỹ thuật tối ưu inference cho{" "}
+          <TopicLink slug="transformer">Transformer</TopicLink>
+          , lưu lại Key và Value tensor đã tính trong lớp{" "}
+          <TopicLink slug="self-attention">self-attention</TopicLink>
+          {" "}để tránh tính lại khi sinh mỗi token mới. Độ lớn cache tỉ lệ thuận với{" "}
+          <TopicLink slug="context-window">context window</TopicLink>
+          {" "}— đây cũng chính là yếu tố giới hạn độ dài context của LLM.
         </p>
 
         <Callout variant="insight" title="Tại sao chỉ cache K và V, không cache Q?">

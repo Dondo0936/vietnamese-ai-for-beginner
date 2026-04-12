@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, StepReveal, AhaMoment, InlineChallenge,
   Callout, MiniSummary, CodeBlock,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -105,6 +105,17 @@ const quizQuestions: QuizQuestion[] = [
     options: ["Chạy nhanh hơn GAN", "Huấn luyện ổn định hơn, đa dạng hơn, không bị mode collapse", "Dùng ít dữ liệu hơn", "Không cần GPU"],
     correct: 1,
     explanation: "Diffusion Models huấn luyện ổn định hơn (không cần cân bằng 2 mạng), tạo ảnh đa dạng hơn (không bị mode collapse), và cho chất lượng tốt hơn ở nhiều tác vụ.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "GAN gồm hai mạng đối kháng: {blank} (tạo dữ liệu giả từ noise z) và {blank} (phân biệt thật/giả). Khi cân bằng Nash, mạng phân biệt chỉ đoán ngẫu nhiên 50/50.",
+    blanks: [
+      { answer: "Generator", accept: ["generator", "G", "mạng sinh"] },
+      { answer: "Discriminator", accept: ["discriminator", "D", "mạng phân biệt"] },
+    ],
+    explanation:
+      "Generator (G) biến vector nhiễu z ~ N(0,1) thành dữ liệu giả. Discriminator (D) là bộ phân loại thật/giả. Hai mạng tham gia trò chơi minimax: min_G max_D V(D,G). Cân bằng Nash: D(x) = 0.5 cho mọi x.",
   },
 ];
 
@@ -462,10 +473,13 @@ export default function GanTopic() {
           <li><strong>Pix2Pix</strong> — biến đổi ảnh theo cặp (bản phác &rarr; ảnh thật, nhãn &rarr; ảnh đường phố).</li>
         </ul>
         <Callout variant="insight" title="Diffusion Models vs GAN">
-          Từ 2022, Diffusion Models (DALL-E 2, Stable Diffusion, Midjourney) đang dần
+          Từ 2022,{" "}
+          <TopicLink slug="diffusion-models">Diffusion Models</TopicLink>{" "}
+          (DALL-E 2, Stable Diffusion, Midjourney) đang dần
           thay thế GAN cho nhiều tác vụ sinh ảnh. Lý do: huấn luyện ổn định hơn, không
           bị mode collapse, và cho kết quả đa dạng hơn. Tuy nhiên GAN vẫn nhanh hơn
-          ở inference — quan trọng cho ứng dụng thời gian thực.
+          ở inference — quan trọng cho ứng dụng thời gian thực. So sánh với{" "}
+          <TopicLink slug="vae">VAE</TopicLink>: VAE có latent space mượt nhưng ảnh mờ; GAN sắc nét nhưng khó train.
         </Callout>
       </ExplanationSection>
 

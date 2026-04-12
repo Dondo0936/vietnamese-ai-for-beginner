@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, TabView,
+  MiniSummary, Callout, CodeBlock, LaTeX, TabView, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -73,6 +73,18 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "BERT dùng WordPiece (đánh dấu sub-token bằng ##). GPT và LLaMA dùng BPE. T5 dùng SentencePiece.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Thuật toán tokenization phổ biến nhất hiện nay là {blank} (ghép cặp xuất hiện nhiều nhất). Nó thuộc họ {blank} (chia thành mảnh nhỏ hơn cả từ), giúp xử lý từ chưa có trong {blank}.",
+    blanks: [
+      { answer: "BPE", accept: ["bpe", "Byte Pair Encoding", "byte pair encoding"] },
+      { answer: "subword", accept: ["từ phụ", "Subword"] },
+      { answer: "vocabulary", accept: ["từ vựng", "vocab"] },
+    ],
+    explanation:
+      "BPE (Byte Pair Encoding) là thuật toán subword tokenization — chia từ lạ thành các mảnh đã có trong vocabulary, giải quyết vấn đề OOV.",
   },
 ];
 
@@ -234,7 +246,13 @@ export default function TokenizationTopic() {
         <ExplanationSection>
           <p>
             <strong>Tokenization</strong>{" "}
-            là bước đầu tiên và quan trọng nhất trong xử lý ngôn ngữ tự nhiên (NLP). Nó chuyển văn bản thô thành chuỗi các đơn vị rời rạc mà mô hình có thể hiểu được.
+            là bước đầu tiên và quan trọng nhất trong xử lý ngôn ngữ tự nhiên (NLP). Nó chuyển văn bản thô thành chuỗi các đơn vị rời rạc mà mô hình có thể hiểu được. Các mô hình hiện đại như{" "}
+            <TopicLink slug="gpt">GPT</TopicLink>
+            {" "}(dùng BPE) và{" "}
+            <TopicLink slug="bert">BERT</TopicLink>
+            {" "}(dùng WordPiece) phụ thuộc hoàn toàn vào bước này. Xem thêm{" "}
+            <TopicLink slug="tokenizer-comparison">so sánh tokenizer</TopicLink>
+            {" "}để hiểu sự khác biệt giữa các thuật toán.
           </p>
 
           <Callout variant="insight" title="Ba phương pháp tokenization">

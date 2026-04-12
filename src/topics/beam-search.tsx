@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -87,13 +87,24 @@ const QUIZ: QuizQuestion[] = [
     question: "ChatGPT dùng beam search hay sampling? Tại sao?",
     options: [
       "Beam search — vì chất lượng cao nhất",
-      "Sampling (top-p/temperature) — v�� cần sự đa dạng, sáng tạo trong hội thoại",
+      "Sampling (top-p/temperature) — vì cần sự đa dạng, sáng tạo trong hội thoại",
       "Greedy search — vì đơn giản nhất",
       "Không dùng thuật toán giải mã",
     ],
     correct: 1,
     explanation:
       "Chatbot cần đa dạng: cùng câu hỏi, mỗi lần trả lời khác. Beam search luôn cho cùng kết quả → nhàm chán! Sampling + temperature tạo sự bất ngờ, tự nhiên hơn.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Trong beam search, tham số {blank} quyết định số lượng chuỗi ứng viên giữ lại ở mỗi bước. Nếu giá trị này bằng {blank}, thuật toán trở thành greedy search.",
+    blanks: [
+      { answer: "beam width", accept: ["beam_width", "k", "beam", "num_beams"] },
+      { answer: "1", accept: ["một", "one"] },
+    ],
+    explanation:
+      "beam width (k hoặc num_beams) = số ứng viên giữ song song. k = 1 đồng nghĩa greedy search (luôn chọn token xác suất cao nhất). k càng lớn, càng khám phá nhiều nhánh nhưng càng tốn tính toán.",
   },
 ];
 
@@ -269,7 +280,11 @@ export default function BeamSearchTopic() {
         <ExplanationSection>
           <p>
             <strong>Beam Search</strong>{" "}
-            giữ k chuỗi ứng viên (beams) tốt nhất ở mỗi bước, mở rộng song song cho đến khi tất cả kết thúc hoặc đạt độ dài tối đa.
+            giữ k chuỗi ứng viên (beams) tốt nhất ở mỗi bước, mở rộng song song cho đến khi tất cả kết thúc hoặc đạt độ dài tối đa. Đây là một chiến lược giải mã deterministic, trái ngược với các phương pháp stochastic như{" "}
+            <TopicLink slug="top-k-top-p">top-k / top-p sampling</TopicLink>
+            {" "}hay chỉnh{" "}
+            <TopicLink slug="temperature">temperature</TopicLink>
+            {" "}— cùng input, beam search luôn cho cùng output.
           </p>
 
           <Callout variant="insight" title="Thuật toán Beam Search">
@@ -332,7 +347,7 @@ beam_lp = generator(prompt, max_length=30,
           points={[
             "Beam Search giữ k ứng viên tốt nhất song song (k = beam width).",
             "k=1 → Greedy (nhanh, kém). k=4-10 → sweet spot. k=lớn → gần exhaustive (chậm).",
-            "Length penalty chia cho |Y|^α đ�� tránh thiên vị câu ngắn.",
+            "Length penalty chia cho |Y|^α để tránh thiên vị câu ngắn.",
             "Dịch máy/tóm tắt → beam search. ChatGPT → sampling (top-p + temperature).",
             "Beam search deterministic (cùng input → cùng output), sampling tạo đa dạng.",
           ]}

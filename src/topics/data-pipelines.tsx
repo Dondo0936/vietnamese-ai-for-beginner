@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -102,6 +102,15 @@ export default function DataPipelinesTopic() {
       ],
       correct: 1,
       explanation: "Airflow là orchestrator, không xử lý data trực tiếp. Nó lên lịch chạy các task (DAG), quản lý dependencies giữa các bước, retry khi fail, alert khi error. Tương tự như 'quản lý nhà máy' — không tự tay làm mà điều phối.",
+    },
+    {
+      type: "fill-blank",
+      question: "Quy trình Extract-Transform-Load viết tắt là {blank}. Pipeline chia làm hai kiểu theo tần suất: {blank} (gom theo lô định kỳ) và streaming (real-time từng event).",
+      blanks: [
+        { answer: "ETL", accept: ["elt", "e-t-l", "etl"] },
+        { answer: "batch", accept: ["theo lô", "theo lo", "batching"] },
+      ],
+      explanation: "ETL (Extract-Transform-Load) là quy trình kinh điển; ELT là biến thể load trước rồi transform trong warehouse. Batch pipeline chạy theo lịch (giờ/ngày) cho analytics; streaming pipeline (Kafka, Flink) xử lý từng event real-time.",
     },
   ], []);
 
@@ -226,7 +235,7 @@ export default function DataPipelinesTopic() {
         <ExplanationSection>
           <p>
             <strong>Data Pipeline</strong>{" "}
-            là quy trình tự động hoá thu thập, xử lý, và chuẩn bị dữ liệu từ nguồn đến đích — thành phần không thể thiếu trong mọi hệ thống AI/ML.
+            là quy trình tự động hoá thu thập, xử lý, và chuẩn bị dữ liệu từ nguồn đến đích — thành phần không thể thiếu trong mọi hệ thống AI/ML, là nền tảng cho <TopicLink slug="mlops">MLOps</TopicLink>{" "}hoàn chỉnh.
           </p>
 
           <p><strong>5 giai đoạn cốt lõi:</strong></p>
@@ -299,7 +308,7 @@ ingest >> validate >> transform >> serve`}
           </CodeBlock>
 
           <Callout variant="info" title="Data Pipeline tại Việt Nam">
-            Shopee, Tiki, VNG xử lý hàng triệu events/giây qua Kafka + Spark. Startup nhỏ hơn dùng Airflow + dbt + BigQuery. FPT Cloud cung cấp managed Kafka và Spark cho doanh nghiệp Việt.
+            Shopee, Tiki, VNG xử lý hàng triệu events/giây qua Kafka + Spark. Startup nhỏ hơn dùng Airflow + dbt + BigQuery. FPT Cloud cung cấp managed Kafka và Spark cho doanh nghiệp Việt. Pipeline production cần kết hợp <TopicLink slug="monitoring">giám sát</TopicLink>{" "}để phát hiện schema drift và data quality issues.
           </Callout>
         </ExplanationSection>
       </LessonSection>

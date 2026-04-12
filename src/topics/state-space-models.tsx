@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -64,6 +64,15 @@ export default function StateSpaceModelsTopic() {
       ],
       correct: 1,
       explanation: "SSM giỏi: nén sequence dài, inference nhanh. Kém: in-context lookup (tìm fact cụ thể trong context). Transformer giỏi: retrieve exact information từ context. Hybrid: SSM layers cho backbone + vài attention layers cho retrieval. Jamba đạt chất lượng tốt với throughput 3x Transformer thuần.",
+    },
+    {
+      type: "fill-blank",
+      question: "{blank} là mô hình SSM nổi bật nhất, đạt độ phức tạp {blank} (tuyến tính) theo độ dài chuỗi, nhờ đó xử lý context dài nhanh hơn Transformer rất nhiều.",
+      blanks: [
+        { answer: "Mamba", accept: ["mamba"] },
+        { answer: "O(N)", accept: ["tuyến tính", "linear", "O(n)"] },
+      ],
+      explanation: "Mamba (Gu & Dao, 2023) là SSM selective với độ phức tạp O(N) — tuyến tính theo sequence length, so với O(N^2) của Transformer attention. Với 100K tokens, Mamba nhanh hơn khoảng 10.000x về FLOPs.",
     },
   ], []);
 
@@ -183,7 +192,10 @@ export default function StateSpaceModelsTopic() {
         <ExplanationSection>
           <p>
             <strong>State Space Models (SSM)</strong>{" "}
-            là kiến trúc tuần tự dựa trên hệ phương trình vi phân, với O(N) complexity thay vì O(N^2) của Transformer.
+            là kiến trúc tuần tự dựa trên hệ phương trình vi phân, kế thừa ý tưởng hidden state từ{" "}
+            <TopicLink slug="rnn">RNN</TopicLink>{" "}nhưng với O(N) complexity thay vì O(N^2) của{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>, đặc biệt hiệu quả cho bài toán{" "}
+            <TopicLink slug="long-context">long context</TopicLink>.
           </p>
 
           <p><strong>Phương trình SSM cơ bản:</strong></p>

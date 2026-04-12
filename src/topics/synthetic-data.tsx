@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -77,6 +77,15 @@ export default function SyntheticDataTopic() {
       ],
       correct: 1,
       explanation: "OpenAI ToS cấm dùng output để 'develop models that compete'. Nhiều mô hình open-source (Alpaca, Vicuna) đã bị chỉ trích vì train trên GPT output. Giải pháp: dùng model open-source (Llama, Mistral) để sinh data, hoặc tự xây pipeline từ scratch.",
+    },
+    {
+      type: "fill-blank",
+      question: "Dữ liệu tổng hợp được {blank} bằng LLM hoặc mô phỏng, thường dùng kết hợp với {blank} dữ liệu (thêm biến thể từ sample gốc) để tăng đa dạng.",
+      blanks: [
+        { answer: "generated", accept: ["sinh", "tạo", "tao"] },
+        { answer: "augmentation", accept: ["augment", "tăng cường", "tang cuong"] },
+      ],
+      explanation: "Synthetic data được generated từ mô hình AI, trong khi data augmentation áp dụng các phép biến đổi (noise, paraphrase, crop...) lên dữ liệu thật. Kết hợp cả hai cho pipeline training hiệu quả và giảm nguy cơ model collapse.",
     },
   ], []);
 
@@ -194,7 +203,11 @@ export default function SyntheticDataTopic() {
         <ExplanationSection>
           <p>
             <strong>Synthetic Data</strong>{" "}
-            là dữ liệu được tạo bằng AI hoặc mô phỏng, dùng thay thế hoặc bổ sung dữ liệu thật khi dữ liệu thật khan hiếm, đắt, hoặc nhạy cảm.
+            là dữ liệu được tạo bằng AI hoặc mô phỏng, dùng thay thế hoặc bổ sung dữ liệu thật khi dữ liệu thật khan hiếm, đắt, hoặc nhạy cảm. Đây là mắt xích quan trọng trong{" "}
+            <TopicLink slug="data-pipelines">data pipelines</TopicLink>{" "}
+            hiện đại và là một trong những động lực mới của{" "}
+            <TopicLink slug="scaling-laws">scaling laws</TopicLink>{" "}
+            khi dữ liệu web chất lượng cao đã dần cạn.
           </p>
 
           <p><strong>3 phương pháp tạo chính:</strong></p>

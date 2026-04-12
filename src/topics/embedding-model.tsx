@@ -10,7 +10,8 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -83,6 +84,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Embedding model thực tế: 768 chiều (BERT), 1536 chiều (OpenAI ada-002), 3072 chiều (text-embedding-3-large). Nhiều chiều = nắm bắt nhiều sắc thái ý nghĩa hơn.",
+  },
+  {
+    type: "fill-blank",
+    question: "Embedding model chuyển văn bản thành một {blank} số học nằm trong không gian nhiều {blank}, nơi câu giống nghĩa sẽ ở gần nhau.",
+    blanks: [
+      { answer: "vector", accept: ["vectơ", "véc-tơ"] },
+      { answer: "chiều", accept: ["dimension", "chieu"] },
+    ],
+    explanation: "Embedding = vector số trong không gian nhiều chiều (768 - 3072 chiều). Mỗi chiều nắm bắt một khía cạnh ngữ nghĩa; câu có nghĩa gần nhau → vector gần nhau.",
   },
 ];
 
@@ -213,7 +223,9 @@ export default function EmbeddingModelTopic() {
       <AhaMoment>
         <strong>Embedding model</strong>{" "}chuyển text thành vector trong không gian nhiều chiều.
         Câu giống nghĩa → vector gần nhau → cosine similarity cao.
-        Đây là nền tảng cho <em>semantic search</em>, <em>RAG</em>, và mọi ứng dụng AI hiểu ngôn ngữ.
+        Đây là nền tảng cho <TopicLink slug="semantic-search">tìm kiếm ngữ nghĩa</TopicLink>, lưu trữ trong{" "}
+        <TopicLink slug="vector-databases">vector database</TopicLink>, và kế thừa từ ý tưởng{" "}
+        <TopicLink slug="word-embeddings">word embeddings</TopicLink>{" "}cổ điển.
       </AhaMoment>
 
       </LessonSection>

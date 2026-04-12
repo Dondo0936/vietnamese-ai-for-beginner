@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -76,6 +76,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Tokenizer (BPE) của GPT/LLaMA chia tiếng Việt thành nhiều sub-tokens hơn tiếng Anh (1 từ Việt = 2-3 tokens). Từ vựng effective nhỏ hơn → green/red partition kém đa dạng → cần đoạn văn dài hơn (200+ tokens) để phát hiện watermark đáng tin cậy.",
+  },
+  {
+    type: "fill-blank",
+    question: "Watermark nhúng tín hiệu {blank} vào văn bản/ảnh AI sinh ra, rồi dùng phân tích thống kê để {blank} nguồn gốc nội dung.",
+    blanks: [
+      { answer: "ẩn", accept: ["an", "hidden"] },
+      { answer: "phát hiện", accept: ["detect", "phat hien"] },
+    ],
+    explanation: "Watermark hoạt động dựa trên nguyên tắc nhúng tín hiệu ẩn (không ảnh hưởng cảm nhận người dùng) để sau đó có thể phát hiện thống kê khi cần xác minh nội dung AI.",
   },
 ];
 
@@ -176,7 +185,11 @@ export default function AIWatermarkingTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>AI Watermarking</strong>{" "} là kỹ thuật nhúng dấu hiệu ẩn vào nội dung AI, cho phép phát hiện nguồn gốc mà không ảnh hưởng đến chất lượng.</p>
+          <p><strong>AI Watermarking</strong>{" "} là kỹ thuật nhúng dấu hiệu ẩn vào nội dung AI, cho phép phát hiện nguồn gốc mà không ảnh hưởng đến chất lượng. Đây là tuyến phòng thủ bổ trợ cho{" "}
+            <TopicLink slug="deepfake-detection">phát hiện deepfake</TopicLink>{" "}
+            và đối phó với{" "}
+            <TopicLink slug="adversarial-robustness">tấn công đối kháng</TopicLink>{" "}
+            nhằm xoá dấu nguồn gốc.</p>
           <Callout variant="insight" title="Cách hoạt động (Kirchenbauer et al., 2023)">
             <div className="space-y-2">
               <p><strong>1. Chia từ vựng:</strong>{" "} Dùng hash(token trước) chia từ vựng thành green list và red list — ngẫu nhiên nhưng deterministic.</p>

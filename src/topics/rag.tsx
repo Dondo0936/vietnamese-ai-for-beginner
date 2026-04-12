@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, StepReveal, AhaMoment, InlineChallenge,
   Callout, MiniSummary, CodeBlock, ToggleCompare,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -305,6 +305,15 @@ const QUIZ: QuizQuestion[] = [
   { question: "RAG giúp giải quyết vấn đề nào của LLM?",
     options: ["Tốc độ inference chậm", "Chi phí training cao", "Hallucination - trả lời sai do thiếu dữ liệu thực tế", "Giới hạn context window"],
     correct: 2, explanation: "RAG giúp giảm hallucination bằng cách cho LLM tra cứu tài liệu thật trước khi trả lời." },
+  {
+    type: "fill-blank",
+    question: "Pipeline RAG gồm hai bước cốt lõi: đầu tiên hệ thống {blank} tài liệu liên quan từ knowledge base, sau đó LLM {blank} câu trả lời dựa trên các tài liệu đó.",
+    blanks: [
+      { answer: "retrieve", accept: ["truy xuất", "tra cứu", "tìm kiếm", "retrieval"] },
+      { answer: "generate", accept: ["sinh", "tạo", "tạo ra", "generation"] },
+    ],
+    explanation: "RAG = Retrieval-Augmented Generation. Bước 1 (Retrieve): tìm top-K tài liệu liên quan bằng vector search. Bước 2 (Generate): LLM đọc context + câu hỏi rồi sinh câu trả lời có trích dẫn.",
+  },
 ];
 
 /* ── Main ──────────────────────────────────────────────────── */
@@ -376,10 +385,10 @@ export default function RAGTopic() {
         </p>
         <p><strong>Các thành phần chính:</strong></p>
         <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-          <li><strong>Embedding Model:</strong> Chuyển text thành vector (VD: text-embedding-3-small)</li>
-          <li><strong>Vector Store:</strong> Lưu và tìm kiếm vector (VD: Pinecone, Chroma, FAISS)</li>
-          <li><strong>Retriever:</strong> Tìm top-K tài liệu liên quan nhất</li>
-          <li><strong>Generator (LLM):</strong> Sinh câu trả lời từ context + question</li>
+          <li><strong><TopicLink slug="embedding-model">Embedding Model</TopicLink>:</strong>{" "}Chuyển text thành vector (VD: text-embedding-3-small)</li>
+          <li><strong><TopicLink slug="vector-databases">Vector Store</TopicLink>:</strong>{" "}Lưu và tìm kiếm vector (VD: Pinecone, Chroma, FAISS)</li>
+          <li><strong>Retriever:</strong> Dùng <TopicLink slug="semantic-search">semantic search</TopicLink> để tìm top-K tài liệu liên quan nhất</li>
+          <li><strong>Generator (LLM):</strong> Sinh câu trả lời từ context + question (tài liệu được cắt bằng <TopicLink slug="chunking">chunking</TopicLink> trước khi lập chỉ mục)</li>
         </ul>
         <p><strong>Ưu điểm so với LLM thuần:</strong></p>
         <ul className="list-disc list-inside space-y-1 pl-2 text-sm">

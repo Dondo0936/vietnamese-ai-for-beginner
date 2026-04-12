@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -85,6 +85,15 @@ export default function MoETopic() {
       ],
       correct: 1,
       explanation: "Mixtral 8x7B: 47B params tất cả phải nằm trong VRAM (≈94GB FP16). Dense model 13B chỉ cần 26GB. MoE trade-off: compute = 13B dense nhưng memory = 47B. Đây là bottleneck chính khi serving MoE trên consumer GPU.",
+    },
+    {
+      type: "fill-blank",
+      question: "Trong kiến trúc MoE, mỗi mạng con chuyên biệt được gọi là một {blank}, và mạng chọn ra những mạng nào được kích hoạt cho mỗi token được gọi là {blank} (hay gating network).",
+      blanks: [
+        { answer: "expert", accept: ["Expert", "chuyên gia"] },
+        { answer: "router", accept: ["Router", "gate", "Gate"] },
+      ],
+      explanation: "MoE gồm nhiều expert (chuyên gia) và một router (gating network) chọn top-K expert phù hợp nhất với input. Trong Mixtral 8x7B, router chọn 2 trong 8 expert cho mỗi token.",
     },
   ], []);
 
@@ -225,7 +234,7 @@ export default function MoETopic() {
         <ExplanationSection>
           <p>
             <strong>Mixture of Experts (MoE)</strong>{" "}
-            là kiến trúc sparse: nhiều expert networks nhưng chỉ kích hoạt subset nhỏ cho mỗi input. Đạt chất lượng model lớn với compute model nhỏ.
+            là kiến trúc sparse thường thay thế lớp FFN trong <TopicLink slug="transformer">Transformer</TopicLink>: nhiều expert networks nhưng chỉ kích hoạt subset nhỏ cho mỗi input. Đạt chất lượng model lớn với compute model nhỏ, giúp vượt qua giới hạn của <TopicLink slug="scaling-laws">scaling laws</TopicLink>{" "}truyền thống.
           </p>
 
           <p><strong>Cấu trúc MoE layer:</strong></p>

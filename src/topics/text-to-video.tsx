@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -94,6 +94,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Flickering xảy ra khi temporal attention không đủ ràng buộc giữa các frame liên tiếp. Các mô hình tốt hơn (Sora, Kling) dùng spacetime attention mạnh hơn để đảm bảo frame t và t+1 nhất quán.",
+  },
+  {
+    type: "fill-blank",
+    question: "Thách thức cốt lõi phân biệt text-to-video với text-to-image là chiều {blank} — mỗi {blank} phải vừa đẹp riêng, vừa nhất quán với các frame lân cận.",
+    blanks: [
+      { answer: "thời gian", accept: ["temporal", "time", "temporal dimension", "chiều thời gian"] },
+      { answer: "frame", accept: ["khung hình", "frames"] },
+    ],
+    explanation: "Video thêm một chiều mới so với ảnh tĩnh: chiều thời gian (temporal). Mỗi frame phải vừa là một ảnh chất lượng riêng lẻ, vừa liền mạch với các frame trước/sau — đây là lý do cần temporal attention hoặc spacetime patches.",
   },
 ];
 
@@ -228,7 +237,10 @@ export default function TextToVideoTopic() {
         <ExplanationSection>
           <p>
             <strong>Text-to-Video</strong>{" "}
-            mở rộng text-to-image bằng cách thêm chiều thời gian, tạo ra chuỗi frame liền mạch từ mô tả văn bản. Đây là một trong những thách thức khó nhất của AI sinh tạo.
+            mở rộng{" "}
+            <TopicLink slug="text-to-image">text-to-image</TopicLink>{" "}
+            bằng cách thêm chiều thời gian, tạo ra chuỗi frame liền mạch từ mô tả văn bản. Nền tảng vẫn là{" "}
+            <TopicLink slug="diffusion-models">mô hình khuếch tán</TopicLink>, chỉ khác ở chỗ mở rộng sang không gian 4D (thời gian + không gian). Đây là một trong những thách thức khó nhất của AI sinh tạo.
           </p>
 
           <Callout variant="insight" title="Hai kiến trúc chính">

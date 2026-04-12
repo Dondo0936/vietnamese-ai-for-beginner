@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -67,6 +67,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Attention cho phép decoder 'nhìn lại' mọi vị trí trong câu nguồn khi sinh mỗi từ, thay vì chỉ dựa vào 1 context vector. Giải quyết triệt để bottleneck!",
+  },
+  {
+    type: "fill-blank",
+    question: "Seq2Seq gồm hai phần chính: {blank} nén chuỗi đầu vào thành context vector, và {blank} sinh chuỗi đầu ra theo kiểu autoregressive từ context đó.",
+    blanks: [
+      { answer: "encoder", accept: ["Encoder", "bộ mã hóa", "mã hóa"] },
+      { answer: "decoder", accept: ["Decoder", "bộ giải mã", "giải mã"] },
+    ],
+    explanation: "Encoder đọc toàn bộ chuỗi nguồn (ví dụ tiếng Việt) và nén thành một context vector. Decoder nhận context này rồi sinh từng token đầu ra (ví dụ tiếng Anh), mỗi token trước là input cho token sau.",
   },
 ];
 
@@ -262,7 +271,7 @@ export default function Seq2SeqTopic() {
                 {Array.from({ length: 12 }).map((_, i) => (
                   <span key={i} className="rounded bg-blue-500/20 px-1.5 py-0.5 text-xs text-blue-400">từ</span>
                 ))}
-                <span className="text-xs text-muted">...+38 từ n��a</span>
+                <span className="text-xs text-muted">...+38 từ nữa</span>
               </div>
               <div className="flex justify-center">
                 <span className="text-muted">↓</span>
@@ -281,7 +290,10 @@ export default function Seq2SeqTopic() {
         <ExplanationSection>
           <p>
             <strong>Sequence-to-Sequence</strong>{" "}
-            (Sutskever et al., Google 2014) gồm Encoder nén input và Decoder sinh output, nền tảng cho dịch máy hiện đại.
+            (Sutskever et al., Google 2014) gồm Encoder nén input và Decoder sinh output, thường dùng{" "}
+            <TopicLink slug="rnn">RNN</TopicLink>{" "}hoặc{" "}
+            <TopicLink slug="lstm">LSTM</TopicLink>{" "}làm khối cơ sở, và sau đó được tăng cường bằng{" "}
+            <TopicLink slug="attention-mechanism">attention</TopicLink>{" "}để khắc phục bottleneck.
           </p>
 
           <Callout variant="insight" title="Kiến trúc Seq2Seq">

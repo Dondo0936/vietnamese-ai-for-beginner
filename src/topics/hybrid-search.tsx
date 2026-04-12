@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Tìm 'Điều 128 Bộ luật Lao động': BM25 khớp chính xác 'Điều 128'. Semantic có thể trả về điều khoản khác có nghĩa tương tự. Tăng BM25 weight khi cần exact match!",
+  },
+  {
+    type: "fill-blank",
+    question: "Hybrid search thường trộn hai nhánh: nhánh lexical dùng thuật toán {blank} để khớp từ chính xác, và nhánh {blank} dùng embedding vector để nắm bắt ý nghĩa. Cả hai được hợp nhất bằng RRF hoặc convex combination.",
+    blanks: [
+      { answer: "BM25", accept: ["bm25", "Okapi BM25", "okapi bm25"] },
+      { answer: "semantic", accept: ["ngữ nghĩa", "vector", "dense", "semantic search"] },
+    ],
+    explanation: "BM25 (Okapi BM25) là thuật toán sparse cổ điển — giỏi exact match, tên riêng, mã SKU. Semantic (dense vector) — giỏi đồng nghĩa, paraphrase, đa ngôn ngữ. Hai nhánh bổ sung điểm yếu của nhau, chuẩn mực trong mọi RAG hiện đại.",
   },
 ];
 
@@ -179,8 +188,8 @@ export default function HybridSearchTopic() {
       <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
-            <strong>Hybrid Search</strong>{" "}kết hợp sức mạnh của BM25 (exact match) và Semantic Search
-            (understanding) để đạt kết quả tốt nhất.
+            <strong>Hybrid Search</strong>{" "}kết hợp sức mạnh của <TopicLink slug="bm25">BM25</TopicLink> (exact match) và <TopicLink slug="semantic-search">semantic search</TopicLink>
+            (understanding) để đạt kết quả tốt nhất. Thường được nối tiếp bởi bước <TopicLink slug="re-ranking">re-ranking</TopicLink> để tinh chỉnh top-K cuối cùng.
           </p>
 
           <p><strong>Convex Combination (trộn theo trọng số):</strong></p>

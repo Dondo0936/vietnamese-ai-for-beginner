@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -76,6 +76,15 @@ export default function ReasoningModelsTopic() {
       ],
       correct: 0,
       explanation: "Process reward model (PRM) cho điểm từng bước suy luận — bước nào logic đúng, bước nào sai. Outcome reward model (ORM) chỉ đánh giá kết quả cuối. PRM dạy model 'suy nghĩ đúng cách' thay vì chỉ 'trả lời đúng'.",
+    },
+    {
+      type: "fill-blank",
+      question: "Reasoning models sinh chuỗi {blank} nội bộ trước khi trả lời — đây là quá trình {blank} sâu được tối ưu bằng test-time compute.",
+      blanks: [
+        { answer: "chain-of-thought", accept: ["cot", "suy luận", "chain of thought"] },
+        { answer: "thinking", accept: ["reasoning", "suy nghĩ", "tư duy"] },
+      ],
+      explanation: "Đặc trưng của reasoning models là sinh chuỗi chain-of-thought (CoT) dài trong giai đoạn thinking trước khi xuất đáp án cuối, cho phép phân tích, tự kiểm tra, và backtracking.",
     },
   ], []);
 
@@ -190,7 +199,13 @@ export default function ReasoningModelsTopic() {
         <ExplanationSection>
           <p>
             <strong>Mô hình suy luận (Reasoning Models)</strong>{" "}
-            như o1/o3 (OpenAI), Claude với extended thinking, DeepSeek-R1 đại diện cho paradigm mới: tăng compute LÚC INFERENCE thay vì chỉ lúc training.
+            như o1/o3 (OpenAI), Claude với extended thinking, DeepSeek-R1 đại diện cho paradigm mới: tăng{" "}
+            <TopicLink slug="test-time-compute">test-time compute</TopicLink>{" "}
+            LÚC INFERENCE thay vì chỉ lúc training. Cốt lõi là sinh chuỗi{" "}
+            <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>{" "}
+            nội bộ, và DeepSeek-R1 được huấn luyện bằng{" "}
+            <TopicLink slug="grpo">GRPO</TopicLink>{" "}
+            thay vì PPO.
           </p>
 
           <p><strong>Scaling Laws cũ vs mới:</strong></p>

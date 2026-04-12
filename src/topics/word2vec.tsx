@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare,
+  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -67,6 +67,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Softmax cần tính xác suất cho TẤT CẢ từ trong từ vựng (O(V) rất lớn). Negative Sampling chỉ cần phân biệt từ đúng với k từ ngẫu nhiên → nhanh hơn rất nhiều!",
+  },
+  {
+    type: "fill-blank",
+    question: "Word2Vec có hai kiến trúc chính: {blank} dự đoán từ trung tâm dựa vào các từ ngữ cảnh xung quanh, còn {blank} làm ngược lại — dự đoán ngữ cảnh từ một từ trung tâm cho trước.",
+    blanks: [
+      { answer: "CBOW", accept: ["cbow", "Continuous Bag of Words"] },
+      { answer: "Skip-gram", accept: ["skip-gram", "skipgram", "Skip Gram"] },
+    ],
+    explanation: "CBOW (Continuous Bag of Words) nhận nhiều từ ngữ cảnh và dự đoán 1 từ trung tâm — nhanh, phù hợp tập lớn. Skip-gram nhận 1 từ trung tâm và dự đoán nhiều từ ngữ cảnh — chậm hơn nhưng tốt với từ hiếm và tập nhỏ.",
   },
 ];
 
@@ -262,7 +271,9 @@ export default function Word2VecTopic() {
         <ExplanationSection>
           <p>
             <strong>Word2Vec</strong>{" "}
-            (Mikolov et al., Google 2013) là mô hình neural network nông (shallow) học word embeddings từ dữ liệu văn bản lớn.
+            (Mikolov et al., Google 2013) là mô hình neural network nông (shallow) học{" "}
+            <TopicLink slug="word-embeddings">word embeddings</TopicLink>{" "}từ dữ liệu văn bản lớn, là đối thủ trực tiếp với{" "}
+            <TopicLink slug="glove">GloVe</TopicLink>{" "}ở cùng thế hệ.
           </p>
 
           <Callout variant="insight" title="Mục tiêu huấn luyện">

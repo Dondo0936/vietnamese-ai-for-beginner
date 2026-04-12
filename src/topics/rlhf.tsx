@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -98,6 +98,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "ChatGPT dùng RLHF gốc, Claude dùng RLAIF + Constitutional AI (biến thể của RLHF). Hầu hết LLM hàng đầu đều dùng RLHF hoặc biến thể để alignment.",
+  },
+  {
+    type: "fill-blank",
+    question: "RLHF có 3 bước: SFT → huấn luyện {blank} (học sở thích con người, thay mặt con người chấm điểm) → dùng {blank} (thuật toán RL phổ biến nhất) để tối ưu policy theo điểm thưởng.",
+    blanks: [
+      { answer: "reward model", accept: ["mô hình thưởng", "rm", "reward-model"] },
+      { answer: "PPO", accept: ["ppo", "proximal policy optimization"] },
+    ],
+    explanation: "RLHF chuẩn gồm: (1) SFT học format trả lời từ ví dụ mẫu, (2) Reward Model học sở thích con người từ pairwise comparisons để chấm điểm hàng triệu phản hồi, (3) PPO (Proximal Policy Optimization) cập nhật chính sách để tăng reward kèm KL penalty tránh đi xa bản SFT.",
   },
 ];
 
@@ -219,8 +228,11 @@ export default function RLHFTopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            <strong>RLHF</strong>{" "}(Reinforcement Learning from Human Feedback) là phương pháp
-            alignment phổ biến nhất hiện nay, đứng sau ChatGPT, Claude và hầu hết LLM hàng đầu.
+            <strong>RLHF</strong>{" "}(Reinforcement Learning from Human Feedback) là phương pháp{" "}
+            <TopicLink slug="alignment">alignment</TopicLink>{" "}
+            phổ biến nhất hiện nay, đứng sau ChatGPT, Claude và hầu hết LLM hàng đầu. Anthropic mở rộng RLHF thành{" "}
+            <TopicLink slug="constitutional-ai">Constitutional AI</TopicLink>{" "}
+            với RLAIF.
           </p>
 
           <p>Hàm mục tiêu của bước PPO:</p>
@@ -260,8 +272,9 @@ ppo_trainer = PPOTrainer(
 
           <Callout variant="warning" title="Hạn chế của RLHF">
             Cần nhiều phản hồi con người (tốn kém), reward model có thể bị hack,
-            PPO không ổn định và có nhiều hyperparameter. Đây là lý do DPO và GRPO
-            ra đời như các giải pháp đơn giản hơn.
+            PPO không ổn định và có nhiều hyperparameter. Đây là lý do{" "}
+            <TopicLink slug="dpo">DPO</TopicLink>{" "}
+            và GRPO ra đời như các giải pháp đơn giản hơn.
           </Callout>
         </ExplanationSection>
       </LessonSection>

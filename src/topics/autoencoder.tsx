@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -58,6 +58,17 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Autoencoder mã hóa mỗi ảnh thành 1 điểm cố định trong latent space. Giữa các điểm là vùng trống — lấy mẫu ở đó cho output vô nghĩa. VAE giải quyết bằng cách ép latent space thành phân bố liên tục.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Autoencoder có hai phần: {blank} nén x → z (qua bottleneck nhỏ) và {blank} giải nén z → x̂. Mục tiêu: x̂ ≈ x, loss = ||x - x̂||².",
+    blanks: [
+      { answer: "encoder", accept: ["Encoder", "bộ mã hoá", "bộ mã hóa", "mạng nén"] },
+      { answer: "decoder", accept: ["Decoder", "bộ giải mã", "mạng giải nén"] },
+    ],
+    explanation:
+      "Encoder z = f_θ(x) nén dữ liệu D chiều vào latent d chiều (d << D). Decoder x̂ = g_φ(z) giải nén ngược lại. Bottleneck buộc mạng học đặc trưng quan trọng nhất. Với 1 lớp tuyến tính → tương đương PCA; với nhiều lớp phi tuyến → mạnh hơn nhiều.",
   },
 ];
 
@@ -255,7 +266,9 @@ export default function AutoencoderTopic() {
               </div>
             </div>
             <div className="rounded-xl border border-orange-500/30 bg-orange-500/5 p-4">
-              <h4 className="text-sm font-semibold text-orange-500 mb-2">VAE (Variational)</h4>
+              <h4 className="text-sm font-semibold text-orange-500 mb-2">
+                <TopicLink slug="vae">VAE (Variational)</TopicLink>
+              </h4>
               <p className="text-xs text-muted">Latent space = phân bố xác suất. Có thể sinh dữ liệu mới bằng lấy mẫu!</p>
               <div className="mt-2 flex items-center justify-center gap-1 text-sm">
                 <span className="text-blue-500">x</span>
@@ -301,7 +314,9 @@ export default function AutoencoderTopic() {
 
           <Callout variant="insight" title="Autoencoder vs PCA">
             <p>
-              Autoencoder 1 lớp tuyến tính (không activation) = tương đương PCA. Thêm nhiều lớp + activation phi tuyến → Autoencoder mạnh hơn PCA nhiều, nắm bắt được quan hệ phi tuyến trong dữ liệu.
+              Autoencoder 1 lớp tuyến tính (không activation) = tương đương{" "}
+              <TopicLink slug="pca">PCA</TopicLink>
+              . Thêm nhiều lớp + activation phi tuyến → Autoencoder mạnh hơn PCA nhiều, nắm bắt được quan hệ phi tuyến trong dữ liệu.
             </p>
           </Callout>
 

@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -59,6 +59,15 @@ export default function AgenticRAGTopic() {
       ],
       correct: 0,
       explanation: "Self-RAG (Asai et al. 2023): model tự sinh 'reflection tokens' để tự đánh giá từng bước. [Retrieve]: có cần retrieve? [ISREL]: doc có relevant? [ISSUP]: answer có được support? [ISUSE]: answer có hữu ích? Mỗi bước có quyết định → kết quả chính xác hơn.",
+    },
+    {
+      type: "fill-blank",
+      question: "Agentic RAG vượt trội so với basic RAG nhờ hai năng lực: agent có thể gọi nhiều công cụ retrieve thông qua {blank}, và tự đánh giá chất lượng kết quả bằng {blank} trước khi trả lời.",
+      blanks: [
+        { answer: "tool use", accept: ["function calling", "tool-use", "tool calling", "công cụ"] },
+        { answer: "self-reflection", accept: ["self reflection", "tự phản hồi", "tự đánh giá", "reflection"] },
+      ],
+      explanation: "Tool use giúp agent linh hoạt chọn nguồn (vector DB, SQL, web, API). Self-reflection (Self-RAG, CRAG) giúp agent quyết định retrieve tiếp, đổi truy vấn hay từ chối trả lời — chính xác hơn 15-30% so với basic RAG.",
     },
   ], []);
 
@@ -161,7 +170,7 @@ export default function AgenticRAGTopic() {
         <ExplanationSection>
           <p>
             <strong>Agentic RAG</strong>{" "}
-            kết hợp RAG với AI Agent — agent tự quyết định khi nào retrieve, từ nguồn nào, bao nhiêu lần, và có cần verify không.
+            kết hợp <TopicLink slug="rag">RAG</TopicLink> với AI Agent dựa trên <TopicLink slug="agent-architecture">agent architecture</TopicLink> — agent tự quyết định khi nào retrieve, từ nguồn nào, bao nhiêu lần, và có cần verify không. Khả năng điều phối nhiều công cụ đến từ <TopicLink slug="function-calling">function calling</TopicLink>.
           </p>
           <p><strong>4 khả năng cốt lõi:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">

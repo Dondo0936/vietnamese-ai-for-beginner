@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,15 @@ export default function ComputerUseTopic() {
       correct: 1,
       explanation: "AI cần 'nhìn' màn hình (screenshot) và hiểu: đây là button 'Submit', đây là text field 'Email', đây là menu dropdown. VLM (GPT-4V, Claude vision) xử lý screenshot → output: 'click tại toạ độ (345, 120) trên button Submit'. Không có vision = mù.",
     },
+    {
+      type: "fill-blank",
+      question: "Vòng lặp Computer Use bắt đầu bằng việc chụp một {blank} của màn hình, sau đó VLM phân tích và sinh ra một {blank} cụ thể (click, gõ phím, cuộn).",
+      blanks: [
+        { answer: "screenshot", accept: ["ảnh màn hình", "ảnh chụp màn hình", "screen shot"] },
+        { answer: "action", accept: ["hành động", "thao tác"] },
+      ],
+      explanation: "Mỗi bước: (1) chụp screenshot hiện tại, (2) VLM hiểu nội dung + quyết định action tiếp theo (click toạ độ, gõ text, scroll), (3) thực thi action, (4) chụp screenshot mới để xác minh kết quả.",
+    },
   ], []);
 
   return (
@@ -117,9 +126,11 @@ export default function ComputerUseTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            API integration: cần developer build cho TỪNG app. Computer Use: AI dùng app <strong>như con người</strong>{" "}
+            API integration (qua <TopicLink slug="function-calling">function calling</TopicLink>): cần developer build cho TỪNG app. Computer Use: AI dùng app <strong>như con người</strong>{" "}
             — hoạt động với MỌI app có giao diện, kể cả legacy software 20 năm tuổi không có API.
-            Giống <strong>thuê người làm việc</strong>{" "}nhưng 24/7, không mệt, không sai vì mỏi.
+            Đây là một biến thể đặc biệt của{" "}
+            <TopicLink slug="agent-architecture">kiến trúc agent</TopicLink>{" "}mà &quot;tool&quot; duy nhất là chuột và bàn phím. Giống{" "}
+            <strong>thuê người làm việc</strong>{" "}nhưng 24/7, không mệt, không sai vì mỏi.
           </p>
         </AhaMoment>
       </LessonSection>

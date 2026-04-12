@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -97,6 +97,15 @@ export default function InferenceOptimizationTopic() {
       ],
       correct: 1,
       explanation: "Static batching: đợi N request, xử lý cùng lúc, đợi request dài nhất xong → lãng phí GPU. Continuous batching: request ngắn xong thì nhường slot cho request mới → GPU utilization tăng từ 30% lên 90%+.",
+    },
+    {
+      type: "fill-blank",
+      question: "Hai kỹ thuật tăng tốc inference LLM quan trọng nhất: gộp nhiều request lại gọi là {blank}, và lưu attention đã tính để tránh tính lại gọi là {blank}.",
+      blanks: [
+        { answer: "batching", accept: ["batch", "continuous batching"] },
+        { answer: "KV cache", accept: ["kv-cache", "kv cache", "key-value cache"] },
+      ],
+      explanation: "Batching tăng throughput bằng cách xử lý nhiều request cùng lúc trên GPU. KV cache lưu key-value attention của các token trước, giảm độ phức tạp từ O(N^2) xuống O(N) cho mỗi token mới.",
     },
   ], []);
 
@@ -211,15 +220,15 @@ export default function InferenceOptimizationTopic() {
             là tập hợp kỹ thuật giúp model AI chạy nhanh hơn, tốn ít bộ nhớ hơn, và chi phí thấp hơn khi phục vụ người dùng thực tế.
           </p>
 
-          <p><strong>1. Quantization (Lượng tử hoá)</strong></p>
+          <p><strong>1. <TopicLink slug="quantization">Quantization</TopicLink>{" "}(Lượng tử hoá)</strong></p>
           <p>Giảm số bit biểu diễn mỗi tham số:</p>
           <LaTeX block>{"\\text{Memory} = \\text{Params} \\times \\frac{\\text{Bits}}{8} \\text{ bytes}"}</LaTeX>
           <p>
             Model 7B tham số: FP32 = 28GB, FP16 = 14GB, INT8 = 7GB, INT4 = 3.5GB.
           </p>
 
-          <p><strong>2. KV Cache</strong></p>
-          <p>Lưu key-value attention đã tính:</p>
+          <p><strong>2. <TopicLink slug="kv-cache">KV Cache</TopicLink></strong></p>
+          <p>Lưu key-value attention đã tính, kết hợp với <TopicLink slug="model-serving">model serving</TopicLink>{" "}và <TopicLink slug="gpu-optimization">tối ưu GPU</TopicLink>{" "}để đạt throughput tối đa:</p>
           <LaTeX block>{"\\text{KV Cache size} = 2 \\times n_{\\text{layers}} \\times n_{\\text{heads}} \\times d_{\\text{head}} \\times \\text{seq\\_len} \\times \\text{batch} \\times \\text{bytes}"}</LaTeX>
 
           <p><strong>3. Continuous Batching</strong></p>

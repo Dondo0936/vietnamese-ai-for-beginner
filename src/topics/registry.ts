@@ -2080,6 +2080,78 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["llm-overview", "rag", "recommendation-systems"],
     vizType: "static",
   },
+  {
+    slug: "getting-started-with-ai",
+    title: "Getting Started with AI",
+    titleVi: "Bắt đầu sử dụng AI",
+    description:
+      "Hướng dẫn tạo tài khoản, cuộc hội thoại đầu tiên, và mẹo nhận kết quả tốt trong 5 phút.",
+    category: "applied-ai",
+    tags: ["beginner", "practical", "office", "getting-started"],
+    difficulty: "beginner",
+    relatedSlugs: ["llm-overview", "prompt-engineering", "ai-tool-evaluation"],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-for-writing",
+    title: "AI for Writing",
+    titleVi: "AI hỗ trợ viết lách",
+    description:
+      "Dùng AI để viết email, báo cáo, bài thuyết trình, và tóm tắt cuộc họp nhanh hơn.",
+    category: "applied-ai",
+    tags: ["writing", "email", "reports", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "prompt-engineering",
+      "getting-started-with-ai",
+      "ai-tool-evaluation",
+    ],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-for-data-analysis",
+    title: "AI for Data Analysis",
+    titleVi: "AI phân tích dữ liệu",
+    description:
+      "Dùng AI để phân tích bảng tính, tạo biểu đồ, viết SQL, và tìm insight từ dữ liệu.",
+    category: "applied-ai",
+    tags: ["data-analysis", "spreadsheet", "sql", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "prompt-engineering",
+      "ai-for-writing",
+      "getting-started-with-ai",
+    ],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-tool-evaluation",
+    title: "AI Tool Evaluation",
+    titleVi: "So sánh và chọn AI tool",
+    description:
+      "So sánh ChatGPT, Claude, Gemini, Copilot — chọn công cụ phù hợp cho nhu cầu công việc.",
+    category: "applied-ai",
+    tags: ["comparison", "evaluation", "tools", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "getting-started-with-ai",
+      "prompt-engineering",
+      "ai-for-writing",
+    ],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-privacy-security",
+    title: "AI Privacy & Security",
+    titleVi: "Bảo mật khi dùng AI",
+    description:
+      "Những gì KHÔNG NÊN đưa vào AI tool, chính sách dữ liệu công ty, và cách bảo vệ thông tin cá nhân.",
+    category: "ai-safety",
+    tags: ["privacy", "security", "data-protection", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: ["guardrails", "ai-governance", "bias-fairness"],
+    vizType: "interactive",
+  },
 
   // ═══════════════════════════════════════════════════════
   // Category 17: math-foundations (4 topics)

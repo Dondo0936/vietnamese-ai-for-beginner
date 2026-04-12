@@ -12,6 +12,7 @@ import {
   CodeBlock,
   LaTeX,
   ToggleCompare,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -203,6 +204,17 @@ export default function SGDTopic() {
       explanation:
         "Mini-batch 32-256 cân bằng tốt: đủ lớn để ước lượng gradient ổn định, đủ nhỏ để cập nhật thường xuyên và vừa bộ nhớ GPU.",
     },
+    {
+      type: "fill-blank",
+      question:
+        "SGD là viết tắt của {blank} Gradient Descent — cập nhật sau mỗi mẫu. Trong thực tế, deep learning dùng {blank}-batch với 32-256 mẫu để cân bằng tốc độ và ổn định.",
+      blanks: [
+        { answer: "Stochastic", accept: ["stochastic", "ngẫu nhiên"] },
+        { answer: "mini", accept: ["Mini", "nhỏ"] },
+      ],
+      explanation:
+        "'Stochastic' = ngẫu nhiên: cập nhật sau mỗi mẫu ngẫu nhiên (batch size = 1). Trong thực tế, mọi framework dùng mini-batch (32-256) — gọi là SGD nhưng thật ra là mini-batch GD. Đây là mặc định cho deep learning.",
+    },
   ];
 
   return (
@@ -222,7 +234,8 @@ export default function SGDTopic() {
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Ba cách tiếp cận tìm quán phở tương ứng chính xác với 3 biến thể
-            của Gradient Descent. Hãy xem chúng{" "}
+            của{" "}
+            <TopicLink slug="gradient-descent">Gradient Descent</TopicLink>. Hãy xem chúng{" "}
             <strong className="text-foreground">chạy đua</strong>{" "}
             trên cùng bề mặt loss.
           </p>
@@ -541,7 +554,9 @@ for epoch in range(10):
           <Callout variant="tip" title="Chọn batch size như thế nào?">
             Bắt đầu với <strong>32 hoặc 64</strong>. Tăng lên 128-256 nếu GPU còn dư RAM.
             Batch lớn hơn → gradient ổn định hơn nhưng cập nhật ít hơn mỗi epoch.
-            Quy tắc: nếu tăng batch size gấp đôi, tăng learning rate gấp đôi.
+            Quy tắc: nếu tăng batch size gấp đôi, tăng learning rate gấp đôi. Xem thêm{" "}
+            <TopicLink slug="optimizers">các optimizer nâng cao</TopicLink>{" "}
+            (Adam, AdamW) để tăng tốc hội tụ.
           </Callout>
         </ExplanationSection>
       </LessonSection>

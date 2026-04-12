@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
@@ -14,6 +14,15 @@ export default function AIInEducationTopic() {
     { question: "AI Tutor cá nhân hoá học tập bằng cách nào?", options: ["Dạy giống nhau cho tất cả", "Đo lường trình độ học sinh (diagnostic) → điều chỉnh nội dung (adaptive) → giải thích theo phong cách học → practice theo điểm yếu", "Chỉ chấm điểm"], correct: 1, explanation: "Knowledge tracing: AI biết học sinh BIẾT GÌ và CHƯA BIẾT GÌ (như game RPG skill tree). Bài tập adaptive: biết yếu toán → cho nhiều bài toán. Giải thích: học sinh thích ví dụ → cho nhiều ví dụ. Tốc độ: nhanh → tăng khó. Chậm → giảng lại. Giống gia sư riêng 1-1!" },
     { question: "LLM (ChatGPT/Claude) thay đổi giáo dục thế nào?", options: ["Thay thế giáo viên", "LLM là 'gia sư 24/7': giải thích bất kỳ câu hỏi, bất kỳ lúc nào, bất kỳ cách nào. Nhưng cần hướng dẫn sử dụng đúng để tránh dependency và plagiarism", "Không ảnh hưởng"], correct: 1, explanation: "LLM: (1) Giải thích khái niệm bằng nhiều cách (ví dụ, bảng so sánh, hình ảnh), (2) Trả lời câu hỏi 24/7, (3) Kiểm tra hiểu biết (Socratic method), (4) Dịch/tóm tắt tài liệu. Nhưng: cần dạy học sinh ĐÚNG dùng (không copy), VERIFY (AI có thể sai), và phát triển TƯ DUY (không dependency)." },
     { question: "Auto-grading essay bằng AI có vấn đề gì?", options: ["Chấm chính xác 100%", "AI khác có thể bị hack (writing to please AI), có thể bias, và khó đánh giá sáng tạo/tư duy phản biện", "Không có vấn đề"], correct: 1, explanation: "Vấn đề: (1) Students học cách viết 'AI-friendly' thay vì tốt thật, (2) AI bias: ưu tiên văn phong tây Âu, (3) Khó đánh giá: tư duy phản biện, sáng tạo, argument mới lạ. Giải pháp: AI chấm draft + giáo viên review final, AI như assistant không phải judge." },
+    {
+      type: "fill-blank",
+      question: "AI trong giáo dục mang đến trải nghiệm học {blank} cho từng học sinh, đóng vai trò như một gia sư {blank} 24/7.",
+      blanks: [
+        { answer: "cá nhân hoá", accept: ["personalized", "ca nhan hoa", "cá nhân hóa"] },
+        { answer: "ảo", accept: ["tutoring", "AI", "trực tuyến", "gia sư AI"] },
+      ],
+      explanation: "Cá nhân hoá (personalized): điều chỉnh nội dung/tốc độ/ví dụ theo từng học sinh dựa trên knowledge tracing. AI tutor (gia sư ảo) hoạt động 24/7, giải thích theo nhiều cách đến khi học sinh hiểu — điều mà giáo viên truyền thống khó làm với 40 học sinh.",
+    },
   ], []);
 
   return (
@@ -28,8 +37,8 @@ export default function AIInEducationTopic() {
         <p><strong>AI in Education</strong>{" "}cá nhân hoá học tập, trợ lý giảng dạy, và chấm bài tự động — dân chủ hoá giáo dục.</p>
         <p><strong>4 ứng dụng chính:</strong></p>
         <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-          <li><strong>Adaptive Learning:</strong>{" "}Knowledge tracing → adaptive content (Brilliant, Khan Academy, Duolingo)</li>
-          <li><strong>AI Tutoring:</strong>{" "}LLM giải thích 24/7, Socratic method, multi-modal (text + hình + video)</li>
+          <li><strong>Adaptive Learning:</strong>{" "}Knowledge tracing → adaptive content; dựa trên <TopicLink slug="recommendation-systems">recommendation systems</TopicLink>{" "}để gợi ý bài học vừa sức (Brilliant, Khan Academy, Duolingo)</li>
+          <li><strong>AI Tutoring:</strong>{" "}<TopicLink slug="llm-overview">LLM</TopicLink>{" "}giải thích 24/7, Socratic method, multi-modal (text + hình + video). Gắn <TopicLink slug="rag">RAG</TopicLink>{" "}vào giáo trình của trường giúp AI trả lời đúng chương trình học.</li>
           <li><strong>Auto Assessment:</strong>{" "}Chấm bài tự động (code, toán, essay draft). AI assist, không thay thế giáo viên</li>
           <li><strong>Content Generation:</strong>{" "}Tạo bài tập, đề thi, flashcards tự động theo trình độ</li>
         </ul>

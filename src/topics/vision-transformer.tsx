@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -60,6 +60,16 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation: "[CLS] token không chứa thông tin patch nào cụ thể. Qua các lớp Transformer, nó attend đến mọi patch → tích lũy thông tin toàn cục. Output của [CLS] cuối cùng đưa vào classification head. Giống [CLS] trong BERT cho NLP!",
   },
+  {
+    type: "fill-blank",
+    question: "ViT chia ảnh thành các mảnh nhỏ kích thước {blank}×{blank} pixel, mỗi mảnh được gọi là một {blank} và được coi như một token đưa vào Transformer.",
+    blanks: [
+      { answer: "16", accept: ["16"] },
+      { answer: "16", accept: ["16"] },
+      { answer: "patch", accept: ["Patch", "mảnh"] },
+    ],
+    explanation: "ViT-Base dùng patch 16×16 pixel. Với ảnh 224×224, ta được (224/16)² = 196 patch, mỗi patch flatten thành vector 16×16×3 = 768 chiều — giống word embedding trong NLP.",
+  },
 ];
 
 export default function VisionTransformerTopic() {
@@ -85,7 +95,7 @@ export default function VisionTransformerTopic() {
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá ViT">
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bạn có tấm ảnh chụp phố c�� Hội An và cắt thành 9 mảnh ghép (jigsaw). Mỗi mảnh tự hỏi: &quot;Mảnh nào liên quan đến tôi?&quot; — đó là self-attention! Mảnh có đèn lồng sẽ &quot;chú ý&quot; đến mảnh có phố — dù chúng cách xa nhau.
+          Hãy tưởng tượng bạn có tấm ảnh chụp phố cổ Hội An và cắt thành 9 mảnh ghép (jigsaw). Mỗi mảnh tự hỏi: &quot;Mảnh nào liên quan đến tôi?&quot; — đó là self-attention! Mảnh có đèn lồng sẽ &quot;chú ý&quot; đến mảnh có phố — dù chúng cách xa nhau.
         </p>
 
         <VisualizationSection>
@@ -221,7 +231,9 @@ export default function VisionTransformerTopic() {
         <ExplanationSection>
           <p>
             <strong>Vision Transformer (ViT)</strong>{" "}
-            (Dosovitskiy et al., 2020) chứng minh Transformer thuần túy (không CNN) đạt SOTA trên image classification.
+            (Dosovitskiy et al., 2020) chứng minh kiến trúc <TopicLink slug="transformer">Transformer</TopicLink>{" "}thuần túy (không{" "}
+            <TopicLink slug="cnn">CNN</TopicLink>) đạt SOTA trên image classification nhờ{" "}
+            <TopicLink slug="self-attention">self-attention</TopicLink>{" "}trên các patch ảnh.
           </p>
           <LaTeX block>{String.raw`\mathbf{z}_0 = [\mathbf{x}_{\text{class}}; \; \mathbf{x}_p^1 E; \; \mathbf{x}_p^2 E; \; \cdots; \; \mathbf{x}_p^N E] + \mathbf{E}_{pos}`}</LaTeX>
           <p className="text-sm text-muted mt-1">
@@ -279,7 +291,7 @@ class ViT(nn.Module):
             "ViT: chia ảnh thành patches → flatten → linear projection → Transformer encoder. Patches = tokens!",
             "[CLS] token attend đến mọi patch → tổng hợp thông tin toàn bộ ảnh → classification head.",
             "Không có inductive bias của CNN (locality, weight sharing) → cần nhiều data hơn hoặc augmentation mạnh (DeiT).",
-            "Với data đủ lớn (>100M), ViT vượt CNN. Scale rất t���t: ViT-22B có 22 tỷ tham số.",
+            "Với data đủ lớn (>100M), ViT vượt CNN. Scale rất tốt: ViT-22B có 22 tỷ tham số.",
             "Biến thể: DeiT (ít data), Swin Transformer (hierarchical + shifted window), DINO (self-supervised).",
           ]}
         />

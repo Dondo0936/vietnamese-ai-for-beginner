@@ -11,7 +11,9 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
-  LessonSection,} from "@/components/interactive";
+  LessonSection,
+  TopicLink,
+} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -102,6 +104,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 0,
     explanation: "ICL là pattern matching cấp cao: AI nhận ra CẤU TRÚC (input → output) từ ví dụ, rồi áp dụng cấu trúc đó cho input mới. Không ghi nhớ, không tìm kiếm.",
+  },
+  {
+    type: "fill-blank",
+    question: "Khi prompt chỉ mô tả task mà không có ví dụ nào, ta gọi là {blank}. Khi thêm vài ví dụ mẫu input-output thì gọi là few-shot và có thể cho nhiều {blank} hơn.",
+    blanks: [
+      { answer: "zero-shot", accept: ["zero shot", "không ví dụ", "0-shot"] },
+      { answer: "ví dụ", accept: ["examples", "mẫu", "example"] },
+    ],
+    explanation: "Zero-shot = 0 ví dụ (chỉ mô tả task). Few-shot = 3-5 ví dụ trong prompt. Many-shot = 10+ ví dụ. Số lượng ví dụ tăng thì chất lượng thường tăng, nhưng hiệu quả giảm dần sau 5-10 ví dụ.",
   },
 ];
 
@@ -257,6 +268,9 @@ export default function InContextLearningTopic() {
         correct={1}
         explanation="LLM nhìn toàn bộ context — nếu câu hỏi cuối rõ ràng yêu cầu dịch, nó sẽ dịch. Ví dụ mẫu là 'gợi ý' format, không phải 'lệnh cứng'. Đó là lý do prompt engineering quan trọng!"
       />
+      <p className="text-sm text-muted mt-2">
+        Muốn viết prompt tốt hơn? Xem <TopicLink slug="prompt-engineering">prompt engineering</TopicLink>.
+      </p>
 
       </LessonSection>
 
@@ -265,7 +279,8 @@ export default function InContextLearningTopic() {
       <ExplanationSection>
         <p>
           <strong>In-Context Learning (ICL)</strong>{" "}là khả năng LLM thực hiện tác vụ mới
-          chỉ từ vài ví dụ trong prompt, mà <em>không thay đổi trọng số model</em>.
+          chỉ từ vài ví dụ trong prompt, mà <em>không thay đổi trọng số model</em>{" "}— khác hẳn với <TopicLink slug="fine-tuning">fine-tuning</TopicLink>.
+          Kết hợp ICL với <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>{" "}(few-shot CoT) giúp model vừa học format vừa học cách suy luận.
         </p>
 
         <Callout variant="insight" title="Tại sao AI 'học' được mà không cần training?">

@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare,
+  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -77,6 +77,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Scaling laws: mô hình lớn + dữ liệu nhiều → khả năng mới xuất hiện (emergent abilities). GPT-3 có thể few-shot learning, viết code, suy luận — điều GPT-2 không làm được!",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "GPT thuộc kiến trúc {blank}-only và sinh văn bản theo cách {blank} (mỗi token mới phụ thuộc vào toàn bộ token trước đó).",
+    blanks: [
+      { answer: "decoder", accept: ["Decoder"] },
+      { answer: "autoregressive", accept: ["tự hồi quy", "auto-regressive"] },
+    ],
+    explanation:
+      "GPT là decoder-only Transformer và sinh token theo kiểu autoregressive — P(w_t | w_1, ..., w_{t-1}). Đây là điểm khác biệt cốt lõi so với BERT (encoder-only, không autoregressive).",
   },
 ];
 
@@ -265,7 +276,15 @@ export default function GptTopic() {
         <ExplanationSection>
           <p>
             <strong>GPT</strong>{" "}
-            (Generative Pre-trained Transformer, OpenAI 2018) dùng Transformer Decoder để sinh văn bản tự hồi quy — dự đoán từ tiếp theo dựa trên tất cả từ trước đó.
+            (Generative Pre-trained Transformer, OpenAI 2018) dùng{" "}
+            <TopicLink slug="transformer">Transformer</TopicLink>
+            {" "}Decoder với{" "}
+            <TopicLink slug="self-attention">self-attention</TopicLink>
+            {" "}dạng masked để sinh văn bản tự hồi quy — dự đoán từ tiếp theo dựa trên tất cả từ trước đó. Trước khi mô hình xử lý, văn bản được chia nhỏ bằng{" "}
+            <TopicLink slug="tokenization">tokenization</TopicLink>
+            {" "}thành các token con. So với{" "}
+            <TopicLink slug="bert">BERT</TopicLink>
+            {" "}(encoder hai chiều), GPT tối ưu cho việc sinh văn bản thay vì hiểu toàn câu.
           </p>
 
           <Callout variant="insight" title="Mục tiêu huấn luyện">

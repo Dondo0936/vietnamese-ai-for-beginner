@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -68,6 +68,15 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "Quản trị AI = đầu tư, không phải chi phí. Doanh nghiệp có AI governance tốt: (1) tránh phạt pháp lý, (2) người dùng tin tưởng hơn, (3) phát hiện bias/lỗi sớm (giảm thiệt hại), (4) đối tác quốc tế yêu cầu AI compliance (đặc biệt EU).",
+  },
+  {
+    type: "fill-blank",
+    question: "Quản trị AI đặt ra các {blank} nội bộ và đòi hỏi doanh nghiệp đạt mức {blank} với pháp luật như EU AI Act hoặc Nghị định 13/2023.",
+    blanks: [
+      { answer: "chính sách", accept: ["policy", "quy định", "policies"] },
+      { answer: "tuân thủ", accept: ["compliance", "compliant", "tuân thủ pháp luật"] },
+    ],
+    explanation: "AI governance = policy (chính sách nội bộ về cách phát triển/triển khai AI) + compliance (tuân thủ luật bên ngoài: EU AI Act, GDPR, NĐ 13). Doanh nghiệp cần cả hai: policy rõ ràng trong tổ chức và compliance với regulator.",
   },
 ];
 
@@ -149,7 +158,10 @@ export default function AIGovernanceTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Quản trị AI (AI Governance)</strong>{" "} bao gồm khung pháp lý, chính sách và quy trình đảm bảo AI được phát triển và triển khai có trách nhiệm.</p>
+          <p><strong>Quản trị AI (AI Governance)</strong>{" "} bao gồm khung pháp lý, chính sách và quy trình đảm bảo AI được phát triển và triển khai có trách nhiệm — bao phủ cả kiểm soát{" "}
+            <TopicLink slug="bias-fairness">bias &amp; fairness</TopicLink>, yêu cầu{" "}
+            <TopicLink slug="explainability">explainability</TopicLink>{" "}và triển khai{" "}
+            <TopicLink slug="guardrails">guardrails</TopicLink>{" "}kỹ thuật.</p>
           <Callout variant="insight" title="EU AI Act — Khung quản trị toàn diện nhất">
             <div className="space-y-2">
               <p><strong>Unacceptable risk (Bị cấm):</strong>{" "} Social scoring, nhận dạng khuôn mặt real-time nơi công cộng, thao túng hành vi.</p>

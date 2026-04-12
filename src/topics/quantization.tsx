@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -66,6 +66,17 @@ const QUIZ: QuizQuestion[] = [
     correct: 1,
     explanation:
       "FP16 = 16 bit/tham số, INT4 = 4 bit/tham số. Tỷ lệ = 4/16 = 1/4. Nên 140GB / 4 = 35GB — vừa đủ cho 1 GPU RTX 4090 24GB với offloading.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Sắp xếp từ chính xác nhất đến nén nhất: {blank} (32 bit) → FP16 (16 bit) → {blank} (8 bit) → INT4 (4 bit).",
+    blanks: [
+      { answer: "FP32", accept: ["fp32", "float32"] },
+      { answer: "INT8", accept: ["int8"] },
+    ],
+    explanation:
+      "FP32 là baseline huấn luyện chính xác nhất. FP16 giảm nửa bộ nhớ với ~0% mất mát. INT8 dùng phổ biến cho inference (giảm 4x so với FP32). INT4 dùng cho deployment cực nén.",
   },
 ];
 
@@ -190,7 +201,10 @@ export default function QuantizationTopic() {
         <ExplanationSection>
           <p>
             <strong>Lượng tử hoá</strong>{" "}(Quantization) ánh xạ giá trị liên tục (FP32/FP16)
-            sang tập rời rạc ít bit hơn. Công thức cơ bản:
+            sang tập rời rạc ít bit hơn. Đây là một trong ba kỹ thuật nén mô hình phổ biến,
+            bên cạnh <TopicLink slug="distillation">distillation</TopicLink>{" "}và{" "}
+            <TopicLink slug="mixed-precision">mixed precision training</TopicLink>.
+            Công thức cơ bản:
           </p>
 
           <LaTeX block>{"x_q = \\text{round}\\left(\\frac{x}{s}\\right) + z \\qquad x_{\\text{dequant}} = s \\cdot (x_q - z)"}</LaTeX>
@@ -232,6 +246,8 @@ model = AutoModelForCausalLM.from_pretrained(
             GPTQ: lượng tử hoá theo nhóm, tối ưu cho GPU.
             AWQ: bảo vệ kênh quan trọng, chất lượng tốt hơn GPTQ.
             GGUF: format của llama.cpp, chạy được trên CPU. Chọn theo phần cứng của bạn.
+            Khi cần fine-tune mô hình đã lượng tử hoá, hãy xem{" "}
+            <TopicLink slug="qlora">QLoRA</TopicLink>.
           </Callout>
         </ExplanationSection>
       </LessonSection>

@@ -10,6 +10,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -151,6 +152,17 @@ export default function RegularizationTopic() {
       correct: 1,
       explanation:
         "Weight decay = nhân trọng số với (1 - λ) mỗi bước, tương đương thêm λ·||w||² vào loss. Đó chính là L2 regularization. Adam + weight decay gọi là AdamW.",
+    },
+    {
+      type: "fill-blank",
+      question:
+        "Kỹ thuật {blank} (Lasso) thêm λ·Σ|w| vào loss, đẩy trọng số về đúng 0 tạo sparsity. Kỹ thuật {blank} (Ridge) thêm λ·Σw² — thu nhỏ đều tất cả trọng số.",
+      blanks: [
+        { answer: "L1", accept: ["l1", "Lasso", "lasso"] },
+        { answer: "L2", accept: ["l2", "Ridge", "ridge"] },
+      ],
+      explanation:
+        "L1 (Lasso) dùng giá trị tuyệt đối — tạo mô hình thưa, tự động feature selection. L2 (Ridge / weight decay) dùng bình phương — thu nhỏ đều trọng số, hiếm khi về 0. Cả hai đều thêm λ để kiểm soát cường độ.",
     },
   ];
 
@@ -400,7 +412,8 @@ export default function RegularizationTopic() {
         <ExplanationSection>
           <p>
             <strong>Regularization</strong>{" "}
-            thêm ràng buộc vào hàm loss để ngăn mô hình quá phức tạp:
+            thêm ràng buộc vào hàm loss để ngăn mô hình quá phức tạp, chống{" "}
+            <TopicLink slug="overfitting-underfitting">overfitting</TopicLink>:
           </p>
 
           <p>
@@ -473,7 +486,9 @@ model.eval()   # Dropout OFF (inference)`}
           <Callout variant="tip" title="Combo chống overfitting phổ biến nhất">
             <strong>L2 (weight decay) + Dropout + Early Stopping</strong>{" "}
             là bộ ba kinh điển. AdamW (Adam + weight decay) đã tích hợp L2.
-            Thêm Dropout 0.1-0.3 giữa các lớp. Early stopping khi val loss tăng.
+            Thêm Dropout 0.1-0.3 giữa các lớp. Kết hợp với{" "}
+            <TopicLink slug="batch-normalization">Batch Normalization</TopicLink>{" "}
+            cũng có tác dụng regularization nhẹ. Early stopping khi val loss tăng.
           </Callout>
         </ExplanationSection>
       </LessonSection>

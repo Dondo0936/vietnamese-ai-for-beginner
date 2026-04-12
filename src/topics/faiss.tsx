@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -72,6 +72,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "PQ chia vector 768-d thành 8 nhóm x 96-d, mỗi nhóm quantize thành 1 byte (256 centroids). 768 floats (3072 bytes) → 8 bytes! Giảm bộ nhớ > 100x với chỉ mất chút chính xác.",
+  },
+  {
+    type: "fill-blank",
+    question: "FAISS là viết tắt của {blank}, thư viện của Meta. Lớp exact search đơn giản nhất tên là {blank}, dùng khoảng cách Euclidean toàn bộ.",
+    blanks: [
+      { answer: "Facebook AI Similarity Search", accept: ["facebook ai similarity search", "Facebook AI Similarity Search (FAISS)"] },
+      { answer: "IndexFlatL2", accept: ["faiss.IndexFlatL2", "indexflatl2"] },
+    ],
+    explanation: "FAISS = Facebook AI Similarity Search. IndexFlatL2 là brute-force exact search (O(N)) dùng L2 distance; IndexFlatIP dùng inner product. Dùng cho dataset < 1M vector hoặc làm baseline chuẩn xác để so sánh các index ANN.",
   },
 ];
 
@@ -200,7 +209,7 @@ export default function FAISSTopic() {
         <ExplanationSection>
           <p>
             <strong>FAISS</strong>{" "}(Facebook AI Similarity Search) là thư viện mã nguồn mở của Meta,
-            chuyên tìm kiếm vector tương tự trên quy mô lớn.
+            chuyên tìm kiếm vector tương tự trên quy mô lớn. Nó thường là lõi bên trong nhiều <TopicLink slug="vector-databases">vector database</TopicLink>, lập chỉ mục các vector sinh ra từ <TopicLink slug="embedding-model">embedding model</TopicLink>.
           </p>
 
           <Callout variant="insight" title="Các loại index trong FAISS">

@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -15,6 +15,15 @@ export default function PolicyGradientTopic() {
     { question: "Policy Gradient khác Q-Learning ở điểm nào cơ bản?", options: ["Dùng nhiều GPU hơn", "Q-Learning học VALUE function rồi suy ra policy. Policy Gradient học TRỰC TIẾP policy pi(a|s) — mapping state→action probabilities", "Không khác"], correct: 1, explanation: "Q-Learning: học Q(s,a) → chọn argmax. Policy Gradient: học trực tiếp pi(a|s) = P(action|state). Ưu điểm PG: xử lý action space liên tục (robot arm), stochastic policies (cần thiết cho game). Nhược điểm: variance cao, cần nhiều samples." },
     { question: "Tại sao Policy Gradient có variance cao?", options: ["Vì dùng nhiều params", "Reward signal DELAYED và NOISY: cùng action nhưng khác episodes có reward khác nhau → gradient dao động mạnh", "Vì learning rate quá lớn"], correct: 1, explanation: "Episode 1: action A → reward 10. Episode 2: cùng action A → reward 2 (do môi trường random). Gradient estimate dao động mạnh. Giải pháp: baseline subtraction (trừ mean reward) giảm variance mà không thay đổi expected gradient." },
     { question: "REINFORCE algorithm là gì?", options: ["Tên của deep learning framework", "Policy gradient cơ bản nhất: sample episode, tính return, update policy theo gradient = return x grad(log pi)", "Kỹ thuật tăng cường data"], correct: 1, explanation: "REINFORCE (Williams 1992): (1) Sample toàn bộ episode theo policy, (2) Tính return G_t cho mỗi step, (3) Update: theta += alpha * G_t * grad(log pi(a_t|s_t)). Đơn giản nhưng variance cao. Actor-Critic cải thiện bằng cách dùng Critic đánh giá." },
+    {
+      type: "fill-blank",
+      question: "Policy Gradient cập nhật tham số bằng cách đi theo {blank} của log-likelihood nhân với {blank} (G_t hoặc advantage).",
+      blanks: [
+        { answer: "gradient", accept: ["grad"] },
+        { answer: "reward", accept: ["return", "g_t", "phần thưởng"] },
+      ],
+      explanation: "Công thức cốt lõi: ∇θ J(θ) = E[∇θ log πθ(a|s) · G_t]. Đây chính là gradient ascent trên expected reward — tăng xác suất của action tốt, giảm action xấu.",
+    },
   ], []);
 
   return (
@@ -40,7 +49,12 @@ export default function PolicyGradientTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách"><InlineChallenge question="REINFORCE có vấn đề: variance cao vì dùng toàn bộ episode return. Cách đơn giản nhất để giảm variance?" options={["Tăng learning rate", "Trừ baseline b (ví dụ mean return) từ return: G_t - b. Gradient không đổi nhưng variance giảm đáng kể", "Dùng nhiều episodes hơn"]} correct={1} explanation="Baseline subtraction: thay vì gradient = G_t * grad(log pi), dùng (G_t - b) * grad(log pi). Nếu b = mean(G), action tốt hơn trung bình → gradient dương (tăng xác suất). Action tệ → gradient âm (giảm). Không thay đổi expected gradient nhưng variance giảm 50-90%!" /></LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết"><ExplanationSection>
-        <p><strong>Policy Gradient</strong>{" "}tối ưu trực tiếp policy pi_theta(a|s) bằng gradient ascent trên expected return.</p>
+        <p><strong>Policy Gradient</strong>{" "}tối ưu trực tiếp policy pi_theta(a|s) bằng gradient ascent trên expected return. Trái ngược với{" "}
+          <TopicLink slug="q-learning">Q-Learning</TopicLink>{" "}
+          (học value rồi suy ra policy), PG học policy trực tiếp. Kết hợp với một critic ta được{" "}
+          <TopicLink slug="actor-critic">Actor-Critic</TopicLink>, và biến thể PPO/GRPO hiện là xương sống của{" "}
+          <TopicLink slug="rlhf">RLHF</TopicLink>{" "}
+          cho các mô hình ngôn ngữ.</p>
         <p><strong>Policy Gradient Theorem:</strong></p>
         <LaTeX block>{"\\nabla_\\theta J(\\theta) = \\mathbb{E}_{\\pi_\\theta}\\left[\\sum_{t=0}^{T} \\nabla_\\theta \\log \\pi_\\theta(a_t|s_t) \\cdot G_t\\right]"}</LaTeX>
         <p><strong>REINFORCE với baseline:</strong></p>

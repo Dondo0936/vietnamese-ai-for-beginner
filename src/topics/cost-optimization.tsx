@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -87,6 +87,15 @@ export default function CostOptimizationTopic() {
       ],
       correct: 1,
       explanation: "Spot instances là GPU 'thừa' của cloud, giảm 60-90% giá nhưng có thể bị thu hồi (2 phút cảnh báo). Phù hợp cho training (có checkpoint), không phù hợp cho production serving (cần availability cao).",
+    },
+    {
+      type: "fill-blank",
+      question: "Semantic {blank} tái dùng câu trả lời cho các query tương tự (hit rate 40%+), còn {blank} là GPU giá rẻ 60-90% nhưng có thể bị cloud thu hồi bất kỳ lúc nào.",
+      blanks: [
+        { answer: "cache", accept: ["caching", "bộ nhớ đệm", "bo nho dem"] },
+        { answer: "spot instance", accept: ["spot", "spot instances", "preemptible", "spot vm"] },
+      ],
+      explanation: "Semantic cache dùng embedding similarity để hit ngay cả khi câu hỏi diễn đạt khác. Spot instances tiết kiệm rất nhiều cho training/batch jobs có checkpoint, không phù hợp serving real-time vì rủi ro interrupt.",
     },
   ], []);
 
@@ -218,7 +227,7 @@ export default function CostOptimizationTopic() {
             Exact match: 5-15% hit rate. Semantic (embedding similarity &gt; 0.95): 30-50%. Prompt prefix caching (vLLM): giảm 30-50% compute cho prompts có system message chung.
           </Callout>
 
-          <p><strong>3. Quantization</strong>{" "}— giảm kích thước model, cần ít GPU hơn</p>
+          <p><strong>3. Quantization</strong>{" "}— giảm kích thước model, cần ít GPU hơn. Xem thêm các kỹ thuật khác ở <TopicLink slug="inference-optimization">tối ưu inference</TopicLink>{" "}và <TopicLink slug="gpu-optimization">tối ưu GPU</TopicLink>.</p>
           <p><strong>4. Auto-scaling</strong>{" "}— scale-to-zero khi không có traffic</p>
           <p><strong>5. Prompt optimization</strong>{" "}— mỗi token đều có giá</p>
 

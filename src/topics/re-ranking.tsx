@@ -2,7 +2,7 @@
 
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -57,6 +57,15 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation: "Rerank API nhận (query, [doc1, doc2, ...]) và trả relevance score cho mỗi doc. Đơn giản: 1 API call, không cần quản lý model. Sort theo score giảm dần = kết quả re-ranked!",
+  },
+  {
+    type: "fill-blank",
+    question: "Kiến trúc dùng cho re-ranking là {blank}, encode query và doc cùng lúc. Vì tốn kém, nó chỉ chấm {blank} tài liệu do stage 1 trả về (thường 50-100) thay vì cả corpus.",
+    blanks: [
+      { answer: "cross-encoder", accept: ["cross encoder", "CrossEncoder", "cross-encoder Transformer"] },
+      { answer: "top-k", accept: ["top k", "top-K", "top K", "top-n", "top n"] },
+    ],
+    explanation: "Cross-encoder đưa [CLS] q [SEP] d [SEP] qua Transformer, nắm bắt tương tác chi tiết giữa query và document nên chính xác hơn bi-encoder. Nhưng O(N) per query, vì vậy chỉ chạy trên top-K (50-100) từ stage 1 để giữ độ trễ dưới 1 giây.",
   },
 ];
 
@@ -144,11 +153,11 @@ export default function ReRankingTopic() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="rounded-lg bg-background/50 border border-blue-500/30 p-3">
                 <p className="text-sm font-semibold text-blue-400">Bi-Encoder (Stage 1)</p>
-                <p className="text-xs text-muted">Encode query va doc RIENG RE. So sanh vector. Nhanh (ms). 10M → top 50.</p>
+                <p className="text-xs text-muted">Encode query và doc RIÊNG RẼ. So sánh vector. Nhanh (ms). 10M → top 50.</p>
               </div>
               <div className="rounded-lg bg-background/50 border border-yellow-500/30 p-3">
                 <p className="text-sm font-semibold text-yellow-400">Cross-Encoder (Stage 2)</p>
-                <p className="text-xs text-muted">Encode CUNG LUC (query, doc). Chinh xac hon nhieu. Cham (10ms/cap). Top 50 → re-rank.</p>
+                <p className="text-xs text-muted">Encode CÙNG LÚC (query, doc). Chính xác hơn nhiều. Chậm (10ms/cặp). Top 50 → re-rank.</p>
               </div>
             </div>
           </div>
@@ -181,8 +190,8 @@ export default function ReRankingTopic() {
       <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
-            <strong>Re-ranking</strong>{" "}sắp xếp lại kết quả từ stage 1 bằng mô hình mạnh hơn (Cross-Encoder),
-            đưa kết quả liên quan nhất lên đầu.
+            <strong>Re-ranking</strong>{" "}sắp xếp lại kết quả từ stage 1 (thường là <TopicLink slug="semantic-search">semantic search</TopicLink> hoặc <TopicLink slug="hybrid-search">hybrid search</TopicLink>) bằng mô hình mạnh hơn (Cross-Encoder),
+            đưa kết quả liên quan nhất lên đầu — là bước chuẩn trong mọi pipeline <TopicLink slug="rag">RAG</TopicLink> chất lượng cao.
           </p>
 
           <p><strong>Cross-Encoder scoring:</strong></p>
