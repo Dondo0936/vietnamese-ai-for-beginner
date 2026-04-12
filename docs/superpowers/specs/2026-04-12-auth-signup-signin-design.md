@@ -93,7 +93,12 @@ interface AuthContextValue {
 }
 ```
 
-- `signUp` calls `supabase.auth.updateUser({ email, password })` when the session is anonymous; falls back to `signUp({ email, password })` otherwise. Always triggers Supabase's confirmation email.
+- `signUp`: **Two-step upgrade flow.** Supabase requires email verification before a password can be set on an anonymous user (confirmed against Supabase docs, 2026). The hook does:
+  1. Saves the password to `sessionStorage` under a short-lived key `pending-password-<email>`.
+  2. Calls `supabase.auth.updateUser({ email })` — this triggers the confirmation email.
+  3. Returns success; the modal then shows the "check email" message.
+  4. The `/auth/callback` page, after exchanging the code, reads the password back from `sessionStorage` and calls `supabase.auth.updateUser({ password })` to finish the upgrade. sessionStorage key is cleared immediately after.
+  5. If the email link is opened in a different browser (sessionStorage empty), the callback page renders a fallback "Đặt mật khẩu" form so the user can set a password manually.
 - `signIn` calls `signInWithPassword`. If the current session was anonymous, Supabase discards the anon user and switches to the permanent user. The `ProgressProvider` will react to the user-id change and reload progress.
 - `signUpGoogle` calls `linkIdentity({ provider: 'google', options: { redirectTo: ... } })` — used from the "Đăng ký" tab. Attaches Google to the current anon user, preserving the UUID. If the Google email is already linked to another verified user, Supabase returns an error and we surface "Email đã được đăng ký".
 - `signInGoogle` calls `signInWithOAuth({ provider: 'google', options: { redirectTo: ... } })` — used from the "Đăng nhập" tab. Signs into the user whose verified email matches the Google account.
@@ -183,10 +188,16 @@ Mounted once in `AppShell`, below `BottomNav`. Portal-rendered into `document.bo
 
 New route: `src/app/auth/callback/page.tsx` (client component).
 
-1. On mount, read `code` from URL query params
-2. Call `supabase.auth.exchangeCodeForSession(code)`
-3. On success: show "Xác nhận thành công, đang chuyển hướng..." for ~500ms, then `router.push('/')`
-4. On failure: show error + "Về trang chủ" button
+1. On mount, read `code` from URL query params.
+2. Call `supabase.auth.exchangeCodeForSession(code)`.
+3. On success:
+   - Read `pending-password-<email>` from sessionStorage (keyed by current user's email).
+   - If present: `await supabase.auth.updateUser({ password })` → clear the sessionStorage key → continue.
+   - If absent (different-browser scenario): render a "Đặt mật khẩu" form (password + confirm password fields). On submit, call `updateUser({ password })`.
+   - Once password is set (either branch): show "Xác nhận thành công, đang chuyển hướng..." for ~500ms → `router.push('/')`.
+4. On failure: show "Liên kết đã hết hạn hoặc không hợp lệ" + "Về trang chủ" button.
+
+**Note:** For Google OAuth redirects, the same callback runs but there is no password step (Google identities don't require a password). The page detects this by checking whether the authenticated user has an `email` identity vs only `google` — if only google, skip the password form.
 
 ---
 
@@ -195,11 +206,15 @@ New route: `src/app/auth/callback/page.tsx` (client component).
 ### Flow A — Fresh user signs up (happy path)
 1. User browses site anonymously → `ensureAnonymousAuth()` creates anon user `abc-123` → user bookmarks a topic (saved under `user_progress.user_id = abc-123`).
 2. User clicks "Đăng nhập" in navbar → `AuthModal` opens → switches to "Đăng ký" tab → enters email + password.
-3. Form submits → `signUp()` calls `supabase.auth.updateUser({ email, password })` on the existing anon session.
-4. `auth.users.abc-123` row is updated: email set, `is_anonymous: false`, `encrypted_password: <hash>`. A row in `auth.identities` is added linking `provider: 'email'` to `user_id: abc-123`.
-5. Supabase sends confirmation email to the user's inbox. Modal replaces form with "Check email" message.
-6. User clicks the link in the email → browser opens `https://ai-edu-app.vercel.app/auth/callback?code=...` → callback page calls `exchangeCodeForSession` → `email_confirmed_at` is set → redirect to `/`.
-7. Navbar re-renders with avatar (email initial since no avatar_url yet); all bookmarks/read_topics still present because the UUID never changed.
+3. Form submits → `signUp(email, password)`:
+   - Client saves `password` to `sessionStorage` under key `pending-password-<email>` (cleared after use, auto-cleared on tab close).
+   - Client calls `supabase.auth.updateUser({ email })`.
+4. Supabase sends confirmation email; `auth.users.abc-123` is not yet updated — email is still NULL until verification.
+5. Modal replaces form with "Vui lòng kiểm tra email để xác nhận tài khoản."
+6. User clicks the link in the email → browser opens `/auth/callback?code=...` → callback page calls `supabase.auth.exchangeCodeForSession(code)` → `auth.users.abc-123` now has email set, `is_anonymous: false`, `email_confirmed_at: now()`.
+7. Callback page reads `pending-password-<email>` from sessionStorage. If present and matches current user's email → calls `supabase.auth.updateUser({ password })` → clears sessionStorage → shows "Xác nhận thành công" → redirects to `/`.
+8. If sessionStorage is empty (user opened email link on different browser): callback renders a minimal "Đặt mật khẩu" form. User types password → `updateUser({ password })` → redirect.
+9. Navbar re-renders with avatar (email initial since no avatar_url); all bookmarks/read_topics still intact because the UUID never changed.
 
 ### Flow B — Returning user on a new device
 1. User loads the site → `ensureAnonymousAuth()` creates throwaway anon user `def-456` (empty progress).
@@ -241,7 +256,8 @@ New route: `src/app/auth/callback/page.tsx` (client component).
 
 | Error | User message (Vietnamese) | Handling |
 |---|---|---|
-| Email already registered | "Email đã được đăng ký. Thử đăng nhập?" | Auto-switch to "Đăng nhập" tab with email prefilled |
+| Email already registered (Supabase error from `updateUser({ email })`) | "Email đã được đăng ký. Thử đăng nhập?" | Clear the sessionStorage password key, auto-switch to "Đăng nhập" tab with email prefilled |
+| `updateUser({ password })` fails on callback page | "Không thể đặt mật khẩu. Vui lòng đăng nhập rồi thử lại." | Redirect to home with a toast; user can use "Forgot password" flow to retry |
 | Wrong password / invalid email | "Sai email hoặc mật khẩu." | Inline error below form |
 | Password < 6 chars | "Mật khẩu tối thiểu 6 ký tự." | Inline, live validation on blur |
 | Invalid email format | "Email không hợp lệ." | Inline, live validation on blur |
@@ -259,8 +275,9 @@ Manual configuration required before deployment. Document in `CONTRIBUTING.md` s
 
 1. **Auth > Providers > Email:** ensure "Enable email provider" is ON, "Secure email change" is ON, "Confirm email" is ON.
 2. **Auth > Providers > Google:** enable. Set Client ID and Client Secret from Google Cloud Console. Redirect URL: `https://<project-ref>.supabase.co/auth/v1/callback`.
-3. **Auth > URL Configuration:** set Site URL to `https://ai-edu-app.vercel.app`. Add `https://ai-edu-app.vercel.app/auth/callback` to Redirect URLs allow-list.
-4. **Auth > Email Templates > Confirm signup:** customize subject to "Xác nhận đăng ký tài khoản AI Cho Mọi Người" and body text in Vietnamese (keep the `{{ .ConfirmationURL }}` token).
+3. **Auth > General > "Allow manual linking":** **ON**. Required for `supabase.auth.linkIdentity()` to work (otherwise the anon→Google upgrade flow errors out).
+4. **Auth > URL Configuration:** set Site URL to `https://ai-edu-app.vercel.app`. Add `https://ai-edu-app.vercel.app/auth/callback` to Redirect URLs allow-list.
+5. **Auth > Email Templates > Confirm signup:** customize subject to "Xác nhận đăng ký tài khoản AI Cho Mọi Người" and body text in Vietnamese (keep the `{{ .ConfirmationURL }}` token).
 
 Google Cloud Console:
 1. Create OAuth 2.0 Client ID (Web application).
