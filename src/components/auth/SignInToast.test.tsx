@@ -90,4 +90,20 @@ describe("SignInToast", () => {
 
     expect(localStorage.getItem(LS_KEY)).not.toBeNull();
   });
+
+  it("hides immediately when user signs in while toast is visible", () => {
+    mockAuth(true);
+    const { rerender } = render(<SignInToast />);
+
+    act(() => {
+      vi.advanceTimersByTime(10 * 60 * 1000);
+    });
+    expect(screen.getByText(/Lưu tiến độ/i)).toBeInTheDocument();
+
+    // User signs in — isAnonymous flips to false
+    mockAuth(false);
+    rerender(<SignInToast />);
+
+    expect(screen.queryByText(/Lưu tiến độ/i)).not.toBeInTheDocument();
+  });
 });
