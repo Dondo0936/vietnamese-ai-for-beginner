@@ -4,6 +4,7 @@
 > Status: Draft — awaiting user review
 > Scope: Two new learning paths for Vietnamese elementary/secondary students (6–15 yrs), a parent-facing credibility dashboard, 9 new interaction primitives, 3 Supabase table additions, and a 6-phase shipping plan. Additive — no existing routes modified.
 > Authored from: brainstorming session 2026-04-12; informed by deep-research report `docs/superpowers/research/2026-04-12-kids-ai-edtech-best-practices.md`.
+> Technical claims fact-checked via Context7 against `/vercel/next.js` v16.2.2 docs, `/supabase/supabase` docs, and `/websites/vercel` docs on 2026-04-12. Project versions confirmed: Next.js 16.2.3, `@supabase/ssr` 0.10.2, `@supabase/supabase-js` 2.103.0.
 
 ---
 
@@ -248,13 +249,24 @@ create policy "parent reads own kid retention" on retention_checks
 
 A kid device opens `/kids/*` without a Supabase auth session. Artifact and retention writes go through a PostgREST RPC that accepts a `kid_profile_id` and a short-lived signed token the parent minted on handoff (PIN-entered on the kid device). No parent credentials ever touch the kid device.
 
-The RPC signature (exact name and arg set to be finalized at implementation time):
-```
+The RPC signature (exact name and arg set to be finalized at implementation time). Note `SECURITY DEFINER` — required so the function runs with elevated privileges to insert into `kid_artifacts` on behalf of a kid-device session that does not hold `auth.uid()`:
+
+```sql
 create or replace function record_artifact(
   p_kid_profile_id uuid, p_handoff_token text, p_topic_slug text,
   p_kind text, p_payload jsonb, p_thumbnail_url text
-) returns uuid ...
+) returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+  -- verify p_handoff_token against a short-lived server-minted JWT,
+  -- then insert into public.kid_artifacts, return new id
+  ...
+$$;
 ```
+
+Same `SECURITY DEFINER` pattern applies to the retention-check write-back RPC. Both RPCs must explicitly `set search_path = ''` to prevent search-path injection attacks (Supabase-recommended pattern).
 
 ---
 
@@ -311,9 +323,14 @@ Per user direction, **the layered consent stack (phone OTP + email delay + re-ve
 
 This is the ONLY place where kid-mode differs from adult layout. The navbar, footer, color tokens, and typography scale all come from `AppShell` unchanged — matching the user's requirement that "the coloring and the nav bar still shows it belongs to us."
 
-### 10.3 Parent subtree layout
+### 10.3 Parent subtree auth guard
 
-`src/app/kids/parent/layout.tsx` wraps everything under `/kids/parent/*` in a server-side auth guard. Unauthenticated requests redirect to `/kids/parent/login`. This is the only auth-gated subtree in the app.
+Follows the Next.js 16 two-layer pattern:
+
+1. **Optimistic cookie-only check in `proxy.ts`** (Next.js 16 replaces `middleware.ts` with `proxy.ts`). Any unauthenticated request to `/kids/parent/*` (other than `/kids/parent/login` and `/signup`) gets a server redirect to `/kids/parent/login`. Cookie-only — no database reads, no performance hit.
+2. **Authoritative verification in `src/app/kids/parent/layout.tsx`** — a server component that calls `createServerClient` from `@supabase/ssr`, verifies the session via Supabase, and calls `redirect('/kids/parent/login')` from `next/navigation` if invalid. Runs on every parent-subtree navigation.
+
+The proxy is fast but spoofable (cookies can be forged); the layout check hits Supabase and is the real gate. Server Actions under `/kids/parent/*` must **also** re-verify the session independently — Next.js 16 docs explicitly call this out ("actions are separate entry points"). This is the only auth-gated subtree in the app.
 
 ---
 
@@ -391,6 +408,14 @@ supabase/
     YYYYMMDDHHMMSS_kid_artifacts.sql
     YYYYMMDDHHMMSS_retention_checks.sql
     YYYYMMDDHHMMSS_record_artifact_rpc.sql
+
+vercel.ts                             # NEW — cron jobs config (retention + weekly email)
+                                      # Replaces any previous vercel.json cron setup
+
+src/app/api/kids/cron/
+  retention-schedule/route.ts         # Phase 4 — every 6h UTC
+  weekly-summary/route.ts             # Phase 4 — Sunday 13:00 UTC (20:00 ICT)
+  # Both validate Authorization: Bearer ${CRON_SECRET}
 
 docs/
   primitives-kids.md                # reference for the 9 new primitives (mirrors primitives.md pattern)
@@ -487,9 +512,19 @@ Shipping order. Each phase should be a shippable PR (or PR series) with feature 
 - Update `CONTRIBUTING.md` with a "Writing kid topics" section and Nhí voice-guide checklist.
 
 ### Phase 4 — Scheduler &amp; weekly email
-- Vercel Cron: `0 */6 * * *` runs retention-check scheduler (creates any missing `scheduled_for` rows).
+
+Vercel Cron constraints fact-checked against current docs:
+- **Cron timezone is always UTC.** Schedule expressions below are UTC; Vietnam (ICT = UTC+7) offsets baked in.
+- **Cron config lives in `vercel.ts`** (the TypeScript project config file that replaces `vercel.json` in current Vercel). Project needs `@vercel/config` added.
+- **Every cron endpoint must validate `Authorization: Bearer ${CRON_SECRET}`**. Vercel auto-injects this header on invocation; our route handlers must reject requests missing it. Add `CRON_SECRET` (≥16 random chars) to environment variables.
+- **Cron expression limits:** no `MON`/`SUN`/`JAN` word forms — numeric only (0–6 for day-of-week, 0 = Sunday). Day-of-month and day-of-week can't both be non-`*`.
+
+Scope of phase:
+- `vercel.ts` — two cron entries:
+  - `{ path: '/api/kids/cron/retention-schedule', schedule: '0 */6 * * *' }` — every 6 hours UTC — creates any missing `scheduled_for` rows in `retention_checks`.
+  - `{ path: '/api/kids/cron/weekly-summary', schedule: '0 13 * * 0' }` — every Sunday 13:00 UTC = Sunday 20:00 ICT — sends the weekly email.
+- Both route handlers at `src/app/api/kids/cron/*/route.ts` start by checking `request.headers.get('authorization') === \`Bearer ${process.env.CRON_SECRET}\`` and return 401 otherwise.
 - Retention checks surfaced on next kid session via `SpacedCheck` primitive render.
-- Vercel Cron: `0 13 * * 0` runs weekly-summary email job.
 - Email provider choice finalized here (Resend recommended; Supabase built-in as fallback).
 - `WeeklyReportPreview` component shown in dashboard alongside email.
 
@@ -535,6 +570,8 @@ These are resolved at the design level but need implementation-level choices dur
 3. **Artifact thumbnail storage** — Supabase Storage bucket vs. data-URI in `jsonb` for small payloads. Deferred to Phase 3.
 4. **Teachable Machine embed fallback** — if the iframe doesn't expose classification via postMessage, what is the kid's UX? (Current fallback plan: screenshot-and-upload via `ArtifactCapture`.)
 5. **PIN security** — bcrypt hash is fine for a 4-digit PIN combined with per-account salt, but rate limiting on PIN entry needs spec'ing at implementation time.
+6. **`proxy.ts` creation (Phase 2)** — fact-checked: repo has no existing `proxy.ts` or `middleware.ts` on `main` as of 2026-04-12. Phase 2 creates `proxy.ts` at the repo root matching `/kids/parent/((?!login|signup).*)` for the optimistic session-cookie redirect. If the separate auth sign-up/sign-in Google OAuth work (spec `2026-04-12-auth-spec.md`, commit `a44b304`) lands first and adds a `proxy.ts`, Phase 2 extends its matcher array instead of creating a new file.
+7. **`vercel.ts` creation (Phase 4)** — fact-checked: repo has no `vercel.ts` or `vercel.json` on `main`. Phase 4 creates `vercel.ts` at repo root and installs `@vercel/config` as a devDependency. This is the current recommended pattern per Vercel docs (replaces `vercel.json`).
 
 ---
 
