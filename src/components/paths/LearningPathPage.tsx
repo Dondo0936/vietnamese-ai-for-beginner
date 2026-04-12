@@ -48,6 +48,7 @@ export default function LearningPathPage(props: LearningPathPageProps) {
 }
 
 function LearningPathContent({
+  pathId,
   nameVi,
   descriptionVi,
   icon: Icon,
@@ -179,7 +180,7 @@ function LearningPathContent({
                       return (
                         <Link
                           key={topic.slug}
-                          href={`/topics/${topic.slug}`}
+                          href={`/topics/${topic.slug}?path=${pathId}`}
                           className={`group relative flex items-center gap-2 rounded-[12px] border px-3 py-2 text-left transition-all ${
                             isRead
                               ? "border-accent/30 bg-accent/5 hover:bg-accent/10"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 interface LessonSectionProps {
   children: React.ReactNode;
@@ -20,9 +20,21 @@ export default function LessonSection({
   totalSteps,
 }: LessonSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // When the user prefers reduced motion, skip the scroll-triggered reveal
+    // entirely — content should be visible immediately on mount. Without this
+    // the `animate` prop stays at { opacity: 0 } until the IntersectionObserver
+    // fires, and some browsers with reduced-motion honor framer-motion's
+    // transition-skip in a way that leaves the element stuck at the initial
+    // state (audit found sections 3–8 rendering as empty blocks).
+    if (reduceMotion) {
+      setVisible(true);
+      return;
+    }
+
     const el = ref.current;
     if (!el) return;
 
@@ -38,7 +50,7 @@ export default function LessonSection({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [reduceMotion]);
 
   return (
     <div ref={ref} className="lesson-section scroll-mt-20 my-10 first:mt-0">
@@ -63,11 +75,11 @@ export default function LessonSection({
         </div>
       )}
 
-      {/* Content with scroll-triggered animation */}
+      {/* Content with scroll-triggered animation (skipped under reduced motion) */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 16 }}
         animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: "easeOut" }}
       >
         {children}
       </motion.div>
