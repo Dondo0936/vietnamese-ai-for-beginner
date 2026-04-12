@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   BookOpen,
   X,
@@ -29,6 +30,11 @@ export default function LearningObjectivesModal({
   objectives,
 }: LearningObjectivesModalProps) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -69,8 +75,9 @@ export default function LearningObjectivesModal({
         Mục tiêu học tập
       </button>
 
-      {/* Modal overlay */}
-      {open && (
+      {/* Modal overlay — rendered via portal into document.body to escape
+          ancestor stacking contexts (e.g. header's backdrop-blur-sm). */}
+      {open && mounted && createPortal(
         <div
           className="fixed inset-0 z-[200] cmd-backdrop flex items-center justify-center p-4"
           onClick={close}
@@ -218,7 +225,8 @@ export default function LearningObjectivesModal({
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
