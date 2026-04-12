@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import {
   BarChart3, BookOpen, Bookmark, Trophy, Clock, ArrowRight,
@@ -9,7 +9,7 @@ import {
   Gamepad2, Briefcase, Calculator,
 } from "lucide-react";
 import AppShell from "@/components/layout/AppShell";
-import { getUserProgress } from "@/lib/database";
+import { useProgress } from "@/lib/progress-context";
 import { topicList, categories } from "@/topics/registry";
 import type { TopicMeta } from "@/lib/types";
 
@@ -34,19 +34,15 @@ const categoryIcons: Record<string, React.ElementType> = {
 };
 
 export default function ProgressPage() {
-  const [readTopics, setReadTopics] = useState<string[]>([]);
-  const [bookmarks, setBookmarks] = useState<string[]>([]);
-  const [lastVisited, setLastVisited] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  return (
+    <AppShell>
+      <ProgressContent />
+    </AppShell>
+  );
+}
 
-  useEffect(() => {
-    getUserProgress().then((progress) => {
-      setReadTopics(progress.readTopics);
-      setBookmarks(progress.bookmarks);
-      setLastVisited(progress.lastVisited);
-      setLoading(false);
-    });
-  }, []);
+function ProgressContent() {
+  const { readTopics, bookmarks, loading } = useProgress();
 
   const totalTopics = topicList.length;
   const readCount = readTopics.length;
@@ -75,7 +71,8 @@ export default function ProgressPage() {
     });
   }, [readTopics]);
 
-  const lastTopic = lastVisited ? topicList.find((t) => t.slug === lastVisited) : null;
+  const lastRead = readTopics.length > 0 ? readTopics[readTopics.length - 1] : null;
+  const lastTopic = lastRead ? topicList.find((t) => t.slug === lastRead) : null;
 
   const recentlyRead = useMemo(() => {
     return readTopics
@@ -99,16 +96,13 @@ export default function ProgressPage() {
 
   if (loading) {
     return (
-      <AppShell>
-        <div className="flex items-center justify-center py-20">
-          <p className="text-muted">Đang tải...</p>
-        </div>
-      </AppShell>
+      <div className="flex items-center justify-center py-20">
+        <p className="text-muted">Đang tải...</p>
+      </div>
     );
   }
 
   return (
-    <AppShell>
       <div className="mx-auto max-w-4xl px-4 py-10">
         <div className="flex items-center gap-3 mb-8">
           <BarChart3 className="h-6 w-6 text-accent" />
@@ -212,6 +206,5 @@ export default function ProgressPage() {
           })}
         </div>
       </div>
-    </AppShell>
   );
 }

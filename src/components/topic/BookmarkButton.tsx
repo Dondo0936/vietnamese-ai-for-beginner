@@ -1,42 +1,27 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { Bookmark } from "lucide-react";
-import { toggleBookmark, getUserProgress } from "@/lib/database";
+import { useProgress } from "@/lib/progress-context";
 
 interface BookmarkButtonProps {
   slug: string;
-  initialBookmarked?: boolean;
 }
 
-export default function BookmarkButton({
-  slug,
-  initialBookmarked = false,
-}: BookmarkButtonProps) {
-  const [bookmarked, setBookmarked] = useState(initialBookmarked);
+export default function BookmarkButton({ slug }: BookmarkButtonProps) {
+  const { bookmarks, toggleBookmark } = useProgress();
+  const bookmarked = bookmarks.includes(slug);
   const [pending, setPending] = useState(false);
-
-  // Fetch actual bookmark state on mount
-  useEffect(() => {
-    getUserProgress().then((progress) => {
-      setBookmarked(progress.bookmarks.includes(slug));
-    });
-  }, [slug]);
 
   const handleToggle = useCallback(async () => {
     if (pending) return;
     setPending(true);
-    setBookmarked((prev) => !prev);
-
     try {
-      const result = await toggleBookmark(slug);
-      setBookmarked(result);
-    } catch {
-      setBookmarked((prev) => !prev);
+      await toggleBookmark(slug);
     } finally {
       setPending(false);
     }
-  }, [slug, pending]);
+  }, [slug, pending, toggleBookmark]);
 
   return (
     <button
