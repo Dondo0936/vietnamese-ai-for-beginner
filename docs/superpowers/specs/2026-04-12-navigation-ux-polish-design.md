@@ -81,17 +81,48 @@ Also added:
 - `useReducedMotion()` — skip pill-wiggle animations (audit #7)
 - `role="navigation"` + `aria-label="Mục lục bài học"` + `aria-current="location"` on active section (audit #8)
 
-### Decision 3: One-section-per-type refactor (60 topics)
+### Decision 3: One-section-per-type rule + `LessonSection` for sub-steps
 
-For each of the 36 + 24 topics with duplicate sections:
+**The rule (documented in `_template.tsx`):**
 
-- **If the duplicates share intent** (e.g., two viz demos for one concept) → merge into one `<VisualizationSection>` with both demos inside, or split-tab them
-- **If the duplicates are progressive** (intro demo + deep demo) → merge into one section with a collapsible or tabbed inner layout
-- **If one is actually an inline illustration that got wrapped in `VisualizationSection`** → swap it for `<InlineChallenge>` or raw JSX
+> Each topic renders at most ONE `<VisualizationSection>` and ONE `<ExplanationSection>`. To include multiple demos or multiple explanations, use `<LessonSection label="…" step={N}>` *inside* the outer section.
 
-The plan enumerates each of the 60 topics with a per-topic call. Content doesn't change — containers do.
+This is the best-fit for open-source contribution:
 
-This eliminates duplicate IDs at the source, preserves the topic-files-are-free-form principle (experts still write whatever they want inside the sections), and keeps the TOC's one-per-type mental model honest.
+- **One pattern to memorize.** New contributors copy `_template.tsx` and can't accidentally ship duplicate IDs.
+- **Zero new primitives.** `<LessonSection>` already exists and is used across the codebase for sub-steps — nothing new for contributors to learn.
+- **Dev-mode guardrail.** `VisualizationSection` / `ExplanationSection` each emit a `console.warn` in development when a second instance of the same type appears in the same topic render tree (detect via React context). Silent bugs become loud.
+- **Mechanical refactor.** For the 60 existing topics, each duplicate is wrapped in a `<LessonSection label="…" step={N}>` and collapsed under one outer section. No content lost, no intent changed, every diff is reviewable at a glance.
+- **Template carries the norm.** `_template.tsx` grows a commented example showing the "multi-demo-inside-one-section" pattern so PR #500 from a new contributor looks like PR #1.
+
+**Refactor mechanic (applied uniformly to all 60 topics):**
+
+Before:
+```tsx
+<VisualizationSection>
+  <FirstDemo />
+</VisualizationSection>
+
+<VisualizationSection>
+  <SecondDemo />
+</VisualizationSection>
+```
+
+After:
+```tsx
+<VisualizationSection>
+  <LessonSection label="Demo cơ bản" step={1}>
+    <FirstDemo />
+  </LessonSection>
+  <LessonSection label="Demo nâng cao" step={2}>
+    <SecondDemo />
+  </LessonSection>
+</VisualizationSection>
+```
+
+Plan lists all 60 topics; each gets a single bite-sized commit using this mechanic. Labels and step counts come from reading the topic's existing section headings / step labels. No judgment calls on "tab vs merge vs collapsible" — always this shape.
+
+This eliminates duplicate IDs at the source, preserves the topic-files-are-free-form principle (experts still write whatever they want inside `LessonSection`s), and keeps the TOC's one-per-type mental model honest.
 
 ## Data flow
 
@@ -114,16 +145,19 @@ TopicTOC (pure renderer, observer keyed on section IDs)
 | `meta.tocSections` is `[]` | TOC rail doesn't render (topic opted out) |
 | Target ID never mounts (e.g., typo in meta) | TOC entry renders, bounded retry fails, entry stays un-highlighted — anchor jump still works |
 | Reduced motion | Skip pill-wiggle animations; progress dot static |
-| Duplicate IDs post-refactor (shouldn't happen) | Dev-mode `console.warn` during render; TOC picks the first element; plan's regression test guards against recurrence |
+| Duplicate IDs post-refactor (shouldn't happen) | `VisualizationSection` / `ExplanationSection` use a React context counter — second instance emits a `console.warn` in development with the topic slug and which duplicate fired. TOC picks the first element. Plan adds a regression test that renders a topic with two `<VisualizationSection>`s and asserts the warn fires. |
 
 ## Components in scope
 
 **Code changes:**
 - `src/lib/types.ts` — add `TocSection`, `TocSectionId`, extend `TopicMeta`
 - `src/components/topic/TopicTOC.tsx` — rewrite (sections prop, retry observer, reduced-motion, a11y)
-- `src/components/topic/TopicLayout.tsx` — resolve `sections` and pass as prop
+- `src/components/topic/TopicLayout.tsx` — resolve `sections` and pass as prop; wrap body in `<SectionDuplicateGuard>` context provider
+- `src/components/topic/VisualizationSection.tsx` — consume `SectionDuplicateGuard` context; dev-mode warn on second instance
+- `src/components/topic/ExplanationSection.tsx` — same dev-mode warn pattern
+- `src/components/topic/SectionDuplicateGuard.tsx` (NEW) — context + hook for duplicate detection
 - `src/components/topic/AnalogyCard.tsx` — **DELETE**
-- `src/topics/_template.tsx` — remove AnalogyCard import/example
+- `src/topics/_template.tsx` — remove AnalogyCard import; add commented "multi-demo inside one section" pattern example
 - `src/components/interactive/index.ts` — drop AnalogyCard re-export (if any)
 
 **Mechanical topic refactor (60 files):**
@@ -141,7 +175,7 @@ TopicTOC (pure renderer, observer keyed on section IDs)
 **Tests:**
 - `src/__tests__/topic-toc.test.tsx` — TopicTOC unit tests (sections prop, retry observer, reduced motion, a11y)
 - `src/__tests__/topic-layout-toc-resolution.test.tsx` — TopicLayout resolves default vs override
-- `src/__tests__/topic-meta-toc-sections.test.ts` — type-level sanity for optional field
+- `src/__tests__/section-duplicate-guard.test.tsx` — SectionDuplicateGuard warns on second instance; silent on first
 - Existing 78 tests must keep passing
 
 ## Testing strategy
@@ -153,14 +187,15 @@ TopicTOC (pure renderer, observer keyed on section IDs)
 4. When target never arrives (3s timeout), TOC stops retrying; rows render but none active
 5. Under `useReducedMotion() === true`, no animation classes applied
 6. a11y landmarks present (`role="navigation"`, `aria-label`, `aria-current`)
+7. `SectionDuplicateGuard` stays silent on first `VisualizationSection`, `console.warn`s on second instance (and surfaces topic slug in message)
 
 **Integration:**
-7. `TopicLayout` passes `DEFAULT_TOC_SECTIONS` when `meta.tocSections` undefined
-8. `TopicLayout` passes `meta.tocSections` verbatim when provided
-9. Topic smoke test: one topic per category, TOC renders + clicks scroll to sections
+8. `TopicLayout` passes `DEFAULT_TOC_SECTIONS` when `meta.tocSections` undefined
+9. `TopicLayout` passes `meta.tocSections` verbatim when provided
+10. Topic smoke test: one topic per category, TOC renders + clicks scroll to sections
 
 **Regression:**
-10. All 78 existing tests pass
+11. All 78 existing tests pass
 
 ## YAGNI decisions
 
@@ -191,9 +226,9 @@ TopicTOC (pure renderer, observer keyed on section IDs)
 ## Self-review
 
 - **Placeholders:** none — every change traces to a specific audit item
-- **Internal consistency:** one `TopicMeta` field, one component rewrite, one mechanical refactor, all agree
-- **Scope:** single phase, ~1-2 days of work. Plan will decompose into ~15-20 bite-sized tasks
-- **Ambiguity:** per-topic refactor calls need case-by-case judgment — flagged in the plan as "read topic, pick merge strategy, apply, smoke-test"
+- **Internal consistency:** one `TopicMeta` field, one TOC rewrite, one uniform refactor mechanic, one duplicate-guard — all agree
+- **Scope:** single phase, ~1-2 days of work. Plan will decompose into ~20-25 bite-sized tasks (most are per-topic refactor commits)
+- **Ambiguity eliminated:** refactor is mechanical (wrap-in-LessonSection pattern); no per-topic judgment. Open-source contributors see one rule and one example in `_template.tsx`.
 
 ## Links
 
