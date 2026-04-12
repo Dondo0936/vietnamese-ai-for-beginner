@@ -72,20 +72,23 @@ export default function LearningObjectivesModal({
       {/* Modal overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[200] cmd-backdrop flex items-center justify-center p-4"
           onClick={close}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="learning-objectives-title"
         >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-
           {/* Modal */}
           <div
-            className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-border bg-card shadow-xl"
+            className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card px-6 py-4 rounded-t-2xl">
-              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+              <h2
+                id="learning-objectives-title"
+                className="text-lg font-bold text-foreground flex items-center gap-2"
+              >
                 <BookOpen size={20} className="text-accent" />
                 Mục tiêu học tập
               </h2>
