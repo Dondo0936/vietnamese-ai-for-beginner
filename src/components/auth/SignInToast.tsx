@@ -20,6 +20,21 @@ export default function SignInToast() {
 
   useEffect(() => setMounted(true), []);
 
+  // Force-hide the toast and close the modal whenever the user is no
+  // longer anonymous (signed in, or signed out → fresh anon not yet
+  // created). Guards against the case where authentication happens
+  // while the toast is already visible or the modal is open.
+  useEffect(() => {
+    if (!isAnonymous) {
+      setVisible(false);
+      setModalOpen(false);
+      if (dismissTimer.current) {
+        clearTimeout(dismissTimer.current);
+        dismissTimer.current = null;
+      }
+    }
+  }, [isAnonymous]);
+
   useEffect(() => {
     if (!isAnonymous) return;
 
