@@ -20,6 +20,7 @@ interface LearningPathPageProps {
   descriptionVi: string;
   icon: React.ElementType;
   stages: Stage[];
+  headerExtra?: React.ReactNode;
 }
 
 /* ─── Helpers ─── */
@@ -51,6 +52,7 @@ function LearningPathContent({
   descriptionVi,
   icon: Icon,
   stages,
+  headerExtra,
 }: LearningPathPageProps) {
   const { readTopics, loading } = useProgress();
 
@@ -89,6 +91,7 @@ function LearningPathContent({
                 {nameVi}
               </h1>
               <p className="text-sm text-muted mt-1">{descriptionVi}</p>
+              {headerExtra && <div className="mt-3">{headerExtra}</div>}
             </div>
           </div>
 
