@@ -108,6 +108,62 @@ Each path page file defines a `pathObjectives` constant that the modal consumes.
 
 ---
 
+### 1.3 `QuizSection` — Extended Question Types
+
+**File:** `src/components/topic/QuizSection.tsx` (modify existing)
+
+Currently all quizzes are 3 MCQ questions with identical format. Extend to support a discriminated union of question types within the same quiz flow.
+
+**New question types (added via discriminated union):**
+
+```typescript
+// Existing — unchanged
+interface MCQQuestion {
+  type?: "mcq";           // Default, backwards-compatible (omitted = mcq)
+  question: string;
+  options: string[];
+  correct: number;
+  explanation?: string;
+}
+
+// New — fill in the blank
+interface FillBlankQuestion {
+  type: "fill-blank";
+  question: string;       // Contains {blank} placeholder(s)
+  blanks: { answer: string; accept?: string[] }[];  // accept = alternative correct answers
+  explanation?: string;
+}
+
+// New — code completion
+interface CodeQuestion {
+  type: "code";
+  question: string;
+  codeTemplate: string;   // Code with ___ blanks
+  language: string;
+  blanks: { answer: string; accept?: string[] }[];
+  explanation?: string;
+}
+
+export type QuizQuestion = MCQQuestion | FillBlankQuestion | CodeQuestion;
+```
+
+**Rendering behavior:**
+- MCQ: current behavior (no changes)
+- Fill-blank: renders the question with inline text inputs at `{blank}` positions. Check button validates. Case-insensitive matching. `accept` array for alternative correct answers (e.g., "ReLU" and "relu")
+- Code: renders a code block with editable `___` blanks as inline inputs. Same check/validate flow.
+
+**Scoring:** all question types contribute equally to the final score.
+
+**Backwards compatibility:** existing topics with `QuizQuestion[]` (no `type` field) continue working unchanged — `type` defaults to `"mcq"`.
+
+**Per-path quiz guidelines (for content editing phase):**
+- **Student math topics:** use `fill-blank` for formulas and equations
+- **Student ML/NN topics:** 5-7 questions mixing MCQ + fill-blank
+- **Engineer topics:** use `code` for implementation questions
+- **Office topics:** MCQ with scenario-based questions (longer question text, practical workplace situations)
+
+---
+
 ## Phase 2: Student Path Restructuring
 
 ### Current (4 stages, 27 topics):
@@ -175,12 +231,13 @@ For each existing topic in the Student path, apply this checklist:
 ```
 1. Build TopicLink component + add to interactive/index.ts
 2. Build LearningObjectivesModal component
-3. Update CONTRIBUTING.md with TopicLink contributor guide
-4. Add LearningObjectivesModal + pathObjectives to Student path page
-5. Restructure Student path stages (reorder slugs in page.tsx)
-6. Create 5 new topic files for Student path (what-is-ml, python-for-ml, model-evaluation-selection, jupyter-colab-workflow, end-to-end-ml-project)
-7. Edit each existing Student path topic (TopicLink + audit fixes)
-8. Repeat steps 4-7 for Engineer, Researcher, Office paths
+3. Extend QuizSection with fill-blank and code question types
+4. Update CONTRIBUTING.md with TopicLink + quiz type contributor guides
+5. Add LearningObjectivesModal + pathObjectives to Student path page
+6. Restructure Student path stages (reorder slugs in page.tsx)
+7. Create 5 new topic files for Student path (what-is-ml, python-for-ml, model-evaluation-selection, jupyter-colab-workflow, end-to-end-ml-project)
+8. Edit each existing Student path topic (TopicLink + audit fixes + quiz variety)
+9. Repeat steps 5-8 for Engineer, Researcher, Office paths
 ```
 
 ---
@@ -189,7 +246,7 @@ For each existing topic in the Student path, apply this checklist:
 
 - Auto-linking utility (chose manual TopicLink approach)
 - Spaced repetition / review mechanism
-- Quiz format variety (more than 3 questions, fill-in-the-blank quizzes)
+- ~~Quiz format variety~~ — moved into Phase 1 (section 1.3)
 - Cross-path prerequisite indicators
 - Separate intro page per path (chose modal approach)
 - Other 3 paths (Engineer, Researcher, Office) — future iterations
