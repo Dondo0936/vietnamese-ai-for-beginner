@@ -23,6 +23,9 @@ export { default as ProgressSteps } from "./ProgressSteps";
 export { default as Callout } from "./Callout";
 export { default as MiniSummary } from "./MiniSummary";
 
+// Cross-linking
+export { default as TopicLink } from "./TopicLink";
+
 // Layout
 export { default as SplitView } from "./SplitView";
 export { default as TabView } from "./TabView";
