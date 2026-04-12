@@ -3,8 +3,8 @@
 import { GraduationCap } from "lucide-react";
 import LearningPathPage from "@/components/paths/LearningPathPage";
 import LearningObjectivesModal from "@/components/paths/LearningObjectivesModal";
-import type { Stage } from "@/components/paths/LearningPathPage";
 import type { PathObjectives } from "@/components/paths/LearningObjectivesModal";
+import { getPathStages } from "@/lib/paths";
 
 const pathObjectives: PathObjectives = {
   audience:
@@ -71,64 +71,6 @@ const pathObjectives: PathObjectives = {
   nextPath: { slug: "ai-engineer", label: "AI Engineer" },
 };
 
-const stages: Stage[] = [
-  {
-    title: "Giới thiệu",
-    slugs: ["what-is-ml"],
-  },
-  {
-    title: "Nền tảng toán",
-    slugs: [
-      "linear-algebra-for-ml",
-      "probability-statistics",
-      "calculus-for-backprop",
-    ],
-  },
-  {
-    title: "ML cơ bản",
-    slugs: [
-      "supervised-unsupervised-rl",
-      "linear-regression",
-      "logistic-regression",
-      "information-theory",
-      "decision-trees",
-      "knn",
-      "naive-bayes",
-      "k-means",
-      "confusion-matrix",
-      "bias-variance",
-      "overfitting-underfitting",
-      "cross-validation",
-      "train-val-test",
-    ],
-  },
-  {
-    title: "Mạng nơ-ron",
-    slugs: [
-      "neural-network-overview",
-      "perceptron",
-      "mlp",
-      "activation-functions",
-      "forward-propagation",
-      "backpropagation",
-      "gradient-descent",
-      "loss-functions",
-      "epochs-batches",
-    ],
-  },
-  {
-    title: "Kỹ năng thực hành",
-    slugs: [
-      "data-preprocessing",
-      "feature-engineering",
-      "python-for-ml",
-      "model-evaluation-selection",
-      "jupyter-colab-workflow",
-      "end-to-end-ml-project",
-    ],
-  },
-];
-
 export default function StudentPathPage() {
   return (
     <LearningPathPage
@@ -136,7 +78,7 @@ export default function StudentPathPage() {
       nameVi="Học sinh · Sinh viên"
       descriptionVi="Nền tảng AI/ML từ con số 0 — toán, thuật toán cổ điển, mạng nơ-ron cơ bản"
       icon={GraduationCap}
-      stages={stages}
+      stages={getPathStages("student")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
     />
   );

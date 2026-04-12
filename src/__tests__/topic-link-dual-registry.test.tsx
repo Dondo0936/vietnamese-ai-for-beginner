@@ -12,6 +12,7 @@ vi.mock("next/link", () => ({
 const pathnameMock = vi.fn(() => "/topics/linear-regression");
 vi.mock("next/navigation", () => ({
   usePathname: () => pathnameMock(),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 // Mock both registries with one known slug each

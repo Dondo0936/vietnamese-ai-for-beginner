@@ -3,8 +3,8 @@
 import { Briefcase } from "lucide-react";
 import LearningPathPage from "@/components/paths/LearningPathPage";
 import LearningObjectivesModal from "@/components/paths/LearningObjectivesModal";
-import type { Stage } from "@/components/paths/LearningPathPage";
 import type { PathObjectives } from "@/components/paths/LearningObjectivesModal";
+import { getPathStages } from "@/lib/paths";
 
 const pathObjectives: PathObjectives = {
   audience:
@@ -63,51 +63,6 @@ const pathObjectives: PathObjectives = {
   nextPath: { slug: "ai-engineer", label: "AI Engineer" },
 };
 
-const stages: Stage[] = [
-  {
-    title: "Bắt đầu với AI",
-    slugs: [
-      "getting-started-with-ai",
-      "llm-overview",
-      "prompt-engineering",
-      "chain-of-thought",
-      "in-context-learning",
-      "temperature",
-      "hallucination",
-      "context-window",
-    ],
-  },
-  {
-    title: "Ứng dụng thực tế",
-    slugs: [
-      "rag",
-      "semantic-search",
-      "ai-coding-assistants",
-      "agentic-workflows",
-      "ai-for-writing",
-      "ai-for-data-analysis",
-      "ai-privacy-security",
-      "ai-tool-evaluation",
-    ],
-  },
-  {
-    title: "An toàn & Đạo đức",
-    slugs: ["bias-fairness", "ai-governance", "guardrails", "explainability"],
-  },
-  {
-    title: "Ứng dụng ngành",
-    slugs: [
-      "ai-in-finance",
-      "ai-in-healthcare",
-      "ai-in-education",
-      "ai-in-agriculture",
-      "recommendation-systems",
-      "sentiment-analysis",
-      "text-classification",
-    ],
-  },
-];
-
 export default function OfficePathPage() {
   return (
     <LearningPathPage
@@ -115,7 +70,7 @@ export default function OfficePathPage() {
       nameVi="Nhân viên văn phòng"
       descriptionVi="Hiểu AI để ứng dụng trong công việc — prompt, ứng dụng thực tế, an toàn AI"
       icon={Briefcase}
-      stages={stages}
+      stages={getPathStages("office")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
     />
   );
