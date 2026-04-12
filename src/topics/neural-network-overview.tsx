@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -17,6 +17,7 @@ export default function NeuralNetworkOverviewTopic() {
     { question: "Neural network 'học' bằng cách nào?", options: ["Lập trình từng quy tắc thủ công", "Điều chỉnh weights (trọng số) thông qua backpropagation để giảm loss function — giống điều chỉnh núm âm thanh để nghe hay nhất", "Copy dữ liệu từ internet"], correct: 1, explanation: "Neural network = tập hợp weights. Training = tìm weights tối ưu. Backpropagation tính gradient của loss theo từng weight → gradient descent điều chỉnh weights → loss giảm dần → model đúng dần. Như điều chỉnh 1 triệu núm âm thanh cùng lúc!" },
     { question: "Tại sao cần activation function (ReLU, sigmoid)?", options: ["Để tính nhanh hơn", "Không có activation → mạng chỉ là phép nhân ma trận (tuyến tính) → không học được non-linear patterns", "Để giảm overfitting"], correct: 1, explanation: "Linear(Linear(x)) = Linear(x) — bao nhiêu layers cũng chỉ là 1 phép biến đổi tuyến tính. Activation function (ReLU, tanh) thêm non-linearity → mạng có thể học bất kỳ function nào (Universal Approximation Theorem). ReLU: max(0, x) — đơn giản, hiệu quả." },
     { question: "Deep Learning khác Machine Learning thế nào?", options: ["Hoàn toàn khác nhau", "Deep Learning LÀ Machine Learning, nhưng dùng neural networks nhiều layers (deep) → tự học features thay vì cần feature engineering thủ công", "Deep Learning không cần data"], correct: 1, explanation: "ML truyền thống: feature engineering thủ công → model. DL: raw data → neural network tự học features (layers đầu học edges, layers giữa học shapes, layers sau học concepts). Trade-off: DL cần NHIỀU data hơn nhưng không cần feature engineering." },
+    { type: "fill-blank", question: "Neural network học bằng cách chạy {blank} để tính gradient, rồi dùng gradient descent để cập nhật weights.", blanks: [{ answer: "backpropagation", accept: ["lan truyền ngược", "backprop"] }], explanation: "Backpropagation (lan truyền ngược) tính đạo hàm riêng của hàm loss theo từng weight bằng quy tắc chuỗi, sau đó gradient descent dùng các gradient đó để cập nhật weights theo hướng giảm loss." },
   ], []);
 
   return (
@@ -52,7 +53,7 @@ export default function NeuralNetworkOverviewTopic() {
       </LessonSection>
 
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
-        <AhaMoment><p>Neural network chỉ là: <strong>nhiều phép nhân ma trận + activation functions</strong>. Sức mạnh không từ 1 neuron mà từ <strong>hàng triệu neurons kết nối</strong>{" "}— giống đàn kiến: 1 con yếu, cả đàn làm được mọi thứ. Training = điều chỉnh hàng triệu 'núm âm thanh' (weights) để output đúng!</p></AhaMoment>
+        <AhaMoment><p>Neural network chỉ là: <strong>nhiều phép nhân ma trận + <TopicLink slug="activation-functions">activation functions</TopicLink></strong>. Sức mạnh không từ 1 neuron mà từ <strong>hàng triệu neurons kết nối</strong>{" "}— giống đàn kiến: 1 con yếu, cả đàn làm được mọi thứ. Training = điều chỉnh hàng triệu 'núm âm thanh' (weights) để output đúng!</p></AhaMoment>
       </LessonSection>
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
@@ -61,12 +62,13 @@ export default function NeuralNetworkOverviewTopic() {
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Neural Network</strong>{" "}là mô hình gồm nhiều layers neurons kết nối, học bằng cách điều chỉnh weights để giảm loss.</p>
+          <p><strong>Neural Network</strong>{" "}là mô hình gồm nhiều layers neurons kết nối, học bằng cách điều chỉnh weights để giảm loss. Đơn vị cơ bản nhất là <TopicLink slug="perceptron">perceptron</TopicLink>; xếp chồng nhiều lớp tạo thành <TopicLink slug="mlp">MLP</TopicLink>.</p>
           <p><strong>Forward pass (1 neuron):</strong></p>
           <LaTeX block>{"z = \\sum_{i=1}^{n} w_i x_i + b \\quad \\text{(weighted sum)}"}</LaTeX>
           <LaTeX block>{"a = \\sigma(z) \\quad \\text{(activation: ReLU, sigmoid, tanh)}"}</LaTeX>
           <p><strong>Training loop:</strong></p>
           <LaTeX block>{"\\theta_{t+1} = \\theta_t - \\eta \\cdot \\nabla_\\theta \\mathcal{L}(\\theta) \\quad \\text{(gradient descent)}"}</LaTeX>
+          <p>Quá trình tính gradient được thực hiện bởi <TopicLink slug="backpropagation">backpropagation</TopicLink>, kết hợp với <TopicLink slug="supervised-unsupervised-rl">học có giám sát</TopicLink> để điều chỉnh weights từ dữ liệu có nhãn.</p>
           <Callout variant="tip" title="Universal Approximation Theorem">Neural network với 1 hidden layer đủ rộng có thể xấp xỉ BẤT KỲ function nào. Nhưng trong thực tế, nhiều layers (deep) hiệu quả hơn: mỗi layer học mức abstraction cao hơn (edges → shapes → objects).</Callout>
           <p><strong>Các kiến trúc phổ biến:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">

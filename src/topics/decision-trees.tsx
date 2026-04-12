@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -155,6 +155,15 @@ export default function DecisionTreesTopic() {
       ],
       correct: 1,
       explanation: "Cây quyết định tạo ra luật IF-THEN mà con người đọc được. Trong y tế, tài chính — nơi cần giải thích quyết định — đây là ưu điểm rất lớn.",
+    },
+    {
+      type: "fill-blank",
+      question: "Gini impurity bằng {blank} khi nút chứa 100% một lớp (thuần khiết hoàn toàn), và đạt giá trị cao nhất khi các lớp {blank} nhau.",
+      blanks: [
+        { answer: "0", accept: ["0.0", "bằng 0", "giá trị 0"] },
+        { answer: "cân bằng", accept: ["đồng đều", "bằng nhau", "ngang nhau"] },
+      ],
+      explanation: "G = 1 - Σ p_k². Khi nút chứa 100% lớp A: p_A = 1 → G = 1 - 1² = 0 (thuần khiết). Khi hai lớp bằng nhau 50/50: G = 1 - (0.5² + 0.5²) = 0.5 (bất định cao nhất cho 2 lớp). Thuật toán luôn tìm câu hỏi giảm G nhiều nhất.",
     },
   ], []);
 
@@ -360,7 +369,11 @@ export default function DecisionTreesTopic() {
             chia không gian dữ liệu bằng chuỗi câu hỏi dạng &quot;feature X &gt; ngưỡng T?&quot;. Tại mỗi nút, thuật toán chọn câu hỏi tốt nhất theo tiêu chí:
           </p>
 
-          <p><strong>Gini Impurity</strong>{" "}(mặc định trong scikit-learn):</p>
+          <p>
+            <strong>Gini Impurity</strong>{" "}(mặc định trong scikit-learn) — liên quan chặt chẽ đến{" "}
+            <TopicLink slug="information-theory">lý thuyết thông tin</TopicLink>{" "}
+            qua Information Gain:
+          </p>
           <LaTeX block>{"G = 1 - \\sum_{k=1}^{K} p_k^2"}</LaTeX>
 
           <p>
@@ -375,7 +388,15 @@ export default function DecisionTreesTopic() {
             Trong thực tế, hai tiêu chí cho kết quả gần giống nhau. Gini nhanh hơn (không cần tính log), Entropy cho cây cân bằng hơn. scikit-learn mặc định dùng Gini.
           </Callout>
 
-          <p><strong>Kiểm soát overfitting:</strong></p>
+          <p>
+            <strong>Kiểm soát{" "}
+            <TopicLink slug="overfitting-underfitting">overfitting</TopicLink></strong>{" "}
+            — cây sâu có thể học thuộc noise. Hiểu rõ{" "}
+            <TopicLink slug="bias-variance">đánh đổi bias-variance</TopicLink>{" "}
+            giúp chọn max_depth phù hợp. Dùng{" "}
+            <TopicLink slug="cross-validation">kiểm định chéo</TopicLink>{" "}
+            để đánh giá:
+          </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>max_depth:</strong>{" "}Giới hạn chiều sâu cây</li>
             <li><strong>min_samples_split:</strong>{" "}Số mẫu tối thiểu để chia nhánh</li>

@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare,
+  MiniSummary, Callout, CodeBlock, LaTeX, ToggleCompare, TopicLink, DragDrop,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -82,7 +82,7 @@ function ArcheryTarget({ bias, variance, label }: { bias: "high" | "low"; varian
   );
 }
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 9;
 
 /* ═══════════════ MAIN ═══════════════ */
 export default function BiasVarianceTopic() {
@@ -131,6 +131,16 @@ export default function BiasVarianceTopic() {
       ],
       correct: 1,
       explanation: "Khoảng cách lớn giữa train và val accuracy = overfitting. Model 'nhớ' training data nhưng không generalize. Cả hai thấp = underfitting. Cả hai cao = sweet spot!",
+    },
+    {
+      type: "fill-blank",
+      question: "Khi độ phức tạp mô hình tăng, {blank} giảm nhưng {blank} tăng. Tổng sai số có dạng đường cong {blank}.",
+      blanks: [
+        { answer: "bias", accept: ["Bias", "bias²", "Bias²"] },
+        { answer: "variance", accept: ["Variance"] },
+        { answer: "chữ U", accept: ["hình chữ U", "U"] },
+      ],
+      explanation: "Đây là bản chất của Bias-Variance Tradeoff: tăng phức tạp → bias giảm, variance tăng. Tổng sai số = Bias² + Variance + Noise có hình chữ U, với 'sweet spot' ở đáy.",
     },
   ], []);
 
@@ -306,9 +316,9 @@ export default function BiasVarianceTopic() {
           </ul>
 
           <Callout variant="tip" title="Chẩn đoán nhanh">
-            Underfitting (bias cao): train acc thấp, val acc thấp. Khoảng cách nhỏ.{"\n"}
+            <TopicLink slug="overfitting-underfitting">Underfitting</TopicLink>{" "}(bias cao): train acc thấp, val acc thấp. Khoảng cách nhỏ.{"\n"}
             Overfitting (variance cao): train acc cao, val acc thấp. Khoảng cách lớn.{"\n"}
-            Good fit: cả hai cao, khoảng cách nhỏ.
+            Good fit: cả hai cao, khoảng cách nhỏ. Dùng <TopicLink slug="cross-validation">cross-validation</TopicLink>{" "}để ước lượng ổn định hơn.
           </Callout>
 
           <p><strong>Cách giảm bias:</strong></p>
@@ -321,8 +331,8 @@ export default function BiasVarianceTopic() {
           <p><strong>Cách giảm variance:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>Thêm dữ liệu huấn luyện</li>
-            <li>Regularization (L1/L2, dropout)</li>
-            <li>Ensemble (bagging/Random Forest)</li>
+            <li><TopicLink slug="regularization">Regularization</TopicLink>{" "}(L1/L2, dropout)</li>
+            <li>Ensemble (bagging/<TopicLink slug="random-forests">Random Forest</TopicLink>)</li>
             <li>Giảm phức tạp mô hình</li>
             <li>Early stopping</li>
           </ul>
@@ -353,8 +363,79 @@ print(f"Gap: {gap:.1%} → {'Overfitting!' if gap > 0.1 else 'OK'}")`}
         </ExplanationSection>
       </LessonSection>
 
-      {/* STEP 6: SUMMARY */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+      {/* STEP 6: TOGGLE COMPARE — Underfitting vs Overfitting */}
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="So sánh">
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          So sánh trực quan triệu chứng và giải pháp cho hai thái cực của bias-variance tradeoff.
+        </p>
+        <ToggleCompare
+          labelA="Underfitting (Bias cao)"
+          labelB="Overfitting (Variance cao)"
+          description="Hai vấn đề đối lập — hiểu rõ từng bên để chọn đúng hướng cải thiện."
+          childA={
+            <div className="space-y-2 p-4 rounded-lg bg-blue-50/50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800">
+              <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">Triệu chứng</p>
+              <ul className="text-sm space-y-1 text-blue-800 dark:text-blue-300 list-disc list-inside">
+                <li>Train acc thấp, Val acc thấp</li>
+                <li>Khoảng cách train–val nhỏ</li>
+                <li>Mô hình quá đơn giản</li>
+              </ul>
+              <p className="text-sm font-semibold text-blue-600 dark:text-blue-400 mt-3">Giải pháp</p>
+              <ul className="text-sm space-y-1 text-blue-800 dark:text-blue-300 list-disc list-inside">
+                <li>Tăng độ phức tạp mô hình</li>
+                <li>Thêm features quan trọng</li>
+                <li>Giảm regularization</li>
+              </ul>
+            </div>
+          }
+          childB={
+            <div className="space-y-2 p-4 rounded-lg bg-red-50/50 dark:bg-red-900/10 border border-red-200 dark:border-red-800">
+              <p className="text-sm font-semibold text-red-600 dark:text-red-400">Triệu chứng</p>
+              <ul className="text-sm space-y-1 text-red-800 dark:text-red-300 list-disc list-inside">
+                <li>Train acc cao, Val acc thấp</li>
+                <li>Khoảng cách train–val lớn</li>
+                <li>Mô hình quá phức tạp</li>
+              </ul>
+              <p className="text-sm font-semibold text-red-600 dark:text-red-400 mt-3">Giải pháp</p>
+              <ul className="text-sm space-y-1 text-red-800 dark:text-red-300 list-disc list-inside">
+                <li>Thêm dữ liệu huấn luyện</li>
+                <li>Regularization, Dropout</li>
+                <li>Ensemble (Random Forest)</li>
+              </ul>
+            </div>
+          }
+        />
+      </LessonSection>
+
+      {/* STEP 7: DRAGDROP — Chẩn đoán triệu chứng */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Bài tập chẩn đoán">
+        <p className="mb-4 text-sm text-muted leading-relaxed">
+          Kéo từng triệu chứng vào ô chẩn đoán đúng: <strong className="text-foreground">Underfitting</strong> hay <strong className="text-foreground">Overfitting</strong>?
+        </p>
+        <DragDrop
+          instruction="Kéo từng mô tả vào cột chẩn đoán phù hợp."
+          items={[
+            { id: "sym-a", label: "Train loss = 0.02, Val loss = 2.1" },
+            { id: "sym-b", label: "Train loss = 1.8, Val loss = 1.9" },
+            { id: "sym-c", label: "Mô hình bậc 1 khớp dữ liệu bậc 3" },
+            { id: "sym-d", label: "Mô hình học thuộc nhiễu trong dữ liệu" },
+            { id: "sym-e", label: "Khoảng cách train–val = 25%" },
+            { id: "sym-f", label: "Cả train và val accuracy đều thấp" },
+          ]}
+          zones={[
+            { id: "zone-overfit", label: "Overfitting (Variance cao)", accepts: ["sym-a", "sym-d", "sym-e"] },
+            { id: "zone-underfit", label: "Underfitting (Bias cao)", accepts: ["sym-b", "sym-c", "sym-f"] },
+          ]}
+        />
+        <Callout variant="insight" title="Ví dụ thực tế: Dự đoán giá nhà TP.HCM">
+          Một nhóm sinh viên xây mô hình dự đoán giá nhà tại TP.HCM với 500 mẫu. Mô hình hồi quy tuyến tính đơn giản cho RMSE 800 triệu đồng trên tập train và 820 triệu trên tập validation — khoảng cách nhỏ nhưng sai số vẫn lớn.{" "}
+          Đây là dấu hiệu <strong>underfitting</strong>: mô hình quá đơn giản để nắm bắt sự phức tạp của thị trường bất động sản (vị trí, diện tích, tầng, hẻm hay mặt tiền...). Giải pháp: thêm features (khoảng cách trung tâm, chất lượng đường) và dùng mô hình phi tuyến như{" "}
+          <TopicLink slug="random-forests">Random Forest</TopicLink>.
+        </Callout>
+      </LessonSection>
+
+      {/* STEP 8: SUMMARY */}
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
           "Tổng sai số = Bias² + Variance + Noise. Bias: sai hệ thống. Variance: nhạy dữ liệu.",
           "Tăng phức tạp: bias giảm, variance tăng. Đường cong tổng sai số hình chữ U.",
@@ -364,8 +445,8 @@ print(f"Gap: {gap:.1%} → {'Overfitting!' if gap > 0.1 else 'OK'}")`}
         ]} />
       </LessonSection>
 
-      {/* STEP 7: QUIZ */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+      {/* STEP 9: QUIZ */}
+      <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 

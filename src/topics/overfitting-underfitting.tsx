@@ -10,6 +10,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -205,6 +206,15 @@ export default function OverfittingUnderfittingTopic() {
       correct: 1,
       explanation:
         "Validation loss giảm → mô hình đang học tốt. Khi val loss tăng lại → bắt đầu overfit. Early stopping lưu mô hình tốt nhất và dừng, tránh overfit.",
+    },
+    {
+      type: "fill-blank",
+      question: "Nếu train loss = 0.05 và val loss = 0.06, khoảng cách nhỏ và cả hai đều cao, mô hình đang bị {blank}. Nếu train loss = 0.01 nhưng val loss = 1.8, mô hình đang bị {blank}.",
+      blanks: [
+        { answer: "underfitting", accept: ["chưa khớp", "underfit"] },
+        { answer: "overfitting", accept: ["quá khớp", "overfit"] },
+      ],
+      explanation: "Underfitting: cả hai loss cao, khoảng cách nhỏ — mô hình chưa học đủ. Overfitting: train loss thấp nhưng val loss cao — mô hình học thuộc train data nhưng không generalize được.",
     },
   ];
 
@@ -601,7 +611,8 @@ export default function OverfittingUnderfittingTopic() {
         <ExplanationSection>
           <p>
             <strong>Overfitting</strong> và <strong>Underfitting</strong>{" "}
-            là hai mặt của cùng một đồng xu: <strong>bias-variance tradeoff</strong>.
+            là hai mặt của cùng một đồng xu:{" "}
+            <TopicLink slug="bias-variance"><strong>bias-variance tradeoff</strong></TopicLink>.
           </p>
 
           <LaTeX block>
@@ -664,13 +675,15 @@ export default function OverfittingUnderfittingTopic() {
             <li>
               <strong>Overfitting:</strong>{" "}
               Thêm dữ liệu, dùng Dropout/L2, early stopping, data augmentation, giảm kích thước mạng.
+              Phân tách đúng cách bằng <TopicLink slug="train-val-test">train/validation/test split</TopicLink>{" "}để phát hiện sớm.
             </li>
           </ul>
 
           <Callout variant="tip" title="Quy trình thực tế">
-            1. Bắt đầu với mô hình đủ lớn để overfit (train loss gần 0).
-            2. Sau đó dùng regularization để giảm overfit.
-            3. Nếu vẫn overfit → thêm dữ liệu hoặc data augmentation.
+            1. Bắt đầu với mô hình đủ lớn để overfit (train loss gần 0).{"\n"}
+            2. Sau đó dùng <TopicLink slug="regularization">regularization</TopicLink>{" "}để giảm overfit.{"\n"}
+            3. Nếu vẫn overfit → thêm dữ liệu hoặc data augmentation.{"\n"}
+            4. Đánh giá bằng <TopicLink slug="cross-validation">cross-validation</TopicLink>{" "}để ước lượng hiệu suất ổn định.{"\n"}
             Đừng bao giờ bắt đầu với mô hình quá nhỏ — underfitting khó sửa hơn overfitting!
           </Callout>
 

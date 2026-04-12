@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge,
   Callout, MiniSummary, CodeBlock,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
@@ -217,6 +217,15 @@ export default function ConfusionMatrixTopic() {
       options: ["Precision và Recall đều tăng", "Precision tăng, Recall giảm", "Precision giảm, Recall tăng", "Cả hai đều giảm"],
       correct: 1,
       explanation: "Ngưỡng cao hơn → mô hình 'khó tính' hơn → ít dự đoán dương → Precision tăng (ít FP) nhưng Recall giảm (nhiều FN hơn).",
+    },
+    {
+      type: "fill-blank",
+      question: "Khi mô hình dự đoán DƯƠNG nhưng thực tế là ÂM, đó là trường hợp {blank}. Khi mô hình dự đoán ÂM nhưng thực tế là DƯƠNG, đó là {blank}.",
+      blanks: [
+        { answer: "False Positive", accept: ["FP", "false positive"] },
+        { answer: "False Negative", accept: ["FN", "false negative"] },
+      ],
+      explanation: "False Positive (FP): báo nhầm — dự đoán dương nhưng thực tế âm. False Negative (FN): bỏ sót — dự đoán âm nhưng thực tế dương. Trong y tế, FN thường nguy hiểm hơn FP.",
     },
   ], []);
 
@@ -431,7 +440,7 @@ export default function ConfusionMatrixTopic() {
         {/* ── STEP 6: EXPLAIN ── */}
         <ExplanationSection>
           <p>
-            <strong>Ma trận nhầm lẫn (Confusion Matrix)</strong> là bảng 2&times;2 tóm tắt hiệu suất mô hình phân loại nhị phân.
+            <strong>Ma trận nhầm lẫn (Confusion Matrix)</strong> là bảng 2&times;2 tóm tắt hiệu suất mô hình phân loại nhị phân, thường dùng cùng với{" "}<TopicLink slug="logistic-regression">hồi quy logistic</TopicLink>{" "}và các mô hình phân loại khác.
             Từ 4 ô TP, TN, FP, FN, ta tính được các chỉ số quan trọng:
           </p>
           <div className="rounded-lg bg-surface p-4 space-y-2 font-mono text-sm">
@@ -466,8 +475,12 @@ print(classification_report(y_true, y_pred))`}
           </Callout>
           <Callout variant="warning" title="Bẫy Accuracy">
             Với dữ liệu mất cân bằng (99% âm, 1% dương), mô hình luôn đoán &quot;âm&quot; có 99% accuracy nhưng Recall = 0%.
-            Luôn kiểm tra Precision, Recall và F1 cùng Accuracy!
+            Luôn kiểm tra Precision, Recall và F1 cùng Accuracy! Để ước lượng ổn định hơn, kết hợp với{" "}<TopicLink slug="cross-validation">cross-validation</TopicLink>.
           </Callout>
+          <p className="text-sm text-muted">
+            Khi mô hình có dấu hiệu <TopicLink slug="bias-variance">bias-variance</TopicLink>{" "}
+            không cân bằng, confusion matrix giúp xác định loại lỗi cụ thể (FP hay FN) để chọn hướng cải thiện phù hợp.
+          </p>
         </ExplanationSection>
 
         {/* ── STEP 7: SUMMARY ── */}

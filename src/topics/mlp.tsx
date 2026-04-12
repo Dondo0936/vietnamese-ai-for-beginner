@@ -12,6 +12,7 @@ import {
   CodeBlock,
   LaTeX,
   SliderGroup,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -178,6 +179,25 @@ export default function MLPTopic() {
       explanation:
         "Fully connected chỉ kết nối giữa hai lớp liền kề: mỗi nơ-ron lớp l kết nối với mọi nơ-ron lớp l+1, không phải mọi lớp.",
     },
+    {
+      type: "code",
+      question: "Hoàn thiện đoạn code định nghĩa MLP 3 lớp ẩn với ReLU bằng PyTorch:",
+      codeTemplate: `import torch.nn as nn
+
+class MLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layers = nn.Sequential(
+            nn.Linear(784, 256),
+            nn.___(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 10),
+        )`,
+      language: "python",
+      blanks: [{ answer: "ReLU" }],
+      explanation: "nn.ReLU() là hàm kích hoạt phi tuyến bắt buộc giữa các lớp tuyến tính. Thiếu nó, toàn bộ mạng dù có bao nhiêu lớp cũng chỉ là một phép biến đổi tuyến tính duy nhất.",
+    },
   ];
 
   return (
@@ -185,7 +205,7 @@ export default function MLPTopic() {
       {/* ===== STEP 1: PREDICTION GATE ===== */}
       <LessonSection step={1} totalSteps={7} label="Dự đoán">
         <PredictionGate
-          question="Một Perceptron đơn lẻ chỉ vẽ được đường thẳng để phân loại. Muốn phân loại hình xoắn ốc (spiral), bạn cần gì?"
+          question="Một perceptron đơn lẻ chỉ vẽ được đường thẳng để phân loại. Muốn phân loại hình xoắn ốc (spiral), bạn cần gì?"
           options={[
             "Một Perceptron với learning rate lớn hơn",
             "Nhiều Perceptron xếp thành nhiều lớp",
@@ -193,12 +213,12 @@ export default function MLPTopic() {
             "Dùng dữ liệu nhiều hơn",
           ]}
           correct={1}
-          explanation="Chính xác! Xếp nhiều Perceptron thành nhiều lớp tạo ra MLP — mạng có thể vẽ ranh giới cong phức tạp tùy ý."
+          explanation="Chính xác! Xếp nhiều perceptron thành nhiều lớp tạo ra MLP — mạng có thể vẽ ranh giới cong phức tạp tùy ý."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Bạn đã nắm ý tưởng cốt lõi. Bây giờ hãy tự tay{" "}
             <strong className="text-foreground">xây dựng</strong>{" "}
-            một MLP và xem dữ liệu chảy qua từng lớp.
+            một MLP và xem dữ liệu chảy qua từng lớp — quá trình đó gọi là <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink>.
           </p>
         </PredictionGate>
       </LessonSection>
@@ -493,7 +513,8 @@ export default function MLPTopic() {
           <p>
             Trong đó <LaTeX>{"W^{[l]}"}</LaTeX> là ma trận trọng số,{" "}
             <LaTeX>{"b^{[l]}"}</LaTeX> là bias, và{" "}
-            <LaTeX>{"f"}</LaTeX> là hàm kích hoạt phi tuyến (ReLU, sigmoid, v.v.).
+            <LaTeX>{"f"}</LaTeX> là <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> phi tuyến (ReLU, sigmoid, v.v.).
+            Mạng học bằng <TopicLink slug="backpropagation">lan truyền ngược</TopicLink> để tối ưu trọng số.
           </p>
 
           <Callout variant="tip" title="Tại sao gọi là fully connected?">

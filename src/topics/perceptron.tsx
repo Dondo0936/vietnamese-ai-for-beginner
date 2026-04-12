@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge,
   MiniSummary, CodeBlock, Callout, CollapsibleDetail,
-  LessonSection,} from "@/components/interactive";
+  LessonSection, TopicLink,} from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
@@ -75,6 +75,12 @@ const quizQuestions: QuizQuestion[] = [
     options: ["AND", "OR", "NOT", "XOR"],
     correct: 3,
     explanation: "XOR không phân tách tuyến tính — không thể vẽ một đường thẳng chia đúng 4 trường hợp. Cần ít nhất 2 lớp (MLP).",
+  },
+  {
+    type: "fill-blank",
+    question: "Perceptron cập nhật trọng số theo công thức: w_i = w_i + lr × ({blank} − output) × x_i, trong đó số hạng trong ngoặc thể hiện sai lệch giữa kết quả mong đợi và thực tế.",
+    blanks: [{ answer: "target", accept: ["nhãn", "y", "label", "mục tiêu"] }],
+    explanation: "Luật học perceptron dùng sai lệch (target − output) để điều chỉnh: nếu dự đoán đúng thì sai lệch = 0 và trọng số không đổi; nếu sai thì trọng số dịch chuyển theo hướng giảm lỗi.",
   },
 ];
 
@@ -328,7 +334,7 @@ export default function PerceptronTopic() {
         </p>
         <Callout variant="info" title="Công thức">
           <p><strong>Tổng có trọng số:</strong> z = w1*x1 + w2*x2 + ... + wn*xn + b</p>
-          <p><strong>Hàm kích hoạt bước:</strong> output = 1 nếu z &gt; 0, ngược lại output = 0</p>
+          <p><strong><TopicLink slug="activation-functions">Hàm kích hoạt</TopicLink> bước:</strong> output = 1 nếu z &gt; 0, ngược lại output = 0</p>
         </Callout>
         <Callout variant="tip" title="Luật học (Learning Rule)">
           <p>
@@ -368,10 +374,10 @@ for xi in X:
         </CodeBlock>
         <Callout variant="warning" title="Giới hạn quan trọng">
           <p>
-            Perceptron chỉ giải được bài toán <strong>phân tách tuyến tính</strong>.
+            Perceptron chỉ giải được bài toán <strong>phân tách tuyến tính</strong> (tương tự bài toán <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink>).
             Năm 1969, Minsky &amp; Papert chứng minh nó không giải được XOR, dẫn tới
             &quot;mùa đông AI&quot; đầu tiên. Giải pháp: xếp nhiều perceptron thành
-            lớp → <strong>Multi-Layer Perceptron (MLP)</strong>.
+            lớp → <strong><TopicLink slug="mlp">Multi-Layer Perceptron (MLP)</TopicLink></strong>.
           </p>
         </Callout>
       </ExplanationSection>
@@ -386,6 +392,9 @@ for xi in X:
           "Nhiều perceptron xếp thành lớp = MLP, giải được bài toán phi tuyến.",
         ]}
       />
+      <p className="mt-4 text-sm text-muted leading-relaxed">
+        Perceptron là nền tảng của <TopicLink slug="neural-network-overview">mạng nơ-ron nhân tạo</TopicLink> hiện đại — mỗi neuron trong mạng sâu đều hoạt động theo nguyên lý tương tự nhưng với hàm kích hoạt phức tạp hơn.
+      </p>
 
       {/* ── Step 8: QUIZ ── */}
       <QuizSection questions={quizQuestions} />

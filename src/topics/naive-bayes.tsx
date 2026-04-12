@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -116,6 +116,15 @@ export default function NaiveBayesTopic() {
       ],
       correct: 1,
       explanation: "Nhân chuỗi xác suất → 1 giá trị = 0 → tích = 0! Laplace smoothing thêm +α (thường α=1) vào mọi đếm → không bao giờ = 0. scikit-learn mặc định đã bật smoothing.",
+    },
+    {
+      type: "fill-blank",
+      question: "Trong Naive Bayes, thay vì nhân trực tiếp các xác suất nhỏ (dễ gây underflow), người ta dùng {blank} của xác suất để chuyển phép nhân thành phép {blank}.",
+      blanks: [
+        { answer: "logarithm", accept: ["log", "log xác suất", "logarit"] },
+        { answer: "cộng", accept: ["tính tổng", "sum", "cộng dồn"] },
+      ],
+      explanation: "Nhân nhiều số rất nhỏ (ví dụ: 0.001 × 0.002 × ... × 0.0005) nhanh chóng tiến về 0 — gọi là underflow số học. Dùng log: log(a·b) = log(a) + log(b). Thay vì nhân, cộng các log xác suất → kết quả ổn định, rồi so sánh giá trị log lớn nhất.",
     },
   ], []);
 
@@ -258,7 +267,10 @@ export default function NaiveBayesTopic() {
         <ExplanationSection>
           <p>
             <strong>Naive Bayes</strong>{" "}
-            dựa trên <strong>định lý Bayes</strong>:
+            dựa trên <strong>định lý Bayes</strong> từ{" "}
+            <TopicLink slug="probability-statistics">lý thuyết xác suất thống kê</TopicLink>
+            {" "}và là một thuật toán{" "}
+            <TopicLink slug="supervised-unsupervised-rl">học có giám sát</TopicLink>:
           </p>
 
           <LaTeX block>{"P(c|\\mathbf{x}) = \\frac{P(\\mathbf{x}|c) \\cdot P(c)}{P(\\mathbf{x})}"}</LaTeX>
@@ -324,7 +336,9 @@ print(f"Iris accuracy: {cross_val_score(gnb, X_iris, y_iris, cv=5).mean():.1%}")
           </CodeBlock>
 
           <Callout variant="warning" title="Khi nào Naive Bayes kém?">
-            Khi features rất phụ thuộc nhau (ví dụ: diện tích nhà và số phòng). Giả định độc lập sai → xác suất sai → phân loại kém. Lúc này logistic regression hoặc SVM thường tốt hơn.
+            Khi features rất phụ thuộc nhau (ví dụ: diện tích nhà và số phòng). Giả định độc lập sai → xác suất sai → phân loại kém. Lúc này{" "}
+            <TopicLink slug="logistic-regression">hồi quy logistic</TopicLink>{" "}
+            hoặc SVM thường tốt hơn.
           </Callout>
         </ExplanationSection>
       </LessonSection>

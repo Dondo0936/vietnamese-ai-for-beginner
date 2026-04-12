@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX,
+  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -116,6 +116,15 @@ export default function LogisticRegressionTopic() {
       ],
       correct: 1,
       explanation: "Binary cross-entropy phạt nặng dự đoán tự tin nhưng sai. Ví dụ: dự đoán xác suất 0.99 nhưng thực tế là lớp 0 → loss rất cao.",
+    },
+    {
+      type: "fill-blank",
+      question: "Hàm sigmoid σ(z) = 1 / (1 + e^{-z}) trả về giá trị trong khoảng {blank} đến {blank}, làm cho output phù hợp làm xác suất.",
+      blanks: [
+        { answer: "0", accept: ["0.0"] },
+        { answer: "1", accept: ["1.0"] },
+      ],
+      explanation: "Sigmoid ép mọi đầu vào thực z ∈ (-∞, +∞) về khoảng (0, 1) — đây chính là lý do sigmoid được chọn cho logistic regression. Khi z → -∞ thì σ → 0; khi z → +∞ thì σ → 1; khi z = 0 thì σ = 0.5 (ranh giới quyết định mặc định).",
     },
   ], []);
 
@@ -262,7 +271,7 @@ export default function LogisticRegressionTopic() {
         <AhaMoment>
           <p>
             <strong>Logistic Regression</strong>{" "}
-            = hồi quy tuyến tính + hàm sigmoid! Nó tính z = wx + b (tuyến tính), rồi ép qua sigmoid để ra xác suất 0-1. Ranh giới quyết định là nơi xác suất = ngưỡng.
+            = <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink> + hàm sigmoid! Nó tính z = wx + b (tuyến tính), rồi ép qua sigmoid để ra xác suất 0-1. Ranh giới quyết định là nơi xác suất = ngưỡng.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -286,7 +295,9 @@ export default function LogisticRegressionTopic() {
         <ExplanationSection>
           <p>
             <strong>Logistic Regression</strong>{" "}
-            dự đoán xác suất thuộc lớp dương bằng hàm sigmoid:
+            dự đoán xác suất thuộc lớp dương bằng{" "}
+            <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink>{" "}
+            sigmoid:
           </p>
 
           <LaTeX block>{"P(y=1|x) = \\sigma(z) = \\frac{1}{1 + e^{-z}}, \\quad z = \\mathbf{w}^T \\mathbf{x} + b"}</LaTeX>
@@ -333,7 +344,11 @@ print(f"Accuracy (ngưỡng 30%): {accuracy_score(y, custom_pred):.1%}")`}
           </CodeBlock>
 
           <Callout variant="warning" title="Ranh giới tuyến tính">
-            Logistic regression chỉ tạo được ranh giới là đường thẳng (hoặc siêu phẳng). Nếu hai lớp không thể phân tách bằng đường thẳng, cần SVM với kernel hoặc neural network.
+            Logistic regression chỉ tạo được ranh giới là đường thẳng (hoặc siêu phẳng). Nếu hai lớp không thể phân tách bằng đường thẳng, cần SVM với kernel hoặc neural network. Để đánh giá model chi tiết hơn, hãy xem{" "}
+            <TopicLink slug="confusion-matrix">ma trận nhầm lẫn</TopicLink>{" "}
+            và kết hợp với{" "}
+            <TopicLink slug="cross-validation">kiểm định chéo</TopicLink>{" "}
+            để chọn ngưỡng tối ưu.
           </Callout>
         </ExplanationSection>
       </LessonSection>

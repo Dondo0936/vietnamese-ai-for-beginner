@@ -11,6 +11,7 @@ import {
   Callout,
   CodeBlock,
   LaTeX,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -153,6 +154,12 @@ export default function EpochsBatchesTopic() {
       correct: 1,
       explanation:
         "Gradient accumulation: forward+backward 8 lần với batch=2, tích lũy gradient, rồi cập nhật 1 lần. Hiệu quả = batch_size = 16 nhưng chỉ cần RAM cho 2 mẫu. Kỹ thuật phổ biến cho LLM!",
+    },
+    {
+      type: "fill-blank",
+      question: "Dataset 1.000 mẫu, batch_size = 50, train 10 epoch. Số lần cập nhật trọng số = (1000 / {blank}) × 10 = 200 lần.",
+      blanks: [{ answer: "50", accept: ["batch_size", "50"] }],
+      explanation: "Mỗi epoch có 1000/50 = 20 iterations (lần cập nhật). 10 epoch × 20 iterations = 200 lần cập nhật tổng cộng. Công thức tổng quát: iterations = (N / batch_size) × epochs.",
     },
   ];
 
@@ -395,7 +402,7 @@ export default function EpochsBatchesTopic() {
         <AhaMoment>
           <p>
             <strong>Epoch</strong> = 1 vòng qua toàn bộ dữ liệu.{" "}
-            <strong>Batch</strong> = 1 lô nhỏ, cập nhật trọng số 1 lần.{" "}
+            <strong>Batch</strong> = 1 lô nhỏ, cập nhật trọng số 1 lần (qua <TopicLink slug="gradient-descent">gradient descent</TopicLink>).{" "}
             <strong>Iteration</strong> = 1 lần cập nhật. Giống đội Shopee giao hàng:
             mỗi xe chở 1 batch đơn hàng, khi tất cả đơn được giao = xong 1 epoch,
             lặp lại nếu có đơn mới!
@@ -489,6 +496,10 @@ export default function EpochsBatchesTopic() {
             <strong>Bắt đầu với 32 hoặc 64</strong> — tăng dần nếu GPU còn RAM.
           </Callout>
 
+          <p className="text-sm text-muted">
+            Mỗi iteration bao gồm: forward pass → tính loss → <TopicLink slug="backpropagation">backpropagation</TopicLink> → cập nhật trọng số.
+            Chạy nhiều epoch giúp model thấy dữ liệu nhiều lần và học tốt hơn, nhưng quá nhiều epoch có thể gây <TopicLink slug="overfitting-underfitting">overfitting</TopicLink>.
+          </p>
           <CodeBlock language="python" title="training_loop.py">
 {`from torch.utils.data import DataLoader
 

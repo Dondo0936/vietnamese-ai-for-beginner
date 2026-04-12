@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX } from "@/components/interactive";
+import { PredictionGate, LessonSection, AhaMoment, InlineChallenge, MiniSummary, Callout, CodeBlock, LaTeX, TopicLink } from "@/components/interactive";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
@@ -14,6 +14,7 @@ export default function ProbabilityStatisticsTopic() {
     { question: "Bayes theorem dùng cho gì trong ML?", options: ["Tính trung bình", "CẬP NHẬT niềm tin (belief) khi có bằng chứng mới: P(bệnh|triệu chứng) = P(triệu chứng|bệnh) * P(bệnh) / P(triệu chứng)", "Tính variance"], correct: 1, explanation: "Bayes: prior (niềm tin ban đầu) + evidence (bằng chứng mới) → posterior (niềm tin cập nhật). VD: P(spam|từ 'free') = P('free'|spam) * P(spam) / P('free'). Naive Bayes classifier, Bayesian Neural Networks, và toàn bộ Bayesian ML dựa trên định lý này." },
     { question: "Normal distribution (Gaussian) quan trọng cho ML vì sao?", options: ["Vì đẹp", "Central Limit Theorem: trung bình của nhiều random variables → Gaussian. Nhiều hiện tượng tự nhiên và nhiều ML algorithms (linear regression, GP) giả định Gaussian", "Chỉ dùng cho thống kê"], correct: 1, explanation: "CLT: bất kể distribution gốc, trung bình của N samples → Gaussian khi N lớn. Linear regression giả định: error ~ N(0, sigma^2). Batch Normalization: normalize activations về ~Gaussian. Weight initialization: sample từ Gaussian. Gaussian là 'default' distribution của ML." },
     { question: "MLE (Maximum Likelihood Estimation) và cross-entropy loss có liên quan không?", options: ["Không liên quan", "MLE tối đa hoá likelihood = tối thiểu hoá negative log-likelihood = tối thiểu hoá cross-entropy loss. GIỐNG NHAU!", "Chỉ giống nhau về tên"], correct: 1, explanation: "minimize cross-entropy H(p,q) = -sum(p*log(q)) = maximize log-likelihood của dữ liệu. Khi p = one-hot label, q = model prediction: CE loss chính là negative log-likelihood. Đây là lý do cross-entropy là default loss cho classification — nó chính là MLE!" },
+    { type: "fill-blank", question: "Công thức Bayes: P(A|B) = P(B|A) × P(A) / P({blank}). Phần mẫu số này gọi là {blank}.", blanks: [{ answer: "B", accept: ["B"] }, { answer: "evidence", accept: ["xác suất chuẩn hoá", "normalizing constant", "marginal likelihood"] }], explanation: "Công thức Bayes đầy đủ: P(A|B) = P(B|A) × P(A) / P(B). P(B) ở mẫu số là xác suất của bằng chứng (evidence), còn gọi là normalizing constant, đảm bảo posterior tổng bằng 1. P(B) = Σ P(B|A_i) × P(A_i) tính bằng cách cộng hết tất cả các trường hợp." },
   ], []);
 
   return (
@@ -36,7 +37,7 @@ export default function ProbabilityStatisticsTopic() {
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
-          <p><strong>Probability & Statistics</strong>{" "}là nền tảng của mọi thuật toán ML — từ loss function đến model architecture.</p>
+          <p><strong>Probability & Statistics</strong>{" "}là nền tảng của mọi thuật toán ML — từ loss function đến model architecture. Định lý Bayes là trái tim của <TopicLink slug="naive-bayes">Naive Bayes classifier</TopicLink>. Cross-entropy loss liên hệ chặt chẽ với <TopicLink slug="calculus-for-backprop">giải tích cho backprop</TopicLink> vì đạo hàm của nó chính là gradient để huấn luyện. Phân phối xác suất cũng dùng <TopicLink slug="linear-algebra-for-ml">đại số tuyến tính</TopicLink> — vector và ma trận — để biểu diễn dữ liệu nhiều chiều. Hiểu bias và variance dẫn thẳng đến <TopicLink slug="bias-variance">bài toán bias-variance trade-off</TopicLink>.</p>
           <p><strong>Bayes Theorem:</strong></p>
           <LaTeX block>{"P(A|B) = \\frac{P(B|A) \\cdot P(A)}{P(B)} \\quad \\text{(posterior = likelihood × prior / evidence)}"}</LaTeX>
           <p><strong>Distributions quan trọng:</strong></p>

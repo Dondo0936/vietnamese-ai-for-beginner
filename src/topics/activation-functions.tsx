@@ -12,6 +12,7 @@ import {
   CodeBlock,
   LaTeX,
   ToggleCompare,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -187,6 +188,15 @@ export default function ActivationFunctionsTopic() {
       correct: 1,
       explanation:
         "Sigmoid nén đầu ra về (0,1) — hoàn hảo cho xác suất nhị phân. Phân loại đa lớp dùng softmax, hồi quy dùng tuyến tính (không kích hoạt).",
+    },
+    {
+      type: "fill-blank",
+      question: "ReLU(x) = max(0, x). Khi x = −4, ReLU trả về {blank}, và gradient tại điểm đó bằng {blank}.",
+      blanks: [
+        { answer: "0", accept: ["0.0"] },
+        { answer: "0", accept: ["0.0"] },
+      ],
+      explanation: "Khi đầu vào âm, ReLU trả về 0 và đạo hàm bằng 0. Nếu nơ-ron luôn nhận đầu vào âm, gradient sẽ luôn bằng 0 → trọng số không bao giờ cập nhật. Đây là hiện tượng 'dying ReLU' và là lý do Leaky ReLU ra đời.",
     },
   ];
 
@@ -460,9 +470,8 @@ export default function ActivationFunctionsTopic() {
           <p>
             <strong>Hàm kích hoạt</strong>{" "}
             là &quot;công tắc&quot; của nơ-ron — nó quyết định tín hiệu có được
-            chuyển tiếp hay không, và chuyển bao nhiêu. Giống như bảo vệ quán karaoke:
-            ReLU chỉ cho vào nếu bạn đủ tuổi (x &gt; 0), Sigmoid cho vào nhưng hạn chế
-            số người (nén về 0-1).
+            chuyển tiếp hay không, và chuyển bao nhiêu. Trong <TopicLink slug="perceptron">perceptron</TopicLink> cổ điển
+            dùng hàm bước đơn giản; mạng hiện đại dùng ReLU hoặc sigmoid để gradient có thể lan truyền qua nhiều lớp.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -530,7 +539,7 @@ export default function ActivationFunctionsTopic() {
             </div>
             <p className="text-xs text-center text-red-400">
               Mọi giá trị đều hội tụ về 0.5 — gradient gần bằng 0!
-              Đây là vấn đề &quot;triệt tiêu gradient&quot;.
+              Đây là vấn đề &quot;triệt tiêu gradient&quot; (<TopicLink slug="vanishing-exploding-gradients">vanishing gradient</TopicLink>).
             </p>
           </div>
         </VisualizationSection>
@@ -556,7 +565,8 @@ export default function ActivationFunctionsTopic() {
           <p>
             <strong>Hàm kích hoạt (Activation Function)</strong>{" "}
             thêm tính phi tuyến vào mạng. Không có nó, dù mạng bao nhiêu lớp cũng chỉ
-            tương đương một phép biến đổi tuyến tính.
+            tương đương một phép biến đổi tuyến tính. Trong quá trình <TopicLink slug="backpropagation">lan truyền ngược</TopicLink>,
+            đạo hàm của hàm kích hoạt đóng vai trò then chốt trong việc truyền gradient qua các lớp.
           </p>
 
           <p>
@@ -653,7 +663,7 @@ model = torch.nn.Sequential(
         <MiniSummary
           title="Hàm kích hoạt — Điểm chốt"
           points={[
-            "Hàm kích hoạt thêm tính phi tuyến — không có nó, nhiều lớp vẫn chỉ là một phép tuyến tính.",
+            "Hàm kích hoạt thêm tính phi tuyến — nền tảng của mọi kiến trúc mạng nơ-ron hiện đại (xem thêm: Tổng quan mạng nơ-ron).",
             "ReLU là mặc định cho lớp ẩn: nhanh, gradient ổn định ở vùng dương, nhưng có thể gây dying neuron.",
             "Sigmoid (0-1) cho phân loại nhị phân, Softmax cho phân loại đa lớp, Tanh cho RNN.",
             "Triệt tiêu gradient: sigmoid/tanh nén gradient về ~0 ở vùng bão hòa, gây khó huấn luyện mạng sâu.",
