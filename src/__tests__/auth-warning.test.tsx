@@ -23,6 +23,20 @@ vi.mock("@/lib/progress-context", () => ({
   }),
 }));
 
+vi.mock("@/lib/auth-context", () => ({
+  useAuth: () => ({
+    user: null,
+    isAnonymous: true,
+    isAuthenticated: false,
+    loading: false,
+    signUp: vi.fn(),
+    signIn: vi.fn(),
+    signUpGoogle: vi.fn(),
+    signInGoogle: vi.fn(),
+    signOut: vi.fn(),
+  }),
+}));
+
 beforeEach(() => {
   vi.clearAllMocks();
   for (const k in store) delete store[k];
