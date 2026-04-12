@@ -537,3 +537,39 @@ export default function SoftmaxFunctionTopic() {
 We are committed to providing a welcoming and inclusive experience for everyone. Please be respectful, constructive, and kind in all interactions. Harassment, discrimination, or disrespectful behavior will not be tolerated.
 
 Hãy tôn trọng, xây dựng, và thân thiện trong mọi trao đổi. Cảm ơn bạn!
+
+## Supabase Dashboard Setup (for auth features)
+
+The sign-up / sign-in feature requires one-time manual configuration in the Supabase dashboard. If you're setting up a fresh Supabase project for local development, complete these steps:
+
+### 1. Enable email confirmation
+- Navigate to **Authentication → Providers → Email**
+- Set **Confirm email**: ON
+- Set **Secure email change**: ON
+
+### 2. Enable manual identity linking
+- Navigate to **Authentication → General**
+- Set **Allow manual linking**: ON
+
+Without this, `supabase.auth.linkIdentity()` (used for anon → Google upgrade) returns an error.
+
+### 3. Configure Google provider
+- Navigate to **Authentication → Providers → Google**
+- Toggle **Enabled**: ON
+- In Google Cloud Console, create an OAuth 2.0 Client ID (Web application):
+  - **Authorized JavaScript origins**: `https://ai-edu-app.vercel.app` (and `http://localhost:3000` for dev)
+  - **Authorized redirect URIs**: `https://<your-supabase-project-ref>.supabase.co/auth/v1/callback`
+- Copy the Google Client ID + Secret back into the Supabase dashboard
+
+### 4. Set redirect URLs
+- Navigate to **Authentication → URL Configuration**
+- Set **Site URL**: `https://ai-edu-app.vercel.app` (use `http://localhost:3000` for dev)
+- Add to **Redirect URLs** allow-list:
+  - `https://ai-edu-app.vercel.app/auth/callback`
+  - `http://localhost:3000/auth/callback`
+
+### 5. Customize the confirmation email (optional)
+- Navigate to **Authentication → Email Templates → Confirm signup**
+- Change subject to: `Xác nhận đăng ký tài khoản AI Cho Mọi Người`
+- Keep the `{{ .ConfirmationURL }}` token in the body — Supabase substitutes the actual confirmation link there
+
