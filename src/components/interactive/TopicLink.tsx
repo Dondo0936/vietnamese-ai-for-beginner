@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { topicMap } from "@/topics/registry";
 import { kidsTopicMap } from "@/topics/kids/kids-registry";
+import { isAdultPathId } from "@/lib/paths";
 
 interface TopicLinkProps {
   slug: string;
@@ -11,14 +12,17 @@ interface TopicLinkProps {
 }
 
 /**
- * Links to a topic page. Automatically routes to /kids/topics/:slug when
- * rendered under /kids/*, and validates against the kid registry in that
- * case. Adult routes are unchanged (back-compat).
- *
- * See spec §11.1.
+ * Links to a topic page. Automatically:
+ *   - Routes to /kids/topics/:slug when rendered under /kids/*, validating
+ *     against kidsTopicMap (adult routes stay back-compatible).
+ *   - Preserves a `?path=` query param from the current URL when present
+ *     and valid, so in-body cross-references keep the learner on their path.
+ *     If the target slug isn't actually in that path, TopicLayout gracefully
+ *     falls back to category-based navigation on the target page.
  */
 export default function TopicLink({ slug, children }: TopicLinkProps) {
   const pathname = usePathname() ?? "";
+  const searchParams = useSearchParams();
   const isKidRoute = pathname.startsWith("/kids");
 
   if (process.env.NODE_ENV === "development") {
@@ -30,7 +34,14 @@ export default function TopicLink({ slug, children }: TopicLinkProps) {
     }
   }
 
-  const href = isKidRoute ? `/kids/topics/${slug}` : `/topics/${slug}`;
+  let href: string;
+  if (isKidRoute) {
+    href = `/kids/topics/${slug}`;
+  } else {
+    const rawPath = searchParams?.get("path") ?? null;
+    const carryPath = isAdultPathId(rawPath) ? rawPath : null;
+    href = carryPath ? `/topics/${slug}?path=${carryPath}` : `/topics/${slug}`;
+  }
 
   return (
     <Link

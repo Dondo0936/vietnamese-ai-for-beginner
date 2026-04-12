@@ -5,6 +5,8 @@ import userEvent from "@testing-library/user-event";
 // Mock dependencies
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ back: vi.fn(), push: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/topics/test-topic",
 }));
 vi.mock("next/link", () => ({
   default: ({ children, href, ...props }: any) => (
@@ -15,6 +17,7 @@ vi.mock("framer-motion", () => ({
   motion: {
     article: ({ children, ...props }: any) => <article {...props}>{children}</article>,
   },
+  useReducedMotion: () => false,
 }));
 vi.mock("@/lib/database", () => ({
   markTopicRead: vi.fn(),
@@ -23,6 +26,9 @@ vi.mock("@/topics/registry", () => ({
   topicList: [
     { slug: "test-topic", title: "Test", titleVi: "Test Vi", category: "foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
   ],
+  topicMap: {
+    "test-topic": { slug: "test-topic", title: "Test", titleVi: "Test Vi", category: "foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
+  },
 }));
 vi.mock("@/components/ui/Tag", () => ({
   default: ({ label }: any) => <span data-testid="tag">{label}</span>,
