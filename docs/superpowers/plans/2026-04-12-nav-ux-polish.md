@@ -30,6 +30,96 @@
 **Deleted files (1):**
 - `src/components/topic/AnalogyCard.tsx`
 
+---
+
+## Vietnamese UI Diacritics Protocol (MANDATORY)
+
+**Every Vietnamese string that reaches the UI in this plan — `LessonSection` labels, `tocSections` `labelVi`, dev-mode messages surfaced to users, any commented example text — MUST carry correct tones and vowel diacritics.** Wrong or missing diacritics change meaning or read as machine-translated nonsense to Vietnamese users. This is a hard requirement, not a "nice to have."
+
+### Rule: never type a Vietnamese word without its tone
+
+Vietnamese has six tones encoded as diacritics on vowels:
+
+| Tone name | Mark | Example |
+|---|---|---|
+| ngang (level) | (none) | a, e, i, o, u |
+| huyền (falling) | ` | à, è, ì, ò, ù |
+| sắc (rising) | ´ | á, é, í, ó, ú |
+| hỏi (dipping-rising) | ̉ | ả, ẻ, ỉ, ỏ, ủ |
+| ngã (rising-broken) | ̃ | ã, ẽ, ĩ, õ, ũ |
+| nặng (low-broken) | ̣ | ạ, ẹ, ị, ọ, ụ |
+
+Plus vowel modifiers: **â, ă, ê, ô, ơ, ư, đ**. Combine freely with tones: **ấ ầ ẩ ẫ ậ**, **ắ ằ ẳ ẵ ặ**, etc.
+
+### Phase-specific vocabulary — copy exactly, do not retype from memory
+
+The following Vietnamese strings appear across this plan. Always copy-paste, never type from memory:
+
+| Correct | Common wrong forms (DO NOT SHIP) |
+|---|---|
+| Trực quan | truc quan, Trực Quan, Trực-quan |
+| Giải thích | Giai thich, Giải-thích |
+| Hình minh họa | Hinh minh hoa, Hình minh hoạ (wrong tone on *hoa*) |
+| Minh họa | Minh hoa, Minh hoạ |
+| Mục lục bài học | Muc luc bai hoc, Mục lục bài-học |
+| Ví dụ | Vi du |
+| Dự đoán | Du doan |
+| Bước | Buoc, Bươc |
+| Demo cơ bản | Demo co ban |
+| Demo nâng cao | Demo nang cao |
+| Ứng dụng | Ung dung |
+| Công thức | Cong thuc |
+| Tóm tắt | Tom tat |
+| Lộ trình | Lo trinh |
+| Khái niệm cơ bản | Khai niem co ban |
+| Chi tiết kỹ thuật | Chi tiet ky thuat |
+| Ứng dụng thực tế | Ung dung thuc te |
+| So sánh | So sanh |
+| Trường hợp biên | Truong hop bien |
+| Ví dụ thực tế | Vi du thuc te |
+
+### For `LessonSection` labels during topic refactor (Tasks 8–15)
+
+When choosing a label for each wrapped duplicate, follow this priority:
+
+1. **Reuse the existing label already in the topic.** Grep the file for `label=` on other `LessonSection` or for `<h2>` / `<h3>` text near the duplicate section, and use the same phrasing for consistency. Copy-paste it character-for-character.
+2. If no existing label applies, pick from the canonical label set below (copy-paste exactly):
+   - `"Demo cơ bản"` (basic demo)
+   - `"Demo nâng cao"` (advanced demo)
+   - `"Ví dụ thực tế"` (practical example)
+   - `"So sánh"` (comparison)
+   - `"Công thức"` (formula)
+   - `"Ứng dụng"` (application)
+   - `"Trường hợp biên"` (edge case)
+   - `"Tóm tắt"` (summary)
+3. Never invent a Vietnamese phrase if the canonical set covers the meaning.
+4. If the topic's content is highly domain-specific and none of the canonical labels fit, construct the label using words that already exist **in the same topic file** with their existing diacritics, or ask.
+
+### Verification step — each subagent MUST run before their commit
+
+After editing any file that adds Vietnamese strings, run these two checks:
+
+```bash
+# 1. Every new Vietnamese string in the diff — eyeball it against the vocabulary table above
+git diff --staged | grep -E "label=|labelVi:|'[A-ZẠ-ỹ]" | head -50
+
+# 2. Sanity: no common wrong forms slipped in
+git diff --staged | grep -E "Minh hoa|Giai thich|Vi du|Du doan|Buoc|Trực-quan" && echo "FAIL — wrong diacritics" || echo "OK — no obvious mistakes"
+```
+
+If check #2 prints "FAIL", the subagent MUST fix before committing. A passing check is not a guarantee of correctness (it catches common failures, not all) — the eyeball check in step #1 remains mandatory.
+
+### Escalation
+
+If a subagent is genuinely uncertain about a Vietnamese label choice (no existing label in the topic, canonical set doesn't fit, domain-specific term), it MUST:
+- Stop
+- Report the specific label decision needed (topic slug + context + what the content is about)
+- Wait for human guidance
+
+Do not ship best-guess Vietnamese. Do not fall back to English. Do not mix English words into Vietnamese labels.
+
+---
+
 **Refactor-only files (60 topics, content preserved, containers reshaped):**
 - 36 topics with >1 `<VisualizationSection>`: activation-functions, autoencoder, backpropagation, bag-of-words, bias-variance, cnn, confusion-matrix, context-window, convolution, diffusion-models, fine-tuning, flash-attention, gan, gru, kv-cache, llm-overview, lstm, multi-head-attention, nerf, overfitting-underfitting, pooling, positional-encoding, prompt-engineering, rag, residual-connections, rnn, scaling-laws, self-attention, sentiment-analysis, temperature, tf-idf, top-k-top-p, transfer-learning, u-net, vae, vision-transformer
 - 24 topics with >1 `<ExplanationSection>`: adversarial-robustness, ai-for-data-analysis, ai-for-writing, ai-governance, ai-privacy-security, ai-tool-evaluation, ai-watermarking, alignment, bias-fairness, clip, constitutional-ai, deepfake-detection, explainability, getting-started-with-ai, guardrails, python-for-ml, red-teaming, speech-recognition, text-to-image, text-to-video, tlm, tts, unified-multimodal, vlm
@@ -190,14 +280,17 @@ Expected: FAIL — "Cannot find module '@/components/topic/SectionDuplicateGuard
 
 Create `src/components/topic/SectionDuplicateGuard.tsx`:
 
+**React 19 note:** The React Compiler bans ref mutation during render. This implementation uses a `registerSection` / `unregisterSection` pair invoked from `useEffect` so the ref mutation happens after commit, not during render. StrictMode double-mount is handled correctly (register → unregister → register keeps the counter accurate).
+
 ```tsx
 "use client";
 
-import { createContext, useContext, useRef } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 import type { TocSectionId } from "@/lib/types";
 
 interface SectionGuardContextValue {
-  recordSection: (id: TocSectionId, slug: string) => void;
+  registerSection: (id: TocSectionId, slug: string) => void;
+  unregisterSection: (id: TocSectionId) => void;
 }
 
 const SectionGuardContext = createContext<SectionGuardContextValue | null>(null);
@@ -205,35 +298,50 @@ const SectionGuardContext = createContext<SectionGuardContextValue | null>(null)
 export function SectionDuplicateGuard({ children }: { children: React.ReactNode }) {
   const seen = useRef<Record<TocSectionId, number>>({ visualization: 0, explanation: 0 });
 
-  const recordSection = (id: TocSectionId, slug: string) => {
-    seen.current[id] += 1;
-    if (seen.current[id] > 1 && process.env.NODE_ENV !== "production") {
-      console.warn(
-        `[SectionDuplicateGuard] Topic "${slug}" renders more than one <${id === "visualization" ? "VisualizationSection" : "ExplanationSection"}/>. ` +
-        `Wrap duplicates in <LessonSection label="…" step={N}> inside a single outer section instead. ` +
-        `See src/topics/_template.tsx for the pattern.`
-      );
-    }
-  };
+  const value = useMemo<SectionGuardContextValue>(
+    () => ({
+      registerSection: (id, slug) => {
+        seen.current[id] += 1;
+        if (seen.current[id] > 1 && process.env.NODE_ENV !== "production") {
+          const componentName =
+            id === "visualization" ? "VisualizationSection" : "ExplanationSection";
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[SectionDuplicateGuard] Topic "${slug}" renders more than one <${componentName}/>. ` +
+              `Wrap duplicates in <LessonSection label="…" step={N}> inside a single outer section instead. ` +
+              `See src/topics/_template.tsx for the pattern.`
+          );
+        }
+      },
+      unregisterSection: (id) => {
+        seen.current[id] = Math.max(0, seen.current[id] - 1);
+      },
+    }),
+    []
+  );
 
   return (
-    <SectionGuardContext.Provider value={{ recordSection }}>
+    <SectionGuardContext.Provider value={value}>
       {children}
     </SectionGuardContext.Provider>
   );
 }
 
 /**
- * Called by VisualizationSection / ExplanationSection on each render.
+ * Called by VisualizationSection / ExplanationSection.
  * No-op when used outside a SectionDuplicateGuard provider.
+ *
+ * Uses useEffect so the ref mutation inside registerSection happens after
+ * commit — React 19 / React Compiler forbids accessing or mutating refs
+ * during render.
  */
 export function useSectionGuard(id: TocSectionId, slug: string) {
   const ctx = useContext(SectionGuardContext);
-  // Record during render so the counter runs on every mount (incl. test cases
-  // that render multiple sections in one tree).
-  if (ctx) {
-    ctx.recordSection(id, slug);
-  }
+  useEffect(() => {
+    if (!ctx) return;
+    ctx.registerSection(id, slug);
+    return () => ctx.unregisterSection(id);
+  }, [ctx, id, slug]);
 }
 ```
 
@@ -944,10 +1052,12 @@ Change to:
 
 If prose between the two original sections is NOT section-specific (general connective text), leave it between them — outside the new wrapper — by splitting into two `<VisualizationSection>` calls… wait, no, the whole point is ONE outer section. Instead, move the connective prose into a `<LessonSection label="…">` of its own, between the two demo LessonSections, or merge it into the trailing prose area of the first demo.
 
-**Labels:**
-- Read each original `<VisualizationSection>`'s first few lines of child JSX to find the natural label (existing heading, first prompt, or first `<Callout>` title).
-- If no obvious label, use `"Demo 1"` / `"Demo 2"` / `"Demo nâng cao"`.
-- Labels must be Vietnamese with correct diacritics.
+**Labels — MANDATORY reference:** Follow the **Vietnamese UI Diacritics Protocol** section at the top of this plan. Priority order for each label:
+1. Reuse an existing label already in the topic file (grep for `label=` / `<h2>` / `<h3>` — copy character-for-character).
+2. Pick from the canonical label set in the protocol (`"Demo cơ bản"`, `"Demo nâng cao"`, `"Ví dụ thực tế"`, `"So sánh"`, `"Công thức"`, `"Ứng dụng"`, `"Trường hợp biên"`, `"Tóm tắt"`).
+3. If neither applies, STOP and escalate per the protocol's Escalation section — do not invent Vietnamese phrases.
+
+Before committing, run the two verification commands from the protocol's "Verification step" section. If the wrong-forms grep fires, fix before committing.
 
 **Per-topic steps:**
 
@@ -1126,14 +1236,18 @@ git commit -m "refactor(topics): merge duplicate VisualizationSections — batch
 
 ```tsx
 <ExplanationSection topicSlug={metadata.slug}>
-  <LessonSection label="<describe section 1>" step={1}>
+  <LessonSection label="<Vietnamese label — see protocol>" step={1}>
     <PartA />
   </LessonSection>
-  <LessonSection label="<describe section 2>" step={2}>
+  <LessonSection label="<Vietnamese label — see protocol>" step={2}>
     <PartB />
   </LessonSection>
 </ExplanationSection>
 ```
+
+**Labels — MANDATORY reference:** Follow the **Vietnamese UI Diacritics Protocol** at the top of this plan. Same priority order as Task 8 (reuse existing → canonical set → escalate). For explanation sections, the canonical set that most often applies: `"Khái niệm cơ bản"` (basic concept), `"Chi tiết kỹ thuật"` (technical detail), `"Ứng dụng thực tế"` (real-world use), `"So sánh"`, `"Tóm tắt"`. These five cover ~90% of explanation-dup cases — if none fit, escalate.
+
+Before committing each file, run the two verification commands from the protocol's "Verification step" section.
 
 - [ ] **Step 1:** adversarial-robustness.tsx
 - [ ] **Step 2:** ai-governance.tsx
@@ -1229,6 +1343,8 @@ git commit -m "refactor(topics): merge duplicate ExplanationSections — batch 8
 - `src/topics/perceptron.tsx`
 - `src/topics/probability-statistics.tsx`
 
+**MANDATORY reference:** `tocSections` override strings and any `<LessonSection label>` on added visualizations must follow the **Vietnamese UI Diacritics Protocol** (top of this plan). Copy `"Giải thích"` character-for-character — never type it from memory.
+
 **Per-topic decision rule:**
 
 Open each file. Read its content quickly. Decide:
@@ -1269,6 +1385,8 @@ git commit -m "refactor(topics): cover 8 viz-less topics (override tocSections o
 
 **Files:**
 - TBD based on grep results
+
+**MANDATORY reference:** Any replacement strings must follow the **Vietnamese UI Diacritics Protocol** (top of this plan). Never replace an English word with an undiacriticized Vietnamese equivalent. If unsure of the correct tone/diacritic, escalate per the protocol.
 
 - [ ] **Step 1: Grep for suspicious code-switch**
 
@@ -1384,3 +1502,7 @@ Use `superpowers:finishing-a-development-branch`. Follow that skill to verify te
 - **Placeholder scan:** none. Every Task step has concrete code, concrete commands, or concrete per-file action lists.
 
 - **Type consistency:** `TocSection`, `TocSectionId`, `DEFAULT_TOC_SECTIONS` used consistently across Tasks 1, 5, 6. `useSectionGuard` signature matches between Tasks 2 and 3. `topicSlug` prop is optional to avoid breaking topic files that haven't been touched yet (refactor tasks add it to the files they modify).
+
+- **React 19 compliance:** `SectionDuplicateGuard`'s `useSectionGuard` hook uses `useEffect` with a register/unregister pair — confirmed via Context7 against `/facebook/react/v19_2_0` docs that ref mutation during render is forbidden by the React Compiler. This plan's pattern mutates the ref only inside effect callbacks invoked post-commit. `useMemo` wraps the provider value so context-consumer effects don't re-fire on every parent re-render. StrictMode double-mount is handled correctly: register → unregister → register keeps the counter accurate.
+
+- **Vietnamese UI compliance:** Every UI-facing string introduced by this plan is covered by the **Vietnamese UI Diacritics Protocol** (top of this document). Tasks 8–17 explicitly reference it. Subagents executing refactor batches run two verification commands before each commit: one visual diff review and one grep-based wrong-form check. Canonical label sets are provided for both Visualization (8 choices) and Explanation (5 choices) refactors. When a subagent cannot find a fitting canonical label, the protocol requires escalation rather than invention.
