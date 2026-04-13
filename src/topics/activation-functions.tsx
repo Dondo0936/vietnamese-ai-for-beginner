@@ -223,9 +223,9 @@ export default function ActivationFunctionsTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ===== STEP 2: INTERACTIVE EXPLORER ===== */}
-      <LessonSection step={2} totalSteps={8} label="Khám phá">
-        <VisualizationSection>
+      {/* ===== STEPS 2 & 4: VISUALIZATIONS ===== */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection step={2} totalSteps={8} label="Khám phá">
           <div className="space-y-4">
             {/* Function selector */}
             <div className="flex flex-wrap gap-2 justify-center">
@@ -461,28 +461,13 @@ export default function ActivationFunctionsTopic() {
               <LaTeX block>{act.formula}</LaTeX>
             </div>
           </div>
-        </VisualizationSection>
-      </LessonSection>
+        </LessonSection>
 
-      {/* ===== STEP 3: AHA MOMENT ===== */}
-      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>Hàm kích hoạt</strong>{" "}
-            là &quot;công tắc&quot; của nơ-ron — nó quyết định tín hiệu có được
-            chuyển tiếp hay không, và chuyển bao nhiêu. Trong <TopicLink slug="perceptron">perceptron</TopicLink> cổ điển
-            dùng hàm bước đơn giản; mạng hiện đại dùng ReLU hoặc sigmoid để gradient có thể lan truyền qua nhiều lớp.
+        <LessonSection step={4} totalSteps={8} label="Thí nghiệm">
+          <p className="text-sm text-muted mb-3 leading-relaxed">
+            Đây là lý do sigmoid gặp vấn đề ở lớp ẩn. Khi tín hiệu đi qua sigmoid nhiều lần,
+            nó bị &quot;nén&quot; dần về 0.5 — gradient gần bằng 0, mạng không thể học!
           </p>
-        </AhaMoment>
-      </LessonSection>
-
-      {/* ===== STEP 4: VANISHING GRADIENT DEMO ===== */}
-      <LessonSection step={4} totalSteps={8} label="Thí nghiệm">
-        <p className="text-sm text-muted mb-3 leading-relaxed">
-          Đây là lý do sigmoid gặp vấn đề ở lớp ẩn. Khi tín hiệu đi qua sigmoid nhiều lần,
-          nó bị &quot;nén&quot; dần về 0.5 — gradient gần bằng 0, mạng không thể học!
-        </p>
-        <VisualizationSection>
           <div className="space-y-3">
             <p className="text-xs text-center text-muted">
               Xem giá trị thay đổi khi đi qua sigmoid 8 lần liên tiếp
@@ -542,7 +527,19 @@ export default function ActivationFunctionsTopic() {
               Đây là vấn đề &quot;triệt tiêu gradient&quot; (<TopicLink slug="vanishing-exploding-gradients">vanishing gradient</TopicLink>).
             </p>
           </div>
-        </VisualizationSection>
+        </LessonSection>
+      </VisualizationSection>
+
+      {/* ===== STEP 3: AHA MOMENT ===== */}
+      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>Hàm kích hoạt</strong>{" "}
+            là &quot;công tắc&quot; của nơ-ron — nó quyết định tín hiệu có được
+            chuyển tiếp hay không, và chuyển bao nhiêu. Trong <TopicLink slug="perceptron">perceptron</TopicLink> cổ điển
+            dùng hàm bước đơn giản; mạng hiện đại dùng ReLU hoặc sigmoid để gradient có thể lan truyền qua nhiều lớp.
+          </p>
+        </AhaMoment>
       </LessonSection>
 
       {/* ===== STEP 5: INLINE CHALLENGE ===== */}

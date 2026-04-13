@@ -159,14 +159,14 @@ export default function BiasVarianceTopic() {
           explanation="Mũi tên lệch hệ thống = BIAS cao. Mũi tên chụm = variance thấp. Bạn cần sửa hướng (giảm bias), không cần tập trung hơn. Đây chính là tradeoff bias-variance trong ML!"
         >
 
-      {/* STEP 2: ARCHERY TARGET COMPARISON */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Trực quan hoá">
-        <p className="mb-4 text-sm text-muted leading-relaxed">
-          Bốn tổ hợp bias-variance qua ví dụ bắn cung. Mục tiêu lý tưởng: <strong className="text-foreground">Bias thấp + Variance thấp</strong>{" "}
-          (mũi tên chụm quanh hồng tâm).
-        </p>
+      {/* STEPS 2 & 3: VISUALIZATIONS */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Trực quan hoá">
+          <p className="mb-4 text-sm text-muted leading-relaxed">
+            Bốn tổ hợp bias-variance qua ví dụ bắn cung. Mục tiêu lý tưởng: <strong className="text-foreground">Bias thấp + Variance thấp</strong>{" "}
+            (mũi tên chụm quanh hồng tâm).
+          </p>
 
-        <VisualizationSection>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <ArcheryTarget bias="low" variance="low" label="Bias thấp + Var thấp" />
@@ -185,16 +185,13 @@ export default function BiasVarianceTopic() {
               <p className="text-center text-[10px] text-red-500 font-semibold mt-1">TỆ NHẤT</p>
             </div>
           </div>
-        </VisualizationSection>
-      </LessonSection>
+        </LessonSection>
 
-      {/* STEP 3: TRADEOFF CURVE */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Đường cong tradeoff">
-        <p className="mb-4 text-sm text-muted leading-relaxed">
-          Kéo thanh trượt <strong className="text-foreground">độ phức tạp mô hình</strong>. Bias giảm nhưng variance tăng — tìm điểm tổng sai số thấp nhất!
-        </p>
+        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Đường cong tradeoff">
+          <p className="mb-4 text-sm text-muted leading-relaxed">
+            Kéo thanh trượt <strong className="text-foreground">độ phức tạp mô hình</strong>. Bias giảm nhưng variance tăng — tìm điểm tổng sai số thấp nhất!
+          </p>
 
-        <VisualizationSection>
           <div className="space-y-4">
             <svg viewBox="0 0 500 260" className="w-full rounded-lg border border-border bg-background">
               {/* Grid */}
@@ -268,8 +265,8 @@ export default function BiasVarianceTopic() {
               </div>
             </div>
           </div>
-        </VisualizationSection>
-      </LessonSection>
+        </LessonSection>
+      </VisualizationSection>
 
       {/* STEP 4: AHA + CHALLENGE */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">

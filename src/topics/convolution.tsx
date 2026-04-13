@@ -149,15 +149,15 @@ export default function ConvolutionTopic() {
         />
       </LessonSection>
 
-      {/* ═══ Step 2: DISCOVER — Interactive Convolution ═══ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá phép tích chập">
-        <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bạn là thợ kiểm tra vải ở chợ Bến Thành. Bạn đặt một{" "}
-          <strong>khuôn mẫu nhỏ 3×3</strong>{" "}
-          lên tấm vải, so sánh từng điểm. Nơi nào khớp nhiều → điểm cao, nơi nào không khớp → điểm thấp. Rồi bạn trượt khuôn sang vị trí tiếp theo.
-        </p>
+      {/* ═══ Steps 2 & 4: VISUALIZATIONS ═══ */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá phép tích chập">
+          <p className="text-sm text-foreground leading-relaxed mb-3">
+            Hãy tưởng tượng bạn là thợ kiểm tra vải ở chợ Bến Thành. Bạn đặt một{" "}
+            <strong>khuôn mẫu nhỏ 3×3</strong>{" "}
+            lên tấm vải, so sánh từng điểm. Nơi nào khớp nhiều → điểm cao, nơi nào không khớp → điểm thấp. Rồi bạn trượt khuôn sang vị trí tiếp theo.
+          </p>
 
-        <VisualizationSection>
           <p className="text-sm text-muted mb-3">
             Chọn loại bộ lọc, rồi nhấn &quot;Bước tiếp&quot; để xem phép tích chập tại từng vị trí.
           </p>
@@ -294,29 +294,13 @@ export default function ConvolutionTopic() {
               Vị trí: ({pos.row}, {pos.col}) / ({maxRow}, {maxCol})
             </span>
           </div>
-        </VisualizationSection>
 
-        <p className="text-sm text-muted mt-3">
-          Bạn vừa thấy cùng một phép toán lặp lại ở mọi vị trí — nhân rồi cộng. Nhưng kết quả thay đổi tùy theo kernel bạn chọn. Thử chuyển sang &quot;Cạnh ngang&quot; xem sự khác biệt...
-        </p>
-      </LessonSection>
-
-      {/* ═══ Step 3: AHA MOMENT ═══ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            Phép toán &quot;nhân từng cặp rồi cộng&quot; bạn vừa thực hiện chính là <strong>phép tích chập (convolution)</strong>!{" "}
-            Bộ lọc khác nhau → phát hiện đặc trưng khác nhau. CNN học được bộ lọc tối ưu tự động qua quá trình huấn luyện.
+          <p className="text-sm text-muted mt-3">
+            Bạn vừa thấy cùng một phép toán lặp lại ở mọi vị trí — nhân rồi cộng. Nhưng kết quả thay đổi tùy theo kernel bạn chọn. Thử chuyển sang &quot;Cạnh ngang&quot; xem sự khác biệt...
           </p>
-          <p className="text-sm text-muted mt-1">
-            Giống bạn có nhiều cái kính lọc: kính đỏ thấy chỉ màu đỏ, kính xanh thấy chỉ xanh. Mỗi kernel là một &quot;cái kính&quot; tìm một loại pattern riêng.
-          </p>
-        </AhaMoment>
-      </LessonSection>
+        </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Stride & Padding ═══ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Stride và Padding">
-        <VisualizationSection>
+        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Stride và Padding">
           <div className="space-y-4">
             <div className="rounded-xl border border-border bg-background/50 p-4">
               <h4 className="text-sm font-semibold text-foreground mb-2">Stride (bước nhảy)</h4>
@@ -403,7 +387,20 @@ export default function ConvolutionTopic() {
               </div>
             </div>
           </div>
-        </VisualizationSection>
+        </LessonSection>
+      </VisualizationSection>
+
+      {/* ═══ Step 3: AHA MOMENT ═══ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            Phép toán &quot;nhân từng cặp rồi cộng&quot; bạn vừa thực hiện chính là <strong>phép tích chập (convolution)</strong>!{" "}
+            Bộ lọc khác nhau → phát hiện đặc trưng khác nhau. CNN học được bộ lọc tối ưu tự động qua quá trình huấn luyện.
+          </p>
+          <p className="text-sm text-muted mt-1">
+            Giống bạn có nhiều cái kính lọc: kính đỏ thấy chỉ màu đỏ, kính xanh thấy chỉ xanh. Mỗi kernel là một &quot;cái kính&quot; tìm một loại pattern riêng.
+          </p>
+        </AhaMoment>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
