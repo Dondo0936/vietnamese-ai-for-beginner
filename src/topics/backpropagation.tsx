@@ -463,10 +463,10 @@ for name, param in model.named_parameters():
           "Vanishing/exploding gradient là thách thức chính khi mạng sâu — giải pháp: ReLU, ResNet, LayerNorm",
         ]}
       />
+      </LessonSection>
 
       {/* ━━━ BƯỚC 8: KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
     </>
   );
 }

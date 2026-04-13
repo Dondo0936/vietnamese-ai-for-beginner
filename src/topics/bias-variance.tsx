@@ -157,7 +157,8 @@ export default function BiasVarianceTopic() {
           ]}
           correct={1}
           explanation="Mũi tên lệch hệ thống = BIAS cao. Mũi tên chụm = variance thấp. Bạn cần sửa hướng (giảm bias), không cần tập trung hơn. Đây chính là tradeoff bias-variance trong ML!"
-        >
+        />
+      </LessonSection>
 
       {/* STEPS 2 & 3: VISUALIZATIONS */}
       <VisualizationSection topicSlug={metadata.slug}>
@@ -445,9 +446,6 @@ print(f"Gap: {gap:.1%} → {'Overfitting!' if gap > 0.1 else 'OK'}")`}
       {/* STEP 9: QUIZ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
-      </LessonSection>
-
-        </PredictionGate>
       </LessonSection>
     </>
   );
