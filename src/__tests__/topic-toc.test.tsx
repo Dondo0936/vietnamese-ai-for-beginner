@@ -115,6 +115,19 @@ describe("TopicTOC", () => {
     expect(scrollSpy).toHaveBeenCalled();
   });
 
+  it("uses 'auto' scroll behavior under reduced motion (instead of smooth)", () => {
+    reduceMotionMock.mockReturnValue(true);
+    withSectionsInDOM(SECTIONS);
+    const scrollSpy = vi.fn();
+    const el = document.getElementById("visualization")!;
+    el.scrollIntoView = scrollSpy;
+    render(<TopicTOC sections={SECTIONS} />);
+    fireEvent.click(screen.getAllByText("Minh họa")[0]);
+    expect(scrollSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ behavior: "auto" })
+    );
+  });
+
   it("renders nothing when sections is empty (topic opted out)", () => {
     const { container } = render(<TopicTOC sections={[]} />);
     expect(container.querySelector('[role="navigation"]')).toBeNull();

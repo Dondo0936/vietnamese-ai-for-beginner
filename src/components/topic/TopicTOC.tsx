@@ -81,6 +81,10 @@ export default function TopicTOC({ sections }: TopicTOCProps) {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      // Use replaceState so we don't pollute the back-button history with each TOC click
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", `#${id}`);
+      }
       setCollapsed(true);
     }
   }
@@ -136,7 +140,6 @@ export default function TopicTOC({ sections }: TopicTOCProps) {
           <button
             type="button"
             onClick={() => setCollapsed(false)}
-            aria-expanded={false}
             className={`flex items-center gap-1.5 rounded-full border border-border bg-card/95 backdrop-blur-sm px-3 py-2 text-xs font-medium text-muted shadow-lg ${listClasses} hover:text-foreground`}
           >
             <List size={14} />
