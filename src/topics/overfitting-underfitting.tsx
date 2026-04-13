@@ -241,9 +241,9 @@ export default function OverfittingUnderfittingTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ===== STEP 2: INTERACTIVE FIT EXPLORER ===== */}
-      <LessonSection step={2} totalSteps={8} label="Khám phá">
-        <VisualizationSection>
+      {/* ===== STEPS 2 & 4: VISUALIZATIONS ===== */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection step={2} totalSteps={8} label="Khám phá">
           <div className="space-y-4">
             {/* Complexity slider */}
             <div className="space-y-2 max-w-lg mx-auto">
@@ -424,23 +424,9 @@ export default function OverfittingUnderfittingTopic() {
               </div>
             </div>
           </div>
-        </VisualizationSection>
-      </LessonSection>
+        </LessonSection>
 
-      {/* ===== STEP 3: AHA MOMENT ===== */}
-      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>Mục tiêu cuối cùng không phải loss thấp trên dữ liệu train</strong>{" "}
-            — mà là hoạt động tốt trên dữ liệu <em>chưa từng thấy</em>. Overfit = điểm
-            cao bài tập về nhà nhưng thi rớt. Good fit = hiểu bản chất, thi đạt điểm cao.
-          </p>
-        </AhaMoment>
-      </LessonSection>
-
-      {/* ===== STEP 4: TRAINING CURVES ===== */}
-      <LessonSection step={4} totalSteps={8} label="Đường cong huấn luyện">
-        <VisualizationSection>
+        <LessonSection step={4} totalSteps={8} label="Đường cong huấn luyện">
           <div className="space-y-3">
             <p className="text-sm text-center text-muted">
               Đường cong loss theo epoch — dấu hiệu nhận biết overfitting kinh điển
@@ -589,7 +575,18 @@ export default function OverfittingUnderfittingTopic() {
               />
             </div>
           </div>
-        </VisualizationSection>
+        </LessonSection>
+      </VisualizationSection>
+
+      {/* ===== STEP 3: AHA MOMENT ===== */}
+      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>Mục tiêu cuối cùng không phải loss thấp trên dữ liệu train</strong>{" "}
+            — mà là hoạt động tốt trên dữ liệu <em>chưa từng thấy</em>. Overfit = điểm
+            cao bài tập về nhà nhưng thi rớt. Good fit = hiểu bản chất, thi đạt điểm cao.
+          </p>
+        </AhaMoment>
       </LessonSection>
 
       {/* ===== STEP 5: INLINE CHALLENGE ===== */}

@@ -106,17 +106,17 @@ export default function CnnTopic() {
         />
       </LessonSection>
 
-      {/* ═══ Step 2: DISCOVER — Interactive Architecture ═══ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá kiến trúc">
-        <p className="text-sm text-foreground leading-relaxed mb-4">
-          Hãy tưởng tượng bạn đang ở quán phở. Từ xa nhìn vào, bạn thấy{" "}
-          <strong>hình dạng tổng thể</strong>{" "}
-          (bàn, ghế). Lại gần hơn, bạn nhận ra <strong>chi tiết</strong>{" "}
-          (tô phở, đũa). Sát hơn nữa, bạn thấy <strong>kết cấu</strong>{" "}
-          (sợi phở, lá hành). CNN cũng &quot;nhìn&quot; theo cách này — từ đơn giản đến phức tạp.
-        </p>
+      {/* ═══ Steps 2 & 4: VISUALIZATIONS ═══ */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá kiến trúc">
+          <p className="text-sm text-foreground leading-relaxed mb-4">
+            Hãy tưởng tượng bạn đang ở quán phở. Từ xa nhìn vào, bạn thấy{" "}
+            <strong>hình dạng tổng thể</strong>{" "}
+            (bàn, ghế). Lại gần hơn, bạn nhận ra <strong>chi tiết</strong>{" "}
+            (tô phở, đũa). Sát hơn nữa, bạn thấy <strong>kết cấu</strong>{" "}
+            (sợi phở, lá hành). CNN cũng &quot;nhìn&quot; theo cách này — từ đơn giản đến phức tạp.
+          </p>
 
-        <VisualizationSection>
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng lớp để xem vai trò. Kéo thanh trượt để di chuyển bộ lọc trên ảnh đầu vào.
           </p>
@@ -195,29 +195,13 @@ export default function CnnTopic() {
               className="flex-1 accent-accent"
             />
           </div>
-        </VisualizationSection>
 
-        <p className="text-sm text-muted mt-3">
-          Bạn vừa thấy bộ lọc trượt qua ảnh — đây chính là &quot;phép tích chập&quot;. Nhưng điều kỳ diệu thật sự nằm ở cách các lớp xếp chồng lên nhau...
-        </p>
-      </LessonSection>
-
-      {/* ═══ Step 3: AHA MOMENT ═══ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>CNN</strong>{" "}
-            không phải một bộ lọc đơn lẻ — nó là hàng chục lớp xếp chồng, mỗi lớp phát hiện đặc trưng phức tạp hơn lớp trước. Cạnh → hình dạng → vật thể hoàn chỉnh!
+          <p className="text-sm text-muted mt-3">
+            Bạn vừa thấy bộ lọc trượt qua ảnh — đây chính là &quot;phép tích chập&quot;. Nhưng điều kỳ diệu thật sự nằm ở cách các lớp xếp chồng lên nhau...
           </p>
-          <p className="text-sm text-muted mt-1">
-            Giống cách bạn xếp LEGO: viên gạch đơn → khối hình → ngôi nhà hoàn chỉnh. Mỗi lớp CNN xây trên nền của lớp trước.
-          </p>
-        </AhaMoment>
-      </LessonSection>
+        </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Feature Hierarchy ═══ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Phân cấp đặc trưng">
-        <VisualizationSection>
+        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Phân cấp đặc trưng">
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng cấp để xem CNN phát hiện gì ở mỗi độ sâu.
           </p>
@@ -291,7 +275,20 @@ export default function CnnTopic() {
               })}
             </svg>
           </div>
-        </VisualizationSection>
+        </LessonSection>
+      </VisualizationSection>
+
+      {/* ═══ Step 3: AHA MOMENT ═══ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>CNN</strong>{" "}
+            không phải một bộ lọc đơn lẻ — nó là hàng chục lớp xếp chồng, mỗi lớp phát hiện đặc trưng phức tạp hơn lớp trước. Cạnh → hình dạng → vật thể hoàn chỉnh!
+          </p>
+          <p className="text-sm text-muted mt-1">
+            Giống cách bạn xếp LEGO: viên gạch đơn → khối hình → ngôi nhà hoàn chỉnh. Mỗi lớp CNN xây trên nền của lớp trước.
+          </p>
+        </AhaMoment>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

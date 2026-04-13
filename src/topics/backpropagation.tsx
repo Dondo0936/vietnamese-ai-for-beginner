@@ -180,9 +180,9 @@ export default function BackpropagationTopic() {
 
             </LessonSection>
 
-{/* ━━━ BƯỚC 2: KHÁM PHÁ — Người dùng tự tay tối ưu ━━━ */}
-      <LessonSection step={2} totalSteps={7} label="Khám phá">
-      <VisualizationSection>
+{/* ━━━ BƯỚC 2 & 4: VISUALIZATIONS ━━━ */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection step={2} totalSteps={7} label="Khám phá">
         <h3 className="text-base font-semibold text-foreground mb-1">
           Thử điều chỉnh trọng số thủ công!
         </h3>
@@ -274,24 +274,9 @@ export default function BackpropagationTopic() {
             Nhưng backpropagation chỉ cần <strong>1 lần tính toán</strong> để biết chính xác cần thay đổi bao nhiêu!
           </motion.div>
         )}
-      </VisualizationSection>
+        </LessonSection>
 
-            </LessonSection>
-
-{/* ━━━ BƯỚC 3: AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={7} label="Khám phá">
-      <AhaMoment>
-        Thay vì thử từng chút như bạn vừa làm, <strong>Backpropagation</strong> tính
-        <em> chính xác </em> mỗi trọng số cần thay đổi bao nhiêu — chỉ bằng một lần
-        duyệt ngược qua mạng, dùng <strong>quy tắc chuỗi</strong> (chain rule) trong đạo hàm.
-        Đây là bước tiếp theo sau <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink> trong mỗi vòng lặp huấn luyện.
-      </AhaMoment>
-
-            </LessonSection>
-
-{/* ━━━ BƯỚC 4: ĐI SÂU — Xem backprop hoạt động ━━━ */}
-      <LessonSection step={4} totalSteps={7} label="Đi sâu">
-      <VisualizationSection>
+        <LessonSection step={4} totalSteps={7} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground mb-2">
           Xem Backpropagation tự động tối ưu
         </h3>
@@ -374,7 +359,17 @@ export default function BackpropagationTopic() {
             </p>
           </div>
         </StepReveal>
+        </LessonSection>
       </VisualizationSection>
+
+{/* ━━━ BƯỚC 3: AHA MOMENT ━━━ */}
+      <LessonSection step={3} totalSteps={7} label="Khám phá">
+      <AhaMoment>
+        Thay vì thử từng chút như bạn vừa làm, <strong>Backpropagation</strong> tính
+        <em> chính xác </em> mỗi trọng số cần thay đổi bao nhiêu — chỉ bằng một lần
+        duyệt ngược qua mạng, dùng <strong>quy tắc chuỗi</strong> (chain rule) trong đạo hàm.
+        Đây là bước tiếp theo sau <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink> trong mỗi vòng lặp huấn luyện.
+      </AhaMoment>
 
             </LessonSection>
 
