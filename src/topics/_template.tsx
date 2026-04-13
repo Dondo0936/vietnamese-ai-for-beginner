@@ -65,7 +65,6 @@ import {
 } from "@/components/interactive";
 
 // Section components từ topic/ — khung bố cục chung
-import AnalogyCard from "@/components/topic/AnalogyCard";           // Ví dụ thực tế / ẩn dụ
 import VisualizationSection from "@/components/topic/VisualizationSection"; // Hình minh họa tương tác
 import ExplanationSection from "@/components/topic/ExplanationSection";     // Giải thích lý thuyết
 import QuizSection from "@/components/topic/QuizSection";
@@ -123,7 +122,7 @@ export const metadata: TopicMeta = {
 //
 // 8 BƯỚC CỦA MỘT BÀI HỌC TỐT:
 //   1. Hook / Dự đoán   → PredictionGate kích hoạt tò mò
-//   2. Ẩn dụ thực tế    → AnalogyCard kết nối khái niệm với cuộc sống
+//   2. Ẩn dụ thực tế    → đoạn văn + Callout kết nối khái niệm với cuộc sống
 //   3. Trực quan hóa    → VisualizationSection tương tác
 //   4. Khoảnh khắc aha  → AhaMoment đóng đinh insight cốt lõi
 //   5. Thách thức nhỏ   → InlineChallenge kiểm tra ngay trong luồng
@@ -132,6 +131,30 @@ export const metadata: TopicMeta = {
 //   8. Kiểm tra         → QuizSection đánh giá cuối bài
 //
 // ---------------------------------------------------------------------------
+
+/**
+ * TOPIC CONTRIBUTOR GUIDE
+ *
+ * 1. Each topic renders AT MOST ONE <VisualizationSection> and ONE <ExplanationSection>.
+ *    Need multiple demos? Wrap them in <LessonSection label="…" step={N}> INSIDE
+ *    the outer section:
+ *
+ *    <VisualizationSection topicSlug={metadata.slug}>
+ *      <LessonSection label="Demo cơ bản" step={1}>
+ *        <FirstDemo />
+ *      </LessonSection>
+ *      <LessonSection label="Demo nâng cao" step={2}>
+ *        <SecondDemo />
+ *      </LessonSection>
+ *    </VisualizationSection>
+ *
+ *    A React context (SectionDuplicateGuard) warns in development if you
+ *    accidentally render two of the same section type.
+ *
+ * 2. Topics without a visualization should set metadata.tocSections to:
+ *      [{ id: "explanation", labelVi: "Giải thích" }]
+ *    so the TOC rail doesn't show a dead "Minh họa" row.
+ */
 
 export default function XyzKhaiNiemTopic() {
   // Khai báo state nếu cần cho VisualizationSection tương tác
@@ -151,7 +174,7 @@ export default function XyzKhaiNiemTopic() {
             • correct:  index của đáp án đúng (0-based)
             • explanation: giải thích ngắn sau khi chọn (~1-2 câu)
             • children: nội dung hiện ra SAU KHI người học đã chọn
-              (thường là AnalogyCard hoặc đoạn văn mở đầu)
+              (thường là đoạn văn mở đầu hoặc Callout giới thiệu)
 
           Lưu ý: Không dùng PredictionGate cho câu hỏi quá dễ hoặc quá khó.
           Mục tiêu là tạo ra một "dự đoán" khả thi, không phải kiểm tra kiến thức.
@@ -180,8 +203,7 @@ export default function XyzKhaiNiemTopic() {
           Não người học theo mô hình nối kết — không có móc treo thì kiến thức
           sẽ rơi ra. Ẩn dụ là cái móc treo đó.
 
-          Primitive: AnalogyCard
-            • Chứa JSX thuần túy (paragraphs, strong, em)
+          Dùng đoạn văn <p> thông thường hoặc <Callout variant="insight">
             • Thường 2-4 đoạn văn ngắn
             • Kết thúc bằng câu chuyển tiếp sang visualization
 
@@ -189,22 +211,20 @@ export default function XyzKhaiNiemTopic() {
           (chợ, bếp, giao thông, thể thao…)
           ================================================================= */}
 
-      <AnalogyCard>
-        <p>
-          Hãy tưởng tượng Khái Niệm XYZ giống như{" "}
-          <strong>[ẩn dụ quen thuộc]</strong>. Khi bạn [hành động A], thì
-          [hệ quả B] xảy ra — tương tự như khi [ẩn dụ] [làm gì đó].
-        </p>
-        <p>
-          Điểm mấu chốt là <strong>[thuộc tính quan trọng]</strong>: [giải
-          thích ngắn tại sao thuộc tính đó quan trọng trong bối cảnh ẩn dụ].
-          Trong AI/ML, điều này có nghĩa là [kết nối ẩn dụ với kỹ thuật thực].
-        </p>
-        <p>
-          Nếu không có XYZ, [điều gì sẽ xảy ra] — giống như [ẩn dụ hậu quả].
-          Đó chính là lý do tại sao [tên kỹ thuật] cần Khái Niệm XYZ.
-        </p>
-      </AnalogyCard>
+      <p>
+        Hãy tưởng tượng Khái Niệm XYZ giống như{" "}
+        <strong>[ẩn dụ quen thuộc]</strong>. Khi bạn [hành động A], thì
+        [hệ quả B] xảy ra — tương tự như khi [ẩn dụ] [làm gì đó].
+      </p>
+      <p>
+        Điểm mấu chốt là <strong>[thuộc tính quan trọng]</strong>: [giải
+        thích ngắn tại sao thuộc tính đó quan trọng trong bối cảnh ẩn dụ].
+        Trong AI/ML, điều này có nghĩa là [kết nối ẩn dụ với kỹ thuật thực].
+      </p>
+      <p>
+        Nếu không có XYZ, [điều gì sẽ xảy ra] — giống như [ẩn dụ hậu quả].
+        Đó chính là lý do tại sao [tên kỹ thuật] cần Khái Niệm XYZ.
+      </p>
 
       {/* ===================================================================
           BƯỚC 3 — TRỰC QUAN HÓA TƯƠNG TÁC
@@ -331,7 +351,7 @@ export default function XyzKhaiNiemTopic() {
 
           Quy tắc:
             • Định nghĩa chính thức ở đoạn đầu tiên
-            • Đừng giải thích lại những gì đã nói trong AnalogyCard
+            • Đừng giải thích lại những gì đã nói trong phần ẩn dụ (Bước 2)
             • Kết thúc bằng "trong thực tế" hoặc "khi nào dùng"
           ================================================================= */}
 
