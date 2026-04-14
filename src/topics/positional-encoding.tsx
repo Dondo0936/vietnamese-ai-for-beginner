@@ -118,7 +118,7 @@ export default function PositionalEncodingTopic() {
           (positional encoding). Nhưng thay vì số đơn giản (1, 2, 3...), ta dùng hệ thống giống đồng hồ: kim giây quay nhanh (phân biệt nhà gần), kim giờ quay chậm (phân biệt đầu phố vs cuối phố).
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Di chuột qua hàng (vị trí) hoặc cột (chiều) để highlight. Quan sát: cột trái thay đổi nhanh (tần số cao), cột phải thay đổi chậm (tần số thấp).
           </p>
@@ -208,7 +208,6 @@ export default function PositionalEncodingTopic() {
 
       {/* ═══ Step 4: DEEPEN — Modern variants ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Biến thể hiện đại">
-        <VisualizationSection>
           <div className="space-y-3">
             <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
               <h4 className="text-sm font-semibold text-blue-500 mb-1">Sinusoidal PE (Transformer gốc, 2017)</h4>
@@ -235,7 +234,6 @@ export default function PositionalEncodingTopic() {
               </p>
             </div>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

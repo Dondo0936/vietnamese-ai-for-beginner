@@ -165,7 +165,7 @@ export default function ScalingLawsTopic() {
 
 {/* ━━━ KHÁM PHÁ — Biểu đồ scaling ━━━ */}
       <LessonSection step={2} totalSteps={6} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Biểu đồ Scaling: Model lớn hơn → Loss thấp hơn (nhưng chậm dần)
         </h3>
@@ -274,7 +274,6 @@ export default function ScalingLawsTopic() {
 
 {/* ━━━ ĐI SÂU — Slider dự đoán ━━━ */}
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Dự đoán hiệu suất model
         </h3>
@@ -288,7 +287,6 @@ export default function ScalingLawsTopic() {
           ]}
           visualization={sliderViz}
         />
-      </VisualizationSection>
 
       </LessonSection>
 

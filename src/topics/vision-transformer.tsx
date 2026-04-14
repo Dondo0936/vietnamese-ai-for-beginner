@@ -98,7 +98,7 @@ export default function VisionTransformerTopic() {
           Hãy tưởng tượng bạn có tấm ảnh chụp phố cổ Hội An và cắt thành 9 mảnh ghép (jigsaw). Mỗi mảnh tự hỏi: &quot;Mảnh nào liên quan đến tôi?&quot; — đó là self-attention! Mảnh có đèn lồng sẽ &quot;chú ý&quot; đến mảnh có phố — dù chúng cách xa nhau.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn vào patch để xem attention connections. Mỗi patch &quot;nhìn&quot; tất cả patches khác.
           </p>
@@ -185,7 +185,6 @@ export default function VisionTransformerTopic() {
       </LessonSection>
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="ViT vs CNN">
-        <VisualizationSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
               <h4 className="text-sm font-semibold text-blue-500 mb-2">CNN</h4>
@@ -211,7 +210,6 @@ export default function VisionTransformerTopic() {
               DeiT (2021) cho thấy ViT train được trên ImageNet (1.4M) nhờ data augmentation mạnh + knowledge distillation từ CNN. Không cần 300M ảnh nữa! Ngày nay ViT là lựa chọn hàng đầu cho computer vision.
             </p>
           </Callout>
-        </VisualizationSection>
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
