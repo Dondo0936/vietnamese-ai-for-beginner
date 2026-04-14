@@ -110,7 +110,7 @@ export default function AutoencoderTopic() {
           Giống bạn gọi Grab đi từ Sài Gòn ra Hà Nội. Đường đi phải qua &quot;cổ chai&quot; — đoạn đường hẹp nhất (bottleneck). Mọi thông tin phải nén lại để chui qua, rồi &quot;giải nén&quot; ở đầu bên kia.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Kéo thanh trượt để thay đổi kích thước bottleneck. Nhỏ hơn = nén mạnh hơn = buộc mạng học bản chất.
           </p>
@@ -234,7 +234,6 @@ export default function AutoencoderTopic() {
 
       {/* ═══ Step 4: DEEPEN — Variants ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Các biến thể">
-        <VisualizationSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
               <h4 className="text-sm font-semibold text-blue-500 mb-2">Autoencoder thường</h4>
@@ -279,7 +278,6 @@ export default function AutoencoderTopic() {
               </div>
             </div>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
