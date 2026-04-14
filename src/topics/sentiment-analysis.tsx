@@ -138,7 +138,7 @@ export default function SentimentAnalysisTopic() {
           Nhập review tiếng Việt bên dưới — thuật toán sẽ {'"đọc vị"'} cảm xúc bằng cách đếm từ tích cực/tiêu cực (phương pháp lexicon đơn giản).
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             <textarea
               value={text}
@@ -217,7 +217,6 @@ export default function SentimentAnalysisTopic() {
           Xem 5 review Shopee mẫu — mỗi review được phân loại tự động. Nhấn vào review để xem chi tiết.
         </p>
 
-        <VisualizationSection>
           <div className="space-y-3">
             {SHOPEE_REVIEWS.map((review, i) => (
               <button key={i} type="button" onClick={() => setReviewIdx(i)}
@@ -242,7 +241,6 @@ export default function SentimentAnalysisTopic() {
               </button>
             ))}
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ── Step 5: InlineChallenge ── */}
