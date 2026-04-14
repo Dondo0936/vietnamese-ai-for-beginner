@@ -101,7 +101,7 @@ export default function UNetTopic() {
           lại, vẽ chi tiết ranh giới (decoder). Ghi chú từ mỗi mức zoom (skip connections) giúp bạn không quên chi tiết.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng cấp để xem skip connection truyền chi tiết từ encoder sang decoder.
           </p>
@@ -183,7 +183,6 @@ export default function UNetTopic() {
       </LessonSection>
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="U-Net trong Diffusion">
-        <VisualizationSection>
           <Callout variant="insight" title="U-Net trong Stable Diffusion">
             <p>
               Stable Diffusion dùng U-Net với 3 bổ sung: (1) <strong>Timestep embedding</strong>{" "}
@@ -192,7 +191,6 @@ export default function UNetTopic() {
               — hoạt động trên latent 64×64 thay vì pixel 512×512.
             </p>
           </Callout>
-        </VisualizationSection>
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
