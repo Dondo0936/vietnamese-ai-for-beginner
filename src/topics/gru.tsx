@@ -112,7 +112,7 @@ export default function GruTopic() {
           — bỏ bớt vài tính năng ít dùng, nhẹ hơn, tiết kiệm xăng hơn, mà đi vẫn tốt.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn vào cổng để xem chi tiết. So sánh: LSTM 3 cổng + cell state riêng, GRU chỉ 2 cổng.
           </p>
@@ -217,7 +217,6 @@ export default function GruTopic() {
 
       {/* ═══ Step 4: DEEPEN — LSTM vs GRU ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="So sánh LSTM vs GRU">
-        <VisualizationSection>
           <button type="button" onClick={() => setShowCompare(!showCompare)}
             className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-white mb-4">
             {showCompare ? "Ẩn bảng so sánh" : "Xem bảng so sánh chi tiết"}
@@ -263,7 +262,6 @@ export default function GruTopic() {
               → Transformer (cả hai đều thua). Trong thực tế, thử cả hai rồi chọn cái tốt hơn trên validation set!
             </p>
           </Callout>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
