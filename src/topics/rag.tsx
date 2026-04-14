@@ -333,7 +333,7 @@ export default function RAGTopic() {
         </p>
 
       {/* Step 2: DISCOVER */}
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <div className="space-y-5">
           <div>
             <p className="text-sm text-foreground mb-3 font-medium">Chọn câu hỏi để thử nghiệm:</p>
@@ -363,12 +363,10 @@ export default function RAGTopic() {
       </AhaMoment>
 
       {/* Step 4: DEEPEN */}
-      <VisualizationSection>
         <div className="space-y-3">
           <p className="text-sm text-foreground font-medium">Xây dựng pipeline RAG từng bước:</p>
           <PipelineBuilder />
         </div>
-      </VisualizationSection>
 
       {/* Step 5: CHALLENGE */}
       <InlineChallenge

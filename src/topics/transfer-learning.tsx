@@ -100,7 +100,7 @@ export default function TransferLearningTopic() {
           Giống bạn đã biết nấu phở bò, giờ muốn nấu phở gà. Kỹ năng ninh nước dùng, nêm gia vị, trụng bánh phở vẫn dùng được (<strong>frozen layers</strong>). Chỉ cần học cách xử lý gà thay bò (<strong>trainable layers</strong>).
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Chọn chiến lược transfer learning để xem lớp nào đóng băng, lớp nào train.
           </p>
@@ -165,7 +165,6 @@ export default function TransferLearningTopic() {
       </LessonSection>
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khi nào dùng gì?">
-        <VisualizationSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
               <h4 className="text-sm font-semibold text-blue-500 mb-1">Dữ liệu ít + Giống pretrain</h4>
@@ -184,7 +183,6 @@ export default function TransferLearningTopic() {
               <p className="text-xs text-muted">Có thể <strong>train từ đầu</strong>{" "}hoặc chỉ dùng kiến trúc (không pretrained weights).</p>
             </div>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
