@@ -110,9 +110,9 @@ export default function ResidualConnectionsTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ═══ Steps 2 & 4: VISUALIZATIONS ═══ */}
-      <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
+      {/* ═══ Step 2: DISCOVER — Interactive Comparison ═══ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-foreground leading-relaxed mb-3">
             Hãy tưởng tượng bạn gửi tin nhắn qua dãy người truyền miệng. Qua mỗi người, tin nhắn bị méo mó thêm. Đến người thứ 10, tin nhắn gốc đã biến thành &quot;tam sao thất bản&quot;.{" "}
             <strong>Skip connection</strong>{" "}
@@ -227,9 +227,25 @@ export default function ResidualConnectionsTopic() {
           <p className="text-sm text-muted mt-3">
             Bạn vừa thấy gradient bên trái suy giảm qua mỗi lớp, nhưng bên phải gradient chảy thẳng qua skip connection = luôn mạnh. Đây là lý do ResNet train được 152 lớp!
           </p>
-        </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
 
-        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Độ sâu vs Accuracy">
+      {/* ═══ Step 3: AHA MOMENT ═══ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>output = F(x) + x</strong>. Mạng không cần học toàn bộ ánh xạ H(x), chỉ cần học{" "}
+            <strong>phần dư</strong>{" "}
+            F(x) = H(x) - x. Nếu lớp tối ưu là identity (không thay đổi gì), F(x) chỉ cần = 0. Dễ học 0 hơn identity rất nhiều!
+          </p>
+          <p className="text-sm text-muted mt-1">
+            Gradient của x + F(x) theo x = 1 + dF/dx. Dù dF/dx nhỏ, gradient vẫn ít nhất = 1. Không vanishing!
+          </p>
+        </AhaMoment>
+      </LessonSection>
+
+      {/* ═══ Step 4: DEPTH VS ACCURACY ═══ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Độ sâu vs Accuracy">
           <h3 className="text-sm font-semibold text-foreground mb-3">
             ImageNet accuracy theo độ sâu mạng
           </h3>
@@ -268,21 +284,6 @@ export default function ResidualConnectionsTopic() {
               Có skip: 8 lớp (92%) &lt; 56 lớp (97%) &lt; 152 lớp (97.8%). Sâu hơn = TỐT hơn!
             </p>
           </Callout>
-        </LessonSection>
-      </VisualizationSection>
-
-      {/* ═══ Step 3: AHA MOMENT ═══ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>output = F(x) + x</strong>. Mạng không cần học toàn bộ ánh xạ H(x), chỉ cần học{" "}
-            <strong>phần dư</strong>{" "}
-            F(x) = H(x) - x. Nếu lớp tối ưu là identity (không thay đổi gì), F(x) chỉ cần = 0. Dễ học 0 hơn identity rất nhiều!
-          </p>
-          <p className="text-sm text-muted mt-1">
-            Gradient của x + F(x) theo x = 1 + dF/dx. Dù dF/dx nhỏ, gradient vẫn ít nhất = 1. Không vanishing!
-          </p>
-        </AhaMoment>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
