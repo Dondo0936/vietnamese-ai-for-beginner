@@ -157,12 +157,11 @@ export default function BiasVarianceTopic() {
           ]}
           correct={1}
           explanation="Mũi tên lệch hệ thống = BIAS cao. Mũi tên chụm = variance thấp. Bạn cần sửa hướng (giảm bias), không cần tập trung hơn. Đây chính là tradeoff bias-variance trong ML!"
-        />
-      </LessonSection>
+        >
 
-      {/* STEPS 2 & 3: VISUALIZATIONS */}
-      <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Trực quan hoá">
+          {/* STEPS 2 & 3: VISUALIZATIONS */}
+          <VisualizationSection topicSlug={metadata.slug}>
+            <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Trực quan hoá">
           <p className="mb-4 text-sm text-muted leading-relaxed">
             Bốn tổ hợp bias-variance qua ví dụ bắn cung. Mục tiêu lý tưởng: <strong className="text-foreground">Bias thấp + Variance thấp</strong>{" "}
             (mũi tên chụm quanh hồng tâm).
@@ -443,9 +442,11 @@ print(f"Gap: {gap:.1%} → {'Overfitting!' if gap > 0.1 else 'OK'}")`}
         ]} />
       </LessonSection>
 
-      {/* STEP 9: QUIZ */}
-      <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
-        <QuizSection questions={quizQuestions} />
+          {/* STEP 9: QUIZ */}
+          <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+            <QuizSection questions={quizQuestions} />
+          </LessonSection>
+        </PredictionGate>
       </LessonSection>
     </>
   );
