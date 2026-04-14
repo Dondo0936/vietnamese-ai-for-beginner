@@ -147,7 +147,7 @@ export default function TopKTopPTopic() {
 
 {/* ━━━ KHÁM PHÁ ━━━ */}
       <LessonSection step={2} totalSteps={6} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Lọc từ trước khi chọn
         </h3>
@@ -283,7 +283,6 @@ export default function TopKTopPTopic() {
 
 {/* ━━━ ĐI SÂU — So sánh K vs P ━━━ */}
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Khi nào Top-K gặp vấn đề?
         </h3>
@@ -315,7 +314,6 @@ export default function TopKTopPTopic() {
           }
           description="Top-P tự điều chỉnh số từ tùy mức tự tin — ít từ khi chắc chắn, nhiều từ khi không chắc."
         />
-      </VisualizationSection>
 
       </LessonSection>
 
