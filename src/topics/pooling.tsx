@@ -120,9 +120,9 @@ export default function PoolingTopic() {
         />
       </LessonSection>
 
-      {/* ═══ Steps 2 & 4: VISUALIZATIONS ═══ */}
-      <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá Pooling">
+      {/* ═══ Step 2: DISCOVER — Interactive Pooling ═══ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá Pooling">
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-foreground leading-relaxed mb-3">
             Hãy tưởng tượng bạn tóm tắt đánh giá món phở trên Shopee Food. Thay vì đọc 100 review, bạn chỉ lấy{" "}
             <strong>điểm cao nhất</strong>{" "}
@@ -252,9 +252,25 @@ export default function PoolingTopic() {
           <p className="text-sm text-muted mt-3">
             Bạn vừa thấy ảnh 4×4 giảm xuống 2×2 — kích thước giảm 4 lần mà thông tin quan trọng vẫn được giữ lại. Đây là lý do CNN có thể xử lý ảnh hàng triệu pixel.
           </p>
-        </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
 
-        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Các loại Pooling">
+      {/* ═══ Step 3: AHA MOMENT ═══ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>Pooling</strong>{" "}
+            là &quot;bộ tóm tắt&quot; — giảm kích thước dữ liệu nhưng giữ bản chất. Giống bạn đọc tóm tắt sách thay vì đọc hết 500 trang — nhanh hơn mà vẫn nắm được nội dung chính!
+          </p>
+          <p className="text-sm text-muted mt-1">
+            Bonus: pooling tạo tính <strong>bất biến dịch chuyển nhỏ</strong>{" "}
+            — dù con mèo dịch sang trái/phải vài pixel, max value trong vùng 2×2 vẫn giống nhau.
+          </p>
+        </AhaMoment>
+      </LessonSection>
+
+      {/* ═══ Step 4: POOLING TYPES ═══ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Các loại Pooling">
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
@@ -287,21 +303,6 @@ export default function PoolingTopic() {
               </p>
             </Callout>
           </div>
-        </LessonSection>
-      </VisualizationSection>
-
-      {/* ═══ Step 3: AHA MOMENT ═══ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>Pooling</strong>{" "}
-            là &quot;bộ tóm tắt&quot; — giảm kích thước dữ liệu nhưng giữ bản chất. Giống bạn đọc tóm tắt sách thay vì đọc hết 500 trang — nhanh hơn mà vẫn nắm được nội dung chính!
-          </p>
-          <p className="text-sm text-muted mt-1">
-            Bonus: pooling tạo tính <strong>bất biến dịch chuyển nhỏ</strong>{" "}
-            — dù con mèo dịch sang trái/phải vài pixel, max value trong vùng 2×2 vẫn giống nhau.
-          </p>
-        </AhaMoment>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

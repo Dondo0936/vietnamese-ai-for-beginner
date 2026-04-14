@@ -106,9 +106,9 @@ export default function CnnTopic() {
         />
       </LessonSection>
 
-      {/* ═══ Steps 2 & 4: VISUALIZATIONS ═══ */}
-      <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá kiến trúc">
+      {/* ═══ Step 2: DISCOVER — Interactive Architecture ═══ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá kiến trúc">
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-foreground leading-relaxed mb-4">
             Hãy tưởng tượng bạn đang ở quán phở. Từ xa nhìn vào, bạn thấy{" "}
             <strong>hình dạng tổng thể</strong>{" "}
@@ -199,9 +199,24 @@ export default function CnnTopic() {
           <p className="text-sm text-muted mt-3">
             Bạn vừa thấy bộ lọc trượt qua ảnh — đây chính là &quot;phép tích chập&quot;. Nhưng điều kỳ diệu thật sự nằm ở cách các lớp xếp chồng lên nhau...
           </p>
-        </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
 
-        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Phân cấp đặc trưng">
+      {/* ═══ Step 3: AHA MOMENT ═══ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+        <AhaMoment>
+          <p>
+            <strong>CNN</strong>{" "}
+            không phải một bộ lọc đơn lẻ — nó là hàng chục lớp xếp chồng, mỗi lớp phát hiện đặc trưng phức tạp hơn lớp trước. Cạnh → hình dạng → vật thể hoàn chỉnh!
+          </p>
+          <p className="text-sm text-muted mt-1">
+            Giống cách bạn xếp LEGO: viên gạch đơn → khối hình → ngôi nhà hoàn chỉnh. Mỗi lớp CNN xây trên nền của lớp trước.
+          </p>
+        </AhaMoment>
+      </LessonSection>
+
+      {/* ═══ Step 4: FEATURE HIERARCHY ═══ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Phân cấp đặc trưng">
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng cấp để xem CNN phát hiện gì ở mỗi độ sâu.
           </p>
@@ -275,20 +290,6 @@ export default function CnnTopic() {
               })}
             </svg>
           </div>
-        </LessonSection>
-      </VisualizationSection>
-
-      {/* ═══ Step 3: AHA MOMENT ═══ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>CNN</strong>{" "}
-            không phải một bộ lọc đơn lẻ — nó là hàng chục lớp xếp chồng, mỗi lớp phát hiện đặc trưng phức tạp hơn lớp trước. Cạnh → hình dạng → vật thể hoàn chỉnh!
-          </p>
-          <p className="text-sm text-muted mt-1">
-            Giống cách bạn xếp LEGO: viên gạch đơn → khối hình → ngôi nhà hoàn chỉnh. Mỗi lớp CNN xây trên nền của lớp trước.
-          </p>
-        </AhaMoment>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
