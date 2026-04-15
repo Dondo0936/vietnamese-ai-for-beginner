@@ -307,7 +307,6 @@ print(processor.decode(output[0], skip_special_tokens=True))
 
       {/* ── Step 6: Deeper insight ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng thực tế">
-        <ExplanationSection>
           <Callout variant="info" title="VLM trong đời sống Việt Nam">
             <div className="space-y-2">
               <p>
@@ -328,7 +327,6 @@ print(processor.decode(output[0], skip_special_tokens=True))
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}
