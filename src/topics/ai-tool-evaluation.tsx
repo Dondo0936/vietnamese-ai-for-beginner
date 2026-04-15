@@ -388,7 +388,6 @@ export default function AiToolEvaluationTopic() {
 
       {/* ━━━ STEP 6: EXPLAIN — FREE vs PAID ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Miễn phí vs Trả phí">
-        <ExplanationSection>
           <p>
             <strong>Khi nào nên nâng cấp lên bản trả phí?</strong>{" "}
             Đừng vội trả tiền ngay. Hãy dùng bản miễn phí đủ lâu để hiểu rõ nhu cầu thực sự,
@@ -441,7 +440,6 @@ export default function AiToolEvaluationTopic() {
             <TopicLink slug="ai-for-writing">AI cho viết lách</TopicLink>{" "}
             để tận dụng tối đa bản miễn phí cho công việc soạn thảo.
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ━━━ STEP 7: CONNECT — MINI SUMMARY ━━━ */}
