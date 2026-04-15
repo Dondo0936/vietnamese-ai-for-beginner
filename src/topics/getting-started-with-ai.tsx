@@ -317,7 +317,6 @@ export default function GettingStartedWithAiTopic() {
 
       {/* ━━━ Step 6: EXPLAIN — Sai lầm thường gặp ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lưu ý">
-        <ExplanationSection>
           <p>
             <strong>Sai lầm phổ biến</strong>{" "}
             của người mới bắt đầu dùng AI — và cách khắc phục:
@@ -353,7 +352,6 @@ export default function GettingStartedWithAiTopic() {
             hãy học{" "}
             <TopicLink slug="prompt-engineering">kỹ thuật viết prompt</TopicLink>.
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ━━━ Step 7: CONNECT — Tóm tắt + bước tiếp theo ━━━ */}

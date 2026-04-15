@@ -314,9 +314,8 @@ print(f"NumPy nhanh hơn {elapsed_loop / elapsed_numpy:.0f}x!")`}
         />
       </LessonSection>
 
-      {/* Bước 5 — ExplanationSection */}
+      {/* Bước 5 — Lý thuyết */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
           <p>
             Ba thư viện NumPy, Pandas, Matplotlib tạo nên bộ công cụ cơ bản không thể thiếu trong mọi dự án ML. Mỗi thư viện giải quyết một tầng khác nhau của quy trình làm việc với dữ liệu.
           </p>
@@ -436,7 +435,6 @@ plt.show()`}
             <TopicLink slug="feature-engineering">Kỹ thuật đặc trưng</TopicLink>
             {" "}(tạo features có ý nghĩa cho model).
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* Bước 6 — AhaMoment */}

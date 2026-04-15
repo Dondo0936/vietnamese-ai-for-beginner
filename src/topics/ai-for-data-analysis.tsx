@@ -241,7 +241,6 @@ export default function AiForDataAnalysisTopic() {
 
       {/* ━━━ Bước 4: DEEPEN — Ví dụ prompt cụ thể ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
-        <ExplanationSection>
           <p>
             Dưới đây là những prompt thực tế mà dân văn phòng hay dùng khi nhờ
             AI phân tích dữ liệu. Bạn có thể copy và chỉnh sửa cho phù hợp
@@ -291,7 +290,6 @@ Hãy viết công thức cho:
             AI rồi yêu cầu viết SQL. Ví dụ: &quot;Viết SQL lấy top 10 khách
             hàng mua nhiều nhất trong tháng 3, nhóm theo khu vực.&quot;
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ━━━ Bước 5: CHALLENGE — Viết prompt phân tích dữ liệu ━━━ */}
@@ -311,7 +309,6 @@ Hãy viết công thức cho:
 
       {/* ━━━ Bước 6: EXPLAIN — Pitfalls khi dùng AI với dữ liệu ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lưu ý quan trọng">
-        <ExplanationSection>
           <p>
             AI rất hữu ích cho phân tích dữ liệu, nhưng có <strong>3 điểm yếu
             nghiêm trọng</strong>{" "}
@@ -348,7 +345,6 @@ Hãy viết công thức cho:
             bằng dữ liệu thật trong Excel. AI là trợ lý, không phải người thay
             thế bạn ra quyết định.
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ━━━ Bước 7: CONNECT — Tóm tắt và liên kết ━━━ */}
