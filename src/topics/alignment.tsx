@@ -187,7 +187,7 @@ export default function AlignmentTopic() {
 
       {/* ── Step 5: Explanation ── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
             <strong>AI Alignment</strong>{" "}
             là lĩnh vực nghiên cứu đảm bảo AI hoạt động phù hợp với ý định, giá trị và mong muốn của con người. Đây là thách thức cốt lõi khi AI ngày càng mạnh mẽ.
@@ -272,7 +272,6 @@ trainer = PPOTrainer(config, policy_model, reward_model)
 
       {/* ── Step 6: Alignment tại Việt Nam ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Alignment trong bối cảnh Việt Nam">
-        <ExplanationSection>
           <Callout variant="tip" title="Thách thức alignment đặc thù Việt Nam">
             <div className="space-y-2">
               <p>
@@ -293,7 +292,6 @@ trainer = PPOTrainer(config, policy_model, reward_model)
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

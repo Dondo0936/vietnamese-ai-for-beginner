@@ -188,7 +188,7 @@ export default function BiasFairnessTopic() {
 
       {/* ── Step 5: Explanation ── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
             <strong>Thiên kiến (Bias)</strong>{" "}
             trong AI xảy ra khi mô hình tạo ra kết quả không công bằng cho một nhóm người. Bias có thể xuất phát từ dữ liệu, thuật toán, hoặc cách đánh giá — và thường được kiểm soát qua khung{" "}
@@ -268,7 +268,6 @@ print(f"Demographic Parity Gap: {dp_diff:.3f}")
 
       {/* ── Step 6: Giải pháp ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải pháp">
-        <ExplanationSection>
           <Callout variant="tip" title="Giảm thiểu bias: framework 4 bước">
             <div className="space-y-2">
               <p><strong>1. Đo lường:</strong>{" "} Kiểm toán fairness trên TẤT CẢ nhóm nhân khẩu. Dùng fairlearn, AIF360. Kết hợp với <TopicLink slug="explainability">explainability</TopicLink>{" "}(SHAP, LIME) để hiểu quyết định.</p>
@@ -277,7 +276,6 @@ print(f"Demographic Parity Gap: {dp_diff:.3f}")
               <p><strong>4. Post-processing:</strong>{" "} Điều chỉnh threshold riêng cho từng nhóm để đạt equalized odds.</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

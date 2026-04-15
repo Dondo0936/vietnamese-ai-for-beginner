@@ -190,7 +190,7 @@ export default function DeepfakeDetectionTopic() {
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p><strong>Deepfake Detection</strong>{" "} là các phương pháp phát hiện nội dung ảnh/video giả mạo tạo bởi AI ({" "}
             <TopicLink slug="gan">GAN</TopicLink>, Diffusion). Để phòng chống toàn diện, detection thường kết hợp với{" "}
             <TopicLink slug="ai-watermarking">AI watermarking</TopicLink>{" "}
@@ -254,7 +254,6 @@ else:
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Cuộc chạy đua vũ trang">
-        <ExplanationSection>
           <Callout variant="info" title="Arms race: Deepfake vs Detection">
             <div className="space-y-2">
               <p><strong>2019:</strong>{" "} Deepfake dễ phát hiện (da nhoè, mắt sai). Detector accuracy ~99%.</p>
@@ -263,7 +262,6 @@ else:
               <p><strong>Tương lai:</strong>{" "} Watermarking + provenance (C2PA standard) có thể hiệu quả hơn detection.</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

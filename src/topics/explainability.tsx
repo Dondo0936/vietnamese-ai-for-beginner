@@ -191,7 +191,7 @@ export default function ExplainabilityTopic() {
 
       {/* ── Step 5: Explanation ── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
             <strong>Giải thích được (Explainability/XAI)</strong>{" "}
             là khả năng hệ thống AI trình bày lý do đằng sau quyết định một cách con người có thể hiểu và kiểm chứng. XAI là công cụ cốt lõi để phát hiện{" "}
@@ -269,7 +269,6 @@ shap.waterfall_plot(
 
       {/* ── Step 6: XAI tại Việt Nam ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="XAI tại Việt Nam">
-        <ExplanationSection>
           <Callout variant="tip" title="Ứng dụng XAI trong bối cảnh Việt Nam">
             <div className="space-y-2">
               <p><strong>Ngân hàng:</strong>{" "} NHNN yêu cầu lý do rõ ràng khi từ chối tín dụng. SHAP giúp tạo giải thích tự động bằng tiếng Việt.</p>
@@ -278,7 +277,6 @@ shap.waterfall_plot(
               <p><strong>Pháp luật:</strong>{" "} Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân sẽ ngày càng yêu cầu giải thích AI.</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}
