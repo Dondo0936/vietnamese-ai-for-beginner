@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "information-theory", title: "Information Theory", titleVi: "Lý thuyết thông tin", description: "Entropy, cross-entropy và KL divergence — đo lường thông tin và so sánh phân phối xác suất", category: "math-foundations", tags: ["entropy", "kl-divergence", "cross-entropy"], difficulty: "intermediate", relatedSlugs: ["loss-functions", "probability-statistics", "vae"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "information-theory", title: "Information Theory", titleVi: "Lý thuyết thông tin", description: "Entropy, cross-entropy và KL divergence — đo lường thông tin và so sánh phân phối xác suất", category: "math-foundations", tags: ["entropy", "kl-divergence", "cross-entropy"], difficulty: "intermediate", relatedSlugs: ["loss-functions", "probability-statistics", "vae"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 6;
 export default function InformationTheoryTopic() {
