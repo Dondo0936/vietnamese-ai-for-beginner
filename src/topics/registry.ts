@@ -2056,7 +2056,8 @@ export const topicList: TopicMeta[] = [
     tags: ["fraud-detection", "risk", "trading"],
     difficulty: "beginner",
     relatedSlugs: ["decision-trees", "gradient-boosting", "sentiment-analysis"],
-    vizType: "static",
+    vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
   {
     slug: "ai-in-agriculture",
@@ -2067,7 +2068,8 @@ export const topicList: TopicMeta[] = [
     tags: ["crop", "pest-detection", "precision-farming"],
     difficulty: "beginner",
     relatedSlugs: ["image-classification", "object-detection", "edge-ai"],
-    vizType: "static",
+    vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
   {
     slug: "ai-in-education",
@@ -2078,7 +2080,8 @@ export const topicList: TopicMeta[] = [
     tags: ["personalization", "tutoring", "assessment"],
     difficulty: "beginner",
     relatedSlugs: ["llm-overview", "rag", "recommendation-systems"],
-    vizType: "static",
+    vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
   {
     slug: "getting-started-with-ai",
@@ -2166,6 +2169,7 @@ export const topicList: TopicMeta[] = [
     difficulty: "beginner",
     relatedSlugs: ["pca", "word-embeddings", "neural-network-overview"],
     vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
   {
     slug: "probability-statistics",
@@ -2177,6 +2181,7 @@ export const topicList: TopicMeta[] = [
     difficulty: "beginner",
     relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"],
     vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
   {
     slug: "calculus-for-backprop",
@@ -2188,6 +2193,7 @@ export const topicList: TopicMeta[] = [
     difficulty: "intermediate",
     relatedSlugs: ["backpropagation", "gradient-descent", "loss-functions"],
     vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
   {
     slug: "information-theory",
@@ -2199,6 +2205,7 @@ export const topicList: TopicMeta[] = [
     difficulty: "intermediate",
     relatedSlugs: ["loss-functions", "probability-statistics", "vae"],
     vizType: "interactive",
+    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
   },
 
   // ═══════════════════════════════════════════════════════
