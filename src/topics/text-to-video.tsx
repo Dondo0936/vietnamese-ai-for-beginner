@@ -292,7 +292,6 @@ export default function TextToVideoTopic() {
 
       {/* ── Step 6: Ứng dụng Việt Nam ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng tại Việt Nam">
-        <ExplanationSection>
           <Callout variant="tip" title="Text-to-video trong bối cảnh Việt Nam">
             <div className="space-y-2">
               <p>
@@ -313,7 +312,6 @@ export default function TextToVideoTopic() {
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}
