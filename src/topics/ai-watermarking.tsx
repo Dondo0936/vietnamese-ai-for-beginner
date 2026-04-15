@@ -184,7 +184,7 @@ export default function AIWatermarkingTopic() {
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p><strong>AI Watermarking</strong>{" "} là kỹ thuật nhúng dấu hiệu ẩn vào nội dung AI, cho phép phát hiện nguồn gốc mà không ảnh hưởng đến chất lượng. Đây là tuyến phòng thủ bổ trợ cho{" "}
             <TopicLink slug="deepfake-detection">phát hiện deepfake</TopicLink>{" "}
             và đối phó với{" "}
@@ -246,7 +246,6 @@ def detect_watermark(tokens, vocab_size, gamma=0.5):
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng">
-        <ExplanationSection>
           <Callout variant="tip" title="Watermark trong thực tế">
             <div className="space-y-1">
               <p><strong>Giáo dục:</strong>{" "} Phát hiện bài luận do AI viết — hỗ trợ giáo viên Việt Nam.</p>
@@ -255,7 +254,6 @@ def detect_watermark(tokens, vocab_size, gamma=0.5):
               <p><strong>Google SynthID:</strong>{" "} Watermark cho ảnh, văn bản, audio do Google AI tạo.</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
