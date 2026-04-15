@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "linear-algebra-for-ml", title: "Linear Algebra for ML", titleVi: "Đại số tuyến tính cho ML", description: "Vector, ma trận, phép nhân ma trận và trị riêng — nền tảng toán học cho mọi mô hình AI", category: "math-foundations", tags: ["vectors", "matrices", "eigenvalues"], difficulty: "beginner", relatedSlugs: ["pca", "word-embeddings", "neural-network-overview"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "linear-algebra-for-ml", title: "Linear Algebra for ML", titleVi: "Đại số tuyến tính cho ML", description: "Vector, ma trận, phép nhân ma trận và trị riêng — nền tảng toán học cho mọi mô hình AI", category: "math-foundations", tags: ["vectors", "matrices", "eigenvalues"], difficulty: "beginner", relatedSlugs: ["pca", "word-embeddings", "neural-network-overview"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 7;
 export default function LinearAlgebraForMLTopic() {

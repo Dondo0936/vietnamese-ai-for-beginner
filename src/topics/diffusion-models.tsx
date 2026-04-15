@@ -345,7 +345,7 @@ export default function DiffusionModelsTopic() {
       >
 
       {/* ═══ STEP 2: DISCOVER — Paint → Noise → Denoise ═══ */}
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         {/* ── Phase A: Paint ──────────────────────── */}
         <div className="space-y-3">
           <h3 className="text-sm font-semibold text-foreground">
@@ -502,7 +502,6 @@ export default function DiffusionModelsTopic() {
       </AhaMoment>
 
       {/* ═══ STEP 4: DEEPEN — Forward vs Reverse ═════ */}
-      <VisualizationSection>
         <h3 className="text-sm font-semibold text-foreground mb-3">
           So sánh Forward vs Reverse Process
         </h3>
@@ -559,7 +558,6 @@ export default function DiffusionModelsTopic() {
           Forward bắt đầu từ ảnh sạch, thêm nhiễu dần. Reverse bắt đầu từ nhiễu,
           khử dần thành ảnh mới. Hai quá trình ngược chiều nhưng cùng số bước.
         </p>
-      </VisualizationSection>
 
       {/* ═══ STEP 5: CHALLENGE ═══════════════════════ */}
       <p className="text-sm text-muted leading-relaxed mb-3">

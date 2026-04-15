@@ -18,7 +18,8 @@ import Tag from "@/components/ui/Tag";
 import BookmarkButton from "./BookmarkButton";
 import RelatedTopics from "./RelatedTopics";
 import ReadingProgressBar from "@/components/ui/ReadingProgressBar";
-import TopicTOC from "./TopicTOC";
+import TopicTOC, { DEFAULT_TOC_SECTIONS } from "./TopicTOC";
+import { SectionDuplicateGuard } from "./SectionDuplicateGuard";
 
 interface TopicLayoutProps {
   meta: TopicMeta;
@@ -134,10 +135,12 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
   const backLabel =
     nav.kind === "path" ? `Quay lại lộ trình ${nav.path.nameVi}` : "Quay lại trang chủ";
 
+  const tocSections = meta.tocSections ?? DEFAULT_TOC_SECTIONS;
+
   return (
     <>
       <ReadingProgressBar />
-      <TopicTOC />
+      <TopicTOC sections={tocSections} />
 
       <motion.article
         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
@@ -192,7 +195,9 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
         </header>
 
         {/* Content */}
-        <div>{children}</div>
+        <SectionDuplicateGuard>
+          <div>{children}</div>
+        </SectionDuplicateGuard>
 
         {/* Mark as complete */}
         <div className="mt-10 flex justify-center">

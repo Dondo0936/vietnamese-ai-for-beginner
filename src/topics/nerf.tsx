@@ -89,7 +89,7 @@ export default function NerfTopic() {
           <strong>NeRF</strong>.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <svg viewBox="0 0 500 280" className="w-full rounded-lg border border-border bg-background">
             <text x={250} y={18} fontSize={11} fill="currentColor" className="text-foreground"
               textAnchor="middle" fontWeight={600}>
@@ -194,7 +194,6 @@ export default function NerfTopic() {
       </LessonSection>
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Volume Rendering">
-        <VisualizationSection>
           <Callout variant="insight" title="Volume Rendering = Tích phân dọc tia">
             <p>
               Để tính màu 1 pixel: bắn tia từ camera, lấy mẫu N điểm trên tia, hỏi MLP tại mỗi điểm → (rgb, &sigma;). Tích phân: C = &Sigma; T_i &middot; (1 - exp(-&sigma;_i &middot; &delta;_i)) &middot; c_i. Trong đó T_i = xác suất tia đến được điểm i (không bị chặn trước đó).
@@ -208,7 +207,6 @@ export default function NerfTopic() {
               (2023): biểu diễn cảnh bằng hàng triệu Gaussian 3D, rasterize trực tiếp → render realtime 100+ FPS. Cả hai đang thay thế NeRF gốc.
             </p>
           </Callout>
-        </VisualizationSection>
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">

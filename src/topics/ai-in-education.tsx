@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "ai-in-education", title: "AI in Education", titleVi: "AI trong Giáo dục", description: "Ứng dụng AI trong cá nhân hoá học tập, chấm bài tự động và trợ lý giảng dạy thông minh", category: "applied-ai", tags: ["personalization", "tutoring", "assessment"], difficulty: "beginner", relatedSlugs: ["llm-overview", "rag", "recommendation-systems"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "ai-in-education", title: "AI in Education", titleVi: "AI trong Giáo dục", description: "Ứng dụng AI trong cá nhân hoá học tập, chấm bài tự động và trợ lý giảng dạy thông minh", category: "applied-ai", tags: ["personalization", "tutoring", "assessment"], difficulty: "beginner", relatedSlugs: ["llm-overview", "rag", "recommendation-systems"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 7;
 export default function AIInEducationTopic() {

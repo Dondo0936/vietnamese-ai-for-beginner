@@ -113,7 +113,7 @@ export default function TfIdfTopic() {
           Bạn vừa phát hiện nguyên tắc cốt lõi: từ hiếm thì quý! Bây giờ hãy xem TF-IDF tính điểm cho từng từ trong ví dụ thực tế.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             {/* Document list */}
             <div className="space-y-2">
@@ -185,7 +185,6 @@ export default function TfIdfTopic() {
           Kéo thanh trượt bên dưới để hiểu mối quan hệ giữa TF, DF và TF-IDF. Thử tăng DF lên thật cao — chuyện gì xảy ra?
         </p>
 
-        <VisualizationSection>
           <div className="space-y-5">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="space-y-1">
@@ -257,7 +256,6 @@ export default function TfIdfTopic() {
               </p>
             </div>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ── Step 5: InlineChallenge ── */}

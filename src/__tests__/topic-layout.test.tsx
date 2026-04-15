@@ -44,6 +44,10 @@ vi.mock("@/components/ui/ReadingProgressBar", () => ({
 }));
 vi.mock("@/components/topic/TopicTOC", () => ({
   default: () => <div>toc</div>,
+  DEFAULT_TOC_SECTIONS: [
+    { id: "visualization", labelVi: "Minh họa" },
+    { id: "explanation", labelVi: "Giải thích" },
+  ],
 }));
 
 import TopicLayout from "@/components/topic/TopicLayout";

@@ -302,7 +302,6 @@ result = get_confidence("AI có ý thức không?")
 
       {/* ── Step 6: Thực hành ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng thực tế">
-        <ExplanationSection>
           <Callout variant="tip" title="Áp dụng TLM trong sản phẩm">
             <div className="space-y-2">
               <p>
@@ -319,7 +318,6 @@ result = get_confidence("AI có ý thức không?")
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

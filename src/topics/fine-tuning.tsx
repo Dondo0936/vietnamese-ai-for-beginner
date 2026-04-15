@@ -117,7 +117,7 @@ export default function FineTuningTopic() {
 
       {/* ━━━ 2. TRỰC QUAN HOÁ ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <h3 className="text-base font-semibold text-foreground mb-1">
             Phòng thí nghiệm Fine-tuning
           </h3>
@@ -219,7 +219,6 @@ export default function FineTuningTopic() {
 
       {/* ━━━ 5. SO SÁNH TRỰC QUAN ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="So sánh">
-        <VisualizationSection>
           <svg viewBox="0 0 700 380" className="w-full max-w-3xl mx-auto">
             <text x="350" y="25" textAnchor="middle" fill="var(--text-primary)" fontSize="14" fontWeight="bold">
               Pre-training vs Fine-tuning
@@ -302,7 +301,6 @@ export default function FineTuningTopic() {
               </marker>
             </defs>
           </svg>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ━━━ 6. GIẢI THÍCH SÂU ━━━ */}

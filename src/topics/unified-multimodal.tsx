@@ -349,7 +349,6 @@ response = model.generate_content([
 
       {/* ── Step 6: Tương lai ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Xu hướng tương lai">
-        <ExplanationSection>
           <Callout variant="tip" title="Hướng tới AI giác quan tổng hợp">
             <div className="space-y-2">
               <p>
@@ -366,7 +365,6 @@ response = model.generate_content([
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

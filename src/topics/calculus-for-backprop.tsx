@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "calculus-for-backprop", title: "Calculus for Backpropagation", titleVi: "Giải tích cho lan truyền ngược", description: "Đạo hàm, quy tắc chuỗi và gradient — toán học đằng sau quá trình huấn luyện mạng nơ-ron", category: "math-foundations", tags: ["derivatives", "chain-rule", "gradient"], difficulty: "intermediate", relatedSlugs: ["backpropagation", "gradient-descent", "loss-functions"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "calculus-for-backprop", title: "Calculus for Backpropagation", titleVi: "Giải tích cho lan truyền ngược", description: "Đạo hàm, quy tắc chuỗi và gradient — toán học đằng sau quá trình huấn luyện mạng nơ-ron", category: "math-foundations", tags: ["derivatives", "chain-rule", "gradient"], difficulty: "intermediate", relatedSlugs: ["backpropagation", "gradient-descent", "loss-functions"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 6;
 export default function CalculusForBackpropTopic() {

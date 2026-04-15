@@ -284,7 +284,6 @@ for label, prob in zip(labels, probs[0]):
 
       {/* ── Step 6: Limitations ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Hạn chế">
-        <ExplanationSection>
           <Callout variant="warning" title="Hạn chế của CLIP">
             <div className="space-y-2">
               <p>
@@ -305,7 +304,6 @@ for label, prob in zip(labels, probs[0]):
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

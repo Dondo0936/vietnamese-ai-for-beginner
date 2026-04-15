@@ -292,7 +292,6 @@ tts_clone.tts_to_file(
 
       {/* ── Step 6: Ứng dụng ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng tại Việt Nam">
-        <ExplanationSection>
           <Callout variant="info" title="TTS trong đời sống Việt Nam">
             <div className="space-y-2">
               <p>
@@ -313,7 +312,6 @@ tts_clone.tts_to_file(
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

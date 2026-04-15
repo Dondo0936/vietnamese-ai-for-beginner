@@ -96,7 +96,7 @@ export default function FlashAttentionTopic() {
           gốc): trải hết 1000 hồ sơ ra sàn nhà khổng lồ, so từng cặp. Cách Flash: lấy ra 50 hồ sơ, so sánh trên bàn nhỏ, ghi kết quả, cất lại, lấy 50 hồ sơ tiếp. Bàn nhỏ hơn nhiều mà kết quả chính xác!
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Chuyển đổi giữa Standard và Flash Attention để thấy sự khác biệt về bộ nhớ và tốc độ.
           </p>
@@ -246,7 +246,6 @@ export default function FlashAttentionTopic() {
       </LessonSection>
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Bộ nhớ GPU">
-        <VisualizationSection>
           <div className="space-y-3">
             <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4">
               <h4 className="text-sm font-semibold text-red-500 mb-1">HBM (High Bandwidth Memory)</h4>
@@ -263,7 +262,6 @@ export default function FlashAttentionTopic() {
               Flash Attention không bỏ phần tử nào, không xấp xỉ. Nó chỉ thay đổi thứ tự tính toán: thay vì tính toàn bộ hàng softmax → tính từng block + cập nhật online softmax. Toán học tương đương, IO ít hơn → nhanh hơn.
             </p>
           </Callout>
-        </VisualizationSection>
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">

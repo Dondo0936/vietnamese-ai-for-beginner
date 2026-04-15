@@ -126,7 +126,7 @@ export default function SelfAttentionTopic() {
           (hàng hóa thật). Quầy phở hỏi → quầy rau thơm đáp mạnh nhất!
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn vào một từ để xem nó &quot;chú ý&quot; đến các từ khác bao nhiêu. Đường càng đậm = chú ý càng nhiều.
           </p>
@@ -225,7 +225,6 @@ export default function SelfAttentionTopic() {
 
       {/* ═══ Step 4: DEEPEN — Q, K, V ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Query, Key, Value">
-        <VisualizationSection>
           <h3 className="text-sm font-semibold text-foreground mb-3">
             Cơ chế Q, K, V — Ba vector cho mỗi từ
           </h3>
@@ -261,7 +260,6 @@ export default function SelfAttentionTopic() {
               <li>Nhân weights với V → output = tổng có trọng số của các V</li>
             </ol>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "ai-in-agriculture", title: "AI in Agriculture", titleVi: "AI trong Nông nghiệp", description: "Ứng dụng AI trong phát hiện sâu bệnh, dự báo mùa vụ và nông nghiệp chính xác tại Việt Nam", category: "applied-ai", tags: ["crop", "pest-detection", "precision-farming"], difficulty: "beginner", relatedSlugs: ["image-classification", "object-detection", "edge-ai"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "ai-in-agriculture", title: "AI in Agriculture", titleVi: "AI trong Nông nghiệp", description: "Ứng dụng AI trong phát hiện sâu bệnh, dự báo mùa vụ và nông nghiệp chính xác tại Việt Nam", category: "applied-ai", tags: ["crop", "pest-detection", "precision-farming"], difficulty: "beginner", relatedSlugs: ["image-classification", "object-detection", "edge-ai"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 7;
 export default function AIInAgricultureTopic() {

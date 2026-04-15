@@ -122,15 +122,15 @@ export default function PoolingTopic() {
 
       {/* ═══ Step 2: DISCOVER — Interactive Pooling ═══ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá Pooling">
-        <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bạn tóm tắt đánh giá món phở trên Shopee Food. Thay vì đọc 100 review, bạn chỉ lấy{" "}
-          <strong>điểm cao nhất</strong>{" "}
-          (max pooling — &quot;quán này có review 5 sao!&quot;) hoặc{" "}
-          <strong>điểm trung bình</strong>{" "}
-          (average pooling — &quot;trung bình 4.2 sao&quot;).
-        </p>
+        <VisualizationSection topicSlug={metadata.slug}>
+          <p className="text-sm text-foreground leading-relaxed mb-3">
+            Hãy tưởng tượng bạn tóm tắt đánh giá món phở trên Shopee Food. Thay vì đọc 100 review, bạn chỉ lấy{" "}
+            <strong>điểm cao nhất</strong>{" "}
+            (max pooling — &quot;quán này có review 5 sao!&quot;) hoặc{" "}
+            <strong>điểm trung bình</strong>{" "}
+            (average pooling — &quot;trung bình 4.2 sao&quot;).
+          </p>
 
-        <VisualizationSection>
           <p className="text-sm text-muted mb-3">
             Chọn kiểu pooling và nhấn vào từng vùng 2×2 trên input để xem kết quả.
           </p>
@@ -248,11 +248,11 @@ export default function PoolingTopic() {
               )}
             </p>
           </div>
-        </VisualizationSection>
 
-        <p className="text-sm text-muted mt-3">
-          Bạn vừa thấy ảnh 4×4 giảm xuống 2×2 — kích thước giảm 4 lần mà thông tin quan trọng vẫn được giữ lại. Đây là lý do CNN có thể xử lý ảnh hàng triệu pixel.
-        </p>
+          <p className="text-sm text-muted mt-3">
+            Bạn vừa thấy ảnh 4×4 giảm xuống 2×2 — kích thước giảm 4 lần mà thông tin quan trọng vẫn được giữ lại. Đây là lý do CNN có thể xử lý ảnh hàng triệu pixel.
+          </p>
+        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 3: AHA MOMENT ═══ */}
@@ -269,9 +269,8 @@ export default function PoolingTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Types of Pooling ═══ */}
+      {/* ═══ Step 4: POOLING TYPES ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Các loại Pooling">
-        <VisualizationSection>
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
@@ -304,7 +303,6 @@ export default function PoolingTopic() {
               </p>
             </Callout>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}
