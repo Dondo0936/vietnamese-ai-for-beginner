@@ -214,7 +214,7 @@ export default function PromptEngineeringTopic() {
 
       {/* ━━━ KHÁM PHÁ — Xem prompt cải thiện từng bước ━━━ */}
       <LessonSection step={2} totalSteps={6} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Cải thiện prompt từng bước
         </h3>
@@ -329,7 +329,6 @@ export default function PromptEngineeringTopic() {
 
       {/* ━━━ ĐI SÂU — 4 kỹ thuật chính ━━━ */}
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           4 kỹ thuật prompt phổ biến nhất
         </h3>
@@ -371,7 +370,6 @@ export default function PromptEngineeringTopic() {
             ),
           }))}
         />
-      </VisualizationSection>
 
       </LessonSection>
 

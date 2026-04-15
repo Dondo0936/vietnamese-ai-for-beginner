@@ -160,7 +160,7 @@ export default function VaeTopic() {
           Hãy tưởng tượng bản đồ Google Maps. Autoencoder thường giống bản đồ chỉ có vài chấm thành phố — giữa chúng là biển trắng. VAE giống bản đồ liên tục — mỗi nơi đều có địa hình, bạn đi từ Sài Gòn ra Huế thấy cảnh thay đổi dần.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn vào bất kỳ đâu trên latent space để &quot;lấy mẫu&quot;. Quan sát các điểm phân bố liên tục — không có vùng trống.
           </p>
@@ -250,7 +250,6 @@ export default function VaeTopic() {
 
       {/* ═══ Step 4: DEEPEN — Reparameterization Trick ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Reparameterization Trick">
-        <VisualizationSection>
           <h3 className="text-sm font-semibold text-foreground mb-3">
             Vấn đề: Backprop không đi qua phép sampling
           </h3>
@@ -286,7 +285,6 @@ export default function VaeTopic() {
               z = &mu; + &sigma; &times; &epsilon; toán học tương đương z ~ N(&mu;, &sigma;&sup2;), nhưng đặt phần random (&epsilon;) sang bên ngoài. &epsilon; là input cố định (constant) cho mỗi forward pass → gradient chảy qua &mu; và &sigma; bình thường qua phép cộng và nhân!
             </p>
           </Callout>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

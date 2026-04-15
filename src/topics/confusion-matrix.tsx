@@ -250,7 +250,7 @@ export default function ConfusionMatrixTopic() {
         </p>
 
         {/* ── STEP 2: DISCOVER — User IS the Classifier ── */}
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-4">
             {gamePhase === "playing" && (
               <>
@@ -368,7 +368,6 @@ export default function ConfusionMatrixTopic() {
         </AhaMoment>
 
         {/* ── STEP 4: DEEPEN — Threshold Slider ── */}
-        <VisualizationSection>
           <div className="space-y-4">
             <p className="text-sm text-muted">
               Kéo ngưỡng (threshold) để thấy sự đánh đổi giữa Precision và Recall. Dữ liệu mô phỏng 50 mẫu.
@@ -427,7 +426,6 @@ export default function ConfusionMatrixTopic() {
               Ngưỡng thấp bắt nhiều bệnh nhân hơn (ít bỏ sót) nhưng cũng báo nhầm nhiều hơn.
             </div>
           </div>
-        </VisualizationSection>
 
         {/* ── STEP 5: CHALLENGE ── */}
         <InlineChallenge

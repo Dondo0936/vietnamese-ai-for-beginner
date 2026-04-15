@@ -161,7 +161,7 @@ export default function AdversarialRobustnessTopic() {
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p><strong>Adversarial Robustness</strong>{" "} là khả năng AI duy trì dự đoán chính xác khi đầu vào bị thao túng có chủ đích. Khái niệm liên quan chặt chẽ tới{" "}
             <TopicLink slug="red-teaming">red-teaming</TopicLink>{" "}
             (tìm lỗ hổng chủ động) và{" "}
@@ -224,11 +224,9 @@ for images, labels in dataloader:
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Trade-off">
-        <ExplanationSection>
           <Callout variant="tip" title="Accuracy vs Robustness trade-off">
             <p>Adversarial training cải thiện robustness nhưng có thể giảm accuracy trên dữ liệu sạch 1-3%. Đây là trade-off đáng chấp nhận cho ứng dụng safety-critical (xe tự lái, y tế), nhưng có thể không cần cho ứng dụng rủi ro thấp (gợi ý sản phẩm).</p>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

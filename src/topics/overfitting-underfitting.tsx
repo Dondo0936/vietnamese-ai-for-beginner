@@ -243,7 +243,7 @@ export default function OverfittingUnderfittingTopic() {
 
       {/* ===== STEP 2: INTERACTIVE FIT EXPLORER ===== */}
       <LessonSection step={2} totalSteps={8} label="Khám phá">
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-4">
             {/* Complexity slider */}
             <div className="space-y-2 max-w-lg mx-auto">
@@ -440,7 +440,6 @@ export default function OverfittingUnderfittingTopic() {
 
       {/* ===== STEP 4: TRAINING CURVES ===== */}
       <LessonSection step={4} totalSteps={8} label="Đường cong huấn luyện">
-        <VisualizationSection>
           <div className="space-y-3">
             <p className="text-sm text-center text-muted">
               Đường cong loss theo epoch — dấu hiệu nhận biết overfitting kinh điển
@@ -589,7 +588,6 @@ export default function OverfittingUnderfittingTopic() {
               />
             </div>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ===== STEP 5: INLINE CHALLENGE ===== */}

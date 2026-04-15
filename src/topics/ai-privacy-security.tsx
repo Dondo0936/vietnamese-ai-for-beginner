@@ -154,7 +154,7 @@ export default function AiPrivacySecurityTopic() {
           BƯỚC 3 — REVEAL: Cách AI xử lý dữ liệu của bạn
           ================================================================ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Giải thích">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
             <strong>Khi bạn gửi dữ liệu vào AI tool</strong>{" "}
             — dù là ChatGPT, Gemini, hay Claude — dữ liệu đó đi qua nhiều giai đoạn xử lý. Hiểu rõ quy trình này giúp bạn đánh giá rủi ro chính xác hơn.
@@ -208,7 +208,6 @@ export default function AiPrivacySecurityTopic() {
           BƯỚC 4 — DEEPEN: Giải pháp AI Enterprise
           ================================================================ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Giải pháp Enterprise">
-        <ExplanationSection>
             <p>
               Cấm hoàn toàn nhân viên dùng AI là không thực tế — họ sẽ dùng lén trên điện thoại cá nhân (gọi là{" "}
               <strong>shadow AI</strong>), còn nguy hiểm hơn vì không ai kiểm soát được. Giải pháp là cung cấp công cụ AI an toàn cấp doanh nghiệp.
@@ -240,7 +239,6 @@ export default function AiPrivacySecurityTopic() {
               <TopicLink slug="ai-governance">quản trị AI</TopicLink>{" "}
               để hiểu khung pháp lý đầy đủ.
             </Callout>
-          </ExplanationSection>
       </LessonSection>
 
       {/* ================================================================
@@ -271,7 +269,6 @@ export default function AiPrivacySecurityTopic() {
           BƯỚC 6 — EXPLAIN: Xây dựng chính sách AI công ty
           ================================================================ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Chính sách AI công ty">
-        <ExplanationSection>
           <p>
             Một chính sách sử dụng AI nội bộ tốt giúp nhân viên biết rõ ranh giới, tránh rủi ro mà vẫn tận dụng được sức mạnh AI. Dưới đây là những nội dung cần có.
           </p>
@@ -311,7 +308,6 @@ export default function AiPrivacySecurityTopic() {
           <Callout variant="info" title="Ví dụ thực tế">
             Samsung đã cấm nhân viên dùng ChatGPT sau khi phát hiện kỹ sư paste mã nguồn nội bộ vào AI. Apple, JPMorgan cũng đưa ra quy định tương tự. Giải pháp lâu dài: không cấm mà cung cấp công cụ AI Enterprise an toàn kèm chính sách rõ ràng.
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ================================================================

@@ -235,7 +235,7 @@ export default function RedTeamingTopic() {
 
       {/* ── Step 5: Explanation ── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
             <strong>Red Teaming</strong>{" "}
             là phương pháp kiểm thử bảo mật chủ động, trong đó các chuyên gia cố tình tấn công AI để phát hiện lỗ hổng trước khi triển khai. Thuật ngữ lấy từ quân sự: {'"đội đỏ"'} giả lập kẻ thù. Kết quả red team được dùng để gia cố <TopicLink slug="guardrails">guardrails</TopicLink>, tăng <TopicLink slug="adversarial-robustness">khả năng chống tấn công</TopicLink>, và giảm <TopicLink slug="hallucination">hallucination</TopicLink>{" "}trên edge cases.
@@ -327,7 +327,6 @@ VIETNAMESE_PROBES = [
 
       {/* ── Step 6: Best practices ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thực hành tốt nhất">
-        <ExplanationSection>
           <Callout variant="tip" title="Checklist red teaming cho sản phẩm AI Việt Nam">
             <div className="space-y-1">
               <p>1. Test jailbreak bằng CẢ tiếng Anh và tiếng Việt (multilingual bypass)</p>
@@ -338,7 +337,6 @@ VIETNAMESE_PROBES = [
               <p>6. Regression test sau mỗi bản cập nhật mô hình</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

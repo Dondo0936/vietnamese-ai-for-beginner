@@ -108,15 +108,15 @@ export default function CnnTopic() {
 
       {/* ═══ Step 2: DISCOVER — Interactive Architecture ═══ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá kiến trúc">
-        <p className="text-sm text-foreground leading-relaxed mb-4">
-          Hãy tưởng tượng bạn đang ở quán phở. Từ xa nhìn vào, bạn thấy{" "}
-          <strong>hình dạng tổng thể</strong>{" "}
-          (bàn, ghế). Lại gần hơn, bạn nhận ra <strong>chi tiết</strong>{" "}
-          (tô phở, đũa). Sát hơn nữa, bạn thấy <strong>kết cấu</strong>{" "}
-          (sợi phở, lá hành). CNN cũng &quot;nhìn&quot; theo cách này — từ đơn giản đến phức tạp.
-        </p>
+        <VisualizationSection topicSlug={metadata.slug}>
+          <p className="text-sm text-foreground leading-relaxed mb-4">
+            Hãy tưởng tượng bạn đang ở quán phở. Từ xa nhìn vào, bạn thấy{" "}
+            <strong>hình dạng tổng thể</strong>{" "}
+            (bàn, ghế). Lại gần hơn, bạn nhận ra <strong>chi tiết</strong>{" "}
+            (tô phở, đũa). Sát hơn nữa, bạn thấy <strong>kết cấu</strong>{" "}
+            (sợi phở, lá hành). CNN cũng &quot;nhìn&quot; theo cách này — từ đơn giản đến phức tạp.
+          </p>
 
-        <VisualizationSection>
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng lớp để xem vai trò. Kéo thanh trượt để di chuyển bộ lọc trên ảnh đầu vào.
           </p>
@@ -195,11 +195,11 @@ export default function CnnTopic() {
               className="flex-1 accent-accent"
             />
           </div>
-        </VisualizationSection>
 
-        <p className="text-sm text-muted mt-3">
-          Bạn vừa thấy bộ lọc trượt qua ảnh — đây chính là &quot;phép tích chập&quot;. Nhưng điều kỳ diệu thật sự nằm ở cách các lớp xếp chồng lên nhau...
-        </p>
+          <p className="text-sm text-muted mt-3">
+            Bạn vừa thấy bộ lọc trượt qua ảnh — đây chính là &quot;phép tích chập&quot;. Nhưng điều kỳ diệu thật sự nằm ở cách các lớp xếp chồng lên nhau...
+          </p>
+        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 3: AHA MOMENT ═══ */}
@@ -215,9 +215,8 @@ export default function CnnTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Feature Hierarchy ═══ */}
+      {/* ═══ Step 4: FEATURE HIERARCHY ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Phân cấp đặc trưng">
-        <VisualizationSection>
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng cấp để xem CNN phát hiện gì ở mỗi độ sâu.
           </p>
@@ -291,7 +290,6 @@ export default function CnnTopic() {
               })}
             </svg>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

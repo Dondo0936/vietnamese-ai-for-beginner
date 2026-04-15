@@ -283,7 +283,6 @@ for seg in result["segments"]:
 
       {/* ── Step 6: So sánh mô hình ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="So sánh mô hình">
-        <ExplanationSection>
           <Callout variant="info" title="Các mô hình ASR phổ biến">
             <div className="space-y-2">
               <p>
@@ -304,7 +303,6 @@ for seg in result["segments"]:
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

@@ -167,7 +167,7 @@ export default function GuardrailsTopic() {
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
             <strong>Guardrails</strong>{" "}
             là các cơ chế kiểm soát đặt trước và sau mô hình AI để đảm bảo đầu ra an toàn, chính xác và phù hợp.
@@ -226,7 +226,6 @@ response = rails.generate(
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Guardrails cho sản phẩm VN">
-        <ExplanationSection>
           <Callout variant="tip" title="Guardrails đặc thù Việt Nam">
             <div className="space-y-1">
               <p><strong>Lừa đảo Zalo:</strong>{" "} Chặn yêu cầu tạo kịch bản giả mạo công an, ngân hàng, người thân.</p>
@@ -235,7 +234,6 @@ response = rails.generate(
               <p><strong>Đa ngôn ngữ:</strong>{" "} Guardrails phải hoạt động cho cả tiếng Việt VÀ tiếng Anh (tránh multilingual bypass).</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

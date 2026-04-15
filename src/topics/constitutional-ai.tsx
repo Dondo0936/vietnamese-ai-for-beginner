@@ -154,7 +154,7 @@ export default function ConstitutionalAITopic() {
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p><strong>Constitutional AI (CAI)</strong>{" "} là phương pháp do Anthropic phát triển, giúp mô hình tự kiểm duyệt dựa trên bộ nguyên tắc đạo đức ({'"hiến pháp"'}) — là cách tiếp cận mới cho bài toán{" "}
           <TopicLink slug="alignment">alignment</TopicLink>, thay thế phản hồi con người trong{" "}
           <TopicLink slug="rlhf">RLHF</TopicLink>{" "} bằng đánh giá của AI (RLAIF).</p>
@@ -219,7 +219,6 @@ def critique_and_revise(response, question, constitution):
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="CAI cho Việt Nam">
-        <ExplanationSection>
           <Callout variant="tip" title="Xây dựng constitution cho AI Việt Nam">
             <div className="space-y-1">
               <p>Thêm nguyên tắc văn hoá: tôn trọng người lớn tuổi, đúng phép xưng hô (anh/chị/em)</p>
@@ -228,7 +227,6 @@ def critique_and_revise(response, question, constitution):
               <p>Đa phương ngữ: nguyên tắc áp dụng nhất quán cho cả tiếng Việt và tiếng Anh</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

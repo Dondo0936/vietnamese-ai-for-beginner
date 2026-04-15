@@ -201,7 +201,7 @@ export default function GanTopic() {
       >
 
       {/* Step 2: DISCOVER — User IS the Discriminator */}
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         {!gameStarted && !gameFinished && (
           <div className="text-center space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
@@ -303,7 +303,6 @@ export default function GanTopic() {
       </AhaMoment>
 
       {/* Step 4: DEEPEN — GAN Architecture */}
-      <VisualizationSection>
         <p className="text-sm text-muted mb-4">
           Vòng huấn luyện GAN: nhấn từng bước để thấy cách Generator và Discriminator học lẫn nhau.
         </p>
@@ -416,7 +415,6 @@ export default function GanTopic() {
             </div>
           </div>
         </StepReveal>
-      </VisualizationSection>
 
       {/* Step 5: CHALLENGE */}
       <InlineChallenge

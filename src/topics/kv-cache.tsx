@@ -112,7 +112,7 @@ export default function KVCacheTopic() {
 
 {/* ━━━ KHÁM PHÁ — So sánh có/không cache ━━━ */}
       <LessonSection step={2} totalSteps={6} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Sinh câu: &quot;{TOKENS.join(" ")}&quot;
         </h3>
@@ -210,7 +210,6 @@ export default function KVCacheTopic() {
 
 {/* ━━━ ĐI SÂU — Cách KV Cache hoạt động ━━━ */}
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Bên trong KV Cache
         </h3>
@@ -261,7 +260,6 @@ export default function KVCacheTopic() {
             </div>
           </div>
         </StepReveal>
-      </VisualizationSection>
 
       </LessonSection>
 

@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "ai-in-finance", title: "AI in Finance", titleVi: "AI trong Tài chính", description: "Ứng dụng AI trong phát hiện gian lận, phân tích rủi ro và giao dịch tự động", category: "applied-ai", tags: ["fraud-detection", "risk", "trading"], difficulty: "beginner", relatedSlugs: ["decision-trees", "gradient-boosting", "sentiment-analysis"], vizType: "interactive" };
+export const metadata: TopicMeta = { slug: "ai-in-finance", title: "AI in Finance", titleVi: "AI trong Tài chính", description: "Ứng dụng AI trong phát hiện gian lận, phân tích rủi ro và giao dịch tự động", category: "applied-ai", tags: ["fraud-detection", "risk", "trading"], difficulty: "beginner", relatedSlugs: ["decision-trees", "gradient-boosting", "sentiment-analysis"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 7;
 export default function AIInFinanceTopic() {

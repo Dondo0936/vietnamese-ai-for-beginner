@@ -427,7 +427,6 @@ export default function AiForWritingTopic() {
           BƯỚC 6 — EXPLAIN: Pitfalls khi dùng AI viết
           ================================================================ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lưu ý quan trọng">
-        <ExplanationSection>
           <p>
             AI viết rất nhanh, nhưng nếu dùng không cẩn thận, bạn có thể gặp những
             vấn đề nghiêm trọng hơn cả viết chậm.
@@ -486,7 +485,6 @@ export default function AiForWritingTopic() {
               </li>
             </ol>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ================================================================

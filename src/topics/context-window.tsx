@@ -144,7 +144,7 @@ export default function ContextWindowTopic() {
 
 {/* ━━━ KHÁM PHÁ — Hội thoại bị cắt ━━━ */}
       <LessonSection step={2} totalSteps={7} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Khi context window quá ngắn — AI quên
         </h3>
@@ -242,7 +242,6 @@ export default function ContextWindowTopic() {
 
 {/* ━━━ ĐI SÂU — So sánh context window các model ━━━ */}
       <LessonSection step={4} totalSteps={7} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           So sánh context window các model
         </h3>
@@ -280,7 +279,6 @@ export default function ContextWindowTopic() {
           token). &quot;Xin chào&quot; = 2-4 token tùy model. Context window bao gồm
           cả prompt (đầu vào) VÀ response (đầu ra).
         </Callout>
-      </VisualizationSection>
 
       </LessonSection>
 

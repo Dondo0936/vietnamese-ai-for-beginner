@@ -299,7 +299,6 @@ image.save("pho-co-ha-noi.png")`}
 
       {/* ── Step 6: Ứng dụng ── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng thực tế">
-        <ExplanationSection>
           <Callout variant="info" title="Các mô hình text-to-image nổi bật">
             <div className="space-y-2">
               <p>
@@ -320,7 +319,6 @@ image.save("pho-co-ha-noi.png")`}
               </p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}

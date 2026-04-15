@@ -185,7 +185,7 @@ export default function LLMOverviewTopic() {
 
 {/* ━━━ KHÁM PHÁ — Trò chơi dự đoán từ tiếp theo ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Bạn là LLM: Đoán từ tiếp theo
         </h3>
@@ -332,7 +332,6 @@ export default function LLMOverviewTopic() {
 
 {/* ━━━ ĐI SÂU — Xây dựng một LLM ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Hành trình xây dựng một LLM
         </h3>
@@ -443,13 +442,11 @@ export default function LLMOverviewTopic() {
             </p>
           </div>
         </StepReveal>
-      </VisualizationSection>
 
       </LessonSection>
 
 {/* ━━━ TIMELINE ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Dòng thời gian">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Cuộc đua LLM: 2017 → Nay
         </h3>
@@ -476,7 +473,6 @@ export default function LLMOverviewTopic() {
             </motion.div>
           ))}
         </div>
-      </VisualizationSection>
 
       </LessonSection>
 

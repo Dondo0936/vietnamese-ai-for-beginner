@@ -182,7 +182,7 @@ export default function BackpropagationTopic() {
 
 {/* ━━━ BƯỚC 2: KHÁM PHÁ — Người dùng tự tay tối ưu ━━━ */}
       <LessonSection step={2} totalSteps={7} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Thử điều chỉnh trọng số thủ công!
         </h3>
@@ -274,9 +274,8 @@ export default function BackpropagationTopic() {
             Nhưng backpropagation chỉ cần <strong>1 lần tính toán</strong> để biết chính xác cần thay đổi bao nhiêu!
           </motion.div>
         )}
-      </VisualizationSection>
-
-            </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
 
 {/* ━━━ BƯỚC 3: AHA MOMENT ━━━ */}
       <LessonSection step={3} totalSteps={7} label="Khám phá">
@@ -289,9 +288,8 @@ export default function BackpropagationTopic() {
 
             </LessonSection>
 
-{/* ━━━ BƯỚC 4: ĐI SÂU — Xem backprop hoạt động ━━━ */}
+{/* ━━━ BƯỚC 4: ĐI SÂU ━━━ */}
       <LessonSection step={4} totalSteps={7} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-2">
           Xem Backpropagation tự động tối ưu
         </h3>
@@ -374,9 +372,7 @@ export default function BackpropagationTopic() {
             </p>
           </div>
         </StepReveal>
-      </VisualizationSection>
-
-            </LessonSection>
+      </LessonSection>
 
 {/* ━━━ BƯỚC 5: THỬ THÁCH ━━━ */}
       <LessonSection step={5} totalSteps={7} label="Thử thách">
@@ -468,10 +464,10 @@ for name, param in model.named_parameters():
           "Vanishing/exploding gradient là thách thức chính khi mạng sâu — giải pháp: ReLU, ResNet, LayerNorm",
         ]}
       />
+      </LessonSection>
 
       {/* ━━━ BƯỚC 8: KIỂM TRA ━━━ */}
       <QuizSection questions={quizQuestions} />
-      </LessonSection>
     </>
   );
 }

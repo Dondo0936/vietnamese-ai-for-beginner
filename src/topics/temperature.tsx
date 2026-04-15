@@ -166,7 +166,7 @@ export default function TemperatureTopic() {
 
 {/* ━━━ KHÁM PHÁ — Biểu đồ xác suất trực tiếp ━━━ */}
       <LessonSection step={2} totalSteps={7} label="Khám phá">
-      <VisualizationSection>
+      <VisualizationSection topicSlug={metadata.slug}>
         <h3 className="text-base font-semibold text-foreground mb-1">
           Xác suất chọn từ tiếp theo
         </h3>
@@ -271,7 +271,6 @@ export default function TemperatureTopic() {
 
 {/* ━━━ ĐI SÂU — So sánh output thực tế ━━━ */}
       <LessonSection step={4} totalSteps={7} label="Đi sâu">
-      <VisualizationSection>
         <h3 className="text-base font-semibold text-foreground mb-3">
           Output thực tế ở 3 mức temperature
         </h3>
@@ -304,7 +303,6 @@ export default function TemperatureTopic() {
             </div>
           }
         />
-      </VisualizationSection>
 
       </LessonSection>
 

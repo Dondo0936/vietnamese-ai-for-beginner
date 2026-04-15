@@ -6,6 +6,7 @@ import {
   PredictionGate, AhaMoment, InlineChallenge,
   MiniSummary, CodeBlock, Callout, CollapsibleDetail,
   LessonSection, TopicLink,} from "@/components/interactive";
+import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
 import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
@@ -220,9 +221,8 @@ export default function PerceptronTopic() {
       </AhaMoment>
 
       {/* ── Step 4: DEEPEN — Full Perceptron Visualization ── */}
-      <section className="my-8 scroll-mt-20">
-        <h2 className="mb-3 text-lg font-semibold text-foreground">Bên trong Perceptron</h2>
-        <div className="rounded-xl border border-border bg-card p-5 space-y-6">
+      <VisualizationSection topicSlug={metadata.slug}>
+        <div className="space-y-6">
           {/* Inputs */}
           <div className="flex flex-wrap gap-6">
             {[{ label: "x1 (Kinh nghiệm)", val: px1, set: setPx1 },
@@ -315,7 +315,7 @@ export default function PerceptronTopic() {
             </svg>
           </CollapsibleDetail>
         </div>
-      </section>
+      </VisualizationSection>
 
       {/* ── Step 5: CHALLENGE ── */}
       <InlineChallenge

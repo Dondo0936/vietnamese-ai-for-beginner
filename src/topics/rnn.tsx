@@ -136,7 +136,7 @@ export default function RnnTopic() {
           <strong>ký ức + thông tin hiện tại</strong>.
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn &quot;Bước tiếp&quot; hoặc &quot;Tự động chạy&quot; để xem dữ liệu truyền qua RNN. Quan sát cách trạng thái ẩn h tích lũy ngữ cảnh.
           </p>
@@ -274,7 +274,6 @@ export default function RnnTopic() {
 
       {/* ═══ Step 4: DEEPEN — Vanishing Gradient ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Vấn đề Gradient biến mất">
-        <VisualizationSection>
           <h3 className="text-sm font-semibold text-foreground mb-3">
             Tại sao RNN &quot;quên&quot; thông tin xa?
           </h3>
@@ -323,7 +322,6 @@ export default function RnnTopic() {
             giải quyết triệt để bằng attention trực tiếp. Để hiểu rõ cơ chế gradient truyền ngược ở đây, xem{" "}
             <TopicLink slug="backpropagation">backpropagation</TopicLink>.
           </p>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

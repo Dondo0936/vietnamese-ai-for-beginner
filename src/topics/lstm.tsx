@@ -136,7 +136,7 @@ export default function LstmTopic() {
           (cổng xuất).
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Nhấn vào từng cổng để xem chức năng chi tiết.
           </p>
@@ -255,7 +255,6 @@ export default function LstmTopic() {
 
       {/* ═══ Step 4: DEEPEN — Cell state tracking ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Theo dõi bộ nhớ">
-        <VisualizationSection>
           <h3 className="text-sm font-semibold text-foreground mb-3">
             Cell state qua câu: &quot;Tôi sinh ở Huế nên tôi thích ăn bún bò&quot;
           </h3>
@@ -305,7 +304,6 @@ export default function LstmTopic() {
           <p className="text-sm text-muted mt-3">
             RNN thường đã quên &quot;Huế&quot; sau 5-6 bước. LSTM giữ được nhờ cell state truyền thẳng!
           </p>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

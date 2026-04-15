@@ -115,7 +115,7 @@ export default function MultiHeadAttentionTopic() {
           tất cả → bạn hiểu trận đấu đầy đủ. Mỗi head attention = 1 camera!
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
             Chọn head và từ truy vấn. Quan sát cách mỗi head &quot;nhìn&quot; câu theo kiểu khác nhau.
           </p>
@@ -208,7 +208,6 @@ export default function MultiHeadAttentionTopic() {
 
       {/* ═══ Step 4: DEEPEN — Architecture Detail ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Chi tiết kiến trúc">
-        <VisualizationSection>
           <svg viewBox="0 0 480 180" className="w-full rounded-lg border border-border bg-background">
             <text x={240} y={18} fontSize={11} fill="currentColor" className="text-foreground"
               textAnchor="middle" fontWeight={600}>
@@ -271,7 +270,6 @@ export default function MultiHeadAttentionTopic() {
               Tổng tham số ≈ single-head attention (vì d_k = d_model/h)
             </text>
           </svg>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ═══ Step 5: CHALLENGE ═══ */}

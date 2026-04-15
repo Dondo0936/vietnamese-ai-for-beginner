@@ -157,7 +157,7 @@ export default function AIGovernanceTopic() {
       </LessonSection>
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-        <ExplanationSection>
+        <ExplanationSection topicSlug={metadata.slug}>
           <p><strong>Quản trị AI (AI Governance)</strong>{" "} bao gồm khung pháp lý, chính sách và quy trình đảm bảo AI được phát triển và triển khai có trách nhiệm — bao phủ cả kiểm soát{" "}
             <TopicLink slug="bias-fairness">bias &amp; fairness</TopicLink>, yêu cầu{" "}
             <TopicLink slug="explainability">explainability</TopicLink>{" "}và triển khai{" "}
@@ -189,7 +189,6 @@ export default function AIGovernanceTopic() {
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Checklist quản trị">
-        <ExplanationSection>
           <Callout variant="tip" title="Checklist AI Governance cho doanh nghiệp Việt Nam">
             <div className="space-y-1">
               <p>1. Phân loại AI theo mức rủi ro (theo EU AI Act framework)</p>
@@ -201,7 +200,6 @@ export default function AIGovernanceTopic() {
               <p>7. Lưu log quyết định AI để truy vết khi có vấn đề</p>
             </div>
           </Callout>
-        </ExplanationSection>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

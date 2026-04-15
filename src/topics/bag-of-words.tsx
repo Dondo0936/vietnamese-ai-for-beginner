@@ -120,7 +120,7 @@ export default function BagOfWordsTopic() {
           Bạn vừa thấy: Bag of Words biến câu thành bảng đếm tần suất. Hãy thử nhập câu tiếng Việt bên dưới và xem máy tính {'"đổ từ vào túi"'} như thế nào!
         </p>
 
-        <VisualizationSection>
+        <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             <div className="space-y-2">
               <label className="text-sm font-medium text-muted">
@@ -204,7 +204,6 @@ export default function BagOfWordsTopic() {
           Hãy xem BoW hoạt động thực tế với đánh giá Shopee. Mỗi đánh giá trở thành 1 hàng trong bảng — đây chính là cách máy tính {'"đọc"'} review!
         </p>
 
-        <VisualizationSection>
           <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
               {SAMPLE_REVIEWS.map((review, i) => (
@@ -260,7 +259,6 @@ export default function BagOfWordsTopic() {
               </table>
             </div>
           </div>
-        </VisualizationSection>
       </LessonSection>
 
       {/* ── Step 5: InlineChallenge ── */}
