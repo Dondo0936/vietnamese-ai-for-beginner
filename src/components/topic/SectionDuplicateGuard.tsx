@@ -10,16 +10,26 @@ interface SectionGuardContextValue {
 
 const SectionGuardContext = createContext<SectionGuardContextValue | null>(null);
 
+const COMPONENT_NAMES: Record<TocSectionId, string> = {
+  visualization: "VisualizationSection",
+  explanation: "ExplanationSection",
+  hero: "ApplicationHero",
+  problem: "ApplicationProblem",
+  mechanism: "ApplicationMechanism",
+  metrics: "ApplicationMetrics",
+  tryIt: "ApplicationTryIt",
+  counterfactual: "ApplicationCounterfactual",
+};
+
 export function SectionDuplicateGuard({ children }: { children: React.ReactNode }) {
-  const seen = useRef<Record<TocSectionId, number>>({ visualization: 0, explanation: 0 });
+  const seen = useRef<Partial<Record<TocSectionId, number>>>({});
 
   const value = useMemo<SectionGuardContextValue>(
     () => ({
       registerSection: (id, slug) => {
-        seen.current[id] += 1;
-        if (seen.current[id] > 1 && process.env.NODE_ENV !== "production") {
-          const componentName =
-            id === "visualization" ? "VisualizationSection" : "ExplanationSection";
+        seen.current[id] = (seen.current[id] ?? 0) + 1;
+        if ((seen.current[id] ?? 0) > 1 && process.env.NODE_ENV !== "production") {
+          const componentName = COMPONENT_NAMES[id];
           // eslint-disable-next-line no-console
           console.warn(
             `[SectionDuplicateGuard] Duplicate "${id}" section — topic "${slug}" renders more than one <${componentName}/>. ` +
@@ -29,7 +39,7 @@ export function SectionDuplicateGuard({ children }: { children: React.ReactNode 
         }
       },
       unregisterSection: (id) => {
-        seen.current[id] = Math.max(0, seen.current[id] - 1);
+        seen.current[id] = Math.max(0, (seen.current[id] ?? 0) - 1);
       },
     }),
     []
