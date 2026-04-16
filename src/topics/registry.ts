@@ -2711,6 +2711,73 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["vectors-and-matrices", "pca", "word-embeddings"],
     vizType: "interactive",
   },
+  {
+    slug: "vectors-and-matrices-in-photo-search",
+    title: "Vectors & Matrices in Photo Search",
+    titleVi: "Vector & Ma trận trong Tìm kiếm Ảnh",
+    description:
+      "Cách Google Photos dùng vector nhúng 128 chiều và phép đo khoảng cách để gom hàng nghìn ảnh cùng một khuôn mặt",
+    category: "math-foundations",
+    tags: ["vectors", "embeddings", "face-recognition", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["vectors-and-matrices"],
+    vizType: "static",
+    applicationOf: "vectors-and-matrices",
+    featuredApp: {
+      name: "Google Photos",
+      productFeature: "Face Grouping",
+      company: "Google LLC",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "FaceNet: A Unified Embedding for Face Recognition and Clustering",
+        publisher:
+          "Florian Schroff, Dmitry Kalenichenko, James Philbin — CVPR 2015",
+        url: "https://arxiv.org/abs/1503.03832",
+        date: "2015-06",
+        kind: "paper",
+      },
+      {
+        title: "Spanner: Google's Globally-Distributed Database",
+        publisher: "Google Cloud Blog",
+        url: "https://cloud.google.com/blog/topics/developers-practitioners/what-cloud-spanner",
+        date: "2017-11",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Search your photos by people, places & things",
+        publisher: "Google Support",
+        url: "https://support.google.com/photos/answer/6128838",
+        date: "2024-01",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Automatic large-scale clustering of faces in images and videos (US8977061B2)",
+        publisher: "Google Patent",
+        url: "https://patents.google.com/patent/US8977061B2",
+        date: "2015-03",
+        kind: "patent",
+      },
+      {
+        title:
+          "Google Photos Now Stores Over 9 Trillion Photos — And the Number Is Growing Fast",
+        publisher: "PetaPixel",
+        url: "https://petapixel.com/2025/02/18/google-photos-now-stores-over-9-trillion-photos/",
+        date: "2025-02",
+        kind: "news",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
