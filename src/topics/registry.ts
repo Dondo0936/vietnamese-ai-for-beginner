@@ -2438,6 +2438,64 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "backpropagation-in-translation",
+    title: "Backpropagation in Translation",
+    titleVi: "Lan truyền ngược trong Dịch thuật",
+    description:
+      "Cách Google Translate dùng lan truyền ngược để huấn luyện mạng nơ-ron sâu, cắt giảm 60% lỗi dịch",
+    category: "neural-fundamentals",
+    tags: ["backpropagation", "translation", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["backpropagation"],
+    vizType: "static",
+    applicationOf: "backpropagation",
+    featuredApp: {
+      name: "Google Translate",
+      productFeature: "Neural Machine Translation",
+      company: "Google LLC",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation",
+        publisher: "arXiv (Google Research)",
+        url: "https://arxiv.org/abs/1609.08144",
+        date: "2016-09",
+        kind: "paper",
+      },
+      {
+        title:
+          "A Neural Network for Machine Translation, at Production Scale",
+        publisher: "Google Research Blog",
+        url: "https://research.google/blog/a-neural-network-for-machine-translation-at-production-scale/",
+        date: "2016-09",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Recent Advances in Google Translate",
+        publisher: "Google Research Blog",
+        url: "https://research.google/blog/recent-advances-in-google-translate/",
+        date: "2020-06",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Attention Is All You Need",
+        publisher: "arXiv (Google Brain / NeurIPS 2017)",
+        url: "https://arxiv.org/abs/1706.03762",
+        date: "2017-06",
+        kind: "paper",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
