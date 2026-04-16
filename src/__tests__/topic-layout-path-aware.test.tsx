@@ -51,6 +51,7 @@ vi.mock("@/topics/registry", () => ({
     "k-means": { slug: "k-means", title: "K-Means Clustering", titleVi: "Phân cụm K-Means" },
     "decision-trees": { slug: "decision-trees", title: "Decision Trees", titleVi: "Cây quyết định" },
     "loss-functions": { slug: "loss-functions", title: "Loss Functions", titleVi: "Hàm mất mát" },
+    "loss-functions-in-recommendation": { slug: "loss-functions-in-recommendation", title: "Loss Functions in Recommendation", titleVi: "Hàm mất mát trong Gợi ý" },
     "epochs-batches": { slug: "epochs-batches", title: "Epochs, Batches & Iterations", titleVi: "Epochs, Batches & Iterations" },
   },
 }));
@@ -163,11 +164,11 @@ describe("TopicLayout — path-aware navigation", () => {
     expect(next).toHaveAttribute("href", "/topics/knn-in-symptom-checker?path=student");
   });
 
-  it("with ?path=student on loss-functions, Bài tiếp theo is epochs-batches (audit fix)", () => {
+  it("with ?path=student on loss-functions, Bài tiếp theo is loss-functions-in-recommendation (application follows theory)", () => {
     searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
     render(<TopicLayout meta={lossFunctionsMeta}><p>body</p></TopicLayout>);
-    const next = screen.getByRole("link", { name: /Epochs, Batches/ });
-    expect(next).toHaveAttribute("href", "/topics/epochs-batches?path=student");
+    const next = screen.getByRole("link", { name: /Recommendation/ });
+    expect(next).toHaveAttribute("href", "/topics/loss-functions-in-recommendation?path=student");
   });
 
   it("with ?path=fake (unknown path), silently falls back to category behavior", () => {

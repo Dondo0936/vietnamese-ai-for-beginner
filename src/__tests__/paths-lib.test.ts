@@ -83,14 +83,14 @@ describe("getPathNeighbors", () => {
     expect(n!.next?.slug).toBe("decision-trees-in-loan-scoring");
   });
 
-  it("resolves student path — loss-functions → epochs-batches", () => {
+  it("resolves student path — loss-functions → loss-functions-in-recommendation", () => {
     const n = getPathNeighbors("student", "loss-functions");
-    expect(n!.next?.slug).toBe("epochs-batches");
+    expect(n!.next?.slug).toBe("loss-functions-in-recommendation");
   });
 
-  it("resolves student path — gradient-descent → loss-functions", () => {
+  it("resolves student path — gradient-descent → gradient-descent-in-training", () => {
     const n = getPathNeighbors("student", "gradient-descent");
-    expect(n!.next?.slug).toBe("loss-functions");
+    expect(n!.next?.slug).toBe("gradient-descent-in-training");
   });
 
   it("crosses stage boundaries — last topic of a stage → first of next stage", () => {
