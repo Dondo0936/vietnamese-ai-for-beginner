@@ -18,7 +18,7 @@ export const metadata: TopicMeta = {
     "Cách Spotify dùng phân cụm vector để tạo Discover Weekly cho hàng trăm triệu người dùng",
   category: "classic-ml",
   tags: ["clustering", "recommendation", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["k-means"],
   vizType: "static",
   applicationOf: "k-means",

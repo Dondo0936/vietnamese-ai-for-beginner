@@ -243,7 +243,9 @@ features = ["dien_tich", "so_phong", "quan_encoded"]
 X = df[features]
 y = df["gia"]
 
-X_scaled = scaler.fit_transform(X)`}
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)`}
               </CodeBlock>
             </div>
             <div className="space-y-3">
@@ -303,11 +305,12 @@ df["gia_per_m2"] = df["gia"] / df["dien_tich"]
 # Cập nhật features và retrain
 features_v2 = ["dien_tich", "so_phong", "quan_encoded", "gia_per_m2"]
 X_v2 = df[features_v2]
-X_v2_scaled = scaler.fit_transform(X_v2)
 
 X_train2, X_test2, y_train2, y_test2 = train_test_split(
-    X_v2_scaled, y, test_size=0.2, random_state=42
+    X_v2, y, test_size=0.2, random_state=42
 )
+X_train2_scaled = scaler.fit_transform(X_train2)
+X_test2_scaled = scaler.transform(X_test2)
 
 lr_v2 = LinearRegression().fit(X_train2, y_train2)
 y_pred2 = lr_v2.predict(X_test2)

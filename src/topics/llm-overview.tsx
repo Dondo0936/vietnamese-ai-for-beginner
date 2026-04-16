@@ -15,6 +15,7 @@ import {
   LaTeX,
   LessonSection,
   TopicLink,
+  CollapsibleDetail,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -507,8 +508,9 @@ export default function LLMOverviewTopic() {
           từ điển (~50.000 từ) và chọn từ có xác suất cao nhất.
         </Callout>
 
-        <p>Công thức cốt lõi:</p>
-        <LaTeX block>{"P(w_{\\text{next}} \\mid w_1, w_2, ..., w_n) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right) V"}</LaTeX>
+        <CollapsibleDetail title="Cho bạn nào tò mò: công thức Attention">
+          <LaTeX block>{"P(w_{\\text{next}} \\mid w_1, w_2, ..., w_n) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right) V"}</LaTeX>
+        </CollapsibleDetail>
         <p>
           Đây là cơ chế <strong>self-attention</strong>{" "}trong <TopicLink slug="transformer">Transformer</TopicLink> — cho phép mỗi từ
           &quot;nhìn&quot; mọi từ khác để hiểu ngữ cảnh trước khi dự đoán.

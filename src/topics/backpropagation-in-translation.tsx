@@ -18,7 +18,7 @@ export const metadata: TopicMeta = {
     "Cách Google Translate dùng lan truyền ngược để huấn luyện mạng nơ-ron sâu, cắt giảm 60% lỗi dịch",
   category: "neural-fundamentals",
   tags: ["backpropagation", "translation", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["backpropagation"],
   vizType: "static",
   applicationOf: "backpropagation",

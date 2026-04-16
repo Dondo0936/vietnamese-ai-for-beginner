@@ -6,7 +6,7 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-export const metadata: TopicMeta = { slug: "probability-statistics", title: "Probability & Statistics", titleVi: "Xác suất & Thống kê cơ bản", description: "Phân phối xác suất, kỳ vọng, phương sai và định lý Bayes — công cụ cốt lõi cho ML", category: "math-foundations", tags: ["probability", "distribution", "bayes"], difficulty: "beginner", relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
+export const metadata: TopicMeta = { slug: "probability-statistics", title: "Probability & Statistics", titleVi: "Xác suất & Thống kê cơ bản", description: "Phân phối xác suất, kỳ vọng, phương sai và định lý Bayes — công cụ cốt lõi cho ML", category: "math-foundations", tags: ["probability", "distribution", "bayes"], difficulty: "intermediate", relatedSlugs: ["naive-bayes", "logistic-regression", "loss-functions"], vizType: "interactive", tocSections: [{ id: "explanation", labelVi: "Giải thích" }] };
 
 const TOTAL_STEPS = 6;
 export default function ProbabilityStatisticsTopic() {
