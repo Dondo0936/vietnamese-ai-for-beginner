@@ -11,6 +11,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
+import { PATHS, type AdultPathId } from "@/lib/paths";
+
+function slugsForPath(id: AdultPathId): string[] {
+  return PATHS[id].stages.flatMap((s) => s.slugs);
+}
 
 /* ─── Profession definitions ─── */
 
@@ -30,80 +35,35 @@ export const professions: Profession[] = [
     nameVi: "Học sinh · Sinh viên",
     descriptionVi: "Nền tảng AI/ML từ con số 0 — toán, thuật toán cổ điển, mạng nơ-ron cơ bản",
     icon: GraduationCap,
-    topicSlugs: [
-      "linear-algebra-for-ml", "probability-statistics", "calculus-for-backprop", "information-theory",
-      "supervised-unsupervised-rl", "linear-regression", "logistic-regression", "decision-trees",
-      "k-means", "knn", "naive-bayes", "bias-variance", "overfitting-underfitting",
-      "cross-validation", "confusion-matrix", "train-val-test",
-      "perceptron", "mlp", "activation-functions", "forward-propagation", "backpropagation",
-      "gradient-descent", "loss-functions", "epochs-batches",
-      "neural-network-overview", "data-preprocessing", "feature-engineering",
-    ],
+    topicSlugs: slugsForPath("student"),
   },
   {
     id: "office",
     nameVi: "Nhân viên văn phòng",
     descriptionVi: "Hiểu AI để ứng dụng trong công việc — prompt, RAG, agent, an toàn AI",
     icon: Briefcase,
-    topicSlugs: [
-      "llm-overview", "prompt-engineering", "chain-of-thought", "in-context-learning",
-      "temperature", "hallucination", "context-window",
-      "rag", "chunking", "semantic-search", "function-calling",
-      "agent-architecture", "agentic-workflows", "ai-coding-assistants", "model-context-protocol",
-      "bias-fairness", "ai-governance", "guardrails", "explainability",
-      "ai-in-finance", "ai-in-healthcare", "ai-in-education", "ai-in-agriculture",
-      "recommendation-systems", "sentiment-analysis", "text-classification",
-    ],
+    topicSlugs: slugsForPath("office"),
   },
   {
     id: "ai-engineer",
     nameVi: "AI Engineer",
     descriptionVi: "Xây dựng & triển khai hệ thống AI — fine-tuning, RAG, serving, MLOps",
     icon: Code2,
-    topicSlugs: [
-      "transformer", "self-attention", "multi-head-attention", "positional-encoding",
-      "cnn", "rnn", "lstm", "gpt", "bert", "tokenization", "tokenizer-comparison", "kv-cache",
-      "temperature", "top-k-top-p", "beam-search", "context-window",
-      "fine-tuning", "lora", "qlora", "fine-tuning-vs-prompting",
-      "quantization", "distillation", "pruning", "mixed-precision",
-      "rag", "agentic-rag", "vector-databases", "faiss", "semantic-search",
-      "hybrid-search", "re-ranking", "chunking", "embedding-model", "bm25",
-      "function-calling", "react-framework", "agent-architecture", "orchestration",
-      "structured-outputs", "computer-use",
-      "model-serving", "inference-optimization", "mlops", "containerization",
-      "monitoring", "edge-ai", "gpu-optimization", "cost-optimization", "data-pipelines",
-      "guardrails", "red-teaming", "hallucination",
-    ],
+    topicSlugs: slugsForPath("ai-engineer"),
   },
   {
     id: "ai-researcher",
     nameVi: "AI Researcher",
     descriptionVi: "Lý thuyết sâu & xu hướng mới — scaling laws, alignment, kiến trúc tiên tiến",
     icon: FlaskConical,
-    topicSlugs: [
-      "backpropagation", "vanishing-exploding-gradients", "weight-initialization",
-      "regularization", "batch-normalization", "optimizers", "sgd",
-      "transformer", "self-attention", "flash-attention", "residual-connections",
-      "vae", "gan", "diffusion-models", "autoencoder",
-      "moe", "state-space-models", "vision-transformer", "u-net", "nerf",
-      "word-embeddings", "word2vec", "glove", "seq2seq", "attention-mechanism",
-      "perplexity-metric",
-      "rlhf", "dpo", "grpo", "constitutional-ai", "alignment",
-      "scaling-laws", "test-time-compute",
-      "reasoning-models", "world-models", "long-context", "synthetic-data",
-      "small-language-models", "ai-for-science",
-      "adversarial-robustness", "ai-watermarking", "deepfake-detection", "explainability",
-      "q-learning", "deep-q-network", "policy-gradient", "actor-critic", "multi-armed-bandit",
-      "clip", "vlm", "unified-multimodal", "text-to-image", "text-to-video",
-      "speech-recognition", "tts",
-    ],
+    topicSlugs: slugsForPath("ai-researcher"),
   },
   {
     id: "kids-nhi",
     nameVi: "Bé làm quen với AI (6–10 tuổi)",
     descriptionVi: "18 bài vui vẻ — hình ảnh, kéo thả, có audio. Không cần biết đọc nhiều.",
     icon: Sparkles,
-    topicSlugs: [], // Phase 5 populates; for Phase 1 the card shows 0 chủ đề.
+    topicSlugs: [],
     href: "/kids/nhi",
   },
   {
@@ -111,7 +71,7 @@ export const professions: Profession[] = [
     nameVi: "Teen tự làm dự án AI (11–15 tuổi)",
     descriptionVi: "30 bài — train mô hình nhỏ, hiểu AI tạo sinh, sẵn sàng cho lộ trình Học sinh.",
     icon: Rocket,
-    topicSlugs: [], // Phase 5 populates.
+    topicSlugs: [],
     href: "/kids/teen",
   },
 ];
