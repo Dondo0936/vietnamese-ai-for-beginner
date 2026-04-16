@@ -2657,9 +2657,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "math-readiness",
     title: "Math Readiness for ML",
-    titleVi: "San sang cho toan ML",
+    titleVi: "Sẵn sàng cho toán ML",
     description:
-      "Bien so, ham so, mat phang toa do va ky hieu tong — chuan bi toan hoc cho Machine Learning",
+      "Biến số, hàm số, mặt phẳng toạ độ và ký hiệu tổng — chuẩn bị toán học cho Machine Learning",
     category: "foundations",
     tags: ["functions", "notation", "summation", "prerequisites"],
     difficulty: "beginner",
