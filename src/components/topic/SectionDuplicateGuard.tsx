@@ -30,7 +30,6 @@ export function SectionDuplicateGuard({ children }: { children: React.ReactNode 
         seen.current[id] = (seen.current[id] ?? 0) + 1;
         if ((seen.current[id] ?? 0) > 1 && process.env.NODE_ENV !== "production") {
           const componentName = COMPONENT_NAMES[id];
-          // eslint-disable-next-line no-console
           console.warn(
             `[SectionDuplicateGuard] Duplicate "${id}" section — topic "${slug}" renders more than one <${componentName}/>. ` +
               `Wrap duplicates in <LessonSection label="..." step={N}> inside a single outer section instead. ` +
