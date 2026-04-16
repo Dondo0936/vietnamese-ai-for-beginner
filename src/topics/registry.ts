@@ -2615,6 +2615,57 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "sentiment-analysis-in-brand-monitoring",
+    title: "Sentiment Analysis in Brand Monitoring",
+    titleVi: "Phân tích cảm xúc trong Giám sát thương hiệu",
+    description:
+      "Cách Brandwatch dùng phân tích cảm xúc để quét hơn 100 triệu nguồn trực tuyến, phát hiện khủng hoảng truyền thông thời gian thực",
+    category: "nlp",
+    tags: ["sentiment-analysis", "brand-monitoring", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["sentiment-analysis"],
+    vizType: "static",
+    applicationOf: "sentiment-analysis",
+    featuredApp: {
+      name: "Brandwatch",
+      productFeature: "Listen (Social Listening)",
+      company: "Brandwatch (Cision)",
+      countryOrigin: "GB",
+    },
+    sources: [
+      {
+        title:
+          "The Data Science Behind Brandwatch's New Sentiment Analysis",
+        publisher: "Brandwatch",
+        url: "https://www.brandwatch.com/blog/data-science-behind-brandwatchs-new-sentiment-analysis/",
+        date: "2022-01",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Sentiment and Emotion Analysis",
+        publisher: "Brandwatch Help Center",
+        url: "https://social-media-management-help.brandwatch.com/hc/en-us/articles/4555786479901-Sentiment-and-Emotion-Analysis",
+        date: "2025",
+        kind: "documentation",
+      },
+      {
+        title: "Brandwatch is acquired by Cision for $450M",
+        publisher: "TechCrunch",
+        url: "https://techcrunch.com/2021/02/26/brandwatch-is-acquired-by-cision-for-450m-creating-a-pr-marketing-and-social-listening-giant/",
+        date: "2021-02",
+        kind: "news",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "tryIt", labelVi: "Thử tự tay" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
