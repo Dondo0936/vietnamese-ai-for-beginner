@@ -111,7 +111,7 @@ describe("getPathNeighbors", () => {
   it("resolves office path correctly", () => {
     const n = getPathNeighbors("office", "llm-overview");
     expect(n!.prev?.slug).toBe("getting-started-with-ai");
-    expect(n!.next?.slug).toBe("prompt-engineering");
+    expect(n!.next?.slug).toBe("llm-overview-in-chat-assistants");
     expect(n!.nameVi).toBe("Nhân viên văn phòng");
   });
 

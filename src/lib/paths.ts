@@ -128,13 +128,19 @@ const OFFICE_STAGES: Stage[] = [
     slugs: [
       "getting-started-with-ai",
       "llm-overview",
+      "llm-overview-in-chat-assistants",
       "prompt-engineering",
+      "prompt-engineering-in-writing-tools",
       "chain-of-thought",
+      "chain-of-thought-in-reasoning-models",
       "in-context-learning",
+      "in-context-learning-in-chatbots",
       "temperature",
+      "temperature-in-creative-writing",
       "hallucination",
       "hallucination-in-legal-research",
       "context-window",
+      "context-window-in-long-documents",
     ],
   },
   {
@@ -152,7 +158,7 @@ const OFFICE_STAGES: Stage[] = [
   },
   {
     title: "An toàn & Đạo đức",
-    slugs: ["bias-fairness", "bias-fairness-in-hiring", "ai-governance", "guardrails", "explainability"],
+    slugs: ["bias-fairness", "bias-fairness-in-hiring", "ai-governance", "ai-governance-in-enterprise", "guardrails", "guardrails-in-chat-assistants", "explainability", "explainability-in-credit-decisions"],
   },
   {
     title: "Ứng dụng ngành",
@@ -162,9 +168,11 @@ const OFFICE_STAGES: Stage[] = [
       "ai-in-education",
       "ai-in-agriculture",
       "recommendation-systems",
+      "recommendation-systems-in-shopping",
       "sentiment-analysis",
       "sentiment-analysis-in-brand-monitoring",
       "text-classification",
+      "text-classification-in-support-routing",
     ],
   },
 ];
