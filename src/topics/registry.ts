@@ -2695,6 +2695,22 @@ export const topicList: TopicMeta[] = [
     ],
     vizType: "interactive",
   },
+  {
+    slug: "vectors-and-matrices",
+    title: "Vectors & Matrices",
+    titleVi: "Vector & Ma trận",
+    description:
+      "Tích vô hướng, độ tương đồng cosine và phép nhân ma trận — ngôn ngữ cốt lõi của AI",
+    category: "math-foundations",
+    tags: ["vectors", "matrices", "dot-product", "cosine-similarity"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "eigendecomposition-pca",
+      "word-embeddings",
+      "neural-network-overview",
+    ],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
