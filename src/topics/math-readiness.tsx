@@ -20,9 +20,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "math-readiness",
   title: "Math Readiness for ML",
-  titleVi: "San sang cho toan ML",
+  titleVi: "Sẵn sàng cho toán ML",
   description:
-    "Bien so, ham so, mat phang toa do va ky hieu tong — chuan bi toan hoc cho Machine Learning",
+    "Biến số, hàm số, mặt phẳng toạ độ và ký hiệu tổng — chuẩn bị toán học cho Machine Learning",
   category: "foundations",
   tags: ["functions", "notation", "summation", "prerequisites"],
   difficulty: "beginner",
@@ -92,28 +92,28 @@ export default function MathReadinessTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
-        question: "Cho f(x) = 3x + 2. Gia tri f(4) bang bao nhieu?",
+        question: "Cho f(x) = 3x + 2. Giá trị f(4) bằng bao nhiêu?",
         options: ["10", "14", "12", "15"],
         correct: 1,
         explanation:
-          "f(4) = 3 \u00d7 4 + 2 = 12 + 2 = 14. Thay x = 4 vao cong thuc roi tinh theo thu tu phep tinh.",
+          "f(4) = 3 \u00d7 4 + 2 = 12 + 2 = 14. Thay x = 4 vào công thức rồi tính theo thứ tự phép tính.",
       },
       {
         question:
-          "Trong ham y = ax + b, khi a tang tu 1 len 3 (giu b khong doi), do thi thay doi the nao?",
+          "Trong hàm y = ax + b, khi a tăng từ 1 lên 3 (giữ b không đổi), đồ thị thay đổi thế nào?",
         options: [
-          "Doc hon (steeper)",
-          "Thoai hon (flatter)",
-          "Dich sang phai",
-          "Khong doi",
+          "Dốc hơn (steeper)",
+          "Thoải hơn (flatter)",
+          "Dịch sang phải",
+          "Không đổi",
         ],
         correct: 0,
         explanation:
-          "He so a quyet dinh do doc cua duong thang. a cang lon, duong cang doc. Day chinh la ly do trong ML, thay doi tham so a se thay doi manh hanh vi cua mo hinh.",
+          "Hệ số a quyết định độ dốc của đường thẳng. a càng lớn, đường càng dốc. Đây chính là lý do trong ML, thay đổi tham số a sẽ thay đổi mạnh hành vi của mô hình.",
       },
       {
         question:
-          "Bieu thuc \u03a3_{i=1}^{4} i\u00b2 co nghia la gi?",
+          "Biểu thức \u03a3_{i=1}^{4} i\u00b2 có nghĩa là gì?",
         options: [
           "1 + 2 + 3 + 4",
           "1\u00b2 + 2\u00b2 + 3\u00b2 + 4\u00b2",
@@ -122,15 +122,15 @@ export default function MathReadinessTopic() {
         ],
         correct: 1,
         explanation:
-          "Ky hieu \u03a3 yeu cau tinh tong cua bieu thuc i\u00b2 voi i chay tu 1 den 4. Vay ket qua la 1\u00b2 + 2\u00b2 + 3\u00b2 + 4\u00b2 = 1 + 4 + 9 + 16 = 30.",
+          "Ký hiệu \u03a3 yêu cầu tính tổng của biểu thức i\u00b2 với i chạy từ 1 đến 4. Vậy kết quả là 1\u00b2 + 2\u00b2 + 3\u00b2 + 4\u00b2 = 1 + 4 + 9 + 16 = 30.",
       },
       {
         type: "fill-blank",
         question:
-          "Cho f(x) = 2x \u2212 1. Tinh \u03a3_{i=0}^{2} f(i) = {blank}",
+          "Cho f(x) = 2x \u2212 1. Tính \u03a3_{i=0}^{2} f(i) = {blank}",
         blanks: [{ answer: "3", accept: ["3", "3,0"] }],
         explanation:
-          "f(0) = \u22121, f(1) = 1, f(2) = 3. Tong = (\u22121) + 1 + 3 = 3. Day la ket hop ham so va ky hieu tong — dung rat nhieu trong cong thuc ML.",
+          "f(0) = \u22121, f(1) = 1, f(2) = 3. Tổng = (\u22121) + 1 + 3 = 3. Đây là kết hợp hàm số và ký hiệu tổng — dùng rất nhiều trong công thức ML.",
       },
     ],
     [],
@@ -161,12 +161,12 @@ export default function MathReadinessTopic() {
           {/* ── PRIMARY: Triple-linked function explorer ── */}
           <div className="space-y-4">
             <h3 className="text-base font-semibold text-foreground">
-              Kham pha ham tuyen tinh: y = ax + b
+              Khám phá hàm tuyến tính: y = ax + b
             </h3>
             <p className="text-sm text-muted leading-relaxed">
-              Keo thanh truot de thay doi tham so (parameter){" "}
-              <strong>a</strong> va <strong>b</strong>. Quan sat cach do thi,
-              bang gia tri, va phuong trinh thay doi dong bo.
+              Kéo thanh trượt để thay đổi tham số (parameter){" "}
+              <strong>a</strong> và <strong>b</strong>. Quan sát cách đồ thị,
+              bảng giá trị, và phương trình thay đổi đồng bộ.
             </p>
 
             {/* Equation panel */}
@@ -181,7 +181,7 @@ export default function MathReadinessTopic() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-sm text-foreground font-medium">
-                    He so goc a (do doc)
+                    Hệ số góc a (độ dốc)
                   </label>
                   <span className="font-mono text-sm font-medium text-accent">
                     {a.toFixed(1)}
@@ -208,7 +208,7 @@ export default function MathReadinessTopic() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-sm text-foreground font-medium">
-                    He so tu do b (cat truc y)
+                    Hệ số tự do b (cắt trục y)
                   </label>
                   <span className="font-mono text-sm font-medium text-accent">
                     {b.toFixed(1)}
@@ -244,7 +244,7 @@ export default function MathReadinessTopic() {
                         x
                       </th>
                       <th className="px-3 py-2 text-left font-medium text-foreground">
-                        Phep tinh
+                        Phép tính
                       </th>
                       <th className="px-3 py-2 text-right font-medium text-foreground">
                         f(x)
@@ -277,7 +277,7 @@ export default function MathReadinessTopic() {
                 <svg
                   viewBox={`0 0 ${GW} ${GH}`}
                   className="w-full max-w-[340px]"
-                  aria-label="Do thi ham tuyen tinh y = ax + b"
+                  aria-label="Đồ thị hàm tuyến tính y = ax + b"
                 >
                   {/* Grid lines */}
                   {[-10, -5, 0, 5, 10].map((y) => (
@@ -418,14 +418,14 @@ export default function MathReadinessTopic() {
           {/* ── SECONDARY: Summation builder ── */}
           <div className="space-y-4">
             <h3 className="text-base font-semibold text-foreground">
-              Ky hieu tong: <LaTeX>{String.raw`\Sigma`}</LaTeX> (Sigma)
+              Ký hiệu tổng: <LaTeX>{String.raw`\Sigma`}</LaTeX> (Sigma)
             </h3>
             <p className="text-sm text-muted leading-relaxed">
-              Em co 5 bai kiem tra voi diem so:{" "}
+              Em có 5 bài kiểm tra với điểm số:{" "}
               <span className="font-mono font-medium text-foreground">
                 8, 6, 9, 7, 10
               </span>
-              . Bam &quot;Buoc tiep&quot; de xem tung buoc cong don.
+              . Bấm &quot;Bước tiếp&quot; để xem từng bước cộng dồn.
             </p>
 
             {/* Sigma formula display */}
@@ -471,7 +471,7 @@ export default function MathReadinessTopic() {
               {/* Running total bar */}
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted">Tong hien tai:</span>
+                  <span className="text-muted">Tổng hiện tại:</span>
                   <span className="font-mono font-bold text-accent text-lg">
                     {sumStep === 0 ? "0" : runningTotal[sumStep - 1]}
                   </span>
@@ -490,7 +490,7 @@ export default function MathReadinessTopic() {
               <div className="text-center font-mono text-sm text-foreground min-h-[24px]">
                 {sumStep === 0 && (
                   <span className="text-muted">
-                    Bam &quot;Buoc tiep&quot; de bat dau...
+                    Bấm &quot;Bước tiếp&quot; để bắt đầu...
                   </span>
                 )}
                 {sumStep > 0 && (
@@ -511,14 +511,14 @@ export default function MathReadinessTopic() {
                   className="rounded-lg px-4 py-2 text-sm font-medium bg-accent text-white hover:bg-accent-dark disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   {sumStep >= EXAM_SCORES.length
-                    ? "Hoan thanh!"
-                    : `Buoc tiep (i = ${sumStep + 1})`}
+                    ? "Hoàn thành!"
+                    : `Bước tiếp (i = ${sumStep + 1})`}
                 </button>
                 <button
                   onClick={handleSumReset}
                   className="rounded-lg px-4 py-2 text-sm font-medium border border-border text-foreground hover:bg-surface-hover transition-colors"
                 >
-                  Lam lai
+                  Làm lại
                 </button>
               </div>
 
@@ -526,12 +526,12 @@ export default function MathReadinessTopic() {
               {sumStep >= EXAM_SCORES.length && (
                 <div className="mt-2 rounded-lg border border-accent/30 bg-accent-light/30 p-3 text-sm text-foreground leading-relaxed">
                   <p className="font-semibold text-accent-dark mb-1">
-                    Ket noi voi ML:
+                    Kết nối với ML:
                   </p>
                   <p className="text-muted">
-                    Trong ML, cong thuc sai so trung binh binh phuong (MSE)
-                    dung ky hieu{" "}
-                    <LaTeX>{String.raw`\Sigma`}</LaTeX> y het nhu vay:
+                    Trong ML, công thức sai số trung bình bình phương (MSE)
+                    dùng ký hiệu{" "}
+                    <LaTeX>{String.raw`\Sigma`}</LaTeX> y hệt như vậy:
                   </p>
                   <div className="mt-2">
                     <LaTeX block>
@@ -539,8 +539,8 @@ export default function MathReadinessTopic() {
                     </LaTeX>
                   </div>
                   <p className="text-muted mt-1">
-                    Thay vi cong diem bai thi, ta cong binh phuong sai so
-                    giua du doan va thuc te.
+                    Thay vì cộng điểm bài thi, ta cộng bình phương sai số
+                    giữa dự đoán và thực tế.
                   </p>
                 </div>
               )}
@@ -553,128 +553,128 @@ export default function MathReadinessTopic() {
           EXPLANATION SECTION
           ================================================================ */}
       <ExplanationSection topicSlug="math-readiness">
-        <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+        <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
           <PredictionGate
-            question="Trong ML, khi mo hinh 'hoc', no thuc su dang lam gi?"
+            question="Trong ML, khi mô hình 'học', nó thực sự đang làm gì?"
             options={[
-              "Ghi nho toan bo du lieu dau vao",
-              "Dieu chinh cac con so (tham so) de dua ra du doan chinh xac hon",
-              "Viet code tu dong",
+              "Ghi nhớ toàn bộ dữ liệu đầu vào",
+              "Điều chỉnh các con số (tham số) để đưa ra dự đoán chính xác hơn",
+              "Viết code tự động",
             ]}
             correct={1}
-            explanation="Dung! 'Hoc' trong ML nghia la dieu chinh cac tham so — nhung con so nhu a va b trong y = ax + b — sao cho du doan sat voi thuc te nhat. Bai nay se giup ban hieu ro nhung khai niem toan hoc nen tang nay."
+            explanation="Đúng! 'Học' trong ML nghĩa là điều chỉnh các tham số — những con số như a và b trong y = ax + b — sao cho dự đoán sát với thực tế nhất. Bài này sẽ giúp bạn hiểu rõ những khái niệm toán học nền tảng này."
           >
             <p className="mt-3 text-sm text-muted leading-relaxed">
-              Tiep tuc de kham pha cac cong cu toan hoc ma ML dung moi ngay.
+              Tiếp tục để khám phá các công cụ toán học mà ML dùng mỗi ngày.
             </p>
           </PredictionGate>
         </LessonSection>
 
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Bien so & Tham so">
+        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Biến số & Tham số">
           <p className="text-sm leading-relaxed">
-            Trong toan lop 7, ban da gap <strong>bien so</strong> (variable):{" "}
-            <LaTeX>{"x"}</LaTeX>, <LaTeX>{"y"}</LaTeX> la nhung ky hieu dai dien
-            cho gia tri thay doi. Trong ML, co them mot khai niem quan trong:{" "}
-            <strong>tham so</strong> (parameter).
+            Trong toán lớp 7, bạn đã gặp <strong>biến số</strong> (variable):{" "}
+            <LaTeX>{"x"}</LaTeX>, <LaTeX>{"y"}</LaTeX> là những ký hiệu đại diện
+            cho giá trị thay đổi. Trong ML, có thêm một khái niệm quan trọng:{" "}
+            <strong>tham số</strong> (parameter).
           </p>
 
-          <Callout variant="tip" title="Vi du: Quan ca phe may pha">
-            Tuong tuong mot may pha ca phe co hai nut van:{" "}
-            <strong>a</strong> = do dam va <strong>b</strong> = do ngot.
-            Moi to hop (a, b) khac nhau cho ra mot vi ca phe khac nhau.
-            Trong ML, mo hinh co hang trieu &quot;nut van&quot; nhu vay — moi
-            nut la mot tham so ma may tu dieu chinh khi hoc.
+          <Callout variant="tip" title="Ví dụ: Quán cà phê máy pha">
+            Tưởng tượng một máy pha cà phê có hai nút vặn:{" "}
+            <strong>a</strong> = độ đậm và <strong>b</strong> = độ ngọt.
+            Mỗi tổ hợp (a, b) khác nhau cho ra một vị cà phê khác nhau.
+            Trong ML, mô hình có hàng triệu &quot;nút vặn&quot; như vậy — mỗi
+            nút là một tham số mà máy tự điều chỉnh khi học.
           </Callout>
 
           <p className="text-sm leading-relaxed mt-3">
-            Su khac biet chinh:
+            Sự khác biệt chính:
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
             <li>
-              <strong>Bien so</strong> (variable): dau vao thay doi —{" "}
-              <LaTeX>{"x"}</LaTeX> la du lieu moi ban dua cho mo hinh
+              <strong>Biến số</strong> (variable): đầu vào thay đổi —{" "}
+              <LaTeX>{"x"}</LaTeX> là dữ liệu mới bạn đưa cho mô hình
             </li>
             <li>
-              <strong>Tham so</strong> (parameter): con so ma mo hinh tu dieu chinh
-              trong qua trinh hoc — <LaTeX>{"a"}</LaTeX> va{" "}
+              <strong>Tham số</strong> (parameter): con số mà mô hình tự điều chỉnh
+              trong quá trình học — <LaTeX>{"a"}</LaTeX> và{" "}
               <LaTeX>{"b"}</LaTeX> trong{" "}
               <LaTeX>{"y = ax + b"}</LaTeX>
             </li>
           </ul>
 
           <AhaMoment>
-            Tham so giong nhu nut van volume tren loa: mot con so nho thoi nhung
-            thay doi no la thay doi toan bo hanh vi cua he thong. Trong ML,
-            &quot;huan luyen&quot; chinh la qua trinh tim ra vi tri tot nhat cho
-            cac nut van nay.
+            Tham số giống như nút vặn volume trên loa: một con số nhỏ thôi nhưng
+            thay đổi nó là thay đổi toàn bộ hành vi của hệ thống. Trong ML,
+            &quot;huấn luyện&quot; chính là quá trình tìm ra vị trí tốt nhất cho
+            các nút vặn này.
           </AhaMoment>
         </LessonSection>
 
-        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Ham so">
+        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Hàm số">
           <p className="text-sm leading-relaxed">
-            <strong>Ham so</strong> (function) la mot quy tac bien doi:{" "}
-            cho dau vao, tra ra dau ra. Cach viet:{" "}
-            <LaTeX>{"f(x) = 2x + 1"}</LaTeX> nghia la &quot;ham{" "}
-            <LaTeX>{"f"}</LaTeX> nhan <LaTeX>{"x"}</LaTeX>, nhan doi len roi cong
-            them 1&quot;.
+            <strong>Hàm số</strong> (function) là một quy tắc biến đổi:{" "}
+            cho đầu vào, trả ra đầu ra. Cách viết:{" "}
+            <LaTeX>{"f(x) = 2x + 1"}</LaTeX> nghĩa là &quot;hàm{" "}
+            <LaTeX>{"f"}</LaTeX> nhận <LaTeX>{"x"}</LaTeX>, nhân đôi lên rồi cộng
+            thêm 1&quot;.
           </p>
 
-          <Callout variant="info" title="Vi du: Cong thuc nau pho">
-            Mot to pho ngon phu thuoc vao luong gia vi. Doi luong nuoc mam{" "}
-            <LaTeX>{"x"}</LaTeX> se doi vi <LaTeX>{"f(x)"}</LaTeX>.
-            Cong thuc nau chinh la ham so — no cho ban biet: voi moi &quot;dau
-            vao&quot; (luong gia vi), &quot;dau ra&quot; (vi pho) se la gi.
+          <Callout variant="info" title="Ví dụ: Công thức nấu phở">
+            Một tô phở ngon phụ thuộc vào lượng gia vị. Đổi lượng nước mắm{" "}
+            <LaTeX>{"x"}</LaTeX> sẽ đổi vị <LaTeX>{"f(x)"}</LaTeX>.
+            Công thức nấu chính là hàm số — nó cho bạn biết: với mỗi &quot;đầu
+            vào&quot; (lượng gia vị), &quot;đầu ra&quot; (vị phở) sẽ là gì.
           </Callout>
 
           <p className="text-sm leading-relaxed mt-3">
-            Trong ML, <strong>mo hinh chinh la mot ham so khong lo</strong>.{" "}
-            Khi ban cho ChatGPT mot cau hoi (dau vao{" "}
-            <LaTeX>{"x"}</LaTeX>), no tinh toan qua hang ty tham so de tra ra
-            cau tra loi (dau ra <LaTeX>{"f(x)"}</LaTeX>).
+            Trong ML, <strong>mô hình chính là một hàm số khổng lồ</strong>.{" "}
+            Khi bạn cho ChatGPT một câu hỏi (đầu vào{" "}
+            <LaTeX>{"x"}</LaTeX>), nó tính toán qua hàng tỷ tham số để trả ra
+            câu trả lời (đầu ra <LaTeX>{"f(x)"}</LaTeX>).
           </p>
 
           <InlineChallenge
-            question="Cho f(x) = 5x \u2212 3. Gia tri f(2) la bao nhieu?"
+            question="Cho f(x) = 5x \u2212 3. Giá trị f(2) là bao nhiêu?"
             options={["3", "7", "10", "13"]}
             correct={1}
-            explanation="f(2) = 5 \u00d7 2 \u2212 3 = 10 \u2212 3 = 7. Thay x = 2 vao cong thuc roi tinh."
+            explanation="f(2) = 5 \u00d7 2 \u2212 3 = 10 \u2212 3 = 7. Thay x = 2 vào công thức rồi tính."
           />
         </LessonSection>
 
-        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Mat phang toa do">
+        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Mặt phẳng toạ độ">
           <p className="text-sm leading-relaxed">
-            <strong>Mat phang toa do</strong> (coordinate plane) la mot &quot;ban
-            do 2D&quot; voi hai truc: truc ngang <LaTeX>{"x"}</LaTeX> va truc
-            dung <LaTeX>{"y"}</LaTeX>. Ban da hoc no o lop 7-8 roi!
+            <strong>Mặt phẳng toạ độ</strong> (coordinate plane) là một &quot;bản
+            đồ 2D&quot; với hai trục: trục ngang <LaTeX>{"x"}</LaTeX> và trục
+            dọc <LaTeX>{"y"}</LaTeX>. Bạn đã học nó ở lớp 7-8 rồi!
           </p>
 
-          <Callout variant="tip" title="Vi du: Google Maps">
-            Google Maps la mot mat phang toa do khong lo: kinh do la truc{" "}
-            <LaTeX>{"x"}</LaTeX>, vi do la truc <LaTeX>{"y"}</LaTeX>. Moi dia
-            diem co mot cap so xac dinh vi tri. Tuong tu, moi diem tren do thi
-            ham so co toa do <LaTeX>{"(x, y)"}</LaTeX>.
+          <Callout variant="tip" title="Ví dụ: Google Maps">
+            Google Maps là một mặt phẳng toạ độ khổng lồ: kinh độ là trục{" "}
+            <LaTeX>{"x"}</LaTeX>, vĩ độ là trục <LaTeX>{"y"}</LaTeX>. Mỗi địa
+            điểm có một cặp số xác định vị trí. Tương tự, mỗi điểm trên đồ thị
+            hàm số có toạ độ <LaTeX>{"(x, y)"}</LaTeX>.
           </Callout>
 
           <p className="text-sm leading-relaxed mt-3">
-            Tai sao mat phang toa do quan trong trong ML? Vi no giup ta{" "}
-            <strong>nhin thay du lieu</strong>. Khi ve du lieu len do thi, ta co
-            the nhan ra cac pattern: diem nao thi chung nhom, xu huong tang hay
-            giam, co diem nao bat thuong khong.
+            Tại sao mặt phẳng toạ độ quan trọng trong ML? Vì nó giúp ta{" "}
+            <strong>nhìn thấy dữ liệu</strong>. Khi vẽ dữ liệu lên đồ thị, ta có
+            thể nhận ra các pattern: điểm nào thì chung nhóm, xu hướng tăng hay
+            giảm, có điểm nào bất thường không.
           </p>
 
           <p className="text-sm leading-relaxed">
-            Quay lai phan{" "}
-            <strong>Hinh minh hoa</strong> phia tren va thu keo thanh truot{" "}
-            <LaTeX>{"a"}</LaTeX> va <LaTeX>{"b"}</LaTeX>{" "}
-            de thay do thi thay doi the nao!
+            Quay lại phần{" "}
+            <strong>Hình minh hoạ</strong> phía trên và thử kéo thanh trượt{" "}
+            <LaTeX>{"a"}</LaTeX> và <LaTeX>{"b"}</LaTeX>{" "}
+            để thấy đồ thị thay đổi thế nào!
           </p>
         </LessonSection>
 
-        <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ky hieu tong \u03a3">
+        <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ký hiệu tổng \u03a3">
           <p className="text-sm leading-relaxed">
-            Day la khai niem hoan toan moi — <strong>ky hieu tong</strong>{" "}
-            (summation notation) viet bang chu cai Hy Lap{" "}
-            <LaTeX>{String.raw`\Sigma`}</LaTeX> (sigma, doc la &quot;xich-ma&quot;).
+            Đây là khái niệm hoàn toàn mới — <strong>ký hiệu tổng</strong>{" "}
+            (summation notation) viết bằng chữ cái Hy Lạp{" "}
+            <LaTeX>{String.raw`\Sigma`}</LaTeX> (sigma, đọc là &quot;xích-ma&quot;).
           </p>
 
           <LaTeX block>
@@ -682,52 +682,52 @@ export default function MathReadinessTopic() {
           </LaTeX>
 
           <p className="text-sm leading-relaxed">
-            Nghia la: &quot;cong tat ca cac <LaTeX>{"x_i"}</LaTeX> tu{" "}
-            <LaTeX>{"i = 1"}</LaTeX> den <LaTeX>{"i = n"}</LaTeX>&quot;.
-            Phan phia duoi (<LaTeX>{"i=1"}</LaTeX>) la diem bat dau, phia tren
-            (<LaTeX>{"n"}</LaTeX>) la diem ket thuc.
+            Nghĩa là: &quot;cộng tất cả các <LaTeX>{"x_i"}</LaTeX> từ{" "}
+            <LaTeX>{"i = 1"}</LaTeX> đến <LaTeX>{"i = n"}</LaTeX>&quot;.
+            Phần phía dưới (<LaTeX>{"i=1"}</LaTeX>) là điểm bắt đầu, phía trên
+            (<LaTeX>{"n"}</LaTeX>) là điểm kết thúc.
           </p>
 
-          <Callout variant="info" title="Vi du: Tinh tong diem bai thi">
-            Em co 5 bai kiem tra: 8, 6, 9, 7, 10 diem. Thay vi viet
-            &quot;8 + 6 + 9 + 7 + 10&quot;, toan hoc viet gon:{" "}
-            <LaTeX>{String.raw`\sum_{i=1}^{5} x_i = 40`}</LaTeX>. Khi co 1.000
-            bai thi, ky hieu nay tiet kiem duoc rat nhieu giay muc!
+          <Callout variant="info" title="Ví dụ: Tính tổng điểm bài thi">
+            Em có 5 bài kiểm tra: 8, 6, 9, 7, 10 điểm. Thay vì viết
+            &quot;8 + 6 + 9 + 7 + 10&quot;, toán học viết gọn:{" "}
+            <LaTeX>{String.raw`\sum_{i=1}^{5} x_i = 40`}</LaTeX>. Khi có 1.000
+            bài thi, ký hiệu này tiết kiệm được rất nhiều giấy mực!
           </Callout>
 
           <p className="text-sm leading-relaxed mt-3">
             Trong ML, <LaTeX>{String.raw`\Sigma`}</LaTeX>{" "}
-            xuat hien o khap noi: tinh sai so, tinh trung binh, cap nhat
-            tham so. Hieu ky hieu nay la ban co the doc duoc{" "}
-            <strong>hau het cac cong thuc ML</strong>.
+            xuất hiện ở khắp nơi: tính sai số, tính trung bình, cập nhật
+            tham số. Hiểu ký hiệu này là bạn có thể đọc được{" "}
+            <strong>hầu hết các công thức ML</strong>.
           </p>
         </LessonSection>
 
-        <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tong ket">
+        <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tổng kết">
           <MiniSummary
-            title="Nhung dieu can nho"
+            title="Những điều cần nhớ"
             points={[
-              "Bien so (variable) = dau vao thay doi, tham so (parameter) = 'nut van' mo hinh tu chinh.",
-              "Ham so (function) = quy tac bien doi dau vao thanh dau ra. Mo hinh ML la mot ham so khong lo.",
-              "Mat phang toa do (coordinate plane) = 'ban do 2D' giup ta hinh dung du lieu va quan he giua cac bien.",
-              "Ky hieu tong \u03a3 (sigma) = cach viet gon 'cong tat ca tu i = 1 den n'. Xuat hien o khap noi trong ML.",
-              "Tat ca khai niem nay ket noi voi nhau: ML dieu chinh tham so cua ham so de toi uu tong sai so tren mat phang du lieu.",
+              "Biến số (variable) = đầu vào thay đổi, tham số (parameter) = 'nút vặn' mô hình tự chỉnh.",
+              "Hàm số (function) = quy tắc biến đổi đầu vào thành đầu ra. Mô hình ML là một hàm số khổng lồ.",
+              "Mặt phẳng toạ độ (coordinate plane) = 'bản đồ 2D' giúp ta hình dung dữ liệu và quan hệ giữa các biến.",
+              "Ký hiệu tổng \u03a3 (sigma) = cách viết gọn 'cộng tất cả từ i = 1 đến n'. Xuất hiện ở khắp nơi trong ML.",
+              "Tất cả khái niệm này kết nối với nhau: ML điều chỉnh tham số của hàm số để tối ưu tổng sai số trên mặt phẳng dữ liệu.",
             ]}
           />
           <p className="text-sm leading-relaxed mt-4">
-            Tiep theo, hay tim hieu{" "}
+            Tiếp theo, hãy tìm hiểu{" "}
             <TopicLink slug="vectors-and-matrices">
-              vector va ma tran
+              vector và ma trận
             </TopicLink>{" "}
-            de mo rong tu 1 bien thanh hang tram bien cung luc, hoac quay lai{" "}
+            để mở rộng từ 1 biến thành hàng trăm biến cùng lúc, hoặc quay lại{" "}
             <TopicLink slug="what-is-ml">
-              Machine Learning la gi?
+              Machine Learning là gì?
             </TopicLink>{" "}
-            neu ban muon on lai nen tang.
+            nếu bạn muốn ôn lại nền tảng.
           </p>
         </LessonSection>
 
-        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiem tra">
+        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
           <QuizSection questions={quizQuestions} />
         </LessonSection>
       </ExplanationSection>

@@ -435,14 +435,14 @@ export default function CalculusForBackpropTopic() {
           {stage === 1 && (
             <div className="space-y-3">
               <p className="text-sm text-muted leading-relaxed">
-                Keo vien bi de thay do doc (dao ham). Do doc tai moi diem cho biet loss tang hay giam khi weight thay doi.
+                Kéo viên bi để thấy độ dốc (đạo hàm). Độ dốc tại mỗi điểm cho biết loss tăng hay giảm khi weight thay đổi.
               </p>
               <div className="rounded-lg border border-border bg-surface p-2 flex items-center justify-center">
                 <svg
                   ref={svg1Ref}
                   viewBox={`0 0 ${W} ${H}`}
                   className="w-full max-w-[420px] cursor-grab select-none"
-                  aria-label="Keo vien bi tren duong cong loss de thay dao ham"
+                  aria-label="Kéo viên bi trên đường cong loss để thấy đạo hàm"
                   onMouseMove={handleBallDrag}
                   onMouseUp={() => setDraggingBall(false)}
                   onMouseLeave={() => setDraggingBall(false)}
@@ -637,12 +637,12 @@ export default function CalculusForBackpropTopic() {
                 </div>
               </div>
               <p className="text-xs text-muted text-center">
-                dL/dw = 2(w - 3) = {ballGrad.toFixed(2)} | Do doc{" "}
+                dL/dw = 2(w - 3) = {ballGrad.toFixed(2)} | Độ dốc{" "}
                 {Math.abs(ballGrad) < 0.1
-                  ? "gan 0 — dang o day!"
+                  ? "gần 0 — đang ở đáy!"
                   : ballGrad > 0
-                    ? "duong — loss tang khi w tang, nen buoc trai"
-                    : "am — loss giam khi w tang, nen buoc phai"}
+                    ? "dương — loss tăng khi w tăng, nên bước trái"
+                    : "âm — loss giảm khi w tăng, nên bước phải"}
               </p>
             </div>
           )}
@@ -651,15 +651,15 @@ export default function CalculusForBackpropTopic() {
           {stage === 2 && (
             <div className="space-y-3">
               <p className="text-sm text-muted leading-relaxed">
-                Bam vao noi ban nghi nen buoc tiep. Mui ten do la huong gradient
-                dung (buoc tot uu). Diem cang gan huong do, diem cang cao!
+                Bấm vào nơi bạn nghĩ nên bước tiếp. Mũi tên đỏ là hướng gradient
+                đúng (bước tối ưu). Điểm càng gần hướng đó, điểm càng cao!
               </p>
               <div className="rounded-lg border border-border bg-surface p-2 flex items-center justify-center">
                 <svg
                   ref={svg2Ref}
                   viewBox={`0 0 ${W} ${H}`}
                   className="w-full max-w-[420px] cursor-crosshair select-none"
-                  aria-label="Bam de chon buoc tiep theo tren contour plot"
+                  aria-label="Bấm để chọn bước tiếp theo trên contour plot"
                   onClick={handleContourClick}
                 >
                   {/* Contour lines */}
@@ -761,11 +761,11 @@ export default function CalculusForBackpropTopic() {
               {/* Score display */}
               <div className="flex items-center justify-between">
                 <div className="text-sm text-muted">
-                  Vi tri hien tai: ({s2Pos[0].toFixed(1)},{" "}
+                  Vị trí hiện tại: ({s2Pos[0].toFixed(1)},{" "}
                   {s2Pos[1].toFixed(1)})
                   {s2Score !== null && (
                     <span className="ml-3 font-semibold">
-                      Diem:{" "}
+                      Điểm:{" "}
                       <span
                         className={
                           s2Score >= 70
@@ -784,7 +784,7 @@ export default function CalculusForBackpropTopic() {
                   onClick={resetStage2}
                   className="rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-foreground hover:bg-surface-hover transition-colors"
                 >
-                  Vi tri moi
+                  Vị trí mới
                 </button>
               </div>
             </div>
@@ -794,7 +794,7 @@ export default function CalculusForBackpropTopic() {
           {stage === 3 && (
             <div className="space-y-3">
               <p className="text-sm text-muted leading-relaxed">
-                Dieu chinh learning rate va quan sat duong hoi tu. Qua lon thi phan ky, qua nho thi cham.
+                Điều chỉnh learning rate và quan sát đường hội tụ. Quá lớn thì phân kỳ, quá nhỏ thì chậm.
               </p>
 
               {/* Learning rate slider */}
@@ -822,7 +822,7 @@ export default function CalculusForBackpropTopic() {
                 <svg
                   viewBox={`0 0 ${W} ${H}`}
                   className="w-full max-w-[420px] select-none"
-                  aria-label="Gradient descent voi learning rate co the dieu chinh"
+                  aria-label="Gradient descent với learning rate có thể điều chỉnh"
                 >
                   {/* Contour lines */}
                   {ContourBackground}
@@ -908,7 +908,7 @@ export default function CalculusForBackpropTopic() {
                   disabled={autoRunning}
                   className="rounded-lg px-3 py-1.5 text-xs font-medium border border-accent text-accent hover:bg-accent/10 transition-colors disabled:opacity-40"
                 >
-                  Buoc tiep
+                  Bước tiếp
                 </button>
                 <button
                   onClick={() => setAutoRunning((r) => !r)}
@@ -918,7 +918,7 @@ export default function CalculusForBackpropTopic() {
                       : "border-accent text-accent hover:bg-accent/10"
                   }`}
                 >
-                  {autoRunning ? "Dung lai" : "Tu dong chay"}
+                  {autoRunning ? "Dừng lại" : "Tự động chạy"}
                 </button>
                 <button
                   onClick={resetStage3}
@@ -927,7 +927,7 @@ export default function CalculusForBackpropTopic() {
                   Reset
                 </button>
                 <span className="ml-auto text-xs text-muted">
-                  Buoc: {s3Trail.length - 1} | Loss:{" "}
+                  Bước: {s3Trail.length - 1} | Loss:{" "}
                   {loss2D(s3Pos[0], s3Pos[1]).toFixed(2)}
                 </span>
               </div>
@@ -940,42 +940,42 @@ export default function CalculusForBackpropTopic() {
           EXPLANATION SECTION
           ================================================================ */}
       <ExplanationSection topicSlug="calculus-for-backprop">
-        <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Du doan">
+        <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
           <PredictionGate
-            question="Neural network co 1 trieu weights. Training = tim gia tri toi uu cho 1 trieu bien so. Lam sao biet dieu chinh moi weight theo huong nao?"
+            question="Neural network có 1 triệu weights. Training = tìm giá trị tối ưu cho 1 triệu biến số. Làm sao biết điều chỉnh mỗi weight theo hướng nào?"
             options={[
-              "Thu random tung weight",
-              "Dao ham (gradient): tinh huong doc nhat cho moi weight, dieu chinh nguoc huong doc de loss giam",
-              "Dung cong thuc co dinh",
+              "Thử random từng weight",
+              "Đạo hàm (gradient): tính hướng dốc nhất cho mỗi weight, điều chỉnh ngược hướng dốc để loss giảm",
+              "Dùng công thức cố định",
             ]}
             correct={1}
-            explanation="Gradient la ban do dia hinh cua loss landscape. Tai moi diem, gradient chi huong doc nhat (loss tang). Di NGUOC gradient = loss giam nhanh nhat. Backprop tinh gradient cho 1 trieu weights HIEU QUA bang chain rule."
+            explanation="Gradient là bản đồ địa hình của loss landscape. Tại mỗi điểm, gradient chỉ hướng dốc nhất (loss tăng). Đi NGƯỢC gradient = loss giảm nhanh nhất. Backprop tính gradient cho 1 triệu weights HIỆU QUẢ bằng chain rule."
           >
             <p className="text-sm text-muted mt-2">
-              Hay tiep tuc de kham pha toan hoc dang sau backpropagation.
+              Hãy tiếp tục để khám phá toán học đằng sau backpropagation.
             </p>
           </PredictionGate>
         </LessonSection>
 
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoang khac Aha">
+        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
           <AhaMoment>
             <p>
-              Gradient descent giong{" "}
-              <strong>tim day thung lung khi bi bit mat</strong>: khong
-              nhin thay dinh nhung <strong>cam nhan doc</strong> (gradient)
-              roi buoc nguoc lai. Learning rate la{" "}
-              <strong>buoc chan</strong>: buoc qua lon nhay qua day, buoc
-              qua nho di mai khong toi. Chain rule la{" "}
-              <strong>hieu ung domino</strong>: do quan dau, tat ca do theo
-              chuoi!
+              Gradient descent giống{" "}
+              <strong>tìm đáy thung lũng khi bị bịt mắt</strong>: không
+              nhìn thấy đỉnh nhưng <strong>cảm nhận dốc</strong> (gradient)
+              rồi bước ngược lại. Learning rate là{" "}
+              <strong>bước chân</strong>: bước quá lớn nhảy qua đáy, bước
+              quá nhỏ đi mãi không tới. Chain rule là{" "}
+              <strong>hiệu ứng domino</strong>: đổ quân đầu, tất cả đổ theo
+              chuỗi!
             </p>
           </AhaMoment>
         </LessonSection>
 
-        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Dao ham">
+        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Đạo hàm">
           <p className="text-sm leading-relaxed">
-            <strong>Dao ham</strong> (derivative) do toc do thay doi cua ham so. Trong ML:{" "}
-            dL/dw cho biet loss thay doi bao nhieu khi weight thay doi mot chut.
+            <strong>Đạo hàm</strong> (derivative) đo tốc độ thay đổi của hàm số. Trong ML:{" "}
+            dL/dw cho biết loss thay đổi bao nhiêu khi weight thay đổi một chút.
           </p>
 
           <LaTeX block>
@@ -983,14 +983,14 @@ export default function CalculusForBackpropTopic() {
           </LaTeX>
 
           <p className="text-sm leading-relaxed mt-2">
-            Trong hinh minh hoa Stage 1, do doc cua duong tiep tuyen chinh la dao ham.
-            Tai w = 3 (day thung lung), dao ham = 0 vi khong con doc de di xuong nua.
+            Trong hình minh hoạ Stage 1, độ dốc của đường tiếp tuyến chính là đạo hàm.
+            Tại w = 3 (đáy thung lũng), đạo hàm = 0 vì không còn dốc để đi xuống nữa.
           </p>
 
-          <Callout variant="tip" title="Gradient = vector dao ham">
-            Khi ham co nhieu bien (nhu neural network), dao ham rieng theo tung bien
-            ghep lai thanh <strong>gradient</strong> — mot vector chi huong loss tang nhanh nhat.
-            Di nguoc gradient = loss giam nhanh nhat.
+          <Callout variant="tip" title="Gradient = vector đạo hàm">
+            Khi hàm có nhiều biến (như neural network), đạo hàm riêng theo từng biến
+            ghép lại thành <strong>gradient</strong> — một vector chỉ hướng loss tăng nhanh nhất.
+            Đi ngược gradient = loss giảm nhanh nhất.
           </Callout>
 
           <LaTeX block>
@@ -1002,7 +1002,7 @@ export default function CalculusForBackpropTopic() {
 
         <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Gradient descent">
           <p className="text-sm leading-relaxed">
-            <strong>Gradient descent</strong> cap nhat weight bang cach buoc nguoc huong gradient:
+            <strong>Gradient descent</strong> cập nhật weight bằng cách bước ngược hướng gradient:
           </p>
 
           <LaTeX block>
@@ -1012,29 +1012,29 @@ export default function CalculusForBackpropTopic() {
           </LaTeX>
 
           <p className="text-sm leading-relaxed mt-2">
-            <strong>Toc do hoc</strong> (learning rate, ky hieu eta) kiem soat kich thuoc buoc.
-            Trong Stage 3 cua hinh minh hoa, ban co the thay:
+            <strong>Tốc độ học</strong> (learning rate, ký hiệu eta) kiểm soát kích thước bước.
+            Trong Stage 3 của hình minh hoạ, bạn có thể thấy:
           </p>
 
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm leading-relaxed">
-            <li>eta qua lon (khoang 0.5 - 1.0): buoc nhay qua xa, loss phat tan</li>
-            <li>eta qua nho (khoang 0.001): buoc rat nho, can hang tram buoc</li>
-            <li>eta vua phai (khoang 0.05 - 0.15): hoi tu muot ma den minimum</li>
+            <li>eta quá lớn (khoảng 0.5 - 1.0): bước nhảy quá xa, loss phát tán</li>
+            <li>eta quá nhỏ (khoảng 0.001): bước rất nhỏ, cần hàng trăm bước</li>
+            <li>eta vừa phải (khoảng 0.05 - 0.15): hội tụ mượt mà đến minimum</li>
           </ul>
 
           <InlineChallenge
-            question="Voi w = 1, dL/dw = -4, lr = 0.1 thi w_moi = ?"
+            question="Với w = 1, dL/dw = -4, lr = 0.1 thì w_mới = ?"
             options={["0.6", "1.4", "1.04", "0.96"]}
             correct={1}
-            explanation="w_moi = w - lr * dL/dw = 1 - 0.1 * (-4) = 1 + 0.4 = 1.4. Gradient am nen w tang (di ve phia loss giam)."
+            explanation="w_mới = w - lr * dL/dw = 1 - 0.1 * (-4) = 1 + 0.4 = 1.4. Gradient âm nên w tăng (đi về phía loss giảm)."
           />
         </LessonSection>
 
         <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Chain rule">
           <p className="text-sm leading-relaxed">
-            <strong>Quy tac chuoi</strong> (chain rule) la ly do backpropagation hoat dong.
-            Neural network la chuoi ham: y = f3(f2(f1(x))). Chain rule cho phep tinh dao ham
-            nguoc lai qua tung layer:
+            <strong>Quy tắc chuỗi</strong> (chain rule) là lý do backpropagation hoạt động.
+            Neural network là chuỗi hàm: y = f3(f2(f1(x))). Chain rule cho phép tính đạo hàm
+            ngược lại qua từng layer:
           </p>
 
           <LaTeX block>
@@ -1044,23 +1044,23 @@ export default function CalculusForBackpropTopic() {
           </LaTeX>
 
           <p className="text-sm leading-relaxed mt-2">
-            Nhu <strong>hieu ung domino</strong>: do quan dau, tat ca do theo chuoi. Moi
-            layer chi can tinh local gradient, roi nhan nguoc lai. 100 layers nhan local
-            gradient thay vi dao ham ham 100 lop truc tiep.
+            Như <strong>hiệu ứng domino</strong>: đổ quân đầu, tất cả đổ theo chuỗi. Mỗi
+            layer chỉ cần tính local gradient, rồi nhân ngược lại. 100 layers nhân local
+            gradient thay vì đạo hàm hàm 100 lớp trực tiếp.
           </p>
 
-          <Callout variant="info" title="Vi du cu the">
-            Cho f(x) = (3x + 2)^2. Dat u = 3x + 2, f = u^2.
+          <Callout variant="info" title="Ví dụ cụ thể">
+            Cho f(x) = (3x + 2)^2. Đặt u = 3x + 2, f = u^2.
             Chain rule: df/dx = df/du * du/dx = 2u * 3 = 6(3x+2).
-            Tai x = 1: df/dx = 6 * 5 = 30.
+            Tại x = 1: df/dx = 6 * 5 = 30.
             Trong neural network: u = linear layer, f = activation.
           </Callout>
         </LessonSection>
 
         <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Vanishing gradient">
           <p className="text-sm leading-relaxed">
-            <strong>Vanishing gradient</strong> xay ra khi chain rule nhan nhieu gradient nho.
-            Nhu thi tham qua 100 nguoi — tin nhan mat dan.
+            <strong>Vanishing gradient</strong> xảy ra khi chain rule nhân nhiều gradient nhỏ.
+            Như thì thầm qua 100 người — tin nhắn mất dần.
           </p>
 
           <LaTeX block>
@@ -1070,14 +1070,14 @@ export default function CalculusForBackpropTopic() {
           </LaTeX>
 
           <p className="text-sm leading-relaxed mt-2">
-            Sigmoid co gradient toi da 0.25. Voi 50 layers: 0.25^50 &#8776; 10^(-30) — gradient
-            ve co 0, cac layer dau khong hoc duoc gi. Giai phap:
+            Sigmoid có gradient tối đa 0.25. Với 50 layers: 0.25^50 &#8776; 10^(-30) — gradient
+            về cỡ 0, các layer đầu không học được gì. Giải pháp:
           </p>
 
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm leading-relaxed">
-            <li><strong>ReLU</strong>: gradient = 1 (khi x &gt; 0), khong bi giam qua cac layer</li>
-            <li><strong>Residual connections</strong> (skip connections): gradient co duong tat</li>
-            <li><strong>Batch normalization</strong>: giu gradient o muc on dinh</li>
+            <li><strong>ReLU</strong>: gradient = 1 (khi x &gt; 0), không bị giảm qua các layer</li>
+            <li><strong>Residual connections</strong> (skip connections): gradient có đường tắt</li>
+            <li><strong>Batch normalization</strong>: giữ gradient ở mức ổn định</li>
           </ul>
 
           <LaTeX block>
@@ -1087,42 +1087,42 @@ export default function CalculusForBackpropTopic() {
           </LaTeX>
 
           <Callout variant="tip" title="Autograd">
-            Trong thuc te, ban KHONG can tinh dao ham thu cong. PyTorch autograd tu dong tinh gradient
-            cho bat ky computation graph nao. loss.backward() tinh gradient cho TAT CA parameters.
+            Trong thực tế, bạn KHÔNG cần tính đạo hàm thủ công. PyTorch autograd tự động tính gradient
+            cho bất kỳ computation graph nào. loss.backward() tính gradient cho TẤT CẢ parameters.
           </Callout>
 
-          <CodeBlock language="python" title="Backpropagation voi PyTorch autograd">{`import torch
+          <CodeBlock language="python" title="Backpropagation với PyTorch autograd">{`import torch
 
-# PyTorch tu dong tinh gradient
+# PyTorch tự động tính gradient
 x = torch.tensor(2.0, requires_grad=True)
 y = (3*x + 2)**2  # f(x) = (3x+2)^2
-y.backward()       # Chain rule tu dong
-print(f"df/dx tai x=2: {x.grad}")  # 48.0
+y.backward()       # Chain rule tự động
+print(f"df/dx tại x=2: {x.grad}")  # 48.0
 
-# Training loop (autograd lam tat ca)
+# Training loop (autograd làm tất cả)
 model = torch.nn.Linear(784, 10)
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
 output = model(input_data)
 loss = torch.nn.functional.cross_entropy(output, labels)
-loss.backward()        # Backprop: gradient cho MOI weight
-optimizer.step()       # Gradient descent: cap nhat weights
-optimizer.zero_grad()  # Reset cho batch tiep`}</CodeBlock>
+loss.backward()        # Backprop: gradient cho MỌI weight
+optimizer.step()       # Gradient descent: cập nhật weights
+optimizer.zero_grad()  # Reset cho batch tiếp`}</CodeBlock>
         </LessonSection>
 
-        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tom tat">
+        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
           <MiniSummary
             points={[
-              "Dao ham = toc do thay doi. Trong ML: dL/dw cho biet loss thay doi bao nhieu khi weight thay doi.",
-              "Gradient = vector chi huong loss tang nhanh nhat. Di nguoc gradient de loss giam.",
-              "Gradient descent: w_moi = w_cu - lr * gradient. Learning rate kiem soat kich thuoc buoc.",
-              "Chain rule: nhan local gradients nguoc lai qua tung layer. Day la co che cua backpropagation.",
-              "Vanishing gradient: sigmoid (max 0.25) nhan nhieu layers thi gradient ve 0. ReLU (gradient = 1) giai quyet.",
+              "Đạo hàm = tốc độ thay đổi. Trong ML: dL/dw cho biết loss thay đổi bao nhiêu khi weight thay đổi.",
+              "Gradient = vector chỉ hướng loss tăng nhanh nhất. Đi ngược gradient để loss giảm.",
+              "Gradient descent: w_mới = w_cũ - lr * gradient. Learning rate kiểm soát kích thước bước.",
+              "Chain rule: nhân local gradients ngược lại qua từng layer. Đây là cơ chế của backpropagation.",
+              "Vanishing gradient: sigmoid (max 0.25) nhân nhiều layers thì gradient về 0. ReLU (gradient = 1) giải quyết.",
             ]}
           />
         </LessonSection>
 
-        <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiem tra">
+        <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
           <QuizSection questions={quizQuestions} />
         </LessonSection>
       </ExplanationSection>
