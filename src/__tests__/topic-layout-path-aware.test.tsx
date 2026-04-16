@@ -46,6 +46,7 @@ vi.mock("@/topics/registry", () => ({
     "python-for-ml": { slug: "python-for-ml", title: "Python for ML", titleVi: "Python cho ML" },
     "neural-network-overview": { slug: "neural-network-overview", title: "Neural Network Overview", titleVi: "Tổng quan mạng nơ-ron" },
     "knn": { slug: "knn", title: "K-Nearest Neighbors", titleVi: "K-láng giềng gần nhất" },
+    "knn-in-symptom-checker": { slug: "knn-in-symptom-checker", title: "KNN in Symptom Checker", titleVi: "KNN trong Kiểm tra Triệu chứng" },
     "naive-bayes": { slug: "naive-bayes", title: "Naive Bayes", titleVi: "Naive Bayes" },
     "k-means": { slug: "k-means", title: "K-Means Clustering", titleVi: "Phân cụm K-Means" },
     "decision-trees": { slug: "decision-trees", title: "Decision Trees", titleVi: "Cây quyết định" },
@@ -155,13 +156,11 @@ describe("TopicLayout — path-aware navigation", () => {
     expect(next).toHaveAttribute("href", "/topics/math-readiness?path=student");
   });
 
-  it("with ?path=student on knn, Bài tiếp theo is naive-bayes (audit fix)", () => {
+  it("with ?path=student on knn, Bài tiếp theo is knn-in-symptom-checker (application topic follows theory)", () => {
     searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
     render(<TopicLayout meta={knnMeta}><p>body</p></TopicLayout>);
-    const next = screen.getByRole("link", { name: /Naive Bayes/ });
-    expect(next).toHaveAttribute("href", "/topics/naive-bayes?path=student");
-    // Should NOT show K-Means Clustering as the next link
-    expect(screen.queryByText("K-Means Clustering")).toBeNull();
+    const next = screen.getByRole("link", { name: /Symptom/ });
+    expect(next).toHaveAttribute("href", "/topics/knn-in-symptom-checker?path=student");
   });
 
   it("with ?path=student on loss-functions, Bài tiếp theo is epochs-batches (audit fix)", () => {

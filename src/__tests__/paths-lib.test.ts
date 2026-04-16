@@ -68,19 +68,19 @@ describe("getPathNeighbors", () => {
     expect(n!.currentStageTitle).toBe("Giới thiệu");
   });
 
-  it("resolves student path — linear-regression → logistic-regression", () => {
+  it("resolves student path — linear-regression → linear-regression-in-housing", () => {
     const n = getPathNeighbors("student", "linear-regression");
-    expect(n!.next?.slug).toBe("logistic-regression");
+    expect(n!.next?.slug).toBe("linear-regression-in-housing");
   });
 
-  it("resolves student path — knn → naive-bayes", () => {
+  it("resolves student path — knn → knn-in-symptom-checker", () => {
     const n = getPathNeighbors("student", "knn");
-    expect(n!.next?.slug).toBe("naive-bayes");
+    expect(n!.next?.slug).toBe("knn-in-symptom-checker");
   });
 
-  it("resolves student path — decision-trees → knn", () => {
+  it("resolves student path — decision-trees → decision-trees-in-loan-scoring", () => {
     const n = getPathNeighbors("student", "decision-trees");
-    expect(n!.next?.slug).toBe("knn");
+    expect(n!.next?.slug).toBe("decision-trees-in-loan-scoring");
   });
 
   it("resolves student path — loss-functions → epochs-batches", () => {
