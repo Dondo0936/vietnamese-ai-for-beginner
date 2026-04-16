@@ -2836,6 +2836,66 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "calculus-for-backprop-in-model-training",
+    title: "Calculus for Backpropagation in Model Training",
+    titleVi: "Giải tích & Lan truyền ngược trong Huấn luyện Mô hình",
+    description:
+      "Cách Meta dùng quy tắc chuỗi, AdamW và gradient checkpointing để huấn luyện LLaMA 3.1 405 tỷ tham số trên 16.384 GPU H100 trong 54 ngày",
+    category: "math-foundations",
+    tags: ["calculus", "backpropagation", "model-training", "application"],
+    difficulty: "intermediate",
+    relatedSlugs: ["calculus-for-backprop"],
+    vizType: "static",
+    applicationOf: "calculus-for-backprop",
+    featuredApp: {
+      name: "LLaMA 3.1",
+      productFeature: "405B Model Training",
+      company: "Meta Platforms Inc.",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Language Models are Few-Shot Learners",
+        publisher:
+          "Tom Brown et al. — NeurIPS 2020",
+        url: "https://arxiv.org/abs/2005.14165",
+        date: "2020-07",
+        kind: "paper",
+      },
+      {
+        title: "LLaMA: Open and Efficient Foundation Language Models",
+        publisher: "Hugo Touvron et al. — Meta AI, 2023",
+        url: "https://arxiv.org/abs/2302.13971",
+        date: "2023-02",
+        kind: "paper",
+      },
+      {
+        title:
+          "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM",
+        publisher:
+          "Deepak Narayanan et al. — SC 2021",
+        url: "https://arxiv.org/abs/2104.04473",
+        date: "2021-11",
+        kind: "paper",
+      },
+      {
+        title: "The Llama 3 Herd of Models",
+        publisher: "Meta AI, 2024",
+        url: "https://arxiv.org/abs/2407.21783",
+        date: "2024-07",
+        kind: "paper",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
