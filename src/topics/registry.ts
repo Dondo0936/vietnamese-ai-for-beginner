@@ -2678,6 +2678,23 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["what-is-ml", "vectors-and-matrices", "data-and-datasets"],
     vizType: "interactive",
   },
+  {
+    slug: "data-and-datasets",
+    title: "Data & Datasets",
+    titleVi: "Dữ liệu & Tập dữ liệu",
+    description:
+      "Đặc trưng, nhãn, tập huấn luyện và tập kiểm tra — hiểu dữ liệu trước khi học thuật toán",
+    category: "foundations",
+    tags: ["data", "features", "labels", "train-test-split"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "what-is-ml",
+      "math-readiness",
+      "supervised-unsupervised-rl",
+      "train-val-test",
+    ],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
