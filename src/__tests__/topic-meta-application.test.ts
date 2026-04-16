@@ -72,5 +72,7 @@ describe("TopicMeta application extensions", () => {
       "counterfactual",
     ];
     expectTypeOf(ids).toEqualTypeOf<TocSectionId[]>();
+    expectTypeOf<TopicMeta["featuredApp"]>().toEqualTypeOf<FeaturedApp | undefined>();
+    expectTypeOf<TopicMeta["sources"]>().toEqualTypeOf<SourceLink[] | undefined>();
   });
 });
