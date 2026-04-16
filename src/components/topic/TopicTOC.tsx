@@ -1,13 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Eye, BookOpen, List } from "lucide-react";
+import {
+  Eye,
+  BookOpen,
+  List,
+  Building2,
+  HelpCircle,
+  Cog,
+  BarChart3,
+  Hand,
+  GitBranch,
+} from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import type { TocSection, TocSectionId } from "@/lib/types";
 
 const ICONS: Record<TocSectionId, typeof Eye> = {
   visualization: Eye,
   explanation: BookOpen,
+  hero: Building2,
+  problem: HelpCircle,
+  mechanism: Cog,
+  metrics: BarChart3,
+  tryIt: Hand,
+  counterfactual: GitBranch,
 };
 
 export const DEFAULT_TOC_SECTIONS: TocSection[] = [
