@@ -43,7 +43,15 @@ vi.mock("@/components/ui/ReadingProgressBar", () => ({
   default: () => <div>progress bar</div>,
 }));
 vi.mock("@/components/topic/TopicTOC", () => ({
-  default: () => <div>toc</div>,
+  default: ({ sections }: { sections: Array<{ id: string; labelVi: string }> }) => (
+    <nav aria-label="Mục lục bài học">
+      {sections.map((s) => (
+        <a key={s.id} href={`#${s.id}`}>
+          {s.labelVi}
+        </a>
+      ))}
+    </nav>
+  ),
   DEFAULT_TOC_SECTIONS: [
     { id: "visualization", labelVi: "Minh họa" },
     { id: "explanation", labelVi: "Giải thích" },
@@ -51,6 +59,7 @@ vi.mock("@/components/topic/TopicTOC", () => ({
 }));
 
 import TopicLayout from "@/components/topic/TopicLayout";
+import type { TopicMeta } from "@/lib/types";
 import { markTopicRead } from "@/lib/database";
 
 const testMeta = {
@@ -92,5 +101,43 @@ describe("TopicLayout", () => {
     await user.click(btn);
 
     expect(markTopicRead).toHaveBeenCalledWith("test-topic");
+  });
+
+  it("renders application TOC section labels when metadata.tocSections has application IDs", () => {
+    const meta: TopicMeta = {
+      slug: "k-means-in-music-recs",
+      title: "K-means in Music Recs",
+      titleVi: "K-means trong gợi ý nhạc",
+      description: "Spotify dùng K-means.",
+      category: "ai-applications",
+      tags: ["application"],
+      difficulty: "beginner",
+      relatedSlugs: ["k-means"],
+      vizType: "interactive",
+      applicationOf: "k-means",
+      tocSections: [
+        { id: "hero", labelVi: "Công ty nào?" },
+        { id: "problem", labelVi: "Vấn đề" },
+        { id: "mechanism", labelVi: "Cách giải quyết" },
+        { id: "metrics", labelVi: "Con số thật" },
+        { id: "counterfactual", labelVi: "Nếu không có" },
+      ],
+    };
+    const { container } = render(
+      <TopicLayout meta={meta}>
+        <div>body</div>
+      </TopicLayout>
+    );
+    const tocLinks = container.querySelectorAll(
+      "nav[aria-label='Mục lục bài học'] a"
+    );
+    const labels = Array.from(tocLinks).map((a) => a.textContent?.trim());
+    expect(labels).toEqual([
+      "Công ty nào?",
+      "Vấn đề",
+      "Cách giải quyết",
+      "Con số thật",
+      "Nếu không có",
+    ]);
   });
 });
