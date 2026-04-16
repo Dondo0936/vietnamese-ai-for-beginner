@@ -1,11 +1,40 @@
 export type Difficulty = "beginner" | "intermediate" | "advanced";
 export type VizType = "interactive" | "static";
 
-export type TocSectionId = "visualization" | "explanation";
+export type TocSectionId =
+  | "visualization"
+  | "explanation"
+  | "hero"
+  | "problem"
+  | "mechanism"
+  | "metrics"
+  | "tryIt"
+  | "counterfactual";
 
 export interface TocSection {
   id: TocSectionId;
   labelVi: string;
+}
+
+export interface FeaturedApp {
+  name: string;
+  productFeature?: string;
+  company: string;
+  countryOrigin: string;
+}
+
+export interface SourceLink {
+  title: string;
+  publisher: string;
+  url: string;
+  date: string;
+  kind:
+    | "engineering-blog"
+    | "paper"
+    | "keynote"
+    | "news"
+    | "patent"
+    | "documentation";
 }
 
 export interface TopicMeta {
@@ -19,13 +48,10 @@ export interface TopicMeta {
   relatedSlugs: string[];
   vizType: VizType;
   icon?: string;
-  /**
-   * Controls which entries the TopicTOC rail renders for this topic.
-   * If omitted, TopicLayout falls back to DEFAULT_TOC_SECTIONS
-   * (visualization + explanation). Topics without a VisualizationSection
-   * should set this to `[{ id: "explanation", labelVi: "Giải thích" }]`.
-   */
   tocSections?: TocSection[];
+  applicationOf?: string;
+  featuredApp?: FeaturedApp;
+  sources?: SourceLink[];
 }
 
 export interface Category {
