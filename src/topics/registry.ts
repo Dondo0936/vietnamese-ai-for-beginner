@@ -2555,6 +2555,66 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "bias-fairness-in-hiring",
+    title: "Bias & Fairness in Hiring",
+    titleVi: "Thiên kiến & Công bằng trong Tuyển dụng",
+    description:
+      "Công cụ AI tuyển dụng của Amazon bị huỷ vì phân biệt đối xử với ứng viên nữ",
+    category: "ai-safety",
+    tags: ["bias-fairness", "hiring", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["bias-fairness"],
+    vizType: "static",
+    applicationOf: "bias-fairness",
+    featuredApp: {
+      name: "Amazon",
+      productFeature: "AI Recruiting Tool (scrapped)",
+      company: "Amazon.com Inc.",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Amazon scraps secret AI recruiting tool that showed bias against women",
+        publisher: "Reuters",
+        url: "https://www.reuters.com/article/us-amazon-com-jobs-automation-insight/amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK08G",
+        date: "2018-10",
+        kind: "news",
+      },
+      {
+        title:
+          "Amazon ditched AI recruitment software because it was biased against women",
+        publisher: "MIT Technology Review",
+        url: "https://www.technologyreview.com/2018/10/10/139858/amazon-ditched-ai-recruitment-software-because-it-was-biased-against-women/",
+        date: "2018-10",
+        kind: "news",
+      },
+      {
+        title:
+          "Why Amazon's Automated Hiring Tool Discriminated Against Women",
+        publisher: "American Civil Liberties Union",
+        url: "https://www.aclu.org/news/womens-rights/why-amazons-automated-hiring-tool-discriminated-against",
+        date: "2018-10",
+        kind: "news",
+      },
+      {
+        title:
+          "Diversity in the High Tech Workforce and Sector 2014–2022",
+        publisher: "U.S. Equal Employment Opportunity Commission",
+        url: "https://www.eeoc.gov/sites/default/files/2024-09/20240910_Diversity%20in%20the%20High%20Tech%20Workforce%20and%20Sector%202014-2022.pdf",
+        date: "2024-09",
+        kind: "documentation",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
