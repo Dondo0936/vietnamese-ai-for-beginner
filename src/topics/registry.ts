@@ -2358,6 +2358,86 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["data-preprocessing", "mlops", "feature-engineering"],
     vizType: "static",
   },
+  {
+    slug: "k-means-in-music-recs",
+    title: "K-Means in Music Recommendations",
+    titleVi: "K-Means trong Gợi ý Nhạc",
+    description:
+      "Cách Spotify dùng phân cụm vector để tạo Discover Weekly cho hàng trăm triệu người dùng",
+    category: "classic-ml",
+    tags: ["clustering", "recommendation", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["k-means"],
+    vizType: "static",
+    applicationOf: "k-means",
+    featuredApp: {
+      name: "Spotify",
+      productFeature: "Discover Weekly",
+      company: "Spotify AB",
+      countryOrigin: "SE",
+    },
+    sources: [
+      {
+        title:
+          "What Made Discover Weekly One of Our Most Successful Feature Launches to Date?",
+        publisher: "Spotify Engineering",
+        url: "https://engineering.atspotify.com/2015/11/what-made-discover-weekly-one-of-our-most-successful-feature-launches-to-date",
+        date: "2015-11",
+        kind: "engineering-blog",
+      },
+      {
+        title: "From Idea to Execution: Spotify's Discover Weekly",
+        publisher: "Chris Johnson & Edward Newett, DataEngConf NYC 2015",
+        url: "https://www.slideshare.net/MrChrisJohnson/from-idea-to-execution-spotifys-discover-weekly",
+        date: "2015-11",
+        kind: "keynote",
+      },
+      {
+        title: "Logistic Matrix Factorization for Implicit Feedback Data",
+        publisher: "Chris Johnson, Spotify — NIPS 2014 Workshop",
+        url: "https://research.atspotify.com/publications/logistic-matrix-factorization-for-implicit-feedback-data",
+        date: "2014-12",
+        kind: "paper",
+      },
+      {
+        title:
+          "Introducing Voyager: Spotify's New Nearest-Neighbor Search Library",
+        publisher: "Spotify Engineering",
+        url: "https://engineering.atspotify.com/2023/10/introducing-voyager-spotifys-new-nearest-neighbor-search-library",
+        date: "2023-10",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Recommending Music on Spotify with Deep Learning",
+        publisher: "Sander Dieleman (Spotify internship)",
+        url: "https://sander.ai/2014/08/05/spotify-cnns.html",
+        date: "2014-08",
+        kind: "engineering-blog",
+      },
+      {
+        title: "How to Break Free of Spotify's Algorithm",
+        publisher: "MIT Technology Review",
+        url: "https://www.technologyreview.com/2024/08/16/1096276/spotify-algorithms-music-discovery-ux/",
+        date: "2024-08",
+        kind: "news",
+      },
+      {
+        title:
+          "How Fans Discover Your Music on Spotify — Made to Be Found",
+        publisher: "Spotify for Artists",
+        url: "https://artists.spotify.com/en/blog/how-fans-discover-music-on-spotify-playlists-made-to-be-found",
+        date: "2022-03",
+        kind: "documentation",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
