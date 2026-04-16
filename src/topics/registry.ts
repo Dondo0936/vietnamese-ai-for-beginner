@@ -2778,6 +2778,64 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "probability-statistics-in-spam-filter",
+    title: "Probability & Statistics in Spam Filtering",
+    titleVi: "Xác suất & Thống kê trong Lọc Thư rác",
+    description:
+      "Cách Gmail dùng lọc Bayes, TensorFlow và RETVec để chặn 15 tỷ email rác mỗi ngày với độ chính xác trên 99,9%",
+    category: "math-foundations",
+    tags: ["bayesian-filtering", "spam-detection", "application"],
+    difficulty: "intermediate",
+    relatedSlugs: ["probability-statistics"],
+    vizType: "static",
+    applicationOf: "probability-statistics",
+    featuredApp: {
+      name: "Gmail",
+      productFeature: "Spam Classifier",
+      company: "Google LLC",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Spam Does Not Bring Us Joy — Ridding Gmail of 100 Million More Spam Messages with TensorFlow",
+        publisher: "Google Workspace Blog",
+        url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
+        date: "2019-02",
+        kind: "engineering-blog",
+      },
+      {
+        title: "RETVec: Resilient and Efficient Text Vectorizer",
+        publisher: "Google Security Blog",
+        url: "https://security.googleblog.com/2023/11/google-retvec-open-source-text-vectorizer.html",
+        date: "2023-11",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Unwrapping the Holidays with Gmail: How We Block 15 Billion Spam Emails a Day",
+        publisher: "Google Blog",
+        url: "https://blog.google/products/gmail/gmail-security-end-of-year-2024/",
+        date: "2024-12",
+        kind: "engineering-blog",
+      },
+      {
+        title: "A Plan for Spam",
+        publisher: "Paul Graham",
+        url: "http://www.paulgraham.com/spam.html",
+        date: "2002-08",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
