@@ -4239,6 +4239,663 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  // ═══════════════════════════════════════════════════════
+  // Batch 6 — Office Stage 1: LLM concepts (6 topics)
+  // ═══════════════════════════════════════════════════════
+  {
+    slug: "llm-overview-in-chat-assistants",
+    title: "LLM Overview in Chat Assistants",
+    titleVi: "Tổng quan LLM trong Trợ lý Trò chuyện",
+    description:
+      "ChatGPT, Claude, Gemini: ba trợ lý trò chuyện AI hàng đầu đạt hàng trăm triệu người dùng",
+    category: "llm-concepts",
+    tags: ["llm-overview", "chatbot", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["llm-overview"],
+    vizType: "static",
+    applicationOf: "llm-overview",
+    featuredApp: {
+      name: "ChatGPT / Claude / Gemini",
+      productFeature: "General-purpose Chat Assistants",
+      company: "OpenAI / Anthropic / Google",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Sam Altman says ChatGPT has hit 800M weekly active users",
+        publisher: "TechCrunch",
+        url: "https://techcrunch.com/2025/10/06/sam-altman-says-chatgpt-has-hit-800m-weekly-active-users/",
+        date: "2025-10",
+        kind: "news",
+      },
+      {
+        title:
+          "ChatGPT Hits 200m Users: The Rise of OpenAI's AI Gamechanger",
+        publisher: "Technology Magazine",
+        url: "https://technologymagazine.com/articles/partnerships-and-updates-examining-chatgpts-usage-doubling",
+        date: "2024-08",
+        kind: "news",
+      },
+      {
+        title: "Anthropic to sign the EU Code of Practice",
+        publisher: "Anthropic",
+        url: "https://www.anthropic.com/news/eu-code-practice",
+        date: "2025-07",
+        kind: "news",
+      },
+      {
+        title:
+          "AI Act — Shaping Europe's digital future",
+        publisher: "European Commission",
+        url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+        date: "2024-08",
+        kind: "documentation",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "prompt-engineering-in-writing-tools",
+    title: "Prompt Engineering in Writing Tools",
+    titleVi: "Prompt Engineering trong Công cụ Viết",
+    description:
+      "Jasper AI và Notion AI: công cụ viết sử dụng prompt engineering để tạo nội dung chuyên nghiệp",
+    category: "llm-concepts",
+    tags: ["prompt-engineering", "writing", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["prompt-engineering"],
+    vizType: "static",
+    applicationOf: "prompt-engineering",
+    featuredApp: {
+      name: "Jasper / Notion AI",
+      productFeature: "AI-powered Writing Assistants",
+      company: "Jasper AI / Notion Labs",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "AI content platform Jasper raises $125M at a $1.5B valuation",
+        publisher: "TechCrunch",
+        url: "https://techcrunch.com/2022/10/18/ai-content-platform-jasper-raises-125m-at-a-1-7b-valuation/",
+        date: "2022-10",
+        kind: "news",
+      },
+      {
+        title:
+          "Jasper Announces $125M Series A Funding Round, Bringing Total Valuation to $1.5B",
+        publisher: "Jasper Blog",
+        url: "https://www.jasper.ai/blog/jasper-announces-125m-series-a-funding",
+        date: "2022-10",
+        kind: "news",
+      },
+      {
+        title:
+          "Generative AI Assistant Notion AI Launched by Productivity App Notion",
+        publisher: "Voicebot.ai",
+        url: "https://voicebot.ai/2023/02/22/generative-ai-assistant-notion-ai-launched-by-productivity-app-notion/",
+        date: "2023-02",
+        kind: "news",
+      },
+      {
+        title: "Explore Notion AI: Augment Your Writing & Creativity Now",
+        publisher: "Notion",
+        url: "https://www.notion.com/blog/notion-ai-is-here-for-everyone",
+        date: "2023-02",
+        kind: "news",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "chain-of-thought-in-reasoning-models",
+    title: "Chain of Thought in Reasoning Models",
+    titleVi: "Chuỗi suy luận trong Mô hình Lý luận",
+    description:
+      "GPT-o1 và Claude thinking: mô hình lý luận hiển thị từng bước suy nghĩ trước khi trả lời",
+    category: "llm-concepts",
+    tags: ["chain-of-thought", "reasoning", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["chain-of-thought"],
+    vizType: "static",
+    applicationOf: "chain-of-thought",
+    featuredApp: {
+      name: "GPT-o1 / Claude Extended Thinking",
+      productFeature: "Reasoning Models with Visible Chain of Thought",
+      company: "OpenAI / Anthropic",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title: "Learning to reason with LLMs",
+        publisher: "OpenAI",
+        url: "https://openai.com/index/learning-to-reason-with-llms/",
+        date: "2024-09",
+        kind: "engineering-blog",
+      },
+      {
+        title: "OpenAI o1 System Card",
+        publisher: "OpenAI",
+        url: "https://cdn.openai.com/o1-system-card-20241205.pdf",
+        date: "2024-12",
+        kind: "documentation",
+      },
+      {
+        title: "Claude 3.7 Sonnet and Claude Code",
+        publisher: "Anthropic",
+        url: "https://www.anthropic.com/news/claude-3-7-sonnet",
+        date: "2025-02",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Claude's extended thinking",
+        publisher: "Anthropic",
+        url: "https://www.anthropic.com/news/visible-extended-thinking",
+        date: "2025-02",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "in-context-learning-in-chatbots",
+    title: "In-Context Learning in Chatbots",
+    titleVi: "Học trong Ngữ cảnh ở Chatbot",
+    description:
+      "Intercom Fin: chatbot hỗ trợ khách hàng sử dụng few-shot learning để trả lời chính xác từ kho kiến thức",
+    category: "llm-concepts",
+    tags: ["in-context-learning", "chatbot", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["in-context-learning"],
+    vizType: "static",
+    applicationOf: "in-context-learning",
+    featuredApp: {
+      name: "Intercom Fin",
+      productFeature: "AI Customer Support Chatbot",
+      company: "Intercom",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Introducing Fin: Intercom's breakthrough AI chatbot, built on GPT-4",
+        publisher: "Intercom Blog",
+        url: "https://www.intercom.com/blog/announcing-intercoms-new-ai-chatbot/",
+        date: "2023-03",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Intercom Brings ChatGPT to Customer Service with Fin, the First AI Customer Service Bot Built with GPT-4 Technology",
+        publisher: "PR Newswire",
+        url: "https://www.prnewswire.com/news-releases/intercom-brings-chatgpt-to-customer-service-with-fin-the-first-ai-customer-service-bot-built-with-gpt-4-technology-301771944.html",
+        date: "2023-03",
+        kind: "news",
+      },
+      {
+        title:
+          "Everything you need to know about Fin, the breakthrough AI bot transforming customer service",
+        publisher: "Intercom Blog",
+        url: "https://www.intercom.com/blog/fin-ai-bot-customer-service/",
+        date: "2023-06",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Intercom's three lessons for creating a sustainable AI advantage",
+        publisher: "OpenAI",
+        url: "https://openai.com/index/intercom/",
+        date: "2024-03",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "temperature-in-creative-writing",
+    title: "Temperature in Creative Writing",
+    titleVi: "Temperature trong Viết Sáng tạo",
+    description:
+      "ChatGPT viết sáng tạo vs trang trọng: tham số temperature điều chỉnh mức độ ngẫu nhiên của AI",
+    category: "llm-concepts",
+    tags: ["temperature", "creative-writing", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["temperature"],
+    vizType: "static",
+    applicationOf: "temperature",
+    featuredApp: {
+      name: "ChatGPT",
+      productFeature: "Creative vs Formal Writing via Temperature",
+      company: "OpenAI",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title: "Understanding OpenAI's Temperature Parameter",
+        publisher: "Colt Steele",
+        url: "https://www.coltsteele.com/tips/understanding-openai-s-temperature-parameter",
+        date: "2024-01",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Cheat Sheet: Mastering Temperature and Top_p in ChatGPT API",
+        publisher: "OpenAI Developer Community",
+        url: "https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683",
+        date: "2023-06",
+        kind: "documentation",
+      },
+      {
+        title: "How to use OpenAI GPT models temperature",
+        publisher: "GPT for Work",
+        url: "https://gptforwork.com/guides/openai-gpt-ai-temperature",
+        date: "2024-03",
+        kind: "documentation",
+      },
+      {
+        title: "What Is OpenAI Temperature?",
+        publisher: "Coursera",
+        url: "https://www.coursera.org/articles/openai-temperature",
+        date: "2024-06",
+        kind: "documentation",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "context-window-in-long-documents",
+    title: "Context Window in Long Documents",
+    titleVi: "Cửa sổ Ngữ cảnh trong Tài liệu Dài",
+    description:
+      "Claude và Gemini xử lý PDF hàng trăm trang: cửa sổ ngữ cảnh 100K+ token thay đổi cách làm việc với tài liệu",
+    category: "llm-concepts",
+    tags: ["context-window", "long-documents", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["context-window"],
+    vizType: "static",
+    applicationOf: "context-window",
+    featuredApp: {
+      name: "Claude / Gemini",
+      productFeature: "Long Document Processing (100K+ tokens)",
+      company: "Anthropic / Google",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title: "Context windows — Claude API Docs",
+        publisher: "Anthropic",
+        url: "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+        date: "2025-01",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Anthropic's Claude Sonnet 4 Model Gets a 1M Token Context Window",
+        publisher: "The New Stack",
+        url: "https://thenewstack.io/anthropics-claude-sonnet-4-model-gets-a-1m-token-context-window/",
+        date: "2025-06",
+        kind: "news",
+      },
+      {
+        title:
+          "Claude's 1 Million Context Window: What Changed and When It's Worth Using",
+        publisher: "Karo Zieminski (Substack)",
+        url: "https://karozieminski.substack.com/p/claude-1-million-context-window-guide-2026",
+        date: "2026-01",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Claude Opus 4.6 Context Window, Long Projects, Large Files, and 1M-Token Workflows",
+        publisher: "DataStudios",
+        url: "https://www.datastudios.org/post/claude-opus-4-6-context-window-long-projects-large-files-and-1m-token-workflows-what-anthropic-s",
+        date: "2026-03",
+        kind: "documentation",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  // ═══════════════════════════════════════════════════════
+  // Batch 7 — Office Stage 3: Safety/Ethics (3 topics)
+  // ═══════════════════════════════════════════════════════
+  {
+    slug: "ai-governance-in-enterprise",
+    title: "AI Governance in Enterprise",
+    titleVi: "Quản trị AI trong Doanh nghiệp",
+    description:
+      "EU AI Act: OpenAI và Anthropic tuân thủ luật AI đầu tiên trên thế giới để tiếp tục hoạt động tại châu Âu",
+    category: "ai-safety",
+    tags: ["ai-governance", "regulation", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["ai-governance"],
+    vizType: "static",
+    applicationOf: "ai-governance",
+    featuredApp: {
+      name: "EU AI Act Compliance",
+      productFeature: "Regulatory Compliance at OpenAI & Anthropic",
+      company: "OpenAI / Anthropic",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "AI Act — Shaping Europe's digital future",
+        publisher: "European Commission",
+        url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+        date: "2024-08",
+        kind: "documentation",
+      },
+      {
+        title:
+          "The EU Code of Practice and future of AI in Europe",
+        publisher: "OpenAI",
+        url: "https://openai.com/global-affairs/eu-code-of-practice/",
+        date: "2025-07",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Anthropic to sign the EU Code of Practice",
+        publisher: "Anthropic",
+        url: "https://www.anthropic.com/news/eu-code-practice",
+        date: "2025-07",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "OpenAI Anthropic EU AI Code: Key Compliance Steps 2025",
+        publisher: "Nemko Digital",
+        url: "https://digital.nemko.com/news/openai-anthropic-signs-eu-ai-code",
+        date: "2025-08",
+        kind: "news",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "guardrails-in-chat-assistants",
+    title: "Guardrails in Chat Assistants",
+    titleVi: "Rào chắn An toàn trong Trợ lý Trò chuyện",
+    description:
+      "Constitutional AI của Anthropic và Moderation API của OpenAI: hai cách tiếp cận bảo vệ người dùng khỏi nội dung có hại",
+    category: "ai-safety",
+    tags: ["guardrails", "safety", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["guardrails"],
+    vizType: "static",
+    applicationOf: "guardrails",
+    featuredApp: {
+      name: "Constitutional AI / Moderation API",
+      productFeature: "AI Safety Guardrails",
+      company: "Anthropic / OpenAI",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Constitutional AI: Harmlessness from AI Feedback",
+        publisher: "Anthropic",
+        url: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback",
+        date: "2022-12",
+        kind: "paper",
+      },
+      {
+        title:
+          "Constitutional Classifiers: Defending against universal jailbreaks",
+        publisher: "Anthropic",
+        url: "https://www.anthropic.com/research/constitutional-classifiers",
+        date: "2025-01",
+        kind: "paper",
+      },
+      {
+        title: "Moderation — OpenAI API Guide",
+        publisher: "OpenAI",
+        url: "https://developers.openai.com/api/docs/guides/moderation",
+        date: "2024-08",
+        kind: "documentation",
+      },
+      {
+        title:
+          "New and improved content moderation tooling",
+        publisher: "OpenAI",
+        url: "https://openai.com/index/new-and-improved-content-moderation-tooling/",
+        date: "2024-08",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "explainability-in-credit-decisions",
+    title: "Explainability in Credit Decisions",
+    titleVi: "Giải thích được trong Quyết định Tín dụng",
+    description:
+      "GDPR và CFPB yêu cầu ngân hàng phải giải thích khi AI từ chối cấp tín dụng — không được dùng hộp đen",
+    category: "ai-safety",
+    tags: ["explainability", "credit", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["explainability"],
+    vizType: "static",
+    applicationOf: "explainability",
+    featuredApp: {
+      name: "GDPR / CFPB Credit Decisions",
+      productFeature: "Right to Explanation for Automated Credit Scoring",
+      company: "EU / US Regulators",
+      countryOrigin: "EU",
+    },
+    sources: [
+      {
+        title:
+          "Art. 22 GDPR — Automated individual decision-making, including profiling",
+        publisher: "GDPR-info.eu",
+        url: "https://gdpr-info.eu/art-22-gdpr/",
+        date: "2018-05",
+        kind: "documentation",
+      },
+      {
+        title:
+          "CFPB Issues Guidance on Credit Denials by Lenders Using Artificial Intelligence",
+        publisher: "Consumer Financial Protection Bureau",
+        url: "https://www.consumerfinance.gov/about-us/newsroom/cfpb-issues-guidance-on-credit-denials-by-lenders-using-artificial-intelligence/",
+        date: "2023-09",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Understanding Right to Explanation and Automated Decision-Making in Europe's GDPR and AI Act",
+        publisher: "TechPolicy.Press",
+        url: "https://www.techpolicy.press/understanding-right-to-explanation-and-automated-decisionmaking-in-europes-gdpr-and-ai-act/",
+        date: "2024-03",
+        kind: "news",
+      },
+      {
+        title:
+          "CFPB Applies Adverse Action Notification Requirement to Artificial Intelligence Models",
+        publisher: "Skadden, Arps, Slate, Meagher & Flom LLP",
+        url: "https://www.skadden.com/insights/publications/2024/01/cfpb-applies-adverse-action-notification-requirement",
+        date: "2024-01",
+        kind: "news",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  // ═══════════════════════════════════════════════════════
+  // Batch 8 — Office Stage 4: NLP Applications (2 topics)
+  // ═══════════════════════════════════════════════════════
+  {
+    slug: "recommendation-systems-in-shopping",
+    title: "Recommendation Systems in Shopping",
+    titleVi: "Hệ thống Gợi ý trong Mua sắm",
+    description:
+      "Shopee dùng AI gợi ý sản phẩm cá nhân hóa cho hàng trăm triệu người dùng Đông Nam Á",
+    category: "applied-ai",
+    tags: ["recommendation-systems", "e-commerce", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["recommendation-systems"],
+    vizType: "static",
+    applicationOf: "recommendation-systems",
+    featuredApp: {
+      name: "Shopee",
+      productFeature: "Personalized Product Recommendations",
+      company: "Sea Group",
+      countryOrigin: "SG",
+    },
+    sources: [
+      {
+        title:
+          "How Shopee's AI-Powered Personalization Is Dominating Southeast Asia's E-Commerce Growth In 2024",
+        publisher: "GrowthHQ",
+        url: "https://www.growthhq.io/our-thinking/how-shopees-ai-powered-personalization-is-dominating-southeast-asias-e-commerce-growth-in-2024",
+        date: "2024-08",
+        kind: "news",
+      },
+      {
+        title:
+          "Shopee's AI Revolution: How Hyper-Personalization Is Reshaping E-Commerce In Southeast Asia, Malaysia, And Thailand",
+        publisher: "GrowthHQ",
+        url: "https://www.growthhq.io/our-thinking/shopees-ai-revolution-how-hyper-personalization-is-reshaping-e-commerce-in-southeast-asia-malaysia-and-thailand",
+        date: "2024-10",
+        kind: "news",
+      },
+      {
+        title:
+          "Shopee AI: How Artificial Intelligence Is Redefining E-Commerce on Southeast Asia's Most Visited Platform",
+        publisher: "Saint Augustines University",
+        url: "https://explore.st-aug.edu/exp/shopee-ai-how-artificial-intelligence-is-redefining-ecommerce-on-southeast-asias-most-visited-platform",
+        date: "2024-06",
+        kind: "news",
+      },
+      {
+        title:
+          "AI Personalization: How eCommerce Transform their Business",
+        publisher: "Kitameraki",
+        url: "https://www.kitameraki.com/post/how-shopee-and-others-transforming-ecommerce-with-ai-personalization-strategies",
+        date: "2024-05",
+        kind: "news",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "text-classification-in-support-routing",
+    title: "Text Classification in Support Routing",
+    titleVi: "Phân loại Văn bản trong Điều phối Hỗ trợ",
+    description:
+      "Zendesk AI tự động phân loại và điều phối ticket hỗ trợ — giảm 45% thời gian phản hồi",
+    category: "nlp",
+    tags: ["text-classification", "support", "application"],
+    difficulty: "beginner",
+    relatedSlugs: ["text-classification"],
+    vizType: "static",
+    applicationOf: "text-classification",
+    featuredApp: {
+      name: "Zendesk",
+      productFeature: "AI Ticket Classification & Auto-Routing",
+      company: "Zendesk Inc.",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "AI-powered ticketing automation: A complete guide for 2026",
+        publisher: "Zendesk",
+        url: "https://www.zendesk.com/blog/ai-powered-ticketing/",
+        date: "2026-01",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Zendesk AI ticket classification: Complete rundown in 2026",
+        publisher: "Eesel AI",
+        url: "https://www.eesel.ai/blog/zendesk-ai-ticket-classification-complete-rundown-in-2025",
+        date: "2026-01",
+        kind: "news",
+      },
+      {
+        title:
+          "Zendesk Automated Ticket Routing with Ticket Classification",
+        publisher: "Swifteq",
+        url: "https://swifteq.com/post/automated-ticket-routing-with-ticket-classification",
+        date: "2024-06",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Routing and automation options for incoming tickets",
+        publisher: "Zendesk Help",
+        url: "https://support.zendesk.com/hc/en-us/articles/4408831658650-Routing-and-automation-options-for-incoming-tickets",
+        date: "2024-09",
+        kind: "documentation",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
