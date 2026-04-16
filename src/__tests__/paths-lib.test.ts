@@ -60,7 +60,7 @@ describe("getPathNeighbors", () => {
     const n = getPathNeighbors("student", "what-is-ml");
     expect(n).not.toBeNull();
     expect(n!.prev).toBeNull();
-    expect(n!.next?.slug).toBe("linear-algebra-for-ml");
+    expect(n!.next?.slug).toBe("math-readiness");
     expect(n!.current).toBe(1);
     expect(n!.total).toBeGreaterThanOrEqual(30);
     expect(n!.pathId).toBe("student");
@@ -94,10 +94,10 @@ describe("getPathNeighbors", () => {
   });
 
   it("crosses stage boundaries — last topic of a stage → first of next stage", () => {
-    // In the student path: "Giới thiệu" stage has only what-is-ml, then stage 2
-    // starts with linear-algebra-for-ml
-    const n = getPathNeighbors("student", "what-is-ml");
-    expect(n!.next?.slug).toBe("linear-algebra-for-ml");
+    // In the student path: "Giới thiệu" stage ends with data-and-datasets, then stage 2
+    // starts with vectors-and-matrices
+    const n = getPathNeighbors("student", "data-and-datasets");
+    expect(n!.next?.slug).toBe("vectors-and-matrices");
     expect(n!.next?.stageTitle).toBe("Nền tảng toán");
     expect(n!.currentStageTitle).toBe("Giới thiệu");
   });

@@ -28,7 +28,8 @@ vi.mock("@/lib/database", () => ({
 vi.mock("@/topics/registry", () => ({
   topicList: [
     { slug: "what-is-ml", title: "What is ML?", titleVi: "Machine Learning là gì?", category: "foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
-    { slug: "linear-algebra-for-ml", title: "Linear Algebra for ML", titleVi: "Đại số tuyến tính cho ML", category: "math-foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
+    { slug: "math-readiness", title: "Math Readiness", titleVi: "Sẵn sàng cho toán ML", category: "math-foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
+    { slug: "vectors-and-matrices", title: "Vectors & Matrices", titleVi: "Vector & Ma trận", category: "math-foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
     { slug: "python-for-ml", title: "Python for ML", titleVi: "Python cho ML", category: "foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
     { slug: "neural-network-overview", title: "Neural Network Overview", titleVi: "Tổng quan mạng nơ-ron", category: "foundations", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
     { slug: "knn", title: "K-Nearest Neighbors", titleVi: "K-láng giềng gần nhất", category: "classic-ml", difficulty: "beginner", tags: [], relatedSlugs: [], description: "" },
@@ -40,7 +41,8 @@ vi.mock("@/topics/registry", () => ({
   ],
   topicMap: {
     "what-is-ml": { slug: "what-is-ml", title: "What is ML?", titleVi: "Machine Learning là gì?" },
-    "linear-algebra-for-ml": { slug: "linear-algebra-for-ml", title: "Linear Algebra for ML", titleVi: "Đại số tuyến tính cho ML" },
+    "math-readiness": { slug: "math-readiness", title: "Math Readiness", titleVi: "Sẵn sàng cho toán ML" },
+    "vectors-and-matrices": { slug: "vectors-and-matrices", title: "Vectors & Matrices", titleVi: "Vector & Ma trận" },
     "python-for-ml": { slug: "python-for-ml", title: "Python for ML", titleVi: "Python cho ML" },
     "neural-network-overview": { slug: "neural-network-overview", title: "Neural Network Overview", titleVi: "Tổng quan mạng nơ-ron" },
     "knn": { slug: "knn", title: "K-Nearest Neighbors", titleVi: "K-láng giềng gần nhất" },
@@ -143,14 +145,14 @@ describe("TopicLayout — path-aware navigation", () => {
     expect(back).toHaveAttribute("href", "/paths/student");
   });
 
-  it("with ?path=student on what-is-ml, Bài trước is null and Bài tiếp theo links to linear-algebra-for-ml", () => {
+  it("with ?path=student on what-is-ml, Bài trước is null and Bài tiếp theo links to math-readiness", () => {
     searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     // No "Bài trước" link rendered for the first topic
     expect(screen.queryByText(/bài trước/i)).toBeNull();
-    // Next link exists, points to linear-algebra-for-ml and preserves ?path=student
-    const next = screen.getByRole("link", { name: /Linear Algebra for ML/ });
-    expect(next).toHaveAttribute("href", "/topics/linear-algebra-for-ml?path=student");
+    // Next link exists, points to math-readiness and preserves ?path=student
+    const next = screen.getByRole("link", { name: /Math Readiness/ });
+    expect(next).toHaveAttribute("href", "/topics/math-readiness?path=student");
   });
 
   it("with ?path=student on knn, Bài tiếp theo is naive-bayes (audit fix)", () => {

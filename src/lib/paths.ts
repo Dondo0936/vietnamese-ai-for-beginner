@@ -37,12 +37,13 @@ interface PathDefinition {
 const STUDENT_STAGES: Stage[] = [
   {
     title: "Giới thiệu",
-    slugs: ["what-is-ml"],
+    slugs: ["what-is-ml", "math-readiness", "data-and-datasets"],
   },
   {
     title: "Nền tảng toán",
     slugs: [
-      "linear-algebra-for-ml",
+      "vectors-and-matrices",
+      "eigendecomposition-pca",
       "probability-statistics",
       "calculus-for-backprop",
     ],

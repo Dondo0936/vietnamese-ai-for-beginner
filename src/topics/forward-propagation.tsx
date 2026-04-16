@@ -534,7 +534,7 @@ export default function ForwardPropagationTopic() {
           </p>
 
           <p>
-            <strong>Bước 1 — Biến đổi tuyến tính</strong> (dựa trên <TopicLink slug="linear-algebra-for-ml">đại số tuyến tính</TopicLink>):
+            <strong>Bước 1 — Biến đổi tuyến tính</strong> (dựa trên <TopicLink slug="vectors-and-matrices">đại số tuyến tính</TopicLink>):
           </p>
           <LaTeX block>{"z^{[l]} = W^{[l]} \\cdot a^{[l-1]} + b^{[l]}"}</LaTeX>
 

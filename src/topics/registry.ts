@@ -2157,20 +2157,8 @@ export const topicList: TopicMeta[] = [
   },
 
   // ═══════════════════════════════════════════════════════
-  // Category 17: math-foundations (4 topics)
+  // Category 17: math-foundations (8 topics)
   // ═══════════════════════════════════════════════════════
-  {
-    slug: "linear-algebra-for-ml",
-    title: "Linear Algebra for ML",
-    titleVi: "Đại số tuyến tính cho ML",
-    description: "Vector, ma trận, phép nhân ma trận và trị riêng — nền tảng toán học cho mọi mô hình AI",
-    category: "math-foundations",
-    tags: ["vectors", "matrices", "eigenvalues"],
-    difficulty: "beginner",
-    relatedSlugs: ["pca", "word-embeddings", "neural-network-overview"],
-    vizType: "interactive",
-    tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
-  },
   {
     slug: "probability-statistics",
     title: "Probability & Statistics",
