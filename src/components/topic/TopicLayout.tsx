@@ -135,6 +135,11 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
   const backLabel =
     nav.kind === "path" ? `Quay lại lộ trình ${nav.path.nameVi}` : "Quay lại trang chủ";
 
+  const applicationTopic = useMemo(() => {
+    if (meta.applicationOf) return null;
+    return topicList.find((t) => t.applicationOf === meta.slug) ?? null;
+  }, [meta.slug, meta.applicationOf]);
+
   const tocSections = meta.tocSections ?? DEFAULT_TOC_SECTIONS;
 
   return (
@@ -193,6 +198,23 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             )}
           </div>
         </header>
+
+        {/* Forward link to application topic */}
+        {applicationTopic?.featuredApp && (
+          <nav
+            aria-label="Liên kết với bài ứng dụng"
+            className="mb-8 rounded-md border border-accent/20 bg-accent/5 px-4 py-3 text-sm"
+          >
+            <Link
+              href={neighborHref(applicationTopic.slug)}
+              className="text-link hover:underline"
+            >
+              Xem ứng dụng thực tế: cách{" "}
+              <strong>{applicationTopic.featuredApp.name}</strong> dùng{" "}
+              {meta.titleVi} →
+            </Link>
+          </nav>
+        )}
 
         {/* Content */}
         <SectionDuplicateGuard>

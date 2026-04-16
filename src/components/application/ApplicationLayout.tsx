@@ -35,8 +35,7 @@ export default function ApplicationLayout({
         className="mb-6 rounded-md border border-border/60 bg-surface/40 px-4 py-3 text-sm"
       >
         <Link href={ribbonHref} className="text-link hover:underline">
-          ← Bạn vừa học {parentTitleVi}. Giờ xem cách{" "}
-          <strong>{metadata.featuredApp.name}</strong> dùng nó.
+          ← Bài lý thuyết: {parentTitleVi}
         </Link>
       </nav>
 

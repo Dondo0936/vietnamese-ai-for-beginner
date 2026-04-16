@@ -70,14 +70,13 @@ describe("<ApplicationLayout>", () => {
     ).toHaveAttribute("href", "https://engineering.atspotify.com/foo");
   });
 
-  it("renders the ribbon with parentTitleVi and featuredApp.name", () => {
+  it("renders the ribbon back-link to theory topic", () => {
     render(
       <ApplicationLayout metadata={meta} parentTitleVi="K-means" currentPath="student">
         <div>body</div>
       </ApplicationLayout>
     );
-    const ribbon = screen.getByRole("link", { name: /Bạn vừa học K-means/ });
+    const ribbon = screen.getByRole("link", { name: /Bài lý thuyết: K-means/ });
     expect(ribbon).toHaveAttribute("href", "/topics/k-means?path=student");
-    expect(ribbon.textContent).toContain("Spotify");
   });
 });
