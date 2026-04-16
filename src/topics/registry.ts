@@ -4030,6 +4030,215 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "data-preprocessing-in-uber-eta",
+    title: "Data Preprocessing in Uber ETA",
+    titleVi: "Tiền xử lý dữ liệu trong Dự đoán ETA của Uber",
+    description:
+      "Cách Uber làm sạch hàng tỷ điểm GPS nhiễu, xử lý missing data và tính feature real-time để dự đoán thời gian đến chính xác dưới 1 phút sai số",
+    category: "foundations",
+    tags: ["preprocessing", "eta-prediction", "application"],
+    difficulty: "intermediate",
+    relatedSlugs: ["data-preprocessing"],
+    vizType: "static",
+    applicationOf: "data-preprocessing",
+    featuredApp: {
+      name: "Uber",
+      productFeature: "DeepETA",
+      company: "Uber Technologies",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "DeepETA: How Uber Predicts Arrival Times Using Deep Learning",
+        publisher: "Uber Engineering Blog",
+        url: "https://www.uber.com/us/en/blog/deepeta-how-uber-predicts-arrival-times/",
+        date: "2022-01",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "DeeprETA: An ETA Post-processing System at Scale",
+        publisher: "arXiv (Uber AI)",
+        url: "https://arxiv.org/pdf/2206.02127",
+        date: "2022-06",
+        kind: "paper",
+      },
+      {
+        title: "Rethinking GPS: Engineering Next-Gen Location at Uber",
+        publisher: "Uber Engineering Blog",
+        url: "https://www.uber.com/us/en/blog/rethinking-gps/",
+        date: "2023-08",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Enhancing the Quality of Uber's Maps with Metrics Computation",
+        publisher: "Uber Engineering Blog",
+        url: "https://www.uber.com/us/en/blog/maps-metrics-computation/",
+        date: "2022-04",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Improving Uber's Mapping Accuracy with CatchME",
+        publisher: "Uber Engineering Blog",
+        url: "https://eng.uber.com/mapping-accuracy-with-catchme/",
+        date: "2021-06",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "feature-engineering-in-fraud-detection",
+    title: "Feature Engineering in Fraud Detection",
+    titleVi: "Feature Engineering trong Phát hiện Gian lận",
+    description:
+      "Cách Stripe Radar chế tạo hơn 1.000 đặc trưng từ dữ liệu giao dịch toàn cầu để phát hiện gian lận trong dưới 100ms",
+    category: "foundations",
+    tags: ["feature-engineering", "fraud-detection", "application"],
+    difficulty: "intermediate",
+    relatedSlugs: ["feature-engineering"],
+    vizType: "static",
+    applicationOf: "feature-engineering",
+    featuredApp: {
+      name: "Stripe Radar",
+      productFeature: "Fraud Detection",
+      company: "Stripe Inc.",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title: "How we built it: Stripe Radar",
+        publisher: "Stripe Dot Dev Blog",
+        url: "https://stripe.dev/blog/how-we-built-it-stripe-radar",
+        date: "2024-03",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "A primer on machine learning for fraud detection",
+        publisher: "Stripe Guides",
+        url: "https://stripe.com/guides/primer-on-machine-learning-for-fraud-protection",
+        date: "2023-06",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Using AI to create dynamic, risk-based Radar rules",
+        publisher: "Stripe Blog",
+        url: "https://stripe.com/blog/using-ai-dynamic-radar-rules",
+        date: "2024-09",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Stripe debuts Radar anti-fraud AI tools for big businesses, says it has halted $4B in fraud to date",
+        publisher: "TechCrunch",
+        url: "https://techcrunch.com/2018/04/18/stripe-debuts-radar-anti-fraud-ai-tools-for-big-businesses-says-it-has-halted-4b-in-fraud-to-date/",
+        date: "2018-04",
+        kind: "news",
+      },
+      {
+        title: "Updates to Stripe's advanced fraud detection",
+        publisher: "Stripe Blog",
+        url: "https://stripe.com/blog/advanced-fraud-detection-updates",
+        date: "2023-11",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
+  {
+    slug: "model-evaluation-selection-in-kaggle",
+    title: "Model Evaluation & Selection in Kaggle",
+    titleVi: "Đánh giá & Chọn mô hình trên Kaggle",
+    description:
+      "Chiến thuật chọn model, cross-validation, và ensemble stacking mà Kaggle Grandmaster dùng để chiến thắng các cuộc thi dữ liệu lớn",
+    category: "classic-ml",
+    tags: ["model-evaluation", "kaggle", "application"],
+    difficulty: "intermediate",
+    relatedSlugs: ["model-evaluation-selection"],
+    vizType: "static",
+    applicationOf: "model-evaluation-selection",
+    featuredApp: {
+      name: "Kaggle",
+      productFeature: "Competition Platform",
+      company: "Google LLC",
+      countryOrigin: "US",
+    },
+    sources: [
+      {
+        title:
+          "Kaggle Champions: Ensemble Methods in Machine Learning",
+        publisher: "Toptal Engineering",
+        url: "https://www.toptal.com/developers/machine-learning/ensemble-methods-kaggle-machine-learn",
+        date: "2023-05",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Grandmaster Pro Tip: Winning First Place in a Kaggle Competition with Stacking Using cuML",
+        publisher: "NVIDIA Technical Blog",
+        url: "https://developer.nvidia.com/blog/grandmaster-pro-tip-winning-first-place-in-a-kaggle-competition-with-stacking-using-cuml/",
+        date: "2025-04",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "The Kaggle Grandmasters Playbook: 7 Battle-Tested Modeling Techniques for Tabular Data",
+        publisher: "NVIDIA Technical Blog",
+        url: "https://developer.nvidia.com/blog/the-kaggle-grandmasters-playbook-7-battle-tested-modeling-techniques-for-tabular-data/",
+        date: "2024-12",
+        kind: "engineering-blog",
+      },
+      {
+        title:
+          "Ensembling with Blending and Stacking Solutions — The Kaggle Book",
+        publisher: "Packt Publishing (Luca Massaron & Konrad Banachewicz)",
+        url: "https://www.oreilly.com/library/view/the-kaggle-book/9781835083208/Text/Chapter_10.xhtml",
+        date: "2024-06",
+        kind: "documentation",
+      },
+      {
+        title:
+          "Winning Tips on Machine Learning Competitions by Kazanova, Kaggle #3",
+        publisher: "HackerEarth",
+        url: "https://www.hackerearth.com/practice/machine-learning/advanced-techniques/winning-tips-machine-learning-competitions-kazanova-current-kaggle-3/tutorial/",
+        date: "2017-03",
+        kind: "documentation",
+      },
+      {
+        title:
+          "How to Select Your Final Models in a Kaggle Competition",
+        publisher: "Cheng-Tao Chu",
+        url: "http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/",
+        date: "2015-01",
+        kind: "engineering-blog",
+      },
+    ],
+    tocSections: [
+      { id: "hero", labelVi: "Công ty nào?" },
+      { id: "problem", labelVi: "Vấn đề" },
+      { id: "mechanism", labelVi: "Cách giải quyết" },
+      { id: "metrics", labelVi: "Con số thật" },
+      { id: "counterfactual", labelVi: "Nếu không có" },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
