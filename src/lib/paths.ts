@@ -43,9 +43,12 @@ const STUDENT_STAGES: Stage[] = [
     title: "Nền tảng toán",
     slugs: [
       "vectors-and-matrices",
+      "vectors-and-matrices-in-photo-search",
       "eigendecomposition-pca",
       "probability-statistics",
+      "probability-statistics-in-spam-filter",
       "calculus-for-backprop",
+      "calculus-for-backprop-in-model-training",
     ],
   },
   {
