@@ -39,4 +39,22 @@ describe("topic files — section uniqueness", () => {
     );
     expect(offenders.map((o) => o.slug)).toEqual([]);
   });
+
+  const APPLICATION_SECTION_PATTERNS: Record<string, RegExp> = {
+    ApplicationHero: /<ApplicationHero[\s/>]/g,
+    ApplicationProblem: /<ApplicationProblem[\s/>]/g,
+    ApplicationMechanism: /<ApplicationMechanism[\s/>]/g,
+    ApplicationMetrics: /<ApplicationMetrics[\s/>]/g,
+    ApplicationTryIt: /<ApplicationTryIt[\s/>]/g,
+    ApplicationCounterfactual: /<ApplicationCounterfactual[\s/>]/g,
+  };
+
+  for (const [name, pattern] of Object.entries(APPLICATION_SECTION_PATTERNS)) {
+    it(`no topic renders more than one <${name}>`, () => {
+      const offenders = topics.filter(
+        ({ source }) => countOccurrences(source, pattern) > 1
+      );
+      expect(offenders.map((o) => o.slug)).toEqual([]);
+    });
+  }
 });
