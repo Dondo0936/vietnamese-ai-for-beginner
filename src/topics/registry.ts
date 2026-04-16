@@ -2711,6 +2711,18 @@ export const topicList: TopicMeta[] = [
     ],
     vizType: "interactive",
   },
+  {
+    slug: "eigendecomposition-pca",
+    title: "Eigendecomposition & PCA",
+    titleVi: "Phân rã trị riêng & PCA",
+    description:
+      "Trị riêng, vector riêng và phân tích thành phần chính — giảm chiều dữ liệu giữ tối đa thông tin",
+    category: "math-foundations",
+    tags: ["eigenvalues", "pca", "dimensionality-reduction"],
+    difficulty: "intermediate",
+    relatedSlugs: ["vectors-and-matrices", "pca", "word-embeddings"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
