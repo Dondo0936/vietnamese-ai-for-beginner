@@ -2666,6 +2666,18 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+  {
+    slug: "math-readiness",
+    title: "Math Readiness for ML",
+    titleVi: "San sang cho toan ML",
+    description:
+      "Bien so, ham so, mat phang toa do va ky hieu tong — chuan bi toan hoc cho Machine Learning",
+    category: "foundations",
+    tags: ["functions", "notation", "summation", "prerequisites"],
+    difficulty: "beginner",
+    relatedSlugs: ["what-is-ml", "vectors-and-matrices", "data-and-datasets"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
