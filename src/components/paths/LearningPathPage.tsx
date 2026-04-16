@@ -200,6 +200,11 @@ function LearningPathContent({
                               }`}
                             >
                               {topic.titleVi}
+                              {topic.applicationOf && (
+                                <span className="ml-1 text-xs text-muted font-normal">
+                                  · Ứng dụng
+                                </span>
+                              )}
                             </span>
                             <span className="block text-[11px] text-tertiary leading-snug">
                               {topic.title}
