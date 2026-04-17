@@ -252,3 +252,29 @@ html[data-scroll-behavior="smooth"] {
 .animate-pearl-glow {
   animation: pearl-glow 1.5s ease-in-out infinite;
 }
+
+/* Magic Marble Bag animations */
+@keyframes marble-jiggle {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-1.5px, 1px); }
+  50% { transform: translate(1.5px, -1px); }
+  75% { transform: translate(-1px, 1.5px); }
+}
+.animate-marble-jiggle {
+  animation: marble-jiggle 0.8s ease-in-out infinite;
+}
+@keyframes marble-float {
+  0% { transform: translateY(0); opacity: 1; }
+  60% { transform: translateY(-50px); opacity: 1; }
+  100% { transform: translateY(-70px); opacity: 0; }
+}
+.animate-marble-float {
+  animation: marble-float 0.6s ease-out forwards;
+}
+@keyframes marble-appear {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+.animate-marble-appear {
+  animation: marble-appear 0.3s ease-out forwards;
+}
