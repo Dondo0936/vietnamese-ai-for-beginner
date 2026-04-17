@@ -1,21 +1,95 @@
 import type { KidsTopicMeta } from "@/lib/kids/types";
 
-/**
- * Kid topic registry — separate from the adult topicMap. See spec §11.1.
- *
- * Phase 1 ships empty. Phase 5 adds all 48 kid topics. Phase 3 adds
- * the two exemplar lessons (one Nhí + one Teen).
- *
- * Kept as a dedicated module so imports from /kids/* routes never
- * accidentally pull in adult topic code, and vice versa.
- */
-
-export const kidsTopicList: KidsTopicMeta[] = [];
+export const kidsTopicList: KidsTopicMeta[] = [
+  {
+    slug: "nhi-coral-factory",
+    title: "Coral Factory",
+    titleVi: "Nhà máy san hô",
+    description: "Khám phá quy tắc biến đổi — nền tảng của hàm số",
+    category: "kids-math",
+    tags: ["functions", "nhi"],
+    difficulty: "beginner",
+    relatedSlugs: [],
+    vizType: "interactive",
+    tier: "nhi",
+    durationMinutes: 6,
+    mascotMood: "curious",
+  },
+  {
+    slug: "nhi-creature-garden",
+    title: "Creature Garden",
+    titleVi: "Vườn sinh vật",
+    description: "Phân loại sinh vật theo đặc điểm — nền tảng của dữ liệu và phân loại",
+    category: "kids-math",
+    tags: ["classification", "nhi"],
+    difficulty: "beginner",
+    relatedSlugs: [],
+    vizType: "interactive",
+    tier: "nhi",
+    durationMinutes: 6,
+    mascotMood: "happy",
+  },
+  {
+    slug: "nhi-treasure-map",
+    title: "Treasure Map",
+    titleVi: "Bản đồ kho báu",
+    description: "Kết hợp hướng đi để tìm kho báu — nền tảng của vector",
+    category: "kids-math",
+    tags: ["vectors", "nhi"],
+    difficulty: "beginner",
+    relatedSlugs: [],
+    vizType: "interactive",
+    tier: "nhi",
+    durationMinutes: 6,
+    mascotMood: "curious",
+  },
+  {
+    slug: "nhi-magic-marble-bag",
+    title: "Magic Marble Bag",
+    titleVi: "Túi bi thần kỳ",
+    description: "Đoán màu bi và khám phá xác suất qua thí nghiệm",
+    category: "kids-math",
+    tags: ["probability", "nhi"],
+    difficulty: "beginner",
+    relatedSlugs: [],
+    vizType: "interactive",
+    tier: "nhi",
+    durationMinutes: 6,
+    mascotMood: "happy",
+  },
+  {
+    slug: "nhi-shadow-theater",
+    title: "Shadow Theater",
+    titleVi: "Rạp chiếu bóng",
+    description: "Xoay ánh sáng để phân biệt hình khối — nền tảng của giảm chiều",
+    category: "kids-math",
+    tags: ["dimensionality", "nhi"],
+    difficulty: "beginner",
+    relatedSlugs: [],
+    vizType: "interactive",
+    tier: "nhi",
+    durationMinutes: 6,
+    mascotMood: "curious",
+  },
+  {
+    slug: "nhi-ocean-race",
+    title: "Ocean Race",
+    titleVi: "Đường đua đại dương",
+    description: "Đua trên đường cong và khám phá tốc độ thay đổi — nền tảng của đạo hàm",
+    category: "kids-math",
+    tags: ["calculus", "nhi"],
+    difficulty: "beginner",
+    relatedSlugs: [],
+    vizType: "interactive",
+    tier: "nhi",
+    durationMinutes: 6,
+    mascotMood: "happy",
+  },
+];
 
 export const kidsTopicMap: Record<string, KidsTopicMeta> = Object.fromEntries(
-  kidsTopicList.map((t) => [t.slug, t])
+  kidsTopicList.map((t) => [t.slug, t]),
 );
 
-/** Topics filtered by tier — used by /kids/nhi and /kids/teen pages. */
 export const nhiTopics: KidsTopicMeta[] = kidsTopicList.filter((t) => t.tier === "nhi");
 export const teenTopics: KidsTopicMeta[] = kidsTopicList.filter((t) => t.tier === "teen");
