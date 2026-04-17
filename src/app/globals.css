@@ -234,3 +234,21 @@ html[data-scroll-behavior="smooth"] {
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: 0.5rem;
 }
+
+/* ─────────────────────────────────────────────── */
+/* Kids — Nhí celebration animations               */
+/* ─────────────────────────────────────────────── */
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110px) rotate(720deg); opacity: 0; }
+}
+.animate-confetti-fall {
+  animation: confetti-fall 2s ease-out forwards;
+}
+@keyframes pearl-glow {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.15); filter: brightness(1.3); }
+}
+.animate-pearl-glow {
+  animation: pearl-glow 1.5s ease-in-out infinite;
+}
