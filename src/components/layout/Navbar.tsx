@@ -40,6 +40,13 @@ export default function Navbar() {
           </button>
 
           <Link
+            href="/claude"
+            className="hidden md:inline-flex items-center rounded-[var(--r-md)] px-2.5 py-1.5 text-[13px] font-medium text-tertiary transition-colors hover:text-foreground hover:bg-surface"
+          >
+            Cẩm nang Claude
+          </Link>
+
+          <Link
             href="/progress"
             className="rounded-[var(--r-md)] p-2 text-tertiary transition-colors hover:text-foreground hover:bg-surface"
             aria-label="Tiến độ"
