@@ -1,50 +1,82 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────── */
-/* Light theme — Brilliance warm neutrals          */
+/* Light theme (default) — Perplexity paper tones  */
 /* ─────────────────────────────────────────────── */
 :root {
-  --bg-primary: #F7F5F3;
+  --bg-primary: #FBF7F2;
   --bg-card: #FFFFFF;
-  --bg-dark: #37322F;
-  --bg-surface: #F0EDEB;
-  --bg-surface-hover: #E8E5E3;
-  --text-primary: #37322F;
-  --text-secondary: #605A57;
-  --text-tertiary: #8A847F;
-  --accent: #0D9488;
-  --accent-light: #E6FAF7;
-  --accent-dark: #0F766E;
-  --border: rgba(55, 50, 47, 0.12);
-  --analogy-bg: #F0FAF8;
-  --shadow-color: 0 0% 0%;
-  --ring: #0D9488;
-  --hero-gradient-from: #0D9488;
-  --hero-gradient-to: #2563EB;
+  --bg-dark: #0A0A0B;
+  --bg-surface: #F4EEE3;
+  --bg-surface-hover: #E8DEC9;
+  --bg-sunken: #F4EEE3;
+  --text-primary: #0A0A0B;
+  --text-secondary: #2A2A2F;
+  --text-tertiary: #6C6C74;
+  --text-muted: #9B9BA3;
+  --accent: #0F8A83;
+  --accent-light: rgba(15, 138, 131, 0.10);
+  --accent-dark: #0E6F69;
+  --border: rgba(10, 10, 11, 0.10);
+  --border-subtle: rgba(10, 10, 11, 0.06);
+  --border-strong: rgba(10, 10, 11, 0.18);
+  --analogy-bg: rgba(15, 138, 131, 0.06);
+  --ring: rgba(15, 138, 131, 0.35);
+  --hero-gradient-from: #0F8A83;
+  --hero-gradient-to: #20B8AE;
+  --heat-400: #FF7A29;
+  --heat-500: #F05A00;
+  --sub-accent-soft: rgba(255, 122, 41, 0.14);
+  --shadow-sm: 0 1px 2px rgba(10, 10, 11, 0.06), 0 0 0 1px rgba(10, 10, 11, 0.04);
+  --shadow-md: 0 4px 14px rgba(10, 10, 11, 0.08), 0 0 0 1px rgba(10, 10, 11, 0.04);
+  --shadow-lg: 0 20px 40px rgba(10, 10, 11, 0.12), 0 0 0 1px rgba(10, 10, 11, 0.05);
+  --shadow-glow-accent: 0 0 0 1px rgba(15, 138, 131, 0.35), 0 8px 30px rgba(15, 138, 131, 0.18);
+  --shadow-glow-heat: 0 0 0 1px rgba(255, 122, 41, 0.35), 0 8px 30px rgba(255, 122, 41, 0.2);
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 420ms;
+  --success: #3DD68C;
+  --warning: #F5B547;
+  --danger: #F25C54;
   color-scheme: light;
 }
 
 /* ─────────────────────────────────────────────── */
-/* Dark theme                                      */
+/* Dark theme — Perplexity ink palette              */
 /* ─────────────────────────────────────────────── */
 .dark {
-  --bg-primary: #09090B;
-  --bg-card: #18181B;
-  --bg-dark: #000000;
-  --bg-surface: #27272A;
-  --bg-surface-hover: #3F3F46;
-  --text-primary: #FAFAFA;
-  --text-secondary: #A1A1AA;
-  --text-tertiary: #71717A;
-  --accent: #2DD4BF;
-  --accent-light: rgba(45, 212, 191, 0.1);
-  --accent-dark: #14B8A6;
-  --border: #27272A;
-  --analogy-bg: rgba(20, 184, 166, 0.06);
-  --shadow-color: 220 60% 2%;
-  --ring: #2DD4BF;
-  --hero-gradient-from: #2DD4BF;
-  --hero-gradient-to: #818CF8;
+  --bg-primary: #0A0A0B;
+  --bg-card: #121214;
+  --bg-dark: #060607;
+  --bg-surface: #18181B;
+  --bg-surface-hover: #1F1F23;
+  --bg-sunken: #060607;
+  --text-primary: #F5F5F7;
+  --text-secondary: #C4C4CC;
+  --text-tertiary: #9B9BA3;
+  --text-muted: #6C6C74;
+  --accent: #20B8AE;
+  --accent-light: rgba(19, 168, 158, 0.12);
+  --accent-dark: #13A89E;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --analogy-bg: rgba(32, 184, 174, 0.06);
+  --ring: rgba(32, 184, 174, 0.35);
+  --hero-gradient-from: #20B8AE;
+  --hero-gradient-to: #5FD2CB;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-glow-accent: 0 0 0 1px rgba(32, 184, 174, 0.35), 0 8px 30px rgba(32, 184, 174, 0.18);
+  --shadow-glow-heat: 0 0 0 1px rgba(255, 122, 41, 0.35), 0 8px 30px rgba(255, 122, 41, 0.2);
   color-scheme: dark;
 }
 
@@ -63,40 +95,43 @@
   --color-surface: var(--bg-surface);
   --color-surface-hover: var(--bg-surface-hover);
   --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-heat: var(--heat-400);
+  --color-heat-soft: var(--sub-accent-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
 }
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Vietnamese diacritics */
+/* Vietnamese diacritics — generous line-height for readability */
 p, li, span, label {
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 .content-width {
-  max-width: 720px;
+  max-width: 680px;
   margin-left: auto;
   margin-right: auto;
 }
 
 /* ─────────────────────────────────────────────── */
-/* Lesson section spacing and visual rhythm        */
+/* Lesson section spacing                          */
 /* ─────────────────────────────────────────────── */
 .lesson-section + .lesson-section {
   padding-top: 0.5rem;
-}
-
-/* ─────────────────────────────────────────────── */
-/* Brilliance-style dot grid background            */
-/* ─────────────────────────────────────────────── */
-.dot-grid {
-  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-  background-size: 24px 24px;
 }
 
 /* Hero gradient text */
@@ -108,29 +143,24 @@ p, li, span, label {
 }
 
 /* ─────────────────────────────────────────────── */
-/* Cards — Brilliance shadow-first style           */
+/* Cards — Perplexity soft shadow style            */
 /* ─────────────────────────────────────────────── */
 .card {
   background: var(--bg-card);
-  border-radius: 0.75rem;
+  border-radius: var(--r-lg);
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px rgba(55, 50, 47, 0.06), 0 1px 2px rgba(55, 50, 47, 0.04);
-  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--dur-base) var(--ease-standard),
+              transform var(--dur-base) var(--ease-standard),
+              border-color var(--dur-base) var(--ease-standard);
 }
 .card:hover {
-  box-shadow: 0 4px 16px rgba(55, 50, 47, 0.08), 0 2px 4px rgba(55, 50, 47, 0.04);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
-}
-.dark .card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-.dark .card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border-color: var(--accent);
 }
 
 /* ─────────────────────────────────────────────── */
-/* Solid tags — high contrast in both modes        */
+/* Difficulty tags                                 */
 /* ─────────────────────────────────────────────── */
 .tag-beginner { background: #059669; color: #FFFFFF; }
 .tag-intermediate { background: #D97706; color: #FFFFFF; }
@@ -143,7 +173,7 @@ p, li, span, label {
   background: var(--analogy-bg);
   border-left: 3px solid var(--accent);
   padding: 1rem 1.25rem;
-  border-radius: 0.5rem;
+  border-radius: var(--r-sm);
 }
 
 /* Topic card read indicator */
@@ -156,12 +186,9 @@ html[data-scroll-behavior="smooth"] {
   scroll-behavior: smooth;
 }
 
-/* ─────────────────────────────────────────────── */
-/* Section dividers — Brilliance embossed style    */
-/* ─────────────────────────────────────────────── */
+/* Section dividers */
 .section-divider {
   border-top: 1px solid var(--border);
-  box-shadow: 0px 1px 0px var(--bg-card);
 }
 
 /* ─────────────────────────────────────────────── */
@@ -179,11 +206,11 @@ html[data-scroll-behavior="smooth"] {
 
 /* Command palette backdrop */
 .cmd-backdrop {
-  background: rgba(55, 50, 47, 0.4);
-  backdrop-filter: blur(8px);
+  background: rgba(10, 10, 11, 0.3);
+  backdrop-filter: blur(12px) saturate(140%);
 }
 .dark .cmd-backdrop {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* ─────────────────────────────────────────────── */
@@ -202,17 +229,17 @@ html[data-scroll-behavior="smooth"] {
 /* ─────────────────────────────────────────────── */
 /* Quiz                                            */
 /* ─────────────────────────────────────────────── */
-.quiz-option { transition: all 0.2s ease; }
+.quiz-option { transition: all var(--dur-base) var(--ease-standard); }
 .quiz-option:hover:not(.quiz-selected):not(.quiz-disabled) {
   border-color: var(--accent);
   background: var(--accent-light);
 }
-.quiz-correct { border-color: #059669 !important; background: rgba(5, 150, 105, 0.08) !important; }
-.quiz-wrong { border-color: #DC2626 !important; background: rgba(220, 38, 38, 0.08) !important; }
+.quiz-correct { border-color: var(--success) !important; background: rgba(61, 214, 140, 0.08) !important; }
+.quiz-wrong { border-color: var(--danger) !important; background: rgba(242, 92, 84, 0.08) !important; }
 
 /* Code block */
 .code-block {
-  font-family: var(--font-geist-mono), 'Fira Code', monospace;
+  font-family: var(--font-mono), 'Fira Code', monospace;
   font-size: 13px;
   line-height: 1.6;
   tab-size: 2;
@@ -232,5 +259,5 @@ html[data-scroll-behavior="smooth"] {
   background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-surface-hover) 50%, var(--bg-surface) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 0.5rem;
+  border-radius: var(--r-sm);
 }
