@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 
 const nextConfig: NextConfig = {
   async headers() {
@@ -44,4 +45,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// withBotId injects the proxy rewrites BotID needs so ad-blockers and
+// third-party scripts can't weaken detection. Keep this as the outermost
+// wrapper on the exported config.
+export default withBotId(nextConfig);

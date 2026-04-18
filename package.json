@@ -15,6 +15,7 @@
     "@supabase/supabase-js": "^2.103.0",
     "@types/katex": "^0.16.8",
     "@vercel/analytics": "^2.0.1",
+    "botid": "^1.5.11",
     "framer-motion": "^12.38.0",
     "fuse.js": "^7.3.0",
     "katex": "^0.16.45",
