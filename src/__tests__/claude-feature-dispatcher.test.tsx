@@ -11,6 +11,7 @@ import ClaudeFeaturePage, {
   generateStaticParams,
 } from "@/app/claude/[feature]/page";
 import { notFound } from "next/navigation";
+import { tiles } from "@/features/claude/registry";
 
 describe("/claude/[feature] dispatcher", () => {
   it("generateStaticParams returns 24 slugs", async () => {
@@ -19,17 +20,19 @@ describe("/claude/[feature] dispatcher", () => {
     expect(params[0]).toHaveProperty("feature");
   });
 
-  it("renders the TilePlaceholder title for a known planned slug", async () => {
-    // Use a slug that's still "planned" — the dispatcher delegates to
-    // TilePlaceholder which synchronously renders the title. Tiles flipped
-    // to "ready" resolve to `next/dynamic` components whose body requires
-    // Suspense to resolve and so aren't accessible synchronously here.
+  it("renders the tile's title for a known slug (via TilePlaceholder for any still-planned slug)", async () => {
+    const planned = tiles.find((t) => t.status === "planned");
+    if (!planned) {
+      throw new Error(
+        "Dispatcher test needs at least one tile with status='planned'. All tiles are ready — write a new test."
+      );
+    }
     const node = await ClaudeFeaturePage({
-      params: Promise.resolve({ feature: "projects" }),
+      params: Promise.resolve({ feature: planned.slug }),
     });
     render(node);
     expect(
-      screen.getByRole("heading", { name: /Projects/ })
+      screen.getByRole("heading", { name: new RegExp(planned.viTitle) })
     ).toBeInTheDocument();
   });
 

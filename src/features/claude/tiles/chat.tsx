@@ -44,6 +44,7 @@
  *   lazy-load path in Next 16 App Router. (docs/01-app/02-guides/lazy-loading.mdx)
  */
 
+import { memo } from "react";
 import Link from "next/link";
 import { ChevronDown, Settings, Send, Square } from "lucide-react";
 
@@ -55,6 +56,7 @@ import {
 import { AnnotationLayer } from "@/features/claude/components/AnnotationLayer";
 import { DemoCanvas } from "@/features/claude/components/DemoCanvas";
 import { DeepLinkCTA } from "@/features/claude/components/DeepLinkCTA";
+import { StillFrame } from "@/features/claude/components/StillFrame";
 import { useDemoPlayhead } from "@/features/claude/useDemoPlayhead";
 import { findTile } from "@/features/claude/registry";
 import type { Annotation } from "@/features/claude/types";
@@ -153,15 +155,18 @@ const CROSS_LINKS: Array<{ href: string; title: string; blurb: string }> = [
  *  - STREAM_START..STREAM_END → linearly grows
  *  - STREAM_END..1 → full text, frozen.
  */
-function streamedSubstring(playhead: number): string {
+export function streamedSubstring(
+  playhead: number,
+  text: string = TARGET_TEXT
+): string {
   if (playhead <= STREAM_START) return "";
-  if (playhead >= STREAM_END) return TARGET_TEXT;
+  if (playhead >= STREAM_END) return text;
   const t = (playhead - STREAM_START) / (STREAM_END - STREAM_START);
-  const n = Math.floor(t * TARGET_TEXT.length);
-  return TARGET_TEXT.slice(0, n);
+  const n = Math.floor(t * text.length);
+  return text.slice(0, n);
 }
 
-function isStreaming(playhead: number): boolean {
+export function isStreaming(playhead: number): boolean {
   return playhead > STREAM_START && playhead < STREAM_END;
 }
 
@@ -176,9 +181,7 @@ function StreamingComposer({ playhead }: { playhead: number }) {
       <ShellComposerStub placeholder="Nhập tiếp theo..." />
       <button
         type="button"
-        tabIndex={-1}
         aria-hidden="true"
-        aria-label={streaming ? "Dừng phản hồi" : "Gửi"}
         className="pointer-events-none absolute right-7 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full border border-foreground bg-foreground text-background"
       >
         {streaming ? (
@@ -192,21 +195,11 @@ function StreamingComposer({ playhead }: { playhead: number }) {
 }
 
 // ---------------------------------------------------------------------------
-// Shell slot builder — shared by hero demo + still frames
+// Shell slot components — shared by hero demo + still frames
 // ---------------------------------------------------------------------------
 
-interface ShellSlots {
-  topBar: React.ReactNode;
-  leftRail: React.ReactNode;
-  main: React.ReactNode;
-}
-
-function ChatShellContents({ playhead }: { playhead: number }): ShellSlots {
-  const revealed = streamedSubstring(playhead);
-  const streaming = isStreaming(playhead);
-  const showTypingHint = playhead <= STREAM_START;
-
-  const topBar = (
+const ChatTopBar = memo(function ChatTopBar() {
+  return (
     <div className="flex w-full items-center gap-2">
       <span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[12px] text-foreground">
         Cá nhân
@@ -221,8 +214,10 @@ function ChatShellContents({ playhead }: { playhead: number }): ShellSlots {
       </span>
     </div>
   );
+});
 
-  const leftRail = (
+const ChatLeftRail = memo(function ChatLeftRail() {
+  return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-3">
       <div className="px-1 pb-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-tertiary">
         Chats
@@ -244,8 +239,14 @@ function ChatShellContents({ playhead }: { playhead: number }): ShellSlots {
       </ul>
     </div>
   );
+});
 
-  const main = (
+const ChatMain = memo(function ChatMain({ playhead }: { playhead: number }) {
+  const revealed = streamedSubstring(playhead);
+  const streaming = isStreaming(playhead);
+  const showTypingHint = playhead <= STREAM_START;
+
+  return (
     <div className="flex h-full flex-col">
       <div className="flex-1 overflow-hidden pt-3">
         <ShellMessage from="user">{USER_QUESTION}</ShellMessage>
@@ -268,48 +269,7 @@ function ChatShellContents({ playhead }: { playhead: number }): ShellSlots {
       <StreamingComposer playhead={playhead} />
     </div>
   );
-
-  return { topBar, leftRail, main };
-}
-
-// ---------------------------------------------------------------------------
-// StillFrame — scaled-down shell with frozen playhead + static annotations
-// ---------------------------------------------------------------------------
-
-function StillFrame({
-  playhead,
-  title,
-  caption,
-}: {
-  playhead: number;
-  title: string;
-  caption: string;
-}) {
-  const slots = ChatShellContents({ playhead });
-  // Only show annotations whose showAt range straddles this frozen playhead.
-  const relevant = ANNOTATIONS.filter(
-    ({ showAt: [s, e] }) => playhead >= s && playhead <= e
-  );
-  return (
-    <figure className="flex flex-col gap-3">
-      <div className="relative">
-        <ClaudeDesktopShell
-          topBar={slots.topBar}
-          leftRail={slots.leftRail}
-          main={slots.main}
-          height={280}
-        />
-        <AnnotationLayer annotations={relevant} playhead={playhead} staticMode />
-      </div>
-      <figcaption>
-        <div className="text-[13px] font-semibold text-foreground">{title}</div>
-        <div className="mt-1 text-[12px] leading-[1.5] text-secondary">
-          {caption}
-        </div>
-      </figcaption>
-    </figure>
-  );
-}
+});
 
 // ---------------------------------------------------------------------------
 // Default export — the full tile
@@ -324,7 +284,14 @@ export default function ChatTile() {
     pauseAtEnd: 2000,
   });
 
-  const slots = ChatShellContents({ playhead });
+  const buildSlots = (t: number) => ({
+    topBar: <ChatTopBar />,
+    leftRail: <ChatLeftRail />,
+    main: <ChatMain playhead={t} />,
+  });
+
+  const filterAnnotations = (t: number) =>
+    ANNOTATIONS.filter(({ showAt: [s, e] }) => t >= s && t <= e);
 
   return (
     <article className="mx-auto flex max-w-[1100px] flex-col gap-12 px-4 py-10">
@@ -351,9 +318,9 @@ export default function ChatTile() {
       >
         <div className="relative">
           <ClaudeDesktopShell
-            topBar={slots.topBar}
-            leftRail={slots.leftRail}
-            main={slots.main}
+            topBar={<ChatTopBar />}
+            leftRail={<ChatLeftRail />}
+            main={<ChatMain playhead={playhead} />}
           />
           <AnnotationLayer annotations={ANNOTATIONS} playhead={playhead} />
         </div>
@@ -369,16 +336,22 @@ export default function ChatTile() {
             playhead={0.04}
             title="Câu hỏi vừa gửi"
             caption="Bạn gõ xong và bấm Enter. Câu hỏi lên tức thì, Claude bắt đầu đọc và suy nghĩ."
+            annotations={filterAnnotations(0.04)}
+            slots={buildSlots}
           />
           <StillFrame
             playhead={0.45}
             title="Đang stream"
             caption="Claude đang sinh phản hồi từng token. Bạn đọc song song với mô hình — không cần chờ cả câu."
+            annotations={filterAnnotations(0.45)}
+            slots={buildSlots}
           />
           <StillFrame
             playhead={0.92}
             title="Hoàn tất"
             caption="Phản hồi đầy đủ. Composer quay về trạng thái sẵn sàng. Claude nhớ bối cảnh, bạn có thể hỏi tiếp."
+            annotations={filterAnnotations(0.92)}
+            slots={buildSlots}
           />
         </div>
       </section>
@@ -405,7 +378,7 @@ export default function ChatTile() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="block rounded-[12px] border border-border bg-card p-4 transition-transform hover:-translate-y-[1px] hover:shadow-[var(--shadow-sm)]"
+                className="block rounded-[12px] border border-border bg-card p-4 transition-transform hover:-translate-y-[1px] hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--turquoise-500)] focus-visible:ring-offset-2"
               >
                 <div className="text-[14px] font-semibold text-foreground">
                   {link.title}
