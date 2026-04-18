@@ -54,7 +54,7 @@ export default function Navbar() {
 
           <Link
             href="/claude"
-            className="hidden md:inline-flex items-center rounded-[var(--r-md)] px-2.5 py-1.5 text-[13px] font-medium text-tertiary transition-colors hover:text-foreground hover:bg-surface"
+            className="hidden md:inline-flex items-center rounded-[var(--r-md)] mx-1 px-3 py-1.5 text-[13px] font-medium text-tertiary transition-colors hover:text-foreground hover:bg-surface"
           >
             Cẩm nang Claude
           </Link>

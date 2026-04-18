@@ -88,11 +88,12 @@ export default function HeroSearch({
             }}
           >
             Hiểu AI qua{" "}
-            {/* Keep "hình ảnh và ví dụ." atomic so text-wrap never splits
+            {/* Keep "hình ảnh và ví dụ" atomic so text-wrap never splits
                 after "hình". The whole phrase either fits the line or drops
-                to the next line together. */}
+                to the next line together. No trailing period — the gradient
+                phrase IS the endpoint. */}
             <span className="whitespace-nowrap">
-              <AccentHueSweep lang="vi">hình ảnh và ví dụ</AccentHueSweep>.
+              <AccentHueSweep lang="vi">hình ảnh và ví dụ</AccentHueSweep>
             </span>
           </motion.h1>
 

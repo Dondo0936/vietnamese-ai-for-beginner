@@ -43,6 +43,6 @@ describe("HeroSearch hero", () => {
     );
     expect(
       screen.getByRole("heading", { level: 1 }).textContent
-    ).toContain("Hiểu AI qua hình ảnh và ví dụ.");
+    ).toContain("Hiểu AI qua hình ảnh và ví dụ");
   });
 });
