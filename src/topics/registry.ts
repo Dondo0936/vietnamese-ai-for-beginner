@@ -4896,6 +4896,82 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
+
+  // ═══════════════════════════════════════════════════════
+  // Đánh giá & Quan sát hệ thống AI — AI Engineer path
+  // ═══════════════════════════════════════════════════════
+  {
+    slug: "llm-evaluation",
+    title: "LLM Evaluation",
+    titleVi: "Đánh giá LLM — Đo chất lượng trước và sau khi deploy",
+    description:
+      "Khung đánh giá LLM toàn diện: offline (golden set, LLM-as-judge, human eval) + online (shadow traffic, A/B, drift detection) — điều kiện tiên quyết để đưa LLM vào production một cách có trách nhiệm.",
+    category: "ai-safety",
+    tags: ["evaluation", "llm-as-judge", "benchmark", "production"],
+    difficulty: "advanced",
+    relatedSlugs: ["agent-evaluation", "rag-evaluation", "hallucination", "guardrails", "red-teaming"],
+    vizType: "interactive",
+  },
+  {
+    slug: "rag-evaluation",
+    title: "RAG Evaluation",
+    titleVi: "Đánh giá RAG — Bộ ba Faithfulness, Answer & Context Relevance",
+    description:
+      "Đo lường hệ thống RAG theo ba trụ cột: độ trung thành với nguồn (faithfulness), độ liên quan câu trả lời (answer relevance), độ liên quan ngữ cảnh truy xuất (context relevance) — và cách chúng sụp đổ khác nhau khi retrieval, prompting, hoặc generation bị lỗi.",
+    category: "ai-safety",
+    tags: ["rag", "evaluation", "faithfulness", "retrieval"],
+    difficulty: "advanced",
+    relatedSlugs: ["rag", "agentic-rag", "hallucination", "llm-evaluation", "re-ranking"],
+    vizType: "interactive",
+  },
+  {
+    slug: "observability-for-ai",
+    title: "Observability for AI Systems",
+    titleVi: "Quan sát hệ thống AI — Trace, Log, Metric cho LLM app",
+    description:
+      "Đưa hệ thống LLM ra production cần quan sát được từng bước: distributed tracing đa tầng (retrieval + LLM + tool), metric p50/p95, structured logs có PII-safe redaction, và cảnh báo khi drift. Khung observability AI-native khác biệt với APM truyền thống như thế nào.",
+    category: "infrastructure",
+    tags: ["observability", "tracing", "metrics", "logging", "langfuse"],
+    difficulty: "advanced",
+    relatedSlugs: ["monitoring", "mlops", "agent-evaluation", "cost-latency-tokens", "model-serving"],
+    vizType: "interactive",
+  },
+  {
+    slug: "cost-latency-tokens",
+    title: "Cost, Latency & Token Economics for LLM Apps",
+    titleVi: "Kinh tế token — Chi phí, độ trễ và hiệu quả",
+    description:
+      "Đơn vị tiền tệ của LLM production là token. Biết cách đo $/task, phân rã latency (TTFT + decode + retrieval + tool), tính break-even với human baseline, và thấy tức thì tác dụng của prompt caching / model cascade / context compression.",
+    category: "infrastructure",
+    tags: ["cost", "latency", "tokens", "caching", "optimization"],
+    difficulty: "advanced",
+    relatedSlugs: ["cost-optimization", "inference-optimization", "kv-cache", "observability-for-ai", "model-serving"],
+    vizType: "interactive",
+  },
+  {
+    slug: "prompt-injection-defense",
+    title: "Prompt Injection Defense",
+    titleVi: "Phòng thủ Prompt Injection — Lớp bảo vệ nhiều tầng",
+    description:
+      "Prompt injection là lỗ hổng số 1 của ứng dụng LLM (OWASP LLM01). Bài học xây lớp phòng thủ nhiều tầng: input validation, instruction hierarchy, output filter, tool allowlist, và LLM-judge — mỗi lớp bắt một loại payload khác nhau.",
+    category: "ai-safety",
+    tags: ["security", "injection", "owasp", "defense-in-depth"],
+    difficulty: "advanced",
+    relatedSlugs: ["guardrails", "red-teaming", "agent-evaluation", "llm-evaluation", "hallucination"],
+    vizType: "interactive",
+  },
+  {
+    slug: "canary-releases-llm",
+    title: "Canary Releases & Shadow Traffic for LLM",
+    titleVi: "Canary & Shadow Rollout — Triển khai LLM an toàn",
+    description:
+      "Đổi model LLM trong production không thể 'big bang'. Học cách triển khai gradient: shadow traffic (so sánh không ảnh hưởng user) → 1% canary → 10% → 50% → 100%, với gate theo eval, user-feedback, và cost; cùng rollback tự động khi metric vi phạm SLO.",
+    category: "infrastructure",
+    tags: ["deployment", "canary", "shadow", "rollout", "reliability"],
+    difficulty: "advanced",
+    relatedSlugs: ["mlops", "model-serving", "llm-evaluation", "observability-for-ai", "agent-evaluation"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────

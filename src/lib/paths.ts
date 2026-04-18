@@ -188,6 +188,11 @@ const AI_ENGINEER_STAGES: Stage[] = [
       "self-attention",
       "multi-head-attention",
       "positional-encoding",
+      "residual-connections",
+      "weight-initialization",
+      "batch-normalization",
+      "sgd",
+      "optimizers",
     ],
   },
   {
@@ -254,6 +259,18 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
+    title: "Đánh giá & Quan sát hệ thống AI",
+    slugs: [
+      "llm-evaluation",
+      "rag-evaluation",
+      "agent-evaluation",
+      "observability-for-ai",
+      "cost-latency-tokens",
+      "canary-releases-llm",
+      "prompt-injection-defense",
+    ],
+  },
+  {
     title: "An toàn & Chất lượng",
     slugs: ["guardrails", "red-teaming", "hallucination"],
   },
@@ -266,11 +283,7 @@ const AI_RESEARCHER_STAGES: Stage[] = [
     slugs: [
       "backpropagation",
       "vanishing-exploding-gradients",
-      "weight-initialization",
       "regularization",
-      "batch-normalization",
-      "optimizers",
-      "sgd",
     ],
   },
   {
@@ -279,7 +292,6 @@ const AI_RESEARCHER_STAGES: Stage[] = [
       "transformer",
       "self-attention",
       "flash-attention",
-      "residual-connections",
       "vae",
       "gan",
       "diffusion-models",

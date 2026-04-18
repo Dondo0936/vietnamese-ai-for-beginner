@@ -8,9 +8,9 @@ import { getPathStages } from "@/lib/paths";
 
 const pathObjectives: PathObjectives = {
   audience:
-    "Nhân viên văn phòng, quản lý, và bất kỳ ai muốn sử dụng AI hiệu quả trong công việc hàng ngày. Không cần biết lập trình hay kiến thức kỹ thuật.",
+    "Nhân viên văn phòng, quản lý, giáo viên, marketer, luật sư, nhà báo — bất kỳ ai không lập trình mà muốn biến AI thành trợ lý làm việc hàng ngày. Không cần kiến thức kỹ thuật.",
   prerequisites:
-    "Biết sử dụng máy tính và trình duyệt web. Có email và tài khoản công việc. Không cần kiến thức toán hay lập trình.",
+    "Biết sử dụng máy tính và trình duyệt web. Có email và tài khoản công việc. Không cần kiến thức toán hay lập trình. Nếu sau này muốn chuyển sang xây dựng hệ thống AI, bạn sẽ cần học thêm Python, toán nền tảng và ML cơ bản theo lộ trình Học sinh · Sinh viên — lộ trình Office không dẫn thẳng sang AI Engineer.",
   stageObjectives: [
     {
       stage: "Bắt đầu với AI",
@@ -53,6 +53,7 @@ const pathObjectives: PathObjectives = {
     "Biết bảo vệ dữ liệu cá nhân và công ty khi dùng AI",
     "Đánh giá và chọn đúng AI tool cho nhu cầu cụ thể",
     "Hiểu AI đang thay đổi ngành nghề của mình",
+    "Nếu muốn bước tiếp sang xây dựng AI, biết chính xác khoảng cách kỹ năng mình cần lấp (Python + toán + ML cơ bản qua lộ trình Học sinh · Sinh viên)",
   ],
   estimatedTime: [
     { stage: "Bắt đầu với AI", hours: 6 },
@@ -60,7 +61,7 @@ const pathObjectives: PathObjectives = {
     { stage: "An toàn & Đạo đức", hours: 4 },
     { stage: "Ứng dụng ngành", hours: 6 },
   ],
-  nextPath: { slug: "ai-engineer", label: "AI Engineer" },
+  nextPath: { slug: "student", label: "Học sinh · Sinh viên (để bắt đầu xây dựng AI)" },
 };
 
 export default function OfficePathPage() {

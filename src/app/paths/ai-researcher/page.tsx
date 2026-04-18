@@ -15,16 +15,16 @@ const pathObjectives: PathObjectives = {
     {
       stage: "Lý thuyết sâu",
       objectives: [
-        "Hiểu sâu backpropagation và vấn đề vanishing/exploding gradients",
-        "Nắm các kỹ thuật weight initialization và regularization",
-        "So sánh các optimizer: SGD, Adam, AdaGrad, RMSProp",
+        "Hiểu sâu backpropagation dưới góc nhìn chain rule và autograd",
+        "Phân tích nguồn gốc vanishing / exploding gradients và hệ quả với mạng rất sâu",
+        "Lý thuyết regularization: L1/L2, dropout, early stopping và quan hệ với capacity + generalization",
       ],
     },
     {
       stage: "Kiến trúc tiên tiến",
       objectives: [
         "Hiểu Transformer và Flash Attention ở mức toán học",
-        "Nắm kiến trúc generative: VAE, GAN, Diffusion Models",
+        "Nắm kiến trúc generative: VAE, GAN, Diffusion Models, Autoencoder",
         "Hiểu Mixture of Experts và State Space Models",
         "Biết Vision Transformer, U-Net, NeRF",
       ],
@@ -72,8 +72,8 @@ const pathObjectives: PathObjectives = {
     "Theo kịp các xu hướng mới nhất trong nghiên cứu AI",
   ],
   estimatedTime: [
-    { stage: "Lý thuyết sâu", hours: 14 },
-    { stage: "Kiến trúc tiên tiến", hours: 25 },
+    { stage: "Lý thuyết sâu", hours: 7 },
+    { stage: "Kiến trúc tiên tiến", hours: 23 },
     { stage: "NLP & Multimodal", hours: 22 },
     { stage: "Huấn luyện & Alignment", hours: 18 },
     { stage: "Học tăng cường", hours: 10 },

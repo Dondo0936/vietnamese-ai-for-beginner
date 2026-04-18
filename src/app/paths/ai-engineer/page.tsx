@@ -18,6 +18,10 @@ const pathObjectives: PathObjectives = {
         "Hiểu kiến trúc CNN, RNN, LSTM và hạn chế của chúng",
         "Nắm vững Transformer: self-attention, multi-head attention, positional encoding",
         "Hiểu tại sao Transformer vượt trội hơn các kiến trúc trước đó",
+        "Nắm residual connections — kỹ thuật giúp mạng sâu huấn luyện được (ResNet → Transformer)",
+        "Chọn đúng weight initialization (Xavier, He) cho kiến trúc đang dùng",
+        "Hiểu batch normalization: cách ổn định huấn luyện và vị trí đặt trong block",
+        "Phân biệt SGD, momentum, Adam, AdamW — biết chọn optimizer + hyperparameter cho workload thực tế",
       ],
     },
     {
@@ -56,6 +60,18 @@ const pathObjectives: PathObjectives = {
       ],
     },
     {
+      stage: "Đánh giá & Quan sát hệ thống AI",
+      objectives: [
+        "Thiết kế bộ eval offline + online cho LLM: golden set, LLM-as-judge, human calibration",
+        "Đo chất lượng RAG theo bộ ba faithfulness / answer-relevance / context-relevance",
+        "Đánh giá agent nhiều bước theo 6 chiều (success, tool use, hallucination, latency, cost, safety)",
+        "Xây dựng observability: tracing nhiều bước, metric, structured logs, alert on drift",
+        "Làm chủ token economics — đo $/task, p50/p95 latency, dự phòng chi phí",
+        "Triển khai từng bước qua shadow → canary → full rollout với gate theo eval score",
+        "Phát hiện và chặn prompt injection, data exfiltration qua nhiều lớp defense-in-depth",
+      ],
+    },
+    {
       stage: "An toàn & Chất lượng",
       objectives: [
         "Thiết lập guardrails cho AI systems",
@@ -68,15 +84,17 @@ const pathObjectives: PathObjectives = {
     "Xây dựng hệ thống RAG và AI agent từ đầu đến cuối",
     "Fine-tune và tối ưu mô hình cho production",
     "Triển khai và vận hành mô hình AI ở quy mô lớn",
+    "Đo lường và quan sát hệ thống AI trong production — eval, trace, cost dashboard, canary gate",
     "Đảm bảo an toàn và chất lượng cho hệ thống AI",
     "Sẵn sàng cho vị trí AI/ML Engineer tại doanh nghiệp",
   ],
   estimatedTime: [
-    { stage: "Kiến trúc", hours: 12 },
+    { stage: "Kiến trúc", hours: 18 },
     { stage: "LLM & NLP", hours: 15 },
     { stage: "Fine-tuning & Tối ưu", hours: 14 },
     { stage: "RAG & Agents", hours: 25 },
     { stage: "Hạ tầng & Vận hành", hours: 18 },
+    { stage: "Đánh giá & Quan sát hệ thống AI", hours: 14 },
     { stage: "An toàn & Chất lượng", hours: 6 },
   ],
   nextPath: { slug: "ai-researcher", label: "AI Researcher" },
