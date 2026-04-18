@@ -11,32 +11,37 @@ function triggerCmdK() {
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-card border-b border-border backdrop-blur-sm">
-      <div className="mx-auto max-w-6xl flex items-center justify-between px-4 h-14">
+    <nav className="sticky top-0 z-50 border-b border-border bg-[rgba(251,247,242,0.7)] backdrop-blur-[16px] backdrop-saturate-[140%] dark:bg-[rgba(10,10,11,0.7)]">
+      <div className="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-8 h-14">
         <Link
           href="/"
-          className="flex items-center gap-2 text-foreground font-semibold text-lg tracking-tight"
+          className="flex items-center gap-2.5 text-foreground"
         >
           <Brain className="h-5 w-5 text-accent" />
-          <span className="hidden sm:inline">AI Cho Mọi Người</span>
-          <span className="sm:hidden">ACMN</span>
+          <span className="hidden sm:inline font-display text-[17px] font-medium tracking-[-0.02em]">
+            AI Cho Mọi Người
+          </span>
+          <span className="sm:hidden font-display text-[17px] font-medium tracking-[-0.02em]">
+            ACMN
+          </span>
         </Link>
 
         <div className="flex items-center gap-1">
-          {/* Cmd+K search trigger */}
           <button
             type="button"
             onClick={triggerCmdK}
-            className="hidden sm:flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
+            className="hidden sm:flex items-center gap-2 rounded-[var(--r-md)] border border-border bg-surface px-3 py-1.5 text-xs text-tertiary transition-colors hover:bg-surface-hover hover:text-foreground"
           >
             <Search size={14} />
             <span>Tìm kiếm...</span>
-            <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 text-[10px] font-mono text-tertiary">⌘K</kbd>
+            <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono text-tertiary">
+              ⌘K
+            </kbd>
           </button>
 
           <Link
             href="/progress"
-            className="rounded-lg p-2 text-muted transition-colors hover:text-foreground hover:bg-surface"
+            className="rounded-[var(--r-md)] p-2 text-tertiary transition-colors hover:text-foreground hover:bg-surface"
             aria-label="Tiến độ"
           >
             <BarChart3 size={18} />
@@ -44,7 +49,7 @@ export default function Navbar() {
 
           <Link
             href="/bookmarks"
-            className="rounded-lg p-2 text-muted transition-colors hover:text-foreground hover:bg-surface"
+            className="rounded-[var(--r-md)] p-2 text-tertiary transition-colors hover:text-foreground hover:bg-surface"
             aria-label="Đã lưu"
           >
             <Bookmark size={18} />
