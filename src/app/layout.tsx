@@ -1,16 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter_Tight, JetBrains_Mono, Fraunces } from "next/font/google";
 import { ThemeProvider } from "@/lib/theme";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin", "latin-ext"],
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-display",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const interTight = Inter_Tight({
+  variable: "--font-sans",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-serif",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -27,14 +41,14 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable} ${fraunces.variable} h-full antialiased`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark')}}catch(e){}})()`,
           }}
         />
       </head>
