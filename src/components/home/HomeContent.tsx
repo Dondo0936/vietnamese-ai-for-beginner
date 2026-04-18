@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import ClaudeHeroCard from "./ClaudeHeroCard";
 import HeroSearch from "./HeroSearch";
 import ProfessionPaths from "./ProfessionPaths";
 import TopicGrid from "./TopicGrid";
@@ -84,6 +85,8 @@ export default function HomeContent({ topics, categories }: HomeContentProps) {
           </span>
         </div>
       </section>
+
+      <ClaudeHeroCard />
 
       <AuthWarningBanner />
 
