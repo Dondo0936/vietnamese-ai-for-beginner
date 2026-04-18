@@ -44,7 +44,8 @@ export function TilePlaceholder({ tile }: { tile: TileMeta }) {
             href="/claude"
             className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-medium text-foreground hover:bg-surface"
           >
-            ← Xem toàn bộ cẩm nang
+            <span aria-hidden="true">←</span>
+            Xem toàn bộ cẩm nang
           </Link>
         </div>
       </section>
@@ -52,12 +53,15 @@ export function TilePlaceholder({ tile }: { tile: TileMeta }) {
   );
 }
 
+const SHELF_VI: Record<TileMeta["shelf"], string> = {
+  starter: "Khởi đầu",
+  power: "Nâng cao",
+  developer: "Dành cho nhà phát triển",
+};
+
 function shelfVi(shelf: TileMeta["shelf"]) {
-  return shelf === "starter"
-    ? "Khởi đầu"
-    : shelf === "power"
-    ? "Nâng cao"
-    : "Dành cho nhà phát triển";
+  // Exhaustiveness: adding a new ShelfKey without updating SHELF_VI is a TS error.
+  return SHELF_VI[shelf];
 }
 
 function defaultPromptFor(slug: string): string {
