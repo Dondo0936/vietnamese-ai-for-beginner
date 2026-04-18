@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
-  MiniSummary, Callout, CodeBlock, LaTeX, TopicLink,
+  MiniSummary, Callout, CodeBlock, CollapsibleDetail, LaTeX, TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -26,7 +26,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ── Constants ── */
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 10;
 
 interface WordPoint {
   word: string;
@@ -109,6 +109,48 @@ const QUIZ: QuizQuestion[] = [
     ],
     explanation: "Distributed representation nghĩa là thông tin về một từ được trải đều trên nhiều chiều của vector, không tập trung ở một vị trí. Các từ có ngữ cảnh tương tự sẽ có vector gần nhau, cho phép đo semantic similarity bằng cosine.",
   },
+  {
+    question: "Vector('phở') và vector('bún chả') có cosine = 0.85. Vector('phở') và vector('xe máy') có cosine = 0.12. Có thể kết luận gì?",
+    options: [
+      "'Phở' và 'xe máy' không tồn tại trong vocabulary",
+      "'Phở' gần 'bún chả' hơn nhiều so với 'xe máy' — đúng với kỳ vọng ngữ nghĩa (cùng là món ăn)",
+      "Cosine 0.85 nghĩa là hai từ là đồng nghĩa hoàn toàn",
+      "Không có ý nghĩa vì cosine không đo được tiếng Việt",
+    ],
+    correct: 1,
+    explanation: "Cosine đo độ tương đồng ngữ nghĩa — giá trị càng cao càng gần. 0.85 là rất cao (gần = đồng ngữ cảnh), 0.12 là gần như không liên quan. Nhưng đồng nghĩa hoàn toàn yêu cầu cosine ≈ 1.0 và cần bối cảnh khớp hoàn toàn.",
+  },
+  {
+    question: "Bạn huấn luyện Word2Vec trên một corpus chỉ có 1.000 câu. Kết quả embedding có vấn đề gì?",
+    options: [
+      "Quá lớn để chạy",
+      "Quá ít dữ liệu — embedding không học được pattern tổng quát, từ hiếm bị sai hoàn toàn. Word2Vec thường cần ít nhất hàng triệu đến hàng tỷ token.",
+      "Cho kết quả hoàn hảo vì dữ liệu sạch",
+      "Chỉ hoạt động với tiếng Anh",
+    ],
+    correct: 1,
+    explanation: "Word embeddings học từ đồng xuất hiện (co-occurrence). Với chỉ 1.000 câu, hầu hết từ xuất hiện <10 lần — thống kê quá thưa để học ngữ nghĩa đáng tin cậy. Pre-trained models (GloVe, fastText, PhoBERT) được train trên hàng tỷ token chính vì lý do này.",
+  },
+  {
+    question: "Word embeddings (Word2Vec/GloVe) gán MỘT vector cố định cho mỗi từ. Hạn chế lớn nhất là gì?",
+    options: [
+      "Chúng quá lớn để lưu",
+      "Không xử lý được đa nghĩa (polysemy): 'đá' trong 'đá bóng' và 'hòn đá' chia sẻ CÙNG vector, dù nghĩa khác hẳn",
+      "Chỉ hoạt động với tiếng Anh",
+      "Mất ngữ nghĩa khi nhân với ma trận",
+    ],
+    correct: 1,
+    explanation: "Vấn đề polysemy là lý do ra đời contextual embeddings (ELMo → BERT → GPT). Trong BERT, 'đá' trong 'đá bóng' có vector KHÁC 'đá' trong 'hòn đá' vì embedding phụ thuộc vào toàn bộ câu. Đây là bước tiến từ Word2Vec → Transformer.",
+  },
+  {
+    type: "fill-blank",
+    question: "Khoảng cách {blank} đo góc giữa hai vector (giá trị từ -1 đến 1). Đối với embeddings, giá trị {blank} nghĩa là hai từ có ngữ nghĩa gần nhau.",
+    blanks: [
+      { answer: "cosine", accept: ["cos", "cosine similarity", "cô-sin"] },
+      { answer: "gần 1", accept: ["cao", "lớn", "gần +1", "~1"] },
+    ],
+    explanation: "Cosine similarity không quan tâm độ dài vector, chỉ đo hướng — phù hợp với embeddings chuẩn hoá. cosine = 1 là cùng hướng (đồng nghĩa), cosine = 0 là vuông góc (không liên quan), cosine = -1 là ngược hướng (trái nghĩa, hiếm gặp).",
+  },
 ];
 
 /* ── Main Component ── */
@@ -136,6 +178,41 @@ export default function WordEmbeddingsTopic() {
           correct={1}
           explanation={`"Phở" và "bún chả" đều là món ăn Việt Nam — chúng xuất hiện trong ngữ cảnh giống nhau (nhà hàng, ngon, Hà Nội...). Word Embeddings biến từ thành TỌA ĐỘ trên bản đồ — từ có nghĩa gần thì nằm gần nhau!`}
         />
+
+        <div className="mt-6 space-y-3 text-sm leading-relaxed">
+          <p>
+            <strong>Liên tưởng 1 — Cách bạn sắp xếp kệ sách:</strong>{" "}
+            Khi bạn sắp kệ sách ở nhà, bạn đặt sách cùng chủ đề gần nhau:
+            tiểu thuyết gần tiểu thuyết, sách kỹ thuật gần sách kỹ thuật. Bạn
+            không cần ai bảo — bạn &quot;cảm&quot; được từ nội dung. Word
+            embedding là bản đồ tự sắp xếp như vậy cho từ ngữ: &quot;phở&quot;
+            gần &quot;bún chả&quot;, không phải vì ai dán nhãn, mà vì chúng
+            cùng xuất hiện trong các ngữ cảnh về ẩm thực.
+          </p>
+          <p>
+            <strong>Liên tưởng 2 — Map định vị Sài Gòn:</strong>{" "}
+            Trên bản đồ Sài Gòn, Bến Thành gần phố Tây (Phạm Ngũ Lão), xa quận
+            9. Bạn đo khoảng cách bằng km. Trong word embedding, mỗi từ là
+            một toạ độ trong không gian 300 chiều. Bạn đo &quot;độ giống
+            nghĩa&quot; bằng cosine similarity giữa hai vector.
+          </p>
+          <p>
+            <strong>Liên tưởng 3 — &quot;Vua - đàn ông + phụ nữ =
+            hoàng hậu&quot;:</strong>{" "}
+            Đây là đẳng thức kinh điển thể hiện word embedding không chỉ là
+            &quot;gần/xa&quot; — nó còn biểu diễn được các mối quan hệ trừu
+            tượng như &quot;giới tính&quot;, &quot;số ít/số nhiều&quot;,
+            &quot;thủ đô-quốc gia&quot;, &quot;nguyên thể-quá khứ&quot;.
+            Việc này gần như phép thuật khi công bố (Mikolov, 2013).
+          </p>
+          <p>
+            <strong>Liên tưởng 4 — Tìm kiếm ngữ nghĩa trên Shopee:</strong>{" "}
+            Khi bạn gõ &quot;quần jean&quot;, Shopee cũng hiện &quot;quần
+            bò&quot;, &quot;quần tây&quot; — dù bạn không gõ. Đằng sau hậu
+            trường là embedding: các từ này có vector gần nhau. Đây là một
+            trong những ứng dụng công nghiệp sớm nhất của word embedding.
+          </p>
+        </div>
       </LessonSection>
 
       {/* ── Step 2: Interactive Viz ── */}
@@ -238,8 +315,75 @@ export default function WordEmbeddingsTopic() {
         </VisualizationSection>
       </LessonSection>
 
+      {/* ── Step 2.5: Interpretation & bias ── */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Đọc hiểu embedding">
+        <div className="space-y-4 text-sm leading-relaxed">
+          <p>
+            <strong>Tại sao việc đo &quot;gần&quot; trong embedding khác với
+            khoảng cách Euclid thông thường?</strong>{" "}
+            Trong word embedding, độ dài vector phụ thuộc vào tần suất từ
+            xuất hiện. Nếu dùng Euclid, từ hiếm sẽ &quot;xa&quot; tất cả vì
+            norm nhỏ. Cosine similarity bỏ qua độ dài, chỉ đo hướng — phù
+            hợp hơn cho đo độ tương đồng ngữ nghĩa.
+          </p>
+
+          <div className="rounded-xl border border-border bg-surface p-4">
+            <p className="font-semibold text-foreground mb-2">
+              Bảng ví dụ cosine similarity thực tế (embedding tiếng Việt):
+            </p>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2">Cặp từ</th>
+                  <th className="text-right py-2">Cosine</th>
+                  <th className="text-left py-2 pl-4">Diễn giải</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted">
+                <tr className="border-b border-border/50">
+                  <td className="py-2">phở — bún chả</td>
+                  <td className="text-right py-2 font-mono">0.86</td>
+                  <td className="pl-4 py-2">Cùng chủ đề ẩm thực</td>
+                </tr>
+                <tr className="border-b border-border/50">
+                  <td className="py-2">Hà Nội — Sài Gòn</td>
+                  <td className="text-right py-2 font-mono">0.79</td>
+                  <td className="pl-4 py-2">Đều là thành phố lớn</td>
+                </tr>
+                <tr className="border-b border-border/50">
+                  <td className="py-2">vui — hạnh phúc</td>
+                  <td className="text-right py-2 font-mono">0.72</td>
+                  <td className="pl-4 py-2">Cảm xúc tích cực</td>
+                </tr>
+                <tr className="border-b border-border/50">
+                  <td className="py-2">phở — máy tính</td>
+                  <td className="text-right py-2 font-mono">0.11</td>
+                  <td className="pl-4 py-2">Khác chủ đề hoàn toàn</td>
+                </tr>
+                <tr>
+                  <td className="py-2">vui — buồn</td>
+                  <td className="text-right py-2 font-mono">0.42</td>
+                  <td className="pl-4 py-2">
+                    Trái nghĩa nhưng cùng domain cảm xúc &rArr; cosine vừa
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <Callout variant="warning" title="Cạm bẫy: gần không có nghĩa là đồng nghĩa">
+            Một điểm thường nhầm: &quot;vui&quot; và &quot;buồn&quot; có
+            cosine khá cao (0.42) mặc dù trái nghĩa. Lý do: chúng xuất hiện
+            trong cùng ngữ cảnh (câu về cảm xúc). Word embedding chỉ nắm bắt
+            <em>similarity of context</em>, không phải <em>semantic
+            equivalence</em>. Cần cẩn thận khi dùng cho các task đòi hỏi
+            phân biệt đối lập (sentiment, logic).
+          </Callout>
+        </div>
+      </LessonSection>
+
       {/* ── Step 3: AhaMoment ── */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           <p>
             <strong>Word Embeddings</strong>{" "}
@@ -252,7 +396,7 @@ export default function WordEmbeddingsTopic() {
       </LessonSection>
 
       {/* ── Step 4: InlineChallenge ── */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
           question="Nếu vector('Hà Nội') - vector('phở') + vector('cơm tấm'), kết quả sẽ gần vector nào nhất?"
           options={[
@@ -263,10 +407,38 @@ export default function WordEmbeddingsTopic() {
           correct={1}
           explanation="Hà Nội - phở = khái niệm 'thành phố'. Cộng cơm tấm = thành phố + đặc sản cơm tấm = Sài Gòn! Embeddings mã hóa cả quan hệ địa lý-ẩm thực."
         />
+
+        <div className="mt-6">
+          <InlineChallenge
+            question={`Từ "đá" có thể là động từ ("đá bóng") hoặc danh từ ("hòn đá"). Word2Vec gán MỘT vector duy nhất cho "đá". Điều gì xảy ra?`}
+            options={[
+              "Vector 'đá' sẽ rất chính xác — tách biệt hai nghĩa hoàn hảo",
+              "Vector 'đá' là trung bình của cả hai nghĩa → gần 'bóng' một chút VÀ gần 'hòn' một chút, nhưng không nghĩa nào rõ ràng",
+              "Word2Vec sẽ báo lỗi và từ chối huấn luyện",
+              "Vector 'đá' bằng 0",
+            ]}
+            correct={1}
+            explanation={`Đây là vấn đề polysemy (đa nghĩa) của embeddings cố định. Vector 'đá' là hỗn hợp của mọi ngữ cảnh mà 'đá' xuất hiện. Giải pháp: BERT và các contextual embeddings gán vector KHÁC NHAU tuỳ theo câu chứa "đá" — đây là lý do NLP hiện đại đã chuyển sang Transformer.`}
+          />
+        </div>
+
+        <div className="mt-6">
+          <InlineChallenge
+            question="Bạn xây hệ thống tìm kiếm bán hàng tiếng Việt. User gõ 'áo khoác ấm'. Hệ thống truyền thống (BoW) không tìm được sản phẩm 'jacket mùa đông'. Dùng word embedding giải quyết thế nào?"
+            options={[
+              "Chuyển chữ hoa thành chữ thường rồi tìm",
+              "Embedding biểu diễn 'áo khoác' và 'jacket' làm vector GẦN nhau; 'ấm' và 'mùa đông' cũng gần nhau → semantic search tìm được sản phẩm có nội dung gần ý người dùng",
+              "Tăng từ khoá cho database",
+              "Dùng regex chính xác",
+            ]}
+            correct={1}
+            explanation="Đây là nền tảng của semantic search hiện đại. Encode truy vấn và sản phẩm thành vector, rồi so cosine. Tiki, Lazada, Shopee đều đã chuyển từ BoW thuần sang retrieval dựa trên embedding (BGE, E5, GTE cho tiếng Anh; pho-w2v, vietnamese-bi-encoder cho tiếng Việt)."
+          />
+        </div>
       </LessonSection>
 
       {/* ── Step 5: Explanation ── */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
             <strong>Word Embeddings</strong>{" "}
@@ -325,11 +497,275 @@ print(model.similarity("pho", "car"))     # 0.08`}
               cũng có pre-trained vectors cho tiếng Việt. Các mô hình này hiểu {'"phở"'} gần {'"bún chả"'} tốt hơn mô hình tiếng Anh.
             </p>
           </Callout>
+
+          <CodeBlock language="python" title="Huấn luyện Word2Vec từ corpus tiếng Việt">
+{`import gensim
+from gensim.models import Word2Vec
+from pyvi import ViTokenizer
+
+# 1. Chuẩn bị corpus — list câu, mỗi câu là list từ (đã tokenize)
+raw_sentences = [
+    "Tôi ăn phở mỗi sáng ở Hà Nội",
+    "Bún chả là đặc sản Hà Nội nổi tiếng",
+    "Cơm tấm thơm ngon đậm chất Sài Gòn",
+    "Grab là ứng dụng xe ôm phổ biến tại Việt Nam",
+    # ... cần vài triệu câu để có embedding tốt
+]
+# Tách từ tiếng Việt (ViTokenizer nối 'Hà_Nội' thành 1 token)
+sentences = [ViTokenizer.tokenize(s).split() for s in raw_sentences]
+
+# 2. Huấn luyện Word2Vec (skip-gram)
+model = Word2Vec(
+    sentences=sentences,
+    vector_size=100,      # Số chiều embedding
+    window=5,             # Cửa sổ ngữ cảnh
+    min_count=2,          # Bỏ qua từ xuất hiện < 2 lần
+    sg=1,                 # 1 = skip-gram, 0 = CBOW
+    workers=4,
+    epochs=10,
+)
+
+# 3. Khám phá không gian vector
+print(model.wv.most_similar("phở", topn=3))
+# [('bún_chả', 0.85), ('cơm_tấm', 0.79), ('bánh_mì', 0.72)]
+
+# 4. Phép toán vector — king-queen trên tiếng Việt
+result = model.wv.most_similar(
+    positive=["Sài_Gòn", "phở"],
+    negative=["Hà_Nội"],
+)
+print(result[0])  # Gần 'cơm_tấm' — đặc sản Sài Gòn`}
+          </CodeBlock>
+
+          <CollapsibleDetail title="Skip-gram vs CBOW (cơ chế huấn luyện Word2Vec)">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Word2Vec (Mikolov, 2013) có hai biến thể huấn luyện với logic
+                ngược nhau:
+              </p>
+              <p>
+                <strong>CBOW (Continuous Bag of Words):</strong> dùng ngữ
+                cảnh (các từ xung quanh) để dự đoán từ trung tâm. Ví dụ
+                từ[&quot;Tôi&quot;, &quot;ăn&quot;, &quot;ở&quot;, &quot;Hà Nội&quot;] → dự đoán{" "}
+                <em>&quot;phở&quot;</em>. Nhanh, phù hợp corpus lớn, từ phổ biến.
+              </p>
+              <p>
+                <strong>Skip-gram:</strong> ngược lại — dùng từ trung tâm
+                để dự đoán các từ ngữ cảnh. Từ <em>&quot;phở&quot;</em> → dự đoán{" "}
+                [&quot;Tôi&quot;, &quot;ăn&quot;, &quot;ở&quot;, &quot;Hà Nội&quot;]. Chậm hơn nhưng tốt hơn cho
+                từ hiếm.
+              </p>
+              <p>
+                <strong>Negative sampling:</strong> kỹ thuật tăng tốc —
+                thay vì softmax trên toàn bộ vocabulary (triệu từ), chỉ cập
+                nhật với vài từ &quot;giả&quot; (negative samples). Giảm chi phí từ
+                O(V) xuống O(k) với k = 5-20.
+              </p>
+              <p className="text-muted">
+                Kết quả thực nghiệm: skip-gram + negative sampling thường
+                cho embedding tốt nhất cho NLP hiện đại (trước khi
+                Transformer thay thế).
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <Callout variant="warning" title="Embeddings có bias — cẩn trọng khi triển khai">
+            Word embeddings phản ánh bias trong corpus huấn luyện. Ví dụ
+            nổi tiếng: <code>vector(&quot;lập trình viên&quot;) − vector(&quot;đàn ông&quot;) +
+            vector(&quot;phụ nữ&quot;)</code> có thể cho ra{" "}
+            <em>&quot;nội trợ&quot;</em> thay vì &quot;lập trình viên&quot; — vì corpus
+            chứa thiên kiến giới. Khi triển khai cho hệ thống tuyển dụng,
+            tín dụng, tư pháp, bạn BẮT BUỘC phải kiểm tra và giảm thiểu
+            bias (debias techniques).
+          </Callout>
+
+          <CollapsibleDetail title="Từ Word2Vec đến sentence embedding & modern embedding model (nâng cao)">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Word embedding chỉ là bước khởi đầu. Trong các hệ thống NLP
+                hiện đại, chúng ta thường cần vector cho cả câu hoặc đoạn văn,
+                không phải từng từ:
+              </p>
+              <ul className="list-disc list-inside space-y-2 pl-2">
+                <li>
+                  <strong>Sentence-BERT (SBERT, 2019):</strong>{" "}
+                  fine-tune BERT với contrastive loss để vector câu trở nên có
+                  ý nghĩa khi đo cosine. Đây là bước nhảy từ word-level sang
+                  sentence-level.
+                </li>
+                <li>
+                  <strong>E5, BGE, GTE (2023-2024):</strong>{" "}
+                  các embedding model hiện đại train trên hàng tỷ cặp câu
+                  (query-passage), tối ưu cho retrieval. Là xương sống của{" "}
+                  <TopicLink slug="rag">RAG</TopicLink>.
+                </li>
+                <li>
+                  <strong>Cross-encoder vs Bi-encoder:</strong>{" "}
+                  Bi-encoder (như SBERT) encode câu độc lập → nhanh nhưng
+                  accuracy thấp hơn. Cross-encoder encode cặp câu cùng lúc →
+                  chính xác hơn nhưng chậm. Pattern thực tế: bi-encoder cho
+                  retrieval, cross-encoder cho reranking.
+                </li>
+                <li>
+                  <strong>OpenAI text-embedding-3, Cohere Embed v3:</strong>{" "}
+                  dịch vụ API cho embedding chất lượng cao, hỗ trợ tiếng
+                  Việt. Nhược điểm: chi phí + vendor lock-in.
+                </li>
+              </ul>
+              <p>
+                Trong tiếng Việt, các lựa chọn phổ biến cho semantic search:{" "}
+                <code>vinai/phobert-base</code> (với mean pooling),{" "}
+                <code>bkai-foundation-models/vietnamese-bi-encoder</code>
+                (train riêng cho retrieval), hoặc OpenAI API nếu quy mô nhỏ.
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <CodeBlock language="python" title="Semantic search tiếng Việt bằng sentence embedding">
+{`from sentence_transformers import SentenceTransformer, util
+import torch
+
+# Load model tiếng Việt
+model = SentenceTransformer(
+    "bkai-foundation-models/vietnamese-bi-encoder"
+)
+
+# Cơ sở dữ liệu sản phẩm của shop thời trang
+products = [
+    "Áo khoác dạ nam ấm mùa đông",
+    "Giày sneaker thể thao chạy bộ",
+    "Quần jean slim nam basic",
+    "Áo thun polo cổ trụ nam",
+    "Jacket nỉ trơn đi chơi lạnh",
+]
+prod_emb = model.encode(products, convert_to_tensor=True)
+
+# User gõ truy vấn
+query = "áo ấm cho mùa lạnh"
+q_emb = model.encode(query, convert_to_tensor=True)
+
+# Tìm top-3 sản phẩm gần nghĩa nhất
+scores = util.cos_sim(q_emb, prod_emb)[0]
+top3 = torch.topk(scores, 3)
+for score, idx in zip(top3.values, top3.indices):
+    print(f"{score:.3f} - {products[idx]}")
+# 0.872 - Jacket nỉ trơn đi chơi lạnh
+# 0.845 - Áo khoác dạ nam ấm mùa đông
+# 0.412 - Áo thun polo cổ trụ nam`}
+          </CodeBlock>
+
+          <Callout variant="insight" title="Word embedding vẫn chưa chết">
+            Mặc dù BERT/GPT đã thay thế Word2Vec cho hầu hết task hiện đại,
+            word embedding cổ điển vẫn hữu ích: (1) lightweight — chạy được
+            trên CPU cho edge device; (2) giải thích tốt — vẫn là ví dụ số 1
+            cho sinh viên học NLP; (3) nền tảng toán học cho các embedding
+            hiện đại (cùng dùng cosine, cùng triết lý distributional). Đừng
+            nhảy thẳng sang Transformer mà bỏ qua nền móng này.
+          </Callout>
+
+          <p>
+            <strong>So sánh các thuật toán embedding kinh điển:</strong>
+          </p>
+
+          <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
+            <li>
+              <strong>Word2Vec (Mikolov, 2013):</strong>{" "}
+              predict context từ center word (skip-gram) hoặc ngược lại (CBOW).
+              Đơn giản, nhanh, nhưng không tận dụng được thống kê toàn cục.
+            </li>
+            <li>
+              <strong>GloVe (Pennington, 2014):</strong>{" "}
+              kết hợp matrix factorization với local context. Thường cho kết
+              quả tương đương Word2Vec nhưng hội tụ nhanh hơn trên corpus lớn.
+            </li>
+            <li>
+              <strong>fastText (Bojanowski, 2017):</strong>{" "}
+              dùng n-gram ký tự — xử lý được từ hiếm và OOV. Hoạt động tốt
+              với các ngôn ngữ có hình thái phong phú (morphology-rich
+              languages).
+            </li>
+            <li>
+              <strong>ELMo (Peters, 2018):</strong>{" "}
+              lần đầu cung cấp contextual embedding bằng bi-LSTM. Đã giải
+              quyết một phần vấn đề polysemy.
+            </li>
+            <li>
+              <strong>BERT (Devlin, 2018):</strong>{" "}
+              contextual embedding dùng Transformer — chuẩn vàng cho NLP
+              hiện đại.
+            </li>
+          </ul>
         </ExplanationSection>
       </LessonSection>
 
+      {/* ── Step 5.5: Production usage ── */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Embedding trong production">
+        <div className="space-y-4 text-sm leading-relaxed">
+          <p>
+            <strong>Quy trình chuẩn cho semantic search tiếng Việt:</strong>
+          </p>
+
+          <ol className="list-decimal list-inside space-y-2 pl-2">
+            <li>
+              <strong>Preprocessing:</strong>{" "}
+              làm sạch văn bản (bỏ HTML, emoji dư thừa, normalize dấu), chia
+              câu dài thành đoạn 200-300 token để tôn trọng giới hạn context
+              của embedding model.
+            </li>
+            <li>
+              <strong>Chọn model:</strong>{" "}
+              cho tiếng Việt, cân nhắc PhoBERT-based bi-encoder (chạy local,
+              free) hay OpenAI API (chất lượng cao, trả phí). Với dataset
+              1M+ chunk, cân bằng tốt nhất là model open source chạy trên GPU
+              của bạn.
+            </li>
+            <li>
+              <strong>Encode &amp; index:</strong>{" "}
+              chạy batch encode, lưu vector vào vector database (Qdrant,
+              Milvus, pgvector Supabase). Cần approximate nearest neighbor
+              (HNSW) để scale.
+            </li>
+            <li>
+              <strong>Retrieval + rerank:</strong>{" "}
+              bi-encoder lấy top-50, sau đó cross-encoder rerank xuống top-5.
+              Cross-encoder (như BKAI vietnamese-rerank) cho độ chính xác cao
+              hơn.
+            </li>
+            <li>
+              <strong>Monitor drift:</strong>{" "}
+              theo dõi phân phối truy vấn theo thời gian. Nếu user bắt đầu
+              hỏi về chủ đề mới (ví dụ COVID xuất hiện 2020), bạn có thể cần
+              retrain/fine-tune embedding trên dữ liệu mới.
+            </li>
+          </ol>
+
+          <div className="mt-4 rounded-xl border border-border bg-surface p-4">
+            <p className="font-semibold text-foreground mb-2">
+              Câu chuyện thực tế: knowledge base CSKH Viettel
+            </p>
+            <p className="text-muted">
+              Giả sử đội CSKH có 50.000 câu hỏi thường gặp về gói cước, dịch
+              vụ, khuyến mãi. Cách cũ (BoW + TF-IDF) bắt keyword chính xác
+              nhưng hỏng khi user dùng synonym (&quot;5G&quot; vs &quot;mạng
+              nhanh&quot;, &quot;gói cước&quot; vs &quot;data&quot;). Sau khi
+              chuyển sang bi-encoder tiếng Việt, recall@5 tăng từ 62% lên
+              89%, user resolution rate tăng 20%. Đầu tư: 1 tuần kỹ sư và GPU
+              T4 giá rẻ.
+            </p>
+          </div>
+
+          <Callout variant="tip" title="Lời khuyên cho team nhỏ">
+            Nếu bạn chỉ có &lt;10K documents và không có GPU, đừng tự host.
+            Dùng OpenAI text-embedding-3-small qua API — chi phí rất thấp
+            (&lt;$5 cho 1M token), chất lượng cao, không phải quản lý
+            infra. Chỉ self-host khi số lượng query/ngày hoặc data
+            sensitivity biện minh được thời gian kỹ sư bỏ ra.
+          </Callout>
+        </div>
+      </LessonSection>
+
       {/* ── Step 6: Comparison ── */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="So sánh phương pháp">
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="So sánh phương pháp">
         <div className="space-y-3">
           <p className="text-sm text-foreground leading-relaxed">
             Hãy so sánh 3 cách biểu diễn từ mà bạn đã học:
@@ -352,7 +788,7 @@ print(model.similarity("pho", "car"))     # 0.08`}
       </LessonSection>
 
       {/* ── Step 7: MiniSummary ── */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+      <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về Word Embeddings"
           points={[
@@ -361,12 +797,13 @@ print(model.similarity("pho", "car"))     # 0.08`}
             "Phép tính vector có ý nghĩa: vua - đàn ông + phụ nữ ≈ hoàng hậu.",
             "Cosine similarity đo mức tương đồng giữa hai từ (từ -1 đến 1).",
             "Nền tảng cho mọi mô hình NLP hiện đại: Word2Vec → GloVe → BERT → GPT.",
+            "Hạn chế: không xử lý đa nghĩa (polysemy) và thừa kế bias từ corpus — cần debias khi triển khai.",
           ]}
         />
       </LessonSection>
 
       {/* ── Step 8: Quiz ── */}
-      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+      <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />
       </LessonSection>
     </>

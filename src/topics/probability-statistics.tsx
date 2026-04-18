@@ -9,6 +9,7 @@ import {
   MiniSummary,
   Callout,
   CodeBlock,
+  CollapsibleDetail,
   LaTeX,
   TopicLink,
 } from "@/components/interactive";
@@ -38,7 +39,7 @@ export const metadata: TopicMeta = {
 /* ── Constants ── */
 const TOTAL_PEOPLE = 1000;
 const GRID_COLS = 40; // 40 cols × 25 rows = 1000
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 9;
 
 /* Icon size in the grid */
 const ICON_R = 4;
@@ -180,6 +181,46 @@ export default function ProbabilityStatisticsTopic() {
         ],
         explanation:
           "Mẫu số P(dương tính) là xác suất tổng thể của kết quả dương tính, tính bằng: P(dương tính|bệnh) × P(bệnh) + P(dương tính|khỏe) × P(khỏe). Đây là normalizing constant đảm bảo posterior tổng bằng 1.",
+      },
+      {
+        question:
+          "Biến ngẫu nhiên X có phân phối chuẩn với μ = 100, σ = 15 (ví dụ IQ). Xác suất X nằm trong khoảng [85, 115] xấp xỉ bao nhiêu?",
+        options: ["50%", "68%", "95%", "99.7%"],
+        correct: 1,
+        explanation:
+          "Quy tắc 68-95-99.7: với phân phối chuẩn, ~68% dữ liệu nằm trong 1σ của μ, ~95% trong 2σ, ~99.7% trong 3σ. [85, 115] = μ ± 15 = μ ± 1σ → ~68%.",
+      },
+      {
+        question:
+          "Một email chứa từ 'trúng thưởng'. P(trúng thưởng|spam) = 0.6, P(trúng thưởng|không spam) = 0.01, tỷ lệ spam = 30%. P(spam|có từ 'trúng thưởng') gần nhất với giá trị nào?",
+        options: ["30%", "60%", "96%", "99.9%"],
+        correct: 2,
+        explanation:
+          "Bayes: P(spam|E) = P(E|spam)·P(spam) / P(E) = 0.6·0.3 / (0.6·0.3 + 0.01·0.7) = 0.18 / 0.187 ≈ 96.3%. Đây là cơ chế của Naive Bayes classifier dùng trong lọc email hàng tỷ lần mỗi ngày.",
+      },
+      {
+        question:
+          "Bạn có mẫu n = 400, trung bình mẫu x̄ = 50, độ lệch chuẩn mẫu s = 20. Khoảng tin cậy 95% cho trung bình tổng thể μ xấp xỉ?",
+        options: [
+          "[48, 52] — dùng sai số chuẩn s/√n",
+          "[30, 70] — dùng x̄ ± 1σ",
+          "[10, 90] — dùng x̄ ± 2σ (không chia √n)",
+          "[49.9, 50.1] — đường kính rất hẹp",
+        ],
+        correct: 0,
+        explanation:
+          "Sai số chuẩn (SE) = s/√n = 20/20 = 1. CI 95% ≈ x̄ ± 1.96·SE = 50 ± 1.96 ≈ [48.04, 51.96]. Khoảng hẹp vì n lớn. Nhầm phổ biến: dùng x̄ ± 2s thay vì x̄ ± 2·SE.",
+      },
+      {
+        type: "fill-blank",
+        question:
+          "Định lý giới hạn trung tâm (Central Limit Theorem) nói rằng: khi cỡ mẫu n đủ lớn, phân phối của trung bình mẫu tiến về phân phối {blank}, bất kể phân phối gốc. Đây là lý do vì sao hầu hết các bài toán {blank} đều giả định dữ liệu có phân phối chuẩn xung quanh giá trị trung bình.",
+        blanks: [
+          { answer: "chuẩn", accept: ["normal", "Gaussian", "gaussian", "bình thường"] },
+          { answer: "thống kê", accept: ["statistics", "suy luận thống kê", "inference"] },
+        ],
+        explanation:
+          "CLT là định lý cơ bản của thống kê. Dù dữ liệu gốc có phân phối gì (uniform, Bernoulli, Poisson...), trung bình mẫu luôn tiến về phân phối chuẩn khi n đủ lớn (thường n ≥ 30). Đây là nền tảng của mọi test thống kê: t-test, ANOVA, confidence intervals — và cả công thức loss của hồi quy tuyến tính (giả định residual ~ N(0, σ²)).",
       },
     ],
     [],
@@ -362,6 +403,67 @@ export default function ProbabilityStatisticsTopic() {
               xác suất — và cách định lý Bayes khắc phục điều đó.
             </p>
           </PredictionGate>
+
+          <div className="mt-6 space-y-3 text-sm leading-relaxed">
+            <p>
+              <strong>Liên tưởng 1 — Mở &quot;giao hàng Grab&quot; vào chiều
+              thứ sáu:</strong>{" "}
+              Bạn nhìn màn hình: 23% xe đang bận, trời bắt đầu mưa. Trong đầu,
+              bạn &quot;cộng&quot; các bằng chứng: mưa + giờ tan tầm →
+              xác suất chờ lâu tăng đáng kể. Đó chính là suy luận Bayes —
+              cập nhật niềm tin khi có thêm bằng chứng mới.
+            </p>
+            <p>
+              <strong>Liên tưởng 2 — Đọc tin &quot;90% người giàu dậy sớm&quot;:</strong>{" "}
+              Nhiều khoá học làm giàu bán bằng thống kê kiểu này. Cạm bẫy:
+              họ không cho bạn base rate — &quot;bao nhiêu người DẬY SỚM đã
+              trở nên giàu?&quot;. Nếu 90% dân số cũng dậy sớm, tin này không
+              có giá trị dự đoán. Đây là base rate fallacy trong cuộc sống.
+            </p>
+            <p>
+              <strong>Liên tưởng 3 — Kiểm định covid bằng test nhanh:</strong>{" "}
+              Giữa mùa dịch (base rate 30%), test dương tính gần như chắc chắn
+              bạn đã nhiễm. Khi hết dịch (base rate 0.1%), cùng một test
+              dương tính thường là giả — cần PCR xác nhận. Con số không đổi,
+              ý nghĩa thay đổi hoàn toàn theo base rate.
+            </p>
+            <p>
+              <strong>Liên tưởng 4 — Trò chơi bầu cua tôm cá:</strong>{" "}
+              Ai chơi cũng &quot;cảm&quot; rằng mặt vừa xuất hiện ít khả năng
+              ra tiếp. Nhưng xúc xắc không có trí nhớ — mỗi lần độc lập. Đây
+              là gambler&apos;s fallacy. Thống kê đúng: xác suất có điều kiện
+              P(A|B) không phải lúc nào cũng giống P(A). Đặc biệt khi A, B độc
+              lập thì P(A|B) = P(A).
+            </p>
+          </div>
+
+          <div className="mt-6">
+            <InlineChallenge
+              question="Một chiếc hộp có 3 viên bi đỏ, 2 viên bi xanh. Bạn rút 1 viên (không nhìn), rồi rút thêm 1 viên NỮA (không trả viên đầu vào). Xác suất viên thứ HAI là đỏ bằng bao nhiêu?"
+              options={[
+                "2/5 = 40% — vì 2 viên còn lại là xanh",
+                "3/5 = 60% — bằng xác suất ban đầu, trung bình theo luật xác suất toàn phần",
+                "Không tính được nếu không biết viên đầu màu gì",
+                "1/2 = 50% — vì chỉ còn 2 màu",
+              ]}
+              correct={1}
+              explanation="Luật xác suất toàn phần: P(thứ 2 đỏ) = P(thứ 1 đỏ)·P(thứ 2 đỏ|thứ 1 đỏ) + P(thứ 1 xanh)·P(thứ 2 đỏ|thứ 1 xanh) = (3/5)(2/4) + (2/5)(3/4) = 6/20 + 6/20 = 12/20 = 3/5. Trực giác: nếu không có thông tin viên đầu, xác suất các lần rút giống nhau — 3/5."
+            />
+          </div>
+
+          <div className="mt-6">
+            <InlineChallenge
+              question="Bạn lập một mô hình ML chẩn đoán bệnh hiếm (tỷ lệ mắc 0.5%). Test-set accuracy = 99%. Vì sao con số này GÂY HIỂU LẦM?"
+              options={[
+                "Accuracy cao luôn là dấu hiệu mô hình tốt",
+                "Vì mô hình chỉ cần luôn đoán 'không bệnh' cũng đạt 99.5% accuracy — cần nhìn precision/recall trên lớp hiếm",
+                "99% là thấp với bài toán y tế",
+                "Không vấn đề gì — triển khai ngay",
+              ]}
+              correct={1}
+              explanation="Đây là class imbalance bẫy. Với base rate 0.5%, mô hình 'luôn nói không bệnh' có accuracy 99.5%. Accuracy không đo được năng lực phát hiện lớp thiểu số. Cần dùng precision, recall, F1, AUC-ROC — và đặc biệt PR-AUC cho dữ liệu cực kỳ mất cân bằng."
+            />
+          </div>
         </LessonSection>
 
         {/* Step 2: Aha moment */}
@@ -578,10 +680,247 @@ y_pred = np.array([0.7, 0.2, 0.1])   # Predictions
 ce_loss = -np.sum(y_true * np.log(y_pred))
 print(f"CE Loss = {ce_loss:.3f}")     # 0.357`}
           </CodeBlock>
+
+          <CodeBlock language="python" title="Ước lượng khoảng tin cậy & hypothesis test">
+{`import numpy as np
+from scipy import stats
+
+# === Tình huống: đánh giá 2 phiên bản trang chủ Tiki ===
+# Phiên bản A (cũ): 1200 visit, 144 đặt hàng → conversion 12.0%
+# Phiên bản B (mới): 1150 visit, 161 đặt hàng → conversion 14.0%
+n_a, x_a = 1200, 144
+n_b, x_b = 1150, 161
+p_a = x_a / n_a
+p_b = x_b / n_b
+print(f"Conversion A = {p_a:.2%}, B = {p_b:.2%}")
+
+# === Z-test hai tỉ lệ ===
+p_pool = (x_a + x_b) / (n_a + n_b)
+se = np.sqrt(p_pool * (1 - p_pool) * (1/n_a + 1/n_b))
+z = (p_b - p_a) / se
+p_value = 2 * (1 - stats.norm.cdf(abs(z)))  # hai phía
+print(f"Z = {z:.3f}, p-value = {p_value:.4f}")
+
+# === Khoảng tin cậy 95% cho hiệu tỉ lệ ===
+se_diff = np.sqrt(p_a*(1-p_a)/n_a + p_b*(1-p_b)/n_b)
+ci_low = (p_b - p_a) - 1.96 * se_diff
+ci_high = (p_b - p_a) + 1.96 * se_diff
+print(f"CI 95%: [{ci_low:.4f}, {ci_high:.4f}]")
+
+# Nếu khoảng tin cậy KHÔNG chứa 0 → khác biệt có ý nghĩa thống kê
+# p-value < 0.05 → bác bỏ giả thuyết 'hai phiên bản giống nhau'`}
+          </CodeBlock>
+
+          <Callout variant="info" title="P-value KHÔNG phải là xác suất giả thuyết đúng">
+            Đây là hiểu lầm phổ biến nhất trong thống kê. P-value = 0.03 KHÔNG
+            nghĩa &quot;xác suất null hypothesis đúng là 3%&quot;. Nó nghĩa:
+            NẾU null hypothesis là đúng, thì xác suất thấy dữ liệu cực đoan
+            như mẫu đã quan sát (hoặc hơn) chỉ 3%. Hiểu đúng giúp tránh
+            p-hacking và kết luận ẩu — đặc biệt quan trọng với team A/B testing
+            trong các công ty VN như Tiki, Shopee, MoMo.
+          </Callout>
+
+          <CollapsibleDetail title="Phân phối Bernoulli, Binomial, Poisson — khi nào dùng?">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                <strong>Bernoulli(p):</strong>{" "}
+                một lần thử nhị phân, ra 1 với xác suất p, 0 với xác suất 1-p.
+                Ví dụ: một email có phải spam? Click/không click quảng cáo?
+                Là nền tảng của logistic regression.
+              </p>
+              <p>
+                <strong>Binomial(n, p):</strong>{" "}
+                tổng n lần Bernoulli độc lập. Ví dụ: trong 100 email, bao nhiêu
+                là spam? P(X=k) = C(n,k)·p^k·(1-p)^(n-k). Biến ngẫu nhiên số lần
+                thành công trong n lần thử.
+              </p>
+              <p>
+                <strong>Poisson(λ):</strong>{" "}
+                số sự kiện xảy ra trong khoảng thời gian/không gian cố định,
+                với trung bình λ. Ví dụ: số cuộc gọi Grab trong 1 phút giờ cao
+                điểm, số lỗi server trong 1 giờ. P(X=k) = λ^k·e^(-λ)/k!.
+              </p>
+              <p>
+                <strong>Quy tắc chọn phân phối:</strong>
+              </p>
+              <ul className="list-disc list-inside pl-2 space-y-1">
+                <li>Ngẫu nhiên liên tục quanh trung bình → <strong>Gaussian</strong></li>
+                <li>Đếm số sự kiện trong khoảng cố định → <strong>Poisson</strong></li>
+                <li>Tổng số lần thành công trong n lần thử → <strong>Binomial</strong></li>
+                <li>Thời gian giữa các sự kiện → <strong>Exponential</strong></li>
+                <li>Số lần thử đến khi thành công đầu tiên → <strong>Geometric</strong></li>
+              </ul>
+              <p>
+                Trong ML, các phân phối này xuất hiện trong lựa chọn loss
+                function: Gaussian → MSE; Bernoulli/Categorical → cross-entropy;
+                Poisson → Poisson regression cho đếm.
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <Callout variant="tip" title="Từ xác suất đến MLE & MAP (kiến thức nâng cao)">
+            <p>
+              Nhiều thuật toán ML có thể được viết lại dưới dạng tối đa hoá
+              xác suất. <strong>MLE (Maximum Likelihood Estimation):</strong>{" "}
+              tìm tham số &theta; tối đa P(data|&theta;).{" "}
+              <strong>MAP (Maximum A Posteriori):</strong> MLE + prior — tối
+              đa P(&theta;|data) &prop; P(data|&theta;)·P(&theta;). Đây là nền
+              tảng của Bayesian ML và cũng giải thích tại sao regularization
+              (L2 → Gaussian prior, L1 → Laplace prior) hoạt động.
+            </p>
+          </Callout>
+
+          <CollapsibleDetail title="KL divergence và mối liên hệ với cross-entropy (nâng cao)">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                KL divergence đo &quot;khoảng cách&quot; (không đối xứng) giữa
+                hai phân phối p và q:
+              </p>
+              <LaTeX block>
+                {String.raw`D_{\text{KL}}(p \| q) = \sum_{x} p(x) \log \frac{p(x)}{q(x)}`}
+              </LaTeX>
+              <p>
+                Có thể viết lại:
+              </p>
+              <LaTeX block>
+                {String.raw`D_{\text{KL}}(p \| q) = H(p, q) - H(p)`}
+              </LaTeX>
+              <p>
+                Trong đó H(p, q) là cross-entropy và H(p) là entropy của p.
+                Khi p là nhãn thật (one-hot), H(p) = 0 → minimize cross-entropy
+                tương đương minimize KL divergence. Điều này giải thích tại sao
+                CE là loss mặc định cho phân loại.
+              </p>
+              <p>
+                KL là nền tảng của: variational inference (VAE),{" "}
+                <TopicLink slug="knowledge-distillation">knowledge
+                distillation</TopicLink> (học từ mô hình lớn sang nhỏ), reinforcement
+                learning (KL penalty trong PPO), và đo drift trong production ML.
+              </p>
+              <p>
+                <strong>Cảnh báo:</strong> KL không đối xứng (D_KL(p||q) ≠
+                D_KL(q||p)). Dùng sai hướng có thể dẫn tới mode collapse (trong
+                VAE) hoặc mode covering. Đây là một trong những lỗi tinh vi nhất
+                khi triển khai generative model.
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <Callout variant="warning" title="Những sai lầm thống kê phổ biến trong startup">
+            (1) Kết luận từ mẫu quá nhỏ — 50 người khó cho kết luận tin cậy;
+            (2) P-hacking — chạy hàng chục test rồi chỉ báo cáo cái có p &lt;
+            0.05; (3) Kiểm định nhiều lần mà không điều chỉnh Bonferroni;
+            (4) Coi correlation là causation;
+            (5) Không tính cỡ mẫu trước khi chạy A/B test → dễ dừng sớm khi
+            thấy kết quả đẹp. Mọi dự án dữ liệu nghiêm túc cần trả lời 5 câu
+            này trước khi công bố số liệu.
+          </Callout>
         </LessonSection>
 
-        {/* Step 7: Summary */}
-        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tổng kết">
+        {/* Step 6.5: Sampling & Applications */}
+        <LessonSection
+          step={7}
+          totalSteps={TOTAL_STEPS}
+          label="Ứng dụng trong ML"
+        >
+          <p className="text-sm leading-relaxed">
+            <strong>Xác suất và thống kê có mặt trong MỌI bước của ML:</strong>
+          </p>
+
+          <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
+            <li>
+              <strong>Khởi tạo trọng số:</strong>{" "}
+              Xavier/He initialization dùng phân phối chuẩn với variance phụ
+              thuộc số neuron đầu vào/ra — nhằm giữ activation ổn định khi
+              propagation.
+            </li>
+            <li>
+              <strong>Stochastic gradient descent:</strong>{" "}
+              mẫu ngẫu nhiên mini-batch từ tập train. Việc đổi batch giữa
+              các epoch (shuffle) đảm bảo gradient không bias theo thứ tự.
+            </li>
+            <li>
+              <strong>Dropout:</strong>{" "}
+              tắt ngẫu nhiên một phần neuron trong huấn luyện — được giải
+              thích là sampling trên một tập lớn các mô hình nhỏ (ensemble
+              giả).
+            </li>
+            <li>
+              <strong>Batch normalization:</strong>{" "}
+              chuẩn hoá mỗi feature về phân phối chuẩn (mean 0, variance 1)
+              trong mỗi mini-batch để tăng tốc hội tụ.
+            </li>
+            <li>
+              <strong>Data augmentation:</strong>{" "}
+              biến đổi ngẫu nhiên ảnh/text để mở rộng dataset — mọi phép biến
+              đổi đều có tham số được sample từ phân phối.
+            </li>
+            <li>
+              <strong>Bayesian neural networks:</strong>{" "}
+              thay vì một giá trị cho mỗi trọng số, lưu cả phân phối — cho
+              ước lượng độ bất định (uncertainty).
+            </li>
+          </ul>
+
+          <Callout variant="tip" title="Uncertainty quantification — quantile tin cậy cho LLM">
+            Khi LLM trả lời &quot;2 + 2 = 4&quot;, bạn muốn mô hình tự tin.
+            Khi hỏi &quot;thủ đô của Atlantis là gì?&quot;, bạn muốn mô hình
+            nói &quot;không chắc&quot;. Các kỹ thuật như temperature sampling,
+            top-k/top-p, và Monte Carlo dropout đều dựa trên lý thuyết xác
+            suất — và là chủ đề nóng của AI safety 2024-2025.
+          </Callout>
+
+          <CollapsibleDetail title="Monte Carlo — mô phỏng bằng ngẫu nhiên (nâng cao)">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Phương pháp Monte Carlo là cách tính xấp xỉ kỳ vọng bằng lấy
+                mẫu. Thay vì tính tích phân &int; f(x) p(x) dx giải tích
+                (thường bất khả thi), ta lấy N mẫu x₁, ..., x_N từ p(x) rồi
+                ước lượng:
+              </p>
+              <LaTeX block>
+                {String.raw`\mathbb{E}[f(X)] \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i)`}
+              </LaTeX>
+              <p>
+                Ứng dụng trong ML:
+              </p>
+              <ul className="list-disc list-inside pl-2 space-y-1">
+                <li>Ước lượng integral trong VAE (ELBO).</li>
+                <li>MCTS (Monte Carlo Tree Search) trong AlphaGo — lấy mẫu các kịch bản game.</li>
+                <li>Uncertainty estimation trong Bayesian neural network (Monte Carlo dropout).</li>
+                <li>Importance sampling trong reinforcement learning.</li>
+              </ul>
+              <p>
+                Định lý giới hạn trung tâm (CLT) bảo đảm sai số ước lượng
+                giảm theo 1/√N — muốn gấp đôi chính xác, cần gấp bốn mẫu. Đây
+                là lý do Monte Carlo đôi khi chậm cho các ứng dụng real-time.
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <div className="mt-5 rounded-xl border border-border bg-surface p-4 space-y-3 text-sm">
+            <p className="font-semibold text-foreground">
+              Case study thực tế: Grab phát hiện gian lận
+            </p>
+            <p className="text-muted leading-relaxed">
+              Giả sử đội gian lận của Grab muốn phát hiện tài xế &quot;chạy
+              ma&quot; (hoàn tất chuyến khống để lấy bonus). Dữ liệu: 99.7%
+              chuyến là thật, 0.3% là gian lận. Nếu mô hình đạt accuracy 99.5%
+              — hầu hết bạn vẫn đang đoán &quot;không gian lận&quot;.
+            </p>
+            <p className="text-muted leading-relaxed">
+              Đội dùng: (1) Bayes-based anomaly score tính P(giao dịch|hành
+              vi bình thường); (2) độ lệch chuẩn theo tài xế để đánh giá
+              outlier; (3) p-value từ hypothesis test &quot;tài xế này có
+              pattern khác quần thể hay không?&quot;. Quy trình luôn bắt đầu
+              bằng hiểu phân phối cơ sở — một ứng dụng trực tiếp của xác
+              suất &amp; thống kê vào production ML.
+            </p>
+          </div>
+        </LessonSection>
+
+        {/* Step 8: Summary */}
+        <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tổng kết">
           <MiniSummary
             points={[
               "Định lý Bayes: P(A|B) = P(B|A) × P(A) / P(B). Cập nhật niềm tin khi có bằng chứng mới — core của Naive Bayes và Bayesian ML.",
@@ -589,12 +928,13 @@ print(f"CE Loss = {ce_loss:.3f}")     # 0.357`}
               "Base rate fallacy: bệnh hiếm + test chính xác ≠ kết quả đáng tin. Tỷ lệ nền quyết định phần lớn posterior.",
               "Sensitivity (recall) = phát hiện đúng. Specificity = không báo nhầm. Trade-off giữa hai chỉ số này là bài toán cốt lõi trong ML.",
               "Cross-entropy = negative log-likelihood = MLE. Loss mặc định cho classification. Gaussian là phân phối mặc định của ML.",
+              "Central Limit Theorem + quy tắc 68-95-99.7: nền tảng của mọi confidence interval, hypothesis test, và sigma-rule để phát hiện outlier/anomaly.",
             ]}
           />
         </LessonSection>
 
         {/* Step 8: Quiz */}
-        <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+        <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
           <QuizSection questions={quizQuestions} />
         </LessonSection>
       </ExplanationSection>

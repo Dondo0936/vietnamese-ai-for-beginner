@@ -71,7 +71,7 @@ function grad2D(w1: number, w2: number): [number, number] {
   return [dw1, dw2];
 }
 
-/** Approximate minimum (solve grad = 0): w1 = 16/7.5, w2 = 8/7.5 -- roughly (2.133, 1.067) */
+/** Minimum (solve grad = 0): 2w1 + 0.5w2 = 4, 0.5w1 + 2w2 = 2 → w1 = 28/15 ≈ 1.867, w2 = 8/15 ≈ 0.533 */
 
 /* Generate contour levels */
 const CONTOUR_LEVELS = [0.5, 1, 2, 3, 5, 8, 12, 18, 25];
@@ -86,9 +86,9 @@ function contourPoints(
   const points: [number, number][] = [];
   for (let a = 0; a < 360; a += 4) {
     const rad = (a * Math.PI) / 180;
-    // Search outward from approximate min
-    const cx = 2.13;
-    const cy = 1.07;
+    // Search outward from exact min (28/15, 8/15)
+    const cx = 28 / 15;
+    const cy = 8 / 15;
     let lo = 0;
     let hi = 6;
     for (let iter = 0; iter < 20; iter++) {
@@ -371,6 +371,32 @@ export default function CalculusForBackpropTopic() {
         ],
         explanation:
           "η (eta) là learning rate (tốc độ học) — kiểm soát kích thước bước cập nhật. Quá lớn thì phân kỳ, quá nhỏ thì hội tụ chậm.",
+      },
+      {
+        question:
+          "Vì sao hàm kích hoạt ReLU (f(x) = max(0, x)) giúp giảm vanishing gradient so với sigmoid?",
+        options: [
+          "Vì ReLU có nhiều tham số hơn sigmoid",
+          "Vì gradient của ReLU bằng 1 khi x > 0, không nén nhỏ như sigmoid (tối đa 0.25)",
+          "Vì ReLU không tuyến tính còn sigmoid thì tuyến tính",
+          "Vì ReLU chỉ dùng cho layer đầu ra, sigmoid dùng cho layer ẩn",
+        ],
+        correct: 1,
+        explanation:
+          "Gradient của sigmoid là σ'(x) = σ(x)(1 - σ(x)) có giá trị lớn nhất 0.25. Khi chain rule nhân qua 50 lớp, 0.25^50 ≈ 10^-30 — gradient biến mất. ReLU có đạo hàm = 1 khi x > 0, nên khi nhân chuỗi vẫn giữ nguyên độ lớn gradient, giúp các lớp đầu học được.",
+      },
+      {
+        type: "fill-blank" as const,
+        question:
+          "Trong mini-batch gradient descent, ta lấy trung bình gradient trên một nhóm {blank} mẫu thay vì toàn bộ tập dữ liệu. Việc này cân bằng giữa tốc độ (ít hơn toàn batch) và độ ổn định (hơn SGD một mẫu).",
+        blanks: [
+          {
+            answer: "batch",
+            accept: ["mini-batch", "minibatch", "nhóm", "lô"],
+          },
+        ],
+        explanation:
+          "Mini-batch (thường 32–256 mẫu) là lựa chọn mặc định trong huấn luyện deep learning: đủ lớn để gradient ước lượng ổn định, đủ nhỏ để vừa GPU và cập nhật weight nhiều lần trong một epoch. Kích thước batch cũng ảnh hưởng đến generalization — batch quá lớn có thể hội tụ về minimum sắc nhọn, kém khái quát hoá.",
       },
     ],
     [],
@@ -868,10 +894,10 @@ export default function CalculusForBackpropTopic() {
                     />
                   ))}
 
-                  {/* Approximate minimum marker */}
+                  {/* Minimum marker at (28/15, 8/15) ≈ (1.867, 0.533) */}
                   <circle
-                    cx={toCX(2.13)}
-                    cy={toCY(1.07)}
+                    cx={toCX(28 / 15)}
+                    cy={toCY(8 / 15)}
                     r="4"
                     fill="none"
                     stroke="#22C55E"
@@ -1108,6 +1134,61 @@ loss = torch.nn.functional.cross_entropy(output, labels)
 loss.backward()        # Backprop: gradient cho MỌI weight
 optimizer.step()       # Gradient descent: cập nhật weights
 optimizer.zero_grad()  # Reset cho batch tiếp`}</CodeBlock>
+
+          <Callout variant="info" title="Exploding gradient — người anh em của vanishing">
+            <p className="text-sm leading-relaxed">
+              Ngược với vanishing, <strong>exploding gradient</strong> xảy ra khi chain rule
+              nhân nhiều gradient lớn hơn 1. Ví dụ: nếu mỗi layer khuếch đại gradient 1.5 lần,
+              sau 50 layer gradient sẽ lớn 1.5^50 ≈ 637 triệu. Weight nhảy vọt, loss thành NaN,
+              huấn luyện sụp đổ. Dấu hiệu: loss đang giảm ổn định rồi đột ngột nhảy lên vô cùng.
+              Giải pháp phổ biến là <strong>gradient clipping</strong> — giới hạn norm của
+              gradient về một ngưỡng (thường 1.0 hoặc 5.0) trước khi cập nhật weight.
+            </p>
+          </Callout>
+
+          <CodeBlock language="python" title="Gradient clipping để chống exploding gradient">{`import torch
+import torch.nn as nn
+
+model = nn.LSTM(input_size=100, hidden_size=256, num_layers=3)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+for batch in loader:
+    output, _ = model(batch.input)
+    loss = loss_fn(output, batch.target)
+
+    loss.backward()
+
+    # Giới hạn norm gradient toàn cục về tối đa 1.0
+    # Nếu ||grad|| > 1.0: grad = grad * (1.0 / ||grad||)
+    torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
+    optimizer.step()
+    optimizer.zero_grad()
+
+# Khi nào cần clip gradient?
+# - RNN/LSTM: rất dễ exploding vì backprop through time qua nhiều bước
+# - Transformer khi train from scratch: nên dùng clip_grad_norm = 1.0
+# - CNN cho classification: ít cần thiết nếu đã có batch norm`}</CodeBlock>
+
+          <p className="text-sm leading-relaxed mt-3">
+            Có một sự thật ít được nói rõ: phần lớn kỹ thuật hiện đại trong deep learning (ReLU,
+            residual connection, batch norm, layer norm, Adam, gradient clipping, khởi tạo
+            Xavier/He) đều được phát minh để giải quyết bài toán gradient không ổn định. Nếu
+            một ngày bạn huấn luyện mạng sâu mà loss đứng yên hoặc nhảy loạn, hãy nhớ: gần như
+            chắc chắn vấn đề nằm ở dòng chảy gradient qua chain rule. Kiểm tra{" "}
+            <code>param.grad.norm()</code> cho từng layer là công cụ chẩn đoán số một.
+          </p>
+
+          <Callout variant="tip" title="Tại sao Adam thường tốt hơn SGD thuần?">
+            <p className="text-sm leading-relaxed">
+              Adam (Adaptive Moment Estimation) duy trì hai moving average: momentum (trung bình
+              gradient) và biến thiên bình phương. Nó tự điều chỉnh learning rate cho từng
+              tham số — tham số nào gradient lớn sẽ giảm bước, tham số nào gradient nhỏ sẽ tăng
+              bước. Kết quả: ít nhạy với lựa chọn learning rate, hội tụ nhanh trên nhiều bài
+              toán. Tuy nhiên với CNN classification lớn (ResNet, ViT), SGD có momentum +
+              weight decay vẫn thường cho generalization tốt hơn Adam.
+            </p>
+          </Callout>
         </LessonSection>
 
         <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

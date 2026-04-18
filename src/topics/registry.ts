@@ -672,7 +672,7 @@ export const topicList: TopicMeta[] = [
     category: "dl-architectures",
     tags: ["3d-reconstruction", "neural-radiance", "rendering"],
     difficulty: "advanced",
-    relatedSlugs: ["cnn", "mlp", "computer-vision"],
+    relatedSlugs: ["cnn", "mlp", "image-classification"],
     vizType: "static",
   },
 
@@ -2299,7 +2299,7 @@ export const topicList: TopicMeta[] = [
     category: "llm-concepts",
     tags: ["scaling", "compute", "chinchilla"],
     difficulty: "intermediate",
-    relatedSlugs: ["llm-overview", "training-optimization", "cost-optimization"],
+    relatedSlugs: ["llm-overview", "gpu-optimization", "cost-optimization"],
     vizType: "static",
   },
   {

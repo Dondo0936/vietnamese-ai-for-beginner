@@ -274,10 +274,16 @@ export default function PcaTopic() {
         <ExplanationSection>
           <p>
             <strong>PCA</strong>{" "}
-            tìm các hướng (eigenvector) của ma trận hiệp phương sai mà phương sai (eigenvalue) lớn nhất:
+            tìm các hướng (eigenvector) của ma trận hiệp phương sai mà phương sai (eigenvalue) lớn nhất. Đặt{" "}
+            <LaTeX>{"\\tilde{\\mathbf{X}} = \\mathbf{X} - \\boldsymbol{\\mu}"}</LaTeX>{" "}
+            là dữ liệu đã trừ trung bình theo từng feature:
           </p>
 
-          <LaTeX block>{"\\Sigma = \\frac{1}{n}\\mathbf{X}^T\\mathbf{X}, \\quad \\Sigma \\mathbf{v}_k = \\lambda_k \\mathbf{v}_k"}</LaTeX>
+          <LaTeX block>{"\\Sigma = \\frac{1}{n}\\tilde{\\mathbf{X}}^T\\tilde{\\mathbf{X}}, \\quad \\Sigma \\mathbf{v}_k = \\lambda_k \\mathbf{v}_k"}</LaTeX>
+
+          <p className="text-sm text-muted">
+            Phép trừ trung bình <LaTeX>{"\\boldsymbol{\\mu}"}</LaTeX> đảm bảo phương sai được tính quanh tâm dữ liệu, chứ không quanh gốc toạ độ — nếu bỏ qua bước này ta sẽ thu được ma trận mô-men bậc hai, không phải hiệp phương sai.
+          </p>
 
           <p>
             <LaTeX>{"\\mathbf{v}_1"}</LaTeX> (eigenvector ứng với <LaTeX>{"\\lambda_1"}</LaTeX> lớn nhất) là PC1. Phương sai giữ lại khi giữ k PC đầu:
@@ -291,7 +297,7 @@ export default function PcaTopic() {
             <li><strong>Tính ma trận hiệp phương sai</strong>{" "}<LaTeX>{"\\Sigma"}</LaTeX></li>
             <li><strong>Eigen decomposition:</strong>{" "}Tìm eigenvectors và eigenvalues</li>
             <li><strong>Chọn k PC đầu</strong>{" "}(sao cho giải thích ≥ 90-95% variance)</li>
-            <li><strong>Chiếu dữ liệu:</strong>{" "}<LaTeX>{"\\mathbf{Z} = \\mathbf{X} \\mathbf{V}_k"}</LaTeX></li>
+            <li><strong>Chiếu dữ liệu:</strong>{" "}<LaTeX>{"\\mathbf{Z} = \\tilde{\\mathbf{X}} \\mathbf{V}_k = (\\mathbf{X} - \\boldsymbol{\\mu}) \\mathbf{V}_k"}</LaTeX></li>
           </ol>
 
           <Callout variant="tip" title="Ứng dụng thực tế">

@@ -8,7 +8,10 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
+  CodeBlock,
+  LaTeX,
   TopicLink,
+  CollapsibleDetail,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -16,6 +19,9 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
+/* ══════════════════════════════════════════════════════════════════════
+   METADATA
+   ══════════════════════════════════════════════════════════════════════ */
 export const metadata: TopicMeta = {
   slug: "data-and-datasets",
   title: "Data & Datasets",
@@ -34,14 +40,18 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-/* ── Types ── */
+/* ══════════════════════════════════════════════════════════════════════
+   TYPES
+   ══════════════════════════════════════════════════════════════════════ */
 interface DataPoint {
   x: number;
   y: number;
   cls: 0 | 1; // 0 = class A (blue), 1 = class B (orange)
 }
 
-/* ── Constants ── */
+/* ══════════════════════════════════════════════════════════════════════
+   CONSTANTS
+   ══════════════════════════════════════════════════════════════════════ */
 const TOTAL_STEPS = 7;
 
 /* SVG coordinate system for scatter plot */
@@ -71,7 +81,9 @@ const COLUMNS = [
   { key: "price" as const, label: "Giá (triệu VNĐ)" },
 ];
 
-/* ── Helpers ── */
+/* ══════════════════════════════════════════════════════════════════════
+   HELPERS
+   ══════════════════════════════════════════════════════════════════════ */
 
 /** Simple seeded shuffle (Fisher-Yates) using a seed for reproducibility per click */
 function shuffleArray<T>(arr: T[], seed: number): T[] {
@@ -147,6 +159,9 @@ function fmtVn(n: number): string {
   return n.toLocaleString("vi-VN");
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+   ══════════════════════════════════════════════════════════════════════ */
 export default function DataAndDatasetsTopic() {
   /* ── State for scatter plot (Build-your-own dataset) ── */
   const [points, setPoints] = useState<DataPoint[]>([]);
@@ -160,7 +175,8 @@ export default function DataAndDatasetsTopic() {
 
   /* ── Derived: split into train/test ── */
   const { trainSet, testSet } = useMemo(() => {
-    if (splitSeed === null) return { trainSet: points, testSet: [] as DataPoint[] };
+    if (splitSeed === null)
+      return { trainSet: points, testSet: [] as DataPoint[] };
     const shuffled = shuffleArray(points, splitSeed);
     const testCount = Math.round(points.length * TEST_RATIO);
     return {
@@ -198,10 +214,7 @@ export default function DataAndDatasetsTopic() {
   }, [splitSeed, testSet, trainClassA, trainClassB]);
 
   /* ── SVG coordinate helpers ── */
-  const toSvgX = useCallback(
-    (x: number) => PADDING + (x / 100) * PLOT_W,
-    [],
-  );
+  const toSvgX = useCallback((x: number) => PADDING + (x / 100) * PLOT_W, []);
   const toSvgY = useCallback(
     (y: number) => PADDING + ((100 - y) / 100) * PLOT_H,
     [],
@@ -262,18 +275,15 @@ export default function DataAndDatasetsTopic() {
     return new Set(testSet);
   }, [splitSeed, testSet]);
 
-  /* ── Quiz ── */
+  /* ══════════════════════════════════════════════════════════════════
+     QUIZ (8 questions)
+     ══════════════════════════════════════════════════════════════════ */
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
         question:
           "Trong bảng dữ liệu nhà ở, cột nào thường được chọn làm nhãn (label)?",
-        options: [
-          "Quận",
-          "Diện tích",
-          "Số phòng",
-          "Giá nhà",
-        ],
+        options: ["Quận", "Diện tích", "Số phòng", "Giá nhà"],
         correct: 3,
         explanation:
           "Giá nhà là giá trị ta muốn dự đoán, nên nó là nhãn (label). Các cột còn lại (quận, diện tích, số phòng) là đặc trưng (features) — thông tin đầu vào để mô hình học cách dự đoán giá.",
@@ -306,8 +316,7 @@ export default function DataAndDatasetsTopic() {
       },
       {
         type: "fill-blank",
-        question:
-          "Mỗi hàng trong bảng dữ liệu gọi là một {blank} (sample)",
+        question: "Mỗi hàng trong bảng dữ liệu gọi là một {blank} (sample)",
         blanks: [
           {
             answer: "mẫu",
@@ -317,10 +326,58 @@ export default function DataAndDatasetsTopic() {
         explanation:
           "Mỗi hàng đại diện cho một quan sát thực tế — ví dụ một căn nhà với đầy đủ thông tin. Trong tiếng Anh gọi là sample hoặc instance.",
       },
+      {
+        question:
+          "Dataset có 1.000 hàng × 50 cột (49 đặc trưng + 1 nhãn). Ta gọi số chiều của không gian đặc trưng là bao nhiêu?",
+        options: ["1.000", "50", "49", "Không xác định được"],
+        correct: 2,
+        explanation:
+          "Số chiều = số đặc trưng (features). Ở đây là 49. Số hàng là số mẫu, còn 'chiều' hiểu theo toán học là số thành phần của mỗi vector đặc trưng. Khi số chiều quá lớn so với số mẫu, ta gặp hiện tượng 'curse of dimensionality'.",
+      },
+      {
+        question:
+          "Mô hình nhận diện giọng nói được train trên 95% giọng nam, 5% giọng nữ. Khi deploy, kết quả thực tế có thể thế nào?",
+        options: [
+          "Hoạt động tốt với cả hai giới vì đã có dữ liệu.",
+          "Có thể nhận diện giọng nam tốt nhưng giọng nữ kém — đây là thiên lệch chọn mẫu (selection bias).",
+          "Không chạy được với giọng nữ.",
+        ],
+        correct: 1,
+        explanation:
+          "Dataset mất cân bằng về giới tính → mô hình học đặc điểm giọng nam tốt nhưng thiếu dữ liệu để học giọng nữ. Kết quả: độ chính xác tổng thể có thể cao (nhờ đa số nam) nhưng trải nghiệm cho nữ rất tệ. Đây là vấn đề đạo đức AI đã gây nhiều scandal thực tế.",
+      },
+      {
+        type: "fill-blank",
+        question:
+          "Nguyên lý &ldquo;rác vào, rác ra&rdquo; trong tiếng Anh viết tắt là {blank}.",
+        blanks: [
+          {
+            answer: "GIGO",
+            accept: ["gigo", "Garbage In Garbage Out", "garbage in garbage out"],
+          },
+        ],
+        explanation:
+          "GIGO = Garbage In, Garbage Out. Chất lượng mô hình ML bị giới hạn bởi chất lượng dữ liệu đầu vào — dù thuật toán có tinh vi đến đâu.",
+      },
+      {
+        question:
+          "Bạn có 10.000 ảnh chó/mèo nhưng 8.000 ảnh chó và 2.000 ảnh mèo. Hành động nào phù hợp nhất trước khi train?",
+        options: [
+          "Train ngay — mô hình sẽ tự cân bằng.",
+          "Xem xét cân bằng lớp: oversample lớp mèo, undersample lớp chó, hoặc dùng class weights; đồng thời stratify khi chia train/test.",
+          "Bỏ bớt 2.000 ảnh mèo cho đều.",
+        ],
+        correct: 1,
+        explanation:
+          "Mất cân bằng 4:1 có thể khiến mô hình 'lười' đoán toàn chó và vẫn đạt 80% accuracy. Cách xử lý: (1) class weights trong loss function, (2) oversampling (SMOTE, duplicate), (3) undersampling có chọn lọc, (4) thu thập thêm ảnh mèo. Bỏ bớt là lãng phí dữ liệu.",
+      },
     ],
     [],
   );
 
+  /* ══════════════════════════════════════════════════════════════════
+     RENDER
+     ══════════════════════════════════════════════════════════════════ */
   return (
     <>
       {/* ================================================================
@@ -334,8 +391,8 @@ export default function DataAndDatasetsTopic() {
               Tự tạo tập dữ liệu phân loại
             </h3>
             <p className="text-sm text-muted leading-relaxed">
-              Bấm vào mặt phẳng để đặt điểm dữ liệu. Chuyển đổi giữa hai
-              lớp bằng nút bên dưới. Khi có từ {MIN_POINTS_TO_SPLIT} điểm trở
+              Bấm vào mặt phẳng để đặt điểm dữ liệu. Chuyển đổi giữa hai lớp
+              bằng nút bên dưới. Khi có từ {MIN_POINTS_TO_SPLIT} điểm trở
               lên, hãy chia tập dữ liệu để xem mô hình hoạt động ra sao.
             </p>
 
@@ -346,8 +403,7 @@ export default function DataAndDatasetsTopic() {
                 className="rounded-lg px-4 py-2 text-sm font-medium border-2 transition-colors"
                 style={{
                   borderColor: activeClass === 0 ? "#3b82f6" : "#f59e0b",
-                  backgroundColor:
-                    activeClass === 0 ? "#eff6ff" : "#fffbeb",
+                  backgroundColor: activeClass === 0 ? "#eff6ff" : "#fffbeb",
                   color: activeClass === 0 ? "#1d4ed8" : "#b45309",
                 }}
               >
@@ -544,11 +600,14 @@ export default function DataAndDatasetsTopic() {
                   <span className="font-mono font-bold text-accent-dark text-lg">
                     {testAccuracy}%
                   </span>{" "}
-                  ({testSet.filter((p) => {
-                    const cA = centroid(trainClassA);
-                    const cB = centroid(trainClassB);
-                    return classifyPoint(p, cA, cB) === p.cls;
-                  }).length}
+                  (
+                  {
+                    testSet.filter((p) => {
+                      const cA = centroid(trainClassA);
+                      const cB = centroid(trainClassB);
+                      return classifyPoint(p, cA, cB) === p.cls;
+                    }).length
+                  }
                   /{testSet.length} điểm đúng)
                 </p>
                 <p className="text-xs text-muted mt-1">
@@ -569,8 +628,8 @@ export default function DataAndDatasetsTopic() {
             </h3>
             <p className="text-sm text-muted leading-relaxed">
               Bấm vào tên cột để chọn nó làm <strong>nhãn</strong> (label).
-              Các cột còn lại tự động trở thành{" "}
-              <strong>đặc trưng</strong> (features).
+              Các cột còn lại tự động trở thành <strong>đặc trưng</strong>{" "}
+              (features).
             </p>
 
             <div className="rounded-lg border border-border bg-surface overflow-hidden">
@@ -640,7 +699,8 @@ export default function DataAndDatasetsTopic() {
             </div>
 
             <div className="text-xs text-muted leading-relaxed">
-              <strong>Mẫu (sample)</strong> = mỗi hàng trong bảng (1 căn nhà).{" "}
+              <strong>Mẫu (sample)</strong> = mỗi hàng trong bảng (1 căn
+              nhà).{" "}
               <strong>Đặc trưng (features)</strong> = cột{" "}
               <span className="text-blue-600 dark:text-blue-400 font-medium">
                 xanh
@@ -675,6 +735,14 @@ export default function DataAndDatasetsTopic() {
               Tiếp tục để khám phá cấu trúc của dữ liệu ML và lý do tại sao
               phải chia dữ liệu trước khi huấn luyện.
             </p>
+            <div className="mt-3 rounded-lg border border-border bg-surface/60 p-3 text-sm leading-relaxed">
+              <strong>Phép ẩn dụ:</strong> hãy tưởng tượng bạn dạy em nhỏ
+              phân biệt trái cam và trái quýt. Bạn đặt cả rổ trước mặt em,
+              chỉ từng trái và nói &ldquo;cái này cam&rdquo;, &ldquo;cái này
+              quýt&rdquo;. Mỗi trái cây bạn đưa ra = 1 mẫu dữ liệu. Màu
+              vỏ, kích thước, mùi hương = đặc trưng. Nhãn &ldquo;cam&rdquo;
+              hay &ldquo;quýt&rdquo; = label. Mô hình ML học hệt như vậy.
+            </div>
           </PredictionGate>
         </LessonSection>
 
@@ -686,8 +754,8 @@ export default function DataAndDatasetsTopic() {
           <p className="text-sm leading-relaxed">
             Trong Machine Learning, <strong>dữ liệu</strong> (data) được tổ
             chức thành bảng. Mỗi <strong>hàng</strong> là một{" "}
-            <strong>mẫu</strong> (sample) — một quan sát từ thế giới thực. Mỗi{" "}
-            <strong>cột</strong> là một thuộc tính mô tả mẫu đó.
+            <strong>mẫu</strong> (sample) — một quan sát từ thế giới thực.
+            Mỗi <strong>cột</strong> là một thuộc tính mô tả mẫu đó.
           </p>
 
           <Callout variant="tip" title="Ví dụ: Bảng giá nhà TP.HCM">
@@ -697,9 +765,21 @@ export default function DataAndDatasetsTopic() {
           </Callout>
 
           <p className="text-sm leading-relaxed mt-3">
-            Bạn có thể tưởng tượng bảng dữ liệu giống như bảng điểm cuối kỳ:
-            mỗi học sinh là một hàng, mỗi môn thi là một cột. ML đọc bảng
-            này và tìm ra quy luật ẩn bên trong.
+            Bạn có thể tưởng tượng bảng dữ liệu giống như bảng điểm cuối
+            kỳ: mỗi học sinh là một hàng, mỗi môn thi là một cột. ML đọc
+            bảng này và tìm ra quy luật ẩn bên trong.
+          </p>
+
+          <LaTeX block>
+            {
+              "X \\in \\mathbb{R}^{n \\times d}, \\quad y \\in \\mathbb{R}^n \\quad \\text{(hoặc } \\{0,1\\}^n\\text{)}"
+            }
+          </LaTeX>
+          <p className="text-xs text-muted">
+            Dưới dạng toán học: <code>X</code> là ma trận đặc trưng{" "}
+            <em>n × d</em> (n mẫu, d đặc trưng) và <code>y</code> là vector
+            nhãn dài n. Đây là biểu diễn chuẩn mà hầu hết thuật toán ML
+            dùng.
           </p>
         </LessonSection>
 
@@ -715,7 +795,8 @@ export default function DataAndDatasetsTopic() {
           <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
             <li>
               <strong>Đặc trưng</strong> (features) — các cột đầu vào mà mô
-              hình dùng để phân tích. Ví dụ: diện tích, số phòng, vị trí quận.
+              hình dùng để phân tích. Ví dụ: diện tích, số phòng, vị trí
+              quận.
             </li>
             <li>
               <strong>Nhãn</strong> (label) — cột đầu ra mà mô hình cố gắng
@@ -724,9 +805,9 @@ export default function DataAndDatasetsTopic() {
           </ul>
 
           <Callout variant="info" title="Shopee phân loại sản phẩm">
-            Khi bạn đăng bán trên Shopee, AI tự động gợi ý danh mục. Ảnh sản
-            phẩm và mô tả là đặc trưng, danh mục (thời trang, điện tử, gia
-            dụng...) là nhãn.
+            Khi bạn đăng bán trên Shopee, AI tự động gợi ý danh mục. Ảnh
+            sản phẩm và mô tả là đặc trưng, danh mục (thời trang, điện tử,
+            gia dụng...) là nhãn.
           </Callout>
 
           <InlineChallenge
@@ -745,6 +826,54 @@ export default function DataAndDatasetsTopic() {
             bảng dữ liệu nhà ở — bạn sẽ thấy bất kỳ cột nào cũng có thể là
             nhãn, tùy vào câu hỏi bạn muốn trả lời!
           </AhaMoment>
+
+          <CollapsibleDetail title="Phân loại đặc trưng: numerical, categorical, ordinal, text, image">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Không phải đặc trưng nào cũng là số. Trước khi train, ta
+                phải hiểu từng kiểu để xử lý đúng:
+              </p>
+              <ul className="list-disc list-inside space-y-2 pl-2">
+                <li>
+                  <strong>Numerical (số liên tục):</strong> diện tích, giá,
+                  nhiệt độ. Có thể dùng trực tiếp, nên chuẩn hoá về cùng
+                  thang đo.
+                </li>
+                <li>
+                  <strong>Categorical (phân loại danh nghĩa):</strong>{" "}
+                  quận, nghề nghiệp, loại xe. Phải mã hoá (one-hot,
+                  target encoding, embedding).
+                </li>
+                <li>
+                  <strong>Ordinal (có thứ tự):</strong> hạng sao (1–5),
+                  mức độ hài lòng. Có thể giữ nguyên thứ tự hoặc one-hot.
+                </li>
+                <li>
+                  <strong>Datetime:</strong> tách thành năm, tháng, ngày
+                  trong tuần, giờ, có phải ngày lễ hay không.
+                </li>
+                <li>
+                  <strong>Text:</strong> bình luận, mô tả sản phẩm. Dùng
+                  TF-IDF, word embeddings, hoặc cho vào transformer.
+                </li>
+                <li>
+                  <strong>Image:</strong> ảnh chụp, X-quang. Dùng CNN
+                  hoặc Vision Transformer, thường cần resize về kích thước
+                  cố định.
+                </li>
+                <li>
+                  <strong>Audio:</strong> giọng nói, âm thanh. Dùng
+                  spectrogram, MFCC, hoặc model wav2vec.
+                </li>
+              </ul>
+              <p>
+                <strong>Ghi nhớ:</strong> mỗi kiểu dữ liệu cần pipeline
+                tiền xử lý khác nhau. Dùng{" "}
+                <code>ColumnTransformer</code> trong scikit-learn để ghép
+                nhiều pipeline song song.
+              </p>
+            </div>
+          </CollapsibleDetail>
         </LessonSection>
 
         <LessonSection
@@ -753,9 +882,11 @@ export default function DataAndDatasetsTopic() {
           label="Tập huấn luyện & Tập kiểm tra"
         >
           <p className="text-sm leading-relaxed">
-            Đây là nguyên tắc vàng trong ML: <strong>không bao giờ kiểm tra
-            mô hình trên dữ liệu nó đã dùng để học</strong>. Ta chia dữ liệu
-            thành hai phần:
+            Đây là nguyên tắc vàng trong ML:{" "}
+            <strong>
+              không bao giờ kiểm tra mô hình trên dữ liệu nó đã dùng để học
+            </strong>
+            . Ta chia dữ liệu thành hai phần:
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
             <li>
@@ -764,23 +895,51 @@ export default function DataAndDatasetsTopic() {
             </li>
             <li>
               <strong>Tập kiểm tra</strong> (test set) — phần nhỏ còn lại
-              (20-30%), dùng để đánh giá mô hình trên dữ liệu hoàn toàn mới.
+              (20-30%), dùng để đánh giá mô hình trên dữ liệu hoàn toàn
+              mới.
             </li>
           </ul>
 
           <Callout variant="tip" title="Ví dụ: Thi cuối kỳ ở trường">
             Học bài từ sách giáo khoa = huấn luyện trên tập huấn luyện.
             Làm bài thi cuối kỳ (đề mới) = kiểm tra trên tập kiểm tra. Nếu
-            em chỉ học thuộc đáp án sách mà không hiểu bản chất, em sẽ trượt
-            bài thi — trong ML gọi hiện tượng này là overfitting.
+            em chỉ học thuộc đáp án sách mà không hiểu bản chất, em sẽ
+            trượt bài thi — trong ML gọi hiện tượng này là overfitting.
           </Callout>
 
           <AhaMoment>
             Quay lại phần Hình minh họa phía trên, đặt ít nhất 20 điểm rồi
             bấm &quot;Chia tập dữ liệu&quot;. Bấm &quot;Chia lại&quot; vài
-            lần — bạn sẽ thấy cùng một bộ dữ liệu nhưng cách chia khác nhau
-            cho kết quả khác nhau. Đó là lý do ta cần chia cẩn thận!
+            lần — bạn sẽ thấy cùng một bộ dữ liệu nhưng cách chia khác
+            nhau cho kết quả khác nhau. Đó là lý do ta cần chia cẩn thận!
           </AhaMoment>
+
+          <CodeBlock
+            language="python"
+            title="Chia train/test chuẩn với scikit-learn"
+          >
+            {`import pandas as pd
+from sklearn.model_selection import train_test_split
+
+df = pd.read_csv("houses.csv")
+
+# X = đặc trưng, y = nhãn
+X = df.drop(columns=["price"])
+y = df["price"]
+
+# Chia 80/20, stratify nếu là bài phân loại
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,        # để reproducible
+    # stratify=y,           # bật cho classification mất cân bằng
+)
+
+print(f"Train: {X_train.shape}, Test: {X_test.shape}")
+# Train: (800, 3), Test: (200, 3)
+
+# Quan trọng: KHÔNG đụng vào X_test cho đến khi mô hình hoàn chỉnh!`}
+          </CodeBlock>
         </LessonSection>
 
         <LessonSection
@@ -790,21 +949,30 @@ export default function DataAndDatasetsTopic() {
         >
           <p className="text-sm leading-relaxed">
             Có một câu nói nổi tiếng trong ML:{" "}
-            <strong>&quot;Rác vào, rác ra&quot;</strong> (Garbage In, Garbage
-            Out). Dù thuật toán có tốt đến đâu, nếu dữ liệu đầu vào kém chất
-            lượng thì kết quả cũng sẽ sai lệch.
+            <strong>&quot;Rác vào, rác ra&quot;</strong> (Garbage In,
+            Garbage Out — viết tắt <code>GIGO</code>). Dù thuật toán có
+            tốt đến đâu, nếu dữ liệu đầu vào kém chất lượng thì kết quả
+            cũng sẽ sai lệch.
           </p>
 
-          <p className="text-sm leading-relaxed mt-3">
-            Dữ liệu kém có thể là:
-          </p>
+          <p className="text-sm leading-relaxed mt-3">Dữ liệu kém có thể là:</p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm leading-relaxed">
             <li>Thiếu giá trị (ô trống trong bảng)</li>
-            <li>Giá trị sai (ghi nhầm diện tích 50m² thành 5.000m²)</li>
             <li>
-              Thiên lệch (chỉ có dữ liệu Quận 1, không có quận ngoại thành)
+              Giá trị sai (ghi nhầm diện tích 50m² thành 5.000m²)
+            </li>
+            <li>
+              Thiên lệch (chỉ có dữ liệu Quận 1, không có quận ngoại
+              thành)
             </li>
             <li>Nhãn gán sai (ghi nhà giá rẻ nhưng thực tế giá đắt)</li>
+            <li>
+              Trùng lặp (cùng một căn nhà xuất hiện 3 lần với giá khác
+              nhau)
+            </li>
+            <li>
+              Lệch phân phối (train chụp ảnh ban ngày, test ban đêm)
+            </li>
           </ul>
 
           <InlineChallenge
@@ -817,6 +985,297 @@ export default function DataAndDatasetsTopic() {
             correct={1}
             explanation="Mô hình chỉ biết những gì nó đã thấy. Nếu chỉ học từ nhà Quận 1, nó sẽ không hiểu đặc điểm nhà ngoại thành — đây là vấn đề thiên lệch dữ liệu."
           />
+
+          <Callout
+            variant="warning"
+            title="Cảnh báo data leakage — kẻ thù ngầm của ML"
+          >
+            Data leakage xảy ra khi thông tin từ tập test &ldquo;rò
+            rỉ&rdquo; vào quá trình train, khiến điểm đánh giá bị thổi
+            phồng. Ví dụ kinh điển: fit <code>StandardScaler</code> trên
+            toàn bộ dữ liệu trước khi chia train/test — scaler đã
+            &ldquo;nhìn&rdquo; phân phối test. Cách đúng: chia trước, fit
+            scaler chỉ trên train.
+          </Callout>
+
+          <Callout variant="info" title="Cỡ dữ liệu bao nhiêu là đủ?">
+            Không có công thức cứng, nhưng có quy tắc kinh nghiệm: (1)
+            classification nhị phân đơn giản: 100–1.000 mẫu mỗi lớp, (2)
+            deep learning ảnh: vài chục nghìn đến vài triệu ảnh, (3) LLM:
+            hàng tỷ token. Khi thiếu dữ liệu, dùng{" "}
+            <strong>data augmentation</strong>, <strong>transfer learning</strong>
+            , hoặc <strong>few-shot learning</strong> với mô hình lớn có
+            sẵn.
+          </Callout>
+
+          <CodeBlock
+            language="python"
+            title="Data cleaning với pandas: các bước cơ bản"
+          >
+            {`import pandas as pd
+import numpy as np
+
+df = pd.read_csv("houses_raw.csv")
+
+# 1. Xem tổng quan
+print(df.info())
+print(df.describe(include="all"))
+
+# 2. Kiểm tra missing values
+print(df.isnull().sum())
+#   area       12
+#   rooms       3
+#   price       0
+#   district    0
+
+# 3. Xử lý missing
+df["area"] = df["area"].fillna(df["area"].median())
+df["rooms"] = df["rooms"].fillna(df["rooms"].mode()[0])
+
+# 4. Phát hiện outlier bằng IQR
+q1, q3 = df["area"].quantile([0.25, 0.75])
+iqr = q3 - q1
+lo, hi = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+df = df[(df["area"] >= lo) & (df["area"] <= hi)]
+
+# 5. Loại bỏ trùng lặp
+before = len(df)
+df = df.drop_duplicates()
+print(f"Đã loại {before - len(df)} dòng trùng")
+
+# 6. Chuẩn hoá kiểu dữ liệu
+df["district"] = df["district"].astype("category")
+df["price"] = pd.to_numeric(df["price"], errors="coerce")
+
+# 7. Sanity check: có giá trị âm không?
+assert (df["area"] > 0).all(), "Diện tích phải dương!"
+assert (df["price"] > 0).all(), "Giá phải dương!"
+
+# 8. Lưu bản đã làm sạch
+df.to_parquet("houses_clean.parquet", index=False)
+print(f"Còn {len(df)} dòng sau khi làm sạch.")`}
+          </CodeBlock>
+
+          <CodeBlock
+            language="python"
+            title="HuggingFace Datasets API — tải và xử lý dataset lớn"
+          >
+            {`# pip install datasets
+from datasets import load_dataset, Dataset, DatasetDict
+
+# 1. Tải dataset có sẵn từ Hub
+ds = load_dataset("imdb")  # 50k review phim, có train/test sẵn
+print(ds)
+# DatasetDict({
+#   train: Dataset({ features: ['text', 'label'], num_rows: 25000 }),
+#   test:  Dataset({ features: ['text', 'label'], num_rows: 25000 }),
+# })
+
+# 2. Xem mẫu
+print(ds["train"][0])
+# {'text': 'I rented I AM CURIOUS-YELLOW ...', 'label': 0}
+
+# 3. Lọc và map song song (rất nhanh nhờ Arrow backend)
+ds_clean = ds.filter(lambda x: len(x["text"]) > 100)
+ds_clean = ds_clean.map(
+    lambda x: {"text_lower": x["text"].lower()},
+    num_proc=4,  # chạy song song 4 process
+)
+
+# 4. Chia train/validation từ train set
+split = ds_clean["train"].train_test_split(
+    test_size=0.1, seed=42, stratify_by_column="label",
+)
+ds_final = DatasetDict({
+    "train": split["train"],
+    "validation": split["test"],
+    "test": ds_clean["test"],
+})
+
+# 5. Tokenize cho transformer
+from transformers import AutoTokenizer
+tok = AutoTokenizer.from_pretrained("bert-base-uncased")
+def tokenize(batch):
+    return tok(batch["text"], padding=True, truncation=True, max_length=256)
+
+ds_tokenized = ds_final.map(tokenize, batched=True, batch_size=1000)
+
+# 6. Lưu về đĩa / đẩy lên Hub
+ds_tokenized.save_to_disk("imdb_tokenized/")
+# ds_tokenized.push_to_hub("your-username/imdb-vi-clean")
+
+# 7. Tải dataset tiếng Việt có sẵn
+vi_ds = load_dataset("uitnlp/vietnamese_students_feedback")
+print(vi_ds["train"][0])`}
+          </CodeBlock>
+
+          <CollapsibleDetail title="Case study: Dataset bias trong nhận diện khuôn mặt">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Năm 2018, nhà nghiên cứu Joy Buolamwini (MIT) công bố
+                nghiên cứu <em>Gender Shades</em>: các API nhận diện
+                khuôn mặt thương mại (IBM, Microsoft, Face++) có tỷ lệ sai
+                &lt;1% với nam da trắng nhưng lên đến{" "}
+                <strong>34.7%</strong> với nữ da đen.
+              </p>
+              <p>
+                Nguyên nhân: các dataset benchmark phổ biến (IJB-A, Adience)
+                có 77-81% khuôn mặt nam và 79-86% da sáng. Mô hình học tốt
+                nhóm đa số và tệ nhóm thiểu số — đúng nghĩa &ldquo;rác
+                vào, rác ra&rdquo; theo chiều nhân khẩu học.
+              </p>
+              <p>
+                <strong>Hậu quả thực tế:</strong> cảnh sát Detroit đã bắt
+                nhầm người da đen năm 2020 vì hệ thống nhận diện mặt
+                &ldquo;trùng khớp&rdquo; sai. Amazon phải dừng bán{" "}
+                <em>Rekognition</em> cho cảnh sát.
+              </p>
+              <p>
+                <strong>Bài học:</strong>
+              </p>
+              <ul className="list-disc list-inside space-y-1 pl-2">
+                <li>
+                  Luôn kiểm tra phân bố nhân khẩu trong train / test set.
+                </li>
+                <li>
+                  Báo cáo metric theo từng nhóm (per-subgroup accuracy),
+                  không chỉ trung bình.
+                </li>
+                <li>
+                  Dùng dataset cân bằng hơn (FairFace, BUPT-CBFace).
+                </li>
+                <li>
+                  Xin phép và bồi thường cho subject của dữ liệu — không
+                  scrape ảnh người dùng không đồng ý.
+                </li>
+              </ul>
+            </div>
+          </CollapsibleDetail>
+
+          <CollapsibleDetail title="Case study: Amazon hiring AI — dataset bias theo giới tính">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Năm 2014, Amazon phát triển AI tự động sàng lọc CV. Năm
+                2018, Reuters tiết lộ Amazon đã <strong>dẹp bỏ</strong>{" "}
+                dự án vì mô hình phân biệt đối xử với ứng viên nữ.
+              </p>
+              <p>
+                Lý do: Amazon train mô hình trên 10 năm CV nhận được
+                (2004–2014). Ngành công nghệ khi đó đa số là nam → mô
+                hình học rằng CV &ldquo;thành công&rdquo; là CV của nam.
+                Nó tự động hạ điểm các CV có chữ &ldquo;women&rsquo;s&rdquo;
+                (ví dụ &ldquo;women&rsquo;s chess club captain&rdquo;) và
+                hạ điểm CV tốt nghiệp từ 2 trường đại học nữ.
+              </p>
+              <p>
+                <strong>Bài học:</strong>
+              </p>
+              <ul className="list-disc list-inside space-y-1 pl-2">
+                <li>
+                  Nhãn &ldquo;tốt&rdquo; trong lịch sử có thể phản ánh
+                  thiên kiến lịch sử, không phải năng lực thực tế.
+                </li>
+                <li>
+                  Xoá tên giới tính không đủ — thiên kiến có thể &ldquo;rò
+                  rỉ&rdquo; qua tên trường, hoạt động ngoại khoá, từ ngữ.
+                </li>
+                <li>
+                  Cần audit chủ động bằng metric fairness (demographic
+                  parity, equal opportunity).
+                </li>
+                <li>
+                  Đôi khi, không nên tự động hoá quyết định quan trọng
+                  bằng ML.
+                </li>
+              </ul>
+            </div>
+          </CollapsibleDetail>
+
+          <CollapsibleDetail title="Case study: COVID-19 X-ray classifier — shortcut learning">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Đầu năm 2020, hàng chục paper công bố CNN phân loại
+                COVID-19 từ ảnh X-quang với accuracy &gt;95%. Đến 2021,
+                nghiên cứu rà soát của DeGrave et al. (Nature Machine
+                Intelligence) phát hiện: các mô hình học{" "}
+                <strong>shortcut</strong>, không học bệnh lý.
+              </p>
+              <p>
+                Shortcut nào? Ảnh COVID+ lấy từ bệnh viện Ý và Trung
+                Quốc, còn ảnh COVID- lấy từ tập cũ (pre-2019) của bệnh
+                viện Mỹ. Hai nguồn có style ảnh khác nhau (độ phơi sáng,
+                marker chữ R/L, góc chụp). Mô hình học phân biệt{" "}
+                <em>nguồn ảnh</em> chứ không phải bệnh!
+              </p>
+              <p>
+                Khi Grad-CAM trực quan hoá vùng mô hình tập trung: thay
+                vì nhìn phổi, mô hình nhìn góc ảnh — nơi có watermark bệnh
+                viện.
+              </p>
+              <p>
+                <strong>Bài học:</strong>
+              </p>
+              <ul className="list-disc list-inside space-y-1 pl-2">
+                <li>
+                  Khi trộn nhiều nguồn, luôn kiểm tra mô hình không học
+                  đặc điểm nguồn.
+                </li>
+                <li>
+                  Dùng explainability (Grad-CAM, SHAP) để verify mô hình
+                  nhìn đúng chỗ.
+                </li>
+                <li>
+                  Test trên dataset ngoài (external validation) trước khi
+                  đăng báo.
+                </li>
+                <li>
+                  Accuracy cao ≠ mô hình hữu ích. Luôn hỏi: nếu deploy
+                  thật, ai là người chịu hậu quả khi sai?
+                </li>
+              </ul>
+            </div>
+          </CollapsibleDetail>
+
+          <CollapsibleDetail title="Case study: Netflix Prize và de-anonymization">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Năm 2006, Netflix mở cuộc thi 1 triệu USD và công khai
+                dataset 100 triệu lượt đánh giá phim của 480k người dùng,
+                đã &ldquo;anonymize&rdquo; bằng cách thay ID thật bằng ID
+                giả.
+              </p>
+              <p>
+                Năm 2007, hai nhà nghiên cứu Narayanan và Shmatikov
+                (UT Austin) chứng minh: chỉ cần biết 8 lượt rating + ngày
+                của 1 người trên IMDb (public), họ có thể xác định
+                <strong> 99%</strong> user trong dataset Netflix. Kết
+                quả: một phụ nữ ẩn danh kiện Netflix vì bị &ldquo;lộ&rdquo;
+                sở thích xem phim → Netflix Prize 2 bị huỷ năm 2010.
+              </p>
+              <p>
+                <strong>Bài học:</strong>
+              </p>
+              <ul className="list-disc list-inside space-y-1 pl-2">
+                <li>
+                  Anonymize đơn thuần (xoá tên, thay ID) KHÔNG đủ. Các
+                  thuộc tính phụ vẫn đủ unique để identify.
+                </li>
+                <li>
+                  Dùng <em>differential privacy</em>, <em>k-anonymity</em>
+                  , hoặc <em>federated learning</em> cho dữ liệu nhạy
+                  cảm.
+                </li>
+                <li>
+                  Tuân thủ GDPR, CCPA, và Luật Bảo vệ Dữ liệu Cá nhân
+                  2023 của Việt Nam.
+                </li>
+                <li>
+                  Khi công bố dataset, thử tấn công re-identification
+                  trước — không để người ngoài phát hiện thay bạn.
+                </li>
+              </ul>
+            </div>
+          </CollapsibleDetail>
         </LessonSection>
 
         <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tổng kết">
@@ -826,8 +1285,9 @@ export default function DataAndDatasetsTopic() {
               "Dữ liệu ML được tổ chức thành bảng: hàng = mẫu (sample), cột = thuộc tính.",
               "Đặc trưng (features) = cột đầu vào, nhãn (label) = cột đầu ra cần dự đoán.",
               "Tập huấn luyện (training set) để mô hình học, tập kiểm tra (test set) để đánh giá trung thực.",
-              "Cùng dữ liệu nhưng cách chia khác nhau có thể cho kết quả khác nhau.",
-              "Chất lượng dữ liệu quyết định chất lượng mô hình — 'rác vào, rác ra'.",
+              "Cùng dữ liệu nhưng cách chia khác nhau có thể cho kết quả khác nhau — đây là động lực cho cross-validation.",
+              "Chất lượng dữ liệu quyết định chất lượng mô hình — 'rác vào, rác ra' (GIGO).",
+              "Dataset bias là nguy cơ đạo đức: luôn kiểm tra phân bố, audit theo subgroup, và dùng explainability để phát hiện shortcut learning.",
             ]}
           />
           <p className="text-sm leading-relaxed mt-4">
@@ -835,12 +1295,17 @@ export default function DataAndDatasetsTopic() {
             <TopicLink slug="vectors-and-matrices">
               vector và ma trận
             </TopicLink>{" "}
-            để biết cách máy tính biểu diễn bảng dữ liệu này dưới dạng toán
-            học, hoặc xem{" "}
+            để biết cách máy tính biểu diễn bảng dữ liệu này dưới dạng
+            toán học, hoặc xem{" "}
             <TopicLink slug="supervised-unsupervised-rl">
               các loại học máy
             </TopicLink>{" "}
-            để hiểu mô hình dùng dữ liệu này như thế nào.
+            để hiểu mô hình dùng dữ liệu này như thế nào. Nếu muốn đi sâu
+            về cách đánh giá mô hình ổn định, xem{" "}
+            <TopicLink slug="cross-validation">
+              kiểm chứng chéo (cross-validation)
+            </TopicLink>
+            .
           </p>
         </LessonSection>
 
