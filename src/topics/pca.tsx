@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useState, useMemo, useRef, useCallback } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   PredictionGate, LessonSection, AhaMoment, InlineChallenge,
   MiniSummary, Callout, CodeBlock, LaTeX,
@@ -56,36 +56,53 @@ function totalVariance(pts: Pt[]) {
 
 const TOTAL_STEPS = 7;
 
-/* ═══════════════ MAIN ���══════════════ */
+/* ═══════════════ MAIN ═══════════════ */
 export default function PcaTopic() {
   const [angle, setAngle] = useState(35);
+  // Pilot: click to add, drag to move — PC1 tối ưu tự cập nhật theo cloud.
+  const [points, setPoints] = useState<Pt[]>(DATA);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const reduce = useReducedMotion();
 
   const rad = (angle * Math.PI) / 180;
   const cosA = Math.cos(rad);
   const sinA = Math.sin(rad);
 
-  const projected = useMemo(() =>
-    DATA.map((p) => {
-      const dx = p.x - CX;
-      const dy = p.y - CY;
-      const proj = dx * cosA + dy * sinA;
-      return { px: CX + proj * cosA, py: CY + proj * sinA, origX: p.x, origY: p.y };
-    }),
-  [cosA, sinA]);
+  const projected = useMemo(() => points.map((p) => {
+    const proj = (p.x - CX) * cosA + (p.y - CY) * sinA;
+    return { px: CX + proj * cosA, py: CY + proj * sinA, origX: p.x, origY: p.y };
+  }), [cosA, sinA, points]);
 
-  const variance = useMemo(() => computeVariance(DATA, rad), [rad]);
-  const total = useMemo(() => totalVariance(DATA), []);
-  const explainedRatio = Math.min(1, variance / total);
-
-  /* Find optimal angle (max variance) */
+  const variance = useMemo(() => computeVariance(points, rad), [rad, points]);
+  const total = useMemo(() => totalVariance(points), [points]);
+  const explainedRatio = total > 0 ? Math.min(1, variance / total) : 0;
   const optimalAngle = useMemo(() => {
     let best = 0, bestVar = 0;
     for (let a = 0; a < 180; a++) {
-      const v = computeVariance(DATA, (a * Math.PI) / 180);
+      const v = computeVariance(points, (a * Math.PI) / 180);
       if (v > bestVar) { bestVar = v; best = a; }
     }
     return best;
+  }, [points]);
+
+  const toSvg = useCallback((cx: number, cy: number): Pt => {
+    const r = svgRef.current?.getBoundingClientRect();
+    if (!r) return { x: 0, y: 0 };
+    return {
+      x: Math.max(5, Math.min(495, ((cx - r.left) * 500) / r.width)),
+      y: Math.max(5, Math.min(295, ((cy - r.top) * 300) / r.height)),
+    };
   }, []);
+  const onSvgClick = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (dragIdx !== null) return;
+    setPoints((prev) => [...prev, toSvg(e.clientX, e.clientY)]);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (dragIdx === null) return;
+    const p = toSvg(e.clientX, e.clientY);
+    setPoints((prev) => prev.map((pt, i) => (i === dragIdx ? p : pt)));
+  };
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
@@ -137,14 +154,17 @@ export default function PcaTopic() {
 
       {/* STEP 2: INTERACTIVE VIZ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
-        <p className="mb-4 text-sm text-muted leading-relaxed">
-          Xoay trục chiếu bằng thanh trượt. Tìm góc mà các <strong className="text-foreground">điểm chiếu (xanh)</strong>{" "}
-          trải rộng nhất trên trục — đó là PC1!
-        </p>
-
         <VisualizationSection>
           <div className="space-y-4">
-            <svg viewBox="0 0 500 300" className="w-full rounded-lg border border-border bg-background">
+            <p className="text-xs text-muted">
+              Xoay trục bằng thanh trượt; <strong>nhấn nền</strong> để thêm điểm, <strong>kéo chấm cam</strong> để di chuyển.
+            </p>
+            <svg ref={svgRef} viewBox="0 0 500 300"
+              className="w-full cursor-crosshair touch-none select-none rounded-lg border border-border bg-background"
+              role="img" aria-label={`PCA, góc ${angle}°, giữ ${(explainedRatio * 100).toFixed(0)}% phương sai`}
+              onClick={onSvgClick} onPointerMove={onPointerMove}
+              onPointerUp={() => setDragIdx(null)} onPointerLeave={() => setDragIdx(null)}>
+              <title>Trục PC1 góc {angle} độ, giữ lại {(explainedRatio * 100).toFixed(0)} phần trăm phương sai</title>
               {/* Principal axis */}
               <motion.line
                 x1={CX - 230 * cosA} y1={CY - 230 * sinA}
@@ -173,13 +193,20 @@ export default function PcaTopic() {
                   x1={p.origX} y1={p.origY} x2={p.px} y2={p.py}
                   stroke="#8b5cf6" strokeWidth={0.8} strokeDasharray="3 2" opacity={0.35}
                   animate={{ x2: p.px, y2: p.py }}
-                  transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                  transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 150, damping: 20 }}
                 />
               ))}
 
-              {/* Original points */}
-              {DATA.map((p, i) => (
-                <circle key={`orig-${i}`} cx={p.x} cy={p.y} r={4} fill="#f97316" stroke="#fff" strokeWidth={1} />
+              {/* Original points (draggable) */}
+              {points.map((p, i) => (
+                <circle key={`orig-${i}`} cx={p.x} cy={p.y} r={5}
+                  fill="#f97316" stroke="#fff" strokeWidth={1}
+                  className="cursor-grab active:cursor-grabbing"
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                    (e.target as Element).setPointerCapture(e.pointerId);
+                    setDragIdx(i);
+                  }} />
               ))}
 
               {/* Projected points */}
@@ -187,7 +214,7 @@ export default function PcaTopic() {
                 <motion.circle
                   key={`proj-${i}`} r={4} fill="#3b82f6" stroke="#fff" strokeWidth={1}
                   animate={{ cx: p.px, cy: p.py }}
-                  transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                  transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 150, damping: 20 }}
                 />
               ))}
 
@@ -230,17 +257,23 @@ export default function PcaTopic() {
                   transition={{ type: "spring", stiffness: 120, damping: 18 }}
                 />
               </div>
-              <p className="text-[10px] text-muted mt-1">
-                PC1 tối ưu ở ~{optimalAngle}° — thử tìm góc đó!
-              </p>
             </div>
 
-            <button
-              onClick={() => setAngle(optimalAngle)}
-              className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
-            >
-              Nhảy đến PC1 tối ưu ({optimalAngle}°)
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => setAngle(optimalAngle)}
+                className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
+              >
+                Nhảy đến PC1 tối ưu ({optimalAngle}°)
+              </button>
+              <button
+                onClick={() => { setPoints(DATA); setAngle(35); }}
+                className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
+              >
+                Đặt lại dữ liệu
+              </button>
+              <span className="ml-auto text-xs text-muted">{points.length} điểm</span>
+            </div>
           </div>
         </VisualizationSection>
       </LessonSection>

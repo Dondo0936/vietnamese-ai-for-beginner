@@ -392,6 +392,79 @@ const DECOMP_PAD = { l: 34, r: 14, t: 12, b: 30 };
 
 const TOTAL_STEPS = 8;
 
+/* Pilot: interactive-first — "Ẩn dụ bắn cung" now a canvas, not 4 bullet points.
+   Two sliders (bias, variance) → ~25 arrows on a target. The 4 quadrants of the
+   classic metaphor become visible as the learner tunes. */
+const TARGET_R = 100;
+const SHOT_SEED = 7;
+function bullsRng(seed: number) {
+  let s = seed >>> 0;
+  return () => { s = (1664525 * s + 1013904223) >>> 0; return s / 0xffffffff; };
+}
+function bullsShots(bias: number, variance: number) {
+  const rng = bullsRng(SHOT_SEED);
+  const shots: { x: number; y: number }[] = [];
+  for (let i = 0; i < 25; i++) {
+    const ang = rng() * Math.PI * 2;
+    const r = Math.sqrt(-2 * Math.log(Math.max(1e-6, rng()))) * variance;
+    shots.push({ x: bias + r * Math.cos(ang), y: r * Math.sin(ang) });
+  }
+  return shots;
+}
+function BullseyeCanvas() {
+  const [bias, setBias] = useState(10);
+  const [variance, setVariance] = useState(15);
+  const shots = useMemo(() => bullsShots(bias, variance), [bias, variance]);
+  const label =
+    bias < 20 && variance < 20 ? "Bias thấp · Variance thấp — lý tưởng"
+    : bias >= 20 && variance < 20 ? "Bias cao · Variance thấp — underfit"
+    : bias < 20 && variance >= 20 ? "Bias thấp · Variance cao — overfit"
+    : "Bias cao · Variance cao — tệ nhất";
+  const cx = 140, cy = 140;
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+      <p className="text-sm font-semibold text-foreground">Ẩn dụ bắn cung — kéo hai thanh để tái tạo cả bốn trường hợp</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        <svg viewBox="0 0 280 280" className="w-full max-w-[240px] mx-auto" role="img"
+          aria-label={`Bia bắn cung. ${label}. 25 mũi tên với bias ${bias} và variance ${variance}.`}>
+          <title>{label}</title>
+          {[TARGET_R, TARGET_R * 0.66, TARGET_R * 0.33].map((r, i) => (
+            <circle key={i} cx={cx} cy={cy} r={r}
+              fill={i === 0 ? "#fee2e2" : i === 1 ? "#fecaca" : "#fca5a5"}
+              stroke="#ef4444" strokeWidth={1} />
+          ))}
+          <circle cx={cx} cy={cy} r={3} fill="#7f1d1d" />
+          {shots.map((s, i) => (
+            <circle key={i} cx={cx + s.x} cy={cy + s.y} r={3}
+              fill="#1e293b" stroke="#fff" strokeWidth={0.8} opacity={0.85} />
+          ))}
+        </svg>
+        <div className="flex-1 space-y-3 text-sm">
+          <div>
+            <label className="flex items-center justify-between text-muted">
+              <span>Bias (lệch hệ thống)</span>
+              <span className="font-mono text-foreground">{bias}</span>
+            </label>
+            <input type="range" min={0} max={60} step={1} value={bias}
+              onChange={(e) => setBias(Number(e.target.value))} className="w-full accent-accent" />
+          </div>
+          <div>
+            <label className="flex items-center justify-between text-muted">
+              <span>Variance (độ tán)</span>
+              <span className="font-mono text-foreground">{variance}</span>
+            </label>
+            <input type="range" min={2} max={40} step={1} value={variance}
+              onChange={(e) => setVariance(Number(e.target.value))} className="w-full accent-accent" />
+          </div>
+          <p className="font-semibold" style={{ color:
+            bias < 20 && variance < 20 ? "#22c55e"
+            : (bias >= 20 && variance >= 20) ? "#ef4444" : "#f59e0b" }}>{label}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ═══ COMPONENT CHÍNH ═══ */
 
 export default function BiasVarianceTopic() {
@@ -601,14 +674,7 @@ export default function BiasVarianceTopic() {
           </p>
         </PredictionGate>
 
-        <Callout variant="info" title="Ẩn dụ: bắn cung ở trường bắn">
-          <ul className="list-disc pl-5 space-y-0.5">
-            <li><strong>Bias thấp + var thấp</strong>: mũi chụm quanh hồng tâm — lý tưởng.</li>
-            <li><strong>Bias cao + var thấp</strong>: mũi chụm nhưng lệch — underfit.</li>
-            <li><strong>Bias thấp + var cao</strong>: mũi quanh tâm nhưng tán — overfit.</li>
-            <li><strong>Bias cao + var cao</strong>: cả lệch lẫn tán — tệ nhất.</li>
-          </ul>
-        </Callout>
+        <BullseyeCanvas />
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════

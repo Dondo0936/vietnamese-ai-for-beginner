@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useMemo, useCallback, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   PredictionGate, AhaMoment, InlineChallenge,
   MiniSummary, CodeBlock, Callout, CollapsibleDetail,
@@ -85,33 +85,100 @@ const quizQuestions: QuizQuestion[] = [
   },
 ];
 
+/* Pilot: interactive-first — drag line endpoints, misclassified points auto-highlight. */
+type XY = { x: number; y: number };
+const LINE_DEFAULT: [XY, XY] = [{ x: 80, y: 260 }, { x: 320, y: 80 }];
+
+function DraggableClassifierCanvas() {
+  const [ends, setEnds] = useState<[XY, XY]>(LINE_DEFAULT);
+  const [dragging, setDragging] = useState<0 | 1 | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const reduce = useReducedMotion();
+
+  const toSvg = (cx: number, cy: number): XY => {
+    const r = svgRef.current?.getBoundingClientRect();
+    if (!r) return { x: 0, y: 0 };
+    return {
+      x: Math.max(10, Math.min(SVG_W - 10, ((cx - r.left) * SVG_W) / r.width)),
+      y: Math.max(10, Math.min(SVG_H - 10, ((cy - r.top) * SVG_H) / r.height)),
+    };
+  };
+  const onMove = useCallback((e: React.PointerEvent) => {
+    if (dragging === null) return;
+    const p = toSvg(e.clientX, e.clientY);
+    setEnds((prev) => (dragging === 0 ? [p, prev[1]] : [prev[0], p]));
+  }, [dragging]);
+
+  const classified = useMemo(() => POINTS.map((pt) => {
+    const pred = side(pt.x, pt.y, ends[0].x, ends[0].y, ends[1].x, ends[1].y) < 0 ? 0 : 1;
+    return { ...pt, ok: pred === pt.cls };
+  }), [ends]);
+  const ok = classified.filter((c) => c.ok).length;
+  const acc = Math.round((ok / POINTS.length) * 100);
+  const extY = (tx: number) =>
+    ends[0].y + ((ends[1].y - ends[0].y) / (ends[1].x - ends[0].x || 0.001)) * (tx - ends[0].x);
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+      <p className="text-sm text-foreground leading-relaxed">
+        Hai nhóm điểm: <span className="font-semibold text-blue-500">xanh</span> (A) và{" "}
+        <span className="font-semibold text-red-500">đỏ</span> (B).{" "}
+        <strong>Kéo hai đầu mút tím</strong> để chia đúng cả 12 điểm. Điểm sai có viền cam.
+      </p>
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+        className="w-full max-w-md mx-auto touch-none select-none rounded-lg border border-border bg-background/50"
+        role="img"
+        aria-label={`Đường phân loại tương tác, hiện đúng ${ok} trên ${POINTS.length} điểm`}
+        onPointerMove={onMove}
+        onPointerUp={() => setDragging(null)}
+        onPointerLeave={() => setDragging(null)}
+      >
+        <title>Đường phân loại tương tác, hiện đúng {ok} trên {POINTS.length} điểm ({acc}%)</title>
+        {[0, 1, 2, 3].map((i) => (
+          <g key={i}>
+            <line x1={i * (SVG_W / 3)} y1={0} x2={i * (SVG_W / 3)} y2={SVG_H} stroke="currentColor" className="text-border" strokeWidth={0.5} />
+            <line x1={0} y1={i * (SVG_H / 3)} x2={SVG_W} y2={i * (SVG_H / 3)} stroke="currentColor" className="text-border" strokeWidth={0.5} />
+          </g>
+        ))}
+        {classified.map((pt, i) => (
+          <motion.circle key={i} cx={pt.x} cy={pt.y} r={8}
+            fill={pt.cls === 0 ? "#3b82f6" : "#ef4444"}
+            stroke={pt.ok ? "#fff" : "#f59e0b"} strokeWidth={pt.ok ? 1.5 : 3}
+            initial={reduce ? false : { scale: 0 }} animate={{ scale: 1 }}
+            transition={reduce ? { duration: 0 } : { delay: i * 0.03, type: "spring", stiffness: 300 }} />
+        ))}
+        <line x1={0} y1={extY(0)} x2={SVG_W} y2={extY(SVG_W)}
+          stroke="#a855f7" strokeWidth={2.5} strokeDasharray="6,4" opacity={0.8} />
+        {ends.map((p, i) => (
+          <circle key={`e-${i}`} cx={p.x} cy={p.y} r={10}
+            fill="#a855f7" stroke="#fff" strokeWidth={2}
+            className="cursor-grab active:cursor-grabbing"
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              (e.target as Element).setPointerCapture(e.pointerId);
+              setDragging(i as 0 | 1);
+            }} />
+        ))}
+      </svg>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-2xl font-bold" style={{ color: acc === 100 ? "#22c55e" : acc >= 75 ? "#f59e0b" : "#ef4444" }}>{acc}%</p>
+          <p className="text-xs text-muted">
+            {acc === 100 ? "Hoàn hảo! 12/12 điểm đúng." : `${ok}/${POINTS.length} điểm đúng — kéo tiếp để cải thiện.`}
+          </p>
+        </div>
+        <button type="button" onClick={() => setEnds(LINE_DEFAULT)} className="text-sm text-accent hover:underline">
+          Đặt lại đường
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /* ── Component ── */
 export default function PerceptronTopic() {
-  // Step 2 state: classification game
-  const [linePoints, setLinePoints] = useState<{ x: number; y: number }[]>([]);
-  const [gameComplete, setGameComplete] = useState(false);
-
-  const handleSvgClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
-    if (gameComplete) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (SVG_W / rect.width);
-    const y = (e.clientY - rect.top) * (SVG_H / rect.height);
-    setLinePoints((prev) => {
-      if (prev.length === 0) return [{ x, y }];
-      if (prev.length === 1) { setGameComplete(true); return [prev[0], { x, y }]; }
-      return prev;
-    });
-  }, [gameComplete]);
-
-  const accuracy = useMemo(() => {
-    if (linePoints.length < 2) return null;
-    const [p1, p2] = linePoints;
-    let ok = 0;
-    for (const pt of POINTS) {
-      if ((side(pt.x, pt.y, p1.x, p1.y, p2.x, p2.y) < 0 ? 0 : 1) === pt.cls) ok++;
-    }
-    return Math.round((ok / POINTS.length) * 100);
-  }, [linePoints]);
 
   // Step 4 state: perceptron controls
   const [w1, setW1] = useState(0.6);
@@ -130,13 +197,6 @@ export default function PerceptronTopic() {
     return { x1: mapX(0), y1: mapY(solve(0)), x2: mapX(100), y2: mapY(solve(100)) };
   }, [w1, w2, bias]);
 
-  // Helper for extended line coords
-  const extY = (targetX: number) => {
-    if (linePoints.length < 2) return 0;
-    const [a, b] = linePoints;
-    return a.y + ((b.y - a.y) / (b.x - a.x || 0.001)) * (targetX - a.x);
-  };
-
   return (
     <>
       {/* ── Step 1: HOOK ── */}
@@ -151,61 +211,10 @@ export default function PerceptronTopic() {
         Bạn vừa thấy rằng quyết định phụ thuộc vào trọng số và ngưỡng. Bây giờ, hãy thử <strong className="text-foreground">TỰ MÌNH</strong> phân loại dữ liệu — bạn sẽ trải nghiệm chính xác điều mà một Perceptron làm.
       </p>
 
-      {/* ── Step 2: DISCOVER — Classification Game ── */}
+      {/* ── Step 2: DISCOVER — Draggable classifier (pilot: interactive-first) ── */}
       <section className="my-8 scroll-mt-20">
         <h2 className="mb-3 text-lg font-semibold text-foreground">Thử làm bộ phân loại</h2>
-        <div className="rounded-xl border border-border bg-card p-5 space-y-4">
-          <p className="text-sm text-foreground leading-relaxed">
-            Hai nhóm điểm: <span className="font-semibold text-blue-500">xanh</span> (A)
-            và <span className="font-semibold text-red-500">đỏ</span> (B).{" "}
-            <strong>Nhấn 2 điểm trên hình để vẽ đường phân chia.</strong>
-          </p>
-          <svg
-            viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-            className="w-full max-w-md mx-auto cursor-crosshair rounded-lg bg-background/50 border border-border"
-            onClick={handleSvgClick}
-          >
-            {[0, 1, 2, 3].map((i) => (
-              <g key={i}>
-                <line x1={i * (SVG_W / 3)} y1={0} x2={i * (SVG_W / 3)} y2={SVG_H} stroke="currentColor" className="text-border" strokeWidth={0.5} />
-                <line x1={0} y1={i * (SVG_H / 3)} x2={SVG_W} y2={i * (SVG_H / 3)} stroke="currentColor" className="text-border" strokeWidth={0.5} />
-              </g>
-            ))}
-            {POINTS.map((pt, i) => (
-              <motion.circle key={i} cx={pt.x} cy={pt.y} r={8}
-                fill={pt.cls === 0 ? "#3b82f6" : "#ef4444"}
-                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                transition={{ delay: i * 0.04, type: "spring", stiffness: 300 }} />
-            ))}
-            {linePoints.length === 1 && (
-              <motion.circle cx={linePoints[0].x} cy={linePoints[0].y} r={5} fill="#a855f7"
-                initial={{ scale: 0 }} animate={{ scale: [1, 1.4, 1] }}
-                transition={{ repeat: Infinity, duration: 1.2 }} />
-            )}
-            {linePoints.length === 2 && (
-              <>
-                <motion.line x1={0} y1={extY(0)} x2={SVG_W} y2={extY(SVG_W)}
-                  stroke="#a855f7" strokeWidth={2.5} strokeDasharray="6,4"
-                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.5 }} />
-                <circle cx={linePoints[0].x} cy={linePoints[0].y} r={4} fill="#a855f7" />
-                <circle cx={linePoints[1].x} cy={linePoints[1].y} r={4} fill="#a855f7" />
-              </>
-            )}
-          </svg>
-          {accuracy !== null && (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-1">
-              <p className="text-2xl font-bold text-accent">{accuracy}%</p>
-              <p className="text-sm text-muted">
-                {accuracy === 100 ? "Hoàn hảo! Bạn phân chia chính xác mọi điểm."
-                  : accuracy >= 75 ? "Khá tốt! Đường của bạn chia được phần lớn."
-                  : "Thử lại nhé — hãy chia rõ hai nhóm hơn."}
-              </p>
-              <button type="button" onClick={() => { setLinePoints([]); setGameComplete(false); }}
-                className="mt-2 text-sm text-accent hover:underline">Vẽ lại</button>
-            </motion.div>
-          )}
-        </div>
+        <DraggableClassifierCanvas />
       </section>
 
       {/* ── Step 3: REVEAL ── */}
