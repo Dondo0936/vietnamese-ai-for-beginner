@@ -44,7 +44,7 @@
  *   lazy-load path in Next 16 App Router. (docs/01-app/02-guides/lazy-loading.mdx)
  */
 
-import { memo } from "react";
+import { memo, type ReactNode } from "react";
 import Link from "next/link";
 import { ChevronDown, Settings, Send, Square } from "lucide-react";
 
@@ -56,7 +56,6 @@ import {
 import { AnnotationLayer } from "@/features/claude/components/AnnotationLayer";
 import { DemoCanvas } from "@/features/claude/components/DemoCanvas";
 import { DeepLinkCTA } from "@/features/claude/components/DeepLinkCTA";
-import { StillFrame } from "@/features/claude/components/StillFrame";
 import { useDemoPlayhead } from "@/features/claude/useDemoPlayhead";
 import { findTile } from "@/features/claude/registry";
 import type { Annotation } from "@/features/claude/types";
@@ -175,6 +174,113 @@ export function streamedSubstring(
 
 export function isStreaming(playhead: number): boolean {
   return playhead > STREAM_START && playhead < STREAM_END;
+}
+
+// ---------------------------------------------------------------------------
+// "Cách nó hoạt động" crop primitives — zoomed fragments, not mini-shells
+// ---------------------------------------------------------------------------
+
+/** Small card wrapper shared by the 3 "how it works" crops. */
+function CropCard({
+  title,
+  caption,
+  children,
+}: {
+  title: string;
+  caption: string;
+  children: ReactNode;
+}) {
+  return (
+    <figure className="flex flex-col gap-3">
+      <div
+        className="flex flex-col gap-3 rounded-[14px] border border-border bg-[var(--paper-2,#F3F2EE)] p-5"
+        style={{ boxShadow: "var(--shadow-sm)" }}
+      >
+        {children}
+      </div>
+      <figcaption className="flex flex-col gap-1.5">
+        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-tertiary">
+          {title}
+        </span>
+        <p className="text-[14px] leading-[1.55] text-muted">{caption}</p>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Message bubble styled like ShellMessage but without the shell's flex context. */
+function CropBubble({
+  from,
+  children,
+  muted,
+}: {
+  from: "user" | "claude";
+  children: ReactNode;
+  muted?: boolean;
+}) {
+  const isUser = from === "user";
+  return (
+    <div
+      className={`rounded-[12px] px-4 py-2 text-[13px] leading-[1.55] ${
+        isUser
+          ? "ml-auto bg-foreground text-background"
+          : "bg-[var(--paper,#FBFAF7)] text-foreground"
+      } ${muted ? "italic text-tertiary" : ""}`}
+      style={{ maxWidth: "85%" }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Composer stub with a single icon button visible — stop or send. */
+function CropComposer({ icon }: { icon: "stop" | "send" }) {
+  return (
+    <div
+      className="flex items-center justify-between gap-3 rounded-[14px] border border-border bg-[var(--pure-white,#FFFFFF)] px-4 py-2.5"
+      style={{ boxShadow: "var(--shadow-sm)" }}
+    >
+      <span className="text-[13px] text-tertiary">Nhập tiếp theo...</span>
+      <span
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-background"
+        aria-hidden="true"
+      >
+        {icon === "stop" ? (
+          <Square size={12} strokeWidth={2.5} />
+        ) : (
+          <Send size={12} strokeWidth={2.5} />
+        )}
+      </span>
+    </div>
+  );
+}
+
+/** Inline pin+label — matches the AnnotationLayer look but as a flow element. */
+function CropAnnotation({
+  pin,
+  label,
+  align = "left",
+}: {
+  pin: number;
+  label: string;
+  align?: "left" | "right";
+}) {
+  return (
+    <div
+      className={`flex items-start gap-2 ${align === "right" ? "ml-auto flex-row-reverse" : ""}`}
+    >
+      <span
+        aria-hidden="true"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-foreground bg-[var(--paper,#FBFAF7)] text-[11px] font-semibold text-foreground"
+        style={{ boxShadow: "var(--shadow-sm)" }}
+      >
+        {pin}
+      </span>
+      <span className="rounded-[6px] border border-border bg-[var(--paper,#FBFAF7)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground">
+        {label}
+      </span>
+    </div>
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -297,30 +403,8 @@ export default function ChatTile() {
     main: <ChatMain playhead={t} />,
   });
 
-  // Still-frame slots: rail omitted so the bubble + composer fill the narrow
-  // 3-up card. Annotation anchors re-mapped below because main column now
-  // spans 0%→100% instead of hero's 22.5%→100%.
-  const buildStillFrameSlots = (t: number) => ({
-    topBar: <ChatTopBar />,
-    main: <ChatMain playhead={t} />,
-  });
-
-  // Shift hero anchor x: (hero_x - 22.5) / 0.775
-  // Rail occupies 22.5% of hero shell width; once the rail is gone, main
-  // column width expands from 77.5% to 100% of the shell.
-  const STILL_FRAME_ANNOTATIONS: Annotation[] = ANNOTATIONS.map((a) => ({
-    ...a,
-    anchor: {
-      x: Math.round((a.anchor.x - 22.5) / 0.775),
-      y: a.anchor.y,
-    },
-  }));
-
   const filterAnnotations = (t: number) =>
     ANNOTATIONS.filter(({ showAt: [s, e] }) => t >= s && t <= e);
-
-  const filterStillFrameAnnotations = (t: number) =>
-    STILL_FRAME_ANNOTATIONS.filter(({ showAt: [s, e] }) => t >= s && t <= e);
 
   return (
     <article className="mx-auto flex max-w-[1100px] flex-col gap-12 px-4 py-10">
@@ -355,33 +439,53 @@ export default function ChatTile() {
         </div>
       </DemoCanvas>
 
-      {/* Still frames — "Cách nó hoạt động" */}
+      {/* "Cách nó hoạt động" — zoomed crop cards. Each card shows just the
+          relevant UI fragment(s) at full card width instead of squeezing the
+          entire ClaudeDesktopShell chrome into a 350px thumbnail. Sharper,
+          readable, and each pin sits in its own composition. */}
       <section className="flex flex-col gap-5">
         <h2 className="text-[22px] font-semibold leading-[1.25] text-foreground md:text-[26px]">
           Cách nó hoạt động
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
-          <StillFrame
-            playhead={0.04}
+          <CropCard
             title="Câu hỏi vừa gửi"
             caption="Bạn gõ xong và bấm Enter. Câu hỏi lên tức thì, Claude bắt đầu đọc và suy nghĩ."
-            annotations={filterStillFrameAnnotations(0.04)}
-            slots={buildStillFrameSlots}
-          />
-          <StillFrame
-            playhead={0.45}
+          >
+            <CropAnnotation pin={1} label="Câu hỏi gửi ngay" align="right" />
+            <CropBubble from="user">
+              Giải thích cơ bản về mạng nơ-ron cho học sinh cấp 2.
+            </CropBubble>
+            <CropBubble from="claude" muted>
+              Claude đang soạn...
+            </CropBubble>
+          </CropCard>
+
+          <CropCard
             title="Đang stream"
             caption="Claude đang sinh phản hồi từng token. Bạn đọc song song với mô hình — không cần chờ cả câu."
-            annotations={filterStillFrameAnnotations(0.45)}
-            slots={buildStillFrameSlots}
-          />
-          <StillFrame
-            playhead={0.92}
+          >
+            <CropBubble from="claude">
+              Mạng nơ-ron là một mô hình học máy lấy cảm hứng từ cách não bộ
+              hoạt động. Nó gồm nhiều lớp tế bào nhân tạo, mỗi tế bào nhận tín
+              hiệu, xử lý,
+            </CropBubble>
+            <CropAnnotation
+              pin={2}
+              label="Chữ sẽ chạy về liên tục bằng phương pháp response streaming"
+            />
+            <CropComposer icon="stop" />
+            <CropAnnotation pin={3} label="Nút Dừng giữa chừng" align="right" />
+          </CropCard>
+
+          <CropCard
             title="Hoàn tất"
             caption="Phản hồi đầy đủ. Composer quay về trạng thái sẵn sàng. Claude nhớ bối cảnh, bạn có thể hỏi tiếp."
-            annotations={filterStillFrameAnnotations(0.92)}
-            slots={buildStillFrameSlots}
-          />
+          >
+            <CropBubble from="claude">{TARGET_TEXT}</CropBubble>
+            <CropComposer icon="send" />
+            <CropAnnotation pin={4} label="Sẵn sàng cho lượt kế" align="right" />
+          </CropCard>
         </div>
       </section>
 
