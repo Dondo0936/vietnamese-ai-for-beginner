@@ -88,8 +88,12 @@ export default function HeroSearch({
             }}
           >
             Hiểu AI qua{" "}
-            <AccentHueSweep lang="vi">hình ảnh và ví dụ</AccentHueSweep>
-            .
+            {/* Keep "hình ảnh và ví dụ." atomic so text-wrap never splits
+                after "hình". The whole phrase either fits the line or drops
+                to the next line together. */}
+            <span className="whitespace-nowrap">
+              <AccentHueSweep lang="vi">hình ảnh và ví dụ</AccentHueSweep>.
+            </span>
           </motion.h1>
 
           {/* Sub-head — body at 18px, relaxed leading, secondary ink */}
