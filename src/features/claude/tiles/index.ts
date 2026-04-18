@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import dynamic from "next/dynamic";
 import type { TileSlug } from "@/features/claude/registry";
 
 /**
@@ -11,8 +12,9 @@ import type { TileSlug } from "@/features/claude/registry";
  * registry) so typos in downstream tile registrations fail at
  * compile time instead of silently falling through to the placeholder.
  *
- * Phase 1: empty. Phase 2 tasks 1-8 populate this one by one.
+ * Phase 2 progress:
+ *  - Task 1: chat — streaming response demo.
  */
 export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
-  // Task 1 will add: chat: dynamic(() => import("./chat"))
+  chat: dynamic(() => import("./chat")),
 };

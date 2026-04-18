@@ -25,7 +25,11 @@ describe("claude registry", () => {
     }
   });
 
-  it("marks every tile as status=planned in Phase 1", () => {
-    expect(tiles.every((t) => t.status === "planned")).toBe(true);
+  it("tracks per-tile status through Phase 2 rollout", () => {
+    // Phase 2 ships tiles one-by-one; keep this test as a live snapshot of
+    // which tiles have flipped from "planned" → "ready" so the rollout is
+    // visible in CI. Update this set as each tile ships.
+    const ready = tiles.filter((t) => t.status === "ready").map((t) => t.slug);
+    expect(ready).toEqual(["chat"]);
   });
 });

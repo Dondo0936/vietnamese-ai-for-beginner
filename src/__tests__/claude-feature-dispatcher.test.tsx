@@ -19,13 +19,17 @@ describe("/claude/[feature] dispatcher", () => {
     expect(params[0]).toHaveProperty("feature");
   });
 
-  it("renders the tile's title for a known slug", async () => {
+  it("renders the TilePlaceholder title for a known planned slug", async () => {
+    // Use a slug that's still "planned" — the dispatcher delegates to
+    // TilePlaceholder which synchronously renders the title. Tiles flipped
+    // to "ready" resolve to `next/dynamic` components whose body requires
+    // Suspense to resolve and so aren't accessible synchronously here.
     const node = await ClaudeFeaturePage({
-      params: Promise.resolve({ feature: "chat" }),
+      params: Promise.resolve({ feature: "projects" }),
     });
     render(node);
     expect(
-      screen.getByRole("heading", { name: /Chat \+ phản hồi trực tiếp/ })
+      screen.getByRole("heading", { name: /Projects/ })
     ).toBeInTheDocument();
   });
 
