@@ -3,7 +3,7 @@
 import { useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
-interface AccentHueSweepProps {
+export interface AccentHueSweepProps {
   children: ReactNode;
   lang?: string;
   className?: string;
@@ -16,7 +16,7 @@ interface AccentHueSweepProps {
  * Gradient uses existing DS tokens (--turquoise-500, --peach-500, --clay)
  * so we don't introduce new colors.
  */
-export default function AccentHueSweep({
+export function AccentHueSweep({
   children,
   lang,
   className = "",

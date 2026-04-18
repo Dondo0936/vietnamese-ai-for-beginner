@@ -3,7 +3,7 @@
 import { Search, ArrowRight } from "lucide-react";
 import { motion, MotionConfig, useReducedMotion } from "framer-motion";
 import DifficultyFilter from "./DifficultyFilter";
-import AccentHueSweep from "@/features/claude/AccentHueSweep";
+import { AccentHueSweep } from "@/features/claude/components/AccentHueSweep";
 import type { TopicMeta, Difficulty } from "@/lib/types";
 
 interface HeroSearchProps {

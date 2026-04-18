@@ -3,7 +3,7 @@
 import { useReducedMotion } from "framer-motion";
 import type { KeyboardEvent, ReactNode } from "react";
 
-interface DemoCanvasProps {
+export interface DemoCanvasProps {
   title: string;
   children: ReactNode;
   onPlay: () => void;

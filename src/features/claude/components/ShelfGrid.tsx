@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { ShelfMeta, TileMeta } from "@/features/claude/types";
 
-interface ShelfGridProps {
+export interface ShelfGridProps {
   shelf: ShelfMeta;
   tiles: TileMeta[];
   index: number; // 1-based shelf position for the eyebrow

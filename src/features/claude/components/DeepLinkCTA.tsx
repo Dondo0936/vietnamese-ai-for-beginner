@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 
-type Props =
+export type DeepLinkCTAProps =
   | {
       prompt: string;
       docHref?: never;
@@ -19,7 +19,7 @@ type Props =
  *  1. deep-links a seeded prompt into claude.ai/new?q=...
  *  2. or opens an Anthropic doc page for non-deep-linkable features (Skills, MCP).
  */
-export function DeepLinkCTA(props: Props) {
+export function DeepLinkCTA(props: DeepLinkCTAProps) {
   const href = props.prompt
     ? `https://claude.ai/new?q=${encodeURIComponent(props.prompt)}`
     : props.docHref;

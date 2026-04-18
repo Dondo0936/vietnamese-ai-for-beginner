@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import * as fm from "framer-motion";
-import AccentHueSweep from "@/features/claude/AccentHueSweep";
+import { AccentHueSweep } from "@/features/claude/components/AccentHueSweep";
 
 // Spy-enable the framer-motion module so vi.spyOn can stub useReducedMotion.
 // Without { spy: true }, ESM namespace exports are frozen and not configurable.
