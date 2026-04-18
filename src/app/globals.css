@@ -66,22 +66,29 @@
 /* Light theme (default) — Perplexity paper tones  */
 /* ─────────────────────────────────────────────── */
 :root {
-  --bg-primary: #FBF7F2;
+  /* Surfaces — warm paper ladder (DS: --paper / --paper-2 / --paper-3).
+     --bg-primary holds the DS paper; --bg-surface is the next step down
+     (paper-2) and --bg-surface-hover is paper-3. Pure white reserved
+     for elevated cards (--bg-card). */
+  --bg-primary: #FBFAF7;
   --bg-card: #FFFFFF;
-  --bg-dark: #0A0A0B;
-  --bg-surface: #F4EEE3;
-  --bg-surface-hover: #E8DEC9;
-  --bg-sunken: #F4EEE3;
-  --text-primary: #0A0A0B;
-  --text-secondary: #2A2A2F;
-  --text-tertiary: #6C6C74;
-  --text-muted: #9B9BA3;
-  --accent: #0F8A83;
-  --accent-light: rgba(15, 138, 131, 0.10);
-  --accent-dark: #0E6F69;
-  --border: rgba(10, 10, 11, 0.10);
-  --border-subtle: rgba(10, 10, 11, 0.06);
-  --border-strong: rgba(10, 10, 11, 0.18);
+  --bg-dark: #0B0B0B;
+  --bg-surface: #F3F2EE;
+  --bg-surface-hover: #E9E7E1;
+  --bg-sunken: #F3F2EE;
+  /* Ink — DS ink is #1A1A1A (engineered near-black, not pure black).
+     Everything that previously read as #0A0A0B is pushed to the DS value. */
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4842;
+  --text-tertiary: #8A8780;
+  --text-muted: #8A8780;
+  --accent: #20B8B0;
+  --accent-light: rgba(32, 184, 176, 0.10);
+  --accent-dark: #178F89;
+  /* DS hairlines — single weight at --border, slightly stronger at --border-strong */
+  --border: #D9D7D0;
+  --border-subtle: rgba(26, 26, 26, 0.06);
+  --border-strong: #C4C1B8;
   --analogy-bg: rgba(15, 138, 131, 0.06);
   --ring: rgba(15, 138, 131, 0.35);
   --hero-gradient-from: #0F8A83;
@@ -111,25 +118,29 @@
 }
 
 /* ─────────────────────────────────────────────── */
-/* Dark theme — Perplexity ink palette              */
+/* Dark theme — DS dark (invert semantics, keep accent) */
+/* DS guidance: offblack base, a slightly lifted elev, single-weight  */
+/* hairlines, turquoise-300 for accent ink on dark.                    */
 /* ─────────────────────────────────────────────── */
 .dark {
-  --bg-primary: #0A0A0B;
-  --bg-card: #121214;
-  --bg-dark: #060607;
-  --bg-surface: #18181B;
-  --bg-surface-hover: #1F1F23;
-  --bg-sunken: #060607;
-  --text-primary: #F5F5F7;
-  --text-secondary: #C4C4CC;
-  --text-tertiary: #9B9BA3;
-  --text-muted: #6C6C74;
-  --accent: #20B8AE;
-  --accent-light: rgba(19, 168, 158, 0.12);
-  --accent-dark: #13A89E;
-  --border: rgba(255, 255, 255, 0.10);
+  --bg-primary: #0B0B0B;
+  --bg-card: #141414;
+  --bg-dark: #050505;
+  --bg-surface: #1C1C1C;
+  --bg-surface-hover: #232323;
+  --bg-sunken: #0E0E0E;
+  --text-primary: #F2F1ED;
+  --text-secondary: #B8B6AF;
+  --text-tertiary: #7B7972;
+  --text-muted: #7B7972;
+  /* Accent on dark: DS suggests keeping the 500 for fills but using
+     turquoise-300 for link/ink so it reads without fighting the bg. */
+  --accent: #20B8B0;
+  --accent-light: rgba(32, 184, 176, 0.12);
+  --accent-dark: #6FD6D0;
+  --border: #262624;
   --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-strong: #3A3835;
   --analogy-bg: rgba(32, 184, 174, 0.06);
   --ring: rgba(32, 184, 174, 0.35);
   --hero-gradient-from: #20B8AE;
@@ -311,6 +322,41 @@ html[data-scroll-behavior="smooth"] {
 .katex-display { margin: 1rem 0 !important; overflow-x: auto; overflow-y: hidden; padding: 0.5rem 0; }
 .katex { font-size: 1.05em !important; }
 .katex-display > .katex { font-size: 1.15em !important; }
+
+/* ─────────────────────────────────────────────── */
+/* DS utility classes — used by homepage composition */
+/* ─────────────────────────────────────────────── */
+.ds-eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-caps, 0.08em);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+/* Asterisk mark — DS brand-friendly unicode, turquoise-ink in light,
+   turquoise-300 in dark. Used at most once per surface. */
+.ds-mark {
+  display: inline-block;
+  font-family: var(--font-display), sans-serif;
+  color: var(--turquoise-ink);
+  line-height: 1;
+}
+.dark .ds-mark { color: var(--turquoise-300); }
+
+/* Ask bar focus ring — DS turquoise halo */
+.ds-ask:focus-within {
+  border-color: var(--turquoise-300);
+  box-shadow: 0 0 0 4px rgba(32, 184, 176, 0.15), var(--shadow-sm);
+}
+
+/* Library-row hover — DS thread-title turquoise-ink accent */
+.ds-thread:hover .ds-thread-title {
+  color: var(--turquoise-ink);
+}
+.dark .ds-thread:hover .ds-thread-title {
+  color: var(--turquoise-300);
+}
 
 /* Skeleton loading */
 @keyframes shimmer {

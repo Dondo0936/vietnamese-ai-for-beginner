@@ -1,8 +1,8 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
+import { motion, MotionConfig, useReducedMotion } from "framer-motion";
 import DifficultyFilter from "./DifficultyFilter";
-import ShaderBackground from "./ShaderBackground";
 import type { TopicMeta, Difficulty } from "@/lib/types";
 
 interface HeroSearchProps {
@@ -12,156 +12,165 @@ interface HeroSearchProps {
   counts: Record<string, number>;
 }
 
+/**
+ * Homepage hero — Perplexity × Momo DS, ground-up.
+ *
+ * DS alignment:
+ *  - Flat paper surface. No shader, no gradient, no decorative fill.
+ *  - Sentence case. No emoji in product. One DS asterisk mark (✳) in
+ *    turquoise-ink, counted as the surface's single turquoise use.
+ *  - Display type (Space Grotesk / --font-display) at h1 size only.
+ *    Vietnamese diacritics rely on Space Grotesk's latin-ext + vi subsets
+ *    already loaded in `app/layout.tsx` (Be Vietnam Pro intentionally
+ *    skipped per prior decision to keep bundle lean).
+ *  - Ask bar: pure-white surface, 1px hairline, radius-lg (12px), resting
+ *    shadow-sm, turquoise focus halo. Left leading ✳, right-side ⌘K kbd
+ *    hint and an accent-ink arrow capsule.
+ *  - Motion: one-shot fade+y-8 on mount. MotionConfig reducedMotion="user"
+ *    honours prefers-reduced-motion automatically.
+ *
+ * Functional preservation:
+ *  - ⌘K dispatch unchanged.
+ *  - DifficultyFilter props plumbed through.
+ *  - Vietnamese copy verbatim.
+ */
+
 function triggerCmdK() {
   document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }));
 }
 
-/**
- * Homepage hero — applies the Perplexity × Momo design system.
- *
- * DS rules applied here:
- *  - Sentence case, no exclamation marks, no emoji.
- *  - Space Grotesk for the H1 (--font-display), Inter Tight elsewhere.
- *    Vietnamese H1 uses `lang="vi"` so Inter-Tight's Vietnamese subset
- *    renders with correct diacritic metrics. (Be Vietnam Pro is optional
- *    for full Vietnamese immersion; kept off the hero to honour the
- *    "one typeface per surface" editorial rule.)
- *  - Display tracking -0.02em (`--tracking-tight`), leading 1.05.
- *  - Turquoise used exactly ONCE on the surface — as the emphasised
- *    word in the H1 (deep teal `--turquoise-ink`, not a rainbow
- *    gradient). No second accent anywhere else in the hero.
- *  - Ask-bar anatomy: pure-white surface, 1px `--line` hairline,
- *    `--radius-lg` (12px), `--shadow-sm` at rest, turquoise focus ring.
- *  - Eyebrow in 12px UPPERCASE with `--tracking-caps` (0.08em), ash colour.
- *
- * Preserved from the previous pass:
- *  - Shader background system stays (ShaderBackground → GravityGrid/CellBloom).
- *  - Legibility veil remains so shader colours can't fight the text.
- *  - Vietnamese copy verbatim.
- *  - ⌘K dispatch. `DifficultyFilter` props plumbing unchanged.
- *  - `prefers-reduced-motion` + tab-hidden behaviour lives inside the shader hook.
- */
 export default function HeroSearch({
   selectedDifficulty,
   onDifficultyChange,
   counts,
 }: HeroSearchProps) {
+  const reduce = useReducedMotion();
+
+  // Short, out-eased motion (DS: 120–360ms, ease-out).
+  const base = reduce
+    ? { duration: 0 }
+    : { duration: 0.42, ease: [0.22, 1, 0.36, 1] as const };
+
   return (
-    <section className="relative isolate overflow-hidden px-4 pb-16 pt-20 text-center sm:pb-24 sm:pt-28">
-      <ShaderBackground />
+    <MotionConfig reducedMotion="user">
+      <section
+        aria-labelledby="hero-title"
+        className="relative px-4 pt-16 pb-10 sm:pt-24 sm:pb-14"
+      >
+        <div className="mx-auto flex max-w-[720px] flex-col items-center text-center">
+          {/* DS mark — single turquoise moment on the surface */}
+          <motion.span
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...base, delay: reduce ? 0 : 0.02 }}
+            className="ds-mark mb-8 text-[44px] sm:text-[52px] font-medium leading-none"
+          >
+            ✳
+          </motion.span>
 
-      {/* Legibility veil — a barely-there radial wash under the text block.
-          Keeps WCAG contrast over animated shader colours without hiding them. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 55% at 50% 45%, var(--bg-primary) 0%, transparent 70%)",
-          opacity: 0.55,
-        }}
-      />
+          {/* Eyebrow — 11px uppercase mono, DS tracking-caps */}
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...base, delay: reduce ? 0 : 0.06 }}
+            className="ds-eyebrow mb-6"
+          >
+            AI cho mọi người · Tiếng Việt
+          </motion.p>
 
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center">
-        {/* Eyebrow — DS spec: 12px uppercase, tracking-caps, ash colour.
-            No decorative icon (DS: "no emoji in product UI"); the mark
-            character `*` is brand-friendly but kept off here to stay
-            within the "turquoise ≤ 2x" budget. */}
-        <div
-          className="mb-6 font-mono text-[11px] font-medium uppercase text-tertiary"
-          style={{ letterSpacing: "var(--tracking-caps)" }}
-        >
-          AI cho mọi người · Tiếng Việt
-        </div>
-
-        {/* H1 — DS display: Space Grotesk 500, tight tracking, leading 1.05.
-            Vietnamese diacritics render through Inter-Tight/Space-Grotesk's
-            Vietnamese subsets already loaded in app/layout.tsx. */}
-        <h1
-          lang="vi"
-          className="font-display text-foreground"
-          style={{
-            fontWeight: 500,
-            fontSize: "clamp(44px, 8vw, 96px)",
-            lineHeight: "var(--lh-tight, 1.05)",
-            letterSpacing: "var(--tracking-tight)",
-            margin: 0,
-          }}
-        >
-          Hiểu AI qua{" "}
-          <span
-            // Single accent on the surface: deep turquoise ink, no gradient,
-            // no italic, no serif. DS: "turquoise used sparingly, never
-            // decorative." The weight bump (600) gives emphasis without colour.
+          {/* H1 — display type, DS tight tracking, leading 1.05 */}
+          <motion.h1
+            id="hero-title"
+            lang="vi"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...base, delay: reduce ? 0 : 0.1 }}
+            className="font-display text-foreground"
             style={{
-              color: "var(--turquoise-ink)",
-              fontWeight: 600,
+              fontWeight: 500,
+              fontSize: "clamp(40px, 7.2vw, 72px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              margin: 0,
+              textWrap: "balance",
             }}
           >
-            hình ảnh
-          </span>
-        </h1>
+            Hiểu AI qua hình ảnh và ví dụ.
+          </motion.h1>
 
-        {/* Sub-head — 18px body, relaxed line-height, graphite secondary.
-            DS: plain sentence, no exclamation. Copy verbatim. */}
-        <p
-          className="mt-7 max-w-[560px] text-muted"
-          style={{
-            fontSize: "18px",
-            lineHeight: 1.55,
-          }}
-        >
-          Khám phá AI/ML qua minh họa tương tác và ví dụ thực tế bằng tiếng Việt.
-          Không cần nền tảng kỹ thuật.
-        </p>
-
-        {/* Ask-bar — DS input anatomy.
-            - Surface: pure white (--bg-card) sitting on the paper hero.
-            - 1px hairline border (--border → --line in DS).
-            - 12px radius (--r-lg, maps to DS --radius-lg).
-            - Resting shadow-sm; focus grows a turquoise ring.
-            - Left leading icon (Search, 1.5px stroke via Lucide default).
-            - Right trailing kbd hint (mono, --radius-sm).
-            A single button acts as a click target that opens the existing
-            command palette via ⌘K dispatch — mechanics unchanged. */}
-        <div className="mt-10 w-full max-w-[520px]">
-          <button
-            type="button"
-            onClick={triggerCmdK}
-            aria-label="Mở tìm kiếm chủ đề (phím tắt Cmd+K)"
-            className="group flex w-full items-center gap-3 border border-border bg-card py-[14px] pl-5 pr-3 text-left text-[15px] text-tertiary transition-all duration-[var(--dur-base)] hover:border-[color:var(--border-strong)] focus-within:border-[color:var(--turquoise-300,#6FD6D0)]"
-            style={{
-              borderRadius: "var(--radius-lg, 12px)",
-              boxShadow: "var(--shadow-sm)",
-            }}
+          {/* Sub-head — body at 18px, relaxed leading, secondary ink */}
+          <motion.p
+            lang="vi"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...base, delay: reduce ? 0 : 0.14 }}
+            className="mt-5 max-w-[540px] text-muted"
+            style={{ fontSize: 17, lineHeight: 1.55, textWrap: "pretty" }}
           >
-            <Search
-              size={18}
-              strokeWidth={1.5}
-              className="shrink-0 text-tertiary transition-colors group-hover:text-foreground"
-              aria-hidden="true"
-            />
-            <span className="flex-1">Tìm kiếm chủ đề...</span>
-            <kbd
-              className="hidden items-center border border-border bg-surface px-2 py-0.5 font-mono text-[10px] text-tertiary sm:inline-flex"
+            Khám phá AI/ML qua minh họa tương tác và ví dụ thực tế bằng tiếng Việt.
+            Không cần nền tảng kỹ thuật.
+          </motion.p>
+
+          {/* Ask bar — DS input anatomy */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...base, delay: reduce ? 0 : 0.2 }}
+            className="mt-9 w-full max-w-[560px]"
+          >
+            <button
+              type="button"
+              onClick={triggerCmdK}
+              aria-label="Mở tìm kiếm chủ đề (phím tắt Cmd K)"
+              className="ds-ask group flex w-full items-center gap-3 border border-border bg-card py-[13px] pl-5 pr-[6px] text-left text-[15px] text-tertiary transition-[border-color,box-shadow] duration-200"
               style={{
-                borderRadius: "var(--radius-sm, 4px)",
-                letterSpacing: "0.04em",
+                borderRadius: 14,
+                boxShadow: "var(--shadow-sm)",
               }}
             >
-              ⌘K
-            </kbd>
-          </button>
-        </div>
+              <Search
+                size={18}
+                strokeWidth={1.5}
+                className="shrink-0 text-tertiary transition-colors group-hover:text-foreground"
+                aria-hidden="true"
+              />
+              <span className="flex-1 truncate">Tìm kiếm chủ đề...</span>
+              <kbd
+                aria-hidden="true"
+                className="hidden items-center border border-border bg-surface px-2 py-0.5 font-mono text-[10px] text-tertiary sm:inline-flex"
+                style={{ borderRadius: 4, letterSpacing: "0.04em" }}
+              >
+                ⌘K
+              </kbd>
+              <span
+                aria-hidden="true"
+                className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full transition-colors"
+                style={{
+                  background: "var(--turquoise-ink, #13343B)",
+                  color: "var(--bg-primary)",
+                }}
+              >
+                <ArrowRight size={16} strokeWidth={1.75} />
+              </span>
+            </button>
+          </motion.div>
 
-        <div className="mt-6">
-          <DifficultyFilter
-            selected={selectedDifficulty}
-            onChange={onDifficultyChange}
-            counts={counts}
-          />
+          {/* Difficulty filter — kept functional, DS pill style lives in the component */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...base, delay: reduce ? 0 : 0.26 }}
+            className="mt-7"
+          >
+            <DifficultyFilter
+              selected={selectedDifficulty}
+              onChange={onDifficultyChange}
+              counts={counts}
+            />
+          </motion.div>
         </div>
-      </div>
-    </section>
+      </section>
+    </MotionConfig>
   );
 }
