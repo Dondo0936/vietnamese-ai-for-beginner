@@ -88,6 +88,13 @@ const CHAT_HISTORY: Array<{ id: string; title: string; active?: boolean }> = [
   { id: "domain", title: "Gợi ý 10 tên miền cho startup AI giáo dục Việt Nam" },
 ];
 
+// Anchor calibration notes (2026-04-18):
+//   - Shell layout: top bar 44px, left rail 248px (~22.5% of a 1100px shell),
+//     main column ~77.5% wide starting at x≈22.5%.
+//   - User bubble (right-aligned, mx-4, max-w-85%): right side of main ≈ x:82,
+//     first message sits near y:22 (just below top bar).
+//   - Claude bubble (left-aligned): bubble body centers around x:48, y:48.
+//   - Composer sits at bottom: y:94. Right-side icon (stop/send) at x:88.
 const ANNOTATIONS: Annotation[] = [
   {
     id: "user-sent",
@@ -96,16 +103,16 @@ const ANNOTATIONS: Annotation[] = [
     description:
       "Enter → câu hỏi của bạn xuất hiện tức thì ở cột chat; Claude bắt đầu xử lý.",
     showAt: [0.0, 0.12],
-    anchor: { x: 68, y: 28 },
+    anchor: { x: 82, y: 22 },
   },
   {
     id: "streaming",
     pin: 2,
-    label: "Token chảy từng phần",
+    label: "Chữ sẽ chạy về liên tục bằng phương pháp response streaming",
     description:
       "Mỗi token (một mảnh nhỏ của từ, thường vài ký tự) được gửi về trình duyệt ngay khi mô hình sinh ra — không chờ toàn bộ câu. Đây là server-sent events (SSE) đằng sau hậu trường.",
     showAt: [0.1, 0.5],
-    anchor: { x: 42, y: 45 },
+    anchor: { x: 48, y: 48 },
   },
   {
     id: "stop-button",
@@ -114,7 +121,7 @@ const ANNOTATIONS: Annotation[] = [
     description:
       "Trong lúc Claude đang trả lời, composer hiện nút Dừng (vuông). Bấm vào để cắt phản hồi nếu Claude lạc đề hoặc dài dòng.",
     showAt: [0.3, 0.8],
-    anchor: { x: 58, y: 82 },
+    anchor: { x: 80, y: 94 },
   },
   {
     id: "done",
@@ -123,7 +130,7 @@ const ANNOTATIONS: Annotation[] = [
     description:
       "Khi stream hoàn tất, nút Dừng trở lại nút Gửi (mũi tên). Bạn có thể gõ tiếp ngay trong cùng cuộc trò chuyện — Claude nhớ bối cảnh vừa rồi.",
     showAt: [0.85, 1.0],
-    anchor: { x: 58, y: 82 },
+    anchor: { x: 80, y: 94 },
   },
 ];
 
