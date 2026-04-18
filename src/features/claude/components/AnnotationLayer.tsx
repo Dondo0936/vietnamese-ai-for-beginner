@@ -51,7 +51,7 @@ export function AnnotationLayer({
           >
             {a.pin}
           </span>
-          <span className="rounded-[6px] border border-border bg-[var(--paper,#FBFAF7)] px-2 py-0.5 text-[12px] text-foreground">
+          <span className="max-w-[220px] rounded-[6px] border border-border bg-[var(--paper,#FBFAF7)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground whitespace-normal">
             {a.label}
           </span>
         </div>
