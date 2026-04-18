@@ -101,7 +101,7 @@ const ANNOTATIONS: Annotation[] = [
     pin: 2,
     label: "Token chảy từng phần",
     description:
-      "Mỗi token (~1–2 ký tự trung bình) được gửi về trình duyệt ngay khi mô hình sinh ra — không chờ toàn bộ câu. Đây là server-sent events (SSE) đằng sau hậu trường.",
+      "Mỗi token (một mảnh nhỏ của từ, thường vài ký tự) được gửi về trình duyệt ngay khi mô hình sinh ra — không chờ toàn bộ câu. Đây là server-sent events (SSE) đằng sau hậu trường.",
     showAt: [0.1, 0.5],
     anchor: { x: 42, y: 45 },
   },
@@ -209,11 +209,11 @@ function ChatShellContents({ playhead }: { playhead: number }): ShellSlots {
   const topBar = (
     <div className="flex w-full items-center gap-2">
       <span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[12px] text-foreground">
-        Cuộc trò chuyện mới
+        Cá nhân
         <ChevronDown size={12} strokeWidth={2} aria-hidden="true" />
       </span>
       <span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[12px] text-foreground">
-        Claude Sonnet 4.7
+        Claude Sonnet 4.6
         <ChevronDown size={12} strokeWidth={2} aria-hidden="true" />
       </span>
       <span className="ml-auto text-tertiary" aria-hidden="true">
