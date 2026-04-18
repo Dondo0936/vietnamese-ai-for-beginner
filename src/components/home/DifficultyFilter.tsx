@@ -32,11 +32,22 @@ export default function DifficultyFilter({
             type="button"
             aria-pressed={isActive}
             onClick={() => onChange(f.value)}
-            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-[7px] text-[13px] font-medium transition-all ${
+            // DS: pill chip with ink fill when active, transparent when not.
+            // Resting ghost, hover darkens to ink — no colour flash (DS rule).
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-[7px] text-[13px] font-medium transition-all duration-[var(--dur-fast)] ${
               isActive
-                ? "bg-foreground text-background shadow-sm"
-                : "text-muted hover:text-foreground"
+                ? "bg-foreground text-background"
+                : "text-muted hover:bg-surface hover:text-foreground"
             }`}
+            style={
+              isActive
+                ? {
+                    // DS button anatomy: inset highlight + 1px resting drop.
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 2px rgba(17,17,17,0.08)",
+                  }
+                : undefined
+            }
           >
             {f.label}
             <span className={`text-[11px] ${isActive ? "opacity-60" : "text-tertiary"}`}>

@@ -1,5 +1,67 @@
 @import "tailwindcss";
 
+/* ===============================================================
+   Perplexity × Momo design system — additive DS tokens.
+   These are adopted alongside the project's existing tokens so
+   topic files (which depend on --r-pill, --bg-card, --accent, etc.)
+   keep working. Homepage components opt-in to the DS tokens by name.
+   =============================================================== */
+:root {
+  /* Neutrals — warm paper through near-black (DS: colors_and_type.css) */
+  --paper:      #FBFAF7;
+  --paper-2:    #F3F2EE;
+  --paper-3:    #E9E7E1;
+  --line:       #D9D7D0;
+  --line-2:     #C4C1B8;
+  --ash:        #8A8780;
+  --graphite:   #4A4842;
+  --ink:        #1A1A1A;
+  --offblack:   #0B0B0B;
+  --pure-white: #FFFFFF;
+
+  /* True Turquoise — Perplexity primary accent ramp */
+  --turquoise-50:  #E6F8F7;
+  --turquoise-100: #C2EFEC;
+  --turquoise-300: #6FD6D0;
+  --turquoise-500: #20B8B0;
+  --turquoise-600: #178F89;
+  --turquoise-700: #0E5F5B;
+  --turquoise-ink: #13343B;
+
+  /* Warm earth — editorial only, never core chrome */
+  --peach-200:  #F4D9C5;
+  --peach-500:  #E08B54;
+  --clay:       #B3533A;
+
+  /* DS-native spacing scale (4px base) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* DS-native radii (map onto existing --r-* where sensible) */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 999px;
+
+  /* DS type tracking */
+  --tracking-tight: -0.02em;
+  --tracking-snug:  -0.01em;
+  --tracking-caps:   0.08em;
+}
+
 /* ─────────────────────────────────────────────── */
 /* Light theme (default) — Perplexity paper tones  */
 /* ─────────────────────────────────────────────── */
