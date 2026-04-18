@@ -3,27 +3,39 @@ import { Brain } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-dark border-t border-white/10 mt-auto">
-      <div className="mx-auto max-w-6xl px-4 py-10">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-white">
+    <footer className="bg-dark border-t border-[rgba(255,255,255,0.06)] mt-auto">
+      <div className="mx-auto max-w-6xl px-4 sm:px-8 py-12">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2.5">
             <Brain className="h-4 w-4 text-accent" />
-            <span className="text-sm font-medium">AI Cho Mọi Người</span>
+            <span className="font-display text-[17px] font-medium tracking-[-0.02em] text-[#F5F5F7]">
+              AI Cho Mọi Người
+            </span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-slate-400">
-            <Link href="/" className="hover:text-slate-300 transition-colors">Trang chủ</Link>
-            <Link href="/bookmarks" className="hover:text-slate-300 transition-colors">Đã lưu</Link>
-            <Link href="/progress" className="hover:text-slate-300 transition-colors">Tiến độ</Link>
+          <div className="flex items-center gap-6">
+            {[
+              { href: "/", label: "Trang chủ" },
+              { href: "/bookmarks", label: "Đã lưu" },
+              { href: "/progress", label: "Tiến độ" },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-[13px] text-[#9B9BA3] transition-colors hover:text-[#C4C4CC]"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-white/5 text-center">
-          <p className="text-xs text-slate-500">
-            Hiểu AI qua hình ảnh và ví dụ đơn giản &mdash; Mã nguồn mở
+        <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.06)] text-center">
+          <p className="font-serif italic text-[15px] text-[#6C6C74]">
+            Hiểu AI qua hình ảnh và ví dụ đơn giản
           </p>
-          <p className="mt-1 text-xs text-slate-600">
-            Created by Tien Dat Do
+          <p className="mt-2 font-mono text-[11px] tracking-[0.04em] text-[#6C6C74]">
+            © 2026 Tien Dat Do
           </p>
         </div>
       </div>
