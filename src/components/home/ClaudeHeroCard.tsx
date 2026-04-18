@@ -10,7 +10,6 @@ export default function ClaudeHeroCard() {
     <section className="mx-auto max-w-[720px] px-4 pb-4 sm:pb-6">
       <Link
         href="/claude"
-        aria-label="Cẩm nang Claude — Chưa dùng Claude? Bắt đầu ở đây"
         className="group flex items-center justify-between gap-4 border border-border bg-card px-5 py-3 text-[14px] text-foreground transition-[border-color,box-shadow] duration-200 hover:border-[color:var(--border-strong)]"
         style={{ borderRadius: 12, boxShadow: "var(--shadow-sm)" }}
       >
