@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllTopics } from "@/topics/registry";
+import { tiles } from "@/features/claude/registry";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ai-edu-app.vercel.app";
 
@@ -18,6 +19,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    {
+      url: `${BASE_URL}/claude`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    ...tiles.map((tile) => ({
+      url: `${BASE_URL}/claude/${tile.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
     })),
   ];
 }
