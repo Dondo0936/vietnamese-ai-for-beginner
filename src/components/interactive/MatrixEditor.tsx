@@ -26,15 +26,38 @@ export default function MatrixEditor({
   const [data, setData] = useState<number[][]>(() =>
     initialData.map((row) => [...row])
   );
+  const [draft, setDraft] = useState<string[][]>(() =>
+    initialData.map((row) => row.map((v) => String(v)))
+  );
 
   function handleChange(rowIdx: number, colIdx: number, value: string) {
+    // Always accept the raw keystrokes so intermediate tokens ("-", ".", "")
+    // aren't eaten while the user types a number like "-0.5".
+    const nextDraft = draft.map((row, r) =>
+      row.map((cell, c) => (r === rowIdx && c === colIdx ? value : cell))
+    );
+    setDraft(nextDraft);
+
     const num = parseFloat(value);
-    if (isNaN(num)) return;
+    if (!Number.isFinite(num)) return;
     const next = data.map((row, r) =>
       row.map((cell, c) => (r === rowIdx && c === colIdx ? num : cell))
     );
     setData(next);
     onChange?.(next);
+  }
+
+  function handleBlur(rowIdx: number, colIdx: number) {
+    const raw = draft[rowIdx]?.[colIdx] ?? "";
+    const num = parseFloat(raw);
+    if (!Number.isFinite(num)) {
+      // Revert draft to the last committed numeric value.
+      const committed = String(data[rowIdx][colIdx]);
+      const nextDraft = draft.map((row, r) =>
+        row.map((cell, c) => (r === rowIdx && c === colIdx ? committed : cell))
+      );
+      setDraft(nextDraft);
+    }
   }
 
   const rows = data.length;
@@ -81,8 +104,9 @@ export default function MatrixEditor({
                       min={min}
                       max={max}
                       step={step}
-                      value={data[r][c]}
+                      value={draft[r]?.[c] ?? ""}
                       onChange={(e) => handleChange(r, c, e.target.value)}
+                      onBlur={() => handleBlur(r, c)}
                       className="w-16 h-9 rounded-lg border border-border bg-surface text-center font-mono text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-colors"
                     />
                   </td>

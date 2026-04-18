@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 
 export interface Pair {
   left: string;
@@ -22,12 +22,21 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function MatchPairs({ pairs, instruction }: MatchPairsProps) {
+  // Seed with the identity order so SSR and the first client render produce
+  // identical HTML. Math.random() in the initializer would desync them and
+  // trigger a hydration mismatch. The real shuffle happens post-mount.
   const [shuffledRight, setShuffledRight] = useState<number[]>(() =>
-    shuffle(pairs.map((_, i) => i))
+    pairs.map((_, i) => i)
   );
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [matches, setMatches] = useState<Record<number, number>>({});
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    setShuffledRight((prev) => shuffle(prev));
+    // Only shuffle once on mount; Reset button re-shuffles explicitly.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const allMatched = Object.keys(matches).length === pairs.length;
 

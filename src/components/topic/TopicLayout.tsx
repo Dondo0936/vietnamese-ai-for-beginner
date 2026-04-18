@@ -88,6 +88,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
       if (pct >= 0.7) {
         markTopicRead(meta.slug);
         hasMarkedRead.current = true;
+        setManuallyMarked(true);
       }
     }
 
@@ -226,8 +227,12 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
           <button
             type="button"
             aria-label="Đánh dấu đã đọc"
-            disabled={manuallyMarked || hasMarkedRead.current}
+            disabled={manuallyMarked}
             onClick={() => {
+              if (hasMarkedRead.current) {
+                setManuallyMarked(true);
+                return;
+              }
               markTopicRead(meta.slug);
               hasMarkedRead.current = true;
               setManuallyMarked(true);

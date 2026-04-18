@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GripVertical, CheckCircle2, XCircle } from "lucide-react";
 
 interface ReorderableProps {
@@ -23,9 +23,21 @@ export default function Reorderable({
   correctOrder,
   instruction,
 }: ReorderableProps) {
-  const [order, setOrder] = useState<number[]>(() => shuffleIndices(items.length));
+  // Start with the identity order so SSR and the first client render agree.
+  // Shuffling uses Math.random(), which would produce different orderings on
+  // server vs. client and trigger a hydration mismatch. We defer the shuffle
+  // to a post-mount effect so the randomized order only appears on the client.
+  const [order, setOrder] = useState<number[]>(() =>
+    Array.from({ length: items.length }, (_, i) => i)
+  );
   const [checked, setChecked] = useState(false);
   const dragIdx = useRef<number | null>(null);
+
+  useEffect(() => {
+    setOrder(shuffleIndices(items.length));
+    // Only shuffle once on mount; re-shuffles happen via the Retry button.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const allCorrect =
     checked && order.every((itemIdx, pos) => itemIdx === correctOrder[pos]);

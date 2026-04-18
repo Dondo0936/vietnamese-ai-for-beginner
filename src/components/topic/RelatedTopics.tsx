@@ -6,6 +6,14 @@ interface RelatedTopicsProps {
 }
 
 export default function RelatedTopics({ slugs }: RelatedTopicsProps) {
+  if (process.env.NODE_ENV === "development") {
+    slugs.forEach((s) => {
+      if (!topicMap[s]) {
+        console.warn(`[RelatedTopics] slug "${s}" not found in topicMap`);
+      }
+    });
+  }
+
   const validTopics = slugs
     .map((s) => topicMap[s])
     .filter(Boolean);

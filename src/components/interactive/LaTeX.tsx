@@ -17,7 +17,13 @@ export default function LaTeX({ children, block = false }: LaTeXProps) {
       return katex.renderToString(children, {
         displayMode: block,
         throwOnError: false,
-        trust: true,
+        // Default-deny: disables \href, \url, \includegraphics and other
+        // commands that can emit attacker-controlled URLs into the DOM.
+        // Output is fed into dangerouslySetInnerHTML, so enabling trust is
+        // a stored-XSS trap. Re-enable per-command via a function form
+        // (see KaTeX docs) only if a topic genuinely needs \href.
+        trust: false,
+        strict: "warn",
       });
     } catch {
       return children;
