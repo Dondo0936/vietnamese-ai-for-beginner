@@ -87,14 +87,14 @@ export default function ProfessionPaths({
           <Link
             key={prof.id}
             href={prof.href ?? `/paths/${prof.id}`}
-            className="group rounded-[16px] border border-border bg-card/50 backdrop-blur-sm overflow-hidden transition-all hover:bg-card hover:shadow-sm hover:-translate-y-0.5"
+            className="group rounded-[var(--r-lg)] border border-border bg-card/50 shadow-[var(--shadow-sm)] overflow-hidden transition-all hover:bg-card hover:shadow-sm hover:-translate-y-0.5"
           >
             <div className="flex items-center gap-3 p-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-muted group-hover:text-accent transition-colors">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--r-md)] bg-surface text-muted group-hover:text-accent transition-colors">
                 <Icon size={20} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-[13px] font-semibold text-foreground truncate leading-snug group-hover:text-accent transition-colors">
+                <h3 className="font-display text-[13px] font-medium tracking-[-0.01em] text-foreground truncate leading-snug group-hover:text-accent transition-colors">
                   {prof.nameVi}
                 </h3>
                 <p className="text-[11px] text-tertiary mt-0.5 line-clamp-1">
