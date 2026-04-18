@@ -6,8 +6,6 @@ import {
   Briefcase,
   Code2,
   FlaskConical,
-  Sparkles,
-  Rocket,
   ArrowRight,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
@@ -57,22 +55,6 @@ export const professions: Profession[] = [
     descriptionVi: "Lý thuyết sâu & xu hướng mới — scaling laws, alignment, kiến trúc tiên tiến",
     icon: FlaskConical,
     topicSlugs: slugsForPath("ai-researcher"),
-  },
-  {
-    id: "kids-nhi",
-    nameVi: "Bé làm quen với AI (6–10 tuổi)",
-    descriptionVi: "18 bài vui vẻ — hình ảnh, kéo thả, có audio. Không cần biết đọc nhiều.",
-    icon: Sparkles,
-    topicSlugs: [],
-    href: "/kids/nhi",
-  },
-  {
-    id: "kids-teen",
-    nameVi: "Teen tự làm dự án AI (11–15 tuổi)",
-    descriptionVi: "30 bài — train mô hình nhỏ, hiểu AI tạo sinh, sẵn sàng cho lộ trình Học sinh.",
-    icon: Rocket,
-    topicSlugs: [],
-    href: "/kids/teen",
   },
 ];
 

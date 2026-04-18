@@ -19,10 +19,6 @@ vi.mock("@/topics/registry", () => ({
     "transformer": { slug: "transformer", title: "Transformer", titleVi: "Transformer" },
   },
 }));
-vi.mock("@/topics/kids/kids-registry", () => ({
-  kidsTopicMap: {},
-}));
-
 import TopicLink from "@/components/interactive/TopicLink";
 
 beforeEach(() => {
@@ -60,11 +56,4 @@ describe("TopicLink — ?path= preservation", () => {
     expect(link).toHaveAttribute("href", "/topics/logistic-regression");
   });
 
-  it("on a /kids/* route, ignores ?path= entirely and routes to /kids/topics/:slug", () => {
-    pathnameMock.mockReturnValue("/kids/topics/may-nhin-pixel");
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
-    render(<TopicLink slug="logistic-regression">Hồi quy</TopicLink>);
-    const link = screen.getByRole("link", { name: "Hồi quy" });
-    expect(link).toHaveAttribute("href", "/kids/topics/logistic-regression");
-  });
 });

@@ -8,7 +8,6 @@ import type { Stage } from "@/components/paths/LearningPathPage";
  * derive prev/next links that follow the learner's current path rather than
  * the topic's category.
  *
- * Kid paths (/kids/*) have their own namespace and are NOT included here.
  */
 
 export type AdultPathId = "student" | "office" | "ai-engineer" | "ai-researcher";

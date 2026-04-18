@@ -33,7 +33,6 @@ describe("paths-lib: registry shape", () => {
   it("isAdultPathId accepts known ids and rejects others", () => {
     expect(isAdultPathId("student")).toBe(true);
     expect(isAdultPathId("ai-engineer")).toBe(true);
-    expect(isAdultPathId("kids-nhi")).toBe(false);
     expect(isAdultPathId("")).toBe(false);
     expect(isAdultPathId(null)).toBe(false);
     expect(isAdultPathId(undefined)).toBe(false);
