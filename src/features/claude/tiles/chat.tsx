@@ -297,8 +297,30 @@ export default function ChatTile() {
     main: <ChatMain playhead={t} />,
   });
 
+  // Still-frame slots: rail omitted so the bubble + composer fill the narrow
+  // 3-up card. Annotation anchors re-mapped below because main column now
+  // spans 0%→100% instead of hero's 22.5%→100%.
+  const buildStillFrameSlots = (t: number) => ({
+    topBar: <ChatTopBar />,
+    main: <ChatMain playhead={t} />,
+  });
+
+  // Shift hero anchor x: (hero_x - 22.5) / 0.775
+  // Rail occupies 22.5% of hero shell width; once the rail is gone, main
+  // column width expands from 77.5% to 100% of the shell.
+  const STILL_FRAME_ANNOTATIONS: Annotation[] = ANNOTATIONS.map((a) => ({
+    ...a,
+    anchor: {
+      x: Math.round((a.anchor.x - 22.5) / 0.775),
+      y: a.anchor.y,
+    },
+  }));
+
   const filterAnnotations = (t: number) =>
     ANNOTATIONS.filter(({ showAt: [s, e] }) => t >= s && t <= e);
+
+  const filterStillFrameAnnotations = (t: number) =>
+    STILL_FRAME_ANNOTATIONS.filter(({ showAt: [s, e] }) => t >= s && t <= e);
 
   return (
     <article className="mx-auto flex max-w-[1100px] flex-col gap-12 px-4 py-10">
@@ -343,22 +365,22 @@ export default function ChatTile() {
             playhead={0.04}
             title="Câu hỏi vừa gửi"
             caption="Bạn gõ xong và bấm Enter. Câu hỏi lên tức thì, Claude bắt đầu đọc và suy nghĩ."
-            annotations={filterAnnotations(0.04)}
-            slots={buildSlots}
+            annotations={filterStillFrameAnnotations(0.04)}
+            slots={buildStillFrameSlots}
           />
           <StillFrame
             playhead={0.45}
             title="Đang stream"
             caption="Claude đang sinh phản hồi từng token. Bạn đọc song song với mô hình — không cần chờ cả câu."
-            annotations={filterAnnotations(0.45)}
-            slots={buildSlots}
+            annotations={filterStillFrameAnnotations(0.45)}
+            slots={buildStillFrameSlots}
           />
           <StillFrame
             playhead={0.92}
             title="Hoàn tất"
             caption="Phản hồi đầy đủ. Composer quay về trạng thái sẵn sàng. Claude nhớ bối cảnh, bạn có thể hỏi tiếp."
-            annotations={filterAnnotations(0.92)}
-            slots={buildSlots}
+            annotations={filterStillFrameAnnotations(0.92)}
+            slots={buildStillFrameSlots}
           />
         </div>
       </section>
