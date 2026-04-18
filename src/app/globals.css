@@ -370,6 +370,7 @@ html[data-scroll-behavior="smooth"] {
   border-radius: var(--r-sm);
 }
 
+/* used by AccentHueSweep component */
 @keyframes hue-sweep {
   0%   { background-position:   0% 50%; }
   50%  { background-position: 100% 50%; }

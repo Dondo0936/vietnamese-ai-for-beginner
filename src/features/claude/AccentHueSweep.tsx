@@ -22,28 +22,30 @@ export default function AccentHueSweep({
   className = "",
 }: AccentHueSweepProps) {
   const reduce = useReducedMotion();
+  // Treat the SSR/hydration-unknown state (null) as "prefer reduced" — gives
+  // reduced-motion users a clean static paint from SSR through hydration.
+  const animate = reduce === false;
 
   const base: React.CSSProperties = {
-    backgroundImage: reduce
-      ? "linear-gradient(90deg, var(--turquoise-500) 0%, var(--peach-500) 55%, var(--clay) 100%)"
-      : "conic-gradient(from var(--hue-sweep-angle, 0deg) at 50% 50%, var(--turquoise-500), var(--peach-500), var(--clay), var(--turquoise-500))",
-    backgroundSize: reduce ? "100% 100%" : "300% 300%",
+    backgroundImage: animate
+      ? "conic-gradient(at 50% 50%, var(--turquoise-500), var(--peach-500), var(--clay), var(--turquoise-500))"
+      : "linear-gradient(90deg, var(--turquoise-500) 0%, var(--peach-500) 55%, var(--clay) 100%)",
+    backgroundSize: animate ? "300% 300%" : "100% 100%",
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     color: "transparent",
     WebkitTextFillColor: "transparent",
   };
 
+  const composed = [
+    className,
+    animate ? "animate-[hue-sweep_7s_linear_infinite]" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <span
-      lang={lang}
-      className={
-        reduce
-          ? className
-          : `${className} animate-[hue-sweep_7s_linear_infinite]`
-      }
-      style={base}
-    >
+    <span lang={lang} className={composed} style={base}>
       {children}
     </span>
   );
