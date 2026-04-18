@@ -8,7 +8,8 @@ import type { ReactNode } from "react";
  * Pure presentational. Never fetches. Never calls a real API.
  * Layout tokens match the real app:
  *   - Top bar height: 44px
- *   - Left rail width: 248px (collapsible in the real app; fixed here)
+ *   - Left rail width: 248px when present; rail is optional (hide it by
+ *     omitting the prop — used in narrow still-frame thumbnails).
  *   - Artifacts panel width: 42% of shell, min 360px
  *   - Paper surface: --paper (light) / #1A1919 (dark, matches claude.ai)
  *
@@ -18,7 +19,12 @@ import type { ReactNode } from "react";
 
 export interface ClaudeDesktopShellProps {
   topBar: ReactNode;
-  leftRail: ReactNode;
+  /**
+   * Left rail contents. Optional — when omitted (e.g. in still-frame
+   * thumbnails where horizontal space is tight), the main column fills
+   * the shell width and annotation anchors shift accordingly.
+   */
+  leftRail?: ReactNode;
   main: ReactNode;
   artifactsPanel?: ReactNode;
   /** Override shell height (default 620px). */
@@ -56,13 +62,15 @@ export function ClaudeDesktopShell({
       </div>
 
       <div className="flex" style={{ height: "calc(100% - 44px)" }}>
-        {/* Left rail */}
-        <aside
-          className="flex shrink-0 flex-col border-r border-border"
-          style={{ width: 248, background: "var(--paper-2, #F3F2EE)" }}
-        >
-          {leftRail}
-        </aside>
+        {/* Left rail — optional; omit in narrow still-frames */}
+        {leftRail !== undefined && leftRail !== null ? (
+          <aside
+            className="flex shrink-0 flex-col border-r border-border"
+            style={{ width: 248, background: "var(--paper-2, #F3F2EE)" }}
+          >
+            {leftRail}
+          </aside>
+        ) : null}
 
         {/* Main */}
         <section className="flex min-w-0 flex-1 flex-col">{main}</section>
