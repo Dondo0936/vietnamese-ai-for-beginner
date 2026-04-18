@@ -102,6 +102,9 @@ export function useDemoPlayhead(opts: UseDemoPlayheadOpts): DemoPlayhead {
     startedAtRef.current = null;
   }, []);
   const onStep = useCallback(() => {
+    // Stepping implies manual control — pause the auto-loop so the
+    // next rAF frame doesn't overwrite the nudge.
+    setPlaying(false);
     setPlayhead((p) => Math.min(1, p + step));
   }, [step]);
 

@@ -45,4 +45,12 @@ describe("useDemoPlayhead", () => {
     act(() => result.current.onPlay()); // pause
     expect(result.current.playing).toBe(false);
   });
+
+  it("onStep pauses the demo if it was playing", () => {
+    const { result } = renderHook(() => useDemoPlayhead({ duration: 1000 }));
+    act(() => result.current.onPlay()); // start playing
+    expect(result.current.playing).toBe(true);
+    act(() => result.current.onStep());
+    expect(result.current.playing).toBe(false);
+  });
 });
