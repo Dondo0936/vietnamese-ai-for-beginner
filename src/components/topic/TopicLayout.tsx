@@ -151,7 +151,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
         initial={reduceMotion ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: "easeOut" }}
-        className="content-width px-5 py-10"
+        className="content-width px-5 sm:px-8 py-10"
       >
         {/* Back + position indicator */}
         <div className="mb-8 flex items-center justify-between gap-3">
@@ -180,10 +180,10 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
         <header className="mb-10">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              <h1 className="font-display text-[40px] font-medium tracking-[-0.035em] leading-[1.05] text-foreground">
                 {meta.title}
               </h1>
-              <p className="text-lg text-muted">{meta.titleVi}</p>
+              <p className="text-lg text-muted tracking-[-0.01em]">{meta.titleVi}</p>
             </div>
             <BookmarkButton slug={meta.slug} />
           </div>
@@ -232,7 +232,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
               hasMarkedRead.current = true;
               setManuallyMarked(true);
             }}
-            className={`inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all ${
+            className={`inline-flex items-center gap-2 rounded-[var(--r-pill)] border px-5 py-2.5 text-sm font-medium transition-all ${
               manuallyMarked
                 ? "border-accent/30 bg-accent/10 text-accent cursor-default"
                 : "border-border bg-card/50 text-muted hover:text-foreground hover:bg-card hover:shadow-sm"
@@ -252,7 +252,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             {nav.prev ? (
               <Link
                 href={neighborHref(nav.prev.slug)}
-                className="group flex items-start gap-3 rounded-[16px] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm"
+                className="group flex items-start gap-3 rounded-[var(--r-lg)] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm"
               >
                 <ChevronLeft size={16} className="mt-0.5 text-tertiary group-hover:text-accent shrink-0" />
                 <div className="min-w-0">
@@ -268,7 +268,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             {nav.next ? (
               <Link
                 href={neighborHref(nav.next.slug)}
-                className="group flex items-start gap-3 rounded-[16px] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm text-right"
+                className="group flex items-start gap-3 rounded-[var(--r-lg)] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm text-right"
               >
                 <div className="min-w-0 flex-1">
                   <span className="text-[10px] text-tertiary uppercase tracking-wider">Bài tiếp theo</span>
@@ -280,7 +280,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             ) : (
               <Link
                 href={backHref}
-                className="group flex items-center justify-center gap-2 rounded-[16px] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm"
+                className="group flex items-center justify-center gap-2 rounded-[var(--r-lg)] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm"
               >
                 <span className="text-sm font-medium text-muted group-hover:text-foreground">
                   {nav.kind === "path" ? `Hoàn thành lộ trình ${nav.path.nameVi}!` : "Hoàn thành danh mục!"}
