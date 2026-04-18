@@ -71,7 +71,7 @@ export function ClaudeDesktopShell({
         {artifactsPanel ? (
           <aside
             role="complementary"
-            aria-label="Artifacts panel"
+            aria-label="Khung Artifacts"
             className="flex shrink-0 flex-col border-l border-border"
             style={{
               width: "42%",
@@ -87,7 +87,10 @@ export function ClaudeDesktopShell({
   );
 }
 
-/** Pre-styled bubbles for common message UI inside Shell.main. */
+/**
+ * Pre-styled bubbles for common message UI inside Shell.main.
+ * Render inside a flex-column container; user bubbles use `ml-auto` to align right.
+ */
 export function ShellMessage({
   from,
   children,
@@ -108,6 +111,11 @@ export function ShellMessage({
   );
 }
 
+/**
+ * Non-interactive visual placeholder for the Claude Desktop composer.
+ * Pure div — no input, no submit. Use for tiles that need the composer
+ * *look* without any real functionality.
+ */
 export function ShellComposerStub({ placeholder }: { placeholder?: string }) {
   return (
     <div
