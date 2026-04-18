@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { tiles, findTile } from "@/features/claude/registry";
+import { tiles, findTile, type TileSlug } from "@/features/claude/registry";
+import { tileBodies } from "@/features/claude/tiles";
 import { TilePlaceholder } from "@/features/claude/components/TilePlaceholder";
 
 type Params = { feature: string };
@@ -31,7 +32,8 @@ export default async function ClaudeFeaturePage({
   const { feature } = await params;
   const tile = findTile(feature);
   if (!tile) notFound();
-  // Phase 1: every tile is "planned" and renders the placeholder.
-  // Phases 2-4 will introduce per-slug bodies gated on tile.status.
-  return <TilePlaceholder tile={tile} />;
+  // tile.slug is typed `string` on TileMeta; the registry enforces each
+  // literal matches TileSlug via `satisfies`, so the cast is safe here.
+  const Body = tile.status === "ready" ? tileBodies[tile.slug as TileSlug] : undefined;
+  return Body ? <Body /> : <TilePlaceholder tile={tile} />;
 }

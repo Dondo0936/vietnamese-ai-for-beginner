@@ -11,6 +11,7 @@ import ClaudeFeaturePage, {
   generateStaticParams,
 } from "@/app/claude/[feature]/page";
 import { notFound } from "next/navigation";
+import { tiles } from "@/features/claude/registry";
 
 describe("/claude/[feature] dispatcher", () => {
   it("generateStaticParams returns 24 slugs", async () => {
@@ -19,13 +20,19 @@ describe("/claude/[feature] dispatcher", () => {
     expect(params[0]).toHaveProperty("feature");
   });
 
-  it("renders the tile's title for a known slug", async () => {
+  it("renders the tile's title for a known slug (via TilePlaceholder for any still-planned slug)", async () => {
+    const planned = tiles.find((t) => t.status === "planned");
+    if (!planned) {
+      throw new Error(
+        "Dispatcher test needs at least one tile with status='planned'. All tiles are ready — write a new test."
+      );
+    }
     const node = await ClaudeFeaturePage({
-      params: Promise.resolve({ feature: "chat" }),
+      params: Promise.resolve({ feature: planned.slug }),
     });
     render(node);
     expect(
-      screen.getByRole("heading", { name: /Chat \+ phản hồi trực tiếp/ })
+      screen.getByRole("heading", { name: new RegExp(planned.viTitle) })
     ).toBeInTheDocument();
   });
 
