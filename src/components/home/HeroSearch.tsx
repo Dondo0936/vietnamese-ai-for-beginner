@@ -3,6 +3,7 @@
 import { Search, ArrowRight } from "lucide-react";
 import { motion, MotionConfig, useReducedMotion } from "framer-motion";
 import DifficultyFilter from "./DifficultyFilter";
+import AccentHueSweep from "@/features/claude/AccentHueSweep";
 import type { TopicMeta, Difficulty } from "@/lib/types";
 
 interface HeroSearchProps {
@@ -17,8 +18,9 @@ interface HeroSearchProps {
  *
  * DS alignment:
  *  - Flat paper surface. No shader, no gradient, no decorative fill.
- *  - Sentence case. No emoji in product. One DS asterisk mark (✳) in
- *    turquoise-ink, counted as the surface's single turquoise use.
+ *  - Sentence case. No emoji in product. Hero headline accents "hình ảnh và ví dụ"
+ *    via `<AccentHueSweep>` (animated conic gradient clipped to text), replacing
+ *    the prior ✳.
  *  - Display type (Space Grotesk / --font-display) at h1 size only.
  *    Vietnamese diacritics rely on Space Grotesk's latin-ext + vi subsets
  *    already loaded in `app/layout.tsx` (Be Vietnam Pro intentionally
@@ -58,17 +60,6 @@ export default function HeroSearch({
         className="relative px-4 pt-16 pb-10 sm:pt-24 sm:pb-14"
       >
         <div className="mx-auto flex max-w-[720px] flex-col items-center text-center">
-          {/* DS mark — single turquoise moment on the surface */}
-          <motion.span
-            aria-hidden="true"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ ...base, delay: reduce ? 0 : 0.02 }}
-            className="ds-mark mb-8 text-[44px] sm:text-[52px] font-medium leading-none"
-          >
-            ✳
-          </motion.span>
-
           {/* Eyebrow — 11px uppercase mono, DS tracking-caps */}
           <motion.p
             initial={{ opacity: 0, y: 6 }}
@@ -96,7 +87,9 @@ export default function HeroSearch({
               textWrap: "balance",
             }}
           >
-            Hiểu AI qua hình ảnh và ví dụ.
+            Hiểu AI qua{" "}
+            <AccentHueSweep lang="vi">hình ảnh và ví dụ</AccentHueSweep>
+            .
           </motion.h1>
 
           {/* Sub-head — body at 18px, relaxed leading, secondary ink */}
