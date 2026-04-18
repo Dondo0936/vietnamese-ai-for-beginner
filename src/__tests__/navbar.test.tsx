@@ -24,8 +24,8 @@ describe("Navbar", () => {
     expect(nav.className).not.toContain("bg-dark");
     expect(nav.className).not.toContain("text-white");
 
-    // Should use theme-aware classes
-    expect(nav.className).toContain("bg-card");
+    // Should use glassy backdrop with theme-aware classes
+    expect(nav.className).toContain("backdrop-blur");
     expect(nav.className).toContain("border-border");
   });
 
