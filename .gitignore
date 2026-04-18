@@ -46,3 +46,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Internal audit reports + dev scratch
+/.audit/
+/browser-use-llms-full.txt
