@@ -1,12 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 
-// searchParams mock we can mutate per test
-const searchParamsMock = vi.fn(() => new URLSearchParams());
+// TopicLayout reads ?path= from window.location.search inside useEffect to
+// avoid SSR bailout. Tests simulate path by mutating jsdom's location.
+function setSearch(search: string) {
+  const url = new URL(window.location.href);
+  url.search = search;
+  window.history.replaceState({}, "", url.toString());
+}
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ back: vi.fn(), push: vi.fn() }),
-  useSearchParams: () => searchParamsMock(),
   usePathname: () => "/topics/what-is-ml",
 }));
 vi.mock("next/link", () => ({
@@ -114,8 +118,7 @@ const lossFunctionsMeta = {
 };
 
 beforeEach(() => {
-  searchParamsMock.mockReset();
-  searchParamsMock.mockReturnValue(new URLSearchParams());
+  setSearch("");
 });
 
 describe("TopicLayout — path-aware navigation", () => {
@@ -132,7 +135,7 @@ describe("TopicLayout — path-aware navigation", () => {
   });
 
   it("with ?path=student on what-is-ml, shows Bài 1/N — Giới thiệu counter", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
+    setSearch("?path=student");
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     // Path-aware counter uses "Bài " prefix
     expect(screen.getByText(/Bài\s+1\s*\/\s*\d+/i)).toBeInTheDocument();
@@ -141,14 +144,14 @@ describe("TopicLayout — path-aware navigation", () => {
   });
 
   it("with ?path=student, back link goes to /paths/student", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
+    setSearch("?path=student");
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     const back = screen.getByRole("link", { name: /quay lại lộ trình học sinh/i });
     expect(back).toHaveAttribute("href", "/paths/student");
   });
 
   it("with ?path=student on what-is-ml, Bài trước is null and Bài tiếp theo links to math-readiness", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
+    setSearch("?path=student");
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     // No "Bài trước" link rendered for the first topic
     expect(screen.queryByText(/bài trước/i)).toBeNull();
@@ -158,21 +161,21 @@ describe("TopicLayout — path-aware navigation", () => {
   });
 
   it("with ?path=student on knn, Bài tiếp theo is knn-in-symptom-checker (application topic follows theory)", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
+    setSearch("?path=student");
     render(<TopicLayout meta={knnMeta}><p>body</p></TopicLayout>);
     const next = screen.getByRole("link", { name: /Symptom/ });
     expect(next).toHaveAttribute("href", "/topics/knn-in-symptom-checker?path=student");
   });
 
   it("with ?path=student on loss-functions, Bài tiếp theo is loss-functions-in-recommendation (application follows theory)", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
+    setSearch("?path=student");
     render(<TopicLayout meta={lossFunctionsMeta}><p>body</p></TopicLayout>);
     const next = screen.getByRole("link", { name: /Recommendation/ });
     expect(next).toHaveAttribute("href", "/topics/loss-functions-in-recommendation?path=student");
   });
 
   it("with ?path=fake (unknown path), silently falls back to category behavior", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=fake"));
+    setSearch("?path=fake");
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     expect(screen.getByText(/trong danh mục/i)).toBeInTheDocument();
     // Back link should still be home since path is invalid
@@ -180,7 +183,7 @@ describe("TopicLayout — path-aware navigation", () => {
   });
 
   it("shows a Lộ trình tag in the header when on a valid path", () => {
-    searchParamsMock.mockReturnValue(new URLSearchParams("path=student"));
+    setSearch("?path=student");
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     expect(screen.getByText(/Lộ trình:\s*Học sinh/i)).toBeInTheDocument();
   });

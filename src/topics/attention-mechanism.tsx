@@ -306,7 +306,11 @@ export default function AttentionMechanismTopic() {
             </div>
 
             {/* ─────────── Full 5×5 Heatmap ─────────── */}
-            <div className="rounded-xl border border-border bg-background/40 p-4">
+            <div
+              className="rounded-xl border border-border bg-background/40 p-4"
+              role="img"
+              aria-label={`Ma trận attention 5×5. Query hiện tại "${TOKENS[queryIdx]}" chú ý mạnh nhất vào "${TOKENS[topAttentionIdx]}" (${(attentionRow[topAttentionIdx]*100).toFixed(0)}%).`}
+            >
               <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3 text-center">
                 Ma trận attention 5×5 (hàng = query, cột = key)
               </p>

@@ -24,6 +24,31 @@ function isOffline() {
 let authFailed = false;
 let ensureInFlight: Promise<ReturnType<typeof createClient> | null> | null = null;
 
+// ─── Progress-intent signal ─────────────────────────────────────────
+// When a write gesture can't mint an anon session (BotID rejection, infra
+// error, or Supabase not configured), we notify subscribers so a banner /
+// toast can surface the failure. Subscribers are registered from a React
+// context; this keeps database.ts framework-free.
+type IntentListener = () => void;
+const intentListeners = new Set<IntentListener>();
+
+export function subscribeToAuthIntentFailure(listener: IntentListener) {
+  intentListeners.add(listener);
+  return () => {
+    intentListeners.delete(listener);
+  };
+}
+
+function emitAuthIntentFailure() {
+  for (const listener of intentListeners) {
+    try {
+      listener();
+    } catch {
+      // Ignore listener errors — they shouldn't break the write path.
+    }
+  }
+}
+
 /**
  * Lazily sign in an anonymous Supabase session.
  *
@@ -46,8 +71,16 @@ let ensureInFlight: Promise<ReturnType<typeof createClient> | null> | null = nul
  */
 export async function ensureAnonSession() {
   const supabase = createClient();
-  if (!supabase) return null;
-  if (authFailed) return null;
+  if (!supabase) {
+    // Offline / not configured: a write intent just occurred but can't be
+    // persisted. Let the banner know so the user can be invited to sign in.
+    emitAuthIntentFailure();
+    return null;
+  }
+  if (authFailed) {
+    emitAuthIntentFailure();
+    return null;
+  }
 
   const {
     data: { session },
@@ -70,6 +103,7 @@ export async function ensureAnonSession() {
         // 429 = bot_detected, other non-2xx = infra error. Either way,
         // do not mint an anon user; the write silently no-ops.
         authFailed = true;
+        emitAuthIntentFailure();
         return null;
       }
 
@@ -77,11 +111,13 @@ export async function ensureAnonSession() {
       if (error) {
         console.warn("Anonymous auth failed:", error.message);
         authFailed = true;
+        emitAuthIntentFailure();
         return null;
       }
       return supabase;
     } catch {
       authFailed = true;
+      emitAuthIntentFailure();
       return null;
     } finally {
       ensureInFlight = null;

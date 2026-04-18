@@ -42,12 +42,10 @@ const WORDS: Word[] = [
   { text: "dự án", pSpam: 0.04, pHam: 0.45 },
 ];
 
-const P_SPAM_PRIOR = 0.3;
-const P_HAM_PRIOR = 0.7;
-
-function classify(selectedWords: string[]) {
-  let logSpam = Math.log(P_SPAM_PRIOR);
-  let logHam = Math.log(P_HAM_PRIOR);
+function classify(selectedWords: string[], pSpamPrior: number) {
+  const pHamPrior = 1 - pSpamPrior;
+  let logSpam = Math.log(pSpamPrior);
+  let logHam = Math.log(pHamPrior);
 
   for (const w of WORDS) {
     if (selectedWords.includes(w.text)) {
@@ -77,6 +75,7 @@ const TOTAL_STEPS = 7;
 /* ═══════════════ MAIN ═══════════════ */
 export default function NaiveBayesTopic() {
   const [selectedWords, setSelectedWords] = useState<string[]>(["khuyến mãi", "miễn phí"]);
+  const [pSpamPrior, setPSpamPrior] = useState(0.3);
 
   const toggleWord = useCallback((word: string) => {
     setSelectedWords((prev) =>
@@ -84,7 +83,7 @@ export default function NaiveBayesTopic() {
     );
   }, []);
 
-  const result = useMemo(() => classify(selectedWords), [selectedWords]);
+  const result = useMemo(() => classify(selectedWords, pSpamPrior), [selectedWords, pSpamPrior]);
 
   const quizQuestions: QuizQuestion[] = useMemo(() => [
     {
@@ -178,11 +177,29 @@ export default function NaiveBayesTopic() {
               })}
             </div>
 
+            {/* Prior slider — base rate of spam before seeing words */}
+            <div className="space-y-1 max-w-md mx-auto">
+              <label className="text-xs font-medium text-muted flex justify-between">
+                <span>Tỉ lệ spam cơ sở (prior)</span>
+                <strong className="text-foreground">{(pSpamPrior * 100).toFixed(0)}%</strong>
+              </label>
+              <input
+                type="range" min={0.05} max={0.95} step={0.05}
+                value={pSpamPrior}
+                onChange={(e) => setPSpamPrior(parseFloat(e.target.value))}
+                className="w-full accent-accent"
+              />
+              <p className="text-[10px] text-muted">Kéo để xem prior mạnh lật được bằng chứng từ từ khoá thế nào.</p>
+            </div>
+
             {/* Probability flow diagram */}
-            <svg viewBox="0 0 500 200" className="w-full rounded-lg border border-border bg-background">
+            <svg viewBox="0 0 500 200" className="w-full rounded-lg border border-border bg-background"
+              role="img"
+              aria-label={`Naive Bayes: prior P(Spam)=${(pSpamPrior*100).toFixed(0)}%, ${selectedWords.length} từ được chọn, dự đoán ${result.prediction} với ${(Math.max(result.pSpam, result.pHam)*100).toFixed(1)}% tin cậy.`}>
+              <title>Prior {(pSpamPrior*100).toFixed(0)}% · {selectedWords.length} từ · {result.prediction} {(Math.max(result.pSpam, result.pHam)*100).toFixed(1)}%</title>
               {/* Prior */}
               <text x={250} y={20} fontSize={11} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
-                Prior: P(Spam) = {(P_SPAM_PRIOR * 100).toFixed(0)}% | P(Ham) = {(P_HAM_PRIOR * 100).toFixed(0)}%
+                Prior: P(Spam) = {(pSpamPrior * 100).toFixed(0)}% | P(Ham) = {((1 - pSpamPrior) * 100).toFixed(0)}%
               </text>
 
               {/* Selected words */}

@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter_Tight, JetBrains_Mono, Fraunces } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/lib/theme";
+import { topicList } from "@/topics/registry";
 import "./globals.css";
+
+// Round DOWN to the nearest 10 so the meta description stays stable across
+// small additions (e.g., 257 → "250+ chủ đề"). Single canonical source;
+// matches the on-page stats strip in HomeContent which reads topics.length.
+const TOPIC_COUNT_ROUNDED = Math.floor(topicList.length / 10) * 10;
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -30,8 +36,7 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: "AI Cho Mọi Người — Hiểu AI qua hình ảnh và ví dụ đơn giản",
-  description:
-    "Khám phá 185+ chủ đề AI/ML qua hình minh họa tương tác và ví dụ thực tế bằng tiếng Việt. Từ Neural Network đến RAG, từ Transformer đến AI Agent.",
+  description: `Khám phá ${TOPIC_COUNT_ROUNDED}+ chủ đề AI/ML qua hình minh họa tương tác và ví dụ thực tế bằng tiếng Việt. Từ Neural Network đến RAG, từ Transformer đến AI Agent.`,
 };
 
 export default function RootLayout({

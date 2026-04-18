@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const store: Record<string, string> = {};
@@ -13,14 +13,16 @@ const mockLocalStorage = {
 };
 Object.defineProperty(globalThis, "localStorage", { value: mockLocalStorage, writable: true });
 
-vi.mock("@/lib/progress-context", () => ({
-  useProgress: () => ({
-    readTopics: ["topic-a", "topic-b"],
-    bookmarks: [],
-    loading: false,
-    toggleBookmark: vi.fn(),
-    addReadTopic: vi.fn(),
-  }),
+// Capture the subscriber registered by the banner so the test can simulate
+// a write-intent failure emission from database.ts.
+let capturedListener: (() => void) | null = null;
+vi.mock("@/lib/database", () => ({
+  subscribeToAuthIntentFailure: (listener: () => void) => {
+    capturedListener = listener;
+    return () => {
+      capturedListener = null;
+    };
+  },
 }));
 
 vi.mock("@/lib/auth-context", () => ({
@@ -39,20 +41,33 @@ vi.mock("@/lib/auth-context", () => ({
 
 beforeEach(() => {
   vi.clearAllMocks();
+  capturedListener = null;
   for (const k in store) delete store[k];
 });
 
 import AuthWarningBanner from "@/components/ui/AuthWarningBanner";
 
 describe("AuthWarningBanner", () => {
-  it("shows warning when user has progress", () => {
+  it("stays hidden on first mount for signed-out users", () => {
     render(<AuthWarningBanner />);
+    expect(screen.queryByText(/tiến độ chưa được sao lưu/i)).toBeNull();
+  });
+
+  it("shows after a write-intent failure is emitted", () => {
+    render(<AuthWarningBanner />);
+    expect(capturedListener).toBeTypeOf("function");
+    act(() => {
+      capturedListener?.();
+    });
     expect(screen.getByText(/tiến độ chưa được sao lưu/i)).toBeInTheDocument();
   });
 
-  it("can be dismissed", async () => {
+  it("can be dismissed after surfacing", async () => {
     const user = userEvent.setup();
     render(<AuthWarningBanner />);
+    act(() => {
+      capturedListener?.();
+    });
 
     const dismissBtn = screen.getByRole("button", { name: /đã hiểu/i });
     await user.click(dismissBtn);

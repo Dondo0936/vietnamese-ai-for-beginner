@@ -50,3 +50,6 @@ next-env.d.ts
 # Internal audit reports + dev scratch
 /.audit/
 /browser-use-llms-full.txt
+
+# Visual companion session dirs
+/.superpowers/

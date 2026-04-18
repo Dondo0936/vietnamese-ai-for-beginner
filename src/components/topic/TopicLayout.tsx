@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { TopicMeta } from "@/lib/types";
@@ -67,9 +66,17 @@ function toDisplay(slug: string): NeighborDisplay | null {
 }
 
 export default function TopicLayout({ meta, children }: TopicLayoutProps) {
-  const searchParams = useSearchParams();
-  const rawPath = searchParams?.get("path") ?? null;
-  const pathId: AdultPathId | null = isAdultPathId(rawPath) ? rawPath : null;
+  // Read ?path= from the URL *after* hydration so this component doesn't
+  // suspend during SSR/SSG. Using useSearchParams() here would trigger a
+  // client-side bailout (BAILOUT_TO_CLIENT_SIDE_RENDERING) on every statically
+  // prerendered topic page, causing the skeleton fallback to be shipped as
+  // the initial HTML and leaving crawlers/SEO with no Vietnamese prose.
+  const [pathId, setPathId] = useState<AdultPathId | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const raw = new URLSearchParams(window.location.search).get("path");
+    setPathId(isAdultPathId(raw) ? raw : null);
+  }, []);
   const reduceMotion = useReducedMotion();
 
   const hasMarkedRead = useRef(false);

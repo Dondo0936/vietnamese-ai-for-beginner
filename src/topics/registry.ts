@@ -110,7 +110,7 @@ export const categories: Category[] = [
 ];
 
 // ─────────────────────────────────────────────────────────
-// 185 Topics — Full Metadata
+// Topics — Full Metadata (canonical count = topicList.length)
 // ─────────────────────────────────────────────────────────
 
 export const topicList: TopicMeta[] = [

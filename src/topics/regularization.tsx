@@ -506,7 +506,10 @@ export default function RegularizationTopic() {
             <svg
               viewBox={`0 0 ${SVG_W} ${SVG_H}`}
               className="w-full max-w-xl mx-auto"
+              role="img"
+              aria-label={`Biểu đồ 12 trọng số với ${REG_CONFIG[regType].label}${regType !== "none" ? `, cường độ ${strength.toFixed(2)}` : ""}. ${weights.filter(w => Math.abs(w) < 0.01).length} trọng số bị đẩy về 0.`}
             >
+              <title>{REG_CONFIG[regType].label}{regType !== "none" ? ` λ=${strength.toFixed(2)}` : ""} — {weights.filter(w => Math.abs(w) < 0.01).length}/12 trọng số = 0</title>
               <text
                 x={SVG_W / 2}
                 y={15}

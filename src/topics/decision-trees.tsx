@@ -591,7 +591,8 @@ export default function DecisionTreesTopic() {
                   <div className="mb-2 text-xs font-medium text-muted">
                     20 khách hàng (xanh = MUA, đỏ = KHÔNG MUA)
                   </div>
-                  <svg viewBox="0 0 500 180" className="w-full">
+                  <svg viewBox="0 0 500 180" className="w-full" role="img" aria-label={`Scatter 20 khách hàng theo tuổi và thu nhập${selectedLeafNode ? `, đang làm nổi bật ${selectedLeafNode.samples.length} khách của lá đã chọn` : ""}`}>
+                    <title>{DATASET.filter((s)=>s.buy===1).length} khách MUA, {DATASET.filter((s)=>s.buy===0).length} khách KHÔNG MUA</title>
                     {/* axes */}
                     <line
                       x1={40}
@@ -674,7 +675,10 @@ export default function DecisionTreesTopic() {
                   <svg
                     viewBox={`0 0 560 ${Math.max(200, depth * 80 + 120)}`}
                     className="w-full"
+                    role="img"
+                    aria-label={`Cây quyết định với ${nodeCount} nút, sâu ${depth}, accuracy train ${(trainAccuracy*100).toFixed(0)}%`}
                   >
+                    <title>Cây: {nodeCount} nút · sâu {depth} · acc {(trainAccuracy*100).toFixed(0)}%{isFullyGrown ? " · đã mọc đầy đủ" : ""}</title>
                     {/* Edges */}
                     {nodes.map((n) => {
                       if (!n.left || !n.right) return null;

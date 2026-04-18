@@ -63,6 +63,13 @@ export default function LinearRegressionTopic() {
   const { slope, intercept } = useMemo(() => fitLine(points), [points]);
   const lineY = useCallback((x: number) => slope * x + intercept, [slope, intercept]);
   const currentMSE = useMemo(() => mse(points, slope, intercept), [points, slope, intercept]);
+  const r2 = useMemo(() => {
+    if (points.length < 2) return 0;
+    const meanY = points.reduce((s, p) => s + p.y, 0) / points.length;
+    const ssTot = points.reduce((s, p) => s + (p.y - meanY) ** 2, 0);
+    const ssRes = points.reduce((s, p) => s + (p.y - lineY(p.x)) ** 2, 0);
+    return ssTot === 0 ? 1 : Math.max(0, 1 - ssRes / ssTot);
+  }, [points, lineY]);
 
   const handleCanvasClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     if (dragging !== null) return;
@@ -179,38 +186,14 @@ export default function LinearRegressionTopic() {
           explanation="Bạn vừa tự làm hồi quy tuyến tính trong đầu! Nối các điểm (nhiệt độ, số tô) thành đường thẳng, rồi dóng từ 30°C lên để đọc kết quả."
         />
 
-        <div className="mt-6 space-y-3 text-sm leading-relaxed">
-          <p>
-            <strong>Liên tưởng 1 — Chủ quán bia hơi Hà Nội:</strong>{" "}
-            Anh Minh bán bia hơi vỉa hè phố Tạ Hiện. Mỗi tối, anh nhìn nhiệt độ
-            ngoài trời rồi quyết định đặt bao nhiêu két bia. Sau 3 năm, anh
-            &quot;cảm&quot; được quy luật: trời càng nóng, bia bán càng chạy.
-            Quan hệ đó — trong đầu anh Minh — chính là một đường thẳng ước
-            lượng. Linear regression chỉ đơn giản là biến &quot;cảm giác&quot;
-            của anh Minh thành công thức rõ ràng, đo được.
-          </p>
-          <p>
-            <strong>Liên tưởng 2 — Cân lúa ở chợ đầu mối:</strong>{" "}
-            Khi người nông dân ở Cần Thơ mang lúa ra chợ, thương lái nhẩm nhanh
-            giá: cứ mỗi kg lúa OM5451 cuối vụ = giá x đồng; nhưng độ ẩm cao
-            thì trừ bớt, tạp chất trừ thêm. Đây là hồi quy tuyến tính nhiều
-            biến: giá ≈ w₁·khối_lượng + w₂·độ_ẩm + w₃·tạp_chất + bias.
-          </p>
-          <p>
-            <strong>Liên tưởng 3 — Giá thuê phòng trọ sinh viên:</strong>{" "}
-            Sinh viên HUST tìm phòng trọ: diện tích lớn hơn → giá cao hơn,
-            nhưng xa trường → giá rẻ hơn. Một mô hình tuyến tính nhỏ có thể
-            học được &quot;công thức ngầm&quot; của thị trường và giúp bạn
-            nhận ra phòng nào đang bị hét giá bất hợp lý.
-          </p>
-          <p>
-            <strong>Liên tưởng 4 — Phân tích điểm thi đại học:</strong>{" "}
-            Một tỉnh muốn dự đoán điểm trung bình năm sau dựa trên số giờ học
-            thêm, tỉ lệ học sinh/lớp, và chi phí giáo dục. Đây là bài toán
-            hồi quy tuyến tính kinh điển trong giáo dục — dễ huấn luyện, dễ
-            giải thích, và đủ tốt để ra quyết định chính sách.
-          </p>
-        </div>
+        <CollapsibleDetail title="4 liên tưởng đời thường (bia hơi, cân lúa, phòng trọ, điểm thi)">
+          <div className="space-y-3 text-sm leading-relaxed">
+            <p><strong>Bia hơi Tạ Hiện:</strong> trời nóng → bia bán chạy. Linear regression biến cảm giác thành công thức đo được.</p>
+            <p><strong>Cân lúa Cần Thơ:</strong> giá ≈ w₁·khối_lượng + w₂·độ_ẩm + w₃·tạp_chất + bias — hồi quy tuyến tính nhiều biến.</p>
+            <p><strong>Phòng trọ HUST:</strong> diện tích lớn → giá cao, xa trường → giá rẻ. Mô hình tuyến tính học &quot;công thức ngầm&quot; của thị trường.</p>
+            <p><strong>Điểm thi đại học:</strong> dự đoán điểm trung bình từ giờ học thêm, tỉ lệ học sinh/lớp, chi phí giáo dục — baseline chính sách kinh điển.</p>
+          </div>
+        </CollapsibleDetail>
       </LessonSection>
 
       {/* STEP 2: BRIDGE + INTERACTIVE VIZ */}
@@ -225,11 +208,14 @@ export default function LinearRegressionTopic() {
             <svg
               viewBox="0 0 500 320"
               className="w-full cursor-crosshair rounded-lg border border-border bg-background touch-none"
+              role="img"
+              aria-label={`Biểu đồ hồi quy tương tác: ${points.length} điểm, MSE ${currentMSE.toFixed(1)}, R² ${r2.toFixed(2)}`}
               onClick={handleCanvasClick}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
               onPointerLeave={handlePointerUp}
             >
+              <title>Đường hồi quy y = {slope.toFixed(2)}x + {intercept.toFixed(0)}, MSE {currentMSE.toFixed(1)}, R² {r2.toFixed(2)}</title>
               {/* Grid */}
               {[0, 80, 160, 240, 320].map((y) => (
                 <line key={`gy-${y}`} x1={0} y1={y} x2={500} y2={y} stroke="currentColor" className="text-border" strokeWidth={0.5} />
@@ -293,7 +279,7 @@ export default function LinearRegressionTopic() {
                 y = {slope.toFixed(2)}x + {intercept.toFixed(0)}
               </text>
               <text x={10} y={38} fontSize={11} fill="currentColor" className="text-muted">
-                MSE = {currentMSE.toFixed(1)}
+                MSE = {currentMSE.toFixed(1)} · R² = {r2.toFixed(2)}
               </text>
             </svg>
 

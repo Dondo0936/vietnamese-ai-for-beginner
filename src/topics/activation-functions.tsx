@@ -500,7 +500,10 @@ export default function ActivationFunctionsTopic() {
             <svg
               viewBox={`0 0 ${SVG_W} ${SVG_H}`}
               className="w-full max-w-xl mx-auto"
+              role="img"
+              aria-label={`Đồ thị hàm ${act.label} với điểm đầu vào x = ${inputVal.toFixed(1)}, đầu ra ${outputVal.toFixed(3)}${showDeriv ? `, đạo hàm ${derivVal.toFixed(3)}` : ""}`}
             >
+              <title>{act.label}: f({inputVal.toFixed(1)}) = {outputVal.toFixed(3)}{showDeriv ? ` · f'(x) = ${derivVal.toFixed(3)}` : ""}</title>
               {/* Axes */}
               <line
                 x1={PAD}

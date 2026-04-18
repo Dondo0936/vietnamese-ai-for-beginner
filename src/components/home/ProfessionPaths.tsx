@@ -37,7 +37,7 @@ export const professions: Profession[] = [
     id: "office",
     nameVi: "Nhân viên văn phòng",
     descriptionVi:
-      "Hiểu AI để ứng dụng trong công việc — prompt, RAG, agent, an toàn AI",
+      "Hiểu AI để ứng dụng trong công việc — prompt (câu lệnh gợi ý), RAG (truy xuất tài liệu rồi trả lời), agent (tác tử AI tự hành) và an toàn AI",
     icon: Briefcase,
     topicSlugs: slugsForPath("office"),
   },

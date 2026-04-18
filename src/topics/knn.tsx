@@ -437,11 +437,12 @@ function KnnDemo({
       <div className="w-full overflow-hidden rounded-lg border border-border bg-background">
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="h-auto w-full cursor-crosshair"
+          className="h-auto w-full cursor-crosshair touch-none"
           onClick={handleCanvasClick}
           role="img"
-          aria-label="Canvas minh họa KNN — click để đặt điểm truy vấn"
+          aria-label={`Canvas KNN — K=${k}, dự đoán lớp ${prediction.label} (A:${voteBreakdown.A} B:${voteBreakdown.B} C:${voteBreakdown.C}). Click để đặt điểm truy vấn.`}
         >
+          <title>KNN với K={k} — dự đoán lớp {prediction.label}. Phiếu: A {voteBreakdown.A}, B {voteBreakdown.B}, C {voteBreakdown.C}</title>
           {/* Decision boundary — nền mờ */}
           {showBoundary &&
             gridCells.map((cell, i) => (

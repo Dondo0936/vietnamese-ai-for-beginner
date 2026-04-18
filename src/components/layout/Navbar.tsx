@@ -27,9 +27,11 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-1">
+          {/* Desktop: full ⌘K trigger */}
           <button
             type="button"
             onClick={triggerCmdK}
+            aria-label="Tìm kiếm chủ đề"
             className="hidden sm:flex items-center gap-2 rounded-[var(--r-md)] border border-border bg-surface px-3 py-1.5 text-xs text-tertiary transition-colors hover:bg-surface-hover hover:text-foreground"
           >
             <Search size={14} />
@@ -37,6 +39,17 @@ export default function Navbar() {
             <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono text-tertiary">
               ⌘K
             </kbd>
+          </button>
+
+          {/* Mobile: 44×44 icon button — dispatches same ⌘K event so the
+              command palette is still reachable after scrolling past the hero */}
+          <button
+            type="button"
+            onClick={triggerCmdK}
+            aria-label="Tìm kiếm chủ đề"
+            className="sm:hidden flex h-11 w-11 items-center justify-center rounded-[var(--r-md)] text-tertiary transition-colors hover:text-foreground hover:bg-surface"
+          >
+            <Search size={18} />
           </button>
 
           <Link

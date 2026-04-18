@@ -472,7 +472,8 @@ export default function LearningRateTopic() {
             </div>
 
             {/* Loss landscape */}
-            <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full max-w-2xl mx-auto">
+            <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full max-w-2xl mx-auto" role="img" aria-label={`Đồ thị loss landscape gradient descent: learning rate ${lr.toFixed(2)}, bước ${animStep}, ${status.text}`}>
+              <title>Gradient descent với lr={lr.toFixed(2)}, bước {animStep} — {status.text}</title>
               <line
                 x1={PAD}
                 y1={SVG_H - PAD}
