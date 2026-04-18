@@ -150,6 +150,11 @@
   --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.05);
   --shadow-glow-accent: 0 0 0 1px rgba(32, 184, 174, 0.35), 0 8px 30px rgba(32, 184, 174, 0.18);
   --shadow-glow-heat: 0 0 0 1px rgba(255, 122, 41, 0.35), 0 8px 30px rgba(255, 122, 41, 0.2);
+  /* Claude Desktop shell — dark snapshot matches claude.ai dark theme */
+  --paper:      #1A1919;
+  --paper-2:    #222120;
+  --paper-3:    #2A2928;
+  --pure-white: #0E0E0E;
   color-scheme: dark;
 }
 
@@ -368,4 +373,11 @@ html[data-scroll-behavior="smooth"] {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: var(--r-sm);
+}
+
+/* used by AccentHueSweep component */
+@keyframes hue-sweep {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
 }
