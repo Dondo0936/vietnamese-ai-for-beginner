@@ -1811,3 +1811,25 @@ Phase 1 complete. Hand back to the user with: "Phase 1 foundation ready on branc
 **Placeholder scan:** none — every task has complete code.
 
 **Type consistency:** `TileMeta`, `ShelfKey`, `Annotation` defined once in `types.ts` and imported consistently. `findTile` / `tiles` / `shelves` exports used identically in all downstream files.
+
+---
+
+## Phase 1 completion notes
+
+Filled in by the executing agent (2026-04-18):
+
+- **Commits landed:** 18 (from `60e4797 docs: Phase 1 foundation implementation plan` through `efa6389 feat(seo): add /claude hub + 24 tile URLs to sitemap`).
+- **LOC delta:** +2971 / −205 across 31 files.
+- **Test count delta:** +31 (107 → 138 passing; 2 pre-existing failures in `src/__tests__/topic-section-uniqueness.test.ts` are unchanged and unrelated to Phase 1).
+- **Route sanity sweep (dev server on port 3200):**
+  - `/` → HTTP 200, hero H1 "Hiểu AI qua" present (2 occurrences), gradient phrase "hình ảnh và ví dụ" present (2), "Cẩm nang Claude" navbar link present (1), `ds-mark` class absent (0 — old ✳ span is gone).
+  - `/claude` → HTTP 200, all 3 shelf labels render ("Khởi đầu", "Nâng cao", "Dành cho nhà phát triển"), exactly 24 unique `/claude/<slug>` links on the hub — full slug list verified alphabetically from `artifacts` through `workspace`.
+  - `/claude/chat` → HTTP 200, placeholder renders Vietnamese title "Chat + phản hồi trực tiếp", "Đang xây dựng" status, DeepLinkCTA button "Thử trong Claude" with `claude.ai/new` href.
+  - `/claude/ghost` → dev server returns HTTP 200 but the body is correctly the global not-found UI ("Không tìm thấy" present, `not-found_tsx` bundle loaded, response header `x-nextjs-prerender: 1`). This is the expected Next.js 16 dev-mode behavior for `notFound()` from a `generateStaticParams` route — the production build will serve the true 404 status. Worth re-verifying after `pnpm build && pnpm start` before release.
+- **Known follow-ups for Phase 2:**
+  - Add an explicit production-mode check (`next build` + `next start`) that `/claude/ghost` returns HTTP 404 headers, not just a 404 body.
+  - Add a `null`-branch test for DemoCanvas SSR hardening.
+  - Swap `focus:` for `focus-visible:` on the `DemoCanvas` region (module-wide polish).
+  - Strip redundant hex fallbacks in `var(--paper, ...)` / `var(--paper-2, ...)` sites now that dark-mode tokens exist.
+  - Dark-mode contrast audit for the peach/clay "Mới" badge in `ShelfGrid`.
+  - Consider surfacing Vietnamese tile titles (not slugs) inside `defaultPromptFor()` seed prompts.
