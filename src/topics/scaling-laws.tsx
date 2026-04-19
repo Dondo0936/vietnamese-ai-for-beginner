@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
     "Quy luật toán học dự đoán hiệu suất mô hình dựa trên kích thước tham số, dữ liệu và compute.",
   category: "llm-concepts",
   tags: ["scaling", "compute", "chinchilla", "training"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["llm-overview", "cost-optimization", "gpu-optimization"],
   vizType: "interactive",
 };

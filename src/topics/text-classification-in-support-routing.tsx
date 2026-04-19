@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
     "Cách Zendesk AI, Intercom Fin, Subiz và FPT.AI dùng phân loại văn bản để tự động gán nhãn, định tuyến ticket đến đúng đội — giảm 45% thời gian phản hồi.",
   category: "nlp",
   tags: ["text-classification", "support", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["text-classification"],
   vizType: "static",
   applicationOf: "text-classification",

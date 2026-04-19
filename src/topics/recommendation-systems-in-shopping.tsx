@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
     "Shopee dùng AI gợi ý sản phẩm cá nhân hóa cho hàng trăm triệu người dùng Đông Nam Á",
   category: "applied-ai",
   tags: ["recommendation-systems", "e-commerce", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["recommendation-systems"],
   vizType: "interactive",
   applicationOf: "recommendation-systems",

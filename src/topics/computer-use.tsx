@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Khả năng AI Agent điều khiển giao diện người dùng — click, gõ phím, chụp ảnh màn hình",
   category: "emerging",
   tags: ["browser-use", "gui-agent", "automation"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["agent-architecture", "vlm", "agentic-workflows"],
   vizType: "interactive",
 };

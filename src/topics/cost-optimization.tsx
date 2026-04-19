@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Chiến lược giảm chi phí vận hành hệ thống AI mà không hy sinh chất lượng, từ chọn mô hình đến caching, routing, nén context và batch API.",
   category: "infrastructure",
   tags: ["cost", "optimization", "budget", "efficiency", "llm-ops"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["inference-optimization", "model-serving", "gpu-optimization"],
   vizType: "interactive",
 };

@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật chuyển giao kiến thức từ mô hình lớn (teacher) sang mô hình nhỏ (student) hiệu quả hơn.",
   category: "training-optimization",
   tags: ["distillation", "compression", "teacher-student", "efficiency"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["pruning", "quantization", "fine-tuning"],
   vizType: "interactive",
 };

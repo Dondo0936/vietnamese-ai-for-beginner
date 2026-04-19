@@ -31,7 +31,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật chia văn bản dài thành các đoạn nhỏ phù hợp để nhúng và truy xuất hiệu quả.",
   category: "search-retrieval",
   tags: ["chunking", "rag", "preprocessing", "text-splitting"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["rag", "vector-databases", "semantic-search"],
   vizType: "interactive",
 };

@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
     "GDPR và CFPB yêu cầu ngân hàng phải giải thích khi AI từ chối cấp tín dụng — không được dùng hộp đen",
   category: "ai-safety",
   tags: ["explainability", "credit", "application"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["explainability"],
   vizType: "static",
   applicationOf: "explainability",

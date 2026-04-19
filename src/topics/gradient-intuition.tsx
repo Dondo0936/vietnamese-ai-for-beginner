@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
     "Trên một đồi sương mù bạn chỉ nhìn được mặt đất dưới chân. Gradient là ngón tay chỉ hướng dốc nhất — đi NGƯỢC lại để xuống núi.",
   category: "math-foundations",
   tags: ["gradient", "optimization", "intuition"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["derivatives-intuition", "gradient-descent", "calculus-for-backprop"],
   vizType: "interactive",
 };

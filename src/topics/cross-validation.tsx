@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
     "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần và xoay vòng — đó là kiểm định chéo.",
   category: "classic-ml",
   tags: ["evaluation", "model-selection", "theory"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["train-val-test", "overfitting-underfitting", "bias-variance"],
   vizType: "interactive",
 };

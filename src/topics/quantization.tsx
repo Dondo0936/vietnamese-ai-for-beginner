@@ -27,7 +27,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật giảm kích thước mô hình bằng cách giảm độ chính xác số học, từ FP32 xuống INT8/INT4.",
   category: "training-optimization",
   tags: ["quantization", "optimization", "inference", "compression"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["qlora", "pruning", "mixed-precision"],
   vizType: "interactive",
 };

@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
     "Muốn biết một điểm thuộc nhóm nào? Hỏi k láng giềng gần nhất rồi lấy theo đa số. Đơn giản, trực quan — và đủ mạnh để làm nền cho nhiều hệ thống gợi ý.",
   category: "classic-ml",
   tags: ["classification", "supervised-learning", "distance", "lazy-learning"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["k-means", "svm", "logistic-regression", "decision-trees"],
   vizType: "interactive",
 };

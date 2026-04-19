@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Dữ liệu được tạo bằng AI hoặc mô phỏng, dùng để huấn luyện mô hình khi dữ liệu thật khan hiếm, đắt đỏ hoặc nhạy cảm.",
   category: "emerging",
   tags: ["synthetic-data", "generation", "augmentation", "privacy"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["small-language-models", "bias-fairness", "alignment"],
   vizType: "interactive",
 };

@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
     "AI đọc tin nhắn rồi gán nhãn — giống nhân viên thư phòng ngày xưa phân loại thư nhưng nhanh hơn triệu lần. Cốt lõi của chatbot, bộ lọc spam, hệ thống hỗ trợ khách hàng.",
   category: "nlp",
   tags: ["nlp", "classification", "supervised-learning"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["sentiment-analysis", "text-classification-in-support-routing"],
   vizType: "interactive",
 };

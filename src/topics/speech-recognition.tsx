@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Công nghệ chuyển đổi giọng nói con người thành văn bản, là nền tảng cho trợ lý ảo và ghi chú tự động.",
   category: "multimodal",
   tags: ["speech", "asr", "audio", "transcription"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["tts", "unified-multimodal", "tlm"],
   vizType: "interactive",
 };

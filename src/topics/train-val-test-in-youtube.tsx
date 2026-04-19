@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
     "YouTube dùng dữ liệu của 2 tỷ người dùng. Chia ngẫu nhiên sẽ gây leakage tương lai → quá khứ. Họ chia theo thời gian rồi A/B test trên người dùng thật.",
   category: "classic-ml",
   tags: ["data-split", "recommendation", "ab-testing", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["train-val-test"],
   vizType: "interactive",
   applicationOf: "train-val-test",

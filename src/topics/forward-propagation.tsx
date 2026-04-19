@@ -43,7 +43,7 @@ export const metadata: TopicMeta = {
     "Dữ liệu đi qua mạng như tin nhắn qua các trạm — mỗi trạm xử lý rồi chuyển cho trạm sau.",
   category: "neural-fundamentals",
   tags: ["neural-network", "training", "fundamentals"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "mlp",
     "backpropagation",

@@ -25,7 +25,7 @@ export const metadata: TopicMeta = {
     "Claude và Gemini xử lý PDF hàng trăm trang: cửa sổ ngữ cảnh 100K+ token thay đổi cách làm việc với tài liệu",
   category: "llm-concepts",
   tags: ["context-window", "long-documents", "application"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["context-window"],
   vizType: "interactive",
   applicationOf: "context-window",

@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Hai kỹ thuật lọc từ vựng trước khi chọn token tiếp theo, giúp kiểm soát chất lượng và đa dạng.",
   category: "llm-concepts",
   tags: ["top-k", "top-p", "nucleus-sampling", "generation"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["temperature", "llm-overview", "context-window"],
   vizType: "interactive",
 };

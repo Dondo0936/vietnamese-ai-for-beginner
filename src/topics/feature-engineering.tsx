@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
     "Mô hình hay không nằm ở việc bạn đưa cho nó dữ liệu thô hay đã chế biến thành đặc trưng có ý nghĩa. Chạm vào từng cột để xem phép biến đổi thực sự làm gì.",
   category: "foundations",
   tags: ["features", "engineering", "transformation", "selection"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["data-preprocessing", "dimensionality-curse", "train-val-test"],
   vizType: "interactive",
 };

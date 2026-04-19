@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
     "Các kỹ thuật giúp con người hiểu tại sao mô hình AI đưa ra một quyết định cụ thể.",
   category: "ai-safety",
   tags: ["explainability", "interpretability", "xai", "transparency"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["bias-fairness", "alignment", "guardrails"],
   vizType: "interactive",
 };

@@ -38,7 +38,7 @@ export const metadata: TopicMeta = {
     "Cách Brandwatch, Talkwalker, YouNet Media và Buzzmetrics dùng AI phân tích cảm xúc để theo dõi khen chê trên mạng xã hội, phát hiện khủng hoảng truyền thông trong vài phút.",
   category: "nlp",
   tags: ["sentiment-analysis", "brand-monitoring", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["sentiment-analysis"],
   vizType: "static",
   applicationOf: "sentiment-analysis",

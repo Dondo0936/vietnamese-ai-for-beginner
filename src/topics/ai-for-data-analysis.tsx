@@ -49,7 +49,7 @@ export const metadata: TopicMeta = {
     "Dùng AI để phân tích bảng tính, tạo biểu đồ, viết SQL, và tìm insight từ dữ liệu.",
   category: "applied-ai",
   tags: ["data-analysis", "spreadsheet", "sql", "practical", "office"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "prompt-engineering",
     "ai-for-writing",

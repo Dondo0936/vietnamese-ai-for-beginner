@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter_Tight, JetBrains_Mono, Fraunces } from "next/font/
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/lib/theme";
+import { MotionProvider } from "@/components/MotionProvider";
 import { topicList } from "@/topics/registry";
 import "./globals.css";
 
@@ -82,13 +83,15 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <ThemeProvider>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
-          >
-            Bỏ qua đến nội dung chính
-          </a>
-          {children}
+          <MotionProvider>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+            >
+              Bỏ qua đến nội dung chính
+            </a>
+            {children}
+          </MotionProvider>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

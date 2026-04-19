@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
     "Cùng một lịch sử người dùng, cùng một mô hình — đổi hàm mất mát thì bảng xếp hạng top 10 đổi hoàn toàn. Vì sao MSE thua pairwise/ranking loss ở Shopee, TikTok, Spotify, YouTube.",
   category: "neural-fundamentals",
   tags: ["loss-functions", "recommendation", "ranking", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["loss-functions"],
   vizType: "interactive",
   applicationOf: "loss-functions",

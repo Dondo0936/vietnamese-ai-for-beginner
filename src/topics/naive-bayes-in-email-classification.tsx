@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
     "Cách Gmail và SpamAssassin dùng Naive Bayes để chặn 15 tỷ email rác mỗi ngày với tỷ lệ nhầm dưới 0,2%. Thử phân loại ba email mẫu, rồi kéo thanh Laplace để thấy bộ lọc xử lý từ lạ thế nào.",
   category: "classic-ml",
   tags: ["classification", "email", "spam", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["naive-bayes"],
   vizType: "static",
   applicationOf: "naive-bayes",

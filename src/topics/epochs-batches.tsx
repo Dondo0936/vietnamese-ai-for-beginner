@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Máy học không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Xem sự thay đổi của đường loss khi bạn kéo thanh batch size.",
   category: "neural-fundamentals",
   tags: ["training", "fundamentals"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["sgd", "gradient-descent", "learning-rate"],
   vizType: "interactive",
 };

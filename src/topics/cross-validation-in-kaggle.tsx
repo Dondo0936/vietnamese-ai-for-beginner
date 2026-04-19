@@ -47,7 +47,7 @@ export const metadata: TopicMeta = {
     "Public leaderboard có thể đánh lừa. Đội xếp hạng 1.485 đã nhảy lên hạng 1 private chỉ vì tin vào CV của mình, không chạy theo public LB.",
   category: "classic-ml",
   tags: ["evaluation", "competition", "leaderboard", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["cross-validation"],
   vizType: "interactive",
   applicationOf: "cross-validation",

@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
     "AI đọc bình luận khách hàng rồi đoán tích cực, tiêu cực hay trung tính — như một nhân viên marketing lướt Facebook nhưng làm với hàng triệu câu mỗi phút.",
   category: "nlp",
   tags: ["nlp", "classification", "opinion-mining"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["text-classification", "sentiment-analysis-in-brand-monitoring"],
   vizType: "interactive",
 };

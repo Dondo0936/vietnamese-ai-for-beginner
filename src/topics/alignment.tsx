@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người — thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
   category: "ai-safety",
   tags: ["alignment", "rlhf", "values", "safety", "reward-hacking", "specification-gaming"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["constitutional-ai", "guardrails", "red-teaming", "rlhf", "dpo"],
   vizType: "interactive",
 };

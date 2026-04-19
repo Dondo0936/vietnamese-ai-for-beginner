@@ -27,7 +27,7 @@ export const metadata: TopicMeta = {
   description: "Cơ chế cho phép mỗi vị trí trong chuỗi chú ý đến mọi vị trí khác",
   category: "dl-architectures",
   tags: ["attention", "transformer", "fundamentals"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["transformer", "multi-head-attention", "positional-encoding"],
   vizType: "interactive",
 };

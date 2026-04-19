@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Mô hình AI tạo ra hình ảnh chất lượng cao từ mô tả bằng ngôn ngữ tự nhiên.",
   category: "multimodal",
   tags: ["text-to-image", "diffusion", "generation"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["diffusion-models", "text-to-video", "clip"],
   vizType: "interactive",
 };

@@ -32,7 +32,7 @@ export const metadata: TopicMeta = {
     "Giới hạn số lượng token mà mô hình có thể xử lý cùng lúc — ảnh hưởng đến khả năng hiểu và nhớ ngữ cảnh.",
   category: "llm-concepts",
   tags: ["context-window", "tokens", "attention", "llm"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["self-attention", "multi-head-attention", "llm-overview", "tokenization"],
   vizType: "interactive",
 };

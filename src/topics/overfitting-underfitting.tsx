@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
     "Hai thái cực ngược nhau khi luyện mô hình. Học thuộc đề cũ → chết khi đề mới (overfit). Học mỗi lý thuyết → nhớ nhưng không làm nổi (underfit).",
   category: "classic-ml",
   tags: ["training", "generalization", "fundamentals"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["regularization", "cross-validation", "bias-variance"],
   vizType: "interactive",
 };

@@ -31,7 +31,7 @@ export const metadata: TopicMeta = {
     "Bạn gõ một câu, 20 mili-giây sau ChatGPT đáp. Mở từng giai đoạn của lượt lan truyền thuận để thấy điều gì xảy ra trong khoảnh khắc đó.",
   category: "neural-fundamentals",
   tags: ["forward-propagation", "inference", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["forward-propagation"],
   vizType: "interactive",
   applicationOf: "forward-propagation",

@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
     "Constitutional AI của Anthropic và Moderation API của OpenAI: hai cách tiếp cận bảo vệ người dùng khỏi nội dung có hại",
   category: "ai-safety",
   tags: ["guardrails", "safety", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["guardrails"],
   vizType: "static",
   applicationOf: "guardrails",

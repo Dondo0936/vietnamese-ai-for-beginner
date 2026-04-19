@@ -45,7 +45,7 @@ export const metadata: TopicMeta = {
     "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên — từ đặt kho hàng Grab đến phân khúc khách hàng.",
   category: "classic-ml",
   tags: ["clustering", "unsupervised-learning"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["dbscan", "knn", "pca"],
   vizType: "interactive",
 };

@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Khả năng mô hình xử lý hàng trăm nghìn đến hàng triệu token trong một lần, cho phép phân tích tài liệu dài.",
   category: "emerging",
   tags: ["long-context", "context-window", "retrieval", "attention"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["state-space-models", "reasoning-models", "inference-optimization"],
   vizType: "interactive",
 };

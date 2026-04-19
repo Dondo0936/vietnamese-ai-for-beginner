@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
     "Khi nào nên tinh chỉnh model, khi nào chỉ cần kỹ thuật prompt — hướng dẫn chọn chiến lược phù hợp cho dự án AI của bạn.",
   category: "llm-concepts",
   tags: ["fine-tuning", "prompting", "comparison", "strategy"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: [
     "prompt-engineering",
     "fine-tuning",

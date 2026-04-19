@@ -32,7 +32,7 @@ export const metadata: TopicMeta = {
     "Đường tắt cho gradient đi qua, cho phép huấn luyện mạng rất sâu mà không bị gradient biến mất",
   category: "dl-architectures",
   tags: ["architecture", "training", "optimization"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["transformer", "cnn", "u-net"],
   vizType: "interactive",
 };

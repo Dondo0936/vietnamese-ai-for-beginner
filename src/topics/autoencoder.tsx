@@ -21,7 +21,7 @@ export const metadata: TopicMeta = {
     "Mạng nén dữ liệu vào biểu diễn chiều thấp rồi tái tạo lại, học đặc trưng quan trọng nhất.",
   category: "dl-architectures",
   tags: ["unsupervised-learning", "compression", "representation"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["vae", "pca", "gan"],
   vizType: "interactive",
 };

@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
   description: "Kiến trúc encoder-decoder hình chữ U với skip connections cho phân đoạn ảnh",
   category: "dl-architectures",
   tags: ["segmentation", "computer-vision", "architecture"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["cnn", "residual-connections", "autoencoder", "diffusion-models"],
   vizType: "interactive",
 };

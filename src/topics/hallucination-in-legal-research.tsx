@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
     "Vụ Mata v. Avianca: luật sư trích dẫn 6 án lệ giả do ChatGPT bịa ra, bị tòa phạt 5.000 đô-la Mỹ",
   category: "llm-concepts",
   tags: ["hallucination", "legal", "application"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["hallucination"],
   vizType: "interactive",
   applicationOf: "hallucination",

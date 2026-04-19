@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Quá trình chia văn bản thành các đơn vị nhỏ hơn (token) để máy tính có thể xử lý ngôn ngữ tự nhiên.",
   category: "nlp",
   tags: ["nlp", "preprocessing", "text"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["bag-of-words", "word-embeddings", "bert"],
   vizType: "interactive",
 };

@@ -45,7 +45,7 @@ export const metadata: TopicMeta = {
     "Khách có vay được không? Nhập thu nhập, nợ, lịch sử rồi xem cây quyết định chạy qua từng câu hỏi để đưa ra câu trả lời có/không.",
   category: "classic-ml",
   tags: ["classification", "finance", "credit-scoring", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["decision-trees"],
   vizType: "interactive",
   applicationOf: "decision-trees",

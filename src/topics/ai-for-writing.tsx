@@ -45,7 +45,7 @@ export const metadata: TopicMeta = {
     "Dùng AI để viết email, báo cáo, bài thuyết trình, và tóm tắt cuộc họp nhanh hơn.",
   category: "applied-ai",
   tags: ["writing", "email", "reports", "practical", "office"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "prompt-engineering",
     "getting-started-with-ai",

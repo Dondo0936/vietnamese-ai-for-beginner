@@ -26,7 +26,7 @@ export const metadata: TopicMeta = {
     "Chiến lược chọn giá trị ban đầu cho trọng số, ảnh hưởng lớn đến tốc độ và khả năng hội tụ.",
   category: "neural-fundamentals",
   tags: ["training", "techniques", "fundamentals"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: [
     "vanishing-exploding-gradients",
     "activation-functions",

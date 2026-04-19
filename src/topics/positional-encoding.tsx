@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
   description: "Thêm thông tin vị trí vào embedding vì Transformer không có khái niệm thứ tự",
   category: "dl-architectures",
   tags: ["transformer", "fundamentals", "encoding"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["transformer", "self-attention", "multi-head-attention"],
   vizType: "interactive",
 };

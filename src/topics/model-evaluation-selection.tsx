@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
     "Bốn mô hình cùng giải một bài toán — ai thắng? Bạn kéo trọng số cho accuracy, precision, latency, rồi xem thứ hạng đổi theo thời gian thực.",
   category: "classic-ml",
   tags: ["evaluation", "model-selection", "metrics", "comparison"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "confusion-matrix",
     "bias-variance",

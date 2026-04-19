@@ -47,7 +47,7 @@ export const metadata: TopicMeta = {
     "Notebook là IDE của data scientist: viết code, chạy, thấy kết quả ngay, viết chú thích, tiếp tục. Bài thực hành chỉ cho bạn cách dùng trong ngày đầu tiên.",
   category: "foundations",
   tags: ["jupyter", "colab", "notebook", "tools", "workflow"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["python-for-ml", "data-preprocessing", "end-to-end-ml-project"],
   vizType: "interactive",
 };

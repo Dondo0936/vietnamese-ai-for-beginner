@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
     "Nút chỉnh độ ngẫu nhiên của AI: khi nào nên vặn thấp để có câu trả lời chắc chắn, khi nào vặn cao để có ý tưởng mới.",
   category: "llm-concepts",
   tags: ["temperature", "sampling", "llm", "generation"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["top-k-top-p", "hallucination", "prompt-engineering"],
   vizType: "interactive",
 };

@@ -4,6 +4,12 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+# Contracts — read before editing topics or primitives
+
+`docs/CONTRACTS.md` is the single source of truth for every enforced invariant: registry/topic metadata parity, difficulty monotonicity, primitive requirements (InlineChallenge retry, SliderGroup reset, DraggableDot 44×44 hitbox, MetricReadout aria-live, root MotionConfig), color+icon pairing, jargon gloss policy, PredictionGate discipline, hex→token policy, mobile touch/scroll rules.
+
+Every contract has a matching test in `src/__tests__/contracts.test.ts`. `npm test` must be green before every ship. If you add a new contract, write the test first, then update `docs/CONTRACTS.md`, then make it pass.
+
 # Shipping rules — push to BOTH git and Vercel
 
 GitHub → Vercel auto-sync on this project is unreliable. Every time you ship:

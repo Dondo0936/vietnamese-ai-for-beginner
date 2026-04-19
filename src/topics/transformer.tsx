@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
   description: "Kiến trúc nền tảng của mọi LLM hiện đại, dùng self-attention thay vì hồi quy",
   category: "dl-architectures",
   tags: ["attention", "nlp", "architecture"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["self-attention", "multi-head-attention", "positional-encoding"],
   vizType: "interactive",
 };

@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
     "Python không phải ngôn ngữ nhanh nhất, nhưng NumPy và Pandas biến nó thành lingua franca của ML. Bài này chỉ cho bạn đọc một đoạn code ML và biết nó đang làm gì.",
   category: "foundations",
   tags: ["python", "numpy", "pandas", "matplotlib", "tools"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "data-preprocessing",
     "feature-engineering",

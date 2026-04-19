@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Copilot, Cursor, Claude Code là gì và vì sao văn phòng Việt nên quan tâm — kể cả khi bạn không viết một dòng code nào.",
   category: "emerging",
   tags: ["copilot", "cursor", "claude-code", "industry"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["agentic-workflows", "prompt-engineering", "llm-overview"],
   vizType: "interactive",
 };

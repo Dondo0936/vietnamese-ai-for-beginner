@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Theo dõi hiệu suất, phát hiện data drift và cảnh báo khi mô hình AI trong sản phẩm bắt đầu suy giảm chất lượng.",
   category: "infrastructure",
   tags: ["monitoring", "drift", "observability", "production"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["mlops", "model-serving", "cost-optimization"],
   vizType: "interactive",
 };

@@ -46,7 +46,7 @@ export const metadata: TopicMeta = {
     "COMPAS dùng 137 đặc trưng để chấm điểm rủi ro tái phạm nhưng chỉ đạt 65% chính xác — mô hình 2 biến đạt 67%, bóc trần hiện tượng overfit lên thiên kiến lịch sử",
   category: "classic-ml",
   tags: ["fairness", "criminal-justice", "bias", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["overfitting-underfitting"],
   vizType: "interactive",
   applicationOf: "overfitting-underfitting",

@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Tập hợp thực hành và công cụ để tự động hoá vòng đời phát triển, triển khai và giám sát mô hình máy học.",
   category: "infrastructure",
   tags: ["mlops", "pipeline", "automation", "ci-cd"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["model-serving", "monitoring", "containerization"],
   vizType: "interactive",
 };

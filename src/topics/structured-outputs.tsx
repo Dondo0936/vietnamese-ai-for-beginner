@@ -29,7 +29,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật đảm bảo LLM sinh ra JSON, XML hoặc schema cố định thay vì văn bản tự do.",
   category: "emerging",
   tags: ["json-mode", "schema", "constrained-decoding"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["function-calling", "prompt-engineering", "guardrails"],
   vizType: "interactive",
 };

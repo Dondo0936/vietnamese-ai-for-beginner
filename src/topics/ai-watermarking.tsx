@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật nhúng dấu hiệu thống kê ẩn vào nội dung do AI tạo ra để xác minh nguồn gốc và phát hiện văn bản tổng hợp.",
   category: "ai-safety",
   tags: ["watermark", "detection", "provenance", "statistics", "z-score"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["guardrails", "ai-governance", "text-to-image", "deepfake-detection"],
   vizType: "interactive",
 };

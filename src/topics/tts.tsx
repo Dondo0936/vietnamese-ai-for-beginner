@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Công nghệ chuyển đổi văn bản thành giọng nói tự nhiên, với khả năng kiểm soát ngữ điệu và cảm xúc.",
   category: "multimodal",
   tags: ["tts", "speech", "synthesis", "audio"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["speech-recognition", "unified-multimodal", "tlm"],
   vizType: "interactive",
 };

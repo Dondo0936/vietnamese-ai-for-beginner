@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
     "Câu chuyện xét nghiệm COVID-19: chính xác 99% nghe hay, nhưng khi tỷ lệ nhiễm trong cộng đồng thấp, hàng nghìn người vẫn có thể nhận kết quả dương tính giả.",
   category: "classic-ml",
   tags: ["evaluation", "medical", "covid", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["confusion-matrix"],
   vizType: "interactive",
   applicationOf: "confusion-matrix",

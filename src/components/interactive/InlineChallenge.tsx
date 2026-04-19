@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { RotateCcw } from "lucide-react";
 
 interface InlineChallengeProps {
   question: string;
@@ -17,6 +18,7 @@ export default function InlineChallenge({
   explanation,
 }: InlineChallengeProps) {
   const [selected, setSelected] = useState<number | null>(null);
+  const isWrong = selected !== null && selected !== correct;
 
   function getButtonClass(index: number): string {
     const base =
@@ -35,6 +37,11 @@ export default function InlineChallenge({
     return `${base} border-border bg-card text-muted opacity-50`;
   }
 
+  // Buttons stay enabled after a wrong guess so the learner can click
+  // "Thử lại" and pick again. After a correct guess we lock to avoid
+  // accidental re-entry.
+  const locked = selected === correct;
+
   return (
     <div className="rounded-xl border-2 border-dashed border-accent/30 bg-accent-light p-5 space-y-3">
       <p className="text-sm font-medium text-foreground leading-snug">{question}</p>
@@ -44,7 +51,7 @@ export default function InlineChallenge({
           <button
             key={index}
             type="button"
-            disabled={selected !== null}
+            disabled={locked}
             onClick={() => setSelected(index)}
             className={getButtonClass(index)}
           >
@@ -81,6 +88,17 @@ export default function InlineChallenge({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {isWrong && (
+        <button
+          type="button"
+          onClick={() => setSelected(null)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-dark transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-ring"
+        >
+          <RotateCcw size={14} aria-hidden="true" />
+          Thử lại
+        </button>
+      )}
     </div>
   );
 }

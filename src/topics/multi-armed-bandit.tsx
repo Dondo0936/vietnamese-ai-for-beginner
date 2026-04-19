@@ -31,7 +31,7 @@ export const metadata: TopicMeta = {
     "Bài toán cân bằng giữa khai thác kiến thức đã có và khám phá lựa chọn mới",
   category: "reinforcement-learning",
   tags: ["exploration", "exploitation", "epsilon-greedy"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: [
     "q-learning",
     "recommendation-systems",

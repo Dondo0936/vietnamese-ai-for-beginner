@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Mô hình ngôn ngữ dưới 10B tham số được tối ưu để chạy trên thiết bị cá nhân với chất lượng ngày càng tiệm cận mô hình lớn.",
   category: "emerging",
   tags: ["slm", "small", "efficient", "on-device"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["edge-ai", "inference-optimization", "moe"],
   vizType: "interactive",
 };

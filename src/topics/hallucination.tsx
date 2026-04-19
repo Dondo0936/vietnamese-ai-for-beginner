@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
     "Hiện tượng AI tạo ra thông tin nghe rất hợp lý nhưng thực tế sai hoặc bịa đặt — và cách nhận biết, phòng tránh khi làm việc.",
   category: "llm-concepts",
   tags: ["hallucination", "reliability", "safety", "llm"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: [
     "rag",
     "chain-of-thought",

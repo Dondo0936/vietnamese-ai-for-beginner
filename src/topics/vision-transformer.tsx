@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
   description: "Áp dụng kiến trúc Transformer trực tiếp cho hình ảnh bằng cách chia ảnh thành các patch",
   category: "dl-architectures",
   tags: ["vit", "image-patches", "transformer"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["transformer", "cnn", "image-classification", "self-attention"],
   vizType: "interactive",
 };

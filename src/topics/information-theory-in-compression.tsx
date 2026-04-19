@@ -35,7 +35,7 @@ export const metadata: TopicMeta = {
     "Vì sao file .txt toàn chữ 'a' nén rất nhỏ còn file ngẫu nhiên gần như không nén được? Entropy Shannon đặt giới hạn — Huffman tiến gần nó.",
   category: "classic-ml",
   tags: ["entropy", "compression", "information-theory", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["information-theory"],
   vizType: "interactive",
   applicationOf: "information-theory",

@@ -29,7 +29,7 @@ export const metadata: TopicMeta = {
     "Zapier, Make, n8n, Gumloop, Dify — năm công cụ cho phép người làm văn phòng Việt dựng quy trình AI tự động mà không viết một dòng code.",
   category: "ai-agents",
   tags: ["no-code", "automation", "zapier", "make", "n8n"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "ai-coding-assistants",
     "prompt-engineering",

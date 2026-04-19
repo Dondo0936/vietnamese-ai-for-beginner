@@ -27,7 +27,7 @@ export const metadata: TopicMeta = {
     "Các thuật toán cải tiến gradient descent, giúp huấn luyện nhanh hơn và ổn định hơn.",
   category: "neural-fundamentals",
   tags: ["optimization", "training", "advanced"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["gradient-descent", "sgd", "learning-rate"],
   vizType: "interactive",
 };

@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Biến thể hiệu quả của gradient descent, cập nhật trọng số sau mỗi mẫu hoặc mỗi lô nhỏ.",
   category: "neural-fundamentals",
   tags: ["optimization", "training"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: [
     "gradient-descent",
     "learning-rate",

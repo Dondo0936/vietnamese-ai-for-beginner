@@ -20,7 +20,7 @@ export const metadata: TopicMeta = {
     "So sánh BPE, SentencePiece và WordPiece — ưu nhược điểm và ứng dụng của từng phương pháp",
   category: "nlp",
   tags: ["bpe", "sentencepiece", "wordpiece"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["tokenization", "bert", "gpt"],
   vizType: "interactive",
 };

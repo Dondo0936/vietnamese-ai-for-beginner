@@ -31,7 +31,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật đóng gói mô hình AI cùng mọi phụ thuộc vào container, đảm bảo chạy nhất quán trên mọi môi trường.",
   category: "infrastructure",
   tags: ["docker", "kubernetes", "container", "deployment"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["model-serving", "mlops", "gpu-optimization"],
   vizType: "interactive",
 };

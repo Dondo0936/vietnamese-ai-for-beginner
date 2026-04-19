@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật lưu trữ key-value đã tính để tránh tính lại khi sinh token mới, tăng tốc suy luận LLM.",
   category: "llm-concepts",
   tags: ["inference", "caching", "key-value", "optimization"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["self-attention", "inference-optimization", "context-window", "transformer"],
   vizType: "interactive",
 };

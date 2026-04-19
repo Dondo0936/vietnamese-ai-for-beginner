@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
     "Hỏi 20 câu để đoán đồ vật — mỗi câu chia nhỏ khả năng. Cây quyết định làm đúng như vậy, thử tự tay xây một cái xem.",
   category: "classic-ml",
   tags: ["classification", "supervised-learning", "interpretable"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["random-forests", "gradient-boosting", "bias-variance"],
   vizType: "interactive",
 };

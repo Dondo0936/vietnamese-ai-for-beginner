@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
     "Loss là 'điểm số' của mô hình — càng thấp càng tốt. Chọn sai loss đồng nghĩa mô hình học sai mục tiêu. Kéo điểm dự đoán và thấy MSE, MAE, cross-entropy phản ứng rất khác nhau.",
   category: "neural-fundamentals",
   tags: ["training", "optimization", "fundamentals"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "gradient-descent",
     "backpropagation",

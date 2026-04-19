@@ -32,7 +32,7 @@ export const metadata: TopicMeta = {
     "Thiết kế quy trình tự động thu thập, xử lý và chuẩn bị dữ liệu cho huấn luyện mô hình AI",
   category: "infrastructure",
   tags: ["etl", "automation", "data-flow"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["data-preprocessing", "mlops", "feature-engineering"],
   vizType: "interactive",
 };

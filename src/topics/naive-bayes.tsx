@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
     "Khi có nhiều manh mối độc lập cùng trỏ về một kết luận, bạn tự tin hơn hẳn. Naive Bayes biến trực giác đó thành phép nhân xác suất đơn giản.",
   category: "classic-ml",
   tags: ["classification", "probability", "supervised-learning"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["logistic-regression", "decision-trees", "confusion-matrix"],
   vizType: "interactive",
 };

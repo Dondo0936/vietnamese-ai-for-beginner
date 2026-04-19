@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
     "Các phương pháp phát hiện video và hình ảnh giả mạo được tạo bởi AI",
   category: "ai-safety",
   tags: ["deepfake", "forensics", "detection"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["gan", "adversarial-robustness", "ai-watermarking"],
   vizType: "interactive",
 };

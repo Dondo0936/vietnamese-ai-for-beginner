@@ -43,7 +43,7 @@ export const metadata: TopicMeta = {
     "Huấn luyện GPT-3 tốn ~12 triệu USD chỉ cho tính toán, phần lớn là chạy gradient descent. Vặn thử learning rate, momentum, batch size — xem loss hội tụ, dao động hay nổ tung.",
   category: "neural-fundamentals",
   tags: ["gradient-descent", "optimization", "training", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["gradient-descent"],
   vizType: "interactive",
   applicationOf: "gradient-descent",

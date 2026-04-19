@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
     "App chatbot hỏi bạn vài triệu chứng → so với hàng ngàn ca bệnh cũ → gợi ý bệnh gần nhất. Cốt lõi chính là k-NN.",
   category: "classic-ml",
   tags: ["classification", "healthcare", "knn", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["knn"],
   vizType: "interactive",
   applicationOf: "knn",

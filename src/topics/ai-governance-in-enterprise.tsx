@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
     "Microsoft Responsible AI Standard: Làm thế nào một tập đoàn 220.000 nhân viên quản trị hàng trăm dự án AI cùng lúc — khung và bài học cho doanh nghiệp Việt Nam.",
   category: "ai-safety",
   tags: ["ai-governance", "regulation", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["ai-governance"],
   vizType: "static",
   applicationOf: "ai-governance",

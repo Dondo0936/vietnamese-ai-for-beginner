@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
     "Mô hình đoán 'có bệnh' — đúng hay sai đáng quan tâm thế nào? Bốn loại kết quả và cách ma trận 2×2 phân loại chúng.",
   category: "classic-ml",
   tags: ["evaluation", "classification", "metrics"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["logistic-regression", "cross-validation", "naive-bayes"],
   vizType: "interactive",
 };

@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật loại bỏ các trọng số hoặc nơ-ron ít quan trọng để giảm kích thước mô hình.",
   category: "training-optimization",
   tags: ["pruning", "compression", "sparsity", "optimization"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: ["quantization", "distillation", "mixed-precision"],
   vizType: "interactive",
 };

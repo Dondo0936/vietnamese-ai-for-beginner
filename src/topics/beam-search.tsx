@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Thuật toán giải mã giữ lại k ứng viên tốt nhất ở mỗi bước, cân bằng giữa chất lượng và chi phí tính toán.",
   category: "nlp",
   tags: ["nlp", "decoding", "search", "generation"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: [
     "gpt",
     "seq2seq",

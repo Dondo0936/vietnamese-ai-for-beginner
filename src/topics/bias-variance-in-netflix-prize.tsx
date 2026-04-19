@@ -38,7 +38,7 @@ export const metadata: TopicMeta = {
     "Netflix Prize 1 triệu đô: vì sao đội thắng cần 800+ mô hình gộp lại? Câu chuyện kinh điển về ensemble và giới hạn của việc giảm variance trong thực tế.",
   category: "classic-ml",
   tags: ["ensemble", "recommendation", "competition", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["bias-variance"],
   vizType: "interactive",
   applicationOf: "bias-variance",

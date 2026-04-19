@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
     "Train = bài tập. Val = đề thi thử. Test = đề thi thật. Không được xem test trước — nếu không, điểm không có ý nghĩa.",
   category: "foundations",
   tags: ["train", "validation", "test", "split"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["cross-validation", "overfitting-underfitting", "bias-variance"],
   vizType: "interactive",
 };

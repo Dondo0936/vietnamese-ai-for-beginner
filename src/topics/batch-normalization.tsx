@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
     "Kỹ thuật chuẩn hóa đầu vào mỗi lớp theo thống kê mini-batch để ổn định gradient, tăng tốc hội tụ, và giảm internal covariate shift.",
   category: "neural-fundamentals",
   tags: ["training", "techniques", "normalization", "regularization"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: [
     "mlp",
     "vanishing-exploding-gradients",

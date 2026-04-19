@@ -43,7 +43,7 @@ export const metadata: TopicMeta = {
     "GPT-4 đọc khoảng 13 nghìn tỉ token — một lượt duy nhất, chia thành hàng triệu batch. Xem cách các lab AI vặn batch size, lên lịch epoch và tránh hết RAM GPU.",
   category: "neural-fundamentals",
   tags: ["epochs-batches", "training", "gpt", "application"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: ["epochs-batches"],
   vizType: "interactive",
   applicationOf: "epochs-batches",

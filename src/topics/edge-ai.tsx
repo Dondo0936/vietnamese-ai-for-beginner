@@ -31,7 +31,7 @@ export const metadata: TopicMeta = {
     "Triển khai mô hình AI trực tiếp trên thiết bị đầu cuối (điện thoại, IoT, camera) thay vì trên đám mây.",
   category: "infrastructure",
   tags: ["edge", "on-device", "mobile", "iot"],
-  difficulty: "intermediate",
+  difficulty: "advanced",
   relatedSlugs: [
     "inference-optimization",
     "small-language-models",

@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
     "ChatGPT, Sudowrite, Notion AI: tham số temperature điều chỉnh mức độ ngẫu nhiên để AI vừa viết được thơ sáng tạo, vừa trả lời đúng câu hỏi có đáp án.",
   category: "llm-concepts",
   tags: ["temperature", "creative-writing", "application"],
-  difficulty: "beginner",
+  difficulty: "advanced",
   relatedSlugs: ["temperature"],
   vizType: "interactive",
   applicationOf: "temperature",
