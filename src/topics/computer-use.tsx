@@ -538,7 +538,7 @@ export default function ComputerUseTopic() {
                     <circle cx={10} cy={8} r={3} fill="#ef4444" />
                     <circle cx={22} cy={8} r={3} fill="#f59e0b" />
                     <circle cx={34} cy={8} r={3} fill="#22c55e" />
-                    <text x={60} y={11} fill="#64748b" fontSize={8}>
+                    <text x={60} y={11} fill="#64748b" fontSize={11}>
                       AI Agent Desktop · sandboxed container
                     </text>
 
@@ -571,7 +571,7 @@ export default function ComputerUseTopic() {
                       rx={4}
                       fill="#1e293b"
                     />
-                    <text x={168} y={34} fontSize={6} fill="#64748b">
+                    <text x={168} y={34} fontSize={11} fill="#64748b">
                       https://example.com
                     </text>
 
@@ -631,7 +631,7 @@ export default function ComputerUseTopic() {
                       x={330}
                       y={278}
                       textAnchor="middle"
-                      fontSize={9}
+                      fontSize={11}
                       fill="white"
                       fontWeight="bold"
                     >
@@ -656,7 +656,7 @@ export default function ComputerUseTopic() {
                       rx={4}
                       fill="#111827"
                     />
-                    <text x={18} y={70} fontSize={6} fill="#64748b">
+                    <text x={18} y={70} fontSize={11} fill="#64748b">
                       Files
                     </text>
                     {[80, 95, 110, 125, 140, 155].map((y, i) => (
@@ -689,25 +689,25 @@ export default function ComputerUseTopic() {
                       fill="#020617"
                       stroke="#1f2937"
                     />
-                    <text x={18} y={192} fontSize={6} fill="#22c55e">
+                    <text x={18} y={192} fontSize={11} fill="#22c55e">
                       $ bash
                     </text>
-                    <text x={18} y={204} fontSize={5} fill="#4ade80">
+                    <text x={18} y={204} fontSize={11} fill="#4ade80">
                       user@sandbox:~$
                     </text>
-                    <text x={18} y={215} fontSize={5} fill="#4ade80">
+                    <text x={18} y={215} fontSize={11} fill="#4ade80">
                       $ ls -la
                     </text>
-                    <text x={18} y={226} fontSize={5} fill="#94a3b8">
+                    <text x={18} y={226} fontSize={11} fill="#94a3b8">
                       total 48
                     </text>
-                    <text x={18} y={237} fontSize={5} fill="#94a3b8">
+                    <text x={18} y={237} fontSize={11} fill="#94a3b8">
                       drwx--- home
                     </text>
-                    <text x={18} y={248} fontSize={5} fill="#94a3b8">
+                    <text x={18} y={248} fontSize={11} fill="#94a3b8">
                       drwx--- work
                     </text>
-                    <text x={18} y={265} fontSize={5} fill="#22c55e">
+                    <text x={18} y={265} fontSize={11} fill="#22c55e">
                       $ _
                     </text>
 
@@ -728,7 +728,7 @@ export default function ComputerUseTopic() {
                         x={34}
                         y={350}
                         textAnchor="middle"
-                        fontSize={6}
+                        fontSize={11}
                         fill="#64748b"
                       >
                         Chrome
@@ -755,7 +755,7 @@ export default function ComputerUseTopic() {
                         x={70}
                         y={350}
                         textAnchor="middle"
-                        fontSize={6}
+                        fontSize={11}
                         fill="#64748b"
                       >
                         Files
@@ -771,14 +771,14 @@ export default function ComputerUseTopic() {
                         rx={4}
                         fill="#1e293b"
                       />
-                      <text x={97} y={328} fontSize={10} fill="#22c55e">
+                      <text x={97} y={328} fontSize={11} fill="#22c55e">
                         &gt;_
                       </text>
                       <text
                         x={106}
                         y={350}
                         textAnchor="middle"
-                        fontSize={6}
+                        fontSize={11}
                         fill="#64748b"
                       >
                         Term
@@ -790,7 +790,7 @@ export default function ComputerUseTopic() {
                       x={620}
                       y={328}
                       textAnchor="end"
-                      fontSize={8}
+                      fontSize={11}
                       fill="#64748b"
                     >
                       10:42
@@ -799,7 +799,7 @@ export default function ComputerUseTopic() {
                       x={620}
                       y={340}
                       textAnchor="end"
-                      fontSize={6}
+                      fontSize={11}
                       fill="#475569"
                     >
                       step {stepIndex + 1}/{task.steps.length}
@@ -847,7 +847,7 @@ export default function ComputerUseTopic() {
                           x={currentStep.highlight.x + 25}
                           y={Math.max(10, currentStep.highlight.y - 5)}
                           textAnchor="middle"
-                          fontSize={7}
+                          fontSize={11}
                           fill="white"
                           fontWeight="bold"
                         >

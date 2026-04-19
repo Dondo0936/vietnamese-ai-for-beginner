@@ -153,7 +153,7 @@ export default function NmsTopic() {
                   <rect x={box.x} y={box.y} width={box.w} height={box.h}
                     fill="none" stroke={box.color} strokeWidth={2} opacity={0.9} />
                   <rect x={box.x} y={box.y - 16} width={50} height="16" fill={box.color} rx="3" />
-                  <text x={box.x + 4} y={box.y - 4} fill="white" fontSize="10" fontWeight="bold">
+                  <text x={box.x + 4} y={box.y - 4} fill="white" fontSize="11" fontWeight="bold">
                     {(box.conf * 100).toFixed(0)}%
                   </text>
                 </g>

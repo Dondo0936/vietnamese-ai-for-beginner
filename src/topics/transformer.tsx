@@ -342,7 +342,7 @@ export default function TransformerTopic() {
                 {W.map((w, i) => (
                   <g key={i}>
                     <circle cx={AX[i]} cy={90} r={20} fill={`${C[i]}30`} stroke={C[i]} strokeWidth={2} />
-                    <text x={AX[i]} y={95} textAnchor="middle" fontSize={10} fontWeight={700} fill={C[i]}>{w}</text>
+                    <text x={AX[i]} y={95} textAnchor="middle" fontSize={11} fontWeight={700} fill={C[i]}>{w}</text>
                   </g>
                 ))}
                 {W.map((_, i) => W.map((_, j) => i !== j ? (
@@ -384,19 +384,19 @@ export default function TransformerTopic() {
             <div className="rounded-lg border border-border bg-background/50 p-4">
               <svg viewBox="0 0 400 80" className="w-full max-w-sm mx-auto">
                 <rect x="30" y="25" width="80" height="30" rx="6" fill="#8b5cf630" stroke="#8b5cf6" strokeWidth="1.5" />
-                <text x="70" y="45" textAnchor="middle" fontSize="10" fill="#8b5cf6" fontWeight="600">Attention</text>
+                <text x="70" y="45" textAnchor="middle" fontSize="11" fill="#8b5cf6" fontWeight="600">Attention</text>
                 <line x1="110" y1="40" x2="150" y2="40" stroke="#475569" strokeWidth="1.5" />
                 <circle cx="165" cy="40" r="12" fill="#1e293b" stroke="#22c55e" strokeWidth="2" />
                 <text x="165" y="44" textAnchor="middle" fontSize="12" fill="#22c55e" fontWeight="700">+</text>
                 <line x1="177" y1="40" x2="210" y2="40" stroke="#475569" strokeWidth="1.5" />
                 <rect x="210" y="25" width="70" height="30" rx="6" fill="#22c55e30" stroke="#22c55e" strokeWidth="1.5" />
-                <text x="245" y="45" textAnchor="middle" fontSize="10" fill="#22c55e" fontWeight="600">LayerNorm</text>
+                <text x="245" y="45" textAnchor="middle" fontSize="11" fill="#22c55e" fontWeight="600">LayerNorm</text>
                 <path d="M 30 40 Q 30 10 100 10 L 165 10 L 165 28" fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4,3" />
                 <polygon points="161,27 165,35 169,27" fill="#f97316" />
-                <text x="80" y="8" fontSize="8" fill="#f97316" fontWeight="600">skip connection</text>
+                <text x="80" y="8" fontSize="11" fill="#f97316" fontWeight="600">skip connection</text>
                 <line x1="280" y1="40" x2="320" y2="40" stroke="#475569" strokeWidth="1.5" />
                 <polygon points="318,36 326,40 318,44" fill="#475569" />
-                <text x="350" y="44" fontSize="10" fill="#94a3b8">output</text>
+                <text x="350" y="44" fontSize="11" fill="#94a3b8">output</text>
               </svg>
               <p className="text-xs text-muted text-center mt-2">
                 Residual connection (cộng input gốc) + LayerNorm — giúp gradient chảy tốt qua nhiều lớp</p>

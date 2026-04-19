@@ -762,7 +762,7 @@ export default function AgentEvaluationTopic() {
               x={l.x}
               y={l.y}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fill={l.color}
               fontWeight="bold"
             >
@@ -777,7 +777,7 @@ export default function AgentEvaluationTopic() {
                 x={p.x}
                 y={p.y - 6}
                 textAnchor="middle"
-                fontSize={9}
+                fontSize={11}
                 fill="#e2e8f0"
               >
                 {p.raw}

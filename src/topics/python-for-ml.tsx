@@ -82,7 +82,11 @@ function OutputBox({ label = "Kết quả", children, tone = "default" }: Output
   return (
     <div className={`rounded-xl border ${border} ${bg} p-3 space-y-2`}>
       <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-tertiary">
-        <TerminalSquare size={11} />
+        {tone === "success" ? (
+          <CheckCircle2 size={11} className="text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+        ) : (
+          <TerminalSquare size={11} />
+        )}
         {label}
       </div>
       <div className="text-sm">{children}</div>
@@ -775,7 +779,7 @@ plt.show()`}
                     strokeDasharray="2,3"
                     opacity={0.5}
                   />
-                  <text x={30} y={y + 3} textAnchor="end" fontSize={8} fill="var(--text-tertiary)">
+                  <text x={30} y={y + 3} textAnchor="end" fontSize={11} fill="var(--text-tertiary)">
                     {t}
                   </text>
                 </g>
@@ -802,7 +806,7 @@ plt.show()`}
                     x={xBase + barWidth / 2}
                     y={165}
                     textAnchor="middle"
-                    fontSize={9}
+                    fontSize={11}
                     fill="var(--text-secondary)"
                   >
                     {b.bin}
@@ -811,7 +815,7 @@ plt.show()`}
                     x={xBase + barWidth / 2}
                     y={150 - h - 3}
                     textAnchor="middle"
-                    fontSize={9}
+                    fontSize={11}
                     fill="#6366f1"
                     fontWeight={600}
                   >
@@ -820,7 +824,7 @@ plt.show()`}
                 </g>
               );
             })}
-            <text x={172} y={178} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)">
+            <text x={172} y={178} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
               Điểm trung bình
             </text>
           </svg>
@@ -967,15 +971,15 @@ export default function PythonForMlTopic() {
           </p>
         </div>
         <PredictionGate
-          question="Bạn có bảng điểm 500 học sinh gồm 5 cột. Nhiệm vụ: tính trung bình từng lớp, lọc học sinh điểm ≥ 8, vẽ histogram phân phối điểm. Công cụ phù hợp nhất?"
+          question="Bạn có mảng 1 triệu số. Cần tính tổng bình phương. Đồng nghiệp A viết for-loop Python thuần đi từng phần tử. Đồng nghiệp B viết `(arr ** 2).sum()` bằng NumPy. Lý do chính khiến B chạy nhanh hơn A cỡ 100 lần là gì?"
           options={[
-            "Excel — mở file, dùng PivotTable, tạo chart. Quen thuộc và đủ dùng.",
-            "Python thuần — viết for-loop cho từng phép tính. Linh hoạt tuyệt đối.",
-            "NumPy + Pandas + Matplotlib — bộ ba tiêu chuẩn của data science.",
-            "Lập trình C từ đầu — tốc độ tối đa, không phụ thuộc thư viện ngoài.",
+            "NumPy chạy song song trên nhiều CPU core tự động",
+            "NumPy lưu mảng liên tiếp trong bộ nhớ và thực thi vòng lặp bằng C biên dịch sẵn, bỏ qua chi phí mỗi bước của interpreter Python",
+            "NumPy gọi GPU ngầm cho mọi phép tính",
+            "NumPy nén mảng lại chỉ còn 1% số phần tử nên ít việc hơn",
           ]}
-          correct={2}
-          explanation="500 hàng thì Excel còn OK, nhưng scale lên 5 triệu hàng là Excel 'chết'. Python thuần chạy được nhưng for-loop chậm hơn NumPy 100–200 lần. C nhanh nhưng viết code dài dòng gấp 20 lần. NumPy + Pandas + Matplotlib: đọc CSV 1 dòng, lọc 1 dòng, groupby 1 dòng, vẽ 1 dòng — 4 dòng thay vì 200. Đó là lý do cả ngành ML đều dùng bộ ba này."
+          correct={1}
+          explanation="Mỗi bước trong for-loop Python phải qua interpreter — kiểm tra kiểu, unbox số, boxing lại — rất đắt. NumPy lưu mảng dạng buffer C thuần, vòng lặp chạy bằng mã C đã biên dịch, không mất chi phí đó. Đây gọi là 'vectorization'. Không phải song song đa core, không phải GPU ngầm — chỉ là vòng lặp C thay vì vòng lặp Python. Bài sau bạn sẽ đặt hai đoạn code cạnh nhau và đo thật."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Trong phần dưới, bạn sẽ thấy cùng một tác vụ mà NumPy rút gọn vòng lặp 20 dòng xuống

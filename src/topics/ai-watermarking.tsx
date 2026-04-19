@@ -536,7 +536,7 @@ export default function AIWatermarkingTopic() {
                     stroke="#22c55e"
                     rx={2}
                   />
-                  <text x={20} y={12} fontSize={10} fill="#166534">
+                  <text x={20} y={12} fontSize={11} fill="#166534">
                     Green list ({greenCount}/{totalTokens})
                   </text>
                   <rect
@@ -548,13 +548,13 @@ export default function AIWatermarkingTopic() {
                     stroke="#ef4444"
                     rx={2}
                   />
-                  <text x={200} y={12} fontSize={10} fill="#991b1b">
+                  <text x={200} y={12} fontSize={11} fill="#991b1b">
                     Red list ({totalTokens - greenCount}/{totalTokens})
                   </text>
                   <text
                     x={360}
                     y={12}
-                    fontSize={10}
+                    fontSize={11}
                     fill="#64748b"
                     fontStyle="italic"
                   >
@@ -600,7 +600,7 @@ export default function AIWatermarkingTopic() {
                   x={290}
                   y={44}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fill="white"
                   fontWeight="bold"
                 >
@@ -639,7 +639,7 @@ export default function AIWatermarkingTopic() {
                   x={290}
                   y={115}
                   textAnchor="middle"
-                  fontSize={9}
+                  fontSize={11}
                   fill="#64748b"
                   fontStyle="italic"
                 >

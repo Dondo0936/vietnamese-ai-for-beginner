@@ -10,6 +10,8 @@ import {
   Layers,
   ImageIcon,
   Sparkles,
+  X,
+  Check,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 import ApplicationLayout from "@/components/application/ApplicationLayout";
@@ -561,7 +563,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="rounded-lg border border-rose-200 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 p-3 space-y-2">
-              <div className="text-xs font-semibold text-rose-700 dark:text-rose-300">
+              <div className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 dark:text-rose-300">
+                <X size={12} aria-hidden="true" />
                 Cách ngây thơ: so sánh từng pixel
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed">
@@ -572,7 +575,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
               </p>
             </div>
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-3 space-y-2">
-              <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+              <div className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                <Check size={12} aria-hidden="true" />
                 Cách của Google: biến ảnh thành vector ý nghĩa
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed">

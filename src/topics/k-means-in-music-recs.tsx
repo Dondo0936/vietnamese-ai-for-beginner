@@ -407,7 +407,7 @@ export default function KMeansInMusicRecs() {
                 <text
                   x={40 + (v * 380) / 100}
                   y={355}
-                  fontSize={9}
+                  fontSize={11}
                   fill="currentColor"
                   fillOpacity={0.4}
                   textAnchor="middle"
@@ -417,7 +417,7 @@ export default function KMeansInMusicRecs() {
                 <text
                   x={35}
                   y={340 - (v * 320) / 100 + 3}
-                  fontSize={9}
+                  fontSize={11}
                   fill="currentColor"
                   fillOpacity={0.4}
                   textAnchor="end"
@@ -477,7 +477,7 @@ export default function KMeansInMusicRecs() {
                   <text
                     x={x + 10}
                     y={y - 8}
-                    fontSize={10}
+                    fontSize={11}
                     fill={color}
                     fontWeight={700}
                   >
@@ -1055,10 +1055,10 @@ function Mini2DPlot({
       <svg viewBox="0 0 340 250" className="w-full rounded-lg border border-border bg-background">
         <line x1={30} y1={220} x2={310} y2={220} stroke="currentColor" strokeOpacity={0.3} />
         <line x1={30} y1={20} x2={30} y2={220} stroke="currentColor" strokeOpacity={0.3} />
-        <text x={170} y={240} fontSize={9} fill="currentColor" fillOpacity={0.5} textAnchor="middle">
+        <text x={170} y={240} fontSize={11} fill="currentColor" fillOpacity={0.5} textAnchor="middle">
           energy
         </text>
-        <text x={15} y={120} fontSize={9} fill="currentColor" fillOpacity={0.5} textAnchor="middle" transform="rotate(-90, 15, 120)">
+        <text x={15} y={120} fontSize={11} fill="currentColor" fillOpacity={0.5} textAnchor="middle" transform="rotate(-90, 15, 120)">
           dance
         </text>
 
@@ -1109,7 +1109,7 @@ function Mini2DPlot({
             <text
               x={scaleX(h.x) + 9}
               y={scaleY(h.y) - 5}
-              fontSize={9}
+              fontSize={11}
               fill={h.color}
             >
               ♥
@@ -1133,7 +1133,7 @@ function Mini2DPlot({
           <text
             x={scaleX(centroid.x) + 14}
             y={scaleY(centroid.y) + 4}
-            fontSize={10}
+            fontSize={11}
             fontWeight={700}
             fill="#f59e0b"
           >

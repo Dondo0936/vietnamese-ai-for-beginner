@@ -147,10 +147,10 @@ export default function MLOpsTopic() {
                     stroke={stage.active ? "#22c55e" : "#475569"}
                     strokeWidth={stage.active ? 2 : 1}
                   />
-                  <text x={stage.x} y={50} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">
+                  <text x={stage.x} y={50} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                     {stage.label}
                   </text>
-                  <text x={stage.x} y={65} textAnchor="middle" fill={stage.active ? "#bbf7d0" : "#64748b"} fontSize={8}>
+                  <text x={stage.x} y={65} textAnchor="middle" fill={stage.active ? "#bbf7d0" : "#64748b"} fontSize={11}>
                     {stage.active ? "ON" : "OFF"}
                   </text>
                   {i < 4 && (
@@ -167,7 +167,7 @@ export default function MLOpsTopic() {
               {level.autoRetrain && (
                 <>
                   <path d="M 540 75 C 560 160, 40 160, 60 75" fill="none" stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="5,3" />
-                  <text x={300} y={155} textAnchor="middle" fill="#f59e0b" fontSize={9}>Vòng lặp tự động: Drift detected → Retrain → Deploy</text>
+                  <text x={300} y={155} textAnchor="middle" fill="#f59e0b" fontSize={11}>Vòng lặp tự động: Drift detected → Retrain → Deploy</text>
                 </>
               )}
 
@@ -175,7 +175,7 @@ export default function MLOpsTopic() {
               <text x={300} y={190} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
                 Level {level.level}: {level.name}
               </text>
-              <text x={300} y={210} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+              <text x={300} y={210} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                 {level.desc}
               </text>
             </svg>

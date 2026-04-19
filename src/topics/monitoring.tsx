@@ -155,14 +155,14 @@ export default function MonitoringTopic() {
               </text>
 
               {/* Y-axis labels */}
-              <text x={25} y={45} fill="#94a3b8" fontSize={8}>100%</text>
-              <text x={25} y={145} fill="#94a3b8" fontSize={8}>70%</text>
+              <text x={25} y={45} fill="#94a3b8" fontSize={11}>100%</text>
+              <text x={25} y={145} fill="#94a3b8" fontSize={11}>70%</text>
               <line x1={45} y1={30} x2={45} y2={170} stroke="#475569" strokeWidth={1} />
               <line x1={45} y1={170} x2={575} y2={170} stroke="#475569" strokeWidth={1} />
 
               {/* Alert threshold line */}
               <line x1={45} y1={93} x2={575} y2={93} stroke="#ef4444" strokeWidth={1} strokeDasharray="4,3" />
-              <text x={578} y={97} fill="#ef4444" fontSize={7}>88% threshold</text>
+              <text x={578} y={97} fill="#ef4444" fontSize={11}>88% threshold</text>
 
               {/* Accuracy line */}
               {metrics.map((m, i) => {
@@ -183,7 +183,7 @@ export default function MonitoringTopic() {
                       fill={isAlert ? "#ef4444" : "#22c55e"}
                       stroke={selectedWeek === i ? "white" : "none"} strokeWidth={2}
                     />
-                    <text x={x} y={185} textAnchor="middle" fill="#64748b" fontSize={7}>W{i + 1}</text>
+                    <text x={x} y={185} textAnchor="middle" fill="#64748b" fontSize={11}>W{i + 1}</text>
                   </g>
                 );
               })}
@@ -198,11 +198,11 @@ export default function MonitoringTopic() {
                   />
                 );
               })}
-              <text x={300} y={215} textAnchor="middle" fill="#94a3b8" fontSize={8}>Drift Score (thấp = ổn định)</text>
+              <text x={300} y={215} textAnchor="middle" fill="#94a3b8" fontSize={11}>Drift Score (thấp = ổn định)</text>
 
               {/* Alert marker */}
               {alertWeek >= 0 && hasDrift && (
-                <text x={55 + alertWeek * 44} y={25} textAnchor="middle" fill="#ef4444" fontSize={10} fontWeight="bold">
+                <text x={55 + alertWeek * 44} y={25} textAnchor="middle" fill="#ef4444" fontSize={11} fontWeight="bold">
                   ALERT
                 </text>
               )}

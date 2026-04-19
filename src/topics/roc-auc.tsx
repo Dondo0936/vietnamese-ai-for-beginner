@@ -462,7 +462,7 @@ export default function RocAucTopic() {
                           y={distPadT + distPlotH + 16}
                           textAnchor="middle"
                           fill="#94a3b8"
-                          fontSize={8}
+                          fontSize={11}
                         >
                           {t}
                         </text>
@@ -473,7 +473,7 @@ export default function RocAucTopic() {
                       y={distSvgH - 4}
                       textAnchor="middle"
                       fill="#94a3b8"
-                      fontSize={9}
+                      fontSize={11}
                     >
                       Score dự đoán
                     </text>
@@ -528,7 +528,7 @@ export default function RocAucTopic() {
                       y={distPadT - 4}
                       textAnchor="middle"
                       fill="#ef4444"
-                      fontSize={9}
+                      fontSize={11}
                       fontWeight="bold"
                     >
                       ngưỡng
@@ -543,7 +543,7 @@ export default function RocAucTopic() {
                         height={10}
                         fill="#60a5fa"
                       />
-                      <text x={14} y={9} fill="#cbd5e1" fontSize={8}>
+                      <text x={14} y={9} fill="#cbd5e1" fontSize={11}>
                         Lớp âm (hợp lệ)
                       </text>
                       <rect
@@ -553,7 +553,7 @@ export default function RocAucTopic() {
                         height={10}
                         fill="#f97316"
                       />
-                      <text x={14} y={23} fill="#cbd5e1" fontSize={8}>
+                      <text x={14} y={23} fill="#cbd5e1" fontSize={11}>
                         Lớp dương (gian lận)
                       </text>
                     </g>
@@ -600,7 +600,7 @@ export default function RocAucTopic() {
                             y={rocPad + rocPlotH + 14}
                             textAnchor="middle"
                             fill="#94a3b8"
-                            fontSize={8}
+                            fontSize={11}
                           >
                             {v.toFixed(2)}
                           </text>
@@ -609,7 +609,7 @@ export default function RocAucTopic() {
                             y={rocY(v) + 3}
                             textAnchor="end"
                             fill="#94a3b8"
-                            fontSize={8}
+                            fontSize={11}
                           >
                             {v.toFixed(2)}
                           </text>
@@ -637,7 +637,7 @@ export default function RocAucTopic() {
                         y={rocSvgH - 6}
                         textAnchor="middle"
                         fill="#94a3b8"
-                        fontSize={9}
+                        fontSize={11}
                       >
                         FPR (false positive rate)
                       </text>
@@ -646,7 +646,7 @@ export default function RocAucTopic() {
                         y={rocSvgH / 2}
                         textAnchor="middle"
                         fill="#94a3b8"
-                        fontSize={9}
+                        fontSize={11}
                         transform={`rotate(-90 14 ${rocSvgH / 2})`}
                       >
                         TPR (true positive rate)
@@ -728,7 +728,7 @@ export default function RocAucTopic() {
                               6
                             }
                             fill="#22c55e"
-                            fontSize={9}
+                            fontSize={11}
                             fontWeight="bold"
                           >
                             Youden J

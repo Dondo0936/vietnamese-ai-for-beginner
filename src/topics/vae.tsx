@@ -202,20 +202,20 @@ export default function VaeTopic() {
             <circle cx={sampleX} cy={sampleY} r={28}
               fill="#f59e0b" opacity={0.08} />
 
-            <text x={sampleX + 15} y={sampleY - 5} fontSize={10} fill="#f59e0b" fontWeight={600}>
+            <text x={sampleX + 15} y={sampleY - 5} fontSize={11} fill="#f59e0b" fontWeight={600}>
               Sample
             </text>
-            <text x={sampleX + 15} y={sampleY + 8} fontSize={9} fill={nearestInfo.color} fontWeight={500}>
+            <text x={sampleX + 15} y={sampleY + 8} fontSize={11} fill={nearestInfo.color} fontWeight={500}>
               → gần nhất: lớp {nearestInfo.label}
             </text>
 
             {/* Legend */}
             <circle cx={60} cy={265} r={4} fill="#3b82f6" />
-            <text x={70} y={269} fontSize={10} fill="#3b82f6">Lớp A (μ_A, σ_A)</text>
+            <text x={70} y={269} fontSize={11} fill="#3b82f6">Lớp A (μ_A, σ_A)</text>
             <circle cx={190} cy={265} r={4} fill="#ef4444" />
-            <text x={200} y={269} fontSize={10} fill="#ef4444">Lớp B (μ_B, σ_B)</text>
+            <text x={200} y={269} fontSize={11} fill="#ef4444">Lớp B (μ_B, σ_B)</text>
             <circle cx={320} cy={265} r={5} fill="#f59e0b" />
-            <text x={330} y={269} fontSize={10} fill="#f59e0b">Điểm lấy mẫu</text>
+            <text x={330} y={269} fontSize={11} fill="#f59e0b">Điểm lấy mẫu</text>
           </svg>
 
           <div className="mt-3 rounded-lg border border-border bg-background/50 p-3">

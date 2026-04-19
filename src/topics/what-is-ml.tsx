@@ -17,6 +17,8 @@ import {
   Calculator,
   Camera,
   Music,
+  Check,
+  X,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -465,7 +467,18 @@ function ApproachPicker() {
                         className="overflow-hidden"
                       >
                         <p className="text-xs text-foreground/80 leading-relaxed mt-3 pt-3 border-t border-border/50">
-                          <span className="font-semibold">
+                          <span
+                            className={`inline-flex items-center gap-1 font-semibold ${
+                              correct
+                                ? "text-emerald-700 dark:text-emerald-300"
+                                : "text-amber-700 dark:text-amber-300"
+                            }`}
+                          >
+                            {correct ? (
+                              <Check size={12} aria-hidden="true" />
+                            ) : (
+                              <AlertTriangle size={12} aria-hidden="true" />
+                            )}
                             Đáp án:{" "}
                             {p.rightChoice === "classic"
                               ? "Lập trình thường"
@@ -613,7 +626,7 @@ function PipelineSVG() {
                 x={cx}
                 y={boxY + 50 + li * 13}
                 textAnchor="middle"
-                fontSize="10"
+                fontSize="11"
                 fill="var(--color-muted, #64748b)"
               >
                 {line}
@@ -645,7 +658,7 @@ function PipelineSVG() {
         x="430"
         y="215"
         textAnchor="middle"
-        fontSize="10"
+        fontSize="11"
         fill="var(--color-muted, #64748b)"
         fontStyle="italic"
       >
@@ -804,14 +817,15 @@ export default function WhatIsMlTopic() {
       {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn muốn làm app nhận ra ảnh chó so với ảnh mèo. Cách nào sẽ chạy tốt nhất?"
+          question="Bạn cần viết phần mềm cho bốn bài toán sau. Bài nào ML thường KHÔNG phải lựa chọn tốt hơn lập trình thường?"
           options={[
-            "Viết hàng nghìn dòng if-else: nếu tai nhọn thì là mèo, nếu mõm dài thì là chó",
-            "Cho máy xem hàng triệu ảnh chó và mèo đã dán nhãn, rồi để máy tự học cách phân biệt",
-            "Ghi mọi ảnh vào một bảng rồi tra cứu khi cần",
+            "Nhận dạng giọng nói tiếng Việt qua micro điện thoại",
+            "Tính tổng tiền hoá đơn = đơn giá × số lượng + thuế VAT 10%",
+            "Lọc email rác dựa trên nội dung thay đổi liên tục mỗi tuần",
+            "Gợi ý phim dựa trên thói quen xem của hàng triệu người dùng",
           ]}
           correct={1}
-          explanation="Đúng rồi. Chó mèo có hàng ngàn giống, tư thế, góc chụp. Không ai viết hết luật được. ML học từ ví dụ — giống đầu bếp 2. Đây chính là lý do mọi app nhận ảnh hiện đại đều dùng ML, không ngoại lệ."
+          explanation="Tính hoá đơn có công thức rõ ràng, đầu vào là số, kết quả đúng/sai tuyệt đối — đây là đất của lập trình thường. Ba bài còn lại có hàng triệu biến thể (giọng, từ mới trong spam, sở thích cá nhân) mà không ai viết hết luật được — ML mới hợp. Cạm bẫy của người mới là dùng ML cho cả bài toán đơn giản."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Tiếp theo, bạn sẽ thấy hai cách nấu cùng một bài toán đứng

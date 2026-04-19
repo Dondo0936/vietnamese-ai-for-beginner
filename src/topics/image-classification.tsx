@@ -616,7 +616,7 @@ export default function ImageClassificationTopic() {
                         textAnchor="middle"
                         fill="currentColor"
                         className="fill-foreground"
-                        fontSize="9"
+                        fontSize="11"
                         fontWeight="bold"
                       >
                         {layer.desc}
@@ -627,7 +627,7 @@ export default function ImageClassificationTopic() {
                         textAnchor="middle"
                         fill="currentColor"
                         className="fill-muted"
-                        fontSize="8"
+                        fontSize="11"
                       >
                         {layer.label}
                       </text>
@@ -664,7 +664,7 @@ export default function ImageClassificationTopic() {
                   textAnchor="middle"
                   fill="currentColor"
                   className="fill-muted"
-                  fontSize="10"
+                  fontSize="11"
                 >
                   Feature extraction (Conv+Pool) ─────────→ Classifier (FC+Softmax)
                 </text>
@@ -674,7 +674,7 @@ export default function ImageClassificationTopic() {
                   textAnchor="middle"
                   fill="currentColor"
                   className="fill-tertiary"
-                  fontSize="9"
+                  fontSize="11"
                 >
                   Kích thước không gian ↓, độ sâu kênh ↑ — đặc trưng từ đơn giản đến phức
                   tạp

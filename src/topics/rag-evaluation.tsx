@@ -745,13 +745,13 @@ export default function RagEvaluationTopic() {
               <text x={l.pos.x} y={l.pos.y} textAnchor={l.anchor} fontSize={11} fill={scoreColor(l.score)} fontWeight="bold">
                 {l.name}
               </text>
-              <text x={l.pos.x} y={l.pos.y + 12} textAnchor={l.anchor} fontSize={10} fill="#e2e8f0">
+              <text x={l.pos.x} y={l.pos.y + 12} textAnchor={l.anchor} fontSize={11} fill="#e2e8f0">
                 {l.score}
               </text>
             </g>
           ))}
           {/* Composite ở giữa */}
-          <text x={cx} y={cy - 2} textAnchor="middle" fontSize={10} fill="#94a3b8">composite</text>
+          <text x={cx} y={cy - 2} textAnchor="middle" fontSize={11} fill="#94a3b8">composite</text>
           <text x={cx} y={cy + 14} textAnchor="middle" fontSize={18} fontWeight="bold" fill={scoreColor(composite)}>
             {composite}
           </text>

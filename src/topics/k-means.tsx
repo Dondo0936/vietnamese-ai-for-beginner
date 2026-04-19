@@ -1076,7 +1076,7 @@ function ElbowChart({
         <text
           x={xScale(3) + 6}
           y={PADT + 14}
-          fontSize={10}
+          fontSize={11}
           fontWeight={700}
           fill="#f59e0b"
         >
@@ -1121,7 +1121,7 @@ function ElbowChart({
             x={xScale(p.k)}
             y={PH - 10}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill="#94a3b8"
           >
             k={p.k}
@@ -1132,7 +1132,7 @@ function ElbowChart({
         <text
           x={PADL}
           y={PADT - 5}
-          fontSize={10}
+          fontSize={11}
           fontWeight={600}
           fill="#94a3b8"
         >
@@ -1316,7 +1316,7 @@ function StepUpdate() {
         <g>
           <line x1={80} y1={60} x2={100} y2={80} stroke="#ef444480" strokeWidth={3} />
           <line x1={100} y1={60} x2={80} y2={80} stroke="#ef444480" strokeWidth={3} />
-          <text x={110} y={75} fontSize={10} fill="#ef4444" opacity={0.6}>
+          <text x={110} y={75} fontSize={11} fill="#ef4444" opacity={0.6}>
             Tâm cũ
           </text>
         </g>
@@ -1336,7 +1336,7 @@ function StepUpdate() {
         <motion.text
           x={120}
           y={80}
-          fontSize={10}
+          fontSize={11}
           fill="#94a3b8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -1353,7 +1353,7 @@ function StepUpdate() {
         >
           <line x1={160} y1={90} x2={180} y2={110} stroke="#ef4444" strokeWidth={3.5} />
           <line x1={180} y1={90} x2={160} y2={110} stroke="#ef4444" strokeWidth={3.5} />
-          <text x={190} y={105} fontSize={10} fontWeight={700} fill="#ef4444">
+          <text x={190} y={105} fontSize={11} fontWeight={700} fill="#ef4444">
             Tâm mới
           </text>
         </motion.g>

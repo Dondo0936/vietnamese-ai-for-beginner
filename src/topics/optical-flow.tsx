@@ -147,7 +147,7 @@ export default function OpticalFlowTopic() {
                     markerEnd="url(#arrowhead-of)" />
                 );
               })}
-              <text x="300" y="300" textAnchor="middle" fill="#64748b" fontSize="10">
+              <text x="300" y="300" textAnchor="middle" fill="#64748b" fontSize="11">
                 Mũi tên = hướng và tốc độ chuyển động giữa 2 frame
               </text>
             </svg>

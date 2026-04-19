@@ -501,7 +501,7 @@ export default function AgentArchitectureTopic() {
                   x={615}
                   y={260}
                   fill={phase.color}
-                  fontSize={10}
+                  fontSize={11}
                   fontWeight={700}
                   transform="rotate(90, 615, 260)"
                 >
@@ -553,7 +553,7 @@ export default function AgentArchitectureTopic() {
                     y={c.y + 14}
                     textAnchor="middle"
                     fill={isSelected || active ? "white" : "var(--text-muted)"}
-                    fontSize={9}
+                    fontSize={11}
                   >
                     {c.sublabel}
                   </text>
@@ -582,7 +582,7 @@ export default function AgentArchitectureTopic() {
               stroke={phase.color}
               strokeWidth={2}
             />
-            <text x={100} y={26} textAnchor="middle" fill={phase.color} fontSize={10} fontWeight={700}>
+            <text x={100} y={26} textAnchor="middle" fill={phase.color} fontSize={11} fontWeight={700}>
               Pha hiện tại
             </text>
             <text x={100} y={42} textAnchor="middle" fill={phase.color} fontSize={13} fontWeight={700}>

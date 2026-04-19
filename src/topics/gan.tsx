@@ -411,10 +411,10 @@ function LossCurve({ step, total }: { step: number; total: number }) {
         opacity={0.4}
       />
       {/* axes labels */}
-      <text x={pad - 4} y={pad + 4} fontSize="9" textAnchor="end" fill="currentColor" opacity={0.6}>
+      <text x={pad - 4} y={pad + 4} fontSize="11" textAnchor="end" fill="currentColor" opacity={0.6}>
         loss
       </text>
-      <text x={W - pad} y={H - pad + 14} fontSize="9" textAnchor="end" fill="currentColor" opacity={0.6}>
+      <text x={W - pad} y={H - pad + 14} fontSize="11" textAnchor="end" fill="currentColor" opacity={0.6}>
         step
       </text>
       {/* G curve */}
@@ -435,9 +435,9 @@ function LossCurve({ step, total }: { step: number; total: number }) {
       <g transform={`translate(${W - pad - 120}, ${pad + 4})`}>
         <rect width="120" height="28" rx="4" fill="var(--bg-card)" opacity={0.8} />
         <circle cx={10} cy={10} r={3} fill="#3b82f6" />
-        <text x={18} y={13} fontSize="9" fill="currentColor">Generator loss</text>
+        <text x={18} y={13} fontSize="11" fill="currentColor">Generator loss</text>
         <circle cx={10} cy={22} r={3} fill="#ef4444" />
-        <text x={18} y={25} fontSize="9" fill="currentColor">Discriminator loss</text>
+        <text x={18} y={25} fontSize="11" fill="currentColor">Discriminator loss</text>
       </g>
     </svg>
   );

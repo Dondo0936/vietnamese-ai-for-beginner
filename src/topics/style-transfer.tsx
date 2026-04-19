@@ -231,7 +231,7 @@ function GramHeatmap({ gram, x, y, size, label }: GramProps) {
                 y={y + i * cell + cell / 2 + 3}
                 textAnchor="middle"
                 fill="white"
-                fontSize={8}
+                fontSize={11}
                 fontFamily="monospace"
               >
                 {v.toFixed(2)}
@@ -491,7 +491,7 @@ export default function StyleTransferTopic() {
                       ease: "linear",
                     }}
                   />
-                  <text x={230} y={92} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+                  <text x={230} y={92} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                     1-α
                   </text>
 
@@ -510,7 +510,7 @@ export default function StyleTransferTopic() {
                       ease: "linear",
                     }}
                   />
-                  <text x={555} y={92} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+                  <text x={555} y={92} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                     α
                   </text>
 
@@ -545,7 +545,7 @@ export default function StyleTransferTopic() {
                         y={390}
                         textAnchor="middle"
                         fill="#94a3b8"
-                        fontSize={10}
+                        fontSize={11}
                       >
                         Gram matrix G[i,j] = ⟨F_i, F_j⟩ / N — tương quan giữa
                         feature maps, nắm bắt kết cấu không phụ thuộc vị trí
@@ -555,7 +555,7 @@ export default function StyleTransferTopic() {
                         y={406}
                         textAnchor="middle"
                         fill="#64748b"
-                        fontSize={9}
+                        fontSize={11}
                       >
                         Khi α → 1, Gram(blend) tiệm cận Gram(style) — style
                         loss giảm dần.
@@ -627,12 +627,12 @@ export default function StyleTransferTopic() {
                       <div className="text-[11px] text-muted uppercase tracking-wide">
                         Content loss (MSE trên pixel)
                       </div>
-                      <div className="font-mono text-sm text-[#3b82f6]">
+                      <div className="font-mono text-sm text-accent">
                         {contentLoss.toFixed(4)}
                       </div>
                       <div className="h-1.5 rounded-full bg-background overflow-hidden">
                         <motion.div
-                          className="h-full bg-[#3b82f6]"
+                          className="h-full bg-accent"
                           animate={{
                             width: `${Math.min(100, contentLoss * 4000)}%`,
                           }}
@@ -695,7 +695,7 @@ export default function StyleTransferTopic() {
                     <div className="mt-3 space-y-1 font-mono text-[11px]">
                       <div>
                         content[{highlightCell.i},{highlightCell.j}] ={" "}
-                        <span className="text-[#3b82f6]">
+                        <span className="text-accent">
                           rgb
                           {String(
                             CONTENT_GRID[highlightCell.i][highlightCell.j],
@@ -713,7 +713,7 @@ export default function StyleTransferTopic() {
                       </div>
                       <div>
                         blend = (1-α)·content + α·style ={" "}
-                        <span className="text-[#22c55e]">
+                        <span className="text-success">
                           rgb
                           {String(blended[highlightCell.i][highlightCell.j])}
                         </span>

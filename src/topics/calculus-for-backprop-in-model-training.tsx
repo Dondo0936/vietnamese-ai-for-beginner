@@ -260,7 +260,7 @@ function PipelineStrip({ highlighted }: { highlighted?: string }) {
               x={cx}
               y={75}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill="var(--text-tertiary)"
               fontFamily="monospace"
             >
@@ -303,7 +303,7 @@ function PipelineStrip({ highlighted }: { highlighted?: string }) {
         x={340}
         y={10}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fill="var(--text-tertiary)"
         fontStyle="italic"
       >
@@ -883,7 +883,7 @@ function ForwardPassSketch() {
               x={cx}
               y={78}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill="#1e3a8a"
               fontFamily="monospace"
             >
@@ -913,7 +913,7 @@ function ForwardPassSketch() {
       <text x={440} y={78} fontSize={11} fill="#3b82f6" fontWeight={700}>
         → ŷ
       </text>
-      <text x={240} y={130} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={130} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         126 lớp Transformer nối tiếp, mỗi lớp nhân ma trận + activation
       </text>
     </svg>
@@ -944,10 +944,10 @@ function BackwardPassSketch() {
               opacity={0.15 + (5 - i) * 0.13}
               stroke="#8b5cf6"
             />
-            <text x={cx} y={78} textAnchor="middle" fontSize={9} fill="#4c1d95" fontFamily="monospace">
+            <text x={cx} y={78} textAnchor="middle" fontSize={11} fill="#4c1d95" fontFamily="monospace">
               L{i + 1}
             </text>
-            <text x={cx} y={118} textAnchor="middle" fontSize={8} fill="#8b5cf6" fontFamily="monospace">
+            <text x={cx} y={118} textAnchor="middle" fontSize={11} fill="#8b5cf6" fontFamily="monospace">
               ∂aᵢ/∂aᵢ₋₁
             </text>
           </g>
@@ -971,7 +971,7 @@ function BackwardPassSketch() {
           <path d="M 0 0 L 8 4 L 0 8 z" fill="#8b5cf6" />
         </marker>
       </defs>
-      <text x={240} y={136} textAnchor="middle" fontSize={10} fill="#8b5cf6" fontStyle="italic" fontWeight={600}>
+      <text x={240} y={136} textAnchor="middle" fontSize={11} fill="#8b5cf6" fontStyle="italic" fontWeight={600}>
         chain rule: nhân các đạo hàm cục bộ ngược qua 126 lớp
       </text>
     </svg>
@@ -986,7 +986,7 @@ function AdamWSketch() {
       <text x={95} y={52} textAnchor="middle" fontSize={11} fill="#1e40af" fontWeight={600}>
         m̂ (momentum)
       </text>
-      <text x={95} y={70} textAnchor="middle" fontSize={9} fill="#1e40af" fontFamily="monospace">
+      <text x={95} y={70} textAnchor="middle" fontSize={11} fill="#1e40af" fontFamily="monospace">
         trung bình gradient
       </text>
 
@@ -994,7 +994,7 @@ function AdamWSketch() {
       <text x={225} y={52} textAnchor="middle" fontSize={11} fill="#5b21b6" fontWeight={600}>
         v̂ (variance)
       </text>
-      <text x={225} y={70} textAnchor="middle" fontSize={9} fill="#5b21b6" fontFamily="monospace">
+      <text x={225} y={70} textAnchor="middle" fontSize={11} fill="#5b21b6" fontFamily="monospace">
         grad bình phương
       </text>
 
@@ -1011,11 +1011,11 @@ function AdamWSketch() {
       <text x={390} y={52} textAnchor="middle" fontSize={11} fill="#166534" fontWeight={700}>
         w ← w − η·m̂/√v̂
       </text>
-      <text x={390} y={70} textAnchor="middle" fontSize={9} fill="#166534" fontFamily="monospace">
+      <text x={390} y={70} textAnchor="middle" fontSize={11} fill="#166534" fontFamily="monospace">
         bước thích ứng
       </text>
 
-      <text x={240} y={110} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={110} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Tham số nào gradient lớn sẽ rút bớt bước; gradient nhỏ được đẩy nhanh hơn.
       </text>
     </svg>
@@ -1047,7 +1047,7 @@ function CheckpointSketch() {
                 x={cx}
                 y={100}
                 textAnchor="middle"
-                fontSize={9}
+                fontSize={11}
                 fill="#166534"
                 fontWeight={600}
               >
@@ -1059,7 +1059,7 @@ function CheckpointSketch() {
                 x={cx}
                 y={100}
                 textAnchor="middle"
-                fontSize={9}
+                fontSize={11}
                 fill="var(--text-tertiary)"
                 fontStyle="italic"
               >
@@ -1069,7 +1069,7 @@ function CheckpointSketch() {
           </g>
         );
       })}
-      <text x={240} y={125} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={125} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Giảm RAM từ O(n) xuống O(√n), đổi lại +30% tính toán — cần thiết với 80GB HBM3.
       </text>
     </svg>
@@ -1103,7 +1103,7 @@ function ParallelSketch() {
           </g>
         );
       })}
-      <text x={240} y={130} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={130} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Gradient đồng bộ giữa các nhóm GPU sau mỗi backward pass.
       </text>
     </svg>
@@ -1191,10 +1191,10 @@ function TrainingLossChart({
         />
 
         {/* Axis labels */}
-        <text x={plotW - 22} y={plotH - 6} fontSize={10} fill="var(--text-tertiary)" textAnchor="end">
+        <text x={plotW - 22} y={plotH - 6} fontSize={11} fill="var(--text-tertiary)" textAnchor="end">
           epoch
         </text>
-        <text x={8} y={28} fontSize={10} fill="var(--text-tertiary)">
+        <text x={8} y={28} fontSize={11} fill="var(--text-tertiary)">
           loss
         </text>
 
@@ -1219,7 +1219,7 @@ function TrainingLossChart({
           <text
             x={toPX(points[points.length - 1].epoch) - 6}
             y={toPY(points[points.length - 1].loss) - 8}
-            fontSize={10}
+            fontSize={11}
             fill={diagnosis.accent}
             textAnchor="end"
             fontFamily="monospace"
@@ -1292,7 +1292,7 @@ function IterationStep({
             x={50}
             y={37}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill={kind === "backward" ? "#d97706" : "#1e3a8a"}
             fontWeight={600}
           >
@@ -1316,7 +1316,7 @@ function IterationStep({
             x={390}
             y={37}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill={kind === "loss" ? "#92400e" : kind === "update" ? "#166534" : "#5b21b6"}
             fontWeight={600}
           >
@@ -1358,7 +1358,7 @@ function IterationStep({
             x={220}
             y={14}
             textAnchor="middle"
-            fontSize={9}
+            fontSize={11}
             fill="var(--text-tertiary)"
             fontStyle="italic"
           >

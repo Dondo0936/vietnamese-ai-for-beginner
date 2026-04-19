@@ -285,7 +285,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "epochs-batches",
     title: "Epochs, Batches & Iterations",
-    titleVi: "Epoch, Batch và Iteration",
+    titleVi: "Epoch và batch — Chia nhỏ đề thi để mô hình không ngộp",
     description: "Máy học không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Xem sự thay đổi của đường loss khi bạn kéo thanh batch size.",
     category: "neural-fundamentals",
     tags: ["training", "batch-size", "iterations"],
@@ -2174,7 +2174,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "calculus-for-backprop",
     title: "Calculus for Backpropagation",
-    titleVi: "Giải tích cho backprop",
+    titleVi: "Giải tích cho lan truyền ngược (backpropagation)",
     description: "Đạo hàm là câu trả lời cho câu hỏi: thay đổi nhỏ này làm loss thay đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
     category: "math-foundations",
     tags: ["derivatives", "chain-rule", "gradient-descent", "learning-rate"],

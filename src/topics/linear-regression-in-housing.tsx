@@ -492,7 +492,7 @@ function HouseIllustration({
         <rect x={43} y={105} width={14} height={25} fill="#7c2d12" />
         {/* Dấu &ldquo;cũ&rdquo; nếu age cao */}
         {age > 15 && (
-          <text x={50} y={138} textAnchor="middle" fontSize={7} fill="#6b7280" fontStyle="italic">
+          <text x={50} y={138} textAnchor="middle" fontSize={11} fill="#6b7280" fontStyle="italic">
             (cũ)
           </text>
         )}
@@ -555,7 +555,7 @@ function Q2ScatterPlot() {
               strokeDasharray="2 3"
               opacity={0.6}
             />
-            <text x={42} y={yScale(p) + 3} textAnchor="end" fontSize={9} fill="currentColor" className="text-muted">
+            <text x={42} y={yScale(p) + 3} textAnchor="end" fontSize={11} fill="currentColor" className="text-muted">
               {p}
             </text>
           </g>
@@ -575,16 +575,16 @@ function Q2ScatterPlot() {
               strokeDasharray="2 3"
               opacity={0.5}
             />
-            <text x={xScale(a)} y={275} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted">
+            <text x={xScale(a)} y={275} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               {a}
             </text>
           </g>
         ))}
 
-        <text x={270} y={293} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted" fontWeight={600}>
+        <text x={270} y={293} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted" fontWeight={600}>
           Diện tích (m²)
         </text>
-        <text x={15} y={145} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted" fontWeight={600} transform="rotate(-90 15 145)">
+        <text x={15} y={145} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted" fontWeight={600} transform="rotate(-90 15 145)">
           Giá (tỷ VNĐ)
         </text>
 
@@ -600,7 +600,7 @@ function Q2ScatterPlot() {
           animate={{ pathLength: 1 }}
           transition={{ duration: 0.6 }}
         />
-        <text x={xScale(maxArea) - 10} y={yScale(lineAt(maxArea)) - 8} textAnchor="end" fontSize={10} fill="#10b981" fontWeight={700}>
+        <text x={xScale(maxArea) - 10} y={yScale(lineAt(maxArea)) - 8} textAnchor="end" fontSize={11} fill="#10b981" fontWeight={700}>
           Đường tuyến tính
         </text>
 

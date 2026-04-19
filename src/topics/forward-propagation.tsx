@@ -288,7 +288,7 @@ function NetworkNode({
           y={cy - 30}
           textAnchor="middle"
           fill="#94a3b8"
-          fontSize={10}
+          fontSize={11}
           fontWeight={600}
         >
           {label}
@@ -437,15 +437,15 @@ export default function ForwardPropagationTopic() {
       {/* ═══════════════ BƯỚC 2 — DISCOVER (PredictionGate) ═══════════════ */}
       <LessonSection step={2} totalSteps={8} label="Dự đoán">
         <PredictionGate
-          question="Bạn đưa ảnh một con mèo cho mô hình đã huấn luyện. Thứ tự các phép tính trong mạng là gì?"
+          question="Tại MỖI lớp trạm, lớp đó phải làm phép tính gì với đầu ra của lớp ngay trước để cho ra đầu vào cho lớp sau?"
           options={[
-            "Tính từ lớp cuối ngược về đầu vào",
-            "Đầu vào → lớp ẩn → lớp ra, một chiều duy nhất",
-            "Chỉ tính ở lớp cuối, bỏ qua các lớp giữa",
-            "Mỗi lớp tự tính độc lập, không phụ thuộc lớp trước",
+            "Chọn giá trị lớn nhất trong đầu ra lớp trước rồi bỏ phần còn lại",
+            "Tổ hợp tuyến tính (W·x + b) rồi uốn qua một hàm kích hoạt phi tuyến",
+            "Cộng thêm một số ngẫu nhiên để mạng khám phá ngẫu nhiên",
+            "Sao chép nguyên đầu ra lớp trước — chỉ lớp cuối mới thực sự tính toán",
           ]}
           correct={1}
-          explanation="Dữ liệu luôn đi một chiều: đầu vào → lớp ẩn → lớp ra. Mỗi lớp nhận đầu ra của lớp trước làm đầu vào. Chiều ngược (đi từ lớp ra về đầu vào) chỉ xảy ra khi huấn luyện, và được gọi là lan truyền ngược."
+          explanation="Mỗi lớp làm đúng hai việc nhỏ: (1) phép nhân ma trận với trọng số W rồi cộng bias b, (2) đi qua một hàm kích hoạt (ReLU, sigmoid…) để 'bẻ cong'. Không có bước 1 thì không pha trộn đặc trưng được; không có bước 2 thì 100 lớp rút gọn thành một. Ở phần sau bạn sẽ thấy đúng hai phép đó chạy qua từng trạm."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Bên dưới là mạng 3 lớp phân loại con vật theo ba đặc trưng{" "}
@@ -1161,7 +1161,7 @@ export default function ForwardPropagationTopic() {
                       x={x + 18}
                       y={170}
                       textAnchor="middle"
-                      fontSize={10}
+                      fontSize={11}
                       fill="var(--text-secondary)"
                     >
                       z — {CLASS_LABELS[k]}
@@ -1170,7 +1170,7 @@ export default function ForwardPropagationTopic() {
                       x={x + 18}
                       y={z >= 0 ? 150 - barH - 4 : 150 + barH + 12}
                       textAnchor="middle"
-                      fontSize={9}
+                      fontSize={11}
                       fill="var(--text-primary)"
                     >
                       {z.toFixed(2)}
@@ -1209,7 +1209,7 @@ export default function ForwardPropagationTopic() {
                       x={x + 18}
                       y={170}
                       textAnchor="middle"
-                      fontSize={10}
+                      fontSize={11}
                       fill="var(--text-secondary)"
                     >
                       {CLASS_LABELS[k]}
@@ -1218,7 +1218,7 @@ export default function ForwardPropagationTopic() {
                       x={x + 18}
                       y={150 - barH - 4}
                       textAnchor="middle"
-                      fontSize={9}
+                      fontSize={11}
                       fill="var(--text-primary)"
                     >
                       {(p * 100).toFixed(0)}%

@@ -149,7 +149,7 @@ export default function PlanningTopic() {
                       <rect x={300} y={y + j * 35 - 14} width={190} height={28} rx={6}
                         fill={child.done ? "#22c55e" : "var(--bg-surface)"}
                         stroke={child.done ? "#4ade80" : "var(--text-tertiary)"} strokeWidth={1.5} />
-                      <text x={395} y={y + j * 35 + 4} textAnchor="middle" fill="white" fontSize={10}>
+                      <text x={395} y={y + j * 35 + 4} textAnchor="middle" fill="white" fontSize={11}>
                         {child.done ? "done " : ""}{child.label}
                       </text>
                     </g>

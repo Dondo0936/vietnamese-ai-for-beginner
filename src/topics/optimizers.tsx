@@ -353,7 +353,7 @@ export default function OptimizersTopic() {
                 x={toSvg(3) + 8}
                 y={toSvg(3) - 6}
                 fill="#22c55e"
-                fontSize="8"
+                fontSize="11"
               >
                 Min
               </text>
@@ -412,7 +412,7 @@ export default function OptimizersTopic() {
                 y={SVG_H - 3}
                 textAnchor="middle"
                 fill="#64748b"
-                fontSize="10"
+                fontSize="11"
               >
                 w₁
               </text>
@@ -420,7 +420,7 @@ export default function OptimizersTopic() {
                 x={6}
                 y={SVG_H / 2}
                 fill="#64748b"
-                fontSize="10"
+                fontSize="11"
                 transform={`rotate(-90, 6, ${SVG_H / 2})`}
               >
                 w₂

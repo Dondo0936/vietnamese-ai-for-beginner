@@ -661,7 +661,7 @@ export default function ColorSpacesTopic() {
                     y={152}
                     textAnchor="middle"
                     fill="#94a3b8"
-                    fontSize={9}
+                    fontSize={11}
                   >
                     Trên = sáng, Dưới = tối
                   </text>
@@ -702,10 +702,10 @@ export default function ColorSpacesTopic() {
                   {/* trục */}
                   <line x1={80} y1={10} x2={80} y2={150} stroke="#fafafa" strokeWidth={1} />
                   <line x1={10} y1={80} x2={150} y2={80} stroke="#fafafa" strokeWidth={1} />
-                  <text x={146} y={78} fill="#fafafa" fontSize={8}>+a (đỏ)</text>
-                  <text x={12} y={78} fill="#fafafa" fontSize={8}>−a</text>
-                  <text x={82} y={18} fill="#fafafa" fontSize={8}>+b (vàng)</text>
-                  <text x={82} y={148} fill="#fafafa" fontSize={8}>−b</text>
+                  <text x={146} y={78} fill="#fafafa" fontSize={11}>+a (đỏ)</text>
+                  <text x={12} y={78} fill="#fafafa" fontSize={11}>−a</text>
+                  <text x={82} y={18} fill="#fafafa" fontSize={11}>+b (vàng)</text>
+                  <text x={82} y={148} fill="#fafafa" fontSize={11}>−b</text>
                   {/* marker vị trí (clamp a,b vào [-128,128] → toạ độ) */}
                   {(() => {
                     const ax = 80 + Math.max(-70, Math.min(70, A * 0.55));

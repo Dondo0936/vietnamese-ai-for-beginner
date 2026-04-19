@@ -524,7 +524,7 @@ export default function LoRATopic() {
                 y="122"
                 textAnchor="middle"
                 fill="#94a3b8"
-                fontSize="10"
+                fontSize="11"
               >
                 {dim.toLocaleString()} × {dim.toLocaleString()}
               </text>
@@ -533,7 +533,7 @@ export default function LoRATopic() {
                 y="142"
                 textAnchor="middle"
                 fill="#94a3b8"
-                fontSize="9"
+                fontSize="11"
               >
                 {formatCompact(stats.perMatrixFull)} params
               </text>
@@ -542,7 +542,7 @@ export default function LoRATopic() {
                 y="180"
                 textAnchor="middle"
                 fill={useQLoRA ? "#fbbf24" : "#94a3b8"}
-                fontSize="10"
+                fontSize="11"
                 fontWeight="bold"
               >
                 {useQLoRA ? "4-bit NF4 ❄️" : "Đóng băng ❄️"}
@@ -552,7 +552,7 @@ export default function LoRATopic() {
                 y="220"
                 textAnchor="middle"
                 fill="#64748b"
-                fontSize="9"
+                fontSize="11"
               >
                 (không gradient)
               </text>
@@ -585,7 +585,7 @@ export default function LoRATopic() {
               y="150"
               textAnchor="middle"
               fill="#94a3b8"
-              fontSize="9"
+              fontSize="11"
             >
               α/r
             </text>
@@ -626,7 +626,7 @@ export default function LoRATopic() {
                 y="220"
                 textAnchor="middle"
                 fill="#93c5fd"
-                fontSize="9"
+                fontSize="11"
               >
                 {dim}×{rank}
               </text>
@@ -635,7 +635,7 @@ export default function LoRATopic() {
                 y="240"
                 textAnchor="middle"
                 fill="#60a5fa"
-                fontSize="8"
+                fontSize="11"
               >
                 init = 0
               </text>
@@ -679,7 +679,7 @@ export default function LoRATopic() {
                 y={135 + rankBarHeight / 2 + 20}
                 textAnchor="middle"
                 fill="#93c5fd"
-                fontSize="9"
+                fontSize="11"
               >
                 {rank}×{dim}
               </text>
@@ -688,7 +688,7 @@ export default function LoRATopic() {
                 y={135 + rankBarHeight / 2 + 35}
                 textAnchor="middle"
                 fill="#60a5fa"
-                fontSize="8"
+                fontSize="11"
               >
                 init ~ N(0, σ²)
               </text>
@@ -732,7 +732,7 @@ export default function LoRATopic() {
                 y="122"
                 textAnchor="middle"
                 fill="#bbf7d0"
-                fontSize="9"
+                fontSize="11"
               >
                 = W₀ + (α/r)·BA
               </text>
@@ -741,7 +741,7 @@ export default function LoRATopic() {
                 y="148"
                 textAnchor="middle"
                 fill="#bbf7d0"
-                fontSize="9"
+                fontSize="11"
               >
                 {dim.toLocaleString()} × {dim.toLocaleString()}
               </text>
@@ -750,7 +750,7 @@ export default function LoRATopic() {
                 y="180"
                 textAnchor="middle"
                 fill="#22c55e"
-                fontSize="10"
+                fontSize="11"
                 fontWeight="bold"
               >
                 Gộp khi deploy

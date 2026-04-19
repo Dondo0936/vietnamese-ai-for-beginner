@@ -499,10 +499,10 @@ function StylizedFace({
             stroke="#0f172a"
             strokeWidth={0.5}
           />
-          <text x={10} y={184} fontSize={7} fill="#64748b">
+          <text x={10} y={184} fontSize={11} fill="#64748b">
             low freq
           </text>
-          <text x={130} y={184} fontSize={7} fill="#64748b">
+          <text x={130} y={184} fontSize={11} fill="#64748b">
             high
           </text>
         </g>
@@ -1108,7 +1108,7 @@ if __name__ == "__main__":
                 <text
                   x={10}
                   y={14}
-                  fontSize={10}
+                  fontSize={11}
                   fill="var(--text-tertiary, #64748b)"
                 >
                   Detector accuracy theo thời gian (%)
@@ -1135,7 +1135,7 @@ if __name__ == "__main__":
                     <text
                       x={32}
                       y={113 - (y - 50)}
-                      fontSize={8}
+                      fontSize={11}
                       fill="var(--text-tertiary, #64748b)"
                       textAnchor="end"
                     >
@@ -1170,7 +1170,7 @@ if __name__ == "__main__":
                       <text
                         x={x}
                         y={128}
-                        fontSize={9}
+                        fontSize={11}
                         textAnchor="middle"
                         fill="var(--text-tertiary, #64748b)"
                       >

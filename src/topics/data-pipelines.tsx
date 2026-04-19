@@ -428,7 +428,7 @@ export default function DataPipelinesTopic() {
                       y={220}
                       textAnchor="middle"
                       fill="#94a3b8"
-                      fontSize={9}
+                      fontSize={11}
                       fontWeight="bold"
                     >
                       Nguồn dữ liệu gốc
@@ -451,7 +451,7 @@ export default function DataPipelinesTopic() {
                           y={245}
                           textAnchor="middle"
                           fill="#3b82f6"
-                          fontSize={9}
+                          fontSize={11}
                         >
                           {src}
                         </text>
@@ -494,7 +494,7 @@ export default function DataPipelinesTopic() {
                           y={y + 22}
                           textAnchor="middle"
                           fill={stage.status === "running" ? "#fff" : "#e2e8f0"}
-                          fontSize={9}
+                          fontSize={11}
                           fontWeight="bold"
                         >
                           {stage.name}
@@ -504,7 +504,7 @@ export default function DataPipelinesTopic() {
                           y={y + 38}
                           textAnchor="middle"
                           fill="#94a3b8"
-                          fontSize={8}
+                          fontSize={11}
                         >
                           {stage.sub}
                         </text>
@@ -513,7 +513,7 @@ export default function DataPipelinesTopic() {
                           y={y + 54}
                           textAnchor="middle"
                           fill="#cbd5e1"
-                          fontSize={8}
+                          fontSize={11}
                         >
                           {stage.duration}
                         </text>
@@ -523,7 +523,7 @@ export default function DataPipelinesTopic() {
                             y={y + 70}
                             textAnchor="middle"
                             fill="#22c55e"
-                            fontSize={8}
+                            fontSize={11}
                           >
                             {stage.outputRows.toLocaleString()} rows
                           </text>
@@ -534,7 +534,7 @@ export default function DataPipelinesTopic() {
                             y={y + 70}
                             textAnchor="middle"
                             fill="#fde68a"
-                            fontSize={8}
+                            fontSize={11}
                           >
                             đang xử lý...
                           </text>
@@ -605,7 +605,7 @@ export default function DataPipelinesTopic() {
                       y={25}
                       textAnchor="middle"
                       fill="#c4b5fd"
-                      fontSize={9}
+                      fontSize={11}
                       fontWeight="bold"
                     >
                       Orchestrator: Apache Airflow · Dagster · Prefect — điều phối thứ tự, retry, alert
@@ -762,7 +762,7 @@ export default function DataPipelinesTopic() {
                         y={n.y + 19}
                         textAnchor="middle"
                         fill="#e2e8f0"
-                        fontSize={9}
+                        fontSize={11}
                         fontFamily="monospace"
                       >
                         {n.label}

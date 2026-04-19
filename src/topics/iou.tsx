@@ -464,7 +464,8 @@ function IoUCalculator() {
         <svg
           ref={svgRef}
           viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
-          className="w-full touch-none select-none"
+          className="w-full select-none"
+          style={{ touchAction: drag !== null ? "none" : "auto" }}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}

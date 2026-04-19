@@ -276,7 +276,8 @@ export default function TrainValTestTopic() {
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed mt-4">
             Quy tắc quan trọng nhất:{" "}
-            <strong className="text-red-500">
+            <strong className="inline-flex items-center gap-1 text-red-500">
+              <AlertTriangle size={14} aria-hidden="true" />
               không được nhìn test trước khi nộp
             </strong>
             . Một khi đã nhìn, dù chỉ một lần, điểm test không còn ý nghĩa — nó trở thành một
@@ -285,15 +286,15 @@ export default function TrainValTestTopic() {
         </div>
 
         <PredictionGate
-          question="Bạn ôn thi đại học. Giáo viên cho 100 đề. Bạn làm cả 100, rồi dùng chính 100 đề đó để chấm điểm. Điểm 10/10. Vào thi thật, trượt. Vì sao?"
+          question="Bạn đã chia train / val / test đúng. Bạn thử 50 kiến trúc mô hình khác nhau, MỖI LẦN đo điểm test để xem cái nào cao nhất, rồi báo cáo điểm test của mô hình thắng cuộc. Con số báo cáo đó có còn tin được không?"
           options={[
-            "Đề thi thật khó hơn đề ôn",
-            "Bạn đã 'học thuộc' đáp án — điểm cao giả tạo. Cần giữ riêng vài đề CHƯA LÀM để đo năng lực thật.",
-            "Bạn không ôn đủ",
-            "Bạn mệt hôm thi",
+            "Có — bạn vẫn đo trên test set nên hoàn toàn khách quan",
+            "Có thể tin, vì đo 50 lần rồi lấy trung bình càng chính xác",
+            "Không — bạn đã biến test thành val ngầm; trong 50 lần thử thế nào cũng có một mô hình 'may mắn' khớp đặc thù tập test, con số đẹp đó là ảo",
+            "Không, vì đáng ra phải đo test trước khi tune thì mới đúng",
           ]}
-          correct={1}
-          explanation="Giống ML: dùng TẤT CẢ data để train → model thuộc lòng train → accuracy cao trên train nhưng tệ trên data mới. Cần giữ riêng: validation set (đề thi thử — dùng nhiều lần để tune), và test set (đề thi thật — chỉ mở 1 lần)."
+          correct={2}
+          explanation="Quy tắc 'chỉ mở test một lần' không phải mê tín. Khi bạn chọn mô hình thắng dựa vào điểm test, test đang bị dùng làm val — một trong 50 mô hình sẽ trúng đúng đặc thù ngẫu nhiên của tập test và cho điểm ảo đẹp. Đúng quy trình: dùng val để so 50 mô hình, chọn 1, rồi mở test đúng 1 lần để báo cáo. Bài sau bạn sẽ bật chế độ 'nhìn test trước' và thấy điểm test phồng lên bao nhiêu."
         />
       </LessonSection>
 
@@ -500,12 +501,12 @@ export default function TrainValTestTopic() {
               >
                 <line x1={30} y1={14} x2={30} y2={CURVE_H - 16} stroke="currentColor" className="text-muted" strokeWidth={1} />
                 <line x1={30} y1={CURVE_H - 16} x2={CURVE_W - 20} y2={CURVE_H - 16} stroke="currentColor" className="text-muted" strokeWidth={1} />
-                <text x={10} y={16} fontSize={9} fill="currentColor" className="text-muted">100%</text>
-                <text x={14} y={CURVE_H - 14} fontSize={9} fill="currentColor" className="text-muted">50%</text>
+                <text x={10} y={16} fontSize={11} fill="currentColor" className="text-muted">100%</text>
+                <text x={14} y={CURVE_H - 14} fontSize={11} fill="currentColor" className="text-muted">50%</text>
                 <text
                   x={CURVE_W / 2}
                   y={CURVE_H + 20}
-                  fontSize={9}
+                  fontSize={11}
                   fill="currentColor"
                   className="text-muted"
                   textAnchor="middle"

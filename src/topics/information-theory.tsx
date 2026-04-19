@@ -10,6 +10,8 @@ import {
   RotateCcw,
   Zap,
   Coins,
+  AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -115,11 +117,11 @@ function CoinEntropyVisual({ pHeads }: { pHeads: number }) {
         <line x1={20} y1={110} x2={300} y2={110} stroke="currentColor" className="text-border" />
         <line x1={20} y1={30} x2={20} y2={110} stroke="currentColor" className="text-border" />
 
-        <text x={26} y={32} fontSize={9} fill="currentColor" className="text-muted">1 bit (max)</text>
-        <text x={26} y={108} fontSize={9} fill="currentColor" className="text-muted">0 bit</text>
-        <text x={20} y={126} fontSize={9} fill="currentColor" className="text-muted">0</text>
-        <text x={160} y={126} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">0.5</text>
-        <text x={300} y={126} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">1</text>
+        <text x={26} y={32} fontSize={11} fill="currentColor" className="text-muted">1 bit (max)</text>
+        <text x={26} y={108} fontSize={11} fill="currentColor" className="text-muted">0 bit</text>
+        <text x={20} y={126} fontSize={11} fill="currentColor" className="text-muted">0</text>
+        <text x={160} y={126} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">0.5</text>
+        <text x={300} y={126} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">1</text>
 
         {/* Parabol */}
         <path d={curvePath} fill="none" stroke="#2563eb" strokeWidth={2.2} />
@@ -461,11 +463,11 @@ function EntropyShape() {
     <svg viewBox="0 0 320 140" className="w-full max-w-sm">
       <line x1={10} y1={110} x2={310} y2={110} stroke="currentColor" className="text-border" />
       <line x1={10} y1={30} x2={10} y2={110} stroke="currentColor" className="text-border" />
-      <text x={14} y={32} fontSize={9} fill="currentColor" className="text-muted">H max</text>
-      <text x={14} y={108} fontSize={9} fill="currentColor" className="text-muted">H = 0</text>
+      <text x={14} y={32} fontSize={11} fill="currentColor" className="text-muted">H max</text>
+      <text x={14} y={108} fontSize={11} fill="currentColor" className="text-muted">H = 0</text>
       <path d={path} fill="none" stroke="#2563eb" strokeWidth={2.4} />
       <circle cx={160} cy={30} r={4} fill="#dc2626" />
-      <text x={162} y={28} fontSize={9} fill="#dc2626">
+      <text x={162} y={28} fontSize={11} fill="#dc2626">
         P = 0.5 → H max
       </text>
     </svg>
@@ -495,10 +497,10 @@ function KLShape() {
         <rect key={`q-${i}`} x={b.x} y={110 - b.h} width={20} height={b.h} fill={b.c} opacity={0.75} rx={2} />
       ))}
       <rect x={220} y={30} width={12} height={10} fill="#2563eb" opacity={0.75} rx={2} />
-      <text x={236} y={39} fontSize={10} fill="currentColor" className="text-foreground">p (thật)</text>
+      <text x={236} y={39} fontSize={11} fill="currentColor" className="text-foreground">p (thật)</text>
       <rect x={220} y={48} width={12} height={10} fill="#dc2626" opacity={0.75} rx={2} />
-      <text x={236} y={57} fontSize={10} fill="currentColor" className="text-foreground">q (dự đoán)</text>
-      <text x={220} y={95} fontSize={10} fill="currentColor" className="text-muted">KL = độ &quot;lệch&quot; giữa p và q</text>
+      <text x={236} y={57} fontSize={11} fill="currentColor" className="text-foreground">q (dự đoán)</text>
+      <text x={220} y={95} fontSize={11} fill="currentColor" className="text-muted">KL = độ &quot;lệch&quot; giữa p và q</text>
     </svg>
   );
 }
@@ -508,8 +510,8 @@ function CrossEntropyShape() {
     <svg viewBox="0 0 320 140" className="w-full max-w-sm">
       <line x1={20} y1={110} x2={310} y2={110} stroke="currentColor" className="text-border" />
       <line x1={20} y1={20} x2={20} y2={110} stroke="currentColor" className="text-border" />
-      <text x={24} y={28} fontSize={10} fill="currentColor" className="text-muted">loss</text>
-      <text x={308} y={122} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">q → 1</text>
+      <text x={24} y={28} fontSize={11} fill="currentColor" className="text-muted">loss</text>
+      <text x={308} y={122} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">q → 1</text>
       <path
         d={Array.from({ length: 80 }, (_, i) => {
           const q = 0.02 + (i / 79) * 0.95;
@@ -521,10 +523,10 @@ function CrossEntropyShape() {
         stroke="#dc2626"
         strokeWidth={2.4}
       />
-      <text x={40} y={40} fontSize={10} fill="#dc2626">
+      <text x={40} y={40} fontSize={11} fill="#dc2626">
         Loss lớn khi mô hình đoán sai rất chắc
       </text>
-      <text x={150} y={105} fontSize={10} fill="#16a34a">
+      <text x={150} y={105} fontSize={11} fill="#16a34a">
         Loss ≈ 0 khi đoán đúng
       </text>
     </svg>
@@ -939,7 +941,8 @@ export default function InformationTheoryTopic() {
             </p>
             <div className="space-y-3">
               <div className="rounded-lg border border-red-200 bg-red-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-red-800 dark:bg-red-900/10">
-                <p className="mb-1 text-sm font-semibold text-red-700 dark:text-red-300">
+                <p className="mb-1 inline-flex items-center gap-1 text-sm font-semibold text-red-700 dark:text-red-300">
+                  <AlertCircle size={14} aria-hidden="true" />
                   Nhầm &quot;entropy cao&quot; với &quot;data xấu&quot;
                 </p>
                 Entropy cao không phải là tiêu cực. Dữ liệu lý thuyết đa dạng (nhiều kết quả đều
@@ -948,7 +951,8 @@ export default function InformationTheoryTopic() {
                 tệ.
               </div>
               <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-amber-800 dark:bg-amber-900/10">
-                <p className="mb-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                <p className="mb-1 inline-flex items-center gap-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                  <AlertTriangle size={14} aria-hidden="true" />
                   Nhầm entropy với variance (phương sai)
                 </p>
                 Variance đo độ phân tán quanh trung bình (biến số liên tục). Entropy đo độ bất

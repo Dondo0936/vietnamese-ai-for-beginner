@@ -184,7 +184,7 @@ function MiniTreeSvg({
         fill={highlighted ? "#f59e0b" : "#6b7280"}
         opacity={highlighted ? 0.9 : 0.5}
       />
-      <text x={60} y={23} fontSize={7} fill="white" textAnchor="middle">
+      <text x={60} y={23} fontSize={11} fill="white" textAnchor="middle">
         {tree.features[0]?.slice(0, 3)}
       </text>
 
@@ -214,7 +214,7 @@ function MiniTreeSvg({
         fill={highlighted ? "#10b981" : "#6b7280"}
         opacity={highlighted ? 0.85 : 0.4}
       />
-      <text x={35} y={63} fontSize={6} fill="white" textAnchor="middle">
+      <text x={35} y={63} fontSize={11} fill="white" textAnchor="middle">
         {tree.features[1]?.slice(0, 3) ?? "?"}
       </text>
       <circle
@@ -224,7 +224,7 @@ function MiniTreeSvg({
         fill={highlighted ? "#10b981" : "#6b7280"}
         opacity={highlighted ? 0.85 : 0.4}
       />
-      <text x={85} y={63} fontSize={6} fill="white" textAnchor="middle">
+      <text x={85} y={63} fontSize={11} fill="white" textAnchor="middle">
         {tree.features[1]?.slice(0, 3) ?? "?"}
       </text>
 
@@ -271,7 +271,7 @@ function MiniTreeSvg({
       <text
         x={60}
         y={124}
-        fontSize={10}
+        fontSize={11}
         fill="white"
         textAnchor="middle"
         fontWeight={700}

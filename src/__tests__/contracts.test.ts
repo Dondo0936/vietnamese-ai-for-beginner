@@ -9,7 +9,7 @@
 import { describe, it, expect } from "vitest";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { topicList } from "@/topics/registry";
+import { topicList, categories } from "@/topics/registry";
 import { PATHS, type AdultPathId } from "@/lib/paths";
 
 const TOPICS_DIR = path.resolve(__dirname, "..", "topics");
@@ -338,5 +338,183 @@ describe("Contract: DragDrop responds to pointer events", () => {
     const hasPointerEvents =
       /onPointerDown|onPointerMove|onPointerUp|PointerSensor/.test(src);
     expect(hasPointerEvents).toBe(true);
+  });
+});
+
+// ─── 7. UI-semantic hex should use CSS tokens ───────────────────────
+// Regression guard: UI-class-bound hex (text-[#...], bg-[#...],
+// border-[#...]) in topic files drifts away from theming. Catches new
+// violations; a dedicated migration wave reduces the existing count.
+describe("Contract: UI-class-bound hex in topic files", () => {
+  const topicsDir = TOPICS_DIR;
+  const files = fs
+    .readdirSync(topicsDir)
+    .filter((f) => f.endsWith(".tsx") && !f.startsWith("_") && f !== "topic-loader.tsx");
+
+  function countUiBoundHex(src: string): number {
+    const re = /(?:text|bg|border|ring|fill|stroke)-\[#[0-9a-fA-F]{6}\]/g;
+    return (src.match(re) ?? []).length;
+  }
+
+  it("does not grow beyond the locked regression threshold", () => {
+    let total = 0;
+    for (const f of files) {
+      const src = fs.readFileSync(path.join(topicsDir, f), "utf8");
+      total += countUiBoundHex(src);
+    }
+    // Lock the count at the discovered value. Audit waves should LOWER
+    // this; if it ever grows, a new class-bound hex slipped in and this
+    // test fails. Update the threshold downward as you reduce.
+    expect(total).toBeLessThanOrEqual(52);
+  });
+});
+
+// ─── 8. relatedSlugs integrity ──────────────────────────────────────
+describe("Contract: relatedSlugs point at real topics", () => {
+  it("every relatedSlug in registry.ts resolves to a known topic slug", () => {
+    const slugs = new Set(topicList.map((t) => t.slug));
+    const broken = topicList.flatMap((t) =>
+      t.relatedSlugs
+        .filter((s) => !slugs.has(s))
+        .map((bad) => ({ topic: t.slug, broken: bad }))
+    );
+    expect(broken).toEqual([]);
+  });
+
+  it("every relatedSlug in a topic file's metadata matches a registry entry", () => {
+    const slugs = new Set(topicList.map((t) => t.slug));
+    const entries = fs
+      .readdirSync(TOPICS_DIR)
+      .filter((f) => f.endsWith(".tsx") && !f.startsWith("_") && !NON_TOPIC_FILES.has(f));
+    const broken: Array<{ topic: string; broken: string }> = [];
+    for (const file of entries) {
+      const slug = file.replace(/\.tsx$/, "");
+      const src = fs.readFileSync(path.join(TOPICS_DIR, file), "utf8");
+      const metaRange = src.search(/export\s+const\s+metadata\s*:\s*TopicMeta\s*=\s*\{/);
+      if (metaRange === -1) continue;
+      const openIdx = src.indexOf("{", metaRange);
+      let depth = 0;
+      let endIdx = openIdx;
+      for (let i = openIdx; i < src.length; i++) {
+        if (src[i] === "{") depth++;
+        else if (src[i] === "}") {
+          depth--;
+          if (depth === 0) {
+            endIdx = i + 1;
+            break;
+          }
+        }
+      }
+      const block = src.slice(openIdx, endIdx);
+      const relMatch = block.match(/relatedSlugs\s*:\s*\[([\s\S]*?)\]/);
+      if (!relMatch) continue;
+      const relSlugs = [...relMatch[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+      for (const r of relSlugs) {
+        if (!slugs.has(r)) broken.push({ topic: slug, broken: r });
+      }
+    }
+    expect(broken).toEqual([]);
+  });
+});
+
+// ─── 9. TopicMeta shape — required fields present ───────────────────
+describe("Contract: every topic file's metadata has required TopicMeta fields", () => {
+  it("every metadata export declares slug/title/titleVi/description/category/tags/difficulty/relatedSlugs/vizType", () => {
+    const required = [
+      "slug",
+      "title",
+      "titleVi",
+      "description",
+      "category",
+      "tags",
+      "difficulty",
+      "relatedSlugs",
+      "vizType",
+    ];
+    const entries = fs
+      .readdirSync(TOPICS_DIR)
+      .filter((f) => f.endsWith(".tsx") && !f.startsWith("_") && !NON_TOPIC_FILES.has(f));
+    const missing: Array<{ topic: string; missing: string[] }> = [];
+    for (const file of entries) {
+      const slug = file.replace(/\.tsx$/, "");
+      const src = fs.readFileSync(path.join(TOPICS_DIR, file), "utf8");
+      const startIdx = src.search(/export\s+const\s+metadata\s*:\s*TopicMeta\s*=\s*\{/);
+      if (startIdx === -1) {
+        missing.push({ topic: slug, missing: ["(no metadata export)"] });
+        continue;
+      }
+      const openIdx = src.indexOf("{", startIdx);
+      let depth = 0;
+      let endIdx = openIdx;
+      for (let i = openIdx; i < src.length; i++) {
+        if (src[i] === "{") depth++;
+        else if (src[i] === "}") {
+          depth--;
+          if (depth === 0) {
+            endIdx = i + 1;
+            break;
+          }
+        }
+      }
+      const block = src.slice(openIdx, endIdx);
+      const missingFields = required.filter(
+        (f) => !new RegExp(`\\b${f}\\s*:`).test(block)
+      );
+      if (missingFields.length)
+        missing.push({ topic: slug, missing: missingFields });
+    }
+    expect(missing).toEqual([]);
+  });
+});
+
+// ─── 9a. category values resolve to known categories ──────────────
+describe("Contract: every topic's category resolves to the categories list", () => {
+  it("no topic declares a category that isn't defined in registry categories", () => {
+    const known = new Set(categories.map((c) => c.slug));
+    const bad = topicList
+      .filter((t) => !known.has(t.category))
+      .map((t) => ({ topic: t.slug, category: t.category }));
+    expect(bad).toEqual([]);
+  });
+});
+
+// ─── 9b. generateMetadata uses registry as source of truth ─────────
+describe("Contract: /topics/[slug] generateMetadata reads registry.ts", () => {
+  it("page.tsx calls getTopicBySlug and renders topic.titleVi in <title>", () => {
+    const page = fs.readFileSync(
+      path.resolve(__dirname, "..", "app", "topics", "[slug]", "page.tsx"),
+      "utf8"
+    );
+    expect(page).toMatch(/generateMetadata/);
+    expect(page).toMatch(/getTopicBySlug/);
+    expect(page).toMatch(/topic\.titleVi/);
+  });
+});
+
+// ─── 10. SVG text fontSize should not be a raw px number ────────────
+describe("Contract: SVG <text> fontSize not hardcoded px in topic files", () => {
+  const topicsDir = TOPICS_DIR;
+  const files = fs
+    .readdirSync(topicsDir)
+    .filter((f) => f.endsWith(".tsx") && !f.startsWith("_") && f !== "topic-loader.tsx");
+
+  function countHardcodedPxFontSize(src: string): number {
+    // Match `fontSize="10"` or `fontSize={10}` on SVG <text>-like
+    // elements. We don't distinguish <text> from other uses — SVG
+    // fontSize should always be em or responsive.
+    const re = /fontSize\s*=\s*(?:"(?:\d+)"|\{\d+\})/g;
+    return (src.match(re) ?? []).length;
+  }
+
+  it("does not grow beyond the locked regression threshold", () => {
+    let total = 0;
+    for (const f of files) {
+      const src = fs.readFileSync(path.join(topicsDir, f), "utf8");
+      total += countHardcodedPxFontSize(src);
+    }
+    // Lock the count at the current value. New additions must fail this
+    // test. Dedicated reduction wave should lower the threshold over
+    // time. Today's baseline: 1507.
+    expect(total).toBeLessThanOrEqual(1507);
   });
 });

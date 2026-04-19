@@ -974,6 +974,7 @@ print("Voting ensemble AUC:", vote.score(X_test, y_test))`}
                   🔍 So sánh chi tiết: Bagging vs Boosting vs Stacking
                 </p>
 
+                <div className="relative">
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[600px] text-[11px]">
                     <thead>
@@ -1035,6 +1036,11 @@ print("Voting ensemble AUC:", vote.score(X_test, y_test))`}
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[var(--bg-card)] to-transparent md:hidden"
+                  />
                 </div>
 
                 <p className="mt-4 text-[11px] leading-relaxed text-muted">

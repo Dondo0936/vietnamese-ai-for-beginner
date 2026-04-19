@@ -397,7 +397,7 @@ function SlotMachine({
           y={36}
           textAnchor="middle"
           fill={arm.color}
-          fontSize={10}
+          fontSize={11}
           fontWeight="bold"
         >
           {(estimate * 100).toFixed(0)}%
@@ -430,7 +430,7 @@ function SlotMachine({
           y={74}
           textAnchor="middle"
           fill="#e2e8f0"
-          fontSize={9}
+          fontSize={11}
         >
           pull: {count}
         </text>
@@ -440,7 +440,7 @@ function SlotMachine({
             y={104}
             textAnchor="middle"
             fill="#fbbf24"
-            fontSize={8}
+            fontSize={11}
             fontWeight="bold"
           >
             TRUE BEST
@@ -517,7 +517,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
               y={y + 3}
               textAnchor="end"
               fill="#64748b"
-              fontSize={8}
+              fontSize={11}
             >
               {(maxRegret * frac).toFixed(1)}
             </text>
@@ -542,7 +542,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
         y={height - 6}
         textAnchor="end"
         fill="#94a3b8"
-        fontSize={9}
+        fontSize={11}
       >
         pulls: {n - 1}
       </text>
@@ -551,7 +551,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
         y={height - 6}
         textAnchor="start"
         fill="#ef4444"
-        fontSize={9}
+        fontSize={11}
       >
         total regret = {maxRegret.toFixed(2)}
       </text>

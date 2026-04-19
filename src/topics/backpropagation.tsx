@@ -16,6 +16,7 @@ import {
   Target,
   TrendingDown,
   TriangleAlert,
+  Check,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -298,7 +299,7 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
       {[40, 220, 400].map((x, idx) => (
         <g key={x}>
           <rect x={x} y={20} width={60} height={280} rx={10} fill="var(--bg-surface)" opacity={0.4} />
-          <text x={x + 30} y={16} textAnchor="middle" fontSize={10} fill="var(--text-tertiary)">
+          <text x={x + 30} y={16} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
             {["Lớp vào", "Lớp ẩn", "Lớp ra"][idx]}
           </text>
         </g>
@@ -334,7 +335,7 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
               <text
                 x={(inputX + hiddenX) / 2 + (j === 0 ? -4 : 4)}
                 y={(inputYs[j] + hiddenYs[i]) / 2 + (j === 0 ? -2 : 10)}
-                fontSize={8}
+                fontSize={11}
                 fill={labelCol}
                 textAnchor="middle"
                 fontFamily="monospace"
@@ -368,7 +369,7 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
           <text
             x={(hiddenX + outputX) / 2}
             y={(hiddenYs[i] + outputY) / 2 - 4}
-            fontSize={9}
+            fontSize={11}
             fill={labelCol}
             textAnchor="middle"
             fontFamily="monospace"
@@ -394,7 +395,7 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
           <text x={inputX} y={inputYs[j] + 4} textAnchor="middle" fontSize={11} fill="var(--text-primary)" fontWeight={600} fontFamily="monospace">
             {v.toFixed(2)}
           </text>
-          <text x={inputX} y={inputYs[j] - 28} textAnchor="middle" fontSize={10} fill="var(--text-tertiary)">
+          <text x={inputX} y={inputYs[j] - 28} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
             x{j + 1}
           </text>
         </g>
@@ -419,10 +420,10 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
             }
             transition={{ duration: 0.5, delay: 0.2 + i * 0.05 }}
           />
-          <text x={hiddenX} y={hiddenYs[i] + 4} textAnchor="middle" fontSize={10} fill="var(--text-primary)" fontWeight={600} fontFamily="monospace">
+          <text x={hiddenX} y={hiddenYs[i] + 4} textAnchor="middle" fontSize={11} fill="var(--text-primary)" fontWeight={600} fontFamily="monospace">
             {fp.h[i].toFixed(2)}
           </text>
-          <text x={hiddenX} y={hiddenYs[i] - 30} textAnchor="middle" fontSize={10} fill="var(--text-tertiary)">
+          <text x={hiddenX} y={hiddenYs[i] - 30} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
             h{i + 1}
           </text>
         </g>
@@ -448,10 +449,10 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
       <text x={outputX} y={outputY + 4} textAnchor="middle" fontSize={12} fill="var(--text-primary)" fontWeight={700} fontFamily="monospace">
         {fp.out.toFixed(3)}
       </text>
-      <text x={outputX} y={outputY - 34} textAnchor="middle" fontSize={10} fill="var(--text-tertiary)">ŷ</text>
+      <text x={outputX} y={outputY - 34} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">ŷ</text>
 
       {/* Target marker */}
-      <text x={outputX + 42} y={outputY - 8} fontSize={10} fill="#10b981" fontWeight={600}>target</text>
+      <text x={outputX + 42} y={outputY - 8} fontSize={11} fill="#10b981" fontWeight={600}>target</text>
       <text x={outputX + 42} y={outputY + 6} fontSize={11} fill="#10b981" fontWeight={700} fontFamily="monospace">
         {TARGET.toFixed(2)}
       </text>
@@ -594,7 +595,7 @@ function Pill({ cx, cy, label, value, color, width = 96, height = 46 }: PillProp
         x={cx}
         y={cy - 4}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fill={color}
         fontWeight={600}
         fontFamily="monospace"
@@ -625,34 +626,34 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
         <text x={60} y={54} textAnchor="middle" fontSize={11} fontWeight={700} fill="#0369a1">
           {numbers.x1}
         </text>
-        <text x={60} y={26} textAnchor="middle" fontSize={9} fill="#0369a1">x₁</text>
+        <text x={60} y={26} textAnchor="middle" fontSize={11} fill="#0369a1">x₁</text>
         <circle cx={60} cy={110} r={18} fill="#e0f2fe" stroke="#0ea5e9" strokeWidth={2} />
         <text x={60} y={114} textAnchor="middle" fontSize={11} fontWeight={700} fill="#0369a1">
           {numbers.x2}
         </text>
-        <text x={60} y={140} textAnchor="middle" fontSize={9} fill="#0369a1">x₂</text>
+        <text x={60} y={140} textAnchor="middle" fontSize={11} fill="#0369a1">x₂</text>
         <line x1={78} y1={50} x2={202} y2={80} stroke="#0ea5e9" strokeWidth={1.5} />
         <line x1={78} y1={110} x2={202} y2={80} stroke="#0ea5e9" strokeWidth={1.5} />
-        <text x={130} y={58} fontSize={9} fill="#6366f1" fontFamily="monospace">w={numbers.w1a}</text>
-        <text x={130} y={105} fontSize={9} fill="#6366f1" fontFamily="monospace">w={numbers.w1b}</text>
+        <text x={130} y={58} fontSize={11} fill="#6366f1" fontFamily="monospace">w={numbers.w1a}</text>
+        <text x={130} y={105} fontSize={11} fill="#6366f1" fontFamily="monospace">w={numbers.w1b}</text>
         <circle cx={220} cy={80} r={20} fill="#ede9fe" stroke="#8b5cf6" strokeWidth={2} />
         <text x={220} y={84} textAnchor="middle" fontSize={11} fontWeight={700} fill="#6d28d9">
           {numbers.h.toFixed(2)}
         </text>
-        <text x={220} y={112} textAnchor="middle" fontSize={9} fill="#6d28d9">
+        <text x={220} y={112} textAnchor="middle" fontSize={11} fill="#6d28d9">
           h = σ({numbers.z.toFixed(2)})
         </text>
-        <text x={220} y={54} textAnchor="middle" fontSize={9} fill="#6d28d9">
+        <text x={220} y={54} textAnchor="middle" fontSize={11} fill="#6d28d9">
           z = {numbers.w1a}·{numbers.x1}+{numbers.w1b}·{numbers.x2}
         </text>
         <line x1={240} y1={80} x2={362} y2={80} stroke="#ec4899" strokeWidth={1.5} />
-        <text x={295} y={74} fontSize={9} fill="#be185d" fontFamily="monospace">w₂={numbers.w2}</text>
+        <text x={295} y={74} fontSize={11} fill="#be185d" fontFamily="monospace">w₂={numbers.w2}</text>
         <circle cx={380} cy={80} r={22} fill="#fce7f3" stroke="#ec4899" strokeWidth={2.5} />
         <text x={380} y={84} textAnchor="middle" fontSize={11} fontWeight={700} fill="#be185d">
           {numbers.yHat.toFixed(3)}
         </text>
-        <text x={380} y={46} textAnchor="middle" fontSize={9} fill="#be185d" fontWeight={600}>ŷ</text>
-        <text x={380} y={118} textAnchor="middle" fontSize={8} fill="#be185d">
+        <text x={380} y={46} textAnchor="middle" fontSize={11} fill="#be185d" fontWeight={600}>ŷ</text>
+        <text x={380} y={118} textAnchor="middle" fontSize={11} fill="#be185d">
           = σ({numbers.zOut.toFixed(2)})
         </text>
       </svg>
@@ -666,22 +667,22 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
         <text x={120} y={74} textAnchor="middle" fontSize={11} fontWeight={700} fill="#be185d">
           {numbers.yHat.toFixed(3)}
         </text>
-        <text x={120} y={40} textAnchor="middle" fontSize={9} fill="#be185d">ŷ (dự đoán)</text>
+        <text x={120} y={40} textAnchor="middle" fontSize={11} fill="#be185d">ŷ (dự đoán)</text>
         <circle cx={260} cy={70} r={22} fill="#dcfce7" stroke="#16a34a" strokeWidth={2} />
         <text x={260} y={74} textAnchor="middle" fontSize={11} fontWeight={700} fill="#166534">
           {TARGET}
         </text>
-        <text x={260} y={40} textAnchor="middle" fontSize={9} fill="#166534">y (đáp án)</text>
+        <text x={260} y={40} textAnchor="middle" fontSize={11} fill="#166534">y (đáp án)</text>
         <line x1={145} y1={70} x2={235} y2={70} stroke="#f97316" strokeWidth={2} strokeDasharray="4,3" />
-        <text x={190} y={62} textAnchor="middle" fontSize={10} fill="#c2410c" fontWeight={600}>
+        <text x={190} y={62} textAnchor="middle" fontSize={11} fill="#c2410c" fontWeight={600}>
           sai số: {(TARGET - numbers.yHat).toFixed(3)}
         </text>
         <rect x={320} y={54} width={100} height={32} rx={8} fill="#fef3c7" stroke="#f59e0b" />
-        <text x={370} y={68} textAnchor="middle" fontSize={9} fill="#b45309">L = ½(y − ŷ)²</text>
+        <text x={370} y={68} textAnchor="middle" fontSize={11} fill="#b45309">L = ½(y − ŷ)²</text>
         <text x={370} y={82} textAnchor="middle" fontSize={12} fill="#b45309" fontWeight={700} fontFamily="monospace">
           {numbers.loss.toFixed(4)}
         </text>
-        <text x={190} y={125} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)" fontStyle="italic">
+        <text x={190} y={125} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
           Càng khác xa target → loss càng to.
         </text>
       </svg>
@@ -692,8 +693,8 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
       <svg viewBox="0 0 440 130" className="w-full">
         <title>∂L/∂ŷ: loss đổi bao nhiêu khi ŷ đổi 1 đơn vị.</title>
         <rect x={20} y={20} width={180} height={50} rx={8} fill="#fef3c7" stroke="#f59e0b" strokeWidth={1.5} />
-        <text x={110} y={40} textAnchor="middle" fontSize={10} fill="#b45309">L = ½(y − ŷ)²</text>
-        <text x={110} y={58} textAnchor="middle" fontSize={10} fill="#b45309" fontFamily="monospace">
+        <text x={110} y={40} textAnchor="middle" fontSize={11} fill="#b45309">L = ½(y − ŷ)²</text>
+        <text x={110} y={58} textAnchor="middle" fontSize={11} fill="#b45309" fontFamily="monospace">
           → ∂L/∂ŷ = −(y − ŷ)
         </text>
         <path d="M 205 45 L 240 45" stroke="#dc2626" strokeWidth={2} markerEnd="url(#arrow-deepen)" />
@@ -703,13 +704,13 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
           </marker>
         </defs>
         <rect x={248} y={20} width={170} height={50} rx={8} fill="#fee2e2" stroke="#dc2626" strokeWidth={2} />
-        <text x={333} y={40} textAnchor="middle" fontSize={10} fill="#991b1b">
+        <text x={333} y={40} textAnchor="middle" fontSize={11} fill="#991b1b">
           Thay số: −({TARGET} − {numbers.yHat.toFixed(3)})
         </text>
         <text x={333} y={58} textAnchor="middle" fontSize={13} fill="#991b1b" fontWeight={700} fontFamily="monospace">
           ∂L/∂ŷ = {numbers.dL_dOut.toFixed(3)}
         </text>
-        <text x={220} y={100} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+        <text x={220} y={100} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
           Dấu âm: ŷ đang nhỏ hơn target, tăng ŷ một tí → loss giảm.
         </text>
       </svg>
@@ -726,13 +727,13 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
         <Pill cx={315} cy={55} label="w₂" value={numbers.w2.toFixed(2)} color="#8b5cf6" />
         <line x1={120} y1={100} x2={320} y2={100} stroke="var(--border)" />
         <rect x={160} y={115} width={120} height={40} rx={10} fill="#16a34a22" stroke="#16a34a" strokeWidth={2} />
-        <text x={220} y={132} textAnchor="middle" fontSize={10} fill="#166534" fontWeight={600} fontFamily="monospace">
+        <text x={220} y={132} textAnchor="middle" fontSize={11} fill="#166534" fontWeight={600} fontFamily="monospace">
           ∂L/∂h
         </text>
         <text x={220} y={148} textAnchor="middle" fontSize={13} fill="#166534" fontWeight={700} fontFamily="monospace">
           = {numbers.dL_dH.toFixed(3)}
         </text>
-        <text x={220} y={174} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)" fontStyle="italic">
+        <text x={220} y={174} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
           Tích ba thừa số — gradient đã lan về lớp ẩn.
         </text>
       </svg>
@@ -758,7 +759,7 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
             <Pill cx={360} cy={r.y} label={r.gradLabel} value={r.gradVal.toFixed(3)} color="#dc2626" width={80} height={40} />
           </g>
         ))}
-        <text x={220} y={160} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)" fontStyle="italic">
+        <text x={220} y={160} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
           Hai weight cùng lớp nhưng gradient khác nhau vì nhân với x₁ hoặc x₂.
         </text>
       </svg>
@@ -785,12 +786,12 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
           <Pill cx={225} cy={row.y + 13} label="grad" value={row.grad.toFixed(3)} color="#dc2626" width={60} height={26} />
           <text x={262} y={row.y + 17} fontSize={12} fontWeight={700} fill="var(--text-primary)">=</text>
           <Pill cx={310} cy={row.y + 13} label="mới" value={row.nw.toFixed(3)} color="#16a34a" width={76} height={26} />
-          <text x={372} y={row.y + 17} fontSize={10} fontWeight={600} fill={row.nw > row.old ? "#16a34a" : "#dc2626"}>
+          <text x={372} y={row.y + 17} fontSize={11} fontWeight={600} fill={row.nw > row.old ? "#16a34a" : "#dc2626"}>
             {row.nw > row.old ? "↑" : "↓"} {Math.abs(row.nw - row.old).toFixed(3)}
           </text>
         </g>
       ))}
-      <text x={220} y={150} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)" fontStyle="italic">
+      <text x={220} y={150} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
         Mỗi weight nhích đúng một lượng η · gradient của nó.
       </text>
     </svg>
@@ -1069,15 +1070,15 @@ export default function BackpropagationTopic() {
       {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Mạng nơ-ron 100 lớp vừa đoán sai. Bạn có hàng triệu weight và muốn sửa chúng để loss giảm. Cách nào hiệu quả nhất?"
+          question="Bạn đã biết phải 'truy ngược lỗi qua từng lớp'. Mạng có 1 triệu weight. Nếu bạn truy ngược NGÂY THƠ — mỗi weight chạy lại cả mạng một lần để đo ảnh hưởng — thì mất bao nhiêu lần duyệt mạng cho một bước cập nhật?"
           options={[
-            "Sửa MỌI weight một lượng như nhau (ví dụ +0.01) và hy vọng loss giảm",
-            "Chỉ sửa weight ở lớp cuối vì nó gần output nhất",
-            "Truy ngược lỗi: bắt đầu từ ∂L/∂output, rồi dùng chain rule để biết ∂L/∂(mọi weight) — trong ĐÚNG một lần duyệt ngược",
-            "Thử ngẫu nhiên bộ weight mới hàng triệu lần, giữ bộ cho loss thấp nhất",
+            "Một lần duyệt — chain rule miễn phí",
+            "Khoảng 1.000 lần — vì mỗi lớp một lần",
+            "Khoảng 1 triệu lần — mỗi weight một lần chạy lại",
+            "Đúng 2 lần — một forward một backward",
           ]}
           correct={2}
-          explanation="Đáp án 3 là backpropagation. Các cách khác hoặc vô dụng (đổi đều tay không có định hướng), thiếu (chỉ sửa lớp cuối không chạm được đặc trưng sơ cấp), hoặc tốn kém kinh khủng (O(2^N) phương án weight không khả thi cho N = triệu). Backprop biến chi phí thành O(N)."
+          explanation="Cách ngây thơ (numerical differentiation) cần đổi từng weight rồi chạy lại cả mạng → O(N) lần duyệt, với N = số weight. 1 triệu weight nghĩa là 1 triệu lần duyệt — bất khả thi. Backprop thật sự chỉ tốn ĐÚNG một forward + một backward = 2 lần duyệt, nhờ chia sẻ các đạo hàm cục bộ đã tính được. Đây là lý do mạng tỉ tham số mới huấn luyện được trên đời."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Trong sơ đồ mạng bên dưới, bạn sẽ thấy đúng cái ý tưởng đó chạy: bấm{" "}
@@ -1197,7 +1198,7 @@ export default function BackpropagationTopic() {
                   }`}
                 >
                   <p
-                    className={`text-[10px] uppercase tracking-wide ${
+                    className={`inline-flex items-center gap-1 text-[10px] uppercase tracking-wide ${
                       cell.tone === "ok"
                         ? "text-emerald-700 dark:text-emerald-300"
                         : cell.tone === "warn"
@@ -1205,6 +1206,11 @@ export default function BackpropagationTopic() {
                           : "text-tertiary"
                     }`}
                   >
+                    {cell.tone === "ok" ? (
+                      <Check size={10} aria-hidden="true" />
+                    ) : cell.tone === "warn" ? (
+                      <TriangleAlert size={10} aria-hidden="true" />
+                    ) : null}
                     {cell.label}
                   </p>
                   <p
@@ -1546,7 +1552,7 @@ export default function BackpropagationTopic() {
               ].map((e, i) => (
                 <g key={i}>
                   <line x1={e.x1} y1={50} x2={e.x2} y2={50} stroke="#dc2626" strokeWidth={2} markerEnd="url(#backward-arrow)" />
-                  <text x={(e.x1 + e.x2) / 2} y={38} textAnchor="middle" fontSize={9} fill="#991b1b" fontFamily="monospace">
+                  <text x={(e.x1 + e.x2) / 2} y={38} textAnchor="middle" fontSize={11} fill="#991b1b" fontFamily="monospace">
                     {e.label}
                   </text>
                 </g>
@@ -1556,7 +1562,7 @@ export default function BackpropagationTopic() {
                   <path d="M 0 0 L 8 4 L 0 8 Z" fill="#dc2626" />
                 </marker>
               </defs>
-              <text x={250} y={100} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+              <text x={250} y={100} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
                 Bắt đầu từ L ở bên trái, đi NGƯỢC, nhân mỗi cạnh.
               </text>
             </svg>
@@ -1573,16 +1579,16 @@ export default function BackpropagationTopic() {
               <title>Công thức δ · a — gradient của weight nối hai nơ-ron.</title>
               <circle cx={100} cy={65} r={28} fill="#3b82f622" stroke="#3b82f6" strokeWidth={2} />
               <text x={100} y={70} textAnchor="middle" fontSize={12} fill="#1e3a8a" fontWeight={700} fontFamily="monospace">a_j</text>
-              <text x={100} y={30} textAnchor="middle" fontSize={10} fill="#1e3a8a">activation đi vào</text>
+              <text x={100} y={30} textAnchor="middle" fontSize={11} fill="#1e3a8a">activation đi vào</text>
               <circle cx={340} cy={65} r={28} fill="#dc262622" stroke="#dc2626" strokeWidth={2} />
               <text x={340} y={70} textAnchor="middle" fontSize={12} fill="#991b1b" fontWeight={700} fontFamily="monospace">δ_i</text>
-              <text x={340} y={30} textAnchor="middle" fontSize={10} fill="#991b1b">gradient lan về</text>
+              <text x={340} y={30} textAnchor="middle" fontSize={11} fill="#991b1b">gradient lan về</text>
               <line x1={130} y1={65} x2={310} y2={65} stroke="#8b5cf6" strokeWidth={3} />
               <text x={220} y={58} textAnchor="middle" fontSize={11} fill="#6d28d9" fontWeight={700} fontFamily="monospace">w_ij</text>
-              <text x={220} y={82} textAnchor="middle" fontSize={10} fill="var(--text-secondary)">
+              <text x={220} y={82} textAnchor="middle" fontSize={11} fill="var(--text-secondary)">
                 ∂L/∂w_ij = δ_i · a_j
               </text>
-              <text x={220} y={120} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)" fontStyle="italic">
+              <text x={220} y={120} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
                 δ_i = (sai số lan về nơ-ron i) · σ&prime;(z_i)
               </text>
             </svg>
@@ -1604,7 +1610,7 @@ export default function BackpropagationTopic() {
               <Pill cx={285} cy={50} label="∂L/∂w" value="−0.05" color="#dc2626" width={90} height={40} />
               <text x={340} y={55} fontSize={18} fill="var(--text-primary)" fontWeight={700}>=</text>
               <Pill cx={395} cy={50} label="w mới" value="0.39" color="#16a34a" width={70} height={40} />
-              <text x={220} y={90} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)" fontStyle="italic">
+              <text x={220} y={90} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
                 Dấu TRỪ: đi NGƯỢC gradient vì gradient chỉ hướng loss TĂNG.
               </text>
             </svg>

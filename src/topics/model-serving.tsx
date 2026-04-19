@@ -775,7 +775,7 @@ export default function ModelServingTopic() {
                   y={82}
                   textAnchor="middle"
                   fill="white"
-                  fontSize={10}
+                  fontSize={11}
                   fontWeight="bold"
                 >
                   Clients
@@ -785,7 +785,7 @@ export default function ModelServingTopic() {
                   y={100}
                   textAnchor="middle"
                   fill="#94a3b8"
-                  fontSize={8}
+                  fontSize={11}
                 >
                   HTTP / gRPC
                 </text>
@@ -804,7 +804,7 @@ export default function ModelServingTopic() {
                   y={156}
                   textAnchor="middle"
                   fill="#94a3b8"
-                  fontSize={8}
+                  fontSize={11}
                 >
                   QPS target
                 </text>
@@ -813,7 +813,7 @@ export default function ModelServingTopic() {
                   y={190}
                   textAnchor="middle"
                   fill="#94a3b8"
-                  fontSize={8}
+                  fontSize={11}
                 >
                   Queue: {totalInQueue}
                 </text>
@@ -822,7 +822,7 @@ export default function ModelServingTopic() {
                   y={206}
                   textAnchor="middle"
                   fill="#94a3b8"
-                  fontSize={8}
+                  fontSize={11}
                 >
                   Done: {doneRequests.length}
                 </text>
@@ -863,7 +863,7 @@ export default function ModelServingTopic() {
                 y={138}
                 textAnchor="middle"
                 fill="white"
-                fontSize={9}
+                fontSize={11}
               >
                 Envoy / NGINX
               </text>
@@ -872,7 +872,7 @@ export default function ModelServingTopic() {
                 y={154}
                 textAnchor="middle"
                 fill="white"
-                fontSize={8}
+                fontSize={11}
                 opacity={0.85}
               >
                 Round robin
@@ -882,7 +882,7 @@ export default function ModelServingTopic() {
                 y={170}
                 textAnchor="middle"
                 fill="white"
-                fontSize={8}
+                fontSize={11}
                 opacity={0.85}
               >
                 Health check
@@ -926,7 +926,7 @@ export default function ModelServingTopic() {
                       x={385}
                       y={y + 26}
                       fill="white"
-                      fontSize={10}
+                      fontSize={11}
                       fontWeight="bold"
                     >
                       {profile.name} #{i + 1}
@@ -935,7 +935,7 @@ export default function ModelServingTopic() {
                       x={385}
                       y={y + 42}
                       fill="#94a3b8"
-                      fontSize={8}
+                      fontSize={11}
                     >
                       Batches {server?.processed ?? 0} · util{" "}
                       {(util * 100).toFixed(0)}%
@@ -967,7 +967,7 @@ export default function ModelServingTopic() {
                 y={275}
                 textAnchor="middle"
                 fill="#94a3b8"
-                fontSize={8}
+                fontSize={11}
               >
                 Server pool — mỗi replica giữ model trong VRAM
               </text>
@@ -993,7 +993,7 @@ export default function ModelServingTopic() {
                     y={34}
                     textAnchor="middle"
                     fill="white"
-                    fontSize={10}
+                    fontSize={11}
                     fontWeight="bold"
                   >
                     {shouldScaleUp ? "↑" : shouldScaleDown ? "↓" : "="}

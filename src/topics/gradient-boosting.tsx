@@ -594,7 +594,7 @@ export default function GradientBoostingTopic() {
                   <text
                     x={PAD_L + 80}
                     y={12}
-                    fontSize={10}
+                    fontSize={11}
                     fill="currentColor"
                     className="text-muted"
                   >
@@ -607,7 +607,7 @@ export default function GradientBoostingTopic() {
                     <text
                       x={12}
                       y={7}
-                      fontSize={9}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -617,7 +617,7 @@ export default function GradientBoostingTopic() {
                     <text
                       x={58}
                       y={7}
-                      fontSize={9}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -634,7 +634,7 @@ export default function GradientBoostingTopic() {
                     <text
                       x={15}
                       y={19}
-                      fontSize={9}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -651,7 +651,7 @@ export default function GradientBoostingTopic() {
                     <text
                       x={75}
                       y={19}
-                      fontSize={9}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -722,7 +722,7 @@ export default function GradientBoostingTopic() {
                           <text
                             x={x}
                             y={78}
-                            fontSize={8}
+                            fontSize={11}
                             fill={current ? "#f97316" : "currentColor"}
                             className={
                               current ? "" : "text-muted"
@@ -736,7 +736,7 @@ export default function GradientBoostingTopic() {
                             <text
                               x={x}
                               y={y - 8}
-                              fontSize={8}
+                              fontSize={11}
                               fill="#f97316"
                               textAnchor="middle"
                               fontWeight={700}
@@ -840,7 +840,7 @@ export default function GradientBoostingTopic() {
                     <text
                       x={10}
                       y={55}
-                      fontSize={8}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -849,7 +849,7 @@ export default function GradientBoostingTopic() {
                     <text
                       x={170}
                       y={55}
-                      fontSize={8}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >

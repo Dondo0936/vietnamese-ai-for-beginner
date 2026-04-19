@@ -128,8 +128,8 @@ export default function MemorySystemsTopic() {
 
           <svg viewBox="0 0 600 200" className="w-full max-w-2xl mx-auto mb-4">
             <circle cx={300} cy={100} r={40} fill="var(--bg-surface)" stroke={active.color} strokeWidth={3} />
-            <text x={300} y={96} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">AI Agent</text>
-            <text x={300} y={112} textAnchor="middle" fill="var(--text-tertiary)" fontSize={8}>Bộ não</text>
+            <text x={300} y={96} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">AI Agent</text>
+            <text x={300} y={112} textAnchor="middle" fill="var(--text-tertiary)" fontSize={11}>Bộ não</text>
 
             {active.items.map((item, i) => {
               const angle = -Math.PI / 2 + (i * Math.PI) / (active.items.length - 1 || 1);
@@ -140,7 +140,7 @@ export default function MemorySystemsTopic() {
                 <g key={i}>
                   <line x1={300} y1={100} x2={cx} y2={cy} stroke={active.color} strokeWidth={1.5} opacity={0.5} />
                   <rect x={cx - 80} y={cy - 14} width={160} height={28} rx={6} fill={active.color} opacity={0.85} />
-                  <text x={cx} y={cy + 4} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">
+                  <text x={cx} y={cy + 4} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                     {item}
                   </text>
                 </g>

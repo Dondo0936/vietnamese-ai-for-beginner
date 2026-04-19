@@ -136,7 +136,7 @@ export default function SyntheticDataTopic() {
                 const isActive = i === activeSource;
                 return (
                   <g key={i}>
-                    <text x={15} y={y + 16} fill={isActive ? "#e2e8f0" : "#64748b"} fontSize={8} fontWeight={isActive ? "bold" : "normal"}>
+                    <text x={15} y={y + 16} fill={isActive ? "#e2e8f0" : "#64748b"} fontSize={11} fontWeight={isActive ? "bold" : "normal"}>
                       {s.name}
                     </text>
                     <rect x={160} y={y} width={300} height={22} rx={3} fill="#1e293b" />
@@ -144,10 +144,10 @@ export default function SyntheticDataTopic() {
                       fill={s.quality > 90 ? "#22c55e" : s.quality > 80 ? "#3b82f6" : "#f59e0b"}
                       opacity={isActive ? 1 : 0.3}
                     />
-                    <text x={165 + 300 * (s.quality / 100)} y={y + 15} fill="white" fontSize={9} fontWeight="bold">
+                    <text x={165 + 300 * (s.quality / 100)} y={y + 15} fill="white" fontSize={11} fontWeight="bold">
                       {s.quality}%
                     </text>
-                    <text x={500} y={y + 15} fill="#94a3b8" fontSize={7}>{s.cost}</text>
+                    <text x={500} y={y + 15} fill="#94a3b8" fontSize={11}>{s.cost}</text>
                   </g>
                 );
               })}

@@ -569,7 +569,8 @@ export default function VectorsAndMatricesTopic() {
                   <svg
                     ref={svgRef}
                     viewBox={`0 0 ${VW} ${VH}`}
-                    className="w-full max-w-[360px] cursor-crosshair select-none touch-none"
+                    className="w-full max-w-[360px] cursor-crosshair select-none"
+                    style={{ touchAction: dragging !== null ? "none" : "auto" }}
                     aria-label="Kéo đầu hai mũi tên để khám phá tích vô hướng"
                     onMouseMove={handleMove}
                     onMouseUp={handleUp}
@@ -1161,16 +1162,16 @@ export default function VectorsAndMatricesTopic() {
                       dotted
                     />
 
-                    <text x={28} y={34} fontSize="10" fill="#3B82F6">
+                    <text x={28} y={34} fontSize="11" fill="#3B82F6">
                       u (xanh)
                     </text>
-                    <text x={28} y={48} fontSize="10" fill="#EF4444">
+                    <text x={28} y={48} fontSize="11" fill="#EF4444">
                       v (đỏ, đặt ở ngọn u)
                     </text>
-                    <text x={28} y={62} fontSize="10" fill="#10b981">
+                    <text x={28} y={62} fontSize="11" fill="#10b981">
                       u + v (xanh lá)
                     </text>
-                    <text x={28} y={76} fontSize="10" fill="#8b5cf6">
+                    <text x={28} y={76} fontSize="11" fill="#8b5cf6">
                       {scalar.toFixed(1)} · u (tím)
                     </text>
                   </svg>

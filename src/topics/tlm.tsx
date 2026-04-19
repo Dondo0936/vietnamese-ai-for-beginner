@@ -156,7 +156,7 @@ export default function TLMTopic() {
               </text>
 
               {/* Calibration insight */}
-              <text x={20} y={185} fill="#94a3b8" fontSize={10}>
+              <text x={20} y={185} fill="#94a3b8" fontSize={11}>
                 {ex.confidence > 0.8 && ex.correct && "Calibration tốt: tự tin cao + đáp án đúng"}
                 {ex.confidence < 0.4 && ex.correct && "Calibration tốt: không chắc nên nói thật → dù đáp án đúng, mô hình khiêm tốn"}
                 {ex.confidence > 0.5 && !ex.correct && "Calibration KÉM: tự tin vừa/cao nhưng SAI → nguy hiểm!"}

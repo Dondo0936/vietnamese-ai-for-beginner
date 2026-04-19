@@ -228,12 +228,12 @@ export default function TopKTopPTopic() {
                   transition={{ duration: 0.2 }}
                 />
                 {/* Percentage */}
-                <text x={x + barW / 2} y={y - 4} textAnchor="middle" fontSize={9} fontWeight={600}
+                <text x={x + barW / 2} y={y - 4} textAnchor="middle" fontSize={11} fontWeight={600}
                   fill={isActive ? "var(--text-primary)" : "var(--text-tertiary)"}>
                   {(w.prob * 100).toFixed(0)}%
                 </text>
                 {/* Word label */}
-                <text x={x + barW / 2} y={178} textAnchor="middle" fontSize={8}
+                <text x={x + barW / 2} y={178} textAnchor="middle" fontSize={11}
                   fill={isActive ? "var(--text-secondary)" : "var(--text-tertiary)"}>
                   {w.word}
                 </text>

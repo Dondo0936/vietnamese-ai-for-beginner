@@ -448,7 +448,7 @@ export default function MultiAgentTopic() {
                         y={a.y + 14}
                         textAnchor="middle"
                         fill={isActive ? "white" : a.color}
-                        fontSize="10"
+                        fontSize="11"
                         fontWeight="bold"
                       >
                         {a.label}
@@ -458,7 +458,7 @@ export default function MultiAgentTopic() {
                         y={a.y + 58}
                         textAnchor="middle"
                         fill="#94a3b8"
-                        fontSize="10"
+                        fontSize="11"
                       >
                         {a.role}
                       </text>

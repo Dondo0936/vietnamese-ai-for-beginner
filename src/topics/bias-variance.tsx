@@ -470,10 +470,10 @@ function ErrorCurveVisualization({
           animate={{ x1: curX, x2: curX }}
           transition={{ type: "spring", stiffness: 200, damping: 22 }}
         />
-        <text x={30} y={155} fontSize={9} fill="currentColor" className="text-muted">
+        <text x={30} y={155} fontSize={11} fill="currentColor" className="text-muted">
           Đơn giản
         </text>
-        <text x={250} y={155} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">
+        <text x={250} y={155} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">
           Phức tạp
         </text>
       </svg>
@@ -580,10 +580,10 @@ function PolyFitChart({ degree, seed }: { degree: number; seed: number }) {
             strokeWidth={1}
           />
         ))}
-        <text x={padL} y={H - 10} fontSize={9} fill="currentColor" className="text-muted">
+        <text x={padL} y={H - 10} fontSize={11} fill="currentColor" className="text-muted">
           0
         </text>
-        <text x={W - padR} y={H - 10} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">
+        <text x={W - padR} y={H - 10} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">
           1
         </text>
       </svg>

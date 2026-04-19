@@ -28,7 +28,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "epochs-batches",
   title: "Epochs & Batches",
-  titleVi: "Epoch, Batch và Iteration",
+  titleVi: "Epoch và batch — Chia nhỏ đề thi để mô hình không ngộp",
   description:
     "Máy học không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Xem sự thay đổi của đường loss khi bạn kéo thanh batch size.",
   category: "neural-fundamentals",
@@ -264,7 +264,7 @@ function LossChart({
               x={x}
               y={top + 10}
               fill="#64748b"
-              fontSize={9}
+              fontSize={11}
               textAnchor="middle"
             >
               hết epoch {e + 1}
@@ -275,10 +275,10 @@ function LossChart({
 
       <line x1={left} y1={top} x2={left} y2={bottom} stroke="#475569" strokeWidth={1} />
       <line x1={left} y1={bottom} x2={right} y2={bottom} stroke="#475569" strokeWidth={1} />
-      <text x={8} y={top + 10} fill="#94a3b8" fontSize={10}>
+      <text x={8} y={top + 10} fill="#94a3b8" fontSize={11}>
         Loss
       </text>
-      <text x={right - 60} y={LOSS_H - 8} fill="#94a3b8" fontSize={10}>
+      <text x={right - 60} y={LOSS_H - 8} fill="#94a3b8" fontSize={11}>
         Iteration
       </text>
 
@@ -579,10 +579,10 @@ function StaticLossComparison({
         })}
         <line x1={left} y1={top} x2={left} y2={bottom} stroke="#475569" strokeWidth={1} />
         <line x1={left} y1={bottom} x2={right} y2={bottom} stroke="#475569" strokeWidth={1} />
-        <text x={8} y={top + 10} fill="#94a3b8" fontSize={10}>
+        <text x={8} y={top + 10} fill="#94a3b8" fontSize={11}>
           Loss
         </text>
-        <text x={right - 60} y={LOSS_H - 8} fill="#94a3b8" fontSize={10}>
+        <text x={right - 60} y={LOSS_H - 8} fill="#94a3b8" fontSize={11}>
           Iteration
         </text>
 

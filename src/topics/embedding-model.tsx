@@ -367,27 +367,27 @@ export default function EmbeddingModelTopic() {
 
             {/* Vùng cụm — ellipse mờ */}
             <ellipse cx={88} cy={66} rx={50} ry={26} fill="#7C3AED" opacity={0.08} />
-            <text x={88} y={36} textAnchor="middle" fontSize={10} fill="#7C3AED" fontWeight={600}>
+            <text x={88} y={36} textAnchor="middle" fontSize={11} fill="#7C3AED" fontWeight={600}>
               Quyền lực
             </text>
 
             <ellipse cx={200} cy={255} rx={40} ry={30} fill="#D97706" opacity={0.08} />
-            <text x={200} y={298} textAnchor="middle" fontSize={10} fill="#D97706" fontWeight={600}>
+            <text x={200} y={298} textAnchor="middle" fontSize={11} fill="#D97706" fontWeight={600}>
               Động vật
             </text>
 
             <ellipse cx={305} cy={237} rx={28} ry={22} fill="#0D9488" opacity={0.08} />
-            <text x={305} y={272} textAnchor="middle" fontSize={10} fill="#0D9488" fontWeight={600}>
+            <text x={305} y={272} textAnchor="middle" fontSize={11} fill="#0D9488" fontWeight={600}>
               Màu sắc
             </text>
 
             <ellipse cx={308} cy={97} rx={30} ry={24} fill="#2563EB" opacity={0.08} />
-            <text x={308} y={135} textAnchor="middle" fontSize={10} fill="#2563EB" fontWeight={600}>
+            <text x={308} y={135} textAnchor="middle" fontSize={11} fill="#2563EB" fontWeight={600}>
               Công nghệ
             </text>
 
             <ellipse cx={75} cy={210} rx={42} ry={28} fill="#DC2626" opacity={0.08} />
-            <text x={75} y={250} textAnchor="middle" fontSize={10} fill="#DC2626" fontWeight={600}>
+            <text x={75} y={250} textAnchor="middle" fontSize={11} fill="#DC2626" fontWeight={600}>
               Cảm xúc
             </text>
 
@@ -436,7 +436,7 @@ export default function EmbeddingModelTopic() {
                     x={w.x}
                     y={w.y - r - 4}
                     textAnchor="middle"
-                    fontSize={9}
+                    fontSize={11}
                     fill="var(--text-secondary)"
                     className="pointer-events-none select-none"
                   >
@@ -459,7 +459,7 @@ export default function EmbeddingModelTopic() {
                         x={w.x}
                         y={w.y + r + 18}
                         textAnchor="middle"
-                        fontSize={8}
+                        fontSize={11}
                         fill="var(--text-primary)"
                       >
                         {w.note.slice(0, 40)}
@@ -468,7 +468,7 @@ export default function EmbeddingModelTopic() {
                         x={w.x}
                         y={w.y + r + 28}
                         textAnchor="middle"
-                        fontSize={7}
+                        fontSize={11}
                         fill="var(--text-tertiary)"
                       >
                         {w.note.length > 40 ? w.note.slice(40, 80) : ""}

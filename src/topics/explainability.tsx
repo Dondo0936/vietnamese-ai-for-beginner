@@ -530,10 +530,10 @@ function WhiteBoxTree() {
         stroke="#64748b"
         strokeWidth={2}
       />
-      <text x={110} y={66} fill="#94a3b8" fontSize={10} fontWeight={600}>
+      <text x={110} y={66} fill="#94a3b8" fontSize={11} fontWeight={600}>
         Không
       </text>
-      <text x={240} y={66} fill="#94a3b8" fontSize={10} fontWeight={600}>
+      <text x={240} y={66} fill="#94a3b8" fontSize={11} fontWeight={600}>
         Có
       </text>
 
@@ -602,10 +602,10 @@ function WhiteBoxTree() {
         stroke="#64748b"
         strokeWidth={2}
       />
-      <text x={205} y={138} fill="#94a3b8" fontSize={10} fontWeight={600}>
+      <text x={205} y={138} fill="#94a3b8" fontSize={11} fontWeight={600}>
         Không
       </text>
-      <text x={310} y={138} fill="#94a3b8" fontSize={10} fontWeight={600}>
+      <text x={310} y={138} fill="#94a3b8" fontSize={11} fontWeight={600}>
         Có
       </text>
 
@@ -658,10 +658,10 @@ function WhiteBoxTree() {
       </g>
 
       {/* Chú thích */}
-      <text x={180} y={215} textAnchor="middle" fill="#475569" fontSize={10}>
+      <text x={180} y={215} textAnchor="middle" fill="#475569" fontSize={11}>
         Mỗi nhánh là một câu hỏi rõ ràng — con người đọc được.
       </text>
-      <text x={180} y={230} textAnchor="middle" fill="#10b981" fontSize={10} fontWeight={600}>
+      <text x={180} y={230} textAnchor="middle" fill="#10b981" fontSize={11} fontWeight={600}>
         Bạn có thể đi từ gốc đến lá và kể lại bằng lời.
       </text>
     </svg>
@@ -788,16 +788,16 @@ function BlackBoxNeuralNet() {
       )}
 
       {/* Nhãn */}
-      <text x={55} y={18} textAnchor="middle" fill="#60a5fa" fontSize={9}>
+      <text x={55} y={18} textAnchor="middle" fill="#60a5fa" fontSize={11}>
         Đầu vào
       </text>
-      <text x={145} y={18} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+      <text x={145} y={18} textAnchor="middle" fill="#94a3b8" fontSize={11}>
         ???
       </text>
-      <text x={235} y={18} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+      <text x={235} y={18} textAnchor="middle" fill="#94a3b8" fontSize={11}>
         ???
       </text>
-      <text x={315} y={18} textAnchor="middle" fill="#f59e0b" fontSize={9}>
+      <text x={315} y={18} textAnchor="middle" fill="#f59e0b" fontSize={11}>
         Quyết định
       </text>
 

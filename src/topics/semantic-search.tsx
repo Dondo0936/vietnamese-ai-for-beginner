@@ -634,7 +634,7 @@ export default function SemanticSearchTopic() {
                   x={250}
                   y={315}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fill="currentColor"
                   opacity={0.6}
                 >
@@ -644,7 +644,7 @@ export default function SemanticSearchTopic() {
                   x={15}
                   y={170}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fill="currentColor"
                   opacity={0.6}
                   transform="rotate(-90 15 170)"
@@ -707,7 +707,7 @@ export default function SemanticSearchTopic() {
                           x={x}
                           y={y + 3}
                           textAnchor="middle"
-                          fontSize={9}
+                          fontSize={11}
                           fontWeight={700}
                           fill="white"
                         >
@@ -718,7 +718,7 @@ export default function SemanticSearchTopic() {
                         x={x}
                         y={y - 14}
                         textAnchor="middle"
-                        fontSize={9}
+                        fontSize={11}
                         fill="currentColor"
                         opacity={isTop ? 0.95 : 0.55}
                       >

@@ -472,7 +472,7 @@ export default function CanaryReleasesLLMTopic() {
               x={t.x}
               y={t.y + (t.y < DIAL_CY - 30 ? -10 : 18)}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill="var(--muted)"
               fontWeight="bold"
             >
@@ -519,7 +519,7 @@ export default function CanaryReleasesLLMTopic() {
           x={DIAL_CX}
           y={DIAL_CY + 26}
           textAnchor="middle"
-          fontSize={10}
+          fontSize={11}
           fill="var(--muted)"
         >
           {pct === 0 ? "shadow" : "canary"}

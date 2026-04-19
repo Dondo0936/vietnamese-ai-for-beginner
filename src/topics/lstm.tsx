@@ -429,10 +429,10 @@ export default function LstmTopic() {
               Cell State C (Bộ nhớ dài hạn — &quot;cuốn vở&quot;)
             </text>
             <polygon points="570,55 562,49 562,61" fill="#f59e0b" />
-            <text x={22} y={60} fontSize={9} fill="#f59e0b" fontWeight={500}>
+            <text x={22} y={60} fontSize={11} fill="#f59e0b" fontWeight={500}>
               Cₜ₋₁
             </text>
-            <text x={578} y={60} fontSize={9} fill="#f59e0b" fontWeight={500}>
+            <text x={578} y={60} fontSize={11} fill="#f59e0b" fontWeight={500}>
               Cₜ
             </text>
 
@@ -493,7 +493,7 @@ export default function LstmTopic() {
                   <text
                     x={x}
                     y={143}
-                    fontSize={9}
+                    fontSize={11}
                     fill={gate.color}
                     textAnchor="middle"
                     opacity={0.8}
@@ -559,7 +559,7 @@ export default function LstmTopic() {
             <text
               x={50}
               y={315}
-              fontSize={10}
+              fontSize={11}
               fill="currentColor"
               className="text-muted"
               textAnchor="middle"
@@ -860,7 +860,7 @@ export default function LstmTopic() {
             <text
               x={10}
               y={45}
-              fontSize={9}
+              fontSize={11}
               fill="#f59e0b"
               fontWeight={600}
             >
@@ -887,7 +887,7 @@ export default function LstmTopic() {
                   <text
                     x={x}
                     y={93}
-                    fontSize={9}
+                    fontSize={11}
                     textAnchor="middle"
                     fill={current ? "#0f172a" : visited ? "#f59e0b" : "#64748b"}
                     fontWeight={600}
@@ -898,7 +898,7 @@ export default function LstmTopic() {
                   <text
                     x={x}
                     y={128}
-                    fontSize={9}
+                    fontSize={11}
                     textAnchor="middle"
                     fill={visited ? "#e2e8f0" : "#64748b"}
                   >
@@ -1026,10 +1026,10 @@ export default function LstmTopic() {
               stroke="#334155"
               strokeWidth={1}
             />
-            <text x={10} y={20} fontSize={9} fill="#94a3b8">
+            <text x={10} y={20} fontSize={11} fill="#94a3b8">
               log g
             </text>
-            <text x={565} y={135} fontSize={9} fill="#94a3b8">
+            <text x={565} y={135} fontSize={11} fill="#94a3b8">
               N
             </text>
             {/* RNN curve */}
@@ -1071,16 +1071,16 @@ export default function LstmTopic() {
             <text
               x={40 + (compareSteps * 540) / 100 + 4}
               y={18}
-              fontSize={9}
+              fontSize={11}
               fill="#f59e0b"
             >
               N={compareSteps}
             </text>
 
-            <text x={50} y={30} fontSize={10} fill="#ef4444">
+            <text x={50} y={30} fontSize={11} fill="#ef4444">
               — RNN
             </text>
-            <text x={110} y={30} fontSize={10} fill="#22c55e">
+            <text x={110} y={30} fontSize={11} fill="#22c55e">
               — LSTM
             </text>
           </svg>

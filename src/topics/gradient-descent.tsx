@@ -511,7 +511,7 @@ function LossSurfacePlayground() {
               x={toPX(1)}
               y={toPY(-0.5) + 18}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fill="#166534"
               fontWeight={600}
             >
@@ -531,7 +531,7 @@ function LossSurfacePlayground() {
               x={toPX(start[0])}
               y={toPY(start[1]) - 8}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill="#64748b"
             >
               xuất phát
@@ -828,20 +828,20 @@ function LossCurveMini({
       <text
         x={cursor[0] + 6}
         y={cursor[1] - 6}
-        fontSize={10}
+        fontSize={11}
         fill={color}
         fontWeight={600}
       >
         {losses[Math.min(step, losses.length - 1)].toFixed(2)}
       </text>
       {/* Labels */}
-      <text x={pad} y={15} fontSize={9} fill="#64748b">
+      <text x={pad} y={15} fontSize={11} fill="#64748b">
         loss cao
       </text>
-      <text x={pad} y={h - 6} fontSize={9} fill="#64748b">
+      <text x={pad} y={h - 6} fontSize={11} fill="#64748b">
         loss thấp
       </text>
-      <text x={w - pad} y={h - 6} textAnchor="end" fontSize={9} fill="#64748b">
+      <text x={w - pad} y={h - 6} textAnchor="end" fontSize={11} fill="#64748b">
         bước →
       </text>
     </svg>
@@ -1250,10 +1250,10 @@ function OneStepPhase1({ w1, w2, L }: { w1: number; w2: number; L: number }) {
       <svg viewBox="0 0 420 80" className="w-full">
         <title>Loss tại điểm hiện tại — cao hay thấp so với đáy.</title>
         <line x1={30} y1={60} x2={390} y2={60} stroke="#cbd5e1" strokeWidth={1} />
-        <text x={30} y={74} fontSize={9} fill="#64748b">
+        <text x={30} y={74} fontSize={11} fill="#64748b">
           đáy (loss = 0)
         </text>
-        <text x={390} y={74} textAnchor="end" fontSize={9} fill="#64748b">
+        <text x={390} y={74} textAnchor="end" fontSize={11} fill="#64748b">
           loss cao
         </text>
         {/* Bar up to loss */}
@@ -1270,7 +1270,7 @@ function OneStepPhase1({ w1, w2, L }: { w1: number; w2: number; L: number }) {
           x={202}
           y={60 - Math.min(40, L * 6) - 10}
           textAnchor="middle"
-          fontSize={10}
+          fontSize={11}
           fill="#3b82f6"
           fontWeight={700}
         >
@@ -1347,7 +1347,7 @@ function OneStepPhase2({
         ))}
         {/* Point */}
         <circle cx={120} cy={70} r={6} fill="#3b82f6" stroke="#fff" strokeWidth={2} />
-        <text x={120} y={88} textAnchor="middle" fontSize={9} fill="#1e3a8a" fontWeight={600}>
+        <text x={120} y={88} textAnchor="middle" fontSize={11} fill="#1e3a8a" fontWeight={600}>
           (w₁, w₂)
         </text>
         {/* Gradient arrow up-left (toward uphill direction) */}
@@ -1382,7 +1382,7 @@ function OneStepPhase2({
           strokeWidth={2.5}
           markerEnd="url(#osp2-arrow-up)"
         />
-        <text x={36} y={18} fontSize={10} fill="#ef4444" fontWeight={700}>
+        <text x={36} y={18} fontSize={11} fill="#ef4444" fontWeight={700}>
           ∇L (lên dốc)
         </text>
         <line
@@ -1395,7 +1395,7 @@ function OneStepPhase2({
           strokeDasharray="4,3"
           markerEnd="url(#osp2-arrow-down)"
         />
-        <text x={188} y={104} fontSize={10} fill="#166534" fontWeight={700}>
+        <text x={188} y={104} fontSize={11} fill="#166534" fontWeight={700}>
           −∇L (xuống dốc)
         </text>
       </svg>
@@ -1515,12 +1515,12 @@ function OneStepPhase3({
         />
         {/* Old point */}
         <circle cx={120} cy={75} r={6} fill="#3b82f6" stroke="#fff" strokeWidth={2} opacity={0.5} />
-        <text x={120} y={98} textAnchor="middle" fontSize={9} fill="#1e3a8a" fontWeight={600}>
+        <text x={120} y={98} textAnchor="middle" fontSize={11} fill="#1e3a8a" fontWeight={600}>
           (w cũ)
         </text>
         {/* New point */}
         <circle cx={200} cy={55} r={7} fill="#10b981" stroke="#fff" strokeWidth={2} />
-        <text x={200} y={45} textAnchor="middle" fontSize={10} fill="#065f46" fontWeight={700}>
+        <text x={200} y={45} textAnchor="middle" fontSize={11} fill="#065f46" fontWeight={700}>
           (w mới)
         </text>
       </svg>
@@ -1807,21 +1807,21 @@ export default function GradientDescentTopic() {
               <svg viewBox="0 0 440 90" className="w-full">
                 <title>Vector weight cũ − η × gradient = vector weight mới.</title>
                 <circle cx={60} cy={50} r={7} fill="#3b82f6" stroke="#fff" strokeWidth={2} />
-                <text x={60} y={75} textAnchor="middle" fontSize={10} fill="#1e3a8a" fontWeight={600}>
+                <text x={60} y={75} textAnchor="middle" fontSize={11} fill="#1e3a8a" fontWeight={600}>
                   θ cũ
                 </text>
                 <text x={110} y={54} fontSize={14} fill="var(--text-primary)" fontWeight={700}>−</text>
                 <line x1={130} y1={50} x2={200} y2={20} stroke="#ef4444" strokeWidth={2} />
                 <path d="M 200 20 L 192 19 L 194 27 Z" fill="#ef4444" />
-                <text x={206} y={18} fontSize={10} fill="#ef4444" fontWeight={600}>η · ∇L</text>
+                <text x={206} y={18} fontSize={11} fill="#ef4444" fontWeight={600}>η · ∇L</text>
                 <text x={230} y={54} fontSize={14} fill="var(--text-primary)" fontWeight={700}>=</text>
                 <circle cx={290} cy={50} r={7} fill="#10b981" stroke="#fff" strokeWidth={2} />
-                <text x={290} y={75} textAnchor="middle" fontSize={10} fill="#065f46" fontWeight={600}>
+                <text x={290} y={75} textAnchor="middle" fontSize={11} fill="#065f46" fontWeight={600}>
                   θ mới
                 </text>
                 <line x1={340} y1={50} x2={400} y2={50} stroke="#10b981" strokeWidth={2} strokeDasharray="4,3" />
                 <path d="M 400 50 L 392 46 L 392 54 Z" fill="#10b981" />
-                <text x={400} y={44} textAnchor="end" fontSize={10} fill="#065f46" fontWeight={600}>
+                <text x={400} y={44} textAnchor="end" fontSize={11} fill="#065f46" fontWeight={600}>
                   gần đáy hơn
                 </text>
               </svg>
@@ -1861,7 +1861,7 @@ export default function GradientDescentTopic() {
                 <title>Lấy ngẫu nhiên một lô nhỏ từ toàn bộ dataset để tính gradient.</title>
                 {/* Big dataset grid */}
                 <rect x={20} y={15} width={170} height={70} fill="none" stroke="#cbd5e1" strokeWidth={1} rx={4} />
-                <text x={105} y={12} textAnchor="middle" fontSize={9} fill="#64748b">
+                <text x={105} y={12} textAnchor="middle" fontSize={11} fill="#64748b">
                   Toàn bộ dataset (N mẫu)
                 </text>
                 {Array.from({ length: 10 * 4 }).map((_, i) => {
@@ -1887,7 +1887,7 @@ export default function GradientDescentTopic() {
                 <path d="M 250 50 L 242 46 L 242 54 Z" fill="#f59e0b" />
                 {/* Small batch */}
                 <rect x={260} y={25} width={80} height={50} fill="none" stroke="#f59e0b" strokeWidth={1.5} rx={4} />
-                <text x={300} y={22} textAnchor="middle" fontSize={9} fill="#b45309">
+                <text x={300} y={22} textAnchor="middle" fontSize={11} fill="#b45309">
                   Mini-batch B (|B| mẫu)
                 </text>
                 {Array.from({ length: 8 }).map((_, i) => {
@@ -1908,7 +1908,7 @@ export default function GradientDescentTopic() {
                 {/* Arrow to gradient */}
                 <line x1={345} y1={50} x2={380} y2={50} stroke="#10b981" strokeWidth={2} />
                 <path d="M 380 50 L 372 46 L 372 54 Z" fill="#10b981" />
-                <text x={410} y={54} textAnchor="middle" fontSize={10} fill="#065f46" fontWeight={600}>
+                <text x={410} y={54} textAnchor="middle" fontSize={11} fill="#065f46" fontWeight={600}>
                   ∇L
                 </text>
               </svg>
@@ -1960,11 +1960,11 @@ export default function GradientDescentTopic() {
                 {/* Big combined arrow */}
                 <line x1={220} y1={60} x2={400} y2={30} stroke="#8b5cf6" strokeWidth={3.5} />
                 <path d="M 400 30 L 388 27 L 392 37 Z" fill="#8b5cf6" />
-                <text x={300} y={75} fontSize={10} fill="#6d28d9" fontWeight={700} textAnchor="middle">
+                <text x={300} y={75} fontSize={11} fill="#6d28d9" fontWeight={700} textAnchor="middle">
                   v — quán tính cộng dồn
                 </text>
 
-                <text x={120} y={18} fontSize={9} fill="#6d28d9" fontWeight={600} textAnchor="middle">
+                <text x={120} y={18} fontSize={11} fill="#6d28d9" fontWeight={600} textAnchor="middle">
                   các bước nhất quán cộng dồn
                 </text>
               </svg>

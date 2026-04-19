@@ -482,7 +482,7 @@ export default function DPOTopic() {
                         y="107"
                         textAnchor="middle"
                         fill={item.color}
-                        fontSize="9"
+                        fontSize="11"
                       >
                         {item.label.split("\n")[1]}
                       </text>
@@ -491,7 +491,7 @@ export default function DPOTopic() {
                         y="127"
                         textAnchor="middle"
                         fill="var(--text-tertiary)"
-                        fontSize="8"
+                        fontSize="11"
                       >
                         {item.sub}
                       </text>
@@ -513,7 +513,7 @@ export default function DPOTopic() {
                     y="175"
                     textAnchor="middle"
                     fill="var(--text-tertiary)"
-                    fontSize="10"
+                    fontSize="11"
                   >
                     Cần RM riêng • PPO kém ổn định • Nhiều hyperparameter •
                     Nguy cơ reward hacking
@@ -586,7 +586,7 @@ export default function DPOTopic() {
                         y="107"
                         textAnchor="middle"
                         fill={item.color}
-                        fontSize="9"
+                        fontSize="11"
                       >
                         {item.label.split("\n")[1]}
                       </text>
@@ -595,7 +595,7 @@ export default function DPOTopic() {
                         y="127"
                         textAnchor="middle"
                         fill="var(--text-tertiary)"
-                        fontSize="8"
+                        fontSize="11"
                       >
                         {item.sub}
                       </text>
@@ -617,7 +617,7 @@ export default function DPOTopic() {
                     y="175"
                     textAnchor="middle"
                     fill="var(--text-tertiary)"
-                    fontSize="10"
+                    fontSize="11"
                   >
                     Không cần RM • Loss đơn giản • Ổn định • Dễ triển khai
                   </text>

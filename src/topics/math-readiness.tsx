@@ -330,7 +330,7 @@ function ConstellationMap({
                 x={s.x}
                 y={s.y + baseR + 36}
                 textAnchor="middle"
-                fontSize="10"
+                fontSize="11"
                 fill="rgba(255,255,255,0.6)"
                 style={{ pointerEvents: "none" }}
               >
@@ -758,15 +758,15 @@ export default function MathReadinessTopic() {
       {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Theo bạn, làm ML cần trình toán nào?"
+          question="Bạn được cho bốn mảnh toán. Mảnh nào bạn sẽ ÍT khi gặp nhất trong công việc ML đời thường (không phải nghiên cứu hàn lâm)?"
           options={[
-            "Phải giải được mọi bài tích phân trong sách bài tập",
-            "Cần quen mặt bốn nhóm khái niệm ở mức hiểu ý, không cần chứng minh công thức",
-            "Không cần toán gì cả, chỉ cần học Python",
-            "Phải có bằng tiến sĩ toán",
+            "Vector và ma trận — để biểu diễn dữ liệu và ảnh",
+            "Đạo hàm — để hiểu mô hình 'học' theo hướng nào",
+            "Xác suất và thống kê — để đánh giá mô hình và hiểu dữ liệu",
+            "Chứng minh chặt chẽ theo dạng epsilon-delta của giải tích",
           ]}
-          correct={1}
-          explanation="Đáp án B là thực tế. Rất nhiều kỹ sư ML hiện nay không giỏi chứng minh định lý, nhưng họ hiểu bốn khái niệm cơ bản và biết tra cứu khi cần. Trình toán cấp ba + óc tò mò là đủ để bắt đầu."
+          correct={3}
+          explanation="Ba mảnh đầu xuất hiện mỗi ngày khi làm ML công nghiệp; chúng là 'vocab' bạn đọc mọi tài liệu. Chứng minh epsilon-delta là nền tảng hàn lâm — đẹp, quan trọng cho nhà nghiên cứu — nhưng người viết app ML hiếm khi phải viết lại. Mục tiêu của bài là giúp bạn quen mặt ba mảnh đầu ở mức hiểu ý."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Tiếp theo, mình sẽ vẽ cho bạn chòm sao Bắc Đẩu của ML —

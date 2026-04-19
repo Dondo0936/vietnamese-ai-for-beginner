@@ -448,7 +448,8 @@ function UnsupervisedDragCanvas() {
 
       <svg
         viewBox="0 0 520 340"
-        className="w-full cursor-crosshair rounded-lg border border-border bg-surface/40 touch-none"
+        className="w-full cursor-crosshair rounded-lg border border-border bg-surface/40"
+        style={{ touchAction: dragging !== null ? "none" : "auto" }}
         role="img"
         aria-label="Vùng kéo tâm cụm để nhóm các điểm dữ liệu không nhãn"
         onPointerMove={handlePointerMove}
@@ -465,7 +466,7 @@ function UnsupervisedDragCanvas() {
         <line x1={30} y1={310} x2={490} y2={310} stroke="currentColor" className="text-muted" strokeWidth={1} />
         <line x1={30} y1={30} x2={30} y2={310} stroke="currentColor" className="text-muted" strokeWidth={1} />
 
-        <text x={260} y={328} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+        <text x={260} y={328} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
           Đặc trưng 1
         </text>
 
@@ -545,7 +546,7 @@ function UnsupervisedDragCanvas() {
               x={c.x}
               y={c.y - 22}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fontWeight={700}
               fill={colors[i]}
             >

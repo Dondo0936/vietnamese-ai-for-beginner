@@ -776,7 +776,7 @@ export default function TemperatureTopic() {
               {/* Chú thích */}
               <g>
                 <rect x={50} y={10} width={14} height={10} fill="#0ea5e9" opacity={0.85} rx={2} />
-                <text x={70} y={19} fontSize={10} fill="var(--text-primary)">
+                <text x={70} y={19} fontSize={11} fill="var(--text-primary)">
                   Temperature thấp — &ldquo;phở&rdquo; gần như luôn thắng
                 </text>
                 <rect
@@ -790,7 +790,7 @@ export default function TemperatureTopic() {
                   strokeDasharray="4,3"
                   rx={2}
                 />
-                <text x={70} y={35} fontSize={10} fill="var(--text-primary)">
+                <text x={70} y={35} fontSize={11} fill="var(--text-primary)">
                   Temperature cao — các món khác cũng có cơ hội
                 </text>
               </g>

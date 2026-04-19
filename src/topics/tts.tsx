@@ -143,17 +143,17 @@ export default function TTSTopic() {
             <svg viewBox="0 0 620 210" className="w-full max-w-2xl mx-auto">
               {/* Text input */}
               <rect x={20} y={15} width={200} height={36} rx={8} fill="#3b82f6" />
-              <text x={120} y={38} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">
+              <text x={120} y={38} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                 Văn bản đầu vào
               </text>
 
               {/* TTS engine */}
               <line x1={220} y1={33} x2={250} y2={33} stroke="#475569" strokeWidth={2} />
               <rect x={250} y={10} width={120} height={46} rx={10} fill="#1e293b" stroke="#8b5cf6" strokeWidth={2} />
-              <text x={310} y={30} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">
+              <text x={310} y={30} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                 TTS Engine
               </text>
-              <text x={310} y={46} textAnchor="middle" fill="#94a3b8" fontSize={8}>
+              <text x={310} y={46} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                 {voice.label}
               </text>
 
@@ -171,8 +171,8 @@ export default function TTSTopic() {
                 return (
                   <g key={i}>
                     <rect x={x} y={95} width={140} height={34} rx={6} fill={step.color} opacity={0.8} />
-                    <text x={x + 70} y={109} textAnchor="middle" fill="white" fontSize={8} fontWeight="bold">{step.label}</text>
-                    <text x={x + 70} y={122} textAnchor="middle" fill="#e2e8f0" fontSize={6}>
+                    <text x={x + 70} y={109} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">{step.label}</text>
+                    <text x={x + 70} y={122} textAnchor="middle" fill="#e2e8f0" fontSize={11}>
                       {step.desc.length > 30 ? step.desc.slice(0, 30) + "..." : step.desc}
                     </text>
                     {i < PIPELINE_STEPS.length - 1 && <line x1={x + 140} y1={112} x2={x + 155} y2={112} stroke="#475569" strokeWidth={1.5} />}

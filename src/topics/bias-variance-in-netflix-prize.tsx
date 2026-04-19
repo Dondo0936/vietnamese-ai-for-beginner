@@ -225,10 +225,10 @@ function ScatterPlot({ model }: { model: ModelEntry }) {
         {[1, 2, 3, 4, 5].map((v) => (
           <g key={v}>
             <line x1={padL} y1={yAt(v)} x2={W - padR} y2={yAt(v)} stroke="currentColor" className="text-border" strokeWidth={0.4} />
-            <text x={padL - 4} y={yAt(v) + 3} fontSize={8} fill="currentColor" className="text-muted" textAnchor="end">
+            <text x={padL - 4} y={yAt(v) + 3} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">
               {v}
             </text>
-            <text x={xAt(v)} y={H - 10} fontSize={8} fill="currentColor" className="text-muted" textAnchor="middle">
+            <text x={xAt(v)} y={H - 10} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
               {v}
             </text>
           </g>
@@ -255,13 +255,13 @@ function ScatterPlot({ model }: { model: ModelEntry }) {
           />
         ))}
         {/* Axes labels */}
-        <text x={W / 2} y={H - 2} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={W / 2} y={H - 2} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           Điểm thực tế (sao)
         </text>
         <text
           x={8}
           y={H / 2}
-          fontSize={9}
+          fontSize={11}
           fill="currentColor"
           className="text-muted"
           textAnchor="middle"

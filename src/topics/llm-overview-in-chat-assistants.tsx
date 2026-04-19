@@ -186,9 +186,10 @@ function LaunchTimeline() {
   const curve = "M 30 260 C 180 258, 260 190, 320 140 S 520 40, 720 30";
 
   return (
+    <div className="not-prose my-6 relative">
     <div
       ref={ref}
-      className="not-prose my-6 rounded-xl border border-border bg-card p-4 overflow-x-auto"
+      className="rounded-xl border border-border bg-card p-4 overflow-x-auto"
     >
       <div className="flex items-center gap-2 mb-2">
         <Calendar size={16} className="text-accent" />
@@ -298,7 +299,7 @@ function LaunchTimeline() {
                   y={y + 32}
                   textAnchor="middle"
                   className="fill-muted"
-                  fontSize={10}
+                  fontSize={11}
                 >
                   {m.date}
                 </text>
@@ -337,6 +338,11 @@ function LaunchTimeline() {
           })}
         </div>
       </div>
+    </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 w-10 rounded-r-xl bg-gradient-to-l from-[var(--bg-card)] to-transparent md:hidden"
+      />
     </div>
   );
 }

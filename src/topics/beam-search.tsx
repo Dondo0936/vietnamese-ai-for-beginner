@@ -625,13 +625,13 @@ function LengthPenaltyChart({
       >
         raw score (log P)
       </text>
-      <text x={24} y={height - 8} fontSize={10} className="fill-muted">
+      <text x={24} y={height - 8} fontSize={11} className="fill-muted">
         |Y| = 1
       </text>
       <text
         x={width - 8}
         y={height - 8}
-        fontSize={10}
+        fontSize={11}
         textAnchor="end"
         className="fill-muted"
       >

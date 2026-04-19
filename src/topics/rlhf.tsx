@@ -422,6 +422,7 @@ export default function RLHFTopic() {
               </div>
 
               {/* Pipeline SVG */}
+              <div className="relative">
               <div className="rounded-lg border border-border bg-background p-3 overflow-x-auto">
                 <svg viewBox="0 0 760 300" className="w-full min-w-[700px]">
                   <defs>
@@ -474,7 +475,7 @@ export default function RLHFTopic() {
                           x={x + 110}
                           y={84}
                           textAnchor="middle"
-                          fontSize={10}
+                          fontSize={11}
                           fill="#94a3b8"
                         >
                           {stage.subtitle}
@@ -487,7 +488,7 @@ export default function RLHFTopic() {
                               key={j}
                               x={x + 12}
                               y={112 + j * 22}
-                              fontSize={9}
+                              fontSize={11}
                               fill="#cbd5e1"
                             >
                               • {b.length > 42 ? b.slice(0, 42) + "..." : b}
@@ -498,7 +499,7 @@ export default function RLHFTopic() {
                             x={x + 110}
                             y={170}
                             textAnchor="middle"
-                            fontSize={10}
+                            fontSize={11}
                             fill="#64748b"
                           >
                             (nhấp để xem)
@@ -510,7 +511,7 @@ export default function RLHFTopic() {
                           x={x + 110}
                           y={225}
                           textAnchor="middle"
-                          fontSize={9}
+                          fontSize={11}
                           fontWeight={600}
                           fill={stage.color}
                           opacity={0.9}
@@ -548,7 +549,7 @@ export default function RLHFTopic() {
                   })}
 
                   {/* Top input label */}
-                  <text x={30} y={22} fontSize={10} fill="#94a3b8">
+                  <text x={30} y={22} fontSize={11} fill="#94a3b8">
                     Input: {activeStageMeta.flowFrom}
                   </text>
 
@@ -564,6 +565,11 @@ export default function RLHFTopic() {
                     Output cuối: π_RLHF (aligned)
                   </text>
                 </svg>
+              </div>
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 right-0 w-10 rounded-r-lg bg-gradient-to-l from-[var(--bg-primary)] to-transparent md:hidden"
+                />
               </div>
 
               {/* Active stage detail */}
@@ -607,16 +613,16 @@ export default function RLHFTopic() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-[#f59e0b] font-semibold">
+                  <span className="text-warning font-semibold">
                     RM accuracy (khớp đáp án tham khảo)
                   </span>
-                  <span className="font-mono text-[#f59e0b]">
+                  <span className="font-mono text-warning">
                     {(rmAccuracy * 100).toFixed(0)}%
                   </span>
                 </div>
                 <div className="h-3 rounded-full bg-surface overflow-hidden">
                   <motion.div
-                    className="h-full rounded-full bg-[#f59e0b]"
+                    className="h-full rounded-full bg-warning"
                     initial={{ width: 0 }}
                     animate={{ width: `${rmAccuracy * 100}%` }}
                     transition={{ duration: 0.4 }}
@@ -624,16 +630,16 @@ export default function RLHFTopic() {
                 </div>
 
                 <div className="flex items-center justify-between text-xs mt-3 mb-1">
-                  <span className="text-[#22c55e] font-semibold">
+                  <span className="text-success font-semibold">
                     Policy reward (ước lượng sau PPO)
                   </span>
-                  <span className="font-mono text-[#22c55e]">
+                  <span className="font-mono text-success">
                     {(policyReward * 100).toFixed(0)}%
                   </span>
                 </div>
                 <div className="h-3 rounded-full bg-surface overflow-hidden">
                   <motion.div
-                    className="h-full rounded-full bg-[#22c55e]"
+                    className="h-full rounded-full bg-success"
                     initial={{ width: 0 }}
                     animate={{ width: `${policyReward * 100}%` }}
                     transition={{ duration: 0.4 }}
@@ -826,7 +832,7 @@ export default function RLHFTopic() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
             <div className="rounded-lg border border-[#22c55e40] bg-[#22c55e10] p-3">
-              <p className="text-[#22c55e] font-semibold mb-1">β nhỏ (0.01)</p>
+              <p className="text-success font-semibold mb-1">β nhỏ (0.01)</p>
               <p className="text-xs text-muted leading-relaxed">
                 Policy tự do → reward model score tăng nhanh. Nhưng có thể bị hack:
                 mô hình nịnh, xả văn, trả lời off-topic. Cần giám sát kỹ.
@@ -840,7 +846,7 @@ export default function RLHFTopic() {
               </p>
             </div>
             <div className="rounded-lg border border-[#ef444440] bg-[#ef444410] p-3">
-              <p className="text-[#ef4444] font-semibold mb-1">β lớn (&gt;0.5)</p>
+              <p className="text-danger font-semibold mb-1">β lớn (&gt;0.5)</p>
               <p className="text-xs text-muted leading-relaxed">
                 Policy gần như = SFT. Reward không tăng được. Lãng phí compute. Bằng
                 chứng: eval win-rate vs SFT chỉ nhỉnh hơn 50/50.

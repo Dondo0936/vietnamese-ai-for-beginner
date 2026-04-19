@@ -553,10 +553,10 @@ export default function FlashAttentionTopic() {
                   ))}
 
                 {/* Annotation Q labels */}
-                <text x={10} y={svgSize + 18} fontSize={10} fill="#94a3b8">
+                <text x={10} y={svgSize + 18} fontSize={11} fill="#94a3b8">
                   Q (query rows)
                 </text>
-                <text x={svgSize - 50} y={svgSize + 18} fontSize={10} fill="#94a3b8">
+                <text x={svgSize - 50} y={svgSize + 18} fontSize={11} fill="#94a3b8">
                   → K columns
                 </text>
               </svg>
@@ -614,10 +614,10 @@ export default function FlashAttentionTopic() {
                       >
                         {tier.label}
                       </text>
-                      <text x={160} y={y + 33} textAnchor="middle" fontSize={9} fill="#e2e8f0">
+                      <text x={160} y={y + 33} textAnchor="middle" fontSize={11} fill="#e2e8f0">
                         {tier.size} · {tier.bandwidth}
                       </text>
-                      <text x={160} y={y + 46} textAnchor="middle" fontSize={8} fill="#94a3b8">
+                      <text x={160} y={y + 46} textAnchor="middle" fontSize={11} fill="#94a3b8">
                         {tier.latency}
                       </text>
                     </g>
@@ -645,7 +645,7 @@ export default function FlashAttentionTopic() {
                       animate={{ strokeDashoffset: [0, 14] }}
                       transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
                     />
-                    <text x={160} y={305} textAnchor="middle" fontSize={10} fill="#ef4444">
+                    <text x={160} y={305} textAnchor="middle" fontSize={11} fill="#ef4444">
                       ↕ nhiều round-trip HBM ↔ SRAM
                     </text>
                   </g>
@@ -659,7 +659,7 @@ export default function FlashAttentionTopic() {
                       animate={{ scale: [1, 1.4, 1] }}
                       transition={{ repeat: Infinity, duration: 1.2 }}
                     />
-                    <text x={160} y={305} textAnchor="middle" fontSize={10} fill="#22c55e">
+                    <text x={160} y={305} textAnchor="middle" fontSize={11} fill="#22c55e">
                       ✓ dữ liệu ở lại SRAM cho cả tile
                     </text>
                   </g>
@@ -780,7 +780,7 @@ export default function FlashAttentionTopic() {
               <line x1={60} y1={30} x2={60} y2={210} stroke="#475569" strokeWidth={1} />
               <line x1={60} y1={210} x2={500} y2={210} stroke="#475569" strokeWidth={1} />
 
-              <text x={16} y={115} fontSize={10} fill="#94a3b8" transform="rotate(-90 16 115)">
+              <text x={16} y={115} fontSize={11} fill="#94a3b8" transform="rotate(-90 16 115)">
                 Thời gian (log ms)
               </text>
 
@@ -816,7 +816,7 @@ export default function FlashAttentionTopic() {
                       rx={3}
                       fill="url(#barRed)"
                     />
-                    <text x={x + 15} y={205 - stdH} textAnchor="middle" fontSize={9} fill="#f87171">
+                    <text x={x + 15} y={205 - stdH} textAnchor="middle" fontSize={11} fill="#f87171">
                       {b.standardMs < 1000 ? `${b.standardMs}ms` : `${(b.standardMs / 1000).toFixed(1)}s`}
                     </text>
                     <rect
@@ -831,15 +831,15 @@ export default function FlashAttentionTopic() {
                       x={x + 50}
                       y={205 - flashH}
                       textAnchor="middle"
-                      fontSize={9}
+                      fontSize={11}
                       fill="#4ade80"
                     >
                       {b.flashMs < 1000 ? `${b.flashMs}ms` : `${(b.flashMs / 1000).toFixed(1)}s`}
                     </text>
-                    <text x={x + 32} y={225} textAnchor="middle" fontSize={10} fill="#94a3b8" fontWeight="bold">
+                    <text x={x + 32} y={225} textAnchor="middle" fontSize={11} fill="#94a3b8" fontWeight="bold">
                       N={b.seqLen}
                     </text>
-                    <text x={x + 32} y={240} textAnchor="middle" fontSize={9} fill="#22c55e">
+                    <text x={x + 32} y={240} textAnchor="middle" fontSize={11} fill="#22c55e">
                       {(b.standardMs / b.flashMs).toFixed(1)}× nhanh hơn
                     </text>
                   </g>
@@ -848,11 +848,11 @@ export default function FlashAttentionTopic() {
 
               {/* Legend */}
               <rect x={400} y={40} width={12} height={12} fill="url(#barRed)" rx={2} />
-              <text x={418} y={50} fontSize={10} fill="#e2e8f0">
+              <text x={418} y={50} fontSize={11} fill="#e2e8f0">
                 Standard
               </text>
               <rect x={400} y={60} width={12} height={12} fill="url(#barGreen)" rx={2} />
-              <text x={418} y={70} fontSize={10} fill="#e2e8f0">
+              <text x={418} y={70} fontSize={11} fill="#e2e8f0">
                 Flash Attn
               </text>
             </svg>

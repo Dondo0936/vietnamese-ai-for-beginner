@@ -647,7 +647,7 @@ export default function RedTeamingTopic() {
                         x={x + 27.5}
                         y={140 - h - 4}
                         textAnchor="middle"
-                        fontSize={10}
+                        fontSize={11}
                         fontWeight="bold"
                         fill={cat.color}
                       >
@@ -657,7 +657,7 @@ export default function RedTeamingTopic() {
                         x={x + 27.5}
                         y={155}
                         textAnchor="middle"
-                        fontSize={9}
+                        fontSize={11}
                         fill="#94a3b8"
                       >
                         {cat.name.split(" ")[0]}
@@ -673,10 +673,10 @@ export default function RedTeamingTopic() {
                   stroke="#334155"
                   strokeWidth={1}
                 />
-                <text x={10} y={144} fontSize={9} fill="#64748b">
+                <text x={10} y={144} fontSize={11} fill="#64748b">
                   0%
                 </text>
-                <text x={10} y={24} fontSize={9} fill="#64748b">
+                <text x={10} y={24} fontSize={11} fill="#64748b">
                   100%
                 </text>
               </svg>

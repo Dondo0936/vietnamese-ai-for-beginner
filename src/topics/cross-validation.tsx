@@ -9,6 +9,8 @@ import {
   RotateCcw,
   TrendingUp,
   BookOpenCheck,
+  Check,
+  X,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -212,15 +214,15 @@ export default function CrossValidationTopic() {
         </div>
 
         <PredictionGate
-          question="Bạn chia dataset thành train/test một lần rồi đo accuracy được 88%. Bạn chia lại (random seed khác) — lần này được 82%. Chuyện gì đang xảy ra?"
+          question="Bạn đã biết chia K phần và xoay vòng. Dataset có 500 mẫu. So K = 2 với K = 500 (leave-one-out). Đánh đổi chính là gì?"
           options={[
-            "Mô hình bị lỗi, cần huấn luyện lại từ đầu",
-            "Việc chia dữ liệu là ngẫu nhiên, kết quả dao động theo cú chia — một số đo duy nhất không đáng tin",
-            "Accuracy luôn dao động ngẫu nhiên, không có ý nghĩa",
-            "Cần thêm dữ liệu mới",
+            "K càng lớn càng tốt — K = 500 luôn thắng K = 2",
+            "K = 2 chỉ dùng 250 mẫu mỗi lần train (thiếu) còn K = 500 dùng 499 mẫu (sát thật) nhưng phải huấn luyện 500 lần",
+            "K = 2 và K = 500 cho kết quả y hệt vì trung bình bằng nhau",
+            "K không ảnh hưởng gì — chỉ để đặt tên file kết quả",
           ]}
           correct={1}
-          explanation="Chia một lần là 'một đề thi'. Kết quả phụ thuộc vào tập test rơi vào điểm nào. Cross-validation giải quyết bằng cách đo K lần với K tập test khác nhau, rồi báo cáo (trung bình ± độ lệch chuẩn). Nếu std lớn &rArr; báo động về tính ổn định."
+          explanation="K nhỏ (như 2) khiến mỗi lần train thiếu dữ liệu → kết quả bi quan hơn thực tế. K lớn (như N) cho train gần đủ dataset, nhưng phải fit mô hình N lần — cực tốn thời gian, và các fold chồng chéo nên std cuối cùng thường nhỏ giả. Thực tế K = 5 hoặc K = 10 dung hoà được cả hai phía; bài sau bạn sẽ đổi K để tận mắt thấy."
         />
       </LessonSection>
 
@@ -280,7 +282,7 @@ export default function CrossValidationTopic() {
                     key={`hdr-${block}`}
                     x={bx + blockW / 2}
                     y={46}
-                    fontSize={9}
+                    fontSize={11}
                     textAnchor="middle"
                     fill="currentColor"
                     className="text-muted"
@@ -350,7 +352,7 @@ export default function CrossValidationTopic() {
                             <text
                               x={bx + blockW / 2}
                               y={y + 15}
-                              fontSize={9}
+                              fontSize={11}
                               fill={isTest ? "#fff" : "#94a3b8"}
                               textAnchor="middle"
                               fontWeight={isTest ? 700 : 500}
@@ -399,7 +401,7 @@ export default function CrossValidationTopic() {
               <text
                 x={260}
                 y={328}
-                fontSize={10}
+                fontSize={11}
                 fill="currentColor"
                 className="text-muted"
                 textAnchor="middle"
@@ -896,7 +898,8 @@ function MistakeCard({
   return (
     <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
       <div className="flex items-start gap-2">
-        <span className="shrink-0 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white">
+        <span className="inline-flex items-center gap-0.5 shrink-0 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white">
+          <X size={10} aria-hidden="true" />
           SAI
         </span>
         <p className="text-sm font-semibold text-foreground">{wrong}</p>
@@ -906,7 +909,8 @@ function MistakeCard({
         {why}
       </p>
       <div className="flex items-start gap-2 pt-1 border-t border-border/60">
-        <span className="shrink-0 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
+        <span className="inline-flex items-center gap-0.5 shrink-0 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
+          <Check size={10} aria-hidden="true" />
           ĐÚNG
         </span>
         <p className="text-sm text-foreground/85">{fix}</p>
@@ -953,7 +957,7 @@ function FoldRound({
             <text
               x={16}
               y={22 + fold * 24}
-              fontSize={10}
+              fontSize={11}
               fill="currentColor"
               className="text-muted"
               fontWeight={fold === testFold ? 700 : 500}
@@ -979,7 +983,7 @@ function FoldRound({
                   <text
                     x={40 + cellIdx * 110 + 50}
                     y={23 + fold * 24}
-                    fontSize={9}
+                    fontSize={11}
                     fill={isTest ? "#fff" : "#94a3b8"}
                     textAnchor="middle"
                     fontWeight={isTest ? 700 : 500}

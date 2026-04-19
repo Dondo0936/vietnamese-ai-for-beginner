@@ -293,7 +293,7 @@ function SensitivityTimeline() {
             <text
               x={padL - 6}
               y={yAt(s) + 3}
-              fontSize={9}
+              fontSize={11}
               fill="currentColor"
               className="text-muted"
               textAnchor="end"
@@ -317,7 +317,7 @@ function SensitivityTimeline() {
             <text
               x={xAt(d)}
               y={H - padB + 16}
-              fontSize={9}
+              fontSize={11}
               fill="currentColor"
               className="text-muted"
               textAnchor="middle"
@@ -343,7 +343,7 @@ function SensitivityTimeline() {
               <text
                 x={xAt(d.day)}
                 y={yAt(d.sensitivity) - 10}
-                fontSize={8}
+                fontSize={11}
                 fill="#a855f7"
                 textAnchor="middle"
                 fontWeight={600}
@@ -365,7 +365,7 @@ function SensitivityTimeline() {
         <text
           x={(xAt(6) + xAt(10)) / 2}
           y={padT + 14}
-          fontSize={10}
+          fontSize={11}
           fill="#b45309"
           textAnchor="middle"
           fontWeight={700}
@@ -373,7 +373,7 @@ function SensitivityTimeline() {
           Thời điểm vàng
         </text>
         {/* Axis label */}
-        <text x={W / 2} y={H - 4} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={W / 2} y={H - 4} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           Ngày kể từ phơi nhiễm
         </text>
       </svg>

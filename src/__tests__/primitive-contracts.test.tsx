@@ -7,8 +7,11 @@
 
 import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
 import InlineChallenge from "@/components/interactive/InlineChallenge";
 import SliderGroup from "@/components/interactive/SliderGroup";
+import { DraggableDot, HITBOX_R } from "@/components/interactive/DraggableDot";
+import { MetricReadout } from "@/components/interactive/MetricReadout";
 
 // ─── InlineChallenge retry flow ─────────────────────────────────────
 describe("Contract 3.1: InlineChallenge retry after wrong answer", () => {
@@ -102,5 +105,62 @@ describe("Contract 3.2: SliderGroup reset restores defaults", () => {
       />
     );
     expect(screen.queryByRole("button", { name: /đặt lại|reset/i })).toBeNull();
+  });
+});
+
+// ─── DraggableDot accessibility + hitbox ────────────────────────────
+describe("Contract 3.3: DraggableDot primitive", () => {
+  function Wrap() {
+    const ref = React.useRef<SVGSVGElement>(null);
+    return (
+      <svg ref={ref} viewBox="0 0 100 100" width={300} height={300}>
+        <DraggableDot
+          cx={50}
+          cy={50}
+          r={6}
+          svgRef={ref}
+          onMove={() => {}}
+          label="điểm kéo"
+          valueText="x=50, y=50"
+        />
+      </svg>
+    );
+  }
+
+  it("renders an invisible hitbox with radius ≥ HITBOX_R (18)", () => {
+    const { container } = render(<Wrap />);
+    const circles = container.querySelectorAll("circle");
+    // 2 circles: visible (first) + hitbox (second). Hitbox r ≥ HITBOX_R.
+    expect(circles.length).toBe(2);
+    const hitbox = circles[1];
+    const radius = parseFloat(hitbox.getAttribute("r") ?? "0");
+    expect(radius).toBeGreaterThanOrEqual(HITBOX_R);
+    expect(HITBOX_R).toBeGreaterThanOrEqual(18);
+  });
+
+  it("hitbox is keyboard-focusable with slider role + aria-label", () => {
+    render(<Wrap />);
+    const slider = screen.getByRole("slider", { name: /điểm kéo/ });
+    expect(slider).toHaveAttribute("tabindex", "0");
+    expect(slider).toHaveAttribute("aria-valuetext", "x=50, y=50");
+  });
+});
+
+// ─── MetricReadout aria-live ────────────────────────────────────────
+describe("Contract 3.4: MetricReadout", () => {
+  it('wraps in aria-live="polite"', () => {
+    const { container } = render(<MetricReadout label="MSE" value={0.123} />);
+    const live = container.querySelector("[aria-live='polite']");
+    expect(live).not.toBeNull();
+    expect(live!.textContent).toContain("MSE");
+    expect(live!.textContent).toContain("0.123");
+  });
+
+  it("applies a number formatter when provided", () => {
+    const { container } = render(
+      <MetricReadout label="Hệ số" value={0.12345} format={(v) => v.toFixed(2)} />
+    );
+    expect(container.textContent).toContain("0.12");
+    expect(container.textContent).not.toContain("0.12345");
   });
 });

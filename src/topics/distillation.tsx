@@ -405,7 +405,7 @@ export default function DistillationTopic() {
                     y={y + 17}
                     textAnchor="middle"
                     fill="#3b82f6"
-                    fontSize="10"
+                    fontSize="11"
                     fontWeight="bold"
                   >
                     {layer.name} ({layer.dim})
@@ -435,7 +435,7 @@ export default function DistillationTopic() {
                     y={y + 17}
                     textAnchor="middle"
                     fill="#22c55e"
-                    fontSize="10"
+                    fontSize="11"
                     fontWeight="bold"
                   >
                     {layer.name} ({layer.dim})
@@ -489,7 +489,7 @@ export default function DistillationTopic() {
               y={340}
               textAnchor="middle"
               fill="#94a3b8"
-              fontSize="10"
+              fontSize="11"
             >
               {patternOn
                 ? "Pattern distillation: ĐANG BẬT — khớp hidden states trung gian"
@@ -594,7 +594,7 @@ export default function DistillationTopic() {
                     x={40 + barW}
                     y={55 + i * 50}
                     fill="#3b82f6"
-                    fontSize="10"
+                    fontSize="11"
                     fontWeight="bold"
                   >
                     {WORDS[i]}: {(p * 100).toFixed(1)}%
@@ -651,7 +651,7 @@ export default function DistillationTopic() {
                     x={530 + barW}
                     y={55 + i * 50}
                     fill="#22c55e"
-                    fontSize="10"
+                    fontSize="11"
                     fontWeight="bold"
                   >
                     {WORDS[i]}: {(p * 100).toFixed(1)}%
@@ -766,7 +766,7 @@ export default function DistillationTopic() {
                     y={y + 4}
                     textAnchor="end"
                     fill="var(--text-tertiary)"
-                    fontSize="9"
+                    fontSize="11"
                   >
                     {(v * 100).toFixed(0)}%
                   </text>
@@ -812,7 +812,7 @@ export default function DistillationTopic() {
                     y={258}
                     textAnchor="middle"
                     fill={s.color}
-                    fontSize="10"
+                    fontSize="11"
                     fontWeight="bold"
                   >
                     {s.label}
@@ -822,7 +822,7 @@ export default function DistillationTopic() {
                     y={270}
                     textAnchor="middle"
                     fill="var(--text-tertiary)"
-                    fontSize="9"
+                    fontSize="11"
                   >
                     (mô hình {s.size})
                   </text>

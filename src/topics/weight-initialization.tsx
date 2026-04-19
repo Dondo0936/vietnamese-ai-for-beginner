@@ -291,7 +291,7 @@ export default function WeightInitializationTopic() {
                 y={15}
                 textAnchor="middle"
                 fill="#94a3b8"
-                fontSize="10"
+                fontSize="11"
               >
                 Phân phối trọng số (fan_in = {fanIn})
               </text>
@@ -309,7 +309,7 @@ export default function WeightInitializationTopic() {
                 x={PAD}
                 y={SVG_H - PAD + 14}
                 fill="#64748b"
-                fontSize="8"
+                fontSize="11"
                 textAnchor="middle"
               >
                 {(-maxAbs).toFixed(1)}
@@ -318,7 +318,7 @@ export default function WeightInitializationTopic() {
                 x={SVG_W / 2}
                 y={SVG_H - PAD + 14}
                 fill="#64748b"
-                fontSize="8"
+                fontSize="11"
                 textAnchor="middle"
               >
                 0
@@ -327,7 +327,7 @@ export default function WeightInitializationTopic() {
                 x={SVG_W - PAD}
                 y={SVG_H - PAD + 14}
                 fill="#64748b"
-                fontSize="8"
+                fontSize="11"
                 textAnchor="middle"
               >
                 {maxAbs.toFixed(1)}

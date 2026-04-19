@@ -227,15 +227,15 @@ export default function WordEmbeddingsTopic() {
               {/* Axes */}
               <line x1="30" y1="370" x2="540" y2="370" stroke="#334155" strokeWidth="1" />
               <line x1="30" y1="10" x2="30" y2="370" stroke="#334155" strokeWidth="1" />
-              <text x="285" y="395" textAnchor="middle" fill="#64748b" fontSize="10">Chiều 1</text>
-              <text x="8" y="190" textAnchor="middle" fill="#64748b" fontSize="10" transform="rotate(-90,8,190)">Chiều 2</text>
+              <text x="285" y="395" textAnchor="middle" fill="#64748b" fontSize="11">Chiều 1</text>
+              <text x="8" y="190" textAnchor="middle" fill="#64748b" fontSize="11" transform="rotate(-90,8,190)">Chiều 2</text>
 
               {/* Cluster labels */}
               {Array.from(clusters.entries()).map(([name, points]) => {
                 const avgX = points.reduce((s, p) => s + p.x, 0) / points.length;
                 const avgY = points.reduce((s, p) => s + p.y, 0) / points.length;
                 return (
-                  <text key={name} x={avgX} y={avgY - 25} textAnchor="middle" fill="#475569" fontSize="9" fontStyle="italic">
+                  <text key={name} x={avgX} y={avgY - 25} textAnchor="middle" fill="#475569" fontSize="11" fontStyle="italic">
                     {name}
                   </text>
                 );

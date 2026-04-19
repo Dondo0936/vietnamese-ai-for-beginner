@@ -576,7 +576,7 @@ export default function ReasoningModelsTopic() {
                       y={224 - y * 1.8}
                       textAnchor="end"
                       fill="#64748b"
-                      fontSize="9"
+                      fontSize="11"
                     >
                       {y}%
                     </text>
@@ -591,7 +591,7 @@ export default function ReasoningModelsTopic() {
                     y="240"
                     textAnchor="middle"
                     fill="#64748b"
-                    fontSize="8"
+                    fontSize="11"
                   >
                     {p.budget >= 1000
                       ? `${p.budget / 1000}K`
@@ -649,7 +649,7 @@ export default function ReasoningModelsTopic() {
                         x={x + 8}
                         y={220 - currentAcc * 1.8}
                         fill="#fbbf24"
-                        fontSize="10"
+                        fontSize="11"
                         fontWeight="bold"
                       >
                         {currentAcc.toFixed(0)}% acc
@@ -663,7 +663,7 @@ export default function ReasoningModelsTopic() {
                   y="15"
                   textAnchor="middle"
                   fill="#94a3b8"
-                  fontSize="10"
+                  fontSize="11"
                 >
                   Accuracy ∝ log(test-time compute) — cùng model, thêm
                   thinking = tốt hơn.

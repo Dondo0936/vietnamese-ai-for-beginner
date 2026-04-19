@@ -324,7 +324,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
           y={16}
           textAnchor="middle"
           fill="#94a3b8"
-          fontSize={10}
+          fontSize={11}
           fontWeight={600}
         >
           {labelFor(ci)}
@@ -367,7 +367,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
                 y={pos.y + 3}
                 textAnchor="middle"
                 fill="white"
-                fontSize={9}
+                fontSize={11}
                 fontWeight={700}
               >
                 {isInput
@@ -381,7 +381,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
                 y={pos.y + 24}
                 textAnchor="middle"
                 fill="#94a3b8"
-                fontSize={8}
+                fontSize={11}
               >
                 {isInput ? "" : isOutput ? "xác suất" : `tanh`}
               </text>
@@ -391,7 +391,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
                   y={H - 8}
                   textAnchor="middle"
                   fill="#64748b"
-                  fontSize={9}
+                  fontSize={11}
                   fontWeight={600}
                 >
                   {count} nơ-ron

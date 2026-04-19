@@ -378,7 +378,7 @@ function MiniHistogram() {
                 x={x + barWidth / 2}
                 y={165}
                 textAnchor="middle"
-                fontSize={10}
+                fontSize={11}
                 fill="var(--text-secondary)"
               >
                 {b.label}
@@ -387,7 +387,7 @@ function MiniHistogram() {
                 x={x + barWidth / 2}
                 y={145 - h}
                 textAnchor="middle"
-                fontSize={10}
+                fontSize={11}
                 fill="var(--text-primary)"
               >
                 {b.count}
@@ -399,7 +399,7 @@ function MiniHistogram() {
           x={170}
           y={178}
           textAnchor="middle"
-          fontSize={10}
+          fontSize={11}
           fill="var(--text-secondary)"
         >
           Điểm

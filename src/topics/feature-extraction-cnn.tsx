@@ -959,10 +959,10 @@ export default function FeatureExtractionCnnTopic() {
                         <text x={x + 65} y={32} textAnchor="middle" fontSize={11} fontWeight="bold" fill={layer.color}>
                           {layer.name}
                         </text>
-                        <text x={x + 65} y={40 + h / 2 - 4} textAnchor="middle" fontSize={10} fill="#e2e8f0">
+                        <text x={x + 65} y={40 + h / 2 - 4} textAnchor="middle" fontSize={11} fill="#e2e8f0">
                           {layer.description}
                         </text>
-                        <text x={x + 65} y={40 + h / 2 + 10} textAnchor="middle" fontSize={9} fill="#94a3b8">
+                        <text x={x + 65} y={40 + h / 2 + 10} textAnchor="middle" fontSize={11} fill="#94a3b8">
                           RF {layer.receptiveField}
                         </text>
                         {i < LAYERS.length - 1 && (
@@ -980,10 +980,10 @@ export default function FeatureExtractionCnnTopic() {
                     );
                   })}
                   <rect x={20} y={120} width={610} height={6} rx={3} fill="url(#fhGrad)" opacity={0.7} />
-                  <text x={20} y={115} fontSize={9} fill={LAYERS[0].color}>
+                  <text x={20} y={115} fontSize={11} fill={LAYERS[0].color}>
                     Đơn giản · RF nhỏ
                   </text>
-                  <text x={630} y={115} fontSize={9} fill={LAYERS[3].color} textAnchor="end">
+                  <text x={630} y={115} fontSize={11} fill={LAYERS[3].color} textAnchor="end">
                     Trừu tượng · RF lớn
                   </text>
                 </svg>

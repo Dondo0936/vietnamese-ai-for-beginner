@@ -107,9 +107,9 @@ export default function UNetTopic() {
           </p>
 
           <svg viewBox="0 0 500 280" className="w-full rounded-lg border border-border bg-background">
-            <text x={80} y={18} fontSize={10} fill="#3b82f6" textAnchor="middle" fontWeight={600}>Encoder</text>
-            <text x={420} y={18} fontSize={10} fill="#22c55e" textAnchor="middle" fontWeight={600}>Decoder</text>
-            <text x={250} y={18} fontSize={10} fill="#f59e0b" textAnchor="middle" fontWeight={700}>U-Net</text>
+            <text x={80} y={18} fontSize={11} fill="#3b82f6" textAnchor="middle" fontWeight={600}>Encoder</text>
+            <text x={420} y={18} fontSize={11} fill="#22c55e" textAnchor="middle" fontWeight={600}>Decoder</text>
+            <text x={250} y={18} fontSize={11} fill="#f59e0b" textAnchor="middle" fontWeight={700}>U-Net</text>
 
             {LEVELS.map((lvl, i) => {
               const w = 85 - i * 14;
@@ -123,7 +123,7 @@ export default function UNetTopic() {
                   <rect x={40 + i * 18} y={yPos} width={w} height={22} rx={5}
                     fill="#3b82f6" opacity={isActive ? 0.35 : 0.15}
                     stroke="#3b82f6" strokeWidth={isActive ? 2 : 1} />
-                  <text x={40 + i * 18 + w / 2} y={yPos + 15} fontSize={7} fill="#3b82f6"
+                  <text x={40 + i * 18 + w / 2} y={yPos + 15} fontSize={11} fill="#3b82f6"
                     textAnchor="middle" fontWeight={500}>{lvl.enc}</text>
 
                   {/* Decoder block (if not bottleneck) */}
@@ -132,7 +132,7 @@ export default function UNetTopic() {
                       <rect x={460 - i * 18 - w} y={yPos} width={w} height={22} rx={5}
                         fill="#22c55e" opacity={isActive ? 0.35 : 0.15}
                         stroke="#22c55e" strokeWidth={isActive ? 2 : 1} />
-                      <text x={460 - i * 18 - w / 2} y={yPos + 15} fontSize={7} fill="#22c55e"
+                      <text x={460 - i * 18 - w / 2} y={yPos + 15} fontSize={11} fill="#22c55e"
                         textAnchor="middle" fontWeight={500}>{lvl.dec}</text>
 
                       {/* Skip connection */}
@@ -146,7 +146,7 @@ export default function UNetTopic() {
                         transition={{ repeat: Infinity, duration: 1.5 }}
                       />
                       {isActive && (
-                        <text x={250} y={yPos + 8} fontSize={7} fill="#8b5cf6" textAnchor="middle" fontWeight={600}>
+                        <text x={250} y={yPos + 8} fontSize={11} fill="#8b5cf6" textAnchor="middle" fontWeight={600}>
                           skip (concat)
                         </text>
                       )}
@@ -159,7 +159,7 @@ export default function UNetTopic() {
                       fill="#f59e0b" opacity={0.2} stroke="#f59e0b" strokeWidth={2} />
                   )}
                   {isBottleneck && (
-                    <text x={250} y={yPos + 15} fontSize={8} fill="#f59e0b" textAnchor="middle" fontWeight={700}>
+                    <text x={250} y={yPos + 15} fontSize={11} fill="#f59e0b" textAnchor="middle" fontWeight={700}>
                       Bottleneck (1024ch)
                     </text>
                   )}
@@ -167,8 +167,8 @@ export default function UNetTopic() {
               );
             })}
 
-            <text x={50} y={275} fontSize={9} fill="currentColor" className="text-muted">Input</text>
-            <text x={440} y={275} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">Segmentation Map</text>
+            <text x={50} y={275} fontSize={11} fill="currentColor" className="text-muted">Input</text>
+            <text x={440} y={275} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">Segmentation Map</text>
           </svg>
         </VisualizationSection>
       </LessonSection>

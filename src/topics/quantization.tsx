@@ -516,7 +516,7 @@ export default function QuantizationTopic() {
                 return (
                   <g key={v}>
                     <line x1={x} y1="178" x2={x} y2="184" stroke="var(--border)" strokeWidth="1" />
-                    <text x={x} y="197" textAnchor="middle" fill="var(--text-tertiary)" fontSize="9">
+                    <text x={x} y="197" textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">
                       {v}
                     </text>
                   </g>
@@ -590,7 +590,7 @@ export default function QuantizationTopic() {
               <text x="40" y="24" fill="var(--text-primary)" fontSize="11" fontWeight="bold">
                 {current.name} — {current.bins > 1000 ? "≥65k bin (gần như liên tục)" : `${current.bins} bin`}
               </text>
-              <text x="620" y="24" textAnchor="end" fill={current.color} fontSize="10">
+              <text x="620" y="24" textAnchor="end" fill={current.color} fontSize="11">
                 Chất lượng: {current.quality}%
               </text>
             </svg>
@@ -622,7 +622,7 @@ export default function QuantizationTopic() {
                 return (
                   <g key={v}>
                     <line x1="58" y1={y} x2="62" y2={y} stroke="var(--border)" strokeWidth="1" />
-                    <text x="55" y={y + 3} textAnchor="end" fill="var(--text-tertiary)" fontSize="9">
+                    <text x="55" y={y + 3} textAnchor="end" fill="var(--text-tertiary)" fontSize="11">
                       {v}%
                     </text>
                     <line x1="60" y1={y} x2="620" y2={y} stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,3" opacity="0.3" />
@@ -657,10 +657,10 @@ export default function QuantizationTopic() {
                       stroke="white"
                       strokeWidth={isSelected ? 2 : 1}
                     />
-                    <text x={x} y="200" textAnchor="middle" fill="var(--text-secondary)" fontSize="10" fontWeight={isSelected ? "bold" : "normal"}>
+                    <text x={x} y="200" textAnchor="middle" fill="var(--text-secondary)" fontSize="11" fontWeight={isSelected ? "bold" : "normal"}>
                       {p.name}
                     </text>
-                    <text x={x} y={y - 14} textAnchor="middle" fill={p.color} fontSize="10" fontWeight="bold">
+                    <text x={x} y={y - 14} textAnchor="middle" fill={p.color} fontSize="11" fontWeight="bold">
                       {p.quality}%
                     </text>
                   </g>

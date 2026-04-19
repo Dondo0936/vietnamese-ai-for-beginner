@@ -184,7 +184,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
         y={originY - 16}
         textAnchor="middle"
         fill="#94a3b8"
-        fontSize={10}
+        fontSize={11}
       >
         Learning Rate →
       </text>
@@ -193,7 +193,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
         y={originY + (cellSize * BATCH_SIZES.length) / 2}
         textAnchor="middle"
         fill="#94a3b8"
-        fontSize={10}
+        fontSize={11}
         transform={`rotate(-90 20 ${
           originY + (cellSize * BATCH_SIZES.length) / 2
         })`}
@@ -209,7 +209,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
           y={originY - 4}
           textAnchor="middle"
           fill="#cbd5e1"
-          fontSize={9}
+          fontSize={11}
         >
           {formatLr(lr)}
         </text>
@@ -223,7 +223,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
           y={originY + j * cellSize + cellSize / 2 + 3}
           textAnchor="end"
           fill="#cbd5e1"
-          fontSize={9}
+          fontSize={11}
         >
           {bs}
         </text>
@@ -258,7 +258,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
                 y={originY + j * cellSize + cellSize / 2 + 4}
                 textAnchor="middle"
                 fill="white"
-                fontSize={10}
+                fontSize={11}
                 fontWeight="bold"
                 pointerEvents="none"
               >
@@ -271,7 +271,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
                 y={originY + j * cellSize + cellSize / 2 + 4}
                 textAnchor="middle"
                 fill="#64748b"
-                fontSize={10}
+                fontSize={11}
                 pointerEvents="none"
               >
                 ?
@@ -283,7 +283,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
 
       {/* Legend */}
       <g transform={`translate(${originX}, ${originY + cellSize * BATCH_SIZES.length + 18})`}>
-        <text x={0} y={6} fill="#94a3b8" fontSize={9}>
+        <text x={0} y={6} fill="#94a3b8" fontSize={11}>
           Accuracy
         </text>
         {Array.from({ length: 12 }).map((_, idx) => {
@@ -299,10 +299,10 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
             />
           );
         })}
-        <text x={60} y={24} fill="#64748b" fontSize={8}>
+        <text x={60} y={24} fill="#64748b" fontSize={11}>
           42%
         </text>
-        <text x={60 + 11 * 14} y={24} fill="#64748b" fontSize={8}>
+        <text x={60 + 11 * 14} y={24} fill="#64748b" fontSize={11}>
           95%
         </text>
       </g>
@@ -373,7 +373,7 @@ function SearchComparison() {
           y={plotHeight - 12}
           textAnchor="middle"
           fill="#94a3b8"
-          fontSize={9}
+          fontSize={11}
         >
           log(learning rate)
         </text>
@@ -382,7 +382,7 @@ function SearchComparison() {
           y={plotHeight / 2}
           textAnchor="middle"
           fill="#94a3b8"
-          fontSize={9}
+          fontSize={11}
           transform={`rotate(-90 12 ${plotHeight / 2})`}
         >
           log(batch size)
@@ -474,10 +474,10 @@ function StrategyEfficiencyBars() {
         const filled = (barWidth * s.efficiency) / 100;
         return (
           <g key={s.name}>
-            <text x={15} y={y + 14} fill="#cbd5e1" fontSize={10} fontWeight="bold">
+            <text x={15} y={y + 14} fill="#cbd5e1" fontSize={11} fontWeight="bold">
               {s.name}
             </text>
-            <text x={15} y={y + 26} fill="#64748b" fontSize={8}>
+            <text x={15} y={y + 26} fill="#64748b" fontSize={11}>
               {s.description}
             </text>
             <rect x={160} y={y} width={barWidth} height={28} rx={4} fill="#1e293b" />
@@ -487,12 +487,12 @@ function StrategyEfficiencyBars() {
               y={y + 18}
               textAnchor="end"
               fill="white"
-              fontSize={10}
+              fontSize={11}
               fontWeight="bold"
             >
               {s.efficiency}%
             </text>
-            <text x={510} y={y + 18} fill="#94a3b8" fontSize={8}>
+            <text x={510} y={y + 18} fill="#94a3b8" fontSize={11}>
               {s.trials}
             </text>
           </g>

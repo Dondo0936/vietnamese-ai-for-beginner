@@ -284,7 +284,8 @@ function ScatterPlayground() {
       <div className="rounded-xl border border-border bg-card p-4 space-y-3">
         <svg
           viewBox="0 0 500 320"
-          className="w-full cursor-crosshair rounded-lg border border-border bg-background touch-none"
+          className="w-full cursor-crosshair rounded-lg border border-border bg-background"
+          style={{ touchAction: dragging !== null ? "none" : "auto" }}
           role="img"
           aria-label={`Biểu đồ hồi quy tương tác: ${points.length} điểm. MSE bạn ${userMSE.toFixed(1)}, MSE tối ưu ${optMSE.toFixed(1)}.`}
           onClick={handleCanvasClick}
@@ -720,10 +721,10 @@ function ResidualBreakdown() {
             <text x={160} y={28} textAnchor="middle" fontSize={11} fill="#10b981" fontWeight={700}>
               đây! min
             </text>
-            <text x={160} y={175} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+            <text x={160} y={175} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               độ dốc đường thẳng
             </text>
-            <text x={15} y={105} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted" transform="rotate(-90 15 105)">
+            <text x={15} y={105} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted" transform="rotate(-90 15 105)">
               tổng sai số bình phương
             </text>
           </svg>
@@ -901,16 +902,16 @@ export default function LinearRegressionTopic() {
               <line x1={30} y1={120} x2={300} y2={40} stroke="#3b82f6" strokeWidth={2.5} />
               {/* điểm chặn */}
               <circle cx={30} cy={120} r={4} fill="#10b981" />
-              <text x={36} y={135} fontSize={10} fill="#10b981" fontWeight={600}>
+              <text x={36} y={135} fontSize={11} fill="#10b981" fontWeight={600}>
                 w₀ (điểm chặn)
               </text>
               {/* độ dốc */}
               <line x1={150} y1={90} x2={200} y2={90} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="3 3" />
               <line x1={200} y1={90} x2={200} y2={70} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="3 3" />
-              <text x={210} y={85} fontSize={10} fill="#f59e0b" fontWeight={600}>
+              <text x={210} y={85} fontSize={11} fill="#f59e0b" fontWeight={600}>
                 w₁ = độ dốc
               </text>
-              <text x={120} y={20} fontSize={10} fill="#3b82f6" fontWeight={600}>
+              <text x={120} y={20} fontSize={11} fill="#3b82f6" fontWeight={600}>
                 ŷ = w₁·x + w₀
               </text>
             </svg>

@@ -424,7 +424,7 @@ export default function ObservabilityForAiTopic() {
                 strokeOpacity={0.35}
                 strokeDasharray="2 3"
               />
-              <text x={x} y={10} fontSize={9} fill="#94a3b8" textAnchor="middle">
+              <text x={x} y={10} fontSize={11} fill="#94a3b8" textAnchor="middle">
                 {Math.round(scaleMax * t)}ms
               </text>
             </g>
@@ -451,7 +451,7 @@ export default function ObservabilityForAiTopic() {
               <text
                 x={labelW - 8}
                 y={y + 14}
-                fontSize={10}
+                fontSize={11}
                 textAnchor="end"
                 fontFamily="ui-monospace, Menlo, monospace"
                 fill={isActive ? "#f8fafc" : "#cbd5e1"}
@@ -496,7 +496,7 @@ export default function ObservabilityForAiTopic() {
               <text
                 x={xStart + width + 6}
                 y={y + 17}
-                fontSize={9}
+                fontSize={11}
                 fill="#94a3b8"
                 fontFamily="ui-monospace, Menlo, monospace"
               >
@@ -523,7 +523,7 @@ export default function ObservabilityForAiTopic() {
                 <text
                   x={labelW - 8}
                   y={cy + 14}
-                  fontSize={9}
+                  fontSize={11}
                   textAnchor="end"
                   fontFamily="ui-monospace, Menlo, monospace"
                   fill="#94a3b8"
@@ -548,7 +548,7 @@ export default function ObservabilityForAiTopic() {
                 <text
                   x={cStart + cW + 6}
                   y={cy + 16}
-                  fontSize={9}
+                  fontSize={11}
                   fill="#94a3b8"
                   fontFamily="ui-monospace, Menlo, monospace"
                 >
@@ -715,7 +715,7 @@ export default function ObservabilityForAiTopic() {
             strokeDasharray="3 3"
             strokeWidth={1}
           />
-          <text x={w - 2} y={p50Y - 2} fontSize={8} fill="#22c55e" textAnchor="end">
+          <text x={w - 2} y={p50Y - 2} fontSize={11} fill="#22c55e" textAnchor="end">
             p50 {p50}ms
           </text>
           {/* p95 line */}
@@ -728,7 +728,7 @@ export default function ObservabilityForAiTopic() {
             strokeDasharray="3 3"
             strokeWidth={1}
           />
-          <text x={w - 2} y={p95Y - 2} fontSize={8} fill="#ef4444" textAnchor="end">
+          <text x={w - 2} y={p95Y - 2} fontSize={11} fill="#ef4444" textAnchor="end">
             p95 {p95}ms
           </text>
           <motion.polyline
@@ -745,10 +745,10 @@ export default function ObservabilityForAiTopic() {
             const y = h - (v / max) * h;
             return <circle key={i} cx={x} cy={y} r={1.6} fill="#60a5fa" />;
           })}
-          <text x={2} y={h + 14} fontSize={8} fill="#94a3b8">
+          <text x={2} y={h + 14} fontSize={11} fill="#94a3b8">
             cũ ←
           </text>
-          <text x={w - 2} y={h + 14} fontSize={8} fill="#94a3b8" textAnchor="end">
+          <text x={w - 2} y={h + 14} fontSize={11} fill="#94a3b8" textAnchor="end">
             → mới
           </text>
         </svg>

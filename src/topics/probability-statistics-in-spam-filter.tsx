@@ -441,12 +441,17 @@ export default function ProbabilityStatisticsInSpamFilter() {
                         initial={{ opacity: 0, x: -8 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0 }}
-                        className={`ml-auto text-[11px] font-semibold ${
+                        className={`ml-auto inline-flex items-center gap-1 text-[11px] font-semibold ${
                           correct
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-rose-600 dark:text-rose-400"
                         }`}
                       >
+                        {correct ? (
+                          <CheckCircle2 size={12} aria-hidden="true" />
+                        ) : (
+                          <XCircle size={12} aria-hidden="true" />
+                        )}
                         {correct
                           ? "Chính xác"
                           : `Sai — thực ra là ${email.truth}`}

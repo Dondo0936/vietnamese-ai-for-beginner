@@ -759,8 +759,8 @@ function CurveChart({ title, points, xMax, yMax, color, yLabel, fmt }: CurveChar
         ))}
         <line x1={32} y1={plotH - 22} x2={plotW - 16} y2={plotH - 22} stroke="var(--border)" strokeWidth={1} />
         <line x1={32} y1={20} x2={32} y2={plotH - 22} stroke="var(--border)" strokeWidth={1} />
-        <text x={plotW - 14} y={plotH - 7} fontSize={9} fill="var(--text-tertiary)" textAnchor="end">epoch</text>
-        <text x={8} y={26} fontSize={9} fill="var(--text-tertiary)">{yLabel}</text>
+        <text x={plotW - 14} y={plotH - 7} fontSize={11} fill="var(--text-tertiary)" textAnchor="end">epoch</text>
+        <text x={8} y={26} fontSize={11} fill="var(--text-tertiary)">{yLabel}</text>
         <path d={path} fill="none" stroke={color} strokeWidth={1.8} />
         {last && <circle cx={toPX(last.x)} cy={toPY(last.y)} r={3.5} fill={color} stroke="#fff" strokeWidth={1} />}
       </svg>
@@ -792,7 +792,7 @@ function WeightHistogram({ points, color }: { points: TrainingPoint[]; color: st
       <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Phân bố trọng số qua các epoch">
         <title>Mỗi cột là một thời điểm (epoch). Chấm là trung bình w; cột bo thể hiện độ rộng phân bố.</title>
         <line x1={20} y1={plotH / 2} x2={plotW - 20} y2={plotH / 2} stroke="var(--border)" strokeWidth={0.8} strokeDasharray="3,3" />
-        <text x={10} y={plotH / 2 + 3} fontSize={8} fill="var(--text-tertiary)">0</text>
+        <text x={10} y={plotH / 2 + 3} fontSize={11} fill="var(--text-tertiary)">0</text>
         {sample.map((s, i) => {
           const cx = 24 + i * xStep;
           const mid = plotH / 2 - (s.wMean / 3) * (plotH / 2 - 8);
@@ -802,7 +802,7 @@ function WeightHistogram({ points, color }: { points: TrainingPoint[]; color: st
               <rect x={cx - 7} y={mid - spreadPx} width={14} height={Math.max(2, spreadPx * 2)} rx={2} fill={color} opacity={0.22} />
               <circle cx={cx} cy={mid} r={2.6} fill={color} />
               {(i === 0 || i === sample.length - 1) && (
-                <text x={cx} y={plotH - 4} fontSize={8} fill="var(--text-tertiary)" textAnchor="middle">ep {s.epoch}</text>
+                <text x={cx} y={plotH - 4} fontSize={11} fill="var(--text-tertiary)" textAnchor="middle">ep {s.epoch}</text>
               )}
             </g>
           );
@@ -891,14 +891,14 @@ function MiniBatchSketch() {
         return (
           <g key={i}>
             <rect x={190} y={y} width={80} height={16} rx={3} fill="#8b5cf633" stroke="#8b5cf6" />
-            <text x={230} y={y + 12} textAnchor="middle" fontSize={9} fill="#5b21b6" fontFamily="monospace">mini-batch {i + 1}</text>
+            <text x={230} y={y + 12} textAnchor="middle" fontSize={11} fill="#5b21b6" fontFamily="monospace">mini-batch {i + 1}</text>
             <path d={`M 270 ${y + 8} L 320 ${y + 8}`} stroke="var(--text-secondary)" strokeWidth={1} markerEnd="url(#mb-arrow)" />
             <rect x={325} y={y} width={56} height={16} rx={3} fill="#22c55e33" stroke="#22c55e" />
-            <text x={353} y={y + 12} textAnchor="middle" fontSize={9} fill="#166534" fontFamily="monospace">GPU #{i + 1}</text>
+            <text x={353} y={y + 12} textAnchor="middle" fontSize={11} fill="#166534" fontFamily="monospace">GPU #{i + 1}</text>
           </g>
         );
       })}
-      <text x={240} y={122} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={122} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Gradient các GPU được tổng hợp (all-reduce) trước khi cập nhật.
       </text>
     </svg>
@@ -921,7 +921,7 @@ function BackpropSketch() {
         return (
           <g key={i}>
             <rect x={cx - 18} y={38} width={36} height={48} rx={6} fill="#8b5cf6" opacity={0.15 + (5 - i) * 0.12} stroke="#8b5cf6" />
-            <text x={cx} y={66} textAnchor="middle" fontSize={9} fill="#4c1d95" fontFamily="monospace">L{96 - i * 16}</text>
+            <text x={cx} y={66} textAnchor="middle" fontSize={11} fill="#4c1d95" fontFamily="monospace">L{96 - i * 16}</text>
           </g>
         );
       })}
@@ -929,7 +929,7 @@ function BackpropSketch() {
         const cx = 68 + i * 72;
         return <path key={i} d={`M ${cx + 40} 62 L ${cx} 62`} stroke="#8b5cf6" strokeWidth={2} markerEnd="url(#bp-arrow)" />;
       })}
-      <text x={240} y={112} textAnchor="middle" fontSize={10} fill="#8b5cf6" fontStyle="italic" fontWeight={600}>
+      <text x={240} y={112} textAnchor="middle" fontSize={11} fill="#8b5cf6" fontStyle="italic" fontWeight={600}>
         Chain rule nhân đạo hàm cục bộ ngược qua 96 lớp để ra ∂L/∂w.
       </text>
     </svg>
@@ -947,19 +947,19 @@ function AdamWSketch() {
       </defs>
       <rect x={20} y={20} width={120} height={50} rx={8} fill="#3b82f6" opacity={0.18} stroke="#3b82f6" />
       <text x={80} y={42} textAnchor="middle" fontSize={11} fill="#1e40af" fontWeight={600}>m (momentum)</text>
-      <text x={80} y={60} textAnchor="middle" fontSize={9} fill="#1e40af" fontFamily="monospace">trung bình gradient</text>
+      <text x={80} y={60} textAnchor="middle" fontSize={11} fill="#1e40af" fontFamily="monospace">trung bình gradient</text>
       <rect x={160} y={20} width={120} height={50} rx={8} fill="#8b5cf6" opacity={0.18} stroke="#8b5cf6" />
       <text x={220} y={42} textAnchor="middle" fontSize={11} fill="#5b21b6" fontWeight={600}>v (variance)</text>
-      <text x={220} y={60} textAnchor="middle" fontSize={9} fill="#5b21b6" fontFamily="monospace">grad bình phương</text>
+      <text x={220} y={60} textAnchor="middle" fontSize={11} fill="#5b21b6" fontFamily="monospace">grad bình phương</text>
       <path d="M 140 45 L 160 45" stroke="var(--text-secondary)" strokeWidth={1.5} />
       <path d="M 280 45 L 320 45" stroke="var(--text-secondary)" strokeWidth={1.5} markerEnd="url(#aw-arrow)" />
       <rect x={330} y={20} width={130} height={50} rx={8} fill="#22c55e" opacity={0.18} stroke="#22c55e" />
       <text x={395} y={42} textAnchor="middle" fontSize={11} fill="#166534" fontWeight={700}>bước thích ứng</text>
-      <text x={395} y={60} textAnchor="middle" fontSize={9} fill="#166534" fontFamily="monospace">w giảm theo m / √v</text>
-      <text x={240} y={110} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={395} y={60} textAnchor="middle" fontSize={11} fill="#166534" fontFamily="monospace">w giảm theo m / √v</text>
+      <text x={240} y={110} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Trọng số nào gradient to sẽ bị rút ngắn bước; gradient nhỏ được đẩy nhanh hơn.
       </text>
-      <text x={240} y={128} textAnchor="middle" fontSize={10} fill="var(--text-tertiary)">
+      <text x={240} y={128} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
         Weight decay áp riêng — đây là &ldquo;W&rdquo; trong AdamW.
       </text>
     </svg>
@@ -972,10 +972,10 @@ function ClipSketch() {
       <title>Gradient clipping — chặn gradient vượt ngưỡng về bằng 1,0.</title>
       <line x1={30} y1={80} x2={450} y2={80} stroke="var(--border)" strokeWidth={1} />
       <line x1={240} y1={30} x2={240} y2={140} stroke="var(--border)" strokeWidth={1} />
-      <text x={250} y={26} fontSize={10} fill="var(--text-tertiary)">gradient norm</text>
-      <text x={458} y={84} fontSize={10} fill="var(--text-tertiary)" textAnchor="end">batch</text>
+      <text x={250} y={26} fontSize={11} fill="var(--text-tertiary)">gradient norm</text>
+      <text x={458} y={84} fontSize={11} fill="var(--text-tertiary)" textAnchor="end">batch</text>
       <line x1={30} y1={55} x2={450} y2={55} stroke="#ef4444" strokeWidth={1} strokeDasharray="4,3" />
-      <text x={440} y={50} fontSize={9} fill="#ef4444" fontWeight={600} textAnchor="end">clip = 1,0</text>
+      <text x={440} y={50} fontSize={11} fill="#ef4444" fontWeight={600} textAnchor="end">clip = 1,0</text>
       {[60, 80, 50, 72, 140, 60, 48, 66, 74, 62].map((h, i) => {
         const x = 50 + i * 38;
         const capped = h > 50 ? 50 : h;
@@ -983,11 +983,11 @@ function ClipSketch() {
           <g key={i}>
             <rect x={x - 10} y={80 - h} width={20} height={h} rx={2} fill="#ef4444" opacity={0.22} />
             <rect x={x - 10} y={80 - capped} width={20} height={capped} rx={2} fill="#22c55e" opacity={0.75} />
-            {h > 50 && <text x={x} y={80 - h - 4} textAnchor="middle" fontSize={9} fill="#ef4444" fontWeight={600}>bùng nổ</text>}
+            {h > 50 && <text x={x} y={80 - h - 4} textAnchor="middle" fontSize={11} fill="#ef4444" fontWeight={600}>bùng nổ</text>}
           </g>
         );
       })}
-      <text x={240} y={154} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={154} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Thanh đỏ nhạt = gradient thô. Thanh xanh = sau clip. Batch thứ 5 sẽ phá run nếu không clip.
       </text>
     </svg>
@@ -1006,13 +1006,13 @@ function LoopSketch() {
         return (
           <g key={lbl}>
             <circle cx={cx} cy={cy} r={26} fill="#3b82f6" opacity={0.15} stroke="#3b82f6" />
-            <text x={cx} y={cy + 4} textAnchor="middle" fontSize={10} fill="#1e3a8a" fontWeight={600}>{lbl}</text>
+            <text x={cx} y={cy + 4} textAnchor="middle" fontSize={11} fill="#1e3a8a" fontWeight={600}>{lbl}</text>
           </g>
         );
       })}
       <circle cx={240} cy={75} r={40} fill="none" stroke="#3b82f6" strokeWidth={1.3} strokeDasharray="4,4" />
-      <text x={240} y={78} textAnchor="middle" fontSize={10} fill="#3b82f6" fontWeight={700}>500 tỉ lần</text>
-      <text x={240} y={146} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontStyle="italic">
+      <text x={240} y={78} textAnchor="middle" fontSize={11} fill="#3b82f6" fontWeight={700}>500 tỉ lần</text>
+      <text x={240} y={146} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
         Mỗi vòng ~vài trăm mili-giây trên GPT-3. 34 ngày = đủ số vòng để loss về gần đáy.
       </text>
     </svg>
@@ -1071,10 +1071,10 @@ function WarmupSketch() {
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <rect x={toPX(0)} y={20} width={toPX(warmupEnd) - toPX(0)} height={plotH - 44} fill="#0ea5e9" opacity={0.08} />
-      <text x={toPX(warmupEnd / 2)} y={34} textAnchor="middle" fontSize={10} fill="#0c4a6e" fontWeight={600}>Warmup</text>
+      <text x={toPX(warmupEnd / 2)} y={34} textAnchor="middle" fontSize={11} fill="#0c4a6e" fontWeight={600}>Warmup</text>
       <path d={path} fill="none" stroke="#0ea5e9" strokeWidth={2} />
-      <text x={plotW - 22} y={plotH - 8} fontSize={9} fill="var(--text-tertiary)" textAnchor="end">số bước</text>
-      <text x={10} y={30} fontSize={9} fill="var(--text-tertiary)">η</text>
+      <text x={plotW - 22} y={plotH - 8} fontSize={11} fill="var(--text-tertiary)" textAnchor="end">số bước</text>
+      <text x={10} y={30} fontSize={11} fill="var(--text-tertiary)">η</text>
     </svg>
   );
 }
@@ -1099,10 +1099,10 @@ function DecaySketch() {
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={toPY(peak * 0.1)} x2={plotW - 20} y2={toPY(peak * 0.1)} stroke="#22c55e" strokeWidth={1} strokeDasharray="3,3" opacity={0.6} />
-      <text x={plotW - 24} y={toPY(peak * 0.1) - 4} fontSize={9} fill="#22c55e" textAnchor="end">sàn = 10% đỉnh</text>
+      <text x={plotW - 24} y={toPY(peak * 0.1) - 4} fontSize={11} fill="#22c55e" textAnchor="end">sàn = 10% đỉnh</text>
       <path d={path} fill="none" stroke="#22c55e" strokeWidth={2} />
-      <text x={plotW - 22} y={plotH - 8} fontSize={9} fill="var(--text-tertiary)" textAnchor="end">số bước</text>
-      <text x={10} y={30} fontSize={9} fill="var(--text-tertiary)">η</text>
+      <text x={plotW - 22} y={plotH - 8} fontSize={11} fill="var(--text-tertiary)" textAnchor="end">số bước</text>
+      <text x={10} y={30} fontSize={11} fill="var(--text-tertiary)">η</text>
     </svg>
   );
 }
@@ -1127,11 +1127,11 @@ function ClippingCurveSketch() {
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={toPY(1)} x2={plotW - 20} y2={toPY(1)} stroke="#ef4444" strokeWidth={1} strokeDasharray="3,3" opacity={0.8} />
-      <text x={plotW - 22} y={toPY(1) - 4} fontSize={9} fill="#ef4444" textAnchor="end">threshold 1,0</text>
+      <text x={plotW - 22} y={toPY(1) - 4} fontSize={11} fill="#ef4444" textAnchor="end">threshold 1,0</text>
       <path d={rawPath} fill="none" stroke="#ef4444" strokeWidth={1.5} strokeDasharray="2,2" />
       <path d={clippedPath} fill="none" stroke="#22c55e" strokeWidth={2.2} />
-      <text x={10} y={30} fontSize={9} fill="var(--text-tertiary)">norm</text>
-      <text x={plotW - 22} y={plotH - 8} fontSize={9} fill="var(--text-tertiary)" textAnchor="end">batch</text>
+      <text x={10} y={30} fontSize={11} fill="var(--text-tertiary)">norm</text>
+      <text x={plotW - 22} y={plotH - 8} fontSize={11} fill="var(--text-tertiary)" textAnchor="end">batch</text>
     </svg>
   );
 }

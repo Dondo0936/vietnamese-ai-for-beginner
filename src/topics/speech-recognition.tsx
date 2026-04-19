@@ -134,10 +134,10 @@ export default function SpeechRecognitionTopic() {
                       stroke={s.color}
                       strokeWidth={active ? 3 : 1.5}
                     />
-                    <text x={x} y={48} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">
+                    <text x={x} y={48} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                       {s.label}
                     </text>
-                    <text x={x} y={64} textAnchor="middle" fill="#cbd5e1" fontSize={7}>
+                    <text x={x} y={64} textAnchor="middle" fill="#cbd5e1" fontSize={11}>
                       Bước {i + 1}
                     </text>
                     {i < PIPELINE.length - 1 && (

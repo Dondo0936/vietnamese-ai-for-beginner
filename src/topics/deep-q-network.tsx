@@ -315,7 +315,7 @@ function GridView({ agent, size }: GridViewProps) {
                 x={x + cell / 2}
                 y={y + cell / 2 + 3}
                 fill="#e2e8f0"
-                fontSize={8}
+                fontSize={11}
                 textAnchor="middle"
                 opacity={0.6}
               >
@@ -327,7 +327,7 @@ function GridView({ agent, size }: GridViewProps) {
                 x={x + cell / 2}
                 y={y + cell / 2 + 3}
                 fill="#bbf7d0"
-                fontSize={10}
+                fontSize={11}
                 textAnchor="middle"
                 fontWeight="bold"
               >
@@ -351,7 +351,7 @@ function GridView({ agent, size }: GridViewProps) {
             x={x}
             y={y}
             fill="#fde68a"
-            fontSize={10}
+            fontSize={11}
             textAnchor="middle"
             opacity={0.85}
           >
@@ -401,7 +401,7 @@ function BufferView({ agent, width }: BufferViewProps) {
       role="img"
       aria-label="Replay buffer visualization"
     >
-      <text x={4} y={12} fill="#94a3b8" fontSize={10}>
+      <text x={4} y={12} fill="#94a3b8" fontSize={11}>
         Replay buffer — {agent.buffer.length}/{BUFFER_CAPACITY} transitions (ô
         vàng = vừa được sample cho batch)
       </text>

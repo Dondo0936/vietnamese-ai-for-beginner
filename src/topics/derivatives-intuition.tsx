@@ -102,6 +102,8 @@ function TangentExplorer({
   showSecant?: boolean;
   delta?: number;
 }) {
+  const [isDragging, setIsDragging] = useState(false);
+
   // Tạo polyline cho đường cong
   const curvePath = useMemo(() => {
     const pts: string[] = [];
@@ -142,6 +144,7 @@ function TangentExplorer({
 
   const handleClick = useCallback(
     (e: React.PointerEvent<SVGSVGElement>) => {
+      setIsDragging(true);
       const rect = e.currentTarget.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * VIEW_W;
       onXChange(Math.max(0, Math.min(VIEW_W, x)));
@@ -149,13 +152,19 @@ function TangentExplorer({
     [onXChange],
   );
 
+  const stopDrag = useCallback(() => setIsDragging(false), []);
+
   return (
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-      className="w-full max-w-lg mx-auto cursor-crosshair touch-none bg-surface/40 rounded-lg border border-border"
+      className="w-full max-w-lg mx-auto cursor-crosshair bg-surface/40 rounded-lg border border-border"
+      style={{ touchAction: isDragging ? "none" : "auto" }}
       role="img"
       aria-label={`Đường cong, tiếp tuyến tại x=${xPos.toFixed(0)}, slope=${s.toFixed(3)}`}
       onPointerDown={handleClick}
+      onPointerUp={stopDrag}
+      onPointerLeave={stopDrag}
+      onPointerCancel={stopDrag}
       onPointerMove={handleDrag}
     >
       {/* Lưới nền */}

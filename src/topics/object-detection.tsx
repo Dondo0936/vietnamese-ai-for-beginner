@@ -165,7 +165,7 @@ export default function ObjectDetectionTopic() {
                   )}
                 </g>
               ))}
-              <text x="10" y="270" fill="#64748b" fontSize="10">
+              <text x="10" y="270" fill="#64748b" fontSize="11">
                 Phát hiện: {filtered.length} đối tượng (ngưỡng: {(confThreshold * 100).toFixed(0)}%)
               </text>
             </svg>

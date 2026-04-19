@@ -507,10 +507,10 @@ function TimelineVisualization() {
         <text x={170} y={75} fontSize={14} fill="#fff" textAnchor="middle" fontWeight={700}>
           TRAIN
         </text>
-        <text x={170} y={92} fontSize={10} fill="#fff" textAnchor="middle">
+        <text x={170} y={92} fontSize={11} fill="#fff" textAnchor="middle">
           Jan 2023 → Sep 2024
         </text>
-        <text x={170} y={106} fontSize={9} fill="#fff" textAnchor="middle" opacity={0.9}>
+        <text x={170} y={106} fontSize={11} fill="#fff" textAnchor="middle" opacity={0.9}>
           Hàng tỷ tương tác lịch sử
         </text>
 
@@ -519,7 +519,7 @@ function TimelineVisualization() {
         <text x={350} y={75} fontSize={12} fill="#fff" textAnchor="middle" fontWeight={700}>
           VAL
         </text>
-        <text x={350} y={92} fontSize={9} fill="#fff" textAnchor="middle">
+        <text x={350} y={92} fontSize={11} fill="#fff" textAnchor="middle">
           Oct 2024
         </text>
 
@@ -528,12 +528,12 @@ function TimelineVisualization() {
         <text x={445} y={75} fontSize={12} fill="#fff" textAnchor="middle" fontWeight={700}>
           TEST
         </text>
-        <text x={445} y={92} fontSize={9} fill="#fff" textAnchor="middle">
+        <text x={445} y={92} fontSize={11} fill="#fff" textAnchor="middle">
           Nov 2024
         </text>
 
         {/* Arrow showing direction */}
-        <text x={280} y={28} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={280} y={28} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           Train trên quá khứ → đánh giá trên tương lai
         </text>
 
@@ -545,11 +545,11 @@ function TimelineVisualization() {
         {/* Live users at the end */}
         <g>
           <rect x={498} y={40} width={22} height={70} rx={4} fill="#8b5cf6" opacity={0.7} />
-          <text x={509} y={78} fontSize={9} fill="#fff" textAnchor="middle" fontWeight={700} transform="rotate(-90 509 78)">
+          <text x={509} y={78} fontSize={11} fill="#fff" textAnchor="middle" fontWeight={700} transform="rotate(-90 509 78)">
             A/B LIVE
           </text>
         </g>
-        <text x={509} y={126} fontSize={8} fill="#8b5cf6" textAnchor="middle" fontWeight={700}>
+        <text x={509} y={126} fontSize={11} fill="#8b5cf6" textAnchor="middle" fontWeight={700}>
           Real users
         </text>
       </svg>
@@ -637,7 +637,10 @@ function SplitVisual({ mode }: { mode: "random" | "time" }) {
       <div className="rounded-lg bg-background border border-border p-3">
         {isLeaky ? (
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-red-500">Vấn đề:</p>
+            <p className="inline-flex items-center gap-1 text-xs font-semibold text-red-500">
+              <AlertTriangle size={12} aria-hidden="true" />
+              Vấn đề:
+            </p>
             <p className="text-xs text-foreground/85 leading-relaxed">
               T3 (tháng 3) nằm trong test, nhưng T5, T9 (tháng 5, 9 &mdash; tương
               lai so với T3) lại ở train. Mô hình &ldquo;biết trước&rdquo; xu
@@ -646,7 +649,10 @@ function SplitVisual({ mode }: { mode: "random" | "time" }) {
           </div>
         ) : (
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-green-600">Ưu điểm:</p>
+            <p className="inline-flex items-center gap-1 text-xs font-semibold text-green-600">
+              <CheckCircle2 size={12} aria-hidden="true" />
+              Ưu điểm:
+            </p>
             <p className="text-xs text-foreground/85 leading-relaxed">
               Train = T1-T8 (cũ), Val = T9-T10, Test = T11-T12 (mới nhất). Mô
               phỏng đúng production: dự đoán tương lai từ quá khứ. Không có
@@ -715,10 +721,10 @@ function TwoStageArchitecture() {
         <text x={75} y={50} fontSize={11} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={700}>
           800 triệu video
         </text>
-        <text x={75} y={65} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={75} y={65} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           Kho video khổng lồ
         </text>
-        <text x={75} y={80} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={75} y={80} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           (không kịp xếp hết)
         </text>
 
@@ -735,10 +741,10 @@ function TwoStageArchitecture() {
         <text x={270} y={50} fontSize={11} fill="#3b82f6" textAnchor="middle" fontWeight={700}>
           Giai đoạn 1: Candidate
         </text>
-        <text x={270} y={65} fontSize={9} fill="#3b82f6" textAnchor="middle">
+        <text x={270} y={65} fontSize={11} fill="#3b82f6" textAnchor="middle">
           Mạng nơ-ron sâu, embedding
         </text>
-        <text x={270} y={80} fontSize={9} fill="#3b82f6" textAnchor="middle">
+        <text x={270} y={80} fontSize={11} fill="#3b82f6" textAnchor="middle">
           Chọn ~200 video ứng viên
         </text>
 
@@ -750,58 +756,58 @@ function TwoStageArchitecture() {
         <text x={480} y={50} fontSize={11} fill="#22c55e" textAnchor="middle" fontWeight={700}>
           Giai đoạn 2: Ranking
         </text>
-        <text x={480} y={65} fontSize={9} fill="#22c55e" textAnchor="middle">
+        <text x={480} y={65} fontSize={11} fill="#22c55e" textAnchor="middle">
           Xếp hạng ~200 → top 20
         </text>
-        <text x={480} y={80} fontSize={9} fill="#22c55e" textAnchor="middle">
+        <text x={480} y={80} fontSize={11} fill="#22c55e" textAnchor="middle">
           Điểm dự đoán watch time
         </text>
 
         {/* Data split details below each stage */}
         <g transform="translate(180, 110)">
-          <text x={90} y={14} fontSize={10} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
+          <text x={90} y={14} fontSize={11} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
             Dữ liệu Candidate
           </text>
           <rect x={0} y={20} width={180} height={18} rx={3} fill="#3b82f6" opacity={0.7} />
-          <text x={90} y={33} fontSize={9} fill="#fff" textAnchor="middle" fontWeight={600}>
+          <text x={90} y={33} fontSize={11} fill="#fff" textAnchor="middle" fontWeight={600}>
             Train: tương tác &gt; 7 ngày trước
           </text>
           <rect x={0} y={42} width={90} height={18} rx={3} fill="#f59e0b" opacity={0.7} />
           <rect x={90} y={42} width={90} height={18} rx={3} fill="#22c55e" opacity={0.7} />
-          <text x={45} y={55} fontSize={9} fill="#fff" textAnchor="middle" fontWeight={600}>
+          <text x={45} y={55} fontSize={11} fill="#fff" textAnchor="middle" fontWeight={600}>
             Val: tuần trước
           </text>
-          <text x={135} y={55} fontSize={9} fill="#fff" textAnchor="middle" fontWeight={600}>
+          <text x={135} y={55} fontSize={11} fill="#fff" textAnchor="middle" fontWeight={600}>
             Test: 24h qua
           </text>
         </g>
 
         <g transform="translate(410, 110)">
-          <text x={70} y={14} fontSize={10} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
+          <text x={70} y={14} fontSize={11} fill="currentColor" className="text-foreground" textAnchor="middle" fontWeight={600}>
             Dữ liệu Ranking
           </text>
           <rect x={0} y={20} width={140} height={18} rx={3} fill="#3b82f6" opacity={0.7} />
-          <text x={70} y={33} fontSize={9} fill="#fff" textAnchor="middle" fontWeight={600}>
+          <text x={70} y={33} fontSize={11} fill="#fff" textAnchor="middle" fontWeight={600}>
             Train: click + watch time
           </text>
           <rect x={0} y={42} width={140} height={18} rx={3} fill="#22c55e" opacity={0.7} />
-          <text x={70} y={55} fontSize={9} fill="#fff" textAnchor="middle" fontWeight={600}>
+          <text x={70} y={55} fontSize={11} fill="#fff" textAnchor="middle" fontWeight={600}>
             A/B: Final test thật
           </text>
         </g>
 
         {/* Metric side */}
         <g transform="translate(20, 180)">
-          <text x={0} y={10} fontSize={10} fill="currentColor" className="text-foreground" fontWeight={600}>
+          <text x={0} y={10} fontSize={11} fill="currentColor" className="text-foreground" fontWeight={600}>
             Metric đánh giá:
           </text>
-          <text x={0} y={25} fontSize={9} fill="#3b82f6">
+          <text x={0} y={25} fontSize={11} fill="#3b82f6">
             • Candidate: Recall@200 (có bao nhiêu video hay lọt vào top 200?)
           </text>
-          <text x={0} y={40} fontSize={9} fill="#22c55e">
+          <text x={0} y={40} fontSize={11} fill="#22c55e">
             • Ranking: AUC weighted theo watch time, NDCG@20
           </text>
-          <text x={0} y={55} fontSize={9} fill="#8b5cf6">
+          <text x={0} y={55} fontSize={11} fill="#8b5cf6">
             • A/B: Watch time per user, satisfaction survey
           </text>
         </g>
@@ -882,10 +888,15 @@ function OfflineOnlineDivergence() {
                   Online ({s.onlineMetric})
                 </p>
                 <p
-                  className={`text-lg font-bold tabular-nums ${
+                  className={`inline-flex items-center gap-1 text-lg font-bold tabular-nums ${
                     s.onlineTone === "good" ? "text-green-600" : "text-red-500"
                   }`}
                 >
+                  {s.onlineTone === "good" ? (
+                    <CheckCircle2 size={14} aria-hidden="true" />
+                  ) : (
+                    <XCircle size={14} aria-hidden="true" />
+                  )}
                   {s.onlineValue}
                 </p>
               </div>

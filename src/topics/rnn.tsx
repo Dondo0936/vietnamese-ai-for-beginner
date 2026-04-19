@@ -424,7 +424,7 @@ export default function RnnTopic() {
                         >
                           {SENTENCE[t - 1]}
                         </text>
-                        <text x={x} y={286} textAnchor="middle" fontSize={9} className="fill-muted">
+                        <text x={x} y={286} textAnchor="middle" fontSize={11} className="fill-muted">
                           x{t}
                         </text>
                         {/* Mũi tên xₜ lên ô RNN */}
@@ -471,7 +471,7 @@ export default function RnnTopic() {
                         x={x}
                         y={174}
                         textAnchor="middle"
-                        fontSize={9}
+                        fontSize={11}
                         className="fill-muted"
                       >
                         tanh(W_h·h + W_x·x + b)
@@ -479,11 +479,11 @@ export default function RnnTopic() {
                     )}
 
                     {/* Nhãn hₜ phía trên */}
-                    <text x={x} y={118} textAnchor="middle" fontSize={10} fontWeight={600} fill="#22c55e">
+                    <text x={x} y={118} textAnchor="middle" fontSize={11} fontWeight={600} fill="#22c55e">
                       h{t}
                     </text>
                     {/* Giá trị gần đúng của hₜ */}
-                    <text x={x} y={106} textAnchor="middle" fontSize={8} className="fill-muted">
+                    <text x={x} y={106} textAnchor="middle" fontSize={11} className="fill-muted">
                       [{hiddenStates[t].map((v) => v.toFixed(2)).join(", ")}]
                     </text>
 
@@ -507,7 +507,7 @@ export default function RnnTopic() {
                           x={x + 75}
                           y={152}
                           textAnchor="middle"
-                          fontSize={9}
+                          fontSize={11}
                           className="fill-muted"
                         >
                           W_hh
@@ -542,7 +542,7 @@ export default function RnnTopic() {
                           x={x}
                           y={67}
                           textAnchor="middle"
-                          fontSize={10}
+                          fontSize={11}
                           fontWeight={600}
                           fill="#8b5cf6"
                         >
@@ -638,7 +638,7 @@ export default function RnnTopic() {
                         x={x + 23}
                         y={38}
                         textAnchor="middle"
-                        fontSize={10}
+                        fontSize={11}
                         fontWeight={600}
                         fill="#ef4444"
                       >
@@ -648,7 +648,7 @@ export default function RnnTopic() {
                         x={x + 23}
                         y={62}
                         textAnchor="middle"
-                        fontSize={8}
+                        fontSize={11}
                         className="fill-muted"
                       >
                         {(strength * 100).toFixed(0)}%
@@ -656,7 +656,7 @@ export default function RnnTopic() {
                     </g>
                   );
                 })}
-                <text x={280} y={12} textAnchor="middle" fontSize={9} className="fill-muted">
+                <text x={280} y={12} textAnchor="middle" fontSize={11} className="fill-muted">
                   Gradient lan ngược từ bước 10 về bước 1 — càng xa càng mờ
                 </text>
               </svg>

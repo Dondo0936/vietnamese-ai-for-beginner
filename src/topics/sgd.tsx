@@ -298,7 +298,7 @@ export default function SGDTopic() {
                 x={toSvg(3) + 10}
                 y={toSvg(3) - 8}
                 fill="#22c55e"
-                fontSize="9"
+                fontSize="11"
               >
                 Cực tiểu
               </text>
@@ -356,7 +356,7 @@ export default function SGDTopic() {
                     x={toSvg(0.5) + 8}
                     y={toSvg(0.5) + 4}
                     fill="#f59e0b"
-                    fontSize="9"
+                    fontSize="11"
                   >
                     Bắt đầu
                   </text>
@@ -369,7 +369,7 @@ export default function SGDTopic() {
                 y={SVG_H - 5}
                 textAnchor="middle"
                 fill="#64748b"
-                fontSize="10"
+                fontSize="11"
               >
                 w₁
               </text>
@@ -377,7 +377,7 @@ export default function SGDTopic() {
                 x={8}
                 y={SVG_H / 2}
                 fill="#64748b"
-                fontSize="10"
+                fontSize="11"
                 transform={`rotate(-90, 8, ${SVG_H / 2})`}
               >
                 w₂

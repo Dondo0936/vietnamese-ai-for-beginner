@@ -364,7 +364,8 @@ export default function CrossValidationInKaggle() {
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-lg border border-border bg-card p-3 space-y-1">
-              <p className="text-xs font-semibold text-green-600">
+              <p className="inline-flex items-center gap-1 text-xs font-semibold text-green-600">
+                <CheckCircle2 size={12} aria-hidden="true" />
                 Submission 1 &mdash; an toàn
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
@@ -374,7 +375,8 @@ export default function CrossValidationInKaggle() {
               </p>
             </div>
             <div className="rounded-lg border border-border bg-card p-3 space-y-1">
-              <p className="text-xs font-semibold text-amber-500">
+              <p className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+                <AlertTriangle size={12} aria-hidden="true" />
                 Submission 2 &mdash; cân bằng
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
@@ -540,7 +542,7 @@ function PublicVsPrivateChart() {
               <text
                 x={10}
                 y={y + 4}
-                fontSize={9}
+                fontSize={11}
                 fill="currentColor"
                 className="text-muted"
                 fontWeight={600}
@@ -557,7 +559,7 @@ function PublicVsPrivateChart() {
                 fill="#3b82f6"
                 opacity={0.75}
               />
-              <text x={60 + publicW + 4} y={y + 3} fontSize={8} fill="#3b82f6">
+              <text x={60 + publicW + 4} y={y + 3} fontSize={11} fill="#3b82f6">
                 {d.public.toFixed(3)}
               </text>
               {/* Private bar */}
@@ -573,7 +575,7 @@ function PublicVsPrivateChart() {
               <text
                 x={320 + privateW + 4}
                 y={y + 3}
-                fontSize={8}
+                fontSize={11}
                 fill="#22c55e"
               >
                 {d.private.toFixed(3)}
@@ -582,7 +584,7 @@ function PublicVsPrivateChart() {
                 <text
                   x={470}
                   y={y + 3}
-                  fontSize={9}
+                  fontSize={11}
                   fill="#22c55e"
                   fontWeight={700}
                 >
@@ -853,10 +855,10 @@ function DriftScatter() {
         {/* Axes */}
         <line x1={50} y1={280} x2={440} y2={280} stroke="currentColor" className="text-muted" strokeWidth={1} />
         <line x1={50} y1={30} x2={50} y2={280} stroke="currentColor" className="text-muted" strokeWidth={1} />
-        <text x={245} y={305} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={245} y={305} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           Public LB score →
         </text>
-        <text x={25} y={155} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle" transform="rotate(-90 25 155)">
+        <text x={25} y={155} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle" transform="rotate(-90 25 155)">
           Private LB score →
         </text>
 
@@ -871,7 +873,7 @@ function DriftScatter() {
           strokeDasharray="4,3"
           opacity={0.6}
         />
-        <text x={400} y={50} fontSize={9} fill="#94a3b8">y = x</text>
+        <text x={400} y={50} fontSize={11} fill="#94a3b8">y = x</text>
 
         {/* Points */}
         {teams.map((t) => {
@@ -895,9 +897,9 @@ function DriftScatter() {
         {/* Legend */}
         <g transform="translate(300, 40)">
           <circle cx={0} cy={0} r={5} fill="#22c55e" opacity={0.8} />
-          <text x={10} y={3} fontSize={9} fill="#22c55e">Tin CV → giữ vị trí</text>
+          <text x={10} y={3} fontSize={11} fill="#22c55e">Tin CV → giữ vị trí</text>
           <circle cx={0} cy={16} r={5} fill="#ef4444" opacity={0.8} />
-          <text x={10} y={19} fontSize={9} fill="#ef4444">Overfit public → tụt</text>
+          <text x={10} y={19} fontSize={11} fill="#ef4444">Overfit public → tụt</text>
         </g>
       </svg>
 

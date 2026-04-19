@@ -146,7 +146,8 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
     <div className="space-y-3">
       <svg
         viewBox="0 0 500 320"
-        className="w-full rounded-lg border border-border bg-background touch-none cursor-crosshair"
+        className="w-full rounded-lg border border-border bg-background cursor-crosshair"
+        style={{ touchAction: dragIdx !== null ? "none" : "auto" }}
         role="img"
         aria-label={`Bộ phân loại logistic — ${points.length} điểm, accuracy ${(stats.accuracy * 100).toFixed(0)}%`}
         onClick={onSvgClick}
@@ -192,8 +193,8 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
 
         {/* Trục sigmoid P(y=1) */}
         <line x1={10} y1={20} x2={10} y2={280} stroke="currentColor" className="text-muted" strokeWidth={0.5} />
-        <text x={14} y={26} fontSize={9} fill="currentColor" className="text-muted">P = 1</text>
-        <text x={14} y={278} fontSize={9} fill="currentColor" className="text-muted">P = 0</text>
+        <text x={14} y={26} fontSize={11} fill="currentColor" className="text-muted">P = 1</text>
+        <text x={14} y={278} fontSize={11} fill="currentColor" className="text-muted">P = 0</text>
 
         {/* Đường sigmoid */}
         <motion.path
@@ -216,7 +217,7 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
           strokeDasharray="4 4"
           opacity={0.7}
         />
-        <text x={498} y={thresholdY - 4} fontSize={10} fill="#16a34a" textAnchor="end" fontWeight={600}>
+        <text x={498} y={thresholdY - 4} fontSize={11} fill="#16a34a" textAnchor="end" fontWeight={600}>
           ngưỡng = {(threshold * 100).toFixed(0)}%
         </text>
 
@@ -331,13 +332,13 @@ function LinearPredictionCard() {
         {/* Trục */}
         <line x1={20} y1={150} x2={370} y2={150} stroke="currentColor" className="text-border" />
         <line x1={20} y1={20} x2={20} y2={150} stroke="currentColor" className="text-border" />
-        <text x={25} y={18} fontSize={10} fill="currentColor" className="text-muted">y</text>
+        <text x={25} y={18} fontSize={11} fill="currentColor" className="text-muted">y</text>
 
         {/* Ngưỡng 0 và 1 */}
         <line x1={20} y1={140} x2={370} y2={140} stroke="#16a34a" strokeWidth={0.8} strokeDasharray="3 3" opacity={0.6} />
         <line x1={20} y1={40} x2={370} y2={40} stroke="#16a34a" strokeWidth={0.8} strokeDasharray="3 3" opacity={0.6} />
-        <text x={372} y={44} fontSize={9} fill="#16a34a" textAnchor="start">y=1</text>
-        <text x={372} y={144} fontSize={9} fill="#16a34a" textAnchor="start">y=0</text>
+        <text x={372} y={44} fontSize={11} fill="#16a34a" textAnchor="start">y=1</text>
+        <text x={372} y={144} fontSize={11} fill="#16a34a" textAnchor="start">y=0</text>
 
         {/* Đường tuyến tính dốc */}
         <line x1={40} y1={170} x2={360} y2={0} stroke="#f59e0b" strokeWidth={2.5} />
@@ -359,7 +360,7 @@ function LinearPredictionCard() {
         {/* Vùng lỗi */}
         <rect x={20} y={150} width={350} height={20} fill="#dc2626" opacity={0.1} />
         <rect x={20} y={0} width={350} height={20} fill="#dc2626" opacity={0.1} />
-        <text x={195} y={175} fontSize={9} fill="#dc2626" textAnchor="middle">
+        <text x={195} y={175} fontSize={11} fill="#dc2626" textAnchor="middle">
           y &lt; 0 (vô nghĩa)
         </text>
       </svg>
@@ -382,12 +383,12 @@ function LogisticPredictionCard() {
       <svg viewBox="0 0 380 180" className="w-full">
         <line x1={20} y1={150} x2={370} y2={150} stroke="currentColor" className="text-border" />
         <line x1={20} y1={20} x2={20} y2={150} stroke="currentColor" className="text-border" />
-        <text x={25} y={18} fontSize={10} fill="currentColor" className="text-muted">P</text>
+        <text x={25} y={18} fontSize={11} fill="currentColor" className="text-muted">P</text>
 
         <line x1={20} y1={140} x2={370} y2={140} stroke="#16a34a" strokeWidth={0.8} strokeDasharray="3 3" opacity={0.6} />
         <line x1={20} y1={40} x2={370} y2={40} stroke="#16a34a" strokeWidth={0.8} strokeDasharray="3 3" opacity={0.6} />
-        <text x={372} y={44} fontSize={9} fill="#16a34a" textAnchor="start">P=1</text>
-        <text x={372} y={144} fontSize={9} fill="#16a34a" textAnchor="start">P=0</text>
+        <text x={372} y={44} fontSize={11} fill="#16a34a" textAnchor="start">P=1</text>
+        <text x={372} y={144} fontSize={11} fill="#16a34a" textAnchor="start">P=0</text>
 
         {/* Đường sigmoid */}
         <path
@@ -435,9 +436,9 @@ function SigmoidMiniVisual() {
       <line x1={160} y1={10} x2={160} y2={130} stroke="currentColor" className="text-border" />
       <line x1={10} y1={20} x2={310} y2={20} stroke="#16a34a" strokeDasharray="3 3" strokeWidth={0.8} opacity={0.6} />
       <line x1={10} y1={110} x2={310} y2={110} stroke="#16a34a" strokeDasharray="3 3" strokeWidth={0.8} opacity={0.6} />
-      <text x={312} y={24} fontSize={9} fill="#16a34a">1</text>
-      <text x={312} y={114} fontSize={9} fill="#16a34a">0</text>
-      <text x={156} y={130} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">0</text>
+      <text x={312} y={24} fontSize={11} fill="#16a34a">1</text>
+      <text x={312} y={114} fontSize={11} fill="#16a34a">0</text>
+      <text x={156} y={130} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">0</text>
       <path
         d={Array.from({ length: 80 }, (_, i) => {
           const xi = 10 + (i / 79) * 300;
@@ -471,10 +472,10 @@ function LogOddsMiniVisual() {
         stroke="#8b5cf6"
         strokeWidth={2.4}
       />
-      <text x={12} y={18} fontSize={10} fill="currentColor" className="text-muted">log-odds lớn</text>
-      <text x={12} y={130} fontSize={10} fill="currentColor" className="text-muted">log-odds nhỏ</text>
-      <text x={308} y={82} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">p = 1</text>
-      <text x={18} y={82} fontSize={9} fill="currentColor" className="text-muted">p = 0</text>
+      <text x={12} y={18} fontSize={11} fill="currentColor" className="text-muted">log-odds lớn</text>
+      <text x={12} y={130} fontSize={11} fill="currentColor" className="text-muted">log-odds nhỏ</text>
+      <text x={308} y={82} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">p = 1</text>
+      <text x={18} y={82} fontSize={11} fill="currentColor" className="text-muted">p = 0</text>
     </svg>
   );
 }
@@ -535,14 +536,14 @@ function ProbOddsLogOddsVisual({ pct }: { pct: number }) {
           animate={{ width: 340 * p }}
           transition={{ duration: 0.15 }}
         />
-        <text x={10} y={42} fontSize={10} fill="currentColor" className="text-muted">
+        <text x={10} y={42} fontSize={11} fill="currentColor" className="text-muted">
           Thanh xác suất: {(p * 100).toFixed(0)}% tô xanh, {(100 - p * 100).toFixed(0)}% còn lại
         </text>
 
         {/* Marker log-odds trên trục (−5..5) */}
         <line x1={10} y1={62} x2={350} y2={62} stroke="currentColor" className="text-border" />
         <line x1={180} y1={58} x2={180} y2={66} stroke="currentColor" className="text-border" />
-        <text x={180} y={76} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={180} y={76} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           0 (p = 0.5)
         </text>
         <motion.circle
@@ -568,9 +569,9 @@ function CrossEntropyMiniVisual() {
     <svg viewBox="0 0 320 140" className="w-full max-w-sm">
       <line x1={20} y1={120} x2={310} y2={120} stroke="currentColor" className="text-border" />
       <line x1={20} y1={10} x2={20} y2={120} stroke="currentColor" className="text-border" />
-      <text x={24} y={20} fontSize={10} fill="currentColor" className="text-muted">loss</text>
-      <text x={310} y={132} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">p̂ = 1</text>
-      <text x={22} y={132} fontSize={9} fill="currentColor" className="text-muted">p̂ = 0</text>
+      <text x={24} y={20} fontSize={11} fill="currentColor" className="text-muted">loss</text>
+      <text x={310} y={132} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">p̂ = 1</text>
+      <text x={22} y={132} fontSize={11} fill="currentColor" className="text-muted">p̂ = 0</text>
       {/* −log(p̂) */}
       <path
         d={Array.from({ length: 80 }, (_, i) => {
@@ -583,8 +584,8 @@ function CrossEntropyMiniVisual() {
         stroke="#dc2626"
         strokeWidth={2.4}
       />
-      <text x={42} y={30} fontSize={10} fill="#dc2626">loss lớn khi p̂ nhỏ</text>
-      <text x={188} y={118} fontSize={10} fill="#16a34a">loss ≈ 0 khi p̂ → 1</text>
+      <text x={42} y={30} fontSize={11} fill="#dc2626">loss lớn khi p̂ nhỏ</text>
+      <text x={188} y={118} fontSize={11} fill="#16a34a">loss ≈ 0 khi p̂ → 1</text>
     </svg>
   );
 }

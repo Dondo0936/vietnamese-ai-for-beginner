@@ -7,6 +7,8 @@ import {
   Brain,
   Sparkles,
   AlertTriangle,
+  AlertCircle,
+  Check,
   TrendingDown,
   TrendingUp,
   Circle,
@@ -424,13 +426,13 @@ export default function OverfittingUnderfittingTopic() {
                 className="text-muted"
                 strokeWidth={1}
               />
-              <text x={W / 2} y={H - 10} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+              <text x={W / 2} y={H - 10} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
                 x (đặc trưng đầu vào)
               </text>
               <text
                 x={14}
                 y={H / 2}
-                fontSize={10}
+                fontSize={11}
                 fill="currentColor"
                 className="text-muted"
                 textAnchor="middle"
@@ -493,7 +495,7 @@ export default function OverfittingUnderfittingTopic() {
               {/* Legend */}
               <g>
                 <circle cx={W - 120} cy={PAD_T - 4} r={4} fill="#f59e0b" />
-                <text x={W - 112} y={PAD_T - 1} fontSize={10} fill="#f59e0b" fontWeight={600}>
+                <text x={W - 112} y={PAD_T - 1} fontSize={11} fill="#f59e0b" fontWeight={600}>
                   Train
                 </text>
                 {showTest && (
@@ -506,7 +508,7 @@ export default function OverfittingUnderfittingTopic() {
                       stroke="#06b6d4"
                       strokeWidth={2}
                     />
-                    <text x={W - 60} y={PAD_T - 1} fontSize={10} fill="#06b6d4" fontWeight={600}>
+                    <text x={W - 60} y={PAD_T - 1} fontSize={11} fill="#06b6d4" fontWeight={600}>
                       Test
                     </text>
                   </>
@@ -761,8 +763,8 @@ export default function OverfittingUnderfittingTopic() {
               {/* Grid */}
               <line x1={40} y1={16} x2={40} y2={164} stroke="currentColor" className="text-muted" strokeWidth={1} />
               <line x1={40} y1={164} x2={460} y2={164} stroke="currentColor" className="text-muted" strokeWidth={1} />
-              <text x={14} y={24} fontSize={9} fill="currentColor" className="text-muted">Loss</text>
-              <text x={450} y={180} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">Epoch →</text>
+              <text x={14} y={24} fontSize={11} fill="currentColor" className="text-muted">Loss</text>
+              <text x={450} y={180} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">Epoch →</text>
 
               {/* Early stopping guide */}
               <line
@@ -778,7 +780,7 @@ export default function OverfittingUnderfittingTopic() {
               <text
                 x={40 + (trainingCurve.turnAt / trainingCurve.max) * 420}
                 y={14}
-                fontSize={9}
+                fontSize={11}
                 fill="#22c55e"
                 textAnchor="middle"
                 fontWeight={700}
@@ -806,7 +808,7 @@ export default function OverfittingUnderfittingTopic() {
               <text
                 x={60}
                 y={38}
-                fontSize={9}
+                fontSize={11}
                 fill="currentColor"
                 className="text-muted"
               >
@@ -815,7 +817,7 @@ export default function OverfittingUnderfittingTopic() {
               <text
                 x={280}
                 y={38}
-                fontSize={9}
+                fontSize={11}
                 fill="#ef4444"
                 fontWeight={600}
               >
@@ -825,9 +827,9 @@ export default function OverfittingUnderfittingTopic() {
               {/* Legend */}
               <g transform="translate(310, 150)">
                 <line x1={0} y1={0} x2={16} y2={0} stroke="#3b82f6" strokeWidth={2} />
-                <text x={20} y={3} fontSize={9} fill="#3b82f6">Train loss</text>
+                <text x={20} y={3} fontSize={11} fill="#3b82f6">Train loss</text>
                 <line x1={90} y1={0} x2={106} y2={0} stroke="#ef4444" strokeWidth={2} strokeDasharray="3,2" />
-                <text x={110} y={3} fontSize={9} fill="#ef4444">Val loss</text>
+                <text x={110} y={3} fontSize={11} fill="#ef4444">Val loss</text>
               </g>
             </svg>
           </div>
@@ -878,7 +880,8 @@ export default function OverfittingUnderfittingTopic() {
             }
             childB={
               <div className="rounded-lg bg-background p-4 space-y-2">
-                <p className="text-sm font-semibold text-red-500">
+                <p className="inline-flex items-center gap-1 text-sm font-semibold text-red-500">
+                  <AlertCircle size={14} aria-hidden="true" />
                   Overfit = học thuộc nhiễu
                 </p>
                 <ul className="list-disc list-inside text-sm text-foreground/85 space-y-1">
@@ -904,8 +907,18 @@ export default function OverfittingUnderfittingTopic() {
                 <tr className="border-b border-border">
                   <th className="text-left py-2 pr-3 font-semibold text-foreground">Triệu chứng</th>
                   <th className="text-left py-2 pr-3 font-semibold text-blue-500">Underfit</th>
-                  <th className="text-left py-2 pr-3 font-semibold text-green-500">Good fit</th>
-                  <th className="text-left py-2 font-semibold text-red-500">Overfit</th>
+                  <th className="text-left py-2 pr-3 font-semibold text-green-500">
+                    <span className="inline-flex items-center gap-1">
+                      <Check size={14} aria-hidden="true" />
+                      Good fit
+                    </span>
+                  </th>
+                  <th className="text-left py-2 font-semibold text-red-500">
+                    <span className="inline-flex items-center gap-1">
+                      <AlertCircle size={14} aria-hidden="true" />
+                      Overfit
+                    </span>
+                  </th>
                 </tr>
               </thead>
               <tbody className="text-foreground/85">

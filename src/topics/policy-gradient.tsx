@@ -290,7 +290,7 @@ function CorridorVisual({ position, isRunning }: CorridorProps) {
               y={58}
               textAnchor="middle"
               fill={isGoal ? "#bbf7d0" : "#64748b"}
-              fontSize={9}
+              fontSize={11}
               fontWeight={isGoal ? "bold" : "normal"}
             >
               {idx}
@@ -327,7 +327,7 @@ function CorridorVisual({ position, isRunning }: CorridorProps) {
         y={92}
         textAnchor="middle"
         fill="#94a3b8"
-        fontSize={9}
+        fontSize={11}
       >
         Mỗi bước sai: reward {STEP_PENALTY}. Đến goal: reward +{REWARD_AT_GOAL}.
       </text>
@@ -414,7 +414,7 @@ function PolicyChart({ policy, previousPolicy }: PolicyChartProps) {
                 y={225}
                 textAnchor="middle"
                 fill={p > prev ? "#22c55e" : "#ef4444"}
-                fontSize={9}
+                fontSize={11}
               >
                 {p > prev ? "▲" : "▼"} {((p - prev) * 100).toFixed(1)}%
               </text>
@@ -475,7 +475,7 @@ function GradientArrow({ direction, magnitude }: GradientArrowProps) {
         y={12}
         textAnchor="middle"
         fill="#e2e8f0"
-        fontSize={10}
+        fontSize={11}
         fontWeight="bold"
       >
         {label}
@@ -485,7 +485,7 @@ function GradientArrow({ direction, magnitude }: GradientArrowProps) {
         y={64}
         textAnchor="middle"
         fill="#94a3b8"
-        fontSize={9}
+        fontSize={11}
       >
         |G − baseline| = {magnitude.toFixed(3)}
       </text>

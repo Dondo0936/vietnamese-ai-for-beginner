@@ -544,7 +544,7 @@ export default function InstanceSegmentationTopic() {
                         x={inst.bbox.x1 + 4}
                         y={inst.bbox.y1 - 4}
                         fill={color}
-                        fontSize="10"
+                        fontSize="11"
                         fontWeight="bold"
                         opacity={dimmed ? 0.3 : 1}
                       >
@@ -852,7 +852,7 @@ export default function InstanceSegmentationTopic() {
                         x={inst.bbox.x1 + 4}
                         y={inst.bbox.y1 - 4}
                         fill={inst.color}
-                        fontSize="10"
+                        fontSize="11"
                         fontWeight="bold"
                       >
                         {inst.className} {(inst.score * 100).toFixed(0)}%

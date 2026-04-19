@@ -502,7 +502,7 @@ function TreeStepA() {
             x={leaf.x}
             y={leaf.y + 36}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill="currentColor"
             className="text-muted"
           >
@@ -541,7 +541,7 @@ function TreeStepB() {
             x={n.x}
             y={n.y + 34}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill="currentColor"
             className="text-muted"
           >
@@ -570,7 +570,7 @@ function TreeStepB() {
             x={n.x}
             y={n.y + 30}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill="currentColor"
             className="text-muted"
           >
@@ -596,7 +596,7 @@ function TreeStepB() {
         x={355}
         y={50}
         textAnchor="middle"
-        fontSize={9}
+        fontSize={11}
         fill="currentColor"
         className="text-muted"
       >
@@ -635,7 +635,7 @@ function TreeStepC() {
             x={n.x}
             y={n.y + 32}
             textAnchor="middle"
-            fontSize={9}
+            fontSize={11}
             fontFamily="monospace"
             fill="#dc2626"
           >
@@ -649,7 +649,7 @@ function TreeStepC() {
         x={240}
         y={34}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fontWeight="bold"
         fill="#ffffff"
       >
@@ -686,7 +686,7 @@ function TreeStepC() {
             <text
               x={(x1 + x2) / 2 + 4}
               y={(y1 + y2) / 2}
-              fontSize={9}
+              fontSize={11}
               fontFamily="monospace"
               fill="#dc2626"
             >

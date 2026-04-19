@@ -465,7 +465,7 @@ export default function AnchorBoxesTopic() {
                       x={GROUND_TRUTH.x - GROUND_TRUTH.w / 2 + 4}
                       y={GROUND_TRUTH.y - GROUND_TRUTH.h / 2 + 12}
                       fill="#0ea5e9"
-                      fontSize="10"
+                      fontSize="11"
                       fontWeight="bold"
                     >
                       GT: {GROUND_TRUTH.label}
@@ -513,7 +513,7 @@ export default function AnchorBoxesTopic() {
                               x={a.cx - a.w / 2 + 2}
                               y={a.cy - a.h / 2 - 6}
                               fill="white"
-                              fontSize="9"
+                              fontSize="11"
                               fontWeight="bold"
                             >
                               {classification.label} · IoU {a.iouScore.toFixed(2)}
@@ -531,7 +531,7 @@ export default function AnchorBoxesTopic() {
                   y={GRID_CY - 10}
                   textAnchor="middle"
                   fill="#ef4444"
-                  fontSize="9"
+                  fontSize="11"
                   fontWeight="bold"
                 >
                   Tâm lưới

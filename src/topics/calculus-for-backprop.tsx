@@ -33,7 +33,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "calculus-for-backprop",
   title: "Calculus for Backpropagation",
-  titleVi: "Giải tích cho backprop",
+  titleVi: "Giải tích cho lan truyền ngược (backpropagation)",
   description:
     "Đạo hàm là câu trả lời cho câu hỏi: thay đổi nhỏ này làm loss thay đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
   category: "math-foundations",
@@ -297,15 +297,15 @@ export default function CalculusForBackpropTopic() {
       {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Mạng nơ-ron có 100 lớp. Bạn muốn biết weight w ở LỚP ĐẦU TIÊN ảnh hưởng loss ra sao. Làm sao tính hiệu quả nhất?"
+          question="Bạn biết chain rule là NHÂN các đạo hàm cục bộ trên đường ống. Đường ống có ba đoạn với đạo hàm cục bộ lần lượt là 2, 3, và 4. Đạo hàm tổng (output theo đầu vào) bằng bao nhiêu?"
           options={[
-            "Với mỗi weight, chạy lại toàn mạng với w thay đổi một tí, đo loss thay đổi",
-            "Đoán đại rồi thử — sai thì sửa",
-            "Dùng chain rule: mỗi lớp tự tính đạo hàm cục bộ, rồi NHÂN các mảnh đó ngược từ output về w",
-            "Chỉ tính được với mạng dưới 10 lớp — còn lại phải bỏ cuộc",
+            "2 + 3 + 4 = 9 — cộng là đủ",
+            "2 × 3 × 4 = 24 — nhân dọc theo đường ống",
+            "(2 + 3 + 4) / 3 = 3 — lấy trung bình",
+            "Không đủ thông tin để tính",
           ]}
-          correct={2}
-          explanation="Cách 1 đúng về lý thuyết nhưng tốn kém khủng khiếp (O(n²) forward pass). Chain rule biến bài toán thành một forward + một backward — O(n). Đây là lý do mạng tỉ tham số hôm nay huấn luyện được."
+          correct={1}
+          explanation="Chain rule NHÂN, không cộng: mỗi đoạn khuếch đại (hoặc thu nhỏ) thay đổi, nên tác động tổng hợp bằng tích. Nếu mỗi đoạn đạo hàm là 2 thì qua 100 đoạn bạn có 2¹⁰⁰ — bùng nổ gradient. Nếu mỗi đoạn là 0.5 thì qua 100 đoạn còn ~0 — gradient tan biến. Bài sau bạn sẽ thấy chính hai hiện tượng đó trên đường ống tương tác."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Bài này cho bạn nhìn rõ chain rule bằng hình ảnh đường ống — mỗi lớp là
@@ -428,7 +428,7 @@ export default function CalculusForBackpropTopic() {
                               x={cx}
                               y={158}
                               textAnchor="middle"
-                              fontSize={10}
+                              fontSize={11}
                               fill="var(--text-secondary)"
                               fontFamily="monospace"
                             >
@@ -680,7 +680,7 @@ export default function CalculusForBackpropTopic() {
                               x={tx}
                               y={216}
                               textAnchor="middle"
-                              fontSize={10}
+                              fontSize={11}
                               fill="var(--text-tertiary)"
                             >
                               {t}
@@ -728,7 +728,7 @@ export default function CalculusForBackpropTopic() {
                         x={40 + (3 / 6) * 440}
                         y={200 - 1 * 8 - 10}
                         textAnchor="middle"
-                        fontSize={9}
+                        fontSize={11}
                         fill="#22c55e"
                       >
                         đáy
@@ -884,7 +884,7 @@ export default function CalculusForBackpropTopic() {
                             x={b.x}
                             y={54}
                             textAnchor="middle"
-                            fontSize={10}
+                            fontSize={11}
                             fill="var(--text-secondary)"
                             fontFamily="monospace"
                           >
@@ -999,7 +999,7 @@ export default function CalculusForBackpropTopic() {
                 <text x={80} y={45} textAnchor="middle" fontSize={12} fill="#0ea5e9" fontWeight={600}>
                   x → g
                 </text>
-                <text x={80} y={72} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontFamily="monospace">
+                <text x={80} y={72} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontFamily="monospace">
                   dg/dx
                 </text>
 
@@ -1007,7 +1007,7 @@ export default function CalculusForBackpropTopic() {
                 <text x={230} y={45} textAnchor="middle" fontSize={12} fill="#ec4899" fontWeight={600}>
                   g → y
                 </text>
-                <text x={230} y={72} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontFamily="monospace">
+                <text x={230} y={72} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontFamily="monospace">
                   dy/dg
                 </text>
 
@@ -1073,7 +1073,7 @@ export default function CalculusForBackpropTopic() {
                         x={x + 15}
                         y={95}
                         textAnchor="middle"
-                        fontSize={10}
+                        fontSize={11}
                         fill={active ? "#8b5cf6" : "var(--text-tertiary)"}
                         fontFamily="monospace"
                         fontWeight={active ? 700 : 400}
@@ -1098,7 +1098,7 @@ export default function CalculusForBackpropTopic() {
                             x={x + 15}
                             y={22}
                             textAnchor="middle"
-                            fontSize={10}
+                            fontSize={11}
                             fill="#8b5cf6"
                             fontWeight={600}
                           >

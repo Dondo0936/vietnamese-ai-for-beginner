@@ -182,7 +182,7 @@ export default function MultiHeadAttentionTopic() {
             {/* Concat → W^O */}
             <rect x={100} y={195} width={260} height={22} rx={6}
               fill="#ec4899" opacity={0.1} stroke="#ec4899" strokeWidth={1} />
-            <text x={230} y={210} fontSize={10} fill="#ec4899" textAnchor="middle" fontWeight={600}>
+            <text x={230} y={210} fontSize={11} fill="#ec4899" textAnchor="middle" fontWeight={600}>
               Concat(head&#x2081;, ..., head&#x2084;) &middot; W&#x1D52; &rarr; Output
             </text>
           </svg>
@@ -217,7 +217,7 @@ export default function MultiHeadAttentionTopic() {
             {/* Input */}
             <rect x={10} y={70} width={60} height={35} rx={8} fill="#3b82f6" opacity={0.15}
               stroke="#3b82f6" strokeWidth={1.5} />
-            <text x={40} y={92} fontSize={10} fill="#3b82f6" textAnchor="middle" fontWeight={600}>
+            <text x={40} y={92} fontSize={11} fill="#3b82f6" textAnchor="middle" fontWeight={600}>
               Input X
             </text>
 
@@ -229,13 +229,13 @@ export default function MultiHeadAttentionTopic() {
                   <line x1={72} y1={87} x2={100} y2={y + 15} stroke="#888" strokeWidth={1} />
                   <rect x={100} y={y} width={80} height={28} rx={6}
                     fill={h.color} opacity={0.15} stroke={h.color} strokeWidth={1} />
-                  <text x={140} y={y + 18} fontSize={8} fill={h.color} textAnchor="middle" fontWeight={600}>
+                  <text x={140} y={y + 18} fontSize={11} fill={h.color} textAnchor="middle" fontWeight={600}>
                     {h.name} (d_k=64)
                   </text>
                   <line x1={180} y1={y + 14} x2={210} y2={y + 14} stroke={h.color} strokeWidth={1} />
                   <rect x={210} y={y} width={65} height={28} rx={6}
                     fill={h.color} opacity={0.1} stroke={h.color} strokeWidth={0.5} />
-                  <text x={242} y={y + 18} fontSize={7} fill={h.color} textAnchor="middle">
+                  <text x={242} y={y + 18} fontSize={11} fill={h.color} textAnchor="middle">
                     Attn(Q,K,V)
                   </text>
                   <line x1={275} y1={y + 14} x2={310} y2={87} stroke={h.color} strokeWidth={1} />
@@ -246,10 +246,10 @@ export default function MultiHeadAttentionTopic() {
             {/* Concat */}
             <rect x={310} y={65} width={60} height={45} rx={8} fill="#ec4899" opacity={0.15}
               stroke="#ec4899" strokeWidth={1.5} />
-            <text x={340} y={85} fontSize={9} fill="#ec4899" textAnchor="middle" fontWeight={600}>
+            <text x={340} y={85} fontSize={11} fill="#ec4899" textAnchor="middle" fontWeight={600}>
               Concat
             </text>
-            <text x={340} y={100} fontSize={7} fill="#ec4899" textAnchor="middle">
+            <text x={340} y={100} fontSize={11} fill="#ec4899" textAnchor="middle">
               (4×64=256)
             </text>
 
@@ -257,15 +257,15 @@ export default function MultiHeadAttentionTopic() {
             <line x1={370} y1={87} x2={395} y2={87} stroke="#888" strokeWidth={1.5} />
             <rect x={395} y={70} width={70} height={35} rx={8} fill="#22c55e" opacity={0.15}
               stroke="#22c55e" strokeWidth={1.5} />
-            <text x={430} y={85} fontSize={9} fill="#22c55e" textAnchor="middle" fontWeight={600}>
+            <text x={430} y={85} fontSize={11} fill="#22c55e" textAnchor="middle" fontWeight={600}>
               W&#x1D52; (linear)
             </text>
-            <text x={430} y={98} fontSize={7} fill="#22c55e" textAnchor="middle">
+            <text x={430} y={98} fontSize={11} fill="#22c55e" textAnchor="middle">
               256→512
             </text>
 
             {/* Bottom label */}
-            <text x={240} y={170} fontSize={9} fill="currentColor" className="text-muted"
+            <text x={240} y={170} fontSize={11} fill="currentColor" className="text-muted"
               textAnchor="middle">
               Tổng tham số ≈ single-head attention (vì d_k = d_model/h)
             </text>

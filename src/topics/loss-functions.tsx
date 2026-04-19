@@ -203,7 +203,8 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
       <div className="rounded-xl border border-border bg-card p-4 space-y-3">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full cursor-crosshair rounded-lg border border-border bg-background touch-none"
+          className="w-full cursor-crosshair rounded-lg border border-border bg-background"
+          style={{ touchAction: dragId !== null ? "none" : "auto" }}
           role="img"
           aria-label={`Biểu đồ loss với ${points.length} điểm. Tổng ${lossLabel}: ${totalLoss.toFixed(1)}.`}
           onPointerMove={handlePointerMove}
@@ -288,7 +289,7 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
             <text
               x={52}
               y={24}
-              fontSize={10}
+              fontSize={11}
               fill="var(--text-primary)"
               fontWeight={600}
             >
@@ -298,7 +299,7 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
             <text
               x={132}
               y={24}
-              fontSize={10}
+              fontSize={11}
               fill="var(--text-primary)"
               fontWeight={600}
             >
@@ -521,7 +522,7 @@ function CrossEntropyExplorer() {
           <text
             x={200}
             y={196}
-            fontSize={10}
+            fontSize={11}
             fill="var(--text-secondary)"
             textAnchor="middle"
           >
@@ -530,7 +531,7 @@ function CrossEntropyExplorer() {
           <text
             x={14}
             y={100}
-            fontSize={10}
+            fontSize={11}
             fill="var(--text-secondary)"
             textAnchor="middle"
             transform="rotate(-90 14 100)"
@@ -542,7 +543,7 @@ function CrossEntropyExplorer() {
           <text
             x={markerX}
             y={16}
-            fontSize={10}
+            fontSize={11}
             fill={tone.color}
             textAnchor="middle"
             fontWeight={700}
@@ -1122,7 +1123,7 @@ export default function LossFunctionsTopic() {
               <text
                 x={180}
                 y={14}
-                fontSize={10}
+                fontSize={11}
                 fill="var(--text-secondary)"
                 textAnchor="middle"
               >

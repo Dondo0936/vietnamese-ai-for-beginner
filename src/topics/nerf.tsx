@@ -97,14 +97,14 @@ export default function NerfTopic() {
             </text>
 
             {/* Input photos */}
-            <text x={60} y={42} fontSize={9} fill="#3b82f6" textAnchor="middle" fontWeight={600}>Ảnh đầu vào</text>
+            <text x={60} y={42} fontSize={11} fill="#3b82f6" textAnchor="middle" fontWeight={600}>Ảnh đầu vào</text>
             {[0, 1, 2].map((i) => {
               const y = 50 + i * 42;
               return (
                 <g key={i} transform={`rotate(${-8 + i * 8}, 60, ${y + 16})`}>
                   <rect x={25} y={y} width={70} height={36} rx={4}
                     fill="#3b82f6" opacity={0.12} stroke="#3b82f6" strokeWidth={1.5} />
-                  <text x={60} y={y + 22} fontSize={9} fill="#3b82f6" textAnchor="middle">
+                  <text x={60} y={y + 22} fontSize={11} fill="#3b82f6" textAnchor="middle">
                     Góc {i + 1}
                   </text>
                 </g>
@@ -121,21 +121,21 @@ export default function NerfTopic() {
             <text x={232} y={72} fontSize={11} fill="#f97316" textAnchor="middle" fontWeight={700}>
               MLP (mạng nơ-ron)
             </text>
-            <text x={232} y={92} fontSize={8} fill="#f97316" textAnchor="middle">
+            <text x={232} y={92} fontSize={11} fill="#f97316" textAnchor="middle">
               Input: (x, y, z, &theta;, &phi;)
             </text>
-            <text x={232} y={105} fontSize={7} fill="#f97316" textAnchor="middle" opacity={0.7}>
+            <text x={232} y={105} fontSize={11} fill="#f97316" textAnchor="middle" opacity={0.7}>
               Vị trí 3D + Hướng nhìn
             </text>
             <rect x={175} y={112} width={115} height={16} rx={4}
               fill="#8b5cf6" opacity={0.1} stroke="#8b5cf6" strokeWidth={1} />
-            <text x={232} y={124} fontSize={7} fill="#8b5cf6" textAnchor="middle">
+            <text x={232} y={124} fontSize={11} fill="#8b5cf6" textAnchor="middle">
               + Positional Encoding
             </text>
-            <text x={232} y={148} fontSize={8} fill="#f97316" textAnchor="middle">
+            <text x={232} y={148} fontSize={11} fill="#f97316" textAnchor="middle">
               Output: (r, g, b, &sigma;)
             </text>
-            <text x={232} y={162} fontSize={7} fill="#f97316" textAnchor="middle" opacity={0.7}>
+            <text x={232} y={162} fontSize={11} fill="#f97316" textAnchor="middle" opacity={0.7}>
               Màu sắc + Mật độ
             </text>
 
@@ -146,25 +146,25 @@ export default function NerfTopic() {
             {/* Volume rendering */}
             <rect x={355} y={65} width={120} height={42} rx={8}
               fill="#22c55e" opacity={0.12} stroke="#22c55e" strokeWidth={1.5} />
-            <text x={415} y={83} fontSize={9} fill="#22c55e" textAnchor="middle" fontWeight={600}>
+            <text x={415} y={83} fontSize={11} fill="#22c55e" textAnchor="middle" fontWeight={600}>
               Volume Rendering
             </text>
-            <text x={415} y={99} fontSize={7} fill="#22c55e" textAnchor="middle">
+            <text x={415} y={99} fontSize={11} fill="#22c55e" textAnchor="middle">
               Tích phân dọc tia nhìn
             </text>
 
             {/* Output */}
             <rect x={365} y={120} width={100} height={55} rx={8}
               fill="#ec4899" opacity={0.12} stroke="#ec4899" strokeWidth={2} />
-            <text x={415} y={142} fontSize={10} fill="#ec4899" textAnchor="middle" fontWeight={700}>
+            <text x={415} y={142} fontSize={11} fill="#ec4899" textAnchor="middle" fontWeight={700}>
               Góc nhìn mới!
             </text>
-            <text x={415} y={158} fontSize={8} fill="#ec4899" textAnchor="middle">
+            <text x={415} y={158} fontSize={11} fill="#ec4899" textAnchor="middle">
               (chưa từng chụp)
             </text>
 
             {/* Ray diagram */}
-            <text x={250} y={210} fontSize={9} fill="currentColor" className="text-foreground"
+            <text x={250} y={210} fontSize={11} fill="currentColor" className="text-foreground"
               textAnchor="middle" fontWeight={600}>
               Volume Rendering: bắn tia qua cảnh, lấy mẫu nhiều điểm
             </text>
@@ -175,11 +175,11 @@ export default function NerfTopic() {
               <g key={`s-${i}`}>
                 <circle cx={115 + i * 70} cy={242} r={4}
                   fill="#f97316" opacity={0.2 + i * 0.15} />
-                <text x={115 + i * 70} y={262} fontSize={6} fill="currentColor" className="text-muted"
+                <text x={115 + i * 70} y={262} fontSize={11} fill="currentColor" className="text-muted"
                   textAnchor="middle">(rgb, &sigma;)</text>
               </g>
             ))}
-            <text x={455} y={246} fontSize={8} fill="#22c55e" fontWeight={600}>&sum; &rarr; pixel</text>
+            <text x={455} y={246} fontSize={11} fill="#22c55e" fontWeight={600}>&sum; &rarr; pixel</text>
           </svg>
         </VisualizationSection>
       </LessonSection>

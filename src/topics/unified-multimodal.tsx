@@ -168,13 +168,13 @@ export default function UnifiedMultimodalTopic() {
                       <g key={i}>
                         <line x1={310} y1={130} x2={x} y2={y} stroke={m.color} strokeWidth={2} opacity={0.5} />
                         <circle cx={x} cy={y} r={26} fill={m.color} opacity={0.85} />
-                        <text x={x} y={y + 4} textAnchor="middle" fill="white" fontSize={8} fontWeight="bold">
+                        <text x={x} y={y + 4} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                           {m.label}
                         </text>
                       </g>
                     );
                   })}
-                  <text x={310} y={270} textAnchor="middle" fill="#94a3b8" fontSize={10}>
+                  <text x={310} y={270} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                     Any-to-any: bất kỳ đầu vào → bất kỳ đầu ra
                   </text>
                 </>
@@ -189,8 +189,8 @@ export default function UnifiedMultimodalTopic() {
                   ].map((m, i) => (
                     <g key={i}>
                       <rect x={m.x - 55} y={90} width={110} height={50} rx={10} fill="#1e293b" stroke={m.color} strokeWidth={2} />
-                      <text x={m.x} y={112} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">{m.label}</text>
-                      <text x={m.x} y={128} textAnchor="middle" fill="#94a3b8" fontSize={7}>Module riêng</text>
+                      <text x={m.x} y={112} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">{m.label}</text>
+                      <text x={m.x} y={128} textAnchor="middle" fill="#94a3b8" fontSize={11}>Module riêng</text>
                       {i < 3 && (
                         <line x1={m.x + 55} y1={115} x2={m.x + 85} y2={115} stroke="#475569" strokeWidth={2} markerEnd="url(#um-arrow)" />
                       )}
@@ -198,11 +198,11 @@ export default function UnifiedMultimodalTopic() {
                   ))}
                   {/* Bottleneck markers */}
                   {[195, 335, 475].map((x, i) => (
-                    <text key={i} x={x} y={155} textAnchor="middle" fill="#ef4444" fontSize={8}>
+                    <text key={i} x={x} y={155} textAnchor="middle" fill="#ef4444" fontSize={11}>
                       mất tin
                     </text>
                   ))}
-                  <text x={310} y={200} textAnchor="middle" fill="#94a3b8" fontSize={10}>
+                  <text x={310} y={200} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                     Pipeline: mỗi module chuyên biệt, nhưng mất thông tin giữa các bước
                   </text>
                   <defs>

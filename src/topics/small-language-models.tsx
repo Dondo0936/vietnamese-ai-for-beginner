@@ -140,7 +140,7 @@ export default function SmallLanguageModelsTopic() {
                 const isActive = i === activeModel;
                 return (
                   <g key={i}>
-                    <text x={15} y={y + 14} fill={isActive ? "#e2e8f0" : "#64748b"} fontSize={8} fontWeight={isActive ? "bold" : "normal"}>
+                    <text x={15} y={y + 14} fill={isActive ? "#e2e8f0" : "#64748b"} fontSize={11} fontWeight={isActive ? "bold" : "normal"}>
                       {m.name}
                     </text>
                     <rect x={120} y={y} width={350} height={20} rx={3} fill="#1e293b" />
@@ -148,10 +148,10 @@ export default function SmallLanguageModelsTopic() {
                       fill={i < 4 ? "#22c55e" : "#3b82f6"}
                       opacity={isActive ? 1 : 0.4}
                     />
-                    <text x={125 + barW} y={y + 14} fill="white" fontSize={9} fontWeight="bold">
+                    <text x={125 + barW} y={y + 14} fill="white" fontSize={11} fontWeight="bold">
                       {m.mmlu}%
                     </text>
-                    <text x={530} y={y + 14} fill="#94a3b8" fontSize={7}>{m.device}</text>
+                    <text x={530} y={y + 14} fill="#94a3b8" fontSize={11}>{m.device}</text>
                   </g>
                 );
               })}

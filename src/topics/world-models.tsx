@@ -967,10 +967,10 @@ function WorldModelViz({
             >
               1. Thế giới thật
             </text>
-            <text x={95} y={80} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+            <text x={95} y={80} textAnchor="middle" fill="#94a3b8" fontSize={11}>
               Thu thập ít kinh nghiệm
             </text>
-            <text x={95} y={92} textAnchor="middle" fill="#64748b" fontSize={8}>
+            <text x={95} y={92} textAnchor="middle" fill="#64748b" fontSize={11}>
               (s, a, r, s&apos;)
             </text>
           </g>
@@ -998,10 +998,10 @@ function WorldModelViz({
             >
               2. Train world model
             </text>
-            <text x={300} y={80} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+            <text x={300} y={80} textAnchor="middle" fill="#94a3b8" fontSize={11}>
               f(s, a) → s&apos;, r
             </text>
-            <text x={300} y={92} textAnchor="middle" fill="#64748b" fontSize={8}>
+            <text x={300} y={92} textAnchor="middle" fill="#64748b" fontSize={11}>
               Neural network
             </text>
           </g>
@@ -1029,10 +1029,10 @@ function WorldModelViz({
             >
               3. Train policy trong dream
             </text>
-            <text x={520} y={80} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+            <text x={520} y={80} textAnchor="middle" fill="#94a3b8" fontSize={11}>
               Rollout tưởng tượng
             </text>
-            <text x={520} y={92} textAnchor="middle" fill="#64748b" fontSize={8}>
+            <text x={520} y={92} textAnchor="middle" fill="#64748b" fontSize={11}>
               Không tốn env thật
             </text>
           </g>
@@ -1045,7 +1045,7 @@ function WorldModelViz({
             strokeDasharray="4 3"
             markerEnd="url(#arrowhead)"
           />
-          <text x={320} y={128} textAnchor="middle" fill="#f59e0b" fontSize={9}>
+          <text x={320} y={128} textAnchor="middle" fill="#f59e0b" fontSize={11}>
             lặp lại
           </text>
           <defs>

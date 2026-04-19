@@ -315,12 +315,12 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
         </text>
         {/* Hardware */}
         <rect x={20} y={210} width={560} height={30} rx={6} fill="#475569" opacity={0.4} />
-        <text x={300} y={230} textAnchor="middle" fill="#94a3b8" fontSize={10}>
+        <text x={300} y={230} textAnchor="middle" fill="#94a3b8" fontSize={11}>
           Phần cứng (CPU, GPU, RAM)
         </text>
         {/* Host OS */}
         <rect x={20} y={170} width={560} height={30} rx={6} fill="#1e293b" stroke="#475569" />
-        <text x={300} y={190} textAnchor="middle" fill="#94a3b8" fontSize={10}>
+        <text x={300} y={190} textAnchor="middle" fill="#94a3b8" fontSize={11}>
           Host OS + Hypervisor
         </text>
         {/* VMs */}
@@ -336,7 +336,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
               stroke="#8b5cf6"
               strokeWidth={2}
             />
-            <text x={115 + i * 190} y={50} textAnchor="middle" fill="#a78bfa" fontSize={10} fontWeight="bold">
+            <text x={115 + i * 190} y={50} textAnchor="middle" fill="#a78bfa" fontSize={11} fontWeight="bold">
               VM {i + 1}
             </text>
             <rect
@@ -348,7 +348,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
               fill="#475569"
               opacity={0.6}
             />
-            <text x={115 + i * 190} y={78} textAnchor="middle" fill="#e2e8f0" fontSize={9}>
+            <text x={115 + i * 190} y={78} textAnchor="middle" fill="#e2e8f0" fontSize={11}>
               Guest OS (boot nguyên hệ điều hành)
             </text>
             <rect
@@ -360,7 +360,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
               fill="#3b82f6"
               opacity={0.3}
             />
-            <text x={115 + i * 190} y={111} textAnchor="middle" fill="#93c5fd" fontSize={9}>
+            <text x={115 + i * 190} y={111} textAnchor="middle" fill="#93c5fd" fontSize={11}>
               Bin / Libs
             </text>
             <rect
@@ -372,7 +372,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
               fill="#22c55e"
               opacity={0.25}
             />
-            <text x={115 + i * 190} y={143} textAnchor="middle" fill="#86efac" fontSize={9}>
+            <text x={115 + i * 190} y={143} textAnchor="middle" fill="#86efac" fontSize={11}>
               App
             </text>
           </g>
@@ -387,17 +387,17 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
       </text>
       {/* Hardware */}
       <rect x={20} y={210} width={560} height={30} rx={6} fill="#475569" opacity={0.4} />
-      <text x={300} y={230} textAnchor="middle" fill="#94a3b8" fontSize={10}>
+      <text x={300} y={230} textAnchor="middle" fill="#94a3b8" fontSize={11}>
         Phần cứng (CPU, GPU, RAM)
       </text>
       {/* Host OS kernel (SHARED) */}
       <rect x={20} y={170} width={560} height={30} rx={6} fill="#1e293b" stroke="#22c55e" strokeWidth={2} />
-      <text x={300} y={190} textAnchor="middle" fill="#86efac" fontSize={10}>
+      <text x={300} y={190} textAnchor="middle" fill="#86efac" fontSize={11}>
         Host Linux Kernel (CHIA SẺ)
       </text>
       {/* Docker engine */}
       <rect x={20} y={130} width={560} height={30} rx={6} fill="#f59e0b" opacity={0.2} stroke="#f59e0b" />
-      <text x={300} y={150} textAnchor="middle" fill="#fbbf24" fontSize={10}>
+      <text x={300} y={150} textAnchor="middle" fill="#fbbf24" fontSize={11}>
         Docker Engine + NVIDIA Container Toolkit
       </text>
       {/* Containers */}
@@ -414,7 +414,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
             stroke="#22c55e"
             strokeWidth={2}
           />
-          <text x={92.5 + i * 145} y={50} textAnchor="middle" fill="#86efac" fontSize={10} fontWeight="bold">
+          <text x={92.5 + i * 145} y={50} textAnchor="middle" fill="#86efac" fontSize={11} fontWeight="bold">
             Container {i + 1}
           </text>
           <rect
@@ -426,7 +426,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
             fill="#3b82f6"
             opacity={0.25}
           />
-          <text x={92.5 + i * 145} y={73} textAnchor="middle" fill="#93c5fd" fontSize={8}>
+          <text x={92.5 + i * 145} y={73} textAnchor="middle" fill="#93c5fd" fontSize={11}>
             Bin / Libs
           </text>
           <rect
@@ -438,7 +438,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
             fill="#22c55e"
             opacity={0.3}
           />
-          <text x={92.5 + i * 145} y={102} textAnchor="middle" fill="#86efac" fontSize={8}>
+          <text x={92.5 + i * 145} y={102} textAnchor="middle" fill="#86efac" fontSize={11}>
             {["FastAPI", "PyTorch", "nginx", "Redis"][i]}
           </text>
         </g>
@@ -471,7 +471,7 @@ function MlStackSvg({ highlighted }: { highlighted: string | null }) {
             <text x={50} y={y + 22} fill={layer.color} fontSize={12} fontWeight="bold">
               {layer.title}
             </text>
-            <text x={50} y={y + 38} fill="#cbd5e1" fontSize={10}>
+            <text x={50} y={y + 38} fill="#cbd5e1" fontSize={11}>
               {layer.detail}
             </text>
           </g>

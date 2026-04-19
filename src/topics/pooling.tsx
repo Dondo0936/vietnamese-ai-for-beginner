@@ -194,7 +194,7 @@ export default function PoolingTopic() {
             {/* Arrow */}
             <line x1={245} y1={145} x2={298} y2={145} stroke="#888" strokeWidth={2} />
             <polygon points="303,145 296,140 296,150" fill="#888" />
-            <text x={273} y={132} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+            <text x={273} y={132} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
               {poolType === "max" ? "Max" : "Avg"}
             </text>
 

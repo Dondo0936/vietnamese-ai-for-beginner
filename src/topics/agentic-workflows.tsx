@@ -412,7 +412,7 @@ function TriggerActionDiagram() {
               y={94}
               textAnchor="middle"
               fill="white"
-              fontSize={9}
+              fontSize={11}
               opacity={0.85}
             >
               {n.sub}

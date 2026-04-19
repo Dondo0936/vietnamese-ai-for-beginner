@@ -21,6 +21,7 @@ import {
   TrendingUp,
   AlertTriangle,
   Layers,
+  Check,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 import ApplicationLayout from "@/components/application/ApplicationLayout";
@@ -985,7 +986,8 @@ function PairwiseDetail() {
             B: Clickbait
           </span>
         </div>
-        <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed text-center">
+        <p className="inline-flex items-center justify-center gap-1 w-full text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed text-center">
+          <Check size={12} aria-hidden="true" />
           Mô hình đoán score(A) = 9.0 và score(B) = 2.3 &rArr; chênh
           +6.7 &rArr; đúng thứ tự &rArr; <strong>loss rất thấp</strong>.
         </p>

@@ -286,7 +286,7 @@ function KnnPlayground() {
       <div className="rounded-xl border border-border bg-card overflow-hidden">
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="w-full cursor-crosshair touch-none"
+          className="w-full cursor-crosshair"
           onClick={handleClick}
           role="img"
           aria-label={`Canvas k-NN với k=${k}, dự đoán ${LABEL[pred.label]} (A ${votes.A}, B ${votes.B}, C ${votes.C})`}
@@ -728,15 +728,15 @@ export default function KnnTopic() {
         </div>
         <div className="mt-6">
           <PredictionGate
-            question="Một điểm mới cần phân loại. Hỏi 3 hàng xóm gần nhất, nhận được 2 phiếu 'cơm tấm', 1 phiếu 'phở'. k-NN kết luận điểm này là gì?"
+            question="Vẫn ẩn dụ hỏi hàng xóm, nhưng đẩy tới cực hạn: bạn chỉ hỏi k = 1 người (người gần nhất) cho mọi câu. Rủi ro lớn nhất là gì?"
             options={[
-              "Phở — vì là lớp thiểu số nên đáng chú ý hơn",
-              "Cơm tấm — đa số thắng",
-              "Không đoán được với k = 3",
-              "Lấy trung bình nhãn — một món nằm giữa hai món",
+              "Càng ít người hỏi càng ổn định — k = 1 là tốt nhất",
+              "Một hàng xóm bị lệch hoặc dữ liệu ghi nhầm sẽ kéo quyết định đi sai, không ai bác bỏ được",
+              "k = 1 khiến công thức tính khoảng cách bị sai",
+              "Không đoán được nếu chỉ có một hàng xóm",
             ]}
             correct={1}
-            explanation="k-NN phân loại bằng đa số trong k hàng xóm gần nhất. 2 > 1 → chọn cơm tấm. Đơn giản đến ngạc nhiên — và đó chính là sức mạnh của nó khi dữ liệu có cấu trúc hình học rõ ràng."
+            explanation="k = 1 cực kỳ nhạy với nhiễu: chỉ một điểm hàng xóm bị gán nhãn sai hay rơi vào vùng lạ là kéo toàn bộ dự đoán theo. Khi tăng k, nhiều phiếu cùng bầu làm quyết định ổn định hơn — nhưng k quá lớn lại làm mờ ranh giới. Chọn k chính là đánh đổi 'nhạy với điểm mới' và 'chịu nhiễu' mà bạn sẽ thấy ngay ở phần sau."
           >
             <p className="text-sm text-muted mt-4 leading-relaxed">
               Phần tiếp theo bạn sẽ tự click để đặt &ldquo;điểm mới&rdquo; vào bản đồ, và
@@ -1143,7 +1143,7 @@ function EuclidMiniVisual() {
         <text
           x={(a.x + b.x) / 2}
           y={(a.y + b.y) / 2 - 6}
-          fontSize={10}
+          fontSize={11}
           fill="#4f46e5"
           fontWeight={600}
           textAnchor="middle"

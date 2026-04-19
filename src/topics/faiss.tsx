@@ -650,7 +650,7 @@ export default function FAISSTopic() {
                             x={px(c.cx)}
                             y={py(c.cy) - 76}
                             textAnchor="middle"
-                            fontSize="10"
+                            fontSize="11"
                             fontWeight="bold"
                             fill={c.color}
                             opacity={isProbed ? 1 : 0.5}

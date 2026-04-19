@@ -568,7 +568,7 @@ export default function GRPOTopic() {
                             <text
                               x={x + 16}
                               y={125}
-                              fontSize={9}
+                              fontSize={11}
                               fill="currentColor"
                               className="text-muted"
                               textAnchor="middle"
@@ -579,7 +579,7 @@ export default function GRPOTopic() {
                               <text
                                 x={x + 16}
                                 y={110 - h - 3}
-                                fontSize={8}
+                                fontSize={11}
                                 fill={color}
                                 textAnchor="middle"
                                 fontWeight={700}
@@ -608,7 +608,7 @@ export default function GRPOTopic() {
                           <text
                             x={385}
                             y={110 - (REW_MEAN / maxR) * 95 - 4}
-                            fontSize={9}
+                            fontSize={11}
                             fill="#8b5cf6"
                             textAnchor="end"
                             fontWeight={700}
@@ -625,7 +625,7 @@ export default function GRPOTopic() {
                             <text
                               x={24}
                               y={y + 3}
-                              fontSize={8}
+                              fontSize={11}
                               fill="currentColor"
                               className="text-muted"
                               textAnchor="end"
@@ -668,7 +668,7 @@ export default function GRPOTopic() {
                       <text
                         x={30}
                         y={62}
-                        fontSize={8}
+                        fontSize={11}
                         fill="currentColor"
                         className="text-muted"
                       >
@@ -700,7 +700,7 @@ export default function GRPOTopic() {
                             <text
                               x={x + 16}
                               y={120}
-                              fontSize={9}
+                              fontSize={11}
                               fill="currentColor"
                               className="text-muted"
                               textAnchor="middle"
@@ -710,7 +710,7 @@ export default function GRPOTopic() {
                             <text
                               x={x + 16}
                               y={up ? 65 - h - 3 : 65 + h + 9}
-                              fontSize={8}
+                              fontSize={11}
                               fill={color}
                               textAnchor="middle"
                               fontWeight={700}

@@ -478,7 +478,7 @@ export default function ScalingLawsTopic() {
                 return (
                   <g key={exp}>
                     <line x1={x} y1={310} x2={x} y2={314} stroke="currentColor" className="text-muted/60" />
-                    <text x={x} y={328} textAnchor="middle" fontSize={9} className="fill-muted">
+                    <text x={x} y={328} textAnchor="middle" fontSize={11} className="fill-muted">
                       10^{exp}
                     </text>
                   </g>
@@ -498,7 +498,7 @@ export default function ScalingLawsTopic() {
                 return (
                   <g key={tick.value}>
                     <line x1={76} y1={y} x2={80} y2={y} stroke="currentColor" className="text-muted/60" />
-                    <text x={72} y={y + 3} textAnchor="end" fontSize={9} className="fill-muted">
+                    <text x={72} y={y + 3} textAnchor="end" fontSize={11} className="fill-muted">
                       {tick.label}
                     </text>
                   </g>
@@ -548,10 +548,10 @@ export default function ScalingLawsTopic() {
                 })}
 
               {/* Chú thích đường */}
-              <text x={520} y={80} fontSize={9} fill="#22c55e" fontWeight={600}>
+              <text x={520} y={80} fontSize={11} fill="#22c55e" fontWeight={600}>
                 Compute-optimal
               </text>
-              <text x={520} y={92} fontSize={8} className="fill-muted">
+              <text x={520} y={92} fontSize={11} className="fill-muted">
                 (Chinchilla rule)
               </text>
 
@@ -584,7 +584,7 @@ export default function ScalingLawsTopic() {
                     <text
                       x={x + 10}
                       y={y + 3}
-                      fontSize={9}
+                      fontSize={11}
                       fontWeight={isSelected ? 700 : 500}
                       className="fill-foreground"
                     >
@@ -601,16 +601,16 @@ export default function ScalingLawsTopic() {
                   <text x={100} y={58} fontSize={11} fontWeight={700} fill="white">
                     {MODELS[selectedModel].name}
                   </text>
-                  <text x={100} y={75} fontSize={9} fill="#cbd5e1">
+                  <text x={100} y={75} fontSize={11} fill="#cbd5e1">
                     N = {MODELS[selectedModel].paramsB}B; D = {MODELS[selectedModel].tokensB}B
                   </text>
-                  <text x={100} y={89} fontSize={9} fill="#cbd5e1">
+                  <text x={100} y={89} fontSize={11} fill="#cbd5e1">
                     D/N = {(MODELS[selectedModel].tokensB / MODELS[selectedModel].paramsB).toFixed(1)}
                   </text>
-                  <text x={100} y={108} fontSize={9} fill="#cbd5e1">
+                  <text x={100} y={108} fontSize={11} fill="#cbd5e1">
                     {MODELS[selectedModel].note.slice(0, 60)}
                   </text>
-                  <text x={100} y={120} fontSize={9} fill="#cbd5e1">
+                  <text x={100} y={120} fontSize={11} fill="#cbd5e1">
                     {MODELS[selectedModel].note.slice(60, 120)}
                   </text>
                 </g>

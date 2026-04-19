@@ -543,7 +543,7 @@ function LogTransformChart() {
                   x={36 + i * 50}
                   y={135}
                   textAnchor="middle"
-                  fontSize={8}
+                  fontSize={11}
                   fill="var(--text-secondary)"
                 >
                   {p >= 1e6 ? `${(p / 1e6).toFixed(1)}M` : `${p / 1000}k`}
@@ -579,7 +579,7 @@ function LogTransformChart() {
                   x={36 + i * 50}
                   y={135}
                   textAnchor="middle"
-                  fontSize={8}
+                  fontSize={11}
                   fill="var(--text-secondary)"
                 >
                   {v.toFixed(1)}

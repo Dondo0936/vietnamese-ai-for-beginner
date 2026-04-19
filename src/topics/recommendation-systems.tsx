@@ -188,6 +188,7 @@ function CFSimulator() {
       </div>
 
       {/* Grid */}
+      <div className="relative">
       <div className="overflow-x-auto rounded-xl border border-border bg-card">
         <table className="w-full min-w-[640px] border-collapse">
           <thead>
@@ -302,6 +303,11 @@ function CFSimulator() {
             </tr>
           </tbody>
         </table>
+      </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-10 rounded-r-xl bg-gradient-to-l from-[var(--bg-card)] to-transparent md:hidden"
+        />
       </div>
 
       {/* Legend + instruction */}

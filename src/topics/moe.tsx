@@ -140,13 +140,13 @@ export default function MoETopic() {
             <svg viewBox="0 0 600 230" className="w-full max-w-2xl mx-auto">
               {/* Input query */}
               <rect x={180} y={5} width={240} height={28} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
-              <text x={300} y={23} textAnchor="middle" fill="#e2e8f0" fontSize={8}>
+              <text x={300} y={23} textAnchor="middle" fill="#e2e8f0" fontSize={11}>
                 {query.text.slice(0, 35)}...
               </text>
 
               {/* Router */}
               <rect x={230} y={45} width={140} height={30} rx={8} fill="#f59e0b" />
-              <text x={300} y={64} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">
+              <text x={300} y={64} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                 Router (Gating)
               </text>
               <line x1={300} y1={33} x2={300} y2={45} stroke="#475569" strokeWidth={1.5} />
@@ -170,11 +170,11 @@ export default function MoETopic() {
                       strokeWidth={isActive ? 2 : 0.5}
                       opacity={isActive ? 1 : 0.2}
                     />
-                    <text x={x} y={118} textAnchor="middle" fill="white" fontSize={7} fontWeight="bold">
+                    <text x={x} y={118} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                       {e.label}
                     </text>
                     {isActive && (
-                      <text x={x} y={133} textAnchor="middle" fill="white" fontSize={8}>
+                      <text x={x} y={133} textAnchor="middle" fill="white" fontSize={11}>
                         {(weight * 100).toFixed(0)}%
                       </text>
                     )}
@@ -190,12 +190,12 @@ export default function MoETopic() {
                 );
               })}
               <rect x={230} y={165} width={140} height={28} rx={6} fill="#22c55e" opacity={0.2} stroke="#22c55e" strokeWidth={1.5} />
-              <text x={300} y={183} textAnchor="middle" fill="#22c55e" fontSize={9} fontWeight="bold">
+              <text x={300} y={183} textAnchor="middle" fill="#22c55e" fontSize={11} fontWeight="bold">
                 Output (weighted sum)
               </text>
 
               {/* Info */}
-              <text x={300} y={215} textAnchor="middle" fill="#94a3b8" fontSize={9}>
+              <text x={300} y={215} textAnchor="middle" fill="#94a3b8" fontSize={11}>
                 Top-2 routing: chỉ {query.activeExperts.length}/{EXPERTS.length} experts active | Compute = 2/8 = 25% tổng params
               </text>
             </svg>

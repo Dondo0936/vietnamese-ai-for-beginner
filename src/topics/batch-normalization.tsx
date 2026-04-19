@@ -326,7 +326,7 @@ function HistogramChart({
         <text
           x={20}
           y={height - 6}
-          fontSize={10}
+          fontSize={11}
           className="fill-muted"
           textAnchor="start"
         >
@@ -335,7 +335,7 @@ function HistogramChart({
         <text
           x={width - 20}
           y={height - 6}
-          fontSize={10}
+          fontSize={11}
           className="fill-muted"
           textAnchor="end"
         >
@@ -447,7 +447,7 @@ function LossCurveChart({
       <text
         x={24}
         y={height - 10}
-        fontSize={10}
+        fontSize={11}
         className="fill-muted"
       >
         epoch 0
@@ -455,7 +455,7 @@ function LossCurveChart({
       <text
         x={width - 12}
         y={height - 10}
-        fontSize={10}
+        fontSize={11}
         textAnchor="end"
         className="fill-muted"
       >
@@ -464,7 +464,7 @@ function LossCurveChart({
       <text
         x={12}
         y={16}
-        fontSize={10}
+        fontSize={11}
         className="fill-muted"
       >
         loss {maxLoss.toFixed(1)}

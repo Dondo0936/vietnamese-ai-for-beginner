@@ -617,7 +617,7 @@ export default function AlignmentTopic() {
                     x={gridWidth / 2}
                     y={14}
                     textAnchor="middle"
-                    fontSize={10}
+                    fontSize={11}
                     fill="#94a3b8"
                   >
                     Bước: {stepIdx}/{path.length - 1} · Coins:{" "}
@@ -629,7 +629,7 @@ export default function AlignmentTopic() {
                     x={gridWidth / 2}
                     y={28}
                     textAnchor="middle"
-                    fontSize={9}
+                    fontSize={11}
                     fill={
                       isInExploitLoop
                         ? "#fca5a5"

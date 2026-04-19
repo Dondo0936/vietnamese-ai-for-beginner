@@ -385,7 +385,7 @@ function GridWorldSVG({ position, showValues, showPolicy }: GridWorldProps) {
                   y={cellY + 14}
                   textAnchor="middle"
                   fill="#f8fafc"
-                  fontSize={10}
+                  fontSize={11}
                   fontWeight="bold"
                 >
                   S
@@ -397,7 +397,7 @@ function GridWorldSVG({ position, showValues, showPolicy }: GridWorldProps) {
                   y={cellY + cellSize - 6}
                   textAnchor="middle"
                   fill="#f8fafc"
-                  fontSize={9}
+                  fontSize={11}
                 >
                   {value.toFixed(2)}
                 </text>
@@ -502,16 +502,16 @@ function ActorCriticDiagram() {
       <text x={75} y={86} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
         State s_t
       </text>
-      <text x={75} y={104} textAnchor="middle" fill="white" fontSize={9}>
+      <text x={75} y={104} textAnchor="middle" fill="white" fontSize={11}>
         (observation)
       </text>
 
       {/* Shared trunk */}
       <rect x={160} y={65} width={110} height={50} rx={8} fill="#7c3aed" />
-      <text x={215} y={86} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">
+      <text x={215} y={86} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
         Shared trunk
       </text>
-      <text x={215} y={100} textAnchor="middle" fill="white" fontSize={9}>
+      <text x={215} y={100} textAnchor="middle" fill="white" fontSize={11}>
         (convs / MLP)
       </text>
 
@@ -522,7 +522,7 @@ function ActorCriticDiagram() {
       <text x={365} y={50} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
         Actor π(a|s)
       </text>
-      <text x={365} y={66} textAnchor="middle" fill="white" fontSize={9}>
+      <text x={365} y={66} textAnchor="middle" fill="white" fontSize={11}>
         policy softmax
       </text>
 
@@ -541,7 +541,7 @@ function ActorCriticDiagram() {
       <text x={365} y={122} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
         Critic V(s)
       </text>
-      <text x={365} y={138} textAnchor="middle" fill="white" fontSize={9}>
+      <text x={365} y={138} textAnchor="middle" fill="white" fontSize={11}>
         scalar value
       </text>
 
@@ -575,10 +575,10 @@ function ActorCriticDiagram() {
         stroke="#8b5cf6"
         strokeWidth={1.5}
       />
-      <text x={530} y={178} textAnchor="middle" fill="#c4b5fd" fontSize={10} fontWeight="bold">
+      <text x={530} y={178} textAnchor="middle" fill="#c4b5fd" fontSize={11} fontWeight="bold">
         Advantage
       </text>
-      <text x={530} y={190} textAnchor="middle" fill="#cbd5e1" fontSize={8}>
+      <text x={530} y={190} textAnchor="middle" fill="#cbd5e1" fontSize={11}>
         A = r + γ·V(s′) − V(s)
       </text>
 
@@ -677,7 +677,7 @@ function AdvantageSparkline({ steps }: AdvantageSparklineProps) {
         stroke="#475569"
         strokeDasharray="3 3"
       />
-      <text x={width - padding + 4} y={zeroY + 3} fill="#64748b" fontSize={8}>
+      <text x={width - padding + 4} y={zeroY + 3} fill="#64748b" fontSize={11}>
         A = 0
       </text>
 

@@ -566,12 +566,14 @@ export default function BackpropagationInTranslation() {
                           {(t.prob * 100).toFixed(0)}%
                         </span>
                         {isTop && !t.isCorrect && (
-                          <p className="text-[9px] text-rose-600 dark:text-rose-400 font-semibold">
+                          <p className="inline-flex items-center gap-0.5 text-[9px] text-rose-600 dark:text-rose-400 font-semibold">
+                            <XCircle size={10} aria-hidden="true" />
                             đang chọn
                           </p>
                         )}
                         {isTop && t.isCorrect && (
-                          <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                          <p className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                            <CheckCircle2 size={10} aria-hidden="true" />
                             đang chọn
                           </p>
                         )}
@@ -944,7 +946,7 @@ function BackpropLayerAnimation({
                 x={cx}
                 y={100}
                 textAnchor="middle"
-                fontSize={8}
+                fontSize={11}
                 fill={isEncoder ? "#1e3a8a" : "#4c1d95"}
                 fontFamily="monospace"
                 fontWeight={600}
@@ -996,7 +998,7 @@ function BackpropLayerAnimation({
               x={637}
               y={98}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fill="#b91c1c"
               fontWeight={700}
             >
@@ -1006,7 +1008,7 @@ function BackpropLayerAnimation({
               x={637}
               y={114}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill="#b91c1c"
               fontFamily="monospace"
             >
@@ -1040,7 +1042,7 @@ function BackpropLayerAnimation({
             <text
               x={20}
               y={160}
-              fontSize={10}
+              fontSize={11}
               fill="#f59e0b"
               fontWeight={600}
             >
@@ -1050,7 +1052,7 @@ function BackpropLayerAnimation({
               x={340}
               y={178}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fill="#f59e0b"
               fontStyle="italic"
             >
@@ -1089,7 +1091,7 @@ function BackpropLayerAnimation({
             x={340}
             y={50}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill="#16a34a"
             fontStyle="italic"
             fontWeight={600}
@@ -1103,7 +1105,7 @@ function BackpropLayerAnimation({
           x={170}
           y={200}
           textAnchor="middle"
-          fontSize={10}
+          fontSize={11}
           fill="#1e3a8a"
           fontWeight={600}
         >
@@ -1113,7 +1115,7 @@ function BackpropLayerAnimation({
           x={510}
           y={200}
           textAnchor="middle"
-          fontSize={10}
+          fontSize={11}
           fill="#4c1d95"
           fontWeight={600}
         >
@@ -1299,7 +1301,7 @@ function TrainingStepCard({
             x={55}
             y={40}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill={accentColor}
             fontWeight={700}
           >
@@ -1322,7 +1324,7 @@ function TrainingStepCard({
             x={385}
             y={40}
             textAnchor="middle"
-            fontSize={10}
+            fontSize={11}
             fill={accentColor}
             fontWeight={700}
           >
@@ -1357,7 +1359,7 @@ function TrainingStepCard({
             x={220}
             y={16}
             textAnchor="middle"
-            fontSize={9}
+            fontSize={11}
             fill="var(--text-tertiary)"
             fontStyle="italic"
           >

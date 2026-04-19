@@ -158,7 +158,7 @@ export default function TextToVideoTopic() {
             <svg viewBox="0 0 620 230" className="w-full max-w-2xl mx-auto">
               {/* Prompt */}
               <rect x={20} y={15} width={580} height={32} rx={8} fill="#3b82f6" />
-              <text x={310} y={36} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">
+              <text x={310} y={36} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                 Prompt: {'"Xe máy chạy qua phố cổ Hội An lúc hoàng hôn"'}
               </text>
 
@@ -181,7 +181,7 @@ export default function TextToVideoTopic() {
                 return (
                   <g key={i}>
                     <rect x={x} y={130} width={55} height={38} rx={4} fill={`hsl(${hue}, 55%, 35%)`} stroke={challenge.color} strokeWidth={activeChallenge === "temporal" ? 1.5 : 0.5} strokeDasharray={activeChallenge === "temporal" ? "3,2" : "0"} />
-                    <text x={x + 27} y={153} textAnchor="middle" fill="white" fontSize={9}>
+                    <text x={x + 27} y={153} textAnchor="middle" fill="white" fontSize={11}>
                       F{i + 1}
                     </text>
                     {i < 7 && (
@@ -193,7 +193,7 @@ export default function TextToVideoTopic() {
 
               {/* Challenge highlight */}
               <rect x={20} y={185} width={580} height={35} rx={6} fill={challenge.color} opacity={0.15} />
-              <text x={310} y={207} textAnchor="middle" fill={challenge.color} fontSize={10} fontWeight="bold">
+              <text x={310} y={207} textAnchor="middle" fill={challenge.color} fontSize={11} fontWeight="bold">
                 {challenge.label} ({challenge.difficulty})
               </text>
             </svg>

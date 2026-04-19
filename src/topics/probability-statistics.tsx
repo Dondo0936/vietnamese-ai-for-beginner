@@ -163,7 +163,7 @@ function Histogram({
               x={x + barWidth / 2}
               y={height + 14}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fill="var(--text-secondary)"
             >
               {i}
@@ -173,7 +173,7 @@ function Histogram({
                 x={x + barWidth / 2}
                 y={y - 4}
                 textAnchor="middle"
-                fontSize={10}
+                fontSize={11}
                 fill="var(--text-secondary)"
               >
                 {count}
@@ -186,7 +186,7 @@ function Histogram({
         x={width / 2}
         y={height + 28}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fill="var(--text-tertiary)"
       >
         Số mặt ngửa trong mỗi nhóm 10 lần tung
@@ -291,7 +291,7 @@ function BayesTree({
               <rect x={b.subRectX} y={220} width={160} height={64} rx={8} fill={b.boldFill} stroke={b.strokeDark} />
               <text x={b.subX} y={240} textAnchor="middle" fontSize={11} fill={b.textMain}>{b.subLabel}</text>
               <text x={b.subX} y={258} textAnchor="middle" fontSize={11} fill={b.textSoft} fontWeight={600}>{b.subCount.toFixed(1)} email</text>
-              <text x={b.subX} y={274} textAnchor="middle" fontSize={10} fill={b.textSoft}>(P = {(b.subLikelihood * 100).toFixed(0)}% {b.subHint})</text>
+              <text x={b.subX} y={274} textAnchor="middle" fontSize={11} fill={b.textSoft}>(P = {(b.subLikelihood * 100).toFixed(0)}% {b.subHint})</text>
 
               <line x1={b.x} y1={160} x2={b.altX - 30} y2={220} stroke={b.strokeFaint} strokeWidth={1} strokeDasharray="3,3" />
               <rect x={b.altRectX} y={220} width={100} height={40} rx={8} fill={b.softFill} stroke={b.strokeFaint} />

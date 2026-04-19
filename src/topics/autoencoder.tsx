@@ -479,7 +479,7 @@ export default function AutoencoderTopic() {
                       <text
                         x={x}
                         y={y + height + 14}
-                        fontSize={10}
+                        fontSize={11}
                         fill={color}
                         textAnchor="middle"
                         fontWeight={600}
@@ -506,7 +506,7 @@ export default function AutoencoderTopic() {
                 <text
                   x={50}
                   y={160}
-                  fontSize={10}
+                  fontSize={11}
                   fill="currentColor"
                   className="text-muted"
                   textAnchor="middle"
@@ -516,7 +516,7 @@ export default function AutoencoderTopic() {
                 <text
                   x={650}
                   y={160}
-                  fontSize={10}
+                  fontSize={11}
                   fill="currentColor"
                   className="text-muted"
                   textAnchor="middle"

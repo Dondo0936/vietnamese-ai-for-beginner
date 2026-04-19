@@ -487,7 +487,7 @@ export default function LearningRateTopic() {
                 y={SVG_H - 8}
                 textAnchor="middle"
                 fill="#64748b"
-                fontSize="10"
+                fontSize="11"
               >
                 Trọng số (w)
               </text>
@@ -515,7 +515,7 @@ export default function LearningRateTopic() {
                 y={SVG_H - PAD + 14}
                 textAnchor="middle"
                 fill="#22c55e"
-                fontSize="9"
+                fontSize="11"
               >
                 Cực tiểu
               </text>
@@ -573,7 +573,7 @@ export default function LearningRateTopic() {
                   y={toY(Math.min(p.y, Y_MAX)) - 10}
                   textAnchor="middle"
                   fill="#94a3b8"
-                  fontSize="8"
+                  fontSize="11"
                 >
                   {i}
                 </text>
@@ -687,7 +687,7 @@ export default function LearningRateTopic() {
                       y={238}
                       textAnchor="middle"
                       fill="#64748b"
-                      fontSize="10"
+                      fontSize="11"
                     >
                       1e{lg}
                     </text>
@@ -724,10 +724,10 @@ export default function LearningRateTopic() {
                 </text>
 
                 {/* explosion region label */}
-                <text x={440} y={60} textAnchor="end" fill="#ef4444" fontSize="10">
+                <text x={440} y={60} textAnchor="end" fill="#ef4444" fontSize="11">
                   Loss bùng nổ
                 </text>
-                <text x={80} y={210} fill="#f59e0b" fontSize="10">
+                <text x={80} y={210} fill="#f59e0b" fontSize="11">
                   Quá nhỏ, không học
                 </text>
 
@@ -845,10 +845,10 @@ export default function LearningRateTopic() {
                           stroke={colors[curve.name]}
                           strokeWidth="2"
                         />
-                        <text x={30} y={125} fontSize="8" fill="#64748b">
+                        <text x={30} y={125} fontSize="11" fill="#64748b">
                           t=0
                         </text>
-                        <text x={230} y={125} textAnchor="end" fontSize="8" fill="#64748b">
+                        <text x={230} y={125} textAnchor="end" fontSize="11" fill="#64748b">
                           t=T
                         </text>
                       </svg>
@@ -918,10 +918,10 @@ export default function LearningRateTopic() {
                     stroke="#3b82f6"
                     strokeWidth="2.5"
                   />
-                  <text x={260} y={156} textAnchor="middle" fill="#94a3b8" fontSize="10">
+                  <text x={260} y={156} textAnchor="middle" fill="#94a3b8" fontSize="11">
                     Epoch
                   </text>
-                  <text x={30} y={15} textAnchor="end" fill="#94a3b8" fontSize="9">
+                  <text x={30} y={15} textAnchor="end" fill="#94a3b8" fontSize="11">
                     α
                   </text>
                 </svg>
@@ -1123,7 +1123,7 @@ for epoch in range(100):
                   strokeWidth="2.5"
                 />
 
-                <text x={260} y={190} textAnchor="middle" fill="#94a3b8" fontSize="10">
+                <text x={260} y={190} textAnchor="middle" fill="#94a3b8" fontSize="11">
                   % tổng số bước huấn luyện
                 </text>
               </svg>
@@ -1255,7 +1255,7 @@ for batch in train_loader:
                 <text
                   x={BOWL_W / 2 + 8}
                   y={BOWL_H / 2 + 4}
-                  fontSize="9"
+                  fontSize="11"
                   fill="#22c55e"
                   fontWeight="600"
                 >
@@ -1326,15 +1326,15 @@ for batch in train_loader:
                 <g transform={`translate(${BOWL_W - 130}, 14)`}>
                   <rect width="120" height="58" fill="#0f172a" opacity={0.4} rx="4" />
                   <circle cx="10" cy="14" r="3" fill="#f59e0b" />
-                  <text x="20" y="18" fontSize="9" fill="#f59e0b">
+                  <text x="20" y="18" fontSize="11" fill="#f59e0b">
                     α=0.02 (chậm)
                   </text>
                   <circle cx="10" cy="28" r="3" fill="#22c55e" />
-                  <text x="20" y="32" fontSize="9" fill="#22c55e">
+                  <text x="20" y="32" fontSize="11" fill="#22c55e">
                     α={bowlLr.toFixed(2)} (vừa)
                   </text>
                   <circle cx="10" cy="42" r="3" fill="#ef4444" />
-                  <text x="20" y="46" fontSize="9" fill="#ef4444">
+                  <text x="20" y="46" fontSize="11" fill="#ef4444">
                     α=0.16 (zig-zag)
                   </text>
                 </g>

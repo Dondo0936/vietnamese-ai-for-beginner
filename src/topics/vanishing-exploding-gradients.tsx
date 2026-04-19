@@ -257,7 +257,7 @@ export default function VanishingExplodingGradientsTopic() {
                       y={SVG_H - 33}
                       textAnchor="middle"
                       fill="#64748b"
-                      fontSize="9"
+                      fontSize="11"
                     >
                       Lớp {i + 1}
                     </text>
@@ -266,7 +266,7 @@ export default function VanishingExplodingGradientsTopic() {
                       y={y - 5}
                       textAnchor="middle"
                       fill="#e2e8f0"
-                      fontSize="8"
+                      fontSize="11"
                     >
                       {Math.abs(g) < 0.001
                         ? "~0"
@@ -296,7 +296,7 @@ export default function VanishingExplodingGradientsTopic() {
                 y={SVG_H - 5}
                 textAnchor="middle"
                 fill="#475569"
-                fontSize="9"
+                fontSize="11"
               >
                 ← Hướng lan truyền ngược gradient (backward)
               </text>

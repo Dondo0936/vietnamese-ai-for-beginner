@@ -574,7 +574,7 @@ export default function AIForScienceTopic() {
                             x={a.x}
                             y={a.y + 3.5}
                             textAnchor="middle"
-                            fontSize={10}
+                            fontSize={11}
                             fontWeight="bold"
                             fill="white"
                           >
@@ -711,7 +711,7 @@ export default function AIForScienceTopic() {
                             x={40}
                             y={y + 14}
                             fill={b.color}
-                            fontSize={9}
+                            fontSize={11}
                             fontWeight="bold"
                           >
                             {b.year}
@@ -720,7 +720,7 @@ export default function AIForScienceTopic() {
                             x={100}
                             y={y + 14}
                             fill="#e2e8f0"
-                            fontSize={9}
+                            fontSize={11}
                             fontWeight="bold"
                           >
                             {b.name}
@@ -729,7 +729,7 @@ export default function AIForScienceTopic() {
                             x={210}
                             y={y + 14}
                             fill="#94a3b8"
-                            fontSize={8}
+                            fontSize={11}
                           >
                             {b.field}
                           </text>
@@ -737,7 +737,7 @@ export default function AIForScienceTopic() {
                             x={280}
                             y={y + 14}
                             fill="#94a3b8"
-                            fontSize={8}
+                            fontSize={11}
                           >
                             {b.impact}
                           </text>
@@ -745,7 +745,7 @@ export default function AIForScienceTopic() {
                             x={40}
                             y={y + 26}
                             fill="#64748b"
-                            fontSize={7}
+                            fontSize={11}
                           >
                             {b.speedup}
                           </text>

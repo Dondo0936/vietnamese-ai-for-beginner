@@ -820,7 +820,7 @@ export default function NaiveBayesInEmailClassification() {
           </div>
           <div className="rounded-xl border-2 border-amber-300 bg-amber-50/60 dark:bg-amber-900/20 dark:border-amber-700 p-4 space-y-2">
             <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-              <Mail size={16} />
+              <AlertTriangle size={16} aria-hidden="true" />
               <span className="text-sm font-bold">
                 False negative (lọt spam vào Inbox)
               </span>

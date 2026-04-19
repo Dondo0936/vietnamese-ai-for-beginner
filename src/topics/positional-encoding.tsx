@@ -135,11 +135,11 @@ export default function PositionalEncodingTopic() {
                 className="cursor-pointer"
                 onMouseEnter={() => setHighlightDim(d)}
                 onMouseLeave={() => setHighlightDim(null)}>
-                <text x={120 + d * 45} y={38} fontSize={9} fill="#8b5cf6" textAnchor="middle"
+                <text x={120 + d * 45} y={38} fontSize={11} fill="#8b5cf6" textAnchor="middle"
                   fontWeight={highlightDim === d ? 700 : 400}>
                   d={d}
                 </text>
-                <text x={120 + d * 45} y={50} fontSize={7} fill="#8b5cf6" textAnchor="middle"
+                <text x={120 + d * 45} y={50} fontSize={11} fill="#8b5cf6" textAnchor="middle"
                   opacity={0.7}>
                   {d % 2 === 0 ? "sin" : "cos"}
                 </text>
@@ -152,7 +152,7 @@ export default function PositionalEncodingTopic() {
                 className="cursor-pointer"
                 onMouseEnter={() => setHighlightPos(pos)}
                 onMouseLeave={() => setHighlightPos(null)}>
-                <text x={70} y={74 + pos * 30} fontSize={10} fill="#3b82f6" textAnchor="end"
+                <text x={70} y={74 + pos * 30} fontSize={11} fill="#3b82f6" textAnchor="end"
                   fontWeight={highlightPos === pos ? 700 : 400}>
                   pos={pos}
                 </text>
@@ -166,7 +166,7 @@ export default function PositionalEncodingTopic() {
                         fill={`hsl(${260 - normalized * 200}, 70%, ${30 + normalized * 40}%)`}
                         opacity={isHighlight ? 0.6 : 0.3}
                         stroke={isHighlight ? "#fff" : "transparent"} strokeWidth={isHighlight ? 1.5 : 0} />
-                      <text x={120 + d * 45} y={74 + pos * 30} fontSize={8}
+                      <text x={120 + d * 45} y={74 + pos * 30} fontSize={11}
                         fill="currentColor" className="text-foreground" textAnchor="middle"
                         fontWeight={isHighlight ? 600 : 400}>
                         {val.toFixed(2)}
@@ -179,10 +179,10 @@ export default function PositionalEncodingTopic() {
 
             {/* Frequency annotation */}
             <line x1={98} y1={302} x2={460} y2={302} stroke="#f97316" strokeWidth={1} opacity={0.5} />
-            <text x={140} y={298} fontSize={8} fill="#f97316" fontWeight={600}>
+            <text x={140} y={298} fontSize={11} fill="#f97316" fontWeight={600}>
               Tần số cao ← (thay đổi nhanh)
             </text>
-            <text x={400} y={298} fontSize={8} fill="#f97316" fontWeight={600} textAnchor="end">
+            <text x={400} y={298} fontSize={11} fill="#f97316" fontWeight={600} textAnchor="end">
               → Tần số thấp (thay đổi chậm)
             </text>
           </svg>

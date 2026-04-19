@@ -9,6 +9,7 @@ import {
   Scissors,
   ListChecks,
   AlertTriangle,
+  AlertCircle,
   Trash2,
   Eye,
   EyeOff,
@@ -16,6 +17,7 @@ import {
   SprayCan,
   Tag,
   SplitSquareHorizontal,
+  X,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -158,6 +160,7 @@ function DatasetInspector() {
       </div>
 
       {/* SVG Table */}
+      <div className="relative">
       <div className="rounded-xl border border-border bg-surface overflow-x-auto">
         <svg
           viewBox={`0 0 ${Math.max(720, 130 * visibleCols.length + 60)} 420`}
@@ -199,7 +202,7 @@ function DatasetInspector() {
                   x={x + 60}
                   y={44}
                   textAnchor="middle"
-                  fontSize="9"
+                  fontSize="11"
                   fill={isLabel ? "#b45309" : "#1d4ed8"}
                   fontStyle="italic"
                 >
@@ -294,6 +297,11 @@ function DatasetInspector() {
             );
           })}
         </svg>
+      </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-10 rounded-r-xl bg-gradient-to-l from-[var(--bg-surface)] to-transparent md:hidden"
+        />
       </div>
 
       {/* Tóm tắt động */}
@@ -442,7 +450,8 @@ function SplitVisualization({ train, val }: SplitVisArgs) {
       )}
 
       {total !== 100 && (
-        <p className="text-xs text-rose-500 font-semibold text-center">
+        <p className="inline-flex items-center justify-center gap-1 text-xs text-rose-500 font-semibold text-center w-full">
+          <AlertCircle size={12} aria-hidden="true" />
           Ba tỉ lệ phải cộng lại bằng 100%.
         </p>
       )}
@@ -537,7 +546,10 @@ function PipelineStage({
             <span className="text-[10px] text-muted font-semibold">#{i + 1}</span>
             <span className="flex-1 truncate">{cleanedLabel}</span>
             {stage === "raw" && isIssue && (
-              <span className="text-[10px] font-bold text-rose-500">LỖI</span>
+              <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-rose-500">
+                <X size={10} aria-hidden="true" />
+                LỖI
+              </span>
             )}
             {stage === "labeled" && (
               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200">
@@ -818,15 +830,15 @@ export default function DataAndDatasetsTopic() {
       {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn dạy em 5 tuổi phân biệt cam và quýt. Cách nào hiệu quả nhất?"
+          question="Bảng 10.000 căn hộ có 4 cột: diện tích, quận, số phòng, giá. Bạn muốn dạy mô hình đoán GIÁ cho căn hộ mới. Khi huấn luyện và khi dự đoán, bạn đưa vào cột nào?"
           options={[
-            "Giải thích cấu trúc gen của cam và quýt",
-            "Đặt một rổ trước mặt, chỉ từng trái: 'cam', 'quýt', 'cam', 'quýt'…",
-            "Đưa em đọc sách dày 300 trang về trái cây họ cam",
-            "Không dạy gì — để em tự nghĩ ra",
+            "Đưa cả 4 cột lúc huấn luyện và cả 4 cột lúc dự đoán — mô hình tự chọn cột nào cần thiết",
+            "Huấn luyện: đưa 3 cột đầu kèm 'giá' làm đáp án đúng. Dự đoán: chỉ đưa 3 cột đầu để mô hình đoán giá",
+            "Huấn luyện: chỉ đưa cột 'giá'. Dự đoán: đưa 3 cột còn lại",
+            "Bỏ cột 'quận' đi vì là chữ, ML chỉ hiểu số",
           ]}
           correct={1}
-          explanation="ML cũng học y hệt cách này. Mỗi trái cây = một mẫu dữ liệu. Màu vỏ, mùi, kích thước = đặc trưng. Nhãn 'cam' hoặc 'quýt' = thứ máy cần đoán. Cho máy đủ ví dụ, nó sẽ tự rút ra quy luật."
+          explanation="Ba cột đầu là 'đặc trưng' (feature) — đầu vào. 'Giá' là 'nhãn' (label) — thứ mô hình phải đoán. Khi huấn luyện bạn đưa đủ cả đặc trưng lẫn nhãn để mô hình học mối quan hệ; khi dự đoán cho căn mới, nhãn chính là thứ bạn chưa biết — nếu đưa vào thì mô hình chỉ việc copy (rò rỉ nhãn). Cột chữ như 'quận' sẽ được mã hoá thành số ở bước tiền xử lý — bạn không cần bỏ."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Tiếp theo, bạn sẽ thấy dữ liệu ML trông như thế nào — và bạn

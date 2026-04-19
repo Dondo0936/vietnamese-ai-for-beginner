@@ -116,7 +116,7 @@ export default function OrchestrationTopic() {
           <svg viewBox="0 0 600 280" className="w-full max-w-2xl mx-auto mb-4">
             {/* User input */}
             <rect x={225} y={5} width={150} height={35} rx={8} fill="var(--bg-surface)" stroke="var(--text-tertiary)" strokeWidth={1.5} />
-            <text x={300} y={27} textAnchor="middle" fill="var(--text-primary)" fontSize={10} fontWeight="bold">
+            <text x={300} y={27} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
               Người dùng
             </text>
 
@@ -127,7 +127,7 @@ export default function OrchestrationTopic() {
             <text x={300} y={82} textAnchor="middle" fill="white" fontSize={12} fontWeight="bold">
               Tầng Điều phối
             </text>
-            <text x={300} y={98} textAnchor="middle" fill="#bfdbfe" fontSize={8}>
+            <text x={300} y={98} textAnchor="middle" fill="#bfdbfe" fontSize={11}>
               Routing | State | Error Handling | Monitoring
             </text>
 
@@ -139,8 +139,8 @@ export default function OrchestrationTopic() {
                 <g key={i}>
                   <line x1={300} y1={110} x2={x} y2={140} stroke="var(--text-tertiary)" strokeWidth={1.5} />
                   <rect x={x - 65} y={140} width={130} height={42} rx={8} fill="var(--bg-surface)" stroke="#8b5cf6" strokeWidth={2} />
-                  <text x={x} y={157} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">{lines[0]}</text>
-                  <text x={x} y={172} textAnchor="middle" fill="var(--text-tertiary)" fontSize={8}>{lines[1]}</text>
+                  <text x={x} y={157} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">{lines[0]}</text>
+                  <text x={x} y={172} textAnchor="middle" fill="var(--text-tertiary)" fontSize={11}>{lines[1]}</text>
                 </g>
               );
             })}
@@ -152,13 +152,13 @@ export default function OrchestrationTopic() {
                 <g key={i}>
                   <line x1={x} y1={200} x2={x} y2={222} stroke="var(--text-tertiary)" strokeWidth={1} strokeDasharray="3,3" />
                   <rect x={x - 50} y={222} width={100} height={30} rx={6} fill="var(--bg-surface)" stroke="#22c55e" strokeWidth={1.5} />
-                  <text x={x} y={241} textAnchor="middle" fill="#22c55e" fontSize={9} fontWeight="bold">{tool}</text>
+                  <text x={x} y={241} textAnchor="middle" fill="#22c55e" fontSize={11} fontWeight="bold">{tool}</text>
                 </g>
               );
             })}
 
-            <text x={560} y={165} fill="var(--text-tertiary)" fontSize={8}>Agents</text>
-            <text x={560} y={240} fill="var(--text-tertiary)" fontSize={8}>Tools</text>
+            <text x={560} y={165} fill="var(--text-tertiary)" fontSize={11}>Agents</text>
+            <text x={560} y={240} fill="var(--text-tertiary)" fontSize={11}>Tools</text>
           </svg>
 
           <h4 className="text-sm font-semibold text-foreground mb-2">Frameworks phổ biến:</h4>

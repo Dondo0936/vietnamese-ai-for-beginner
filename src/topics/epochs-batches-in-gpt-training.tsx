@@ -296,10 +296,10 @@ function BatchStripChart({ totalTokens, batchTokens, color }: StripChartProps) {
           />
         );
       })}
-      <text x={200} y={16} textAnchor="middle" fontSize={10} fill="var(--text-secondary)">
+      <text x={200} y={16} textAnchor="middle" fontSize={11} fill="var(--text-secondary)">
         {fmtBig(totalTokens)} token chia thành {fmtIterations(totalTokens, batchTokens)} batch
       </text>
-      <text x={200} y={66} textAnchor="middle" fontSize={9} fill="var(--text-tertiary)">
+      <text x={200} y={66} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
         Mỗi ô = một batch = một bước cập nhật trọng số
       </text>
     </svg>
@@ -373,19 +373,19 @@ function ScalingCurveSvg() {
       {SCALING_CURVE.map((p) => (
         <g key={p.label}>
           <circle cx={x(p.compute)} cy={y(p.loss)} r={5.5} fill={p.color} stroke="white" strokeWidth={1.5} />
-          <text x={x(p.compute)} y={y(p.loss) - 10} textAnchor="middle" fontSize={10} fill={p.color} fontWeight={600}>
+          <text x={x(p.compute)} y={y(p.loss) - 10} textAnchor="middle" fontSize={11} fill={p.color} fontWeight={600}>
             {p.label}
           </text>
         </g>
       ))}
-      <text x={W / 2} y={H - 6} textAnchor="middle" fontSize={10} fill="var(--text-tertiary)">
+      <text x={W / 2} y={H - 6} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
         Compute (phép tính, thang log) →
       </text>
       <text
         x={12}
         y={H / 2}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fill="var(--text-tertiary)"
         transform={`rotate(-90, 12, ${H / 2})`}
       >

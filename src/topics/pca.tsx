@@ -160,7 +160,8 @@ export default function PcaTopic() {
               Xoay trục bằng thanh trượt; <strong>nhấn nền</strong> để thêm điểm, <strong>kéo chấm cam</strong> để di chuyển.
             </p>
             <svg ref={svgRef} viewBox="0 0 500 300"
-              className="w-full cursor-crosshair touch-none select-none rounded-lg border border-border bg-background"
+              className="w-full cursor-crosshair select-none rounded-lg border border-border bg-background"
+              style={{ touchAction: dragIdx !== null ? "none" : "auto" }}
               role="img" aria-label={`PCA, góc ${angle}°, giữ ${(explainedRatio * 100).toFixed(0)}% phương sai`}
               onClick={onSvgClick} onPointerMove={onPointerMove}
               onPointerUp={() => setDragIdx(null)} onPointerLeave={() => setDragIdx(null)}>
@@ -228,9 +229,9 @@ export default function PcaTopic() {
 
               {/* Legend */}
               <circle cx={400} cy={14} r={4} fill="#f97316" />
-              <text x={410} y={18} fontSize={9} fill="currentColor" className="text-muted">Gốc (2D)</text>
+              <text x={410} y={18} fontSize={11} fill="currentColor" className="text-muted">Gốc (2D)</text>
               <circle cx={400} cy={30} r={4} fill="#3b82f6" />
-              <text x={410} y={34} fontSize={9} fill="currentColor" className="text-muted">Chiếu (1D)</text>
+              <text x={410} y={34} fontSize={11} fill="currentColor" className="text-muted">Chiếu (1D)</text>
             </svg>
 
             {/* Controls */}

@@ -414,15 +414,15 @@ export default function GradientIntuitionTopic() {
       {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn đang trên đồi dốc. Bạn muốn xuống thung lũng nhanh nhất. Nên bước thế nào?"
+          question="Bạn đã biết phải đi ngược hướng dốc xuống. Giờ chọn độ dài MỖI BƯỚC. Bạn đặt bước rất to (η lớn) để xuống thật nhanh. Chuyện gì dễ xảy ra nhất?"
           options={[
-            "Bước thật to, càng to càng xuống nhanh",
-            "Bước nhỏ tí một, an toàn nhất",
-            "Bước vừa đủ theo hướng NGƯỢC với hướng dốc lên — lặp lại sau mỗi bước",
-            "Nhắm mắt đi đại, đằng nào cũng tới",
+            "Xuống đáy sau đúng một bước — ai cũng thích bước to",
+            "Nhảy vọt qua đáy sang sườn đối diện, rồi lại nhảy về, loss không chịu giảm",
+            "Bước to làm gradient trở về 0, thuật toán dừng sớm",
+            "Máy tính tự phát hiện và âm thầm chia nhỏ bước hộ bạn",
           ]}
-          correct={2}
-          explanation="Đúng — bước quá to sẽ nhảy qua đáy sang sườn bên kia (phân kỳ). Bước quá nhỏ mất rất lâu. Bước vừa đủ theo hướng ngược gradient là cách tối ưu. Đây là trực giác của gradient descent."
+          correct={1}
+          explanation="Bước quá to = đi quá đà. Ở đáy thung lũng hẹp, cú bước lớn sẽ đẩy bạn sang vách bên kia, rồi bước tiếp lại đẩy về bên đây — dao động, thậm chí phân kỳ (loss càng lúc càng to). Ngược lại, bước quá nhỏ đi mãi không tới. Learning rate η phải vừa đủ — bài sau bạn sẽ tự điều chỉnh để thấy cả ba chế độ."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Giờ ta sẽ thả một viên bi lên mặt loss 2D thật và xem nó lăn. Bạn
@@ -509,7 +509,7 @@ export default function GradientIntuitionTopic() {
                     x={toPX(1.5)}
                     y={toPY(-0.5) + 18}
                     textAnchor="middle"
-                    fontSize={10}
+                    fontSize={11}
                     fill="#166534"
                     fontWeight={600}
                   >
@@ -599,7 +599,7 @@ export default function GradientIntuitionTopic() {
                             <text
                               x={pxUp + 6}
                               y={pyUp - 4}
-                              fontSize={10}
+                              fontSize={11}
                               fill="#ef4444"
                               fontWeight={700}
                             >
@@ -608,7 +608,7 @@ export default function GradientIntuitionTopic() {
                             <text
                               x={pxDown - 28}
                               y={pyDown + 10}
-                              fontSize={10}
+                              fontSize={11}
                               fill="#166534"
                               fontWeight={700}
                             >
@@ -1036,27 +1036,27 @@ export default function GradientIntuitionTopic() {
                 </title>
                 {/* θ old */}
                 <circle cx={90} cy={55} r={6} fill="#3b82f6" stroke="#fff" strokeWidth={2} />
-                <text x={90} y={80} textAnchor="middle" fontSize={10} fill="#1e3a8a" fontWeight={600}>
+                <text x={90} y={80} textAnchor="middle" fontSize={11} fill="#1e3a8a" fontWeight={600}>
                   θ cũ
                 </text>
 
                 {/* gradient arrow from θ old (uphill) */}
                 <line x1={90} y1={55} x2={170} y2={25} stroke="#ef4444" strokeWidth={2} />
                 <path d="M 170 25 L 162 24 L 164 32 Z" fill="#ef4444" />
-                <text x={176} y={22} fontSize={10} fill="#ef4444" fontWeight={600}>
+                <text x={176} y={22} fontSize={11} fill="#ef4444" fontWeight={600}>
                   ∇L
                 </text>
 
                 {/* negated gradient arrow */}
                 <line x1={210} y1={55} x2={290} y2={85} stroke="#22c55e" strokeWidth={2} strokeDasharray="4,3" />
                 <path d="M 290 85 L 282 84 L 284 76 Z" fill="#22c55e" />
-                <text x={296} y={92} fontSize={10} fill="#22c55e" fontWeight={600}>
+                <text x={296} y={92} fontSize={11} fill="#22c55e" fontWeight={600}>
                   −η·∇L
                 </text>
 
                 {/* θ new */}
                 <circle cx={330} cy={55} r={6} fill="#22c55e" stroke="#fff" strokeWidth={2} />
-                <text x={330} y={80} textAnchor="middle" fontSize={10} fill="#166534" fontWeight={600}>
+                <text x={330} y={80} textAnchor="middle" fontSize={11} fill="#166534" fontWeight={600}>
                   θ mới
                 </text>
 
@@ -1214,7 +1214,7 @@ function IterationMiniVisual({ phase, color }: { phase: string; color: string })
           />
         ))}
         <circle cx={140} cy={52} r={7} fill={color} stroke="#fff" strokeWidth={2} />
-        <text x={140} y={74} textAnchor="middle" fontSize={10} fill={color} fontWeight={600}>
+        <text x={140} y={74} textAnchor="middle" fontSize={11} fill={color} fontWeight={600}>
           (x, y)
         </text>
       </svg>
@@ -1259,7 +1259,7 @@ function IterationMiniVisual({ phase, color }: { phase: string; color: string })
           strokeWidth={2}
           strokeDasharray="3,3"
         />
-        <text x={180} y={40} textAnchor="middle" fontSize={10} fill="#22c55e" fontWeight={600}>
+        <text x={180} y={40} textAnchor="middle" fontSize={11} fill="#22c55e" fontWeight={600}>
           bước: −η·∇L
         </text>
       </svg>
@@ -1295,7 +1295,7 @@ function IterationMiniVisual({ phase, color }: { phase: string; color: string })
         />
       ))}
       <circle cx={395} cy={42} r={5} fill="none" stroke="#22c55e" strokeWidth={1.5} strokeDasharray="2,2" />
-      <text x={395} y={64} textAnchor="middle" fontSize={10} fill="#166534" fontWeight={600}>
+      <text x={395} y={64} textAnchor="middle" fontSize={11} fill="#166534" fontWeight={600}>
         đáy
       </text>
     </svg>

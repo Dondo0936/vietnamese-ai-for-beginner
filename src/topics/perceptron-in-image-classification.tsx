@@ -556,7 +556,7 @@ function PipelineDemo() {
                   key={`${i}-${j}`}
                   x={195 + j * 22}
                   y={28 + i * 20}
-                  fontSize={10}
+                  fontSize={11}
                   fill={i === 2 && j === 2 ? "#ef4444" : "currentColor"}
                   className="text-muted"
                   fontWeight={i === 2 && j === 2 ? 700 : 400}
@@ -565,7 +565,7 @@ function PipelineDemo() {
                 </text>
               ))
             )}
-            <text x={248} y={135} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+            <text x={248} y={135} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               Ma trận pixel
             </text>
           </svg>
@@ -608,13 +608,13 @@ function PipelineDemo() {
                 strokeWidth={0.5}
               />
             ))}
-            <text x={125} y={75} fontSize={9} fill="currentColor" className="text-muted">
+            <text x={125} y={75} fontSize={11} fill="currentColor" className="text-muted">
               x₁
             </text>
-            <text x={341} y={75} fontSize={9} fill="currentColor" className="text-muted">
+            <text x={341} y={75} fontSize={11} fill="currentColor" className="text-muted">
               x₇₈₄
             </text>
-            <text x={220} y={30} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+            <text x={220} y={30} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               Vector 784 chiều
             </text>
           </svg>
@@ -694,32 +694,32 @@ function PipelineDemo() {
           <svg viewBox="0 0 360 140" className="w-full max-w-md mx-auto">
             <line x1={30} y1={70} x2={330} y2={70} stroke="currentColor" className="text-muted" strokeWidth={1} />
             <line x1={180} y1={20} x2={180} y2={120} stroke="currentColor" className="text-muted" strokeWidth={1} strokeDasharray="3 3" />
-            <text x={180} y={18} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+            <text x={180} y={18} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               0
             </text>
 
             {/* Ví dụ 3 giá trị */}
             <circle cx={80} cy={70} r={8} fill="#3b82f6" />
-            <text x={80} y={90} textAnchor="middle" fontSize={10} fill="#3b82f6" fontWeight={700}>
+            <text x={80} y={90} textAnchor="middle" fontSize={11} fill="#3b82f6" fontWeight={700}>
               z = −5
             </text>
-            <text x={80} y={104} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted">
+            <text x={80} y={104} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               → đoán 0
             </text>
 
             <circle cx={180} cy={70} r={8} fill="#94a3b8" />
-            <text x={180} y={90} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted" fontWeight={700}>
+            <text x={180} y={90} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted" fontWeight={700}>
               z = 0
             </text>
-            <text x={180} y={104} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted">
+            <text x={180} y={104} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               → biên
             </text>
 
             <circle cx={280} cy={70} r={8} fill="#ef4444" />
-            <text x={280} y={90} textAnchor="middle" fontSize={10} fill="#ef4444" fontWeight={700}>
+            <text x={280} y={90} textAnchor="middle" fontSize={11} fill="#ef4444" fontWeight={700}>
               z = +4
             </text>
-            <text x={280} y={104} textAnchor="middle" fontSize={9} fill="currentColor" className="text-muted">
+            <text x={280} y={104} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
               → đoán 1
             </text>
           </svg>

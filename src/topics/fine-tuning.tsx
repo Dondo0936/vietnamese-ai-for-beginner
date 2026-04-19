@@ -481,9 +481,9 @@ export default function FineTuningTopic() {
             {/* Legend for the matrix */}
             <g transform="translate(80, 300)">
               <rect width="18" height="12" fill={activeDef.color} opacity="0.9" rx="2" />
-              <text x="24" y="10" fill="var(--text-tertiary)" fontSize="10">đang học</text>
+              <text x="24" y="10" fill="var(--text-tertiary)" fontSize="11">đang học</text>
               <rect x="110" width="18" height="12" fill="var(--bg-surface)" stroke="var(--border)" opacity="0.4" rx="2" />
-              <text x="134" y="10" fill="var(--text-tertiary)" fontSize="10">đóng băng</text>
+              <text x="134" y="10" fill="var(--text-tertiary)" fontSize="11">đóng băng</text>
             </g>
 
             {/* Method-specific side module */}
@@ -494,13 +494,13 @@ export default function FineTuningTopic() {
                 </text>
                 <rect width="60" height="180" fill={activeDef.color} opacity="0.85" rx="4" />
                 <text x="30" y="100" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">A</text>
-                <text x="30" y="120" textAnchor="middle" fill="white" fontSize="9">d × r</text>
+                <text x="30" y="120" textAnchor="middle" fill="white" fontSize="11">d × r</text>
                 <text x="75" y="95" fill="var(--text-tertiary)" fontSize="20">×</text>
                 <rect x="100" width="180" height="60" fill={activeDef.color} opacity="0.85" rx="4" />
                 <text x="190" y="38" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">B</text>
-                <text x="190" y="52" textAnchor="middle" fill="white" fontSize="9">r × d</text>
-                <text x="120" y="200" fill="var(--text-tertiary)" fontSize="10">Tham số học: 2 · d · r</text>
-                <text x="120" y="216" fill="var(--text-tertiary)" fontSize="10">→ chỉ ~0.1–1% của W</text>
+                <text x="190" y="52" textAnchor="middle" fill="white" fontSize="11">r × d</text>
+                <text x="120" y="200" fill="var(--text-tertiary)" fontSize="11">Tham số học: 2 · d · r</text>
+                <text x="120" y="216" fill="var(--text-tertiary)" fontSize="11">→ chỉ ~0.1–1% của W</text>
               </g>
             )}
 
@@ -512,12 +512,12 @@ export default function FineTuningTopic() {
                 <rect width="220" height="42" fill={activeDef.color} opacity="0.85" rx="4" />
                 <text x="110" y="27" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Down-projection (d → k)</text>
                 <rect y="50" width="220" height="34" fill="var(--bg-card)" rx="4" />
-                <text x="110" y="71" textAnchor="middle" fill="var(--text-tertiary)" fontSize="10">ReLU / GELU</text>
+                <text x="110" y="71" textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">ReLU / GELU</text>
                 <rect y="90" width="220" height="42" fill={activeDef.color} opacity="0.85" rx="4" />
                 <text x="110" y="117" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">Up-projection (k → d)</text>
                 <line x1="-30" y1="60" x2="-10" y2="60" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#ft-arrow)" />
                 <line x1="225" y1="60" x2="250" y2="60" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#ft-arrow)" />
-                <text x="100" y="160" fill="var(--text-tertiary)" fontSize="10">Backbone đóng băng, chỉ học Adapter</text>
+                <text x="100" y="160" fill="var(--text-tertiary)" fontSize="11">Backbone đóng băng, chỉ học Adapter</text>
               </g>
             )}
 
@@ -532,10 +532,10 @@ export default function FineTuningTopic() {
                 {Array.from({ length: 8 }).map((_, i) => (
                   <rect key={i} x={180 + i * 28} width="24" height="30" fill="var(--bg-surface)" stroke="var(--border)" opacity="0.4" rx="3" />
                 ))}
-                <text x="85" y="52" textAnchor="middle" fill={activeDef.color} fontSize="10">prefix P</text>
-                <text x="280" y="52" textAnchor="middle" fill="var(--text-tertiary)" fontSize="10">token thật (đóng băng)</text>
-                <text x="50" y="120" fill="var(--text-tertiary)" fontSize="10">Tham số học: chỉ các vector prefix ở mỗi lớp</text>
-                <text x="50" y="134" fill="var(--text-tertiary)" fontSize="10">→ ~0.01–0.1% của W</text>
+                <text x="85" y="52" textAnchor="middle" fill={activeDef.color} fontSize="11">prefix P</text>
+                <text x="280" y="52" textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">token thật (đóng băng)</text>
+                <text x="50" y="120" fill="var(--text-tertiary)" fontSize="11">Tham số học: chỉ các vector prefix ở mỗi lớp</text>
+                <text x="50" y="134" fill="var(--text-tertiary)" fontSize="11">→ ~0.01–0.1% của W</text>
               </g>
             )}
 
@@ -633,7 +633,7 @@ export default function FineTuningTopic() {
               return (
                 <g key={v}>
                   <line x1="55" y1={y} x2="60" y2={y} stroke="#64748b" strokeWidth="1" />
-                  <text x="50" y={y + 4} textAnchor="end" fill="#64748b" fontSize="10">{v}%</text>
+                  <text x="50" y={y + 4} textAnchor="end" fill="#64748b" fontSize="11">{v}%</text>
                 </g>
               );
             })}
@@ -645,7 +645,7 @@ export default function FineTuningTopic() {
               return (
                 <g key={v}>
                   <line x1={x} y1="260" x2={x} y2="265" stroke="#64748b" strokeWidth="1" />
-                  <text x={x} y="280" textAnchor="middle" fill="#64748b" fontSize="10">{v}%</text>
+                  <text x={x} y="280" textAnchor="middle" fill="#64748b" fontSize="11">{v}%</text>
                 </g>
               );
             })}
@@ -675,7 +675,7 @@ export default function FineTuningTopic() {
                 <g key={m}>
                   <circle cx={x} cy={y} r={method === m ? 9 : 6} fill={d.color} stroke="white" strokeWidth="2" opacity={method === m ? 1 : 0.75} />
                   <text x={x} y={y - 14} textAnchor="middle" fill={d.color} fontSize="11" fontWeight="bold">{d.label}</text>
-                  <text x={x} y={y + 22} textAnchor="middle" fill="var(--text-tertiary)" fontSize="9">
+                  <text x={x} y={y + 22} textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">
                     {pct}% · {d.accuracyRetained}%
                   </text>
                 </g>

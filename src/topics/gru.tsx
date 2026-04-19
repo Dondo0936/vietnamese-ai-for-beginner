@@ -421,10 +421,10 @@ export default function GruTopic() {
             >
               Hidden State hₜ (GRU gộp cell state vào đây!)
             </text>
-            <text x={22} y={95} fontSize={9} fill="#8b5cf6" fontWeight={500}>
+            <text x={22} y={95} fontSize={11} fill="#8b5cf6" fontWeight={500}>
               hₜ₋₁
             </text>
-            <text x={540} y={95} fontSize={9} fill="#8b5cf6" fontWeight={500}>
+            <text x={540} y={95} fontSize={11} fill="#8b5cf6" fontWeight={500}>
               hₜ
             </text>
 
@@ -443,7 +443,7 @@ export default function GruTopic() {
             <text
               x={67.5}
               y={78}
-              fontSize={10}
+              fontSize={11}
               fill="#8b5cf6"
               textAnchor="middle"
               fontWeight={600}
@@ -466,7 +466,7 @@ export default function GruTopic() {
             <text
               x={497.5}
               y={78}
-              fontSize={10}
+              fontSize={11}
               fill="#22c55e"
               textAnchor="middle"
               fontWeight={600}
@@ -478,7 +478,7 @@ export default function GruTopic() {
             <text
               x={280}
               y={52}
-              fontSize={9}
+              fontSize={11}
               fill="#f59e0b"
               textAnchor="middle"
               fontWeight={500}
@@ -519,7 +519,7 @@ export default function GruTopic() {
               <text
                 x={130}
                 y={180}
-                fontSize={9}
+                fontSize={11}
                 fill="#ef4444"
                 textAnchor="middle"
               >
@@ -607,7 +607,7 @@ export default function GruTopic() {
               <text
                 x={410}
                 y={180}
-                fontSize={9}
+                fontSize={11}
                 fill="#22c55e"
                 textAnchor="middle"
               >
@@ -695,7 +695,7 @@ export default function GruTopic() {
               <text
                 x={270}
                 y={266}
-                fontSize={9}
+                fontSize={11}
                 fill="#3b82f6"
                 textAnchor="middle"
               >
@@ -713,7 +713,7 @@ export default function GruTopic() {
               <text
                 x={270}
                 y={283}
-                fontSize={10}
+                fontSize={11}
                 fill="#3b82f6"
                 textAnchor="middle"
                 fontWeight={700}
@@ -734,7 +734,7 @@ export default function GruTopic() {
             <text
               x={280}
               y={350}
-              fontSize={10}
+              fontSize={11}
               fill="currentColor"
               className="text-muted"
               textAnchor="middle"
@@ -763,7 +763,7 @@ export default function GruTopic() {
                 <text
                   x={280}
                   y={322}
-                  fontSize={10}
+                  fontSize={11}
                   fill={
                     activeGate === "reset"
                       ? "#ef4444"
@@ -1024,7 +1024,7 @@ export default function GruTopic() {
                   <text
                     x={130}
                     y={18}
-                    fontSize={9}
+                    fontSize={11}
                     fill="#3b82f6"
                     textAnchor="middle"
                     fontWeight={600}
@@ -1043,7 +1043,7 @@ export default function GruTopic() {
                   <text
                     x={130}
                     y={116}
-                    fontSize={9}
+                    fontSize={11}
                     fill="#60a5fa"
                     textAnchor="middle"
                   >
@@ -1064,7 +1064,7 @@ export default function GruTopic() {
                   <text
                     x={55}
                     y={150}
-                    fontSize={9}
+                    fontSize={11}
                     fill="#ef4444"
                     textAnchor="middle"
                     fontWeight={600}
@@ -1086,7 +1086,7 @@ export default function GruTopic() {
                   <text
                     x={125}
                     y={150}
-                    fontSize={9}
+                    fontSize={11}
                     fill="#f59e0b"
                     textAnchor="middle"
                     fontWeight={600}
@@ -1108,7 +1108,7 @@ export default function GruTopic() {
                   <text
                     x={195}
                     y={150}
-                    fontSize={9}
+                    fontSize={11}
                     fill="#22c55e"
                     textAnchor="middle"
                     fontWeight={600}
@@ -1149,7 +1149,7 @@ export default function GruTopic() {
                   <text
                     x={130}
                     y={30}
-                    fontSize={9}
+                    fontSize={11}
                     fill="#22c55e"
                     textAnchor="middle"
                     fontWeight={600}
@@ -1159,7 +1159,7 @@ export default function GruTopic() {
                   <text
                     x={130}
                     y={46}
-                    fontSize={8}
+                    fontSize={11}
                     fill="#888"
                     textAnchor="middle"
                     fontStyle="italic"
@@ -1181,7 +1181,7 @@ export default function GruTopic() {
                   <text
                     x={80}
                     y={132}
-                    fontSize={10}
+                    fontSize={11}
                     fill="#ef4444"
                     textAnchor="middle"
                     fontWeight={600}
@@ -1203,7 +1203,7 @@ export default function GruTopic() {
                   <text
                     x={180}
                     y={132}
-                    fontSize={10}
+                    fontSize={11}
                     fill="#22c55e"
                     textAnchor="middle"
                     fontWeight={600}

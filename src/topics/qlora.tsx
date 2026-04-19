@@ -430,7 +430,7 @@ export default function QLoRATopic() {
                     strokeDasharray="2,3"
                     opacity="0.4"
                   />
-                  <text x="65" y={224 - v} fill="var(--text-tertiary)" fontSize="9" textAnchor="end">
+                  <text x="65" y={224 - v} fill="var(--text-tertiary)" fontSize="11" textAnchor="end">
                     {v}
                   </text>
                 </g>
@@ -458,7 +458,7 @@ export default function QLoRATopic() {
                       y="245"
                       textAnchor="middle"
                       fill="var(--text-secondary)"
-                      fontSize="10"
+                      fontSize="11"
                       fontWeight={method === i ? "bold" : "normal"}
                     >
                       {m.shortName}
@@ -495,7 +495,7 @@ export default function QLoRATopic() {
                               y={yStack + h / 2 + 3}
                               textAnchor="middle"
                               fill="white"
-                              fontSize="9"
+                              fontSize="11"
                               fontWeight="600"
                             >
                               {s.label} {s.v}
@@ -516,7 +516,7 @@ export default function QLoRATopic() {
                           strokeWidth="1.5"
                           strokeDasharray="4,3"
                         />
-                        <text x="615" y={220 - 48 - 4} fill="#22c55e" fontSize="9" textAnchor="end">
+                        <text x="615" y={220 - 48 - 4} fill="#22c55e" fontSize="11" textAnchor="end">
                           48GB limit (1 GPU)
                         </text>
                       </>
@@ -677,9 +677,9 @@ export default function QLoRATopic() {
                 />
                 {/* Axis */}
                 <line x1="40" y1="120" x2="600" y2="120" stroke="var(--border)" strokeWidth="1" />
-                <text x="40" y="140" fill="var(--text-tertiary)" fontSize="9">-3σ</text>
-                <text x="320" y="140" fill="var(--text-tertiary)" fontSize="9" textAnchor="middle">0</text>
-                <text x="600" y="140" fill="var(--text-tertiary)" fontSize="9" textAnchor="end">+3σ</text>
+                <text x="40" y="140" fill="var(--text-tertiary)" fontSize="11">-3σ</text>
+                <text x="320" y="140" fill="var(--text-tertiary)" fontSize="11" textAnchor="middle">0</text>
+                <text x="600" y="140" fill="var(--text-tertiary)" fontSize="11" textAnchor="end">+3σ</text>
 
                 {/* NF4 ticks — 16 levels */}
                 {NF4_LEVELS.map((v, i) => {
@@ -691,7 +691,7 @@ export default function QLoRATopic() {
                       <line x1={sx} y1="30" x2={sx} y2="120" stroke="#22c55e" strokeWidth="1.1" opacity={0.8} />
                       <circle cx={sx} cy="120" r="3" fill="#22c55e" />
                       {i % 2 === 0 && (
-                        <text x={sx} y="28" fill="#22c55e" fontSize="8" textAnchor="middle">
+                        <text x={sx} y="28" fill="#22c55e" fontSize="11" textAnchor="middle">
                           {v.toFixed(2)}
                         </text>
                       )}
@@ -708,8 +708,8 @@ export default function QLoRATopic() {
                     <line key={i} x1={sx} y1="120" x2={sx} y2="148" stroke="#ef4444" strokeWidth="1" opacity={0.6} />
                   );
                 })}
-                <text x="600" y="158" fill="#ef4444" fontSize="8" textAnchor="end">INT4 đều</text>
-                <text x="600" y="25" fill="#22c55e" fontSize="8" textAnchor="end">NF4 theo Gaussian</text>
+                <text x="600" y="158" fill="#ef4444" fontSize="11" textAnchor="end">INT4 đều</text>
+                <text x="600" y="25" fill="#22c55e" fontSize="11" textAnchor="end">NF4 theo Gaussian</text>
               </svg>
             )}
             <p className="text-xs text-muted mt-1 leading-relaxed">

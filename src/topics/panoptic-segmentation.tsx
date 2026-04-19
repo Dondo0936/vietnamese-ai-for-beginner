@@ -93,19 +93,19 @@ export default function PanopticSegmentationTopic() {
               <rect x="50" y="100" width="30" height="20" fill="#ef4444" opacity={0.6} />
               <rect x="110" y="100" width="30" height="20" fill="#ef4444" opacity={0.6} />
               <rect x="105" y="135" width="80" height="40" fill="#22c55e" opacity={0.5} />
-              <text x="107" y="172" textAnchor="middle" fill="#64748b" fontSize="8">Cùng màu = cùng lớp</text>
+              <text x="107" y="172" textAnchor="middle" fill="#64748b" fontSize="11">Cùng màu = cùng lớp</text>
 
               {/* Instance */}
               <rect x="213" y="35" width="175" height="145" rx="8" fill="#0f172a" stroke="#8b5cf6" strokeWidth="1.5" />
               <text x="300" y="55" textAnchor="middle" fill="#8b5cf6" fontSize="11" fontWeight="bold">Instance</text>
               <rect x="218" y="60" width="165" height="115" fill="#1e293b" opacity={0.3} />
               <rect x="243" y="100" width="30" height="20" fill="#3b82f6" opacity={0.7} />
-              <text x="258" y="114" textAnchor="middle" fill="white" fontSize="7">Xe #1</text>
+              <text x="258" y="114" textAnchor="middle" fill="white" fontSize="11">Xe #1</text>
               <rect x="303" y="100" width="30" height="20" fill="#22c55e" opacity={0.7} />
-              <text x="318" y="114" textAnchor="middle" fill="white" fontSize="7">Xe #2</text>
+              <text x="318" y="114" textAnchor="middle" fill="white" fontSize="11">Xe #2</text>
               <rect x="350" y="85" width="18" height="35" fill="#f59e0b" opacity={0.7} />
-              <text x="359" y="130" textAnchor="middle" fill="#f59e0b" fontSize="7">Ng. #1</text>
-              <text x="300" y="172" textAnchor="middle" fill="#64748b" fontSize="8">Chỉ things, bỏ stuff</text>
+              <text x="359" y="130" textAnchor="middle" fill="#f59e0b" fontSize="11">Ng. #1</text>
+              <text x="300" y="172" textAnchor="middle" fill="#64748b" fontSize="11">Chỉ things, bỏ stuff</text>
 
               {/* Panoptic */}
               <rect x="405" y="35" width="175" height="145" rx="8" fill="#0f172a" stroke="#22c55e" strokeWidth="1.5" />
@@ -115,12 +115,12 @@ export default function PanopticSegmentationTopic() {
               <rect x="410" y="135" width="80" height="40" fill="#22c55e" opacity={0.5} />
               <rect x="490" y="135" width="80" height="40" fill="#22c55e" opacity={0.5} />
               <rect x="435" y="100" width="30" height="20" fill="#3b82f6" opacity={0.8} />
-              <text x="450" y="114" textAnchor="middle" fill="white" fontSize="6">Xe #1</text>
+              <text x="450" y="114" textAnchor="middle" fill="white" fontSize="11">Xe #1</text>
               <rect x="500" y="100" width="30" height="20" fill="#ec4899" opacity={0.8} />
-              <text x="515" y="114" textAnchor="middle" fill="white" fontSize="6">Xe #2</text>
+              <text x="515" y="114" textAnchor="middle" fill="white" fontSize="11">Xe #2</text>
               <rect x="545" y="85" width="18" height="35" fill="#f59e0b" opacity={0.8} />
-              <text x="554" y="130" textAnchor="middle" fill="#f59e0b" fontSize="6">Ng. #1</text>
-              <text x="493" y="172" textAnchor="middle" fill="#64748b" fontSize="8">MỌI pixel có nhãn!</text>
+              <text x="554" y="130" textAnchor="middle" fill="#f59e0b" fontSize="11">Ng. #1</text>
+              <text x="493" y="172" textAnchor="middle" fill="#64748b" fontSize="11">MỌI pixel có nhãn!</text>
 
               <text x="300" y="210" textAnchor="middle" fill="#e2e8f0" fontSize="12" fontWeight="bold">Bảng so sánh</text>
 
@@ -134,7 +134,7 @@ export default function PanopticSegmentationTopic() {
                 return (
                   <g key={row.label}>
                     <rect x="50" y={y} width="120" height="22" fill="#0f172a" stroke="#334155" strokeWidth="1" />
-                    <text x="110" y={y + 15} textAnchor="middle" fill="#94a3b8" fontSize="9">{row.label}</text>
+                    <text x="110" y={y + 15} textAnchor="middle" fill="#94a3b8" fontSize="11">{row.label}</text>
                     {[
                       { val: row.sem, x: 235, c: "#3b82f6" },
                       { val: row.inst, x: 365, c: "#8b5cf6" },
@@ -142,7 +142,7 @@ export default function PanopticSegmentationTopic() {
                     ].map(({ val, x, c }) => (
                       <g key={`${row.label}-${x}`}>
                         <rect x={x - 65} y={y} width="130" height="22" fill="#0f172a" stroke="#334155" strokeWidth="1" />
-                        <text x={x} y={y + 15} textAnchor="middle" fill={val === true ? "#22c55e" : val === false ? "#ef4444" : "#f59e0b"} fontSize="10">
+                        <text x={x} y={y + 15} textAnchor="middle" fill={val === true ? "#22c55e" : val === false ? "#ef4444" : "#f59e0b"} fontSize="11">
                           {val === true ? "\u2713" : val === false ? "\u2717" : String(val)}
                         </text>
                       </g>
@@ -151,7 +151,7 @@ export default function PanopticSegmentationTopic() {
                 );
               })}
 
-              <text x="300" y="320" textAnchor="middle" fill="#22c55e" fontSize="10" fontWeight="bold">
+              <text x="300" y="320" textAnchor="middle" fill="#22c55e" fontSize="11" fontWeight="bold">
                 Panoptic = Semantic + Instance (tốt nhất cả hai!)
               </text>
             </svg>

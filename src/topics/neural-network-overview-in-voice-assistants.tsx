@@ -12,6 +12,7 @@ import {
   Clock,
   ChevronRight,
   Sparkles,
+  XCircle,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 import ApplicationLayout from "@/components/application/ApplicationLayout";
@@ -324,8 +325,8 @@ function WaveformVisual() {
       <svg viewBox="0 0 320 120" className="w-full">
         <line x1={0} y1={60} x2={320} y2={60} stroke="#94a3b8" strokeWidth={0.5} strokeDasharray="2 3" />
         <polyline points={points.join(" ")} fill="none" stroke="#3b82f6" strokeWidth={1.5} />
-        <text x={4} y={115} fontSize={9} fill="#94a3b8">0 giây</text>
-        <text x={300} y={115} fontSize={9} fill="#94a3b8" textAnchor="end">1 giây</text>
+        <text x={4} y={115} fontSize={11} fill="#94a3b8">0 giây</text>
+        <text x={300} y={115} fontSize={11} fill="#94a3b8" textAnchor="end">1 giây</text>
       </svg>
     </div>
   );
@@ -362,8 +363,8 @@ function SpectrogramVisual() {
             opacity={c.v}
           />
         ))}
-        <text x={4} y={125} fontSize={9} fill="#94a3b8">Thấp</text>
-        <text x={312} y={8} fontSize={9} fill="#94a3b8" textAnchor="end">Cao</text>
+        <text x={4} y={125} fontSize={11} fill="#94a3b8">Thấp</text>
+        <text x={312} y={8} fontSize={11} fill="#94a3b8" textAnchor="end">Cao</text>
       </svg>
     </div>
   );
@@ -455,7 +456,7 @@ function PhonemeVisual() {
                 x={layer.x}
                 y={155}
                 textAnchor="middle"
-                fontSize={9}
+                fontSize={11}
                 fill="#64748b"
               >
                 {layer.label}
@@ -464,9 +465,9 @@ function PhonemeVisual() {
           );
         })}
         {/* Nhãn âm vị đầu ra */}
-        <text x={330} y={52} fontSize={10} fill="#8b5cf6" fontWeight="bold">/h/</text>
-        <text x={330} y={82} fontSize={10} fill="#8b5cf6" fontWeight="bold">/eɪ/</text>
-        <text x={330} y={112} fontSize={10} fill="#8b5cf6" fontWeight="bold">/s/</text>
+        <text x={330} y={52} fontSize={11} fill="#8b5cf6" fontWeight="bold">/h/</text>
+        <text x={330} y={82} fontSize={11} fill="#8b5cf6" fontWeight="bold">/eɪ/</text>
+        <text x={330} y={112} fontSize={11} fill="#8b5cf6" fontWeight="bold">/s/</text>
       </svg>
     </div>
   );
@@ -1122,7 +1123,8 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-xl border-2 border-rose-300 bg-rose-50 dark:bg-rose-900/20 p-3">
-              <p className="text-[10px] uppercase tracking-wide text-rose-700 dark:text-rose-300 font-bold mb-2">
+              <p className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-rose-700 dark:text-rose-300 font-bold mb-2">
+                <XCircle size={12} aria-hidden="true" />
                 Thế giới không có mạng nơ-ron
               </p>
               <ul className="text-xs text-foreground/85 space-y-1 list-disc list-inside">
@@ -1133,7 +1135,8 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               </ul>
             </div>
             <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 p-3">
-              <p className="text-[10px] uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-bold mb-2">
+              <p className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-bold mb-2">
+                <CheckCircle2 size={12} aria-hidden="true" />
                 Thế giới có mạng nơ-ron (bây giờ)
               </p>
               <ul className="text-xs text-foreground/85 space-y-1 list-disc list-inside">

@@ -492,7 +492,7 @@ export default function ReRankingTopic() {
               >
                 Query
               </text>
-              <text x="70" y="192" textAnchor="middle" fill="#64748b" fontSize="9">
+              <text x="70" y="192" textAnchor="middle" fill="#64748b" fontSize="11">
                 &quot;quyền lao động&quot;
               </text>
 
@@ -507,10 +507,10 @@ export default function ReRankingTopic() {
                 stroke="#334155"
                 strokeWidth="1.2"
               />
-              <text x="210" y="65" textAnchor="middle" fill="#94a3b8" fontSize="10">
+              <text x="210" y="65" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 Corpus
               </text>
-              <text x="210" y="82" textAnchor="middle" fill="#64748b" fontSize="9">
+              <text x="210" y="82" textAnchor="middle" fill="#64748b" fontSize="11">
                 10M tài liệu
               </text>
 
@@ -555,10 +555,10 @@ export default function ReRankingTopic() {
               >
                 Stage 1 — Retrieve
               </text>
-              <text x="365" y="183" textAnchor="middle" fill="#94a3b8" fontSize="9">
+              <text x="365" y="183" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 Bi-encoder + ANN
               </text>
-              <text x="365" y="200" textAnchor="middle" fill="#94a3b8" fontSize="9">
+              <text x="365" y="200" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 10M → top-100 (5 ms)
               </text>
 
@@ -593,10 +593,10 @@ export default function ReRankingTopic() {
               >
                 Stage 2 — Rerank
               </text>
-              <text x="565" y="183" textAnchor="middle" fill="#94a3b8" fontSize="9">
+              <text x="565" y="183" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 Cross-encoder
               </text>
-              <text x="565" y="200" textAnchor="middle" fill="#94a3b8" fontSize="9">
+              <text x="565" y="200" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 top-100 → top-10 ({reranker.latencyPerPair * 10} ms)
               </text>
 
@@ -626,12 +626,12 @@ export default function ReRankingTopic() {
                 y="175"
                 textAnchor="middle"
                 fill="#4ade80"
-                fontSize="10"
+                fontSize="11"
                 fontWeight="bold"
               >
                 Top-5
               </text>
-              <text x="720" y="192" textAnchor="middle" fill="#64748b" fontSize="9">
+              <text x="720" y="192" textAnchor="middle" fill="#64748b" fontSize="11">
                 cho LLM
               </text>
 
@@ -659,7 +659,7 @@ export default function ReRankingTopic() {
                       x="155"
                       y={248 + i * 11}
                       fill="#94a3b8"
-                      fontSize="8"
+                      fontSize="11"
                     >
                       {c.id} {c.biScore.toFixed(2)}
                     </text>
@@ -694,7 +694,7 @@ export default function ReRankingTopic() {
                         x="155"
                         y={248 + i * 11}
                         fill={color}
-                        fontSize="8"
+                        fontSize="11"
                       >
                         {c.id} {c.crossScore.toFixed(2)} ({movementLabel(i, newIdx)})
                       </text>
@@ -715,7 +715,7 @@ export default function ReRankingTopic() {
                       stroke="#22c55e"
                       strokeWidth="1"
                     />
-                    <text x="16" y={250 + i * 16} fill="#4ade80" fontSize="9">
+                    <text x="16" y={250 + i * 16} fill="#4ade80" fontSize="11">
                       {i + 1}. {c.id} — cross {c.crossScore.toFixed(2)}
                     </text>
                   </g>
@@ -727,7 +727,7 @@ export default function ReRankingTopic() {
                 y="340"
                 textAnchor="middle"
                 fill="#94a3b8"
-                fontSize="10"
+                fontSize="11"
               >
                 {stage === "retrieve" &&
                   "Top-10 theo bi-encoder — chú ý các tài liệu nhiễu (D2, D6, D9) vẫn lọt."}

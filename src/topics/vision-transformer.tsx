@@ -161,7 +161,7 @@ export default function VisionTransformerTopic() {
                   <g key={i}>
                     <rect x={0} y={y} width={170} height={26} rx={6}
                       fill={colors[i]} opacity={0.12} stroke={colors[i]} strokeWidth={1} />
-                    <text x={85} y={y + 17} fontSize={9} fill={colors[i]} textAnchor="middle" fontWeight={600}>
+                    <text x={85} y={y + 17} fontSize={11} fill={colors[i]} textAnchor="middle" fontWeight={600}>
                       {label}
                     </text>
                     {i < 5 && (

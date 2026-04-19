@@ -10,6 +10,8 @@ import {
   Sparkles,
   RotateCw,
   Shuffle,
+  Check,
+  X,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -261,6 +263,7 @@ export default function EigendecompositionPcaTopic() {
   const [foundPC1, setFoundPC1] = useState<number | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const isDragging = useRef(false);
+  const [draggingActive, setDraggingActive] = useState(false);
 
   /* ── Thử thách: đoán PC1 của 4 bộ scatter khác nhau ── */
   const [challengeIdx, setChallengeIdx] = useState(0);
@@ -314,6 +317,7 @@ export default function EigendecompositionPcaTopic() {
     (e: React.PointerEvent<SVGSVGElement>) => {
       if (phase === "done") return;
       isDragging.current = true;
+      setDraggingActive(true);
       (e.target as SVGSVGElement).setPointerCapture?.(e.pointerId);
     },
     [phase],
@@ -338,6 +342,7 @@ export default function EigendecompositionPcaTopic() {
 
   const handlePointerUp = useCallback(() => {
     isDragging.current = false;
+    setDraggingActive(false);
   }, []);
 
   const handleLockPC1 = useCallback(() => {
@@ -499,7 +504,8 @@ export default function EigendecompositionPcaTopic() {
                 <svg
                   ref={svgRef}
                   viewBox={`0 0 ${SW} ${SH}`}
-                  className="w-full max-w-[420px] cursor-crosshair select-none touch-none"
+                  className="w-full max-w-[420px] cursor-crosshair select-none"
+                  style={{ touchAction: draggingActive ? "none" : "auto" }}
                   aria-label="Kéo trục để tìm PC1"
                   onPointerDown={handlePointerDown}
                   onPointerMove={handlePointerMove}
@@ -643,7 +649,7 @@ export default function EigendecompositionPcaTopic() {
                     className="text-border"
                     strokeWidth="0.5"
                   />
-                  <text x={20} y={HIST_Y - 10} fontSize="10" fill="currentColor" className="text-muted">
+                  <text x={20} y={HIST_Y - 10} fontSize="11" fill="currentColor" className="text-muted">
                     Phân bố sau khi chiếu xuống PC1 (từ đám mây 2D → đường thẳng 1D)
                   </text>
                   {projections.map((proj, i) => {
@@ -1091,7 +1097,7 @@ function MiniCenteringDiagram() {
           className="text-border"
           strokeWidth="1"
         />
-        <text x={90} y={25} fontSize="10" textAnchor="middle" fill="currentColor" className="text-muted">
+        <text x={90} y={25} fontSize="11" textAnchor="middle" fill="currentColor" className="text-muted">
           Trước (tâm lệch)
         </text>
         {[
@@ -1129,7 +1135,7 @@ function MiniCenteringDiagram() {
           className="text-border"
           strokeWidth="1"
         />
-        <text x={275} y={25} fontSize="10" textAnchor="middle" fill="currentColor" className="text-muted">
+        <text x={275} y={25} fontSize="11" textAnchor="middle" fill="currentColor" className="text-muted">
           Sau (tâm ở gốc)
         </text>
         {[
@@ -1195,17 +1201,17 @@ function MiniEigenDiagram() {
         strokeWidth="1.5"
         strokeDasharray="4,3"
       />
-      <text x={130} y={88} fontSize="10" fill="#ef4444">
+      <text x={130} y={88} fontSize="11" fill="#ef4444">
         PC2
       </text>
 
-      <text x={180} y={75} fontSize="10" fill="currentColor" className="text-muted">
+      <text x={180} y={75} fontSize="11" fill="currentColor" className="text-muted">
         PC1 = hướng đám mây
       </text>
-      <text x={180} y={90} fontSize="10" fill="currentColor" className="text-muted">
+      <text x={180} y={90} fontSize="11" fill="currentColor" className="text-muted">
         trải ra nhiều nhất.
       </text>
-      <text x={180} y={105} fontSize="10" fill="currentColor" className="text-muted">
+      <text x={180} y={105} fontSize="11" fill="currentColor" className="text-muted">
         PC2 vuông góc.
       </text>
     </svg>
@@ -1254,7 +1260,7 @@ function MiniProjectionDiagram() {
             strokeDasharray="2,2"
           />
         ))}
-        <text x={75} y={115} fontSize="9" fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={75} y={115} fontSize="11" fill="currentColor" className="text-muted" textAnchor="middle">
           2D (trước)
         </text>
       </g>
@@ -1270,7 +1276,7 @@ function MiniProjectionDiagram() {
         {[200, 215, 230, 250, 265, 285, 305, 325].map((x, i) => (
           <circle key={i} cx={x} cy={75} r="3.5" fill="#10b981" />
         ))}
-        <text x={265} y={105} fontSize="9" fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={265} y={105} fontSize="11" fill="currentColor" className="text-muted" textAnchor="middle">
           1D (sau khi chiếu)
         </text>
       </g>
@@ -1321,12 +1327,17 @@ function ChallengeScatterCard({
         </span>
         {isRevealed && (
           <span
-            className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+            className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${
               isCorrect
                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                 : "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300"
             }`}
           >
+            {isCorrect ? (
+              <Check size={12} aria-hidden="true" />
+            ) : (
+              <X size={12} aria-hidden="true" />
+            )}
             {isCorrect ? "Đúng!" : "Chưa đúng"}
           </span>
         )}

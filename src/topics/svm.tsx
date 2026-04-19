@@ -217,7 +217,7 @@ export default function SvmTopic() {
               <text x={10} y={38} fontSize={11} fill={violations > 0 ? "#ef4444" : "#22c55e"}>
                 Vi phạm: {violations} điểm {violations === 0 ? "(hoàn hảo!)" : ""}
               </text>
-              <text x={10} y={54} fontSize={10} fill="currentColor" className="text-muted">
+              <text x={10} y={54} fontSize={11} fill="currentColor" className="text-muted">
                 Margin tối ưu: ~{(optimalMargin * 2).toFixed(0)}px
               </text>
             </svg>

@@ -532,7 +532,7 @@ export default function RegularizationTopic() {
                 x={18}
                 y={midY + 4}
                 fill="#64748b"
-                fontSize="9"
+                fontSize="11"
                 textAnchor="middle"
               >
                 0
@@ -577,7 +577,7 @@ export default function RegularizationTopic() {
                       y={SVG_H - 5}
                       textAnchor="middle"
                       fill="#64748b"
-                      fontSize="8"
+                      fontSize="11"
                     >
                       w{i + 1}
                     </text>
@@ -587,7 +587,7 @@ export default function RegularizationTopic() {
                       y={w >= 0 ? y - 4 : y + barHeight + 12}
                       textAnchor="middle"
                       fill={isZero ? "#475569" : "#e2e8f0"}
-                      fontSize="8"
+                      fontSize="11"
                     >
                       {w.toFixed(1)}
                     </text>
@@ -768,7 +768,7 @@ export default function RegularizationTopic() {
                           x={cx}
                           y={cy + 3}
                           textAnchor="middle"
-                          fontSize={9}
+                          fontSize={11}
                           fill={dropped ? "#64748b" : "white"}
                           fontWeight="bold"
                         >

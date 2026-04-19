@@ -687,7 +687,7 @@ function TreeCanvas({ path }: { path: QNodeId[] }) {
             key={`lbl-${e.from}-${e.to}`}
             x={(from.x + to.x) / 2}
             y={(from.y + to.y) / 2 + 3}
-            fontSize={10}
+            fontSize={11}
             fontWeight={700}
             textAnchor="middle"
             fill={e.branch === "yes" ? "#059669" : "#b91c1c"}
@@ -721,7 +721,7 @@ function TreeCanvas({ path }: { path: QNodeId[] }) {
                 x={pos.x}
                 y={pos.y - 5}
                 textAnchor="middle"
-                fontSize={10}
+                fontSize={11}
                 fontWeight={700}
                 fill="#4f46e5"
               >
@@ -759,7 +759,7 @@ function TreeCanvas({ path }: { path: QNodeId[] }) {
               x={pos.x}
               y={pos.y + 2}
               textAnchor="middle"
-              fontSize={10}
+              fontSize={11}
               fontWeight={700}
               fill={s.color}
             >

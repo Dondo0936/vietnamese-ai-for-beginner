@@ -249,7 +249,7 @@ function CurvePanel({ actKey, inputX }: CurvePanelProps) {
               x={xToPx(v)}
               y={yToPx(0, yMin, yMax) + 14}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill="var(--text-tertiary)"
             >
               {v}
@@ -833,15 +833,15 @@ export default function ActivationFunctionsTopic() {
       {/* ━━━━━ BƯỚC 2 — DỰ ĐOÁN ━━━━━ */}
       <LessonSection step={2} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Nếu bạn xếp 100 lớp tuyến tính (chỉ có phép nhân ma trận) mà không thêm bất kỳ hàm kích hoạt nào, kết quả sẽ mạnh ngang bao nhiêu lớp thật?"
+          question="Bạn đã biết cần một hàm kích hoạt phi tuyến để 'bẻ cong' sau mỗi lớp. Trong bốn hàm dưới, hàm nào KHÔNG thật sự giúp mạng học đường biên cong?"
           options={[
-            "100 lớp — mỗi lớp đều đóng góp",
-            "50 lớp — giảm một nửa vì nén dữ liệu",
-            "1 lớp duy nhất — tất cả rút gọn thành một phép nhân",
-            "0 lớp — mạng không làm được gì",
+            "f(x) = max(0, x) — ReLU, chặn phần âm về 0",
+            "f(x) = 1 / (1 + e^(−x)) — sigmoid hình chữ S",
+            "f(x) = 2·x + 5 — đường thẳng dịch lên 5 đơn vị",
+            "f(x) = tanh(x) — hình chữ S chạy từ −1 tới 1",
           ]}
           correct={2}
-          explanation="Nhân liên tiếp W₁ × W₂ × ... × W₁₀₀ vẫn chỉ cho một ma trận W_tổng. Không có phi tuyến ⇒ 100 lớp = 1 lớp. Đây chính là lý do hàm kích hoạt phải tồn tại — để 'phá' tính tuyến tính sau mỗi lớp."
+          explanation="2·x + 5 là hàm tuyến tính; xếp chồng nhiều lớp kèm một phép 'bẻ cong' kiểu này vẫn thu gọn được thành một phép tuyến tính duy nhất. ReLU, sigmoid, tanh đều có 'khúc gãy' hoặc 'chữ S' — chính cái khúc đó cho phép các lớp kết hợp thành đường biên cong. Bài sau bạn sẽ kéo x qua từng hàm và thấy khúc gãy ở đâu."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Cả bài học này là để bạn <strong>tay cầm slider</strong>, xem năm

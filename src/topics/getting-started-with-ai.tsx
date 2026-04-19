@@ -1373,6 +1373,25 @@ export default function GettingStartedWithAiTopic() {
       <LessonSection step={8} totalSteps={8} label="Kiểm tra nhẹ">
         <QuizSection questions={QUIZ} />
       </LessonSection>
+
+      {/* ══════════════════════════════════════════════════════════════ */}
+      {/* CROSSLINK — Cẩm nang Claude (punchlist #10)                    */}
+      {/* ══════════════════════════════════════════════════════════════ */}
+      <LessonSection step={8} totalSteps={8} label="Đọc thêm">
+        <div className="rounded-xl border border-border bg-card p-5">
+          <p className="text-sm text-foreground leading-relaxed">
+            Muốn đi sâu với một công cụ cụ thể trước khi thử hết?{" "}
+            <a
+              href="/claude"
+              className="font-semibold text-accent underline decoration-accent/40 hover:decoration-accent"
+            >
+              Cẩm nang Claude
+            </a>{" "}
+            gom đủ khung phong cách, prompt mẫu, và cách dùng Claude
+            cho các tác vụ văn phòng — đọc 10 phút, xài được liền.
+          </p>
+        </div>
+      </LessonSection>
     </>
   );
 }

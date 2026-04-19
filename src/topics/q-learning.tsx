@@ -607,7 +607,7 @@ export default function QLearningTopic() {
                             y={y + CELL / 2 + 4}
                             textAnchor="middle"
                             fill="#64748b"
-                            fontSize={10}
+                            fontSize={11}
                             fontWeight="bold"
                           >
                             WALL
@@ -619,7 +619,7 @@ export default function QLearningTopic() {
                             y={y + CELL / 2 + 4}
                             textAnchor="middle"
                             fill="#fecaca"
-                            fontSize={10}
+                            fontSize={11}
                             fontWeight="bold"
                           >
                             TRAP
@@ -643,7 +643,7 @@ export default function QLearningTopic() {
                             y={y + 14}
                             textAnchor="middle"
                             fill="#94a3b8"
-                            fontSize={9}
+                            fontSize={11}
                           >
                             start
                           </text>
@@ -670,7 +670,7 @@ export default function QLearningTopic() {
                             y={y + CELL - 6}
                             textAnchor="end"
                             fill="#e2e8f0"
-                            fontSize={8}
+                            fontSize={11}
                             fontFamily="monospace"
                             opacity={0.75}
                           >

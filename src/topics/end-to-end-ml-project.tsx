@@ -585,7 +585,7 @@ function StageFlowchart({
         fill="none"
         opacity={0.5}
       />
-      <text x={4} y={74} fontSize={7} fill="#14b8a6">
+      <text x={4} y={74} fontSize={11} fill="#14b8a6">
         retrain
       </text>
       {/* nodes */}
@@ -1210,13 +1210,16 @@ proba = loaded.predict_proba(X_new)[:, 1]`}
                 Đây là cách <strong>duy nhất đáng tin</strong> để đảm bảo transform
                 online giống hệt offline — tránh train/serve skew.
               </p>
-              <p className="mt-2 text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
-                <strong>⚠️ An toàn:</strong> chỉ <code>joblib.load</code> /{" "}
-                <code>pickle.load</code> trên file do chính bạn tạo hoặc nguồn đã
-                xác minh. File <code>.pkl</code> lạ có thể chạy code Python tuỳ ý
-                khi load (supply-chain attack trên HuggingFace / Kaggle là thật).
-                Dùng <code>picklescan</code> hoặc convert sang{" "}
-                <code>safetensors</code> trước.
+              <p className="mt-2 inline-flex items-start gap-1 text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                <AlertTriangle size={12} aria-hidden="true" className="mt-0.5 shrink-0" />
+                <span>
+                  <strong>An toàn:</strong> chỉ <code>joblib.load</code> /{" "}
+                  <code>pickle.load</code> trên file do chính bạn tạo hoặc nguồn đã
+                  xác minh. File <code>.pkl</code> lạ có thể chạy code Python tuỳ ý
+                  khi load (supply-chain attack trên HuggingFace / Kaggle là thật).
+                  Dùng <code>picklescan</code> hoặc convert sang{" "}
+                  <code>safetensors</code> trước.
+                </span>
               </p>
             </div>
           </div>

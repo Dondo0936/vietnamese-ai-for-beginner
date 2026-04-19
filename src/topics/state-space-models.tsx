@@ -121,39 +121,39 @@ export default function StateSpaceModelsTopic() {
               </text>
 
               {/* Transformer FLOPs */}
-              <text x={15} y={48} fill="#ef4444" fontSize={9}>Transformer</text>
+              <text x={15} y={48} fill="#ef4444" fontSize={11}>Transformer</text>
               <rect x={100} y={34} width={420} height={20} rx={4} fill="#1e293b" />
               <rect x={100} y={34} width={Math.min(420, 420 * Math.min(transformerFLOPs, 100) / 100)} height={20} rx={4} fill="#ef4444" opacity={0.7} />
-              <text x={525} y={48} fill="#ef4444" fontSize={9} fontWeight="bold">
+              <text x={525} y={48} fill="#ef4444" fontSize={11} fontWeight="bold">
                 O(N^2) = {transformerFLOPs.toFixed(1)}x
               </text>
 
               {/* SSM FLOPs */}
-              <text x={15} y={78} fill="#22c55e" fontSize={9}>SSM/Mamba</text>
+              <text x={15} y={78} fill="#22c55e" fontSize={11}>SSM/Mamba</text>
               <rect x={100} y={64} width={420} height={20} rx={4} fill="#1e293b" />
               <rect x={100} y={64} width={Math.min(420, 420 * ssmFLOPs / 100)} height={20} rx={4} fill="#22c55e" />
-              <text x={525} y={78} fill="#22c55e" fontSize={9} fontWeight="bold">
+              <text x={525} y={78} fill="#22c55e" fontSize={11} fontWeight="bold">
                 O(N) = {ssmFLOPs.toFixed(1)}x
               </text>
 
               {/* Memory comparison */}
-              <text x={300} y={115} textAnchor="middle" fill="#94a3b8" fontSize={10} fontWeight="bold">KV Cache Memory</text>
+              <text x={300} y={115} textAnchor="middle" fill="#94a3b8" fontSize={11} fontWeight="bold">KV Cache Memory</text>
 
-              <text x={15} y={138} fill="#ef4444" fontSize={9}>Transformer</text>
+              <text x={15} y={138} fill="#ef4444" fontSize={11}>Transformer</text>
               <rect x={100} y={124} width={420} height={20} rx={4} fill="#1e293b" />
               <rect x={100} y={124} width={Math.min(420, 420 * Math.min(transformerMem, 100) / 100)} height={20} rx={4} fill="#ef4444" opacity={0.5} />
-              <text x={525} y={138} fill="#ef4444" fontSize={9}>
+              <text x={525} y={138} fill="#ef4444" fontSize={11}>
                 O(N) KV
               </text>
 
-              <text x={15} y={168} fill="#22c55e" fontSize={9}>SSM</text>
+              <text x={15} y={168} fill="#22c55e" fontSize={11}>SSM</text>
               <rect x={100} y={154} width={420} height={20} rx={4} fill="#1e293b" />
               <rect x={100} y={154} width={20} height={20} rx={4} fill="#22c55e" />
-              <text x={525} y={168} fill="#22c55e" fontSize={9}>
+              <text x={525} y={168} fill="#22c55e" fontSize={11}>
                 O(1) state
               </text>
 
-              <text x={300} y={193} textAnchor="middle" fill="#64748b" fontSize={9}>
+              <text x={300} y={193} textAnchor="middle" fill="#64748b" fontSize={11}>
                 SSM nhanh hơn {(transformerFLOPs / ssmFLOPs).toFixed(0)}x FLOPs, memory KV cache O(1) vs O(N)
               </text>
             </svg>

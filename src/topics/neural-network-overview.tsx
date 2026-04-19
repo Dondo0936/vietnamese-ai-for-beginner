@@ -337,7 +337,7 @@ function MLPPlayground() {
                       x={(LAYER_X[0] + 20 + LAYER_X[1] - 20) / 2}
                       y={(neuronY(0, i) + neuronY(1, j)) / 2 - 4}
                       textAnchor="middle"
-                      fontSize={10}
+                      fontSize={11}
                       fill="#f59e0b"
                       fontWeight="bold"
                       className="pointer-events-none"
@@ -376,7 +376,7 @@ function MLPPlayground() {
                       x={(LAYER_X[1] + 20 + LAYER_X[2] - 20) / 2}
                       y={(neuronY(1, j) + neuronY(2, k)) / 2 - 4}
                       textAnchor="middle"
-                      fontSize={10}
+                      fontSize={11}
                       fill="#f59e0b"
                       fontWeight="bold"
                       className="pointer-events-none"
@@ -418,7 +418,7 @@ function MLPPlayground() {
                   <text x={LAYER_X[spec.layer]} y={neuronY(spec.layer, i) + 4} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold" className="pointer-events-none">
                     {spec.label}{i + 1}
                   </text>
-                  <text x={LAYER_X[spec.layer]} y={neuronY(spec.layer, i) + 38} textAnchor="middle" fill="#94a3b8" fontSize={10} className="pointer-events-none">
+                  <text x={LAYER_X[spec.layer]} y={neuronY(spec.layer, i) + 38} textAnchor="middle" fill="#94a3b8" fontSize={11} className="pointer-events-none">
                     {label}
                   </text>
                 </g>
@@ -834,7 +834,7 @@ function SingleNeuronIllustration() {
             <text
               x={110}
               y={y + (90 - y) / 2 - 2}
-              fontSize={10}
+              fontSize={11}
               fill="#f59e0b"
               fontWeight="bold"
               textAnchor="middle"
@@ -861,7 +861,7 @@ function SingleNeuronIllustration() {
         x={185}
         y={102}
         textAnchor="middle"
-        fontSize={9}
+        fontSize={11}
         fill="white"
       >
         + b
@@ -917,7 +917,7 @@ function SingleNeuronIllustration() {
         x={342}
         y={94}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fill="white"
         fontWeight="bold"
       >
@@ -925,16 +925,16 @@ function SingleNeuronIllustration() {
       </text>
 
       {/* Chú thích */}
-      <text x={40} y={170} fontSize={10} fill="#94a3b8" textAnchor="middle">
+      <text x={40} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
         Đầu vào
       </text>
-      <text x={185} y={170} fontSize={10} fill="#94a3b8" textAnchor="middle">
+      <text x={185} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
         Cộng có trọng số
       </text>
-      <text x={281} y={170} fontSize={10} fill="#94a3b8" textAnchor="middle">
+      <text x={281} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
         Công tắc
       </text>
-      <text x={342} y={170} fontSize={10} fill="#94a3b8" textAnchor="middle">
+      <text x={342} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
         Ra
       </text>
     </svg>
@@ -1171,10 +1171,10 @@ export default function NeuralNetworkOverviewTopic() {
               <line x1={150} y1={20} x2={150} y2={130} stroke="currentColor" className="text-muted" strokeWidth={1} />
               <line x1={20} y1={120} x2={150} y2={120} stroke="#ef4444" strokeWidth={3} />
               <line x1={150} y1={120} x2={270} y2={30} stroke="#10b981" strokeWidth={3} />
-              <text x={75} y={135} fontSize={10} fill="#ef4444" textAnchor="middle">z &lt; 0 → a = 0 (tắt)</text>
-              <text x={210} y={135} fontSize={10} fill="#10b981" textAnchor="middle">z &gt; 0 → a = z (mở)</text>
-              <text x={155} y={18} fontSize={10} fill="currentColor" className="text-muted">a</text>
-              <text x={275} y={128} fontSize={10} fill="currentColor" className="text-muted">z</text>
+              <text x={75} y={135} fontSize={11} fill="#ef4444" textAnchor="middle">z &lt; 0 → a = 0 (tắt)</text>
+              <text x={210} y={135} fontSize={11} fill="#10b981" textAnchor="middle">z &gt; 0 → a = z (mở)</text>
+              <text x={155} y={18} fontSize={11} fill="currentColor" className="text-muted">a</text>
+              <text x={275} y={128} fontSize={11} fill="currentColor" className="text-muted">z</text>
             </svg>
           </div>
 

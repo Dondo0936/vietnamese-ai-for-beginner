@@ -160,7 +160,7 @@ export default function PruningTopic() {
             {[0, 1, 2].map(i => (
               <g key={`in-${i}`}>
                 <circle cx="80" cy={inputY(i)} r="18" fill="#3b82f6" opacity={0.8} />
-                <text x="80" y={inputY(i) + 4} textAnchor="middle" fill="white" fontSize="10">
+                <text x="80" y={inputY(i) + 4} textAnchor="middle" fill="white" fontSize="11">
                   x{i + 1}
                 </text>
               </g>
@@ -173,7 +173,7 @@ export default function PruningTopic() {
                   <circle cx="420" cy={outputY(i)} r="16"
                     fill={has ? "#22c55e" : "var(--bg-card)"} opacity={has ? 0.8 : 0.3} />
                   <text x="420" y={outputY(i) + 4} textAnchor="middle"
-                    fill={has ? "white" : "var(--text-tertiary)"} fontSize="10">
+                    fill={has ? "white" : "var(--text-tertiary)"} fontSize="11">
                     y{i + 1}
                   </text>
                 </g>

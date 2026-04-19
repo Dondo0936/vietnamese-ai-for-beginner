@@ -808,7 +808,7 @@ export default function DiffusionModelsTopic() {
                     return (
                       <g key={mark}>
                         <line x1={x} y1={106} x2={x} y2={114} stroke="#475569" strokeWidth={1} />
-                        <text x={x} y={128} textAnchor="middle" fill="#94a3b8" fontSize={9}>w={mark}</text>
+                        <text x={x} y={128} textAnchor="middle" fill="#94a3b8" fontSize={11}>w={mark}</text>
                       </g>
                     );
                   })}
@@ -816,21 +816,21 @@ export default function DiffusionModelsTopic() {
                   <rect x={40 + ((3 - 1) / 19) * 520} y={30} width={((9 - 3) / 19) * 520} height={60} fill="#22c55e" opacity={0.18} />
                   <rect x={40 + ((9 - 1) / 19) * 520} y={30} width={((15 - 9) / 19) * 520} height={60} fill="#f59e0b" opacity={0.18} />
                   <rect x={40 + ((15 - 1) / 19) * 520} y={30} width={((20 - 15) / 19) * 520} height={60} fill="#ef4444" opacity={0.18} />
-                  <text x={60} y={52} fill="#60a5fa" fontSize={9} fontWeight="bold">Under-guided</text>
-                  <text x={60} y={66} fill="#60a5fa" fontSize={8}>bỏ qua prompt</text>
-                  <text x={210} y={52} fill="#22c55e" fontSize={9} fontWeight="bold">Sweet spot</text>
-                  <text x={210} y={66} fill="#22c55e" fontSize={8}>w=5–9 cho SD 1.5</text>
-                  <text x={360} y={52} fill="#f59e0b" fontSize={9} fontWeight="bold">Over-guided</text>
-                  <text x={360} y={66} fill="#f59e0b" fontSize={8}>oversaturated</text>
-                  <text x={470} y={52} fill="#ef4444" fontSize={9} fontWeight="bold">Severe</text>
-                  <text x={470} y={66} fill="#ef4444" fontSize={8}>artifact nặng</text>
+                  <text x={60} y={52} fill="#60a5fa" fontSize={11} fontWeight="bold">Under-guided</text>
+                  <text x={60} y={66} fill="#60a5fa" fontSize={11}>bỏ qua prompt</text>
+                  <text x={210} y={52} fill="#22c55e" fontSize={11} fontWeight="bold">Sweet spot</text>
+                  <text x={210} y={66} fill="#22c55e" fontSize={11}>w=5–9 cho SD 1.5</text>
+                  <text x={360} y={52} fill="#f59e0b" fontSize={11} fontWeight="bold">Over-guided</text>
+                  <text x={360} y={66} fill="#f59e0b" fontSize={11}>oversaturated</text>
+                  <text x={470} y={52} fill="#ef4444" fontSize={11} fontWeight="bold">Severe</text>
+                  <text x={470} y={66} fill="#ef4444" fontSize={11}>artifact nặng</text>
                   <g transform={`translate(${40 + ((cfgScale - 1) / 19) * 520}, 60)`}>
                     <circle r={10} fill={`hsl(${cfgHue}, 70%, 55%)`} stroke="#fff" strokeWidth={2} />
-                    <text y={-18} textAnchor="middle" fill="#e2e8f0" fontSize={10} fontWeight="bold">
+                    <text y={-18} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
                       w = {cfgScale.toFixed(1)}
                     </text>
                   </g>
-                  <text x={300} y={150} textAnchor="middle" fill="#94a3b8" fontSize={10} fontFamily="monospace">
+                  <text x={300} y={150} textAnchor="middle" fill="#94a3b8" fontSize={11} fontFamily="monospace">
                     ε̂ = ε_uncond + w · (ε_cond − ε_uncond)
                   </text>
                 </svg>
@@ -879,14 +879,14 @@ export default function DiffusionModelsTopic() {
                 >
                   {/* --- Input text --- */}
                   <rect x={10} y={10} width={160} height={36} rx={6} fill="#1e293b" stroke="#a78bfa" strokeWidth={1.5} />
-                  <text x={90} y={28} textAnchor="middle" fill="#e2e8f0" fontSize={10} fontWeight="bold">Prompt (text)</text>
-                  <text x={90} y={40} textAnchor="middle" fill="#a78bfa" fontSize={8}>"a cat astronaut"</text>
+                  <text x={90} y={28} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Prompt (text)</text>
+                  <text x={90} y={40} textAnchor="middle" fill="#a78bfa" fontSize={11}>"a cat astronaut"</text>
 
                   {/* --- Text encoder --- */}
                   <rect x={10} y={70} width={160} height={60} rx={8} fill="rgba(167,139,250,0.15)" stroke="#a78bfa" strokeWidth={2} />
                   <text x={90} y={92} textAnchor="middle" fill="#c4b5fd" fontSize={11} fontWeight="bold">Text Encoder</text>
-                  <text x={90} y={106} textAnchor="middle" fill="#c4b5fd" fontSize={8}>CLIP ViT-L / OpenCLIP</text>
-                  <text x={90} y={118} textAnchor="middle" fill="#94a3b8" fontSize={8}>77 × 768 dim</text>
+                  <text x={90} y={106} textAnchor="middle" fill="#c4b5fd" fontSize={11}>CLIP ViT-L / OpenCLIP</text>
+                  <text x={90} y={118} textAnchor="middle" fill="#94a3b8" fontSize={11}>77 × 768 dim</text>
 
                   {/* Arrow prompt → text encoder */}
                   <line x1={90} y1={46} x2={90} y2={70} stroke="#a78bfa" strokeWidth={1.5} />
@@ -894,14 +894,14 @@ export default function DiffusionModelsTopic() {
 
                   {/* --- Input image (training only) --- */}
                   <rect x={10} y={160} width={160} height={36} rx={6} fill="#1e293b" stroke="#f472b6" strokeWidth={1.5} strokeDasharray="3 2" />
-                  <text x={90} y={178} textAnchor="middle" fill="#e2e8f0" fontSize={10} fontWeight="bold">Image 512×512×3</text>
-                  <text x={90} y={190} textAnchor="middle" fill="#f472b6" fontSize={7}>(chỉ khi training)</text>
+                  <text x={90} y={178} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Image 512×512×3</text>
+                  <text x={90} y={190} textAnchor="middle" fill="#f472b6" fontSize={11}>(chỉ khi training)</text>
 
                   {/* --- VAE Encoder --- */}
                   <rect x={10} y={220} width={160} height={50} rx={8} fill="rgba(244,114,182,0.15)" stroke="#f472b6" strokeWidth={2} />
                   <text x={90} y={240} textAnchor="middle" fill="#f9a8d4" fontSize={11} fontWeight="bold">VAE Encoder</text>
-                  <text x={90} y={254} textAnchor="middle" fill="#f9a8d4" fontSize={8}>512×512×3 → 64×64×4</text>
-                  <text x={90} y={266} textAnchor="middle" fill="#94a3b8" fontSize={8}>compression ratio 48×</text>
+                  <text x={90} y={254} textAnchor="middle" fill="#f9a8d4" fontSize={11}>512×512×3 → 64×64×4</text>
+                  <text x={90} y={266} textAnchor="middle" fill="#94a3b8" fontSize={11}>compression ratio 48×</text>
 
                   {/* arrow */}
                   <line x1={90} y1={196} x2={90} y2={220} stroke="#f472b6" strokeWidth={1.5} strokeDasharray="3 2" />
@@ -910,42 +910,42 @@ export default function DiffusionModelsTopic() {
                   {/* --- U-Net (center, big) --- */}
                   <rect x={220} y={70} width={320} height={200} rx={12} fill="rgba(34,211,238,0.10)" stroke="#22d3ee" strokeWidth={2} />
                   <text x={380} y={92} textAnchor="middle" fill="#67e8f9" fontSize={13} fontWeight="bold">Denoising U-Net</text>
-                  <text x={380} y={108} textAnchor="middle" fill="#67e8f9" fontSize={9}>~860M parameters (SD 1.5)</text>
+                  <text x={380} y={108} textAnchor="middle" fill="#67e8f9" fontSize={11}>~860M parameters (SD 1.5)</text>
 
                   {/* Encoder blocks */}
                   {[0, 1, 2, 3].map((i) => (
                     <rect key={`enc-${i}`} x={240 + i * 30} y={130 + i * 12} width={30 - i * 3} height={20 - i * 2} rx={2} fill="#0891b2" opacity={0.8} />
                   ))}
-                  <text x={260} y={200} fill="#94a3b8" fontSize={8}>encoder (down)</text>
+                  <text x={260} y={200} fill="#94a3b8" fontSize={11}>encoder (down)</text>
                   <rect x={370} y={180} width={20} height={14} rx={2} fill="#22d3ee" />
-                  <text x={380} y={210} textAnchor="middle" fill="#22d3ee" fontSize={8} fontWeight="bold">mid block</text>
+                  <text x={380} y={210} textAnchor="middle" fill="#22d3ee" fontSize={11} fontWeight="bold">mid block</text>
                   {[0, 1, 2, 3].map((i) => (
                     <rect key={`dec-${i}`} x={420 + i * 30} y={178 - i * 12} width={21 + i * 3} height={14 + i * 2} rx={2} fill="#0891b2" opacity={0.8} />
                   ))}
-                  <text x={480} y={200} fill="#94a3b8" fontSize={8}>decoder (up)</text>
+                  <text x={480} y={200} fill="#94a3b8" fontSize={11}>decoder (up)</text>
                   {[0, 1, 2].map((i) => (
                     <path key={`skip-${i}`} d={`M ${255 + i * 28} ${140 + i * 12} Q ${380} ${120 + i * 5} ${510 - i * 28} ${184 - i * 12}`} stroke="#22d3ee" strokeWidth={1} strokeDasharray="2 2" fill="none" />
                   ))}
-                  <text x={380} y={250} textAnchor="middle" fill="#22d3ee" fontSize={8}>skip connections (U-Net)</text>
+                  <text x={380} y={250} textAnchor="middle" fill="#22d3ee" fontSize={11}>skip connections (U-Net)</text>
                   <path d="M 170 100 Q 200 90 240 140" stroke="#a78bfa" strokeWidth={1.5} fill="none" markerEnd="url(#arrow-purple)" />
                   <path d="M 170 100 Q 200 80 440 140" stroke="#a78bfa" strokeWidth={1.5} fill="none" markerEnd="url(#arrow-purple)" />
-                  <text x={200} y={80} fill="#c4b5fd" fontSize={8} fontWeight="bold">cross-attention</text>
+                  <text x={200} y={80} fill="#c4b5fd" fontSize={11} fontWeight="bold">cross-attention</text>
                   <line x1={170} y1={245} x2={220} y2={200} stroke="#f472b6" strokeWidth={1.5} />
                   <polygon points="216,196 220,200 216,204" fill="#f472b6" />
-                  <text x={175} y={240} fill="#f9a8d4" fontSize={8}>z_t</text>
+                  <text x={175} y={240} fill="#f9a8d4" fontSize={11}>z_t</text>
                   <rect x={225} y={285} width={80} height={20} rx={4} fill="rgba(251,191,36,0.15)" stroke="#fbbf24" strokeWidth={1} />
-                  <text x={265} y={299} textAnchor="middle" fill="#fde68a" fontSize={9} fontWeight="bold">timestep t emb</text>
+                  <text x={265} y={299} textAnchor="middle" fill="#fde68a" fontSize={11} fontWeight="bold">timestep t emb</text>
                   <line x1={265} y1={285} x2={320} y2={250} stroke="#fbbf24" strokeWidth={1.5} />
                   <rect x={590} y={160} width={160} height={60} rx={8} fill="rgba(244,114,182,0.15)" stroke="#f472b6" strokeWidth={2} />
                   <text x={670} y={182} textAnchor="middle" fill="#f9a8d4" fontSize={11} fontWeight="bold">VAE Decoder</text>
-                  <text x={670} y={196} textAnchor="middle" fill="#f9a8d4" fontSize={8}>64×64×4 → 512×512×3</text>
-                  <text x={670} y={208} textAnchor="middle" fill="#94a3b8" fontSize={8}>giải nén latent</text>
+                  <text x={670} y={196} textAnchor="middle" fill="#f9a8d4" fontSize={11}>64×64×4 → 512×512×3</text>
+                  <text x={670} y={208} textAnchor="middle" fill="#94a3b8" fontSize={11}>giải nén latent</text>
                   <rect x={590} y={240} width={160} height={36} rx={6} fill="#1e293b" stroke="#22c55e" strokeWidth={1.5} />
-                  <text x={670} y={258} textAnchor="middle" fill="#e2e8f0" fontSize={10} fontWeight="bold">Output 512×512</text>
-                  <text x={670} y={270} textAnchor="middle" fill="#22c55e" fontSize={8}>ảnh cuối cùng</text>
+                  <text x={670} y={258} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Output 512×512</text>
+                  <text x={670} y={270} textAnchor="middle" fill="#22c55e" fontSize={11}>ảnh cuối cùng</text>
                   <line x1={540} y1={170} x2={590} y2={185} stroke="#22d3ee" strokeWidth={1.5} />
                   <polygon points="586,181 590,185 586,189" fill="#22d3ee" />
-                  <text x={550} y={165} fill="#67e8f9" fontSize={8}>ẑ_0</text>
+                  <text x={550} y={165} fill="#67e8f9" fontSize={11}>ẑ_0</text>
                   <line x1={670} y1={220} x2={670} y2={240} stroke="#f472b6" strokeWidth={1.5} />
                   <polygon points="666,236 670,240 674,236" fill="#f472b6" />
                   <defs>
@@ -953,7 +953,7 @@ export default function DiffusionModelsTopic() {
                       <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa" />
                     </marker>
                   </defs>
-                  <text x={380} y={330} textAnchor="middle" fill="#cbd5e1" fontSize={10}>
+                  <text x={380} y={330} textAnchor="middle" fill="#cbd5e1" fontSize={11}>
                     Inference loop: với mỗi t = T,…,0 → U-Net dự đoán ε, cập nhật z_t → z_{"t-1"}, cuối cùng VAE decode z_0
                   </text>
                 </svg>

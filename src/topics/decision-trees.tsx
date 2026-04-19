@@ -10,6 +10,8 @@ import {
   ListTree,
   Eye,
   RotateCcw,
+  Check,
+  X,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -422,7 +424,7 @@ function ManualTreeBuilder() {
                 key={`xt-${v}`}
                 x={xToPx(v)}
                 y={SCATTER_H - PAD_B + 14}
-                fontSize={9}
+                fontSize={11}
                 textAnchor="middle"
                 fill="currentColor"
                 className="text-muted"
@@ -435,7 +437,7 @@ function ManualTreeBuilder() {
                 key={`yt-${v}`}
                 x={PAD_L - 6}
                 y={yToPx(v) + 3}
-                fontSize={9}
+                fontSize={11}
                 textAnchor="end"
                 fill="currentColor"
                 className="text-muted"
@@ -446,7 +448,7 @@ function ManualTreeBuilder() {
             <text
               x={SCATTER_W / 2}
               y={SCATTER_H - 4}
-              fontSize={10}
+              fontSize={11}
               textAnchor="middle"
               fill="currentColor"
               className="text-muted"
@@ -456,7 +458,7 @@ function ManualTreeBuilder() {
             <text
               x={10}
               y={SCATTER_H / 2}
-              fontSize={10}
+              fontSize={11}
               textAnchor="middle"
               fill="currentColor"
               className="text-muted"
@@ -728,7 +730,7 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
             <text
               x={(pos.x + lp.x) / 2 - 8}
               y={(pos.y + lp.y) / 2}
-              fontSize={9}
+              fontSize={11}
               fill="#10b981"
               fontWeight={600}
             >
@@ -737,7 +739,7 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
             <text
               x={(pos.x + rp.x) / 2 + 4}
               y={(pos.y + rp.y) / 2}
-              fontSize={9}
+              fontSize={11}
               fill="#ef4444"
               fontWeight={600}
             >
@@ -788,7 +790,7 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
                   x={pos.x}
                   y={pos.y - 2}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fontWeight={700}
                   fill={label === 1 ? "#059669" : "#b91c1c"}
                 >
@@ -798,7 +800,7 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
                   x={pos.x}
                   y={pos.y + 10}
                   textAnchor="middle"
-                  fontSize={8}
+                  fontSize={11}
                   fill="currentColor"
                   className="text-muted"
                 >
@@ -822,7 +824,7 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
                   x={pos.x}
                   y={pos.y - 2}
                   textAnchor="middle"
-                  fontSize={10}
+                  fontSize={11}
                   fontWeight={700}
                   fill="#4f46e5"
                 >
@@ -832,7 +834,7 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
                   x={pos.x}
                   y={pos.y + 10}
                   textAnchor="middle"
-                  fontSize={8}
+                  fontSize={11}
                   fill="currentColor"
                   className="text-muted"
                 >
@@ -1388,15 +1390,17 @@ function useTwentyQuestions() {
           <button
             type="button"
             onClick={() => setPath((p) => [...p, "yes"])}
-            className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20"
+            className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20"
           >
+            <Check size={12} aria-hidden="true" />
             Đúng
           </button>
           <button
             type="button"
             onClick={() => setPath((p) => [...p, "no"])}
-            className="text-xs px-3 py-1 rounded-full bg-red-500/10 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/20"
+            className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-red-500/10 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/20"
           >
+            <X size={12} aria-hidden="true" />
             Sai
           </button>
         </div>
@@ -1504,10 +1508,10 @@ function GiniVisual() {
         <circle cx={toX(hover)} cy={toY(gHover, 1)} r={4} fill="#0ea5e9" />
         <circle cx={toX(hover)} cy={toY(hHover, 1)} r={4} fill="#a855f7" />
         {/* labels */}
-        <text x={W_ - 20} y={H_ - 6} fontSize={9} textAnchor="end" fill="currentColor" className="text-muted">
+        <text x={W_ - 20} y={H_ - 6} fontSize={11} textAnchor="end" fill="currentColor" className="text-muted">
           p₁ (tỉ lệ lớp 1)
         </text>
-        <text x={20} y={18} fontSize={9} fill="currentColor" className="text-muted">
+        <text x={20} y={18} fontSize={11} fill="currentColor" className="text-muted">
           Độ lẫn lộn
         </text>
       </svg>

@@ -788,7 +788,7 @@ export default function BertTopic() {
                           x={30}
                           y={y + 2}
                           textAnchor="end"
-                          fontSize={10}
+                          fontSize={11}
                           fill={isActive ? "#1d4ed8" : "#64748b"}
                           fontWeight={isActive ? 700 : 500}
                           className="cursor-pointer"
@@ -803,7 +803,7 @@ export default function BertTopic() {
                     x="320"
                     y={250 - (selectedLayer - 1) * 18 + 2}
                     textAnchor="middle"
-                    fontSize={10}
+                    fontSize={11}
                     fontWeight="700"
                     fill="#ffffff"
                     style={{ pointerEvents: "none" }}

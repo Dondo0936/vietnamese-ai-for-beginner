@@ -10,6 +10,7 @@ import {
   GraduationCap,
   Boxes,
   Gamepad2,
+  Check,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 import ApplicationLayout from "@/components/application/ApplicationLayout";
@@ -510,7 +511,8 @@ function SupervisedMiniViz() {
       </div>
 
       <div className="rounded-md bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-2 text-center">
-        <span className="text-xs text-emerald-800 dark:text-emerald-300">
+        <span className="inline-flex items-center gap-1 text-xs text-emerald-800 dark:text-emerald-300">
+          <Check size={12} aria-hidden="true" />
           Sai số chỉ {Math.abs(active.trueStars - active.predictedStars).toFixed(2)} sao — đủ tốt
           để xếp phim.
         </span>
@@ -575,7 +577,7 @@ function UnsupervisedMiniViz() {
               x={c.x}
               y={c.y - 38}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill={c.color}
               fontWeight={700}
             >

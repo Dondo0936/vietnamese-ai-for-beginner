@@ -10,6 +10,7 @@ import {
   Tags,
   AlertTriangle,
   CheckCircle2,
+  XCircle,
   RotateCcw,
   Sparkles,
 } from "lucide-react";
@@ -342,7 +343,8 @@ export default function DataPreprocessingTopic() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-4">
-              <p className="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+              <p className="inline-flex items-center gap-1 text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+                <XCircle size={12} aria-hidden="true" />
                 Không làm sạch
               </p>
               <p className="text-xs text-foreground/80 leading-relaxed">
@@ -351,7 +353,8 @@ export default function DataPreprocessingTopic() {
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4">
-              <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 mb-1">
+              <p className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300 mb-1">
+                <CheckCircle2 size={12} aria-hidden="true" />
                 Có làm sạch
               </p>
               <p className="text-xs text-foreground/80 leading-relaxed">
@@ -1176,13 +1179,13 @@ function ScaleComparisonSvg({ values }: { values: number[] }) {
         const span = rowMax - rowMin || 1;
         return (
           <g key={r.label}>
-            <text x={4} y={y + 4} fontSize={10} fill="var(--text-secondary)">
+            <text x={4} y={y + 4} fontSize={11} fill="var(--text-secondary)">
               {r.label}
             </text>
             <text
               x={4}
               y={y + 18}
-              fontSize={9}
+              fontSize={11}
               fill="var(--text-tertiary)"
               fontStyle="italic"
             >

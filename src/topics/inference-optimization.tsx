@@ -890,9 +890,9 @@ export default function InferenceOptimizationTopic() {
               <g transform="translate(450, 50)">
                 <rect x={0} y={0} width={160} height={54} rx={6} fill="#0f172a" opacity={0.85} />
                 <circle cx={12} cy={16} r={5} fill="#22c55e" />
-                <text x={24} y={20} fill="#e2e8f0" fontSize={10}>Trên Pareto frontier</text>
+                <text x={24} y={20} fill="#e2e8f0" fontSize={11}>Trên Pareto frontier</text>
                 <circle cx={12} cy={40} r={5} fill="#ef4444" />
-                <text x={24} y={44} fill="#e2e8f0" fontSize={10}>Bị dominate (kém hơn)</text>
+                <text x={24} y={44} fill="#e2e8f0" fontSize={11}>Bị dominate (kém hơn)</text>
               </g>
             </svg>
 

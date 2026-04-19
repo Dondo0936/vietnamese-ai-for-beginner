@@ -141,7 +141,7 @@ export default function VectorDatabasesTopic() {
                       strokeWidth={isNearest ? 2.5 : 0}
                       opacity={queryIdx !== null && !isQuery && !isNearest ? 0.35 : 1} />
                     <text x={p.x} y={p.y - 16} textAnchor="middle"
-                      fill={isQuery ? "#22c55e" : "#94a3b8"} fontSize="10"
+                      fill={isQuery ? "#22c55e" : "#94a3b8"} fontSize="11"
                       fontWeight={isQuery ? "bold" : "normal"}>
                       {p.label}
                     </text>
@@ -149,9 +149,9 @@ export default function VectorDatabasesTopic() {
                 );
               })}
               <circle cx="420" cy="20" r="6" fill="#3b82f6" />
-              <text x="432" y="24" fill="#94a3b8" fontSize="9">Đồ ăn</text>
+              <text x="432" y="24" fill="#94a3b8" fontSize="11">Đồ ăn</text>
               <circle cx="420" cy="40" r="6" fill="#ef4444" />
-              <text x="432" y="44" fill="#94a3b8" fontSize="9">Phương tiện</text>
+              <text x="432" y="44" fill="#94a3b8" fontSize="11">Phương tiện</text>
             </svg>
 
             {queryIdx !== null && (

@@ -430,7 +430,7 @@ export default function ResidualConnectionsTopic() {
                   onClick={() => setShowGradient((v) => !v)}
                   className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors border ${
                     showGradient
-                      ? "bg-[#3b82f6] text-white border-[#3b82f6]"
+                      ? "bg-accent text-white border-accent"
                       : "bg-card text-muted border-border hover:text-foreground"
                   }`}
                 >
@@ -546,7 +546,7 @@ export default function ResidualConnectionsTopic() {
                         <text
                           x={370}
                           y={y + 24}
-                          fontSize={10}
+                          fontSize={11}
                           fill={skipOn ? "#22c55e" : "#ef4444"}
                           opacity={0.9}
                         >
@@ -710,7 +710,7 @@ export default function ResidualConnectionsTopic() {
                       <text
                         x={80}
                         y={215}
-                        fontSize={10}
+                        fontSize={11}
                         fill="#3b82f6"
                         textAnchor="middle"
                         transform="rotate(-90, 80, 215)"
@@ -754,7 +754,7 @@ export default function ResidualConnectionsTopic() {
                         <text
                           x={460}
                           y={200}
-                          fontSize={10}
+                          fontSize={11}
                           fill="#ef4444"
                           fontWeight={700}
                         >
@@ -792,7 +792,7 @@ export default function ResidualConnectionsTopic() {
                 >
                   F(x)
                 </text>
-                <text x={395} y={216} fontSize={10} fill="#8b5cf6" opacity={0.9}>
+                <text x={395} y={216} fontSize={11} fill="#8b5cf6" opacity={0.9}>
                   nhánh residual
                 </text>
 
@@ -864,7 +864,7 @@ export default function ResidualConnectionsTopic() {
                           stroke="#475569"
                           strokeWidth={1}
                         />
-                        <text x={-8} y={y + 3} fontSize={9} fill="#94a3b8" textAnchor="end">
+                        <text x={-8} y={y + 3} fontSize={11} fill="#94a3b8" textAnchor="end">
                           {v.toFixed(1)}
                         </text>
                       </g>
@@ -886,7 +886,7 @@ export default function ResidualConnectionsTopic() {
                         <text
                           x={x}
                           y={CURVE_H + 16}
-                          fontSize={9}
+                          fontSize={11}
                           fill="#94a3b8"
                           textAnchor="middle"
                         >
@@ -898,7 +898,7 @@ export default function ResidualConnectionsTopic() {
                   <text
                     x={CURVE_W / 2}
                     y={CURVE_H + 30}
-                    fontSize={10}
+                    fontSize={11}
                     fill="#cbd5e1"
                     textAnchor="middle"
                   >
@@ -907,7 +907,7 @@ export default function ResidualConnectionsTopic() {
                   <text
                     x={-24}
                     y={CURVE_H / 2}
-                    fontSize={10}
+                    fontSize={11}
                     fill="#cbd5e1"
                     textAnchor="middle"
                     transform={`rotate(-90, -24, ${CURVE_H / 2})`}
@@ -956,11 +956,11 @@ export default function ResidualConnectionsTopic() {
                       strokeWidth={1}
                     />
                     <line x1={8} y1={12} x2={22} y2={12} stroke="#ef4444" strokeWidth={2} />
-                    <text x={28} y={15} fontSize={9} fill="#ef4444">
+                    <text x={28} y={15} fontSize={11} fill="#ef4444">
                       plain (không skip) — diverge
                     </text>
                     <line x1={8} y1={26} x2={22} y2={26} stroke="#22c55e" strokeWidth={2.5} />
-                    <text x={28} y={29} fontSize={9} fill="#22c55e">
+                    <text x={28} y={29} fontSize={11} fill="#22c55e">
                       ResNet (có skip) — converge
                     </text>
                   </g>

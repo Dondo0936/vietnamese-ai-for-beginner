@@ -158,8 +158,8 @@ export default function VLMTopic() {
             <svg viewBox="0 0 620 220" className="w-full max-w-2xl mx-auto">
               {/* Input */}
               <rect x={20} y={55} width={150} height={70} rx={10} fill="#3b82f6" />
-              <text x={95} y={80} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">Đầu vào</text>
-              <text x={95} y={100} textAnchor="middle" fill="#bfdbfe" fontSize={8}>
+              <text x={95} y={80} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">Đầu vào</text>
+              <text x={95} y={100} textAnchor="middle" fill="#bfdbfe" fontSize={11}>
                 {task.input.length > 22 ? task.input.slice(0, 22) + "..." : task.input}
               </text>
 
@@ -168,23 +168,23 @@ export default function VLMTopic() {
 
               {/* VLM architecture */}
               <rect x={215} y={30} width={190} height={120} rx={12} fill="#1e293b" stroke="#8b5cf6" strokeWidth={2} />
-              <text x={310} y={55} textAnchor="middle" fill="#c4b5fd" fontSize={9}>Vision Encoder (ViT)</text>
+              <text x={310} y={55} textAnchor="middle" fill="#c4b5fd" fontSize={11}>Vision Encoder (ViT)</text>
               <rect x={225} y={62} width={75} height={24} rx={4} fill="#3b82f6" opacity={0.4} />
-              <text x={262} y={78} textAnchor="middle" fill="#93c5fd" fontSize={8}>Ảnh → Vector</text>
+              <text x={262} y={78} textAnchor="middle" fill="#93c5fd" fontSize={11}>Ảnh → Vector</text>
               <rect x={320} y={62} width={75} height={24} rx={4} fill="#22c55e" opacity={0.4} />
-              <text x={357} y={78} textAnchor="middle" fill="#86efac" fontSize={8}>Projection</text>
+              <text x={357} y={78} textAnchor="middle" fill="#86efac" fontSize={11}>Projection</text>
               <line x1={265} y1={90} x2={310} y2={110} stroke="#475569" strokeWidth={1} strokeDasharray="3,2" />
               <line x1={355} y1={90} x2={310} y2={110} stroke="#475569" strokeWidth={1} strokeDasharray="3,2" />
               <rect x={255} y={105} width={110} height={28} rx={6} fill="#8b5cf6" opacity={0.5} />
-              <text x={310} y={123} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">LLM</text>
+              <text x={310} y={123} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">LLM</text>
 
               {/* Arrow */}
               <line x1={405} y1={90} x2={440} y2={90} stroke="#475569" strokeWidth={2} markerEnd="url(#vlm-arrow)" />
 
               {/* Output */}
               <rect x={440} y={50} width={160} height={80} rx={10} fill="#22c55e" />
-              <text x={520} y={75} textAnchor="middle" fill="white" fontSize={10} fontWeight="bold">Đầu ra</text>
-              <text x={520} y={95} textAnchor="middle" fill="#bbf7d0" fontSize={7}>
+              <text x={520} y={75} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">Đầu ra</text>
+              <text x={520} y={95} textAnchor="middle" fill="#bbf7d0" fontSize={11}>
                 {task.output.length > 28 ? task.output.slice(0, 28) + "..." : task.output}
               </text>
 

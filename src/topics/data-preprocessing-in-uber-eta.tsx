@@ -971,11 +971,11 @@ function GpsMap({
       {/* Legend */}
       <g transform={`translate(20, ${H - 14})`}>
         <circle cx={0} cy={0} r={3} fill="#94a3b8" opacity={0.4} />
-        <text x={8} y={3} fontSize={9} fill="var(--text-tertiary)">
+        <text x={8} y={3} fontSize={11} fill="var(--text-tertiary)">
           Điểm GPS thô
         </text>
         <circle cx={100} cy={0} r={3} fill={color} />
-        <text x={108} y={3} fontSize={9} fill="var(--text-tertiary)">
+        <text x={108} y={3} fontSize={11} fill="var(--text-tertiary)">
           Sau {STEP_META.snap.label === (raw ? "?" : "?") ? "" : ""}bước hiện tại
         </text>
         <line
@@ -987,7 +987,7 @@ function GpsMap({
           strokeWidth={2}
           strokeDasharray={showClean ? undefined : "4,4"}
         />
-        <text x={250} y={3} fontSize={9} fill="var(--text-tertiary)">
+        <text x={250} y={3} fontSize={11} fill="var(--text-tertiary)">
           Đường đi thật trên bản đồ
         </text>
       </g>

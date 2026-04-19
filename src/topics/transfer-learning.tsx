@@ -467,7 +467,7 @@ function TrainingCurves({ active }: { active: StrategyId }) {
           <text
             x={pad.l - 6}
             y={yScale(v) + 3}
-            fontSize={9}
+            fontSize={11}
             textAnchor="end"
             className="fill-muted"
           >
@@ -482,7 +482,7 @@ function TrainingCurves({ active }: { active: StrategyId }) {
           key={i}
           x={xScale(i)}
           y={height - pad.b + 14}
-          fontSize={9}
+          fontSize={11}
           textAnchor="middle"
           className="fill-muted"
         >
@@ -492,7 +492,7 @@ function TrainingCurves({ active }: { active: StrategyId }) {
       <text
         x={pad.l + innerW / 2}
         y={height - 4}
-        fontSize={10}
+        fontSize={11}
         textAnchor="middle"
         className="fill-muted"
       >
@@ -501,7 +501,7 @@ function TrainingCurves({ active }: { active: StrategyId }) {
       <text
         x={12}
         y={pad.t + innerH / 2}
-        fontSize={10}
+        fontSize={11}
         textAnchor="middle"
         transform={`rotate(-90 12 ${pad.t + innerH / 2})`}
         className="fill-muted"
@@ -540,7 +540,7 @@ function TrainingCurves({ active }: { active: StrategyId }) {
         {STRATEGY_ORDER.map((id, i) => (
           <g key={id} transform={`translate(0, ${i * 14})`}>
             <rect width={10} height={10} rx={2} fill={colorFor(id)} />
-            <text x={14} y={9} fontSize={10} className="fill-foreground">
+            <text x={14} y={9} fontSize={11} className="fill-foreground">
               {STRATEGIES[id].shortName} · cuối epoch 10 ={" "}
               {(STRATEGIES[id].finalAcc * 100).toFixed(0)}%
             </text>

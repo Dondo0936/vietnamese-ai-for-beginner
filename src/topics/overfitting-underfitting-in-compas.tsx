@@ -559,7 +559,7 @@ function TiltedDataDiagram() {
           <text x={130} y={50} fontSize={12} fill="#3b82f6" fontWeight={700} textAnchor="middle">
             Khu phố A — tuần tra thưa
           </text>
-          <text x={130} y={68} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+          <text x={130} y={68} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
             Cùng số tội → ít bị ghi nhận hơn
           </text>
           {/* tiny people icons */}
@@ -570,7 +570,7 @@ function TiltedDataDiagram() {
                 <text
                   x={45 + (i % 3) * 60}
                   y={99 + Math.floor(i / 3) * 30}
-                  fontSize={7}
+                  fontSize={11}
                   fill="#fff"
                   textAnchor="middle"
                   fontWeight={700}
@@ -580,7 +580,7 @@ function TiltedDataDiagram() {
               )}
             </g>
           ))}
-          <text x={130} y={170} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">
+          <text x={130} y={170} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
             2/6 bị ghi nhận tái phạm
           </text>
         </g>
@@ -591,7 +591,7 @@ function TiltedDataDiagram() {
           <text x={390} y={50} fontSize={12} fill="#f97316" fontWeight={700} textAnchor="middle">
             Khu phố B — tuần tra dày
           </text>
-          <text x={390} y={68} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+          <text x={390} y={68} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
             Cùng số tội → bị ghi nhận nhiều hơn
           </text>
           {Array.from({ length: 6 }, (_, i) => (
@@ -601,7 +601,7 @@ function TiltedDataDiagram() {
                 <text
                   x={305 + (i % 3) * 60}
                   y={99 + Math.floor(i / 3) * 30}
-                  fontSize={7}
+                  fontSize={11}
                   fill="#fff"
                   textAnchor="middle"
                   fontWeight={700}
@@ -611,7 +611,7 @@ function TiltedDataDiagram() {
               )}
             </g>
           ))}
-          <text x={390} y={170} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">
+          <text x={390} y={170} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
             4/6 bị ghi nhận tái phạm
           </text>
         </g>
@@ -836,10 +836,10 @@ function FeatureCountCurve() {
         <line x1={40} y1={180} x2={480} y2={180} stroke="currentColor" className="text-muted" strokeWidth={1} />
         <line x1={40} y1={20} x2={40} y2={180} stroke="currentColor" className="text-muted" strokeWidth={1} />
         {/* Ticks */}
-        <text x={30} y={25} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">100%</text>
-        <text x={30} y={100} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">75%</text>
-        <text x={30} y={180} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">50%</text>
-        <text x={260} y={198} fontSize={10} fill="currentColor" className="text-muted" textAnchor="middle">
+        <text x={30} y={25} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">100%</text>
+        <text x={30} y={100} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">75%</text>
+        <text x={30} y={180} fontSize={11} fill="currentColor" className="text-muted" textAnchor="end">50%</text>
+        <text x={260} y={198} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
           Số feature (1 → 137)
         </text>
 
@@ -854,7 +854,7 @@ function FeatureCountCurve() {
           strokeDasharray="3,3"
           opacity={0.6}
         />
-        <text x={470} y={20 + (1 - 0.65) * 140 - 3} fontSize={8} fill="#94a3b8" textAnchor="end">
+        <text x={470} y={20 + (1 - 0.65) * 140 - 3} fontSize={11} fill="#94a3b8" textAnchor="end">
           Trần ~67%
         </text>
 
@@ -869,9 +869,9 @@ function FeatureCountCurve() {
         {/* Legend */}
         <g transform="translate(320, 20)">
           <line x1={0} y1={0} x2={18} y2={0} stroke="#f59e0b" strokeWidth={2} />
-          <text x={22} y={3} fontSize={9} fill="#f59e0b">Train acc</text>
+          <text x={22} y={3} fontSize={11} fill="#f59e0b">Train acc</text>
           <line x1={80} y1={0} x2={98} y2={0} stroke="#22c55e" strokeWidth={2} strokeDasharray="3,2" />
-          <text x={102} y={3} fontSize={9} fill="#22c55e">Test acc</text>
+          <text x={102} y={3} fontSize={11} fill="#22c55e">Test acc</text>
         </g>
       </svg>
 

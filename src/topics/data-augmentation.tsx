@@ -749,7 +749,7 @@ export default function DataAugmentationTopic() {
                       y={toY(v) + 3}
                       textAnchor="end"
                       fill="#64748b"
-                      fontSize={8}
+                      fontSize={11}
                     >
                       {v}%
                     </text>
@@ -785,7 +785,7 @@ export default function DataAugmentationTopic() {
                       y={chartHeight - 6}
                       textAnchor="middle"
                       fill="#64748b"
-                      fontSize={8}
+                      fontSize={11}
                     >
                       {e + 1}
                     </text>
@@ -806,10 +806,10 @@ export default function DataAugmentationTopic() {
                 />
 
                 {/* annotations */}
-                <text x={toX(12)} y={toY(81)} fill="#f43f5e" fontSize={9}>
+                <text x={toX(12)} y={toY(81)} fill="#f43f5e" fontSize={11}>
                   Peak 80.7% → rơi xuống 75.3%
                 </text>
-                <text x={toX(20)} y={toY(92)} fill="#10b981" fontSize={9}>
+                <text x={toX(20)} y={toY(92)} fill="#10b981" fontSize={11}>
                   Aug: 91.25% ổn định
                 </text>
 
@@ -835,7 +835,7 @@ export default function DataAugmentationTopic() {
                   x={chartWidth - 116}
                   y={37}
                   fill="#f43f5e"
-                  fontSize={9}
+                  fontSize={11}
                 >
                   Không augmentation
                 </text>
@@ -851,7 +851,7 @@ export default function DataAugmentationTopic() {
                   x={chartWidth - 116}
                   y={53}
                   fill="#10b981"
-                  fontSize={9}
+                  fontSize={11}
                 >
                   Có augmentation
                 </text>

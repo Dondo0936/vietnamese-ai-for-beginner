@@ -247,7 +247,7 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
         stroke="#60a5fa"
         strokeWidth={2}
       />
-      <text x={meanX + 4} y={padding.top + 12} fill="#60a5fa" fontSize={9}>
+      <text x={meanX + 4} y={padding.top + 12} fill="#60a5fa" fontSize={11}>
         mean
       </text>
       {/* theoretical √(D/6) */}
@@ -260,7 +260,7 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
         strokeWidth={2}
         strokeDasharray="4 3"
       />
-      <text x={theoryX + 4} y={padding.top + 24} fill="#f472b6" fontSize={9}>
+      <text x={theoryX + 4} y={padding.top + 24} fill="#f472b6" fontSize={11}>
         √(D/6)
       </text>
       {/* axis labels */}
@@ -268,7 +268,7 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
         x={padding.left}
         y={padding.top + plotH + 14}
         fill="#64748b"
-        fontSize={9}
+        fontSize={11}
       >
         0
       </text>
@@ -276,7 +276,7 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
         x={padding.left + plotW}
         y={padding.top + plotH + 14}
         fill="#64748b"
-        fontSize={9}
+        fontSize={11}
         textAnchor="end"
       >
         √D = {upper.toFixed(2)}
@@ -285,7 +285,7 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
         x={padding.left + plotW / 2}
         y={padding.top + plotH + 28}
         fill="#94a3b8"
-        fontSize={10}
+        fontSize={11}
         textAnchor="middle"
       >
         Khoảng cách Euclid giữa các cặp điểm
@@ -295,13 +295,13 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
         x={12}
         y={padding.top + plotH / 2}
         fill="#94a3b8"
-        fontSize={10}
+        fontSize={11}
         transform={`rotate(-90 12 ${padding.top + plotH / 2})`}
         textAnchor="middle"
       >
         Số cặp
       </text>
-      <text x={padding.left + 6} y={padding.top - 6} fill="#64748b" fontSize={9}>
+      <text x={padding.left + 6} y={padding.top - 6} fill="#64748b" fontSize={11}>
         min={minD.toFixed(2)}, max={maxD.toFixed(2)}, σ={stdD.toFixed(3)}
       </text>
     </svg>
@@ -361,7 +361,7 @@ function PointCloudPreview({ dims, nPoints, seed, size }: PointCloudProps) {
           opacity={0.85}
         />
       ))}
-      <text x={size / 2} y={size - 6} fill="#64748b" fontSize={8} textAnchor="middle">
+      <text x={size / 2} y={size - 6} fill="#64748b" fontSize={11} textAnchor="middle">
         Chiếu 2D ({dims}D gốc)
       </text>
     </svg>

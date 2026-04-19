@@ -141,10 +141,10 @@ export default function TsneTopic() {
               <text x={10} y={20} fontSize={12} fill="currentColor" className="text-foreground" fontWeight={600}>
                 Bước {step}/{MAX_STEP}
               </text>
-              <text x={10} y={38} fontSize={10} fill="currentColor" className="text-muted">
+              <text x={10} y={38} fontSize={11} fill="currentColor" className="text-muted">
                 KL Divergence: {klDiv.toFixed(2)}
               </text>
-              <text x={10} y={54} fontSize={10} fill="currentColor" className="text-muted">
+              <text x={10} y={54} fontSize={11} fill="currentColor" className="text-muted">
                 Perplexity: {perplexity}
               </text>
 
@@ -152,7 +152,7 @@ export default function TsneTopic() {
               {CLUSTER_CENTERS.map((c, i) => (
                 <g key={i}>
                   <circle cx={380} cy={14 + i * 16} r={4} fill={c.color} />
-                  <text x={390} y={18 + i * 16} fontSize={9} fill="currentColor" className="text-muted">{c.label}</text>
+                  <text x={390} y={18 + i * 16} fontSize={11} fill="currentColor" className="text-muted">{c.label}</text>
                 </g>
               ))}
 

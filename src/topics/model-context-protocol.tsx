@@ -428,7 +428,7 @@ export default function ModelContextProtocolTopic() {
                     y={124}
                     textAnchor="middle"
                     fill="#f59e0b"
-                    fontSize={10}
+                    fontSize={11}
                     fontWeight="bold"
                   >
                     MCP Protocol · JSON-RPC 2.0 · stdio / SSE
@@ -518,7 +518,7 @@ export default function ModelContextProtocolTopic() {
                           y={node.y + 18}
                           textAnchor="middle"
                           fill="#cbd5e1"
-                          fontSize={8}
+                          fontSize={11}
                         >
                           {key === "client"
                             ? "Claude Desktop"
@@ -560,7 +560,7 @@ export default function ModelContextProtocolTopic() {
                           y={302}
                           textAnchor="middle"
                           fill="white"
-                          fontSize={10}
+                          fontSize={11}
                           fontWeight="bold"
                         >
                           {t.icon}
@@ -570,7 +570,7 @@ export default function ModelContextProtocolTopic() {
                           y={318}
                           textAnchor="middle"
                           fill="white"
-                          fontSize={9}
+                          fontSize={11}
                         >
                           {t.name}
                         </text>
@@ -579,7 +579,7 @@ export default function ModelContextProtocolTopic() {
                           y={332}
                           textAnchor="middle"
                           fill={isActive ? "white" : "#64748b"}
-                          fontSize={7}
+                          fontSize={11}
                         >
                           {t.latencyMs}ms
                         </text>

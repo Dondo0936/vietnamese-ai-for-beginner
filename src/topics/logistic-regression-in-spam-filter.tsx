@@ -11,6 +11,7 @@ import {
   Link2,
   Type,
   BadgeAlert,
+  AlertTriangle,
 } from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 import ApplicationLayout from "@/components/application/ApplicationLayout";
@@ -444,7 +445,8 @@ function EmailRow({
       <div className="mt-1 truncate text-foreground/80">{row.email.subject}</div>
       <div className="mt-0.5 truncate text-muted">{row.email.snippet}</div>
       {!isCorrect && (
-        <p className="mt-1 text-[10px] text-amber-700 dark:text-amber-400">
+        <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-amber-700 dark:text-amber-400">
+          <AlertTriangle size={10} aria-hidden="true" />
           {row.predicted === 1
             ? "Đánh dấu nhầm — email này thật sự là thư thường."
             : "Bỏ sót — email này thật sự là spam."}

@@ -410,10 +410,10 @@ export default function CLIPTopic() {
                   const x = 150 + c * 100 + 50;
                   return (
                     <g key={t.id}>
-                      <text x={x} y={48} textAnchor="middle" fontSize={10} fontWeight="600" fill="#0f766e">
+                      <text x={x} y={48} textAnchor="middle" fontSize={11} fontWeight="600" fill="#0f766e">
                         T{c + 1}
                       </text>
-                      <text x={x} y={62} textAnchor="middle" fontSize={8} fill="#475569">
+                      <text x={x} y={62} textAnchor="middle" fontSize={11} fill="#475569">
                         {t.vi.slice(0, 18)}
                       </text>
                     </g>
@@ -440,10 +440,10 @@ export default function CLIPTopic() {
                       <text x={55} y={y - 4} fontSize={22}>
                         {img.emoji}
                       </text>
-                      <text x={90} y={y - 4} fontSize={10} fontWeight="600" fill="#1e40af">
+                      <text x={90} y={y - 4} fontSize={11} fontWeight="600" fill="#1e40af">
                         I{r + 1}
                       </text>
-                      <text x={90} y={y + 8} fontSize={8} fill="#475569">
+                      <text x={90} y={y + 8} fontSize={11} fill="#475569">
                         {img.vi.slice(0, 14)}
                       </text>
                     </g>
@@ -500,7 +500,7 @@ export default function CLIPTopic() {
                           x={x + 50}
                           y={y + 54}
                           textAnchor="middle"
-                          fontSize={8}
+                          fontSize={11}
                           fill={textFill}
                           opacity={0.85}
                         >

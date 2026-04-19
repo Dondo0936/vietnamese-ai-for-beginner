@@ -8,6 +8,9 @@ import {
   Scale,
   BarChart3,
   Repeat,
+  Check,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 import {
   PredictionGate,
@@ -487,7 +490,8 @@ function ConfusionVisual() {
 
       <div className="grid grid-cols-2 gap-2 max-w-sm mx-auto">
         <div className="rounded-lg border-2 border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-center">
-          <div className="text-[10px] uppercase text-emerald-700 dark:text-emerald-400 font-semibold">
+          <div className="inline-flex items-center justify-center gap-1 text-[10px] uppercase text-emerald-700 dark:text-emerald-400 font-semibold">
+            <Check size={11} aria-hidden="true" />
             TP — đúng
           </div>
           <div className="text-xl font-bold text-emerald-700 dark:text-emerald-400 tabular-nums">
@@ -495,7 +499,8 @@ function ConfusionVisual() {
           </div>
         </div>
         <div className="rounded-lg border-2 border-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3 text-center">
-          <div className="text-[10px] uppercase text-amber-700 dark:text-amber-400 font-semibold">
+          <div className="inline-flex items-center justify-center gap-1 text-[10px] uppercase text-amber-700 dark:text-amber-400 font-semibold">
+            <AlertTriangle size={11} aria-hidden="true" />
             FP — báo giả
           </div>
           <div className="text-xl font-bold text-amber-700 dark:text-amber-400 tabular-nums">
@@ -503,7 +508,8 @@ function ConfusionVisual() {
           </div>
         </div>
         <div className="rounded-lg border-2 border-red-400 bg-red-50 dark:bg-red-900/20 p-3 text-center">
-          <div className="text-[10px] uppercase text-red-700 dark:text-red-400 font-semibold">
+          <div className="inline-flex items-center justify-center gap-1 text-[10px] uppercase text-red-700 dark:text-red-400 font-semibold">
+            <X size={11} aria-hidden="true" />
             FN — bỏ sót
           </div>
           <div className="text-xl font-bold text-red-700 dark:text-red-400 tabular-nums">
@@ -638,7 +644,7 @@ function RegressionVisual() {
         <text
           x={140}
           y={195}
-          fontSize={9}
+          fontSize={11}
           fill="var(--text-muted)"
           textAnchor="middle"
         >
@@ -824,7 +830,7 @@ function CalibrationVisual() {
             <text
               x={30 + v * 190}
               y={195}
-              fontSize={8}
+              fontSize={11}
               fill="var(--text-muted)"
               textAnchor="middle"
             >
@@ -926,7 +932,7 @@ function RocAucChart() {
           <text
             x={30 + v * 230}
             y={205}
-            fontSize={8}
+            fontSize={11}
             fill="var(--text-muted)"
             textAnchor="middle"
           >
@@ -959,7 +965,7 @@ function RocAucChart() {
       {curves.map((c, i) => (
         <g key={c.label} transform={`translate(40, ${25 + i * 16})`}>
           <rect width={10} height={3} y={3} fill={c.color} rx={1} />
-          <text x={16} y={8} fontSize={9} fill="var(--text-primary)">
+          <text x={16} y={8} fontSize={11} fill="var(--text-primary)">
             {c.label}
           </text>
         </g>
@@ -967,7 +973,7 @@ function RocAucChart() {
       <text
         x={140}
         y={218}
-        fontSize={9}
+        fontSize={11}
         fill="var(--text-muted)"
         textAnchor="middle"
       >
@@ -1048,7 +1054,7 @@ function MetricDecisionTree() {
               x={n.x + n.w / 2}
               y={n.y + 27}
               textAnchor="middle"
-              fontSize={9}
+              fontSize={11}
               fill={n.color}
             >
               {n.metrics}
@@ -1060,7 +1066,7 @@ function MetricDecisionTree() {
         x={310}
         y={245}
         textAnchor="middle"
-        fontSize={10}
+        fontSize={11}
         fill="var(--text-muted)"
       >
         Bonus: luôn báo thêm confidence interval từ cross-validation

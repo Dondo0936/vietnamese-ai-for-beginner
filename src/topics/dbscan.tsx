@@ -625,7 +625,7 @@ export default function DbscanTopic() {
                     <text
                       x={12}
                       y={4}
-                      fontSize={10}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -635,7 +635,7 @@ export default function DbscanTopic() {
                     <text
                       x={12}
                       y={22}
-                      fontSize={10}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >
@@ -648,7 +648,7 @@ export default function DbscanTopic() {
                     <text
                       x={12}
                       y={40}
-                      fontSize={10}
+                      fontSize={11}
                       fill="currentColor"
                       className="text-muted"
                     >

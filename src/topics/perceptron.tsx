@@ -723,7 +723,7 @@ function PerceptronDiagram({
         stroke="#f59e0b"
         strokeWidth={2.5}
       />
-      <text x={385} y={170} textAnchor="middle" fill="#64748b" fontSize={10} fontWeight={700}>
+      <text x={385} y={170} textAnchor="middle" fill="#64748b" fontSize={11} fontWeight={700}>
         step
       </text>
 
@@ -741,7 +741,7 @@ function PerceptronDiagram({
       <text x={490} y={137} textAnchor="middle" fill="#ffffff" fontSize={16} fontWeight={700}>
         {out}
       </text>
-      <text x={490} y={154} textAnchor="middle" fill="#ffffff" fontSize={10}>
+      <text x={490} y={154} textAnchor="middle" fill="#ffffff" fontSize={11}>
         {out === 1 ? "CÓ" : "KHÔNG"}
       </text>
     </svg>
@@ -876,7 +876,7 @@ function LogicGatesDemo() {
                 >
                   {pt.cls}
                 </text>
-                <text x={cx} y={cy - 18} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+                <text x={cx} y={cy - 18} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
                   ({pt.x},{pt.y})
                 </text>
               </g>
@@ -1307,16 +1307,16 @@ export default function PerceptronTopic() {
                 x₂
               </text>
               <circle cx={60} cy={140} r={14} fill="#94a3b8" />
-              <text x={60} y={144} textAnchor="middle" fontSize={10} fill="#ffffff" fontWeight={700}>
+              <text x={60} y={144} textAnchor="middle" fontSize={11} fill="#ffffff" fontWeight={700}>
                 b
               </text>
 
               <line x1={80} y1={40} x2={220} y2={75} stroke="#3b82f6" strokeWidth={3} opacity={0.8} />
-              <text x={130} y={52} fontSize={10} fill="#3b82f6" fontWeight={700}>
+              <text x={130} y={52} fontSize={11} fill="#3b82f6" fontWeight={700}>
                 × w₁
               </text>
               <line x1={80} y1={100} x2={220} y2={85} stroke="#3b82f6" strokeWidth={2} opacity={0.6} />
-              <text x={130} y={110} fontSize={10} fill="#3b82f6" fontWeight={700}>
+              <text x={130} y={110} fontSize={11} fill="#3b82f6" fontWeight={700}>
                 × w₂
               </text>
               <line
@@ -1334,7 +1334,7 @@ export default function PerceptronTopic() {
               <text x={240} y={85} textAnchor="middle" fontSize={16} fill="#e2e8f0">
                 Σ
               </text>
-              <text x={240} y={120} textAnchor="middle" fontSize={10} fill="currentColor" className="text-muted">
+              <text x={240} y={120} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">
                 tổng
               </text>
 

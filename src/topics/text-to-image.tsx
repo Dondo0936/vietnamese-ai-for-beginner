@@ -132,10 +132,10 @@ export default function TextToImageTopic() {
                       strokeWidth={2}
                       opacity={active ? 1 : 0.4}
                     />
-                    <text x={x} y={52} textAnchor="middle" fill="white" fontSize={9} fontWeight="bold">
+                    <text x={x} y={52} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
                       {s.label}
                     </text>
-                    <text x={x} y={68} textAnchor="middle" fill="#e2e8f0" fontSize={7}>
+                    <text x={x} y={68} textAnchor="middle" fill="#e2e8f0" fontSize={11}>
                       {s.desc.length > 28 ? s.desc.slice(0, 28) + "..." : s.desc}
                     </text>
                     {i < PIPELINE_STEPS.length - 1 && (
@@ -153,8 +153,8 @@ export default function TextToImageTopic() {
               })}
               {/* Gradient bar */}
               <rect x={72} y={115} width={580} height={16} rx={4} fill="url(#t2i-grad)" opacity={0.5} />
-              <text x={72} y={148} fill="#94a3b8" fontSize={9}>Nhiễu thuần tuý</text>
-              <text x={652} y={148} textAnchor="end" fill="#94a3b8" fontSize={9}>Ảnh hoàn chỉnh</text>
+              <text x={72} y={148} fill="#94a3b8" fontSize={11}>Nhiễu thuần tuý</text>
+              <text x={652} y={148} textAnchor="end" fill="#94a3b8" fontSize={11}>Ảnh hoàn chỉnh</text>
               <defs>
                 <linearGradient id="t2i-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#ef4444" />
