@@ -62,6 +62,36 @@ describe("files-vision tile", () => {
     ).toBeInTheDocument();
   });
 
+  it("frames the source-citation card as on-request, not automatic", () => {
+    render(<FilesVisionTile />);
+    // The third CropCard caption should explicitly flag on-request behavior
+    // so the viewer doesn't read citations as something Claude emits by default.
+    expect(
+      screen.getByText(/Khi bạn hỏi thêm 'trích từ đâu\?'/)
+    ).toBeInTheDocument();
+  });
+
+  it("cross-links to a ready tile (projects), not a planned tile (web-search)", () => {
+    render(<FilesVisionTile />);
+    const projectsLink = screen.getByRole("link", {
+      name: /Workspace \(Projects\)/,
+    });
+    expect(projectsLink).toHaveAttribute("href", "/claude/projects");
+    // And the old web-search cross-link should no longer be in the Liên quan nav.
+    expect(
+      screen.queryByRole("link", { name: /^Web Search$/ })
+    ).not.toBeInTheDocument();
+  });
+
+  it("softens the XLSX feature-flag copy to natural Vietnamese", () => {
+    render(<FilesVisionTile />);
+    expect(
+      screen.getByText(
+        /bật hai tính năng Code execution và File creation trong cài đặt Claude/
+      )
+    ).toBeInTheDocument();
+  });
+
   it("renders the DeepLinkCTA with the expected Vietnamese prompt", () => {
     render(<FilesVisionTile />);
     const cta = screen.getByRole("link", { name: /Thử trong Claude/i });

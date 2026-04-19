@@ -62,11 +62,11 @@
  *   >  to upload XLSX files."
  *
  * Canonical URL used by ViewRealUI is the Anthropic PDF-support docs page.
- * The support article that was in the task spec (8558304-using-files-in-
- * claude-ai) 404'd on 2026-04-19, and the replacement support article
- * (8241126-upload-content-to-claude-ai) was also unreachable via WebFetch.
- * Platform docs are richer anyway for the three claims this tile makes
- * (text+visual analysis, supported formats, size limits).
+ * The support article 8241126-upload-content-to-claude-ai is reachable and
+ * is the source of quotes 8–11 above. ViewRealUI still points at the
+ * platform PDF-support docs because they're the richer canonical reference
+ * for a PDF-forward tile — covering text+visual analysis, supported
+ * formats, and size limits in one page.
  *
  * ---------------------------------------------------------------------------
  * CONTEXT7 FINDINGS (snapshot 2026-04-19)
@@ -194,9 +194,9 @@ const ANNOTATIONS: Annotation[] = [
   {
     id: "source-citation",
     pin: 4,
-    label: "Claude trích dẫn nguồn trong file",
+    label: "Claude chỉ rõ trang gốc khi bạn hỏi",
     description:
-      "Dòng ghi nguồn chỉ rõ số trang và tên bảng/biểu đồ để bạn mở lại PDF gốc kiểm chứng. Cơ chế này giữ cho câu trả lời về tài liệu gốc luôn truy vết được.",
+      "Khi bạn yêu cầu, Claude chỉ cho bạn trang và vị trí trong PDF — giúp bạn kiểm tra lại hoặc đọc nguyên gốc. Đây là hành vi theo yêu cầu, không mặc định.",
     showAt: [0.5, 1.0],
     anchor: { x: 44, y: 60 },
   },
@@ -215,9 +215,10 @@ const CROSS_LINKS: Array<{ href: string; title: string; blurb: string }> = [
       "Sau khi đọc file, Claude có thể tạo bảng tổng hợp mở trong Artifacts.",
   },
   {
-    href: "/claude/web-search",
-    title: "Web Search",
-    blurb: "Đọc file nội bộ, đối chiếu với nguồn công khai mới nhất.",
+    href: "/claude/projects",
+    title: "Workspace (Projects)",
+    blurb:
+      "Lưu file dùng đi dùng lại trong Projects — Claude nhớ ngữ cảnh cả dự án.",
   },
 ];
 
@@ -437,8 +438,9 @@ export default function FilesVisionTile() {
       >
         Trong claude.ai: PDF, DOCX, CSV, TXT, HTML, ODT, RTF, EPUB, JSON, XLSX
         và ảnh JPEG/PNG/GIF/WebP đều tải lên được — tối đa 30 MB mỗi file và 20
-        file mỗi cuộc chat. File XLSX cần bật code execution + file creation
-        trong cài đặt. Với API, PDF có giới hạn 32 MB và 600 trang mỗi yêu cầu.
+        file mỗi cuộc chat. File XLSX cần bật hai tính năng Code execution và
+        File creation trong cài đặt Claude. Với API, PDF có giới hạn 32 MB và
+        600 trang mỗi yêu cầu.
       </p>
 
       {/* "Cách nó hoạt động" — three crop cards built from shared primitives. */}
@@ -488,8 +490,8 @@ export default function FilesVisionTile() {
               Trong biểu đồ trang 7, quý nào doanh thu cao nhất?
             </CropBubble>
             <CropBubble from="claude">
-              Quý 4 cao nhất với 31,5 tỷ — đọc từ cột Q4 trong Biểu đồ 1, trang
-              7.
+              Quý 4 cao nhất với 31,5 tỷ đồng — đọc từ cột Q4 trong Biểu đồ 1,
+              trang 7.
             </CropBubble>
             <CropAnnotation
               pin={3}
@@ -499,7 +501,7 @@ export default function FilesVisionTile() {
 
           <CropCard
             title="Dẫn nguồn để bạn kiểm tra lại"
-            caption="Claude nêu rõ số trang và tên bảng/biểu đồ trong câu trả lời. Bạn mở PDF gốc ở trang đó là xác minh được — không phải đoán xem con số lấy từ đâu."
+            caption="Khi bạn hỏi thêm 'trích từ đâu?', Claude chỉ rõ số trang và tên bảng/biểu đồ. Bạn mở PDF gốc ở trang đó là xác minh được — không phải đoán xem con số lấy từ đâu."
           >
             <div
               className="flex items-start gap-2 rounded-[12px] border border-border bg-[var(--paper,#FBFAF7)] px-3 py-2.5 text-[12px] italic text-tertiary"
