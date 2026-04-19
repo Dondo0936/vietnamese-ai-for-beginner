@@ -37,6 +37,17 @@
  *   > "Artifacts give you a dedicated space to see, iterate on, and build
  *   >  code, documents, and visualizations as we work together"
  *
+ * Source: https://support.claude.com/en/articles/9547008-publishing-and-sharing-artifacts
+ * Fetched: 2026-04-19
+ *
+ *   Quote 6 (publish gating):
+ *   > "Publishing is available on Free, Pro, and Max plans."
+ *
+ *   Quote 7 (internal-share gating):
+ *   > "Internal sharing is available on Team and Enterprise plans.
+ *   >  Artifacts created on Team or Enterprise accounts can only be
+ *   >  shared within your organization—they cannot be published publicly."
+ *
  * Canonical URL used by ViewRealUI is the support article above — it has
  * the richest verbatim content about when Claude opens an Artifact and
  * which plans have access, which is what this tile teaches.
@@ -116,7 +127,7 @@ const CLAUDE_INTRO =
   "Đây là biểu đồ cột doanh thu 4 quý năm 2025. Mình đã mở ở khung Artifacts bên phải để bạn xem đầy đủ, sửa số liệu hoặc tải về PNG cho slide.";
 
 const ARTIFACT_TITLE = "Biểu đồ cột doanh thu 2025";
-const ARTIFACT_VERSION_LINE = "Phiên bản 2 · 8 phút trước";
+const ARTIFACT_VERSION_LINE = "Phiên bản 2";
 
 // Plausible VND revenue numbers (tỷ đồng). Kept round so the demo reads at
 // a glance — this is a simulated panel, not real data.
@@ -167,7 +178,7 @@ const ANNOTATIONS: Annotation[] = [
     pin: 3,
     label: "Xem trực quan hoặc code gốc",
     description:
-      "Tab Preview cho bạn xem trực quan (biểu đồ, trang HTML, React render). Tab Code mở đúng nguồn Claude đã sinh — copy lại, chỉnh tay hoặc kiểm tra logic.",
+      "Xem trực quan hoặc mở mã nguồn — Claude cho bạn cả hai, tuỳ loại Artifact. Một số loại (ví dụ tài liệu ngắn) chỉ có chế độ xem duy nhất.",
     showAt: [0.5, 1.0],
     anchor: { x: 70, y: 14 },
   },
@@ -522,9 +533,10 @@ export default function ArtifactsTile() {
         role="note"
         className="max-w-[62ch] text-[12px] leading-[1.55] text-tertiary"
       >
-        Artifacts có sẵn trên mọi gói — Free, Pro, Max, Team và Enterprise.
-        Tính năng publish/share artifact có thể gắn điều kiện riêng theo bài
-        hướng dẫn Anthropic.
+        Artifacts dùng được trên mọi gói — Free, Pro, Max, Team và Enterprise.
+        Publish ra công khai chỉ có trên Free, Pro và Max; Team và Enterprise
+        chỉ chia sẻ nội bộ trong tổ chức. MCP và lưu trữ bền vững cần từ gói
+        Pro trở lên.
       </p>
 
       {/* "Cách nó hoạt động" — three crop cards built from shared primitives. */}
@@ -549,7 +561,7 @@ export default function ArtifactsTile() {
 
           <CropCard
             title="Xem trực quan hoặc code gốc"
-            caption="Panel có hai tab. Preview cho hình ảnh chạy được; Code cho nguồn Claude sinh — bạn chọn chế độ phù hợp."
+            caption="Khung Artifact cho bạn xem trực quan hoặc mở mã nguồn — tuỳ loại, một số chỉ có chế độ xem."
           >
             <div
               className="flex items-center gap-1 rounded-[12px] border border-border bg-[var(--paper,#FBFAF7)] px-3 py-2.5"

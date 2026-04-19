@@ -57,6 +57,13 @@ describe("artifacts tile", () => {
     ).toBeInTheDocument();
   });
 
+  it("plan-availability note covers both publish and internal-share gating", () => {
+    render(<ArtifactsTile />);
+    expect(
+      screen.getByText(/Publish ra công khai chỉ có trên Free/i)
+    ).toBeInTheDocument();
+  });
+
   it("renders the DeepLinkCTA with the expected Vietnamese prompt", () => {
     render(<ArtifactsTile />);
     const cta = screen.getByRole("link", { name: /Thử trong Claude/i });
