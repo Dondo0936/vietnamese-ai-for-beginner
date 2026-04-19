@@ -1,46 +1,43 @@
 import { ReactNode } from "react";
-import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { Easing, interpolate, useCurrentFrame } from "remotion";
 
 interface AnimatedInProps {
   children: ReactNode;
   delay?: number;
   offsetY?: number;
-  damping?: number;
+  /** How many frames the reveal takes. Default 18. */
+  duration?: number;
 }
 
 /**
- * Spring reveal with subpixel-stable transforms.
+ * Deterministic reveal — by design cannot shimmer.
  *
- * Two fixes prevent the "shimmering heading" issue:
+ * We use `interpolate` with an expo-out bezier curve (`0.16, 1, 0.3, 1`) and
+ * clamp the extrapolation. After frame `delay + duration` the progress is
+ * EXACTLY 1.0 forever — unlike a spring, which can keep micro-oscillating
+ * around 1.0 and re-render the element each frame. The translate is also
+ * `Math.round`-ed to an integer pixel so there is no subpixel flicker.
  *
- * 1. `overshootClamping: true` stops the spring from oscillating past 1.0 —
- *    without it the spring settles with tiny ±0.001 residuals that the CSS
- *    translate picks up as a visible jitter.
- * 2. `perspective(100px)` + `willChange: 'transform'` push the element onto a
- *    GPU layer so the browser composites instead of re-rasterising each
- *    frame — Remotion's official fix for subpixel rendering flicker.
+ * `perspective(100px)` + `willChange: transform` still force a GPU layer so
+ * the text rasterizes once and composites cleanly (Remotion's official
+ * subpixel-rendering fix).
  */
 export const AnimatedIn = ({
   children,
   delay = 0,
   offsetY = 24,
-  damping = 200,
+  duration = 18,
 }: AnimatedInProps) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
-  const progress = spring({
-    frame: frame - delay,
-    fps,
-    config: { damping, stiffness: 120, mass: 0.6, overshootClamping: true },
-  });
-
-  const opacity = interpolate(progress, [0, 1], [0, 1], {
+  const progress = interpolate(frame - delay, [0, duration], [0, 1], {
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
+    extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const y = interpolate(progress, [0, 1], [offsetY, 0], {
-    extrapolateRight: "clamp",
-  });
+
+  const opacity = progress;
+  const y = Math.round((1 - progress) * offsetY);
 
   return (
     <div
