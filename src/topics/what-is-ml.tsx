@@ -1,6 +1,23 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChefHat,
+  UtensilsCrossed,
+  BookOpenCheck,
+  Sparkles,
+  Mail,
+  Shield,
+  AlertTriangle,
+  Database,
+  Brain,
+  Zap,
+  MessageSquare,
+  Calculator,
+  Camera,
+  Music,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -8,10 +25,8 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  CollapsibleDetail,
   TopicLink,
-  DragDrop,
+  StepReveal,
   ToggleCompare,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
@@ -25,7 +40,7 @@ export const metadata: TopicMeta = {
   title: "What is Machine Learning?",
   titleVi: "Machine Learning là gì?",
   description:
-    "Giới thiệu Machine Learning — khác gì lập trình truyền thống, giải quyết bài toán nào, và tại sao quan trọng.",
+    "Làm quen với Machine Learning qua hình ảnh quen thuộc: một đầu bếp học nấu từ nếm thử, khác với công thức cứng. Bạn sẽ thấy máy học từ ví dụ như thế nào.",
   category: "foundations",
   tags: ["introduction", "machine-learning", "basics"],
   difficulty: "beginner",
@@ -39,952 +54,1211 @@ export const metadata: TopicMeta = {
 
 const TOTAL_STEPS = 8;
 
+/* ──────────────────────────────────────────────────────────────
+   DỮ LIỆU: ba bài toán — với mỗi bài, người học chọn cách tiếp
+   cận phù hợp (lập trình thường hay ML).
+   ────────────────────────────────────────────────────────────── */
+
+type ApproachKey = "classic" | "ml";
+
+interface ProblemScenario {
+  id: string;
+  icon: typeof Calculator;
+  title: string;
+  prompt: string;
+  rightChoice: ApproachKey;
+  why: string;
+}
+
+const PROBLEM_SCENARIOS: ProblemScenario[] = [
+  {
+    id: "tax",
+    icon: Calculator,
+    title: "Tính tiền điện",
+    prompt:
+      "Mỗi kWh là 2.500 đồng. Tính tiền điện khi biết số kWh tiêu thụ trong tháng.",
+    rightChoice: "classic",
+    why:
+      "Quy tắc quá rõ ràng: tiền = kWh × 2.500. Một dòng công thức là đủ. Dùng ML ở đây vừa chậm, vừa khó kiểm tra, vừa không chính xác bằng công thức tay.",
+  },
+  {
+    id: "spam",
+    icon: Mail,
+    title: "Chặn email rác",
+    prompt:
+      "Hộp thư nhận 1000 email mỗi ngày. Phân biệt email thật và email rác — kiểu rác thay đổi liên tục.",
+    rightChoice: "ml",
+    why:
+      "Spammer đổi từ ngữ mỗi tuần. Không ai viết nổi một bộ luật if-else bám kịp. ML học pattern từ hàng triệu email thật, tự cập nhật khi có dữ liệu mới.",
+  },
+  {
+    id: "photo",
+    icon: Camera,
+    title: "Nhận ra mèo trong ảnh",
+    prompt:
+      "Cho một ảnh bất kỳ, cần biết trong ảnh có con mèo hay không — không phụ thuộc giống, màu lông, tư thế.",
+    rightChoice: "ml",
+    why:
+      "Mèo có hàng nghìn biến thể. Không thể viết luật \"tai nhọn + râu dài\" vì luật đó cũng đúng với cáo, chồn. ML học từ hàng triệu ảnh có nhãn, tự rút ra đặc điểm.",
+  },
+  {
+    id: "music",
+    icon: Music,
+    title: "Đặt lại thứ tự bài hát",
+    prompt:
+      "Có danh sách 50 bài hát. Cần sắp xếp theo tên bài theo thứ tự a-b-c.",
+    rightChoice: "classic",
+    why:
+      "Sắp xếp theo alphabet đã có thuật toán chuẩn từ những năm 1960. Chỉ cần một dòng code. ML ở đây là \"dùng búa tạ để đóng đinh mũ\".",
+  },
+];
+
+/* ──────────────────────────────────────────────────────────────
+   COMPONENT PHỤ: Bếp — animation nhỏ so sánh hai đầu bếp
+   ────────────────────────────────────────────────────────────── */
+
+function RuleBasedChef() {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <BookOpenCheck size={18} className="text-blue-500" />
+        <h4 className="text-sm font-semibold text-foreground">
+          Đầu bếp theo công thức
+        </h4>
+      </div>
+      <ul className="space-y-1.5 text-xs text-foreground/85 leading-relaxed">
+        <li className="flex items-start gap-2">
+          <span className="text-blue-500 font-bold">1.</span>
+          <span>Mở sách: &ldquo;Phở bò — 3 lít nước, 500g bò&rdquo;.</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <span className="text-blue-500 font-bold">2.</span>
+          <span>Cân đúng, đo đúng, bỏ đúng lượng.</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <span className="text-blue-500 font-bold">3.</span>
+          <span>Ra đúng vị đã ghi trong sách.</span>
+        </li>
+      </ul>
+      <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 text-xs text-foreground/80 leading-relaxed">
+        Nếu hôm nay thịt hơi khác, nước hơi mặn — đầu bếp này vẫn làm y
+        như sách. Vị thay đổi, nhưng quy trình không đổi.
+      </div>
+    </div>
+  );
+}
+
+function LearningChef() {
+  const [batch, setBatch] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setBatch((b) => (b + 1) % 4), 2200);
+    return () => clearInterval(id);
+  }, []);
+
+  const stages = [
+    "Nồi thứ 1: quá mặn — ghi nhớ.",
+    "Nồi thứ 10: bớt muối được rồi.",
+    "Nồi thứ 50: vị đang ổn — nếm thêm chút.",
+    "Nồi thứ 200: ai cũng khen — công thức trong đầu đã chín.",
+  ];
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+      <div className="flex items-center gap-2">
+        <ChefHat size={18} className="text-emerald-500" />
+        <h4 className="text-sm font-semibold text-foreground">
+          Đầu bếp học từ nếm thử
+        </h4>
+      </div>
+      <div className="rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-3 min-h-[92px] flex items-center">
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={batch}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.35 }}
+            className="text-xs text-foreground/90 leading-relaxed"
+          >
+            {stages[batch]}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+      <div className="flex gap-1.5">
+        {stages.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1.5 flex-1 rounded-full transition-colors ${
+              i <= batch ? "bg-emerald-500" : "bg-surface"
+            }`}
+          />
+        ))}
+      </div>
+      <p className="text-xs text-muted italic leading-relaxed">
+        Không ai đọc công thức cho đầu bếp này. Cô ấy tự tích kinh nghiệm
+        — càng nấu nhiều, càng chuẩn.
+      </p>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+   COMPONENT PHỤ: Vòng lặp huấn luyện — ví dụ đoán giá nước cam
+   ────────────────────────────────────────────────────────────── */
+
+type GuessSample = {
+  input: string;
+  truth: number;
+  guess: number;
+  label: string;
+};
+
+function TrainingLoopDemo() {
+  const [iter, setIter] = useState(0);
+
+  const samples: GuessSample[][] = useMemo(
+    () => [
+      [
+        { input: "Ly nhỏ", truth: 15, guess: 25, label: "Vòng 1: đoán lung tung" },
+        { input: "Ly vừa", truth: 25, guess: 25, label: "Vòng 1: đoán lung tung" },
+        { input: "Ly to", truth: 40, guess: 25, label: "Vòng 1: đoán lung tung" },
+      ],
+      [
+        { input: "Ly nhỏ", truth: 15, guess: 20, label: "Vòng 50: bớt sai" },
+        { input: "Ly vừa", truth: 25, guess: 27, label: "Vòng 50: bớt sai" },
+        { input: "Ly to", truth: 40, guess: 35, label: "Vòng 50: bớt sai" },
+      ],
+      [
+        { input: "Ly nhỏ", truth: 15, guess: 15, label: "Vòng 500: gần đúng" },
+        { input: "Ly vừa", truth: 25, guess: 26, label: "Vòng 500: gần đúng" },
+        { input: "Ly to", truth: 40, guess: 39, label: "Vòng 500: gần đúng" },
+      ],
+      [
+        { input: "Ly nhỏ", truth: 15, guess: 15, label: "Vòng 2000: đã học xong" },
+        { input: "Ly vừa", truth: 25, guess: 25, label: "Vòng 2000: đã học xong" },
+        { input: "Ly to", truth: 40, guess: 40, label: "Vòng 2000: đã học xong" },
+      ],
+    ],
+    [],
+  );
+
+  const current = samples[iter];
+  const maxIter = samples.length - 1;
+
+  return (
+    <div className="rounded-xl border-2 border-border bg-card p-5 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Brain size={18} className="text-accent" />
+          <h4 className="text-sm font-semibold text-foreground">
+            Máy học đoán giá nước cam (theo ly)
+          </h4>
+        </div>
+        <span className="text-xs font-semibold text-accent px-2 py-1 rounded-full bg-accent-light">
+          {current[0].label}
+        </span>
+      </div>
+
+      <p className="text-xs text-muted leading-relaxed">
+        Mục tiêu: đoán giá (nghìn đồng) của ba loại ly. Máy bắt đầu với
+        số ngẫu nhiên, rồi mỗi vòng so với giá thật và tự điều chỉnh.
+      </p>
+
+      <div className="grid grid-cols-3 gap-3">
+        {current.map((s, i) => {
+          const diff = Math.abs(s.guess - s.truth);
+          const maxDiff = 25;
+          const errPct = Math.min(100, (diff / maxDiff) * 100);
+          const color =
+            diff === 0
+              ? "#10b981"
+              : diff < 5
+                ? "#22c55e"
+                : diff < 15
+                  ? "#f59e0b"
+                  : "#ef4444";
+          return (
+            <div
+              key={s.input + i}
+              className="rounded-lg border border-border bg-surface p-3 space-y-2"
+            >
+              <p className="text-[11px] font-semibold text-tertiary uppercase">
+                {s.input}
+              </p>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-[10px] text-muted">Máy đoán</p>
+                  <p
+                    className="text-lg font-bold tabular-nums"
+                    style={{ color }}
+                  >
+                    {s.guess}k
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] text-muted">Giá thật</p>
+                  <p className="text-lg font-bold text-foreground tabular-nums">
+                    {s.truth}k
+                  </p>
+                </div>
+              </div>
+              <div className="h-1.5 rounded-full bg-surface-hover overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ backgroundColor: color }}
+                  animate={{ width: `${errPct}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
+              </div>
+              <p
+                className="text-[10px] text-right tabular-nums"
+                style={{ color }}
+              >
+                Lệch {diff}k
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex gap-1.5">
+          {samples.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 w-8 rounded-full transition-colors ${
+                i <= iter ? "bg-accent" : "bg-surface"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setIter(0)}
+            disabled={iter === 0}
+            className="rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-muted hover:bg-surface-hover disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            Bắt đầu lại
+          </button>
+          <button
+            type="button"
+            onClick={() => setIter((i) => Math.min(i + 1, maxIter))}
+            disabled={iter >= maxIter}
+            className="rounded-lg px-3 py-1.5 text-xs font-semibold bg-accent text-white hover:bg-accent-dark disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            {iter >= maxIter ? "Đã học xong" : "Chạy thêm"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+   COMPONENT PHỤ: Bảng chọn tiếp cận — người học bấm, thấy giải
+   thích tức thì.
+   ────────────────────────────────────────────────────────────── */
+
+function ApproachPicker() {
+  const [picks, setPicks] = useState<Record<string, ApproachKey | null>>(
+    () =>
+      Object.fromEntries(PROBLEM_SCENARIOS.map((p) => [p.id, null])) as Record<
+        string,
+        ApproachKey | null
+      >,
+  );
+  const [showAll, setShowAll] = useState(false);
+
+  const correctCount = PROBLEM_SCENARIOS.filter(
+    (p) => picks[p.id] === p.rightChoice,
+  ).length;
+  const answeredCount = Object.values(picks).filter((v) => v !== null).length;
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted leading-relaxed">
+        Cho bốn bài toán dưới đây, theo bạn: nên dùng <strong>lập trình thường</strong>{" "}
+        (viết luật if-else), hay <strong>Machine Learning</strong> (cho máy học
+        từ ví dụ)?
+      </p>
+
+      <div className="grid grid-cols-1 gap-3">
+        {PROBLEM_SCENARIOS.map((p) => {
+          const Icon = p.icon;
+          const picked = picks[p.id];
+          const correct = picked === p.rightChoice;
+          const revealed = showAll || picked !== null;
+          return (
+            <div
+              key={p.id}
+              className={`rounded-xl border-2 p-4 transition-colors ${
+                !revealed
+                  ? "border-border bg-card"
+                  : correct
+                    ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20"
+                    : "border-amber-400 bg-amber-50 dark:bg-amber-900/20"
+              }`}
+            >
+              <div className="flex items-start gap-3">
+                <div className="shrink-0 mt-0.5 flex h-9 w-9 items-center justify-center rounded-lg bg-surface border border-border">
+                  <Icon size={18} className="text-accent" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground mb-1">
+                    {p.title}
+                  </p>
+                  <p className="text-xs text-muted leading-relaxed mb-3">
+                    {p.prompt}
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      disabled={picked !== null}
+                      onClick={() =>
+                        setPicks((prev) => ({ ...prev, [p.id]: "classic" }))
+                      }
+                      className={`rounded-lg border px-3 py-2 text-xs font-medium transition-all ${
+                        picked === "classic"
+                          ? p.rightChoice === "classic"
+                            ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200"
+                            : "border-rose-500 bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-200"
+                          : picked !== null
+                            ? "border-border bg-card text-muted opacity-60"
+                            : "border-border bg-card text-foreground hover:border-accent/60"
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 justify-center">
+                        <BookOpenCheck size={12} /> Lập trình thường
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={picked !== null}
+                      onClick={() =>
+                        setPicks((prev) => ({ ...prev, [p.id]: "ml" }))
+                      }
+                      className={`rounded-lg border px-3 py-2 text-xs font-medium transition-all ${
+                        picked === "ml"
+                          ? p.rightChoice === "ml"
+                            ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200"
+                            : "border-rose-500 bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-200"
+                          : picked !== null
+                            ? "border-border bg-card text-muted opacity-60"
+                            : "border-border bg-card text-foreground hover:border-accent/60"
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 justify-center">
+                        <Brain size={12} /> Machine Learning
+                      </div>
+                    </button>
+                  </div>
+
+                  <AnimatePresence>
+                    {revealed && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-xs text-foreground/80 leading-relaxed mt-3 pt-3 border-t border-border/50">
+                          <span className="font-semibold">
+                            Đáp án:{" "}
+                            {p.rightChoice === "classic"
+                              ? "Lập trình thường"
+                              : "Machine Learning"}
+                            .
+                          </span>{" "}
+                          {p.why}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="flex items-center justify-between gap-3 pt-1">
+        <p className="text-xs text-muted">
+          Đã làm {answeredCount}/{PROBLEM_SCENARIOS.length}
+          {answeredCount > 0 && ` — đúng ${correctCount}`}
+        </p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-muted hover:bg-surface-hover transition-colors"
+          >
+            {showAll ? "Ẩn lời giải" : "Xem hết lời giải"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPicks(
+                Object.fromEntries(
+                  PROBLEM_SCENARIOS.map((p) => [p.id, null]),
+                ) as Record<string, ApproachKey | null>,
+              );
+              setShowAll(false);
+            }}
+            className="rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-muted hover:bg-surface-hover transition-colors"
+          >
+            Làm lại
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+   PIPELINE SVG — vẽ theo dữ liệu để đỡ cồng kềnh
+   ────────────────────────────────────────────────────────────── */
+
+const PIPE_STAGES = [
+  {
+    x: 20,
+    w: 130,
+    color: "#22c55e",
+    title: "Dữ liệu",
+    lines: ["Ví dụ có nhãn:", "ảnh + tên,", "email + nhãn rác"],
+    highlight: false,
+  },
+  {
+    x: 195,
+    w: 140,
+    color: "#3b82f6",
+    title: "Học",
+    lines: ["Máy đọc ví dụ,", "đoán, so đáp án,", "tự chỉnh — lặp", "hàng triệu lần."],
+    highlight: false,
+  },
+  {
+    x: 380,
+    w: 130,
+    color: "#3b82f6",
+    title: "Mô hình",
+    lines: ["Bộ não đã học", "— có thể dùng", "cho việc mới."],
+    highlight: true,
+  },
+  {
+    x: 555,
+    w: 110,
+    color: "#8b5cf6",
+    title: "Dự đoán",
+    lines: ["Dữ liệu mới", "đi vào, đáp án", "đi ra."],
+    highlight: false,
+  },
+];
+
+function PipelineSVG() {
+  return (
+    <svg
+      viewBox="0 0 680 220"
+      className="w-full max-w-3xl mx-auto"
+      aria-label="Vòng học của Machine Learning"
+    >
+      <defs>
+        <linearGradient id="wip-ml-glow" x1="0" x2="1">
+          <stop offset="0" stopColor="#22c55e" stopOpacity="0.2" />
+          <stop offset="1" stopColor="#3b82f6" stopOpacity="0.2" />
+        </linearGradient>
+        <marker
+          id="wip-arrow"
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="8"
+          markerHeight="8"
+          orient="auto"
+        >
+          <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8" />
+        </marker>
+      </defs>
+
+      {PIPE_STAGES.map((s, i) => {
+        const cx = s.x + s.w / 2;
+        const boxY = s.highlight ? 50 : 60;
+        const boxH = s.highlight ? 120 : 100;
+        return (
+          <g key={s.title}>
+            <rect
+              x={s.x}
+              y={boxY}
+              width={s.w}
+              height={boxH}
+              rx={14}
+              fill={s.highlight ? "var(--accent-light, #eff6ff)" : "url(#wip-ml-glow)"}
+              stroke={s.color}
+              strokeWidth={s.highlight ? 2.5 : 2}
+            />
+            <text
+              x={cx}
+              y={boxY + 30}
+              textAnchor="middle"
+              fontSize="13"
+              fontWeight="700"
+              fill={s.highlight ? s.color : "var(--color-foreground, #0f172a)"}
+            >
+              {s.title}
+            </text>
+            {s.lines.map((line, li) => (
+              <text
+                key={li}
+                x={cx}
+                y={boxY + 50 + li * 13}
+                textAnchor="middle"
+                fontSize="10"
+                fill="var(--color-muted, #64748b)"
+              >
+                {line}
+              </text>
+            ))}
+            {i < PIPE_STAGES.length - 1 && (
+              <path
+                d={`M ${s.x + s.w} 110 L ${PIPE_STAGES[i + 1].x} 110`}
+                stroke="#94a3b8"
+                strokeWidth="2"
+                markerEnd="url(#wip-arrow)"
+                fill="none"
+              />
+            )}
+          </g>
+        );
+      })}
+
+      {/* Feedback loop */}
+      <path
+        d="M 610 170 Q 610 200 445 200 Q 265 200 265 180"
+        stroke="#94a3b8"
+        strokeWidth="1.5"
+        strokeDasharray="5,4"
+        fill="none"
+        markerEnd="url(#wip-arrow)"
+      />
+      <text
+        x="430"
+        y="215"
+        textAnchor="middle"
+        fontSize="10"
+        fill="var(--color-muted, #64748b)"
+        fontStyle="italic"
+      >
+        Có dữ liệu mới → học lại
+      </text>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COMPONENT CHÍNH
+   ══════════════════════════════════════════════════════════════ */
+
 export default function WhatIsMlTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
         question:
-          "Điều nào sau đây MÔ TẢ ĐÚNG NHẤT sự khác biệt giữa Machine Learning và lập trình truyền thống?",
+          "Sự khác biệt cơ bản giữa lập trình thường và Machine Learning là gì?",
         options: [
-          "Lập trình truyền thống dùng CPU, còn Machine Learning dùng GPU",
-          "Machine Learning học luật từ dữ liệu, lập trình truyền thống do lập trình viên viết luật thủ công",
-          "Machine Learning chỉ dùng được cho ảnh và video, lập trình truyền thống dùng cho văn bản",
-          "Hai cách tiếp cận cho kết quả giống hệt nhau, chỉ khác về tốc độ",
+          "Lập trình thường dùng máy tính, ML thì không",
+          "Lập trình thường: người viết quy tắc. ML: máy tự tìm quy tắc từ ví dụ.",
+          "ML nhanh hơn lập trình thường",
+          "Hai cách này cho kết quả giống hệt nhau",
         ],
         correct: 1,
         explanation:
-          "Điểm cốt lõi: lập trình truyền thống = người viết luật (if-else), ML = máy học luật từ dữ liệu. GPU/CPU là chi tiết phần cứng không phải bản chất; ML dùng được cho nhiều dạng dữ liệu, không riêng ảnh.",
+          "Đây là điểm cốt lõi. Lập trình thường — bạn viết if-else. ML — bạn đưa ví dụ, máy tự rút ra luật. Giống đầu bếp đọc sách so với đầu bếp học từ nếm thử.",
       },
       {
         question:
-          "Bài toán nào sau đây PHÙ HỢP NHẤT để áp dụng Machine Learning?",
+          "Bài toán nào sau đây phù hợp nhất với Machine Learning?",
         options: [
-          "Tính tiền điện dựa trên số kWh × đơn giá cố định",
-          "Chuyển đổi nhiệt độ từ Celsius sang Fahrenheit",
-          "Phát hiện email spam trong hộp thư có hàng triệu mẫu",
-          "Sắp xếp danh sách tên theo thứ tự bảng chữ cái",
+          "Cộng hai số a + b",
+          "Sắp xếp 100 cái tên theo a-b-c",
+          "Nhận ra chữ viết tay trong ảnh",
+          "Tính diện tích hình vuông khi biết cạnh",
         ],
         correct: 2,
         explanation:
-          "Ba bài toán kia đều có công thức/quy tắc rõ ràng — lập trình truyền thống là đủ. Phát hiện spam phức tạp vì ngôn ngữ spam thay đổi liên tục, cần học từ hàng triệu ví dụ thực tế.",
+          "Ba cái còn lại đều có công thức rõ ràng. Chữ viết tay mỗi người một khác — không thể viết luật, nhưng có thể học từ hàng triệu mẫu.",
+      },
+      {
+        question:
+          "Gmail tự động lọc email rác vào thư mục riêng. Đây là ML hay lập trình thường?",
+        options: [
+          "Lập trình thường — Google đã viết hàng ngàn luật if-else",
+          "Machine Learning — hệ thống học từ hàng tỷ email được đánh dấu",
+          "Không phải cả hai — chỉ là danh sách đen địa chỉ gửi",
+          "Cả hai kết hợp đều đặn 50-50",
+        ],
+        correct: 1,
+        explanation:
+          "Gmail dùng ML. Spammer đổi cách viết mỗi tuần nên luật tĩnh không kịp. Mỗi lần bạn bấm 'Báo cáo rác' là một ví dụ mới cho hệ thống học.",
       },
       {
         type: "fill-blank",
         question:
-          "ML học từ {blank} thay vì tuân theo {blank} do con người viết sẵn.",
+          "Trong ML, máy học từ {blank} thay vì tuân theo {blank} do người viết sẵn.",
         blanks: [
-          { answer: "dữ liệu", accept: ["data", "dữ liệu thực tế"] },
+          { answer: "dữ liệu", accept: ["ví dụ", "data", "dữ liệu thực tế"] },
           {
-            answer: "luật cố định",
-            accept: ["quy tắc cố định", "luật", "quy tắc", "rules"],
+            answer: "quy tắc",
+            accept: ["luật", "luật cố định", "quy tắc cố định", "rules"],
           },
         ],
         explanation:
-          "Đây là bản chất cốt lõi của Machine Learning: thay vì lập trình viên phải đặt ra mọi quy tắc, mô hình tự học các quy luật từ dữ liệu ví dụ.",
+          "Đây là bản chất của ML. Thay vì ai đó phải viết tay mọi trường hợp, máy xem ví dụ thật rồi tự rút ra quy tắc chung.",
       },
       {
         question:
-          "Grab sử dụng Machine Learning để tối ưu lộ trình và ước tính giá cước. Câu nào sau đây ĐÚNG về hệ thống này?",
+          "Một máy ML muốn dự đoán giá nhà dựa trên diện tích. Điều nào sau đây là ĐÚNG?",
         options: [
-          "Grab thuê lập trình viên viết tay mọi trường hợp về giao thông Hà Nội, TP.HCM",
-          "Hệ thống của Grab học từ hàng triệu chuyến đi thực tế để dự đoán thời gian và giá",
-          "Grab dùng Google Maps theo cách thủ công, không có AI",
-          "Hệ thống Grab hoạt động tốt nhất khi không có dữ liệu lịch sử",
+          "Máy cần được nghe lập trình viên giải thích về bất động sản",
+          "Máy cần được cho xem nhiều cặp (diện tích, giá) thật và tự học mối quan hệ",
+          "Máy tự biết giá nhà vì đã có sẵn trong hệ điều hành",
+          "Máy không thể dự đoán được vì giá nhà luôn thay đổi",
         ],
         correct: 1,
         explanation:
-          "Grab thu thập dữ liệu từ hàng triệu chuyến đi — tình trạng giao thông, thời gian, lộ trình — rồi dùng ML để học các pattern phức tạp mà không thể viết tay được.",
+          "ML học từ ví dụ. Đưa cho máy vài nghìn cặp (diện tích, giá), nó sẽ tự rút ra: nhà càng rộng thì thường càng đắt, rồi dùng luật đó cho nhà mới.",
       },
       {
         question:
-          "Bạn là quản lý một quán cà phê ở Hà Nội và muốn dự đoán doanh thu ngày mai. Bạn có log 2 năm doanh số, thời tiết, ngày lễ. Cách tiếp cận nào PHÙ HỢP NHẤT?",
+          "Cô Lan mở quán cà phê. Cô muốn ước tính doanh thu ngày mai dựa trên: ngày trong tuần, thời tiết, có lễ hay không, số khách tuần trước. Cô có log 2 năm. Cách nào phù hợp?",
         options: [
-          "Viết một hàm if-else tổng hợp từ trực giác của chủ quán",
-          "Huấn luyện mô hình ML dùng log 2 năm đó làm dữ liệu lịch sử",
-          "Gọi điện cho 10 quán cà phê khác để hỏi doanh số của họ",
-          "Luôn nấu cùng một lượng bất kể điều kiện",
+          "Viết hàm if-else tay — dựa vào linh tính của cô",
+          "Dùng ML — cho máy học 2 năm dữ liệu, tìm pattern phức tạp giữa nhiều yếu tố",
+          "Gọi điện hỏi quán khác xem doanh thu bao nhiêu",
+          "Không dự đoán — đóng cửa nếu trời mưa",
         ],
         correct: 1,
         explanation:
-          "Có đủ dữ liệu lịch sử (2 năm) + pattern phức tạp (thời tiết x ngày lễ x doanh số) + quy tắc thay đổi theo mùa → đúng ba điều kiện của bài toán ML. Viết if-else thủ công không nắm được tương tác giữa các yếu tố.",
+          "Đủ điều kiện dùng ML: nhiều yếu tố kết hợp phức tạp (khó viết luật tay) + có dữ liệu lịch sử lớn + quan hệ đa chiều. Đây là bài toán ML kinh điển cho quán/shop nhỏ.",
       },
       {
         question:
-          "Bạn chỉ có 30 mẫu dữ liệu cho bài toán phân loại ảnh X-quang phổi. Điều gì đáng lo ngại nhất?",
+          "Một startup quảng cáo: 'AI của chúng tôi luôn đúng 100%'. Vì sao câu này ĐÁNG NGHI?",
         options: [
-          "Mô hình sẽ chạy quá chậm",
-          "Mô hình dễ học thuộc lòng 30 ảnh (overfit) và không áp dụng được cho ảnh mới",
-          "Thuật toán sẽ dừng giữa chừng",
-          "Kết quả sẽ chính xác 100% mọi lúc",
+          "Vì AI không bao giờ đúng 100% — cờ đỏ rằng họ đã kiểm tra trên chính dữ liệu đã dùng để học, hoặc đang nói quá",
+          "Vì startup luôn nói dối",
+          "Vì AI chỉ đúng khi trời nắng",
+          "Vì 100% là con số quá lớn",
         ],
-        correct: 1,
+        correct: 0,
         explanation:
-          "30 mẫu là quá ít cho một bài toán ảnh y tế. Mô hình sẽ bắt 'dấu hiệu riêng' của 30 ảnh đó (có thể là nhiễu) thay vì pattern bệnh lý thực. Khi gặp ảnh mới, dự đoán sai bét — đây là overfitting, một trong những rủi ro lớn nhất của ML.",
-      },
-      {
-        type: "fill-blank",
-        question:
-          "Trong pipeline ML cơ bản, bước dùng dữ liệu mới chưa từng thấy để đưa ra dự đoán được gọi là {blank} (tiếng Anh).",
-        blanks: [
-          {
-            answer: "inference",
-            accept: ["dự đoán", "prediction", "suy luận", "Inference"],
-          },
-        ],
-        explanation:
-          "Inference là bước triển khai (serve) — khi mô hình đã được huấn luyện xong và được dùng để đưa ra dự đoán cho dữ liệu thực tế. Đây chính là nơi ML tạo ra giá trị kinh doanh: mỗi lần Gmail phân loại spam, mỗi lần Grab ước tính ETA, đều là một lần inference.",
-      },
-      {
-        question:
-          "Một startup tuyên bố 'AI của chúng tôi luôn đạt độ chính xác 100%'. Lý do nghi ngờ LỚN NHẤT là gì?",
-        options: [
-          "Vì AI không bao giờ sai",
-          "Vì trong ML thực tế, 100% chính xác thường là dấu hiệu test bị 'rò rỉ' (data leakage) hoặc overfit — không phải mô hình thật sự tốt",
-          "Vì startup luôn nói đúng",
-          "Vì AI chỉ đạt đúng 50%",
-        ],
-        correct: 1,
-        explanation:
-          "Trong ML thực tế, ngay cả các mô hình SOTA của Google/OpenAI cũng có lỗi. 100% accuracy thường là cờ đỏ: có thể dữ liệu test bị trùng với train (data leakage), hoặc mô hình đã học thuộc lòng. Câu hỏi đúng là: 'accuracy trên tập test ĐỘC LẬP là bao nhiêu, với baseline nào?'",
+          "Trong ML thực tế, ngay cả Google và OpenAI cũng không đạt 100%. Khi ai đó khoe con số này, thường là họ test trên chính dữ liệu huấn luyện — giống như cho học sinh làm lại đúng đề đã học thuộc.",
       },
     ],
-    []
+    [],
   );
 
   return (
     <>
-      {/* ================================================================
-          BƯỚC 1 — HOOK / DỰ ĐOÁN
-          ================================================================ */}
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Khởi động">
-        <PredictionGate
-          question="Bạn muốn xây app nhận diện ảnh chó/mèo. Bạn sẽ làm thế nào?"
-          options={[
-            "Viết hàng nghìn câu lệnh if-else: nếu tai nhọn thì là mèo, nếu mõm dài thì là chó…",
-            "Cho máy tính xem hàng nghìn ảnh chó và mèo rồi để nó tự học cách phân biệt",
-            "Hardcode trực tiếp đáp án cho từng ảnh trong một bảng tra cứu khổng lồ",
-          ]}
-          correct={1}
-          explanation="Đúng vậy! Không ai có thể viết hết được các quy tắc — tai mèo không phải lúc nào cũng nhọn, chó cũng có nhiều giống khác nhau. Cho máy học từ ví dụ chính là ý tưởng cốt lõi của Machine Learning."
-        >
-          <p className="mt-3 text-sm text-muted leading-relaxed">
-            Tiếp tục để khám phá tại sao cách tiếp cận này mạnh mẽ đến vậy —
-            và ML thực sự là gì.
-          </p>
-        </PredictionGate>
+      {/* ══════════════════ BƯỚC 1 — HOOK ══════════════════ */}
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Bắt đầu">
+        <div className="rounded-2xl border-2 border-accent/30 bg-gradient-to-br from-accent-light to-surface p-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15">
+              <UtensilsCrossed size={24} className="text-accent" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-foreground leading-tight">
+                Hai đầu bếp, một bát phở
+              </h3>
+              <p className="text-xs text-muted">
+                Hãy tưởng tượng bạn đang tập nấu ăn…
+              </p>
+            </div>
+          </div>
 
-        <div className="mt-6 space-y-3 text-sm leading-relaxed">
-          <p>
-            <strong>Liên tưởng 1 — Học nấu bún bò Huế từ bà ngoại:</strong>{" "}
-            Bà không đưa bạn sách công thức — bà cho bạn đứng bếp, ngửi,
-            nếm, chỉnh vị. Sau 30 nồi bún, bạn &quot;cảm&quot; được bao nhiêu
-            muối, bao nhiêu mắm ruốc. Đây chính là machine learning: học qua
-            ví dụ thực hành, không phải qua quy tắc cứng. Máy tính cũng vậy
-            — cho nó hàng triệu &quot;nồi bún&quot; (dữ liệu), nó dần tự học
-            được công thức ngầm.
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            <strong>Đầu bếp 1</strong> mở sách công thức, đọc từng dòng:
+            &ldquo;3 lít nước, 500g xương, 2 hoa hồi&rdquo;. Làm đúng y
+            bản in. Nấu xong có tô phở — đúng như sách ghi.
           </p>
-          <p>
-            <strong>Liên tưởng 2 — Nhận mặt đồng nghiệp ở công ty:</strong>{" "}
-            Ngày đầu đi làm, bạn không biết ai. Sau 1 tháng gặp mọi người, bạn
-            tự nhận ra ai là ai — không cần ai dạy bạn quy tắc &quot;nếu tóc
-            đen dài và đeo kính cận thì là chị Lan&quot;. Não bạn học pattern
-            từ các gương mặt thực. ML nhận dạng khuôn mặt hoạt động bằng
-            chính cơ chế này, chỉ là với CNN và hàng triệu ảnh thay vì 1 tháng
-            làm việc.
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            <strong>Đầu bếp 2</strong> chưa bao giờ đọc sách. Cô ấy đứng
+            bếp hàng trăm lần, nếm, chỉnh, nếm tiếp. Lần đầu mặn quá. Lần
+            mười đỡ rồi. Lần một trăm thì khách khen nức nở.
           </p>
-          <p>
-            <strong>Liên tưởng 3 — Lớp học toán không có sách giáo
-            khoa:</strong>{" "}
-            Hãy tưởng tượng bạn đến lớp và giáo viên chỉ đưa cho bạn 1.000
-            bài toán có lời giải sẵn. Bạn tự tìm ra quy tắc. Khi gặp bài toán
-            mới, bạn áp dụng quy tắc mình vừa phát hiện. Đây chính là
-            supervised learning — cho máy nhiều cặp &quot;câu hỏi - đáp
-            án&quot;, máy tự tìm quy tắc.
-          </p>
-          <p>
-            <strong>Liên tưởng 4 — Giao thông Hà Nội không theo luật
-            cứng:</strong>{" "}
-            Quy tắc giao thông Việt Nam có trên giấy, nhưng thực tế giao
-            thông Hà Nội hỗn loạn hơn thế rất nhiều. Để xe tự lái hoạt động ở
-            đây, không thể chỉ lập trình theo luật — phải học từ video hàng
-            triệu chuyến đi thực tế. ML là công cụ DUY NHẤT hiện nay giải
-            quyết được các bài toán mà quy tắc chính thức không đủ mô tả.
-          </p>
+          <div className="rounded-xl border border-accent/40 bg-card p-4 text-sm text-foreground/90 leading-relaxed">
+            <strong>Lập trình thường</strong> = đầu bếp 1. Người viết
+            công thức, máy làm theo.{" "}
+            <strong>Machine Learning (ML)</strong> = đầu bếp 2. Máy học
+            từ ví dụ, tự rút ra công thức.
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <RuleBasedChef />
+          <LearningChef />
         </div>
       </LessonSection>
 
-      {/* ================================================================
-          BƯỚC 2 — REVEAL: ToggleCompare hai mô hình
-          ================================================================ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
-        <p className="mb-4 text-sm text-muted leading-relaxed">
-          Hãy so sánh hai cách tiếp cận để giải cùng một bài toán. Nhấn vào
-          từng tab để xem sự khác biệt.
-        </p>
-
-        <ToggleCompare
-          labelA="Lập trình truyền thống"
-          labelB="Machine Learning"
-          description="Cùng bài toán, hai cách tiếp cận hoàn toàn khác nhau"
-          childA={
-            <div className="space-y-3 py-2">
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="rounded-lg border border-border bg-surface px-4 py-3 text-sm font-medium text-center min-w-[100px]">
-                  <div className="text-xs text-muted mb-1">Đầu vào</div>
-                  <div>Dữ liệu</div>
-                </div>
-                <div className="text-muted text-lg font-light">+</div>
-                <div className="rounded-lg border-2 border-accent bg-accent-light px-4 py-3 text-sm font-medium text-center min-w-[120px]">
-                  <div className="text-xs text-muted mb-1">Do người viết</div>
-                  <div className="text-accent-dark">Luật (if-else)</div>
-                </div>
-                <div className="text-muted text-lg font-light">→</div>
-                <div className="rounded-lg border border-border bg-surface px-4 py-3 text-sm font-medium text-center min-w-[100px]">
-                  <div className="text-xs text-muted mb-1">Kết quả</div>
-                  <div>Đầu ra</div>
-                </div>
-              </div>
-              <Callout variant="info" title="Ví dụ thực tế">
-                Lọc spam: lập trình viên viết luật —{" "}
-                <em>
-                  &quot;nếu tiêu đề chứa 'trúng thưởng' thì là spam&quot;
-                </em>
-                . Khi spammer đổi sang &quot;trúng giải&quot;, phải viết luật
-                mới.
-              </Callout>
-            </div>
-          }
-          childB={
-            <div className="space-y-3 py-2">
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="rounded-lg border border-border bg-surface px-4 py-3 text-sm font-medium text-center min-w-[100px]">
-                  <div className="text-xs text-muted mb-1">Đầu vào</div>
-                  <div>Dữ liệu</div>
-                </div>
-                <div className="text-muted text-lg font-light">+</div>
-                <div className="rounded-lg border border-border bg-surface px-4 py-3 text-sm font-medium text-center min-w-[100px]">
-                  <div className="text-xs text-muted mb-1">Ví dụ có nhãn</div>
-                  <div>Đầu ra</div>
-                </div>
-                <div className="text-muted text-lg font-light">→</div>
-                <div className="rounded-lg border-2 border-accent bg-accent-light px-4 py-3 text-sm font-medium text-center min-w-[120px]">
-                  <div className="text-xs text-muted mb-1">Máy tự học</div>
-                  <div className="text-accent-dark">Mô hình (model)</div>
-                </div>
-              </div>
-              <Callout variant="tip" title="Ví dụ thực tế">
-                Lọc spam bằng ML: cho máy xem hàng triệu email spam và không
-                spam, máy tự học pattern. Khi spammer đổi cách viết, chỉ cần
-                thêm dữ liệu mới — không cần lập trình lại.
-              </Callout>
-            </div>
-          }
-        />
+      {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
+        <PredictionGate
+          question="Bạn muốn làm app nhận ra ảnh chó so với ảnh mèo. Cách nào sẽ chạy tốt nhất?"
+          options={[
+            "Viết hàng nghìn dòng if-else: nếu tai nhọn thì là mèo, nếu mõm dài thì là chó",
+            "Cho máy xem hàng triệu ảnh chó và mèo đã dán nhãn, rồi để máy tự học cách phân biệt",
+            "Ghi mọi ảnh vào một bảng rồi tra cứu khi cần",
+          ]}
+          correct={1}
+          explanation="Đúng rồi. Chó mèo có hàng ngàn giống, tư thế, góc chụp. Không ai viết hết luật được. ML học từ ví dụ — giống đầu bếp 2. Đây chính là lý do mọi app nhận ảnh hiện đại đều dùng ML, không ngoại lệ."
+        >
+          <p className="text-sm text-muted mt-3 leading-relaxed">
+            Tiếp theo, bạn sẽ thấy hai cách nấu cùng một bài toán đứng
+            cạnh nhau.
+          </p>
+        </PredictionGate>
       </LessonSection>
 
-      {/* ================================================================
-          BƯỚC 3 — DEEPEN: Pipeline ML trực quan
-          ================================================================ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Hình minh họa">
-        <VisualizationSection>
-          <div className="space-y-6">
-            <p className="text-sm text-muted text-center">
-              Vòng đời của một hệ thống Machine Learning — từ dữ liệu thô đến
-              dự đoán thực tế
-            </p>
+      {/* ══════════════════ BƯỚC 3 — REVEAL ══════════════════ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <div className="space-y-8">
+            {/* DEMO 1: So sánh hai cách xử lý spam */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Mail size={18} className="text-accent" />
+                <h3 className="text-base font-semibold text-foreground">
+                  Cùng bài toán lọc email rác — hai cách khác nhau
+                </h3>
+              </div>
 
-            {/* Pipeline SVG */}
-            <div className="overflow-x-auto">
-              <svg
-                viewBox="0 0 640 180"
-                className="w-full max-w-2xl mx-auto"
-                aria-label="Sơ đồ pipeline Machine Learning"
-              >
-                {/* Dữ liệu */}
-                <rect
-                  x="10"
-                  y="60"
-                  width="110"
-                  height="60"
-                  rx="10"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2"
-                />
-                <text
-                  x="65"
-                  y="85"
-                  textAnchor="middle"
-                  fontSize="13"
-                  fontWeight="600"
-                  fill="currentColor"
-                  className="text-foreground"
-                >
-                  Dữ liệu
-                </text>
-                <text
-                  x="65"
-                  y="104"
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  (ảnh, text, số…)
-                </text>
-
-                {/* Mũi tên 1 */}
-                <line
-                  x1="120"
-                  y1="90"
-                  x2="168"
-                  y2="90"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2"
-                />
-                <polygon
-                  points="168,85 178,90 168,95"
-                  fill="currentColor"
-                  className="text-accent"
-                />
-
-                {/* Huấn luyện */}
-                <rect
-                  x="178"
-                  y="60"
-                  width="120"
-                  height="60"
-                  rx="10"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2"
-                />
-                <text
-                  x="238"
-                  y="85"
-                  textAnchor="middle"
-                  fontSize="13"
-                  fontWeight="600"
-                  fill="currentColor"
-                  className="text-foreground"
-                >
-                  Huấn luyện
-                </text>
-                <text
-                  x="238"
-                  y="104"
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  (Training)
-                </text>
-
-                {/* Mũi tên 2 */}
-                <line
-                  x1="298"
-                  y1="90"
-                  x2="346"
-                  y2="90"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2"
-                />
-                <polygon
-                  points="346,85 356,90 346,95"
-                  fill="currentColor"
-                  className="text-accent"
-                />
-
-                {/* Mô hình */}
-                <rect
-                  x="356"
-                  y="50"
-                  width="120"
-                  height="80"
-                  rx="10"
-                  fill="currentColor"
-                  className="text-accent"
-                  opacity="0.12"
-                />
-                <rect
-                  x="356"
-                  y="50"
-                  width="120"
-                  height="80"
-                  rx="10"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2.5"
-                />
-                <text
-                  x="416"
-                  y="85"
-                  textAnchor="middle"
-                  fontSize="13"
-                  fontWeight="700"
-                  fill="currentColor"
-                  className="text-accent"
-                >
-                  Mô hình
-                </text>
-                <text
-                  x="416"
-                  y="104"
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  (Model)
-                </text>
-
-                {/* Mũi tên 3 */}
-                <line
-                  x1="476"
-                  y1="90"
-                  x2="524"
-                  y2="90"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2"
-                />
-                <polygon
-                  points="524,85 534,90 524,95"
-                  fill="currentColor"
-                  className="text-accent"
-                />
-
-                {/* Dự đoán */}
-                <rect
-                  x="534"
-                  y="60"
-                  width="96"
-                  height="60"
-                  rx="10"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-accent"
-                  strokeWidth="2"
-                />
-                <text
-                  x="582"
-                  y="85"
-                  textAnchor="middle"
-                  fontSize="13"
-                  fontWeight="600"
-                  fill="currentColor"
-                  className="text-foreground"
-                >
-                  Dự đoán
-                </text>
-                <text
-                  x="582"
-                  y="104"
-                  textAnchor="middle"
-                  fontSize="10"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  (Prediction)
-                </text>
-
-                {/* Label bên dưới */}
-                <text
-                  x="65"
-                  y="148"
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  Bước 1
-                </text>
-                <text
-                  x="238"
-                  y="148"
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  Bước 2
-                </text>
-                <text
-                  x="416"
-                  y="148"
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  Bước 3
-                </text>
-                <text
-                  x="582"
-                  y="148"
-                  textAnchor="middle"
-                  fontSize="9"
-                  fill="currentColor"
-                  className="text-muted"
-                >
-                  Bước 4
-                </text>
-              </svg>
+              <ToggleCompare
+                labelA="Lập trình thường"
+                labelB="Machine Learning"
+                description="Chạm vào hai tab để thấy cách mỗi phương pháp xử lý email rác."
+                childA={
+                  <div className="space-y-3 py-2">
+                    <p className="text-xs text-muted">
+                      Người viết phải tự nghĩ ra từng dấu hiệu và viết thành
+                      luật cứng. Máy chỉ làm theo.
+                    </p>
+                    <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-4 font-mono text-xs text-foreground space-y-1.5 leading-relaxed">
+                      <div>
+                        <span className="text-blue-600 dark:text-blue-400">
+                          nếu
+                        </span>{" "}
+                        tiêu đề chứa &ldquo;trúng thưởng&rdquo;{" "}
+                        <span className="text-blue-600 dark:text-blue-400">
+                          thì
+                        </span>{" "}
+                        → rác
+                      </div>
+                      <div>
+                        <span className="text-blue-600 dark:text-blue-400">
+                          nếu
+                        </span>{" "}
+                        người gửi ở danh sách đen{" "}
+                        <span className="text-blue-600 dark:text-blue-400">
+                          thì
+                        </span>{" "}
+                        → rác
+                      </div>
+                      <div>
+                        <span className="text-blue-600 dark:text-blue-400">
+                          nếu
+                        </span>{" "}
+                        chứa &ldquo;khuyến mãi 99%&rdquo;{" "}
+                        <span className="text-blue-600 dark:text-blue-400">
+                          thì
+                        </span>{" "}
+                        → rác
+                      </div>
+                      <div className="text-muted italic">
+                        … (hàng nghìn luật nữa, viết tay)
+                      </div>
+                    </div>
+                    <Callout variant="warning" title="Điểm yếu">
+                      Khi spammer đổi chữ thành &ldquo;tr.úng th.ưởng&rdquo;,
+                      tất cả luật cũ vô dụng. Phải có người ngồi viết luật
+                      mới. Càng ngày càng rối.
+                    </Callout>
+                  </div>
+                }
+                childB={
+                  <div className="space-y-3 py-2">
+                    <p className="text-xs text-muted">
+                      Không ai viết luật. Máy tự rút ra từ triệu ví dụ thật.
+                    </p>
+                    <div className="rounded-lg border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 space-y-2 text-sm">
+                      <div className="flex items-start gap-2">
+                        <Database
+                          size={14}
+                          className="mt-0.5 text-emerald-600 dark:text-emerald-400 shrink-0"
+                        />
+                        <p className="text-foreground/90 leading-relaxed">
+                          <strong>Đầu vào:</strong> triệu email đã được gắn
+                          nhãn &ldquo;rác&rdquo; hoặc &ldquo;không
+                          rác&rdquo;.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Brain
+                          size={14}
+                          className="mt-0.5 text-emerald-600 dark:text-emerald-400 shrink-0"
+                        />
+                        <p className="text-foreground/90 leading-relaxed">
+                          <strong>Máy tự rút ra:</strong> đặc điểm nào hay
+                          xuất hiện ở email rác mà ít xuất hiện ở email
+                          thường.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Shield
+                          size={14}
+                          className="mt-0.5 text-emerald-600 dark:text-emerald-400 shrink-0"
+                        />
+                        <p className="text-foreground/90 leading-relaxed">
+                          <strong>Kết quả:</strong> máy biết nhận ra cả kiểu
+                          rác chưa bao giờ có người dạy trực tiếp.
+                        </p>
+                      </div>
+                    </div>
+                    <Callout variant="tip" title="Điểm mạnh">
+                      Có kiểu rác mới? Thêm vài nghìn ví dụ, chạy lại —
+                      không cần viết dòng luật nào. Máy tự thích nghi.
+                    </Callout>
+                  </div>
+                }
+              />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-              <div className="rounded-lg border border-border bg-surface p-3 space-y-1">
-                <div className="font-semibold text-foreground">
-                  1. Thu thập dữ liệu
-                </div>
-                <div className="text-muted text-xs leading-relaxed">
-                  Ảnh chó mèo, email spam/không spam, giá nhà kèm diện
-                  tích… Càng nhiều, càng chất lượng, mô hình càng tốt.
-                </div>
+            <hr className="border-border" />
+
+            {/* DEMO 2: Vòng lặp huấn luyện */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Zap size={18} className="text-accent" />
+                <h3 className="text-base font-semibold text-foreground">
+                  Xem máy học dần — qua từng vòng
+                </h3>
               </div>
-              <div className="rounded-lg border border-border bg-surface p-3 space-y-1">
-                <div className="font-semibold text-foreground">
-                  2. Huấn luyện (Training)
-                </div>
-                <div className="text-muted text-xs leading-relaxed">
-                  Thuật toán phân tích dữ liệu, tìm các pattern ẩn, điều
-                  chỉnh tham số nội bộ để dự đoán đúng hơn.
-                </div>
+              <p className="text-sm text-muted leading-relaxed">
+                Máy không giỏi ngay. Nó đoán sai, bị sửa, đoán tốt hơn, lại
+                sai, lại sửa… Hàng triệu lần. Bấm &ldquo;Chạy thêm&rdquo;
+                để thấy quá trình:
+              </p>
+              <TrainingLoopDemo />
+            </div>
+
+            <hr className="border-border" />
+
+            {/* DEMO 3: Chọn cách tiếp cận */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <MessageSquare size={18} className="text-accent" />
+                <h3 className="text-base font-semibold text-foreground">
+                  Bạn chọn: Lập trình thường hay ML?
+                </h3>
               </div>
-              <div className="rounded-lg border-2 border-accent bg-accent-light p-3 space-y-1">
-                <div className="font-semibold text-accent-dark">
-                  3. Mô hình (Model)
-                </div>
-                <div className="text-accent-dark/70 text-xs leading-relaxed">
-                  Kết quả của quá trình học — một hàm toán học có thể nhận
-                  đầu vào mới và đưa ra dự đoán.
-                </div>
-              </div>
-              <div className="rounded-lg border border-border bg-surface p-3 space-y-1">
-                <div className="font-semibold text-foreground">
-                  4. Dự đoán (Inference)
-                </div>
-                <div className="text-muted text-xs leading-relaxed">
-                  Dùng mô hình đã học để xử lý dữ liệu mới chưa thấy bao
-                  giờ — đây là lúc ML tạo ra giá trị thực.
-                </div>
-              </div>
+              <ApproachPicker />
             </div>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ================================================================
-          BƯỚC 4 — CHALLENGE: InlineChallenge giữa bài
-          ================================================================ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
-        <InlineChallenge
-          question="Gmail tự động phân loại email vào thư mục Spam mà không cần bạn làm gì. Đây là lập trình truyền thống hay Machine Learning?"
-          options={[
-            "Lập trình truyền thống — Google đã viết hàng nghìn quy tắc if-else để kiểm tra từng email",
-            "Machine Learning — hệ thống học từ hàng tỷ email spam/không spam được người dùng đánh dấu",
-            "Không phải cái nào — Gmail chỉ dùng danh sách đen (blacklist) IP",
-            "Cả hai kết hợp theo tỷ lệ 50/50",
+      {/* ══════════════════ BƯỚC 4 — DEEPEN (StepReveal) ══════════════════ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
+        <h3 className="text-base font-semibold text-foreground mb-2">
+          Bốn bước của mọi hệ thống ML
+        </h3>
+        <p className="text-sm text-muted mb-4 leading-relaxed">
+          Từ Grab, Shopee đến ChatGPT — mọi hệ thống ML đều đi qua bốn
+          bước này. Bấm &ldquo;Tiếp tục&rdquo; để mở từng bước:
+        </p>
+
+        <StepReveal
+          labels={[
+            "Bước 1: Dữ liệu",
+            "Bước 2: Học",
+            "Bước 3: Mô hình",
+            "Bước 4: Phản hồi",
           ]}
-          correct={1}
-          explanation="Gmail dùng ML. Spammer liên tục thay đổi nội dung nên không thể viết hết quy tắc tĩnh. Hệ thống học từ hàng tỷ email người dùng đánh dấu spam, cập nhật model liên tục để bắt kịp các chiến thuật mới."
-        />
+        >
+          {[
+            <div
+              key="s1"
+              className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-5 space-y-2"
+            >
+              <div className="flex items-center gap-2">
+                <Database
+                  size={18}
+                  className="text-emerald-600 dark:text-emerald-400"
+                />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Dữ liệu — nguyên liệu nấu ăn
+                </h4>
+              </div>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Trước khi máy học được gì, phải có ví dụ. Với app nhận ảnh
+                mèo: cần hàng triệu ảnh, mỗi ảnh có nhãn rõ
+                &ldquo;mèo&rdquo; hay &ldquo;không phải mèo&rdquo;. Với
+                Grab: cần log hàng triệu chuyến đi thật. Dữ liệu càng
+                nhiều, càng chất lượng → máy học càng tốt.
+              </p>
+              <div className="rounded-lg bg-card border border-border p-3 text-xs text-muted italic leading-relaxed">
+                &ldquo;Rác vào, rác ra&rdquo; — đây là câu nằm lòng của
+                mọi người làm ML. Dữ liệu kém thì mô hình kém, không thuật
+                toán nào cứu được.
+              </div>
+            </div>,
+            <div
+              key="s2"
+              className="rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-5 space-y-2"
+            >
+              <div className="flex items-center gap-2">
+                <Brain
+                  size={18}
+                  className="text-blue-600 dark:text-blue-400"
+                />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Học — máy đang &ldquo;nếm thử&rdquo;
+                </h4>
+              </div>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Máy đọc từng ví dụ, đoán đáp án, so với đáp án thật, rồi
+                tự điều chỉnh để lần sau đoán ít sai hơn. Lặp đi lặp lại
+                hàng triệu lần — giống đầu bếp 2 nấu hàng trăm nồi phở.
+              </p>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Đây là giai đoạn &ldquo;huấn luyện&rdquo; (training). Máy
+                lớn học trên hàng nghìn máy tính, mất nhiều ngày hoặc
+                tuần. Máy nhỏ có khi chỉ mất vài phút trên laptop.
+              </p>
+            </div>,
+            <div
+              key="s3"
+              className="rounded-xl border-2 border-accent bg-accent-light p-5 space-y-2"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles size={18} className="text-accent" />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Mô hình — bộ não đã học xong
+                </h4>
+              </div>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Sau khi học xong, máy tạo ra một thứ gọi là{" "}
+                <strong>mô hình</strong> — giống như cái đầu bếp 2 mang
+                sẵn công thức &ldquo;trong đầu&rdquo;. Mô hình không còn
+                cần dữ liệu gốc nữa; nó đã cô đọng mọi pattern thành một
+                bộ số.
+              </p>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Mô hình ChatGPT nặng vài GB. Mô hình nhận ảnh trong điện
+                thoại bạn chỉ vài MB. Đây là phần &ldquo;đi làm&rdquo;
+                được đóng gói gọn lại.
+              </p>
+            </div>,
+            <div
+              key="s4"
+              className="rounded-xl border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 p-5 space-y-2"
+            >
+              <div className="flex items-center gap-2">
+                <Zap
+                  size={18}
+                  className="text-purple-600 dark:text-purple-400"
+                />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Phản hồi — vòng học không kết thúc
+                </h4>
+              </div>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Mô hình đi vào đời thật, gặp dữ liệu mới, đoán. Người
+                dùng bấm &ldquo;Báo cáo rác&rdquo;, &ldquo;Đây không phải
+                mèo&rdquo;… Mọi phản hồi đó trở thành dữ liệu mới cho lần
+                học tiếp theo.
+              </p>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Vòng này quay đều quay đều. Gmail của bạn ngày càng giỏi
+                lọc rác là nhờ hàng tỷ lần người dùng bấm nút &ldquo;Báo
+                cáo&rdquo; mỗi ngày.
+              </p>
+            </div>,
+          ]}
+        </StepReveal>
 
-        <div className="mt-6">
-          <InlineChallenge
-            question="Bạn cần xây hệ thống tính tiền taxi: cứ 1 km tính 15.000 VNĐ + phí khởi điểm 20.000 VNĐ. Đây là bài toán NÊN dùng Machine Learning không?"
-            options={[
-              "Nên — vì dữ liệu taxi có thể thay đổi theo thời gian",
-              "Không nên — đây là quy tắc cố định, đơn giản, lập trình truyền thống với if/else là đủ và còn minh bạch hơn",
-              "Nên — vì ML luôn tốt hơn lập trình truyền thống",
-              "Không quyết định được nếu chưa có 1 triệu mẫu dữ liệu",
-            ]}
-            correct={1}
-            explanation="Đây là bài toán công thức rõ ràng (giá = 20.000 + 15.000 × km). Dùng ML ở đây là 'overkill' — chậm hơn, khó giải thích hơn, và không cho kết quả tốt hơn một công thức đơn giản. Nguyên tắc vàng: ML chỉ nên dùng khi quy tắc PHỨC TẠP đến mức không thể viết tay."
-          />
-        </div>
-
-        <div className="mt-6">
-          <InlineChallenge
-            question="Team bạn có 5.000 nhãn ảnh X-quang phổi, muốn xây model chẩn đoán viêm phổi. Sau khi train, accuracy trên tập train = 99%, trên tập test = 73%. Điều này nhiều khả năng là dấu hiệu của gì?"
-            options={[
-              "Model tuyệt vời — cần deploy ngay",
-              "Overfitting — model học thuộc lòng dữ liệu train, không tổng quát hoá tới ảnh mới",
-              "Thiếu dữ liệu validation",
-              "Lỗi của GPU",
-            ]}
-            correct={1}
-            explanation="Khoảng cách 26 điểm giữa train và test là dấu hiệu kinh điển của overfitting. Model đang bắt chi tiết ngẫu nhiên của 5.000 ảnh huấn luyện thay vì các dấu hiệu bệnh lý tổng quát. Giải pháp: (1) thêm dữ liệu, (2) data augmentation, (3) regularization (dropout, weight decay), (4) early stopping, (5) dùng model nhỏ hơn."
-          />
+        <div className="mt-6 rounded-xl border border-border bg-card p-5">
+          <h4 className="text-sm font-semibold text-foreground mb-3">
+            Vòng học trực quan hóa
+          </h4>
+          <PipelineSVG />
         </div>
       </LessonSection>
 
-      {/* ================================================================
-          BƯỚC 5 — EXPLAIN: ExplanationSection lý thuyết đầy đủ
-          ================================================================ */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Giải thích">
-        <ExplanationSection>
-          <p>
-            <strong>Machine Learning (ML)</strong>{" "}
-            là nhánh của Trí tuệ nhân tạo (AI) cho phép máy tính học cách
-            thực hiện nhiệm vụ từ dữ liệu — thay vì được lập trình tường
-            minh bằng từng quy tắc cụ thể. Mô hình ML tìm kiếm các pattern
-            ẩn trong dữ liệu và dùng chúng để đưa ra dự đoán hoặc quyết định
-            cho dữ liệu mới chưa từng thấy.
-          </p>
-
-          <p>
-            <strong>Ba ví dụ ML thực tế tại Việt Nam:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-3 pl-2 text-sm leading-relaxed">
-            <li>
-              <strong>Grab — tối ưu lộ trình:</strong>{" "}
-              hệ thống học từ hàng triệu chuyến đi, tình trạng giao thông
-              theo giờ, thời tiết để dự đoán thời gian và gợi ý lộ trình tối
-              ưu. Không thể viết tay được vì giao thông Hà Nội thay đổi từng
-              phút.
-            </li>
-            <li>
-              <strong>Shopee — gợi ý sản phẩm:</strong>{" "}
-              thuật toán phân tích hành vi duyệt web, lịch sử mua hàng, đánh
-              giá của hàng triệu người dùng để cá nhân hóa trang chủ mỗi
-              người — tăng tỷ lệ chuyển đổi đáng kể so với hiển thị ngẫu
-              nhiên.
-            </li>
-            <li>
-              <strong>VinAI — xe tự lái:</strong>{" "}
-              mô hình nhận diện vật thể (người đi bộ, xe máy, biển báo) học
-              từ hàng triệu khung hình video quay trên đường phố Việt Nam —
-              môi trường lưu thông phức tạp và độc đáo so với phương Tây.
-            </li>
-          </ul>
-
-          <p>
-            <strong>Khi nào NÊN dùng ML:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
-            <li>
-              Pattern phức tạp đến mức không thể viết tay toàn bộ quy tắc
-              (nhận diện giọng nói, khuôn mặt, cảm xúc văn bản)
-            </li>
-            <li>
-              Có đủ dữ liệu lịch sử có chất lượng (thường cần hàng nghìn đến
-              hàng triệu mẫu)
-            </li>
-            <li>
-              Quy tắc thay đổi theo thời gian và cần tự thích nghi (xu hướng
-              mua sắm, mô hình gian lận)
-            </li>
-          </ul>
-
-          <p>
-            <strong>Khi nào KHÔNG nên dùng ML:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
-            <li>
-              Quy tắc đơn giản, rõ ràng — tính thuế VAT, chuyển đổi đơn
-              vị, sắp xếp bảng chữ cái
-            </li>
-            <li>
-              Không có dữ liệu — không thể học nếu không có ví dụ
-            </li>
-            <li>
-              Cần giải thích rõ ràng từng quyết định — trong một số lĩnh
-              vực pháp lý/y tế, ML có thể không minh bạch đủ
-            </li>
-          </ul>
-
-          <Callout variant="info" title="ML nằm ở đâu trong bức tranh lớn AI?">
-            AI (Trí tuệ nhân tạo) là lĩnh vực rộng nhất. Machine Learning là
-            một nhánh của AI. Deep Learning là nhánh của ML dùng mạng nơ-ron
-            nhiều tầng. Bài học này tập trung vào ML; các bài sau sẽ đi sâu
-            hơn.
-          </Callout>
-
-          <p>
-            <strong>Hai mảnh code minh hoạ</strong> — cùng bài toán
-            &quot;phân loại hoa iris&quot; nhưng viết theo hai cách hoàn toàn
-            khác nhau:
-          </p>
-
-          <CodeBlock
-            language="python"
-            title="Lập trình truyền thống — người viết luật"
-          >
-{`def classify_iris_rule_based(sepal_length, petal_length, petal_width):
-    """Phân loại hoa iris bằng luật do chuyên gia thực vật học đưa ra."""
-    # Người viết phải nghiên cứu từng loại hoa rồi soạn quy tắc
-    if petal_width < 0.8:
-        return "setosa"
-    if petal_length >= 5.0 and petal_width >= 1.7:
-        return "virginica"
-    if 3.0 <= petal_length < 5.0 and 1.0 <= petal_width < 1.7:
-        return "versicolor"
-    return "unknown"  # Gặp biến thể lạ → bó tay
-
-# Vấn đề: nếu xuất hiện giống hoa mới, phải bổ sung luật thủ công.
-# Khi có 1.000 đặc trưng thay vì 3 — viết tay luật gần như bất khả thi.`}
-          </CodeBlock>
-
-          <CodeBlock
-            language="python"
-            title="Machine Learning — máy tự học luật từ dữ liệu"
-          >
-{`from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-
-# 1. Thu thập dữ liệu — dùng tập chuẩn 150 mẫu iris có sẵn
-X, y = load_iris(return_X_y=True)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, random_state=42, stratify=y
-)
-
-# 2. Huấn luyện — máy tự tìm luật phân loại
-model = DecisionTreeClassifier(max_depth=3, random_state=42)
-model.fit(X_train, y_train)
-
-# 3. Dự đoán (inference) trên dữ liệu chưa từng thấy
-y_pred = model.predict(X_test)
-print(f"Độ chính xác trên test: {accuracy_score(y_test, y_pred):.2%}")
-
-# 4. Khi xuất hiện dữ liệu mới, chỉ cần fit lại trên tập mở rộng —
-#    KHÔNG phải viết thêm luật if/else bằng tay.`}
-          </CodeBlock>
-
-          <Callout variant="tip" title="Đọc code theo 4 bước pipeline">
-            Đoạn mã ML ở trên ánh xạ chính xác với pipeline bạn đã thấy ở
-            Bước 3: (1) <code>load_iris</code> — thu thập dữ liệu; (2){" "}
-            <code>model.fit</code> — huấn luyện; (3) <code>model</code> — mô
-            hình; (4) <code>model.predict</code> — dự đoán. Mọi thư viện ML
-            (scikit-learn, TensorFlow, PyTorch) đều tuân theo mô hình
-            fit/predict này.
-          </Callout>
-
-          <CollapsibleDetail title="Đi sâu: các loại ML và khi nào nên dùng (nâng cao)">
-            <div className="space-y-3 text-sm leading-relaxed">
-              <p>
-                ML không phải một thuật toán duy nhất — nó là một họ các cách
-                tiếp cận. Ba nhánh chính:
-              </p>
-              <ul className="list-disc list-inside space-y-2 pl-2">
-                <li>
-                  <strong>Supervised Learning (học có giám sát):</strong>{" "}
-                  Dữ liệu có nhãn (label). Dự đoán nhà giá bao nhiêu (hồi
-                  quy), email có phải spam không (phân loại). Đây là nhánh
-                  được dùng trong ~80% dự án ML thực tế.
-                </li>
-                <li>
-                  <strong>
-                    Unsupervised Learning (học không giám sát):
-                  </strong>{" "}
-                  Dữ liệu không nhãn. Gom nhóm khách hàng theo hành vi mua
-                  sắm (clustering), phát hiện giao dịch bất thường
-                  (anomaly detection).
-                </li>
-                <li>
-                  <strong>
-                    Reinforcement Learning (học tăng cường):
-                  </strong>{" "}
-                  Agent học qua thử-sai với phần thưởng. Dùng cho game AI
-                  (AlphaGo), robot, tối ưu hệ thống quảng cáo.
-                </li>
-              </ul>
-              <p>
-                Ngoài ra còn có semi-supervised, self-supervised (nền tảng
-                của GPT), và transfer learning — nhưng bạn nên vững ba nhánh
-                cơ bản trước khi đi vào các kỹ thuật kết hợp.
-              </p>
-              <p className="text-muted">
-                Xem chi tiết ở{" "}
-                <TopicLink slug="supervised-unsupervised-rl">
-                  bài &quot;Ba loại học máy&quot;
-                </TopicLink>
-                .
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <Callout variant="warning" title="Cạm bẫy thường gặp khi bắt đầu">
-            Người mới dễ nghĩ &quot;có ML là giải được mọi thứ&quot;. Thực tế,
-            phần lớn thời gian trong một dự án ML là: thu thập &amp; làm sạch
-            dữ liệu (60-70%), chọn và thiết kế đặc trưng (15%), huấn luyện
-            mô hình (chỉ 10%). Người mới cũng hay bỏ qua việc đánh giá trên{" "}
-            <strong>tập test độc lập</strong> — và bị cú sốc khi triển khai
-            thực tế.
-          </Callout>
-
-          <CollapsibleDetail title="ML Pipeline đầy đủ trong môi trường sản xuất (nâng cao)">
-            <div className="space-y-3 text-sm leading-relaxed">
-              <p>
-                Sơ đồ 4 bước đơn giản bạn thấy ở đầu bài là phiên bản
-                &quot;pedagogical&quot;. Trong production thực tế, một ML
-                pipeline đầy đủ gồm nhiều bước hơn:
-              </p>
-              <ol className="list-decimal list-inside space-y-2 pl-2">
-                <li>
-                  <strong>Problem framing:</strong>{" "}
-                  định nghĩa bài toán, metric đánh giá, baseline, và điều
-                  kiện thành công.
-                </li>
-                <li>
-                  <strong>Data collection:</strong>{" "}
-                  crawl, mua, tổng hợp từ nhiều nguồn. Thường mất 40-60%
-                  thời gian dự án.
-                </li>
-                <li>
-                  <strong>Data labeling:</strong>{" "}
-                  nếu supervised learning, cần người dán nhãn (Scale AI,
-                  Label Studio). Đảm bảo chất lượng qua inter-annotator
-                  agreement.
-                </li>
-                <li>
-                  <strong>Data cleaning &amp; EDA:</strong>{" "}
-                  loại outlier, xử lý missing values, vẽ phân phối, phát
-                  hiện bias trong tập dữ liệu.
-                </li>
-                <li>
-                  <strong>Feature engineering:</strong>{" "}
-                  biến đổi, kết hợp, chuẩn hoá feature. Với deep learning,
-                  bước này nhẹ hơn vì model tự học feature.
-                </li>
-                <li>
-                  <strong>Train/val/test split:</strong>{" "}
-                  thường 70/15/15 hoặc 80/10/10, hoặc cross-validation. Chia
-                  theo thời gian nếu time-series.
-                </li>
-                <li>
-                  <strong>Model selection &amp; hyperparameter tuning:</strong>{" "}
-                  thử nhiều model, dùng validation set để chọn. Grid search,
-                  random search, hoặc Bayesian optimization.
-                </li>
-                <li>
-                  <strong>Evaluation:</strong>{" "}
-                  test trên test set (chỉ 1 lần!), tính các metric phù hợp
-                  (accuracy, F1, AUC, RMSE, BLEU...).
-                </li>
-                <li>
-                  <strong>Deployment:</strong>{" "}
-                  đóng gói model (ONNX, TorchScript), đưa vào service (REST
-                  API, gRPC, edge device).
-                </li>
-                <li>
-                  <strong>Monitoring &amp; retraining:</strong>{" "}
-                  theo dõi data drift, concept drift. Retrain định kỳ hoặc
-                  khi metric giảm quá ngưỡng.
-                </li>
-              </ol>
-              <p>
-                MLOps là ngành chuyên về automation các bước này — CI/CD cho
-                ML, versioning cho data và model, observability cho production
-                inference.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <p>
-            <strong>Quan hệ AI - ML - DL - Data Science:</strong>{" "}
-            Đây là bốn thuật ngữ thường bị nhầm lẫn trong giao tiếp kinh
-            doanh và tuyển dụng:
-          </p>
-
-          <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
-            <li>
-              <strong>AI (Artificial Intelligence):</strong>{" "}
-              khái niệm tổng quát về máy móc thực hiện tác vụ đòi hỏi trí
-              thông minh. Bao gồm cả các hệ thống dựa trên luật (expert
-              systems) lẫn ML.
-            </li>
-            <li>
-              <strong>ML (Machine Learning):</strong>{" "}
-              một nhánh con của AI — học từ dữ liệu thay vì luật cứng. Đây
-              là trọng tâm của bài học này.
-            </li>
-            <li>
-              <strong>DL (Deep Learning):</strong>{" "}
-              một nhánh con của ML dùng mạng nơ-ron nhiều lớp. Đặc biệt
-              thành công với ảnh, âm thanh, text, protein.
-            </li>
-            <li>
-              <strong>Data Science:</strong>{" "}
-              ngành nghề xoay quanh dữ liệu — phân tích, trực quan hoá, thống
-              kê, và cả ML. Data scientist dùng ML như một công cụ, không
-              nhất thiết phải là ML engineer.
-            </li>
-          </ul>
-
-          <Callout variant="info" title="Khi nào ML trở nên hữu ích kinh tế">
-            Một ước lượng kinh nghiệm: ML mang lại giá trị khi (1) quy mô
-            đủ lớn — tiết kiệm/tăng doanh thu &gt; chi phí phát triển +
-            vận hành; (2) có dữ liệu chất lượng đủ; (3) tồn tại baseline
-            hiện tại mà ML có thể vượt qua được ít nhất 10-20%. Nếu thiếu
-            bất kỳ điều kiện nào, chi phí sẽ vượt lợi ích và dự án thất
-            bại. Đó là lý do 80% dự án ML ở giai đoạn thử nghiệm chưa bao
-            giờ lên production (Gartner 2019).
-          </Callout>
-
-          <p className="text-sm leading-relaxed">
-            Để học tiếp, hãy xem{" "}
-            <TopicLink slug="supervised-unsupervised-rl">
-              các loại học máy (có giám sát, không giám sát, học tăng cường)
-            </TopicLink>
-            , bắt đầu thực hành với{" "}
-            <TopicLink slug="linear-regression">
-              hồi quy tuyến tính
-            </TopicLink>
-            , hoặc tìm hiểu cách chuẩn bị dữ liệu qua{" "}
-            <TopicLink slug="data-preprocessing">
-              tiền xử lý dữ liệu
-            </TopicLink>
-            .
-          </p>
-        </ExplanationSection>
-      </LessonSection>
-
-      {/* ================================================================
-          BƯỚC 6 — AHA MOMENT
-          ================================================================ */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+      {/* ══════════════════ BƯỚC 5 — AHA ══════════════════ */}
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Aha">
         <AhaMoment>
-          <p>
-            ML không &quot;hiểu&quot; theo nghĩa của con người — nó{" "}
-            <strong>tìm pattern trong dữ liệu</strong>.{" "}
-            Cho nó dữ liệu tốt = kết quả tốt. Cho rác = ra rác.
+          <p className="leading-relaxed">
+            ML không &ldquo;hiểu&rdquo; theo kiểu con người.
+            <br />
+            Nó <strong>tìm ra pattern trong dữ liệu</strong> — và pattern
+            đó chính là công thức ẩn mà không ai biết cách viết ra.
           </p>
           <p className="mt-2 text-sm font-normal text-muted">
-            <strong>Garbage in, garbage out</strong>{" "}
-            — nguyên tắc vàng của mọi dự án ML thực tế.
+            Đưa cho máy dữ liệu tốt → kết quả tốt.
+            <br />
+            Đưa rác → ra rác. Không có phép màu.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ================================================================
-          BƯỚC 7 — CONNECT: MiniSummary
-          ================================================================ */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
-        <MiniSummary
-          title="Những điều cần nhớ về Machine Learning"
-          points={[
-            "ML = máy tự học luật từ dữ liệu, thay vì lập trình viên viết tay từng quy tắc if-else.",
-            "Pipeline cơ bản: Thu thập dữ liệu → Huấn luyện → Mô hình → Dự đoán.",
-            "Dùng ML khi pattern phức tạp, có đủ dữ liệu, quy tắc thay đổi theo thời gian.",
-            "Không dùng ML cho bài toán đơn giản hoặc khi không có dữ liệu lịch sử.",
-            "Garbage in, garbage out — chất lượng dữ liệu quyết định chất lượng mô hình.",
-            "Luôn đánh giá mô hình trên tập test ĐỘC LẬP — accuracy 100% trên train thường là dấu hiệu overfitting, không phải thành công.",
-          ]}
-        />
+      {/* ══════════════════ BƯỚC 6 — CHALLENGE ══════════════════ */}
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <div className="space-y-5">
+          <InlineChallenge
+            question="Trung tâm tiếng Anh muốn làm hệ thống chấm phát âm cho học viên. Bài toán phù hợp nhất với cách nào?"
+            options={[
+              "Lập trình thường — viết luật kiểu 'nếu phát âm đúng thì 10 điểm'",
+              "Machine Learning — cho máy nghe hàng nghìn bản ghi của người bản xứ và học viên",
+              "Không cần máy — để giáo viên chấm tay cho từng học viên",
+              "Đưa cho mỗi học viên một máy đo độ dài âm thanh",
+            ]}
+            correct={1}
+            explanation="Phát âm có hàng vạn biến thể giữa các giọng, tốc độ, âm sắc. Không ai viết luật được. ML học từ bản ghi thật là cách duy nhất khả thi. Đây cũng là cách Google Translate, Duolingo, Elsa Speak đang dùng."
+          />
+
+          <InlineChallenge
+            question="Bạn viết một app đếm số học sinh trong lớp từ ảnh camera. Lớp có đúng 40 học sinh luôn. Có nên dùng ML không?"
+            options={[
+              "Có — ML luôn tốt hơn lập trình thường",
+              "Không — nếu ai cũng phải điểm danh đủ thì cứ in sẵn '40'",
+              "Có — cần dùng ML để nhận diện khuôn mặt từng học sinh",
+              "Không, vì ML chỉ dùng cho bài toán lớn",
+            ]}
+            correct={2}
+            explanation="Đếm học sinh từ ảnh (mà số lượng có thể thay đổi do vắng) là bài nhận ảnh — rất phù hợp với ML vì tư thế, ánh sáng, góc chụp đều khác nhau. Đáp án B sai vì lớp 40 học sinh không có nghĩa ngày nào cũng đủ 40."
+          />
+
+          <InlineChallenge
+            question="Bạn có 20 ảnh X-quang để làm app phát hiện gãy xương. Bạn huấn luyện xong, máy đạt 100% đúng trên 20 ảnh đó. Đáng ăn mừng không?"
+            options={[
+              "Có — 100% là tuyệt",
+              "Không — 20 ảnh quá ít, máy có thể chỉ 'học thuộc lòng' 20 ảnh đó, gặp ảnh mới là sai hết",
+              "Có — máy đã hiểu sâu về giải phẫu",
+              "Chỉ nên ăn mừng nếu có ảnh màu",
+            ]}
+            correct={1}
+            explanation="Đây là hiện tượng 'học thuộc lòng' (overfitting). 20 ảnh quá ít, máy chỉ nhớ mặt từng ảnh chứ không học được dấu hiệu bệnh lý chung. Phải có hàng nghìn đến chục nghìn ảnh, và phải kiểm tra trên ảnh khác tập học."
+          />
+        </div>
       </LessonSection>
 
-      {/* ================================================================
-          BƯỚC 8 — QUIZ
-          ================================================================ */}
+      {/* ══════════════════ BƯỚC 7 — KẾT NỐI ══════════════════ */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kết nối">
+        <ExplanationSection topicSlug={metadata.slug}>
+          <p className="text-sm leading-relaxed">
+            Vậy Machine Learning không phải phép thuật. Nó là một cách
+            tiếp cận khác — thay vì đi viết luật, ta thu thập ví dụ và
+            để máy tự rút luật. Ba điểm cần nhớ:
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 not-prose my-4">
+            <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <BookOpenCheck
+                  size={16}
+                  className="text-blue-500 shrink-0"
+                />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Khi nào dùng
+                </h4>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Pattern phức tạp không thể viết tay (ảnh, giọng nói, ngôn
+                ngữ, hành vi người dùng). Có đủ dữ liệu. Sẵn lòng chấp
+                nhận máy đôi khi sai.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <AlertTriangle
+                  size={16}
+                  className="text-amber-500 shrink-0"
+                />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Khi nào không dùng
+                </h4>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Có công thức rõ ràng (tính thuế, đổi đơn vị). Không có
+                dữ liệu. Sai là chết người và cần giải thích được từng
+                quyết định.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-accent shrink-0" />
+                <h4 className="text-sm font-semibold text-foreground">
+                  Vị trí trong AI
+                </h4>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                AI là cái ô lớn. ML là một nhánh của AI — nhánh đông
+                đúc nhất hiện nay. Deep Learning lại là một nhánh bên
+                trong ML, dùng cho ảnh và ngôn ngữ.
+              </p>
+            </div>
+          </div>
+
+          <Callout variant="insight" title="Ba ví dụ ML ngay quanh bạn">
+            <ul className="list-disc pl-5 space-y-1 text-sm">
+              <li>
+                <strong>Grab</strong> đoán giá cước và thời gian tới nơi
+                — học từ hàng triệu chuyến đi thật trên đường phố Việt
+                Nam.
+              </li>
+              <li>
+                <strong>Shopee</strong> gợi ý sản phẩm — học từ lịch sử
+                bấm, mua, đánh giá của hàng triệu người dùng.
+              </li>
+              <li>
+                <strong>TikTok</strong> đoán video tiếp theo bạn sẽ
+                thích — học từ cách bạn vuốt, xem lâu, bấm tim.
+              </li>
+            </ul>
+          </Callout>
+
+          <Callout variant="tip" title="Bước tiếp theo trong hành trình">
+            <p className="leading-relaxed">
+              Bạn vừa gặp khái niệm quan trọng nhất: ML học từ dữ liệu.
+              Để đi tiếp, hãy xem{" "}
+              <TopicLink slug="math-readiness">
+                những khái niệm toán cần biết
+              </TopicLink>{" "}
+              (không đáng sợ như bạn nghĩ), rồi tìm hiểu{" "}
+              <TopicLink slug="data-and-datasets">
+                dữ liệu được tổ chức thế nào
+              </TopicLink>{" "}
+              — trái tim của mọi mô hình ML.
+            </p>
+          </Callout>
+        </ExplanationSection>
+
+        <div className="mt-6">
+          <MiniSummary
+            title="Năm điều mang theo"
+            points={[
+              "ML = máy tự rút ra quy tắc từ ví dụ, thay vì người viết tay từng luật if-else.",
+              "Giống đầu bếp học từ nếm thử, không đọc công thức — càng nhiều kinh nghiệm càng giỏi.",
+              "Bốn bước: Dữ liệu → Học → Mô hình → Dự đoán (và phản hồi để học tiếp).",
+              "Dùng ML khi pattern phức tạp và có dữ liệu. Đừng dùng khi công thức đã rõ.",
+              "Rác vào, rác ra — chất lượng dữ liệu quyết định mọi thứ.",
+            ]}
+          />
+        </div>
+      </LessonSection>
+
+      {/* ══════════════════ BƯỚC 8 — QUIZ ══════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

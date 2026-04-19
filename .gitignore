@@ -43,6 +43,9 @@ yarn-error.log*
 # git worktrees
 .worktrees/
 
+# Claude Code scratch / playbooks (session-local)
+/.claude/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

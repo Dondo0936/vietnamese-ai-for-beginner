@@ -1,16 +1,28 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChefHat,
+  Soup,
+  Activity,
+  Gauge,
+  Link2,
+  Layers,
+  Sparkles,
+} from "lucide-react";
 import {
   PredictionGate,
-  LessonSection,
   AhaMoment,
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  LaTeX,
+  LessonSection,
   TopicLink,
+  CollapsibleDetail,
+  StepReveal,
+  SliderGroup,
+  LaTeX,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -21,1192 +33,1253 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "calculus-for-backprop",
   title: "Calculus for Backpropagation",
-  titleVi: "Giải tích cho lan truyền ngược",
+  titleVi: "Giải tích cho backprop",
   description:
-    "Đạo hàm, quy tắc chuỗi và gradient descent — toán học đằng sau quá trình huấn luyện mạng nơ-ron",
+    "Đạo hàm là câu trả lời cho câu hỏi: thay đổi nhỏ này làm loss thay đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
   category: "math-foundations",
-  tags: ["derivatives", "chain-rule", "gradient-descent", "learning-rate"],
+  tags: ["derivatives", "chain-rule", "gradient", "backprop"],
   difficulty: "intermediate",
-  relatedSlugs: ["backpropagation", "gradient-descent", "loss-functions"],
+  relatedSlugs: ["gradient-intuition", "backpropagation", "gradient-descent"],
   vizType: "interactive",
 };
 
-/* ── Constants ── */
+/* ────────────────────────────────────────────────────────────
+   HOOK: đầu bếp nếm canh — metaphor cho gradient
+   ──────────────────────────────────────────────────────────── */
+
 const TOTAL_STEPS = 8;
 
-/* SVG dimensions */
-const W = 400;
-const H = 300;
+/* ────────────────────────────────────────────────────────────
+   VISUALIZATION 1 — Pipe diagram: x → g(x) → f(g(x))
+   Learner clicks a junction and sees local derivative
+   ──────────────────────────────────────────────────────────── */
 
-/* ── Stage 1: 1D loss curve ── */
-const S1_CX = W / 2;
-const S1_CY = H - 40;
-const S1_SCALE_X = 50; // px per unit w
-const S1_SCALE_Y = 8; // px per unit L (compressed)
+type JunctionId = "input" | "hidden" | "output";
 
-/** L(w) = (w - 3)^2 + 1 */
-function loss1D(w: number): number {
-  return (w - 3) ** 2 + 1;
+interface JunctionInfo {
+  id: JunctionId;
+  label: string;
+  subtitle: string;
+  formula: string;
+  derivativeLabel: string;
+  colorLight: string;
+  colorDark: string;
 }
 
-/** dL/dw = 2(w - 3) */
-function dLoss1D(w: number): number {
-  return 2 * (w - 3);
+const JUNCTIONS: JunctionInfo[] = [
+  {
+    id: "input",
+    label: "Vào",
+    subtitle: "g(x) = 2x + 1",
+    formula: "∂g/∂x = 2",
+    derivativeLabel: "x tăng 1 → g tăng 2",
+    colorLight: "#38bdf8",
+    colorDark: "#0ea5e9",
+  },
+  {
+    id: "hidden",
+    label: "Ẩn",
+    subtitle: "h(g) = g²",
+    formula: "∂h/∂g = 2g",
+    derivativeLabel: "g tăng 1 → h tăng 2g",
+    colorLight: "#a78bfa",
+    colorDark: "#8b5cf6",
+  },
+  {
+    id: "output",
+    label: "Ra",
+    subtitle: "f(h) = h + 3",
+    formula: "∂f/∂h = 1",
+    derivativeLabel: "h tăng 1 → f tăng 1",
+    colorLight: "#f472b6",
+    colorDark: "#ec4899",
+  },
+];
+
+function computeChain(x: number) {
+  const g = 2 * x + 1;
+  const h = g * g;
+  const f = h + 3;
+  const dg = 2;
+  const dh = 2 * g;
+  const df = 1;
+  const total = df * dh * dg;
+  return { g, h, f, dg, dh, df, total };
 }
 
-/* ── Stage 2 & 3: 2D contour ── */
-const C_CX = W / 2;
-const C_CY = H / 2;
-const C_SCALE = 50; // px per unit
+/* ────────────────────────────────────────────────────────────
+   VISUALIZATION 2 — Two-layer chain walk-through
+   ──────────────────────────────────────────────────────────── */
 
-/** L(w1, w2) = (w1-2)^2 + (w2-1)^2 + 0.5*w1*w2 */
-function loss2D(w1: number, w2: number): number {
-  return (w1 - 2) ** 2 + (w2 - 1) ** 2 + 0.5 * w1 * w2;
+interface ChainStep {
+  title: string;
+  label: string;
+  description: string;
+  icon: typeof Layers;
 }
 
-/** Gradient of L: [dL/dw1, dL/dw2] */
-function grad2D(w1: number, w2: number): [number, number] {
-  const dw1 = 2 * (w1 - 2) + 0.5 * w2;
-  const dw2 = 2 * (w2 - 1) + 0.5 * w1;
-  return [dw1, dw2];
-}
+const CHAIN_STEPS: ChainStep[] = [
+  {
+    title: "Bước 1 — Lớp vào",
+    label: "x → a₁",
+    description:
+      "Giá trị đầu vào x chạy qua lớp đầu tiên: a₁ = w₁·x + b₁. Đạo hàm cục bộ của a₁ theo x chính là w₁ — hệ số của lớp này.",
+    icon: Activity,
+  },
+  {
+    title: "Bước 2 — Lớp ẩn",
+    label: "a₁ → a₂",
+    description:
+      "a₁ tiếp tục chạy qua lớp thứ hai: a₂ = w₂·a₁ + b₂. Đạo hàm cục bộ của a₂ theo a₁ là w₂.",
+    icon: Layers,
+  },
+  {
+    title: "Bước 3 — Đầu ra & Loss",
+    label: "a₂ → L",
+    description:
+      "Cuối cùng, L đo sai khác giữa a₂ và nhãn đúng y. Đạo hàm cục bộ của L theo a₂ cho biết: nếu a₂ tăng 1, loss thay đổi bao nhiêu.",
+    icon: Gauge,
+  },
+  {
+    title: "Bước 4 — Nhân chuỗi",
+    label: "∂L/∂x = ∂L/∂a₂ · ∂a₂/∂a₁ · ∂a₁/∂x",
+    description:
+      "Quy tắc chuỗi nói: muốn biết loss thay đổi bao nhiêu khi x thay đổi, hãy NHÂN các đạo hàm cục bộ qua từng lớp. Mỗi lớp đóng góp một số, và tích của chúng là câu trả lời.",
+    icon: Link2,
+  },
+];
 
-/** Minimum (solve grad = 0): 2w1 + 0.5w2 = 4, 0.5w1 + 2w2 = 2 → w1 = 28/15 ≈ 1.867, w2 = 8/15 ≈ 0.533 */
+/* ────────────────────────────────────────────────────────────
+   QUIZ
+   ──────────────────────────────────────────────────────────── */
 
-/* Generate contour levels */
-const CONTOUR_LEVELS = [0.5, 1, 2, 3, 5, 8, 12, 18, 25];
+const quizQuestions: QuizQuestion[] = [
+  {
+    question:
+      "Đạo hàm dL/dw = -4 nghĩa là gì theo cách dễ hiểu nhất?",
+    options: [
+      "Loss hiện tại bằng -4",
+      "Nếu tăng w lên 1 đơn vị, loss giảm khoảng 4 đơn vị",
+      "Weight hiện tại bằng -4",
+      "Mạng nơ-ron đã hội tụ về minimum",
+    ],
+    correct: 1,
+    explanation:
+      "Đạo hàm đo tốc độ thay đổi. dL/dw = -4 nghĩa là theo tương quan tuyến tính hiện tại, tăng w thêm 1 sẽ làm loss giảm 4. Dấu âm = 'tăng w làm giảm loss' → gradient descent sẽ tăng w để loss nhỏ hơn.",
+  },
+  {
+    question:
+      "Bạn có ba hàm nối tiếp: y = f(g(h(x))). Chain rule cho dy/dx là gì?",
+    options: [
+      "dy/dx = f'(x) + g'(x) + h'(x)",
+      "dy/dx = f'(x) × g'(x) × h'(x)",
+      "dy/dx = f'(g) × g'(h) × h'(x)",
+      "dy/dx = (df/dg) + (dg/dh) + (dh/dx)",
+    ],
+    correct: 2,
+    explanation:
+      "Quy tắc chuỗi nhân các đạo hàm cục bộ, trong đó mỗi đạo hàm được tính TẠI điểm tương ứng — f' tại g, g' tại h, h' tại x. Không phải f' tại x.",
+  },
+  {
+    question:
+      "Trong mạng nơ-ron 3 lớp, đạo hàm cục bộ mỗi lớp đều bằng 0.5. Chain rule cho biết đạo hàm tổng hợp bằng bao nhiêu?",
+    options: [
+      "1.5 — tổng các đạo hàm",
+      "0.5 — vẫn bằng đạo hàm mỗi lớp",
+      "0.125 — tích 0.5 × 0.5 × 0.5",
+      "0 — các đạo hàm triệt tiêu nhau",
+    ],
+    correct: 2,
+    explanation:
+      "Chain rule nhân các đạo hàm cục bộ: 0.5³ = 0.125. Đây là lý do mạng sâu dễ gặp 'vanishing gradient' — nhân nhiều số nhỏ hơn 1 làm gradient nhanh chóng tiến về 0.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Để biết loss thay đổi bao nhiêu khi một weight w ở lớp đầu tiên thay đổi, backprop dùng quy tắc {blank} để nhân các đạo hàm cục bộ xuyên qua mạng từ đầu ra ngược về lớp chứa w.",
+    blanks: [
+      { answer: "chuỗi", accept: ["chain", "chain rule", "quy tắc chuỗi"] },
+    ],
+    explanation:
+      "Quy tắc chuỗi (chain rule) là công cụ nền tảng. Mỗi lớp chỉ cần biết đạo hàm cục bộ của mình. Backprop là thuật toán để NHÂN các mảnh đó lại theo đúng thứ tự từ output ngược về input.",
+  },
+  {
+    question:
+      "Gradient ∇L là gì theo cách hiểu hình học?",
+    options: [
+      "Một số đơn — đo độ lớn của loss",
+      "Một vector — mỗi thành phần là đạo hàm riêng của L theo một weight, chỉ hướng loss tăng nhanh nhất",
+      "Ma trận vuông lưu mọi cặp đạo hàm",
+      "Tên khác của learning rate",
+    ],
+    correct: 1,
+    explanation:
+      "Gradient là một vector gom tất cả đạo hàm riêng. Tại mỗi điểm, nó chỉ hướng loss TĂNG nhanh nhất. Đó là lý do ta đi NGƯỢC gradient để loss giảm — công thức update w ← w − η∇L.",
+  },
+  {
+    question:
+      "Vì sao chain rule cho phép backprop chạy hiệu quả trên mạng hàng tỉ tham số?",
+    options: [
+      "Nhờ chain rule, ta có công thức đóng cho mọi gradient",
+      "Mỗi lớp chỉ cần tính đạo hàm cục bộ của mình, rồi nhân với gradient truyền ngược từ lớp sau — không cần tính riêng cho từng weight",
+      "Chain rule tự động bỏ qua các weight không quan trọng",
+      "Chain rule biến đạo hàm thành phép cộng rẻ hơn",
+    ],
+    correct: 1,
+    explanation:
+      "Không có chain rule, để tính gradient của mỗi weight, bạn phải forward pass lại gần như toàn bộ mạng — O(n²). Chain rule biến chi phí thành O(n): một forward + một backward pass, tái sử dụng các đạo hàm cục bộ.",
+  },
+];
 
-/** Generate contour path points for a given level using marching squares-like sampling */
-function contourPoints(
-  level: number,
-  rangeX: [number, number],
-  rangeY: [number, number],
-  steps: number,
-): [number, number][] {
-  const points: [number, number][] = [];
-  for (let a = 0; a < 360; a += 4) {
-    const rad = (a * Math.PI) / 180;
-    // Search outward from exact min (28/15, 8/15)
-    const cx = 28 / 15;
-    const cy = 8 / 15;
-    let lo = 0;
-    let hi = 6;
-    for (let iter = 0; iter < 20; iter++) {
-      const mid = (lo + hi) / 2;
-      const px = cx + mid * Math.cos(rad);
-      const py = cy + mid * Math.sin(rad);
-      if (loss2D(px, py) < level) lo = mid;
-      else hi = mid;
-    }
-    const r = (lo + hi) / 2;
-    const px = cx + r * Math.cos(rad);
-    const py = cy + r * Math.sin(rad);
-    if (
-      px >= rangeX[0] &&
-      px <= rangeX[1] &&
-      py >= rangeY[0] &&
-      py <= rangeY[1]
-    ) {
-      points.push([px, py]);
-    }
-  }
-  return points;
-}
-
-/** Contour color based on level */
-function contourColor(level: number): string {
-  const t = Math.min(level / 25, 1);
-  // blue (low) -> yellow -> red (high)
-  if (t < 0.5) {
-    const s = t * 2;
-    const r = Math.round(50 + 205 * s);
-    const g = Math.round(100 + 155 * s);
-    const b = Math.round(200 * (1 - s));
-    return `rgb(${r},${g},${b})`;
-  }
-  const s = (t - 0.5) * 2;
-  const r = 255;
-  const g = Math.round(255 * (1 - s));
-  const b = 0;
-  return `rgb(${r},${g},${b})`;
-}
+/* ────────────────────────────────────────────────────────────
+   COMPONENT CHÍNH
+   ──────────────────────────────────────────────────────────── */
 
 export default function CalculusForBackpropTopic() {
-  /* ── Viz stage management ── */
-  const [stage, setStage] = useState<1 | 2 | 3>(1);
-
-  /* ── Stage 1 state ── */
-  const [ballW, setBallW] = useState(0.5);
-  const [draggingBall, setDraggingBall] = useState(false);
-  const svg1Ref = useRef<SVGSVGElement>(null);
-
-  /* ── Stage 2 state ── */
-  const [userClick, setUserClick] = useState<[number, number] | null>(null);
-  const [s2Pos, setS2Pos] = useState<[number, number]>([0, 3]);
-  const [s2Score, setS2Score] = useState<number | null>(null);
-  const svg2Ref = useRef<SVGSVGElement>(null);
-
-  /* ── Stage 3 state ── */
-  const [lr, setLr] = useState(0.1);
-  const [s3Pos, setS3Pos] = useState<[number, number]>([0, 3]);
-  const [s3Trail, setS3Trail] = useState<[number, number][]>([[0, 3]]);
-  const [autoRunning, setAutoRunning] = useState(false);
-  const autoRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  /* ── Stage 1 helpers ── */
-  const toS1X = useCallback((w: number) => S1_CX + (w - 3) * S1_SCALE_X, []);
-  const toS1Y = useCallback((l: number) => S1_CY - (l - 1) * S1_SCALE_Y, []);
-
-  const curvePoints = useMemo(() => {
-    const pts: string[] = [];
-    for (let w = -0.5; w <= 6.5; w += 0.1) {
-      const l = loss1D(w);
-      if (l <= 30) pts.push(`${toS1X(w).toFixed(1)},${toS1Y(l).toFixed(1)}`);
-    }
-    return pts.join(" ");
-  }, [toS1X, toS1Y]);
-
-  const ballL = useMemo(() => loss1D(ballW), [ballW]);
-  const ballGrad = useMemo(() => dLoss1D(ballW), [ballW]);
-
-  const handleBallDrag = useCallback(
-    (e: React.MouseEvent<SVGSVGElement>) => {
-      if (!draggingBall) return;
-      const svg = svg1Ref.current;
-      if (!svg) return;
-      const rect = svg.getBoundingClientRect();
-      const scaleX = W / rect.width;
-      const svgX = (e.clientX - rect.left) * scaleX;
-      const w = (svgX - S1_CX) / S1_SCALE_X + 3;
-      setBallW(Math.max(-0.3, Math.min(6.3, w)));
-    },
-    [draggingBall],
-  );
-
-  /* ── Stage 1: tangent line endpoints ── */
-  const tangentLen = 1.2;
-  const tangentX1 = ballW - tangentLen;
-  const tangentY1 = ballL + ballGrad * (-tangentLen);
-  const tangentX2 = ballW + tangentLen;
-  const tangentY2 = ballL + ballGrad * tangentLen;
-
-  /* ── Contour data (memoized) ── */
-  const contours = useMemo(
-    () =>
-      CONTOUR_LEVELS.map((level) => ({
-        level,
-        points: contourPoints(level, [-2, 6], [-2, 5], 90),
-      })),
-    [],
-  );
-
-  /* ── Stage 2/3 coordinate helpers ── */
-  const toCX = useCallback((x: number) => C_CX + (x - 2) * C_SCALE, []);
-  const toCY = useCallback((y: number) => C_CY - (y - 1) * C_SCALE, []);
-  const fromCX = useCallback((sx: number) => (sx - C_CX) / C_SCALE + 2, []);
-  const fromCY = useCallback((sy: number) => -(sy - C_CY) / C_SCALE + 1, []);
-
-  /* ── Stage 2: click handler ── */
-  const handleContourClick = useCallback(
-    (e: React.MouseEvent<SVGSVGElement>) => {
-      const svg = svg2Ref.current;
-      if (!svg) return;
-      const rect = svg.getBoundingClientRect();
-      const scaleX = W / rect.width;
-      const scaleY = H / rect.height;
-      const svgX = (e.clientX - rect.left) * scaleX;
-      const svgY = (e.clientY - rect.top) * scaleY;
-      const clickW1 = fromCX(svgX);
-      const clickW2 = fromCY(svgY);
-      setUserClick([clickW1, clickW2]);
-
-      // Calculate score: angle similarity between user direction and correct gradient step
-      const [gw1, gw2] = grad2D(s2Pos[0], s2Pos[1]);
-      const correctDirW1 = -gw1;
-      const correctDirW2 = -gw2;
-      const userDirW1 = clickW1 - s2Pos[0];
-      const userDirW2 = clickW2 - s2Pos[1];
-      const correctLen = Math.sqrt(
-        correctDirW1 ** 2 + correctDirW2 ** 2,
-      );
-      const userLen = Math.sqrt(userDirW1 ** 2 + userDirW2 ** 2);
-      if (correctLen < 0.001 || userLen < 0.001) {
-        setS2Score(100);
-        return;
-      }
-      const cosAngle =
-        (correctDirW1 * userDirW1 + correctDirW2 * userDirW2) /
-        (correctLen * userLen);
-      setS2Score(Math.max(0, Math.round(((cosAngle + 1) / 2) * 100)));
-    },
-    [s2Pos, fromCX, fromCY],
-  );
-
-  const resetStage2 = useCallback(() => {
-    // Pick a random starting point
-    const newW1 = Math.random() * 4 - 1;
-    const newW2 = Math.random() * 4 - 0.5;
-    setS2Pos([newW1, newW2]);
-    setUserClick(null);
-    setS2Score(null);
-  }, []);
-
-  /* ── Stage 3: gradient step ── */
-  const takeStep = useCallback(() => {
-    setS3Pos((prev) => {
-      const [gw1, gw2] = grad2D(prev[0], prev[1]);
-      const next: [number, number] = [
-        prev[0] - lr * gw1,
-        prev[1] - lr * gw2,
-      ];
-      // Clamp to prevent going off-screen
-      const clamped: [number, number] = [
-        Math.max(-2, Math.min(6, next[0])),
-        Math.max(-2, Math.min(5, next[1])),
-      ];
-      setS3Trail((t) => [...t, clamped]);
-      return clamped;
-    });
-  }, [lr]);
-
-  const resetStage3 = useCallback(() => {
-    setS3Pos([0, 3]);
-    setS3Trail([[0, 3]]);
-    setAutoRunning(false);
-    if (autoRef.current) {
-      clearInterval(autoRef.current);
-      autoRef.current = null;
-    }
-  }, []);
-
-  /* Auto-run effect */
-  useEffect(() => {
-    if (autoRunning) {
-      autoRef.current = setInterval(() => {
-        takeStep();
-      }, 300);
-    } else if (autoRef.current) {
-      clearInterval(autoRef.current);
-      autoRef.current = null;
-    }
-    return () => {
-      if (autoRef.current) {
-        clearInterval(autoRef.current);
-        autoRef.current = null;
-      }
-    };
-  }, [autoRunning, takeStep]);
-
-  /* Stop auto-run if loss diverges */
-  useEffect(() => {
-    const l = loss2D(s3Pos[0], s3Pos[1]);
-    if (l > 200 || s3Trail.length > 200) {
-      setAutoRunning(false);
-    }
-  }, [s3Pos, s3Trail.length]);
-
-  /* ── Stage 2: gradient arrow from current position ── */
-  const [g2w1, g2w2] = useMemo(() => grad2D(s2Pos[0], s2Pos[1]), [s2Pos]);
-  const gradLen2 = Math.sqrt(g2w1 ** 2 + g2w2 ** 2);
-  const arrowScale2 = gradLen2 > 0.01 ? Math.min(1.5 / gradLen2, 0.8) : 0;
-
-  /* ── Quiz ── */
-  const quizQuestions: QuizQuestion[] = useMemo(
-    () => [
-      {
-        question:
-          'Đạo hàm dL/dw = -4 nghĩa là gì?',
-        options: [
-          "Khi w tăng 1, loss tăng 4",
-          "Khi w tăng 1, loss giảm 4",
-          "Loss hiện tại bằng -4",
-          "Weight hiện tại bằng -4",
-        ],
-        correct: 1,
-        explanation:
-          "dL/dw = -4 nghĩa là khi w tăng 1 đơn vị, loss giảm 4 đơn vị. Dấu âm = loss đang giảm theo hướng tăng w. Gradient descent sẽ tăng w vì: w_mới = w - lr × (-4) = w + 4 × lr.",
-      },
-      {
-        question:
-          "Nếu learning rate quá lớn, điều gì xảy ra?",
-        options: [
-          "Hội tụ nhanh hơn đến minimum",
-          "Bước nhảy quá xa, loss tăng thay vì giảm (phân kỳ)",
-          "Gradient biến mất",
-          "Không ảnh hưởng gì",
-        ],
-        correct: 1,
-        explanation:
-          "Learning rate quá lớn khiến bước cập nhật quá dài, nhảy qua điểm minimum và loss tăng lên. Trong trường hợp cực đoan, loss phát tán đến vô cùng (diverge). Thử kéo slider learning rate trong hình minh họa Stage 3 lên 1.0 để thấy!",
-      },
-      {
-        question:
-          "Chain rule cho f(g(x)): df/dx = ?",
-        options: [
-          "df/dx = f'(x) + g'(x)",
-          "df/dx = f'(x) × g'(x)",
-          "df/dx = (df/dg) × (dg/dx)",
-          "df/dx = df/dg + dg/dx",
-        ],
-        correct: 2,
-        explanation:
-          "Chain rule: đạo hàm hàm hợp = tích các đạo hàm cục bộ. df/dx = (df/dg) × (dg/dx). Trong neural network, mỗi layer là một hàm g, và backpropagation nhân local gradients ngược lại qua từng layer.",
-      },
-      {
-        type: "fill-blank" as const,
-        question:
-          "Công thức cập nhật trọng số: w_mới = w_cũ - {blank} × dL/dw",
-        blanks: [
-          {
-            answer: "η",
-            accept: [
-              "η",
-              "eta",
-              "learning rate",
-              "tốc độ học",
-              "lr",
-              "alpha",
-            ],
-          },
-        ],
-        explanation:
-          "η (eta) là learning rate (tốc độ học) — kiểm soát kích thước bước cập nhật. Quá lớn thì phân kỳ, quá nhỏ thì hội tụ chậm.",
-      },
-      {
-        question:
-          "Vì sao hàm kích hoạt ReLU (f(x) = max(0, x)) giúp giảm vanishing gradient so với sigmoid?",
-        options: [
-          "Vì ReLU có nhiều tham số hơn sigmoid",
-          "Vì gradient của ReLU bằng 1 khi x > 0, không nén nhỏ như sigmoid (tối đa 0.25)",
-          "Vì ReLU không tuyến tính còn sigmoid thì tuyến tính",
-          "Vì ReLU chỉ dùng cho layer đầu ra, sigmoid dùng cho layer ẩn",
-        ],
-        correct: 1,
-        explanation:
-          "Gradient của sigmoid là σ'(x) = σ(x)(1 - σ(x)) có giá trị lớn nhất 0.25. Khi chain rule nhân qua 50 lớp, 0.25^50 ≈ 10^-30 — gradient biến mất. ReLU có đạo hàm = 1 khi x > 0, nên khi nhân chuỗi vẫn giữ nguyên độ lớn gradient, giúp các lớp đầu học được.",
-      },
-      {
-        type: "fill-blank" as const,
-        question:
-          "Trong mini-batch gradient descent, ta lấy trung bình gradient trên một nhóm {blank} mẫu thay vì toàn bộ tập dữ liệu. Việc này cân bằng giữa tốc độ (ít hơn toàn batch) và độ ổn định (hơn SGD một mẫu).",
-        blanks: [
-          {
-            answer: "batch",
-            accept: ["mini-batch", "minibatch", "nhóm", "lô"],
-          },
-        ],
-        explanation:
-          "Mini-batch (thường 32–256 mẫu) là lựa chọn mặc định trong huấn luyện deep learning: đủ lớn để gradient ước lượng ổn định, đủ nhỏ để vừa GPU và cập nhật weight nhiều lần trong một epoch. Kích thước batch cũng ảnh hưởng đến generalization — batch quá lớn có thể hội tụ về minimum sắc nhọn, kém khái quát hoá.",
-      },
-    ],
-    [],
-  );
-
-  /* ── Contour SVG (shared between Stage 2 and 3) ── */
-  const ContourBackground = useMemo(() => {
-    return (
-      <>
-        {contours.map(({ level, points }) => {
-          if (points.length < 3) return null;
-          const d =
-            points
-              .map((p, i) =>
-                i === 0
-                  ? `M${toCX(p[0]).toFixed(1)},${toCY(p[1]).toFixed(1)}`
-                  : `L${toCX(p[0]).toFixed(1)},${toCY(p[1]).toFixed(1)}`,
-              )
-              .join(" ") + " Z";
-          return (
-            <path
-              key={`contour-${level}`}
-              d={d}
-              fill="none"
-              stroke={contourColor(level)}
-              strokeWidth="1.5"
-              opacity="0.7"
-            />
-          );
-        })}
-      </>
-    );
-  }, [contours, toCX, toCY]);
+  const [activeJunction, setActiveJunction] = useState<JunctionId>("hidden");
 
   return (
     <>
-      {/* ================================================================
-          VISUALIZATION SECTION
-          ================================================================ */}
-      <VisualizationSection topicSlug="calculus-for-backprop">
-        <div className="space-y-4">
-          {/* Stage tabs */}
-          <div className="flex gap-2">
-            {([1, 2, 3] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setStage(s)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${
-                  stage === s
-                    ? "border-accent bg-accent/10 text-accent"
-                    : "border-border text-foreground hover:bg-surface-hover"
-                }`}
-              >
-                {s === 1 && "Stage 1: Tiếp tuyến 1D"}
-                {s === 2 && "Stage 2: Gradient 2D"}
-                {s === 3 && "Stage 3: Learning rate"}
-              </button>
-            ))}
+      {/* ━━━ BƯỚC 1 — HOOK (đầu bếp nếm canh) ━━━ */}
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Ẩn dụ mở đầu">
+        <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-6 space-y-4">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/60 dark:bg-white/10">
+              <ChefHat className="h-6 w-6 text-accent" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-foreground leading-snug">
+                Mạng nơ-ron học như đầu bếp nếm canh
+              </h3>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Đầu bếp múc một thìa canh, nếm, rồi quyết định: <strong>mặn hơn hay
+                nhạt hơn bao nhiêu</strong>? Nếu quá nhạt một chút, thêm nhúm muối.
+                Nếu quá mặn, đổ thêm nước. Việc &ldquo;bao nhiêu&rdquo; quan trọng
+                không kém việc &ldquo;hướng nào&rdquo; — nêm tay nặng sẽ hỏng nồi canh.
+              </p>
+              <p className="text-sm text-foreground/85 leading-relaxed">
+                Đó chính là <strong>đạo hàm</strong>: câu trả lời cho câu hỏi &ldquo;thay
+                đổi nhỏ này làm kết quả thay đổi bao nhiêu?&rdquo; Và{" "}
+                <strong>quy tắc chuỗi</strong> chính là cách đầu bếp truy ngược xem{" "}
+                <em>mỗi bước nấu</em> (thêm muối → đun sôi → rắc hành) đóng góp bao
+                nhiêu vào vị canh cuối cùng.
+              </p>
+            </div>
           </div>
 
-          {/* ── STAGE 1: 1D tangent line ── */}
-          {stage === 1 && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted leading-relaxed">
-                Kéo viên bi để thấy độ dốc (đạo hàm). Độ dốc tại mỗi điểm cho biết loss tăng hay giảm khi weight thay đổi.
-              </p>
-              <div className="rounded-lg border border-border bg-surface p-2 flex items-center justify-center">
-                <svg
-                  ref={svg1Ref}
-                  viewBox={`0 0 ${W} ${H}`}
-                  className="w-full max-w-[420px] cursor-grab select-none"
-                  aria-label="Kéo viên bi trên đường cong loss để thấy đạo hàm"
-                  onMouseMove={handleBallDrag}
-                  onMouseUp={() => setDraggingBall(false)}
-                  onMouseLeave={() => setDraggingBall(false)}
-                >
-                  {/* Axis labels */}
-                  <text
-                    x={W - 20}
-                    y={S1_CY + 16}
-                    fontSize="11"
-                    fill="currentColor"
-                    className="text-muted"
-                    textAnchor="end"
-                  >
-                    w
-                  </text>
-                  <text
-                    x={S1_CX - 45}
-                    y={18}
-                    fontSize="11"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    L(w)
-                  </text>
-
-                  {/* Horizontal axis */}
-                  <line
-                    x1={20}
-                    y1={S1_CY}
-                    x2={W - 10}
-                    y2={S1_CY}
-                    stroke="currentColor"
-                    className="text-foreground/30"
-                    strokeWidth="1"
-                  />
-
-                  {/* Tick marks on w axis */}
-                  {[0, 1, 2, 3, 4, 5, 6].map((v) => (
-                    <g key={`tick-${v}`}>
-                      <line
-                        x1={toS1X(v)}
-                        y1={S1_CY - 3}
-                        x2={toS1X(v)}
-                        y2={S1_CY + 3}
-                        stroke="currentColor"
-                        className="text-foreground/30"
-                        strokeWidth="1"
-                      />
-                      <text
-                        x={toS1X(v)}
-                        y={S1_CY + 16}
-                        fontSize="9"
-                        fill="currentColor"
-                        className="text-muted"
-                        textAnchor="middle"
-                      >
-                        {v}
-                      </text>
-                    </g>
-                  ))}
-
-                  {/* Loss curve */}
-                  <polyline
-                    points={curvePoints}
-                    fill="none"
-                    stroke="#6366F1"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-
-                  {/* Minimum marker */}
-                  <circle
-                    cx={toS1X(3)}
-                    cy={toS1Y(1)}
-                    r="4"
-                    fill="none"
-                    stroke="#22C55E"
-                    strokeWidth="1.5"
-                    strokeDasharray="2,2"
-                  />
-                  <text
-                    x={toS1X(3)}
-                    y={toS1Y(1) + 16}
-                    fontSize="9"
-                    fill="#22C55E"
-                    textAnchor="middle"
-                  >
-                    min
-                  </text>
-
-                  {/* Tangent line */}
-                  <line
-                    x1={toS1X(tangentX1)}
-                    y1={toS1Y(tangentY1)}
-                    x2={toS1X(tangentX2)}
-                    y2={toS1Y(tangentY2)}
-                    stroke="#F59E0B"
-                    strokeWidth="1.5"
-                    strokeDasharray="4,3"
-                    opacity="0.8"
-                  />
-
-                  {/* Gradient arrow: points downhill */}
-                  {Math.abs(ballGrad) > 0.1 && (
-                    <>
-                      <defs>
-                        <marker
-                          id="grad-arrow"
-                          viewBox="0 0 10 10"
-                          refX="9"
-                          refY="5"
-                          markerWidth="5"
-                          markerHeight="5"
-                          orient="auto-start-reverse"
-                        >
-                          <path
-                            d="M 0 0 L 10 5 L 0 10 z"
-                            fill="#EF4444"
-                          />
-                        </marker>
-                      </defs>
-                      <line
-                        x1={toS1X(ballW)}
-                        y1={toS1Y(ballL) + 12}
-                        x2={toS1X(
-                          ballW - Math.sign(ballGrad) * 1.2,
-                        )}
-                        y2={toS1Y(ballL) + 12}
-                        stroke="#EF4444"
-                        strokeWidth="2"
-                        markerEnd="url(#grad-arrow)"
-                      />
-                      <text
-                        x={toS1X(
-                          ballW - Math.sign(ballGrad) * 0.6,
-                        )}
-                        y={toS1Y(ballL) + 28}
-                        fontSize="8"
-                        fill="#EF4444"
-                        textAnchor="middle"
-                      >
-                        -gradient
-                      </text>
-                    </>
-                  )}
-
-                  {/* Draggable ball */}
-                  <circle
-                    cx={toS1X(ballW)}
-                    cy={toS1Y(ballL)}
-                    r="8"
-                    fill="#3B82F6"
-                    stroke="white"
-                    strokeWidth="2"
-                    className="cursor-grab"
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      setDraggingBall(true);
-                    }}
-                  />
-                </svg>
-              </div>
-
-              {/* Info display */}
-              <div className="grid grid-cols-3 gap-2">
-                <div className="rounded-lg border border-border bg-surface p-2 text-center">
-                  <div className="text-[10px] text-muted">w</div>
-                  <div className="font-mono text-sm font-semibold text-foreground">
-                    {ballW.toFixed(2)}
-                  </div>
-                </div>
-                <div className="rounded-lg border border-border bg-surface p-2 text-center">
-                  <div className="text-[10px] text-muted">L(w)</div>
-                  <div className="font-mono text-sm font-semibold text-foreground">
-                    {ballL.toFixed(2)}
-                  </div>
-                </div>
-                <div className="rounded-lg border border-border bg-surface p-2 text-center">
-                  <div className="text-[10px] text-muted">dL/dw</div>
-                  <div
-                    className={`font-mono text-sm font-semibold ${
-                      ballGrad > 0.1
-                        ? "text-red-500"
-                        : ballGrad < -0.1
-                          ? "text-green-500"
-                          : "text-yellow-500"
-                    }`}
-                  >
-                    {ballGrad > 0 ? "+" : ""}
-                    {ballGrad.toFixed(2)}
-                  </div>
-                </div>
-              </div>
-              <p className="text-xs text-muted text-center">
-                dL/dw = 2(w - 3) = {ballGrad.toFixed(2)} | Độ dốc{" "}
-                {Math.abs(ballGrad) < 0.1
-                  ? "gần 0 — đang ở đáy!"
-                  : ballGrad > 0
-                    ? "dương — loss tăng khi w tăng, nên bước trái"
-                    : "âm — loss giảm khi w tăng, nên bước phải"}
+          {/* Mini sketch — bowl + spoon + arrow */}
+          <div className="grid grid-cols-3 gap-3 pt-3">
+            <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
+              <Soup className="mx-auto h-6 w-6 text-amber-500" />
+              <p className="text-[11px] font-semibold text-foreground">Bước nấu</p>
+              <p className="text-[10px] text-muted leading-tight">
+                Thêm muối, đun sôi, rắc hành — mỗi bước là một hàm.
               </p>
             </div>
-          )}
-
-          {/* ── STAGE 2: 2D contour plot ── */}
-          {stage === 2 && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted leading-relaxed">
-                Bấm vào nơi bạn nghĩ nên bước tiếp. Mũi tên đỏ là hướng gradient
-                đúng (bước tối ưu). Điểm càng gần hướng đó, điểm càng cao!
+            <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
+              <Gauge className="mx-auto h-6 w-6 text-sky-500" />
+              <p className="text-[11px] font-semibold text-foreground">Nếm vị</p>
+              <p className="text-[10px] text-muted leading-tight">
+                So với &ldquo;vị mong muốn&rdquo; — ra một con số: loss.
               </p>
-              <div className="rounded-lg border border-border bg-surface p-2 flex items-center justify-center">
-                <svg
-                  ref={svg2Ref}
-                  viewBox={`0 0 ${W} ${H}`}
-                  className="w-full max-w-[420px] cursor-crosshair select-none"
-                  aria-label="Bấm để chọn bước tiếp theo trên contour plot"
-                  onClick={handleContourClick}
-                >
-                  {/* Contour lines */}
-                  {ContourBackground}
-
-                  {/* Current position */}
-                  <circle
-                    cx={toCX(s2Pos[0])}
-                    cy={toCY(s2Pos[1])}
-                    r="6"
-                    fill="#3B82F6"
-                    stroke="white"
-                    strokeWidth="2"
-                  />
-
-                  {/* Correct gradient direction arrow */}
-                  {gradLen2 > 0.01 && (
-                    <>
-                      <defs>
-                        <marker
-                          id="grad-arrow-2"
-                          viewBox="0 0 10 10"
-                          refX="9"
-                          refY="5"
-                          markerWidth="5"
-                          markerHeight="5"
-                          orient="auto-start-reverse"
-                        >
-                          <path
-                            d="M 0 0 L 10 5 L 0 10 z"
-                            fill="#EF4444"
-                          />
-                        </marker>
-                      </defs>
-                      <line
-                        x1={toCX(s2Pos[0])}
-                        y1={toCY(s2Pos[1])}
-                        x2={toCX(
-                          s2Pos[0] - g2w1 * arrowScale2,
-                        )}
-                        y2={toCY(
-                          s2Pos[1] - g2w2 * arrowScale2,
-                        )}
-                        stroke="#EF4444"
-                        strokeWidth="2.5"
-                        markerEnd="url(#grad-arrow-2)"
-                      />
-                    </>
-                  )}
-
-                  {/* User click marker */}
-                  {userClick && (
-                    <>
-                      <circle
-                        cx={toCX(userClick[0])}
-                        cy={toCY(userClick[1])}
-                        r="5"
-                        fill="#22C55E"
-                        stroke="white"
-                        strokeWidth="1.5"
-                        opacity="0.8"
-                      />
-                      {/* Line from current to user click */}
-                      <line
-                        x1={toCX(s2Pos[0])}
-                        y1={toCY(s2Pos[1])}
-                        x2={toCX(userClick[0])}
-                        y2={toCY(userClick[1])}
-                        stroke="#22C55E"
-                        strokeWidth="1.5"
-                        strokeDasharray="3,3"
-                        opacity="0.6"
-                      />
-                    </>
-                  )}
-
-                  {/* Axis labels */}
-                  <text
-                    x={W - 14}
-                    y={C_CY + 4}
-                    fontSize="10"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    w1
-                  </text>
-                  <text
-                    x={C_CX + 6}
-                    y={14}
-                    fontSize="10"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    w2
-                  </text>
-                </svg>
-              </div>
-
-              {/* Score display */}
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-muted">
-                  Vị trí hiện tại: ({s2Pos[0].toFixed(1)},{" "}
-                  {s2Pos[1].toFixed(1)})
-                  {s2Score !== null && (
-                    <span className="ml-3 font-semibold">
-                      Điểm:{" "}
-                      <span
-                        className={
-                          s2Score >= 70
-                            ? "text-green-500"
-                            : s2Score >= 40
-                              ? "text-yellow-500"
-                              : "text-red-500"
-                        }
-                      >
-                        {s2Score}/100
-                      </span>
-                    </span>
-                  )}
-                </div>
-                <button
-                  onClick={resetStage2}
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-foreground hover:bg-surface-hover transition-colors"
-                >
-                  Vị trí mới
-                </button>
-              </div>
             </div>
-          )}
-
-          {/* ── STAGE 3: Learning rate control ── */}
-          {stage === 3 && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted leading-relaxed">
-                Điều chỉnh learning rate và quan sát đường hội tụ. Quá lớn thì phân kỳ, quá nhỏ thì chậm.
+            <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
+              <Link2 className="mx-auto h-6 w-6 text-violet-500" />
+              <p className="text-[11px] font-semibold text-foreground">Truy ngược</p>
+              <p className="text-[10px] text-muted leading-tight">
+                Bước nào nên sửa bao nhiêu? Chain rule trả lời.
               </p>
-
-              {/* Learning rate slider */}
-              <div className="flex items-center gap-3">
-                <label className="text-xs text-muted whitespace-nowrap">
-                  lr = {lr.toFixed(3)}
-                </label>
-                <input
-                  type="range"
-                  min={-3}
-                  max={0}
-                  step={0.05}
-                  value={Math.log10(lr)}
-                  onChange={(e) =>
-                    setLr(
-                      Math.round(10 ** parseFloat(e.target.value) * 1000) / 1000,
-                    )
-                  }
-                  className="flex-1 accent-accent"
-                />
-                <span className="text-[10px] text-muted">0.001 — 1.0</span>
-              </div>
-
-              <div className="rounded-lg border border-border bg-surface p-2 flex items-center justify-center">
-                <svg
-                  viewBox={`0 0 ${W} ${H}`}
-                  className="w-full max-w-[420px] select-none"
-                  aria-label="Gradient descent với learning rate có thể điều chỉnh"
-                >
-                  {/* Contour lines */}
-                  {ContourBackground}
-
-                  {/* Trail */}
-                  {s3Trail.length > 1 &&
-                    s3Trail.map((pt, i) => {
-                      if (i === 0) return null;
-                      const prev = s3Trail[i - 1];
-                      return (
-                        <line
-                          key={`trail-line-${i}`}
-                          x1={toCX(prev[0])}
-                          y1={toCY(prev[1])}
-                          x2={toCX(pt[0])}
-                          y2={toCY(pt[1])}
-                          stroke="#3B82F6"
-                          strokeWidth="1.5"
-                          opacity={0.4 + (i / s3Trail.length) * 0.6}
-                        />
-                      );
-                    })}
-
-                  {/* Trail dots */}
-                  {s3Trail.map((pt, i) => (
-                    <circle
-                      key={`trail-dot-${i}`}
-                      cx={toCX(pt[0])}
-                      cy={toCY(pt[1])}
-                      r={i === s3Trail.length - 1 ? 5 : 2.5}
-                      fill={i === s3Trail.length - 1 ? "#3B82F6" : "#3B82F6"}
-                      opacity={
-                        i === s3Trail.length - 1
-                          ? 1
-                          : 0.3 + (i / s3Trail.length) * 0.5
-                      }
-                      stroke={
-                        i === s3Trail.length - 1 ? "white" : "none"
-                      }
-                      strokeWidth={
-                        i === s3Trail.length - 1 ? 2 : 0
-                      }
-                    />
-                  ))}
-
-                  {/* Minimum marker at (28/15, 8/15) ≈ (1.867, 0.533) */}
-                  <circle
-                    cx={toCX(28 / 15)}
-                    cy={toCY(8 / 15)}
-                    r="4"
-                    fill="none"
-                    stroke="#22C55E"
-                    strokeWidth="1.5"
-                    strokeDasharray="2,2"
-                  />
-
-                  {/* Axis labels */}
-                  <text
-                    x={W - 14}
-                    y={C_CY + 4}
-                    fontSize="10"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    w1
-                  </text>
-                  <text
-                    x={C_CX + 6}
-                    y={14}
-                    fontSize="10"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    w2
-                  </text>
-                </svg>
-              </div>
-
-              {/* Controls */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={takeStep}
-                  disabled={autoRunning}
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium border border-accent text-accent hover:bg-accent/10 transition-colors disabled:opacity-40"
-                >
-                  Bước tiếp
-                </button>
-                <button
-                  onClick={() => setAutoRunning((r) => !r)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors ${
-                    autoRunning
-                      ? "border-red-500 text-red-500 hover:bg-red-500/10"
-                      : "border-accent text-accent hover:bg-accent/10"
-                  }`}
-                >
-                  {autoRunning ? "Dừng lại" : "Tự động chạy"}
-                </button>
-                <button
-                  onClick={resetStage3}
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium border border-border text-foreground hover:bg-surface-hover transition-colors"
-                >
-                  Reset
-                </button>
-                <span className="ml-auto text-xs text-muted">
-                  Bước: {s3Trail.length - 1} | Loss:{" "}
-                  {loss2D(s3Pos[0], s3Pos[1]).toFixed(2)}
-                </span>
-              </div>
             </div>
-          )}
+          </div>
         </div>
-      </VisualizationSection>
+      </LessonSection>
 
-      {/* ================================================================
-          EXPLANATION SECTION
-          ================================================================ */}
-      <ExplanationSection topicSlug="calculus-for-backprop">
-        <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
-          <PredictionGate
-            question="Neural network có 1 triệu weights. Training = tìm giá trị tối ưu cho 1 triệu biến số. Làm sao biết điều chỉnh mỗi weight theo hướng nào?"
-            options={[
-              "Thử random từng weight",
-              "Đạo hàm (gradient): tính hướng dốc nhất cho mỗi weight, điều chỉnh ngược hướng dốc để loss giảm",
-              "Dùng công thức cố định",
-            ]}
-            correct={1}
-            explanation="Gradient là bản đồ địa hình của loss landscape. Tại mỗi điểm, gradient chỉ hướng dốc nhất (loss tăng). Đi NGƯỢC gradient = loss giảm nhanh nhất. Backprop tính gradient cho 1 triệu weights HIỆU QUẢ bằng chain rule."
-          >
-            <p className="text-sm text-muted mt-2">
-              Hãy tiếp tục để khám phá toán học đằng sau backpropagation.
+      {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
+        <PredictionGate
+          question="Mạng nơ-ron có 100 lớp. Bạn muốn biết weight w ở LỚP ĐẦU TIÊN ảnh hưởng loss ra sao. Làm sao tính hiệu quả nhất?"
+          options={[
+            "Với mỗi weight, chạy lại toàn mạng với w thay đổi một tí, đo loss thay đổi",
+            "Đoán đại rồi thử — sai thì sửa",
+            "Dùng chain rule: mỗi lớp tự tính đạo hàm cục bộ, rồi NHÂN các mảnh đó ngược từ output về w",
+            "Chỉ tính được với mạng dưới 10 lớp — còn lại phải bỏ cuộc",
+          ]}
+          correct={2}
+          explanation="Cách 1 đúng về lý thuyết nhưng tốn kém khủng khiếp (O(n²) forward pass). Chain rule biến bài toán thành một forward + một backward — O(n). Đây là lý do mạng tỉ tham số hôm nay huấn luyện được."
+        >
+          <p className="text-sm text-muted mt-3 leading-relaxed">
+            Bài này cho bạn nhìn rõ chain rule bằng hình ảnh đường ống — mỗi lớp là
+            một đoạn ống có đạo hàm cục bộ riêng. Và câu hỏi &ldquo;tổng cộng&rdquo; được
+            trả lời bằng cách <strong>nhân</strong> các đạo hàm trên đường ống đó.
+          </p>
+        </PredictionGate>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 3 — REVEAL (pipe diagram + SliderGroup) ━━━ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá tương tác">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <LessonSection label="Thí nghiệm 1: Đường ống hàm hợp" step={1}>
+            <p className="text-sm text-muted mb-4 leading-relaxed">
+              Dữ liệu <code className="px-1.5 py-0.5 rounded bg-surface">x</code> chảy
+              qua ba đoạn ống <em>g → h → f</em>. Mỗi đoạn có một{" "}
+              <strong>đạo hàm cục bộ</strong> — thay đổi nhỏ ở đầu vào của đoạn đó
+              làm đầu ra của đoạn đó thay đổi bao nhiêu. Bấm vào một nút giao để
+              xem chi tiết.
             </p>
-          </PredictionGate>
-        </LessonSection>
 
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+            <SliderGroup
+              sliders={[
+                {
+                  key: "x",
+                  label: "Giá trị đầu vào x",
+                  min: 0,
+                  max: 4,
+                  step: 0.1,
+                  defaultValue: 1.5,
+                },
+              ]}
+              visualization={(values) => {
+                const x = values.x;
+                const { g, h, f, dg, dh, df, total } = computeChain(x);
+
+                return (
+                  <div className="w-full space-y-4">
+                    {/* SVG pipe diagram */}
+                    <svg
+                      viewBox="0 0 520 220"
+                      className="w-full"
+                      role="img"
+                      aria-label="Sơ đồ đường ống ba đoạn g, h, f với đạo hàm cục bộ hiển thị ở mỗi nút giao."
+                    >
+                      <title>
+                        Hàm hợp f(h(g(x))), đạo hàm tổng = {total.toFixed(2)}
+                      </title>
+
+                      {/* Pipes */}
+                      <line
+                        x1={30}
+                        y1={110}
+                        x2={490}
+                        y2={110}
+                        stroke="var(--border)"
+                        strokeWidth={28}
+                        strokeLinecap="round"
+                        opacity={0.3}
+                      />
+                      <line
+                        x1={30}
+                        y1={110}
+                        x2={490}
+                        y2={110}
+                        stroke="url(#flow-grad)"
+                        strokeWidth={6}
+                        strokeLinecap="round"
+                      />
+
+                      <defs>
+                        <linearGradient id="flow-grad" x1="0" x2="1">
+                          <stop offset="0%" stopColor="#0ea5e9" />
+                          <stop offset="50%" stopColor="#8b5cf6" />
+                          <stop offset="100%" stopColor="#ec4899" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Junctions */}
+                      {JUNCTIONS.map((j, i) => {
+                        const cx = 100 + i * 160;
+                        const isActive = j.id === activeJunction;
+                        return (
+                          <g
+                            key={j.id}
+                            onClick={() => setActiveJunction(j.id)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            {isActive && (
+                              <motion.circle
+                                cx={cx}
+                                cy={110}
+                                r={32}
+                                fill={j.colorLight}
+                                opacity={0.2}
+                                initial={{ scale: 0.6 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.25 }}
+                              />
+                            )}
+                            <circle
+                              cx={cx}
+                              cy={110}
+                              r={22}
+                              fill={isActive ? j.colorDark : "var(--bg-card)"}
+                              stroke={j.colorDark}
+                              strokeWidth={isActive ? 3 : 2}
+                            />
+                            <text
+                              x={cx}
+                              y={114}
+                              textAnchor="middle"
+                              fontSize={11}
+                              fontWeight={700}
+                              fill={isActive ? "#fff" : j.colorDark}
+                            >
+                              {j.label}
+                            </text>
+                            <text
+                              x={cx}
+                              y={158}
+                              textAnchor="middle"
+                              fontSize={10}
+                              fill="var(--text-secondary)"
+                              fontFamily="monospace"
+                            >
+                              {j.subtitle}
+                            </text>
+                          </g>
+                        );
+                      })}
+
+                      {/* Arrows between */}
+                      {[0, 1].map((i) => {
+                        const cx = 180 + i * 160;
+                        return (
+                          <g key={`arr-${i}`}>
+                            <path
+                              d={`M ${cx - 4} 102 L ${cx + 4} 110 L ${cx - 4} 118`}
+                              stroke="var(--text-secondary)"
+                              strokeWidth={1.5}
+                              fill="none"
+                            />
+                          </g>
+                        );
+                      })}
+
+                      {/* Current value labels (above pipe) */}
+                      <text
+                        x={100}
+                        y={76}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fill="#0ea5e9"
+                        fontWeight={600}
+                      >
+                        x = {x.toFixed(2)}
+                      </text>
+                      <text
+                        x={260}
+                        y={76}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fill="#8b5cf6"
+                        fontWeight={600}
+                      >
+                        g = {g.toFixed(2)}
+                      </text>
+                      <text
+                        x={420}
+                        y={76}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fill="#ec4899"
+                        fontWeight={600}
+                      >
+                        h = {h.toFixed(2)}
+                      </text>
+
+                      {/* End label */}
+                      <text
+                        x={500}
+                        y={114}
+                        fontSize={12}
+                        fill="var(--text-primary)"
+                        fontWeight={700}
+                      >
+                        f = {f.toFixed(2)}
+                      </text>
+
+                      {/* Bottom bar: product of derivatives */}
+                      <rect
+                        x={30}
+                        y={190}
+                        width={460}
+                        height={22}
+                        rx={6}
+                        fill="var(--bg-surface)"
+                        stroke="var(--border)"
+                      />
+                      <text
+                        x={260}
+                        y={205}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fill="var(--text-primary)"
+                        fontFamily="monospace"
+                      >
+                        ∂f/∂x = ∂f/∂h · ∂h/∂g · ∂g/∂x = {df} · {dh.toFixed(2)}{" "}
+                        · {dg} = <tspan fontWeight={700}>{total.toFixed(2)}</tspan>
+                      </text>
+                    </svg>
+
+                    {/* Active junction detail */}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeJunction}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.2 }}
+                        className="rounded-lg border border-border bg-card p-4 space-y-2"
+                      >
+                        {(() => {
+                          const info = JUNCTIONS.find((j) => j.id === activeJunction);
+                          if (!info) return null;
+                          const localDeriv =
+                            info.id === "input"
+                              ? dg
+                              : info.id === "hidden"
+                                ? dh
+                                : df;
+                          return (
+                            <>
+                              <div className="flex items-center justify-between">
+                                <span
+                                  className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                                  style={{
+                                    backgroundColor: info.colorDark + "22",
+                                    color: info.colorDark,
+                                  }}
+                                >
+                                  Lớp {info.label}
+                                </span>
+                                <span className="text-[11px] text-tertiary font-mono">
+                                  {info.subtitle}
+                                </span>
+                              </div>
+                              <p className="text-sm text-foreground leading-relaxed">
+                                Đạo hàm cục bộ: <strong>{info.formula}</strong> ={" "}
+                                <span
+                                  className="px-1.5 py-0.5 rounded"
+                                  style={{
+                                    backgroundColor: info.colorDark + "22",
+                                    color: info.colorDark,
+                                  }}
+                                >
+                                  {localDeriv.toFixed(2)}
+                                </span>
+                              </p>
+                              <p className="text-xs text-muted leading-relaxed">
+                                Ý nghĩa: {info.derivativeLabel}. Đây là{" "}
+                                <em>một mảnh</em> của câu trả lời cuối. Chain rule
+                                nhân tất cả các mảnh lại.
+                              </p>
+                            </>
+                          );
+                        })()}
+                      </motion.div>
+                    </AnimatePresence>
+
+                    <p className="text-xs text-muted italic text-center">
+                      Kéo thanh x và quan sát: đạo hàm ∂h/∂g = 2g thay đổi theo g,
+                      trong khi ∂f/∂h = 1 giữ nguyên. Tích của chúng là gradient tổng.
+                    </p>
+                  </div>
+                );
+              }}
+            />
+          </LessonSection>
+
+          {/* Thí nghiệm 2: minh hoạ riêng — đạo hàm như độ dốc */}
+          <LessonSection label="Thí nghiệm 2: Đạo hàm là độ dốc" step={2}>
+            <p className="text-sm text-muted mb-4 leading-relaxed">
+              Kéo thanh để di chuyển điểm trên parabol{" "}
+              <code className="px-1.5 py-0.5 rounded bg-surface">L(w) = (w − 3)² + 1</code>
+              . Đường tiếp tuyến màu cam cho biết <strong>độ dốc tại điểm đó</strong> —
+              đúng bằng giá trị đạo hàm.
+            </p>
+
+            <SliderGroup
+              sliders={[
+                {
+                  key: "w",
+                  label: "Vị trí weight w",
+                  min: 0,
+                  max: 6,
+                  step: 0.05,
+                  defaultValue: 1,
+                },
+              ]}
+              visualization={(values) => {
+                const w = values.w;
+                const L = (w - 3) ** 2 + 1;
+                const dL = 2 * (w - 3);
+                const cx = 40 + (w / 6) * 440;
+                const cy = 200 - Math.min(L, 20) * 8;
+                const tangentDX = 40;
+                const tangentDY = dL * (40 / 6) * (160 / 20);
+                const tangentX1 = cx - tangentDX;
+                const tangentY1 = cy + tangentDY;
+                const tangentX2 = cx + tangentDX;
+                const tangentY2 = cy - tangentDY;
+
+                const curvePoints: string[] = [];
+                for (let wi = 0; wi <= 6; wi += 0.08) {
+                  const Li = (wi - 3) ** 2 + 1;
+                  const px = 40 + (wi / 6) * 440;
+                  const py = 200 - Math.min(Li, 20) * 8;
+                  curvePoints.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+                }
+
+                const slopeColor =
+                  Math.abs(dL) < 0.2
+                    ? "#22c55e"
+                    : dL > 0
+                      ? "#ef4444"
+                      : "#3b82f6";
+
+                return (
+                  <div className="w-full space-y-3">
+                    <svg
+                      viewBox="0 0 520 240"
+                      className="w-full"
+                      role="img"
+                      aria-label={`Parabol loss với tiếp tuyến tại w = ${w.toFixed(2)}, độ dốc = ${dL.toFixed(2)}.`}
+                    >
+                      <title>L(w) = (w − 3)² + 1, dL/dw tại w = {w.toFixed(2)}</title>
+
+                      {/* Axes */}
+                      <line
+                        x1={40}
+                        y1={200}
+                        x2={480}
+                        y2={200}
+                        stroke="var(--border)"
+                        strokeWidth={1}
+                      />
+                      <line
+                        x1={40}
+                        y1={20}
+                        x2={40}
+                        y2={200}
+                        stroke="var(--border)"
+                        strokeWidth={1}
+                      />
+
+                      {/* Tick marks */}
+                      {[0, 1, 2, 3, 4, 5, 6].map((t) => {
+                        const tx = 40 + (t / 6) * 440;
+                        return (
+                          <g key={`tx-${t}`}>
+                            <line
+                              x1={tx}
+                              y1={200}
+                              x2={tx}
+                              y2={204}
+                              stroke="var(--text-tertiary)"
+                              strokeWidth={1}
+                            />
+                            <text
+                              x={tx}
+                              y={216}
+                              textAnchor="middle"
+                              fontSize={10}
+                              fill="var(--text-tertiary)"
+                            >
+                              {t}
+                            </text>
+                          </g>
+                        );
+                      })}
+                      <text
+                        x={490}
+                        y={204}
+                        fontSize={11}
+                        fill="var(--text-secondary)"
+                      >
+                        w
+                      </text>
+                      <text
+                        x={14}
+                        y={30}
+                        fontSize={11}
+                        fill="var(--text-secondary)"
+                      >
+                        L
+                      </text>
+
+                      {/* Curve */}
+                      <polyline
+                        points={curvePoints.join(" ")}
+                        fill="none"
+                        stroke="#6366f1"
+                        strokeWidth={2.5}
+                        strokeLinecap="round"
+                      />
+
+                      {/* Minimum marker */}
+                      <circle
+                        cx={40 + (3 / 6) * 440}
+                        cy={200 - 1 * 8}
+                        r={5}
+                        fill="none"
+                        stroke="#22c55e"
+                        strokeWidth={1.5}
+                        strokeDasharray="2,2"
+                      />
+                      <text
+                        x={40 + (3 / 6) * 440}
+                        y={200 - 1 * 8 - 10}
+                        textAnchor="middle"
+                        fontSize={9}
+                        fill="#22c55e"
+                      >
+                        đáy
+                      </text>
+
+                      {/* Tangent line */}
+                      <line
+                        x1={tangentX1}
+                        y1={tangentY1}
+                        x2={tangentX2}
+                        y2={tangentY2}
+                        stroke="#f59e0b"
+                        strokeWidth={2}
+                        strokeDasharray="4,3"
+                      />
+
+                      {/* Ball */}
+                      <circle cx={cx} cy={cy} r={7} fill={slopeColor} stroke="#fff" strokeWidth={2} />
+
+                      {/* Arrow indicating downhill direction */}
+                      {Math.abs(dL) > 0.15 && (
+                        <g>
+                          <line
+                            x1={cx}
+                            y1={cy + 16}
+                            x2={cx - Math.sign(dL) * 30}
+                            y2={cy + 16}
+                            stroke={slopeColor}
+                            strokeWidth={2}
+                          />
+                          <path
+                            d={`M ${cx - Math.sign(dL) * 30} ${cy + 12} L ${cx - Math.sign(dL) * 36} ${cy + 16} L ${cx - Math.sign(dL) * 30} ${cy + 20} Z`}
+                            fill={slopeColor}
+                          />
+                        </g>
+                      )}
+                    </svg>
+
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="rounded-lg border border-border bg-card p-2 text-center">
+                        <p className="text-[10px] text-tertiary uppercase tracking-wide">w</p>
+                        <p className="text-sm font-mono font-semibold text-foreground">
+                          {w.toFixed(2)}
+                        </p>
+                      </div>
+                      <div className="rounded-lg border border-border bg-card p-2 text-center">
+                        <p className="text-[10px] text-tertiary uppercase tracking-wide">L(w)</p>
+                        <p className="text-sm font-mono font-semibold text-foreground">
+                          {L.toFixed(2)}
+                        </p>
+                      </div>
+                      <div
+                        className="rounded-lg p-2 text-center border"
+                        style={{
+                          backgroundColor: slopeColor + "12",
+                          borderColor: slopeColor + "55",
+                        }}
+                      >
+                        <p className="text-[10px] uppercase tracking-wide" style={{ color: slopeColor }}>
+                          dL/dw
+                        </p>
+                        <p
+                          className="text-sm font-mono font-semibold"
+                          style={{ color: slopeColor }}
+                        >
+                          {dL >= 0 ? "+" : ""}
+                          {dL.toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-muted italic text-center leading-relaxed">
+                      {Math.abs(dL) < 0.2
+                        ? "Gần đáy — độ dốc ≈ 0, ta đang ở cực tiểu."
+                        : dL > 0
+                          ? "Độ dốc dương → loss đang tăng về bên phải → cần giảm w."
+                          : "Độ dốc âm → loss đang giảm về bên phải → cần tăng w."}
+                    </p>
+                  </div>
+                );
+              }}
+            />
+          </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 4 — DEEPEN (StepReveal: 2-layer chain walk) ━━━ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu — mạng hai lớp">
+        <p className="text-sm text-muted mb-4 leading-relaxed">
+          Giờ ta rút gọn mạng nơ-ron thành ba giai đoạn: vào → lớp ẩn → đầu ra → loss.
+          Bấm &ldquo;Tiếp tục&rdquo; để thấy từng mảnh đạo hàm cục bộ xuất hiện, rồi
+          cách chúng nhân lại với nhau.
+        </p>
+
+        <StepReveal
+          labels={CHAIN_STEPS.map((s) => s.label)}
+        >
+          {CHAIN_STEPS.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.title}
+                className="rounded-xl border border-border bg-card p-5 space-y-3"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
+                    <Icon className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground">
+                      {step.title}
+                    </h4>
+                    <p className="text-[11px] font-mono text-muted">{step.label}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-foreground/85 leading-relaxed">
+                  {step.description}
+                </p>
+
+                {/* Micro visual for the final "multiplication" step */}
+                {step.title.includes("Nhân chuỗi") && (
+                  <div className="rounded-lg bg-surface p-3 mt-2">
+                    <svg viewBox="0 0 460 90" className="w-full">
+                      <title>Ba đạo hàm cục bộ nhân lại thành gradient tổng.</title>
+                      {[
+                        { x: 60, label: "∂L/∂a₂", color: "#0ea5e9", val: "2" },
+                        { x: 200, label: "∂a₂/∂a₁", color: "#8b5cf6", val: "w₂" },
+                        { x: 340, label: "∂a₁/∂x", color: "#ec4899", val: "w₁" },
+                      ].map((b, i) => (
+                        <g key={b.label}>
+                          <rect
+                            x={b.x - 50}
+                            y={20}
+                            width={100}
+                            height={40}
+                            rx={8}
+                            fill={b.color + "22"}
+                            stroke={b.color}
+                            strokeWidth={1.5}
+                          />
+                          <text
+                            x={b.x}
+                            y={38}
+                            textAnchor="middle"
+                            fontSize={11}
+                            fill={b.color}
+                            fontWeight={600}
+                            fontFamily="monospace"
+                          >
+                            {b.label}
+                          </text>
+                          <text
+                            x={b.x}
+                            y={54}
+                            textAnchor="middle"
+                            fontSize={10}
+                            fill="var(--text-secondary)"
+                            fontFamily="monospace"
+                          >
+                            = {b.val}
+                          </text>
+                          {i < 2 && (
+                            <text
+                              x={b.x + 70}
+                              y={44}
+                              fontSize={14}
+                              fill="var(--text-primary)"
+                              fontWeight={700}
+                            >
+                              ×
+                            </text>
+                          )}
+                        </g>
+                      ))}
+                      <text
+                        x={230}
+                        y={82}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fill="var(--text-primary)"
+                        fontStyle="italic"
+                      >
+                        tích ba mảnh = gradient tổng ∂L/∂x
+                      </text>
+                    </svg>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </StepReveal>
+
+        {/* AhaMoment after the walk */}
+        <div className="mt-6">
           <AhaMoment>
-            <p>
-              Gradient descent giống{" "}
-              <strong>tìm đáy thung lũng khi bị bịt mắt</strong>: không
-              nhìn thấy đỉnh nhưng <strong>cảm nhận dốc</strong> (gradient)
-              rồi bước ngược lại. Learning rate là{" "}
-              <strong>bước chân</strong>: bước quá lớn nhảy qua đáy, bước
-              quá nhỏ đi mãi không tới. Chain rule là{" "}
-              <strong>hiệu ứng domino</strong>: đổ quân đầu, tất cả đổ theo
-              chuỗi!
-            </p>
+            <strong>Chain rule không phải phép thuật</strong> — nó chỉ là một cách
+            tổ chức việc cộng hưởng các thay đổi nhỏ. Mỗi lớp chỉ cần biết đạo hàm
+            cục bộ CỦA RIÊNG NÓ. Sau đó, gradient của toàn mạng được ráp lại bằng
+            phép nhân. Đó là lý do mạng tỉ tham số hôm nay tập luyện được trong giờ,
+            chứ không phải hàng tháng.
           </AhaMoment>
-        </LessonSection>
+        </div>
+      </LessonSection>
 
-        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Đạo hàm">
-          <p className="text-sm leading-relaxed">
-            <strong>Đạo hàm</strong> (derivative) đo tốc độ thay đổi của hàm số. Trong ML:{" "}
-            dL/dw cho biết loss thay đổi bao nhiêu khi weight thay đổi một chút.
-          </p>
+      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge
+          question="Cho f(g(x)) với g(x) = 3x và f(g) = g². Áp dụng chain rule, df/dx tại x = 2 bằng bao nhiêu?"
+          options={[
+            "6 — đơn giản là f'(x)",
+            "12 — df/dg × dg/dx = 2g × 3 = 2(3·2) × 3",
+            "36 — df/dg × dg/dx = 2g × 3, với g = 6 → 12 × 3",
+            "4 — bằng f(x) tại x = 2",
+          ]}
+          correct={2}
+          explanation="Chain rule: df/dx = df/dg · dg/dx. Ta có df/dg = 2g và dg/dx = 3. Tại x = 2 thì g = 3·2 = 6, nên df/dg = 2·6 = 12. Kết quả: 12 × 3 = 36. Lỗi thường gặp là nhầm df/dg với df/dx."
+        />
 
-          <LaTeX block>
-            {"f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}"}
-          </LaTeX>
-
-          <p className="text-sm leading-relaxed mt-2">
-            Trong hình minh hoạ Stage 1, độ dốc của đường tiếp tuyến chính là đạo hàm.
-            Tại w = 3 (đáy thung lũng), đạo hàm = 0 vì không còn dốc để đi xuống nữa.
-          </p>
-
-          <Callout variant="tip" title="Gradient = vector đạo hàm">
-            Khi hàm có nhiều biến (như neural network), đạo hàm riêng theo từng biến
-            ghép lại thành <strong>gradient</strong> — một vector chỉ hướng loss tăng nhanh nhất.
-            Đi ngược gradient = loss giảm nhanh nhất.
-          </Callout>
-
-          <LaTeX block>
-            {
-              "\\nabla L = \\left[\\frac{\\partial L}{\\partial w_1}, \\frac{\\partial L}{\\partial w_2}, \\ldots \\right]"
-            }
-          </LaTeX>
-        </LessonSection>
-
-        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Gradient descent">
-          <p className="text-sm leading-relaxed">
-            <strong>Gradient descent</strong> cập nhật weight bằng cách bước ngược hướng gradient:
-          </p>
-
-          <LaTeX block>
-            {
-              "w_{\\text{moi}} = w_{\\text{cu}} - \\eta \\cdot \\frac{\\partial L}{\\partial w}"
-            }
-          </LaTeX>
-
-          <p className="text-sm leading-relaxed mt-2">
-            <strong>Tốc độ học</strong> (learning rate, ký hiệu eta) kiểm soát kích thước bước.
-            Trong Stage 3 của hình minh hoạ, bạn có thể thấy:
-          </p>
-
-          <ul className="list-disc list-inside space-y-1 pl-2 text-sm leading-relaxed">
-            <li>eta quá lớn (khoảng 0.5 - 1.0): bước nhảy quá xa, loss phát tán</li>
-            <li>eta quá nhỏ (khoảng 0.001): bước rất nhỏ, cần hàng trăm bước</li>
-            <li>eta vừa phải (khoảng 0.05 - 0.15): hội tụ mượt mà đến minimum</li>
-          </ul>
-
+        <div className="mt-5">
           <InlineChallenge
-            question="Với w = 1, dL/dw = -4, lr = 0.1 thì w_mới = ?"
-            options={["0.6", "1.4", "1.04", "0.96"]}
-            correct={1}
-            explanation="w_mới = w - lr * dL/dw = 1 - 0.1 * (-4) = 1 + 0.4 = 1.4. Gradient âm nên w tăng (đi về phía loss giảm)."
-          />
-        </LessonSection>
-
-        <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Chain rule">
-          <p className="text-sm leading-relaxed">
-            <strong>Quy tắc chuỗi</strong> (chain rule) là lý do backpropagation hoạt động.
-            Neural network là chuỗi hàm: y = f3(f2(f1(x))). Chain rule cho phép tính đạo hàm
-            ngược lại qua từng layer:
-          </p>
-
-          <LaTeX block>
-            {
-              "\\frac{\\partial L}{\\partial w} = \\frac{\\partial L}{\\partial y} \\cdot \\frac{\\partial y}{\\partial h} \\cdot \\frac{\\partial h}{\\partial w}"
-            }
-          </LaTeX>
-
-          <p className="text-sm leading-relaxed mt-2">
-            Như <strong>hiệu ứng domino</strong>: đổ quân đầu, tất cả đổ theo chuỗi. Mỗi
-            layer chỉ cần tính local gradient, rồi nhân ngược lại. 100 layers nhân local
-            gradient thay vì đạo hàm hàm 100 lớp trực tiếp.
-          </p>
-
-          <Callout variant="info" title="Ví dụ cụ thể">
-            Cho f(x) = (3x + 2)^2. Đặt u = 3x + 2, f = u^2.
-            Chain rule: df/dx = df/du * du/dx = 2u * 3 = 6(3x+2).
-            Tại x = 1: df/dx = 6 * 5 = 30.
-            Trong neural network: u = linear layer, f = activation.
-          </Callout>
-        </LessonSection>
-
-        <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Vanishing gradient">
-          <p className="text-sm leading-relaxed">
-            <strong>Vanishing gradient</strong> xảy ra khi chain rule nhân nhiều gradient nhỏ.
-            Như thì thầm qua 100 người — tin nhắn mất dần.
-          </p>
-
-          <LaTeX block>
-            {
-              "\\text{Sigmoid: } \\sigma'(x) = \\sigma(x)(1 - \\sigma(x)) \\leq 0.25"
-            }
-          </LaTeX>
-
-          <p className="text-sm leading-relaxed mt-2">
-            Sigmoid có gradient tối đa 0.25. Với 50 layers: 0.25^50 &#8776; 10^(-30) — gradient
-            về cỡ 0, các layer đầu không học được gì. Giải pháp:
-          </p>
-
-          <ul className="list-disc list-inside space-y-1 pl-2 text-sm leading-relaxed">
-            <li><strong>ReLU</strong>: gradient = 1 (khi x &gt; 0), không bị giảm qua các layer</li>
-            <li><strong>Residual connections</strong> (skip connections): gradient có đường tắt</li>
-            <li><strong>Batch normalization</strong>: giữ gradient ở mức ổn định</li>
-          </ul>
-
-          <LaTeX block>
-            {
-              "\\text{ReLU: } f'(x) = \\begin{cases} 1 & x > 0 \\\\ 0 & x \\leq 0 \\end{cases}"
-            }
-          </LaTeX>
-
-          <Callout variant="tip" title="Autograd">
-            Trong thực tế, bạn KHÔNG cần tính đạo hàm thủ công. PyTorch autograd tự động tính gradient
-            cho bất kỳ computation graph nào. loss.backward() tính gradient cho TẤT CẢ parameters.
-          </Callout>
-
-          <CodeBlock language="python" title="Backpropagation với PyTorch autograd">{`import torch
-
-# PyTorch tự động tính gradient
-x = torch.tensor(2.0, requires_grad=True)
-y = (3*x + 2)**2  # f(x) = (3x+2)^2
-y.backward()       # Chain rule tự động
-print(f"df/dx tại x=2: {x.grad}")  # 48.0
-
-# Training loop (autograd làm tất cả)
-model = torch.nn.Linear(784, 10)
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
-
-output = model(input_data)
-loss = torch.nn.functional.cross_entropy(output, labels)
-loss.backward()        # Backprop: gradient cho MỌI weight
-optimizer.step()       # Gradient descent: cập nhật weights
-optimizer.zero_grad()  # Reset cho batch tiếp`}</CodeBlock>
-
-          <Callout variant="info" title="Exploding gradient — người anh em của vanishing">
-            <p className="text-sm leading-relaxed">
-              Ngược với vanishing, <strong>exploding gradient</strong> xảy ra khi chain rule
-              nhân nhiều gradient lớn hơn 1. Ví dụ: nếu mỗi layer khuếch đại gradient 1.5 lần,
-              sau 50 layer gradient sẽ lớn 1.5^50 ≈ 637 triệu. Weight nhảy vọt, loss thành NaN,
-              huấn luyện sụp đổ. Dấu hiệu: loss đang giảm ổn định rồi đột ngột nhảy lên vô cùng.
-              Giải pháp phổ biến là <strong>gradient clipping</strong> — giới hạn norm của
-              gradient về một ngưỡng (thường 1.0 hoặc 5.0) trước khi cập nhật weight.
-            </p>
-          </Callout>
-
-          <CodeBlock language="python" title="Gradient clipping để chống exploding gradient">{`import torch
-import torch.nn as nn
-
-model = nn.LSTM(input_size=100, hidden_size=256, num_layers=3)
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-
-for batch in loader:
-    output, _ = model(batch.input)
-    loss = loss_fn(output, batch.target)
-
-    loss.backward()
-
-    # Giới hạn norm gradient toàn cục về tối đa 1.0
-    # Nếu ||grad|| > 1.0: grad = grad * (1.0 / ||grad||)
-    torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-
-    optimizer.step()
-    optimizer.zero_grad()
-
-# Khi nào cần clip gradient?
-# - RNN/LSTM: rất dễ exploding vì backprop through time qua nhiều bước
-# - Transformer khi train from scratch: nên dùng clip_grad_norm = 1.0
-# - CNN cho classification: ít cần thiết nếu đã có batch norm`}</CodeBlock>
-
-          <p className="text-sm leading-relaxed mt-3">
-            Có một sự thật ít được nói rõ: phần lớn kỹ thuật hiện đại trong deep learning (ReLU,
-            residual connection, batch norm, layer norm, Adam, gradient clipping, khởi tạo
-            Xavier/He) đều được phát minh để giải quyết bài toán gradient không ổn định. Nếu
-            một ngày bạn huấn luyện mạng sâu mà loss đứng yên hoặc nhảy loạn, hãy nhớ: gần như
-            chắc chắn vấn đề nằm ở dòng chảy gradient qua chain rule. Kiểm tra{" "}
-            <code>param.grad.norm()</code> cho từng layer là công cụ chẩn đoán số một.
-          </p>
-
-          <Callout variant="tip" title="Tại sao Adam thường tốt hơn SGD thuần?">
-            <p className="text-sm leading-relaxed">
-              Adam (Adaptive Moment Estimation) duy trì hai moving average: momentum (trung bình
-              gradient) và biến thiên bình phương. Nó tự điều chỉnh learning rate cho từng
-              tham số — tham số nào gradient lớn sẽ giảm bước, tham số nào gradient nhỏ sẽ tăng
-              bước. Kết quả: ít nhạy với lựa chọn learning rate, hội tụ nhanh trên nhiều bài
-              toán. Tuy nhiên với CNN classification lớn (ResNet, ViT), SGD có momentum +
-              weight decay vẫn thường cho generalization tốt hơn Adam.
-            </p>
-          </Callout>
-        </LessonSection>
-
-        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
-          <MiniSummary
-            points={[
-              "Đạo hàm = tốc độ thay đổi. Trong ML: dL/dw cho biết loss thay đổi bao nhiêu khi weight thay đổi.",
-              "Gradient = vector chỉ hướng loss tăng nhanh nhất. Đi ngược gradient để loss giảm.",
-              "Gradient descent: w_mới = w_cũ - lr * gradient. Learning rate kiểm soát kích thước bước.",
-              "Chain rule: nhân local gradients ngược lại qua từng layer. Đây là cơ chế của backpropagation.",
-              "Vanishing gradient: sigmoid (max 0.25) nhân nhiều layers thì gradient về 0. ReLU (gradient = 1) giải quyết.",
+            question="Trong một mạng 5 lớp, mọi đạo hàm cục bộ đều bằng 0.3. Gradient của loss theo weight ở lớp đầu tiên (tính qua chain rule) có độ lớn bao nhiêu?"
+            options={[
+              "1.5 — tổng 0.3 + 0.3 + 0.3 + 0.3 + 0.3",
+              "0.3 — không đổi sau mỗi lớp",
+              "0.00243 — tích 0.3⁵",
+              "0 — gradient luôn triệt tiêu",
             ]}
+            correct={2}
+            explanation="Chain rule nhân: 0.3⁵ ≈ 0.00243. Đây là 'vanishing gradient' — nhân nhiều số nhỏ hơn 1 làm gradient teo nhỏ rất nhanh, khiến lớp đầu gần như không học được. Giải pháp: ReLU (gradient ≈ 1) và skip connections."
           />
-        </LessonSection>
+        </div>
+      </LessonSection>
 
-        <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
-          <QuizSection questions={quizQuestions} />
-        </LessonSection>
-      </ExplanationSection>
+      {/* ━━━ BƯỚC 6 — EXPLAIN (≤3 LaTeX) ━━━ */}
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích toán">
+        <ExplanationSection topicSlug={metadata.slug}>
+          <p className="leading-relaxed">
+            Bạn đã thấy bằng hình: mỗi lớp là một &ldquo;đoạn ống&rdquo; có đạo hàm
+            cục bộ. Giờ ta viết lại bằng ba công thức — mỗi công thức đi kèm một câu
+            &ldquo;nó nghĩa là gì bằng tiếng Việt đời thường&rdquo;.
+          </p>
+
+          {/* Formula 1: chain rule */}
+          <div className="rounded-xl border border-border bg-surface/50 p-5 my-4 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white text-sm font-bold">
+                1
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-foreground">
+                  Quy tắc chuỗi cho hai lớp hàm
+                </p>
+                <p className="text-xs text-muted">
+                  Nếu y = f(g(x)), đạo hàm tổng bằng tích đạo hàm cục bộ.
+                </p>
+              </div>
+            </div>
+
+            <LaTeX block>
+              {"\\frac{dy}{dx} = \\frac{dy}{dg} \\cdot \\frac{dg}{dx}"}
+            </LaTeX>
+
+            {/* Mini visual paired */}
+            <div className="rounded-lg bg-card border border-border p-3">
+              <svg viewBox="0 0 440 80" className="w-full">
+                <title>Hai đoạn ống nối tiếp, đạo hàm của toàn chuỗi bằng tích.</title>
+                <rect x={20} y={20} width={120} height={40} rx={8} fill="#0ea5e9" opacity={0.22} stroke="#0ea5e9" />
+                <text x={80} y={45} textAnchor="middle" fontSize={12} fill="#0ea5e9" fontWeight={600}>
+                  x → g
+                </text>
+                <text x={80} y={72} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontFamily="monospace">
+                  dg/dx
+                </text>
+
+                <rect x={170} y={20} width={120} height={40} rx={8} fill="#ec4899" opacity={0.22} stroke="#ec4899" />
+                <text x={230} y={45} textAnchor="middle" fontSize={12} fill="#ec4899" fontWeight={600}>
+                  g → y
+                </text>
+                <text x={230} y={72} textAnchor="middle" fontSize={10} fill="var(--text-secondary)" fontFamily="monospace">
+                  dy/dg
+                </text>
+
+                <text x={155} y={45} fontSize={16} fill="var(--text-primary)" fontWeight={700}>
+                  →
+                </text>
+
+                <text x={320} y={45} fontSize={12} fill="var(--text-primary)" fontFamily="monospace" fontWeight={600}>
+                  = (dy/dg) × (dg/dx)
+                </text>
+              </svg>
+            </div>
+
+            <p className="text-xs text-muted italic leading-relaxed">
+              &ldquo;Muốn biết y thay đổi bao nhiêu khi x đổi một tí, hãy xem g thay đổi
+              bao nhiêu khi x đổi, rồi y thay đổi bao nhiêu khi g đổi, cuối cùng
+              nhân lại.&rdquo;
+            </p>
+          </div>
+
+          {/* Formula 2: partial derivative */}
+          <div className="rounded-xl border border-border bg-surface/50 p-5 my-4 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white text-sm font-bold">
+                2
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-foreground">
+                  Đạo hàm riêng — một biến mỗi lần
+                </p>
+                <p className="text-xs text-muted">
+                  Khi loss L phụ thuộc nhiều weight, ∂L/∂wᵢ chỉ hỏi: &ldquo;giữ các
+                  weight khác yên, đổi riêng wᵢ thì L đổi bao nhiêu?&rdquo;
+                </p>
+              </div>
+            </div>
+
+            <LaTeX block>
+              {"\\frac{\\partial L}{\\partial w_i} = \\lim_{h \\to 0} \\frac{L(\\ldots, w_i + h, \\ldots) - L(\\ldots, w_i, \\ldots)}{h}"}
+            </LaTeX>
+
+            {/* Mini visual */}
+            <div className="rounded-lg bg-card border border-border p-3">
+              <svg viewBox="0 0 440 100" className="w-full">
+                <title>Đạo hàm riêng — chỉ lắc thanh wᵢ, giữ các thanh khác yên.</title>
+                {[0, 1, 2, 3, 4].map((i) => {
+                  const active = i === 2;
+                  const x = 40 + i * 80;
+                  return (
+                    <g key={i}>
+                      <rect
+                        x={x}
+                        y={30}
+                        width={30}
+                        height={50}
+                        rx={4}
+                        fill={active ? "#8b5cf6" : "var(--bg-surface)"}
+                        stroke={active ? "#8b5cf6" : "var(--border)"}
+                        strokeWidth={1.5}
+                        opacity={active ? 0.8 : 0.5}
+                      />
+                      <text
+                        x={x + 15}
+                        y={95}
+                        textAnchor="middle"
+                        fontSize={10}
+                        fill={active ? "#8b5cf6" : "var(--text-tertiary)"}
+                        fontFamily="monospace"
+                        fontWeight={active ? 700 : 400}
+                      >
+                        w{i + 1}
+                      </text>
+                      {active && (
+                        <>
+                          <path
+                            d={`M ${x - 6} 55 Q ${x - 14} 55 ${x - 14} 45`}
+                            stroke="#8b5cf6"
+                            strokeWidth={1.5}
+                            fill="none"
+                          />
+                          <path
+                            d={`M ${x + 36} 55 Q ${x + 44} 55 ${x + 44} 45`}
+                            stroke="#8b5cf6"
+                            strokeWidth={1.5}
+                            fill="none"
+                          />
+                          <text
+                            x={x + 15}
+                            y={22}
+                            textAnchor="middle"
+                            fontSize={10}
+                            fill="#8b5cf6"
+                            fontWeight={600}
+                          >
+                            lắc
+                          </text>
+                        </>
+                      )}
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
+
+            <p className="text-xs text-muted italic leading-relaxed">
+              &ldquo;Trong một phòng có 5 người, câu hỏi &lsquo;nếu chỉ một mình bạn
+              thay đổi, nhóm sẽ thay đổi ra sao?&rsquo; là đạo hàm riêng.&rdquo;
+            </p>
+          </div>
+
+          {/* Formula 3: gradient vector */}
+          <div className="rounded-xl border border-border bg-surface/50 p-5 my-4 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white text-sm font-bold">
+                3
+              </div>
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-foreground">
+                  Gradient — gom tất cả đạo hàm riêng thành một vector
+                </p>
+                <p className="text-xs text-muted">
+                  Mỗi thành phần ứng với một weight. Vector này chỉ hướng loss tăng
+                  nhanh nhất — ta đi NGƯỢC nó.
+                </p>
+              </div>
+            </div>
+
+            <LaTeX block>
+              {"\\nabla L = \\left[ \\frac{\\partial L}{\\partial w_1}, \\frac{\\partial L}{\\partial w_2}, \\ldots, \\frac{\\partial L}{\\partial w_n} \\right]"}
+            </LaTeX>
+
+            {/* Mini visual — arrows on a hill */}
+            <div className="rounded-lg bg-card border border-border p-3">
+              <svg viewBox="0 0 440 120" className="w-full">
+                <title>Gradient tại một điểm — mũi tên chỉ hướng loss tăng mạnh nhất.</title>
+                {/* Elliptical contours */}
+                {[60, 90, 120].map((r, i) => (
+                  <ellipse
+                    key={r}
+                    cx={220}
+                    cy={70}
+                    rx={r * 1.6}
+                    ry={r * 0.4}
+                    fill="none"
+                    stroke="#6366f1"
+                    strokeWidth={1}
+                    opacity={0.3 - i * 0.08}
+                  />
+                ))}
+
+                {/* Gradient arrow */}
+                <circle cx={220} cy={70} r={6} fill="#8b5cf6" stroke="#fff" strokeWidth={2} />
+                <line
+                  x1={220}
+                  y1={70}
+                  x2={300}
+                  y2={30}
+                  stroke="#ef4444"
+                  strokeWidth={2.5}
+                />
+                <path
+                  d="M 300 30 L 292 30 L 296 36 Z"
+                  fill="#ef4444"
+                />
+                <text x={304} y={26} fontSize={11} fill="#ef4444" fontWeight={600}>
+                  ∇L (lên dốc)
+                </text>
+
+                {/* Opposite arrow */}
+                <line
+                  x1={220}
+                  y1={70}
+                  x2={140}
+                  y2={110}
+                  stroke="#22c55e"
+                  strokeWidth={2.5}
+                  strokeDasharray="4,3"
+                />
+                <path d="M 140 110 L 148 108 L 144 102 Z" fill="#22c55e" />
+                <text x={60} y={112} fontSize={11} fill="#22c55e" fontWeight={600}>
+                  −∇L (xuống dốc)
+                </text>
+              </svg>
+            </div>
+
+            <p className="text-xs text-muted italic leading-relaxed">
+              &ldquo;Tưởng tượng bạn đứng trên sườn đồi sương mù. Gradient là ngón
+              tay chỉ hướng dốc lên. Gradient descent là: đi ngược ngón tay đó,
+              từng bước nhỏ.&rdquo;
+            </p>
+          </div>
+
+          <Callout variant="insight" title="Ba công thức, một câu chuyện">
+            Đạo hàm (một biến) → đạo hàm riêng (nhiều biến, lắc một thanh) → gradient
+            (gom lại thành vector) → quy tắc chuỗi (nhân các gradient cục bộ xuyên
+            qua các lớp). Đây là toàn bộ bộ công cụ toán bạn cần để hiểu{" "}
+            <TopicLink slug="backpropagation">backpropagation</TopicLink>.
+          </Callout>
+
+          <CollapsibleDetail title="Vì sao lại là PHÉP NHÂN, không phải phép cộng?">
+            <div className="space-y-2 text-sm leading-relaxed text-muted">
+              <p>
+                Trực giác: tưởng tượng một chuỗi <strong>tỉ lệ</strong>. Nếu giá vé
+                máy bay đổi 1 đồng làm chi phí chuyến đi đổi 2 đồng, và chi phí
+                chuyến đi đổi 1 đồng làm ngân sách gia đình đổi 1.5 đồng — thì giá
+                vé đổi 1 đồng làm ngân sách đổi 2 × 1.5 = 3 đồng. Các tỉ lệ dọc
+                chuỗi <strong>nhân nhau</strong>, không cộng.
+              </p>
+              <p>
+                Toán học: khi bạn tiệm cận về giới hạn h → 0 trong định nghĩa đạo
+                hàm, các hạng tử bậc cao bị bỏ qua và chỉ còn lại tích các hệ số
+                tuyến tính — chính là chain rule.
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <CollapsibleDetail title="Sao &lsquo;vanishing gradient&rsquo; lại đáng sợ đến vậy?">
+            <div className="space-y-2 text-sm leading-relaxed text-muted">
+              <p>
+                Sigmoid có đạo hàm tối đa ≈ 0.25. Nhân qua 50 lớp: 0.25⁵⁰ ≈ 10⁻³⁰.
+                Gradient ở lớp đầu gần như bằng 0 → các weight ở lớp đó không được
+                cập nhật → mạng không học được đặc trưng sơ cấp. Đây là lý do{" "}
+                <strong>ReLU</strong> (đạo hàm = 1 khi x &gt; 0) và{" "}
+                <strong>skip connection</strong> (tạo đường tắt cho gradient) được
+                phát minh. Xem thêm ở{" "}
+                <TopicLink slug="backpropagation">backpropagation</TopicLink>.
+              </p>
+            </div>
+          </CollapsibleDetail>
+
+          <p className="leading-relaxed mt-4">
+            Công cụ đã đủ. Bước kế tiếp là ráp chúng lại thành một thuật toán huấn
+            luyện hoàn chỉnh — xem{" "}
+            <TopicLink slug="gradient-intuition">Gradient — mũi tên chỉ đường xuống dốc</TopicLink>{" "}
+            để thấy gradient descent hoạt động trên một mặt 2D có thể tương tác.
+          </p>
+        </ExplanationSection>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 7 — CONNECT (summary + redirect) ━━━ */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt & Liên kết">
+        <MiniSummary
+          title="Bốn ý bạn mang về"
+          points={[
+            "Đạo hàm trả lời: 'thay đổi nhỏ này làm kết quả thay đổi bao nhiêu'. Trong ML, đó là dL/dw.",
+            "Đạo hàm riêng giữ mọi biến khác yên, chỉ lắc một biến. Gradient là vector gom mọi đạo hàm riêng lại.",
+            "Quy tắc chuỗi nhân các đạo hàm cục bộ xuyên qua mạng — là nền tảng của backpropagation.",
+            "Mỗi lớp chỉ cần biết đạo hàm cục bộ của mình. Backprop ráp các mảnh lại bằng phép nhân, không cần thần thánh.",
+          ]}
+        />
+
+        <div className="mt-5">
+          <Callout variant="tip" title="Xem ứng dụng thực tế">
+            Toán này không chỉ là lý thuyết — Meta dùng đúng những công thức trên
+            để huấn luyện LLaMA 3.1 với 405 tỉ tham số. Xem cách làm ở{" "}
+            <TopicLink slug="calculus-for-backprop-in-model-training">
+              Giải tích trong huấn luyện mô hình
+            </TopicLink>
+            .
+          </Callout>
+        </div>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+        <QuizSection questions={quizQuestions} />
+        <div className="mt-6 flex items-center justify-center text-xs text-muted gap-2">
+          <Sparkles className="h-3.5 w-3.5" />
+          Bạn có thể làm lại quiz và thử lại visualizations bất cứ lúc nào.
+        </div>
+      </LessonSection>
     </>
   );
 }
+

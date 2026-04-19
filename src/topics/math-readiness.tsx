@@ -1,6 +1,19 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Star,
+  Compass,
+  Dice5,
+  TrendingUp,
+  BarChart3,
+  BookOpen,
+  CheckCircle2,
+  RotateCcw,
+  Heart,
+  Sparkles,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -8,8 +21,8 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
-  LaTeX,
   TopicLink,
+  MatchPairs,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -20,9 +33,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "math-readiness",
   title: "Math Readiness for ML",
-  titleVi: "Sẵn sàng cho toán ML",
+  titleVi: "Toán cần biết — đừng lo",
   description:
-    "Biến số, hàm số, mặt phẳng toạ độ và ký hiệu tổng — chuẩn bị toán học cho Machine Learning",
+    "Bốn ngôi sao Bắc Đẩu của Machine Learning: đại số tuyến tính, xác suất, đạo hàm, thống kê. Không cần giỏi toán — chỉ cần biết chúng để làm gì.",
   category: "foundations",
   tags: ["functions", "notation", "summation", "prerequisites"],
   difficulty: "beginner",
@@ -30,707 +43,964 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-/* ── Constants ── */
 const TOTAL_STEPS = 7;
-const X_VALUES = [-3, -2, -1, 0, 1, 2, 3];
 
-/* SVG coordinate system for graph */
-const GW = 340;
-const GH = 280;
-const PADDING = 40;
-const PLOT_W = GW - 2 * PADDING;
-const PLOT_H = GH - 2 * PADDING;
+/* ══════════════════════════════════════════════════════════════
+   DỮ LIỆU: 4 ngôi sao Bắc Đẩu + vị trí trên chòm
+   ══════════════════════════════════════════════════════════════ */
 
-/* Summation demo data: exam scores */
-const EXAM_SCORES = [8, 6, 9, 7, 10];
+type StarId = "linalg" | "prob" | "deriv" | "stats";
+
+interface StarInfo {
+  id: StarId;
+  name: string;
+  subtitle: string;
+  icon: typeof Compass;
+  /** Vị trí SVG (viewBox 500 × 360) */
+  x: number;
+  y: number;
+  color: string;
+  /** Một câu mô tả ngắn — dùng làm tagline */
+  tagline: string;
+  /** Ẩn dụ đời thường */
+  analogy: string;
+  /** Chúng xuất hiện ở đâu trong ML */
+  whereInML: string;
+  /** Mức yêu cầu cho người mới */
+  needLevel: "biết sơ qua" | "nhớ kiến thức cấp 3" | "quen mặt là đủ";
+  /** Ví dụ cụ thể đời thường */
+  example: string;
+}
+
+const STARS: StarInfo[] = [
+  {
+    id: "linalg",
+    name: "Đại số tuyến tính",
+    subtitle: "Vector & ma trận",
+    icon: Compass,
+    x: 130,
+    y: 100,
+    color: "#3b82f6",
+    tagline: "Ngôn ngữ để mô tả mọi thứ bằng con số.",
+    analogy:
+      "Giống tọa độ trên Google Maps: một địa điểm = một cặp số (kinh độ, vĩ độ). Một bức ảnh = một dãy dài toàn số. Một bài hát = một dãy khác.",
+    whereInML:
+      "Dữ liệu nào vào máy cũng phải thành dãy số. Ảnh, văn bản, âm thanh — tất cả trở thành vector. Ma trận là bảng chứa nhiều vector xếp cạnh nhau.",
+    needLevel: "quen mặt là đủ",
+    example:
+      "Ảnh chân dung → ảnh trở thành lưới số 28×28 pixel = một ma trận. Cộng hai vector giống như ghép hai danh sách lại cột một.",
+  },
+  {
+    id: "prob",
+    name: "Xác suất",
+    subtitle: "Khả năng xảy ra của sự kiện",
+    icon: Dice5,
+    x: 370,
+    y: 90,
+    color: "#10b981",
+    tagline: "Máy không chắc chắn — nó đo độ chắc bằng xác suất.",
+    analogy:
+      "Bạn xem thời tiết: &ldquo;70% khả năng có mưa&rdquo;. Đó là xác suất. Máy ML cũng nói kiểu đó: &ldquo;95% đây là ảnh mèo&rdquo;.",
+    whereInML:
+      "Khi máy đoán, nó không nói &ldquo;đây là mèo&rdquo; chắc nịch mà nói &ldquo;mèo với độ chắc 0.95&rdquo;. Số càng gần 1 = càng tin. Gần 0.5 = đang lưỡng lự.",
+    needLevel: "biết sơ qua",
+    example:
+      "Tung đồng xu 100 lần được 53 lần ngửa → xác suất ngửa ≈ 0.53. Dự đoán thời tiết, khám bệnh, chatbot — tất cả đều chạy trên xác suất.",
+  },
+  {
+    id: "deriv",
+    name: "Đạo hàm",
+    subtitle: "Độ dốc — bạn đang đi lên hay xuống",
+    icon: TrendingUp,
+    x: 130,
+    y: 260,
+    color: "#f59e0b",
+    tagline: "Công cụ để tự sửa sai khi máy đang học.",
+    analogy:
+      "Bạn đang leo núi trong sương mù. Không thấy đỉnh, nhưng biết chân đang nghiêng về hướng nào. Đạo hàm cho biết hướng dốc — đi ngược hướng dốc là tới thấp nhất.",
+    whereInML:
+      "Lỗi của mô hình là một cái &ldquo;đồi&rdquo;. Máy muốn xuống đáy (lỗi thấp nhất). Đạo hàm cho biết nên bước theo hướng nào. Đây là linh hồn của huấn luyện.",
+    needLevel: "biết sơ qua",
+    example:
+      "Xe máy đang chạy, bạn nhìn đồng hồ tốc độ tăng dần — đạo hàm đang dương. Đang phanh, đồng hồ giảm — đạo hàm âm. Đó là toàn bộ ý tưởng.",
+  },
+  {
+    id: "stats",
+    name: "Thống kê",
+    subtitle: "Rút ra kết luận từ dữ liệu",
+    icon: BarChart3,
+    x: 370,
+    y: 270,
+    color: "#a855f7",
+    tagline: "Đọc được câu chuyện dữ liệu đang kể.",
+    analogy:
+      "Giáo viên nhìn điểm thi của cả lớp: trung bình bao nhiêu, lệch nhau thế nào, có ai thi 0 điểm không. Đó là thống kê — tóm gọn hàng nghìn số thành vài con số có ý nghĩa.",
+    whereInML:
+      "Trước khi huấn luyện, bạn phải biết dữ liệu có gì: bao nhiêu ví dụ, phân bố ra sao, có sai lệch không. Sau khi huấn luyện, cần đo mô hình đúng bao nhiêu phần trăm.",
+    needLevel: "nhớ kiến thức cấp 3",
+    example:
+      "Trung bình cộng điểm, giá trị cao nhất và thấp nhất, bao nhiêu phần trăm học sinh đậu. Tất cả những điều bạn học lớp 10 là đủ để bắt đầu.",
+  },
+];
+
+/* ══════════════════════════════════════════════════════════════
+   Tự đánh giá — mỗi ô là một mini-quiz biết/chưa biết
+   ══════════════════════════════════════════════════════════════ */
+
+type SelfAssessState = Record<string, "known" | "unsure" | "nope" | null>;
+
+interface SelfAssessItem {
+  id: string;
+  q: string;
+  starRelated: StarId;
+}
+
+const SELF_ASSESS: SelfAssessItem[] = [
+  {
+    id: "coord",
+    q: "Bạn biết mặt phẳng tọa độ là gì không? (trục x, trục y, điểm có tọa độ (2, 3))",
+    starRelated: "linalg",
+  },
+  {
+    id: "avg",
+    q: "Bạn tính được trung bình cộng của 5 số chứ? (ví dụ: 6, 7, 8, 9, 10)",
+    starRelated: "stats",
+  },
+  {
+    id: "prob",
+    q: "Bạn hiểu &ldquo;70% khả năng có mưa&rdquo; nghĩa là gì chứ?",
+    starRelated: "prob",
+  },
+  {
+    id: "slope",
+    q: "Bạn phân biệt được đường đi lên dốc với đường đi xuống dốc không?",
+    starRelated: "deriv",
+  },
+  {
+    id: "func",
+    q: "Công thức y = 2x + 1: cho x = 3 thì y bằng bao nhiêu?",
+    starRelated: "linalg",
+  },
+  {
+    id: "sum",
+    q: "Cộng 3 + 5 + 7 + 9 = bao nhiêu? (không dùng máy tính)",
+    starRelated: "stats",
+  },
+];
+
+/* ══════════════════════════════════════════════════════════════
+   COMPONENT PHỤ: Chòm sao Bắc Đẩu có thể bấm
+   ══════════════════════════════════════════════════════════════ */
+
+function ConstellationMap({
+  active,
+  onSelect,
+  visited,
+}: {
+  active: StarId | null;
+  onSelect: (id: StarId) => void;
+  visited: Set<StarId>;
+}) {
+  return (
+    <div className="relative">
+      <svg
+        viewBox="0 0 500 360"
+        className="w-full rounded-xl border border-border"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(30, 41, 59, 0.98) 0%, rgba(2, 6, 23, 1) 75%)",
+        }}
+      >
+        <defs>
+          <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="60%" stopColor="white" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* Rải sao nền nhỏ */}
+        {Array.from({ length: 40 }).map((_, i) => {
+          const cx = (i * 317.21) % 500;
+          const cy = (i * 119.73) % 360;
+          const r = 0.6 + ((i * 7) % 5) * 0.25;
+          const op = 0.2 + ((i * 13) % 6) * 0.1;
+          return (
+            <circle
+              key={`bg-${i}`}
+              cx={cx}
+              cy={cy}
+              r={r}
+              fill="white"
+              opacity={op}
+            />
+          );
+        })}
+
+        {/* Đường nối các sao chính */}
+        {STARS.map((s, i) => {
+          const next = STARS[(i + 1) % STARS.length];
+          return (
+            <line
+              key={`line-${s.id}-${next.id}`}
+              x1={s.x}
+              y1={s.y}
+              x2={next.x}
+              y2={next.y}
+              stroke="white"
+              strokeWidth="0.6"
+              strokeDasharray="3,4"
+              opacity="0.25"
+            />
+          );
+        })}
+
+        {/* Các sao chính */}
+        {STARS.map((s) => {
+          const isActive = active === s.id;
+          const wasVisited = visited.has(s.id);
+          const baseR = isActive ? 14 : wasVisited ? 11 : 10;
+
+          return (
+            <g
+              key={s.id}
+              onClick={() => onSelect(s.id)}
+              style={{ cursor: "pointer" }}
+            >
+              {/* Glow halo */}
+              <motion.circle
+                cx={s.x}
+                cy={s.y}
+                r={baseR + 14}
+                fill="url(#starGlow)"
+                opacity={isActive ? 0.8 : 0.35}
+                animate={{
+                  scale: isActive ? [1, 1.15, 1] : 1,
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: isActive ? Infinity : 0,
+                  ease: "easeInOut",
+                }}
+              />
+
+              {/* Sao chính */}
+              <motion.circle
+                cx={s.x}
+                cy={s.y}
+                r={baseR}
+                fill={s.color}
+                stroke="white"
+                strokeWidth="1.5"
+                animate={{
+                  r: isActive ? [baseR, baseR + 2, baseR] : baseR,
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: isActive ? Infinity : 0,
+                  ease: "easeInOut",
+                }}
+              />
+
+              {/* Tick nếu đã ghé */}
+              {wasVisited && !isActive && (
+                <circle
+                  cx={s.x + baseR - 2}
+                  cy={s.y - baseR + 2}
+                  r={4}
+                  fill="#22c55e"
+                  stroke="white"
+                  strokeWidth="1"
+                />
+              )}
+
+              {/* Tên sao */}
+              <text
+                x={s.x}
+                y={s.y + baseR + 20}
+                textAnchor="middle"
+                fontSize="13"
+                fontWeight="700"
+                fill="white"
+                style={{ pointerEvents: "none" }}
+              >
+                {s.name}
+              </text>
+              <text
+                x={s.x}
+                y={s.y + baseR + 36}
+                textAnchor="middle"
+                fontSize="10"
+                fill="rgba(255,255,255,0.6)"
+                style={{ pointerEvents: "none" }}
+              >
+                {s.subtitle}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Ghi chú giữa chòm */}
+        <text
+          x="250"
+          y="185"
+          textAnchor="middle"
+          fontSize="11"
+          fill="rgba(255,255,255,0.5)"
+          fontStyle="italic"
+        >
+          Bấm vào một ngôi sao để biết chi tiết
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COMPONENT PHỤ: Bảng chi tiết khi bấm một sao
+   ══════════════════════════════════════════════════════════════ */
+
+function StarDetail({ star }: { star: StarInfo }) {
+  const Icon = star.icon;
+  const levelColor =
+    star.needLevel === "quen mặt là đủ"
+      ? "#22c55e"
+      : star.needLevel === "biết sơ qua"
+        ? "#84cc16"
+        : "#f59e0b";
+
+  return (
+    <motion.div
+      key={star.id}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="rounded-xl border-2 p-5 space-y-4"
+      style={{
+        borderColor: star.color + "66",
+        backgroundColor: star.color + "0d",
+      }}
+    >
+      <div className="flex items-center gap-3">
+        <div
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
+          style={{ backgroundColor: star.color + "22" }}
+        >
+          <Icon size={22} style={{ color: star.color }} />
+        </div>
+        <div>
+          <h3 className="text-base font-bold text-foreground leading-tight">
+            {star.name}
+          </h3>
+          <p className="text-xs text-muted">{star.subtitle}</p>
+        </div>
+        <span
+          className="ml-auto text-[10px] font-bold px-2 py-1 rounded-full whitespace-nowrap"
+          style={{
+            backgroundColor: levelColor + "22",
+            color: levelColor,
+          }}
+        >
+          {star.needLevel}
+        </span>
+      </div>
+
+      <p
+        className="text-sm font-semibold leading-relaxed"
+        style={{ color: star.color }}
+      >
+        &ldquo;{star.tagline}&rdquo;
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="rounded-lg border border-border bg-card p-3 space-y-1.5">
+          <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
+            Ẩn dụ đời thường
+          </p>
+          <p className="text-xs text-foreground/85 leading-relaxed">
+            {star.analogy}
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-3 space-y-1.5">
+          <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
+            Dùng ở đâu trong ML
+          </p>
+          <p className="text-xs text-foreground/85 leading-relaxed">
+            {star.whereInML}
+          </p>
+        </div>
+      </div>
+
+      <div className="rounded-lg bg-card border border-border p-3">
+        <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide mb-1.5">
+          Ví dụ cụ thể
+        </p>
+        <p className="text-xs text-foreground/85 leading-relaxed">
+          {star.example}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COMPONENT PHỤ: Tự đánh giá
+   ══════════════════════════════════════════════════════════════ */
+
+function SelfAssessment() {
+  const [answers, setAnswers] = useState<SelfAssessState>(
+    () =>
+      Object.fromEntries(SELF_ASSESS.map((q) => [q.id, null])) as SelfAssessState,
+  );
+
+  const answered = Object.values(answers).filter((v) => v !== null).length;
+  const knownCount = Object.values(answers).filter(
+    (v) => v === "known",
+  ).length;
+  const nopeCount = Object.values(answers).filter((v) => v === "nope").length;
+
+  let advice = "";
+  let adviceColor = "";
+  if (answered === SELF_ASSESS.length) {
+    if (knownCount >= 5) {
+      advice =
+        "Xuất sắc! Bạn có nền tảng rất vững. Học ML sẽ rất thoải mái cho bạn.";
+      adviceColor = "#22c55e";
+    } else if (knownCount >= 3) {
+      advice =
+        "Ổn rồi. Vài chỗ chưa chắc — nhưng hoàn toàn đủ để bắt đầu. Các bài tiếp theo sẽ ôn lại khi cần.";
+      adviceColor = "#84cc16";
+    } else {
+      advice =
+        "Đừng nản! ML không cần giỏi toán — cần quen mặt. Mỗi khi gặp ký hiệu lạ, bạn chỉ cần hỏi 'cái này dùng để làm gì?' — không cần chứng minh được.";
+      adviceColor = "#f59e0b";
+    }
+  }
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+      <div className="flex items-center gap-2">
+        <BookOpen size={18} className="text-accent" />
+        <h3 className="text-base font-semibold text-foreground">
+          Bạn biết đến đâu rồi?
+        </h3>
+      </div>
+      <p className="text-sm text-muted leading-relaxed">
+        Sáu câu hỏi nhỏ để tự kiểm tra. Đừng lo đúng sai — chỉ bấm cái
+        bạn cảm thấy thật. Cuối cùng sẽ có lời khuyên dựa trên kết quả.
+      </p>
+
+      <div className="space-y-2.5">
+        {SELF_ASSESS.map((q, i) => {
+          const ans = answers[q.id];
+          return (
+            <div
+              key={q.id}
+              className={`rounded-lg border p-3 transition-colors ${
+                ans
+                  ? "border-accent/40 bg-accent-light/30"
+                  : "border-border bg-surface"
+              }`}
+            >
+              <p className="text-sm text-foreground/90 mb-2 leading-relaxed">
+                <span className="font-semibold text-accent mr-2">
+                  #{i + 1}
+                </span>
+                {q.q}
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {(
+                  [
+                    { key: "known" as const, label: "Biết chắc", color: "#22c55e" },
+                    { key: "unsure" as const, label: "Mơ hồ", color: "#f59e0b" },
+                    { key: "nope" as const, label: "Chưa biết", color: "#ef4444" },
+                  ] as const
+                ).map((opt) => {
+                  const selected = ans === opt.key;
+                  return (
+                    <button
+                      key={opt.key}
+                      type="button"
+                      onClick={() =>
+                        setAnswers((prev) => ({
+                          ...prev,
+                          [q.id]: prev[q.id] === opt.key ? null : opt.key,
+                        }))
+                      }
+                      className="rounded-lg border px-2 py-1.5 text-xs font-medium transition-all"
+                      style={
+                        selected
+                          ? {
+                              borderColor: opt.color,
+                              backgroundColor: opt.color + "22",
+                              color: opt.color,
+                            }
+                          : undefined
+                      }
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Tổng kết */}
+      <div className="rounded-lg border border-border bg-surface p-3 space-y-2">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-muted">
+            Đã trả lời: {answered}/{SELF_ASSESS.length}
+          </span>
+          {answered > 0 && (
+            <span className="text-muted">
+              Biết chắc: <strong className="text-emerald-500">{knownCount}</strong>
+              {" · "}Chưa:{" "}
+              <strong className="text-rose-500">{nopeCount}</strong>
+            </span>
+          )}
+        </div>
+        <div className="flex gap-1">
+          {SELF_ASSESS.map((q) => {
+            const a = answers[q.id];
+            const color =
+              a === "known"
+                ? "#22c55e"
+                : a === "unsure"
+                  ? "#f59e0b"
+                  : a === "nope"
+                    ? "#ef4444"
+                    : "var(--border)";
+            return (
+              <div
+                key={q.id}
+                className="h-2 flex-1 rounded-full transition-colors"
+                style={{ backgroundColor: color }}
+              />
+            );
+          })}
+        </div>
+
+        <AnimatePresence>
+          {advice && (
+            <motion.p
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="text-xs font-medium leading-relaxed pt-2"
+              style={{ color: adviceColor }}
+            >
+              <Sparkles size={12} className="inline mr-1" />
+              {advice}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COMPONENT CHÍNH
+   ══════════════════════════════════════════════════════════════ */
 
 export default function MathReadinessTopic() {
-  /* ── State for function explorer ── */
-  const [a, setA] = useState(1);
-  const [b, setB] = useState(0);
+  const [activeStar, setActiveStar] = useState<StarId | null>("linalg");
+  const [visited, setVisited] = useState<Set<StarId>>(new Set(["linalg"]));
 
-  /* ── State for summation builder ── */
-  const [sumStep, setSumStep] = useState(0);
-
-  /* ── Derived: function values ── */
-  const tableData = useMemo(
-    () =>
-      X_VALUES.map((x) => ({
-        x,
-        computation: `${a} \u00d7 ${x >= 0 ? x : `(${x})`} + ${b >= 0 ? b : `(${b})`}`,
-        result: a * x + b,
-      })),
-    [a, b],
+  const activeInfo = useMemo(
+    () => STARS.find((s) => s.id === activeStar),
+    [activeStar],
   );
 
-  /* ── Derived: running total for summation ── */
-  const runningTotal = useMemo(() => {
-    const totals: number[] = [];
-    let sum = 0;
-    for (const score of EXAM_SCORES) {
-      sum += score;
-      totals.push(sum);
-    }
-    return totals;
-  }, []);
+  function handleSelect(id: StarId) {
+    setActiveStar(id);
+    setVisited((prev) => new Set(prev).add(id));
+  }
 
-  /* ── SVG helpers ── */
-  const toSvgX = useCallback(
-    (x: number) => PADDING + ((x + 3) / 6) * PLOT_W,
-    [],
-  );
-  const toSvgY = useCallback(
-    (y: number) => {
-      const yMin = -15;
-      const yMax = 15;
-      return PADDING + ((yMax - y) / (yMax - yMin)) * PLOT_H;
-    },
-    [],
-  );
-
-  /* ── Quiz ── */
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
-        question: "Cho f(x) = 3x + 2. Giá trị f(4) bằng bao nhiêu?",
-        options: ["10", "14", "12", "15"],
-        correct: 1,
-        explanation:
-          "f(4) = 3 \u00d7 4 + 2 = 12 + 2 = 14. Thay x = 4 vào công thức rồi tính theo thứ tự phép tính.",
-      },
-      {
         question:
-          "Trong hàm y = ax + b, khi a tăng từ 1 lên 3 (giữ b không đổi), đồ thị thay đổi thế nào?",
+          "Bốn ngôi sao Bắc Đẩu của Machine Learning là gì?",
         options: [
-          "Dốc hơn (steeper)",
-          "Thoải hơn (flatter)",
-          "Dịch sang phải",
-          "Không đổi",
-        ],
-        correct: 0,
-        explanation:
-          "Hệ số a quyết định độ dốc của đường thẳng. a càng lớn, đường càng dốc. Đây chính là lý do trong ML, thay đổi tham số a sẽ thay đổi mạnh hành vi của mô hình.",
-      },
-      {
-        question:
-          "Biểu thức \u03a3_{i=1}^{4} i\u00b2 có nghĩa là gì?",
-        options: [
-          "1 + 2 + 3 + 4",
-          "1\u00b2 + 2\u00b2 + 3\u00b2 + 4\u00b2",
-          "4\u00b2",
-          "(1 + 2 + 3 + 4)\u00b2",
+          "Cộng, trừ, nhân, chia",
+          "Đại số tuyến tính, xác suất, đạo hàm, thống kê",
+          "Hình học, lượng giác, số học, đại số",
+          "Python, SQL, Excel, Git",
         ],
         correct: 1,
         explanation:
-          "Ký hiệu \u03a3 yêu cầu tính tổng của biểu thức i\u00b2 với i chạy từ 1 đến 4. Vậy kết quả là 1\u00b2 + 2\u00b2 + 3\u00b2 + 4\u00b2 = 1 + 4 + 9 + 16 = 30.",
+          "Bốn khái niệm này gần như xuất hiện trong mọi mô hình ML. Không cần giỏi, nhưng cần quen mặt và biết chúng dùng để làm gì.",
+      },
+      {
+        question:
+          "Ảnh 28x28 pixel đen trắng được biểu diễn trong máy tính như thế nào?",
+        options: [
+          "Một chuỗi ký tự",
+          "Một ma trận 28x28 số, mỗi số thể hiện độ sáng của một pixel",
+          "Một file video",
+          "Một câu văn mô tả ảnh",
+        ],
+        correct: 1,
+        explanation:
+          "Máy nhìn mọi thứ bằng số. Ảnh 28x28 = ma trận 28x28 con số. Đây là lý do đại số tuyến tính (vector, ma trận) là ngôi sao số một — vì dữ liệu nào cũng phải trở thành dãy số.",
+      },
+      {
+        question:
+          "Khi mô hình ML đưa ra dự đoán, nó thường trả về điều gì?",
+        options: [
+          "Chỉ có đáp án đúng — không bao giờ sai",
+          "Xác suất hoặc độ tin cậy (ví dụ 0.87 = 87% chắc chắn)",
+          "Một câu tiếng Anh",
+          "Số phức",
+        ],
+        correct: 1,
+        explanation:
+          "Máy ML không nói chắc nịch — nó nói độ chắc. &ldquo;Đây là ảnh mèo với độ tin 0.95&rdquo;. Đó là lý do xác suất là ngôi sao quan trọng thứ hai.",
+      },
+      {
+        question:
+          "Đạo hàm (độ dốc) được dùng để làm gì trong ML?",
+        options: [
+          "Để đo chiều cao mô hình",
+          "Để máy biết đi theo hướng nào thì lỗi giảm — giống leo núi trong sương mù",
+          "Để vẽ đồ thị đẹp",
+          "Không dùng, chỉ có trong sách toán",
+        ],
+        correct: 1,
+        explanation:
+          "Huấn luyện ML thực chất là đi tìm điểm thấp nhất của đồi lỗi. Đạo hàm chỉ hướng đi — đi ngược dốc là xuống. Đây chính là thuật toán &ldquo;gradient descent&rdquo; mà bạn sẽ nghe nhiều.",
       },
       {
         type: "fill-blank",
         question:
-          "Cho f(x) = 2x \u2212 1. Tính \u03a3_{i=0}^{2} f(i) = {blank}",
-        blanks: [{ answer: "3", accept: ["3", "3,0"] }],
+          "Khi huấn luyện xong, ta cần đo xem mô hình đúng bao nhiêu phần trăm trên dữ liệu mới. Việc đo đạc này thuộc về {blank}.",
+        blanks: [
+          {
+            answer: "thống kê",
+            accept: ["thong ke", "statistics", "thống kê"],
+          },
+        ],
         explanation:
-          "f(0) = \u22121, f(1) = 1, f(2) = 3. Tổng = (\u22121) + 1 + 3 = 3. Đây là kết hợp hàm số và ký hiệu tổng — dùng rất nhiều trong công thức ML.",
+          "Thống kê là ngôi sao thứ tư. Nó không chỉ giúp bạn hiểu dữ liệu trước huấn luyện mà còn đánh giá mô hình sau khi huấn luyện xong.",
+      },
+      {
+        question:
+          "Bạn muốn bắt đầu học ML nhưng không giỏi toán. Lời khuyên nào hợp lý nhất?",
+        options: [
+          "Bỏ ý định — không giỏi toán thì không học được",
+          "Học bốn khái niệm ở mức hiểu ý — không cần chứng minh công thức — và học dần khi gặp lại ở các bài sau",
+          "Học toán ba năm trước khi đụng đến ML",
+          "Chỉ học Python, bỏ hết toán",
+        ],
+        correct: 1,
+        explanation:
+          "Đây là cách của hầu hết người làm ML hiện nay. Biết để làm gì > biết chứng minh. Khi gặp lại trong bài sau, kiến thức sẽ dần sâu hơn một cách tự nhiên.",
+      },
+      {
+        question:
+          "Khẳng định nào là SAI về mối quan hệ giữa toán và ML?",
+        options: [
+          "Hiểu toán sâu giúp bạn tạo ra mô hình mới, không chỉ dùng mô hình có sẵn",
+          "Đa số công việc ML thực tế dùng thư viện có sẵn, không yêu cầu chứng minh công thức",
+          "Không biết chút toán nào thì không thể bắt đầu học ML",
+          "Nhiều công việc ML phổ biến cần bạn hiểu ý các khái niệm, không cần viết công thức tay",
+        ],
+        correct: 2,
+        explanation:
+          "Sai ở câu C. Bạn chỉ cần &ldquo;quen mặt&rdquo; các khái niệm — không cần tính tay giải phương trình. Rất nhiều lập trình viên ML đã từng &ldquo;sợ toán&rdquo; hồi trung học.",
       },
     ],
     [],
   );
 
-  /* ── Handlers ── */
-  const handleSliderA = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setA(Number(e.target.value)),
-    [],
-  );
-  const handleSliderB = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setB(Number(e.target.value)),
-    [],
-  );
-  const handleSumNext = useCallback(
-    () => setSumStep((prev) => Math.min(prev + 1, EXAM_SCORES.length)),
-    [],
-  );
-  const handleSumReset = useCallback(() => setSumStep(0), []);
-
   return (
     <>
-      {/* ================================================================
-          VISUALIZATION SECTION
-          ================================================================ */}
-      <VisualizationSection topicSlug="math-readiness">
-        <div className="space-y-8">
-          {/* ── PRIMARY: Triple-linked function explorer ── */}
-          <div className="space-y-4">
-            <h3 className="text-base font-semibold text-foreground">
-              Khám phá hàm tuyến tính: y = ax + b
-            </h3>
-            <p className="text-sm text-muted leading-relaxed">
-              Kéo thanh trượt để thay đổi tham số (parameter){" "}
-              <strong>a</strong> và <strong>b</strong>. Quan sát cách đồ thị,
-              bảng giá trị, và phương trình thay đổi đồng bộ.
-            </p>
-
-            {/* Equation panel */}
-            <div className="rounded-lg border border-border bg-surface p-4 text-center">
-              <LaTeX block>
-                {`y = ${a < 0 ? `(${a})` : a}x + ${b < 0 ? `(${b})` : b}`}
-              </LaTeX>
+      {/* ══════════════════ BƯỚC 1 — HOOK ══════════════════ */}
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Bắt đầu">
+        <div className="rounded-2xl border-2 border-accent/30 bg-gradient-to-br from-surface via-accent-light/40 to-surface p-6 space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent/15">
+              <Heart size={24} className="text-accent" />
             </div>
-
-            {/* Sliders */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm text-foreground font-medium">
-                    Hệ số góc a (độ dốc)
-                  </label>
-                  <span className="font-mono text-sm font-medium text-accent">
-                    {a.toFixed(1)}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={-3}
-                  max={3}
-                  step={0.1}
-                  value={a}
-                  onChange={handleSliderA}
-                  className="w-full h-2 rounded-full appearance-none cursor-pointer accent-accent"
-                  style={{
-                    background: `linear-gradient(to right, var(--color-accent) ${((a + 3) / 6) * 100}%, var(--bg-surface-hover, #E2E8F0) ${((a + 3) / 6) * 100}%)`,
-                  }}
-                />
-                <div className="flex justify-between text-xs text-tertiary">
-                  <span>-3,0</span>
-                  <span>3,0</span>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm text-foreground font-medium">
-                    Hệ số tự do b (cắt trục y)
-                  </label>
-                  <span className="font-mono text-sm font-medium text-accent">
-                    {b.toFixed(1)}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={-5}
-                  max={5}
-                  step={0.5}
-                  value={b}
-                  onChange={handleSliderB}
-                  className="w-full h-2 rounded-full appearance-none cursor-pointer accent-accent"
-                  style={{
-                    background: `linear-gradient(to right, var(--color-accent) ${((b + 5) / 10) * 100}%, var(--bg-surface-hover, #E2E8F0) ${((b + 5) / 10) * 100}%)`,
-                  }}
-                />
-                <div className="flex justify-between text-xs text-tertiary">
-                  <span>-5,0</span>
-                  <span>5,0</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Value table + Graph side by side */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Value table */}
-              <div className="rounded-lg border border-border bg-surface overflow-hidden">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-surface-hover/50">
-                      <th className="px-3 py-2 text-left font-medium text-foreground">
-                        x
-                      </th>
-                      <th className="px-3 py-2 text-left font-medium text-foreground">
-                        Phép tính
-                      </th>
-                      <th className="px-3 py-2 text-right font-medium text-foreground">
-                        f(x)
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row) => (
-                      <tr
-                        key={row.x}
-                        className="border-t border-border/50 hover:bg-surface-hover/30 transition-colors"
-                      >
-                        <td className="px-3 py-1.5 font-mono text-foreground">
-                          {row.x}
-                        </td>
-                        <td className="px-3 py-1.5 font-mono text-muted text-xs">
-                          {row.computation}
-                        </td>
-                        <td className="px-3 py-1.5 font-mono text-accent text-right font-medium">
-                          {row.result.toFixed(1)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* SVG Graph */}
-              <div className="rounded-lg border border-border bg-surface p-2 flex items-center justify-center">
-                <svg
-                  viewBox={`0 0 ${GW} ${GH}`}
-                  className="w-full max-w-[340px]"
-                  aria-label="Đồ thị hàm tuyến tính y = ax + b"
-                >
-                  {/* Grid lines */}
-                  {[-10, -5, 0, 5, 10].map((y) => (
-                    <line
-                      key={`grid-y-${y}`}
-                      x1={PADDING}
-                      y1={toSvgY(y)}
-                      x2={GW - PADDING}
-                      y2={toSvgY(y)}
-                      stroke="currentColor"
-                      className="text-border"
-                      strokeWidth="0.5"
-                      strokeDasharray={y === 0 ? "none" : "3,3"}
-                    />
-                  ))}
-                  {X_VALUES.map((x) => (
-                    <line
-                      key={`grid-x-${x}`}
-                      x1={toSvgX(x)}
-                      y1={PADDING}
-                      x2={toSvgX(x)}
-                      y2={GH - PADDING}
-                      stroke="currentColor"
-                      className="text-border"
-                      strokeWidth="0.5"
-                      strokeDasharray={x === 0 ? "none" : "3,3"}
-                    />
-                  ))}
-
-                  {/* Axes */}
-                  <line
-                    x1={PADDING}
-                    y1={toSvgY(0)}
-                    x2={GW - PADDING}
-                    y2={toSvgY(0)}
-                    stroke="currentColor"
-                    className="text-foreground"
-                    strokeWidth="1.5"
-                  />
-                  <line
-                    x1={toSvgX(0)}
-                    y1={PADDING}
-                    x2={toSvgX(0)}
-                    y2={GH - PADDING}
-                    stroke="currentColor"
-                    className="text-foreground"
-                    strokeWidth="1.5"
-                  />
-
-                  {/* Axis labels */}
-                  <text
-                    x={GW - PADDING + 5}
-                    y={toSvgY(0) + 4}
-                    fontSize="11"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    x
-                  </text>
-                  <text
-                    x={toSvgX(0) - 12}
-                    y={PADDING - 5}
-                    fontSize="11"
-                    fill="currentColor"
-                    className="text-muted"
-                  >
-                    y
-                  </text>
-
-                  {/* X-axis tick labels */}
-                  {X_VALUES.map((x) => (
-                    <text
-                      key={`xlabel-${x}`}
-                      x={toSvgX(x)}
-                      y={toSvgY(0) + 16}
-                      textAnchor="middle"
-                      fontSize="9"
-                      fill="currentColor"
-                      className="text-tertiary"
-                    >
-                      {x}
-                    </text>
-                  ))}
-                  {/* Y-axis tick labels */}
-                  {[-10, -5, 5, 10].map((y) => (
-                    <text
-                      key={`ylabel-${y}`}
-                      x={toSvgX(0) - 8}
-                      y={toSvgY(y) + 3}
-                      textAnchor="end"
-                      fontSize="9"
-                      fill="currentColor"
-                      className="text-tertiary"
-                    >
-                      {y}
-                    </text>
-                  ))}
-
-                  {/* The line: draw from x=-3 to x=3 */}
-                  <line
-                    x1={toSvgX(-3)}
-                    y1={toSvgY(a * -3 + b)}
-                    x2={toSvgX(3)}
-                    y2={toSvgY(a * 3 + b)}
-                    stroke="currentColor"
-                    className="text-accent"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-
-                  {/* Dots from table */}
-                  {tableData.map((row) => {
-                    const sy = toSvgY(row.result);
-                    const inBounds =
-                      sy >= PADDING && sy <= GH - PADDING;
-                    if (!inBounds) return null;
-                    return (
-                      <circle
-                        key={`dot-${row.x}`}
-                        cx={toSvgX(row.x)}
-                        cy={sy}
-                        r="4"
-                        fill="currentColor"
-                        className="text-accent"
-                        stroke="white"
-                        strokeWidth="1.5"
-                      />
-                    );
-                  })}
-                </svg>
-              </div>
+            <div>
+              <h3 className="text-lg font-bold text-foreground leading-tight">
+                Đừng lo — bạn không cần giỏi toán để học ML.
+              </h3>
+              <p className="text-sm text-muted mt-1">
+                Nhưng có <strong>bốn ngôi sao Bắc Đẩu</strong> bạn cần
+                nhìn mặt và biết dùng để làm gì.
+              </p>
             </div>
           </div>
 
-          {/* Divider */}
-          <hr className="border-border" />
-
-          {/* ── SECONDARY: Summation builder ── */}
-          <div className="space-y-4">
-            <h3 className="text-base font-semibold text-foreground">
-              Ký hiệu tổng: <LaTeX>{String.raw`\Sigma`}</LaTeX> (Sigma)
-            </h3>
-            <p className="text-sm text-muted leading-relaxed">
-              Em có 5 bài kiểm tra với điểm số:{" "}
-              <span className="font-mono font-medium text-foreground">
-                8, 6, 9, 7, 10
-              </span>
-              . Bấm &quot;Bước tiếp&quot; để xem từng bước cộng dồn.
+          <div className="rounded-xl border border-border bg-card p-4 text-sm text-foreground/90 leading-relaxed space-y-2">
+            <p>
+              Rất nhiều bạn trẻ nghĩ: &ldquo;Tôi dốt toán, ML không phải
+              cho tôi&rdquo;. Sai rồi. Làm ML phổ thông giống như lái xe:
+              bạn cần biết vô-lăng, chân ga, chân phanh là gì — không cần
+              hiểu piston và hộp số hoạt động ra sao.
             </p>
-
-            {/* Sigma formula display */}
-            <div className="rounded-lg border border-border bg-surface p-4 text-center">
-              <LaTeX block>
-                {String.raw`\sum_{i=1}^{5} x_i = x_1 + x_2 + x_3 + x_4 + x_5`}
-              </LaTeX>
-            </div>
-
-            {/* Step-through visualization */}
-            <div className="rounded-lg border border-border bg-surface p-4 space-y-4">
-              {/* Score cards */}
-              <div className="flex flex-wrap gap-2 justify-center">
-                {EXAM_SCORES.map((score, i) => {
-                  const isActive = i < sumStep;
-                  const isCurrent = i === sumStep - 1;
-                  return (
-                    <div
-                      key={i}
-                      className={`flex flex-col items-center rounded-lg border-2 px-3 py-2 transition-all duration-300 min-w-[56px] ${
-                        isCurrent
-                          ? "border-accent bg-accent-light scale-105"
-                          : isActive
-                            ? "border-accent/50 bg-accent-light/50"
-                            : "border-border bg-surface"
-                      }`}
-                    >
-                      <span className="text-xs text-muted">
-                        x<sub>{i + 1}</sub>
-                      </span>
-                      <span
-                        className={`text-lg font-bold font-mono ${
-                          isActive ? "text-accent-dark" : "text-foreground/40"
-                        }`}
-                      >
-                        {score}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Running total bar */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted">Tổng hiện tại:</span>
-                  <span className="font-mono font-bold text-accent text-lg">
-                    {sumStep === 0 ? "0" : runningTotal[sumStep - 1]}
-                  </span>
-                </div>
-                <div className="h-4 rounded-full bg-surface-hover overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-accent transition-all duration-500 ease-out"
-                    style={{
-                      width: `${sumStep === 0 ? 0 : (runningTotal[sumStep - 1] / runningTotal[runningTotal.length - 1]) * 100}%`,
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Computation display */}
-              <div className="text-center font-mono text-sm text-foreground min-h-[24px]">
-                {sumStep === 0 && (
-                  <span className="text-muted">
-                    Bấm &quot;Bước tiếp&quot; để bắt đầu...
-                  </span>
-                )}
-                {sumStep > 0 && (
-                  <span>
-                    {EXAM_SCORES.slice(0, sumStep).join(" + ")} ={" "}
-                    <span className="font-bold text-accent">
-                      {runningTotal[sumStep - 1]}
-                    </span>
-                  </span>
-                )}
-              </div>
-
-              {/* Buttons */}
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={handleSumNext}
-                  disabled={sumStep >= EXAM_SCORES.length}
-                  className="rounded-lg px-4 py-2 text-sm font-medium bg-accent text-white hover:bg-accent-dark disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                >
-                  {sumStep >= EXAM_SCORES.length
-                    ? "Hoàn thành!"
-                    : `Bước tiếp (i = ${sumStep + 1})`}
-                </button>
-                <button
-                  onClick={handleSumReset}
-                  className="rounded-lg px-4 py-2 text-sm font-medium border border-border text-foreground hover:bg-surface-hover transition-colors"
-                >
-                  Làm lại
-                </button>
-              </div>
-
-              {/* MSE teaser */}
-              {sumStep >= EXAM_SCORES.length && (
-                <div className="mt-2 rounded-lg border border-accent/30 bg-accent-light/30 p-3 text-sm text-foreground leading-relaxed">
-                  <p className="font-semibold text-accent-dark mb-1">
-                    Kết nối với ML:
-                  </p>
-                  <p className="text-muted">
-                    Trong ML, công thức sai số trung bình bình phương (MSE)
-                    dùng ký hiệu{" "}
-                    <LaTeX>{String.raw`\Sigma`}</LaTeX> y hệt như vậy:
-                  </p>
-                  <div className="mt-2">
-                    <LaTeX block>
-                      {String.raw`MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2`}
-                    </LaTeX>
-                  </div>
-                  <p className="text-muted mt-1">
-                    Thay vì cộng điểm bài thi, ta cộng bình phương sai số
-                    giữa dự đoán và thực tế.
-                  </p>
-                </div>
-              )}
-            </div>
+            <p>
+              Trong bài này bạn sẽ gặp bốn khái niệm quan trọng nhất. Với
+              mỗi khái niệm, bạn chỉ cần biết:{" "}
+              <em>&ldquo;Cái này tên là gì, nó dùng để làm gì trong
+              ML?&rdquo;</em>
+            </p>
           </div>
         </div>
-      </VisualizationSection>
+      </LessonSection>
 
-      {/* ================================================================
-          EXPLANATION SECTION
-          ================================================================ */}
-      <ExplanationSection topicSlug="math-readiness">
-        <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
-          <PredictionGate
-            question="Trong ML, khi mô hình 'học', nó thực sự đang làm gì?"
-            options={[
-              "Ghi nhớ toàn bộ dữ liệu đầu vào",
-              "Điều chỉnh các con số (tham số) để đưa ra dự đoán chính xác hơn",
-              "Viết code tự động",
-            ]}
-            correct={1}
-            explanation="Đúng! 'Học' trong ML nghĩa là điều chỉnh các tham số — những con số như a và b trong y = ax + b — sao cho dự đoán sát với thực tế nhất. Bài này sẽ giúp bạn hiểu rõ những khái niệm toán học nền tảng này."
-          >
-            <p className="mt-3 text-sm text-muted leading-relaxed">
-              Tiếp tục để khám phá các công cụ toán học mà ML dùng mỗi ngày.
+      {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
+        <PredictionGate
+          question="Theo bạn, làm ML cần trình toán nào?"
+          options={[
+            "Phải giải được mọi bài tích phân trong sách bài tập",
+            "Cần quen mặt bốn nhóm khái niệm ở mức hiểu ý, không cần chứng minh công thức",
+            "Không cần toán gì cả, chỉ cần học Python",
+            "Phải có bằng tiến sĩ toán",
+          ]}
+          correct={1}
+          explanation="Đáp án B là thực tế. Rất nhiều kỹ sư ML hiện nay không giỏi chứng minh định lý, nhưng họ hiểu bốn khái niệm cơ bản và biết tra cứu khi cần. Trình toán cấp ba + óc tò mò là đủ để bắt đầu."
+        >
+          <p className="text-sm text-muted mt-3 leading-relaxed">
+            Tiếp theo, mình sẽ vẽ cho bạn chòm sao Bắc Đẩu của ML —
+            bốn điểm mốc dẫn đường.
+          </p>
+        </PredictionGate>
+      </LessonSection>
+
+      {/* ══════════════════ BƯỚC 3 — REVEAL (Chòm sao) ══════════════════ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <div className="space-y-5">
+            <div className="flex items-center gap-2">
+              <Star size={18} className="text-accent" />
+              <h3 className="text-base font-semibold text-foreground">
+                Chòm sao Bắc Đẩu — bấm vào từng ngôi sao
+              </h3>
+            </div>
+            <p className="text-sm text-muted leading-relaxed">
+              Mỗi ngôi sao là một nhóm khái niệm. Bấm vào để biết:{" "}
+              <em>nó là gì, giống cái gì ngoài đời, và dùng ở đâu trong
+              ML</em>. Dấu xanh nhỏ xuất hiện khi bạn đã ghé qua.
             </p>
-          </PredictionGate>
-        </LessonSection>
 
-        <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Biến số & Tham số">
-          <p className="text-sm leading-relaxed">
-            Trong toán lớp 7, bạn đã gặp <strong>biến số</strong> (variable):{" "}
-            <LaTeX>{"x"}</LaTeX>, <LaTeX>{"y"}</LaTeX> là những ký hiệu đại diện
-            cho giá trị thay đổi. Trong ML, có thêm một khái niệm quan trọng:{" "}
-            <strong>tham số</strong> (parameter).
-          </p>
+            <ConstellationMap
+              active={activeStar}
+              onSelect={handleSelect}
+              visited={visited}
+            />
 
-          <Callout variant="tip" title="Ví dụ: Quán cà phê máy pha">
-            Tưởng tượng một máy pha cà phê có hai nút vặn:{" "}
-            <strong>a</strong> = độ đậm và <strong>b</strong> = độ ngọt.
-            Mỗi tổ hợp (a, b) khác nhau cho ra một vị cà phê khác nhau.
-            Trong ML, mô hình có hàng triệu &quot;nút vặn&quot; như vậy — mỗi
-            nút là một tham số mà máy tự điều chỉnh khi học.
-          </Callout>
+            <AnimatePresence mode="wait">
+              {activeInfo && <StarDetail star={activeInfo} />}
+            </AnimatePresence>
 
-          <p className="text-sm leading-relaxed mt-3">
-            Sự khác biệt chính:
-          </p>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed">
-            <li>
-              <strong>Biến số</strong> (variable): đầu vào thay đổi —{" "}
-              <LaTeX>{"x"}</LaTeX> là dữ liệu mới bạn đưa cho mô hình
-            </li>
-            <li>
-              <strong>Tham số</strong> (parameter): con số mà mô hình tự điều chỉnh
-              trong quá trình học — <LaTeX>{"a"}</LaTeX> và{" "}
-              <LaTeX>{"b"}</LaTeX> trong{" "}
-              <LaTeX>{"y = ax + b"}</LaTeX>
-            </li>
-          </ul>
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-muted">
+                Đã ghé: {visited.size}/{STARS.length}{" "}
+                {visited.size === STARS.length && (
+                  <CheckCircle2
+                    size={12}
+                    className="inline text-emerald-500"
+                  />
+                )}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveStar(null);
+                  setVisited(new Set());
+                }}
+                className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs text-muted hover:bg-surface-hover transition-colors"
+              >
+                <RotateCcw size={12} />
+                Bắt đầu lại
+              </button>
+            </div>
+          </div>
+        </VisualizationSection>
+      </LessonSection>
 
-          <AhaMoment>
-            Tham số giống như nút vặn volume trên loa: một con số nhỏ thôi nhưng
-            thay đổi nó là thay đổi toàn bộ hành vi của hệ thống. Trong ML,
-            &quot;huấn luyện&quot; chính là quá trình tìm ra vị trí tốt nhất cho
-            các nút vặn này.
-          </AhaMoment>
-        </LessonSection>
+      {/* ══════════════════ BƯỚC 4 — DEEPEN (Tự đánh giá) ══════════════════ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Tự kiểm">
+        <SelfAssessment />
+      </LessonSection>
 
-        <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Hàm số">
-          <p className="text-sm leading-relaxed">
-            <strong>Hàm số</strong> (function) là một quy tắc biến đổi:{" "}
-            cho đầu vào, trả ra đầu ra. Cách viết:{" "}
-            <LaTeX>{"f(x) = 2x + 1"}</LaTeX> nghĩa là &quot;hàm{" "}
-            <LaTeX>{"f"}</LaTeX> nhận <LaTeX>{"x"}</LaTeX>, nhân đôi lên rồi cộng
-            thêm 1&quot;.
-          </p>
-
-          <Callout variant="info" title="Ví dụ: Công thức nấu phở">
-            Một tô phở ngon phụ thuộc vào lượng gia vị. Đổi lượng nước mắm{" "}
-            <LaTeX>{"x"}</LaTeX> sẽ đổi vị <LaTeX>{"f(x)"}</LaTeX>.
-            Công thức nấu chính là hàm số — nó cho bạn biết: với mỗi &quot;đầu
-            vào&quot; (lượng gia vị), &quot;đầu ra&quot; (vị phở) sẽ là gì.
-          </Callout>
-
-          <p className="text-sm leading-relaxed mt-3">
-            Trong ML, <strong>mô hình chính là một hàm số khổng lồ</strong>.{" "}
-            Khi bạn cho ChatGPT một câu hỏi (đầu vào{" "}
-            <LaTeX>{"x"}</LaTeX>), nó tính toán qua hàng tỷ tham số để trả ra
-            câu trả lời (đầu ra <LaTeX>{"f(x)"}</LaTeX>).
-          </p>
+      {/* ══════════════════ BƯỚC 5 — CHALLENGE (Match + Challenge) ══════════════════ */}
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <h3 className="text-base font-semibold text-foreground">
+              Ghép: công việc ML ↔ ngôi sao toán cần dùng
+            </h3>
+            <p className="text-sm text-muted leading-relaxed">
+              Với mỗi công việc ML thật dưới đây, ngôi sao nào được dùng
+              nhiều nhất? Kéo để ghép:
+            </p>
+            <MatchPairs
+              instruction="Ghép mỗi công việc ML (Cột A) với ngôi sao toán học chủ đạo (Cột B)."
+              pairs={[
+                {
+                  left: "Biểu diễn một ảnh chân dung thành bảng số",
+                  right: "Đại số tuyến tính — ảnh thành ma trận pixel",
+                },
+                {
+                  left: "Tính khả năng đây là email rác",
+                  right: "Xác suất — trả về một số từ 0 đến 1",
+                },
+                {
+                  left: "Máy tự sửa khi đoán sai trong quá trình học",
+                  right: "Đạo hàm — biết đi hướng nào để lỗi giảm",
+                },
+                {
+                  left: "Đo xem mô hình đúng bao nhiêu % trên 1000 ảnh test",
+                  right: "Thống kê — tóm gọn kết quả nhiều lần đo",
+                },
+              ]}
+            />
+          </div>
 
           <InlineChallenge
-            question="Cho f(x) = 5x \u2212 3. Giá trị f(2) là bao nhiêu?"
-            options={["3", "7", "10", "13"]}
-            correct={1}
-            explanation="f(2) = 5 \u00d7 2 \u2212 3 = 10 \u2212 3 = 7. Thay x = 2 vào công thức rồi tính."
+            question="Khi huấn luyện mô hình, máy liên tục đoán sai → chỉnh → đoán lại. Việc chọn HƯỚNG chỉnh dựa trên ngôi sao nào?"
+            options={[
+              "Đại số tuyến tính",
+              "Xác suất",
+              "Đạo hàm",
+              "Thống kê",
+            ]}
+            correct={2}
+            explanation="Đạo hàm (độ dốc) chỉ cho máy biết đi theo hướng nào thì lỗi giảm nhanh nhất. Đây là ý tưởng cốt lõi của gradient descent — thuật toán chạy đằng sau mọi mô hình deep learning."
           />
-        </LessonSection>
 
-        <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Mặt phẳng toạ độ">
-          <p className="text-sm leading-relaxed">
-            <strong>Mặt phẳng toạ độ</strong> (coordinate plane) là một &quot;bản
-            đồ 2D&quot; với hai trục: trục ngang <LaTeX>{"x"}</LaTeX> và trục
-            dọc <LaTeX>{"y"}</LaTeX>. Bạn đã học nó ở lớp 7-8 rồi!
+          <InlineChallenge
+            question="Bạn nhập ảnh chó vào app, app báo 'đây là chó với độ tin 0.98'. Con số 0.98 đến từ đâu?"
+            options={[
+              "Đạo hàm",
+              "Xác suất — ước lượng máy về độ chắc chắn",
+              "Thống kê mô tả",
+              "Đại số tuyến tính",
+            ]}
+            correct={1}
+            explanation="Mọi mô hình ML đều trả lời bằng xác suất. 0.98 nghĩa là 'tôi 98% tin đây là chó, 2% còn lại để ngỏ'. Không bao giờ có câu trả lời 100% tuyệt đối — đó là bản chất của ML."
+          />
+
+          <InlineChallenge
+            question="Giảng viên kiểm tra app y tế: cho 500 bệnh nhân thật, đếm số lần app đoán đúng, tính tỉ lệ. Hoạt động này thuộc ngôi sao nào?"
+            options={[
+              "Đại số tuyến tính",
+              "Xác suất",
+              "Đạo hàm",
+              "Thống kê mô tả",
+            ]}
+            correct={3}
+            explanation="Đây là thống kê mô tả — đo đạc, đếm, tính trung bình trên một mẫu thật. Mọi báo cáo kết quả mô hình đều cần thống kê để người đọc biết tin bao nhiêu."
+          />
+        </div>
+      </LessonSection>
+
+      {/* ══════════════════ BƯỚC 6 — GIẢI THÍCH + AHA + TÓM TẮT ══════════════════ */}
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Gắn kết">
+        <AhaMoment>
+          <p className="leading-relaxed">
+            Bốn ngôi sao không đứng riêng lẻ —{" "}
+            <strong>chúng là bốn ngôn ngữ</strong> mà ML dùng để nói
+            chuyện với dữ liệu.
           </p>
-
-          <Callout variant="tip" title="Ví dụ: Google Maps">
-            Google Maps là một mặt phẳng toạ độ khổng lồ: kinh độ là trục{" "}
-            <LaTeX>{"x"}</LaTeX>, vĩ độ là trục <LaTeX>{"y"}</LaTeX>. Mỗi địa
-            điểm có một cặp số xác định vị trí. Tương tự, mỗi điểm trên đồ thị
-            hàm số có toạ độ <LaTeX>{"(x, y)"}</LaTeX>.
-          </Callout>
-
-          <p className="text-sm leading-relaxed mt-3">
-            Tại sao mặt phẳng toạ độ quan trọng trong ML? Vì nó giúp ta{" "}
-            <strong>nhìn thấy dữ liệu</strong>. Khi vẽ dữ liệu lên đồ thị, ta có
-            thể nhận ra các pattern: điểm nào thì chung nhóm, xu hướng tăng hay
-            giảm, có điểm nào bất thường không.
+          <p className="mt-2 text-sm font-normal text-muted">
+            Dữ liệu bước vào bằng <strong>đại số tuyến tính</strong> →
+            máy đoán bằng <strong>xác suất</strong> → sửa sai bằng{" "}
+            <strong>đạo hàm</strong> → đánh giá bằng <strong>thống kê</strong>.
           </p>
+        </AhaMoment>
 
-          <p className="text-sm leading-relaxed">
-            Quay lại phần{" "}
-            <strong>Hình minh hoạ</strong> phía trên và thử kéo thanh trượt{" "}
-            <LaTeX>{"a"}</LaTeX> và <LaTeX>{"b"}</LaTeX>{" "}
-            để thấy đồ thị thay đổi thế nào!
-          </p>
-        </LessonSection>
+        <div className="mt-6">
+          <ExplanationSection topicSlug={metadata.slug}>
+            <p className="text-sm leading-relaxed">
+              Bạn không cần học sâu từng nhánh để bắt đầu. Mỗi bài sau
+              trong chuỗi này sẽ chạm tới một ngôi sao ở mức vừa đủ — khi
+              bạn cần, không phải khi nó còn xa. Cách làm này gọi là{" "}
+              <em>just-in-time learning</em>: học đúng lúc cần.
+            </p>
 
-        <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Ký hiệu tổng \u03a3">
-          <p className="text-sm leading-relaxed">
-            Đây là khái niệm hoàn toàn mới — <strong>ký hiệu tổng</strong>{" "}
-            (summation notation) viết bằng chữ cái Hy Lạp{" "}
-            <LaTeX>{String.raw`\Sigma`}</LaTeX> (sigma, đọc là &quot;xích-ma&quot;).
-          </p>
+            <Callout variant="insight" title="Ba nguyên tắc vàng khi học toán ML">
+              <ol className="list-decimal pl-5 space-y-1.5 text-sm">
+                <li>
+                  <strong>Hiểu ý trước, công thức sau.</strong> Biết
+                  &ldquo;đạo hàm để làm gì&rdquo; quan trọng hơn biết
+                  đạo hàm của sin x bằng cos x.
+                </li>
+                <li>
+                  <strong>Hình dung trước khi tính.</strong> Mọi công
+                  thức đều có một hình ảnh tương ứng. Tìm cho được hình
+                  ảnh đó, tính toán theo sau.
+                </li>
+                <li>
+                  <strong>Gặp lại là cơ hội.</strong> Không hiểu ngay
+                  lần đầu là bình thường. Bài sau sẽ gặp lại, sâu hơn
+                  một chút — dần bạn sẽ thấm.
+                </li>
+              </ol>
+            </Callout>
 
-          <LaTeX block>
-            {String.raw`\sum_{i=1}^{n} x_i = x_1 + x_2 + \cdots + x_n`}
-          </LaTeX>
+            <Callout variant="tip" title="Lộ trình nhẹ nhàng">
+              Không cần phải biết tất cả bốn ngôi sao trước khi học ML.
+              Thứ tự tự nhiên:
+              <ol className="list-decimal pl-5 space-y-0.5 text-sm mt-2">
+                <li>Quen với đại số tuyến tính (ảnh = bảng số).</li>
+                <li>
+                  Làm quen với xác suất qua các ví dụ (chatbot, dự đoán
+                  thời tiết).
+                </li>
+                <li>
+                  Hiểu đạo hàm qua ẩn dụ &ldquo;leo núi&rdquo; — không
+                  cần tính tay.
+                </li>
+                <li>
+                  Học thống kê khi đánh giá mô hình (trung bình, sai số,
+                  accuracy).
+                </li>
+              </ol>
+            </Callout>
 
-          <p className="text-sm leading-relaxed">
-            Nghĩa là: &quot;cộng tất cả các <LaTeX>{"x_i"}</LaTeX> từ{" "}
-            <LaTeX>{"i = 1"}</LaTeX> đến <LaTeX>{"i = n"}</LaTeX>&quot;.
-            Phần phía dưới (<LaTeX>{"i=1"}</LaTeX>) là điểm bắt đầu, phía trên
-            (<LaTeX>{"n"}</LaTeX>) là điểm kết thúc.
-          </p>
+            <p className="text-sm leading-relaxed">
+              Sau bài này, hãy tiếp tục tới{" "}
+              <TopicLink slug="data-and-datasets">
+                dữ liệu và tập dữ liệu
+              </TopicLink>{" "}
+              — nơi bạn sẽ thấy ngôi sao &ldquo;đại số tuyến tính&rdquo;
+              được dùng thật để sắp xếp dữ liệu. Hoặc quay lại{" "}
+              <TopicLink slug="what-is-ml">
+                Machine Learning là gì?
+              </TopicLink>{" "}
+              nếu bạn muốn ôn lại nền tảng.
+            </p>
+          </ExplanationSection>
+        </div>
 
-          <Callout variant="info" title="Ví dụ: Tính tổng điểm bài thi">
-            Em có 5 bài kiểm tra: 8, 6, 9, 7, 10 điểm. Thay vì viết
-            &quot;8 + 6 + 9 + 7 + 10&quot;, toán học viết gọn:{" "}
-            <LaTeX>{String.raw`\sum_{i=1}^{5} x_i = 40`}</LaTeX>. Khi có 1.000
-            bài thi, ký hiệu này tiết kiệm được rất nhiều giấy mực!
-          </Callout>
-
-          <p className="text-sm leading-relaxed mt-3">
-            Trong ML, <LaTeX>{String.raw`\Sigma`}</LaTeX>{" "}
-            xuất hiện ở khắp nơi: tính sai số, tính trung bình, cập nhật
-            tham số. Hiểu ký hiệu này là bạn có thể đọc được{" "}
-            <strong>hầu hết các công thức ML</strong>.
-          </p>
-        </LessonSection>
-
-        <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tổng kết">
+        <div className="mt-6">
           <MiniSummary
-            title="Những điều cần nhớ"
+            title="Bốn điều mang theo"
             points={[
-              "Biến số (variable) = đầu vào thay đổi, tham số (parameter) = 'nút vặn' mô hình tự chỉnh.",
-              "Hàm số (function) = quy tắc biến đổi đầu vào thành đầu ra. Mô hình ML là một hàm số khổng lồ.",
-              "Mặt phẳng toạ độ (coordinate plane) = 'bản đồ 2D' giúp ta hình dung dữ liệu và quan hệ giữa các biến.",
-              "Ký hiệu tổng \u03a3 (sigma) = cách viết gọn 'cộng tất cả từ i = 1 đến n'. Xuất hiện ở khắp nơi trong ML.",
-              "Tất cả khái niệm này kết nối với nhau: ML điều chỉnh tham số của hàm số để tối ưu tổng sai số trên mặt phẳng dữ liệu.",
+              "Không cần giỏi toán để học ML — cần biết bốn ngôi sao dùng để làm gì.",
+              "Đại số tuyến tính: ngôn ngữ biến mọi thứ thành số (ảnh, văn bản, âm thanh → vector/ma trận).",
+              "Xác suất: máy ML luôn trả lời bằng độ tin cậy, không phải chắc nịch.",
+              "Đạo hàm: la bàn trong sương mù — chỉ hướng đi để lỗi giảm khi máy đang học.",
+              "Thống kê: đọc câu chuyện của dữ liệu trước và sau khi huấn luyện.",
             ]}
           />
-          <p className="text-sm leading-relaxed mt-4">
-            Tiếp theo, hãy tìm hiểu{" "}
-            <TopicLink slug="vectors-and-matrices">
-              vector và ma trận
-            </TopicLink>{" "}
-            để mở rộng từ 1 biến thành hàng trăm biến cùng lúc, hoặc quay lại{" "}
-            <TopicLink slug="what-is-ml">
-              Machine Learning là gì?
-            </TopicLink>{" "}
-            nếu bạn muốn ôn lại nền tảng.
-          </p>
-        </LessonSection>
+        </div>
+      </LessonSection>
 
-        <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
-          <QuizSection questions={quizQuestions} />
-        </LessonSection>
-      </ExplanationSection>
+      {/* ══════════════════ BƯỚC 7 — QUIZ ══════════════════ */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+        <QuizSection questions={quizQuestions} />
+      </LessonSection>
     </>
   );
 }

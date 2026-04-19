@@ -1,25 +1,35 @@
 "use client";
 
 import {
-  useState,
-  useMemo,
   useCallback,
-  useRef,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  ChevronRight,
+  Target,
+  MapPin,
+  Sparkles,
+  MousePointerClick,
+  Zap,
+} from "lucide-react";
 import {
   PredictionGate,
   AhaMoment,
   InlineChallenge,
-  Callout,
   MiniSummary,
-  CodeBlock,
-  ToggleCompare,
+  Callout,
   LessonSection,
   TopicLink,
-  LaTeX,
+  StepReveal,
   CollapsibleDetail,
+  LaTeX,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -27,17 +37,12 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-/* ──────────────────────────────────────────────────────────────
- * METADATA — giữ nguyên so với bản gốc. Các route, breadcrumb và
- * progress tracker của hệ thống đọc từ đây, đổi slug sẽ làm gãy
- * liên kết nội bộ và bookmark người dùng.
- * ────────────────────────────────────────────────────────────── */
 export const metadata: TopicMeta = {
   slug: "k-means",
   title: "K-Means Clustering",
-  titleVi: "Phân cụm K-Means",
+  titleVi: "Phân cụm k-means",
   description:
-    "Chia dữ liệu thành K cụm dựa trên khoảng cách đến tâm cụm",
+    "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên — từ đặt kho hàng Grab đến phân khúc khách hàng.",
   category: "classic-ml",
   tags: ["clustering", "unsupervised-learning"],
   difficulty: "beginner",
@@ -45,64 +50,36 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-/* ──────────────────────────────────────────────────────────────
- * TYPES
- * ────────────────────────────────────────────────────────────── */
-type Pt = { x: number; y: number };
+/* ────────────────────────────────────────────────────────────
+   TYPES
+   ──────────────────────────────────────────────────────────── */
 
+type Pt = { x: number; y: number };
 type Phase = "place" | "assigned" | "moved" | "converged";
 
-type ElbowPoint = {
-  k: number;
-  inertia: number;
-};
+/* ────────────────────────────────────────────────────────────
+   HẰNG SỐ
+   ──────────────────────────────────────────────────────────── */
 
-/* ──────────────────────────────────────────────────────────────
- * HẰNG SỐ
- * Canvas 420×360 vừa vặn trên desktop mà vẫn đọc tốt trên mobile.
- * Cụm “xa” ở (320, 80), cụm “gần” ở (100, 100), cụm “dưới” ở
- * (220, 270) — 3 cụm cách nhau đủ rõ để elbow method thấy k=3.
- * ────────────────────────────────────────────────────────────── */
-const CANVAS_W = 420;
+const CANVAS_W = 440;
 const CANVAS_H = 360;
-const K_VIZ = 3;
 const MAX_ITER = 25;
 
 const COLORS = [
-  "#3b82f6", // cụm 0 — xanh dương
-  "#ef4444", // cụm 1 — đỏ
-  "#22c55e", // cụm 2 — xanh lá
-  "#a855f7", // cụm 3 — tím (cho elbow demo k≥4)
-  "#f59e0b", // cụm 4 — cam
-  "#06b6d4", // cụm 5 — cyan
-  "#ec4899", // cụm 6 — hồng
-  "#84cc16", // cụm 7 — lime
-  "#eab308", // cụm 8 — vàng
-  "#14b8a6", // cụm 9 — teal
+  "#3b82f6",
+  "#ef4444",
+  "#22c55e",
+  "#a855f7",
+  "#f59e0b",
+  "#06b6d4",
 ];
 
-const COLOR_NAMES = [
-  "xanh dương",
-  "đỏ",
-  "xanh lá",
-  "tím",
-  "cam",
-  "cyan",
-  "hồng",
-  "lime",
-  "vàng",
-  "teal",
-];
+/* ────────────────────────────────────────────────────────────
+   DỮ LIỆU — 3 cụm tự nhiên, 30 điểm
+   ──────────────────────────────────────────────────────────── */
 
-/* ──────────────────────────────────────────────────────────────
- * DỮ LIỆU — 30 điểm, 3 cụm tự nhiên
- * Mỗi cụm 10 điểm, phân bố quanh centroid thật. Dùng seed tĩnh
- * (không random) để mọi lần mount đều giống nhau — tốt cho
- * trải nghiệm học và test visual.
- * ────────────────────────────────────────────────────────────── */
-const DATA: Pt[] = [
-  // Cụm 1 — góc trên trái, quanh (100, 100)
-  { x: 85, y: 92 },
+const SEED_POINTS: Pt[] = [
+  { x: 85, y: 90 },
   { x: 110, y: 84 },
   { x: 96, y: 115 },
   { x: 122, y: 102 },
@@ -112,19 +89,17 @@ const DATA: Pt[] = [
   { x: 128, y: 118 },
   { x: 70, y: 96 },
   { x: 104, y: 140 },
-  // Cụm 2 — góc trên phải, quanh (320, 80)
-  { x: 298, y: 72 },
-  { x: 322, y: 90 },
-  { x: 310, y: 58 },
-  { x: 340, y: 78 },
-  { x: 302, y: 96 },
-  { x: 328, y: 66 },
-  { x: 345, y: 94 },
-  { x: 292, y: 84 },
-  { x: 314, y: 104 },
-  { x: 354, y: 82 },
-  // Cụm 3 — giữa dưới, quanh (220, 270)
-  { x: 192, y: 255 },
+  { x: 300, y: 72 },
+  { x: 324, y: 90 },
+  { x: 312, y: 58 },
+  { x: 342, y: 78 },
+  { x: 304, y: 96 },
+  { x: 330, y: 66 },
+  { x: 347, y: 94 },
+  { x: 294, y: 84 },
+  { x: 316, y: 104 },
+  { x: 356, y: 82 },
+  { x: 192, y: 265 },
   { x: 218, y: 278 },
   { x: 206, y: 262 },
   { x: 232, y: 290 },
@@ -136,23 +111,23 @@ const DATA: Pt[] = [
   { x: 234, y: 302 },
 ];
 
-/* ──────────────────────────────────────────────────────────────
- * HELPER FUNCTIONS — toán học cơ bản tách riêng để test dễ và
- * giúp người đọc map với công thức LaTeX trong phần giải thích.
- * ────────────────────────────────────────────────────────────── */
-function dist(a: Pt, b: Pt) {
-  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
-}
+/* ────────────────────────────────────────────────────────────
+   HELPERS
+   ──────────────────────────────────────────────────────────── */
 
 function distSq(a: Pt, b: Pt) {
   return (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
 }
 
-function assign(pts: Pt[], centroids: Pt[]) {
+function dist(a: Pt, b: Pt) {
+  return Math.sqrt(distSq(a, b));
+}
+
+function assign(pts: Pt[], cents: Pt[]) {
   return pts.map((p) => {
     let best = 0;
     let minD = Infinity;
-    centroids.forEach((c, i) => {
+    cents.forEach((c, i) => {
       const d = distSq(p, c);
       if (d < minD) {
         minD = d;
@@ -163,8 +138,8 @@ function assign(pts: Pt[], centroids: Pt[]) {
   });
 }
 
-function recompute(pts: Pt[], asgn: number[], centroids: Pt[]) {
-  return centroids.map((c, ci) => {
+function recompute(pts: Pt[], asgn: number[], cents: Pt[]) {
+  return cents.map((c, ci) => {
     const members = pts.filter((_, pi) => asgn[pi] === ci);
     if (!members.length) return c;
     return {
@@ -174,39 +149,16 @@ function recompute(pts: Pt[], asgn: number[], centroids: Pt[]) {
   });
 }
 
-/**
- * Inertia — tổng bình phương khoảng cách từ mỗi điểm đến tâm
- * cụm của nó. Đây chính là hàm mục tiêu K-Means tối thiểu hóa.
- * Thuật ngữ khác: Within-Cluster Sum of Squares (WCSS).
- */
-function inertia(pts: Pt[], centroids: Pt[]) {
-  if (centroids.length === 0) return 0;
+function inertia(pts: Pt[], cents: Pt[]) {
+  if (cents.length === 0) return 0;
   return pts.reduce(
     (sum, p) =>
-      sum + Math.min(...centroids.map((c) => distSq(p, c))),
-    0
+      sum + Math.min(...cents.map((c) => distSq(p, c))),
+    0,
   );
 }
 
-/**
- * Tổng khoảng cách (không bình phương) — dùng cho overlay chữ
- * vì số nhỏ hơn, dễ đọc. Không phải hàm mục tiêu thực sự của
- * K-Means nhưng biến thiên cùng chiều với inertia.
- */
-function totalDistance(pts: Pt[], centroids: Pt[]) {
-  if (centroids.length === 0) return 0;
-  return pts.reduce(
-    (sum, p) => sum + Math.min(...centroids.map((c) => dist(p, c))),
-    0
-  );
-}
-
-/**
- * Khởi tạo random "ngây thơ" — chỉ dùng để so sánh với k-means++.
- * Dùng Math.seedrandom không khả dụng, ta dùng một RNG LCG đơn
- * giản dựa trên seed để tái lập được.
- */
-function makeSeededRng(seed: number) {
+function seededRng(seed: number) {
   let s = seed >>> 0;
   return () => {
     s = (1664525 * s + 1013904223) >>> 0;
@@ -214,18 +166,13 @@ function makeSeededRng(seed: number) {
   };
 }
 
-/**
- * K-Means++ initialization — chọn tâm đầu tiên ngẫu nhiên, các
- * tâm sau được chọn với xác suất tỷ lệ với D(x)² để cách xa tâm
- * đã chọn. Giúp hội tụ nhanh và tránh rơi vào nghiệm xấu.
- */
 function kMeansPlusPlusInit(pts: Pt[], k: number, seed: number): Pt[] {
-  const rng = makeSeededRng(seed);
+  const rng = seededRng(seed);
   const first = pts[Math.floor(rng() * pts.length)];
   const out: Pt[] = [first];
   while (out.length < k) {
     const d2 = pts.map((p) =>
-      Math.min(...out.map((c) => distSq(p, c)))
+      Math.min(...out.map((c) => distSq(p, c))),
     );
     const total = d2.reduce((s, v) => s + v, 0);
     if (total === 0) {
@@ -244,11 +191,6 @@ function kMeansPlusPlusInit(pts: Pt[], k: number, seed: number): Pt[] {
   return out;
 }
 
-/**
- * Chạy K-Means tới khi hội tụ, trả về inertia cuối cùng.
- * Dùng cho đồ thị Elbow (k = 1 → 10). Lặp tối đa MAX_ITER để
- * tránh infinite loop trong trường hợp dữ liệu oscillate.
- */
 function runToConvergence(pts: Pt[], k: number, seed: number) {
   let cs = kMeansPlusPlusInit(pts, k, seed);
   for (let i = 0; i < MAX_ITER; i++) {
@@ -261,1233 +203,1176 @@ function runToConvergence(pts: Pt[], k: number, seed: number) {
   return { centroids: cs, inertia: inertia(pts, cs) };
 }
 
-/* ──────────────────────────────────────────────────────────────
- * SUB-COMPONENTS
- * Tách riêng để main component gọn, dễ đọc, và các demo phụ
- * (ToggleCompare, Elbow plot) có thể tái sử dụng logic.
- * ────────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────
+   QUIZ
+   ──────────────────────────────────────────────────────────── */
 
-/** Centroid cross marker — dấu X cách điệu cho dễ phân biệt với điểm dữ liệu */
-function Cross({ c, color, size = 8 }: { c: Pt; color: string; size?: number }) {
-  return (
-    <g>
-      <line x1={c.x - size} y1={c.y - size} x2={c.x + size} y2={c.y + size} stroke={color} strokeWidth={3} />
-      <line x1={c.x + size} y1={c.y - size} x2={c.x - size} y2={c.y + size} stroke={color} strokeWidth={3} />
-      <circle cx={c.x} cy={c.y} r={3} fill="#fff" />
-    </g>
-  );
-}
-
-/** Auto-animated demo cho ToggleCompare — hội tụ tự động */
-function InitDemo({ startCentroids }: { startCentroids: Pt[] }) {
-  const [centroids, setCentroids] = useState(startCentroids);
-  const [iter, setIter] = useState(0);
-  const ref = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    let i = 0;
-    let curr = startCentroids;
-    setCentroids(startCentroids);
-    setIter(0);
-    ref.current = setInterval(() => {
-      const a = assign(DATA, curr);
-      const next = recompute(DATA, a, curr);
-      const done =
-        next.every((c, ci) => dist(c, curr[ci]) < 0.5) || i > 15;
-      curr = next;
-      i++;
-      setCentroids(next);
-      setIter(i);
-      if (done && ref.current) clearInterval(ref.current);
-    }, 900);
-    return () => {
-      if (ref.current) clearInterval(ref.current);
-    };
-  }, [startCentroids]);
-
-  const asgn = assign(DATA, centroids);
-  return (
-    <svg viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} className="w-full rounded-lg border border-border bg-background">
-      {DATA.map((p, i) => (
-        <line key={`l${i}`} x1={p.x} y1={p.y} x2={centroids[asgn[i]].x} y2={centroids[asgn[i]].y}
-          stroke={COLORS[asgn[i]]} strokeWidth={0.7} opacity={0.25} />
-      ))}
-      {DATA.map((p, i) => (
-        <circle key={`p${i}`} cx={p.x} cy={p.y} r={5} fill={COLORS[asgn[i]]} stroke="#fff" strokeWidth={1} />
-      ))}
-      {centroids.map((c, i) => <Cross key={`c${i}`} c={c} color={COLORS[i]} />)}
-      <text x={10} y={20} fontSize={12} fill="currentColor" className="text-foreground" fontWeight={600}>
-        Vòng lặp: {iter}
-      </text>
-      <text x={10} y={38} fontSize={11} fill="currentColor" className="text-muted">
-        Inertia: {inertia(DATA, centroids).toFixed(0)}
-      </text>
-    </svg>
-  );
-}
-
-/* ──────────────────────────────────────────────────────────────
- * ELBOW PLOT — chạy K-Means cho k = 1 → 10 rồi vẽ inertia
- * Điểm "khuỷu tay" là k tối ưu. Trong dữ liệu của chúng ta, 3
- * cụm tự nhiên → elbow xuất hiện tại k = 3.
- * ────────────────────────────────────────────────────────────── */
-function ElbowPlot() {
-  const [selectedK, setSelectedK] = useState(3);
-
-  // Tính inertia cho k = 1 → 10. useMemo vì phép tính chỉ phụ thuộc
-  // hằng số DATA; chỉ chạy một lần khi component mount.
-  const points: ElbowPoint[] = useMemo(() => {
-    const out: ElbowPoint[] = [];
-    for (let k = 1; k <= 10; k++) {
-      const { inertia } = runToConvergence(DATA, k, 42 + k);
-      out.push({ k, inertia });
-    }
-    return out;
-  }, []);
-
-  const maxIn = points[0]?.inertia ?? 1;
-  const minIn = points[points.length - 1]?.inertia ?? 0;
-
-  // Tọa độ SVG cho plot
-  const PW = 420;
-  const PH = 240;
-  const PADL = 48;
-  const PADR = 20;
-  const PADT = 20;
-  const PADB = 36;
-
-  const xScale = (k: number) =>
-    PADL + ((k - 1) * (PW - PADL - PADR)) / 9;
-  const yScale = (v: number) => {
-    if (maxIn === minIn) return PADT;
-    return (
-      PADT +
-      ((maxIn - v) / (maxIn - minIn)) * (PH - PADT - PADB)
-    );
-    // Lưu ý: đã đảo trục — inertia lớn ở trên, nhỏ ở dưới
-  };
-
-  const pathD = points
-    .map(
-      (p, i) =>
-        `${i === 0 ? "M" : "L"} ${xScale(p.k)} ${yScale(p.inertia)}`
-    )
-    .join(" ");
-
-  return (
-    <div className="space-y-3">
-      <div className="overflow-hidden rounded-xl border border-border bg-card p-3">
-        <svg viewBox={`0 0 ${PW} ${PH}`} className="w-full">
-          {/* Lưới ngang */}
-          {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
-            const y = PADT + t * (PH - PADT - PADB);
-            return (
-              <line key={`g${i}`} x1={PADL} y1={y} x2={PW - PADR} y2={y}
-                stroke="#e2e8f0" strokeDasharray="2,3" strokeWidth={1} className="dark:stroke-slate-700" />
-            );
-          })}
-
-          {/* Đường cong inertia */}
-          <path d={pathD} fill="none" stroke="#3b82f6" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
-
-          {/* Chấm dữ liệu */}
-          {points.map((p) => (
-            <g key={`pt-${p.k}`}>
-              <circle cx={xScale(p.k)} cy={yScale(p.inertia)}
-                r={p.k === selectedK ? 7 : 5} fill={p.k === selectedK ? "#ef4444" : "#3b82f6"}
-                stroke="#fff" strokeWidth={2} onClick={() => setSelectedK(p.k)} style={{ cursor: "pointer" }} />
-              <text x={xScale(p.k)} y={PH - 18} textAnchor="middle" fontSize={10} fill="#64748b">
-                k={p.k}
-              </text>
-            </g>
-          ))}
-
-          {/* Vạch đánh dấu “khuỷu tay” */}
-          <line x1={xScale(3)} y1={PADT} x2={xScale(3)} y2={PH - PADB}
-            stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="4,4" />
-          <text x={xScale(3) + 6} y={PADT + 12} fontSize={10} fill="#f59e0b" fontWeight={600}>
-            Elbow tại k = 3
-          </text>
-
-          {/* Nhãn trục */}
-          <text x={PADL} y={PADT - 6} fontSize={10} fill="#94a3b8" fontWeight={500}>
-            Inertia (WCSS)
-          </text>
-          <text x={PW / 2} y={PH - 4} textAnchor="middle" fontSize={10} fill="#94a3b8">
-            Số cụm K
-          </text>
-        </svg>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <div className="rounded-lg border border-border bg-card p-3">
-          <p className="text-xs uppercase text-muted">K đang chọn</p>
-          <p className="mt-1 text-xl font-bold text-foreground">
-            {selectedK}
-          </p>
-        </div>
-        <div className="rounded-lg border border-border bg-card p-3">
-          <p className="text-xs uppercase text-muted">Inertia</p>
-          <p className="mt-1 text-xl font-bold text-foreground">
-            {points[selectedK - 1].inertia.toFixed(0)}
-          </p>
-        </div>
-        <div className="rounded-lg border border-border bg-card p-3">
-          <p className="text-xs uppercase text-muted">Giảm so với K−1</p>
-          <p className="mt-1 text-xl font-bold text-foreground">
-            {selectedK === 1
-              ? "—"
-              : `-${(
-                  ((points[selectedK - 2].inertia -
-                    points[selectedK - 1].inertia) /
-                    points[selectedK - 2].inertia) *
-                  100
-                ).toFixed(0)}%`}
-          </p>
-        </div>
-      </div>
-
-      <p className="text-xs text-muted">
-        Nhấn vào chấm bất kỳ để xem inertia tại K đó. Chú ý độ dốc: từ
-        K=1 → K=3 giảm mạnh, sau K=3 giảm rất chậm — đó là “khuỷu tay”,
-        chỉ điểm K tối ưu của dataset này.
-      </p>
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────────────────────────────
- * QUIZ — 8 câu
- * ────────────────────────────────────────────────────────────── */
-const QUIZ: QuizQuestion[] = [
+const quizQuestions: QuizQuestion[] = [
   {
-    question: "K-Means thuộc loại học máy nào?",
+    question: "K-means thuộc loại học máy nào?",
     options: [
-      "Học có giám sát (Supervised Learning)",
-      "Học không giám sát (Unsupervised Learning)",
-      "Học tăng cường (Reinforcement Learning)",
+      "Học có giám sát — cần dữ liệu gán nhãn",
+      "Học không giám sát — tự tìm cấu trúc trong dữ liệu không có nhãn",
+      "Học tăng cường — thông qua phần thưởng và hình phạt",
+      "Không phải học máy",
     ],
     correct: 1,
     explanation:
-      "K-Means là thuật toán phân cụm không giám sát — dữ liệu không có nhãn, thuật toán tự tìm cấu trúc nhóm.",
-  },
-  {
-    question: 'Trong mỗi vòng lặp K-Means, bước "Cập nhật tâm" làm gì?',
-    options: [
-      "Xóa tâm cụm có ít điểm nhất",
-      "Di chuyển tâm đến trung bình các điểm trong cụm",
-      "Di chuyển tâm đến điểm dữ liệu gần nhất",
-    ],
-    correct: 1,
-    explanation:
-      "Tâm cụm (centroid) được cập nhật bằng cách tính trung bình tọa độ của tất cả điểm thuộc cụm đó — chính xác là gradient đóng của hàm inertia.",
-  },
-  {
-    question: "K-Means++ cải tiến gì so với K-Means gốc?",
-    options: [
-      "Tự động chọn số cụm K tối ưu",
-      "Khởi tạo tâm cụm thông minh hơn, tránh đặt gần nhau",
-      "Dùng khoảng cách Manhattan thay vì Euclidean",
-    ],
-    correct: 1,
-    explanation:
-      "K-Means++ chọn tâm ban đầu với xác suất tỷ lệ D(x)², ưu tiên điểm xa các tâm đã chọn. Giúp hội tụ nhanh hơn và gần như luôn tránh được nghiệm xấu cục bộ.",
-  },
-  {
-    type: "fill-blank",
-    question:
-      "K-Means gán mỗi điểm dữ liệu vào cụm có {blank} gần nhất, sau đó cập nhật tâm cụm bằng cách tính {blank} tọa độ các điểm trong cụm.",
-    blanks: [
-      { answer: "tâm cụm", accept: ["centroid", "tâm"] },
-      { answer: "trung bình", accept: ["mean", "giá trị trung bình"] },
-    ],
-    explanation:
-      "Hai bước lặp cốt lõi của K-Means: (1) gán điểm đến tâm cụm gần nhất, (2) cập nhật tâm bằng trung bình các điểm trong cụm.",
+      "K-means là ví dụ tiêu biểu của học không giám sát (unsupervised learning). Dữ liệu đầu vào chỉ gồm các điểm — không ai nói trước điểm nào thuộc cụm nào. Thuật toán tự tìm cấu trúc nhóm.",
   },
   {
     question:
-      "Dữ liệu của bạn có 4 cụm tự nhiên nhưng bạn chạy K-Means với K=2. Chuyện gì sẽ xảy ra?",
+      "Một vòng lặp k-means gồm 2 bước. Đó là hai bước nào?",
+    options: [
+      "Đếm cụm → Xếp hạng cụm",
+      "Gán mỗi điểm đến tâm cụm gần nhất → Di chuyển mỗi tâm về trung bình cụm",
+      "Thêm điểm → Xoá điểm",
+      "Tính trung vị → Tính phương sai",
+    ],
+    correct: 1,
+    explanation:
+      "Hai bước: (1) gán điểm đến tâm cụm gần nhất — gọi là E-step, (2) di chuyển mỗi tâm về trung bình toạ độ các điểm trong cụm — gọi là M-step. Lặp đến khi tâm không dời nữa.",
+  },
+  {
+    question:
+      "Dữ liệu có 4 cụm tự nhiên, nhưng bạn chạy k-means với k = 2. Chuyện gì xảy ra?",
     options: [
       "Thuật toán báo lỗi và dừng",
-      "Hai cụm tự nhiên gần nhau sẽ bị gộp lại thành một cụm K-Means",
-      "K-Means sẽ tự tăng K lên 4",
+      "Hai cụm gần nhau bị gộp thành một — k-means luôn trả về đúng k cụm",
+      "K-means tự động tăng k lên 4",
       "Kết quả không xác định",
     ],
     correct: 1,
     explanation:
-      "K-Means luôn trả về đúng K cụm. Nếu K nhỏ hơn số cụm tự nhiên, các cụm gần nhau bị gộp; inertia sẽ cao rõ rệt — đây cũng là tín hiệu để dùng Elbow method tìm K phù hợp.",
+      "K-means không biết “số cụm tự nhiên” là bao nhiêu. Nó trả về đúng k cụm theo yêu cầu. Nếu k nhỏ hơn số cụm thực, các cụm gần nhau bị gộp. Để tìm k phù hợp, dùng phương pháp Elbow hoặc Silhouette.",
   },
   {
-    question: "Phương pháp Elbow chọn K thế nào?",
-    options: [
-      "Chọn K có inertia thấp nhất",
-      "Chọn K mà từ đó trở đi inertia giảm rất chậm — điểm 'khuỷu tay' trên đường cong",
-      "Chọn K bằng căn bậc hai của số điểm dữ liệu",
-      "Chọn K = 3 cho mọi dataset",
-    ],
-    correct: 1,
-    explanation:
-      "Inertia luôn giảm khi K tăng (K = n thì inertia = 0). Elbow method tìm K nơi 'phần thưởng' từ việc thêm cụm bắt đầu giảm — đồ thị chuyển từ dốc mạnh sang thoải.",
-  },
-  {
+    type: "fill-blank",
     question:
-      "Tại sao K-Means không phù hợp cho dữ liệu có cụm hình nguyệt (crescent-shaped)?",
-    options: [
-      "Thuật toán quá chậm",
-      "K-Means giả định cụm hình cầu (isotropic); nó chia theo Voronoi tuyến tính",
-      "K-Means cần nhãn",
-      "K-Means chỉ chạy cho dữ liệu 2D",
+      "Tâm cụm (centroid) được cập nhật bằng cách tính {blank} toạ độ của các điểm trong cụm. Điều này tương đương tối thiểu hoá tổng {blank} khoảng cách — còn gọi là inertia.",
+    blanks: [
+      { answer: "trung bình", accept: ["mean", "giá trị trung bình"] },
+      { answer: "bình phương", accept: ["squared", "bình phương"] },
     ],
-    correct: 1,
     explanation:
-      "K-Means tối thiểu bình phương khoảng cách Euclidean → biên phân cụm là siêu phẳng Voronoi → chỉ bắt được cụm hình cầu/elip. Với cụm cong, dùng DBSCAN hoặc Spectral Clustering.",
-  },
-  {
-    question:
-      "Bạn chạy K-Means 5 lần với 5 seed khác nhau và thu được 5 kết quả khác nhau (inertia dao động). Nên làm gì?",
-    options: [
-      "Luôn chọn kết quả của seed đầu tiên",
-      "Chạy nhiều lần (n_init ≥ 10) và chọn kết quả có inertia thấp nhất",
-      "Tăng learning rate",
-      "Tăng K lên gấp đôi",
-    ],
-    correct: 1,
-    explanation:
-      "Lloyd's algorithm chỉ đảm bảo hội tụ tới cực tiểu địa phương. Scikit-learn mặc định n_init=10 và trả về nghiệm tốt nhất — chiến lược chuẩn trong thực tế.",
+      "Trung bình toạ độ là điểm tối thiểu hoá tổng bình phương khoảng cách từ các điểm trong cụm đến tâm. Đây là lý do k-means dùng trung bình — không phải trung vị hay điểm tuỳ ý khác.",
   },
 ];
 
-/* ══════════════════════════════════════════════════════════════
- * MAIN COMPONENT
- * ══════════════════════════════════════════════════════════════ */
+/* ────────────────────────────────────────────────────────────
+   COMPONENT CHÍNH
+   ──────────────────────────────────────────────────────────── */
+
 export default function KMeansTopic() {
-  /* ─────────── State cho iteration tương tác ─────────── */
+  const [points, setPoints] = useState<Pt[]>(SEED_POINTS);
+  const [k, setK] = useState(3);
   const [centroids, setCentroids] = useState<Pt[]>([]);
   const [phase, setPhase] = useState<Phase>("place");
-  const [iteration, setIteration] = useState(0);
-  const [history, setHistory] = useState<number[]>([]); // lịch sử inertia
-
-  /* ─────────── Auto mode — K-Means chạy một phát ─────────── */
-  const [isAutoRunning, setIsAutoRunning] = useState(false);
+  const [iter, setIter] = useState(0);
+  const [history, setHistory] = useState<number[]>([]);
+  const [isPlaying, setIsPlaying] = useState(false);
   const autoRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const asgn = useMemo(
-    () =>
-      centroids.length === K_VIZ
-        ? assign(DATA, centroids)
-        : [],
-    [centroids]
-  );
-  const currInertia = useMemo(
-    () =>
-      centroids.length === K_VIZ
-        ? inertia(DATA, centroids)
-        : Infinity,
-    [centroids]
-  );
-  const currDist = useMemo(
-    () =>
-      centroids.length === K_VIZ
-        ? totalDistance(DATA, centroids)
-        : Infinity,
-    [centroids]
-  );
-
-  /* ─────────── Handlers ─────────── */
-  const handleCanvasClick = useCallback(
-    (e: React.MouseEvent<SVGSVGElement>) => {
-      if (phase !== "place" || centroids.length >= K_VIZ) return;
-      const svg = e.currentTarget;
-      const rect = svg.getBoundingClientRect();
-      const x =
-        ((e.clientX - rect.left) * CANVAS_W) / rect.width;
-      const y =
-        ((e.clientY - rect.top) * CANVAS_H) / rect.height;
-      setCentroids((prev) => [...prev, { x, y }]);
-    },
-    [phase, centroids.length]
-  );
-
-  const handleAssign = useCallback(() => {
-    setPhase("assigned");
-    setIteration((i) => i + 1);
-    setHistory((h) => [...h, inertia(DATA, centroids)]);
-  }, [centroids]);
-
-  const handleMove = useCallback(() => {
-    const next = recompute(DATA, asgn, centroids);
-    setCentroids(next);
-    const moved = next.every((c, ci) => dist(c, centroids[ci]) < 1);
-    setPhase(moved ? "converged" : "moved");
-  }, [asgn, centroids]);
-
-  const handleIterate = useCallback(() => {
-    setPhase("assigned");
-    setIteration((i) => i + 1);
-    setHistory((h) => [...h, inertia(DATA, centroids)]);
-  }, [centroids]);
-
-  const handleReset = useCallback(() => {
-    setCentroids([]);
-    setPhase("place");
-    setIteration(0);
-    setHistory([]);
-    if (autoRef.current) {
-      clearInterval(autoRef.current);
-      autoRef.current = null;
-    }
-    setIsAutoRunning(false);
-  }, []);
-
-  const handleKMeansPlusPlus = useCallback(() => {
-    const cs = kMeansPlusPlusInit(DATA, K_VIZ, Date.now() & 0xffff);
+  useEffect(() => {
+    const cs = kMeansPlusPlusInit(points, k, 42);
     setCentroids(cs);
     setPhase("place");
-    setIteration(0);
-    setHistory([]);
-  }, []);
+    setIter(0);
+    setHistory([inertia(points, cs)]);
+  }, [k, points]);
 
-  const handleAutoRun = useCallback(() => {
-    if (centroids.length !== K_VIZ) return;
-    setIsAutoRunning(true);
-    let curr = centroids;
-    let i = iteration;
-    autoRef.current = setInterval(() => {
-      const a = assign(DATA, curr);
-      const next = recompute(DATA, a, curr);
-      const done =
-        next.every((c, ci) => dist(c, curr[ci]) < 0.5) ||
-        i > MAX_ITER;
-      curr = next;
-      i++;
-      setCentroids(next);
-      setIteration(i);
-      setHistory((h) => [...h, inertia(DATA, next)]);
-      if (done && autoRef.current) {
-        clearInterval(autoRef.current);
-        autoRef.current = null;
-        setIsAutoRunning(false);
-        setPhase("converged");
-      }
-    }, 700);
-  }, [centroids, iteration]);
-
-  // Dọn interval khi unmount
   useEffect(() => {
     return () => {
       if (autoRef.current) clearInterval(autoRef.current);
     };
   }, []);
 
-  /* ─────────── Preset centroid cho ToggleCompare ─────────── */
-  const goodInit = useMemo<Pt[]>(
-    () => [
-      { x: 95, y: 95 },
-      { x: 320, y: 80 },
-      { x: 220, y: 270 },
-    ],
-    []
-  );
-  const badInit = useMemo<Pt[]>(
-    () => [
-      { x: 50, y: 40 },
-      { x: 70, y: 55 },
-      { x: 60, y: 48 },
-    ],
-    []
+  const asgn = useMemo(
+    () =>
+      centroids.length === k ? assign(points, centroids) : [],
+    [points, centroids, k],
   );
 
-  const spring = {
-    type: "spring" as const,
-    stiffness: 120,
-    damping: 18,
-  };
-  const btnPrimary =
-    "rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50";
-  const btnSecondary =
-    "rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground disabled:opacity-50";
+  const currInertia = useMemo(
+    () => (centroids.length === k ? inertia(points, centroids) : 0),
+    [points, centroids, k],
+  );
+
+  const handleAddPoint = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      if (isPlaying) return;
+      const svg = e.currentTarget;
+      const rect = svg.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) * CANVAS_W) / rect.width;
+      const y = ((e.clientY - rect.top) * CANVAS_H) / rect.height;
+      setPoints((prev) => [...prev, { x, y }]);
+    },
+    [isPlaying],
+  );
+
+  const handleStep = useCallback(() => {
+    if (phase === "place" || phase === "moved") {
+      setPhase("assigned");
+      setIter((i) => i + 1);
+      setHistory((h) => [...h, inertia(points, centroids)]);
+    } else if (phase === "assigned") {
+      const next = recompute(points, asgn, centroids);
+      const moved = next.every((c, ci) => dist(c, centroids[ci]) < 1);
+      setCentroids(next);
+      setPhase(moved ? "converged" : "moved");
+    }
+  }, [phase, asgn, centroids, points]);
+
+  const handlePlay = useCallback(() => {
+    if (isPlaying) {
+      if (autoRef.current) {
+        clearInterval(autoRef.current);
+        autoRef.current = null;
+      }
+      setIsPlaying(false);
+      return;
+    }
+    setIsPlaying(true);
+    let curr = centroids;
+    let i = iter;
+    let step = phase === "assigned" ? ("move" as const) : ("assign" as const);
+    autoRef.current = setInterval(() => {
+      if (step === "assign") {
+        setPhase("assigned");
+        i += 1;
+        setIter(i);
+        setHistory((h) => [...h, inertia(points, curr)]);
+        step = "move";
+      } else {
+        const a = assign(points, curr);
+        const next = recompute(points, a, curr);
+        const converged = next.every(
+          (c, ci) => dist(c, curr[ci]) < 0.5,
+        );
+        curr = next;
+        setCentroids(next);
+        if (converged || i >= MAX_ITER) {
+          setPhase("converged");
+          if (autoRef.current) {
+            clearInterval(autoRef.current);
+            autoRef.current = null;
+          }
+          setIsPlaying(false);
+        } else {
+          setPhase("moved");
+        }
+        step = "assign";
+      }
+    }, 650);
+  }, [isPlaying, centroids, iter, phase, points]);
+
+  const handleReset = useCallback(() => {
+    if (autoRef.current) {
+      clearInterval(autoRef.current);
+      autoRef.current = null;
+    }
+    setIsPlaying(false);
+    setPoints(SEED_POINTS);
+    const cs = kMeansPlusPlusInit(SEED_POINTS, k, Date.now() & 0xffff);
+    setCentroids(cs);
+    setPhase("place");
+    setIter(0);
+    setHistory([inertia(SEED_POINTS, cs)]);
+  }, [k]);
+
+  const elbowData = useMemo(() => {
+    const out: { k: number; inertia: number }[] = [];
+    for (let kk = 1; kk <= 6; kk++) {
+      const { inertia: j } = runToConvergence(SEED_POINTS, kk, 1337 + kk);
+      out.push({ k: kk, inertia: j });
+    }
+    return out;
+  }, []);
 
   return (
     <>
-      {/* ────────── STEP 1 — PREDICTION GATE ────────── */}
-      <LessonSection step={1} totalSteps={8} label="Dự đoán">
+      {/* BƯỚC 1 — DỰ ĐOÁN */}
+      <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Bạn quản lý 3 kho hàng Grab. 30 tài xế rải rác khắp thành phố. Bạn muốn mỗi tài xế đến kho gần nhất. Làm sao đặt 3 kho cho tối ưu?"
+          question="Bạn là chủ thương hiệu cà phê, có 30 cửa hàng rải rác khắp Hà Nội. Đội vận hành muốn đặt 3 kho nguyên liệu sao cho mọi cửa hàng đến kho gần nhất là ngắn nhất. Bạn đặt kho ở đâu?"
           options={[
-            "Đặt ngẫu nhiên",
-            "Đặt ở 3 góc thành phố",
-            "Đặt ở trung tâm mỗi cụm tài xế",
+            "Đặt đều ở 3 hướng: Đông, Tây, Nam thành phố",
+            "Đặt gần trung tâm vì nhiều cửa hàng ở đó",
+            "Đặt ở trung tâm mỗi cụm cửa hàng tự nhiên — gần nhau thì chung một kho",
+            "Đặt ngẫu nhiên cho công bằng",
           ]}
           correct={2}
-          explanation="Đặt kho ở trung tâm mỗi cụm — đó chính là ý tưởng K-Means!"
+          explanation="Chính xác! Đặt kho ở trung tâm mỗi cụm cửa hàng. Đó là ý tưởng cốt lõi của k-means: 'tụ điểm' (centroid) là trung bình của các điểm thuộc về nó. Nhưng có điều kỳ lạ: trước khi đặt kho bạn không biết cửa hàng nào thuộc nhóm nào. Thuật toán giải quyết 'gà có trước hay trứng có trước' bằng cách... đoán rồi sửa dần."
+        >
+          <p className="text-sm text-muted mt-4 leading-relaxed">
+            Chưa có ai dán nhãn &ldquo;cụm bắc&rdquo; hay &ldquo;cụm
+            nam&rdquo; cho 30 cửa hàng. Nhưng dữ liệu thường{" "}
+            <em>tự gom nhóm</em> — cửa hàng gần nhau thì về địa lý đã
+            &ldquo;đồng nhóm&rdquo; rồi. k-means là cách để máy tính tìm
+            ra những tụ điểm tự nhiên đó mà không cần ai nói trước.
+          </p>
+        </PredictionGate>
+      </LessonSection>
+
+      {/* BƯỚC 2 — ẨN DỤ */}
+      <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <MapPin size={20} className="text-accent" /> Gà có trước hay trứng có trước?
+          </h3>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Bạn không biết cửa hàng nào thuộc cụm nào — để biết điều đó
+            cần có vị trí kho. Nhưng vị trí kho lại phụ thuộc vào danh
+            sách cửa hàng trong cụm. Vòng tròn!
+          </p>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            <strong>Mẹo của k-means: bắt đầu bằng một phỏng đoán thô,
+            rồi sửa liên tục.</strong>
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
+            <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+                <Target size={16} />
+                <span className="text-sm font-semibold">Bước 1: Đoán</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Đặt 3 kho ở 3 vị trí bất kỳ — thậm chí là ngẫu nhiên.
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                <MousePointerClick size={16} />
+                <span className="text-sm font-semibold">Bước 2: Gán</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Mỗi cửa hàng → chọn kho gần nhất. Cụm được &ldquo;khai
+                sinh&rdquo;.
+              </p>
+            </div>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+                <Zap size={16} />
+                <span className="text-sm font-semibold">Bước 3: Dời</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Dời mỗi kho về trung bình cụm. Quay lại bước 2. Lặp đến
+                khi không ai dời nữa.
+              </p>
+            </div>
+          </div>
+        </div>
+      </LessonSection>
+
+      {/* BƯỚC 3 — TRỰC QUAN HOÁ */}
+      <LessonSection step={3} totalSteps={8} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <div className="space-y-5">
+            <p className="text-sm text-muted leading-relaxed">
+              Canvas bên dưới là bản đồ giả định. 30 chấm xám là cửa
+              hàng đã có sẵn — bạn có thể{" "}
+              <strong>nhấp vào ô trống</strong> để thêm cửa hàng mới.
+              Kéo thanh <strong>số kho (k)</strong> rồi bấm{" "}
+              <strong>Play</strong> để xem thuật toán chạy.
+            </p>
+
+            {/* Controls row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="md:col-span-1 rounded-xl border border-border bg-card p-3 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={14} className="text-accent" />
+                  <span className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
+                    Điều khiển
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={handlePlay}
+                    disabled={phase === "converged"}
+                    className="flex items-center justify-center gap-1 rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                  >
+                    {isPlaying ? (
+                      <Pause size={12} />
+                    ) : (
+                      <Play size={12} />
+                    )}
+                    {isPlaying ? "Dừng" : "Play"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleStep}
+                    disabled={isPlaying || phase === "converged"}
+                    className="flex items-center justify-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted hover:text-foreground disabled:opacity-50"
+                  >
+                    <ChevronRight size={12} />
+                    1 bước
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="flex items-center justify-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted hover:text-foreground"
+                  >
+                    <RotateCcw size={12} />
+                    Reset
+                  </button>
+                </div>
+                <div className="rounded-lg bg-surface/60 p-2 text-[11px] text-muted text-center leading-snug">
+                  {phase === "place" &&
+                    "Tâm cụm đã đặt xong — bấm Play hoặc “1 bước” để bắt đầu gán"}
+                  {phase === "assigned" &&
+                    "Điểm đã được gán vào cụm gần nhất. Tiếp theo: dời tâm"}
+                  {phase === "moved" &&
+                    "Tâm đã dời. Gán lại điểm để kiểm tra có thay đổi không"}
+                  {phase === "converged" && (
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                      Hội tụ! Tâm không dời nữa.
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="md:col-span-1 rounded-xl border border-border bg-card p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
+                    Số kho k
+                  </span>
+                  <span className="text-lg font-bold text-accent tabular-nums">
+                    {k}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={6}
+                  step={1}
+                  value={k}
+                  onChange={(e) => setK(Number(e.target.value))}
+                  disabled={isPlaying}
+                  className="w-full h-2 rounded-full appearance-none cursor-pointer accent-accent"
+                  aria-label="Số cụm k"
+                />
+                <div className="flex justify-between text-[10px] text-tertiary">
+                  <span>1</span>
+                  <span>2</span>
+                  <span>3</span>
+                  <span>4</span>
+                  <span>5</span>
+                  <span>6</span>
+                </div>
+              </div>
+
+              <div className="md:col-span-1 rounded-xl border border-border bg-card p-3 space-y-1">
+                <div className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
+                  Trạng thái
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted">Vòng lặp</span>
+                  <span className="tabular-nums font-bold text-foreground">
+                    {iter}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted">Inertia</span>
+                  <span className="tabular-nums font-bold text-foreground">
+                    {currInertia.toFixed(0)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted">Điểm</span>
+                  <span className="tabular-nums font-bold text-foreground">
+                    {points.length}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Canvas */}
+            <svg
+              viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
+              className="w-full rounded-xl border border-border bg-background cursor-crosshair"
+              onClick={handleAddPoint}
+              role="img"
+              aria-label={`Canvas phân cụm k-means: ${points.length} điểm, ${k} tâm cụm, vòng lặp ${iter}, inertia ${currInertia.toFixed(0)}`}
+            >
+              {/* Grid */}
+              {[0, 1, 2, 3, 4].map((g) => (
+                <line
+                  key={`gv-${g}`}
+                  x1={(g * CANVAS_W) / 4}
+                  y1={0}
+                  x2={(g * CANVAS_W) / 4}
+                  y2={CANVAS_H}
+                  stroke="currentColor"
+                  strokeOpacity={0.06}
+                  strokeDasharray="2,4"
+                />
+              ))}
+              {[0, 1, 2, 3].map((g) => (
+                <line
+                  key={`gh-${g}`}
+                  x1={0}
+                  y1={(g * CANVAS_H) / 3}
+                  x2={CANVAS_W}
+                  y2={(g * CANVAS_H) / 3}
+                  stroke="currentColor"
+                  strokeOpacity={0.06}
+                  strokeDasharray="2,4"
+                />
+              ))}
+
+              {/* Assignment lines */}
+              {phase !== "place" &&
+                centroids.length === k &&
+                points.map((p, i) => (
+                  <motion.line
+                    key={`ln-${i}`}
+                    x1={p.x}
+                    y1={p.y}
+                    x2={centroids[asgn[i]].x}
+                    y2={centroids[asgn[i]].y}
+                    stroke={COLORS[asgn[i]]}
+                    strokeWidth={0.8}
+                    opacity={0.3}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.3 }}
+                    transition={{ duration: 0.3, delay: i * 0.015 }}
+                  />
+                ))}
+
+              {/* Points */}
+              {points.map((p, i) => {
+                const active = phase !== "place" && centroids.length === k;
+                const fill = active ? COLORS[asgn[i]] : "#94a3b8";
+                return (
+                  <motion.circle
+                    key={`pt-${i}`}
+                    cx={p.x}
+                    cy={p.y}
+                    r={5}
+                    stroke="#fff"
+                    strokeWidth={1.2}
+                    animate={{ fill }}
+                    transition={{ duration: 0.35 }}
+                  />
+                );
+              })}
+
+              {/* Centroids */}
+              {centroids.map((c, i) => (
+                <motion.g
+                  key={`cg-${i}`}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                >
+                  <motion.line
+                    x1={c.x - 9}
+                    y1={c.y - 9}
+                    x2={c.x + 9}
+                    y2={c.y + 9}
+                    stroke={COLORS[i]}
+                    strokeWidth={3.5}
+                    animate={{ x1: c.x - 9, y1: c.y - 9, x2: c.x + 9, y2: c.y + 9 }}
+                    transition={{ type: "spring", stiffness: 140, damping: 18 }}
+                  />
+                  <motion.line
+                    x1={c.x + 9}
+                    y1={c.y - 9}
+                    x2={c.x - 9}
+                    y2={c.y + 9}
+                    stroke={COLORS[i]}
+                    strokeWidth={3.5}
+                    animate={{ x1: c.x + 9, y1: c.y - 9, x2: c.x - 9, y2: c.y + 9 }}
+                    transition={{ type: "spring", stiffness: 140, damping: 18 }}
+                  />
+                  <motion.circle
+                    cx={c.x}
+                    cy={c.y}
+                    r={4}
+                    fill="#fff"
+                    animate={{ cx: c.x, cy: c.y }}
+                    transition={{ type: "spring", stiffness: 140, damping: 18 }}
+                  />
+                </motion.g>
+              ))}
+
+              {/* Converged badge */}
+              <AnimatePresence>
+                {phase === "converged" && (
+                  <motion.g
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <rect
+                      x={CANVAS_W - 130}
+                      y={10}
+                      width={120}
+                      height={24}
+                      rx={12}
+                      fill="#22c55e"
+                      opacity={0.12}
+                    />
+                    <text
+                      x={CANVAS_W - 70}
+                      y={26}
+                      textAnchor="middle"
+                      fontSize={11}
+                      fontWeight={700}
+                      fill="#16a34a"
+                    >
+                      ✓ Hội tụ sau {iter} vòng
+                    </text>
+                  </motion.g>
+                )}
+              </AnimatePresence>
+            </svg>
+
+            {/* History mini-chart */}
+            {history.length > 1 && (
+              <div className="rounded-xl border border-border bg-card p-4">
+                <p className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
+                  <Sparkles size={12} className="text-accent" />
+                  Inertia giảm theo từng vòng lặp
+                </p>
+                <svg viewBox="0 0 400 100" className="w-full">
+                  {(() => {
+                    const maxH = Math.max(...history);
+                    const minH = Math.min(...history);
+                    const range = Math.max(1, maxH - minH);
+                    const n = Math.max(1, history.length - 1);
+                    const toX = (i: number) => 20 + (i * 360) / Math.max(1, n);
+                    const toY = (v: number) =>
+                      15 + ((maxH - v) / range) * 70;
+                    const path = history
+                      .map(
+                        (v, i) =>
+                          `${i === 0 ? "M" : "L"} ${toX(i)} ${toY(v)}`,
+                      )
+                      .join(" ");
+                    return (
+                      <>
+                        <line
+                          x1={20}
+                          x2={380}
+                          y1={85}
+                          y2={85}
+                          stroke="currentColor"
+                          strokeOpacity={0.15}
+                        />
+                        <path
+                          d={path}
+                          fill="none"
+                          stroke="#3b82f6"
+                          strokeWidth={2}
+                        />
+                        {history.map((v, i) => (
+                          <motion.circle
+                            key={`h-${i}`}
+                            cx={toX(i)}
+                            cy={toY(v)}
+                            r={3}
+                            fill="#3b82f6"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: i * 0.05 }}
+                          />
+                        ))}
+                      </>
+                    );
+                  })()}
+                </svg>
+                <p className="text-[10px] text-muted mt-1 italic">
+                  Inertia luôn giảm hoặc giữ nguyên — nếu bạn thấy nó
+                  tăng, có lỗi trong cài đặt!
+                </p>
+              </div>
+            )}
+          </div>
+        </VisualizationSection>
+      </LessonSection>
+
+      {/* BƯỚC 4 — MỔ XẺ MỘT VÒNG LẶP */}
+      <LessonSection step={4} totalSteps={8} label="Mổ xẻ một vòng lặp">
+        <p className="text-sm text-muted mb-4 leading-relaxed">
+          Bấm &ldquo;Tiếp tục&rdquo; để đi qua từng bước trong một vòng
+          lặp: tính khoảng cách → gán cụm → dời tâm. Mỗi bước có hình
+          ảnh riêng.
+        </p>
+
+        <StepReveal
+          labels={[
+            "Bước 1: Đo khoảng cách từ điểm đến mỗi tâm",
+            "Bước 2: Gán điểm về tâm gần nhất",
+            "Bước 3: Dời tâm về trung bình cụm",
+          ]}
+        >
+          {[
+            <StepDistance key="s1" />,
+            <StepAssign key="s2" />,
+            <StepUpdate key="s3" />,
+          ]}
+        </StepReveal>
+      </LessonSection>
+
+      {/* BƯỚC 5 — AHA */}
+      <LessonSection step={5} totalSteps={8} label="Khoảnh khắc hiểu">
+        <AhaMoment>
+          k-means giải bài toán &ldquo;gà và trứng&rdquo; bằng cách{" "}
+          <strong>luân phiên</strong> — giả vờ biết một phần, giải phần
+          còn lại, rồi đảo ngược.
+          <br />
+          <br />
+          Đây là một ví dụ của một họ thuật toán lớn hơn gọi là{" "}
+          <em>Expectation-Maximization</em>. Bạn sẽ gặp lại ý tưởng này
+          ở nhiều nơi — Gaussian Mixture Model, thuật toán EM cho hidden
+          Markov, thậm chí cả cách bạn tự điều chỉnh kỳ vọng khi gặp
+          người mới.
+        </AhaMoment>
+      </LessonSection>
+
+      {/* BƯỚC 6 — THỬ THÁCH */}
+      <LessonSection step={6} totalSteps={8} label="Thử thách">
+        <InlineChallenge
+          question="Bạn có n điểm. Chạy k-means với k = 1 và k = n (số cụm bằng số điểm). Chuyện gì xảy ra?"
+          options={[
+            "k = 1: mọi điểm chung một cụm → tâm là trung bình cả tập; k = n: mỗi điểm là một cụm riêng → inertia = 0 nhưng vô nghĩa",
+            "Cả hai trường hợp đều báo lỗi",
+            "k = 1 cho kết quả tốt, k = n cho kết quả kém",
+            "Không có gì khác thường — k-means xử lý bình thường",
+          ]}
+          correct={0}
+          explanation="Với k = 1: mọi điểm thuộc cùng một cụm, tâm là trung bình toàn tập — inertia lớn nhất có thể. Với k = n: mỗi điểm tự là một cụm, tâm trùng chính điểm đó, inertia = 0 tuyệt đối — nhưng hoàn toàn vô nghĩa cho phân tích. Đây là lý do cần chọn k cẩn thận: inertia luôn giảm khi tăng k, không phải lúc nào k nhỏ hơn cũng tệ."
         />
       </LessonSection>
 
-          {/* ────────── ANALOGY ────────── */}
-          <div className="mb-4 rounded-xl border border-border bg-card p-4">
-            <p className="text-sm font-semibold text-foreground">
-              Liên hệ đời thường — đặt kho hàng tối ưu
+      {/* BƯỚC 7 — GIẢI THÍCH */}
+      <LessonSection step={7} totalSteps={8} label="Giải thích">
+        <ExplanationSection>
+          <p className="leading-relaxed">
+            k-means là thuật toán{" "}
+            <TopicLink slug="supervised-unsupervised-rl">
+              học không giám sát
+            </TopicLink>{" "}
+            phổ biến nhất. Nó chia dữ liệu thành k nhóm sao cho{" "}
+            <strong>tổng bình phương khoảng cách</strong> từ mỗi điểm
+            đến tâm cụm của nó là nhỏ nhất. Đại lượng này gọi là{" "}
+            <em>inertia</em> hoặc <em>within-cluster sum of squares</em>.
+          </p>
+
+          <div className="rounded-xl border border-border bg-card p-5 my-4 space-y-3">
+            <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <Target size={16} className="text-accent" />
+              Hàm mục tiêu
             </p>
-            <p className="mt-1 text-sm text-muted leading-relaxed">
-              Hình dung bạn được giao 3 kho Grab và hàng chục tài xế
-              đang rải khắp thành phố. Nếu đặt kho bừa thì có tài xế
-              phải chạy rất xa. Trực giác: “đặt kho ở{" "}
-              <strong className="text-foreground">trung tâm</strong>{" "}
-              của mỗi nhóm tài xế gần nhau”. Nhưng bạn không biết
-              trước ai thuộc nhóm nào — gà hay trứng có trước? Mẹo của
-              K-Means là <em>lặp</em>: đoán 3 vị trí kho, yêu cầu mỗi
-              tài xế đến kho gần nhất, rồi dời kho về trung bình tọa
-              độ các tài xế vừa đến. Lặp lại. Sau vài vòng, ba kho tự
-              “trượt” về ba trung tâm cụm — giống như bụi mạt sắt xếp
-              theo từ trường.
+            <LaTeX block>{"J = \\sum_{k=1}^{K} \\sum_{x \\in C_k} \\|x - \\mu_k\\|^2"}</LaTeX>
+            <p className="text-xs text-muted leading-relaxed">
+              <LaTeX>{"\\mu_k"}</LaTeX> là tâm cụm k,{" "}
+              <LaTeX>{"C_k"}</LaTeX> là tập điểm thuộc cụm k. Mục tiêu:
+              tìm bộ tâm và phân cụm sao cho J nhỏ nhất. Vì inertia giảm
+              đơn điệu qua mỗi vòng lặp, thuật toán luôn hội tụ — nhưng
+              chỉ đảm bảo về cực tiểu địa phương.
             </p>
           </div>
 
-          <p className="mb-4 text-sm text-muted leading-relaxed">
-            Bây giờ hãy thử với dữ liệu thật. Bạn sẽ tự tay đặt{" "}
-            <strong className="text-foreground">3 tâm cụm</strong>,
-            rồi bấm “Gán điểm” và “Di chuyển tâm” để trở thành thuật
-            toán. Khi tâm không dời nữa → bạn đã hội tụ.
+          <div className="rounded-xl border border-border bg-card p-5 my-4 space-y-3">
+            <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <Sparkles size={16} className="text-accent" />
+              Cập nhật tâm (M-step)
+            </p>
+            <LaTeX block>{"\\mu_k = \\frac{1}{|C_k|} \\sum_{x \\in C_k} x"}</LaTeX>
+            <p className="text-xs text-muted leading-relaxed">
+              Tâm mới là trung bình toạ độ của các điểm trong cụm. Không
+              phải trung vị, không phải một điểm bất kỳ — <em>trung bình</em>.
+              Lý do: trung bình chính là điểm tối thiểu hoá tổng bình
+              phương khoảng cách (đạo hàm J theo <LaTeX>{"\\mu_k"}</LaTeX>
+              bằng 0 cho ra đúng công thức này).
+            </p>
+          </div>
+
+          <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
+            Chọn k bằng phương pháp Elbow
+          </h4>
+          <p className="text-sm text-muted leading-relaxed mb-3">
+            Inertia luôn giảm khi k tăng (k càng lớn → cụm càng nhỏ →
+            điểm càng gần tâm). Nhưng ở một điểm nào đó, tăng k không
+            còn giảm inertia đáng kể nữa — đó là &ldquo;khuỷu tay&rdquo;.
           </p>
+          <ElbowChart data={elbowData} />
 
-          {/* ────────── STEP 2 — DISCOVERY ────────── */}
-          <LessonSection step={2} totalSteps={8} label="Khám phá">
-            <VisualizationSection>
-              <div className="space-y-4">
-                {/* Thông báo trạng thái */}
-                <p className="text-sm text-muted">
-                  {phase === "place" && centroids.length < K_VIZ && (
-                    <>
-                      Nhấp vào canvas để đặt{" "}
-                      <strong className="text-foreground">{K_VIZ - centroids.length} tâm cụm</strong>{" "}
-                      còn lại (
-                      {COLORS.slice(centroids.length, K_VIZ)
-                        .map((_, i) => COLOR_NAMES[centroids.length + i])
-                        .join(", ")}
-                      ).
-                    </>
-                  )}
-                  {phase === "place" && centroids.length === K_VIZ && (
-                    <>
-                      Đã đặt 3 tâm cụm! Nhấn{" "}
-                      <strong className="text-foreground">&quot;Gán điểm&quot;</strong>{" "}
-                      để xem mỗi điểm thuộc cụm nào, hoặc nhấn{" "}
-                      <strong className="text-foreground">&quot;Chạy auto&quot;</strong>{" "}
-                      để K-Means chạy tới khi hội tụ.
-                    </>
-                  )}
-                  {phase === "assigned" && (
-                    <>
-                      Mỗi điểm được tô màu theo tâm gần nhất. Nhấn{" "}
-                      <strong className="text-foreground">&quot;Di chuyển tâm&quot;</strong>{" "}
-                      để dời tâm về trung bình cụm.
-                    </>
-                  )}
-                  {phase === "moved" && (
-                    <>
-                      Tâm đã di chuyển! Nhấn{" "}
-                      <strong className="text-foreground">&quot;Lặp tiếp&quot;</strong>{" "}
-                      để gán lại và tiếp tục.
-                    </>
-                  )}
-                  {phase === "converged" && (
-                    <>
-                      Thuật toán đã <strong className="text-green-500">hội tụ</strong>{" "}
-                      — tâm cụm không thay đổi nữa!
-                    </>
-                  )}
-                </p>
+          <Callout variant="tip" title="Mẹo chọn k trong thực tế">
+            Elbow là phương pháp trực quan nhưng đôi khi mơ hồ. Các cách
+            bổ sung: (1) <em>Silhouette score</em> — đo mức độ &ldquo;chặt&rdquo;
+            của cụm; (2) <em>Gap statistic</em> — so sánh inertia thật với
+            dữ liệu ngẫu nhiên; (3) <em>Ràng buộc nghiệp vụ</em> — đôi
+            khi bạn biết trước cần 4 phân khúc khách hàng, 3 gói dịch vụ.
+          </Callout>
 
-                {/* Canvas K-Means tương tác */}
-                <svg viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
-                  className="w-full cursor-crosshair rounded-lg border border-border bg-background"
-                  onClick={handleCanvasClick}>
-                  {/* Assignment lines */}
-                  {phase !== "place" && centroids.length === K_VIZ &&
-                    DATA.map((p, i) => (
-                      <motion.line key={`ln-${i}`} x1={p.x} y1={p.y}
-                        x2={centroids[asgn[i]].x} y2={centroids[asgn[i]].y}
-                        stroke={COLORS[asgn[i]]} strokeWidth={0.8} opacity={0.25}
-                        initial={{ opacity: 0 }} animate={{ opacity: 0.25 }}
-                        transition={{ duration: 0.4, delay: i * 0.02 }} />
-                    ))}
+          <Callout variant="warning" title="Những cạm bẫy thường gặp">
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>
+                <strong>Không chuẩn hoá dữ liệu:</strong> nếu một chiều
+                có đơn vị lớn (thu nhập triệu đồng) và chiều khác nhỏ
+                (tuổi), khoảng cách Euclidean bị chi phối bởi chiều lớn.
+                Luôn chuẩn hoá trước khi chạy.
+              </li>
+              <li>
+                <strong>Khởi tạo tồi:</strong> k-means rất nhạy với vị
+                trí tâm ban đầu. Dùng <em>k-means++</em> (chọn tâm xa nhau)
+                thay vì ngẫu nhiên — scikit-learn mặc định đã bật.
+              </li>
+              <li>
+                <strong>Cụm hình không phải cầu:</strong> k-means giả định
+                cụm có dạng tròn (isotropic). Cụm cong hoặc mật độ khác
+                nhau → dùng DBSCAN hoặc Spectral Clustering.
+              </li>
+              <li>
+                <strong>Outlier:</strong> k-means dùng trung bình nên rất
+                nhạy outlier. Xử lý bằng k-medoids (dùng điểm thật làm
+                tâm) hoặc lọc outlier trước.
+              </li>
+            </ul>
+          </Callout>
 
-                  {/* Data points */}
-                  {DATA.map((p, i) => {
-                    const active = phase !== "place" && centroids.length === K_VIZ;
-                    const fill = active ? COLORS[asgn[i]] : "#94a3b8";
-                    return (
-                      <motion.circle key={`pt-${i}`} cx={p.x} cy={p.y} r={5} fill={fill}
-                        stroke="#fff" strokeWidth={1.5} initial={false}
-                        animate={{ fill }} transition={{ duration: 0.4 }} />
-                    );
-                  })}
+          <CollapsibleDetail title="Tại sao k-means luôn hội tụ?">
+            <p className="text-sm leading-relaxed">
+              Hàm mục tiêu J giảm đơn điệu qua mỗi vòng lặp (bước E không
+              tăng J, bước M không tăng J), và J bị chặn dưới bởi 0.
+              Thêm vào đó, số cách phân hoạch n điểm thành k cụm là hữu
+              hạn, nên J không thể giảm mãi — thuật toán hội tụ trong
+              hữu hạn vòng. <em>Lưu ý quan trọng:</em> chỉ hội tụ đến
+              cực tiểu <strong>địa phương</strong>, không đảm bảo toàn
+              cục. Đó là lý do scikit-learn chạy 10 lần với seed khác
+              nhau và chọn nghiệm tốt nhất (tham số{" "}
+              <code>n_init=10</code>).
+            </p>
+          </CollapsibleDetail>
 
-                  {/* Centroids animated */}
-                  {centroids.map((c, i) => (
-                    <motion.g key={`cg-${i}`} initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 200, damping: 15 }}>
-                      <motion.line x1={c.x - 8} y1={c.y - 8} x2={c.x + 8} y2={c.y + 8}
-                        stroke={COLORS[i]} strokeWidth={3}
-                        animate={{ x1: c.x - 8, y1: c.y - 8, x2: c.x + 8, y2: c.y + 8 }}
-                        transition={spring} />
-                      <motion.line x1={c.x + 8} y1={c.y - 8} x2={c.x - 8} y2={c.y + 8}
-                        stroke={COLORS[i]} strokeWidth={3}
-                        animate={{ x1: c.x + 8, y1: c.y - 8, x2: c.x - 8, y2: c.y + 8 }}
-                        transition={spring} />
-                      <motion.circle cx={c.x} cy={c.y} r={3} fill="#fff"
-                        animate={{ cx: c.x, cy: c.y }} transition={spring} />
-                    </motion.g>
-                  ))}
+          <CollapsibleDetail title="Ứng dụng thực tế của k-means">
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>
+                <strong>Phân khúc khách hàng:</strong> gom khách thành
+                4–8 cụm hành vi để gửi email/ưu đãi khác nhau.
+              </li>
+              <li>
+                <strong>Nén ảnh (color quantization):</strong> gom các
+                màu tương tự thành một bảng 256 màu, giảm 80% dung lượng.
+              </li>
+              <li>
+                <strong>Phát hiện bất thường:</strong> điểm xa mọi tâm
+                là outlier — dùng cho phát hiện gian lận thẻ tín dụng.
+              </li>
+              <li>
+                <strong>Phân cụm tài liệu:</strong> gom tin tức thành chủ
+                đề bằng k-means trên vector embedding.
+              </li>
+              <li>
+                <strong>Gợi ý nhạc:</strong> Spotify dùng k-means trên
+                vector nghe của người dùng để tìm &ldquo;đồng minh thẩm
+                mỹ&rdquo; — xem bài ứng dụng.
+              </li>
+            </ul>
+          </CollapsibleDetail>
+        </ExplanationSection>
+      </LessonSection>
 
-                  {/* Overlay số liệu */}
-                  {centroids.length === K_VIZ && phase !== "place" && (
-                    <>
-                      <text x={10} y={20} fontSize={12} fill="currentColor"
-                        className="text-foreground" fontWeight={600}>
-                        Vòng lặp: {iteration}
-                      </text>
-                      <text x={10} y={38} fontSize={11} fill="currentColor" className="text-muted">
-                        Inertia: {currInertia.toFixed(0)}
-                      </text>
-                      <text x={10} y={54} fontSize={11} fill="currentColor" className="text-muted">
-                        Tổng khoảng cách: {currDist.toFixed(0)}
-                      </text>
-                    </>
-                  )}
-                </svg>
+      {/* BƯỚC 8 — TÓM TẮT + QUIZ */}
+      <LessonSection step={8} totalSteps={8} label="Tóm tắt và kiểm tra">
+        <MiniSummary
+          title="5 điều cần nhớ về k-means"
+          points={[
+            "Ý tưởng gốc: lặp giữa gán điểm đến tâm gần nhất (E-step) và dời tâm về trung bình cụm (M-step) đến khi không ai dời nữa.",
+            "Hàm mục tiêu là inertia — tổng bình phương khoảng cách; luôn giảm đơn điệu và hội tụ đến cực tiểu địa phương.",
+            "Phải chọn k trước khi chạy. Dùng Elbow hoặc Silhouette để tìm k phù hợp với dữ liệu.",
+            "Nhạy với khởi tạo — luôn dùng k-means++ và chạy nhiều lần (n_init ≥ 10) để tránh nghiệm xấu.",
+            "Chỉ phù hợp cụm hình cầu. Dữ liệu cong hoặc mật độ khác nhau → dùng DBSCAN, Spectral, hoặc GMM.",
+          ]}
+        />
 
-                {/* Button panel */}
-                <div className="flex flex-wrap items-center gap-3">
-                  {phase === "place" && centroids.length === K_VIZ && (
-                    <>
-                      <button onClick={handleAssign} className={btnPrimary}>Gán điểm</button>
-                      <button onClick={handleAutoRun} className={btnSecondary} disabled={isAutoRunning}>
-                        Chạy auto tới hội tụ
-                      </button>
-                    </>
-                  )}
-                  {phase === "assigned" && (
-                    <button onClick={handleMove} className={btnPrimary}>Di chuyển tâm</button>
-                  )}
-                  {phase === "moved" && (
-                    <button onClick={handleIterate} className={btnPrimary}>Lặp tiếp</button>
-                  )}
-                  {phase === "place" && centroids.length < K_VIZ && (
-                    <button onClick={handleKMeansPlusPlus} className={btnSecondary}>
-                      Dùng K-Means++ (tự đặt 3 tâm)
-                    </button>
-                  )}
-                  <button onClick={handleReset} className={btnSecondary} disabled={isAutoRunning}>
-                    Đặt lại
-                  </button>
-                </div>
+        <div className="mt-8">
+          <QuizSection questions={quizQuestions} />
+        </div>
 
-                {/* Convergence banner */}
-                <AnimatePresence>
-                  {phase === "converged" && (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                      className="rounded-lg border border-green-300 bg-green-50 p-3 text-center text-sm font-medium text-green-800 dark:border-green-700 dark:bg-green-900/20 dark:text-green-300">
-                      Hội tụ sau {iteration} vòng lặp — inertia cuối cùng {currInertia.toFixed(0)}.
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* History chart — inertia theo vòng lặp */}
-                {history.length > 1 && (
-                  <div className="rounded-xl border border-border bg-card p-3">
-                    <p className="text-sm font-semibold text-foreground">
-                      Inertia giảm theo từng vòng lặp
-                    </p>
-                    <svg viewBox="0 0 400 120" className="mt-2 w-full">
-                      <line x1={30} y1={100} x2={390} y2={100} stroke="#cbd5e1" strokeWidth={1} />
-                      <line x1={30} y1={10} x2={30} y2={100} stroke="#cbd5e1" strokeWidth={1} />
-                      {(() => {
-                        const maxH = Math.max(...history);
-                        const minH = Math.min(...history);
-                        const range = Math.max(1, maxH - minH);
-                        const n = Math.max(1, history.length - 1);
-                        const toX = (i: number) => 30 + (i * 360) / n;
-                        const toY = (v: number) => 10 + ((maxH - v) / range) * 85;
-                        const path = history.map((v, i) => `${i === 0 ? "M" : "L"} ${toX(i)} ${toY(v)}`).join(" ");
-                        // minH chỉ dùng cho debug — tránh cảnh báo unused bằng cách tham chiếu
-                        void minH;
-                        return (
-                          <>
-                            <path d={path} fill="none" stroke="#3b82f6" strokeWidth={2} />
-                            {history.map((v, i) => (
-                              <circle key={i} cx={toX(i)} cy={toY(v)} r={3} fill="#3b82f6" />
-                            ))}
-                          </>
-                        );
-                      })()}
-                      <text x={30} y={115} fontSize={9} fill="#94a3b8">Vòng lặp 1</text>
-                      <text x={380} y={115} textAnchor="end" fontSize={9} fill="#94a3b8">
-                        Vòng lặp {history.length}
-                      </text>
-                    </svg>
-                    <p className="mt-2 text-xs text-muted">
-                      Inertia phải giảm đơn điệu (hoặc giữ nguyên khi
-                      hội tụ) — nếu bạn thấy nó tăng, có lỗi trong cài
-                      đặt!
-                    </p>
-                  </div>
-                )}
-              </div>
-            </VisualizationSection>
-          </LessonSection>
-
-          {/* ────────── STEP 3 — AHA MOMENT ────────── */}
-          <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
-            <AhaMoment>
-              <p>
-                Bạn vừa tự tay chạy thuật toán{" "}
-                <strong>K-Means Clustering</strong> — gán điểm đến tâm
-                gần nhất, rồi dời tâm đến trung bình cụm. Lặp lại cho
-                đến khi ổn định. Đây là một ví dụ kinh điển của{" "}
-                <em>Expectation-Maximization</em>: bước E (gán cụm) và
-                bước M (cập nhật tâm) thay phiên nhau giảm hàm mục
-                tiêu <strong>inertia</strong>{" "}
-                <LaTeX>
-                  {"J = \\sum_i \\|x_i - \\mu_{c_i}\\|^2"}
-                </LaTeX>{" "}
-                — đồ thị inertia ở trên chính là bằng chứng.
-              </p>
-            </AhaMoment>
-          </LessonSection>
-
-          {/* ────────── STEP 4 — TOGGLE COMPARE (bad init) ────────── */}
-          <ToggleCompare
-            labelA="Khởi tạo tốt"
-            labelB="Khởi tạo xấu"
-            description="Vị trí ban đầu của tâm cụm ảnh hưởng lớn đến kết quả. K-Means++ giải quyết vấn đề này bằng cách chọn tâm ban đầu xa nhau."
-            childA={<InitDemo startCentroids={goodInit} />}
-            childB={<InitDemo startCentroids={badInit} />}
-          />
-
-          {/* ────────── STEP 4 — CHALLENGE 1 ────────── */}
-          <LessonSection step={4} totalSteps={8} label="Thử thách 1">
-            <InlineChallenge
-              question="K-Means cần bạn chọn K trước. Nếu dữ liệu có 3 cụm tự nhiên nhưng bạn chọn K=5, chuyện gì xảy ra?"
-              options={[
-                "Thuật toán báo lỗi",
-                "Một số cụm bị chia nhỏ không cần thiết",
-                "Kết quả giống hệt K=3",
-              ]}
-              correct={1}
-              explanation="K-Means luôn tìm đúng K cụm, nên K=5 sẽ chia nhỏ cụm tự nhiên. Dùng phương pháp Elbow hoặc Silhouette để tìm K phù hợp trước khi chạy production."
-            />
-          </LessonSection>
-
-          {/* ────────── STEP 5 — CHALLENGE 2 ────────── */}
-          <LessonSection step={5} totalSteps={8} label="Thử thách 2">
-            <InlineChallenge
-              question="Bạn chạy K-Means trên ảnh 1MP (1 triệu pixel) với K=16 để nén ảnh. Thuật toán rất chậm. Cách tăng tốc nào phù hợp nhất?"
-              options={[
-                "Giảm K xuống 2",
-                "Dùng Mini-Batch K-Means: mỗi vòng lặp chỉ cập nhật trên batch 1000 pixel",
-                "Bỏ qua bước cập nhật tâm",
-              ]}
-              correct={1}
-              explanation="Mini-Batch K-Means dùng batch nhỏ mỗi vòng lặp (stochastic), hội tụ nhanh hơn 10-100× so với Lloyd's gốc cho big data, đánh đổi một chút chất lượng. Scikit-learn có sẵn MiniBatchKMeans."
-            />
-          </LessonSection>
-
-          {/* ────────── STEP 6 — EXPLANATION ────────── */}
-          <LessonSection step={6} totalSteps={8} label="Giải thích sâu">
-            <ExplanationSection>
-              <p>
-                <strong>K-Means</strong> là thuật toán{" "}
-                <TopicLink slug="supervised-unsupervised-rl">
-                  <strong>phân cụm không giám sát</strong>
-                </TopicLink>{" "}
-                phổ biến nhất. Nó chia dữ liệu thành K nhóm sao cho
-                tổng bình phương khoảng cách từ mỗi điểm đến tâm cụm
-                của nó là nhỏ nhất.
-              </p>
-
-              {/* Hàm mục tiêu */}
-              <p>
-                <strong>Hàm mục tiêu (objective):</strong>
-              </p>
-              <LaTeX block>
-                {"J(\\mu_1, \\ldots, \\mu_K, C_1, \\ldots, C_K) = \\sum_{k=1}^{K} \\sum_{x \\in C_k} \\|x - \\mu_k\\|^2"}
-              </LaTeX>
-              <p>
-                với <LaTeX>{"\\mu_k"}</LaTeX> là tâm cụm k và{" "}
-                <LaTeX>{"C_k"}</LaTeX> là tập điểm thuộc cụm k. Đại
-                lượng này gọi là <em>inertia</em> hoặc{" "}
-                <em>within-cluster sum of squares (WCSS)</em>.
-              </p>
-
-              <p>
-                <strong>
-                  Hai bước lặp (Lloyd&apos;s algorithm):
-                </strong>
-              </p>
-              <LaTeX block>
-                {"\\text{(E-step)} \\quad c_i = \\arg\\min_k \\|x_i - \\mu_k\\|^2"}
-              </LaTeX>
-              <LaTeX block>
-                {"\\text{(M-step)} \\quad \\mu_k = \\frac{1}{|C_k|} \\sum_{x \\in C_k} x"}
-              </LaTeX>
-
-              {/* Các bước */}
-              <p>
-                <strong>Thuật toán đầy đủ:</strong>
-              </p>
-              <ol className="list-decimal list-inside space-y-2 pl-2">
-                <li>
-                  <strong>Khởi tạo:</strong> Chọn K tâm cụm — ngẫu
-                  nhiên hoặc bằng K-Means++ (khuyến khích).
-                </li>
-                <li>
-                  <strong>Gán cụm (E-step):</strong> Mỗi điểm được
-                  gán cho centroid gần nhất theo khoảng cách
-                  Euclidean.
-                </li>
-                <li>
-                  <strong>Cập nhật tâm (M-step):</strong> Dời mỗi
-                  centroid về trung bình tọa độ các điểm trong cụm.
-                </li>
-                <li>
-                  <strong>Lặp lại:</strong> Bước 2-3 cho tới khi
-                  centroid thay đổi ít hơn ε hoặc đạt max_iter.
-                </li>
-              </ol>
-              <p>
-                <strong>Độ phức tạp:</strong>{" "}
-                <LaTeX>{"O(n \\cdot K \\cdot d \\cdot T)"}</LaTeX>{" "}
-                với n = số điểm, K = số cụm, d = số chiều, T = số
-                vòng lặp. Thường T = 10–50 cho dữ liệu sạch.
-              </p>
-
-              {/* Callout 1 — K-Means++ chi tiết */}
-              <Callout
-                variant="insight"
-                title="K-Means++ — khởi tạo thông minh"
-              >
-                <div className="space-y-2">
-                  <p>
-                    Thuật toán:
-                  </p>
-                  <ol className="list-decimal list-inside space-y-1">
-                    <li>
-                      Chọn <LaTeX>{"\\mu_1"}</LaTeX> ngẫu nhiên từ
-                      dữ liệu.
-                    </li>
-                    <li>
-                      Với mỗi điểm x, tính D(x) = khoảng cách tới
-                      tâm đã chọn gần nhất.
-                    </li>
-                    <li>
-                      Chọn <LaTeX>{"\\mu_{k+1}"}</LaTeX> với xác
-                      suất tỷ lệ <LaTeX>{"D(x)^2"}</LaTeX> — ưu tiên
-                      điểm xa.
-                    </li>
-                    <li>Lặp cho tới khi đủ K tâm.</li>
-                  </ol>
-                  <p>
-                    Arthur &amp; Vassilvitskii (2007) chứng minh
-                    K-Means++ cho nghiệm{" "}
-                    <LaTeX>{"O(\\log K)"}</LaTeX>-xấp xỉ so với
-                    optimum trong kỳ vọng. Trong thực tế: inertia
-                    cuối cùng thấp hơn 20-50% so với random init,
-                    ít vòng lặp hơn, và gần như không bao giờ rơi
-                    vào nghiệm xấu.
-                  </p>
-                </div>
-              </Callout>
-
-              {/* Callout 2 — Elbow & Silhouette */}
-              <Callout
-                variant="tip"
-                title="Chọn K bằng Elbow và Silhouette"
-              >
-                <ul className="list-disc list-inside space-y-1">
-                  <li>
-                    <strong>Elbow method:</strong> vẽ inertia theo K;
-                    tìm điểm “khuỷu tay”. Trực quan nhưng đôi khi
-                    mơ hồ.
-                  </li>
-                  <li>
-                    <strong>Silhouette score:</strong> cho mỗi điểm
-                    i, tính{" "}
-                    <LaTeX>{"s(i) = (b(i) - a(i))/\\max(a(i), b(i))"}</LaTeX>{" "}
-                    với a(i) = khoảng cách TB trong cùng cụm, b(i) =
-                    khoảng cách TB tới cụm gần nhất khác. s ∈ [−1,
-                    1]; gần 1 = cụm chặt, gần 0 = ranh giới mờ, âm =
-                    gán sai cụm.
-                  </li>
-                  <li>
-                    <strong>Gap statistic:</strong> so sánh inertia
-                    với dữ liệu ngẫu nhiên, chọn K có gap lớn nhất.
-                  </li>
-                  <li>
-                    <strong>Domain knowledge:</strong> đôi khi K là
-                    ràng buộc nghiệp vụ (3 gói dịch vụ, 5 phân khúc
-                    khách hàng).
-                  </li>
-                </ul>
-              </Callout>
-
-              {/* Elbow plot thực tế */}
-              <p>
-                <strong>Elbow Method trên dataset 30 điểm:</strong>
-              </p>
-              <ElbowPlot />
-
-              {/* Code 1 — scikit-learn */}
-              <CodeBlock
-                language="python"
-                title="K-Means với scikit-learn (production)"
-              >
-{`from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
-import numpy as np
-
-X = np.array([
-    [1, 2], [1.5, 1.8], [5, 8],
-    [8, 8], [1, 0.6], [9, 11],
-    [8, 2], [10, 2], [9, 3],
-])
-
-# Chạy K-Means với K-Means++ và n_init=10
-kmeans = KMeans(
-    n_clusters=3,
-    init="k-means++",
-    n_init=10,                # chạy 10 lần, giữ nghiệm tốt nhất
-    max_iter=300,
-    tol=1e-4,
-    random_state=42,
-)
-kmeans.fit(X)
-
-print("Nhãn cụm:", kmeans.labels_)
-print("Tâm cụm:\\n", kmeans.cluster_centers_)
-print("Inertia:", kmeans.inertia_)
-
-# Silhouette score cho K = 2 → 8
-for k in range(2, 9):
-    model = KMeans(n_clusters=k, n_init=10, random_state=42).fit(X)
-    s = silhouette_score(X, model.labels_)
-    print(f"K={k}  silhouette={s:.3f}  inertia={model.inertia_:.1f}")`}
-              </CodeBlock>
-
-              {/* Code 2 — implement from scratch */}
-              <CodeBlock
-                language="python"
-                title="Viết K-Means từ đầu bằng NumPy"
-              >
-{`import numpy as np
-
-
-def kmeans_plus_plus_init(X, k, rng):
-    n = X.shape[0]
-    idx = [rng.integers(n)]
-    for _ in range(k - 1):
-        dists = np.min(
-            np.linalg.norm(X[:, None] - X[idx], axis=2) ** 2,
-            axis=1,
-        )
-        probs = dists / dists.sum()
-        idx.append(rng.choice(n, p=probs))
-    return X[idx].copy()
-
-
-def kmeans_fit(X, k, max_iter=100, tol=1e-4, seed=0):
-    rng = np.random.default_rng(seed)
-    centroids = kmeans_plus_plus_init(X, k, rng)
-    for it in range(max_iter):
-        # E-step: gán cụm gần nhất
-        d = np.linalg.norm(X[:, None] - centroids, axis=2)
-        labels = np.argmin(d, axis=1)
-        # M-step: cập nhật tâm
-        new_centroids = np.stack([
-            X[labels == c].mean(axis=0) if (labels == c).any()
-            else centroids[c]
-            for c in range(k)
-        ])
-        shift = np.linalg.norm(new_centroids - centroids)
-        centroids = new_centroids
-        if shift < tol:
-            break
-    inertia = np.sum((X - centroids[labels]) ** 2)
-    return labels, centroids, inertia
-
-
-# Ví dụ
-X = np.random.default_rng(0).normal(size=(200, 2))
-labels, C, J = kmeans_fit(X, k=3, seed=7)
-print(f"Inertia = {J:.2f}")`}
-              </CodeBlock>
-
-              {/* Callout 3 — Biến thể */}
-              <Callout
-                variant="insight"
-                title="Các biến thể K-Means"
-              >
-                <ul className="list-disc list-inside space-y-1">
-                  <li>
-                    <strong>Mini-Batch K-Means:</strong> cập nhật
-                    trên batch nhỏ (1000-10000 mẫu) mỗi vòng. Nhanh
-                    10-100× cho big data, đánh đổi một chút chất
-                    lượng. Dùng cho ảnh, streaming data.
-                  </li>
-                  <li>
-                    <strong>K-Medoids (PAM):</strong> dùng điểm dữ
-                    liệu thật làm tâm thay vì trung bình. Chống
-                    outlier, dùng được với khoảng cách tùy biến
-                    (Manhattan, cosine).
-                  </li>
-                  <li>
-                    <strong>K-Medians:</strong> dùng trung vị thay
-                    vì trung bình. Robust với outlier, tối ưu L1
-                    thay vì L2.
-                  </li>
-                  <li>
-                    <strong>Fuzzy C-Means:</strong> mỗi điểm thuộc
-                    mọi cụm với một xác suất mềm. Hữu ích khi ranh
-                    giới cụm mờ.
-                  </li>
-                  <li>
-                    <strong>Bisecting K-Means:</strong> bắt đầu với
-                    1 cụm, liên tục chia đôi cụm có inertia lớn
-                    nhất. Tránh nghiệm xấu, kết quả ổn định.
-                  </li>
-                  <li>
-                    <strong>
-                      Gaussian Mixture Models (GMM):
-                    </strong>{" "}
-                    mô hình xác suất, cho ra ma trận hiệp phương sai
-                    — linh hoạt hơn nhưng chậm hơn K-Means.
-                  </li>
-                </ul>
-              </Callout>
-
-              {/* Callout 4 — Pitfalls */}
-              <Callout
-                variant="warning"
-                title="Những cạm bẫy thường gặp"
-              >
-                <ul className="list-disc list-inside space-y-1">
-                  <li>
-                    <strong>Không chuẩn hóa feature:</strong> nếu một
-                    chiều có đơn vị lớn (VND triệu) và một chiều nhỏ
-                    (tuổi), khoảng cách Euclidean bị chi phối bởi
-                    chiều lớn. Luôn{" "}
-                    <code className="rounded bg-surface px-1">
-                      StandardScaler
-                    </code>{" "}
-                    hoặc{" "}
-                    <code className="rounded bg-surface px-1">
-                      MinMaxScaler
-                    </code>{" "}
-                    trước khi chạy K-Means.
-                  </li>
-                  <li>
-                    <strong>Không dùng n_init ≥ 10:</strong>{" "}
-                    Lloyd&apos;s chỉ đảm bảo cực tiểu địa phương;
-                    chạy nhiều lần và giữ nghiệm tốt nhất.
-                  </li>
-                  <li>
-                    <strong>Gán nhãn cụm làm feature:</strong> nhãn
-                    cụm là categorical — không có thứ tự. Dùng
-                    one-hot, không phải int thẳng vào model
-                    downstream.
-                  </li>
-                  <li>
-                    <strong>Dữ liệu high-dim:</strong> “lời nguyền
-                    chiều cao” làm khoảng cách Euclidean mất ý
-                    nghĩa. Giảm chiều bằng PCA hoặc UMAP trước.
-                  </li>
-                  <li>
-                    <strong>Outlier:</strong> K-Means rất nhạy với
-                    outlier vì dùng trung bình. Xử lý bằng
-                    K-Medoids, K-Medians, hoặc lọc outlier bằng
-                    IsolationForest trước.
-                  </li>
-                  <li>
-                    <strong>Empty cluster:</strong> nếu một cụm mất
-                    tất cả điểm, scikit-learn tái khởi tạo tâm đó
-                    tại điểm xa tâm nhất. Nếu tự viết, nhớ xử lý
-                    case này.
-                  </li>
-                </ul>
-              </Callout>
-
-              {/* CollapsibleDetail 1 — Chứng minh hội tụ */}
-              <CollapsibleDetail title="Chi tiết: Tại sao Lloyd's algorithm luôn hội tụ?">
-                <div className="space-y-2 text-sm">
-                  <p>
-                    Cần chứng minh hàm mục tiêu J giảm đơn điệu (hoặc
-                    giữ nguyên) qua mỗi vòng lặp, và J bị chặn dưới
-                    bởi 0.
-                  </p>
-                  <p>
-                    <strong>Bước E (gán cụm):</strong> với centroid
-                    cố định, mỗi điểm được gán vào cụm có khoảng
-                    cách nhỏ nhất. Do đó:
-                  </p>
-                  <LaTeX block>
-                    {"J_{\\text{sau E}} = \\sum_i \\min_k \\|x_i - \\mu_k\\|^2 \\le \\sum_i \\|x_i - \\mu_{c_i^{\\text{cũ}}}\\|^2 = J_{\\text{trước E}}"}
-                  </LaTeX>
-                  <p>
-                    <strong>Bước M (cập nhật tâm):</strong> với gán
-                    cố định, đạo hàm J theo{" "}
-                    <LaTeX>{"\\mu_k"}</LaTeX> và đặt = 0 cho ra{" "}
-                    <LaTeX>
-                      {"\\mu_k = \\frac{1}{|C_k|} \\sum_{x \\in C_k} x"}
-                    </LaTeX>
-                    — chính là trung bình. Vì J là bậc 2 theo{" "}
-                    <LaTeX>{"\\mu_k"}</LaTeX>, đây là cực tiểu toàn
-                    cục, nên:
-                  </p>
-                  <LaTeX block>
-                    {"J_{\\text{sau M}} \\le J_{\\text{trước M}}"}
-                  </LaTeX>
-                  <p>
-                    Kết hợp, J giảm đơn điệu. Vì số cách phân hoạch n
-                    điểm thành K cụm là hữu hạn (≤ K^n), J không thể
-                    giảm mãi → thuật toán hội tụ trong hữu hạn vòng
-                    lặp. <em>Chú ý:</em> chỉ hội tụ tới cực tiểu địa
-                    phương — đó là lý do cần n_init ≥ 10.
-                  </p>
-                </div>
-              </CollapsibleDetail>
-
-              {/* CollapsibleDetail 2 — K-Means vs GMM */}
-              <CollapsibleDetail title="Chi tiết: K-Means là trường hợp đặc biệt của GMM">
-                <div className="space-y-2 text-sm">
-                  <p>
-                    Gaussian Mixture Model giả định dữ liệu sinh từ
-                    hỗn hợp K Gaussian:
-                  </p>
-                  <LaTeX block>
-                    {"p(x) = \\sum_{k=1}^K \\pi_k \\mathcal{N}(x \\mid \\mu_k, \\Sigma_k)"}
-                  </LaTeX>
-                  <p>
-                    EM cho GMM: bước E tính xác suất mềm (soft
-                    assignment) <LaTeX>{"\\gamma_{ik}"}</LaTeX>; bước
-                    M cập nhật{" "}
-                    <LaTeX>{"\\mu_k, \\Sigma_k, \\pi_k"}</LaTeX>.
-                  </p>
-                  <p>
-                    Khi đặt:{" "}
-                    <LaTeX>{"\\Sigma_k = \\sigma^2 I"}</LaTeX> (hình
-                    cầu, cùng phương sai) và cho{" "}
-                    <LaTeX>{"\\sigma^2 \\to 0"}</LaTeX>, soft
-                    assignment trở thành hard assignment (argmax), và
-                    GMM đúng bằng K-Means. Nên K-Means = GMM với giả
-                    định cụm hình cầu và phương sai vô cùng nhỏ.
-                  </p>
-                  <p>
-                    Hệ quả: K-Means không linh hoạt bằng GMM khi cụm
-                    có hình elip, kích cỡ khác nhau, hay mật độ khác
-                    nhau. Nhưng K-Means đơn giản và nhanh hơn nhiều —
-                    luôn là baseline đầu tiên.
-                  </p>
-                </div>
-              </CollapsibleDetail>
-
-              {/* Ứng dụng */}
-              <p>
-                <strong>Ứng dụng thực tế:</strong>
-              </p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>
-                  <strong>Phân khúc khách hàng:</strong> marketing
-                  gom khách thành 4-8 cụm hành vi để cá nhân hóa
-                  email/ưu đãi.
-                </li>
-                <li>
-                  <strong>Nén ảnh (color quantization):</strong> K=16
-                  hoặc K=256 — gom các màu tương tự thành một bảng
-                  màu, giảm 80% dung lượng ảnh.
-                </li>
-                <li>
-                  <strong>Anomaly detection:</strong> điểm xa mọi
-                  centroid là outlier — dùng cho phát hiện gian lận
-                  thẻ tín dụng.
-                </li>
-                <li>
-                  <strong>Document clustering:</strong> gom tin tức
-                  thành chủ đề bằng K-Means trên TF-IDF hoặc
-                  embedding.
-                </li>
-                <li>
-                  <strong>Image segmentation đơn giản:</strong>{" "}
-                  K-Means trên pixel (R, G, B) tách foreground /
-                  background; khởi động cho các thuật toán phức tạp
-                  hơn như GrabCut.
-                </li>
-                <li>
-                  <strong>Vector quantization:</strong> nén embedding
-                  trong search vector database (FAISS IVF-PQ dùng
-                  K-Means để chia index thành coarse cells).
-                </li>
-                <li>
-                  <strong>Warehouse placement:</strong> tìm K vị trí
-                  kho tối ưu cho bài toán logistics — đúng như ví dụ
-                  Grab mở đầu.
-                </li>
-              </ul>
-
-              {/* Pitfalls tổng hợp */}
-              <p>
-                <strong>Danh sách kiểm tra trước khi chạy K-Means:</strong>
-              </p>
-              <ol className="list-decimal list-inside space-y-1">
-                <li>
-                  Đã chuẩn hóa feature (StandardScaler /
-                  MinMaxScaler)?
-                </li>
-                <li>
-                  Đã chọn K bằng Elbow / Silhouette / domain
-                  knowledge?
-                </li>
-                <li>
-                  Đã đặt <code>init=&quot;k-means++&quot;</code> và{" "}
-                  <code>n_init ≥ 10</code>?
-                </li>
-                <li>
-                  Đã giảm chiều nếu d &gt; 50 (PCA/UMAP)?
-                </li>
-                <li>
-                  Đã loại outlier (hoặc dùng K-Medoids nếu không
-                  loại được)?
-                </li>
-                <li>
-                  Đã kiểm tra inertia giảm đơn điệu qua các vòng
-                  lặp?
-                </li>
-                <li>
-                  Đã so sánh với baseline khác (GMM, DBSCAN) để biết
-                  K-Means có phù hợp không?
-                </li>
-              </ol>
-            </ExplanationSection>
-          </LessonSection>
-
-          {/* ────────── STEP 7 — MINI SUMMARY ────────── */}
-          <LessonSection step={7} totalSteps={8} label="Tóm tắt">
-            <MiniSummary
-              points={[
-                "K-Means chia dữ liệu thành K cụm bằng vòng lặp E-M: gán điểm về tâm gần nhất, rồi dời tâm về trung bình cụm.",
-                "Hàm mục tiêu là inertia (WCSS) — tổng bình phương khoảng cách từ điểm tới tâm cụm; luôn giảm đơn điệu và hội tụ về cực tiểu địa phương.",
-                "Khởi tạo rất quan trọng: K-Means++ chọn tâm xa nhau, giúp hội tụ nhanh và tránh nghiệm xấu. Luôn đặt n_init ≥ 10.",
-                "Chọn K bằng Elbow (khuỷu tay inertia), Silhouette score, Gap statistic, hoặc domain knowledge.",
-                "Chỉ phù hợp cụm hình cầu và cần chuẩn hóa feature — với cụm phi tuyến dùng DBSCAN, Spectral, hoặc GMM.",
-                "Ứng dụng: phân khúc khách hàng, nén ảnh, anomaly detection, document clustering, vector quantization, warehouse placement.",
-              ]}
-            />
-          </LessonSection>
-
-          {/* ────────── STEP 8 — QUIZ ────────── */}
-          <LessonSection step={8} totalSteps={8} label="Kiểm tra">
-            <QuizSection questions={QUIZ} />
-          </LessonSection>
+        <div className="mt-10">
+          <Callout variant="tip" title="Ứng dụng thực tế">
+            Spotify dùng một họ thuật toán phân cụm (bao gồm k-means và
+            ma trận phân rã) để tạo ra Discover Weekly — 30 bài hát mới
+            mỗi tuần &ldquo;hợp gu lạ kỳ&rdquo;. Xem cách họ làm ở bài
+            ứng dụng:{" "}
+            <TopicLink slug="k-means-in-music-recs">
+              k-means trong gợi ý nhạc
+            </TopicLink>
+            .
+          </Callout>
+        </div>
+      </LessonSection>
     </>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────
+   SUB-COMPONENT: Elbow chart
+   ──────────────────────────────────────────────────────────── */
+
+function ElbowChart({
+  data,
+}: {
+  data: { k: number; inertia: number }[];
+}) {
+  const maxIn = Math.max(...data.map((d) => d.inertia));
+  const minIn = Math.min(...data.map((d) => d.inertia));
+  const PW = 400;
+  const PH = 200;
+  const PADL = 40;
+  const PADR = 15;
+  const PADT = 20;
+  const PADB = 30;
+
+  const xScale = (k: number) =>
+    PADL + ((k - 1) / 5) * (PW - PADL - PADR);
+  const yScale = (v: number) => {
+    if (maxIn === minIn) return PADT;
+    return PADT + ((maxIn - v) / (maxIn - minIn)) * (PH - PADT - PADB);
+  };
+
+  const path = data
+    .map(
+      (p, i) =>
+        `${i === 0 ? "M" : "L"} ${xScale(p.k)} ${yScale(p.inertia)}`,
+    )
+    .join(" ");
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-4">
+      <svg viewBox={`0 0 ${PW} ${PH}`} className="w-full">
+        {/* Grid */}
+        {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
+          const y = PADT + t * (PH - PADT - PADB);
+          return (
+            <line
+              key={`g-${i}`}
+              x1={PADL}
+              y1={y}
+              x2={PW - PADR}
+              y2={y}
+              stroke="currentColor"
+              strokeOpacity={0.1}
+              strokeDasharray="2,3"
+            />
+          );
+        })}
+
+        {/* Elbow marker at k=3 */}
+        <line
+          x1={xScale(3)}
+          y1={PADT}
+          x2={xScale(3)}
+          y2={PH - PADB}
+          stroke="#f59e0b"
+          strokeWidth={1.5}
+          strokeDasharray="4,4"
+        />
+        <text
+          x={xScale(3) + 6}
+          y={PADT + 14}
+          fontSize={10}
+          fontWeight={700}
+          fill="#f59e0b"
+        >
+          Elbow ở k = 3
+        </text>
+
+        {/* Path */}
+        <motion.path
+          d={path}
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2 }}
+        />
+
+        {/* Dots */}
+        {data.map((p) => (
+          <motion.circle
+            key={`pt-${p.k}`}
+            cx={xScale(p.k)}
+            cy={yScale(p.inertia)}
+            r={p.k === 3 ? 7 : 5}
+            fill={p.k === 3 ? "#f59e0b" : "#3b82f6"}
+            stroke="#fff"
+            strokeWidth={2}
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 * p.k }}
+          />
+        ))}
+
+        {/* X-axis labels */}
+        {data.map((p) => (
+          <text
+            key={`lbl-${p.k}`}
+            x={xScale(p.k)}
+            y={PH - 10}
+            textAnchor="middle"
+            fontSize={10}
+            fill="#94a3b8"
+          >
+            k={p.k}
+          </text>
+        ))}
+
+        {/* Axis titles */}
+        <text
+          x={PADL}
+          y={PADT - 5}
+          fontSize={10}
+          fontWeight={600}
+          fill="#94a3b8"
+        >
+          Inertia (WCSS)
+        </text>
+      </svg>
+      <p className="text-xs text-muted mt-2 italic leading-relaxed">
+        Quan sát: từ k = 1 đến k = 3, inertia giảm mạnh. Từ k = 3 trở
+        đi, giảm rất chậm — đó là &ldquo;khuỷu tay&rdquo;, gợi ý k = 3
+        là số cụm tự nhiên của dữ liệu này.
+      </p>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────
+   STEP REVEAL sub-components
+   ──────────────────────────────────────────────────────────── */
+
+function StepDistance() {
+  const pt = { x: 160, y: 180 };
+  const cents = [
+    { x: 80, y: 80, color: "#3b82f6" },
+    { x: 280, y: 80, color: "#ef4444" },
+    { x: 180, y: 260, color: "#22c55e" },
+  ];
+  const dists = cents.map((c) => Math.hypot(c.x - pt.x, c.y - pt.y));
+  const nearest = dists.indexOf(Math.min(...dists));
+
+  return (
+    <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
+      <p className="text-sm text-foreground leading-relaxed">
+        Với <strong>mỗi điểm dữ liệu</strong>, đo khoảng cách đến{" "}
+        <strong>mỗi tâm</strong>. Dùng công thức Pythagoras:{" "}
+        <code className="text-xs bg-surface px-1 rounded">
+          d = √((Δx)² + (Δy)²)
+        </code>
+        .
+      </p>
+      <svg viewBox="0 0 360 320" className="w-full rounded-lg border border-border bg-background">
+        {cents.map((c, i) => (
+          <g key={`cent-${i}`}>
+            <motion.line
+              x1={pt.x}
+              y1={pt.y}
+              x2={c.x}
+              y2={c.y}
+              stroke={c.color}
+              strokeWidth={i === nearest ? 2.5 : 1}
+              strokeDasharray={i === nearest ? "0" : "4,3"}
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.2 * i }}
+            />
+            <text
+              x={(pt.x + c.x) / 2 + 8}
+              y={(pt.y + c.y) / 2 - 4}
+              fontSize={11}
+              fontWeight={i === nearest ? 700 : 500}
+              fill={c.color}
+            >
+              {dists[i].toFixed(0)}
+            </text>
+            <g>
+              <line x1={c.x - 10} y1={c.y - 10} x2={c.x + 10} y2={c.y + 10} stroke={c.color} strokeWidth={3.5} />
+              <line x1={c.x + 10} y1={c.y - 10} x2={c.x - 10} y2={c.y + 10} stroke={c.color} strokeWidth={3.5} />
+            </g>
+          </g>
+        ))}
+        <circle cx={pt.x} cy={pt.y} r={7} fill="#f97316" stroke="#fff" strokeWidth={2} />
+        <text x={pt.x + 12} y={pt.y + 4} fontSize={11} fill="#f97316" fontWeight={600}>
+          Điểm
+        </text>
+      </svg>
+      <p className="text-xs text-muted italic leading-relaxed">
+        Số bên cạnh mỗi đường là khoảng cách. Đường đậm (xanh lá, d ={" "}
+        {dists[nearest].toFixed(0)}) là tâm gần nhất — điểm sẽ được gán
+        về cụm đó.
+      </p>
+    </div>
+  );
+}
+
+function StepAssign() {
+  return (
+    <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
+      <p className="text-sm text-foreground leading-relaxed">
+        Lặp lại phép đo cho <strong>tất cả điểm dữ liệu</strong>. Mỗi
+        điểm chọn tâm gần nhất — và lấy luôn màu của tâm đó. Đây là
+        bước <em>E-step</em> (expectation).
+      </p>
+      <svg viewBox="0 0 360 220" className="w-full rounded-lg border border-border bg-background">
+        {[
+          { x: 70, y: 60, cl: 0 },
+          { x: 90, y: 80, cl: 0 },
+          { x: 110, y: 50, cl: 0 },
+          { x: 80, y: 100, cl: 0 },
+          { x: 260, y: 55, cl: 1 },
+          { x: 290, y: 80, cl: 1 },
+          { x: 280, y: 40, cl: 1 },
+          { x: 300, y: 105, cl: 1 },
+          { x: 160, y: 160, cl: 2 },
+          { x: 185, y: 175, cl: 2 },
+          { x: 200, y: 145, cl: 2 },
+          { x: 175, y: 185, cl: 2 },
+        ].map((p, i) => {
+          const colors = ["#3b82f6", "#ef4444", "#22c55e"];
+          return (
+            <motion.circle
+              key={`p-${i}`}
+              cx={p.x}
+              cy={p.y}
+              r={5}
+              stroke="#fff"
+              strokeWidth={1.2}
+              initial={{ fill: "#94a3b8" }}
+              animate={{ fill: colors[p.cl] }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+            />
+          );
+        })}
+        {[
+          { x: 90, y: 80, color: "#3b82f6" },
+          { x: 285, y: 70, color: "#ef4444" },
+          { x: 180, y: 170, color: "#22c55e" },
+        ].map((c, i) => (
+          <g key={`c-${i}`}>
+            <line x1={c.x - 9} y1={c.y - 9} x2={c.x + 9} y2={c.y + 9} stroke={c.color} strokeWidth={3.5} />
+            <line x1={c.x + 9} y1={c.y - 9} x2={c.x - 9} y2={c.y + 9} stroke={c.color} strokeWidth={3.5} />
+          </g>
+        ))}
+      </svg>
+      <p className="text-xs text-muted italic leading-relaxed">
+        Mỗi điểm đã &ldquo;khoác áo&rdquo; theo tâm gần nhất. Cụm hình
+        thành từ đây.
+      </p>
+    </div>
+  );
+}
+
+function StepUpdate() {
+  return (
+    <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
+      <p className="text-sm text-foreground leading-relaxed">
+        Với mỗi cụm, tính <strong>trung bình toạ độ</strong> của các
+        điểm trong cụm — đó là tâm mới. Đây là bước <em>M-step</em>{" "}
+        (maximization — nhưng cho k-means tương đương minimization của
+        inertia).
+      </p>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-lg bg-card border border-border p-3">
+          <div className="text-[10px] text-tertiary uppercase tracking-wide mb-1">
+            Cụm đỏ (5 điểm)
+          </div>
+          <div className="text-xs text-foreground/85">
+            x = (50+60+65+52+58) / 5 = <strong>57</strong>
+          </div>
+          <div className="text-xs text-foreground/85">
+            y = (40+48+42+50+46) / 5 = <strong>45.2</strong>
+          </div>
+          <div className="mt-2 text-xs font-semibold text-red-600 dark:text-red-400">
+            Tâm mới: (57, 45.2)
+          </div>
+        </div>
+        <div className="rounded-lg bg-card border border-border p-3">
+          <div className="text-[10px] text-tertiary uppercase tracking-wide mb-1">
+            Cụm xanh (3 điểm)
+          </div>
+          <div className="text-xs text-foreground/85">
+            x = (200+210+220) / 3 = <strong>210</strong>
+          </div>
+          <div className="text-xs text-foreground/85">
+            y = (150+155+160) / 3 = <strong>155</strong>
+          </div>
+          <div className="mt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            Tâm mới: (210, 155)
+          </div>
+        </div>
+      </div>
+      <svg viewBox="0 0 360 160" className="w-full rounded-lg border border-border bg-background">
+        <g>
+          <line x1={80} y1={60} x2={100} y2={80} stroke="#ef444480" strokeWidth={3} />
+          <line x1={100} y1={60} x2={80} y2={80} stroke="#ef444480" strokeWidth={3} />
+          <text x={110} y={75} fontSize={10} fill="#ef4444" opacity={0.6}>
+            Tâm cũ
+          </text>
+        </g>
+        <motion.line
+          x1={90}
+          y1={70}
+          x2={170}
+          y2={100}
+          stroke="#94a3b8"
+          strokeWidth={1.5}
+          strokeDasharray="3,3"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        />
+        <motion.text
+          x={120}
+          y={80}
+          fontSize={10}
+          fill="#94a3b8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+        >
+          dời →
+        </motion.text>
+        <motion.g
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.9, type: "spring" }}
+        >
+          <line x1={160} y1={90} x2={180} y2={110} stroke="#ef4444" strokeWidth={3.5} />
+          <line x1={180} y1={90} x2={160} y2={110} stroke="#ef4444" strokeWidth={3.5} />
+          <text x={190} y={105} fontSize={10} fontWeight={700} fill="#ef4444">
+            Tâm mới
+          </text>
+        </motion.g>
+        {[
+          { x: 145, y: 95 },
+          { x: 165, y: 85 },
+          { x: 175, y: 115 },
+          { x: 150, y: 115 },
+          { x: 180, y: 95 },
+        ].map((p, i) => (
+          <circle key={`dp-${i}`} cx={p.x} cy={p.y} r={4} fill="#ef4444" stroke="#fff" strokeWidth={1} />
+        ))}
+      </svg>
+      <p className="text-xs text-muted italic leading-relaxed">
+        Tâm mới luôn nằm ở &ldquo;trung tâm khối lượng&rdquo; của cụm.
+        Sau khi dời, lặp lại bước 1 — đôi khi một số điểm gần biên sẽ
+        đổi cụm. Quay lại bước 2. Khi không điểm nào đổi cụm nữa →
+        hội tụ.
+      </p>
+    </div>
   );
 }

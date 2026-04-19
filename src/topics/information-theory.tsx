@@ -1,17 +1,27 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  Sun,
+  CloudLightning,
+  Dice5,
+  Sparkles,
+  RotateCcw,
+  Zap,
+  Coins,
+} from "lucide-react";
+import {
   PredictionGate,
-  LessonSection,
   AhaMoment,
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  LaTeX,
+  LessonSection,
   TopicLink,
+  StepReveal,
+  SliderGroup,
+  LaTeX,
   CollapsibleDetail,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
@@ -20,1192 +30,1064 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// METADATA — giữ nguyên schema cũ để index/search hoạt động
-// ─────────────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "information-theory",
   title: "Information Theory",
   titleVi: "Lý thuyết thông tin",
   description:
-    "Entropy, cross-entropy và KL divergence — đo lường thông tin và so sánh phân phối xác suất",
+    "Entropy, cross-entropy và KL divergence — đo 'độ bất ngờ' của dữ liệu bằng bit, nền tảng của mọi loss function.",
   category: "math-foundations",
   tags: ["entropy", "kl-divergence", "cross-entropy"],
   difficulty: "intermediate",
   relatedSlugs: ["loss-functions", "probability-statistics", "vae"],
   vizType: "interactive",
-  tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
 };
 
-const TOTAL_STEPS = 5;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PRESETS cho Entropy Explorer
-// ─────────────────────────────────────────────────────────────────────────────
-// Mỗi preset đại diện cho một "loại" phân phối xác suất để người học
-// chuyển qua lại và quan sát entropy thay đổi.
-type Preset = {
-  id: string;
-  label: string;
-  probs: number[];
-  note: string;
-};
-
-const PRESETS: Preset[] = [
-  {
-    id: "uniform",
-    label: "Đồng đều (max entropy)",
-    probs: [0.25, 0.25, 0.25, 0.25],
-    note: "4 sự kiện đồng khả năng — bất định tối đa, H = 2 bit.",
-  },
-  {
-    id: "peaked",
-    label: "Peaked (gần chắc chắn)",
-    probs: [0.85, 0.07, 0.05, 0.03],
-    note: "1 sự kiện chiếm ưu thế — entropy thấp, dễ dự đoán.",
-  },
-  {
-    id: "bimodal",
-    label: "Bimodal (2 đỉnh)",
-    probs: [0.45, 0.45, 0.05, 0.05],
-    note: "Hai sự kiện đồng ưu thế — entropy trung bình-cao.",
-  },
-  {
-    id: "skewed",
-    label: "Lệch (skewed)",
-    probs: [0.6, 0.2, 0.15, 0.05],
-    note: "Phân phối lệch dần — thường gặp trong dữ liệu thực.",
-  },
-  {
-    id: "deterministic",
-    label: "Chắc chắn (H = 0)",
-    probs: [1, 0, 0, 0],
-    note: "Xác suất 1 cho 1 sự kiện — không có bất định, H = 0.",
-  },
-];
-
-// Nhãn cho từng lớp/sự kiện. Dùng màu để phân biệt khi vẽ bars.
-const CLASS_LABELS = ["A", "B", "C", "D"] as const;
-const CLASS_COLORS = [
-  "bg-accent",
-  "bg-blue-500",
-  "bg-amber-500",
-  "bg-green-500",
-] as const;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HÀM TOÁN — entropy, cross-entropy, KL divergence
-// ─────────────────────────────────────────────────────────────────────────────
-// Tất cả đều dùng log2 để đơn vị là "bit" — trực quan hơn cho người học.
-// Với nat, chỉ cần chia cho ln(2).
+const TOTAL_STEPS = 8;
 const LN2 = Math.log(2);
-const EPS = 1e-12; // tránh log(0)
+const EPS = 1e-12;
 
 function log2(x: number) {
   return Math.log(x + EPS) / LN2;
 }
 
-// Shannon entropy: H(p) = -Σ p_i * log2(p_i)
 function entropy(p: number[]): number {
-  return -p.reduce((sum, pi) => (pi > 0 ? sum + pi * log2(pi) : sum), 0);
-}
-
-// Cross-entropy: H(p, q) = -Σ p_i * log2(q_i)
-// Nếu q_i = 0 trong khi p_i > 0 → infinite. Ta gán một giá trị rất lớn để UI không break.
-function crossEntropy(p: number[], q: number[]): number {
-  let s = 0;
-  for (let i = 0; i < p.length; i++) {
-    if (p[i] > 0) {
-      if (q[i] <= 0) return Infinity;
-      s += p[i] * log2(q[i]);
-    }
+  let h = 0;
+  for (const pi of p) {
+    if (pi > 0) h -= pi * log2(pi);
   }
-  return -s;
+  return h;
 }
 
-// KL divergence: D(p || q) = Σ p_i * log2(p_i / q_i) = H(p, q) - H(p)
-function klDivergence(p: number[], q: number[]): number {
-  const ce = crossEntropy(p, q);
-  if (!isFinite(ce)) return Infinity;
-  return ce - entropy(p);
+function surprise(p: number): number {
+  if (p <= 0) return Infinity;
+  return -log2(p);
 }
 
-// Chuẩn hoá: đảm bảo tổng = 1. Dùng mỗi lần người dùng sửa thanh slider.
-function normalize(probs: number[]): number[] {
-  const s = probs.reduce((a, b) => a + b, 0);
-  if (s <= 0) return probs.map(() => 1 / probs.length);
-  return probs.map((p) => p / s);
-}
-
-// Surprise (self-information) của một sự kiện: -log2(p).
-// Sự kiện hiếm → surprise lớn. Sự kiện chắc chắn → surprise 0.
-function surprise(pi: number): number {
-  if (pi <= 0) return Infinity;
-  return -log2(pi);
-}
-
-// Format số có dấu phẩy đẹp, dùng "—" cho NaN/Infinity.
-function fmt(n: number, digits = 3): string {
+function fmt(n: number, digits = 2): string {
   if (!isFinite(n)) return "∞";
   return n.toFixed(digits);
 }
 
-// Sampling từ phân phối p — dùng cho "random sampler" bên dưới.
-// Trả về chỉ số lớp được chọn.
-function sample(p: number[]): number {
-  const r = Math.random();
-  let cum = 0;
-  for (let i = 0; i < p.length; i++) {
-    cum += p[i];
-    if (r < cum) return i;
-  }
-  return p.length - 1;
-}
+/* ─────────────────────────────────────────────────────────────
+   Coin entropy — slider cho P(ngửa)
+   ───────────────────────────────────────────────────────────── */
+function CoinEntropyVisual({ pHeads }: { pHeads: number }) {
+  const p = Math.max(0.01, Math.min(0.99, pHeads / 100));
+  const H = entropy([p, 1 - p]);
+  const color = H > 0.9 ? "#dc2626" : H > 0.5 ? "#f59e0b" : "#16a34a";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// QUIZ — 8 CÂU HỎI
-// ─────────────────────────────────────────────────────────────────────────────
-function useQuizQuestions(): QuizQuestion[] {
-  return useMemo<QuizQuestion[]>(
-    () => [
-      {
-        question: "Entropy H(X) cao nghĩa là gì?",
-        options: [
-          "Data có nhiều noise",
-          "Độ bất định cao: khó dự đoán kết quả. Đồng xu công bằng H = 1 bit (bất định nhất). Đồng xu 2 mặt giống nhau: H = 0 (chắc chắn)",
-          "Model tốt",
-        ],
-        correct: 1,
-        explanation:
-          "Entropy = độ bất định / lượng thông tin trung bình. H cao = bất định cao = cần nhiều bit để mã hoá. Đồng xu: H = 1. Xúc xắc: H ≈ 2.58. Sự kiện chắc chắn: H = 0. Trong ML: decision tree chọn feature giảm entropy nhiều nhất (information gain).",
-      },
-      {
-        question: "Cross-Entropy H(p, q) đo gì?",
-        options: [
-          "Entropy của p",
-          "Số bits cần để mã hoá data từ phân phối p DÙNG phân phối q. Càng gần: CE thấp. Càng xa: CE cao. Đây là loss function cho classification!",
-          "Entropy của q",
-        ],
-        correct: 1,
-        explanation:
-          "H(p, q) = -Σ p·log(q). Nếu q = p (model perfect): H(p, q) = H(p) (minimum). Nếu q khác p: H(p, q) > H(p). Phần thừa chính là KL divergence = H(p, q) - H(p). Minimize CE loss = làm q (model) gần p (true distribution) nhất có thể.",
-      },
-      {
-        question: "KL Divergence KL(p || q) dùng cho gì?",
-        options: [
-          "Tính khoảng cách Euclid",
-          "Đo sự khác biệt giữa 2 phân phối. KL = 0: giống hệt. KL lớn: rất khác. Dùng trong: VAE loss, data drift detection, distillation.",
-          "Tính trung bình",
-        ],
-        correct: 1,
-        explanation:
-          "KL(p || q) = Σ p·log(p/q) = H(p, q) − H(p). KHÔNG đối xứng: KL(p || q) ≠ KL(q || p). Ứng dụng: (1) VAE: KL(q(z|x) || p(z)) ≈ 0 → latent ~ prior; (2) distillation: KL(student || teacher) → student học từ teacher; (3) data drift: KL(train || production) → phát hiện drift.",
-      },
-      {
-        type: "fill-blank",
-        question:
-          "Entropy H(X) đạt giá trị {blank} khi tất cả sự kiện có xác suất bằng nhau (bất định tối đa), và đạt {blank} khi một sự kiện chắc chắn xảy ra (xác suất = 1).",
-        blanks: [
-          { answer: "cực đại", accept: ["maximum", "max", "lớn nhất", "cao nhất"] },
-          { answer: "0", accept: ["0 bit", "bằng 0", "giá trị 0"] },
-        ],
-        explanation:
-          "Entropy = độ bất định trung bình. Khi tất cả sự kiện đồng xác suất (ví dụ: xúc xắc công bằng), không thể dự đoán → entropy cực đại. Khi một sự kiện chắc chắn xảy ra (P = 1), không có gì để dự đoán → H = −1·log(1) = 0.",
-      },
-      {
-        question:
-          "Một mô hình dự đoán chắc chắn nhãn sai (q gán xác suất 0 cho class đúng). Cross-entropy loss sẽ như thế nào?",
-        options: [
-          "Bằng 0",
-          "Bằng entropy của p",
-          "Vô cùng lớn (∞) — đây là lý do ta clip log(q) hoặc dùng label smoothing",
-          "Không đổi",
-        ],
-        correct: 2,
-        explanation:
-          "Khi q(class đúng) = 0, −log(q) = ∞ → CE loss bằng ∞ → gradient nổ. Trong thực hành: label smoothing, clipping, hoặc dùng softmax đảm bảo q > 0 tại mọi vị trí.",
-      },
-      {
-        question: "KL divergence có đối xứng không?",
-        options: [
-          "Có — KL(p || q) = KL(q || p) luôn luôn",
-          "Không — KL(p || q) nói chung khác KL(q || p). Nó là 'divergence', không phải 'metric'.",
-          "Chỉ đối xứng khi p và q là Gaussian",
-        ],
-        correct: 1,
-        explanation:
-          "KL divergence không thoả bất đẳng thức tam giác và không đối xứng, nên không phải metric. Để đo khoảng cách đối xứng, dùng Jensen–Shannon divergence: JSD(p, q) = ½KL(p || m) + ½KL(q || m) với m = (p+q)/2.",
-      },
-      {
-        question:
-          "Trong classification với one-hot true label, tại sao cross-entropy loss đơn giản thành −log(q[class đúng])?",
-        options: [
-          "Vì p là one-hot, tất cả p_i = 0 trừ class đúng; các số hạng khác triệt tiêu",
-          "Vì cross-entropy luôn bằng −log(q)",
-          "Vì entropy của one-hot khác 0",
-        ],
-        correct: 0,
-        explanation:
-          "Với one-hot p, chỉ một p_i = 1 còn lại = 0. H(p, q) = −Σ p_i·log(q_i) = −log(q[class đúng]). Đây là công thức quen thuộc trong PyTorch/TensorFlow.",
-      },
-      {
-        question: "Giữa entropy, cross-entropy và KL: quan hệ nào đúng?",
-        options: [
-          "H(p, q) = H(p) + KL(p || q)",
-          "H(p, q) = H(p) − KL(p || q)",
-          "H(p, q) = KL(p || q) − H(p)",
-          "H(p, q) = H(q) + KL(q || p)",
-        ],
-        correct: 0,
-        explanation:
-          "Đẳng thức cơ bản: H(p, q) = H(p) + KL(p || q). Vì H(p) không phụ thuộc model → minimize CE tương đương minimize KL. Đây là lý do CE và KL thường được dùng hoán đổi trong ML.",
-      },
-    ],
-    [],
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// COMPONENT CHÍNH
-// ─────────────────────────────────────────────────────────────────────────────
-export default function InformationTheoryTopic() {
-  const quizQuestions = useQuizQuestions();
-
-  // Phân phối p do người dùng chỉnh (true distribution)
-  const [p, setP] = useState<number[]>(() => [0.25, 0.25, 0.25, 0.25]);
-
-  // Phân phối q do người dùng chỉnh (model prediction)
-  const [q, setQ] = useState<number[]>(() => [0.5, 0.2, 0.2, 0.1]);
-
-  // Kết quả sampling gần nhất (dùng cho random sampler)
-  const [lastSample, setLastSample] = useState<{ idx: number; surp: number } | null>(null);
-
-  // ── Tính các đại lượng cốt lõi ──
-  const Hp = useMemo(() => entropy(p), [p]);
-  const Hq = useMemo(() => entropy(q), [q]);
-  const CE = useMemo(() => crossEntropy(p, q), [p, q]);
-  const KL = useMemo(() => klDivergence(p, q), [p, q]);
-  const Hmax = log2(p.length); // entropy tối đa của phân phối 4 class
-
-  // ── Xử lý điều chỉnh thanh slider ──
-  const onSlidePi = useCallback(
-    (i: number, value: number) => {
-      setP((prev) => {
-        const next = [...prev];
-        next[i] = Math.max(0, Math.min(1, value));
-        return normalize(next);
-      });
-    },
-    [],
-  );
-
-  const onSlideQi = useCallback(
-    (i: number, value: number) => {
-      setQ((prev) => {
-        const next = [...prev];
-        next[i] = Math.max(0, Math.min(1, value));
-        return normalize(next);
-      });
-    },
-    [],
-  );
-
-  const applyPreset = useCallback((target: "p" | "q", preset: Preset) => {
-    if (target === "p") setP([...preset.probs]);
-    else setQ([...preset.probs]);
+  // Vẽ parabol entropy theo P(ngửa)
+  const curvePath = useMemo(() => {
+    const pts: string[] = [];
+    for (let i = 1; i <= 99; i++) {
+      const pi = i / 100;
+      const h = entropy([pi, 1 - pi]);
+      const x = 20 + (i / 100) * 280;
+      const y = 110 - h * 80;
+      pts.push(`${i === 1 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+    return pts.join(" ");
   }, []);
 
-  const doSample = useCallback(() => {
-    const idx = sample(p);
-    setLastSample({ idx, surp: surprise(p[idx]) });
-  }, [p]);
+  const markerX = 20 + p * 280;
+  const markerY = 110 - H * 80;
 
-  // ── Render ──
+  return (
+    <div className="w-full space-y-3">
+      <div className="grid grid-cols-2 gap-3 text-center">
+        <div className="rounded-xl border border-border bg-surface/60 p-3">
+          <div className="text-xs text-muted">P(ngửa)</div>
+          <div className="text-2xl font-bold text-foreground">
+            {(p * 100).toFixed(0)}%
+          </div>
+        </div>
+        <div className="rounded-xl border bg-surface/60 p-3" style={{ borderColor: color }}>
+          <div className="text-xs text-muted">Entropy H</div>
+          <div className="font-mono text-2xl font-bold" style={{ color }}>
+            {fmt(H)} bit
+          </div>
+        </div>
+      </div>
+
+      <svg viewBox="0 0 320 140" className="w-full">
+        {/* Lưới */}
+        <line x1={20} y1={110} x2={300} y2={110} stroke="currentColor" className="text-border" />
+        <line x1={20} y1={30} x2={20} y2={110} stroke="currentColor" className="text-border" />
+
+        <text x={26} y={32} fontSize={9} fill="currentColor" className="text-muted">1 bit (max)</text>
+        <text x={26} y={108} fontSize={9} fill="currentColor" className="text-muted">0 bit</text>
+        <text x={20} y={126} fontSize={9} fill="currentColor" className="text-muted">0</text>
+        <text x={160} y={126} fontSize={9} fill="currentColor" className="text-muted" textAnchor="middle">0.5</text>
+        <text x={300} y={126} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">1</text>
+
+        {/* Parabol */}
+        <path d={curvePath} fill="none" stroke="#2563eb" strokeWidth={2.2} />
+
+        {/* Marker */}
+        <motion.line
+          x1={markerX}
+          y1={110}
+          x2={markerX}
+          y2={markerY}
+          stroke={color}
+          strokeWidth={1.5}
+          strokeDasharray="3 3"
+          animate={{ x1: markerX, x2: markerX, y2: markerY }}
+          transition={{ duration: 0.15 }}
+        />
+        <motion.circle
+          cx={markerX}
+          cy={markerY}
+          r={5}
+          fill={color}
+          stroke="#ffffff"
+          strokeWidth={1.5}
+          animate={{ cx: markerX, cy: markerY }}
+          transition={{ duration: 0.15 }}
+        />
+      </svg>
+
+      <p className="text-xs text-muted leading-relaxed">
+        Entropy đạt đỉnh <strong>1 bit</strong> khi đồng xu công bằng (P = 0.5) — bất
+        định tối đa. Khi đồng xu lệch hẳn (P = 0.99), entropy tụt về gần 0 — gần như
+        luôn biết trước kết quả.
+      </p>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Dice entropy — xúc xắc 4 mặt / 6 mặt
+   ───────────────────────────────────────────────────────────── */
+type DiceMode = "uniform4" | "uniform6" | "loaded";
+
+function DiceEntropyVisual() {
+  const [mode, setMode] = useState<DiceMode>("uniform4");
+  const [lastRoll, setLastRoll] = useState<number | null>(null);
+
+  const dist = useMemo(() => {
+    if (mode === "uniform4") return [0.25, 0.25, 0.25, 0.25];
+    if (mode === "uniform6") return [1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6];
+    return [0.5, 0.2, 0.12, 0.08, 0.06, 0.04];
+  }, [mode]);
+
+  const H = entropy(dist);
+  const Hmax = log2(dist.length);
+
+  const rollDice = useCallback(() => {
+    const r = Math.random();
+    let cum = 0;
+    for (let i = 0; i < dist.length; i++) {
+      cum += dist[i];
+      if (r < cum) {
+        setLastRoll(i);
+        return;
+      }
+    }
+    setLastRoll(dist.length - 1);
+  }, [dist]);
+
+  return (
+    <div className="space-y-4 rounded-xl border border-border bg-card p-5">
+      {/* Chọn mode */}
+      <div className="flex flex-wrap gap-2">
+        {(
+          [
+            { key: "uniform4" as const, label: "Xúc xắc 4 mặt fair", icon: Dice5 },
+            { key: "uniform6" as const, label: "Xúc xắc 6 mặt fair", icon: Dice5 },
+            { key: "loaded" as const, label: "Xúc xắc 6 mặt gian", icon: Zap },
+          ]
+        ).map((m) => {
+          const Icon = m.icon;
+          const active = mode === m.key;
+          return (
+            <button
+              key={m.key}
+              type="button"
+              onClick={() => {
+                setMode(m.key);
+                setLastRoll(null);
+              }}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                active
+                  ? "bg-accent text-white"
+                  : "border border-border bg-surface text-muted hover:text-foreground"
+              }`}
+            >
+              <Icon size={12} /> {m.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Bar chart phân phối */}
+      <div className="rounded-lg bg-surface/50 p-4">
+        <div className="flex items-end justify-between gap-2" style={{ height: 140 }}>
+          {dist.map((pi, i) => {
+            const heightPct = pi * 100 * 2.5; // scale cho dễ nhìn
+            const isRolled = lastRoll === i;
+            return (
+              <div key={i} className="flex flex-1 flex-col items-center gap-1">
+                <motion.div
+                  className="w-full rounded-t-md"
+                  style={{
+                    backgroundColor: isRolled ? "#dc2626" : "#2563eb",
+                  }}
+                  animate={{ height: heightPct }}
+                  transition={{ type: "spring", stiffness: 140, damping: 18 }}
+                />
+                <span className="text-[10px] text-muted">
+                  {(pi * 100).toFixed(0)}%
+                </span>
+                <span className="text-[10px] font-semibold text-foreground">
+                  {i + 1}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        <div className="rounded-lg border border-border bg-surface/40 p-3 text-center">
+          <div className="text-[10px] uppercase tracking-wide text-tertiary">
+            Số mặt
+          </div>
+          <div className="mt-1 text-lg font-bold text-foreground">{dist.length}</div>
+        </div>
+        <div className="rounded-lg border border-border bg-accent-light p-3 text-center">
+          <div className="text-[10px] uppercase tracking-wide text-accent">
+            H(X)
+          </div>
+          <div className="mt-1 font-mono text-lg font-bold text-accent">
+            {fmt(H)} bit
+          </div>
+        </div>
+        <div className="rounded-lg border border-border bg-surface/40 p-3 text-center">
+          <div className="text-[10px] uppercase tracking-wide text-tertiary">
+            H<sub>max</sub> = log₂ n
+          </div>
+          <div className="mt-1 font-mono text-lg font-bold text-foreground">
+            {fmt(Hmax)} bit
+          </div>
+        </div>
+      </div>
+
+      {/* Nút roll */}
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={rollDice}
+          className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+        >
+          <Sparkles size={14} /> Tung xúc xắc
+        </button>
+        <AnimatePresence mode="wait">
+          {lastRoll !== null && (
+            <motion.div
+              key={lastRoll}
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 6 }}
+              transition={{ duration: 0.2 }}
+              className="text-sm"
+            >
+              Trúng mặt <strong className="text-accent">{lastRoll + 1}</strong> — surprise ={" "}
+              <strong className="font-mono">{fmt(surprise(dist[lastRoll]))} bit</strong>.{" "}
+              <span className="text-muted">
+                {surprise(dist[lastRoll]) < 1.5
+                  ? "Mặt phổ biến, ít bất ngờ."
+                  : surprise(dist[lastRoll]) < 3
+                    ? "Mặt trung bình."
+                    : "Mặt hiếm, rất bất ngờ."}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <p className="text-xs text-muted leading-relaxed">
+        <strong>Nhận xét:</strong> xúc xắc 4 mặt fair có H = 2 bit; xúc xắc 6 mặt fair có
+        H ≈ 2.58 bit; xúc xắc gian (lệch về mặt 1) có H ≈ 2.02 bit. <em>Càng nhiều mặt
+        và càng cân bằng</em> → entropy càng cao.
+      </p>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Cross-entropy explorer — hai phân phối, cross-entropy + KL
+   ───────────────────────────────────────────────────────────── */
+function CrossEntropyExplorer() {
+  const [qPct, setQPct] = useState(50);
+
+  const p = [0.5, 0.5]; // true coin
+  const q1 = Math.max(0.01, Math.min(0.99, qPct / 100));
+  const q = [q1, 1 - q1];
+
+  const Hp = entropy(p);
+  const ce = -(p[0] * log2(q[0]) + p[1] * log2(q[1]));
+  const kl = ce - Hp;
+
+  const barColor = (val: number) => {
+    if (val < 1.1) return "#16a34a";
+    if (val < 1.5) return "#f59e0b";
+    return "#dc2626";
+  };
+
+  return (
+    <div className="w-full space-y-4 rounded-xl border border-border bg-card p-5">
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/20">
+          <p className="mb-2 text-[11px] font-semibold text-blue-700 dark:text-blue-300">
+            p — phân phối thật (cố định)
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            <DistBar label="Mặt 1" p={p[0]} color="#2563eb" />
+            <DistBar label="Mặt 2" p={p[1]} color="#2563eb" />
+          </div>
+          <p className="mt-2 text-[10px] text-muted">Entropy H(p) = {fmt(Hp)} bit</p>
+        </div>
+        <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-800 dark:bg-red-900/20">
+          <p className="mb-2 text-[11px] font-semibold text-red-700 dark:text-red-300">
+            q — dự đoán của mô hình
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            <DistBar label="Mặt 1" p={q[0]} color="#dc2626" />
+            <DistBar label="Mặt 2" p={q[1]} color="#dc2626" />
+          </div>
+          <div className="mt-2">
+            <input
+              type="range"
+              min={1}
+              max={99}
+              value={qPct}
+              onChange={(e) => setQPct(Number(e.target.value))}
+              className="w-full accent-red-500"
+              aria-label="q[Mặt 1]"
+            />
+            <p className="text-[10px] text-muted">
+              q[Mặt 1] = {qPct}% — kéo để di chuyển
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-lg border border-border bg-surface/50 p-3 text-center">
+          <div className="text-[11px] font-semibold text-muted">H(p)</div>
+          <div className="mt-1 font-mono text-lg font-bold text-foreground">
+            {fmt(Hp)} bit
+          </div>
+          <div className="mt-1 text-[10px] text-muted">Không đổi</div>
+        </div>
+        <div
+          className="rounded-lg border bg-surface/50 p-3 text-center"
+          style={{ borderColor: barColor(ce) }}
+        >
+          <div className="text-[11px] font-semibold" style={{ color: barColor(ce) }}>
+            H(p, q) — CE loss
+          </div>
+          <div className="mt-1 font-mono text-lg font-bold text-foreground">
+            {isFinite(ce) ? fmt(ce) : "∞"} bit
+          </div>
+          <div className="mt-1 text-[10px] text-muted">
+            Số bit thực tế dùng mã của q
+          </div>
+        </div>
+        <div
+          className="rounded-lg border bg-surface/50 p-3 text-center"
+          style={{ borderColor: barColor(kl + 1) }}
+        >
+          <div className="text-[11px] font-semibold" style={{ color: barColor(kl + 1) }}>
+            KL(p ‖ q)
+          </div>
+          <div className="mt-1 font-mono text-lg font-bold text-foreground">
+            {isFinite(kl) ? fmt(Math.max(0, kl)) : "∞"} bit
+          </div>
+          <div className="mt-1 text-[10px] text-muted">
+            Phần &quot;phí phạm&quot;
+          </div>
+        </div>
+      </div>
+
+      <p className="text-xs text-muted leading-relaxed">
+        <strong>Quan hệ then chốt:</strong> H(p, q) = H(p) + KL(p ‖ q). Khi q = p (slider ở 50%),
+        KL = 0 và cross-entropy = H(p) — không thể giảm thêm. Đẩy q về 1% hoặc 99%, KL tăng vọt
+        — đúng với ý nghĩa &quot;mô hình tự tin sai thì bị phạt rất nặng&quot;.
+      </p>
+    </div>
+  );
+}
+
+function DistBar({ label, p, color }: { label: string; p: number; color: string }) {
+  return (
+    <div className="rounded border border-border bg-card p-2">
+      <div className="flex items-center justify-between text-[10px]">
+        <span className="font-semibold text-foreground">{label}</span>
+        <span className="font-mono text-muted">{(p * 100).toFixed(0)}%</span>
+      </div>
+      <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-surface">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+          animate={{ width: `${p * 100}%` }}
+          transition={{ duration: 0.15 }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Mini-visual: công thức đi kèm hình
+   ───────────────────────────────────────────────────────────── */
+function EntropyShape() {
+  // Hình parabol đơn giản
+  const path = useMemo(() => {
+    const pts: string[] = [];
+    for (let i = 1; i <= 99; i++) {
+      const p = i / 100;
+      const h = entropy([p, 1 - p]);
+      const x = 10 + (i / 100) * 300;
+      const y = 110 - h * 80;
+      pts.push(`${i === 1 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+    return pts.join(" ");
+  }, []);
+
+  return (
+    <svg viewBox="0 0 320 140" className="w-full max-w-sm">
+      <line x1={10} y1={110} x2={310} y2={110} stroke="currentColor" className="text-border" />
+      <line x1={10} y1={30} x2={10} y2={110} stroke="currentColor" className="text-border" />
+      <text x={14} y={32} fontSize={9} fill="currentColor" className="text-muted">H max</text>
+      <text x={14} y={108} fontSize={9} fill="currentColor" className="text-muted">H = 0</text>
+      <path d={path} fill="none" stroke="#2563eb" strokeWidth={2.4} />
+      <circle cx={160} cy={30} r={4} fill="#dc2626" />
+      <text x={162} y={28} fontSize={9} fill="#dc2626">
+        P = 0.5 → H max
+      </text>
+    </svg>
+  );
+}
+
+function KLShape() {
+  return (
+    <svg viewBox="0 0 320 140" className="w-full max-w-sm">
+      <line x1={10} y1={110} x2={310} y2={110} stroke="currentColor" className="text-border" />
+      <line x1={20} y1={10} x2={20} y2={110} stroke="currentColor" className="text-border" />
+      {/* Hai phân phối */}
+      {[
+        { x: 40, h: 70, c: "#2563eb", label: "p" },
+        { x: 80, h: 50, c: "#2563eb", label: "" },
+        { x: 120, h: 30, c: "#2563eb", label: "" },
+        { x: 160, h: 20, c: "#2563eb", label: "" },
+      ].map((b, i) => (
+        <rect key={`p-${i}`} x={b.x} y={110 - b.h} width={20} height={b.h} fill={b.c} opacity={0.75} rx={2} />
+      ))}
+      {[
+        { x: 60, h: 25, c: "#dc2626", label: "q" },
+        { x: 100, h: 35, c: "#dc2626", label: "" },
+        { x: 140, h: 50, c: "#dc2626", label: "" },
+        { x: 180, h: 70, c: "#dc2626", label: "" },
+      ].map((b, i) => (
+        <rect key={`q-${i}`} x={b.x} y={110 - b.h} width={20} height={b.h} fill={b.c} opacity={0.75} rx={2} />
+      ))}
+      <rect x={220} y={30} width={12} height={10} fill="#2563eb" opacity={0.75} rx={2} />
+      <text x={236} y={39} fontSize={10} fill="currentColor" className="text-foreground">p (thật)</text>
+      <rect x={220} y={48} width={12} height={10} fill="#dc2626" opacity={0.75} rx={2} />
+      <text x={236} y={57} fontSize={10} fill="currentColor" className="text-foreground">q (dự đoán)</text>
+      <text x={220} y={95} fontSize={10} fill="currentColor" className="text-muted">KL = độ &quot;lệch&quot; giữa p và q</text>
+    </svg>
+  );
+}
+
+function CrossEntropyShape() {
+  return (
+    <svg viewBox="0 0 320 140" className="w-full max-w-sm">
+      <line x1={20} y1={110} x2={310} y2={110} stroke="currentColor" className="text-border" />
+      <line x1={20} y1={20} x2={20} y2={110} stroke="currentColor" className="text-border" />
+      <text x={24} y={28} fontSize={10} fill="currentColor" className="text-muted">loss</text>
+      <text x={308} y={122} fontSize={9} fill="currentColor" className="text-muted" textAnchor="end">q → 1</text>
+      <path
+        d={Array.from({ length: 80 }, (_, i) => {
+          const q = 0.02 + (i / 79) * 0.95;
+          const x = 20 + (i / 79) * 285;
+          const y = 110 + Math.log(q) * 18;
+          return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${Math.max(10, y).toFixed(1)}`;
+        }).join(" ")}
+        fill="none"
+        stroke="#dc2626"
+        strokeWidth={2.4}
+      />
+      <text x={40} y={40} fontSize={10} fill="#dc2626">
+        Loss lớn khi mô hình đoán sai rất chắc
+      </text>
+      <text x={150} y={105} fontSize={10} fill="#16a34a">
+        Loss ≈ 0 khi đoán đúng
+      </text>
+    </svg>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   QUIZ
+   ───────────────────────────────────────────────────────────── */
+const quizQuestions: QuizQuestion[] = [
+  {
+    question: "Xúc xắc 6 mặt công bằng. Entropy H(X) bằng bao nhiêu bit?",
+    options: [
+      "1 bit",
+      "2 bit",
+      "Khoảng 2,58 bit (= log₂ 6)",
+      "6 bit",
+    ],
+    correct: 2,
+    explanation:
+      "Với phân phối đều trên n giá trị, entropy đạt cực đại H = log₂ n. Với xúc xắc 6 mặt fair, H = log₂ 6 ≈ 2,58 bit. Nếu xúc xắc gian (lệch về một mặt), entropy sẽ nhỏ hơn.",
+  },
+  {
+    question: "Sự kiện nào mang NHIỀU THÔNG TIN hơn khi xảy ra?",
+    options: [
+      "'Trời Sài Gòn hôm nay nắng' (P ≈ 0.95)",
+      "'Mưa đá giữa trưa tháng 4 ở Sài Gòn' (P ≈ 0.001)",
+      "Bằng nhau vì cả hai đều xảy ra",
+      "Không xác định được",
+    ],
+    correct: 1,
+    explanation:
+      "Information = −log₂ P. Sự kiện hiếm có nhiều bit thông tin hơn. 'Nắng' có P cao → −log₂(0.95) ≈ 0.07 bit. 'Mưa đá' có P thấp → −log₂(0.001) ≈ 10 bit. Đó là lý do tin tức chỉ đưa tin bất ngờ — vì chúng mang nhiều thông tin hơn.",
+  },
+  {
+    question:
+      "Khi hai phân phối p và q trùng nhau hoàn toàn (p = q), KL(p ‖ q) bằng bao nhiêu?",
+    options: [
+      "Vô cùng lớn",
+      "Bằng 0",
+      "Bằng entropy của p",
+      "Bằng 1 bit",
+    ],
+    correct: 1,
+    explanation:
+      "KL(p ‖ q) = 0 khi và chỉ khi p = q. Đây là lý do KL được gọi là 'độ lệch' giữa hai phân phối — càng gần nhau, KL càng nhỏ; trùng nhau thì KL = 0.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Entropy H(X) đạt giá trị {blank} khi mọi sự kiện đồng xác suất, và đạt {blank} khi một sự kiện chắc chắn xảy ra (P = 1).",
+    blanks: [
+      { answer: "cực đại", accept: ["maximum", "max", "lớn nhất", "cao nhất"] },
+      { answer: "0", accept: ["0 bit", "bằng 0", "không"] },
+    ],
+    explanation:
+      "Entropy là độ bất định trung bình. Khi đồng đều → không thể đoán trước → H lớn nhất = log₂ n. Khi một sự kiện chắc chắn → không có gì để đoán → H = 0.",
+  },
+  {
+    question:
+      "Trong machine learning, cross-entropy H(p, q) được dùng làm loss function. Minimize cross-entropy đồng nghĩa với việc làm gì?",
+    options: [
+      "Làm entropy H(p) bằng 0",
+      "Làm phân phối q (mô hình) gần p (nhãn thật) nhất có thể",
+      "Tăng entropy của q",
+      "Bỏ qua nhãn thật",
+    ],
+    correct: 1,
+    explanation:
+      "H(p, q) = H(p) + KL(p ‖ q). Vì H(p) không phụ thuộc mô hình (nhãn là cố định), tối thiểu cross-entropy tương đương tối thiểu KL(p ‖ q) — tức là kéo q về gần p. Đây là lý do cross-entropy là loss mặc định cho bài toán phân loại.",
+  },
+];
+
+/* ═══════════════ MAIN ═══════════════ */
+export default function InformationTheoryTopic() {
   return (
     <>
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 1 — DỰ ĐOÁN
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
+      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="2 sự kiện: (A) Ngày mai mặt trời mọc, (B) Ngày mai có động đất. Sự kiện nào chứa NHIỀU THÔNG TIN hơn khi xảy ra?"
+          question="Bạn đọc hai tin trên báo: (A) 'Trời Sài Gòn hôm nay nắng', (B) 'Mưa đá giữa trưa tháng 4 ở Sài Gòn'. Tin nào chứa NHIỀU THÔNG TIN hơn?"
           options={[
             "A — vì quan trọng hơn",
-            "B — sự kiện HIẾM có nhiều thông tin hơn sự kiện chắc chắn. 'Mặt trời mọc' = 0 thông tin (ai cũng biết). 'Động đất' = nhiều thông tin (bất ngờ).",
+            "B — sự kiện hiếm có nhiều thông tin hơn sự kiện gần như chắc chắn",
             "Bằng nhau",
+            "Phụ thuộc vào tâm trạng người đọc",
           ]}
           correct={1}
-          explanation="Information = −log P. Mặt trời mọc: P ≈ 1 → −log(1) = 0 bits (không có thông tin mới). Động đất: P ≈ 0.001 → −log(0.001) ≈ 10 bits (rất nhiều thông tin). Tin tức báo chí chỉ đưa tin BẤT NGỜ vì nó có nhiều thông tin. Đây là trực giác của Shannon!"
+          explanation="Entropy và thông tin đo sự 'bất ngờ'. 'Nắng' có xác suất ≈ 0.95 → không ai lạ → gần như 0 bit thông tin. 'Mưa đá' có xác suất ≈ 0.001 → rất hiếm → khoảng 10 bit thông tin. Tin tức chỉ đưa tin bất ngờ vì chúng mang nhiều thông tin — đây chính là trực giác Shannon đặt nền cho toàn bộ lý thuyết thông tin."
         >
-          <p className="text-sm text-muted mt-2">
-            Bên dưới bạn sẽ có một entropy explorer để tự tay tạo phân phối và nhìn các đại lượng
-            entropy / cross-entropy / KL-divergence thay đổi trong thời gian thực.
+          <p className="mt-4 text-sm text-muted leading-relaxed">
+            Hôm nay bạn sẽ học ba thước đo cốt lõi: <strong>entropy</strong> (đo bất định),{" "}
+            <strong>KL divergence</strong> (đo sự khác nhau giữa hai phân phối), và{" "}
+            <strong>cross-entropy</strong> (loss function của machine learning). Cả ba đều
+            tính bằng <em>bit</em>.
           </p>
         </PredictionGate>
+      </LessonSection>
 
-        <div className="mt-6 rounded-xl border border-border bg-card p-5">
-          <h3 className="text-sm font-semibold text-foreground mb-2">
-            Phép so sánh — đóng gói tin nhắn
+      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hiểu bằng hình ảnh">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <CloudLightning size={20} className="text-accent" /> Entropy = &quot;độ bất ngờ trung bình&quot;
           </h3>
-          <p className="text-sm text-muted leading-relaxed">
-            Tưởng tượng bạn phải gửi các bản tin thời tiết qua điện báo tính tiền theo ký tự.
-            Nếu nơi bạn gửi đi luôn nắng, một tin &quot;hôm nay nắng&quot; chiếm 99% số bản tin —
-            bạn có thể mã hoá nó chỉ bằng 1 ký tự, còn &quot;tuyết&quot;, &quot;bão&quot; hay
-            &quot;sương mù&quot; (hiếm) có thể chấp nhận mã dài. Ngược lại, nếu mỗi loại thời
-            tiết xuất hiện với xác suất bằng nhau, bạn buộc phải dùng mã dài hơn cho tất cả.
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Hãy tưởng tượng bạn đang nhắn tin cho bạn bè về thời tiết ở Sài Gòn bằng{" "}
+            <em>điện báo tính tiền theo ký tự</em>. Nếu hầu hết ngày là nắng, bạn nên đặt{" "}
+            &quot;nắng&quot; = một ký tự ngắn, còn &quot;mưa đá&quot; thì nhận ký tự dài — vì nó hiếm,
+            dùng ký tự dài cũng không phí nhiều lần. Trung bình, bạn gửi rất ít ký tự mỗi tin.
           </p>
-          <p className="mt-3 text-sm text-muted leading-relaxed">
-            <strong>Entropy</strong> chính là số bit trung bình ít nhất để mã hoá một bản tin,{" "}
-            <strong>cross-entropy</strong> là số bit thực tế khi bạn dùng sai &quot;bảng
-            mã&quot; (dùng bảng của phân phối q nhưng tin sinh ra từ p), và{" "}
-            <strong>KL divergence</strong> là phần phí phạm do dùng sai bảng mã.
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Ngược lại, ở một thành phố ôn đới mỗi loại thời tiết xuất hiện đều đều, bạn buộc phải
+            dùng ký tự dài hơn cho tất cả. Shannon chứng minh: <strong>số bit trung bình ngắn
+            nhất</strong> bạn có thể dùng để mã hoá một bản tin chính là <strong>entropy H</strong> của
+            phân phối thời tiết ở đó.
           </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-emerald-800 dark:bg-emerald-900/20">
+              <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                <Sun size={14} /> Phân phối lệch
+              </p>
+              Một kết quả chiếm ưu thế → dễ đoán → entropy thấp, mã ngắn trung bình.
+            </div>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-amber-800 dark:bg-amber-900/20">
+              <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                <Coins size={14} /> Đồng xu công bằng
+              </p>
+              Hai mặt bằng nhau → bất định nhất cho 2 kết quả → entropy = 1 bit.
+            </div>
+            <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-red-800 dark:bg-red-900/20">
+              <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-red-700 dark:text-red-300">
+                <Dice5 size={14} /> Xúc xắc 6 mặt
+              </p>
+              Đồng đều trên nhiều kết quả → entropy cao nhất = log₂ 6 ≈ 2.58 bit.
+            </div>
+          </div>
         </div>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 2 — KHÁM PHÁ: ENTROPY EXPLORER
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
+      {/* ━━━ BƯỚC 3 — KHÁM PHÁ (playgrounds) ━━━ */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
-          <h3 className="text-base font-semibold text-foreground mb-1">
-            Entropy explorer — điều chỉnh p và q để cảm nhận ba đại lượng
+          <h3 className="mb-1 text-base font-semibold text-foreground">
+            Playground 1 — Đồng xu nghiêng dần
           </h3>
-          <p className="text-sm text-muted mb-5">
-            Hai phân phối 4 lớp (A, B, C, D). <strong>p</strong> là phân phối &quot;thật&quot;
-            (ground truth). <strong>q</strong> là &quot;model&quot; của bạn. Các đại lượng bên
-            phải cập nhật ngay khi bạn kéo thanh.
+          <p className="mb-4 text-sm text-muted leading-relaxed">
+            Kéo thanh trượt để thay đổi P(ngửa). Chấm đỏ chạy theo đường cong entropy. Khi P
+            = 50%, entropy đạt đỉnh 1 bit. Khi P rất gần 0 hoặc 1, entropy tiến về 0.
           </p>
 
-          {/* ── Khối 1: tóm tắt 4 số liệu ──────────────────────────── */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <StatCard label="H(p)" value={fmt(Hp)} unit="bit" hint="Entropy của p" />
-            <StatCard label="H(q)" value={fmt(Hq)} unit="bit" hint="Entropy của q" />
-            <StatCard
-              label="H(p,q)"
-              value={fmt(CE)}
-              unit="bit"
-              hint="Cross-entropy (loss)"
-            />
-            <StatCard
-              label="KL(p‖q)"
-              value={fmt(KL)}
-              unit="bit"
-              hint="Độ khác biệt p và q"
-            />
-          </div>
+          <SliderGroup
+            sliders={[
+              { key: "p", label: "P(ngửa)", min: 1, max: 99, step: 1, defaultValue: 50, unit: "%" },
+            ]}
+            visualization={(v) => <CoinEntropyVisual pHeads={v.p} />}
+          />
 
-          {/* ── Khối 2: hai editor song song ──────────────────────── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <DistributionEditor
-              title="p — phân phối thật"
-              subtitle="Ground truth (dữ liệu)"
-              probs={p}
-              onChange={onSlidePi}
-              presets={PRESETS}
-              onPreset={(pr) => applyPreset("p", pr)}
-              H={Hp}
-              Hmax={Hmax}
-            />
+          <h3 className="mt-8 mb-1 text-base font-semibold text-foreground">
+            Playground 2 — Xúc xắc 4 mặt vs 6 mặt vs &quot;gian&quot;
+          </h3>
+          <p className="mb-4 text-sm text-muted leading-relaxed">
+            Chọn chế độ và quan sát thanh entropy. Uniform càng nhiều mặt → entropy càng cao.
+            Xúc xắc gian (lệch về mặt 1) có entropy nhỏ hơn fair dù cùng số mặt.
+          </p>
+          <DiceEntropyVisual />
 
-            <DistributionEditor
-              title="q — model dự đoán"
-              subtitle="Model output (softmax)"
-              probs={q}
-              onChange={onSlideQi}
-              presets={PRESETS}
-              onPreset={(pr) => applyPreset("q", pr)}
-              H={Hq}
-              Hmax={Hmax}
-            />
-          </div>
-
-          {/* ── Khối 3: thanh trực quan H(p) so với H_max ─────────── */}
-          <div className="mt-6 rounded-lg border border-border bg-surface/30 p-4">
-            <p className="text-xs text-muted mb-2">
-              Tiến độ entropy của p so với entropy tối đa (log₂ 4 = 2 bit):
-            </p>
-            <div className="h-3 w-full rounded-full bg-surface overflow-hidden">
-              <motion.div
-                className="h-full rounded-full bg-accent"
-                animate={{ width: `${Math.min(100, (Hp / Hmax) * 100)}%` }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-            <p className="mt-2 text-xs text-muted">
-              H(p) = {fmt(Hp)} bit / H<sub>max</sub> = {fmt(Hmax)} bit. Khi p đồng đều, thanh
-              chạm 100%. Khi p tập trung về một class, thanh tụt về 0%.
-            </p>
-          </div>
-
-          {/* ── Khối 4: Quan hệ H(p,q) = H(p) + KL ───────────────── */}
-          <div className="mt-5 rounded-lg border border-border bg-card p-4">
-            <h4 className="text-sm font-semibold text-foreground mb-2">
-              Quan hệ then chốt
-            </h4>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
-              <span className="rounded bg-accent/10 px-2 py-1 font-mono text-accent">
-                H(p,q) = {fmt(CE)}
-              </span>
-              <span className="text-muted">=</span>
-              <span className="rounded bg-blue-500/10 px-2 py-1 font-mono text-blue-600 dark:text-blue-400">
-                H(p) = {fmt(Hp)}
-              </span>
-              <span className="text-muted">+</span>
-              <span className="rounded bg-amber-500/10 px-2 py-1 font-mono text-amber-600 dark:text-amber-400">
-                KL(p‖q) = {fmt(KL)}
-              </span>
-            </div>
-            <p className="mt-3 text-xs text-muted leading-relaxed">
-              H(p) là phần &quot;không thể giảm&quot; (entropy sẵn có của dữ liệu). KL(p‖q) là
-              phần &quot;phí phạm&quot; do model chưa khớp. Khi train, gradient descent chỉ có
-              thể chạm vào phần KL. Đây là lý do minimize cross-entropy tương đương minimize
-              KL.
-            </p>
-          </div>
-
-          {/* ── Khối 5: Random sampler — hiển thị surprise ───────── */}
-          <div className="mt-5 rounded-lg border border-border bg-surface/30 p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-foreground">
-                Random sampler — rút 1 mẫu từ p
-              </h4>
-              <button
-                type="button"
-                onClick={doSample}
-                className="rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white hover:bg-accent-dark transition-colors"
-              >
-                Rút mẫu
-              </button>
-            </div>
-
-            <AnimatePresence mode="wait">
-              {lastSample ? (
-                <motion.div
-                  key={`${lastSample.idx}-${lastSample.surp}`}
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.2 }}
-                  className="rounded-lg border border-border bg-card p-3 text-sm"
-                >
-                  <p>
-                    Lớp trúng: <strong className="text-accent">{CLASS_LABELS[lastSample.idx]}</strong>{" "}
-                    (p = {fmt(p[lastSample.idx])})
-                  </p>
-                  <p className="mt-1 text-muted">
-                    Surprise của mẫu này = −log₂(p) ={" "}
-                    <strong className="text-foreground">{fmt(lastSample.surp)} bit</strong>.{" "}
-                    {lastSample.surp < 1
-                      ? "Mẫu phổ biến, ít bất ngờ."
-                      : lastSample.surp < 3
-                      ? "Mẫu có độ hiếm trung bình."
-                      : "Mẫu hiếm, rất bất ngờ — nhiều thông tin."}
-                  </p>
-                </motion.div>
-              ) : (
-                <p className="text-sm text-muted">
-                  Nhấn nút &quot;Rút mẫu&quot; để xem một sự kiện hiếm có bao nhiêu bit thông
-                  tin.
-                </p>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* ── Khối 6: gợi ý thử nghiệm ──────────────────────────── */}
-          <div className="mt-5 rounded-lg border border-dashed border-border bg-surface/20 p-4">
-            <h4 className="text-sm font-semibold text-foreground mb-2">Thử nghiệm nhanh</h4>
-            <ul className="list-disc list-inside space-y-1 text-xs text-muted">
-              <li>
-                Đặt p = uniform, q = peaked: xem KL tăng vọt — model quá tự tin sai.
-              </li>
-              <li>
-                Đặt p = q (cả hai cùng một preset): KL = 0, H(p, q) = H(p) (minimum).
-              </li>
-              <li>
-                Đặt p = one-hot (H(p) = 0): cross-entropy = −log₂ q[class đúng], đúng với công
-                thức CE-loss cho classification.
-              </li>
-              <li>
-                Đẩy một q_i về 0 trong khi p_i {">"} 0: CE = ∞, KL = ∞ — đây là &quot;log-sum
-                trap&quot; khi train không có label smoothing.
-              </li>
-            </ul>
-          </div>
+          <h3 className="mt-8 mb-1 text-base font-semibold text-foreground">
+            Playground 3 — Cross-entropy khi mô hình sai
+          </h3>
+          <p className="mb-4 text-sm text-muted leading-relaxed">
+            Đây là phân phối thật p của một đồng xu (giả sử nhãn ta quan sát thấy chính là xác
+            suất P(ngửa) = 50%). Kéo q — dự đoán của mô hình — xem cross-entropy và KL divergence
+            thay đổi. Khi q = p → KL = 0; càng lệch → loss càng cao.
+          </p>
+          <CrossEntropyExplorer />
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 3 — AHA MOMENT
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
+      {/* ━━━ BƯỚC 4 — ĐI SÂU (StepReveal công thức) ━━━ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
+        <h3 className="mb-3 text-base font-semibold text-foreground">
+          Entropy được dựng lên từng mảnh
+        </h3>
+        <StepReveal
+          labels={[
+            "Bước 1: Surprise của một sự kiện",
+            "Bước 2: Trung bình theo xác suất",
+            "Bước 3: Đó chính là entropy",
+          ]}
+        >
+          {[
+            <div
+              key="s1"
+              className="rounded-xl border border-border bg-surface/60 p-4 text-sm text-foreground leading-relaxed"
+            >
+              <p className="mb-3">
+                <strong>Surprise của một kết quả.</strong> Một kết quả xảy ra với xác suất p
+                mang lượng &quot;bất ngờ&quot; bằng{" "}
+                <span className="rounded bg-accent/10 px-1.5 py-0.5 font-mono text-accent">
+                  −log₂ p
+                </span>{" "}
+                bit. Sự kiện gần như chắc chắn (p = 0.99) → surprise ≈ 0.014 bit (ai cũng biết
+                trước). Sự kiện rất hiếm (p = 0.001) → surprise ≈ 10 bit (rất bất ngờ).
+              </p>
+              <p className="text-xs text-muted">
+                Lý do dùng log: khi hai sự kiện độc lập xảy ra cùng lúc, surprise của chúng
+                cộng lại. Nếu bạn dùng −p thay cho −log p, hai sự kiện độc lập sẽ nhân chứ không
+                cộng — ít trực quan hơn.
+              </p>
+            </div>,
+            <div
+              key="s2"
+              className="rounded-xl border border-border bg-surface/60 p-4 text-sm text-foreground leading-relaxed"
+            >
+              <p>
+                <strong>Trung bình theo xác suất.</strong> Mỗi sự kiện có surprise riêng. Để
+                có một con số duy nhất cho toàn phân phối, ta nhân surprise của mỗi sự kiện với
+                xác suất của nó, rồi cộng tổng. Đây chính là &quot;giá trị kỳ vọng của
+                surprise&quot; — sự bất ngờ trung bình mà bạn phải chịu khi rút một mẫu.
+              </p>
+            </div>,
+            <div
+              key="s3"
+              className="rounded-xl border border-border bg-surface/60 p-4 text-sm text-foreground leading-relaxed"
+            >
+              <p className="mb-3">
+                <strong>Công thức Shannon:</strong>
+              </p>
+              <div className="rounded-lg bg-surface p-3 text-center font-mono text-sm">
+                H(X) = − Σ p(x) · log₂ p(x)
+              </div>
+              <p className="mt-3">
+                Đơn vị là <strong>bit</strong>. Entropy không âm, đạt cực đại khi phân phối
+                đồng đều, và = 0 khi một sự kiện chắc chắn xảy ra.
+              </p>
+            </div>,
+          ]}
+        </StepReveal>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 5 — AHA ━━━ */}
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Entropy = <strong>độ bất định trung bình</strong>. Cross-Entropy ={" "}
-            <strong>loss function của classification</strong>. KL Divergence ={" "}
-            <strong>độ khác biệt giữa 2 phân phối</strong>. Ba concept này xuất hiện KHẮP NƠI
-            trong ML: decision trees (information gain), neural networks (CE loss), VAE (KL
-            loss), distillation (KL student → teacher). <strong>Information Theory là ngôn
-            ngữ chung của ML hiện đại.</strong>
+            <strong>Entropy = mức bất ngờ trung bình.</strong> Cross-entropy = số bit trung bình
+            khi bạn mã hoá dữ liệu thật <em>bằng mô hình sai</em>. KL divergence = phần &quot;chi
+            phí&quot; dư ra giữa hai con số đó.
+          </p>
+          <p className="mt-2">
+            Vì vậy, khi bạn bấm nút &quot;train&quot; trên một mạng nơ-ron phân loại, bạn đang
+            làm <em>một việc rất đơn giản</em>: thu nhỏ phần chi phí dư — tức là làm xác suất
+            mô hình phát ra tiến về xác suất thật của nhãn.
           </p>
         </AhaMoment>
+      </LessonSection>
 
-        {/* ── Thử thách 1 ─────────────────────────────────────────── */}
+      {/* ━━━ BƯỚC 6 — THỬ THÁCH ━━━ */}
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách">
+        <InlineChallenge
+          question="Xúc xắc 6 mặt công bằng — entropy bao nhiêu bit?"
+          options={[
+            "1 bit",
+            "2 bit",
+            "log₂ 6 ≈ 2,58 bit",
+            "6 bit",
+          ]}
+          correct={2}
+          explanation="Phân phối đều trên n kết quả → entropy đạt cực đại H = log₂ n. Xúc xắc 6 mặt fair → H = log₂ 6 ≈ 2,58 bit. Đây cũng là lý do 'chơi tài xỉu 6 mặt' khó đoán hơn 'chơi đồng xu' (1 bit)."
+        />
+
         <div className="mt-6">
           <InlineChallenge
-            question="Đồng xu công bằng: P(H) = P(T) = 0.5. Đồng xu gian lận: P(H) = 0.9, P(T) = 0.1. Entropy nào cao hơn?"
+            question="Một mô hình phân loại 10 lớp chưa học gì, nên output q gần uniform. Cross-entropy loss trung bình trên mỗi mẫu xấp xỉ bao nhiêu?"
             options={[
-              "Đồng xu công bằng: H = −0.5·log(0.5)·2 = 1 bit (bất định nhất, cao nhất)",
-              "Đồng xu gian lận: bất định hơn vì gần 1 → cao hơn",
-              "Bằng nhau",
+              "≈ 0 bit",
+              "≈ 1 bit",
+              "≈ log₂ 10 ≈ 3,32 bit",
+              "≈ 10 bit",
             ]}
-            correct={0}
-            explanation="Công bằng: H = −0.5·log₂(0.5) − 0.5·log₂(0.5) = 1 bit (maximum entropy cho binary). Gian lận: H = −0.9·log₂(0.9) − 0.1·log₂(0.1) ≈ 0.47 bit (ít bất định vì gần như chắc chắn H). Entropy max khi ĐỒNG ĐỀU (bất định nhất). Max entropy = hardest to predict."
+            correct={2}
+            explanation="Với nhãn one-hot và q uniform trên 10 lớp (mỗi lớp 0.1), CE = −log(0.1) = log 10 ≈ 3,32 bit. Đây là 'baseline ngu' — mô hình chưa học gì nên loss ở ngưỡng này. Khi bắt đầu train, loss phải giảm dưới mức này thì mô hình mới đang học."
           />
         </div>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 4 — THỬ THÁCH 2 + GIẢI THÍCH + TÓM TẮT
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách & Giải thích">
-        <InlineChallenge
-          question="Bạn huấn luyện một bộ phân loại 10 lớp. Trên một mẫu, model dự đoán q = softmax cực kỳ đồng đều (gần 0.1 cho mọi lớp). Nhãn thật là class 3. Cross-entropy loss cho mẫu này xấp xỉ bao nhiêu?"
-          options={[
-            "≈ 0 — vì model không có lỗi rõ ràng",
-            "≈ log₂(10) ≈ 3.32 bit — model hoàn toàn không có thông tin nên loss bằng entropy của uniform",
-            "≈ ∞ vì q quá phẳng",
-          ]}
-          correct={1}
-          explanation="Với one-hot true label, CE loss = −log q[class đúng] = −log(0.1) = log(10) ≈ 2.30 nat ≈ 3.32 bit. Đây là baseline 'ngu nhất an toàn' — mọi model chưa học đều cho loss ở ngưỡng này."
-        />
+      {/* ━━━ BƯỚC 7 — GIẢI THÍCH (LaTeX ≤3) ━━━ */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích">
+        <ExplanationSection topicSlug={metadata.slug}>
+          <p className="leading-relaxed">
+            Dưới đây là ba công thức &quot;nền&quot; — bạn sẽ gặp lại chúng ở{" "}
+            <TopicLink slug="loss-functions">loss functions</TopicLink>, VAE, decision tree, và
+            knowledge distillation. Mỗi công thức đi kèm một hình để bám vào.
+          </p>
 
-        <div className="mt-6">
-          <ExplanationSection topicSlug={metadata.slug}>
-            <p>
-              <strong>Information Theory</strong> (Shannon, 1948) đo lường thông tin và bất định
-              — nền tảng của loss functions và nhiều thuật toán ML, bao gồm{" "}
-              <TopicLink slug="decision-trees">cây quyết định</TopicLink> (dùng information
-              gain) và các mô hình{" "}
-              <TopicLink slug="probability-statistics">xác suất thống kê</TopicLink>. Mục tiêu
-              của phần này là giúp bạn đọc được 3 công thức dưới đây một cách trực giác — chúng
-              xuất hiện liên tục trong mọi bài báo ML.
+          {/* Công thức 1 — Entropy */}
+          <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
+            <p className="mb-2 text-sm font-semibold text-foreground">
+              1) Entropy H(X) — độ bất định trung bình
             </p>
-
-            <p>
-              <strong>Information (self-information):</strong> đo độ bất ngờ của một sự kiện.
+            <LaTeX block>{"H(X) = -\\sum_{x} p(x) \\log_2 p(x)"}</LaTeX>
+            <div className="mt-3 flex justify-center">
+              <EntropyShape />
+            </div>
+            <p className="mt-3 text-xs text-muted leading-relaxed">
+              Lấy −log₂ xác suất của mỗi kết quả (= surprise), nhân với xác suất tương ứng, rồi
+              cộng lại. Đường cong là entropy của đồng xu theo P(ngửa) — đỉnh ở 0.5.
             </p>
-            <LaTeX block>
-              {"I(x) = -\\log_2 P(x) \\quad \\text{(bits — sự kiện hiếm có nhiều thông tin)}"}
-            </LaTeX>
+          </div>
 
-            <p>
-              <strong>Entropy H(X):</strong> giá trị kỳ vọng của self-information trên toàn phân
-              phối — nói cách khác là &quot;độ bất định trung bình&quot;.
+          {/* Công thức 2 — KL divergence */}
+          <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
+            <p className="mb-2 text-sm font-semibold text-foreground">
+              2) KL divergence — độ &quot;lệch&quot; giữa hai phân phối
             </p>
-            <LaTeX block>
-              {"H(X) = -\\sum_{x} P(x) \\log_2 P(x) \\quad \\text{(cao = bất định, thấp = chắc chắn)}"}
-            </LaTeX>
-
-            <p>
-              <strong>Cross-entropy H(p, q):</strong> chi phí trung bình (theo bit) để mã hoá
-              mẫu từ phân phối p bằng mã tối ưu của phân phối q.
+            <LaTeX block>{"D_{KL}(p \\| q) = \\sum_{x} p(x) \\log_2 \\frac{p(x)}{q(x)} \\geq 0"}</LaTeX>
+            <div className="mt-3 flex justify-center">
+              <KLShape />
+            </div>
+            <p className="mt-3 text-xs text-muted leading-relaxed">
+              KL = 0 khi và chỉ khi p = q. <strong>Không đối xứng</strong>: KL(p ‖ q) ≠ KL(q ‖ p).
+              Khi bạn train, p là nhãn thật (one-hot) và q là output softmax — KL đo mô hình
+              lệch bao xa so với sự thật.
             </p>
-            <LaTeX block>
-              {"H(p, q) = -\\sum_{x} p(x) \\log q(x) = H(p) + D_{KL}(p \\| q)"}
-            </LaTeX>
+          </div>
 
-            <p>
-              <strong>KL divergence D<sub>KL</sub>(p ‖ q):</strong> phần chi phí dư so với tối
-              ưu H(p).
+          {/* Công thức 3 — Cross-entropy */}
+          <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
+            <p className="mb-2 text-sm font-semibold text-foreground">
+              3) Cross-entropy H(p, q) — loss function
             </p>
-            <LaTeX block>
-              {"D_{KL}(p \\| q) = \\sum_{x} p(x) \\log \\frac{p(x)}{q(x)} \\geq 0 \\quad \\text{(= 0 iff } p = q)"}
-            </LaTeX>
-
-            <Callout variant="tip" title="Cross-entropy = loss function">
-              Minimize CE H(p, q) = minimize KL(p ‖ q) + H(p). Vì H(p) là hằng số với dữ liệu
-              cho trước → minimize CE tương đương minimize KL = làm q (model) gần p (true) nhất.
-              Đây là lý do CE là default loss cho classification! Kết hợp với{" "}
-              <TopicLink slug="cross-validation">kiểm định chéo</TopicLink> để đánh giá model ổn
-              định hơn.
-            </Callout>
-
-            <Callout variant="insight" title="Trực giác 'coding': vì sao đơn vị là bit?">
-              Shannon chứng minh rằng số bit trung bình ngắn nhất cần dùng để mã hoá một ký tự
-              sinh ra từ phân phối p chính là H(p). Nếu bạn dùng sai bảng mã (của q thay vì p),
-              số bit trung bình thực tế là H(p, q) — và phần phụ trội là KL(p ‖ q). Trong ML,
-              &quot;bảng mã&quot; đồng nghĩa với &quot;mô hình xác suất&quot;, và &quot;phí
-              phạm&quot; chính là &quot;loss&quot;.
-            </Callout>
-
-            <Callout variant="warning" title="KL không đối xứng">
-              KL(p ‖ q) ≠ KL(q ‖ p). Chọn thứ tự có ý nghĩa: KL(p ‖ q) &quot;phạt&quot; nặng các
-              chỗ p có mass mà q gán gần 0 (mode-covering). KL(q ‖ p) &quot;phạt&quot; nặng các
-              chỗ q có mass nhưng p gán gần 0 (mode-seeking). VAE dùng KL(q ‖ p); RL dùng
-              KL(π_old ‖ π_new) — không thể đổi ngẫu nhiên.
-            </Callout>
-
-            <Callout variant="info" title="Jensen–Shannon và đối xứng hoá">
-              Nếu cần một &quot;khoảng cách&quot; đối xứng giữa p và q, hãy dùng Jensen–Shannon
-              divergence: JSD(p, q) = ½KL(p ‖ m) + ½KL(q ‖ m) với m = (p + q)/2. JSD có tính
-              chất đẹp: đối xứng, luôn hữu hạn, và <em>căn bậc hai</em> của JSD là một metric
-              thực sự.
-            </Callout>
-
-            <p>
-              <strong>Ví dụ code — tính entropy, cross-entropy, KL với SciPy:</strong>
+            <LaTeX block>{"H(p, q) = -\\sum_{x} p(x) \\log_2 q(x) = H(p) + D_{KL}(p \\| q)"}</LaTeX>
+            <div className="mt-3 flex justify-center">
+              <CrossEntropyShape />
+            </div>
+            <p className="mt-3 text-xs text-muted leading-relaxed">
+              Vì H(p) không phụ thuộc mô hình, tối thiểu cross-entropy <em>tương đương</em> tối
+              thiểu KL. Khi nhãn là one-hot, công thức rút gọn thành −log q[lớp đúng] — chính là
+              loss cho phân loại ở PyTorch, TensorFlow.
             </p>
-            <CodeBlock language="python" title="info_theory_scipy.py">{`import numpy as np
-from scipy.stats import entropy  # scipy dùng log tự nhiên mặc định
+          </div>
 
-# Entropy (đổi base=2 để ra bit)
-p_fair   = [0.5, 0.5]
-p_biased = [0.9, 0.1]
-print(f"Entropy fair   : {entropy(p_fair,   base=2):.3f} bit")   # 1.000
-print(f"Entropy biased : {entropy(p_biased, base=2):.3f} bit")   # 0.469
+          <Callout variant="tip" title="Trực giác 'bảng mã'">
+            Shannon chứng minh: số bit trung bình ngắn nhất để mã hoá một ký tự sinh ra từ phân
+            phối p chính là H(p). Nếu bạn dùng <em>bảng mã sai</em> (tối ưu cho q thay vì p),
+            số bit trung bình là H(p, q) — luôn lớn hơn hoặc bằng H(p). Phần dư chính là KL(p ‖ q).
+            Trong ML: &quot;bảng mã&quot; = mô hình, &quot;phần dư&quot; = loss.
+          </Callout>
 
-# Cross-entropy (classification loss, one-hot y_true)
-y_true = np.array([1, 0, 0])       # class 0 là đúng
-y_pred = np.array([0.7, 0.2, 0.1]) # model output
-ce = -np.sum(y_true * np.log(y_pred + 1e-12))
-print(f"CE loss: {ce:.4f} nat")    # 0.3567
+          <Callout variant="warning" title="KL không đối xứng">
+            KL(p ‖ q) và KL(q ‖ p) khác nhau về ý nghĩa thực hành. KL(p ‖ q) phạt nặng chỗ p có
+            mass mà q gán gần 0 (&quot;phủ các mode&quot;). KL(q ‖ p) phạt nặng chỗ ngược lại
+            (&quot;săn một mode&quot;). VAE dùng KL(q ‖ p); phần lớn phân loại dùng KL(p ‖ q) =
+            cross-entropy. Nếu cần khoảng cách đối xứng, dùng Jensen–Shannon divergence.
+          </Callout>
 
-# KL divergence — scipy.stats.entropy(p, q) = KL(p || q) (natural log)
-p = np.array([0.4, 0.3, 0.3])
-q = np.array([0.5, 0.3, 0.2])
-kl_nat = entropy(p, q)             # nat
-kl_bit = entropy(p, q, base=2)     # bit
-print(f"KL(p||q) = {kl_nat:.4f} nat = {kl_bit:.4f} bit")
-
-# Ứng dụng 1: data drift detection
-def drift_score(train_hist, prod_hist, eps=1e-12):
-    p = np.asarray(train_hist) + eps
-    q = np.asarray(prod_hist)  + eps
-    p = p / p.sum(); q = q / q.sum()
-    return entropy(p, q, base=2)   # càng lớn → drift càng nhiều
-
-# Ứng dụng 2: VAE loss = reconstruction + KL(q(z|x) || p(z))
-# Với p(z) = N(0, I) và q(z|x) = N(mu, sigma^2):
-def kl_gaussian_standard(mu, logvar):
-    # Công thức đóng cho KL(N(mu, sigma^2) || N(0, 1))
-    return 0.5 * np.sum(mu**2 + np.exp(logvar) - 1 - logvar)`}</CodeBlock>
-
-            <p>
-              <strong>Ví dụ code — tính trực tiếp bằng NumPy thuần (không cần SciPy):</strong>
+          <CollapsibleDetail title="Mutual information — mối liên hệ giữa hai biến">
+            <p className="text-sm leading-relaxed">
+              <strong>I(X; Y) = H(X) − H(X | Y).</strong> Đo lượng thông tin bạn biết thêm về X
+              nếu biết Y. Bằng 0 khi X và Y độc lập. Là nền tảng của contrastive learning
+              (InfoNCE trong CLIP, SimCLR), feature selection, và phân cụm dựa trên thông tin.
             </p>
-            <CodeBlock language="python" title="info_theory_numpy.py">{`import numpy as np
+          </CollapsibleDetail>
 
-EPS = 1e-12
-
-def shannon_entropy(p, base=2):
-    p = np.asarray(p) + EPS
-    return -(p * (np.log(p) / np.log(base))).sum()
-
-def cross_entropy(p, q, base=2):
-    p = np.asarray(p) + EPS
-    q = np.asarray(q) + EPS
-    return -(p * (np.log(q) / np.log(base))).sum()
-
-def kl_divergence(p, q, base=2):
-    p = np.asarray(p) + EPS
-    q = np.asarray(q) + EPS
-    return (p * (np.log(p / q) / np.log(base))).sum()
-
-# Kiểm định tính chất: H(p, q) = H(p) + KL(p || q)
-p = np.array([0.4, 0.3, 0.3])
-q = np.array([0.5, 0.3, 0.2])
-assert np.isclose(
-    cross_entropy(p, q),
-    shannon_entropy(p) + kl_divergence(p, q),
-)
-
-# PyTorch: F.cross_entropy kết hợp log_softmax + NLL đã xử lý ổn định số.
-# Không tự dùng log trên softmax — dễ underflow!`}</CodeBlock>
-
-            <CollapsibleDetail title="Chi tiết nâng cao — nguồn gốc của công thức H">
-              <div className="space-y-3 text-sm text-foreground">
-                <p>
-                  Shannon đặt 3 tiên đề cho hàm đo bất định H của một phân phối rời rạc:
-                </p>
-                <ol className="list-decimal list-inside space-y-1.5 pl-2">
-                  <li>
-                    H liên tục theo các xác suất p_i.
-                  </li>
-                  <li>
-                    Nếu tất cả n sự kiện đồng khả năng, H tăng khi n tăng.
-                  </li>
-                  <li>
-                    Phân rã: khi một sự kiện được chia thành 2 tiểu sự kiện, H tổng bằng tổng
-                    có trọng số của các tiểu H.
-                  </li>
-                </ol>
-                <p>
-                  Shannon chứng minh duy nhất một dạng hàm thoả cả 3 tiên đề (tới hằng số):
-                  H(p) = −K·Σ p_i·log p_i. Chọn K = 1 và base = 2 cho đơn vị bit, ta có entropy
-                  quen thuộc.
-                </p>
-                <p>
-                  Bất đẳng thức Gibbs cho ta KL(p ‖ q) ≥ 0 với đẳng thức khi và chỉ khi p = q —
-                  đây là nền tảng chứng minh rằng minimize CE dẫn đến model đúng (khi đủ dữ
-                  liệu và dung lượng).
-                </p>
+          <div className="my-5 rounded-xl border border-border bg-card p-5">
+            <p className="mb-3 text-sm font-semibold text-foreground">
+              Trực giác &quot;information gain&quot; của cây quyết định
+            </p>
+            <p className="mb-3 text-sm leading-relaxed text-foreground/85">
+              Giả sử bạn đoán liệu một người có đậu phỏng vấn không. Trước khi biết gì, entropy
+              của &quot;đậu/không đậu&quot; trong tập huấn luyện là ~ 1 bit (hai lớp xấp xỉ cân
+              bằng). Sau khi biết thêm đặc trưng &quot;điểm IELTS ≥ 7.0&quot;, phân phối trở nên
+              lệch — entropy điều kiện giảm xuống, ví dụ còn 0,6 bit.
+            </p>
+            <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-center dark:border-blue-800 dark:bg-blue-900/20">
+                <div className="text-[11px] font-semibold text-blue-700 dark:text-blue-300">
+                  H(Y) — trước khi biết
+                </div>
+                <div className="mt-1 font-mono text-lg font-bold text-foreground">1,00 bit</div>
               </div>
-            </CollapsibleDetail>
-
-            <CollapsibleDetail title="So sánh CE với các loss khác (MSE, Hinge)">
-              <div className="space-y-3 text-sm text-foreground">
-                <p>
-                  Khi nào chọn CE, khi nào chọn MSE?
-                </p>
-                <ul className="list-disc list-inside space-y-1.5 pl-2">
-                  <li>
-                    <strong>CE cho classification:</strong> giả định output là xác suất
-                    (softmax/sigmoid). Gradient dạng (q − p) rất &quot;sạch&quot; và không bị
-                    vanish ở vùng q gần 0/1. Đây là lý do cross-entropy được chuẩn hoá cho
-                    NN classification.
-                  </li>
-                  <li>
-                    <strong>MSE cho regression:</strong> giả định noise Gaussian trên output
-                    liên tục. Nếu dùng MSE với softmax cho classification, gradient bị ép nhỏ
-                    khi output sai → training chậm.
-                  </li>
-                  <li>
-                    <strong>Hinge loss (SVM):</strong> không dựa trên xác suất, tối ưu hoá
-                    margin. Không dùng cho probabilistic output.
-                  </li>
-                </ul>
-                <p>
-                  Một cách nhìn: CE = log-likelihood negative của Bernoulli/Categorical. MSE =
-                  log-likelihood negative của Gaussian. Chọn loss = chọn giả định noise của bài
-                  toán.
-                </p>
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
+                <div className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                  H(Y | IELTS)
+                </div>
+                <div className="mt-1 font-mono text-lg font-bold text-foreground">0,60 bit</div>
               </div>
-            </CollapsibleDetail>
-
-            <p>
-              <strong>Ứng dụng trong ML:</strong>
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-center dark:border-amber-800 dark:bg-amber-900/20">
+                <div className="text-[11px] font-semibold text-amber-700 dark:text-amber-300">
+                  Information gain
+                </div>
+                <div className="mt-1 font-mono text-lg font-bold text-foreground">0,40 bit</div>
+              </div>
+            </div>
+            <p className="text-xs text-muted leading-relaxed">
+              Cây quyết định (ID3, C4.5) chọn đặc trưng có <strong>information gain lớn nhất</strong>{" "}
+              làm điểm chia. Đây là một trong những ứng dụng cổ điển và trực quan nhất của entropy
+              trong machine learning — bạn đã nhìn thấy Shannon trong phòng họp rồi.
             </p>
-            <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-              <li>
-                <strong>Loss functions:</strong> CE là loss chuẩn cho classification (cả binary
-                và multi-class). Mọi framework (PyTorch, TF, JAX) đều có implementation ổn định
-                số.
-              </li>
-              <li>
-                <strong>Decision trees:</strong> ID3, C4.5 dùng information gain (giảm entropy
-                sau khi split) để chọn feature quan trọng. Gini impurity là biến thể gần giống.
-              </li>
-              <li>
-                <strong>VAE:</strong> ELBO = reconstruction loss + KL(q(z|x) ‖ p(z)). KL kéo
-                latent về prior, giúp sinh mẫu mượt.
-              </li>
-              <li>
-                <strong>Knowledge distillation:</strong> student network minimize KL(student ‖
-                teacher) trên logits softmax — học cả xác suất sai giúp student tổng quát hoá
-                tốt.
-              </li>
-              <li>
-                <strong>RL / policy gradient:</strong> PPO giới hạn KL giữa policy cũ và mới để
-                tránh update quá mạnh.
-              </li>
-              <li>
-                <strong>Data drift detection:</strong> theo dõi KL(train ‖ production) theo thời
-                gian. Vượt ngưỡng → cảnh báo retrain.
-              </li>
-              <li>
-                <strong>Mutual information:</strong> I(X; Y) = H(X) − H(X|Y) — đo độ liên hệ
-                giữa 2 biến, dùng trong feature selection và representation learning (InfoNCE,
-                MINE).
-              </li>
-              <li>
-                <strong>Compression:</strong> Huffman coding, arithmetic coding — các thuật toán
-                mã hoá không tổn hao đạt tối thiểu H(p) bit/ký tự.
-              </li>
-            </ul>
+          </div>
 
-            <p>
-              <strong>Các lỗi phổ biến cần tránh:</strong>
+          <Callout variant="info" title="Vì sao 'log' xuất hiện khắp nơi trong ML?">
+            Bạn sẽ gặp log trong: cross-entropy loss, KL divergence, log-likelihood, log-odds,
+            log-softmax, PPL (perplexity). Lý do chung: log biến <em>phép nhân xác suất</em>{" "}
+            thành <em>phép cộng</em> — dễ tối ưu, tránh underflow, cộng độc lập giữa các sự kiện
+            độc lập. Mỗi khi thấy log, hãy nhớ: đây là &quot;ngôn ngữ cộng&quot; của xác suất.
+          </Callout>
+
+          <div className="my-5 rounded-xl border border-border bg-card p-5">
+            <p className="mb-3 text-sm font-semibold text-foreground">
+              Ba sai lầm hay gặp khi mới học entropy
             </p>
-            <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-              <li>
-                <strong>Log của 0:</strong> khi q_i = 0 trong khi p_i {">"} 0, CE = ∞. Luôn clamp
-                q ≥ ε nhỏ (ví dụ 1e-7) hoặc dùng log_softmax + NLL thay vì softmax + log.
-              </li>
-              <li>
-                <strong>Nhầm cơ số log:</strong> bit dùng log₂, nat dùng ln. Chuyển đổi: 1 nat ≈
-                1.443 bit. Nếu so kết quả với paper khác, hãy kiểm tra đơn vị.
-              </li>
-              <li>
-                <strong>KL đối xứng hoá ngây thơ:</strong> (KL(p‖q) + KL(q‖p))/2 không phải
-                metric. Dùng JSD nếu cần tính chất đối xứng.
-              </li>
-              <li>
-                <strong>Coi KL như khoảng cách Euclid:</strong> KL không thoả bất đẳng thức tam
-                giác. Không thể dùng KL như một metric không gian.
-              </li>
-              <li>
-                <strong>Label smoothing quá mạnh:</strong> kéo p từ one-hot về gần uniform làm
-                entropy target cao → CE không về 0 dù model đúng 100%. Cần cân đối.
-              </li>
-              <li>
-                <strong>Tính entropy trên xác suất chưa chuẩn hoá:</strong> luôn đảm bảo tổng
-                p_i = 1 trước khi tính.
-              </li>
-              <li>
-                <strong>Confuse entropy với variance:</strong> entropy đo bất định về giá trị
-                xuất hiện, variance đo độ phân tán quanh trung bình. Hai khái niệm khác nhau.
-              </li>
-            </ul>
+            <div className="space-y-3">
+              <div className="rounded-lg border border-red-200 bg-red-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-red-800 dark:bg-red-900/10">
+                <p className="mb-1 text-sm font-semibold text-red-700 dark:text-red-300">
+                  Nhầm &quot;entropy cao&quot; với &quot;data xấu&quot;
+                </p>
+                Entropy cao không phải là tiêu cực. Dữ liệu lý thuyết đa dạng (nhiều kết quả đều
+                nhau) <em>cần</em> entropy cao để mô tả. Ví dụ: ảnh nén sau cùng (JPEG đã nén
+                mạnh) có entropy gần cực đại — nhưng đó là vì đã bỏ hết dư thừa, không phải vì
+                tệ.
+              </div>
+              <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-amber-800 dark:bg-amber-900/10">
+                <p className="mb-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
+                  Nhầm entropy với variance (phương sai)
+                </p>
+                Variance đo độ phân tán quanh trung bình (biến số liên tục). Entropy đo độ bất
+                định (bao nhiêu kết quả có thể). Hai khái niệm khác hẳn nhau — dùng sai sẽ sai
+                toàn bộ phân tích.
+              </div>
+              <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-blue-800 dark:bg-blue-900/10">
+                <p className="mb-1 text-sm font-semibold text-blue-700 dark:text-blue-300">
+                  Quên rằng KL không đối xứng
+                </p>
+                Viết KL(p ‖ q) rồi &quot;dùng lại&quot; cho KL(q ‖ p) — hai giá trị có thể khác
+                xa nhau. Luôn đọc kỹ thứ tự; nếu cần đối xứng, dùng Jensen-Shannon divergence.
+              </div>
+            </div>
+          </div>
 
-            <p>
-              <strong>Checklist nhanh khi debug CE loss:</strong>
+          <div className="my-5 rounded-xl border border-border bg-surface/30 p-5">
+            <p className="mb-3 text-sm font-semibold text-foreground">
+              Đi từ entropy đến mô hình ngôn ngữ (LLM)
             </p>
-            <ol className="list-decimal list-inside space-y-1.5 pl-2 text-sm">
-              <li>
-                In ra q[class đúng] cho 10 mẫu đầu. Nếu toàn gần 0.1 (với 10 class), model chưa
-                học gì — kiểm tra data loader / learning rate.
-              </li>
-              <li>
-                Kiểm tra loss khởi đầu ≈ log(num_classes). Nếu thấp hơn → có thể data leakage.
-              </li>
-              <li>
-                Theo dõi KL giữa predicted distribution và uniform — tăng dần theo epoch là dấu
-                hiệu model &quot;tự tin hơn&quot;.
-              </li>
-              <li>
-                Cẩn thận label smoothing: luôn log cả &quot;CE với smooth label&quot; và &quot;CE
-                với hard label&quot; để tách nhiễu.
-              </li>
-            </ol>
-
-            <Callout variant="tip" title="Mẹo thực dụng">
-              Khi thấy CE loss bỗng bật lên NaN, 90% là do log(0) ở đâu đó trong pipeline. Kiểm
-              tra: (1) softmax có nan không, (2) có clip q vào [ε, 1 − ε] trước log chưa, (3)
-              gradient có bị nổ do learning rate quá lớn không. Dùng torch.autograd.set_detect_anomaly(True)
-              để bắt điểm phát sinh.
-            </Callout>
-
-            <p>
-              <strong>Bảng đổi đơn vị — bit vs nat vs ban/Hartley:</strong>
+            <p className="mb-3 text-sm leading-relaxed text-foreground/85">
+              Mô hình ngôn ngữ dự đoán ký tự (hoặc token) tiếp theo dựa trên các ký tự đã xuất
+              hiện. Chất lượng của mô hình thường được đo bằng <strong>perplexity</strong>:
             </p>
+            <div className="mb-3 rounded-lg bg-card p-3 text-center font-mono text-sm">
+              PPL = 2<sup>H(p, q)</sup>
+            </div>
+            <p className="text-sm leading-relaxed text-foreground/85">
+              Nếu cross-entropy của mô hình trên một đoạn văn bản là 2 bit/token, thì perplexity
+              là 4 — trung bình mô hình &quot;cân đối&quot; giữa 4 token khả dĩ mỗi bước. Càng
+              nhỏ càng giỏi. Các LLM tiếng Anh hiện đại đạt PPL khoảng 10–30 trên văn bản thông
+              thường.
+            </p>
+          </div>
 
-            <div className="overflow-x-auto rounded-lg border border-border">
+          <CollapsibleDetail title="Bit vs nat — đơn vị đo thông tin">
+            <p className="text-sm leading-relaxed">
+              <strong>Bit</strong> dùng log cơ số 2, trực quan cho khoa học máy tính và mã hoá.{" "}
+              <strong>Nat</strong> dùng logarit tự nhiên (ln), mặc định trong giải tích và các thư
+              viện như scipy, torch. Quy đổi: 1 nat ≈ 1.443 bit. Kết quả cross-entropy loss
+              hiển thị ở PyTorch thường tính bằng nat — nếu bạn muốn đọc ra bit, nhân với 1.443.
+            </p>
+          </CollapsibleDetail>
+
+          <p className="leading-relaxed">
+            Entropy xuất hiện ở rất nhiều nơi trong ML:{" "}
+            <TopicLink slug="loss-functions">loss functions</TopicLink>,{" "}
+            <TopicLink slug="vae">VAE</TopicLink>, distillation, decision tree (information
+            gain), và cả trong <TopicLink slug="information-theory-in-compression">nén dữ liệu</TopicLink>{" "}
+            (ZIP, JPEG, H.265). Nó là &quot;ngôn ngữ chung&quot; nối giữa xác suất, thống kê và
+            học máy.
+          </p>
+
+          <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
+            <p className="mb-3 text-sm font-semibold text-foreground">
+              Một bảng nhanh entropy vài nguồn dữ liệu
+            </p>
+            <div className="overflow-x-auto">
               <table className="w-full text-xs">
-                <thead className="bg-surface/40 text-tertiary">
+                <thead className="bg-surface/60 text-tertiary">
                   <tr>
-                    <th className="text-left px-3 py-2 font-medium">Đơn vị</th>
-                    <th className="text-left px-3 py-2 font-medium">Log base</th>
-                    <th className="text-left px-3 py-2 font-medium">Khi nào dùng</th>
-                    <th className="text-left px-3 py-2 font-medium">Quy đổi về bit</th>
+                    <th className="px-3 py-2 text-left font-medium">Nguồn</th>
+                    <th className="px-3 py-2 text-left font-medium">Đặc điểm</th>
+                    <th className="px-3 py-2 text-left font-medium">H xấp xỉ</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="bg-card">
-                    <td className="px-3 py-2 font-semibold text-foreground">bit (shannon)</td>
-                    <td className="px-3 py-2 font-mono">2</td>
-                    <td className="px-3 py-2 text-muted">Trực giác coding, CS, ML</td>
-                    <td className="px-3 py-2 font-mono">× 1</td>
+                    <td className="px-3 py-2 font-semibold text-foreground">Đồng xu công bằng</td>
+                    <td className="px-3 py-2 text-muted">2 kết quả đều nhau</td>
+                    <td className="px-3 py-2 font-mono text-accent">1 bit</td>
                   </tr>
                   <tr className="bg-surface/20">
-                    <td className="px-3 py-2 font-semibold text-foreground">nat</td>
-                    <td className="px-3 py-2 font-mono">e</td>
-                    <td className="px-3 py-2 text-muted">Toán học, giải tích, mặc định của scipy/torch</td>
-                    <td className="px-3 py-2 font-mono">× 1.4427</td>
+                    <td className="px-3 py-2 font-semibold text-foreground">Xúc xắc 6 mặt fair</td>
+                    <td className="px-3 py-2 text-muted">6 kết quả đều nhau</td>
+                    <td className="px-3 py-2 font-mono text-accent">2,58 bit</td>
                   </tr>
                   <tr className="bg-card">
-                    <td className="px-3 py-2 font-semibold text-foreground">ban (hartley)</td>
-                    <td className="px-3 py-2 font-mono">10</td>
-                    <td className="px-3 py-2 text-muted">Tin sinh học, genetics</td>
-                    <td className="px-3 py-2 font-mono">× 3.3219</td>
+                    <td className="px-3 py-2 font-semibold text-foreground">Chữ cái tiếng Anh</td>
+                    <td className="px-3 py-2 text-muted">26 chữ, &apos;e&apos; rất phổ biến</td>
+                    <td className="px-3 py-2 font-mono text-accent">≈ 4,1 bit/chữ</td>
+                  </tr>
+                  <tr className="bg-surface/20">
+                    <td className="px-3 py-2 font-semibold text-foreground">Văn bản tiếng Việt</td>
+                    <td className="px-3 py-2 text-muted">Có dấu — phân phối lệch</td>
+                    <td className="px-3 py-2 font-mono text-accent">≈ 4,7 bit/ký tự</td>
+                  </tr>
+                  <tr className="bg-card">
+                    <td className="px-3 py-2 font-semibold text-foreground">Byte ngẫu nhiên</td>
+                    <td className="px-3 py-2 text-muted">256 giá trị đều nhau</td>
+                    <td className="px-3 py-2 font-mono text-accent">8 bit (tối đa)</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-
-            <p className="mt-4">
-              <strong>Mutual information — mối quan hệ giữa hai biến:</strong>
+            <p className="mt-3 text-xs text-muted leading-relaxed">
+              Văn bản có &quot;dư thừa&quot; lớn: lý thuyết cần 8 bit/ký tự ASCII, nhưng thực tế chỉ
+              cần ~4,7 bit/ký tự tiếng Việt. Đây là lý do ZIP nén văn bản rất tốt — nó chỉ cần
+              &quot;đánh thuế&quot; phần dư thừa đó.
             </p>
-
-            <LaTeX block>
-              {"I(X; Y) = \\sum_{x,y} p(x, y) \\log \\frac{p(x, y)}{p(x) p(y)} = H(X) - H(X \\mid Y)"}
-            </LaTeX>
-
-            <p>
-              Mutual information I(X; Y) đo lượng thông tin mà quan sát Y cho bạn về X (và
-              ngược lại, do đối xứng). Nó bằng 0 iff X và Y độc lập. Đây là khái niệm nền của
-              nhiều kỹ thuật self-supervised learning (InfoNCE trong CLIP, SimCLR, MINE).
-            </p>
-
-            <Callout variant="info" title="Từ CE đến mutual information">
-              Khi train contrastive learning (SimCLR, CLIP), loss InfoNCE là một lower-bound của
-              mutual information giữa positive pair. Tức là model học &quot;biểu diễn càng nhiều
-              thông tin chung giữa 2 view càng tốt&quot;. Information theory xuất hiện ngay cả
-              ở các phương pháp tưởng chừng không liên quan.
-            </Callout>
-
-            <p>
-              <strong>Cheat-sheet các công thức hay dùng:</strong>
-            </p>
-
-            <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-              <li>
-                <code>0 ≤ H(p) ≤ log n</code>, với n là số class.
-              </li>
-              <li>
-                <code>H(p, q) ≥ H(p)</code>, đẳng thức khi p = q.
-              </li>
-              <li>
-                <code>D_KL(p ‖ q) ≥ 0</code>, đẳng thức khi p = q (Gibbs inequality).
-              </li>
-              <li>
-                <code>H(X, Y) = H(X) + H(Y | X) = H(Y) + H(X | Y)</code> (chain rule).
-              </li>
-              <li>
-                <code>I(X; Y) ≥ 0</code>, đẳng thức khi X và Y độc lập.
-              </li>
-              <li>
-                <code>I(X; Y) = H(X) + H(Y) − H(X, Y)</code>.
-              </li>
-              <li>
-                <code>H(p) = E_p[−log p(X)]</code> — entropy là kỳ vọng self-information.
-              </li>
-              <li>
-                <code>D_KL(p ‖ q) = E_p[log p − log q]</code> — KL là kỳ vọng log-ratio.
-              </li>
-            </ul>
-
-            <p>
-              <strong>Câu hỏi thường gặp:</strong>
-            </p>
-
-            <div className="space-y-3 text-sm">
-              <div className="rounded-lg border border-border bg-card p-3">
-                <p className="font-semibold text-foreground mb-1">
-                  Q1: Entropy có luôn dương không? Có thể âm không?
-                </p>
-                <p className="text-muted">
-                  Với phân phối rời rạc, H ≥ 0 luôn luôn (vì p_i ≤ 1 ⇒ log p_i ≤ 0). Với phân
-                  phối liên tục (differential entropy), H có thể âm — ví dụ Gaussian với σ nhỏ.
-                  Điều này là một trong những điểm &quot;bẫy&quot; khi chuyển giữa rời rạc và
-                  liên tục.
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-3">
-                <p className="font-semibold text-foreground mb-1">
-                  Q2: Vì sao KL(p ‖ q) và KL(q ‖ p) khác nhau về ý nghĩa thực hành?
-                </p>
-                <p className="text-muted">
-                  KL(p ‖ q) &quot;mean-seeking&quot; — q phải cover mọi mode của p để tránh phạt
-                  nặng. KL(q ‖ p) &quot;mode-seeking&quot; — q có thể tập trung vào một mode của
-                  p và bỏ qua các mode khác. Khi học biến phân (VAE), đây là quyết định quan
-                  trọng.
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-3">
-                <p className="font-semibold text-foreground mb-1">
-                  Q3: Tại sao PyTorch gọi là <code>CrossEntropyLoss</code> nhưng nhận logits
-                  thô chứ không phải xác suất?
-                </p>
-                <p className="text-muted">
-                  Để đảm bảo ổn định số. <code>F.cross_entropy(logits, target)</code> nội bộ
-                  kết hợp <code>log_softmax + NLLLoss</code> — tránh tính <code>log(softmax(x))</code>
-                  riêng biệt (dễ underflow). Quy tắc: <em>không bao giờ</em> tự apply softmax
-                  trước khi vào cross-entropy trong PyTorch.
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-3">
-                <p className="font-semibold text-foreground mb-1">
-                  Q4: Liệu có thể dùng entropy để phát hiện out-of-distribution không?
-                </p>
-                <p className="text-muted">
-                  Có — nhiều phương pháp OOD detection dùng entropy của predicted softmax như
-                  tín hiệu. Mẫu in-distribution thường cho entropy thấp (model tự tin), OOD cho
-                  entropy cao. Tuy vậy, model neural network thường &quot;tự tin sai&quot; trên
-                  OOD — nên thường kết hợp với temperature scaling hoặc các phương pháp như
-                  energy-based.
-                </p>
-              </div>
-            </div>
-
-            <p className="mt-4">
-              <strong>Đọc thêm:</strong>
-            </p>
-
-            <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-              <li>
-                Cover &amp; Thomas, <em>Elements of Information Theory</em> — sách giáo khoa
-                chuẩn mực, phần 2 (entropy + chain rule) và phần 8 (differential entropy) là
-                cần thiết.
-              </li>
-              <li>
-                MacKay, <em>Information Theory, Inference, and Learning Algorithms</em> — miễn
-                phí online, cầu nối giữa IT và ML, cực kỳ trực quan.
-              </li>
-              <li>
-                Shannon, <em>A Mathematical Theory of Communication</em> (1948) — bản gốc, vẫn
-                rất đáng đọc sau 75 năm.
-              </li>
-              <li>
-                <TopicLink slug="loss-functions">Loss functions</TopicLink> — xem cách CE hoạt
-                động trong thực hành.
-              </li>
-              <li>
-                <TopicLink slug="vae">VAE</TopicLink> — xem KL divergence xuất hiện như một
-                regularizer.
-              </li>
-            </ul>
-          </ExplanationSection>
-        </div>
+          </div>
+        </ExplanationSection>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 5 — TÓM TẮT + QUIZ
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Tóm tắt & Kiểm tra">
+      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt & Kiểm tra">
         <MiniSummary
+          title="5 điều cần nhớ"
           points={[
-            "Information I(x) = −log P(x): sự kiện hiếm = nhiều thông tin; sự kiện chắc chắn = 0 thông tin.",
-            "Entropy H(X) = độ bất định trung bình. Max khi đồng đều. Decision tree dùng information gain.",
-            "Cross-entropy H(p, q) = loss function cho classification. Minimize CE = làm model gần true distribution.",
-            "KL(p ‖ q) ≥ 0, = 0 iff p = q. Không đối xứng. Dùng trong VAE, distillation, drift detection.",
-            "Đẳng thức then chốt: H(p, q) = H(p) + KL(p ‖ q). Training chỉ giảm KL — H(p) là bất biến.",
-            "Information Theory là ngôn ngữ chung của ML: loss functions, decision trees, compression, coding.",
+            "Surprise của một sự kiện = −log₂ p — càng hiếm càng bất ngờ.",
+            "Entropy H(X) là surprise trung bình. Max khi phân phối đồng đều, = 0 khi chắc chắn.",
+            "Cross-entropy H(p, q) = loss function cho phân loại — tối thiểu CE = tối thiểu KL.",
+            "KL(p ‖ q) ≥ 0, = 0 khi p = q. Không đối xứng — chọn thứ tự có chủ đích.",
+            "Bit và nat chỉ khác nhau về cơ số logarit — kết quả lý thuyết giống nhau.",
           ]}
         />
 
+        <div className="mt-6 rounded-xl border border-border bg-card p-4 text-sm text-foreground/85 leading-relaxed">
+          <p>
+            <strong>Xem ứng dụng thực tế:</strong>{" "}
+            <TopicLink slug="information-theory-in-compression">
+              Entropy trong nén file (ZIP, JPEG, H.265)
+            </TopicLink>{" "}
+            — cách Shannon đặt giới hạn lý thuyết cho mọi thuật toán nén, và Huffman gán mã
+            ngắn cho ký tự phổ biến.
+          </p>
+        </div>
+
         <QuizSection questions={quizQuestions} />
+        <div className="mt-4 flex items-center justify-center">
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs text-muted hover:text-foreground"
+            onClick={() => window.location.reload()}
+          >
+            <RotateCcw size={12} /> Tải lại trang để làm lại từ đầu
+          </button>
+        </div>
       </LessonSection>
     </>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SUB-COMPONENTS — nhỏ, cục bộ
-// ─────────────────────────────────────────────────────────────────────────────
-
-function StatCard({
-  label,
-  value,
-  unit,
-  hint,
-}: {
-  label: string;
-  value: string;
-  unit: string;
-  hint: string;
-}) {
-  return (
-    <div className="rounded-lg border border-border bg-card p-3">
-      <div className="flex items-baseline justify-between">
-        <span className="text-xs font-semibold text-muted">{label}</span>
-        <span className="text-xs text-tertiary">{unit}</span>
-      </div>
-      <div className="mt-1 text-xl font-bold text-foreground font-mono">{value}</div>
-      <div className="mt-1 text-[11px] text-muted">{hint}</div>
-    </div>
-  );
-}
-
-function DistributionEditor({
-  title,
-  subtitle,
-  probs,
-  onChange,
-  presets,
-  onPreset,
-  H,
-  Hmax,
-}: {
-  title: string;
-  subtitle: string;
-  probs: number[];
-  onChange: (i: number, value: number) => void;
-  presets: Preset[];
-  onPreset: (p: Preset) => void;
-  H: number;
-  Hmax: number;
-}) {
-  return (
-    <div className="rounded-lg border border-border bg-card p-4">
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <h4 className="text-sm font-semibold text-foreground">{title}</h4>
-          <p className="text-[11px] text-muted">{subtitle}</p>
-        </div>
-        <div className="text-right">
-          <div className="text-xs text-muted">H</div>
-          <div className="text-sm font-mono font-bold text-accent">{fmt(H)}</div>
-        </div>
-      </div>
-
-      {/* Bars + sliders */}
-      <div className="space-y-2 mb-4">
-        {probs.map((pi, i) => (
-          <div key={i} className="space-y-1">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="font-semibold text-foreground">
-                Lớp {CLASS_LABELS[i]}
-              </span>
-              <span className="font-mono text-muted">{fmt(pi)}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 h-4 rounded-full bg-surface overflow-hidden">
-                <motion.div
-                  className={`h-full ${CLASS_COLORS[i]}`}
-                  animate={{ width: `${pi * 100}%` }}
-                  transition={{ duration: 0.15 }}
-                />
-              </div>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={pi}
-              onChange={(e) => onChange(i, parseFloat(e.target.value))}
-              className="w-full accent-accent"
-              aria-label={`Xác suất lớp ${CLASS_LABELS[i]}`}
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Preset buttons */}
-      <div>
-        <p className="text-[11px] text-muted mb-2">Preset nhanh:</p>
-        <div className="flex flex-wrap gap-1.5">
-          {presets.map((pr) => (
-            <button
-              key={pr.id}
-              type="button"
-              onClick={() => onPreset(pr)}
-              className="rounded border border-border bg-surface/40 px-2 py-1 text-[11px] text-muted hover:text-foreground hover:border-accent/40 transition-colors"
-              title={pr.note}
-            >
-              {pr.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Mini indicator — H / Hmax */}
-      <div className="mt-3 pt-3 border-t border-border">
-        <div className="flex items-center justify-between text-[11px] text-muted">
-          <span>H / H_max</span>
-          <span className="font-mono">
-            {fmt(H)} / {fmt(Hmax)}
-          </span>
-        </div>
-        <div className="mt-1 h-1.5 w-full rounded-full bg-surface overflow-hidden">
-          <motion.div
-            className="h-full rounded-full bg-accent"
-            animate={{ width: `${Math.min(100, (H / Hmax) * 100)}%` }}
-            transition={{ duration: 0.15 }}
-          />
-        </div>
-      </div>
-    </div>
   );
 }

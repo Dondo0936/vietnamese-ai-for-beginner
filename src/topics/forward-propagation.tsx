@@ -1,7 +1,18 @@
 "use client";
 
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  StepForward,
+  MessageSquare,
+  Network,
+  Cpu,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -9,11 +20,10 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
+  CollapsibleDetail,
   LaTeX,
   TopicLink,
-  CollapsibleDetail,
-  ProgressSteps,
+  StepReveal,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -21,15 +31,16 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-/* ======================================================================== */
-/*  METADATA                                                                 */
-/* ======================================================================== */
+/* ═══════════════════════════════════════════════════════════════════
+   METADATA
+   ═══════════════════════════════════════════════════════════════════ */
+
 export const metadata: TopicMeta = {
   slug: "forward-propagation",
   title: "Forward Propagation",
-  titleVi: "Lan truyền tiến",
+  titleVi: "Lan truyền thuận",
   description:
-    "Quá trình dữ liệu đi từ đầu vào qua các lớp để tạo ra dự đoán đầu ra.",
+    "Dữ liệu đi qua mạng như tin nhắn qua các trạm — mỗi trạm xử lý rồi chuyển cho trạm sau.",
   category: "neural-fundamentals",
   tags: ["neural-network", "training", "fundamentals"],
   difficulty: "beginner",
@@ -42,1518 +53,1247 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-/* ======================================================================== */
-/*  MATH HELPERS                                                             */
-/* ======================================================================== */
-function sigmoid(x: number) {
-  return 1 / (1 + Math.exp(-x));
-}
-function relu(x: number) {
+/* ═══════════════════════════════════════════════════════════════════
+   MÔ HÌNH 3 LỚP: input(3) → hidden(4) → output(3)
+   Trọng số và bias cố định, dùng cho mọi phần minh hoạ.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const W1: number[][] = [
+  [0.6, -0.4, 0.3, 0.8],
+  [-0.5, 0.7, 0.9, -0.2],
+  [0.2, 0.5, -0.6, 0.4],
+];
+const B1: number[] = [0.1, -0.2, 0.15, -0.05];
+
+const W2: number[][] = [
+  [0.7, -0.3, 0.5],
+  [-0.4, 0.8, 0.2],
+  [0.6, 0.1, -0.5],
+  [-0.2, 0.4, 0.9],
+];
+const B2: number[] = [0.05, 0.1, -0.15];
+
+function relu(x: number): number {
   return Math.max(0, x);
 }
-function tanh(x: number) {
-  return Math.tanh(x);
-}
-function leakyRelu(x: number, alpha = 0.01) {
-  return x >= 0 ? x : alpha * x;
-}
 
-/* Activation registry for the "activation hook points" feature */
-type ActivationName = "relu" | "sigmoid" | "tanh" | "leakyRelu";
-const ACTIVATIONS: Record<
-  ActivationName,
-  { fn: (x: number) => number; label: string; formula: string }
-> = {
-  relu: { fn: relu, label: "ReLU", formula: "max(0, z)" },
-  sigmoid: { fn: sigmoid, label: "Sigmoid", formula: "1 / (1 + e^{-z})" },
-  tanh: { fn: tanh, label: "Tanh", formula: "tanh(z)" },
-  leakyRelu: { fn: (x) => leakyRelu(x), label: "Leaky ReLU", formula: "max(0.01z, z)" },
-};
-
-/* ======================================================================== */
-/*  CORE NETWORK (original 2-2-1 diagram — PRESERVED)                        */
-/* ======================================================================== */
-const W1 = [
-  [0.3, 0.7],
-  [0.5, -0.4],
-]; // 2x2
-const B1 = [0.1, -0.2];
-const W2 = [0.6, -0.3];
-const B2 = 0.15;
-
-interface ForwardState {
-  x: [number, number];
-  z1: [number, number];
-  a1: [number, number];
-  z2: number;
-  a2: number;
+function softmax(z: number[]): number[] {
+  const m = Math.max(...z);
+  const exps = z.map((v) => Math.exp(v - m));
+  const s = exps.reduce((a, b) => a + b, 0);
+  return exps.map((v) => v / s);
 }
 
-function forwardPass(
-  x1: number,
-  x2: number,
-  activation: ActivationName = "relu"
-): ForwardState {
-  const f = ACTIVATIONS[activation].fn;
-  const x: [number, number] = [x1, x2];
-  const z1: [number, number] = [
-    W1[0][0] * x1 + W1[1][0] * x2 + B1[0],
-    W1[0][1] * x1 + W1[1][1] * x2 + B1[1],
-  ];
-  const a1: [number, number] = [f(z1[0]), f(z1[1])];
-  const z2 = W2[0] * a1[0] + W2[1] * a1[1] + B2;
-  const a2 = sigmoid(z2);
-  return { x, z1, a1, z2, a2 };
+interface LayerSnapshot {
+  x: number[];
+  z1: number[];
+  a1: number[];
+  z2: number[];
+  a2: number[]; // softmax output
+  prediction: number; // argmax
+  labels: readonly string[];
 }
 
-/* SVG geometry for the original 2-2-1 diagram */
-const SVG_W = 540;
-const SVG_H = 300;
+const CLASS_LABELS = ["Mèo", "Chó", "Chim"] as const;
 
-const NODES = {
-  x1: { x: 60, y: 100 },
-  x2: { x: 60, y: 200 },
-  h1: { x: 230, y: 100 },
-  h2: { x: 230, y: 200 },
-  out: { x: 420, y: 150 },
-};
-
-const CONNECTIONS = [
-  { from: "x1", to: "h1", w: W1[0][0] },
-  { from: "x1", to: "h2", w: W1[0][1] },
-  { from: "x2", to: "h1", w: W1[1][0] },
-  { from: "x2", to: "h2", w: W1[1][1] },
-  { from: "h1", to: "out", w: W2[0] },
-  { from: "h2", to: "out", w: W2[1] },
-] as const;
-
-/* ======================================================================== */
-/*  MULTI-LAYER NETWORK (4-layer animation)                                  */
-/* ======================================================================== */
-interface LayerDef {
-  label: string;
-  size: number;
-  activation: ActivationName | "linear";
-}
-const DEEP_LAYERS: LayerDef[] = [
-  { label: "Input", size: 3, activation: "linear" },
-  { label: "Hidden 1", size: 4, activation: "relu" },
-  { label: "Hidden 2", size: 4, activation: "relu" },
-  { label: "Hidden 3", size: 3, activation: "relu" },
-  { label: "Output", size: 2, activation: "sigmoid" },
-];
-
-/* Pre-initialised pseudo-random weights (deterministic, derived from indices). */
-function deepWeight(l: number, i: number, j: number): number {
-  const raw = Math.sin(l * 91.3 + i * 12.7 + j * 5.1) * 10000;
-  return (raw - Math.floor(raw)) * 2 - 1; // in [-1, 1]
-}
-function deepBias(l: number, j: number): number {
-  const raw = Math.sin(l * 33.1 + j * 7.2) * 10000;
-  return (raw - Math.floor(raw)) * 0.6 - 0.3; // in [-0.3, 0.3]
-}
-
-/* Run a full forward pass through the deep network and return every activation. */
-function deepForward(input: number[]): number[][] {
-  const activations: number[][] = [input.slice()];
-  for (let l = 1; l < DEEP_LAYERS.length; l++) {
-    const prev = activations[l - 1];
-    const layer = DEEP_LAYERS[l];
-    const out: number[] = [];
-    for (let j = 0; j < layer.size; j++) {
-      let z = deepBias(l, j);
-      for (let i = 0; i < prev.length; i++) {
-        z += deepWeight(l, i, j) * prev[i];
-      }
-      if (layer.activation === "linear") {
-        out.push(z);
-      } else {
-        out.push(ACTIVATIONS[layer.activation as ActivationName].fn(z));
-      }
-    }
-    activations.push(out);
+function forward(x: number[]): LayerSnapshot {
+  const z1 = B1.map((b, j) => {
+    let s = b;
+    for (let i = 0; i < x.length; i++) s += W1[i][j] * x[i];
+    return s;
+  });
+  const a1 = z1.map(relu);
+  const z2 = B2.map((b, k) => {
+    let s = b;
+    for (let j = 0; j < a1.length; j++) s += W2[j][k] * a1[j];
+    return s;
+  });
+  const a2 = softmax(z2);
+  let prediction = 0;
+  for (let i = 1; i < a2.length; i++) {
+    if (a2[i] > a2[prediction]) prediction = i;
   }
-  return activations;
+  return { x, z1, a1, z2, a2, prediction, labels: CLASS_LABELS };
 }
 
-/* ======================================================================== */
-/*  PRE-TRAINED WEIGHT COMPARISON                                            */
-/* ======================================================================== */
-/** "Random init" vs "Trained" — shows how W matures during training. */
-const RANDOM_W = [
-  [0.12, -0.85],
-  [0.33, 0.47],
-];
-const TRAINED_W = [
-  [1.92, -0.31],
-  [-0.18, 2.05],
-];
-const RANDOM_B = [0.01, -0.02];
-const TRAINED_B = [0.43, -0.67];
+/* ═══════════════════════════════════════════════════════════════════
+   HÌNH HỌC SVG — dùng chung cho bức vẽ "mạng 3 lớp"
+   ═══════════════════════════════════════════════════════════════════ */
 
-function miniForward(
-  x: [number, number],
-  W: number[][],
-  b: number[]
-): { z: number[]; a: number[] } {
-  const z = [W[0][0] * x[0] + W[1][0] * x[1] + b[0], W[0][1] * x[0] + W[1][1] * x[1] + b[1]];
-  const a = z.map(relu);
-  return { z, a };
+const SVG_W = 720;
+const SVG_H = 360;
+
+function layerX(layer: 0 | 1 | 2): number {
+  return [90, 360, 630][layer];
 }
 
-/* ======================================================================== */
-/*  MAIN COMPONENT                                                           */
-/* ======================================================================== */
-export default function ForwardPropagationTopic() {
-  /* ----- ORIGINAL 2-2-1 INTERACTIVE STATE (PRESERVED) ----- */
-  const [x1, setX1] = useState(0.5);
-  const [x2, setX2] = useState(0.8);
-  const [step, setStep] = useState(-1);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [activation, setActivation] = useState<ActivationName>("relu");
+function nodeY(index: number, layerSize: number): number {
+  const top = 60;
+  const bottom = SVG_H - 60;
+  const usable = bottom - top;
+  if (layerSize === 1) return (top + bottom) / 2;
+  return top + (index * usable) / (layerSize - 1);
+}
 
-  const state = useMemo(
-    () => forwardPass(x1, x2, activation),
-    [x1, x2, activation]
-  );
+const INPUT_LABELS = ["Tai", "Lông", "Đuôi"] as const;
 
-  const stepLabels = [
-    "Đầu vào",
-    `Nhân trọng số + bias → z`,
-    `Hàm kích hoạt ${ACTIVATIONS[activation].label} → a`,
-    "Nhân trọng số + bias → z₂",
-    "Sigmoid → đầu ra",
-  ];
+/* ═══════════════════════════════════════════════════════════════════
+   QUIZ
+   ═══════════════════════════════════════════════════════════════════ */
 
-  const stepDetails = useMemo(
-    () => [
-      `x = [${x1.toFixed(2)}, ${x2.toFixed(2)}]`,
-      `z₁ = ${W1[0][0]}×${x1.toFixed(2)} + ${W1[1][0]}×${x2.toFixed(2)} + ${B1[0]} = ${state.z1[0].toFixed(3)}  |  z₂ = ${W1[0][1]}×${x1.toFixed(2)} + ${W1[1][1]}×${x2.toFixed(2)} + (${B1[1]}) = ${state.z1[1].toFixed(3)}`,
-      `a₁ = ${ACTIVATIONS[activation].label}(${state.z1[0].toFixed(3)}) = ${state.a1[0].toFixed(3)}  |  a₂ = ${ACTIVATIONS[activation].label}(${state.z1[1].toFixed(3)}) = ${state.a1[1].toFixed(3)}`,
-      `z = ${W2[0]}×${state.a1[0].toFixed(3)} + (${W2[1]})×${state.a1[1].toFixed(3)} + ${B2} = ${state.z2.toFixed(3)}`,
-      `ŷ = sigmoid(${state.z2.toFixed(3)}) = ${state.a2.toFixed(4)}`,
+const quizQuestions: QuizQuestion[] = [
+  {
+    question:
+      "Lan truyền thuận đi theo chiều nào trong mạng nơ-ron?",
+    options: [
+      "Từ đầu ra quay ngược lại đầu vào",
+      "Một chiều từ đầu vào qua các lớp ẩn đến đầu ra",
+      "Ngẫu nhiên giữa các lớp",
+      "Chỉ tính ở lớp cuối cùng",
     ],
-    [x1, x2, state, activation]
+    correct: 1,
+    explanation:
+      "Lan truyền thuận (forward propagation) luôn đi một chiều: đầu vào đi qua từng lớp ẩn theo thứ tự rồi mới tới lớp đầu ra. Chiều ngược lại là lan truyền ngược (backpropagation), chỉ dùng khi huấn luyện.",
+  },
+  {
+    question:
+      "Tại mỗi nơ-ron, phép tính nào xảy ra TRƯỚC?",
+    options: [
+      "Hàm kích hoạt a = f(z)",
+      "Tổ hợp có trọng số z = W·a + b",
+      "So sánh với nhãn thực tế",
+      "Cập nhật trọng số",
+    ],
+    correct: 1,
+    explanation:
+      "Mỗi nơ-ron luôn tính z = W·a + b (bước tuyến tính) trước, rồi mới áp dụng hàm kích hoạt f(z) để tạo giá trị a truyền sang lớp sau.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Ở lớp cuối để phân loại ba lớp, ta thường dùng hàm {blank} để biến các điểm z thành xác suất cộng lại bằng 1.",
+    blanks: [
+      {
+        answer: "softmax",
+        accept: ["Softmax", "soft-max", "hàm softmax"],
+      },
+    ],
+    explanation:
+      "Softmax nén một vector số thực thành phân phối xác suất (mỗi phần tử ≥ 0, tổng = 1). Đây là lý do đầu ra của mô hình phân loại thường là vector xác suất các lớp.",
+  },
+  {
+    question:
+      "Mạng nhận đầu vào x = [1, 0, 0] và trả về xác suất [0.7, 0.2, 0.1] cho ba lớp [Mèo, Chó, Chim]. Mạng dự đoán lớp nào?",
+    options: [
+      "Chó (vì 0.2 ở giữa)",
+      "Chim (vì đứng cuối cùng)",
+      "Mèo (lớp có xác suất cao nhất)",
+      "Không đủ dữ kiện",
+    ],
+    correct: 2,
+    explanation:
+      "Dự đoán = lớp có xác suất lớn nhất (argmax). Mèo có 0.7 → cao nhất → mạng dự đoán Mèo. Các giá trị còn lại cho biết mức độ không chắc chắn.",
+  },
+  {
+    question:
+      "Vai trò của hàm kích hoạt (ReLU, sigmoid, tanh...) trong lan truyền thuận là gì?",
+    options: [
+      "Tăng tốc độ tính toán của GPU",
+      "Thêm tính phi tuyến để mạng học được các quan hệ phức tạp",
+      "Giảm kích thước vector",
+      "Biến đầu vào thành số nguyên",
+    ],
+    correct: 1,
+    explanation:
+      "Nếu bỏ hàm kích hoạt, nhiều lớp chồng lên nhau chỉ tương đương một phép biến đổi tuyến tính duy nhất. Hàm kích hoạt bẻ cong đường thẳng thành đường cong → mạng mới học được ranh giới quyết định phi tuyến.",
+  },
+  {
+    question:
+      "Khi giá trị đầu vào x thay đổi, điều gì xảy ra trong lan truyền thuận?",
+    options: [
+      "Trọng số W cũng thay đổi theo",
+      "Mạng tính lại toàn bộ z và a cho mỗi lớp, giữ nguyên W và b",
+      "Chỉ lớp cuối được tính lại",
+      "Mạng báo lỗi",
+    ],
+    correct: 1,
+    explanation:
+      "Trong lan truyền thuận, W và b cố định (chúng chỉ đổi khi huấn luyện). Khi x đổi, mạng tính lại toàn bộ các giá trị trung gian z và a cho mọi lớp rồi mới ra đầu ra mới.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Công thức của một lớp trong lan truyền thuận: z = W·a + {blank}, rồi a_mới = f(z).",
+    blanks: [
+      { answer: "b", accept: ["bias", "B", "b_l", "b[l]"] },
+    ],
+    explanation:
+      "b là bias — một hằng số cộng thêm cho mỗi nơ-ron, giúp mạng dịch chuyển đường kích hoạt lên xuống mà không phụ thuộc vào đầu vào.",
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+   THÀNH PHẦN PHỤ: số nhỏ hiển thị dưới nơ-ron
+   ═══════════════════════════════════════════════════════════════════ */
+
+interface NodeProps {
+  cx: number;
+  cy: number;
+  value: number;
+  label?: string;
+  active: boolean;
+  color: string;
+  highlight?: boolean;
+}
+
+function NetworkNode({
+  cx,
+  cy,
+  value,
+  label,
+  active,
+  color,
+  highlight,
+}: NodeProps) {
+  return (
+    <g>
+      <motion.circle
+        cx={cx}
+        cy={cy}
+        r={20}
+        fill={active ? color : "#1e293b"}
+        stroke={highlight ? "#fbbf24" : active ? color : "#475569"}
+        strokeWidth={highlight ? 3 : 2}
+        initial={false}
+        animate={{
+          fill: active ? color : "#1e293b",
+          scale: highlight ? 1.12 : 1,
+        }}
+        transition={{ duration: 0.35 }}
+      />
+      <text
+        x={cx}
+        y={cy + 4}
+        textAnchor="middle"
+        fill={active ? "#ffffff" : "#94a3b8"}
+        fontSize={11}
+        fontWeight={700}
+        className="pointer-events-none select-none"
+      >
+        {active ? value.toFixed(2) : "?"}
+      </text>
+      {label && (
+        <text
+          x={cx}
+          y={cy - 30}
+          textAnchor="middle"
+          fill="#94a3b8"
+          fontSize={10}
+          fontWeight={600}
+        >
+          {label}
+        </text>
+      )}
+    </g>
   );
+}
 
-  const runAnimation = useCallback(() => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setStep(0);
-    let s = 0;
-    const interval = setInterval(() => {
-      s++;
-      if (s >= 5) {
-        clearInterval(interval);
-        setIsAnimating(false);
-        return;
-      }
-      setStep(s);
-    }, 1200);
-  }, [isAnimating]);
+/* ═══════════════════════════════════════════════════════════════════
+   COMPONENT CHÍNH
+   ═══════════════════════════════════════════════════════════════════ */
 
-  const reset = useCallback(() => {
-    setStep(-1);
-    setIsAnimating(false);
-  }, []);
+export default function ForwardPropagationTopic() {
+  /* ── Đầu vào động qua 3 thanh trượt ── */
+  const [input, setInput] = useState<number[]>([0.8, 0.6, 0.3]);
 
-  /* ----- MATRIX VISUALIZATION STATE ----- */
-  const [matrixStep, setMatrixStep] = useState(0);
-  const matrixStepTotal = 6;
+  /* ── Điều khiển Play / Step / Pause / Reset ── */
+  const TOTAL_STEPS = 4; // 0: chưa có; 1: x vào; 2: lớp ẩn; 3: đầu ra thô; 4: softmax
+  const [step, setStep] = useState<number>(0);
+  const [playing, setPlaying] = useState<boolean>(false);
 
-  /* ----- MULTI-LAYER ANIMATION STATE ----- */
-  const [deepInput, setDeepInput] = useState<number[]>([0.6, -0.4, 0.9]);
-  const [deepLayer, setDeepLayer] = useState(0); // active layer index
-  const [deepPlaying, setDeepPlaying] = useState(false);
-
-  const deepActivations = useMemo(() => deepForward(deepInput), [deepInput]);
+  const snapshot = useMemo(() => forward(input), [input]);
 
   useEffect(() => {
-    if (!deepPlaying) return;
-    if (deepLayer >= DEEP_LAYERS.length - 1) {
-      setDeepPlaying(false);
+    if (!playing) return;
+    if (step >= TOTAL_STEPS) {
+      setPlaying(false);
       return;
     }
-    const t = setTimeout(() => setDeepLayer((l) => l + 1), 900);
-    return () => clearTimeout(t);
-  }, [deepPlaying, deepLayer]);
+    const id = setTimeout(() => setStep((s) => s + 1), 1100);
+    return () => clearTimeout(id);
+  }, [playing, step]);
 
-  const resetDeep = useCallback(() => {
-    setDeepLayer(0);
-    setDeepPlaying(false);
+  const handlePlay = useCallback(() => {
+    if (step >= TOTAL_STEPS) setStep(0);
+    setPlaying(true);
+  }, [step]);
+
+  const handlePause = useCallback(() => setPlaying(false), []);
+  const handleReset = useCallback(() => {
+    setPlaying(false);
+    setStep(0);
+  }, []);
+  const handleStep = useCallback(() => {
+    setPlaying(false);
+    setStep((s) => Math.min(s + 1, TOTAL_STEPS));
   }, []);
 
-  /* ----- PRE-TRAINED COMPARISON STATE ----- */
-  const [cmpX, setCmpX] = useState<[number, number]>([0.8, 0.2]);
-  const randomOut = useMemo(() => miniForward(cmpX, RANDOM_W, RANDOM_B), [cmpX]);
-  const trainedOut = useMemo(() => miniForward(cmpX, TRAINED_W, TRAINED_B), [cmpX]);
+  /* ── Khi slider đổi → reset bước hoạt hình để không lệch ── */
+  const updateInput = useCallback((index: number, value: number) => {
+    setInput((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+    setStep(0);
+    setPlaying(false);
+  }, []);
 
-  /* ----- QUIZ ----- */
-  const quizQuestions: QuizQuestion[] = [
-    {
-      question:
-        "Trong forward propagation, phép tính nào xảy ra ĐẦU TIÊN tại mỗi nơ-ron?",
-      options: [
-        "Áp dụng hàm kích hoạt",
-        "Tính tổ hợp tuyến tính: z = W·x + b",
-        "Tính gradient",
-        "So sánh với nhãn thực tế",
-      ],
-      correct: 1,
-      explanation:
-        "Mỗi nơ-ron luôn tính z = W·x + b trước, rồi mới áp dụng hàm kích hoạt a = f(z). Gradient chỉ tính trong backpropagation.",
-    },
-    {
-      question: "Forward propagation có cần tính gradient không?",
-      options: [
-        "Có — gradient cần cho mọi phép tính",
-        "Không — forward pass chỉ tính đầu ra, gradient tính ở backpropagation",
-        "Chỉ khi huấn luyện",
-        "Chỉ ở lớp đầu ra",
-      ],
-      correct: 1,
-      explanation:
-        "Forward pass chỉ lan truyền dữ liệu từ trái sang phải. Gradient tính ở bước riêng (backpropagation). Khi inference, hoàn toàn không cần gradient → nhanh hơn.",
-    },
-    {
-      question:
-        "Nếu đầu ra sigmoid = 0.82, điều này nghĩa là gì trong phân loại nhị phân?",
-      options: [
-        "Mô hình chắc chắn 82% rằng mẫu thuộc lớp dương",
-        "Loss = 0.82",
-        "Mô hình cần huấn luyện thêm 82 epoch",
-        "Trọng số trung bình = 0.82",
-      ],
-      correct: 0,
-      explanation:
-        "Sigmoid nén đầu ra về (0,1), biểu diễn xác suất. Giá trị 0.82 nghĩa là mô hình dự đoán 82% khả năng mẫu thuộc lớp dương (positive class).",
-    },
-    {
-      type: "fill-blank",
-      question:
-        "Trong forward propagation, tại mỗi lớp có hai bước: đầu tiên tính z = W·a + b (biến đổi tuyến tính), sau đó tính a = {blank}(z) để thêm tính phi tuyến.",
-      blanks: [
-        {
-          answer: "f",
-          accept: ["activation", "hàm kích hoạt", "relu", "sigmoid"],
-        },
-      ],
-      explanation:
-        "Hàm kích hoạt f(z) là bước thứ hai tại mỗi lớp, biến đổi tổng có trọng số z thành giá trị kích hoạt a. Không có bước này, toàn bộ mạng dù nhiều lớp cũng chỉ là một phép biến đổi tuyến tính.",
-    },
-    {
-      question:
-        "Khi thực hiện forward pass trên batch 32 mẫu với mạng 3 lớp, ma trận trọng số W của mỗi lớp có thay đổi giữa các mẫu không?",
-      options: [
-        "Có — mỗi mẫu có bộ trọng số riêng",
-        "Không — W dùng chung cho cả batch, chỉ đầu vào x khác nhau",
-        "Thay đổi nếu dùng ReLU, không thay đổi nếu dùng sigmoid",
-        "Thay đổi theo thứ tự mẫu trong batch",
-      ],
-      correct: 1,
-      explanation:
-        "Trọng số W và bias b được chia sẻ cho mọi mẫu trong batch — đây chính là lý do có thể xếp các mẫu thành ma trận X ∈ ℝ^(32×d) và tính Z = X·W + b cùng lúc (vectorization). Mỗi hàng của Z là kết quả cho một mẫu.",
-    },
-    {
-      question:
-        "Mạng có 5 lớp, bạn bỏ TOÀN BỘ hàm kích hoạt (giữ lại phép nhân ma trận). Mạng tương đương với gì?",
-      options: [
-        "Một mạng 5 lớp mạnh hơn",
-        "Một hàm phi tuyến phức tạp",
-        "Một phép biến đổi tuyến tính duy nhất (tương đương 1 lớp)",
-        "Mạng không thể chạy",
-      ],
-      correct: 2,
-      explanation:
-        "Nhân nhiều ma trận tuyến tính lại với nhau vẫn cho ra một ma trận tuyến tính: W₅·W₄·W₃·W₂·W₁ = W_tổng. Không có hàm kích hoạt phi tuyến thì độ sâu mất tác dụng — đó là lý do ReLU/sigmoid tồn tại.",
-    },
-    {
-      question:
-        "Trong inference (suy luận) với PyTorch, tại sao nên bọc forward pass trong torch.no_grad()?",
-      options: [
-        "Để mô hình chính xác hơn",
-        "Để tránh lưu computation graph phục vụ gradient — tiết kiệm bộ nhớ và tăng tốc",
-        "Để đổi hàm kích hoạt",
-        "Để batch nhỏ hơn",
-      ],
-      correct: 1,
-      explanation:
-        "Mặc định PyTorch lưu computation graph (các tensor trung gian) để phục vụ backprop. Khi inference không cần backprop, no_grad() bỏ qua việc lưu này — thường tiết kiệm 30-50% bộ nhớ và tăng tốc 2-3 lần.",
-    },
-    {
-      type: "fill-blank",
-      question:
-        "Với trọng số đã huấn luyện, đầu vào x đi qua mạng theo chiều từ trái sang phải — quá trình này gọi là {blank} propagation, còn ngược lại (tính gradient) gọi là {blank}.",
-      blanks: [
-        { answer: "forward", accept: ["Forward", "lan truyền tiến"] },
-        { answer: "backpropagation", accept: ["backward", "lan truyền ngược"] },
-      ],
-      explanation:
-        "Forward đi tới (xuôi), backward đi lui (ngược) — hai nửa của một vòng huấn luyện.",
-    },
+  const INPUT_SLIDERS: ReadonlyArray<{
+    key: string;
+    label: string;
+  }> = [
+    { key: "x1", label: "Kích cỡ tai (x₁)" },
+    { key: "x2", label: "Độ dày lông (x₂)" },
+    { key: "x3", label: "Độ dài đuôi (x₃)" },
   ];
 
-  /* --------------------------------------------------------------------- */
-  /*  HELPERS FOR ORIGINAL DIAGRAM COLORS                                   */
-  /* --------------------------------------------------------------------- */
-  function nodeColor(nodeType: string): string {
-    if (step < 0) return "#1e293b";
-    if (nodeType === "input") return step >= 0 ? "#3b82f6" : "#1e293b";
-    if (nodeType === "hidden") return step >= 2 ? "#8b5cf6" : "#1e293b";
-    if (nodeType === "output") return step >= 4 ? "#22c55e" : "#1e293b";
-    return "#1e293b";
-  }
+  const activeInput = step >= 1;
+  const activeHidden = step >= 2;
+  const activeLogits = step >= 3;
+  const activeOutput = step >= 4;
 
-  function nodeValue(name: string): string {
-    if (step < 0) return name;
-    switch (name) {
-      case "x1":
-        return step >= 0 ? x1.toFixed(2) : "x₁";
-      case "x2":
-        return step >= 0 ? x2.toFixed(2) : "x₂";
-      case "h1":
-        return step >= 2
-          ? state.a1[0].toFixed(2)
-          : step >= 1
-            ? state.z1[0].toFixed(2)
-            : "h₁";
-      case "h2":
-        return step >= 2
-          ? state.a1[1].toFixed(2)
-          : step >= 1
-            ? state.z1[1].toFixed(2)
-            : "h₂";
-      case "out":
-        return step >= 4
-          ? state.a2.toFixed(3)
-          : step >= 3
-            ? state.z2.toFixed(2)
-            : "ŷ";
-      default:
-        return name;
-    }
-  }
+  const stepCaption = [
+    "Chưa có dữ liệu. Nhấn Phát để bắt đầu.",
+    "Bước 1 — Đầu vào x đi vào lớp nhập.",
+    "Bước 2 — Lớp ẩn tính z = W·x + b rồi ReLU.",
+    "Bước 3 — Lớp ra tính z = W·a + b (chưa chuẩn hoá).",
+    "Bước 4 — Softmax biến z thành xác suất.",
+  ];
 
-  function isConnectionActive(from: string, to: string): boolean {
-    if (from.startsWith("x") && to.startsWith("h")) return step >= 1;
-    if (from.startsWith("h") && to === "out") return step >= 3;
-    return false;
-  }
+  /* ═════════════ DEEPEN — giá trị cụ thể dùng để hiển thị ═════════════ */
+  const z1Text = snapshot.z1.map((v) => v.toFixed(2));
+  const a1Text = snapshot.a1.map((v) => v.toFixed(2));
+  const z2Text = snapshot.z2.map((v) => v.toFixed(2));
+  const a2Text = snapshot.a2.map((v) => (v * 100).toFixed(1));
 
-  /* --------------------------------------------------------------------- */
-  /*  RENDER                                                                */
-  /* --------------------------------------------------------------------- */
   return (
     <>
-      {/* =============== STEP 1: PREDICTION GATE =============== */}
-      <LessonSection step={1} totalSteps={9} label="Dự đoán">
+      {/* ═══════════════ BƯỚC 1 — HOOK ═══════════════ */}
+      <LessonSection step={1} totalSteps={8} label="Ẩn dụ">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <MessageSquare size={20} className="text-accent" />
+            Dữ liệu đi như tin nhắn qua các trạm
+          </h3>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Hãy tưởng tượng bạn gửi một tin nhắn từ Sài Gòn ra Hà Nội. Tin nhắn
+            không bay thẳng — nó đi qua nhiều <strong>trạm</strong>: trạm đầu
+            mã hoá, trạm giữa chuyển tiếp, trạm cuối giải mã và đưa tới người
+            nhận. Mỗi trạm <em>xử lý một chút</em> rồi chuyển cho trạm sau.
+          </p>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            <strong>Lan truyền thuận</strong> trong mạng nơ-ron hoạt động giống
+            hệt vậy: dữ liệu đầu vào đi qua từng lớp, mỗi lớp biến đổi một
+            chút, rồi chuyển cho lớp sau — cho đến khi lớp cuối cùng đưa ra dự
+            đoán.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+                <Network size={16} />
+                <span className="text-sm font-semibold">Trạm đầu</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Nhận đầu vào thô (ví dụ các đặc trưng của con vật: tai, lông,
+                đuôi).
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                <Cpu size={16} />
+                <span className="text-sm font-semibold">Trạm giữa</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Các lớp ẩn — pha trộn các đặc trưng, thêm tính phi tuyến để học
+                được khái niệm phức tạp.
+              </p>
+            </div>
+            <div className="rounded-xl border border-violet-200 bg-violet-50 dark:bg-violet-900/20 dark:border-violet-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-violet-700 dark:text-violet-300">
+                <Sparkles size={16} />
+                <span className="text-sm font-semibold">Trạm cuối</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Đưa ra dự đoán — thường là vector xác suất các lớp có thể xảy
+                ra.
+              </p>
+            </div>
+          </div>
+        </div>
+      </LessonSection>
+
+      {/* ═══════════════ BƯỚC 2 — DISCOVER (PredictionGate) ═══════════════ */}
+      <LessonSection step={2} totalSteps={8} label="Dự đoán">
         <PredictionGate
-          question="Khi bạn gửi ảnh cho ChatGPT và nó nhận ra đó là con mèo, quá trình tính toán đi theo hướng nào trong mạng?"
+          question="Bạn đưa ảnh một con mèo cho mô hình đã huấn luyện. Thứ tự các phép tính trong mạng là gì?"
           options={[
-            "Từ đầu ra ngược về đầu vào",
-            "Chỉ tính ở lớp đầu ra",
-            "Một chiều từ đầu vào đến đầu ra, lớp này nối tiếp lớp kia",
-            "Ngẫu nhiên giữa các lớp",
+            "Tính từ lớp cuối ngược về đầu vào",
+            "Đầu vào → lớp ẩn → lớp ra, một chiều duy nhất",
+            "Chỉ tính ở lớp cuối, bỏ qua các lớp giữa",
+            "Mỗi lớp tự tính độc lập, không phụ thuộc lớp trước",
           ]}
-          correct={2}
-          explanation="Dữ liệu luôn đi một chiều từ trái sang phải qua từng lớp — đó là Forward Propagation! Giống xe máy đi trên đường một chiều, không quay lại."
+          correct={1}
+          explanation="Dữ liệu luôn đi một chiều: đầu vào → lớp ẩn → lớp ra. Mỗi lớp nhận đầu ra của lớp trước làm đầu vào. Chiều ngược (đi từ lớp ra về đầu vào) chỉ xảy ra khi huấn luyện, và được gọi là lan truyền ngược."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
-            Hãy tự tay truyền dữ liệu qua mạng và theo dõi từng phép tính. Thay
-            đổi đầu vào rồi nhấn{" "}
-            <strong className="text-foreground">Lan truyền</strong> để xem con
-            số biến đổi qua từng lớp.
+            Bên dưới là mạng 3 lớp phân loại con vật theo ba đặc trưng{" "}
+            <strong className="text-foreground">tai, lông, đuôi</strong>. Hãy
+            kéo thanh trượt rồi nhấn <strong>Phát</strong> để nhìn dữ liệu lan
+            qua từng lớp.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* =============== STEP 2: INTERACTIVE FORWARD PASS (PRESERVED) =============== */}
-      <LessonSection step={2} totalSteps={9} label="Khám phá">
-        <div className="mb-4 flex justify-center">
-          <ProgressSteps
-            current={Math.max(1, step + 1)}
-            total={5}
-            labels={stepLabels}
-          />
-        </div>
-
-        <VisualizationSection>
-          <div className="space-y-4">
-            {/* Input sliders */}
-            <div className="flex flex-wrap gap-6 justify-center">
-              <div className="space-y-1">
-                <label className="text-xs text-muted">
-                  x₁ ={" "}
-                  <strong className="text-foreground">{x1.toFixed(2)}</strong>
-                </label>
-                <input
-                  type="range"
-                  min="-2"
-                  max="2"
-                  step="0.05"
-                  value={x1}
-                  onChange={(e) => {
-                    setX1(parseFloat(e.target.value));
-                    reset();
-                  }}
-                  className="w-36 accent-accent"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs text-muted">
-                  x₂ ={" "}
-                  <strong className="text-foreground">{x2.toFixed(2)}</strong>
-                </label>
-                <input
-                  type="range"
-                  min="-2"
-                  max="2"
-                  step="0.05"
-                  value={x2}
-                  onChange={(e) => {
-                    setX2(parseFloat(e.target.value));
-                    reset();
-                  }}
-                  className="w-36 accent-accent"
-                />
-              </div>
-            </div>
-
-            {/* Activation hook selector */}
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-              <span className="text-xs text-muted">Hàm kích hoạt lớp ẩn:</span>
-              {(Object.keys(ACTIVATIONS) as ActivationName[]).map((key) => (
-                <button
-                  key={key}
-                  onClick={() => {
-                    setActivation(key);
-                    reset();
-                  }}
-                  className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                    activation === key
-                      ? "border-accent bg-accent text-white"
-                      : "border-border bg-card text-muted hover:text-foreground"
-                  }`}
-                >
-                  {ACTIVATIONS[key].label}
-                </button>
-              ))}
-            </div>
-
-            {/* Network diagram (PRESERVED) */}
-            <svg
-              viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-              className="w-full max-w-2xl mx-auto"
-            >
-              <text
-                x={60}
-                y={40}
-                textAnchor="middle"
-                fill="#94a3b8"
-                fontSize="10"
-                fontWeight="600"
-              >
-                Đầu vào
-              </text>
-              <text
-                x={230}
-                y={40}
-                textAnchor="middle"
-                fill="#94a3b8"
-                fontSize="10"
-                fontWeight="600"
-              >
-                Lớp ẩn
-              </text>
-              <text
-                x={420}
-                y={40}
-                textAnchor="middle"
-                fill="#94a3b8"
-                fontSize="10"
-                fontWeight="600"
-              >
-                Đầu ra
-              </text>
-
-              {CONNECTIONS.map((conn, i) => {
-                const from = NODES[conn.from as keyof typeof NODES];
-                const to = NODES[conn.to as keyof typeof NODES];
-                const active = isConnectionActive(conn.from, conn.to);
-                const color = active ? (conn.w >= 0 ? "#3b82f6" : "#ef4444") : "#334155";
-                return (
-                  <g key={`conn-${i}`}>
-                    <motion.line
-                      x1={from.x + 20} y1={from.y} x2={to.x - 20} y2={to.y}
-                      stroke={color}
-                      strokeWidth={active ? Math.abs(conn.w) * 4 + 1 : 1}
-                      opacity={active ? 0.7 : 0.2}
-                      initial={false}
-                      animate={{ stroke: color, opacity: active ? 0.7 : 0.2 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    {active && (
-                      <text
-                        x={(from.x + to.x) / 2 + (from.y === to.y ? 0 : from.y < to.y ? 12 : -12)}
-                        y={(from.y + to.y) / 2 + (from.y === to.y ? -8 : 0)}
-                        textAnchor="middle" fill="#64748b" fontSize="8"
-                      >
-                        {conn.w > 0 ? "+" : ""}{conn.w}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
-
-              {(
-                [
-                  { name: "x1", pos: NODES.x1, type: "input" },
-                  { name: "x2", pos: NODES.x2, type: "input" },
-                  { name: "h1", pos: NODES.h1, type: "hidden" },
-                  { name: "h2", pos: NODES.h2, type: "hidden" },
-                  { name: "out", pos: NODES.out, type: "output" },
-                ] as const
-              ).map(({ name, pos, type }) => (
-                <g key={name}>
-                  <motion.circle
-                    cx={pos.x} cy={pos.y} r={18}
-                    fill={nodeColor(type)}
-                    stroke={step >= 0 ? nodeColor(type) : "#475569"}
-                    strokeWidth="2"
-                    initial={false}
-                    animate={{ fill: nodeColor(type) }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <text x={pos.x} y={pos.y + 4} textAnchor="middle" fill="white"
-                    fontSize="10" fontWeight="bold"
-                    className="pointer-events-none select-none">
-                    {nodeValue(name)}
-                  </text>
-                  {type === "hidden" && step >= 1 && step < 3 && (
-                    <text x={pos.x} y={pos.y + 34} textAnchor="middle" fill="#94a3b8" fontSize="8">
-                      {step === 1 ? "z = W·x+b" : `a = ${ACTIVATIONS[activation].label}(z)`}
-                    </text>
-                  )}
-                  {type === "output" && step >= 3 && (
-                    <text x={pos.x} y={pos.y + 34} textAnchor="middle" fill="#94a3b8" fontSize="8">
-                      {step === 3 ? "z = W·a+b" : "ŷ = σ(z)"}
-                    </text>
-                  )}
-                </g>
-              ))}
-
-              {step >= 1 && (
-                <motion.polygon points="143,148 153,150 143,152" fill="#3b82f6"
-                  initial={{ opacity: 0 }} animate={{ opacity: 0.6 }} />
-              )}
-              {step >= 3 && (
-                <motion.polygon points="330,148 340,150 330,152" fill="#3b82f6"
-                  initial={{ opacity: 0 }} animate={{ opacity: 0.6 }} />
-              )}
-            </svg>
-
-            {/* Controls */}
-            <div className="flex justify-center gap-3">
-              <button
-                onClick={reset}
-                className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-              >
-                Đặt lại
-              </button>
-              <button
-                onClick={runAnimation}
-                disabled={isAnimating}
-                className="rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
-              >
-                {isAnimating ? "Đang chạy..." : "Lan truyền"}
-              </button>
-            </div>
-
-            {/* Step-by-step detail */}
-            <AnimatePresence mode="wait">
-              {step >= 0 && (
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className="rounded-lg bg-background/50 border border-border p-4 space-y-1"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-white">
-                      {step + 1}
-                    </span>
-                    <p className="text-sm font-semibold text-foreground">
-                      {stepLabels[step]}
-                    </p>
-                  </div>
-                  <p className="text-xs text-muted pl-7 break-all">
-                    {stepDetails[step]}
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {step >= 4 && (
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-                  <p className="text-xs text-muted">Đầu vào</p>
-                  <p className="text-sm font-bold text-blue-400">
-                    [{x1.toFixed(2)}, {x2.toFixed(2)}]
-                  </p>
-                </div>
-                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-                  <p className="text-xs text-muted">Dự đoán ŷ</p>
-                  <p className="text-sm font-bold text-green-400">
-                    {state.a2.toFixed(4)} ({(state.a2 * 100).toFixed(1)}%)
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        </VisualizationSection>
-
-        <Callout variant="info" title="Đổi hàm kích hoạt, quan sát đầu ra">
-          Các nút phía trên cho bạn thay <strong>ReLU</strong> bằng{" "}
-          <strong>Sigmoid</strong>, <strong>Tanh</strong> hay{" "}
-          <strong>Leaky ReLU</strong>. Lưu ý: với cùng một đầu vào x, đầu ra ŷ
-          thay đổi — vì hàm kích hoạt định hình đường cong quyết định khác nhau.
-          Đây là điểm &quot;hook&quot; nơi bạn có thể cắm bất kỳ hàm phi tuyến
-          nào vào forward pass.
-        </Callout>
-      </LessonSection>
-
-      {/* =============== STEP 3: MATRIX VISUALIZATION =============== */}
-      <LessonSection step={3} totalSteps={9} label="Ma trận chi tiết">
-        <VisualizationSection>
-          <h3 className="text-base font-semibold text-foreground mb-2">
-            Phóng to một phép tính: W × x + b theo từng phần tử
-          </h3>
-          <p className="text-sm text-muted mb-5 leading-relaxed">
-            Bên trong mỗi nơ-ron là một phép nhân ma trận đơn giản. Hãy xem nó
-            diễn ra từng bước một, với đầu vào x = [{x1.toFixed(2)},{" "}
-            {x2.toFixed(2)}] và trọng số đã được định nghĩa phía trên.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            {/* W matrix */}
-            <div className="rounded-xl border border-border bg-background/40 p-4">
-              <p className="text-xs text-muted mb-2 text-center">
-                Ma trận trọng số W
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {W1.map((row, i) =>
-                  row.map((v, j) => (
-                    <motion.div
-                      key={`w-${i}-${j}`}
-                      className={`rounded-md px-3 py-2 text-center text-sm font-mono ${
-                        matrixStep >= 1 && (i === 0 || j === 0)
-                          ? "bg-blue-500/20 border border-blue-400/40 text-blue-300"
-                          : "bg-card border border-border text-muted"
-                      }`}
-                      animate={{
-                        scale: matrixStep >= 1 && j === matrixStep - 1 ? 1.05 : 1,
-                      }}
-                    >
-                      {v.toFixed(2)}
-                    </motion.div>
-                  ))
-                )}
-              </div>
-              <p className="text-[10px] text-muted text-center mt-2">
-                Kích thước: 2×2
+      {/* ═══════════════ BƯỚC 3 — REVEAL ═══════════════ */}
+      <LessonSection step={3} totalSteps={8} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <div className="space-y-5">
+            <div>
+              <h3 className="text-base font-semibold text-foreground">
+                Mạng 3 lớp phân loại Mèo / Chó / Chim
+              </h3>
+              <p className="text-sm text-muted leading-relaxed mt-1">
+                Kéo ba thanh trượt để thay đổi đặc trưng đầu vào. Nhấn{" "}
+                <strong>Phát</strong> để xem dữ liệu lan qua từng lớp, hoặc{" "}
+                <strong>Bước</strong> để đi từng nhịp.
               </p>
             </div>
 
-            {/* x vector */}
-            <div className="rounded-xl border border-border bg-background/40 p-4">
-              <p className="text-xs text-muted mb-2 text-center">
-                Vector đầu vào x
-              </p>
-              <div className="flex flex-col gap-2">
-                <div
-                  className={`rounded-md px-3 py-2 text-center text-sm font-mono transition-colors ${
-                    matrixStep >= 1
-                      ? "bg-amber-500/20 border border-amber-400/40 text-amber-300"
-                      : "bg-card border border-border text-muted"
-                  }`}
-                >
-                  {x1.toFixed(2)}
-                </div>
-                <div
-                  className={`rounded-md px-3 py-2 text-center text-sm font-mono transition-colors ${
-                    matrixStep >= 1
-                      ? "bg-amber-500/20 border border-amber-400/40 text-amber-300"
-                      : "bg-card border border-border text-muted"
-                  }`}
-                >
-                  {x2.toFixed(2)}
-                </div>
+            {/* Sliders — parent sở hữu state, không đi vòng qua SliderGroup */}
+            <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-foreground">
+                  Đặc trưng đầu vào
+                </h4>
+                <span className="font-mono text-xs text-muted">
+                  x = [{input[0].toFixed(2)}, {input[1].toFixed(2)},{" "}
+                  {input[2].toFixed(2)}]
+                </span>
               </div>
-              <p className="text-[10px] text-muted text-center mt-2">
-                Kích thước: 2×1
-              </p>
+
+              <div className="space-y-3">
+                {INPUT_SLIDERS.map((slider, i) => {
+                  const pct = input[i] * 100;
+                  return (
+                    <div key={slider.key} className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <label
+                          htmlFor={`fp-slider-${slider.key}`}
+                          className="text-sm text-foreground"
+                        >
+                          {slider.label}
+                        </label>
+                        <span className="font-mono text-sm font-medium text-accent">
+                          {input[i].toFixed(2)}
+                        </span>
+                      </div>
+                      <input
+                        id={`fp-slider-${slider.key}`}
+                        type="range"
+                        min={0}
+                        max={1}
+                        step={0.05}
+                        value={input[i]}
+                        onChange={(e) =>
+                          updateInput(i, parseFloat(e.target.value))
+                        }
+                        className="w-full h-2 rounded-full appearance-none cursor-pointer bg-surface-hover accent-accent"
+                        style={{
+                          background: `linear-gradient(to right, var(--color-accent) ${pct}%, var(--bg-surface-hover, #E2E8F0) ${pct}%)`,
+                        }}
+                      />
+                      <div className="flex justify-between text-[10px] text-tertiary">
+                        <span>0.00</span>
+                        <span>1.00</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* b vector */}
-            <div className="rounded-xl border border-border bg-background/40 p-4">
-              <p className="text-xs text-muted mb-2 text-center">
-                Vector bias b
-              </p>
-              <div className="flex flex-col gap-2">
-                {B1.map((bv, i) => (
-                  <div
-                    key={`b-${i}`}
-                    className={`rounded-md px-3 py-2 text-center text-sm font-mono transition-colors ${
-                      matrixStep >= 4
-                        ? "bg-violet-500/20 border border-violet-400/40 text-violet-300"
-                        : "bg-card border border-border text-muted"
-                    }`}
+            {/* Network SVG */}
+            <div className="rounded-xl border border-border bg-surface/40 p-3 overflow-hidden">
+              <svg
+                viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+                className="w-full h-auto"
+                role="img"
+                aria-label="Sơ đồ mạng nơ-ron 3 lớp đang lan truyền thuận"
+              >
+                {/* Nhãn cột */}
+                {[
+                  { x: layerX(0), t: "Đầu vào (3)" },
+                  { x: layerX(1), t: "Lớp ẩn — ReLU (4)" },
+                  { x: layerX(2), t: "Lớp ra — Softmax (3)" },
+                ].map((col, i) => (
+                  <text
+                    key={`col-${i}`}
+                    x={col.x}
+                    y={28}
+                    textAnchor="middle"
+                    fill="#94a3b8"
+                    fontSize={11}
+                    fontWeight={700}
                   >
-                    {bv.toFixed(2)}
-                  </div>
+                    {col.t}
+                  </text>
+                ))}
+
+                {/* Kết nối input → hidden */}
+                {input.map((_, i) =>
+                  W1[i].map((w, j) => {
+                    const color = w >= 0 ? "#3b82f6" : "#ef4444";
+                    const active = activeHidden;
+                    return (
+                      <motion.line
+                        key={`l1-${i}-${j}`}
+                        x1={layerX(0) + 20}
+                        y1={nodeY(i, 3)}
+                        x2={layerX(1) - 20}
+                        y2={nodeY(j, 4)}
+                        stroke={active ? color : "#334155"}
+                        strokeWidth={
+                          active ? Math.min(3.5, Math.abs(w) * 3 + 0.6) : 0.8
+                        }
+                        opacity={active ? 0.6 : 0.2}
+                        initial={false}
+                        animate={{ opacity: active ? 0.6 : 0.2 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                    );
+                  }),
+                )}
+
+                {/* Kết nối hidden → output */}
+                {Array.from({ length: 4 }).map((_, j) =>
+                  W2[j].map((w, k) => {
+                    const color = w >= 0 ? "#3b82f6" : "#ef4444";
+                    const active = activeLogits;
+                    return (
+                      <motion.line
+                        key={`l2-${j}-${k}`}
+                        x1={layerX(1) + 20}
+                        y1={nodeY(j, 4)}
+                        x2={layerX(2) - 20}
+                        y2={nodeY(k, 3)}
+                        stroke={active ? color : "#334155"}
+                        strokeWidth={
+                          active ? Math.min(3.5, Math.abs(w) * 3 + 0.6) : 0.8
+                        }
+                        opacity={active ? 0.6 : 0.2}
+                        initial={false}
+                        animate={{ opacity: active ? 0.6 : 0.2 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                    );
+                  }),
+                )}
+
+                {/* Nút input */}
+                {input.map((v, i) => (
+                  <NetworkNode
+                    key={`in-${i}`}
+                    cx={layerX(0)}
+                    cy={nodeY(i, 3)}
+                    value={v}
+                    label={INPUT_LABELS[i]}
+                    active={activeInput}
+                    color="#0ea5e9"
+                  />
+                ))}
+
+                {/* Nút hidden — hiển thị a1 (sau ReLU) khi đã qua bước 2 */}
+                {snapshot.a1.map((v, j) => (
+                  <NetworkNode
+                    key={`hid-${j}`}
+                    cx={layerX(1)}
+                    cy={nodeY(j, 4)}
+                    value={v}
+                    label={`h${j + 1}`}
+                    active={activeHidden}
+                    color="#8b5cf6"
+                  />
+                ))}
+
+                {/* Nút output — dùng a2 (xác suất) khi softmax xong, nếu
+                    mới ở bước 3 thì hiển thị z2 (logit thô). */}
+                {snapshot.a2.map((v, k) => {
+                  const raw = activeOutput
+                    ? v
+                    : activeLogits
+                      ? snapshot.z2[k]
+                      : 0;
+                  return (
+                    <NetworkNode
+                      key={`out-${k}`}
+                      cx={layerX(2)}
+                      cy={nodeY(k, 3)}
+                      value={raw}
+                      label={CLASS_LABELS[k]}
+                      active={activeLogits || activeOutput}
+                      color="#10b981"
+                      highlight={activeOutput && k === snapshot.prediction}
+                    />
+                  );
+                })}
+
+                {/* Mũi tên giữa các lớp */}
+                {activeHidden && (
+                  <motion.polygon
+                    points={`${layerX(0) + 120},${SVG_H / 2 - 6} ${layerX(0) + 140},${SVG_H / 2} ${layerX(0) + 120},${SVG_H / 2 + 6}`}
+                    fill="#38bdf8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.7 }}
+                  />
+                )}
+                {activeLogits && (
+                  <motion.polygon
+                    points={`${layerX(1) + 120},${SVG_H / 2 - 6} ${layerX(1) + 140},${SVG_H / 2} ${layerX(1) + 120},${SVG_H / 2 + 6}`}
+                    fill="#a78bfa"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.7 }}
+                  />
+                )}
+              </svg>
+            </div>
+
+            {/* Chú thích cạnh dương/âm */}
+            <div className="flex items-center justify-center gap-5 text-[11px] text-muted">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block h-[3px] w-6 rounded-full bg-blue-500" />
+                Trọng số dương
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block h-[3px] w-6 rounded-full bg-red-500" />
+                Trọng số âm
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block h-[3px] w-6 rounded-full bg-slate-500" />
+                Chưa kích hoạt
+              </span>
+            </div>
+
+            {/* Điều khiển Play/Pause/Step/Reset */}
+            <div className="flex flex-wrap justify-center gap-3">
+              {playing ? (
+                <button
+                  type="button"
+                  onClick={handlePause}
+                  className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-surface transition-colors"
+                >
+                  <Pause size={14} /> Tạm dừng
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handlePlay}
+                  className="flex items-center gap-2 rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+                >
+                  <Play size={14} />{" "}
+                  {step >= TOTAL_STEPS ? "Phát lại" : "Phát"}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleStep}
+                disabled={step >= TOTAL_STEPS}
+                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-surface disabled:opacity-40 transition-colors"
+              >
+                <StepForward size={14} /> Bước
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+              >
+                <RotateCcw size={14} /> Đặt lại
+              </button>
+            </div>
+
+            {/* Caption theo từng bước */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-1.5">
+                {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+                  <div
+                    key={`dot-${i}`}
+                    className={`h-1.5 rounded-full transition-all ${
+                      i < step ? "w-8 bg-accent" : "w-4 bg-surface"
+                    }`}
+                  />
                 ))}
               </div>
-              <p className="text-[10px] text-muted text-center mt-2">
-                Kích thước: 2×1
-              </p>
+              <span className="text-xs font-medium text-muted">
+                Bước {step}/{TOTAL_STEPS}
+              </span>
             </div>
-          </div>
 
-          {/* Element-wise breakdown */}
-          <div className="rounded-xl border border-border bg-background/40 p-4 space-y-3 mb-4">
-            <p className="text-sm font-semibold text-foreground">
-              Tính z₁ và z₂ từng phần tử:
-            </p>
-
-            <AnimatePresence>
-              {matrixStep >= 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex flex-wrap items-center gap-2 text-sm font-mono"
-                >
-                  <span className="text-blue-300">z₁ =</span>
-                  <span className="text-blue-300">W[0][0]·x₁</span>
-                  {matrixStep >= 2 && (
-                    <>
-                      <span className="text-muted">+</span>
-                      <span className="text-blue-300">W[1][0]·x₂</span>
-                    </>
-                  )}
-                  {matrixStep >= 4 && (
-                    <>
-                      <span className="text-muted">+</span>
-                      <span className="text-violet-300">b[0]</span>
-                    </>
-                  )}
-                </motion.div>
-              )}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`cap-${step}`}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.25 }}
+                className="rounded-lg border border-border bg-background/50 p-4"
+              >
+                <p className="text-sm text-foreground leading-relaxed">
+                  {stepCaption[step]}
+                </p>
+              </motion.div>
             </AnimatePresence>
 
-            {matrixStep >= 1 && (
+            {/* Panel xác suất cuối cùng */}
+            {activeOutput && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="pl-4 text-xs text-muted font-mono"
-              >
-                = {W1[0][0].toFixed(2)}×{x1.toFixed(2)}
-                {matrixStep >= 2 &&
-                  ` + ${W1[1][0].toFixed(2)}×${x2.toFixed(2)}`}
-                {matrixStep >= 4 && ` + ${B1[0].toFixed(2)}`}
-                {matrixStep >= 5 && (
-                  <span className="text-blue-300">
-                    {" "}
-                    = {state.z1[0].toFixed(3)}
-                  </span>
-                )}
-              </motion.div>
-            )}
-
-            {matrixStep >= 3 && (
-              <motion.div
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex flex-wrap items-center gap-2 text-sm font-mono pt-2 border-t border-border"
-              >
-                <span className="text-blue-300">z₂ =</span>
-                <span className="text-blue-300">W[0][1]·x₁</span>
-                <span className="text-muted">+</span>
-                <span className="text-blue-300">W[1][1]·x₂</span>
-                {matrixStep >= 4 && (
-                  <>
-                    <span className="text-muted">+</span>
-                    <span className="text-violet-300">b[1]</span>
-                  </>
-                )}
-              </motion.div>
-            )}
-
-            {matrixStep >= 3 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="pl-4 text-xs text-muted font-mono"
-              >
-                = {W1[0][1].toFixed(2)}×{x1.toFixed(2)} +{" "}
-                {W1[1][1].toFixed(2)}×{x2.toFixed(2)}
-                {matrixStep >= 4 && ` + (${B1[1].toFixed(2)})`}
-                {matrixStep >= 5 && (
-                  <span className="text-blue-300">
-                    {" "}
-                    = {state.z1[1].toFixed(3)}
-                  </span>
-                )}
-              </motion.div>
-            )}
-
-            {matrixStep >= 5 && (
-              <motion.div
-                initial={{ opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-3 rounded-md bg-green-500/10 border border-green-400/40 p-3 text-sm text-green-300 font-mono"
+                className="rounded-xl border border-border bg-card p-4 space-y-3"
               >
-                z = [{state.z1[0].toFixed(3)}, {state.z1[1].toFixed(3)}]
-              </motion.div>
-            )}
-          </div>
-
-          <div className="flex justify-center gap-3">
-            <button
-              onClick={() => setMatrixStep(0)}
-              className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground"
-            >
-              Đặt lại
-            </button>
-            <button
-              onClick={() =>
-                setMatrixStep((s) => Math.min(s + 1, matrixStepTotal - 1))
-              }
-              disabled={matrixStep >= matrixStepTotal - 1}
-              className="rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-white disabled:opacity-40"
-            >
-              Bước tiếp
-            </button>
-          </div>
-          <p className="text-center text-[11px] text-muted mt-2">
-            Bước {matrixStep + 1}/{matrixStepTotal}
-          </p>
-        </VisualizationSection>
-
-        <Callout variant="tip" title="Tại sao gọi là tích vô hướng (dot product)?">
-          Mỗi phần tử z_i là <strong>tích vô hướng</strong> giữa cột thứ i của W
-          và vector x, cộng thêm bias b_i. Trong NumPy:{" "}
-          <code className="text-accent">z = W.T @ x + b</code>. Hiểu rõ tích vô
-          hướng là nền tảng để đọc bất kỳ công thức học sâu nào — xem lại tại{" "}
-          <TopicLink slug="vectors-and-matrices">đại số tuyến tính</TopicLink>.
-        </Callout>
-      </LessonSection>
-
-      {/* =============== STEP 4: MULTI-LAYER ANIMATION =============== */}
-      <LessonSection step={4} totalSteps={9} label="Mạng sâu 4 lớp">
-        <VisualizationSection>
-          <h3 className="text-base font-semibold text-foreground mb-2">
-            Tín hiệu lan qua 4 lớp ẩn
-          </h3>
-          <p className="text-sm text-muted mb-4 leading-relaxed">
-            Trong thực tế, mạng có hàng chục tới hàng trăm lớp. Hãy xem dữ liệu{" "}
-            <strong>x ∈ ℝ³</strong> lan truyền qua một mạng 5 lớp: input (3) →
-            hidden (4, 4, 3) → output (2). Nhấn <em>Phát</em> để theo dõi từng
-            lớp &quot;sáng lên&quot; khi tín hiệu tới nó.
-          </p>
-
-          {/* Input sliders */}
-          <div className="flex flex-wrap gap-4 justify-center mb-4">
-            {deepInput.map((v, i) => (
-              <div key={`deep-in-${i}`} className="space-y-1">
-                <label className="text-xs text-muted">
-                  x{i + 1} ={" "}
-                  <strong className="text-foreground">{v.toFixed(2)}</strong>
-                </label>
-                <input
-                  type="range"
-                  min="-1"
-                  max="1"
-                  step="0.05"
-                  value={v}
-                  onChange={(e) => {
-                    const next = [...deepInput];
-                    next[i] = parseFloat(e.target.value);
-                    setDeepInput(next);
-                    setDeepLayer(0);
-                  }}
-                  className="w-28 accent-accent"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Layered SVG */}
-          <svg
-            viewBox="0 0 700 320"
-            className="w-full max-w-3xl mx-auto mb-4"
-          >
-            {/* Layer labels */}
-            {DEEP_LAYERS.map((layer, l) => (
-              <text
-                key={`lab-${l}`}
-                x={70 + l * 140}
-                y={25}
-                textAnchor="middle"
-                fill={l <= deepLayer ? "#60a5fa" : "#64748b"}
-                fontSize={11}
-                fontWeight={700}
-              >
-                {layer.label}
-              </text>
-            ))}
-            {DEEP_LAYERS.map((layer, l) => (
-              <text
-                key={`act-${l}`}
-                x={70 + l * 140}
-                y={40}
-                textAnchor="middle"
-                fill="#94a3b8"
-                fontSize={9}
-              >
-                {layer.activation === "linear" ? "—" : ACTIVATIONS[layer.activation as ActivationName].label}
-              </text>
-            ))}
-
-            {/* Connections layer-to-layer */}
-            {DEEP_LAYERS.slice(0, -1).map((layer, l) => {
-              const nextLayer = DEEP_LAYERS[l + 1];
-              const x0 = 70 + l * 140;
-              const x1c = 70 + (l + 1) * 140;
-              const spacing0 = 220 / Math.max(1, layer.size);
-              const spacing1 = 220 / Math.max(1, nextLayer.size);
-              const active = l + 1 <= deepLayer;
-              return (
-                <g key={`conn-layer-${l}`}>
-                  {Array.from({ length: layer.size }).map((_, i) =>
-                    Array.from({ length: nextLayer.size }).map((__, j) => {
-                      const w = deepWeight(l + 1, i, j);
-                      const y0 = 70 + i * spacing0 + spacing0 / 2;
-                      const y1 = 70 + j * spacing1 + spacing1 / 2;
-                      return (
-                        <motion.line
-                          key={`cl-${l}-${i}-${j}`}
-                          x1={x0 + 14}
-                          y1={y0}
-                          x2={x1c - 14}
-                          y2={y1}
-                          stroke={
-                            active
-                              ? w >= 0
-                                ? "#3b82f6"
-                                : "#ef4444"
-                              : "#334155"
-                          }
-                          strokeWidth={active ? Math.abs(w) * 1.5 + 0.3 : 0.4}
-                          opacity={active ? 0.35 : 0.1}
-                          initial={false}
-                          animate={{
-                            opacity: active ? 0.35 : 0.1,
-                          }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      );
-                    })
-                  )}
-                </g>
-              );
-            })}
-
-            {/* Nodes */}
-            {DEEP_LAYERS.map((layer, l) => {
-              const x = 70 + l * 140;
-              const spacing = 220 / Math.max(1, layer.size);
-              const active = l <= deepLayer;
-              const values = deepActivations[l] ?? [];
-              return (
-                <g key={`layer-${l}`}>
-                  {Array.from({ length: layer.size }).map((_, i) => {
-                    const y = 70 + i * spacing + spacing / 2;
-                    const v = values[i] ?? 0;
-                    const mag = Math.min(1, Math.abs(v));
-                    const fill = active
-                      ? l === 0
-                        ? "#3b82f6"
-                        : l === DEEP_LAYERS.length - 1
-                          ? "#22c55e"
-                          : `rgb(${139 + mag * 50}, ${92 + mag * 40}, ${246})`
-                      : "#1e293b";
+                <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Sparkles size={14} className="text-accent" /> Xác suất dự
+                  đoán
+                </p>
+                <div className="space-y-2">
+                  {snapshot.a2.map((p, k) => {
+                    const isTop = k === snapshot.prediction;
                     return (
-                      <g key={`node-${l}-${i}`}>
-                        <motion.circle
-                          cx={x}
-                          cy={y}
-                          r={14}
-                          fill={fill}
-                          stroke={active ? "#60a5fa" : "#475569"}
-                          strokeWidth={2}
-                          initial={false}
-                          animate={{
-                            fill,
-                            scale: active && l === deepLayer ? 1.1 : 1,
-                          }}
-                          transition={{ duration: 0.35 }}
-                        />
-                        <text
-                          x={x}
-                          y={y + 3}
-                          textAnchor="middle"
-                          fill="white"
-                          fontSize={8}
-                          fontWeight={700}
-                          className="pointer-events-none select-none"
-                        >
-                          {active ? v.toFixed(2) : ""}
-                        </text>
-                      </g>
+                      <div key={`bar-${k}`} className="space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span
+                            className={
+                              isTop
+                                ? "font-semibold text-accent"
+                                : "text-muted"
+                            }
+                          >
+                            {CLASS_LABELS[k]}
+                          </span>
+                          <span className="font-mono text-foreground">
+                            {(p * 100).toFixed(1)}%
+                          </span>
+                        </div>
+                        <div className="h-2 rounded-full bg-surface overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${p * 100}%` }}
+                            transition={{ duration: 0.5 }}
+                            className={`h-full rounded-full ${
+                              isTop ? "bg-accent" : "bg-muted/40"
+                            }`}
+                          />
+                        </div>
+                      </div>
                     );
                   })}
-                </g>
-              );
-            })}
-          </svg>
-
-          <div className="flex justify-center gap-3 mb-3">
-            <button
-              onClick={resetDeep}
-              className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground"
-            >
-              Đặt lại
-            </button>
-            <button
-              onClick={() =>
-                setDeepLayer((l) => Math.min(l + 1, DEEP_LAYERS.length - 1))
-              }
-              disabled={deepLayer >= DEEP_LAYERS.length - 1}
-              className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted hover:text-foreground disabled:opacity-40"
-            >
-              Lớp tiếp
-            </button>
-            <button
-              onClick={() => {
-                setDeepLayer(0);
-                setDeepPlaying(true);
-              }}
-              disabled={deepPlaying}
-              className="rounded-lg bg-accent px-5 py-2 text-sm font-semibold text-white disabled:opacity-40"
-            >
-              {deepPlaying ? "Đang chạy..." : "Phát"}
-            </button>
+                </div>
+                <p className="text-xs text-muted italic">
+                  Mạng dự đoán:{" "}
+                  <strong className="text-foreground">
+                    {CLASS_LABELS[snapshot.prediction]}
+                  </strong>{" "}
+                  ({(snapshot.a2[snapshot.prediction] * 100).toFixed(1)}%)
+                </p>
+              </motion.div>
+            )}
           </div>
-
-          <p className="text-center text-xs text-muted">
-            Đang ở lớp {deepLayer + 1}/{DEEP_LAYERS.length}:{" "}
-            <strong className="text-foreground">
-              {DEEP_LAYERS[deepLayer].label}
-            </strong>{" "}
-            — kích thước {DEEP_LAYERS[deepLayer].size}
-          </p>
-
-          {/* Final vector */}
-          {deepLayer >= DEEP_LAYERS.length - 1 && (
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-4 rounded-lg bg-background/50 border border-border p-3 text-center"
-            >
-              <p className="text-xs text-muted mb-1">Đầu ra ŷ</p>
-              <p className="text-sm font-mono font-bold text-green-400">
-                [
-                {deepActivations[DEEP_LAYERS.length - 1]
-                  .map((v) => v.toFixed(3))
-                  .join(", ")}
-                ]
-              </p>
-            </motion.div>
-          )}
         </VisualizationSection>
 
-        <Callout variant="info" title="Khi nào mạng sâu hơn?">
-          Mạng sâu hơn = nhiều lớp hơn = nhiều &quot;cấp trừu tượng&quot; hơn.
-          Lớp đầu học cạnh và góc, lớp giữa học hình khối, lớp cuối học khái niệm
-          như &quot;mèo&quot;. Nhưng mạng quá sâu cũng có vấn đề — xem{" "}
-          <TopicLink slug="backpropagation">backpropagation</TopicLink> và hiện
-          tượng vanishing gradient.
+        <Callout variant="info" title="Lưu ý khi kéo slider">
+          Thay đổi x làm mạng tính lại TOÀN BỘ các giá trị z và a — nhưng trọng
+          số W, b không đổi. Đó là điều cốt lõi của lan truyền thuận: cùng một
+          công thức, cùng một bộ trọng số, chỉ khác đầu vào.
         </Callout>
       </LessonSection>
 
-      {/* =============== STEP 5: PRE-TRAINED COMPARISON =============== */}
-      <LessonSection step={5} totalSteps={9} label="So sánh trọng số">
-        <VisualizationSection>
+      {/* ═══════════════ BƯỚC 4 — DEEPEN (StepReveal) ═══════════════ */}
+      <LessonSection step={4} totalSteps={8} label="Đi sâu">
+        <VisualizationSection topicSlug={metadata.slug}>
           <h3 className="text-base font-semibold text-foreground mb-2">
-            Trọng số ngẫu nhiên vs đã huấn luyện
+            Một vòng lan truyền thuận, mở ra từng lớp
           </h3>
-          <p className="text-sm text-muted mb-4 leading-relaxed">
-            Forward propagation là phép tính GIỐNG NHAU dù trọng số tốt hay xấu
-            — chỉ kết quả khác. Hãy cho cùng một đầu vào chạy qua 2 bộ trọng số:
-            một bộ mới khởi tạo ngẫu nhiên (vô nghĩa), một bộ đã được huấn luyện
-            (có kỹ năng phân loại).
+          <p className="text-sm text-muted leading-relaxed mb-4">
+            Dưới đây là năm khoảnh khắc bên trong mạng cho đầu vào x ={" "}
+            <span className="font-mono text-foreground">
+              [{input[0].toFixed(2)}, {input[1].toFixed(2)},{" "}
+              {input[2].toFixed(2)}]
+            </span>
+            . Nhấn <strong>Tiếp tục</strong> để lần lượt mở từng lớp — hãy chú
+            ý ai đang nói chuyện với ai.
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center mb-4">
-            <div className="space-y-1">
-              <label className="text-xs text-muted">
-                x₁ ={" "}
-                <strong className="text-foreground">
-                  {cmpX[0].toFixed(2)}
-                </strong>
-              </label>
-              <input
-                type="range"
-                min="-1.5"
-                max="1.5"
-                step="0.05"
-                value={cmpX[0]}
-                onChange={(e) =>
-                  setCmpX([parseFloat(e.target.value), cmpX[1]])
-                }
-                className="w-36 accent-accent"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-muted">
-                x₂ ={" "}
-                <strong className="text-foreground">
-                  {cmpX[1].toFixed(2)}
-                </strong>
-              </label>
-              <input
-                type="range"
-                min="-1.5"
-                max="1.5"
-                step="0.05"
-                value={cmpX[1]}
-                onChange={(e) =>
-                  setCmpX([cmpX[0], parseFloat(e.target.value)])
-                }
-                className="w-36 accent-accent"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Random model */}
-            <div className="rounded-xl border border-border bg-background/40 p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-amber-300">
-                  Khởi tạo ngẫu nhiên
+          <StepReveal
+            labels={[
+              "Đầu vào",
+              "Lớp ẩn: tính z",
+              "Lớp ẩn: qua ReLU",
+              "Lớp ra: tính z",
+              "Lớp ra: softmax",
+            ]}
+          >
+            {[
+              <div
+                key="d1"
+                className="rounded-lg border border-border bg-surface/50 p-4 space-y-2"
+              >
+                <p className="text-sm font-semibold text-foreground">
+                  Đầu vào — vector ba đặc trưng
                 </p>
-                <span className="text-[10px] rounded-full bg-amber-500/20 text-amber-300 px-2 py-0.5 font-semibold">
-                  Epoch 0
-                </span>
-              </div>
-              <p className="text-xs text-muted">Trọng số W:</p>
-              <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono">
-                {RANDOM_W.flat().map((v, i) => (
-                  <div
-                    key={`rand-w-${i}`}
-                    className="rounded bg-card border border-border px-2 py-1 text-center text-muted"
-                  >
-                    {v.toFixed(2)}
-                  </div>
-                ))}
-              </div>
-              <div className="rounded-md bg-background/60 p-2 text-xs font-mono space-y-1">
-                <p className="text-muted">
-                  z = [{randomOut.z.map((v) => v.toFixed(2)).join(", ")}]
+                <div className="grid grid-cols-3 gap-2">
+                  {input.map((v, i) => (
+                    <div
+                      key={`din-${i}`}
+                      className="rounded-md bg-sky-500/15 border border-sky-500/40 p-2 text-center"
+                    >
+                      <p className="text-[10px] text-muted">
+                        {INPUT_LABELS[i]}
+                      </p>
+                      <p className="font-mono text-sm text-sky-300">
+                        {v.toFixed(2)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted leading-relaxed">
+                  Đây là tin nhắn gốc mà mạng nhận được. Không có phép tính nào
+                  diễn ra ở lớp này — nó chỉ truyền nguyên x cho lớp sau.
                 </p>
-                <p className="text-amber-300">
-                  a (ReLU) = [{randomOut.a.map((v) => v.toFixed(2)).join(", ")}]
+              </div>,
+              <div
+                key="d2"
+                className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
+              >
+                <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <ArrowRight size={14} className="text-accent" /> Bước 1 —
+                  Trạm ẩn cộng-có-trọng-số
                 </p>
-              </div>
-              <p className="text-[11px] text-muted leading-relaxed">
-                Đầu ra chỉ là &quot;tiếng ồn&quot; — mạng chưa học được gì nên
-                không phân biệt được lớp.
-              </p>
-            </div>
-
-            {/* Trained model */}
-            <div className="rounded-xl border border-border bg-background/40 p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-green-300">
-                  Đã huấn luyện
+                <p className="text-xs text-muted leading-relaxed">
+                  Mỗi nơ-ron ẩn tính tổng có trọng số từ cả 3 đặc trưng đầu
+                  vào, rồi cộng bias. Kết quả là vector z gồm 4 số — chưa qua
+                  bất kỳ hàm kích hoạt nào.
                 </p>
-                <span className="text-[10px] rounded-full bg-green-500/20 text-green-300 px-2 py-0.5 font-semibold">
-                  Epoch 100
-                </span>
-              </div>
-              <p className="text-xs text-muted">Trọng số W:</p>
-              <div className="grid grid-cols-2 gap-1.5 text-[10px] font-mono">
-                {TRAINED_W.flat().map((v, i) => (
-                  <div
-                    key={`tr-w-${i}`}
-                    className="rounded bg-card border border-border px-2 py-1 text-center text-foreground"
-                  >
-                    {v.toFixed(2)}
-                  </div>
-                ))}
-              </div>
-              <div className="rounded-md bg-background/60 p-2 text-xs font-mono space-y-1">
-                <p className="text-muted">
-                  z = [{trainedOut.z.map((v) => v.toFixed(2)).join(", ")}]
+                <div className="grid grid-cols-4 gap-2">
+                  {snapshot.z1.map((_, j) => (
+                    <div
+                      key={`dz1-${j}`}
+                      className="rounded-md bg-violet-500/10 border border-violet-500/30 p-2 text-center"
+                    >
+                      <p className="text-[10px] text-muted">z₁[{j + 1}]</p>
+                      <p className="font-mono text-sm text-violet-300">
+                        {z1Text[j]}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11px] text-muted font-mono leading-relaxed">
+                  Ví dụ z₁[1] = W₁[0][0]·{input[0].toFixed(2)} + W₁[1][0]·
+                  {input[1].toFixed(2)} + W₁[2][0]·{input[2].toFixed(2)} +{" "}
+                  {B1[0].toFixed(2)} = {z1Text[0]}
                 </p>
-                <p className="text-green-300">
-                  a (ReLU) = [
-                  {trainedOut.a.map((v) => v.toFixed(2)).join(", ")}]
+              </div>,
+              <div
+                key="d3"
+                className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
+              >
+                <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <ArrowRight size={14} className="text-accent" /> Bước 2 — Áp
+                  dụng ReLU
                 </p>
-              </div>
-              <p className="text-[11px] text-muted leading-relaxed">
-                Mạng &quot;phát hiện&quot; các đặc trưng có ý nghĩa. Cùng một
-                công thức, chỉ số khác → kết quả hoàn toàn khác.
-              </p>
-            </div>
-          </div>
-
-          <p className="text-center text-xs text-muted mt-4 italic">
-            Thông điệp: forward pass = công thức cố định. Học nằm ở việc cập
-            nhật W, b — công việc của backpropagation.
-          </p>
+                <p className="text-xs text-muted leading-relaxed">
+                  ReLU cắt bỏ phần âm: giữ nguyên nếu &ge; 0, đẩy về 0 nếu &lt;
+                  0. Đây là bước <strong>phi tuyến</strong> duy nhất trong lớp
+                  ẩn — nếu bỏ nó đi, toàn bộ mạng sụp về một phép biến đổi
+                  tuyến tính.
+                </p>
+                <div className="grid grid-cols-4 gap-2">
+                  {snapshot.a1.map((v, j) => {
+                    const wasNeg = snapshot.z1[j] < 0;
+                    return (
+                      <div
+                        key={`da1-${j}`}
+                        className={`rounded-md p-2 text-center border ${
+                          wasNeg
+                            ? "bg-red-500/10 border-red-500/40"
+                            : "bg-emerald-500/10 border-emerald-500/40"
+                        }`}
+                      >
+                        <p className="text-[10px] text-muted">a₁[{j + 1}]</p>
+                        <p className="font-mono text-sm text-foreground">
+                          {v.toFixed(2)}
+                        </p>
+                        {wasNeg && (
+                          <p className="text-[9px] text-red-400">(bị cắt)</p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>,
+              <div
+                key="d4"
+                className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
+              >
+                <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <ArrowRight size={14} className="text-accent" /> Bước 3 —
+                  Lớp ra cộng-có-trọng-số
+                </p>
+                <p className="text-xs text-muted leading-relaxed">
+                  Lặp lại công thức z = W·a + b, nhưng lần này dùng a₁ (đầu ra
+                  của lớp ẩn) làm đầu vào. Kết quả là vector logits — ba số
+                  thực chưa chuẩn hoá.
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {snapshot.z2.map((_, k) => (
+                    <div
+                      key={`dz2-${k}`}
+                      className="rounded-md bg-emerald-500/10 border border-emerald-500/30 p-2 text-center"
+                    >
+                      <p className="text-[10px] text-muted">
+                        z₂ — {CLASS_LABELS[k]}
+                      </p>
+                      <p className="font-mono text-sm text-emerald-300">
+                        {z2Text[k]}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11px] text-muted italic leading-relaxed">
+                  Logits chưa phải xác suất: có thể âm, có thể lớn hơn 1, tổng
+                  không bằng 1.
+                </p>
+              </div>,
+              <div
+                key="d5"
+                className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
+              >
+                <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <Sparkles size={14} className="text-accent" /> Bước 4 —
+                  Softmax chuẩn hoá
+                </p>
+                <p className="text-xs text-muted leading-relaxed">
+                  Softmax mũ hoá và chia đều: mỗi logit &rarr; e^{"{z_k}"}, rồi
+                  chia cho tổng. Kết quả: ba số &ge; 0, cộng lại bằng 1 → đây
+                  là <em>phân phối xác suất</em>.
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {snapshot.a2.map((p, k) => (
+                    <div
+                      key={`da2-${k}`}
+                      className={`rounded-md p-2 text-center border ${
+                        k === snapshot.prediction
+                          ? "bg-accent/15 border-accent/50"
+                          : "bg-card border-border"
+                      }`}
+                    >
+                      <p className="text-[10px] text-muted">
+                        {CLASS_LABELS[k]}
+                      </p>
+                      <p className="font-mono text-sm font-bold text-foreground">
+                        {a2Text[k]}%
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted">
+                  Dự đoán cuối:{" "}
+                  <strong className="text-accent">
+                    {CLASS_LABELS[snapshot.prediction]}
+                  </strong>
+                  . Lan truyền thuận kết thúc ở đây — đây cũng là đầu ra để so
+                  với nhãn thực khi huấn luyện.
+                </p>
+              </div>,
+            ]}
+          </StepReveal>
         </VisualizationSection>
+
+        <Callout variant="tip" title="Quan sát cốt lõi">
+          Cả hai lớp đều lặp lại cùng một <strong>cặp phép tính</strong>: (1)
+          tổng có trọng số cộng bias, (2) hàm kích hoạt. Khác biệt duy nhất là
+          kích thước ma trận và hàm kích hoạt. Dù mạng có 3 lớp hay 300 lớp,
+          cấu trúc vẫn giống hệt — chỉ lặp nhiều hơn.
+        </Callout>
       </LessonSection>
 
-      {/* =============== STEP 6: AHA MOMENT =============== */}
-      <LessonSection step={6} totalSteps={9} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <p>
-            <strong>Forward Propagation</strong> chỉ là hai phép tính lặp đi lặp
-            lại: (1) nhân trọng số + bias → z, (2){" "}
-            <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> →
-            a. Quá trình này đi qua từng lớp của{" "}
-            <TopicLink slug="mlp">MLP</TopicLink> để tạo ra dự đoán cuối cùng.
-            Dù mạng có 3 lớp hay 300 lớp, công thức này vẫn đúng — chỉ lặp lại
-            nhiều hơn.
-          </p>
-        </AhaMoment>
-      </LessonSection>
-
-      {/* =============== STEP 7: CHALLENGES =============== */}
-      <LessonSection step={7} totalSteps={9} label="Thử thách">
+      {/* ═══════════════ BƯỚC 5 — CHALLENGE ═══════════════ */}
+      <LessonSection step={5} totalSteps={8} label="Thử thách">
         <p className="text-sm text-muted mb-3 leading-relaxed">
-          Bạn đã thấy forward pass tính toán đầu ra. Nhưng kết quả chính xác
-          chưa? Bước tiếp theo sau forward propagation là gì?
+          Bạn được cho một lớp ẩn nhỏ với hai đầu vào và hai nơ-ron. Thử tính
+          nhẩm rồi chọn đáp án.
         </p>
+
+        <div className="rounded-xl border border-border bg-surface/40 p-4 mb-4 text-xs font-mono text-foreground/90 space-y-1">
+          <p>
+            Đầu vào: x = [2, 3]. Trọng số W ={" "}
+            <span className="text-accent">[[1, -1], [2, 0]]</span>, bias b ={" "}
+            <span className="text-accent">[0, 1]</span>.
+          </p>
+          <p>Lớp ẩn dùng hàm kích hoạt ReLU.</p>
+          <p className="text-muted">
+            Nhắc: z = W·x + b, a = ReLU(z). Với dữ liệu ở đây, z[1] = 1·2 +
+            2·3 + 0 = 8; z[2] = (-1)·2 + 0·3 + 1 = -1.
+          </p>
+        </div>
+
         <InlineChallenge
-          question="Sau forward propagation, mô hình dự đoán ŷ = 0.647 nhưng nhãn thực tế y = 1. Bước tiếp theo là gì?"
-          options={[
-            "Tính loss (sai số) rồi dùng backpropagation để cập nhật trọng số",
-            "Chạy forward propagation thêm lần nữa",
-            "Thay đổi đầu vào cho đến khi ŷ = 1",
-          ]}
-          correct={0}
-          explanation="Forward pass cho dự đoán, loss đo sai số, rồi backpropagation tính gradient để cập nhật trọng số. Đây là vòng lặp huấn luyện: forward → loss → backward → cập nhật."
+          question="Đầu ra a của lớp ẩn là gì?"
+          options={["[8, -1]", "[8, 0]", "[0, 0]", "[2, 3]"]}
+          correct={1}
+          explanation="z = [8, -1]. ReLU(8) = 8 (giữ nguyên vì dương), ReLU(-1) = 0 (cắt phần âm về 0). Do đó a = [8, 0]. Đáp án A sai vì chưa qua ReLU; đáp án C sai vì cả hai nơ-ron đều bị cắt; đáp án D là chính x, không phải đầu ra của lớp."
         />
 
         <div className="h-4" />
 
         <InlineChallenge
-          question="Mạng có 3 lớp ẩn, mỗi lớp dùng sigmoid. Bạn nhận thấy đầu ra gần như không thay đổi dù x thay đổi mạnh. Lý do khả dĩ nhất?"
-          options={[
-            "Trọng số quá nhỏ → z luôn gần 0 → sigmoid(z) ≈ 0.5 với mọi đầu vào",
-            "Forward pass bị lỗi kỹ thuật",
-            "Sigmoid không phải hàm kích hoạt hợp lệ",
-            "Mạng cần nhiều đầu vào hơn",
-          ]}
-          correct={0}
-          explanation="Khi mọi nơ-ron đều 'bão hoà' quanh 0.5 (vùng phẳng của sigmoid), tín hiệu khó đi qua — đây là tiền đề cho vấn đề vanishing gradient. Cách khắc phục: dùng ReLU cho lớp ẩn, hoặc khởi tạo W tốt hơn (He/Xavier init)."
+          question="Nếu bạn đổi bias của nơ-ron thứ hai từ 1 thành 5 (các số khác giữ nguyên), đầu ra mới là gì?"
+          options={["[8, 0]", "[8, 3]", "[12, 3]", "[0, 3]"]}
+          correct={1}
+          explanation="Chỉ bias thay đổi, không đụng W. z[2] mới = (-1)·2 + 0·3 + 5 = 3. ReLU(3) = 3 vì đã dương. z[1] và a[1] không đổi (vẫn 8). Vậy a mới = [8, 3]. Bias giúp nơ-ron 'ra khỏi vùng bị ReLU cắt' mà không cần thay đổi đầu vào."
         />
       </LessonSection>
 
-      {/* =============== STEP 8: EXPLANATION =============== */}
-      <LessonSection step={8} totalSteps={9} label="Giải thích">
-        <ExplanationSection>
+      {/* ═══════════════ BƯỚC 6 — AHA ═══════════════ */}
+      <LessonSection step={6} totalSteps={8} label="Khoảnh khắc hiểu">
+        <AhaMoment>
+          Lan truyền thuận không phải thứ gì bí ẩn — nó chỉ là hai phép tính
+          lặp lại ở mỗi lớp: <strong>z = W·a + b</strong> rồi{" "}
+          <strong>a = f(z)</strong>.
+          <br />
+          <br />
+          Dữ liệu đi một chiều, mỗi trạm biến đổi một chút. Dù mạng có ba lớp
+          hay ba trăm lớp, công thức vẫn đúng — chỉ lặp nhiều hơn.
+        </AhaMoment>
+      </LessonSection>
+
+      {/* ═══════════════ BƯỚC 7 — EXPLAIN ═══════════════ */}
+      <LessonSection step={7} totalSteps={8} label="Giải thích">
+        <ExplanationSection topicSlug={metadata.slug}>
           <p>
-            <strong>Lan truyền tiến (Forward Propagation)</strong> là quá trình
-            đưa dữ liệu qua mạng để tạo ra dự đoán. Tại mỗi lớp:
+            <strong>Lan truyền thuận (forward propagation)</strong> là quá
+            trình đưa dữ liệu đi qua mạng nơ-ron từ đầu vào tới đầu ra. Ở mỗi
+            lớp, ta lặp đúng <em>hai bước</em>: biến đổi tuyến tính rồi áp dụng
+            hàm kích hoạt.
           </p>
 
-          <p>
-            <strong>Bước 1 — Biến đổi tuyến tính</strong> (dựa trên{" "}
-            <TopicLink slug="vectors-and-matrices">
-              đại số tuyến tính
-            </TopicLink>
-            ):
-          </p>
+          <h4 className="text-sm font-semibold text-foreground mt-4">
+            Công thức một lớp (dạng ma trận)
+          </h4>
           <LaTeX block>
-            {"z^{[l]} = W^{[l]} \\cdot a^{[l-1]} + b^{[l]}"}
+            {"z^{[l]} = W^{[l]} a^{[l-1]} + b^{[l]}, \\quad a^{[l]} = f^{[l]}(z^{[l]})"}
           </LaTeX>
+          <div className="rounded-lg border border-border bg-surface/40 p-3 text-sm text-foreground/85 leading-relaxed">
+            <strong>Đọc thành lời Việt:</strong> &ldquo;Ở lớp thứ l, lấy đầu ra
+            của lớp trước là a<sup>[l-1]</sup>, nhân với ma trận trọng số W
+            <sup>[l]</sup>, cộng bias b<sup>[l]</sup> → ra z<sup>[l]</sup>.
+            Sau đó cho qua hàm kích hoạt f → ra a<sup>[l]</sup>.&rdquo;
+          </div>
 
-          <p>
-            <strong>Bước 2 — Hàm kích hoạt:</strong>
-          </p>
-          <LaTeX block>{"a^{[l]} = f(z^{[l]})"}</LaTeX>
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Cả vòng lan truyền viết gọn
+          </h4>
+          <LaTeX block>
+            {"\\hat{y} = f^{[L]}\\big(W^{[L]} \\cdots f^{[2]}(W^{[2]} f^{[1]}(W^{[1]} x + b^{[1]}) + b^{[2]}) \\cdots + b^{[L]}\\big)"}
+          </LaTeX>
+          <div className="rounded-lg border border-border bg-surface/40 p-3 text-sm text-foreground/85 leading-relaxed">
+            <strong>Đọc thành lời:</strong> đầu vào x đi vào, áp dụng công thức{" "}
+            <em>(nhân trọng số + bias) → hàm kích hoạt</em> cho mọi lớp từ 1
+            tới L. Kết quả cuối cùng ŷ = a<sup>[L]</sup> là dự đoán của mạng.
+          </div>
 
-          <p>
-            Lặp lại cho mỗi lớp từ <LaTeX>{"l=1"}</LaTeX> đến lớp cuối cùng. Đầu
-            ra cuối <LaTeX>{"\\hat{y} = a^{[L]}"}</LaTeX> là dự đoán của mạng.
-          </p>
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Ở lớp cuối: softmax cho phân loại
+          </h4>
+          <LaTeX block>
+            {"\\operatorname{softmax}(z)_k = \\dfrac{e^{z_k}}{\\sum_{j} e^{z_j}}"}
+          </LaTeX>
+          <div className="rounded-lg border border-border bg-surface/40 p-3 text-sm text-foreground/85 leading-relaxed">
+            <strong>Ý nghĩa:</strong> lấy mũ của mỗi logit rồi chia đều, ép các
+            con số thành phân phối xác suất — cộng lại bằng 1, không âm. Đó là
+            lý do đầu ra của mô hình phân loại luôn đọc được như &ldquo;70%
+            Mèo, 20% Chó, 10% Chim&rdquo;.
+          </div>
 
-          <Callout
-            variant="info"
-            title="Forward pass trong huấn luyện vs inference"
-          >
-            <strong>Huấn luyện:</strong> Cần lưu lại tất cả giá trị trung gian
-            (z, a) ở mỗi lớp —{" "}
-            <TopicLink slug="backpropagation">backpropagation</TopicLink> sẽ
-            dùng chúng để tính gradient.
-            <br />
-            <strong>Inference (suy luận):</strong> Chỉ cần đầu ra cuối, không
-            lưu giá trị trung gian, không tính gradient → nhanh hơn nhiều.
+          {/* SVG minh hoạ so sánh logits vs softmax */}
+          <div className="rounded-xl border border-border bg-surface/40 p-4 my-4">
+            <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-3">
+              Từ logits tới xác suất — ảnh chụp cho đầu vào hiện tại
+            </p>
+            <svg viewBox="0 0 520 180" className="w-full max-w-xl mx-auto">
+              <line
+                x1={40}
+                y1={150}
+                x2={500}
+                y2={150}
+                stroke="var(--border)"
+                strokeWidth={1}
+              />
+              {snapshot.z2.map((z, k) => {
+                const maxAbs = Math.max(
+                  1,
+                  ...snapshot.z2.map((v) => Math.abs(v)),
+                );
+                const barH = (z / maxAbs) * 50;
+                const x = 60 + k * 70;
+                const color = z >= 0 ? "#10b981" : "#ef4444";
+                return (
+                  <g key={`lg-${k}`}>
+                    <rect
+                      x={x}
+                      y={z >= 0 ? 150 - barH : 150}
+                      width={36}
+                      height={Math.abs(barH)}
+                      rx={3}
+                      fill={color}
+                      opacity={0.85}
+                    />
+                    <text
+                      x={x + 18}
+                      y={170}
+                      textAnchor="middle"
+                      fontSize={10}
+                      fill="var(--text-secondary)"
+                    >
+                      z — {CLASS_LABELS[k]}
+                    </text>
+                    <text
+                      x={x + 18}
+                      y={z >= 0 ? 150 - barH - 4 : 150 + barH + 12}
+                      textAnchor="middle"
+                      fontSize={9}
+                      fill="var(--text-primary)"
+                    >
+                      {z.toFixed(2)}
+                    </text>
+                  </g>
+                );
+              })}
+
+              {/* Spaceful divider */}
+              <text
+                x={275}
+                y={90}
+                textAnchor="middle"
+                fontSize={14}
+                fill="var(--text-secondary)"
+              >
+                →
+              </text>
+
+              {snapshot.a2.map((p, k) => {
+                const barH = p * 100;
+                const x = 310 + k * 70;
+                const isTop = k === snapshot.prediction;
+                return (
+                  <g key={`pr-${k}`}>
+                    <rect
+                      x={x}
+                      y={150 - barH}
+                      width={36}
+                      height={barH}
+                      rx={3}
+                      fill={isTop ? "#6366f1" : "#94a3b8"}
+                      opacity={isTop ? 0.9 : 0.6}
+                    />
+                    <text
+                      x={x + 18}
+                      y={170}
+                      textAnchor="middle"
+                      fontSize={10}
+                      fill="var(--text-secondary)"
+                    >
+                      {CLASS_LABELS[k]}
+                    </text>
+                    <text
+                      x={x + 18}
+                      y={150 - barH - 4}
+                      textAnchor="middle"
+                      fontSize={9}
+                      fill="var(--text-primary)"
+                    >
+                      {(p * 100).toFixed(0)}%
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+            <p className="text-[11px] text-muted text-center mt-2 italic leading-relaxed">
+              Bên trái: logits z (có thể âm). Bên phải: sau softmax — phân phối
+              xác suất, cột cao nhất chính là dự đoán.
+            </p>
+          </div>
+
+          <Callout variant="warning" title="Bỏ hàm kích hoạt = mất sức mạnh">
+            Nếu tất cả lớp chỉ có phép nhân ma trận và không có hàm kích hoạt,
+            toàn mạng sẽ sụp về <em>một phép biến đổi tuyến tính duy nhất</em>.
+            Dù xếp 100 lớp, mạng vẫn tương đương một đường thẳng — không vẽ
+            được ranh giới cong. ReLU / sigmoid / tanh là chính thứ tạo ra sức
+            mạnh phi tuyến của mạng nơ-ron.
           </Callout>
 
-          <CodeBlock language="python" title="forward_pass.py">
-{`import numpy as np
-
-def forward(X, weights, biases):
-    """Forward pass qua mạng nơ-ron — phiên bản gốc."""
-    a = X  # đầu vào ban đầu, shape (batch, input_dim)
-    cache = [a]  # lưu lại cho backprop
-
-    for W, b in zip(weights[:-1], biases[:-1]):
-        z = a @ W + b          # biến đổi tuyến tính
-        a = np.maximum(0, z)   # ReLU cho lớp ẩn
-        cache.append(a)
-
-    # Lớp cuối: sigmoid cho phân loại nhị phân
-    z = a @ weights[-1] + biases[-1]
-    y_hat = 1 / (1 + np.exp(-z))
-    cache.append(y_hat)
-
-    return y_hat, cache`}
-          </CodeBlock>
-
-          <p>
-            Phiên bản trên dùng NumPy, đơn giản cho mục đích học. Trong thực tế,
-            các thư viện như PyTorch tự động tạo computation graph để backprop:
-          </p>
-
-          <CodeBlock language="python" title="forward_pytorch.py">
-{`import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
-class MLP(nn.Module):
-    def __init__(self, in_dim=784, hidden=128, out_dim=10):
-        super().__init__()
-        self.fc1 = nn.Linear(in_dim, hidden)
-        self.fc2 = nn.Linear(hidden, hidden)
-        self.fc3 = nn.Linear(hidden, out_dim)
-
-    def forward(self, x):
-        # Mỗi lớp = Linear(W, b) + activation
-        h1 = F.relu(self.fc1(x))    # lớp ẩn 1
-        h2 = F.relu(self.fc2(h1))   # lớp ẩn 2
-        logits = self.fc3(h2)       # đầu ra thô (chưa softmax)
-        return logits
-
-model = MLP()
-x = torch.randn(32, 784)           # batch 32 ảnh MNIST
-
-# Huấn luyện: cần gradient
-logits = model(x)                  # computation graph được dựng
-
-# Inference: tắt gradient, nhanh và tiết kiệm RAM
-model.eval()
-with torch.no_grad():
-    preds = model(x).argmax(dim=1)`}
-          </CodeBlock>
-
-          <Callout variant="tip" title="Mẹo tối ưu inference">
-            Khi deploy mô hình, dùng <strong>torch.no_grad()</strong> hoặc{" "}
-            <strong>model.eval()</strong> để tắt tính gradient — tiết kiệm bộ
-            nhớ và tăng tốc 2-3 lần. Giống như khi nấu phở để bán, bạn không
-            cần ghi lại từng bước nữa!
-          </Callout>
-
-          <Callout
-            variant="warning"
-            title="Đừng quên chuyển sang .eval() khi inference"
-          >
-            Các layer như <code>Dropout</code> và <code>BatchNorm</code> hoạt
-            động KHÁC giữa chế độ huấn luyện và inference. Quên gọi{" "}
-            <code>model.eval()</code> có thể làm đầu ra không ổn định. Một bug
-            thầm lặng nhưng rất phổ biến trong production.
-          </Callout>
-
-          <CollapsibleDetail title="Vectorization: tại sao batch giúp GPU chạy nhanh">
-            <div className="space-y-3 text-sm text-muted leading-relaxed">
-              <p>
-                Với một mẫu, bạn tính <code>z = W·x + b</code>. Với batch 32
-                mẫu, bạn xếp chúng thành ma trận{" "}
-                <code>X ∈ ℝ^{"{32 × d}"}</code> và tính{" "}
-                <code>Z = X·W + b</code> một lần. GPU sẽ phân công 32 phép nhân
-                song song trên hàng ngàn core — thường nhanh gấp 20-50 lần so
-                với vòng lặp Python.
-              </p>
-              <p>
-                Đây là lý do mọi framework học sâu đều yêu cầu{" "}
-                <strong>batch dimension ở đầu tensor</strong>. Bạn KHÔNG viết
-                vòng for <code>for sample in batch</code> — bạn vector hoá.
-              </p>
-              <CodeBlock language="python" title="vectorized_forward.py">
-{`# Thay vì (chậm):
-outputs = []
-for x in batch:            # 32 mẫu riêng biệt
-    z = W @ x + b
-    outputs.append(relu(z))
-
-# Hãy viết (nhanh gấp nhiều lần):
-Z = batch @ W + b           # batch shape (32, d) @ W (d, h) → (32, h)
-A = np.maximum(0, Z)`}
-              </CodeBlock>
-            </div>
+          <CollapsibleDetail title="Vì sao gọi là forward?">
+            <p className="text-sm leading-relaxed">
+              &ldquo;Forward&rdquo; ở đây nghĩa là đi{" "}
+              <strong>theo chiều xuôi</strong>: đầu vào &rarr; lớp 1 &rarr; lớp
+              2 &rarr; ... &rarr; lớp cuối &rarr; đầu ra. Khi huấn luyện,
+              chúng ta đi chiều ngược lại để tính gradient — gọi là{" "}
+              <TopicLink slug="backpropagation">
+                lan truyền ngược (backpropagation)
+              </TopicLink>
+              . Hai chiều này luôn đi kèm nhau trong một vòng huấn luyện:
+              forward để đoán, backward để sửa sai.
+            </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Forward pass trong Transformer: có gì đặc biệt?">
-            <div className="space-y-3 text-sm text-muted leading-relaxed">
-              <p>
-                Transformer (GPT, BERT) vẫn tuân theo nguyên tắc forward
-                propagation, nhưng mỗi &quot;lớp&quot; phức tạp hơn. Một block
-                gồm:
-              </p>
-              <ol className="list-decimal list-inside space-y-1">
-                <li>
-                  <strong>Self-attention:</strong> tính Q, K, V từ x rồi{" "}
-                  <code>attention(Q, K, V) = softmax(QKᵀ / √d) · V</code>
-                </li>
-                <li>
-                  <strong>Residual + LayerNorm:</strong>{" "}
-                  <code>x = LN(x + attn_out)</code>
-                </li>
-                <li>
-                  <strong>Feed-forward:</strong> 2 lớp Linear với GELU ở giữa
-                </li>
-                <li>
-                  <strong>Residual + LayerNorm</strong> lần nữa
-                </li>
-              </ol>
-              <p>
-                Bản chất vẫn là: <em>biến đổi tuyến tính → phi tuyến → lặp</em>.
-                Chỉ khác là chiều biến đổi giờ phụ thuộc vào NHIỀU token cùng
-                lúc (qua attention), không chỉ token hiện tại.
-              </p>
-            </div>
+          <CollapsibleDetail title="Tại sao dùng ReLU ở lớp ẩn mà không dùng sigmoid?">
+            <p className="text-sm leading-relaxed">
+              Lịch sử ban đầu dùng sigmoid cho mọi lớp. Nhưng sigmoid có hai
+              vấn đề khi mạng sâu: (1) giá trị bị đẩy về giữa 0 và 1 nên{" "}
+              <em>tín hiệu bão hoà</em>, mạng khó học; (2) tính đạo hàm tốn
+              kém. ReLU chỉ là &ldquo;max(0, z)&rdquo; — rẻ, không bão hoà phía
+              dương, và đã trở thành lựa chọn mặc định cho lớp ẩn trong hầu hết
+              các kiến trúc hiện đại. Chi tiết thêm trong bài{" "}
+              <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink>.
+            </p>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* =============== STEP 9: MINI SUMMARY + QUIZ =============== */}
-      <LessonSection step={9} totalSteps={9} label="Tổng kết & Kiểm tra">
+      {/* ═══════════════ BƯỚC 8 — CONNECT + QUIZ ═══════════════ */}
+      <LessonSection step={8} totalSteps={8} label="Kết nối & Kiểm tra">
         <MiniSummary
-          title="Forward Propagation — Điểm chốt"
+          title="Lan truyền thuận — 5 điều cần nhớ"
           points={[
-            "Forward pass = lặp 2 phép tính tại mỗi lớp: z = W·a + b, rồi a = f(z).",
-            "Dữ liệu đi MỘT CHIỀU từ đầu vào → lớp ẩn → đầu ra, không quay lại.",
-            "Đầu ra cuối cùng (ŷ) được so sánh với nhãn thực (y) qua hàm loss.",
-            "Khi huấn luyện: lưu giá trị trung gian cho backpropagation. Khi inference: bỏ qua → nhanh hơn.",
-            "Trọng số W, b dùng chung cho mọi mẫu trong batch — đây là cơ sở để vector hoá trên GPU.",
-            "Vòng lặp huấn luyện: forward → loss → backward → cập nhật trọng số → lặp lại.",
+            "Dữ liệu đi MỘT CHIỀU: đầu vào → lớp ẩn → lớp ra. Không bao giờ quay lại.",
+            "Mỗi lớp lặp đúng hai phép tính: z = W·a + b, rồi a = f(z).",
+            "Hàm kích hoạt (ReLU, sigmoid, tanh...) cung cấp tính phi tuyến. Bỏ nó đi, mạng sụp về một đường thẳng.",
+            "Với phân loại, lớp cuối thường dùng softmax để biến logits thành xác suất cộng = 1.",
+            "W và b cố định trong lan truyền thuận; chúng chỉ đổi khi huấn luyện (qua lan truyền ngược).",
           ]}
         />
+
+        <div className="h-6" />
+
+        <Callout variant="tip" title="Bước tiếp theo: sửa sai bằng lan truyền ngược">
+          Lan truyền thuận cho ra dự đoán ŷ. Nếu ŷ chưa khớp nhãn thực y, mạng
+          phải học cách sửa. Quy trình này đi ngược chiều vừa rồi — mỗi lớp
+          hỏi &ldquo;tôi đã đóng góp bao nhiêu vào sai số?&rdquo; rồi cập nhật
+          trọng số. Xem tiếp tại{" "}
+          <TopicLink slug="backpropagation">lan truyền ngược</TopicLink>, hoặc
+          ôn lại{" "}
+          <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> và{" "}
+          <TopicLink slug="mlp">kiến trúc MLP</TopicLink> nếu cần.
+        </Callout>
 
         <div className="h-6" />
 

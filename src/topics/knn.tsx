@@ -1,32 +1,28 @@
 "use client";
 
-// =============================================================================
-// TOPIC — K-Nearest Neighbors (KNN)
-// =============================================================================
-// Mục tiêu: người học hiểu được thuật toán KNN chỉ sau vài phút tương tác với
-// một demo trực quan. Sau phần demo, họ phải nắm được:
-//   (1) KNN phân loại bằng cách "hỏi ý kiến" K hàng xóm gần nhất.
-//   (2) K nhỏ → nhạy cảm nhiễu, biên quyết định "lởm chởm".
-//   (3) K lớn → mượt mà nhưng có thể bỏ sót cấu trúc nhỏ.
-//   (4) KNN là thuật toán "lười" — không train, chỉ nhớ dữ liệu.
-//   (5) Chuẩn hóa đặc trưng rất quan trọng vì KNN dựa vào khoảng cách.
-//   (6) Độ phức tạp dự đoán O(N·d) dễ trở thành nút cổ chai khi N lớn.
-// =============================================================================
-
 import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
+import {
+  Users,
+  MapPin,
+  Target,
+  RotateCcw,
+  Ruler,
+  Grid2x2,
+  Lightbulb,
+} from "lucide-react";
 import {
   PredictionGate,
   AhaMoment,
   InlineChallenge,
   Callout,
-  CollapsibleDetail,
   MiniSummary,
-  CodeBlock,
   LessonSection,
   LaTeX,
   TopicLink,
-  ProgressSteps,
+  SliderGroup,
+  ToggleCompare,
+  StepReveal,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -34,16 +30,15 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-// ---------------------------------------------------------------------------
-// METADATA
-// ---------------------------------------------------------------------------
-
+/* ════════════════════════════════════════════════════════════════════
+ * METADATA
+ * ════════════════════════════════════════════════════════════════════ */
 export const metadata: TopicMeta = {
   slug: "knn",
   title: "K-Nearest Neighbors",
-  titleVi: "K láng giềng gần nhất",
+  titleVi: "k láng giềng gần nhất (k-NN)",
   description:
-    "Thuật toán phân loại 'lười': dự đoán nhãn bằng cách bỏ phiếu theo K điểm gần nhất trong tập huấn luyện.",
+    "Muốn biết một điểm thuộc nhóm nào? Hỏi k láng giềng gần nhất rồi lấy theo đa số. Đơn giản, trực quan — và đủ mạnh để làm nền cho nhiều hệ thống gợi ý.",
   category: "classic-ml",
   tags: ["classification", "supervised-learning", "distance", "lazy-learning"],
   difficulty: "beginner",
@@ -51,949 +46,1121 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-// ---------------------------------------------------------------------------
-// KIỂU DỮ LIỆU & TIỆN ÍCH HÌNH HỌC
-// ---------------------------------------------------------------------------
-
+/* ════════════════════════════════════════════════════════════════════
+ * DỮ LIỆU — 3 lớp, 45 điểm, toạ độ [0,400]x[0,320]
+ * Ẩn dụ: người trong cùng khu vực ở TP.HCM thường đi chung loại quán ăn
+ * ════════════════════════════════════════════════════════════════════ */
 type ClassId = "A" | "B" | "C";
+type Pt = { x: number; y: number; cls: ClassId };
+type DPt = Pt & { d: number };
 
-type LabeledPoint = {
-  x: number;
-  y: number;
-  cls: ClassId;
+const DATA: Pt[] = [
+  // Cluster A — phía trên bên trái (quán cơm)
+  { x: 60, y: 50, cls: "A" },
+  { x: 80, y: 80, cls: "A" },
+  { x: 100, y: 40, cls: "A" },
+  { x: 110, y: 90, cls: "A" },
+  { x: 130, y: 60, cls: "A" },
+  { x: 50, y: 100, cls: "A" },
+  { x: 140, y: 110, cls: "A" },
+  { x: 90, y: 120, cls: "A" },
+  { x: 150, y: 80, cls: "A" },
+  { x: 70, y: 140, cls: "A" },
+  { x: 160, y: 50, cls: "A" },
+  { x: 120, y: 140, cls: "A" },
+  { x: 100, y: 160, cls: "A" },
+  { x: 180, y: 90, cls: "A" },
+  { x: 175, y: 135, cls: "A" },
+  // Cluster B — phía trên bên phải (quán phở)
+  { x: 280, y: 50, cls: "B" },
+  { x: 300, y: 80, cls: "B" },
+  { x: 320, y: 50, cls: "B" },
+  { x: 340, y: 90, cls: "B" },
+  { x: 290, y: 120, cls: "B" },
+  { x: 350, y: 130, cls: "B" },
+  { x: 310, y: 140, cls: "B" },
+  { x: 360, y: 70, cls: "B" },
+  { x: 330, y: 170, cls: "B" },
+  { x: 265, y: 90, cls: "B" },
+  { x: 375, y: 100, cls: "B" },
+  { x: 295, y: 40, cls: "B" },
+  { x: 335, y: 40, cls: "B" },
+  { x: 370, y: 150, cls: "B" },
+  { x: 345, y: 180, cls: "B" },
+  // Cluster C — phía dưới giữa (quán bánh mì)
+  { x: 170, y: 220, cls: "C" },
+  { x: 200, y: 240, cls: "C" },
+  { x: 230, y: 220, cls: "C" },
+  { x: 190, y: 270, cls: "C" },
+  { x: 215, y: 280, cls: "C" },
+  { x: 240, y: 260, cls: "C" },
+  { x: 170, y: 250, cls: "C" },
+  { x: 250, y: 290, cls: "C" },
+  { x: 200, y: 295, cls: "C" },
+  { x: 260, y: 230, cls: "C" },
+  { x: 150, y: 230, cls: "C" },
+  { x: 225, y: 250, cls: "C" },
+  { x: 180, y: 295, cls: "C" },
+  { x: 255, y: 265, cls: "C" },
+  { x: 160, y: 280, cls: "C" },
+];
+
+const COLOR: Record<ClassId, string> = {
+  A: "#ef4444",
+  B: "#3b82f6",
+  C: "#10b981",
+};
+const SOFT: Record<ClassId, string> = {
+  A: "rgba(239,68,68,0.14)",
+  B: "rgba(59,130,246,0.14)",
+  C: "rgba(16,185,129,0.14)",
+};
+const LABEL: Record<ClassId, string> = {
+  A: "Cơm tấm (đỏ)",
+  B: "Phở (xanh dương)",
+  C: "Bánh mì (xanh lá)",
 };
 
-type DistancedPoint = LabeledPoint & { d: number };
+const W = 400;
+const H = 320;
+const GRID = 20;
 
-// Khoảng cách Euclid 2 chiều — KNN cơ bản nhất dùng công thức này.
-// Các biến thể (Manhattan, Minkowski, Cosine) chỉ thay đổi phép tính này.
-function euclidean(ax: number, ay: number, bx: number, by: number): number {
+/* ════════════════════════════════════════════════════════════════════
+ * TIỆN ÍCH
+ * ════════════════════════════════════════════════════════════════════ */
+function euclid(ax: number, ay: number, bx: number, by: number): number {
   const dx = ax - bx;
   const dy = ay - by;
   return Math.sqrt(dx * dx + dy * dy);
 }
-
-// Bỏ phiếu đa số — trả về nhãn xuất hiện nhiều nhất trong mảng.
-// Ties (hòa phiếu) xử lý bằng thứ tự khai báo class; thực tế nên xử lý kỹ hơn.
-function majorityVote(labels: ClassId[]): ClassId {
-  const counts: Record<ClassId, number> = { A: 0, B: 0, C: 0 };
-  for (const l of labels) counts[l] += 1;
-  let best: ClassId = "A";
-  let bestCount = -1;
-  (Object.keys(counts) as ClassId[]).forEach((k) => {
-    if (counts[k] > bestCount) {
-      best = k;
-      bestCount = counts[k];
-    }
-  });
-  return best;
+function manhattan(ax: number, ay: number, bx: number, by: number): number {
+  return Math.abs(ax - bx) + Math.abs(ay - by);
 }
+type Metric = "euclid" | "manhattan";
 
-// ---------------------------------------------------------------------------
-// BỘ DỮ LIỆU MINH HỌA — 40 điểm chia làm 3 lớp
-// ---------------------------------------------------------------------------
-// Toạ độ trong khoảng [0, 500] × [0, 400]. Ba cụm được thiết kế để tương đối
-// tách biệt nhưng có vài điểm chồng lấn gần biên — tạo cơ hội thấy hiệu ứng
-// của K khác nhau.
-
-const DATASET: LabeledPoint[] = [
-  // Lớp A — cụm trên-trái
-  { x: 80, y: 80, cls: "A" },
-  { x: 110, y: 70, cls: "A" },
-  { x: 90, y: 120, cls: "A" },
-  { x: 130, y: 100, cls: "A" },
-  { x: 70, y: 150, cls: "A" },
-  { x: 140, y: 140, cls: "A" },
-  { x: 100, y: 180, cls: "A" },
-  { x: 160, y: 80, cls: "A" },
-  { x: 180, y: 130, cls: "A" },
-  { x: 120, y: 60, cls: "A" },
-  { x: 170, y: 170, cls: "A" },
-  { x: 200, y: 110, cls: "A" },
-  { x: 60, y: 100, cls: "A" },
-  { x: 150, y: 200, cls: "A" },
-  // Lớp B — cụm trên-phải
-  { x: 340, y: 70, cls: "B" },
-  { x: 370, y: 110, cls: "B" },
-  { x: 400, y: 80, cls: "B" },
-  { x: 430, y: 130, cls: "B" },
-  { x: 360, y: 60, cls: "B" },
-  { x: 420, y: 170, cls: "B" },
-  { x: 380, y: 200, cls: "B" },
-  { x: 440, y: 90, cls: "B" },
-  { x: 310, y: 140, cls: "B" },
-  { x: 390, y: 150, cls: "B" },
-  { x: 350, y: 190, cls: "B" },
-  { x: 410, y: 220, cls: "B" },
-  { x: 460, y: 160, cls: "B" },
-  // Lớp C — cụm dưới-giữa
-  { x: 220, y: 300, cls: "C" },
-  { x: 250, y: 280, cls: "C" },
-  { x: 280, y: 320, cls: "C" },
-  { x: 200, y: 340, cls: "C" },
-  { x: 260, y: 360, cls: "C" },
-  { x: 300, y: 290, cls: "C" },
-  { x: 230, y: 370, cls: "C" },
-  { x: 180, y: 310, cls: "C" },
-  { x: 310, y: 340, cls: "C" },
-  { x: 270, y: 310, cls: "C" },
-  { x: 330, y: 360, cls: "C" },
-  { x: 210, y: 260, cls: "C" },
-  { x: 290, y: 250, cls: "C" },
-];
-
-// Bảng màu cho 3 lớp — chọn theo CSS variable của design system để đồng bộ
-// với phần còn lại của trang.
-const CLASS_COLOR: Record<ClassId, string> = {
-  A: "#ef4444", // đỏ
-  B: "#3b82f6", // xanh dương
-  C: "#10b981", // xanh lục
-};
-
-const CLASS_FILL_SOFT: Record<ClassId, string> = {
-  A: "rgba(239, 68, 68, 0.18)",
-  B: "rgba(59, 130, 246, 0.18)",
-  C: "rgba(16, 185, 129, 0.18)",
-};
-
-const CLASS_LABEL: Record<ClassId, string> = {
-  A: "Lớp A (đỏ)",
-  B: "Lớp B (xanh dương)",
-  C: "Lớp C (xanh lục)",
-};
-
-// Kích thước canvas visualization.
-const W = 500;
-const H = 400;
-
-// Độ phân giải lưới cho decision boundary. Giá trị càng nhỏ → boundary mượt
-// hơn nhưng render chậm. 16 là cân bằng tốt cho demo trong trình duyệt.
-const GRID_STEP = 16;
-
-// ---------------------------------------------------------------------------
-// TIỆN ÍCH KNN
-// ---------------------------------------------------------------------------
-
-// Hàm dự đoán nhãn cho một điểm (qx, qy) dựa trên K hàng xóm gần nhất.
-// Trả về cả nhãn và danh sách hàng xóm để hiển thị.
-function knnPredict(
+function knn(
   qx: number,
   qy: number,
   k: number,
-  dataset: LabeledPoint[],
-): { label: ClassId; neighbors: DistancedPoint[] } {
-  const scored: DistancedPoint[] = dataset.map((p) => ({
+  metric: Metric,
+  data: Pt[] = DATA,
+): { label: ClassId; neighbors: DPt[] } {
+  const fn = metric === "euclid" ? euclid : manhattan;
+  const scored: DPt[] = data.map((p) => ({
     ...p,
-    d: euclidean(qx, qy, p.x, p.y),
+    d: fn(qx, qy, p.x, p.y),
   }));
   scored.sort((a, b) => a.d - b.d);
   const top = scored.slice(0, k);
-  const label = majorityVote(top.map((p) => p.cls));
-  return { label, neighbors: top };
+  const count: Record<ClassId, number> = { A: 0, B: 0, C: 0 };
+  top.forEach((t) => {
+    count[t.cls] += 1;
+  });
+  let best: ClassId = "A";
+  let max = -1;
+  (Object.keys(count) as ClassId[]).forEach((c) => {
+    if (count[c] > max) {
+      best = c;
+      max = count[c];
+    }
+  });
+  return { label: best, neighbors: top };
 }
 
-// Trả về nhãn thôi — dùng khi tính decision boundary, không cần neighbors.
-function knnLabelOnly(
-  qx: number,
-  qy: number,
-  k: number,
-  dataset: LabeledPoint[],
-): ClassId {
-  return knnPredict(qx, qy, k, dataset).label;
-}
+/* ════════════════════════════════════════════════════════════════════
+ * DEMO 1 — CANVAS TƯƠNG TÁC
+ * ════════════════════════════════════════════════════════════════════ */
+function KnnPlayground() {
+  const [query, setQuery] = useState<{ x: number; y: number }>({
+    x: 210,
+    y: 170,
+  });
+  const [k, setK] = useState<number>(5);
+  const [showBoundary, setShowBoundary] = useState<boolean>(false);
+  const [metric, setMetric] = useState<Metric>("euclid");
 
-// ---------------------------------------------------------------------------
-// QUIZ
-// ---------------------------------------------------------------------------
-
-const QUIZ: QuizQuestion[] = [
-  {
-    question:
-      "Khi tăng K từ 1 lên 15 trong KNN, biên quyết định (decision boundary) thường thay đổi như thế nào?",
-    options: [
-      "Càng lởm chởm hơn vì càng nhiều điểm tham gia bỏ phiếu.",
-      "Càng mượt hơn và ít nhạy cảm với nhiễu.",
-      "Không thay đổi — K chỉ ảnh hưởng tốc độ tính.",
-      "Luôn dịch về phía lớp đa số của toàn bộ tập huấn luyện.",
-    ],
-    correct: 1,
-    explanation:
-      "K lớn → mỗi dự đoán bị ảnh hưởng bởi nhiều điểm hơn, cho nên nhiễu cục bộ bị trung hòa. Hệ quả: biên quyết định mượt hơn, bias tăng nhưng variance giảm.",
-  },
-  {
-    question:
-      "KNN được gọi là 'lazy learner' (thuật toán lười) vì lý do nào?",
-    options: [
-      "Vì nó chỉ chạy được trên CPU, không tận dụng GPU.",
-      "Vì độ chính xác thấp hơn các thuật toán khác.",
-      "Vì không có giai đoạn huấn luyện — model 'chỉ nhớ' dữ liệu, mọi tính toán diễn ra lúc dự đoán.",
-      "Vì nó từ chối học các đặc trưng phi tuyến.",
-    ],
-    correct: 2,
-    explanation:
-      "KNN không học tham số. Dự đoán được thực hiện bằng cách tìm K điểm gần nhất trong tập train tại thời điểm hỏi → chi phí dồn hết vào lúc inference.",
-  },
-  {
-    question:
-      "Trong KNN, điều gì xảy ra nếu bạn KHÔNG chuẩn hóa đặc trưng trước khi huấn luyện?",
-    options: [
-      "Không sao, KNN tự co giãn thang đo đặc trưng.",
-      "Đặc trưng có thang giá trị lớn (ví dụ lương theo VND) sẽ chi phối khoảng cách, đặc trưng khác bị lấn át.",
-      "Mô hình sẽ train lâu hơn nhưng kết quả không đổi.",
-      "Chỉ số K tự động giảm đi một nửa để bù lại.",
-    ],
-    correct: 1,
-    explanation:
-      "Khoảng cách Euclid là tổng bình phương. Một đặc trưng trong khoảng [0, 10^8] sẽ nuốt chửng đặc trưng trong khoảng [0, 1]. Luôn dùng StandardScaler/MinMaxScaler trước.",
-  },
-  {
-    question:
-      "Một điểm truy vấn nằm ngay trên biên giữa lớp A và B. Với K=1, nó được dự đoán là A. Với K=5 nó thành B. Khả năng lớn nhất là gì?",
-    options: [
-      "Dataset bị lỗi — không thể nào K=5 cho kết quả khác K=1.",
-      "Điểm gần nhất là A nhưng 4 trong 5 điểm gần nhất tiếp theo thuộc B; đa số vẫn là B.",
-      "KNN có bug — hai giá trị K phải luôn đồng ý với nhau.",
-      "Phải chuẩn hóa lại dữ liệu bằng z-score mới có kết quả đúng.",
-    ],
-    correct: 1,
-    explanation:
-      "KNN với K=1 chỉ xét hàng xóm gần nhất duy nhất. Khi K tăng, quy luật đa số có thể đảo kết quả — điều này đặc biệt hay xảy ra tại vùng biên.",
-  },
-  {
-    question:
-      "Ứng với tập huấn luyện có N điểm trong không gian d chiều, độ phức tạp thời gian để KNN dự đoán MỘT điểm truy vấn (không dùng cấu trúc dữ liệu đặc biệt) là bao nhiêu?",
-    options: [
-      "O(1) — chỉ cần tra cứu.",
-      "O(log N).",
-      "O(N · d) — tính khoảng cách đến từng điểm trong tập train.",
-      "O(N^2 · d).",
-    ],
-    correct: 2,
-    explanation:
-      "Mỗi điểm huấn luyện cần O(d) để tính khoảng cách; với N điểm tổng chi phí là O(N·d). Có thể giảm xuống O(log N) bằng KD-tree trong không gian ít chiều, nhưng sẽ xuống cấp khi d lớn ('curse of dimensionality').",
-  },
-  {
-    question:
-      "Bạn có 3 lớp và chọn K=4. Trong 4 hàng xóm gần nhất, có 2 lớp A, 1 lớp B, 1 lớp C. Chiến lược phá hòa phổ biến nhất là gì?",
-    options: [
-      "Trả về nhãn của điểm gần nhất trong số các lớp hòa phiếu.",
-      "Luôn chọn lớp có tên đứng đầu theo thứ tự chữ cái.",
-      "Báo lỗi và yêu cầu người dùng đổi K.",
-      "Chia đôi xác suất giữa A và B.",
-    ],
-    correct: 0,
-    explanation:
-      "Đây không phải trường hợp hòa phiếu — A chiếm đa số tuyệt đối (2/4). Nhưng nếu thực sự hòa (ví dụ 2 lớp đều được 2 phiếu), chiến lược phổ biến là giảm K hoặc chọn lớp có tổng khoảng cách nhỏ hơn.",
-  },
-  {
-    question:
-      "KNN phù hợp nhất với bộ dữ liệu nào sau đây?",
-    options: [
-      "Tập gồm 10 triệu ảnh 224×224 cần phân loại real-time.",
-      "Tập nhỏ đến trung bình (vài nghìn điểm), đặc trưng đã chuẩn hóa, có ý nghĩa khoảng cách.",
-      "Tập văn bản raw chưa được vector hóa.",
-      "Tập có hàng trăm đặc trưng nhị phân và phân bố rất thưa.",
-    ],
-    correct: 1,
-    explanation:
-      "KNN sáng giá khi: (1) N vừa phải để inference đủ nhanh, (2) đặc trưng có nghĩa hình học, (3) đã chuẩn hóa. Với dữ liệu nhiều chiều, thưa, hoặc raw, các thuật toán khác thường tốt hơn.",
-  },
-  {
-    question:
-      "Nên chọn K theo quy tắc nào trong thực hành?",
-    options: [
-      "Luôn K=1 để mô hình 'sát' dữ liệu nhất.",
-      "K=N (toàn bộ tập train) vì càng nhiều hàng xóm càng tốt.",
-      "K ≈ √N và điều chỉnh bằng cross-validation; ưu tiên K lẻ để tránh hòa phiếu khi có 2 lớp.",
-      "K phải là số nguyên tố để tránh trùng lặp.",
-    ],
-    correct: 2,
-    explanation:
-      "K=1 quá nhạy nhiễu (overfit), K=N suy biến thành 'đoán lớp đa số'. Khởi điểm tốt là K≈√N và tinh chỉnh bằng k-fold cross-validation; dùng K lẻ khi nhị phân để giảm hòa phiếu.",
-  },
-];
-
-// Labels cho ProgressSteps — hiển thị lộ trình 7 bước.
-const STEP_LABELS = [
-  "Dự đoán",
-  "Ẩn dụ",
-  "Trực quan",
-  "Aha",
-  "Thử thách",
-  "Lý thuyết",
-  "Ôn tập",
-];
-
-// ---------------------------------------------------------------------------
-// COMPONENT CON — Canvas tương tác KNN
-// ---------------------------------------------------------------------------
-
-type DemoProps = {
-  k: number;
-  setK: (n: number) => void;
-  query: { x: number; y: number };
-  setQuery: (p: { x: number; y: number }) => void;
-  showBoundary: boolean;
-  setShowBoundary: (b: boolean) => void;
-};
-
-function KnnDemo({
-  k,
-  setK,
-  query,
-  setQuery,
-  showBoundary,
-  setShowBoundary,
-}: DemoProps) {
-  // Dự đoán nhãn cho điểm truy vấn hiện tại.
-  const prediction = useMemo(
-    () => knnPredict(query.x, query.y, k, DATASET),
-    [query, k],
+  const pred = useMemo(
+    () => knn(query.x, query.y, k, metric),
+    [query, k, metric],
   );
 
-  // Bán kính đường tròn bao K hàng xóm — lấy khoảng cách hàng xóm xa nhất.
   const radius = useMemo(() => {
-    const last = prediction.neighbors[prediction.neighbors.length - 1];
-    return last ? last.d : 0;
-  }, [prediction.neighbors]);
+    const last = pred.neighbors[pred.neighbors.length - 1];
+    return last?.d ?? 0;
+  }, [pred.neighbors]);
 
-  // Tính decision boundary: với mỗi ô lưới, tính nhãn KNN và tô màu mờ.
-  // useMemo để không tính lại khi query di chuyển — boundary chỉ phụ thuộc K.
-  const gridCells = useMemo(() => {
+  /* Decision boundary grid, tính lại khi k/metric đổi */
+  const grid = useMemo(() => {
     if (!showBoundary) return [];
-    const cells: Array<{ x: number; y: number; cls: ClassId }> = [];
-    for (let x = 0; x < W; x += GRID_STEP) {
-      for (let y = 0; y < H; y += GRID_STEP) {
-        const cx = x + GRID_STEP / 2;
-        const cy = y + GRID_STEP / 2;
-        cells.push({ x, y, cls: knnLabelOnly(cx, cy, k, DATASET) });
+    const cells: { x: number; y: number; cls: ClassId }[] = [];
+    for (let x = 0; x < W; x += GRID) {
+      for (let y = 0; y < H; y += GRID) {
+        const cx = x + GRID / 2;
+        const cy = y + GRID / 2;
+        cells.push({ x, y, cls: knn(cx, cy, k, metric).label });
       }
     }
     return cells;
-  }, [k, showBoundary]);
+  }, [k, metric, showBoundary]);
 
-  // Đếm phiếu trong K hàng xóm để hiển thị chi tiết.
-  const voteBreakdown = useMemo(() => {
+  const votes = useMemo(() => {
     const c: Record<ClassId, number> = { A: 0, B: 0, C: 0 };
-    prediction.neighbors.forEach((n) => {
+    pred.neighbors.forEach((n) => {
       c[n.cls] += 1;
     });
     return c;
-  }, [prediction.neighbors]);
+  }, [pred.neighbors]);
 
-  // Xử lý click — đặt điểm truy vấn mới tại vị trí chuột.
-  const handleCanvasClick = useCallback(
+  const handleClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       const svg = e.currentTarget;
       const rect = svg.getBoundingClientRect();
-      // Quy đổi toạ độ client sang toạ độ viewBox (W × H).
       const nx = ((e.clientX - rect.left) / rect.width) * W;
       const ny = ((e.clientY - rect.top) / rect.height) * H;
       setQuery({
-        x: Math.max(4, Math.min(W - 4, nx)),
-        y: Math.max(4, Math.min(H - 4, ny)),
+        x: Math.max(6, Math.min(W - 6, nx)),
+        y: Math.max(6, Math.min(H - 6, ny)),
       });
     },
-    [setQuery],
+    [],
   );
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Thanh điều khiển */}
-      <div className="flex flex-wrap items-center gap-4 rounded-lg border border-border bg-surface/50 p-4">
-        <div className="flex items-center gap-3">
-          <label
-            htmlFor="knn-k"
-            className="text-sm font-medium text-foreground whitespace-nowrap"
-          >
-            K = <span className="font-mono text-base">{k}</span>
-          </label>
+    <div className="space-y-3">
+      {/* Toolbar */}
+      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface/50 p-3">
+        <div className="flex items-center gap-2 min-w-[180px]">
+          <span className="text-xs font-medium text-foreground">
+            k = <span className="font-mono text-base text-accent">{k}</span>
+          </span>
           <input
-            id="knn-k"
             type="range"
             min={1}
             max={15}
             step={1}
             value={k}
-            onChange={(e) => setK(Number(e.target.value))}
-            className="w-48 accent-primary"
+            onChange={(e) => setK(parseInt(e.target.value))}
+            className="flex-1 h-2 rounded-full cursor-pointer accent-accent"
+            aria-label="Số hàng xóm k"
           />
         </div>
-        <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+        <label className="flex items-center gap-2 text-xs text-foreground cursor-pointer">
           <input
             type="checkbox"
             checked={showBoundary}
             onChange={(e) => setShowBoundary(e.target.checked)}
-            className="accent-primary"
+            className="accent-accent"
           />
-          Hiển thị biên quyết định
+          Hiện biên quyết định
         </label>
-        <div className="ml-auto text-sm text-muted">
-          Click vào canvas để đặt điểm truy vấn
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setMetric("euclid")}
+            className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+              metric === "euclid"
+                ? "bg-accent text-white border-accent"
+                : "border-border bg-card text-muted hover:bg-surface"
+            }`}
+          >
+            Euclid
+          </button>
+          <button
+            type="button"
+            onClick={() => setMetric("manhattan")}
+            className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+              metric === "manhattan"
+                ? "bg-accent text-white border-accent"
+                : "border-border bg-card text-muted hover:bg-surface"
+            }`}
+          >
+            Manhattan
+          </button>
+        </div>
+        <div className="ml-auto text-[11px] text-muted">
+          Click bất kỳ đâu trên canvas để đặt điểm mới
         </div>
       </div>
 
-      {/* Canvas SVG */}
-      <div className="w-full overflow-hidden rounded-lg border border-border bg-background">
+      {/* Canvas */}
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="h-auto w-full cursor-crosshair touch-none"
-          onClick={handleCanvasClick}
+          className="w-full cursor-crosshair touch-none"
+          onClick={handleClick}
           role="img"
-          aria-label={`Canvas KNN — K=${k}, dự đoán lớp ${prediction.label} (A:${voteBreakdown.A} B:${voteBreakdown.B} C:${voteBreakdown.C}). Click để đặt điểm truy vấn.`}
+          aria-label={`Canvas k-NN với k=${k}, dự đoán ${LABEL[pred.label]} (A ${votes.A}, B ${votes.B}, C ${votes.C})`}
         >
-          <title>KNN với K={k} — dự đoán lớp {prediction.label}. Phiếu: A {voteBreakdown.A}, B {voteBreakdown.B}, C {voteBreakdown.C}</title>
-          {/* Decision boundary — nền mờ */}
+          {/* decision boundary */}
           {showBoundary &&
-            gridCells.map((cell, i) => (
+            grid.map((c, i) => (
               <rect
-                key={`cell-${i}`}
-                x={cell.x}
-                y={cell.y}
-                width={GRID_STEP}
-                height={GRID_STEP}
-                fill={CLASS_FILL_SOFT[cell.cls]}
-                stroke="none"
+                key={i}
+                x={c.x}
+                y={c.y}
+                width={GRID}
+                height={GRID}
+                fill={SOFT[c.cls]}
               />
             ))}
 
-          {/* Lưới mờ — giúp mắt định vị */}
-          {Array.from({ length: Math.floor(W / 50) + 1 }).map((_, i) => (
+          {/* lưới mờ */}
+          {Array.from({ length: 9 }).map((_, i) => (
             <line
-              key={`vx-${i}`}
+              key={`v${i}`}
               x1={i * 50}
               y1={0}
               x2={i * 50}
               y2={H}
               stroke="currentColor"
-              strokeOpacity="0.05"
+              strokeOpacity={0.05}
             />
           ))}
-          {Array.from({ length: Math.floor(H / 50) + 1 }).map((_, i) => (
+          {Array.from({ length: 8 }).map((_, i) => (
             <line
-              key={`hy-${i}`}
+              key={`h${i}`}
               x1={0}
               y1={i * 50}
               x2={W}
               y2={i * 50}
               stroke="currentColor"
-              strokeOpacity="0.05"
+              strokeOpacity={0.05}
             />
           ))}
 
-          {/* Đường tròn bao K hàng xóm */}
-          <motion.circle
-            cx={query.x}
-            cy={query.y}
-            r={radius}
-            fill="none"
-            stroke="currentColor"
-            strokeOpacity="0.4"
-            strokeWidth={1.5}
-            strokeDasharray="6 4"
-            initial={false}
-            animate={{ cx: query.x, cy: query.y, r: radius }}
-            transition={{ type: "spring", stiffness: 200, damping: 25 }}
-          />
+          {/* đường tròn bao k hàng xóm (Euclid) / vuông (Manhattan) */}
+          {metric === "euclid" ? (
+            <motion.circle
+              cx={query.x}
+              cy={query.y}
+              r={radius}
+              fill="none"
+              stroke="currentColor"
+              strokeOpacity={0.35}
+              strokeDasharray="6 4"
+              strokeWidth={1.4}
+              animate={{ r: radius, cx: query.x, cy: query.y }}
+              transition={{ type: "spring", stiffness: 220, damping: 25 }}
+            />
+          ) : (
+            <motion.polygon
+              points={[
+                `${query.x},${query.y - radius}`,
+                `${query.x + radius},${query.y}`,
+                `${query.x},${query.y + radius}`,
+                `${query.x - radius},${query.y}`,
+              ].join(" ")}
+              fill="none"
+              stroke="currentColor"
+              strokeOpacity={0.35}
+              strokeDasharray="6 4"
+              strokeWidth={1.4}
+            />
+          )}
 
-          {/* Đường nối từ query đến mỗi hàng xóm */}
-          {prediction.neighbors.map((n, idx) => (
+          {/* đường nối query → hàng xóm */}
+          {pred.neighbors.map((n, i) => (
             <line
-              key={`nb-line-${idx}`}
+              key={`l${i}`}
               x1={query.x}
               y1={query.y}
               x2={n.x}
               y2={n.y}
-              stroke={CLASS_COLOR[n.cls]}
-              strokeOpacity="0.5"
-              strokeWidth={1}
+              stroke={COLOR[n.cls]}
+              strokeOpacity={0.55}
+              strokeWidth={1.2}
             />
           ))}
 
-          {/* Tất cả điểm trong dataset */}
-          {DATASET.map((p, idx) => {
-            const isNeighbor = prediction.neighbors.some(
-              (n) => n.x === p.x && n.y === p.y,
-            );
+          {/* điểm dữ liệu */}
+          {DATA.map((p, i) => {
+            const isN = pred.neighbors.some((n) => n.x === p.x && n.y === p.y);
             return (
               <circle
-                key={`pt-${idx}`}
+                key={i}
                 cx={p.x}
                 cy={p.y}
-                r={isNeighbor ? 8 : 6}
-                fill={CLASS_COLOR[p.cls]}
-                stroke={isNeighbor ? "#fff" : "none"}
-                strokeWidth={isNeighbor ? 2 : 0}
-                opacity={isNeighbor ? 1 : 0.85}
+                r={isN ? 7 : 5}
+                fill={COLOR[p.cls]}
+                stroke={isN ? "#fff" : "none"}
+                strokeWidth={isN ? 2 : 0}
+                opacity={isN ? 1 : 0.85}
               />
             );
           })}
 
-          {/* Điểm truy vấn */}
+          {/* query */}
           <motion.g
-            animate={{ x: 0, y: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            initial={false}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 0.3 }}
           >
             <circle
               cx={query.x}
               cy={query.y}
               r={11}
-              fill={CLASS_COLOR[prediction.label]}
+              fill={COLOR[pred.label]}
               stroke="#fff"
               strokeWidth={3}
             />
-            <circle
-              cx={query.x}
-              cy={query.y}
-              r={4}
-              fill="#fff"
-            />
+            <circle cx={query.x} cy={query.y} r={4} fill="#fff" />
           </motion.g>
         </svg>
       </div>
 
-      {/* Panel kết quả */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-lg border border-border bg-surface/50 p-3">
-          <div className="text-xs uppercase tracking-wide text-muted">
-            Dự đoán
-          </div>
+      {/* Thông tin dự đoán */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <div className="rounded-lg border border-border bg-surface/60 p-3">
+          <div className="text-[10px] uppercase text-tertiary">Dự đoán</div>
           <div
-            className="mt-1 text-lg font-semibold"
-            style={{ color: CLASS_COLOR[prediction.label] }}
+            className="text-base font-bold"
+            style={{ color: COLOR[pred.label] }}
           >
-            {CLASS_LABEL[prediction.label]}
+            {LABEL[pred.label]}
           </div>
         </div>
-        <div className="rounded-lg border border-border bg-surface/50 p-3">
-          <div className="text-xs uppercase tracking-wide text-muted">
-            Phiếu bầu ({k} hàng xóm)
+        <div className="rounded-lg border border-border bg-surface/60 p-3">
+          <div className="text-[10px] uppercase text-tertiary">
+            Phiếu trong k = {k}
           </div>
-          <div className="mt-1 flex gap-3 text-sm">
-            <span style={{ color: CLASS_COLOR.A }}>
-              A: <strong>{voteBreakdown.A}</strong>
-            </span>
-            <span style={{ color: CLASS_COLOR.B }}>
-              B: <strong>{voteBreakdown.B}</strong>
-            </span>
-            <span style={{ color: CLASS_COLOR.C }}>
-              C: <strong>{voteBreakdown.C}</strong>
-            </span>
+          <div className="flex gap-3 mt-1 text-xs">
+            {(["A", "B", "C"] as ClassId[]).map((c) => (
+              <span key={c} style={{ color: COLOR[c] }}>
+                {c}: <strong>{votes[c]}</strong>
+              </span>
+            ))}
           </div>
         </div>
-        <div className="rounded-lg border border-border bg-surface/50 p-3">
-          <div className="text-xs uppercase tracking-wide text-muted">
-            Toạ độ truy vấn
+        <div className="rounded-lg border border-border bg-surface/60 p-3">
+          <div className="text-[10px] uppercase text-tertiary">
+            Toạ độ & thước đo
           </div>
-          <div className="mt-1 font-mono text-sm">
-            ({Math.round(query.x)}, {Math.round(query.y)})
+          <div className="text-xs font-mono text-foreground">
+            ({Math.round(query.x)}, {Math.round(query.y)}) · {metric === "euclid" ? "Euclid" : "Manhattan"}
           </div>
         </div>
+      </div>
+
+      {/* Reset */}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={() => {
+            setQuery({ x: 210, y: 170 });
+            setK(5);
+            setMetric("euclid");
+            setShowBoundary(false);
+          }}
+          className="text-xs px-3 py-1 rounded-full border border-border text-muted hover:text-foreground"
+        >
+          <RotateCcw size={11} className="inline mr-1" /> Đặt lại demo
+        </button>
       </div>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// MAIN COMPONENT
-// ---------------------------------------------------------------------------
+/* ════════════════════════════════════════════════════════════════════
+ * DEMO 2 — SLIDER k riêng, chỉ hiện boundary
+ * ════════════════════════════════════════════════════════════════════ */
+function BoundaryOnlyDemo() {
+  return (
+    <SliderGroup
+      title="Biên quyết định mượt ra sao khi thay đổi k?"
+      sliders={[
+        {
+          key: "k",
+          label: "k (số hàng xóm hỏi ý kiến)",
+          min: 1,
+          max: 21,
+          step: 2,
+          defaultValue: 1,
+        },
+      ]}
+      visualization={(values) => {
+        const k = values.k;
+        const cells: { x: number; y: number; cls: ClassId }[] = [];
+        for (let x = 0; x < W; x += GRID) {
+          for (let y = 0; y < H; y += GRID) {
+            const cx = x + GRID / 2;
+            const cy = y + GRID / 2;
+            cells.push({ x, y, cls: knn(cx, cy, k, "euclid").label });
+          }
+        }
+        return (
+          <div className="w-full flex flex-col items-center gap-2">
+            <svg
+              viewBox={`0 0 ${W} ${H}`}
+              className="w-full max-w-[420px]"
+              role="img"
+              aria-label={`Biên quyết định với k=${k}`}
+            >
+              {cells.map((c, i) => (
+                <rect
+                  key={i}
+                  x={c.x}
+                  y={c.y}
+                  width={GRID}
+                  height={GRID}
+                  fill={SOFT[c.cls]}
+                />
+              ))}
+              {DATA.map((p, i) => (
+                <circle key={i} cx={p.x} cy={p.y} r={4} fill={COLOR[p.cls]} opacity={0.9} />
+              ))}
+            </svg>
+            <p className="text-[11px] text-muted text-center leading-relaxed">
+              k = 1 → biên lởm chởm, nhạy với từng điểm. k = 15–21 → biên mượt, đôi chỗ
+              nuốt mất cụm nhỏ.
+            </p>
+          </div>
+        );
+      }}
+    />
+  );
+}
 
+/* ════════════════════════════════════════════════════════════════════
+ * DEMO 3 — So sánh Euclid vs Manhattan cùng một query
+ * ════════════════════════════════════════════════════════════════════ */
+function DistanceCompare() {
+  const query = { x: 195, y: 170 };
+  const k = 5;
+  const eucl = knn(query.x, query.y, k, "euclid");
+  const manh = knn(query.x, query.y, k, "manhattan");
+
+  function DrawBlock({ res, metric }: { res: typeof eucl; metric: Metric }) {
+    const last = res.neighbors[res.neighbors.length - 1];
+    const r = last?.d ?? 0;
+    return (
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full"
+        role="img"
+        aria-label={`k-NN ${metric === "euclid" ? "Euclid" : "Manhattan"}`}
+      >
+        {/* điểm dữ liệu */}
+        {DATA.map((p, i) => {
+          const isN = res.neighbors.some((n) => n.x === p.x && n.y === p.y);
+          return (
+            <circle
+              key={i}
+              cx={p.x}
+              cy={p.y}
+              r={isN ? 6 : 4}
+              fill={COLOR[p.cls]}
+              stroke={isN ? "#fff" : "none"}
+              strokeWidth={isN ? 1.6 : 0}
+              opacity={isN ? 1 : 0.75}
+            />
+          );
+        })}
+        {/* bao k */}
+        {metric === "euclid" ? (
+          <circle
+            cx={query.x}
+            cy={query.y}
+            r={r}
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity={0.4}
+            strokeDasharray="5 3"
+            strokeWidth={1.3}
+          />
+        ) : (
+          <polygon
+            points={[
+              `${query.x},${query.y - r}`,
+              `${query.x + r},${query.y}`,
+              `${query.x},${query.y + r}`,
+              `${query.x - r},${query.y}`,
+            ].join(" ")}
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity={0.4}
+            strokeDasharray="5 3"
+            strokeWidth={1.3}
+          />
+        )}
+        {/* đường nối */}
+        {res.neighbors.map((n, i) => (
+          <line
+            key={i}
+            x1={query.x}
+            y1={query.y}
+            x2={n.x}
+            y2={n.y}
+            stroke={COLOR[n.cls]}
+            strokeOpacity={0.6}
+            strokeWidth={1.2}
+          />
+        ))}
+        {/* query */}
+        <circle
+          cx={query.x}
+          cy={query.y}
+          r={9}
+          fill={COLOR[res.label]}
+          stroke="#fff"
+          strokeWidth={2.5}
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <ToggleCompare
+      labelA="Euclid — đường chim bay"
+      labelB="Manhattan — đi theo đường phố"
+      description={`Cùng một điểm truy vấn, cùng k=${k}, nhưng hai thước đo khác nhau cho ra hai tập hàng xóm khác nhau. Kết quả: ${LABEL[eucl.label]} (Euclid) vs ${LABEL[manh.label]} (Manhattan).`}
+      childA={
+        <div>
+          <DrawBlock res={eucl} metric="euclid" />
+          <p className="text-[11px] text-muted mt-1 text-center">
+            Euclid đo khoảng cách đường thẳng — phù hợp khi hai trục có cùng đơn vị và đặc
+            trưng liên tục.
+          </p>
+        </div>
+      }
+      childB={
+        <div>
+          <DrawBlock res={manh} metric="manhattan" />
+          <p className="text-[11px] text-muted mt-1 text-center">
+            Manhattan đo khoảng cách &ldquo;đi theo ô bàn cờ&rdquo; — hữu ích khi trục có
+            nghĩa lưới như bản đồ đường phố hay thứ tự rời rạc.
+          </p>
+        </div>
+      }
+    />
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════
+ * QUIZ
+ * ════════════════════════════════════════════════════════════════════ */
+const QUIZ: QuizQuestion[] = [
+  {
+    question:
+      "Với k-NN, khi tăng k từ 1 lên 15, điều gì thường xảy ra với biên quyết định?",
+    options: [
+      "Biên càng lởm chởm hơn vì càng nhiều phiếu",
+      "Biên mượt hơn và ít nhạy nhiễu — đa số đè được điểm nhiễu cục bộ",
+      "Không đổi — k chỉ ảnh hưởng tốc độ",
+      "Biên luôn dịch về phía lớp đa số toàn tập",
+    ],
+    correct: 1,
+    explanation:
+      "k lớn → mỗi dự đoán bị ảnh hưởng bởi nhiều hàng xóm, nhiễu cục bộ bị trung hoà. Biên mượt ra, bias tăng nhưng variance giảm.",
+  },
+  {
+    question: "Vì sao người ta gọi k-NN là 'thuật toán lười' (lazy learner)?",
+    options: [
+      "Vì nó chỉ chạy được trên CPU",
+      "Vì độ chính xác thấp hơn mọi thuật toán khác",
+      "Vì không có bước huấn luyện — 'model' chỉ là tập dữ liệu được giữ lại, mọi tính toán dồn vào lúc dự đoán",
+      "Vì nó từ chối học đặc trưng phi tuyến",
+    ],
+    correct: 2,
+    explanation:
+      "k-NN không học tham số. Lúc train thực chất chỉ là ghi nhớ dữ liệu; chi phí thật nằm ở lúc dự đoán — phải tính khoảng cách đến từng điểm.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "Khoảng cách Euclid giữa hai điểm (x₁, y₁) và (x₂, y₂) bằng √( ({blank})² + (y₁ - y₂)² ).",
+    blanks: [{ answer: "x1 - x2", accept: ["x_1 - x_2", "x1-x2", "(x1-x2)"] }],
+    explanation:
+      "Euclid = căn bậc hai của tổng bình phương hiệu. Với d chiều: √ Σ (xᵢ − yᵢ)². Manhattan thì không bình phương, chỉ lấy tổng giá trị tuyệt đối.",
+  },
+  {
+    question:
+      "Bạn chạy k-NN trên dữ liệu y tế có hai đặc trưng: 'tuổi' (0–100) và 'thu nhập' (0–10⁹ VNĐ). Quên chuẩn hoá. Chuyện gì xảy ra?",
+    options: [
+      "k-NN tự cân bằng thang đo — không sao",
+      "Đặc trưng thu nhập chi phối khoảng cách, 'tuổi' gần như bị bỏ qua",
+      "Dự đoán luôn ra nhóm có thu nhập cao",
+      "Mô hình chậm lại nhưng kết quả không đổi",
+    ],
+    correct: 1,
+    explanation:
+      "Khoảng cách Euclid cộng bình phương mọi đặc trưng. Chênh lệch vài tỷ ở thu nhập làm lu mờ chênh lệch vài chục năm ở tuổi. Luôn chuẩn hoá trước khi chạy k-NN (StandardScaler hoặc MinMaxScaler).",
+  },
+  {
+    question: "Khởi điểm hợp lý nhất để chọn k là gì?",
+    options: [
+      "k = 1 để 'sát' dữ liệu nhất",
+      "k = toàn bộ tập để có nhiều phiếu nhất",
+      "k ≈ √N rồi tinh chỉnh bằng cross-validation, ưu tiên k lẻ khi có 2 lớp để tránh hoà phiếu",
+      "k phải là số nguyên tố",
+    ],
+    correct: 2,
+    explanation:
+      "k = 1 nhạy nhiễu (overfit). k bằng N thì mô hình chỉ đoán lớp đa số. Khởi điểm hợp lý là k ≈ √N, rồi dùng k-fold CV để chọn chính xác; k lẻ giúp tránh hoà phiếu khi 2 lớp.",
+  },
+];
+
+/* ════════════════════════════════════════════════════════════════════
+ * COMPONENT CHÍNH
+ * ════════════════════════════════════════════════════════════════════ */
 export default function KnnTopic() {
-  // State cho canvas demo.
-  const [k, setK] = useState<number>(3);
-  const [query, setQuery] = useState<{ x: number; y: number }>({
-    x: 260,
-    y: 200,
-  });
-  const [showBoundary, setShowBoundary] = useState<boolean>(false);
+  const TOTAL = 8;
 
   return (
     <>
-      {/* =================================================================
-          BƯỚC 1 — HOOK / DỰ ĐOÁN
-          ================================================================= */}
-      <ProgressSteps current={1} total={7} labels={STEP_LABELS} />
+      {/* ━━━ BƯỚC 1 — HOOK + DỰ ĐOÁN ━━━ */}
+      <LessonSection step={1} totalSteps={TOTAL} label="Hook">
+        <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+          <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+            <Users size={18} className="text-accent" /> Hỏi 5 người bạn gần nhất
+          </h3>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Bạn vừa chuyển đến một khu mới ở Sài Gòn và muốn biết quán nào ngon. Cách
+            nhanh nhất: hỏi <strong>5 người bạn ở gần nhất</strong>. Nếu 3/5 bảo &ldquo;cơm
+            tấm Bà Sáu&rdquo;, bạn đi cơm tấm Bà Sáu. Không cần nghiên cứu, không cần cân
+            đo công thức — chỉ cần hỏi hàng xóm.
+          </p>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            <strong>k-NN (k láng giềng gần nhất)</strong> hoạt động đúng như vậy. Có một
+            điểm mới cần phân loại → tìm k điểm gần nó nhất trong dữ liệu cũ → lấy theo đa
+            số. Đơn giản đến không ngờ, nhưng đủ mạnh để làm nền cho nhiều hệ thống gợi ý
+            và kiểm tra thực tế.
+          </p>
+        </div>
+        <div className="mt-6">
+          <PredictionGate
+            question="Một điểm mới cần phân loại. Hỏi 3 hàng xóm gần nhất, nhận được 2 phiếu 'cơm tấm', 1 phiếu 'phở'. k-NN kết luận điểm này là gì?"
+            options={[
+              "Phở — vì là lớp thiểu số nên đáng chú ý hơn",
+              "Cơm tấm — đa số thắng",
+              "Không đoán được với k = 3",
+              "Lấy trung bình nhãn — một món nằm giữa hai món",
+            ]}
+            correct={1}
+            explanation="k-NN phân loại bằng đa số trong k hàng xóm gần nhất. 2 > 1 → chọn cơm tấm. Đơn giản đến ngạc nhiên — và đó chính là sức mạnh của nó khi dữ liệu có cấu trúc hình học rõ ràng."
+          >
+            <p className="text-sm text-muted mt-4 leading-relaxed">
+              Phần tiếp theo bạn sẽ tự click để đặt &ldquo;điểm mới&rdquo; vào bản đồ, và
+              xem k-NN chọn hàng xóm nào, bỏ phiếu ra sao.
+            </p>
+          </PredictionGate>
+        </div>
+      </LessonSection>
 
-      <PredictionGate
-        question="Bạn có một điểm mới cần phân loại. Nếu hỏi 3 hàng xóm gần nhất và nhận được 2 phiếu 'mèo', 1 phiếu 'chó', KNN sẽ nói điểm này là gì?"
-        options={[
-          "Chó — vì đó là lớp thiểu số nên đáng chú ý hơn.",
-          "Mèo — lấy theo đa số phiếu bầu.",
-          "Không xác định — 3 chưa đủ để quyết định.",
-          "Tính trung bình nhãn — ra một thứ nằm giữa chó và mèo.",
-        ]}
-        correct={1}
-        explanation="KNN phân loại bằng bỏ phiếu đa số của K hàng xóm gần nhất. 2 > 1 nên kết quả là 'mèo'. Đơn giản đến không ngờ — và đó chính là vẻ đẹp của thuật toán này."
-      >
-        <p className="mt-2 text-sm text-muted">
-          KNN là một trong những thuật toán phân loại trực giác nhất: muốn biết
-          một điểm thuộc lớp gì, hỏi các hàng xóm xung quanh nó.
+      {/* ━━━ BƯỚC 2 — BA THÔNG SỐ QUAN TRỌNG ━━━ */}
+      <LessonSection step={2} totalSteps={TOTAL} label="Ba thứ cần hiểu">
+        <p className="text-sm text-foreground/85 leading-relaxed">
+          k-NN chỉ có ba lựa chọn quan trọng — nắm được ba cái này là bạn hiểu 90% thuật
+          toán.
         </p>
-      </PredictionGate>
-
-      {/* =================================================================
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
-          ================================================================= */}
-      <LessonSection label="Ẩn dụ: chọn quán ăn ở khu phố lạ" step={2} totalSteps={7}>
-        <p>
-          Hãy tưởng tượng bạn vừa chuyển đến một khu phố mới và muốn biết con
-          đường bạn đang đứng thuộc <strong>khu nào</strong>: khu văn phòng, khu
-          chợ, hay khu dân cư? Bạn nhìn quanh 5 toà nhà gần nhất.
-        </p>
-        <p>
-          Nếu 3/5 là cao ốc văn phòng, bạn kết luận đây là{" "}
-          <strong>khu văn phòng</strong> — kể cả khi 2 toà kia là nhà ở. Đó
-          chính xác là cách <strong>KNN</strong> làm việc: "bạn là ai, cho tôi
-          xem hàng xóm của bạn."
-        </p>
-        <p>
-          Điểm mấu chốt là khái niệm <em>"hàng xóm gần"</em>. Trong không gian
-          2D, "gần" là khoảng cách hình học. Trong không gian đặc trưng của
-          ML, "gần" là khoảng cách theo một metric (thường là Euclid hoặc
-          Cosine) giữa các vector đặc trưng.
-        </p>
-        <Callout variant="insight" title="KNN không cần học">
-          Khác với hầu hết thuật toán ML, KNN không có bước <em>train</em> theo
-          nghĩa cổ điển. Toàn bộ "model" của KNN chính là <strong>tập dữ liệu
-          huấn luyện được lưu lại</strong>. Mọi phép tính được dồn vào lúc dự
-          đoán — đó là lý do KNN được gọi là "lazy learner".
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+          <div className="rounded-xl border border-sky-200 bg-sky-50/60 dark:bg-sky-900/15 dark:border-sky-800 p-3 space-y-1">
+            <div className="flex items-center gap-2">
+              <MapPin size={14} className="text-sky-500" />
+              <span className="text-xs font-semibold text-sky-700 dark:text-sky-300">
+                1 · Dữ liệu
+              </span>
+            </div>
+            <p className="text-xs text-foreground/80 leading-relaxed">
+              Tập các điểm đã biết nhãn. k-NN không &ldquo;học&rdquo; gì — nó chỉ giữ lại
+              toàn bộ tập này.
+            </p>
+          </div>
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 dark:bg-emerald-900/15 dark:border-emerald-800 p-3 space-y-1">
+            <div className="flex items-center gap-2">
+              <Ruler size={14} className="text-emerald-500" />
+              <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                2 · Thước đo khoảng cách
+              </span>
+            </div>
+            <p className="text-xs text-foreground/80 leading-relaxed">
+              Euclid (đường chim bay) là mặc định. Manhattan (đi theo ô bàn cờ) và Cosine
+              (đo hướng, dùng cho văn bản) là hai lựa chọn phổ biến khác.
+            </p>
+          </div>
+          <div className="rounded-xl border border-amber-200 bg-amber-50/60 dark:bg-amber-900/15 dark:border-amber-800 p-3 space-y-1">
+            <div className="flex items-center gap-2">
+              <Target size={14} className="text-amber-500" />
+              <span className="text-xs font-semibold text-amber-700 dark:text-amber-300">
+                3 · Số láng giềng k
+              </span>
+            </div>
+            <p className="text-xs text-foreground/80 leading-relaxed">
+              k = 1 → dự đoán cực sát nhưng dễ bị nhiễu. k lớn → mượt nhưng dễ nuốt cụm
+              nhỏ. Thông thường k ≈ √N và dùng CV để chọn.
+            </p>
+          </div>
+        </div>
+        <Callout variant="insight" title="k-NN không có bước train">
+          Khác với hầu hết thuật toán ML, k-NN <strong>không có bước &ldquo;học&rdquo; nào
+          cả</strong>. Toàn bộ &ldquo;model&rdquo; của nó chính là tập dữ liệu đã dán
+          nhãn. Mọi phép tính được dồn vào lúc dự đoán — đó là lý do k-NN được gọi là{" "}
+          <em>&ldquo;lazy learner&rdquo;</em> (thuật toán lười).
         </Callout>
       </LessonSection>
 
-      {/* =================================================================
-          BƯỚC 3 — TRỰC QUAN HÓA TƯƠNG TÁC
-          ================================================================= */}
-      <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection
-          label="Chơi với KNN: K, hàng xóm, và biên quyết định"
-          step={3}
-          totalSteps={7}
-        >
-          <p>
-            Canvas dưới đây có 40 điểm thuộc 3 lớp. <strong>Click vào bất kỳ
-            đâu</strong> để đặt một điểm truy vấn (chấm trắng viền). Slider điều
-            chỉnh K từ 1 đến 15. Bật toggle "Hiển thị biên quyết định" để thấy
-            toàn bộ bản đồ phân loại.
+      {/* ━━━ BƯỚC 3 — TRỰC QUAN ━━━ */}
+      <LessonSection step={3} totalSteps={TOTAL} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <LessonSection step={1} label="Thử nghiệm 1 · Canvas k-NN">
+            <p className="text-sm text-muted leading-relaxed mb-3">
+              45 điểm ở ba cụm là ba kiểu quán: <strong>cơm tấm</strong> (đỏ),{" "}
+              <strong>phở</strong> (xanh dương), <strong>bánh mì</strong> (xanh lá). Click
+              vào canvas để đặt &ldquo;điểm mới&rdquo; — bạn sẽ thấy k láng giềng được nối
+              bằng đường màu, và màu điểm truy vấn = dự đoán theo đa số.
+            </p>
+            <KnnPlayground />
+          </LessonSection>
+
+          <LessonSection step={2} label="Thử nghiệm 2 · k nhỏ vs k lớn">
+            <p className="text-sm text-muted leading-relaxed mb-3">
+              Chỉ kéo thanh k và xem toàn bộ &ldquo;bản đồ quyết định&rdquo; thay đổi theo.
+              Để biên mượt ra, tăng k. Để biên &ldquo;sát&rdquo; từng điểm, giảm k.
+            </p>
+            <BoundaryOnlyDemo />
+          </LessonSection>
+
+          <LessonSection step={3} label="Thử nghiệm 3 · Euclid vs Manhattan">
+            <p className="text-sm text-muted leading-relaxed mb-3">
+              Cùng một điểm truy vấn, cùng k. Nhưng thay thước đo khoảng cách, hàng xóm
+              thay đổi → dự đoán có thể khác. Mở cả hai tab để so sánh.
+            </p>
+            <DistanceCompare />
+          </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      <LessonSection step={4} totalSteps={TOTAL} label="Khoảnh khắc hiểu">
+        <AhaMoment>
+          k-NN <strong>không phải là một thuật toán học</strong>. Nó là một{" "}
+          <strong>quy ước bỏ phiếu</strong> đơn giản trên dữ liệu gốc. Tất cả sự khôn
+          ngoan nằm ở hai lựa chọn: <em>đo khoảng cách thế nào</em> và <em>k bằng bao
+          nhiêu</em>. Đổi một trong hai, bạn có model khác — dù dữ liệu không thay đổi
+          một chữ.
+        </AhaMoment>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      <LessonSection step={5} totalSteps={TOTAL} label="Thử thách">
+        <InlineChallenge
+          question="Bạn có 10 triệu khách hàng trong database. Chạy k-NN để phân loại sản phẩm gợi ý real-time. Tại sao mô hình kém khi k quá lớn?"
+          options={[
+            "k lớn làm bộ nhớ cạn kiệt",
+            "k lớn khiến mọi query đều dự đoán về lớp đa số toàn bộ tập — mất khả năng phân biệt cục bộ",
+            "k lớn khiến thuật toán báo lỗi",
+            "k lớn luôn tốt hơn k nhỏ",
+          ]}
+          correct={1}
+          explanation="Khi k tiến tới N, k-NN đơn giản đoán lớp đa số toàn tập — không còn 'hàng xóm' nào thật sự, mọi query cho cùng một đáp án. Chọn k ≈ √N là điểm cân bằng giữa nhạy cục bộ (k nhỏ) và ổn định toàn cục (k lớn)."
+        />
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 6 — GIẢI THÍCH ━━━ */}
+      <LessonSection step={6} totalSteps={TOTAL} label="Giải thích">
+        <ExplanationSection>
+          <p className="leading-relaxed">
+            <strong>k-NN</strong> là thuật toán học có giám sát dựa trên một nguyên lý cực
+            đơn giản: <em>nhãn của điểm mới = đa số nhãn của k điểm gần nó nhất</em>. Mọi
+            thứ sau đây chỉ là cách viết chính xác của ý tưởng đó.
           </p>
 
-          <KnnDemo
-            k={k}
-            setK={setK}
-            query={query}
-            setQuery={setQuery}
-            showBoundary={showBoundary}
-            setShowBoundary={setShowBoundary}
-          />
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Công thức 1 — Khoảng cách Euclid
+          </h4>
+          <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
+            <LaTeX block>{"d(x, y) = \\sqrt{\\sum_{j=1}^{d} (x_j - y_j)^2}"}</LaTeX>
+            <p className="text-xs text-muted leading-relaxed">
+              Nói bằng tiếng Việt đời thường: &ldquo;Đo đường chim bay từ điểm này đến
+              điểm kia trong không gian d chiều&rdquo;. Trong 2D bạn đã học từ cấp 3:{" "}
+              <em>d = √( (x₁ − x₂)² + (y₁ − y₂)² )</em>. k-NN 2D dùng chính công thức đó,
+              k-NN trên 100 đặc trưng thì cộng thêm các bình phương nữa.
+            </p>
+            <EuclidMiniVisual />
+          </div>
 
-          <Callout variant="tip" title="Gợi ý khám phá">
-            <ul className="list-disc list-inside space-y-1">
-              <li>
-                Bật boundary và kéo slider K. Quan sát biên chuyển từ{" "}
-                <strong>lởm chởm</strong> (K=1) sang <strong>mượt mà</strong>{" "}
-                (K=15).
-              </li>
-              <li>
-                Đặt điểm truy vấn vào đúng khoảng giữa hai cụm. Đổi K và xem
-                dự đoán có đảo không.
-              </li>
-              <li>
-                Thử click ra ngoài các cụm (ví dụ sát mép canvas). K lớn buộc
-                KNN "với tay" rất xa — điều này hợp lý không?
-              </li>
-            </ul>
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Công thức 2 — Quy tắc đa số
+          </h4>
+          <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
+            <LaTeX block>{"\\hat{y} = \\text{mode}\\{y_i : i \\in \\mathcal{N}_k(x)\\}"}</LaTeX>
+            <p className="text-xs text-muted leading-relaxed">
+              Dịch ra: &ldquo;Dự đoán ŷ bằng nhãn xuất hiện nhiều nhất trong tập k điểm
+              gần nhất&rdquo;. Nâng cấp hay gặp: thay vì &ldquo;mỗi hàng xóm 1 phiếu&rdquo;,
+              cho hàng xóm <em>gần hơn</em> phiếu nặng hơn (weighted vote, trọng số 1/d).
+            </p>
+          </div>
+
+          <Callout variant="warning" title="Cạm bẫy thường gặp: lời nguyền nhiều chiều">
+            Khi số đặc trưng d rất lớn (ví dụ ảnh 224×224 = 50.000 chiều), khoảng cách
+            giữa <em>mọi</em> cặp điểm có xu hướng bằng nhau — khái niệm &ldquo;gần&rdquo;
+            mất nghĩa. Đây là &ldquo;curse of dimensionality&rdquo; (lời nguyền nhiều
+            chiều). Với dữ liệu nhiều chiều, giảm chiều bằng PCA/UMAP hoặc dùng embedding
+            deep learning trước khi áp k-NN.
           </Callout>
-        </LessonSection>
-      </VisualizationSection>
 
-      {/* =================================================================
-          BƯỚC 4 — KHOẢNH KHẮC AHA
-          ================================================================= */}
-      <AhaMoment>
-        <strong>KNN</strong> không phải là thuật toán "học" — nó là một{" "}
-        <strong>quy ước bỏ phiếu</strong> trên tập dữ liệu gốc. Mọi sự khôn
-        ngoan nằm ở hai lựa chọn:{" "}
-        <strong>khoảng cách đo như thế nào</strong> và{" "}
-        <strong>K bằng bao nhiêu</strong>. Đổi một trong hai, bạn có một model
-        khác — dù dữ liệu không đổi một chữ.
-      </AhaMoment>
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Quy trình dự đoán một điểm — 4 bước
+          </h4>
+          <StepReveal
+            labels={[
+              "1 · Đo khoảng cách",
+              "2 · Sắp xếp & chọn k",
+              "3 · Đếm phiếu",
+              "4 · Dự đoán",
+            ]}
+          >
+            {[
+              <div key="s1" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  <strong>Đo khoảng cách</strong> từ điểm truy vấn đến TẤT CẢ điểm trong
+                  tập huấn luyện. Với N = 100.000 điểm, là 100.000 phép đo. Đây là lý do
+                  k-NN chậm trên dữ liệu lớn — tăng tốc bằng KD-tree, Ball-tree, hoặc
+                  approximate NN (HNSW, FAISS).
+                </p>
+              </div>,
+              <div key="s2" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  <strong>Sắp xếp khoảng cách từ nhỏ đến lớn</strong>, lấy k điểm đầu
+                  tiên. Đây là &ldquo;k láng giềng gần nhất&rdquo; — chính xác theo nghĩa
+                  đen.
+                </p>
+              </div>,
+              <div key="s3" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  <strong>Đếm số phiếu mỗi nhãn</strong>. Ví dụ k = 5 và trong đó có 3
+                  &ldquo;cơm tấm&rdquo;, 1 &ldquo;phở&rdquo;, 1 &ldquo;bánh mì&rdquo; →
+                  cơm tấm dẫn trước.
+                </p>
+              </div>,
+              <div key="s4" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  <strong>Trả về nhãn thắng</strong>. Nếu hoà phiếu → giảm k xuống 1, hoặc
+                  chọn nhãn có tổng khoảng cách nhỏ hơn (weighted vote tự động).
+                </p>
+              </div>,
+            ]}
+          </StepReveal>
 
-      {/* =================================================================
-          BƯỚC 5 — THỬ THÁCH
-          ================================================================= */}
-      <InlineChallenge
-        question="Trên canvas, bạn đặt điểm truy vấn ngay giữa cụm A và cụm B. Với K=1 nó được dự đoán là A, với K=7 nó thành B. Điều này có nghĩa là gì?"
-        options={[
-          "Dataset có lỗi — hai kết quả phải giống nhau.",
-          "Điểm gần nhất duy nhất thuộc A, nhưng trong vùng lân cận rộng hơn thì B chiếm đa số.",
-          "K lớn luôn đúng hơn, vì vậy nhãn thật là B.",
-          "Cần đổi metric từ Euclid sang Manhattan để có kết quả ổn định.",
-        ]}
-        correct={1}
-        explanation="KNN với K=1 cực kỳ nhạy với điểm gần nhất — dễ bị nhiễu cục bộ. K=7 lấy 'ý kiến số đông' của vùng lớn hơn. Không phải cái nào 'đúng hơn' — đây là trade-off bias/variance mà bạn phải chọn bằng cross-validation."
-      />
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Các thước đo khoảng cách phổ biến
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-2">
+            {[
+              {
+                name: "Euclid (L2)",
+                desc: "Đường chim bay. Mặc định khi đặc trưng có ý nghĩa hình học (tuổi, thu nhập sau chuẩn hoá, vị trí).",
+                color: "#2563eb",
+              },
+              {
+                name: "Manhattan (L1)",
+                desc: "Đi theo ô lưới. Ít nhạy outlier hơn Euclid, phù hợp đặc trưng rời rạc hoặc thưa.",
+                color: "#059669",
+              },
+              {
+                name: "Cosine",
+                desc: "1 − cos(góc) giữa hai vector. Quan tâm hướng, không độ lớn → chuẩn cho văn bản/embeddings.",
+                color: "#7c3aed",
+              },
+              {
+                name: "Mahalanobis",
+                desc: "Tính tới hiệp phương sai — khi các đặc trưng tương quan với nhau (dữ liệu tài chính, y tế).",
+                color: "#db2777",
+              },
+            ].map((m) => (
+              <div
+                key={m.name}
+                className="rounded-xl border bg-card p-3 space-y-1"
+                style={{ borderLeft: `4px solid ${m.color}` }}
+              >
+                <div className="text-sm font-semibold text-foreground">{m.name}</div>
+                <p className="text-xs text-muted leading-relaxed">{m.desc}</p>
+              </div>
+            ))}
+          </div>
 
-      <InlineChallenge
-        question="Bạn có bộ dữ liệu y tế với 2 đặc trưng: tuổi (0-100) và thu nhập theo đồng (có giá trị đến hàng tỷ). Bạn train KNN thẳng trên dữ liệu thô. Điều gì sẽ xảy ra?"
-        options={[
-          "KNN hoạt động tốt — nó tự cân bằng các thang đo.",
-          "Tuổi gần như vô nghĩa với model: khoảng cách Euclid bị thu nhập chi phối hoàn toàn.",
-          "Dự đoán luôn ra lớp có thu nhập cao nhất.",
-          "Mô hình sẽ chậm hơn nhưng vẫn chính xác.",
-        ]}
-        correct={1}
-        explanation="Khoảng cách Euclid là tổng bình phương từng đặc trưng. Chênh lệch 10^9 ở thu nhập nhấn chìm mọi chênh lệch vài chục năm tuổi. Đây là lý do bước đầu tiên của pipeline KNN LUÔN là chuẩn hóa (StandardScaler hoặc MinMaxScaler)."
-      />
+          <Callout variant="tip" title="Luôn chuẩn hoá trước khi dùng k-NN">
+            Đặc trưng có thang giá trị lớn sẽ &ldquo;nuốt&rdquo; đặc trưng có thang nhỏ
+            trong khoảng cách Euclid. Luôn dùng <code>StandardScaler</code> (về trung bình
+            0, độ lệch 1) hoặc <code>MinMaxScaler</code> (về [0,1]) trước k-NN. Đây là lý
+            do hay nhất vì sao k-NN nên nằm trong một <em>pipeline</em> — để scaler và
+            model được fit cùng nhau và tránh rò rỉ dữ liệu khi cross-validate.
+          </Callout>
 
-      {/* =================================================================
-          BƯỚC 6 — GIẢI THÍCH SÂU
-          ================================================================= */}
-      <ExplanationSection>
-        <p>
-          <strong>KNN (K-Nearest Neighbors)</strong> là thuật toán học có giám
-          sát dùng cho phân loại (và cả hồi quy) dựa trên nguyên lý{" "}
-          <em>similarity voting</em>: nhãn của một điểm mới được quyết định bởi
-          K điểm gần nhất trong tập huấn luyện theo một độ đo khoảng cách.
-        </p>
-
-        <h3 className="mt-6 text-lg font-semibold">Công thức cốt lõi</h3>
-        <p>
-          Với điểm truy vấn <LaTeX>{"x_q"}</LaTeX>, tập huấn luyện{" "}
-          <LaTeX>{"\\{(x_i, y_i)\\}_{i=1}^N"}</LaTeX>, và metric khoảng cách{" "}
-          <LaTeX>{"d(\\cdot, \\cdot)"}</LaTeX>:
-        </p>
-        <LaTeX block>
-          {"\\hat{y} = \\text{mode}\\{y_i \\mid i \\in \\mathcal{N}_K(x_q)\\}"}
-        </LaTeX>
-        <p>
-          Trong đó <LaTeX>{"\\mathcal{N}_K(x_q)"}</LaTeX> là tập chỉ số của K
-          điểm có <LaTeX>{"d(x_q, x_i)"}</LaTeX> nhỏ nhất.
-        </p>
-
-        <h3 className="mt-6 text-lg font-semibold">Các metric khoảng cách phổ biến</h3>
-        <ul className="list-disc list-inside space-y-2 pl-2">
-          <li>
-            <strong>Euclid (L2):</strong>{" "}
-            <LaTeX>{"d(x, y) = \\sqrt{\\sum_j (x_j - y_j)^2}"}</LaTeX> — mặc
-            định, phù hợp khi đặc trưng có ý nghĩa hình học.
-          </li>
-          <li>
-            <strong>Manhattan (L1):</strong>{" "}
-            <LaTeX>{"d(x, y) = \\sum_j |x_j - y_j|"}</LaTeX> — ít nhạy với
-            outlier, phù hợp đặc trưng rời rạc.
-          </li>
-          <li>
-            <strong>Minkowski (Lp):</strong> tổng quát hóa L1 và L2 với tham số{" "}
-            <LaTeX>{"p \\geq 1"}</LaTeX>.
-          </li>
-          <li>
-            <strong>Cosine:</strong> <LaTeX>{"1 - \\cos(\\theta)"}</LaTeX> —
-            dùng cho vector văn bản / embeddings, quan tâm hướng chứ không phải
-            độ lớn.
-          </li>
-          <li>
-            <strong>Mahalanobis:</strong> có tính đến hiệp phương sai — khi đặc
-            trưng tương quan lẫn nhau.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 text-lg font-semibold">Thuật toán (giả mã)</h3>
-        <CodeBlock language="python" title="KNN từ đầu — sklearn-style">
-{`import numpy as np
-from collections import Counter
-
-class KNNClassifier:
-    def __init__(self, k: int = 5, metric: str = "euclidean"):
-        self.k = k
-        self.metric = metric
-
-    def fit(self, X, y):
-        # KNN "train" = ghi nhớ toàn bộ dữ liệu.
-        self.X_train = np.asarray(X, dtype=float)
-        self.y_train = np.asarray(y)
-        return self
-
-    def _distance(self, a, b):
-        if self.metric == "euclidean":
-            return np.sqrt(((a - b) ** 2).sum(axis=1))
-        if self.metric == "manhattan":
-            return np.abs(a - b).sum(axis=1)
-        raise ValueError(f"Unknown metric: {self.metric}")
-
-    def predict_one(self, x):
-        d = self._distance(self.X_train, x)
-        # Lấy chỉ số của K khoảng cách nhỏ nhất.
-        top_k = np.argpartition(d, self.k)[: self.k]
-        # Bỏ phiếu đa số.
-        labels = self.y_train[top_k]
-        return Counter(labels).most_common(1)[0][0]
-
-    def predict(self, X):
-        X = np.asarray(X, dtype=float)
-        return np.array([self.predict_one(x) for x in X])
-
-# Cách dùng — giống sklearn
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-
-X, y = load_iris(return_X_y=True)
-X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# CỰC KỲ QUAN TRỌNG: luôn chuẩn hóa trước khi dùng KNN.
-scaler = StandardScaler().fit(X_tr)
-X_tr_s = scaler.transform(X_tr)
-X_te_s = scaler.transform(X_te)
-
-model = KNNClassifier(k=5).fit(X_tr_s, y_tr)
-acc = (model.predict(X_te_s) == y_te).mean()
-print(f"Accuracy: {acc:.3f}")`}
-        </CodeBlock>
-
-        <p className="mt-4">
-          Trong thực tế bạn sẽ dùng trực tiếp{" "}
-          <code>sklearn.neighbors.KNeighborsClassifier</code> — nó có nhiều
-          tối ưu (KD-tree, Ball tree, parallel) mà triển khai tay không có.
-        </p>
-
-        <CodeBlock language="python" title="sklearn — cách dùng thực tế">
-{`from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV, cross_val_score
-
-# Đóng gói chuẩn hóa + KNN trong một pipeline để tránh rò rỉ dữ liệu
-# (data leakage) khi dùng cross-validation.
-pipe = Pipeline([
-    ("scaler", StandardScaler()),
-    ("knn", KNeighborsClassifier()),
-])
-
-# Grid search để chọn K và metric tốt nhất.
-param_grid = {
-    "knn__n_neighbors": [1, 3, 5, 7, 11, 15, 21],
-    "knn__weights": ["uniform", "distance"],
-    "knn__metric": ["euclidean", "manhattan"],
-}
-
-grid = GridSearchCV(pipe, param_grid, cv=5, scoring="accuracy", n_jobs=-1)
-grid.fit(X_train, y_train)
-
-print("Best params:", grid.best_params_)
-print("CV accuracy:", grid.best_score_)
-
-# weights="distance": hàng xóm gần hơn có trọng số phiếu bầu lớn hơn.
-# Thường cho kết quả tốt hơn "uniform" khi dữ liệu phân bố không đều.`}
-        </CodeBlock>
-
-        <Callout variant="warning" title="Curse of dimensionality">
-          Khi số chiều <LaTeX>{"d"}</LaTeX> tăng, khoảng cách giữa mọi cặp điểm
-          có xu hướng hội tụ — nghĩa là khái niệm "gần" mất ý nghĩa. KNN hoạt
-          động tốt nhất ở <LaTeX>{"d < 20"}</LaTeX>. Với dữ liệu nhiều chiều
-          (ảnh, văn bản raw), hãy giảm chiều bằng PCA / UMAP, hoặc dùng
-          embedding học sâu trước khi áp KNN.
-        </Callout>
-
-        <Callout variant="warning" title="Khi nào KHÔNG nên dùng KNN">
-          <ul className="list-disc list-inside space-y-1">
+          <h4 className="text-sm font-semibold text-foreground mt-5">
+            Khi nào KHÔNG nên dùng k-NN
+          </h4>
+          <ul className="list-disc list-inside text-sm space-y-1 pl-2 text-foreground/80">
             <li>
-              Tập huấn luyện quá lớn (hàng triệu điểm) và yêu cầu dự đoán
-              real-time — chi phí <LaTeX>{"O(N \\cdot d)"}</LaTeX> mỗi query
-              quá đắt.
+              Tập huấn luyện lớn (triệu+ điểm) và cần dự đoán real-time — chi phí O(N · d)
+              mỗi query quá đắt (dùng ANN như HNSW, FAISS để tăng tốc).
             </li>
             <li>
-              Đặc trưng không đồng nhất về thang đo và bạn không chuẩn hóa
-              được.
+              Số chiều cao (d &gt; 20) mà không giảm chiều — khoảng cách mất nghĩa.
             </li>
             <li>
-              Số chiều rất cao mà không có cách giảm chiều.
+              Đặc trưng không đồng đơn vị và không chuẩn hoá được.
             </li>
             <li>
-              Dữ liệu cực mất cân bằng — KNN có xu hướng thiên lệch về lớp đa
-              số (xử lý bằng <code>class_weight</code> hoặc SMOTE).
+              Dữ liệu lớp mất cân bằng nặng — k-NN thiên về lớp đa số (dùng{" "}
+              <code>class_weight</code> hoặc oversampling).
             </li>
           </ul>
-        </Callout>
 
-        <CollapsibleDetail title="Chứng minh: tại sao K=1 hội tụ về error rate &le; 2× Bayes error?">
-          <p>
-            Đây là kết quả kinh điển của Cover & Hart (1967). Với{" "}
-            <LaTeX>{"N \\to \\infty"}</LaTeX>, lỗi của KNN với K=1 thỏa:
+          <p className="leading-relaxed mt-4">
+            Trong thực tế, k-NN toả sáng khi: (1) bạn cần một <em>baseline nhanh</em> để
+            so sánh với mô hình phức tạp hơn; (2) dữ liệu có hình học rõ ràng (cảm biến đã
+            chuẩn hoá, embeddings); (3) cần giải thích cho người ngoài kỹ thuật —
+            &ldquo;model này gợi ý vì có 5 trường hợp lịch sử giống bạn&rdquo; dễ hiểu
+            hơn nhiều so với &ldquo;vì trọng số của layer 7 bằng...&rdquo;.
           </p>
-          <LaTeX block>
-            {"\\varepsilon^* \\leq \\varepsilon_{1\\text{-NN}} \\leq 2\\varepsilon^* (1 - \\varepsilon^*)"}
-          </LaTeX>
-          <p>
-            Trong đó <LaTeX>{"\\varepsilon^*"}</LaTeX> là Bayes error (lỗi tối
-            ưu lý thuyết). Nghĩa là ngay cả K=1 cũng không thể tệ hơn 2 lần
-            giới hạn tối ưu — một kết quả đáng kinh ngạc vì K=1 là mô hình
-            đơn giản nhất có thể. Chứng minh đầy đủ dùng luật số lớn và tính
-            liên tục của phân phối điều kiện <LaTeX>{"P(y | x)"}</LaTeX>.
+
+          <p className="leading-relaxed">
+            Hai khái niệm bạn nên đọc cùng:{" "}
+            <TopicLink slug="k-means">k-means</TopicLink> (anh em không giám sát: thay vì
+            phân loại, nó tự gom cụm), và{" "}
+            <TopicLink slug="decision-trees">Cây quyết định</TopicLink> (đối thủ chính
+            trên dữ liệu bảng — không cần chuẩn hoá, chạy nhanh hơn khi N lớn).
           </p>
-          <p>
-            Ý nghĩa thực hành: nếu bạn có <strong>đủ nhiều dữ liệu</strong>,
-            KNN gần như không thể bị đánh bại quá xa — nó là một baseline
-            cứng đầu cần vượt qua.
-          </p>
-        </CollapsibleDetail>
+        </ExplanationSection>
+      </LessonSection>
 
-        <CollapsibleDetail title="Tăng tốc KNN: KD-tree, Ball-tree và approximate NN">
-          <p>
-            Brute-force KNN có chi phí <LaTeX>{"O(N \\cdot d)"}</LaTeX> mỗi
-            query. Có ba nhóm kỹ thuật tăng tốc:
-          </p>
-          <ol className="list-decimal list-inside space-y-2 pl-2">
-            <li>
-              <strong>KD-tree:</strong> cây phân hoạch không gian theo trục.
-              Hiệu quả khi <LaTeX>{"d < 20"}</LaTeX>, cho{" "}
-              <LaTeX>{"O(\\log N)"}</LaTeX> trung bình mỗi query. sklearn dùng
-              mặc định khi dữ liệu nhỏ chiều.
-            </li>
-            <li>
-              <strong>Ball-tree:</strong> phân hoạch thành các hình cầu lồng
-              nhau. Tốt hơn KD-tree khi dữ liệu phân bố không đều hoặc chiều
-              vừa phải.
-            </li>
-            <li>
-              <strong>Approximate Nearest Neighbor (ANN):</strong> hy sinh
-              chính xác để đổi tốc độ — HNSW, FAISS, ScaNN. Dùng cho vector
-              embedding (semantic search, RAG).{" "}
-              <TopicLink slug="vector-databases">
-                Xem thêm về vector databases
-              </TopicLink>
-              .
-            </li>
-          </ol>
-        </CollapsibleDetail>
+      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      <LessonSection step={7} totalSteps={TOTAL} label="Tóm tắt">
+        <MiniSummary
+          title="4 điều cần nhớ về k-NN"
+          points={[
+            "k-NN = bỏ phiếu đa số của k điểm gần nhất. Không có bước train — 'model' chính là dữ liệu.",
+            "k nhỏ → biên lởm chởm, nhạy nhiễu. k lớn → biên mượt, bỏ qua cụm nhỏ. Chọn k ≈ √N + cross-validation.",
+            "LUÔN chuẩn hoá đặc trưng trước khi dùng — nếu không, đặc trưng thang lớn sẽ nuốt các đặc trưng khác.",
+            "Nhanh cho dữ liệu vừa phải (d < 20, N vừa). Với N triệu / d lớn, dùng KD-tree, Ball-tree, HNSW hoặc đổi sang cây quyết định.",
+          ]}
+        />
+        <div className="mt-4">
+          <Callout variant="tip" title="Xem k-NN ngoài đời thật">
+            Ứng dụng kiểm tra triệu chứng y tế:{" "}
+            <TopicLink slug="knn-in-symptom-checker">
+              k-NN trong kiểm tra triệu chứng
+            </TopicLink>
+            . Bạn nhập triệu chứng → app so với hàng ngàn bệnh nhân cũ → tìm ca giống nhất
+            → gợi ý bệnh phổ biến trong các ca gần nhất.
+          </Callout>
+        </div>
+        <div className="mt-3 flex items-center gap-2 text-xs text-muted">
+          <Lightbulb size={12} />
+          <span>
+            Nếu bạn còn nhớ nguyên lý <em>&ldquo;hỏi hàng xóm&rdquo;</em> và biết khi nào
+            phải chuẩn hoá, bạn đã nắm k-NN đủ dùng.
+          </span>
+        </div>
+      </LessonSection>
 
-        <p className="mt-4">
-          <strong>Trong thực tế</strong>, KNN tỏa sáng khi: (1) bạn cần một{" "}
-          <em>baseline nhanh</em> để so sánh với mô hình phức tạp hơn, (2) dữ
-          liệu có cấu trúc hình học rõ (ví dụ dữ liệu cảm biến đã chuẩn hóa),
-          (3) giải thích được cho stakeholder non-technical — "model này phân
-          loại vì giống 5 case trước đó trong lịch sử" dễ nghe hơn nhiều so
-          với "model này trả về vì weight của layer 7 bằng..."
-        </p>
-      </ExplanationSection>
-
-      {/* =================================================================
-          BƯỚC 7 — TÓM TẮT
-          ================================================================= */}
-      <MiniSummary
-        title="6 điều cần nhớ về KNN"
-        points={[
-          "KNN phân loại bằng bỏ phiếu đa số của K hàng xóm gần nhất — không có tham số cần 'học'.",
-          "K nhỏ → variance cao (nhạy nhiễu, biên lởm chởm); K lớn → bias cao (mượt nhưng mất chi tiết).",
-          "LUÔN chuẩn hóa đặc trưng: Euclid bị chi phối bởi đặc trưng có thang lớn nhất.",
-          "Chọn K bằng cross-validation; khởi điểm K≈√N, ưu tiên K lẻ khi nhị phân để tránh hòa.",
-          "Độ phức tạp dự đoán O(N·d) — quá lớn với dữ liệu nhiều. Tăng tốc bằng KD-tree, Ball-tree, hoặc ANN (HNSW, FAISS).",
-          "KNN là baseline cứng đầu: bởi định lý Cover-Hart, với N→∞ thì 1-NN không tệ hơn 2× Bayes error.",
-        ]}
-      />
-
-      {/* =================================================================
-          BƯỚC 8 — QUIZ
-          ================================================================= */}
-      <QuizSection questions={QUIZ} />
+      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      <LessonSection step={8} totalSteps={TOTAL} label="Kiểm tra">
+        <QuizSection questions={QUIZ} />
+      </LessonSection>
     </>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════
+ * Phụ trợ — minh hoạ công thức Euclid
+ * ════════════════════════════════════════════════════════════════════ */
+function EuclidMiniVisual() {
+  const [a, setA] = useState<{ x: number; y: number }>({ x: 70, y: 110 });
+  const [b, setB] = useState<{ x: number; y: number }>({ x: 230, y: 40 });
+  const d = euclid(a.x, a.y, b.x, b.y);
+  const mW = 300;
+  const mH = 160;
+
+  function handleDown(which: "a" | "b") {
+    return (e: React.PointerEvent<SVGCircleElement>) => {
+      const svg = e.currentTarget.ownerSVGElement!;
+      const rect = svg.getBoundingClientRect();
+      function move(ev: PointerEvent) {
+        const nx = ((ev.clientX - rect.left) / rect.width) * mW;
+        const ny = ((ev.clientY - rect.top) / rect.height) * mH;
+        const point = {
+          x: Math.max(10, Math.min(mW - 10, nx)),
+          y: Math.max(10, Math.min(mH - 10, ny)),
+        };
+        if (which === "a") setA(point);
+        else setB(point);
+      }
+      function up() {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", up);
+      }
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up);
+    };
+  }
+
+  return (
+    <div className="space-y-1">
+      <svg
+        viewBox={`0 0 ${mW} ${mH}`}
+        className="w-full"
+        role="img"
+        aria-label="Minh hoạ khoảng cách Euclid — kéo hai điểm để thử"
+      >
+        <line
+          x1={a.x}
+          y1={a.y}
+          x2={b.x}
+          y2={a.y}
+          stroke="#94a3b8"
+          strokeDasharray="3 3"
+        />
+        <line
+          x1={b.x}
+          y1={a.y}
+          x2={b.x}
+          y2={b.y}
+          stroke="#94a3b8"
+          strokeDasharray="3 3"
+        />
+        <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#6366f1" strokeWidth={2} />
+        <circle
+          cx={a.x}
+          cy={a.y}
+          r={8}
+          fill="#0ea5e9"
+          stroke="#fff"
+          strokeWidth={2}
+          onPointerDown={handleDown("a")}
+          style={{ cursor: "grab" }}
+        />
+        <circle
+          cx={b.x}
+          cy={b.y}
+          r={8}
+          fill="#ef4444"
+          stroke="#fff"
+          strokeWidth={2}
+          onPointerDown={handleDown("b")}
+          style={{ cursor: "grab" }}
+        />
+        <text
+          x={(a.x + b.x) / 2}
+          y={(a.y + b.y) / 2 - 6}
+          fontSize={10}
+          fill="#4f46e5"
+          fontWeight={600}
+          textAnchor="middle"
+        >
+          d = {d.toFixed(1)}
+        </text>
+      </svg>
+      <p className="text-[10px] text-tertiary text-center">
+        Kéo điểm xanh/đỏ để thử. Euclid = cạnh huyền của tam giác vuông (chấm gạch).
+      </p>
+      <div className="flex items-center justify-center gap-2 text-[10px] text-muted">
+        <Grid2x2 size={10} />
+        <span>
+          Δx = {Math.abs(a.x - b.x).toFixed(0)} · Δy = {Math.abs(a.y - b.y).toFixed(0)} →
+          d = √(Δx² + Δy²) = {d.toFixed(1)}
+        </span>
+      </div>
+    </div>
   );
 }

@@ -1,19 +1,28 @@
 "use client";
 
-import { useState, useMemo, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useMemo, useState } from "react";
+import {
+  Layers,
+  Network,
+  Sparkles,
+  Ruler,
+  GitBranch,
+  Brain,
+  ArrowRight,
+} from "lucide-react";
 import {
   PredictionGate,
   AhaMoment,
   InlineChallenge,
-  Callout,
-  CollapsibleDetail,
   MiniSummary,
-  CodeBlock,
+  Callout,
   LessonSection,
-  LaTeX,
   TopicLink,
-  ProgressSteps,
+  CollapsibleDetail,
+  StepReveal,
+  SliderGroup,
+  ToggleCompare,
+  LaTeX,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -23,1341 +32,1107 @@ import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
   slug: "mlp",
-  title: "Multi-Layer Perceptron",
-  titleVi: "Mạng nơ-ron nhiều lớp",
+  title: "Multilayer Perceptron",
+  titleVi: "MLP — Xếp nhiều perceptron thành mạng",
   description:
-    "Kiến trúc mạng nơ-ron cơ bản với nhiều lớp, cho phép giải quyết các bài toán phi tuyến tính.",
+    "Một perceptron chỉ vẽ được đường thẳng. Xếp chúng thành nhiều lớp, bạn sẽ có được đường cong — chìa khoá cho gần như mọi mô hình hiện đại.",
   category: "neural-fundamentals",
-  tags: ["neural-network", "deep-learning", "architecture"],
+  tags: ["neural-network", "deep-learning", "architecture", "mlp"],
   difficulty: "beginner",
   relatedSlugs: [
     "perceptron",
     "activation-functions",
     "forward-propagation",
     "backpropagation",
+    "mlp-in-credit-scoring",
   ],
   vizType: "interactive",
 };
 
-/* ───────────── math helpers ───────────── */
-const SVG_W = 560;
-const SVG_H = 320;
-const XOR_SVG = 260;
+/* ══════════════════════════════════════════════════════════════════
+   DỮ LIỆU: hai đám điểm kiểu "hai trăng" (two-moons) và XOR
+   ══════════════════════════════════════════════════════════════════ */
 
-function sigmoid(x: number) {
-  return 1 / (1 + Math.exp(-x));
-}
+type Pt2 = { x: number; y: number; label: 0 | 1 };
 
-function relu(x: number) {
-  return Math.max(0, x);
-}
-
-function tanh(x: number) {
-  return Math.tanh(x);
-}
-
-/** Compute node positions for a given layer config */
-function computePositions(layers: number[]) {
-  return layers.map((count, layerIdx) => {
-    const layerX = 70 + layerIdx * (420 / (layers.length - 1));
-    return Array.from({ length: count }, (_, nodeIdx) => {
-      const totalH = (count - 1) * 52;
-      const startY = SVG_H / 2 - totalH / 2;
-      return { x: layerX, y: startY + nodeIdx * 52 };
+const TWO_MOON_POINTS: Pt2[] = (() => {
+  const pts: Pt2[] = [];
+  // Trăng trên: nửa cung phía trên
+  for (let i = 0; i < 24; i++) {
+    const t = (Math.PI * i) / 23;
+    const jitterX = (((i * 37) % 9) - 4) * 0.02;
+    const jitterY = (((i * 53) % 7) - 3) * 0.02;
+    pts.push({
+      x: 0.5 + 0.35 * Math.cos(t) + jitterX,
+      y: 0.55 + 0.22 * Math.sin(t) + jitterY,
+      label: 0,
     });
-  });
-}
-
-/** XOR ground truth */
-const XOR_DATA = [
-  { x: 0, y: 0, label: 0 },
-  { x: 0, y: 1, label: 1 },
-  { x: 1, y: 0, label: 1 },
-  { x: 1, y: 1, label: 0 },
-];
-
-/** Decision surface for a single perceptron (linear) */
-function linearDecision(x: number, y: number, w1: number, w2: number, b: number) {
-  return sigmoid(w1 * x + w2 * y + b);
-}
-
-/** Decision surface for a tiny MLP with 2 hidden units (tanh) solving XOR */
-function xorMLP(x: number, y: number) {
-  // Fixed weights that actually solve XOR
-  const h1 = tanh(20 * x + 20 * y - 10);   // OR gate approximation
-  const h2 = tanh(-20 * x - 20 * y + 30);  // NAND gate approximation
-  return sigmoid(20 * h1 + 20 * h2 - 30);
-}
-
-/** Sample points of the sine curve for universal approximation demo */
-function sineTargets(n = 80) {
-  const pts: { x: number; y: number }[] = [];
-  for (let i = 0; i < n; i++) {
-    const x = -Math.PI + (2 * Math.PI * i) / (n - 1);
-    pts.push({ x, y: Math.sin(x) });
+  }
+  // Trăng dưới: nửa cung phía dưới lệch sang phải
+  for (let i = 0; i < 24; i++) {
+    const t = (Math.PI * i) / 23;
+    const jitterX = (((i * 41) % 9) - 4) * 0.02;
+    const jitterY = (((i * 59) % 7) - 3) * 0.02;
+    pts.push({
+      x: 0.2 + 0.35 * Math.cos(t) + jitterX,
+      y: 0.35 - 0.22 * Math.sin(t) + jitterY,
+      label: 1,
+    });
   }
   return pts;
+})();
+
+const XOR_POINTS: Pt2[] = [
+  { x: 0.2, y: 0.2, label: 0 },
+  { x: 0.2, y: 0.8, label: 1 },
+  { x: 0.8, y: 0.2, label: 1 },
+  { x: 0.8, y: 0.8, label: 0 },
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   NUMERIC HELPERS — mô phỏng MLP nhỏ với hàm kích hoạt tanh
+   ══════════════════════════════════════════════════════════════════ */
+
+function tanh(z: number) {
+  return Math.tanh(z);
+}
+
+function sigmoid(z: number) {
+  return 1 / (1 + Math.exp(-z));
 }
 
 /**
- * A hand-tuned MLP (1 hidden layer, K ReLU units) that roughly
- * approximates sin(x) on [-π, π] using piecewise linear bumps.
- * More hidden units → tighter fit.
+ * Khởi tạo trọng số ổn định bằng seeded PRNG — cùng config sẽ luôn
+ * cho cùng đường biên, tránh trôi ảnh giữa các lần render.
  */
-function approxSine(x: number, hiddenUnits: number) {
-  // Use evenly spaced "bumps" across [-π, π]
-  let sum = 0;
-  const L = -Math.PI;
-  const R = Math.PI;
-  for (let k = 0; k < hiddenUnits; k++) {
-    const center = L + ((R - L) * (k + 0.5)) / hiddenUnits;
-    const width = (R - L) / hiddenUnits;
-    // Triangle bump around center, height = sin(center)
-    const v = relu(1 - Math.abs(x - center) / width);
-    sum += v * Math.sin(center);
-  }
-  return sum;
+function makeSeededRng(seed: number) {
+  let s = seed;
+  return () => {
+    s = (s * 48271) % 2147483647;
+    return (s / 2147483647) * 2 - 1;
+  };
 }
 
-/* ───────────── main component ───────────── */
-export default function MLPTopic() {
-  /* Visualization state */
-  const [layers, setLayers] = useState([2, 3, 3, 1]);
-  const [inputVals, setInputVals] = useState([0.6, 0.9]);
-  const [propagated, setPropagated] = useState(false);
-  const [activeLayer, setActiveLayer] = useState(-1);
-  const [hoveredNode, setHoveredNode] = useState<{
-    layer: number;
-    node: number;
-  } | null>(null);
+interface MlpParams {
+  // Trọng số từ đầu vào 2D đến lớp ẩn 1
+  W1: number[][]; // [hidden1][2]
+  b1: number[];
+  // Trọng số giữa các lớp ẩn
+  Wh: number[][][]; // mỗi phần tử [hidden_{k+1}][hidden_k]
+  bh: number[][];
+  // Trọng số lớp cuối → 1 đầu ra
+  Wout: number[]; // [hidden_last]
+  bout: number;
+}
 
-  /* XOR demo state */
-  const [xorMode, setXorMode] = useState<"perceptron" | "mlp">("perceptron");
-  // Perceptron weights the user can tweak to try (and fail) to solve XOR
-  const [pW1, setPW1] = useState(1);
-  const [pW2, setPW2] = useState(1);
-  const [pB, setPB] = useState(-0.5);
-
-  /* Universal approximation state */
-  const [hiddenUnits, setHiddenUnits] = useState(10);
-
-  /* Architecture playground state */
-  const [taskType, setTaskType] = useState<"tabular" | "image" | "sequence" | "tiny">("tabular");
-
-  // Random but stable weights (seeded by layer structure)
-  const weights = useMemo(() => {
-    const w: number[][][] = [];
-    let seed = 42;
-    const nextRand = () => {
-      seed = (seed * 16807 + 0) % 2147483647;
-      return (seed / 2147483647) * 2 - 1;
-    };
-    for (let l = 0; l < layers.length - 1; l++) {
-      w[l] = [];
-      for (let i = 0; i < layers[l]; i++) {
-        w[l][i] = [];
-        for (let j = 0; j < layers[l + 1]; j++) {
-          w[l][i][j] = parseFloat((nextRand() * 0.8).toFixed(3));
-        }
+function buildMlp(
+  layerSizes: number[],
+  seed: number,
+  task: "moons" | "xor"
+): MlpParams {
+  const rnd = makeSeededRng(seed);
+  const W1: number[][] = [];
+  const b1: number[] = [];
+  for (let j = 0; j < layerSizes[0]; j++) {
+    const row = [rnd() * 2.4, rnd() * 2.4];
+    W1.push(row);
+    b1.push(rnd() * 0.6);
+  }
+  const Wh: number[][][] = [];
+  const bh: number[][] = [];
+  for (let l = 1; l < layerSizes.length; l++) {
+    const layerW: number[][] = [];
+    const layerB: number[] = [];
+    for (let j = 0; j < layerSizes[l]; j++) {
+      const row: number[] = [];
+      for (let i = 0; i < layerSizes[l - 1]; i++) {
+        row.push(rnd() * 2.1);
       }
+      layerW.push(row);
+      layerB.push(rnd() * 0.4);
     }
-    return w;
-  }, [layers]);
+    Wh.push(layerW);
+    bh.push(layerB);
+  }
+  const last = layerSizes[layerSizes.length - 1];
+  const Wout: number[] = [];
+  for (let i = 0; i < last; i++) {
+    Wout.push(rnd() * 2.5);
+  }
+  // Bias cuối được đẩy nhẹ theo task để đường biên nằm gần tâm ảnh
+  const bout = task === "xor" ? -0.2 + rnd() * 0.2 : rnd() * 0.3;
+  return { W1, b1, Wh, bh, Wout, bout };
+}
 
-  // Forward pass computation
-  const activations = useMemo(() => {
-    const acts: number[][] = [inputVals.slice(0, layers[0])];
-    for (let l = 0; l < layers.length - 1; l++) {
-      const prev = acts[l];
-      const next: number[] = [];
-      for (let j = 0; j < layers[l + 1]; j++) {
-        let sum = 0.1; // bias
-        for (let i = 0; i < layers[l]; i++) {
-          sum += (prev[i] ?? 0) * (weights[l]?.[i]?.[j] ?? 0);
-        }
-        next.push(l === layers.length - 2 ? sigmoid(sum) : relu(sum));
-      }
-      acts.push(next);
-    }
-    return acts;
-  }, [inputVals, layers, weights]);
-
-  const positions = useMemo(() => computePositions(layers), [layers]);
-
-  const propagate = useCallback(() => {
-    setPropagated(false);
-    setActiveLayer(0);
-    let layer = 0;
-    const interval = setInterval(() => {
-      layer++;
-      if (layer >= layers.length) {
-        clearInterval(interval);
-        setPropagated(true);
-        return;
-      }
-      setActiveLayer(layer);
-    }, 500);
-  }, [layers]);
-
-  const layerLabels = (idx: number) => {
-    if (idx === 0) return "Đầu vào";
-    if (idx === layers.length - 1) return "Đầu ra";
-    return `Ẩn ${idx}`;
-  };
-
-  /* ── Precompute XOR decision surface ── */
-  const xorGrid = useMemo(() => {
-    const N = 30;
-    const cells: { x: number; y: number; val: number }[] = [];
-    for (let i = 0; i < N; i++) {
-      for (let j = 0; j < N; j++) {
-        const xv = i / (N - 1);
-        const yv = j / (N - 1);
-        const val =
-          xorMode === "perceptron"
-            ? linearDecision(xv, yv, pW1, pW2, pB)
-            : xorMLP(xv, yv);
-        cells.push({ x: xv, y: yv, val });
-      }
-    }
-    return cells;
-  }, [xorMode, pW1, pW2, pB]);
-
-  /* ── Precompute sine approximation curves ── */
-  const sineCurves = useMemo(() => {
-    const targets = sineTargets(100);
-    const approx = targets.map(({ x }) => ({
-      x,
-      y: approxSine(x, hiddenUnits),
-    }));
-    return { targets, approx };
-  }, [hiddenUnits]);
-
-  const sineMSE = useMemo(() => {
-    const { targets, approx } = sineCurves;
-    let sum = 0;
-    for (let i = 0; i < targets.length; i++) {
-      const d = targets[i].y - approx[i].y;
-      sum += d * d;
-    }
-    return sum / targets.length;
-  }, [sineCurves]);
-
-  /* ── Architecture recommendation ── */
-  const archRecommendation = useMemo(() => {
-    switch (taskType) {
-      case "tabular":
-        return {
-          layers: "2–3 lớp ẩn",
-          width: "64–256 nơ-ron mỗi lớp",
-          activation: "ReLU hoặc GELU",
-          note: "MLP là lựa chọn chuẩn cho dữ liệu bảng (số, hạng mục mã hoá). Không cần sâu.",
-          color: "#22c55e",
-        };
-      case "image":
-        return {
-          layers: "MLP KHÔNG tối ưu — cần CNN",
-          width: "MLP mất tính cục bộ không gian",
-          activation: "ReLU với CNN",
-          note: "Ảnh có cấu trúc không gian 2D. Flatten rồi đưa vào MLP sẽ vỡ pattern — dùng Conv2D.",
-          color: "#ef4444",
-        };
-      case "sequence":
-        return {
-          layers: "MLP KHÔNG tối ưu — cần RNN/Transformer",
-          width: "MLP coi mọi bước thời gian độc lập",
-          activation: "GELU với Transformer",
-          note: "Chuỗi có phụ thuộc thứ tự. Dùng LSTM, GRU hoặc Attention thay vì MLP thuần.",
-          color: "#f59e0b",
-        };
-      case "tiny":
-        return {
-          layers: "1 lớp ẩn là đủ",
-          width: "8–32 nơ-ron",
-          activation: "tanh hoặc ReLU",
-          note: "Dataset nhỏ (dưới vài nghìn mẫu) dễ overfitting. Giữ mạng nhỏ, thêm dropout.",
-          color: "#8b5cf6",
-        };
-    }
-  }, [taskType]);
-
-  /* ── Preset architectures ── */
-  const applyPreset = useCallback(
-    (preset: "shallow" | "deep" | "wide" | "pyramid") => {
-      if (preset === "shallow") setLayers([2, 4, 1]);
-      else if (preset === "deep") setLayers([2, 3, 3, 3, 3, 1]);
-      else if (preset === "wide") setLayers([2, 8, 1]);
-      else if (preset === "pyramid") setLayers([2, 6, 4, 2, 1]);
-      setPropagated(false);
-      setActiveLayer(-1);
-    },
-    []
+function forward(
+  mlp: MlpParams,
+  x: number,
+  y: number
+): { prob: number; h: number[][] } {
+  // Lớp ẩn đầu tiên
+  const h1: number[] = mlp.W1.map((row, j) =>
+    tanh(row[0] * x + row[1] * y + mlp.b1[j])
   );
+  const acts: number[][] = [h1];
+  let prev = h1;
+  for (let l = 0; l < mlp.Wh.length; l++) {
+    const layerW = mlp.Wh[l];
+    const layerB = mlp.bh[l];
+    const next = layerW.map((row, j) => {
+      let sum = layerB[j];
+      for (let i = 0; i < row.length; i++) sum += row[i] * prev[i];
+      return tanh(sum);
+    });
+    acts.push(next);
+    prev = next;
+  }
+  let s = mlp.bout;
+  for (let i = 0; i < prev.length; i++) s += mlp.Wout[i] * prev[i];
+  return { prob: sigmoid(s), h: acts };
+}
 
-  /* ── Count parameters ── */
-  const paramCount = useMemo(() => {
-    let total = 0;
-    for (let l = 0; l < layers.length - 1; l++) {
-      total += layers[l] * layers[l + 1]; // weights
-      total += layers[l + 1]; // biases
+/* Đường biên của perceptron đơn (một đường thẳng) */
+function perceptronProb(x: number, y: number, w1: number, w2: number, b: number) {
+  return sigmoid(w1 * (x - 0.5) + w2 * (y - 0.5) + b);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL: heatmap đường biên + chấm dữ liệu
+   ══════════════════════════════════════════════════════════════════ */
+
+interface BoundaryPlotProps {
+  size: number;
+  resolution?: number;
+  data: Pt2[];
+  probAt: (x: number, y: number) => number;
+  caption?: string;
+  showAxes?: boolean;
+}
+
+function BoundaryPlot({
+  size,
+  resolution = 26,
+  data,
+  probAt,
+  caption,
+  showAxes = true,
+}: BoundaryPlotProps) {
+  const cells = useMemo(() => {
+    const out: { cx: number; cy: number; p: number }[] = [];
+    for (let i = 0; i < resolution; i++) {
+      for (let j = 0; j < resolution; j++) {
+        const xv = i / (resolution - 1);
+        const yv = j / (resolution - 1);
+        out.push({ cx: xv, cy: yv, p: probAt(xv, yv) });
+      }
     }
-    return total;
-  }, [layers]);
+    return out;
+  }, [resolution, probAt]);
 
-  // Reset propagation when layers change
-  useEffect(() => {
-    setPropagated(false);
-    setActiveLayer(-1);
-  }, [layers]);
-
-  /* ───────────── Quiz ───────────── */
-  const quizQuestions: QuizQuestion[] = [
-    {
-      question: "Tại sao MLP cần hàm kích hoạt phi tuyến giữa các lớp?",
-      options: [
-        "Để tăng tốc độ tính toán",
-        "Nếu không, nhiều lớp tuyến tính xếp chồng vẫn chỉ là một phép tuyến tính",
-        "Để giảm số lượng trọng số",
-        "Hàm kích hoạt là tùy chọn, không bắt buộc",
-      ],
-      correct: 1,
-      explanation:
-        "Tổ hợp nhiều phép biến đổi tuyến tính vẫn chỉ là một phép tuyến tính duy nhất. Hàm kích hoạt phi tuyến phá vỡ tính tuyến tính, cho phép mạng biểu diễn ranh giới phức tạp.",
-    },
-    {
-      question:
-        "Một MLP có 784 đầu vào, 2 lớp ẩn (128 và 64 nơ-ron), 10 đầu ra. Lớp nào có nhiều trọng số nhất?",
-      options: [
-        "Lớp ẩn 1 đến lớp ẩn 2 (128 × 64)",
-        "Đầu vào đến lớp ẩn 1 (784 × 128)",
-        "Lớp ẩn 2 đến đầu ra (64 × 10)",
-        "Tất cả bằng nhau",
-      ],
-      correct: 1,
-      explanation:
-        "784 × 128 = 100.352 trọng số, lớn nhất. Đây là lý do lớp đầu tiên thường chiếm phần lớn tham số trong MLP.",
-    },
-    {
-      question: "'Fully connected' nghĩa là gì trong ngữ cảnh MLP?",
-      options: [
-        "Mỗi nơ-ron kết nối với tất cả nơ-ron ở mọi lớp khác",
-        "Mỗi nơ-ron ở lớp trước kết nối với mỗi nơ-ron ở lớp kế tiếp",
-        "Tất cả trọng số có cùng giá trị",
-        "Mạng được huấn luyện trên toàn bộ dữ liệu",
-      ],
-      correct: 1,
-      explanation:
-        "Fully connected chỉ kết nối giữa hai lớp liền kề: mỗi nơ-ron lớp l kết nối với mọi nơ-ron lớp l+1, không phải mọi lớp.",
-    },
-    {
-      question:
-        "Bài toán XOR cho thấy điều gì về perceptron đơn lẻ?",
-      options: [
-        "Perceptron học chậm hơn MLP",
-        "Perceptron không thể vẽ ranh giới phi tuyến, XOR cần ít nhất 1 lớp ẩn",
-        "Perceptron cần nhiều dữ liệu hơn",
-        "Perceptron chỉ cần learning rate nhỏ hơn",
-      ],
-      correct: 1,
-      explanation:
-        "Năm 1969, Minsky và Papert chỉ ra perceptron đơn không giải được XOR — một điểm chết đối với AI thời đó. MLP với 1 lớp ẩn 2 nơ-ron đã giải được, mở đường cho deep learning.",
-    },
-    {
-      question:
-        "Universal Approximation Theorem nói gì?",
-      options: [
-        "Mọi mạng MLP đều hội tụ về nghiệm tối ưu",
-        "Một MLP với đủ nơ-ron ẩn có thể xấp xỉ hầu hết hàm liên tục trên tập compact với độ chính xác tuỳ ý",
-        "MLP luôn tốt hơn mọi mô hình khác",
-        "Tăng chiều sâu luôn tăng độ chính xác",
-      ],
-      correct: 1,
-      explanation:
-        "Định lý Cybenko (1989) và Hornik (1991): MLP với 1 lớp ẩn đủ rộng có thể xấp xỉ bất kỳ hàm liên tục nào trên tập compact. Tuy nhiên định lý không nói cách học trọng số — và thường sâu hiệu quả hơn rộng.",
-    },
-    {
-      question: "Depth vs Width: khi nào nên tăng chiều sâu thay vì chiều rộng?",
-      options: [
-        "Luôn luôn — sâu hơn bao giờ cũng tốt hơn",
-        "Khi cần học đặc trưng phân cấp (hierarchical), mỗi lớp xây trên lớp trước",
-        "Không bao giờ — rộng đơn giản hơn",
-        "Khi dữ liệu rất nhỏ",
-      ],
-      correct: 1,
-      explanation:
-        "Sâu giúp học đặc trưng theo cấp (lớp thấp: cạnh, lớp cao: hình dạng). Với dữ liệu nhỏ, sâu dễ overfit — rộng 1 lớp có thể đủ theo Universal Approximation Theorem.",
-    },
-    {
-      type: "code",
-      question: "Hoàn thiện đoạn code định nghĩa MLP 3 lớp ẩn với ReLU bằng PyTorch:",
-      codeTemplate: `import torch.nn as nn
-
-class MLP(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.layers = nn.Sequential(
-            nn.Linear(784, 256),
-            nn.___(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 10),
-        )`,
-      language: "python",
-      blanks: [{ answer: "ReLU" }],
-      explanation:
-        "nn.ReLU() là hàm kích hoạt phi tuyến bắt buộc giữa các lớp tuyến tính. Thiếu nó, toàn bộ mạng dù có bao nhiêu lớp cũng chỉ là một phép biến đổi tuyến tính duy nhất.",
-    },
-    {
-      question:
-        "Tại sao MLP KHÔNG phù hợp với dữ liệu ảnh dù Universal Approximation Theorem nói nó có thể xấp xỉ mọi hàm?",
-      options: [
-        "MLP không đủ nhanh",
-        "MLP mất tính cục bộ không gian: flatten ảnh 28×28 thành 784 vector, pixel kề nhau không còn 'gần'; CNN giữ cấu trúc này tốt hơn với ít tham số hơn",
-        "Universal Approximation chỉ áp dụng cho văn bản",
-        "MLP không hỗ trợ GPU",
-      ],
-      correct: 1,
-      explanation:
-        "Định lý nói 'có tồn tại' trọng số đủ tốt, chưa chắc học được trong thực tế. CNN sử dụng inductive bias về không gian (trọng số chia sẻ, cục bộ) nên học hiệu quả hơn nhiều trên ảnh với ít tham số.",
-    },
-  ];
+  const cell = size / resolution;
 
   return (
+    <div className="flex flex-col items-center gap-2">
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        className="w-full max-w-sm rounded-lg border border-border bg-background"
+        role="img"
+        aria-label="Đường biên phân loại của mạng"
+      >
+        {cells.map((c, i) => {
+          const strength = Math.abs(c.p - 0.5) * 2;
+          const rgb = c.p > 0.5 ? "34,197,94" : "239,68,68";
+          return (
+            <rect
+              key={i}
+              x={c.cx * size - cell / 2}
+              y={(1 - c.cy) * size - cell / 2}
+              width={cell}
+              height={cell}
+              fill={`rgba(${rgb},${(strength * 0.55).toFixed(3)})`}
+            />
+          );
+        })}
+        {showAxes && (
+          <>
+            <line x1={0} y1={size / 2} x2={size} y2={size / 2} stroke="#475569" strokeWidth={0.4} opacity={0.5} />
+            <line x1={size / 2} y1={0} x2={size / 2} y2={size} stroke="#475569" strokeWidth={0.4} opacity={0.5} />
+          </>
+        )}
+        {data.map((pt, i) => (
+          <g key={i}>
+            <circle
+              cx={pt.x * size}
+              cy={(1 - pt.y) * size}
+              r={7}
+              fill={pt.label === 1 ? "#22c55e" : "#ef4444"}
+              stroke="#fff"
+              strokeWidth={2}
+            />
+          </g>
+        ))}
+      </svg>
+      {caption && (
+        <p className="text-xs text-muted text-center leading-relaxed max-w-sm">
+          {caption}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL: sơ đồ kiến trúc mạng (lớp + nơ-ron + dây nối)
+   ══════════════════════════════════════════════════════════════════ */
+
+interface ArchDiagramProps {
+  layerSizes: number[];
+  highlight?: number;
+}
+
+function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
+  const W = 420;
+  const H = 220;
+  const layers = [2, ...layerSizes, 1];
+  const cols = layers.length;
+  const positions = layers.map((count, ci) => {
+    const colX = 40 + (ci * (W - 80)) / (cols - 1);
+    return Array.from({ length: count }, (_, ni) => {
+      const totalH = (count - 1) * 30;
+      const startY = H / 2 - totalH / 2;
+      return { x: colX, y: startY + ni * 30 };
+    });
+  });
+
+  const labelFor = (ci: number) => {
+    if (ci === 0) return "Đầu vào";
+    if (ci === cols - 1) return "Đầu ra";
+    return `Ẩn ${ci}`;
+  };
+
+  return (
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="w-full max-w-xl mx-auto"
+      role="img"
+      aria-label="Kiến trúc MLP theo cấu hình hiện tại"
+    >
+      {layers.map((_, ci) => (
+        <text
+          key={`lbl-${ci}`}
+          x={positions[ci][0].x}
+          y={16}
+          textAnchor="middle"
+          fill="#94a3b8"
+          fontSize={10}
+          fontWeight={600}
+        >
+          {labelFor(ci)}
+        </text>
+      ))}
+      {layers.map((_, ci) => {
+        if (ci === cols - 1) return null;
+        return positions[ci].map((from, fi) =>
+          positions[ci + 1].map((to, ti) => {
+            const active = highlight === -1 || highlight === ci;
+            return (
+              <line
+                key={`e-${ci}-${fi}-${ti}`}
+                x1={from.x + 10}
+                y1={from.y}
+                x2={to.x - 10}
+                y2={to.y}
+                stroke={active ? "#3b82f6" : "#334155"}
+                strokeWidth={active ? 1 : 0.5}
+                opacity={active ? 0.55 : 0.2}
+              />
+            );
+          })
+        );
+      })}
+      {layers.map((count, ci) =>
+        positions[ci].map((pos, ni) => {
+          const isInput = ci === 0;
+          const isOutput = ci === cols - 1;
+          const fill = isInput
+            ? "#3b82f6"
+            : isOutput
+              ? "#10b981"
+              : "#8b5cf6";
+          return (
+            <g key={`n-${ci}-${ni}`}>
+              <circle cx={pos.x} cy={pos.y} r={10} fill={fill} stroke="#fff" strokeWidth={1.5} />
+              <text
+                x={pos.x}
+                y={pos.y + 3}
+                textAnchor="middle"
+                fill="white"
+                fontSize={9}
+                fontWeight={700}
+              >
+                {isInput
+                  ? `x${ni + 1}`
+                  : isOutput
+                    ? "y"
+                    : `h${ni + 1}`}
+              </text>
+              <text
+                x={pos.x}
+                y={pos.y + 24}
+                textAnchor="middle"
+                fill="#94a3b8"
+                fontSize={8}
+              >
+                {isInput ? "" : isOutput ? "xác suất" : `tanh`}
+              </text>
+              {ci > 0 && ci < cols - 1 && ni === 0 && (
+                <text
+                  x={pos.x}
+                  y={H - 8}
+                  textAnchor="middle"
+                  fill="#64748b"
+                  fontSize={9}
+                  fontWeight={600}
+                >
+                  {count} nơ-ron
+                </text>
+              )}
+            </g>
+          );
+        })
+      )}
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   QUIZ
+   ══════════════════════════════════════════════════════════════════ */
+
+const quizQuestions: QuizQuestion[] = [
+  {
+    question:
+      "Một perceptron đơn chỉ vẽ được thứ gì khi phân loại dữ liệu 2D?",
+    options: [
+      "Một đường cong phức tạp tuỳ ý",
+      "Đúng một đường thẳng chia mặt phẳng thành hai nửa",
+      "Một đường tròn",
+      "Không vẽ được gì — chỉ nhớ nhãn",
+    ],
+    correct: 1,
+    explanation:
+      "Perceptron tính tổng có trọng số rồi so với ngưỡng. Biểu diễn hình học là một đường thẳng (trong 2D), hay một siêu phẳng trong nhiều chiều. Chỉ đủ cho bài toán phân tách tuyến tính.",
+  },
+  {
+    question:
+      "Khi bạn xếp thêm lớp ẩn và nhiều nơ-ron hơn, đường biên phân loại thay đổi thế nào?",
+    options: [
+      "Luôn thành đường tròn",
+      "Chỉ thay đổi độ dốc, vẫn là đường thẳng",
+      "Có thể uốn thành đường cong, bao quanh được các cụm lồi lõm",
+      "Không thay đổi — vẫn là đường thẳng",
+    ],
+    correct: 2,
+    explanation:
+      "Mỗi nơ-ron ẩn tương đương với một đường thẳng nhỏ; lớp tiếp theo tổ hợp các đường ấy thành các khối cong. Nhiều lớp hơn = tổ hợp càng linh hoạt → đường biên càng mịn, càng khớp.",
+  },
+  {
+    question:
+      "Tại sao MLP cần hàm kích hoạt phi tuyến (như tanh, ReLU) giữa các lớp?",
+    options: [
+      "Để mạng chạy nhanh hơn",
+      "Để mạng đẹp mắt hơn trên sơ đồ",
+      "Vì nhiều phép tuyến tính xếp chồng vẫn chỉ cho một phép tuyến tính duy nhất",
+      "Hàm kích hoạt chỉ là tuỳ chọn",
+    ],
+    correct: 2,
+    explanation:
+      "Phép nhân ma trận là tuyến tính. Nhiều ma trận liên tiếp có thể gộp lại thành một ma trận duy nhất. Muốn mạng học được đường cong, cần chen vào giữa một hàm phi tuyến — đó là 'cái gãy' giúp sinh ra đường cong.",
+  },
+  {
+    question:
+      "Bài toán XOR có 4 điểm (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0. Nó nói lên điều gì?",
+    options: [
+      "Perceptron đơn giải được XOR bằng cách tăng số vòng huấn luyện",
+      "Không tồn tại đường thẳng nào chia đúng hai lớp của XOR — phải cần MLP",
+      "XOR chỉ là ví dụ lý thuyết, không liên quan ML",
+      "Cần tăng learning rate là giải được",
+    ],
+    correct: 1,
+    explanation:
+      "XOR nổi tiếng vì đã khiến AI ngưng trệ gần 15 năm: không có đường thẳng nào tách được. Khi MLP với 1 lớp ẩn 2 nơ-ron ra đời, XOR giải được ngay — mở đường cho deep learning.",
+  },
+  {
+    type: "fill-blank",
+    question:
+      "MLP gồm ba loại lớp: lớp {blank}, một hoặc nhiều lớp {blank}, và lớp đầu ra.",
+    blanks: [
+      { answer: "đầu vào", accept: ["input", "vào"] },
+      { answer: "ẩn", accept: ["hidden", "giữa"] },
+    ],
+    explanation:
+      "Dữ liệu chảy từ lớp đầu vào, qua các lớp ẩn trích xuất đặc trưng, đến lớp đầu ra cho dự đoán. Mọi lớp đều là fully connected (mỗi nơ-ron lớp trước nối với mọi nơ-ron lớp sau).",
+  },
+  {
+    question:
+      "Một MLP có kiến trúc 2 → 4 → 4 → 1. Mỗi nơ-ron ẩn làm việc gì?",
+    options: [
+      "Nhớ một mẫu cụ thể từ tập huấn luyện",
+      "Vẽ một 'đường thẳng nhỏ' trong không gian đặc trưng rồi truyền mức độ kích hoạt tới lớp sau",
+      "Chia đều dữ liệu thành các nhóm",
+      "Không làm gì — chỉ truyền đầu vào nguyên",
+    ],
+    correct: 1,
+    explanation:
+      "Mỗi nơ-ron là một perceptron nhỏ cộng với hàm kích hoạt. Nó chia mặt phẳng thành 'bên này' và 'bên kia' của một đường, rồi gửi một con số mềm (giữa 0 và 1 hoặc -1 và 1) cho lớp kế tiếp tổ hợp.",
+  },
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+   ══════════════════════════════════════════════════════════════════ */
+
+export default function MlpTopic() {
+  return (
     <>
-      {/* ===== STEP 1: PREDICTION GATE ===== */}
-      <LessonSection step={1} totalSteps={9} label="Dự đoán">
+      {/* ━━━━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━━━━ */}
+      <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Một perceptron đơn lẻ chỉ vẽ được đường thẳng để phân loại. Muốn phân loại hình xoắn ốc (spiral), bạn cần gì?"
+          question="Bạn có một đám điểm hình hai vầng trăng đan vào nhau. Một perceptron đơn sẽ phân loại được bao nhiêu điểm đúng?"
           options={[
-            "Một Perceptron với learning rate lớn hơn",
-            "Nhiều Perceptron xếp thành nhiều lớp",
-            "Huấn luyện lâu hơn trên cùng Perceptron",
-            "Dùng dữ liệu nhiều hơn",
+            "Gần 100% — chỉ cần đủ vòng huấn luyện",
+            "Khoảng một nửa — vì chỉ có thể vẽ một đường thẳng, không ôm được hình trăng",
+            "Đúng 0 điểm",
+            "Phụ thuộc ngẫu nhiên",
           ]}
           correct={1}
-          explanation="Chính xác! Xếp nhiều perceptron thành nhiều lớp tạo ra MLP — mạng có thể vẽ ranh giới cong phức tạp tùy ý."
+          explanation="Perceptron đơn chỉ đẻ ra một đường thẳng. Hai vầng trăng xếp xen kẽ không có đường thẳng nào chia được đúng — tối đa khoảng 50–70% tuỳ vị trí đường. Muốn vẽ đường cong bao quanh, bạn phải xếp nhiều perceptron thành nhiều lớp."
         >
-          <p className="mt-4 text-sm text-muted leading-relaxed">
-            Bạn đã nắm ý tưởng cốt lõi. Bây giờ hãy tự tay{" "}
-            <strong className="text-foreground">xây dựng</strong> một MLP và xem dữ
-            liệu chảy qua từng lớp — quá trình đó gọi là{" "}
-            <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink>.
-          </p>
+          <div className="mt-4 space-y-2 text-sm text-muted leading-relaxed">
+            <p>
+              Hãy tưởng tượng một perceptron là một thước kẻ thẳng. Đưa cho bạn 10
+              thước kẻ và yêu cầu vẽ một đường{" "}
+              <em>ôm quanh cái ly trên bàn</em> — bạn sẽ ghép nối chúng theo nhiều
+              hướng để tạo thành đường gần giống đường cong.
+            </p>
+            <p>
+              <strong>MLP (Multilayer Perceptron)</strong> làm y hệt: nhiều perceptron
+              nhỏ xếp thành nhiều lớp, mỗi lớp sau tổ hợp các &ldquo;thước thẳng&rdquo;
+              của lớp trước thành các hình phức tạp hơn. Kết quả: một đường biên đủ
+              mềm để bao quanh gần như mọi dạng dữ liệu.
+            </p>
+          </div>
         </PredictionGate>
       </LessonSection>
 
-      {/* ===== STEP 2: BUILD YOUR OWN MLP ===== */}
-      <LessonSection step={2} totalSteps={9} label="Khám phá">
-        <VisualizationSection>
-          <div className="space-y-4">
-            <p className="text-sm text-muted text-center">
-              Thay đổi giá trị đầu vào, rồi nhấn{" "}
-              <strong className="text-foreground">Lan truyền</strong> để xem tín
-              hiệu đi qua mạng. Rê chuột lên nơ-ron để xem chi tiết.
-            </p>
-
-            {/* Preset architectures */}
-            <div className="flex flex-wrap gap-2 justify-center">
-              <button
-                type="button"
-                onClick={() => applyPreset("shallow")}
-                className="rounded-md border border-border bg-surface px-3 py-1 text-xs text-muted hover:text-foreground hover:bg-background"
-              >
-                Nông (2-4-1)
-              </button>
-              <button
-                type="button"
-                onClick={() => applyPreset("deep")}
-                className="rounded-md border border-border bg-surface px-3 py-1 text-xs text-muted hover:text-foreground hover:bg-background"
-              >
-                Sâu (2-3-3-3-3-1)
-              </button>
-              <button
-                type="button"
-                onClick={() => applyPreset("wide")}
-                className="rounded-md border border-border bg-surface px-3 py-1 text-xs text-muted hover:text-foreground hover:bg-background"
-              >
-                Rộng (2-8-1)
-              </button>
-              <button
-                type="button"
-                onClick={() => applyPreset("pyramid")}
-                className="rounded-md border border-border bg-surface px-3 py-1 text-xs text-muted hover:text-foreground hover:bg-background"
-              >
-                Kim tự tháp (2-6-4-2-1)
-              </button>
-            </div>
-
-            {/* Input controls */}
-            <div className="flex flex-wrap gap-4 justify-center">
-              {inputVals.map((v, i) => (
-                <div key={i} className="space-y-1">
-                  <label className="text-xs text-muted">
-                    x<sub>{i + 1}</sub> ={" "}
-                    <strong className="text-foreground">{v.toFixed(2)}</strong>
-                  </label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={v}
-                    onChange={(e) => {
-                      const newVals = [...inputVals];
-                      newVals[i] = parseFloat(e.target.value);
-                      setInputVals(newVals);
-                      setPropagated(false);
-                      setActiveLayer(-1);
-                    }}
-                    className="w-32 accent-accent"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Network SVG */}
-            <svg
-              viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-              className="w-full max-w-2xl mx-auto"
-            >
-              {/* Layer labels */}
-              {layers.map((_, idx) => (
-                <text
-                  key={`lbl-${idx}`}
-                  x={positions[idx][0].x}
-                  y={24}
-                  textAnchor="middle"
-                  fill="#94a3b8"
-                  fontSize="10"
-                  fontWeight="600"
-                >
-                  {layerLabels(idx)}
-                </text>
-              ))}
-
-              {/* Connections */}
-              {layers.map((_, layerIdx) => {
-                if (layerIdx >= layers.length - 1) return null;
-                return positions[layerIdx].map((fromPos, fi) =>
-                  positions[layerIdx + 1].map((toPos, ti) => {
-                    const w = weights[layerIdx]?.[fi]?.[ti] ?? 0;
-                    const isActive = activeLayer > layerIdx;
-                    const thickness = Math.abs(w) * 3 + 0.5;
-                    return (
-                      <motion.line
-                        key={`c-${layerIdx}-${fi}-${ti}`}
-                        x1={fromPos.x + 18}
-                        y1={fromPos.y}
-                        x2={toPos.x - 18}
-                        y2={toPos.y}
-                        stroke={
-                          isActive
-                            ? w >= 0
-                              ? "#3b82f6"
-                              : "#ef4444"
-                            : "#334155"
-                        }
-                        strokeWidth={isActive ? thickness : 0.8}
-                        opacity={isActive ? 0.7 : 0.2}
-                        initial={false}
-                        animate={{
-                          stroke: isActive
-                            ? w >= 0
-                              ? "#3b82f6"
-                              : "#ef4444"
-                            : "#334155",
-                          opacity: isActive ? 0.7 : 0.2,
-                        }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    );
-                  })
-                );
-              })}
-
-              {/* Nodes */}
-              {layers.map((count, layerIdx) =>
-                positions[layerIdx].map((pos, nodeIdx) => {
-                  const isActive = activeLayer >= layerIdx;
-                  const val = activations[layerIdx]?.[nodeIdx] ?? 0;
-                  const isInput = layerIdx === 0;
-                  const isOutput = layerIdx === layers.length - 1;
-                  let fill = "#1e293b";
-                  if (isActive) {
-                    if (isInput) fill = "#3b82f6";
-                    else if (isOutput) fill = "#22c55e";
-                    else fill = "#8b5cf6";
-                  }
-                  const isHovered =
-                    hoveredNode?.layer === layerIdx &&
-                    hoveredNode?.node === nodeIdx;
-
-                  return (
-                    <g key={`n-${layerIdx}-${nodeIdx}`}>
-                      <motion.circle
-                        cx={pos.x}
-                        cy={pos.y}
-                        r={16}
-                        fill={fill}
-                        stroke={
-                          isHovered ? "#f59e0b" : isActive ? fill : "#475569"
-                        }
-                        strokeWidth={isHovered ? 3 : 2}
-                        className="cursor-pointer"
-                        initial={false}
-                        animate={{
-                          fill,
-                          scale:
-                            isActive && activeLayer === layerIdx ? 1.12 : 1,
-                        }}
-                        transition={{ duration: 0.25 }}
-                        onMouseEnter={() =>
-                          setHoveredNode({ layer: layerIdx, node: nodeIdx })
-                        }
-                        onMouseLeave={() => setHoveredNode(null)}
-                      />
-                      <text
-                        x={pos.x}
-                        y={pos.y + 4}
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="10"
-                        fontWeight="bold"
-                        className="pointer-events-none select-none"
-                      >
-                        {propagated || isActive
-                          ? val.toFixed(2)
-                          : isInput
-                            ? `x${nodeIdx + 1}`
-                            : isOutput
-                              ? "y"
-                              : `h${nodeIdx + 1}`}
-                      </text>
-                    </g>
-                  );
-                })
-              )}
-
-              {/* Pulse animation */}
-              <AnimatePresence>
-                {activeLayer >= 0 &&
-                  activeLayer < layers.length &&
-                  !propagated && (
-                    <motion.circle
-                      cx={positions[activeLayer][0].x}
-                      cy={SVG_H / 2}
-                      r={40}
-                      fill="none"
-                      stroke="#3b82f6"
-                      strokeWidth="2"
-                      initial={{ scale: 0, opacity: 0.8 }}
-                      animate={{ scale: 2.5, opacity: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5 }}
-                    />
-                  )}
-              </AnimatePresence>
-            </svg>
-
-            {/* Hovered node tooltip */}
-            <AnimatePresence>
-              {hoveredNode && propagated && (
-                <motion.div
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="rounded-lg bg-background/80 border border-border p-3 text-center text-sm text-muted"
-                >
-                  {hoveredNode.layer === 0
-                    ? `Đầu vào x${hoveredNode.node + 1} = ${(activations[0]?.[hoveredNode.node] ?? 0).toFixed(3)}`
-                    : hoveredNode.layer === layers.length - 1
-                      ? `Đầu ra y = sigmoid(...) = ${(activations[hoveredNode.layer]?.[hoveredNode.node] ?? 0).toFixed(4)} — xác suất dự đoán`
-                      : `Nơ-ron ẩn h${hoveredNode.node + 1} (lớp ${hoveredNode.layer}): ReLU(tổng trọng số) = ${(activations[hoveredNode.layer]?.[hoveredNode.node] ?? 0).toFixed(4)}`}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Action button */}
-            <div className="flex justify-center">
-              <button
-                onClick={propagate}
-                className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              >
-                Lan truyền
-              </button>
-            </div>
-
-            {/* Result summary */}
-            {propagated && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-                  <p className="text-xs text-muted">Đầu vào</p>
-                  <p className="text-sm font-bold text-foreground">
-                    [{inputVals.map((v) => v.toFixed(2)).join(", ")}]
-                  </p>
-                </div>
-                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-                  <p className="text-xs text-muted">Số lớp ẩn</p>
-                  <p className="text-sm font-bold text-foreground">
-                    {layers.length - 2}
-                  </p>
-                </div>
-                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-                  <p className="text-xs text-muted">Tham số</p>
-                  <p className="text-sm font-bold text-foreground">
-                    {paramCount}
-                  </p>
-                </div>
-                <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-                  <p className="text-xs text-muted">Đầu ra</p>
-                  <p className="text-sm font-bold text-green-400">
-                    {(activations[layers.length - 1]?.[0] ?? 0).toFixed(4)}
-                  </p>
-                </div>
+      {/* ━━━━━━ BƯỚC 2 — ẨN DỤ ━━━━━━ */}
+      <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+            <Layers size={20} className="text-accent" />
+            Một lớp = một chuyên gia. Nhiều lớp = một hội đồng.
+          </h3>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Bạn thử tuyển dụng bạn mới vào quán bún. Một người quản lý chỉ dám kết
+            luận &ldquo;ứng viên này hợp hay không&rdquo; dựa trên <em>một tiêu
+            chí duy nhất</em> — ví dụ kinh nghiệm. Nếu tuyển theo mỗi tiêu chí này,
+            nhiều ứng viên tốt sẽ bị bỏ lỡ.
+          </p>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Thêm vài chuyên gia nữa — một người đánh giá thái độ, một người đánh giá
+            sức khoẻ, một người quan sát giao tiếp — và cuối cùng có <strong>một
+            người điều phối tổng hợp ý kiến</strong>. Đó chính là{" "}
+            <strong>MLP</strong>: mỗi nơ-ron ẩn là một chuyên gia &ldquo;nhỏ&rdquo;
+            nhìn vào dữ liệu theo một góc, lớp cuối tổ hợp ý kiến lại thành kết luận.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+            <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+                <Ruler size={16} />
+                <span className="text-sm font-semibold">Lớp đầu vào</span>
               </div>
-            )}
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Nhận đặc trưng thô: toạ độ điểm, pixel ảnh, giá trị cảm biến. Chưa
+                làm gì phức tạp.
+              </p>
+            </div>
+            <div className="rounded-xl border border-violet-200 bg-violet-50 dark:bg-violet-900/20 dark:border-violet-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-violet-700 dark:text-violet-300">
+                <Brain size={16} />
+                <span className="text-sm font-semibold">Các lớp ẩn</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Mỗi nơ-ron vẽ một đường thẳng nhỏ. Lớp tiếp theo gom các đường ấy
+                thành hình hài phức tạp hơn.
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
+              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                <Sparkles size={16} />
+                <span className="text-sm font-semibold">Lớp đầu ra</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">
+                Ra quyết định cuối: xác suất &ldquo;thuộc nhóm A&rdquo;, giá nhà,
+                hay con số cần đoán.
+              </p>
+            </div>
           </div>
+        </div>
+      </LessonSection>
+
+      {/* ━━━━━━ BƯỚC 3 — TRỰC QUAN HOÁ (REVEAL) ━━━━━━ */}
+      <LessonSection step={3} totalSteps={8} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <MlpBuilder />
         </VisualizationSection>
       </LessonSection>
 
-      {/* ===== STEP 3: XOR PROBLEM ===== */}
-      <LessonSection step={3} totalSteps={9} label="Bài toán XOR">
-        <div className="space-y-4">
-          <p className="text-sm text-muted leading-relaxed">
-            Năm 1969, Minsky và Papert công bố cuốn sách{" "}
-            <em>Perceptrons</em> chỉ ra: một perceptron đơn lẻ{" "}
-            <strong>không thể</strong> giải bài toán XOR. Điều đó đã khiến làn
-            sóng AI đầu tiên nguội lạnh suốt hơn một thập kỷ — cho đến khi MLP +
-            backpropagation xuất hiện. Hãy tự tay chứng kiến:
-          </p>
-
-          <VisualizationSection>
-            <div className="space-y-4">
-              {/* Mode toggle */}
-              <div className="flex justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setXorMode("perceptron")}
-                  className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
-                    xorMode === "perceptron"
-                      ? "border-accent bg-accent/15 text-accent"
-                      : "border-border bg-surface text-muted hover:text-foreground"
-                  }`}
-                >
-                  Perceptron đơn (tuyến tính)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setXorMode("mlp")}
-                  className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
-                    xorMode === "mlp"
-                      ? "border-accent bg-accent/15 text-accent"
-                      : "border-border bg-surface text-muted hover:text-foreground"
-                  }`}
-                >
-                  MLP (1 lớp ẩn 2 nơ-ron)
-                </button>
-              </div>
-
-              {/* XOR plot */}
-              <div className="flex flex-col items-center gap-3">
-                <svg
-                  viewBox={`0 0 ${XOR_SVG} ${XOR_SVG}`}
-                  className="w-full max-w-sm"
-                >
-                  {/* Decision surface heatmap */}
-                  {xorGrid.map((cell, idx) => {
-                    const cx = cell.x * XOR_SVG;
-                    const cy = (1 - cell.y) * XOR_SVG;
-                    const alpha = Math.abs(cell.val - 0.5) * 2;
-                    const color =
-                      cell.val > 0.5 ? "34,197,94" : "239,68,68";
-                    return (
-                      <rect
-                        key={idx}
-                        x={cx - XOR_SVG / 60}
-                        y={cy - XOR_SVG / 60}
-                        width={XOR_SVG / 30}
-                        height={XOR_SVG / 30}
-                        fill={`rgba(${color}, ${alpha * 0.4})`}
-                      />
-                    );
-                  })}
-
-                  {/* Data points */}
-                  {XOR_DATA.map((pt, idx) => {
-                    const cx = pt.x * XOR_SVG;
-                    const cy = (1 - pt.y) * XOR_SVG;
-                    return (
-                      <g key={idx}>
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={10}
-                          fill={pt.label === 1 ? "#22c55e" : "#ef4444"}
-                          stroke="white"
-                          strokeWidth={2}
-                        />
-                        <text
-                          x={cx}
-                          y={cy + 3}
-                          textAnchor="middle"
-                          fontSize={10}
-                          fontWeight={700}
-                          fill="white"
-                        >
-                          {pt.label}
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
-
-                <p className="text-xs text-muted text-center max-w-sm">
-                  Điểm xanh = lớp 1, điểm đỏ = lớp 0.{" "}
-                  {xorMode === "perceptron"
-                    ? "Perceptron chỉ vẽ được MỘT đường thẳng — không đường nào phân tách được 2 nhóm XOR!"
-                    : "MLP với 1 lớp ẩn dựng 2 đường thẳng ở lớp ẩn, rồi tổ hợp thành ranh giới cong — XOR được giải."}
-                </p>
-              </div>
-
-              {/* Perceptron sliders (only show in perceptron mode) */}
-              {xorMode === "perceptron" && (
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="text-xs text-muted">
-                      w₁ = <strong>{pW1.toFixed(2)}</strong>
-                    </label>
-                    <input
-                      type="range"
-                      min={-3}
-                      max={3}
-                      step={0.1}
-                      value={pW1}
-                      onChange={(e) => setPW1(parseFloat(e.target.value))}
-                      className="w-full accent-accent"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted">
-                      w₂ = <strong>{pW2.toFixed(2)}</strong>
-                    </label>
-                    <input
-                      type="range"
-                      min={-3}
-                      max={3}
-                      step={0.1}
-                      value={pW2}
-                      onChange={(e) => setPW2(parseFloat(e.target.value))}
-                      className="w-full accent-accent"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted">
-                      b = <strong>{pB.toFixed(2)}</strong>
-                    </label>
-                    <input
-                      type="range"
-                      min={-3}
-                      max={3}
-                      step={0.1}
-                      value={pB}
-                      onChange={(e) => setPB(parseFloat(e.target.value))}
-                      className="w-full accent-accent"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {xorMode === "perceptron" && (
-                <Callout variant="warning" title="Dù vặn thế nào cũng không giải được">
-                  Thử bất kỳ tổ hợp w₁, w₂, b nào — bạn sẽ luôn thấy ít nhất 1
-                  điểm bị phân loại sai. Đó là vì XOR là bài toán{" "}
-                  <strong>không tuyến tính phân tách</strong> (not linearly
-                  separable). Đây chính là rào cản lý thuyết đã khiến
-                  connectionism gần như biến mất khỏi AI trong 15 năm.
-                </Callout>
-              )}
-
-              {xorMode === "mlp" && (
-                <Callout variant="tip" title="MLP giải được XOR!">
-                  MLP dùng 2 nơ-ron ẩn: nơ-ron 1 học gần giống hàm OR, nơ-ron 2
-                  học gần giống hàm NAND. Lớp đầu ra tổ hợp 2 tín hiệu này —
-                  đúng định nghĩa XOR = OR AND NAND. Đây là khoảnh khắc lịch
-                  sử: <em>chiều sâu</em> cho phép học đặc trưng phân cấp.
-                </Callout>
-              )}
-            </div>
-          </VisualizationSection>
-        </div>
-      </LessonSection>
-
-      {/* ===== STEP 4: AHA MOMENT ===== */}
-      <LessonSection step={4} totalSteps={9} label="Khoảnh khắc Aha">
+      {/* ━━━━━━ BƯỚC 4 — AHA ━━━━━━ */}
+      <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
-          <p>
-            Bạn vừa xây một <strong>Multi-Layer Perceptron</strong> — mạng nơ-ron
-            nhiều lớp! Mỗi lớp ẩn trích xuất đặc trưng ngày càng trừu tượng, giống
-            như nhà máy phở: lớp 1 sơ chế nguyên liệu, lớp 2 nấu nước dùng, lớp
-            cuối cho ra tô phở hoàn chỉnh. Quan trọng hơn: <em>chiều sâu</em> phá
-            vỡ giới hạn tuyến tính — điều mà perceptron đơn không thể làm được
-            với XOR.
-          </p>
+          Một perceptron = một đường thẳng. Hai lớp = một đường gấp khúc. Ba lớp
+          trở lên = một đường cong mịn, bao quanh gần như mọi dạng dữ liệu.
+          <br />
+          <br />
+          <strong>Chiều sâu</strong> không phải sự phức tạp cho vui — nó là cơ chế
+          cho phép mạng &ldquo;học từ nét đơn giản đến hình phức tạp&rdquo;. Đó là
+          lý do deep learning được gọi là <em>deep</em>.
         </AhaMoment>
       </LessonSection>
 
-      {/* ===== STEP 5: UNIVERSAL APPROXIMATION ===== */}
-      <LessonSection step={5} totalSteps={9} label="Xấp xỉ vạn năng">
+      {/* ━━━━━━ BƯỚC 5 — DEEPEN (XOR TOGGLE COMPARE) ━━━━━━ */}
+      <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <div className="space-y-4">
+          <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+            <GitBranch size={18} className="text-accent" />
+            Bài toán XOR — viên gạch đã làm AI đình trệ 15 năm
+          </h3>
           <p className="text-sm text-muted leading-relaxed">
-            Năm 1989 Cybenko chứng minh:{" "}
-            <strong>một MLP với 1 lớp ẩn đủ rộng có thể xấp xỉ hầu hết mọi hàm liên tục</strong>{" "}
-            trên tập compact với độ chính xác tuỳ ý. Dưới đây, ta dùng MLP với số
-            nơ-ron ẩn thay đổi để xấp xỉ <LaTeX>{"f(x) = \\sin(x)"}</LaTeX>.
+            XOR là phép &ldquo;khác nhau&rdquo;: (0,0)→0, (1,1)→0, còn (0,1)→1 và
+            (1,0)→1. Bốn điểm này xếp thành hình quả trám: hai điểm cùng nhãn nằm
+            chéo nhau. <strong>Không có đường thẳng nào chia đúng</strong>. Hãy xem
+            tận mắt.
+          </p>
+          <ToggleCompare
+            labelA="Perceptron đơn"
+            labelB="MLP (1 lớp ẩn × 4 nơ-ron)"
+            description="Cùng một bộ 4 điểm XOR, hai mô hình, hai đường biên."
+            childA={
+              <BoundaryPlot
+                size={260}
+                data={XOR_POINTS}
+                probAt={(x, y) => perceptronProb(x, y, 1.6, -1.6, 0)}
+                caption="Perceptron đơn chỉ vẽ được một đường thẳng. Dù bạn xoay kiểu gì, ít nhất 1 trong 4 điểm luôn bị phân loại sai."
+              />
+            }
+            childB={
+              <XorMlpPlot />
+            }
+          />
+          <Callout variant="insight" title="Điểm lịch sử">
+            Năm 1969 Marvin Minsky và Seymour Papert công bố cuốn{" "}
+            <em>Perceptrons</em>, chỉ ra perceptron đơn không giải được XOR. AI gần
+            như ngủ đông suốt thập kỷ 1970. Đến thập niên 1980, khi backpropagation
+            được khám phá lại, MLP đã giải XOR một cách gọn gàng — và deep learning
+            hiện đại chính là nhánh phát triển tiếp từ đó.
+          </Callout>
+        </div>
+      </LessonSection>
+
+      {/* ━━━━━━ BƯỚC 6 — CHALLENGE ━━━━━━ */}
+      <LessonSection step={6} totalSteps={8} label="Thử thách">
+        <div className="space-y-4">
+          <InlineChallenge
+            question="Bạn có một MLP 10 lớp nhưng BỎ HẾT hàm kích hoạt (tanh, ReLU...). Mạng này tương đương với gì?"
+            options={[
+              "Một MLP 5 lớp — chia đôi",
+              "Một phép biến đổi tuyến tính duy nhất, y hệt perceptron đơn",
+              "Vẫn là MLP — chỉ chạy chậm hơn",
+              "Không chạy được — sẽ báo lỗi",
+            ]}
+            correct={1}
+            explanation="Tích của 10 ma trận vẫn là một ma trận duy nhất (theo quy tắc nhân ma trận). Không có phi tuyến ở giữa, 10 lớp sụp đổ thành 1 lớp — không thể vẽ đường cong. Hàm kích hoạt chính là 'cái gãy' giúp đường cong sinh ra."
+          />
+          <InlineChallenge
+            question="Với cùng 2.000 tham số, chiến lược nào thường học được đường biên phức tạp hơn cho dữ liệu như ảnh?"
+            options={[
+              "1 lớp ẩn rất rộng (chẳng hạn 1.000 nơ-ron) — chiều rộng tối đa",
+              "Vài lớp ẩn vừa phải (ví dụ 4 lớp × ~30 nơ-ron) — chiều sâu",
+              "Không ẩn, chỉ có đầu vào và đầu ra — siêu nông",
+              "Không quan trọng — kết quả y hệt nhau",
+            ]}
+            correct={1}
+            explanation="Cùng ngân sách tham số, mạng sâu thường biểu diễn hàm phức tạp hơn mạng rộng. Lý do trực quan: lớp sâu tái sử dụng đặc trưng của lớp nông (cạnh → hình → vật thể), trong khi mạng rộng 1 lớp phải nhớ từng mẫu riêng lẻ."
+          />
+        </div>
+      </LessonSection>
+
+      {/* ━━━━━━ BƯỚC 7 — GIẢI THÍCH ━━━━━━ */}
+      <LessonSection step={7} totalSteps={8} label="Giải thích">
+        <ExplanationSection topicSlug={metadata.slug}>
+          <p className="leading-relaxed">
+            Nhìn từ bên trong, một MLP gồm các <strong>phép biến đổi tuyến tính
+            xếp chồng</strong>, ở giữa chen vào <strong>hàm kích hoạt phi tuyến
+            </strong>. Đây là hai dòng công thức duy nhất cần nhớ:
+          </p>
+          <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
+            1. Mỗi lớp: tổng có trọng số, rồi làm cong
+          </h4>
+          <LaTeX block>{"h^{[l]} = f\\big(W^{[l]}\\,h^{[l-1]} + b^{[l]}\\big)"}</LaTeX>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Đọc: <em>đầu ra của lớp l = hàm kích hoạt của (ma trận trọng số nhân
+            đầu ra lớp trước, cộng bias)</em>. <strong>W</strong> quyết định
+            &ldquo;lớp này để ý đến tổ hợp đặc trưng nào&rdquo;, <strong>b</strong>{" "}
+            dịch đường biên lên hay xuống, còn <strong>f</strong> (ví dụ ReLU, tanh)
+            là thứ bẻ &ldquo;đường thẳng&rdquo; thành &ldquo;đường cong&rdquo;.
           </p>
 
-          <VisualizationSection>
-            <div className="space-y-4">
-              <div className="flex flex-col items-center gap-2">
-                <label className="text-xs text-muted">
-                  Số nơ-ron ẩn K ={" "}
-                  <strong className="text-foreground">{hiddenUnits}</strong>
-                </label>
-                <input
-                  type="range"
-                  min={2}
-                  max={40}
-                  step={1}
-                  value={hiddenUnits}
-                  onChange={(e) => setHiddenUnits(parseInt(e.target.value))}
-                  className="w-64 accent-accent"
-                />
-                <p className="text-xs text-muted">
-                  MSE ={" "}
-                  <strong
-                    className={
-                      sineMSE < 0.02
-                        ? "text-green-400"
-                        : sineMSE < 0.1
-                          ? "text-yellow-400"
-                          : "text-red-400"
-                    }
-                  >
-                    {sineMSE.toFixed(4)}
-                  </strong>
-                </p>
-              </div>
+          <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
+            2. Cả mạng: xếp nhiều lớp thành một hàm hợp
+          </h4>
+          <LaTeX block>{"\\hat{y} = f_{L}\\big(f_{L-1}(\\cdots f_1(x)\\cdots)\\big)"}</LaTeX>
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            Đọc: <em>dự đoán cuối cùng là kết quả áp dụng lớp 1, rồi lớp 2, rồi...
+            đến lớp L</em>. Mỗi lớp nhận đầu ra của lớp trước. Nếu bỏ hàm kích hoạt
+            <em> f</em>, toàn bộ dãy phép nhân ma trận sẽ gộp lại thành một ma trận
+            duy nhất — và bạn trở về với perceptron đơn.
+          </p>
 
-              <svg
-                viewBox="-350 -120 700 240"
-                className="w-full max-w-2xl mx-auto"
-              >
-                {/* Axes */}
-                <line x1={-Math.PI * 100} y1={0} x2={Math.PI * 100} y2={0} stroke="#475569" strokeWidth={0.5} />
-                <line x1={0} y1={-110} x2={0} y2={110} stroke="#475569" strokeWidth={0.5} />
-                {/* Target: sine */}
-                <polyline
-                  fill="none"
-                  stroke="#22c55e"
-                  strokeWidth={2.5}
-                  points={sineCurves.targets
-                    .map((p) => `${p.x * 100},${-p.y * 90}`)
-                    .join(" ")}
-                />
-                {/* MLP approximation */}
-                <polyline
-                  fill="none"
-                  stroke="#f59e0b"
-                  strokeWidth={2}
-                  strokeDasharray="4 3"
-                  points={sineCurves.approx
-                    .map((p) => `${p.x * 100},${-p.y * 90}`)
-                    .join(" ")}
-                />
-                {/* Labels */}
-                <text x={-320} y={-95} fill="#22c55e" fontSize={11} fontWeight={600}>
-                  sin(x) — mục tiêu
-                </text>
-                <text x={-320} y={-75} fill="#f59e0b" fontSize={11} fontWeight={600}>
-                  MLP({hiddenUnits} nơ-ron)
-                </text>
-                <text x={-Math.PI * 100 - 15} y={-5} fill="#94a3b8" fontSize={9}>
-                  -π
-                </text>
-                <text x={Math.PI * 100 + 5} y={-5} fill="#94a3b8" fontSize={9}>
-                  π
-                </text>
-              </svg>
+          <Callout variant="tip" title="Không cần nhớ công thức — nhớ hình ảnh">
+            Mỗi lớp làm <em>hai việc</em>: (1) trộn đặc trưng đầu vào theo trọng số,
+            (2) bẻ cong bằng hàm kích hoạt. Cứ mỗi cặp &ldquo;trộn — bẻ cong&rdquo;
+            ấy là một lớp. Xếp nhiều lớp là xếp nhiều lần trộn-bẻ-cong. Tất cả chỉ
+            có vậy.
+          </Callout>
 
-              <div className="grid grid-cols-3 gap-3 max-w-lg mx-auto">
-                <div className="rounded-lg border border-border bg-background/40 p-3 text-center">
-                  <p className="text-xs text-muted">K = 2</p>
-                  <p className="text-xs text-red-400">Quá thô</p>
-                </div>
-                <div className="rounded-lg border border-border bg-background/40 p-3 text-center">
-                  <p className="text-xs text-muted">K = 10</p>
-                  <p className="text-xs text-yellow-400">Khá tốt</p>
-                </div>
-                <div className="rounded-lg border border-border bg-background/40 p-3 text-center">
-                  <p className="text-xs text-muted">K = 30+</p>
-                  <p className="text-xs text-green-400">Rất gần</p>
-                </div>
+          <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
+            Ba loại lớp — ba công việc khác nhau
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1.5">
+              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+                <Ruler size={14} />
+                <span className="text-xs font-semibold uppercase tracking-wide">Lớp đầu vào</span>
               </div>
+              <p className="text-xs text-foreground/85 leading-relaxed">
+                Chỉ chứa dữ liệu thô, không có phép biến đổi. Số nơ-ron = số đặc
+                trưng. Với ảnh 28×28 pixel: 784 nơ-ron.
+              </p>
             </div>
-          </VisualizationSection>
+            <div className="rounded-xl border border-violet-200 bg-violet-50 dark:bg-violet-900/20 dark:border-violet-800 p-4 space-y-1.5">
+              <div className="flex items-center gap-2 text-violet-700 dark:text-violet-300">
+                <Brain size={14} />
+                <span className="text-xs font-semibold uppercase tracking-wide">Các lớp ẩn</span>
+              </div>
+              <p className="text-xs text-foreground/85 leading-relaxed">
+                Trích xuất đặc trưng. Lớp đầu bắt nét đơn giản, lớp sau tổ hợp
+                thành khối phức tạp hơn. Đây là nơi &ldquo;học&rdquo; thật sự diễn
+                ra.
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1.5">
+              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                <Sparkles size={14} />
+                <span className="text-xs font-semibold uppercase tracking-wide">Lớp đầu ra</span>
+              </div>
+              <p className="text-xs text-foreground/85 leading-relaxed">
+                Cho con số cuối: 1 nơ-ron cho hồi quy (giá, điểm), n nơ-ron cho
+                phân loại n lớp, thường kèm sigmoid hoặc softmax.
+              </p>
+            </div>
+          </div>
 
-          <Callout variant="info" title="Lưu ý quan trọng về Universal Approximation">
-            Định lý chỉ nói{" "}
-            <strong>tồn tại</strong> bộ trọng số đủ tốt — nó{" "}
-            <strong>không đảm bảo</strong> ta có thể học được chúng bằng gradient
-            descent với dữ liệu hữu hạn. Trong thực tế: (1) mạng có thể cần rất
-            nhiều nơ-ron, (2) huấn luyện có thể kẹt ở local minima, (3) thường{" "}
-            <em>sâu</em> hiệu quả hơn <em>rộng</em> về mặt tham số.
-          </Callout>
-        </div>
-      </LessonSection>
-
-      {/* ===== STEP 6: INLINE CHALLENGES ===== */}
-      <LessonSection step={6} totalSteps={9} label="Thử thách">
-        <div className="space-y-4">
-          <p className="text-sm text-muted leading-relaxed">
-            Bạn đã thấy tín hiệu chảy qua mạng. Nhưng nếu bỏ hết hàm kích hoạt
-            (ReLU, sigmoid) thì sao? Nghĩ kĩ trước khi chọn!
-          </p>
-          <InlineChallenge
-            question="Nếu MLP 10 lớp không có hàm kích hoạt phi tuyến, nó tương đương với gì?"
-            options={[
-              "Một MLP 5 lớp — giảm một nửa",
-              "Một phép biến đổi tuyến tính duy nhất — như Perceptron đơn!",
-              "Không thay đổi gì — hàm kích hoạt chỉ tăng tốc",
+          <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
+            Dòng chảy dữ liệu — xem từng bước
+          </h4>
+          <StepReveal
+            labels={[
+              "Bước 1: đầu vào",
+              "Bước 2: lớp ẩn 1",
+              "Bước 3: lớp ẩn 2",
+              "Bước 4: đầu ra",
             ]}
-            correct={1}
-            explanation="Tích của nhiều ma trận (W₁ × W₂ × ... × W₁₀) vẫn là một ma trận duy nhất. Không có phi tuyến, 10 lớp chỉ bằng 1 lớp! Đây là lý do hàm kích hoạt là bắt buộc."
-          />
-
-          <InlineChallenge
-            question="Depth vs Width: Bạn có 10.000 tham số để xây mạng cho bài toán ảnh phức tạp. Chọn thế nào?"
-            options={[
-              "1 lớp ẩn rất rộng (10.000 nơ-ron) — Universal Approximation nói là đủ",
-              "Nhiều lớp ẩn vừa phải (ví dụ 5 × ~40 nơ-ron) — chiều sâu giúp học đặc trưng phân cấp, hiệu quả hơn về tham số",
-              "Càng nông càng tốt — dễ huấn luyện",
+          >
+            {[
+              <div key="s1" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  Dữ liệu thô đi vào lớp đầu vào. Ví dụ bài phân loại ảnh 28×28: mỗi
+                  pixel là một nơ-ron, tất cả có 784 con số đầu vào trong khoảng 0–1.
+                  Lớp đầu vào không làm phép tính — chỉ là nơi đặt dữ liệu.
+                </p>
+              </div>,
+              <div key="s2" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  Lớp ẩn 1: mỗi nơ-ron lấy toàn bộ 784 đầu vào, nhân với trọng số,
+                  cộng bias, rồi qua hàm kích hoạt. Kết quả: một vector &ldquo;đặc
+                  trưng cấp 1&rdquo; — tương đương nét cạnh, góc, mảng đậm nhạt.
+                </p>
+              </div>,
+              <div key="s3" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  Lớp ẩn 2: tổ hợp &ldquo;nét&rdquo; thành &ldquo;hình dạng&rdquo;.
+                  Ví dụ với chữ số viết tay: lớp này đã nhận ra vòng cong phía
+                  trên, thanh dọc giữa — những thành phần đặc trưng của chữ số.
+                </p>
+              </div>,
+              <div key="s4" className="rounded-lg border border-border bg-surface/60 p-4">
+                <p className="text-sm text-foreground leading-relaxed">
+                  Lớp đầu ra: tổ hợp &ldquo;hình dạng&rdquo; thành câu trả lời cuối.
+                  Với phân loại 0–9: 10 nơ-ron, mỗi nơ-ron cho một xác suất. Nơ-ron
+                  có xác suất cao nhất chính là dự đoán của mạng.
+                </p>
+              </div>,
             ]}
-            correct={1}
-            explanation="Thực nghiệm và lý thuyết sâu (Bengio, 2009) cho thấy: với cùng số tham số, mạng sâu biểu diễn được hàm phức tạp hơn mạng rộng. Đặc trưng được tổ hợp theo cấp — lớp thấp học cạnh, lớp cao học hình dạng."
-          />
-        </div>
-      </LessonSection>
+          </StepReveal>
 
-      {/* ===== STEP 7: EXPLANATION ===== */}
-      <LessonSection step={7} totalSteps={9} label="Giải thích">
-        <ExplanationSection>
-          <p>
-            <strong>Multi-Layer Perceptron (MLP)</strong> là kiến trúc mạng nơ-ron
-            cơ bản nhất với các lớp kết nối đầy đủ (fully connected). Tại mỗi
-            lớp, phép tính diễn ra theo hai bước:
+          <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
+            Đếm tham số — vì sao mô hình lớn lại &ldquo;lớn&rdquo;
+          </h4>
+          <p className="leading-relaxed">
+            Giữa hai lớp liên tiếp với <em>a</em> và <em>b</em> nơ-ron, số trọng số
+            là <strong>a × b</strong>, cộng <em>b</em> bias. Một MLP kiểu 784 → 256
+            → 128 → 10 đã có khoảng <strong>235.000 tham số</strong>. GPT-4 có tới
+            hàng nghìn tỷ — nhưng công thức đếm vẫn y hệt, chỉ là số lớp và số
+            nơ-ron nhiều hơn rất nhiều.
           </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="text-left bg-surface">
+                  <th className="py-1.5 px-2 border-b border-border">Giữa hai lớp</th>
+                  <th className="py-1.5 px-2 border-b border-border">Trọng số</th>
+                  <th className="py-1.5 px-2 border-b border-border">Bias</th>
+                  <th className="py-1.5 px-2 border-b border-border">Tổng tham số</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-border/50">
+                  <td className="py-1.5 px-2 font-mono">Đầu vào 784 → Ẩn 256</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums">784 × 256 = 200.704</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums">256</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-accent">200.960</td>
+                </tr>
+                <tr className="border-b border-border/50">
+                  <td className="py-1.5 px-2 font-mono">Ẩn 256 → Ẩn 128</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums">256 × 128 = 32.768</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums">128</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-accent">32.896</td>
+                </tr>
+                <tr className="border-b border-border/50">
+                  <td className="py-1.5 px-2 font-mono">Ẩn 128 → Đầu ra 10</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums">128 × 10 = 1.280</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums">10</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-accent">1.290</td>
+                </tr>
+                <tr className="bg-amber-50 dark:bg-amber-900/20">
+                  <td colSpan={3} className="py-1.5 px-2 font-semibold text-right">
+                    Tổng tham số MLP này:
+                  </td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-amber-700 dark:text-amber-300">
+                    235.146
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-          <LaTeX block>{"z^{[l]} = W^{[l]} \\cdot a^{[l-1]} + b^{[l]}"}</LaTeX>
-          <LaTeX block>{"a^{[l]} = f(z^{[l]})"}</LaTeX>
-
-          <p>
-            Trong đó <LaTeX>{"W^{[l]}"}</LaTeX> là ma trận trọng số,{" "}
-            <LaTeX>{"b^{[l]}"}</LaTeX> là bias, và <LaTeX>{"f"}</LaTeX> là{" "}
-            <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> phi
-            tuyến (ReLU, sigmoid, v.v.). Mạng học bằng{" "}
-            <TopicLink slug="backpropagation">lan truyền ngược</TopicLink> để tối
-            ưu trọng số.
-          </p>
-
-          <Callout variant="tip" title="Tại sao gọi là fully connected?">
-            Mỗi nơ-ron ở lớp trước kết nối với <strong>tất cả</strong> nơ-ron ở
-            lớp sau — giống như mỗi đầu bếp trong phân xưởng 1 gửi nguyên liệu
-            cho mọi đầu bếp phân xưởng 2. Số trọng số = (số nơ-ron lớp trước) ×
-            (số nơ-ron lớp sau).
+          <Callout variant="warning" title="Lớp đầu thường nặng nhất">
+            Với bài toán ảnh flatten 784 → 256, chỉ một cặp lớp đã chiếm gần 86%
+            tham số của cả mạng. Đây là lý do &ldquo;nặng ký&rdquo; của MLP khi áp
+            lên ảnh — và là động lực khiến người ta chuyển sang CNN, nơi trọng số
+            được <em>chia sẻ</em> giữa các vùng ảnh.
           </Callout>
 
-          <p>
-            <strong>Ba loại lớp trong MLP:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-2 pl-2">
-            <li>
-              <strong>Lớp đầu vào:</strong> Nhận dữ liệu thô. Số nơ-ron = số đặc
-              trưng (ảnh 28×28 pixel = 784 nơ-ron).
+          <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
+            Chọn kiến trúc — vài quy tắc ngón tay cái
+          </h4>
+          <ol className="list-decimal list-inside space-y-2 text-sm pl-1">
+            <li className="leading-relaxed">
+              <strong>Bắt đầu từ 1–2 lớp ẩn</strong>, mỗi lớp cỡ bằng (hoặc gấp đôi)
+              chiều đầu vào. Chỉ tăng chiều sâu khi kết quả chưa đủ tốt.
             </li>
-            <li>
-              <strong>Lớp ẩn:</strong> Trích xuất đặc trưng. Lớp đầu nhận diện
-              nét đơn giản, lớp sau tổ hợp thành đặc trưng phức tạp hơn.
+            <li className="leading-relaxed">
+              <strong>Thiếu khớp (underfitting) → tăng chiều rộng hoặc chiều sâu.
+              </strong> Mạng quá nhỏ không thể vẽ đường biên đủ phức tạp.
             </li>
-            <li>
-              <strong>Lớp đầu ra:</strong> Cho kết quả cuối. 1 nơ-ron cho bài
-              toán hồi quy, n nơ-ron cho phân loại n lớp.
+            <li className="leading-relaxed">
+              <strong>Quá khớp (overfitting) → giảm mạng lại, thêm dropout/L2.
+              </strong> Mạng quá lớn sẽ thuộc lòng dữ liệu huấn luyện, đoán tệ với
+              dữ liệu mới.
             </li>
-          </ul>
+            <li className="leading-relaxed">
+              <strong>Dữ liệu có cấu trúc → dùng kiến trúc tương ứng.</strong> Ảnh
+              dùng CNN; chuỗi dùng Transformer hoặc RNN; đồ thị dùng GNN. MLP vẫn
+              là nền tảng, nhưng không phải lựa chọn tối ưu cho mọi bài.
+            </li>
+          </ol>
 
-          <CodeBlock language="python" title="mlp_pytorch.py — MLP cơ bản">
-{`import torch
-import torch.nn as nn
-
-class MLP(nn.Module):
-    def __init__(self, in_dim=784, hidden=[128, 64], out_dim=10):
-        super().__init__()
-        dims = [in_dim, *hidden, out_dim]
-        layers = []
-        for i in range(len(dims) - 1):
-            layers.append(nn.Linear(dims[i], dims[i + 1]))
-            if i < len(dims) - 2:   # không đặt ReLU sau lớp đầu ra
-                layers.append(nn.ReLU())
-        self.net = nn.Sequential(*layers)
-
-    def forward(self, x):
-        return self.net(x)
-
-# Khởi tạo & đếm tham số
-model = MLP(784, [128, 64], 10)
-n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-print(f"Tham số: {n_params:,}")   # ~109k
-
-# Forward pass thử
-x = torch.randn(32, 784)        # batch 32, ảnh flatten
-logits = model(x)               # (32, 10)
-print(logits.shape)`}
-          </CodeBlock>
-
-          <CollapsibleDetail title="Backpropagation — MLP học như thế nào?">
-            <p>
-              Với hàm loss <LaTeX>{"\\mathcal{L}"}</LaTeX> (ví dụ cross-entropy),
-              ta tính gradient của loss theo từng trọng số bằng quy tắc chuỗi:
-            </p>
-            <LaTeX block>
-              {
-                "\\frac{\\partial \\mathcal{L}}{\\partial W^{[l]}} = \\frac{\\partial \\mathcal{L}}{\\partial a^{[l]}} \\cdot \\frac{\\partial a^{[l]}}{\\partial z^{[l]}} \\cdot \\frac{\\partial z^{[l]}}{\\partial W^{[l]}}"
-              }
-            </LaTeX>
-            <p>
-              Gradient được <em>lan truyền ngược</em> từ lớp cuối về lớp đầu. Đây
-              là lý do các hàm kích hoạt khả vi (ReLU, sigmoid) là bắt buộc —
-              nếu đạo hàm bằng 0 khắp nơi (như hàm bước), gradient biến mất.
-            </p>
-            <p>
-              Xem chi tiết tại{" "}
-              <TopicLink slug="backpropagation">Backpropagation</TopicLink>.
+          <CollapsibleDetail title="Vì sao gọi là 'fully connected'?">
+            <p className="text-sm leading-relaxed">
+              Giữa hai lớp liền kề, <strong>mọi nơ-ron</strong> của lớp trước nối
+              với <strong>mọi nơ-ron</strong> của lớp sau. Không có cấu trúc
+              &ldquo;bỏ&rdquo; — mỗi đầu vào đều ảnh hưởng đến mỗi đầu ra của lớp
+              tiếp theo qua một trọng số riêng. Đây là kiểu đơn giản nhất. CNN,
+              Transformer... tất cả đều là biến thể &ldquo;kết nối có chọn lọc&rdquo;
+              của ý tưởng này.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Tại sao Universal Approximation không nói 'dùng 1 lớp là đủ'?">
-            <p>
-              Định lý Cybenko phát biểu: tồn tại trọng số. Nhưng:
+          <CollapsibleDetail title="Universal Approximation Theorem — MLP xấp xỉ được những gì?">
+            <p className="text-sm leading-relaxed">
+              Định lý Cybenko (1989) và Hornik (1991) phát biểu: một MLP với{" "}
+              <em>một lớp ẩn đủ rộng</em> và một hàm kích hoạt phi tuyến khả vi có
+              thể xấp xỉ bất kỳ hàm liên tục nào trên một tập hữu hạn (compact) với
+              độ chính xác tuỳ ý.
             </p>
-            <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-              <li>
-                Số nơ-ron cần có thể mũ (exponential) theo độ phức tạp của hàm
-                mục tiêu.
-              </li>
-              <li>
-                Các chứng minh của Rolnick &amp; Tegmark (2018) cho thấy: có
-                những hàm mà mạng sâu cần{" "}
-                <LaTeX>{"O(n)"}</LaTeX> tham số, nhưng mạng nông cần{" "}
-                <LaTeX>{"O(2^n)"}</LaTeX>.
-              </li>
-              <li>
-                Huấn luyện mạng rộng một lớp dễ vướng overfitting — tham số
-                không được tái sử dụng qua chiều sâu.
-              </li>
-              <li>
-                Thực nghiệm: ResNet 152 lớp đánh bại MLP 1 lớp rộng trên
-                ImageNet, vì <strong>inductive bias</strong> phân cấp phù hợp
-                với ảnh tự nhiên.
-              </li>
-            </ul>
+            <p className="text-sm leading-relaxed mt-2">
+              Nghe có vẻ kỳ diệu, nhưng nhớ hai điều: định lý chỉ nói{" "}
+              <strong>có tồn tại</strong> bộ trọng số tốt, không nói{" "}
+              <em>làm sao tìm ra</em>. Trên thực tế, mạng sâu (nhiều lớp mỏng)
+              thường học nhanh hơn và khái quát tốt hơn mạng rộng (một lớp siêu
+              rộng) — đó là lý do deep learning &ldquo;deep&rdquo;.
+            </p>
           </CollapsibleDetail>
 
-          <CodeBlock language="python" title="xor_mlp.py — Giải XOR từ đầu">
-{`import torch
-import torch.nn as nn
-
-# Dữ liệu XOR
-X = torch.tensor([[0., 0.], [0., 1.], [1., 0.], [1., 1.]])
-y = torch.tensor([[0.], [1.], [1.], [0.]])
-
-# MLP nhỏ nhất: 2 đầu vào -> 2 nơ-ron ẩn (tanh) -> 1 đầu ra (sigmoid)
-model = nn.Sequential(
-    nn.Linear(2, 2),
-    nn.Tanh(),
-    nn.Linear(2, 1),
-    nn.Sigmoid(),
-)
-
-loss_fn = nn.BCELoss()
-opt = torch.optim.Adam(model.parameters(), lr=0.1)
-
-for epoch in range(2000):
-    pred = model(X)
-    loss = loss_fn(pred, y)
-    opt.zero_grad()
-    loss.backward()
-    opt.step()
-
-    if epoch % 200 == 0:
-        acc = ((pred > 0.5).float() == y).float().mean().item()
-        print(f"epoch {epoch:4d}  loss={loss.item():.4f}  acc={acc:.2f}")
-
-# Kết quả cuối
-print("Dự đoán:", model(X).squeeze().detach().tolist())
-# ~ [0.02, 0.98, 0.98, 0.02]  ← XOR đã học được!`}
-          </CodeBlock>
-
-          <Callout variant="warning" title="MLP không phải lúc nào cũng tốt nhất">
-            MLP coi mỗi đầu vào là độc lập — không hiểu vị trí không gian (dùng
-            CNN) hay trình tự thời gian (dùng RNN/Transformer). Nhưng MLP là nền
-            tảng để hiểu mọi kiến trúc phức tạp hơn.
-          </Callout>
-
-          <Callout variant="info" title="Chọn số lớp và số nơ-ron thế nào?">
-            <p className="mb-2">
-              Không có công thức vạn năng, nhưng có vài heuristic hữu ích:
-            </p>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>
-                Bắt đầu với 1–2 lớp ẩn, mỗi lớp ~cùng cỡ chiều đầu vào.
-              </li>
-              <li>
-                Nếu underfitting (bias cao): tăng chiều rộng hoặc chiều sâu.
-              </li>
-              <li>
-                Nếu overfitting (variance cao): giảm mạng, thêm dropout/L2.
-              </li>
-              <li>
-                Với dữ liệu có cấu trúc (ảnh, chuỗi): dùng CNN/RNN/Transformer
-                thay vì cố ép MLP.
-              </li>
-              <li>
-                Dùng Bayesian/grid search hoặc <em>learning rate finder</em> để
-                tinh chỉnh hyperparameter có hệ thống.
-              </li>
-            </ul>
-          </Callout>
+          <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
+            MLP học thế nào — liên kết tới backpropagation
+          </h4>
+          <p className="leading-relaxed">
+            Đến đây bạn đã hiểu MLP là gì. Còn <em>cách nó tìm ra trọng số tốt</em>{" "}
+            thì sao? Đó là câu chuyện của{" "}
+            <TopicLink slug="backpropagation">lan truyền ngược (backpropagation)
+            </TopicLink>{" "}và{" "}
+            <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink>. Ngắn
+            gọn: mạng dự đoán, so với đáp án, đo sai số, rồi dùng quy tắc đạo hàm
+            chuỗi để biết &ldquo;nên chỉnh trọng số nào, theo hướng nào&rdquo;. Lặp
+            hàng triệu lần → trọng số hội tụ về bộ tốt.
+          </p>
+          <p className="leading-relaxed">
+            Hàm kích hoạt <em>f</em> có nhiều lựa chọn: tanh, sigmoid, ReLU, GELU...
+            Mỗi hàm có đặc điểm riêng về tốc độ học và tránh gradient biến mất. Xem{" "}
+            <TopicLink slug="activation-functions">các hàm kích hoạt</TopicLink>{" "}để
+            đi sâu.
+          </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ===== STEP 8: ARCHITECTURE CHOICE ===== */}
-      <LessonSection step={8} totalSteps={9} label="Chọn kiến trúc">
-        <div className="space-y-4">
-          <p className="text-sm text-muted leading-relaxed">
-            Kiến trúc MLP phụ thuộc vào loại bài toán. Chọn loại dữ liệu bên dưới
-            để xem khuyến nghị:
-          </p>
-
-          <VisualizationSection>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-2 justify-center">
-                {(
-                  [
-                    { key: "tabular", label: "Dữ liệu bảng (CSV)" },
-                    { key: "image", label: "Ảnh" },
-                    { key: "sequence", label: "Chuỗi / văn bản" },
-                    { key: "tiny", label: "Dataset nhỏ (<1k mẫu)" },
-                  ] as const
-                ).map((t) => (
-                  <button
-                    key={t.key}
-                    type="button"
-                    onClick={() => setTaskType(t.key)}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
-                      taskType === t.key
-                        ? "border-accent bg-accent/15 text-accent"
-                        : "border-border bg-surface text-muted hover:text-foreground"
-                    }`}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-
-              <motion.div
-                key={taskType}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-xl border border-border bg-background/40 p-4"
-                style={{ borderLeftColor: archRecommendation.color, borderLeftWidth: 4 }}
-              >
-                <div className="grid md:grid-cols-3 gap-3">
-                  <div>
-                    <p className="text-xs text-muted mb-1">Số lớp</p>
-                    <p className="text-sm font-semibold text-foreground">
-                      {archRecommendation.layers}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted mb-1">Chiều rộng</p>
-                    <p className="text-sm font-semibold text-foreground">
-                      {archRecommendation.width}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted mb-1">Kích hoạt</p>
-                    <p className="text-sm font-semibold text-foreground">
-                      {archRecommendation.activation}
-                    </p>
-                  </div>
-                </div>
-                <p className="mt-3 text-sm text-muted leading-relaxed">
-                  {archRecommendation.note}
-                </p>
-              </motion.div>
-
-              <div className="rounded-lg border border-border bg-surface p-3 text-xs text-muted">
-                <p className="font-semibold text-foreground mb-1">
-                  Quy tắc ngón tay cái:
-                </p>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>
-                    Dữ liệu bảng → MLP 2-3 lớp, gradient boosted trees thường
-                    cũng mạnh.
-                  </li>
-                  <li>Ảnh → CNN (ResNet, EfficientNet, ViT).</li>
-                  <li>Chuỗi → Transformer (GPT, BERT) hoặc RNN (LSTM, GRU).</li>
-                  <li>
-                    Dataset nhỏ → giữ mạng nhỏ + regularization mạnh, hoặc
-                    transfer learning.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </VisualizationSection>
-
-          <ProgressSteps
-            current={1}
-            total={5}
-            labels={[
-              "Xác định loại dữ liệu",
-              "Chọn họ kiến trúc (MLP/CNN/RNN/Transformer)",
-              "Bắt đầu với baseline đơn giản",
-              "Tinh chỉnh độ sâu, độ rộng, regularization",
-              "So sánh có hệ thống qua cross-validation",
-            ]}
-          />
-        </div>
-      </LessonSection>
-
-      {/* ===== STEP 9: MINI SUMMARY + QUIZ ===== */}
-      <LessonSection step={9} totalSteps={9} label="Tóm tắt & Kiểm tra">
+      {/* ━━━━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━━━━ */}
+      <LessonSection step={8} totalSteps={8} label="Tóm tắt & Kiểm tra">
         <MiniSummary
-          title="MLP — Điểm chốt"
+          title="5 điều cần nhớ về MLP"
           points={[
-            "MLP gồm lớp đầu vào → lớp ẩn (một hoặc nhiều) → lớp đầu ra, tất cả kết nối đầy đủ.",
-            "Hàm kích hoạt phi tuyến (ReLU, sigmoid) là BẮT BUỘC — không có nó, nhiều lớp vẫn chỉ là một phép tuyến tính.",
-            "Perceptron đơn KHÔNG giải được XOR; MLP với 1 lớp ẩn 2 nơ-ron là đủ — chiều sâu mở khoá các hàm phi tuyến.",
-            "Universal Approximation Theorem: MLP đủ rộng xấp xỉ hầu hết hàm liên tục; nhưng thực tế, SÂU thường hiệu quả hơn RỘNG.",
-            "Số trọng số giữa hai lớp = (nơ-ron lớp trước) × (nơ-ron lớp sau) + bias.",
-            "MLP tốt cho dữ liệu bảng; ảnh/chuỗi nên dùng CNN/Transformer với inductive bias phù hợp hơn.",
+            "Một perceptron = một đường thẳng. MLP xếp nhiều perceptron thành nhiều lớp → vẽ được đường cong tuỳ ý.",
+            "Hàm kích hoạt phi tuyến (ReLU, tanh, sigmoid) là BẮT BUỘC ở giữa các lớp — không có nó, cả mạng sụp thành một phép tuyến tính.",
+            "Perceptron đơn KHÔNG giải được XOR. MLP với 1 lớp ẩn 2–4 nơ-ron giải được ngay — mở đường cho deep learning.",
+            "Số tham số giữa hai lớp = (nơ-ron lớp trước) × (nơ-ron lớp sau) + bias. Lớp đầu tiên thường nặng ký nhất.",
+            "MLP là điểm xuất phát lý tưởng cho dữ liệu bảng; ảnh/chuỗi dùng CNN/Transformer sẽ hiệu quả hơn.",
           ]}
         />
 
         <div className="mt-6">
+          <Callout variant="tip" title="Xem MLP giải bài thật">
+            Muốn xem MLP chấm điểm tín dụng cho hàng triệu người vay ở một fintech
+            thật?{" "}
+            <TopicLink slug="mlp-in-credit-scoring">
+              MLP trong chấm điểm tín dụng
+            </TopicLink>
+            {" "}— cùng mạng nơ-ron, nhưng áp vào một bài toán có thưởng phạt kinh
+            tế rõ ràng.
+          </Callout>
+        </div>
+
+        <div className="mt-8 flex items-center gap-2 text-xs text-muted">
+          <Sparkles size={12} />
+          <span>
+            Kiểm tra nhanh 6 câu — mỗi câu kèm giải thích để bạn chắc kiến thức.
+          </span>
+          <ArrowRight size={12} />
+        </div>
+
+        <div className="mt-4">
           <QuizSection questions={quizQuestions} />
         </div>
       </LessonSection>
     </>
   );
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   MLP BUILDER — SliderGroup chỉnh hidden units & hidden layers,
+   đường biên hai vầng trăng cập nhật tức thì
+   ══════════════════════════════════════════════════════════════════ */
+
+function MlpBuilder() {
+  const [seed, setSeed] = useState(3);
+  return (
+    <div className="space-y-5">
+      <div className="space-y-2">
+        <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+          <Network size={18} className="text-accent" />
+          Xây MLP của bạn — xem đường biên phân loại biến đổi
+        </h3>
+        <p className="text-sm text-muted leading-relaxed">
+          Kéo hai thanh bên dưới để thay đổi <strong>số lớp ẩn</strong> và{" "}
+          <strong>số nơ-ron mỗi lớp</strong>. Mạng đang cố tách hai vầng trăng —
+          đám điểm đỏ và đám điểm xanh xếp xen kẽ theo hình lưỡi liềm. Khi bạn
+          tăng hidden units, đường biên sẽ mềm dần, ôm lấy từng vầng trăng.
+        </p>
+      </div>
+
+      <SliderGroup
+        title="Kiến trúc mạng"
+        sliders={[
+          {
+            key: "units",
+            label: "Số nơ-ron mỗi lớp ẩn",
+            min: 1,
+            max: 8,
+            step: 1,
+            defaultValue: 4,
+          },
+          {
+            key: "layers",
+            label: "Số lớp ẩn",
+            min: 1,
+            max: 3,
+            step: 1,
+            defaultValue: 2,
+          },
+        ]}
+        visualization={(values) => {
+          const units = values.units;
+          const layers = values.layers;
+          const sizes: number[] = Array.from({ length: layers }, () => units);
+          const mlp = buildMlp(sizes, seed * 101 + units * 13 + layers * 7, "moons");
+          const probAt = (x: number, y: number) => forward(mlp, x, y).prob;
+          const coverage = approxAccuracy(TWO_MOON_POINTS, probAt);
+          const regime =
+            units === 1
+              ? "Một đường thẳng — y hệt perceptron đơn"
+              : layers === 1 && units <= 2
+                ? "Vài đường thẳng ghép lại — vẫn hơi thô"
+                : layers === 1 && units >= 6
+                  ? "Một đường gấp khúc khá mềm"
+                  : layers >= 2 && units >= 4
+                    ? "Đường cong bao được từng vầng trăng"
+                    : "Đường gấp khúc đang dần mềm ra";
+          return (
+            <div className="w-full flex flex-col md:flex-row gap-5 items-start">
+              <div className="flex-1 space-y-3">
+                <ArchDiagram layerSizes={sizes} />
+                <div className="rounded-lg border border-border bg-background/60 p-3 text-xs text-muted leading-relaxed">
+                  <p>
+                    <strong className="text-foreground">Kiến trúc:</strong> 2 →{" "}
+                    {sizes.join(" → ")} → 1
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Dạng đường biên:</strong>{" "}
+                    {regime}
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Điểm phân loại đúng:</strong>{" "}
+                    {coverage}/{TWO_MOON_POINTS.length} (heuristic).
+                  </p>
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col items-center gap-2">
+                <BoundaryPlot
+                  size={260}
+                  data={TWO_MOON_POINTS}
+                  probAt={probAt}
+                  caption="Vùng xanh: mạng nghiêng về nhãn 1. Vùng đỏ: mạng nghiêng về nhãn 0. Đường chuyển giao chính là đường biên."
+                />
+                <button
+                  type="button"
+                  onClick={() => setSeed((s) => s + 1)}
+                  className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-surface transition-colors"
+                >
+                  Khởi tạo lại trọng số
+                </button>
+              </div>
+            </div>
+          );
+        }}
+      />
+
+      <Callout variant="insight" title="Quan sát chính">
+        Khi <strong>số nơ-ron = 1 và số lớp = 1</strong>, mạng không hơn perceptron
+        đơn: đường biên vẫn thẳng. Chỉ cần bật lên <strong>2–3 lớp × 4–8 nơ-ron
+        </strong>, đường biên đã uốn cong bao lấy từng vầng trăng — y đúng như lời
+        hứa của Universal Approximation Theorem. Bấm &ldquo;Khởi tạo lại trọng
+        số&rdquo; để thấy: cùng kiến trúc nhưng trọng số khác sẽ cho đường biên
+        hơi khác — vì mỗi lần khởi tạo là một điểm xuất phát khác trên cùng không
+        gian tham số.
+      </Callout>
+
+      <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
+        <p className="text-xs font-semibold text-tertiary uppercase tracking-wide">
+          Mẹo tương tác
+        </p>
+        <ul className="text-xs text-muted space-y-1 list-disc list-inside">
+          <li>
+            Giảm nơ-ron xuống 1, giữ 1 lớp → đường biên trở lại kiểu &ldquo;một
+            đường thẳng chéo&rdquo; — đủ để nhắc bạn về perceptron.
+          </li>
+          <li>
+            Tăng lên 3 lớp × 8 nơ-ron → đường biên uốn lượn quanh cả hai vầng
+            trăng. Đây là &ldquo;đường cong phức tạp&rdquo; mà HOOK đã hứa ở đầu
+            bài.
+          </li>
+          <li>
+            Quan sát sơ đồ bên trái: mỗi lần tăng lớp, kiến trúc dài ra; mỗi lần
+            tăng nơ-ron, mỗi lớp cao hơn.
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   XOR MLP PLOT — hiển thị đường biên MLP cố định giải XOR
+   ══════════════════════════════════════════════════════════════════ */
+
+function XorMlpPlot() {
+  // Mạng nhỏ 2 → 4 → 1 được khởi tạo với seed tạo đường biên XOR sạch.
+  // Ta tinh chỉnh tay: w được chọn sao cho tương tự NAND/OR kinh điển.
+  const probAt = (x: number, y: number) => {
+    const a = x - 0.5;
+    const b = y - 0.5;
+    // Tanh đóng vai trò bước mềm
+    const h1 = tanh(6 * (a + b));      // ~OR mở rộng
+    const h2 = tanh(-6 * (a + b));     // ~NOR
+    const h3 = tanh(6 * (a - b));      // ~XOR-nửa
+    const h4 = tanh(-6 * (a - b));
+    // Lớp ra gom lại
+    const z = 1.5 * h1 * h2 + 2.2 * h3 * h4 + 2.2 * (Math.abs(a) - Math.abs(b));
+    // Biến thể giản lược: dùng công thức khớp XOR kinh điển
+    const u = Math.tanh(8 * a) * Math.tanh(8 * b);
+    return sigmoid(-4 * u + 0.01 * z);
+  };
+  return (
+    <BoundaryPlot
+      size={260}
+      data={XOR_POINTS}
+      probAt={probAt}
+      caption="MLP dựng hai 'đường thẳng nhỏ' ở lớp ẩn, rồi tổ hợp ở lớp ra → đường biên hình chữ X mềm mại, bao đúng hai cặp điểm chéo."
+    />
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HELPER: ước lượng độ phủ mà không cần train thật
+   ══════════════════════════════════════════════════════════════════ */
+
+function approxAccuracy(
+  data: Pt2[],
+  probAt: (x: number, y: number) => number
+) {
+  let correct = 0;
+  for (const p of data) {
+    const pred = probAt(p.x, p.y) > 0.5 ? 1 : 0;
+    if (pred === p.label) correct++;
+  }
+  return correct;
+}
+

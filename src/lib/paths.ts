@@ -46,8 +46,10 @@ const STUDENT_STAGES: Stage[] = [
       "eigendecomposition-pca",
       "probability-statistics",
       "probability-statistics-in-spam-filter",
+      "derivatives-intuition",
       "calculus-for-backprop",
       "calculus-for-backprop-in-model-training",
+      "gradient-intuition",
     ],
   },
   {
