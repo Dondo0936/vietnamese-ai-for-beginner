@@ -10,8 +10,15 @@ describe("projects tile", () => {
     render(<ProjectsTile />);
     expect(
       screen.getByText(
-        /Projects là không gian làm việc riêng của bạn — instructions, files, memory gắn liền với một chủ đề, Claude tự động nhớ khi bạn quay lại\./
+        /Projects là không gian làm việc riêng cho mỗi chủ đề — files và instructions gắn liền với project, dùng chung cho mọi chat bên trong\. \(Memory xuyên phiên có trên gói Pro trở lên\.\)/
       )
+    ).toBeInTheDocument();
+  });
+
+  it("renders the plan-availability note disclosure", () => {
+    render(<ProjectsTile />);
+    expect(
+      screen.getByText(/Free tối đa 5 projects/)
     ).toBeInTheDocument();
   });
 
@@ -51,7 +58,9 @@ describe("projects tile", () => {
       screen.getByText("Bộ nhớ cục bộ cho một mục đích")
     ).toBeInTheDocument();
     expect(screen.getByText("File và hướng dẫn dùng chung")).toBeInTheDocument();
-    expect(screen.getByText("Claude nhớ khi bạn quay lại")).toBeInTheDocument();
+    expect(
+      screen.getByText("Files theo project, không phải theo chat")
+    ).toBeInTheDocument();
   });
 
   it("renders the DeepLinkCTA with the expected Vietnamese prompt", () => {

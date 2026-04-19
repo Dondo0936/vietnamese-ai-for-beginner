@@ -27,6 +27,10 @@
  *   > "Projects are available to all users, including those with free
  *   >  Claude accounts."
  *
+ *   Quote 5 (memory plan gating):
+ *   > "Memory from chat history is available for users on Pro, Max, Team,
+ *   >  and Enterprise plans."
+ *
  * Note: the marketing page at https://www.claude.com/ lists Projects under
  * its Learn/Resources strip with the short line "Organize conversations by
  * topic with persistent context. Keep related work together and build on
@@ -80,7 +84,7 @@ import type { Annotation } from "@/features/claude/types";
 // ---------------------------------------------------------------------------
 
 const ONE_LINER =
-  "Projects là không gian làm việc riêng của bạn — instructions, files, memory gắn liền với một chủ đề, Claude tự động nhớ khi bạn quay lại.";
+  "Projects là không gian làm việc riêng cho mỗi chủ đề — files và instructions gắn liền với project, dùng chung cho mọi chat bên trong. (Memory xuyên phiên có trên gói Pro trở lên.)";
 
 const ACTIVE_PROJECT_NAME = "Kế hoạch Q2 — Marketing";
 const ACTIVE_PROJECT_DESC = "Roadmap, KPI và brief cho chiến dịch quý 2.";
@@ -122,7 +126,7 @@ const ANNOTATIONS: Annotation[] = [
   {
     id: "active-project",
     pin: 1,
-    label: "Mỗi Project là một không gian riêng",
+    label: "Mỗi project là một không gian riêng",
     description:
       "Danh sách project ở cột trái. Mỗi project có files, instructions, memory và lịch sử chat riêng — không trộn lẫn với các project khác.",
     showAt: [0.0, 0.55],
@@ -140,7 +144,7 @@ const ANNOTATIONS: Annotation[] = [
   {
     id: "instructions-chip",
     pin: 3,
-    label: "Hướng dẫn hệ thống dùng lại mỗi lượt",
+    label: "Hướng dẫn riêng cho project, dùng lại mỗi chat",
     description:
       "Instructions là system prompt của riêng project — Claude đọc lại trước mọi chat trong project, giữ giọng văn và quy ước đồng nhất.",
     showAt: [0.5, 1.0],
@@ -149,7 +153,7 @@ const ANNOTATIONS: Annotation[] = [
   {
     id: "memory-filename",
     pin: 4,
-    label: "Claude nhớ nội dung, không cần dán lại",
+    label: "Files luôn sẵn sàng, không cần đính kèm lại",
     description:
       "Claude trích dẫn trực tiếp tên file trong project. Bạn không phải dán nội dung PDF vào câu hỏi — memory của project giữ sẵn bối cảnh.",
     showAt: [0.5, 1.0],
@@ -503,6 +507,17 @@ export default function ProjectsTile() {
         caption="Mở trang gốc trong tab mới. Giao diện demo được dựng lại theo ảnh chụp ngày 2026-04-19."
       />
 
+      {/* Plan availability — factual disclosure, not decorative. Placed between
+          the real-UI link and the "Cách nó hoạt động" deep-dive so users see
+          the gating note before reading the mechanism breakdown. */}
+      <p
+        role="note"
+        className="max-w-[62ch] text-[12px] leading-[1.55] text-tertiary"
+      >
+        Projects có sẵn trên mọi gói (Free tối đa 5 projects). Memory summaries
+        xuyên phiên chỉ có từ gói Pro trở lên.
+      </p>
+
       {/* "Cách nó hoạt động" — zoomed crop cards. Three bespoke compositions,
           not mini-shell thumbnails. Each card shows just the relevant UI
           fragment(s) at full card width. */}
@@ -519,7 +534,7 @@ export default function ProjectsTile() {
             <CropAnnotation pin={2} label="File bạn thêm sẽ luôn có mặt" />
             <CropAnnotation
               pin={3}
-              label="Hướng dẫn hệ thống dùng lại mỗi lượt"
+              label="Hướng dẫn riêng cho project, dùng lại mỗi chat"
               align="right"
             />
           </CropCard>
@@ -532,13 +547,13 @@ export default function ProjectsTile() {
           </CropCard>
 
           <CropCard
-            title="Claude nhớ khi bạn quay lại"
-            caption="Mỗi project có summary memory riêng. Claude trích dẫn trực tiếp tên file thay vì bắt bạn dán lại nội dung."
+            title="Files theo project, không phải theo chat"
+            caption="File upload vào Projects được dùng xuyên suốt mọi chat trong project — Claude trích dẫn trực tiếp tên file, không cần bạn đính kèm lại mỗi lượt. (Riêng memory summaries cần gói Pro trở lên.)"
           >
             <CropCitingReply />
             <CropAnnotation
               pin={4}
-              label="Claude nhớ nội dung, không cần dán lại"
+              label="Files luôn sẵn sàng, không cần đính kèm lại"
               align="right"
             />
           </CropCard>
