@@ -30,6 +30,12 @@ describe("claude registry", () => {
     // which tiles have flipped from "planned" → "ready" so the rollout is
     // visible in CI. Update this set as each tile ships.
     const ready = tiles.filter((t) => t.status === "ready").map((t) => t.slug);
-    expect(ready).toEqual(["chat", "projects", "artifacts", "files-vision"]);
+    expect(ready).toEqual([
+      "chat",
+      "projects",
+      "artifacts",
+      "files-vision",
+      "voice",
+    ]);
   });
 });
