@@ -212,6 +212,38 @@ these become illegible below 400px viewBox width.
 
 ---
 
+## 4.7. Landing page (`/`) vs. catalog (`/browse`)
+
+**Rule.** Since 2026-04-19 the root route `/` is the **marketing landing
+page** (`src/components/landing/Landing.tsx`). The **topic catalog** —
+filters, category chips, topic grid, load-more — lives at **`/browse`**
+(`src/components/browse/BrowseContent.tsx`). The two MUST stay separate:
+don't fold the catalog back into the landing, don't move marketing
+sections into `/browse`.
+
+**Why.** The landing page's only job is to convert — headline + hero
+demo + search-prompt + paths + social proof + CTA. Mixing a 200-row
+topic grid into that flow drowns the signal. The previous home tried
+both at once and the page hit 8000px of vertical scroll; after the
+redesign the landing is ~6 screens and `/browse` is a dedicated utility
+surface. Discovered 2026-04-19 during the Landing Page.html redesign.
+
+**How to apply.**
+- New marketing copy → new section component in `src/components/landing/`.
+- New catalog affordance (filter, sort, pagination) → `BrowseContent.tsx`.
+- Footer on the landing **MUST NOT** carry "Built with Claude Opus 4.7"
+  nor "Type: Space Grotesk · Inter Tight · Be Vietnam Pro" — those were
+  explicitly removed. Keep only the © + MIT License line.
+- Landing search input is a **plain catalog search** (placeholder starts
+  with "Tìm chủ đề —"); it is NOT an AI-prompt box. On focus it routes
+  to `/browse` where the real ⌘K palette lives.
+
+**Contract enforcement.**
+`src/__tests__/landing-page.test.tsx` (10 tests) +
+`src/__tests__/browse-page.test.tsx` (4 tests).
+
+---
+
 ## 5. Running the contract suite
 
 ```bash
