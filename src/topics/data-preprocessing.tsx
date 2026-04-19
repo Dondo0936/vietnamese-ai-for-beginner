@@ -299,10 +299,10 @@ export default function DataPreprocessingTopic() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {[
-                { icon: Droplet, label: "Fill missing", color: "#ef4444" },
-                { icon: Filter, label: "Remove outliers", color: "#f59e0b" },
-                { icon: Tags, label: "Encode categories", color: "#3b82f6" },
-                { icon: Sliders, label: "Normalize", color: "#10b981" },
+                { icon: Droplet, label: "Điền chỗ thiếu", color: "#ef4444" },
+                { icon: Filter, label: "Bỏ giá trị vô lý", color: "#f59e0b" },
+                { icon: Tags, label: "Mã hoá cột chữ", color: "#3b82f6" },
+                { icon: Sliders, label: "Chuẩn hoá", color: "#10b981" },
               ].map((s) => {
                 const Icon = s.icon;
                 return (

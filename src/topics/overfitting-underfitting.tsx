@@ -37,7 +37,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "overfitting-underfitting",
   title: "Overfitting & Underfitting",
-  titleVi: "Overfit vs Underfit — Học thuộc hay chưa đủ?",
+  titleVi: "Học quá khớp vs học chưa đủ — Overfit & Underfit",
   description:
     "Hai thái cực ngược nhau khi luyện mô hình. Học thuộc đề cũ → chết khi đề mới (overfit). Học mỗi lý thuyết → nhớ nhưng không làm nổi (underfit).",
   category: "classic-ml",

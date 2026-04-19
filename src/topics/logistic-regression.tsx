@@ -962,10 +962,12 @@ export default function LogisticRegressionTopic() {
           </div>
 
           <Callout variant="tip" title="Vì sao dùng cross-entropy chứ không phải MSE?">
-            MSE cộng với sigmoid tạo ra hàm loss không lồi (non-convex) — gradient descent dễ
-            kẹt ở cực tiểu cục bộ. Cross-entropy cộng với sigmoid thì lồi theo w, b, nên thuật
-            toán tối ưu chắc chắn tìm được nghiệm tốt nhất. Đây là lý do mọi framework ML
-            (scikit-learn, PyTorch, TensorFlow) mặc định dùng binary cross-entropy.
+            Với sigmoid ở cuối, MSE tạo ra gradient dạng σ&apos;(z)·(ŷ − y). Khi mô hình
+            rất tự tin (p̂ gần 0 hoặc gần 1), σ&apos;(z) ≈ 0 → gradient teo lại → học
+            cực kỳ chậm, gần như dừng. Cross-entropy cộng với sigmoid đơn giản hoá
+            gradient thành ŷ − y (không nhân σ&apos;(z)), nên sai càng nhiều thì học
+            càng nhanh. Đây là lý do mọi framework ML (scikit-learn, PyTorch,
+            TensorFlow) mặc định dùng binary cross-entropy cho phân loại nhị phân.
           </Callout>
 
           <Callout variant="warning" title="Biên chỉ tuyến tính">

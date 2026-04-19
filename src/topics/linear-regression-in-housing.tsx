@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
   title: "Linear Regression in Housing Valuation",
   titleVi: "Hồi quy tuyến tính trong giá nhà",
   description:
-    "Hà Nội và TP.HCM: căn hộ 80m² ở Quận 2 giá bao nhiêu? Kéo các thanh diện tích, số phòng, quận và xem công thức hồi quy tuyến tính ước giá trực tiếp.",
+    "Hà Nội và TP.HCM: căn hộ 80m² ở TP Thủ Đức giá bao nhiêu? Kéo các thanh diện tích, số phòng, quận và xem công thức hồi quy tuyến tính ước giá trực tiếp.",
   category: "classic-ml",
   tags: ["regression", "real-estate", "application"],
   difficulty: "beginner",

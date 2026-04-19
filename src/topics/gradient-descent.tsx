@@ -39,12 +39,12 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "gradient-descent",
   title: "Gradient Descent",
-  titleVi: "Thuật toán Gradient Descent — xoay weight để giảm loss",
+  titleVi: "Thuật toán Gradient Descent — xoay trọng số (weight) để giảm mất mát (loss)",
   description:
-    "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật: xoay các weight theo từng bước để loss giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
+    "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật: xoay các trọng số (weight) theo từng bước để mất mát (loss) giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
   category: "neural-fundamentals",
   tags: ["optimization", "training", "fundamentals"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "gradient-intuition",
     "learning-rate",
@@ -1932,8 +1932,9 @@ export default function GradientDescentTopic() {
                   Momentum — thêm &ldquo;quán tính&rdquo; vào bước
                 </p>
                 <p className="text-xs text-muted">
-                  v là velocity — trung bình luỹ kế của gradient. β thường là
-                  0.9, giữ lại 90 % đà cũ mỗi bước.
+                  v là velocity — tổng luỹ kế có chiết khấu của gradient cũ
+                  cộng gradient mới. β thường là 0.9, giữ lại 90 % đà cũ mỗi
+                  bước (bước hiệu quả ổn định ≈ η / (1 − β)).
                 </p>
               </div>
             </div>

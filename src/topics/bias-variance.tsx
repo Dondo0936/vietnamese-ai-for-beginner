@@ -24,7 +24,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "bias-variance",
   title: "Bias-Variance Tradeoff",
-  titleVi: "Bias và Variance",
+  titleVi: "Bias và Variance — lệch tâm hay đạn rải",
   description:
     "Ẩn dụ bắn cung: bias là xa tâm, variance là đạn rải. Bốn tổ hợp xuất hiện khi bạn thay đổi độ phức tạp của mô hình.",
   category: "classic-ml",

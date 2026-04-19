@@ -835,7 +835,7 @@ export default function JupyterColabWorkflowTopic() {
         ],
         correct: 1,
         explanation:
-          "Mỗi phiên Colab là một VM tạm, hết phiên là bị huỷ. Muốn giữ kết quả, hãy lưu ra Drive bằng pickle, joblib hoặc pd.to_csv.",
+          "Mỗi phiên Colab là một VM tạm, hết phiên là bị huỷ. Muốn giữ kết quả, hãy lưu ra Drive bằng pickle, joblib hoặc pd.to_csv — và chỉ load lại .pkl do CHÍNH BẠN tạo (file .pkl lạ có thể chạy code tuỳ ý khi load).",
       },
       {
         question:
@@ -1274,6 +1274,10 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
               <strong>Quên lưu mô hình ra Drive</strong> — sau khi huấn
               luyện, luôn{" "}
               <code>joblib.dump(clf, &apos;/content/drive/.../model.pkl&apos;)</code>. Runtime hết là mô hình mất.
+              <span className="block mt-1 text-[11px] text-amber-700 dark:text-amber-300">
+                ⚠️ Chỉ <code>joblib.load</code> trên file do chính bạn tạo —
+                file <code>.pkl</code> lạ có thể chạy code Python tuỳ ý khi load.
+              </span>
             </li>
             <li>
               <strong>Execution count nhảy lung tung</strong> — các số

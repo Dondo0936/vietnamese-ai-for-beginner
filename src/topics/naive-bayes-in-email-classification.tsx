@@ -124,7 +124,7 @@ const EMAILS: DemoEmail[] = [
     subject: "Báo cáo tuần — dự án CRM",
     preview:
       "Chào anh, gửi anh báo cáo tuần của dự án CRM. Chúng ta sẽ họp vào sáng mai về deadline giai đoạn 2...",
-    from: "lan.nguyen@company.vn",
+    from: "lan.nguyen@company.example",
     icon: Briefcase,
     truthLabel: "HAM",
     features: [
@@ -139,7 +139,7 @@ const EMAILS: DemoEmail[] = [
     subject: "Ưu đãi cho khách hàng doanh nghiệp — mời họp giới thiệu",
     preview:
       "Kính gửi quý khách, khuyến mãi đặc biệt cho khách hàng doanh nghiệp. Kính mời quý khách họp giới thiệu sản phẩm...",
-    from: "sales@partner-company.vn",
+    from: "sales@partner.example",
     icon: FileText,
     truthLabel: "HAM",
     features: [

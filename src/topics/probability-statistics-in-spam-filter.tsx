@@ -117,7 +117,7 @@ const INBOX: InboxEmail[] = [
   },
   {
     id: "e2",
-    sender: "linh.nguyen@shopee.vn",
+    sender: "linh.nguyen@company.example",
     subject: "Đơn hàng #SP20260418 đã được giao thành công",
     snippet:
       "Chào bạn, cảm ơn đã mua hàng tại Shopee. Bạn có thể xem chi tiết đơn hàng trong ứng dụng.",
@@ -143,7 +143,7 @@ const INBOX: InboxEmail[] = [
   },
   {
     id: "e4",
-    sender: "giaovien@thpt-lequydon.edu.vn",
+    sender: "giaovien@thpt.example",
     subject: "Lịch họp phụ huynh lớp 12A3 — thứ Bảy 25/04",
     snippet:
       "Kính gửi quý phụ huynh, trường kính mời quý vị tham dự buổi họp lớp vào lúc 8h sáng thứ Bảy. Trân trọng.",
@@ -187,22 +187,22 @@ const FEATURES: SpamFeature[] = [
   {
     id: "giveaway",
     icon: Gift,
-    label: "Cụm từ &ldquo;trúng thưởng&rdquo;",
+    label: "Cụm từ \u201Ctrúng thưởng\u201D",
     description: "Xuất hiện trong 85% email spam, chỉ 2% email thật.",
     weight: 1.8,
   },
   {
     id: "urgent",
     icon: AlertTriangle,
-    label: "Tạo cảm giác gấp — &ldquo;hành động ngay&rdquo;",
+    label: "Tạo cảm giác gấp — \u201Chành động ngay\u201D",
     description:
-      "Cụm từ gấp gáp như &ldquo;khoá tài khoản&rdquo;, &ldquo;trong 24 giờ&rdquo;.",
+      "Cụm từ gấp gáp như \u201Ckhoá tài khoản\u201D, \u201Ctrong 24 giờ\u201D.",
     weight: 1.2,
   },
   {
     id: "click",
     icon: MousePointerClick,
-    label: "Link &ldquo;bấm vào đây&rdquo; nổi bật",
+    label: "Link \u201Cbấm vào đây\u201D nổi bật",
     description:
       "Gần một nửa spam có link gắn sẵn với anchor-text kiểu kêu gọi hành động.",
     weight: 0.9,
@@ -631,8 +631,9 @@ export default function ProbabilityStatisticsInSpamFilter() {
                           className={`text-sm font-semibold ${
                             on ? "text-rose-800 dark:text-rose-200" : "text-foreground"
                           }`}
-                          dangerouslySetInnerHTML={{ __html: f.label }}
-                        />
+                        >
+                          {f.label}
+                        </span>
                         <span
                           className={`text-[10px] tabular-nums font-mono rounded-full px-2 py-0.5 ${
                             on
@@ -703,8 +704,9 @@ export default function ProbabilityStatisticsInSpamFilter() {
                   >
                     <span
                       className={active[f.id] ? "text-foreground" : "text-tertiary"}
-                      dangerouslySetInnerHTML={{ __html: f.label }}
-                    />
+                    >
+                      {f.label}
+                    </span>
                     <span
                       className={`font-mono tabular-nums ${
                         active[f.id] ? "text-rose-500" : "text-tertiary"

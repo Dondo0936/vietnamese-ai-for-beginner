@@ -42,10 +42,10 @@ export const metadata: TopicMeta = {
   title: "End-to-End ML Project",
   titleVi: "Dự án ML từ đầu đến cuối",
   description:
-    "Capstone — đi trọn vẹn một dự án ML: từ câu hỏi kinh doanh đến mô hình chạy thật, được theo dõi mỗi ngày.",
+    "Dự án tổng kết (Capstone) — đi trọn vẹn một dự án ML: từ câu hỏi kinh doanh đến mô hình chạy thật, được theo dõi mỗi ngày.",
   category: "foundations",
   tags: ["project", "pipeline", "end-to-end", "capstone"],
-  difficulty: "beginner",
+  difficulty: "intermediate",
   relatedSlugs: [
     "data-preprocessing",
     "feature-engineering",
@@ -249,7 +249,7 @@ class OrderIn(BaseModel):
 def predict(o: OrderIn):
     return {"p": float(clf.predict_proba([o.dict()])[0, 1])}`,
     codeExplain:
-      "joblib lưu nguyên Pipeline (gồm preprocessing + model) vào 1 file .pkl — quan trọng vì khi load lại, preprocessing tự chạy đúng. FastAPI dựng endpoint chỉ vài dòng. pydantic kiểm tra input để không bị lỗi schema.",
+      "joblib lưu nguyên Pipeline (gồm preprocessing + model) vào 1 file .pkl — quan trọng vì khi load lại, preprocessing tự chạy đúng. FastAPI dựng endpoint chỉ vài dòng. pydantic kiểm tra input để không bị lỗi schema. ⚠️ Chỉ joblib.load / pickle.load trên file do CHÍNH BẠN tạo hoặc nguồn đã xác minh — file .pkl lạ có thể chạy code tuỳ ý khi load, dùng picklescan hoặc convert sang safetensors trước.",
   },
   {
     id: 8,
@@ -1209,6 +1209,14 @@ proba = loaded.predict_proba(X_new)[:, 1]`}
                 <code> predict_proba </code> tự động chạy đủ chuỗi: scale → one-hot → predict.
                 Đây là cách <strong>duy nhất đáng tin</strong> để đảm bảo transform
                 online giống hệt offline — tránh train/serve skew.
+              </p>
+              <p className="mt-2 text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                <strong>⚠️ An toàn:</strong> chỉ <code>joblib.load</code> /{" "}
+                <code>pickle.load</code> trên file do chính bạn tạo hoặc nguồn đã
+                xác minh. File <code>.pkl</code> lạ có thể chạy code Python tuỳ ý
+                khi load (supply-chain attack trên HuggingFace / Kaggle là thật).
+                Dùng <code>picklescan</code> hoặc convert sang{" "}
+                <code>safetensors</code> trước.
               </p>
             </div>
           </div>
