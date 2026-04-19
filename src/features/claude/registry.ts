@@ -42,7 +42,7 @@ export const tiles: TileMeta[] = [
   { slug: "chat" satisfies TileSlug,          shelf: "starter",   viTitle: "Chat + phản hồi trực tiếp", viTagline: "Token chảy từng chữ một.",                status: "ready" },
   { slug: "projects" satisfies TileSlug,      shelf: "starter",   viTitle: "Workspace (Projects)",      viTagline: "Không gian làm việc dài hạn.",              status: "ready" },
   { slug: "artifacts" satisfies TileSlug,     shelf: "starter",   viTitle: "Artifacts",                 viTagline: "Panel bên phải cho mã, tài liệu, app.",      status: "ready" },
-  { slug: "files-vision" satisfies TileSlug,  shelf: "starter",   viTitle: "Files & Vision",            viTagline: "Đọc PDF, ảnh, Excel.",                       status: "planned" },
+  { slug: "files-vision" satisfies TileSlug,  shelf: "starter",   viTitle: "Files & Vision",            viTagline: "Đọc PDF, ảnh, Excel.",                       status: "ready" },
   { slug: "voice" satisfies TileSlug,         shelf: "starter",   viTitle: "Voice Mode",                viTagline: "Nói chuyện với Claude.",                     status: "planned" },
   { slug: "web-search" satisfies TileSlug,    shelf: "starter",   viTitle: "Web Search",                viTagline: "Thông tin mới nhất, có trích dẫn.",          status: "planned" },
   { slug: "claude-design" satisfies TileSlug, shelf: "starter",   viTitle: "Claude Design",             viTagline: "Slide, prototype, one-pager.",               status: "planned", badge: "new" },
