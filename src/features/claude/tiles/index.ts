@@ -16,9 +16,11 @@ import type { TileSlug } from "@/features/claude/registry";
  *  - Task 1: chat — streaming response demo.
  *  - Task 2: projects — workspace (projects) demo.
  *  - Task 3: artifacts — right-side live-preview panel demo.
+ *  - Task 4: files-vision — PDF + image upload with multimodal extraction.
  */
 export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
   chat: dynamic(() => import("./chat")),
   projects: dynamic(() => import("./projects")),
   artifacts: dynamic(() => import("./artifacts")),
+  "files-vision": dynamic(() => import("./files-vision")),
 };
