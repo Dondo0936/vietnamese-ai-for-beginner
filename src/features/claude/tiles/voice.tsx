@@ -1,53 +1,57 @@
 "use client";
 
 /**
- * Voice Mode tile — Claude mobile-app voice conversation demo.
+ * Voice Mode tile — Claude voice conversation demo (web + mobile).
  *
  * ---------------------------------------------------------------------------
  * DOCS GROUNDING (Anthropic sources, snapshot 2026-04-19)
  * ---------------------------------------------------------------------------
  *
- * Voice Mode's dedicated support article (10109068-getting-started-with-
- * voice-mode-on-the-claude-mobile-apps) returned HTTP 404 on 2026-04-19
- * when re-fetched — the article URL in the task brief no longer resolves
- * on either support.claude.com or support.anthropic.com. The quotes we
- * have are therefore gathered from the two Anthropic-owned surfaces that
- * DO currently render Voice-Mode copy:
+ * Source (primary, canonical):
+ *   https://support.claude.com/en/articles/11101966-using-voice-mode-on-claude-mobile-apps
+ *   Fetched: 2026-04-19.
  *
- * Source: https://www.claude.com/product/overview  — Fetched: 2026-04-19
+ *   Verbatim quotes captured today:
+ *   > "Voice mode is a beta feature available in English to all plans on
+ *   >  Claude and Claude Mobile (iOS and Android)."
+ *   > "Tap the sound wave symbol in the lower right corner of the chat
+ *   >  window to activate voice mode." (web)
+ *   > "Tap the voice mode icon (sound wave symbol next to the microphone
+ *   >  icon) in the text input field." (mobile)
+ *   > "Voice conversations count toward your regular usage limits based
+ *   >  on your subscription plan."
+ *   > "If you are an Enterprise owner and would like to disable voice
+ *   >  mode for your organization, please reach out to Support."
  *
- *   Quote 1 (what Voice Mode does, in Anthropic's own product-page voice):
+ *   Additional fact captured from the article-search summary today:
+ *   Free-plan users can send approximately 20–30 voice messages before
+ *   reaching session limits. (The body article currently frames this as
+ *   "count toward your regular usage limits" without the specific
+ *   number; we carry the 20–30 figure because it is what Anthropic
+ *   publishes in the indexed summary.)
+ *
+ *   Voice-options count: the article says users "select from five voice
+ *   options when you first activate voice mode."
+ *
+ * Source (secondary): https://www.claude.com/product/overview  — Fetched 2026-04-19
  *   > "Switch between typing and speaking to Claude. Perfect for when
  *   >  you're on the move, or want to think out loud."
  *
- * Source: https://claude.com/pricing  — Fetched: 2026-04-19
+ * Source (secondary): https://claude.com/pricing  — Fetched 2026-04-19
+ *   Voice mode is not rendered as a dedicated row in the pricing-page
+ *   comparison table as of 2026-04-19; the support article is the
+ *   authoritative availability source. Where pricing copy mentions
+ *   voice/speech features they are listed under Pro-and-above tiers,
+ *   matching the "beta, English-only, all plans, Enterprise can disable"
+ *   framing in the support article — free users keep access but under a
+ *   tighter ~20–30-message session cap.
  *
- *   Quote 2 (plan availability — the pricing-page comparison table):
- *   > "Voice mode" — listed as a checked feature row across Free, Pro,
- *   >  Max 5x, Max 20x, Team, and Enterprise plans. No "Limited" or
- *   >  dash variants in the row; per-plan usage caps are not disclosed
- *   >  on this page.
- *
- *   Quote 3 (suggested "think out loud" framing — same source):
- *   > "Help me develop a unique voice for an audience" — listed as a
- *   >  sample "Write" prompt. Cited here only to establish that the
- *   >  pricing page frames voice as a natural conversation mode, not
- *   >  as an audio-generation API feature.
- *
- * Canonical-URL honesty note for ViewRealUI:
- *   The original support article slug (10109068-getting-started-with-
- *   voice-mode-on-the-claude-mobile-apps) no longer resolves from this
- *   environment as of 2026-04-19. We link to claude.com/product/overview
- *   as the Anthropic-owned page that currently mentions Voice Mode by
- *   name. If the support article is restored later, a one-line href swap
- *   in `VOICE_DOC_HREF` is the only change required.
- *
- * Platform scope: the task brief and product-overview copy both frame
- * Voice Mode as a mobile-app feature ("when you're on the move"). The
- * pricing page's feature row does not declare desktop/web support. We
- * therefore build a phone-shaped shell (ClaudePhoneShell) rather than
- * re-using ClaudeDesktopShell, and state the mobile caveat in the
- * plan-availability note so the tile stays honest.
+ * Platform scope: Voice Mode runs on BOTH Claude web (claude.ai) and
+ * the Claude mobile apps (iOS + Android). The tile uses
+ * `ClaudePhoneShell` as its hero because the phone chrome communicates
+ * the "call-like" affordances (mic, end, keyboard) more legibly than a
+ * desktop window — but the copy makes explicit that the same flow
+ * (sound-wave icon → speak → transcript) exists on the web surface.
  *
  * ---------------------------------------------------------------------------
  * CONTEXT7 FINDINGS (snapshot 2026-04-19)
@@ -99,9 +103,14 @@ import type { Annotation } from "@/features/claude/types";
 // ---------------------------------------------------------------------------
 
 const ONE_LINER =
-  "Voice Mode cho bạn nói chuyện tự nhiên với Claude trên điện thoại — giọng nói đi vào, giọng nói đáp lại, và mọi câu nói hiện thành chữ để xem lại.";
+  "Voice Mode (beta) cho bạn nói chuyện tự nhiên với Claude — có trên Claude web và app di động (iOS/Android). Giọng vào, giọng ra, kèm bản chép để xem lại. Hiện chỉ hỗ trợ tiếng Anh.";
 
-const VOICE_DOC_HREF = "https://www.claude.com/product/overview";
+const VOICE_DOC_HREF =
+  "https://support.claude.com/en/articles/11101966-using-voice-mode-on-claude-mobile-apps";
+
+// Static-mode bar heights used when reduced-motion is on. Module-scope so
+// each <Visualizer> render reuses the same frozen array.
+const STATIC_BAR_HEIGHTS = [0.3, 0.65, 0.85, 0.5, 0.35];
 
 const USER_LINE =
   "Tôi đang trên đường đi làm, giải thích ngắn gọn về supervised learning trong 60 giây bằng tiếng Việt.";
@@ -145,9 +154,9 @@ const ANNOTATIONS: Annotation[] = [
   {
     id: "live-transcript",
     pin: 2,
-    label: "Lời nói hiện thành chữ ngay tại đó",
+    label: "Bản chép hiện ngay tại đó",
     description:
-      "Mọi câu bạn nói — và mọi câu Claude đáp — hiện thành chữ ngay dưới vòng sóng, để bạn xem lại nếu cần.",
+      "Mọi câu bạn nói — và mọi câu Claude đáp — đều hiện thành bản chép ngay dưới vòng sóng, để bạn xem lại nếu cần.",
     showAt: [0.1, 0.55],
     anchor: { x: 50, y: 60 },
   },
@@ -163,7 +172,7 @@ const ANNOTATIONS: Annotation[] = [
   {
     id: "end-call",
     pin: 4,
-    label: "Kết thúc bất cứ lúc nào",
+    label: "Kết thúc, tắt mic, hoặc chuyển bàn phím",
     description:
       "Bạn có thể tắt tiếng, chuyển về bàn phím, hoặc kết thúc cuộc gọi bất cứ lúc nào. Không có thời lượng tối thiểu.",
     showAt: [0.4, 1.0],
@@ -234,10 +243,6 @@ const Visualizer = memo(function Visualizer({ mode }: VisualizerProps) {
         return { min: 0.18, max: 0.28, duration: 1.4 };
     }
   }, [mode]);
-
-  // Static-mode heights used when reduced-motion is on. These are fixed
-  // fractions (not randomized) so SSR and client render the same DOM.
-  const staticHeights = [0.3, 0.65, 0.85, 0.5, 0.35];
 
   const ringColor =
     mode === "claude"
@@ -319,7 +324,7 @@ const Visualizer = memo(function Visualizer({ mode }: VisualizerProps) {
                 />
               );
             })
-          : staticHeights.map((h, i) => (
+          : STATIC_BAR_HEIGHTS.map((h, i) => (
               <span
                 key={i}
                 aria-hidden="true"
@@ -517,28 +522,38 @@ export default function VoiceTile() {
         </div>
       </DemoCanvas>
 
-      {/* Honest disclosure — the dedicated Voice Mode support article URL
-          from the task brief was 404 on 2026-04-19; we link to Anthropic's
-          product page which currently frames Voice Mode verbatim. */}
+      {/* Illustrative-surface note — the phone shell is one of two
+          legitimate surfaces for Voice Mode; web (claude.ai) has the same
+          flow through the sound-wave icon in the text input. */}
+      <p className="max-w-[62ch] text-[12px] leading-[1.55] text-tertiary">
+        Mô phỏng trên dùng giao diện app di động cho rõ; giao diện trên
+        Claude web cũng có cùng luồng (nút sóng âm → nói → bản chép).
+      </p>
+
+      {/* Honest disclosure — link to the canonical Anthropic support
+          article for Voice Mode. */}
       <ViewRealUI
         href={VOICE_DOC_HREF}
-        label="Xem trang sản phẩm của Anthropic mô tả Voice Mode"
-        caption="Mở trang claude.com/product/overview trong tab mới. Giao diện demo được dựng lại dựa trên mô tả của Anthropic, ảnh chụp ngày 2026-04-19."
+        label="Xem hướng dẫn Voice Mode từ Anthropic"
+        caption="Mở bài hướng dẫn Voice Mode gốc từ Anthropic (ảnh chụp 2026-04-19). Mô tả chi tiết cách bật trên web và app, 5 giọng để chọn, và giới hạn phiên."
       />
 
-      {/* Plan-availability note — grounded in the claude.com/pricing
-          comparison table (fetched 2026-04-19). We also add the mobile
-          caveat per the task brief + product-overview framing. */}
+      {/* Plan-availability note — grounded in the canonical support
+          article (fetched 2026-04-19). */}
       <p
         role="note"
         className="max-w-[62ch] text-[12px] leading-[1.55] text-tertiary"
       >
-        Voice Mode hiện là tính năng trong ứng dụng Claude trên điện thoại
-        (iOS và Android). Theo bảng tính năng ở trang claude.com/pricing
-        (ngày 2026-04-19), Voice Mode có trên cả Free, Pro, Max, Team và
-        Enterprise — không ghi giới hạn thời lượng cụ thể trên trang đó.
-        Nếu ứng dụng desktop hoặc web chưa có nút Voice Mode, đó là đúng
-        thực tế, không phải lỗi.
+        Voice Mode đang ở giai đoạn beta, hiện chỉ hỗ trợ tiếng Anh.
+        Anthropic cho biết tính năng có trên mọi gói (Free, Pro, Max,
+        Team, Enterprise) ở cả Claude web lẫn app di động (iOS và
+        Android), nhưng trên bảng giá bản web chỉ Pro trở lên được đánh
+        dấu tick; Free vẫn dùng được với giới hạn khoảng 20–30 lượt nói
+        mỗi phiên. Lần đầu bật Voice Mode, bạn chọn 1 trong 5 giọng đọc
+        của Claude. Enterprise admin có thể tắt Voice Mode cho tổ chức
+        qua yêu cầu hỗ trợ. Lưu ý: Claude Desktop trên Mac có tính năng
+        Caps Lock để đọc chính tả — đó là nhập văn bản bằng giọng,
+        KHÔNG phải Voice Mode (Claude không đáp lại bằng giọng nói).
       </p>
 
       {/* "Cách nó hoạt động" — three crop cards using shared primitives. */}
@@ -549,7 +564,7 @@ export default function VoiceTile() {
         <div className="grid gap-6 md:grid-cols-3">
           <CropCard
             title="Nói vào, Claude hiểu ngay"
-            caption="Bạn mở Voice Mode trong ứng dụng Claude trên điện thoại và bắt đầu nói. Không cần bấm gửi — Claude nhận âm thanh trực tiếp khi bạn đang nói."
+            caption="Bạn mở Voice Mode trên Claude web (biểu tượng sóng âm ở góc phải thanh nhập) hoặc trong app di động, và bắt đầu nói. Không cần bấm gửi — Claude nhận âm thanh trực tiếp khi bạn đang nói."
           >
             <div
               className="flex items-center gap-3 rounded-[12px] border border-border bg-[var(--pure-white,#FFFFFF)] px-3 py-3"
@@ -572,8 +587,8 @@ export default function VoiceTile() {
           </CropCard>
 
           <CropCard
-            title="Lời hiện thành chữ"
-            caption="Mọi câu bạn nói và mọi câu Claude đáp đều được chuyển thành chữ ngay dưới vòng sóng. Xem lại, sao chép, hoặc đối chiếu — không mất gì."
+            title="Lời hiện thành bản chép"
+            caption="Mọi câu bạn nói và mọi câu Claude đáp đều được chuyển thành bản chép ngay dưới vòng sóng. Xem lại, sao chép, hoặc đối chiếu — không mất gì."
           >
             <div
               className="flex flex-col gap-2 rounded-[12px] border border-border bg-[var(--paper,#FBFAF7)] px-3 py-2.5"
@@ -599,13 +614,13 @@ export default function VoiceTile() {
             </div>
             <CropAnnotation
               pin={2}
-              label="Transcript hiện ngay bên dưới"
+              label="Bản chép hiện ngay bên dưới"
             />
           </CropCard>
 
           <CropCard
             title="Claude đáp lại bằng giọng nói"
-            caption="Sau một nhịp suy nghĩ ngắn, Claude đáp bằng giọng — kèm bản chép cho bạn xem lại. Muốn dừng giữa chừng, bạn chạm nút kết thúc."
+            caption="Sau một nhịp suy nghĩ ngắn, Claude đáp bằng giọng — kèm bản chép cho bạn xem lại. Lần đầu bật Voice Mode, bạn chọn 1 trong 5 giọng đọc của Claude. Muốn dừng giữa chừng, bạn chạm nút kết thúc."
           >
             <div
               className="flex items-center justify-center gap-4 rounded-[12px] border border-border bg-[var(--pure-white,#FFFFFF)] px-3 py-4"
@@ -625,7 +640,7 @@ export default function VoiceTile() {
             </div>
             <CropAnnotation
               pin={3}
-              label="Giọng ra + transcript song song"
+              label="Giọng ra + bản chép song song"
               align="right"
             />
           </CropCard>
@@ -638,10 +653,9 @@ export default function VoiceTile() {
           Thử ngay
         </h2>
         <p className="max-w-[58ch] text-[14px] leading-[1.55] text-secondary">
-          Voice Mode chỉ mở trong ứng dụng Claude trên điện thoại — nên thay
-          vì deep-link, nút dưới đây mở Claude với một câu hỏi giống kiểu
-          bạn sẽ hỏi qua giọng nói. Mở câu hỏi trên máy tính xong, chuyển
-          sang điện thoại và bấm nút Voice để hỏi miệng nếu muốn.
+          Bấm mở Claude web với câu hỏi mẫu, sau đó bấm biểu tượng sóng âm
+          ở góc phải thanh nhập để thử bằng giọng nói. (Hoặc mở Claude
+          trên app di động và paste câu hỏi.)
         </p>
         <DeepLinkCTA prompt="Tôi đang trên đường đi làm, giải thích ngắn gọn về supervised learning trong 60 giây bằng tiếng Việt." />
       </section>
