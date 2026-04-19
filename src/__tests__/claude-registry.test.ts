@@ -37,6 +37,7 @@ describe("claude registry", () => {
       "files-vision",
       "voice",
       "web-search",
+      "claude-design",
     ]);
   });
 });
