@@ -557,15 +557,16 @@ Without this, `supabase.auth.linkIdentity()` (used for anon → Google upgrade) 
 - Navigate to **Authentication → Providers → Google**
 - Toggle **Enabled**: ON
 - In Google Cloud Console, create an OAuth 2.0 Client ID (Web application):
-  - **Authorized JavaScript origins**: `https://ai-edu-app.vercel.app` (and `http://localhost:3000` for dev)
+  - **Authorized JavaScript origins**: `https://udemi.tech` (plus `https://ai-edu-app.vercel.app` as an alias while DNS fully propagates, and `http://localhost:3000` for dev)
   - **Authorized redirect URIs**: `https://<your-supabase-project-ref>.supabase.co/auth/v1/callback`
 - Copy the Google Client ID + Secret back into the Supabase dashboard
 
 ### 4. Set redirect URLs
 - Navigate to **Authentication → URL Configuration**
-- Set **Site URL**: `https://ai-edu-app.vercel.app` (use `http://localhost:3000` for dev)
+- Set **Site URL**: `https://udemi.tech` (use `http://localhost:3000` for dev)
 - Add to **Redirect URLs** allow-list:
-  - `https://ai-edu-app.vercel.app/auth/callback`
+  - `https://udemi.tech/auth/callback`
+  - `https://ai-edu-app.vercel.app/auth/callback` (alias — keeps older sign-in links working)
   - `http://localhost:3000/auth/callback`
 
 ### 5. Customize the confirmation email (optional)

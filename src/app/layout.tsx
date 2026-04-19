@@ -35,9 +35,30 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+// Canonical URL for the product. Anything relative in metadata (Open Graph
+// images, alternates, etc.) is resolved against this. Override with
+// NEXT_PUBLIC_SITE_URL in preview deploys if needed. Matches sitemap.ts /
+// robots.ts fallback.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://udemi.tech";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "AI Cho Mọi Người — Hiểu AI qua hình ảnh và ví dụ đơn giản",
   description: `Khám phá ${TOPIC_COUNT_ROUNDED}+ chủ đề AI/ML qua hình minh họa tương tác và ví dụ thực tế bằng tiếng Việt. Từ Neural Network đến RAG, từ Transformer đến AI Agent.`,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "AI Cho Mọi Người",
+    locale: "vi_VN",
+    title: "AI Cho Mọi Người — Hiểu AI qua hình ảnh và ví dụ đơn giản",
+    description: `Khám phá ${TOPIC_COUNT_ROUNDED}+ chủ đề AI/ML qua hình minh họa tương tác và ví dụ thực tế bằng tiếng Việt.`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Cho Mọi Người",
+    description: `${TOPIC_COUNT_ROUNDED}+ chủ đề AI/ML bằng tiếng Việt, học qua hình ảnh và ví dụ.`,
+  },
 };
 
 export default function RootLayout({
