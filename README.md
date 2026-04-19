@@ -1,135 +1,262 @@
-# AI Cho Mọi Người
+# AI cho mọi người
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Dondo0936/vietnamese-ai-for-beginner/ci.yml?branch=main&style=flat-square)](https://github.com/Dondo0936/vietnamese-ai-for-beginner/actions)
+[![Live site](https://img.shields.io/badge/Live-ai--edu--app.vercel.app-20B8B0?style=flat-square)](https://ai-edu-app.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Topics](https://img.shields.io/badge/Ch%E1%BB%A7%20%C4%91%E1%BB%81-158-brightgreen?style=flat-square)](#features)
+[![Topics](https://img.shields.io/badge/Ch%E1%BB%A7%20%C4%91%E1%BB%81-260%2B-20B8B0?style=flat-square)](#content)
+[![Paths](https://img.shields.io/badge/L%E1%BB%99%20tr%C3%ACnh-4-178F89?style=flat-square)](#learning-paths)
 
-**Ứng dụng giáo dục AI/ML bằng tiếng Việt** -- Học 158 chủ đề trí tuệ nhân tạo qua hình ảnh tương tác và ví dụ liên hệ thực tế Việt Nam.
+> **Học AI và học máy bằng tiếng Việt qua hình ảnh tương tác và ví dụ thực tế.**
+> An open-source Vietnamese-language educational platform for AI/ML — built around interactive visualizations, not walls of text.
 
-**An open-source Vietnamese-language educational app** for learning AI and machine learning through interactive visualizations and real-world analogies.
+**[→ Xem app trực tiếp tại ai-edu-app.vercel.app](https://ai-edu-app.vercel.app)**
 
-[Live Demo](https://ai-edu-app.vercel.app) | [Contribute](CONTRIBUTING.md)
+---
 
-![Screenshot](screenshot.png)
+## Live demo
+
+<p align="center">
+  <a href="https://ai-edu-app.vercel.app/demo.mp4">
+    <img src="./public/demo-poster.png" alt="Demo preview — AI cho mọi người" width="820" />
+  </a>
+</p>
+
+<p align="center">
+  <em>
+    Bấm vào ảnh để xem video demo 19 giây (<a href="https://ai-edu-app.vercel.app/demo.mp4">MP4</a>) — được render bằng
+    <a href="https://www.remotion.dev/">Remotion</a> với cùng bảng màu, typography và ngôn ngữ của app.
+  </em>
+</p>
+
+<details>
+<summary>Hoặc nhúng trực tiếp MP4 (click để mở)</summary>
+
+```html
+<video src="https://ai-edu-app.vercel.app/demo.mp4" autoplay loop muted playsinline controls></video>
+```
+
+</details>
+
+---
+
+## TL;DR
+
+- **260+ chủ đề AI/ML** trải khắp bốn lộ trình học: Học sinh · Sinh viên, Nhân viên văn phòng, AI Engineer, AI Researcher.
+- Mỗi chủ đề được viết lại cho người dùng Việt — ẩn dụ đời thường, ví dụ Việt Nam (Shopee, Techcombank, VinBrain, MoMo…), diacritics chuẩn.
+- Bài học **tương tác** bằng slider, drag-drop, toggle-compare, match-pairs, SVG tương tác, animated counter. Text chỉ là phần phụ.
+- Stack hiện đại: **Next.js 16 + Turbopack**, React 19, Supabase (auth + progress), Tailwind v4, framer-motion.
+- Hosted trên **Vercel** với **Speed Insights + Analytics**.
+- Demo video ngay trong repo được build bằng **Remotion 4** — đi theo đúng design system của app.
 
 ---
 
 ## Features
 
-- **158 chủ đề AI/ML** across **14 danh mục** -- from neural network fundamentals to emerging trends in 2025--2026
-- **Minh họa SVG tương tác** -- 96 interactive and 62 static visualizations that let you experiment with concepts hands-on
-- **Ví dụ liên hệ thực tế Việt Nam** for every concept, making abstract ideas concrete and memorable
-- **Tìm kiếm mờ (fuzzy search)** supporting both Vietnamese and English queries
-- **Lọc theo độ khó** -- Cơ bản / Trung bình / Nâng cao
-- **Bookmark & tiến độ đọc** -- track what you have read and save topics for later (powered by Supabase)
-- **Thiết kế responsive** -- works on mobile, tablet, and desktop
+- **260+ chủ đề** trải từ nền tảng ML đến xu hướng 2026 (reasoning models, RAG, agentic, MoE, diffusion, alignment, long-context…)
+- **Bốn lộ trình có hướng dẫn** (`/paths/*`) — mỗi lộ trình tự ghép thứ tự bài trước/sau, có mục tiêu và thời lượng rõ ràng
+- **Ưu tiên trực quan** — slider, drag-drop, toggle compare, match pairs, sort challenge, fill blank, custom SVG, framer-motion
+- **Tìm kiếm mờ (fuzzy search)** song ngữ Việt–Anh qua Fuse.js
+- **Bookmark + tiến độ đọc** lưu cá nhân qua Supabase (anonymous auth)
+- **Hướng dẫn Claude** tại `/claude` — guide chuyên sâu cho Claude Code & Claude.ai
+- **Ứng dụng thực tế** cho mọi khái niệm (ChatGPT, Claude, Gemini, Copilot, Jasper, Notion AI, o1, v.v.)
+- **Responsive** trên mobile/tablet/desktop, tôn trọng `prefers-reduced-motion`
+- **Accessibility**: skip-link, reading progress bar, keyboard-first command palette, scroll-reveal bỏ qua khi reduced motion
 
-## Tech Stack
+### Content
+
+- 260+ topic modules in `src/topics/*.tsx` — each a standalone `"use client"` component with its own `metadata`.
+- 47 interactive primitives in `src/components/interactive/` — `SliderGroup`, `ToggleCompare`, `DragDrop`, `MatchPairs`, `PredictionGate`, `AhaMoment`, `InlineChallenge`, `QuizSection`, etc.
+- 7 `Application*` components in `src/components/application/` that host the "real-world case study" lessons.
+
+### Learning paths
+
+All four paths live under `src/lib/paths.ts` and their entry pages under `src/app/paths/*/page.tsx`.
+
+| Lộ trình | Trọng tâm | Thời lượng ước tính |
+| --- | --- | --- |
+| **Học sinh · Sinh viên** | Toán nền tảng, ML cơ bản, mạng nơ-ron, kỹ năng thực hành | ~52 giờ |
+| **Nhân viên văn phòng** | Prompt, ứng dụng thực tế, an toàn & đạo đức, ứng dụng ngành | ~24 giờ |
+| **AI Engineer** | Kiến trúc, LLM & NLP, fine-tuning, RAG & agents, MLOps, đánh giá, an toàn | ~110 giờ |
+| **AI Researcher** | Lý thuyết sâu, kiến trúc tiên tiến, NLP & multimodal, alignment, RL, xu hướng mới | ~92 giờ |
+
+Lộ trình Office đã được viết lại riêng cho người không lập trình: không code, không công thức toán, 50–70% JSX là hình ảnh tương tác.
+
+---
+
+## Tech stack
 
 | Layer | Technology |
 | --- | --- |
-| Framework | [Next.js 16](https://nextjs.org/) |
-| Language | [TypeScript](https://www.typescriptlang.org/) |
-| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
-| Animations | [Framer Motion](https://www.framer.com/motion/) |
-| Search | [Fuse.js](https://www.fusejs.io/) |
-| Backend & Auth | [Supabase](https://supabase.com/) |
-| Hosting | [Vercel](https://vercel.com/) |
+| Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) |
+| Runtime | React 19 + TypeScript 5 |
+| Styling | [Tailwind v4](https://tailwindcss.com/) + CSS variables (Perplexity × Momo design tokens) |
+| Animation | [Framer Motion 12](https://www.framer.com/motion/) |
+| Search | [Fuse.js 7](https://www.fusejs.io/) |
+| Math rendering | [KaTeX](https://katex.org/) (student/researcher paths only) |
+| Backend & Auth | [Supabase](https://supabase.com/) (anonymous auth + `user_progress` table + RLS) |
+| Hosting | [Vercel](https://vercel.com/) — Fluid Compute + Speed Insights + Analytics |
+| Demo video | [Remotion 4](https://www.remotion.dev/) (`remotion/` folder) |
+| Testing | [Vitest](https://vitest.dev/) + Testing Library |
 
-## Getting Started
+---
+
+## Getting started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+
-- [pnpm](https://pnpm.io/) 9+
-- A free [Supabase](https://supabase.com/) account
+- [Node.js 20+](https://nodejs.org/)
+- [pnpm 10+](https://pnpm.io/)
+- Free [Supabase](https://supabase.com/) project
 
-### Installation
+### Install
 
 ```bash
-# Clone the repository
 git clone https://github.com/Dondo0936/vietnamese-ai-for-beginner.git
 cd vietnamese-ai-for-beginner
-
-# Install dependencies
 pnpm install
 ```
 
-### Set up Supabase
+### Configure Supabase
 
-1. Create a new project at [supabase.com](https://supabase.com/)
-2. Enable **Anonymous Auth** under Authentication > Providers
-3. Run the following SQL in the Supabase SQL Editor to create the required tables:
+1. Create a project at [supabase.com](https://supabase.com/).
+2. Enable **Anonymous Auth** under *Authentication → Providers*.
+3. Run this in the SQL Editor (one time):
 
-```sql
-create table if not exists user_progress (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade,
-  read_topics text[] default '{}',
-  bookmarks text[] default '{}',
-  last_visited text,
-  updated_at timestamptz default now()
-);
+   ```sql
+   create table if not exists user_progress (
+     id uuid primary key default gen_random_uuid(),
+     user_id uuid references auth.users(id) on delete cascade,
+     read_topics text[] default '{}',
+     bookmarks text[] default '{}',
+     last_visited text,
+     updated_at timestamptz default now()
+   );
 
-alter table user_progress enable row level security;
+   alter table user_progress enable row level security;
 
-create policy "Users can read own progress"
-  on user_progress for select
-  using (auth.uid() = user_id);
+   create policy "Users can read own progress"
+     on user_progress for select
+     using ((select auth.uid()) = user_id);
 
-create policy "Users can upsert own progress"
-  on user_progress for insert
-  with check (auth.uid() = user_id);
+   create policy "Users can insert own progress"
+     on user_progress for insert
+     with check ((select auth.uid()) = user_id);
 
-create policy "Users can update own progress"
-  on user_progress for update
-  using (auth.uid() = user_id);
-```
+   create policy "Users can update own progress"
+     on user_progress for update
+     using ((select auth.uid()) = user_id);
+   ```
 
-### Environment variables
+   > The `(select auth.uid())` pattern avoids re-evaluating the function per row under Supabase's `initplan` advisor.
+
+4. Copy env template and fill in:
+
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+### Run
 
 ```bash
-cp .env.local.example .env.local
+pnpm dev          # http://localhost:3000
+pnpm build        # production build
+pnpm test         # vitest
+pnpm lint         # eslint
 ```
 
-Open `.env.local` and fill in your Supabase project URL and anonymous key (found under Settings > API in your Supabase dashboard).
-
-### Run the dev server
+### Demo video (Remotion)
 
 ```bash
-pnpm dev
+pnpm demo:studio   # open Remotion Studio for live preview
+pnpm demo:render   # render public/demo.mp4 (≈3 MB, ~30s on first run to fetch headless Chromium)
+pnpm demo:poster   # render public/demo-poster.png (single-frame thumbnail)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the app.
+---
 
-## Project Structure
+## Project structure
 
 ```
+remotion/
+  index.ts                  # registerRoot entry
+  Root.tsx                  # registers DemoComposition
+  DemoComposition.tsx       # orchestrates 5 scenes via TransitionSeries
+  scenes/                   # Hero · Paths · Lesson · Quiz · Outro
+  components/               # LiquidBackground · GlassPanel · AnimatedIn
+  tokens.ts                 # color + FPS + resolution tokens (mirror src/app/globals.css)
+  fonts.ts                  # @remotion/google-fonts loaders (Space Grotesk, Inter Tight,
+                            #   Fraunces, JetBrains Mono — same as the app)
+
 src/
-  app/            # Next.js App Router pages and layouts
-    bookmarks/    # Bookmarks page
-    topics/       # Topic detail pages
-  components/     # Reusable UI components
-    home/         # Homepage components (search, category grid)
-    layout/       # Layout shell (header, footer)
-    topic/        # Topic page components (AnalogyCard, VisualizationSection, ...)
-    ui/           # Shared UI primitives
-  lib/            # Utilities, types, Supabase client, search config
-  topics/         # 158 topic modules (one .tsx per topic) + registry.ts
+  app/                      # Next.js App Router
+    paths/                  # /paths/{student,office,ai-engineer,ai-researcher}
+    topics/[slug]/          # dynamic topic pages
+    claude/                 # Claude Code & Claude.ai guide
+    bookmarks/, progress/   # personal state
+    layout.tsx              # fonts + Analytics + SpeedInsights
+  components/
+    application/            # ApplicationLayout, ApplicationHero, Metric, Beat, …
+    interactive/            # PredictionGate, ToggleCompare, DragDrop, SliderGroup, …
+    topic/                  # TopicLayout, VisualizationSection, ExplanationSection, QuizSection
+    paths/                  # LearningPathPage, LearningObjectivesModal
+    ui/                     # Tag, ReadingProgressBar, Skeleton, …
+  features/claude/          # Claude flagship guide tiles + gating
+  lib/
+    paths.ts                # 4 learning-path registries + neighbor navigation
+    types.ts                # TopicMeta + shared types
+    database.ts             # Supabase client + markTopicRead/bookmark helpers
+    theme.tsx               # dark/light ThemeProvider
+  topics/
+    *.tsx                   # 260+ topic modules
+    registry.ts             # slug → metadata index
+    topic-loader.tsx        # dynamic imports that preserve SSR
 ```
 
-Each topic file in `src/topics/` exports a `metadata` object (`TopicMeta`) and a default React component that uses `AnalogyCard`, `VisualizationSection`, and `ExplanationSection` to present the content.
+Every topic file exports:
+
+```tsx
+export const metadata: TopicMeta = { slug, title, titleVi, description, category, tags, difficulty, relatedSlugs, vizType, /* optional: applicationOf, featuredApp, sources, tocSections */ };
+
+export default function TopicComponent() { /* 8-step lesson layout */ }
+```
+
+The 8-step house style: `PredictionGate → prose + metaphor → VisualizationSection → AhaMoment → InlineChallenge → ExplanationSection → MiniSummary → QuizSection`.
+
+---
+
+## Conventions
+
+- **Office-path lessons** MUST NOT import `CodeBlock` or `LaTeX` — target audience doesn't read Python or formulas.
+- **Never write "Tổng quan LLM"** — native Vietnamese speakers say "LLM" or "mô hình AI".
+- **Concept → application link** renders at the BOTTOM of a concept page (see `src/components/topic/TopicLayout.tsx`), not the top.
+- **All subagents** dispatched on this repo use Opus-class models (see `AGENTS.md`).
+- **Every ship** pushes to GitHub *and* runs `vercel deploy --prod --yes`, then curls the production URL for a 200 check. Auto-sync is unreliable.
+
+See `AGENTS.md` + `CONTRIBUTING.md` for the full contract.
+
+---
 
 ## Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the development workflow, how to add new topics, and coding conventions.
+Pull requests welcome. Before touching content:
+
+1. Read `src/topics/_template.tsx` for the 8-step house style.
+2. Pick an interactive primitive from `src/components/interactive/index.ts`; avoid adding new ones unless truly necessary.
+3. Run `pnpm lint && pnpm test && pnpm build` locally before pushing.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow, coding conventions, and topic authoring guide.
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE).
+
+---
 
 ## Credits
 
-Created by **Tien Dat Do** ([@Dondo0936](https://github.com/Dondo0936))
+Created by **Tien Dat Do** ([@Dondo0936](https://github.com/Dondo0936)).
 
-Topic content and visualizations powered by [Claude](https://claude.ai/) (Anthropic).
+Topic content, visualizations, Office-path rewrite, and the Remotion demo composition authored in close collaboration with [Claude Opus 4.7](https://claude.ai/) (Anthropic).
+
+Design tokens inspired by Perplexity's paper palette and Momo's accent system.
