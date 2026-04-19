@@ -15,28 +15,28 @@ const QUOTES: Quote[] = [
   {
     quote:
       "Không ngờ attention lại dễ đến vậy. Ở trường toàn công thức khô khan.",
-    role: "Một bạn Học sinh THPT",
+    role: "Minh",
     context: "Hà Nội",
     path: "student",
   },
   {
     quote:
       "Lộ trình Engineer giống một khóa học thật — nhưng miễn phí và tiếng Việt. Đang học song song với project ở công ty.",
-    role: "Một bạn SV Bách Khoa",
+    role: "Hiếu",
     context: "HCM",
     path: "ai-engineer",
   },
   {
     quote:
       "Đọc xong RAG mới hiểu team backend đang build gì. Trước đó cứ nghe như ngoại ngữ.",
-    role: "Một bạn Data analyst",
+    role: "Trinh, Data analyst",
     context: "Ngân hàng",
     path: "office",
   },
   {
     quote:
-      "Phần ẩn dụ phở và Grab làm mình cười, rồi nhớ luôn. Người nước ngoài viết không ra chất này.",
-    role: "Một bạn Product Manager",
+      "Phần ẩn dụ phở và Grab làm mình cười, rồi nhớ luôn.",
+    role: "Duy, Product Manager",
     context: "Công ty AI trong nước",
     path: "office",
   },
