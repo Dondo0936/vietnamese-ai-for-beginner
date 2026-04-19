@@ -60,7 +60,7 @@ export const OutroScene = () => {
                 marginBottom: 20,
               }}
             >
-              ai-edu-app.vercel.app
+              udemi.tech
             </div>
           </AnimatedIn>
           <AnimatedIn delay={16}>

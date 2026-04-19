@@ -38,7 +38,7 @@ export const HeroScene = () => {
                 fontWeight: 500,
               }}
             >
-              ai-edu-app.vercel.app
+              udemi.tech
             </div>
           </AnimatedIn>
           <AnimatedIn delay={8}>

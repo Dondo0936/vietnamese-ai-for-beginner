@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllTopics } from "@/topics/registry";
 import { tiles } from "@/features/claude/registry";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ai-edu-app.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://udemi.tech";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const topics = getAllTopics();

@@ -1,6 +1,6 @@
 # AI cho mọi người
 
-[![Live site](https://img.shields.io/badge/Live-ai--edu--app.vercel.app-20B8B0?style=flat-square)](https://ai-edu-app.vercel.app)
+[![Live site](https://img.shields.io/badge/Live-udemi.tech-20B8B0?style=flat-square)](https://udemi.tech)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Topics](https://img.shields.io/badge/Ch%E1%BB%A7%20%C4%91%E1%BB%81-260%2B-20B8B0?style=flat-square)](#content)
 [![Paths](https://img.shields.io/badge/L%E1%BB%99%20tr%C3%ACnh-4-178F89?style=flat-square)](#learning-paths)
@@ -8,33 +8,25 @@
 > **Học AI và học máy bằng tiếng Việt qua hình ảnh tương tác và ví dụ thực tế.**
 > An open-source Vietnamese-language educational platform for AI/ML — built around interactive visualizations, not walls of text.
 
-**[→ Xem app trực tiếp tại ai-edu-app.vercel.app](https://ai-edu-app.vercel.app)**
+**[→ Xem app trực tiếp tại udemi.tech](https://udemi.tech)**
 
 ---
 
 ## Live demo
 
 <p align="center">
-  <a href="https://ai-edu-app.vercel.app/demo.mp4">
-    <img src="./public/demo-poster.png" alt="Demo preview — AI cho mọi người" width="820" />
+  <a href="https://udemi.tech/demo.mp4">
+    <img src="./public/demo.gif" alt="Demo — AI cho mọi người" width="820" />
   </a>
 </p>
 
 <p align="center">
   <em>
-    Bấm vào ảnh để xem video demo 19 giây (<a href="https://ai-edu-app.vercel.app/demo.mp4">MP4</a>) — được render bằng
-    <a href="https://www.remotion.dev/">Remotion</a> với cùng bảng màu, typography và ngôn ngữ của app.
+    30 giây · 8 cảnh · render bằng <a href="https://www.remotion.dev/">Remotion 4</a> với cùng bảng màu, typography và diacritics tiếng Việt như app.
+    <br />
+    Bấm vào GIF để xem bản <strong>MP4 độ nét cao</strong> (<a href="https://udemi.tech/demo.mp4">udemi.tech/demo.mp4</a>, 5.5 MB) — tiện cho LinkedIn / X / Twitter.
   </em>
 </p>
-
-<details>
-<summary>Hoặc nhúng trực tiếp MP4 (click để mở)</summary>
-
-```html
-<video src="https://ai-edu-app.vercel.app/demo.mp4" autoplay loop muted playsinline controls></video>
-```
-
-</details>
 
 ---
 
