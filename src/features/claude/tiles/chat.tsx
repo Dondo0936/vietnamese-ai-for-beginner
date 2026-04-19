@@ -56,6 +56,7 @@ import {
 import { AnnotationLayer } from "@/features/claude/components/AnnotationLayer";
 import { DemoCanvas } from "@/features/claude/components/DemoCanvas";
 import { DeepLinkCTA } from "@/features/claude/components/DeepLinkCTA";
+import { ViewRealUI } from "@/features/claude/components/ViewRealUI";
 import { useDemoPlayhead } from "@/features/claude/useDemoPlayhead";
 import { findTile } from "@/features/claude/registry";
 import type { Annotation } from "@/features/claude/types";
@@ -438,6 +439,16 @@ export default function ChatTile() {
           <AnnotationLayer annotations={ANNOTATIONS} playhead={playhead} />
         </div>
       </DemoCanvas>
+
+      {/* Honest disclosure link — sends curious users to Anthropic's own
+          page showing the real chat UI. Keeps the demo interactive while
+          closing the fidelity gap. Pairs with the "Mô phỏng" badge on the
+          shell above. */}
+      <ViewRealUI
+        href="https://www.claude.com/claude"
+        label="Xem ảnh giao diện thật từ trang sản phẩm Claude"
+        caption="Mở trang claude.com/claude trong tab mới. Giao diện demo ở trên được dựng lại dựa trên trang này, ảnh chụp ngày 2026-04-18."
+      />
 
       {/* "Cách nó hoạt động" — zoomed crop cards. Each card shows just the
           relevant UI fragment(s) at full card width instead of squeezing the
