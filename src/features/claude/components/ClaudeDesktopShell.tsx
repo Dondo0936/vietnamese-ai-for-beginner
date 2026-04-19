@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
+import { MockBadge } from "./MockBadge";
 
 /**
  * Pixel-faithful scaffold of the Claude Desktop app.
  * **UI snapshot pinned to 2026-04-18.** If Claude Desktop re-skins,
- * update this comment + the snapshot date, ideally quarterly.
+ * update `SHELL_SNAPSHOT_DATE` + this comment, ideally quarterly.
  *
  * Pure presentational. Never fetches. Never calls a real API.
  * Layout tokens match the real app:
@@ -13,9 +14,19 @@ import type { ReactNode } from "react";
  *   - Artifacts panel width: 42% of shell, min 360px
  *   - Paper surface: --paper (light) / #1A1919 (dark, matches claude.ai)
  *
+ * Mock disclosure: a visible "Mô phỏng" badge is rendered top-right by
+ * default so sighted users can tell this isn't a screen recording. Pair
+ * with `<ViewRealUI href="...">` below the shell to link to Anthropic's
+ * real product/docs page. Opt out via `showMockBadge={false}` when the
+ * shell is itself a decorative inset (e.g. a hero preview card) and a
+ * separate disclosure already applies.
+ *
  * Exports: ClaudeDesktopShell (default slot layout) +
  *          ShellMessage, ShellComposerStub for common message UI.
  */
+
+/** Date the shell layout was last reconciled against real Claude Desktop. */
+export const SHELL_SNAPSHOT_DATE = "2026-04-18";
 
 export interface ClaudeDesktopShellProps {
   topBar: ReactNode;
@@ -29,6 +40,18 @@ export interface ClaudeDesktopShellProps {
   artifactsPanel?: ReactNode;
   /** Override shell height (default 620px). */
   height?: number | string;
+  /**
+   * Show the "Mô phỏng" badge top-right (default `true`). Disable only
+   * when the shell is a decorative inset under another disclosure — see
+   * the component-level JSDoc.
+   */
+  showMockBadge?: boolean;
+  /**
+   * Override the date stamped on the mock-badge tooltip. Defaults to
+   * `SHELL_SNAPSHOT_DATE`. Useful if a specific tile was reconciled
+   * against Claude Desktop on a different date.
+   */
+  mockBadgeDate?: string;
   className?: string;
 }
 
@@ -38,6 +61,8 @@ export function ClaudeDesktopShell({
   main,
   artifactsPanel,
   height = 620,
+  showMockBadge = true,
+  mockBadgeDate = SHELL_SNAPSHOT_DATE,
   className = "",
 }: ClaudeDesktopShellProps) {
   return (
@@ -53,6 +78,10 @@ export function ClaudeDesktopShell({
         boxShadow: "var(--shadow-sm)",
       }}
     >
+      {/* Mock disclosure badge — visible counterpart to aria-label.
+          Lives above the topbar in z-order so it's always legible. */}
+      {showMockBadge ? <MockBadge snapshotDate={mockBadgeDate} /> : null}
+
       {/* Top bar */}
       <div
         className="flex items-center border-b border-border px-3"
