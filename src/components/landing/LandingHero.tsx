@@ -17,8 +17,8 @@ export function LandingHero() {
         </div>
         <h1 className="ld-h1">
           Học AI<br />
-          không phải<br />
-          <s className="ld-strike">đọc tường chữ.</s>
+          không cần<br />
+          <s className="ld-strike">biết tiếng Anh.</s>
         </h1>
         <p className="ld-lede">
           260+ chủ đề viết lại cho người Việt — qua slider, drag-drop,
