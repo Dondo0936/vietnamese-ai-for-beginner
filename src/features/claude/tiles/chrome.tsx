@@ -66,7 +66,7 @@
  * Timeline (from blog post, captured 2026-04-19):
  *   - Research preview: 2025-08-25
  *   - Max-plan beta: 2025-11-24
- *   - GA on paid plans: 2025-12-18
+ *   - Beta rollout to all paid plans: 2025-12-18
  *   - Pro users: Haiku 4.5 only
  *   - Max / Team / Enterprise: Opus 4.6, Sonnet 4.6, or Haiku 4.5
  *

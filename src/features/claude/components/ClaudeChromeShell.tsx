@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Star } from "lucide-react";
 import { MockBadge } from "./MockBadge";
 
 /**
@@ -270,12 +270,12 @@ export function ClaudeChromeShell({
             <path d="M5 7 V5 a3 3 0 0 1 6 0 V7" strokeLinecap="round" />
           </svg>
           <span className="truncate">{url}</span>
-          <span
+          <Star
+            size={12}
+            strokeWidth={1.6}
             aria-hidden="true"
-            className="ml-auto text-[12px] text-tertiary"
-          >
-            ☆
-          </span>
+            className="ml-auto text-tertiary"
+          />
         </div>
 
         {/* Toolbar — puzzle-piece (extensions) + pinned Claude icon */}
