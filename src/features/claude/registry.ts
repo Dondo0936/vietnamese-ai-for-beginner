@@ -46,7 +46,7 @@ export const tiles: TileMeta[] = [
   { slug: "voice" satisfies TileSlug,         shelf: "starter",   viTitle: "Voice Mode",                viTagline: "Nói chuyện với Claude.",                     status: "ready" },
   { slug: "web-search" satisfies TileSlug,    shelf: "starter",   viTitle: "Web Search",                viTagline: "Thông tin mới nhất, có trích dẫn.",          status: "ready" },
   { slug: "claude-design" satisfies TileSlug, shelf: "starter",   viTitle: "Claude Design",             viTagline: "Slide, prototype, one-pager.",               status: "ready",   badge: "new" },
-  { slug: "chrome" satisfies TileSlug,        shelf: "starter",   viTitle: "Claude for Chrome",         viTagline: "Claude đọc trang web bạn đang xem.",         status: "planned" },
+  { slug: "chrome" satisfies TileSlug,        shelf: "starter",   viTitle: "Claude for Chrome",         viTagline: "Claude đọc trang web bạn đang xem.",         status: "ready",   badge: "new" },
 
   // Shelf 2 — Nâng cao (8)
   { slug: "thinking" satisfies TileSlug,      shelf: "power",     viTitle: "Extended thinking",         viTagline: "Xem Claude suy luận, điều chỉnh độ sâu.",    status: "planned" },
