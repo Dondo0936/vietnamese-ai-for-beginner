@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Image as ImageIcon, Loader2, Check } from "lucide-react";
 import {
   submitFeedback,
@@ -150,7 +151,20 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
     }
   }
 
+  // Lock background scroll while open. Without this, mouse-wheel scrolls the
+  // page behind the modal, which feels broken once body content extends past
+  // the viewport (hero → lesson pages).
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   if (!open) return null;
+  if (typeof document === "undefined") return null;
 
   const isSubmitting = status.state === "submitting";
   const titleValid = title.trim().length >= 3 && title.length <= TITLE_MAX;
@@ -159,7 +173,9 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
   const rateLimited = cooldown > 0;
   const disabled = isSubmitting || rateLimited || !titleValid || !descValid;
 
-  return (
+  // Render via portal so the modal escapes the Navbar's `sticky z-50`
+  // stacking context and paints above every page-level element.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -362,6 +378,7 @@ export default function FeedbackModal({ open, onClose }: FeedbackModalProps) {
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
