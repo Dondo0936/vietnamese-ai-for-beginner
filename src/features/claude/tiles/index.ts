@@ -14,7 +14,9 @@ import type { TileSlug } from "@/features/claude/registry";
  *
  * Phase 2 progress:
  *  - Task 1: chat — streaming response demo.
+ *  - Task 2: projects — workspace (projects) demo.
  */
 export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
   chat: dynamic(() => import("./chat")),
+  projects: dynamic(() => import("./projects")),
 };
