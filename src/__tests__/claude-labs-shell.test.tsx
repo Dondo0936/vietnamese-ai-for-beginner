@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import {
   ClaudeLabsShell,
-  LabsBetaChip,
+  LabsPreviewChip,
 } from "@/features/claude/components/ClaudeLabsShell";
 
 describe("ClaudeLabsShell", () => {
@@ -44,8 +44,13 @@ describe("ClaudeLabsShell", () => {
     expect(screen.queryByText("Mô phỏng")).toBeNull();
   });
 
-  it("LabsBetaChip renders with default label", () => {
-    render(<LabsBetaChip />);
-    expect(screen.getByText(/Labs · Beta/)).toBeInTheDocument();
+  it("LabsPreviewChip renders with 'Research preview' label matching Anthropic's own terminology", () => {
+    render(<LabsPreviewChip />);
+    expect(screen.getByText(/Research preview/)).toBeInTheDocument();
+    // Regression guard — Anthropic never uses "beta" for Claude Design;
+    // the post uses "research preview" exclusively. The chip must not
+    // drift back to "Beta" / "Labs · Beta".
+    expect(screen.queryByText(/Labs\s*·\s*Beta/)).toBeNull();
+    expect(screen.queryByText(/\bBeta\b/)).toBeNull();
   });
 });

@@ -4,8 +4,10 @@
  * Claude Design (Anthropic Labs) tile — mô tả sản phẩm, người dùng mô
  * tả, Claude dựng visual đầu tiên, rồi tinh chỉnh bằng chat / comment /
  * direct edit / sliders. Hero hiển thị một phiên Claude Design đang
- * dựng prototype app thiền di động — đúng ví dụ mà Anthropic đưa ra
- * trong thông báo ra mắt.
+ * dựng prototype app thiền di động — ví dụ này được TechCrunch nêu
+ * trong bài đưa tin 17/4/2026; Anthropic's own announcement mô tả
+ * quy trình ở dạng tổng quát (describe → draft → refine) không khoá
+ * ở một use case cụ thể.
  *
  * ---------------------------------------------------------------------------
  * DOCS GROUNDING (Anthropic sources, snapshot 2026-04-19)
@@ -89,12 +91,13 @@ import {
   Sliders,
   Share2,
   Moon,
+  Sun,
   Play,
 } from "lucide-react";
 
 import {
   ClaudeLabsShell,
-  LabsBetaChip,
+  LabsPreviewChip,
 } from "@/features/claude/components/ClaudeLabsShell";
 import { AnnotationLayer } from "@/features/claude/components/AnnotationLayer";
 import { DemoCanvas } from "@/features/claude/components/DemoCanvas";
@@ -163,7 +166,7 @@ const ANNOTATIONS: Annotation[] = [
     pin: 1,
     label: "Mô tả bằng lời — Claude dựng bản đầu",
     description:
-      "Bạn mô tả thiết kế cần có bằng tiếng Việt hoặc tiếng Anh trong ô chat bên trái. Claude dựng bản đầu tiên ngay trên canvas — đúng như Anthropic mô tả trong thông báo ra mắt 17/4/2026.",
+      "Bạn mô tả thiết kế cần có bằng tiếng Việt hoặc tiếng Anh trong ô chat bên trái. Một ví dụ thường gặp — describe một ý tưởng (chẳng hạn app thiền), Claude dựng bản đầu tiên trên canvas trong vài giây.",
     showAt: [0.0, 0.55],
     anchor: { x: 18, y: 22 },
   },
@@ -181,7 +184,7 @@ const ANNOTATIONS: Annotation[] = [
     pin: 3,
     label: "Thanh điều chỉnh do Claude tự làm",
     description:
-      "Khi cần tinh chỉnh — màu sắc, cỡ chữ, bán kính bo góc — Claude tạo các thanh trượt tùy chỉnh ngay trong phiên, để bạn kéo thay vì phải gõ lại prompt. Anthropic gọi đây là 'custom sliders (made by Claude)'.",
+      "Khi cần tinh chỉnh — khoảng cách, màu sắc, bố cục — Claude tạo các thanh trượt tùy chỉnh ngay trong phiên, để bạn kéo thay vì phải gõ lại prompt. Anthropic gọi đây là 'custom sliders (made by Claude)' cho 'spacing, color, and layout'.",
     showAt: [0.5, 1.0],
     anchor: { x: 62, y: 78 },
   },
@@ -230,7 +233,7 @@ const DesignTopBar = memo(function DesignTopBar() {
         {PROJECT_TITLE}
         <ChevronDown size={11} strokeWidth={2} aria-hidden="true" />
       </span>
-      <LabsBetaChip />
+      <LabsPreviewChip />
       {/* Right-aligned controls — Share (handoff) button anchors pin #4. */}
       <span
         aria-label="Chia sẻ / chuyển giao"
@@ -340,7 +343,13 @@ function PhonePreview({ tone, glyph, label }: PhonePreviewProps) {
           style={{ color: ink, opacity: 0.65 }}
         >
           <span>9:41</span>
-          <span>{tone === "dark" ? "🌙" : "☀"}</span>
+          <span aria-hidden="true" className="inline-flex" style={{ color: ink }}>
+            {tone === "dark" ? (
+              <Moon size={9} strokeWidth={1.8} />
+            ) : (
+              <Sun size={9} strokeWidth={1.8} />
+            )}
+          </span>
         </span>
         {/* Glyph */}
         <div className="flex flex-1 items-center justify-center">
@@ -389,10 +398,13 @@ interface SliderStripProps {
   label: string;
   /** 0..1 — visual position of the thumb on the track. */
   value: number;
-  unit?: string;
 }
 
-function SliderStrip({ label, value, unit }: SliderStripProps) {
+// Intentionally percentage-only: Anthropic's post names the slider
+// dimensions ("spacing, color, and layout") but publishes no specific
+// units/ranges. Showing concrete px / pt values would fabricate
+// precision the product doesn't claim.
+function SliderStrip({ label, value }: SliderStripProps) {
   return (
     <div className="flex items-center gap-2">
       <span className="w-[72px] text-[10px] font-mono uppercase tracking-[0.06em] text-tertiary">
@@ -418,7 +430,7 @@ function SliderStrip({ label, value, unit }: SliderStripProps) {
         />
       </div>
       <span className="w-[56px] text-right text-[10px] text-foreground font-mono">
-        {unit ?? `${Math.round(value * 100)}%`}
+        {Math.round(value * 100)}%
       </span>
     </div>
   );
@@ -435,25 +447,37 @@ const CanvasPreview = memo(function CanvasPreview() {
 
       {/* Phone thumbnails row — three screens, last one is the dark-mode
           toggle the user asked for. This is the "generated prototype"
-          that pin #2 anchors on. */}
+          that pin #2 anchors on. Labels are English because Claude
+          Design currently outputs English design content — depicting
+          Vietnamese on-canvas labels would misrepresent the product.
+          The disclosure caption below explains this to the reader. */}
       <div className="flex items-start justify-center gap-4 rounded-[12px] border border-border bg-[var(--pure-white,#FFFFFF)] p-4">
-        <PhonePreview tone="light" glyph="breathe" label="Thở" />
-        <PhonePreview tone="light" glyph="play" label="Bài thiền" />
-        <PhonePreview tone="dark" glyph="moon" label="Chế độ tối" />
+        <PhonePreview tone="light" glyph="breathe" label="Breathe" />
+        <PhonePreview tone="light" glyph="play" label="Session" />
+        <PhonePreview tone="dark" glyph="moon" label="Dark mode" />
       </div>
+      <p className="text-[10px] leading-[1.5] text-tertiary">
+        Nội dung canvas hiển thị tiếng Anh — Claude Design hiện sinh ra
+        thiết kế bằng tiếng Anh. Bạn có thể yêu cầu Claude dịch hoặc
+        viết lại bằng tiếng Việt.
+      </p>
 
       {/* Sliders — custom knobs Claude makes for tweaking the design.
           This is the "custom sliders (made by Claude)" feature anchored
-          by pin #3. Three knobs because the user asked for mint color
-          + rounded font + larger title — each one maps visually. */}
+          by pin #3. Dimensions match Anthropic's own wording in the
+          announcement post: "spacing, color, and layout". */}
       <div className="flex flex-col gap-2 rounded-[12px] border border-border bg-[var(--pure-white,#FFFFFF)] px-4 py-3">
         <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.08em] text-tertiary">
           <Sliders size={11} strokeWidth={1.8} aria-hidden="true" />
           Thanh điều chỉnh
         </div>
-        <SliderStrip label="Sắc bạc hà" value={0.62} />
-        <SliderStrip label="Độ bo góc" value={0.78} unit="18px" />
-        <SliderStrip label="Cỡ tiêu đề" value={0.55} unit="28pt" />
+        <SliderStrip label="Khoảng cách" value={0.6} />
+        <SliderStrip label="Màu sắc" value={0.75} />
+        <SliderStrip label="Bố cục" value={0.5} />
+        <p className="text-[10px] leading-[1.5] text-tertiary">
+          Giá trị minh hoạ — Claude sinh thanh trượt tuỳ ngữ cảnh thiết
+          kế, không cố định khoảng.
+        </p>
       </div>
     </div>
   );
@@ -549,8 +573,12 @@ export default function ClaudeDesignTile() {
         claude.ai. Với gói Enterprise, tính năng mặc định tắt — admin
         của workspace phải bật trước khi thành viên dùng. Sử dụng
         tính vào hạn mức của gói hiện tại; có thể mua thêm lượt dùng
-        vượt mức. Sản phẩm chạy trên Claude Opus 4.7 (mô hình vision
-        mạnh nhất hiện tại của Anthropic). Truy cập tại{" "}
+        vượt mức. Claude Design ăn token nhanh hơn chat thông thường
+        (theo The New Stack, một thiết kế kèm vài lần sửa có thể dùng
+        tới khoảng 50% hạn mức tuần của gói Pro) — dùng có chủ đích,
+        tránh bắn nhiều prompt thăm dò. Sản phẩm chạy trên Claude
+        Opus 4.7 (mô hình vision mạnh nhất hiện tại của Anthropic).
+        Truy cập tại{" "}
         <a
           href={DESIGN_APP_URL}
           target="_blank"
@@ -572,7 +600,7 @@ export default function ClaudeDesignTile() {
         <div className="grid gap-6 md:grid-cols-3">
           <CropCard
             title="Bước 1 — Mô tả, Claude dựng bản đầu"
-            caption="Bạn mô tả thiết kế cần có bằng ngôn ngữ tự nhiên — 'slide pitch 3 trang', 'one-pager giới thiệu sản phẩm', 'prototype app đặt lịch'. Claude dựng bản đầu tiên trên canvas trong vài giây. Đúng quy trình được nêu trong thông báo ra mắt của Anthropic Labs."
+            caption="Bạn mô tả thiết kế cần có bằng ngôn ngữ tự nhiên — 'slide pitch 3 trang', 'one-pager giới thiệu sản phẩm', 'prototype app đặt lịch'. Claude dựng bản đầu tiên trên canvas trong vài giây. Quy trình describe → draft → refine là chuẩn của Claude Design theo thông báo Anthropic Labs; ví dụ bên dưới dựa trên use case app thiền."
           >
             <div
               className="rounded-[10px] bg-foreground px-3 py-2 text-[12px] leading-[1.5] text-background"
@@ -602,8 +630,8 @@ export default function ClaudeDesignTile() {
                 <Sliders size={11} strokeWidth={1.8} aria-hidden="true" />
                 Thanh điều chỉnh
               </div>
-              <SliderStrip label="Sắc bạc hà" value={0.62} />
-              <SliderStrip label="Cỡ tiêu đề" value={0.55} unit="28pt" />
+              <SliderStrip label="Màu sắc" value={0.75} />
+              <SliderStrip label="Bố cục" value={0.5} />
             </div>
             <CropAnnotation pin={2} label="Slider do Claude tự làm" />
           </CropCard>
@@ -646,9 +674,20 @@ export default function ClaudeDesignTile() {
           Thử ngay
         </h2>
         <p className="max-w-[58ch] text-[14px] leading-[1.55] text-secondary">
-          Bấm mở Claude với câu mẫu bên dưới. Trên gói Pro trở lên, Claude
-          sẽ gợi ý chuyển sang Claude Design (claude.ai/design) để dựng
-          slide/prototype trực tiếp thay vì chỉ trả lời bằng văn bản.
+          Bấm mở Claude với câu mẫu bên dưới — nút này vào chat
+          thường ở claude.ai/new, không phải Claude Design. Để thử
+          Claude Design trực tiếp, mở{" "}
+          <a
+            href={DESIGN_APP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-border underline-offset-2 hover:text-foreground"
+          >
+            claude.ai/design
+          </a>{" "}
+          (cần gói Pro trở lên). Nếu gói của bạn hỗ trợ, Claude sẽ
+          hiện option &ldquo;Design&rdquo; khi prompt có ý yêu cầu sinh
+          visual.
         </p>
         <DeepLinkCTA prompt="Dựng giúp mình 3 slide pitch ngắn cho sản phẩm AI dạy tiếng Việt cho học sinh cấp 2 — slide 1: vấn đề, slide 2: giải pháp, slide 3: kêu gọi đầu tư. Tông màu trung tính, phông chữ tròn, có chỗ đặt logo." />
       </section>

@@ -37,6 +37,36 @@ describe("claude-design tile", () => {
     expect(screen.getAllByText("Mô phỏng").length).toBeGreaterThanOrEqual(1);
   });
 
+  it("renders the 'Research preview' chip — Anthropic's terminology, never 'Labs · Beta'", () => {
+    render(<ClaudeDesignTile />);
+    // Positive assertion — tile must surface "Research preview" in the
+    // Labs top bar, matching the wording of Anthropic's announcement.
+    expect(screen.getAllByText(/Research preview/).length).toBeGreaterThanOrEqual(1);
+    // Regression guard — the chip must not drift back to "Labs · Beta"
+    // or any variant using "Beta", since Anthropic's post never uses
+    // that framing for Claude Design.
+    expect(screen.queryByText(/Labs\s*·\s*Beta/)).toBeNull();
+    expect(screen.queryByText(/\bBeta\b/)).toBeNull();
+  });
+
+  it("renders the illustrative slider-values caption disclosing the values aren't fixed ranges", () => {
+    render(<ClaudeDesignTile />);
+    expect(
+      screen.getByText(
+        /Giá trị minh hoạ — Claude sinh thanh trượt tuỳ ngữ cảnh thiết kế/
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("renders the canvas-language disclosure explaining the English on-canvas labels", () => {
+    render(<ClaudeDesignTile />);
+    expect(
+      screen.getByText(
+        /Nội dung canvas hiển thị tiếng Anh — Claude Design hiện sinh ra/
+      )
+    ).toBeInTheDocument();
+  });
+
   it("links ViewRealUI to the canonical Anthropic announcement post", () => {
     render(<ClaudeDesignTile />);
     const link = screen.getByRole("link", {

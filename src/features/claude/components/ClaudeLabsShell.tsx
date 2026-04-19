@@ -8,10 +8,10 @@ import { MockBadge } from "./MockBadge";
  * Why a new shell primitive (not just a re-skin of ClaudeDesktopShell)?
  *   - Claude Design lives at claude.ai/design, not the main chat app,
  *     and reads visually distinct: no left-rail conversation history,
- *     a narrower top chrome, a visible "Labs" / "Beta" chip, and a
- *     soft turquoise beta-strip at the very top. Rendering a Labs
- *     feature inside ClaudeDesktopShell (44px top + 248px left rail)
- *     would misrepresent the product.
+ *     a narrower top chrome, a visible "Research preview" chip, and a
+ *     soft turquoise strip at the very top. Rendering a Labs feature
+ *     inside ClaudeDesktopShell (44px top + 248px left rail) would
+ *     misrepresent the product.
  *   - Future Labs features (the plan brief flags more coming) can
  *     reuse this primitive instead of each tile re-inventing the
  *     chrome.
@@ -20,12 +20,19 @@ import { MockBadge } from "./MockBadge";
  * + this comment when the Claude Design interface re-skins (or when
  * Anthropic ships the next Labs surface with different chrome).
  *
+ * Note (2026-04-19): the specific chrome specifics (36px top bar, 3px
+ * turquoise strip, 34%/66% split inside the body slot) are a designer
+ * reconstruction. Anthropic has not published exact chrome measurements
+ * for Claude Design. The "Mô phỏng" + "Research preview" disclosures
+ * cover this reconstruction.
+ *
  * Pure presentational. Never fetches. Never calls a real API.
  *
  * Layout tokens:
  *   - Top bar height: 36px (narrower than ClaudeDesktopShell's 44px)
  *     so the Labs chrome reads lighter than the main chat app.
- *   - Beta strip: 3px tall, turquoise gradient, sits above the top bar.
+ *   - Turquoise strip: 3px tall, sits above the top bar — signals
+ *     "research preview" at a glance.
  *   - No left rail. Body slot fills the full shell width — Claude
  *     Design's canvas-first UX wants horizontal room.
  *   - Paper surface: --paper-2 (slightly darker than --paper) so the
@@ -37,6 +44,10 @@ import { MockBadge } from "./MockBadge";
  * real announcement / product page. Opt out via `showMockBadge={false}`
  * when the shell is itself a decorative inset and a separate disclosure
  * already applies.
+ *
+ * Chip naming: use `LabsPreviewChip` (renders "Research preview") —
+ * that matches Anthropic's own terminology. Never label the chip
+ * "Beta" — the announcement post uses "research preview" exclusively.
  */
 
 /** Date the Labs shell layout was last reconciled against Claude Design. */
@@ -92,7 +103,7 @@ export function ClaudeLabsShell({
           all chrome in z-order so it's always legible. */}
       {showMockBadge ? <MockBadge snapshotDate={mockBadgeDate} /> : null}
 
-      {/* Beta strip — thin turquoise gradient signalling "this is Labs /
+      {/* Turquoise strip — thin gradient signalling "this is Labs /
           research preview". 3px is thin enough to not steal attention
           from the canvas but strong enough for sighted users to read
           "experimental product" on first glance. */}
@@ -105,8 +116,9 @@ export function ClaudeLabsShell({
         }}
       />
 
-      {/* Top bar — narrower than desktop's 44px; carries the Labs / Beta
-          chip visibly so the preview doesn't pretend to be the main app. */}
+      {/* Top bar — narrower than desktop's 44px; carries the "Research
+          preview" chip visibly so the preview doesn't pretend to be the
+          main app. */}
       <div
         className="flex items-center border-b border-border px-3"
         style={{ height: 36, background: "var(--paper, #FBFAF7)" }}
@@ -126,11 +138,17 @@ export function ClaudeLabsShell({
 }
 
 /**
- * Small "Labs · Beta" chip for use inside a `ClaudeLabsShell` topBar.
- * Extracted here (rather than duplicated per tile) so every Labs tile
- * surfaces the same chip styling.
+ * Small "Research preview" chip for use inside a `ClaudeLabsShell`
+ * topBar. Extracted here (rather than duplicated per tile) so every Labs
+ * tile surfaces the same chip styling. The label text matches
+ * Anthropic's own terminology in the Claude Design announcement post —
+ * never substitute "Beta" or other framings.
  */
-export function LabsBetaChip({ label = "Labs · Beta" }: { label?: string }) {
+export function LabsPreviewChip({
+  label = "Research preview",
+}: {
+  label?: string;
+}) {
   return (
     <span
       className="inline-flex items-center gap-1.5 rounded-full border border-border bg-[var(--paper-2,#F3F2EE)] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em] text-tertiary"
