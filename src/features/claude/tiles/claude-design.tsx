@@ -221,7 +221,7 @@ const CROSS_LINKS: Array<{ href: string; title: string; blurb: string }> = [
 ];
 
 // ---------------------------------------------------------------------------
-// Hero top bar — project title + Labs · Beta chip + Share / handoff
+// Hero top bar — project title + Research preview chip + Share / handoff
 // ---------------------------------------------------------------------------
 
 const DesignTopBar = memo(function DesignTopBar() {
