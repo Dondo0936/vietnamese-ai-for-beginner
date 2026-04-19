@@ -351,21 +351,24 @@ const FilesVisionMain = memo(function FilesVisionMain() {
     <div className="flex h-full flex-col">
       <div className="flex-1 overflow-hidden pt-3">
         <ShellMessage from="user">
-          <span className="mb-2 flex">
+          {/* ShellMessage wraps children in a <div>, so block-level children
+              are valid. Using <div> instead of <span> avoids div-in-span
+              HTML nesting violations that browsers silently repair. */}
+          <div className="mb-2 flex">
             <PdfChip />
-          </span>
-          <span>{USER_QUESTION}</span>
+          </div>
+          <div>{USER_QUESTION}</div>
         </ShellMessage>
         <ShellMessage from="claude">
-          <span className="block">{CLAUDE_INTRO}</span>
-          <span className="mt-2 flex flex-col gap-1.5">
+          <div>{CLAUDE_INTRO}</div>
+          <div className="mt-2 flex flex-col gap-1.5">
             <StatRow label={CLAUDE_REVENUE_LABEL} value={CLAUDE_REVENUE_VALUE} />
             <StatRow label={CLAUDE_COST_LABEL} value={CLAUDE_COST_VALUE} />
             <StatRow label={CLAUDE_MARGIN_LABEL} value={CLAUDE_MARGIN_VALUE} />
-          </span>
-          <span className="mt-2 block text-[12px] italic text-tertiary">
+          </div>
+          <div className="mt-2 text-[12px] italic text-tertiary">
             {CLAUDE_SOURCE_LINE}
-          </span>
+          </div>
         </ShellMessage>
       </div>
       <FilesVisionComposer />
