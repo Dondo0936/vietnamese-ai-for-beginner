@@ -2,7 +2,7 @@ import { AbsoluteFill } from "remotion";
 import { LiquidBackground } from "../components/LiquidBackground";
 import { GlassPanel } from "../components/GlassPanel";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { FONT_DISPLAY, FONT_SANS, FONT_MONO } from "../fonts";
+import { FONT_DISPLAY, FONT_SANS, FONT_MONO, FONT_VN_DISPLAY } from "../fonts";
 import { COLORS } from "../tokens";
 
 const PATHS = [
@@ -61,15 +61,23 @@ export const PathsScene = () => {
             </div>
           </AnimatedIn>
           <AnimatedIn delay={8}>
+            {/*
+              Section title — Be Vietnam Pro + OpenType shaping disabled so
+              "đường" ("ư" + "ờ" combined marks) renders byte-stable across
+              frames. See fonts.ts.
+            */}
             <div
               style={{
-                fontFamily: FONT_DISPLAY,
-                fontSize: 56,
-                fontWeight: 600,
-                letterSpacing: "-0.03em",
+                fontFamily: FONT_VN_DISPLAY,
+                fontSize: 54,
+                fontWeight: 700,
+                letterSpacing: "-0.015em",
                 color: COLORS.ink,
                 textAlign: "center",
                 marginBottom: 40,
+                textRendering: "geometricPrecision",
+                fontKerning: "none",
+                fontFeatureSettings: '"kern" off, "liga" off, "calt" off, "clig" off',
               }}
             >
               Bốn con đường, cùng một đích

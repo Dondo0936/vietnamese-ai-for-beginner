@@ -2,7 +2,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { LiquidBackground } from "../components/LiquidBackground";
 import { GlassPanel } from "../components/GlassPanel";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { FONT_DISPLAY, FONT_SANS, FONT_MONO } from "../fonts";
+import { FONT_DISPLAY, FONT_SANS, FONT_MONO, FONT_VN_DISPLAY } from "../fonts";
 import { COLORS } from "../tokens";
 
 export const HeroScene = () => {
@@ -42,15 +42,23 @@ export const HeroScene = () => {
             </div>
           </AnimatedIn>
           <AnimatedIn delay={8}>
+            {/*
+              Hero wordmark — uses Be Vietnam Pro + fully disabled OpenType
+              features so Chromium cannot re-shape the combined-mark glyphs
+              ("ọ" in "mọi", "ờ" in "người") between frames. See fonts.ts.
+            */}
             <div
               style={{
-                fontFamily: FONT_DISPLAY,
-                fontSize: 84,
-                fontWeight: 600,
-                letterSpacing: "-0.035em",
-                lineHeight: 1.02,
+                fontFamily: FONT_VN_DISPLAY,
+                fontSize: 80,
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
                 color: COLORS.ink,
                 marginBottom: 18,
+                textRendering: "geometricPrecision",
+                fontKerning: "none",
+                fontFeatureSettings: '"kern" off, "liga" off, "calt" off, "clig" off',
               }}
             >
               AI cho mọi người
