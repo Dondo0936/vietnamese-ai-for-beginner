@@ -273,11 +273,23 @@ function CropAnnotation({
       <span
         aria-hidden="true"
         className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-foreground bg-[var(--paper,#FBFAF7)] text-[11px] font-semibold text-foreground"
-        style={{ boxShadow: "var(--shadow-sm)" }}
+        style={{
+          // Matches the AnnotationLayer polish — layered halo so pins lift
+          // off the surrounding paper instead of blending into it.
+          boxShadow:
+            "0 2px 6px rgba(0,0,0,0.10), 0 0 0 3px var(--paper,#FBFAF7), 0 0 0 4px rgba(19,52,59,0.18)",
+        }}
       >
         {pin}
       </span>
-      <span className="rounded-[6px] border border-border bg-[var(--paper,#FBFAF7)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground">
+      <span
+        className="rounded-[6px] border border-border bg-[var(--pure-white,#FFFFFF)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground"
+        style={{
+          borderLeft: "2px solid var(--turquoise-ink, #13343B)",
+          boxShadow:
+            "0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
+        }}
+      >
         {label}
       </span>
     </div>
