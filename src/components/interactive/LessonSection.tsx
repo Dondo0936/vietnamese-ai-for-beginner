@@ -33,6 +33,13 @@ export default function LessonSection({
     const el = ref.current;
     if (!el) return;
 
+    // threshold: 0 fires on ANY overlap between target and (margin-adjusted) root.
+    // The old 0.15 ratio silently broke sections taller than ~6.6× viewport height,
+    // because intersectionRatio = min(viewport, target) / target can never exceed
+    // viewport/target — for very tall Explanation sections on small viewports the
+    // cap falls below 0.15 and the observer never fires, leaving content frozen
+    // at opacity:0. rootMargin still holds the "wait until ~50px inside viewport"
+    // feel for short sections.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -40,7 +47,7 @@ export default function LessonSection({
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
+      { threshold: 0, rootMargin: "0px 0px -50px 0px" }
     );
 
     observer.observe(el);
