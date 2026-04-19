@@ -40,7 +40,7 @@ export const SHELF_META: Record<ShelfKey, ShelfMeta> = {
 export const tiles: TileMeta[] = [
   // Shelf 1 — Khởi đầu (8)
   { slug: "chat" satisfies TileSlug,          shelf: "starter",   viTitle: "Chat + phản hồi trực tiếp", viTagline: "Token chảy từng chữ một.",                status: "ready" },
-  { slug: "projects" satisfies TileSlug,      shelf: "starter",   viTitle: "Projects",                  viTagline: "Không gian làm việc dài hạn.",              status: "ready" },
+  { slug: "projects" satisfies TileSlug,      shelf: "starter",   viTitle: "Workspace (Projects)",      viTagline: "Không gian làm việc dài hạn.",              status: "ready" },
   { slug: "artifacts" satisfies TileSlug,     shelf: "starter",   viTitle: "Artifacts",                 viTagline: "Panel bên phải cho mã, tài liệu, app.",      status: "planned" },
   { slug: "files-vision" satisfies TileSlug,  shelf: "starter",   viTitle: "Files & Vision",            viTagline: "Đọc PDF, ảnh, Excel.",                       status: "planned" },
   { slug: "voice" satisfies TileSlug,         shelf: "starter",   viTitle: "Voice Mode",                viTagline: "Nói chuyện với Claude.",                     status: "planned" },

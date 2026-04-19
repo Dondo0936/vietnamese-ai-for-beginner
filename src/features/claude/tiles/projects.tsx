@@ -57,9 +57,12 @@
  *   hasn't pressed Play, so all four pins become visible together once
  *   they're rendered by the StillFrame-style cards below.
  *
- * react 19 (via Next 16 stack): `memo` wraps the three sub-slot components
- *   (ProjectsTopBar / ProjectsLeftRail / ProjectsMain) so shell re-renders
- *   driven by playhead ticks don't re-evaluate the static top bar + rail.
+ * react v19 (/facebook/react/v19): `memo` wrappers on ProjectsTopBar/
+ *   ProjectsLeftRail/ProjectsMain keep the static shell chrome from
+ *   re-rendering when the hero DemoCanvas re-renders on playhead ticks.
+ *   ProjectsMain currently takes no props (the playhead drives annotations
+ *   only, not the main content) — memo is kept for consistency with the
+ *   chat tile's pattern and so future prop additions don't cause churn.
  */
 
 import { memo, type ReactNode } from "react";
@@ -432,10 +435,7 @@ const ProjectsMain = memo(function ProjectsMain() {
         <ShellMessage from="claude">
           <span>
             {CLAUDE_REPLY_PREFIX}
-            <span
-              className="rounded-[4px] bg-[var(--paper-2,#F3F2EE)] px-1 py-0.5 font-mono text-[12px]"
-              data-testid="project-file-ref"
-            >
+            <span className="rounded-[4px] bg-[var(--paper-2,#F3F2EE)] px-1 py-0.5 font-mono text-[12px]">
               {CLAUDE_REPLY_FILENAME}
             </span>
             {CLAUDE_REPLY_SUFFIX}
@@ -455,9 +455,6 @@ const ProjectsMain = memo(function ProjectsMain() {
 export default function ProjectsTile() {
   const tile = findTile("projects");
   const viTitle = tile?.viTitle ?? "Workspace (Projects)";
-  // The registry stores the short "Projects"; prefer the longer
-  // presentational title when rendering the hero header.
-  const heroTitle = "Workspace (Projects)";
 
   const { playhead, playing, onPlay, onReset, onStep } = useDemoPlayhead({
     duration: 6000,
@@ -472,7 +469,7 @@ export default function ProjectsTile() {
           Cẩm nang Claude · Khởi đầu
         </span>
         <h1 className="text-[36px] font-semibold leading-[1.15] text-foreground md:text-[44px]">
-          {heroTitle}
+          {viTitle}
         </h1>
         <p className="max-w-[62ch] text-[16px] leading-[1.55] text-secondary md:text-[17px]">
           {ONE_LINER}
