@@ -40,10 +40,10 @@
  * Source: https://support.claude.com/en/articles/9547008-publishing-and-sharing-artifacts
  * Fetched: 2026-04-19
  *
- *   Quote 6 (publish gating):
+ *   Quote 7 (publish gating):
  *   > "Publishing is available on Free, Pro, and Max plans."
  *
- *   Quote 7 (internal-share gating):
+ *   Quote 8 (internal-share gating):
  *   > "Internal sharing is available on Team and Enterprise plans.
  *   >  Artifacts created on Team or Enterprise accounts can only be
  *   >  shared within your organization—they cannot be published publicly."
@@ -239,6 +239,7 @@ function ArtifactBarChart() {
       className="w-full"
       style={{ maxHeight: 220 }}
     >
+      <title>Biểu đồ cột doanh thu Q1 tới Q4 năm 2025</title>
       {/* Axis baseline */}
       <line
         x1={0}
@@ -411,16 +412,14 @@ const ArtifactsPanel = memo(function ArtifactsPanel() {
           <div className="truncate text-[13px] font-semibold text-foreground">
             {ARTIFACT_TITLE}
           </div>
-          <div className="mt-0.5 flex items-center gap-1">
+          <div className="mt-0.5 flex items-center gap-1" aria-hidden="true">
             <span
-              aria-pressed="true"
               className="inline-flex items-center gap-1 rounded-full border border-foreground bg-foreground px-2 py-0.5 text-[11px] font-medium text-background"
             >
               <Eye size={11} strokeWidth={2} aria-hidden="true" />
               Preview
             </span>
             <span
-              aria-pressed="false"
               className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-tertiary"
             >
               <Code2 size={11} strokeWidth={1.8} aria-hidden="true" />
@@ -460,6 +459,9 @@ const ArtifactsPanel = memo(function ArtifactsPanel() {
       </div>
 
       {/* Version footer */}
+      {/* `History` icon pairs with "Phiên bản 2" to signal that there's a
+          version-history stack to scrub through — not a timestamp. Kept after
+          the content audit removed the "8 phút trước" relative time. */}
       <div className="flex items-center gap-1.5 border-t border-border px-4 py-2 text-[11px] text-tertiary">
         <History size={11} strokeWidth={1.8} aria-hidden="true" />
         <span>{ARTIFACT_VERSION_LINE}</span>
@@ -566,16 +568,15 @@ export default function ArtifactsTile() {
             <div
               className="flex items-center gap-1 rounded-[12px] border border-border bg-[var(--paper,#FBFAF7)] px-3 py-2.5"
               style={{ boxShadow: "var(--shadow-sm)" }}
+              aria-hidden="true"
             >
               <span
-                aria-pressed="true"
                 className="inline-flex items-center gap-1 rounded-full border border-foreground bg-foreground px-2 py-0.5 text-[11px] font-medium text-background"
               >
                 <Eye size={11} strokeWidth={2} aria-hidden="true" />
                 Preview
               </span>
               <span
-                aria-pressed="false"
                 className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-tertiary"
               >
                 <Code2 size={11} strokeWidth={1.8} aria-hidden="true" />
