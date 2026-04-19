@@ -20,6 +20,7 @@ import type { TileSlug } from "@/features/claude/registry";
  *  - Task 5: voice — mobile Voice Mode with animated waveform demo.
  *  - Task 6: web-search — cited-web-search demo with source cards.
  *  - Task 7: claude-design — Anthropic Labs design tile (ClaudeLabsShell).
+ *  - Task 8: chrome — Claude for Chrome tile (ClaudeChromeShell).
  */
 export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
   chat: dynamic(() => import("./chat")),
@@ -29,4 +30,5 @@ export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
   voice: dynamic(() => import("./voice")),
   "web-search": dynamic(() => import("./web-search")),
   "claude-design": dynamic(() => import("./claude-design")),
+  chrome: dynamic(() => import("./chrome")),
 };

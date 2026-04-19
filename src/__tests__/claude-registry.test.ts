@@ -38,6 +38,7 @@ describe("claude registry", () => {
       "voice",
       "web-search",
       "claude-design",
+      "chrome",
     ]);
   });
 });
