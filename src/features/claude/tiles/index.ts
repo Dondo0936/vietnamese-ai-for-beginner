@@ -18,6 +18,7 @@ import type { TileSlug } from "@/features/claude/registry";
  *  - Task 3: artifacts — right-side live-preview panel demo.
  *  - Task 4: files-vision — PDF + image upload with multimodal extraction.
  *  - Task 5: voice — mobile Voice Mode with animated waveform demo.
+ *  - Task 6: web-search — cited-web-search demo with source cards.
  */
 export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
   chat: dynamic(() => import("./chat")),
@@ -25,4 +26,5 @@ export const tileBodies: Partial<Record<TileSlug, ComponentType>> = {
   artifacts: dynamic(() => import("./artifacts")),
   "files-vision": dynamic(() => import("./files-vision")),
   voice: dynamic(() => import("./voice")),
+  "web-search": dynamic(() => import("./web-search")),
 };
