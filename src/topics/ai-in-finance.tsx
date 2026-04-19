@@ -1,5 +1,19 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ShieldCheck,
+  AlertTriangle,
+  CreditCard,
+  TrendingUp,
+  Bot,
+  Landmark,
+  FileCheck,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Building2,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -8,9 +22,8 @@ import {
   MiniSummary,
   Callout,
   CollapsibleDetail,
-  CodeBlock,
-  LaTeX,
-  TopicLink,
+  MatchPairs,
+  TabView,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -23,609 +36,799 @@ export const metadata: TopicMeta = {
   title: "AI in Finance",
   titleVi: "AI trong Tài chính",
   description:
-    "Ứng dụng AI trong phát hiện gian lận, phân tích rủi ro và giao dịch tự động",
+    "Ứng dụng AI thực tế tại ngân hàng, ví điện tử và công ty tài chính Việt Nam",
   category: "applied-ai",
-  tags: ["fraud-detection", "risk", "trading"],
+  tags: ["fraud-detection", "credit-scoring", "banking", "fintech"],
   difficulty: "beginner",
-  relatedSlugs: ["decision-trees", "gradient-boosting", "sentiment-analysis"],
+  relatedSlugs: ["ai-in-healthcare", "ai-in-education", "ai-coding-assistants"],
   vizType: "interactive",
   tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
 };
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// Dữ liệu mô phỏng cho visualization
-// Mỗi "giao dịch" có (x, y) là 2 feature tổng hợp (đã chuẩn hóa về 0–100):
-//   x  — mức độ lệch số tiền so với lịch sử của user (amount-deviation score)
-//   y  — mức độ lệch ngữ cảnh (location/time/device/merchant deviation score)
-// label = 1 nếu là gian lận thực sự, 0 nếu bình thường.
-// Threshold là một đường tròn tâm (0,0): distance >= T ⇒ model flag là fraud.
-// Dữ liệu được sinh tĩnh (deterministic) để tránh lệch giữa SSR/CSR.
+// DEMO 1 — Mô phỏng phát hiện gian lận theo thời gian thực
 // ---------------------------------------------------------------------------
 
-type Txn = {
+type SimTxn = {
   id: number;
-  x: number; // 0..100
-  y: number; // 0..100
-  label: 0 | 1; // 1 = fraud thực sự
-  amount: number; // VND
+  label: string;
+  amount: number;
   merchant: string;
-  country: string;
+  location: string;
+  device: string;
+  time: string;
+  risk: number; // 0..100, điểm rủi ro do AI chấm
+  truth: "legit" | "fraud";
 };
 
-const MERCHANTS = [
-  "Shopee",
-  "Lazada",
-  "Tiki",
-  "Grab",
-  "VinMart",
-  "Circle K",
-  "CGV",
-  "Highlands",
-  "Booking.com",
-  "Apple",
-  "Unknown-Online",
-  "Crypto-Exchange",
-  "Forex-Broker",
-  "Gift-Card-Shop",
+const SAMPLE_TXNS: SimTxn[] = [
+  {
+    id: 1,
+    label: "Mua cà phê sáng",
+    amount: 55000,
+    merchant: "Highlands Coffee",
+    location: "Hà Nội, VN",
+    device: "iPhone đã dùng 2 năm",
+    time: "07:42 thứ Hai",
+    risk: 4,
+    truth: "legit",
+  },
+  {
+    id: 2,
+    label: "Thanh toán Shopee",
+    amount: 340000,
+    merchant: "Shopee Mall",
+    location: "TP.HCM, VN",
+    device: "iPhone đã dùng 2 năm",
+    time: "20:15 thứ Tư",
+    risk: 9,
+    truth: "legit",
+  },
+  {
+    id: 3,
+    label: "Chuyển khoản cho mẹ",
+    amount: 5_000_000,
+    merchant: "Vietcombank Internal",
+    location: "Đà Nẵng, VN",
+    device: "iPhone đã dùng 2 năm",
+    time: "19:00 cuối tháng",
+    risk: 12,
+    truth: "legit",
+  },
+  {
+    id: 4,
+    label: "Mua vé máy bay bất ngờ",
+    amount: 4_200_000,
+    merchant: "Vietjet Air",
+    location: "Hà Nội, VN",
+    device: "iPhone đã dùng 2 năm",
+    time: "23:58 thứ Bảy",
+    risk: 38,
+    truth: "legit",
+  },
+  {
+    id: 5,
+    label: "Thanh toán ví lạ",
+    amount: 12_500_000,
+    merchant: "Unknown-Crypto-Site",
+    location: "Singapore",
+    device: "Android mới đăng nhập",
+    time: "03:24 thứ Hai",
+    risk: 72,
+    truth: "fraud",
+  },
+  {
+    id: 6,
+    label: "Rút tiền mặt ATM nước ngoài",
+    amount: 18_000_000,
+    merchant: "ATM tại Nigeria",
+    location: "Lagos, NG",
+    device: "Android lạ",
+    time: "04:11 rạng sáng",
+    risk: 88,
+    truth: "fraud",
+  },
+  {
+    id: 7,
+    label: "Gift card giá trị cao",
+    amount: 9_900_000,
+    merchant: "Gift-Card-Shop",
+    location: "Không xác định",
+    device: "Web browser mới",
+    time: "02:08 thứ Ba",
+    risk: 81,
+    truth: "fraud",
+  },
+  {
+    id: 8,
+    label: "Đặt phòng khách sạn",
+    amount: 2_100_000,
+    merchant: "Booking.com",
+    location: "Hội An, VN",
+    device: "iPhone đã dùng 2 năm",
+    time: "15:10 thứ Sáu",
+    risk: 18,
+    truth: "legit",
+  },
 ];
 
-const COUNTRIES_LOCAL = ["VN", "VN", "VN", "VN", "VN"];
-const COUNTRIES_RISKY = ["NG", "RU", "KP", "IR", "UA", "BY"];
-
-// Pseudo-random generator (mulberry32) để deterministic trên mọi lần render.
-function mulberry32(seed: number) {
-  return function () {
-    let t = (seed += 0x6d2b79f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function buildTransactions(seed = 42, n = 220): Txn[] {
-  const rand = mulberry32(seed);
-  const txns: Txn[] = [];
-
-  // 92% giao dịch bình thường, tập trung gần gốc (0..40, 0..40)
-  const nNormal = Math.round(n * 0.92);
-  for (let i = 0; i < nNormal; i++) {
-    // Gaussian-ish qua Box–Muller đơn giản
-    const u1 = Math.max(1e-6, rand());
-    const u2 = rand();
-    const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-    const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
-    const x = Math.max(0, Math.min(100, 18 + z0 * 10));
-    const y = Math.max(0, Math.min(100, 20 + z1 * 11));
-    txns.push({
-      id: i,
-      x,
-      y,
-      label: 0,
-      amount: Math.round(50000 + rand() * 950000),
-      merchant: MERCHANTS[Math.floor(rand() * 10)]!,
-      country: COUNTRIES_LOCAL[Math.floor(rand() * COUNTRIES_LOCAL.length)]!,
-    });
-  }
-
-  // 8% gian lận thực sự — tập trung ở vùng distance cao (60..95)
-  const nFraud = n - nNormal;
-  for (let i = 0; i < nFraud; i++) {
-    const angle = rand() * Math.PI * 0.5; // góc trong phần tư dương
-    const radius = 55 + rand() * 40; // 55..95
-    const x = Math.max(0, Math.min(100, Math.cos(angle) * radius));
-    const y = Math.max(0, Math.min(100, Math.sin(angle) * radius));
-    txns.push({
-      id: nNormal + i,
-      x,
-      y,
-      label: 1,
-      amount: Math.round(2_000_000 + rand() * 48_000_000),
-      merchant:
-        MERCHANTS[10 + Math.floor(rand() * 4)] ??
-        MERCHANTS[MERCHANTS.length - 1]!,
-      country:
-        COUNTRIES_RISKY[Math.floor(rand() * COUNTRIES_RISKY.length)]!,
-    });
-  }
-
-  // Thêm một ít "gray zone" — giao dịch bình thường NHƯNG ở vùng lệch
-  // (để tạo false positives rõ rệt khi threshold thấp)
-  for (let i = 0; i < 10; i++) {
-    txns.push({
-      id: txns.length,
-      x: 45 + rand() * 25,
-      y: 40 + rand() * 25,
-      label: 0,
-      amount: Math.round(3_000_000 + rand() * 15_000_000),
-      merchant: MERCHANTS[Math.floor(rand() * MERCHANTS.length)]!,
-      country: rand() > 0.5 ? "VN" : "SG",
-    });
-  }
-
-  // Thêm một vài fraud khó — nằm gần vùng bình thường (để recall không đạt 100%)
-  for (let i = 0; i < 6; i++) {
-    txns.push({
-      id: txns.length,
-      x: 30 + rand() * 18,
-      y: 28 + rand() * 20,
-      label: 1,
-      amount: Math.round(1_500_000 + rand() * 6_000_000),
-      merchant: MERCHANTS[10 + Math.floor(rand() * 4)]!,
-      country: rand() > 0.5 ? "VN" : "TH",
-    });
-  }
-
-  return txns;
-}
-
-// ---------------------------------------------------------------------------
-// Interactive fraud-detection simulator
-// ---------------------------------------------------------------------------
-
 function FraudSimulator() {
-  const transactions = useMemo(() => buildTransactions(42, 220), []);
-  const [threshold, setThreshold] = useState<number>(55);
-  const [hoverId, setHoverId] = useState<number | null>(null);
-  const [showOnly, setShowOnly] = useState<"all" | "fraud" | "normal">("all");
+  const [threshold, setThreshold] = useState(55);
+  const [hovered, setHovered] = useState<number | null>(null);
 
-  // Tính metrics dựa trên threshold
   const stats = useMemo(() => {
-    let tp = 0;
-    let fp = 0;
-    let fn = 0;
-    let tn = 0;
-    let blockedAmount = 0;
-    let missedAmount = 0;
-    let falseBlockedAmount = 0;
-    for (const t of transactions) {
-      const dist = Math.sqrt(t.x * t.x + t.y * t.y);
-      const flagged = dist >= threshold;
-      if (flagged && t.label === 1) {
-        tp += 1;
-        blockedAmount += t.amount;
-      } else if (flagged && t.label === 0) {
-        fp += 1;
-        falseBlockedAmount += t.amount;
-      } else if (!flagged && t.label === 1) {
-        fn += 1;
-        missedAmount += t.amount;
+    let bat_dung = 0; // TP
+    let bao_nham = 0; // FP
+    let lot_luoi = 0; // FN
+    let an_toan = 0; // TN
+    let chan_dung_vnd = 0;
+    let chan_nham_vnd = 0;
+    let lot_vnd = 0;
+    for (const t of SAMPLE_TXNS) {
+      const flagged = t.risk >= threshold;
+      if (flagged && t.truth === "fraud") {
+        bat_dung += 1;
+        chan_dung_vnd += t.amount;
+      } else if (flagged && t.truth === "legit") {
+        bao_nham += 1;
+        chan_nham_vnd += t.amount;
+      } else if (!flagged && t.truth === "fraud") {
+        lot_luoi += 1;
+        lot_vnd += t.amount;
       } else {
-        tn += 1;
+        an_toan += 1;
       }
     }
-    const precision = tp + fp === 0 ? 0 : tp / (tp + fp);
-    const recall = tp + fn === 0 ? 0 : tp / (tp + fn);
-    const f1 =
-      precision + recall === 0
-        ? 0
-        : (2 * precision * recall) / (precision + recall);
-    const fraudTotal = tp + fn;
-    const normalTotal = fp + tn;
     return {
-      tp,
-      fp,
-      fn,
-      tn,
-      precision,
-      recall,
-      f1,
-      fraudTotal,
-      normalTotal,
-      blockedAmount,
-      missedAmount,
-      falseBlockedAmount,
+      bat_dung,
+      bao_nham,
+      lot_luoi,
+      an_toan,
+      chan_dung_vnd,
+      chan_nham_vnd,
+      lot_vnd,
     };
-  }, [transactions, threshold]);
-
-  const handleThreshold = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setThreshold(Number(e.target.value));
-    },
-    [],
-  );
-
-  // Kích thước SVG
-  const W = 520;
-  const H = 360;
-  const pad = 28;
-  const plotW = W - pad * 2;
-  const plotH = H - pad * 2;
-
-  const xScale = (x: number) => pad + (x / 100) * plotW;
-  const yScale = (y: number) => H - pad - (y / 100) * plotH;
-  // Đường tròn threshold trong hệ tọa độ pixel: do x và y có scale khác nhau nên
-  // ta vẽ như 1 ellipse để trực quan hóa ranh giới "distance = T".
-  const rX = (threshold / 100) * plotW;
-  const rY = (threshold / 100) * plotH;
-
-  const hovered = hoverId == null ? null : transactions.find((t) => t.id === hoverId) ?? null;
+  }, [threshold]);
 
   return (
-    <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div className="flex flex-col gap-1">
-        <h3 className="text-lg font-semibold">
-          Mô phỏng phát hiện gian lận — Techcombank Demo
+        <h3 className="text-base font-semibold text-foreground">
+          Demo 1 — Phát hiện gian lận thời gian thực
         </h3>
-        <p className="text-sm text-muted-foreground">
-          Mỗi chấm là một giao dịch. Trục X: độ lệch số tiền so với lịch sử
-          user. Trục Y: độ lệch ngữ cảnh (địa điểm, thời gian, thiết bị). Đường
-          cong = ngưỡng phát hiện của model — giao dịch nằm NGOÀI cung sẽ bị
-          flag.
+        <p className="text-sm text-muted">
+          AI chấm điểm rủi ro cho từng giao dịch (0–100). Giao dịch có điểm
+          vượt ngưỡng sẽ bị chặn hoặc yêu cầu xác thực thêm. Hãy kéo thanh
+          ngưỡng để thấy AI bắt được fraud — và chặn nhầm người dùng — như
+          thế nào.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_260px]">
-        {/* SVG scatter */}
-        <div className="relative">
-          <svg
-            viewBox={`0 0 ${W} ${H}`}
-            role="img"
-            aria-label="Biểu đồ scatter các giao dịch với ngưỡng phát hiện"
-            className="h-auto w-full rounded-xl border border-border/60 bg-background"
-          >
-            {/* Grid */}
-            {Array.from({ length: 6 }).map((_, i) => {
-              const gx = pad + (i / 5) * plotW;
-              const gy = pad + (i / 5) * plotH;
-              return (
-                <g key={`g-${i}`}>
-                  <line
-                    x1={gx}
-                    x2={gx}
-                    y1={pad}
-                    y2={H - pad}
-                    stroke="currentColor"
-                    strokeOpacity={0.08}
-                  />
-                  <line
-                    x1={pad}
-                    x2={W - pad}
-                    y1={gy}
-                    y2={gy}
-                    stroke="currentColor"
-                    strokeOpacity={0.08}
-                  />
-                </g>
-              );
-            })}
-
-            {/* Axes */}
-            <line
-              x1={pad}
-              x2={W - pad}
-              y1={H - pad}
-              y2={H - pad}
-              stroke="currentColor"
-              strokeOpacity={0.4}
-            />
-            <line
-              x1={pad}
-              x2={pad}
-              y1={pad}
-              y2={H - pad}
-              stroke="currentColor"
-              strokeOpacity={0.4}
-            />
-            <text
-              x={W - pad}
-              y={H - 6}
-              textAnchor="end"
-              fontSize={11}
-              fill="currentColor"
-              opacity={0.6}
-            >
-              Độ lệch số tiền →
-            </text>
-            <text
-              x={10}
-              y={pad + 4}
-              fontSize={11}
-              fill="currentColor"
-              opacity={0.6}
-            >
-              ↑ Độ lệch ngữ cảnh
-            </text>
-
-            {/* Threshold arc (1/4 ellipse trong phần tư dương) */}
-            <path
-              d={`M ${xScale(0)} ${yScale(threshold)} A ${rX} ${rY} 0 0 0 ${xScale(threshold)} ${yScale(0)}`}
-              fill="none"
-              stroke="#ef4444"
-              strokeOpacity={0.85}
-              strokeWidth={2}
-              strokeDasharray="6 4"
-            />
-            {/* Vùng "flag" được tô nhẹ */}
-            <path
-              d={`
-                M ${xScale(100)} ${yScale(0)}
-                L ${xScale(100)} ${yScale(100)}
-                L ${xScale(0)} ${yScale(100)}
-                L ${xScale(0)} ${yScale(threshold)}
-                A ${rX} ${rY} 0 0 0 ${xScale(threshold)} ${yScale(0)}
-                Z
-              `}
-              fill="#ef4444"
-              fillOpacity={0.06}
-            />
-
-            {/* Các chấm giao dịch */}
-            {transactions.map((t) => {
-              if (showOnly === "fraud" && t.label === 0) return null;
-              if (showOnly === "normal" && t.label === 1) return null;
-              const dist = Math.sqrt(t.x * t.x + t.y * t.y);
-              const flagged = dist >= threshold;
-              const fill =
-                t.label === 1
-                  ? flagged
-                    ? "#dc2626" // TP
-                    : "#fb923c" // FN (fraud bị lọt) — cam cảnh báo
-                  : flagged
-                  ? "#a78bfa" // FP
-                  : "#34d399"; // TN
-              return (
-                <circle
-                  key={t.id}
-                  cx={xScale(t.x)}
-                  cy={yScale(t.y)}
-                  r={hoverId === t.id ? 6 : 3.5}
-                  fill={fill}
-                  fillOpacity={0.85}
-                  stroke={hoverId === t.id ? "#111827" : "none"}
-                  strokeWidth={1}
-                  onMouseEnter={() => setHoverId(t.id)}
-                  onMouseLeave={() => setHoverId(null)}
-                  onFocus={() => setHoverId(t.id)}
-                  onBlur={() => setHoverId(null)}
-                  tabIndex={0}
-                />
-              );
-            })}
-          </svg>
-
-          {hovered ? (
-            <div className="pointer-events-none absolute right-2 top-2 rounded-md border border-border bg-popover px-3 py-2 text-xs shadow-md">
-              <div className="font-mono">#{hovered.id}</div>
-              <div>
-                {hovered.amount.toLocaleString("vi-VN")} VND · {hovered.merchant}
-              </div>
-              <div className="text-muted-foreground">
-                {hovered.country} · {hovered.label === 1 ? "FRAUD thực sự" : "Bình thường"}
-              </div>
-            </div>
-          ) : null}
+      <div className="rounded-xl border border-border bg-surface/60 p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <label className="text-sm font-medium text-foreground">
+            Ngưỡng chặn của AI
+          </label>
+          <span className="rounded-md bg-accent-light px-2 py-0.5 font-mono text-sm font-semibold text-accent">
+            {threshold}
+          </span>
         </div>
-
-        {/* Control panel */}
-        <div className="flex flex-col gap-4">
-          <div>
-            <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="font-medium">Ngưỡng phát hiện (T)</span>
-              <span className="font-mono text-sm tabular-nums">
-                {threshold.toFixed(0)}
-              </span>
-            </div>
-            <input
-              type="range"
-              min={15}
-              max={95}
-              step={1}
-              value={threshold}
-              onChange={handleThreshold}
-              className="w-full accent-red-500"
-              aria-label="Ngưỡng phát hiện gian lận"
-            />
-            <div className="mt-1 flex justify-between text-xs text-muted-foreground">
-              <span>Nhạy (bắt nhiều, báo nhầm nhiều)</span>
-              <span>An toàn user (bỏ lọt fraud)</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => setShowOnly("all")}
-              className={`rounded-md border px-2 py-1 ${showOnly === "all" ? "border-foreground bg-foreground text-background" : "border-border hover:bg-muted"}`}
-            >
-              Tất cả
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowOnly("fraud")}
-              className={`rounded-md border px-2 py-1 ${showOnly === "fraud" ? "border-foreground bg-foreground text-background" : "border-border hover:bg-muted"}`}
-            >
-              Chỉ fraud
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowOnly("normal")}
-              className={`rounded-md border px-2 py-1 ${showOnly === "normal" ? "border-foreground bg-foreground text-background" : "border-border hover:bg-muted"}`}
-            >
-              Chỉ hợp lệ
-            </button>
-          </div>
-
-          <div className="rounded-xl border border-border bg-muted/40 p-3 text-sm">
-            <div className="mb-2 font-semibold">Kết quả ở ngưỡng T = {threshold}</div>
-            <dl className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-xs tabular-nums">
-              <dt>Precision</dt>
-              <dd className="text-right">{(stats.precision * 100).toFixed(1)}%</dd>
-              <dt>Recall</dt>
-              <dd className="text-right">{(stats.recall * 100).toFixed(1)}%</dd>
-              <dt>F1</dt>
-              <dd className="text-right">{(stats.f1 * 100).toFixed(1)}%</dd>
-              <dt>TP (bắt đúng)</dt>
-              <dd className="text-right">{stats.tp}</dd>
-              <dt>FP (báo nhầm)</dt>
-              <dd className="text-right">{stats.fp}</dd>
-              <dt>FN (lọt lưới)</dt>
-              <dd className="text-right">{stats.fn}</dd>
-              <dt>TN (bỏ qua đúng)</dt>
-              <dd className="text-right">{stats.tn}</dd>
-            </dl>
-          </div>
-
-          <div className="rounded-xl border border-border bg-muted/40 p-3 text-xs leading-relaxed">
-            <div className="mb-1 font-semibold">Tác động tài chính</div>
-            <div>
-              Chặn đúng: {(stats.blockedAmount / 1_000_000).toFixed(1)}M VND
-            </div>
-            <div className="text-orange-600 dark:text-orange-400">
-              Fraud lọt: {(stats.missedAmount / 1_000_000).toFixed(1)}M VND
-            </div>
-            <div className="text-purple-600 dark:text-purple-400">
-              User bị chặn nhầm: {(stats.falseBlockedAmount / 1_000_000).toFixed(1)}M VND
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-3 text-xs">
-            <LegendDot color="#dc2626" label="TP — fraud bị bắt" />
-            <LegendDot color="#fb923c" label="FN — fraud lọt" />
-            <LegendDot color="#a78bfa" label="FP — báo nhầm" />
-            <LegendDot color="#34d399" label="TN — bình thường" />
-          </div>
+        <input
+          type="range"
+          min={10}
+          max={95}
+          step={1}
+          value={threshold}
+          onChange={(e) => setThreshold(Number(e.target.value))}
+          className="w-full accent-accent"
+          aria-label="Ngưỡng chặn giao dịch"
+        />
+        <div className="mt-1 flex justify-between text-xs text-muted">
+          <span>Ngặt (chặn nhiều, phiền user)</span>
+          <span>Lỏng (ít phiền, lọt nhiều fraud)</span>
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Gợi ý: kéo slider sang trái (T nhỏ) → model bắt được gần như mọi fraud
-        (recall cao) nhưng chặn nhầm rất nhiều user (precision tụt). Kéo sang
-        phải (T lớn) → precision cao, gần như không chặn nhầm ai, nhưng rất
-        nhiều fraud lọt lưới. Ngành ngân hàng chọn T dựa trên{" "}
-        <em>chi phí</em> của mỗi loại lỗi, không phải trên accuracy.
-      </p>
+      <div className="overflow-hidden rounded-xl border border-border">
+        <table className="w-full text-sm">
+          <thead className="bg-surface text-xs uppercase tracking-wide text-muted">
+            <tr>
+              <th className="px-3 py-2 text-left">Giao dịch</th>
+              <th className="px-3 py-2 text-right">Số tiền (VND)</th>
+              <th className="px-3 py-2 text-right">Điểm AI</th>
+              <th className="px-3 py-2 text-center">Kết quả</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SAMPLE_TXNS.map((t) => {
+              const flagged = t.risk >= threshold;
+              const isFraud = t.truth === "fraud";
+              let badge: {
+                bg: string;
+                text: string;
+                label: string;
+                icon: typeof CheckCircle2;
+              };
+              if (flagged && isFraud) {
+                badge = {
+                  bg: "bg-emerald-100 dark:bg-emerald-900/30",
+                  text: "text-emerald-800 dark:text-emerald-300",
+                  label: "Chặn đúng fraud",
+                  icon: ShieldCheck,
+                };
+              } else if (flagged && !isFraud) {
+                badge = {
+                  bg: "bg-purple-100 dark:bg-purple-900/30",
+                  text: "text-purple-800 dark:text-purple-300",
+                  label: "Chặn nhầm",
+                  icon: AlertTriangle,
+                };
+              } else if (!flagged && isFraud) {
+                badge = {
+                  bg: "bg-red-100 dark:bg-red-900/30",
+                  text: "text-red-800 dark:text-red-300",
+                  label: "Fraud lọt lưới",
+                  icon: XCircle,
+                };
+              } else {
+                badge = {
+                  bg: "bg-slate-100 dark:bg-slate-800/50",
+                  text: "text-slate-700 dark:text-slate-300",
+                  label: "OK",
+                  icon: CheckCircle2,
+                };
+              }
+              const BadgeIcon = badge.icon;
+              return (
+                <tr
+                  key={t.id}
+                  onMouseEnter={() => setHovered(t.id)}
+                  onMouseLeave={() => setHovered(null)}
+                  className={`border-t border-border transition-colors ${
+                    hovered === t.id ? "bg-accent-light/40" : ""
+                  }`}
+                >
+                  <td className="px-3 py-2">
+                    <div className="font-medium text-foreground">{t.label}</div>
+                    <div className="text-xs text-muted">
+                      {t.merchant} · {t.location} · {t.time}
+                    </div>
+                  </td>
+                  <td className="px-3 py-2 text-right font-mono tabular-nums text-foreground">
+                    {t.amount.toLocaleString("vi-VN")}
+                  </td>
+                  <td className="px-3 py-2 text-right">
+                    <span
+                      className={`inline-block rounded-md px-2 py-0.5 font-mono text-xs font-semibold ${
+                        t.risk >= 70
+                          ? "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
+                          : t.risk >= 40
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+                            : "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
+                      }`}
+                    >
+                      {t.risk}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2 text-center">
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${badge.bg} ${badge.text}`}
+                    >
+                      <BadgeIcon className="h-3 w-3" />
+                      {badge.label}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <StatCard
+          label="Chặn đúng fraud"
+          value={stats.bat_dung}
+          sub={`${(stats.chan_dung_vnd / 1_000_000).toFixed(1)} triệu VND`}
+          tone="emerald"
+        />
+        <StatCard
+          label="Chặn nhầm user"
+          value={stats.bao_nham}
+          sub={`${(stats.chan_nham_vnd / 1_000_000).toFixed(1)} triệu VND`}
+          tone="purple"
+        />
+        <StatCard
+          label="Fraud lọt lưới"
+          value={stats.lot_luoi}
+          sub={`${(stats.lot_vnd / 1_000_000).toFixed(1)} triệu VND`}
+          tone="red"
+        />
+        <StatCard
+          label="Giao dịch sạch"
+          value={stats.an_toan}
+          sub="Đi qua trơn tru"
+          tone="slate"
+        />
+      </div>
+
+      <Callout variant="insight" title="Vì sao có hai loại sai?">
+        Không có ngưỡng nào hoàn hảo. Hạ ngưỡng xuống 30: AI bắt được hầu hết
+        fraud nhưng chặn nhầm cả những giao dịch Shopee, Booking bình thường.
+        Nâng lên 80: ít chặn nhầm nhưng fraud lớn vẫn lọt. Ngân hàng Việt
+        Nam chọn ngưỡng dựa trên <em>chi phí</em>: một giao dịch fraud 10
+        triệu lọt đau hơn 100 giao dịch 500 nghìn bị chặn nhầm.
+      </Callout>
     </div>
   );
 }
 
-function LegendDot({ color, label }: { color: string; label: string }) {
+function StatCard({
+  label,
+  value,
+  sub,
+  tone,
+}: {
+  label: string;
+  value: number;
+  sub: string;
+  tone: "emerald" | "purple" | "red" | "slate";
+}) {
+  const tones: Record<typeof tone, string> = {
+    emerald:
+      "border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200",
+    purple:
+      "border-purple-300 bg-purple-50 text-purple-900 dark:border-purple-800 dark:bg-purple-900/20 dark:text-purple-200",
+    red: "border-red-300 bg-red-50 text-red-900 dark:border-red-800 dark:bg-red-900/20 dark:text-red-200",
+    slate:
+      "border-slate-300 bg-slate-50 text-slate-900 dark:border-slate-700 dark:bg-slate-800/40 dark:text-slate-200",
+  };
   return (
-    <span className="inline-flex items-center gap-1.5">
-      <span
-        aria-hidden
-        className="inline-block h-2.5 w-2.5 rounded-full"
-        style={{ backgroundColor: color }}
-      />
-      <span>{label}</span>
-    </span>
+    <div className={`rounded-xl border p-3 ${tones[tone]}`}>
+      <div className="text-xs uppercase tracking-wide opacity-80">{label}</div>
+      <div className="mt-1 text-2xl font-semibold tabular-nums">{value}</div>
+      <div className="mt-0.5 text-xs opacity-75">{sub}</div>
+    </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Topic component
+// DEMO 2 — Credit scoring: giải thích quyết định
+// ---------------------------------------------------------------------------
+
+type CreditFeature = {
+  key: string;
+  label: string;
+  description: string;
+  weight: number; // Tác động lên điểm tín dụng. Âm = kéo xuống, dương = nâng lên.
+  baseline: boolean;
+};
+
+const CREDIT_FEATURES: CreditFeature[] = [
+  {
+    key: "salary",
+    label: "Lương chuyển khoản đều 3 năm",
+    description: "Thu nhập ổn định là tín hiệu mạnh nhất",
+    weight: +22,
+    baseline: true,
+  },
+  {
+    key: "dti",
+    label: "Nợ/thu nhập < 30%",
+    description: "Hệ số DTI thấp — còn khả năng trả thêm",
+    weight: +14,
+    baseline: true,
+  },
+  {
+    key: "history",
+    label: "Lịch sử CIC 24 tháng sạch",
+    description: "Chưa từng chậm nợ tại bất kỳ TCTD nào",
+    weight: +18,
+    baseline: true,
+  },
+  {
+    key: "age_acc",
+    label: "Tài khoản mở > 5 năm",
+    description: "Độ dài mối quan hệ với ngân hàng",
+    weight: +6,
+    baseline: true,
+  },
+  {
+    key: "savings",
+    label: "Sổ tiết kiệm > 100 triệu",
+    description: "Bộ đệm tài chính trong trường hợp xấu",
+    weight: +10,
+    baseline: false,
+  },
+  {
+    key: "late_cc",
+    label: "Thẻ tín dụng chậm 1 kỳ",
+    description: "Một lần chậm gần đây",
+    weight: -15,
+    baseline: false,
+  },
+  {
+    key: "many_apps",
+    label: "Hỏi vay 5 nơi trong 30 ngày",
+    description: "Khát vốn — tín hiệu rủi ro",
+    weight: -12,
+    baseline: false,
+  },
+  {
+    key: "new_job",
+    label: "Mới đổi việc < 6 tháng",
+    description: "Thu nhập chưa đủ lâu để tin",
+    weight: -8,
+    baseline: false,
+  },
+];
+
+function CreditScoreExplainer() {
+  const [active, setActive] = useState<Record<string, boolean>>(() => {
+    const init: Record<string, boolean> = {};
+    for (const f of CREDIT_FEATURES) init[f.key] = f.baseline;
+    return init;
+  });
+
+  const total = useMemo(() => {
+    let score = 50; // điểm khởi đầu trung bình
+    for (const f of CREDIT_FEATURES) {
+      if (active[f.key]) score += f.weight;
+    }
+    return Math.max(0, Math.min(100, score));
+  }, [active]);
+
+  const decision = useMemo(() => {
+    if (total >= 80) {
+      return {
+        label: "Duyệt hạn mức cao",
+        desc: "Lãi suất ưu đãi, phê duyệt tự động",
+        tone: "bg-emerald-500 text-white",
+        ring: "ring-emerald-400",
+      };
+    }
+    if (total >= 60) {
+      return {
+        label: "Duyệt tiêu chuẩn",
+        desc: "Hạn mức trung bình, cần bổ sung hồ sơ",
+        tone: "bg-sky-500 text-white",
+        ring: "ring-sky-400",
+      };
+    }
+    if (total >= 40) {
+      return {
+        label: "Cân nhắc thủ công",
+        desc: "Chuyển cho chuyên viên thẩm định xem xét",
+        tone: "bg-amber-500 text-white",
+        ring: "ring-amber-400",
+      };
+    }
+    return {
+      label: "Từ chối",
+      desc: "Khuyến nghị cải thiện hồ sơ rồi thử lại",
+      tone: "bg-red-500 text-white",
+      ring: "ring-red-400",
+    };
+  }, [total]);
+
+  const contributions = useMemo(() => {
+    return CREDIT_FEATURES.filter((f) => active[f.key]).sort(
+      (a, b) => Math.abs(b.weight) - Math.abs(a.weight),
+    );
+  }, [active]);
+
+  return (
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+      <div>
+        <h3 className="text-base font-semibold text-foreground">
+          Demo 2 — AI giải thích vì sao cho vay hay từ chối
+        </h3>
+        <p className="text-sm text-muted">
+          Hồ sơ ban đầu: chị Lan, 32 tuổi, nhân viên văn phòng tại TP.HCM,
+          xin vay mua xe. Bật/tắt các đặc điểm để thấy AI cập nhật điểm
+          tín dụng và quyết định tức thời.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_280px]">
+        <div className="flex flex-col gap-2">
+          {CREDIT_FEATURES.map((f) => {
+            const on = active[f.key];
+            const positive = f.weight > 0;
+            return (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() =>
+                  setActive((prev) => ({ ...prev, [f.key]: !prev[f.key] }))
+                }
+                className={`flex items-start justify-between gap-3 rounded-xl border px-4 py-3 text-left transition-colors ${
+                  on
+                    ? positive
+                      ? "border-emerald-400 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-900/20"
+                      : "border-red-400 bg-red-50 dark:border-red-700 dark:bg-red-900/20"
+                    : "border-border bg-surface/60 opacity-60 hover:opacity-100"
+                }`}
+              >
+                <div>
+                  <div className="text-sm font-medium text-foreground">
+                    {f.label}
+                  </div>
+                  <div className="text-xs text-muted">{f.description}</div>
+                </div>
+                <span
+                  className={`shrink-0 rounded-md px-2 py-0.5 font-mono text-xs font-semibold ${
+                    positive
+                      ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
+                      : "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
+                  }`}
+                >
+                  {positive ? "+" : ""}
+                  {f.weight}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <div className="rounded-xl border border-border bg-surface/40 p-4">
+            <div className="text-xs uppercase tracking-wide text-muted">
+              Điểm tín dụng dự đoán
+            </div>
+            <div className="mt-1 flex items-baseline gap-1">
+              <motion.span
+                key={total}
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.2 }}
+                className="text-5xl font-bold tabular-nums text-foreground"
+              >
+                {total}
+              </motion.span>
+              <span className="text-sm text-muted">/ 100</span>
+            </div>
+            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+              <motion.div
+                initial={false}
+                animate={{ width: `${total}%` }}
+                transition={{ duration: 0.25 }}
+                className="h-full bg-gradient-to-r from-red-400 via-amber-400 to-emerald-500"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`rounded-xl p-4 ring-2 ${decision.tone} ${decision.ring}`}
+          >
+            <div className="text-xs uppercase tracking-wide opacity-85">
+              Quyết định AI đề xuất
+            </div>
+            <div className="mt-1 text-lg font-semibold">{decision.label}</div>
+            <div className="mt-0.5 text-xs opacity-90">{decision.desc}</div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-surface/40 p-3 text-xs">
+            <div className="mb-2 font-semibold text-foreground">
+              Yếu tố đóng góp mạnh nhất
+            </div>
+            <ul className="space-y-1">
+              {contributions.slice(0, 3).map((f) => (
+                <li key={f.key} className="flex items-center justify-between">
+                  <span className="text-muted">{f.label}</span>
+                  <span
+                    className={`font-mono font-semibold ${
+                      f.weight > 0 ? "text-emerald-600" : "text-red-600"
+                    }`}
+                  >
+                    {f.weight > 0 ? "+" : ""}
+                    {f.weight}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <Callout variant="warning" title="Quyền được giải thích">
+        Theo Nghị định 13/2023 của Chính phủ về bảo vệ dữ liệu cá nhân và
+        Thông tư 13/2018 của NHNN, khách hàng bị từ chối vay CÓ QUYỀN yêu
+        cầu ngân hàng giải thích lý do. AI không được là "hộp đen" — ngân
+        hàng phải trả lời cụ thể: "Hồ sơ bị từ chối chủ yếu do lịch sử chậm
+        nợ thẻ tín dụng (−15 điểm) và việc hỏi vay nhiều nơi trong 30 ngày
+        (−12 điểm)." Đây là lý do mọi mô hình chấm điểm tín dụng tại VN
+        phải có lớp giải thích kèm theo.
+      </Callout>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// DEMO 3 — Bản đồ ứng dụng AI tại các ngân hàng Việt Nam
+// ---------------------------------------------------------------------------
+
+function VietnameseBankMap() {
+  const bankPairs = useMemo(
+    () => [
+      {
+        left: "Vietcombank",
+        right: "Cảnh báo giao dịch bất thường 24/7 trên app VCB Digibank",
+      },
+      {
+        left: "Techcombank",
+        right: "Chấm điểm tín dụng tức thời cho thẻ và vay tiêu dùng",
+      },
+      {
+        left: "MB Bank",
+        right: "Trợ lý ảo MB Buddy tư vấn sản phẩm qua chat và thoại",
+      },
+      {
+        left: "VPBank",
+        right: "Hệ thống AML giám sát rửa tiền và khách hàng nhạy cảm",
+      },
+      {
+        left: "TPBank",
+        right: "eKYC bằng nhận diện khuôn mặt và sinh trắc học giọng nói",
+      },
+      {
+        left: "VietinBank",
+        right: "Dự báo dòng tiền và gợi ý sản phẩm tiết kiệm phù hợp",
+      },
+      {
+        left: "BIDV",
+        right: "Phân tích hành vi để ngăn chặn chiếm đoạt tài khoản",
+      },
+      {
+        left: "ACB",
+        right: "Robo-advisor tư vấn phân bổ đầu tư cho khách hàng ưu tiên",
+      },
+    ],
+    [],
+  );
+
+  return (
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+      <div>
+        <h3 className="text-base font-semibold text-foreground">
+          Demo 3 — Ghép ngân hàng Việt Nam với ứng dụng AI của họ
+        </h3>
+        <p className="text-sm text-muted">
+          Tám ngân hàng hàng đầu Việt Nam đều đã triển khai AI, nhưng mỗi
+          nhà tập trung vào mảng khác nhau. Thử ghép cặp xem bạn đoán đúng
+          bao nhiêu. Đây là các thông tin đã được các ngân hàng công bố
+          công khai giai đoạn 2024–2025.
+        </p>
+      </div>
+      <MatchPairs
+        pairs={bankPairs}
+        instruction="Chọn một ngân hàng ở cột trái, rồi chọn ứng dụng AI tương ứng ở cột phải."
+      />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Trang chính
 // ---------------------------------------------------------------------------
 
 export default function AIInFinanceTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
-        question: "Phát hiện gian lận thẻ tín dụng dùng AI kiểu nào?",
+        question:
+          "Một khách hàng bị ngân hàng chặn giao dịch 2 triệu VND lúc 3 giờ sáng ở nước ngoài. Theo góc nhìn AI chống gian lận, đây là biểu hiện của điều gì?",
         options: [
-          "Rule-based: nếu > 10 triệu thì block",
-          "ML model học patterns giao dịch bình thường của MỖI user. Giao dịch bất thường (khác pattern) → flag. XGBoost + real-time scoring",
-          "AI tự động block mọi giao dịch lớn",
+          "Ngân hàng cố tình làm khó khách hàng",
+          "AI phát hiện giao dịch lệch pattern bình thường (giờ giấc, địa điểm, thiết bị) và yêu cầu xác thực thêm để bảo vệ tài khoản",
+          "Hệ thống bị lỗi kỹ thuật",
         ],
         correct: 1,
         explanation:
-          "Mỗi user có 'profile' riêng: thường mua gì, ở đâu, giờ nào, bao nhiêu. Giao dịch lệch khỏi profile → anomaly score cao → flag. VD: bạn thường mua 200K ở Hà Nội, đột nhiên có giao dịch 50 triệu ở Nigeria → flag! Vietcombank, Techcombank đều dùng.",
+          "Mỗi tài khoản có một 'profile' hành vi riêng: giờ hoạt động, địa điểm, hạn mức quen thuộc, loại merchant hay mua. Khi một giao dịch lệch đủ xa khỏi profile đó — ví dụ 3 giờ sáng giờ VN = giờ ngủ, địa điểm mới, thiết bị mới — điểm rủi ro vọt lên. Ngân hàng sẽ chặn hoặc gửi OTP/thông báo để bạn xác nhận. Đây là cơ chế chuẩn tại Vietcombank, Techcombank, MB.",
       },
       {
         question:
-          "Credit scoring (chấm điểm tín dụng) dùng AI có vấn đề gì về fairness?",
+          "Vì sao hạ ngưỡng chặn xuống quá thấp KHÔNG phải là giải pháp tốt để bắt nhiều fraud hơn?",
         options: [
-          "Không có vấn đề",
-          "Model có thể học BIAS từ data lịch sử: nhóm nào ít được vay trước → model đánh giá thấp → tiếp tục ít được vay (feedback loop)",
-          "AI luôn công bằng hơn người",
+          "Vì GPU chạy chậm",
+          "Vì quá nhiều user bị chặn nhầm, mất niềm tin vào dịch vụ, và chi phí xử lý khiếu nại tăng vọt",
+          "Vì AI không đủ thông minh",
         ],
         correct: 1,
         explanation:
-          "Data lịch sử: phụ nữ/dân tộc thiểu số ít được vay (bias xã hội) → model học bias này → score thấp cho nhóm này → ít được vay → confirm bias (vicious cycle). Cần: fairness constraints, bias auditing, protected attributes, explainability.",
-      },
-      {
-        question: "Algorithmic trading có thể gây 'flash crash'. Vì sao?",
-        options: [
-          "GPU quá nhanh",
-          "Nhiều trading bots phản ứng CÙNG LÚC với tín hiệu → bán đồng loạt → giá giảm → bots bán thêm → cascade",
-          "Lỗi phần cứng",
-        ],
-        correct: 1,
-        explanation:
-          "Flash Crash 2010: Dow giảm 1000 điểm trong 5 phút rồi phục hồi. Lý do: 1 bot bán lớn → nhiều bots thấy giá giảm → bán theo → cascade. AI trading cần: circuit breakers, position limits, diversity trong strategies.",
+          "Hạ ngưỡng = AI cảnh giác cao hơn = nhiều fraud bị bắt NHƯNG cũng nhiều giao dịch bình thường bị chặn nhầm. Trải nghiệm user tệ, trung tâm tổng đài quá tải, khách hàng chuyển ngân hàng khác. Chi phí ẩn của 'chặn nhầm' lớn hơn nhiều so với cảm giác 'chặn được fraud'. Các ngân hàng Việt Nam cân đối dựa trên cost matrix thực tế của mình.",
       },
       {
         question:
-          "Một hệ thống fraud detection đạt precision = 99% và recall = 80%. Ngân hàng cần bắt nhiều fraud hơn. Nên làm gì với threshold?",
+          "Khách hàng bị từ chối vay. Theo Nghị định 13/2023, ngân hàng phải làm gì?",
         options: [
-          "Tăng threshold để precision còn cao hơn",
-          "Giảm threshold: model flag dễ dãi hơn → recall tăng (bắt nhiều hơn) nhưng precision giảm (báo nhầm nhiều hơn)",
-          "Giữ nguyên — không có cách nào cả",
+          "Không cần giải thích, đây là quyền quyết định của ngân hàng",
+          "Giải thích cụ thể yếu tố chính khiến hồ sơ bị từ chối và hướng dẫn cải thiện",
+          "Chỉ nói 'không đủ điều kiện' là đủ",
         ],
         correct: 1,
         explanation:
-          "Threshold và recall NGHỊCH chiều. Threshold thấp → model gọi nhiều cái là 'fraud' → bắt được nhiều fraud thật (recall ↑) nhưng cũng bắt nhầm nhiều giao dịch thật (precision ↓). Đây là trade-off cơ bản của classification.",
+          "Nghị định 13/2023 về bảo vệ dữ liệu cá nhân và các văn bản của NHNN yêu cầu các quyết định tự động ảnh hưởng đến quyền lợi khách hàng (ví dụ từ chối vay) phải có khả năng giải thích. Đây cũng là lý do các ngân hàng buộc phải dùng mô hình chấm điểm có thể giải thích được — không thể dùng mô hình 'hộp đen' thuần túy cho quyết định tín dụng.",
       },
       {
         question:
-          "Giao dịch 5 triệu VND ở Hà Nội lúc 14h, merchant Shopee. Mô hình flag 'fraud'. SHAP value cho thấy đóng góp chính là 'device_id mới'. Phản ứng hợp lý nhất?",
+          "Vai trò chính của chatbot Biti của MB Bank hay trợ lý ảo của các ngân hàng VN hiện nay là gì?",
         options: [
-          "Block thẳng, user phải ra chi nhánh",
-          "Challenge bằng OTP / sinh trắc học — nếu user xác nhận được thì thả, đồng thời cập nhật device_id vào profile",
-          "Bỏ qua — flag sai",
+          "Thay thế hoàn toàn nhân viên tổng đài",
+          "Trả lời các câu hỏi cơ bản và hướng dẫn giao dịch đơn giản 24/7, chuyển các ca phức tạp sang nhân viên con người",
+          "Bán chéo sản phẩm bảo hiểm là nhiệm vụ duy nhất",
         ],
         correct: 1,
         explanation:
-          "Risk-based authentication: thay vì block cứng, leo thang xác thực (OTP, Face ID). User thật vượt qua dễ dàng, kẻ gian không có OTP. Đây là cách các ví như MoMo, ZaloPay xử lý — giảm friction mà vẫn an toàn.",
+          "Chatbot ngân hàng 2024–2025 xử lý tốt các câu hỏi lặp đi lặp lại: tra cứu số dư, hướng dẫn mở thẻ, giải thích phí, hỗ trợ reset mật khẩu. Các ca phức tạp hơn — khiếu nại giao dịch, thương thảo lãi vay, tư vấn đầu tư lớn — vẫn chuyển cho nhân viên. Mô hình 'human-in-the-loop' này giảm 40–60% tải tổng đài mà không làm giảm chất lượng dịch vụ.",
       },
       {
         question:
-          "Vì sao dữ liệu fraud cực kỳ mất cân bằng (99.9% legit, 0.1% fraud) lại LÀ vấn đề nghiêm trọng khi train model?",
+          "Ngân hàng triển khai AI giám sát rửa tiền (AML). Trong bối cảnh Việt Nam, yêu cầu pháp lý chính đến từ đâu?",
         options: [
-          "Không phải vấn đề, càng nhiều data càng tốt",
-          "Model có thể đạt accuracy 99.9% chỉ bằng cách dự đoán 'mọi thứ đều legit' — accuracy cao nhưng hoàn toàn vô dụng",
-          "GPU không xử lý được dữ liệu lớn",
+          "Không có yêu cầu cụ thể",
+          "Luật Phòng chống rửa tiền 2022 và các thông tư của NHNN yêu cầu báo cáo giao dịch đáng ngờ",
+          "Chỉ áp dụng với ngân hàng nước ngoài",
         ],
         correct: 1,
         explanation:
-          "Class imbalance: model lười dự đoán toàn majority class → accuracy 99.9% nhưng recall ≈ 0. Phải dùng class weights (scale_pos_weight), resampling (SMOTE), hoặc focal loss. Và đánh giá bằng precision/recall/PR-AUC thay vì accuracy.",
+          "Luật Phòng chống rửa tiền 2022 (thay thế luật 2012) và Thông tư 09/2023 của NHNN buộc các TCTD phát hiện, báo cáo giao dịch đáng ngờ. Khối lượng giao dịch ở VN đã vượt quá khả năng rà soát thủ công, nên AI AML trở thành công cụ bắt buộc. VPBank, Techcombank đã đầu tư mạnh vào mảng này sau 2023.",
       },
       {
         question:
-          "EU AI Act và Basel III yêu cầu credit scoring model phải 'giải thích được'. Công cụ nào phù hợp nhất?",
+          "Anh Nam đăng nhập MoMo tại Hà Nội lúc 8h sáng. 10 phút sau, có yêu cầu chuyển 15 triệu VND từ IP Singapore. Hệ thống nên phản ứng thế nào?",
         options: [
-          "Confusion matrix",
-          "SHAP values hoặc LIME — gán đóng góp của từng feature cho từng quyết định cụ thể",
-          "Loss curve",
+          "Chấp nhận luôn vì đã đăng nhập thành công",
+          "Chặn hoặc yêu cầu xác thực mạnh (OTP, Face ID) — vì pattern di chuyển địa lý không thể xảy ra và số tiền lớn",
+          "Gửi tin nhắn xin lỗi rồi chấp nhận",
         ],
         correct: 1,
         explanation:
-          "SHAP (SHapley Additive exPlanations) dựa trên lý thuyết trò chơi, phân rã output thành đóng góp của từng feature cho từng instance. Cho phép trả lời 'tại sao khách hàng X bị từ chối vay': 60% do thu nhập, 25% do nợ cũ, 15% do lịch sử tín dụng ngắn.",
+          "Đây là pattern điển hình của 'account takeover' sau phishing OTP. Hệ thống thấy: (1) đăng nhập thiết bị mới ở địa điểm mới, (2) giao dịch lớn bất thường, (3) khoảng cách địa lý không thể di chuyển trong 10 phút. Kết hợp các tín hiệu này cho điểm rủi ro rất cao. MoMo, ZaloPay thực tế đều có layer xác thực mạnh cho các ca như vậy.",
+      },
+      {
+        question:
+          "Robo-advisor đưa gợi ý đầu tư cho khách hàng. Trách nhiệm cuối cùng khi gợi ý sai và khách hàng thua lỗ thuộc về ai?",
+        options: [
+          "Mô hình AI — nó là thứ đưa ra quyết định",
+          "Ngân hàng hoặc công ty tài chính triển khai robo-advisor — AI là công cụ, trách nhiệm pháp lý vẫn thuộc về tổ chức vận hành",
+          "Khách hàng phải tự chịu 100%",
+        ],
+        correct: 1,
+        explanation:
+          "AI không phải là chủ thể pháp lý. Ngân hàng/công ty CKDL triển khai robo-advisor phải chịu trách nhiệm về: (1) chất lượng mô hình, (2) bộ câu hỏi đánh giá khẩu vị rủi ro, (3) cảnh báo rủi ro rõ ràng, (4) kênh khiếu nại. Ủy ban CKDL Việt Nam và các quy định về sản phẩm đầu tư bán lẻ áp dụng cho cả sản phẩm dùng AI.",
       },
       {
         type: "fill-blank",
         question:
-          "Hai ứng dụng AI phổ biến nhất trong ngân hàng là {blank} để chặn giao dịch bất thường và {blank} để quyết định hạn mức cho vay.",
+          "Năm ứng dụng chính của AI trong ngân hàng VN gồm: chống {blank}, chấm điểm {blank}, {blank} khách hàng, tư vấn {blank}, và giám sát {blank}.",
         blanks: [
           {
-            answer: "fraud detection",
-            accept: [
-              "phát hiện gian lận",
-              "chống gian lận",
-              "anti-fraud",
-            ],
+            answer: "gian lận",
+            accept: ["fraud", "lừa đảo", "gian lan"],
           },
           {
-            answer: "credit scoring",
-            accept: [
-              "chấm điểm tín dụng",
-              "chấm điểm tín nhiệm",
-              "tín dụng",
-            ],
+            answer: "tín dụng",
+            accept: ["credit", "tin dung", "tín nhiệm"],
+          },
+          {
+            answer: "chatbot",
+            accept: ["trợ lý ảo", "chat bot", "chat"],
+          },
+          {
+            answer: "đầu tư",
+            accept: ["robo-advisor", "investment", "dau tu"],
+          },
+          {
+            answer: "rửa tiền",
+            accept: ["AML", "rua tien", "money laundering"],
           },
         ],
         explanation:
-          "Fraud detection: ML model chấm điểm anomaly real-time (<100ms) cho từng giao dịch, flag nếu lệch pattern. Credit scoring: ML đánh giá rủi ro tín dụng dựa trên lịch sử giao dịch, thu nhập, demographic — cần fairness audit tránh bias.",
+          "Chống gian lận (fraud detection), chấm điểm tín dụng (credit scoring), chatbot khách hàng, tư vấn đầu tư (robo-advisor), và giám sát rửa tiền (AML/KYC) là 5 trụ cột AI mà hầu hết ngân hàng Việt Nam đều đã triển khai tính đến 2025.",
       },
     ],
     [],
@@ -635,47 +838,53 @@ export default function AIInFinanceTopic() {
     <>
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Ngân hàng Techcombank xử lý 10 triệu giao dịch/ngày. 0.1% là gian lận (10K). Cần phát hiện real-time (<100ms). Con người không thể. Giải pháp?"
+          question="Trong 5 năm qua, các ngân hàng Việt Nam dùng AI cho bốn mục đích chính. Theo bạn là mục đích nào?"
           options={[
-            "Thuê 10.000 nhân viên kiểm tra",
-            "ML model scoring real-time: mỗi giao dịch được chấm điểm anomaly trong 10ms, flag nếu score cao",
-            "Block tất cả giao dịch quốc tế",
+            "Chỉ để chống gian lận giao dịch thẻ",
+            "Chỉ để tư vấn đầu tư cho khách VIP",
+            "Chỉ để chấm điểm tín dụng khoản vay",
+            "Cả bốn: chống gian lận, chấm điểm tín dụng, chatbot khách hàng, và tư vấn đầu tư — cộng thêm giám sát rửa tiền",
           ]}
-          correct={1}
-          explanation="AI fraud detection: mỗi giao dịch → extract features (số tiền, địa điểm, thời gian, merchant) → ML model (XGBoost/neural network) → anomaly score trong 10ms. Score > threshold → block/OTP. Techcombank, VPBank, Momo đều dùng AI như vậy!"
+          correct={3}
+          explanation="Các ngân hàng top Việt Nam đã triển khai AI ở nhiều mảng cùng lúc. Vietcombank, Techcombank, MB, VPBank, TPBank, VietinBank, BIDV, ACB đều có hệ thống chống gian lận thời gian thực, chấm điểm tín dụng tự động, chatbot/trợ lý ảo và robo-advisor cho khách ưu tiên. Mảng thứ năm — giám sát rửa tiền (AML) — đã trở nên bắt buộc sau Luật Phòng chống rửa tiền 2022."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Phép ẩn dụ">
             <p>
-              Hãy hình dung một <strong>chốt an ninh sân bay</strong>. Mỗi phút
-              có hàng trăm hành khách đi qua. Nhân viên không thể hỏi cung từng
-              người — họ dựa vào <em>tín hiệu bất thường</em>: ánh mắt lảng
-              tránh, hành lý nặng bất thường, vé một chiều mua bằng tiền mặt
-              phút chót. Mỗi tín hiệu riêng lẻ chưa đủ để giữ người, nhưng
-              chồng nhiều tín hiệu lên nhau thì mô hình rủi ro tăng nhanh.
+              Hãy hình dung mỗi tài khoản ngân hàng của bạn giống như một{" "}
+              <strong>chiếc xe đang đi trên đường cao tốc</strong>. Hầu hết
+              các chuyến đi là bình thường: bạn lái đến chỗ làm, đi chợ, đưa
+              con đi học. Camera giao thông dọc đường ghi lại từng biển số,
+              từng tốc độ, từng lần dừng đèn đỏ. Cả đời chiếc xe đó có một
+              "dáng đi" rất riêng.
             </p>
             <p>
-              Một <strong>hệ thống fraud detection</strong> của ngân hàng hoạt
-              động y hệt. Mỗi giao dịch là một "hành khách": số tiền, địa điểm,
-              thiết bị, merchant, thời điểm, tốc độ click, cả độ rung của bàn
-              phím khi gõ mật khẩu. Model học <em>profile bình thường</em> của
-              từng khách hàng trong nhiều tháng, rồi chấm điểm bất thường cho
-              mỗi giao dịch mới trong vài chục mili-giây. Giao dịch nào có
-              điểm vượt ngưỡng sẽ bị leo thang xác thực — đúng như nhân viên
-              an ninh mời một hành khách vào phòng kiểm tra phụ.
+              Một ngày đẹp trời, camera ghi được chiếc xe đi tốc độ 150km/h
+              lúc 3 giờ sáng ở một tỉnh cách nhà 800km. Rất có thể là chủ xe
+              đi công tác đột xuất — nhưng cũng rất có thể xe đã bị trộm.
+              Camera không kết luận thay chủ xe. Nó chỉ{" "}
+              <strong>nhấc điện thoại gọi hỏi</strong>: "Anh có đang lái chiếc
+              xe biển số 30A-12345 không?" Nếu có, mọi chuyện tiếp tục. Nếu
+              không, công an được báo ngay.
             </p>
             <p>
-              Cái hay của phép ẩn dụ này là nó cũng lộ ra các{" "}
-              <em>đánh đổi</em> mà ta sắp gặp: nếu chốt quá ngặt, hàng dài
-              hành khách bị chặn oan, sân bay tê liệt. Nếu quá lỏng, kẻ xấu
-              lọt qua. Ngành tài chính không đi tìm một con số "accuracy" đẹp
-              — họ đi tìm <strong>đường cân bằng chi phí</strong> giữa hai loại
-              sai lầm.
+              AI trong ngân hàng làm đúng việc của hệ thống camera đó. Mỗi
+              giao dịch là một "khoảng đường". AI học <em>dáng đi</em> của
+              bạn — giờ nào hay mua gì, địa điểm nào quen thuộc, thiết bị
+              nào đáng tin. Khi có gì đó <em>lệch quá xa</em> khỏi dáng đi
+              bình thường, nó không tự quyết liệu đây là gian lận hay không
+              — nó <strong>leo thang xác thực</strong>: gửi OTP, yêu cầu
+              Face ID, gọi điện xác nhận. Con người bạn vẫn là người nói
+              "đúng" hay "sai" lời cuối.
             </p>
           </LessonSection>
 
           <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
-            <VisualizationSection topicSlug="ai-in-finance">
-              <FraudSimulator />
+            <VisualizationSection topicSlug={metadata.slug}>
+              <div className="flex flex-col gap-8">
+                <FraudSimulator />
+                <CreditScoreExplainer />
+                <VietnameseBankMap />
+              </div>
             </VisualizationSection>
           </LessonSection>
 
@@ -686,533 +895,412 @@ export default function AIInFinanceTopic() {
           >
             <AhaMoment>
               <p>
-                AI trong tài chính không phải là một "thuật toán ma thuật" đoán
-                tương lai. Nó là một <strong>kính lúp xác suất</strong>: nhìn
-                vào biển dữ liệu giao dịch, nó khuếch đại những tín hiệu mà con
-                người không kịp nhìn, và quy chúng về một con số duy nhất — xác
-                suất sự kiện xấu.
+                AI trong ngân hàng không phải là "thuật toán ma thuật đoán
+                tương lai". Nó là một <strong>chiếc kính lúp xác suất</strong>:
+                nhìn vào biển dữ liệu giao dịch để phát hiện tín hiệu mà mắt
+                người không kịp thấy.
               </p>
               <p>
-                Bốn ứng dụng lớn cùng chia sẻ cấu trúc đó:{" "}
-                <strong>Fraud detection</strong> (real-time),{" "}
-                <strong>Credit scoring</strong> (cho vay),{" "}
-                <strong>Algorithmic trading</strong> (giao dịch tự động),{" "}
-                <strong>Risk management</strong> (đánh giá rủi ro danh mục).
-                Công nghệ có thể khác nhau, nhưng câu hỏi cốt lõi là một:{" "}
+                Bài học cốt lõi: mọi ứng dụng — chống gian lận, chấm điểm
+                tín dụng, chatbot, robo-advisor — đều phải trả lời cùng một
+                câu hỏi:{" "}
                 <em>
-                  chi phí của việc tôi sai theo hướng A so với hướng B là bao
-                  nhiêu, và đâu là ngưỡng tối ưu?
-                </em>
-              </p>
-              <p>
-                Tại Việt Nam, Techcombank, VPBank, Momo, ZaloPay đều vận hành
-                các hệ thống scoring real-time. FE Credit và Home Credit dùng
-                ML cho quyết định cho vay. VNG, VinGroup đã bắt đầu đưa{" "}
-                <TopicLink slug="sentiment-analysis">
-                  sentiment analysis
-                </TopicLink>{" "}
-                tin tức vào pipeline quản lý rủi ro danh mục.
+                  chi phí khi tôi sai một kiểu so với sai kiểu ngược lại
+                  lớn đến đâu, và đâu là ngưỡng cân bằng tối ưu?
+                </em>{" "}
+                Công nghệ thì có thể thay đổi theo thời gian, nhưng câu hỏi
+                đánh đổi này thì không.
               </p>
             </AhaMoment>
           </LessonSection>
 
           <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
             <InlineChallenge
-              question="Fraud detection model: precision 99% (chỉ 1% false alarm), recall 80% (bắt 80% fraud). 10K fraud/ngày. Bao nhiêu fraud vượt qua?"
+              question="Ngân hàng A bật AI chống gian lận ở ngưỡng ngặt. Trong một tháng, số fraud bị chặn tăng 40%, nhưng số khiếu nại 'tôi bị chặn oan' tăng 300% và tổng đài quá tải. Phản ứng hợp lý nhất?"
               options={[
-                "100",
-                "2000 — recall 80% nghĩa là 20% fraud không bị bắt = 2000 giao dịch gian lận/ngày!",
-                "0",
+                "Tắt AI, quay về chỉ dùng rule cứng",
+                "Giảm ngưỡng để ít chặn hơn, đồng thời thêm lớp xác thực mềm (OTP, Face ID) cho vùng xám thay vì chặn cứng",
+                "Nâng ngưỡng lên nữa để chắc chắn hơn",
               ]}
               correct={1}
-              explanation="Recall 80% = 20% fraud lọt = 2000/ngày x $500 trung bình = $1M mất/ngày! Tăng recall lên 95% = chỉ 500 lọt = $250K. Trade-off: tăng recall → tăng false alarm → nhiều user bị block nhầm. Cần tìm balance dựa trên cost: cost(miss fraud) >> cost(false alarm)."
+              explanation="Khiếu nại tăng 300% là chỉ báo trải nghiệm user đã sập. Giải pháp không phải tắt AI, mà điều chỉnh ngưỡng kết hợp với 'leo thang xác thực': giao dịch trong vùng rủi ro trung bình không bị chặn thẳng — chỉ cần OTP hoặc Face ID. User thật vượt qua dễ dàng, kẻ gian thì không có OTP. Đây là cách MoMo, ZaloPay, các ví điện tử VN xử lý."
             />
             <InlineChallenge
-              question="Một model credit scoring đạt AUC 0.92 trên tập test nhưng khi triển khai thật, tỉ lệ default tăng 40%. Giả thuyết hợp lý nhất?"
+              question="Mô hình chấm điểm tín dụng của ngân hàng B từ chối chị Hoa với lý do 'không đủ điều kiện'. Chị Hoa khiếu nại. Ngân hàng phải làm gì?"
               options={[
-                "GPU quá nóng",
-                "Data drift: phân phối khách hàng thực tế khác với data train (kinh tế suy thoái, nhóm khách hàng mới, sản phẩm mới) → model stale",
-                "Random bad luck",
+                "Giữ nguyên câu trả lời ban đầu",
+                "Cung cấp giải thích cụ thể (ví dụ: DTI cao, lịch sử chậm nợ), theo đúng Nghị định 13/2023 về bảo vệ dữ liệu cá nhân",
+                "Yêu cầu chị Hoa tự chứng minh mình đủ điều kiện",
               ]}
               correct={1}
-              explanation="Data drift (hoặc concept drift) là nguyên nhân phổ biến nhất khi model performance tụt sau deploy. Giải pháp: monitoring phân phối feature, alert khi PSI (Population Stability Index) vượt ngưỡng, retrain định kỳ, champion-challenger framework."
+              explanation="Nghị định 13/2023 yêu cầu các quyết định tự động ảnh hưởng đến quyền lợi khách hàng phải có khả năng giải thích. Ngân hàng buộc phải cung cấp yếu tố chính khiến hồ sơ bị từ chối. Đây là lý do các mô hình chấm điểm tín dụng tại VN phải kèm lớp giải thích — không thể là hộp đen thuần."
             />
             <InlineChallenge
-              question="Ví điện tử muốn chặn 'account takeover' — kẻ gian chiếm tài khoản rồi rút sạch ví. Feature nào KHÓ giả mạo nhất?"
+              question="Chatbot MB Buddy trả lời sai một câu hỏi quan trọng về lãi suất và khách hàng đã ra quyết định dựa trên đó. Trách nhiệm thuộc về ai?"
               options={[
-                "Số điện thoại",
-                "Behavior biometrics: tốc độ gõ, nhịp vuốt, độ nghiêng điện thoại — các đặc trưng hành vi học qua nhiều session",
-                "Email",
+                "Khách hàng tự chịu — đã đồng ý điều khoản sử dụng",
+                "MB Bank — chatbot là công cụ do MB triển khai, mọi phát ngôn qua kênh chính thức đều thuộc trách nhiệm ngân hàng",
+                "Đội kỹ sư AI — họ viết code sai",
               ]}
               correct={1}
-              explanation="Credentials (mật khẩu, OTP) có thể bị đánh cắp qua phishing. Nhưng nhịp gõ và cách cầm máy là 'behavioral fingerprint' gần như không thể copy. BioCatch, TypingDNA là các vendor chuyên cung cấp layer này. Momo, ZaloPay đang thử nghiệm."
+              explanation="Chatbot không phải chủ thể pháp lý. MB Bank chịu trách nhiệm mọi phát ngôn qua kênh chính thức — bất kể do con người hay AI phát ra. Đây là lý do tất cả chatbot ngân hàng VN đều có disclaimer, và các câu hỏi nhạy cảm (lãi vay thực, cam kết pháp lý) thường được chuyển cho nhân viên con người xác nhận."
             />
           </LessonSection>
 
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
-            <ExplanationSection>
+            <ExplanationSection topicSlug={metadata.slug}>
               <p>
-                <strong>AI in Finance</strong> là tập hợp các ứng dụng học máy
-                cho fraud detection, credit scoring, algorithmic trading và
-                risk management. Điểm chung: mỗi bài toán quy về một hàm mục
-                tiêu được định nghĩa bằng <em>chi phí kỳ vọng</em> của sai lầm,
-                và mô hình học từ dữ liệu lịch sử để xấp xỉ hàm ra quyết định
-                tối ưu. Nhiều ngân hàng kết hợp{" "}
-                <TopicLink slug="sentiment-analysis">
-                  sentiment analysis
-                </TopicLink>{" "}
-                tin tức/mạng xã hội để dự báo thị trường, và{" "}
-                <TopicLink slug="recommendation-systems">
-                  recommendation systems
-                </TopicLink>{" "}
-                để gợi ý sản phẩm tài chính phù hợp với khách hàng.
+                Năm mảng lớn của AI trong ngân hàng Việt Nam hiện nay đều đã
+                chạy production tại các ngân hàng top. Mỗi mảng có một câu
+                hỏi cốt lõi riêng — hiểu từng câu hỏi, bạn hiểu 80% bức
+                tranh.
               </p>
 
-              <h3>Định nghĩa hình thức</h3>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Callout variant="info" title="1. Chống gian lận giao dịch">
+                  <p className="flex items-start gap-2">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <span>
+                      AI chấm điểm rủi ro tức thời cho từng giao dịch, dựa
+                      trên hành vi lịch sử của chủ tài khoản. Giao dịch lệch
+                      pattern sẽ bị chặn hoặc yêu cầu xác thực thêm.{" "}
+                      <strong>Ví dụ VN 2024–2025:</strong> VPBank công bố
+                      giảm hơn 60% thiệt hại do gian lận thẻ sau khi nâng
+                      cấp hệ thống AI; Techcombank vận hành trung tâm giám
+                      sát 24/7 với AI làm tầng lọc đầu tiên.
+                    </span>
+                  </p>
+                </Callout>
+
+                <Callout variant="info" title="2. Chấm điểm tín dụng">
+                  <p className="flex items-start gap-2">
+                    <CreditCard className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <span>
+                      AI dự đoán xác suất trả nợ dựa trên lịch sử CIC, dòng
+                      tiền, hồ sơ nghề nghiệp, DTI và hành vi số.{" "}
+                      <strong>Ví dụ VN:</strong> Techcombank phê duyệt
+                      nhanh thẻ tín dụng qua AI; FE Credit và Home Credit
+                      xử lý hồ sơ vay tiêu dùng tự động trong vài phút; VIB
+                      và TPBank dùng AI cho eKYC + scoring để mở thẻ từ
+                      xa.
+                    </span>
+                  </p>
+                </Callout>
+
+                <Callout variant="info" title="3. Chatbot & trợ lý ảo">
+                  <p className="flex items-start gap-2">
+                    <Bot className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <span>
+                      Các trợ lý ảo như MB Buddy, trợ lý của VCB, VPBank
+                      xử lý câu hỏi lặp đi lặp lại 24/7, giải phóng nhân
+                      viên tổng đài cho các ca phức tạp.{" "}
+                      <strong>Xu hướng 2025:</strong> chuyển từ chatbot
+                      trả lời kịch bản sang trợ lý dùng LLM có kiểm soát
+                      (có disclaimer, có logging, có human-in-the-loop
+                      cho câu khó).
+                    </span>
+                  </p>
+                </Callout>
+
+                <Callout
+                  variant="info"
+                  title="4. Tư vấn đầu tư (robo-advisor)"
+                >
+                  <p className="flex items-start gap-2">
+                    <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <span>
+                      Gợi ý phân bổ danh mục dựa trên khẩu vị rủi ro và
+                      mục tiêu khách hàng. Tại VN, các công ty chứng
+                      khoán (SSI, VPS, HSC, VCSC) và ACB, VPBank Priority
+                      đã triển khai phiên bản đơn giản cho khách ưu tiên,
+                      kèm disclaimer rõ ràng về rủi ro.
+                    </span>
+                  </p>
+                </Callout>
+
+                <Callout
+                  variant="info"
+                  title="5. Giám sát rửa tiền (AML/KYC)"
+                >
+                  <p className="flex items-start gap-2">
+                    <FileCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <span>
+                      Phát hiện pattern rửa tiền phức tạp (structuring,
+                      smurfing, giao dịch vòng). AI phân tích mạng lưới
+                      giao dịch giữa nhiều tài khoản — điều mà con người
+                      không làm được ở quy mô hàng triệu lệnh/ngày.{" "}
+                      <strong>Sau Luật PCRT 2022</strong>, mảng này đã
+                      trở thành bắt buộc tại mọi ngân hàng Việt Nam.
+                    </span>
+                  </p>
+                </Callout>
+
+                <Callout variant="info" title="Bên cạnh 5 mảng trên">
+                  <p className="flex items-start gap-2">
+                    <Landmark className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                    <span>
+                      Các ngân hàng còn dùng AI cho dự báo dòng tiền ATM,
+                      tối ưu lịch trực chi nhánh, phân khúc khách hàng để
+                      marketing, phát hiện chuyển khoản lừa đảo giữa
+                      người dùng (pig-butchering), và phân tích cảm xúc
+                      phản hồi khách hàng.
+                    </span>
+                  </p>
+                </Callout>
+              </div>
+
+              <h3>Bối cảnh pháp lý Việt Nam 2024–2025</h3>
               <p>
-                Cho một dòng sự kiện tài chính{" "}
-                <em>(giao dịch, đơn vay, phiên giao dịch chứng khoán…)</em>,
-                gọi <em>x ∈ ℝ^d</em> là vector đặc trưng của sự kiện và{" "}
-                <em>y ∈ {"{0, 1}"}</em> là biến ẩn cho biết sự kiện có "xấu"
-                hay không (gian lận, vỡ nợ, lệnh bị đảo ngược…). Ta cần ước
-                lượng xác suất <em>p(y = 1 | x)</em> đủ chính xác và đủ nhanh
-                để ra quyết định real-time.
+                AI trong ngân hàng không tự do phát triển — nó nằm trong một
+                mạng lưới văn bản pháp lý đan xen nhau. Hiểu đúng bối cảnh
+                này giúp nhân viên ngân hàng biết vì sao một số tính năng
+                AI nghe có vẻ đơn giản lại bị chậm triển khai nhiều tháng
+                cho các đợt kiểm tra nội bộ.
               </p>
 
-              <LaTeX block>
-                {
-                  "\\text{Expected Loss} = P(\\text{fraud}) \\times \\text{Amount} \\times (1 - \\text{Recall})"
-                }
-              </LaTeX>
+              <TabView
+                tabs={[
+                  {
+                    label: "Luật & nghị định",
+                    content: (
+                      <ul className="list-disc space-y-2 pl-5 text-sm">
+                        <li>
+                          <strong>Luật Phòng chống rửa tiền 2022</strong> —
+                          thay thế luật 2012, siết chặt nghĩa vụ báo cáo
+                          giao dịch đáng ngờ. Là động lực chính để các
+                          ngân hàng đầu tư AI AML.
+                        </li>
+                        <li>
+                          <strong>Nghị định 13/2023/NĐ-CP</strong> về bảo
+                          vệ dữ liệu cá nhân — yêu cầu sự đồng ý rõ ràng
+                          khi xử lý dữ liệu và quyền được giải thích cho
+                          các quyết định tự động.
+                        </li>
+                        <li>
+                          <strong>Luật các tổ chức tín dụng 2024</strong>{" "}
+                          (hiệu lực từ 2024) — cập nhật khung pháp lý cho
+                          hoạt động ngân hàng, bao gồm dịch vụ tài chính
+                          số.
+                        </li>
+                      </ul>
+                    ),
+                  },
+                  {
+                    label: "Thông tư NHNN",
+                    content: (
+                      <ul className="list-disc space-y-2 pl-5 text-sm">
+                        <li>
+                          <strong>Thông tư 09/2023/TT-NHNN</strong> về
+                          quản trị rủi ro — bao gồm rủi ro mô hình khi
+                          dùng AI cho quyết định kinh doanh.
+                        </li>
+                        <li>
+                          <strong>Thông tư 13/2018/TT-NHNN</strong> (và
+                          các sửa đổi) về quản trị rủi ro tín dụng —
+                          ràng buộc các mô hình chấm điểm phải có
+                          validation và kiểm tra backtest định kỳ.
+                        </li>
+                        <li>
+                          <strong>Quy định eKYC</strong> — cho phép mở
+                          tài khoản, phát hành thẻ từ xa qua AI nhận
+                          diện khuôn mặt và OCR giấy tờ, miễn tuân thủ
+                          yêu cầu chống giả mạo (liveness detection).
+                        </li>
+                      </ul>
+                    ),
+                  },
+                  {
+                    label: "Chuẩn quốc tế áp dụng",
+                    content: (
+                      <ul className="list-disc space-y-2 pl-5 text-sm">
+                        <li>
+                          <strong>Basel III / Basel IV</strong> về yêu
+                          cầu vốn tối thiểu — buộc các mô hình rủi ro
+                          phải có validation độc lập và hệ số vốn phù
+                          hợp với chất lượng mô hình.
+                        </li>
+                        <li>
+                          <strong>FATF 40 Recommendations</strong> — là
+                          tham chiếu cho hệ thống AML của Việt Nam.
+                        </li>
+                        <li>
+                          <strong>PCI DSS</strong> cho dữ liệu thẻ — áp
+                          dụng cho mọi hệ thống lưu trữ hoặc xử lý thẻ
+                          tín dụng, kể cả khi AI chỉ đọc để đánh giá.
+                        </li>
+                      </ul>
+                    ),
+                  },
+                ]}
+              />
 
-              <p>
-                Trong bài toán fraud detection, công thức trên cho phép ngân
-                hàng định giá <em>tổn thất kỳ vọng hằng ngày</em> trực tiếp từ
-                recall của model. Tương tự, với credit scoring, ta tối ưu hàm:
-              </p>
+              <h3>Ba câu chuyện thực tế đáng nhớ 2024–2025</h3>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <StoryCard
+                  bank="Techcombank"
+                  title="Chấm điểm tín dụng tức thời"
+                  body="Hệ thống AI của Techcombank cho phép phê duyệt thẻ tín dụng và khoản vay tiêu dùng trong vài phút thay vì vài ngày. Kết hợp CIC, dòng tiền TCB và hành vi số trong app."
+                  icon={Clock}
+                />
+                <StoryCard
+                  bank="VPBank"
+                  title="AI chống gian lận 2024"
+                  body="VPBank công bố giảm mạnh thiệt hại do fraud thẻ sau khi nâng cấp hệ thống AI năm 2024, kết hợp với xác thực sinh trắc học trên app VPBank NEO."
+                  icon={ShieldCheck}
+                />
+                <StoryCard
+                  bank="MB Bank"
+                  title="Trợ lý ảo MB Buddy"
+                  body="MB Buddy trên app MB Bank xử lý hàng triệu câu hỏi mỗi tháng, từ tra cứu số dư đến hướng dẫn giao dịch — giải phóng tổng đài cho các ca phức tạp."
+                  icon={Bot}
+                />
+              </div>
 
-              <LaTeX block>
-                {
-                  "\\mathcal{L}(\\theta) = \\mathbb{E}_{(x,y) \\sim \\mathcal{D}}\\big[ C_{\\text{FN}} \\cdot y (1 - \\hat{p}_\\theta(x)) + C_{\\text{FP}} \\cdot (1-y) \\hat{p}_\\theta(x) \\big]"
-                }
-              </LaTeX>
-
-              <p>
-                trong đó <em>C_FN</em> là chi phí cho một khoản vay vỡ nợ
-                (thường lớn — toàn bộ dư nợ), <em>C_FP</em> là chi phí cơ hội
-                khi từ chối một khách hàng tốt. Tỉ số <em>C_FN / C_FP</em>{" "}
-                chính là chìa khóa quyết định threshold tối ưu, chứ không phải
-                accuracy.
-              </p>
-
-              <Callout variant="insight" title="Threshold không phải là 0.5">
-                Mặc định của nhiều thư viện (scikit-learn, XGBoost) là{" "}
-                <code>0.5</code>, nhưng đó là giá trị tệ nhất cho hầu hết bài
-                toán tài chính. Threshold tối ưu đến từ <em>PR curve</em> và
-                ma trận chi phí, và thường nằm giữa 0.1 và 0.3 cho fraud (vì{" "}
-                <em>C_FN ≫ C_FP</em>).
-              </Callout>
-
-              <Callout
-                variant="warning"
-                title="Fairness và Explainability"
-              >
-                Regulatory (Basel, EU AI Act, NHNN Circular 01/2024) yêu cầu:
-                (1) Model GIẢI THÍCH ĐƯỢC tại sao từ chối cho vay, (2) Không
-                discriminate theo giới tính/dân tộc, (3) Regular bias auditing
-                với các metric như demographic parity, equal opportunity.{" "}
-                <strong>SHAP values</strong> và <strong>LIME</strong> là hai
-                công cụ phổ biến giúp giải thích model decisions ở mức từng
-                instance.
-              </Callout>
-
-              <Callout
-                variant="tip"
-                title="Dùng features rẻ cho tầng 1, features đắt cho tầng 2"
-              >
-                Đa số giao dịch lành tính — không cần gọi mô hình nặng cho mọi
-                giao dịch. Pattern chuẩn: <em>tầng 1</em> là một model
-                logistic / GBDT rất nhẹ (~1 ms) lọc &gt; 99% giao dịch. Chỉ
-                những trường hợp "xám" mới được đẩy lên <em>tầng 2</em> — một
-                ensemble nặng hoặc kể cả graph neural network nhìn vào mạng
-                lưới liên kết giữa các account.
-              </Callout>
-
-              <Callout variant="info" title="Vì sao XGBoost vẫn thống trị?">
-                Dữ liệu tài chính phần lớn là tabular (có bảng, đa kiểu, nhiều
-                missing value). Gradient boosting xử lý native các đặc điểm
-                này, không cần chuẩn hóa, robust với outlier, và cho SHAP
-                values rất tốt. Neural network chỉ vượt trội khi ta có dữ liệu
-                phi cấu trúc (văn bản email khiếu nại, ảnh CMND, tiếng nói
-                tổng đài) hoặc dữ liệu đồ thị.
-              </Callout>
-
-              <h3>Pipeline fraud detection điển hình</h3>
-
-              <CodeBlock language="python" title="Fraud detection với XGBoost">
-                {`import xgboost as xgb
-from sklearn.metrics import precision_recall_curve, average_precision_score
-from sklearn.model_selection import TimeSeriesSplit
-
-# Features: amount, time, location, merchant, device, velocity,
-# so giao dich 1h/24h, so device khac nhau 7 ngay,
-# khoang cach dia ly so voi giao dich truoc, do lech pattern giờ...
-model = xgb.XGBClassifier(
-    n_estimators=500,
-    max_depth=6,
-    learning_rate=0.05,
-    scale_pos_weight=100,     # Imbalanced: 99.9% legit
-    tree_method="hist",
-    eval_metric="aucpr",      # PR-AUC, không phải accuracy
-    early_stopping_rounds=30,
-)
-
-# Time-series CV: KHÔNG shuffle — tương lai không được lọt vào train
-cv = TimeSeriesSplit(n_splits=5)
-for fold, (tr, va) in enumerate(cv.split(X)):
-    model.fit(
-        X.iloc[tr], y.iloc[tr],
-        eval_set=[(X.iloc[va], y.iloc[va])],
-        verbose=False,
-    )
-    ap = average_precision_score(y.iloc[va], model.predict_proba(X.iloc[va])[:, 1])
-    print(f"fold {fold} PR-AUC = {ap:.3f}")
-
-# Chon threshold theo ma tran chi phi, khong phai 0.5
-prec, rec, thr = precision_recall_curve(y_val, proba_val)
-C_FN, C_FP = 500_000, 2_000   # VND trung binh: bo lot fraud vs block nham
-cost = C_FN * (1 - rec) * y_val.sum() + C_FP * (1 - prec) * (proba_val > thr[:, None]).sum(0)
-best = cost.argmin()
-print(f"threshold toi uu = {thr[best]:.3f}")
-
-# Real-time scoring: 5–10 ms per transaction
-score = model.predict_proba(transaction_features)[0][1]
-if score > thr[best]:
-    decision = "block_and_notify"
-elif score > thr[best] * 0.5:
-    decision = "require_otp"
-else:
-    decision = "approve"
-
-# SHAP: giai thich vi sao bi flag
-import shap
-explainer = shap.TreeExplainer(model)
-shap_values = explainer.shap_values(flagged_transaction)
-# "Bi flag vi: amount bat thuong (+0.41), device_id moi (+0.28),
-#  khoang cach dia ly so voi giao dich truoc (+0.19)"
-`}
-              </CodeBlock>
-
-              <p>
-                Đoạn code trên thể hiện bốn quyết định kỹ thuật quan trọng mà
-                nhiều người mới bỏ qua:
-              </p>
-              <ul>
-                <li>
-                  <strong>Time-series split</strong>: nếu shuffle dữ liệu, bạn
-                  đã "nhìn trộm tương lai" và mọi metric đều quá lạc quan.
-                </li>
-                <li>
-                  <strong>PR-AUC thay vì ROC-AUC</strong>: với class imbalance
-                  cực lớn, ROC-AUC bão hòa và trông đẹp kể cả khi model kém.
-                </li>
-                <li>
-                  <strong>Threshold theo chi phí</strong>: 0.5 chỉ đúng khi
-                  <em> C_FN = C_FP</em> và base rate = 50%. Không bao giờ đúng
-                  trong finance.
-                </li>
-                <li>
-                  <strong>SHAP ngay trong pipeline</strong>: để compliance
-                  team có audit trail cho từng quyết định chặn giao dịch.
-                </li>
-              </ul>
-
-              <h3>Credit scoring với gradient boosting</h3>
-
-              <CodeBlock
-                language="python"
-                title="Credit scoring + fairness audit"
-              >
-                {`import lightgbm as lgb
-import shap
-import numpy as np
-import pandas as pd
-from fairlearn.metrics import (
-    MetricFrame, selection_rate, false_negative_rate
-)
-
-# Feature: thu nhap, so nam lam viec, debt-to-income,
-# lich su tin dung 24 thang, so lan cham no, san pham vay hien tai...
-model = lgb.LGBMClassifier(
-    n_estimators=400,
-    num_leaves=63,
-    min_child_samples=200,   # tranh overfit tren nhom nho
-    objective="binary",
-    class_weight="balanced",
-)
-model.fit(X_tr, y_tr, eval_set=[(X_va, y_va)], callbacks=[lgb.early_stopping(30)])
-
-# Base performance
-proba = model.predict_proba(X_va)[:, 1]
-pred  = (proba > 0.35).astype(int)   # threshold theo ma tran chi phi
-
-# Fairness audit: khong duoc lech FN rate giua nhom duoc bao ve
-protected = X_va["gender"]     # demographic-only nhan, KHONG input vao model
-mf = MetricFrame(
-    metrics={
-        "approval_rate": selection_rate,
-        "miss_default":  false_negative_rate,
-    },
-    y_true=y_va, y_pred=pred, sensitive_features=protected,
-)
-print(mf.by_group)
-
-# Equal Opportunity: chenh lech FNR giua cac nhom phai < 5 pp
-disparity = mf.by_group["miss_default"].max() - mf.by_group["miss_default"].min()
-assert disparity < 0.05, "Model vi pham equal-opportunity, can reweight hoac postprocess"
-
-# Explainability o cap instance
-explainer = shap.TreeExplainer(model)
-sv = explainer.shap_values(applicant_features)[1]
-top3 = np.argsort(-np.abs(sv))[:3]
-for idx in top3:
-    print(f"{X_va.columns[idx]:30s} contribution = {sv[idx]:+.2f}")
-# thu_nhap_hang_thang           contribution = -0.51
-# debt_to_income_ratio          contribution = +0.38
-# so_lan_cham_no_12_thang       contribution = +0.22
-`}
-              </CodeBlock>
-
-              <Callout
-                variant="info"
-                title="Fairness không phải là một metric duy nhất"
-              >
-                Có ít nhất 21 định nghĩa fairness khác nhau (Narayanan 2018),
-                và một số định nghĩa <em>mâu thuẫn</em> với nhau một cách toán
-                học. Tùy bối cảnh, ngân hàng chọn một trong ba tiêu chí chính:{" "}
-                <strong>demographic parity</strong> (tỉ lệ được duyệt đồng đều
-                giữa các nhóm), <strong>equal opportunity</strong> (tỉ lệ bỏ
-                lỡ khách hàng tốt đồng đều), hoặc{" "}
-                <strong>calibration</strong> (điểm 0.7 nghĩa là 70% rủi ro
-                đồng đều giữa các nhóm).
-              </Callout>
-
-              <h3>Chi tiết đáng quan tâm</h3>
-
-              <CollapsibleDetail title="Vì sao PR-AUC tốt hơn ROC-AUC khi fraud rate &lt; 1%?">
+              <CollapsibleDetail title="Vì sao Techcombank & Vietcombank thường được lấy làm ví dụ?">
                 <p>
-                  ROC-AUC đo trade-off giữa <em>true positive rate</em> và{" "}
-                  <em>false positive rate</em>. Khi negative class cực kỳ lớn
-                  (99.9% giao dịch là bình thường), mẫu số của FPR =
-                  FP/(FP+TN) gần như không bao giờ di chuyển, khiến FPR luôn
-                  rất nhỏ và ROC-AUC bão hòa về 1.0 kể cả với model tầm
-                  thường.
+                  Hai lý do chính. Thứ nhất, quy mô dữ liệu: các ngân hàng
+                  này có hàng chục triệu khách hàng và xử lý hàng chục
+                  triệu giao dịch mỗi ngày, đủ lớn để các mô hình học được
+                  pattern đáng tin cậy. Ngân hàng nhỏ hơn thường phải thuê
+                  mô hình từ bên thứ ba hoặc dùng chung dữ liệu với công ty
+                  mẹ/đối tác.
                 </p>
                 <p>
-                  PR-AUC dùng precision = TP/(TP+FP), trong đó FP <em>có</em>{" "}
-                  tác động nhìn thấy được — vì mỗi FP là một khách hàng thật
-                  bị chặn nhầm, rất đắt. PR-AUC phân biệt được model tốt và
-                  model dở ở dải low-recall, là dải mà ngân hàng thực sự vận
-                  hành. Tóm lại:{" "}
-                  <em>
-                    khi positive rare và chi phí FP/FN bất đối xứng, luôn
-                    dùng PR-AUC.
-                  </em>
-                </p>
-                <p>
-                  Một lưu ý phụ: PR-AUC không bất biến với class balance — số
-                  này sẽ thay đổi nếu bạn resample dữ liệu. Vì thế khi báo
-                  cáo, luôn kèm theo base rate của tập test.
+                  Thứ hai, độ minh bạch: các ngân hàng này thường xuyên
+                  công bố báo cáo thường niên, tham dự hội thảo ngành và
+                  chia sẻ ca nghiên cứu. Các tổ chức tài chính khác có thể
+                  đang làm AI mạnh không kém — chúng ta chỉ thiếu thông
+                  tin công khai để trích dẫn.
                 </p>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Graph-based fraud detection: khi XGBoost không đủ">
-                <p>
-                  Một nhóm gian lận tinh vi không để lại dấu vết ở một giao
-                  dịch đơn lẻ — chúng lộ ra ở <em>mạng lưới</em>: 50 tài
-                  khoản cùng mới mở, dùng chung một tầng IP, gửi tiền cho
-                  nhau theo hình sao rồi rút về một ví duy nhất. Features
-                  flatten của XGBoost không nhìn thấy cấu trúc này.
-                </p>
-                <p>
-                  Các hệ thống hiện đại (PayPal, Stripe, và gần đây là một số
-                  fintech VN) dùng{" "}
-                  <strong>graph neural networks</strong> hoặc{" "}
-                  <em>community detection</em> trên đồ thị giao dịch. Node =
-                  account, edge = giao dịch. GNN học embedding cho mỗi account
-                  dựa trên hàng xóm của nó trong 1–2 hops, rồi feed embedding
-                  này như feature bổ sung cho XGBoost tầng 2.
-                </p>
-                <p>
-                  Kết quả điển hình: recall ở dải FPR &lt; 1% tăng 8–15 điểm
-                  phần trăm so với model chỉ dùng feature tĩnh. Chi phí: khó
-                  trở thành real-time &lt; 100ms, thường chạy trong chế độ
-                  near-real-time (vài giây) như một tầng audit phụ.
-                </p>
-              </CollapsibleDetail>
-
-              <CollapsibleDetail title="Adversarial và concept drift trong finance">
-                <p>
-                  Không như nhận dạng ảnh, môi trường tài chính có{" "}
-                  <em>đối thủ thích nghi</em>: kẻ gian liên tục thử nghiệm,
-                  học cách model phản ứng và điều chỉnh pattern. Hệ quả: một
-                  model triển khai tốt tháng này có thể giảm hiệu quả đáng kể
-                  sau 90 ngày.
-                </p>
-                <p>
-                  Giải pháp chuẩn gồm ba tầng:
-                </p>
-                <ul>
+              <CollapsibleDetail title="Những cái bẫy thường gặp khi triển khai AI trong ngân hàng">
+                <ul className="list-disc space-y-2 pl-5 text-sm">
                   <li>
-                    <strong>Monitoring</strong>: PSI trên từng feature, KS
-                    test trên phân phối score, alert khi drift vượt ngưỡng.
+                    <strong>Lệch phân phối (data drift):</strong> pattern
+                    gian lận thay đổi theo mùa, theo công nghệ mới (QR, ví
+                    điện tử). Mô hình không được retrain định kỳ sẽ nhanh
+                    chóng lạc hậu.
                   </li>
                   <li>
-                    <strong>Retraining cadence</strong>: nightly fine-tune
-                    trên cửa sổ trượt 30 ngày; full retrain hằng tuần.
+                    <strong>Bias trong chấm điểm tín dụng:</strong> nếu dữ
+                    liệu lịch sử đã thiên lệch theo giới tính/vùng miền/thu
+                    nhập, mô hình sẽ học và khuếch đại bias đó. Cần kiểm
+                    tra công bằng định kỳ và điều chỉnh.
                   </li>
                   <li>
-                    <strong>Champion–challenger</strong>: luôn có một model
-                    mới chạy song song trên 5–10% traffic, tự động promote
-                    nếu beat champion trên A/B.
+                    <strong>Chatbot trả lời sai vấn đề nhạy cảm:</strong>{" "}
+                    lãi suất, điều khoản hợp đồng, cam kết pháp lý — các
+                    chủ đề này luôn cần human-in-the-loop, không để AI tự
+                    trả lời.
+                  </li>
+                  <li>
+                    <strong>Phụ thuộc vào một nhà cung cấp duy nhất:</strong>{" "}
+                    nhiều ngân hàng VN đang dùng dịch vụ AI cloud của một
+                    nhà cung cấp nước ngoài. Rủi ro: thay đổi giá, thay
+                    đổi điều khoản, gián đoạn xuyên biên giới.
+                  </li>
+                  <li>
+                    <strong>Thiếu logging đầy đủ:</strong> khi khách hàng
+                    khiếu nại một quyết định AI, ngân hàng không thể tái
+                    hiện chính xác input và output. Thanh tra NHNN sẽ
+                    không chấp nhận "mô hình đã thay đổi nên không tái
+                    hiện được".
                   </li>
                 </ul>
-                <p>
-                  Một trick hữu ích: đưa cả <em>các pattern gian lận tổng
-                  hợp</em> (synthetic) vào pipeline retrain để model không bị
-                  "quên" những mẫu hiếm gặp nhưng tác hại lớn.
-                </p>
               </CollapsibleDetail>
 
-              <h3>Các ứng dụng chính chi tiết</h3>
+              <CollapsibleDetail title="Góc nhìn nhân viên: làm sao để nói chuyện với AI trong công việc?">
+                <p>
+                  Nếu bạn làm tại ngân hàng/ví điện tử và muốn tận dụng AI
+                  trong công việc thường ngày (không phải xây mô hình), ba
+                  nguyên tắc nên nhớ:
+                </p>
+                <ul className="list-disc space-y-2 pl-5 text-sm">
+                  <li>
+                    <strong>Biết đâu là kênh chính thức.</strong> Hầu hết
+                    ngân hàng có LLM nội bộ đã được kiểm duyệt (ví dụ qua
+                    Azure OpenAI, Google Vertex có hợp đồng VPN). Không
+                    dùng ChatGPT public cho dữ liệu khách hàng — đây là vi
+                    phạm Nghị định 13/2023.
+                  </li>
+                  <li>
+                    <strong>Luôn verify output AI.</strong> AI có thể bịa
+                    số liệu, bịa điều khoản, nhầm văn bản pháp lý. Mọi
+                    output đi đến khách hàng phải qua người xem.
+                  </li>
+                  <li>
+                    <strong>
+                      Ghi log các phiên làm việc với AI nếu liên quan quyết
+                      định.
+                    </strong>{" "}
+                    Nhiều ngân hàng đã yêu cầu nhân viên lưu prompt + output
+                    cho các công việc nhạy cảm như rà soát hồ sơ hay phân
+                    loại khiếu nại.
+                  </li>
+                </ul>
+              </CollapsibleDetail>
 
-              <h4>1. Fraud detection</h4>
-              <p>
-                Mục tiêu: chặn giao dịch gian lận trong thời gian người dùng
-                còn đang chờ màn hình thanh toán. Ràng buộc:{" "}
-                <em>p95 &lt; 100 ms</em>, <em>p99 &lt; 200 ms</em>.
-                Architecture điển hình: feature store (Redis/DragonflyDB) lưu
-                state quay vòng cho mỗi user, một model phục vụ qua gRPC,
-                fallback sang rule engine nếu model lag.
-              </p>
-
-              <h4>2. Credit scoring</h4>
-              <p>
-                Đánh giá xác suất vỡ nợ để quyết định có duyệt, hạn mức bao
-                nhiêu, lãi suất nào. Thời gian phản hồi cho phép dài hơn (vài
-                giây đến vài phút trong quy trình cho vay tiêu dùng). Khác
-                biệt lớn nhất so với fraud: <em>explainability là bắt buộc
-                pháp lý</em> — khách hàng bị từ chối có quyền biết lý do cụ
-                thể, và ngân hàng phải chứng minh model không phân biệt đối
-                xử.
-              </p>
-
-              <h4>3. Algorithmic trading</h4>
-              <p>
-                Từ high-frequency trading (microsecond) đến statistical
-                arbitrage (phút, giờ) và systematic macro (tuần, tháng). AI
-                được dùng cho: dự báo tín hiệu ngắn hạn, tối ưu thực thi
-                (giảm slippage), xếp hạng trái phiếu, tối ưu danh mục.{" "}
-                <strong>Cảnh báo</strong>: thị trường là trò chơi{" "}
-                <em>adversarial</em> và <em>non-stationary</em> — nghiên cứu
-                backtest đẹp thường không sống sót khi deploy vì alpha bị ăn
-                mòn nhanh.
-              </p>
-
-              <h4>4. Risk management và stress testing</h4>
-              <p>
-                Mô phỏng Monte Carlo trên danh mục, ước lượng VaR (Value at
-                Risk), CVaR, stress test khi lãi suất / FX / giá cổ phiếu
-                sốc. AI bổ sung cho mô hình truyền thống ở việc ước lượng
-                correlation thời gian thực và dự báo tail risk từ dữ liệu
-                phi cấu trúc (tin tức, báo cáo).
-              </p>
-
-              <h3>Pitfalls — những cái bẫy nên tránh</h3>
-              <ol>
-                <li>
-                  <strong>Lấy accuracy làm KPI chính.</strong> Trong fraud với
-                  class imbalance 1:1000, model dự đoán "legit" cho mọi giao
-                  dịch có accuracy 99.9% và hoàn toàn vô dụng. Luôn dùng
-                  precision/recall/PR-AUC và ma trận chi phí.
-                </li>
-                <li>
-                  <strong>Shuffle dữ liệu khi split.</strong> Giao dịch tương
-                  lai lọt vào training set gây data leakage, metric backtest
-                  cao gấp đôi thực tế. Luôn dùng time-series split.
-                </li>
-                <li>
-                  <strong>Feature leakage từ hậu quả.</strong> Features như{" "}
-                  <code>so_lan_bi_khieu_nai_30_ngay</code> chỉ biết được sau
-                  khi giao dịch đã xong — đưa vào training set là leakage.
-                </li>
-                <li>
-                  <strong>Quên monitoring sau deploy.</strong> Model tài chính
-                  phải được giám sát drift, calibration, và fairness hàng
-                  ngày. Một model "forgotten" sau 6 tháng có thể gây thiệt
-                  hại hàng tỉ đồng trước khi ai đó nhận ra.
-                </li>
-                <li>
-                  <strong>Fit threshold trên tập validation, report trên
-                  cùng tập đó.</strong> Threshold là hyperparameter — phải
-                  chọn trên tập val, đo performance trên tập test độc lập.
-                </li>
-                <li>
-                  <strong>Không có fallback.</strong> Khi feature store lag
-                  hoặc model service down, luôn cần một rule engine đơn giản
-                  đứng sau chặn các pattern hiển nhiên (giao dịch từ quốc gia
-                  bị cấm vận, số tiền vượt hạn mức cứng…).
-                </li>
-                <li>
-                  <strong>Bỏ qua cost-sensitive learning.</strong> Việc
-                  reweight sample theo chi phí (hoặc dùng focal loss) thường
-                  giúp model hội tụ về biên quyết định hữu ích hơn là chỉ
-                  dùng default loss.
-                </li>
-                <li>
-                  <strong>Trộn môi trường train và sandbox.</strong> Model
-                  fraud cần được train trên dữ liệu production thật (có đầy
-                  đủ edge case) nhưng được <em>test</em> trong sandbox với
-                  traffic được replay — không bao giờ thử nghiệm threshold
-                  mới trực tiếp trên live traffic mà không có kill-switch.
-                </li>
-                <li>
-                  <strong>Dùng feature chứa PII không mã hóa.</strong> Số
-                  CMND, số thẻ, địa chỉ nhà — không nên đi thẳng vào model.
-                  Hash, tokenize, hoặc thay bằng các đại lượng phái sinh để
-                  giảm bề mặt rủi ro khi rò rỉ mô hình.
-                </li>
-              </ol>
-
-              <p className="text-sm text-muted-foreground">
-                Khi bạn đã nắm được bộ khung chi phí và trade-off ở trên, việc
-                triển khai cụ thể chỉ còn là chuyện kỹ thuật. Phần lớn các lỗi
-                tai hại trong production đều xuất phát từ việc quên một trong
-                các pitfalls phía trên, chứ không phải từ "thuật toán chưa đủ
-                mạnh".
+              <p className="text-sm text-muted">
+                Khi bạn đã nắm năm trụ cột và khung pháp lý này, hầu hết tin
+                tức về "ngân hàng ABC ra mắt AI XYZ" sẽ rơi vào một trong
+                các ô có sẵn — và bạn sẽ biết câu hỏi phù hợp để đặt ra.
               </p>
             </ExplanationSection>
           </LessonSection>
 
           <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
-              title="Những gì bạn cần mang đi"
+              title="Những điều cần nhớ"
               points={[
-                "4 ứng dụng lớn: Fraud detection (real-time), Credit scoring (cho vay), Algorithmic trading (giao dịch tự động), Risk management (rủi ro danh mục).",
-                "Fraud detection không đi tìm accuracy — đi tìm ngưỡng tối ưu dựa trên ma trận chi phí (C_FN ≫ C_FP). Threshold 0.5 gần như luôn sai.",
-                "Credit scoring bắt buộc phải explainable (SHAP/LIME) và fair — audit bias định kỳ theo giới tính/dân tộc để tránh feedback loop.",
-                "Dữ liệu tài chính có class imbalance cực lớn: luôn dùng PR-AUC, time-series split, class weighting, và monitoring drift sau deploy.",
-                "Algorithmic trading là trò chơi adversarial: alpha ăn mòn nhanh, cần circuit breakers, position limits và champion-challenger.",
-                "VN landscape: Techcombank, VPBank, Momo, ZaloPay dùng AI fraud detection; FE Credit, Home Credit dùng AI credit scoring; hệ sinh thái đang bổ sung graph-based detection và behavior biometrics.",
+                "Năm mảng AI chính trong ngân hàng VN: chống gian lận, chấm điểm tín dụng, chatbot, robo-advisor, giám sát rửa tiền.",
+                "Mọi ứng dụng đều xoay quanh đánh đổi giữa hai loại sai lầm — chi phí của sai kiểu A so với sai kiểu B quyết định ngưỡng tối ưu, không phải accuracy.",
+                "AI trong ngân hàng không thay thế con người — nó lọc và gợi ý, con người vẫn là người ký tên cuối cùng.",
+                "Khung pháp lý VN: Luật PCRT 2022, Nghị định 13/2023 về dữ liệu cá nhân, Thông tư 09/2023 về quản trị rủi ro, cùng các chuẩn Basel III và FATF.",
+                "Các ví dụ thực tế 2024–2025: Techcombank chấm điểm tức thời, VPBank chống fraud, MB Buddy trả lời 24/7, VPBank/Techcombank giám sát AML.",
+                "Quyền khách hàng: được giải thích khi bị từ chối vay, được xác thực thêm thay vì chặn cứng, được khiếu nại với logging đầy đủ.",
               ]}
             />
           </LessonSection>
 
-          <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+          <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
             <QuizSection questions={quizQuestions} />
           </LessonSection>
         </PredictionGate>
       </LessonSection>
     </>
+  );
+}
+
+function StoryCard({
+  bank,
+  title,
+  body,
+  icon: Icon,
+}: {
+  bank: string;
+  title: string;
+  body: string;
+  icon: typeof CheckCircle2;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex flex-col gap-2 rounded-xl border border-border bg-surface/60 p-4"
+    >
+      <div className="flex items-center gap-2">
+        <div className="rounded-lg bg-accent-light p-2">
+          <Icon className="h-4 w-4 text-accent" />
+        </div>
+        <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent">
+          <Building2 className="h-3 w-3" />
+          {bank}
+        </div>
+      </div>
+      <div className="text-sm font-semibold text-foreground">{title}</div>
+      <div className="text-xs text-muted">{body}</div>
+    </motion.div>
   );
 }

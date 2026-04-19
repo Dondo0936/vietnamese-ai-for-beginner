@@ -4245,7 +4245,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "llm-overview-in-chat-assistants",
     title: "LLM Overview in Chat Assistants",
-    titleVi: "Tổng quan LLM trong Trợ lý Trò chuyện",
+    titleVi: "LLM trong trợ lý trò chuyện",
     description:
       "ChatGPT, Claude, Gemini: ba trợ lý trò chuyện AI hàng đầu đạt hàng trăm triệu người dùng",
     category: "llm-concepts",

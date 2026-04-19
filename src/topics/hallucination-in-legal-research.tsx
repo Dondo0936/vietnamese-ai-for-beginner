@@ -1,5 +1,22 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import {
+  Scale,
+  Gavel,
+  FileSearch,
+  ShieldAlert,
+  CheckCircle2,
+  XCircle,
+  Search,
+  FileX,
+  UserCircle2,
+  Building2,
+  Clock,
+  DollarSign,
+  Newspaper,
+} from "lucide-react";
 import type { TopicMeta } from "@/lib/types";
 import ApplicationLayout from "@/components/application/ApplicationLayout";
 import ApplicationHero from "@/components/application/ApplicationHero";
@@ -9,6 +26,7 @@ import Beat from "@/components/application/Beat";
 import ApplicationMetrics from "@/components/application/ApplicationMetrics";
 import Metric from "@/components/application/Metric";
 import ApplicationCounterfactual from "@/components/application/ApplicationCounterfactual";
+import { Callout, ToggleCompare, ProgressSteps } from "@/components/interactive";
 
 export const metadata: TopicMeta = {
   slug: "hallucination-in-legal-research",
@@ -20,7 +38,7 @@ export const metadata: TopicMeta = {
   tags: ["hallucination", "legal", "application"],
   difficulty: "beginner",
   relatedSlugs: ["hallucination"],
-  vizType: "static",
+  vizType: "interactive",
   applicationOf: "hallucination",
   featuredApp: {
     name: "ChatGPT",
@@ -70,130 +88,679 @@ export const metadata: TopicMeta = {
   ],
 };
 
+/* ──────────────────────────────────────────────────────────────
+ * COMPONENT — Timeline ngang các mốc vụ Mata v. Avianca
+ * ──────────────────────────────────────────────────────────────*/
+interface TimelineEvent {
+  date: string;
+  icon: React.ElementType;
+  title: string;
+  detail: string;
+  color: string;
+}
+
+const TIMELINE: TimelineEvent[] = [
+  {
+    date: "03/2023",
+    icon: FileSearch,
+    title: "Luật sư hỏi ChatGPT",
+    detail:
+      "Steven Schwartz — luật sư hành nghề 30 năm — nhờ ChatGPT tìm án lệ cho vụ Mata v. Avianca.",
+    color: "text-blue-500",
+  },
+  {
+    date: "03/2023",
+    icon: Gavel,
+    title: "ChatGPT bịa 6 án lệ",
+    detail:
+      'ChatGPT tạo ra 6 vụ án giả: Varghese v. China Southern Airlines, Martinez v. Delta, Miller v. United... với đầy đủ số hiệu, tên tòa, năm phán quyết.',
+    color: "text-amber-500",
+  },
+  {
+    date: "04/2023",
+    icon: FileX,
+    title: "Bản kiến nghị được nộp",
+    detail:
+      "Luật sư Peter LoDuca ký và nộp bản kiến nghị 10 trang cho Tòa án Liên bang Quận Nam New York, chứa đầy trích dẫn án lệ bịa.",
+    color: "text-amber-500",
+  },
+  {
+    date: "05/2023",
+    icon: Search,
+    title: "Đối phương không tìm thấy",
+    detail:
+      "Luật sư hãng Avianca tra cứu trên LexisNexis và Westlaw — không vụ án nào tồn tại. Báo cho tòa.",
+    color: "text-red-500",
+  },
+  {
+    date: "06/2023",
+    icon: Scale,
+    title: "Tòa phạt 5.000 đô-la",
+    detail:
+      "Thẩm phán P. Kevin Castel kết luận luật sư hành động với 'thiếu thiện chí chủ quan'. Phạt theo Rule 11.",
+    color: "text-red-600",
+  },
+  {
+    date: "2023 - 2024",
+    icon: Newspaper,
+    title: "Làn sóng truyền thông toàn cầu",
+    detail:
+      "Vụ việc được đưa tin trên CNN, BBC, Reuters, New York Times. Trở thành ví dụ kinh điển trong mọi khóa học về AI cho luật sư.",
+    color: "text-purple-500",
+  },
+];
+
+function IncidentTimeline() {
+  return (
+    <div className="my-6 rounded-xl border border-border bg-surface/40 p-5">
+      <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground">
+        <Clock size={16} className="text-accent" />
+        Dòng thời gian vụ Mata v. Avianca (2023)
+      </h3>
+      <div className="relative">
+        {/* Vertical rail */}
+        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-border md:left-1/2 md:-translate-x-1/2" />
+        <div className="space-y-6">
+          {TIMELINE.map((ev, i) => {
+            const Icon = ev.icon;
+            const left = i % 2 === 0;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: left ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className={`relative flex gap-4 md:grid md:grid-cols-2 md:gap-8 ${
+                  left ? "" : "md:[&>*:first-child]:order-2"
+                }`}
+              >
+                <div
+                  className={`flex-1 md:text-right ${
+                    left ? "" : "md:text-left"
+                  }`}
+                >
+                  <div
+                    className={`rounded-lg border border-border bg-card p-3 ${
+                      left ? "md:mr-4" : "md:ml-4"
+                    }`}
+                  >
+                    <div className="mb-1 flex items-center gap-2 text-xs font-semibold text-muted">
+                      <Icon size={14} className={ev.color} />
+                      <span>{ev.date}</span>
+                    </div>
+                    <div className="mb-1 text-sm font-semibold text-foreground">
+                      {ev.title}
+                    </div>
+                    <p className="text-xs text-muted">{ev.detail}</p>
+                  </div>
+                </div>
+                {/* Marker dot */}
+                <div className="absolute left-4 top-3 z-10 h-3 w-3 -translate-x-1/2 rounded-full bg-accent ring-4 ring-background md:left-1/2" />
+                <div className="hidden md:block" />
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * COMPONENT — Animated counter cho con số
+ * ──────────────────────────────────────────────────────────────*/
+function AnimatedCount({
+  to,
+  prefix = "",
+  suffix = "",
+  duration = 1.2,
+}: {
+  to: number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-30px" });
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const start = performance.now();
+    let rafId: number;
+    const step = (now: number) => {
+      const t = Math.min((now - start) / (duration * 1000), 1);
+      // easeOutQuad
+      const eased = 1 - (1 - t) * (1 - t);
+      setValue(Math.round(to * eased));
+      if (t < 1) rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [inView, to, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {value.toLocaleString("vi-VN")}
+      {suffix}
+    </span>
+  );
+}
+
+interface MetricCardProps {
+  icon: React.ElementType;
+  value: React.ReactNode;
+  label: string;
+  colorClass?: string;
+}
+
+function MetricCard({ icon: Icon, value, label, colorClass = "text-accent" }: MetricCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4 }}
+      className="rounded-xl border border-border bg-card p-5"
+    >
+      <Icon size={22} className={`${colorClass} mb-2`} />
+      <div className="mb-1 text-3xl font-bold text-foreground">{value}</div>
+      <div className="text-xs text-muted">{label}</div>
+    </motion.div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * COMPONENT — Cột trái/phải: tin AI 100% vs xác minh
+ * ──────────────────────────────────────────────────────────────*/
+function TrustVsVerify() {
+  return (
+    <ToggleCompare
+      labelA="Luật sư tin AI 100%"
+      labelB="Luật sư xác minh nguồn"
+      description="Cùng một câu trả lời của AI, hai cách xử lý — hai kết quả khác nhau hoàn toàn."
+      childA={
+        <div className="space-y-3">
+          <div className="rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-700 dark:bg-red-900/20">
+            <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-red-700 dark:text-red-300">
+              <XCircle size={16} /> Quy trình không xác minh
+            </div>
+            <ol className="ml-4 list-decimal space-y-1 text-xs text-foreground">
+              <li>Hỏi ChatGPT &ldquo;Có án lệ tương tự không?&rdquo;</li>
+              <li>AI trả lời kèm 6 vụ án, số hiệu, tên tòa.</li>
+              <li>
+                Luật sư hỏi lại: &ldquo;Có chắc không?&rdquo; — AI trả lời{" "}
+                <em>&ldquo;Có, các vụ án có trên LexisNexis&rdquo;</em>.
+              </li>
+              <li>Copy các trích dẫn vào bản kiến nghị.</li>
+              <li>Nộp cho tòa.</li>
+            </ol>
+          </div>
+          <div className="rounded-lg bg-red-100 p-3 text-xs text-red-900 dark:bg-red-900/30 dark:text-red-200">
+            <strong>Kết quả:</strong> Bị phạt 5.000 đô-la, buộc gửi thư xin lỗi
+            các thẩm phán bị gán tên giả, thân chủ thua kiện, sự nghiệp 30 năm
+            tổn thương nghiêm trọng, tên xuất hiện trên CNN và BBC.
+          </div>
+        </div>
+      }
+      childB={
+        <div className="space-y-3">
+          <div className="rounded-lg border border-emerald-300 bg-emerald-50 p-4 dark:border-emerald-700 dark:bg-emerald-900/20">
+            <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+              <CheckCircle2 size={16} /> Quy trình an toàn
+            </div>
+            <ol className="ml-4 list-decimal space-y-1 text-xs text-foreground">
+              <li>Hỏi ChatGPT để có ý tưởng khung pháp lý.</li>
+              <li>AI trả lời kèm 6 vụ án, số hiệu, tên tòa.</li>
+              <li>
+                <strong>
+                  Mở LexisNexis/Westlaw tra từng số hiệu một cách độc lập.
+                </strong>
+              </li>
+              <li>Chỉ giữ lại những vụ án thật sự tìm thấy.</li>
+              <li>Đọc phán quyết gốc trước khi trích dẫn.</li>
+              <li>Nộp bản kiến nghị.</li>
+            </ol>
+          </div>
+          <div className="rounded-lg bg-emerald-100 p-3 text-xs text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-200">
+            <strong>Kết quả:</strong> Phát hiện sớm tất cả án lệ đều giả. Không
+            nộp hồ sơ sai. Tiết kiệm 5.000 đô-la, giữ nguyên uy tín, bảo vệ
+            thân chủ đúng cách — AI vẫn hữu ích như một công cụ brainstorm.
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * COMPONENT — Beat visual (5 bước sinh ảo giác tới xử phạt)
+ * ──────────────────────────────────────────────────────────────*/
+interface BeatVisual {
+  label: string;
+  icon: React.ElementType;
+  headline: string;
+  detail: React.ReactNode;
+  tone: "blue" | "amber" | "red";
+}
+
+const BEATS: BeatVisual[] = [
+  {
+    label: "Prompt của luật sư",
+    icon: FileSearch,
+    headline: "Yêu cầu: 'Tìm án lệ thương tích hàng không theo Công ước Montreal'",
+    detail: (
+      <p>
+        Steven Schwartz gõ một câu hỏi chuyên ngành vào ChatGPT. Ông chưa từng
+        dùng ChatGPT cho công việc pháp lý trước đó, nhưng tin nó là{" "}
+        &ldquo;một công cụ tìm kiếm siêu thông minh&rdquo;.
+      </p>
+    ),
+    tone: "blue",
+  },
+  {
+    label: "AI sinh câu trả lời",
+    icon: Gavel,
+    headline: "ChatGPT trả ra 6 vụ án — với số hiệu, tên tòa, năm đầy đủ",
+    detail: (
+      <p>
+        Trong số này có <em>Varghese v. China Southern Airlines</em>,{" "}
+        <em>Martinez v. Delta Airlines</em>, <em>Miller v. United Airlines</em>.
+        Mỗi vụ đều có format giống thật: tên thẩm phán, số trang, trích dẫn
+        pháp lý. Nhưng tất cả do AI <strong>bịa ra từ pattern văn bản</strong>.
+      </p>
+    ),
+    tone: "amber",
+  },
+  {
+    label: "Luật sư tin tưởng, không xác minh",
+    icon: UserCircle2,
+    headline: 'Hỏi lại AI "Có chắc không?" — AI xác nhận dõng dạc',
+    detail: (
+      <p>
+        Schwartz thậm chí đã hỏi lại &ldquo;Các vụ này là thật chứ?&rdquo;
+        ChatGPT trả lời: &ldquo;Có, các vụ án tồn tại trên LexisNexis và
+        Westlaw.&rdquo; Đây chính là <strong>ảo giác hai tầng</strong> — AI bịa
+        cả việc tự xác nhận.
+      </p>
+    ),
+    tone: "amber",
+  },
+  {
+    label: "Hồ sơ được nộp cho tòa",
+    icon: Building2,
+    headline: "Bản kiến nghị 10 trang chính thức vào hệ thống tòa án liên bang",
+    detail: (
+      <p>
+        Luật sư cấp cao Peter LoDuca ký tên. Hồ sơ vào hệ thống của Tòa án Liên
+        bang Quận Nam New York. Lúc này chưa ai biết các án lệ là giả — kể cả
+        chính tác giả hồ sơ.
+      </p>
+    ),
+    tone: "red",
+  },
+  {
+    label: "Phát hiện và xử phạt",
+    icon: Scale,
+    headline: "Tòa phát hiện, phạt 5.000 đô-la theo Rule 11",
+    detail: (
+      <p>
+        Luật sư Avianca không tìm ra vụ nào. Thẩm phán P. Kevin Castel yêu cầu
+        nộp bản sao các bản án. Tòa xác định đây là{" "}
+        &ldquo;các quyết định tư pháp giả với trích dẫn giả và nội dung
+        giả&rdquo;. Ngày 22/6/2023, Tòa phạt 5.000 đô-la và yêu cầu các luật sư
+        gửi thư xin lỗi đến từng thẩm phán bị gán tên sai.
+      </p>
+    ),
+    tone: "red",
+  },
+];
+
+function MechanismBeats() {
+  const [active, setActive] = useState(0);
+  const beat = BEATS[active];
+  const Icon = beat.icon;
+
+  const toneClass = {
+    blue: "border-blue-400 bg-blue-50 dark:bg-blue-900/20",
+    amber: "border-amber-400 bg-amber-50 dark:bg-amber-900/20",
+    red: "border-red-400 bg-red-50 dark:bg-red-900/20",
+  }[beat.tone];
+
+  const iconTone = {
+    blue: "text-blue-500",
+    amber: "text-amber-500",
+    red: "text-red-500",
+  }[beat.tone];
+
+  return (
+    <div className="my-4 rounded-xl border border-border bg-card p-5">
+      <div className="mb-4">
+        <ProgressSteps
+          current={active + 1}
+          total={BEATS.length}
+          labels={BEATS.map((b) => b.label)}
+        />
+      </div>
+
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className={`rounded-xl border-l-4 p-4 ${toneClass}`}
+      >
+        <div className="mb-2 flex items-center gap-2">
+          <Icon size={18} className={iconTone} />
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+            Bước {active + 1}/{BEATS.length} — {beat.label}
+          </span>
+        </div>
+        <h4 className="mb-2 text-base font-semibold text-foreground">
+          {beat.headline}
+        </h4>
+        <div className="text-sm text-foreground/90 leading-relaxed">
+          {beat.detail}
+        </div>
+      </motion.div>
+
+      <div className="mt-4 flex justify-between gap-3">
+        <button
+          onClick={() => setActive((i) => Math.max(0, i - 1))}
+          disabled={active === 0}
+          className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-muted disabled:opacity-40 hover:bg-surface-hover"
+        >
+          ← Bước trước
+        </button>
+        <button
+          onClick={() => setActive((i) => Math.min(BEATS.length - 1, i + 1))}
+          disabled={active === BEATS.length - 1}
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-40 hover:opacity-90"
+        >
+          Bước tiếp →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * DEFAULT EXPORT
+ * ──────────────────────────────────────────────────────────────*/
 export default function HallucinationInLegalResearch() {
   return (
-    <ApplicationLayout
-      metadata={metadata}
-      parentTitleVi="Ảo giác AI"
-    >
+    <ApplicationLayout metadata={metadata} parentTitleVi="Ảo giác AI">
+      {/* ================= HERO ================= */}
       <ApplicationHero
         parentTitleVi="Ảo giác AI"
         topicSlug="hallucination-in-legal-research"
       >
         <p>
-          Tháng 3 năm 2023, luật sư Steven Schwartz &mdash; người đã hành nghề
-          hơn 30 năm tại New York &mdash; nộp một bản kiến nghị pháp lý cho Tòa
-          án Liên bang Quận Nam New York (U.S. District Court, Southern District
-          of New York) trong vụ Mata v. Avianca (vụ kiện tại tòa liên bang).
+          Tháng 3 năm 2023, luật sư <strong>Steven Schwartz</strong> &mdash;
+          người đã hành nghề hơn 30 năm tại New York &mdash; nộp một bản kiến
+          nghị pháp lý cho Tòa án Liên bang Quận Nam New York (U.S. District
+          Court, Southern District of New York) trong vụ{" "}
+          <em>Mata v. Avianca</em>.
         </p>
         <p>
-          Bản kiến nghị trích dẫn sáu vụ án tiền lệ (precedent &mdash; phán
-          quyết trước đó được dùng làm căn cứ pháp lý) để bảo vệ thân chủ.
-          Vấn đề: cả sáu vụ án đều không tồn tại. Chúng được ChatGPT (trợ lý
-          trò chuyện của OpenAI) bịa ra hoàn toàn &mdash; với tên vụ án, số hiệu
-          trích dẫn, và cả trích dẫn giả từ các thẩm phán giả.
+          Bản kiến nghị trích dẫn <strong>sáu vụ án tiền lệ</strong> (precedent
+          &mdash; phán quyết trước đó được dùng làm căn cứ pháp lý) để bảo vệ
+          thân chủ. Vấn đề: <strong>cả sáu vụ án đều không tồn tại</strong>.
+          Chúng được <strong>ChatGPT</strong> (trợ lý trò chuyện của OpenAI) bịa
+          ra hoàn toàn &mdash; với tên vụ án, số hiệu trích dẫn, và cả trích dẫn
+          giả từ các thẩm phán giả.
         </p>
+
+        <IncidentTimeline />
+
+        <Callout variant="warning" title="Vì sao câu chuyện này quan trọng với dân văn phòng Việt Nam?">
+          Mata v. Avianca là <strong>ca điển hình</strong> — nó mô tả chính xác
+          điều sẽ xảy ra với bất kỳ ai: luật sư, nhà báo, giáo viên, kế toán
+          &mdash; nếu tin vào trích dẫn do AI sinh mà không xác minh. Bài học
+          không phải &ldquo;AI nguy hiểm&rdquo;, mà là{" "}
+          <strong>cách dùng AI đúng</strong>.
+        </Callout>
       </ApplicationHero>
 
+      {/* ================= PROBLEM ================= */}
       <ApplicationProblem topicSlug="hallucination-in-legal-research">
         <p>
-          &ldquo;Ảo giác&rdquo; (hallucination) là hiện tượng mô hình ngôn ngữ
-          lớn (LLM &mdash; Large Language Model) tạo ra thông tin có vẻ chính
-          xác nhưng hoàn toàn bịa đặt.
-        </p>
-        <p>
-          Trong lĩnh vực pháp lý, mỗi trích dẫn án lệ phải dẫn đến một bản
-          án thực sự &mdash; có thẩm phán thực, tòa án thực, và phán quyết
-          thực &mdash; vì luật sư và thẩm phán dựa vào đó để ra quyết định
-          ảnh hưởng đến quyền lợi con người.
+          <strong>Ảo giác</strong> (hallucination) là hiện tượng mô hình AI tạo
+          ra thông tin có vẻ chính xác nhưng hoàn toàn bịa đặt. Trong lĩnh vực
+          pháp lý, mỗi trích dẫn án lệ phải dẫn đến{" "}
+          <strong>một bản án thực sự</strong> &mdash; có thẩm phán thực, tòa án
+          thực, phán quyết thực &mdash; vì luật sư và thẩm phán dựa vào đó để
+          ra quyết định ảnh hưởng đến quyền lợi con người.
         </p>
         <p>
           Khi AI bịa ra các vụ án nghe rất thuyết phục nhưng không hề có thật,
-          nó phá vỡ nền tảng tin cậy của hệ thống tư pháp (judicial system
-          &mdash; hệ thống các tòa án xét xử).
+          nó phá vỡ nền tảng tin cậy của hệ thống tư pháp. Người luật sư có
+          <em> nghĩa vụ xác minh</em> (duty to verify) &mdash; và đây chính là
+          nơi công nghệ gặp đạo đức nghề nghiệp.
         </p>
+
+        <div className="my-6">
+          <TrustVsVerify />
+        </div>
+
+        <Callout variant="insight" title="Nguyên tắc cốt lõi">
+          <strong>
+            Công cụ AI không chịu trách nhiệm pháp lý — người dùng thì có.
+          </strong>{" "}
+          Dù AI &ldquo;tự tin xác nhận&rdquo; bao nhiêu lần, nghĩa vụ kiểm
+          chứng vẫn thuộc về con người.
+        </Callout>
       </ApplicationProblem>
 
+      {/* ================= MECHANISM ================= */}
       <ApplicationMechanism
         parentTitleVi="Ảo giác AI"
         topicSlug="hallucination-in-legal-research"
       >
         <Beat step={1}>
           <p>
-            <strong>Sử dụng ChatGPT để nghiên cứu pháp lý.</strong> Luật sư
-            Steven Schwartz thuộc hãng Levidow, Levidow &amp; Oberman sử dụng
-            ChatGPT để tìm án lệ liên quan đến vụ kiện thương tích cá nhân
-            (personal injury &mdash; vụ kiện đòi bồi thường tổn hại sức khỏe)
-            của thân chủ Roberto Mata chống hãng hàng không Avianca. Schwartz
-            chưa từng dùng ChatGPT cho nghiên cứu pháp lý trước đó.
+            <strong>Luật sư đặt câu hỏi cho ChatGPT.</strong> Steven Schwartz
+            thuộc hãng Levidow, Levidow &amp; Oberman sử dụng ChatGPT để tìm
+            án lệ liên quan đến vụ kiện thương tích hàng không của thân chủ
+            Roberto Mata chống hãng Avianca. Schwartz chưa từng dùng ChatGPT
+            cho nghiên cứu pháp lý trước đó.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>ChatGPT bịa ra sáu án lệ.</strong> ChatGPT tạo ra sáu
-            trích dẫn án lệ bịa đặt, gồm Varghese v. China Southern Airlines,
-            Martinez v. Delta Airlines, Miller v. United Airlines &mdash; với
-            đầy đủ số hiệu, tên tòa, năm phán quyết. Khi Schwartz hỏi xác
-            nhận, ChatGPT khẳng định các vụ án &ldquo;tồn tại trên
-            LexisNexis và Westlaw&rdquo; (hai cơ sở dữ liệu pháp lý chính
-            thức tại Mỹ).
+            <strong>ChatGPT bịa ra sáu án lệ.</strong> AI tạo ra sáu trích dẫn
+            án lệ bịa đặt, gồm <em>Varghese v. China Southern Airlines</em>,{" "}
+            <em>Martinez v. Delta Airlines</em>,{" "}
+            <em>Miller v. United Airlines</em> &mdash; với đầy đủ số hiệu, tên
+            tòa, năm phán quyết. Khi Schwartz hỏi xác nhận, ChatGPT khẳng định
+            các vụ án &ldquo;tồn tại trên LexisNexis và Westlaw&rdquo;.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
             <strong>Tòa phát hiện gian lận.</strong> Luật sư của Avianca không
-            tìm thấy bất kỳ vụ án nào trong cơ sở dữ liệu pháp lý và thông
-            báo cho tòa. Thẩm phán P. Kevin Castel yêu cầu nộp bản sao các
-            bản án. Tòa phát hiện tất cả là &ldquo;các quyết định tư pháp giả
-            với trích dẫn giả và nội dung giả&rdquo;.
+            tìm thấy bất kỳ vụ án nào trong cơ sở dữ liệu pháp lý và thông báo
+            cho tòa. Thẩm phán P. Kevin Castel yêu cầu nộp bản sao các bản án.
+            Tòa phát hiện tất cả là &ldquo;các quyết định tư pháp giả với trích
+            dẫn giả và nội dung giả&rdquo;.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Xử phạt theo Quy tắc 11.</strong> Ngày 22 tháng 6 năm
-            2023, Thẩm phán Castel ban hành lệnh xử phạt theo Rule 11 (Quy
-            tắc 11 &mdash; quy tắc liên bang yêu cầu luật sư xác minh tính
-            chính xác của mọi hồ sơ trước khi nộp). Tòa phạt Peter LoDuca,
-            Steven Schwartz, và hãng luật 5.000 đô-la Mỹ. Tòa kết luận
-            các luật sư hành động với &ldquo;thiếu thiện chí chủ
-            quan&rdquo; (subjective bad faith). Các luật sư bị yêu cầu
-            gửi thư xin lỗi đến thẩm phán bị gán tên sai.
+            <strong>Xử phạt theo Quy tắc 11.</strong> Ngày 22/6/2023, Thẩm phán
+            Castel ban hành lệnh xử phạt theo Rule 11 &mdash; quy tắc liên bang
+            yêu cầu luật sư xác minh tính chính xác của mọi hồ sơ. Tòa phạt
+            Peter LoDuca, Steven Schwartz, và hãng luật 5.000 đô-la. Các luật
+            sư bị yêu cầu gửi thư xin lỗi đến các thẩm phán bị gán tên sai.
           </p>
         </Beat>
+
+        <div className="mt-6">
+          <h3 className="mb-3 text-sm font-semibold text-foreground">
+            Xem tường thuật từng bước như một bộ phim
+          </h3>
+          <MechanismBeats />
+        </div>
       </ApplicationMechanism>
 
+      {/* ================= METRICS ================= */}
       <ApplicationMetrics
         sources={metadata.sources!}
         topicSlug="hallucination-in-legal-research"
       >
-        <Metric
-          value="6 vụ án giả được trích dẫn trong bản kiến nghị"
-          sourceRef={2}
-        />
-        <Metric
-          value="5.000 đô-la Mỹ tiền phạt theo Quy tắc 11"
-          sourceRef={3}
-        />
+        <Metric value="6 vụ án giả được trích dẫn trong bản kiến nghị" sourceRef={2} />
+        <Metric value="5.000 đô-la Mỹ tiền phạt theo Quy tắc 11" sourceRef={3} />
         <Metric
           value="Hơn 30 năm kinh nghiệm hành nghề của luật sư vẫn không phát hiện ảo giác"
           sourceRef={2}
         />
       </ApplicationMetrics>
 
+      {/* Animated counters — rich visual layer */}
+      <div className="-mt-6 mb-10">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <MetricCard
+            icon={FileX}
+            value={<AnimatedCount to={6} />}
+            label="Án lệ bịa trong một bản kiến nghị"
+            colorClass="text-red-500"
+          />
+          <MetricCard
+            icon={DollarSign}
+            value={<AnimatedCount to={5000} prefix="$" />}
+            label="Tiền phạt theo Rule 11"
+            colorClass="text-amber-500"
+          />
+          <MetricCard
+            icon={UserCircle2}
+            value={<AnimatedCount to={30} suffix=" năm" />}
+            label="Kinh nghiệm hành nghề của luật sư — vẫn dính ảo giác"
+            colorClass="text-blue-500"
+          />
+          <MetricCard
+            icon={Newspaper}
+            value={<AnimatedCount to={12} suffix=" tháng" />}
+            label="Truyền thông quốc tế bám theo vụ việc"
+            colorClass="text-purple-500"
+          />
+        </div>
+
+        <Callout variant="warning" title="Những vụ tương tự đã xảy ra sau Mata v. Avianca">
+          <ul className="ml-4 list-disc space-y-1">
+            <li>
+              <strong>2024 - Michael Cohen (Mỹ):</strong> cựu luật sư của Donald
+              Trump nộp hồ sơ tòa án chứa 3 án lệ bịa do AI Google Bard sinh.
+            </li>
+            <li>
+              <strong>2024 - Colorado:</strong> luật sư Zachariah Crabill bị
+              đình chỉ hành nghề 1 năm sau khi dùng ChatGPT bịa án lệ cho một
+              vụ dân sự.
+            </li>
+            <li>
+              <strong>2024 - British Columbia (Canada):</strong> luật sư Chong
+              Ke bị phạt chi phí khi nộp hồ sơ với án lệ bịa do AI.
+            </li>
+          </ul>
+          <p className="mt-2 text-xs">
+            Xu hướng rõ: <strong>chỉ riêng năm 2023-2024</strong> đã có hàng
+            chục ca tương tự được báo cáo trên thế giới. Kịch bản luôn giống
+            nhau: luật sư tin AI, không xác minh, bị tòa phát hiện.
+          </p>
+        </Callout>
+      </div>
+
+      {/* ================= COUNTERFACTUAL ================= */}
       <ApplicationCounterfactual
         parentTitleVi="Ảo giác AI"
         topicSlug="hallucination-in-legal-research"
       >
         <p>
-          Nếu mô hình ngôn ngữ lớn không có hiện tượng ảo giác, ChatGPT sẽ chỉ
-          trả về các án lệ thực sự tồn tại, hoặc thông báo rõ ràng rằng không
-          tìm thấy án lệ phù hợp.
+          Hãy tưởng tượng hai thế giới song song: một nơi ảo giác của AI
+          <em> không tồn tại</em>, và một nơi luật sư Schwartz biết về nó từ
+          đầu. Cả hai đều dẫn tới kết cục tốt hơn hiện thực.
         </p>
+
+        <div className="my-6">
+          <ToggleCompare
+            labelA="Thế giới có ảo giác + xác minh"
+            labelB="Thế giới không có ảo giác (giả định)"
+            description="Trong cả hai, nghĩa vụ xác minh của luật sư vẫn là nguyên tắc cốt lõi."
+            childA={
+              <div className="space-y-3">
+                <div className="rounded-lg border border-emerald-300 bg-emerald-50 p-4 dark:border-emerald-700 dark:bg-emerald-900/20">
+                  <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                    <CheckCircle2 size={16} /> Luật sư dùng AI có kỷ luật
+                  </div>
+                  <ul className="ml-4 list-disc space-y-1 text-xs text-foreground">
+                    <li>
+                      Dùng ChatGPT để brainstorm khung pháp lý, không để sinh
+                      trích dẫn.
+                    </li>
+                    <li>
+                      Mọi án lệ AI đề xuất đều được mở LexisNexis kiểm tra
+                      trước khi tin.
+                    </li>
+                    <li>
+                      AI trở thành trợ lý nâng năng suất &mdash; không thay thế
+                      nghĩa vụ nghề nghiệp.
+                    </li>
+                  </ul>
+                </div>
+                <p className="text-xs text-muted">
+                  <strong>Kết cục:</strong> Không có tiền phạt, không có phóng
+                  sự CNN, không có thư xin lỗi các thẩm phán. Vụ kiện được xử
+                  lý bình thường dựa trên án lệ thật.
+                </p>
+              </div>
+            }
+            childB={
+              <div className="space-y-3">
+                <div className="rounded-lg border border-blue-300 bg-blue-50 p-4 dark:border-blue-700 dark:bg-blue-900/20">
+                  <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-blue-700 dark:text-blue-300">
+                    <ShieldAlert size={16} /> Nếu AI không bao giờ ảo giác
+                  </div>
+                  <ul className="ml-4 list-disc space-y-1 text-xs text-foreground">
+                    <li>
+                      ChatGPT sẽ chỉ trả về án lệ thật có trong cơ sở dữ liệu.
+                    </li>
+                    <li>
+                      Khi không tìm thấy, nó sẽ nói &ldquo;Tôi không tìm thấy
+                      án lệ phù hợp&rdquo; thay vì bịa.
+                    </li>
+                    <li>
+                      Schwartz không thể &ldquo;vô tình&rdquo; nộp hồ sơ có
+                      trích dẫn bịa.
+                    </li>
+                  </ul>
+                </div>
+                <p className="text-xs text-muted">
+                  <strong>Nhưng lưu ý:</strong> ngay cả trong thế giới này,{" "}
+                  <strong>nghĩa vụ kiểm chứng</strong> của luật sư vẫn là
+                  nguyên tắc cốt lõi của đạo đức nghề nghiệp. AI không bao giờ
+                  là &ldquo;dấu xác thực&rdquo; cuối cùng &mdash; con người là.
+                </p>
+              </div>
+            }
+          />
+        </div>
+
         <p>
-          Tuy nhiên, ngay cả khi AI chính xác hơn trong tương lai, nghĩa vụ
-          kiểm chứng (duty to verify &mdash; trách nhiệm xác minh thông tin)
-          của luật sư vẫn là nguyên tắc cốt lõi của đạo đức nghề nghiệp.
+          Câu chuyện Mata v. Avianca khép lại với một bài học đơn giản đến mức
+          gần như hiển nhiên &mdash; nhưng đã trở nên hiển nhiên bằng cái giá
+          5.000 đô-la và danh tiếng 30 năm hành nghề:
         </p>
+
+        <Callout variant="insight" title="Bài học cho mọi ngành nghề dùng AI">
+          AI là công cụ tuyệt vời để <strong>brainstorm</strong>,{" "}
+          <strong>tổng hợp</strong>, <strong>diễn đạt lại</strong>. Nó{" "}
+          <em>không phải</em> là một công cụ <strong>xác thực sự thật</strong>.
+          Với bất kỳ công việc nào mà &ldquo;một con số sai có thể làm hỏng sản
+          phẩm&rdquo; &mdash; luật, báo chí, y tế, giáo dục &mdash; mọi thông
+          tin sự thật do AI sinh <strong>bắt buộc</strong> phải được đối chiếu
+          với nguồn sơ cấp trước khi đưa vào sản phẩm cuối.
+        </Callout>
       </ApplicationCounterfactual>
     </ApplicationLayout>
   );

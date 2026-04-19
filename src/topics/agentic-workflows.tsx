@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   PredictionGate,
   AhaMoment,
   InlineChallenge,
   Callout,
-  CollapsibleDetail,
   MiniSummary,
-  CodeBlock,
+  ToggleCompare,
+  MatchPairs,
+  Reorderable,
   LessonSection,
-  LaTeX,
+  TabView,
   TopicLink,
-  ProgressSteps,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -24,1305 +24,868 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "agentic-workflows",
   title: "Agentic Workflows",
-  titleVi: "Quy trình tự chủ — AI làm việc như con người",
+  titleVi: "Quy trình AI tự chủ — không code, kéo thả là xong",
   description:
-    "Các mẫu thiết kế luồng công việc nơi AI Agent tự chủ thực hiện chuỗi tác vụ phức tạp với ít sự can thiệp.",
+    "Zapier, Make, n8n, Gumloop, Dify — năm công cụ cho phép người làm văn phòng Việt dựng quy trình AI tự động mà không viết một dòng code.",
   category: "ai-agents",
-  tags: ["workflow", "automation", "agent", "patterns"],
-  difficulty: "advanced",
+  tags: ["no-code", "automation", "zapier", "make", "n8n"],
+  difficulty: "beginner",
   relatedSlugs: [
-    "agent-architecture",
-    "planning",
-    "multi-agent",
-    "orchestration",
+    "ai-coding-assistants",
+    "prompt-engineering",
+    "llm-overview",
   ],
   vizType: "interactive",
 };
 
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 8;
 
-// ───────────────────────────────────────────────────────────────────────────
-// Kiểu dữ liệu cho 5 pattern workflow
-// ───────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Dữ liệu — 5 công cụ no-code phổ biến
+// ─────────────────────────────────────────────────────────────
 
-type PatternId =
-  | "sequential"
-  | "routing"
-  | "parallelization"
-  | "orchestrator-worker"
-  | "evaluator-optimizer";
-
-interface FlowNode {
-  id: string;
-  label: string;
-  x: number;
-  y: number;
-  role: "input" | "llm" | "tool" | "router" | "worker" | "evaluator" | "output";
-}
-
-interface FlowEdge {
-  from: string;
-  to: string;
-  label?: string;
-  loop?: boolean;
-  dashed?: boolean;
-}
-
-interface WorkflowPattern {
-  id: PatternId;
-  label: string;
-  shortLabel: string;
+interface Tool {
+  name: string;
+  tagline: string;
+  strength: string;
+  weakness: string;
   color: string;
-  summary: string;
-  whenToUse: string;
-  latency: string;
-  latencyScore: number; // 1-5 (1: chậm nhất, 5: nhanh nhất)
-  quality: string;
-  qualityScore: number; // 1-5
-  cost: string;
-  costScore: number;
-  nodes: FlowNode[];
-  edges: FlowEdge[];
-  realExample: string;
-  pitfall: string;
+  bestFor: string;
+  pricing: string;
+  learningCurve: "Dễ" | "Vừa" | "Khó";
 }
 
-const PATTERNS: WorkflowPattern[] = [
-  // ──────────────────────────────────────────────────────────────
-  // 1. SEQUENTIAL — prompt chaining thuần
-  // ──────────────────────────────────────────────────────────────
+const TOOLS: Tool[] = [
   {
-    id: "sequential",
-    label: "Sequential (Prompt chaining)",
-    shortLabel: "Sequential",
-    color: "#3b82f6",
-    summary:
-      "Chuỗi các LLM call xếp tuần tự: output của bước trước là input của bước sau. Đơn giản nhất, dễ debug.",
-    whenToUse:
-      "Khi nhiệm vụ chia rõ thành các bước tuyến tính, mỗi bước phụ thuộc kết quả trước đó. Vd: dịch bài → tóm tắt → rút trích điểm chính.",
-    latency: "Chậm (cộng dồn mọi bước)",
-    latencyScore: 2,
-    quality: "Trung bình (mỗi bước chuyên biệt)",
-    qualityScore: 3,
-    cost: "Thấp — mỗi bước ngắn",
-    costScore: 4,
-    nodes: [
-      { id: "in", label: "Input", x: 60, y: 110, role: "input" },
-      { id: "llm1", label: "LLM 1", x: 200, y: 110, role: "llm" },
-      { id: "llm2", label: "LLM 2", x: 340, y: 110, role: "llm" },
-      { id: "llm3", label: "LLM 3", x: 480, y: 110, role: "llm" },
-      { id: "out", label: "Output", x: 620, y: 110, role: "output" },
-    ],
-    edges: [
-      { from: "in", to: "llm1" },
-      { from: "llm1", to: "llm2", label: "intermediate" },
-      { from: "llm2", to: "llm3", label: "intermediate" },
-      { from: "llm3", to: "out" },
-    ],
-    realExample:
-      "Customer support: Bước 1 phân loại ticket → Bước 2 rút trích thông tin khách → Bước 3 sinh câu trả lời → Bước 4 kiểm tra giọng văn.",
-    pitfall:
-      "Lỗi một bước lan sang tất cả bước sau. Luôn thêm validation + fallback giữa các bước.",
+    name: "Zapier AI",
+    tagline: "Nhanh nhất để bắt đầu, đã có sẵn 7000+ kết nối app.",
+    strength:
+      "Ghép nối Gmail, Google Sheets, Slack, Zalo OA, Shopify chỉ vài cú click.",
+    weakness:
+      "Bước logic phức tạp (if/else nhiều tầng) làm khó. Giá tăng nhanh khi chạy nhiều.",
+    color: "#f97316",
+    bestFor: "Phòng marketing nhỏ cần nối lead từ Facebook Ads vào Google Sheets.",
+    pricing: "Gói miễn phí 100 task/tháng, trả phí từ ~20 USD/tháng.",
+    learningCurve: "Dễ",
   },
-
-  // ──────────────────────────────────────────────────────────────
-  // 2. ROUTING — classifier chọn handler
-  // ──────────────────────────────────────────────────────────────
   {
-    id: "routing",
-    label: "Routing",
-    shortLabel: "Routing",
-    color: "#8b5cf6",
-    summary:
-      "Một LLM đọc input, phân loại, rồi gửi tới handler chuyên biệt. Mỗi handler được tối ưu cho 1 loại yêu cầu.",
-    whenToUse:
-      "Khi inputs có nhiều loại khác nhau, mỗi loại cần cách xử lý khác. Vd: refund / hỏi kỹ thuật / khiếu nại → 3 pipeline khác nhau.",
-    latency: "Nhanh (chỉ 1 handler chạy)",
-    latencyScore: 4,
-    quality: "Cao — chuyên biệt hoá theo loại",
-    qualityScore: 4,
-    cost: "Thấp — thêm 1 LLM call phân loại",
-    costScore: 4,
-    nodes: [
-      { id: "in", label: "Input", x: 60, y: 140, role: "input" },
-      { id: "router", label: "Router (classifier)", x: 230, y: 140, role: "router" },
-      { id: "a", label: "Handler A (refund)", x: 430, y: 60, role: "llm" },
-      { id: "b", label: "Handler B (tech)", x: 430, y: 140, role: "llm" },
-      { id: "c", label: "Handler C (complaint)", x: 430, y: 220, role: "llm" },
-      { id: "out", label: "Output", x: 620, y: 140, role: "output" },
-    ],
-    edges: [
-      { from: "in", to: "router" },
-      { from: "router", to: "a", label: "loại 1" },
-      { from: "router", to: "b", label: "loại 2" },
-      { from: "router", to: "c", label: "loại 3" },
-      { from: "a", to: "out" },
-      { from: "b", to: "out" },
-      { from: "c", to: "out" },
-    ],
-    realExample:
-      "Trung tâm CSKH đa ngôn ngữ: Router phát hiện tiếng Việt/Anh/Nhật → đưa tới Handler tiếng tương ứng. Không ép 1 prompt đa ngôn ngữ xử lý tất cả.",
-    pitfall:
-      "Nếu classifier sai, yêu cầu đi nhầm handler và kết quả rất tệ. Cần xác suất confidence + fallback handler tổng quát.",
+    name: "Make.com",
+    tagline: "Màn hình kéo-thả trực quan nhất, nhìn từng bước như sơ đồ.",
+    strength:
+      "Chi tiết từng trường dữ liệu giữa các bước, rẻ hơn Zapier ở mức dùng cao.",
+    weakness:
+      "Học cong hơi cong lúc đầu — phải quen với khái niệm 'scenario' và 'module'.",
+    color: "#6366f1",
+    bestFor: "Công ty thương mại điện tử tự đồng bộ đơn hàng giữa nhiều hệ thống.",
+    pricing: "Gói miễn phí 1000 ops/tháng, trả phí từ ~9 USD/tháng.",
+    learningCurve: "Vừa",
   },
-
-  // ──────────────────────────────────────────────────────────────
-  // 3. PARALLELIZATION — chạy song song để tăng tốc / voting
-  // ──────────────────────────────────────────────────────────────
   {
-    id: "parallelization",
-    label: "Parallelization",
-    shortLabel: "Parallel",
-    color: "#22c55e",
-    summary:
-      "Nhiều LLM chạy song song trên cùng input (hoặc phần của input), rồi một aggregator tổng hợp. Hai biến thể: sectioning + voting.",
-    whenToUse:
-      "Khi task có thể chẻ nhỏ độc lập (vd: dịch 10 đoạn cùng lúc) hoặc khi cần nhiều góc nhìn (vd: 3 LLM đánh giá, lấy đa số).",
-    latency: "Nhanh (song song)",
-    latencyScore: 5,
-    quality: "Cao (kết hợp nhiều view)",
-    qualityScore: 4,
-    cost: "Cao (gấp N lần LLM call)",
-    costScore: 2,
-    nodes: [
-      { id: "in", label: "Input", x: 60, y: 140, role: "input" },
-      { id: "split", label: "Splitter", x: 200, y: 140, role: "router" },
-      { id: "w1", label: "Worker 1", x: 360, y: 60, role: "worker" },
-      { id: "w2", label: "Worker 2", x: 360, y: 140, role: "worker" },
-      { id: "w3", label: "Worker 3", x: 360, y: 220, role: "worker" },
-      { id: "agg", label: "Aggregator", x: 520, y: 140, role: "llm" },
-      { id: "out", label: "Output", x: 640, y: 140, role: "output" },
-    ],
-    edges: [
-      { from: "in", to: "split" },
-      { from: "split", to: "w1", label: "chunk 1" },
-      { from: "split", to: "w2", label: "chunk 2" },
-      { from: "split", to: "w3", label: "chunk 3" },
-      { from: "w1", to: "agg" },
-      { from: "w2", to: "agg" },
-      { from: "w3", to: "agg" },
-      { from: "agg", to: "out" },
-    ],
-    realExample:
-      "Review code an toàn: 3 LLM chạy song song — một tìm SQL injection, một tìm XSS, một tìm logic bug. Aggregator gộp thành báo cáo duy nhất.",
-    pitfall:
-      "Chi phí nhân N. Nếu chỉ cần 1 kết quả duy nhất, cân nhắc cascade (chạy tuần tự từ model rẻ → đắt) thay vì chạy song song.",
-  },
-
-  // ──────────────────────────────────────────────────────────────
-  // 4. ORCHESTRATOR-WORKER — coordinator phân công động
-  // ──────────────────────────────────────────────────────────────
-  {
-    id: "orchestrator-worker",
-    label: "Orchestrator-Worker",
-    shortLabel: "Orchestrator",
-    color: "#f59e0b",
-    summary:
-      "Một LLM orchestrator đọc task, chia thành subtask động (số lượng + nội dung được quyết định runtime), phân công cho worker, thu kết quả.",
-    whenToUse:
-      "Khi subtask không biết trước lúc viết code. Vd: code review trên một repo — số file thay đổi tuỳ PR, orchestrator quyết định worker nào đọc file nào.",
-    latency: "Trung bình (orchestrator + worker chạy song song)",
-    latencyScore: 3,
-    quality: "Rất cao — linh hoạt theo bài toán",
-    qualityScore: 5,
-    cost: "Cao — orchestrator + N worker + có thể synthesis",
-    costScore: 2,
-    nodes: [
-      { id: "in", label: "Task", x: 60, y: 140, role: "input" },
-      { id: "orc", label: "Orchestrator", x: 220, y: 140, role: "llm" },
-      { id: "w1", label: "Worker 1", x: 400, y: 60, role: "worker" },
-      { id: "w2", label: "Worker 2", x: 400, y: 140, role: "worker" },
-      { id: "w3", label: "Worker N", x: 400, y: 220, role: "worker" },
-      { id: "synth", label: "Synthesizer", x: 560, y: 140, role: "llm" },
-      { id: "out", label: "Final", x: 680, y: 140, role: "output" },
-    ],
-    edges: [
-      { from: "in", to: "orc" },
-      { from: "orc", to: "w1", label: "subtask 1" },
-      { from: "orc", to: "w2", label: "subtask 2" },
-      { from: "orc", to: "w3", label: "subtask N" },
-      { from: "w1", to: "synth" },
-      { from: "w2", to: "synth" },
-      { from: "w3", to: "synth" },
-      { from: "synth", to: "out" },
-    ],
-    realExample:
-      "Multi-file code refactor: Orchestrator đọc yêu cầu 'đổi từ callback sang async/await trong repo', quét repo, quyết định mỗi worker refactor 1 file. Synthesizer gộp diff thành PR.",
-    pitfall:
-      "Orchestrator sai phân công → chuỗi worker chạy vô ích. Cần prompt rất kỹ + schema output rõ để giới hạn hành vi orchestrator.",
-  },
-
-  // ──────────────────────────────────────────────────────────────
-  // 5. EVALUATOR-OPTIMIZER — generator + critic loop
-  // ──────────────────────────────────────────────────────────────
-  {
-    id: "evaluator-optimizer",
-    label: "Evaluator-Optimizer",
-    shortLabel: "Eval-Opt",
+    name: "n8n",
+    tagline: "Tự lưu trữ trên máy chủ công ty — dữ liệu không ra ngoài.",
+    strength: "Mã nguồn mở, tự host được, phù hợp ngành yêu cầu bảo mật chặt.",
+    weakness:
+      "Cần có người biết chút kỹ thuật để dựng máy chủ ban đầu.",
     color: "#ef4444",
-    summary:
-      "Một LLM sinh output (optimizer/generator), một LLM khác đánh giá (evaluator) và đưa feedback. Lặp cho đến khi evaluator chấp nhận.",
-    whenToUse:
-      "Khi tiêu chí đánh giá rõ (có rubric), nhưng kết quả một lần khó đủ chất lượng. Vd: dịch văn học, viết code chạy được test, sinh code theo style guide.",
-    latency: "Chậm (nhiều vòng loop)",
-    latencyScore: 2,
-    quality: "Rất cao (iterative refinement)",
-    qualityScore: 5,
-    cost: "Cao — mỗi vòng tốn 2 LLM call",
-    costScore: 2,
-    nodes: [
-      { id: "in", label: "Input", x: 60, y: 140, role: "input" },
-      { id: "gen", label: "Generator", x: 220, y: 140, role: "llm" },
-      { id: "eval", label: "Evaluator", x: 400, y: 140, role: "evaluator" },
-      { id: "out", label: "Output ✓", x: 560, y: 140, role: "output" },
-    ],
-    edges: [
-      { from: "in", to: "gen" },
-      { from: "gen", to: "eval", label: "draft" },
-      { from: "eval", to: "out", label: "pass" },
-      { from: "eval", to: "gen", label: "feedback", loop: true, dashed: true },
-    ],
-    realExample:
-      "Dịch thuật văn học Việt–Nhật: Generator dịch một đoạn. Evaluator chấm theo 4 tiêu chí (chính xác nghĩa, tự nhiên, giữ sắc thái, ngữ pháp). Nếu điểm < 8/10, trả feedback cho Generator sửa. Dừng khi đạt ≥ 8 hoặc chạm max 3 vòng.",
-    pitfall:
-      "Evaluator yếu sẽ duyệt tất cả → workflow trở thành Sequential vô ích. Nếu evaluator quá nghiêm, generator mãi không pass. Calibrate rubric kỹ.",
+    bestFor: "Ngân hàng, bệnh viện, công ty luật cần giữ dữ liệu tại Việt Nam.",
+    pricing: "Miễn phí khi tự host. Bản cloud ~20 USD/tháng.",
+    learningCurve: "Vừa",
+  },
+  {
+    name: "Gumloop",
+    tagline:
+      "Sinh sau đẻ muộn nhưng cực mạnh cho quy trình 'có suy nghĩ' — tức có AI ở mỗi bước.",
+    strength:
+      "Nội bộ gắn AI rất sâu, phù hợp quy trình phân tích dài (đọc, tóm tắt, phân loại).",
+    weakness: "Ít kết nối app ngoài hơn Zapier / Make.",
+    color: "#10b981",
+    bestFor: "Đội nghiên cứu tự động đọc 50 bản tin mỗi ngày, tóm tắt vào Notion.",
+    pricing: "Gói miễn phí giới hạn, trả phí từ ~97 USD/tháng.",
+    learningCurve: "Vừa",
+  },
+  {
+    name: "Dify",
+    tagline:
+      "Tập trung xây chatbot và agent nội bộ — có giao diện riêng cho người dùng.",
+    strength:
+      "Xây chatbot dựa trên tài liệu công ty nhanh, có thể nhúng lên web.",
+    weakness: "Ít phù hợp cho tự động hoá cross-app kiểu Zapier.",
+    color: "#0ea5e9",
+    bestFor: "Phòng nhân sự dựng chatbot trả lời câu hỏi về chính sách công ty.",
+    pricing: "Mã nguồn mở, tự host miễn phí. Bản cloud trả phí.",
+    learningCurve: "Vừa",
   },
 ];
 
-// ───────────────────────────────────────────────────────────────────────────
+// Ví dụ workflow văn phòng Việt
+interface Example {
+  title: string;
+  trigger: string;
+  actions: string[];
+  savings: string;
+  industry: string;
+  color: string;
+}
+
+const EXAMPLES: Example[] = [
+  {
+    title: "Trợ lý email chăm sóc khách",
+    trigger: "Có email mới vào hộp thư hỗ trợ",
+    actions: [
+      "AI đọc và phân loại (than phiền / hỏi / mua hàng)",
+      "AI dịch nếu email tiếng Anh sang tiếng Việt",
+      "Tạo thẻ Trello cho bộ phận đúng",
+      "Gửi Slack cho trưởng nhóm nếu là khiếu nại",
+    ],
+    savings: "Tiết kiệm 2 giờ/ngày cho trợ lý phòng CSKH.",
+    industry: "Công ty bán lẻ, dịch vụ",
+    color: "#f97316",
+  },
+  {
+    title: "Tóm tắt cuộc họp tự động",
+    trigger: "Zoom ghi âm xong một cuộc họp",
+    actions: [
+      "Tải file về OneDrive",
+      "AI chuyển giọng thành chữ (tiếng Việt)",
+      "AI tóm tắt 5 điểm chính + danh sách hành động",
+      "Gửi bản tóm tắt vào kênh Microsoft Teams của dự án",
+    ],
+    savings: "Mỗi cuộc họp 1 giờ tiết kiệm 20 phút ghi biên bản.",
+    industry: "Mọi văn phòng có Zoom/Teams",
+    color: "#6366f1",
+  },
+  {
+    title: "Đẩy đơn Shopee vào báo cáo",
+    trigger: "Có đơn hàng mới trên Shopee",
+    actions: [
+      "Lấy thông tin đơn: mã, giá, sản phẩm, địa chỉ",
+      "AI phân loại vùng giao (Bắc/Trung/Nam)",
+      "Ghi vào Google Sheets quản lý doanh thu",
+      "Nếu tỉnh xa, báo Zalo cho bộ phận vận chuyển",
+    ],
+    savings: "Thay thế việc nhập tay ~15 phút/ngày cho chủ shop nhỏ.",
+    industry: "Bán hàng online",
+    color: "#22c55e",
+  },
+  {
+    title: "Sàng lọc CV ứng viên",
+    trigger: "Có CV mới gửi vào email tuyển dụng",
+    actions: [
+      "AI đọc PDF CV, rút các trường: tên, năm KN, kỹ năng",
+      "So với mô tả vị trí bằng AI — cho điểm 1-10",
+      "Ghi vào bảng ứng viên trên Airtable",
+      "Nếu điểm ≥ 8, gửi thư mời phỏng vấn tự động",
+    ],
+    savings: "HR giảm 70% thời gian sàng CV vòng đầu.",
+    industry: "Phòng nhân sự mọi quy mô",
+    color: "#ef4444",
+  },
+  {
+    title: "Bản tin ngành mỗi sáng",
+    trigger: "Đúng 7:00 sáng mỗi ngày",
+    actions: [
+      "Đọc 10 website ngành (tin kinh tế, công nghệ)",
+      "AI tóm tắt mỗi bài 2 câu bằng tiếng Việt",
+      "Gộp thành báo cáo PDF",
+      "Gửi email cho 5 sếp trong công ty",
+    ],
+    savings: "Thay thế chính thức một vị trí 'thư ký tin tức' phần thấp.",
+    industry: "Lãnh đạo công ty, phòng chiến lược",
+    color: "#0ea5e9",
+  },
+];
+
+// Blocks cho flow-builder demo (Reorderable)
+const FLOW_BLOCKS = [
+  "Email mới vào hộp hỗ trợ",
+  "AI đọc và phân loại nội dung",
+  "AI dịch nếu email tiếng Anh",
+  "Ghi vào bảng Google Sheets",
+  "Gửi cảnh báo Slack nếu là khiếu nại",
+];
+
+// ─────────────────────────────────────────────────────────────
+// Component: Flow builder mock (drag-style)
+// ─────────────────────────────────────────────────────────────
+
+interface FlowBlock {
+  icon: string;
+  label: string;
+  sub: string;
+  tone: string;
+}
+
+const BUILT_FLOW: FlowBlock[] = [
+  {
+    icon: "✉",
+    label: "Gmail",
+    sub: "Khi có email mới có nhãn 'Khách hàng'",
+    tone: "#ea4335",
+  },
+  {
+    icon: "AI",
+    label: "Claude",
+    sub: "Tóm tắt email trong 3 câu",
+    tone: "#f97316",
+  },
+  {
+    icon: "文",
+    label: "Google Dịch",
+    sub: "Dịch sang tiếng Việt nếu email không tiếng Việt",
+    tone: "#4285f4",
+  },
+  {
+    icon: "▤",
+    label: "Google Sheets",
+    sub: "Ghi vào hàng mới: ngày, người gửi, tóm tắt",
+    tone: "#0f9d58",
+  },
+  {
+    icon: "✓",
+    label: "Slack",
+    sub: "Gửi tin tới kênh #cskh",
+    tone: "#611f69",
+  },
+];
+
+function FlowBuilderMock() {
+  return (
+    <div className="rounded-xl border border-border bg-[#0f1427] overflow-hidden shadow-inner">
+      <div className="flex items-center justify-between bg-[#151b33] px-4 py-2 border-b border-border">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+          <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
+          <span className="ml-3 text-[11px] font-mono text-slate-400">
+            Make.com — scenario "Email khách hàng"
+          </span>
+        </div>
+        <span className="text-[10px] font-mono text-green-400">● đang chạy</span>
+      </div>
+
+      <div className="p-5 space-y-2">
+        {BUILT_FLOW.map((b, i) => (
+          <div key={b.label}>
+            <motion.div
+              initial={{ opacity: 0, x: -6 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12 }}
+              className="flex items-center gap-3 rounded-lg border border-border bg-[#1a2040] px-3 py-2.5"
+              style={{ borderLeft: `3px solid ${b.tone}` }}
+            >
+              <div
+                className="h-9 w-9 rounded-md flex items-center justify-center text-lg font-bold text-white"
+                style={{ background: b.tone }}
+              >
+                {b.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-slate-100 font-semibold">
+                  {b.label}
+                </p>
+                <p className="text-[11px] text-slate-400 leading-snug">
+                  {b.sub}
+                </p>
+              </div>
+              <span className="text-[10px] text-slate-500 font-mono">
+                #{i + 1}
+              </span>
+            </motion.div>
+            {i < BUILT_FLOW.length - 1 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 + 0.08 }}
+                className="flex justify-center"
+              >
+                <span className="text-slate-500 text-xs">↓</span>
+              </motion.div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-[#151b33] px-4 py-2 border-t border-border flex justify-between text-[10px] font-mono text-slate-400">
+        <span>5 bước nối tiếp — không có dòng code nào</span>
+        <span>Chi phí: ~0.01 USD mỗi lần chạy</span>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Sơ đồ Trigger → Action (animated)
+// ─────────────────────────────────────────────────────────────
+
+function TriggerActionDiagram() {
+  const nodes = [
+    { id: "trigger", label: "Trigger", sub: "Sự kiện kích hoạt", color: "#22c55e", x: 80 },
+    { id: "ai", label: "AI Node", sub: "Suy nghĩ / tóm tắt / dịch", color: "#f97316", x: 260 },
+    { id: "filter", label: "Điều kiện", sub: "Nếu... thì...", color: "#a855f7", x: 440 },
+    { id: "action", label: "Action", sub: "Hành động cuối", color: "#0ea5e9", x: 620 },
+  ];
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-4">
+      <p className="text-sm font-semibold text-foreground mb-1">
+        Bộ phận của một workflow
+      </p>
+      <p className="text-[11px] text-muted mb-3">
+        Một workflow = <strong>trigger</strong> (sự kiện kích hoạt) +{" "}
+        <strong>nhiều bước</strong> (AI, điều kiện, gọi app khác) +{" "}
+        <strong>action</strong> (hành động cuối).
+      </p>
+
+      <svg viewBox="0 0 720 160" className="w-full">
+        <defs>
+          <marker
+            id="arr-aw"
+            markerWidth="10"
+            markerHeight="8"
+            refX="9"
+            refY="4"
+            orient="auto"
+          >
+            <polygon points="0 0, 10 4, 0 8" fill="#64748b" />
+          </marker>
+        </defs>
+
+        {/* lines */}
+        {nodes.slice(0, -1).map((n, i) => {
+          const next = nodes[i + 1];
+          return (
+            <g key={`edge-${i}`}>
+              <line
+                x1={n.x + 55}
+                y1={80}
+                x2={next.x - 55}
+                y2={80}
+                stroke="#64748b"
+                strokeWidth={2}
+                markerEnd="url(#arr-aw)"
+              />
+              <motion.circle
+                r={4}
+                fill={n.color}
+                initial={{ cx: n.x + 55, cy: 80, opacity: 0 }}
+                animate={{
+                  cx: [n.x + 55, next.x - 55],
+                  opacity: [0, 1, 0],
+                }}
+                transition={{
+                  duration: 1.4,
+                  repeat: Infinity,
+                  delay: i * 0.4,
+                  ease: "linear",
+                }}
+              />
+            </g>
+          );
+        })}
+
+        {/* nodes */}
+        {nodes.map((n) => (
+          <g key={n.id}>
+            <rect
+              x={n.x - 55}
+              y={55}
+              width={110}
+              height={50}
+              rx={10}
+              fill={n.color}
+              opacity={0.9}
+            />
+            <text
+              x={n.x}
+              y={78}
+              textAnchor="middle"
+              fill="white"
+              fontSize={12}
+              fontWeight={700}
+            >
+              {n.label}
+            </text>
+            <text
+              x={n.x}
+              y={94}
+              textAnchor="middle"
+              fill="white"
+              fontSize={9}
+              opacity={0.85}
+            >
+              {n.sub}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Manual vs Workflow comparison
+// ─────────────────────────────────────────────────────────────
+
+function ManualVsAutomatic() {
+  return (
+    <ToggleCompare
+      labelA="Làm tay mỗi ngày"
+      labelB="Workflow tự động"
+      description="Cùng một việc: tóm tắt email khách và ghi vào bảng theo dõi."
+      childA={
+        <div className="space-y-2 text-sm">
+          <Row emoji="✉" text="Mở Gmail, đọc từng email mới (mất 20 phút)" />
+          <Row emoji="✍" text="Viết tóm tắt tay trong Notes (mất 15 phút)" />
+          <Row emoji="▤" text="Mở Google Sheets, nhập từng dòng (mất 10 phút)" />
+          <Row emoji="☎" text="Báo sếp khi có email khiếu nại (quên 1 lần / tuần)" />
+          <p className="text-xs text-muted mt-3">
+            Tổng: <strong>45 phút mỗi ngày</strong> = 15 giờ/tháng = gần 2 ngày
+            công bị "ăn" bởi việc lặp.
+          </p>
+        </div>
+      }
+      childB={
+        <div className="space-y-2 text-sm">
+          <Row emoji="⚙" text="Workflow chạy ngầm, phát hiện email mới" />
+          <Row emoji="AI" text="AI tóm tắt và phân loại tự động trong 3 giây" />
+          <Row emoji="▤" text="Ghi vào Sheets cũng trong 3 giây" />
+          <Row emoji="🔔" text="Slack cảnh báo sếp ngay khi có khiếu nại — không bao giờ quên" />
+          <p className="text-xs text-muted mt-3">
+            Tổng: <strong>gần 0 phút mỗi ngày</strong> — chỉ tốn khoảng 15 phút{" "}
+            <em>một lần</em> lúc dựng workflow ban đầu.
+          </p>
+        </div>
+      }
+    />
+  );
+}
+
+function Row({ emoji, text }: { emoji: string; text: string }) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg bg-surface px-3 py-2">
+      <span className="text-lg">{emoji}</span>
+      <span className="flex-1 text-foreground">{text}</span>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tool comparison in TabView
+// ─────────────────────────────────────────────────────────────
+
+function ToolCard({ tool }: { tool: Tool }) {
+  return (
+    <div
+      className="rounded-xl border p-4 space-y-2"
+      style={{ borderColor: tool.color + "55", background: tool.color + "0f" }}
+    >
+      <div className="flex items-center justify-between">
+        <p className="text-base font-bold" style={{ color: tool.color }}>
+          {tool.name}
+        </p>
+        <span
+          className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+          style={{ background: tool.color + "22", color: tool.color }}
+        >
+          Học: {tool.learningCurve}
+        </span>
+      </div>
+      <p className="text-xs italic text-foreground/90">{tool.tagline}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+        <div className="rounded-md bg-card border border-border p-2">
+          <p className="text-[10px] uppercase font-bold text-muted">Mạnh</p>
+          <p className="text-xs text-foreground/90 mt-1">{tool.strength}</p>
+        </div>
+        <div className="rounded-md bg-card border border-border p-2">
+          <p className="text-[10px] uppercase font-bold text-muted">Yếu</p>
+          <p className="text-xs text-foreground/90 mt-1">{tool.weakness}</p>
+        </div>
+      </div>
+      <div className="pt-2 border-t border-border/50 text-xs text-muted leading-relaxed">
+        <p>
+          <strong className="text-foreground">Phù hợp nhất:</strong>{" "}
+          {tool.bestFor}
+        </p>
+        <p className="mt-1">
+          <strong className="text-foreground">Chi phí:</strong> {tool.pricing}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5 ví dụ như Callout cards
+// ─────────────────────────────────────────────────────────────
+
+function ExampleCards() {
+  return (
+    <div className="grid md:grid-cols-2 gap-3">
+      {EXAMPLES.map((ex, i) => (
+        <motion.div
+          key={ex.title}
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.08 }}
+          className="rounded-xl border p-4 bg-card"
+          style={{ borderLeft: `4px solid ${ex.color}` }}
+        >
+          <div className="flex justify-between items-start gap-2 mb-2">
+            <p className="text-sm font-bold text-foreground leading-snug">
+              {ex.title}
+            </p>
+            <span
+              className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full shrink-0"
+              style={{
+                background: ex.color + "22",
+                color: ex.color,
+              }}
+            >
+              {ex.industry}
+            </span>
+          </div>
+          <p className="text-xs text-muted mb-2">
+            <strong className="text-foreground">Kích hoạt:</strong> {ex.trigger}
+          </p>
+          <ol className="space-y-1 mb-2">
+            {ex.actions.map((a, j) => (
+              <li
+                key={j}
+                className="text-xs text-foreground/85 flex gap-2 leading-relaxed"
+              >
+                <span
+                  className="font-mono text-[10px] mt-0.5 shrink-0"
+                  style={{ color: ex.color }}
+                >
+                  {j + 1}.
+                </span>
+                <span>{a}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="text-[11px] italic text-emerald-600 dark:text-emerald-400">
+            {ex.savings}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 // Quiz
-// ───────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 
 const QUIZ: QuizQuestion[] = [
   {
     question:
-      "Pattern nào phù hợp nhất khi bạn cần dịch 50 đoạn văn độc lập càng nhanh càng tốt?",
+      "Workflow AI kiểu Zapier / Make là gì, nói đơn giản nhất?",
     options: [
-      "Sequential — chuỗi xử lý",
-      "Parallelization — chạy song song 50 bản dịch",
-      "Evaluator-Optimizer — sửa dần qua vòng",
-      "Orchestrator-Worker — phân công động",
+      "Một dạng virus máy tính",
+      "Một chuỗi các bước tự động, kéo thả bằng chuột, không cần viết code — giống dây chuyền nhà máy nhưng cho công việc văn phòng",
+      "Một loại trò chơi điện tử",
     ],
     correct: 1,
     explanation:
-      "Các đoạn văn độc lập ⇒ chẻ nhỏ và chạy song song giảm latency gần 50 lần (giới hạn bởi rate limit API). Sequential sẽ cộng dồn thời gian, Evaluator-Optimizer không phù hợp vì không có rubric phức tạp, Orchestrator-Worker dư thừa khi subtasks biết trước.",
+      "Workflow = trigger (sự kiện kích hoạt) + nhiều bước (AI, điều kiện, gọi app) + action (hành động cuối). Người dùng kéo khối vào, nối lại như trò xếp hình. Không code, không cần IT.",
   },
   {
     question:
-      "Trong Evaluator-Optimizer, vì sao nên dùng 2 LLM khác nhau cho generator và evaluator?",
+      "Điểm khác biệt lớn nhất giữa Zapier và n8n là gì?",
     options: [
-      "Tiết kiệm chi phí",
-      "Tránh bias: LLM tự chấm bài mình viết dễ bỏ qua lỗi — tách biệt vai trò tăng tính phản biện",
-      "Để chạy song song",
-      "Vì Open AI yêu cầu",
+      "Zapier nhanh hơn, n8n chậm hơn",
+      "Zapier là dịch vụ đám mây (dữ liệu đi qua máy chủ của họ); n8n có thể tự host ngay trên máy chủ công ty, giữ dữ liệu trong nhà",
+      "Zapier miễn phí, n8n trả phí",
     ],
     correct: 1,
     explanation:
-      "Self-evaluation có bias. Dùng model khác (hoặc cùng model nhưng prompt + persona khác) làm evaluator giúp phát hiện lỗi thật. Thực tế Anthropic cookbook khuyến nghị 2 model khác nhau khi có thể.",
+      "Với ngành yêu cầu bảo mật cao (ngân hàng, bệnh viện, công ty luật), n8n tự host là lựa chọn an toàn vì dữ liệu không rời khỏi máy chủ nội bộ. Zapier tiện hơn cho doanh nghiệp vừa và nhỏ vì không cần bảo trì hạ tầng.",
   },
   {
     question:
-      "Khác biệt cơ bản giữa Routing và Orchestrator-Worker là gì?",
+      "Một khoản 'chi phí ẩn' mà người mới làm workflow hay bỏ quên là?",
     options: [
-      "Routing chạy song song, Orchestrator chạy tuần tự",
-      "Routing chọn 1 handler duy nhất (số phân nhánh cố định), Orchestrator tạo N subtask động tại runtime rồi phân cho worker",
-      "Routing cần nhiều LLM hơn",
-      "Không có khác biệt đáng kể",
+      "Tiền điện",
+      "Chi phí gọi AI: mỗi bước AI là một lần gọi API, chạy 1000 lần/ngày có thể thành vài trăm nghìn đồng/tháng nếu không giới hạn",
+      "Tiền thuê bao internet",
     ],
     correct: 1,
     explanation:
-      "Routing = if/else nâng cấp (1 nhánh trong N cố định). Orchestrator-Worker = kế hoạch động (N thay đổi tuỳ input, worker có thể tạo mới). Routing đơn giản, Orchestrator linh hoạt nhưng đắt và dễ sai.",
+      "Workflow chạy lặp rất nhiều lần. Mỗi lần AI tóm tắt tốn ~0.01 USD — không nhiều — nhưng nhân với 10.000 lượt/tháng thì thành con số đáng kể. Luôn đặt giới hạn số lần chạy và theo dõi chi phí tháng đầu.",
   },
   {
     question:
-      "Pattern nào có quality cao nhất nhưng latency và cost cũng cao nhất?",
+      "Khi nào bạn KHÔNG nên dùng workflow tự động?",
     options: [
-      "Sequential",
-      "Routing",
-      "Evaluator-Optimizer — mỗi vòng tốn 2 LLM call, cần nhiều vòng để đạt chất lượng cao",
-      "Parallelization",
-    ],
-    correct: 2,
-    explanation:
-      "Evaluator-Optimizer đổi thời gian + tiền lấy chất lượng. Mỗi vòng có 2 LLM call (gen + eval), chạy 2-5 vòng ⇒ 4-10 lần so với 1-shot. Chọn khi chất lượng quan trọng hơn cost/latency.",
-  },
-  {
-    question:
-      "Kết hợp Parallelization + Voting (3 LLM trả lời, lấy đa số) giải quyết vấn đề gì?",
-    options: [
-      "Giảm chi phí",
-      "Giảm variance của output — nếu 2/3 model đồng ý, độ tin cậy cao hơn 1 model đơn",
-      "Tăng tốc độ",
-      "Không có lợi ích thực tế",
+      "Khi việc lặp đi lặp lại hàng ngày",
+      "Khi quyết định có rủi ro cao (ví dụ: chuyển tiền, ký hợp đồng) — các bước này cần có người duyệt, không nên để AI tự chạy đến cùng",
+      "Khi có nhiều app cần nối với nhau",
     ],
     correct: 1,
     explanation:
-      "Voting giảm rủi ro hallucination: nếu 3 model độc lập đưa cùng kết quả, khả năng đúng tăng vọt. Dùng khi task có đáp án rõ (true/false, số, label) — không phù hợp cho text dài mở.",
-  },
-  {
-    question:
-      "Rủi ro lớn nhất của Orchestrator-Worker là gì?",
-    options: [
-      "Chi phí API",
-      "Orchestrator tạo kế hoạch sai → worker làm việc vô ích, có thể lặp vô hạn nếu orchestrator tự gọi lại nó",
-      "Worker không đủ thông minh",
-      "Mạng chậm",
-    ],
-    correct: 1,
-    explanation:
-      "Orchestrator là single point of failure. Nếu nó phân công sai, cả workflow mất công. Cần: schema output chặt, max_depth khi orchestrator đệ quy, giám sát human trước các hành động tốn kém.",
-  },
-  {
-    question:
-      "Workflow Sequential có ưu điểm gì so với các pattern khác?",
-    options: [
-      "Nhanh nhất",
-      "Dễ debug + dễ monitor: mỗi bước có input/output rõ ràng, lỗi xảy ra ở bước nào thấy ngay",
-      "Chất lượng cao nhất",
-      "Không có ưu điểm",
-    ],
-    correct: 1,
-    explanation:
-      "Sequential = chuỗi hàm xếp tuần tự. Bạn có thể log input/output mỗi bước, test từng bước độc lập, replay khi có lỗi. Đây là điểm mạnh công nghệ: khi không cần linh hoạt, đơn giản luôn thắng.",
+      "Quy tắc vàng: workflow tốt cho việc lặp lại & rủi ro thấp (sàng email, ghi dữ liệu, báo cáo). Với việc rủi ro cao — chuyển tiền, duyệt hợp đồng, tuyển dụng cuối — phải có 'chốt người' ở bước cuối. AI đề xuất, người duyệt.",
   },
   {
     type: "fill-blank",
     question:
-      "5 pattern workflow cốt lõi là: {blank} (chuỗi tuần tự), {blank} (classifier chọn nhánh), {blank} (chạy đồng thời), {blank}-worker (coordinator động) và evaluator-{blank} (loop sửa bài).",
+      "Năm công cụ workflow no-code phổ biến là {blank}, {blank}, {blank}, {blank} và {blank}.",
     blanks: [
-      { answer: "sequential", accept: ["tuần tự", "chaining"] },
-      { answer: "routing", accept: ["định tuyến", "route"] },
-      { answer: "parallelization", accept: ["parallel", "song song"] },
-      { answer: "orchestrator", accept: ["điều phối"] },
-      { answer: "optimizer", accept: ["generator", "tối ưu"] },
+      { answer: "Zapier", accept: ["zapier"] },
+      { answer: "Make", accept: ["make.com", "make"] },
+      { answer: "n8n", accept: ["N8N"] },
+      { answer: "Gumloop", accept: ["gumloop"] },
+      { answer: "Dify", accept: ["dify"] },
     ],
     explanation:
-      "Đây là 5 mẫu Anthropic tổng kết trong 'Building Effective Agents' (Dec 2024). Nắm được 5 pattern này là đủ nền để thiết kế hầu hết các workflow production.",
+      "Zapier (tiện nhất), Make (kéo-thả đẹp), n8n (tự host), Gumloop (AI sâu), Dify (chatbot nội bộ). Mỗi cái có thế mạnh riêng — không có cái 'tốt nhất', chỉ có cái phù hợp nhất với nhu cầu của bạn.",
   },
 ];
 
-// ───────────────────────────────────────────────────────────────────────────
-// Component
-// ───────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Component chính
+// ─────────────────────────────────────────────────────────────
 
 export default function AgenticWorkflowsTopic() {
-  const [activeId, setActiveId] = useState<PatternId>("sequential");
-  const [animateFlow, setAnimateFlow] = useState(false);
-
-  const pattern = useMemo(
-    () => PATTERNS.find((p) => p.id === activeId) ?? PATTERNS[0],
-    [activeId],
+  const matchPairs = useMemo(
+    () => [
+      { left: "Zapier AI", right: "Nhanh, nhiều app nhất, phí tăng khi chạy nhiều" },
+      { left: "Make.com", right: "Kéo-thả trực quan, rẻ hơn khi chạy nhiều bước" },
+      { left: "n8n", right: "Mã nguồn mở, tự host, dữ liệu không rời công ty" },
+      { left: "Gumloop", right: "Tập trung vào AI sâu, phù hợp phân tích dài" },
+      { left: "Dify", right: "Xây chatbot nội bộ dựa trên tài liệu công ty" },
+    ],
+    [],
   );
-
-  const nodesById = useMemo(() => {
-    const m = new Map<string, FlowNode>();
-    pattern.nodes.forEach((n) => m.set(n.id, n));
-    return m;
-  }, [pattern]);
-
-  const roleColor = useCallback(
-    (role: FlowNode["role"]): string => {
-      switch (role) {
-        case "input":
-          return "#64748b";
-        case "output":
-          return "#0ea5e9";
-        case "router":
-          return "#a855f7";
-        case "worker":
-          return "#22c55e";
-        case "evaluator":
-          return "#ef4444";
-        case "tool":
-          return "#f97316";
-        case "llm":
-        default:
-          return pattern.color;
-      }
-    },
-    [pattern.color],
-  );
-
-  const patternIndex = PATTERNS.findIndex((p) => p.id === activeId);
 
   return (
     <>
-      {/* ━━━ 1. HOOK ━━━ */}
+      {/* ───────── 1. DỰ ĐOÁN ───────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn phải thiết kế hệ thống CSKH đa ngôn ngữ: phân loại yêu cầu, xử lý 50 yêu cầu/phút, đảm bảo câu trả lời chất lượng cao. Dùng 1 workflow pattern có đủ không?"
+          question="Một nhân viên văn phòng Việt mất bao nhiêu thời gian mỗi tuần cho các việc lặp đi lặp lại có thể tự động hoá?"
           options={[
-            "Đủ — dùng 1 LLM call mạnh là xử lý được hết",
-            "Không đủ — cần kết hợp: Routing (phân loại), Parallelization (song song hoá), Evaluator-Optimizer (đảm bảo chất lượng) — mỗi pattern giải quyết 1 vấn đề riêng",
-            "Chỉ cần 1 pattern Sequential tốt là xong",
+            "Dưới 1 giờ",
+            "Khoảng 3-5 giờ",
+            "Khoảng 8-12 giờ",
+            "Hơn 20 giờ",
           ]}
-          correct={1}
-          explanation="Các bài toán thực tế thường cần kết hợp nhiều pattern. Routing giải phân loại, Parallelization giải throughput, Evaluator-Optimizer giải chất lượng. Hiểu từng pattern giúp bạn ghép đúng khối — giống Lego cho AI system design."
+          correct={2}
+          explanation="Các khảo sát toàn cầu cho thấy 8-12 giờ/tuần cho những việc như: sàng email, nhập dữ liệu giữa các hệ thống, tóm tắt cuộc họp, copy-paste báo cáo. Đây chính xác là loại công việc workflow AI xử lý rất tốt mà bạn không cần viết một dòng code nào."
         >
-          <p className="text-sm text-muted mt-2">
-            Bài này mở 5 pattern cốt lõi của Anthropic: Sequential, Routing,
-            Parallelization, Orchestrator-Worker, Evaluator-Optimizer.
+          <p className="mt-2 text-sm text-muted">
+            Bài hôm nay giới thiệu <strong>workflow AI kiểu no-code</strong>:
+            Zapier, Make, n8n, Gumloop, Dify. Đây là các công cụ cho phép bạn
+            dựng quy trình "AI tự chạy nhiều bước" bằng cách kéo-thả — không
+            cần biết lập trình.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ 2. TRỰC QUAN HOÁ ━━━ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
+      {/* ───────── 2. ẨN DỤ ───────── */}
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ quen thuộc">
+        <p>
+          Hãy tưởng tượng một <strong>dây chuyền trong nhà máy</strong>. Mỗi
+          công nhân đứng một vị trí, làm một việc rất nhỏ: lấy linh kiện, vặn
+          ốc, dán nhãn, xếp vào hộp. Công nhân không cần biết hết quy trình —
+          chỉ làm việc của mình khi có đồ tới.
+        </p>
+        <p>
+          Workflow AI y hệt dây chuyền đó, nhưng thay vì công nhân là{" "}
+          <strong>các khối phần mềm nhỏ</strong>: "đọc email", "AI tóm tắt",
+          "ghi vào Sheets", "gửi Zalo". Khác biệt quan trọng: bạn{" "}
+          <strong>kéo thả để cấu hình</strong> chứ không xây bằng tay từng
+          công nhân. Các công cụ như Zapier và Make biến việc dựng dây chuyền
+          thành trò ghép hình.
+        </p>
+        <Callout variant="insight" title="Tại sao đây là cuộc cách mạng im lặng?">
+          Trước 2023 muốn nối hai phần mềm (ví dụ Gmail + Google Sheets) phải
+          thuê lập trình viên. Bây giờ: một chị phòng kế toán có thể tự làm
+          trong 15 phút. Sức mạnh không còn nằm ở "biết code" — mà ở "biết
+          sắp xếp công việc".
+        </Callout>
+      </LessonSection>
+
+      {/* ───────── 3. TRỰC QUAN HOÁ ───────── */}
+      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Nhìn tận mắt">
         <VisualizationSection>
-          <h3 className="text-base font-semibold text-foreground mb-1">
-            5 mẫu workflow cốt lõi — so sánh latency & quality
-          </h3>
-          <p className="text-sm text-muted mb-4">
-            Chọn 1 pattern để xem luồng thông điệp giữa các node và đánh giá
-            trade-off.
-          </p>
-
-          <div className="mb-4 flex flex-wrap gap-2">
-            {PATTERNS.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => setActiveId(p.id)}
-                className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                  activeId === p.id
-                    ? "text-white"
-                    : "bg-card border border-border text-muted hover:text-foreground"
-                }`}
-                style={activeId === p.id ? { backgroundColor: p.color } : undefined}
-              >
-                {p.shortLabel}
-              </button>
-            ))}
-            <button
-              onClick={() => setAnimateFlow((v) => !v)}
-              className="rounded-lg px-4 py-2 text-sm font-semibold border border-border text-muted hover:text-foreground"
-            >
-              {animateFlow ? "Dừng animation" : "▶ Chạy luồng"}
-            </button>
-          </div>
-
-          <svg viewBox="0 0 720 300" className="w-full max-w-4xl mx-auto mb-4">
-            <defs>
-              <marker
-                id="arr-aw"
-                markerWidth="10"
-                markerHeight="8"
-                refX="9"
-                refY="4"
-                orient="auto"
-              >
-                <polygon points="0 0, 10 4, 0 8" fill="var(--text-tertiary)" />
-              </marker>
-              <marker
-                id="arr-aw-active"
-                markerWidth="10"
-                markerHeight="8"
-                refX="9"
-                refY="4"
-                orient="auto"
-              >
-                <polygon points="0 0, 10 4, 0 8" fill={pattern.color} />
-              </marker>
-            </defs>
-
-            {/* Edges */}
-            {pattern.edges.map((e, idx) => {
-              const from = nodesById.get(e.from);
-              const to = nodesById.get(e.to);
-              if (!from || !to) return null;
-
-              if (e.loop) {
-                return (
-                  <g key={`edge-${idx}`}>
-                    <motion.path
-                      initial={{ pathLength: 0 }}
-                      animate={{
-                        pathLength: animateFlow ? [0, 1, 1] : 1,
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: animateFlow ? Infinity : 0,
-                        delay: idx * 0.2,
-                      }}
-                      d={`M ${from.x} ${from.y - 20} C ${from.x} ${from.y - 70}, ${to.x} ${to.y - 70}, ${to.x} ${to.y - 20}`}
-                      fill="none"
-                      stroke={pattern.color}
-                      strokeWidth={2}
-                      strokeDasharray={e.dashed ? "5,3" : undefined}
-                      markerEnd="url(#arr-aw-active)"
-                    />
-                    {e.label && (
-                      <text
-                        x={(from.x + to.x) / 2}
-                        y={from.y - 55}
-                        textAnchor="middle"
-                        fill={pattern.color}
-                        fontSize={9}
-                        fontWeight={600}
-                      >
-                        {e.label}
-                      </text>
-                    )}
-                  </g>
-                );
-              }
-
-              const dx = to.x - from.x;
-              const dy = to.y - from.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              const ux = dx / dist;
-              const uy = dy / dist;
-              const pad = 42;
-              const x1 = from.x + ux * pad;
-              const y1 = from.y + uy * pad;
-              const x2 = to.x - ux * pad;
-              const y2 = to.y - uy * pad;
-
-              return (
-                <g key={`edge-${idx}`}>
-                  <line
-                    x1={x1}
-                    y1={y1}
-                    x2={x2}
-                    y2={y2}
-                    stroke="var(--text-tertiary)"
-                    strokeWidth={2}
-                    markerEnd="url(#arr-aw)"
-                  />
-                  {e.label && (
-                    <text
-                      x={(x1 + x2) / 2}
-                      y={(y1 + y2) / 2 - 6}
-                      textAnchor="middle"
-                      fill="var(--text-muted)"
-                      fontSize={8}
-                    >
-                      {e.label}
-                    </text>
-                  )}
-                  {animateFlow && (
-                    <motion.circle
-                      r={5}
-                      fill={pattern.color}
-                      initial={{ cx: x1, cy: y1, opacity: 0 }}
-                      animate={{
-                        cx: [x1, x2],
-                        cy: [y1, y2],
-                        opacity: [0, 1, 0],
-                      }}
-                      transition={{
-                        duration: 1.2,
-                        repeat: Infinity,
-                        delay: idx * 0.25,
-                        ease: "linear",
-                      }}
-                    />
-                  )}
-                </g>
-              );
-            })}
-
-            {/* Nodes */}
-            {pattern.nodes.map((n) => (
-              <g key={n.id}>
-                <rect
-                  x={n.x - 50}
-                  y={n.y - 20}
-                  width={100}
-                  height={40}
-                  rx={10}
-                  fill={roleColor(n.role)}
-                  opacity={0.92}
-                />
-                <text
-                  x={n.x}
-                  y={n.y + 4}
-                  textAnchor="middle"
-                  fill="white"
-                  fontSize={10}
-                  fontWeight={700}
-                >
-                  {n.label}
-                </text>
-              </g>
-            ))}
-          </svg>
-
-          {/* Thông tin pattern */}
-          <div className="grid gap-3 md:grid-cols-2">
-            <div
-              className="rounded-lg border p-4"
-              style={{ borderColor: pattern.color, backgroundColor: `${pattern.color}10` }}
-            >
-              <p className="text-sm font-semibold" style={{ color: pattern.color }}>
-                {pattern.label}
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm font-semibold text-foreground mb-1">
+                Demo 1 — Bên trong một công cụ kéo-thả
               </p>
-              <p className="mt-2 text-sm text-foreground">{pattern.summary}</p>
-              <p className="mt-2 text-xs text-muted">
-                <strong>Khi dùng:</strong> {pattern.whenToUse}
+              <p className="text-xs text-muted mb-3">
+                Đây là ảnh chụp dựng lại của một scenario trong Make.com. Mỗi
+                khối là một bước; mũi tên chạy từ trên xuống là dòng dữ liệu.
               </p>
-              <p className="mt-2 text-xs text-muted">
-                <strong>Ví dụ thực:</strong> {pattern.realExample}
-              </p>
-              <p className="mt-2 text-xs text-muted">
-                <strong>Cạm bẫy:</strong> {pattern.pitfall}
-              </p>
+              <FlowBuilderMock />
             </div>
 
-            <div className="rounded-lg border border-border bg-background/50 p-4">
-              <p className="text-sm font-semibold text-foreground">
-                Trade-off
+            <LessonSection label="Demo 1b — Thử sắp lại thứ tự các bước">
+              <p className="text-xs text-muted mb-3">
+                Kéo các khối về đúng thứ tự của workflow 'trợ lý email CSKH'.
+                Thứ tự logic: trigger → AI xử lý → ghi dữ liệu → thông báo.
               </p>
-              <div className="mt-3 space-y-3 text-xs text-muted">
-                <TradeoffBar
-                  label="Latency"
-                  score={pattern.latencyScore}
-                  value={pattern.latency}
-                  color="#0ea5e9"
-                />
-                <TradeoffBar
-                  label="Quality"
-                  score={pattern.qualityScore}
-                  value={pattern.quality}
-                  color="#22c55e"
-                />
-                <TradeoffBar
-                  label="Cost"
-                  score={pattern.costScore}
-                  value={pattern.cost}
-                  color="#f59e0b"
+              <Reorderable
+                items={FLOW_BLOCKS}
+                correctOrder={[0, 1, 2, 3, 4]}
+                instruction="Kéo khối về đúng thứ tự rồi nhấn 'Kiểm tra'."
+              />
+            </LessonSection>
+
+            <LessonSection label="Demo 2 — Thủ công mỗi ngày vs workflow tự động">
+              <ManualVsAutomatic />
+            </LessonSection>
+
+            <LessonSection label="Demo 3 — Năm công cụ no-code phổ biến">
+              <p className="text-xs text-muted mb-3">
+                Mỗi công cụ có một triết lý thiết kế. Xem qua từng tab, sau
+                đó thử ghép tên với thế mạnh ở phần dưới.
+              </p>
+              <TabView
+                tabs={TOOLS.map((t) => ({
+                  label: t.name,
+                  content: <ToolCard tool={t} />,
+                }))}
+              />
+              <div className="mt-4">
+                <MatchPairs
+                  pairs={matchPairs}
+                  instruction="Nối tên công cụ bên trái với mô tả thế mạnh bên phải."
                 />
               </div>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <ProgressSteps
-              current={patternIndex + 1}
-              total={PATTERNS.length}
-              labels={PATTERNS.map((p) => p.shortLabel)}
-            />
-          </div>
-
-          {/* Bảng so sánh tổng */}
-          <div className="mt-6 overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-border text-left">
-                  <th className="py-2 pr-3 font-semibold text-foreground">
-                    Pattern
-                  </th>
-                  <th className="py-2 pr-3 font-semibold text-foreground">
-                    Latency
-                  </th>
-                  <th className="py-2 pr-3 font-semibold text-foreground">
-                    Quality
-                  </th>
-                  <th className="py-2 pr-3 font-semibold text-foreground">
-                    Cost
-                  </th>
-                  <th className="py-2 pr-3 font-semibold text-foreground">
-                    Chọn khi
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {PATTERNS.map((p) => (
-                  <tr
-                    key={p.id}
-                    className={`border-b border-border/60 ${
-                      activeId === p.id ? "bg-card/60" : ""
-                    }`}
-                  >
-                    <td className="py-2 pr-3 font-semibold" style={{ color: p.color }}>
-                      {p.shortLabel}
-                    </td>
-                    <td className="py-2 pr-3 text-muted">{p.latency}</td>
-                    <td className="py-2 pr-3 text-muted">{p.quality}</td>
-                    <td className="py-2 pr-3 text-muted">{p.cost}</td>
-                    <td className="py-2 pr-3 text-muted">{p.whenToUse.split(".")[0]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            </LessonSection>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ 3. AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
+      {/* ───────── 4. AHA ───────── */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
-          Agentic workflow không phải chạy LLM nhiều lần một cách bừa bãi —
-          mà là <strong>kiến trúc có cấu trúc</strong> với những khối Lego
-          được đặt tên rõ ràng: Sequential, Routing, Parallelization,
-          Orchestrator-Worker, Evaluator-Optimizer. Mỗi khối giải quyết một
-          loại vấn đề cụ thể (latency, throughput, phân loại, linh hoạt,
-          chất lượng). Kỹ năng của kiến trúc sư AI là biết ghép khối nào cho
-          bài toán nào — chứ không phải nhồi tất cả vào một prompt dài.
-          Thực ra, càng ít pattern càng tốt: đơn giản luôn thắng.
+          <p>
+            Sức mạnh workflow AI no-code không phải ở việc{" "}
+            <strong>AI giỏi đến đâu</strong>, mà ở việc bạn có thể{" "}
+            <strong>ghép AI vào giữa</strong> hai phần mềm mà bình thường
+            không nói chuyện được với nhau — Gmail và Google Sheets, Shopee và
+            Zalo, Zoom và Teams. Không cần lập trình viên, không cần phòng IT,
+            không cần bất kỳ ai ngoài chính bạn. Đây là lần đầu tiên trong
+            lịch sử công sở, người không code có thể tự xây hệ thống tự động
+            cho mình.
+          </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ 4. THÁCH THỨC 1 ━━━ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách 1">
+      {/* ───────── 5. THỬ THÁCH ───────── */}
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
-          question="Bạn xây Agent viết blog post chất lượng cao. Bản nháp 1 thường 6/10. Yêu cầu sản phẩm cuối ≥ 9/10. Chọn pattern nào?"
+          question="Bạn là HR của công ty 300 người, mỗi tháng nhận 400 CV. Bạn muốn dựng workflow AI sàng CV. Bước nào KHÔNG nên để AI tự quyết định hoàn toàn?"
           options={[
-            "Sequential — chuỗi xử lý",
-            "Routing — phân loại chủ đề",
-            "Evaluator-Optimizer — generator viết, evaluator chấm theo rubric, loop cho đến khi đạt 9/10",
-            "Parallelization — 3 LLM viết song song",
+            "Đọc PDF và rút thông tin như tên, kỹ năng, năm kinh nghiệm",
+            "Cho điểm sơ bộ 1-10 dựa trên mô tả công việc",
+            "Gửi thư từ chối cho ứng viên có điểm thấp — phải có người duyệt, vì từ chối một người có thể ảnh hưởng danh tiếng công ty và AI có thể sai thiên lệch",
+            "Ghi điểm vào bảng Airtable",
           ]}
           correct={2}
-          explanation="Evaluator-Optimizer là lựa chọn chính xác: bạn có rubric rõ (9/10) và cần chất lượng cao > tốc độ. Generator viết → Evaluator chấm + feedback → Generator sửa → lặp. Thường 2-3 vòng là đạt. Parallelization tốt cho số lượng nhưng không giải quyết chất lượng từng bài."
+          explanation="Quy tắc vàng: AI có thể đề xuất, nhưng quyết định 'có tính ảnh hưởng tới người' (từ chối, duyệt tiền, ký) phải có chốt người. AI có thể phân biệt giới/tuổi/trường học một cách thiên lệch mà không tự biết. Workflow tốt: AI chấm điểm + gợi ý, người duyệt cuối."
         />
       </LessonSection>
 
-      {/* ━━━ 5. GIẢI THÍCH SÂU ━━━ */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
+      {/* ───────── 6. GIẢI THÍCH SÂU ───────── */}
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Đi sâu hơn">
         <ExplanationSection>
-          <p>
-            Anthropic (Schluntz & Zhang, 2024) tổng kết 5 pattern cốt lõi cho
-            production agentic systems trong bài &quot;Building Effective
-            Agents&quot;. Mỗi pattern là một cấu hình LLM + control flow khác
-            nhau — bạn có thể ghép chúng như Lego để xây hệ thống phức tạp.
-            Dưới đây là 5 pattern + toán học đơn giản của trade-off:
-          </p>
+          <TriggerActionDiagram />
 
-          <ul className="list-disc list-inside space-y-2 pl-2">
+          <p className="text-sm mt-4">
+            <strong>Ba loại khối</strong> cấu thành mọi workflow:
+          </p>
+          <ul className="list-disc list-inside space-y-1 text-sm pl-2">
             <li>
-              <strong>Sequential (Prompt chaining):</strong> chuỗi tuyến tính
-              các LLM call. Đơn giản nhất, dễ debug, nhưng lỗi lan truyền.
+              <strong>Trigger (kích hoạt):</strong> sự kiện bắt đầu workflow —
+              "có email mới", "đúng 7h sáng", "có đơn Shopee mới", "ai đó
+              submit form".
             </li>
             <li>
-              <strong>Routing:</strong> classifier chọn 1 trong N handler
-              chuyên biệt. Tăng chất lượng bằng chuyên biệt hoá.
+              <strong>Action (hành động):</strong> việc gọi app khác làm thay
+              — "tạo bản ghi trong Sheets", "gửi Slack", "tạo thẻ Trello", "gửi
+              Zalo".
             </li>
             <li>
-              <strong>Parallelization:</strong> N worker chạy đồng thời —
-              sectioning (chẻ input) hoặc voting (gộp đa số).
-            </li>
-            <li>
-              <strong>Orchestrator-Worker:</strong> coordinator LLM phân công
-              động; worker chạy song song; synthesizer tổng hợp.
-            </li>
-            <li>
-              <strong>Evaluator-Optimizer:</strong> generator + critic loop
-              — dùng khi rubric rõ ràng và chất lượng quan trọng hơn chi phí.
+              <strong>AI node (bước thông minh):</strong> khối gọi AI giữa
+              chừng — tóm tắt, phân loại, dịch, rút thông tin, sinh câu trả
+              lời.
             </li>
           </ul>
 
-          <p>
-            Gọi <LaTeX>T</LaTeX> là tổng thời gian, <LaTeX>N</LaTeX> là số
-            bước, <LaTeX>t_i</LaTeX> là thời gian bước thứ{" "}
-            <LaTeX>i</LaTeX>. Một số công thức gần đúng:
+          <p className="text-sm mt-4">
+            Dưới đây là <strong>5 workflow văn phòng Việt thường gặp</strong>.
+            Mỗi cái có thể dựng trong buổi chiều bằng Zapier hoặc Make.
           </p>
 
-          <LaTeX block>{`T_{\\text{seq}} = \\sum_{i=1}^{N} t_i`}</LaTeX>
-          <LaTeX block>{`T_{\\text{par}} \\approx \\max_{i} t_i + t_{\\text{agg}}`}</LaTeX>
-          <LaTeX block>{`T_{\\text{eval-opt}} \\approx k \\cdot (t_{\\text{gen}} + t_{\\text{eval}})`}</LaTeX>
+          <ExampleCards />
 
-          <p>
-            trong đó <LaTeX>k</LaTeX> là số vòng loop (thường 2-5). Công thức
-            cho thấy Parallelization gần tối ưu latency khi các bước độc lập,
-            và Evaluator-Optimizer tốn nhân <LaTeX>k</LaTeX> lần chi phí đổi
-            lấy chất lượng.
+          <Callout variant="warning" title="Ba cạm bẫy khi mới bắt đầu">
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>
+                <strong>Chi phí tăng theo lượt chạy:</strong> một workflow gọi
+                AI 5000 lần/tháng có thể tốn vài trăm nghìn đồng bạn không
+                để ý. Hãy đặt giới hạn & theo dõi tháng đầu.
+              </li>
+              <li>
+                <strong>Bẫy tin cậy AI quá mức:</strong> AI đôi khi phân loại
+                sai, dịch lệch nghĩa. Đừng để bước AI duyệt hoàn toàn các
+                hành động quan trọng.
+              </li>
+              <li>
+                <strong>Rò rỉ dữ liệu nhạy cảm:</strong> Zapier, Make là cloud
+                — dữ liệu đi qua máy chủ nước ngoài. Nếu xử lý thông tin khách
+                hàng nhạy cảm, cân nhắc n8n tự host.
+              </li>
+            </ul>
+          </Callout>
+
+          <Callout variant="tip" title="Khi nào nên dùng — và khi nào không">
+            <p className="text-sm mb-2">
+              <strong>Nên dùng khi:</strong> việc lặp đi lặp lại nhiều lần,
+              rủi ro thấp, dữ liệu đã có sẵn dạng số, kết quả sai vẫn sửa được
+              dễ.
+            </p>
+            <p className="text-sm">
+              <strong>KHÔNG nên dùng khi:</strong> quyết định có ảnh hưởng
+              lớn (tiền, hợp đồng, nhân sự), dữ liệu cực nhạy cảm không được
+              ra ngoài, việc đòi hỏi phán đoán sáng tạo mà AI chưa làm tốt.
+            </p>
+          </Callout>
+
+          <p className="text-sm">
+            Workflow AI và{" "}
+            <TopicLink slug="ai-coding-assistants">AI coding assistants</TopicLink>{" "}
+            là hai mặt của cùng một làn sóng: AI đang thò tay vào{" "}
+            <em>mọi khâu công việc</em> — cả coding lẫn văn phòng. Ai biết
+            kéo-thả trước sẽ có lợi thế trước.
           </p>
-
-          <CodeBlock language="python" title="workflows_langgraph.py (Sequential + Routing + Parallel)">{`# Triển khai 3 pattern cơ bản bằng LangGraph
-from typing import TypedDict, Literal
-from langgraph.graph import StateGraph, END
-from langchain_openai import ChatOpenAI
-import asyncio
-
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-llm_big = ChatOpenAI(model="gpt-4o", temperature=0)
-
-# ────────────────────────────────────────────────────────────────
-# 1. SEQUENTIAL: dịch → tóm tắt → rút keyword
-# ────────────────────────────────────────────────────────────────
-class SeqState(TypedDict):
-    input_text: str
-    translated: str
-    summary: str
-    keywords: list[str]
-
-def translate(s: SeqState) -> SeqState:
-    out = llm.invoke(f"Dịch sang tiếng Anh: {s['input_text']}")
-    s["translated"] = out.content
-    return s
-
-def summarize(s: SeqState) -> SeqState:
-    out = llm.invoke(f"Tóm tắt trong 2 câu: {s['translated']}")
-    s["summary"] = out.content
-    return s
-
-def extract_keywords(s: SeqState) -> SeqState:
-    out = llm.invoke(f"Trả về 5 keyword JSON: {s['summary']}")
-    s["keywords"] = out.content.split(",")
-    return s
-
-seq_graph = StateGraph(SeqState)
-seq_graph.add_node("translate", translate)
-seq_graph.add_node("summarize", summarize)
-seq_graph.add_node("keywords", extract_keywords)
-seq_graph.set_entry_point("translate")
-seq_graph.add_edge("translate", "summarize")
-seq_graph.add_edge("summarize", "keywords")
-seq_graph.add_edge("keywords", END)
-seq_app = seq_graph.compile()
-
-# ────────────────────────────────────────────────────────────────
-# 2. ROUTING: phân loại ticket → handler tương ứng
-# ────────────────────────────────────────────────────────────────
-class RouteState(TypedDict):
-    ticket: str
-    category: Literal["refund", "tech", "complaint"]
-    response: str
-
-def classify(s: RouteState) -> RouteState:
-    out = llm.invoke(
-        f"Phân loại ticket vào 1 trong [refund, tech, complaint]: {s['ticket']}"
-    )
-    s["category"] = out.content.strip().lower()  # type: ignore
-    return s
-
-def handle_refund(s: RouteState) -> RouteState:
-    s["response"] = llm.invoke(
-        f"Bạn là chuyên viên refund. Trả lời: {s['ticket']}"
-    ).content
-    return s
-
-def handle_tech(s: RouteState) -> RouteState:
-    s["response"] = llm_big.invoke(
-        f"Bạn là kỹ sư hỗ trợ. Trả lời ngắn gọn, chính xác: {s['ticket']}"
-    ).content
-    return s
-
-def handle_complaint(s: RouteState) -> RouteState:
-    s["response"] = llm.invoke(
-        f"Bạn là chuyên viên lắng nghe. Xoa dịu + ghi nhận: {s['ticket']}"
-    ).content
-    return s
-
-def route_next(s: RouteState) -> str:
-    return f"handle_{s['category']}"
-
-route_graph = StateGraph(RouteState)
-route_graph.add_node("classify", classify)
-route_graph.add_node("handle_refund", handle_refund)
-route_graph.add_node("handle_tech", handle_tech)
-route_graph.add_node("handle_complaint", handle_complaint)
-route_graph.set_entry_point("classify")
-route_graph.add_conditional_edges("classify", route_next, {
-    "handle_refund": "handle_refund",
-    "handle_tech": "handle_tech",
-    "handle_complaint": "handle_complaint",
-})
-for handler in ["handle_refund", "handle_tech", "handle_complaint"]:
-    route_graph.add_edge(handler, END)
-route_app = route_graph.compile()
-
-# ────────────────────────────────────────────────────────────────
-# 3. PARALLELIZATION: 3 evaluator chạy song song, voting
-# ────────────────────────────────────────────────────────────────
-async def security_review(code: str) -> str:
-    return await llm.ainvoke(
-        f"Tìm lỗ hổng security trong code sau:\\n{code}"
-    )
-
-async def style_review(code: str) -> str:
-    return await llm.ainvoke(
-        f"Tìm lỗi style / readability trong:\\n{code}"
-    )
-
-async def perf_review(code: str) -> str:
-    return await llm.ainvoke(
-        f"Tìm lỗi performance / big-O trong:\\n{code}"
-    )
-
-async def parallel_review(code: str) -> dict:
-    sec, sty, perf = await asyncio.gather(
-        security_review(code),
-        style_review(code),
-        perf_review(code),
-    )
-    aggregate = llm_big.invoke(
-        "Gộp 3 review thành 1 báo cáo thống nhất:\\n"
-        f"Security: {sec}\\n"
-        f"Style: {sty}\\n"
-        f"Perf: {perf}"
-    )
-    return {"final_report": aggregate.content}
-
-# result = asyncio.run(parallel_review(code_to_review))
-`}</CodeBlock>
-
-          <Callout variant="info" title="Vì sao LangGraph hợp với workflow?">
-            LangGraph mô hình hoá workflow dưới dạng đồ thị có hướng với
-            state được chia sẻ. Mỗi node là một hàm (hoặc LLM call), edge là
-            luật chuyển tiếp. Bạn có được: checkpoint, resume, streaming,
-            human-in-the-loop miễn phí. So với tự viết <code>while True</code>{" "}
-            loop, LangGraph giảm bug race condition và dễ kiểm thử.
-          </Callout>
-
-          <CodeBlock language="python" title="workflows_crewai.py (Orchestrator-Worker + Evaluator-Optimizer)">{`# CrewAI cho bạn declarative agents — hợp với Orchestrator-Worker
-from crewai import Agent, Task, Crew, Process
-
-# ────────────────────────────────────────────────────────────────
-# ORCHESTRATOR-WORKER: code refactor đa file
-# ────────────────────────────────────────────────────────────────
-orchestrator = Agent(
-    role="Lead Engineer",
-    goal="Phân công refactor cho đội ngũ junior theo cấu trúc repo",
-    backstory="Kinh nghiệm 10 năm scale Python codebase.",
-    allow_delegation=True,     # Cho phép orchestrator giao việc
-    verbose=True,
-)
-
-worker_a = Agent(
-    role="Junior A",
-    goal="Refactor các file được giao từ callback sang async/await",
-    backstory="Mới vào, cần hướng dẫn rõ ràng.",
-    allow_delegation=False,
-    verbose=True,
-)
-
-worker_b = Agent(
-    role="Junior B",
-    goal="Viết test cho code đã refactor",
-    backstory="Chuyên pytest + async testing.",
-    allow_delegation=False,
-    verbose=True,
-)
-
-orchestrate_task = Task(
-    description=(
-        "Xem repo, liệt kê 10 file cần refactor, chia đều cho Junior A. "
-        "Sau đó yêu cầu Junior B viết test. Báo cáo progress sau mỗi file."
-    ),
-    expected_output="PR với diff refactor + test pass toàn bộ.",
-    agent=orchestrator,
-)
-
-refactor_crew = Crew(
-    agents=[orchestrator, worker_a, worker_b],
-    tasks=[orchestrate_task],
-    process=Process.hierarchical,    # Orchestrator điều phối
-    verbose=True,
-)
-
-# ────────────────────────────────────────────────────────────────
-# EVALUATOR-OPTIMIZER: dịch văn học có rubric
-# ────────────────────────────────────────────────────────────────
-translator = Agent(
-    role="Literary Translator",
-    goal="Dịch truyện ngắn Việt → Nhật giữ được sắc thái",
-    backstory="Từng dịch Murakami sang tiếng Việt và ngược lại.",
-    verbose=True,
-)
-
-critic = Agent(
-    role="Editor-in-Chief",
-    goal="Chấm bản dịch theo 4 tiêu chí, trả feedback cụ thể",
-    backstory=(
-        "Tiêu chí: (1) chính xác nghĩa, (2) tự nhiên, "
-        "(3) giữ giọng tác giả, (4) ngữ pháp. Chấm 1-10 mỗi mục."
-    ),
-    verbose=True,
-)
-
-translate_task = Task(
-    description="Dịch đoạn văn sang tiếng Nhật: {source_text}",
-    expected_output="Bản dịch tiếng Nhật.",
-    agent=translator,
-)
-
-review_task = Task(
-    description=(
-        "Chấm bản dịch của Translator. Nếu có tiêu chí < 8/10, "
-        "trả feedback cụ thể để Translator sửa. Dừng khi tất cả ≥ 8."
-    ),
-    expected_output="JSON có 'scores' và 'feedback' hoặc 'approved': true",
-    agent=critic,
-    context=[translate_task],
-)
-
-eval_opt_crew = Crew(
-    agents=[translator, critic],
-    tasks=[translate_task, review_task],
-    process=Process.sequential,
-    max_rpm=30,
-)
-
-# result = eval_opt_crew.kickoff(inputs={"source_text": "..."})
-`}</CodeBlock>
-
-          <Callout variant="warning" title="Đừng dùng framework khi chưa cần">
-            Anthropic lưu ý: nhiều dự án thành công chỉ dùng LLM API trực
-            tiếp, không cần LangGraph/CrewAI. Framework thêm trừu tượng,
-            đôi khi che giấu bug. Bắt đầu với vài dòng Python + API call; chỉ
-            chuyển sang framework khi số pattern &gt; 3 hoặc cần state
-            management phức tạp.
-          </Callout>
-
-          <CollapsibleDetail title="Khi nào NÊN dùng Agent (autonomy) thay vì Workflow (fixed)?">
-            <p className="text-sm text-muted">
-              Anthropic phân biệt rạch ròi 2 khái niệm. <strong>Workflow</strong>{" "}
-              là khi bạn viết sẵn đồ thị: input chạy theo đường đã biết.{" "}
-              <strong>Agent</strong> là khi LLM tự quyết định bước tiếp
-              (thông qua{" "}
-              <TopicLink slug="function-calling">function calling</TopicLink>).
-            </p>
-            <p className="mt-2 text-sm text-muted">
-              Khi nào chọn Agent? (1) Không biết trước số bước — bài toán
-              quá mở. (2) Môi trường động — API lỗi, tool trả kết quả bất
-              ngờ. (3) Cần khả năng tự sửa. Các case còn lại: Workflow ổn
-              định, dễ debug, rẻ hơn nhiều.
-            </p>
-            <p className="mt-2 text-sm text-muted">
-              Quy tắc ngón tay: <strong>bắt đầu với Workflow</strong>. Chỉ
-              upgrade lên Agent khi gặp trường hợp Workflow không xử lý nổi.
-              Đa số production system thành công là Workflow được thiết kế
-              kỹ, không phải Agent &quot;thông minh&quot;.
-            </p>
-          </CollapsibleDetail>
-
-          <CollapsibleDetail title="Ghép nhiều pattern: ví dụ thực tế">
-            <p className="text-sm text-muted">
-              Một &quot;customer support copilot&quot; production thường
-              gồm:
-            </p>
-            <ol className="mt-2 list-decimal list-inside space-y-1 text-sm text-muted">
-              <li>
-                <strong>Routing</strong> ở cửa: phân loại ticket thành 5
-                category.
-              </li>
-              <li>
-                Trong nhánh &quot;technical&quot;, dùng{" "}
-                <strong>Sequential</strong>: retrieve context → generate
-                answer → redact PII.
-              </li>
-              <li>
-                Trong nhánh &quot;complaint&quot;, dùng{" "}
-                <strong>Evaluator-Optimizer</strong>: generate → score tone
-                + empathy → refine cho đến khi tone đủ nhẹ.
-              </li>
-              <li>
-                <strong>Parallelization</strong> ở bước redact: 2 LLM chạy
-                song song, 1 phát hiện PII, 1 phát hiện từ nhạy cảm, aggregate
-                bằng union.
-              </li>
-              <li>
-                <strong>Orchestrator-Worker</strong> ở tính năng
-                &quot;escalate&quot;: orchestrator phân công cho các agent
-                chuyên (billing, shipping, legal) rồi synthesize response.
-              </li>
-            </ol>
-            <p className="mt-2 text-sm text-muted">
-              Không một pattern nào giải quyết hết — nhưng 5 khối Lego ghép
-              lại đủ phủ 90%+ các use case thực tế.
-            </p>
-          </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ 6. CALLOUTS PHỤ ━━━ */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Các điểm then chốt">
-        <Callout variant="tip" title="Checklist chọn pattern">
-          Hỏi lần lượt: (1) Bước có biết trước không? — Không → Orchestrator
-          hoặc Agent. Có → tiếp. (2) Có rẽ nhánh theo loại input không? — Có
-          → Routing. (3) Các bước có độc lập không? — Có → Parallel. (4)
-          Chất lượng cần cao hơn one-shot? — Có → Eval-Opt. Còn lại →
-          Sequential.
-        </Callout>
-
-        <Callout variant="insight" title="Quan sát từ production">
-          Đội engineering tại Anthropic, OpenAI, và các startup AI
-          mainstream đều báo cáo: workflow tốt nhất là workflow ít khối
-          nhất. Mỗi khối thêm vào là 1 điểm fail mới, 1 nguồn latency mới.
-          Nguyên tắc Occam: khi 2 workflow cho kết quả tương đương, chọn
-          cái đơn giản hơn. Đơn giản là tính năng.
-        </Callout>
-
-        <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {PATTERNS.map((p) => (
-            <div
-              key={p.id}
-              className="rounded-lg border p-3"
-              style={{ borderColor: `${p.color}55`, backgroundColor: `${p.color}0a` }}
-            >
-              <p
-                className="text-xs font-bold uppercase tracking-wide"
-                style={{ color: p.color }}
-              >
-                {p.shortLabel}
-              </p>
-              <p className="mt-1 text-xs text-muted">{p.summary}</p>
-            </div>
-          ))}
-        </div>
-      </LessonSection>
-
-      {/* ━━━ 7. THÁCH THỨC 2 ━━━ */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Thử thách 2">
-        <InlineChallenge
-          question="Startup của bạn cần review 10.000 đơn bảo hiểm/ngày. Mỗi đơn có 5 mục cần kiểm tra độc lập. Chất lượng > tốc độ nhưng chi phí có hạn. Chọn kết hợp pattern nào?"
-          options={[
-            "Chỉ Sequential — đơn giản",
-            "Routing → Parallelization (chia 5 mục chạy song song) → Aggregator; nếu điểm risk cao thì thêm Evaluator-Optimizer để review kỹ",
-            "Evaluator-Optimizer cho tất cả — chất lượng tối đa",
-            "Orchestrator-Worker cho mọi đơn",
-          ]}
-          correct={1}
-          explanation="Giải pháp thực tế: Routing đẩy các đơn &quot;đơn giản&quot; (risk thấp) đi Parallelization nhanh + rẻ; các đơn &quot;khó&quot; mới đi Evaluator-Optimizer. Đây là kiến trúc cascade thường thấy ở production — giữ cost thấp mà vẫn có chất lượng cao cho case khó."
-        />
-      </LessonSection>
-
-      {/* ━━━ 8. TÓM TẮT ━━━ */}
-      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+      {/* ───────── 7. TÓM TẮT ───────── */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
-          title="Những điều cần nhớ về Agentic Workflows"
+          title="Những điều cần nhớ"
           points={[
-            "5 pattern cốt lõi: Sequential (chuỗi), Routing (classifier), Parallelization (song song), Orchestrator-Worker (phân công động), Evaluator-Optimizer (gen + critic loop).",
-            "Trade-off chính: latency vs quality vs cost. Parallel tối ưu latency, Eval-Opt tối ưu quality, Sequential tối ưu cost.",
-            "Workflow = đồ thị cố định (dễ debug, rẻ). Agent = LLM tự chọn bước (linh hoạt, đắt). Bắt đầu với Workflow, upgrade lên Agent khi cần.",
-            "Kết hợp pattern như Lego: Routing + Parallel + Eval-Opt là cấu hình production phổ biến cho customer support / analysis pipeline.",
-            "Framework (LangGraph, CrewAI) giúp nhưng không bắt buộc — vài dòng Python + API call đủ cho dự án nhỏ, framework cần khi state phức tạp.",
-            "Nguyên tắc: đơn giản là tính năng. Workflow ít khối nhất giải quyết được bài toán là workflow thắng.",
+            "Workflow AI = dây chuyền tự động cho công việc văn phòng — kéo thả thay vì code. Trigger → AI node → Action.",
+            "Năm công cụ nên biết: Zapier (nhanh-nhiều app), Make (kéo-thả đẹp), n8n (tự host-bảo mật), Gumloop (AI sâu), Dify (chatbot nội bộ).",
+            "Dùng tốt cho: sàng email, tóm tắt họp, đồng bộ đơn hàng, sàng CV, bản tin sáng — việc lặp & rủi ro thấp.",
+            "Không nên để AI tự quyết định bước có ảnh hưởng lớn (duyệt tiền, từ chối người, ký hợp đồng). Luôn có 'chốt người'.",
+            "Cạm bẫy: chi phí tăng theo lượt chạy, AI phân loại sai, rò rỉ dữ liệu nhạy cảm khi dùng cloud. Theo dõi tháng đầu kỹ.",
           ]}
         />
       </LessonSection>
 
-      {/* ━━━ 9. QUIZ ━━━ */}
-      <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+      {/* ───────── 8. QUIZ ───────── */}
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />
       </LessonSection>
-
-      {/* ━━━ 10. ĐI TIẾP ━━━ */}
-      <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Đi tiếp">
-        <div className="rounded-lg border border-border bg-card p-4 text-sm text-muted">
-          <p className="mb-2 font-semibold text-foreground">
-            Đã nắm 5 pattern — bước tiếp theo:
-          </p>
-          <ul className="list-disc list-inside space-y-1">
-            <li>
-              Hiểu kiến trúc bên trong mỗi Agent —{" "}
-              <TopicLink slug="agent-architecture">Agent Architecture</TopicLink>.
-            </li>
-            <li>
-              Đi sâu <TopicLink slug="planning">Planning</TopicLink> — cách
-              Orchestrator chia subtask.
-            </li>
-            <li>
-              Khi nhiều Agent —{" "}
-              <TopicLink slug="multi-agent">Multi-Agent</TopicLink> và{" "}
-              <TopicLink slug="orchestration">Orchestration</TopicLink>.
-            </li>
-            <li>
-              Đánh giá agentic system —{" "}
-              <TopicLink slug="agent-evaluation">Agent Evaluation</TopicLink>.
-            </li>
-            <li>
-              Cho Agent truy cập công cụ —{" "}
-              <TopicLink slug="function-calling">Function Calling</TopicLink>{" "}
-              và{" "}
-              <TopicLink slug="model-context-protocol">MCP</TopicLink>.
-            </li>
-          </ul>
-
-          <p className="mt-4 font-semibold text-foreground">
-            Checklist triển khai production:
-          </p>
-          <ul className="list-disc list-inside space-y-1 mt-2">
-            <li>
-              <strong>Observability:</strong> log mọi LLM call + latency +
-              token usage. Dùng LangSmith / Langfuse / OpenTelemetry.
-            </li>
-            <li>
-              <strong>Retries:</strong> tool call phải có exponential backoff
-              + jitter. Workflow step có idempotency key.
-            </li>
-            <li>
-              <strong>Budget:</strong> đo token/phiên, ngắt khi vượt
-              ngưỡng. Cảnh báo khi cost/ngày tăng &gt; 2× baseline.
-            </li>
-            <li>
-              <strong>Eval:</strong> golden dataset chạy nightly. Với
-              Evaluator-Optimizer, đo điểm pass-rate theo số vòng.
-            </li>
-            <li>
-              <strong>Fallback:</strong> nếu Router confidence &lt; 0.7,
-              chuyển cho handler tổng quát thay vì đoán.
-            </li>
-            <li>
-              <strong>Human-in-the-loop:</strong> các hành động không đảo
-              ngược (gửi email, charge tiền, xoá file) phải chờ xác nhận.
-            </li>
-            <li>
-              <strong>Cascade:</strong> dùng model rẻ cho bước đơn giản
-              (classify, extract), model lớn chỉ cho bước khó (reason,
-              generate).
-            </li>
-          </ul>
-
-          <p className="mt-4 font-semibold text-foreground">
-            Case study luyện tập:
-          </p>
-          <ol className="list-decimal list-inside space-y-1 mt-2">
-            <li>
-              <strong>Hệ thống viết báo cáo tài chính:</strong> nhận 10 file
-              PDF, trích số liệu, so sánh tháng, viết nhận xét. Đề xuất:
-              Parallel (trích song song 10 file) → Sequential (so sánh →
-              viết) → Eval-Opt (critic kiểm tra tone).
-            </li>
-            <li>
-              <strong>Code review bot:</strong> đọc PR, đánh giá security +
-              style + test coverage. Đề xuất: Parallel (3 reviewer chuyên) →
-              Aggregator → Eval-Opt (refine nếu có conflict giữa reviewer).
-            </li>
-            <li>
-              <strong>Multi-lingual customer care:</strong> Routing (theo
-              ngôn ngữ + category) → Sequential (retrieve KB → generate) →
-              optional Eval-Opt cho khiếu nại nhạy cảm.
-            </li>
-          </ol>
-        </div>
-      </LessonSection>
     </>
-  );
-}
-
-// ───────────────────────────────────────────────────────────────────────────
-// Bar phụ dùng trong VisualizationSection để hiển thị trade-off
-// ───────────────────────────────────────────────────────────────────────────
-
-function TradeoffBar({
-  label,
-  score,
-  value,
-  color,
-}: {
-  label: string;
-  score: number;
-  value: string;
-  color: string;
-}) {
-  const width = Math.max(0, Math.min(5, score)) * 20;
-  return (
-    <div>
-      <div className="flex items-center justify-between">
-        <span className="font-medium text-foreground">{label}</span>
-        <span className="text-muted">{value}</span>
-      </div>
-      <div className="mt-1 h-2 w-full rounded-full bg-background">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${width}%` }}
-          transition={{ duration: 0.5 }}
-          className="h-full rounded-full"
-          style={{ backgroundColor: color }}
-        />
-      </div>
-    </div>
   );
 }

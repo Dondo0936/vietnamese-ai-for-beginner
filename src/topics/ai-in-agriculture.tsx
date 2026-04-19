@@ -1,5 +1,22 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Sprout,
+  Droplets,
+  TrendingUp,
+  Truck,
+  LineChart,
+  Bug,
+  Wifi,
+  CloudSun,
+  MapPin,
+  Leaf,
+  Thermometer,
+  CloudRain,
+  Sun,
+  Sparkles,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -7,9 +24,9 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  LaTeX,
   TopicLink,
+  ToggleCompare,
+  TabView,
   CollapsibleDetail,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
@@ -32,843 +49,794 @@ export const metadata: TopicMeta = {
   tocSections: [{ id: "explanation", labelVi: "Giải thích" }],
 };
 
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 8;
 
-// ---------------------------------------------------------------------------
-// Dataset — 9 "crop leaves" in a 3x3 grid. Each plant has a true condition
-// plus a synthetic probability distribution representing the output of a
-// lightweight CNN (e.g. MobileNetV3) trained for rice / cassava / coffee
-// leaf disease classification. Probabilities sum to ~1.0 for realism.
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// Demo 1 — Phát hiện bệnh trên lá lúa qua ảnh chụp điện thoại
+// ===========================================================================
 
-type DiseaseId =
-  | "healthy"
-  | "blast"
-  | "blight"
-  | "brown_spot"
-  | "tungro"
-  | "mosaic"
-  | "rust";
-
-type Plant = {
+type DiseaseCase = {
   id: string;
-  crop: "rice" | "cassava" | "coffee";
-  cropVi: string;
-  name: string;
-  trueLabel: DiseaseId;
-  probs: Record<DiseaseId, number>;
-  // Activation regions (x, y, r) that a Grad-CAM-like heatmap would highlight
-  activations: { x: number; y: number; r: number; intensity: number }[];
-  // Vietnamese prescription from an extension agent
-  recommendation: string;
+  label: string;
+  location: string;
+  condition: string;
+  confidence: number;
+  regions: { x: number; y: number; r: number }[];
+  color: string;
+  advice: string;
 };
 
-const DISEASE_LABEL_VI: Record<DiseaseId, string> = {
-  healthy: "Khỏe mạnh",
-  blast: "Đạo ôn",
-  blight: "Cháy bìa lá",
-  brown_spot: "Đốm nâu",
-  tungro: "Vàng lùn (tungro)",
-  mosaic: "Khảm lá",
-  rust: "Gỉ sắt",
-};
-
-const DISEASE_COLOR: Record<DiseaseId, string> = {
-  healthy: "#22c55e",
-  blast: "#ef4444",
-  blight: "#f97316",
-  brown_spot: "#b45309",
-  tungro: "#eab308",
-  mosaic: "#a855f7",
-  rust: "#dc2626",
-};
-
-const PLANTS: Plant[] = [
+const DISEASE_CASES: DiseaseCase[] = [
   {
-    id: "p1",
-    crop: "rice",
-    cropVi: "Lúa (Đồng Tháp)",
-    name: "Ruộng lúa #1 — lá xanh đều",
-    trueLabel: "healthy",
-    probs: {
-      healthy: 0.91,
-      blast: 0.03,
-      blight: 0.02,
-      brown_spot: 0.02,
-      tungro: 0.01,
-      mosaic: 0.005,
-      rust: 0.005,
-    },
-    activations: [
-      { x: 50, y: 45, r: 18, intensity: 0.2 },
-      { x: 30, y: 60, r: 10, intensity: 0.1 },
-    ],
-    recommendation:
-      "Cây khỏe. Tiếp tục lịch tưới và bón phân cân đối NPK theo giai đoạn sinh trưởng.",
+    id: "healthy",
+    label: "Lá khoẻ",
+    location: "Đồng Tháp, đầu vụ",
+    condition: "Khoẻ mạnh",
+    confidence: 0.94,
+    regions: [],
+    color: "#16a34a",
+    advice: "Tiếp tục lịch tưới và bón phân cân đối. Kiểm tra lại sau 7 ngày.",
   },
   {
-    id: "p2",
-    crop: "rice",
-    cropVi: "Lúa (Cần Thơ)",
-    name: "Ruộng lúa #2 — vết hình thoi",
-    trueLabel: "blast",
-    probs: {
-      healthy: 0.04,
-      blast: 0.78,
-      blight: 0.08,
-      brown_spot: 0.06,
-      tungro: 0.02,
-      mosaic: 0.01,
-      rust: 0.01,
-    },
-    activations: [
-      { x: 40, y: 40, r: 14, intensity: 0.85 },
-      { x: 60, y: 55, r: 10, intensity: 0.7 },
-      { x: 30, y: 62, r: 8, intensity: 0.55 },
-    ],
-    recommendation:
-      "Dấu hiệu đạo ôn cổ bông. Phun Tricyclazole 75WP liều 1g/lít vào sáng sớm, cách nhau 7 ngày.",
+    id: "dao_on",
+    label: "Đạo ôn",
+    location: "Cần Thơ, giữa vụ",
+    condition: "Nghi đạo ôn (vết hình thoi xám)",
+    confidence: 0.82,
+    regions: [{ x: 30, y: 35, r: 10 }, { x: 55, y: 55, r: 12 }, { x: 70, y: 40, r: 8 }],
+    color: "#dc2626",
+    advice: "Phun Tricyclazole 75WP 1g/lít sáng sớm, cách 7 ngày. Báo khuyến nông xã kiểm tra ruộng lân cận.",
   },
   {
-    id: "p3",
-    crop: "rice",
-    cropVi: "Lúa (An Giang)",
-    name: "Ruộng lúa #3 — cháy mép lá",
-    trueLabel: "blight",
-    probs: {
-      healthy: 0.03,
-      blast: 0.05,
-      blight: 0.82,
-      brown_spot: 0.05,
-      tungro: 0.02,
-      mosaic: 0.02,
-      rust: 0.01,
-    },
-    activations: [
-      { x: 20, y: 35, r: 12, intensity: 0.9 },
-      { x: 80, y: 50, r: 12, intensity: 0.85 },
-      { x: 50, y: 70, r: 10, intensity: 0.6 },
-    ],
-    recommendation:
-      "Cháy bìa lá do vi khuẩn Xanthomonas. Giảm đạm, tăng kali; phun Kasugamycin hoặc đồng oxyclorua.",
+    id: "chay_bia",
+    label: "Cháy bìa lá",
+    location: "An Giang, cuối vụ",
+    condition: "Cháy bìa lá (vi khuẩn Xanthomonas)",
+    confidence: 0.78,
+    regions: [{ x: 15, y: 30, r: 9 }, { x: 85, y: 55, r: 10 }, { x: 10, y: 70, r: 8 }],
+    color: "#f97316",
+    advice: "Giảm đạm, tăng kali. Phun Kasugamycin hoặc Đồng oxyclorua. Tháo nước ruộng 1–2 ngày.",
   },
   {
-    id: "p4",
-    crop: "rice",
-    cropVi: "Lúa (Kiên Giang)",
-    name: "Ruộng lúa #4 — đốm nâu tròn",
-    trueLabel: "brown_spot",
-    probs: {
-      healthy: 0.05,
-      blast: 0.08,
-      blight: 0.06,
-      brown_spot: 0.72,
-      tungro: 0.04,
-      mosaic: 0.02,
-      rust: 0.03,
-    },
-    activations: [
-      { x: 35, y: 40, r: 6, intensity: 0.75 },
-      { x: 55, y: 45, r: 6, intensity: 0.7 },
-      { x: 45, y: 60, r: 6, intensity: 0.8 },
-      { x: 65, y: 30, r: 5, intensity: 0.55 },
-    ],
-    recommendation:
-      "Đốm nâu do Bipolaris oryzae, thường do thiếu kali. Bổ sung K2O và phun Mancozeb 80WP.",
-  },
-  {
-    id: "p5",
-    crop: "rice",
-    cropVi: "Lúa (Sóc Trăng)",
-    name: "Ruộng lúa #5 — lá vàng, cây thấp",
-    trueLabel: "tungro",
-    probs: {
-      healthy: 0.05,
-      blast: 0.03,
-      blight: 0.07,
-      brown_spot: 0.06,
-      tungro: 0.7,
-      mosaic: 0.06,
-      rust: 0.03,
-    },
-    activations: [
-      { x: 30, y: 30, r: 20, intensity: 0.7 },
-      { x: 60, y: 55, r: 18, intensity: 0.78 },
-    ],
-    recommendation:
-      "Vàng lùn do virus, truyền qua rầy nâu. Phun thuốc trừ rầy (Imidacloprid) + nhổ và tiêu hủy cây bệnh.",
-  },
-  {
-    id: "p6",
-    crop: "cassava",
-    cropVi: "Khoai mì (Tây Ninh)",
-    name: "Khoai mì #1 — khảm lá",
-    trueLabel: "mosaic",
-    probs: {
-      healthy: 0.03,
-      blast: 0.01,
-      blight: 0.04,
-      brown_spot: 0.04,
-      tungro: 0.03,
-      mosaic: 0.82,
-      rust: 0.03,
-    },
-    activations: [
-      { x: 40, y: 35, r: 14, intensity: 0.85 },
-      { x: 60, y: 55, r: 14, intensity: 0.8 },
-    ],
-    recommendation:
-      "Bệnh khảm lá sắn (CMD). Nhổ tiêu hủy, dùng giống kháng KM94/KM140, vệ sinh dụng cụ canh tác.",
-  },
-  {
-    id: "p7",
-    crop: "cassava",
-    cropVi: "Khoai mì (Bình Phước)",
-    name: "Khoai mì #2 — lá xanh bóng",
-    trueLabel: "healthy",
-    probs: {
-      healthy: 0.88,
-      blast: 0.01,
-      blight: 0.03,
-      brown_spot: 0.03,
-      tungro: 0.01,
-      mosaic: 0.03,
-      rust: 0.01,
-    },
-    activations: [
-      { x: 50, y: 50, r: 15, intensity: 0.18 },
-    ],
-    recommendation:
-      "Cây khỏe. Duy trì tưới nước hợp lý, tránh úng, kiểm tra rầy trắng 7 ngày/lần.",
-  },
-  {
-    id: "p8",
-    crop: "coffee",
-    cropVi: "Cà phê (Đắk Lắk)",
-    name: "Cà phê #1 — đốm cam dưới lá",
-    trueLabel: "rust",
-    probs: {
-      healthy: 0.02,
-      blast: 0.02,
-      blight: 0.03,
-      brown_spot: 0.09,
-      tungro: 0.01,
-      mosaic: 0.03,
-      rust: 0.8,
-    },
-    activations: [
-      { x: 30, y: 50, r: 8, intensity: 0.85 },
-      { x: 55, y: 55, r: 8, intensity: 0.8 },
-      { x: 75, y: 45, r: 7, intensity: 0.7 },
-    ],
-    recommendation:
-      "Gỉ sắt cà phê (Hemileia). Phun đồng + tỉa tán cho thông thoáng; thay giống kháng như TRS1.",
-  },
-  {
-    id: "p9",
-    crop: "coffee",
-    cropVi: "Cà phê (Lâm Đồng)",
-    name: "Cà phê #2 — lá xanh đậm",
-    trueLabel: "healthy",
-    probs: {
-      healthy: 0.93,
-      blast: 0.005,
-      blight: 0.02,
-      brown_spot: 0.01,
-      tungro: 0.005,
-      mosaic: 0.02,
-      rust: 0.01,
-    },
-    activations: [
-      { x: 50, y: 50, r: 14, intensity: 0.12 },
-    ],
-    recommendation:
-      "Vườn cà phê khỏe mạnh. Chú ý giai đoạn ra hoa — tưới đủ ẩm, tránh sâu đục thân.",
+    id: "vang_lun",
+    label: "Vàng lùn",
+    location: "Sóc Trăng, giữa vụ",
+    condition: "Vàng lùn do virus (rầy nâu truyền)",
+    confidence: 0.71,
+    regions: [{ x: 40, y: 40, r: 16 }, { x: 60, y: 60, r: 15 }],
+    color: "#eab308",
+    advice: "Phun thuốc trừ rầy ngay (Imidacloprid), nhổ cây bệnh tiêu huỷ. Báo khuyến nông vì có thể lan vùng.",
   },
 ];
 
-// ---------------------------------------------------------------------------
-// Leaf SVG — parameterised by severity so unhealthy leaves get tinted spots.
-// ---------------------------------------------------------------------------
-function LeafIllustration({
-  plant,
-  showHeatmap,
+function LeafSVG({
+  showOverlay,
+  regions,
+  color,
 }: {
-  plant: Plant;
-  showHeatmap: boolean;
+  showOverlay: boolean;
+  regions: { x: number; y: number; r: number }[];
+  color: string;
 }) {
-  const topLabel = Object.entries(plant.probs).sort(
-    (a, b) => b[1] - a[1],
-  )[0][0] as DiseaseId;
-  const baseGreen =
-    topLabel === "healthy"
-      ? "#16a34a"
-      : topLabel === "tungro"
-        ? "#ca8a04"
-        : "#15803d";
-  const accentGreen =
-    topLabel === "healthy"
-      ? "#22c55e"
-      : topLabel === "tungro"
-        ? "#eab308"
-        : "#166534";
-
   return (
     <svg
       viewBox="0 0 100 100"
-      className="w-full h-full"
+      className="h-full w-full"
       role="img"
-      aria-label={`Minh họa lá ${plant.cropVi}`}
+      aria-label="Ảnh lá lúa"
     >
       <defs>
-        <radialGradient
-          id={`leaf-grad-${plant.id}`}
-          cx="0.5"
-          cy="0.5"
-          r="0.6"
-        >
-          <stop offset="0%" stopColor={accentGreen} />
-          <stop offset="100%" stopColor={baseGreen} />
+        <radialGradient id="leaf-body" cx="0.5" cy="0.5" r="0.6">
+          <stop offset="0%" stopColor="#22c55e" />
+          <stop offset="100%" stopColor="#15803d" />
+        </radialGradient>
+        <radialGradient id="ai-glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stopColor="#fde047" stopOpacity={0.85} />
+          <stop offset="60%" stopColor="#f97316" stopOpacity={0.55} />
+          <stop offset="100%" stopColor="#dc2626" stopOpacity={0} />
         </radialGradient>
       </defs>
-      {/* Leaf silhouette */}
       <path
         d="M50 6 C78 20, 92 48, 78 82 C65 96, 38 94, 24 80 C8 56, 22 20, 50 6 Z"
-        fill={`url(#leaf-grad-${plant.id})`}
-        stroke={baseGreen}
+        fill="url(#leaf-body)"
+        stroke="#166534"
         strokeWidth="1.5"
       />
-      {/* Midrib */}
       <path
         d="M50 8 Q52 50, 52 92"
         fill="none"
-        stroke={accentGreen}
+        stroke="#166534"
         strokeWidth="1"
-        opacity={0.6}
+        opacity={0.5}
       />
-      {/* Veins */}
       {[18, 32, 46, 60, 74].map((y, i) => (
         <g key={i}>
           <path
             d={`M51 ${y} Q${35 - i} ${y + 6}, ${22 + i * 0.5} ${y + 14}`}
             fill="none"
-            stroke={accentGreen}
+            stroke="#166534"
             strokeWidth="0.7"
-            opacity={0.5}
+            opacity={0.4}
           />
           <path
             d={`M52 ${y} Q${65 + i} ${y + 6}, ${80 - i * 0.5} ${y + 14}`}
             fill="none"
-            stroke={accentGreen}
+            stroke="#166534"
             strokeWidth="0.7"
-            opacity={0.5}
+            opacity={0.4}
           />
         </g>
       ))}
-
-      {/* Disease markers overlay */}
-      {plant.trueLabel !== "healthy" &&
-        plant.activations.map((act, i) => {
-          const fill =
-            plant.trueLabel === "blast"
-              ? "#7f1d1d"
-              : plant.trueLabel === "blight"
-                ? "#9a3412"
-                : plant.trueLabel === "brown_spot"
-                  ? "#78350f"
-                  : plant.trueLabel === "mosaic"
-                    ? "#6b21a8"
-                    : plant.trueLabel === "rust"
-                      ? "#b91c1c"
-                      : "#854d0e";
-          return (
-            <ellipse
-              key={i}
-              cx={act.x}
-              cy={act.y}
-              rx={act.r * 0.5}
-              ry={act.r * 0.3}
-              fill={fill}
-              opacity={0.55}
+      {/* Ground-truth disease spots (always visible on diseased cases) */}
+      {regions.map((r, i) => (
+        <ellipse
+          key={`spot-${i}`}
+          cx={r.x}
+          cy={r.y}
+          rx={r.r * 0.55}
+          ry={r.r * 0.3}
+          fill={color}
+          opacity={0.55}
+        />
+      ))}
+      {/* AI overlay — pulsing heatmap */}
+      <AnimatePresence>
+        {showOverlay &&
+          regions.map((r, i) => (
+            <motion.circle
+              key={`ai-${i}`}
+              cx={r.x}
+              cy={r.y}
+              r={r.r}
+              fill="url(#ai-glow)"
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.4 }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
             />
-          );
-        })}
-
-      {/* Grad-CAM style heatmap overlay */}
-      {showHeatmap &&
-        plant.activations.map((act, i) => (
-          <circle
-            key={`h-${i}`}
-            cx={act.x}
-            cy={act.y}
-            r={act.r}
-            fill="url(#cam-glow)"
-            opacity={act.intensity}
-          />
-        ))}
-
-      <defs>
-        <radialGradient id="cam-glow" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0%" stopColor="#fde047" stopOpacity={0.9} />
-          <stop offset="60%" stopColor="#f97316" stopOpacity={0.5} />
-          <stop offset="100%" stopColor="#dc2626" stopOpacity={0} />
-        </radialGradient>
-      </defs>
+          ))}
+      </AnimatePresence>
     </svg>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Probability bar chart — shows the softmax output for a selected plant.
-// ---------------------------------------------------------------------------
-function ProbabilityBars({ plant }: { plant: Plant }) {
-  const ordered = (
-    Object.entries(plant.probs) as [DiseaseId, number][]
-  ).sort((a, b) => b[1] - a[1]);
-  const max = ordered[0][1];
+function DiseaseDetectionDemo() {
+  const [selectedId, setSelectedId] = useState<string>("dao_on");
+  const [showAI, setShowAI] = useState<boolean>(true);
+  const selected =
+    DISEASE_CASES.find((c) => c.id === selectedId) ?? DISEASE_CASES[0];
 
   return (
-    <div className="space-y-1.5">
-      {ordered.map(([label, p]) => {
-        const pct = Math.round(p * 100);
-        const isTop = p === max;
-        return (
-          <div key={label} className="flex items-center gap-2">
-            <span
-              className="w-28 shrink-0 text-[11px] font-medium"
-              style={{ color: DISEASE_COLOR[label] }}
-            >
-              {DISEASE_LABEL_VI[label]}
-            </span>
-            <div className="flex-1 h-4 rounded-full bg-surface overflow-hidden border border-border">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{
-                  width: `${pct}%`,
-                  backgroundColor: DISEASE_COLOR[label],
-                  opacity: isTop ? 1 : 0.65,
-                }}
-              />
-            </div>
-            <span
-              className={`w-10 text-right text-[11px] tabular-nums ${
-                isTop ? "font-bold text-foreground" : "text-muted"
-              }`}
-            >
-              {pct}%
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Mini CNN stack — diagrammatic view of the conv layers that produced the
-// feature activation highlighted on the leaf.
-// ---------------------------------------------------------------------------
-function CNNStackDiagram({ plant }: { plant: Plant }) {
-  const stages = [
-    {
-      name: "Input 224×224",
-      desc: "Ảnh lá gốc từ camera điện thoại",
-      color: "#64748b",
-    },
-    {
-      name: "Conv1 + ReLU",
-      desc: "Phát hiện cạnh, màu sắc cơ bản",
-      color: "#0ea5e9",
-    },
-    {
-      name: "Conv2 + Pool",
-      desc: "Phát hiện kết cấu (texture) của vết bệnh",
-      color: "#3b82f6",
-    },
-    {
-      name: "Depthwise Sep.",
-      desc: "Kết hợp đặc trưng hình dạng & màu",
-      color: "#6366f1",
-    },
-    {
-      name: "Global Pool",
-      desc: "Tóm gọn thành vector đặc trưng 1280 chiều",
-      color: "#8b5cf6",
-    },
-    {
-      name: "Softmax",
-      desc: `Xác suất ${Object.keys(plant.probs).length} lớp bệnh`,
-      color: DISEASE_COLOR[plant.trueLabel],
-    },
-  ];
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
-      {stages.map((s, i) => (
-        <div
-          key={i}
-          className="rounded-lg border p-2 text-[10px] leading-tight"
-          style={{
-            borderColor: `${s.color}55`,
-            backgroundColor: `${s.color}15`,
-          }}
-        >
-          <div
-            className="text-[9px] uppercase tracking-wide"
-            style={{ color: s.color }}
-          >
-            Bước {i + 1}
-          </div>
-          <div className="font-semibold text-foreground">{s.name}</div>
-          <div className="text-muted">{s.desc}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Interactive visualization — the crop disease detector.
-// ---------------------------------------------------------------------------
-function CropDiseaseDetector() {
-  const [selectedId, setSelectedId] = useState<string>("p2");
-  const [showHeatmap, setShowHeatmap] = useState<boolean>(true);
-  const [threshold, setThreshold] = useState<number>(0.5);
-  const selected = useMemo(
-    () => PLANTS.find((p) => p.id === selectedId) ?? PLANTS[0],
-    [selectedId],
-  );
-  const topPrediction = useMemo(() => {
-    const entries = Object.entries(selected.probs) as [DiseaseId, number][];
-    entries.sort((a, b) => b[1] - a[1]);
-    return entries[0];
-  }, [selected]);
-
-  const confidentEnough = topPrediction[1] >= threshold;
-
-  const onCycle = useCallback(() => {
-    const i = PLANTS.findIndex((p) => p.id === selectedId);
-    const next = PLANTS[(i + 1) % PLANTS.length];
-    setSelectedId(next.id);
-  }, [selectedId]);
-
-  return (
-    <div className="space-y-5">
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3 text-xs">
-        <span className="font-semibold text-foreground">
-          Mô phỏng: chọn 1 cây để AI phân tích
-        </span>
-        <label className="inline-flex items-center gap-1.5 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showHeatmap}
-            onChange={(e) => setShowHeatmap(e.target.checked)}
-            className="accent-accent"
-          />
-          <span className="text-muted">Hiện Grad-CAM</span>
-        </label>
-        <label className="inline-flex items-center gap-1.5">
-          <span className="text-muted">Ngưỡng tự tin:</span>
-          <input
-            type="range"
-            min={0.3}
-            max={0.95}
-            step={0.05}
-            value={threshold}
-            onChange={(e) => setThreshold(parseFloat(e.target.value))}
-            className="accent-accent"
-          />
-          <span className="tabular-nums w-10 text-right">
-            {Math.round(threshold * 100)}%
-          </span>
-        </label>
-        <button
-          type="button"
-          onClick={onCycle}
-          className="ml-auto rounded-lg border border-border px-2.5 py-1 text-[11px] hover:bg-surface"
-        >
-          Cây tiếp theo →
-        </button>
-      </div>
-
-      {/* Grid of plants */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        {PLANTS.map((p) => {
-          const active = p.id === selectedId;
-          const borderColor = active
-            ? "var(--color-accent, #8b5cf6)"
-            : "transparent";
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {DISEASE_CASES.map((c) => {
+          const active = c.id === selectedId;
           return (
             <button
-              key={p.id}
+              key={c.id}
               type="button"
-              onClick={() => setSelectedId(p.id)}
-              className="group relative rounded-xl border-2 bg-surface p-2 transition-all hover:-translate-y-0.5"
-              style={{ borderColor }}
-              aria-pressed={active}
-              aria-label={`Chọn ${p.cropVi}: ${p.name}`}
+              onClick={() => setSelectedId(c.id)}
+              className={`rounded-xl border-2 p-2 text-left transition-all ${
+                active ? "-translate-y-0.5 shadow" : "opacity-80"
+              }`}
+              style={{
+                borderColor: active ? c.color : "var(--color-border)",
+              }}
             >
-              <div className="aspect-square w-full">
-                <LeafIllustration
-                  plant={p}
-                  showHeatmap={active && showHeatmap}
-                />
+              <div className="text-[10px] uppercase text-muted">
+                {c.location}
               </div>
-              <div className="mt-1.5 text-center">
-                <div className="text-[10px] text-muted uppercase tracking-wide">
-                  {p.cropVi}
-                </div>
-                <div className="text-[10px] text-foreground font-medium truncate">
-                  #{p.id.replace("p", "")}
-                </div>
+              <div className="text-[12px] font-semibold text-foreground">
+                {c.label}
               </div>
-              {active && (
-                <span className="absolute -top-1 -right-1 rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-bold text-white shadow">
-                  Đang phân tích
-                </span>
-              )}
             </button>
           );
         })}
       </div>
 
-      {/* Analysis panel */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {/* Left: zoom of the selected leaf */}
-        <div className="md:col-span-2 rounded-xl border border-border bg-card p-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded-xl border border-border bg-card p-3">
           <div className="mb-2 flex items-center justify-between">
             <div>
-              <div className="text-[11px] uppercase text-muted tracking-wider">
-                Ảnh đầu vào
+              <div className="text-[10px] uppercase tracking-wider text-muted">
+                Ảnh nông dân chụp
               </div>
               <div className="text-sm font-semibold text-foreground">
-                {selected.cropVi}
+                {selected.location}
               </div>
             </div>
-            <span className="rounded-full border border-border px-2 py-0.5 text-[10px] text-muted">
-              224×224 RGB
-            </span>
+            <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border bg-surface px-2 py-1 text-[11px]">
+              <input
+                type="checkbox"
+                checked={showAI}
+                onChange={(e) => setShowAI(e.target.checked)}
+                className="accent-accent"
+              />
+              <span>Bật AI phân tích</span>
+            </label>
           </div>
-          <div className="aspect-square w-full rounded-lg bg-surface">
-            <LeafIllustration plant={selected} showHeatmap={showHeatmap} />
+          <div className="mx-auto aspect-square w-full max-w-[260px] rounded-lg bg-surface">
+            <LeafSVG
+              showOverlay={showAI}
+              regions={selected.regions}
+              color={selected.color}
+            />
           </div>
-          <p className="mt-2 text-[11px] text-muted leading-relaxed">
-            {selected.name}. Vùng vàng–cam là nơi CNN <em>chú ý</em> nhiều
-            nhất (Grad-CAM).
+          <p className="mt-2 text-[11px] text-muted">
+            Vùng vàng–cam là chỗ AI &ldquo;nhìn&rdquo; thấy dấu hiệu khác thường.
           </p>
         </div>
 
-        {/* Middle: probability distribution */}
-        <div className="md:col-span-2 rounded-xl border border-border bg-card p-3">
-          <div className="mb-2 flex items-center justify-between">
-            <div className="text-[11px] uppercase text-muted tracking-wider">
-              Đầu ra softmax
+        <div className="space-y-3">
+          <div
+            className="rounded-xl border p-3"
+            style={{
+              borderColor: `${selected.color}55`,
+              backgroundColor: `${selected.color}0D`,
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span
+                className="text-[11px] font-bold uppercase tracking-wider"
+                style={{ color: selected.color }}
+              >
+                Kết luận AI
+              </span>
+              <span
+                className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+                style={{ backgroundColor: selected.color }}
+              >
+                {Math.round(selected.confidence * 100)}% tự tin
+              </span>
             </div>
-            <span
-              className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
-              style={{
-                backgroundColor: DISEASE_COLOR[topPrediction[0]],
-              }}
-            >
-              {DISEASE_LABEL_VI[topPrediction[0]]} —{" "}
-              {Math.round(topPrediction[1] * 100)}%
-            </span>
+            <div className="mt-1 text-sm font-semibold text-foreground">
+              {selected.condition}
+            </div>
+            <ConfidenceBar value={selected.confidence} color={selected.color} />
           </div>
-          <ProbabilityBars plant={selected} />
-          <div className="mt-3 rounded-lg bg-surface p-2 text-[11px] leading-relaxed">
-            {confidentEnough ? (
+
+          <div className="rounded-xl border border-border bg-card p-3">
+            <div className="mb-1 flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-accent" />
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+                Khuyến nghị
+              </span>
+            </div>
+            <p className="text-[13px] leading-relaxed text-foreground">
+              {selected.advice}
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-surface p-2 text-[11px] leading-relaxed text-muted">
+            {selected.confidence >= 0.8 ? (
               <span>
-                <strong className="text-green-600 dark:text-green-400">
-                  ✓ Tự tin:
-                </strong>{" "}
-                xác suất lớn nhất ≥ ngưỡng {Math.round(threshold * 100)}%. App
-                sẽ hiển thị chẩn đoán cho nông dân.
+                <strong className="text-green-600">Đủ tự tin</strong>: app hiển
+                thị chẩn đoán và đường dây khuyến nông.
               </span>
             ) : (
               <span>
-                <strong className="text-amber-600 dark:text-amber-400">
-                  ⚠ Chưa đủ tự tin
-                </strong>{" "}
-                ({Math.round(topPrediction[1] * 100)}% &lt;{" "}
-                {Math.round(threshold * 100)}%). App nên{" "}
-                <em>từ chối trả lời</em> và khuyến nghị chụp lại ảnh rõ hơn
-                hoặc liên hệ khuyến nông.
+                <strong className="text-amber-600">Chưa chắc</strong>: app đề
+                nghị chụp lại ảnh rõ hơn hoặc gọi khuyến nông trước khi xử lý.
               </span>
             )}
           </div>
         </div>
-
-        {/* Right: recommendation */}
-        <div className="md:col-span-1 rounded-xl border border-border bg-card p-3">
-          <div className="text-[11px] uppercase text-muted tracking-wider">
-            Khuyến nghị
-          </div>
-          <div className="mt-1 text-sm font-semibold text-foreground">
-            {DISEASE_LABEL_VI[topPrediction[0]]}
-          </div>
-          <p className="mt-2 text-[11px] leading-relaxed text-muted">
-            {selected.recommendation}
-          </p>
-          <div className="mt-3 flex items-center gap-1">
-            <span
-              className="h-2 w-2 rounded-full"
-              style={{
-                backgroundColor:
-                  selected.trueLabel === topPrediction[0]
-                    ? "#22c55e"
-                    : "#f59e0b",
-              }}
-            />
-            <span className="text-[10px] text-muted">
-              {selected.trueLabel === topPrediction[0]
-                ? "Dự đoán khớp nhãn thật"
-                : "Sai — cần thêm dữ liệu huấn luyện"}
-            </span>
-          </div>
-        </div>
       </div>
 
-      {/* CNN stack diagram */}
-      <div>
-        <div className="mb-2 text-[11px] uppercase text-muted tracking-wider">
-          Cách CNN xử lý ảnh lá (MobileNetV3 Small, ~5 MB sau lượng tử hóa)
-        </div>
-        <CNNStackDiagram plant={selected} />
-      </div>
-
-      {/* Legend */}
-      <div className="flex flex-wrap gap-2 text-[10px]">
-        {(Object.keys(DISEASE_LABEL_VI) as DiseaseId[]).map((k) => (
-          <span
-            key={k}
-            className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 bg-surface"
-          >
-            <span
-              className="h-2 w-2 rounded-full"
-              style={{ backgroundColor: DISEASE_COLOR[k] }}
-            />
-            <span className="text-muted">{DISEASE_LABEL_VI[k]}</span>
-          </span>
-        ))}
-      </div>
-
-      <p className="text-[11px] text-muted italic leading-relaxed">
-        Mô phỏng dùng xác suất tổng hợp. Trong thực tế, mô hình được huấn
-        luyện trên bộ dữ liệu PlantVillage + ảnh địa phương do khuyến nông
-        VN thu thập ở Đồng Tháp, Cần Thơ, Đắk Lắk, Tây Ninh. Với camera điện
-        thoại thông dụng (12–48 MP), độ chính xác đạt 88–93% cho 3 nhóm cây
-        trên.
+      <p className="text-[11px] italic text-muted">
+        Ứng dụng thật (Plantix, VietGap Scan, FPT.AI ForFarming) chạy được trên
+        điện thoại cũ, không cần 4G — nông dân chụp ngoài ruộng, AI trả lời
+        trong vòng vài giây.
       </p>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Main topic component
-// ---------------------------------------------------------------------------
+function ConfidenceBar({ value, color }: { value: number; color: string }) {
+  return (
+    <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface">
+      <motion.div
+        className="h-full rounded-full"
+        style={{ backgroundColor: color }}
+        initial={{ width: 0 }}
+        animate={{ width: `${value * 100}%` }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      />
+    </div>
+  );
+}
+
+// ===========================================================================
+// Demo 2 — Bảng điều khiển tưới nước thông minh
+// ===========================================================================
+
+function IrrigationDashboard() {
+  const [soil, setSoil] = useState<number>(35); // % soil moisture
+  const [rainChance, setRainChance] = useState<number>(20); // % rain next 24h
+  const [temp, setTemp] = useState<number>(32); // °C
+
+  const decision = useMemo(() => {
+    // Simple rules — visible logic for teaching
+    if (soil >= 70)
+      return {
+        action: "Không tưới",
+        color: "#0ea5e9",
+        icon: CloudRain,
+        reason:
+          "Đất đã đủ ẩm. Tưới thêm dễ úng rễ, tăng nguy cơ bệnh đạo ôn cổ bông.",
+      };
+    if (rainChance >= 70)
+      return {
+        action: "Chờ mưa",
+        color: "#6366f1",
+        icon: CloudRain,
+        reason:
+          "Xác suất mưa cao trong 24 giờ. Đợi mưa tự nhiên sẽ tiết kiệm điện bơm và nước.",
+      };
+    if (soil <= 25 && temp >= 32)
+      return {
+        action: "Tưới ngay",
+        color: "#dc2626",
+        icon: Sun,
+        reason:
+          "Đất khô + trời nắng gắt. Nếu không tưới trong vài giờ, lá cuốn và giảm năng suất 5–8%.",
+      };
+    if (soil <= 40)
+      return {
+        action: "Tưới tối nay",
+        color: "#f59e0b",
+        icon: Droplets,
+        reason:
+          "Đất đang xuống dưới mức tối ưu. Tưới khi chiều mát để giảm bốc hơi.",
+      };
+    return {
+      action: "Theo dõi",
+      color: "#16a34a",
+      icon: CloudSun,
+      reason: "Điều kiện ổn. Kiểm tra lại sau 6 giờ hoặc khi thời tiết đổi.",
+    };
+  }, [soil, rainChance, temp]);
+
+  const DecisionIcon = decision.icon;
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        <GaugeCard
+          label="Độ ẩm đất"
+          value={soil}
+          unit="%"
+          min={0}
+          max={100}
+          color="#0ea5e9"
+          icon={Droplets}
+          onChange={setSoil}
+        />
+        <GaugeCard
+          label="Khả năng mưa 24h"
+          value={rainChance}
+          unit="%"
+          min={0}
+          max={100}
+          color="#6366f1"
+          icon={CloudRain}
+          onChange={setRainChance}
+        />
+        <GaugeCard
+          label="Nhiệt độ hiện tại"
+          value={temp}
+          unit="°C"
+          min={20}
+          max={42}
+          color="#dc2626"
+          icon={Thermometer}
+          onChange={setTemp}
+        />
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={decision.action}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.25 }}
+          className="rounded-xl border p-4"
+          style={{
+            borderColor: decision.color,
+            backgroundColor: `${decision.color}0F`,
+          }}
+        >
+          <div className="flex items-start gap-3">
+            <span
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white"
+              style={{ backgroundColor: decision.color }}
+            >
+              <DecisionIcon className="h-5 w-5" />
+            </span>
+            <div>
+              <div
+                className="text-[11px] font-bold uppercase tracking-wider"
+                style={{ color: decision.color }}
+              >
+                AI khuyến nghị
+              </div>
+              <div className="text-lg font-bold text-foreground">
+                {decision.action}
+              </div>
+              <p className="mt-1 text-[13px] leading-relaxed text-foreground">
+                {decision.reason}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="grid grid-cols-1 gap-2 text-[11px] leading-relaxed text-muted sm:grid-cols-2">
+        <div className="rounded-lg bg-surface p-2">
+          <strong>Mẹo thử:</strong> đẩy độ ẩm đất xuống 20%, nhiệt độ 36°C —
+          xem AI đổi sang &ldquo;Tưới ngay&rdquo;.
+        </div>
+        <div className="rounded-lg bg-surface p-2">
+          <strong>Mẹo thử:</strong> tăng khả năng mưa lên 80% — dù đất khô, AI
+          khuyên &ldquo;Chờ mưa&rdquo; để tiết kiệm điện bơm.
+        </div>
+      </div>
+
+      <p className="text-[11px] italic text-muted">
+        Các hệ thật ở Việt Nam (Mimosatek, Hachi Hub, VNPT Smart Agri) dùng
+        cảm biến ngoài ruộng kết hợp API thời tiết. AI học dần thói quen nông
+        dân và đặc thù từng thửa.
+      </p>
+    </div>
+  );
+}
+
+function GaugeCard({
+  label,
+  value,
+  unit,
+  min,
+  max,
+  color,
+  icon: Icon,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  unit: string;
+  min: number;
+  max: number;
+  color: string;
+  icon: typeof Droplets;
+  onChange: (v: number) => void;
+}) {
+  const pct = ((value - min) / (max - min)) * 100;
+  return (
+    <div className="rounded-xl border border-border bg-card p-3">
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">
+          <Icon className="h-3.5 w-3.5" style={{ color }} />
+          {label}
+        </span>
+        <span
+          className="text-lg font-bold tabular-nums"
+          style={{ color }}
+        >
+          {value}
+          <span className="text-[10px] text-muted">{unit}</span>
+        </span>
+      </div>
+      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface">
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        />
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="mt-2 w-full accent-accent"
+        aria-label={`Điều chỉnh ${label}`}
+      />
+      <div className="flex justify-between text-[9px] text-muted">
+        <span>
+          {min}
+          {unit}
+        </span>
+        <span>
+          {max}
+          {unit}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ===========================================================================
+// Demo 3 — Dự báo năng suất: có AI vs không
+// ===========================================================================
+
+type YieldBar = {
+  region: string;
+  withoutAI: number;
+  withAI: number;
+  crop: string;
+};
+
+const YIELD_BARS: YieldBar[] = [
+  { region: "Đồng Tháp", crop: "Lúa hè thu", withoutAI: 5.8, withAI: 7.2 },
+  { region: "An Giang", crop: "Lúa đông xuân", withoutAI: 6.2, withAI: 7.6 },
+  { region: "Cần Thơ", crop: "Lúa ba vụ", withoutAI: 5.5, withAI: 6.9 },
+  { region: "Đắk Lắk", crop: "Cà phê Robusta", withoutAI: 3.1, withAI: 3.8 },
+  { region: "Bình Thuận", crop: "Thanh long ruột đỏ", withoutAI: 28.0, withAI: 33.5 },
+];
+
+function YieldPredictor() {
+  const [selected, setSelected] = useState<string>("Đồng Tháp");
+  const bar = YIELD_BARS.find((b) => b.region === selected) ?? YIELD_BARS[0];
+  const gain = bar.withAI - bar.withoutAI;
+  const gainPct = (gain / bar.withoutAI) * 100;
+  const maxY = Math.max(...YIELD_BARS.map((b) => b.withAI)) * 1.1;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        {YIELD_BARS.map((b) => {
+          const active = b.region === selected;
+          return (
+            <button
+              key={b.region}
+              type="button"
+              onClick={() => setSelected(b.region)}
+              className={`rounded-full border px-3 py-1 text-[11px] transition-colors ${
+                active
+                  ? "border-accent bg-accent text-white"
+                  : "border-border bg-card text-muted hover:border-accent/50"
+              }`}
+            >
+              <MapPin className="mr-1 inline h-3 w-3" />
+              {b.region}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <div className="text-[11px] uppercase tracking-wider text-muted">
+              {bar.crop} — năng suất dự báo
+            </div>
+            <div className="text-sm font-semibold text-foreground">
+              {bar.region}
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-[10px] uppercase text-muted">Chênh lệch</div>
+            <div className="text-sm font-bold text-green-600">
+              +{gain.toFixed(1)} tấn/ha
+            </div>
+            <div className="text-[10px] font-semibold text-green-600">
+              (+{gainPct.toFixed(0)}%)
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <BarRow
+            label="Không dùng AI"
+            sub="Kinh nghiệm, lịch truyền thống"
+            value={bar.withoutAI}
+            max={maxY}
+            color="#94a3b8"
+          />
+          <BarRow
+            label="Có AI hỗ trợ"
+            sub="Dự báo sâu bệnh + tưới thông minh + chọn giống"
+            value={bar.withAI}
+            max={maxY}
+            color="#16a34a"
+          />
+        </div>
+
+        <div className="mt-3 grid grid-cols-3 gap-2 text-[11px]">
+          <StatChip label="Giảm thuốc BVTV" value="−30%" color="#16a34a" />
+          <StatChip label="Giảm nước tưới" value="−25%" color="#0ea5e9" />
+          <StatChip label="Tăng thu nhập" value="+15–25%" color="#f59e0b" />
+        </div>
+      </div>
+
+      <p className="text-[11px] italic text-muted">
+        Con số trên là trung bình của các pilot 2022–2024: VIFONET ở Đồng bằng
+        sông Cửu Long, FPT.AI ForFarming ở Đắk Lắk, và hợp tác xã lúa thông
+        minh ở An Giang.
+      </p>
+    </div>
+  );
+}
+
+function BarRow({
+  label,
+  sub,
+  value,
+  max,
+  color,
+}: {
+  label: string;
+  sub: string;
+  value: number;
+  max: number;
+  color: string;
+}) {
+  const pct = (value / max) * 100;
+  return (
+    <div>
+      <div className="flex items-center justify-between text-[12px]">
+        <div>
+          <span className="font-semibold text-foreground">{label}</span>{" "}
+          <span className="text-[10px] text-muted">— {sub}</span>
+        </div>
+        <span className="font-bold tabular-nums" style={{ color }}>
+          {value.toFixed(1)} t/ha
+        </span>
+      </div>
+      <div className="mt-1 h-3 w-full overflow-hidden rounded-full bg-surface">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function StatChip({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div
+      className="rounded-lg border p-2 text-center"
+      style={{ borderColor: `${color}55`, backgroundColor: `${color}0D` }}
+    >
+      <div className="text-[9px] uppercase text-muted">{label}</div>
+      <div className="text-sm font-bold" style={{ color }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+// ===========================================================================
+// Component chính
+// ===========================================================================
+
 export default function AIInAgricultureTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
-        question: "AI phát hiện bệnh lúa bằng cách nào?",
+        question:
+          "Bác nông dân ở An Giang chụp ảnh lá lúa bằng điện thoại, app AI báo &ldquo;đạo ôn 82% tự tin&rdquo;. Điều này nghĩa là gì?",
         options: [
-          "Đo độ ẩm đất",
-          "Chụp ảnh lá lúa bằng điện thoại → CNN phân loại bệnh (đạo ôn, vàng lá, khô vằn) → gợi ý cách trị với accuracy 90%+",
-          "Đo nhiệt độ không khí",
+          "AI chắc chắn 100% là đạo ôn",
+          "AI đã so ảnh với hàng ngàn ảnh lá bệnh trong bộ học và thấy 82% giống đạo ôn nhất — nên hành xử có phần: phun thuốc đạo ôn, nhưng vẫn nên hỏi khuyến nông xã vì 18% còn lại có thể là bệnh khác",
+          "Đạo ôn sẽ lan 82% cánh đồng",
+          "Nông dân đã làm sai kỹ thuật 82%",
         ],
         correct: 1,
         explanation:
-          "CNN (MobileNet/EfficientNet) nhận diện triệu chứng bệnh từ ảnh lá: màu sắc (vàng, nâu), hình dạng vết bệnh, vị trí. App trên điện thoại: nông dân chụp ảnh → AI phân loại → gợi ý thuốc/cách xử lý. Đã có apps như PlantVillage, Plantix dùng ở VN.",
-      },
-      {
-        question: "Precision farming là gì?",
-        options: [
-          "Farming chính xác từng cm",
-          "Dùng AI + sensors + drone để TỐI ƯU tại từng vùng nhỏ: bao nhiêu nước, bao nhiêu phân, khi nào thu hoạch — thay vì 'làm đồng đều' toàn cánh đồng",
-          "Chỉ dùng trong nhà kính",
-        ],
-        correct: 1,
-        explanation:
-          "Precision farming: không phun thuốc đều toàn ruộng mà chỉ phun chỗ nào bị sâu. Không tưới đều mà tưới theo độ ẩm từng vùng. Giảm 30-50% nước + phân + thuốc, tăng 15-25% năng suất. Drones + sensors + AI = farming 4.0. Việt Nam đang pilot ở Đồng bằng sông Cửu Long.",
-      },
-      {
-        question: "Thách thức lớn nhất của AI nông nghiệp tại Việt Nam?",
-        options: [
-          "Thiếu GPU",
-          "Hạ tầng: internet không ổn định ở nông thôn, nông dân chưa quen công nghệ, data cụ thể cho giống cây VN còn thiếu",
-          "Thiếu đất nông nghiệp",
-        ],
-        correct: 1,
-        explanation:
-          "3 thách thức chính: (1) Internet ở nông thôn không ổn định → cần Edge AI (chạy trên điện thoại offline), (2) Nông dân cần app đơn giản (tiếng Việt, giao diện dễ dùng), (3) Data giống cây VN (lúa, cà phê, thanh long) không nhiều như data cây tây Âu. Cần tự collect và label.",
+          "Con số &ldquo;82% tự tin&rdquo; là mức độ chắc chắn của AI, không phải xác suất bệnh lan. Với bệnh quan trọng, ngưỡng hành động thường 70–80%. Trên 80% thì tin tưởng xử lý; dưới 70% thì chụp lại ảnh rõ hơn hoặc gọi khuyến nông. Đây là nguyên tắc &ldquo;có chừng mực&rdquo; tương tự AI y tế.",
       },
       {
         question:
-          "Vì sao MobileNetV3 phù hợp hơn ResNet-152 cho ứng dụng nông dân?",
+          "Tại sao app phát hiện bệnh cây ở Việt Nam cần chạy ĐƯỢC khi KHÔNG có 4G?",
         options: [
-          "MobileNet chính xác hơn trên mọi bài toán",
-          "MobileNet nhẹ (~5MB sau quantize INT8), chạy offline 50ms trên điện thoại 2-3GB RAM — phù hợp hạ tầng nông thôn",
-          "MobileNet có nhiều layer hơn",
+          "Để nông dân tiết kiệm tiền",
+          "Vì nhiều vùng sâu (An Giang, Tây Nguyên, Hà Giang) sóng yếu hoặc không có; app chạy trên điện thoại cũ offline đảm bảo mọi nông dân đều dùng được",
+          "Để tránh virus máy tính",
+          "Để không cần cập nhật phần mềm",
         ],
         correct: 1,
         explanation:
-          "Nông thôn VN: internet chập chờn, điện thoại cũ 2-3GB RAM. ResNet-152 nặng 230MB cần server. MobileNetV3 INT8 chỉ 5MB, accuracy 88-92% (đủ dùng), chạy hoàn toàn offline. Đây chính là bản chất của Edge AI — hy sinh 3-5% accuracy để đạt tính khả dụng trong thực tế.",
-      },
-      {
-        question: "Grad-CAM giúp gì cho app phát hiện bệnh cây?",
-        options: [
-          "Tăng tốc độ inference lên 2x",
-          "Vẽ heatmap chỉ ra VÙNG CỤ THỂ trên lá mà CNN tập trung → nông dân biết AI nhìn vào đâu và tin tưởng hơn",
-          "Tăng accuracy lên 99%",
-        ],
-        correct: 1,
-        explanation:
-          "Grad-CAM (Gradient-weighted Class Activation Mapping) tạo heatmap trực quan: vùng đỏ/vàng = CNN chú ý nhiều. Nông dân thấy AI chỉ vào đúng vết bệnh → tin tưởng hơn. Nếu AI chỉ vào nền đất (không phải lá) → biết model bị lỗi. Explainability quan trọng trong Edge AI cho nông nghiệp.",
+          "Khoảng 78–82% dân số Việt Nam dùng smartphone (2024), nhưng 4G ở vùng sâu còn chập chờn. Một app cần online sẽ vô dụng ở ruộng xa. Giải pháp: mô hình AI nhẹ chạy trực tiếp trên máy (edge AI / on-device), không cần gửi ảnh lên server.",
       },
       {
         question:
-          "Drone + multispectral camera phát hiện bệnh SỚM hơn mắt thường nhờ cơ chế nào?",
+          "Tưới thông minh tiết kiệm được nước và điện như thế nào?",
         options: [
-          "Camera bay trên cao thấy rõ hơn",
-          "Cảm biến đa phổ (NIR, red-edge) đo chlorophyll và nước trong lá — thay đổi TRƯỚC khi xuất hiện triệu chứng nhìn thấy 1-2 tuần",
-          "Drone bay ban đêm thấy bệnh rõ hơn ban ngày",
+          "Tưới ít nhất có thể, mặc kệ cây",
+          "Dùng cảm biến độ ẩm đất + dự báo mưa + AI: nếu trời sắp mưa thì không tưới, nếu đất đã đủ ẩm thì bỏ qua, chỉ tưới khi thực sự cần và đúng thời điểm mát mẻ",
+          "Tưới ngẫu nhiên",
+          "Tưới gấp đôi lượng bình thường",
         ],
         correct: 1,
         explanation:
-          "Lá bị stress (hạn, bệnh) giảm chlorophyll trước khi đổi màu nhìn được. Dải NIR (near-infrared) và red-edge phản xạ khác giữa lá khỏe và lá stress. AI + chỉ số NDVI/NDRE → bản đồ sức khỏe ruộng → phát hiện sớm 1-2 tuần → xử lý tại điểm, tiết kiệm 70-80% thuốc và cứu năng suất.",
+          "AI tưới thông minh lấy 3 tín hiệu: (1) độ ẩm đất thực tế, (2) dự báo mưa 24 giờ, (3) nhiệt độ để tính bốc hơi. Kết quả: giảm 20–35% lượng nước, giảm bệnh do úng rễ, và tưới vào chiều tối mát để giảm bốc hơi. Pilot ở Ninh Thuận (thanh long) cho thấy hoá đơn điện bơm giảm khoảng 30%.",
       },
       {
         question:
-          "Khi model trả về xác suất cao nhất chỉ 45%, app nên làm gì?",
+          "Nền tảng nào là ví dụ Việt Nam đang ứng dụng AI nông nghiệp quy mô lớn?",
         options: [
-          "Vẫn báo kết quả top-1 cho nông dân",
-          "Từ chối trả lời: hiển thị cảnh báo 'Độ tin cậy thấp — chụp lại ảnh rõ hơn hoặc gọi khuyến nông' và đính kèm top-3 để bác sĩ cây trồng xem",
-          "Gọi API GPT-4 để đoán",
+          "Grab Food",
+          "Mimosatek (tưới thông minh IoT + AI), FPT.AI ForFarming (dự báo sâu bệnh và năng suất cà phê), VIFONET (nền tảng nông nghiệp số cho ĐBSCL)",
+          "Shopee",
+          "Instagram",
         ],
         correct: 1,
         explanation:
-          "Abstention (từ chối trả lời) là best practice. Xác suất thấp thường do: ảnh mờ, sai khung hình, hoặc bệnh mới chưa có trong training set. Hiển thị top-3 + ngưỡng tự tin giúp nông dân không áp dụng thuốc sai. Thà không trả lời còn hơn trả lời sai.",
+          "Ba case study Việt Nam đang vận hành: Mimosatek triển khai cảm biến + AI ở hơn 2000 hộ; FPT.AI ForFarming hợp tác cùng Nestlé Việt Nam cho cà phê Đắk Lắk; VIFONET là platform nông nghiệp số Đồng bằng sông Cửu Long. Bên cạnh đó có Hachi Hub (nhà kính), Agritech startups ở Cần Thơ, Hà Nam.",
+      },
+      {
+        question:
+          "Thách thức đặc biệt của AI nông nghiệp Việt Nam so với Mỹ, Hà Lan là gì?",
+        options: [
+          "Đất Việt Nam ít màu mỡ",
+          "(1) Sóng và thiết bị ở nông thôn còn yếu, (2) đa dạng giống cây (lúa Jasmine, ST25, khoai mì KM94) thiếu dữ liệu huấn luyện riêng, (3) rào cản chữ viết cho đồng bào dân tộc — app thường chỉ có tiếng Kinh",
+          "Nông dân Việt Nam không thông minh",
+          "Không có thách thức nào",
+        ],
+        correct: 1,
+        explanation:
+          "Ba thách thức đặc thù: (1) Hạ tầng — sóng chập chờn, điện thoại cũ 2–3 GB RAM; (2) Dữ liệu — bộ ảnh Plantix chủ yếu cho cây Âu–Mỹ, phải tự thu thập ảnh lúa ST25, khoai mì KM94...; (3) Ngôn ngữ — đồng bào H'Mông, Ê Đê, Khmer không phải ai cũng đọc tiếng Kinh. Các dự án tốt dùng giao diện giọng nói và biểu tượng trực quan.",
+      },
+      {
+        question:
+          "Giá cả trên thị trường nông sản biến động lớn. AI có thể giúp nông dân như thế nào?",
+        options: [
+          "AI không liên quan đến giá",
+          "Dự báo giá 4–12 tuần tới dựa trên thời tiết, sản lượng, xuất khẩu — giúp nông dân quyết định bán ngay hay trữ, chọn giống vụ sau",
+          "AI tự mua nông sản",
+          "AI làm giá tăng lên",
+        ],
+        correct: 1,
+        explanation:
+          "Mô hình dự báo giá nông sản dùng dữ liệu lịch sử + thời tiết + tin tức xuất khẩu. Ở Việt Nam, các hợp tác xã cà phê Đắk Lắk đã dùng để quyết định trữ kho hay bán ngay. Với thanh long, giá chênh 3–5 lần giữa mùa và trái mùa — dự báo đúng thời điểm thu hoạch quan trọng sống còn.",
+      },
+      {
+        question:
+          "Hợp tác xã muốn giao cho AI toàn quyền quyết định phun thuốc cho 200 ha. Cách tiếp cận an toàn nhất?",
+        options: [
+          "Giao toàn bộ cho AI — máy khách quan hơn",
+          "Dùng AI để khuyến nghị; trạm trưởng kiểm tra ngẫu nhiên 10% khuyến nghị mỗi tuần, AI chỉ được tự động hoá sau khi chứng minh đúng trên 95% nhiều vụ liền",
+          "Bỏ AI, làm thủ công",
+          "Chỉ dùng AI cho lúa, không cho cây khác",
+        ],
+        correct: 1,
+        explanation:
+          "Nguyên tắc &ldquo;human-in-the-loop&rdquo;: AI khuyến nghị, con người duyệt — đặc biệt khi quyết định ảnh hưởng đến thu nhập hàng trăm hộ. Sau khi AI chứng minh ổn định qua nhiều vụ, mới cân nhắc tự động hoá một phần, và luôn giữ nút &ldquo;dừng khẩn cấp&rdquo; cho con người.",
       },
       {
         type: "fill-blank",
         question:
-          "Ứng dụng điển hình của AI trong nông nghiệp là chụp ảnh lá {blank} để {blank} sớm, giúp nông dân xử lý trước khi bệnh lan rộng.",
+          "Tại Đồng bằng sông Cửu Long, AI giúp nông dân phát hiện {blank} trên lá lúa qua ảnh điện thoại, quyết định thời điểm {blank} dựa trên độ ẩm đất và dự báo thời tiết, và dự báo {blank} để lên kế hoạch bán.",
         blanks: [
           {
-            answer: "cây trồng",
-            accept: ["crop", "cây", "lúa", "plant"],
+            answer: "sâu bệnh",
+            accept: ["bệnh", "disease", "pests"],
           },
           {
-            answer: "phát hiện bệnh",
-            accept: [
-              "disease detection",
-              "phát hiện sâu bệnh",
-              "chẩn đoán bệnh",
-            ],
+            answer: "tưới nước",
+            accept: ["tưới", "irrigation", "watering"],
+          },
+          {
+            answer: "năng suất",
+            accept: ["yield", "giá", "sản lượng", "price"],
           },
         ],
         explanation:
-          "Mô hình CNN nhẹ (MobileNet) chạy trên điện thoại nông dân: chụp ảnh lá → phân loại bệnh (đạo ôn, khô vằn, vàng lá...) → gợi ý thuốc/biện pháp. Đây là ứng dụng Edge AI tiêu biểu cho nông thôn Việt Nam.",
+          "Ba ứng dụng phổ biến nhất: phát hiện sâu bệnh (chụp ảnh lá), tưới thông minh (cảm biến + thời tiết), và dự báo năng suất/giá (mô hình chuỗi thời gian). Cùng nhau, ba việc này giảm chi phí 25–35% và tăng thu nhập 15–25% cho hộ nông dân tham gia pilot.",
       },
     ],
     [],
@@ -878,64 +846,94 @@ export default function AIInAgricultureTopic() {
     <>
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Nông dân Đồng Tháp trồng 10 ha lúa. Một vùng bị đạo ôn nhưng chưa nhìn thấy rõ. Khi phát hiện thì đã lan 3 ha. AI giúp thế nào?"
+          question="Một nông dân trồng lúa ở Đồng bằng sông Cửu Long dùng AI để làm gì?"
           options={[
-            "AI không liên quan đến nông nghiệp",
-            "Drone bay quét + AI phân tích ảnh → phát hiện bệnh SỚM (trước mắt thường 1-2 tuần) → chỉ cần xử lý 0.5 ha thay vì 3 ha",
-            "AI dự báo thời tiết",
+            "Dự báo năng suất và giá bán vụ sau",
+            "Phát hiện sâu bệnh qua ảnh chụp lá bằng điện thoại",
+            "Tối ưu lịch tưới nước dựa trên độ ẩm đất và thời tiết",
+            "Tư vấn giá bán, thời điểm thu hoạch và chọn giống vụ sau",
+            "Tất cả những việc trên — AI là &ldquo;khuyến nông 24/7&rdquo; trong túi áo",
           ]}
-          correct={1}
-          explanation="Drone + multispectral camera chụp ruộng → AI phân tích: vùng nào stress (chưa có triệu chứng mắt thường nhưng spectral signature khác). Phát hiện sớm 1-2 tuần → xử lý 0.5 ha thay vì 3 ha → tiết kiệm 80% thuốc + cứu 70% năng suất. Đã được pilot ở Cần Thơ, An Giang!"
+          correct={4}
+          explanation="Cả bốn ứng dụng đều đã có pilot thật ở Việt Nam từ 2020–2024. Ảnh chụp lá (Plantix, VietGap Scan) phát hiện đạo ôn, cháy bìa lá, vàng lùn. Cảm biến + AI (Mimosatek) điều khiển tưới ở hơn 2000 hộ. Dự báo năng suất (FPT.AI ForFarming) hợp tác với Nestlé cho cà phê. AI không thay khuyến nông, nhưng giúp khuyến nông tới được mọi hộ, kể cả vùng sâu."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Bối cảnh">
             <div className="space-y-3 text-sm leading-relaxed">
               <p>
-                Việt Nam là <strong>cường quốc nông sản</strong>: top 2 xuất
-                khẩu gạo thế giới, top 1 hồ tiêu, top 2 cà phê (sau Brazil),
-                top 1 điều nhân. Nhưng năng suất trên mỗi hecta của ta vẫn
-                thấp hơn Nhật, Hàn, Thái Lan từ 15–30%. Nguyên nhân chính
-                không phải đất xấu hay nông dân thiếu kinh nghiệm — mà là{" "}
-                <strong>thông tin đến chậm</strong>: sâu bệnh phát hiện muộn,
-                phân bón rải đồng đều thay vì theo đốm đất, thu hoạch theo
-                kinh nghiệm chứ chưa theo dữ liệu.
+                Hãy hình dung bác nông dân trồng{" "}
+                <strong>10 ha lúa ở Đồng Tháp</strong>. Sáng nào bác cũng dậy
+                từ 4 giờ, đi xe máy vòng ruộng. Mắt bác rất tinh — nhưng chỉ
+                thấy bệnh <em>khi đã có triệu chứng rõ</em>, tức là khi dịch
+                đã lan 5–10%. Đến lúc nhận ra đạo ôn, đã mất 1–3 ha. AI không
+                thay bác — nó biến chiếc smartphone trong túi bác thành một
+                &ldquo;kính hiển vi&rdquo; và một &ldquo;khuyến nông
+                24/7&rdquo;.
               </p>
               <p>
-                Ở <strong>Đồng bằng sông Cửu Long</strong>, một bác nông dân
-                trồng 10 ha lúa thường dậy từ 4h sáng đi kiểm tra đồng. Nhưng
-                mắt thường chỉ thấy được bệnh khi đã có triệu chứng rõ — tức
-                là khi dịch đã lan ít nhất 5–10%. Ở{" "}
-                <strong>Tây Nguyên</strong>, vườn cà phê rộng, chủ vườn đi xe
-                máy 2 giờ cũng chỉ soát được 30% diện tích. Ở{" "}
-                <strong>Ninh Thuận</strong>, nho ba vụ/năm, một đợt nắng gắt
-                không tưới kịp là mất trắng.
+                Việt Nam là <strong>cường quốc nông sản</strong>: top 2 xuất
+                khẩu gạo, top 1 hồ tiêu, top 2 cà phê (sau Brazil), top 1 điều
+                nhân. Nhưng năng suất/ha thấp hơn Nhật, Hàn, Thái Lan 15–30%.
+                Nguyên nhân không phải đất xấu mà là{" "}
+                <strong>thông tin đến chậm</strong>: sâu bệnh phát hiện muộn,
+                phân bón rải đều thay vì theo đốm, thu hoạch theo kinh nghiệm
+                chứ chưa theo dữ liệu.
               </p>
               <p>
                 AI giải bài toán này bằng <strong>ba cánh tay</strong>: (1)
-                camera điện thoại rẻ tiền trên tay nông dân, (2) drone bay
-                quét 10 ha trong 15 phút với camera đa phổ, (3) cảm biến độ
-                ẩm đất + API thời tiết. Ba nguồn dữ liệu này được cắm vào mô
-                hình học sâu — thường là{" "}
-                <TopicLink slug="cnn">CNN nhẹ như MobileNet</TopicLink> — để
-                đưa ra chẩn đoán và khuyến nghị cụ thể{" "}
-                <em>theo từng đốm đất</em>, không phải cho cả cánh đồng.
+                camera điện thoại trên tay nông dân; (2) cảm biến IoT ngoài
+                ruộng (độ ẩm, pH, EC); (3) API thời tiết và giá. Ba nguồn cắm
+                vào mô hình AI nhẹ —{" "}
+                <TopicLink slug="edge-ai">chạy ngay trên điện thoại</TopicLink>{" "}
+                — để đưa ra chẩn đoán cho <em>thửa ruộng nhà bác</em>, không
+                phải cho cả tỉnh chung chung.
               </p>
               <p>
-                Điểm then chốt là <strong>Edge AI</strong>: mô hình phải chạy{" "}
-                <em>trên điện thoại</em>, không cần internet. Vì sao? Sóng 4G
-                ở nông thôn chập chờn, điện thoại nông dân thường là máy cũ
-                2–3 GB RAM. Gửi ảnh lên cloud cho GPT-4 Vision xử lý vừa chậm
-                (5–15 giây), vừa tốn data, vừa không chạy được khi không có
-                sóng. Một mô hình <TopicLink slug="quantization">lượng tử hóa INT8</TopicLink>{" "}
-                5 MB chạy 50 ms offline thì <em>khả dụng</em> ngay cả trên
-                ruộng xa. Đây là khác biệt giữa &ldquo;demo đẹp&rdquo; và
-                &ldquo;dùng thật&rdquo;.
+                Điểm then chốt với Việt Nam là{" "}
+                <strong>app phải chạy khi không có 4G</strong>. Sóng ở An Giang,
+                Hà Giang, Sóc Trăng còn chập chờn; gửi ảnh lên cloud là xa xỉ.
+                Một mô hình nhẹ chạy ngay trong điện thoại — kể cả Android 3
+                GB RAM — trả lời trong vài giây, là khác biệt giữa &ldquo;demo
+                đẹp&rdquo; và &ldquo;dùng thật ngoài đồng&rdquo;.
               </p>
             </div>
           </LessonSection>
 
           <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
             <VisualizationSection topicSlug="ai-in-agriculture">
-              <CropDiseaseDetector />
+              <div className="space-y-8">
+                <div>
+                  <h3 className="mb-1 text-base font-semibold text-foreground">
+                    Bản 1 — Phát hiện bệnh qua ảnh điện thoại
+                  </h3>
+                  <p className="mb-3 text-[12px] text-muted">
+                    Chọn một trường hợp — bật/tắt AI phân tích để thấy vùng
+                    &ldquo;nghi ngờ&rdquo; của máy.
+                  </p>
+                  <DiseaseDetectionDemo />
+                </div>
+
+                <div>
+                  <h3 className="mb-1 text-base font-semibold text-foreground">
+                    Bản 2 — Bảng điều khiển tưới nước thông minh
+                  </h3>
+                  <p className="mb-3 text-[12px] text-muted">
+                    Kéo ba thanh trượt, xem AI đổi quyết định: tưới ngay, chờ
+                    mưa, hay bỏ qua.
+                  </p>
+                  <IrrigationDashboard />
+                </div>
+
+                <div>
+                  <h3 className="mb-1 text-base font-semibold text-foreground">
+                    Bản 3 — Năng suất có AI so với không
+                  </h3>
+                  <p className="mb-3 text-[12px] text-muted">
+                    Bốn vùng, năm cây trồng. Chọn vùng để xem chênh lệch
+                    tấn/ha.
+                  </p>
+                  <YieldPredictor />
+                </div>
+              </div>
             </VisualizationSection>
           </LessonSection>
 
@@ -946,16 +944,15 @@ export default function AIInAgricultureTopic() {
           >
             <AhaMoment>
               <p>
-                AI nông nghiệp là <strong>nông dân 4.0</strong>: thay vì nhìn
-                trời đoán thời tiết, dùng <strong>AI dự báo</strong>. Thay vì
-                phun thuốc toàn ruộng, dùng{" "}
-                <strong>drone chỉ phun chỗ bị bệnh</strong>. Thay vì thu
-                hoạch theo lịch, dùng{" "}
-                <strong>AI phân tích độ chín</strong>. Giảm 30–50% chi phí,
-                tăng 15–25% năng suất. Việt Nam — nước nông nghiệp — có thể
-                hưởng lợi <em>rất lớn</em>, miễn là chúng ta giải được bài
-                toán hạ tầng (Edge AI + giao diện tiếng Việt thân thiện) và
-                dữ liệu cho giống cây bản địa.
+                AI nông nghiệp là <strong>khuyến nông 24/7 bỏ túi</strong>:
+                thay vì chờ cán bộ xã mỗi tuần một lần, bác nông dân có thể
+                &ldquo;hỏi&rdquo; điện thoại bất cứ lúc nào — chụp lá lúa nghi
+                bệnh, xem có nên tưới hay chờ mưa, biết giá lúa tuần sau. AI
+                không làm nông dân hết việc, mà làm{" "}
+                <em>kinh nghiệm nhiều năm của khuyến nông</em> nhân rộng cho
+                mọi hộ — cả ở Mộc Châu, Cần Thơ, Cà Mau. Giảm 25–35% chi phí
+                đầu vào, tăng 15–25% thu nhập, và quan trọng nhất: giảm rủi ro
+                mất trắng do phát hiện bệnh muộn.
               </p>
             </AhaMoment>
           </LessonSection>
@@ -963,452 +960,291 @@ export default function AIInAgricultureTopic() {
           <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
             <div className="space-y-4">
               <InlineChallenge
-                question="App AI phát hiện bệnh cây cần chạy trên điện thoại nông dân (RAM 2-3GB, không có internet ổn định). Chọn model nào?"
+                question="App AI trả về: 'Lá lúa — nghi đạo ôn, 65% tự tin'. Nông dân nên làm gì?"
                 options={[
-                  "ResNet-152 (230MB, cần internet)",
-                  "MobileNet V3 quantized INT8 (5MB, chạy offline, 50ms trên điện thoại cũ)",
-                  "GPT-4 Vision API",
+                  "Phun thuốc đạo ôn toàn ruộng ngay",
+                  "Chụp lại 2–3 ảnh ở góc sáng rõ hơn hoặc gọi cán bộ khuyến nông xã — 65% là dưới ngưỡng 'đủ tin' (thường 70–80%)",
+                  "Bỏ qua hoàn toàn kết quả AI",
+                  "Chuyển sang giống khác luôn",
                 ]}
                 correct={1}
-                explanation="Nông thôn VN: internet không ổn định → cần offline. Điện thoại cũ 2-3GB RAM → model phải nhỏ. MobileNet V3 INT8: 5MB, accuracy 88% (đủ cho 90% use cases), chạy 50ms, offline. Edge AI là giải pháp duy nhất cho nông nghiệp nông thôn!"
+                explanation="65% nghĩa là AI vẫn lăn tăn giữa đạo ôn và bệnh khác. Phun thuốc đạo ôn nếu thực chất là cháy bìa lá thì vừa tốn tiền vừa không trị được. Cách đúng: chụp lại (ảnh mờ/ngược sáng là nguyên nhân phổ biến) hoặc hỏi khuyến nông để có người đối chiếu."
               />
               <InlineChallenge
-                question="Mô hình phân loại bệnh lúa trả kết quả: Khỏe 41%, Đạo ôn 39%, Đốm nâu 18%. Ngưỡng tự tin của app là 60%. App nên làm gì?"
+                question="Một dự án AI muốn triển khai ở xã vùng cao Hà Giang nơi 80% dân là người H'Mông, sóng 3G chập chờn. Thiết kế nào phù hợp nhất?"
                 options={[
-                  "Báo 'Khỏe' vì đó là xác suất cao nhất",
-                  "Từ chối trả lời: '41% < 60% → cần chụp lại ảnh rõ hơn, đủ ánh sáng; nếu vẫn không chắc, gọi khuyến nông'",
-                  "Ghép 3 nhãn lại thành 'Khỏe có lẫn bệnh'",
+                  "App cloud yêu cầu 4G ổn định, tiếng Kinh với văn bản dài",
+                  "App nhẹ chạy offline, giao diện bằng biểu tượng + giọng nói tiếng H'Mông, đồng bộ dữ liệu khi có sóng",
+                  "Cử sinh viên tình nguyện cầm iPad xuống thăm hàng tuần",
+                  "Đợi hạ tầng 4G lên đã",
                 ]}
                 correct={1}
-                explanation="Abstention (từ chối trả lời) quan trọng trong nông nghiệp: sai chẩn đoán → nông dân xài thuốc sai → tốn tiền hoặc lan bệnh. Khi top-1 dưới ngưỡng, yêu cầu người dùng chụp lại (ảnh mờ, ngược nắng) hoặc chuyển lên chuyên gia. Đây cũng là best practice trong AI y tế."
+                explanation="Ở vùng sâu, hai rào cản lớn là hạ tầng và ngôn ngữ. App phải chạy offline (mô hình nhẹ trên máy), giao diện đơn giản (biểu tượng thay chữ, giọng nói bản địa), và đồng bộ khi có sóng. Đây là hướng các dự án FPT.AI ForFarming và VIFONET đang đi."
               />
             </div>
           </LessonSection>
 
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết">
             <ExplanationSection>
-              <p>
-                <strong>AI in Agriculture</strong> ứng dụng các mô hình học
-                sâu — chủ yếu là{" "}
-                <TopicLink slug="cnn">CNN</TopicLink> và{" "}
-                <TopicLink slug="object-detection">
-                  object detection
-                </TopicLink>{" "}
-                — để hỗ trợ bốn nhóm bài toán lớn: phát hiện sâu bệnh, tối ưu
-                hóa đầu vào (nước, phân, thuốc), dự báo năng suất, và tự động
-                hóa thu hoạch. Mô hình triển khai trên cạnh mạng (
-                <TopicLink slug="edge-ai">Edge AI</TopicLink>) để phù hợp hạ
-                tầng nông thôn.
+              <p className="text-sm leading-relaxed">
+                AI vào nông nghiệp tập trung vào <strong>năm nhóm ứng dụng</strong>.
+                Mỗi nhóm có ví dụ Việt Nam đang vận hành, kèm hiện trạng hạ
+                tầng và cạm bẫy thường gặp.
               </p>
 
-              <p>
-                <strong>Công thức softmax cho phân loại bệnh</strong> (K lớp
-                bệnh, logits z₁, …, z_K):
-              </p>
-              <LaTeX block>
-                {
-                  "P(y = k \\mid x) = \\frac{e^{z_k}}{\\sum_{j=1}^{K} e^{z_j}}"
-                }
-              </LaTeX>
-              <p>
-                Trong đó x là ảnh lá đã được chuẩn hóa (224×224 RGB), z = CNN(x)
-                là vector logits. Lớp dự đoán là{" "}
-                <LaTeX>{"\\hat{y} = \\arg\\max_k P(y=k \\mid x)"}</LaTeX>, và
-                ứng dụng chỉ trả kết quả khi{" "}
-                <LaTeX>
-                  {"P(y=\\hat{y} \\mid x) \\geq \\tau"}
-                </LaTeX>{" "}
-                (ngưỡng tự tin, thường 0.6–0.8).
-              </p>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <UseCaseCard
+                  icon={Bug}
+                  title="1. Phát hiện sâu bệnh qua ảnh"
+                  description="Chụp lá bằng điện thoại → AI phân loại đạo ôn, cháy bìa, vàng lùn. Đạt 88–93% chính xác. Chạy offline trên Android 3 GB RAM."
+                  color="#dc2626"
+                />
+                <UseCaseCard
+                  icon={LineChart}
+                  title="2. Dự báo năng suất"
+                  description="Kết hợp ảnh vệ tinh + thời tiết + dữ liệu đất → dự báo tấn/ha 4–12 tuần trước thu hoạch. Giúp lên kế hoạch bán, trữ kho."
+                  color="#0ea5e9"
+                />
+                <UseCaseCard
+                  icon={Droplets}
+                  title="3. Tưới thông minh"
+                  description="Cảm biến độ ẩm + API mưa + AI → tưới đúng lúc, đúng lượng. Giảm 20–35% nước, giảm hoá đơn điện bơm 30%."
+                  color="#16a34a"
+                />
+                <UseCaseCard
+                  icon={TrendingUp}
+                  title="4. Dự báo giá"
+                  description="Mô hình chuỗi thời gian + tin xuất khẩu → dự báo giá 4–12 tuần. Hợp tác xã cà phê Đắk Lắk đã dùng để quyết trữ hay bán."
+                  color="#f59e0b"
+                />
+                <UseCaseCard
+                  icon={Truck}
+                  title="5. Tối ưu chuỗi cung ứng"
+                  description="AI lên lộ trình xe tải chở nông sản tươi, giảm hư hao. Ở Đà Lạt – TP.HCM, giảm 15% thời gian vận chuyển rau."
+                  color="#8b5cf6"
+                />
+                <UseCaseCard
+                  icon={Sprout}
+                  title="+ Phụ trợ: Thuỷ sản và chăn nuôi"
+                  description="Camera dưới ao tôm Cà Mau phát hiện bệnh gan tuỵ. Cảm biến chuồng heo ở Hà Nam theo dõi thân nhiệt đàn."
+                  color="#06b6d4"
+                />
+              </div>
 
-              <p>
-                <strong>Chỉ số NDVI (Normalized Difference Vegetation Index)</strong>{" "}
-                dùng cho ảnh drone đa phổ:
-              </p>
-              <LaTeX block>
-                {
-                  "\\text{NDVI} = \\frac{\\text{NIR} - \\text{Red}}{\\text{NIR} + \\text{Red}} \\in [-1, 1]"
-                }
-              </LaTeX>
-              <p>
-                Lá khỏe hấp thụ Red (để quang hợp) và phản xạ mạnh NIR →
-                NDVI ≈ 0.6–0.9. Lá stress do bệnh, hạn hay thiếu đạm phản xạ
-                Red nhiều hơn và NIR ít hơn → NDVI giảm còn 0.2–0.4 nhiều
-                tuần trước khi triệu chứng hiện ra với mắt thường.
-              </p>
-
-              <p>
-                <strong>Bốn ứng dụng chính:</strong>
-              </p>
-              <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-                <li>
-                  <strong>Phát hiện sâu bệnh:</strong>{" "}
-                  <TopicLink slug="image-classification">
-                    Image classification
-                  </TopicLink>{" "}
-                  từ ảnh lá → phân loại bệnh (accuracy 90%+). PlantVillage,
-                  Plantix, Nuru (maize).
-                </li>
-                <li>
-                  <strong>Precision farming:</strong> Sensors độ ẩm + cảm
-                  biến NPK + AI → tối ưu nước, phân, thuốc từng vùng 10m ×
-                  10m. Giảm 30–50% đầu vào.
-                </li>
-                <li>
-                  <strong>Dự báo năng suất:</strong> Satellite (Sentinel-2) +
-                  weather API + soil data → mô hình hồi quy predict yield
-                  tonnes/ha cho cả tỉnh.
-                </li>
-                <li>
-                  <strong>Robot thu hoạch:</strong>{" "}
-                  <TopicLink slug="object-detection">
-                    Object detection
-                  </TopicLink>{" "}
-                  + robotics cho thu hoạch tự động — phát hiện trái chín,
-                  tính toán lực cầm, cắt không làm tổn thương.
-                </li>
-              </ul>
-
-              <Callout variant="info" title="AI Nông nghiệp tại Việt Nam">
-                VNPT xây platform nông nghiệp thông minh cho Đồng bằng sông
-                Cửu Long. FPT có AI dự báo thời tiết cho vùng trồng. Nhiều
-                startup nội địa như AgriConnect, MimosaTEK, HachiHub đang
-                pilot cảm biến + app. Mekong delta (lúa), Tây Nguyên (cà
-                phê), Ninh Thuận (nho), Tiền Giang (thanh long) là bốn vùng
-                đi đầu về thử nghiệm công nghệ.
-              </Callout>
-
-              <Callout variant="tip" title="Chiến lược dữ liệu cho VN">
-                PlantVillage chủ yếu có dữ liệu cây Âu–Mỹ. Nông nghiệp VN có
-                đặc thù riêng: giống lúa Jasmine, ST25, IR50404; cà phê
-                Robusta cao nguyên; khoai mì KM94/KM140. Phải tự thu thập và
-                gán nhãn — thường qua chương trình khuyến nông: nhân viên đi
-                ruộng chụp ảnh, bác sĩ cây trồng gán nhãn, một phần dán nhãn
-                đám đông qua app điện thoại.
-              </Callout>
-
-              <Callout variant="warning" title="Rủi ro khi AI sai">
-                Chẩn đoán sai đạo ôn thành đốm nâu → phun nhầm thuốc → bệnh
-                lan thêm + chi phí tăng. Sai dự báo năng suất → nông dân vay
-                vốn đầu tư quá mức. Đây là lý do app luôn cần (1) ngưỡng
-                tự tin, (2) top-3 kết quả, (3) hotline khuyến nông để đối
-                chiếu trước khi hành động.
-              </Callout>
-
-              <Callout variant="insight" title="Vì sao CNN 'nhìn' được bệnh">
-                CNN học từ dữ liệu cách phân biệt vết hình thoi (đạo ôn) với
-                đốm nâu tròn (brown spot), cháy mép lá (bacterial blight)
-                với vàng gân lá (tungro). Các filter ở lớp thấp phát hiện
-                cạnh, màu, texture; các filter lớp cao ghép thành khái niệm
-                &ldquo;vết bệnh hình thoi màu xám trung tâm&rdquo;.{" "}
-                <TopicLink slug="explainability">Grad-CAM</TopicLink> cho
-                phép vẽ heatmap chỉ ra vùng mà CNN đang chú ý — nếu CNN chú
-                ý vào nền đất thay vì lá, ta biết model bị lỗi.
-              </Callout>
-
-              <CodeBlock
-                language="python"
-                title="Phát hiện bệnh cây trên điện thoại (TFLite)"
+              <Callout
+                variant="info"
+                title="Case study Việt Nam — 6 dự án đang vận hành"
               >
-                {`import tensorflow as tf
+                <ul className="list-disc space-y-1 pl-4 text-[13px]">
+                  <li>
+                    <strong>Mimosatek</strong>: cảm biến IoT + AI tưới thông
+                    minh cho hơn 2.000 hộ trồng rau, trồng nho, cà phê.
+                  </li>
+                  <li>
+                    <strong>FPT.AI ForFarming</strong>: hợp tác với Nestlé
+                    Việt Nam dự báo sâu bệnh và năng suất cà phê ở Đắk Lắk.
+                  </li>
+                  <li>
+                    <strong>VIFONET</strong>: nền tảng nông nghiệp số cho
+                    Đồng bằng sông Cửu Long, tích hợp khuyến nông và dữ liệu
+                    vệ tinh.
+                  </li>
+                  <li>
+                    <strong>Hachi Hub</strong>: hệ nhà kính thông minh (Hà
+                    Nam, Đà Lạt) — AI điều khiển nhiệt độ, ẩm, dinh dưỡng
+                    theo thời gian thực.
+                  </li>
+                  <li>
+                    <strong>Rynan Technologies (Cần Thơ)</strong>: drone phun
+                    thuốc + AI chọn điểm phun cho lúa, giảm 70% thuốc BVTV.
+                  </li>
+                  <li>
+                    <strong>Agritech startups An Giang, Cần Thơ</strong>: các
+                    nhóm trẻ đang pilot ứng dụng phát hiện bệnh và phân tích
+                    đất.
+                  </li>
+                </ul>
+              </Callout>
 
-# 1. Model nhỏ cho điện thoại: MobileNetV3 Small
-model = tf.keras.applications.MobileNetV3Small(
-    input_shape=(224, 224, 3),
-    classes=10,  # 10 loại bệnh lúa phổ biến ở VN
-    weights=None,
-)
-model.load_weights("disease_model.h5")
+              <div className="rounded-xl border border-border bg-card p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <Wifi className="h-4 w-4 text-accent" />
+                  <span className="text-sm font-semibold text-foreground">
+                    Thực tế hạ tầng ở nông thôn Việt Nam (2024–2025)
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 gap-3 text-[13px] leading-relaxed md:grid-cols-3">
+                  <InfraStat label="Smartphone nông thôn" value="≈78–82%" note="Phần lớn là máy cũ 2–4 GB RAM." />
+                  <InfraStat label="Phủ sóng 4G nông thôn" value="≈85–90%" note="Vùng núi, sâu ĐBSCL còn chập chờn." />
+                  <InfraStat label="5G" value="Thí điểm đô thị" note="Ưu tiên TP lớn; nông thôn còn xa." />
+                </div>
+                <p className="mt-3 text-[12px] italic text-muted">
+                  Hàm ý: app AI nông nghiệp phải nhẹ, chạy offline, tối ưu cho
+                  máy cấp thấp. Không thể phụ thuộc vào API cloud.
+                </p>
+              </div>
 
-# 2. Lượng tử hóa INT8 để chạy trên điện thoại
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
-
-def representative_dataset():
-    # 100 ảnh lá thật để calibrate quantization
-    for img in calibration_images[:100]:
-        yield [tf.cast(img, tf.float32)]
-
-converter.representative_dataset = representative_dataset
-converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-converter.inference_input_type = tf.int8
-converter.inference_output_type = tf.int8
-
-tflite_model = converter.convert()
-# Kết quả: 5 MB, 50 ms/inference trên Snapdragon 665
-# Accuracy: 91% (so với 94% của FP32) — mất 3% để giảm kích thước 47x
-
-with open("disease_model_int8.tflite", "wb") as f:
-    f.write(tflite_model)
-
-# 3. Triển khai trên Android/iOS
-# Java:  Interpreter tflite = new Interpreter(modelFile);
-# Swift: let interpreter = try Interpreter(modelPath: path)
-
-# 4. Inference + abstention
-def predict(image, threshold=0.7):
-    probs = tflite_infer(image)   # shape (10,)
-    top = int(probs.argmax())
-    if probs[top] < threshold:
-        return {"action": "retake_photo", "top3": top3(probs)}
-    return {
-        "disease": DISEASES[top],
-        "confidence": float(probs[top]),
-        "recommendation": RECOMMEND[DISEASES[top]],
-    }`}
-              </CodeBlock>
-
-              <CodeBlock
-                language="python"
-                title="Phân tích ảnh drone đa phổ — bản đồ NDVI"
-              >
-                {`import numpy as np
-import rasterio
-
-# Ảnh drone đa phổ (NIR + Red từ camera MicaSense RedEdge)
-with rasterio.open("field_2025_04_12.tif") as src:
-    nir = src.read(4).astype("float32")   # band 4: NIR
-    red = src.read(3).astype("float32")   # band 3: Red
-
-# 1. NDVI: chỉ số sức khỏe thảm thực vật
-np.seterr(divide="ignore", invalid="ignore")
-ndvi = (nir - red) / (nir + red + 1e-8)
-
-# 2. Phân lớp vùng theo ngưỡng kinh nghiệm
-mask_healthy   = ndvi > 0.6             # lá xanh đậm, khỏe
-mask_moderate  = (ndvi > 0.3) & (ndvi <= 0.6)
-mask_stressed  = (ndvi > 0.1) & (ndvi <= 0.3)  # stress — cần kiểm tra
-mask_bare_soil = ndvi <= 0.1
-
-# 3. Gợi ý xử lý theo vùng (precision agriculture)
-def recommend(pct_stressed):
-    if pct_stressed > 0.10:
-        return "Phun trúng điểm các vùng NDVI < 0.3 trong 48h tới."
-    if pct_stressed > 0.03:
-        return "Theo dõi — chụp lại sau 5 ngày."
-    return "Ruộng ổn định. Duy trì lịch tưới tiêu."
-
-pct = mask_stressed.mean()
-print(f"Diện tích stress: {pct*100:.1f}% — {recommend(pct)}")
-
-# 4. Xuất bản đồ cho app để drone phun thuốc theo điểm
-np.save("prescription_map.npy", mask_stressed.astype("uint8"))
-# Drone DJI Agras đọc prescription map → chỉ phun 8% diện tích
-# thay vì phun đồng đều 100% → tiết kiệm 92% thuốc BVTV.`}
-              </CodeBlock>
-
-              <p>
-                <strong>Ví dụ đường ống thực tế</strong> (app &ldquo;Nông Dân
-                Thông Minh&rdquo; pilot ở Đồng Tháp):
-              </p>
-              <ol className="list-decimal list-inside space-y-1 pl-2 text-sm">
-                <li>
-                  Nông dân mở app, chụp 3 ảnh lá từ ba góc khác nhau.
-                </li>
-                <li>
-                  Ảnh được resize 224×224, chuẩn hóa, đưa vào{" "}
-                  <code className="text-[11px]">disease_model_int8.tflite</code>.
-                </li>
-                <li>
-                  Model trả 3 xác suất top-3. Nếu top-1 ≥ 0.7, app hiển thị
-                  tên bệnh + khuyến nghị thuốc/biện pháp bằng tiếng Việt. Có
-                  thêm Grad-CAM heatmap chồng lên ảnh để nông dân tin tưởng.
-                </li>
-                <li>
-                  Nếu top-1 &lt; 0.7, app yêu cầu chụp lại hoặc chuyển ảnh
-                  lên cloud cho chuyên gia khuyến nông review.
-                </li>
-                <li>
-                  Tất cả ảnh + nhãn phản hồi của chuyên gia được gửi lên
-                  cloud (khi có sóng) để <em>cải thiện model</em> ở chu kỳ
-                  huấn luyện sau (
-                  <TopicLink slug="fine-tuning">fine-tuning</TopicLink>).
-                </li>
-                <li>
-                  Ứng dụng hoạt động hoàn toàn offline ở bước 1–3; chỉ cần
-                  internet ở bước 4–5.
-                </li>
-              </ol>
-
-              <CollapsibleDetail title="So sánh kiến trúc CNN cho bài toán phân loại bệnh cây">
-                <div className="space-y-2 text-sm leading-relaxed">
+              <CollapsibleDetail title="Cạm bẫy đặc thù Việt Nam cần lưu ý">
+                <div className="space-y-2 text-[13px] leading-relaxed">
                   <p>
-                    Trên dataset PlantVillage mở rộng với ảnh thực tế ở Đồng
-                    bằng sông Cửu Long:
+                    <strong>1. Dữ liệu cho giống cây bản địa.</strong> Bộ ảnh
+                    PlantVillage chủ yếu cho cây Âu–Mỹ. Lúa Jasmine, ST25,
+                    khoai mì KM94, cà phê Robusta cao nguyên, xoài Hoà Lộc —
+                    phải tự thu thập. Hợp đồng với hợp tác xã, sinh viên nông
+                    nghiệp chụp theo khung chuẩn, bác sĩ cây trồng gán nhãn.
                   </p>
-                  <table className="w-full text-[12px] border-collapse">
-                    <thead>
-                      <tr className="border-b border-border">
-                        <th className="py-1 text-left">Model</th>
-                        <th className="py-1 text-right">Kích thước</th>
-                        <th className="py-1 text-right">Accuracy</th>
-                        <th className="py-1 text-right">Thời gian</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-muted">
-                      <tr className="border-b border-border/50">
-                        <td>ResNet-152 FP32</td>
-                        <td className="text-right">230 MB</td>
-                        <td className="text-right">95.1%</td>
-                        <td className="text-right">1200 ms</td>
-                      </tr>
-                      <tr className="border-b border-border/50">
-                        <td>ResNet-50 FP32</td>
-                        <td className="text-right">98 MB</td>
-                        <td className="text-right">94.3%</td>
-                        <td className="text-right">420 ms</td>
-                      </tr>
-                      <tr className="border-b border-border/50">
-                        <td>EfficientNet-B0</td>
-                        <td className="text-right">21 MB</td>
-                        <td className="text-right">93.8%</td>
-                        <td className="text-right">110 ms</td>
-                      </tr>
-                      <tr className="border-b border-border/50">
-                        <td>MobileNetV3-Small FP32</td>
-                        <td className="text-right">12 MB</td>
-                        <td className="text-right">91.5%</td>
-                        <td className="text-right">75 ms</td>
-                      </tr>
-                      <tr>
-                        <td className="font-semibold text-foreground">
-                          MobileNetV3-Small INT8
-                        </td>
-                        <td className="text-right font-semibold text-foreground">
-                          5 MB
-                        </td>
-                        <td className="text-right font-semibold text-foreground">
-                          90.7%
-                        </td>
-                        <td className="text-right font-semibold text-foreground">
-                          50 ms
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p className="text-[12px] mt-2">
-                    Số đo trên Snapdragon 665 (phổ biến trong điện thoại
-                    giá rẻ tại VN). Chọn MobileNetV3 INT8 cho hạ tầng nông
-                    thôn: đổi 4 điểm % accuracy lấy kích thước nhỏ hơn 46
-                    lần và tốc độ 24 lần.
+                  <p>
+                    <strong>2. Rào cản ngôn ngữ.</strong> Đồng bào H&rsquo;Mông,
+                    Ê Đê, Khmer, Ba Na không phải ai cũng đọc tiếng Kinh trôi
+                    chảy. App tốt dùng biểu tượng + giọng nói bản địa. Hội
+                    phụ nữ xã có thể là đầu mối đào tạo.
+                  </p>
+                  <p>
+                    <strong>3. Niềm tin của nông dân.</strong> Bác có 30 năm
+                    kinh nghiệm sẽ không tin app vừa cài. Dự án thành công
+                    thường bắt đầu bằng thí điểm 0,1 ha, cho nông dân thấy AI
+                    khớp trực giác trước, rồi mới mở rộng.
+                  </p>
+                  <p>
+                    <strong>4. Lệ thuộc cảm biến nhập khẩu.</strong> Cảm biến
+                    độ ẩm / EC / pH chất lượng cao nhập Đài Loan, Israel. Giá
+                    3–10 triệu/bộ là rào cản cho hộ nhỏ. Startup nội địa đang
+                    nội hoá một phần.
                   </p>
                 </div>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Quy trình thu thập và gán nhãn dữ liệu giống cây Việt Nam">
-                <div className="space-y-2 text-sm leading-relaxed">
-                  <p>
-                    PlantVillage mở chỉ có ~54 lớp bệnh cho 14 cây chủ yếu
-                    ở Mỹ/Châu Âu. Cho giống cây VN, một pipeline thực tế
-                    trông như sau:
-                  </p>
-                  <ol className="list-decimal list-inside space-y-1 text-[12px]">
-                    <li>
-                      <strong>Khảo sát ban đầu</strong>: liệt kê 10–15 bệnh
-                      phổ biến nhất cho mỗi giống cây chủ lực (lúa Jasmine,
-                      ST25; cà phê Robusta; khoai mì KM94).
-                    </li>
-                    <li>
-                      <strong>Thu thập đa vùng</strong>: ký hợp đồng với
-                      10–30 hợp tác xã, mỗi bên chụp ít nhất 200 ảnh lá/tuần
-                      theo khung hình chuẩn (cách lá 15 cm, nền tối).
-                    </li>
-                    <li>
-                      <strong>Gán nhãn cấp 1</strong>: sinh viên nông nghiệp
-                      gán nhãn thô qua app web. Gán 2 lần độc lập — nếu khác
-                      nhau thì chuyển lên cấp 2.
-                    </li>
-                    <li>
-                      <strong>Gán nhãn cấp 2</strong>: bác sĩ cây trồng từ
-                      Viện Lúa ĐBSCL review các ảnh khó. Dùng để xây tập
-                      test gold standard ~2000 ảnh.
-                    </li>
-                    <li>
-                      <strong>Cân bằng lớp</strong>:{" "}
-                      <TopicLink slug="data-augmentation">
-                        data augmentation
-                      </TopicLink>{" "}
-                      (xoay, thay đổi ánh sáng) cho lớp hiếm; under-sample
-                      lớp &ldquo;khỏe&rdquo; vốn luôn chiếm đa số.
-                    </li>
-                    <li>
-                      <strong>Vòng lặp active learning</strong>: sau khi
-                      deploy, các ảnh mà model không chắc (top-1 &lt; 0.7)
-                      được ưu tiên gán nhãn và thêm vào tập huấn luyện lần
-                      sau.
-                    </li>
-                  </ol>
-                </div>
-              </CollapsibleDetail>
+              <Callout
+                variant="warning"
+                title="Những sai lầm thường gặp khi triển khai"
+              >
+                <ul className="list-disc space-y-1 pl-4 text-[13px]">
+                  <li>
+                    <strong>Copy mô hình nước ngoài nguyên bản.</strong> Model
+                    huấn luyện trên ảnh cà chua Mỹ không nhận được đạo ôn lúa
+                    Việt — cần fine-tune với dữ liệu địa phương.
+                  </li>
+                  <li>
+                    <strong>Bỏ qua ngưỡng tự tin.</strong> Ép AI trả lời
+                    trong mọi trường hợp sẽ dẫn đến chẩn đoán sai, nông dân
+                    phun sai thuốc — tổn hại hơn là không có AI.
+                  </li>
+                  <li>
+                    <strong>Không có đường dây khuyến nông.</strong> AI chỉ
+                    thay thế 60–70% việc khuyến nông; case khó vẫn cần người.
+                    App không có nút &ldquo;gọi khuyến nông xã&rdquo; là
+                    thiếu trách nhiệm.
+                  </li>
+                  <li>
+                    <strong>Dùng data nông dân để bán cho đại lý thuốc.</strong>
+                    {" "}
+                    Vi phạm đạo đức và pháp luật. Dữ liệu về ruộng, bệnh, thu
+                    hoạch phải được bảo vệ và chỉ dùng đúng mục đích công bố.
+                  </li>
+                </ul>
+              </Callout>
 
-              <p>
-                <strong>Ứng dụng kề cận</strong> — ngoài phát hiện bệnh lá,
-                AI còn dùng để:
-              </p>
-              <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-                <li>
-                  <strong>Đếm cây &amp; trái chín</strong>: drone + YOLO tính
-                  mật độ cây cà phê, đếm trái thanh long chín. Hỗ trợ lập kế
-                  hoạch thu hoạch.
-                </li>
-                <li>
-                  <strong>Theo dõi dịch rầy nâu</strong>: bẫy đèn thông minh
-                  đếm côn trùng từ ảnh, cảnh báo vùng nguy cơ cao trước khi
-                  dịch bùng.
-                </li>
-                <li>
-                  <strong>Thủy sản</strong>: ở Cà Mau, AI phân tích video
-                  camera dưới ao tôm để phát hiện tôm bị bệnh gan tụy — một
-                  trong những nguyên nhân lớn gây mất trắng vụ.
-                </li>
-                <li>
-                  <strong>Chuỗi cung ứng</strong>: mô hình dự báo giá nông
-                  sản 4–12 tuần giúp nông dân quyết định bán ngay hay trữ.
-                </li>
-              </ul>
+              <TabView
+                tabs={[
+                  {
+                    label: "Cho nông dân",
+                    content: (
+                      <ol className="list-decimal space-y-1 pl-4 text-[13px] leading-relaxed">
+                        <li>
+                          Thử app phát hiện bệnh trên một thửa nhỏ. So kết quả
+                          với khuyến nông xã trong 2 tuần — khớp thì mới mở
+                          rộng.
+                        </li>
+                        <li>
+                          Luôn giữ đường dây khuyến nông — AI chưa đúng 100%.
+                          Gọi khi độ tự tin dưới 70%.
+                        </li>
+                        <li>
+                          Tham gia hợp tác xã / nhóm Zalo cùng giống cây để
+                          chia sẻ kinh nghiệm dùng app.
+                        </li>
+                      </ol>
+                    ),
+                  },
+                  {
+                    label: "Cho hợp tác xã",
+                    content: (
+                      <ol className="list-decimal space-y-1 pl-4 text-[13px] leading-relaxed">
+                        <li>
+                          App/cảm biến có tương thích với giống cây địa phương?
+                          Đã huấn luyện trên dữ liệu Việt Nam chưa?
+                        </li>
+                        <li>
+                          Chi phí cả vòng đời (cảm biến, pin, bảo trì)? Sau
+                          bao lâu hoà vốn?
+                        </li>
+                        <li>
+                          Nhà cung cấp có hỗ trợ tiếng Việt, đường dây khẩn
+                          cấp mùa vụ?
+                        </li>
+                        <li>
+                          Dữ liệu ruộng thuộc về ai? Có điều khoản bảo vệ
+                          chưa?
+                        </li>
+                      </ol>
+                    ),
+                  },
+                  {
+                    label: "Cho cán bộ khuyến nông",
+                    content: (
+                      <ol className="list-decimal space-y-1 pl-4 text-[13px] leading-relaxed">
+                        <li>
+                          Dùng dashboard AI phát hiện sớm điểm nóng trong xã —
+                          ưu tiên đi thực địa đúng chỗ.
+                        </li>
+                        <li>
+                          Đưa khuyến nghị AI cho nông dân như góc nhìn thứ
+                          hai, không thay kinh nghiệm của mình.
+                        </li>
+                        <li>
+                          Phản hồi ngược: gán nhãn case AI sai cho đơn vị phát
+                          triển — mô hình cần dữ liệu địa phương.
+                        </li>
+                      </ol>
+                    ),
+                  },
+                ]}
+              />
 
-              <p>
-                <strong>Cạm bẫy thường gặp</strong>:
-              </p>
-              <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-                <li>
-                  <strong>Domain shift:</strong> model huấn luyện với ảnh
-                  sạch trong lab, triển khai ngoài ruộng (nắng gắt, lá bẩn,
-                  ngược sáng) tụt 10–20% accuracy. Luôn{" "}
-                  <TopicLink slug="data-augmentation">
-                    augment
-                  </TopicLink>{" "}
-                  với ảnh thực địa.
-                </li>
-                <li>
-                  <strong>Sai lớp hiếm:</strong> 90% ảnh là &ldquo;khỏe&rdquo;,
-                  model học &ldquo;luôn đoán khỏe&rdquo; vẫn đạt 90% accuracy
-                  — nhưng vô dụng. Đánh giá bằng F1 hoặc recall trên mỗi lớp
-                  bệnh.
-                </li>
-                <li>
-                  <strong>Quên abstention:</strong> bắt model phải trả lời
-                  khi không chắc → nông dân lĩnh kết quả sai → mất tiền
-                  thuốc. Luôn có ngưỡng tự tin + top-k.
-                </li>
-                <li>
-                  <strong>Quên hệ thống khuyến nông:</strong> AI không thay
-                  bác sĩ cây trồng. App phải có đường dây nối nông dân với
-                  chuyên gia cho case khó.
-                </li>
-              </ul>
+              <ToggleCompare
+                labelA="Chưa có AI"
+                labelB="Có AI hỗ trợ"
+                description="Một vụ lúa 3 tháng — so sánh cách ra quyết định"
+                childA={
+                  <div className="space-y-1.5 text-[13px] leading-relaxed">
+                    <p><strong>Phát hiện bệnh</strong>: đi thăm ruộng bằng mắt, thấy khi đã lan 5–10%. Phun đôi khi muộn.</p>
+                    <p><strong>Tưới tiêu</strong>: theo lịch cố định. Dư khi sắp mưa, thiếu khi nắng gắt.</p>
+                    <p><strong>Bán lúa</strong>: bán ngay vì sợ giá rớt, hoặc trữ rồi lỗ.</p>
+                    <p className="italic text-muted">Năng suất 5,8 tấn/ha, chi phí 60%, lợi nhuận ròng 25–30%.</p>
+                  </div>
+                }
+                childB={
+                  <div className="space-y-1.5 text-[13px] leading-relaxed">
+                    <p><strong>Phát hiện bệnh</strong>: chụp lá → AI báo đạo ôn 82% → phun trúng sớm. Bệnh lan 1–2%.</p>
+                    <p><strong>Tưới tiêu</strong>: cảm biến + AI &ldquo;chờ mưa&rdquo; khi 80%, &ldquo;tưới tối&rdquo; khi khô. Giảm 25% nước.</p>
+                    <p><strong>Bán lúa</strong>: AI dự báo giá 4 tuần, hợp tác xã đàm phán tập thể.</p>
+                    <p className="italic text-muted">Năng suất 7,2 tấn/ha (+25%), chi phí −25–30%, lợi nhuận ròng 40–45%.</p>
+                  </div>
+                }
+              />
             </ExplanationSection>
           </LessonSection>
 
           <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               points={[
-                "4 ứng dụng: Phát hiện bệnh (CNN), Precision farming (sensors+AI), Dự báo năng suất, Robot thu hoạch.",
-                "Edge AI bắt buộc: nông thôn không có internet ổn định → model chạy offline trên điện thoại.",
-                "Precision farming: giảm 30-50% nước/thuốc/phân, tăng 15-25% năng suất.",
-                "VN có lợi thế: nước nông nghiệp lớn, nhiều bài toán (lúa, cà phê, thuỷ sản) cần AI.",
-                "Thách thức: internet nông thôn, data giống cây VN còn thiếu, nông dân cần app đơn giản.",
-                "Abstention & Grad-CAM: khi AI không chắc, từ chối trả lời; khi chắc, chỉ rõ vùng bệnh để tạo niềm tin.",
+                "AI nông nghiệp phục vụ 5 nhóm: phát hiện bệnh, dự báo năng suất, tưới thông minh, dự báo giá, tối ưu chuỗi cung ứng.",
+                "Ảnh lá + AI trên điện thoại là ứng dụng phổ biến nhất: bật offline, trả lời trong vài giây, chính xác 88–93%.",
+                "Tưới thông minh kết hợp cảm biến đất + API mưa + AI: giảm 20–35% nước, giảm hoá đơn điện bơm 30%.",
+                "Việt Nam có hệ sinh thái: Mimosatek, FPT.AI ForFarming, VIFONET, Hachi Hub, Rynan, Agritech startups Cần Thơ/An Giang.",
+                "Hạ tầng 2024–2025: smartphone ≈80% nông thôn, 4G phủ 85–90%. App BẮT BUỘC chạy offline.",
+                "Cạm bẫy: thiếu dữ liệu cho giống cây VN, rào cản ngôn ngữ dân tộc, niềm tin của nông dân, lệ thuộc cảm biến nhập khẩu.",
+                "Nguyên tắc human-in-the-loop: AI khuyến nghị, khuyến nông xã + nông dân quyết định — đặc biệt khi bệnh quan trọng hoặc tự tin dưới 80%.",
               ]}
             />
           </LessonSection>
@@ -1421,3 +1257,60 @@ np.save("prescription_map.npy", mask_stressed.astype("uint8"))
     </>
   );
 }
+
+// ===========================================================================
+// Supporting components — kept below main for readability
+// ===========================================================================
+
+function UseCaseCard({
+  icon: Icon,
+  title,
+  description,
+  color,
+}: {
+  icon: typeof Leaf;
+  title: string;
+  description: string;
+  color: string;
+}) {
+  return (
+    <div
+      className="rounded-xl border p-3"
+      style={{ borderColor: `${color}55`, backgroundColor: `${color}0D` }}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-white"
+          style={{ backgroundColor: color }}
+        >
+          <Icon className="h-4 w-4" />
+        </span>
+        <span className="text-sm font-semibold text-foreground">{title}</span>
+      </div>
+      <p className="mt-2 text-[12px] leading-relaxed text-foreground">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function InfraStat({
+  label,
+  value,
+  note,
+}: {
+  label: string;
+  value: string;
+  note: string;
+}) {
+  return (
+    <div className="rounded-lg bg-surface p-3">
+      <div className="text-[10px] uppercase tracking-wider text-muted">
+        {label}
+      </div>
+      <div className="text-lg font-bold text-foreground">{value}</div>
+      <div className="mt-1 text-[11px] text-muted">{note}</div>
+    </div>
+  );
+}
+

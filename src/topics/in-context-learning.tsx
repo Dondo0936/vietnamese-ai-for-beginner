@@ -1,18 +1,28 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Sparkles,
+  MessageSquare,
+  ClipboardCheck,
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+} from "lucide-react";
 import {
   PredictionGate,
   AhaMoment,
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  LaTeX,
   LessonSection,
   TopicLink,
   CollapsibleDetail,
+  ToggleCompare,
+  SliderGroup,
+  Reorderable,
+  MatchPairs,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -28,7 +38,7 @@ export const metadata: TopicMeta = {
   title: "In-Context Learning",
   titleVi: "Học trong ngữ cảnh",
   description:
-    "Khả năng LLM học và thực hiện tác vụ mới chỉ từ vài ví dụ trong prompt, không cần huấn luyện lại.",
+    "Khả năng mô hình AI làm tác vụ mới chỉ từ vài ví dụ bạn gửi trong prompt, không cần huấn luyện lại.",
   category: "llm-concepts",
   tags: ["icl", "few-shot", "zero-shot", "prompt"],
   difficulty: "beginner",
@@ -37,292 +47,221 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DỮ LIỆU DEMO — phân loại cảm xúc review tiếng Việt
+// DỮ LIỆU — phân loại phản hồi khách hàng tiếng Việt
 // ─────────────────────────────────────────────────────────────────────────────
-// Mỗi ví dụ có input (câu review) và output (nhãn cảm xúc mong muốn).
-// Thứ tự các ví dụ đã được sắp xếp cố ý để "bao phủ" dần các class:
-//   - Ví dụ 1: một class tích cực
-//   - Ví dụ 2: thêm class tiêu cực
-//   - Ví dụ 3: thêm class trung lập
-//   - Các ví dụ tiếp theo: đa dạng hoá ngữ cảnh, edge-case
-// Nhờ đó khi người học kéo thanh shot từ 0 → 8, họ thấy rõ cấu trúc prompt
-// dần trở nên "đầy đủ thông tin" hơn.
-const TASK_EXAMPLES: Array<{ input: string; output: string; note: string }> = [
-  {
-    input: "Tôi yêu Hà Nội!",
-    output: "Tích cực",
-    note: "Câu khen ngắn, cảm xúc rõ ràng — đây là 'neo' đầu tiên cho model.",
-  },
-  {
-    input: "Dịch vụ quá tệ",
-    output: "Tiêu cực",
-    note: "Giới thiệu class tiêu cực — model hiểu bài toán có ít nhất 2 nhãn.",
-  },
-  {
-    input: "Bình thường, không có gì đặc biệt",
-    output: "Trung lập",
-    note: "Class thứ ba xuất hiện — model biết đầu ra không chỉ nhị phân.",
-  },
-  {
-    input: "Phở ở đây ngon nhất Sài Gòn!",
-    output: "Tích cực",
-    note: "Củng cố class tích cực với ngữ cảnh khác (ẩm thực).",
-  },
-  {
-    input: "Chờ 45 phút mới có bàn, phục vụ chậm",
-    output: "Tiêu cực",
-    note: "Tiêu cực về dịch vụ, không phải về đồ ăn — giúp model tổng quát hoá.",
-  },
-  {
-    input: "Giá hợp lý, không gian ổn, đồ ăn được",
-    output: "Trung lập",
-    note: "Nhiều tính từ 'vừa đủ' → trung lập — một mẫu tinh tế cho model.",
-  },
-  {
-    input: "Món nào cũng dở, hối hận khi gọi nhiều",
-    output: "Tiêu cực",
-    note: "Từ 'hối hận' là tín hiệu mạnh — củng cố nhận diện sắc thái tiêu cực.",
-  },
-  {
-    input: "Trải nghiệm tuyệt vời, sẽ quay lại!",
-    output: "Tích cực",
-    note: "Mẫu kết thúc bằng ý định quay lại — một tín hiệu tích cực điển hình.",
-  },
-];
-
-// Input thử nghiệm — chứa cả tín hiệu tích cực (nhân viên) lẫn tiêu cực (đồ ăn).
-// Đây là mẫu "khó" để thấy sự khác biệt rõ ràng giữa các mức shot.
-const TEST_INPUT = "Nhân viên thân thiện nhưng đồ ăn hơi lạt";
-
-// Bảng output mô phỏng cho mỗi mức shot (0, 1, 3, 8).
-// Con số độ chính xác là con số minh hoạ giáo dục — phản ánh xu hướng đã được
-// ghi nhận trong các nghiên cứu về ICL: tăng nhanh từ 0 → 3 shot rồi chậm lại.
-type ShotOutput = {
-  answer: string;
-  confidence: number;
-  reasoning: string;
-  tokens: number;
-  cost: number; // cent/request ước lượng
-  latency: number; // ms
+// Mỗi cấp độ "số ví dụ" (shot) trả về một output mô phỏng khác nhau để người
+// học cảm nhận rõ tác động của ICL. Các con số % là con số minh hoạ giáo dục
+// — chúng phản ánh xu hướng thực tế của ICL (tăng nhanh 0→3, chậm dần sau đó).
+type ShotDemo = {
+  label: string;
+  examples: Array<{ review: string; label: string }>;
+  aiAnswer: string;
+  quality: number; // 0–100, phần trăm "đúng ý bạn"
+  note: string;
+  hit: boolean;
 };
 
-const AI_OUTPUTS: Record<number, ShotOutput> = {
+const CUSTOMER_INPUT = "Nhân viên thân thiện nhưng đồ ăn hơi lạt";
+
+const SHOT_DEMOS: Record<number, ShotDemo> = {
   0: {
-    answer:
-      "Đây là một nhận xét về trải nghiệm ăn uống tại nhà hàng, có cả mặt tích cực và tiêu cực.",
-    confidence: 22,
-    reasoning:
-      "Không có ví dụ → AI không biết bạn muốn output dạng gì (nhãn? câu trả lời dài? JSON?).",
-    tokens: 35,
-    cost: 0.2,
-    latency: 420,
+    label: "Không ví dụ",
+    examples: [],
+    aiAnswer:
+      "Đây là nhận xét có cả mặt tích cực (nhân viên thân thiện) lẫn tiêu cực (đồ ăn hơi lạt), cần xem xét tổng thể…",
+    quality: 25,
+    note:
+      "Không có ví dụ, AI không biết bạn muốn output gì. Nó viết một câu dài thay vì chọn một nhãn.",
+    hit: false,
   },
   1: {
-    answer: "Tích cực",
-    confidence: 54,
-    reasoning:
-      "1 ví dụ chỉ cho model thấy duy nhất class 'Tích cực' → nó thiên lệch và đoán theo class đã gặp.",
-    tokens: 70,
-    cost: 0.35,
-    latency: 480,
+    label: "1 ví dụ",
+    examples: [{ review: "Quán này tuyệt vời, tôi sẽ quay lại!", label: "Tích cực" }],
+    aiAnswer: "Tích cực",
+    quality: 55,
+    note:
+      "Mới có 1 ví dụ thuộc nhãn Tích cực, AI thiên lệch theo nhãn nó đã thấy — dù nhận xét thực ra là trung tính.",
+    hit: false,
   },
   3: {
-    answer: "Trung lập",
-    confidence: 87,
-    reasoning:
-      "3 ví dụ phủ đủ 3 class → model phân biệt được sắc thái và hiểu format đầu ra là một nhãn duy nhất.",
-    tokens: 140,
-    cost: 0.62,
-    latency: 560,
-  },
-  8: {
-    answer: "Trung lập",
-    confidence: 93,
-    reasoning:
-      "8 ví dụ đa dạng → model tổng quát hoá tốt hơn nhưng cải thiện so với 3-shot là nhỏ (diminishing returns).",
-    tokens: 260,
-    cost: 1.15,
-    latency: 740,
+    label: "3 ví dụ",
+    examples: [
+      { review: "Quán này tuyệt vời, tôi sẽ quay lại!", label: "Tích cực" },
+      { review: "Dịch vụ quá tệ, chờ 40 phút không ai ra", label: "Tiêu cực" },
+      { review: "Giá hợp lý, không gian ổn, đồ ăn được", label: "Trung tính" },
+    ],
+    aiAnswer: "Trung tính",
+    quality: 90,
+    note:
+      "3 ví dụ phủ đủ 3 nhãn → AI hiểu bạn muốn chọn 1 nhãn và biết nhãn trung tính là lựa chọn đúng cho câu có cả khen lẫn chê nhẹ.",
+    hit: true,
   },
 };
 
-const SHOT_LEVELS = [0, 1, 3, 8] as const;
-type ShotLevel = (typeof SHOT_LEVELS)[number];
-
-// Tra cứu ví dụ tương ứng với mỗi mức shot.
-// 0 shot → không ví dụ
-// 1 shot → chỉ ví dụ 1
-// 3 shot → 3 ví dụ đầu (đủ 3 class)
-// 8 shot → toàn bộ 8 ví dụ
-function examplesForShot(shot: ShotLevel) {
-  return TASK_EXAMPLES.slice(0, shot);
-}
+const SHOT_LEVELS = [0, 1, 3] as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BẢNG SO SÁNH ICL vs FINE-TUNE
+// DEMO 2 — KÉO VÍ DỤ VÀO PROMPT (Reorderable)
+// Người học sắp xếp ví dụ để tạo prompt "phiên dịch email khách hàng sang
+// phong cách công ty" — thứ tự hợp lý: khen trước, chê sau, trung tính cuối.
 // ─────────────────────────────────────────────────────────────────────────────
-// Dùng làm "toggle compare" dạng bảng thủ công — không cần component ngoài.
-type CompareRow = {
-  aspect: string;
-  icl: string;
-  fineTune: string;
-  winner: "icl" | "finetune" | "tie";
-};
+const PROMPT_BUILDER_ITEMS = [
+  "Câu mô tả nhiệm vụ: \"Viết email phản hồi khách hàng theo tone công ty.\"",
+  "Ví dụ 1 — khen sản phẩm  →  Cảm ơn chân thành + gợi ý sản phẩm liên quan.",
+  "Ví dụ 2 — phàn nàn giao hàng  →  Xin lỗi ngắn + đưa mã giảm giá xin lỗi.",
+  "Ví dụ 3 — hỏi chính sách đổi trả  →  Trả lời rõ ràng, đính kèm link.",
+  "Câu hỏi thật của khách: \"Tôi muốn biết chính sách bảo hành sản phẩm A?\"",
+];
 
-// Mỗi hàng là một "khía cạnh" so sánh. Người đọc thường ngầm cho rằng
-// fine-tune luôn tốt hơn ICL, nhưng bảng này cho thấy sự thật phức tạp hơn
-// nhiều: tuỳ vào pha của dự án (MVP vs production vs scale-out), công cụ
-// khác nhau sẽ chiếm ưu thế.
-const COMPARE_ROWS: CompareRow[] = [
+// Thứ tự đúng: task đầu → 3 ví dụ → câu hỏi cuối
+const PROMPT_BUILDER_CORRECT = [0, 1, 2, 3, 4];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEMO 3 — TRÍCH XUẤT THÔNG TIN HOÁ ĐƠN (ToggleCompare)
+// ─────────────────────────────────────────────────────────────────────────────
+const INVOICE_TEXT =
+  "Ngày 15/03/2025, Công ty TNHH Ánh Dương mua 12 thùng nước suối Aquafina, đơn giá 85.000đ/thùng, tổng 1.020.000đ, đã thanh toán chuyển khoản.";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BẢNG SO SÁNH 3 CHẾ ĐỘ (Zero / One / Few shot)
+// ─────────────────────────────────────────────────────────────────────────────
+const MODE_PANELS = [
   {
-    aspect: "Thời gian triển khai",
-    icl: "Vài phút — chỉ viết prompt",
-    fineTune: "Vài giờ đến vài ngày — cần training job",
-    winner: "icl",
+    key: "zero",
+    title: "Zero-shot — không ví dụ",
+    subtitle: "Chỉ mô tả việc cần làm",
+    emoji: <MessageSquare className="h-5 w-5" />,
+    accent: "border-slate-300 bg-slate-50 dark:bg-slate-800/40 dark:border-slate-700",
+    headerColor: "text-slate-700 dark:text-slate-200",
+    bullets: [
+      "Prompt cực ngắn, rẻ nhất.",
+      "Phù hợp việc quen thuộc (tóm tắt, dịch).",
+      "Dễ sai format khi việc lạ.",
+    ],
+    example: "Hãy phân loại cảm xúc câu sau: \"…\"",
   },
   {
-    aspect: "Dữ liệu cần thiết",
-    icl: "3–8 ví dụ mẫu",
-    fineTune: "Hàng trăm đến hàng nghìn cặp input/output",
-    winner: "icl",
+    key: "one",
+    title: "One-shot — 1 ví dụ",
+    subtitle: "Một mẫu để AI bắt chước",
+    emoji: <Sparkles className="h-5 w-5" />,
+    accent: "border-amber-300 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-700/60",
+    headerColor: "text-amber-700 dark:text-amber-300",
+    bullets: [
+      "AI khoá được format đầu ra.",
+      "Dễ thiên lệch theo nhãn ví dụ duy nhất.",
+      "Nên dùng khi format mới, task đơn giản.",
+    ],
+    example: "Mẫu: \"Quán tuyệt vời!\" → Tích cực\n\nGiờ phân loại: \"…\"",
   },
   {
-    aspect: "Chi phí ban đầu",
-    icl: "Gần như $0 (chỉ chi phí API inference)",
-    fineTune: "Phí training + hạ tầng GPU",
-    winner: "icl",
-  },
-  {
-    aspect: "Chi phí mỗi request",
-    icl: "Cao hơn — prompt dài hơn vì chứa ví dụ",
-    fineTune: "Thấp hơn — prompt ngắn, kiến thức đã nằm trong trọng số",
-    winner: "finetune",
-  },
-  {
-    aspect: "Độ ổn định",
-    icl: "Có thể lệch theo cách viết prompt (sensitive)",
-    fineTune: "Ổn định hơn, ít phụ thuộc format prompt",
-    winner: "finetune",
-  },
-  {
-    aspect: "Khả năng cập nhật",
-    icl: "Sửa ví dụ là xong, không cần retrain",
-    fineTune: "Phải mở lại training pipeline",
-    winner: "icl",
-  },
-  {
-    aspect: "Giới hạn context",
-    icl: "Bị chặn bởi context window (8k, 32k, 200k token)",
-    fineTune: "Không phụ thuộc context — kiến thức 'in' vào trọng số",
-    winner: "finetune",
-  },
-  {
-    aspect: "Bảo mật dữ liệu",
-    icl: "Dữ liệu đi cùng request mỗi lần",
-    fineTune: "Dữ liệu huấn luyện nằm trong model custom",
-    winner: "tie",
+    key: "few",
+    title: "Few-shot — 3–5 ví dụ",
+    subtitle: "Phủ đủ mọi trường hợp",
+    emoji: <ClipboardCheck className="h-5 w-5" />,
+    accent: "border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700/60",
+    headerColor: "text-emerald-700 dark:text-emerald-300",
+    bullets: [
+      "Sweet spot cho hầu hết việc văn phòng.",
+      "Cần phủ mọi nhãn bạn muốn AI trả về.",
+      "Chất lượng tăng nhanh, sau 5–8 ví dụ tăng chậm.",
+    ],
+    example:
+      "Mẫu 1: \"Dịch vụ tệ\" → Tiêu cực\nMẫu 2: \"Rất hài lòng!\" → Tích cực\nMẫu 3: \"Bình thường\" → Trung tính\n\nGiờ phân loại: \"…\"",
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// QUIZ — 8 CÂU HỎI
+// CÁC CẶP NỐI — loại việc vs số ví dụ khuyên dùng
+// ─────────────────────────────────────────────────────────────────────────────
+const TASK_EXAMPLE_PAIRS = [
+  { left: "Tóm tắt email dài thành 3 gạch đầu dòng", right: "0 ví dụ (zero-shot) là đủ" },
+  { left: "Viết email theo đúng tone công ty bạn", right: "2–3 ví dụ email cũ của bạn" },
+  { left: "Trích xuất 5 trường từ hoá đơn Việt", right: "3–5 ví dụ đầy đủ trường" },
+  { left: "Phân loại phản hồi thành 4 nhãn hiếm gặp", right: "5–8 ví dụ cover mọi nhãn" },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// QUIZ
 // ─────────────────────────────────────────────────────────────────────────────
 const quizQuestions: QuizQuestion[] = [
   {
-    question: "In-Context Learning khác gì với fine-tuning?",
-    options: [
-      "ICL thay đổi trọng số model, fine-tuning thì không",
-      "ICL KHÔNG thay đổi trọng số — chỉ cho ví dụ trong prompt. Fine-tuning thay đổi trọng số vĩnh viễn",
-      "ICL cần nhiều dữ liệu hơn fine-tuning",
-      "Không khác gì, hai tên cho cùng một thứ",
-    ],
-    correct: 1,
-    explanation:
-      "ICL là 'dạy tạm' qua prompt — model không thay đổi, hiểu biết mất khi prompt kết thúc. Fine-tuning thay đổi trọng số vĩnh viễn.",
-  },
-  {
-    question: "Thêm quá nhiều ví dụ (20–30 ví dụ) vào prompt có tốt không?",
-    options: [
-      "Càng nhiều càng tốt",
-      "Không — tốn context window, tốn tiền, và hiệu quả giảm dần sau 5–10 ví dụ",
-      "Không — AI chỉ đọc ví dụ đầu tiên",
-      "Tốt nếu ví dụ ngắn",
-    ],
-    correct: 1,
-    explanation:
-      "Hiệu quả ICL tăng nhanh ở 1–5 ví dụ, sau đó diminishing returns. 20–30 ví dụ tốn context window (tiền!) mà cải thiện rất ít. 3–5 ví dụ là sweet spot.",
-  },
-  {
-    question: "AI hoạt động theo cơ chế nào khi thực hiện in-context learning?",
-    options: [
-      "Pattern matching — nhận ra format từ ví dụ và áp dụng cho input mới",
-      "Học thuộc lòng — ghi nhớ mọi ví dụ vào trọng số",
-      "Search engine — tìm đáp án trên Internet",
-      "Random — đoán ngẫu nhiên",
-    ],
-    correct: 0,
-    explanation:
-      "ICL là pattern matching cấp cao: AI nhận ra CẤU TRÚC (input → output) từ ví dụ, rồi áp dụng cấu trúc đó cho input mới. Không ghi nhớ, không tìm kiếm.",
-  },
-  {
-    type: "fill-blank",
     question:
-      "Khi prompt chỉ mô tả task mà không có ví dụ nào, ta gọi là {blank}. Khi thêm vài ví dụ mẫu input-output thì gọi là few-shot và có thể cho nhiều {blank} hơn.",
-    blanks: [
-      { answer: "zero-shot", accept: ["zero shot", "không ví dụ", "0-shot"] },
-      { answer: "ví dụ", accept: ["examples", "mẫu", "example"] },
-    ],
-    explanation:
-      "Zero-shot = 0 ví dụ (chỉ mô tả task). Few-shot = 3–5 ví dụ trong prompt. Many-shot = 10+ ví dụ. Số lượng ví dụ tăng thì chất lượng thường tăng, nhưng hiệu quả giảm dần sau 5–10 ví dụ.",
-  },
-  {
-    question: "Điều gì XẢY RA với trọng số của LLM khi bạn dùng few-shot prompting?",
+      "\"In-context learning\" (ICL) trong một câu đơn giản nhất là gì?",
     options: [
-      "Trọng số được cập nhật nhẹ sau mỗi request",
-      "Trọng số không thay đổi — ICL chỉ tác động lên hidden states trong một lần forward pass",
-      "Chỉ lớp cuối cùng được cập nhật",
-      "Trọng số bị khóa tạm thời rồi mở lại sau khi trả lời",
+      "Bạn gửi dữ liệu của công ty lên máy chủ để AI được huấn luyện lại.",
+      "Bạn cho AI vài ví dụ ngay trong prompt, AI làm theo mà không cần ai huấn luyện lại gì cả.",
+      "AI tự động tìm thông tin trên Internet rồi trả lời.",
+      "Một loại model mới chỉ hoạt động offline.",
     ],
     correct: 1,
     explanation:
-      "ICL diễn ra hoàn toàn trong inference. Toàn bộ thông tin ví dụ chỉ tồn tại dưới dạng hidden states và attention patterns tạm thời — không có gradient, không có update.",
+      "ICL là cách bạn \"dạy tạm\" AI bằng vài ví dụ trong prompt. Không có huấn luyện lại, không có upload dữ liệu — chỉ là bạn viết ví dụ vào ô chat. Khi đóng cửa sổ chat, AI quên ngay — vì đây không phải học vĩnh viễn.",
   },
   {
     question:
-      "Bạn có 3 ví dụ: 2 tích cực và 1 tiêu cực (không có trung lập). Mẫu thử là 'Tạm ổn, không quá ấn tượng'. Rủi ro lớn nhất là gì?",
+      "Bạn muốn AI trả lời email khách hàng theo tone công ty của bạn. Cách nào rẻ nhất, nhanh nhất, mà vẫn hiệu quả?",
     options: [
-      "Model trả lời 'Tích cực' hoặc 'Tiêu cực' vì không thấy ví dụ trung lập nào → thiếu class",
-      "Model refuse do prompt quá ngắn",
-      "Model tự động chèn thêm class mới dù chưa từng thấy",
-      "Không có rủi ro đáng kể",
+      "Thuê chuyên gia AI huấn luyện riêng một mô hình cho công ty.",
+      "Copy 3 email mẫu bạn đã viết trước đây dán vào chat, rồi nhờ AI viết email mới theo phong cách tương tự.",
+      "Chờ AI phiên bản mới biết tiếng Việt tốt hơn.",
+      "Gửi toàn bộ hộp thư cho AI đọc trước 1 tuần.",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
-      "ICL rất 'nhìn mẫu mà đoán format'. Nếu ví dụ không cover class bạn muốn, model sẽ ép đáp án về các class đã thấy. Luôn đảm bảo tập ví dụ phủ đủ các nhãn và cả edge-case.",
+      "Đây là few-shot ICL điển hình: 3 ví dụ là đủ để AI bắt chước tone. Không tốn một đồng huấn luyện, không chờ đợi. Nếu 3 ví dụ chưa đủ, bạn có thể thêm 1–2 ví dụ nữa — nhưng thường 3 là đẹp rồi.",
   },
   {
-    question: "Khi nào NÊN dùng fine-tuning thay vì ICL?",
+    question:
+      "Bạn kéo từ 3 ví dụ lên 30 ví dụ trong prompt. Hệ quả rõ nhất là gì?",
     options: [
-      "Khi chỉ có 5 ví dụ",
-      "Khi cần thay đổi nhanh bộ ví dụ mỗi ngày",
-      "Khi task lặp lại cực nhiều request và chi phí per-request là ưu tiên, hoặc cần format cực ổn định",
-      "Không bao giờ — ICL luôn tốt hơn",
+      "Chất lượng câu trả lời tăng gấp 10 lần.",
+      "Không thay đổi gì cả.",
+      "Prompt dài hơn → tốn phí token hơn, chậm hơn, nhưng chất lượng hầu như không tăng thêm.",
+      "AI tự xoá bớt ví dụ để vừa context.",
     ],
     correct: 2,
     explanation:
-      "Fine-tuning 'in' kiến thức vào trọng số → prompt ngắn hơn, rẻ hơn mỗi request, ổn định hơn. Đánh đổi: chi phí đào tạo ban đầu + khó cập nhật.",
+      "Sau 5–8 ví dụ tốt, lợi ích tăng thêm rất nhỏ (diminishing returns). Bạn chỉ tốn thêm tiền mà không tốt hơn bao nhiêu. 3–5 ví dụ đa dạng thường là sweet spot.",
   },
   {
-    question: "Mẹo nào giúp few-shot prompt hoạt động tốt hơn?",
+    question:
+      "Bạn có 3 ví dụ: 2 dán nhãn \"Tích cực\", 1 dán nhãn \"Tiêu cực\" (không có ví dụ \"Trung tính\"). Gửi câu \"Bình thường, không có gì đặc biệt\" — AI sẽ có xu hướng gì?",
     options: [
-      "Đặt ví dụ ngẫu nhiên, không cần thứ tự",
-      "Đảm bảo format input/output giống hệt nhau cho tất cả ví dụ, và đặt ví dụ khó/cần nhớ ở cuối",
-      "Viết ví dụ càng dài càng tốt để model 'ngấm'",
-      "Chỉ cần 1 ví dụ cực chi tiết là đủ",
+      "Trả về \"Trung tính\" dù chưa thấy ví dụ nào.",
+      "Ép vào một trong 2 nhãn đã thấy (Tích cực hoặc Tiêu cực), vì AI bắt chước pattern ví dụ.",
+      "Từ chối trả lời.",
+      "Tự động thêm một nhãn mới mà không ai yêu cầu.",
     ],
     correct: 1,
     explanation:
-      "Format đồng nhất giúp model 'khoá' pattern. Nghiên cứu cho thấy model bị ảnh hưởng bởi recency — ví dụ cuối cùng thường được copy format mạnh nhất.",
+      "ICL rất \"nhìn mẫu mà đoán format\". Nếu ví dụ không phủ nhãn bạn muốn, AI sẽ ép câu trả lời về các nhãn đã thấy. Quy tắc vàng: luôn phủ đủ mọi nhãn trong bộ ví dụ.",
+  },
+  {
+    question:
+      "Đồng nghiệp hỏi: \"Mình đưa 3 ví dụ lên chat, ngày mai AI có nhớ không?\"",
+    options: [
+      "Nhớ vĩnh viễn, vì AI học từ bạn.",
+      "Quên hoàn toàn khi bạn mở cuộc chat mới — ví dụ chỉ sống trong phiên hiện tại.",
+      "Chỉ nhớ với tài khoản của bạn, không nhớ với người khác.",
+      "Nhớ 24 giờ rồi quên.",
+    ],
+    correct: 1,
+    explanation:
+      "ICL không thay đổi \"bộ não\" của AI. Khi bạn mở chat mới, bạn phải dán lại ví dụ nếu muốn AI theo tone đó. Đây cũng là lý do nhiều công ty lưu bộ ví dụ vào \"system prompt\" để không phải copy mỗi lần.",
+  },
+  {
+    question:
+      "Sếp hỏi: \"Việc nào xứng đáng chi tiền để huấn luyện lại (fine-tune) thay vì dán ví dụ mỗi lần?\"",
+    options: [
+      "Mọi việc — fine-tune luôn tốt hơn.",
+      "Khi bạn có vài ví dụ và vài người dùng.",
+      "Khi mỗi tháng bạn chạy hàng trăm nghìn request giống nhau và cần prompt thật ngắn, tiết kiệm dài hạn.",
+      "Khi bạn muốn thử mô hình mới lần đầu.",
+    ],
+    correct: 2,
+    explanation:
+      "Fine-tune rẻ/request nhưng đắt khởi tạo. Chỉ đáng khi traffic lớn, bài toán ổn định. Với việc văn phòng hằng ngày (vài chục-vài trăm lần/tháng), ICL là đúng — nhanh, rẻ, dễ sửa.",
   },
 ];
 
@@ -330,874 +269,506 @@ const quizQuestions: QuizQuestion[] = [
 // COMPONENT CHÍNH
 // ─────────────────────────────────────────────────────────────────────────────
 export default function InContextLearningTopic() {
-  // Mức shot hiện tại (0, 1, 3, 8)
-  const [shotIdx, setShotIdx] = useState(0);
-  const shot = SHOT_LEVELS[shotIdx];
-
-  // Bật/tắt hiển thị prompt đầy đủ
-  const [showPrompt, setShowPrompt] = useState(false);
-
-  // Lấy output mô phỏng theo shot
-  const output = AI_OUTPUTS[shot];
-  const examples = useMemo(() => examplesForShot(shot), [shot]);
-
-  // Tăng/giảm mức shot — dùng cho các nút +/-
-  const bumpShot = useCallback((delta: number) => {
-    setShotIdx((idx) => {
-      const next = idx + delta;
-      if (next < 0) return 0;
-      if (next > SHOT_LEVELS.length - 1) return SHOT_LEVELS.length - 1;
-      return next;
-    });
-  }, []);
-
   return (
     <>
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 1 — HOOK / DỰ ĐOÁN
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={1} totalSteps={5} label="Thử đoán">
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 1 — DỰ ĐOÁN
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Bạn muốn AI phân loại cảm xúc review tiếng Việt. Cách nào hiệu quả nhất MÀ KHÔNG CẦN huấn luyện lại model?"
+          question="Bạn cho AI xem 3 email trả lời khách hàng theo phong cách công ty bạn, rồi nhờ viết email thứ 4 — bạn nghĩ chất lượng sẽ thế nào so với lúc không có ví dụ?"
           options={[
-            "Viết chương trình if-else kiểm tra từ khóa (buồn/vui/chán…)",
-            "Cho AI xem vài ví dụ (review → cảm xúc) ngay trong prompt",
-            "Chờ phiên bản AI mới biết tiếng Việt tốt hơn",
+            "Không khác gì — AI vẫn viết như cũ.",
+            "Kém hơn — ví dụ làm AI bối rối.",
+            "Tốt hơn rõ rệt — AI bắt chước tone của bạn ngay.",
           ]}
-          correct={1}
-          explanation="Chỉ cần cho AI 3–5 ví dụ mẫu ngay trong prompt → nó 'hiểu' task và làm theo! Đây gọi là In-Context Learning — AI 'học' từ ví dụ trong prompt mà không cần thay đổi trọng số."
+          correct={2}
+          explanation="Đây chính là trải nghiệm hầu hết người dùng công sở bất ngờ nhất: chỉ cần 2–3 ví dụ dán vào chat, AI bắt được giọng viết của bạn. Kỹ thuật này có tên riêng — in-context learning — và nó là món quà miễn phí đi kèm mọi mô hình AI hiện đại."
         >
           <p className="text-sm text-muted mt-4">
-            Dưới đây bạn sẽ thử kéo thanh số lượng ví dụ <strong>0 → 1 → 3 → 8</strong> và quan sát
-            cách AI trả lời cùng một câu hỏi thay đổi ra sao.
+            Hôm nay bạn sẽ thấy cùng một AI, cùng một câu hỏi, nhưng kết quả đổi khác hoàn toàn khi
+            bạn thêm 0, 1, hay 3 ví dụ vào prompt.
           </p>
         </PredictionGate>
+      </LessonSection>
 
-        <div className="mt-6 rounded-xl border border-border bg-card p-5">
-          <h3 className="text-sm font-semibold text-foreground mb-2">
-            Phép so sánh nhanh — giống như dạy một đứa trẻ
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 2 — ẨN DỤ
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={2} totalSteps={8} label="Kết nối với đời sống">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+          <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-accent" />
+            Giống như dạy nhân viên mới trong ngày đầu tiên
           </h3>
-          <p className="text-sm text-muted leading-relaxed">
-            Hãy tưởng tượng bạn thuê một nhân viên mới cực kỳ thông minh nhưng chưa biết đặc thù
-            công việc của bạn. Có 2 cách để đào tạo:
+          <p className="text-sm text-foreground leading-relaxed">
+            Hãy tưởng tượng bạn vừa tuyển một bạn nhân viên cực thông minh nhưng chưa biết văn hoá
+            công ty. Bạn có hai cách:
           </p>
-          <ul className="mt-3 space-y-2 text-sm text-foreground">
-            <li>
-              <strong className="text-accent">Cách 1 — ICL:</strong>{" "}
-              Cho họ xem 3 lá thư mẫu mà bạn đã viết trước đây, rồi yêu cầu viết lá thư mới theo
-              cùng phong cách. Họ sẽ bắt chước ngay trong ngày đầu tiên.
-            </li>
-            <li>
-              <strong className="text-accent">Cách 2 — Fine-tuning:</strong>{" "}
-              Gửi họ đi học một khoá đào tạo 3 tháng chuyên về phong cách viết của công ty. Kiến
-              thức sẽ "ngấm" vào họ vĩnh viễn, nhưng bạn phải trả học phí và chờ lâu.
-            </li>
-          </ul>
-          <p className="mt-3 text-sm text-muted leading-relaxed">
-            LLM cũng vậy. Khi việc của bạn chỉ cần vài ví dụ để "gợi nhớ" khung mẫu, ICL là con
-            đường siêu nhanh. Khi khối lượng công việc lớn và bạn cần format cực ổn định, fine-tune
-            mới thực sự rẻ về lâu dài.
-          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-accent/40 bg-accent-light p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-white text-xs font-bold">
+                  A
+                </span>
+                <span className="text-sm font-semibold text-accent-dark">
+                  Cho xem 3 email mẫu
+                </span>
+              </div>
+              <p className="text-sm text-foreground">
+                Bạn in 3 email bạn đã từng viết, đưa cho nhân viên xem. Họ viết email mới theo cùng
+                tone — <strong>ngay trong ngày đầu.</strong>
+              </p>
+              <p className="text-xs text-muted italic">
+                Đây là <strong>in-context learning</strong> của con người.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-400 text-white text-xs font-bold">
+                  B
+                </span>
+                <span className="text-sm font-semibold text-foreground">
+                  Gửi đi học khoá 3 tháng
+                </span>
+              </div>
+              <p className="text-sm text-foreground">
+                Bạn gửi nhân viên đi đào tạo chuyên sâu về phong cách công ty. Kiến thức ngấm vĩnh
+                viễn, nhưng phải trả học phí và <strong>chờ 3 tháng.</strong>
+              </p>
+              <p className="text-xs text-muted italic">
+                Đây là <strong>fine-tuning</strong> — huấn luyện lại mô hình.
+              </p>
+            </div>
+          </div>
+          <Callout variant="insight" title="Điểm mấu chốt">
+            Với 99% công việc văn phòng hằng ngày (viết email, tóm tắt cuộc họp, phân loại phản hồi,
+            trích xuất hoá đơn), bạn chỉ cần cách A. Vài ví dụ dán vào prompt là đủ — không cần
+            đội kỹ sư, không cần huấn luyện, không cần chờ đợi.
+          </Callout>
         </div>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 2 — KHÁM PHÁ (VISUALIZATION)
-          Slider chọn 0/1/3/8-shot + hiển thị prompt + output + độ tin cậy
-          + bảng so sánh ICL vs Fine-tune
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={2} totalSteps={5} label="Khám phá">
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 3 — VISUALIZATION (3 DEMO TƯƠNG TÁC)
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={3} totalSteps={8} label="Tự tay thử">
         <VisualizationSection topicSlug={metadata.slug}>
-          <h3 className="text-base font-semibold text-foreground mb-1">
-            Few-shot explorer — kéo số ví dụ để thấy AI học nhanh như thế nào
-          </h3>
-          <p className="text-sm text-muted mb-5">
-            Dưới đây là một bài toán thực tế: phân loại cảm xúc review nhà hàng tiếng Việt. Cùng
-            một câu hỏi thử, cùng một model — chỉ khác số lượng ví dụ trong prompt.
-          </p>
-
-          {/* ── Thanh chọn shot ────────────────────────────────────────── */}
-          <div className="rounded-lg border border-border bg-surface/40 p-4 mb-5">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-foreground">Số lượng ví dụ (shot)</span>
-              <span className="text-xs text-tertiary">
-                {shot === 0 ? "Zero-shot" : `${shot}-shot`}
-              </span>
-            </div>
-
-            {/* Các nút chọn nhanh */}
-            <div className="flex items-center gap-2 mb-3">
-              {SHOT_LEVELS.map((level, idx) => {
-                const active = idx === shotIdx;
+          {/* ── DEMO 1 — SliderGroup: 0 → 1 → 3 ví dụ ──────────────── */}
+          <LessonSection label="Demo 1 — Kéo thanh số ví dụ và xem AI đổi câu trả lời">
+            <p className="text-sm text-muted mb-4">
+              Cùng một câu nhận xét của khách, cùng một AI. Chỉ khác: có bao nhiêu ví dụ trong
+              prompt. Kéo thanh dưới đây từ <strong>0 → 1 → 3</strong> để thấy AI &ldquo;thay đổi
+              thái độ&rdquo; thế nào.
+            </p>
+            <SliderGroup
+              sliders={[
+                {
+                  key: "shots",
+                  label: "Số ví dụ trong prompt",
+                  min: 0,
+                  max: 2,
+                  step: 1,
+                  defaultValue: 0,
+                },
+              ]}
+              visualization={(vals) => {
+                const idx = Math.round(vals.shots ?? 0);
+                const shot = SHOT_LEVELS[Math.max(0, Math.min(SHOT_LEVELS.length - 1, idx))];
+                const demo = SHOT_DEMOS[shot];
                 return (
-                  <button
-                    key={level}
-                    type="button"
-                    onClick={() => setShotIdx(idx)}
-                    className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
-                      active
-                        ? "border-accent bg-accent text-white"
-                        : "border-border bg-card text-muted hover:text-foreground hover:border-accent/40"
-                    }`}
-                  >
-                    {level === 0 ? "0 (zero)" : `${level}`}
-                  </button>
-                );
-              })}
-            </div>
+                  <div className="w-full space-y-3">
+                    {/* Prompt được xây */}
+                    <div className="rounded-lg border border-border bg-card overflow-hidden">
+                      <div className="px-3 py-1.5 border-b border-border bg-surface/40 flex items-center justify-between">
+                        <span className="text-[11px] font-semibold text-foreground">
+                          Prompt đang gửi AI
+                        </span>
+                        <span className="text-[10px] text-tertiary">
+                          {shot === 0 ? "zero-shot" : `${shot}-shot`}
+                        </span>
+                      </div>
+                      <AnimatePresence initial={false}>
+                        {demo.examples.map((ex, i) => (
+                          <motion.div
+                            key={`${shot}-${i}`}
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.22, delay: i * 0.04 }}
+                            className="px-3 py-1.5 border-b border-border bg-surface/20 text-[11px]"
+                          >
+                            <span className="text-tertiary">Mẫu {i + 1}: </span>
+                            <span className="text-foreground">&ldquo;{ex.review}&rdquo;</span>
+                            <span className="text-accent font-medium"> → {ex.label}</span>
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                      <div className="px-3 py-2 border-b border-border text-[11px]">
+                        <span className="text-tertiary">Câu hỏi thật: </span>
+                        <span className="text-foreground font-medium">
+                          &ldquo;{CUSTOMER_INPUT}&rdquo;
+                        </span>
+                      </div>
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={shot}
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          transition={{ duration: 0.25 }}
+                          className="px-3 py-2 bg-accent-light"
+                        >
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <span className="text-[10px] text-accent font-bold uppercase tracking-wide">
+                              AI trả lời
+                            </span>
+                            {demo.hit ? (
+                              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                            ) : (
+                              <XCircle className="h-3.5 w-3.5 text-amber-500" />
+                            )}
+                          </div>
+                          <p className="text-[12px] text-foreground leading-snug">
+                            {demo.aiAnswer}
+                          </p>
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
 
-            {/* Nút mịn */}
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => bumpShot(-1)}
-                disabled={shotIdx === 0}
-                className="rounded-lg border border-border px-3 py-1 text-xs text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                ← Ít hơn
-              </button>
-              <span className="text-xs text-muted">
-                {shot === 0
-                  ? "Không ví dụ — model tự suy"
-                  : shot === 1
-                  ? "Một ví dụ — hiểu sơ format"
-                  : shot === 3
-                  ? "Ba ví dụ — phủ đủ 3 class (sweet spot)"
-                  : "Tám ví dụ — đa dạng nhưng tốn token"}
-              </span>
-              <button
-                type="button"
-                onClick={() => bumpShot(+1)}
-                disabled={shotIdx === SHOT_LEVELS.length - 1}
-                className="rounded-lg border border-border px-3 py-1 text-xs text-muted hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                Nhiều hơn →
-              </button>
-            </div>
-          </div>
-
-          {/* ── Prompt đang xây ─────────────────────────────────────────── */}
-          <div className="rounded-lg border border-border bg-card overflow-hidden mb-5">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-surface/40">
-              <span className="text-xs font-semibold text-foreground">
-                Prompt gửi đến LLM ({examples.length} ví dụ + 1 câu hỏi)
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowPrompt((v) => !v)}
-                className="text-xs text-accent hover:underline"
-              >
-                {showPrompt ? "Ẩn ghi chú" : "Hiện ghi chú"}
-              </button>
-            </div>
-
-            <AnimatePresence initial={false}>
-              {examples.map((ex, i) => (
-                <motion.div
-                  key={`${shot}-${i}`}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25, delay: i * 0.04 }}
-                  className="border-b border-border px-4 py-2.5 bg-surface/20"
-                >
-                  <div>
-                    <span className="text-xs text-tertiary">Ví dụ {i + 1}: </span>
-                    <span className="text-xs text-foreground">&quot;{ex.input}&quot;</span>
-                    <span className="text-xs text-accent font-medium"> → {ex.output}</span>
+                    {/* Thanh chất lượng */}
+                    <div className="rounded-lg border border-border bg-card p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[11px] text-muted">Chất lượng &ldquo;đúng ý bạn&rdquo;</span>
+                        <span className="text-[11px] font-bold text-accent">
+                          {demo.quality}%
+                        </span>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-surface overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full bg-gradient-to-r from-amber-400 via-accent to-emerald-500"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${demo.quality}%` }}
+                          transition={{ duration: 0.4 }}
+                        />
+                      </div>
+                      <p className="mt-2 text-[11px] text-muted italic leading-relaxed">
+                        {demo.note}
+                      </p>
+                    </div>
                   </div>
-                  {showPrompt && (
-                    <p className="mt-1 text-[11px] text-muted italic">{ex.note}</p>
-                  )}
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                );
+              }}
+            />
+          </LessonSection>
 
-            {/* Câu hỏi thử */}
-            <div className="px-4 py-3 border-b border-border">
-              <span className="text-xs text-tertiary">Câu hỏi: </span>
-              <span className="text-sm text-foreground font-medium">
-                &quot;{TEST_INPUT}&quot;
-              </span>
+          {/* ── DEMO 2 — Sắp xếp prompt (Reorderable) ────────────────── */}
+          <LessonSection label="Demo 2 — Tự xếp prompt đúng thứ tự">
+            <p className="text-sm text-muted mb-4">
+              Một prompt few-shot tốt có thứ tự rất rõ: <strong>task → ví dụ → câu hỏi</strong>.
+              Các dòng dưới đây đang bị xáo trộn. Kéo chúng về đúng thứ tự một prompt hiệu quả
+              thường có.
+            </p>
+            <Reorderable
+              items={PROMPT_BUILDER_ITEMS}
+              correctOrder={PROMPT_BUILDER_CORRECT}
+              instruction="Gợi ý: bắt đầu bằng mô tả nhiệm vụ, kết thúc bằng câu hỏi thật."
+            />
+            <Callout variant="tip" title="Tại sao thứ tự quan trọng?">
+              AI đọc prompt từ trên xuống dưới. Task ở đầu giúp AI biết &ldquo;mình đang làm gì&rdquo;.
+              Ví dụ ở giữa dạy format. Câu hỏi ở cuối giúp AI tập trung vào phần cần trả lời. Đảo lộn
+              thứ tự → AI dễ trả lời ví dụ thay vì câu hỏi thật.
+            </Callout>
+          </LessonSection>
+
+          {/* ── DEMO 3 — Trích xuất hoá đơn (ToggleCompare) ────────── */}
+          <LessonSection label="Demo 3 — Trích xuất hoá đơn: không ví dụ vs có ví dụ">
+            <p className="text-sm text-muted mb-4">
+              Bạn là nhân viên kế toán. Bạn muốn AI đọc một đoạn mô tả bằng tiếng Việt và trích ra
+              các trường (ngày, khách hàng, số lượng, giá, tổng tiền) thành bảng. Đây là lúc
+              few-shot toả sáng rõ rệt nhất.
+            </p>
+
+            <div className="rounded-lg border border-border bg-surface/40 p-3 mb-4 text-xs">
+              <span className="text-tertiary">Đoạn mô tả hoá đơn (input): </span>
+              <span className="text-foreground italic">&ldquo;{INVOICE_TEXT}&rdquo;</span>
             </div>
 
-            {/* Output từ AI */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={shot}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.25 }}
-                className="px-4 py-3 bg-accent-light"
-              >
-                <span className="text-xs text-accent font-semibold block mb-1">
-                  AI trả lời:
-                </span>
-                <p className="text-sm text-foreground leading-relaxed">{output.answer}</p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+            <ToggleCompare
+              labelA="Zero-shot (mơ ước)"
+              labelB="Few-shot (có 2 ví dụ)"
+              description="Cùng đoạn hoá đơn, cùng AI. Chỉ khác: có hay không 2 ví dụ mẫu."
+              childA={
+                <div className="rounded-xl border border-amber-300/60 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-700/60 p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    <span className="text-xs font-semibold text-amber-800 dark:text-amber-300">
+                      AI đoán format — mỗi lần một kiểu
+                    </span>
+                  </div>
+                  <div className="rounded-lg bg-white/60 dark:bg-slate-900/40 p-3 text-xs font-mono text-foreground leading-relaxed whitespace-pre-wrap">
+                    {`Đây là một hoá đơn bán hàng. Công ty TNHH Ánh
+Dương đã mua 12 thùng nước suối Aquafina
+vào ngày 15 tháng 3 năm 2025. Đơn giá
+mỗi thùng là 85.000 đồng. Tổng cộng là
+1.020.000đ và đã thanh toán chuyển khoản.`}
+                  </div>
+                  <p className="text-[11px] text-amber-800 dark:text-amber-300 italic">
+                    Output là một đoạn văn — không thể nhập thẳng vào Excel. Ngày mai bạn hỏi hoá
+                    đơn khác, AI có thể viết kiểu hoàn toàn khác.
+                  </p>
+                </div>
+              }
+              childB={
+                <div className="rounded-xl border border-emerald-300/60 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700/60 p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                    <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">
+                      AI khoá đúng format bạn cần — lần nào cũng thế
+                    </span>
+                  </div>
+                  <div className="rounded-lg overflow-hidden border border-emerald-200 dark:border-emerald-800 bg-white/70 dark:bg-slate-900/40">
+                    <table className="w-full text-xs">
+                      <thead className="bg-emerald-100/60 dark:bg-emerald-900/30">
+                        <tr>
+                          <th className="text-left px-2.5 py-1.5 font-semibold text-emerald-900 dark:text-emerald-200">
+                            Trường
+                          </th>
+                          <th className="text-left px-2.5 py-1.5 font-semibold text-emerald-900 dark:text-emerald-200">
+                            Giá trị
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          ["Ngày", "15/03/2025"],
+                          ["Khách hàng", "Công ty TNHH Ánh Dương"],
+                          ["Mặt hàng", "Nước suối Aquafina"],
+                          ["Số lượng", "12 thùng"],
+                          ["Đơn giá", "85.000đ"],
+                          ["Tổng tiền", "1.020.000đ"],
+                          ["Thanh toán", "Chuyển khoản"],
+                        ].map(([k, v], i) => (
+                          <tr
+                            key={k}
+                            className={i % 2 === 0 ? "bg-white/40 dark:bg-slate-900/20" : ""}
+                          >
+                            <td className="px-2.5 py-1 font-medium text-foreground">{k}</td>
+                            <td className="px-2.5 py-1 text-foreground">{v}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="text-[11px] text-emerald-800 dark:text-emerald-300 italic">
+                    Copy nguyên vào Excel, hoặc chuyển sang Google Sheets, hoặc gửi hệ thống kế toán.
+                    Mỗi hoá đơn đều trả về đúng 7 trường, đúng thứ tự.
+                  </p>
+                </div>
+              }
+            />
 
-          {/* ── Ba chỉ số: độ tin cậy, token, độ trễ ─────────────────── */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
-            <div className="rounded-lg border border-border bg-card p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-muted">Độ chính xác</span>
-                <span className="text-xs font-bold text-accent">{output.confidence}%</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-surface overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full bg-accent"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${output.confidence}%` }}
-                  transition={{ duration: 0.4 }}
-                />
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-border bg-card p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-muted">Token dùng</span>
-                <span className="text-xs font-bold text-foreground">~{output.tokens}</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-surface overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full bg-amber-400"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(100, (output.tokens / 300) * 100)}%` }}
-                  transition={{ duration: 0.4 }}
-                />
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-border bg-card p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-muted">Độ trễ (ms)</span>
-                <span className="text-xs font-bold text-foreground">{output.latency}</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-surface overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full bg-blue-400"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(100, (output.latency / 1000) * 100)}%` }}
-                  transition={{ duration: 0.4 }}
-                />
-              </div>
-            </div>
-          </div>
-
-          <p className="text-xs text-muted italic mb-5 leading-relaxed">
-            Giải thích vì sao: {output.reasoning}
-          </p>
-
-          {/* ── Bảng so sánh ICL vs Fine-tune ─────────────────────────── */}
-          <div className="rounded-lg border border-border bg-card overflow-hidden">
-            <div className="px-4 py-3 border-b border-border bg-surface/40">
-              <h4 className="text-sm font-semibold text-foreground">
-                ICL vs Fine-tune — nên dùng khi nào?
-              </h4>
-              <p className="text-xs text-muted mt-1">
-                Bảng tổng hợp dưới đây giúp bạn chọn đúng công cụ cho từng hoàn cảnh.
-              </p>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead className="bg-surface/40 text-tertiary">
-                  <tr>
-                    <th className="text-left px-4 py-2 font-medium">Khía cạnh</th>
-                    <th className="text-left px-4 py-2 font-medium">In-Context Learning</th>
-                    <th className="text-left px-4 py-2 font-medium">Fine-tuning</th>
-                    <th className="text-left px-4 py-2 font-medium">Thắng</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {COMPARE_ROWS.map((row, i) => (
-                    <tr
-                      key={row.aspect}
-                      className={i % 2 === 0 ? "bg-card" : "bg-surface/20"}
-                    >
-                      <td className="px-4 py-2 font-medium text-foreground">{row.aspect}</td>
-                      <td className="px-4 py-2 text-muted">{row.icl}</td>
-                      <td className="px-4 py-2 text-muted">{row.fineTune}</td>
-                      <td className="px-4 py-2">
-                        {row.winner === "icl" && (
-                          <span className="rounded bg-accent/10 text-accent px-1.5 py-0.5 text-[10px] font-semibold">
-                            ICL
-                          </span>
-                        )}
-                        {row.winner === "finetune" && (
-                          <span className="rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 px-1.5 py-0.5 text-[10px] font-semibold">
-                            Fine-tune
-                          </span>
-                        )}
-                        {row.winner === "tie" && (
-                          <span className="rounded bg-surface text-muted px-1.5 py-0.5 text-[10px] font-semibold">
-                            Hoà
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="px-4 py-3 border-t border-border bg-surface/40">
-              <p className="text-xs text-muted leading-relaxed">
-                Quy tắc ngón tay cái: nếu tổng chi phí inference hằng tháng <em>không</em> quá
-                $500, hầu như luôn chọn ICL. Khi chi phí vượt ngưỡng đó <em>và</em>{" "}
-                bạn đã có {">"}500 cặp input/output, fine-tune mới bắt đầu có lãi.
-              </p>
-            </div>
-          </div>
+            <Callout variant="insight" title="Quy luật trích xuất">
+              Khi bạn cần AI trả về đúng một bảng/JSON/format cứng, <strong>luôn luôn</strong> cho
+              2–3 ví dụ. Mô tả bằng lời &ldquo;hãy trích ra các trường&rdquo; gần như không bao giờ
+              đủ — AI cần <em>thấy</em> chứ không chỉ <em>nghe tả</em>.
+            </Callout>
+          </LessonSection>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 3 — AHA MOMENT
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={3} totalSteps={5} label="Khoảnh khắc Aha">
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 4 — AHA MOMENT
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
-          Bạn vừa thấy AI &quot;học&quot; một task hoàn toàn mới chỉ từ vài ví dụ —{" "}
-          <strong>không cần huấn luyện lại, không cần code, không cần data lớn.</strong> Đây là{" "}
-          <strong>In-Context Learning</strong> — một trong những tính chất kỳ lạ và mạnh mẽ nhất
-          của các mô hình ngôn ngữ lớn: pattern-matching ngay trong một lần forward pass, không có
-          gradient, không có cập nhật trọng số. Chính điều này đã mở ra kỷ nguyên{" "}
-          <em>prompting như lập trình</em> — nơi bạn &quot;dạy&quot; AI bằng vài ví dụ trong chat.
+          Bạn vừa thấy AI &ldquo;học&rdquo; một việc hoàn toàn mới chỉ từ vài ví dụ —{" "}
+          <strong>không cần huấn luyện lại, không cần code, không cần upload dữ liệu.</strong>{" "}
+          Đây chính là <strong>in-context learning</strong>: bạn &ldquo;dạy tạm&rdquo; AI bằng vài
+          mẫu trong prompt, và AI bắt chước ngay trong lần trả lời đó. Đây là siêu năng lực miễn phí
+          đi kèm mọi mô hình AI hiện đại — và là lý do tại sao prompt của bạn &ldquo;có ví dụ&rdquo;
+          luôn đánh bại prompt không có ví dụ.
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 4 — THỬ THÁCH (2 InlineChallenge)
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={4} totalSteps={5} label="Thử thách">
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 5 — THỬ THÁCH NHỎ
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={5} totalSteps={8} label="Thử thách">
         <InlineChallenge
-          question="Nếu bạn cho AI 4 ví dụ phân loại cảm xúc, xong hỏi nó dịch tiếng Anh — nó sẽ dịch hay phân loại?"
+          question="Bạn dán 4 ví dụ phân loại cảm xúc vào chat. Xong câu cuối bạn lại yêu cầu AI dịch sang tiếng Anh một câu khác. AI sẽ làm gì?"
           options={[
-            "Phân loại — vì nó đã 'học' phân loại từ 4 ví dụ",
-            "Dịch — vì câu hỏi cuối rõ ràng yêu cầu dịch, ví dụ trước chỉ là gợi ý",
-            "Bị lỗi — không hiểu bạn muốn gì",
+            "Phân loại câu đó — vì AI đã học phân loại từ 4 ví dụ trên.",
+            "Dịch sang tiếng Anh — vì câu hỏi cuối ưu tiên hơn, ví dụ chỉ là gợi ý.",
+            "Báo lỗi vì prompt mâu thuẫn.",
           ]}
           correct={1}
-          explanation="LLM nhìn toàn bộ context — nếu câu hỏi cuối rõ ràng yêu cầu dịch, nó sẽ dịch. Ví dụ mẫu là 'gợi ý' format, không phải 'lệnh cứng'. Đó là lý do prompt engineering quan trọng!"
+          explanation="AI nhìn toàn bộ context, nhưng câu hỏi cuối cùng mới là &ldquo;mệnh lệnh&rdquo;. Ví dụ chỉ là gợi ý format — nếu câu cuối nói rõ &ldquo;dịch&rdquo;, AI dịch. Đây là lý do nhiều người viết prompt sai: nhét ví dụ nhưng câu cuối viết lạc hướng."
         />
-
-        <p className="text-sm text-muted mt-3 mb-6">
-          Muốn viết prompt tốt hơn? Xem thêm về{" "}
-          <TopicLink slug="prompt-engineering">prompt engineering</TopicLink> và cách{" "}
-          <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink> kết hợp với few-shot.
+        <p className="text-sm text-muted mt-4">
+          Muốn đào sâu kỹ thuật viết prompt? Xem{" "}
+          <TopicLink slug="prompt-engineering">prompt engineering</TopicLink>. Muốn AI vừa bắt
+          chước format vừa suy luận từng bước? Ghé{" "}
+          <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>.
         </p>
+      </LessonSection>
 
-        <InlineChallenge
-          question="Bạn có 500 cặp input/output và chi phí inference mỗi tháng $2,000. Team muốn giảm latency và chi phí per-request. Nên làm gì?"
-          options={[
-            "Thêm nhiều ví dụ vào prompt (10–20 shot) để đạt độ chính xác cao hơn",
-            "Dừng dùng LLM, viết rule-based",
-            "Fine-tune model với 500 cặp — prompt sẽ ngắn hơn, latency và chi phí per-request giảm rõ rệt",
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 6 — GIẢI THÍCH SÂU (VISUAL-HEAVY, KHÔNG CODE, KHÔNG MATH)
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={6} totalSteps={8} label="Hiểu sâu hơn">
+        <ExplanationSection topicSlug={metadata.slug}>
+          {/* ── 3 chế độ ICL dưới dạng 3 thẻ trực quan ──────────────── */}
+          <div className="not-prose">
+            <h3 className="text-base font-semibold text-foreground mb-3">
+              Ba chế độ học trong ngữ cảnh — chọn theo việc
+            </h3>
+            <div className="grid md:grid-cols-3 gap-3">
+              {MODE_PANELS.map((m) => (
+                <motion.div
+                  key={m.key}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.3 }}
+                  className={`rounded-2xl border-2 p-4 space-y-3 ${m.accent}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className={m.headerColor}>{m.emoji}</div>
+                    <div>
+                      <p className={`text-sm font-bold ${m.headerColor}`}>{m.title}</p>
+                      <p className="text-[11px] text-muted">{m.subtitle}</p>
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-white/60 dark:bg-slate-900/40 p-2.5 text-[11px] font-mono text-foreground whitespace-pre-wrap leading-relaxed min-h-[72px]">
+                    {m.example}
+                  </div>
+                  <ul className="space-y-1 text-[11px] text-foreground">
+                    {m.bullets.map((b, i) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <ArrowRight className={`h-3 w-3 mt-0.5 shrink-0 ${m.headerColor}`} />
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Khi nào few-shot thất bại? 3 thẻ cảnh báo ──────────── */}
+          <div className="not-prose mt-8 space-y-3">
+            <h3 className="text-base font-semibold text-foreground">
+              Ba lúc few-shot &ldquo;quay xe&rdquo; — cần tránh
+            </h3>
+            <Callout variant="warning" title="1. Ví dụ mâu thuẫn nhau">
+              Bạn dán ví dụ 1: &ldquo;Dịch vụ chậm&rdquo; → Tiêu cực. Ví dụ 2: &ldquo;Dịch vụ
+              chậm&rdquo; → Trung tính. AI sẽ bối rối và chọn một cách ngẫu nhiên. Luôn rà lại bộ
+              ví dụ: cùng đầu vào phải cùng nhãn.
+            </Callout>
+            <Callout variant="warning" title="2. Format không nhất quán">
+              Ví dụ 1 viết &ldquo;→ Tích cực.&rdquo; (có dấu chấm). Ví dụ 2 viết &ldquo;→
+              tích cực&rdquo; (viết thường). AI sẽ pha trộn 2 kiểu ở câu trả lời mới và bạn mất
+              format cứng. Copy-paste chính xác, đừng gõ lại.
+            </Callout>
+            <Callout variant="warning" title="3. Rò rỉ thông tin nhạy cảm">
+              Ví dụ bạn dán có chứa số CMND, số tài khoản, email thật của khách? Nó sẽ được gửi
+              nguyên văn lên máy chủ AI mỗi lần bạn dùng. Thay tên/số thật bằng placeholder (Nguyễn
+              Văn A, 0900-000-000) trong mọi ví dụ.
+            </Callout>
+          </div>
+
+          {/* ── MatchPairs: loại việc ↔ số ví dụ khuyên dùng ───────── */}
+          <div className="not-prose mt-8">
+            <h3 className="text-base font-semibold text-foreground mb-2">
+              Nối việc bạn cần làm với số ví dụ khuyên dùng
+            </h3>
+            <p className="text-sm text-muted mb-3">
+              Không phải việc nào cũng cần 5 ví dụ. Thử nối xem bạn đoán đúng bao nhiêu.
+            </p>
+            <MatchPairs
+              pairs={TASK_EXAMPLE_PAIRS}
+              instruction="Chọn một mục Cột A, rồi chọn một mục Cột B để nối."
+            />
+          </div>
+
+          {/* ── Checklist dùng prompt có ví dụ hiệu quả ────────────── */}
+          <div className="not-prose mt-8 rounded-2xl border border-border bg-surface/40 p-5">
+            <h3 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+              <ClipboardCheck className="h-5 w-5 text-accent" />
+              Danh sách 6 việc cần làm khi viết prompt có ví dụ
+            </h3>
+            <ol className="space-y-2.5 text-sm">
+              {[
+                "Viết 1 câu mô tả nhiệm vụ ở đầu prompt — AI cần biết đang làm gì.",
+                "Chọn 2–3 ví dụ đa dạng, phủ đủ mọi nhãn/trường hợp bạn muốn AI trả về.",
+                "Copy ví dụ chính xác từng ký tự, kể cả dấu câu — format phải nhất quán.",
+                "Che dữ liệu nhạy cảm bằng tên/số giả trước khi dán lên.",
+                "Đặt câu hỏi thật ở cuối prompt, với cùng format như ví dụ (vd: \"Câu mới: … →\").",
+                "Thử 5–10 câu thật, đếm xem AI đúng mấy lần — nếu sai nhiều, sửa ví dụ chứ không tăng số ví dụ.",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-white text-[11px] font-bold">
+                    {i + 1}
+                  </span>
+                  <span className="text-foreground leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* ── Ẩn danh chi tiết: vì sao AI làm được? ──────────────── */}
+          <div className="not-prose mt-8">
+            <CollapsibleDetail title="Vì sao AI &ldquo;học&rdquo; được mà không cần huấn luyện?">
+              <div className="space-y-3 text-sm text-foreground">
+                <p>
+                  Câu trả lời ngắn: AI <strong>không học thật</strong>. Nó chỉ cực kỳ giỏi{" "}
+                  <em>nhận ra pattern</em>.
+                </p>
+                <p>
+                  Trong quá trình được đào tạo ban đầu (pre-training), AI đã đọc hàng tỷ ví dụ dạng
+                  &ldquo;đầu vào → đầu ra&rdquo; (bài tập sách giáo khoa, câu hỏi-đáp trên web, hướng
+                  dẫn code, v.v.). Nó học được một &ldquo;kỹ năng phổ quát&rdquo;: thấy vài ví dụ là
+                  nhận ra &ldquo;à, đây là loại công việc tôi đã gặp&rdquo; và bắt chước format.
+                </p>
+                <p>
+                  Khi bạn dán 3 email vào chat, AI không &ldquo;ghi nhớ&rdquo; email đó vào não. Nó
+                  chỉ đọc chúng trong một lần trả lời duy nhất — giống thợ may nhìn 3 mẫu áo và may
+                  theo, rồi quên ngay khi khách ra về. Đó là lý do đóng chat xong, AI sẽ không nhớ
+                  gì.
+                </p>
+                <p>
+                  Một ẩn dụ khác: bộ ví dụ giống như &ldquo;bản đồ nhanh&rdquo; bạn dúi vào tay
+                  taxi. Tài xế đã biết đường Hà Nội (pre-training), bạn chỉ cần đưa bản đồ điểm đến
+                  cụ thể của chuyến đi này (prompt) và tài xế đi theo. Xuống xe là bản đồ đó không
+                  còn tác dụng.
+                </p>
+              </div>
+            </CollapsibleDetail>
+          </div>
+        </ExplanationSection>
+      </LessonSection>
+
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 7 — TÓM TẮT
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={7} totalSteps={8} label="Tóm tắt">
+        <MiniSummary
+          title="Năm điều cần nhớ về học trong ngữ cảnh"
+          points={[
+            "Bạn “dạy” AI bằng cách dán vài ví dụ vào prompt — không cần upload, không cần huấn luyện, miễn phí.",
+            "0 ví dụ (zero-shot) hợp việc quen; 3–5 ví dụ (few-shot) là sweet spot cho đa số việc văn phòng; nhiều hơn 8 thường không tốt hơn nữa.",
+            "Chất lượng ví dụ quan trọng hơn số lượng — 3 ví dụ đa dạng ăn đứt 10 ví dụ na ná nhau.",
+            "Ví dụ phải phủ mọi nhãn/trường hợp bạn muốn AI trả về, format tuyệt đối nhất quán.",
+            "AI quên ngay khi đóng chat — muốn dùng lại, hãy lưu prompt mẫu trong Notion/Google Docs.",
           ]}
-          correct={2}
-          explanation="Đây là vùng 'vượt ngưỡng' cho fine-tuning: đã có đủ data, đã có traffic đủ lớn để amortize chi phí đào tạo, và rõ ràng cần prompt ngắn hơn. ICL vẫn là điểm khởi đầu đúng, nhưng khi pipeline trưởng thành, fine-tune tiết kiệm token và ổn định format hơn."
         />
       </LessonSection>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 5 — GIẢI THÍCH + TÓM TẮT + QUIZ
-          ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={5} totalSteps={5} label="Giải thích">
-        <ExplanationSection topicSlug={metadata.slug}>
-          <p>
-            <strong>In-Context Learning (ICL)</strong> là khả năng LLM thực hiện tác vụ mới chỉ
-            từ vài ví dụ trong prompt, mà <em>không thay đổi trọng số model</em> — khác hẳn với{" "}
-            <TopicLink slug="fine-tuning-vs-prompting">fine-tuning</TopicLink>. Kết hợp ICL với{" "}
-            <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink> (few-shot CoT) giúp
-            model vừa học format vừa học cách suy luận.
-          </p>
-
-          <p>
-            Một cách chính xác hơn, khi bạn gửi prompt{" "}
-            <code className="text-accent">{`x₁→y₁, x₂→y₂, …, xₖ→yₖ, x_test →`}</code>, model sinh
-            phân phối xác suất có điều kiện trên câu trả lời. Toàn bộ quá trình này là một{" "}
-            <em>forward pass duy nhất</em> — không có backprop, không có gradient, không có
-            checkpoint mới. Mọi &quot;hiểu biết&quot; đến từ các hidden states và attention
-            patterns do ví dụ kích hoạt.
-          </p>
-
-          <p>
-            Về mặt toán học, ta có thể xem ICL như một bài toán ước lượng hậu nghiệm tiềm ẩn:
-          </p>
-
-          <LaTeX block>
-            {"p(y \\mid x_{\\text{test}}, \\mathcal{D}_{\\text{demo}}) = \\sum_{\\theta} p(y \\mid x_{\\text{test}}, \\theta) \\, p(\\theta \\mid \\mathcal{D}_{\\text{demo}})"}
-          </LaTeX>
-
-          <p>
-            Các ví dụ trong prompt đóng vai trò như một &quot;signal&quot; giúp model thu hẹp phân
-            phối trên các task tiềm ẩn <em>θ</em>. Càng nhiều ví dụ càng giúp model xác định đúng
-            task, nhưng lợi ích giảm dần theo định lý lấy mẫu quen thuộc trong xác suất thống kê.
-          </p>
-
-          <Callout variant="insight" title="Tại sao AI 'học' được mà không cần training?">
-            LLM không thực sự &quot;học&quot; theo nghĩa truyền thống. Trong quá trình
-            pre-training, nó đã thấy hàng triệu pattern dạng &quot;ví dụ → áp dụng&quot;. Khi bạn
-            cho ví dụ trong prompt, nó <em>nhận ra pattern</em> và áp dụng cho input mới. Giống
-            như thợ may giỏi — bạn chỉ cần cho xem một mẫu áo, họ hiểu ngay style bạn muốn.
-          </Callout>
-
-          <p>
-            <strong>Ba chế độ ICL thường gặp:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-sm">
-            <li>
-              <strong>Zero-shot:</strong> Không ví dụ. Chỉ mô tả task. AI dựa hoàn toàn vào
-              pre-training knowledge. Phù hợp cho các task rất quen thuộc (tóm tắt, viết email).
-            </li>
-            <li>
-              <strong>Few-shot:</strong> 3–5 ví dụ mẫu. Sweet spot cho hầu hết task nghiệp vụ —
-              đủ để cố định format, chưa tốn quá nhiều token.
-            </li>
-            <li>
-              <strong>Many-shot:</strong> 10–50+ ví dụ. Hiệu quả tăng ít, tốn context window
-              nhiều. Chỉ nên dùng khi task cực đặc thù (domain hiếm) hoặc model có context rất
-              dài.
-            </li>
-          </ul>
-
-          <Callout variant="tip" title="Mẹo: chất lượng ví dụ quan trọng hơn số lượng">
-            3 ví dụ đa dạng (cover các edge-case) tốt hơn 10 ví dụ giống nhau. Ví dụ nên cover mọi
-            class/format bạn muốn AI output. Thứ tự ví dụ cũng ảnh hưởng — đặt ví dụ khó ở cuối
-            cùng (recency bias giúp model bắt chước ví dụ gần nhất).
-          </Callout>
-
-          <Callout variant="warning" title="Cảnh báo: ICL không phải 'magic wand'">
-            Không phải task nào cũng phù hợp với ICL. Các task yêu cầu kiến thức domain sâu (chẩn
-            đoán y khoa, luật chuyên ngành), hoặc định dạng đầu ra cực phức tạp (JSON lồng nhiều
-            tầng với ràng buộc), thường cần fine-tuning hoặc RAG. ICL mạnh ở{" "}
-            <em>pattern quen thuộc với cấu trúc đơn giản</em>.
-          </Callout>
-
-          <Callout variant="info" title="ICL có thể thất bại ở đâu?">
-            Có các task mà ICL kém hẳn so với fine-tune: (1) phân loại nhiều nhãn với phân phối
-            lệch (long-tail classification) — model thường bỏ qua class hiếm; (2) bài toán số
-            học chính xác nhiều chữ số — model vẫn tính sai dù có ví dụ; (3) bài toán cần nhớ
-            sự kiện mới (update kiến thức). Với những trường hợp này, hoặc chuyển sang fine-tune
-            + RAG, hoặc chia nhỏ bài toán thành các bước mà LLM mạnh.
-          </Callout>
-
-          <Callout variant="info" title="Liên hệ với Chain-of-Thought">
-            Khi bạn thêm bước suy luận vào mỗi ví dụ (<em>&quot;Hãy nghĩ từng bước…&quot;</em>),
-            bạn đang làm <strong>few-shot CoT</strong>. Đây là một trong những kỹ thuật hiệu quả
-            nhất cho bài toán lý luận — ICL học format, CoT học cách suy nghĩ.
-          </Callout>
-
-          <p>
-            <strong>Ví dụ code — gọi API với few-shot prompt (OpenAI SDK):</strong>
-          </p>
-
-          <CodeBlock language="python" title="few_shot_openai.py">{`# Cài đặt: pip install openai
-from openai import OpenAI
-
-client = OpenAI()
-
-# Few-shot: 3 ví dụ phủ 3 class + 1 câu hỏi thử
-SYSTEM = "Bạn là bộ phân loại cảm xúc cho review tiếng Việt. Output chỉ một nhãn."
-
-EXAMPLES = [
-    {"role": "user", "content": "Tôi yêu Hà Nội!"},
-    {"role": "assistant", "content": "Tích cực"},
-    {"role": "user", "content": "Dịch vụ quá tệ"},
-    {"role": "assistant", "content": "Tiêu cực"},
-    {"role": "user", "content": "Bình thường, không có gì đặc biệt"},
-    {"role": "assistant", "content": "Trung lập"},
-]
-
-def classify(review: str) -> str:
-    messages = [{"role": "system", "content": SYSTEM}, *EXAMPLES,
-                {"role": "user", "content": review}]
-    resp = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages,
-        temperature=0,          # deterministic — tránh lệch format
-        max_tokens=5,           # nhãn chỉ cần 1–2 token
-    )
-    return resp.choices[0].message.content.strip()
-
-print(classify("Nhân viên thân thiện nhưng đồ ăn hơi lạt"))
-# → "Trung lập"`}</CodeBlock>
-
-          <p>
-            <strong>Ví dụ code — đánh giá chất lượng few-shot trên tập test:</strong>
-          </p>
-
-          <CodeBlock language="python" title="evaluate_few_shot.py">{`import json
-from collections import Counter
-from openai import OpenAI
-
-client = OpenAI()
-
-# Tập test: 100 review đã dán nhãn sẵn
-with open("test_reviews.jsonl") as f:
-    test = [json.loads(line) for line in f]
-
-def run_shot(k: int, examples_pool):
-    """Đo accuracy ở mức k-shot (k ví dụ đầu tiên trong pool)."""
-    demo = examples_pool[:k]
-    sys_msg = "Phân loại cảm xúc review: Tích cực / Tiêu cực / Trung lập."
-    correct = 0
-    for item in test:
-        msgs = [{"role": "system", "content": sys_msg}]
-        for ex in demo:
-            msgs.append({"role": "user", "content": ex["text"]})
-            msgs.append({"role": "assistant", "content": ex["label"]})
-        msgs.append({"role": "user", "content": item["text"]})
-        out = client.chat.completions.create(
-            model="gpt-4o-mini", messages=msgs,
-            temperature=0, max_tokens=5,
-        ).choices[0].message.content.strip()
-        if out == item["label"]:
-            correct += 1
-    return correct / len(test)
-
-# So sánh các mức shot
-for k in [0, 1, 3, 5, 8]:
-    acc = run_shot(k, examples_pool)
-    print(f"{k}-shot accuracy: {acc:.2%}")
-
-# Output điển hình:
-#   0-shot accuracy: 62%
-#   1-shot accuracy: 71%
-#   3-shot accuracy: 84%   ← sweet spot
-#   5-shot accuracy: 86%
-#   8-shot accuracy: 87%   ← diminishing returns`}</CodeBlock>
-
-          <CollapsibleDetail title="Chi tiết nâng cao — vì sao ICL hoạt động?">
-            <div className="space-y-3 text-sm text-foreground">
-              <p>
-                Có nhiều giả thuyết về cơ chế ICL, và đây là một lĩnh vực nghiên cứu cực kỳ sôi
-                động:
-              </p>
-              <ul className="list-disc list-inside space-y-1.5 pl-2">
-                <li>
-                  <strong>Meta-learning qua pre-training:</strong> Trong quá trình pre-training,
-                  model thấy rất nhiều mẫu văn bản có cấu trúc &quot;ví dụ → kết luận&quot; (bài
-                  tập sách giáo khoa, FAQ, code docstring). Nó học được &quot;kỹ năng bắt chước
-                  pattern&quot; như một khả năng phổ quát.
-                </li>
-                <li>
-                  <strong>Implicit gradient descent:</strong> Một số nghiên cứu (Akyürek et al.
-                  2022, von Oswald et al. 2022) chứng minh rằng các attention layer của
-                  Transformer có thể <em>mô phỏng</em> các bước gradient descent trên dữ liệu
-                  trong context. Tức là ICL thực sự đang làm &quot;học&quot; trong hidden space —
-                  chỉ khác là không cập nhật tham số gốc.
-                </li>
-                <li>
-                  <strong>Task vectors:</strong> Hendel et al. (2023) cho thấy có thể trích xuất
-                  một &quot;task vector&quot; trung gian từ lớp ẩn khi model xử lý prompt few-shot,
-                  rồi tái sử dụng vector đó cho các input mới mà không cần lặp lại ví dụ.
-                </li>
-                <li>
-                  <strong>Induction heads:</strong> Nghiên cứu của Anthropic (2022) tìm ra một loại
-                  attention head đặc biệt chuyên &quot;tìm pattern&quot; giống nhau trong context
-                  và &quot;copy&quot; kết quả. Đây có thể là cơ sở vi mô cho ICL.
-                </li>
-              </ul>
-              <p>
-                Thực tế, không cần nắm 100% cơ chế để dùng ICL hiệu quả. Nhưng biết rằng ICL là
-                một <em>khả năng emergent</em> (xuất hiện khi model đủ lớn) giúp bạn hiểu tại sao
-                GPT-2 không làm tốt còn GPT-3 thì làm được.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <p>
-            <strong>Một góc nhìn toán học khác — ICL như Bayesian inference:</strong>
-          </p>
-
-          <p>
-            Xiè et al. (2022) đề xuất khung lý thuyết coi ICL như suy luận Bayes ngầm. Tưởng
-            tượng pre-training data được sinh từ một hỗn hợp các &quot;chủ đề&quot; (topic)
-            tiềm ẩn. Mỗi demo trong prompt giúp model thu hẹp phân phối trên các chủ đề đó:
-          </p>
-
-          <LaTeX block>
-            {"p(\\text{topic} \\mid \\text{prompt}) \\propto p(\\text{prompt} \\mid \\text{topic}) \\, p(\\text{topic})"}
-          </LaTeX>
-
-          <p>
-            Càng nhiều ví dụ đồng dạng trong prompt, model càng tin chắc về chủ đề → output
-            càng ổn định. Đây là lý do thứ tự, format và chất lượng demo có ảnh hưởng lớn —
-            chúng là &quot;bằng chứng&quot; mà model dùng để quyết định topic.
-          </p>
-
-          <Callout variant="info" title="Semantic few-shot: chọn ví dụ theo input">
-            Thay vì dùng cố định 3 ví dụ cho mọi input, ta có thể <strong>retrieve</strong> các
-            ví dụ gần input nhất về mặt ngữ nghĩa (dùng embedding). Kỹ thuật này gọi là{" "}
-            <em>KATE</em> (Liu et al. 2022) hoặc <em>dynamic few-shot</em>, và thường đem lại
-            5–15% tăng accuracy so với ví dụ cố định. Trade-off là cần một vector store (FAISS,
-            Pinecone, Qdrant) và thêm một bước retrieval trước mỗi request.
-          </Callout>
-
-          <CollapsibleDetail title="Các mẫu prompt few-shot hay gặp">
-            <div className="space-y-3 text-sm text-foreground">
-              <p>
-                <strong>1. Classification (như demo trên):</strong> input → nhãn. Đơn giản, hiệu
-                quả cho phần lớn nhiệm vụ gắn nhãn.
-              </p>
-              <p>
-                <strong>2. Extraction:</strong> input (văn bản tự do) → output (JSON trích
-                trường). Ví dụ:
-              </p>
-              <pre className="rounded bg-surface/40 p-2 text-xs overflow-x-auto">{`"Nguyễn Văn A, 28 tuổi, sinh Hà Nội" → {"name":"Nguyễn Văn A","age":28,"city":"Hà Nội"}
-"Trần Thị B, 35 tuổi, TP.HCM" → {"name":"Trần Thị B","age":35,"city":"TP.HCM"}`}</pre>
-              <p>
-                <strong>3. Transformation:</strong> input → output cùng format nhưng khác nội
-                dung. Ví dụ sửa văn, dịch, paraphrase.
-              </p>
-              <p>
-                <strong>4. Reasoning (few-shot CoT):</strong> input → &quot;Suy nghĩ: … → Đáp án:
-                …&quot;. Bắt buộc cho các task nhiều bước.
-              </p>
-              <p>
-                <strong>5. Instruction + few-shot hỗn hợp:</strong> Mô tả task rõ ràng trước, rồi
-                2–3 ví dụ minh hoạ. Cách này thường robust hơn pure few-shot.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <CollapsibleDetail title="Nâng cao — 'prompt tuning' và các biến thể lai">
-            <div className="space-y-3 text-sm text-foreground">
-              <p>
-                Giữa hai thái cực &quot;ICL thuần&quot; và &quot;fine-tuning đầy đủ&quot; tồn
-                tại một quang phổ các kỹ thuật trung gian:
-              </p>
-              <ul className="list-disc list-inside space-y-1.5 pl-2">
-                <li>
-                  <strong>Prompt tuning / soft prompt:</strong> học một vector embedding nhỏ
-                  (vài nghìn tham số) đóng vai trò như &quot;prefix&quot; cho mọi prompt. Không
-                  dễ đọc nhưng hiệu quả — dùng được cho task lặp rất nhiều.
-                </li>
-                <li>
-                  <strong>Prefix tuning:</strong> tương tự soft prompt nhưng chèn vector vào
-                  tất cả layer, không chỉ input — thường mạnh hơn.
-                </li>
-                <li>
-                  <strong>LoRA / QLoRA:</strong> fine-tune chỉ các ma trận rank-thấp trong
-                  attention/MLP. Chi phí training nhỏ, kết quả gần full fine-tune. Đây là lựa
-                  chọn phổ biến nhất hiện nay khi cần &quot;nặng hơn ICL, nhẹ hơn full
-                  fine-tune&quot;.
-                </li>
-                <li>
-                  <strong>RAG (Retrieval-Augmented Generation):</strong> thay vì nhét ví dụ cố
-                  định, hệ thống truy xuất các tài liệu liên quan tại thời điểm query và đưa
-                  vào prompt. Bản chất vẫn là ICL, nhưng được mở rộng ra kho kiến thức lớn.
-                </li>
-              </ul>
-              <p>
-                Quy luật chọn công cụ: bắt đầu từ ICL → nếu cần prompt ngắn hơn và traffic
-                lớn, chuyển sang LoRA → nếu bài toán cực đặc thù và có đủ data, dùng full
-                fine-tune. Đừng bỏ qua giai đoạn ICL — đó là cách nhanh nhất để kiểm chứng ý
-                tưởng.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <p>
-            <strong>Ứng dụng thực tế:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-            <li>
-              <strong>Phân loại nội dung trên nền tảng UGC:</strong> few-shot giúp đội moderation
-              triển khai phân loại mới trong vài phút thay vì vài tuần.
-            </li>
-            <li>
-              <strong>Trích xuất thông tin từ hoá đơn, CV, hợp đồng:</strong> viết 3–5 mẫu
-              input/JSON và bắt đầu chạy — không cần training.
-            </li>
-            <li>
-              <strong>Chuyển đổi giọng điệu email/ghi chú nội bộ:</strong> 2 ví dụ
-              &quot;before/after&quot; đủ để model bắt chước phong cách công ty.
-            </li>
-            <li>
-              <strong>Code transformation:</strong> di chuyển codebase từ framework cũ sang mới,
-              chỉ cần cung cấp 3–4 cặp &quot;file cũ → file mới&quot;.
-            </li>
-            <li>
-              <strong>Data labeling bán tự động:</strong> dùng LLM với few-shot để gợi ý nhãn cho
-              human-in-the-loop, tăng throughput của annotator 5–10 lần.
-            </li>
-          </ul>
-
-          <p>
-            <strong>Các lỗi phổ biến cần tránh:</strong>
-          </p>
-          <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-            <li>
-              Ví dụ thiếu class → model ép đáp án về class đã thấy. Luôn đảm bảo phủ đủ các nhãn
-              bạn mong muốn.
-            </li>
-            <li>
-              Format không nhất quán giữa các ví dụ → model bối rối. Luôn dùng chung một khung
-              (cùng dấu phân tách, cùng capitalization, cùng độ dài).
-            </li>
-            <li>
-              Thứ tự ví dụ tuỳ tiện → nghiên cứu (Lu et al. 2022) cho thấy accuracy có thể biến
-              thiên 5–20% chỉ vì thứ tự. Cân nhắc chọn thứ tự tốt trên tập validation nhỏ.
-            </li>
-            <li>
-              Dùng <em>cùng</em> ví dụ cho mọi input → kém tổng quát. Khi có thể, retrieve các ví
-              dụ gần input (semantic few-shot).
-            </li>
-            <li>
-              Không đặt <code>temperature=0</code> khi cần output format cố định → kết quả flaky.
-            </li>
-            <li>
-              Kéo shot lên quá cao để &quot;chắc ăn&quot; → tốn context + tốn tiền mà hầu như
-              không cải thiện. Luôn đo hiệu quả biên.
-            </li>
-            <li>
-              Ví dụ có label sai (data bẩn) → model học pattern sai và tự tin áp dụng. ICL
-              không có cơ chế &quot;correction&quot; ngoài chính các ví dụ bạn đưa vào.
-            </li>
-            <li>
-              Trộn nhiều task khác nhau trong cùng prompt → model bối rối giữa các &quot;chủ
-              đề&quot; tiềm ẩn. Giữ prompt single-purpose.
-            </li>
-            <li>
-              Dùng ngôn ngữ hỗn hợp trong ví dụ (Việt + Anh xen kẽ) → model không rõ output
-              nên bằng ngôn ngữ nào. Cố gắng nhất quán.
-            </li>
-            <li>
-              Quên đặt tên cho các trường JSON trong ví dụ → model có thể đổi tên field, gây
-              lỗi downstream. Luôn cố định schema.
-            </li>
-          </ul>
-
-          <p>
-            <strong>Bảng tham chiếu nhanh — khi nào dùng cái gì?</strong>
-          </p>
-
-          <div className="rounded-lg border border-border bg-surface/30 p-4 text-sm">
-            <ul className="space-y-2">
-              <li>
-                <span className="inline-block w-28 font-semibold text-accent">Prototype:</span>{" "}
-                ICL (zero → few-shot). Chuyển sang cái khác chỉ khi có bằng chứng rõ cần.
-              </li>
-              <li>
-                <span className="inline-block w-28 font-semibold text-accent">Production nhẹ:</span>{" "}
-                few-shot + retrieval (semantic few-shot) nếu cần scale chất lượng.
-              </li>
-              <li>
-                <span className="inline-block w-28 font-semibold text-accent">Scale trung:</span>{" "}
-                LoRA/QLoRA fine-tune trên 500–5000 mẫu.
-              </li>
-              <li>
-                <span className="inline-block w-28 font-semibold text-accent">Scale lớn:</span>{" "}
-                full fine-tune hoặc train model chuyên biệt nếu bài toán đủ quan trọng và data
-                đủ lớn ({">"}100k mẫu).
-              </li>
-              <li>
-                <span className="inline-block w-28 font-semibold text-accent">Kiến thức mới:</span>{" "}
-                RAG hoặc kết hợp RAG + fine-tune — ICL không giải quyết được data thay đổi liên
-                tục.
-              </li>
-            </ul>
-          </div>
-
-          <p>
-            <strong>Checklist khi viết prompt few-shot:</strong>
-          </p>
-
-          <ol className="list-decimal list-inside space-y-1.5 pl-2 text-sm">
-            <li>
-              Viết 1–2 câu mô tả task rõ ràng (persona + input + output mong muốn).
-            </li>
-            <li>
-              Chọn 3 ví dụ đại diện phủ đủ class/format. Không cần ví dụ nào là &quot;đẹp
-              nhất&quot; — chỉ cần <em>đa dạng</em>.
-            </li>
-            <li>
-              Đặt dấu phân tách nhất quán: thường dùng <code>\n</code> giữa các ví dụ,{" "}
-              <code>→</code> hoặc <code>Output:</code> trước đáp án.
-            </li>
-            <li>
-              Thêm câu hỏi thử ở cuối, mở dấu để model điền đúng vị trí đáp án.
-            </li>
-            <li>
-              Chạy thử 10–20 mẫu, đếm accuracy, so với zero-shot. Nếu chưa đạt → thêm ví dụ
-              hoặc viết rõ hơn mô tả task.
-            </li>
-            <li>
-              Nếu đạt ngưỡng mong muốn → set <code>temperature=0</code> và triển khai.
-            </li>
-          </ol>
-
-          <Callout variant="tip" title="Mẹo cuối: bắt đầu từ zero-shot rồi tăng dần">
-            Luôn thử zero-shot trước. Nếu model đã làm tốt ở zero-shot, bạn tiết kiệm được
-            rất nhiều token. Chỉ thêm ví dụ khi thực sự có lỗi. Câu thần chú:{" "}
-            <em>&quot;Ít nhất mà đủ&quot;</em>.
-          </Callout>
-
-          <p>
-            <strong>Các câu hỏi thường gặp:</strong>
-          </p>
-
-          <div className="space-y-3 text-sm">
-            <div className="rounded-lg border border-border bg-card p-3">
-              <p className="font-semibold text-foreground mb-1">
-                Q1: ICL có &quot;ghi nhớ&quot; ví dụ giữa các request không?
-              </p>
-              <p className="text-muted">
-                Không. Mỗi lần bạn gọi API, model bắt đầu lại từ đầu. Nếu muốn duy trì ngữ
-                cảnh, bạn phải tự gửi lại ví dụ (hoặc lịch sử chat) trong mỗi request.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-3">
-              <p className="font-semibold text-foreground mb-1">
-                Q2: Có cách nào giảm chi phí khi dùng nhiều ví dụ không?
-              </p>
-              <p className="text-muted">
-                Có — các provider như Anthropic, OpenAI hỗ trợ <em>prompt caching</em>: phần
-                prompt lặp lại (system + few-shot examples) được cache server-side, lần gọi
-                sau chỉ trả tiền cho phần mới. Có thể giảm 50–90% chi phí cho prompt dài lặp
-                lại.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-3">
-              <p className="font-semibold text-foreground mb-1">
-                Q3: Có nên đưa cả &quot;negative example&quot; (ví dụ sai để tránh) không?
-              </p>
-              <p className="text-muted">
-                Có thể — nhưng cần đánh nhãn rõ &quot;ĐÚNG&quot; / &quot;SAI&quot;. Nếu không,
-                model có thể bị confuse và copy luôn output sai. An toàn hơn: chỉ đưa ví dụ
-                đúng, và dùng instruction để mô tả trường hợp KHÔNG nên làm.
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-3">
-              <p className="font-semibold text-foreground mb-1">
-                Q4: Với model nhỏ (Llama 7B, Mistral 7B), ICL có còn hoạt động không?
-              </p>
-              <p className="text-muted">
-                Có, nhưng yếu hơn đáng kể. ICL là khả năng emergent — xuất hiện rõ rệt từ cỡ
-                ~10B tham số. Ở model 7B, bạn thường cần nhiều ví dụ hơn và format cứng hơn.
-                Nếu ngân sách cho phép, fine-tune nhẹ (LoRA) thường vượt qua ICL trên model
-                nhỏ.
-              </p>
-            </div>
-          </div>
-        </ExplanationSection>
-
-        <MiniSummary
-          points={[
-            "In-Context Learning = AI 'học' task mới từ vài ví dụ trong prompt, KHÔNG thay đổi trọng số.",
-            "Zero-shot (0 ví dụ) → Few-shot (3–5) → Many-shot (10+): hiệu quả tăng nhanh rồi chậm dần.",
-            "AI không 'học' thật — nó nhận ra pattern từ pre-training và áp dụng cho context hiện tại.",
-            "Chất lượng ví dụ quan trọng hơn số lượng — 3 ví dụ đa dạng tốt hơn 10 ví dụ giống nhau.",
-            "ICL vs Fine-tune: ICL nhanh/rẻ triển khai, fine-tune ổn định/rẻ per-request khi traffic lớn.",
-            "Luôn đo hiệu quả biên khi tăng shot — dừng khi chi phí thêm không còn tương xứng.",
-          ]}
-        />
-
+      {/* ═════════════════════════════════════════════════════════════════════
+          BƯỚC 8 — QUIZ
+          ═════════════════════════════════════════════════════════════════════ */}
+      <LessonSection step={8} totalSteps={8} label="Kiểm tra hiểu bài">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>

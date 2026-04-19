@@ -1,6 +1,21 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Send,
+  Bot,
+  MousePointerClick,
+  KeyRound,
+  Eye,
+  Edit3,
+  FileText,
+  BarChart3,
+  Languages,
+  Clock,
+  Timer,
+  ArrowRight,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -8,10 +23,11 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  LaTeX,
   TopicLink,
   CollapsibleDetail,
+  ToggleCompare,
+  MatchPairs,
+  Reorderable,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -37,325 +53,950 @@ export const metadata: TopicMeta = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DỮ LIỆU LỘ TRÌNH HỌC AI — 6 NODE
+// DỮ LIỆU — 5 BƯỚC ĐẦU TIÊN DÙNG AI
 // ═══════════════════════════════════════════════════════════════════════════
 //
-// Mỗi node đại diện một cột mốc kiến thức trên đường đi từ người mới
-// đến kỹ sư AI ứng dụng. Click vào node để xem chi tiết về thời lượng,
-// điều kiện tiên quyết, tài nguyên học, và điều mà bạn có thể làm sau
-// khi thành thạo nó.
+// Demo 1 dùng danh sách 5 bước: chọn tool → mở tool → gõ prompt đơn giản
+// → đọc output → điều chỉnh. Mỗi bước có một mock UI riêng được vẽ bằng
+// styled div để giả lập giao diện ChatGPT / Claude.
 
-type RoadmapNode = {
+type FirstStep = {
   id: string;
-  label: string;
+  order: number;
+  title: string;
   short: string;
-  timeHours: string;
-  prerequisites: string[];
-  resources: { label: string; kind: "book" | "course" | "video" | "doc" }[];
-  afterThis: string;
-  color: string;
-  // Toạ độ trên SVG viewBox 800x360
-  x: number;
-  y: number;
+  detail: string;
+  icon: typeof Send;
 };
 
-const NODES: RoadmapNode[] = [
+const FIRST_STEPS: FirstStep[] = [
   {
-    id: "python",
-    label: "Python căn bản",
-    short: "Biến, hàm, list, dict, file I/O",
-    timeHours: "30 – 60 giờ",
-    prerequisites: ["Không có — đây là điểm xuất phát cho đa số người học AI"],
-    resources: [
-      { label: "Python for Everybody (Coursera, miễn phí audit)", kind: "course" },
-      { label: "Automate the Boring Stuff with Python", kind: "book" },
-      { label: "python.org — Hướng dẫn chính thức", kind: "doc" },
-    ],
-    afterThis:
-      "Bạn có thể đọc script Python, viết hàm đơn giản, xử lý file CSV — đủ để bắt đầu làm việc với dữ liệu.",
-    color: "#3b82f6",
-    x: 90,
-    y: 180,
+    id: "pick",
+    order: 1,
+    title: "Chọn một công cụ",
+    short: "Chọn 1 trong 4 trợ lý AI phổ biến, tất cả đều có bản miễn phí.",
+    detail:
+      "Không quan trọng chọn đúng ngay lần đầu. ChatGPT, Claude, Gemini, Copilot đều tốt cho công việc văn phòng. Bạn có thể đổi bất cứ lúc nào.",
+    icon: MousePointerClick,
   },
   {
-    id: "numpy",
-    label: "NumPy & Pandas",
-    short: "Mảng số, phép toán vector, DataFrame",
-    timeHours: "20 – 40 giờ",
-    prerequisites: ["Python căn bản", "Toán cấp 3 (đại số tuyến tính sơ cấp)"],
-    resources: [
-      { label: "NumPy: the absolute basics (numpy.org)", kind: "doc" },
-      { label: "10 minutes to pandas (pandas.pydata.org)", kind: "doc" },
-      { label: "Python Data Science Handbook — Jake VanderPlas", kind: "book" },
-    ],
-    afterThis:
-      "Bạn xử lý được các bộ dữ liệu bảng, làm sạch dữ liệu, và hiểu tại sao vectorisation nhanh hơn vòng lặp Python thuần.",
-    color: "#22c55e",
-    x: 230,
-    y: 180,
+    id: "open",
+    order: 2,
+    title: "Mở trang web hoặc app",
+    short: "Đăng nhập bằng Google hoặc email. Không cần thẻ ngân hàng.",
+    detail:
+      "Sau khoảng 30 giây bạn sẽ thấy một khung chat trống. Giao diện gọn: một ô nhập phía dưới, phần hội thoại phía trên.",
+    icon: KeyRound,
   },
   {
-    id: "ml",
-    label: "Nền tảng ML",
-    short: "Regression, classification, train/test, overfit",
-    timeHours: "80 – 120 giờ",
-    prerequisites: [
-      "NumPy & Pandas",
-      "Xác suất & thống kê cơ bản",
-      "Gradient descent (hiểu ở mức trực quan)",
-    ],
-    resources: [
-      { label: "Machine Learning — Andrew Ng (Coursera)", kind: "course" },
-      { label: "Hands-On ML — Aurélien Géron (O'Reilly)", kind: "book" },
-      { label: "scikit-learn user guide", kind: "doc" },
-      { label: "StatQuest (Josh Starmer) — YouTube", kind: "video" },
-    ],
-    afterThis:
-      "Bạn huấn luyện được mô hình dự đoán đơn giản, chọn metric phù hợp (accuracy, F1, AUC), và nhận ra khi nào mô hình đang overfit.",
-    color: "#f59e0b",
-    x: 380,
-    y: 100,
+    id: "prompt",
+    order: 3,
+    title: "Gõ câu hỏi đầu tiên",
+    short: "Viết như đang nhắn cho đồng nghiệp. Không cần thuật ngữ gì cả.",
+    detail:
+      'Thử: "Viết email xin nghỉ 1 ngày gửi trưởng phòng, lý do việc gia đình, giọng lịch sự, khoảng 80 từ". Càng nhiều chi tiết, càng sát ý bạn muốn.',
+    icon: Send,
   },
   {
-    id: "dl",
-    label: "Deep Learning",
-    short: "Neural net, backprop, CNN, Transformer",
-    timeHours: "120 – 200 giờ",
-    prerequisites: [
-      "Nền tảng ML",
-      "Đại số tuyến tính vững (ma trận, vector)",
-      "Giải tích đa biến sơ cấp",
-    ],
-    resources: [
-      { label: "Deep Learning Specialization — Andrew Ng", kind: "course" },
-      { label: "Dive into Deep Learning (d2l.ai)", kind: "book" },
-      { label: "Neural Networks: Zero to Hero — Karpathy", kind: "video" },
-      { label: "PyTorch tutorials", kind: "doc" },
-    ],
-    afterThis:
-      "Bạn tự huấn luyện được mạng neuron cho bài toán ảnh hoặc văn bản, đọc hiểu paper ở mức kiến trúc, và biết khi nào dùng CNN vs. Transformer.",
-    color: "#a855f7",
-    x: 540,
-    y: 100,
+    id: "read",
+    order: 4,
+    title: "Đọc câu trả lời",
+    short: "AI trả lời trong vài giây. Đọc kỹ và kiểm tra xem có hợp không.",
+    detail:
+      "Luôn đọc trước khi dùng. AI viết rất tự nhiên nhưng đôi khi bịa tên, số liệu, ngày tháng. Điều gì quan trọng thì đối chiếu nguồn gốc.",
+    icon: Eye,
   },
   {
-    id: "nlp",
-    label: "NLP & LLM",
-    short: "Token, embedding, attention, prompt engineering",
-    timeHours: "60 – 100 giờ",
-    prerequisites: ["Deep Learning", "Hiểu mô hình Transformer"],
-    resources: [
-      { label: "Hugging Face NLP Course (miễn phí)", kind: "course" },
-      { label: "Speech & Language Processing — Jurafsky & Martin", kind: "book" },
-      { label: "Illustrated Transformer — Jay Alammar", kind: "doc" },
-      { label: "Let's build GPT — Karpathy", kind: "video" },
-    ],
-    afterThis:
-      "Bạn fine-tune được mô hình LLM nhỏ, hiểu cơ chế attention, và xây được chatbot đơn giản bằng API.",
-    color: "#ec4899",
-    x: 680,
-    y: 180,
-  },
-  {
-    id: "apps",
-    label: "Ứng dụng AI",
-    short: "RAG, agent, tool use, triển khai production",
-    timeHours: "60 – 120 giờ",
-    prerequisites: ["NLP & LLM", "Kinh nghiệm backend web / API"],
-    resources: [
-      { label: "LangChain / LlamaIndex — tài liệu chính thức", kind: "doc" },
-      { label: "Building LLM-Powered Applications — Valentina Alto", kind: "book" },
-      { label: "Prompt Engineering Guide (promptingguide.ai)", kind: "doc" },
-      { label: "Full Stack Deep Learning", kind: "course" },
-    ],
-    afterThis:
-      "Bạn tự xây được chatbot RAG truy vấn tài liệu công ty, agent thực thi tool, và triển khai lên cloud với observability đầy đủ.",
-    color: "#ef4444",
-    x: 540,
-    y: 280,
+    id: "refine",
+    order: 5,
+    title: "Chỉnh lại nếu cần",
+    short: "Không hài lòng? Nhắn thêm yêu cầu — AI sẽ viết lại.",
+    detail:
+      '"Viết lại lịch sự hơn", "ngắn hơn một nửa", "thêm phần cảm ơn ở cuối"… Bạn trò chuyện qua lại cho đến khi vừa ý.',
+    icon: Edit3,
   },
 ];
 
-// Các cạnh (phụ thuộc) giữa các node. Format: [from_id, to_id]
-const EDGES: [string, string][] = [
-  ["python", "numpy"],
-  ["numpy", "ml"],
-  ["ml", "dl"],
-  ["dl", "nlp"],
-  ["nlp", "apps"],
-];
-
 // ═══════════════════════════════════════════════════════════════════════════
-// CÁC LỘ TRÌNH KHÁC NHAU THEO VAI TRÒ
+// DỮ LIỆU — TOOL PICKER (DEMO 2)
 // ═══════════════════════════════════════════════════════════════════════════
+//
+// Người dùng chọn 1 trong 4 mục tiêu, widget gợi ý 2-3 tool phù hợp.
 
-type PathVariant = {
-  id: "student" | "engineer" | "manager";
+type Goal = {
+  id: "write" | "analyze" | "translate" | "ideate";
   label: string;
   subtitle: string;
-  nodes: string[]; // node ids theo thứ tự
-  note: string;
+  picks: { name: string; why: string; tone: string }[];
 };
 
-const PATHS: PathVariant[] = [
+const GOALS: Goal[] = [
   {
-    id: "student",
-    label: "Sinh viên / Người học bài bản",
-    subtitle: "Muốn hiểu sâu, có thời gian, định làm nghiên cứu / kỹ sư AI",
-    nodes: ["python", "numpy", "ml", "dl", "nlp", "apps"],
-    note:
-      "Đi đủ 6 node, dành khoảng 6 – 12 tháng học full-time hoặc 12 – 24 tháng part-time. Ưu tiên bài tập tay, đọc paper, reproduce kết quả.",
+    id: "write",
+    label: "Viết văn bản",
+    subtitle: "Email, báo cáo, bài đăng, mô tả sản phẩm",
+    picks: [
+      {
+        name: "ChatGPT",
+        why: "Viết nhanh, giọng văn linh hoạt, hợp nhất với đa số nhu cầu văn phòng.",
+        tone: "Đa dụng",
+      },
+      {
+        name: "Claude",
+        why: "Viết văn bản dài mạch lạc, ít lạc ý, tốt khi cần giữ giọng văn chuyên nghiệp hoặc nhạy cảm.",
+        tone: "Văn dài",
+      },
+    ],
   },
   {
-    id: "engineer",
-    label: "Kỹ sư phần mềm muốn chuyển sang AI ứng dụng",
-    subtitle: "Đã biết code, cần nhanh chóng xây sản phẩm tích hợp LLM",
-    nodes: ["python", "numpy", "nlp", "apps"],
-    note:
-      "Bỏ qua phần Deep Learning chi tiết, đi tắt vào LLM & ứng dụng. Khoảng 3 – 6 tháng. Sau này nếu cần custom model mới quay lại học DL.",
+    id: "analyze",
+    label: "Phân tích số liệu",
+    subtitle: "Tóm tắt báo cáo, đọc Excel/PDF, nhận xét dữ liệu",
+    picks: [
+      {
+        name: "ChatGPT",
+        why: "Kéo thả file Excel/PDF, hỏi bằng tiếng Việt. Có thể vẽ biểu đồ đơn giản.",
+        tone: "Đa dụng",
+      },
+      {
+        name: "Microsoft Copilot",
+        why: "Nằm thẳng trong Excel/Word/Outlook. Không cần copy dữ liệu ra ngoài — an toàn hơn cho dữ liệu nội bộ.",
+        tone: "Office 365",
+      },
+    ],
   },
   {
-    id: "manager",
-    label: "Quản lý / Người quyết định công nghệ",
-    subtitle: "Cần hiểu khái niệm, đánh giá rủi ro, làm việc với team kỹ thuật",
-    nodes: ["python", "ml", "nlp", "apps"],
-    note:
-      "Tập trung vào tư duy sản phẩm: khi nào dùng AI, chi phí, rủi ro bảo mật, ROI. Không cần code sâu, đọc ở mức khái niệm. Khoảng 4 – 8 tuần.",
+    id: "translate",
+    label: "Dịch và tra cứu",
+    subtitle: "Dịch tài liệu, tìm thông tin mới, đối chiếu nguồn",
+    picks: [
+      {
+        name: "Gemini",
+        why: "Tra cứu có liên kết Google Search, thường kèm nguồn — tiện đối chiếu.",
+        tone: "Tra cứu",
+      },
+      {
+        name: "Claude",
+        why: "Dịch Anh–Việt giữ giọng văn gốc rất tốt, đặc biệt với văn bản hợp đồng hoặc học thuật.",
+        tone: "Văn dài",
+      },
+    ],
+  },
+  {
+    id: "ideate",
+    label: "Tìm ý tưởng",
+    subtitle: "Brainstorm, lên dàn ý họp, ý tưởng marketing",
+    picks: [
+      {
+        name: "ChatGPT",
+        why: "Liệt kê 10-20 ý trong một lần. Dễ đào sâu từng ý bằng câu hỏi nối tiếp.",
+        tone: "Đa dụng",
+      },
+      {
+        name: "Claude",
+        why: "Phân loại, nhóm ý, gợi ý framework suy nghĩ — phù hợp khi brainstorm cần có cấu trúc.",
+        tone: "Văn dài",
+      },
+      {
+        name: "Gemini",
+        why: "Ý tưởng gắn dữ liệu thực tế từ web (tin tức, xu hướng tìm kiếm).",
+        tone: "Tra cứu",
+      },
+    ],
   },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// QUIZ — 8 câu
+// DỮ LIỆU — 4 TOOL PHỔ BIẾN TẠI VIỆT NAM
+// ═══════════════════════════════════════════════════════════════════════════
+
+type ToolCard = {
+  name: string;
+  tagline: string;
+  strength: string;
+  plan: string;
+  color: string;
+  hex: string;
+};
+
+const TOOLS: ToolCard[] = [
+  {
+    name: "ChatGPT",
+    tagline: "Trợ lý đa dụng",
+    strength: "Viết email, tóm tắt, phân tích Excel, tạo ý tưởng. Bản miễn phí đủ cho đa số nhu cầu hằng ngày.",
+    plan: "Miễn phí / 20 USD mỗi tháng",
+    color: "emerald",
+    hex: "#10b981",
+  },
+  {
+    name: "Claude",
+    tagline: "Chuyên gia văn dài",
+    strength: "Viết báo cáo mạch lạc, đọc tài liệu 100+ trang, dịch thuật tinh tế. Hợp cho dân văn phòng đọc nhiều.",
+    plan: "Miễn phí / 20 USD mỗi tháng",
+    color: "violet",
+    hex: "#8b5cf6",
+  },
+  {
+    name: "Gemini",
+    tagline: "Tra cứu gắn Google",
+    strength: "Tìm kiếm kèm nguồn, tóm tắt Gmail, soạn nháp trong Google Docs. Hợp với hệ sinh thái Google Workspace.",
+    plan: "Miễn phí / gói Google One",
+    color: "sky",
+    hex: "#0ea5e9",
+  },
+  {
+    name: "Microsoft Copilot",
+    tagline: "Kèm trong Office 365",
+    strength: "Nằm sẵn trong Word, Excel, Outlook, Teams. Phân tích dữ liệu nội bộ mà không cần copy ra ngoài.",
+    plan: "Miễn phí / gói Microsoft 365",
+    color: "orange",
+    hex: "#f97316",
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DỮ LIỆU — BẢNG THỜI GIAN "KHÔNG AI" vs "CÓ AI"
+// ═══════════════════════════════════════════════════════════════════════════
+
+type Task = {
+  label: string;
+  icon: typeof FileText;
+  manual: number; // phút
+  withAi: number; // phút
+};
+
+const TASKS: Task[] = [
+  { label: "Viết email 150 từ", icon: FileText, manual: 15, withAi: 3 },
+  { label: "Tóm tắt báo cáo 20 trang", icon: BarChart3, manual: 60, withAi: 8 },
+  { label: "Dịch 1000 từ Anh–Việt", icon: Languages, manual: 90, withAi: 10 },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DỮ LIỆU — QUIZ (5 câu)
 // ═══════════════════════════════════════════════════════════════════════════
 
 const QUIZ: QuizQuestion[] = [
   {
-    question: "Khi lần đầu sử dụng AI, bước nào nên làm đầu tiên?",
+    question:
+      "Bạn muốn bắt đầu dùng AI hôm nay. Bước đầu tiên hợp lý nhất là?",
     options: [
-      "Hỏi AI một câu hỏi dài và phức tạp ngay.",
-      "Tạo tài khoản trên một công cụ AI phổ biến (ChatGPT, Claude, Gemini) — miễn phí, chỉ cần email.",
-      "Mua gói trả phí đắt nhất để có kết quả tốt nhất.",
-      "Đọc hết tài liệu kỹ thuật về mô hình ngôn ngữ lớn trước.",
+      "Đọc hết tài liệu kỹ thuật về cách AI hoạt động trước.",
+      "Trả ngay gói đắt nhất để có chất lượng tốt.",
+      "Tạo tài khoản miễn phí trên ChatGPT, Claude, hoặc Gemini và thử một yêu cầu nhỏ.",
+      "Chờ công ty có chính sách rõ ràng rồi mới dùng.",
     ],
-    correct: 1,
+    correct: 2,
     explanation:
-      "Bắt đầu đơn giản: tạo tài khoản miễn phí. Bạn không cần trả phí hay hiểu kỹ thuật — cứ thử trước, tìm hiểu sau. Phần lớn bài học nhập môn AI tốt nhất đến từ việc tương tác thực tế với một công cụ, không phải từ lý thuyết.",
+      "Cách học AI nhanh nhất là dùng thử. Tất cả trợ lý phổ biến đều có bản miễn phí, chỉ cần email là đăng ký được. Một yêu cầu nhỏ, đọc kết quả, chỉnh lại — lặp 3-4 lần là bạn đã hiểu hơn bất cứ bài viết lý thuyết nào.",
   },
   {
     question:
-      "Prompt nào sẽ cho kết quả tốt hơn khi nhờ AI viết email xin phép nghỉ?",
+      "Prompt nào sẽ cho ra email xin phép nghỉ chất lượng hơn?",
     options: [
-      "\"Viết email nghỉ phép\".",
-      "\"Viết email xin phép nghỉ 2 ngày, gửi trưởng phòng Nguyễn Văn A, lý do việc gia đình, giọng văn lịch sự và chuyên nghiệp, khoảng 100 từ\".",
-      "\"Email nghỉ, ngắn thôi\".",
-      "\"Viết cái gì đó cho sếp\".",
+      '"Viết email nghỉ phép."',
+      '"Viết email xin nghỉ 2 ngày gửi trưởng phòng Minh, lý do con ốm, giọng lịch sự chuyên nghiệp, khoảng 100 từ, có lời cảm ơn cuối."',
+      '"Email nghỉ, ngắn thôi."',
+      '"Giúp tôi xin nghỉ đi."',
     ],
     correct: 1,
     explanation:
-      "Prompt cụ thể (số ngày, người nhận, lý do, giọng văn, độ dài) giúp AI hiểu chính xác bạn cần gì. Quy tắc ngắn: càng nhiều ràng buộc rõ ràng trong prompt, output càng sát yêu cầu.",
+      "Càng nhiều chi tiết rõ ràng (số ngày, người nhận, lý do, giọng văn, độ dài, điểm kết) thì AI càng hiểu đúng ý bạn. Đây là quy tắc vàng của prompt: cụ thể thắng chung chung.",
+  },
+  {
+    question:
+      "AI trả lời rất tự tin nhưng có thể bị sai ở điểm nào sau đây?",
+    options: [
+      "Tên người, số liệu, ngày tháng, trích dẫn — AI có thể tự bịa mà nghe rất hợp lý.",
+      "AI luôn từ chối trả lời mọi câu hỏi.",
+      "AI tự gửi email thay bạn.",
+      "AI xoá tài khoản của bạn nếu trả lời sai.",
+    ],
+    correct: 0,
+    explanation:
+      'Đây gọi là "hallucination" (ảo giác) — AI sinh ra câu trả lời nghe trơn tru ngay cả khi thông tin không có thật. Luôn đối chiếu số liệu, tên, dẫn chứng quan trọng với nguồn gốc.',
+  },
+  {
+    question:
+      "Nhiệm vụ nào SAU ĐÂY nên cẩn trọng khi giao cho AI công cộng?",
+    options: [
+      "Viết lời chúc sinh nhật đồng nghiệp.",
+      "Dịch bài giới thiệu công ty đã đăng công khai.",
+      "Phân tích bảng lương chi tiết từng nhân viên kèm CMND, địa chỉ nhà.",
+      "Tóm tắt một bài báo đăng trên VnExpress.",
+    ],
+    correct: 2,
+    explanation:
+      "Dữ liệu nhạy cảm (lương, CMND, hợp đồng, thông tin khách hàng) không nên dán vào AI công cộng. Nếu bắt buộc xử lý, hãy dùng phiên bản doanh nghiệp có cam kết bảo mật hoặc che giấu thông tin riêng tư trước khi gửi.",
   },
   {
     type: "fill-blank",
     question:
-      "Khi kết quả AI chưa tốt, bạn nên {blank} prompt bằng cách thêm chi tiết, thay vì hỏi lại y nguyên câu cũ.",
+      "Khi kết quả AI chưa vừa ý, bạn không cần hỏi lại y nguyên câu cũ — hãy {blank} prompt bằng cách thêm chi tiết.",
     blanks: [
-      { answer: "tinh chỉnh", accept: ["chỉnh sửa", "cải thiện", "sửa", "refine"] },
+      {
+        answer: "tinh chỉnh",
+        accept: ["chỉnh sửa", "sửa", "cải thiện", "chỉnh", "bổ sung"],
+      },
     ],
     explanation:
-      "Tinh chỉnh (refine) prompt là kỹ năng quan trọng nhất khi dùng AI. Thêm ngữ cảnh, ví dụ, hoặc ràng buộc cụ thể hơn sẽ cải thiện kết quả đáng kể. Đây là quá trình lặp — ít ai có prompt hoàn hảo ngay lần đầu.",
-  },
-  {
-    question: "AI có thể mắc sai lầm nào sau đây?",
-    options: [
-      "Trả lời sai nhưng nghe rất tự tin và thuyết phục.",
-      "Từ chối trả lời mọi câu hỏi.",
-      "Tự động gửi email thay bạn mà không hỏi.",
-      "Tự xoá tài khoản của bạn.",
-    ],
-    correct: 0,
-    explanation:
-      "Đây gọi là \"ảo giác\" (hallucination) — AI có thể bịa thông tin sai nhưng trình bày rất thuyết phục. Luôn kiểm tra lại các thông tin quan trọng: số liệu, ngày tháng, trích dẫn, tên riêng.",
-  },
-  {
-    question:
-      "Một sinh viên muốn học AI bài bản. Thứ tự môn nào hợp lý nhất?",
-    options: [
-      "Deep Learning → Python → Toán → NLP.",
-      "Python → NumPy/Pandas → ML căn bản → Deep Learning → NLP → Ứng dụng.",
-      "NLP → Python → ML.",
-      "Bắt đầu thẳng với LLM, bỏ qua hết phần cơ bản.",
-    ],
-    correct: 1,
-    explanation:
-      "Kiến thức AI xếp chồng: cần Python để code, NumPy/Pandas để xử lý dữ liệu, ML căn bản để hiểu khái niệm train/test, rồi mới lên DL và LLM. Nhảy cóc có thể chạy được demo nhưng không vững khi debug hoặc cải thiện.",
-  },
-  {
-    question:
-      "Kỹ sư phần mềm muốn chuyển sang AI ứng dụng (xây chatbot, RAG) nhanh nhất. Lộ trình nào phù hợp?",
-    options: [
-      "Học đủ 6 tháng toán + 6 tháng DL trước, rồi mới đụng LLM.",
-      "Python (đã biết) → đủ NumPy/Pandas → đi tắt vào NLP & ứng dụng LLM → quay lại học DL sâu hơn nếu cần model tuỳ chỉnh.",
-      "Chỉ cần đọc vài bài blog rồi xây ngay.",
-      "Học thuộc API của một framework duy nhất.",
-    ],
-    correct: 1,
-    explanation:
-      "Với kỹ sư đã có nền tảng code, không cần đi qua toàn bộ ML/DL chi tiết để xây app RAG hay chatbot. Đi tắt vào LLM + framework (LangChain, Mastra...) giúp ra sản phẩm trong 3-6 tháng. Khi gặp bài toán cần custom model, mới quay lại học DL.",
-  },
-  {
-    question:
-      "Lộ trình cho người quản lý (không code) nên nhấn vào điều gì?",
-    options: [
-      "Tự viết và train model từ đầu.",
-      "Hiểu khái niệm, khả năng và giới hạn của AI, chi phí / rủi ro / ROI để làm việc hiệu quả với team kỹ thuật.",
-      "Chỉ cần đọc báo công nghệ là đủ.",
-      "Học đầy đủ toán như sinh viên PhD.",
-    ],
-    correct: 1,
-    explanation:
-      "Quản lý cần đủ kiến thức để đánh giá đề xuất của team kỹ thuật: task này AI làm được không, chi phí bao nhiêu, rủi ro hallucination / bảo mật / bản quyền dữ liệu. Không cần code sâu, nhưng cần tư duy về sản phẩm và hệ thống.",
-  },
-  {
-    question:
-      "Dấu hiệu nào cho thấy bạn nên DỪNG lộ trình hiện tại và học lùi lại?",
-    options: [
-      "Bạn đang đọc Deep Learning nhưng không hiểu đạo hàm và ma trận là gì.",
-      "Bạn đọc một đoạn code Python mà không hiểu nghĩa → nên quay lại củng cố Python cơ bản.",
-      "Bạn đang làm model mà không hiểu tại sao dùng loss function này thay loss khác.",
-      "Tất cả các dấu hiệu trên.",
-    ],
-    correct: 3,
-    explanation:
-      "Kiến thức AI như xây nhà: móng không vững thì lên tầng là sập. Nếu thấy mình đang \"copy code không hiểu\", \"chạy theo tutorial cảm giác hiểu nhưng không giải thích được\" — đó là tín hiệu nên quay về node trước đó và củng cố. Đi chậm mà chắc nhanh hơn đi nhanh rồi phải quay lại từ đầu.",
+      "Tinh chỉnh prompt là kỹ năng cốt lõi khi dùng AI. Thêm ngữ cảnh, nêu giọng văn muốn có, hoặc ví dụ mẫu — kết quả thường tốt hơn rõ rệt. Ít khi prompt đầu tiên đã hoàn hảo.",
   },
 ];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MOCK CHAT UI — dùng cho demo 1 "bước 3" và "bước 4"
+// ═══════════════════════════════════════════════════════════════════════════
+
+function MockChatBubble({
+  role,
+  text,
+  typing = false,
+}: {
+  role: "user" | "ai";
+  text: string;
+  typing?: boolean;
+}) {
+  const isUser = role === "user";
+  return (
+    <div
+      className={`flex gap-2 ${isUser ? "justify-end" : "justify-start"}`}
+    >
+      {!isUser && (
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent/15">
+          <Bot size={14} className="text-accent" />
+        </div>
+      )}
+      <div
+        className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-xs leading-relaxed ${
+          isUser
+            ? "bg-accent text-white"
+            : "bg-surface text-foreground border border-border"
+        }`}
+      >
+        {typing ? (
+          <span className="inline-flex gap-1">
+            <motion.span
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ repeat: Infinity, duration: 1, delay: 0 }}
+              className="h-1.5 w-1.5 rounded-full bg-muted"
+            />
+            <motion.span
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
+              className="h-1.5 w-1.5 rounded-full bg-muted"
+            />
+            <motion.span
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
+              className="h-1.5 w-1.5 rounded-full bg-muted"
+            />
+          </span>
+        ) : (
+          text
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DEMO 1 — INTERACTIVE STEP LIST "5 PHÚT ĐẦU TIÊN"
+// ═══════════════════════════════════════════════════════════════════════════
+
+function FiveMinutesDemo() {
+  const [selected, setSelected] = useState(0);
+  const current = FIRST_STEPS[selected];
+  const Icon = current.icon;
+
+  return (
+    <div className="space-y-4">
+      {/* Danh sách bước dạng thanh ngang */}
+      <div className="grid grid-cols-5 gap-2">
+        {FIRST_STEPS.map((step, i) => {
+          const StepIcon = step.icon;
+          const active = selected === i;
+          return (
+            <button
+              key={step.id}
+              onClick={() => setSelected(i)}
+              className={`group flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all ${
+                active
+                  ? "border-accent bg-accent-light shadow-sm"
+                  : "border-border bg-card hover:border-accent/50 hover:bg-surface"
+              }`}
+            >
+              <div
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors ${
+                  active
+                    ? "bg-accent text-white"
+                    : "bg-surface text-muted group-hover:bg-accent/20"
+                }`}
+              >
+                {step.order}
+              </div>
+              <StepIcon
+                size={14}
+                className={active ? "text-accent" : "text-muted"}
+              />
+              <span
+                className={`text-[10px] font-medium leading-tight text-center ${
+                  active ? "text-accent-dark" : "text-muted"
+                }`}
+              >
+                {step.title}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Chi tiết bước đang chọn + mock UI tương ứng */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current.id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.25 }}
+          className="grid gap-4 md:grid-cols-[1fr_1.2fr]"
+        >
+          {/* Cột trái: mô tả bước */}
+          <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">
+                {current.order}
+              </div>
+              <h4 className="text-sm font-semibold text-foreground">
+                {current.title}
+              </h4>
+            </div>
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              {current.short}
+            </p>
+            <p className="text-xs text-muted leading-relaxed">
+              {current.detail}
+            </p>
+          </div>
+
+          {/* Cột phải: mock UI */}
+          <div className="rounded-xl border border-border bg-background/40 p-3">
+            {selected === 0 && <MockPickUI />}
+            {selected === 1 && <MockOpenUI />}
+            {selected === 2 && <MockPromptUI />}
+            {selected === 3 && <MockReadUI />}
+            {selected === 4 && <MockRefineUI />}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      <p className="text-xs text-center text-muted italic">
+        <Icon size={12} className="inline mr-1" />
+        Click vào số trên cùng để xem từng bước
+      </p>
+    </div>
+  );
+}
+
+function MockPickUI() {
+  const tools = [
+    { name: "ChatGPT", hex: "#10b981" },
+    { name: "Claude", hex: "#8b5cf6" },
+    { name: "Gemini", hex: "#0ea5e9" },
+    { name: "Copilot", hex: "#f97316" },
+  ];
+  return (
+    <div className="space-y-2">
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+        4 trợ lý AI phổ biến
+      </p>
+      <div className="grid grid-cols-2 gap-2">
+        {tools.map((t, i) => (
+          <motion.div
+            key={t.name}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.08 }}
+            className="flex items-center gap-2 rounded-lg border border-border bg-card p-2.5"
+          >
+            <div
+              className="h-6 w-6 shrink-0 rounded-md"
+              style={{ backgroundColor: t.hex }}
+            />
+            <span className="text-xs font-medium text-foreground">
+              {t.name}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+      <p className="text-[11px] text-muted italic">
+        Tất cả đều có bản miễn phí. Chọn bất kỳ cái nào.
+      </p>
+    </div>
+  );
+}
+
+function MockOpenUI() {
+  return (
+    <div className="space-y-2">
+      <div className="rounded-md bg-surface px-2.5 py-1.5 font-mono text-[11px] text-muted">
+        https://chat.openai.com
+      </div>
+      <div className="rounded-lg border border-border bg-card p-3 space-y-2">
+        <p className="text-xs font-semibold text-foreground">
+          Đăng nhập
+        </p>
+        <button className="w-full rounded-md border border-border bg-background py-1.5 text-[11px] font-medium text-foreground">
+          Tiếp tục với Google
+        </button>
+        <button className="w-full rounded-md border border-border bg-background py-1.5 text-[11px] text-muted">
+          Đăng ký bằng email
+        </button>
+        <p className="text-[10px] text-center text-tertiary">
+          Không cần thẻ ngân hàng
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function MockPromptUI() {
+  const promptText =
+    "Viết email xin nghỉ 1 ngày gửi trưởng phòng, lý do việc gia đình, giọng lịch sự, khoảng 80 từ.";
+  return (
+    <div className="space-y-2">
+      <div className="rounded-lg border border-border bg-card p-3 space-y-2 min-h-[120px] flex flex-col justify-end">
+        <div className="flex-1" />
+        <div className="flex items-end gap-2 rounded-xl border border-accent/50 bg-surface px-2.5 py-2">
+          <p className="flex-1 text-xs text-foreground leading-relaxed">
+            {promptText}
+            <motion.span
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ repeat: Infinity, duration: 0.8 }}
+              className="inline-block ml-0.5 h-3 w-0.5 bg-foreground align-middle"
+            />
+          </p>
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent">
+            <Send size={12} className="text-white" />
+          </div>
+        </div>
+      </div>
+      <p className="text-[11px] text-muted italic">
+        Viết tự nhiên như nhắn tin. Càng nhiều chi tiết càng tốt.
+      </p>
+    </div>
+  );
+}
+
+function MockReadUI() {
+  return (
+    <div className="space-y-2">
+      <div className="space-y-1.5 rounded-lg border border-border bg-card p-3">
+        <MockChatBubble
+          role="user"
+          text="Viết email xin nghỉ 1 ngày gửi trưởng phòng…"
+        />
+        <MockChatBubble
+          role="ai"
+          text={
+            "Kính gửi anh/chị,\n\nEm xin phép nghỉ 1 ngày vào ngày mai do có việc gia đình cần giải quyết. Em đã bàn giao công việc cho chị Linh và sẽ kiểm tra email khi cần. Em rất mong nhận được sự đồng ý và cảm ơn anh/chị đã tạo điều kiện."
+          }
+        />
+      </div>
+      <p className="text-[11px] text-muted italic">
+        Đọc kỹ trước khi copy. Nếu có tên sếp thật thì chỉnh lại.
+      </p>
+    </div>
+  );
+}
+
+function MockRefineUI() {
+  return (
+    <div className="space-y-2">
+      <div className="space-y-1.5 rounded-lg border border-border bg-card p-3">
+        <MockChatBubble
+          role="ai"
+          text="Kính gửi anh/chị, Em xin phép nghỉ 1 ngày…"
+        />
+        <MockChatBubble
+          role="user"
+          text="Viết lại ngắn hơn, chỉ 50 từ, và thêm lời cảm ơn cuối email."
+        />
+        <MockChatBubble role="ai" text="" typing />
+      </div>
+      <p className="text-[11px] text-muted italic">
+        Không ưng? Cứ yêu cầu AI viết lại. Trò chuyện qua lại đến khi vừa ý.
+      </p>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DEMO 2 — TOOL PICKER
+// ═══════════════════════════════════════════════════════════════════════════
+
+function ToolPickerDemo() {
+  const [goal, setGoal] = useState<Goal["id"]>("write");
+  const active = GOALS.find((g) => g.id === goal) ?? GOALS[0];
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-foreground/90">
+        Bạn đang cần làm gì? Chọn mục tiêu, widget sẽ gợi ý 2-3 công cụ phù
+        hợp nhất.
+      </p>
+
+      {/* Chọn mục tiêu */}
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+        {GOALS.map((g) => {
+          const active = goal === g.id;
+          return (
+            <button
+              key={g.id}
+              onClick={() => setGoal(g.id)}
+              className={`flex flex-col items-start gap-1 rounded-xl border p-3 text-left transition-all ${
+                active
+                  ? "border-accent bg-accent-light"
+                  : "border-border bg-card hover:border-accent/50"
+              }`}
+            >
+              <span
+                className={`text-sm font-semibold ${
+                  active ? "text-accent-dark" : "text-foreground"
+                }`}
+              >
+                {g.label}
+              </span>
+              <span className="text-[11px] text-muted leading-snug">
+                {g.subtitle}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Gợi ý */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-2"
+        >
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+            Gợi ý cho "{active.label}"
+          </p>
+          <div className="grid gap-2 md:grid-cols-2">
+            {active.picks.map((p, i) => (
+              <motion.div
+                key={p.name}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.08 }}
+                className="rounded-lg border border-border bg-card p-3 space-y-1.5"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-foreground">
+                    {p.name}
+                  </span>
+                  <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-muted">
+                    {p.tone}
+                  </span>
+                </div>
+                <p className="text-xs text-foreground/90 leading-relaxed">
+                  {p.why}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DEMO 3 — PROMPT BEFORE / AFTER (ToggleCompare)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function PromptBeforeAfter() {
+  return (
+    <ToggleCompare
+      labelA="Prompt mơ hồ"
+      labelB="Prompt có cấu trúc"
+      description="Cùng một AI, cùng một thời điểm — khác biệt nằm ở cách hỏi."
+      childA={
+        <div className="space-y-3">
+          <div className="rounded-xl border border-border bg-background/40 p-3 space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-red-600 dark:text-red-400">
+              Bạn gõ
+            </p>
+            <div className="rounded-lg bg-card border border-border px-3 py-2 text-sm text-foreground">
+              Viết email báo hoãn họp.
+            </div>
+          </div>
+          <div className="rounded-xl border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-700 p-3 space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-red-700 dark:text-red-300">
+              AI trả lời (chung chung, phải sửa nhiều)
+            </p>
+            <p className="text-xs text-foreground/90 italic leading-relaxed whitespace-pre-line">
+              {
+                "Chào anh/chị,\n\nTôi viết mail này để thông báo cuộc họp sẽ bị hoãn. Rất mong nhận được thông cảm. Cảm ơn.\n\nTrân trọng."
+              }
+            </p>
+            <p className="text-[11px] text-red-700 dark:text-red-300">
+              Thiếu: ai nhận, họp nào, hoãn sang khi nào, lý do, người thay thế.
+            </p>
+          </div>
+        </div>
+      }
+      childB={
+        <div className="space-y-3">
+          <div className="rounded-xl border border-border bg-background/40 p-3 space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              Bạn gõ
+            </p>
+            <div className="rounded-lg bg-card border border-border px-3 py-2 text-sm text-foreground leading-relaxed">
+              Viết email báo hoãn cuộc họp review Q2 thứ Sáu 10h sang thứ Hai tuần sau 14h. Gửi nhóm dự án Marketing (5 người). Lý do: trưởng bộ phận kế toán đi công tác đột xuất. Giọng chuyên nghiệp, ngắn gọn dưới 120 từ, kèm link Google Meet mới.
+            </div>
+          </div>
+          <div className="rounded-xl border border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700 p-3 space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+              AI trả lời (dùng được ngay)
+            </p>
+            <p className="text-xs text-foreground/90 italic leading-relaxed whitespace-pre-line">
+              {
+                "Chào cả team,\n\nDo anh Tuấn bên Kế toán đi công tác đột xuất, cuộc họp review Q2 thứ Sáu (10h) sẽ dời sang thứ Hai tuần sau, 14h. Link Google Meet mới: meet.google.com/abc-defg-hij. Nhờ mọi người cập nhật lịch và chuẩn bị tài liệu như kế hoạch cũ.\n\nCảm ơn cả nhà,\nLan"
+              }
+            </p>
+            <p className="text-[11px] text-emerald-700 dark:text-emerald-300">
+              Gọn, đủ ý, có link họp — sửa rất ít là gửi được.
+            </p>
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// VÒNG ĐỜI MỘT LẦN DÙNG AI (trong ExplanationSection)
+// ═══════════════════════════════════════════════════════════════════════════
+
+const LIFECYCLE_STEPS = [
+  { label: "Bạn nhập yêu cầu", sub: "Viết prompt rõ ràng", hex: "#3b82f6" },
+  { label: "AI xử lý", sub: "Đọc, suy luận, sinh chữ", hex: "#8b5cf6" },
+  { label: "Ra kết quả", sub: "Email, tóm tắt, ý tưởng…", hex: "#10b981" },
+  { label: "Bạn kiểm tra", sub: "Đúng? Đủ? Hợp ý?", hex: "#f59e0b" },
+  { label: "Tinh chỉnh", sub: "Thêm chi tiết, nhờ viết lại", hex: "#ef4444" },
+];
+
+function LifecycleFlow() {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">
+        Vòng đời một lần dùng AI
+      </p>
+      <div className="flex flex-col items-stretch gap-2 md:flex-row md:items-center">
+        {LIFECYCLE_STEPS.map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="flex flex-1 items-center gap-2"
+          >
+            <div className="flex-1 rounded-lg border border-border bg-background/40 p-2.5 text-center">
+              <div
+                className="mx-auto mb-1 h-6 w-6 rounded-full"
+                style={{ backgroundColor: s.hex }}
+              />
+              <p className="text-xs font-semibold text-foreground">
+                {s.label}
+              </p>
+              <p className="text-[10px] text-muted">{s.sub}</p>
+            </div>
+            {i < LIFECYCLE_STEPS.length - 1 && (
+              <ArrowRight
+                size={14}
+                className="hidden shrink-0 text-muted md:block"
+              />
+            )}
+          </motion.div>
+        ))}
+      </div>
+      <p className="mt-3 text-[11px] italic text-muted text-center">
+        Lặp bước 4 → 5 càng nhiều, output càng chuẩn. Đây là cách dùng AI như
+        dân chuyên nghiệp.
+      </p>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// BAR CHART — KHÔNG AI vs CÓ AI (count-up animation)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function useCountUp(target: number, duration = 900, trigger = true) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!trigger) return;
+    let start: number | null = null;
+    let frame: number;
+    const step = (ts: number) => {
+      if (start === null) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress < 1) {
+        frame = requestAnimationFrame(step);
+      }
+    };
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, [target, duration, trigger]);
+  return value;
+}
+
+function TimeSavingsChart() {
+  const [triggered, setTriggered] = useState(false);
+  const max = Math.max(...TASKS.map((t) => t.manual));
+
+  return (
+    <motion.div
+      onViewportEnter={() => setTriggered(true)}
+      viewport={{ once: true, amount: 0.3 }}
+      className="rounded-xl border border-border bg-card p-4 space-y-4"
+    >
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+          Thời gian cho 3 công việc hằng ngày
+        </p>
+        <div className="flex gap-3 text-[10px]">
+          <div className="flex items-center gap-1.5">
+            <div className="h-2.5 w-2.5 rounded-sm bg-slate-400" />
+            <span className="text-muted">Không AI</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="h-2.5 w-2.5 rounded-sm bg-accent" />
+            <span className="text-muted">Có AI</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        {TASKS.map((t, i) => (
+          <TaskBar key={t.label} task={t} max={max} trigger={triggered} index={i} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function TaskBar({
+  task,
+  max,
+  trigger,
+  index,
+}: {
+  task: Task;
+  max: number;
+  trigger: boolean;
+  index: number;
+}) {
+  const manualVal = useCountUp(task.manual, 900, trigger);
+  const aiVal = useCountUp(task.withAi, 900, trigger);
+  const manualWidth = (task.manual / max) * 100;
+  const aiWidth = (task.withAi / max) * 100;
+  const Icon = task.icon;
+
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-2">
+        <Icon size={14} className="shrink-0 text-muted" />
+        <span className="text-xs font-medium text-foreground">{task.label}</span>
+      </div>
+      <div className="space-y-1 pl-5">
+        {/* Không AI */}
+        <div className="relative h-5 overflow-hidden rounded-md bg-surface">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: trigger ? `${manualWidth}%` : 0 }}
+            transition={{ duration: 0.9, delay: index * 0.12 }}
+            className="h-full bg-slate-400 dark:bg-slate-500"
+          />
+          <span className="absolute inset-y-0 right-2 flex items-center text-[10px] font-semibold text-white/90">
+            {manualVal} phút
+          </span>
+        </div>
+        {/* Có AI */}
+        <div className="relative h-5 overflow-hidden rounded-md bg-surface">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: trigger ? `${aiWidth}%` : 0 }}
+            transition={{ duration: 0.9, delay: index * 0.12 + 0.15 }}
+            className="h-full bg-accent"
+          />
+          <span className="absolute inset-y-0 right-2 flex items-center text-[10px] font-semibold text-white/90">
+            {aiVal} phút
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 4 TOOL CARDS (trong ExplanationSection)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function ToolCards() {
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {TOOLS.map((t, i) => (
+        <motion.div
+          key={t.name}
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.08 }}
+          className="rounded-xl border border-border bg-card p-4 space-y-2"
+          style={{ borderLeftColor: t.hex, borderLeftWidth: 4 }}
+        >
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h5 className="text-sm font-semibold text-foreground">
+                {t.name}
+              </h5>
+              <p className="text-[11px] uppercase tracking-wide text-muted">
+                {t.tagline}
+              </p>
+            </div>
+            <span
+              className="h-6 w-6 shrink-0 rounded-md"
+              style={{ backgroundColor: t.hex }}
+            />
+          </div>
+          <p className="text-xs text-foreground/90 leading-relaxed">
+            {t.strength}
+          </p>
+          <p className="text-[11px] text-muted italic">
+            <Clock size={10} className="inline mr-1" />
+            {t.plan}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // COMPONENT CHÍNH
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function GettingStartedWithAiTopic() {
-  // Node đang được chọn để xem chi tiết
-  const [selectedNode, setSelectedNode] = useState<string>("python");
-  // Lộ trình vai trò đang xem
-  const [path, setPath] = useState<PathVariant["id"]>("student");
-
-  const node = useMemo(
-    () => NODES.find((n) => n.id === selectedNode) ?? NODES[0],
-    [selectedNode]
-  );
-
-  const activePath = useMemo(
-    () => PATHS.find((p) => p.id === path) ?? PATHS[0],
-    [path]
-  );
-
-  // Kiểm tra một node có thuộc lộ trình đang chọn không
-  const nodeInPath = useMemo(() => {
-    const set = new Set(activePath.nodes);
-    return (id: string) => set.has(id);
-  }, [activePath]);
-
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════ */}
@@ -363,855 +1004,373 @@ export default function GettingStartedWithAiTopic() {
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Theo bạn, để trở thành kỹ sư AI ứng dụng (xây chatbot, RAG, agent) thành thạo, thời gian học trung bình là bao lâu?"
+          question="Theo bạn, một trợ lý AI có thể giúp bạn làm gì trong 5 phút?"
           options={[
-            "1 – 2 tuần, chỉ cần xem vài video YouTube.",
-            "3 – 12 tháng tuỳ nền tảng ban đầu, với học đều đặn và làm dự án thực tế.",
-            "Tối thiểu 5 năm, phải có bằng PhD.",
+            "Viết một email khó một mình nghĩ mãi không ra.",
+            "Tóm tắt một file PDF 50 trang thành mấy gạch đầu dòng.",
+            "Dịch một báo cáo ngắn sang tiếng Anh giữ đúng giọng văn.",
+            "Tất cả cái trên — và còn nhiều hơn thế.",
           ]}
-          correct={1}
-          explanation="Sự thật nằm giữa. Nếu đã biết lập trình, 3-6 tháng tập trung vào LLM & ứng dụng là đủ để xây sản phẩm đầu tiên. Nếu bắt đầu từ con số 0 (chưa biết Python), cần khoảng 6-12 tháng để học vững. Không cần PhD, nhưng cũng không có đường tắt dưới vài tuần — kỹ năng cần thời gian thực hành."
+          correct={3}
+          explanation="Đúng là tất cả. Trong 5 phút, một trợ lý AI hiện nay có thể viết email, tóm tắt tài liệu dài, dịch thuật, brainstorm, chỉnh câu chữ — đủ cho 60-70% việc văn phòng hằng ngày. Bài này sẽ dẫn bạn qua từng thứ, nhẹ nhàng như uống một ly cà phê."
         >
-          <p className="text-base text-foreground/90 leading-relaxed">
-            Bài này vẽ ra một <strong>lộ trình học AI trực quan</strong>{" "}
-            — 6 cột mốc kiến thức, mỗi cột mốc có thời lượng, điều
-            kiện tiên quyết, và tài nguyên học tốt nhất. Bạn cũng sẽ
-            thấy <strong>ba biến thể lộ trình</strong>: cho sinh viên
-            bài bản, cho kỹ sư đã biết code, và cho người quản lý
-            không cần viết code.
-          </p>
-          <p className="text-sm text-muted mt-2 leading-relaxed">
-            Hãy đoán trước, rồi khám phá đồ thị bên dưới để tìm lộ
-            trình phù hợp với mình.
+          <p className="text-base text-foreground/90 leading-relaxed mt-2">
+            Bài đầu tiên trong lộ trình sẽ cho bạn{" "}
+            <strong>một cái nhìn đầu tay về AI văn phòng</strong>: chọn công
+            cụ nào, mở lên thế nào, gõ câu gì, đọc kết quả ra sao, và
+            những điều cần tránh. Không có dòng lệnh, không có công thức,
+            chỉ có những bước thật sự bạn sẽ làm trên máy tính hôm nay.
           </p>
         </PredictionGate>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 2 — ẨN DỤ + VISUALIZATION                                */}
+      {/* BƯỚC 2 — ẨN DỤ THƯ KÝ                                          */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
-        <div className="rounded-xl border border-border bg-card p-5 space-y-3">
-          <h3 className="text-base font-semibold text-foreground">
-            Ẩn dụ: học AI như leo núi có nhiều tuyến
-          </h3>
-          <p className="text-sm text-foreground/90 leading-relaxed">
-            Hãy tưởng tượng <strong>kiến thức AI là một ngọn núi</strong>,
-            và bạn đang đứng ở chân núi. Có <em>nhiều tuyến đường</em>{" "}
-            lên đỉnh:
-          </p>
-          <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-foreground/90">
-            <li>
-              <strong>Tuyến bài bản</strong>: đi lên từng trạm, dừng
-              nghỉ ở mỗi cột mốc (Python → NumPy → ML → DL → NLP →
-              Ứng dụng). Chậm nhưng vững.
-            </li>
-            <li>
-              <strong>Tuyến tắt cho kỹ sư</strong>: đã có leo núi kinh
-              nghiệm (biết code), có thể đi đường tắt qua vài trạm
-              và lên nhanh hơn.
-            </li>
-            <li>
-              <strong>Tuyến ngắm cảnh</strong>: bạn là quản lý, không
-              cần lên đỉnh — chỉ cần hiểu bản đồ để làm việc với các
-              leader đang dẫn nhóm leo.
-            </li>
-          </ul>
-          <p className="text-sm text-foreground/90 leading-relaxed">
-            Quan trọng: <strong>không có tuyến nào sai</strong> — chỉ
-            có tuyến phù hợp với mục tiêu của bạn. Nhảy cóc có thể
-            nhanh lúc đầu, nhưng nếu móng kiến thức yếu, bạn sẽ phải
-            quay lại. Đọc tiếp để chọn tuyến.
-          </p>
-        </div>
-
-        <div className="mt-6">
-          <VisualizationSection>
-            <h3 className="text-base font-semibold text-foreground mb-1">
-              Bản đồ lộ trình học AI — click vào node để xem chi tiết
+        <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15">
+              <Bot size={16} className="text-accent" />
+            </div>
+            <h3 className="text-base font-semibold text-foreground">
+              Một thư ký sẵn sàng 24/7
             </h3>
-            <p className="text-sm text-muted mb-4">
-              Chọn một vai trò bên dưới để xem lộ trình tương ứng
-              (node màu đầy là có trong lộ trình, node mờ là không
-              bắt buộc). Click vào node bất kỳ để xem thời lượng,
-              điều kiện tiên quyết, và tài nguyên học.
-            </p>
-
-            {/* Bộ chọn vai trò */}
-            <div className="flex flex-wrap gap-2 mb-5">
-              {PATHS.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => setPath(p.id)}
-                  className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                    path === p.id
-                      ? "bg-accent text-white"
-                      : "bg-card border border-border text-muted hover:text-foreground"
-                  }`}
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Mô tả lộ trình hiện tại */}
-            <div className="rounded-lg border border-border bg-background/40 p-3 mb-5">
-              <p className="text-sm font-semibold text-foreground">
-                {activePath.label}
-              </p>
-              <p className="text-xs text-muted mt-1">
-                {activePath.subtitle}
-              </p>
-              <p className="text-sm text-foreground/90 mt-2 leading-relaxed">
-                {activePath.note}
-              </p>
-            </div>
-
-            {/* SVG lộ trình */}
-            <svg
-              viewBox="0 0 800 360"
-              className="w-full max-w-4xl mx-auto mb-4"
-              role="img"
-              aria-label="Bản đồ lộ trình học AI"
-            >
-              <defs>
-                <marker
-                  id="arr-rm"
-                  markerWidth="8"
-                  markerHeight="6"
-                  refX="8"
-                  refY="3"
-                  orient="auto"
-                >
-                  <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" />
-                </marker>
-              </defs>
-
-              {/* Cạnh giữa các node */}
-              {EDGES.map(([from, to]) => {
-                const a = NODES.find((n) => n.id === from)!;
-                const b = NODES.find((n) => n.id === to)!;
-                const inPath = nodeInPath(from) && nodeInPath(to);
-                return (
-                  <line
-                    key={`${from}-${to}`}
-                    x1={a.x}
-                    y1={a.y}
-                    x2={b.x}
-                    y2={b.y}
-                    stroke={inPath ? "#60a5fa" : "#cbd5e1"}
-                    strokeWidth={inPath ? 2.5 : 1}
-                    strokeDasharray={inPath ? "0" : "4 4"}
-                    markerEnd="url(#arr-rm)"
-                  />
-                );
-              })}
-
-              {/* Node */}
-              {NODES.map((n) => {
-                const active = selectedNode === n.id;
-                const inPath = nodeInPath(n.id);
-                const opacity = inPath ? 1 : 0.35;
-                return (
-                  <g
-                    key={n.id}
-                    style={{ cursor: "pointer", opacity }}
-                    onClick={() => setSelectedNode(n.id)}
-                  >
-                    <circle
-                      cx={n.x}
-                      cy={n.y}
-                      r={active ? 36 : 30}
-                      fill={n.color}
-                      stroke={active ? "#fbbf24" : "white"}
-                      strokeWidth={active ? 4 : 2}
-                    />
-                    <text
-                      x={n.x}
-                      y={n.y + 4}
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize={11}
-                      fontWeight="bold"
-                    >
-                      {n.label.split(" ")[0]}
-                    </text>
-                    <text
-                      x={n.x}
-                      y={n.y + 55}
-                      textAnchor="middle"
-                      fill="var(--text-tertiary)"
-                      fontSize={10}
-                    >
-                      {n.label}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
-
-            {/* Chi tiết node đang chọn */}
-            <div className="rounded-lg border border-border bg-background/40 p-4 space-y-3">
-              <div className="flex items-center gap-3">
-                <div
-                  className="h-5 w-5 rounded-full"
-                  style={{ backgroundColor: node.color }}
-                />
-                <h4 className="text-sm font-semibold text-foreground">
-                  {node.label}
-                </h4>
-                <span className="text-xs text-muted ml-auto">
-                  Thời lượng: {node.timeHours}
-                </span>
-              </div>
-              <p className="text-sm text-foreground/90">{node.short}</p>
-
-              <div>
-                <p className="text-xs font-semibold text-muted mb-1">
-                  Điều kiện tiên quyết:
-                </p>
-                <ul className="list-disc list-inside pl-2 text-sm text-foreground/90 space-y-0.5">
-                  {node.prerequisites.map((p, i) => (
-                    <li key={i}>{p}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-muted mb-1">
-                  Tài nguyên đề xuất:
-                </p>
-                <ul className="list-disc list-inside pl-2 text-sm text-foreground/90 space-y-0.5">
-                  {node.resources.map((r, i) => (
-                    <li key={i}>
-                      <span className="text-xs uppercase text-accent mr-1">
-                        [{r.kind}]
-                      </span>
-                      {r.label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-muted mb-1">
-                  Sau khi hoàn thành:
-                </p>
-                <p className="text-sm text-foreground/90 leading-relaxed">
-                  {node.afterThis}
-                </p>
-              </div>
-            </div>
-          </VisualizationSection>
+          </div>
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            Hãy tưởng tượng bạn có một <strong>thư ký giỏi văn, giỏi nghiên
+            cứu</strong>, ngồi ngay cạnh bàn làm việc. Gần như miễn phí (hoặc
+            giá rất thấp), không bao giờ nghỉ trưa, không than mệt, sẵn sàng
+            lúc 2 giờ sáng nếu bạn cần nộp báo cáo gấp.
+          </p>
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            Bạn nói bằng tiếng Việt bình thường. Thư ký hiểu cả tiếng Anh.
+            Bảo viết email — có email. Bảo tóm tắt tài liệu — có bản tóm tắt.
+            Bảo dịch — có bản dịch. Không đúng ý? Bạn nói "viết lại lịch sự
+            hơn" — thư ký viết lại ngay, không hờn dỗi.
+          </p>
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            Điểm trừ duy nhất: <strong>thỉnh thoảng thư ký nói sai</strong> —
+            bịa tên người, nhầm con số, hiểu lệch ý. Bạn vẫn là người ký tên
+            cuối cùng, nên mọi thứ quan trọng đều phải <strong>đọc lại và
+            kiểm chứng</strong>. Giữ thư ký đó ở cạnh — đừng giao phó toàn
+            bộ trách nhiệm cho nó.
+          </p>
         </div>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 3 — AHA MOMENT                                           */}
+      {/* BƯỚC 3 — VISUALIZATION (3 demo con)                            */}
       {/* ══════════════════════════════════════════════════════════════ */}
-      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc aha">
+      <LessonSection step={3} totalSteps={8} label="Thử tận tay">
+        <VisualizationSection topicSlug={metadata.slug}>
+          <LessonSection step={1} totalSteps={3} label="Demo 1 — 5 phút đầu tiên">
+            <h3 className="text-base font-semibold text-foreground mb-1">
+              5 bước đầu tiên khi dùng một trợ lý AI
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              Click từng bước bên dưới — mỗi bước mở ra một hình minh hoạ
+              giả lập giao diện bạn sẽ thấy.
+            </p>
+            <FiveMinutesDemo />
+          </LessonSection>
+
+          <LessonSection step={2} totalSteps={3} label="Demo 2 — Chọn đúng công cụ">
+            <h3 className="text-base font-semibold text-foreground mb-1">
+              Công cụ nào phù hợp với việc bạn đang làm?
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              Mỗi trợ lý có thế mạnh riêng. Chọn mục tiêu bạn đang cần để
+              thấy gợi ý.
+            </p>
+            <ToolPickerDemo />
+          </LessonSection>
+
+          <LessonSection step={3} totalSteps={3} label="Demo 3 — Prompt tốt vs prompt dở">
+            <h3 className="text-base font-semibold text-foreground mb-1">
+              Cùng một AI, khác biệt nằm ở cách hỏi
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              Bấm nút bên dưới để so sánh hai kiểu prompt cho cùng một nhu
+              cầu: báo hoãn cuộc họp.
+            </p>
+            <PromptBeforeAfter />
+          </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
+
+      {/* ══════════════════════════════════════════════════════════════ */}
+      {/* BƯỚC 4 — AHA MOMENT                                            */}
+      {/* ══════════════════════════════════════════════════════════════ */}
+      <LessonSection step={4} totalSteps={8} label="Khoảnh khắc aha">
         <AhaMoment>
-          Lộ trình học AI <strong>không phải một đường thẳng duy nhất</strong>.
-          Một sinh viên năm nhất và một kỹ sư full-stack 5 năm kinh
-          nghiệm không nên đi cùng một tuyến. Điều quan trọng là{" "}
-          <strong>khớp mục tiêu với tuyến</strong>: nếu bạn muốn xây
-          sản phẩm LLM trong 6 tháng, đừng mất 12 tháng đọc
-          backpropagation chi tiết. Nhưng nếu muốn đi xa (nghiên cứu,
-          custom model), không có cách nào né được phần toán và DL.
-          Chọn đúng tuyến giúp bạn tiết kiệm hàng trăm giờ.
+          AI <strong>không phải công cụ phép thuật</strong>. Nó là một trợ
+          lý có <strong>thế mạnh rõ</strong> (nhanh, đa ngôn ngữ, không mệt)
+          và <strong>điểm yếu rõ</strong> (đôi khi bịa thông tin, cần
+          người kiểm tra). Hiểu cả hai mặt giúp bạn biết khi nào nên nhờ
+          AI làm 100%, khi nào chỉ để nó viết bản nháp, và khi nào hoàn
+          toàn không nên đụng tới.
         </AhaMoment>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 4 — INLINE CHALLENGE #1                                  */}
+      {/* BƯỚC 5 — INLINE CHALLENGE                                      */}
       {/* ══════════════════════════════════════════════════════════════ */}
-      <LessonSection step={4} totalSteps={8} label="Thử thách 1">
+      <LessonSection step={5} totalSteps={8} label="Thử thách nhỏ">
         <InlineChallenge
-          question="Bạn là kỹ sư backend 3 năm kinh nghiệm, đã biết Python tốt. Mục tiêu: xây một chatbot RAG truy vấn tài liệu nội bộ công ty trong 3 tháng. Lộ trình nào phù hợp nhất?"
+          question="Nhiệm vụ nào sau đây KHÔNG nên giao hoàn toàn cho AI công cộng?"
           options={[
-            "Học đầy đủ: Python → NumPy → ML → DL → NLP → Ứng dụng (6-12 tháng).",
-            "Nhảy thẳng vào framework LLM, sao chép code mẫu, không cần hiểu gì.",
-            "Ôn NumPy/Pandas nhanh → học NLP & LLM ở mức khái niệm → tập trung vào framework RAG và ứng dụng → quay lại DL sau nếu cần.",
-            "Bỏ nghề, đi học PhD trước.",
+            "Soạn lời chúc Tết cho khách hàng dựa trên template công ty đã đăng.",
+            "Dịch bài giới thiệu sản phẩm đã được đăng công khai sang tiếng Anh.",
+            "Phân tích file bảng lương chi tiết kèm CMND và địa chỉ nhân viên.",
+            "Tóm tắt một bài báo về xu hướng ngành đăng trên VnExpress.",
           ]}
           correct={2}
-          explanation="Với người đã vững code, đi tắt qua phần DL chi tiết để tập trung vào LLM & ứng dụng là hợp lý. Bạn vẫn cần hiểu khái niệm (token, embedding, attention ở mức trực quan), nhưng không cần tự viết transformer từ đầu. Khi nào cần fine-tune model riêng, hãy quay lại học DL sâu hơn."
+          explanation="Dữ liệu nhạy cảm như bảng lương, CMND, hợp đồng, thông tin khách hàng không nên dán vào AI công cộng — bạn không biết dữ liệu sẽ đi đâu. Nếu bắt buộc xử lý nội bộ, hãy dùng Microsoft Copilot trong Office 365 hoặc phiên bản doanh nghiệp có cam kết bảo mật, hoặc che giấu thông tin riêng tư trước khi gửi."
         />
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 5 — INLINE CHALLENGE #2                                  */}
+      {/* BƯỚC 6 — EXPLANATION                                           */}
       {/* ══════════════════════════════════════════════════════════════ */}
-      <LessonSection step={5} totalSteps={8} label="Thử thách 2">
-        <InlineChallenge
-          question="Bạn đang đọc một tutorial Deep Learning, nhưng gặp thuật ngữ 'gradient descent' và không biết đạo hàm là gì. Nên làm gì?"
-          options={[
-            "Bỏ qua, cứ copy code cho chạy được là xong.",
-            "Dừng lại, quay về học đạo hàm sơ cấp (chỉ cần mức hiểu trực quan, không cần giải tích cao cấp) rồi mới tiếp tục.",
-            "Chuyển sang AI khác dễ hơn.",
-            "Đi học PhD toán 4 năm rồi quay lại.",
-          ]}
-          correct={1}
-          explanation="Đây chính là tín hiệu nên học lùi một node. Gradient descent cần hiểu ý nghĩa đạo hàm (tốc độ thay đổi). Không cần giải tích cao cấp — Khan Academy hoặc 3Blue1Brown có thể giải thích trong 1 giờ. Bỏ qua sẽ khiến mọi khái niệm sau đó (backprop, optimizer, lr schedule) trở nên mơ hồ. Chọn 'PhD 4 năm' là over-kill; chọn 'bỏ qua' là nợ kiến thức."
-        />
-      </LessonSection>
-
-      {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 6 — EXPLANATION SECTION                                  */}
-      {/* ══════════════════════════════════════════════════════════════ */}
-      <LessonSection step={6} totalSteps={8} label="Lý thuyết sâu">
-        <ExplanationSection>
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* ĐỊNH NGHĨA                                              */}
-          {/* ──────────────────────────────────────────────────────── */}
+      <LessonSection step={6} totalSteps={8} label="Hiểu sâu hơn">
+        <ExplanationSection topicSlug={metadata.slug}>
+          {/* Vòng đời một lần dùng AI */}
+          <h4 className="text-base font-semibold text-foreground">
+            Vòng đời một lần dùng AI
+          </h4>
           <p>
-            <strong>Lộ trình học AI</strong> là một chuỗi các cột mốc
-            kiến thức được sắp xếp theo thứ tự phụ thuộc, giúp người
-            học đi từ điểm xuất phát (thường là Python cơ bản) đến
-            mục tiêu cụ thể (kỹ sư AI ứng dụng, nhà nghiên cứu, hay
-            quản lý sản phẩm AI). Mỗi cột mốc bao gồm:
+            Mỗi lần bạn dùng một trợ lý AI, có 5 giai đoạn — như 5 nhịp
+            trong một điệu nhảy ngắn. Hiểu vòng đời này giúp bạn không
+            "dính cứng" vào lần output đầu tiên, và biết khi nào phải
+            quay vòng.
           </p>
-          <ul className="list-disc list-inside space-y-1 pl-2">
-            <li>
-              <strong>Nội dung cốt lõi</strong> — khái niệm cần hiểu.
-            </li>
-            <li>
-              <strong>Kỹ năng đầu ra</strong> — sau khi thạo, bạn
-              làm được gì?
-            </li>
-            <li>
-              <strong>Thời lượng ước tính</strong> — giờ học cần đầu
-              tư để đạt mức cơ bản.
-            </li>
-            <li>
-              <strong>Tài nguyên tốt nhất</strong> — khoá học, sách,
-              video được cộng đồng công nhận.
-            </li>
-            <li>
-              <strong>Phụ thuộc</strong> — các cột mốc nào cần có
-              trước khi vào được cột mốc này.
-            </li>
-          </ul>
+          <LifecycleFlow />
 
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* CÔNG THỨC ƯỚC LƯỢNG THỜI GIAN                           */}
-          {/* ──────────────────────────────────────────────────────── */}
+          {/* 4 tool phổ biến */}
+          <h4 className="text-base font-semibold text-foreground mt-6">
+            Bốn trợ lý AI phổ biến tại Việt Nam
+          </h4>
           <p>
-            Hình thức, ta có thể ước lượng tổng thời gian của một
-            lộ trình bằng công thức đơn giản. Gọi{" "}
-            <LaTeX>{`t_i`}</LaTeX> là thời lượng (giờ) của cột mốc
-            thứ <LaTeX>{`i`}</LaTeX>, và{" "}
-            <LaTeX>{`\\alpha_i \\in [0.5, 1.5]`}</LaTeX> là hệ số
-            hiệu chỉnh theo nền tảng ban đầu của bạn (thấp nếu đã
-            có nền, cao nếu chưa có). Tổng thời gian ước tính:
+            Không có công cụ nào "tốt nhất" cho mọi việc — chỉ có công cụ{" "}
+            <strong>phù hợp hơn</strong> cho từng tình huống. Bảng dưới
+            đây tóm tắt thế mạnh chính của bốn trợ lý bạn sẽ gặp nhiều
+            nhất.
           </p>
-          <LaTeX block>
-            {`T_{\\text{total}} = \\sum_{i \\in \\text{path}} \\alpha_i \\cdot t_i`}
-          </LaTeX>
-          <p>
-            Với lộ trình sinh viên đầy đủ (370 – 640 giờ) và{" "}
-            <LaTeX>{`\\alpha = 1.0`}</LaTeX>, học part-time 10
-            giờ/tuần tương ứng{" "}
-            <LaTeX>{`37 - 64`}</LaTeX> tuần — khoảng{" "}
-            <strong>9 – 15 tháng</strong>. Với kỹ sư đã biết code
-            và đi lộ trình tắt (170 – 320 giờ, {" "}
-            <LaTeX>{`\\alpha = 0.7`}</LaTeX>): còn{" "}
-            <LaTeX>{`120 - 224`}</LaTeX> giờ,
-            tương ứng <strong>3 – 5 tháng</strong> part-time.
-          </p>
+          <ToolCards />
 
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* CODE BLOCK 1 — OpenAI tools / gọi API lần đầu            */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <p>
-            Dù lộ trình học thế nào, sớm muộn bạn sẽ cần viết đoạn
-            code đầu tiên gọi API LLM. Đây là &quot;Hello World&quot;
-            của AI ứng dụng — chỉ cần vài dòng để nói chuyện với mô
-            hình:
-          </p>
-
-          <CodeBlock language="python" title="hello_ai.py">{`# Bước 1: cài SDK
-# pip install openai python-dotenv
-
-# Bước 2: tạo file .env ở cùng thư mục với nội dung
-#   OPENAI_API_KEY=sk-...
-# Nhớ thêm .env vào .gitignore để tránh lộ key.
-
-from openai import OpenAI
-from dotenv import load_dotenv
-
-load_dotenv()  # đọc biến môi trường từ .env
-client = OpenAI()  # SDK tự đọc OPENAI_API_KEY
-
-# Bước 3: cuộc hội thoại đầu tiên
-response = client.chat.completions.create(
-    model="gpt-4o-mini",  # mô hình nhỏ, rẻ, đủ dùng cho luyện tập
-    messages=[
-        {"role": "system",
-         "content": "Bạn là gia sư tiếng Việt, trả lời ngắn gọn."},
-        {"role": "user",
-         "content": "Giải thích AI là gì cho người mới, dưới 3 câu."},
-    ],
-)
-
-# Bước 4: in kết quả
-print(response.choices[0].message.content)
-# Ví dụ output: "AI (Trí tuệ nhân tạo) là công nghệ máy tính..."
-`}</CodeBlock>
-
-          <Callout variant="insight" title="Quy tắc ngón tay cái về model">
-            Khi bắt đầu, dùng <strong>model nhỏ &amp; rẻ</strong>{" "}
-            (gpt-4o-mini, claude-3-haiku, gemini-flash) để luyện
-            tập. Mỗi request tốn vài xu — bạn có thể thử hàng trăm
-            lần mà không tốn nhiều. Chỉ nâng lên model lớn khi
-            thấy rõ mô hình nhỏ không đủ chất lượng cho nhiệm vụ
-            cụ thể.
+          <Callout variant="tip" title="Bắt đầu từ một cái, đừng đổi quá sớm">
+            Trong tuần đầu, chọn <strong>một</strong> công cụ và dùng cho
+            đủ loại việc. Bạn sẽ quen giao diện, quen cách AI "nghĩ", và
+            có thể so sánh công bằng khi thử cái thứ hai. Nhảy liên tục
+            giữa 4 tool chỉ khiến bạn rối.
           </Callout>
 
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* CODE BLOCK 2 — Jupyter setup                            */}
-          {/* ──────────────────────────────────────────────────────── */}
+          {/* Bảng thời gian count-up */}
+          <h4 className="text-base font-semibold text-foreground mt-6">
+            Thời gian tiết kiệm — con số thực tế
+          </h4>
           <p>
-            Đa số bài học AI dùng Jupyter Notebook. Dưới đây là
-            cách setup một môi trường Jupyter sạch với uv (trình
-            quản lý môi trường Python nhanh và hiện đại):
+            Đây là ước lượng cho người văn phòng trung bình, lần đầu làm
+            đúng quy trình (prompt rõ, đọc kỹ, chỉnh lại 1-2 lần). Con
+            số sẽ rút ngắn thêm khi bạn dùng nhiều lên.
+          </p>
+          <TimeSavingsChart />
+          <p className="text-xs text-muted italic">
+            <Timer size={11} className="inline mr-1" />
+            Trung bình một ngày làm việc, AI có thể gỡ được 60-90 phút
+            cho các tác vụ văn bản lặp đi lặp lại.
           </p>
 
-          <CodeBlock language="bash" title="jupyter_setup.sh">{`# ── 1. Cài uv (nếu chưa có) ──────────────────────────────────────
-# macOS / Linux:
-curl -LsSf https://astral.sh/uv/install.sh | sh
-# Windows PowerShell:
-#   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-# ── 2. Tạo dự án & môi trường ảo ────────────────────────────────
-mkdir my-ai-lab && cd my-ai-lab
-uv init --python 3.11
-uv venv                  # tạo .venv
-source .venv/bin/activate # (Windows: .venv\\Scripts\\activate)
-
-# ── 3. Cài gói cơ bản cho AI learning ──────────────────────────
-uv pip install \\
-  jupyter \\
-  numpy pandas matplotlib \\
-  scikit-learn \\
-  openai anthropic \\
-  python-dotenv
-
-# ── 4. Tạo file .env (điền key thật) ───────────────────────────
-cat > .env <<'EOF'
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-EOF
-echo ".env" >> .gitignore   # bảo vệ key
-
-# ── 5. Khởi động Jupyter ───────────────────────────────────────
-jupyter notebook
-# Trình duyệt sẽ mở http://localhost:8888/tree
-
-# ── 6. Trong cell đầu tiên của notebook, kiểm tra ──────────────
-# !python -c "import numpy, pandas, sklearn, openai; print('OK')"
-`}</CodeBlock>
-
-          <Callout variant="tip" title="Vì sao dùng Jupyter?">
-            Jupyter cho phép bạn chạy từng cell, xem kết quả ngay,
-            trộn code với Markdown giải thích. Đây là môi trường lý
-            tưởng để học vì bạn có thể thí nghiệm nhanh. Trong
-            production, code sẽ được chuyển sang file .py, nhưng giai
-            đoạn học và R&amp;D thì Jupyter là vô địch.
-          </Callout>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* CALLOUT 2                                               */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <Callout variant="warning" title="Bẫy &quot;tutorial hell&quot;">
-            Nhiều người mới rơi vào vòng lặp: xem tutorial → copy
-            code chạy được → có cảm giác hiểu → xem tutorial tiếp
-            → quên sạch cái trước. Cách thoát:{" "}
-            <strong>làm mini-project của chính mình</strong>. Mỗi
-            node trên lộ trình, hãy hoàn thành ít nhất 1 dự án mà
-            không có template sẵn. Khó hơn xem video, nhưng đó mới
-            là lúc kiến thức bám vào đầu.
-          </Callout>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* CALLOUT 3                                               */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <Callout variant="info" title="Học lý thuyết &amp; thực hành song song">
-            Đừng để lý thuyết quá xa thực hành. Quy tắc 50/50: mỗi
-            giờ đọc/xem, dành một giờ code. Đọc về regression → tự
-            viết linear regression từ đầu bằng NumPy. Đọc về
-            transformer → build một attention head mini. Kiến thức
-            chỉ trở thành kỹ năng khi tay đã gõ ra nó.
-          </Callout>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* CALLOUT 4                                               */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <Callout variant="insight" title="Cộng đồng là gia tốc lớn nhất">
-            Học một mình rất chậm. Tham gia một cộng đồng: Discord,
-            Slack local AI, group Facebook VN về ML/LLM, hoặc tham
-            gia một study group. Bạn sẽ gặp những người cùng trình
-            độ để trao đổi, và những người đi trước sẵn sàng chỉ
-            chỗ sai nhanh hơn Google nhiều lần.
-          </Callout>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* COLLAPSIBLE DETAIL 1                                    */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <CollapsibleDetail title="Chi tiết: Bạn cần bao nhiêu toán?">
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              Lời đồn &quot;học AI phải giỏi toán như tiến sĩ&quot;
-              không đúng với đa số kỹ sư AI ứng dụng. Mức toán tối
-              thiểu theo mục tiêu:
+          {/* Pitfall bảo mật */}
+          <Callout variant="warning" title="Đừng dán thông tin nhạy cảm vào AI công cộng">
+            <p className="mb-2">
+              Bản miễn phí của ChatGPT, Claude, Gemini có thể dùng dữ liệu
+              bạn gõ vào để cải tiến mô hình. Với cá nhân dùng vui thì
+              không sao, nhưng với dữ liệu công việc thì phải thận trọng.
             </p>
-            <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-foreground/90 mt-2">
+            <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
               <li>
-                <strong>Xây ứng dụng LLM (chatbot, RAG, agent):</strong>{" "}
-                cần hiểu vector, similarity (cosine), và xác suất
-                căn bản. Không cần giải tích cao cấp.
+                <strong>Không</strong> dán: bảng lương, CMND, hợp đồng
+                khách hàng, mật khẩu, dữ liệu chưa công bố.
               </li>
               <li>
-                <strong>Huấn luyện mô hình ML / DL:</strong> cần
-                đại số tuyến tính (ma trận, phép nhân ma trận),
-                đạo hàm (để hiểu gradient descent), xác suất &amp;
-                thống kê (likelihood, phân phối).
+                <strong>Nếu bắt buộc dùng cho dữ liệu nội bộ</strong>:
+                chọn Microsoft Copilot trong Office 365, hoặc gói doanh
+                nghiệp (ChatGPT Team/Enterprise, Claude Team) có cam kết
+                không huấn luyện từ dữ liệu bạn gửi.
               </li>
               <li>
-                <strong>Nghiên cứu / viết paper:</strong> cần giải
-                tích nhiều biến, thống kê nâng cao, có khi cả lý
-                thuyết tối ưu lồi và lý thuyết thông tin.
+                <strong>Che tên riêng</strong> (tên người, số tài khoản,
+                mã nội bộ) trước khi gõ vào AI công cộng — AI vẫn giúp
+                được logic mà không biết ai là ai.
               </li>
             </ul>
-            <p className="text-sm text-foreground/90 leading-relaxed mt-2">
-              Nếu quên toán cấp 3, không sao — 3Blue1Brown (YouTube,
-              series &quot;Essence of Linear Algebra&quot; và{" "}
-              &quot;Essence of Calculus&quot;) giúp bạn ôn lại ở mức
-              trực quan trong khoảng 10 giờ.
-            </p>
+          </Callout>
+
+          {/* Ghép cặp công cụ với tình huống */}
+          <h4 className="text-base font-semibold text-foreground mt-6">
+            Chọn đúng công cụ cho đúng việc — thử ghép cặp
+          </h4>
+          <p>
+            Ghép mỗi tình huống công việc với công cụ AI phù hợp nhất.
+            Không có đáp án duy nhất, nhưng có một "lựa chọn đầu tiên"
+            hợp lý hơn các lựa chọn khác.
+          </p>
+          <MatchPairs
+            instruction="Chọn một mục bên trái, rồi click mục bên phải để ghép."
+            pairs={[
+              {
+                left: "Phân tích file Excel lương nội bộ công ty",
+                right: "Microsoft Copilot (không rời Office 365)",
+              },
+              {
+                left: "Viết báo cáo 5 trang có dẫn chứng từ 3 bài báo dài",
+                right: "Claude (đọc tài liệu dài tốt)",
+              },
+              {
+                left: "Tra xu hướng thị trường quý này, kèm nguồn",
+                right: "Gemini (liên kết Google Search)",
+              },
+              {
+                left: "Viết nhanh 10 ý cho bài đăng Facebook",
+                right: "ChatGPT (đa dụng, phản hồi nhanh)",
+              },
+            ]}
+          />
+
+          {/* Sắp xếp thứ tự vòng dùng AI */}
+          <h4 className="text-base font-semibold text-foreground mt-6">
+            Thực hành: sắp xếp đúng trình tự 5 bước
+          </h4>
+          <p>
+            Kéo-thả để sắp xếp lại 5 bước của một lần dùng AI theo đúng
+            thứ tự. (Trong thực tế bạn sẽ lặp bước 4-5 vài lần.)
+          </p>
+          <Reorderable
+            instruction="Kéo các bước vào đúng thứ tự từ trên xuống dưới."
+            items={[
+              "Chọn một công cụ (ChatGPT / Claude / Gemini / Copilot)",
+              "Mở trang web và đăng nhập bằng Google hoặc email",
+              "Gõ yêu cầu rõ ràng: bạn cần gì, cho ai, giọng văn nào, độ dài bao nhiêu",
+              "Đọc kỹ câu trả lời và kiểm tra số liệu, tên, trích dẫn",
+              "Nếu chưa vừa ý, nhắn tiếp để AI chỉnh lại",
+            ]}
+            correctOrder={[0, 1, 2, 3, 4]}
+          />
+
+          {/* Ứng dụng cụ thể */}
+          <h4 className="text-base font-semibold text-foreground mt-6">
+            10 việc văn phòng bạn có thể nhờ AI làm ngay tuần này
+          </h4>
+          <ul className="list-disc list-inside space-y-1.5 pl-2">
+            <li>Viết nháp email khó (báo tin xấu, từ chối, đàm phán giá).</li>
+            <li>Tóm tắt một báo cáo/PDF dài thành 5-7 gạch đầu dòng.</li>
+            <li>Dịch tài liệu Anh–Việt / Việt–Anh, giữ giọng chuyên nghiệp.</li>
+            <li>Brainstorm 15 ý tưởng cho campaign rồi chọn 3 ý mạnh nhất.</li>
+            <li>Soạn dàn ý cho cuộc họp: mục tiêu, agenda, câu hỏi chính.</li>
+            <li>Viết lại đoạn văn cho gọn hơn, lịch sự hơn, hoặc đơn giản hơn.</li>
+            <li>Chuyển bảng dữ liệu lộn xộn sang dạng gọn gàng hơn để trình bày.</li>
+            <li>Giải thích một thuật ngữ khó bằng ngôn ngữ bình dân.</li>
+            <li>Tạo danh sách câu hỏi phỏng vấn ứng viên cho vị trí cụ thể.</li>
+            <li>Chuẩn bị câu trả lời nháp cho những câu khách thường hỏi.</li>
+          </ul>
+
+          {/* Collapsible — lộ trình tiếp theo */}
+          <CollapsibleDetail title="Sắp tới bạn sẽ học gì trong lộ trình văn phòng?">
+            <ul className="list-disc list-inside space-y-2 pl-2 text-sm text-foreground/90 mt-2">
+              <li>
+                <strong>Cách AI "hiểu" tiếng Việt của bạn</strong> — một bài
+                ngắn về cách{" "}
+                <TopicLink slug="llm-overview">bài LLM</TopicLink> xử
+                lý chữ để bạn biết giới hạn thực sự của nó.
+              </li>
+              <li>
+                <strong>Kỹ thuật viết prompt</strong> — từ câu hỏi mơ hồ
+                đến prompt chuyên nghiệp. Học qua đúng 5-6 công thức dễ
+                nhớ.
+              </li>
+              <li>
+                <strong>So sánh và đánh giá công cụ AI</strong> — khi
+                nào chọn gói trả phí, khi nào bản miễn phí là đủ, và
+                cách test nhanh một tool mới trong 15 phút.
+              </li>
+              <li>
+                <strong>AI cho Excel, Email, và họp</strong> — 3 bài
+                chuyên sâu cho 3 việc bạn làm hằng ngày.
+              </li>
+              <li>
+                <strong>An toàn và đạo đức</strong> — làm gì với dữ liệu
+                nhạy cảm, trách nhiệm khi output sai, và cách nói với
+                sếp/khách hàng rằng bạn dùng AI.
+              </li>
+            </ul>
           </CollapsibleDetail>
 
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* COLLAPSIBLE DETAIL 2                                    */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <CollapsibleDetail title="Chi tiết: Cách đo tiến độ học của bạn">
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              Tiến độ học không đo bằng &quot;đã học bao nhiêu
-              giờ&quot; — mà đo bằng &quot;bạn làm được gì mà trước
-              đó không làm được&quot;. Gợi ý bộ checkpoint:
-            </p>
-            <ol className="list-decimal list-inside space-y-1 pl-2 text-sm text-foreground/90 mt-2">
-              <li>
-                <strong>Python</strong>: viết được script tự động
-                đổi tên 100 file ảnh theo pattern.
-              </li>
-              <li>
-                <strong>NumPy/Pandas</strong>: load một CSV 100k
-                dòng, làm sạch, group-by, vẽ biểu đồ.
-              </li>
-              <li>
-                <strong>ML căn bản</strong>: huấn luyện một
-                classifier dự đoán hoa Iris, đạt accuracy &gt; 90%
-                trên test set.
-              </li>
-              <li>
-                <strong>Deep Learning</strong>: train một CNN
-                nhận dạng chữ số MNIST đạt &gt; 98% accuracy.
-              </li>
-              <li>
-                <strong>NLP &amp; LLM</strong>: fine-tune một mô
-                hình BERT nhỏ cho bài phân loại cảm xúc tiếng
-                Việt; hoặc xây một chatbot RAG cho 100 tài liệu
-                PDF.
-              </li>
-              <li>
-                <strong>Ứng dụng</strong>: triển khai ứng dụng lên
-                cloud (Vercel, Fly, Railway), có monitoring, có
-                cost tracking.
-              </li>
-            </ol>
-            <p className="text-sm text-foreground/90 leading-relaxed mt-2">
-              Mỗi checkpoint đạt được là một bằng chứng hữu hình
-              — tốt hơn hàng giờ &quot;cảm giác hiểu&quot;.
-            </p>
-          </CollapsibleDetail>
+          {/* Mẹo giữ tâm thế */}
+          <Callout variant="insight" title="Giữ tâm thế của người cầm bút">
+            AI viết giúp, nhưng chữ ký là của bạn. Khi AI đưa kết quả,
+            hãy hỏi: "Nếu gửi bản này đi mà có lỗi, mình có chịu được
+            không?" Nếu không — đọc lại. Nếu có — gửi. Tâm thế đó giúp
+            bạn dùng AI bền vững mà không rơi vào hai thái cực: lười đọc
+            hoặc sợ hãi không dám dùng.
+          </Callout>
 
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* ỨNG DỤNG                                                */}
-          {/* ──────────────────────────────────────────────────────── */}
+          {/* Hai bẫy phổ biến */}
           <h4 className="text-base font-semibold text-foreground mt-6">
-            Ứng dụng thực tế của kiến thức AI
+            Hai bẫy phổ biến của người mới
           </h4>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
-              <strong>Nhân viên văn phòng:</strong> dùng AI viết
-              email, tóm tắt tài liệu, dịch thuật, phân tích
-              spreadsheet nhanh hơn 2-3 lần.
+              <strong>Tin mọi thứ AI nói:</strong> AI rất tự tin — câu
+              văn trau chuốt, dẫn chứng nghe hợp lý. Nhưng nó có thể
+              bịa. Quy tắc: tên người, số liệu, ngày tháng, luật lệ —
+              luôn kiểm tra lại.
             </li>
             <li>
-              <strong>Lập trình viên:</strong> dùng GitHub Copilot,
-              Cursor, Claude Code để code nhanh hơn; tự xây agent
-              cho workflow riêng.
-            </li>
-            <li>
-              <strong>Marketing:</strong> tự động hoá viết
-              content, A/B test prompt, cá nhân hoá email theo
-              segment.
-            </li>
-            <li>
-              <strong>Customer support:</strong> xây chatbot RAG
-              từ kho FAQ + lịch sử ticket, giảm 40-60% khối
-              lượng tier 1.
-            </li>
-            <li>
-              <strong>Phân tích dữ liệu:</strong> dùng LLM để sinh
-              SQL từ câu hỏi tự nhiên, giúp nghiệp vụ tự truy vấn
-              database mà không cần đội data.
-            </li>
-            <li>
-              <strong>Sáng tạo nội dung:</strong> nhà văn,
-              podcaster, YouTuber dùng AI brainstorm ý tưởng,
-              viết outline, tạo transcript.
+              <strong>Dùng một lần rồi bỏ:</strong> thấy output chưa hay
+              là đóng tab. Thật ra bạn mới đi được bước 3/5 của vòng
+              đời. Cứ nhắn thêm: "ngắn hơn", "thêm ví dụ", "giọng thân
+              mật hơn". Kết quả cuối gần như chắc chắn dùng được.
             </li>
           </ul>
 
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* BẪY PHỔ BIẾN                                            */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <h4 className="text-base font-semibold text-foreground mt-6">
-            Bẫy phổ biến của người mới học AI
-          </h4>
-          <ul className="list-disc list-inside space-y-2 pl-2">
-            <li>
-              <strong>Nhảy cóc kiến thức:</strong> đọc về
-              transformer khi chưa biết matrix multiplication là
-              gì. Mọi thứ sẽ trở nên mơ hồ và bạn sẽ cảm thấy AI
-              là &quot;phép màu&quot; thay vì toán học. Khắc phục:
-              quay lại node trước ngay khi thấy mình không giải
-              thích được khái niệm.
-            </li>
-            <li>
-              <strong>Tutorial hell:</strong> xem 100 video, làm
-              theo từng bước, có cảm giác hiểu, nhưng không tự
-              code được gì. Khắc phục: giới hạn 1 tutorial mỗi
-              chủ đề, rồi tự làm mini-project không template.
-            </li>
-            <li>
-              <strong>Framework worship:</strong> nghĩ rằng phải
-              thạo LangChain / LlamaIndex / AutoGen. Thực tế:
-              framework thay đổi mỗi 6 tháng; hãy hiểu nguyên lý
-              trước (prompt, embedding, vector store, tool use),
-              framework nào cũng học nhanh sau đó.
-            </li>
-            <li>
-              <strong>So sánh với người khác:</strong> thấy người
-              khác xây được app ấn tượng sau 2 tháng, tự nhủ
-              mình dở. Không biết rằng họ có nền tảng 5 năm
-              backend. So sánh với chính bạn tháng trước, không
-              so với bản năm 5 của người khác.
-            </li>
-            <li>
-              <strong>Không theo dõi chi phí:</strong> bật nhiều
-              agent lặp, gọi GPT-4 đầy đủ, một đêm ngủ dậy bill
-              vài triệu đồng. Luôn đặt budget limit trên
-              dashboard của nhà cung cấp, và monitoring token.
-            </li>
-            <li>
-              <strong>Bỏ qua an toàn và đạo đức:</strong> xây
-              chatbot mà không nghĩ đến prompt injection, data
-              leak, bias. Càng vào production sâu, càng phải
-              nghĩ về security và fairness ngay từ đầu.
-            </li>
-            <li>
-              <strong>Học một mình quá lâu:</strong> không tham
-              gia cộng đồng, không đi meetup, không code cùng ai.
-              Kiến thức AI tiến nhanh; cộng đồng là cách update
-              hiệu quả nhất.
-            </li>
-            <li>
-              <strong>Tin vào con số &quot;thay thế việc&quot;:</strong>{" "}
-              &quot;AI sẽ thay thế 50% việc trong 2 năm&quot; —
-              phần lớn dự báo quá cường điệu. AI thay thế{" "}
-              <em>task</em> chứ ít khi thay thế toàn bộ{" "}
-              <em>công việc</em>. Hãy dùng AI để mạnh hơn, thay
-              vì sợ hãi nó.
-            </li>
-          </ul>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* MẸO TIẾT KIỆM THỜI GIAN                                 */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <h4 className="text-base font-semibold text-foreground mt-6">
-            Bảy mẹo tiết kiệm hàng trăm giờ khi học AI
-          </h4>
-          <ol className="list-decimal list-inside space-y-2 pl-2">
-            <li>
-              <strong>Bắt đầu với task thật:</strong> thay vì học
-              khô, chọn một vấn đề thật bạn muốn giải (tự động
-              tóm tắt mail, phân loại ticket). Học có mục đích
-              nhanh gấp 3 lần.
-            </li>
-            <li>
-              <strong>Giới hạn phạm vi:</strong> mỗi tuần chọn{" "}
-              <em>một</em> chủ đề. Khép kín rồi mới sang chủ đề
-              mới. Tránh &quot;đa nhiệm học&quot;.
-            </li>
-            <li>
-              <strong>Ghi lại notes riêng của bạn:</strong> dùng
-              Notion/Obsidian viết lại khái niệm bằng lời của
-              chính bạn. Hành động tái diễn đạt giúp kiến thức
-              ngấm gấp đôi.
-            </li>
-            <li>
-              <strong>Dùng AI để học AI:</strong> hỏi ChatGPT/Claude
-              giải thích bất cứ khái niệm nào bạn mắc. Đặt câu
-              hỏi cụ thể: &quot;Giải thích attention cho người
-              đã biết dot product nhưng chưa biết softmax&quot;.
-            </li>
-            <li>
-              <strong>Đọc source code:</strong> khi dùng thư
-              viện, dành 15 phút đọc source chỗ hàm bạn dùng. Học
-              kỹ thuật viết code hay + hiểu sâu cách library
-              hoạt động.
-            </li>
-            <li>
-              <strong>Viết blog hoặc chia sẻ:</strong> dạy lại là
-              cách học tốt nhất. Một bài blog ngắn mỗi tuần về
-              thứ bạn vừa học ép bạn phải hiểu thật.
-            </li>
-            <li>
-              <strong>Đừng sợ xoá project cũ:</strong> project
-              tuần 1 của bạn sẽ xấu. Đó là bình thường. Quan
-              trọng là project tuần 20 tốt hơn tuần 1.
-            </li>
-          </ol>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* LỊCH HỌC MẪU MỖI TUẦN                                   */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <h4 className="text-base font-semibold text-foreground mt-6">
-            Lịch học mẫu 10 giờ/tuần cho người đi làm
-          </h4>
-          <p>
-            Một lịch học thực tế giúp bạn duy trì đều đặn mà không
-            burnout. Lịch dưới đây thiết kế cho kỹ sư đi làm 40
-            giờ/tuần, dành 10 giờ/tuần cho AI:
-          </p>
-          <ul className="list-disc list-inside space-y-2 pl-2">
-            <li>
-              <strong>Thứ Hai — Thứ Sáu (5 × 1 giờ):</strong> đọc
-              tài liệu chính, xem video ngắn (30 phút), ghi notes
-              (15 phút), làm bài tập nhỏ (15 phút). Ưu tiên buổi
-              sáng sớm hoặc sau ăn tối — lúc trí lực còn tươi.
-            </li>
-            <li>
-              <strong>Thứ Bảy (3 giờ):</strong> block thời gian để
-              code dự án. Mỗi tuần hoàn thành một chức năng nhỏ.
-              Không học lý thuyết trong block này — chỉ code.
-            </li>
-            <li>
-              <strong>Chủ Nhật (2 giờ):</strong> review tuần qua —
-              đọc lại notes, viết bản tóm tắt ngắn (500 từ) bằng
-              lời của bạn, chia sẻ trên blog / Notion công khai
-              nếu có thể.
-            </li>
-          </ul>
-          <p>
-            Làm đều 10 giờ/tuần trong 6 tháng = 260 giờ. Đủ để đi
-            hết lộ trình kỹ sư AI ứng dụng nếu bạn đã biết code.
-            Quan trọng: <strong>đều đặn quan trọng hơn cường độ</strong>.
-            Học 10 giờ/tuần trong 6 tháng hiệu quả hơn 40 giờ/tuần
-            trong 6 tuần rồi bỏ cuộc.
-          </p>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* DẤU HIỆU TIẾN BỘ                                        */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <h4 className="text-base font-semibold text-foreground mt-6">
-            Dấu hiệu bạn đang tiến bộ
-          </h4>
-          <p>
-            Học AI đôi khi khiến bạn cảm thấy đi lùi — khái niệm
-            mới làm rõ những gì bạn tưởng đã hiểu. Đây là{" "}
-            <em>dấu hiệu tốt</em>, không phải xấu. Một vài cột mốc
-            tâm lý cho thấy bạn đang tiến:
-          </p>
-          <ul className="list-disc list-inside space-y-1 pl-2">
-            <li>
-              Bạn bắt đầu <strong>đọc code library</strong> và hiểu
-              một phần — trước đây chỉ thấy &quot;bí ẩn&quot;.
-            </li>
-            <li>
-              Bạn <strong>tranh luận được</strong> về lựa chọn kỹ
-              thuật — vì sao RAG thay vì fine-tune, khi nào dùng
-              agent.
-            </li>
-            <li>
-              Bạn dạy lại được cho người khác — nếu giải thích
-              cho bạn bè mà họ hiểu, bạn thật sự hiểu.
-            </li>
-            <li>
-              Bạn đọc paper và không bỏ cuộc ở dòng công thức đầu
-              tiên — có thể không hiểu hết, nhưng nắm được ý chính.
-            </li>
-          </ul>
-
-          {/* ──────────────────────────────────────────────────────── */}
-          {/* LỜI KẾT NỐI                                             */}
-          {/* ──────────────────────────────────────────────────────── */}
-          <p>
-            Nếu bạn muốn bắt đầu <em>ngay hôm nay</em>, đây là 3
-            bước nhỏ nhất:
-          </p>
-          <ol className="list-decimal list-inside space-y-1 pl-2">
-            <li>
-              Tạo tài khoản miễn phí trên một công cụ (ChatGPT,
-              Claude, hoặc Gemini).
-            </li>
-            <li>
-              Thử 10 prompt thật cho công việc của bạn (viết
-              email, dịch, tóm tắt).
-            </li>
-            <li>
-              Nếu thấy hữu ích, cài Python và chạy script{" "}
-              <code>hello_ai.py</code> ở trên. Chúc mừng, bạn
-              đã qua node đầu tiên của lộ trình!
-            </li>
-          </ol>
-
-          <p>
-            Bài tiếp theo bạn có thể học:{" "}
-            <TopicLink slug="llm-overview">Tổng quan về LLM</TopicLink>,{" "}
-            <TopicLink slug="prompt-engineering">Kỹ thuật viết prompt</TopicLink>,
-            hoặc{" "}
+          {/* Câu kết nối tiếp */}
+          <p className="mt-6">
+            Khi bạn thấy thoải mái với một công cụ, bước tiếp theo là hiểu{" "}
+            <TopicLink slug="llm-overview">bài LLM</TopicLink> — cách
+            AI xử lý chữ viết — và{" "}
+            <TopicLink slug="prompt-engineering">kỹ thuật viết prompt</TopicLink>{" "}
+            để nhận kết quả tốt hơn nữa. Khi đã quen dùng 2-3 công cụ,
+            hãy xem thêm{" "}
             <TopicLink slug="ai-tool-evaluation">
-              Cách đánh giá công cụ AI
-            </TopicLink>
-            .
+              cách đánh giá công cụ AI
+            </TopicLink>{" "}
+            để chọn đúng gói trả phí cho công việc của bạn.
           </p>
         </ExplanationSection>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 7 — MINI SUMMARY (6 điểm)                                */}
+      {/* BƯỚC 7 — MINI SUMMARY                                          */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
-          title="Sáu điểm cần nhớ về lộ trình học AI"
+          title="Năm điều cần nhớ sau bài đầu tiên"
           points={[
-            "Không có một lộ trình đúng duy nhất. Có ít nhất 3 tuyến chính: sinh viên bài bản (6-12 tháng), kỹ sư đi tắt (3-6 tháng), quản lý định hướng (4-8 tuần).",
-            "Sáu cột mốc kiến thức chung: Python → NumPy/Pandas → ML căn bản → Deep Learning → NLP & LLM → Ứng dụng. Mỗi cột phụ thuộc cột trước.",
-            "Tổng thời gian ~ Σ(αᵢ × tᵢ) — hệ số α phụ thuộc nền tảng của bạn. Học part-time 10 giờ/tuần là khả thi cho đa số người đi làm.",
-            "Toán cần vừa đủ theo mục tiêu: ứng dụng LLM cần ít toán; huấn luyện DL cần đại số tuyến tính + đạo hàm; nghiên cứu cần nhiều hơn.",
-            "Học bằng cách làm dự án thật. Tránh tutorial hell bằng cách giới hạn tutorial và bắt tay vào mini-project không template cho mỗi node.",
-            "Cộng đồng và chia sẻ là gia tốc lớn nhất. Viết note, blog lại, tham gia group, mentoring — mỗi hình thức đều giúp kiến thức ngấm sâu hơn.",
+            "AI văn phòng là một trợ lý miễn phí (hoặc giá thấp), sẵn sàng 24/7 — giúp viết, tóm tắt, dịch, brainstorm cho phần lớn việc hằng ngày.",
+            "Năm bước chuẩn: chọn công cụ → mở và đăng nhập → gõ yêu cầu rõ ràng → đọc kỹ kết quả → nhắn lại để chỉnh. Không bỏ bước 4 và 5.",
+            "Bốn tool phổ biến: ChatGPT (đa dụng), Claude (văn dài), Gemini (tra cứu + Google), Microsoft Copilot (Office 365). Chọn theo mục tiêu, không theo danh tiếng.",
+            "Prompt cụ thể thắng prompt chung chung. Cho AI biết: bạn cần gì, cho ai, giọng văn nào, độ dài bao nhiêu, có ràng buộc gì.",
+            "Không dán dữ liệu nhạy cảm (lương, CMND, hợp đồng, khách hàng) vào AI công cộng. Luôn đọc và kiểm tra trước khi dùng output vào việc thật.",
           ]}
         />
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 8 — QUIZ (8 câu)                                         */}
+      {/* BƯỚC 8 — QUIZ                                                  */}
       {/* ══════════════════════════════════════════════════════════════ */}
-      <LessonSection step={8} totalSteps={8} label="Kiểm tra">
+      <LessonSection step={8} totalSteps={8} label="Kiểm tra nhẹ">
         <QuizSection questions={QUIZ} />
       </LessonSection>
     </>

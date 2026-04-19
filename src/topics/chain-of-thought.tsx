@@ -1,19 +1,23 @@
 "use client";
-import { useState, useMemo, useCallback } from "react";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Coffee, FileText, Mail, Scale, Sparkles } from "lucide-react";
+
 import {
-  PredictionGate,
   AhaMoment,
-  InlineChallenge,
   Callout,
-  CollapsibleDetail,
-  MiniSummary,
-  CodeBlock,
+  FillBlank,
+  InlineChallenge,
   LessonSection,
-  LaTeX,
-  TopicLink,
+  MatchPairs,
+  MiniSummary,
+  PredictionGate,
   ProgressSteps,
-  TabView,
+  Reorderable,
+  StepReveal,
+  ToggleCompare,
+  TopicLink,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -22,14 +26,14 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────────
-// Metadata (giữ nguyên)
+// Metadata — giữ nguyên slug + các trường bắt buộc
 // ─────────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "chain-of-thought",
   title: "Chain-of-Thought",
   titleVi: "Chuỗi suy luận từng bước",
   description:
-    "Kỹ thuật yêu cầu mô hình trình bày quá trình suy nghĩ từng bước để cải thiện khả năng lập luận.",
+    "Kỹ thuật nhắc AI trình bày suy nghĩ theo từng bước trước khi chốt đáp án — giúp dân văn phòng có câu trả lời chắc tay hơn ở những việc nhiều bước.",
   category: "llm-concepts",
   tags: ["reasoning", "prompt", "cot", "llm"],
   difficulty: "beginner",
@@ -38,1260 +42,923 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────
-// Kiểu dữ liệu nội bộ
+// Ngân hàng bài toán — tình huống rất đời thường, không cần biết lập trình
 // ─────────────────────────────────────────────────────────────────────────
-type CotVariant = "zero-shot" | "few-shot" | "self-consistency";
-
-interface Problem {
+interface OfficeProblem {
   id: string;
-  domain: "math" | "logic" | "finance" | "physics";
+  tag: string;
+  icon: React.ElementType;
   question: string;
-  direct: {
-    answer: string;
-    reasoning: string;
-    isCorrect: boolean;
-  };
-  cot: {
-    answer: string;
-    steps: string[];
-    isCorrect: boolean;
-  };
-  // Mô phỏng self-consistency: nhiều lời giải độc lập, lấy phiếu bầu đa số
-  samples: string[];
+  directAnswer: string;
+  directNote: string;
+  stepAnswer: string;
+  steps: string[];
 }
 
-interface AccuracyRow {
-  label: string;
-  value: number; // 0..100
-  tone: "neutral" | "good" | "best";
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// Ngân hàng bài toán mẫu
-// ─────────────────────────────────────────────────────────────────────────
-const PROBLEMS: Problem[] = [
+const OFFICE_PROBLEMS: OfficeProblem[] = [
   {
-    id: "discount-stack",
-    domain: "finance",
+    id: "stacked-discount",
+    tag: "Khuyến mãi chồng",
+    icon: Sparkles,
     question:
-      "Một cửa hàng giảm giá 20%, sau đó giảm tiếp 10% trên giá đã giảm. Tổng giảm giá thực tế là bao nhiêu phần trăm?",
-    direct: {
-      answer: "30%",
-      reasoning: "20% + 10% = 30%",
-      isCorrect: false,
-    },
-    cot: {
-      answer: "28%",
-      steps: [
-        "Giả sử giá gốc = 100 đồng để dễ tính.",
-        "Sau khi giảm 20%: 100 × (1 − 0.20) = 80 đồng.",
-        "Sau khi giảm thêm 10% trên 80: 80 × (1 − 0.10) = 72 đồng.",
-        "Tổng tiền đã giảm: 100 − 72 = 28 đồng.",
-        "Quy ra phần trăm: 28 / 100 = 28% — KHÔNG phải 30%.",
-      ],
-      isCorrect: true,
-    },
-    samples: ["28%", "28%", "30%", "28%", "28%", "28%", "30%", "28%"],
-  },
-  {
-    id: "switch-bulb",
-    domain: "logic",
-    question:
-      "Trong phòng có 3 công tắc, ngoài phòng có 3 bóng đèn. Bạn chỉ được vào phòng đúng 1 lần. Làm sao biết công tắc nào nối với đèn nào?",
-    direct: {
-      answer: "Bật từng cái và chạy vào xem",
-      reasoning:
-        "Bật 1 → vào kiểm tra → quay ra bật cái khác. (Sai! chỉ được vào đúng 1 lần.)",
-      isCorrect: false,
-    },
-    cot: {
-      answer: "Dùng nhiệt của bóng đèn.",
-      steps: [
-        "Bật công tắc số 1 và chờ khoảng 5 phút cho bóng đèn nóng lên.",
-        "Sau 5 phút, tắt công tắc số 1, bật công tắc số 2.",
-        "Đi vào phòng ngay. Bóng đang SÁNG = công tắc số 2.",
-        "Chạm vào hai bóng còn lại. Bóng NÓNG nhưng tắt = công tắc số 1.",
-        "Bóng NGUỘI và tắt = công tắc số 3. Hoàn thành chỉ với 1 lần vào.",
-      ],
-      isCorrect: true,
-    },
-    samples: [
-      "Dùng nhiệt",
-      "Dùng nhiệt",
-      "Bật từng cái",
-      "Dùng nhiệt",
-      "Dùng nhiệt",
-      "Dùng nhiệt",
-      "Dùng nhiệt",
-      "Không biết",
+      "Cửa hàng dán bảng: giảm 20%, rồi tới quầy thu ngân giảm thêm 10% trên giá đã giảm. Tổng cộng bạn được giảm bao nhiêu phần trăm so với giá gốc?",
+    directAnswer: "30%",
+    directNote:
+      "AI cộng đại hai con số 20% và 10% → ra 30%. Nghe hợp lý, nhưng sai về bản chất.",
+    stepAnswer: "28%",
+    steps: [
+      "Giả sử món hàng giá gốc là 100.000 đồng cho dễ tính.",
+      "Giảm 20% lần đầu: còn lại 100.000 × 0,8 = 80.000 đồng.",
+      "Giảm thêm 10% trên 80.000: còn lại 80.000 × 0,9 = 72.000 đồng.",
+      "Tổng số tiền được giảm: 100.000 − 72.000 = 28.000 đồng.",
+      "Tức là bạn chỉ được giảm thật 28%, không phải 30% như cộng dồn thô.",
     ],
   },
   {
-    id: "train-meet",
-    domain: "math",
+    id: "meeting-room",
+    tag: "Sắp phòng họp",
+    icon: Coffee,
     question:
-      "Hai tàu chạy ngược chiều trên cùng đường ray, cách nhau 300 km. Tàu A chạy 60 km/h, tàu B chạy 90 km/h. Sau bao lâu thì hai tàu gặp nhau?",
-    direct: {
-      answer: "3 giờ",
-      reasoning: "300 / (60 + 90) = 300 / 150 → nhưng AI hay nhầm là 300/90 ≈ 3.33 giờ hoặc 3 giờ chẵn.",
-      isCorrect: false,
-    },
-    cot: {
-      answer: "2 giờ",
-      steps: [
-        "Hai tàu chạy ngược chiều → tốc độ tiếp cận = tổng vận tốc.",
-        "Tốc độ tiếp cận = 60 + 90 = 150 km/h.",
-        "Thời gian = khoảng cách / tốc độ tiếp cận = 300 / 150.",
-        "300 / 150 = 2 giờ chính xác.",
-        "Kết luận: hai tàu gặp nhau sau đúng 2 giờ.",
-      ],
-      isCorrect: true,
-    },
-    samples: ["2h", "2h", "3h", "2h", "2h", "2h", "2.5h", "2h"],
+      "Phòng họp có 3 công tắc ở hành lang, mỗi cái nối với một đèn trong phòng. Bạn chỉ được mở cửa đúng một lần để vào kiểm tra. Làm sao biết công tắc nào thắp đèn nào?",
+    directAnswer: "Bật từng cái rồi chạy vào xem",
+    directNote:
+      "AI quên mất điều kiện “chỉ được vào phòng đúng một lần” và đề xuất phương án phải vào nhiều lần.",
+    stepAnswer: "Dùng thêm dấu hiệu nhiệt của bóng đèn",
+    steps: [
+      "Bật công tắc số 1, để yên khoảng 5 phút cho bóng ấm lên.",
+      "Sau 5 phút, tắt công tắc số 1 và bật công tắc số 2.",
+      "Bây giờ mới mở cửa vào phòng (đây là lần vào duy nhất).",
+      "Bóng đang sáng chính là công tắc số 2.",
+      "Trong hai bóng còn lại: bóng ấm nóng khi sờ vào là công tắc số 1, bóng nguội lạnh là công tắc số 3.",
+    ],
   },
   {
-    id: "bag-marbles",
-    domain: "math",
+    id: "vat-tax",
+    tag: "Hoàn thuế VAT",
+    icon: FileText,
     question:
-      "Một túi có 5 viên bi đỏ và 3 viên bi xanh. Rút 2 viên liên tiếp KHÔNG hoàn lại. Xác suất cả 2 đều đỏ là bao nhiêu?",
-    direct: {
-      answer: "25/64",
-      reasoning: "(5/8) × (5/8) = 25/64 — coi hai lần rút là độc lập (sai logic).",
-      isCorrect: false,
-    },
-    cot: {
-      answer: "5/14",
-      steps: [
-        "Lần 1: P(đỏ) = 5/8 vì có 5 đỏ trong tổng 8 viên.",
-        "Sau khi rút 1 viên đỏ, còn 4 đỏ và 3 xanh → tổng 7 viên.",
-        "Lần 2 (không hoàn lại): P(đỏ | đã rút đỏ) = 4/7.",
-        "Nhân hai xác suất có điều kiện: (5/8) × (4/7) = 20/56.",
-        "Rút gọn 20/56 = 5/14 ≈ 0.357 (không phải 25/64 ≈ 0.391).",
-      ],
-      isCorrect: true,
-    },
-    samples: ["5/14", "5/14", "25/64", "5/14", "5/14", "5/14", "5/14", "20/56"],
-  },
-  {
-    id: "monty-hall",
-    domain: "logic",
-    question:
-      "Trong trò Monty Hall: có 3 cửa, 1 có xe hơi, 2 có dê. Bạn chọn cửa 1. MC (biết trước) mở cửa 3 có dê. Bạn có nên đổi sang cửa 2?",
-    direct: {
-      answer: "Không cần đổi, 50/50",
-      reasoning: "Còn 2 cửa, 1 xe và 1 dê → xác suất 50% mỗi cửa.",
-      isCorrect: false,
-    },
-    cot: {
-      answer: "CÓ, nên đổi — xác suất thắng 2/3",
-      steps: [
-        "Ban đầu: P(xe ở cửa 1) = 1/3, P(xe ở cửa 2 hoặc 3) = 2/3.",
-        "MC biết vị trí xe, LUÔN mở cửa có dê (không ngẫu nhiên).",
-        "Nếu xe ở cửa 2 hoặc 3 (xác suất 2/3): MC buộc phải mở cửa có dê trong hai cái đó, để lại cửa có xe.",
-        "Do đó khi đổi sang cửa còn lại: thắng với xác suất 2/3.",
-        "Không đổi: thắng chỉ với xác suất 1/3 (phải đoán đúng từ đầu).",
-      ],
-      isCorrect: true,
-    },
-    samples: ["đổi 2/3", "đổi 2/3", "50/50", "đổi 2/3", "đổi 2/3", "đổi", "50/50", "đổi 2/3"],
-  },
-  {
-    id: "birthday-paradox",
-    domain: "math",
-    question:
-      "Trong phòng có 23 người, xác suất ít nhất 2 người có cùng ngày sinh là bao nhiêu?",
-    direct: {
-      answer: "Khoảng 23/365 ≈ 6.3%",
-      reasoning: "Có 23 người, so với 365 ngày → 23/365 ≈ 6%.",
-      isCorrect: false,
-    },
-    cot: {
-      answer: "Khoảng 50.7%",
-      steps: [
-        "Tính P(KHÔNG ai trùng) dễ hơn P(có trùng).",
-        "Người 1 có 365 lựa chọn, người 2 còn 364, người 3 còn 363, …",
-        "P(không trùng) = (365/365) × (364/365) × … × (343/365) (23 số hạng).",
-        "Tính ra: P(không trùng) ≈ 0.4927.",
-        "Vậy P(có trùng) = 1 − 0.4927 ≈ 0.5073 ≈ 50.7% — nghịch lý sinh nhật nổi tiếng.",
-      ],
-      isCorrect: true,
-    },
-    samples: ["50.7%", "~50%", "6%", "50%", "50.7%", "50%", "50%", "51%"],
+      "Hóa đơn ghi tổng tiền thanh toán là 1.100.000 đồng đã bao gồm VAT 10%. Số tiền VAT thật sự bạn nộp là bao nhiêu?",
+    directAnswer: "110.000 đồng",
+    directNote:
+      "AI lấy luôn 10% của 1.100.000 ra 110.000. Nhưng 10% đó là trên giá CHƯA thuế, không phải trên giá đã có thuế.",
+    stepAnswer: "100.000 đồng",
+    steps: [
+      "Gọi giá chưa thuế là X. Theo quy định: X + 10% × X = 1.100.000.",
+      "Viết lại: 1,1 × X = 1.100.000 → X = 1.000.000 đồng (giá chưa thuế thật sự).",
+      "Số tiền VAT = 1.100.000 − 1.000.000 = 100.000 đồng.",
+      "Kiểm tra lại: 10% của 1.000.000 đúng bằng 100.000. Khớp.",
+      "Như vậy nếu hoàn thuế VAT, bạn chỉ được hoàn 100.000 đồng — không phải 110.000 đồng.",
+    ],
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
-// Thông tin về từng biến thể CoT
+// Demo 1 — So sánh “Trả lời thẳng” vs “Suy nghĩ từng bước” trên 3 tình huống
 // ─────────────────────────────────────────────────────────────────────────
-const VARIANT_INFO: Record<
-  CotVariant,
-  {
-    label: string;
-    tagline: string;
-    description: string;
-    pros: string[];
-    cons: string[];
-    accuracyBoost: number; // % tương đối so với direct (giả lập)
-  }
-> = {
-  "zero-shot": {
-    label: "Zero-shot CoT",
-    tagline: "Chỉ cần thêm 'Hãy suy nghĩ từng bước'",
-    description:
-      "Thêm một câu ma thuật vào cuối prompt mà không cần ví dụ mẫu. Đơn giản nhất, triển khai tức thời.",
-    pros: [
-      "Không cần soạn few-shot examples",
-      "Triển khai trong 5 giây — thêm 1 dòng",
-      "Hoạt động với mọi LLM đủ mạnh (>7B params)",
-    ],
-    cons: [
-      "Chất lượng phụ thuộc khả năng reasoning gốc của model",
-      "Đôi khi model bỏ qua chỉ dẫn và trả lời ngắn",
-      "Với model nhỏ (<3B) hiệu quả giảm rõ rệt",
-    ],
-    accuracyBoost: 58,
-  },
-  "few-shot": {
-    label: "Few-shot CoT",
-    tagline: "Cho model 2-3 ví dụ mẫu có từng bước",
-    description:
-      "Trước câu hỏi thật, chèn 2-3 ví dụ mẫu đã giải sẵn với từng bước rõ ràng. Model học theo pattern.",
-    pros: [
-      "Chất lượng ổn định hơn zero-shot",
-      "Kiểm soát được FORMAT của câu trả lời",
-      "Hiệu quả cho domain-specific reasoning",
-    ],
-    cons: [
-      "Tốn nhiều token trong prompt (ví dụ mẫu dài)",
-      "Phải soạn ví dụ chất lượng cao",
-      "Bias theo style ví dụ — có thể thiếu đa dạng",
-    ],
-    accuracyBoost: 72,
-  },
-  "self-consistency": {
-    label: "Self-Consistency",
-    tagline: "Chạy CoT nhiều lần rồi vote đáp án đa số",
-    description:
-      "Sinh 5-40 chuỗi suy luận khác nhau với temperature > 0, đếm phiếu bầu. Đáp án phổ biến nhất thắng.",
-    pros: [
-      "Tăng accuracy mạnh nhất trong 3 biến thể",
-      "Tự-sửa lỗi ngẫu nhiên trong từng lần",
-      "Không cần thay đổi model, chỉ cần sampling",
-    ],
-    cons: [
-      "Đắt gấp 5-40 lần (chạy nhiều lần)",
-      "Latency cao — không phù hợp real-time UX",
-      "Chỉ hoạt động khi đáp án là symbol rời rạc (số, label)",
-    ],
-    accuracyBoost: 86,
-  },
-};
+function DirectVsStepDemo() {
+  const [idx, setIdx] = useState(0);
+  const problem = OFFICE_PROBLEMS[idx];
+  const Icon = problem.icon;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        {OFFICE_PROBLEMS.map((p, i) => {
+          const active = i === idx;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => setIdx(i)}
+              className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                active
+                  ? "border-accent bg-accent text-white"
+                  : "border-border bg-card text-muted hover:border-accent/50"
+              }`}
+            >
+              <p.icon size={14} />
+              {p.tag}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="rounded-xl border border-dashed border-border bg-surface/50 p-4">
+        <div className="flex items-start gap-3">
+          <Icon size={20} className="mt-0.5 shrink-0 text-accent" />
+          <p className="text-sm font-medium text-foreground leading-relaxed">
+            {problem.question}
+          </p>
+        </div>
+      </div>
+
+      <ToggleCompare
+        labelA="Câu trả lời trực tiếp"
+        labelB="Suy nghĩ từng bước"
+        description="Bấm thử hai chế độ để thấy AI khác nhau đến mức nào khi có thời gian 'nháp'."
+        childA={
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-300">
+                Sai
+              </span>
+              <span className="text-sm text-muted">AI trả lời trong 1 nhịp</span>
+            </div>
+            <p className="text-2xl font-semibold text-foreground">
+              {problem.directAnswer}
+            </p>
+            <p className="text-sm text-muted leading-relaxed">
+              {problem.directNote}
+            </p>
+          </div>
+        }
+        childB={
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-300">
+                Đúng
+              </span>
+              <span className="text-sm text-muted">
+                AI nháp từng bước trước khi chốt
+              </span>
+            </div>
+            <ol className="space-y-2 text-sm text-foreground leading-relaxed">
+              {problem.steps.map((s, i) => (
+                <li
+                  key={i}
+                  className="flex gap-2 rounded-lg border border-border/60 bg-card/50 px-3 py-2"
+                >
+                  <span className="shrink-0 font-semibold text-accent">
+                    {i + 1}.
+                  </span>
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm font-semibold text-green-800 dark:border-green-800 dark:bg-green-900/30 dark:text-green-200">
+              Đáp án cuối: {problem.stepAnswer}
+            </div>
+          </div>
+        }
+      />
+    </div>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────
-// Câu hỏi kiểm tra
+// Demo 3 — Hai bản prompt song song, kết quả mô phỏng
+// ─────────────────────────────────────────────────────────────────────────
+function PromptTemplateDemo() {
+  return (
+    <ToggleCompare
+      labelA="Prompt kiểu cũ"
+      labelB="Prompt theo chuỗi suy luận"
+      description="Cùng một câu hỏi về phụ cấp — chỉ thay đổi vài câu trong prompt, chất lượng câu trả lời đã rất khác."
+      childA={
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-border bg-surface/40 p-3">
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-tertiary">
+              Prompt bạn viết
+            </p>
+            <p className="text-sm italic text-foreground leading-relaxed">
+              “Nhân viên thử việc có lương cứng 8 triệu, phụ cấp ăn trưa
+              730.000, phụ cấp điện thoại 300.000. Tính tổng thu nhập.”
+            </p>
+          </div>
+          <div className="rounded-xl border border-red-200 bg-red-50 p-3 dark:border-red-800 dark:bg-red-900/20">
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
+              AI trả lời
+            </p>
+            <p className="text-sm text-foreground leading-relaxed">
+              “Tổng thu nhập khoảng 9 triệu.”
+              <br />
+              <span className="text-xs text-muted">
+                Tròn số, không thấy rõ AI tính gì — bạn không kiểm được.
+              </span>
+            </p>
+          </div>
+        </div>
+      }
+      childB={
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-border bg-surface/40 p-3">
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-tertiary">
+              Prompt bạn viết
+            </p>
+            <p className="text-sm italic text-foreground leading-relaxed">
+              “Nhân viên thử việc có lương cứng 8 triệu, phụ cấp ăn trưa
+              730.000, phụ cấp điện thoại 300.000. <strong>Hãy liệt kê
+              từng khoản rồi cộng lại, cuối cùng mới ghi tổng.</strong>”
+            </p>
+          </div>
+          <div className="rounded-xl border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-900/20">
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-green-700 dark:text-green-300">
+              AI trả lời
+            </p>
+            <ol className="space-y-1 text-sm text-foreground leading-relaxed">
+              <li>1. Lương cứng: 8.000.000</li>
+              <li>2. Phụ cấp ăn trưa: 730.000</li>
+              <li>3. Phụ cấp điện thoại: 300.000</li>
+              <li className="font-semibold text-green-800 dark:text-green-300">
+                Tổng: 9.030.000 đồng
+              </li>
+            </ol>
+            <p className="mt-1.5 text-xs text-muted">
+              Có nháp rõ ràng — bạn kiểm tra từng dòng trong 5 giây.
+            </p>
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Thanh tiến trình nhỏ — trang trí cho VisualizationSection
+// ─────────────────────────────────────────────────────────────────────────
+function DemoStepBadge({
+  step,
+  total,
+  labels,
+}: {
+  step: number;
+  total: number;
+  labels: string[];
+}) {
+  return (
+    <div className="mb-3">
+      <ProgressSteps current={step} total={total} labels={labels} />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Ba mẫu prompt mang sẵn chuỗi suy luận — dùng Callout thay vì CodeBlock
+// ─────────────────────────────────────────────────────────────────────────
+interface PromptTemplate {
+  tag: string;
+  title: string;
+  icon: React.ElementType;
+  tone: "tip" | "info" | "insight";
+  situation: string;
+  template: string;
+}
+
+const PROMPT_TEMPLATES: PromptTemplate[] = [
+  {
+    tag: "Báo cáo tài chính",
+    title: "Khi cần tách – cộng nhiều khoản",
+    icon: FileText,
+    tone: "info",
+    situation:
+      "Bạn có bảng doanh thu nhiều chi nhánh, cần AI so sánh tháng này với tháng trước và tìm chi nhánh đi lùi.",
+    template:
+      "Dưới đây là số liệu doanh thu 5 chi nhánh trong 2 tháng. Hãy làm theo thứ tự: (1) liệt kê doanh thu từng chi nhánh từng tháng, (2) tính chênh lệch từng chi nhánh, (3) chỉ ra chi nhánh nào giảm và giảm bao nhiêu, (4) đưa ra nhận định chung ở cuối. Không bỏ qua bước nào.",
+  },
+  {
+    tag: "Soạn email khó",
+    title: "Khi phải cân nhắc giọng điệu và nhiều bên",
+    icon: Mail,
+    tone: "tip",
+    situation:
+      "Bạn phải trả lời một khách hàng đang khó chịu vì đơn hàng giao trễ, nhưng vẫn cần giữ quan hệ.",
+    template:
+      "Tôi đang soạn email trả lời khách hàng bị giao trễ 3 ngày. Trước khi viết email cuối, hãy suy nghĩ từng bước: (1) cảm xúc hiện tại của khách là gì, (2) ba điều tối thiểu họ cần nghe, (3) hai điều tuyệt đối tránh nói, (4) mới viết email hoàn chỉnh ở cuối. Hãy trình bày lần lượt bốn phần đó.",
+  },
+  {
+    tag: "Quyết định nhanh",
+    title: "Khi so sánh nhiều lựa chọn",
+    icon: Scale,
+    tone: "insight",
+    situation:
+      "Sếp cho 3 nhà cung cấp khác nhau, mỗi bên có ưu nhược điểm. Bạn cần đề xuất chọn một bên.",
+    template:
+      "Tôi có 3 nhà cung cấp A, B, C với bảng thông tin dưới đây. Hãy suy nghĩ qua 4 bước: (1) tiêu chí nào là quan trọng nhất với tình huống của tôi, (2) chấm điểm từng nhà cung cấp trên từng tiêu chí, (3) cộng tổng và xếp hạng, (4) kết luận chọn ai và vì sao. Đừng đưa câu trả lời cuối trước khi đi qua đủ 4 bước.",
+  },
+];
+
+function PromptTemplateCard({ template }: { template: PromptTemplate }) {
+  const Icon = template.icon;
+  return (
+    <Callout variant={template.tone} title={template.title}>
+      <div className="space-y-2.5">
+        <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted">
+          <Icon size={14} />
+          {template.tag}
+        </div>
+        <p className="text-sm text-foreground/90 leading-relaxed">
+          <strong>Tình huống: </strong>
+          {template.situation}
+        </p>
+        <div className="rounded-lg border border-border bg-card/70 p-3">
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-tertiary">
+            Prompt gợi ý (copy rồi đổi số liệu của bạn vào)
+          </p>
+          <p className="text-sm text-foreground italic leading-relaxed">
+            “{template.template}”
+          </p>
+        </div>
+      </div>
+    </Callout>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Bảng Zero-shot vs Few-shot — diagram minh họa
+// ─────────────────────────────────────────────────────────────────────────
+function ZeroVsFewShotDiagram() {
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      <div className="rounded-xl border border-border bg-card p-4">
+        <div className="mb-2 flex items-center gap-2">
+          <span className="rounded-full bg-accent-light px-2 py-0.5 text-xs font-semibold text-accent-dark">
+            Zero-shot CoT
+          </span>
+          <span className="text-xs text-muted">Không ví dụ mẫu</span>
+        </div>
+        <p className="mb-3 text-sm text-foreground/90 leading-relaxed">
+          Chỉ cần thêm một câu thần chú vào cuối prompt. Đơn giản nhất, phù hợp
+          cho 90% tình huống hàng ngày của dân văn phòng.
+        </p>
+        <div className="rounded-lg bg-surface/60 p-3 text-sm italic text-foreground leading-relaxed">
+          “…[câu hỏi của bạn]. <strong>Hãy suy nghĩ từng bước trước khi trả
+          lời.</strong>”
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-4">
+        <div className="mb-2 flex items-center gap-2">
+          <span className="rounded-full bg-accent-light px-2 py-0.5 text-xs font-semibold text-accent-dark">
+            Few-shot CoT
+          </span>
+          <span className="text-xs text-muted">Kèm 1–2 ví dụ mẫu</span>
+        </div>
+        <p className="mb-3 text-sm text-foreground/90 leading-relaxed">
+          Bạn cho AI thấy trước một bài mẫu đã trình bày theo đúng style bạn
+          muốn. Dùng khi bạn cần định dạng cố định (bảng, form, mẫu email).
+        </p>
+        <div className="rounded-lg bg-surface/60 p-3 text-sm italic text-foreground leading-relaxed">
+          “Ví dụ: câu hỏi X → nháp 3 bước → đáp án Y.
+          <br />
+          Bây giờ đến câu của tôi: [câu hỏi thật]. Hãy làm theo đúng mẫu
+          trên.”
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Thanh “Khi nào nên dùng / không nên” — trực quan, không cần biểu đồ
+// ─────────────────────────────────────────────────────────────────────────
+function WhenToUseChart() {
+  const cases: Array<{
+    label: string;
+    good: boolean;
+    note: string;
+  }> = [
+    {
+      label: "Tính lương thưởng nhiều khoản",
+      good: true,
+      note: "Nhiều bước — rất dễ sai nếu cộng gộp.",
+    },
+    {
+      label: "Lên lịch 5 cuộc họp trong 1 ngày",
+      good: true,
+      note: "Có ràng buộc thời gian và người — cần nháp.",
+    },
+    {
+      label: "So sánh 3 nhà cung cấp",
+      good: true,
+      note: "Cần chấm điểm từng tiêu chí.",
+    },
+    {
+      label: "Viết một lời chào email",
+      good: false,
+      note: "Một câu đơn giản — thêm chuỗi suy luận chỉ tốn thời gian.",
+    },
+    {
+      label: "Hỏi thủ đô nước Pháp",
+      good: false,
+      note: "Câu hỏi tra cứu — AI chỉ cần nhớ, không cần suy luận.",
+    },
+    {
+      label: "Dịch 1 câu tiếng Anh",
+      good: false,
+      note: "Việc 1 bước — đừng bắt AI nháp dài dòng.",
+    },
+  ];
+
+  return (
+    <div className="grid gap-2 md:grid-cols-2">
+      {cases.map((c) => (
+        <motion.div
+          key={c.label}
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+          transition={{ duration: 0.3 }}
+          className={`flex items-start gap-3 rounded-xl border p-3 text-sm ${
+            c.good
+              ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20"
+              : "border-border bg-surface/40"
+          }`}
+        >
+          <span
+            aria-hidden
+            className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${
+              c.good ? "bg-green-500" : "bg-muted"
+            }`}
+          >
+            {c.good ? "✓" : "×"}
+          </span>
+          <div>
+            <p className="font-medium text-foreground">{c.label}</p>
+            <p className="mt-0.5 text-xs text-muted leading-relaxed">
+              {c.note}
+            </p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Đồng hồ ba điểm chênh lệch — visualize độ chính xác theo cách nhắc
+// ─────────────────────────────────────────────────────────────────────────
+function AccuracyBars() {
+  const rows = [
+    {
+      label: "Hỏi thẳng, không gợi suy luận",
+      pct: 34,
+      tone: "bg-red-400 dark:bg-red-500",
+      note: "AI đoán cảm tính, dễ lạc đề ở bài nhiều bước.",
+    },
+    {
+      label: "Zero-shot CoT — thêm câu 'suy nghĩ từng bước'",
+      pct: 62,
+      tone: "bg-amber-400 dark:bg-amber-500",
+      note: "Chỉ đổi vài chữ trong prompt đã tăng gần gấp đôi độ đúng.",
+    },
+    {
+      label: "Few-shot CoT — có ví dụ mẫu đã trình bày rõ",
+      pct: 78,
+      tone: "bg-green-500 dark:bg-green-600",
+      note: "Đỉnh nhất khi bạn cần format cố định (bảng, email mẫu, báo cáo).",
+    },
+  ];
+
+  return (
+    <div className="space-y-3">
+      {rows.map((r) => (
+        <div key={r.label} className="space-y-1.5">
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <span className="font-medium text-foreground">{r.label}</span>
+            <span className="font-mono text-sm font-semibold text-accent">
+              {r.pct}%
+            </span>
+          </div>
+          <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: `${r.pct}%` }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
+              className={`h-full rounded-full ${r.tone}`}
+            />
+          </div>
+          <p className="text-xs text-muted">{r.note}</p>
+        </div>
+      ))}
+      <p className="pt-1 text-[11px] italic text-tertiary">
+        Con số minh họa — tổng hợp từ các thử nghiệm công khai trên bài toán
+        nhiều bước. Với tác vụ văn phòng cụ thể của bạn, mức cải thiện thực tế
+        có thể khác.
+      </p>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Câu hỏi kiểm tra cuối bài
 // ─────────────────────────────────────────────────────────────────────────
 const quizQuestions: QuizQuestion[] = [
   {
-    question: "Chain-of-Thought cải thiện LLM ở loại task nào nhất?",
+    question:
+      "Chain-of-Thought (chuỗi suy luận từng bước) giúp ích NHIỀU NHẤT ở loại công việc nào?",
     options: [
-      "Dịch thuật đơn giản",
-      "Bài toán logic và tính toán nhiều bước",
-      "Tóm tắt văn bản",
-      "Phân loại cảm xúc",
+      "Viết câu chúc mừng sinh nhật đồng nghiệp",
+      "Tính thưởng Tết có nhiều phụ cấp và thuế khác nhau",
+      "Gõ chính tả một đoạn văn ngắn",
+      "Tra nghĩa một từ tiếng Anh thông dụng",
     ],
     correct: 1,
     explanation:
-      "CoT giúp nhất ở task cần LẬP LUẬN nhiều bước — toán, logic, suy luận nhân quả. Với task đơn giản (dịch, phân loại), CoT ít có tác dụng và chỉ làm tốn token.",
+      "CoT mạnh nhất ở việc có NHIỀU BƯỚC. Tính thưởng Tết phải cộng lương + các loại phụ cấp + trừ thuế — rất dễ sai nếu AI nhảy thẳng. Ba lựa chọn còn lại là việc 1 bước, không cần nháp.",
   },
   {
-    question: "Zero-shot CoT sử dụng prompt đơn giản nào?",
+    question:
+      "Trong Zero-shot CoT, câu 'thần chú' đơn giản nào thường được thêm vào cuối prompt?",
     options: [
-      "'Trả lời nhanh nhất có thể'",
-      "'Hãy suy nghĩ từng bước' (Let's think step by step)",
-      "'Cho tôi 3 ví dụ trước'",
-      "'Tóm tắt trong 1 câu'",
+      "'Trả lời càng ngắn càng tốt'",
+      "'Hãy suy nghĩ từng bước trước khi trả lời'",
+      "'Chỉ đưa đáp án, đừng giải thích'",
+      "'Đoán thử đi'",
     ],
     correct: 1,
     explanation:
-      "Chỉ cần thêm 'Let's think step by step' hoặc 'Hãy suy nghĩ từng bước' vào cuối prompt → cải thiện đáng kể. Paper Kojima et al. 2022 (NeurIPS) chứng minh điều này.",
+      "Chỉ cần thêm 'Hãy suy nghĩ từng bước trước khi trả lời' (hoặc tiếng Anh 'Let's think step by step') — AI sẽ tự trình bày nháp trước khi kết luận.",
   },
   {
-    question: "Tại sao CoT hoạt động — về mặt kỹ thuật?",
+    question:
+      "Đâu là nhược điểm lớn NHẤT khi bạn dùng Chain-of-Thought cho mọi câu hỏi?",
     options: [
-      "Vì AI có thêm thời gian suy nghĩ",
-      "Vì mỗi bước trung gian cung cấp ngữ cảnh cho bước tiếp theo, giảm lỗi tích lũy",
-      "Vì AI copy bài giải từ Internet",
-      "Vì prompt dài hơn = tốt hơn",
+      "AI sẽ trả lời bằng ngôn ngữ khác",
+      "Câu trả lời dài hơn, tốn token và tốn thời gian đọc — không cần thiết cho việc đơn giản",
+      "AI sẽ không chịu trả lời nữa",
+      "AI chỉ trả lời được bằng chữ in hoa",
     ],
     correct: 1,
     explanation:
-      "Mỗi bước trung gian được sinh ra trở thành INPUT cho bước sau. Thay vì nhảy thẳng từ đề bài → đáp án (dễ sai), AI đi qua chuỗi suy luận — mỗi bước đơn giản hơn tổng thể.",
+      "CoT làm câu trả lời dài ra vì AI phải trình bày nháp. Với câu hỏi một bước (chào hỏi, tra cứu, dịch 1 câu), dùng CoT chỉ gây lãng phí thời gian và token.",
   },
   {
     type: "fill-blank",
     question:
-      "Chain-of-Thought buộc mô hình trình bày {blank} trước khi đưa ra đáp án, giúp cải thiện chất lượng {blank} nhiều bước.",
+      "Chain-of-Thought buộc AI trình bày {blank} trước khi đưa ra đáp án, giúp cải thiện chất lượng ở những việc có {blank}.",
     blanks: [
       { answer: "từng bước", accept: ["step-by-step", "từng-bước", "tung buoc"] },
-      { answer: "suy luận", accept: ["reasoning", "lập luận"] },
+      {
+        answer: "nhiều bước",
+        accept: ["multi-step", "lập luận", "suy luận phức tạp"],
+      },
     ],
     explanation:
-      "CoT yêu cầu mô hình viết ra chuỗi từng bước trung gian thay vì nhảy thẳng tới đáp án. Hiệu quả đặc biệt cho toán, logic, lập kế hoạch.",
-  },
-  {
-    question: "Self-Consistency khác Zero-shot CoT ở điểm cốt lõi nào?",
-    options: [
-      "Dùng model lớn hơn",
-      "Sinh nhiều chuỗi reasoning khác nhau rồi bỏ phiếu đáp án đa số",
-      "Không cần prompt 'suy nghĩ từng bước'",
-      "Chạy offline trên CPU",
-    ],
-    correct: 1,
-    explanation:
-      "Self-Consistency sampling temperature > 0, tạo nhiều đường reasoning độc lập, rồi lấy đáp án phổ biến nhất. Giả định: đường đúng thường hội tụ về cùng đáp án.",
-  },
-  {
-    question: "Khi nào KHÔNG nên dùng CoT?",
-    options: [
-      "Khi trả lời 'mèo hay chó dễ thương hơn'",
-      "Khi cần phân loại 1 câu ngắn thành tích cực/tiêu cực",
-      "Khi dịch 'Hello' sang tiếng Việt",
-      "Tất cả các trường hợp trên",
-    ],
-    correct: 3,
-    explanation:
-      "Task đơn giản, subjective, hoặc không cần reasoning nhiều bước → CoT chỉ thêm token (tốn tiền + chậm) mà không cải thiện kết quả. Dùng có chọn lọc.",
+      "CoT buộc mô hình viết ra chuỗi từng bước trung gian thay vì nhảy thẳng tới đáp án. Hiệu quả đặc biệt cho các việc nhiều bước — kế toán, lập kế hoạch, so sánh lựa chọn.",
   },
   {
     question:
-      "Trong Few-shot CoT, vai trò của các ví dụ mẫu là gì?",
+      "Đồng nghiệp gửi bạn hóa đơn 5 dòng bằng ngoại tệ, yêu cầu quy ra VND rồi lọc những khoản > 500.000 VND. Bạn nên viết prompt theo kiểu nào?",
     options: [
-      "Cho AI học facts mới",
-      "Dạy AI format và STYLE trình bày reasoning qua in-context learning",
-      "Giảm latency",
-      "Thay thế fine-tuning",
+      "'Cho tôi danh sách khoản trên 500.000' — hỏi thẳng",
+      "'Hãy: (1) quy đổi từng dòng sang VND, (2) liệt kê rõ, (3) lọc những dòng > 500.000, (4) tổng cuối cùng' — ép AI đi từng bước",
+      "'Tóm tắt hóa đơn bằng 1 câu'",
+      "'Viết một bài thơ về hóa đơn này'",
     ],
     correct: 1,
     explanation:
-      "Ví dụ mẫu không cung cấp kiến thức — chúng dạy AI cách PHÂN RÃ bài toán và format reasoning. Đây là in-context learning, không cập nhật weights.",
+      "Việc này nhiều bước: quy đổi tỉ giá, lọc điều kiện, cộng tổng. Đây chính là tình huống CoT toả sáng — bạn yêu cầu AI nháp rõ từng bước để kiểm soát độ chính xác.",
   },
   {
     question:
-      "Mô hình reasoning mới (GPT-4o1, DeepSeek-R1) khác CoT truyền thống ở điểm nào?",
+      "Tại sao Chain-of-Thought lại hiệu quả — nói một cách không kỹ thuật?",
     options: [
-      "Không dùng CoT nữa",
-      "Học CoT qua RL trên bài toán, sinh long chain-of-thought nội tại trước khi trả lời",
-      "Chỉ chạy trên GPU H100",
-      "Cấm dùng prompt 'step by step'",
+      "Vì AI được “thưởng” mỗi khi viết dài",
+      "Vì khi viết ra từng bước, mỗi bước trở thành gợi ý cho bước tiếp theo, giúp AI ít nhảy cóc sai",
+      "Vì AI copy đáp án từ Internet nhanh hơn",
+      "Vì AI chỉ hiểu khi prompt có nhiều chữ in hoa",
     ],
     correct: 1,
     explanation:
-      "Reasoning models (o1, R1) được train bằng RL để TỰ sinh chain-of-thought dài (có thể hàng nghìn token), không cần prompt hint từ người dùng. CoT trở thành NỘI TẠI trong model.",
-  },
-  {
-    question:
-      "Trong Self-Consistency với N=5 samples, đáp án nào được chọn?",
-    options: [
-      "Đáp án của sample đầu tiên",
-      "Đáp án xuất hiện nhiều lần nhất (majority vote)",
-      "Trung bình số học của 5 đáp án",
-      "Đáp án dài nhất",
-    ],
-    correct: 1,
-    explanation:
-      "Self-Consistency dùng majority vote: chạy N lần với temperature > 0 để tạo đa dạng reasoning, rồi chọn đáp án phổ biến nhất. Insight: reasoning đúng thường hội tụ cùng đáp án; reasoning sai phân tán.",
-  },
-  {
-    question:
-      "Tree-of-Thoughts (ToT) mở rộng CoT bằng cách nào?",
-    options: [
-      "Chạy CoT trên nhiều GPU cùng lúc",
-      "Mô hình hoá reasoning như cây search — mỗi nút là một bước, có thể branch, evaluate, backtrack",
-      "Dùng CoT với temperature = 0",
-      "Chỉ cho phép đáp án dạng cây nhị phân",
-    ],
-    correct: 1,
-    explanation:
-      "ToT (Yao et al. 2023) xem mỗi bước reasoning là một nút trong cây, kết hợp LLM với BFS/DFS + state evaluator. Khi một nhánh có vẻ sai, backtrack. Hiệu quả cho puzzle, planning, game-playing — nơi CoT tuyến tính bị kẹt.",
-  },
-  {
-    question:
-      "Chi phí của Self-Consistency N=10 so với Zero-shot CoT là bao nhiêu?",
-    options: [
-      "Bằng nhau",
-      "Gấp ~10 lần (tuyến tính theo N)",
-      "Gấp 100 lần",
-      "Rẻ hơn vì cache",
-    ],
-    correct: 1,
-    explanation:
-      "Self-Consistency chạy N lời giải độc lập → cost tuyến tính với N. Với N=10, bạn trả gấp 10 lần tiền API. Production thường dùng N=3-5, ít khi N=10+. ROI giảm dần sau N≈5.",
-  },
-  {
-    type: "fill-blank",
-    question:
-      "Self-Consistency sampling cần temperature {blank}, còn Zero-shot CoT thường dùng temperature {blank} để output ổn định.",
-    blanks: [
-      { answer: "> 0", accept: ["lớn hơn 0", "cao", "0.7", "0.5 đến 1.0"] },
-      { answer: "0", accept: ["= 0", "thấp", "0.0", "gần 0"] },
-    ],
-    explanation:
-      "Self-Consistency cần đa dạng reasoning paths → temperature 0.5-1.0 để sampling đa dạng. Zero-shot CoT đơn lẻ nên dùng temperature 0 để output deterministic, dễ debug và reproduce. Hai mục tiêu trái ngược.",
+      "Giống học sinh giải toán: khi phải trình bày lời giải, các em ít nhảy cóc hơn. AI cũng vậy — mỗi câu nháp trung gian trở thành ngữ cảnh cho câu tiếp theo, giảm lỗi tích lũy.",
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
-// Các khối code minh hoạ
-// ─────────────────────────────────────────────────────────────────────────
-const CODE_OPENAI_COT = `# Zero-shot CoT với OpenAI Python SDK
-from openai import OpenAI
-client = OpenAI()
-
-def solve_with_cot(problem: str) -> str:
-    resp = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "Bạn là giáo viên giải toán cẩn thận. "
-                    "Với mỗi bài toán, hãy TRÌNH BÀY từng bước suy luận, "
-                    "rồi kết luận bằng dòng 'Đáp án: <kết quả>'."
-                ),
-            },
-            {
-                "role": "user",
-                "content": (
-                    f"{problem}\\n\\n"
-                    "Hãy suy nghĩ từng bước trước khi trả lời."
-                ),
-            },
-        ],
-        temperature=0.2,
-    )
-    return resp.choices[0].message.content or ""
-
-
-# Few-shot CoT: chèn 2 ví dụ mẫu có từng bước
-FEW_SHOT = """
-Ví dụ 1:
-Q: 3 chiếc bánh giá 60.000đ, mua 5 chiếc thì bao nhiêu?
-Suy nghĩ: 1 chiếc = 60.000 / 3 = 20.000đ. 5 chiếc = 5 × 20.000 = 100.000đ.
-Đáp án: 100.000đ
-
-Ví dụ 2:
-Q: Giảm 10% rồi giảm 10% nữa thì tổng giảm bao nhiêu?
-Suy nghĩ: 100 → 100 × 0.9 = 90 → 90 × 0.9 = 81. Đã giảm 100 - 81 = 19.
-Đáp án: 19%
-"""
-
-def solve_few_shot(problem: str) -> str:
-    resp = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Bạn là giáo viên cẩn thận."},
-            {
-                "role": "user",
-                "content": f"{FEW_SHOT}\\n\\nQ: {problem}\\nSuy nghĩ:",
-            },
-        ],
-        temperature=0.0,
-    )
-    return resp.choices[0].message.content or ""
-
-
-# Self-Consistency: chạy 5 lần rồi bỏ phiếu
-from collections import Counter
-import re
-
-def extract_answer(text: str) -> str:
-    m = re.search(r"Đáp án:\\s*(.+)", text)
-    return (m.group(1).strip() if m else text.strip()[-40:])
-
-def self_consistency(problem: str, n: int = 5) -> str:
-    samples = []
-    for _ in range(n):
-        resp = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "user", "content": f"{problem}\\nHãy suy nghĩ từng bước."},
-            ],
-            temperature=0.7,  # sampling đa dạng
-        )
-        samples.append(extract_answer(resp.choices[0].message.content or ""))
-    # bỏ phiếu đa số
-    return Counter(samples).most_common(1)[0][0]
-
-
-if __name__ == "__main__":
-    problem = (
-        "Một cửa hàng giảm giá 20%, sau đó giảm tiếp 10% "
-        "trên giá đã giảm. Tổng giảm thực tế là bao nhiêu phần trăm?"
-    )
-    print("Zero-shot:", solve_with_cot(problem))
-    print("Few-shot:", solve_few_shot(problem))
-    print("Self-Consistency (5 lần):", self_consistency(problem, n=5))`;
-
-const CODE_LANGCHAIN_SPLITTERS = `# Gợi ý: LangChain Text Splitters (kèm ở bài Chunking)
-# Ở bài CoT, dưới đây là template prompt dùng với LangChain.
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnableLambda
-
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.0)
-
-# --- Zero-shot CoT prompt ---
-zero_shot = ChatPromptTemplate.from_messages([
-    ("system", "Bạn là giáo viên toán kiên nhẫn."),
-    ("human", "{problem}\\n\\nHãy suy nghĩ từng bước."),
-])
-
-# --- Few-shot CoT prompt ---
-few_shot = ChatPromptTemplate.from_messages([
-    ("system", "Bạn là giáo viên. Trình bày suy luận rồi kết bằng 'Đáp án: ...'."),
-    ("human",
-     "Ví dụ: Giảm 10% rồi giảm 10% nữa → 100 → 90 → 81 → Đáp án: 19%.\\n"
-     "Q: {problem}\\nSuy nghĩ:"),
-])
-
-# --- Self-consistency qua Runnable ---
-import asyncio
-from collections import Counter
-
-async def self_consistency(problem: str, k: int = 5):
-    tasks = [
-        llm.ainvoke(zero_shot.format_prompt(problem=problem).to_messages())
-        for _ in range(k)
-    ]
-    outs = await asyncio.gather(*tasks)
-    texts = [o.content for o in outs]
-    # parse đáp án đơn giản
-    answers = [t.splitlines()[-1].replace("Đáp án:", "").strip() for t in texts]
-    return Counter(answers).most_common(1)[0][0]
-
-# Dùng:
-# answer = asyncio.run(self_consistency("Giảm 20% rồi 10%", k=5))`;
-
-// ─────────────────────────────────────────────────────────────────────────
-// Component phụ: thanh bar chart accuracy
-// ─────────────────────────────────────────────────────────────────────────
-function AccuracyBar({ rows }: { rows: AccuracyRow[] }) {
-  return (
-    <div className="space-y-2">
-      {rows.map((r) => {
-        const color =
-          r.tone === "best"
-            ? "bg-emerald-500"
-            : r.tone === "good"
-              ? "bg-sky-500"
-              : "bg-red-400";
-        const textColor =
-          r.tone === "best"
-            ? "text-emerald-600 dark:text-emerald-400"
-            : r.tone === "good"
-              ? "text-sky-600 dark:text-sky-400"
-              : "text-red-500 dark:text-red-400";
-        return (
-          <div key={r.label} className="flex items-center gap-3">
-            <span className="w-36 shrink-0 text-xs text-muted">{r.label}</span>
-            <div className="relative flex-1 h-5 rounded-full bg-surface overflow-hidden">
-              <motion.div
-                className={`absolute inset-y-0 left-0 ${color}`}
-                initial={{ width: 0 }}
-                animate={{ width: `${r.value}%` }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-              />
-            </div>
-            <span className={`w-12 text-right text-xs font-bold ${textColor}`}>
-              {r.value}%
-            </span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// Component phụ: panel trả lời (Direct hoặc CoT)
-// ─────────────────────────────────────────────────────────────────────────
-function AnswerPanel({
-  mode,
-  problem,
-  revealedSteps,
-}: {
-  mode: "direct" | "cot";
-  problem: Problem;
-  revealedSteps: number;
-}) {
-  if (mode === "direct") {
-    const ok = problem.direct.isCorrect;
-    return (
-      <div
-        className={`rounded-xl border p-4 ${
-          ok
-            ? "border-emerald-300 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-900/10"
-            : "border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/10"
-        }`}
-      >
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">
-            Direct Answer
-          </span>
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-red-500">
-            Không CoT
-          </span>
-        </div>
-        <p className="text-sm text-foreground leading-relaxed mb-3">
-          {problem.direct.reasoning}
-        </p>
-        <p
-          className={`text-lg font-bold ${
-            ok ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"
-          }`}
-        >
-          → {problem.direct.answer} {ok ? "✓" : "✗"}
-        </p>
-        <p className="text-[11px] text-muted italic mt-2">
-          Model nhảy thẳng tới đáp án — dễ sai trong bài nhiều bước.
-        </p>
-      </div>
-    );
-  }
-  // CoT panel
-  const steps = problem.cot.steps;
-  const visible = steps.slice(0, revealedSteps);
-  const final = revealedSteps >= steps.length;
-  return (
-    <div className="rounded-xl border border-sky-300 bg-sky-50 dark:border-sky-700 dark:bg-sky-900/10 p-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">
-          Chain-of-Thought
-        </span>
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-500">
-          Suy nghĩ từng bước
-        </span>
-      </div>
-      <ol className="space-y-2">
-        {visible.map((s, i) => (
-          <motion.li
-            key={i}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.05 }}
-            className="flex items-start gap-2"
-          >
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-200 dark:bg-sky-800 text-[10px] font-bold text-sky-700 dark:text-sky-300">
-              {i + 1}
-            </span>
-            <span className="text-sm text-foreground leading-snug">{s}</span>
-          </motion.li>
-        ))}
-      </ol>
-      {final ? (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-3"
-        >
-          → {problem.cot.answer} ✓
-        </motion.p>
-      ) : (
-        <p className="text-[11px] text-muted italic mt-2">
-          Đã hiện {revealedSteps}/{steps.length} bước. Bấm &quot;Bước kế&quot; để tiếp tục.
-        </p>
-      )}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// Component phụ: Self-Consistency votes chart
-// ─────────────────────────────────────────────────────────────────────────
-function VotePanel({ samples, winner }: { samples: string[]; winner: string }) {
-  const counts: Record<string, number> = {};
-  samples.forEach((s) => {
-    counts[s] = (counts[s] ?? 0) + 1;
-  });
-  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  const max = entries[0]?.[1] ?? 1;
-  return (
-    <div className="rounded-xl border border-border bg-surface p-4 space-y-2">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">
-          Phiếu bầu đáp án (mô phỏng 8 lần chạy)
-        </span>
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-accent">
-          Thắng: {winner}
-        </span>
-      </div>
-      {entries.map(([k, v]) => {
-        const isWin = k === winner;
-        return (
-          <div key={k} className="flex items-center gap-2">
-            <span
-              className={`w-28 shrink-0 text-xs ${
-                isWin ? "font-bold text-emerald-600 dark:text-emerald-400" : "text-muted"
-              }`}
-            >
-              {k}
-            </span>
-            <div className="flex-1 h-3 rounded-full bg-card overflow-hidden">
-              <motion.div
-                className={`h-full ${isWin ? "bg-emerald-500" : "bg-red-300 dark:bg-red-700"}`}
-                initial={{ width: 0 }}
-                animate={{ width: `${(v / max) * 100}%` }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              />
-            </div>
-            <span className="w-8 text-right text-xs text-muted">{v}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// Main component
+// Component chính
 // ─────────────────────────────────────────────────────────────────────────
 export default function ChainOfThoughtTopic() {
-  const [problemIdx, setProblemIdx] = useState(0);
-  const [variant, setVariant] = useState<CotVariant>("zero-shot");
-  const [revealedSteps, setRevealedSteps] = useState(0);
-
-  const problem = PROBLEMS[problemIdx];
-  const variantInfo = VARIANT_INFO[variant];
-
-  const accuracyRows: AccuracyRow[] = useMemo(
-    () => [
-      { label: "Direct (không CoT)", value: 31, tone: "neutral" },
-      {
-        label: VARIANT_INFO["zero-shot"].label,
-        value: VARIANT_INFO["zero-shot"].accuracyBoost,
-        tone: variant === "zero-shot" ? "good" : "neutral",
-      },
-      {
-        label: VARIANT_INFO["few-shot"].label,
-        value: VARIANT_INFO["few-shot"].accuracyBoost,
-        tone: variant === "few-shot" ? "good" : "neutral",
-      },
-      {
-        label: VARIANT_INFO["self-consistency"].label,
-        value: VARIANT_INFO["self-consistency"].accuracyBoost,
-        tone: variant === "self-consistency" ? "best" : "neutral",
-      },
-    ],
-    [variant],
-  );
-
-  const revealNext = useCallback(() => {
-    setRevealedSteps((s) => Math.min(s + 1, problem.cot.steps.length));
-  }, [problem.cot.steps.length]);
-
-  const revealAll = useCallback(() => {
-    setRevealedSteps(problem.cot.steps.length);
-  }, [problem.cot.steps.length]);
-
-  const resetSteps = useCallback(() => {
-    setRevealedSteps(0);
-  }, []);
-
-  const switchProblem = useCallback((idx: number) => {
-    setProblemIdx(idx);
-    setRevealedSteps(0);
-  }, []);
-
-  // ─────────────────────────────────────────────────────────────────────
-  // Render
-  // ─────────────────────────────────────────────────────────────────────
   return (
     <>
-      {/* ━━━━━━━━━━━━━━━━ HOOK — dự đoán ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={1} totalSteps={8} label="Thử đoán">
-        <PredictionGate
-          question="Cửa hàng giảm giá 20%, sau đó giảm thêm 10%. Tổng giảm bao nhiêu phần trăm?"
-          options={["30%", "28%", "25%", "32%"]}
-          correct={1}
-          explanation="Không phải 30%! Giảm 20% trước: 100 → 80. Giảm 10% nữa trên 80: 80 × 0.9 = 72. Tổng giảm = 100 − 72 = 28%. Hầu hết mọi người (và AI khi không dùng CoT) cộng thẳng 20 + 10 → sai 30%. Chain-of-Thought buộc AI tính TỪNG BƯỚC để tránh đúng kiểu lỗi này."
-        >
-          <p className="text-sm text-muted mt-4">
-            Ở dưới đây chúng ta sẽ so sánh hai cách AI trả lời — <strong className="text-foreground">trực tiếp</strong> và <strong className="text-foreground">theo Chain-of-Thought</strong> — trên cùng một bài toán, rồi đo độ chính xác qua các biến thể CoT khác nhau.
+      {/* ============ BƯỚC 1 — DỰ ĐOÁN ============ */}
+      <PredictionGate
+        question="Cửa hàng dán bảng 'giảm 20%, thêm 10% tại quầy thanh toán'. Tổng cộng bạn được giảm bao nhiêu phần trăm so với giá gốc?"
+        options={[
+          "30% — cộng thẳng hai con số",
+          "28% — giảm kép, ít hơn tổng",
+          "25% — trung bình cộng của hai lần giảm",
+          "32% — có cộng dồn khuyến mãi",
+        ]}
+        correct={1}
+        explanation="Đáp án đúng là 28%. Lần giảm thứ hai (10%) chỉ áp lên giá đã giảm lần một, không phải giá gốc — nên tổng giảm ít hơn 30%. Đây đúng là kiểu bài nhiều bước mà AI hay trả lời cẩu thả khi bị ép đáp án nhanh. Bài học hôm nay chỉ bạn cách buộc AI 'nháp' để không lặp lại lỗi này."
+      >
+        <p className="mt-3 text-sm text-muted">
+          Câu chuyện về phần trăm giảm kép cũng chính là câu chuyện của tất cả
+          những việc nhiều bước ở văn phòng: lương, thuế, thưởng, so sánh nhà
+          cung cấp. Cùng xem vì sao một câu “Hãy suy nghĩ từng bước” lại thay
+          đổi hoàn toàn cuộc chơi.
+        </p>
+      </PredictionGate>
+
+      {/* ============ BƯỚC 2 — ẨN DỤ ============ */}
+      <p>
+        Hãy nhớ thời đi học: cô giáo luôn dặn{" "}
+        <strong>“trình bày bài giải, đừng chỉ viết mỗi đáp án”</strong>. Em
+        nào nhảy thẳng đến kết quả cuối rất hay sai ở bài nhiều bước, còn em
+        nào chịu khó viết từng dòng lại thường đúng, dù chưa phải giỏi nhất.
+        Chain-of-Thought làm đúng việc đó với AI: yêu cầu AI
+        <strong> viết nháp</strong> trước khi kết luận.
+      </p>
+      <p>
+        Một cách so sánh khác: khi luật sư tranh luận trước toà, họ
+        <strong> không</strong> nhảy thẳng đến câu “thân chủ tôi vô tội”.
+        Họ dẫn dắt từng mắt xích — chứng cứ A, nhân chứng B, tình tiết C —
+        rồi mới chốt. Nhờ đó toà (và cả chính họ) có cơ hội phát hiện chỗ
+        lỏng lẻo trước khi quyết định. AI cũng vậy: càng đi qua nhiều mắt
+        xích đúng, xác suất đáp án cuối đúng càng cao.
+      </p>
+      <p>
+        Trong công việc văn phòng, “nhiều mắt xích” xuất hiện ở khắp nơi:
+        tính công nợ qua nhiều kỳ, so sánh 3 hợp đồng, viết báo cáo nhiều đề
+        mục, lên lịch họp có ràng buộc. Bạn càng ép AI trình bày nháp, mức
+        kiểm soát của bạn càng cao — và sai sót giảm rõ rệt.
+      </p>
+
+      {/* ============ BƯỚC 3 — TRỰC QUAN HÓA ============ */}
+      <VisualizationSection topicSlug={metadata.slug}>
+        <LessonSection label="Demo 1 — Nhanh vs. nháp kỹ" step={1}>
+          <DemoStepBadge
+            step={1}
+            total={3}
+            labels={[
+              "So sánh câu trả lời trực tiếp vs. từng bước",
+              "Tự xếp các bước suy luận",
+              "Hai mẫu prompt cho cùng một câu hỏi",
+            ]}
+          />
+          <p className="mb-3 text-sm text-muted leading-relaxed">
+            Cùng một câu hỏi, bật giữa hai chế độ “câu trả lời trực tiếp” và
+            “suy nghĩ từng bước”. Bạn sẽ thấy một pattern rất rõ: kiểu trả
+            lời nhanh hay sai ở những tình huống nhiều bước thường gặp.
           </p>
-        </PredictionGate>
-      </LessonSection>
+          <DirectVsStepDemo />
+          <Callout variant="tip" title="Thử đổi tab ở trên">
+            Bấm ba tình huống “Khuyến mãi chồng”, “Sắp phòng họp”, “Hoàn thuế
+            VAT” rồi toggle giữa hai chế độ. AI đều sai khi trả lời nhanh và
+            đều đúng khi được “nháp”.
+          </Callout>
+        </LessonSection>
 
-      {/* ━━━━━━━━━━━━━━━━ VISUALIZATION ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={2} totalSteps={8} label="Khám phá">
-        <VisualizationSection topicSlug={metadata.slug}>
-          <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-start justify-between flex-wrap gap-3">
-              <div>
-                <h3 className="text-base font-semibold text-foreground mb-1">
-                  Direct vs Chain-of-Thought
-                </h3>
-                <p className="text-xs text-muted">
-                  Cùng đề bài → hai cách trả lời → hai kết quả khác nhau.
-                </p>
-              </div>
-              <ProgressSteps
-                current={Math.max(1, Math.min(revealedSteps + 1, problem.cot.steps.length))}
-                total={problem.cot.steps.length}
-                labels={problem.cot.steps.map((_, i) => `Bước ${i + 1}/${problem.cot.steps.length}`)}
-              />
-            </div>
+        <LessonSection label="Demo 2 — Bạn tự xếp các bước" step={2}>
+          <DemoStepBadge
+            step={2}
+            total={3}
+            labels={[
+              "So sánh câu trả lời trực tiếp vs. từng bước",
+              "Tự xếp các bước suy luận",
+              "Hai mẫu prompt cho cùng một câu hỏi",
+            ]}
+          />
+          <p className="mb-3 text-sm text-muted leading-relaxed">
+            Tình huống: bạn được sếp giao so sánh ba nhà cung cấp A, B, C rồi
+            đề xuất chọn một bên. Các bước dưới đây đang bị xáo. Hãy kéo thả
+            để xếp lại đúng thứ tự một chuỗi suy luận lành mạnh.
+          </p>
+          <Reorderable
+            instruction="Kéo thả để sắp xếp 5 bước so sánh nhà cung cấp theo thứ tự đúng."
+            items={[
+              "Chốt chọn một nhà cung cấp và viết lý do",
+              "Liệt kê các tiêu chí quan trọng cho tình huống của mình",
+              "Chấm điểm từng nhà cung cấp trên từng tiêu chí",
+              "Cộng tổng điểm và xếp hạng ba nhà cung cấp",
+              "Thu thập thông tin ba nhà cung cấp vào một bảng",
+            ]}
+            correctOrder={[4, 1, 2, 3, 0]}
+          />
+          <Callout variant="insight" title="Ghi nhớ">
+            Một chuỗi suy luận tốt luôn đi từ{" "}
+            <strong>thu thập → xác định tiêu chí → chấm điểm → tổng
+              hợp → kết luận</strong>. Bạn có thể dán nguyên thứ tự này vào
+            prompt để AI bám theo.
+          </Callout>
+        </LessonSection>
 
-            {/* Problem selector */}
-            <div className="flex flex-wrap gap-2">
-              {PROBLEMS.map((p, i) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => switchProblem(i)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-                    problemIdx === i
-                      ? "bg-accent text-white"
-                      : "bg-surface text-muted hover:text-foreground"
-                  }`}
-                >
-                  Bài {i + 1} · {p.domain}
-                </button>
+        <LessonSection label="Demo 3 — Hai mẫu prompt" step={3}>
+          <DemoStepBadge
+            step={3}
+            total={3}
+            labels={[
+              "So sánh câu trả lời trực tiếp vs. từng bước",
+              "Tự xếp các bước suy luận",
+              "Hai mẫu prompt cho cùng một câu hỏi",
+            ]}
+          />
+          <p className="mb-3 text-sm text-muted leading-relaxed">
+            Cùng một câu hỏi tính phụ cấp. Chỉ cần thêm một câu dặn “hãy liệt
+            kê từng khoản rồi cộng lại”, câu trả lời của AI đã kiểm được rõ
+            ràng và bạn có thể đối chiếu với Excel trong 5 giây.
+          </p>
+          <PromptTemplateDemo />
+        </LessonSection>
+      </VisualizationSection>
+
+      {/* ============ BƯỚC 4 — AHA ============ */}
+      <AhaMoment>
+        <strong>Chain-of-Thought không làm AI thông minh hơn — nó cho AI
+        thời gian để suy nghĩ.</strong>{" "}
+        Khi bạn bắt AI viết nháp từng bước, mỗi bước trung gian trở thành gợi
+        ý cho bước tiếp theo. Cũng một mô hình đó, nhưng được phép trình bày
+        lời giải, tỉ lệ đúng tăng rõ rệt — đặc biệt ở những việc văn phòng có
+        nhiều mắt xích.
+      </AhaMoment>
+
+      {/* ============ BƯỚC 5 — INLINE CHALLENGE ============ */}
+      <InlineChallenge
+        question="Công việc nào SAU ĐÂY sẽ hưởng lợi NHIỀU NHẤT khi bạn thêm 'Hãy suy nghĩ từng bước' vào prompt?"
+        options={[
+          "Viết một câu chào đầu email cho sếp",
+          "Tính tổng công tác phí một chuyến đi 3 ngày, có tỉ giá và thuế",
+          "Đặt tên file báo cáo tháng",
+          "Dịch câu 'Good morning' sang tiếng Việt",
+        ]}
+        correct={1}
+        explanation="Tính công tác phí là việc nhiều bước: đổi tỉ giá, cộng từng ngày, cộng thuế — rất dễ sai. Ba việc còn lại chỉ một bước, CoT chỉ tốn thêm token chứ không cải thiện gì."
+      />
+
+      {/* ============ BƯỚC 6 — GIẢI THÍCH SÂU ============ */}
+      <ExplanationSection topicSlug={metadata.slug}>
+        <div className="space-y-3">
+          <p>
+            <strong>Chain-of-Thought</strong> là một kỹ thuật viết prompt —
+            KHÔNG phải là một tính năng của AI. Bạn có thể áp dụng ngay với
+            ChatGPT, Claude, Gemini hay bất cứ trợ lý AI nào bạn đang dùng mà
+            không cần cài thêm gì. Chỉ là cách{" "}
+            <TopicLink slug="prompt-engineering">đặt câu hỏi</TopicLink>{" "}
+            khác đi một chút.
+          </p>
+          <p>
+            Ý tưởng cốt lõi rất gọn: thay vì hỏi “Đáp án là gì?”, bạn yêu cầu
+            AI <strong>viết nháp từng bước trước khi ra đáp án</strong>. Khi
+            các bước trung gian hiện ra, bạn có thể đọc qua, phát hiện chỗ AI
+            nhầm, và yêu cầu sửa — giống như đọc bài làm của một nhân viên
+            thực tập.
+          </p>
+        </div>
+
+        <StepReveal
+          labels={[
+            "Khi nào CoT toả sáng",
+            "Khi nào đừng dùng CoT",
+            "Ba mẫu prompt dành cho văn phòng",
+          ]}
+        >
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-foreground">
+              Khi nào CoT toả sáng
+            </p>
+            <WhenToUseChart />
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-foreground">
+              Khi nào đừng dùng CoT
+            </p>
+            <Callout variant="warning" title="Đừng ép AI nháp ở việc một bước">
+              Với câu hỏi tra cứu nhanh, chào hỏi, dịch câu ngắn — CoT không
+              những không giúp, mà còn làm câu trả lời dài ra, tốn token và
+              khiến bạn đọc mệt. Quy tắc ngón tay cái: nếu một người văn
+              phòng làm việc đó trong 10 giây không cần viết nháp, thì AI
+              cũng không cần.
+            </Callout>
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-foreground">
+              Ba mẫu prompt dành cho văn phòng (copy và đổi số liệu)
+            </p>
+            <div className="space-y-3">
+              {PROMPT_TEMPLATES.map((t) => (
+                <PromptTemplateCard key={t.tag} template={t} />
               ))}
             </div>
-
-            {/* Problem statement */}
-            <div className="rounded-xl bg-surface p-4">
-              <span className="text-[10px] font-semibold text-tertiary uppercase tracking-wider block mb-1">
-                Đề bài
-              </span>
-              <p className="text-sm text-foreground leading-relaxed">
-                {problem.question}
-              </p>
-            </div>
-
-            {/* Variant selector */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-semibold text-tertiary uppercase tracking-wider">
-                  Biến thể CoT
-                </span>
-                <span className="text-[10px] text-muted italic">
-                  {variantInfo.tagline}
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                {(Object.keys(VARIANT_INFO) as CotVariant[]).map((v) => {
-                  const info = VARIANT_INFO[v];
-                  return (
-                    <button
-                      key={v}
-                      type="button"
-                      onClick={() => setVariant(v)}
-                      className={`rounded-xl border px-3 py-2 text-left transition-colors ${
-                        variant === v
-                          ? "border-accent bg-accent-light text-accent-dark"
-                          : "border-border bg-card text-muted hover:border-accent/50 hover:text-foreground"
-                      }`}
-                    >
-                      <span className="block text-xs font-semibold">
-                        {info.label}
-                      </span>
-                      <span className="block text-[10px] opacity-80">
-                        +{info.accuracyBoost}% accuracy
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="text-xs text-muted leading-relaxed pt-1">
-                {variantInfo.description}
-              </p>
-            </div>
-
-            {/* Side-by-side comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <AnswerPanel mode="direct" problem={problem} revealedSteps={0} />
-              <AnswerPanel mode="cot" problem={problem} revealedSteps={revealedSteps} />
-            </div>
-
-            {/* Step-by-step controls */}
-            <div className="flex flex-wrap gap-2 items-center">
-              <button
-                type="button"
-                onClick={revealNext}
-                disabled={revealedSteps >= problem.cot.steps.length}
-                className="rounded-lg bg-accent text-white text-xs font-semibold px-3 py-1.5 disabled:opacity-40"
-              >
-                Bước kế →
-              </button>
-              <button
-                type="button"
-                onClick={revealAll}
-                disabled={revealedSteps >= problem.cot.steps.length}
-                className="rounded-lg bg-surface text-foreground text-xs font-medium px-3 py-1.5 disabled:opacity-40"
-              >
-                Hiện hết
-              </button>
-              <button
-                type="button"
-                onClick={resetSteps}
-                className="rounded-lg bg-surface text-muted text-xs font-medium px-3 py-1.5"
-              >
-                Reset
-              </button>
-              <span className="text-[11px] text-muted ml-auto">
-                Đang hiển thị: <strong>{revealedSteps}</strong>/{problem.cot.steps.length} bước
-              </span>
-            </div>
-
-            {/* Variant-specific extras */}
-            {variant === "self-consistency" && (
-              <VotePanel
-                samples={problem.samples}
-                winner={problem.cot.answer}
-              />
-            )}
-
-            {variant === "few-shot" && (
-              <div className="rounded-xl border border-border bg-surface p-4 space-y-2">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">
-                  Ví dụ mẫu trong prompt (mô phỏng)
-                </span>
-                <pre className="text-[11px] text-foreground/90 whitespace-pre-wrap leading-relaxed">
-{`Q: 3 chiếc bánh 60.000đ, mua 5 chiếc bao nhiêu?
-Suy nghĩ: 60/3 = 20. 5×20 = 100.
-Đáp án: 100.000đ
-
-Q: Giảm 10% rồi 10% nữa, tổng giảm?
-Suy nghĩ: 100 → 90 → 81. 100−81 = 19.
-Đáp án: 19%
-
-Q: ${problem.question.slice(0, 70)}...
-Suy nghĩ: `}
-                </pre>
-              </div>
-            )}
-
-            {/* Accuracy bar chart */}
-            <div className="rounded-xl border border-border bg-card p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-foreground">
-                  Độ chính xác trên GSM8K (mô phỏng, ~8.5K bài toán lời)
-                </span>
-                <span className="text-[10px] text-muted">
-                  Số thấp hơn công bố trong paper gốc 2022
-                </span>
-              </div>
-              <AccuracyBar rows={accuracyRows} />
-              <p className="text-[11px] text-muted leading-relaxed">
-                GSM8K (Cobbe et al. 2021) là bộ chuẩn đánh giá toán lời lớp tiểu học. CoT đã biến điểm accuracy từ ~17-30% (zero-shot trực tiếp) thành 50-80%+ chỉ bằng thay đổi prompt, và Self-Consistency đẩy lên hơn 90% với các model hiện đại.
-              </p>
-            </div>
           </div>
-        </VisualizationSection>
-      </LessonSection>
+        </StepReveal>
 
-      {/* ━━━━━━━━━━━━━━━━ AHA MOMENT ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
-        <AhaMoment>
-          <strong>Chain-of-Thought</strong> biến một cú nhảy xa thành nhiều bước đi ngắn. Model chỉ phải predict token tiếp theo — nếu khoảng cách từ câu hỏi đến đáp án quá xa, mỗi token bị &quot;gánh&quot; quá nhiều thông tin. CoT chèn các bước trung gian vào làm <em>bậc thang</em>: mỗi bước mới CHỈ cần suy ra từ bước vừa sinh, và mỗi bước là một bài toán con dễ hơn. Từ đó, <strong>giới hạn reasoning của model tăng lên mà không cần train lại.</strong>
-        </AhaMoment>
-      </LessonSection>
-
-      {/* ━━━━━━━━━━━━━━━━ INLINE CHALLENGE #1 ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={4} totalSteps={8} label="Thử thách 1">
-        <InlineChallenge
-          question="Bạn muốn AI dịch 'Hello' sang tiếng Việt. Có cần dùng Chain-of-Thought không?"
-          options={[
-            "Có — luôn dùng CoT cho mọi task",
-            "Không — dịch đơn giản không cần suy luận nhiều bước, CoT chỉ thêm chậm và tốn token",
-            "Tùy — dùng CoT nếu câu dài",
-          ]}
-          correct={1}
-          explanation="CoT chỉ hữu ích cho task CẦN SUY LUẬN: toán, logic, phân tích. Với task đơn giản như dịch 1 từ, CoT chỉ thêm token (tốn tiền + latency) mà không cải thiện kết quả."
-        />
-      </LessonSection>
-
-      {/* ━━━━━━━━━━━━━━━━ EXPLANATION ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={5} totalSteps={8} label="Giải thích">
-        <ExplanationSection topicSlug={metadata.slug}>
+        <div className="space-y-3 pt-2">
           <p>
-            <strong>Chain-of-Thought (CoT)</strong> là kỹ thuật{" "}
-            <TopicLink slug="prompt-engineering">prompt engineering</TopicLink> yêu cầu LLM trình bày quá trình suy luận từng bước trước khi đưa ra đáp án cuối cùng — nền tảng của các{" "}
-            <TopicLink slug="reasoning-models">reasoning model</TopicLink> hiện đại như o1, R1.
+            <strong>Hai biến thể bạn nên biết.</strong> Trong tài liệu AI
+            tiếng Anh, người ta phân biệt hai cách dùng CoT phổ biến:
           </p>
+          <ZeroVsFewShotDiagram />
+        </div>
 
-          <Callout variant="insight" title="Vì sao CoT hoạt động — cái nhìn xác suất">
-            LLM sinh text theo phân phối có điều kiện <LaTeX>{"P(y_t \\mid y_{<t}, x)"}</LaTeX>. Mỗi token mới chỉ nhìn thấy các token trước nó. Khi AI phải nhảy từ câu hỏi <LaTeX>{"x"}</LaTeX> thẳng tới đáp án <LaTeX>{"y"}</LaTeX>, xác suất <LaTeX>{"P(y \\mid x)"}</LaTeX> phải &quot;gánh&quot; toàn bộ chuỗi suy luận. CoT viết ra từng bước trung gian <LaTeX>{"r_1, r_2, \\dots, r_k"}</LaTeX>, phân tích phân phối thành tích <LaTeX>{"P(y \\mid x) = \\sum_{r} P(y \\mid r, x) \\, P(r \\mid x)"}</LaTeX> — mỗi bước là một subtask nhỏ, dễ ước lượng hơn.
-          </Callout>
-
+        <div className="space-y-3 pt-2">
           <p>
-            <strong>3 biến thể chính:</strong>
+            <strong>Mức cải thiện cụ thể ra sao?</strong> Thí nghiệm công
+            khai trên nhiều mô hình lớn (GPT, Claude, Gemini) đều cho thấy
+            cùng một pattern: chỉ cần đổi cách hỏi, độ chính xác trên bài
+            nhiều bước có thể tăng từ khoảng một phần ba lên hơn hai phần ba.
           </p>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-sm">
-            <li>
-              <strong>Zero-shot CoT</strong> — Thêm &quot;Let&apos;s think step by step&quot; (Kojima et al. 2022, NeurIPS). Không ví dụ mẫu, chỉ 1 câu ma thuật. Tăng accuracy GSM8K từ ~17% → ~40% chỉ với GPT-3.
-            </li>
-            <li>
-              <strong>Few-shot CoT</strong> — Chèn 2-8 ví dụ mẫu đã giải với từng bước (Wei et al. 2022). Dạng{" "}
-              <TopicLink slug="in-context-learning">in-context learning</TopicLink>. Kiểm soát được format, stable hơn zero-shot.
-            </li>
-            <li>
-              <strong>Self-Consistency</strong> — Chạy 5-40 lần với temperature &gt; 0, bỏ phiếu đáp án đa số (Wang et al. 2022, &quot;Self-Consistency Improves Chain of Thought Reasoning&quot;). Đẩy GSM8K lên 74%.
-            </li>
-          </ul>
+          <AccuracyBars />
+        </div>
 
+        <div className="space-y-3 pt-2">
           <p>
-            Các biến thể mở rộng khác đáng biết: <strong>Tree-of-Thought</strong> (Yao et al. 2023, mở rộng thành cây search với backtracking), <strong>ReAct</strong> (kết hợp reasoning với tool-use), và <strong>Scratchpad</strong> (tương tự CoT nhưng tập trung vào toán số học).
+            <strong>Ghép đôi thuật ngữ.</strong> Để ghi nhớ, hãy nối mỗi
+            khái niệm bên trái với định nghĩa bên phải.
           </p>
+          <MatchPairs
+            instruction="Nối mỗi thuật ngữ với định nghĩa đúng — thực hành phản xạ trước khi vào quiz."
+            pairs={[
+              {
+                left: "Chain-of-Thought",
+                right:
+                  "Kỹ thuật buộc AI trình bày nháp từng bước trước khi chốt đáp án",
+              },
+              {
+                left: "Zero-shot CoT",
+                right:
+                  "Chỉ thêm câu 'Hãy suy nghĩ từng bước' vào cuối prompt, không kèm ví dụ mẫu",
+              },
+              {
+                left: "Few-shot CoT",
+                right:
+                  "Cho AI thấy trước 1–2 ví dụ đã trình bày theo style bạn muốn",
+              },
+              {
+                left: "Token",
+                right:
+                  "Đơn vị AI tính tiền và tính độ dài — càng nhiều chữ nháp thì càng tốn",
+              },
+            ]}
+          />
+        </div>
 
-          <CodeBlock language="python" title="cot_openai.py — ba biến thể CoT dùng OpenAI SDK">
-            {CODE_OPENAI_COT}
-          </CodeBlock>
-
-          <Callout variant="tip" title="Khi nào DÙNG CoT">
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Toán số học, toán lời, xác suất, tổ hợp</li>
-              <li>Logic, suy luận nhân quả, puzzle</li>
-              <li>Phân tích code, debug, review security</li>
-              <li>Lập kế hoạch nhiều bước (agent planning)</li>
-              <li>Đọc hiểu tài liệu dài, trích xuất structured data</li>
-            </ul>
-          </Callout>
-
-          <Callout variant="warning" title="Khi nào KHÔNG cần CoT">
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Dịch thuật, paraphrase, summarization ngắn</li>
-              <li>Phân loại cảm xúc, spam/ham, intent classification</li>
-              <li>Sinh text sáng tạo (thơ, slogan, caption)</li>
-              <li>Lookup facts đơn giản (thủ đô nước nào)</li>
-              <li>Task real-time cần latency &lt; 500ms</li>
-            </ul>
-          </Callout>
-
-          <CollapsibleDetail title="Chi tiết kỹ thuật: Self-Consistency vs Majority Voting">
-            <div className="space-y-3 text-sm">
-              <p>
-                Self-Consistency không chỉ là &quot;chạy nhiều lần rồi vote&quot;. Wang et al. chứng minh: <strong>nếu reasoning đúng, nhiều đường đi khác nhau sẽ HỘI TỤ về cùng đáp án;</strong> nếu reasoning sai, các đáp án sai thường phân tán rải rác. Do đó, frequency của đáp án trong tập sample là một <em>proxy tốt</em> cho confidence.
-              </p>
-              <p>
-                Công thức (đơn giản hoá): với <LaTeX>{"N"}</LaTeX> samples, đáp án thắng là
-                <LaTeX block>{"\\hat{y} = \\arg\\max_{y \\in \\mathcal{Y}} \\sum_{i=1}^N \\mathbb{1}[f(r_i) = y]"}</LaTeX>
-                trong đó <LaTeX>{"r_i"}</LaTeX> là reasoning chain thứ <LaTeX>{"i"}</LaTeX>, và <LaTeX>{"f(\\cdot)"}</LaTeX> là hàm extract đáp án cuối.
-              </p>
-              <p>
-                <strong>Chi phí:</strong> tỉ lệ tuyến tính với <LaTeX>{"N"}</LaTeX>. Trên GPT-4o-mini giá ~$0.15/1M input tokens, 5 sample của 1 câu hỏi 500 token → ~$0.00038 vs $0.0000075 không Self-Consistency — đắt gấp 50 lần/câu hỏi. Ứng dụng production thường dùng <LaTeX>{"N = 3 - 5"}</LaTeX>, không lên 40.
-              </p>
-              <p>
-                <strong>Temperature setting:</strong> Self-Consistency CHỈ hoạt động khi sampling đa dạng.
-                Với <code>temperature = 0</code>, mọi sample sẽ giống hệt nhau (greedy decoding) → vote vô
-                nghĩa. Paper gốc dùng <code>temperature = 0.7</code> với <code>top_p = 0.95</code>. Tăng
-                temperature quá cao (&gt;1.2) thì reasoning bị noise, đáp án trở nên ngẫu nhiên — hiệu quả
-                giảm. Sweet spot thường là 0.5-0.9 tuỳ task.
-              </p>
-              <p>
-                <strong>Khi nào Self-Consistency THẤT BẠI?</strong> (1) Task có đáp án liên tục
-                (regression, generation tự do) — majority vote không áp dụng được. (2) Task mà sai lầm có
-                hệ thống: nếu model có bias, tất cả N samples đều sai cùng hướng. (3) Khi N quá nhỏ
-                (N=2) — không đủ để dập tắt noise. (4) Task mà đáp án đúng là rare — majority có thể vote
-                cho đáp án sai phổ biến (&quot;mode collapse&quot;).
-              </p>
-              <p>
-                <strong>Biến thể &quot;Weighted Self-Consistency&quot;:</strong> thay vì đếm frequency,
-                cộng xác suất (log-prob) của từng reasoning chain. Nhưng phần lớn API (OpenAI, Anthropic)
-                không expose log-prob của full generation → khó triển khai production. Dùng đơn thuần
-                majority vote là đủ tốt 90% tình huống.
-              </p>
-              <p>
-                <strong>Universal Self-Consistency</strong> (Chen et al. 2023): thay vì extract đáp án
-                cuối bằng regex, dùng một LLM call thứ hai để đọc N reasoning chains và chọn ra &quot;đáp
-                án nhất quán nhất&quot;. Hoạt động với task có output dạng free-form (code, natural language).
-                Trade-off: thêm 1 LLM call cho mỗi query.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <CollapsibleDetail title="Tree-of-Thoughts (ToT) — khi CoT tuyến tính không đủ">
-            <div className="space-y-3 text-sm">
-              <p>
-                <strong>Tree-of-Thoughts</strong> (Yao et al. 2023, NeurIPS) mở rộng CoT từ chuỗi tuyến
-                tính thành cây search. Mỗi nút trong cây là một &quot;thought&quot; (một bước reasoning
-                trung gian), và LLM có thể: (1) <em>branch</em> — sinh nhiều nhánh từ cùng một nút, (2){" "}
-                <em>evaluate</em> — chấm điểm mỗi nhánh về khả năng dẫn tới đáp án đúng, (3){" "}
-                <em>backtrack</em> — quay lại nếu nhánh hiện tại có vẻ sai.
-              </p>
-              <p>
-                <strong>Thuật toán ToT (đơn giản hoá):</strong>
-              </p>
-              <ol className="list-decimal list-inside space-y-1 pl-2">
-                <li>Bắt đầu với problem statement → root node.</li>
-                <li>Expand: sinh <LaTeX>{"k"}</LaTeX> thought con (thường 3-5) từ nút hiện tại.</li>
-                <li>Evaluate: dùng LLM tự chấm mỗi thought (&quot;sure / likely / impossible&quot; hoặc giá trị 0-1).</li>
-                <li>Search: dùng BFS hoặc DFS với pruning — giữ <LaTeX>{"b"}</LaTeX> nhánh tốt nhất (beam).</li>
-                <li>Nếu đạt goal state → return. Nếu dead end → backtrack về parent có score cao thứ 2.</li>
-              </ol>
-              <p>
-                <strong>Khi nào ToT thắng CoT?</strong> Bài toán có multiple valid paths và cần so sánh:
-                (1) <em>Game of 24</em> — kết hợp 4 số bằng phép tính để ra 24. CoT: 4% đúng, ToT: 74%
-                đúng. (2) <em>Creative writing</em> với ràng buộc (viết truyện có exactly 4 twist). (3){" "}
-                <em>Crossword puzzles</em> cần thử-sai có hệ thống. (4) <em>Code debugging</em> với nhiều
-                hypothesis.
-              </p>
-              <p>
-                <strong>Chi phí:</strong> ToT tốn 10-100 LLM calls cho 1 bài (vs 1 call của CoT). Latency
-                và cost cực cao, thường chỉ dùng cho research hoặc bài toán high-stakes. Trong production,
-                reasoning models (o1) là giải pháp &quot;ToT nội tại&quot; — model tự search trong suy
-                nghĩ mà không cần orchestration bên ngoài.
-              </p>
-              <p>
-                <strong>Graph-of-Thoughts (GoT)</strong> (Besta et al. 2023) mở rộng thêm: cho phép cạnh
-                merge (hợp nhất 2 thought thành 1), tạo DAG thay vì cây. Áp dụng cho summarization nhiều
-                nguồn, multi-document QA. Implementation phức tạp hơn đáng kể.
-              </p>
-              <p>
-                <strong>Thư viện:</strong> <code>guidance</code>,{" "}
-                <code>langchain.experimental.tree_of_thought</code>, <code>dspy.TreeOfThoughts</code>.
-                Hiện tại vẫn là lĩnh vực research-heavy, chưa có API production cỡ OpenAI expose ToT
-                native.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <Callout variant="tip" title="Pitfall: CoT có thể 'ảo' — model tạo ra reasoning giả">
-            <p>
-              Nghiên cứu gần đây (Turpin et al. 2023, &quot;Language Models Don&apos;t Always Say What
-              They Think&quot;) phát hiện: LLM đôi khi sinh chain-of-thought trông hợp lý nhưng KHÔNG
-              phản ánh đúng quá trình thực sự dẫn tới đáp án. Ví dụ: model đã &quot;quyết định&quot; đáp
-              án dựa trên bias trong training data, rồi sinh reasoning post-hoc để biện minh.
-            </p>
-            <p className="mt-2 text-sm">
-              <strong>Hậu quả:</strong> không thể dùng reasoning chain làm &quot;lời giải thích&quot;
-              đáng tin cậy cho hành vi của model. Đặc biệt nguy hiểm trong: (1) high-stakes decisions —
-              y tế, pháp lý, tài chính, (2) audit / compliance — &quot;model giải thích tại sao quyết
-              định&quot;, (3) debugging — fix chain nhưng model vẫn sai cùng cách.
-            </p>
-            <p className="mt-2 text-sm">
-              <strong>Khắc phục:</strong> (1) dùng Self-Consistency — nếu reasoning thật, các đáp án hội
-              tụ; (2) kiểm tra reasoning bằng verifier model riêng; (3) với model lớn, reasoning chính
-              xác hơn, nhưng vẫn không đảm bảo 100%. Đây là lĩnh vực nghiên cứu mở (faithful reasoning,
-              interpretability).
-            </p>
-          </Callout>
-
-          <CollapsibleDetail title="So sánh CoT prompting vs Reasoning models (o1, R1)">
-            <div className="space-y-3 text-sm">
-              <p>
-                <strong>CoT prompting</strong> là <em>dạy cách</em> reasoning qua prompt — model gốc không thay đổi. Hiệu quả tốt cho model &gt;7B params, nhưng hạn chế: (1) chain bị giới hạn bởi context window của prompt, (2) model không được train riêng cho reasoning, (3) lỗi tích lũy khi chain quá dài (&gt;20 bước).
-              </p>
-              <p>
-                <strong>Reasoning models</strong> (OpenAI o1, DeepSeek-R1, QwQ) được train bằng RL trên phần thưởng &quot;đáp án đúng&quot;. Model học TỰ sinh chain-of-thought có thể dài hàng nghìn token, có khả năng tự sửa (self-correction), backtrack, và verify. CoT trở thành <em>nội tại</em>, không cần prompt hint.
-              </p>
-              <p>
-                <strong>Khi nào dùng gì?</strong> CoT prompting: rẻ, đơn giản, đủ dùng cho đa số use case. Reasoning models: khi bài toán phức tạp (toán olympiad, code-gen khó, chứng minh), chấp nhận latency cao (10-60s) và giá gấp 5-10x.
-              </p>
-            </div>
-          </CollapsibleDetail>
-
-          <p className="text-sm">
-            <strong>Thực hành:</strong> bắt đầu với Zero-shot CoT. Nếu model trả lời không ổn định, chuyển sang Few-shot CoT. Nếu cần độ chính xác cao nhất (và có ngân sách), dùng Self-Consistency với <LaTeX>{"N = 5"}</LaTeX>. Với task cần reasoning phức tạp, cân nhắc{" "}
-            <TopicLink slug="reasoning-models">reasoning models</TopicLink> thay vì tự prompt.
+        <div className="space-y-3 pt-2">
+          <p>
+            <strong>Điền vào chỗ trống</strong> để chốt lại công thức viết
+            prompt hiệu quả:
           </p>
+          <FillBlank
+            template="Để AI trả lời tốt hơn ở việc nhiều bước, hãy yêu cầu AI {bank1} rồi mới {bank2}, và tránh dùng kỹ thuật này cho câu hỏi {bank3}."
+            blanks={[
+              {
+                id: "bank1",
+                options: [
+                  "trình bày từng bước",
+                  "trả lời thật nhanh",
+                  "trả lời bằng emoji",
+                ],
+                correct: 0,
+              },
+              {
+                id: "bank2",
+                options: [
+                  "chốt đáp án cuối",
+                  "gợi ý câu hỏi khác",
+                  "thoát cuộc trò chuyện",
+                ],
+                correct: 0,
+              },
+              {
+                id: "bank3",
+                options: [
+                  "nhiều bước ràng buộc",
+                  "chỉ một bước đơn giản",
+                  "chuyên môn khó",
+                ],
+                correct: 1,
+              },
+            ]}
+          />
+        </div>
 
-          <CodeBlock language="python" title="cot_langchain.py — template CoT với LangChain">
-            {CODE_LANGCHAIN_SPLITTERS}
-          </CodeBlock>
+        <Callout variant="warning" title="Cảnh báo chi phí – thời gian">
+          Chain-of-Thought <strong>làm câu trả lời dài hơn</strong>, nên AI
+          cũng tính nhiều token hơn (với bản trả phí) và đợi lâu hơn vài
+          giây. Chỉ bật CoT cho những việc thực sự nhiều bước. Với câu hỏi
+          đơn giản — cứ hỏi thẳng, AI sẽ trả nhanh và rẻ.
+        </Callout>
 
-          <Callout variant="info" title="Benchmarks đáng biết">
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>
-                <strong>GSM8K</strong> (Cobbe et al. 2021): 8.5K bài toán lời cấp tiểu học — benchmark kinh điển cho CoT.
-              </li>
-              <li>
-                <strong>MATH</strong> (Hendrycks et al. 2021): 12.5K bài toán cấp 3-olympiad, khó hơn GSM8K nhiều.
-              </li>
-              <li>
-                <strong>BBH (Big-Bench Hard)</strong>: 23 task đa dạng, CoT giúp mạnh nhất ở các task symbolic reasoning.
-              </li>
-              <li>
-                <strong>HumanEval / MBPP</strong>: sinh code Python — CoT chain-of-thought giúp 5-15% accuracy.
-              </li>
-              <li>
-                <strong>ARC-AGI</strong> (Chollet 2019): pattern-matching thị giác, rất khó — reasoning models o1/R1 mới vượt được baseline.
-              </li>
-            </ul>
-          </Callout>
+        <div className="pt-2">
+          <p>
+            <strong>Trong thực tế.</strong> Một số công cụ AI đã tự bật chuỗi
+            suy luận bên trong mà không cần bạn nhắc — ví dụ{" "}
+            <TopicLink slug="chain-of-thought-in-reasoning-models">
+              GPT-o1 và chế độ “Extended Thinking” của Claude
+            </TopicLink>
+            . Với các mô hình thường, bạn vẫn cần tự chủ động nhắc. Dù ở
+            trường hợp nào, hiểu Chain-of-Thought giúp bạn biết lúc nào nên
+            chờ AI “nháp kỹ” và lúc nào nên bảo AI “ngắn gọn thôi”.
+          </p>
+        </div>
+      </ExplanationSection>
 
-          <CollapsibleDetail title="Lịch sử & papers nền tảng">
-            <div className="space-y-3 text-sm">
-              <p>
-                <strong>2022-01 · Wei et al.</strong> — &quot;Chain-of-Thought Prompting Elicits Reasoning in Large Language Models&quot;. Paper đầu tiên chứng minh CoT giúp model &gt;100B params tăng mạnh ở toán & logic. Trước đó, người ta nghĩ scaling params là đủ.
-              </p>
-              <p>
-                <strong>2022-05 · Kojima et al.</strong> — &quot;Large Language Models are Zero-Shot Reasoners&quot;. Phát hiện: chỉ cần thêm &quot;Let&apos;s think step by step&quot; (không ví dụ mẫu) cũng tăng GSM8K từ 17.7% → 40.7% trên InstructGPT. Cú huých quyết định.
-              </p>
-              <p>
-                <strong>2022-10 · Wang et al.</strong> — &quot;Self-Consistency Improves Chain of Thought Reasoning&quot;. Sampling nhiều rồi vote → GSM8K PaLM-540B đạt 74% (so với 57% CoT đơn).
-              </p>
-              <p>
-                <strong>2023 · Yao et al.</strong> — Tree of Thoughts (ToT) & ReAct. Mở rộng CoT thành cây search + tool-use.
-              </p>
-              <p>
-                <strong>2024-09 · OpenAI o1</strong> — model đầu tiên train bằng RL để tự sinh long chain-of-thought. AIME 2024: GPT-4o ~13% → o1 ~83%.
-              </p>
-              <p>
-                <strong>2025-01 · DeepSeek-R1</strong> — open-source reasoning model với kỹ thuật GRPO (Group Relative Policy Optimization), công khai full weights + recipe. Mở cửa cộng đồng tiếp cận reasoning.
-              </p>
-            </div>
-          </CollapsibleDetail>
+      {/* ============ BƯỚC 7 — TÓM TẮT ============ */}
+      <MiniSummary
+        title="Ghi nhớ 5 điều về Chain-of-Thought"
+        points={[
+          "Chain-of-Thought là cách ĐẶT CÂU HỎI — bắt AI viết nháp từng bước thay vì nhảy thẳng tới đáp án.",
+          "Dùng khi việc có nhiều bước: lương thưởng, thuế, so sánh lựa chọn, lên lịch, báo cáo nhiều đề mục.",
+          "Không dùng cho câu hỏi một bước như chào hỏi, tra cứu, dịch câu ngắn — sẽ tốn thời gian vô ích.",
+          "Zero-shot CoT: thêm câu 'Hãy suy nghĩ từng bước'. Few-shot CoT: kèm 1–2 ví dụ mẫu theo đúng format bạn muốn.",
+          "Đánh đổi: câu trả lời dài hơn, tốn token hơn, đợi lâu hơn — nhưng đúng hơn ở những việc nhiều mắt xích.",
+        ]}
+      />
 
-          <Callout variant="info" title="Checklist triển khai CoT trong production">
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Đo baseline không CoT trước khi thêm CoT — để biết gain thật.</li>
-              <li>Đặt <code>max_tokens</code> đủ cao (CoT sinh dài hơn nhiều).</li>
-              <li>Parse đáp án cuối chặt chẽ — regex trên &quot;Đáp án:&quot; hoặc dùng{" "}
-                <TopicLink slug="structured-outputs">structured outputs</TopicLink>.
-              </li>
-              <li>Log cả chain để debug khi model sai (không chỉ đáp án cuối).</li>
-              <li>Cân nhắc cache: cùng câu hỏi, cùng prompt template → cache cho nhanh.</li>
-              <li>Rate-limit Self-Consistency: không chạy 40 samples cho mọi user.</li>
-            </ul>
-          </Callout>
-        </ExplanationSection>
-      </LessonSection>
-
-      {/* ━━━━━━━━━━━━━━━━ INLINE CHALLENGE #2 ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={6} totalSteps={8} label="Thử thách 2">
-        <InlineChallenge
-          question="Bạn đang xây trợ lý toán tiếng Việt cho học sinh cấp 2. Latency yêu cầu <3s, ngân sách vừa. Biến thể CoT nào phù hợp?"
-          options={[
-            "Self-Consistency N=20 vì cần chính xác",
-            "Few-shot CoT — kiểm soát format lời giải, latency 1-2s, chi phí hợp lý",
-            "Không dùng CoT, cho model trả lời thẳng",
-            "Dùng reasoning model o1",
-          ]}
-          correct={1}
-          explanation="Few-shot CoT là compromise tốt: kiểm soát được FORMAT lời giải (theo chuẩn tiếng Việt, phù hợp học sinh), latency vẫn chấp nhận được. Self-Consistency N=20 quá tốn tiền; o1 có latency 10-60s không phù hợp UX trẻ em; không CoT thì thiếu bước giải mà trẻ em cần học theo."
-        />
-      </LessonSection>
-
-      {/* ━━━━━━━━━━━━━━━━ SUMMARY + QUIZ ━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={7} totalSteps={8} label="Tóm tắt">
-        <MiniSummary
-          points={[
-            "Chain-of-Thought buộc AI suy luận từng bước thay vì nhảy thẳng đến đáp án — biến cú nhảy xa thành nhiều bước đi ngắn.",
-            "Hoạt động vì mỗi bước trung gian trở thành NGỮ CẢNH cho bước tiếp theo, giảm gánh nặng cho single-token prediction.",
-            "Ba biến thể chính: Zero-shot CoT (thêm 'suy nghĩ từng bước'), Few-shot CoT (ví dụ mẫu), Self-Consistency (nhiều lần + vote).",
-            "Hiệu quả nhất cho toán, logic, suy luận nhiều bước. KHÔNG cần cho dịch, phân loại, text sáng tạo.",
-            "Reasoning models (o1, R1) học CoT qua RL, sinh chain nội tại — thế hệ tiếp theo của CoT prompting.",
-            "Nguyên tắc production: Zero-shot CoT cho prototyping → Few-shot CoT cho format ổn định → Self-Consistency N=3-5 khi cần chính xác cao.",
-          ]}
-        />
-      </LessonSection>
-
-      <LessonSection step={8} totalSteps={8} label="Kiểm tra">
-        <QuizSection questions={quizQuestions} />
-      </LessonSection>
+      {/* ============ BƯỚC 8 — QUIZ ============ */}
+      <QuizSection questions={quizQuestions} />
     </>
   );
 }

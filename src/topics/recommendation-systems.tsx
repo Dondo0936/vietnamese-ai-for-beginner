@@ -1,6 +1,23 @@
 "use client";
-import { useMemo, useState, useCallback } from "react";
-import { motion } from "framer-motion";
+
+import { useCallback, useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  Film,
+  Users,
+  Package,
+  Star,
+  Store,
+  Sparkles,
+  UserPlus,
+  Flame,
+  HelpCircle,
+  MousePointerClick,
+  TrendingUp,
+  Music2,
+  Tv,
+  ShoppingBag,
+} from "lucide-react";
 import {
   PredictionGate,
   LessonSection,
@@ -8,10 +25,8 @@ import {
   InlineChallenge,
   MiniSummary,
   Callout,
-  CodeBlock,
-  LaTeX,
+  ToggleCompare,
   TopicLink,
-  CollapsibleDetail,
 } from "@/components/interactive";
 import VisualizationSection from "@/components/topic/VisualizationSection";
 import ExplanationSection from "@/components/topic/ExplanationSection";
@@ -24,1158 +39,1178 @@ export const metadata: TopicMeta = {
   title: "Recommendation Systems",
   titleVi: "Hệ thống gợi ý",
   description:
-    "Hệ thống gợi ý sản phẩm, nội dung dựa trên lọc cộng tác, lọc nội dung và phương pháp lai",
+    "Shopee, Tiki, Netflix, Zing MP3 đều đang đoán sở thích của bạn bằng cùng một công thức. Bài này vẽ ra công thức đó cho dân văn phòng — không mã, không công thức toán.",
   category: "applied-ai",
-  tags: ["collaborative-filtering", "content-based", "personalization"],
+  tags: ["recommendation", "ca-nhan-hoa", "van-phong", "shopee"],
   difficulty: "intermediate",
   relatedSlugs: ["embedding-model", "multi-armed-bandit", "k-means"],
   vizType: "interactive",
 };
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
-// ============================================================
-// User-Movie rating matrix visualization
-// ============================================================
-type UserProfile = {
-  id: string;
-  name: string;
-  // Latent taste vector (2D for visualization)
-  taste: [number, number];
-};
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEMO 1 — COLLABORATIVE FILTERING SIMULATOR
+   4 người dùng × 5 bộ phim. Người học bấm "thêm đánh giá" cho chính mình,
+   hệ thống suy ra phim chưa xem sẽ được rating bao nhiêu dựa trên người tương tự.
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-type Movie = {
-  id: string;
-  title: string;
-  genre: string;
-  // Latent feature vector (2D: [action-drama, mainstream-indie])
-  feature: [number, number];
-};
+type SimUser = { id: string; name: string; avatar: string; color: string };
+type SimMovie = { id: string; title: string; tone: string; icon: string };
 
-const USERS: UserProfile[] = [
-  { id: "U1", name: "An", taste: [0.9, 0.2] },
-  { id: "U2", name: "Bình", taste: [0.8, 0.3] },
-  { id: "U3", name: "Chi", taste: [-0.7, 0.6] },
-  { id: "U4", name: "Dũng", taste: [0.4, -0.7] },
-  { id: "U5", name: "Em", taste: [-0.5, -0.8] },
-  { id: "U6", name: "Phúc", taste: [0.85, 0.1] },
+const SIM_USERS: SimUser[] = [
+  { id: "an", name: "An", avatar: "A", color: "#10b981" },
+  { id: "binh", name: "Bình", avatar: "B", color: "#f59e0b" },
+  { id: "chi", name: "Chi", avatar: "C", color: "#a855f7" },
+  { id: "dung", name: "Dũng", avatar: "D", color: "#ef4444" },
 ];
 
-const MOVIES: Movie[] = [
-  { id: "M1", title: "Biệt Đội Báo Đen", genre: "Hành động", feature: [0.9, 0.3] },
-  { id: "M2", title: "Đất Rừng Phương Nam", genre: "Drama", feature: [-0.6, 0.5] },
-  { id: "M3", title: "Nhà Bà Nữ", genre: "Hài / Gia đình", feature: [-0.5, -0.6] },
-  { id: "M4", title: "Mắt Biếc", genre: "Lãng mạn", feature: [-0.8, 0.2] },
-  { id: "M5", title: "Bố Già", genre: "Drama / Hài", feature: [-0.3, -0.4] },
-  { id: "M6", title: "Lật Mặt 7", genre: "Hành động / Hài", feature: [0.6, -0.2] },
-  { id: "M7", title: "Ròm", genre: "Indie / Drama", feature: [-0.4, 0.9] },
-  { id: "M8", title: "Hai Phượng", genre: "Hành động", feature: [0.95, 0.2] },
+const SIM_MOVIES: SimMovie[] = [
+  { id: "kiem", title: "Anh Hùng Xạ Điêu", tone: "Kiếm hiệp", icon: "⚔️" },
+  { id: "ha", title: "Hàn Mặc Tử", tone: "Kiếm hiệp", icon: "🗡️" },
+  { id: "hanh", title: "Lật Mặt 7", tone: "Hành động hài", icon: "💥" },
+  { id: "lang", title: "Mắt Biếc", tone: "Lãng mạn", icon: "💐" },
+  { id: "hai", title: "Nhà Bà Nữ", tone: "Hài gia đình", icon: "🎭" },
 ];
 
-// Compute "true" rating = dot product of taste and feature, scaled to 1..5
-function truthRating(user: UserProfile, movie: Movie): number {
-  const dot =
-    user.taste[0] * movie.feature[0] + user.taste[1] * movie.feature[1];
-  // dot ∈ [-2, 2] roughly → map to 1..5
-  const scaled = 3 + dot * 1.4;
-  return Math.max(1, Math.min(5, scaled));
-}
+// Ratings đã có sẵn. null = chưa xem.
+const SIM_INITIAL: Array<Array<number | null>> = [
+  // phim:     kiem  ha    hanh  lang  hai
+  /* An   */ [5, 5, 4, 2, 3],
+  /* Bình */ [4, 5, 5, null, 2],
+  /* Chi  */ [2, null, 3, 5, 5],
+  /* Dũng */ [null, 2, 4, 4, 5],
+];
 
-// Observed ratings: a subset of the true matrix (most missing)
-type Observation = {
-  userIdx: number;
-  movieIdx: number;
-  rating: number;
-};
-
-function seeded(seed: number): () => number {
-  let s = seed % 2147483647;
-  if (s <= 0) s += 2147483646;
-  return () => {
-    s = (s * 48271) % 2147483647;
-    return (s - 1) / 2147483646;
-  };
-}
-
-function buildObservations(seed: number): Observation[] {
-  const rand = seeded(seed);
-  const observed: Observation[] = [];
-  for (let u = 0; u < USERS.length; u++) {
-    for (let m = 0; m < MOVIES.length; m++) {
-      // ~55% sparsity — each user rates roughly 45% of movies
-      if (rand() < 0.45) {
-        const trueR = truthRating(USERS[u], MOVIES[m]);
-        // add tiny noise, round to 1 decimal
-        const noisy = Math.max(1, Math.min(5, trueR + (rand() - 0.5) * 0.4));
-        observed.push({
-          userIdx: u,
-          movieIdx: m,
-          rating: Math.round(noisy * 10) / 10,
-        });
-      }
-    }
-  }
-  return observed;
-}
-
-function cosineSim(a: number[], b: number[]): number {
+// Tính cosine similarity kiểu rút gọn giữa 2 user dựa trên phim cả hai đã rate.
+function simBetween(a: Array<number | null>, b: Array<number | null>): number {
   let dot = 0;
   let na = 0;
   let nb = 0;
+  let overlap = 0;
   for (let i = 0; i < a.length; i++) {
-    dot += a[i] * b[i];
-    na += a[i] * a[i];
-    nb += b[i] * b[i];
+    if (a[i] !== null && b[i] !== null) {
+      dot += (a[i] as number) * (b[i] as number);
+      na += (a[i] as number) ** 2;
+      nb += (b[i] as number) ** 2;
+      overlap++;
+    }
   }
-  if (na === 0 || nb === 0) return 0;
+  if (na === 0 || nb === 0 || overlap < 2) return 0;
   return dot / (Math.sqrt(na) * Math.sqrt(nb));
 }
 
-// Predict missing ratings using user-based CF:
-// weighted average of similar users' ratings
-function predictCF(
-  observed: Observation[],
-  targetUser: number,
-  targetMovie: number,
-): { prediction: number; neighbors: Array<{ user: number; sim: number }> } {
-  // Build per-user rating vector over all movies (NaN=missing)
-  const ratingVec: number[][] = USERS.map(() =>
-    MOVIES.map(() => Number.NaN),
-  );
-  for (const obs of observed) {
-    ratingVec[obs.userIdx][obs.movieIdx] = obs.rating;
-  }
-
-  const targetVec = ratingVec[targetUser];
-  const meanTarget = mean(targetVec.filter((x) => !Number.isNaN(x)));
-
-  const sims: Array<{ user: number; sim: number }> = [];
-  for (let u = 0; u < USERS.length; u++) {
-    if (u === targetUser) continue;
-    // Only compare on movies both rated
-    const aligned: number[] = [];
-    const alignedOther: number[] = [];
-    for (let m = 0; m < MOVIES.length; m++) {
-      if (!Number.isNaN(targetVec[m]) && !Number.isNaN(ratingVec[u][m])) {
-        aligned.push(targetVec[m]);
-        alignedOther.push(ratingVec[u][m]);
-      }
-    }
-    if (aligned.length < 2) continue;
-    const sim = cosineSim(
-      aligned.map((x) => x - meanTarget),
-      alignedOther.map(
-        (x) => x - mean(ratingVec[u].filter((v) => !Number.isNaN(v))),
-      ),
-    );
-    sims.push({ user: u, sim });
-  }
-
+// Dự đoán rating cho "Bạn" (hàng 5) trên 1 phim dựa vào trung bình có trọng
+// số của 4 hàng xóm (AN, BÌNH, CHI, DŨNG).
+function predictForYou(
+  you: Array<number | null>,
+  matrix: Array<Array<number | null>>,
+  movieIdx: number
+): { value: number; top: Array<{ userIdx: number; sim: number }> } {
+  const sims = matrix.map((row, u) => ({ userIdx: u, sim: simBetween(you, row) }));
   sims.sort((a, b) => b.sim - a.sim);
-  const topK = sims.slice(0, 3).filter((s) => s.sim > 0);
 
-  // Weighted prediction, only count neighbors who rated target movie
   let num = 0;
   let den = 0;
-  const usedNeighbors: Array<{ user: number; sim: number }> = [];
-  for (const n of topK) {
-    const r = ratingVec[n.user][targetMovie];
-    if (!Number.isNaN(r)) {
-      const neighborMean = mean(
-        ratingVec[n.user].filter((v) => !Number.isNaN(v)),
-      );
-      num += n.sim * (r - neighborMean);
-      den += Math.abs(n.sim);
-      usedNeighbors.push(n);
-    }
+  const top: Array<{ userIdx: number; sim: number }> = [];
+  for (const s of sims.slice(0, 3)) {
+    const r = matrix[s.userIdx][movieIdx];
+    if (r === null || s.sim <= 0) continue;
+    num += s.sim * r;
+    den += s.sim;
+    top.push(s);
   }
-
-  let prediction = meanTarget;
-  if (den > 0) prediction = meanTarget + num / den;
-  prediction = Math.max(1, Math.min(5, prediction));
-  return { prediction, neighbors: usedNeighbors };
+  if (den === 0) return { value: 0, top: [] };
+  return { value: num / den, top };
 }
 
-function mean(arr: number[]): number {
-  if (arr.length === 0) return 0;
-  let s = 0;
-  for (const v of arr) s += v;
-  return s / arr.length;
+function ratingColor(r: number | null): string {
+  if (r === null) return "transparent";
+  if (r >= 4.5) return "rgba(16, 185, 129, 0.85)";
+  if (r >= 3.5) return "rgba(132, 204, 22, 0.8)";
+  if (r >= 2.5) return "rgba(234, 179, 8, 0.8)";
+  if (r >= 1.5) return "rgba(249, 115, 22, 0.8)";
+  return "rgba(239, 68, 68, 0.85)";
 }
 
-function ratingColor(rating: number | null): string {
-  if (rating === null) return "#1f2937";
-  // rating 1..5 mapped to red-yellow-green
-  const t = (rating - 1) / 4;
-  const r = Math.round(220 - t * 120);
-  const g = Math.round(80 + t * 150);
-  const b = Math.round(70 + t * 40);
-  return `rgb(${r}, ${g}, ${b})`;
-}
+function CFSimulator() {
+  // "Bạn" là user thứ 5 — ban đầu chưa rate gì.
+  const [you, setYou] = useState<Array<number | null>>([null, null, null, null, null]);
+  const [hoverPrediction, setHoverPrediction] = useState<number | null>(null);
 
-// ============================================================
-// The viz component
-// ============================================================
-function CollaborativeFilteringViz() {
-  const [seed, setSeed] = useState(21);
-  const [hoverCell, setHoverCell] = useState<{
-    user: number;
-    movie: number;
-  } | null>(null);
-  const [showPredictions, setShowPredictions] = useState(false);
-
-  const observed = useMemo(() => buildObservations(seed), [seed]);
-
-  const grid: Array<Array<number | null>> = useMemo(() => {
-    const g: Array<Array<number | null>> = USERS.map(() =>
-      MOVIES.map(() => null),
-    );
-    for (const obs of observed) {
-      g[obs.userIdx][obs.movieIdx] = obs.rating;
-    }
-    return g;
-  }, [observed]);
+  const fullMatrix = [...SIM_INITIAL];
 
   const predictions = useMemo(() => {
-    const preds: Array<
-      Array<{ pred: number; neighbors: Array<{ user: number; sim: number }> } | null>
-    > = USERS.map(() => MOVIES.map(() => null));
-    for (let u = 0; u < USERS.length; u++) {
-      for (let m = 0; m < MOVIES.length; m++) {
-        if (grid[u][m] === null) {
-          const { prediction, neighbors } = predictCF(observed, u, m);
-          preds[u][m] = { pred: prediction, neighbors };
-        }
-      }
-    }
-    return preds;
-  }, [observed, grid]);
+    return SIM_MOVIES.map((_, movieIdx) => {
+      if (you[movieIdx] !== null) return null;
+      return predictForYou(you, fullMatrix, movieIdx);
+    });
+  }, [you]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const reshuffle = useCallback(() => {
-    setSeed((s) => (s + 13) % 9973);
+  const ratedCount = you.filter((v) => v !== null).length;
+
+  const setRating = useCallback((movieIdx: number, rating: number) => {
+    setYou((prev) => {
+      const next = [...prev];
+      next[movieIdx] = next[movieIdx] === rating ? null : rating;
+      return next;
+    });
   }, []);
 
-  const cellWidth = 56;
-  const cellHeight = 42;
-  const headerHeight = 70;
-  const userLabelWidth = 60;
-  const gridWidth = userLabelWidth + MOVIES.length * cellWidth;
-  const gridHeight = headerHeight + USERS.length * cellHeight;
+  const reset = useCallback(() => {
+    setYou([null, null, null, null, null]);
+    setHoverPrediction(null);
+  }, []);
 
-  // Compute total stats
-  const totalCells = USERS.length * MOVIES.length;
-  const observedCount = observed.length;
-  const missingCount = totalCells - observedCount;
-  const sparsity = (missingCount / totalCells) * 100;
+  const best = predictions
+    .map((p, i) => (p ? { value: p.value, movieIdx: i } : null))
+    .filter((x): x is { value: number; movieIdx: number } => x !== null)
+    .sort((a, b) => b.value - a.value)[0];
 
-  // Neighbor highlight
-  const hoverPred =
-    hoverCell && grid[hoverCell.user][hoverCell.movie] === null
-      ? predictions[hoverCell.user][hoverCell.movie]
-      : null;
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h4 className="text-sm font-semibold text-foreground">
+            Giả lập một ngày ở Netflix thu nhỏ
+          </h4>
+          <p className="text-xs text-muted">
+            Bạn chấm sao vài phim — hệ thống đoán ngay bạn sẽ thích phim còn lại bao nhiêu sao.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={reset}
+          className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs text-foreground hover:bg-surface-hover"
+        >
+          Xóa đánh giá của bạn
+        </button>
+      </div>
+
+      {/* Grid */}
+      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <table className="w-full min-w-[640px] border-collapse">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="p-3 text-left text-xs font-semibold text-muted">
+                Người xem
+              </th>
+              {SIM_MOVIES.map((m) => (
+                <th key={m.id} className="p-3 text-center">
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-lg" aria-hidden>
+                      {m.icon}
+                    </span>
+                    <span className="text-[11px] font-semibold text-foreground">
+                      {m.title}
+                    </span>
+                    <span className="text-[10px] text-tertiary">{m.tone}</span>
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {SIM_USERS.map((u, uIdx) => (
+              <tr key={u.id} className="border-b border-border/60">
+                <td className="p-3">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
+                      style={{ backgroundColor: u.color }}
+                    >
+                      {u.avatar}
+                    </div>
+                    <span className="text-sm font-medium text-foreground">{u.name}</span>
+                  </div>
+                </td>
+                {SIM_INITIAL[uIdx].map((r, mIdx) => (
+                  <td key={mIdx} className="p-2">
+                    <div
+                      className="flex h-10 items-center justify-center rounded-md text-sm font-semibold text-slate-900 dark:text-slate-900"
+                      style={{
+                        background: r === null ? "transparent" : ratingColor(r),
+                        border: r === null ? "1px dashed rgba(148,163,184,0.4)" : "none",
+                      }}
+                    >
+                      {r === null ? (
+                        <span className="text-[11px] text-tertiary">chưa xem</span>
+                      ) : (
+                        <span>{r}★</span>
+                      )}
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+            {/* Hàng "Bạn" */}
+            <tr className="bg-accent-light/40">
+              <td className="p-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">
+                    Bạn
+                  </div>
+                  <span className="text-sm font-semibold text-foreground">Bạn</span>
+                </div>
+              </td>
+              {SIM_MOVIES.map((m, mIdx) => {
+                const myRating = you[mIdx];
+                const pred = predictions[mIdx];
+                const isHovering = hoverPrediction === mIdx;
+                return (
+                  <td key={m.id} className="p-2">
+                    {myRating !== null ? (
+                      <motion.div
+                        layout
+                        className="flex h-10 flex-col items-center justify-center rounded-md text-sm font-semibold text-slate-900"
+                        style={{ background: ratingColor(myRating) }}
+                      >
+                        <span>{myRating}★</span>
+                      </motion.div>
+                    ) : pred && pred.top.length > 0 && ratedCount >= 2 ? (
+                      <button
+                        type="button"
+                        onMouseEnter={() => setHoverPrediction(mIdx)}
+                        onMouseLeave={() => setHoverPrediction(null)}
+                        className="flex h-10 w-full flex-col items-center justify-center rounded-md border border-dashed"
+                        style={{
+                          borderColor: isHovering ? "#0ea5e9" : "rgba(14,165,233,0.35)",
+                          background: `${ratingColor(pred.value)}20`,
+                        }}
+                      >
+                        <span className="text-[11px] text-accent font-semibold">
+                          đoán ≈ {pred.value.toFixed(1)}★
+                        </span>
+                      </button>
+                    ) : (
+                      <div className="flex h-10 flex-col items-center justify-center gap-1">
+                        {[1, 3, 5].map((val) => (
+                          <button
+                            key={val}
+                            type="button"
+                            onClick={() => setRating(mIdx, val)}
+                            className="text-[10px] rounded px-1.5 py-0.5 text-muted hover:bg-accent-light hover:text-accent transition-colors"
+                          >
+                            {val}★
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* Legend + instruction */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="rounded-lg border border-border bg-surface p-3">
+          <div className="text-[11px] uppercase tracking-wide text-muted mb-2">
+            Bước 1
+          </div>
+          <p className="text-sm text-foreground leading-relaxed">
+            Bấm <strong>1★, 3★ hoặc 5★</strong> ở vài phim bạn đã xem. Mỗi cú bấm là một tín hiệu bạn dạy hệ thống.
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-surface p-3">
+          <div className="text-[11px] uppercase tracking-wide text-muted mb-2">
+            Bước 2
+          </div>
+          <p className="text-sm text-foreground leading-relaxed">
+            Khi có đủ 2 đánh giá, hàng của bạn xuất hiện <strong>ô xanh nhạt với &quot;đoán ≈ ...★&quot;</strong> cho các phim còn lại.
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-surface p-3">
+          <div className="text-[11px] uppercase tracking-wide text-muted mb-2">
+            Bước 3
+          </div>
+          <p className="text-sm text-foreground leading-relaxed">
+            Rê chuột lên ô đoán để xem <strong>những ai &quot;giống bạn nhất&quot;</strong> đã chấm phim đó mấy sao.
+          </p>
+        </div>
+      </div>
+
+      {/* Neighbor reveal */}
+      <AnimatePresence>
+        {hoverPrediction !== null && predictions[hoverPrediction] && (
+          <motion.div
+            key={hoverPrediction}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2 }}
+            className="rounded-lg border border-sky-300/60 bg-sky-50 dark:bg-sky-900/20 p-4"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Users size={16} className="text-sky-600 dark:text-sky-400" />
+              <span className="text-sm font-semibold text-foreground">
+                Hệ thống dựa vào ai để đoán &quot;{SIM_MOVIES[hoverPrediction].title}&quot;?
+              </span>
+            </div>
+            <div className="space-y-1.5">
+              {predictions[hoverPrediction]!.top.map((n) => {
+                const u = SIM_USERS[n.userIdx];
+                const theirRating = SIM_INITIAL[n.userIdx][hoverPrediction];
+                const pct = Math.round(n.sim * 100);
+                return (
+                  <div key={u.id} className="flex items-center gap-2 text-sm">
+                    <div
+                      className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                      style={{ backgroundColor: u.color }}
+                    >
+                      {u.avatar}
+                    </div>
+                    <span className="text-foreground">{u.name}</span>
+                    <span className="text-xs text-muted">
+                      giống bạn {pct}% · chấm phim này{" "}
+                      <strong className="text-foreground">{theirRating}★</strong>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-xs text-muted mt-2 leading-relaxed">
+              Trung bình có trọng số của các rating trên → {predictions[hoverPrediction]!.value.toFixed(2)} ★. Người giống bạn hơn được tính nặng hơn.
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {ratedCount >= 2 && best && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="rounded-lg border border-emerald-300/60 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-sm text-foreground"
+        >
+          <span className="font-semibold text-emerald-700 dark:text-emerald-300">
+            Gợi ý số 1 cho bạn:
+          </span>{" "}
+          &quot;{SIM_MOVIES[best.movieIdx].title}&quot; — đoán{" "}
+          {best.value.toFixed(1)}★.
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEMO 2 — CONTENT-BASED VS COLLABORATIVE (ToggleCompare)
+   Cùng một user, 2 công thức gợi ý khác nhau, kết quả nhìn khác hẳn.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+type RecTile = {
+  icon: string;
+  title: string;
+  reason: string;
+};
+
+const CONTENT_RECS: RecTile[] = [
+  { icon: "⚔️", title: "Hoàng Phi Hồng", reason: "Cùng thể loại: kiếm hiệp" },
+  { icon: "🗡️", title: "Thiên Long Bát Bộ", reason: "Cùng đạo diễn · kiếm hiệp" },
+  { icon: "🏯", title: "Tây Du Ký 2023", reason: "Phim cổ trang Trung Quốc" },
+  { icon: "⚔️", title: "Anh Hùng 2", reason: "Diễn viên chính giống phần 1" },
+];
+
+const COLLAB_RECS: RecTile[] = [
+  { icon: "🎭", title: "Nhà Bà Nữ", reason: "8/10 người giống bạn đều thích" },
+  { icon: "💐", title: "Mắt Biếc", reason: "Cùng nhóm “fan cuồng phim Việt”" },
+  { icon: "🌊", title: "Đất Rừng Phương Nam", reason: "Top phim nhóm bạn đã xem" },
+  { icon: "💥", title: "Lật Mặt 7", reason: "Người có gu giống bạn đều 5★" },
+];
+
+function RecCard({ tile }: { tile: RecTile }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="rounded-lg border border-border bg-card p-3"
+    >
+      <div className="flex items-start gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-accent-light text-xl">
+          {tile.icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-foreground truncate">{tile.title}</p>
+          <p className="text-xs text-muted leading-relaxed">{tile.reason}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ContentVsCollab() {
+  return (
+    <ToggleCompare
+      labelA="Gợi ý theo đặc tính phim"
+      labelB="Gợi ý theo người giống bạn"
+      description='Cùng một Chị An vừa xem xong "Anh Hùng Xạ Điêu". Netflix có hai cách để chọn phim tiếp theo.'
+      childA={
+        <div className="space-y-3">
+          <div className="rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200/60 p-3 text-xs text-foreground leading-relaxed">
+            <strong className="text-amber-700 dark:text-amber-400">
+              Content-based (lọc theo nội dung):
+            </strong>{" "}
+            hệ thống nhìn vào <em>đặc tính</em> của phim chị An vừa xem — thể loại,
+            đạo diễn, diễn viên, thời đại — rồi tìm phim khác có đặc tính tương
+            tự. Không cần biết ai khác nghĩ gì.
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {CONTENT_RECS.map((t) => (
+              <RecCard key={t.title} tile={t} />
+            ))}
+          </div>
+          <div className="rounded-md bg-surface p-2 text-xs text-muted">
+            <strong className="text-foreground">Ưu:</strong> phim mới đăng hôm qua
+            cũng gợi ý được, chỉ cần có metadata. ·{" "}
+            <strong className="text-foreground">Nhược:</strong> dễ lặp lại kiểu phim
+            cũ, khó bất ngờ.
+          </div>
+        </div>
+      }
+      childB={
+        <div className="space-y-3">
+          <div className="rounded-lg bg-sky-50 dark:bg-sky-900/20 border border-sky-200/60 p-3 text-xs text-foreground leading-relaxed">
+            <strong className="text-sky-700 dark:text-sky-400">
+              Collaborative (lọc cộng tác):
+            </strong>{" "}
+            hệ thống tìm những người <em>có gu xem gần giống</em> chị An, rồi
+            xem nhóm đó <em>đã thích thêm phim gì khác</em>. Không cần biết phim
+            nào thể loại gì.
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {COLLAB_RECS.map((t) => (
+              <RecCard key={t.title} tile={t} />
+            ))}
+          </div>
+          <div className="rounded-md bg-surface p-2 text-xs text-muted">
+            <strong className="text-foreground">Ưu:</strong> phát hiện sở thích ẩn —
+            fan kiếm hiệp có thể cũng thích Mắt Biếc mà chính họ chưa biết. ·{" "}
+            <strong className="text-foreground">Nhược:</strong> phim mới chưa ai xem
+            → không xuất hiện.
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEMO 3 — COLD START PROBLEM
+   User vừa tạo tài khoản, chưa có lịch sử. Người học bật từng cách khắc phục
+   để thấy bảng gợi ý thay đổi.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+type ColdMode = "none" | "popular" | "survey" | "implicit";
+
+const COLD_MODES: Array<{
+  id: ColdMode;
+  label: string;
+  icon: typeof Flame;
+  description: string;
+  color: string;
+  quality: number; // 0..100 "độ khớp sở thích"
+  tiles: RecTile[];
+}> = [
+  {
+    id: "none",
+    label: "Không làm gì",
+    icon: HelpCircle,
+    description:
+      "Tài khoản mới, chưa có hành vi nào. Hệ thống không biết chị An thích gì → trang chủ rỗng hoặc ngẫu nhiên.",
+    color: "#94a3b8",
+    quality: 10,
+    tiles: [
+      { icon: "❓", title: "Sản phẩm ngẫu nhiên 1", reason: "Chọn bất kỳ" },
+      { icon: "❓", title: "Sản phẩm ngẫu nhiên 2", reason: "Chọn bất kỳ" },
+      { icon: "❓", title: "Sản phẩm ngẫu nhiên 3", reason: "Chọn bất kỳ" },
+      { icon: "❓", title: "Sản phẩm ngẫu nhiên 4", reason: "Chọn bất kỳ" },
+    ],
+  },
+  {
+    id: "popular",
+    label: "Gợi ý hàng hot",
+    icon: Flame,
+    description:
+      'Tạm lấy danh sách "đang hot trong 24h". Ai cũng thấy một trang chủ giống nhau — nhưng ít ra đỡ nhạt hơn ngẫu nhiên.',
+    color: "#f97316",
+    quality: 45,
+    tiles: [
+      { icon: "📱", title: "iPhone 15", reason: "#1 bán chạy hôm nay" },
+      { icon: "👟", title: "Giày Nike Pegasus", reason: "Top thể thao" },
+      { icon: "💄", title: "Son MAC Ruby Woo", reason: "Top mỹ phẩm" },
+      { icon: "🎧", title: "Tai nghe AirPods Pro", reason: "Top phụ kiện" },
+    ],
+  },
+  {
+    id: "survey",
+    label: "Hỏi nhanh sở thích",
+    icon: UserPlus,
+    description:
+      'Khi mới đăng ký, app hỏi 3-5 câu: "bạn thích thể loại nào?", "bạn mua hàng cho ai?". Dữ liệu ít, nhưng đủ để khởi động.',
+    color: "#10b981",
+    quality: 70,
+    tiles: [
+      { icon: "👩", title: "Đầm maxi cho nữ công sở", reason: "Chị chọn “Thời trang nữ”" },
+      { icon: "💐", title: "Nước hoa Chanel No.5", reason: "Chị chọn “Mỹ phẩm”" },
+      { icon: "👠", title: "Giày cao gót đế vuông", reason: "Phụ kiện cho thời trang nữ" },
+      { icon: "👜", title: "Túi tote da bò", reason: "Khớp phong cách công sở" },
+    ],
+  },
+  {
+    id: "implicit",
+    label: "Quan sát 10 phút đầu",
+    icon: MousePointerClick,
+    description:
+      "Thay vì hỏi, hệ thống lẳng lặng ghi lại: chị dừng lâu ở đầm nào, bấm vào sản phẩm nào, cuộn qua phần nào. Sau 10 phút đã có khá đủ dữ liệu.",
+    color: "#a855f7",
+    quality: 88,
+    tiles: [
+      { icon: "👗", title: "Đầm maxi hoa nhí Zara", reason: "Chị dừng 38 giây" },
+      { icon: "👜", title: "Túi Charles & Keith", reason: "Chị bấm xem chi tiết" },
+      { icon: "👠", title: "Giày slingback be", reason: "Thêm vào giỏ" },
+      { icon: "💄", title: "Son Dior Rouge 999", reason: "Xem lại 3 lần" },
+    ],
+  },
+];
+
+function ColdStartExplorer() {
+  const [mode, setMode] = useState<ColdMode>("none");
+  const current = COLD_MODES.find((m) => m.id === mode)!;
+  const reduceMotion = useReducedMotion();
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h4 className="text-sm font-semibold text-slate-200">
-            Ma trận User × Phim
-          </h4>
-          <p className="text-xs text-slate-400">
-            Ô có số = rating quan sát được. Ô trống = chưa xem → CF phải đoán.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={reshuffle}
-            className="rounded-md border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-700"
-          >
-            Tạo ma trận mới
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowPredictions((s) => !s)}
-            className="rounded-md border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-700"
-          >
-            {showPredictions ? "Ẩn" : "Hiện"} dự đoán CF
-          </button>
-        </div>
+      <div className="flex flex-wrap gap-2">
+        {COLD_MODES.map((m) => {
+          const active = m.id === mode;
+          const Icon = m.icon;
+          return (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => setMode(m.id)}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                active
+                  ? "bg-accent text-white"
+                  : "bg-surface text-foreground hover:bg-surface-hover"
+              }`}
+            >
+              <Icon size={14} />
+              {m.label}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="rounded-xl border border-slate-800 bg-slate-950 p-3 overflow-x-auto">
-        <svg viewBox={`0 0 ${gridWidth} ${gridHeight}`} className="w-full min-w-[640px]">
-          {/* Movie header labels */}
-          {MOVIES.map((movie, m) => {
-            const x = userLabelWidth + m * cellWidth + cellWidth / 2;
-            return (
-              <g key={movie.id}>
-                <text
-                  x={x}
-                  y={20}
-                  textAnchor="middle"
-                  fill="#94a3b8"
-                  fontSize={9}
-                  fontWeight={600}
-                >
-                  {movie.id}
-                </text>
-                <text
-                  x={x}
-                  y={34}
-                  textAnchor="middle"
-                  fill="#cbd5e1"
-                  fontSize={8}
-                >
-                  {movie.title.length > 11
-                    ? movie.title.slice(0, 10) + "…"
-                    : movie.title}
-                </text>
-                <text
-                  x={x}
-                  y={48}
-                  textAnchor="middle"
-                  fill="#64748b"
-                  fontSize={7}
-                >
-                  {movie.genre}
-                </text>
-              </g>
-            );
-          })}
+      <div className="rounded-xl border border-border bg-card p-4">
+        <p className="text-sm text-foreground leading-relaxed mb-3">
+          {current.description}
+        </p>
 
-          {/* User rows */}
-          {USERS.map((user, u) => (
-            <g key={user.id}>
-              <text
-                x={4}
-                y={headerHeight + u * cellHeight + cellHeight / 2 + 4}
-                fill="#e2e8f0"
-                fontSize={10}
-                fontWeight={600}
+        {/* Thanh chất lượng gợi ý */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between text-[11px] mb-1">
+            <span className="text-muted">Độ khớp với sở thích thật của chị An</span>
+            <span className="font-semibold" style={{ color: current.color }}>
+              {current.quality}%
+            </span>
+          </div>
+          <div className="h-2 rounded-full bg-surface overflow-hidden">
+            <motion.div
+              initial={reduceMotion ? false : { width: 0 }}
+              animate={{ width: `${current.quality}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="h-full rounded-full"
+              style={{ backgroundColor: current.color }}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <AnimatePresence mode="popLayout">
+            {current.tiles.map((t, i) => (
+              <motion.div
+                key={`${mode}-${t.title}`}
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2, delay: i * 0.05 }}
               >
-                {user.name}
-              </text>
-              <text
-                x={4}
-                y={headerHeight + u * cellHeight + cellHeight / 2 + 16}
-                fill="#64748b"
-                fontSize={8}
-              >
-                {user.id}
-              </text>
-            </g>
-          ))}
-
-          {/* Cells */}
-          {USERS.map((user, u) =>
-            MOVIES.map((movie, m) => {
-              const x = userLabelWidth + m * cellWidth;
-              const y = headerHeight + u * cellHeight;
-              const rating = grid[u][m];
-              const isMissing = rating === null;
-              const isHovered =
-                hoverCell?.user === u && hoverCell?.movie === m;
-              const pred = predictions[u][m];
-              const isNeighborRow =
-                hoverPred?.neighbors.some((n) => n.user === u) ?? false;
-              const isNeighborCol =
-                hoverPred && hoverCell?.movie === m ? true : false;
-
-              let fill = ratingColor(rating);
-              if (isMissing && showPredictions && pred) {
-                // Show predicted rating in subtle color
-                fill = ratingColor(pred.pred);
-              }
-
-              const opacity = isMissing && !showPredictions ? 0.25 : 1;
-
-              return (
-                <g
-                  key={`${u}-${m}`}
-                  onMouseEnter={() => setHoverCell({ user: u, movie: m })}
-                  onMouseLeave={() => setHoverCell(null)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <motion.rect
-                    x={x + 2}
-                    y={y + 2}
-                    width={cellWidth - 4}
-                    height={cellHeight - 4}
-                    rx={4}
-                    initial={false}
-                    animate={{ fill, opacity }}
-                    stroke={
-                      isHovered
-                        ? "#fbbf24"
-                        : isNeighborRow || (isNeighborCol && !isMissing)
-                          ? "#60a5fa"
-                          : "#334155"
-                    }
-                    strokeWidth={isHovered ? 2 : isNeighborRow ? 1.5 : 0.5}
-                  />
-                  {!isMissing && (
-                    <text
-                      x={x + cellWidth / 2}
-                      y={y + cellHeight / 2 + 4}
-                      textAnchor="middle"
-                      fill="#0f172a"
-                      fontSize={12}
-                      fontWeight={700}
-                    >
-                      {rating?.toFixed(1)}
-                    </text>
-                  )}
-                  {isMissing && showPredictions && pred && (
-                    <text
-                      x={x + cellWidth / 2}
-                      y={y + cellHeight / 2 + 4}
-                      textAnchor="middle"
-                      fill="#0f172a"
-                      fontSize={11}
-                      fontStyle="italic"
-                      fontWeight={600}
-                    >
-                      ~{pred.pred.toFixed(1)}
-                    </text>
-                  )}
-                  {isMissing && !showPredictions && (
-                    <text
-                      x={x + cellWidth / 2}
-                      y={y + cellHeight / 2 + 5}
-                      textAnchor="middle"
-                      fill="#475569"
-                      fontSize={14}
-                    >
-                      ?
-                    </text>
-                  )}
-                </g>
-              );
-            }),
-          )}
-        </svg>
-      </div>
-
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <div className="rounded-md border border-slate-800 bg-slate-900 p-3 text-xs">
-          <div className="text-slate-400">Tổng ô</div>
-          <div className="text-lg font-semibold text-slate-100">
-            {totalCells}
-          </div>
-          <div className="text-[10px] text-slate-500">
-            {USERS.length} users × {MOVIES.length} phim
-          </div>
-        </div>
-        <div className="rounded-md border border-emerald-900 bg-emerald-950/30 p-3 text-xs">
-          <div className="text-emerald-400">Đã quan sát</div>
-          <div className="text-lg font-semibold text-emerald-200">
-            {observedCount}
-          </div>
-          <div className="text-[10px] text-slate-500">
-            {((observedCount / totalCells) * 100).toFixed(0)}% ô có rating
-          </div>
-        </div>
-        <div className="rounded-md border border-amber-900 bg-amber-950/30 p-3 text-xs">
-          <div className="text-amber-400">Thiếu (sparsity)</div>
-          <div className="text-lg font-semibold text-amber-200">
-            {sparsity.toFixed(0)}%
-          </div>
-          <div className="text-[10px] text-slate-500">
-            Shopee thực tế: &gt; 99.99%
-          </div>
-        </div>
-      </div>
-
-      {hoverPred && hoverCell && (
-        <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-md border border-sky-700 bg-sky-950/40 p-3 text-xs leading-relaxed text-sky-100"
-        >
-          <div className="font-semibold">
-            CF dự đoán rating của {USERS[hoverCell.user].name} cho{" "}
-            {MOVIES[hoverCell.movie].title}
-          </div>
-          <div className="mt-1 text-slate-300">
-            Dự đoán:{" "}
-            <span className="font-mono text-amber-300">
-              {hoverPred.pred.toFixed(2)}
-            </span>{" "}
-            /5 · dựa trên {hoverPred.neighbors.length} hàng xóm gần nhất
-          </div>
-          <ul className="mt-1 list-disc pl-5 text-[11px] text-slate-300">
-            {hoverPred.neighbors.map((n) => (
-              <li key={n.user}>
-                {USERS[n.user].name} — similarity ={" "}
-                <span className="font-mono">{n.sim.toFixed(2)}</span>
-              </li>
+                <RecCard tile={t} />
+              </motion.div>
             ))}
-          </ul>
-        </motion.div>
-      )}
-
-      <div className="text-xs text-slate-400">
-        <span className="font-semibold text-slate-200">Cách đọc: </span>
-        Di chuột qua 1 ô trống (có dấu ?) để xem CF tìm ai là hàng xóm gần
-        nhất và tổng hợp rating của họ thành dự đoán. Bật &quot;Hiện dự đoán
-        CF&quot; để xem toàn bộ ma trận sau khi fill-in.
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
 }
 
-// ============================================================
-// Topic component
-// ============================================================
+/* ═══════════════════════════════════════════════════════════════════════════
+   METRICS — thanh màu cho Precision@K, Recall@K, nDCG
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+type MetricBar = {
+  key: string;
+  title: string;
+  value: number; // 0..100
+  color: string;
+  plain: string;
+  example: string;
+};
+
+const METRICS: MetricBar[] = [
+  {
+    key: "p10",
+    title: "Precision@10",
+    value: 74,
+    color: "#10b981",
+    plain: "Trong 10 gợi ý đầu, bao nhiêu là thật sự trúng?",
+    example: "10 đầm gợi ý → chị An bấm vào 7 cái → 74%.",
+  },
+  {
+    key: "r50",
+    title: "Recall@50",
+    value: 62,
+    color: "#6366f1",
+    plain: "Trong tất cả sản phẩm chị An sẽ thích, bao nhiêu % nằm trong top 50?",
+    example: "Tổng chị sẽ thích 100 sản phẩm. Top 50 chứa 62 trong số đó.",
+  },
+  {
+    key: "ndcg",
+    title: "nDCG@10",
+    value: 81,
+    color: "#a855f7",
+    plain: "Không chỉ trúng hay không — mà sản phẩm HAY có ở vị trí CAO không?",
+    example: "Sản phẩm trúng nhất cần ở vị trí 1-3, không phải vị trí 9.",
+  },
+];
+
+function MetricBars() {
+  const reduceMotion = useReducedMotion();
+  return (
+    <div className="not-prose space-y-3">
+      {METRICS.map((m, i) => (
+        <motion.div
+          key={m.key}
+          initial={reduceMotion ? false : { opacity: 0, x: -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+          transition={{ duration: 0.35, delay: i * 0.1 }}
+          className="rounded-lg border border-border bg-card p-3"
+        >
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-sm font-semibold text-foreground">{m.title}</span>
+            <span className="text-sm font-bold" style={{ color: m.color }}>
+              {m.value}%
+            </span>
+          </div>
+          <div className="h-2.5 rounded-full bg-surface overflow-hidden mb-2">
+            <motion.div
+              initial={reduceMotion ? false : { width: 0 }}
+              whileInView={{ width: `${m.value}%` }}
+              viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+              transition={{ duration: 0.8, delay: 0.2 + i * 0.1, ease: "easeOut" }}
+              className="h-full rounded-full"
+              style={{ backgroundColor: m.color }}
+            />
+          </div>
+          <p className="text-xs text-foreground mb-0.5">{m.plain}</p>
+          <p className="text-[11px] text-muted italic">{m.example}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VIETNAMESE PLATFORMS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+const VN_PLATFORMS = [
+  {
+    name: "Shopee",
+    icon: ShoppingBag,
+    color: "#ee4d2d",
+    role: "Trang “Gợi ý hôm nay” — gần như toàn bộ cá nhân hóa. Dùng cả lọc cộng tác, lọc nội dung, lẫn học máy từ hành vi scroll.",
+  },
+  {
+    name: "Tiki",
+    icon: Package,
+    color: "#1a94ff",
+    role: "Banner “Dành riêng cho bạn” trên trang chủ. Thế mạnh là dữ liệu mua hàng sách, điện tử tích lũy nhiều năm.",
+  },
+  {
+    name: "Lazada",
+    icon: Store,
+    color: "#f9598f",
+    role: "Tab “Khám phá” gợi ý theo sở thích. LazAI (hệ thống AI riêng) phối hợp với Alibaba Cloud để tinh chỉnh cho thị trường Đông Nam Á.",
+  },
+  {
+    name: "Zing MP3",
+    icon: Music2,
+    color: "#7c3aed",
+    role: "Playlist “Gợi ý cho bạn” và radio tự tạo. Nguyên lý giống Spotify: kết hợp lịch sử nghe + đặc trưng bài hát.",
+  },
+  {
+    name: "FPT Play",
+    icon: Tv,
+    color: "#f97316",
+    role: "Trang chủ tùy biến theo vùng miền, thời gian xem, loại thiết bị. Quan trọng với nội dung thể thao và phim bản quyền.",
+  },
+];
+
+function VietnamesePlatformGrid() {
+  return (
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      {VN_PLATFORMS.map((p, i) => {
+        const Icon = p.icon;
+        return (
+          <motion.div
+            key={p.name}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+            transition={{ duration: 0.25, delay: i * 0.07 }}
+            className="rounded-lg border border-border bg-card p-3"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <div
+                className="flex h-7 w-7 items-center justify-center rounded-md"
+                style={{ backgroundColor: `${p.color}22`, color: p.color }}
+              >
+                <Icon size={15} />
+              </div>
+              <span className="text-sm font-semibold text-foreground">{p.name}</span>
+            </div>
+            <p className="text-xs text-muted leading-relaxed">{p.role}</p>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOPIC COMPONENT
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 export default function RecommendationSystemsTopic() {
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
       {
-        question: "Collaborative Filtering hoạt động thế nào?",
+        question:
+          'Trong gợi ý kiểu "lọc cộng tác", hệ thống thật sự dựa vào điều gì để đoán bạn sẽ thích sản phẩm chưa xem?',
         options: [
-          "Phân tích nội dung sản phẩm",
-          "Tìm USER TƯƠNG TỰ bạn (thích cùng sản phẩm) → gợi ý sản phẩm họ thích mà bạn chưa dùng",
-          "Dùng rule-based",
+          "Đọc mô tả sản phẩm rồi phân tích từng chữ.",
+          "Tìm những người dùng có lịch sử xem/mua gần giống bạn, rồi xem nhóm đó còn thích thêm gì.",
+          "Xếp ngẫu nhiên để bạn lướt cho vui.",
         ],
         correct: 1,
         explanation:
-          "CF: 'Người giống bạn thích gì?' Bạn và An đều thích Phở, Bún chả. An thích Bún bò Huế nhưng bạn chưa ăn → gợi ý Bún bò Huế cho bạn. Không cần hiểu nội dung sản phẩm — chỉ dựa trên pattern tương tác của users.",
+          "Collaborative filtering (lọc cộng tác) hoàn toàn không nhìn vào nội dung sản phẩm. Nó chỉ nhìn vào hành vi — ai đã mua / xem / rate cái gì — rồi tìm người tương tự bạn. Giống anh bán tạp hóa biết nhóm khách hay mua phở thì chiều nào cũng ghé mua trứng vịt lộn, không cần biết món đó tên gì.",
       },
       {
-        question: "Cold start problem là gì và giải pháp?",
+        question: "Vấn đề cold start (khởi đầu lạnh) xảy ra khi nào?",
         options: [
-          "Server khởi động chậm",
-          "User/item MỚI không có lịch sử tương tác → CF không hoạt động. Giải pháp: content-based (dựa trên attributes), popularity-based, hoặc hỏi user preferences",
-          "Model quá lớn",
+          "Server của Shopee bị treo.",
+          "Người dùng vừa đăng ký hoặc sản phẩm vừa đăng — chưa có lịch sử tương tác nào nên lọc cộng tác không hoạt động.",
+          "App chạy chậm khi mới mở.",
         ],
         correct: 1,
         explanation:
-          "User mới: chưa rating gì → không biết tương tự ai. Item mới: chưa ai rating → không thể CF. Giải pháp: (1) Content-based: gợi ý dựa trên attributes (thể loại, giá), (2) Popularity: gợi ý sản phẩm hot, (3) Onboarding: hỏi 'bạn thích gì?'",
+          "Cold start đúng nghĩa là: hệ thống chưa có tín hiệu về người dùng mới hoặc sản phẩm mới. Hai nhóm cách xử lý phổ biến: (1) hỏi nhanh vài câu khi đăng ký, (2) gợi ý sản phẩm đang hot, (3) âm thầm quan sát hành vi lướt trong vài phút đầu, (4) dùng lọc theo nội dung để khai thác metadata của sản phẩm mới.",
       },
       {
-        question: "Tại sao Shopee dùng Hybrid (CF + Content + Deep Learning)?",
+        question:
+          'Vì sao Shopee, Tiki, Lazada đều kết hợp nhiều phương pháp thay vì chỉ dùng một công thức duy nhất?',
         options: [
-          "Vì có nhiều data",
-          "MỖI phương pháp có điểm yếu riêng. Hybrid kết hợp: CF cho personalization, Content cho cold start, DL học patterns phức tạp từ behavior",
-          "Để marketing",
+          "Để quảng cáo nghe kêu hơn.",
+          "Mỗi phương pháp có điểm mù riêng — kết hợp giúp bù lẫn nhau: lọc cộng tác cho khách quen, lọc nội dung cho sản phẩm mới, học máy cho gu tinh tế.",
+          "Vì dữ liệu nhiều quá không biết dùng gì.",
         ],
         correct: 1,
         explanation:
-          "CF mạnh ở personalization nhưng cold start. Content tốt cho cold start nhưng không capture subtle preferences. DL (Two-Tower, DSSM) học embedding từ nhiều signals (click, time, scroll). Hybrid kết hợp tất cả → tốt hơn bất kỳ phương pháp đơn lẻ nào.",
+          "Lọc cộng tác chính xác cho khách đã quen nhưng bất lực với người mới. Lọc nội dung xử lý được sản phẩm mới nhưng thiếu sáng tạo. Deep learning học được các tín hiệu ngầm (thời gian nhìn, scroll, thêm-bỏ giỏ hàng). Hybrid là lựa chọn mặc định của gần như mọi sàn thương mại điện tử trên thế giới.",
       },
       {
         type: "fill-blank",
         question:
-          "Hai phương pháp kinh điển của recommender system là {blank} filtering (tìm user tương tự) và {blank}-based filtering (dựa trên đặc trưng sản phẩm).",
+          "Hai phương pháp kinh điển của hệ thống gợi ý là lọc {blank} (dựa trên những người dùng giống bạn) và lọc {blank} (dựa trên đặc tính của chính sản phẩm).",
         blanks: [
-          { answer: "collaborative", accept: ["cộng tác", "hợp tác", "CF"] },
-          { answer: "content", accept: ["nội dung", "content-based"] },
+          {
+            answer: "cộng tác",
+            accept: ["cong tac", "collaborative", "cộng-tác", "collaborative filtering"],
+          },
+          {
+            answer: "nội dung",
+            accept: ["noi dung", "content", "nội-dung", "content-based"],
+          },
         ],
         explanation:
-          "Collaborative filtering: 'Người giống bạn thích gì?' — dùng ma trận user-item. Content-based: 'Sản phẩm có đặc trưng giống sản phẩm bạn từng thích' — dùng attributes/embeddings. Hybrid kết hợp cả hai để giải quyết cold start và personalization.",
+          'Hai trụ cột: lọc cộng tác (collaborative filtering) — tìm người tương tự bạn rồi xem họ thích thêm gì; lọc nội dung (content-based filtering) — dựa trên đặc điểm sản phẩm (thể loại, thương hiệu, mô tả). Đa số sàn lớn dùng hybrid: trộn hai hướng lại.',
       },
       {
         question:
-          "Matrix Factorization phân rã R (m × n) thành U (m × k) và V (n × k). Vai trò của k?",
+          'Trong ba chỉ số Precision@10, Recall@50 và nDCG@10, chỉ số nào đo "sản phẩm hay có ở vị trí cao không"?',
         options: [
-          "Số user",
-          "Số item",
-          "LATENT DIMENSIONS: biểu diễn 'sở thích ẩn' của user và 'đặc trưng ẩn' của item. k thường 32-256",
+          "Precision@10 — chỉ đo số lượng trúng, không quan tâm thứ tự.",
+          "Recall@50 — đo độ bao phủ, cũng không quan tâm thứ tự.",
+          "nDCG@10 — sản phẩm trúng ở vị trí 1 được thưởng nhiều hơn ở vị trí 9.",
         ],
         correct: 2,
         explanation:
-          "k là số latent factor. Mỗi user được biểu diễn bằng vector k chiều (ví dụ: [thích hành động, thích indie, thích hài...]). Tương tự với item. Prediction = dot product u · v. k nhỏ → model đơn giản, miss pattern. k lớn → overfit, tốn bộ nhớ. Thường 32-256.",
+          "nDCG cộng thêm trọng số theo vị trí: trúng ở đầu danh sách được tính nặng hơn. Đó là lý do các đội sản phẩm thường để ý nDCG hơn là Precision thuần — vì thực tế người dùng chỉ nhìn 5-10 gợi ý đầu.",
       },
       {
-        question:
-          "Filter bubble trong recommender system là vấn đề gì?",
+        question: "Filter bubble (buồng lọc) là tác dụng phụ gì của cá nhân hóa?",
         options: [
-          "Server lỗi",
-          "User bị 'mắc kẹt' trong vòng lặp: chỉ xem cái giống mình → AI chỉ gợi ý cái đó → thế giới quan thu hẹp lại",
-          "Model quá lớn",
+          "Server bị tắc nghẽn.",
+          "Người dùng bị mắc kẹt trong vòng lặp: chỉ thấy thứ giống mình đã thích → chỉ bấm thứ đó → hệ thống lại gợi ý tiếp → góc nhìn hẹp dần.",
+          "App bị đầy bộ nhớ.",
         ],
         correct: 1,
         explanation:
-          "Filter bubble là hệ quả xã hội của personalization cực đoan. YouTube radicalization, echo chamber chính trị đều bắt nguồn từ đây. Giải pháp: exploration (multi-armed bandit), diversity constraint, serendipity — đôi khi gợi ý thứ bất ngờ.",
+          "Filter bubble là cái giá của cá nhân hóa cực đoan. Giải pháp kinh điển: chừa 5-15% gợi ý cho thứ “lạ” — item ngoài gu hiện tại — để hệ thống vừa chiều bạn vừa giúp bạn mở rộng sở thích. Nhiều sàn gọi là exploration (thăm dò).",
       },
       {
         question:
-          "Two-Tower model có lợi thế gì so với Matrix Factorization kinh điển?",
+          "Shopee có khoảng 200 triệu khách và hàng trăm triệu sản phẩm. Nếu vẽ thành bảng “khách × sản phẩm” thì bảng này có đặc điểm gì?",
         options: [
-          "Chạy nhanh hơn",
-          "Dùng được FEATURE (text, image, context) không chỉ ID. Item mới có embedding ngay, cold start nhẹ hơn",
-          "Dễ code hơn",
+          "Nhỏ, dễ xử lý thủ công.",
+          "Cực lớn nhưng phần lớn ô trống — mỗi khách chỉ tương tác vài trăm sản phẩm trong hàng trăm triệu.",
+          "Không lưu được vào máy tính.",
         ],
         correct: 1,
         explanation:
-          "MF chỉ học embedding từ rating matrix → item mới không có embedding (cold start). Two-Tower: item tower ăn feature (text description, image, metadata) → item mới có embedding ngay sau khi upload. Đây là lý do YouTube, Shopee, TikTok dùng Two-Tower.",
+          "Bảng cực “thưa” (sparse): hơn 99.99% ô trống. Đó là lý do không ai score tất cả — thay vào đó hệ thống chia pipeline: sàng lọc nhanh vài nghìn ứng viên, rồi mới xếp hạng cẩn thận top 50-100. Gần như mọi recommender thực tế đều đi theo kiến trúc 2-3 tầng này.",
       },
       {
         question:
-          "Khi đánh giá recommender system offline, metric nào KHÔNG phản ánh tốt trải nghiệm thực tế?",
+          "Netflix từng dùng thang 5 sao. Sau 2017 họ chuyển sang thích / không thích. Vì sao đây là quyết định đúng cho hệ thống gợi ý?",
         options: [
-          "nDCG@10",
-          "RMSE trên rating dự đoán — vì user thực tế không care sai số tuyệt đối, họ chỉ care thứ tự top items",
-          "Recall@50",
+          "Tiết kiệm dung lượng lưu trữ.",
+          "Người dùng cho 5 sao phim nghệ thuật họ nghĩ mình “nên thích”, rồi thực tế vẫn bấm xem hài nhẹ. Phản hồi ngầm (thích / bỏ giữa chừng) khớp với hành vi thật hơn.",
+          "Vì thang 5 sao vi phạm pháp luật.",
         ],
         correct: 1,
         explanation:
-          "RMSE đo sai số trên rating dự đoán (ví dụ dự đoán 4.2 thực tế 4.5). Nhưng user chỉ nhìn top 10 gợi ý — họ không care rating tuyệt đối mà care XẾP HẠNG. Ranking metrics (nDCG, MAP, Recall@K, Hit@K) phù hợp hơn. Đó là lý do Netflix Prize chuyển dần khỏi RMSE.",
+          "Đây là bài học kinh điển: tín hiệu bạn thu không nhất thiết khớp với mục tiêu kinh doanh. 5 sao đo “gu lý tưởng”, thumbs up/down + thời gian xem đo “thứ họ thật sự sẽ xem”. Với Netflix, mục tiêu là giữ người ở lại — nên tín hiệu thứ hai quan trọng hơn.",
       },
     ],
-    [],
+    []
   );
 
   return (
     <>
+      {/* ═════════════ BƯỚC 1 — DỰ ĐOÁN ═════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn mua tai nghe trên Shopee. Ngày hôm sau, Shopee gợi ý 10 sản phẩm mà bạn CHƯA TÌM nhưng đều thích. Shopee biết thế nào?"
+          question='Bạn vừa xem xong 1 phim kiếm hiệp trên Netflix. Lần sau mở app, Netflix sẽ gợi ý kiểu nào?'
           options={[
-            "Đoán ngẫu nhiên",
-            "Hệ thống gợi ý: phân tích lịch sử mua/xem của BẠN + người TƯƠNG TỰ → dự đoán bạn thích gì",
-            "Nhân viên Shopee chọn thủ công",
+            "5 phim kiếm hiệp na ná nhau — vì bạn vừa xem kiếm hiệp.",
+            "5 phim hành động tổng hợp (bom tấn, đua xe, chiến tranh).",
+            "3 phim kiếm hiệp + 2 phim hài gia đình — vì nhóm người cùng xem kiếm hiệp cũng hay xem hai thứ đó.",
+            "Phim ngẫu nhiên từ kho — cho bạn khám phá.",
           ]}
-          correct={1}
-          explanation="Recommendation System: (1) Tìm người tương tự bạn (mua cùng loại tai nghe), (2) Xem họ mua gì khác (case, sạc dự phòng), (3) Gợi ý cho bạn. Kết hợp với nội dung sản phẩm + deep learning → 10 gợi ý chính xác. Shopee, Netflix, YouTube đều dùng!"
+          correct={2}
+          explanation="Netflix thật sự ghi nhận: những ai thích một loại phim hiếm khi chỉ thích loại đó. Họ có xu hướng xen kẽ. Hệ thống sẽ kết hợp &quot;đặc tính phim bạn vừa xem&quot; (kiếm hiệp) với &quot;nhóm người xem phim kiếm hiệp còn thích gì khác&quot; (hài gia đình, lãng mạn cổ trang). Kết quả 3 + 2 trộn nhau là kiểu hybrid điển hình — vừa giữ gu, vừa tránh buồng lọc."
         >
-          <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
-            <VisualizationSection>
-              <CollaborativeFilteringViz />
+          {/* ═════════════ BƯỚC 2 — ẨN DỤ ═════════════ */}
+          <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Store className="h-5 w-5 text-accent" />
+                <h3 className="text-base font-semibold text-foreground">
+                  Anh bán tạp hóa đầu hẻm
+                </h3>
+              </div>
+              <p className="text-sm text-foreground leading-relaxed">
+                Anh bán tạp hóa lâu năm không cần thuật toán. Anh{" "}
+                <strong>nhớ</strong> chị bán bún sáng nào cũng mua 3 quả trứng
+                vịt lộn. Anh <strong>đoán</strong> chị khó ngủ có thể cần thêm
+                lọ mật ong — vì dì Năm hàng xóm có thói quen gần giống cũng mua
+                mật ong. Và khi có hàng mới, anh <strong>gợi ý</strong> đúng
+                người hợp gu chứ không tiếp thị tràn lan.
+              </p>
+              <p className="text-sm text-foreground leading-relaxed">
+                Shopee với 200 triệu khách không thể thuê 200 triệu anh bán tạp
+                hóa. Nhưng có thể dựng một <strong>hệ thống gợi ý</strong> làm
+                đúng ba việc trên: <em>nhớ lịch sử</em>, <em>đoán sở thích ẩn</em>, và{" "}
+                <em>gợi ý đúng người</em>. Bài này vẽ ra ruột gan của cỗ máy đó.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
+                {[
+                  { icon: Users, label: "Ai đã làm gì", color: "#10b981" },
+                  { icon: Sparkles, label: "Đoán sở thích ẩn", color: "#6366f1" },
+                  { icon: Star, label: "Gợi ý đúng lúc", color: "#f59e0b" },
+                ].map((s) => {
+                  const Icon = s.icon;
+                  return (
+                    <div
+                      key={s.label}
+                      className="flex items-center gap-2 rounded-md bg-surface p-2.5"
+                    >
+                      <Icon size={16} style={{ color: s.color }} />
+                      <span className="text-xs font-medium text-foreground">
+                        {s.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </LessonSection>
+
+          {/* ═════════════ BƯỚC 3 — KHÁM PHÁ ═════════════ */}
+          <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
+            <VisualizationSection topicSlug="recommendation-systems">
+              <div className="space-y-8">
+                {/* Demo 1 */}
+                <div>
+                  <div className="mb-3 flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent-light">
+                      <Film size={16} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        Demo 1 — Máy đoán sao
+                      </h3>
+                      <p className="text-xs text-muted">
+                        Bạn chấm sao vài phim, hệ thống đoán phim còn lại bằng cách nhìn &quot;người giống bạn&quot;.
+                      </p>
+                    </div>
+                  </div>
+                  <CFSimulator />
+                </div>
+
+                <div className="border-t border-border pt-8">
+                  <div className="mb-3 flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent-light">
+                      <Sparkles size={16} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        Demo 2 — Hai kiểu gợi ý, hai kiểu kết quả
+                      </h3>
+                      <p className="text-xs text-muted">
+                        Cùng một người vừa xem &quot;Anh Hùng Xạ Điêu&quot;. Bấm để đổi giữa hai cách nhìn.
+                      </p>
+                    </div>
+                  </div>
+                  <ContentVsCollab />
+                </div>
+
+                <div className="border-t border-border pt-8">
+                  <div className="mb-3 flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent-light">
+                      <UserPlus size={16} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        Demo 3 — Khởi đầu lạnh (cold start)
+                      </h3>
+                      <p className="text-xs text-muted">
+                        Chị An mới đăng ký Shopee, chưa mua gì. App sẽ làm gì trong 10 phút đầu?
+                      </p>
+                    </div>
+                  </div>
+                  <ColdStartExplorer />
+                </div>
+              </div>
             </VisualizationSection>
 
-            <Callout variant="tip" title="Cách đọc visualization">
-              Ma trận trên là phiên bản thu nhỏ của điều đang xảy ra tại
-              Shopee / Netflix. Ô có số = rating đã biết (user đã xem/mua).
-              Ô có dấu &quot;?&quot; = thiếu. Di chuột vào 1 ô trống để thấy
-              CF chọn 3 hàng xóm gần nhất và dùng rating của họ để dự đoán.
-              Bật &quot;Hiện dự đoán CF&quot; để xem toàn ma trận sau khi
-              fill-in.
+            <Callout variant="tip" title="Cách đọc ba demo này">
+              Demo 1 cho thấy công thức: <em>tìm người giống bạn → lấy rating của họ → trung bình có trọng số</em>. Demo 2 so sánh hai họ công thức khác nhau để thấy chúng &quot;nhìn thế giới&quot; khác nhau thế nào. Demo 3 cho thấy khi dữ liệu chưa đủ, mọi công thức đều bất lực — và đó là lý do app cần bước khởi đầu khéo léo.
             </Callout>
           </LessonSection>
 
-          <LessonSection
-            step={3}
-            totalSteps={TOTAL_STEPS}
-            label="Khoảnh khắc Aha"
-          >
+          {/* ═════════════ BƯỚC 4 — AHA ═════════════ */}
+          <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
             <AhaMoment>
-              <p>
-                35% doanh thu Amazon đến từ recommendations. 80% nội dung
-                Netflix xem là từ gợi ý. Hệ thống gợi ý là{" "}
-                <strong>công cụ tăng trưởng mạnh nhất</strong> của e-commerce
-                và streaming. Shopee Việt Nam cũng dùng tương tự: CF + Content
-                + Deep Learning cho 50 triệu user.
+              <p className="text-center">
+                <strong>Chất lượng gợi ý tỷ lệ thuận với lượng hành vi quan sát được.</strong>
               </p>
-              <p>
-                Điều kỳ diệu của CF: <strong>không cần hiểu nội dung</strong>.
-                Model không biết &quot;Hai Phượng&quot; là phim hành động —
-                nó chỉ biết An và Phúc đều rating cao phim này, và cả hai
-                cùng thích &quot;Lật Mặt 7&quot;. Từ pattern đồng thuận, nó
-                suy ra &quot;sở thích ẩn&quot; mà không cần metadata.
+              <p className="text-center mt-2">
+                Càng nhiều người dùng → có nhiều &quot;hàng xóm&quot; để so sánh.
+                Càng nhiều tương tác trên mỗi người → biết rõ gu hơn. Đó là lý do Shopee, Tiki, Netflix khó bị đánh bại — không phải vì họ có thuật toán bí mật, mà vì họ có kho hành vi của hàng trăm triệu người mà startup mới không sao bắt chước.
               </p>
             </AhaMoment>
           </LessonSection>
 
-          <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
+          {/* ═════════════ BƯỚC 5 — THỬ THÁCH ═════════════ */}
+          <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
             <InlineChallenge
-              question="Shopee có 50M users, 100M items. Matrix user-item rating có bao nhiêu ô? Và bao nhiêu % là trống (sparse)?"
+              question="Sàn A có 1 triệu khách, sàn B có 100 triệu khách. Giả sử cả hai dùng cùng một thuật toán lọc cộng tác. Sàn nào có gợi ý “ngửi” đúng gu tốt hơn?"
               options={[
-                "5 x 10^15 ô, nhưng 99.99%+ là trống vì mỗi user chỉ tương tác với vài trăm items",
-                "5 triệu ô, 50% trống",
-                "Không nhiều",
+                "Sàn A — vì ít khách nên dễ quản lý.",
+                "Hai sàn như nhau — cùng thuật toán mà.",
+                "Sàn B — nhiều khách hơn → mỗi người đều có rất nhiều “người giống mình” để so sánh, giảm sai lệch.",
               ]}
-              correct={0}
-              explanation="5 x 10^15 = 5000 tỷ ô! Nhưng mỗi user chỉ tương tác ~200-500 items → 99.99% ô trống. Đây là 'sparsity problem' — collaborative filtering khó khi matrix quá sparse. Giải pháp: matrix factorization (SVD) nén 50M x 100M xuống embeddings 50M x 128 + 100M x 128."
+              correct={2}
+              explanation="Lọc cộng tác dựa vào mật độ hành vi. Nếu cả sàn chỉ có 1000 khách thích đầm maxi, tìm hàng xóm rất khó. Với 100 triệu khách, bất cứ gu hẹp nào cũng có vài nghìn người tương tự. Đó là “lợi thế dữ liệu” — lý do các sàn lớn ngày càng lớn, còn sàn nhỏ ngày càng khó đuổi kịp."
             />
 
             <InlineChallenge
-              question="TikTok biết bạn thích gì sau 40 video xem. Cơ chế nào đóng vai trò CHÍNH?"
+              question="TikTok “bắt bài” bạn sau 30-40 video dù bạn chưa like cái nào. Tín hiệu nào giúp nó làm được?"
               options={[
-                "User điền form sở thích",
-                "Implicit feedback từ hành vi: thời gian xem, replay, like, share, scroll-past — tín hiệu mạnh hơn rating rõ ràng",
-                "Gắn GPS vào user",
+                "Bạn điền form sở thích lúc đăng ký.",
+                "TikTok gắn GPS theo bạn.",
+                "Phản hồi ngầm: thời gian xem hết hay lướt bỏ sớm, có xem lại không, có share không, có vuốt chậm lại ở đoạn nào. Những tín hiệu này “thật” hơn cả nút like.",
               ]}
-              correct={1}
-              explanation="Implicit feedback (watch time, replay, scroll-past) chính xác hơn explicit rating vì user không nói dối. TikTok collect hàng chục signals cho mỗi video, feed vào Two-Tower / transformer để học embedding user và video. Đây là thành phần chính của 'For You' feed."
+              correct={2}
+              explanation="TikTok nổi tiếng vì khai thác implicit feedback — phản hồi ngầm. Bạn không cần bấm gì, thời lượng xem đã đủ kể. Nếu bạn dừng lại lâu ở một video mèo, hệ thống ghi nhận; nếu bạn lướt qua 3 video nấu ăn liền không dừng, hệ thống cũng ghi nhận. Với vài chục video, hệ thống có hàng trăm tín hiệu — đủ để “hiểu bạn hơn chính bạn”."
             />
 
             <InlineChallenge
-              question="Netflix lớn trên ma trận đánh giá 1-5 sao. Sau 2017 họ bỏ 5-sao, thay bằng thumbs up/down. Vì sao?"
+              question="Bạn làm marketing ở Tiki và nhận task: “tăng tỷ lệ khách mới quay lại mua lần 2 trong 30 ngày”. Đội recommender nên ưu tiên cải thiện gì?"
               options={[
-                "Đơn giản hơn cho user",
-                "Rating 5-sao BIASED nặng: user rate phim 'nghệ thuật' cao nhưng xem hài nhẹ. Binary feedback gần với hành vi thực hơn",
-                "Tiết kiệm database",
+                "Tăng số sản phẩm trên trang chủ lên 50, khách sẽ có nhiều lựa chọn hơn.",
+                "Giải bài toán cold start tốt hơn — vì khách mới chính là nhóm chưa có lịch sử, dễ hụt gợi ý nên cảm thấy “không có gì để mua” rồi bỏ đi.",
+                "Xóa bớt đánh giá cũ.",
               ]}
               correct={1}
-              explanation="Netflix phát hiện user rate phim 'cao cấp' điểm cao nhưng xem phim giải trí. Nếu train recommender trên rating 5-sao → gợi ý phim khó xem → engagement giảm. Thumbs up/down + watch data = tín hiệu thật hơn. Đây là bài học: đánh giá phải khớp với mục tiêu kinh doanh (engagement, không phải taste lý tưởng)."
+              explanation="Khách quay lại phụ thuộc trải nghiệm lần đầu. Nếu lần đầu mở Tiki thấy trang chủ toàn thứ không liên quan, xác suất quay lại rớt mạnh. Các sàn lớn thường có một đội chỉ chuyên xử lý 7-14 ngày đầu của khách mới: onboarding khéo, quan sát ngầm, xếp hạng an toàn nhưng cá nhân."
             />
           </LessonSection>
 
-          <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
-            <ExplanationSection>
+          {/* ═════════════ BƯỚC 6 — GIẢI THÍCH ═════════════ */}
+          <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
+            <ExplanationSection topicSlug="recommendation-systems">
               <p>
-                <strong>Recommendation Systems</strong> gợi ý sản phẩm/nội
-                dung dựa trên lịch sử và sở thích — đằng sau 35% doanh thu
-                Amazon và 80% content Netflix. Ba họ phương pháp lớn:
-                collaborative filtering (dựa vào pattern tương tác), content-based
-                (dựa vào thuộc tính), và hybrid deep learning (kết hợp cả
-                hai + signals phụ).
+                Bên dưới trang chủ Shopee của bạn là một pipeline gồm nhiều lớp. Dân làm sản phẩm hay gọi nôm na là <em>retrieval → ranking → re-ranking</em>: chọn ứng viên → xếp hạng cẩn thận → chỉnh cho đẹp. Mỗi lớp dùng một kỹ thuật. Ba họ kỹ thuật quan trọng nhất đều đã xuất hiện trong ba demo phía trên.
               </p>
 
-              <p>
-                <strong>Matrix Factorization (CF):</strong>
-              </p>
-              <LaTeX block>
-                {
-                  "R \\approx U \\cdot V^T \\quad \\text{(user matrix } U \\in \\mathbb{R}^{m \\times k} \\text{, item matrix } V \\in \\mathbb{R}^{n \\times k} \\text{)}"
-                }
-              </LaTeX>
-              <LaTeX block>
-                {
-                  "\\hat{r}_{ui} = u_i^T \\cdot v_j + b_u + b_i + \\mu \\quad \\text{(dự đoán rating)}"
-                }
-              </LaTeX>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 not-prose">
+                <Callout variant="tip" title="Lọc cộng tác">
+                  <p className="text-sm leading-relaxed">
+                    Không đọc mô tả sản phẩm. Chỉ nhìn <strong>ma trận khách × sản phẩm</strong> — ai đã mua/xem/rate cái gì. Tìm khách có hành vi giống bạn. Mạnh ở <em>gu tinh tế</em>, yếu ở <em>khách mới / sản phẩm mới</em>.
+                  </p>
+                </Callout>
+                <Callout variant="info" title="Lọc nội dung">
+                  <p className="text-sm leading-relaxed">
+                    Đọc <strong>đặc tính sản phẩm</strong> — thể loại, thương hiệu, mô tả, ảnh, tag. Gợi ý thứ có đặc tính giống thứ bạn từng thích. Mạnh với <em>sản phẩm mới</em> (chỉ cần metadata), yếu ở <em>phát hiện sở thích lạ</em>.
+                  </p>
+                </Callout>
+                <Callout variant="insight" title="Hybrid &amp; học máy">
+                  <p className="text-sm leading-relaxed">
+                    Đa số sàn trộn cả hai, cộng thêm <strong>học máy từ hành vi ngầm</strong> — thời gian xem, scroll, thêm giỏ rồi bỏ. Công thức thay đổi theo ngữ cảnh: khách mới → nội dung, khách cũ → cộng tác.
+                  </p>
+                </Callout>
+              </div>
 
-              <p>
-                <strong>User-based Collaborative Filtering</strong> — công
-                thức cổ điển dùng weighted average từ hàng xóm gần nhất:
-              </p>
-              <LaTeX block>
-                {
-                  "\\hat{r}_{ui} = \\bar{r}_u + \\frac{\\sum_{v \\in N_u} \\text{sim}(u, v) \\cdot (r_{vi} - \\bar{r}_v)}{\\sum_{v \\in N_u} |\\text{sim}(u, v)|}"
-                }
-              </LaTeX>
-
-              <p>
-                Ở đây <LaTeX>{"\\bar{r}_u"}</LaTeX> là rating trung bình của
-                user u, <LaTeX>{"N_u"}</LaTeX> là tập hàng xóm (user tương
-                tự), và <LaTeX>{"\\text{sim}(u, v)"}</LaTeX> thường là cosine
-                similarity hoặc Pearson correlation. Chuẩn hoá về mean giúp
-                tránh bias do user &quot;khó tính&quot; (rating trung bình
-                thấp) hay &quot;dễ tính&quot; (trung bình cao).
+              <p className="mt-5">
+                Một hệ thống gợi ý chạy trên hàng trăm triệu sản phẩm không thể so sánh từng cặp một. Nó làm ba lớp:
               </p>
 
-              <Callout variant="tip" title="Two-Tower Model">
-                Deep Learning cho RecSys: 2 neural networks (user tower +
-                item tower) tạo{" "}
-                <TopicLink slug="embedding-model">embeddings</TopicLink>.
-                Similarity = dot product — cùng nguyên lý với{" "}
-                <TopicLink slug="semantic-search">semantic search</TopicLink>.
-                Training: contrastive learning (positive pairs + negative
-                sampling). Serving: ANN search (FAISS) cho real-time. Đây
-                là kiến trúc của Shopee, YouTube, TikTok.
-              </Callout>
+              <div className="not-prose space-y-2 my-4">
+                {[
+                  {
+                    step: 1,
+                    title: "Chọn ứng viên (retrieval)",
+                    body: "Từ hàng trăm triệu sản phẩm, chọn nhanh ~1000 ứng viên hợp gu nhất. Ở đây tốc độ quan trọng hơn độ chính xác tuyệt đối.",
+                    color: "#10b981",
+                  },
+                  {
+                    step: 2,
+                    title: "Xếp hạng (ranking)",
+                    body: "Dùng mô hình “nặng” hơn để xếp 1000 ứng viên theo xác suất bạn sẽ bấm / mua / xem hết.",
+                    color: "#6366f1",
+                  },
+                  {
+                    step: 3,
+                    title: "Chỉnh trang (re-ranking)",
+                    body: "Đảm bảo đa dạng (không 10 sản phẩm cùng hãng), chèn quảng cáo, tránh lặp, kiểm duyệt nội dung — trước khi trả về màn hình.",
+                    color: "#a855f7",
+                  },
+                ].map((s) => (
+                  <div
+                    key={s.step}
+                    className="flex gap-3 rounded-lg border border-border bg-card p-3"
+                  >
+                    <div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                      style={{ backgroundColor: s.color }}
+                    >
+                      {s.step}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground mb-0.5">
+                        {s.title}
+                      </p>
+                      <p className="text-xs text-muted leading-relaxed">
+                        {s.body}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-              <Callout variant="insight" title="Vì sao dot product?">
-                Dot product <LaTeX>{"u \\cdot v"}</LaTeX> trong latent space
-                đo mức độ &quot;khớp sở thích&quot;: nếu user vector u có
-                chiều &quot;thích hài&quot; cao và item vector v cũng có
-                chiều &quot;phim hài&quot; cao, tích của chúng lớn → rating
-                dự đoán cao. Model không cần định nghĩa trước các chiều;
-                training tự tìm ra. Đây là lý do embedding model là nền tảng
-                chung của RecSys, semantic search, và RAG.
-              </Callout>
-
-              <CodeBlock language="python" title="Matrix Factorization với surprise">
-                {`from surprise import SVD, Dataset, Reader
-from surprise.model_selection import cross_validate
-
-# Load data (user_id, item_id, rating)
-reader = Reader(rating_scale=(1, 5))
-data = Dataset.load_from_df(ratings_df, reader)
-
-# Matrix Factorization (SVD)
-model = SVD(n_factors=128, n_epochs=20, lr_all=0.005, reg_all=0.02)
-results = cross_validate(model, data, cv=5, measures=["RMSE"])
-print(f"RMSE: {results['test_rmse'].mean():.3f}")
-
-# Dự đoán rating cho user 42, item 1234
-model.fit(data.build_full_trainset())
-pred = model.predict("user_42", "item_1234")
-print(f"Predicted rating: {pred.est:.2f}")
-
-# Top-N recommendations cho user 42
-all_items = get_all_items()
-predictions = [(item, model.predict("user_42", item).est)
-               for item in all_items if item not in user_42_history]
-top_10 = sorted(predictions, key=lambda x: x[1], reverse=True)[:10]`}
-              </CodeBlock>
-
-              <CodeBlock
-                language="python"
-                title="Two-Tower model với PyTorch (rút gọn)"
-              >
-                {`import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
-class Tower(nn.Module):
-    def __init__(self, input_dim, hidden=256, emb=128):
-        super().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, hidden), nn.ReLU(),
-            nn.Linear(hidden, hidden), nn.ReLU(),
-            nn.Linear(hidden, emb),
-        )
-
-    def forward(self, x):
-        # L2-normalize để dot product ~ cosine similarity
-        return F.normalize(self.net(x), dim=-1)
-
-class TwoTower(nn.Module):
-    def __init__(self, user_dim, item_dim, emb=128):
-        super().__init__()
-        self.user_tower = Tower(user_dim, emb=emb)
-        self.item_tower = Tower(item_dim, emb=emb)
-
-    def forward(self, user_feat, item_feat):
-        u = self.user_tower(user_feat)
-        v = self.item_tower(item_feat)
-        return (u * v).sum(dim=-1)  # dot product
-
-# Training với in-batch negative sampling
-def train_step(model, user_feat, pos_item_feat, optimizer):
-    # Positive scores (diagonal)
-    u = model.user_tower(user_feat)           # [B, D]
-    v_pos = model.item_tower(pos_item_feat)   # [B, D]
-    logits = u @ v_pos.t()                     # [B, B]
-    labels = torch.arange(u.size(0), device=u.device)
-    loss = F.cross_entropy(logits, labels)
-    loss.backward()
-    optimizer.step()
-    optimizer.zero_grad()
-    return loss.item()
-
-# Serving: index item embeddings với FAISS, query bằng user embedding
-# for real-time top-K search across millions of items in <10ms`}
-              </CodeBlock>
-
-              <Callout variant="warning" title="Cold start">
-                Hệ thống CF kinh điển fail với user/item hoàn toàn mới — không
-                có rating để suy ra hàng xóm. Giải pháp phân tầng: (1) hỏi
-                onboarding preference, (2) dùng attribute / metadata qua
-                content-based model, (3) trending / popularity fallback, (4)
-                explore bằng multi-armed bandit. Khi user đã có &gt;5 tương
-                tác → chuyển sang CF.
-              </Callout>
-
-              <Callout variant="info" title="RecSys tại Việt Nam">
-                Shopee VN dùng hybrid: CF cho user có lịch sử, content-based
-                cho user mới, và deep learning (Two-Tower + DSSM) cho chính
-                feed. FPT Play cá nhân hoá nội dung video theo region, thời
-                gian xem. Zing MP3 dùng CF trên hành vi nghe. Các startup
-                như Tiki, Lazada VN có đội RecSys 30-80 người xử lý hàng tỷ
-                event mỗi ngày.
-              </Callout>
-
+              <h3 className="text-lg font-semibold text-foreground mt-6 mb-3 flex items-center gap-2">
+                <TrendingUp size={18} className="text-accent" />
+                Đo &quot;gợi ý tốt&quot; thế nào?
+              </h3>
               <p>
-                <strong>Implicit vs Explicit feedback.</strong> Explicit:
-                user chủ động rating (5 sao). Implicit: suy ra từ hành vi
-                (click, watch time, dwell, share, scroll-past). Thực tế
-                implicit feedback phổ biến hơn vì ít user chịu rating. Model
-                phù hợp: ALS với confidence weighting, BPR (Bayesian
-                Personalized Ranking), hoặc neural ranking loss.
+                Ba chỉ số sau là ngôn ngữ chung của đội recommender. Giữa các đội marketing, product và AI, nếu bạn hiểu ba cái này là đủ để ngồi họp không bị &quot;rớt đài&quot;:
               </p>
+              <MetricBars />
 
-              <p>
-                <strong>Sampling &amp; Ranking Pipeline.</strong> Hệ thống
-                sản xuất không bao giờ score toàn bộ 100M items. Thay vào
-                đó là 3 tầng:
-              </p>
-              <ol className="list-decimal pl-5">
-                <li>
-                  <strong>Retrieval / Candidate generation:</strong> Two-Tower
-                  + FAISS lấy 1000 items ứng viên trong &lt;10ms.
-                </li>
-                <li>
-                  <strong>Ranking:</strong> model lớn hơn (DeepFM, DIN,
-                  Transformer) re-rank 1000 items theo CTR / watch-time.
-                </li>
-                <li>
-                  <strong>Re-ranking &amp; business logic:</strong> diversity,
-                  fairness, giới hạn repeat, inject quảng cáo, constraint
-                  (ví dụ không gợi ý nội dung NSFW cho tài khoản minor).
-                </li>
-              </ol>
-
-              <p>
-                <strong>Exploration vs Exploitation.</strong> Nếu model chỉ
-                gợi ý thứ nó chắc user thích, hệ thống sẽ sa vào{" "}
-                <TopicLink slug="multi-armed-bandit">filter bubble</TopicLink>.
-                Thuật toán thực tế luôn dành 5-15% traffic cho exploration
-                — gợi ý item lạ để thu thêm feedback và khám phá taste mới.
-                Thompson sampling, ε-greedy, UCB là các kỹ thuật phổ biến.
-              </p>
-
-              <p>
-                <strong>Content-Based Filtering — công thức.</strong> Ta
-                biểu diễn mỗi item bằng vector đặc trưng (TF-IDF của mô
-                tả, embedding CLIP của ảnh, one-hot genre…). User được
-                biểu diễn bằng centroid các item họ đã thích:
-              </p>
-              <LaTeX block>
-                {
-                  "u = \\frac{1}{|I_u|} \\sum_{i \\in I_u} w_{ui} \\cdot x_i, \\quad \\text{sim}(u, j) = \\cos(u, x_j)"
-                }
-              </LaTeX>
-              <p>
-                Trong đó <LaTeX>{"I_u"}</LaTeX> là tập item user đã tương
-                tác, <LaTeX>{"w_{ui}"}</LaTeX> là trọng số (rating, watch
-                time) và <LaTeX>{"x_i"}</LaTeX> là vector feature của
-                item. Ưu điểm: xử lý cold start item tốt (item mới có
-                embedding ngay). Nhược điểm: không khám phá sở thích lạ,
-                dễ rơi vào filter bubble.
-              </p>
-
-              <p>
-                <strong>Regularization trong Matrix Factorization.</strong>{" "}
-                Loss thường viết dưới dạng:
-              </p>
-              <LaTeX block>
-                {
-                  "\\mathcal{L} = \\sum_{(u,i) \\in \\mathcal{R}} (r_{ui} - u_i^T v_j - b_u - b_i - \\mu)^2 + \\lambda (\\|U\\|^2 + \\|V\\|^2 + b_u^2 + b_i^2)"
-                }
-              </LaTeX>
-              <p>
-                Thành phần L2 penalty ngăn embedding vector &quot;nổ&quot;
-                — đặc biệt quan trọng với user/item có ít rating. Giá trị{" "}
-                <LaTeX>{"\\lambda"}</LaTeX> thường chọn qua cross-validation,
-                trong khoảng 0.001 đến 0.1.
-              </p>
-
-              <CollapsibleDetail title="Các loss function cho RecSys">
-                <p>
-                  RecSys không dùng 1 loss chung — mỗi bài toán có loss phù
-                  hợp:
-                </p>
-                <ul className="list-disc pl-5 leading-relaxed">
+              <Callout variant="warning" title="Ba cạm bẫy kinh điển">
+                <ul className="list-disc pl-5 space-y-2 text-sm">
                   <li>
-                    <strong>MSE / RMSE:</strong> cho rating prediction kinh
-                    điển (Netflix Prize). Tốt cho explicit rating, kém cho
-                    implicit.
+                    <strong>Cold start (khởi đầu lạnh):</strong> khách mới hoặc sản phẩm mới chưa có lịch sử → lọc cộng tác đứng hình. Cách xử: hỏi onboarding, quan sát ngầm, hoặc lùi về gợi ý theo nội dung / sản phẩm hot.
                   </li>
                   <li>
-                    <strong>BPR (Bayesian Personalized Ranking):</strong>{" "}
-                    pairwise loss: đảm bảo item user thích được rank cao
-                    hơn item random. Phù hợp cho implicit feedback.
+                    <strong>Popularity bias (thiên kiến hàng hot):</strong> hệ thống cứ đẩy sản phẩm top → khách bấm càng nhiều → sản phẩm top lại càng top. Các sản phẩm dài đuôi (long-tail) bị nhấn chìm, gây bất lợi cho người bán nhỏ.
                   </li>
                   <li>
-                    <strong>Softmax / Sampled Softmax:</strong> xem mỗi user
-                    như 1 &quot;câu hỏi&quot;, positive item là đáp án đúng
-                    giữa nhiều negative. Dùng rộng trong Two-Tower.
-                  </li>
-                  <li>
-                    <strong>InfoNCE / Contrastive:</strong> positive pair
-                    (user, item đã mua) vs negative pair (user, item random).
-                    Cùng họ với SimCLR, CLIP.
-                  </li>
-                  <li>
-                    <strong>Hinge / Triplet loss:</strong> encourage
-                    khoảng cách giữa positive và negative &gt; margin. Phổ
-                    biến trong metric learning.
-                  </li>
-                  <li>
-                    <strong>Listwise (ListNet, ListMLE):</strong> optimize
-                    trực tiếp metric ranking như nDCG. Đắt hơn nhưng gần với
-                    đánh giá thực tế.
+                    <strong>Filter bubble (buồng lọc):</strong> cá nhân hóa cực đoan làm góc nhìn hẹp dần. Giải pháp: chừa 5-15% gợi ý cho thứ &quot;lạ&quot; — explore vs exploit — để phát hiện sở thích mới.
                   </li>
                 </ul>
-              </CollapsibleDetail>
+              </Callout>
 
-              <CollapsibleDetail title="Đánh giá recommender system">
-                <p>
-                  Đánh giá offline (trên data lịch sử) và online (A/B test)
-                  là hai thế giới. Offline tốt không đảm bảo online tốt — đây
-                  là thực tế cay đắng của RecSys.
-                </p>
-                <p>
-                  <strong>Metric offline phổ biến:</strong>
-                </p>
-                <ul className="list-disc pl-5 leading-relaxed">
-                  <li>
-                    <strong>RMSE / MAE:</strong> đo sai số rating — cổ điển
-                    từ Netflix Prize, nhưng không phản ánh thứ tự.
-                  </li>
-                  <li>
-                    <strong>Precision@K, Recall@K:</strong> trong top-K gợi
-                    ý, bao nhiêu user thích? Phụ thuộc K.
-                  </li>
-                  <li>
-                    <strong>nDCG@K:</strong> Normalized Discounted Cumulative
-                    Gain — thưởng nhiều hơn nếu item hay ở vị trí cao.
-                    Gần nhất với cảm nhận user.
-                  </li>
-                  <li>
-                    <strong>MAP (Mean Average Precision):</strong> trung bình
-                    precision qua các ngưỡng K.
-                  </li>
-                  <li>
-                    <strong>Hit@K:</strong> có ít nhất 1 item đúng trong
-                    top-K không? Phù hợp next-item prediction.
-                  </li>
-                  <li>
-                    <strong>Diversity / Novelty / Serendipity:</strong> đo
-                    mức đa dạng của gợi ý — cân bằng với relevance.
-                  </li>
-                  <li>
-                    <strong>Coverage:</strong> tỉ lệ catalog được gợi ý ít
-                    nhất 1 lần. Coverage thấp = long-tail item bị bỏ quên.
-                  </li>
-                </ul>
-                <p>
-                  <strong>Metric online (A/B test):</strong> CTR, conversion
-                  rate, watch time, session length, DAU retention, GMV, ARPU.
-                  Đây mới là thước đo business thực sự.
-                </p>
-              </CollapsibleDetail>
-
-              <CollapsibleDetail title="Các pitfall khi build RecSys">
-                <p>Một số bẫy phổ biến mà đội RecSys nào cũng từng vấp:</p>
-                <ul className="list-disc pl-5 leading-relaxed">
-                  <li>
-                    <strong>Data leakage thời gian:</strong> train/test
-                    split ngẫu nhiên → model nhìn thấy tương lai. Phải split
-                    theo thời gian (temporal split).
-                  </li>
-                  <li>
-                    <strong>Popularity bias:</strong> item phổ biến được
-                    recommend nhiều → được tương tác nhiều → popularity
-                    tăng → recommend càng nhiều. Vòng lặp không lành mạnh.
-                  </li>
-                  <li>
-                    <strong>Position bias:</strong> user click item ở vị
-                    trí cao nhiều hơn ngay cả khi item ngang nhau. Model
-                    train thô trên click → học bias. Giải pháp: inverse
-                    propensity weighting, counterfactual learning.
-                  </li>
-                  <li>
-                    <strong>Feedback loop:</strong> model chỉ thấy phản hồi
-                    về item nó đã gợi ý → không học được gì về item nó chưa
-                    gợi ý bao giờ. Giải pháp: exploration, log propensity.
-                  </li>
-                  <li>
-                    <strong>Overfitting trên metric offline:</strong> nDCG
-                    offline tăng, A/B test online giảm. Nguyên nhân:
-                    offline không mô phỏng được feedback loop và
-                    counterfactual. Luôn validate bằng online.
-                  </li>
-                  <li>
-                    <strong>Filter bubble &amp; radicalization:</strong> tối
-                    ưu engagement quá mức → nội dung cực đoan có engagement
-                    cao → user bị đẩy về hướng đó. Cần diversity constraint
-                    và safety filter.
-                  </li>
-                  <li>
-                    <strong>Cold-start một cách tinh tế:</strong> user hoạt
-                    động lâu nhưng ít tương tác (lurker) gần giống cold
-                    start. Dùng session-based / sequential model cho nhóm
-                    này.
-                  </li>
-                </ul>
-              </CollapsibleDetail>
-
-              <CollapsibleDetail title="Xu hướng hiện tại trong RecSys 2024-2026">
-                <p>
-                  RecSys đang chuyển dịch nhanh chóng. Một số xu hướng đáng
-                  chú ý:
-                </p>
-                <ul className="list-disc pl-5 leading-relaxed">
-                  <li>
-                    <strong>Sequential &amp; transformer-based:</strong>{" "}
-                    SASRec, BERT4Rec, Pinnerformer. Treat lịch sử user như
-                    sequence, dùng self-attention để học sở thích theo thời
-                    gian.
-                  </li>
-                  <li>
-                    <strong>LLM-based recommender:</strong> dùng LLM sinh
-                    mô tả item, tóm tắt lịch sử user, hoặc rerank top-K bằng
-                    reasoning. TallRec, P5 là các nghiên cứu đầu.
-                  </li>
-                  <li>
-                    <strong>Generative recommendation:</strong> thay vì
-                    chọn từ candidate set, LLM sinh ra ID/token sản phẩm.
-                    Meta, Google đang thử nghiệm ở scale lớn.
-                  </li>
-                  <li>
-                    <strong>Multi-objective optimization:</strong> không chỉ
-                    CTR, mà kết hợp watch-time, retention, revenue, creator
-                    fairness. Pareto frontier thay vì single metric.
-                  </li>
-                  <li>
-                    <strong>Privacy-preserving:</strong> federated RecSys,
-                    differential privacy để tuân thủ GDPR / PDPA, đặc biệt
-                    quan trọng với dữ liệu nhạy cảm.
-                  </li>
-                  <li>
-                    <strong>Reinforcement Learning:</strong> treat recommendation
-                    như sequential decision — tối ưu reward dài hạn (retention)
-                    thay vì reward tức thì (click). YouTube, TikTok đã áp dụng
-                    từ nhiều năm.
-                  </li>
-                  <li>
-                    <strong>Multi-modal:</strong> dùng cả text, image, audio,
-                    video embedding từ foundation model (CLIP, BLIP) để tăng
-                    content understanding. Đặc biệt hữu ích cho cold start.
-                  </li>
-                </ul>
-              </CollapsibleDetail>
-
+              <h3 className="text-lg font-semibold text-foreground mt-6 mb-3 flex items-center gap-2">
+                <Store size={18} className="text-accent" />
+                Ở Việt Nam, bạn dùng app nào là đang &quot;ăn&quot; recommender?
+              </h3>
               <p>
-                <strong>Scale thực tế.</strong> Shopee VN xử lý hàng trăm
-                triệu impression mỗi ngày. YouTube phục vụ ~1 tỷ giờ
-                watch/ngày. Các hệ thống này không chạy 1 model — chúng là
-                pipeline gồm hàng chục model: retrieval, ranking, re-ranking,
-                safety filter, fairness, business rules. Một thay đổi 0.1%
-                CTR có thể = vài triệu USD doanh thu.
+                Gần như mọi app có scroll đều có. Dưới đây là những cái bạn lướt hằng ngày:
               </p>
+              <VietnamesePlatformGrid />
 
-              <p>
-                <strong>Counterfactual reasoning.</strong> Câu hỏi thật
-                của RecSys không phải &quot;user có click item này
-                không?&quot; mà &quot;nếu mình KHÔNG gợi ý item này, user
-                có click item kia không?&quot; — bài toán counterfactual
-                giống A/B test nhưng ở cấp từng gợi ý. IPS (Inverse
-                Propensity Scoring), doubly robust estimator, causal
-                forests đang được áp dụng để debias offline metric.
-              </p>
+              <Callout variant="insight" title="Điểm giao với embedding và semantic search">
+                <p className="text-sm leading-relaxed">
+                  Cỗ máy đằng sau lọc cộng tác hiện đại (kiểu Shopee, TikTok) thật ra dùng chung nền tảng với{" "}
+                  <TopicLink slug="embedding-model">embedding</TopicLink> và{" "}
+                  <TopicLink slug="semantic-search">semantic search</TopicLink>: chuyển người dùng và sản phẩm thành hai dãy số nhiều chiều, rồi đo &quot;gần nhau&quot; bằng phép tính đơn giản. Ai học qua cái này sẽ thấy ba bài toán tưởng khác nhau — gợi ý, tìm kiếm thông minh, tóm tắt tài liệu — hóa ra là anh em một nhà.
+                </p>
+              </Callout>
 
-              <p>
-                <strong>Fairness giữa creator / seller.</strong> Nếu
-                model chỉ gợi ý top 1% seller, 99% còn lại bị bỏ rơi —
-                ảnh hưởng hệ sinh thái (creator bỏ nền tảng). YouTube,
-                Spotify có các cơ chế boost content mới, đảm bảo mỗi
-                creator có tối thiểu impression. Đây là trade-off giữa
-                short-term engagement và long-term ecosystem health.
-              </p>
-
-              <p>
-                <strong>Latency budget.</strong> Từ khi user load feed đến
-                khi thấy gợi ý: &lt;200ms. Trong đó: ~20ms network, ~30ms
-                feature fetch, ~50ms retrieval (FAISS), ~50ms ranking
-                (DeepFM), ~20ms re-ranking + business logic, ~30ms buffer.
-                Đây là lý do feature store (Redis, Feast, Vertex AI Feature
-                Store) và ANN index là phần &quot;nhàm chán&quot; nhưng
-                quyết định khả thi của hệ thống.
+              <p className="mt-5">
+                Một chi tiết thực tế cho dân văn phòng: nếu bạn làm marketing hoặc e-commerce ở Việt Nam, hiểu hệ thống gợi ý giúp bạn <strong>viết mô tả sản phẩm đúng trend</strong> (tăng cơ hội được lọc nội dung nhấc lên), <strong>tận dụng sản phẩm hot dịp lễ</strong> (bù cho khách mới), và <strong>đừng hoảng khi doanh số dao động 10-15%</strong> — đôi khi chỉ vì Shopee đổi trọng số giữa lọc cộng tác và lọc nội dung trong một thí nghiệm A/B.
               </p>
             </ExplanationSection>
           </LessonSection>
 
-          <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+          {/* ═════════════ BƯỚC 7 — TÓM TẮT ═════════════ */}
+          <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
+              title="Năm điều mang theo ra khỏi bài"
               points={[
-                "3 phương pháp: Collaborative Filtering (user tương tự), Content-Based (item tương tự), Deep Learning Hybrid.",
-                "Matrix Factorization nén sparse user-item matrix xuống dense embeddings (128 dims).",
-                "Cold start problem: user/item mới không có lịch sử → dùng content-based hoặc popularity.",
-                "Two-Tower model (Shopee, YouTube): user tower + item tower → ANN search real-time.",
-                "Pipeline sản xuất = retrieval → ranking → re-ranking; mỗi tầng 1 model, tổng latency &lt;200ms.",
-                "35% doanh thu Amazon, 80% content Netflix từ recommendations. Công cụ tăng trưởng #1.",
+                "Hệ thống gợi ý = anh bán tạp hóa phiên bản số: nhớ hành vi + đoán sở thích ẩn + đẩy đúng người, ở quy mô 200 triệu khách.",
+                "Lọc cộng tác dựa vào người giống bạn; lọc nội dung dựa vào đặc tính sản phẩm; đa số sàn trộn cả hai.",
+                "Cold start (khách / sản phẩm mới) là điểm mù lớn nhất — onboarding + sản phẩm hot + quan sát ngầm là ba cách xử kinh điển.",
+                "Đo chất lượng bằng Precision, Recall, nDCG — trong đó nDCG nhạy với thứ tự (phim hay phải ở vị trí cao).",
+                "Filter bubble là cái giá của cá nhân hóa cực đoan. Các đội recommender chừa 5-15% để explore thứ bạn chưa biết mình thích.",
               ]}
             />
           </LessonSection>
 
-          <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+          {/* ═════════════ BƯỚC 8 — QUIZ ═════════════ */}
+          <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
             <QuizSection questions={quizQuestions} />
           </LessonSection>
         </PredictionGate>

@@ -1,17 +1,28 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowRight, MessageSquare, Wand2 } from "lucide-react";
+import {
+  Sparkles,
+  MessageSquare,
+  Target,
+  Users,
+  ListChecks,
+  Ruler,
+  Mic,
+  BookOpen as BookIcon,
+  TrendingUp,
+  AlertTriangle,
+} from "lucide-react";
 import {
   PredictionGate,
   AhaMoment,
   InlineChallenge,
   MiniSummary,
-  CodeBlock,
   Callout,
   TabView,
-  LaTeX,
+  MatchPairs,
+  DragDrop,
   LessonSection,
   TopicLink,
 } from "@/components/interactive";
@@ -26,7 +37,7 @@ export const metadata: TopicMeta = {
   title: "Prompt Engineering",
   titleVi: "Kỹ thuật viết prompt",
   description:
-    "Nghệ thuật thiết kế prompt hiệu quả để hướng dẫn mô hình ngôn ngữ lớn cho ra kết quả mong muốn.",
+    "Nghệ thuật thiết kế prompt rõ ràng để AI cho ra kết quả đúng ý — dành cho dân văn phòng, không cần lập trình.",
   category: "llm-concepts",
   tags: ["prompt", "llm", "few-shot", "instruction"],
   difficulty: "beginner",
@@ -34,436 +45,913 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-// ─── Dữ liệu minh họa ───
+// ─── Dữ liệu cho Demo 1: Prompt Builder ───
+// Mỗi thành phần người học bật/tắt → prompt được dựng lại + điểm chất lượng tăng.
+interface PromptComponent {
+  id: "role" | "task" | "context" | "format" | "tone" | "example";
+  label: string;
+  icon: typeof Users;
+  snippet: string;
+  weight: number; // điểm cộng khi bật
+  color: string;
+}
 
-// Mỗi cấp prompt cho cùng một nhiệm vụ, chất lượng output tăng dần
-const PROMPT_LEVELS = [
+const PROMPT_COMPONENTS: PromptComponent[] = [
   {
-    level: 0,
-    label: "Mơ hồ",
-    prompt: "Viết gì đó về phở",
-    output: "Phở là món ăn ngon. Nhiều người thích ăn phở. Phở có nhiều loại.",
-    score: 25,
-    issue: "Quá chung chung, không có hướng dẫn cụ thể — AI đoán bừa bạn muốn gì.",
+    id: "role",
+    label: "Vai trò",
+    icon: Users,
+    snippet: "Bạn là trợ lý hành chính nhiều năm kinh nghiệm.",
+    weight: 12,
+    color: "#2563EB",
   },
   {
-    level: 1,
-    label: "Cụ thể hơn",
-    prompt: "Viết một đoạn văn 50 từ giới thiệu phở bò Hà Nội cho du khách nước ngoài.",
-    output:
-      "Phở bò Hà Nội là tinh hoa ẩm thực Việt Nam. Nước dùng được ninh từ xương bò trong 12-24 giờ với quế, hồi, thảo quả tạo hương thơm đặc trưng. Bánh phở mềm mịn cùng thịt bò tái hoặc chín, ăn kèm rau thơm, giá đỗ và tương ớt.",
-    score: 65,
-    issue: "Tốt hơn nhiều! Nhưng thiếu giọng văn và đối tượng cụ thể.",
+    id: "task",
+    label: "Nhiệm vụ cụ thể",
+    icon: Target,
+    snippet:
+      "Hãy viết email xin nghỉ 3 ngày gửi sếp trực tiếp, lý do: vợ sinh con đầu lòng.",
+    weight: 22,
+    color: "#059669",
   },
   {
-    level: 2,
-    label: "Có vai trò",
-    prompt:
-      "Bạn là food blogger nổi tiếng. Viết 50 từ giới thiệu phở bò Hà Nội cho du khách phương Tây lần đầu đến Việt Nam. Giọng văn thân thiện, hấp dẫn.",
-    output:
-      "Bạn chưa thật sự đến Hà Nội nếu chưa ngồi vỉa hè húp tô phở bò nóng hổi lúc 6 giờ sáng! Nước dùng trong vắt nhưng đậm vị, bánh phở mềm như lụa, thịt bò tái vừa chín tới. Thêm chút tương ớt, vắt chanh — và bạn sẽ hiểu vì sao người Hà Nội ăn phở mỗi ngày mà không bao giờ chán.",
-    score: 88,
-    issue: "Rất tốt! Có giọng văn, có persona, có đối tượng rõ ràng.",
+    id: "context",
+    label: "Bối cảnh",
+    icon: BookIcon,
+    snippet:
+      "Em đã bàn giao công việc cho chị Lan và sẽ kiểm tra email mỗi tối.",
+    weight: 14,
+    color: "#7C3AED",
   },
   {
-    level: 3,
-    label: "Có ví dụ mẫu",
-    prompt: `Bạn là food blogger nổi tiếng. Viết giới thiệu phở bò cho du khách phương Tây.
-
-Ví dụ output tốt:
-"Bún chả Hà Nội — thịt nướng than hoa thơm phức, nước chấm chua ngọt hoàn hảo, bún mát lạnh. Obama đã ăn và 'say' ngay lần đầu."
-
-Giọng văn: thân thiện, gợi cảm giác, có chi tiết cảm xúc. Khoảng 50 từ.`,
-    output:
-      "Phở bò Hà Nội — nước dùng ninh 24 giờ thơm hồi quế, trong vắt như hổ phách. Bánh phở trơn mềm, thịt bò tái hồng nhạt chín dần trong bát nóng. Húp một muỗng, bạn sẽ thấy cả Hà Nội — nhẹ nhàng, sâu lắng, và ấm áp đến ngạc nhiên.",
-    score: 96,
-    issue: "Xuất sắc! Ví dụ mẫu giúp AI hiểu chính xác phong cách bạn muốn.",
-  },
-];
-
-// Kỹ thuật prompt (cho tab view)
-const TECHNIQUES = [
-  {
-    label: "Zero-shot",
-    prompt: "Phân loại email này là spam hay không spam:\n'Bạn đã trúng thưởng 1 tỷ đồng! Nhấp vào đây ngay!'",
-    output: "Spam",
-    when: "Câu hỏi đơn giản, AI đã biết loại task này.",
+    id: "format",
+    label: "Định dạng",
+    icon: ListChecks,
+    snippet:
+      "Định dạng: mở đầu – lý do – cam kết bàn giao – kết thư. Mỗi đoạn 1-2 câu.",
+    weight: 12,
+    color: "#D97706",
   },
   {
-    label: "Few-shot",
-    prompt: `Phân loại email:
-"Hóa đơn tháng 3 của bạn" → Không spam
-"Trúng thưởng 1 tỷ!" → Spam
-"Lịch họp team ngày mai" → Không spam
-
-"Bạn được chọn nhận iPhone miễn phí!" →`,
-    output: "Spam",
-    when: "AI cần hiểu format output hoặc task lạ — cho vài ví dụ mẫu.",
+    id: "tone",
+    label: "Giọng văn",
+    icon: Mic,
+    snippet: "Giọng trang trọng nhưng thân thiện, tránh khách sáo cứng nhắc.",
+    weight: 10,
+    color: "#DB2777",
   },
   {
-    label: "Chain-of-Thought",
-    prompt: `Phân loại email này. Suy nghĩ từng bước:
-1. Xác định từ khóa đáng ngờ
-2. Kiểm tra xem có yêu cầu hành động khẩn cấp không
-3. Đánh giá xem nội dung có thực tế không
-
-Email: "Bạn được chọn nhận iPhone miễn phí! Nhấp ngay trước khi hết hạn!"`,
-    output: `1. Từ khóa đáng ngờ: "miễn phí", "nhấp ngay", "hết hạn"
-2. Yêu cầu hành động khẩn cấp: Có — "nhấp ngay trước khi hết hạn"
-3. Thực tế: Không — iPhone miễn phí không có thật
-→ Kết luận: SPAM`,
-    when: "Task cần lập luận logic, tính toán, hoặc phân tích nhiều bước.",
-  },
-  {
-    label: "System Prompt",
-    prompt: `[System] Bạn là chuyên gia an ninh mạng với 20 năm kinh nghiệm. Khi phân tích email, hãy đánh giá theo 3 tiêu chí: kỹ thuật lừa đảo, mức độ nguy hiểm, và khuyến nghị hành động.
-
-[User] Phân tích email: "Tài khoản ngân hàng của bạn sẽ bị khóa. Xác nhận thông tin tại đây: bit.ly/xc9ak"`,
-    output: `**Kỹ thuật lừa đảo:** Phishing cổ điển — tạo urgency (sắp bị khóa), dùng URL rút gọn để ẩn đích thật.
-**Mức độ nguy hiểm:** CAO — nhắm vào thông tin ngân hàng.
-**Khuyến nghị:** KHÔNG nhấp link. Liên hệ ngân hàng qua kênh chính thức. Báo cáo email này.`,
-    when: "Cần output chuyên sâu theo góc nhìn cụ thể — gán vai trò cho AI.",
+    id: "example",
+    label: "Ví dụ mẫu",
+    icon: Sparkles,
+    snippet:
+      'Ví dụ giọng mong muốn: "Kính gửi anh Minh, em xin phép nghỉ từ thứ 5 đến thứ 7…"',
+    weight: 10,
+    color: "#DC2626",
   },
 ];
 
+// ─── Dữ liệu cho Tab gallery (4 khung mẫu cho dân văn phòng) ───
+const TEMPLATES = [
+  {
+    label: "Email xin nghỉ",
+    slot1: "Vai trò",
+    slot1Value: "Bạn là nhân viên văn phòng biết viết email khéo léo.",
+    slot2: "Nhiệm vụ",
+    slot2Value:
+      "Viết email xin nghỉ 2 ngày gửi sếp, lý do: khám sức khỏe định kỳ.",
+    slot3: "Ràng buộc",
+    slot3Value: "Độ dài ~80 từ, giọng trang trọng, có đề xuất người thay ca.",
+    preview:
+      "Kính gửi anh Minh, em xin phép nghỉ thứ 5 và thứ 6 tuần này để khám sức khỏe định kỳ. Trong thời gian em vắng, chị Lan sẽ thay em xử lý báo cáo tuần. Em sẽ kiểm tra email vào buổi tối và phản hồi ngay nếu anh cần. Em xin cảm ơn anh.",
+  },
+  {
+    label: "Tóm tắt cuộc họp",
+    slot1: "Vai trò",
+    slot1Value: "Bạn là thư ký cuộc họp có khả năng tóm tắt súc tích.",
+    slot2: "Nhiệm vụ",
+    slot2Value:
+      "Tóm tắt đoạn ghi âm cuộc họp 30 phút về kế hoạch Q2 thành biên bản.",
+    slot3: "Ràng buộc",
+    slot3Value:
+      "Dưới 200 từ, chia 3 phần: quyết định chính – công việc giao – mốc thời gian.",
+    preview:
+      "Quyết định chính: ra mắt sản phẩm A trong tháng 5. Công việc giao: (1) Hương phụ trách landing page trước 20/4, (2) Tú chạy ads thử nghiệm 5 triệu. Mốc quan trọng: chốt bản demo 25/4, đánh giá kết quả 15/5.",
+  },
+  {
+    label: "Bài đăng LinkedIn",
+    slot1: "Vai trò",
+    slot1Value: "Bạn là content creator chuyên viết LinkedIn cho dân văn phòng.",
+    slot2: "Nhiệm vụ",
+    slot2Value:
+      "Viết bài chia sẻ cảm nhận sau khi hoàn thành khóa học phân tích dữ liệu.",
+    slot3: "Ràng buộc",
+    slot3Value:
+      "Mở bài bằng câu hook gây tò mò, kết thư có CTA kêu gọi kết nối, 150 từ.",
+    preview:
+      "Ba tháng trước, em còn sợ Excel nâng cao. Hôm nay em vừa hoàn thành khóa phân tích dữ liệu cho marketer. Bài học lớn nhất: công cụ chỉ là phần ngọn, tư duy đặt câu hỏi đúng mới là gốc. Nếu anh chị cũng đang bắt đầu, mình kết nối nhé.",
+  },
+  {
+    label: "Phản hồi khiếu nại",
+    slot1: "Vai trò",
+    slot1Value: "Bạn là chuyên viên chăm sóc khách hàng kỳ cựu.",
+    slot2: "Nhiệm vụ",
+    slot2Value:
+      "Viết email trả lời khách hàng đang bức xúc vì đơn hàng giao trễ 5 ngày.",
+    slot3: "Ràng buộc",
+    slot3Value:
+      "Giọng đồng cảm, có xin lỗi, có hành động khắc phục cụ thể, dưới 120 từ.",
+    preview:
+      "Chị Minh thân mến, em thực sự xin lỗi vì đơn hàng #HN2034 đến tay chị chậm tới 5 ngày so với cam kết. Em đã kiểm tra và lỗi nằm ở khâu vận chuyển của đối tác. Để bù đắp, em gửi chị voucher 15% cho đơn tiếp theo và nhờ đội giao hàng ưu tiên mọi đơn của chị trong 3 tháng tới. Mong chị thông cảm.",
+  },
+];
+
+// ─── 5 pitfalls phổ biến ───
+const PITFALLS: { title: string; bad: string; fix: string; variant: "warning" | "tip" | "insight" }[] = [
+  {
+    title: "Bẫy 1 — Prompt quá ngắn, thiếu bối cảnh",
+    bad: '"Viết email xin lỗi"',
+    fix: '"Viết email xin lỗi khách hàng doanh nghiệp vì giao báo cáo trễ 2 ngày. Giọng chuyên nghiệp, có cam kết cụ thể, dưới 100 từ."',
+    variant: "warning",
+  },
+  {
+    title: "Bẫy 2 — Yêu cầu nhiều thứ trong một câu rối",
+    bad: '"Viết email và tóm tắt cuộc họp và dịch sang tiếng Anh"',
+    fix: "Tách thành 3 prompt riêng, mỗi prompt một việc. Dùng xong cái này mới chuyển sang cái kế.",
+    variant: "tip",
+  },
+  {
+    title: "Bẫy 3 — Không nêu đối tượng đọc",
+    bad: '"Viết bài giới thiệu sản phẩm"',
+    fix: '"Viết bài giới thiệu máy lọc nước cho khách hàng là mẹ bỉm sữa 28-35 tuổi, ở chung cư Hà Nội."',
+    variant: "warning",
+  },
+  {
+    title: "Bẫy 4 — Quên cho ví dụ khi cần giọng đặc thù",
+    bad: '"Viết giống giọng của sếp em"',
+    fix: "Dán 1-2 email cũ của sếp vào prompt, rồi nói: “Viết tương tự giọng trên, nội dung mới là…”",
+    variant: "insight",
+  },
+  {
+    title: "Bẫy 5 — Không nói rõ độ dài & định dạng",
+    bad: '"Tóm tắt báo cáo này"',
+    fix: '"Tóm tắt báo cáo dưới đây thành 5 bullet, mỗi bullet 1 câu, tổng dưới 120 từ."',
+    variant: "tip",
+  },
+];
+
+// ─── Quiz cuối bài (5 câu) ───
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Bạn muốn AI viết email xin việc. Prompt nào cho kết quả tốt nhất?",
+      "Bạn cần AI viết email xin nghỉ 3 ngày gửi sếp. Prompt nào là tốt nhất?",
     options: [
-      "Viết email xin việc",
-      "Viết email xin việc vị trí data scientist tại FPT, nhấn mạnh kinh nghiệm Python và ML, giọng chuyên nghiệp, khoảng 200 từ",
-      "Viết email hay",
-      "Email xin việc, ngắn thôi",
+      "Viết email xin nghỉ giúp tôi",
+      "Viết email xin nghỉ 3 ngày gửi sếp trực tiếp, lý do: vợ sinh con đầu lòng, giọng trang trọng nhưng thân thiện, có cam kết bàn giao, khoảng 100 từ",
+      "Email xin nghỉ ngắn gọn thôi",
+      "Giúp tôi nghỉ phép",
     ],
     correct: 1,
     explanation:
-      "Prompt tốt có: vai trò cụ thể, ngữ cảnh, yêu cầu chi tiết, giọng văn, và độ dài mong muốn.",
+      "Prompt tốt phải có: nhiệm vụ cụ thể, người nhận, lý do, giọng văn, ràng buộc. Option B đủ cả năm yếu tố — AI sẽ không phải đoán bừa.",
   },
   {
-    question: "Kỹ thuật nào phù hợp nhất khi AI cần giải bài toán nhiều bước?",
+    question:
+      "Khi muốn AI viết đúng giọng văn của bạn, cách hiệu quả nhất là gì?",
     options: [
-      "Zero-shot — hỏi thẳng",
-      "Few-shot — cho ví dụ",
-      "Chain-of-Thought — yêu cầu suy nghĩ từng bước",
-      "System prompt — gán vai trò",
-    ],
-    correct: 2,
-    explanation:
-      "Chain-of-Thought buộc AI trình bày từng bước suy luận, giảm lỗi đáng kể ở bài toán logic và tính toán.",
-  },
-  {
-    question: "Tại sao few-shot prompting hiệu quả?",
-    options: [
-      "Vì AI thích đọc ví dụ",
-      "Vì ví dụ giúp AI hiểu chính xác format và phong cách output mong muốn",
-      "Vì thêm nhiều chữ hơn = AI làm tốt hơn",
-      "Vì AI học lại từ ví dụ trong prompt",
+      "Viết “viết giọng giống tôi”",
+      "Dán 1-2 đoạn bạn đã viết trước đó, rồi yêu cầu “viết tương tự giọng trên”",
+      "Viết bằng tiếng Anh cho AI dễ hiểu",
+      "Gõ in hoa để AI chú ý",
     ],
     correct: 1,
     explanation:
-      "Ví dụ mẫu hoạt động như 'bản thiết kế' cho output — AI pattern-match theo format và style bạn cho, không phải 'học' từ chúng.",
+      "AI không biết giọng của bạn trừ khi bạn cho nó xem. Dán ví dụ thật là cách nhanh nhất để AI bắt chước phong cách (few-shot prompting).",
+  },
+  {
+    question:
+      "Prompt “Tóm tắt tài liệu này thành 5 gạch đầu dòng, tổng dưới 150 từ, ngôn ngữ đơn giản” tốt vì điều gì?",
+    options: [
+      "Có nhiều chữ hơn nên AI làm tốt hơn",
+      "Đã nêu rõ định dạng (5 bullet), độ dài (dưới 150 từ), và phong cách (đơn giản)",
+      "Viết bằng giọng ra lệnh mạnh",
+      "Có từ “tóm tắt” nên AI hiểu ngay",
+    ],
+    correct: 1,
+    explanation:
+      "Độ dài + định dạng + phong cách là ba ràng buộc (constraints) biến prompt từ mơ hồ thành thực thi được.",
+  },
+  {
+    question:
+      "Bạn vừa nhờ AI viết bài, nhưng kết quả chưa đúng ý. Nên làm gì tiếp?",
+    options: [
+      "Bỏ AI đi, tự viết cho nhanh",
+      "Nói lại đúng phần chưa ổn: “Đoạn 2 quá cứng, hãy viết lại nhẹ nhàng hơn, giữ nguyên đoạn 1”",
+      "Hỏi lại đúng prompt cũ lần nữa",
+      "Khen AI để nó cố gắng hơn",
+    ],
+    correct: 1,
+    explanation:
+      "Prompt engineering là vòng lặp: thử → xem kết quả → chỉnh. Bảo AI sửa phần cụ thể nhanh hơn là viết lại từ đầu.",
   },
   {
     type: "fill-blank",
     question:
-      "Hỏi thẳng không cho ví dụ gọi là {blank}-shot, cho vài ví dụ mẫu gọi là {blank}-shot, và yêu cầu suy luận từng bước gọi là {blank}-of-thought.",
+      "Công thức prompt hiệu quả: {blank} (bạn là ai) + nhiệm vụ cụ thể + {blank} (văn phong) + định dạng & {blank} (bao nhiêu chữ, mấy bullet…).",
     blanks: [
-      { answer: "zero", accept: ["Zero"] },
-      { answer: "few", accept: ["Few"] },
-      { answer: "chain", accept: ["Chain"] },
+      { answer: "vai trò", accept: ["Vai trò", "role", "Role"] },
+      { answer: "giọng văn", accept: ["Giọng văn", "tone", "Tone"] },
+      { answer: "độ dài", accept: ["Độ dài", "length", "Length"] },
     ],
     explanation:
-      "Zero-shot không có ví dụ, few-shot có vài ví dụ mẫu, và chain-of-thought buộc mô hình viết ra các bước suy luận trước khi đưa đáp án.",
+      "Bộ khung CRAFT rút gọn: Context (vai trò + bối cảnh) – Role – Action (nhiệm vụ) – Format – Tone. Thiếu bất kỳ mảnh nào, AI sẽ phải đoán.",
   },
 ];
 
-export default function PromptEngineeringTopic() {
-  const [currentLevel, setCurrentLevel] = useState(0);
-  const [revealedLevels, setRevealedLevels] = useState(new Set([0]));
-  const current = PROMPT_LEVELS[currentLevel];
+// ═══════════════════════════════════════════════════════════════════════════
+// DEMO 1 — PROMPT BUILDER (người học bật/tắt thành phần để dựng prompt)
+// ═══════════════════════════════════════════════════════════════════════════
+function PromptBuilderDemo() {
+  const [enabled, setEnabled] = useState<Record<PromptComponent["id"], boolean>>({
+    role: false,
+    task: true, // task luôn bật mặc định vì không có task thì chẳng có gì
+    context: false,
+    format: false,
+    tone: false,
+    example: false,
+  });
 
-  const advanceLevel = useCallback(() => {
-    if (currentLevel < PROMPT_LEVELS.length - 1) {
-      const next = currentLevel + 1;
-      setCurrentLevel(next);
-      setRevealedLevels((prev) => new Set([...prev, next]));
+  function toggle(id: PromptComponent["id"]) {
+    setEnabled((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  const score = useMemo(() => {
+    // Điểm gốc = 20 nếu có task, 5 nếu không
+    let s = enabled.task ? 20 : 5;
+    for (const c of PROMPT_COMPONENTS) {
+      if (enabled[c.id] && c.id !== "task") s += c.weight;
     }
-  }, [currentLevel]);
+    return Math.min(100, s);
+  }, [enabled]);
+
+  const scoreColor =
+    score >= 85 ? "#059669" : score >= 60 ? "#D97706" : "#DC2626";
+  const scoreLabel =
+    score >= 85 ? "Xuất sắc" : score >= 60 ? "Tạm ổn" : "Còn mơ hồ";
+
+  const composed = PROMPT_COMPONENTS.filter((c) => enabled[c.id])
+    .map((c) => c.snippet)
+    .join("\n");
 
   return (
-    <>
-      {/* ━━━ HOOK ━━━ */}
-      <LessonSection step={1} totalSteps={6} label="Thử đoán">
-      <PredictionGate
-        question="Bạn nhờ AI viết email xin việc. Hai prompt dưới đây, prompt nào cho kết quả tốt hơn?"
-        options={[
-          "A: 'Viết email xin việc'",
-          "B: 'Viết email xin việc vị trí data analyst tại Shopee, nhấn mạnh kỹ năng SQL và Python, giọng chuyên nghiệp nhưng thân thiện, khoảng 200 từ'",
-          "Cả hai cho kết quả như nhau",
-        ]}
-        correct={1}
-        explanation="Prompt B cụ thể hơn rất nhiều — có vị trí, công ty, kỹ năng, giọng văn, độ dài. AI không đọc được suy nghĩ của bạn, nên bạn phải nói rõ bạn muốn gì. Đó chính là Prompt Engineering!"
-      >
-        <p className="text-sm text-muted mt-4">
-          Hãy xem sự khác biệt khi bạn cải thiện prompt <strong className="text-foreground">từng bước</strong> — từ mơ hồ đến xuất sắc.
-        </p>
-      </PredictionGate>
+    <div className="space-y-5">
+      <p className="text-sm text-muted">
+        Bật từng mảnh ghép bên dưới và xem prompt được dựng lại theo thời gian
+        thực. Thanh bên phải là điểm chất lượng ước lượng.
+      </p>
 
-      </LessonSection>
-
-      {/* ━━━ KHÁM PHÁ — Xem prompt cải thiện từng bước ━━━ */}
-      <LessonSection step={2} totalSteps={6} label="Khám phá">
-      <VisualizationSection topicSlug={metadata.slug}>
-        <h3 className="text-base font-semibold text-foreground mb-1">
-          Cải thiện prompt từng bước
-        </h3>
-        <p className="text-sm text-muted mb-4">
-          Cùng một nhiệm vụ: &quot;viết về phở&quot;. Xem output thay đổi khi prompt tốt hơn.
-        </p>
-
-        {/* Thanh tiến trình các cấp */}
-        <div className="flex items-center gap-2 mb-6">
-          {PROMPT_LEVELS.map((lvl, i) => (
+      {/* Grid toggle thành phần */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {PROMPT_COMPONENTS.map((c) => {
+          const Icon = c.icon;
+          const on = enabled[c.id];
+          return (
             <button
-              key={i}
+              key={c.id}
               type="button"
-              disabled={!revealedLevels.has(i)}
-              onClick={() => revealedLevels.has(i) && setCurrentLevel(i)}
-              className={`flex-1 rounded-lg py-2 text-xs font-medium transition-all ${
-                i === currentLevel
-                  ? "bg-accent text-white shadow-sm"
-                  : revealedLevels.has(i)
-                  ? "bg-surface text-muted hover:text-foreground cursor-pointer"
-                  : "bg-surface text-tertiary cursor-not-allowed opacity-50"
+              onClick={() => toggle(c.id)}
+              className={`flex items-center gap-2 rounded-lg border p-3 text-left text-xs transition-all ${
+                on
+                  ? "border-accent bg-accent-light shadow-sm"
+                  : "border-border bg-surface hover:bg-surface-hover"
               }`}
+              aria-pressed={on}
             >
-              {lvl.label}
+              <span
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md"
+                style={{
+                  backgroundColor: on ? c.color : "transparent",
+                  color: on ? "#fff" : c.color,
+                  border: on ? "none" : `1px solid ${c.color}`,
+                }}
+              >
+                <Icon size={14} />
+              </span>
+              <span
+                className={`flex-1 font-medium ${
+                  on ? "text-foreground" : "text-muted"
+                }`}
+              >
+                {c.label}
+              </span>
+              <span
+                className={`h-2 w-2 shrink-0 rounded-full ${
+                  on ? "bg-accent" : "bg-border"
+                }`}
+              />
             </button>
-          ))}
+          );
+        })}
+      </div>
+
+      {/* Khối prompt đang dựng + điểm */}
+      <div className="grid gap-4 sm:grid-cols-5">
+        {/* Prompt đang dựng */}
+        <div className="sm:col-span-3 rounded-lg border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/15 p-4 min-h-[140px]">
+          <div className="flex items-center gap-2 mb-2">
+            <MessageSquare
+              size={14}
+              className="text-blue-600 dark:text-blue-400"
+            />
+            <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
+              Prompt đang dựng
+            </span>
+          </div>
+          <AnimatePresence mode="wait">
+            <motion.pre
+              key={composed}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="whitespace-pre-wrap text-sm font-sans leading-relaxed text-foreground"
+            >
+              {composed || "(Chưa bật mảnh nào — prompt đang trống)"}
+            </motion.pre>
+          </AnimatePresence>
         </div>
 
-        {/* Prompt + Output */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentLevel}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="space-y-4"
-          >
-            {/* Prompt */}
-            <div className="rounded-lg border border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/15 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <MessageSquare size={14} className="text-blue-600 dark:text-blue-400" />
-                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
-                  Prompt
-                </span>
-              </div>
-              <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
-                {current.prompt}
-              </p>
+        {/* Thanh điểm */}
+        <div className="sm:col-span-2 rounded-lg border border-border bg-card p-4 flex flex-col justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp size={14} className="text-accent" />
+              <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+                Điểm chất lượng
+              </span>
             </div>
-
-            {/* Output */}
-            <div className="rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/15 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles size={14} className="text-green-600 dark:text-green-400" />
-                <span className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wide">
-                  Output của AI
-                </span>
-              </div>
-              <p className="text-sm text-foreground leading-relaxed">
-                {current.output}
-              </p>
+            <div className="flex items-end gap-2">
+              <motion.span
+                key={score}
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 240 }}
+                className="text-4xl font-bold"
+                style={{ color: scoreColor }}
+              >
+                {score}
+              </motion.span>
+              <span className="text-sm text-muted pb-1">/100</span>
             </div>
+            <p
+              className="text-xs font-semibold mt-1"
+              style={{ color: scoreColor }}
+            >
+              {scoreLabel}
+            </p>
+          </div>
+          <div className="h-2 w-full rounded-full bg-surface overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              style={{ backgroundColor: scoreColor }}
+              initial={{ width: 0 }}
+              animate={{ width: `${score}%` }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
+        </div>
+      </div>
 
-            {/* Điểm chất lượng */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 rounded-full bg-surface overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{
-                    background: current.score > 85 ? "#059669" : current.score > 60 ? "#D97706" : "#DC2626",
-                  }}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${current.score}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-              <span className="text-sm font-bold text-accent w-12 text-right">{current.score}%</span>
-            </div>
-
-            {/* Nhận xét */}
-            <p className="text-xs text-muted italic">{current.issue}</p>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Nút tiến tới */}
-        {currentLevel < PROMPT_LEVELS.length - 1 && (
-          <button
-            type="button"
-            onClick={advanceLevel}
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-dark transition-colors"
-          >
-            <Wand2 size={14} />
-            Cải thiện prompt
-            <ArrowRight size={14} />
-          </button>
-        )}
-      </VisualizationSection>
-
-      </LessonSection>
-
-      {/* ━━━ AHA MOMENT ━━━ */}
-      <LessonSection step={3} totalSteps={6} label="Khám phá">
-      <AhaMoment>
-        Bạn vừa thấy cùng một nhiệm vụ, chỉ bằng cách viết prompt tốt hơn, chất lượng
-        output tăng từ <strong>25%</strong> lên <strong>96%</strong>.
-        Đó chính là sức mạnh của <strong>Prompt Engineering</strong> — nghệ thuật
-        giao tiếp hiệu quả với AI.
-      </AhaMoment>
-
-      </LessonSection>
-
-      {/* ━━━ ĐI SÂU — 4 kỹ thuật chính ━━━ */}
-      <LessonSection step={4} totalSteps={6} label="Đi sâu">
-        <h3 className="text-base font-semibold text-foreground mb-3">
-          4 kỹ thuật prompt phổ biến nhất
-        </h3>
-        <p className="text-sm text-muted mb-4">
-          Mỗi kỹ thuật phù hợp với một loại task khác nhau. Nhấp vào tab để xem ví dụ cụ thể.
-        </p>
-
-        <TabView
-          tabs={TECHNIQUES.map((tech) => ({
-            label: tech.label,
-            content: (
-              <div className="space-y-4">
-                {/* Khi nào dùng */}
-                <div className="flex items-center gap-2 rounded-lg bg-surface p-3">
-                  <span className="text-xs font-medium text-accent">Khi nào dùng:</span>
-                  <span className="text-xs text-muted">{tech.when}</span>
-                </div>
-
-                {/* Prompt */}
-                <div className="rounded-lg border border-border bg-card p-4">
-                  <span className="text-[10px] font-semibold text-tertiary uppercase tracking-wider block mb-2">
-                    Prompt
-                  </span>
-                  <p className="text-xs text-foreground whitespace-pre-wrap leading-relaxed">
-                    {tech.prompt}
-                  </p>
-                </div>
-
-                {/* Output */}
-                <div className="rounded-lg border border-accent/30 bg-accent-light p-4">
-                  <span className="text-[10px] font-semibold text-accent uppercase tracking-wider block mb-2">
-                    Output
-                  </span>
-                  <p className="text-xs text-foreground whitespace-pre-wrap leading-relaxed">
-                    {tech.output}
-                  </p>
-                </div>
-              </div>
-            ),
-          }))}
-        />
-
-      </LessonSection>
-
-      {/* ━━━ THỬ THÁCH + GIẢI THÍCH ━━━ */}
-      <LessonSection step={5} totalSteps={6} label="Thử thách">
-      <InlineChallenge
-        question="Bạn muốn AI giải bài toán: 'Một cửa hàng giảm giá 20%, sau đó giảm thêm 10%. Tổng giảm giá là bao nhiêu phần trăm?' Kỹ thuật nào phù hợp nhất?"
-        options={[
-          "Zero-shot — hỏi thẳng đáp án",
-          "Few-shot — cho vài ví dụ giảm giá",
-          "Chain-of-Thought — yêu cầu tính từng bước",
-          "System prompt — gán vai giáo viên toán",
-        ]}
-        correct={2}
-        explanation="Chain-of-Thought phù hợp nhất cho bài toán nhiều bước! AI sẽ tính: giá sau giảm 20% = 80%, rồi giảm 10% nữa = 80% × 90% = 72%. Tổng giảm = 28%, không phải 30%!"
-      />
-
-      {/* ━━━ GIẢI THÍCH ━━━ */}
-      <ExplanationSection>
-        <p>
-          <strong>Prompt Engineering</strong> là kỹ năng thiết kế chỉ dẫn (prompt) sao cho
-          LLM hiểu chính xác bạn muốn gì và trả lời đúng format, phong cách, nội dung bạn cần.
-        </p>
-        <p>
-          Các kỹ thuật cốt lõi bao gồm{" "}
-          <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>
-          {" "}(yêu cầu mô hình suy luận từng bước) và{" "}
-          <TopicLink slug="in-context-learning">in-context learning</TopicLink>
-          {" "}(cho ví dụ mẫu trong prompt). Ngoài ra, prompt còn kết hợp với tham số như{" "}
-          <TopicLink slug="temperature">temperature</TopicLink>
-          {" "}để kiểm soát độ sáng tạo và giảm{" "}
-          <TopicLink slug="hallucination">hallucination</TopicLink>
-          {" "}(bịa thông tin).
-        </p>
-
-        <Callout variant="insight" title="Tại sao prompt quan trọng đến vậy?">
-          LLM không đọc được suy nghĩ của bạn. Nó chỉ thấy đúng những gì bạn viết.
-          Prompt mơ hồ = output mơ hồ. Prompt rõ ràng = output chính xác.
-          Một prompt tốt có thể thay thế cả giờ fine-tuning model.
+      {/* Gợi ý mẹo */}
+      {score < 85 && (
+        <Callout variant="tip" title="Gợi ý">
+          Thử bật thêm <strong>Vai trò</strong>, <strong>Bối cảnh</strong> hoặc{" "}
+          <strong>Ví dụ mẫu</strong> — đó là ba mảnh dân văn phòng thường quên,
+          nhưng giúp AI đi thẳng vào giọng bạn muốn.
         </Callout>
+      )}
+      {score >= 85 && (
+        <Callout variant="insight" title="Đã đủ gia vị!">
+          Prompt của bạn giờ có đủ vai trò, nhiệm vụ, ràng buộc và bối cảnh. AI
+          không phải đoán — kết quả sẽ đi đúng ý ngay lần đầu.
+        </Callout>
+      )}
+    </div>
+  );
+}
 
-        <p><strong>Công thức prompt hiệu quả:</strong></p>
-        <div className="rounded-lg bg-surface p-4 my-3">
-          <p className="text-sm font-semibold text-foreground">
-            <strong>Vai trò</strong> + <strong>Nhiệm vụ cụ thể</strong> + <strong>Ngữ cảnh</strong> + <strong>Format output</strong> + <strong>Ví dụ mẫu</strong> (nếu cần)
+// ═══════════════════════════════════════════════════════════════════════════
+// DEMO 2 — GHÉP CẶP PROMPT MƠ HỒ ↔ PROMPT CỤ THỂ
+// ═══════════════════════════════════════════════════════════════════════════
+function VagueVsSpecificDemo() {
+  return (
+    <MatchPairs
+      instruction="Nối prompt mơ hồ bên trái với phiên bản cụ thể ở bên phải. Bấm một ô ở cột A, rồi bấm ô tương ứng ở cột B."
+      pairs={[
+        {
+          left: "Viết email gửi sếp",
+          right:
+            "Viết email xin nghỉ 2 ngày gửi sếp trực tiếp, lý do họp phụ huynh, giọng lịch sự, dưới 80 từ",
+        },
+        {
+          left: "Tóm tắt tài liệu này",
+          right:
+            "Tóm tắt báo cáo dưới đây thành 5 bullet, tổng dưới 150 từ, dành cho người không chuyên",
+        },
+        {
+          left: "Viết bài quảng cáo sản phẩm",
+          right:
+            "Viết caption Facebook 60 từ cho máy lọc nước, đối tượng mẹ bỉm sữa, giọng ấm áp, có CTA đặt hàng",
+        },
+        {
+          left: "Dịch đoạn này sang tiếng Anh",
+          right:
+            "Dịch đoạn dưới sang tiếng Anh kinh doanh trang trọng, giữ nguyên thuật ngữ ngành y, không dịch tên riêng",
+        },
+      ]}
+    />
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DEMO 3 — PHẪU THUẬT PROMPT (DragDrop các mảnh còn thiếu vào đúng chỗ)
+// ═══════════════════════════════════════════════════════════════════════════
+function PromptSurgeryDemo() {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <AlertTriangle
+            size={14}
+            className="text-red-600 dark:text-red-400"
+          />
+          <span className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
+            Prompt bệnh (khó cứu)
+          </span>
+        </div>
+        <p className="text-sm text-foreground italic">
+          &ldquo;Viết bài giới thiệu cho sản phẩm mới&rdquo;
+        </p>
+      </div>
+
+      <p className="text-sm text-muted">
+        Kéo từng mảnh ghép vào đúng vùng điều trị. Mỗi vùng chỉ nhận đúng một
+        mảnh — AI đang chờ bạn làm rõ!
+      </p>
+
+      <DragDrop
+        instruction="Kéo 4 mảnh ghép vào 4 ô tương ứng để biến prompt mơ hồ thành prompt rõ ràng."
+        items={[
+          {
+            id: "piece-role",
+            label: "Bạn là copywriter chuyên sản phẩm gia dụng",
+          },
+          {
+            id: "piece-context",
+            label: "Máy lọc nước RO cho gia đình 4 người",
+          },
+          {
+            id: "piece-constraint",
+            label: "Caption Facebook dưới 80 từ, có CTA đặt hàng",
+          },
+          {
+            id: "piece-format",
+            label: "Mở bằng câu hook, 3 lợi ích chính, kết bằng lời kêu gọi",
+          },
+        ]}
+        zones={[
+          {
+            id: "zone-role",
+            label: "Vai trò (bạn là ai)",
+            accepts: ["piece-role"],
+          },
+          {
+            id: "zone-context",
+            label: "Bối cảnh sản phẩm",
+            accepts: ["piece-context"],
+          },
+          {
+            id: "zone-constraint",
+            label: "Ràng buộc (độ dài, kênh)",
+            accepts: ["piece-constraint"],
+          },
+          {
+            id: "zone-format",
+            label: "Cấu trúc bài",
+            accepts: ["piece-format"],
+          },
+        ]}
+      />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CRAFT — sơ đồ màu (không phải bullet list)
+// ═══════════════════════════════════════════════════════════════════════════
+function CraftDiagram() {
+  const parts = [
+    {
+      letter: "C",
+      label: "Context",
+      subLabel: "Bối cảnh",
+      example: "Mình đang viết email cho sếp là người rất bận…",
+      color: "#7C3AED",
+    },
+    {
+      letter: "R",
+      label: "Role",
+      subLabel: "Vai trò",
+      example: "Bạn là trợ lý hành chính lâu năm…",
+      color: "#2563EB",
+    },
+    {
+      letter: "A",
+      label: "Action",
+      subLabel: "Nhiệm vụ",
+      example: "Hãy viết email xin nghỉ 2 ngày…",
+      color: "#059669",
+    },
+    {
+      letter: "F",
+      label: "Format",
+      subLabel: "Định dạng",
+      example: "5 bullet, mỗi bullet 1 câu, dưới 120 từ…",
+      color: "#D97706",
+    },
+    {
+      letter: "T",
+      label: "Tone",
+      subLabel: "Giọng văn",
+      example: "Trang trọng, ấm, không khách sáo…",
+      color: "#DB2777",
+    },
+  ];
+
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+      <p className="text-sm text-muted">
+        CRAFT là 5 chữ cái bạn nên nhắc bản thân mỗi khi gõ prompt. Mỗi ô bên
+        dưới là một mảnh, màu sắc giúp não bạn bám trụ lâu hơn danh sách bullet.
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-5">
+        {parts.map((p) => (
+          <motion.div
+            key={p.letter}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.3 }}
+            className="rounded-xl border border-border bg-surface p-3 text-center flex flex-col items-center gap-1"
+          >
+            <div
+              className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white"
+              style={{ backgroundColor: p.color }}
+            >
+              {p.letter}
+            </div>
+            <div className="text-sm font-semibold text-foreground mt-1">
+              {p.label}
+            </div>
+            <div className="text-xs text-muted">{p.subLabel}</div>
+            <div className="text-[11px] italic text-tertiary mt-1 leading-snug">
+              &ldquo;{p.example}&rdquo;
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Băng ngang nối các ô */}
+      <div className="hidden sm:flex items-center gap-1 justify-center pt-1">
+        {parts.map((p, i) => (
+          <span key={i} className="flex items-center gap-1">
+            <span
+              className="h-1 w-10 rounded-full"
+              style={{ backgroundColor: p.color }}
+            />
+            {i < parts.length - 1 && (
+              <span className="text-xs text-tertiary">+</span>
+            )}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// BEFORE / AFTER — hai thẻ cạnh nhau (không phải code)
+// ═══════════════════════════════════════════════════════════════════════════
+function BeforeAfterCard() {
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <div className="rounded-xl border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 space-y-2">
+        <div className="flex items-center gap-2">
+          <Ruler size={14} className="text-red-600 dark:text-red-400" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
+            Prompt trước
+          </span>
+        </div>
+        <p className="text-sm text-foreground italic">
+          &ldquo;Viết báo cáo tuần cho team marketing&rdquo;
+        </p>
+        <div className="pt-2 border-t border-red-200 dark:border-red-800">
+          <span className="text-[11px] font-semibold text-red-700 dark:text-red-300 uppercase tracking-wide">
+            Output mơ hồ
+          </span>
+          <p className="text-xs text-foreground mt-1 leading-relaxed">
+            &ldquo;Tuần này team đã làm nhiều việc. Các hoạt động diễn ra tốt.
+            Chúng tôi sẽ tiếp tục cố gắng trong tuần tới.&rdquo;
           </p>
         </div>
+      </div>
 
-        <Callout variant="tip" title="5 quy tắc vàng">
-          <ol className="list-decimal list-inside space-y-1 text-sm">
-            <li><strong>Cụ thể:</strong> &quot;Viết 200 từ&quot; tốt hơn &quot;viết ngắn&quot;</li>
-            <li><strong>Có ví dụ:</strong> Cho AI thấy output bạn muốn</li>
-            <li><strong>Từng bước:</strong> Yêu cầu &quot;suy nghĩ từng bước&quot; cho task phức tạp</li>
-            <li><strong>Gán vai:</strong> &quot;Bạn là chuyên gia...&quot; giúp AI đi vào đúng chế độ</li>
-            <li><strong>Lặp lại:</strong> Không có prompt hoàn hảo lần đầu — thử, xem kết quả, cải thiện</li>
-          </ol>
-        </Callout>
+      <div className="rounded-xl border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-4 space-y-2">
+        <div className="flex items-center gap-2">
+          <Sparkles size={14} className="text-green-600 dark:text-green-400" />
+          <span className="text-xs font-semibold uppercase tracking-wide text-green-700 dark:text-green-300">
+            Prompt sau
+          </span>
+        </div>
+        <p className="text-sm text-foreground italic">
+          &ldquo;Bạn là leader team marketing. Viết báo cáo tuần gửi sếp, 3
+          phần: (1) kết quả chính – có số liệu, (2) vấn đề gặp phải, (3) kế
+          hoạch tuần sau. Mỗi phần dưới 40 từ, giọng trực tiếp.&rdquo;
+        </p>
+        <div className="pt-2 border-t border-green-200 dark:border-green-800">
+          <span className="text-[11px] font-semibold text-green-700 dark:text-green-300 uppercase tracking-wide">
+            Output đi đúng ý
+          </span>
+          <p className="text-xs text-foreground mt-1 leading-relaxed">
+            &ldquo;Kết quả: ads Facebook đạt CPC 4.2k (tốt hơn tuần trước 18%),
+            landing page tăng conversion từ 2.1% lên 3.4%. Vấn đề: nội dung
+            blog chậm 2 ngày. Kế hoạch: thuê thêm freelancer, đẩy brief trước
+            thứ 2.&rdquo;
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        <CodeBlock language="python" title="prompt_template.py">{`# Template prompt chuẩn
-prompt = f"""
-[Vai trò] Bạn là {role}.
-[Nhiệm vụ] Hãy {task}.
-[Ngữ cảnh] {context}
-[Format] Trả lời dưới dạng {format}.
-[Ví dụ]
-Input: {example_input}
-Output: {example_output}
-
-[Câu hỏi thực tế]
-Input: {real_input}
-Output:"""
-
-# Gửi đến API
-response = client.messages.create(
-    model="claude-sonnet-4-20250514",
-    messages=[{"role": "user", "content": prompt}]
-)`}</CodeBlock>
-      </ExplanationSection>
-
+// ═══════════════════════════════════════════════════════════════════════════
+// COMPONENT CHÍNH
+// ═══════════════════════════════════════════════════════════════════════════
+export default function PromptEngineeringTopic() {
+  return (
+    <>
+      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      <LessonSection step={1} totalSteps={8} label="Thử đoán">
+        <PredictionGate
+          question="Bạn nhờ AI viết một email xin nghỉ cho sếp. Hai prompt dưới đây, prompt nào sẽ cho bạn email đúng ý ngay lần đầu?"
+          options={[
+            "A. “Viết email”",
+            "B. “Viết email xin nghỉ 3 ngày gửi sếp, giọng trang trọng nhưng thân thiện, lý do: vợ sinh con đầu lòng. Độ dài ~100 từ.”",
+            "Cả hai như nhau, AI đủ thông minh để tự đoán",
+          ]}
+          correct={1}
+          explanation="Prompt B đã nêu rõ đối tượng (sếp), lý do, giọng văn, và độ dài. AI không đọc được suy nghĩ của bạn — bạn phải nói rõ. Đó chính là toàn bộ bản chất của prompt engineering, và bài học hôm nay sẽ biến điều đó thành thói quen."
+        >
+          <p className="text-sm text-muted mt-4">
+            Viết prompt giống như{" "}
+            <strong className="text-foreground">
+              dặn dò người giúp việc
+            </strong>{" "}
+            — bạn càng nói rõ ngay từ đầu, sau đó càng đỡ phải sửa đi sửa lại.
+          </p>
+        </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ TÓM TẮT + QUIZ ━━━ */}
-      <LessonSection step={6} totalSteps={6} label="Tổng kết">
-      <MiniSummary
-        points={[
-          "Prompt Engineering là kỹ năng giao tiếp hiệu quả với AI — cụ thể, rõ ràng, có cấu trúc",
-          "4 kỹ thuật chính: Zero-shot (hỏi thẳng), Few-shot (cho ví dụ), Chain-of-Thought (từng bước), System prompt (gán vai trò)",
-          "Prompt tốt = Vai trò + Nhiệm vụ cụ thể + Ngữ cảnh + Format output + Ví dụ mẫu",
-          "Lặp lại là chìa khóa — không có prompt hoàn hảo lần đầu, luôn thử và cải thiện",
-        ]}
-      />
+      {/* ━━━ BƯỚC 2 — ẨN DỤ THỰC TẾ ━━━ */}
+      <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
+        <p>
+          Hãy tưởng tượng bạn vừa tuyển một trợ lý mới. Người này{" "}
+          <strong>
+            rất thông minh, đọc cực nhanh, nhớ mọi thứ bạn vừa nói
+          </strong>{" "}
+          — nhưng hoàn toàn không biết bạn đang làm gì, khách hàng của bạn là
+          ai, hay sếp của bạn khó tính đến mức nào. Nếu bạn chỉ bảo &ldquo;viết
+          cái email đó đi&rdquo;, trợ lý sẽ đoán bừa. Nếu bạn đưa đủ chi tiết —
+          gửi ai, để làm gì, dài bao nhiêu, giọng nào — trợ lý làm đúng ngay.
+        </p>
+        <p>
+          AI chính là người trợ lý đó. <strong>Prompt là cách bạn dặn dò.</strong>{" "}
+          Chất lượng dặn dò quyết định chất lượng sản phẩm. Dặn mơ hồ → làm mơ
+          hồ. Dặn rõ → làm đúng. Trong phần tiếp theo, bạn sẽ tự tay lắp ráp
+          một prompt từng mảnh và chứng kiến điểm chất lượng tăng ngay trước
+          mắt.
+        </p>
+        <Callout variant="insight" title="Quy tắc cốt lõi">
+          Chất lượng <strong>output</strong> của AI gần như chỉ phụ thuộc vào
+          chất lượng <strong>prompt</strong> bạn gửi vào. Prompt mơ hồ = output
+          mơ hồ. Không có cách nào khác để AI đọc được suy nghĩ của bạn.
+        </Callout>
+      </LessonSection>
 
-      {/* ━━━ KIỂM TRA ━━━ */}
-      <QuizSection questions={quizQuestions} />
+      {/* ━━━ BƯỚC 3 — TRỰC QUAN HÓA (3 DEMO) ━━━ */}
+      <LessonSection step={3} totalSteps={8} label="Khám phá">
+        <VisualizationSection topicSlug={metadata.slug}>
+          {/* ───── DEMO 1 — PROMPT BUILDER ───── */}
+          <LessonSection step={1} totalSteps={3} label="Demo 1 · Prompt Builder">
+            <h3 className="text-base font-semibold text-foreground mb-1">
+              Tự tay lắp ráp một prompt
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              Bật/tắt từng mảnh ghép. Quan sát prompt được dựng lại và điểm
+              chất lượng tăng theo.
+            </p>
+            <PromptBuilderDemo />
+          </LessonSection>
+
+          {/* ───── DEMO 2 — MATCH PAIRS ───── */}
+          <LessonSection step={2} totalSteps={3} label="Demo 2 · Ghép cặp">
+            <h3 className="text-base font-semibold text-foreground mb-1">
+              Prompt mơ hồ ↔ Prompt cụ thể
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              4 prompt văn phòng đời thường. Nối bản mơ hồ với bản đã được
+              &ldquo;chỉnh trang&rdquo;.
+            </p>
+            <VagueVsSpecificDemo />
+          </LessonSection>
+
+          {/* ───── DEMO 3 — DRAG DROP SURGERY ───── */}
+          <LessonSection step={3} totalSteps={3} label="Demo 3 · Phẫu thuật">
+            <h3 className="text-base font-semibold text-foreground mb-1">
+              Phẫu thuật một prompt bệnh
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              Một prompt mơ hồ đang nằm trên bàn mổ. Kéo 4 mảnh ghép vào đúng
+              vùng để cứu nó.
+            </p>
+            <PromptSurgeryDemo />
+          </LessonSection>
+        </VisualizationSection>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 4 — AHA MOMENT ━━━ */}
+      <LessonSection step={4} totalSteps={8} label="Aha">
+        <AhaMoment>
+          Prompt không phải là một câu lệnh ma thuật — nó là{" "}
+          <strong>một bản dặn dò</strong>. Bạn dặn càng rõ ràng ngay từ đầu, AI
+          càng không cần bạn phải ngồi sửa lại mỗi lần. Garbage in → garbage
+          out. Clear in → clear out.
+        </AhaMoment>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 5 — INLINE CHALLENGE ━━━ */}
+      <LessonSection step={5} totalSteps={8} label="Thử thách">
+        <InlineChallenge
+          question="Sếp vừa nhờ bạn gửi bản tóm tắt cuộc họp 30 phút sáng nay. Bạn muốn AI viết giúp. Prompt nào là tốt nhất?"
+          options={[
+            "“Tóm tắt cuộc họp”",
+            "“Bạn là thư ký cuộc họp. Tóm tắt đoạn ghi âm dưới thành biên bản: 3 phần (quyết định chính – công việc giao – mốc thời gian). Dưới 200 từ, giọng trực tiếp.”",
+            "“Tóm tắt meeting này ngắn gọn”",
+            "“Giúp tôi viết tóm tắt cuộc họp, làm sao cho hay”",
+          ]}
+          correct={1}
+          explanation="Option B có đủ: vai trò (thư ký), nhiệm vụ (tóm tắt), định dạng (3 phần rõ), độ dài (dưới 200 từ), và giọng văn. AI sẽ ra bản tóm tắt đúng chuẩn ngay lần đầu — không cần bạn ngồi chỉnh."
+        />
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 6 — GIẢI THÍCH SÂU (VISUAL HEAVY) ━━━ */}
+      <LessonSection step={6} totalSteps={8} label="Đi sâu">
+        <ExplanationSection>
+          <p>
+            <strong>Prompt engineering</strong> là kỹ năng thiết kế lời dặn
+            (prompt) sao cho AI hiểu chính xác bạn muốn gì — đúng format, đúng
+            giọng văn, đúng độ dài, đúng đối tượng. Không cần biết lập trình,
+            không cần học toán. Chỉ cần biết cách nói cho rõ.
+          </p>
+
+          {/* Sơ đồ CRAFT */}
+          <CraftDiagram />
+
+          <p>
+            Khi bạn đã có khung CRAFT trong đầu, bước tiếp theo là tránh những
+            cái bẫy phổ biến mà dân văn phòng hay vấp. Năm bẫy dưới đây chiếm
+            hơn 80% các lần bạn &ldquo;không hài lòng với AI&rdquo;.
+          </p>
+
+          {/* 5 pitfalls dạng Callout */}
+          <div className="space-y-3">
+            {PITFALLS.map((p, i) => (
+              <Callout key={i} variant={p.variant} title={p.title}>
+                <div className="space-y-1">
+                  <p>
+                    <span className="font-semibold text-red-700 dark:text-red-300">
+                      Bệnh:
+                    </span>{" "}
+                    {p.bad}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-green-700 dark:text-green-300">
+                      Thuốc:
+                    </span>{" "}
+                    {p.fix}
+                  </p>
+                </div>
+              </Callout>
+            ))}
+          </div>
+
+          {/* Before / After card */}
+          <h4 className="text-sm font-semibold text-foreground mt-4">
+            Nhìn sự khác biệt: trước và sau khi áp dụng CRAFT
+          </h4>
+          <BeforeAfterCard />
+
+          {/* Thư viện template */}
+          <h4 className="text-sm font-semibold text-foreground mt-4">
+            Thư viện 4 khung prompt cho dân văn phòng
+          </h4>
+          <p className="text-sm text-muted">
+            Bốn tình huống dân văn phòng gặp mỗi tuần. Mỗi khung đã điền sẵn 3
+            ô — bạn chỉ việc đổi nội dung cho hợp hoàn cảnh của mình.
+          </p>
+          <TabView
+            tabs={TEMPLATES.map((t) => ({
+              label: t.label,
+              content: (
+                <div className="space-y-3">
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    {[
+                      { k: t.slot1, v: t.slot1Value, color: "#2563EB" },
+                      { k: t.slot2, v: t.slot2Value, color: "#059669" },
+                      { k: t.slot3, v: t.slot3Value, color: "#D97706" },
+                    ].map((row, i) => (
+                      <div
+                        key={i}
+                        className="rounded-lg border border-border bg-surface p-3"
+                        style={{ borderLeft: `3px solid ${row.color}` }}
+                      >
+                        <div
+                          className="text-[10px] font-semibold uppercase tracking-wider mb-1"
+                          style={{ color: row.color }}
+                        >
+                          {row.k}
+                        </div>
+                        <div className="text-xs text-foreground leading-snug">
+                          {row.v}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="rounded-lg border border-accent/30 bg-accent-light p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles size={14} className="text-accent" />
+                      <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+                        AI trả ra
+                      </span>
+                    </div>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {t.preview}
+                    </p>
+                  </div>
+                </div>
+              ),
+            }))}
+          />
+
+          <p className="mt-4">
+            Prompt engineering còn có thêm một số kỹ thuật nâng cao khi bạn
+            muốn AI suy luận nhiều bước. Bạn có thể tìm hiểu thêm về{" "}
+            <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>{" "}
+            (yêu cầu AI suy nghĩ từng bước trước khi kết luận) và{" "}
+            <TopicLink slug="in-context-learning">in-context learning</TopicLink>{" "}
+            (cho AI vài ví dụ mẫu ngay trong prompt). Ngoài ra, tham số{" "}
+            <TopicLink slug="temperature">temperature</TopicLink> quyết định AI
+            sáng tạo hay bảo thủ — hữu ích khi bạn muốn AI cho ra nhiều bản
+            nháp khác nhau.
+          </p>
+
+          <Callout variant="insight" title="Lặp lại là chìa khóa">
+            Không có prompt hoàn hảo ngay lần đầu — kể cả người viết prompt
+            chuyên nghiệp. Bí quyết là: thử nhanh → xem AI trả gì → chỉnh một
+            phần cụ thể (&ldquo;đoạn 2 quá khô, hãy viết lại ấm hơn&rdquo;) →
+            lặp lại. Hai ba lần là ra bản ưng ý, nhanh hơn tự viết rất nhiều.
+          </Callout>
+        </ExplanationSection>
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      <LessonSection step={7} totalSteps={8} label="Tóm tắt">
+        <MiniSummary
+          title="5 điều cần nhớ khi viết prompt"
+          points={[
+            "Prompt là bản dặn dò cho trợ lý — càng rõ ràng, AI càng đi đúng ý ngay lần đầu",
+            "Khung CRAFT: Context (bối cảnh) + Role (vai trò) + Action (nhiệm vụ) + Format (định dạng) + Tone (giọng)",
+            "Luôn nêu rõ đối tượng đọc và độ dài — hai mảnh dân văn phòng hay quên nhất",
+            "Khi muốn AI viết đúng giọng của mình, dán 1-2 ví dụ mẫu vào prompt, đừng mô tả bằng lời",
+            "Không có prompt hoàn hảo lần đầu — nhưng chỉnh sửa từng phần nhanh hơn viết lại từ đầu rất nhiều",
+          ]}
+        />
+      </LessonSection>
+
+      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      <LessonSection step={8} totalSteps={8} label="Kiểm tra">
+        <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>
   );

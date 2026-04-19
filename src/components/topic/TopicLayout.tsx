@@ -207,11 +207,16 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
           </div>
         </header>
 
-        {/* Forward link to application topic */}
+        {/* Content */}
+        <SectionDuplicateGuard>
+          <div>{children}</div>
+        </SectionDuplicateGuard>
+
+        {/* Forward link to application topic — shown AFTER reading the concept */}
         {applicationTopic?.featuredApp && (
           <nav
             aria-label="Liên kết với bài ứng dụng"
-            className="mb-8 rounded-md border border-accent/20 bg-accent/5 px-4 py-3 text-sm"
+            className="mt-10 rounded-md border border-accent/20 bg-accent/5 px-4 py-3 text-sm"
           >
             <Link
               href={neighborHref(applicationTopic.slug)}
@@ -223,11 +228,6 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             </Link>
           </nav>
         )}
-
-        {/* Content */}
-        <SectionDuplicateGuard>
-          <div>{children}</div>
-        </SectionDuplicateGuard>
 
         {/* Mark as complete */}
         <div className="mt-10 flex justify-center">
