@@ -52,13 +52,16 @@
  * citations." In the canonical API response schema (web_search_20250305 /
  * 20260209), each citation is a `web_search_result_location` with fields
  * `url`, `title`, `cited_text`, and an `encrypted_index`. In the
- * consumer claude.ai UI those same citations surface as small numbered
- * markers next to the claims and as a row of source cards (favicon +
- * domain + page title) below the answer — that's the UI we simulate
- * here. We render markers as `[1]`, `[2]`, `[3]` (bracketed numerals,
- * same shape Claude emits in plaintext responses); source cards show
- * Vietnamese outlets so a Vietnamese reader can immediately tell which
- * publication is being cited.
+ * consumer claude.ai UI those same citations surface as **inline
+ * underlined hyperlinks on the cited span itself** (not bracketed
+ * `[1]` markers — those are the API/plaintext shape) plus a row of
+ * numbered source cards (favicon + domain + page title) below the
+ * answer. This tile mirrors the consumer UI: the cited number/phrase
+ * is wrapped in an underlined link with `data-citation=N` pointing at
+ * `#source-N`; the source-card row below enumerates "1", "2", "3" so
+ * the numbering connects both ends. Source cards show Vietnamese
+ * outlets so a Vietnamese reader immediately recognises the citation
+ * row.
  *
  * ---------------------------------------------------------------------------
  * CONTEXT7 FINDINGS (snapshot 2026-04-19)
@@ -84,7 +87,7 @@
  *   tile before it.
  */
 
-import { memo } from "react";
+import { memo, type ReactNode } from "react";
 import Link from "next/link";
 import {
   ChevronDown,
@@ -124,33 +127,36 @@ const ONE_LINER =
 const WEB_SEARCH_DOC_HREF =
   "https://support.claude.com/en/articles/10684626-enabling-and-using-web-search";
 
-const ACTIVE_CHAT_TITLE = "Kinh tế vĩ mô VN Q1 2026";
+const ACTIVE_CHAT_TITLE = "Kinh tế vĩ mô VN Q1 2024";
 
 const USER_QUESTION =
-  "Tình hình kinh tế vĩ mô Việt Nam quý 1 năm 2026 ra sao? Tóm tắt 3 con số chính và trích dẫn nguồn báo chính thống.";
+  "Tình hình kinh tế vĩ mô Việt Nam quý 1 năm 2024 như thế nào? Tóm tắt 3 con số chính và trích dẫn nguồn chính thống.";
 
-// Claude's response text, split so we can inject inline citation markers
-// as real DOM children (not substrings). Each marker is a small <sup>
-// that carries `data-citation="N"` so tests can find them without
-// relying on string matching inside paragraphs.
+// Claude's response text. The cited numeric spans below are wrapped in
+// <CitationLink> — the link itself IS the citation, matching the real
+// claude.ai consumer UI (underlined hyperlink on the cited phrase, not
+// a bracketed "[N]" marker which is the API/plaintext shape).
 const CLAUDE_INTRO =
-  "Dựa trên các nguồn vừa tra cứu hôm nay, ba con số lớn nhất quý 1 năm 2026:";
+  "Theo báo cáo kinh tế – xã hội quý I năm 2024 vừa tra cứu, ba con số lớn nhất:";
 
+// Q1 2024 figures — publicly verified against GSO (General Statistics
+// Office of Vietnam) Q1 2024 socio-economic report, fetched 2026-04-19.
 const CLAUDE_STAT_GDP_LABEL = "Tăng trưởng GDP";
-const CLAUDE_STAT_GDP_VALUE = "6,8 %";
+const CLAUDE_STAT_GDP_VALUE = "5,66 %";
 const CLAUDE_STAT_GDP_CITE = 1;
 
 const CLAUDE_STAT_CPI_LABEL = "Lạm phát (CPI bình quân)";
-const CLAUDE_STAT_CPI_VALUE = "3,4 %";
+const CLAUDE_STAT_CPI_VALUE = "3,77 %";
 const CLAUDE_STAT_CPI_CITE = 2;
 
 const CLAUDE_STAT_EXPORT_LABEL = "Xuất khẩu hàng hoá";
-const CLAUDE_STAT_EXPORT_VALUE = "94,1 tỷ USD";
+const CLAUDE_STAT_EXPORT_VALUE = "93,06 tỷ USD";
 const CLAUDE_STAT_EXPORT_CITE = 3;
 
-const CLAUDE_OUTRO_LEAD = "Tổng quan chung, tăng trưởng vẫn cao hơn mục tiêu";
+const CLAUDE_OUTRO_LEAD = "Tổng quan chung, ";
+const CLAUDE_OUTRO_LINKED = "tăng trưởng vẫn cao hơn cùng kỳ 2023";
 const CLAUDE_OUTRO_TAIL =
-  " — dù giá hàng hoá toàn cầu biến động, cán cân thương mại quý 1 vẫn xuất siêu.";
+  " — dù giá hàng hoá toàn cầu biến động, cán cân thương mại quý I vẫn xuất siêu.";
 const CLAUDE_OUTRO_CITE = 1;
 
 // Three source cards — fabricated "retrieved" pages shaped like what
@@ -172,22 +178,22 @@ const SOURCE_CARDS: SourceCard[] = [
   {
     n: 1,
     domain: "gso.gov.vn",
-    title: "Báo cáo tình hình kinh tế – xã hội quý I/2026",
+    title: "Báo cáo tình hình kinh tế – xã hội quý I năm 2024",
     faviconChar: "G",
     accent: "#13343B",
   },
   {
     n: 2,
-    domain: "tuoitre.vn",
-    title: "CPI quý I/2026 tăng 3,4% — áp lực giá trong tầm kiểm soát",
-    faviconChar: "T",
+    domain: "vneconomy.vn",
+    title: "CPI quý I/2024 tăng 3,77% so với cùng kỳ — áp lực giá trong tầm kiểm soát",
+    faviconChar: "V",
     accent: "#A85A2B",
   },
   {
     n: 3,
-    domain: "vneconomy.vn",
-    title: "Xuất khẩu quý I vượt 94 tỷ USD, cán cân vẫn xuất siêu",
-    faviconChar: "V",
+    domain: "tuoitre.vn",
+    title: "Xuất khẩu quý I/2024 đạt 93,06 tỷ USD, cán cân vẫn xuất siêu",
+    faviconChar: "T",
     accent: "#20736A",
   },
 ];
@@ -202,25 +208,25 @@ const CHAT_HISTORY: Array<{ id: string; title: string; active?: boolean }> = [
 //     Main column fills from ~22% to 100% of shell width on wide screens.
 //   - Pin 1 (search-in-progress indicator, appears briefly under the user
 //     question inside Claude's bubble) → x:32, y:26.
-//   - Pin 2 (inline [1] citation marker next to the GDP stat row) → x:48, y:44.
+//   - Pin 2 (inline underlined citation link on the GDP stat value) → x:48, y:44.
 //   - Pin 3 (whole source-card row below Claude's reply) → x:46, y:68.
 //   - Pin 4 (the domain chip inside the first source card) → x:26, y:72.
 const ANNOTATIONS: Annotation[] = [
   {
     id: "searching",
     pin: 1,
-    label: "Claude tự tìm trên web",
+    label: "Claude tự tra cứu web",
     description:
-      "Khi câu hỏi liên quan đến dữ liệu hôm nay, tuần này, hoặc năm nay, Claude tự gọi công cụ web search — bạn không cần bấm nút hoặc nói 'tra giúp'.",
+      "Khi câu hỏi liên quan đến dữ liệu hôm nay, tuần này, hoặc năm nay, Claude tự gọi công cụ Web Search — bạn không cần bấm nút hoặc nói 'tra giúp'.",
     showAt: [0.0, 0.5],
     anchor: { x: 32, y: 26 },
   },
   {
     id: "inline-citation",
     pin: 2,
-    label: "Mỗi khẳng định kèm số trích dẫn",
+    label: "Mỗi con số trích là một link đến nguồn",
     description:
-      "Claude gắn số [1], [2], [3] ngay sau mỗi con số hoặc mệnh đề lấy từ web, để bạn biết chính xác câu nào là từ nguồn nào.",
+      "Trên claude.ai, số hoặc cụm từ lấy từ web được gạch chân và trở thành đường dẫn — bấm vào sẽ cuộn xuống thẻ nguồn tương ứng (hoặc mở trang gốc). Đây là cách giao diện thật hiển thị trích dẫn, không phải dạng [1], [2] của API.",
     showAt: [0.0, 0.5],
     anchor: { x: 48, y: 44 },
   },
@@ -266,20 +272,29 @@ const CROSS_LINKS: Array<{ href: string; title: string; blurb: string }> = [
 ];
 
 // ---------------------------------------------------------------------------
-// Citation marker — reused both inline (in Claude's reply) and inside
-// source cards so the same number shape connects both ends of the UI.
+// Citation link — wraps the cited span itself as an underlined hyperlink,
+// matching the real claude.ai consumer UI. Does NOT render a bracketed
+// "[N]" marker; the cited phrase/number IS the link. The source-card
+// row below enumerates "1", "2", "3" on each card so the numbering
+// still connects both ends of the UI.
 // ---------------------------------------------------------------------------
 
-function CitationMarker({ n }: { n: number }) {
+function CitationLink({
+  sourceIndex,
+  children,
+}: {
+  sourceIndex: number;
+  children: ReactNode;
+}) {
   return (
-    <sup
-      data-citation={n}
-      aria-label={`Trích dẫn ${n}`}
-      className="ml-0.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-[4px] border border-border bg-[var(--pure-white,#FFFFFF)] px-1 font-mono text-[10px] font-semibold leading-none text-foreground"
-      style={{ verticalAlign: "super", boxShadow: "var(--shadow-sm)" }}
+    <a
+      href={`#source-${sourceIndex}`}
+      data-citation={sourceIndex}
+      aria-label={`Trích dẫn nguồn ${sourceIndex}`}
+      className="text-foreground underline decoration-[var(--turquoise-ink,#13343B)] decoration-dotted underline-offset-[3px] hover:decoration-solid"
     >
-      [{n}]
-    </sup>
+      {children}
+    </a>
   );
 }
 
@@ -349,7 +364,12 @@ const SourceRow = memo(function SourceRow() {
       role="list"
     >
       {SOURCE_CARDS.map((card) => (
-        <div key={card.n} role="listitem" className="flex min-w-0 flex-1">
+        <div
+          key={card.n}
+          id={`source-${card.n}`}
+          role="listitem"
+          className="flex min-w-0 flex-1 scroll-mt-16"
+        >
           <SourceCardTile card={card} />
         </div>
       ))}
@@ -373,9 +393,8 @@ function StatRow({
   return (
     <div className="flex items-center justify-between gap-3 rounded-[8px] border border-border bg-[var(--pure-white,#FFFFFF)] px-3 py-2">
       <span className="text-[12px] text-tertiary">{label}</span>
-      <span className="font-mono text-[13px] font-semibold text-foreground">
-        {value}
-        <CitationMarker n={cite} />
+      <span className="font-mono text-[13px] font-semibold">
+        <CitationLink sourceIndex={cite}>{value}</CitationLink>
       </span>
     </div>
   );
@@ -457,7 +476,9 @@ const WebSearchMain = memo(function WebSearchMain() {
           </div>
           <div className="mt-2 text-[13px] leading-[1.55] text-foreground">
             {CLAUDE_OUTRO_LEAD}
-            <CitationMarker n={CLAUDE_OUTRO_CITE} />
+            <CitationLink sourceIndex={CLAUDE_OUTRO_CITE}>
+              {CLAUDE_OUTRO_LINKED}
+            </CitationLink>
             {CLAUDE_OUTRO_TAIL}
           </div>
         </ShellMessage>
@@ -524,19 +545,25 @@ export default function WebSearchTile() {
       />
 
       {/* Plan-availability note — grounded in the claude.com/pricing table
-          + help-center article 10684626, both fetched 2026-04-19. */}
+          + help-center article 10684626, both fetched 2026-04-19. Note
+          that Team / Enterprise get "Enterprise Search" as a distinct
+          product row on the pricing page — not the same as the public
+          Web Search feature on Free/Pro/Max. */}
       <p
         role="note"
         className="max-w-[62ch] text-[12px] leading-[1.55] text-tertiary"
       >
-        Web Search có trên cả bốn gói cá nhân của claude.ai — Free, Pro,
-        Max 5x và Max 20x — theo bảng so sánh &ldquo;Ability to search the
-        web&rdquo; trên trang giá. Với gói Team và Enterprise, tính năng
-        cũng có nhưng Owner (hoặc Primary Owner) phải bật cho cả workspace
-        trước — sau đó mọi thành viên mới dùng được. Trên giao diện chat,
-        bấm vào biểu tượng thanh trượt trong ô soạn tin, tìm mục
-        &ldquo;Web search&rdquo; và gạt nút bật. Gói Free dùng được, nhưng
-        lượt tra cứu tính vào giới hạn sử dụng hàng ngày.
+        Web Search (tra cứu web công khai) có trên gói Free, Pro và Max
+        của claude.ai — theo bảng so sánh &ldquo;Ability to search the
+        web&rdquo; trên trang giá. Gói Team và Enterprise có một sản
+        phẩm riêng tên là &ldquo;Enterprise Search&rdquo; — tra cứu
+        trong các nguồn nội bộ đã kết nối với workspace (không phải web
+        công khai). Trên Team và Enterprise, Owner hoặc Primary Owner
+        cần bật tính năng cho cả workspace trước khi các thành viên
+        khác dùng được. Trên giao diện chat, bấm biểu tượng thanh trượt
+        trong ô soạn tin, tìm mục &ldquo;Web search&rdquo; và gạt nút
+        bật; gói Free dùng được nhưng lượt tra cứu tính vào giới hạn
+        sử dụng hàng ngày.
       </p>
 
       {/* "Cách nó hoạt động" — three crop cards using shared primitives. */}
@@ -546,8 +573,8 @@ export default function WebSearchTile() {
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
           <CropCard
-            title="Khi nào Claude tra web"
-            caption="Theo tài liệu Anthropic, Claude tự quyết định tra cứu khi câu hỏi cần thông tin hiện tại — giá cả, tin tức, sự kiện hôm nay, hoặc dữ liệu mới hơn mốc huấn luyện. Bạn không cần gõ 'tra giúp' — nếu trong câu có 'hôm nay', 'tuần này', 'năm 2026', Claude gần như chắc chắn sẽ gọi web search."
+            title="Khi nào Claude tra cứu web"
+            caption="Theo tài liệu Anthropic, Claude tự quyết định tra cứu khi câu hỏi cần thông tin hiện tại — giá cả, tin tức, sự kiện hôm nay, hoặc dữ liệu mới hơn mốc huấn luyện. Bạn không cần gõ 'tra giúp' — nếu trong câu có 'hôm nay', 'tuần này', 'năm 2026', Claude gần như chắc chắn sẽ gọi Web Search."
           >
             <div
               className="flex items-center gap-2 rounded-[12px] border border-border bg-[var(--pure-white,#FFFFFF)] px-3 py-2.5"
@@ -567,14 +594,19 @@ export default function WebSearchTile() {
           </CropCard>
 
           <CropCard
-            title="Trích dẫn có số thứ tự"
-            caption="Mỗi khẳng định dẫn nguồn được gắn số [1], [2], [3] ngay sau con số hoặc cụm từ. Tài liệu API nói rõ: citation luôn được bật khi dùng Web Search — nghĩa là bạn không bao giờ thấy một câu trả lời lấy từ web mà không kèm trích dẫn."
+            title="Trích dẫn là đường dẫn gạch chân"
+            caption="Mọi câu trả lời từ Web Search đều đi kèm trích dẫn — tài liệu API của Anthropic ghi rõ citation luôn được bật. Trên giao diện claude.ai, trích dẫn hiển thị dưới dạng đường dẫn gạch chân nằm ngay trên con số hoặc cụm từ lấy từ web, kèm hàng thẻ nguồn liệt kê bên dưới câu trả lời."
           >
             <CropBubble from="claude">
-              Tăng trưởng GDP quý I đạt 6,8 %<CitationMarker n={1} /> và CPI
-              bình quân ở mức 3,4 %<CitationMarker n={2} />.
+              Tăng trưởng GDP quý I đạt{" "}
+              <CitationLink sourceIndex={1}>5,66 %</CitationLink> và CPI bình
+              quân ở mức{" "}
+              <CitationLink sourceIndex={2}>3,77 %</CitationLink>.
             </CropBubble>
-            <CropAnnotation pin={2} label="Số [1], [2] dẫn về nguồn cụ thể" />
+            <CropAnnotation
+              pin={2}
+              label="Bấm vào con số gạch chân để mở nguồn"
+            />
           </CropCard>
 
           <CropCard
@@ -601,7 +633,7 @@ export default function WebSearchTile() {
         <p className="max-w-[58ch] text-[14px] leading-[1.55] text-secondary">
           Bấm mở Claude với câu hỏi mẫu bên dưới. Vì câu hỏi có ràng buộc
           thời gian (&ldquo;tuần này&rdquo;), Claude gần như chắc chắn sẽ
-          tự gọi Web Search và trả lời kèm trích dẫn.
+          tự gọi Web Search để tra cứu và trả lời kèm trích dẫn.
         </p>
         <DeepLinkCTA prompt="Tóm tắt 3 tin công nghệ lớn nhất tuần này ở Việt Nam — mỗi tin một đoạn 2-3 câu kèm nguồn." />
       </section>

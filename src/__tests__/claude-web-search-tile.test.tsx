@@ -50,28 +50,33 @@ describe("web-search tile", () => {
     expect(
       screen.getByRole("heading", { name: /Cách nó hoạt động/ })
     ).toBeInTheDocument();
-    expect(screen.getByText("Khi nào Claude tra web")).toBeInTheDocument();
-    expect(screen.getByText("Trích dẫn có số thứ tự")).toBeInTheDocument();
+    expect(screen.getByText("Khi nào Claude tra cứu web")).toBeInTheDocument();
+    expect(
+      screen.getByText("Trích dẫn là đường dẫn gạch chân")
+    ).toBeInTheDocument();
     expect(
       screen.getByText("Thẻ nguồn mở được ra tận trang gốc")
     ).toBeInTheDocument();
   });
 
-  it("renders the plan-availability note covering Free/Pro/Max + Team/Enterprise admin gating", () => {
+  it("renders the plan-availability note covering Free/Pro/Max, Enterprise Search as a separate product, and Team/Enterprise admin gating", () => {
     render(<WebSearchTile />);
     // Multiple role=note nodes exist on the page (MockBadge etc.); find
     // the one whose text starts with the plan-availability framing.
     const notes = screen.getAllByRole("note");
     const planNote = notes.find((n) =>
-      /Web Search có trên cả bốn gói cá nhân/.test(n.textContent ?? "")
+      /Web Search \(tra cứu web công khai\)/.test(n.textContent ?? "")
     );
     expect(planNote).toBeDefined();
     const text = planNote?.textContent ?? "";
     // Individual-plan coverage from claude.com/pricing table.
     expect(text).toMatch(/Free/);
     expect(text).toMatch(/Pro/);
-    expect(text).toMatch(/Max 5x/);
-    expect(text).toMatch(/Max 20x/);
+    expect(text).toMatch(/Max/);
+    // Auditor-critical: Enterprise Search must be called out as a
+    // distinct product, not merged with the public Web Search feature.
+    expect(text).toMatch(/Enterprise Search/);
+    expect(text).toMatch(/nguồn nội bộ/);
     // Team/Enterprise admin-enablement phrasing from the help-center article.
     expect(text).toMatch(/Team/);
     expect(text).toMatch(/Enterprise/);
@@ -89,18 +94,26 @@ describe("web-search tile", () => {
     );
   });
 
-  it("renders at least one inline [N] citation marker inside Claude's reply", () => {
-    // Bonus assertion from the task brief — guards against a regression
-    // where citation rendering gets flattened back into plain text and
-    // loses its DOM hook.
+  it("renders inline citation links (underlined hyperlinks wrapping the cited span) inside Claude's reply", () => {
+    // Guards against regression where citation rendering either
+    // flattens back into plain text (losing the DOM hook) or reverts
+    // to the old "[N]" bracketed-sup form — which is the API shape,
+    // not claude.ai's real consumer UI.
     render(<WebSearchTile />);
-    const markers = document.querySelectorAll("sup[data-citation]");
+    const markers = document.querySelectorAll("a[data-citation]");
     expect(markers.length).toBeGreaterThan(0);
-    // A specific marker — [1] should be emitted somewhere (the GDP stat
-    // row uses cite=1).
-    const marker1 = document.querySelector('sup[data-citation="1"]');
+    // A specific link — sourceIndex=1 wraps the GDP stat value "5,66 %"
+    // and points at "#source-1". The link text is the cited span
+    // itself, not a bracketed "[1]" marker.
+    const marker1 = document.querySelector('a[data-citation="1"]');
     expect(marker1).not.toBeNull();
-    expect(marker1?.textContent).toBe("[1]");
+    expect(marker1?.getAttribute("href")).toBe("#source-1");
+    expect(marker1?.textContent).not.toMatch(/^\[1\]$/);
+    expect(marker1?.className).toMatch(/underline/);
+    // And the bracketed "[N]" shape must NOT be rendered inline as a
+    // <sup> any more (source-card numbering is fine — it lives inside
+    // a different element).
+    expect(document.querySelectorAll("sup[data-citation]").length).toBe(0);
   });
 
   it("cross-links to ready tiles only (chat, files-vision, artifacts), never planned ones", () => {
