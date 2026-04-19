@@ -151,7 +151,9 @@ const ANNOTATIONS: Annotation[] = [
     description:
       "Instructions là system prompt của riêng project — Claude đọc lại trước mọi chat trong project, giữ giọng văn và quy ước đồng nhất.",
     showAt: [0.5, 1.0],
-    anchor: { x: 54, y: 20 },
+    // Shifted from x:54 → x:45 so the pin lands over the Instructions
+    // chip in the project-header row instead of drifting to Memory.
+    anchor: { x: 45, y: 22 },
   },
   {
     id: "memory-filename",
@@ -231,11 +233,24 @@ function CropAnnotation({
       <span
         aria-hidden="true"
         className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-foreground bg-[var(--paper,#FBFAF7)] text-[11px] font-semibold text-foreground"
-        style={{ boxShadow: "var(--shadow-sm)" }}
+        style={{
+          // Layered halo so pins lift off paper-2 crop-card background.
+          // Matches the AnnotationLayer polish — single source of truth
+          // is pending (crop-primitives extraction happens at Task 3).
+          boxShadow:
+            "0 2px 6px rgba(0,0,0,0.10), 0 0 0 3px var(--paper,#FBFAF7), 0 0 0 4px rgba(19,52,59,0.18)",
+        }}
       >
         {pin}
       </span>
-      <span className="rounded-[6px] border border-border bg-[var(--paper,#FBFAF7)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground">
+      <span
+        className="rounded-[6px] border border-border bg-[var(--pure-white,#FFFFFF)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground"
+        style={{
+          borderLeft: "2px solid var(--turquoise-ink, #13343B)",
+          boxShadow:
+            "0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
+        }}
+      >
         {label}
       </span>
     </div>

@@ -47,11 +47,26 @@ export function AnnotationLayer({
             aria-label={a.description}
             role="img"
             className="flex h-6 w-6 items-center justify-center rounded-full border border-foreground bg-[var(--paper,#FBFAF7)] text-[11px] font-semibold text-foreground"
-            style={{ boxShadow: "var(--shadow-sm)" }}
+            style={{
+              // Layered box-shadow = lift + turquoise halo so pins sit
+              // proud of the shell chrome instead of blending into paper.
+              boxShadow:
+                "0 2px 6px rgba(0,0,0,0.10), 0 0 0 3px var(--paper,#FBFAF7), 0 0 0 4px rgba(19,52,59,0.18)",
+            }}
           >
             {a.pin}
           </span>
-          <span className="max-w-[220px] rounded-[6px] border border-border bg-[var(--paper,#FBFAF7)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground whitespace-normal">
+          <span
+            className="max-w-[220px] rounded-[6px] border border-border bg-[var(--pure-white,#FFFFFF)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground whitespace-normal"
+            style={{
+              // Pure-white against paper-2 gives a visible surface break;
+              // left accent tethers the label to the pin visually; soft
+              // shadow adds lift.
+              borderLeft: "2px solid var(--turquoise-ink, #13343B)",
+              boxShadow:
+                "0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
+            }}
+          >
             {a.label}
           </span>
         </div>
