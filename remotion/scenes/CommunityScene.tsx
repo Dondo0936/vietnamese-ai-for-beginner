@@ -35,20 +35,6 @@ export const CommunityScene = () => {
     })
   );
 
-  const stars = Math.floor(
-    interpolate(frame, [30, 110], [0, 1280], {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    })
-  );
-
-  const contribs = Math.floor(
-    interpolate(frame, [30, 110], [0, 18], {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    })
-  );
-
   return (
     <AbsoluteFill>
       <LiquidBackground />
@@ -89,7 +75,7 @@ export const CommunityScene = () => {
                 lineHeight: 1.15,
               }}
             >
-              Sáng học trên sáng — tối học trên tối
+              Tiến độ của bạn — lưu lại từng bài
             </div>
           </AnimatedIn>
 
@@ -272,19 +258,19 @@ export const CommunityScene = () => {
                 }}
               >
                 <Stat
-                  label="Mã nguồn mở · MIT"
-                  value="GitHub"
-                  hint="Dondo0936/vietnamese-ai-for-beginner"
+                  label="Chi phí"
+                  value="0đ"
+                  hint="miễn phí mãi mãi"
                 />
                 <Stat
-                  label="Sao trên GitHub"
-                  value={`★ ${stars.toLocaleString()}`}
-                  hint="và tiếp tục tăng"
+                  label="Ngôn ngữ"
+                  value="Tiếng Việt"
+                  hint="viết bởi người Việt"
                 />
                 <Stat
-                  label="Người đóng góp"
-                  value={`${contribs}+`}
-                  hint="cộng đồng VN + quốc tế"
+                  label="Mã nguồn mở"
+                  value="Cộng đồng"
+                  hint="ai cũng đóng góp được"
                 />
               </div>
             </GlassPanel>

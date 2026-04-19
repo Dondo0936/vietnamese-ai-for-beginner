@@ -9,7 +9,7 @@ const FULL_QUERY = "chuỗi suy luận";
 
 const SUGGESTIONS = [
   { vi: "Chuỗi suy luận (Chain of Thought)", tag: "LLM · Cơ bản" },
-  { vi: "Chuỗi suy luận trong mô hình lý luận", tag: "Ứng dụng · o1 · Claude" },
+  { vi: "Chuỗi suy luận trong mô hình lý luận", tag: "Ứng dụng · Mô hình mới" },
   { vi: "In-context learning", tag: "LLM · Cơ bản" },
   { vi: "Reasoning models", tag: "Xu hướng · 2025" },
 ];
@@ -149,7 +149,7 @@ export const SearchScene = () => {
                     background: COLORS.paper2,
                   }}
                 >
-                  ⌘K
+                  Enter
                 </div>
               </div>
 

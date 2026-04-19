@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="7" ry="7" fill="#0E5F5B"/>
+  <!-- breve (˘) above the A — nods to Vietnamese diacritics like Ă -->
+  <path d="M10.5 7.2 q5.5 3.6 11 0" stroke="#6FD6D0" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <!-- bold A silhouette, paper-white on turquoise -->
+  <path d="M16 11 L25 28 L21.4 28 L19.6 24.4 L12.4 24.4 L10.6 28 L7 28 Z M13.6 21.4 L18.4 21.4 L16 16.4 Z" fill="#FBFAF7"/>
+</svg>

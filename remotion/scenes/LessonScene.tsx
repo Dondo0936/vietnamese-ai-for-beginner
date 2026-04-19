@@ -41,7 +41,7 @@ export const LessonScene = () => {
                 marginBottom: 8,
               }}
             >
-              Bài học · Nhiệt độ (Temperature)
+              Bài học · Điều chỉnh độ sáng tạo
             </div>
           </AnimatedIn>
           <AnimatedIn delay={6}>

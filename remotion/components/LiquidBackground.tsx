@@ -1,23 +1,23 @@
-import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { AbsoluteFill } from "remotion";
 import { COLORS } from "../tokens";
 
 /**
- * Minimalist liquid-glass background.
+ * Static liquid-glass background.
  *
- * Two slowly drifting turquoise blobs on warm paper, each heavily blurred,
- * produce the frosted-glass base that matches the app's Perplexity × Momo
- * paper palette (--paper, --paper-2) plus the turquoise accent ramp.
+ * Earlier revisions drifted three blobs via useCurrentFrame. That looks
+ * nice in the raw MP4, but when the output is palette-quantized into a
+ * 48-colour GIF (for the README inline embed), the colour values behind
+ * every text layer shift by 1–2 palette indices each frame. The Bayer
+ * dither pattern then re-tiles, and the eye reads that as text shimmer —
+ * even though the text pixels never moved. Freezing the backdrop keeps
+ * the GIF palette locked, so text-adjacent pixels stay byte-identical
+ * frame-to-frame and the dither pattern never changes.
+ *
+ * The paper tone, blob halo, and grain overlay all remain — the scene
+ * just stops *flowing*. Trade-off accepted in exchange for headings that
+ * actually sit still in the README GIF.
  */
 export const LiquidBackground = () => {
-  const frame = useCurrentFrame();
-  const t = frame / 60;
-  const blob1X = 220 + Math.sin(t * 0.6) * 80;
-  const blob1Y = 180 + Math.cos(t * 0.45) * 60;
-  const blob2X = 1050 + Math.cos(t * 0.5) * 90;
-  const blob2Y = 540 + Math.sin(t * 0.4) * 70;
-  const blob3X = 640 + Math.sin(t * 0.3 + 1) * 40;
-  const blob3Y = 360 + Math.cos(t * 0.35) * 30;
-
   return (
     <AbsoluteFill
       style={{
@@ -28,8 +28,8 @@ export const LiquidBackground = () => {
       <div
         style={{
           position: "absolute",
-          left: blob1X,
-          top: blob1Y,
+          left: 220,
+          top: 180,
           width: 520,
           height: 520,
           borderRadius: "50%",
@@ -41,8 +41,8 @@ export const LiquidBackground = () => {
       <div
         style={{
           position: "absolute",
-          left: blob2X,
-          top: blob2Y,
+          left: 1050,
+          top: 540,
           width: 440,
           height: 440,
           borderRadius: "50%",
@@ -54,8 +54,8 @@ export const LiquidBackground = () => {
       <div
         style={{
           position: "absolute",
-          left: blob3X,
-          top: blob3Y,
+          left: 640,
+          top: 360,
           width: 360,
           height: 360,
           borderRadius: "50%",

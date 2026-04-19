@@ -19,14 +19,14 @@ const PATHS = [
     stages: 4,
   },
   {
-    label: "AI Engineer",
-    subtitle: "Transformer · RAG · Fine-tuning · Đánh giá",
+    label: "Kỹ sư AI",
+    subtitle: "Xây dựng ứng dụng AI · Chatbot · Trợ lý công việc",
     hours: "110 giờ",
     stages: 7,
   },
   {
-    label: "AI Researcher",
-    subtitle: "Lý thuyết · Kiến trúc · Alignment · Xu hướng",
+    label: "Nghiên cứu AI",
+    subtitle: "Hiểu sâu mô hình · Xu hướng mới · An toàn AI",
     hours: "92 giờ",
     stages: 6,
   },

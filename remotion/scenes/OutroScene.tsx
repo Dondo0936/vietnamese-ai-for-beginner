@@ -86,7 +86,7 @@ export const OutroScene = () => {
                 color: COLORS.ash,
               }}
             >
-              Next.js 16 · Supabase · Vercel
+              udemi.tech · học AI bằng tiếng Việt
             </div>
           </AnimatedIn>
         </GlassPanel>

@@ -88,9 +88,9 @@ export const HeroScene = () => {
                 fontWeight: 500,
               }}
             >
-              <Pill label="260+ chủ đề" />
-              <Pill label="4 lộ trình" tone="accent" />
-              <Pill label="Hoàn toàn tiếng Việt" />
+              <Pill label="264 chủ đề" />
+              <Pill label="Miễn phí · Mã nguồn mở" tone="accent" />
+              <Pill label="100% tiếng Việt" />
             </div>
           </AnimatedIn>
         </GlassPanel>

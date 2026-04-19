@@ -28,7 +28,7 @@ const BINS: { id: Exclude<BinId, "pool">; label: string; tone: string }[] = [
   { id: "safe", label: "An toàn với AI công cộng", tone: COLORS.success },
   {
     id: "enterprise",
-    label: "Chỉ dùng AI doanh nghiệp (ZDR)",
+    label: "Chỉ dùng AI có cam kết bảo mật",
     tone: COLORS.turquoise600,
   },
   { id: "never", label: "Không bao giờ dán vào AI", tone: COLORS.danger },
