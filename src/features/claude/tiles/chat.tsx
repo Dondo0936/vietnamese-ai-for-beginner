@@ -44,7 +44,7 @@
  *   lazy-load path in Next 16 App Router. (docs/01-app/02-guides/lazy-loading.mdx)
  */
 
-import { memo, type ReactNode } from "react";
+import { memo } from "react";
 import Link from "next/link";
 import { ChevronDown, Settings, Send, Square } from "lucide-react";
 
@@ -57,6 +57,12 @@ import { AnnotationLayer } from "@/features/claude/components/AnnotationLayer";
 import { DemoCanvas } from "@/features/claude/components/DemoCanvas";
 import { DeepLinkCTA } from "@/features/claude/components/DeepLinkCTA";
 import { ViewRealUI } from "@/features/claude/components/ViewRealUI";
+import {
+  CropCard,
+  CropBubble,
+  CropComposer,
+  CropAnnotation,
+} from "@/features/claude/components/crop-primitives";
 import { useDemoPlayhead } from "@/features/claude/useDemoPlayhead";
 import { findTile } from "@/features/claude/registry";
 import type { Annotation } from "@/features/claude/types";
@@ -175,125 +181,6 @@ export function streamedSubstring(
 
 export function isStreaming(playhead: number): boolean {
   return playhead > STREAM_START && playhead < STREAM_END;
-}
-
-// ---------------------------------------------------------------------------
-// "Cách nó hoạt động" crop primitives — zoomed fragments, not mini-shells
-// ---------------------------------------------------------------------------
-
-/** Small card wrapper shared by the 3 "how it works" crops. */
-function CropCard({
-  title,
-  caption,
-  children,
-}: {
-  title: string;
-  caption: string;
-  children: ReactNode;
-}) {
-  return (
-    <figure className="flex flex-col gap-3">
-      <div
-        className="flex flex-col gap-3 rounded-[14px] border border-border bg-[var(--paper-2,#F3F2EE)] p-5"
-        style={{ boxShadow: "var(--shadow-sm)" }}
-      >
-        {children}
-      </div>
-      <figcaption className="flex flex-col gap-1.5">
-        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-tertiary">
-          {title}
-        </span>
-        <p className="text-[14px] leading-[1.55] text-muted">{caption}</p>
-      </figcaption>
-    </figure>
-  );
-}
-
-/** Message bubble styled like ShellMessage but without the shell's flex context. */
-function CropBubble({
-  from,
-  children,
-  muted,
-}: {
-  from: "user" | "claude";
-  children: ReactNode;
-  muted?: boolean;
-}) {
-  const isUser = from === "user";
-  return (
-    <div
-      className={`rounded-[12px] px-4 py-2 text-[13px] leading-[1.55] ${
-        isUser
-          ? "ml-auto bg-foreground text-background"
-          : "bg-[var(--paper,#FBFAF7)] text-foreground"
-      } ${muted ? "italic text-tertiary" : ""}`}
-      style={{ maxWidth: "85%" }}
-    >
-      {children}
-    </div>
-  );
-}
-
-/** Composer stub with a single icon button visible — stop or send. */
-function CropComposer({ icon }: { icon: "stop" | "send" }) {
-  return (
-    <div
-      className="flex items-center justify-between gap-3 rounded-[14px] border border-border bg-[var(--pure-white,#FFFFFF)] px-4 py-2.5"
-      style={{ boxShadow: "var(--shadow-sm)" }}
-    >
-      <span className="text-[13px] text-tertiary">Nhập tiếp theo...</span>
-      <span
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-background"
-        aria-hidden="true"
-      >
-        {icon === "stop" ? (
-          <Square size={12} strokeWidth={2.5} />
-        ) : (
-          <Send size={12} strokeWidth={2.5} />
-        )}
-      </span>
-    </div>
-  );
-}
-
-/** Inline pin+label — matches the AnnotationLayer look but as a flow element. */
-function CropAnnotation({
-  pin,
-  label,
-  align = "left",
-}: {
-  pin: number;
-  label: string;
-  align?: "left" | "right";
-}) {
-  return (
-    <div
-      className={`flex items-start gap-2 ${align === "right" ? "ml-auto flex-row-reverse" : ""}`}
-    >
-      <span
-        aria-hidden="true"
-        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-foreground bg-[var(--paper,#FBFAF7)] text-[11px] font-semibold text-foreground"
-        style={{
-          // Matches the AnnotationLayer polish — layered halo so pins lift
-          // off the surrounding paper instead of blending into it.
-          boxShadow:
-            "0 2px 6px rgba(0,0,0,0.10), 0 0 0 3px var(--paper,#FBFAF7), 0 0 0 4px rgba(19,52,59,0.18)",
-        }}
-      >
-        {pin}
-      </span>
-      <span
-        className="rounded-[6px] border border-border bg-[var(--pure-white,#FFFFFF)] px-2 py-0.5 text-[12px] leading-[1.35] text-foreground"
-        style={{
-          borderLeft: "2px solid var(--turquoise-ink, #13343B)",
-          boxShadow:
-            "0 2px 10px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
-        }}
-      >
-        {label}
-      </span>
-    </div>
-  );
 }
 
 // ---------------------------------------------------------------------------
