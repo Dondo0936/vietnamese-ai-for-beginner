@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Brain, Bookmark, BarChart3, Search } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import AuthButton from "@/components/auth/AuthButton";
+import FeedbackButton from "@/components/feedback/FeedbackButton";
 
 function triggerCmdK() {
   document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }));
@@ -58,6 +59,11 @@ export default function Navbar() {
           >
             Cẩm nang Claude
           </Link>
+
+          {/* Feedback entry point — visible on every page. Pre-launch priority. */}
+          <div className="mx-1">
+            <FeedbackButton />
+          </div>
 
           <Link
             href="/progress"
