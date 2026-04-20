@@ -39,10 +39,10 @@ import BrowseContent from "@/components/browse/BrowseContent";
 import { topicList, categories } from "@/topics/registry";
 
 describe("/browse catalog", () => {
-  it("renders the page heading 'Duyệt chủ đề'", () => {
+  it("renders the page heading 'Tất cả chủ đề'", () => {
     render(<BrowseContent topics={topicList} categories={categories} />);
     expect(
-      screen.getByRole("heading", { level: 1, name: /duyệt chủ đề/i })
+      screen.getByRole("heading", { level: 1, name: /tất cả chủ đề/i })
     ).toBeInTheDocument();
   });
 

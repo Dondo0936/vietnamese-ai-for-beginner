@@ -26,7 +26,7 @@ export function LandingContribute() {
           </p>
           <div className="ld-contribute__cta">
             <a
-              href="https://github.com/anthropics/ai-edu-v2/blob/main/CONTRIBUTING.md"
+              href="https://github.com/Dondo0936/vietnamese-ai-for-beginner/blob/main/CONTRIBUTING.md"
               target="_blank"
               rel="noreferrer noopener"
               className="ld-btn ld-btn--primary"

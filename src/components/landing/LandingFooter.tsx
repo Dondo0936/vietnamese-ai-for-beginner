@@ -41,21 +41,21 @@ export function LandingFooter() {
           <div>
             <h5>Cộng đồng</h5>
             <a
-              href="https://github.com/anthropics/ai-edu-v2"
+              href="https://github.com/Dondo0936/vietnamese-ai-for-beginner"
               target="_blank"
               rel="noreferrer noopener"
             >
               GitHub ↗
             </a>
             <a
-              href="https://github.com/anthropics/ai-edu-v2/blob/main/CONTRIBUTING.md"
+              href="https://github.com/Dondo0936/vietnamese-ai-for-beginner/blob/main/CONTRIBUTING.md"
               target="_blank"
               rel="noreferrer noopener"
             >
               Đóng góp bài
             </a>
             <a
-              href="https://github.com/anthropics/ai-edu-v2/issues"
+              href="https://github.com/Dondo0936/vietnamese-ai-for-beginner/issues"
               target="_blank"
               rel="noreferrer noopener"
             >

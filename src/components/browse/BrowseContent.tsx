@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import DifficultyFilter from "@/components/home/DifficultyFilter";
 import TopicGrid from "@/components/home/TopicGrid";
+import SearchBar from "@/components/layout/SearchBar";
 import { useProgress } from "@/lib/progress-context";
 import type { TopicMeta, Category, Difficulty } from "@/lib/types";
 
@@ -65,13 +66,18 @@ export default function BrowseContent({ topics, categories }: BrowseContentProps
             margin: 0,
           }}
         >
-          Duyệt chủ đề
+          Tất cả chủ đề
         </h1>
         <p className="mt-3 max-w-[640px] text-[14px] leading-relaxed text-muted">
           {topics.length} chủ đề · {categories.length} danh mục · lọc theo độ khó
           hoặc nhấn ⌘K để tìm nhanh.
         </p>
       </header>
+
+      {/* Inline search — same index + behavior as the ⌘K palette. */}
+      <div className="mb-8">
+        <SearchBar topics={topics} />
+      </div>
 
       {/* Difficulty pill group */}
       <div className="mb-6 flex justify-start">

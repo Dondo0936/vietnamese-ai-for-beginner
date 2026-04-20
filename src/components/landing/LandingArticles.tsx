@@ -67,7 +67,7 @@ export function LandingArticles() {
         </Link>
 
         <aside className="ar-ed__side">
-          <div className="ar-ed__sideHead">Cùng tuần này</div>
+          <div className="ar-ed__sideHead">Gần đây nhất</div>
           {companions.map((c, i) => (
             <Link
               key={c.slug}
@@ -86,15 +86,6 @@ export function LandingArticles() {
               </div>
             </Link>
           ))}
-          <div className="ar-ed__subscribe">
-            <div>
-              <b>Nhận bản tin thứ Năm</b>
-              <span>5 tin AI/ML đáng đọc mỗi tuần. Viết bằng tiếng Việt.</span>
-            </div>
-            <button type="button" className="ar-ed__subscribeBtn">
-              Đăng ký →
-            </button>
-          </div>
         </aside>
 
         <div className="ar-ed__row">

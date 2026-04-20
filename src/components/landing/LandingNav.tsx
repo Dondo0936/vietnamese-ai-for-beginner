@@ -41,7 +41,7 @@ export function LandingNav() {
         <Link href="/claude">Cẩm nang Claude</Link>
         <Link href="#process">Giới thiệu</Link>
         <a
-          href="https://github.com/anthropics/ai-edu-v2"
+          href="https://github.com/Dondo0936/vietnamese-ai-for-beginner"
           target="_blank"
           rel="noreferrer noopener"
         >
