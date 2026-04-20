@@ -524,6 +524,7 @@
 }
 .ld-search__wrap {
   position: relative;
+  z-index: 20;
   max-width: 780px;
   margin: 0 auto;
 }

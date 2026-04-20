@@ -3,16 +3,16 @@ import { DemoComposition } from "./DemoComposition";
 import { FPS, HEIGHT, WIDTH } from "./tokens";
 
 /**
- * Duration ≈ sum(sequences) − sum(transitions), since TransitionSeries
- * overlaps the transition with the two adjacent sequences:
+ * Duration = sum(sequences) − sum(transitions), since TransitionSeries
+ * overlaps each transition with both adjacent sequences:
  *
- *   sequences   160 + 150 + 170 + 240 + 210 + 130 = 1060
- *   transitions  22 × 5                            =  110
- *   total                                         =  950 frames
+ *   sequences   150+180+100+150+160+130+130+130 = 1130
+ *   transitions  20 × 7                         =  140
+ *   total                                       =  990 frames
  *
- *   950 / 30fps ≈ 31.6 seconds.
+ *   990 / 30fps = 33 seconds.
  */
-const DURATION_IN_FRAMES = 950;
+const DURATION_IN_FRAMES = 990;
 
 export const RemotionRoot = () => {
   return (

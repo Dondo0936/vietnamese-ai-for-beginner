@@ -1,236 +1,236 @@
-import { interpolate, useCurrentFrame } from "remotion";
-import { GraduationCap, Briefcase, Code2, FlaskConical, ArrowUpRight } from "lucide-react";
-import { AppFrame } from "../components/AppFrame";
+import { useCurrentFrame } from "remotion";
+import { LandingChrome } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { Cursor } from "../components/Cursor";
 import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY } from "../fonts";
+import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
- * Scene 2 — Profession paths grid.
+ * Scene 4 — Landing paths section
+ * (mirror of src/components/landing/LandingPaths.tsx).
  *
- * Mocks the `ProfessionPaths` home section: four cards in a 2×2 grid.
- * Cursor arrives from the top, settles on the Student card (row 1,
- * col 1). The card lifts (shadow + border) at frame ~70 and clicks at
- * frame ~110. The click sets up the cut to the Student path detail.
+ * "Ai học ở đây?" section with 4 profession cards (Học sinh/Sinh viên,
+ * Nhân viên văn phòng, AI Engineer, AI Researcher). Each card has a
+ * zero-padded index, title, description, and a bullet list of 3-4
+ * outcomes. Staggered in with AnimatedIn.
  */
+export const PathsScene = () => {
+  const frame = useCurrentFrame();
+
+  return (
+    <LandingChrome>
+      <div
+        style={{
+          padding: "56px 56px",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 28,
+        }}
+      >
+        <div>
+          <AnimatedIn delay={2} offsetY={6} duration={14}>
+            <span
+              style={{
+                fontFamily: FONT_MONO,
+                fontSize: 11,
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: COLORS.ash,
+              }}
+            >
+              (01) · Lộ trình học
+            </span>
+          </AnimatedIn>
+          <AnimatedIn delay={6} offsetY={10} duration={16}>
+            <h2
+              style={{
+                fontFamily: FONT_VN_DISPLAY,
+                fontSize: 56,
+                fontWeight: 500,
+                letterSpacing: "-0.025em",
+                lineHeight: 1.02,
+                margin: "10px 0 0",
+                color: COLORS.ink,
+              }}
+            >
+              Ai học ở đây?{" "}
+              <span
+                style={{
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                  color: COLORS.turquoiseInk,
+                }}
+              >
+                Bốn loại người.
+              </span>
+            </h2>
+          </AnimatedIn>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 18,
+            flex: 1,
+          }}
+        >
+          {PATHS.map((p, i) => (
+            <AnimatedIn key={p.slug} delay={16 + i * 5} offsetY={14} duration={18}>
+              <PathCard path={p} />
+            </AnimatedIn>
+          ))}
+        </div>
+      </div>
+    </LandingChrome>
+  );
+};
+
 type Path = {
+  index: string;
+  title: string;
   slug: string;
-  viTitle: string;
   desc: string;
-  Icon: typeof GraduationCap;
-  readCount: number;
-  total: number;
+  bullets: string[];
+  accent: string;
 };
 
 const PATHS: Path[] = [
   {
-    slug: "student",
-    viTitle: "Học sinh · Sinh viên",
-    desc: "Nền tảng AI/ML từ con số 0 — toán, thuật toán cổ điển, mạng nơ-ron cơ bản",
-    Icon: GraduationCap,
-    readCount: 2,
-    total: 57,
+    index: "01",
+    title: "Học sinh · Sinh viên",
+    slug: "/paths/student",
+    desc: "Học AI từ đầu qua trực quan, không cần giải tích nặng trước.",
+    bullets: [
+      "4 cấp độ · ~70h",
+      "Bắt đầu: bias-variance, gradient descent",
+      "Kết thúc: transformer, RAG",
+    ],
+    accent: COLORS.turquoise500,
   },
   {
-    slug: "office",
-    viTitle: "Nhân viên văn phòng",
-    desc: "Hiểu AI để ứng dụng trong công việc — prompt, RAG, agent và an toàn AI",
-    Icon: Briefcase,
-    readCount: 0,
-    total: 28,
+    index: "02",
+    title: "Nhân viên văn phòng",
+    slug: "/paths/office",
+    desc: "Dùng được AI trong công việc tuần sau — không code, không toán.",
+    bullets: [
+      "6 chương · ~20h",
+      "Prompt, RAG, agents, phân tích dữ liệu",
+      "Trực quan 100% · không đụng mã",
+    ],
+    accent: COLORS.peach500,
   },
   {
-    slug: "ai-engineer",
-    viTitle: "AI Engineer",
-    desc: "Xây dựng & triển khai hệ thống AI — fine-tuning, RAG, serving, MLOps",
-    Icon: Code2,
-    readCount: 0,
-    total: 46,
+    index: "03",
+    title: "AI Engineer",
+    slug: "/paths/ai-engineer",
+    desc: "Từ đọc paper tới build hệ thống — hiểu mọi khâu, không chỉ cách gọi API.",
+    bullets: [
+      "10 giai đoạn · ~110h",
+      "Transformer → fine-tune → agents",
+      "Evaluation, RAG, inference ops",
+    ],
+    accent: COLORS.turquoiseInk,
   },
   {
-    slug: "ai-researcher",
-    viTitle: "AI Researcher",
-    desc: "Lý thuyết sâu & xu hướng mới — scaling laws, alignment, kiến trúc tiên tiến",
-    Icon: FlaskConical,
-    readCount: 0,
-    total: 38,
+    index: "04",
+    title: "AI Researcher",
+    slug: "/paths/ai-researcher",
+    desc: "Intuition sâu cho kiến trúc hiện đại — đủ để đọc paper và phản biện.",
+    bullets: [
+      "8 chương · ~78h",
+      "Attention, MoE, reasoning models",
+      "Constitutional AI, scaling laws",
+    ],
+    accent: COLORS.clay,
   },
 ];
 
-export const PathsScene = () => {
-  const frame = useCurrentFrame();
-
-  const hover = interpolate(frame, [60, 90], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const click = interpolate(frame, [110, 122], [1, 0.97], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const studentScale = 1 + 0.015 * hover;
-  const studentShadow = hover
-    ? `0 6px 18px rgba(10,10,11,${0.06 + 0.06 * hover}), 0 0 0 1px ${COLORS.turquoise500}`
-    : "0 1px 2px rgba(10,10,11,0.04), 0 0 0 1px rgba(10,10,11,0.02)";
-
-  return (
-    <AppFrame>
+const PathCard = ({ path }: { path: Path }) => (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "auto 1fr",
+      gap: 20,
+      padding: 26,
+      background: COLORS.white,
+      border: `1px solid ${COLORS.line}`,
+      borderRadius: 14,
+      height: "100%",
+      boxSizing: "border-box",
+    }}
+  >
+    <div
+      style={{
+        fontFamily: FONT_VN_DISPLAY,
+        fontSize: 46,
+        fontWeight: 500,
+        color: path.accent,
+        letterSpacing: "-0.03em",
+        lineHeight: 1,
+      }}
+    >
+      {path.index}
+    </div>
+    <div>
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          padding: "40px 56px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          background: COLORS.paper,
+          fontFamily: FONT_VN_DISPLAY,
+          fontSize: 22,
+          fontWeight: 500,
+          color: COLORS.ink,
+          letterSpacing: "-0.02em",
+          marginBottom: 6,
         }}
       >
-        <div style={{ width: "100%", maxWidth: 1100 }}>
-          <AnimatedIn delay={2} offsetY={8}>
-            <div
-              style={{
-                paddingBottom: 14,
-                borderBottom: `1px solid ${COLORS.line}`,
-                marginBottom: 22,
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "ui-monospace, SF Mono, Menlo, monospace",
-                  fontSize: 11,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: COLORS.ash,
-                  marginBottom: 8,
-                  fontWeight: 500,
-                }}
-              >
-                Lộ trình
-              </div>
-              <div
-                style={{
-                  fontFamily: FONT_VN_DISPLAY,
-                  fontSize: 28,
-                  fontWeight: 500,
-                  letterSpacing: "-0.015em",
-                  color: COLORS.ink,
-                }}
-              >
-                Chọn con đường phù hợp
-              </div>
-            </div>
-          </AnimatedIn>
-
-          <div
+        {path.title}
+      </div>
+      <div
+        style={{
+          fontFamily: FONT_VN_DISPLAY,
+          fontSize: 13,
+          color: COLORS.graphite,
+          lineHeight: 1.5,
+          marginBottom: 10,
+        }}
+      >
+        {path.desc}
+      </div>
+      <ul
+        style={{
+          listStyle: "none",
+          margin: 0,
+          padding: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 6,
+        }}
+      >
+        {path.bullets.map((b) => (
+          <li
+            key={b}
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 14,
+              fontFamily: FONT_MONO,
+              fontSize: 11,
+              color: COLORS.ash,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
             }}
           >
-            {PATHS.map((p, i) => {
-              const isStudent = i === 0;
-              return (
-                <AnimatedIn key={p.slug} delay={14 + i * 7} offsetY={12}>
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      border: `1px solid ${COLORS.line}`,
-                      borderRadius: 16,
-                      boxShadow: isStudent
-                        ? studentShadow
-                        : "0 1px 2px rgba(10,10,11,0.04), 0 0 0 1px rgba(10,10,11,0.02)",
-                      padding: 22,
-                      display: "flex",
-                      gap: 16,
-                      alignItems: "flex-start",
-                      transform: isStudent
-                        ? `scale(${studentScale * click})`
-                        : undefined,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 10,
-                        background: COLORS.paper2,
-                        border: `1px solid ${COLORS.line}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <p.Icon size={20} color={COLORS.ink} strokeWidth={1.8} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{
-                          fontFamily: FONT_VN_DISPLAY,
-                          fontSize: 18,
-                          fontWeight: 500,
-                          letterSpacing: "-0.01em",
-                          color: COLORS.ink,
-                          marginBottom: 6,
-                        }}
-                      >
-                        {p.viTitle}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: FONT_VN_DISPLAY,
-                          fontSize: 13,
-                          lineHeight: 1.55,
-                          color: COLORS.graphite,
-                          marginBottom: 14,
-                        }}
-                      >
-                        {p.desc}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: "ui-monospace, SF Mono, Menlo, monospace",
-                          fontSize: 11,
-                          color: COLORS.ash,
-                          display: "flex",
-                          gap: 10,
-                          alignItems: "center",
-                        }}
-                      >
-                        <span>{p.total} chủ đề</span>
-                        {p.readCount > 0 && (
-                          <>
-                            <span>·</span>
-                            <span>
-                              {p.readCount}/{p.total} đã đọc ·{" "}
-                              {Math.round((p.readCount / p.total) * 100)}%
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <ArrowUpRight size={16} color={COLORS.ash} strokeWidth={1.8} />
-                  </div>
-                </AnimatedIn>
-              );
-            })}
-          </div>
-        </div>
-
-        <Cursor
-          hideBefore={4}
-          keyframes={[
-            { at: 10, x: 1060, y: 80 },
-            { at: 60, x: 360, y: 255 },
-            { at: 90, x: 320, y: 235 },
-            { at: 110, x: 320, y: 235, click: true },
-            { at: 140, x: 320, y: 235 },
-          ]}
-        />
-      </div>
-    </AppFrame>
-  );
-};
+            <span
+              style={{
+                display: "inline-block",
+                width: 6,
+                height: 6,
+                background: path.accent,
+                borderRadius: "50%",
+              }}
+            />
+            {b}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
