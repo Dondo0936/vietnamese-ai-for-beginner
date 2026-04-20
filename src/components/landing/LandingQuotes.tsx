@@ -57,7 +57,7 @@ export function LandingQuotes() {
             <div className="ld-quote__mark" aria-hidden="true">&ldquo;</div>
             <blockquote>{q.quote}</blockquote>
             <figcaption>
-              <div>
+              <div data-layout="stack">
                 <b>{q.role}</b>
                 <span>{q.context}</span>
               </div>

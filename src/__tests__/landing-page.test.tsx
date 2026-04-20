@@ -5,20 +5,23 @@
  * moves to `/browse`). These tests pin the user-requested deltas from the
  * design bundle so they cannot regress:
  *
- *   - Hero says "Hỏi bất cứ gì về AI."
- *   - Search placeholder is a plain catalog search (NOT a prompt-box
- *     "thử: 'rag là gì'..." AI-style teaser).
- *   - Clicking the search bar (or its keyboard shortcut) opens the
- *     real ⌘K palette — it is not a fake input.
+ *   - Hero reads "Học AI / không cần / biết tiếng Anh." (strike on the
+ *     last line is the same design device as the original).
+ *   - Search placeholder is a plain catalog search (NOT a prompt-box teaser).
+ *   - The search box is a REAL form — GET to /browse with name="q" — so
+ *     typing + Enter takes the user to the catalog with their query.
+ *   - Suggestion chips link to specific /topics/<slug> pages, not /browse.
+ *   - Marquee strip is dark-on-light-text (data-theme="dark").
  *   - Featured grid has exactly 6 hardcoded topic titles from the design.
- *   - Testimonials are ANONYMOUS — no named people.
- *   - Footer MUST NOT carry "Built with Claude Opus 4.7" or
- *     "Type: Space Grotesk · Inter Tight · Be Vietnam Pro".
+ *   - Testimonials are ANONYMOUS and role + location stack visually.
+ *   - Footer MUST NOT carry "Built with Claude Opus 4.7" or font credits.
  *   - "Chủ đề" nav link routes to /browse.
+ *   - AttentionDemoCard exposes a real slider the user can drag to change
+ *     the current query token.
  */
 
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 
 vi.mock("next/navigation", () => ({
@@ -45,28 +48,66 @@ describe("Landing page", () => {
     ).toBeInTheDocument();
   });
 
+  it("hero H1 reads 'Học AI / không cần / biết tiếng Anh.'", () => {
+    render(<Landing />);
+    const h1 = screen.getByRole("heading", { level: 1 });
+    const text = h1.textContent ?? "";
+    expect(text).toMatch(/Học AI/);
+    expect(text).toMatch(/không cần/);
+    expect(text).toMatch(/biết tiếng Anh/);
+    // Old phrasing must be gone.
+    expect(text).not.toMatch(/không phải/);
+    expect(text).not.toMatch(/đọc tường chữ/);
+  });
+
   it("search input has a plain-catalog placeholder, NOT a prompt-style teaser", () => {
     render(<Landing />);
     const search = screen.getByRole("searchbox", { name: /tìm chủ đề/i });
     const placeholder = search.getAttribute("placeholder") ?? "";
     expect(placeholder).toMatch(/tìm chủ đề/i);
-    // The design's original AI-teaser phrasing must be absent.
     expect(placeholder).not.toMatch(/thử:/i);
     expect(placeholder).not.toMatch(/rag là gì/i);
     expect(placeholder).not.toMatch(/vì sao transformer thắng/i);
   });
 
-  it("renders at least 9 suggestion chips under the search bar", () => {
+  it("search is a real form: GET to /browse with name='q'", () => {
+    render(<Landing />);
+    const input = screen.getByRole("searchbox", { name: /tìm chủ đề/i });
+    const form = input.closest("form");
+    expect(form).toBeTruthy();
+    expect(form!.getAttribute("action")).toBe("/browse");
+    expect((form!.getAttribute("method") ?? "").toLowerCase()).toBe("get");
+    expect(input.getAttribute("name")).toBe("q");
+  });
+
+  it("renders at least 9 suggestion chips linking to /topics/<slug>", () => {
     render(<Landing />);
     const chipRail = screen.getByTestId("landing-search-chips");
-    const chips = chipRail.querySelectorAll("[data-chip]");
+    const chips = Array.from(
+      chipRail.querySelectorAll("[data-chip]")
+    ) as HTMLAnchorElement[];
     expect(chips.length).toBeGreaterThanOrEqual(9);
+    for (const chip of chips) {
+      const href = chip.getAttribute("href") ?? "";
+      expect(href).toMatch(/^\/topics\//);
+    }
+    // Spot-check a couple of known slugs are wired up correctly.
+    const hrefs = chips.map((c) => c.getAttribute("href"));
+    expect(hrefs).toContain("/topics/attention-mechanism");
+    expect(hrefs).toContain("/topics/rag");
   });
 
   it("nav 'Chủ đề' link routes to /browse", () => {
     render(<Landing />);
     const chude = screen.getByRole("link", { name: /^Chủ đề$/ });
     expect(chude.getAttribute("href")).toBe("/browse");
+  });
+
+  it("marquee strip is dark-themed (data-theme='dark')", () => {
+    render(<Landing />);
+    const marquee = document.querySelector(".ld-marquee") as HTMLElement | null;
+    expect(marquee).toBeTruthy();
+    expect(marquee!.getAttribute("data-theme")).toBe("dark");
   });
 
   it("renders all 4 profession path cards with correct titles", () => {
@@ -128,6 +169,18 @@ describe("Landing page", () => {
     expect(textContent).not.toMatch(/Mai,\s*24/);
   });
 
+  it("quote caption stacks role on one line and context on the next", () => {
+    render(<Landing />);
+    // The role <b> and its context <span> should each live in their own
+    // block-level slot (not glued together on one line like
+    // "Một bạn Học sinh THPTHà Nội"). We pin the contract via a
+    // `data-layout="stack"` attribute on the wrapper.
+    const role = screen.getByText("Một bạn Học sinh THPT");
+    const wrapper = role.parentElement as HTMLElement | null;
+    expect(wrapper).toBeTruthy();
+    expect(wrapper!.getAttribute("data-layout")).toBe("stack");
+  });
+
   it("footer does NOT contain 'Built with Claude Opus 4.7' or font-type credits", () => {
     render(<Landing />);
     const footer = screen.getByRole("contentinfo");
@@ -147,5 +200,23 @@ describe("Landing page", () => {
   it("renders the big CTA 'học thử đi' at the bottom", () => {
     render(<Landing />);
     expect(screen.getByText(/học thử đi/i)).toBeInTheDocument();
+  });
+
+  it("attention demo exposes a range slider that updates the query label", () => {
+    render(<Landing />);
+    const slider = screen.getByRole("slider", { name: /query/i });
+    // Native range input is required so keyboard + touch + AT work.
+    expect(slider.tagName.toLowerCase()).toBe("input");
+    expect(slider.getAttribute("type")).toBe("range");
+    // Moving to 0 → query token should be "con mèo".
+    fireEvent.change(slider, { target: { value: "0" } });
+    const label = document.querySelector(
+      '[data-testid="ld-demo-query-label"]'
+    ) as HTMLElement | null;
+    expect(label).toBeTruthy();
+    expect(label!.textContent).toMatch(/con mèo/);
+    // Moving to 4 → query token should be "ghế".
+    fireEvent.change(slider, { target: { value: "4" } });
+    expect(label!.textContent).toMatch(/ghế/);
   });
 });

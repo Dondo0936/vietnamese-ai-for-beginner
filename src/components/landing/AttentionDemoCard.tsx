@@ -4,19 +4,16 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
 /**
- * Animated attention-bars demo shown in the hero's right column.
+ * Interactive attention-bars demo in the hero's right column.
  *
- * The query token cycles through the 5 Vietnamese tokens every ~2.4s;
- * each row's bars pulse to the heights the design hardcoded for that
- * query. `useReducedMotion` short-circuits the cycle for users with
- * `prefers-reduced-motion`, pinning the bars to the "ngủ" state (the
- * frame the design ships as its poster).
+ * Real slider drives the current query token. Auto-cycle plays until the
+ * user touches the slider; after that it stops so the user is in control.
+ * `useReducedMotion` short-circuits the auto-cycle entirely and pins the
+ * bars to the "ngủ" state (the design's canonical poster frame).
  */
 
 type Row = { label: string; heights: [number, number, number, number, number] };
 
-// For each query token (by index), the attention distribution across
-// the 5 tokens. Heights are percentages; design-authored values.
 const ROWS_BY_QUERY: Row[][] = [
   // query = "con mèo" (0)
   [
@@ -64,20 +61,34 @@ const QUERY_LABELS = ["con mèo", "đang", "ngủ", "trên", "ghế"];
 const CYCLE_MS = 2400;
 const CANONICAL = 2; // "ngủ"
 
+const AHA_BY_QUERY: Record<number, string> = {
+  0: "attention tập trung nhiều vào 'đang' — động từ gắn liền với chủ ngữ.",
+  1: "'đang' kéo attention sang 'ngủ' — hành động đang diễn ra.",
+  2: "mô hình 'nhìn' trở lại 'con mèo' để biết ai đang ngủ.",
+  3: "'trên' nối 'ngủ' với 'ghế' — attention bắc cầu qua giới từ.",
+  4: "'ghế' được liên kết mạnh với 'trên' — nơi con mèo đang ngủ.",
+};
+
 export function AttentionDemoCard() {
   const reduceMotion = useReducedMotion();
   const [queryIndex, setQueryIndex] = useState(CANONICAL);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduceMotion || hasInteracted) return;
     const id = setInterval(() => {
       setQueryIndex((q) => (q + 1) % QUERY_LABELS.length);
     }, CYCLE_MS);
     return () => clearInterval(id);
-  }, [reduceMotion]);
+  }, [reduceMotion, hasInteracted]);
 
   const rows = ROWS_BY_QUERY[queryIndex];
-  const pct = ((queryIndex + 0.5) / QUERY_LABELS.length) * 100;
+  const pct = (queryIndex / (QUERY_LABELS.length - 1)) * 100;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasInteracted(true);
+    setQueryIndex(Number(e.target.value));
+  };
 
   return (
     <div className="ld-hero__right">
@@ -111,6 +122,7 @@ export function AttentionDemoCard() {
                     style={{
                       height: `${h}%`,
                       background: `color-mix(in oklch, var(--accent) ${h}%, var(--bg-surface))`,
+                      transition: "height 220ms ease, background 220ms ease",
                     }}
                   />
                 ))}
@@ -121,7 +133,10 @@ export function AttentionDemoCard() {
           <div className="ld-demo__slider">
             <div className="ld-demo__slider-label">
               <span>← con mèo</span>
-              <span style={{ fontFamily: "var(--font-mono)" }}>
+              <span
+                data-testid="ld-demo-query-label"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
                 query: &quot;{QUERY_LABELS[queryIndex]}&quot;
               </span>
               <span>ghế →</span>
@@ -129,15 +144,23 @@ export function AttentionDemoCard() {
             <div className="ld-demo__track">
               <div className="ld-demo__fill" style={{ width: `${pct}%` }} />
               <div className="ld-demo__thumb" style={{ left: `${pct}%` }} />
+              <input
+                type="range"
+                min={0}
+                max={QUERY_LABELS.length - 1}
+                step={1}
+                value={queryIndex}
+                onChange={handleChange}
+                aria-label={`Chọn query token (hiện tại: ${QUERY_LABELS[queryIndex]})`}
+                aria-valuetext={QUERY_LABELS[queryIndex]}
+                className="ld-demo__range"
+              />
             </div>
           </div>
 
           <div className="ld-demo__aha">
             <span aria-hidden="true">✳</span>{" "}
-            <b>Khoảnh khắc à-ha:</b>{" "}
-            {queryIndex === CANONICAL
-              ? "mô hình 'nhìn' trở lại 'con mèo' để biết ai đang ngủ."
-              : "attention dịch chuyển khi query đổi — không cố định một ô."}
+            <b>Khoảnh khắc à-ha:</b> {AHA_BY_QUERY[queryIndex]}
           </div>
         </div>
       </div>
