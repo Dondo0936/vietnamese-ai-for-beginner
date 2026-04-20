@@ -21,6 +21,15 @@ const articleComponents: Record<string, ComponentType> = {
   "deepseek-v4-open-weights": dynamic(
     () => import("@/articles/deepseek-v4-open-weights"),
   ),
+  "operator-2-browser-agent": dynamic(
+    () => import("@/articles/operator-2-browser-agent"),
+  ),
+  "phogpt-7b-reasoning": dynamic(
+    () => import("@/articles/phogpt-7b-reasoning"),
+  ),
+  "ai-index-report-2026": dynamic(
+    () => import("@/articles/ai-index-report-2026"),
+  ),
 };
 
 export function getArticleComponent(slug: string): ComponentType | undefined {
