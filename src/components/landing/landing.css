@@ -1294,6 +1294,11 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+.ld-foot__stack {
+  color: var(--text-tertiary);
+  opacity: 0.72;
+  letter-spacing: 0.04em;
+}
 
 /* ─── Responsive: collapse grids at narrow widths ─────────── */
 @media (max-width: 960px) {

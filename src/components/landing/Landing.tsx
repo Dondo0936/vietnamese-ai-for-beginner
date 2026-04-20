@@ -1,4 +1,5 @@
 import "./landing.css";
+import "./articles.css";
 import { topicList } from "@/topics/registry";
 import { LandingNav } from "./LandingNav";
 import { LandingHero } from "./LandingHero";
@@ -8,7 +9,7 @@ import { LandingPaths } from "./LandingPaths";
 import { LandingFeatured } from "./LandingFeatured";
 import { LandingProcess } from "./LandingProcess";
 import { LandingQuotes } from "./LandingQuotes";
-import { LandingStack } from "./LandingStack";
+import { LandingArticles } from "./LandingArticles";
 import { LandingContribute } from "./LandingContribute";
 import { LandingBigCTA } from "./LandingBigCTA";
 import { LandingFooter } from "./LandingFooter";
@@ -35,7 +36,7 @@ export default function Landing() {
         <LandingFeatured />
         <LandingProcess />
         <LandingQuotes />
-        <LandingStack />
+        <LandingArticles />
         <LandingContribute />
         <LandingBigCTA />
       </main>

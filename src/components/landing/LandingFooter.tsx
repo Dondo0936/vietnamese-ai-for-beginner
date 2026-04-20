@@ -72,6 +72,9 @@ export function LandingFooter() {
       </div>
       <div className="ld-foot__bot">
         <span>© 2026 @Dondo0936 · MIT License</span>
+        <span className="ld-foot__stack">
+          Stack mở · Next.js 16 · React 19 · Supabase · Tailwind v4 · không tracking
+        </span>
       </div>
     </footer>
   );
