@@ -6,13 +6,13 @@ import { FPS, HEIGHT, WIDTH } from "./tokens";
  * Duration = sum(sequences) − sum(transitions), since TransitionSeries
  * overlaps each transition with both adjacent sequences:
  *
- *   sequences   150+180+100+150+160+130+130+130 = 1130
- *   transitions  20 × 7                         =  140
- *   total                                       =  990 frames
+ *   sequences   150+180+150+160+130+130+130 = 1030
+ *   transitions  20 × 6                     =  120
+ *   total                                   =  910 frames
  *
- *   990 / 30fps = 33 seconds.
+ *   910 / 30fps ≈ 30.3 seconds.
  */
-const DURATION_IN_FRAMES = 990;
+const DURATION_IN_FRAMES = 910;
 
 export const RemotionRoot = () => {
   return (

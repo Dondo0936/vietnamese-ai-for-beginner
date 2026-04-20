@@ -1,7 +1,6 @@
 import { LandingChrome } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 5 — Landing featured topics
@@ -44,7 +43,7 @@ export const FeaturedScene = () => {
             <h2
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 52,
+                ...VN_TEXT_RENDER,                fontSize: 52,
                 fontWeight: 500,
                 letterSpacing: "-0.025em",
                 lineHeight: 1.02,
@@ -155,7 +154,7 @@ const Tile = ({ tile }: { tile: Tile }) => (
     <h4
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 19,
+        ...VN_TEXT_RENDER,        fontSize: 19,
         fontWeight: 500,
         letterSpacing: "-0.015em",
         color: COLORS.ink,
@@ -167,7 +166,7 @@ const Tile = ({ tile }: { tile: Tile }) => (
     <p
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 13,
+        ...VN_TEXT_RENDER,        fontSize: 13,
         color: COLORS.graphite,
         lineHeight: 1.5,
         margin: 0,

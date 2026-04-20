@@ -1,7 +1,6 @@
 import { LandingChrome } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 6 — Landing process section
@@ -41,7 +40,7 @@ export const ProcessScene = () => {
             <h2
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 50,
+                ...VN_TEXT_RENDER,                fontSize: 50,
                 fontWeight: 500,
                 letterSpacing: "-0.025em",
                 lineHeight: 1.02,
@@ -127,7 +126,7 @@ const StepTile = ({ step }: { step: Step }) => (
     <div
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 18,
+        ...VN_TEXT_RENDER,        fontSize: 18,
         fontWeight: 500,
         letterSpacing: "-0.01em",
         color: COLORS.ink,
@@ -138,7 +137,7 @@ const StepTile = ({ step }: { step: Step }) => (
     <div
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 11,
+        ...VN_TEXT_RENDER,        fontSize: 11,
         color: COLORS.graphite,
         lineHeight: 1.45,
       }}

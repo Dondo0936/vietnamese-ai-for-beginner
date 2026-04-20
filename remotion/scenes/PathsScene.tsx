@@ -1,8 +1,7 @@
 import { useCurrentFrame } from "remotion";
 import { LandingChrome } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 4 — Landing paths section
@@ -45,7 +44,7 @@ export const PathsScene = () => {
             <h2
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 56,
+                ...VN_TEXT_RENDER,                fontSize: 56,
                 fontWeight: 500,
                 letterSpacing: "-0.025em",
                 lineHeight: 1.02,
@@ -53,16 +52,7 @@ export const PathsScene = () => {
                 color: COLORS.ink,
               }}
             >
-              Ai học ở đây?{" "}
-              <span
-                style={{
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  color: COLORS.turquoiseInk,
-                }}
-              >
-                Bốn loại người.
-              </span>
+              4 Lộ trình học
             </h2>
           </AnimatedIn>
         </div>
@@ -163,7 +153,7 @@ const PathCard = ({ path }: { path: Path }) => (
     <div
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 46,
+        ...VN_TEXT_RENDER,        fontSize: 46,
         fontWeight: 500,
         color: path.accent,
         letterSpacing: "-0.03em",
@@ -176,7 +166,7 @@ const PathCard = ({ path }: { path: Path }) => (
       <div
         style={{
           fontFamily: FONT_VN_DISPLAY,
-          fontSize: 22,
+          ...VN_TEXT_RENDER,          fontSize: 22,
           fontWeight: 500,
           color: COLORS.ink,
           letterSpacing: "-0.02em",
@@ -188,7 +178,7 @@ const PathCard = ({ path }: { path: Path }) => (
       <div
         style={{
           fontFamily: FONT_VN_DISPLAY,
-          fontSize: 13,
+          ...VN_TEXT_RENDER,          fontSize: 13,
           color: COLORS.graphite,
           lineHeight: 1.5,
           marginBottom: 10,

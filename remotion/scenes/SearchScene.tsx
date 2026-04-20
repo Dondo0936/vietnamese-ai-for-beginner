@@ -2,8 +2,7 @@ import { useCurrentFrame, interpolate, Easing } from "remotion";
 import { Search } from "lucide-react";
 import { LandingChrome } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 2 — Landing search section
@@ -63,7 +62,7 @@ export const SearchScene = () => {
           <h2
             style={{
               fontFamily: FONT_VN_DISPLAY,
-              fontSize: 88,
+              ...VN_TEXT_RENDER,              fontSize: 88,
               fontWeight: 500,
               letterSpacing: "-0.03em",
               lineHeight: 0.98,
@@ -116,7 +115,7 @@ export const SearchScene = () => {
                 style={{
                   flex: 1,
                   fontFamily: FONT_VN_DISPLAY,
-                  fontSize: 17,
+                  ...VN_TEXT_RENDER,                  fontSize: 17,
                   color: typed ? COLORS.ink : COLORS.ash,
                 }}
               >
@@ -201,7 +200,7 @@ export const SearchScene = () => {
                     <span
                       style={{
                         fontFamily: FONT_VN_DISPLAY,
-                        fontSize: 15,
+                        ...VN_TEXT_RENDER,                        fontSize: 15,
                         fontWeight: 500,
                         color: COLORS.ink,
                       }}
@@ -237,7 +236,7 @@ export const SearchScene = () => {
               justifyContent: "center",
               gap: 8,
               fontFamily: FONT_VN_DISPLAY,
-              fontSize: 13,
+              ...VN_TEXT_RENDER,              fontSize: 13,
             }}
           >
             <span

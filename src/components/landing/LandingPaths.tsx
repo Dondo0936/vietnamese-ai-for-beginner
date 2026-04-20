@@ -59,9 +59,7 @@ export function LandingPaths() {
     <section className="ld-paths" id="paths">
       <div className="ld-section__head">
         <span className="ld-section__eyebrow">(01) hoặc duyệt theo lộ trình</span>
-        <h2 className="ld-section__title">
-          Bốn con đường.<br />Một cho mỗi người.
-        </h2>
+        <h2 className="ld-section__title">4 Lộ trình học</h2>
         <Link href="/browse" className="ld-section__link">
           Xem cả 4 →
         </Link>

@@ -1,6 +1,5 @@
 import { useCurrentFrame, interpolate, Easing } from "remotion";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 8 — Landing big-CTA / outro
@@ -82,7 +81,7 @@ export const BigCTAScene = () => {
         <h1
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 104,
+            ...VN_TEXT_RENDER,            fontSize: 104,
             fontWeight: 500,
             letterSpacing: "-0.035em",
             lineHeight: 0.94,
@@ -116,7 +115,7 @@ export const BigCTAScene = () => {
         <span
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 15,
+            ...VN_TEXT_RENDER,            fontSize: 15,
             fontWeight: 500,
             color: COLORS.ink,
             background: COLORS.turquoise300,
@@ -129,7 +128,7 @@ export const BigCTAScene = () => {
         <span
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 15,
+            ...VN_TEXT_RENDER,            fontSize: 15,
             color: COLORS.paper,
             padding: "16px 22px",
             border: `1px solid rgba(251, 250, 247, 0.25)`,

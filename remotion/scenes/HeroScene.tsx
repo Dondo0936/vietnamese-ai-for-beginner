@@ -1,8 +1,7 @@
 import { useCurrentFrame, interpolate, Easing } from "remotion";
 import { LandingChrome, LandingBackdrop } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 1 — Landing hero (mirror of src/components/landing/LandingHero.tsx).
@@ -68,7 +67,7 @@ export const HeroScene = () => {
             <h1
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 76,
+                ...VN_TEXT_RENDER,                fontSize: 76,
                 fontWeight: 500,
                 letterSpacing: "-0.035em",
                 lineHeight: 0.94,
@@ -107,7 +106,7 @@ export const HeroScene = () => {
             <p
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 15,
+                ...VN_TEXT_RENDER,                fontSize: 15,
                 lineHeight: 1.55,
                 color: COLORS.graphite,
                 maxWidth: 460,
@@ -126,7 +125,7 @@ export const HeroScene = () => {
               <span
                 style={{
                   fontFamily: FONT_VN_DISPLAY,
-                  fontSize: 15,
+                  ...VN_TEXT_RENDER,                  fontSize: 15,
                   fontWeight: 500,
                   color: COLORS.paper,
                   background: COLORS.ink,
@@ -139,7 +138,7 @@ export const HeroScene = () => {
               <span
                 style={{
                   fontFamily: FONT_VN_DISPLAY,
-                  fontSize: 14,
+                  ...VN_TEXT_RENDER,                  fontSize: 14,
                   color: COLORS.turquoise700,
                 }}
               >
@@ -169,7 +168,7 @@ export const HeroScene = () => {
                   <div
                     style={{
                       fontFamily: FONT_VN_DISPLAY,
-                      fontSize: 26,
+                      ...VN_TEXT_RENDER,                      fontSize: 26,
                       fontWeight: 500,
                       color: COLORS.ink,
                       letterSpacing: "-0.02em",
@@ -180,7 +179,7 @@ export const HeroScene = () => {
                   <div
                     style={{
                       fontFamily: FONT_VN_DISPLAY,
-                      fontSize: 11,
+                      ...VN_TEXT_RENDER,                      fontSize: 11,
                       color: COLORS.ash,
                       textTransform: "uppercase",
                       letterSpacing: "0.08em",
@@ -325,7 +324,7 @@ const AttentionDemoCard = ({
         <h3
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 19,
+            ...VN_TEXT_RENDER,            fontSize: 19,
             fontWeight: 500,
             color: COLORS.ink,
             margin: 0,
@@ -337,7 +336,7 @@ const AttentionDemoCard = ({
         <p
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 12,
+            ...VN_TEXT_RENDER,            fontSize: 12,
             color: COLORS.graphite,
             margin: 0,
             marginBottom: 14,
@@ -361,7 +360,7 @@ const AttentionDemoCard = ({
             <span
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 12,
+                ...VN_TEXT_RENDER,                fontSize: 12,
                 color: COLORS.graphite,
               }}
             >
@@ -452,7 +451,7 @@ const AttentionDemoCard = ({
             borderLeft: `3px solid ${COLORS.turquoise500}`,
             borderRadius: "0 6px 6px 0",
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 11,
+            ...VN_TEXT_RENDER,            fontSize: 11,
             color: COLORS.ink,
           }}
         >

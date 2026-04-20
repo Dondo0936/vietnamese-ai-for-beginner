@@ -1,7 +1,6 @@
 import { LandingChrome } from "../components/LandingChrome";
 import { AnimatedIn } from "../components/AnimatedIn";
-import { COLORS } from "../tokens";
-import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
+import { COLORS, VN_TEXT_RENDER } from "../tokens";import { FONT_VN_DISPLAY, FONT_MONO } from "../fonts";
 
 /**
  * Scene 7 — Landing testimonials
@@ -40,7 +39,7 @@ export const QuotesScene = () => {
             <h2
               style={{
                 fontFamily: FONT_VN_DISPLAY,
-                fontSize: 56,
+                ...VN_TEXT_RENDER,                fontSize: 56,
                 fontWeight: 500,
                 letterSpacing: "-0.025em",
                 lineHeight: 1.02,
@@ -129,7 +128,7 @@ const QuoteCard = ({ quote }: { quote: Quote }) => (
     <div
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 52,
+        ...VN_TEXT_RENDER,        fontSize: 52,
         lineHeight: 0.6,
         color: COLORS.turquoise500,
         marginBottom: 4,
@@ -140,7 +139,7 @@ const QuoteCard = ({ quote }: { quote: Quote }) => (
     <blockquote
       style={{
         fontFamily: FONT_VN_DISPLAY,
-        fontSize: 18,
+        ...VN_TEXT_RENDER,        fontSize: 18,
         lineHeight: 1.35,
         fontWeight: 400,
         letterSpacing: "-0.01em",
@@ -165,7 +164,7 @@ const QuoteCard = ({ quote }: { quote: Quote }) => (
         <b
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 13,
+            ...VN_TEXT_RENDER,            fontSize: 13,
             fontWeight: 500,
             color: COLORS.ink,
           }}
@@ -175,7 +174,7 @@ const QuoteCard = ({ quote }: { quote: Quote }) => (
         <span
           style={{
             fontFamily: FONT_VN_DISPLAY,
-            fontSize: 12,
+            ...VN_TEXT_RENDER,            fontSize: 12,
             color: COLORS.ash,
           }}
         >
