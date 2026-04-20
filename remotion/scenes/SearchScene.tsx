@@ -85,6 +85,10 @@ export const SearchScene = () => {
           </h2>
         </AnimatedIn>
 
+        {/* Outer z-index:30 wrapper. Each AnimatedIn child creates its own
+            stacking context (non-identity transform), so z-index on the
+            inner wrap alone wouldn't clear the chips AnimatedIn below. */}
+        <div style={{ position: "relative", zIndex: 30 }}>
         <AnimatedIn delay={20} offsetY={10} duration={18}>
           <div
             style={{
@@ -219,6 +223,7 @@ export const SearchScene = () => {
             )}
           </div>
         </AnimatedIn>
+        </div>
 
         {/* Chips */}
         <AnimatedIn delay={32} offsetY={8} duration={18}>
