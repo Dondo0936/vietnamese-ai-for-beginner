@@ -1,16 +1,32 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 /**
- * Landing nav — design-matching minimal menu (5 links + 2 buttons).
+ * Landing nav — sticky, scroll-aware liquid-glass header.
  *
- * The rest of the app uses `AppShell`'s richer icon navbar; this one is
- * only used at `/`. "Chủ đề" routes to /browse (the new catalog), "Cẩm
- * nang" routes to /claude, everything else is anchor links on the same
- * page.
+ * Opts into a scroll listener via `data-scroll-aware="true"`. Once the
+ * user scrolls past ~12px the `data-scrolled` flag flips and the CSS
+ * pumps the blur + opacity so content underneath visibly defocuses
+ * instead of bleeding through.
  */
 export function LandingNav() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 12);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
   return (
-    <header className="ld-nav">
+    <header
+      className="ld-nav"
+      data-scroll-aware="true"
+      data-scrolled={scrolled ? "true" : "false"}
+    >
       <div className="ld-nav__brand">
         <span className="ld-star" aria-hidden="true">
           <i />

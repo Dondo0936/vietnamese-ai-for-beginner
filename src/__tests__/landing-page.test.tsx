@@ -24,8 +24,9 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 
+const pushMock = vi.fn();
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push: vi.fn(), prefetch: vi.fn() }),
+  useRouter: () => ({ push: pushMock, prefetch: vi.fn() }),
   usePathname: () => "/",
 }));
 
@@ -62,7 +63,7 @@ describe("Landing page", () => {
 
   it("search input has a plain-catalog placeholder, NOT a prompt-style teaser", () => {
     render(<Landing />);
-    const search = screen.getByRole("searchbox", { name: /tìm chủ đề/i });
+    const search = screen.getByRole("combobox", { name: /tìm chủ đề/i });
     const placeholder = search.getAttribute("placeholder") ?? "";
     expect(placeholder).toMatch(/tìm chủ đề/i);
     expect(placeholder).not.toMatch(/thử:/i);
@@ -70,14 +71,22 @@ describe("Landing page", () => {
     expect(placeholder).not.toMatch(/vì sao transformer thắng/i);
   });
 
-  it("search is a real form: GET to /browse with name='q'", () => {
+  it("search input is a combobox that typeaheads topics (matches in-app search)", async () => {
+    pushMock.mockClear();
     render(<Landing />);
-    const input = screen.getByRole("searchbox", { name: /tìm chủ đề/i });
-    const form = input.closest("form");
-    expect(form).toBeTruthy();
-    expect(form!.getAttribute("action")).toBe("/browse");
-    expect((form!.getAttribute("method") ?? "").toLowerCase()).toBe("get");
-    expect(input.getAttribute("name")).toBe("q");
+    const input = screen.getByRole("combobox", { name: /tìm chủ đề/i });
+    expect(input.tagName.toLowerCase()).toBe("input");
+    // Typing a known term should open a listbox of topic results.
+    fireEvent.change(input, { target: { value: "attention" } });
+    const listbox = await screen.findByRole("listbox");
+    expect(listbox).toBeTruthy();
+    const options = listbox.querySelectorAll('[role="option"]');
+    expect(options.length).toBeGreaterThan(0);
+    // Clicking the first option should route to /topics/<slug>.
+    const firstOption = options[0].querySelector("button") as HTMLElement;
+    fireEvent.click(firstOption);
+    expect(pushMock).toHaveBeenCalledTimes(1);
+    expect(pushMock.mock.calls[0][0]).toMatch(/^\/topics\//);
   });
 
   it("renders at least 9 suggestion chips linking to /topics/<slug>", () => {
@@ -101,6 +110,16 @@ describe("Landing page", () => {
     render(<Landing />);
     const chude = screen.getByRole("link", { name: /^Chủ đề$/ });
     expect(chude.getAttribute("href")).toBe("/browse");
+  });
+
+  it("nav is scroll-aware (installs handler that toggles data-scrolled)", () => {
+    render(<Landing />);
+    const nav = document.querySelector(".ld-nav") as HTMLElement | null;
+    expect(nav).toBeTruthy();
+    // Structural contract — the nav opts into the scroll listener via
+    // this attribute. CSS matches [data-scrolled="true"] to intensify
+    // the blur/bg when the user scrolls past the threshold.
+    expect(nav!.getAttribute("data-scroll-aware")).toBe("true");
   });
 
   it("marquee strip is dark-themed (data-theme='dark')", () => {

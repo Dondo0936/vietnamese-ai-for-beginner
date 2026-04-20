@@ -1,4 +1,5 @@
 import "./landing.css";
+import { topicList } from "@/topics/registry";
 import { LandingNav } from "./LandingNav";
 import { LandingHero } from "./LandingHero";
 import { LandingSearch } from "./LandingSearch";
@@ -28,7 +29,7 @@ export default function Landing() {
       <LandingNav />
       <main className="ld-main" id="main-content">
         <LandingHero />
-        <LandingSearch />
+        <LandingSearch topics={topicList} />
         <LandingMarquee />
         <LandingPaths />
         <LandingFeatured />
