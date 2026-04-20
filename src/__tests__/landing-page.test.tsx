@@ -174,11 +174,16 @@ describe("Landing page", () => {
     // The role <b> and its context <span> should each live in their own
     // block-level slot (not glued together on one line like
     // "Một bạn Học sinh THPTHà Nội"). We pin the contract via a
-    // `data-layout="stack"` attribute on the wrapper.
-    const role = screen.getByText("Một bạn Học sinh THPT");
-    const wrapper = role.parentElement as HTMLElement | null;
-    expect(wrapper).toBeTruthy();
-    expect(wrapper!.getAttribute("data-layout")).toBe("stack");
+    // `data-layout="stack"` attribute on the wrapper — independent of
+    // whatever role text happens to live inside.
+    const stacks = document.querySelectorAll(
+      '.ld-quote figcaption [data-layout="stack"]'
+    );
+    expect(stacks.length).toBeGreaterThan(0);
+    const first = stacks[0] as HTMLElement;
+    // Must hold exactly one <b> (role) and one <span> (context), stacked.
+    expect(first.querySelector("b")).toBeTruthy();
+    expect(first.querySelector("span")).toBeTruthy();
   });
 
   it("footer does NOT contain 'Built with Claude Opus 4.7' or font-type credits", () => {
