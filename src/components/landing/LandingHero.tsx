@@ -21,8 +21,9 @@ export function LandingHero() {
           <s className="ld-strike">biết tiếng Anh.</s>
         </h1>
         <p className="ld-lede">
-          260+ chủ đề viết lại cho người Việt — qua slider, drag-drop,
-          toggle-compare và minh hoạ thủ công. Mỗi bài đi qua tám bước:
+          260+ chủ đề viết lại cho người Việt 
+          Hình minh hoạ, bảng điều khiển, biểu đồ, giải thích. 
+          Mỗi bài đi qua tám bước:
           đoán, hình, à-ha, thử, hiểu, tóm, quiz.
         </p>
         <div className="ld-cta-row">
