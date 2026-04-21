@@ -4,18 +4,64 @@
  * Ported from the Anthropic design bundle (`landing-detail.css`) and
  * scoped under `.ld`. Tokens reference our existing `globals.css`
  * palette — paper #FBFAF7, ink #1A1A1A, turquoise #20B8B0 —
- * via CSS variables so dark mode continues to work.
+ * via CSS variables.
+ *
+ * Landing is intentionally LIGHT-ONLY for now. Most of its copy is
+ * inked as #1A1A1A directly; when the app's dark class flips the
+ * background without a matching rewrite of every landing block, the
+ * result is near-black text on near-black surfaces. Until the editorial
+ * language gets a proper dark palette pass, the `.dark .ld { ... }`
+ * block below resets the tokens that `.dark` overrode — so the landing
+ * stays readable even for visitors whose OS preference is dark. The
+ * global theme toggle still works for every other page.
  *
  * If you're editing `.ld-*` rules, mirror any new structure into
  * `src/components/landing/` components, never the other way round.
  * ============================================================ */
 
+.dark .ld {
+  /* Re-apply :root (light) values inside .ld so .dark on <html> can't
+     reach in. Keep this list in sync with the .dark block in globals.css
+     — if a token gets overridden there, reset it here. */
+  --bg-primary: #FBFAF7;
+  --bg-card: #FFFFFF;
+  --bg-dark: #0B0B0B;
+  --bg-surface: #F3F2EE;
+  --bg-surface-hover: #E9E7E1;
+  --bg-sunken: #F3F2EE;
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4842;
+  --text-tertiary: #8A8780;
+  --text-muted: #8A8780;
+  --accent: #20B8B0;
+  --accent-light: rgba(32, 184, 176, 0.10);
+  --accent-dark: #178F89;
+  --border: #D9D7D0;
+  --border-subtle: rgba(26, 26, 26, 0.06);
+  --border-strong: #C4C1B8;
+  --analogy-bg: rgba(15, 138, 131, 0.06);
+  --ring: rgba(15, 138, 131, 0.35);
+  --hero-gradient-from: #0F8A83;
+  --hero-gradient-to: #20B8AE;
+  --shadow-sm: 0 1px 2px rgba(10, 10, 11, 0.06), 0 0 0 1px rgba(10, 10, 11, 0.04);
+  --shadow-md: 0 4px 14px rgba(10, 10, 11, 0.08), 0 0 0 1px rgba(10, 10, 11, 0.04);
+  --shadow-lg: 0 20px 40px rgba(10, 10, 11, 0.12), 0 0 0 1px rgba(10, 10, 11, 0.05);
+  --shadow-glow-accent: 0 0 0 1px rgba(15, 138, 131, 0.35), 0 8px 30px rgba(15, 138, 131, 0.18);
+  --shadow-glow-heat: 0 0 0 1px rgba(255, 122, 41, 0.35), 0 8px 30px rgba(255, 122, 41, 0.2);
+  /* DS primitives that landing.css reads directly */
+  --paper: #FBFAF7;
+  --paper-2: #F3F2EE;
+  --paper-3: #E9E7E1;
+  --pure-white: #FFFFFF;
+  color-scheme: light;
+}
+
 .ld {
   min-height: 100vh;
   max-width: 1440px;
   margin: 0 auto;
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-vn, var(--font-sans));
 }
 
@@ -57,12 +103,8 @@
     border-bottom-color: var(--border);
   }
 }
-.dark .ld-nav {
-  background: color-mix(in srgb, var(--bg-primary, #0B0B0B) 72%, transparent);
-}
-.dark .ld-nav[data-scrolled="true"] {
-  background: color-mix(in srgb, var(--bg-primary, #0B0B0B) 90%, transparent);
-}
+/* Landing is forced light via `.dark .ld` token reset at the top of
+   this file; the dark-specific ld-nav rule is no longer needed. */
 .ld-nav__brand {
   display: flex;
   align-items: center;
@@ -103,6 +145,33 @@
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+/* Small sun/moon pill, sits to the left of Đăng nhập. Toggles the
+   global theme for pages outside the landing; the landing itself is
+   pinned to light via the `.dark .ld` reset at the top of this file. */
+.ld-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 140ms var(--ease-out), border-color 140ms var(--ease-out),
+              background 140ms var(--ease-out);
+}
+.ld-theme-toggle:hover {
+  color: var(--accent-dark);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  background: var(--bg-surface);
+}
+.ld-theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Star logo (4-ray asterisk built from 4 divs) */
