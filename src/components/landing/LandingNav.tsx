@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Moon, Sun } from "lucide-react";
 import { AuthProvider } from "@/lib/auth-context";
-import { useTheme } from "@/lib/theme";
 import AuthModal from "@/components/auth/AuthModal";
 
 /**
@@ -31,7 +29,6 @@ export function LandingNav() {
 function LandingNavInner() {
   const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 12);
@@ -39,8 +36,6 @@ function LandingNavInner() {
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, []);
-
-  const nextThemeLabel = theme === "dark" ? "chế độ sáng" : "chế độ tối";
 
   return (
     <>
@@ -71,19 +66,6 @@ function LandingNavInner() {
           </a>
         </nav>
         <div className="ld-nav__actions">
-          <button
-            type="button"
-            onClick={toggle}
-            className="ld-theme-toggle"
-            aria-label={`Chuyển sang ${nextThemeLabel}`}
-            title={`Chuyển sang ${nextThemeLabel}`}
-          >
-            {theme === "dark" ? (
-              <Sun size={15} strokeWidth={2} />
-            ) : (
-              <Moon size={15} strokeWidth={2} />
-            )}
-          </button>
           <button
             type="button"
             onClick={() => setAuthOpen(true)}
