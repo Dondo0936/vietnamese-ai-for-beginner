@@ -26,7 +26,6 @@ export const articleList: ArticleMeta[] = [
       "function-calling",
     ],
     relatedArticles: ["claude-opus-4-7-launch", "mixture-of-depths"],
-    heroViz: "streaming-hero",
   },
   {
     slug: "claude-design-launch",
