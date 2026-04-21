@@ -30,6 +30,9 @@ const articleComponents: Record<string, ComponentType> = {
   "ai-index-report-2026": dynamic(
     () => import("@/articles/ai-index-report-2026"),
   ),
+  "response-streaming": dynamic(
+    () => import("@/articles/response-streaming"),
+  ),
 };
 
 export function getArticleComponent(slug: string): ComponentType | undefined {

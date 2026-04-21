@@ -7,6 +7,28 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "response-streaming",
+    title: "Response streaming — vì sao chatbot hiện chữ từng chút một",
+    dek: "Một câu trả lời dài 8 giây. Bạn thấy chữ đầu tiên sau 280ms. Đó không phải hiệu ứng — đó là SSE và TTFT, hai khái niệm quyết định chatbot cảm giác sống hay chết.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/response-streaming",
+    },
+    date: "2026-04-21",
+    readingTime: "6 phút",
+    category: "infra",
+    tag: "giải thích",
+    lessonRefs: [
+      "tokenization",
+      "model-serving",
+      "cost-latency-tokens",
+      "function-calling",
+    ],
+    relatedArticles: ["claude-opus-4-7-launch", "mixture-of-depths"],
+    heroViz: "streaming-hero",
+  },
+  {
     slug: "claude-design-launch",
     title: "Claude Design — dựng mockup HTML/CSS bằng prompt, chuyển giao đã chuẩn hoá",
     dek: "Công cụ mới của Anthropic cho phép designer dựng mockup UI bằng prompt tiếng Việt, rồi xuất bundle gồm HTML, CSS, README và chat transcript để coding agent dựng thẳng thành sản phẩm. Bài viết này được làm ra bằng chính nó.",

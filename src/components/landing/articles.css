@@ -97,6 +97,10 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
+@keyframes ar-blink {
+  0%, 55% { opacity: 1; }
+  60%, 100% { opacity: 0; }
+}
 
 .ar-meta {
   display: inline-flex;
