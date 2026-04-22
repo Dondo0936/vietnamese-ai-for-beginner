@@ -22,131 +22,170 @@ export default function ResponseStreamingArticle() {
       <ArticleSection eyebrow="01 · Ý tưởng">
         <ArticleProse>
           <p>
-            Mở ChatGPT, Claude hay Gemini, gõ một câu hỏi rồi bấm Enter.
-            Bạn thấy gì? Chữ bắt đầu hiện ra{" "}
-            <b>từng mảnh một</b> — như ai đó đang gõ phía bên kia. Đây
-            không phải hiệu ứng trang trí. Đây là{" "}
-            <b>response streaming</b>: server đẩy từng{" "}
-            <Term slug="tokenization">token</Term> về browser ngay khi
-            model vừa sinh ra, thay vì chờ trả lời hoàn chỉnh rồi mới gửi
-            một cục.
+            Mở ChatGPT, Claude hay Gemini, nhập một câu hỏi rồi nhấn
+            Enter. Thường bạn sẽ không phải đợi đến khi toàn bộ câu
+            trả lời được tạo xong. Thay vào đó, chữ xuất hiện dần từng
+            phần, như thể có ai đó đang trả lời ở phía bên kia.
           </p>
           <p>
-            Thoạt nhìn giống thay đổi nhỏ về giao diện. Thực ra đây là
-            một trong những lý do lớn nhất khiến chatbot đời này{" "}
-            &ldquo;cảm giác thông minh&rdquo; hơn API model cùng thời —
-            dù cùng một lõi. Khi người dùng thấy chữ đầu tiên trong 300ms
-            thay vì chờ 8 giây, não đánh giá công cụ đó là{" "}
-            <b>sống và đang nghĩ</b>.
+            Hiện tượng đó được gọi là <b>response streaming</b>. Thay
+            vì chờ model tạo xong toàn bộ nội dung rồi mới gửi một
+            phản hồi hoàn chỉnh, server chuyển từng phần đầu ra của
+            model về trình duyệt ngay khi chúng sẵn sàng. Nhờ vậy,
+            người dùng nhìn thấy chữ đầu tiên rất sớm, dù toàn bộ câu
+            trả lời vẫn cần thêm vài giây để hoàn tất.
           </p>
         </ArticleProse>
       </ArticleSection>
 
       <ArticleSection
-        eyebrow="02 · Hai cách gửi một câu trả lời"
-        heading="Gửi một cục &mdash; hay gửi từng ngụm?"
+        eyebrow="02 · Hai cách trả kết quả"
+        heading="Gửi một lần hay gửi dần"
       >
+        <ArticleProse>
+          <p>Có hai cách phổ biến để trả kết quả từ server về trình duyệt.</p>
+          <p>
+            <b>Non-streaming</b> là cách quen thuộc của mô hình
+            request/response truyền thống. Trình duyệt gửi yêu cầu,
+            server xử lý, chờ model tạo xong toàn bộ nội dung, rồi
+            trả về một phản hồi hoàn chỉnh trong một lần. Trong suốt
+            thời gian đó, người dùng chỉ thấy trạng thái &ldquo;đang
+            tạo&rdquo; hoặc một spinner quay.
+          </p>
+          <p>
+            <b>Streaming</b> thì khác. Khi model tạo ra phần đầu tiên
+            của câu trả lời, server gửi phần đó về ngay. Sau đó, mỗi
+            phần mới tiếp tục được gửi đi qua cùng kết nối đang mở.
+            Nội dung cuối cùng có thể giống hệt non-streaming, nhưng
+            trải nghiệm người dùng khác hẳn — họ không phải chờ đến
+            cuối mới thấy kết quả.
+          </p>
+        </ArticleProse>
         <ArticleCompare
           before={{
             label: "Non-streaming · request/response",
             value: "Chờ hết → trả một cục",
-            note: "Browser gõ, server chờ model sinh hết 200 token, rồi trả toàn bộ JSON trong một lần. Thời gian chờ = time-to-last-token. Người dùng nhìn spinner quay.",
+            note: "Trình duyệt gửi yêu cầu; server chờ model sinh xong toàn bộ đầu ra, rồi trả về một cục JSON hoàn chỉnh. Trong suốt thời gian đó, người dùng thấy spinner quay.",
           }}
           after={{
             label: "Streaming · server-sent events",
             value: "Có token nào đẩy ngay token đó",
-            note: "Mỗi token được model sinh ra, server push về client luôn qua cùng một kết nối đang mở. Thời gian thấy chữ đầu = TTFT ≈ 300ms. Người dùng thấy nội dung lớn dần.",
+            note: "Mỗi khi model sinh ra một token mới, server gửi ngay về trình duyệt qua cùng kết nối đang mở. Người dùng thấy chữ đầu sau vài trăm ms, nội dung lớn dần theo thời gian.",
           }}
         />
-        <ArticleProse>
-          <p>
-            Cả hai đều trả cùng một nội dung. Khác nhau là ở chỗ: cách
-            đầu <b>đóng gói một lần</b>, cách sau <b>nhỏ giọt liên tục</b>.
-            Đóng gói một lần đơn giản hơn cho developer; nhỏ giọt đòi hỏi
-            cả server và client cùng hiểu một giao thức gọi là{" "}
-            <b>server-sent events</b> (SSE) — HTTP vẫn mở, server gửi
-            xuống một dòng text mỗi khi có token mới, client đọc từng dòng
-            và in ra màn hình.
-          </p>
-        </ArticleProse>
       </ArticleSection>
 
       <ArticleSection
         eyebrow="03 · TTFT — con số quan trọng nhất"
-        heading="Người dùng muốn thấy AI trả lời như một con người đang typing."
+        heading="Vì sao TTFT quan trọng hơn tổng thời gian"
       >
+        <ArticleProse>
+          <p>
+            Điểm khác biệt quan trọng nhất giữa hai cách nằm ở một
+            con số gọi là <b>TTFT</b> — time to first token, tức thời
+            gian từ lúc người dùng gửi yêu cầu đến lúc nhìn thấy{" "}
+            <Term slug="tokenization">token</Term> đầu tiên. Trong
+            giao diện chat, TTFT ảnh hưởng đến cảm giác{" "}
+            &ldquo;nhanh&rdquo; mạnh hơn cả tổng thời gian tạo xong
+            toàn bộ câu trả lời.
+          </p>
+        </ArticleProse>
         <TimingChart />
         <ArticleProse>
           <p>
-            <b>Time-to-first-token</b> (TTFT) là số giây từ lúc người
-            dùng bấm Enter đến lúc thấy ký tự đầu tiên. Nghiên cứu UX từ
-            thời Google Search năm 2008 đã cho thấy cùng một kết quả:
-            mỗi 100ms chờ thêm, người dùng cảm giác công cụ{" "}
-            &ldquo;chậm&rdquo;. Với LLM, điều này càng rõ: một câu trả
-            lời 400 token có thể mất 8 giây để sinh xong. Nếu bạn phải
-            chờ 8 giây mới thấy gì, bạn đã chuyển tab.
+            Lấy ví dụ một câu trả lời dài khoảng 400 token — model
+            cần khoảng 8 giây để sinh xong.
           </p>
           <p>
-            Streaming đảo trật tự: TTFT chỉ còn vài trăm ms (thời gian
-            model load KV cache rồi phát token đầu). Tổng thời gian
-            vẫn là 8 giây — nhưng bạn đã đọc được 1/3 câu trả lời trong
-            lúc chờ phần còn lại. Lúc token cuối về tới nơi, bạn gần đọc
-            xong.
+            Với non-streaming, người dùng không thấy gì trong suốt 8
+            giây đó. Phần lớn sẽ chuyển tab, kiểm tra điện thoại, hoặc
+            cho rằng công cụ bị đứng. Với streaming, token đầu tiên
+            thường xuất hiện sau vài trăm mili-giây. Tổng thời gian
+            sinh vẫn là 8 giây, nhưng trong lúc chờ, người dùng đã đọc
+            được phần lớn câu trả lời. Đến lúc token cuối về tới, họ
+            gần như đã đọc xong.
+          </p>
+          <p>
+            Nói cách khác, người dùng muốn thấy AI trả lời như một con
+            người đang typing — đó là thứ tạo nên cảm giác sống động,
+            không phải tổng số giây tính toán.
           </p>
         </ArticleProse>
       </ArticleSection>
 
       <ArticleSection
         eyebrow="04 · Dưới mui xe"
-        heading="Cái tưởng là phép thuật, thật ra là một dòng HTTP header"
+        heading="SSE hoạt động ra sao"
       >
         <ArticleProse>
           <p>
-            Không có công nghệ mới nào ở đây. SSE có từ năm 2009, là một
-            phần của tiêu chuẩn HTML5. Server trả về với header{" "}
-            <code>Content-Type: text/event-stream</code> và để connection
-            mở. Mỗi khi có data mới, server ghi một dòng dạng{" "}
-            <code>data: {"{...}"}\n\n</code> xuống socket. Browser có
-            sẵn class <code>EventSource</code> đọc từng dòng ngay khi nó
-            đến.
+            Một cách phổ biến để triển khai streaming trên web là{" "}
+            <b>server-sent events</b> (SSE). Với SSE, server giữ kết
+            nối HTTP mở và gửi dữ liệu xuống trình duyệt từng đợt dưới
+            dạng luồng văn bản, thay vì đóng phản hồi ngay sau một
+            lần trả kết quả.
+          </p>
+          <p>
+            Phản hồi SSE thường dùng header{" "}
+            <code>Content-Type: text/event-stream</code>. Dữ liệu được
+            gửi theo từng block văn bản, mỗi block có dạng như bên
+            dưới.
           </p>
         </ArticleProse>
         <StreamFlowViz />
         <ArticleProse>
           <p>
-            Phía model, <Term slug="model-serving">inference server</Term>{" "}
-            (vLLM, SGLang, TensorRT-LLM) sinh token xong thì đẩy vào
-            queue gửi về client. Không đợi hết câu — không có khái niệm{" "}
-            &ldquo;đợi hết câu&rdquo; ở tầng model, vì model chỉ biết
-            sinh token kế tiếp. Câu &ldquo;hết&rdquo; khi model sinh ra
-            một token đặc biệt tên là <code>&lt;eos&gt;</code> (end of
-            stream) — server thấy token đó thì đóng connection.
+            Mỗi block kết thúc bằng một dòng trống, và trình duyệt có thể
+            xử lý ngay khi block đó đến nơi. Trên trình duyệt, API
+            quen thuộc để nhận luồng SSE là <code>EventSource</code>.
+          </p>
+          <p>
+            Về phía model,{" "}
+            <Term slug="model-serving">inference server</Term> (vLLM,
+            SGLang hay TensorRT-LLM) sinh đầu ra theo từng token kế
+            tiếp. Điều đó cho phép server chuyển tiếp token mới gần
+            như ngay lập tức, thay vì đợi đến khi cả đoạn văn hoàn
+            thành. Quá trình sinh kết thúc khi gặp điều kiện dừng —
+            ví dụ một token đặc biệt tên là <code>&lt;eos&gt;</code>{" "}
+            (end of stream), hoặc giới hạn số token đã đặt trước.
           </p>
         </ArticleProse>
       </ArticleSection>
 
       <ArticleSection
         eyebrow="05 · Đánh đổi"
-        heading="Đẹp hơn cho người xem, khó hơn cho người code"
+        heading="Streaming không miễn phí"
       >
-        <TradeoffCards />
         <ArticleProse>
           <p>
-            Streaming không miễn phí. Bạn <b>không biết</b> câu trả lời
-            cuối trước khi nó ra xong — nên không thể chạy validation
-            toàn bộ (ví dụ kiểm tra JSON có hợp lệ) trước khi hiển thị.
-            Nếu ở token thứ 180, model bắt đầu hallucinate, bạn đã in ra
-            màn hình 179 token trước đó — không rút lại được.
+            Streaming giúp người dùng thấy chữ sớm, nhưng bù lại có
+            ba thứ khó hơn so với non-streaming.
           </p>
           <p>
-            Xử lý lỗi giữa dòng cũng khó: connection rớt ở giây thứ 3,
-            client đã nhận được 50 token, bạn phải quyết định hiển thị
-            tiếp như cũ hay báo lỗi rồi cho retry. Thêm nữa, nhiều{" "}
-            <b>middleware</b> doanh nghiệp (proxy, load balancer, CDN)
-            mặc định buffer response — cần cấu hình riêng để SSE không
-            bị tắc.
+            Thứ nhất, bạn <b>không biết toàn bộ câu trả lời</b> trước
+            khi nó ra xong. Nghĩa là không thể chạy validation trên
+            cả output — ví dụ kiểm tra JSON có hợp lệ — trước khi
+            hiển thị. Nếu ở token thứ 180, model bắt đầu hallucinate,
+            phần 179 token trước đó đã in ra màn hình và không rút
+            lại được.
+          </p>
+          <p>
+            Thứ hai, <b>xử lý lỗi giữa dòng phức tạp hơn</b>. Nếu
+            connection rớt ở giây thứ 3, trình duyệt đã nhận được 50
+            token. Bạn cần quyết định: hiển thị tiếp như cũ, hay báo
+            lỗi rồi cho người dùng retry? Mỗi hướng đều có đánh đổi
+            về UX và độ chính xác.
+          </p>
+          <p>
+            Thứ ba, <b>hạ tầng trung gian thường buffer mặc định</b>.
+            Nhiều proxy, load balancer và CDN của doanh nghiệp gom
+            nhiều dòng output lại thành một cục trước khi gửi tiếp.
+            Để SSE hoạt động đúng, chúng cần được cấu hình riêng —
+            nếu không, người dùng vẫn thấy spinner như cũ, dù server
+            đã làm hết mọi thứ.
           </p>
         </ArticleProse>
+        <TradeoffCards />
       </ArticleSection>
 
       <ArticleSection
@@ -155,26 +194,29 @@ export default function ResponseStreamingArticle() {
       >
         <ArticleProse>
           <p>
-            <b>Dùng streaming</b> khi UI của bạn là chat hay bất kỳ chỗ
-            nào người dùng đọc đầu ra ngay lập tức: code suggestion trong
-            IDE, tóm tắt tài liệu, copilot viết email. Ở đây TTFT là
-            metric quan trọng hơn cả — người dùng không quan tâm bạn tiêu
-            bao nhiêu GPU, họ quan tâm chữ có xuất hiện nhanh không.
+            Streaming hợp nhất với các giao diện nơi người dùng đọc
+            đầu ra ngay lập tức — chat, code suggestion trong IDE,
+            tóm tắt tài liệu, copilot viết email. Ở những chỗ này,
+            TTFT là metric quan trọng hơn cả: người dùng không quan
+            tâm server tiêu bao nhiêu GPU, họ quan tâm chữ có xuất
+            hiện nhanh hay không.
           </p>
           <p>
-            <b>Bỏ streaming</b> khi output là dữ liệu có cấu trúc mà
-            downstream phải dùng nguyên khối: JSON cho một API khác,{" "}
+            Ngược lại, khi đầu ra là dữ liệu có cấu trúc được dùng
+            nguyên khối — JSON gửi vào một API khác,{" "}
             <Term slug="function-calling">function call</Term> đi vào
-            một tool, embedding vector. Stream một JSON chưa xong rồi
-            cho <code>JSON.parse</code> nửa chừng chỉ thêm bug. Batch
-            job đêm cũng không cần streaming — không ai ngồi nhìn.
+            một tool, hoặc embedding vector — streaming thường không
+            giúp được gì. Cho <code>JSON.parse</code> chạy trên một
+            chuỗi chưa hoàn chỉnh chỉ thêm bug. Các batch job chạy
+            qua đêm cũng không cần streaming vì không có người ngồi
+            nhìn.
           </p>
           <p>
-            Còn một điểm ít người để ý: streaming cho bạn cơ hội{" "}
-            <b>dừng giữa chừng</b>. Người dùng đọc được 2 câu đầu, thấy
-            model đi sai hướng, bấm &ldquo;Stop&rdquo; — bạn tiết kiệm
-            được phần tính toán còn lại. Non-streaming không có lối
-            thoát đó: đã gọi là đã tính xong.
+            Còn một lợi ích ít được nhắc tới: streaming cho phép{" "}
+            <b>dừng giữa chừng</b>. Người dùng đọc hai câu đầu, thấy
+            model đi sai hướng, bấm &ldquo;Stop&rdquo; — phần tính
+            toán còn lại được tiết kiệm. Với non-streaming, không có
+            lối thoát đó: đã gọi là đã tính xong.
           </p>
         </ArticleProse>
       </ArticleSection>

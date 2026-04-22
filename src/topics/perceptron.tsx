@@ -182,11 +182,10 @@ function PerceptronPlayground() {
           <button
             type="button"
             onClick={() => setNextLabel(1)}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-              nextLabel === 1
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${nextLabel === 1
                 ? "bg-rose-500 text-white"
                 : "bg-card border border-border text-muted hover:text-foreground"
-            }`}
+              }`}
           >
             <PlusCircle size={11} />
             Lớp 1 (đỏ)
@@ -194,11 +193,10 @@ function PerceptronPlayground() {
           <button
             type="button"
             onClick={() => setNextLabel(0)}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-              nextLabel === 0
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-colors ${nextLabel === 0
                 ? "bg-sky-500 text-white"
                 : "bg-card border border-border text-muted hover:text-foreground"
-            }`}
+              }`}
           >
             <MinusCircle size={11} />
             Lớp 0 (xanh)
@@ -614,11 +612,10 @@ function LearningRuleDemo() {
               <button
                 type="button"
                 onClick={() => setStep(idx)}
-                className={`ml-auto rounded-full px-2 py-0.5 text-[11px] font-semibold transition-colors ${
-                  step === idx
+                className={`ml-auto rounded-full px-2 py-0.5 text-[11px] font-semibold transition-colors ${step === idx
                     ? "bg-accent text-white"
                     : "border border-border bg-card text-muted hover:text-foreground"
-                }`}
+                  }`}
               >
                 {step === idx ? "Đang xem" : "Xem bước này"}
               </button>
@@ -817,11 +814,10 @@ function LogicGatesDemo() {
             key={g}
             type="button"
             onClick={() => setGate(g)}
-            className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-              gate === g
+            className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${gate === g
                 ? "bg-accent text-white"
                 : "border border-border bg-card text-muted hover:text-foreground"
-            }`}
+              }`}
           >
             {g}
           </button>
@@ -1026,7 +1022,7 @@ export default function PerceptronTopic() {
       {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Bạn là người phỏng vấn. Ứng viên có 5 năm kinh nghiệm (x₁ = 1) nhưng không có bằng đại học (x₂ = 0). Bạn đã đặt ra 'quy tắc ngầm': kinh nghiệm quan trọng gấp 3 lần bằng cấp. Nên nhận hay không?"
+          question="Bạn là người phỏng vấn và đưa ra yêu cầu rằng ứng viên cần có 5 năm kinh nghiệm (x₁) và có bằng đại học (x₂). Ứng viên mới đến có 5 năm kinh nghiệm (x₁ = 1) nhưng không có bằng đại học (x₂ = 0). Bạn đã đặt ra 'quy tắc ngầm': kinh nghiệm quan trọng gấp 3 lần bằng cấp. Nên nhận hay không?"
           options={[
             "Nhận — vì cộng có trọng số ra kết quả lớn hơn ngưỡng 'chấp nhận'",
             "Từ chối — thiếu bằng cấp là yếu tố loại trực tiếp",
@@ -1037,11 +1033,13 @@ export default function PerceptronTopic() {
           explanation="Bạn vừa chạy một perceptron bằng đầu! Trọng số w₁ = 3 (kinh nghiệm), w₂ = 1 (bằng), bias = -2 (ngưỡng chấp nhận). Tổng = 3·1 + 1·0 − 2 = 1 > 0 → nhận. Đây chính xác là cách một perceptron quyết định."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
-            Hãy tưởng tượng nơ-ron là một <strong>cử tri</strong>. Mỗi đầu vào đưa ra một ý kiến,
-            có đầu vào quan trọng (trọng số cao), có đầu vào ít quan trọng (trọng số thấp).
-            Nơ-ron cộng tất cả phiếu lại, so với một ngưỡng nội bộ (bias), rồi nói một lời duy
-            nhất: &ldquo;có&rdquo; hoặc &ldquo;không&rdquo;. Bài này đưa bạn đi từ ẩn dụ đó tới
-            <em> đơn vị tính toán đầu tiên của mạng nơ-ron</em>.
+            Câu hỏi trên mô tả đúng một phép tính nằm bên trong mọi mạng nơ-ron.
+            Bạn cân hai yếu tố, gán mỗi yếu tố một mức độ quan trọng, cộng lại,
+            so với một ngưỡng trong đầu, rồi trả về &ldquo;có&rdquo; hoặc
+            &ldquo;không&rdquo;. Thao tác đó có một tên gọi riêng:{" "}
+            <strong>perceptron</strong> — đơn vị tính toán đầu tiên của mạng nơ-ron.
+            Bài này đưa bạn từ câu trả lời vừa xong đến cơ chế bên trong, và vì
+            sao mọi mạng sâu hiện đại vẫn dựa trên ý tưởng ấy.
           </p>
         </PredictionGate>
       </LessonSection>
@@ -1054,11 +1052,15 @@ export default function PerceptronTopic() {
             &ldquo;không&rdquo;
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Trong đầu, bạn luôn ra quyết định kiểu này: &ldquo;hôm nay đi học hay nghỉ?&rdquo;,
-            &ldquo;mua hay không mua?&rdquo;, &ldquo;trả lời tin nhắn hay đọc rồi cất?&rdquo;. Mỗi quyết định cân
-            một số yếu tố — bạn gán cho mỗi yếu tố một <strong>mức độ quan trọng</strong> (trọng số),
-            cộng lại, rồi so với một <em>ngưỡng</em> riêng của bạn. Perceptron mô phỏng chính xác
-            quá trình đó.
+            Nhớ lại ứng viên vừa xong: 5 năm kinh nghiệm, không có bằng. Bạn nhân
+            3·1 cho kinh nghiệm, cộng 1·0 cho bằng cấp, trừ đi bias 2 — kết quả ra
+            1, lớn hơn 0, nên bạn nhận. Thao tác đó gọi là{" "}
+            <strong>tổng có trọng số</strong> (weighted sum): mỗi đầu vào xᵢ được
+            nhân với <em>trọng số</em> wᵢ thể hiện mức độ quan trọng của nó, rồi
+            cộng tất cả lại, cộng thêm bias — một hằng số điều chỉnh{" "}
+            <em>ngưỡng</em> mà perceptron mới chịu nói &ldquo;có&rdquo;. Nhờ vậy,
+            thay đổi trọng số là thay đổi ưu tiên; thay đổi bias là thay đổi độ
+            &ldquo;khó tính&rdquo; của nơ-ron.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
@@ -1094,9 +1096,10 @@ export default function PerceptronTopic() {
           </div>
 
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Nghe đơn giản đúng không? Đây chính là lý do perceptron là <strong>viên gạch đầu
-            tiên</strong> của mọi mạng nơ-ron hiện đại. Mạng phức tạp đến mấy, cuối cùng vẫn là
-            triệu phép tính như thế xếp chồng lên nhau.
+            Chỉ một phép cộng và một ngưỡng — vậy mà đủ để phân loại. Đây chính
+            là lý do perceptron là <strong>viên gạch đầu tiên</strong> của mọi mạng
+            nơ-ron hiện đại. Mạng phức tạp đến mấy, cuối cùng vẫn là hàng triệu
+            phép tính như thế xếp chồng lên nhau.
           </p>
         </div>
       </LessonSection>
@@ -1132,11 +1135,10 @@ export default function PerceptronTopic() {
                             key={v}
                             type="button"
                             onClick={() => set(v)}
-                            className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
-                              value === v
+                            className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${value === v
                                 ? "bg-accent text-white"
                                 : "border border-border bg-card text-muted hover:text-foreground"
-                            }`}
+                              }`}
                           >
                             {v === 1 ? "Có (1)" : "Không (0)"}
                           </button>
@@ -1197,11 +1199,10 @@ export default function PerceptronTopic() {
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
-                    className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-bold ${
-                      out === 1
+                    className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-bold ${out === 1
                         ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
                         : "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300"
-                    }`}
+                      }`}
                   >
                     Nơ-ron nói: {out === 1 ? "CÓ" : "KHÔNG"}
                   </motion.div>
@@ -1274,10 +1275,14 @@ export default function PerceptronTopic() {
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
-            Frank Rosenblatt đề xuất perceptron năm 1958 tại Cornell. Đây là lần đầu tiên một
-            chiếc máy <em>tự học</em> phân loại từ dữ liệu, thay vì được lập trình cứng bằng tay.
-            Dưới đây là hai công thức cốt lõi — mỗi công thức kèm lời giải thích bằng tiếng Việt
-            và một hình minh hoạ để bạn &ldquo;thấy&rdquo; nó hoạt động.
+            Năm 1958, Frank Rosenblatt tại Cornell nối một bộ điện trở chỉnh bằng
+            tay vào một mảng quang điện tử rồi chiếu hình lên đó. Chiếc máy —
+            Mark I Perceptron — nhìn hình, đoán nhãn, nhận phản hồi đúng/sai, rồi
+            tự điều chỉnh các điện trở để lần sau đoán tốt hơn. Không ai gõ
+            &ldquo;nếu sáng thì nhãn A&rdquo; vào mã nguồn — máy{" "}
+            <em>tự học</em> quy tắc từ dữ liệu. Dưới đây là hai công thức cốt lõi
+            đằng sau cơ chế đó — mỗi công thức kèm lời giải thích và một hình
+            minh hoạ để bạn &ldquo;thấy&rdquo; nó hoạt động.
           </p>
 
           {/* Công thức 1 — Tổng có trọng số */}
@@ -1287,7 +1292,7 @@ export default function PerceptronTopic() {
           <LaTeX block>{"z = w_1 x_1 + w_2 x_2 + \\cdots + w_n x_n + b"}</LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>nhân từng đầu vào với trọng số của nó, cộng tất cả lại, rồi cộng thêm
-            bias</em>. Trọng số wᵢ cao = đầu vào xᵢ quan trọng. Bias b giống như &ldquo;ngưỡng
+              bias</em>. Trọng số wᵢ cao = đầu vào xᵢ quan trọng. Bias b giống như &ldquo;ngưỡng
             cá tính&rdquo; của nơ-ron — b âm lớn nghĩa là nơ-ron &ldquo;khó tính&rdquo;, phải cộng
             được nhiều mới qua được 0.
           </p>
