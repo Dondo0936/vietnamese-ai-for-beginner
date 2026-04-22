@@ -33,6 +33,9 @@ const articleComponents: Record<string, ComponentType> = {
   "response-streaming": dynamic(
     () => import("@/articles/response-streaming"),
   ),
+  "large-tabular-models": dynamic(
+    () => import("@/articles/large-tabular-models"),
+  ),
 };
 
 export function getArticleComponent(slug: string): ComponentType | undefined {

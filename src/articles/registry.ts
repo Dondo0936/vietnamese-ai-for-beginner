@@ -7,6 +7,28 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "large-tabular-models",
+    title:
+      "Large Tabular Models — khi AI biết đọc bảng mà không cần train",
+    dek: "TabPFN v2 được train một lần trên hàng trăm triệu bảng giả, sau đó đoán cột thiếu cho bất kỳ bảng nào — không fine-tune, không hyperparameter. Trên bảng dưới 10K dòng, nó đang vượt XGBoost, thứ đã thống trị dữ liệu bảng suốt hơn một thập kỷ.",
+    source: {
+      name: "Nature",
+      host: "nature.com",
+      url: "https://www.nature.com/articles/s41586-024-08328-6",
+    },
+    date: "2026-04-22",
+    readingTime: "8 phút",
+    category: "paper",
+    tag: "hot",
+    lessonRefs: [
+      "transformer",
+      "in-context-learning",
+      "decision-trees",
+      "fine-tuning-vs-prompting",
+    ],
+    relatedArticles: ["claude-opus-4-7-launch", "mixture-of-depths"],
+  },
+  {
     slug: "response-streaming",
     title: "Response streaming — vì sao chatbot hiện chữ từng chút một",
     dek: "Một câu trả lời dài 8 giây. Bạn thấy chữ đầu tiên sau 280ms. Đó không phải hiệu ứng — đó là SSE và TTFT, hai khái niệm quyết định chatbot cảm giác sống hay chết.",
