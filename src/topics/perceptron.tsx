@@ -467,35 +467,36 @@ const LEARNING_POINTS: LearningDemoPoint[] = [
 function LearningRuleDemo() {
   const [step, setStep] = useState(0);
 
-  // Ba trạng thái trọng số: khởi tạo xấu → sửa một lần → sửa lần nữa → tạm ổn
+  // Bốn trạng thái trọng số: sửa dần ba điểm đỏ từ phải sang trái
+  // cho tới khi đường chia đúng hai cụm.
   const states: { w1: number; w2: number; b: number; badIdx: number | null; note: string }[] = [
     {
       w1: 0.1,
       w2: -0.4,
       b: 0,
+      badIdx: 5,
+      note: "Khởi tạo ngẫu nhiên. Cả ba điểm đỏ đang bị đoán thành 0 — đường chưa chia được gì.",
+    },
+    {
+      w1: 0.2,
+      w2: 0.15,
+      b: -1.0,
+      badIdx: 4,
+      note: "Điểm đỏ phải cùng đã được sửa. Đường dịch lên, nhưng hai điểm đỏ còn lại vẫn sai phía.",
+    },
+    {
+      w1: 0.3,
+      w2: 0.2,
+      b: -1.3,
       badIdx: 3,
-      note: "Khởi tạo ngẫu nhiên. Nhiều điểm đỏ đang bị đoán thành 0.",
+      note: "Sửa thêm điểm đỏ giữa. Chỉ còn điểm đỏ trái cùng chưa đúng.",
     },
     {
-      w1: 0.6,
-      w2: -0.1,
-      b: -0.2,
-      badIdx: 2,
-      note: "Điểm đỏ đầu tiên được sửa. Đường dịch sang phải một chút.",
-    },
-    {
-      w1: 0.95,
-      w2: 0.25,
-      b: -0.4,
-      badIdx: 1,
-      note: "Một bước nữa, vẫn còn điểm xanh bên trái chưa ổn.",
-    },
-    {
-      w1: 1.1,
-      w2: 0.55,
-      b: -0.9,
+      w1: 1.0,
+      w2: 0.5,
+      b: -3.0,
       badIdx: null,
-      note: "Perceptron học xong — toàn bộ điểm được phân loại đúng.",
+      note: "Perceptron học xong — đường chia đúng hai cụm màu.",
     },
   ];
 
@@ -1234,7 +1235,7 @@ export default function PerceptronTopic() {
       </LessonSection>
 
       {/* ━━━ BƯỚC 5 — DEEPEN (luật học) ━━━ */}
-      <LessonSection step={5} totalSteps={8} label="Đi sâu — luật học">
+      <LessonSection step={5} totalSteps={8} label="Đi sâu hơn">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2 mb-2">
           <Lightbulb size={18} className="text-accent" />
           Perceptron tự chỉnh trọng số thế nào?
