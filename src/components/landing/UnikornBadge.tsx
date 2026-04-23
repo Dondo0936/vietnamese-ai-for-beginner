@@ -1,59 +1,21 @@
+import { UNIKORN_BADGE_SVG } from "./unikorn-badge-svg";
+
 /**
- * Unikorn "Product of the Day" badge. Fetched as SVG server-side and
- * inlined so we can repaint it in the udemi palette via CSS variables.
+ * Unikorn "Product of the Day" badge. Inlined from a pre-processed SVG
+ * (see `unikorn-badge-svg.ts`) so we can repaint it in the udemi palette
+ * via CSS variables.
  *
- * The badge's own <style> block is stripped so its `:root` variable
- * declarations do not leak to the HTML root, and so `.ld-unikorn svg`
- * rules in landing.css drive the final colors unambiguously. The hard
- * black drop-shadow on the star filter is rewritten to use the udemi
- * `--border-strong` token so it stops reading as a foreign sticker.
- *
- * Revalidates hourly so the rank stays fresh without hitting unikorn.vn
- * on every landing render.
+ * The badge is inlined rather than fetched because unikorn.vn sits behind
+ * Cloudflare, which 403s Vercel build IPs even with a browser User-Agent.
+ * If the badge design or rank needs to refresh, re-run the transform
+ * pipeline documented at the top of `unikorn-badge-svg.ts` and commit
+ * the new string.
  */
 
-const BADGE_SVG_URL =
-  "https://unikorn.vn/api/widgets/badge/ai-cho-moi-nguoi/rank?theme=light&type=daily";
 const BADGE_LINK_URL =
   "https://unikorn.vn/p/ai-cho-moi-nguoi?ref=embed-ai-cho-moi-nguoi";
 
-export async function UnikornBadge() {
-  let raw: string;
-  try {
-    const res = await fetch(BADGE_SVG_URL, {
-      next: { revalidate: 3600 },
-      headers: {
-        Accept: "image/svg+xml,image/*;q=0.8,*/*;q=0.5",
-        "Accept-Language": "en-US,en;q=0.9,vi;q=0.8",
-        "User-Agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " +
-          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        Referer: "https://udemi.tech/",
-      },
-    });
-    if (!res.ok) {
-      console.error(
-        `[UnikornBadge] fetch returned ${res.status} ${res.statusText}`,
-      );
-      return null;
-    }
-    raw = await res.text();
-    if (!raw.trim().startsWith("<svg")) {
-      console.error(
-        `[UnikornBadge] unexpected body (len=${raw.length}): ${raw.slice(0, 120)}`,
-      );
-      return null;
-    }
-  } catch (err) {
-    console.error("[UnikornBadge] fetch threw:", err);
-    return null;
-  }
-
-  const svg = raw
-    .replace(/<style[\s\S]*?<\/style>/g, "")
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/flood-color="#000000"/g, 'flood-color="var(--border-strong)"');
-
+export function UnikornBadge() {
   return (
     <a
       href={BADGE_LINK_URL}
@@ -64,7 +26,7 @@ export async function UnikornBadge() {
     >
       <span
         className="ld-unikorn__svg"
-        dangerouslySetInnerHTML={{ __html: svg }}
+        dangerouslySetInnerHTML={{ __html: UNIKORN_BADGE_SVG }}
       />
     </a>
   );
