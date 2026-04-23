@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data:",
+              "img-src 'self' data: https://unikorn.vn",
               "font-src 'self'",
               "connect-src 'self' https://*.supabase.co",
               "frame-ancestors 'none'",
