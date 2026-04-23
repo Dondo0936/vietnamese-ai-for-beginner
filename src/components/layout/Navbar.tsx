@@ -19,7 +19,7 @@ function triggerCmdK() {
  */
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-[rgba(251,247,242,0.7)] backdrop-blur-[16px] backdrop-saturate-[140%] dark:bg-[rgba(10,10,11,0.7)]">
+    <nav className="sticky top-0 z-50 border-b border-border bg-[color-mix(in_srgb,var(--bg-primary)_92%,transparent)] backdrop-blur-[16px] backdrop-saturate-[140%]">
       <div className="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-8 h-14">
         <Link href="/" className="flex items-center gap-2.5 text-foreground">
           <Brain className="h-5 w-5 text-accent" />

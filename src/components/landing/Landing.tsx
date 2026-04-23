@@ -1,5 +1,6 @@
 import "./landing.css";
 import "./articles.css";
+import "./landing-mobile.css";
 import { topicList } from "@/topics/registry";
 import { LandingNav } from "./LandingNav";
 import { LandingHero } from "./LandingHero";

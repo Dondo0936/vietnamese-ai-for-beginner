@@ -60,6 +60,15 @@
   --tracking-tight: -0.02em;
   --tracking-snug:  -0.01em;
   --tracking-caps:   0.08em;
+
+  /* Design-system aliases — let the handoff-bundle CSS port verbatim.
+     These point at tokens already in use; no existing rule references
+     the alias names, so adding them is zero-risk. */
+  --bg-elev:        var(--pure-white);
+  --bg-quiet:       var(--paper-3);
+  --fg-1:           var(--ink);
+  --fg-2:           var(--graphite);
+  --fg-3:           var(--ash);
 }
 
 /* ─────────────────────────────────────────────── */

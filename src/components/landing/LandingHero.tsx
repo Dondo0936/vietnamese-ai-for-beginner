@@ -32,14 +32,14 @@ export function LandingHero() {
           <span className="ld-dot" /> nền tảng giáo dục AI · mã nguồn mở · 2026
         </div>
         <h1 className="ld-h1">
-          Học AI<br />
-          không cần<br />
+          Học AI<br className="hide-mobile" />
+          không cần<br className="hide-mobile" />
           <s className="ld-strike">biết tiếng Anh.</s>
         </h1>
         <p className="ld-lede">
-          260+ chủ đề viết lại cho người Việt<br />
-          Hình minh hoạ, bảng điều khiển, biểu đồ, giải thích.<br />
-          Mỗi bài đi qua tám bước:<br />
+          260+ chủ đề viết lại cho người Việt<br className="hide-mobile" />
+          Hình minh hoạ, bảng điều khiển, biểu đồ, giải thích.<br className="hide-mobile" />
+          Mỗi bài đi qua tám bước:<br className="hide-mobile" />
           đoán, hình, à-ha, thử, hiểu, tóm, quiz.
         </p>
         <div className="ld-cta-row">

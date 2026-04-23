@@ -109,6 +109,32 @@ export default function AIEngineerPathPage() {
       icon={Code2}
       stages={getPathStages("ai-engineer")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
+      extras={{
+        eyebrowVi: "Lộ trình cho người xây hệ thống AI",
+        editor: {
+          name: "Dondo",
+          role: "Biên tập chính · udemi.tech",
+          initials: "DD",
+        },
+        faq: [
+          {
+            q: "Tôi biết Python cơ bản là đủ chưa?",
+            a: "Đủ để bắt đầu. Lộ trình giả định bạn đọc được Python, biết numpy/pandas. PyTorch/Transformers sẽ học trong các chương giữa.",
+          },
+          {
+            q: "Cần GPU không?",
+            a: "Không bắt buộc. Phần lớn ví dụ chạy được trên Colab free hoặc local CPU. Khi đến phần fine-tuning/serving, bạn có thể thuê GPU theo giờ (~$1–3/h).",
+          },
+          {
+            q: "Lộ trình này có dạy MLOps không?",
+            a: "Có. Hai chương 'Hạ tầng & Vận hành' và 'Đánh giá & Quan sát hệ thống AI' tập trung vào triển khai, monitoring, observability cho hệ thống LLM.",
+          },
+          {
+            q: "Sau lộ trình này tôi xin việc được không?",
+            a: "Lộ trình trang bị nền tảng vững; ứng tuyển còn phụ thuộc portfolio + kinh nghiệm thực chiến. Capstone cuối lộ trình là một dự án end-to-end bạn có thể đưa vào CV.",
+          },
+        ],
+      }}
     />
   );
 }

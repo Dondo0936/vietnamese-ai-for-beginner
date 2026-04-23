@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter_Tight, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Space_Grotesk, Inter_Tight, JetBrains_Mono, Fraunces, Be_Vietnam_Pro } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/lib/theme";
@@ -33,6 +33,13 @@ const jetbrainsMono = JetBrains_Mono({
 const fraunces = Fraunces({
   variable: "--font-serif",
   subsets: ["latin", "latin-ext", "vietnamese"],
+  display: "swap",
+});
+
+const beVietnamPro = Be_Vietnam_Pro({
+  variable: "--font-vn",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -70,7 +77,7 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={`${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable} ${fraunces.variable} ${beVietnamPro.variable} h-full antialiased`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >

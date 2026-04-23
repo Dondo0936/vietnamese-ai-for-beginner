@@ -1,0 +1,379 @@
+/* ============================================================
+   Landing — mobile-only redesign (≤ 768px).
+   Desktop CSS in landing.css / articles.css is untouched; every
+   rule here is inside @media (max-width: 768px) so production
+   desktop layout is byte-for-byte unchanged.
+   ============================================================ */
+
+/* Utility: desktop-only elements (hide on mobile) */
+.hide-mobile { display: initial; }
+@media (max-width: 768px) {
+  .hide-mobile { display: none; }
+}
+
+@media (max-width: 768px) {
+  .ld {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ───── Nav ─────
+     Keep brand + primary CTA + hamburger on mobile. The long
+     link list collapses into a drawer toggled by .mn-menu-btn. */
+  .ld-nav {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  .ld-nav__brand {
+    font-size: 17px;
+    gap: 8px;
+  }
+  .ld-nav__brand > span:last-child { display: none; }
+  .ld-nav__links { display: none; }
+  .ld-nav__actions > button,
+  .ld-nav__actions > a.ld-btn--ghost { display: none; }
+  .ld-nav__actions > .ld-btn--primary {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .mn-menu-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--paper-3);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .mn-menu-btn span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    background: var(--ink);
+    border-radius: 1px;
+  }
+
+  /* Drawer */
+  .mn-drawer {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 16px 20px 20px;
+    z-index: 45;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    animation: mn-slidein 180ms ease-out;
+  }
+  @keyframes mn-slidein {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .mn-drawer a {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: 17px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .mn-drawer a:last-child { border-bottom: 0; }
+  .mn-drawer__cta {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .mn-drawer__cta > * { flex: 1; justify-content: center; }
+
+  /* ───── Hero ───── */
+  .ld-hero {
+    display: block;
+    padding: 24px 16px 36px;
+  }
+  .ld-hero::before { display: none; }
+  .ld-unikorn { margin-bottom: 16px; }
+  .ld-unikorn img { max-width: 100%; height: auto; }
+  .ld-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--paper-3);
+    border: 1px solid var(--border);
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+  .ld-h1 {
+    font-size: clamp(44px, 13vw, 56px);
+    line-height: 0.95;
+    margin-bottom: 18px;
+  }
+  .ld-strike {
+    text-decoration-thickness: 4px;
+  }
+  .ld-lede {
+    font-size: 15px;
+    max-width: none;
+    margin-bottom: 24px;
+  }
+  .ld-cta-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .ld-cta-row > .ld-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .ld-link {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .ld-cta-note {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+    text-align: center;
+    display: block;
+    padding-top: 4px;
+  }
+  .ld-counters {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    border-top: 1px solid var(--border);
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 24px;
+  }
+  .ld-counters > div {
+    background: var(--paper);
+    padding: 14px;
+    gap: 2px;
+  }
+  .ld-counter__n { font-size: 26px; letter-spacing: -0.02em; }
+  .ld-counter__l { font-size: 10px; letter-spacing: 0.08em; margin-top: 4px; }
+
+  /* Demo card — move absolute tags inside the frame on mobile */
+  .ld-hero__right { margin-top: 32px; }
+  .ld-demo { border-radius: 16px; }
+  .ld-demo__body { padding: 20px 16px; }
+  .ld-demo__title { font-size: 20px; }
+  .ld-demo__caption { font-size: 12px; }
+  .ld-demo__label { width: 60px; font-size: 12px; }
+  .ld-demo__bars { height: 28px; }
+  .ld-tag {
+    padding: 5px 10px;
+    font-size: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .ld-tag--ink {
+    top: 8px;
+    right: 8px;
+  }
+  .ld-tag--accent {
+    bottom: 8px;
+    left: 8px;
+    transform: rotate(-2deg);
+  }
+
+  /* ───── Search ───── */
+  .ld-search {
+    padding: 48px 16px 40px;
+  }
+  .ld-search__h {
+    font-size: clamp(36px, 10vw, 52px);
+    margin: 14px 0 24px;
+  }
+  .ld-search__box {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+  .ld-search__icon { font-size: 18px; }
+  .ld-search__placeholder { font-size: 14px; }
+  .ld-search__kbd { display: none; }
+  .ld-search__chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    margin: 20px -16px 0;
+    padding: 4px 16px;
+    scrollbar-width: none;
+  }
+  .ld-search__chips::-webkit-scrollbar { display: none; }
+  .ld-chip { flex-shrink: 0; }
+  .ld-chip-label {
+    flex-shrink: 0;
+    padding: 6px 0;
+  }
+
+  /* ───── Marquee ───── */
+  .ld-marquee { padding: 12px 0; }
+  .ld-marquee__track { font-size: 14px; gap: 20px; }
+
+  /* ───── Section scaffolding ───── */
+  .ld-section__head {
+    display: block;
+    margin-bottom: 24px;
+    padding: 0 16px;
+  }
+  .ld-section__title {
+    font-size: clamp(32px, 9vw, 44px);
+    margin: 10px 0 0;
+  }
+  .ld-section__link,
+  .ld-section__meta {
+    display: block;
+    margin-top: 12px;
+    justify-self: start;
+  }
+
+  /* ───── Paths ───── */
+  .ld-paths { padding: 48px 0; }
+  .ld-paths__grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0 16px;
+  }
+  .ld-path {
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 14px;
+  }
+  .ld-path__num {
+    font-size: 36px;
+    padding-top: 0;
+  }
+  .ld-path__head h3 { font-size: 19px; }
+  .ld-path__body p { font-size: 13px; }
+
+  /* ───── Featured ───── */
+  .ld-featured { padding: 48px 0; }
+  .ld-featured__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .ld-card { border-radius: 14px; }
+  .ld-card__viz { height: 140px; }
+  .ld-card__body { padding: 18px; }
+  .ld-card__body h4 { font-size: 19px; }
+  .ld-card__body p { font-size: 12px; }
+
+  /* ───── Process — 2×4 grid ───── */
+  .ld-process { padding: 48px 16px; }
+  .ld-process__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ld-step {
+    padding: 20px;
+    min-height: 140px;
+  }
+  .ld-step h4 { font-size: 17px; }
+  .ld-step p { font-size: 12px; }
+
+  /* ───── Quotes ───── */
+  .ld-quotes { padding: 48px 0; }
+  .ld-quotes__grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0 16px;
+  }
+  .ld-quote { padding: 22px; border-radius: 14px; }
+  .ld-quote__mark { font-size: 44px; }
+  .ld-quote blockquote { font-size: 17px; margin-bottom: 18px; }
+
+  /* ───── Articles — force single-col ───── */
+  .ar-ed__row {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .ar-ed__leadViz {
+    height: 200px !important;
+  }
+  .ar-ed__lead {
+    grid-template-columns: 1fr;
+  }
+  .ar-ed__leadBody {
+    padding: 22px 20px !important;
+  }
+
+  /* ───── Contribute ───── */
+  .ld-contribute { padding: 64px 16px; }
+  .ld-contribute__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .ld-contribute h2 {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+  .ld-contribute__body p { font-size: 15px; }
+
+  /* ───── Big CTA ───── */
+  .ld-cta {
+    padding: 56px 20px;
+  }
+  .ld-cta__h {
+    font-size: clamp(40px, 12vw, 64px);
+  }
+  .ld-cta p { font-size: 14px; }
+  .ld-cta__buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .ld-cta__buttons > * {
+    width: 100%;
+    justify-content: center;
+  }
+  .ld-cta__meta {
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  /* ───── Footer ───── */
+  .ld-foot { padding: 48px 16px 28px; }
+  .ld-foot__top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-bottom: 32px;
+  }
+  .ld-foot__cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .ld-foot__bot {
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 24px;
+    align-items: flex-start;
+  }
+}
+
+/* Between 480 and 768 is tablet-ish; below 480 tighten a bit more */
+@media (max-width: 480px) {
+  .ld-foot__cols {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .ld-process__grid {
+    grid-template-columns: 1fr;
+  }
+}

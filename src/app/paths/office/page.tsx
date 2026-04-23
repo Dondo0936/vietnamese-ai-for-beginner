@@ -73,6 +73,32 @@ export default function OfficePathPage() {
       icon={Briefcase}
       stages={getPathStages("office")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
+      extras={{
+        eyebrowVi: "Lộ trình cho người không code",
+        editor: {
+          name: "Dondo",
+          role: "Biên tập chính · udemi.tech",
+          initials: "DD",
+        },
+        faq: [
+          {
+            q: "Tôi không biết code. Học được không?",
+            a: "Được. Lộ trình này không yêu cầu viết code, chỉ có prompt mẫu, ví dụ trong trình duyệt, và ẩn dụ đời thường.",
+          },
+          {
+            q: "Mất bao lâu để hoàn thành?",
+            a: "Trung bình 5–6 tuần nếu học 30 phút/ngày. Nếu học dồn cuối tuần, khoảng 8 tuần.",
+          },
+          {
+            q: "AI có thay thế công việc của tôi không?",
+            a: "Lộ trình không hứa hẹn. Nó giúp bạn hiểu AI làm được gì, không làm được gì, và dùng nó như công cụ hỗ trợ, không phải thay thế.",
+          },
+          {
+            q: "Chứng chỉ có dùng được trên LinkedIn/CV không?",
+            a: "Được. Chứng nhận là tự nguyện, tạo ra khi bạn hoàn thành 100%. Không thay thế chứng chỉ AWS/Google, nhưng tốt trên CV nội bộ.",
+          },
+        ],
+      }}
     />
   );
 }

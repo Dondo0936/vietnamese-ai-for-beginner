@@ -117,11 +117,13 @@ export default function TopicTOC({ sections }: TopicTOCProps) {
 
   return (
     <>
-      {/* Desktop: sticky sidebar */}
+      {/* Desktop floating rail: shown lg (1024-1279). On xl+ (1280+) the
+          inline left-rail TOC inside TopicLayout takes over, so we hide
+          this floating variant to avoid a duplicate nav. */}
       <nav
         role="navigation"
         aria-label="Mục lục bài học"
-        className="hidden lg:block fixed right-8 top-1/2 -translate-y-1/2 z-40"
+        className="hidden lg:block xl:hidden fixed right-8 top-1/2 -translate-y-1/2 z-40"
       >
         <div className="flex flex-col gap-1 rounded-xl border border-border bg-card/90 backdrop-blur-sm p-2 shadow-lg">
           {rows.map(({ id, labelVi, Icon, isActive }) => (

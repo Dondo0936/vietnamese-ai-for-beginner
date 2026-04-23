@@ -80,6 +80,32 @@ export default function StudentPathPage() {
       icon={GraduationCap}
       stages={getPathStages("student")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
+      extras={{
+        eyebrowVi: "Lộ trình cho người bắt đầu từ số 0",
+        editor: {
+          name: "Dondo",
+          role: "Biên tập chính · udemi.tech",
+          initials: "DD",
+        },
+        faq: [
+          {
+            q: "Tôi chưa biết lập trình. Học được không?",
+            a: "Được. Lộ trình này có dạy Python cơ bản ở chương 'Kỹ năng thực hành'. Trước đó, bạn chỉ cần làm quen với khái niệm. Không viết code nào trong 3 chương đầu.",
+          },
+          {
+            q: "Mất bao lâu để hoàn thành?",
+            a: "Ước tính ~60 giờ tổng. Nếu học 30 phút/ngày, bạn hoàn thành sau ~4 tháng. Nếu dồn cuối tuần 2 giờ/tuần, khoảng 7 tháng.",
+          },
+          {
+            q: "Sau khi xong lộ trình này, tôi nên học gì?",
+            a: "Lộ trình AI Engineer là bước tiếp theo tự nhiên. Nó giả định bạn đã nắm toán và ML cơ bản từ đây.",
+          },
+          {
+            q: "Có thể học offline không?",
+            a: "Mỗi bài có thể đọc được khi mạng chậm vì nội dung text-first. Tiến độ đồng bộ ẩn danh trên trình duyệt bạn đang dùng.",
+          },
+        ],
+      }}
     />
   );
 }

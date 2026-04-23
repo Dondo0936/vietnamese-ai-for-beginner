@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import type { TopicMeta } from "@/lib/types";
+import type { TopicMeta, TocSection } from "@/lib/types";
 import { markTopicRead } from "@/lib/database";
 import { topicList, topicMap } from "@/topics/registry";
 import {
@@ -13,12 +13,12 @@ import {
   type AdultPathId,
   type PathNeighbors,
 } from "@/lib/paths";
-import Tag from "@/components/ui/Tag";
 import BookmarkButton from "./BookmarkButton";
 import RelatedTopics from "./RelatedTopics";
 import ReadingProgressBar from "@/components/ui/ReadingProgressBar";
 import TopicTOC, { DEFAULT_TOC_SECTIONS } from "./TopicTOC";
 import { SectionDuplicateGuard } from "./SectionDuplicateGuard";
+import "./topic-layout.css";
 
 interface TopicLayoutProps {
   meta: TopicMeta;
@@ -82,7 +82,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
   const hasMarkedRead = useRef(false);
   const [manuallyMarked, setManuallyMarked] = useState(false);
 
-  // Mark read after 70% scroll (unchanged from previous behavior)
+  // Mark read after 70% scroll — contract-enforced behavior, do not change.
   useEffect(() => {
     hasMarkedRead.current = false;
 
@@ -150,170 +150,319 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
 
   const tocSections = meta.tocSections ?? DEFAULT_TOC_SECTIONS;
 
+  // Related topic objects (resolved + filtered) for the right-rail block.
+  const relatedTopicObjects = useMemo(
+    () => meta.relatedSlugs.map((s) => topicMap[s]).filter(Boolean).slice(0, 4),
+    [meta.relatedSlugs]
+  );
+
   return (
     <>
       <ReadingProgressBar />
+      {/* Floating/mobile TOC stays for lg (1024–1279) + mobile.
+          On xl (1280+), the inline left-rail TOC below takes over
+          and TopicTOC's desktop variant is hidden via its own class. */}
       <TopicTOC sections={tocSections} />
 
-      <motion.article
-        initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: "easeOut" }}
-        className="content-width px-5 sm:px-8 py-10"
-      >
-        {/* Back + position indicator */}
-        <div className="mb-8 flex items-center justify-between gap-3">
-          <Link
-            href={backHref}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-accent min-w-0"
-          >
-            <ArrowLeft size={16} className="shrink-0" />
-            <span className="truncate">{backLabel}</span>
-          </Link>
-          <span className="text-[11px] text-tertiary shrink-0 text-right">
-            {nav.kind === "path" ? (
-              <>
-                Bài {nav.path.current}/{nav.path.total}
-                <span className="hidden sm:inline"> — {nav.path.currentStageTitle}</span>
-              </>
-            ) : (
-              <>
-                {nav.current}/{nav.total} trong danh mục
-              </>
-            )}
-          </span>
-        </div>
-
-        {/* Header */}
-        <header className="mb-10">
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1">
-              <h1 className="font-display text-[40px] font-medium tracking-[-0.035em] leading-[1.05] text-foreground">
-                {meta.title}
-              </h1>
-              <p className="text-lg text-muted tracking-[-0.01em]">{meta.titleVi}</p>
+      <div className="tp-page">
+        <div className="tp-layout">
+          {/* Left rail — xl+ only */}
+          <aside className="tp-rail">
+            <div className="tp-rail__sticky">
+              <h4 className="tp-rail__head">Trong bài này</h4>
+              <InlineToc sections={tocSections} reduceMotion={reduceMotion ?? false} />
+              {nav.kind === "path" && (
+                <div className="tp-rail__meta">
+                  <div>
+                    <span>Bài</span>
+                    <b>
+                      {nav.path.current}/{nav.path.total}
+                    </b>
+                  </div>
+                  {nav.path.currentStageTitle && (
+                    <div>
+                      <span>Chương</span>
+                      <b>{nav.path.currentStageTitle}</b>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-            <BookmarkButton slug={meta.slug} />
-          </div>
+          </aside>
 
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <Tag label={meta.difficulty} variant="difficulty" />
-            <Tag label={meta.category} />
-            {nav.kind === "path" && (
-              <span className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent/5 px-2.5 py-0.5 text-[11px] font-medium text-accent">
-                Lộ trình: {nav.path.nameVi}
+          {/* Main column */}
+          <motion.article
+            className="tp-main"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: "easeOut" }}
+          >
+            {/* Back + position */}
+            <div className="tp-back">
+              <Link href={backHref}>
+                <ArrowLeft size={14} className="shrink-0" />
+                <span>{backLabel}</span>
+              </Link>
+              <span className="tp-back__pos">
+                {nav.kind === "path" ? (
+                  <>
+                    Bài {nav.path.current}/{nav.path.total}
+                  </>
+                ) : (
+                  <>
+                    {nav.current}/{nav.total} trong danh mục
+                  </>
+                )}
               </span>
-            )}
-          </div>
-        </header>
+            </div>
 
-        {/* Content */}
-        <SectionDuplicateGuard>
-          <div>{children}</div>
-        </SectionDuplicateGuard>
-
-        {/* Forward link to application topic — shown AFTER reading the concept */}
-        {applicationTopic?.featuredApp && (
-          <nav
-            aria-label="Liên kết với bài ứng dụng"
-            className="mt-10 rounded-md border border-accent/20 bg-accent/5 px-4 py-3 text-sm"
-          >
-            <Link
-              href={neighborHref(applicationTopic.slug)}
-              className="text-link hover:underline"
-            >
-              Xem ứng dụng thực tế: cách{" "}
-              <strong>{applicationTopic.featuredApp.name}</strong> dùng{" "}
-              {meta.titleVi} →
-            </Link>
-          </nav>
-        )}
-
-        {/* Mark as complete */}
-        <div className="mt-10 flex justify-center">
-          <button
-            type="button"
-            aria-label="Đánh dấu đã đọc"
-            disabled={manuallyMarked}
-            onClick={() => {
-              if (hasMarkedRead.current) {
-                setManuallyMarked(true);
-                return;
-              }
-              markTopicRead(meta.slug);
-              hasMarkedRead.current = true;
-              setManuallyMarked(true);
-            }}
-            className={`inline-flex items-center gap-2 rounded-[var(--r-pill)] border px-5 py-2.5 text-sm font-medium transition-all ${
-              manuallyMarked
-                ? "border-accent/30 bg-accent/10 text-accent cursor-default"
-                : "border-border bg-card/50 text-muted hover:text-foreground hover:bg-card hover:shadow-sm"
-            }`}
-          >
-            <CheckCircle2 size={16} />
-            {manuallyMarked ? "Đã đánh dấu hoàn thành" : "Đánh dấu đã đọc"}
-          </button>
-        </div>
-
-        {/* Related Topics */}
-        <RelatedTopics slugs={meta.relatedSlugs} />
-
-        {/* Next/Previous topic navigation */}
-        <nav className="mt-12 border-t border-border pt-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {nav.prev ? (
-              <Link
-                href={neighborHref(nav.prev.slug)}
-                className="group flex items-start gap-3 rounded-[var(--r-lg)] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm"
-              >
-                <ChevronLeft size={16} className="mt-0.5 text-tertiary group-hover:text-accent shrink-0" />
-                <div className="min-w-0">
-                  <span className="text-[10px] text-tertiary uppercase tracking-wider">Bài trước</span>
-                  <p className="text-sm font-medium text-foreground mt-0.5 break-words leading-snug">{nav.prev.title}</p>
-                  <p className="text-[11px] text-muted break-words leading-snug">{nav.prev.titleVi}</p>
+            {/* Hero */}
+            <header className="tp-hero">
+              <div className="tp-eyebrow">
+                <span className="tp-dot" />
+                <span>{meta.category}</span>
+                {nav.kind === "path" && nav.path.currentStageTitle && (
+                  <>
+                    <span>·</span>
+                    <span>{nav.path.currentStageTitle}</span>
+                  </>
+                )}
+              </div>
+              <div className="tp-hero__row">
+                <h1 className="tp-h1">{meta.title}</h1>
+                <BookmarkButton slug={meta.slug} />
+              </div>
+              <p className="tp-sub">{meta.titleVi}</p>
+              <div className="tp-hero__meta">
+                <div className="tp-hero__facts">
+                  <div>
+                    <span>Độ khó</span>
+                    <b>{meta.difficulty}</b>
+                  </div>
+                  {nav.kind === "path" && (
+                    <div>
+                      <span>Lộ trình</span>
+                      <b>{nav.path.nameVi}</b>
+                    </div>
+                  )}
                 </div>
-              </Link>
-            ) : (
-              <div className="hidden sm:block" />
+              </div>
+            </header>
+
+            {/* Body — unchanged */}
+            <SectionDuplicateGuard>
+              <div>{children}</div>
+            </SectionDuplicateGuard>
+
+            {/* Forward link to application topic — shown AFTER reading the concept */}
+            {applicationTopic?.featuredApp && (
+              <nav aria-label="Liên kết với bài ứng dụng" className="tp-app">
+                <Link href={neighborHref(applicationTopic.slug)}>
+                  Xem ứng dụng thực tế: cách{" "}
+                  <strong>{applicationTopic.featuredApp.name}</strong> dùng{" "}
+                  {meta.titleVi} →
+                </Link>
+              </nav>
             )}
 
-            {nav.next ? (
-              <Link
-                href={neighborHref(nav.next.slug)}
-                className="group flex items-start gap-3 rounded-[var(--r-lg)] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm text-right"
+            {/* Mark as complete */}
+            <div className="tp-complete">
+              <button
+                type="button"
+                aria-label="Đánh dấu đã đọc"
+                disabled={manuallyMarked}
+                onClick={() => {
+                  if (hasMarkedRead.current) {
+                    setManuallyMarked(true);
+                    return;
+                  }
+                  markTopicRead(meta.slug);
+                  hasMarkedRead.current = true;
+                  setManuallyMarked(true);
+                }}
               >
-                <div className="min-w-0 flex-1">
-                  <span className="text-[10px] text-tertiary uppercase tracking-wider">Bài tiếp theo</span>
-                  <p className="text-sm font-medium text-foreground mt-0.5 break-words leading-snug">{nav.next.title}</p>
-                  <p className="text-[11px] text-muted break-words leading-snug">{nav.next.titleVi}</p>
+                <CheckCircle2 size={16} />
+                {manuallyMarked ? "Đã đánh dấu hoàn thành" : "Đánh dấu đã đọc"}
+              </button>
+            </div>
+
+            {/* Related topics — existing flat chip list below main content */}
+            <RelatedTopics slugs={meta.relatedSlugs} />
+
+            {/* Pager — prev / chapter / next */}
+            <nav className="tp-pager">
+              {nav.prev ? (
+                <Link href={neighborHref(nav.prev.slug)} className="tp-pager__prev">
+                  <span>← Bài trước</span>
+                  <b>{nav.prev.title}</b>
+                  <p>{nav.prev.titleVi}</p>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {nav.kind === "path" && nav.path.currentStageTitle ? (
+                <div className="tp-pager__ch">
+                  <span>Chương</span>
+                  <b>{nav.path.currentStageTitle}</b>
                 </div>
-                <ChevronRight size={16} className="mt-0.5 text-tertiary group-hover:text-accent shrink-0" />
-              </Link>
-            ) : (
-              <Link
-                href={backHref}
-                className="group flex items-center justify-center gap-2 rounded-[var(--r-lg)] border border-border bg-card/50 p-4 transition-all hover:bg-card hover:shadow-sm"
-              >
-                <span className="text-sm font-medium text-muted group-hover:text-foreground">
-                  {nav.kind === "path" ? `Hoàn thành lộ trình ${nav.path.nameVi}!` : "Hoàn thành danh mục!"}
-                </span>
-                <ArrowRight size={14} className="text-tertiary group-hover:text-accent" />
-              </Link>
-            )}
-          </div>
-        </nav>
+              ) : (
+                <div className="tp-pager__ch">
+                  <span>Danh mục</span>
+                  <b>{meta.category}</b>
+                </div>
+              )}
 
-        {/* Scroll to top */}
-        <div className="mt-6 text-center">
-          <button
-            type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-xs text-tertiary hover:text-accent transition-colors"
-          >
-            ↑ Về đầu trang
-          </button>
+              {nav.next ? (
+                <Link href={neighborHref(nav.next.slug)} className="tp-pager__next">
+                  <span>Bài tiếp →</span>
+                  <b>{nav.next.title}</b>
+                  <p>{nav.next.titleVi}</p>
+                </Link>
+              ) : (
+                <Link href={backHref} className="tp-pager__done">
+                  <span>Hoàn thành</span>
+                  <b>
+                    {nav.kind === "path"
+                      ? `Hoàn thành lộ trình ${nav.path.nameVi}!`
+                      : "Hoàn thành danh mục!"}{" "}
+                    <ArrowRight size={14} className="inline" />
+                  </b>
+                </Link>
+              )}
+            </nav>
+
+            {/* Scroll to top */}
+            <div className="mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="text-xs text-tertiary hover:text-accent transition-colors"
+              >
+                ↑ Về đầu trang
+              </button>
+            </div>
+          </motion.article>
+
+          {/* Right rail — xl+ only */}
+          <aside className="tp-side">
+            <div className="tp-side__sticky">
+              {relatedTopicObjects.length > 0 && (
+                <div className="tp-side__block">
+                  <h4>Bài liên quan</h4>
+                  {relatedTopicObjects.map((topic) => (
+                    <Link key={topic.slug} href={neighborHref(topic.slug)} className="tp-rel">
+                      <span>#{topic.category}</span>
+                      <b>{topic.titleVi}</b>
+                      <span className="tp-rel__meta">{topic.difficulty}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          </aside>
         </div>
-      </motion.article>
+      </div>
     </>
+  );
+}
+
+// ─── Inline TOC used inside the left rail on xl+ ───
+function InlineToc({
+  sections,
+  reduceMotion,
+}: {
+  sections: TocSection[];
+  reduceMotion: boolean;
+}) {
+  const [active, setActive] = useState<string>("");
+
+  useEffect(() => {
+    if (sections.length === 0) return;
+    // Guard for test / SSR environments that don't ship IntersectionObserver.
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: "-20% 0px -60% 0px" }
+    );
+
+    const outstanding = new Set<string>(sections.map((s) => s.id));
+    function attachFound() {
+      for (const id of Array.from(outstanding)) {
+        const el = document.getElementById(id);
+        if (el) {
+          observer.observe(el);
+          outstanding.delete(id);
+        }
+      }
+    }
+    attachFound();
+
+    let mo: MutationObserver | null = null;
+    let giveUpTimer: ReturnType<typeof setTimeout> | null = null;
+    if (outstanding.size > 0) {
+      mo = new MutationObserver(() => {
+        attachFound();
+        if (outstanding.size === 0 && mo) {
+          mo.disconnect();
+          mo = null;
+          if (giveUpTimer) clearTimeout(giveUpTimer);
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+      giveUpTimer = setTimeout(() => {
+        if (mo) {
+          mo.disconnect();
+          mo = null;
+        }
+      }, 3000);
+    }
+
+    return () => {
+      observer.disconnect();
+      if (mo) mo.disconnect();
+      if (giveUpTimer) clearTimeout(giveUpTimer);
+    };
+  }, [sections]);
+
+  function scrollTo(id: string) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", `#${id}`);
+      }
+    }
+  }
+
+  if (sections.length === 0) return null;
+
+  return (
+    <ol className="tp-toc">
+      {sections.map((s, i) => {
+        const isActive = active === s.id;
+        return (
+          <li
+            key={s.id}
+            className={isActive ? "tp-toc__i is-current" : "tp-toc__i"}
+          >
+            <span className="tp-toc__n">{String(i + 1).padStart(2, "0")}</span>
+            <button
+              type="button"
+              className="tp-toc__t"
+              onClick={() => scrollTo(s.id)}
+            >
+              {s.labelVi}
+            </button>
+            {isActive && <span className="tp-toc__cur" aria-hidden />}
+          </li>
+        );
+      })}
+    </ol>
   );
 }

@@ -1,0 +1,582 @@
+/* ============================================================
+   Topic page chrome — 3-col desktop, single-scroll mobile.
+   Paired with src/components/topic/TopicLayout.tsx.
+   Only the chrome is styled here; the 8-step body (primitives,
+   VisualizationSection, ExplanationSection, callouts, quiz) is
+   untouched and keeps its existing styling.
+   ============================================================ */
+
+.tp-page {
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* --- 3-col layout (activates at xl / 1280px+).
+   NOTE: no `align-items: start` — we want grid items to stretch to
+   full row height so `position: sticky` on the rails has room to
+   work past a single screen of content. */
+.tp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  gap: 0;
+}
+@media (min-width: 1280px) {
+  .tp-layout {
+    grid-template-columns: 260px minmax(0, 1fr) 300px;
+    gap: 48px;
+    padding: 0 32px;
+  }
+}
+
+/* --- Left rail (inline TOC) — xl+ only --- */
+.tp-rail {
+  display: none;
+  padding: 32px 0;
+}
+@media (min-width: 1280px) {
+  .tp-rail { display: block; }
+}
+.tp-rail__sticky { position: sticky; top: 80px; }
+.tp-rail__head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+
+.tp-toc {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+.tp-toc__i {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--graphite);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.tp-toc__i:last-child { border-bottom: 0; }
+.tp-toc__n {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ash);
+  padding-top: 2px;
+}
+.tp-toc__t {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+}
+.tp-toc__t:hover { color: var(--ink); }
+.tp-toc__i.is-current {
+  background: var(--paper-3);
+  margin: 0 -12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-bottom: 0;
+}
+.tp-toc__i.is-current + .tp-toc__i { border-top: 0; }
+.tp-toc__i.is-current .tp-toc__t {
+  color: var(--ink);
+  font-weight: 500;
+}
+.tp-toc__i.is-current .tp-toc__n {
+  color: var(--turquoise-ink);
+  font-weight: 500;
+}
+.tp-toc__cur {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--turquoise-500);
+  margin-top: 4px;
+  animation: tp-pulse 2s infinite;
+  align-self: center;
+}
+@keyframes tp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.tp-rail__meta {
+  background: var(--paper-3);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  display: grid;
+  gap: 8px;
+}
+.tp-rail__meta > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.tp-rail__meta > div + div {
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+.tp-rail__meta span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ash);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tp-rail__meta b {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  text-align: right;
+  line-height: 1.25;
+}
+
+/* --- Main column --- */
+.tp-main {
+  padding: 32px 0 64px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  min-width: 0;
+}
+@media (min-width: 1280px) {
+  .tp-main { padding: 40px 0 80px; margin: 0; }
+}
+
+/* Back + position indicator row */
+.tp-back {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+.tp-back a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--graphite);
+  text-decoration: none;
+  min-width: 0;
+}
+.tp-back a:hover { color: var(--ink); }
+.tp-back a span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tp-back__pos {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ash);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* --- Hero --- */
+.tp-hero { margin-bottom: 36px; }
+.tp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+  margin-bottom: 16px;
+}
+.tp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--turquoise-500);
+  flex-shrink: 0;
+}
+
+.tp-hero__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.tp-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.5vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin: 0 0 10px;
+  color: var(--ink);
+  text-wrap: balance;
+  flex: 1;
+  min-width: 0;
+}
+.tp-sub {
+  font-family: var(--font-vn);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--graphite);
+  margin: 0 0 24px;
+  text-wrap: pretty;
+}
+
+.tp-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.tp-hero__facts {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.tp-hero__facts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tp-hero__facts span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ash);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tp-hero__facts b {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.tp-hero__path {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--turquoise-ink);
+  background: var(--turquoise-50);
+  border: 1px solid var(--turquoise-300);
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --- App forward link (unchanged intent, restyled) --- */
+.tp-app {
+  margin-top: 40px;
+  padding: 14px 18px;
+  background: color-mix(in srgb, var(--turquoise-50) 50%, var(--paper));
+  border: 1px solid var(--turquoise-300);
+  border-radius: 12px;
+  font-size: 14px;
+}
+.tp-app a {
+  color: var(--turquoise-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--turquoise-300);
+}
+.tp-app a:hover { color: var(--turquoise-600); }
+
+/* --- Mark complete --- */
+.tp-complete {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.tp-complete button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--pure-white);
+  color: var(--graphite);
+  font-family: var(--font-vn);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.tp-complete button:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--paper);
+}
+.tp-complete button:disabled {
+  border-color: var(--turquoise-300);
+  background: var(--turquoise-50);
+  color: var(--turquoise-ink);
+  cursor: default;
+}
+
+/* --- Pager --- */
+.tp-pager {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  padding: 28px 0;
+  margin-top: 48px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 640px) {
+  .tp-pager { grid-template-columns: 1fr; gap: 10px; }
+  .tp-pager__ch { display: none; }
+}
+.tp-pager a {
+  padding: 16px 20px;
+  background: var(--pure-white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 150ms, transform 150ms;
+  display: block;
+  min-width: 0;
+}
+.tp-pager a:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+.tp-pager__prev { text-align: left; }
+.tp-pager__next { text-align: right; }
+.tp-pager a span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+  display: block;
+  margin-bottom: 4px;
+}
+.tp-pager a b {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  display: block;
+  line-height: 1.3;
+  text-wrap: balance;
+  word-break: break-word;
+}
+.tp-pager a p {
+  font-size: 12px;
+  color: var(--graphite);
+  margin: 3px 0 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.tp-pager__ch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 18px;
+  background: var(--paper-3);
+  border-radius: 12px;
+  text-align: center;
+  min-width: 120px;
+}
+.tp-pager__ch span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+  display: block;
+  margin-bottom: 2px;
+}
+.tp-pager__ch b {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--graphite);
+  display: block;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.tp-pager__done {
+  text-align: right;
+}
+.tp-pager__done b { color: var(--turquoise-ink); }
+
+/* --- Right side rail — xl+ only --- */
+.tp-side {
+  display: none;
+  padding: 40px 0;
+}
+@media (min-width: 1280px) {
+  .tp-side { display: block; }
+}
+.tp-side__sticky {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tp-side__block {
+  padding: 16px;
+  background: var(--pure-white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.tp-side__block h4 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+.tp-rel {
+  display: block;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+.tp-rel:last-child { border-bottom: 0; padding-bottom: 0; }
+.tp-rel:first-child { padding-top: 0; }
+.tp-rel > span:first-child {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--turquoise-ink);
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.tp-rel b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+.tp-rel__meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ash);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tp-rel:hover b { color: var(--turquoise-ink); }
+
+/* --- Dark mode overrides: keep paper-light look inside topic page.
+   We map design's paper tokens to the same warm off-white so the
+   topic reading experience stays luminous regardless of shell theme. */
+.dark .tp-page {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+.dark .tp-h1,
+.dark .tp-hero__facts b,
+.dark .tp-rel b,
+.dark .tp-pager a b {
+  color: var(--text-primary);
+}
+.dark .tp-sub,
+.dark .tp-back a,
+.dark .tp-pager a p {
+  color: var(--text-secondary);
+}
+.dark .tp-toc__i,
+.dark .tp-rel__meta,
+.dark .tp-hero__facts span,
+.dark .tp-back__pos,
+.dark .tp-pager a span,
+.dark .tp-rail__head,
+.dark .tp-side__block h4 {
+  color: var(--text-tertiary);
+}
+.dark .tp-toc__i {
+  border-color: var(--border);
+}
+.dark .tp-toc__i.is-current {
+  background: var(--bg-surface);
+}
+.dark .tp-toc__i.is-current .tp-toc__t {
+  color: var(--text-primary);
+}
+.dark .tp-hero__meta {
+  border-top-color: var(--border);
+  border-bottom-color: var(--border);
+}
+.dark .tp-pager {
+  border-top-color: var(--border);
+}
+.dark .tp-pager a {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+.dark .tp-pager a:hover {
+  border-color: var(--text-primary);
+}
+.dark .tp-pager__ch {
+  background: var(--bg-surface);
+}
+.dark .tp-pager__ch b {
+  color: var(--text-secondary);
+}
+.dark .tp-rail__meta {
+  background: var(--bg-surface);
+}
+.dark .tp-rail__meta > div + div {
+  border-top-color: var(--border);
+}
+.dark .tp-rail__meta b {
+  color: var(--text-primary);
+}
+.dark .tp-side__block {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+.dark .tp-rel {
+  border-color: var(--border);
+}
+.dark .tp-complete button {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+.dark .tp-complete button:hover:not(:disabled) {
+  background: var(--bg-surface);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}

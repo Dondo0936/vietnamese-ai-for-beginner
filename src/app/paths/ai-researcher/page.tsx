@@ -91,6 +91,32 @@ export default function AIResearcherPathPage() {
       icon={FlaskConical}
       stages={getPathStages("ai-researcher")}
       headerExtra={<LearningObjectivesModal objectives={pathObjectives} />}
+      extras={{
+        eyebrowVi: "Lộ trình cho người nghiên cứu",
+        editor: {
+          name: "Dondo",
+          role: "Biên tập chính · udemi.tech",
+          initials: "DD",
+        },
+        faq: [
+          {
+            q: "Cần nền toán đến đâu?",
+            a: "Đại số tuyến tính vững + xác suất + giải tích ở mức đại học. Lộ trình không ôn lại toán. Nếu rỗng phần này, nên đi qua lộ trình Học sinh · Sinh viên trước.",
+          },
+          {
+            q: "Lộ trình có dạy đọc paper không?",
+            a: "Có. Chương cuối tập trung vào scaling laws, alignment, và cách đọc các paper mới nhất trên arXiv một cách hệ thống.",
+          },
+          {
+            q: "Có phải theo thứ tự không?",
+            a: "Hai chương đầu (Nền tảng lý thuyết + Kiến trúc) nên học tuần tự. Các chương sau có thể nhảy cóc theo hứng nghiên cứu.",
+          },
+          {
+            q: "Làm sao đóng góp vào lộ trình?",
+            a: "Repo mở trên GitHub. Mỗi bài có nút 'Đề xuất chỉnh sửa'. Pull request với trích dẫn paper được welcome.",
+          },
+        ],
+      }}
     />
   );
 }

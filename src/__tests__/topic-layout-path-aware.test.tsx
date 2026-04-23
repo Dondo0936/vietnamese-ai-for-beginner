@@ -139,8 +139,9 @@ describe("TopicLayout — path-aware navigation", () => {
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
     // Path-aware counter uses "Bài " prefix
     expect(screen.getByText(/Bài\s+1\s*\/\s*\d+/i)).toBeInTheDocument();
-    // Stage title shown on desktop-size breakpoint — query by text content
-    expect(screen.getByText(/Giới thiệu/)).toBeInTheDocument();
+    // Stage title appears in multiple places in the new 3-col layout
+    // (eyebrow, rail meta, pager pill) — use getAllByText accordingly.
+    expect(screen.getAllByText(/Giới thiệu/).length).toBeGreaterThan(0);
   });
 
   it("with ?path=student, back link goes to /paths/student", () => {
@@ -182,10 +183,13 @@ describe("TopicLayout — path-aware navigation", () => {
     expect(screen.getByRole("link", { name: /quay lại trang chủ/i })).toBeInTheDocument();
   });
 
-  it("shows a Lộ trình tag in the header when on a valid path", () => {
+  it("shows the path name in the hero meta when on a valid path", () => {
     setSearch("?path=student");
     render(<TopicLayout meta={whatIsMlMeta}><p>body</p></TopicLayout>);
-    expect(screen.getByText(/Lộ trình:\s*Học sinh/i)).toBeInTheDocument();
+    // The new 3-col layout surfaces path name as a hero-meta fact
+    // ("Lộ trình" label + path nameVi) and also in the back link.
+    expect(screen.getAllByText(/Lộ trình/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Học sinh/i).length).toBeGreaterThan(0);
   });
 
   it("does NOT show the Lộ trình tag when navigating without ?path=", () => {
