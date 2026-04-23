@@ -7,6 +7,27 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "tts-how-it-works",
+    title: "Máy đọc thành tiếng thế nào. Bên trong kỹ thuật ElevenLabs.",
+    dek: "Bạn gõ một câu. Loa phát ra giọng người. Giữa hai thứ đó là một pipeline năm khối: chuẩn hoá văn bản, grapheme-to-phoneme, prosody, acoustic model, vocoder. Thêm một lớp speaker embedding, và hệ thống học xong một giọng chỉ sau 30 giây audio.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/tts-how-it-works",
+    },
+    date: "2026-04-23",
+    readingTime: "9 phút",
+    category: "infra",
+    tag: "giải thích",
+    lessonRefs: [
+      "tts",
+      "speech-recognition",
+      "transformer",
+      "embedding-model",
+    ],
+    relatedArticles: ["llm-math-weakness", "response-streaming"],
+  },
+  {
     slug: "llm-math-weakness",
     title: "Vì sao ChatGPT hay sai khi tính toán",
     dek: "Hỏi ChatGPT tính 7583 × 2947, bạn nhận được một con số trông rất thuyết phục nhưng thường sai. Lỗi này có nguyên nhân cơ học: tokenizer cắt nhỏ chữ số, và model chỉ đoán chữ kế tiếp chứ không thực sự tính. Bài viết giải thích cơ chế, rồi chỉ ra cách chuyển việc tính cho đúng công cụ.",
