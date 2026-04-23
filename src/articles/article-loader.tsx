@@ -36,6 +36,9 @@ const articleComponents: Record<string, ComponentType> = {
   "large-tabular-models": dynamic(
     () => import("@/articles/large-tabular-models"),
   ),
+  "llm-math-weakness": dynamic(
+    () => import("@/articles/llm-math-weakness"),
+  ),
 };
 
 export function getArticleComponent(slug: string): ComponentType | undefined {

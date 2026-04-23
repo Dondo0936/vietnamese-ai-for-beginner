@@ -7,6 +7,27 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "llm-math-weakness",
+    title: "Vì sao ChatGPT hay sai khi tính toán",
+    dek: "Hỏi ChatGPT tính 7583 × 2947, bạn nhận được một con số trông rất thuyết phục nhưng thường sai. Lỗi này có nguyên nhân cơ học: tokenizer cắt nhỏ chữ số, và model chỉ đoán chữ kế tiếp chứ không thực sự tính. Bài viết giải thích cơ chế, rồi chỉ ra cách chuyển việc tính cho đúng công cụ.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/llm-math-weakness",
+    },
+    date: "2026-04-23",
+    readingTime: "7 phút",
+    category: "infra",
+    tag: "giải thích",
+    lessonRefs: [
+      "tokenization",
+      "chain-of-thought",
+      "function-calling",
+      "prompt-engineering",
+    ],
+    relatedArticles: ["response-streaming", "claude-opus-4-7-launch"],
+  },
+  {
     slug: "large-tabular-models",
     title:
       "Large Tabular Models — khi AI biết đọc bảng mà không cần train",

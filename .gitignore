@@ -56,3 +56,5 @@ next-env.d.ts
 
 # Visual companion session dirs
 /.superpowers/
+# Added by code-review-graph
+.code-review-graph/

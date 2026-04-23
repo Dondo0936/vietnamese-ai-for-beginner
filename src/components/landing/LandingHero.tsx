@@ -14,6 +14,21 @@ export function LandingHero() {
       <div>
         <div className="ld-eyebrow">
           <span className="ld-dot" /> nền tảng giáo dục AI · mã nguồn mở · 2026
+          <a
+            href="https://unikorn.vn/p/ai-cho-moi-nguoi?ref=embed-ai-cho-moi-nguoi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ld-eyebrow__badge"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://unikorn.vn/api/widgets/badge/ai-cho-moi-nguoi/rank?theme=light&type=daily"
+              alt="AI Cho Mọi Người - Daily"
+              width={250}
+              height={64}
+              loading="lazy"
+            />
+          </a>
         </div>
         <h1 className="ld-h1">
           Học AI<br />

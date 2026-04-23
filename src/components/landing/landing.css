@@ -225,7 +225,7 @@
   display: grid;
   grid-template-columns: 1.15fr 1fr;
   gap: 80px;
-  padding: 88px 48px 104px;
+  padding: 36px 48px 104px;
   align-items: center;
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -234,7 +234,8 @@
 .ld-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 14px;
   font-family: var(--font-mono);
   font-size: 11px;
   text-transform: uppercase;
@@ -242,6 +243,13 @@
   color: var(--text-tertiary);
   margin-bottom: 32px;
 }
+.ld-eyebrow__badge {
+  display: inline-flex;
+  line-height: 0;
+  transition: opacity 0.15s ease;
+}
+.ld-eyebrow__badge:hover { opacity: 0.85; }
+.ld-eyebrow__badge img { display: block; }
 .ld-dot {
   width: 6px;
   height: 6px;
