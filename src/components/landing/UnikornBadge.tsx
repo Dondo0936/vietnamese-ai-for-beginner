@@ -22,11 +22,26 @@ export async function UnikornBadge() {
   try {
     const res = await fetch(BADGE_SVG_URL, {
       next: { revalidate: 3600 },
-      headers: { Accept: "image/svg+xml" },
+      headers: {
+        Accept: "image/svg+xml",
+        "User-Agent": "udemi.tech/1.0 (+https://udemi.tech)",
+      },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(
+        `[UnikornBadge] fetch returned ${res.status} ${res.statusText}`,
+      );
+      return null;
+    }
     raw = await res.text();
-  } catch {
+    if (!raw.trim().startsWith("<svg")) {
+      console.error(
+        `[UnikornBadge] unexpected body (len=${raw.length}): ${raw.slice(0, 120)}`,
+      );
+      return null;
+    }
+  } catch (err) {
+    console.error("[UnikornBadge] fetch threw:", err);
     return null;
   }
 
