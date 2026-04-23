@@ -244,7 +244,8 @@
 }
 
 .ld-unikorn {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   line-height: 0;
   margin-bottom: 20px;
   transition: opacity 0.15s ease;
