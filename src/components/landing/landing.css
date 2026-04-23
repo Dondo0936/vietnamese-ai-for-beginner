@@ -243,9 +243,6 @@
   margin-bottom: 32px;
 }
 
-/* Unikorn badge — SVG is inlined (see UnikornBadge.tsx) and repainted
-   in the udemi palette via CSS variables that match the names inside
-   the badge's original <defs>. */
 .ld-unikorn {
   display: inline-flex;
   line-height: 0;
@@ -253,27 +250,7 @@
   transition: opacity 0.15s ease;
 }
 .ld-unikorn:hover { opacity: 0.85; }
-.ld-unikorn__svg { display: inline-flex; line-height: 0; }
-.ld-unikorn__svg svg {
-  display: block;
-  --bg: var(--paper);
-  --text: var(--text-primary);
-  --sub-text: var(--text-tertiary);
-  --accent: var(--accent);
-  --border: var(--border);
-  --badge-inner: var(--paper);
-}
-.ld-unikorn__svg svg text.product-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-.ld-unikorn__svg svg text.sub-text {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
+.ld-unikorn img { display: block; }
 .ld-dot {
   width: 6px;
   height: 6px;

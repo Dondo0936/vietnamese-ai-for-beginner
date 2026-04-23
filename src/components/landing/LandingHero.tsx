@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AttentionDemoCard } from "./AttentionDemoCard";
-import { UnikornBadge } from "./UnikornBadge";
 
 /**
  * Landing hero — split layout: editorial headline + stats counters
@@ -13,7 +12,22 @@ export function LandingHero() {
   return (
     <section className="ld-hero" id="hero">
       <div>
-        <UnikornBadge />
+        <a
+          href="https://unikorn.vn/p/ai-cho-moi-nguoi?ref=embed-ai-cho-moi-nguoi"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ld-unikorn"
+          aria-label="Xem trang Unikorn của udemi"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://unikorn.vn/api/widgets/badge/ai-cho-moi-nguoi/rank?theme=light&type=daily"
+            alt="AI Cho Mọi Người - Daily"
+            width={250}
+            height={64}
+            loading="lazy"
+          />
+        </a>
         <div className="ld-eyebrow">
           <span className="ld-dot" /> nền tảng giáo dục AI · mã nguồn mở · 2026
         </div>
