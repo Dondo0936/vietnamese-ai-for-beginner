@@ -225,17 +225,16 @@
   display: grid;
   grid-template-columns: 1.15fr 1fr;
   gap: 80px;
-  padding: 36px 48px 104px;
+  padding: 14px 48px 104px;
   align-items: center;
   border-bottom: 1px solid var(--border);
   position: relative;
 }
 
 .ld-eyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: 11px;
   text-transform: uppercase;
@@ -243,13 +242,38 @@
   color: var(--text-tertiary);
   margin-bottom: 32px;
 }
-.ld-eyebrow__badge {
+
+/* Unikorn badge — SVG is inlined (see UnikornBadge.tsx) and repainted
+   in the udemi palette via CSS variables that match the names inside
+   the badge's original <defs>. */
+.ld-unikorn {
   display: inline-flex;
   line-height: 0;
+  margin-bottom: 20px;
   transition: opacity 0.15s ease;
 }
-.ld-eyebrow__badge:hover { opacity: 0.85; }
-.ld-eyebrow__badge img { display: block; }
+.ld-unikorn:hover { opacity: 0.85; }
+.ld-unikorn__svg { display: inline-flex; line-height: 0; }
+.ld-unikorn__svg svg {
+  display: block;
+  --bg: var(--paper);
+  --text: var(--text-primary);
+  --sub-text: var(--text-tertiary);
+  --accent: var(--accent);
+  --border: var(--border);
+  --badge-inner: var(--paper);
+}
+.ld-unikorn__svg svg text.product-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ld-unikorn__svg svg text.sub-text {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
 .ld-dot {
   width: 6px;
   height: 6px;
