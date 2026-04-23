@@ -58,3 +58,11 @@ next-env.d.ts
 /.superpowers/
 # Added by code-review-graph
 .code-review-graph/
+
+# Remotion lesson videos, banners, and their sources are kept local only.
+# remotion/Root.tsx stays tracked in its clean DemoComposition-only form;
+# local development adds Lesson*.tsx imports to Root.tsx as uncommitted
+# working-tree modifications.
+/remotion/Lesson*.tsx
+/public/lesson-*.mp4
+/public/lesson-*.png
