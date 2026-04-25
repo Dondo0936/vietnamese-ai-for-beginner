@@ -7,6 +7,28 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "claude-in-excel-how-it-works",
+    title:
+      "Claude trong Excel hoạt động thế nào. Bên trong cách AI sửa bảng tính.",
+    dek: "Bạn bấm Ctrl+Alt+C, sidebar trượt ra, gõ một câu. Vài giây sau hai cell đổi màu cam và một citation chỉ thẳng tới ô lỗi. Bài viết mổ xẻ Office.js taskpane, vòng lặp tool use bốn nhịp đọc-đề-xuất-ghi-kiểm-chứng, lớp diff, ranh giới quyền truy cập, và lỗ hổng prompt injection CellShock đầu năm 2026.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/claude-in-excel-how-it-works",
+    },
+    date: "2026-04-25",
+    readingTime: "10 phút",
+    category: "tool",
+    tag: "giải thích",
+    lessonRefs: [
+      "function-calling",
+      "agentic-workflows",
+      "prompt-injection-defense",
+      "prompt-engineering",
+    ],
+    relatedArticles: ["claude-design-launch", "claude-opus-4-7-launch"],
+  },
+  {
     slug: "tts-how-it-works",
     title: "Máy đọc thành tiếng thế nào. Bên trong kỹ thuật ElevenLabs.",
     dek: "Bạn gõ một câu. Loa phát ra giọng người. Giữa hai thứ đó là một pipeline năm khối: chuẩn hoá văn bản, grapheme-to-phoneme, prosody, acoustic model, vocoder. Thêm một lớp speaker embedding, và hệ thống học xong một giọng chỉ sau 30 giây audio.",

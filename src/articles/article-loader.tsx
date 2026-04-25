@@ -40,6 +40,9 @@ const articleComponents: Record<string, ComponentType> = {
     () => import("@/articles/llm-math-weakness"),
   ),
   "tts-how-it-works": dynamic(() => import("@/articles/tts-how-it-works")),
+  "claude-in-excel-how-it-works": dynamic(
+    () => import("@/articles/claude-in-excel-how-it-works"),
+  ),
 };
 
 export function getArticleComponent(slug: string): ComponentType | undefined {
