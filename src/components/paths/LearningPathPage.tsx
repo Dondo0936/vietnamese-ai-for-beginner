@@ -193,12 +193,20 @@ function LearningPathContent({
                 {ctaLabel}
               </Link>
             ) : (
-              <Link
-                href={`/topics/${allSlugs[0]}?path=${pathId}`}
-                className="lp-btn lp-btn--xl"
-              >
-                Xem lại từ đầu →
-              </Link>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href={`/account/certificates?claim=${pathId}`}
+                  className="lp-btn lp-btn--primary lp-btn--xl"
+                >
+                  Nhận chứng chỉ →
+                </Link>
+                <Link
+                  href={`/topics/${allSlugs[0]}?path=${pathId}`}
+                  className="lp-btn lp-btn--xl"
+                >
+                  Xem lại từ đầu
+                </Link>
+              </div>
             )}
             <div className="lp-resume__foot">
               <span>lưu ẩn danh</span>
