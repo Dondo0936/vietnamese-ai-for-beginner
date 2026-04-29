@@ -74,7 +74,7 @@ const TOOLS: Tool[] = [
     strength:
       "Chi tiết từng trường dữ liệu giữa các bước, rẻ hơn Zapier ở mức dùng cao.",
     weakness:
-      "Học cong hơi cong lúc đầu — phải quen với khái niệm 'scenario' và 'module'.",
+      "Đường học hơi dốc lúc đầu. Phải quen với khái niệm 'scenario' và 'module'.",
     color: "#6366f1",
     bestFor: "Công ty thương mại điện tử tự đồng bộ đơn hàng giữa nhiều hệ thống.",
     pricing: "Gói miễn phí 1000 ops/tháng, trả phí từ ~9 USD/tháng.",
@@ -189,7 +189,7 @@ const EXAMPLES: Example[] = [
       "Gộp thành báo cáo PDF",
       "Gửi email cho 5 sếp trong công ty",
     ],
-    savings: "Thay thế chính thức một vị trí 'thư ký tin tức' phần thấp.",
+    savings: "Thay thế phần việc đơn giản của một vị trí 'thư ký tin tức'.",
     industry: "Lãnh đạo công ty, phòng chiến lược",
     color: "#0ea5e9",
   },
@@ -479,7 +479,7 @@ function ToolCard({ tool }: { tool: Tool }) {
   return (
     <div
       className="rounded-xl border p-4 space-y-2"
-      style={{ borderColor: tool.color + "55", background: tool.color + "0f" }}
+      style={{ borderColor: tool.color + "66", background: tool.color + "1a" }}
     >
       <div className="flex items-center justify-between">
         <p className="text-base font-bold" style={{ color: tool.color }}>
@@ -487,7 +487,7 @@ function ToolCard({ tool }: { tool: Tool }) {
         </p>
         <span
           className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-          style={{ background: tool.color + "22", color: tool.color }}
+          style={{ background: tool.color + "33", color: tool.color }}
         >
           Học: {tool.learningCurve}
         </span>
@@ -540,7 +540,7 @@ function ExampleCards() {
             <span
               className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full shrink-0"
               style={{
-                background: ex.color + "22",
+                background: ex.color + "33",
                 color: ex.color,
               }}
             >
@@ -566,7 +566,7 @@ function ExampleCards() {
               </li>
             ))}
           </ol>
-          <p className="text-[11px] italic text-emerald-600 dark:text-emerald-400">
+          <p className="text-[11px] italic text-emerald-700 dark:text-emerald-400">
             {ex.savings}
           </p>
         </motion.div>
@@ -798,23 +798,29 @@ export default function AgenticWorkflowsTopic() {
           <TriggerActionDiagram />
 
           <p className="text-sm mt-4">
-            <strong>Ba loại khối</strong> cấu thành mọi workflow:
+            <strong>Bốn loại khối</strong> cấu thành mọi workflow (đúng theo
+            sơ đồ trên):
           </p>
           <ul className="list-disc list-inside space-y-1 text-sm pl-2">
             <li>
-              <strong>Trigger (kích hoạt):</strong> sự kiện bắt đầu workflow —
-              "có email mới", "đúng 7h sáng", "có đơn Shopee mới", "ai đó
-              submit form".
-            </li>
-            <li>
-              <strong>Action (hành động):</strong> việc gọi app khác làm thay
-              — "tạo bản ghi trong Sheets", "gửi Slack", "tạo thẻ Trello", "gửi
-              Zalo".
+              <strong>Trigger (kích hoạt):</strong> sự kiện bắt đầu workflow.
+              Ví dụ: "có email mới", "đúng 7h sáng", "có đơn Shopee mới", "ai
+              đó submit form".
             </li>
             <li>
               <strong>AI node (bước thông minh):</strong> khối gọi AI giữa
-              chừng — tóm tắt, phân loại, dịch, rút thông tin, sinh câu trả
+              chừng để tóm tắt, phân loại, dịch, rút thông tin, sinh câu trả
               lời.
+            </li>
+            <li>
+              <strong>Điều kiện (filter):</strong> bước "nếu... thì..." quyết
+              định luồng đi tiếp. Chỉ chạy bước sau khi điều kiện đúng (ví dụ:
+              chỉ gửi Slack cho sếp khi AI phân loại là 'khiếu nại').
+            </li>
+            <li>
+              <strong>Action (hành động):</strong> việc gọi app khác làm thay.
+              Ví dụ: "tạo bản ghi trong Sheets", "gửi Slack", "tạo thẻ Trello",
+              "gửi Zalo".
             </li>
           </ul>
 
