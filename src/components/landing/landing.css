@@ -1325,7 +1325,8 @@
   margin: 0 0 14px;
   font-weight: 500;
 }
-.ld-foot__cols a {
+.ld-foot__cols a,
+.ld-foot__cols button {
   display: block;
   font-size: 14px;
   color: var(--foreground);
@@ -1333,8 +1334,14 @@
   cursor: pointer;
   margin-bottom: 8px;
   transition: color 120ms ease;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  text-align: left;
 }
-.ld-foot__cols a:hover {
+.ld-foot__cols a:hover,
+.ld-foot__cols button:hover {
   color: var(--turquoise-ink, var(--accent));
 }
 .ld-foot__bot {

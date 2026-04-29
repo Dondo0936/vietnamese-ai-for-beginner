@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FeedbackLink from "@/components/feedback/FeedbackLink";
 
 /**
  * Site footer — paper-first, multi-column brand layout used on all
@@ -66,12 +67,10 @@ export default function Footer() {
                   label: "Đóng góp bài",
                   external: true,
                 },
-                {
-                  href: "https://github.com/Dondo0936/vietnamese-ai-for-beginner/issues",
-                  label: "Báo lỗi",
-                  external: true,
-                },
               ]}
+              extraSlot={
+                <FeedbackLink className="block mb-2 text-[14px] text-foreground no-underline hover:text-accent text-left" />
+              }
             />
             <FooterCol
               title="Giới thiệu"
@@ -99,9 +98,11 @@ export default function Footer() {
 function FooterCol({
   title,
   links,
+  extraSlot,
 }: {
   title: string;
   links: { href: string; label: string; external?: boolean }[];
+  extraSlot?: React.ReactNode;
 }) {
   return (
     <div>
@@ -129,6 +130,7 @@ function FooterCol({
           </Link>
         )
       )}
+      {extraSlot}
     </div>
   );
 }

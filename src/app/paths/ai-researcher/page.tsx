@@ -105,7 +105,7 @@ export default function AIResearcherPathPage() {
           },
           {
             q: "Lộ trình có dạy đọc paper không?",
-            a: "Có. Chương cuối tập trung vào scaling laws, alignment, và cách đọc các paper mới nhất trên arXiv một cách hệ thống.",
+            a: "Lộ trình chạm tới scaling laws, alignment, reasoning models, world models — đủ khung để đọc paper dễ hơn, nhưng không thay thế việc tự đọc arXiv. Hãy coi udemi là bản đồ, paper gốc vẫn là vùng đất.",
           },
           {
             q: "Có phải theo thứ tự không?",
@@ -113,7 +113,7 @@ export default function AIResearcherPathPage() {
           },
           {
             q: "Làm sao đóng góp vào lộ trình?",
-            a: "Repo mở trên GitHub. Mỗi bài có nút 'Đề xuất chỉnh sửa'. Pull request với trích dẫn paper được welcome.",
+            a: "Repo mở trên GitHub (Dondo0936/vietnamese-ai-for-beginner) — pull request với trích dẫn paper được welcome. Lỗi nội dung hoặc gợi ý nhỏ thì bấm nút 'Góp ý' (icon tin nhắn) ở navbar, gửi nhanh trong app.",
           },
         ],
       }}

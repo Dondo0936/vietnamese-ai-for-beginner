@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FeedbackLink from "@/components/feedback/FeedbackLink";
 
 /**
  * Landing footer — trimmed version of the design.
@@ -54,13 +55,8 @@ export function LandingFooter() {
             >
               Đóng góp bài
             </a>
-            <a
-              href="https://github.com/Dondo0936/vietnamese-ai-for-beginner/issues"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Báo lỗi
-            </a>
+            <FeedbackLink />
+
           </div>
           <div>
             <h5>Giới thiệu</h5>

@@ -1,11 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import AppShell from "@/components/layout/AppShell";
 import { useProgress } from "@/lib/progress-context";
+import { useAuth } from "@/lib/auth-context";
+import { createClient } from "@/lib/supabase";
 import { topicMap } from "@/topics/registry";
 import type { TopicMeta, Difficulty } from "@/lib/types";
+import CertPreview from "@/components/cert/CertPreview";
+import { formatHours } from "@/lib/certificates";
 import "./path-page.css";
 
 /* ─── Types ─── */
@@ -76,6 +81,33 @@ function LearningPathContent({
   extras,
 }: LearningPathPageProps) {
   const { readTopics, loading } = useProgress();
+  const { user, isAuthenticated } = useAuth();
+  const [existingCertId, setExistingCertId] = useState<string | null>(null);
+
+  // If the user is authenticated, look up an existing cert for this path so
+  // the preview can switch to "view" mode instead of "claim" mode.
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      setExistingCertId(null);
+      return;
+    }
+    const supabase = createClient();
+    if (!supabase) return;
+    let cancelled = false;
+    supabase
+      .from("certificates")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("path_id", pathId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (cancelled) return;
+        setExistingCertId((data?.id as string | undefined) ?? null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, user, pathId]);
 
   if (loading) {
     return (
@@ -372,6 +404,22 @@ function LearningPathContent({
                 </div>
               </div>
             )}
+
+            <CertPreview
+              pathId={pathId}
+              pathName={nameVi}
+              totalLessons={totalTopics}
+              hoursLabel={formatHours(totalTopics * 12 * 60)}
+              completedCount={readCount}
+              displayName={
+                (user?.user_metadata?.full_name as string | undefined) ??
+                (user?.user_metadata?.name as string | undefined) ??
+                null
+              }
+              pathComplete={readCount === totalTopics && totalTopics > 0}
+              alreadyClaimed={!!existingCertId}
+              certId={existingCertId ?? undefined}
+            />
           </aside>
         </div>
 

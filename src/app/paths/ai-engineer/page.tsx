@@ -131,7 +131,7 @@ export default function AIEngineerPathPage() {
           },
           {
             q: "Sau lộ trình này tôi xin việc được không?",
-            a: "Lộ trình trang bị nền tảng vững; ứng tuyển còn phụ thuộc portfolio + kinh nghiệm thực chiến. Capstone cuối lộ trình là một dự án end-to-end bạn có thể đưa vào CV.",
+            a: "Lộ trình trang bị nền tảng vững, nhưng ứng tuyển còn phụ thuộc portfolio + kinh nghiệm thực chiến — udemi không thay thế dự án thật của riêng bạn. Hoàn thành 100% sẽ mở chứng chỉ ký số (Ed25519, URL xác thực công khai, nút 'Add to LinkedIn' để đính lên hồ sơ).",
           },
         ],
       }}

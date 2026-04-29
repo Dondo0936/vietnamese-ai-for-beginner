@@ -95,7 +95,7 @@ export default function OfficePathPage() {
           },
           {
             q: "Chứng chỉ có dùng được trên LinkedIn/CV không?",
-            a: "Được. Chứng nhận là tự nguyện, tạo ra khi bạn hoàn thành 100%. Không thay thế chứng chỉ AWS/Google, nhưng tốt trên CV nội bộ.",
+            a: "Được. Hoàn thành 100% là mở khoá nút 'Nhận chứng chỉ'. Chứng chỉ ký số bằng Ed25519, có URL xác thực công khai và nút 'Add to LinkedIn' tự điền vào hồ sơ. Không thay thế chứng chỉ AWS/Google, nhưng cho thấy bạn nghiêm túc với chủ đề.",
           },
         ],
       }}
