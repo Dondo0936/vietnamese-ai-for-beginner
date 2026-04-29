@@ -10,7 +10,7 @@ export default function Beat({ step, children }: BeatProps) {
     <li className="flex gap-4">
       <span
         aria-hidden
-        className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary text-sm font-semibold"
+        className="flex-shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full bg-accent/10 text-accent text-sm font-semibold"
       >
         {step}
       </span>

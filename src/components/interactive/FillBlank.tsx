@@ -61,8 +61,8 @@ export default function FillBlank({ template, blanks }: FillBlankProps) {
     if (val === null) return `${base} border-border text-muted`;
     const correct = val === blank.correct;
     return correct
-      ? `${base} border-green-400 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`
-      : `${base} border-red-400 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
+      ? `${base} border-emerald-600 bg-emerald-100 text-emerald-900 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`
+      : `${base} border-red-500 bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
   }
 
   const parts = parseTemplate();

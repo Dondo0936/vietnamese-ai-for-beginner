@@ -609,7 +609,7 @@ export default function StyleTransferTopic() {
                     </button>
                     <button
                       onClick={resetSlider}
-                      className="px-3 py-1.5 rounded-md bg-primary/20 text-primary text-xs"
+                      className="px-3 py-1.5 rounded-md bg-accent/20 text-accent text-xs"
                     >
                       Reset
                     </button>

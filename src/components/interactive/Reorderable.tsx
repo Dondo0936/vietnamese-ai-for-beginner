@@ -75,8 +75,8 @@ export default function Reorderable({
       "flex items-center gap-3 px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors duration-150 cursor-grab active:cursor-grabbing select-none";
     if (!checked) return `${base} bg-card border-border text-foreground hover:bg-surface-hover`;
     if (isPositionCorrect(pos))
-      return `${base} bg-green-100 dark:bg-green-900/30 border-green-400 dark:border-green-700 text-green-800 dark:text-green-300`;
-    return `${base} bg-red-100 dark:bg-red-900/30 border-red-400 dark:border-red-700 text-red-800 dark:text-red-300`;
+      return `${base} bg-emerald-100 dark:bg-green-900/30 border-emerald-600 dark:border-green-700 text-emerald-900 dark:text-green-300`;
+    return `${base} bg-red-100 dark:bg-red-900/30 border-red-500 dark:border-red-700 text-red-900 dark:text-red-300`;
   }
 
   function handleCheck() {

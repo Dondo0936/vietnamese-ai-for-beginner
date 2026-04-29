@@ -37,10 +37,10 @@ export default function PredictionGate({
 
     // After reveal
     if (index === correct) {
-      return `${base} border-emerald-600 bg-emerald-50 text-foreground dark:bg-emerald-900/30 dark:text-emerald-100 dark:border-emerald-600`;
+      return `${base} border-emerald-600 bg-emerald-100 text-emerald-900 dark:bg-emerald-900/30 dark:text-emerald-100 dark:border-emerald-600`;
     }
     if (selected === index && index !== correct) {
-      return `${base} border-red-500 bg-red-50 text-foreground dark:bg-red-900/30 dark:text-red-100 dark:border-red-600`;
+      return `${base} border-red-500 bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-100 dark:border-red-600`;
     }
     return `${base} border-border bg-card text-muted opacity-60`;
   }
@@ -97,8 +97,8 @@ export default function PredictionGate({
             <div
               className={`rounded-xl border p-4 text-sm leading-relaxed ${
                 isCorrect
-                  ? "border-emerald-600 bg-emerald-50 text-foreground dark:border-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-100"
-                  : "border-amber-500 bg-amber-50 text-foreground dark:border-amber-600 dark:bg-amber-900/20 dark:text-amber-100"
+                  ? "border-emerald-600 bg-emerald-100 text-emerald-900 dark:border-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-100"
+                  : "border-amber-500 bg-amber-100 text-amber-900 dark:border-amber-600 dark:bg-amber-900/20 dark:text-amber-100"
               }`}
             >
               <span className="font-semibold">

@@ -754,7 +754,7 @@ export default function FlashAttentionTopic() {
                     onClick={() => setSeqChoice(b.seqLen as "2K" | "8K" | "32K" | "128K")}
                     className={`rounded-md border px-2 py-1 text-[11px] font-semibold transition-all ${
                       seqChoice === b.seqLen
-                        ? "border-primary bg-primary/15 text-primary"
+                        ? "border-accent bg-accent/15 text-accent"
                         : "border-border bg-card text-muted hover:bg-surface"
                     }`}
                   >

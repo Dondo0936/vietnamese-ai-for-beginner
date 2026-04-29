@@ -72,8 +72,8 @@ export default function MatchPairs({ pairs, instruction }: MatchPairsProps) {
       if (matchedRight === undefined) return `${base} border-border bg-card text-muted`;
       const correct = matchedRight === idx;
       return correct
-        ? `${base} border-green-400 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`
-        : `${base} border-red-400 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
+        ? `${base} border-emerald-600 bg-emerald-100 text-emerald-900 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`
+        : `${base} border-red-500 bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
     }
 
     if (matches[idx] !== undefined) {
@@ -99,8 +99,8 @@ export default function MatchPairs({ pairs, instruction }: MatchPairsProps) {
       if (leftIdx === undefined) return `${base} border-border bg-card text-muted`;
       const correct = Number(leftIdx) === originalIdx;
       return correct
-        ? `${base} border-green-400 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`
-        : `${base} border-red-400 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
+        ? `${base} border-emerald-600 bg-emerald-100 text-emerald-900 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`
+        : `${base} border-red-500 bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
     }
 
     if (alreadyUsed) {

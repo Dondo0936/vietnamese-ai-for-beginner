@@ -555,7 +555,7 @@ export default function QLoRATopic() {
                   onClick={() => setScaleIdx(i)}
                   className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                     scaleIdx === i
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-accent text-white"
                       : "bg-card border border-border text-muted hover:text-foreground"
                   }`}
                 >
@@ -728,7 +728,7 @@ export default function QLoRATopic() {
                 onClick={() => setUseDoubleQuant(!useDoubleQuant)}
                 className={`rounded-md px-3 py-1.5 text-xs font-semibold ${
                   useDoubleQuant
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-accent text-white"
                     : "bg-card border border-border text-muted"
                 }`}
               >

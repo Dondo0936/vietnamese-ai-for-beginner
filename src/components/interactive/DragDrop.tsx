@@ -134,8 +134,8 @@ export default function DragDrop({
       : "cursor-grab active:cursor-grabbing";
     if (!checked) return `${base} ${grab} bg-card text-foreground hover:bg-surface-hover`;
     if (isCorrect(itemId))
-      return `${base} ${grab} bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-400 dark:border-green-700`;
-    return `${base} ${grab} bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-400 dark:border-red-700`;
+      return `${base} ${grab} bg-emerald-100 dark:bg-green-900/30 text-emerald-900 dark:text-green-300 border-emerald-600 dark:border-green-700`;
+    return `${base} ${grab} bg-red-100 dark:bg-red-900/30 text-red-900 dark:text-red-300 border-red-500 dark:border-red-700`;
   }
 
   const draggingItem = draggingId

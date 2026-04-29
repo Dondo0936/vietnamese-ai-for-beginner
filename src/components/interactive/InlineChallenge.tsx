@@ -29,10 +29,10 @@ export default function InlineChallenge({
     }
 
     if (index === correct) {
-      return `${base} border-green-400 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`;
+      return `${base} border-emerald-600 bg-emerald-100 text-emerald-900 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`;
     }
     if (index === selected) {
-      return `${base} border-red-400 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
+      return `${base} border-red-500 bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
     }
     return `${base} border-border bg-card text-muted opacity-50`;
   }
@@ -76,8 +76,8 @@ export default function InlineChallenge({
             <div
               className={`rounded-xl border p-3 text-sm leading-relaxed mt-1 ${
                 selected === correct
-                  ? "border-green-300 bg-green-50 text-green-800 dark:border-green-700 dark:bg-green-900/20 dark:text-green-300"
-                  : "border-red-300 bg-red-50 text-red-800 dark:border-red-700 dark:bg-red-900/20 dark:text-red-300"
+                  ? "border-emerald-500 bg-emerald-100 text-emerald-900 dark:border-green-700 dark:bg-green-900/20 dark:text-green-300"
+                  : "border-red-400 bg-red-100 text-red-900 dark:border-red-700 dark:bg-red-900/20 dark:text-red-300"
               }`}
             >
               <span className="font-semibold">
