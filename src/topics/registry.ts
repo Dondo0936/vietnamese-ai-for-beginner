@@ -2271,7 +2271,7 @@ export const topicList: TopicMeta[] = [
     slug: "computer-use",
     title: "Computer Use",
     titleVi: "AI sử dụng máy tính",
-    description: "Khả năng AI Agent điều khiển giao diện người dùng — click, gõ phím, chụp ảnh màn hình",
+    description: "Khả năng AI Agent điều khiển giao diện người dùng. Click, gõ phím, chụp ảnh màn hình.",
     category: "emerging",
     tags: ["browser-use", "gui-agent", "automation"],
     difficulty: "advanced",
