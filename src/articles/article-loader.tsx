@@ -43,6 +43,9 @@ const articleComponents: Record<string, ComponentType> = {
   "claude-in-excel-how-it-works": dynamic(
     () => import("@/articles/claude-in-excel-how-it-works"),
   ),
+  "claude-controls-apps-adobe": dynamic(
+    () => import("@/articles/claude-controls-apps-adobe"),
+  ),
 };
 
 export function getArticleComponent(slug: string): ComponentType | undefined {

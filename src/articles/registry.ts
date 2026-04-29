@@ -7,6 +7,32 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "claude-controls-apps-adobe",
+    title:
+      "Claude điều khiển ứng dụng thế nào. Bộ Adobe Creative Cloud 2026 làm ví dụ.",
+    dek: "Bạn gõ một câu, Claude xoá price tag, đổi nền, xuất 80 ảnh sản phẩm. Ngày 28 tháng 4 năm 2026, Anthropic ship 9 connector cho công cụ sáng tạo, gồm Adobe for creativity với hơn 50 tool xuyên Photoshop, Premiere, Illustrator. Bài viết mổ xẻ ba cơ chế Claude dùng để điều khiển một desktop app: computer use (screenshot và toạ độ), MCP server (tool call có cấu trúc), UXP plugin (code chạy bên trong Photoshop). Khi nào dùng cái nào, mặt phẳng tấn công nào kèm theo, và đâu là cạm bẫy thực tế.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/claude-controls-apps-adobe",
+    },
+    date: "2026-04-29",
+    readingTime: "11 phút",
+    category: "tool",
+    tag: "giải thích",
+    lessonRefs: [
+      "computer-use",
+      "model-context-protocol",
+      "function-calling",
+      "agentic-workflows",
+      "prompt-injection-defense",
+    ],
+    relatedArticles: [
+      "claude-in-excel-how-it-works",
+      "claude-design-launch",
+    ],
+  },
+  {
     slug: "claude-in-excel-how-it-works",
     title:
       "Claude trong Excel hoạt động thế nào. Bên trong cách AI sửa bảng tính.",
