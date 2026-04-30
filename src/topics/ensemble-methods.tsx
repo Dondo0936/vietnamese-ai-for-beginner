@@ -980,9 +980,9 @@ print("Voting ensemble AUC:", vote.score(X_test, y_test))`}
                     <thead>
                       <tr className="border-b border-border text-left">
                         <th className="px-2 py-2 font-semibold text-muted">Tiêu chí</th>
-                        <th className="px-2 py-2 font-semibold text-green-400">Bagging</th>
-                        <th className="px-2 py-2 font-semibold text-orange-400">Boosting</th>
-                        <th className="px-2 py-2 font-semibold text-purple-400">Stacking</th>
+                        <th className="px-2 py-2 font-semibold text-green-700 dark:text-green-400">Bagging</th>
+                        <th className="px-2 py-2 font-semibold text-orange-700 dark:text-orange-400">Boosting</th>
+                        <th className="px-2 py-2 font-semibold text-purple-700 dark:text-purple-400">Stacking</th>
                       </tr>
                     </thead>
                     <tbody className="text-foreground/80">

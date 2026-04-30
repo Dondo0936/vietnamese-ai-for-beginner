@@ -732,7 +732,7 @@ export default function InferenceOptimizationTopic() {
                         <span className="text-xs font-bold text-white drop-shadow">
                           {s.throughput.toFixed(1)} req/s
                         </span>
-                        <span className="text-[10px] text-slate-300 font-mono">
+                        <span className="text-[10px] text-slate-700 dark:text-slate-300 font-mono">
                           {s.latency.toFixed(0)} ms/batch
                         </span>
                       </div>

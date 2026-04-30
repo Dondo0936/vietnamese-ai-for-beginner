@@ -58,7 +58,7 @@ const FORMATS: FormatSpec[] = [
     maxFinite: 3.402823e38,
     epsilon: 1.1920929e-7,
     color: "#3b82f6",
-    accent: "bg-blue-500/15 border-blue-500/40 text-blue-300",
+    accent: "bg-blue-500/15 border-blue-500/40 text-blue-800 dark:text-blue-300",
     description: "Chuẩn IEEE 754 single — dải rộng, độ phân giải cao, dùng cho master weights.",
     useCase: "Lưu master weights, tích luỹ gradient, reduce-sum trong distributed training.",
   },
@@ -74,7 +74,7 @@ const FORMATS: FormatSpec[] = [
     maxFinite: 65504,
     epsilon: 9.765625e-4,
     color: "#f59e0b",
-    accent: "bg-amber-500/15 border-amber-500/40 text-amber-300",
+    accent: "bg-amber-500/15 border-amber-500/40 text-amber-800 dark:text-amber-300",
     description: "IEEE 754 half — dải hẹp (±65504), dễ underflow gradient, cần loss scaling.",
     useCase: "Forward/backward trên Tensor Cores Volta/Turing/Ampere. Nhanh 2x vs FP32.",
   },
@@ -90,7 +90,7 @@ const FORMATS: FormatSpec[] = [
     maxFinite: 3.389531e38,
     epsilon: 7.8125e-3,
     color: "#a855f7",
-    accent: "bg-purple-500/15 border-purple-500/40 text-purple-300",
+    accent: "bg-purple-500/15 border-purple-500/40 text-purple-800 dark:text-purple-300",
     description: "Google Brain BF16 — 8 bit exponent như FP32 (dải rộng), 7 bit mantissa (độ phân giải thô hơn FP16).",
     useCase: "LLM training từ Ampere trở đi. Gần như không cần loss scaling.",
   },
@@ -106,7 +106,7 @@ const FORMATS: FormatSpec[] = [
     maxFinite: 448,
     epsilon: 0.125,
     color: "#22c55e",
-    accent: "bg-green-500/15 border-green-500/40 text-green-300",
+    accent: "bg-green-500/15 border-green-500/40 text-green-800 dark:text-green-300",
     description: "Hopper/H100 FP8 — 4 bit exponent, 3 bit mantissa. Dùng cho forward activation.",
     useCase: "Forward activations trong Transformer Engine. Nhanh ~2x so với BF16.",
   },
@@ -122,7 +122,7 @@ const FORMATS: FormatSpec[] = [
     maxFinite: 57344,
     epsilon: 0.25,
     color: "#06b6d4",
-    accent: "bg-cyan-500/15 border-cyan-500/40 text-cyan-300",
+    accent: "bg-cyan-500/15 border-cyan-500/40 text-cyan-800 dark:text-cyan-300",
     description: "Hopper FP8 E5M2 — 5 bit exponent (giống FP16), 2 bit mantissa. Dải rộng hơn E4M3.",
     useCase: "Backward gradients (cần dải rộng hơn để chứa gradient lớn và nhỏ).",
   },
@@ -138,7 +138,7 @@ const FORMATS: FormatSpec[] = [
     maxFinite: 127,
     epsilon: 1,
     color: "#ef4444",
-    accent: "bg-red-500/15 border-red-500/40 text-red-300",
+    accent: "bg-red-500/15 border-red-500/40 text-red-800 dark:text-red-300",
     description: "Số nguyên 8 bit có dấu, cần scale factor để biểu diễn số thực. Chủ yếu cho inference.",
     useCase: "Quantization inference, post-training INT8. Không dùng cho forward pass trong training thuần.",
   },
@@ -601,17 +601,17 @@ export default function MixedPrecisionTopic() {
 
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {enc.flagUnderflow && (
-                      <span className="rounded-full bg-amber-500/20 text-amber-300 text-[10px] px-2 py-0.5 border border-amber-500/40">
+                      <span className="rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[10px] px-2 py-0.5 border border-amber-500/40">
                         underflow → 0
                       </span>
                     )}
                     {enc.flagOverflow && (
-                      <span className="rounded-full bg-red-500/20 text-red-300 text-[10px] px-2 py-0.5 border border-red-500/40">
+                      <span className="rounded-full bg-red-500/20 text-red-800 dark:text-red-300 text-[10px] px-2 py-0.5 border border-red-500/40">
                         overflow → Inf
                       </span>
                     )}
                     {!enc.flagUnderflow && !enc.flagOverflow && (
-                      <span className="rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 border border-emerald-500/40">
+                      <span className="rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-[10px] px-2 py-0.5 border border-emerald-500/40">
                         biểu diễn được
                       </span>
                     )}
@@ -716,12 +716,12 @@ export default function MixedPrecisionTopic() {
                 <p className="font-bold text-foreground text-base">{GRADIENT_SAMPLES.length}</p>
               </div>
               <div className="rounded-md bg-background/60 border border-amber-500/40 p-2">
-                <p className="text-amber-300">Underflow trong FP16 thuần</p>
-                <p className="font-bold text-amber-300 text-base">{underflowCount}</p>
+                <p className="text-amber-800 dark:text-amber-300">Underflow trong FP16 thuần</p>
+                <p className="font-bold text-amber-800 dark:text-amber-300 text-base">{underflowCount}</p>
               </div>
               <div className="rounded-md bg-background/60 border border-emerald-500/40 p-2">
-                <p className="text-emerald-300">Được cứu bởi scale</p>
-                <p className="font-bold text-emerald-300 text-base">{rescuedCount}</p>
+                <p className="text-emerald-800 dark:text-emerald-300">Được cứu bởi scale</p>
+                <p className="font-bold text-emerald-800 dark:text-emerald-300 text-base">{rescuedCount}</p>
               </div>
             </div>
           </div>
@@ -758,34 +758,34 @@ export default function MixedPrecisionTopic() {
                       </td>
                       <td
                         className={`py-2 pr-3 text-right ${
-                          storedPureFp16 === 0 ? "text-red-400" : "text-foreground"
+                          storedPureFp16 === 0 ? "text-red-700 dark:text-red-400" : "text-foreground"
                         }`}
                       >
                         {storedPureFp16 === 0 ? "0 (lost)" : storedPureFp16.toExponential(2)}
                       </td>
                       <td
                         className={`py-2 pr-3 text-right ${
-                          storedScaled === 0 ? "text-red-400" : "text-emerald-400"
+                          storedScaled === 0 ? "text-red-700 dark:text-red-400" : "text-emerald-700 dark:text-emerald-400"
                         }`}
                       >
                         {storedScaled === 0 ? "0 (lost)" : storedScaled.toExponential(2)}
                       </td>
-                      <td className="py-2 pr-3 text-right text-purple-300">
+                      <td className="py-2 pr-3 text-right text-purple-800 dark:text-purple-300">
                         {row.bf16.stored.toExponential(2)}
                       </td>
                       <td className="py-2 text-center">
                         {storedPureFp16 === 0 && storedScaled !== 0 && (
-                          <span className="rounded-full bg-emerald-500/20 text-emerald-300 px-2 py-0.5 border border-emerald-500/40">
+                          <span className="rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 border border-emerald-500/40">
                             cứu
                           </span>
                         )}
                         {storedPureFp16 !== 0 && (
-                          <span className="rounded-full bg-blue-500/20 text-blue-300 px-2 py-0.5 border border-blue-500/40">
+                          <span className="rounded-full bg-blue-500/20 text-blue-800 dark:text-blue-300 px-2 py-0.5 border border-blue-500/40">
                             OK
                           </span>
                         )}
                         {storedPureFp16 === 0 && storedScaled === 0 && (
-                          <span className="rounded-full bg-red-500/20 text-red-300 px-2 py-0.5 border border-red-500/40">
+                          <span className="rounded-full bg-red-500/20 text-red-800 dark:text-red-300 px-2 py-0.5 border border-red-500/40">
                             cần S lớn hơn
                           </span>
                         )}

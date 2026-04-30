@@ -360,10 +360,10 @@ function MethodCompareTable() {
             <th className="text-left px-4 py-2 font-semibold text-foreground">
               Khía cạnh
             </th>
-            <th className="text-left px-4 py-2 font-semibold text-orange-300">
+            <th className="text-left px-4 py-2 font-semibold text-orange-800 dark:text-orange-300">
               RLHF
             </th>
-            <th className="text-left px-4 py-2 font-semibold text-emerald-300">
+            <th className="text-left px-4 py-2 font-semibold text-emerald-800 dark:text-emerald-300">
               Constitutional AI (RLAIF)
             </th>
           </tr>
@@ -528,8 +528,8 @@ export default function ConstitutionalAITopic() {
             <div className="space-y-3">
               {/* Bước A: Phản hồi gốc */}
               <div className="rounded-xl border-l-4 border-l-red-500 border-t border-b border-r border-border bg-red-500/5 px-4 py-3">
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-red-300 mb-1">
-                  <span className="inline-block w-5 h-5 rounded-full bg-red-500/30 text-red-200 text-center leading-5 text-[10px]">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-red-800 dark:text-red-300 mb-1">
+                  <span className="inline-block w-5 h-5 rounded-full bg-red-500/30 text-red-900 dark:text-red-200 text-center leading-5 text-[10px]">
                     A
                   </span>
                   Bước 1 — AI tạo phản hồi thô (harmful)
@@ -546,8 +546,8 @@ export default function ConstitutionalAITopic() {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-amber-300">
-                    <span className="inline-block w-5 h-5 rounded-full bg-amber-500/30 text-amber-200 text-center leading-5 text-[10px]">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-amber-800 dark:text-amber-300">
+                    <span className="inline-block w-5 h-5 rounded-full bg-amber-500/30 text-amber-900 dark:text-amber-200 text-center leading-5 text-[10px]">
                       B
                     </span>
                     Bước 2 — AI tự phê bình theo nguyên tắc
@@ -607,8 +607,8 @@ export default function ConstitutionalAITopic() {
                     : "border-l-muted/40"
                 }`}
               >
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-emerald-300 mb-1">
-                  <span className="inline-block w-5 h-5 rounded-full bg-emerald-500/30 text-emerald-200 text-center leading-5 text-[10px]">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-emerald-800 dark:text-emerald-300 mb-1">
+                  <span className="inline-block w-5 h-5 rounded-full bg-emerald-500/30 text-emerald-900 dark:text-emerald-200 text-center leading-5 text-[10px]">
                     C
                   </span>
                   Bước 3 — AI viết lại phản hồi đã sửa
@@ -635,8 +635,8 @@ export default function ConstitutionalAITopic() {
               animate={{ opacity: 1 }}
               className={`rounded-lg border px-4 py-2 text-sm ${
                 dropped.length === 0
-                  ? "border-red-500/40 bg-red-500/10 text-red-200"
-                  : "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
+                  ? "border-red-500/40 bg-red-500/10 text-red-900 dark:text-red-200"
+                  : "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200"
               }`}
             >
               {statusText}

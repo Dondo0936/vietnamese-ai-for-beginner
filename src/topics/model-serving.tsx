@@ -1006,21 +1006,21 @@ export default function ModelServingTopic() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="rounded-xl border border-border bg-card p-3 text-center">
                 <p className="text-[11px] text-muted">QPS thực đo</p>
-                <p className="text-lg font-bold text-blue-400">
+                <p className="text-lg font-bold text-blue-700 dark:text-blue-400">
                   {currentQps.toFixed(1)}
                 </p>
                 <p className="text-[10px] text-muted">req/s</p>
               </div>
               <div className="rounded-xl border border-border bg-card p-3 text-center">
                 <p className="text-[11px] text-muted">GPU util TB</p>
-                <p className="text-lg font-bold text-green-400">
+                <p className="text-lg font-bold text-green-700 dark:text-green-400">
                   {(avgGpuUtil * 100).toFixed(0)}%
                 </p>
                 <p className="text-[10px] text-muted">trên {replicas} replica</p>
               </div>
               <div className="rounded-xl border border-border bg-card p-3 text-center">
                 <p className="text-[11px] text-muted">Hàng chờ</p>
-                <p className="text-lg font-bold text-amber-400">
+                <p className="text-lg font-bold text-amber-700 dark:text-amber-400">
                   {totalInQueue}
                 </p>
                 <p className="text-[10px] text-muted">req chưa phục vụ</p>
@@ -1047,19 +1047,19 @@ export default function ModelServingTopic() {
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div>
                   <p className="text-[11px] text-muted">P50</p>
-                  <p className="text-lg font-bold text-green-400">
+                  <p className="text-lg font-bold text-green-700 dark:text-green-400">
                     {fmtMs(p50)}
                   </p>
                 </div>
                 <div>
                   <p className="text-[11px] text-muted">P95</p>
-                  <p className="text-lg font-bold text-amber-400">
+                  <p className="text-lg font-bold text-amber-700 dark:text-amber-400">
                     {fmtMs(p95)}
                   </p>
                 </div>
                 <div>
                   <p className="text-[11px] text-muted">P99</p>
-                  <p className="text-lg font-bold text-red-400">
+                  <p className="text-lg font-bold text-red-700 dark:text-red-400">
                     {fmtMs(p99)}
                   </p>
                 </div>

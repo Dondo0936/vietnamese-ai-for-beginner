@@ -537,7 +537,7 @@ export default function MultiAgentTopic() {
                 </div>
               )}
               {step.kind === "final" && (
-                <div className="rounded-md bg-green-500/10 border border-green-500/30 p-3 text-sm text-green-300">
+                <div className="rounded-md bg-green-500/10 border border-green-500/30 p-3 text-sm text-green-800 dark:text-green-300">
                   ✅ {step.text}
                 </div>
               )}
@@ -547,17 +547,17 @@ export default function MultiAgentTopic() {
             <div className="grid grid-cols-3 gap-3 text-center text-sm">
               <div className="rounded-lg bg-sky-500/10 border border-sky-500/30 p-3">
                 <div className="text-xs text-muted">Message</div>
-                <div className="text-lg font-bold text-sky-300">{stats.sends}</div>
+                <div className="text-lg font-bold text-sky-800 dark:text-sky-300">{stats.sends}</div>
               </div>
               <div className="rounded-lg bg-purple-500/10 border border-purple-500/30 p-3">
                 <div className="text-xs text-muted">Phase xử lý</div>
-                <div className="text-lg font-bold text-purple-300">
+                <div className="text-lg font-bold text-purple-800 dark:text-purple-300">
                   {stats.processes}
                 </div>
               </div>
               <div className="rounded-lg bg-green-500/10 border border-green-500/30 p-3">
                 <div className="text-xs text-muted">Hoàn tất</div>
-                <div className="text-lg font-bold text-green-300">
+                <div className="text-lg font-bold text-green-800 dark:text-green-300">
                   {stats.isFinal ? "Yes" : "—"}
                 </div>
               </div>

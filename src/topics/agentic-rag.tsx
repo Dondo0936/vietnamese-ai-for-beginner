@@ -295,11 +295,11 @@ const SCENARIOS: AgentScenario[] = [
 ];
 
 const PHASE_COLORS: Record<AgentStep["phase"], { bg: string; border: string; text: string; label: string }> = {
-  plan: { bg: "bg-purple-500/10", border: "border-purple-500/50", text: "text-purple-400", label: "PLAN" },
-  retrieve: { bg: "bg-amber-500/10", border: "border-amber-500/50", text: "text-amber-400", label: "RETRIEVE" },
-  evaluate: { bg: "bg-red-500/10", border: "border-red-500/50", text: "text-red-400", label: "EVALUATE" },
-  reretrieve: { bg: "bg-orange-500/10", border: "border-orange-500/50", text: "text-orange-400", label: "RE-RETRIEVE" },
-  answer: { bg: "bg-emerald-500/10", border: "border-emerald-500/50", text: "text-emerald-400", label: "ANSWER" },
+  plan: { bg: "bg-purple-500/10", border: "border-purple-500/50", text: "text-purple-700 dark:text-purple-400", label: "PLAN" },
+  retrieve: { bg: "bg-amber-500/10", border: "border-amber-500/50", text: "text-amber-700 dark:text-amber-400", label: "RETRIEVE" },
+  evaluate: { bg: "bg-red-500/10", border: "border-red-500/50", text: "text-red-700 dark:text-red-400", label: "EVALUATE" },
+  reretrieve: { bg: "bg-orange-500/10", border: "border-orange-500/50", text: "text-orange-700 dark:text-orange-400", label: "RE-RETRIEVE" },
+  answer: { bg: "bg-emerald-500/10", border: "border-emerald-500/50", text: "text-emerald-700 dark:text-emerald-400", label: "ANSWER" },
 };
 
 export default function AgenticRAGTopic() {
@@ -510,7 +510,7 @@ export default function AgenticRAGTopic() {
                     >
                       <span
                         className={`mb-1 block text-[10px] font-bold uppercase ${
-                          active ? "text-purple-400" : "text-muted"
+                          active ? "text-purple-700 dark:text-purple-400" : "text-muted"
                         }`}
                       >
                         {categoryLabel}
@@ -572,7 +572,7 @@ export default function AgenticRAGTopic() {
                   onClick={() => handleModeChange("naive")}
                   className={`flex-1 rounded-lg border px-4 py-2 text-sm font-semibold transition-colors ${
                     mode === "naive"
-                      ? "border-blue-500 bg-blue-500/20 text-blue-300"
+                      ? "border-blue-500 bg-blue-500/20 text-blue-800 dark:text-blue-300"
                       : "border-border bg-card text-muted hover:border-blue-500/50"
                   }`}
                 >
@@ -585,7 +585,7 @@ export default function AgenticRAGTopic() {
                   onClick={() => handleModeChange("agentic")}
                   className={`flex-1 rounded-lg border px-4 py-2 text-sm font-semibold transition-colors ${
                     mode === "agentic"
-                      ? "border-purple-500 bg-purple-500/20 text-purple-300"
+                      ? "border-purple-500 bg-purple-500/20 text-purple-800 dark:text-purple-300"
                       : "border-border bg-card text-muted hover:border-purple-500/50"
                   }`}
                 >
@@ -670,10 +670,10 @@ export default function AgenticRAGTopic() {
                               <span
                                 className={`font-mono ${
                                   step.score > 0.8
-                                    ? "text-emerald-400"
+                                    ? "text-emerald-700 dark:text-emerald-400"
                                     : step.score > 0.6
-                                    ? "text-amber-400"
-                                    : "text-red-400"
+                                    ? "text-amber-700 dark:text-amber-400"
+                                    : "text-red-700 dark:text-red-400"
                                 }`}
                               >
                                 relevance = {step.score.toFixed(2)}
@@ -691,7 +691,7 @@ export default function AgenticRAGTopic() {
             {/* Summary comparison */}
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
-                <p className="text-xs uppercase tracking-wide text-blue-400 font-bold">Naive RAG</p>
+                <p className="text-xs uppercase tracking-wide text-blue-700 dark:text-blue-400 font-bold">Naive RAG</p>
                 <p className="mt-1 text-sm text-foreground">{scenario.naiveSummary}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
                   <div className="rounded bg-background/50 p-2">
@@ -700,14 +700,14 @@ export default function AgenticRAGTopic() {
                   </div>
                   <div className="rounded bg-background/50 p-2">
                     <p className="text-muted">Relevance</p>
-                    <p className="font-mono text-lg text-blue-400">
+                    <p className="font-mono text-lg text-blue-700 dark:text-blue-400">
                       {(scenario.naiveRelevance * 100).toFixed(0)}%
                     </p>
                   </div>
                 </div>
               </div>
               <div className="rounded-xl border border-purple-500/30 bg-purple-500/5 p-4">
-                <p className="text-xs uppercase tracking-wide text-purple-400 font-bold">Agentic RAG</p>
+                <p className="text-xs uppercase tracking-wide text-purple-700 dark:text-purple-400 font-bold">Agentic RAG</p>
                 <p className="mt-1 text-sm text-foreground">{scenario.agenticSummary}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
                   <div className="rounded bg-background/50 p-2">
@@ -717,7 +717,7 @@ export default function AgenticRAGTopic() {
                       {stepCountDiff !== 0 && (
                         <span
                           className={`ml-1 text-xs ${
-                            stepCountDiff > 0 ? "text-purple-400" : "text-emerald-400"
+                            stepCountDiff > 0 ? "text-purple-700 dark:text-purple-400" : "text-emerald-700 dark:text-emerald-400"
                           }`}
                         >
                           ({stepCountDiff > 0 ? "+" : ""}
@@ -728,7 +728,7 @@ export default function AgenticRAGTopic() {
                   </div>
                   <div className="rounded bg-background/50 p-2">
                     <p className="text-muted">Relevance</p>
-                    <p className="font-mono text-lg text-emerald-400">
+                    <p className="font-mono text-lg text-emerald-700 dark:text-emerald-400">
                       {(scenario.agenticRelevance * 100).toFixed(0)}%
                       <span className="ml-1 text-xs text-emerald-500">
                         (+{relevanceDelta.toFixed(0)}pp)

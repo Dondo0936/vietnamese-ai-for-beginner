@@ -649,17 +649,17 @@ export default function AnchorBoxesTopic() {
             <div className="grid grid-cols-3 gap-3 text-center text-sm">
               <div className="rounded-lg bg-green-500/10 border border-green-500/30 p-3">
                 <div className="text-xs text-muted">Positive</div>
-                <div className="text-lg font-bold text-green-400">{positiveCount}</div>
+                <div className="text-lg font-bold text-green-700 dark:text-green-400">{positiveCount}</div>
                 <div className="text-[11px] text-muted">IoU ≥ 0.7</div>
               </div>
               <div className="rounded-lg bg-slate-500/10 border border-slate-500/30 p-3">
                 <div className="text-xs text-muted">Bỏ qua</div>
-                <div className="text-lg font-bold text-slate-300">{ignoreCount}</div>
+                <div className="text-lg font-bold text-slate-800 dark:text-slate-300">{ignoreCount}</div>
                 <div className="text-[11px] text-muted">0.3 ≤ IoU &lt; 0.7</div>
               </div>
               <div className="rounded-lg bg-red-500/10 border border-red-500/30 p-3">
                 <div className="text-xs text-muted">Negative</div>
-                <div className="text-lg font-bold text-red-400">{negativeCount}</div>
+                <div className="text-lg font-bold text-red-700 dark:text-red-400">{negativeCount}</div>
                 <div className="text-[11px] text-muted">IoU &lt; 0.3</div>
               </div>
             </div>

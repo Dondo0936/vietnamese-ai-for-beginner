@@ -642,7 +642,7 @@ export default function DPOTopic() {
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="rounded-lg bg-background/50 border border-red-500/30 p-3">
-                <p className="text-sm font-semibold text-red-400">RLHF</p>
+                <p className="text-sm font-semibold text-red-700 dark:text-red-400">RLHF</p>
                 <ul className="text-xs text-muted space-y-1 mt-1 list-disc list-inside">
                   <li>3 pha, 3 mô hình (SFT, RM, Policy)</li>
                   <li>Vòng lặp PPO — bất ổn, nhiều HP</li>
@@ -651,7 +651,7 @@ export default function DPOTopic() {
                 </ul>
               </div>
               <div className="rounded-lg bg-background/50 border border-green-500/30 p-3">
-                <p className="text-sm font-semibold text-green-400">DPO</p>
+                <p className="text-sm font-semibold text-green-700 dark:text-green-400">DPO</p>
                 <ul className="text-xs text-muted space-y-1 mt-1 list-disc list-inside">
                   <li>2 pha, 1 mô hình + 1 π_ref đóng băng</li>
                   <li>Ổn định như supervised learning</li>

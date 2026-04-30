@@ -268,18 +268,18 @@ function cellTone(norm: number): {
   if (norm >= 0.75)
     return {
       bg: "bg-emerald-500/15 border-emerald-500/40",
-      text: "text-emerald-400",
+      text: "text-emerald-700 dark:text-emerald-400",
       label: "good",
     };
   if (norm >= 0.55)
     return {
       bg: "bg-amber-500/15 border-amber-500/40",
-      text: "text-amber-400",
+      text: "text-amber-700 dark:text-amber-400",
       label: "mid",
     };
   return {
     bg: "bg-red-500/15 border-red-500/40",
-    text: "text-red-400",
+    text: "text-red-700 dark:text-red-400",
     label: "bad",
   };
 }
@@ -637,8 +637,8 @@ export default function LlmEvaluationTopic() {
           <span
             className={`text-[11px] font-mono ${
               Math.abs(weightSum - 1) < 0.02
-                ? "text-emerald-400"
-                : "text-amber-400"
+                ? "text-emerald-700 dark:text-emerald-400"
+                : "text-amber-700 dark:text-amber-400"
             }`}
           >
             Σw = {weightSum.toFixed(2)}
@@ -693,9 +693,9 @@ export default function LlmEvaluationTopic() {
           const pct = (composite / Math.max(maxComposite, 0.001)) * 100;
           const rankColor =
             idx === 0
-              ? "text-emerald-400"
+              ? "text-emerald-700 dark:text-emerald-400"
               : idx === 1
-                ? "text-amber-400"
+                ? "text-amber-700 dark:text-amber-400"
                 : "text-muted";
           return (
             <div key={model.id} className="flex items-center gap-3">

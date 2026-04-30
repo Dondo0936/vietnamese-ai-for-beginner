@@ -876,7 +876,7 @@ export default function GloveTopic() {
               </div>
 
               <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
-                <p className="text-xs font-bold text-blue-400 uppercase mb-2">
+                <p className="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase mb-2">
                   Word2Vec (cục bộ)
                 </p>
                 <p className="text-lg font-bold text-foreground">

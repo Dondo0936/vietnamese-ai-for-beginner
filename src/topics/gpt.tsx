@@ -486,7 +486,7 @@ export default function GptTopic() {
                           ? "bg-accent/20 text-accent border border-accent/40"
                           : isLatest
                           ? "bg-green-500 text-white"
-                          : "bg-green-500/20 text-green-400 border border-green-500/40"
+                          : "bg-green-500/20 text-green-700 dark:text-green-400 border border-green-500/40"
                       }`}
                     >
                       {tok}
@@ -756,7 +756,7 @@ export default function GptTopic() {
                       setTopK(1);
                       setTopP(1.0);
                     }}
-                    className="px-2 py-1 rounded bg-blue-500/20 text-blue-400 text-[11px] hover:bg-blue-500/30"
+                    className="px-2 py-1 rounded bg-blue-500/20 text-blue-700 dark:text-blue-400 text-[11px] hover:bg-blue-500/30"
                   >
                     Greedy (T=0.1, k=1)
                   </button>
@@ -767,7 +767,7 @@ export default function GptTopic() {
                       setTopK(10);
                       setTopP(0.9);
                     }}
-                    className="px-2 py-1 rounded bg-green-500/20 text-green-400 text-[11px] hover:bg-green-500/30"
+                    className="px-2 py-1 rounded bg-green-500/20 text-green-700 dark:text-green-400 text-[11px] hover:bg-green-500/30"
                   >
                     Cân bằng (T=0.7, p=0.9)
                   </button>

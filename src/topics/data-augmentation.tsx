@@ -720,9 +720,9 @@ export default function DataAugmentationTopic() {
             <p className="mb-4 text-sm text-muted leading-relaxed">
               So sánh hai lần huấn luyện cùng kiến trúc, cùng dataset, cùng optimizer --
               chỉ khác ở việc có hay không có augmentation. Chú ý: đường{" "}
-              <span className="text-rose-400 font-semibold">không aug</span>{" "}chạm đỉnh
+              <span className="text-rose-700 dark:text-rose-400 font-semibold">không aug</span>{" "}chạm đỉnh
               rồi <em>đi xuống</em>{" "}(overfit), còn đường{" "}
-              <span className="text-emerald-400 font-semibold">có aug</span>{" "}tiếp tục
+              <span className="text-emerald-700 dark:text-emerald-400 font-semibold">có aug</span>{" "}tiếp tục
               tăng và cao hơn ~15%.
             </p>
 
@@ -859,10 +859,10 @@ export default function DataAugmentationTopic() {
 
               <div className="mt-4 grid grid-cols-2 gap-3 max-w-md mx-auto">
                 <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-center">
-                  <p className="text-xs text-rose-300 font-semibold">
+                  <p className="text-xs text-rose-800 dark:text-rose-300 font-semibold">
                     Không augmentation
                   </p>
-                  <p className="text-2xl font-bold text-rose-400 mt-1">
+                  <p className="text-2xl font-bold text-rose-700 dark:text-rose-400 mt-1">
                     75.3%
                   </p>
                   <p className="text-[10px] text-muted mt-1">
@@ -870,10 +870,10 @@ export default function DataAugmentationTopic() {
                   </p>
                 </div>
                 <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3 text-center">
-                  <p className="text-xs text-emerald-300 font-semibold">
+                  <p className="text-xs text-emerald-800 dark:text-emerald-300 font-semibold">
                     Có augmentation
                   </p>
-                  <p className="text-2xl font-bold text-emerald-400 mt-1">
+                  <p className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-1">
                     91.25%
                   </p>
                   <p className="text-[10px] text-muted mt-1">

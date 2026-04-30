@@ -566,8 +566,8 @@ export default function AgentEvaluationTopic() {
             className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-mono ${
               done
                 ? t.success
-                  ? "bg-emerald-500/20 text-emerald-400"
-                  : "bg-red-500/20 text-red-400"
+                  ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
+                  : "bg-red-500/20 text-red-700 dark:text-red-400"
                 : "bg-background text-muted"
             }`}
           >
@@ -609,8 +609,8 @@ export default function AgentEvaluationTopic() {
           <span
             className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold ${
               activeResult.success
-                ? "bg-emerald-500/20 text-emerald-400"
-                : "bg-red-500/20 text-red-400"
+                ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
+                : "bg-red-500/20 text-red-700 dark:text-red-400"
             }`}
           >
             {activeResult.success ? "SUCCESS" : "FAILURE"}

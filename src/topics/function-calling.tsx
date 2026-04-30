@@ -493,7 +493,7 @@ export default function FunctionCallingTopic() {
                 <p className="text-xs font-semibold text-accent mb-1">
                   Hệ thống thực thi, trả kết quả (bước 4):
                 </p>
-                <pre className="text-xs font-mono text-blue-400 whitespace-pre-wrap">
+                <pre className="text-xs font-mono text-blue-700 dark:text-blue-400 whitespace-pre-wrap">
                   {tool.toolResultJson}
                 </pre>
               </div>

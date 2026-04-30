@@ -585,8 +585,8 @@ export default function AdversarialRobustnessTopic() {
                 transition={{ duration: 0.2 }}
                 className={`rounded-lg border px-4 py-3 text-sm ${
                   prediction.correct
-                    ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
-                    : "border-red-500/40 bg-red-500/10 text-red-200"
+                    ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200"
+                    : "border-red-500/40 bg-red-500/10 text-red-900 dark:text-red-200"
                 }`}
               >
                 {attackStatus}

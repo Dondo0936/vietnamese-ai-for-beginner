@@ -746,7 +746,7 @@ function StepTable({ steps }: StepTableProps) {
         <tbody>
           {recent.map((step, idx) => {
             const t = steps.length - recent.length + idx;
-            const sign = step.advantage >= 0 ? "text-emerald-400" : "text-red-400";
+            const sign = step.advantage >= 0 ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400";
             return (
               <tr key={t} className="border-b border-border/40">
                 <td className="py-1 pr-2 text-muted">{t}</td>

@@ -215,7 +215,7 @@ export default function MonitoringTopic() {
                 <p>Accuracy: <strong>{metrics[selectedWeek].accuracy.toFixed(1)}%</strong></p>
                 <p>Latency: <strong>{metrics[selectedWeek].latency.toFixed(0)}ms</strong></p>
                 <p>Drift Score: <strong>{metrics[selectedWeek].driftScore.toFixed(3)}</strong>
-                  {metrics[selectedWeek].driftScore > 0.3 && <span className="ml-2 text-red-400">Data drift detected!</span>}
+                  {metrics[selectedWeek].driftScore > 0.3 && <span className="ml-2 text-red-700 dark:text-red-400">Data drift detected!</span>}
                 </p>
               </div>
             )}

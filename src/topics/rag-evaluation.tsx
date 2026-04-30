@@ -501,9 +501,9 @@ function scoreColor(score: number): string {
   return "#ef4444";
 }
 function scoreTone(score: number): string {
-  if (score >= 80) return "text-emerald-400";
-  if (score >= 55) return "text-amber-400";
-  return "text-red-400";
+  if (score >= 80) return "text-emerald-700 dark:text-emerald-400";
+  if (score >= 55) return "text-amber-700 dark:text-amber-400";
+  return "text-red-700 dark:text-red-400";
 }
 
 export default function RagEvaluationTopic() {
@@ -777,7 +777,7 @@ export default function RagEvaluationTopic() {
         >
           <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
             <code className="font-mono text-[10px] text-muted">{d.source}</code>
-            <span className={`text-[9px] font-mono rounded px-1 py-0.5 ${d.relevant ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`}>
+            <span className={`text-[9px] font-mono rounded px-1 py-0.5 ${d.relevant ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400" : "bg-red-500/20 text-red-700 dark:text-red-400"}`}>
               {d.relevant ? "relevant" : "irrelevant"}
             </span>
           </div>
@@ -1130,17 +1130,17 @@ export default function RagEvaluationTopic() {
               </thead>
               <tbody className="divide-y divide-border">
                 <tr>
-                  <td className="px-3 py-2 text-emerald-400 font-mono">Context Rel</td>
+                  <td className="px-3 py-2 text-emerald-700 dark:text-emerald-400 font-mono">Context Rel</td>
                   <td className="px-3 py-2">Retrieval / chunking / embedding</td>
                   <td className="px-3 py-2">Reranker, embedding chuyên domain/ngôn ngữ, chunk size, hybrid BM25 + vector</td>
                 </tr>
                 <tr>
-                  <td className="px-3 py-2 text-red-400 font-mono">Faithfulness</td>
+                  <td className="px-3 py-2 text-red-700 dark:text-red-400 font-mono">Faithfulness</td>
                   <td className="px-3 py-2">Generation bịa (hallucination)</td>
                   <td className="px-3 py-2">Prompt chặt (&quot;only use CONTEXT&quot;), cite-required, đổi model — xem <TopicLink slug="hallucination">hallucination</TopicLink></td>
                 </tr>
                 <tr>
-                  <td className="px-3 py-2 text-purple-400 font-mono">Answer Rel</td>
+                  <td className="px-3 py-2 text-purple-700 dark:text-purple-400 font-mono">Answer Rel</td>
                   <td className="px-3 py-2">Prompt / intent parsing / model lan man</td>
                   <td className="px-3 py-2">Intent clarification, prompt buộc trả lời trực tiếp, post-filter độ dài</td>
                 </tr>
@@ -1342,9 +1342,9 @@ reporting:
           </p>
           <p><strong className="text-foreground">Tuần 1 — triad.</strong></p>
           <ul className="list-disc list-inside pl-2 space-y-1">
-            <li>Faithfulness: <span className="text-emerald-400 font-mono">94%</span> — LLM bám context tốt.</li>
-            <li>Context Relevance: <span className="text-amber-400 font-mono">71%</span> — nhiều doc lạ trôi vào top-k.</li>
-            <li>Answer Relevance: <span className="text-emerald-400 font-mono">88%</span> — đi vào trọng tâm.</li>
+            <li>Faithfulness: <span className="text-emerald-700 dark:text-emerald-400 font-mono">94%</span> — LLM bám context tốt.</li>
+            <li>Context Relevance: <span className="text-amber-700 dark:text-amber-400 font-mono">71%</span> — nhiều doc lạ trôi vào top-k.</li>
+            <li>Answer Relevance: <span className="text-emerald-700 dark:text-emerald-400 font-mono">88%</span> — đi vào trọng tâm.</li>
           </ul>
           <p>
             <strong className="text-foreground">Chẩn đoán.</strong> Context Rel yếu nhất → khâu retrieval bệnh. Hai giả thuyết: (1) embedding multilingual không đủ mạnh cho tiếng Việt chuyên ngành, (2) chunk 200 tokens cắt vụn ngữ cảnh — câu đầu ở chunk A, câu giải thích ở chunk B, retriever không lấy đủ.
@@ -1354,7 +1354,7 @@ reporting:
             <li>V1 (baseline): chunk 200, no rerank → CR 71%.</li>
             <li>V2: chunk 512, no rerank → CR 82%.</li>
             <li>V3: chunk 200 + Cohere Rerank v3 → CR 85%.</li>
-            <li>V4: <strong>chunk 512 + Cohere Rerank v3</strong> → CR <span className="text-emerald-400 font-mono">89%</span>, Faithfulness <span className="text-emerald-400 font-mono">96%</span>, Answer Rel <span className="text-emerald-400 font-mono">91%</span>.</li>
+            <li>V4: <strong>chunk 512 + Cohere Rerank v3</strong> → CR <span className="text-emerald-700 dark:text-emerald-400 font-mono">89%</span>, Faithfulness <span className="text-emerald-700 dark:text-emerald-400 font-mono">96%</span>, Answer Rel <span className="text-emerald-700 dark:text-emerald-400 font-mono">91%</span>.</li>
           </ul>
           <p>
             <strong className="text-foreground">Kết quả.</strong> Triển khai V4. Latency +180ms, $/query +0.0007 (chấp nhận được). CSAT học viên từ 4.1 → 4.6 sau 3 tuần.

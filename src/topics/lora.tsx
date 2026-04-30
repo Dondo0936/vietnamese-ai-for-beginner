@@ -761,25 +761,25 @@ export default function LoRATopic() {
           {/* Stats grid */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-4">
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-slate-300">
+              <p className="text-lg font-bold text-slate-800 dark:text-slate-300">
                 {formatCompact(stats.totalFull)}
               </p>
               <p className="text-xs text-muted">Tham số full FT</p>
             </div>
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-blue-400">
+              <p className="text-lg font-bold text-blue-700 dark:text-blue-400">
                 {formatCompact(stats.totalLora)}
               </p>
               <p className="text-xs text-muted">Tham số LoRA (A+B)</p>
             </div>
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-yellow-400">
+              <p className="text-lg font-bold text-yellow-700 dark:text-yellow-400">
                 {stats.ratio}%
               </p>
               <p className="text-xs text-muted">Tỷ lệ trainable</p>
             </div>
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-green-400">
+              <p className="text-lg font-bold text-green-700 dark:text-green-400">
                 {stats.saved}%
               </p>
               <p className="text-xs text-muted">Tiết kiệm</p>
@@ -801,19 +801,19 @@ export default function LoRATopic() {
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-base font-bold text-blue-400">
+                <p className="text-base font-bold text-blue-700 dark:text-blue-400">
                   {memoryEstimate.trainableMB.toFixed(1)} MB
                 </p>
                 <p className="text-xs text-muted">Adapter fp16</p>
               </div>
               <div className="text-center">
-                <p className="text-base font-bold text-purple-400">
+                <p className="text-base font-bold text-purple-700 dark:text-purple-400">
                   {memoryEstimate.optimizerMB.toFixed(1)} MB
                 </p>
                 <p className="text-xs text-muted">Optimizer Adam</p>
               </div>
               <div className="text-center">
-                <p className="text-base font-bold text-green-400">
+                <p className="text-base font-bold text-green-700 dark:text-green-400">
                   {memoryEstimate.totalGB.toFixed(2)} GB
                 </p>
                 <p className="text-xs text-muted">Tổng cộng</p>

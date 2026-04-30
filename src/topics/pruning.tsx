@@ -183,15 +183,15 @@ export default function PruningTopic() {
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-blue-400">{active.length}/{CONNECTIONS.length}</p>
+              <p className="text-lg font-bold text-blue-700 dark:text-blue-400">{active.length}/{CONNECTIONS.length}</p>
               <p className="text-xs text-muted">Kết nối còn lại</p>
             </div>
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-red-400">{prunedPercent}%</p>
+              <p className="text-lg font-bold text-red-700 dark:text-red-400">{prunedPercent}%</p>
               <p className="text-xs text-muted">Đã cắt tỉa</p>
             </div>
             <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
-              <p className="text-lg font-bold text-green-400">
+              <p className="text-lg font-bold text-green-700 dark:text-green-400">
                 {(100 - Number(prunedPercent) * 0.3).toFixed(0)}%
               </p>
               <p className="text-xs text-muted">Chất lượng ước tính</p>

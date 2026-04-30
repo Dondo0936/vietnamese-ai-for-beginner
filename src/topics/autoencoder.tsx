@@ -888,7 +888,7 @@ export default function AutoencoderTopic() {
               biểu diễn robust hơn.
             </p>
             <div className="mt-2 flex items-center justify-center gap-1 text-sm">
-              <span className="text-red-400">x̃</span>
+              <span className="text-red-700 dark:text-red-400">x̃</span>
               <span className="text-muted">→</span>
               <span className="text-amber-500 font-bold">z</span>
               <span className="text-muted">→</span>

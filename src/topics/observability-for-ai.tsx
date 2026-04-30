@@ -590,10 +590,10 @@ export default function ObservabilityForAiTopic() {
           <span
             className={`text-[10px] font-mono rounded-md px-1.5 py-0.5 ${
               r.status === "ok"
-                ? "bg-emerald-500/20 text-emerald-300"
+                ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300"
                 : r.status === "warn"
-                  ? "bg-amber-500/20 text-amber-300"
-                  : "bg-red-500/20 text-red-300"
+                  ? "bg-amber-500/20 text-amber-800 dark:text-amber-300"
+                  : "bg-red-500/20 text-red-800 dark:text-red-300"
             }`}
           >
             {r.status.toUpperCase()}
@@ -662,10 +662,10 @@ export default function ObservabilityForAiTopic() {
         </div>
         {r.errorNote && (
           <div className="mt-2 rounded-md border border-red-500/50 bg-red-500/10 p-2">
-            <p className="text-[10px] text-red-300 uppercase tracking-wide">
+            <p className="text-[10px] text-red-800 dark:text-red-300 uppercase tracking-wide">
               error
             </p>
-            <p className="text-[11px] text-red-200 mt-0.5 leading-relaxed">
+            <p className="text-[11px] text-red-900 dark:text-red-200 mt-0.5 leading-relaxed">
               {r.errorNote}
             </p>
           </div>
@@ -830,8 +830,8 @@ export default function ObservabilityForAiTopic() {
                   }`}>
                     <p className="text-[10px] text-muted uppercase tracking-wide">status</p>
                     <p className={`text-sm font-mono font-bold ${
-                      overallStatus === "ok" ? "text-emerald-300"
-                      : overallStatus === "warn" ? "text-amber-300" : "text-red-300"
+                      overallStatus === "ok" ? "text-emerald-800 dark:text-emerald-300"
+                      : overallStatus === "warn" ? "text-amber-800 dark:text-amber-300" : "text-red-800 dark:text-red-300"
                     }`}>
                       {overallStatus === "ok" ? "OK" : overallStatus === "warn" ? "DEGRADED" : "FAIL"}
                     </p>

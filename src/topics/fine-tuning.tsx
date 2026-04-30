@@ -963,10 +963,10 @@ export default function FineTuningTopic() {
               <p
                 className={`text-lg font-bold ${
                   Number(result.quality) > 85
-                    ? "text-green-400"
+                    ? "text-green-700 dark:text-green-400"
                     : Number(result.quality) > 70
-                      ? "text-yellow-400"
-                      : "text-red-400"
+                      ? "text-yellow-700 dark:text-yellow-400"
+                      : "text-red-700 dark:text-red-400"
                 }`}
               >
                 {result.quality}%
@@ -977,10 +977,10 @@ export default function FineTuningTopic() {
               <p
                 className={`text-lg font-bold ${
                   result.overfitRisk === "Thấp"
-                    ? "text-green-400"
+                    ? "text-green-700 dark:text-green-400"
                     : result.overfitRisk === "Trung bình"
-                      ? "text-yellow-400"
-                      : "text-red-400"
+                      ? "text-yellow-700 dark:text-yellow-400"
+                      : "text-red-700 dark:text-red-400"
                 }`}
               >
                 {result.overfitRisk}
@@ -991,10 +991,10 @@ export default function FineTuningTopic() {
               <p
                 className={`text-lg font-bold ${
                   result.forgettingRisk === "Thấp"
-                    ? "text-green-400"
+                    ? "text-green-700 dark:text-green-400"
                     : result.forgettingRisk === "Trung bình"
-                      ? "text-yellow-400"
-                      : "text-red-400"
+                      ? "text-yellow-700 dark:text-yellow-400"
+                      : "text-red-700 dark:text-red-400"
                 }`}
               >
                 {result.forgettingRisk}

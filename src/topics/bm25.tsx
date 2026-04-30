@@ -102,11 +102,11 @@ function tfidfTermScore(term: string, doc: Doc): { tf: number; idfValue: number;
 }
 
 const TERM_COLOR_PALETTE = [
-  "text-blue-400",
-  "text-purple-400",
-  "text-amber-400",
-  "text-emerald-400",
-  "text-pink-400",
+  "text-blue-700 dark:text-blue-400",
+  "text-purple-700 dark:text-purple-400",
+  "text-amber-700 dark:text-amber-400",
+  "text-emerald-700 dark:text-emerald-400",
+  "text-pink-700 dark:text-pink-400",
 ];
 
 export default function BM25Topic() {
@@ -339,7 +339,7 @@ export default function BM25Topic() {
                     onClick={() => handleQueryPreset(q)}
                     className={`rounded-full border px-2.5 py-1 text-[11px] transition-colors ${
                       q === query
-                        ? "border-blue-500 bg-blue-500/15 text-blue-300"
+                        ? "border-blue-500 bg-blue-500/15 text-blue-800 dark:text-blue-300"
                         : "border-border bg-card text-muted hover:border-blue-500/40"
                     }`}
                   >
@@ -372,7 +372,7 @@ export default function BM25Topic() {
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-lg border border-border bg-background/60 p-3">
                   <div className="flex items-baseline justify-between">
-                    <label className="text-sm font-semibold text-amber-400">
+                    <label className="text-sm font-semibold text-amber-700 dark:text-amber-400">
                       <LaTeX>{"k_1"}</LaTeX> = {k1.toFixed(2)}
                     </label>
                     <span className="text-[10px] text-muted">bão hoà TF (1.2–2.0)</span>
@@ -392,7 +392,7 @@ export default function BM25Topic() {
                 </div>
                 <div className="rounded-lg border border-border bg-background/60 p-3">
                   <div className="flex items-baseline justify-between">
-                    <label className="text-sm font-semibold text-emerald-400">
+                    <label className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
                       <LaTeX>{"b"}</LaTeX> = {b.toFixed(2)}
                     </label>
                     <span className="text-[10px] text-muted">length norm (0–1)</span>
@@ -458,7 +458,7 @@ export default function BM25Topic() {
                           </p>
                         </div>
                         <div className="w-32 shrink-0 text-right">
-                          <p className="font-mono text-lg font-bold text-blue-400">
+                          <p className="font-mono text-lg font-bold text-blue-700 dark:text-blue-400">
                             {bm25Total.toFixed(3)}
                           </p>
                           <p className="text-[10px] text-muted">BM25 score</p>
@@ -505,11 +505,11 @@ export default function BM25Topic() {
                                     <td className={`py-1 pr-2 font-mono ${termColorMap[row.term]}`}>
                                       {row.term}
                                     </td>
-                                    <td className="py-1 pr-2 font-mono text-amber-400">{row.tf}</td>
-                                    <td className="py-1 pr-2 font-mono text-purple-400">
+                                    <td className="py-1 pr-2 font-mono text-amber-700 dark:text-amber-400">{row.tf}</td>
+                                    <td className="py-1 pr-2 font-mono text-purple-700 dark:text-purple-400">
                                       {row.idfValue.toFixed(3)}
                                     </td>
-                                    <td className="py-1 pr-2 font-mono text-blue-400">
+                                    <td className="py-1 pr-2 font-mono text-blue-700 dark:text-blue-400">
                                       {row.contribution.toFixed(3)}
                                     </td>
                                   </tr>
@@ -521,7 +521,7 @@ export default function BM25Topic() {
                                 <td colSpan={3} className="py-1 pr-2 text-right text-muted">
                                   Tổng BM25:
                                 </td>
-                                <td className="py-1 pr-2 font-mono font-bold text-blue-400">
+                                <td className="py-1 pr-2 font-mono font-bold text-blue-700 dark:text-blue-400">
                                   {bm25Total.toFixed(3)}
                                 </td>
                               </tr>
@@ -542,7 +542,7 @@ export default function BM25Topic() {
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-3">
-                  <p className="text-xs font-bold uppercase text-blue-400">Xếp hạng BM25</p>
+                  <p className="text-xs font-bold uppercase text-blue-700 dark:text-blue-400">Xếp hạng BM25</p>
                   <ol className="mt-2 space-y-1.5">
                     {rankedByBm25.map((entry, idx) => (
                       <li
@@ -561,7 +561,7 @@ export default function BM25Topic() {
                             style={{ width: `${(entry.bm25Total / maxBm25) * 100}%` }}
                           />
                         </span>
-                        <span className="font-mono text-blue-400 w-14 text-right">
+                        <span className="font-mono text-blue-700 dark:text-blue-400 w-14 text-right">
                           {entry.bm25Total.toFixed(2)}
                         </span>
                       </li>
@@ -569,7 +569,7 @@ export default function BM25Topic() {
                   </ol>
                 </div>
                 <div className="rounded-xl border border-pink-500/30 bg-pink-500/5 p-3">
-                  <p className="text-xs font-bold uppercase text-pink-400">Xếp hạng TF-IDF</p>
+                  <p className="text-xs font-bold uppercase text-pink-700 dark:text-pink-400">Xếp hạng TF-IDF</p>
                   <ol className="mt-2 space-y-1.5">
                     {rankedByTfidf.map((entry, idx) => (
                       <li
@@ -588,7 +588,7 @@ export default function BM25Topic() {
                             style={{ width: `${(entry.tfidfTotal / maxTfidf) * 100}%` }}
                           />
                         </span>
-                        <span className="font-mono text-pink-400 w-14 text-right">
+                        <span className="font-mono text-pink-700 dark:text-pink-400 w-14 text-right">
                           {entry.tfidfTotal.toFixed(2)}
                         </span>
                       </li>

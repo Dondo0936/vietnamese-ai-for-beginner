@@ -418,7 +418,7 @@ export default function CanaryReleasesLLMTopic() {
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-[10px] font-mono rounded-md bg-red-500/20 text-red-300 px-2 py-0.5 border border-red-500/40"
+            className="text-[10px] font-mono rounded-md bg-red-500/20 text-red-800 dark:text-red-300 px-2 py-0.5 border border-red-500/40"
           >
             ROLLBACK
           </motion.span>
@@ -569,8 +569,8 @@ export default function CanaryReleasesLLMTopic() {
           <span
             className={`text-[9px] font-mono rounded px-1.5 py-0.5 ${
               allPass
-                ? "bg-emerald-500/20 text-emerald-300"
-                : "bg-red-500/20 text-red-300"
+                ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300"
+                : "bg-red-500/20 text-red-800 dark:text-red-300"
             }`}
           >
             {allPass ? "healthy" : "breach"}
@@ -644,8 +644,8 @@ export default function CanaryReleasesLLMTopic() {
         <span
           className={`text-[9px] font-mono rounded px-1.5 py-0.5 ${
             allPass
-              ? "bg-emerald-500/20 text-emerald-300"
-              : "bg-red-500/20 text-red-300"
+              ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300"
+              : "bg-red-500/20 text-red-800 dark:text-red-300"
           }`}
         >
           {allPass ? "ALL PASS" : "BREACH"}
@@ -666,7 +666,7 @@ export default function CanaryReleasesLLMTopic() {
             <div className="flex items-start gap-2">
               <span
                 className={`mt-0.5 text-[11px] font-mono ${
-                  g.pass ? "text-emerald-400" : "text-red-400"
+                  g.pass ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"
                 }`}
               >
                 {g.pass ? "✓" : "✗"}
@@ -738,7 +738,7 @@ export default function CanaryReleasesLLMTopic() {
           onClick={() => triggerInject("latency")}
           className={`text-[11px] rounded-md border px-2 py-1.5 transition ${
             injection === "latency"
-              ? "border-red-500/60 bg-red-500/10 text-red-200"
+              ? "border-red-500/60 bg-red-500/10 text-red-900 dark:text-red-200"
               : "border-border bg-background text-muted hover:text-foreground"
           }`}
         >
@@ -749,7 +749,7 @@ export default function CanaryReleasesLLMTopic() {
           onClick={() => triggerInject("halluc")}
           className={`text-[11px] rounded-md border px-2 py-1.5 transition ${
             injection === "halluc"
-              ? "border-red-500/60 bg-red-500/10 text-red-200"
+              ? "border-red-500/60 bg-red-500/10 text-red-900 dark:text-red-200"
               : "border-border bg-background text-muted hover:text-foreground"
           }`}
         >
@@ -760,7 +760,7 @@ export default function CanaryReleasesLLMTopic() {
           onClick={() => triggerInject("cost")}
           className={`text-[11px] rounded-md border px-2 py-1.5 transition ${
             injection === "cost"
-              ? "border-red-500/60 bg-red-500/10 text-red-200"
+              ? "border-red-500/60 bg-red-500/10 text-red-900 dark:text-red-200"
               : "border-border bg-background text-muted hover:text-foreground"
           }`}
         >
@@ -816,10 +816,10 @@ export default function CanaryReleasesLLMTopic() {
                       exit={{ opacity: 0, y: -8 }}
                       className="rounded-lg border border-red-500/60 bg-red-500/10 p-3 text-center"
                     >
-                      <p className="text-sm font-bold text-red-300">
+                      <p className="text-sm font-bold text-red-800 dark:text-red-300">
                         AUTO-ROLLBACK TRIGGERED
                       </p>
-                      <p className="text-[11px] text-red-200/80 mt-0.5">
+                      <p className="text-[11px] text-red-900/80 dark:text-red-200/80 mt-0.5">
                         Một guardrail SLO bị vi phạm — traffic weight về
                         0%, feature flag tắt candidate, trang on-call.
                       </p>
@@ -1386,17 +1386,17 @@ spec:
               <ul className="list-disc list-inside pl-2 space-y-1">
                 <li>
                   Faithfulness (LLM-as-judge đối chiếu với catalog):{" "}
-                  <strong className="text-emerald-400">+6pp</strong>{" "}
+                  <strong className="text-emerald-700 dark:text-emerald-400">+6pp</strong>{" "}
                   (76% → 82%).
                 </li>
                 <li>
                   p95 latency:{" "}
-                  <strong className="text-amber-400">+1.1s</strong>{" "}
+                  <strong className="text-amber-700 dark:text-amber-400">+1.1s</strong>{" "}
                   (0.8s → 1.9s).
                 </li>
                 <li>
                   Cost/request:{" "}
-                  <strong className="text-red-400">×3.2</strong>{" "}
+                  <strong className="text-red-700 dark:text-red-400">×3.2</strong>{" "}
                   ($0.0025 → $0.008).
                 </li>
                 <li>
