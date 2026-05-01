@@ -7,6 +7,33 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "turboquant-kv-cache-compression",
+    title:
+      "TurboQuant. Nén KV cache xuống 3 bit mà accuracy không đổi.",
+    dek: "Hỏi một câu vào model đang giữ 200K token context, GPU nuốt vài chục GB chỉ để nhớ KV. TurboQuant của Google Research xoay vector trước khi quantize, nén key và value xuống 3 bit, giảm 6 lần memory, chạy nhanh hơn tới 8 lần trên H100. Không cần fine-tune, không cần calibration, accuracy trên LongBench gần như không sứt mẻ. Bài viết mổ xẻ tại sao quantize thẳng KV cache hỏng, phép quay Hadamard biến đường cong outlier thành phân phối beta thế nào, và lớp Quantized Johnson-Lindenstrauss khử nốt bias còn lại.",
+    source: {
+      name: "arXiv · 2504.19874",
+      host: "arxiv.org",
+      url: "https://arxiv.org/abs/2504.19874",
+    },
+    date: "2026-05-01",
+    readingTime: "9 phút",
+    category: "paper",
+    tag: "hot",
+    lessonRefs: [
+      "kv-cache",
+      "quantization",
+      "inference-optimization",
+      "long-context",
+    ],
+    relatedArticles: [
+      "mixture-of-depths",
+      "response-streaming",
+    ],
+    heroViz: "kv-rotation",
+    isLead: true,
+  },
+  {
     slug: "claude-controls-apps-adobe",
     title:
       "Claude điều khiển ứng dụng thế nào. Bộ Adobe Creative Cloud 2026 làm ví dụ.",

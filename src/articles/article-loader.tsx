@@ -11,6 +11,9 @@ import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 
 const articleComponents: Record<string, ComponentType> = {
+  "turboquant-kv-cache-compression": dynamic(
+    () => import("@/articles/turboquant-kv-cache-compression"),
+  ),
   "claude-design-launch": dynamic(
     () => import("@/articles/claude-design-launch"),
   ),
