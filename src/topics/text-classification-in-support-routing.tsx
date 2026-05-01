@@ -727,7 +727,7 @@ function LabelCard({
   return (
     <div
       className="rounded-lg border p-2.5"
-      style={{ borderColor: color + "40", backgroundColor: color + "10" }}
+      style={{ borderColor: color + "40", backgroundColor: color + "1a" }}
     >
       <div className="flex items-center gap-1.5 mb-0.5">
         <Icon size={12} style={{ color }} />

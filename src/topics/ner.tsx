@@ -210,7 +210,7 @@ export default function NerTopic() {
                 {namedEntities.map((entity, i) => (
                   <div key={i}
                     className="rounded-lg border px-3 py-1.5 text-sm"
-                    style={{ borderColor: ENTITY_COLORS[entity.type] + "60", backgroundColor: ENTITY_COLORS[entity.type] + "10" }}>
+                    style={{ borderColor: ENTITY_COLORS[entity.type] + "60", backgroundColor: ENTITY_COLORS[entity.type] + "1a" }}>
                     <span className="font-semibold" style={{ color: ENTITY_COLORS[entity.type] }}>{entity.text}</span>
                     <span className="text-xs text-muted ml-1">({ENTITY_LABELS[entity.type]})</span>
                   </div>

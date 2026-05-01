@@ -527,7 +527,7 @@ export default function ConstitutionalAITopic() {
             {/* Ba bước: phản hồi gốc → critique → revision */}
             <div className="space-y-3">
               {/* Bước A: Phản hồi gốc */}
-              <div className="rounded-xl border-l-4 border-l-red-500 border-t border-b border-r border-border bg-red-500/5 px-4 py-3">
+              <div className="rounded-xl border-l-4 border-l-red-500 border-t border-b border-r border-border bg-red-500/10 px-4 py-3">
                 <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-red-800 dark:text-red-300 mb-1">
                   <span className="inline-block w-5 h-5 rounded-full bg-red-500/30 text-red-900 dark:text-red-200 text-center leading-5 text-[10px]">
                     A
@@ -539,7 +539,7 @@ export default function ConstitutionalAITopic() {
 
               {/* Bước B: Critique */}
               <div
-                className={`rounded-xl border-l-4 border-t border-b border-r border-border bg-amber-500/5 px-4 py-3 transition-all ${
+                className={`rounded-xl border-l-4 border-t border-b border-r border-border bg-amber-500/10 px-4 py-3 transition-all ${
                   dropped.length > 0
                     ? "border-l-amber-500"
                     : "border-l-muted/40"
@@ -601,7 +601,7 @@ export default function ConstitutionalAITopic() {
 
               {/* Bước C: Revision */}
               <div
-                className={`rounded-xl border-l-4 border-t border-b border-r border-border bg-emerald-500/5 px-4 py-3 ${
+                className={`rounded-xl border-l-4 border-t border-b border-r border-border bg-emerald-500/10 px-4 py-3 ${
                   dropped.length > 0
                     ? "border-l-emerald-500"
                     : "border-l-muted/40"

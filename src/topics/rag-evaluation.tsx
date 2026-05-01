@@ -773,7 +773,7 @@ export default function RagEvaluationTopic() {
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.06, duration: 0.25 }}
-          className={`rounded-lg border p-2.5 text-[11px] leading-relaxed ${d.relevant ? "border-emerald-500/40 bg-emerald-500/5" : "border-red-500/40 bg-red-500/5"}`}
+          className={`rounded-lg border p-2.5 text-[11px] leading-relaxed ${d.relevant ? "border-emerald-500/40 bg-emerald-500/10" : "border-red-500/40 bg-red-500/10"}`}
         >
           <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
             <code className="font-mono text-[10px] text-muted">{d.source}</code>

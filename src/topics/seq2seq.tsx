@@ -250,7 +250,7 @@ export default function Seq2SeqTopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Vấn đề Bottleneck">
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4 space-y-2">
+            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4 space-y-2">
               <p className="text-xs font-semibold text-green-500 uppercase">Câu ngắn (5 từ)</p>
               <div className="flex gap-1 flex-wrap">
                 {["Tôi", "yêu", "Việt", "Nam", "."].map((w, i) => (
@@ -265,7 +265,7 @@ export default function Seq2SeqTopic() {
               </div>
               <p className="text-xs text-green-500 text-center">Vector đủ chỗ chứa!</p>
             </div>
-            <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4 space-y-2">
+            <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 space-y-2">
               <p className="text-xs font-semibold text-red-500 uppercase">Câu dài (50 từ)</p>
               <div className="flex gap-1 flex-wrap">
                 {Array.from({ length: 12 }).map((_, i) => (

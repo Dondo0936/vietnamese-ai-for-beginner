@@ -939,7 +939,7 @@ export default function EndToEndMlProjectTopic() {
          DEEPEN — Case study Shopee walkthrough
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={4} totalSteps={8} label="Case study Shopee">
-        <div className="mb-4 rounded-2xl border-2 border-orange-500/40 bg-orange-500/5 p-5">
+        <div className="mb-4 rounded-2xl border-2 border-orange-500/40 bg-orange-500/10 p-5">
           <div className="flex items-start gap-3">
             <div className="shrink-0 rounded-xl bg-orange-500/15 p-3">
               <ShoppingBag className="h-6 w-6 text-orange-500" />

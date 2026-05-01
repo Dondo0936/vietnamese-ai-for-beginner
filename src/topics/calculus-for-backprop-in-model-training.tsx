@@ -1232,7 +1232,7 @@ function TrainingLossChart({
       <div
         className="rounded-lg border p-3 flex items-start gap-3"
         style={{
-          backgroundColor: diagnosis.accent + "12",
+          backgroundColor: diagnosis.accent + "1a",
           borderColor: diagnosis.accent + "55",
         }}
       >

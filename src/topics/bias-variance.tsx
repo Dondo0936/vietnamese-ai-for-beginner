@@ -761,7 +761,7 @@ export default function BiasVarianceTopic() {
             className="rounded-xl border p-4 mt-3"
             style={{
               borderLeft: `4px solid ${activeCase.color}`,
-              backgroundColor: activeCase.color + "12",
+              backgroundColor: activeCase.color + "1a",
             }}
           >
             <div className="text-sm font-semibold text-foreground mb-1">

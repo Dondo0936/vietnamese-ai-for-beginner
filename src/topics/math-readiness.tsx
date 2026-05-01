@@ -379,7 +379,7 @@ function StarDetail({ star }: { star: StarInfo }) {
       className="rounded-xl border-2 p-5 space-y-4"
       style={{
         borderColor: star.color + "66",
-        backgroundColor: star.color + "0d",
+        backgroundColor: star.color + "1a",
       }}
     >
       <div className="flex items-center gap-3">

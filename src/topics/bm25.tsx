@@ -541,7 +541,7 @@ export default function BM25Topic() {
                 4. So sánh với TF-IDF (không có bão hoà, không có length norm)
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-3">
+                <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-3">
                   <p className="text-xs font-bold uppercase text-blue-700 dark:text-blue-400">Xếp hạng BM25</p>
                   <ol className="mt-2 space-y-1.5">
                     {rankedByBm25.map((entry, idx) => (
@@ -568,7 +568,7 @@ export default function BM25Topic() {
                     ))}
                   </ol>
                 </div>
-                <div className="rounded-xl border border-pink-500/30 bg-pink-500/5 p-3">
+                <div className="rounded-xl border border-pink-500/30 bg-pink-500/10 p-3">
                   <p className="text-xs font-bold uppercase text-pink-700 dark:text-pink-400">Xếp hạng TF-IDF</p>
                   <ol className="mt-2 space-y-1.5">
                     {rankedByTfidf.map((entry, idx) => (

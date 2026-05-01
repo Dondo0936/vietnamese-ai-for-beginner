@@ -450,7 +450,7 @@ export default function ReasoningModelsTopic() {
 
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               {/* Standard LLM */}
-              <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-4">
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4">
                 <div className="mb-2 flex items-center justify-between">
                   <p className="text-sm font-semibold text-red-300">
                     LLM thường (GPT-4o)
@@ -466,7 +466,7 @@ export default function ReasoningModelsTopic() {
               </div>
 
               {/* Reasoning Model */}
-              <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-4">
+              <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-4">
                 <div className="mb-2 flex items-center justify-between">
                   <p className="text-sm font-semibold text-green-300">
                     Reasoning model (o1 / R1)

@@ -696,7 +696,7 @@ export default function DPOTopic() {
                 <p className="text-sm text-foreground mt-1">{pair.prompt}</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="rounded-md border border-green-500/40 bg-green-500/5 p-3">
+                <div className="rounded-md border border-green-500/40 bg-green-500/10 p-3">
                   <p className="text-xs font-semibold text-green-500 mb-1">
                     y_chosen (được ưa hơn)
                   </p>
@@ -712,7 +712,7 @@ export default function DPOTopic() {
                     </p>
                   </div>
                 </div>
-                <div className="rounded-md border border-red-500/40 bg-red-500/5 p-3">
+                <div className="rounded-md border border-red-500/40 bg-red-500/10 p-3">
                   <p className="text-xs font-semibold text-red-500 mb-1">
                     y_rejected (bị loại)
                   </p>

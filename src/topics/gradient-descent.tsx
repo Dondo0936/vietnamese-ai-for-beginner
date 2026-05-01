@@ -1109,7 +1109,7 @@ function ThreeOptimComparison({
               className="rounded-lg border p-2"
               style={{
                 borderColor: OPTIM_META[kind].tint + "55",
-                backgroundColor: OPTIM_META[kind].tint + "10",
+                backgroundColor: OPTIM_META[kind].tint + "1a",
               }}
             >
               <div className="flex items-center gap-1.5 mb-1">

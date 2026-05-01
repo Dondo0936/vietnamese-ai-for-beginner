@@ -154,7 +154,7 @@ export default function Word2VecTopic() {
 
             {/* Skip-gram vs CBOW */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4 space-y-2">
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 space-y-2">
                 <p className="text-xs font-semibold text-red-500 uppercase tracking-wide">Skip-gram</p>
                 <p className="text-sm text-foreground">
                   Cho <strong className="text-red-500">{SENTENCE[centerIdx]}</strong> → dự đoán:{" "}
@@ -167,7 +167,7 @@ export default function Word2VecTopic() {
                 </p>
                 <p className="text-xs text-muted">Từ trung tâm → dự đoán ngữ cảnh</p>
               </div>
-              <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4 space-y-2">
+              <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 space-y-2">
                 <p className="text-xs font-semibold text-blue-500 uppercase tracking-wide">CBOW</p>
                 <p className="text-sm text-foreground">
                   Cho{" "}

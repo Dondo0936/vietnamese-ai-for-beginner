@@ -1237,7 +1237,7 @@ class GradientBoostingFromScratch:
                 className="rounded-xl border p-4 text-sm"
                 style={{
                   borderColor: selectedLib.color + "55",
-                  backgroundColor: selectedLib.color + "0f",
+                  backgroundColor: selectedLib.color + "1a",
                 }}
               >
                 <p

@@ -858,7 +858,7 @@ export default function DataAugmentationTopic() {
               </svg>
 
               <div className="mt-4 grid grid-cols-2 gap-3 max-w-md mx-auto">
-                <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-center">
+                <div className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-center">
                   <p className="text-xs text-rose-800 dark:text-rose-300 font-semibold">
                     Không augmentation
                   </p>
@@ -869,7 +869,7 @@ export default function DataAugmentationTopic() {
                     sau 30 epoch (overfit)
                   </p>
                 </div>
-                <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3 text-center">
+                <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-center">
                   <p className="text-xs text-emerald-800 dark:text-emerald-300 font-semibold">
                     Có augmentation
                   </p>

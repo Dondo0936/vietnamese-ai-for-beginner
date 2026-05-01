@@ -475,7 +475,7 @@ export default function ConvolutionTopic() {
 
             {/* Kernel 3×3 + result */}
             <div className="flex flex-col items-center gap-2">
-              <div className="rounded-xl border border-amber-500/60 bg-amber-500/5 p-3">
+              <div className="rounded-xl border border-amber-500/60 bg-amber-500/10 p-3">
                 <div className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 text-center mb-2">
                   Kernel {kernel.name}
                 </div>

@@ -544,7 +544,7 @@ export default function NaiveBayesInEmailClassification() {
             className="flex items-center gap-2 rounded-lg border-2 p-3"
             style={{
               borderColor: predictionColor,
-              backgroundColor: predictionColor + "10",
+              backgroundColor: predictionColor + "1a",
             }}
           >
             {result.prediction === "SPAM" ? (

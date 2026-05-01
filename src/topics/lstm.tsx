@@ -918,7 +918,7 @@ export default function LstmTopic() {
 
           <motion.div
             key={sentStep}
-            className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4"
+            className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4"
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
           >

@@ -272,7 +272,7 @@ function KaggleScoreboard() {
               className="rounded-xl border-2 p-3 space-y-2"
               style={{
                 borderColor: s.color,
-                backgroundColor: s.color + "10",
+                backgroundColor: s.color + "1a",
               }}
             >
               <div className="flex items-center justify-between">

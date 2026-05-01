@@ -317,7 +317,7 @@ export default function TextClassificationTopic() {
                   className="rounded-lg border p-3 text-center"
                   style={{
                     borderColor: c.color + "40",
-                    backgroundColor: c.color + "10",
+                    backgroundColor: c.color + "1a",
                   }}
                 >
                   <c.icon
@@ -380,7 +380,7 @@ export default function TextClassificationTopic() {
                 className="rounded-xl border-2 p-4 flex items-center justify-between"
                 style={{
                   borderColor: topCategory.color + "60",
-                  backgroundColor: topCategory.color + "10",
+                  backgroundColor: topCategory.color + "1a",
                 }}
               >
                 <div className="flex items-center gap-3">

@@ -273,21 +273,21 @@ export default function PoolingTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Các loại Pooling">
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
                 <h4 className="text-sm font-semibold text-amber-500 mb-2">Max Pooling</h4>
                 <p className="text-xs text-muted">Lấy giá trị lớn nhất. Phổ biến nhất trong CNN phân loại.</p>
                 <div className="mt-2 text-center">
                   <span className="text-2xl font-bold text-amber-500">max()</span>
                 </div>
               </div>
-              <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-4">
+              <div className="rounded-xl border border-violet-500/30 bg-violet-500/10 p-4">
                 <h4 className="text-sm font-semibold text-violet-500 mb-2">Average Pooling</h4>
                 <p className="text-xs text-muted">Lấy trung bình. Giữ thông tin tổng quát hơn.</p>
                 <div className="mt-2 text-center">
                   <span className="text-2xl font-bold text-violet-500">avg()</span>
                 </div>
               </div>
-              <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4">
+              <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4">
                 <h4 className="text-sm font-semibold text-green-500 mb-2">Global Avg Pooling</h4>
                 <p className="text-xs text-muted">Lấy TB toàn bộ feature map → 1 số/channel. Thay FC layer.</p>
                 <div className="mt-2 text-center">

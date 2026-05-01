@@ -546,7 +546,7 @@ export default function PromptInjectionDefenseTopic() {
           on
             ? activeInCurrent
               ? "border-red-500 bg-red-500/10 shadow-md"
-              : "border-emerald-500/60 bg-emerald-500/5"
+              : "border-emerald-500/60 bg-emerald-500/10"
             : "border-border bg-card hover:border-accent/60"
         }`}
         aria-pressed={on}
@@ -643,7 +643,7 @@ export default function PromptInjectionDefenseTopic() {
                   blocked
                     ? "border-red-500 bg-red-500/10"
                     : on
-                      ? "border-emerald-500/50 bg-emerald-500/5"
+                      ? "border-emerald-500/50 bg-emerald-500/10"
                       : "border-border bg-background/40"
                 }`}
               >
@@ -765,8 +765,8 @@ export default function PromptInjectionDefenseTopic() {
                 key={d.id}
                 className={`flex items-center gap-1.5 rounded px-1.5 py-1 border ${
                   d.blocked
-                    ? "border-emerald-500/30 bg-emerald-500/5"
-                    : "border-red-500/30 bg-red-500/5"
+                    ? "border-emerald-500/30 bg-emerald-500/10"
+                    : "border-red-500/30 bg-red-500/10"
                 }`}
               >
                 <span

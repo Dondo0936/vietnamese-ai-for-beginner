@@ -498,7 +498,7 @@ export default function AttentionMechanismTopic() {
               <div
                 className={`rounded-lg border p-3 transition-all ${
                   stage === 0
-                    ? "border-blue-500/60 bg-blue-500/5"
+                    ? "border-blue-500/60 bg-blue-500/10"
                     : "border-border/50 opacity-60"
                 }`}
               >
@@ -521,7 +521,7 @@ export default function AttentionMechanismTopic() {
               <div
                 className={`rounded-lg border p-3 transition-all ${
                   stage === 1
-                    ? "border-amber-500/60 bg-amber-500/5"
+                    ? "border-amber-500/60 bg-amber-500/10"
                     : "border-border/50 opacity-60"
                 }`}
               >
@@ -548,7 +548,7 @@ export default function AttentionMechanismTopic() {
               <div
                 className={`rounded-lg border p-3 transition-all ${
                   stage === 2
-                    ? "border-green-500/60 bg-green-500/5"
+                    ? "border-green-500/60 bg-green-500/10"
                     : "border-border/50 opacity-60"
                 }`}
               >
@@ -1117,7 +1117,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-3">
+            <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
               <p className="text-xs font-semibold text-blue-500 mb-1">
                 2014 — Bahdanau Attention
               </p>
@@ -1128,7 +1128,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
               </p>
             </div>
 
-            <div className="rounded-lg border border-purple-500/30 bg-purple-500/5 p-3">
+            <div className="rounded-lg border border-purple-500/30 bg-purple-500/10 p-3">
               <p className="text-xs font-semibold text-purple-500 mb-1">
                 2015 — Luong Attention
               </p>
@@ -1139,7 +1139,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
               </p>
             </div>
 
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
               <p className="text-xs font-semibold text-amber-500 mb-1">
                 2017 — Transformer (Attention is All You Need)
               </p>
@@ -1149,7 +1149,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
               </p>
             </div>
 
-            <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-3">
+            <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3">
               <p className="text-xs font-semibold text-green-500 mb-1">
                 2018-2020 — BERT, GPT-2, T5
               </p>
@@ -1159,7 +1159,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
               </p>
             </div>
 
-            <div className="rounded-lg border border-pink-500/30 bg-pink-500/5 p-3">
+            <div className="rounded-lg border border-pink-500/30 bg-pink-500/10 p-3">
               <p className="text-xs font-semibold text-pink-500 mb-1">
                 2022 — FlashAttention
               </p>
@@ -1170,7 +1170,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
               </p>
             </div>
 
-            <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-3">
+            <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3">
               <p className="text-xs font-semibold text-red-500 mb-1">
                 2023+ — Linear &amp; Sparse Attention
               </p>

@@ -434,7 +434,7 @@ function ChunkStrip({
             className="rounded-lg border p-3 text-xs leading-relaxed"
             style={{
               borderColor: color + "60",
-              backgroundColor: color + "10",
+              backgroundColor: color + "1a",
             }}
           >
             <div className="mb-1 flex items-center justify-between">
@@ -688,7 +688,7 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3">
+        <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-500">
             Ưu điểm
           </p>
@@ -698,7 +698,7 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
             ))}
           </ul>
         </div>
-        <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-3">
+        <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-red-500">
             Hạn chế
           </p>

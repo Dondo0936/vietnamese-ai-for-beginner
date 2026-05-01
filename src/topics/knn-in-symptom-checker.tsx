@@ -574,7 +574,7 @@ function SymptomPlayground() {
             transition={{ duration: 0.25 }}
             className="rounded-2xl border p-4 grid grid-cols-1 sm:grid-cols-2 gap-3"
             style={{
-              backgroundColor: DISEASE_COLOR[result.disease] + "10",
+              backgroundColor: DISEASE_COLOR[result.disease] + "1a",
               borderColor: DISEASE_COLOR[result.disease] + "50",
             }}
           >
@@ -770,7 +770,7 @@ function ScenarioWalkthrough() {
           <div
             className="rounded-lg p-3 border"
             style={{
-              backgroundColor: DISEASE_COLOR[res.disease!] + "10",
+              backgroundColor: DISEASE_COLOR[res.disease!] + "1a",
               borderColor: DISEASE_COLOR[res.disease!] + "60",
             }}
           >

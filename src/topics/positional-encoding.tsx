@@ -209,25 +209,25 @@ export default function PositionalEncodingTopic() {
       {/* ═══ Step 4: DEEPEN — Modern variants ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Biến thể hiện đại">
           <div className="space-y-3">
-            <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
+            <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
               <h4 className="text-sm font-semibold text-blue-500 mb-1">Sinusoidal PE (Transformer gốc, 2017)</h4>
               <p className="text-xs text-muted">
                 Cộng sin/cos vào embedding. Cố định (không học). Ngoại suy được cho chuỗi dài hơn lúc train.
               </p>
             </div>
-            <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4">
+            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4">
               <h4 className="text-sm font-semibold text-green-500 mb-1">Learned PE (BERT, GPT-2)</h4>
               <p className="text-xs text-muted">
                 Embedding vị trí được học (lookup table). Linh hoạt hơn nhưng giới hạn chuỗi dài (max 512 tokens cho BERT).
               </p>
             </div>
-            <div className="rounded-xl border border-purple-500/30 bg-purple-500/5 p-4">
+            <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-4">
               <h4 className="text-sm font-semibold text-purple-500 mb-1">RoPE (LLaMA, GPT-NeoX, 2021+)</h4>
               <p className="text-xs text-muted">
                 Xoay Q, K vectors theo vị trí. Mã hóa khoảng cách tương đối trực tiếp vào attention score. Ngoại suy tốt hơn.
               </p>
             </div>
-            <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
               <h4 className="text-sm font-semibold text-amber-500 mb-1">ALiBi (BLOOM, 2022+)</h4>
               <p className="text-xs text-muted">
                 Thêm bias tuyến tính vào attention score dựa trên khoảng cách. Rất đơn giản, ngoại suy xuất sắc.

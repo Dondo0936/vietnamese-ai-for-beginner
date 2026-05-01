@@ -255,7 +255,7 @@ export default function VaeTopic() {
           </h3>
 
           <div className="space-y-3">
-            <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4">
+            <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
               <h4 className="text-sm font-semibold text-red-500 mb-1">Cách sai (không gradient)</h4>
               <p className="text-xs text-muted">z ~ N(&mu;, &sigma;&sup2;) — phép sampling ngẫu nhiên, gradient không chảy qua được.</p>
               <div className="flex items-center justify-center gap-2 mt-2 text-sm">
@@ -266,7 +266,7 @@ export default function VaeTopic() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4">
+            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4">
               <h4 className="text-sm font-semibold text-green-500 mb-1">Reparameterization trick (gradient ok!)</h4>
               <p className="text-xs text-muted">z = &mu; + &sigma; &times; &epsilon;, &epsilon; ~ N(0,1). Random tách ra &epsilon;, gradient chảy qua &mu; và &sigma;.</p>
               <div className="flex items-center justify-center gap-2 mt-2 text-sm">

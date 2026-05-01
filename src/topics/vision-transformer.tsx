@@ -186,7 +186,7 @@ export default function VisionTransformerTopic() {
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="ViT vs CNN">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
+            <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
               <h4 className="text-sm font-semibold text-blue-500 mb-2">CNN</h4>
               <ul className="text-xs text-muted space-y-1">
                 <li>Inductive bias: cục bộ + chia sẻ bộ lọc</li>
@@ -195,7 +195,7 @@ export default function VisionTransformerTopic() {
                 <li>Hiệu quả tham số hơn</li>
               </ul>
             </div>
-            <div className="rounded-xl border border-purple-500/30 bg-purple-500/5 p-4">
+            <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-4">
               <h4 className="text-sm font-semibold text-purple-500 mb-2">ViT</h4>
               <ul className="text-xs text-muted space-y-1">
                 <li>Không inductive bias → cần nhiều data hơn</li>

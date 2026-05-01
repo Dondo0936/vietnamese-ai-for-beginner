@@ -372,7 +372,7 @@ export default function GRPOTopic() {
                 </div>
 
                 {/* ─── 1 PROMPT BOX ─── */}
-                <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-3">
+                <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-3">
                   <p className="text-xs uppercase tracking-wide text-blue-500 font-semibold mb-1">
                     Prompt
                   </p>
@@ -738,7 +738,7 @@ export default function GRPOTopic() {
 
                 {/* ─── UPDATE: CLIP + KL ─── */}
                 {updateShown && (
-                  <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-3">
+                  <div className="rounded-xl border border-violet-500/30 bg-violet-500/10 p-3">
                     <p className="text-xs uppercase tracking-wide text-violet-500 font-semibold mb-2">
                       Cập nhật chính sách (clipping + KL)
                     </p>

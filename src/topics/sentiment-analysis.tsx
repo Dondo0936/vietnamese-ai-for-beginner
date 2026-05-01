@@ -378,7 +378,7 @@ export default function SentimentAnalysisTopic() {
               <div
                 key={label}
                 className="rounded-xl border p-4"
-                style={{ borderColor: color + "50", backgroundColor: color + "10" }}
+                style={{ borderColor: color + "50", backgroundColor: color + "1a" }}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <Icon size={18} style={{ color }} />
@@ -523,7 +523,7 @@ export default function SentimentAnalysisTopic() {
                           ? SENTIMENT_COLOR[s]
                           : "rgba(120,120,120,0.2)",
                         backgroundColor: isPick
-                          ? SENTIMENT_COLOR[s] + "12"
+                          ? SENTIMENT_COLOR[s] + "1a"
                           : "transparent",
                       }}
                     >
@@ -596,7 +596,7 @@ export default function SentimentAnalysisTopic() {
                       className="rounded-xl border p-3 text-center"
                       style={{
                         borderColor: SENTIMENT_COLOR[s] + "40",
-                        backgroundColor: SENTIMENT_COLOR[s] + "10",
+                        backgroundColor: SENTIMENT_COLOR[s] + "1a",
                       }}
                     >
                       <p
@@ -752,7 +752,7 @@ export default function SentimentAnalysisTopic() {
                         className="rounded-lg border p-3"
                         style={{
                           borderColor: SENTIMENT_COLOR[currentTricky.naive] + "40",
-                          backgroundColor: SENTIMENT_COLOR[currentTricky.naive] + "10",
+                          backgroundColor: SENTIMENT_COLOR[currentTricky.naive] + "1a",
                         }}
                       >
                         <p className="text-[10px] uppercase tracking-wide text-muted">
@@ -769,7 +769,7 @@ export default function SentimentAnalysisTopic() {
                         className="rounded-lg border p-3"
                         style={{
                           borderColor: SENTIMENT_COLOR[currentTricky.correct] + "40",
-                          backgroundColor: SENTIMENT_COLOR[currentTricky.correct] + "10",
+                          backgroundColor: SENTIMENT_COLOR[currentTricky.correct] + "1a",
                         }}
                       >
                         <p className="text-[10px] uppercase tracking-wide text-muted">

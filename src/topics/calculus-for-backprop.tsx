@@ -783,7 +783,7 @@ export default function CalculusForBackpropTopic() {
                       <div
                         className="rounded-lg p-2 text-center border"
                         style={{
-                          backgroundColor: slopeColor + "12",
+                          backgroundColor: slopeColor + "1a",
                           borderColor: slopeColor + "55",
                         }}
                       >

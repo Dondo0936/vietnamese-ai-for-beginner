@@ -555,8 +555,8 @@ export default function CanaryReleasesLLMTopic() {
       className={`rounded-xl border p-3 ${
         isCandidate
           ? allPass
-            ? "border-indigo-500/50 bg-indigo-500/5"
-            : "border-red-500/50 bg-red-500/5"
+            ? "border-indigo-500/50 bg-indigo-500/10"
+            : "border-red-500/50 bg-red-500/10"
           : "border-border bg-card"
       }`}
     >

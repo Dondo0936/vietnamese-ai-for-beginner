@@ -156,9 +156,9 @@ export default function PerplexityMetricTopic() {
 
             {/* Perplexity display */}
             <div className={`rounded-xl border-2 p-6 text-center ${
-              perplexity < 3 ? "border-green-500 bg-green-500/5" :
-              perplexity < 8 ? "border-yellow-500 bg-yellow-500/5" :
-              "border-red-500 bg-red-500/5"
+              perplexity < 3 ? "border-green-500 bg-green-500/10" :
+              perplexity < 8 ? "border-yellow-500 bg-yellow-500/10" :
+              "border-red-500 bg-red-500/10"
             }`}>
               <p className="text-xs text-muted uppercase tracking-wide">Perplexity</p>
               <p className={`text-4xl font-bold ${

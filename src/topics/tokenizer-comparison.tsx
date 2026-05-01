@@ -334,7 +334,7 @@ export default function TokenizerComparisonTopic() {
             Tiếng Việt có thách thức riêng cho tokenizer: dấu thanh, từ ghép, và ranh giới từ phức tạp.
           </p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4 space-y-2">
+            <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 space-y-2">
               <p className="text-xs font-semibold text-red-500 uppercase">GPT Tokenizer (tiếng Anh)</p>
               <div className="space-y-1 text-sm">
                 <p className="text-foreground">{'"Phở"'} → <span className="text-red-500 font-bold">{'"Ph" + "ở"'}</span> (2 token)</p>
@@ -343,7 +343,7 @@ export default function TokenizerComparisonTopic() {
               </div>
               <p className="text-xs text-red-400">Từ tiếng Việt bị chia nhỏ quá mức → tốn token → đắt tiền!</p>
             </div>
-            <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4 space-y-2">
+            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4 space-y-2">
               <p className="text-xs font-semibold text-green-500 uppercase">PhoBERT Tokenizer (tiếng Việt)</p>
               <div className="space-y-1 text-sm">
                 <p className="text-foreground">{'"Phở"'} → <span className="text-green-500 font-bold">{'"Phở"'}</span> (1 token)</p>

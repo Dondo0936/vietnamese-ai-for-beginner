@@ -862,7 +862,7 @@ export default function AutoencoderTopic() {
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Các biến thể quan trọng">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
+          <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
             <h4 className="text-sm font-semibold text-blue-500 mb-2">
               Vanilla Autoencoder
             </h4>
@@ -879,7 +879,7 @@ export default function AutoencoderTopic() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-purple-500/30 bg-purple-500/5 p-4">
+          <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-4">
             <h4 className="text-sm font-semibold text-purple-500 mb-2">
               Denoising AE
             </h4>
@@ -896,7 +896,7 @@ export default function AutoencoderTopic() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-pink-500/30 bg-pink-500/5 p-4">
+          <div className="rounded-xl border border-pink-500/30 bg-pink-500/10 p-4">
             <h4 className="text-sm font-semibold text-pink-500 mb-2">
               Sparse AE
             </h4>
@@ -910,7 +910,7 @@ export default function AutoencoderTopic() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-orange-500/30 bg-orange-500/5 p-4">
+          <div className="rounded-xl border border-orange-500/30 bg-orange-500/10 p-4">
             <h4 className="text-sm font-semibold text-orange-500 mb-2">
               <TopicLink slug="vae">VAE (Variational)</TopicLink>
             </h4>
@@ -928,7 +928,7 @@ export default function AutoencoderTopic() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4">
+          <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-4">
             <h4 className="text-sm font-semibold text-cyan-500 mb-2">
               Contractive AE
             </h4>
@@ -942,7 +942,7 @@ export default function AutoencoderTopic() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4">
             <h4 className="text-sm font-semibold text-emerald-500 mb-2">
               Masked AE (MAE)
             </h4>

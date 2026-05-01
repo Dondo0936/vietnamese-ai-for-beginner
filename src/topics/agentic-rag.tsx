@@ -690,7 +690,7 @@ export default function AgenticRAGTopic() {
 
             {/* Summary comparison */}
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
+              <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
                 <p className="text-xs uppercase tracking-wide text-blue-700 dark:text-blue-400 font-bold">Naive RAG</p>
                 <p className="mt-1 text-sm text-foreground">{scenario.naiveSummary}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
@@ -706,7 +706,7 @@ export default function AgenticRAGTopic() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-xl border border-purple-500/30 bg-purple-500/5 p-4">
+              <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-4">
                 <p className="text-xs uppercase tracking-wide text-purple-700 dark:text-purple-400 font-bold">Agentic RAG</p>
                 <p className="mt-1 text-sm text-foreground">{scenario.agenticSummary}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">

@@ -722,7 +722,7 @@ export default function GloveTopic() {
 
             {/* ── Key insight boxes ── */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-3 text-center">
+              <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-center">
                 <p className="text-xs text-green-500 font-semibold">
                   Đồng xuất hiện cao
                 </p>
@@ -734,7 +734,7 @@ export default function GloveTopic() {
                   → <LaTeX>{`\\log 22 \\approx 3.09`}</LaTeX> → vector rất gần
                 </p>
               </div>
-              <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-3 text-center">
+              <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-center">
                 <p className="text-xs text-red-500 font-semibold">
                   Đồng xuất hiện thấp
                 </p>
@@ -854,7 +854,7 @@ export default function GloveTopic() {
 
             {/* So sánh kết quả */}
             <div className="grid md:grid-cols-2 gap-3">
-              <div className="rounded-lg border border-purple-500/30 bg-purple-500/5 p-4">
+              <div className="rounded-lg border border-purple-500/30 bg-purple-500/10 p-4">
                 <p className="text-xs font-bold text-purple-400 uppercase mb-2">
                   GloVe (toàn cục)
                 </p>
@@ -875,7 +875,7 @@ export default function GloveTopic() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
+              <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-4">
                 <p className="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase mb-2">
                   Word2Vec (cục bộ)
                 </p>

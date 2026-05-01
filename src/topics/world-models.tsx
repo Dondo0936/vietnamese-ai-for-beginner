@@ -1069,7 +1069,7 @@ function WorldModelViz({
 
       {/* Compare panel: without vs with world model */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-        <div className="rounded-lg border border-red-500/40 bg-red-500/5 p-3">
+        <div className="rounded-lg border border-red-500/40 bg-red-500/10 p-3">
           <div className="font-semibold text-red-400 mb-2">
             Không có world model
           </div>
@@ -1081,7 +1081,7 @@ function WorldModelViz({
             <li>Rủi ro cao trong môi trường nguy hiểm</li>
           </ul>
         </div>
-        <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-3">
+        <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-3">
           <div className="font-semibold text-emerald-400 mb-2">
             Có world model
           </div>

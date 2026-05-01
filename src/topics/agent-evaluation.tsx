@@ -551,7 +551,7 @@ export default function AgentEvaluationTopic() {
           isActive
             ? "border-accent bg-accent/10 shadow-md"
             : done
-              ? "border-emerald-500/60 bg-emerald-500/5"
+              ? "border-emerald-500/60 bg-emerald-500/10"
               : "border-border bg-card hover:border-accent/60"
         }`}
       >
@@ -620,9 +620,9 @@ export default function AgentEvaluationTopic() {
         <ol className="space-y-2">
           {activeResult.steps.map((step, i) => {
             const colorByStatus: Record<TaskStep["status"], string> = {
-              ok: "border-emerald-500/50 bg-emerald-500/5",
-              warn: "border-amber-500/50 bg-amber-500/5",
-              fail: "border-red-500/50 bg-red-500/5",
+              ok: "border-emerald-500/50 bg-emerald-500/10",
+              warn: "border-amber-500/50 bg-amber-500/10",
+              fail: "border-red-500/50 bg-red-500/10",
             };
             const dotByStatus: Record<TaskStep["status"], string> = {
               ok: "bg-emerald-500",
