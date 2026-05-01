@@ -11,6 +11,7 @@ import { LandingFeatured } from "./LandingFeatured";
 import { LandingProcess } from "./LandingProcess";
 import { LandingQuotes } from "./LandingQuotes";
 import { LandingArticles } from "./LandingArticles";
+import { LandingResources } from "./LandingResources";
 import { LandingContribute } from "./LandingContribute";
 import { LandingBigCTA } from "./LandingBigCTA";
 import { LandingFooter } from "./LandingFooter";
@@ -38,6 +39,7 @@ export default function Landing() {
         <LandingProcess />
         <LandingQuotes />
         <LandingArticles />
+        <LandingResources />
         <LandingContribute />
         <LandingBigCTA />
       </main>

@@ -11,7 +11,7 @@ export function LandingContribute() {
     <section className="ld-contribute" id="contribute">
       <div className="ld-contribute__inner">
         <div>
-          <span className="ld-section__eyebrow">(06) không tìm thấy?</span>
+          <span className="ld-section__eyebrow">(07) không tìm thấy?</span>
           <h2>
             Góp bài.<br />
             <em>Mỗi topic là một file React.</em>

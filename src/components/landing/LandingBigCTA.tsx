@@ -7,7 +7,7 @@ import Link from "next/link";
 export function LandingBigCTA() {
   return (
     <section className="ld-cta" id="cta">
-      <span className="ld-cta__eyebrow">(07) bắt đầu</span>
+      <span className="ld-cta__eyebrow">(08) bắt đầu</span>
       <h2 className="ld-cta__h">
         Thôi nào,<br />
         <em>học thử đi.</em>
