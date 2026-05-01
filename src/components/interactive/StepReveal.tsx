@@ -7,20 +7,26 @@ import { ChevronRight, RotateCcw } from "lucide-react";
 interface StepRevealProps {
   children: React.ReactNode[];
   labels?: string[];
+  onCurrent?: (current: number) => void;
 }
 
-export default function StepReveal({ children, labels }: StepRevealProps) {
+export default function StepReveal({ children, labels, onCurrent }: StepRevealProps) {
   const [current, setCurrent] = useState(0);
 
   const total = children.length;
   const allRevealed = current === total - 1;
 
   function handleNext() {
-    setCurrent((prev) => Math.min(prev + 1, total - 1));
+    setCurrent((prev) => {
+      const next = Math.min(prev + 1, total - 1);
+      onCurrent?.(next);
+      return next;
+    });
   }
 
   function handleReset() {
     setCurrent(0);
+    onCurrent?.(0);
   }
 
   const stepLabel = labels?.[current] ?? `Bước ${current + 1}/${total}`;

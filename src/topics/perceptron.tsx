@@ -599,6 +599,7 @@ function LearningRuleDemo() {
 
       <StepReveal
         labels={["Khởi tạo", "Sửa lần 1", "Sửa lần 2", "Học xong"]}
+        onCurrent={setStep}
       >
         {[0, 1, 2, 3].map((idx) => (
           <div key={idx} className="rounded-lg border border-border bg-surface/60 p-4 space-y-2">
