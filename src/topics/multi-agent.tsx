@@ -457,7 +457,7 @@ export default function MultiAgentTopic() {
                         x={a.x}
                         y={a.y + 58}
                         textAnchor="middle"
-                        fill="#94a3b8"
+                        fill="var(--text-secondary)"
                         fontSize="11"
                       >
                         {a.role}

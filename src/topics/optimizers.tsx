@@ -411,7 +411,7 @@ export default function OptimizersTopic() {
                 x={SVG_W / 2}
                 y={SVG_H - 3}
                 textAnchor="middle"
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
               >
                 w₁
@@ -419,7 +419,7 @@ export default function OptimizersTopic() {
               <text
                 x={6}
                 y={SVG_H / 2}
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
                 transform={`rotate(-90, 6, ${SVG_H / 2})`}
               >

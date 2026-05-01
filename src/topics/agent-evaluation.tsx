@@ -778,7 +778,7 @@ export default function AgentEvaluationTopic() {
                 y={p.y - 6}
                 textAnchor="middle"
                 fontSize={11}
-                fill="#e2e8f0"
+                fill="var(--text-primary)"
               >
                 {p.raw}
               </text>

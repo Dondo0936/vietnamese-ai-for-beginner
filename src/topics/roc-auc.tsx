@@ -422,7 +422,7 @@ export default function RocAucTopic() {
                       x={distSvgW / 2}
                       y={14}
                       textAnchor="middle"
-                      fill="#e2e8f0"
+                      fill="var(--text-primary)"
                       fontSize={11}
                       fontWeight="bold"
                     >
@@ -461,7 +461,7 @@ export default function RocAucTopic() {
                           x={distX(t)}
                           y={distPadT + distPlotH + 16}
                           textAnchor="middle"
-                          fill="#94a3b8"
+                          fill="var(--text-secondary)"
                           fontSize={11}
                         >
                           {t}
@@ -472,7 +472,7 @@ export default function RocAucTopic() {
                       x={distSvgW / 2}
                       y={distSvgH - 4}
                       textAnchor="middle"
-                      fill="#94a3b8"
+                      fill="var(--text-secondary)"
                       fontSize={11}
                     >
                       Score dự đoán
@@ -543,7 +543,7 @@ export default function RocAucTopic() {
                         height={10}
                         fill="#60a5fa"
                       />
-                      <text x={14} y={9} fill="#cbd5e1" fontSize={11}>
+                      <text x={14} y={9} fill="var(--text-primary)" fontSize={11}>
                         Lớp âm (hợp lệ)
                       </text>
                       <rect
@@ -553,7 +553,7 @@ export default function RocAucTopic() {
                         height={10}
                         fill="#f97316"
                       />
-                      <text x={14} y={23} fill="#cbd5e1" fontSize={11}>
+                      <text x={14} y={23} fill="var(--text-primary)" fontSize={11}>
                         Lớp dương (gian lận)
                       </text>
                     </g>
@@ -571,7 +571,7 @@ export default function RocAucTopic() {
                         x={rocSvgW / 2}
                         y={16}
                         textAnchor="middle"
-                        fill="#e2e8f0"
+                        fill="var(--text-primary)"
                         fontSize={11}
                         fontWeight="bold"
                       >
@@ -599,7 +599,7 @@ export default function RocAucTopic() {
                             x={rocX(v)}
                             y={rocPad + rocPlotH + 14}
                             textAnchor="middle"
-                            fill="#94a3b8"
+                            fill="var(--text-secondary)"
                             fontSize={11}
                           >
                             {v.toFixed(2)}
@@ -608,7 +608,7 @@ export default function RocAucTopic() {
                             x={rocPad - 6}
                             y={rocY(v) + 3}
                             textAnchor="end"
-                            fill="#94a3b8"
+                            fill="var(--text-secondary)"
                             fontSize={11}
                           >
                             {v.toFixed(2)}
@@ -636,7 +636,7 @@ export default function RocAucTopic() {
                         x={rocSvgW / 2}
                         y={rocSvgH - 6}
                         textAnchor="middle"
-                        fill="#94a3b8"
+                        fill="var(--text-secondary)"
                         fontSize={11}
                       >
                         FPR (false positive rate)
@@ -645,7 +645,7 @@ export default function RocAucTopic() {
                         x={14}
                         y={rocSvgH / 2}
                         textAnchor="middle"
-                        fill="#94a3b8"
+                        fill="var(--text-secondary)"
                         fontSize={11}
                         transform={`rotate(-90 14 ${rocSvgH / 2})`}
                       >

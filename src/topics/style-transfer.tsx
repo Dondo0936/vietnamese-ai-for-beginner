@@ -491,7 +491,7 @@ export default function StyleTransferTopic() {
                       ease: "linear",
                     }}
                   />
-                  <text x={230} y={92} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+                  <text x={230} y={92} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                     1-α
                   </text>
 
@@ -510,7 +510,7 @@ export default function StyleTransferTopic() {
                       ease: "linear",
                     }}
                   />
-                  <text x={555} y={92} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+                  <text x={555} y={92} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                     α
                   </text>
 
@@ -544,7 +544,7 @@ export default function StyleTransferTopic() {
                         x={360}
                         y={390}
                         textAnchor="middle"
-                        fill="#94a3b8"
+                        fill="var(--text-secondary)"
                         fontSize={11}
                       >
                         Gram matrix G[i,j] = ⟨F_i, F_j⟩ / N — tương quan giữa
@@ -554,7 +554,7 @@ export default function StyleTransferTopic() {
                         x={360}
                         y={406}
                         textAnchor="middle"
-                        fill="#64748b"
+                        fill="var(--text-tertiary)"
                         fontSize={11}
                       >
                         Khi α → 1, Gram(blend) tiệm cận Gram(style) — style

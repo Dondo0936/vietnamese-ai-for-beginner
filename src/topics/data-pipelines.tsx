@@ -427,7 +427,7 @@ export default function DataPipelinesTopic() {
                       x={360}
                       y={220}
                       textAnchor="middle"
-                      fill="#94a3b8"
+                      fill="var(--text-secondary)"
                       fontSize={11}
                       fontWeight="bold"
                     >
@@ -503,7 +503,7 @@ export default function DataPipelinesTopic() {
                           x={x + cardW / 2}
                           y={y + 38}
                           textAnchor="middle"
-                          fill="#94a3b8"
+                          fill="var(--text-secondary)"
                           fontSize={11}
                         >
                           {stage.sub}
@@ -512,7 +512,7 @@ export default function DataPipelinesTopic() {
                           x={x + cardW / 2}
                           y={y + 54}
                           textAnchor="middle"
-                          fill="#cbd5e1"
+                          fill="var(--text-primary)"
                           fontSize={11}
                         >
                           {stage.duration}

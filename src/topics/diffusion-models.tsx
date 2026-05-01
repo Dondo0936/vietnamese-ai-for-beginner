@@ -808,7 +808,7 @@ export default function DiffusionModelsTopic() {
                     return (
                       <g key={mark}>
                         <line x1={x} y1={106} x2={x} y2={114} stroke="#475569" strokeWidth={1} />
-                        <text x={x} y={128} textAnchor="middle" fill="#94a3b8" fontSize={11}>w={mark}</text>
+                        <text x={x} y={128} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>w={mark}</text>
                       </g>
                     );
                   })}
@@ -826,11 +826,11 @@ export default function DiffusionModelsTopic() {
                   <text x={470} y={66} fill="#ef4444" fontSize={11}>artifact nặng</text>
                   <g transform={`translate(${40 + ((cfgScale - 1) / 19) * 520}, 60)`}>
                     <circle r={10} fill={`hsl(${cfgHue}, 70%, 55%)`} stroke="#fff" strokeWidth={2} />
-                    <text y={-18} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+                    <text y={-18} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
                       w = {cfgScale.toFixed(1)}
                     </text>
                   </g>
-                  <text x={300} y={150} textAnchor="middle" fill="#94a3b8" fontSize={11} fontFamily="monospace">
+                  <text x={300} y={150} textAnchor="middle" fill="var(--text-secondary)" fontSize={11} fontFamily="monospace">
                     ε̂ = ε_uncond + w · (ε_cond − ε_uncond)
                   </text>
                 </svg>
@@ -886,7 +886,7 @@ export default function DiffusionModelsTopic() {
                   <rect x={10} y={70} width={160} height={60} rx={8} fill="rgba(167,139,250,0.15)" stroke="#a78bfa" strokeWidth={2} />
                   <text x={90} y={92} textAnchor="middle" fill="#c4b5fd" fontSize={11} fontWeight="bold">Text Encoder</text>
                   <text x={90} y={106} textAnchor="middle" fill="#c4b5fd" fontSize={11}>CLIP ViT-L / OpenCLIP</text>
-                  <text x={90} y={118} textAnchor="middle" fill="#94a3b8" fontSize={11}>77 × 768 dim</text>
+                  <text x={90} y={118} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>77 × 768 dim</text>
 
                   {/* Arrow prompt → text encoder */}
                   <line x1={90} y1={46} x2={90} y2={70} stroke="#a78bfa" strokeWidth={1.5} />
@@ -901,7 +901,7 @@ export default function DiffusionModelsTopic() {
                   <rect x={10} y={220} width={160} height={50} rx={8} fill="rgba(244,114,182,0.15)" stroke="#f472b6" strokeWidth={2} />
                   <text x={90} y={240} textAnchor="middle" fill="#f9a8d4" fontSize={11} fontWeight="bold">VAE Encoder</text>
                   <text x={90} y={254} textAnchor="middle" fill="#f9a8d4" fontSize={11}>512×512×3 → 64×64×4</text>
-                  <text x={90} y={266} textAnchor="middle" fill="#94a3b8" fontSize={11}>compression ratio 48×</text>
+                  <text x={90} y={266} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>compression ratio 48×</text>
 
                   {/* arrow */}
                   <line x1={90} y1={196} x2={90} y2={220} stroke="#f472b6" strokeWidth={1.5} strokeDasharray="3 2" />
@@ -916,13 +916,13 @@ export default function DiffusionModelsTopic() {
                   {[0, 1, 2, 3].map((i) => (
                     <rect key={`enc-${i}`} x={240 + i * 30} y={130 + i * 12} width={30 - i * 3} height={20 - i * 2} rx={2} fill="#0891b2" opacity={0.8} />
                   ))}
-                  <text x={260} y={200} fill="#94a3b8" fontSize={11}>encoder (down)</text>
+                  <text x={260} y={200} fill="var(--text-secondary)" fontSize={11}>encoder (down)</text>
                   <rect x={370} y={180} width={20} height={14} rx={2} fill="#22d3ee" />
                   <text x={380} y={210} textAnchor="middle" fill="#22d3ee" fontSize={11} fontWeight="bold">mid block</text>
                   {[0, 1, 2, 3].map((i) => (
                     <rect key={`dec-${i}`} x={420 + i * 30} y={178 - i * 12} width={21 + i * 3} height={14 + i * 2} rx={2} fill="#0891b2" opacity={0.8} />
                   ))}
-                  <text x={480} y={200} fill="#94a3b8" fontSize={11}>decoder (up)</text>
+                  <text x={480} y={200} fill="var(--text-secondary)" fontSize={11}>decoder (up)</text>
                   {[0, 1, 2].map((i) => (
                     <path key={`skip-${i}`} d={`M ${255 + i * 28} ${140 + i * 12} Q ${380} ${120 + i * 5} ${510 - i * 28} ${184 - i * 12}`} stroke="#22d3ee" strokeWidth={1} strokeDasharray="2 2" fill="none" />
                   ))}
@@ -939,7 +939,7 @@ export default function DiffusionModelsTopic() {
                   <rect x={590} y={160} width={160} height={60} rx={8} fill="rgba(244,114,182,0.15)" stroke="#f472b6" strokeWidth={2} />
                   <text x={670} y={182} textAnchor="middle" fill="#f9a8d4" fontSize={11} fontWeight="bold">VAE Decoder</text>
                   <text x={670} y={196} textAnchor="middle" fill="#f9a8d4" fontSize={11}>64×64×4 → 512×512×3</text>
-                  <text x={670} y={208} textAnchor="middle" fill="#94a3b8" fontSize={11}>giải nén latent</text>
+                  <text x={670} y={208} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>giải nén latent</text>
                   <rect x={590} y={240} width={160} height={36} rx={6} fill="#1e293b" stroke="#22c55e" strokeWidth={1.5} />
                   <text x={670} y={258} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">Output 512×512</text>
                   <text x={670} y={270} textAnchor="middle" fill="#22c55e" fontSize={11}>ảnh cuối cùng</text>
@@ -953,7 +953,7 @@ export default function DiffusionModelsTopic() {
                       <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa" />
                     </marker>
                   </defs>
-                  <text x={380} y={330} textAnchor="middle" fill="#cbd5e1" fontSize={11}>
+                  <text x={380} y={330} textAnchor="middle" fill="var(--text-primary)" fontSize={11}>
                     Inference loop: với mỗi t = T,…,0 → U-Net dự đoán ε, cập nhật z_t → z_{"t-1"}, cuối cùng VAE decode z_0
                   </text>
                 </svg>

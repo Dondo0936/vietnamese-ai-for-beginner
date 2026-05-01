@@ -172,10 +172,10 @@ export default function MLOpsTopic() {
               )}
 
               {/* Description */}
-              <text x={300} y={190} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+              <text x={300} y={190} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
                 Level {level.level}: {level.name}
               </text>
-              <text x={300} y={210} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+              <text x={300} y={210} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                 {level.desc}
               </text>
             </svg>

@@ -132,13 +132,13 @@ export default function TestTimeComputeTopic() {
 
             <svg viewBox="0 0 600 200" className="w-full max-w-2xl mx-auto">
               {/* Accuracy */}
-              <text x={15} y={38} fill="#94a3b8" fontSize={11}>Accuracy</text>
+              <text x={15} y={38} fill="var(--text-secondary)" fontSize={11}>Accuracy</text>
               <rect x={90} y={24} width={430} height={20} rx={4} fill="#1e293b" />
               <rect x={90} y={24} width={430 * strategy.accuracy / 100} height={20} rx={4} fill="#22c55e" />
               <text x={95 + 430 * strategy.accuracy / 100} y={38} fill="white" fontSize={11} fontWeight="bold">{strategy.accuracy}%</text>
 
               {/* Compute */}
-              <text x={15} y={72} fill="#94a3b8" fontSize={11}>Compute</text>
+              <text x={15} y={72} fill="var(--text-secondary)" fontSize={11}>Compute</text>
               <rect x={90} y={58} width={430} height={20} rx={4} fill="#1e293b" />
               <rect x={90} y={58} width={430 * strategy.compute / 20} height={20} rx={4} fill="#3b82f6" />
               <text x={95 + 430 * strategy.compute / 20} y={72} fill="white" fontSize={11} fontWeight="bold">{strategy.costMultiple}</text>
@@ -152,7 +152,7 @@ export default function TestTimeComputeTopic() {
               <text x={300} y={147} textAnchor="middle" fill="#94a3b8" fontSize={11}>{strategy.desc}</text>
 
               {/* Efficiency curve hint */}
-              <text x={300} y={185} textAnchor="middle" fill="#64748b" fontSize={11}>
+              <text x={300} y={185} textAnchor="middle" fill="var(--text-tertiary)" fontSize={11}>
                 Accuracy tăng nhanh ban đầu, rồi chậm dần (diminishing returns)
               </text>
             </svg>

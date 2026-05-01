@@ -873,7 +873,7 @@ function DriftScatter() {
           strokeDasharray="4,3"
           opacity={0.6}
         />
-        <text x={400} y={50} fontSize={11} fill="#94a3b8">y = x</text>
+        <text x={400} y={50} fontSize={11} fill="var(--text-secondary)">y = x</text>
 
         {/* Points */}
         {teams.map((t) => {

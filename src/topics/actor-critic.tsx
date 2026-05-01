@@ -320,7 +320,7 @@ function GridWorldSVG({ position, showValues, showPolicy }: GridWorldProps) {
         x={width / 2}
         y={14}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={11}
         fontWeight="bold"
       >
@@ -490,7 +490,7 @@ function ActorCriticDiagram() {
         x={310}
         y={16}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={12}
         fontWeight="bold"
       >
@@ -578,7 +578,7 @@ function ActorCriticDiagram() {
       <text x={530} y={178} textAnchor="middle" fill="#c4b5fd" fontSize={11} fontWeight="bold">
         Advantage
       </text>
-      <text x={530} y={190} textAnchor="middle" fill="#cbd5e1" fontSize={11}>
+      <text x={530} y={190} textAnchor="middle" fill="var(--text-primary)" fontSize={11}>
         A = r + γ·V(s′) − V(s)
       </text>
 
@@ -639,7 +639,7 @@ function AdvantageSparkline({ steps }: AdvantageSparklineProps) {
           x={width / 2}
           y={height / 2}
           textAnchor="middle"
-          fill="#64748b"
+          fill="var(--text-tertiary)"
           fontSize={11}
         >
           Chưa có step nào — bấm &quot;Step&quot; để agent di chuyển.
@@ -664,7 +664,7 @@ function AdvantageSparkline({ steps }: AdvantageSparklineProps) {
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className="w-full max-w-2xl mx-auto">
-      <text x={width / 2} y={14} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+      <text x={width / 2} y={14} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
         Advantage A(s, a) theo từng step
       </text>
 
@@ -677,7 +677,7 @@ function AdvantageSparkline({ steps }: AdvantageSparklineProps) {
         stroke="#475569"
         strokeDasharray="3 3"
       />
-      <text x={width - padding + 4} y={zeroY + 3} fill="#64748b" fontSize={11}>
+      <text x={width - padding + 4} y={zeroY + 3} fill="var(--text-tertiary)" fontSize={11}>
         A = 0
       </text>
 

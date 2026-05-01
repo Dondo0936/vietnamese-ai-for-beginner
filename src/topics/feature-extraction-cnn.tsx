@@ -686,7 +686,7 @@ export default function FeatureExtractionCnnTopic() {
                       nghĩa sẵn. Mạng tự học ra mọi thứ!
                     </p>
                     <svg viewBox="0 0 280 300" className="w-full max-w-md mx-auto">
-                      <text x={140} y={16} textAnchor="middle" fontSize={11} fill="#94a3b8">
+                      <text x={140} y={16} textAnchor="middle" fontSize={11} fill="var(--text-secondary)">
                         Digit &ldquo;3&rdquo; dạng grayscale 28×28
                       </text>
                       {DIGIT_3.map((row, y) =>
@@ -959,10 +959,10 @@ export default function FeatureExtractionCnnTopic() {
                         <text x={x + 65} y={32} textAnchor="middle" fontSize={11} fontWeight="bold" fill={layer.color}>
                           {layer.name}
                         </text>
-                        <text x={x + 65} y={40 + h / 2 - 4} textAnchor="middle" fontSize={11} fill="#e2e8f0">
+                        <text x={x + 65} y={40 + h / 2 - 4} textAnchor="middle" fontSize={11} fill="var(--text-primary)">
                           {layer.description}
                         </text>
-                        <text x={x + 65} y={40 + h / 2 + 10} textAnchor="middle" fontSize={11} fill="#94a3b8">
+                        <text x={x + 65} y={40 + h / 2 + 10} textAnchor="middle" fontSize={11} fill="var(--text-secondary)">
                           RF {layer.receptiveField}
                         </text>
                         {i < LAYERS.length - 1 && (

@@ -396,7 +396,7 @@ export default function TransformerTopic() {
                 <text x="80" y="8" fontSize="11" fill="#f97316" fontWeight="600">skip connection</text>
                 <line x1="280" y1="40" x2="320" y2="40" stroke="#475569" strokeWidth="1.5" />
                 <polygon points="318,36 326,40 318,44" fill="#475569" />
-                <text x="350" y="44" fontSize="11" fill="#94a3b8">output</text>
+                <text x="350" y="44" fontSize="11" fill="var(--text-secondary)">output</text>
               </svg>
               <p className="text-xs text-muted text-center mt-2">
                 Residual connection (cộng input gốc) + LayerNorm — giúp gradient chảy tốt qua nhiều lớp</p>

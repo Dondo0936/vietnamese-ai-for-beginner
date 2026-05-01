@@ -147,7 +147,7 @@ export default function SyntheticDataTopic() {
                     <text x={165 + 300 * (s.quality / 100)} y={y + 15} fill="white" fontSize={11} fontWeight="bold">
                       {s.quality}%
                     </text>
-                    <text x={500} y={y + 15} fill="#94a3b8" fontSize={11}>{s.cost}</text>
+                    <text x={500} y={y + 15} fill="var(--text-secondary)" fontSize={11}>{s.cost}</text>
                   </g>
                 );
               })}

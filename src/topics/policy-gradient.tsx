@@ -316,7 +316,7 @@ function CorridorVisual({ position, isRunning }: CorridorProps) {
         x={280}
         y={22}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={11}
         fontWeight="bold"
       >
@@ -326,7 +326,7 @@ function CorridorVisual({ position, isRunning }: CorridorProps) {
         x={280}
         y={92}
         textAnchor="middle"
-        fill="#94a3b8"
+        fill="var(--text-secondary)"
         fontSize={11}
       >
         Mỗi bước sai: reward {STEP_PENALTY}. Đến goal: reward +{REWARD_AT_GOAL}.
@@ -353,7 +353,7 @@ function PolicyChart({ policy, previousPolicy }: PolicyChartProps) {
         x={180}
         y={18}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={11}
         fontWeight="bold"
       >
@@ -402,7 +402,7 @@ function PolicyChart({ policy, previousPolicy }: PolicyChartProps) {
               x={x + barWidth / 2}
               y={34}
               textAnchor="middle"
-              fill="#e2e8f0"
+              fill="var(--text-primary)"
               fontSize={11}
               fontWeight="bold"
             >
@@ -474,7 +474,7 @@ function GradientArrow({ direction, magnitude }: GradientArrowProps) {
         x={260}
         y={12}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={11}
         fontWeight="bold"
       >
@@ -484,7 +484,7 @@ function GradientArrow({ direction, magnitude }: GradientArrowProps) {
         x={260}
         y={64}
         textAnchor="middle"
-        fill="#94a3b8"
+        fill="var(--text-secondary)"
         fontSize={11}
       >
         |G − baseline| = {magnitude.toFixed(3)}

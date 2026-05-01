@@ -323,7 +323,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
           x={positions[ci][0].x}
           y={16}
           textAnchor="middle"
-          fill="#94a3b8"
+          fill="var(--text-secondary)"
           fontSize={11}
           fontWeight={600}
         >
@@ -380,7 +380,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
                 x={pos.x}
                 y={pos.y + 24}
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontSize={11}
               >
                 {isInput ? "" : isOutput ? "xác suất" : `tanh`}
@@ -390,7 +390,7 @@ function ArchDiagram({ layerSizes, highlight = -1 }: ArchDiagramProps) {
                   x={pos.x}
                   y={H - 8}
                   textAnchor="middle"
-                  fill="#64748b"
+                  fill="var(--text-tertiary)"
                   fontSize={11}
                   fontWeight={600}
                 >

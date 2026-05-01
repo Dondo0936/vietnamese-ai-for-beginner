@@ -658,7 +658,7 @@ export default function ReRankingTopic() {
                     <text
                       x="155"
                       y={248 + i * 11}
-                      fill="#94a3b8"
+                      fill="var(--text-secondary)"
                       fontSize="11"
                     >
                       {c.id} {c.biScore.toFixed(2)}
@@ -726,7 +726,7 @@ export default function ReRankingTopic() {
                 x="380"
                 y="340"
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontSize="11"
               >
                 {stage === "retrieve" &&

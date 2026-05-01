@@ -514,7 +514,7 @@ export default function RegularizationTopic() {
                 x={SVG_W / 2}
                 y={15}
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontSize="11"
               >
                 Phân phối trọng số (12 weights)
@@ -531,7 +531,7 @@ export default function RegularizationTopic() {
               <text
                 x={18}
                 y={midY + 4}
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
                 textAnchor="middle"
               >
@@ -576,7 +576,7 @@ export default function RegularizationTopic() {
                       x={x + barW / 2}
                       y={SVG_H - 5}
                       textAnchor="middle"
-                      fill="#64748b"
+                      fill="var(--text-tertiary)"
                       fontSize="11"
                     >
                       w{i + 1}

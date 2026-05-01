@@ -174,7 +174,7 @@ export default function UnifiedMultimodalTopic() {
                       </g>
                     );
                   })}
-                  <text x={310} y={270} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+                  <text x={310} y={270} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                     Any-to-any: bất kỳ đầu vào → bất kỳ đầu ra
                   </text>
                 </>
@@ -202,7 +202,7 @@ export default function UnifiedMultimodalTopic() {
                       mất tin
                     </text>
                   ))}
-                  <text x={310} y={200} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+                  <text x={310} y={200} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                     Pipeline: mỗi module chuyên biệt, nhưng mất thông tin giữa các bước
                   </text>
                   <defs>

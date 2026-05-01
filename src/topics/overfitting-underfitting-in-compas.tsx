@@ -854,7 +854,7 @@ function FeatureCountCurve() {
           strokeDasharray="3,3"
           opacity={0.6}
         />
-        <text x={470} y={20 + (1 - 0.65) * 140 - 3} fontSize={11} fill="#94a3b8" textAnchor="end">
+        <text x={470} y={20 + (1 - 0.65) * 140 - 3} fontSize={11} fill="var(--text-secondary)" textAnchor="end">
           Trần ~67%
         </text>
 

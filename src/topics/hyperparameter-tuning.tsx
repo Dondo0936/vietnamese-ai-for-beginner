@@ -171,7 +171,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
         x={width / 2}
         y={20}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={12}
         fontWeight="bold"
       >
@@ -183,7 +183,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
         x={originX + (cellSize * LEARNING_RATES.length) / 2}
         y={originY - 16}
         textAnchor="middle"
-        fill="#94a3b8"
+        fill="var(--text-secondary)"
         fontSize={11}
       >
         Learning Rate →
@@ -192,7 +192,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
         x={20}
         y={originY + (cellSize * BATCH_SIZES.length) / 2}
         textAnchor="middle"
-        fill="#94a3b8"
+        fill="var(--text-secondary)"
         fontSize={11}
         transform={`rotate(-90 20 ${
           originY + (cellSize * BATCH_SIZES.length) / 2
@@ -208,7 +208,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
           x={originX + i * cellSize + cellSize / 2}
           y={originY - 4}
           textAnchor="middle"
-          fill="#cbd5e1"
+          fill="var(--text-primary)"
           fontSize={11}
         >
           {formatLr(lr)}
@@ -222,7 +222,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
           x={originX - 8}
           y={originY + j * cellSize + cellSize / 2 + 3}
           textAnchor="end"
-          fill="#cbd5e1"
+          fill="var(--text-primary)"
           fontSize={11}
         >
           {bs}
@@ -283,7 +283,7 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
 
       {/* Legend */}
       <g transform={`translate(${originX}, ${originY + cellSize * BATCH_SIZES.length + 18})`}>
-        <text x={0} y={6} fill="#94a3b8" fontSize={11}>
+        <text x={0} y={6} fill="var(--text-secondary)" fontSize={11}>
           Accuracy
         </text>
         {Array.from({ length: 12 }).map((_, idx) => {
@@ -299,10 +299,10 @@ function GridSearchHeatmap({ cells, activated, onActivate }: HeatmapProps) {
             />
           );
         })}
-        <text x={60} y={24} fill="#64748b" fontSize={11}>
+        <text x={60} y={24} fill="var(--text-tertiary)" fontSize={11}>
           42%
         </text>
-        <text x={60 + 11 * 14} y={24} fill="#64748b" fontSize={11}>
+        <text x={60 + 11 * 14} y={24} fill="var(--text-tertiary)" fontSize={11}>
           95%
         </text>
       </g>
@@ -461,7 +461,7 @@ function StrategyEfficiencyBars() {
         x={300}
         y={18}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={12}
         fontWeight="bold"
       >
@@ -474,10 +474,10 @@ function StrategyEfficiencyBars() {
         const filled = (barWidth * s.efficiency) / 100;
         return (
           <g key={s.name}>
-            <text x={15} y={y + 14} fill="#cbd5e1" fontSize={11} fontWeight="bold">
+            <text x={15} y={y + 14} fill="var(--text-primary)" fontSize={11} fontWeight="bold">
               {s.name}
             </text>
-            <text x={15} y={y + 26} fill="#64748b" fontSize={11}>
+            <text x={15} y={y + 26} fill="var(--text-tertiary)" fontSize={11}>
               {s.description}
             </text>
             <rect x={160} y={y} width={barWidth} height={28} rx={4} fill="#1e293b" />
@@ -492,7 +492,7 @@ function StrategyEfficiencyBars() {
             >
               {s.efficiency}%
             </text>
-            <text x={510} y={y + 18} fill="#94a3b8" fontSize={11}>
+            <text x={510} y={y + 18} fill="var(--text-secondary)" fontSize={11}>
               {s.trials}
             </text>
           </g>

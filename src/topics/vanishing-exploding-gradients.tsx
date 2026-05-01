@@ -213,7 +213,7 @@ export default function VanishingExplodingGradientsTopic() {
                 x={SVG_W / 2}
                 y={18}
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontSize="11"
               >
                 Biên độ gradient tại mỗi lớp (lan truyền ngược ←)
@@ -256,7 +256,7 @@ export default function VanishingExplodingGradientsTopic() {
                       x={x + barW / 2}
                       y={SVG_H - 33}
                       textAnchor="middle"
-                      fill="#64748b"
+                      fill="var(--text-tertiary)"
                       fontSize="11"
                     >
                       Lớp {i + 1}
@@ -265,7 +265,7 @@ export default function VanishingExplodingGradientsTopic() {
                       x={x + barW / 2}
                       y={y - 5}
                       textAnchor="middle"
-                      fill="#e2e8f0"
+                      fill="var(--text-primary)"
                       fontSize="11"
                     >
                       {Math.abs(g) < 0.001

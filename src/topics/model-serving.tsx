@@ -966,7 +966,7 @@ export default function ModelServingTopic() {
                 x={455}
                 y={275}
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontSize={11}
               >
                 Server pool — mỗi replica giữ model trong VRAM

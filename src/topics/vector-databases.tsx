@@ -149,9 +149,9 @@ export default function VectorDatabasesTopic() {
                 );
               })}
               <circle cx="420" cy="20" r="6" fill="#3b82f6" />
-              <text x="432" y="24" fill="#94a3b8" fontSize="11">Đồ ăn</text>
+              <text x="432" y="24" fill="var(--text-secondary)" fontSize="11">Đồ ăn</text>
               <circle cx="420" cy="40" r="6" fill="#ef4444" />
-              <text x="432" y="44" fill="#94a3b8" fontSize="11">Phương tiện</text>
+              <text x="432" y="44" fill="var(--text-secondary)" fontSize="11">Phương tiện</text>
             </svg>
 
             {queryIdx !== null && (

@@ -368,7 +368,7 @@ export default function SGDTopic() {
                 x={SVG_W / 2}
                 y={SVG_H - 5}
                 textAnchor="middle"
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
               >
                 w₁
@@ -376,7 +376,7 @@ export default function SGDTopic() {
               <text
                 x={8}
                 y={SVG_H / 2}
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
                 transform={`rotate(-90, 8, ${SVG_H / 2})`}
               >

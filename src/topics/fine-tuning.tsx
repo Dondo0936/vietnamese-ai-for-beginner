@@ -633,7 +633,7 @@ export default function FineTuningTopic() {
               return (
                 <g key={v}>
                   <line x1="55" y1={y} x2="60" y2={y} stroke="#64748b" strokeWidth="1" />
-                  <text x="50" y={y + 4} textAnchor="end" fill="#64748b" fontSize="11">{v}%</text>
+                  <text x="50" y={y + 4} textAnchor="end" fill="var(--text-tertiary)" fontSize="11">{v}%</text>
                 </g>
               );
             })}
@@ -645,7 +645,7 @@ export default function FineTuningTopic() {
               return (
                 <g key={v}>
                   <line x1={x} y1="260" x2={x} y2="265" stroke="#64748b" strokeWidth="1" />
-                  <text x={x} y="280" textAnchor="middle" fill="#64748b" fontSize="11">{v}%</text>
+                  <text x={x} y="280" textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">{v}%</text>
                 </g>
               );
             })}

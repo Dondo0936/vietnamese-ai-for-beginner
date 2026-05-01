@@ -493,7 +493,7 @@ export default function AIForScienceTopic() {
                         x={molSvgW / 2}
                         y={16}
                         textAnchor="middle"
-                        fill="#e2e8f0"
+                        fill="var(--text-primary)"
                         fontSize={11}
                         fontWeight="bold"
                       >
@@ -612,7 +612,7 @@ export default function AIForScienceTopic() {
                             x={molSvgW / 2}
                             y={molSvgH / 2 + 40}
                             textAnchor="middle"
-                            fill="#e2e8f0"
+                            fill="var(--text-primary)"
                             fontSize={11}
                           >
                             Đang chạy model GNN...
@@ -687,7 +687,7 @@ export default function AIForScienceTopic() {
                       x={300}
                       y={16}
                       textAnchor="middle"
-                      fill="#e2e8f0"
+                      fill="var(--text-primary)"
                       fontSize={11}
                       fontWeight="bold"
                     >

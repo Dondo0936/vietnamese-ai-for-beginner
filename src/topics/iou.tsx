@@ -649,7 +649,7 @@ function IoUCalculator() {
             x={CANVAS_W / 2}
             y={CANVAS_H - 8}
             textAnchor="middle"
-            fill="#64748b"
+            fill="var(--text-tertiary)"
             fontSize={11}
           >
             Kéo góc để thay đổi kích thước — kéo thân box để di chuyển

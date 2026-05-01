@@ -543,7 +543,7 @@ export default function ForwardPropagationTopic() {
                     x={col.x}
                     y={28}
                     textAnchor="middle"
-                    fill="#94a3b8"
+                    fill="var(--text-secondary)"
                     fontSize={11}
                     fontWeight={700}
                   >

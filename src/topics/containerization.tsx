@@ -310,7 +310,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
   if (mode === "vm") {
     return (
       <svg viewBox="0 0 600 260" className="w-full max-w-2xl mx-auto">
-        <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={12} fontWeight="bold">
+        <text x={300} y={16} textAnchor="middle" fill="var(--text-primary)" fontSize={12} fontWeight="bold">
           Virtual Machine
         </text>
         {/* Hardware */}
@@ -382,7 +382,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
   }
   return (
     <svg viewBox="0 0 600 260" className="w-full max-w-2xl mx-auto">
-      <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={12} fontWeight="bold">
+      <text x={300} y={16} textAnchor="middle" fill="var(--text-primary)" fontSize={12} fontWeight="bold">
         Docker Container
       </text>
       {/* Hardware */}
@@ -450,7 +450,7 @@ function VmVsContainerSvg({ mode }: { mode: "vm" | "container" }) {
 function MlStackSvg({ highlighted }: { highlighted: string | null }) {
   return (
     <svg viewBox="0 0 600 320" className="w-full max-w-2xl mx-auto">
-      <text x={300} y={18} textAnchor="middle" fill="#e2e8f0" fontSize={12} fontWeight="bold">
+      <text x={300} y={18} textAnchor="middle" fill="var(--text-primary)" fontSize={12} fontWeight="bold">
         Container phục vụ mô hình ML (FastAPI + PyTorch + nginx)
       </text>
       {ML_STACK.map((layer, i) => {

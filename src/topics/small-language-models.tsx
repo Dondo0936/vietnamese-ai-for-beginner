@@ -151,7 +151,7 @@ export default function SmallLanguageModelsTopic() {
                     <text x={125 + barW} y={y + 14} fill="white" fontSize={11} fontWeight="bold">
                       {m.mmlu}%
                     </text>
-                    <text x={530} y={y + 14} fill="#94a3b8" fontSize={11}>{m.device}</text>
+                    <text x={530} y={y + 14} fill="var(--text-secondary)" fontSize={11}>{m.device}</text>
                   </g>
                 );
               })}

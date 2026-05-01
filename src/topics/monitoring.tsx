@@ -150,13 +150,13 @@ export default function MonitoringTopic() {
             </div>
 
             <svg viewBox="0 0 600 240" className="w-full max-w-2xl mx-auto">
-              <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+              <text x={300} y={16} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
                 Accuracy &amp; Drift Score qua {WEEKS} tuần
               </text>
 
               {/* Y-axis labels */}
-              <text x={25} y={45} fill="#94a3b8" fontSize={11}>100%</text>
-              <text x={25} y={145} fill="#94a3b8" fontSize={11}>70%</text>
+              <text x={25} y={45} fill="var(--text-secondary)" fontSize={11}>100%</text>
+              <text x={25} y={145} fill="var(--text-secondary)" fontSize={11}>70%</text>
               <line x1={45} y1={30} x2={45} y2={170} stroke="#475569" strokeWidth={1} />
               <line x1={45} y1={170} x2={575} y2={170} stroke="#475569" strokeWidth={1} />
 
@@ -183,7 +183,7 @@ export default function MonitoringTopic() {
                       fill={isAlert ? "#ef4444" : "#22c55e"}
                       stroke={selectedWeek === i ? "white" : "none"} strokeWidth={2}
                     />
-                    <text x={x} y={185} textAnchor="middle" fill="#64748b" fontSize={11}>W{i + 1}</text>
+                    <text x={x} y={185} textAnchor="middle" fill="var(--text-tertiary)" fontSize={11}>W{i + 1}</text>
                   </g>
                 );
               })}
@@ -198,7 +198,7 @@ export default function MonitoringTopic() {
                   />
                 );
               })}
-              <text x={300} y={215} textAnchor="middle" fill="#94a3b8" fontSize={11}>Drift Score (thấp = ổn định)</text>
+              <text x={300} y={215} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>Drift Score (thấp = ổn định)</text>
 
               {/* Alert marker */}
               {alertWeek >= 0 && hasDrift && (

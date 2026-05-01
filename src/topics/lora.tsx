@@ -551,7 +551,7 @@ export default function LoRATopic() {
                 x="90"
                 y="220"
                 textAnchor="middle"
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
               >
                 (không gradient)
@@ -563,7 +563,7 @@ export default function LoRATopic() {
               x="185"
               y="135"
               textAnchor="middle"
-              fill="#e2e8f0"
+              fill="var(--text-primary)"
               fontSize="28"
               fontWeight="bold"
             >
@@ -584,7 +584,7 @@ export default function LoRATopic() {
               x="225"
               y="150"
               textAnchor="middle"
-              fill="#94a3b8"
+              fill="var(--text-secondary)"
               fontSize="11"
             >
               α/r
@@ -593,7 +593,7 @@ export default function LoRATopic() {
               x="258"
               y="135"
               textAnchor="middle"
-              fill="#e2e8f0"
+              fill="var(--text-primary)"
               fontSize="20"
             >
               ×
@@ -646,7 +646,7 @@ export default function LoRATopic() {
               x={285 + rankBarWidth + 18}
               y="135"
               textAnchor="middle"
-              fill="#e2e8f0"
+              fill="var(--text-primary)"
               fontSize="20"
             >
               ×
@@ -699,7 +699,7 @@ export default function LoRATopic() {
               x={460 + rankBarWidth + 18}
               y="135"
               textAnchor="middle"
-              fill="#e2e8f0"
+              fill="var(--text-primary)"
               fontSize="22"
             >
               =

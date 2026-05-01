@@ -532,7 +532,7 @@ function LossSurfacePlayground() {
               y={toPY(start[1]) - 8}
               textAnchor="middle"
               fontSize={11}
-              fill="#64748b"
+              fill="var(--text-tertiary)"
             >
               xuất phát
             </text>
@@ -835,13 +835,13 @@ function LossCurveMini({
         {losses[Math.min(step, losses.length - 1)].toFixed(2)}
       </text>
       {/* Labels */}
-      <text x={pad} y={15} fontSize={11} fill="#64748b">
+      <text x={pad} y={15} fontSize={11} fill="var(--text-tertiary)">
         loss cao
       </text>
-      <text x={pad} y={h - 6} fontSize={11} fill="#64748b">
+      <text x={pad} y={h - 6} fontSize={11} fill="var(--text-tertiary)">
         loss thấp
       </text>
-      <text x={w - pad} y={h - 6} textAnchor="end" fontSize={11} fill="#64748b">
+      <text x={w - pad} y={h - 6} textAnchor="end" fontSize={11} fill="var(--text-tertiary)">
         bước →
       </text>
     </svg>
@@ -1250,10 +1250,10 @@ function OneStepPhase1({ w1, w2, L }: { w1: number; w2: number; L: number }) {
       <svg viewBox="0 0 420 80" className="w-full">
         <title>Loss tại điểm hiện tại — cao hay thấp so với đáy.</title>
         <line x1={30} y1={60} x2={390} y2={60} stroke="#cbd5e1" strokeWidth={1} />
-        <text x={30} y={74} fontSize={11} fill="#64748b">
+        <text x={30} y={74} fontSize={11} fill="var(--text-tertiary)">
           đáy (loss = 0)
         </text>
-        <text x={390} y={74} textAnchor="end" fontSize={11} fill="#64748b">
+        <text x={390} y={74} textAnchor="end" fontSize={11} fill="var(--text-tertiary)">
           loss cao
         </text>
         {/* Bar up to loss */}
@@ -1861,7 +1861,7 @@ export default function GradientDescentTopic() {
                 <title>Lấy ngẫu nhiên một lô nhỏ từ toàn bộ dataset để tính gradient.</title>
                 {/* Big dataset grid */}
                 <rect x={20} y={15} width={170} height={70} fill="none" stroke="#cbd5e1" strokeWidth={1} rx={4} />
-                <text x={105} y={12} textAnchor="middle" fontSize={11} fill="#64748b">
+                <text x={105} y={12} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
                   Toàn bộ dataset (N mẫu)
                 </text>
                 {Array.from({ length: 10 * 4 }).map((_, i) => {

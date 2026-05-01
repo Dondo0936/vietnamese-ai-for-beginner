@@ -80,7 +80,7 @@ export default function PanopticSegmentationTopic() {
         <VisualizationSection>
           <div className="space-y-6">
             <svg viewBox="0 0 600 420" className="w-full max-w-2xl mx-auto">
-              <text x="300" y="20" textAnchor="middle" fill="#e2e8f0" fontSize="13" fontWeight="bold">
+              <text x="300" y="20" textAnchor="middle" fill="var(--text-primary)" fontSize="13" fontWeight="bold">
                 So sánh 3 loại phân đoạn
               </text>
 
@@ -122,7 +122,7 @@ export default function PanopticSegmentationTopic() {
               <text x="554" y="130" textAnchor="middle" fill="#f59e0b" fontSize="11">Ng. #1</text>
               <text x="493" y="172" textAnchor="middle" fill="#64748b" fontSize="11">MỌI pixel có nhãn!</text>
 
-              <text x="300" y="210" textAnchor="middle" fill="#e2e8f0" fontSize="12" fontWeight="bold">Bảng so sánh</text>
+              <text x="300" y="210" textAnchor="middle" fill="var(--text-primary)" fontSize="12" fontWeight="bold">Bảng so sánh</text>
 
               {/* Table */}
               {[

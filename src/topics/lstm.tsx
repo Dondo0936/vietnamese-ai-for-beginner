@@ -1026,10 +1026,10 @@ export default function LstmTopic() {
               stroke="#334155"
               strokeWidth={1}
             />
-            <text x={10} y={20} fontSize={11} fill="#94a3b8">
+            <text x={10} y={20} fontSize={11} fill="var(--text-secondary)">
               log g
             </text>
-            <text x={565} y={135} fontSize={11} fill="#94a3b8">
+            <text x={565} y={135} fontSize={11} fill="var(--text-secondary)">
               N
             </text>
             {/* RNN curve */}

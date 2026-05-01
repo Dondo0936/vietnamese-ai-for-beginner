@@ -116,7 +116,7 @@ export default function StateSpaceModelsTopic() {
             </div>
 
             <svg viewBox="0 0 600 200" className="w-full max-w-2xl mx-auto">
-              <text x={300} y={16} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+              <text x={300} y={16} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
                 FLOPs &amp; Memory: Transformer vs SSM
               </text>
 
@@ -137,7 +137,7 @@ export default function StateSpaceModelsTopic() {
               </text>
 
               {/* Memory comparison */}
-              <text x={300} y={115} textAnchor="middle" fill="#94a3b8" fontSize={11} fontWeight="bold">KV Cache Memory</text>
+              <text x={300} y={115} textAnchor="middle" fill="var(--text-secondary)" fontSize={11} fontWeight="bold">KV Cache Memory</text>
 
               <text x={15} y={138} fill="#ef4444" fontSize={11}>Transformer</text>
               <rect x={100} y={124} width={420} height={20} rx={4} fill="#1e293b" />
@@ -153,7 +153,7 @@ export default function StateSpaceModelsTopic() {
                 O(1) state
               </text>
 
-              <text x={300} y={193} textAnchor="middle" fill="#64748b" fontSize={11}>
+              <text x={300} y={193} textAnchor="middle" fill="var(--text-tertiary)" fontSize={11}>
                 SSM nhanh hơn {(transformerFLOPs / ssmFLOPs).toFixed(0)}x FLOPs, memory KV cache O(1) vs O(N)
               </text>
             </svg>

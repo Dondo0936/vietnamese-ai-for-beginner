@@ -163,7 +163,7 @@ export default function TTSTopic() {
               <path d={voice.wave} fill="none" stroke="#22c55e" strokeWidth={2} transform="translate(415, -13) scale(0.6)" />
 
               {/* Pipeline steps */}
-              <text x={310} y={82} textAnchor="middle" fill="#e2e8f0" fontSize={11} fontWeight="bold">
+              <text x={310} y={82} textAnchor="middle" fill="var(--text-primary)" fontSize={11} fontWeight="bold">
                 Pipeline tổng hợp
               </text>
               {PIPELINE_STEPS.map((step, i) => {

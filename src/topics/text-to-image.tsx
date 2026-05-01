@@ -153,8 +153,8 @@ export default function TextToImageTopic() {
               })}
               {/* Gradient bar */}
               <rect x={72} y={115} width={580} height={16} rx={4} fill="url(#t2i-grad)" opacity={0.5} />
-              <text x={72} y={148} fill="#94a3b8" fontSize={11}>Nhiễu thuần tuý</text>
-              <text x={652} y={148} textAnchor="end" fill="#94a3b8" fontSize={11}>Ảnh hoàn chỉnh</text>
+              <text x={72} y={148} fill="var(--text-secondary)" fontSize={11}>Nhiễu thuần tuý</text>
+              <text x={652} y={148} textAnchor="end" fill="var(--text-secondary)" fontSize={11}>Ảnh hoàn chỉnh</text>
               <defs>
                 <linearGradient id="t2i-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#ef4444" />

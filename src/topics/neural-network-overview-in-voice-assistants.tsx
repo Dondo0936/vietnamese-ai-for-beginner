@@ -325,8 +325,8 @@ function WaveformVisual() {
       <svg viewBox="0 0 320 120" className="w-full">
         <line x1={0} y1={60} x2={320} y2={60} stroke="#94a3b8" strokeWidth={0.5} strokeDasharray="2 3" />
         <polyline points={points.join(" ")} fill="none" stroke="#3b82f6" strokeWidth={1.5} />
-        <text x={4} y={115} fontSize={11} fill="#94a3b8">0 giây</text>
-        <text x={300} y={115} fontSize={11} fill="#94a3b8" textAnchor="end">1 giây</text>
+        <text x={4} y={115} fontSize={11} fill="var(--text-secondary)">0 giây</text>
+        <text x={300} y={115} fontSize={11} fill="var(--text-secondary)" textAnchor="end">1 giây</text>
       </svg>
     </div>
   );
@@ -363,8 +363,8 @@ function SpectrogramVisual() {
             opacity={c.v}
           />
         ))}
-        <text x={4} y={125} fontSize={11} fill="#94a3b8">Thấp</text>
-        <text x={312} y={8} fontSize={11} fill="#94a3b8" textAnchor="end">Cao</text>
+        <text x={4} y={125} fontSize={11} fill="var(--text-secondary)">Thấp</text>
+        <text x={312} y={8} fontSize={11} fill="var(--text-secondary)" textAnchor="end">Cao</text>
       </svg>
     </div>
   );
@@ -457,7 +457,7 @@ function PhonemeVisual() {
                 y={155}
                 textAnchor="middle"
                 fontSize={11}
-                fill="#64748b"
+                fill="var(--text-tertiary)"
               >
                 {layer.label}
               </text>

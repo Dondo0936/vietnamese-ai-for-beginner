@@ -515,7 +515,7 @@ export default function InferenceOptimizationTopic() {
                 <text
                   textAnchor="middle"
                   y={-2}
-                  fill="#e2e8f0"
+                  fill="var(--text-primary)"
                   fontSize={11}
                   fontWeight="bold"
                 >
@@ -786,7 +786,7 @@ export default function InferenceOptimizationTopic() {
               <line x1={60} y1={40} x2={60} y2={320} stroke="#475569" strokeWidth={1.5} />
 
               {/* Axis labels */}
-              <text x={340} y={350} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+              <text x={340} y={350} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                 Latency/request (ms, thấp hơn = tốt hơn →)
               </text>
               <text
@@ -794,7 +794,7 @@ export default function InferenceOptimizationTopic() {
                 y={22}
                 transform="rotate(-90)"
                 textAnchor="middle"
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontSize={11}
               >
                 Throughput (req/s, ↑ cao hơn = tốt hơn)

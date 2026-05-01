@@ -460,7 +460,7 @@ export default function AIWatermarkingTopic() {
                 y={20}
                 textAnchor="middle"
                 fontSize={12}
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontWeight="bold"
               >
                 {activeCase.source === "ai"
@@ -555,7 +555,7 @@ export default function AIWatermarkingTopic() {
                     x={360}
                     y={12}
                     fontSize={11}
-                    fill="#64748b"
+                    fill="var(--text-tertiary)"
                     fontStyle="italic"
                   >
                     Hash(prev) → phân chia ngẫu nhiên
@@ -579,7 +579,7 @@ export default function AIWatermarkingTopic() {
                   y={18}
                   textAnchor="middle"
                   fontSize={12}
-                  fill="#64748b"
+                  fill="var(--text-tertiary)"
                   fontWeight="bold"
                 >
                   Phân tích thống kê — gamma={params.gamma.toFixed(2)}, delta=
@@ -640,7 +640,7 @@ export default function AIWatermarkingTopic() {
                   y={115}
                   textAnchor="middle"
                   fontSize={11}
-                  fill="#64748b"
+                  fill="var(--text-tertiary)"
                   fontStyle="italic"
                 >
                   T = {totalTokens} tokens · kỳ vọng green = {(totalTokens * params.gamma).toFixed(1)} · SD ={" "}

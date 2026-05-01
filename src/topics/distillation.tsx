@@ -488,7 +488,7 @@ export default function DistillationTopic() {
               x={370}
               y={340}
               textAnchor="middle"
-              fill="#94a3b8"
+              fill="var(--text-secondary)"
               fontSize="11"
             >
               {patternOn

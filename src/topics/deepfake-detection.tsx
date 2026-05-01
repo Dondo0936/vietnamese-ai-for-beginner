@@ -499,10 +499,10 @@ function StylizedFace({
             stroke="#0f172a"
             strokeWidth={0.5}
           />
-          <text x={10} y={184} fontSize={11} fill="#64748b">
+          <text x={10} y={184} fontSize={11} fill="var(--text-tertiary)">
             low freq
           </text>
-          <text x={130} y={184} fontSize={11} fill="#64748b">
+          <text x={130} y={184} fontSize={11} fill="var(--text-tertiary)">
             high
           </text>
         </g>

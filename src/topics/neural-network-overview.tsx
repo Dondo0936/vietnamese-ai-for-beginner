@@ -418,7 +418,7 @@ function MLPPlayground() {
                   <text x={LAYER_X[spec.layer]} y={neuronY(spec.layer, i) + 4} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold" className="pointer-events-none">
                     {spec.label}{i + 1}
                   </text>
-                  <text x={LAYER_X[spec.layer]} y={neuronY(spec.layer, i) + 38} textAnchor="middle" fill="#94a3b8" fontSize={11} className="pointer-events-none">
+                  <text x={LAYER_X[spec.layer]} y={neuronY(spec.layer, i) + 38} textAnchor="middle" fill="var(--text-secondary)" fontSize={11} className="pointer-events-none">
                     {label}
                   </text>
                 </g>
@@ -925,16 +925,16 @@ function SingleNeuronIllustration() {
       </text>
 
       {/* Chú thích */}
-      <text x={40} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
+      <text x={40} y={170} fontSize={11} fill="var(--text-secondary)" textAnchor="middle">
         Đầu vào
       </text>
-      <text x={185} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
+      <text x={185} y={170} fontSize={11} fill="var(--text-secondary)" textAnchor="middle">
         Cộng có trọng số
       </text>
-      <text x={281} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
+      <text x={281} y={170} fontSize={11} fill="var(--text-secondary)" textAnchor="middle">
         Công tắc
       </text>
-      <text x={342} y={170} fontSize={11} fill="#94a3b8" textAnchor="middle">
+      <text x={342} y={170} fontSize={11} fill="var(--text-secondary)" textAnchor="middle">
         Ra
       </text>
     </svg>

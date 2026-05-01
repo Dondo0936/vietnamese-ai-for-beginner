@@ -642,7 +642,7 @@ export default function QLearningTopic() {
                             x={x + CELL / 2}
                             y={y + 14}
                             textAnchor="middle"
-                            fill="#94a3b8"
+                            fill="var(--text-secondary)"
                             fontSize={11}
                           >
                             start
@@ -669,7 +669,7 @@ export default function QLearningTopic() {
                             x={x + CELL - 6}
                             y={y + CELL - 6}
                             textAnchor="end"
-                            fill="#e2e8f0"
+                            fill="var(--text-primary)"
                             fontSize={11}
                             fontFamily="monospace"
                             opacity={0.75}

@@ -424,7 +424,7 @@ export default function ObservabilityForAiTopic() {
                 strokeOpacity={0.35}
                 strokeDasharray="2 3"
               />
-              <text x={x} y={10} fontSize={11} fill="#94a3b8" textAnchor="middle">
+              <text x={x} y={10} fontSize={11} fill="var(--text-secondary)" textAnchor="middle">
                 {Math.round(scaleMax * t)}ms
               </text>
             </g>
@@ -497,7 +497,7 @@ export default function ObservabilityForAiTopic() {
                 x={xStart + width + 6}
                 y={y + 17}
                 fontSize={11}
-                fill="#94a3b8"
+                fill="var(--text-secondary)"
                 fontFamily="ui-monospace, Menlo, monospace"
               >
                 {s.durationMs}ms
@@ -526,7 +526,7 @@ export default function ObservabilityForAiTopic() {
                   fontSize={11}
                   textAnchor="end"
                   fontFamily="ui-monospace, Menlo, monospace"
-                  fill="#94a3b8"
+                  fill="var(--text-secondary)"
                 >
                   ↳ retry
                 </text>
@@ -549,7 +549,7 @@ export default function ObservabilityForAiTopic() {
                   x={cStart + cW + 6}
                   y={cy + 16}
                   fontSize={11}
-                  fill="#94a3b8"
+                  fill="var(--text-secondary)"
                   fontFamily="ui-monospace, Menlo, monospace"
                 >
                   {s.child.durationMs}ms
@@ -745,10 +745,10 @@ export default function ObservabilityForAiTopic() {
             const y = h - (v / max) * h;
             return <circle key={i} cx={x} cy={y} r={1.6} fill="#60a5fa" />;
           })}
-          <text x={2} y={h + 14} fontSize={11} fill="#94a3b8">
+          <text x={2} y={h + 14} fontSize={11} fill="var(--text-secondary)">
             cũ ←
           </text>
-          <text x={w - 2} y={h + 14} fontSize={11} fill="#94a3b8" textAnchor="end">
+          <text x={w - 2} y={h + 14} fontSize={11} fill="var(--text-secondary)" textAnchor="end">
             → mới
           </text>
         </svg>

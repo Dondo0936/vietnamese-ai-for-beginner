@@ -705,10 +705,10 @@ function PerceptronDiagram({
 
       {/* Sum node */}
       <circle cx={270} cy={140} r={32} fill="#1e293b" stroke="#475569" strokeWidth={2} />
-      <text x={270} y={135} textAnchor="middle" fill="#e2e8f0" fontSize={18}>
+      <text x={270} y={135} textAnchor="middle" fill="var(--text-primary)" fontSize={18}>
         Σ
       </text>
-      <text x={270} y={155} textAnchor="middle" fill="#94a3b8" fontSize={11} fontWeight={700}>
+      <text x={270} y={155} textAnchor="middle" fill="var(--text-secondary)" fontSize={11} fontWeight={700}>
         {z.toFixed(2)}
       </text>
 
@@ -1337,7 +1337,7 @@ export default function PerceptronTopic() {
               />
 
               <circle cx={240} cy={80} r={24} fill="#1e293b" stroke="#475569" strokeWidth={1.5} />
-              <text x={240} y={85} textAnchor="middle" fontSize={16} fill="#e2e8f0">
+              <text x={240} y={85} textAnchor="middle" fontSize={16} fill="var(--text-primary)">
                 Σ
               </text>
               <text x={240} y={120} textAnchor="middle" fontSize={11} fill="currentColor" className="text-muted">

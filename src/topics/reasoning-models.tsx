@@ -575,7 +575,7 @@ export default function ReasoningModelsTopic() {
                       x="45"
                       y={224 - y * 1.8}
                       textAnchor="end"
-                      fill="#64748b"
+                      fill="var(--text-tertiary)"
                       fontSize="11"
                     >
                       {y}%
@@ -590,7 +590,7 @@ export default function ReasoningModelsTopic() {
                     x={50 + (i / (points.length - 1)) * 520}
                     y="240"
                     textAnchor="middle"
-                    fill="#64748b"
+                    fill="var(--text-tertiary)"
                     fontSize="11"
                   >
                     {p.budget >= 1000
@@ -662,7 +662,7 @@ export default function ReasoningModelsTopic() {
                   x="310"
                   y="15"
                   textAnchor="middle"
-                  fill="#94a3b8"
+                  fill="var(--text-secondary)"
                   fontSize="11"
                 >
                   Accuracy ∝ log(test-time compute) — cùng model, thêm

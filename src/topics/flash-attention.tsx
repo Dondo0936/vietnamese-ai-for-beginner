@@ -553,10 +553,10 @@ export default function FlashAttentionTopic() {
                   ))}
 
                 {/* Annotation Q labels */}
-                <text x={10} y={svgSize + 18} fontSize={11} fill="#94a3b8">
+                <text x={10} y={svgSize + 18} fontSize={11} fill="var(--text-secondary)">
                   Q (query rows)
                 </text>
-                <text x={svgSize - 50} y={svgSize + 18} fontSize={11} fill="#94a3b8">
+                <text x={svgSize - 50} y={svgSize + 18} fontSize={11} fill="var(--text-secondary)">
                   → K columns
                 </text>
               </svg>
@@ -614,10 +614,10 @@ export default function FlashAttentionTopic() {
                       >
                         {tier.label}
                       </text>
-                      <text x={160} y={y + 33} textAnchor="middle" fontSize={11} fill="#e2e8f0">
+                      <text x={160} y={y + 33} textAnchor="middle" fontSize={11} fill="var(--text-primary)">
                         {tier.size} · {tier.bandwidth}
                       </text>
-                      <text x={160} y={y + 46} textAnchor="middle" fontSize={11} fill="#94a3b8">
+                      <text x={160} y={y + 46} textAnchor="middle" fontSize={11} fill="var(--text-secondary)">
                         {tier.latency}
                       </text>
                     </g>
@@ -780,7 +780,7 @@ export default function FlashAttentionTopic() {
               <line x1={60} y1={30} x2={60} y2={210} stroke="#475569" strokeWidth={1} />
               <line x1={60} y1={210} x2={500} y2={210} stroke="#475569" strokeWidth={1} />
 
-              <text x={16} y={115} fontSize={11} fill="#94a3b8" transform="rotate(-90 16 115)">
+              <text x={16} y={115} fontSize={11} fill="var(--text-secondary)" transform="rotate(-90 16 115)">
                 Thời gian (log ms)
               </text>
 
@@ -836,7 +836,7 @@ export default function FlashAttentionTopic() {
                     >
                       {b.flashMs < 1000 ? `${b.flashMs}ms` : `${(b.flashMs / 1000).toFixed(1)}s`}
                     </text>
-                    <text x={x + 32} y={225} textAnchor="middle" fontSize={11} fill="#94a3b8" fontWeight="bold">
+                    <text x={x + 32} y={225} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontWeight="bold">
                       N={b.seqLen}
                     </text>
                     <text x={x + 32} y={240} textAnchor="middle" fontSize={11} fill="#22c55e">
@@ -848,11 +848,11 @@ export default function FlashAttentionTopic() {
 
               {/* Legend */}
               <rect x={400} y={40} width={12} height={12} fill="url(#barRed)" rx={2} />
-              <text x={418} y={50} fontSize={11} fill="#e2e8f0">
+              <text x={418} y={50} fontSize={11} fill="var(--text-primary)">
                 Standard
               </text>
               <rect x={400} y={60} width={12} height={12} fill="url(#barGreen)" rx={2} />
-              <text x={418} y={70} fontSize={11} fill="#e2e8f0">
+              <text x={418} y={70} fontSize={11} fill="var(--text-primary)">
                 Flash Attn
               </text>
             </svg>

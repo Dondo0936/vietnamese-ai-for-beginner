@@ -124,12 +124,12 @@ export default function TLMTopic() {
 
             <svg viewBox="0 0 620 200" className="w-full max-w-2xl mx-auto">
               {/* Question */}
-              <text x={20} y={25} fill="#94a3b8" fontSize={11}>
+              <text x={20} y={25} fill="var(--text-secondary)" fontSize={11}>
                 <tspan fontWeight="bold">Câu hỏi:</tspan> {ex.query}
               </text>
 
               {/* Confidence bar */}
-              <text x={20} y={55} fill="#94a3b8" fontSize={11} fontWeight="bold">Điểm tin cậy:</text>
+              <text x={20} y={55} fill="var(--text-secondary)" fontSize={11} fontWeight="bold">Điểm tin cậy:</text>
               <rect x={20} y={65} width={480} height={28} rx={6} fill="#1e293b" stroke="#475569" strokeWidth={1} />
               <rect
                 x={20}
@@ -144,7 +144,7 @@ export default function TLMTopic() {
               </text>
 
               {/* Answer */}
-              <text x={20} y={120} fill="#e2e8f0" fontSize={11}>
+              <text x={20} y={120} fill="var(--text-primary)" fontSize={11}>
                 <tspan fontWeight="bold">Trả lời:</tspan> {ex.answer}
               </text>
 
@@ -156,7 +156,7 @@ export default function TLMTopic() {
               </text>
 
               {/* Calibration insight */}
-              <text x={20} y={185} fill="#94a3b8" fontSize={11}>
+              <text x={20} y={185} fill="var(--text-secondary)" fontSize={11}>
                 {ex.confidence > 0.8 && ex.correct && "Calibration tốt: tự tin cao + đáp án đúng"}
                 {ex.confidence < 0.4 && ex.correct && "Calibration tốt: không chắc nên nói thật → dù đáp án đúng, mô hình khiêm tốn"}
                 {ex.confidence > 0.5 && !ex.correct && "Calibration KÉM: tự tin vừa/cao nhưng SAI → nguy hiểm!"}

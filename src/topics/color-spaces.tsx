@@ -660,7 +660,7 @@ export default function ColorSpacesTopic() {
                     x={80}
                     y={152}
                     textAnchor="middle"
-                    fill="#94a3b8"
+                    fill="var(--text-secondary)"
                     fontSize={11}
                   >
                     Trên = sáng, Dưới = tối

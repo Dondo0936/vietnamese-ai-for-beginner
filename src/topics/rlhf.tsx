@@ -489,7 +489,7 @@ export default function RLHFTopic() {
                               x={x + 12}
                               y={112 + j * 22}
                               fontSize={11}
-                              fill="#cbd5e1"
+                              fill="var(--text-primary)"
                             >
                               • {b.length > 42 ? b.slice(0, 42) + "..." : b}
                             </text>
@@ -549,7 +549,7 @@ export default function RLHFTopic() {
                   })}
 
                   {/* Top input label */}
-                  <text x={30} y={22} fontSize={11} fill="#94a3b8">
+                  <text x={30} y={22} fontSize={11} fill="var(--text-secondary)">
                     Input: {activeStageMeta.flowFrom}
                   </text>
 

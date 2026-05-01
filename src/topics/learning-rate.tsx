@@ -486,7 +486,7 @@ export default function LearningRateTopic() {
                 x={SVG_W / 2}
                 y={SVG_H - 8}
                 textAnchor="middle"
-                fill="#64748b"
+                fill="var(--text-tertiary)"
                 fontSize="11"
               >
                 Trọng số (w)
@@ -572,7 +572,7 @@ export default function LearningRateTopic() {
                   x={toX(p.x)}
                   y={toY(Math.min(p.y, Y_MAX)) - 10}
                   textAnchor="middle"
-                  fill="#94a3b8"
+                  fill="var(--text-secondary)"
                   fontSize="11"
                 >
                   {i}
@@ -686,7 +686,7 @@ export default function LearningRateTopic() {
                       x={40 + ((lg + 7) / 9) * 440}
                       y={238}
                       textAnchor="middle"
-                      fill="#64748b"
+                      fill="var(--text-tertiary)"
                       fontSize="11"
                     >
                       1e{lg}
@@ -732,14 +732,14 @@ export default function LearningRateTopic() {
                 </text>
 
                 {/* axis labels */}
-                <text x={260} y={254} textAnchor="middle" fill="#94a3b8" fontSize="11">
+                <text x={260} y={254} textAnchor="middle" fill="var(--text-secondary)" fontSize="11">
                   Learning rate (thang log)
                 </text>
                 <text
                   x={18}
                   y={120}
                   textAnchor="middle"
-                  fill="#94a3b8"
+                  fill="var(--text-secondary)"
                   fontSize="11"
                   transform="rotate(-90 18 120)"
                 >
@@ -845,10 +845,10 @@ export default function LearningRateTopic() {
                           stroke={colors[curve.name]}
                           strokeWidth="2"
                         />
-                        <text x={30} y={125} fontSize="11" fill="#64748b">
+                        <text x={30} y={125} fontSize="11" fill="var(--text-tertiary)">
                           t=0
                         </text>
-                        <text x={230} y={125} textAnchor="end" fontSize="11" fill="#64748b">
+                        <text x={230} y={125} textAnchor="end" fontSize="11" fill="var(--text-tertiary)">
                           t=T
                         </text>
                       </svg>
@@ -918,10 +918,10 @@ export default function LearningRateTopic() {
                     stroke="#3b82f6"
                     strokeWidth="2.5"
                   />
-                  <text x={260} y={156} textAnchor="middle" fill="#94a3b8" fontSize="11">
+                  <text x={260} y={156} textAnchor="middle" fill="var(--text-secondary)" fontSize="11">
                     Epoch
                   </text>
-                  <text x={30} y={15} textAnchor="end" fill="#94a3b8" fontSize="11">
+                  <text x={30} y={15} textAnchor="end" fill="var(--text-secondary)" fontSize="11">
                     α
                   </text>
                 </svg>
@@ -1123,7 +1123,7 @@ for epoch in range(100):
                   strokeWidth="2.5"
                 />
 
-                <text x={260} y={190} textAnchor="middle" fill="#94a3b8" fontSize="11">
+                <text x={260} y={190} textAnchor="middle" fill="var(--text-secondary)" fontSize="11">
                   % tổng số bước huấn luyện
                 </text>
               </svg>

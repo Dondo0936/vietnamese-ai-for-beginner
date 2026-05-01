@@ -401,7 +401,7 @@ function BufferView({ agent, width }: BufferViewProps) {
       role="img"
       aria-label="Replay buffer visualization"
     >
-      <text x={4} y={12} fill="#94a3b8" fontSize={11}>
+      <text x={4} y={12} fill="var(--text-secondary)" fontSize={11}>
         Replay buffer — {agent.buffer.length}/{BUFFER_CAPACITY} transitions (ô
         vàng = vừa được sample cho batch)
       </text>

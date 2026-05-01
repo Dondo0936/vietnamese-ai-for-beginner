@@ -195,7 +195,7 @@ export default function MoETopic() {
               </text>
 
               {/* Info */}
-              <text x={300} y={215} textAnchor="middle" fill="#94a3b8" fontSize={11}>
+              <text x={300} y={215} textAnchor="middle" fill="var(--text-secondary)" fontSize={11}>
                 Top-2 routing: chỉ {query.activeExperts.length}/{EXPERTS.length} experts active | Compute = 2/8 = 25% tổng params
               </text>
             </svg>

@@ -530,10 +530,10 @@ function WhiteBoxTree() {
         stroke="#64748b"
         strokeWidth={2}
       />
-      <text x={110} y={66} fill="#94a3b8" fontSize={11} fontWeight={600}>
+      <text x={110} y={66} fill="var(--text-secondary)" fontSize={11} fontWeight={600}>
         Không
       </text>
-      <text x={240} y={66} fill="#94a3b8" fontSize={11} fontWeight={600}>
+      <text x={240} y={66} fill="var(--text-secondary)" fontSize={11} fontWeight={600}>
         Có
       </text>
 
@@ -602,10 +602,10 @@ function WhiteBoxTree() {
         stroke="#64748b"
         strokeWidth={2}
       />
-      <text x={205} y={138} fill="#94a3b8" fontSize={11} fontWeight={600}>
+      <text x={205} y={138} fill="var(--text-secondary)" fontSize={11} fontWeight={600}>
         Không
       </text>
-      <text x={310} y={138} fill="#94a3b8" fontSize={11} fontWeight={600}>
+      <text x={310} y={138} fill="var(--text-secondary)" fontSize={11} fontWeight={600}>
         Có
       </text>
 

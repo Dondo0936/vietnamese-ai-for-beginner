@@ -864,7 +864,7 @@ export default function ResidualConnectionsTopic() {
                           stroke="#475569"
                           strokeWidth={1}
                         />
-                        <text x={-8} y={y + 3} fontSize={11} fill="#94a3b8" textAnchor="end">
+                        <text x={-8} y={y + 3} fontSize={11} fill="var(--text-secondary)" textAnchor="end">
                           {v.toFixed(1)}
                         </text>
                       </g>
@@ -887,7 +887,7 @@ export default function ResidualConnectionsTopic() {
                           x={x}
                           y={CURVE_H + 16}
                           fontSize={11}
-                          fill="#94a3b8"
+                          fill="var(--text-secondary)"
                           textAnchor="middle"
                         >
                           {i}
@@ -899,7 +899,7 @@ export default function ResidualConnectionsTopic() {
                     x={CURVE_W / 2}
                     y={CURVE_H + 30}
                     fontSize={11}
-                    fill="#cbd5e1"
+                    fill="var(--text-primary)"
                     textAnchor="middle"
                   >
                     epoch
@@ -908,7 +908,7 @@ export default function ResidualConnectionsTopic() {
                     x={-24}
                     y={CURVE_H / 2}
                     fontSize={11}
-                    fill="#cbd5e1"
+                    fill="var(--text-primary)"
                     textAnchor="middle"
                     transform={`rotate(-90, -24, ${CURVE_H / 2})`}
                   >

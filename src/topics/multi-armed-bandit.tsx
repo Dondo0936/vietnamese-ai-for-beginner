@@ -516,7 +516,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
               x={paddingX - 4}
               y={y + 3}
               textAnchor="end"
-              fill="#64748b"
+              fill="var(--text-tertiary)"
               fontSize={11}
             >
               {(maxRegret * frac).toFixed(1)}
@@ -531,7 +531,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
         x={width / 2}
         y={16}
         textAnchor="middle"
-        fill="#e2e8f0"
+        fill="var(--text-primary)"
         fontSize={11}
         fontWeight="bold"
       >

@@ -1122,7 +1122,7 @@ function ElbowChart({
             y={PH - 10}
             textAnchor="middle"
             fontSize={11}
-            fill="#94a3b8"
+            fill="var(--text-secondary)"
           >
             k={p.k}
           </text>
@@ -1134,7 +1134,7 @@ function ElbowChart({
           y={PADT - 5}
           fontSize={11}
           fontWeight={600}
-          fill="#94a3b8"
+          fill="var(--text-secondary)"
         >
           Inertia (WCSS)
         </text>
