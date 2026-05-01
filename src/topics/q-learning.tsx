@@ -156,7 +156,7 @@ const EPSILON_MIN = 0.05;
 const EPSILON_DECAY = 0.995;
 const MAX_STEPS_PER_EPISODE = 200;
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 type ArrowDir = "up" | "right" | "down" | "left";
 
@@ -1025,7 +1025,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết mở rộng">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết mở rộng">
         <ExplanationSection>
           <p>
             <strong>Markov Decision Process (MDP)</strong> là khung toán học
@@ -1165,7 +1165,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
         </ExplanationSection>
       </LessonSection>
 
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           points={[
             "Q(s,a) = giá trị kỳ vọng của việc thực hiện action a tại state s rồi theo chính sách tối ưu. Agent chọn action có Q cao nhất.",
@@ -1194,7 +1194,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
         </Callout>
       </LessonSection>
 
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
     </>

@@ -32,7 +32,7 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 9;
 
 // ════════════════════════════════════════════════════════════════════════════
 // DỮ LIỆU: Các mức precision, số bin, accuracy drop (ước lượng thực nghiệm)

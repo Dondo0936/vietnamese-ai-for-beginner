@@ -1129,14 +1129,6 @@ export default function FeatureEngineeringTopic() {
               khác 0 – 1, gradient bị feature to đè, training mất ổn định.
             </p>
           </CollapsibleDetail>
-
-          <p className="mt-4 text-sm leading-relaxed">
-            Tiếp theo, xem feature engineering chạy thực tế trong bài{" "}
-            <TopicLink slug="feature-engineering-in-fraud-detection">
-              chống lừa đảo ngân hàng
-            </TopicLink>{" "}
-            — nơi mỗi feature đúng giúp bắt hàng trăm giao dịch gian lận/giây.
-          </p>
         </ExplanationSection>
       </LessonSection>
 

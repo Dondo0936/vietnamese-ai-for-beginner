@@ -199,7 +199,7 @@ const RERANKERS: RerankerSpec[] = [
   },
 ];
 
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 9;
 
 // ---------------------------------------------------------------------------
 // QUIZ — 8 câu theo yêu cầu
@@ -1315,9 +1315,11 @@ for doc, s in ranked:
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 8 — QUIZ (8 câu)
+           BƯỚC 9 — QUIZ (8 câu)
            ================================================================ */}
-      <QuizSection questions={quiz} />
+      <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
+        <QuizSection questions={quiz} />
+      </LessonSection>
     </>
   );
 }

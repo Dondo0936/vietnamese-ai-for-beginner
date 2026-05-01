@@ -139,7 +139,7 @@ export default function PlanningTopic() {
                     <rect x={25} y={y} width={210} height={38} rx={8}
                       fill={task.done ? "#22c55e" : "var(--bg-surface)"}
                       stroke={task.done ? "#4ade80" : "var(--text-tertiary)"} strokeWidth={2} />
-                    <text x={130} y={y + 24} textAnchor="middle" fill="white" fontSize={11} fontWeight="bold">
+                    <text x={130} y={y + 24} textAnchor="middle" fill={task.done ? "white" : "var(--ink)"} fontSize={11} fontWeight="bold">
                       {task.done ? "done " : ""}{task.label}
                     </text>
                   </g>
@@ -149,7 +149,7 @@ export default function PlanningTopic() {
                       <rect x={300} y={y + j * 35 - 14} width={190} height={28} rx={6}
                         fill={child.done ? "#22c55e" : "var(--bg-surface)"}
                         stroke={child.done ? "#4ade80" : "var(--text-tertiary)"} strokeWidth={1.5} />
-                      <text x={395} y={y + j * 35 + 4} textAnchor="middle" fill="white" fontSize={11}>
+                      <text x={395} y={y + j * 35 + 4} textAnchor="middle" fill={child.done ? "white" : "var(--ink)"} fontSize={11}>
                         {child.done ? "done " : ""}{child.label}
                       </text>
                     </g>
