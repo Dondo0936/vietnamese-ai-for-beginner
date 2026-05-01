@@ -7,6 +7,33 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "neuro-symbolic-robots",
+    title:
+      "Vì sao một robot biết nghĩ tiết kiệm 100 lần năng lượng.",
+    dek: "Trên bài tháp Hà Nội, robot dùng AI kiểu cũ học từ hàng triệu demo thắng 34%. Robot mới của Tufts cộng thêm một bộ luật suy luận, thắng 95% và đi được những phép xếp chưa từng thấy. Khoản đắt nhất không phải accuracy, là điện: cách nghĩ mới ngốn 1% điện train, 5% điện chạy. Hội nghị ICRA Vienna tháng 5 năm 2026 vừa công bố. Bài viết giải thích vì sao một mạng nơ-ron lai với bộ luật cổ điển lại vừa chính xác vừa tiết kiệm hơn việc nhồi cho mạng học thật to.",
+    source: {
+      name: "arXiv · 2602.11743",
+      host: "arxiv.org",
+      url: "https://arxiv.org/abs/2602.11743",
+    },
+    date: "2026-05-01",
+    readingTime: "8 phút",
+    category: "paper",
+    tag: "hot",
+    lessonRefs: [
+      "agent-architecture",
+      "reasoning-models",
+      "chain-of-thought",
+      "agentic-workflows",
+    ],
+    relatedArticles: [
+      "turboquant-kv-cache-compression",
+      "mixture-of-depths",
+    ],
+    heroViz: "tower-of-hanoi",
+    isLead: true,
+  },
+  {
     slug: "turboquant-kv-cache-compression",
     title:
       "TurboQuant. Nén KV cache xuống 3 bit mà accuracy không đổi.",

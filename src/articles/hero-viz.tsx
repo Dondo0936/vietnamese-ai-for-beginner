@@ -7,6 +7,7 @@ import { CoBrowserViz } from "./operator-2-browser-agent";
 import { VMLUBarsViz } from "./phogpt-7b-reasoning";
 import { CostCurveViz } from "./ai-index-report-2026";
 import { KvRotationViz } from "./turboquant-kv-cache-compression";
+import { TowerOfHanoiHeroViz } from "./neuro-symbolic-robots";
 
 /**
  * Map an article's `heroViz` frontmatter key to the same SVG the
@@ -24,6 +25,7 @@ const map: Record<string, ComponentType> = {
   "vmlu-bars": VMLUBarsViz,
   "cost-curve": CostCurveViz,
   "kv-rotation": KvRotationViz,
+  "tower-of-hanoi": TowerOfHanoiHeroViz,
 };
 
 export function getHeroViz(key: string | undefined): ComponentType | null {
