@@ -26,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/resources`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     ...tiles.map((tile) => ({
       url: `${BASE_URL}/claude/${tile.slug}`,
       lastModified: new Date(),

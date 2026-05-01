@@ -50,6 +50,7 @@ export default function Footer() {
               links={[
                 { href: "/browse", label: "Tất cả chủ đề" },
                 { href: "/claude", label: "Cẩm nang Claude" },
+                { href: "/resources", label: "Tài nguyên Học máy" },
                 { href: "/bookmarks", label: "Đã lưu" },
                 { href: "/progress", label: "Tiến độ" },
               ]}
