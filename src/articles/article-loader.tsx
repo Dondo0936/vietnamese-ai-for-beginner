@@ -11,6 +11,9 @@ import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 
 const articleComponents: Record<string, ComponentType> = {
+  "midjourney-vs-chatgpt-image-2": dynamic(
+    () => import("@/articles/midjourney-vs-chatgpt-image-2"),
+  ),
   "neuro-symbolic-robots": dynamic(
     () => import("@/articles/neuro-symbolic-robots"),
   ),

@@ -44,13 +44,16 @@ export default function NeuroSymbolicRobotsArticle() {
             nhưng kèm thêm một bộ luật suy luận cổ điển để lập kế hoạch.
           </p>
           <p>
-            Bài thi giống nhau, kết quả khác xa. Cánh tay VLA thắng 34%.
-            Cánh tay neuro-symbolic thắng 95%. Khi nhóm làm khó bằng các
-            biến thể tháp chưa từng có trong dữ liệu huấn luyện, VLA rớt
-            về 0%, neuro-symbolic giữ 78%. Khoản đắt nhất không nằm ở
-            tỷ lệ thắng. Nó nằm ở điện. Cánh tay neuro-symbolic ngốn 1%
-            điện train, 5% điện chạy. Bài này sẽ đi vào hai chữ
-            &ldquo;biết nghĩ&rdquo; thực sự nghĩa là gì với một con robot.
+            Cùng một bài thi, hai cánh tay cho ra kết quả rất khác nhau.
+            Cánh tay VLA chỉ thắng 34%, trong khi cánh tay neuro-symbolic
+            thắng tới 95%. Khi nhóm làm khó bằng các biến thể tháp chưa
+            từng có trong dữ liệu huấn luyện, VLA rớt về 0% còn
+            neuro-symbolic vẫn giữ được 78%. Tuy nhiên, điều khiến giới
+            robot chú ý nhất không nằm ở tỷ lệ thắng mà ở chi phí điện.
+            So với VLA, cánh tay neuro-symbolic chỉ tốn khoảng 1% điện
+            cho việc huấn luyện và 5% điện cho việc vận hành. Bài viết
+            sẽ đi sâu vào hai chữ &ldquo;biết nghĩ&rdquo; thực sự nghĩa
+            là gì với một con robot.
           </p>
         </ArticleProse>
       </ArticleSection>
@@ -69,21 +72,22 @@ export default function NeuroSymbolicRobotsArticle() {
             tiếp.
           </p>
           <p>
-            Cách này hoạt động tuyệt vời cho những việc đã có nhiều
+            Cách này hoạt động tuyệt vời cho những việc đã có sẵn nhiều
             video gần giống. Robot pha cà phê, gấp khăn, lau bàn nếu
-            được train đúng dạng. Nhưng trò tháp Hà Nội đặt ra một yêu
-            cầu khác. Việc thắng đòi hỏi phải nghĩ trước nhiều bước, và
-            mỗi tình huống tháp lại khác nhau dù trông giống nhau. Mạng
-            nơ-ron không có khái niệm &ldquo;kế hoạch&rdquo;. Nó chỉ
-            đoán, ở mỗi khung hình, động tác kế tiếp giống nhất với hàng
-            triệu video đã xem.
+            được huấn luyện đúng dạng. Tuy nhiên, trò tháp Hà Nội đặt
+            ra một yêu cầu khác hẳn. Việc thắng đòi hỏi phải nghĩ trước
+            nhiều bước, trong khi mỗi tình huống tháp lại khác nhau dù
+            trông giống nhau. Mạng nơ-ron không có khái niệm
+            &ldquo;kế hoạch&rdquo;. Ở mỗi khung hình, nó chỉ đoán động
+            tác kế tiếp giống nhất với hàng triệu video đã xem.
           </p>
           <p>
-            Đây là kiểu <b>học vẹt</b> rất nặng, lấy số lượng đè chất
-            lượng. Robot đã từng thấy hàng nghìn pha &ldquo;nhấc đĩa nhỏ
-            đặt qua cọc bên cạnh&rdquo;, nên rất hay làm động tác đó dù
-            đó không phải bước đúng. Khi gặp tháp 4 đĩa thay vì 3, hoặc
-            khi vị trí cọc xê dịch, mẫu khớp với video huấn luyện ít đi
+            Đây là kiểu <b>học vẹt</b> rất nặng, dùng quy mô dữ liệu để
+            bù cho việc thiếu khả năng suy luận. Robot đã từng thấy
+            hàng nghìn pha &ldquo;nhấc đĩa nhỏ đặt qua cọc bên cạnh&rdquo;,
+            nên hay lặp lại động tác đó dù không phải bước đúng. Khi
+            gặp tháp 4 đĩa thay vì 3, hoặc khi vị trí cọc xê dịch, số
+            mẫu video huấn luyện khớp được với cảnh trước mắt giảm đi
             và xác suất thắng tụt nhanh.
           </p>
         </ArticleProse>
@@ -92,7 +96,7 @@ export default function NeuroSymbolicRobotsArticle() {
 
       <ArticleSection
         eyebrow="03 · Cách nghĩ kiểu mới"
-        heading="Mạng nhìn, luật xếp kế hoạch"
+        heading="Neuro-symbolic chia việc giữa mạng nơ-ron và bộ luật"
       >
         <ArticleProse>
           <p>
@@ -129,37 +133,39 @@ export default function NeuroSymbolicRobotsArticle() {
 
       <ArticleSection
         eyebrow="04 · Số liệu"
-        heading="Đôi cánh nhỏ, đường bay xa"
+        heading="Độ chính xác cao hơn, năng lượng giảm 100 lần"
       >
         <ArticleCompare
           before={{
             label: "Robot VLA · học vẹt từ video",
             value: "34% thắng",
-            note: "Hơn 36 giờ train. Tháp biến thể chưa từng thấy: 0% thắng. Điện train là chuẩn 100%.",
+            note: "Hơn 36 giờ huấn luyện. Tháp biến thể chưa từng thấy: 0% thắng. Mức điện huấn luyện chuẩn 100%.",
           }}
           after={{
             label: "Robot neuro-symbolic · mạng + luật",
             value: "95% thắng",
-            note: "34 phút train. Tháp biến thể: vẫn 78%. Điện train còn 1%. Điện chạy còn 5%.",
+            note: "34 phút huấn luyện. Tháp biến thể: vẫn 78%. Điện huấn luyện còn 1%. Điện vận hành còn 5%.",
           }}
         />
         <ArticleProse>
           <p>
-            Hai con số 1% và 5% là điểm thực sự khiến giới làm robot chú
-            ý. AI hiện đại đang là một ngành ngốn điện rõ rệt: GPU train
-            chạy hàng tuần, datacenter tốn nước làm mát. Nếu cùng bài
-            toán có thể giải bằng cách viết thêm một bộ luật vài chục
-            dòng và để mạng nơ-ron chỉ làm phần nó giỏi, lượng điện cần
-            thiết đột nhiên rơi xuống một mức gần như nồi cơm điện so
-            với ô tô.
+            Hai con số 1% và 5% là điểm thực sự khiến giới làm robot
+            chú ý. AI hiện đại đang là một ngành ngốn điện rõ rệt: cụm
+            GPU chạy huấn luyện hàng tuần, datacenter tốn nước làm
+            mát. Nếu cùng một bài toán có thể giải được bằng cách viết
+            thêm một bộ luật vài chục dòng và để mạng nơ-ron chỉ làm
+            phần nó giỏi, thì lượng điện cần thiết đột nhiên rơi
+            xuống một mức gần như nồi cơm điện so với ô tô.
           </p>
           <p>
-            Tỷ lệ thắng cao trên biến thể chưa thấy có thể giải thích
-            đơn giản: planner không cần thấy biến thể đó trong dữ liệu.
-            Nó chỉ chạy luật. Tháp 4 đĩa, tháp 5 đĩa, tháp với cọc xê
-            dịch, đều cùng một luật. Mạng nơ-ron mà planner gọi cũng
-            không cần học cả tháp; nó chỉ học nhìn đĩa và cọc. Khả năng
-            tổng quát hoá đến từ chỗ chia việc, không từ chỗ học thêm.
+            Tỷ lệ thắng cao trên các biến thể chưa thấy có thể giải
+            thích đơn giản: planner không cần thấy biến thể đó trong
+            dữ liệu, nó chỉ chạy luật. Tháp 4 đĩa, tháp 5 đĩa, tháp
+            với cọc xê dịch, tất cả đều cùng một luật. Mạng nơ-ron mà
+            planner gọi cũng không cần học cả tháp, nó chỉ học nhìn
+            đĩa và cọc. Khả năng giải các bài chưa thấy đến từ việc
+            chia rạch ròi vai trò, chứ không đến từ việc cho mạng học
+            thêm dữ liệu.
           </p>
         </ArticleProse>
         <EnergyComparisonViz />
@@ -171,14 +177,16 @@ export default function NeuroSymbolicRobotsArticle() {
       >
         <ArticleProse>
           <p>
-            Trong vài năm vừa rồi, công nghệ robot học theo hướng &ldquo;to
-            hơn, nhiều dữ liệu hơn&rdquo;: VLA ngày càng đồ sộ, datacenter
-            ngày càng đắt. Bài của Tufts gợi ra một con đường khác.
-            Không phải mạng to thay được mọi việc. Một số việc, đặc biệt
-            là những việc cần lập kế hoạch nhiều bước, có cách giải đã
-            tồn tại từ trước thời học máy: thuật toán cổ điển, code do
-            con người viết. Lai hai bên lại, cùng một bài, cùng độ chính
-            xác hoặc cao hơn, năng lượng thấp đi rõ rệt.
+            Trong vài năm vừa rồi, công nghệ robot học đang đi theo
+            hướng &ldquo;mạng to hơn, dữ liệu nhiều hơn&rdquo;: model
+            VLA ngày càng đồ sộ, datacenter ngày càng đắt. Bài của
+            Tufts gợi ra một con đường khác. Không phải cứ mạng to thì
+            sẽ thay được mọi việc. Một số việc, đặc biệt là những việc
+            cần lập kế hoạch nhiều bước, có cách giải đã tồn tại từ
+            trước thời học máy: thuật toán cổ điển, code do con người
+            viết. Khi lai hai bên lại trên cùng một bài toán, độ chính
+            xác bằng hoặc cao hơn, trong khi năng lượng tiêu thụ giảm
+            rõ rệt.
           </p>
           <p>
             Hướng này không xoá bỏ <Term slug="reasoning-models">model
@@ -193,10 +201,11 @@ export default function NeuroSymbolicRobotsArticle() {
             Bạn không cần làm robot để áp dụng tinh thần này. Lần tới
             khi bạn lắp một <Term slug="agent-architecture">agent</Term>{" "}
             chạy bằng LLM, ví dụ một agent đặt vé, hãy tự hỏi: phần nào
-            cần &ldquo;hiểu&rdquo; (đọc email, xác định thông tin), phần
-            nào chỉ là quy tắc (tính ngày, kiểm tra điều kiện, gọi API)?
-            Phần thứ hai để cho code thường làm sẽ rẻ hơn, đáng tin cậy
-            hơn, và dễ debug hơn nhiều so với việc nhờ LLM lý sự.
+            cần &ldquo;hiểu&rdquo; (đọc email, xác định thông tin), và
+            phần nào chỉ là quy tắc (tính ngày, kiểm tra điều kiện, gọi
+            API)? Phần thứ hai nên giao cho code thông thường. Nó rẻ
+            hơn, đáng tin cậy hơn, và dễ debug hơn nhiều so với việc
+            nhờ LLM tự suy luận.
           </p>
         </ArticleProse>
       </ArticleSection>
@@ -594,9 +603,9 @@ function NeuroSymbolicPipeline() {
  * ────────────────────────────────────────────────────────────── */
 function EnergyComparisonViz() {
   const rows = [
-    { label: "Điện train", vla: 100, ns: 1, unit: "%" },
-    { label: "Điện chạy", vla: 100, ns: 5, unit: "%" },
-    { label: "Thời gian train", vla: 100, ns: 1.6, unit: "%" },
+    { label: "Điện huấn luyện", vla: 100, ns: 1, unit: "%" },
+    { label: "Điện vận hành", vla: 100, ns: 5, unit: "%" },
+    { label: "Thời gian huấn luyện", vla: 100, ns: 1.6, unit: "%" },
   ];
   return (
     <ArticleViz caption="Cùng một bài tháp Hà Nội, ba chiều chi phí. Mỗi thanh bên trên là VLA, bên dưới là neuro-symbolic. Số nhỏ là tốt.">

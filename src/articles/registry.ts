@@ -7,10 +7,36 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "midjourney-vs-chatgpt-image-2",
+    title:
+      "Midjourney V8.1 vẽ đẹp, ChatGPT Images 2.0 vẽ đúng chữ.",
+    dek: "Tháng 4 năm 2026, hai bản image gen mới ra cùng tuần. Ngày 21, OpenAI tung ChatGPT Images 2.0 (model gpt-image-2), bản image gen đầu tiên có thinking mode biết suy luận trước khi vẽ. Trong khi đó, ngày 30, Midjourney chuyển V8.1 thành mặc định, mang ảnh 2K trực tiếp lên web app kèm text rendering tốt hơn V7 đáng kể. Cùng một prompt yêu cầu vẽ biển hiệu PHỞ BÒ NGON, Midjourney vẽ ra một bức không khí đẹp nhưng biển hiệu vẫn sai chính tả. Tuy nhiên, Images 2.0 vẽ một bức trông giống ảnh chụp điện thoại, biển hiệu đúng từng dấu, và còn suy nghĩ về layout trước khi vẽ. Bài viết phân tích vì sao diffusion (Midjourney) và token autoregressive kèm thinking mode (Images 2.0) sinh ra hai phong cách rất khác, lúc nào nên dùng bên nào, và tại sao nhiều designer dùng cả hai trong cùng một quy trình.",
+    source: {
+      name: "udemi.tech · phân tích so sánh",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/midjourney-vs-chatgpt-image-2",
+    },
+    date: "2026-05-02",
+    readingTime: "9 phút",
+    category: "tool",
+    tag: "hot",
+    lessonRefs: [
+      "agent-architecture",
+      "reasoning-models",
+      "chain-of-thought",
+    ],
+    relatedArticles: [
+      "neuro-symbolic-robots",
+      "turboquant-kv-cache-compression",
+    ],
+    heroViz: "image-gen-split",
+    isLead: true,
+  },
+  {
     slug: "neuro-symbolic-robots",
     title:
-      "Vì sao một robot biết nghĩ tiết kiệm 100 lần năng lượng.",
-    dek: "Trên bài tháp Hà Nội, robot dùng AI kiểu cũ học từ hàng triệu demo thắng 34%. Robot mới của Tufts cộng thêm một bộ luật suy luận, thắng 95% và đi được những phép xếp chưa từng thấy. Khoản đắt nhất không phải accuracy, là điện: cách nghĩ mới ngốn 1% điện train, 5% điện chạy. Hội nghị ICRA Vienna tháng 5 năm 2026 vừa công bố. Bài viết giải thích vì sao một mạng nơ-ron lai với bộ luật cổ điển lại vừa chính xác vừa tiết kiệm hơn việc nhồi cho mạng học thật to.",
+      "Vì sao một robot biết nghĩ lại tiết kiệm năng lượng gấp 100 lần.",
+    dek: "Trong bài thi tháp Hà Nội, một cánh tay robot chạy AI kiểu cũ chỉ thắng 34%. Loại AI này học bằng cách bắt chước hàng triệu video người làm. Robot mới của đại học Tufts cộng thêm một bộ luật suy luận, vừa thắng 95% vừa giải được cả các biến thể tháp chưa từng có trong dữ liệu. Cái tốn kém nhất không phải độ chính xác mà là điện: cách nghĩ mới chỉ tốn khoảng 1% điện cho việc huấn luyện và 5% điện cho việc vận hành. Nghiên cứu vừa được công bố tại hội nghị ICRA Vienna tháng 5 năm 2026. Bài viết giải thích vì sao một mạng nơ-ron lai với bộ luật cổ điển lại vừa chính xác vừa tiết kiệm hơn việc nhồi cho mạng học thật to.",
     source: {
       name: "arXiv · 2602.11743",
       host: "arxiv.org",
