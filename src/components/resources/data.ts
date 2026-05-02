@@ -110,7 +110,7 @@ export const RESOURCES_META = {
   h1Italic: "được tuyển chọn",
   h1Tail: ", dịch sang tiếng Việt.",
   lede:
-    "Bộ sưu tập sách, khoá học, blog và lộ trình do cộng đồng awesome-machine-learning tổng hợp. Chỉ giữ lại các nguồn vẫn được duy trì trong vòng 12 tháng qua. Mỗi mục được dịch và chú thích để bạn hiểu nhanh trước khi nhấp.",
+    "Bộ sưu tập sách, khóa học, blog và lộ trình do cộng đồng awesome-machine-learning tổng hợp. Chỉ giữ lại các nguồn vẫn được duy trì trong vòng 12 tháng qua. Mỗi mục được dịch và chú thích để bạn hiểu nhanh trước khi nhấp.",
   meta: [
     { value: "5", text: "tệp Markdown, gốc tiếng Anh" },
     { value: "80+", text: "mục đã dịch" },
@@ -245,21 +245,21 @@ export const SECTIONS: Section[] = [
             title: "Causal AI",
             href: "https://www.manning.com/books/causal-machine-learning",
             desc:
-              "Robert Ness. Xây model AI có khả năng suy luận về quan hệ nhân quả.",
+              "Robert Ness. Xây model AI biết suy luận nhân quả.",
             tags: [TAG_PAID],
           },
           {
             title: "Machine Learning System Design",
             href: "https://www.manning.com/books/machine-learning-system-design",
             desc:
-              "Babushkin và Kravchenko. Cách lập kế hoạch và thiết kế ứng dụng ML thành công.",
+              "Babushkin và Kravchenko. Cách lên kế hoạch và thiết kế hệ thống ML cho ra sản phẩm thật.",
             tags: [TAG_PAID],
           },
           {
             title: "AI Governance",
             href: "https://www.manning.com/books/ai-governance",
             desc:
-              "Sổ tay khai thác Generative AI một cách an toàn và có cấu trúc.",
+              "Sổ tay dùng Generative AI an toàn và có hệ thống.",
             tags: [TAG_PAID, TAG_FRESH_NEW],
           },
         ],
@@ -306,7 +306,7 @@ export const SECTIONS: Section[] = [
           {
             title: "AI Model Evaluation",
             href: "https://www.manning.com/books/ai-model-evaluation",
-            desc: "Sách mới về đánh giá model AI một cách có hệ thống.",
+            desc: "Sách mới về cách đánh giá model AI có hệ thống.",
             tags: [TAG_PAID, TAG_FRESH_NEW],
           },
         ],
@@ -375,14 +375,14 @@ export const SECTIONS: Section[] = [
     ],
   },
 
-  /* ─── 02 · Khoá học ─── */
+  /* ─── 02 · Khóa học ─── */
   {
     kind: "list",
     id: "courses",
     num: "02",
-    title: "Khoá học",
+    title: "Khóa học",
     desc:
-      "Khoá học trực tuyến, miễn phí và trả phí, về học máy, thống kê, khai phá dữ liệu.",
+      "Khóa học trực tuyến, miễn phí và trả phí, về học máy, thống kê, khai phá dữ liệu.",
     cats: [
       {
         title: "Nhập môn: chọn một trong số này",
@@ -392,21 +392,21 @@ export const SECTIONS: Section[] = [
             title: "Machine Learning · Andrew Ng",
             href: "https://www.coursera.org/learn/machine-learning",
             desc:
-              "Khoá kinh điển trên Coursera. Vẫn là điểm khởi đầu được đề xuất nhiều nhất cho người mới.",
+              "Khóa kinh điển trên Coursera. Vẫn là điểm khởi đầu được đề xuất nhiều nhất cho người mới.",
             tags: [TAG_FREE_AUDIT, TAG_CLS_STANFORD],
           },
           {
             title: "Deep Learning Specialization",
             href: "https://www.coursera.org/specializations/deep-learning",
             desc:
-              "5 khoá nhỏ về mạng neural, CNN, RNN, Transformer. Do Andrew Ng và DeepLearning.AI tổ chức.",
+              "5 khóa nhỏ về mạng neural, CNN, RNN, Transformer. Do Andrew Ng và DeepLearning.AI tổ chức.",
             tags: [TAG_AUDIT_FREE, TAG_PAID_CERT],
           },
           {
             title: "Intro to Deep Learning · MIT",
             href: "https://introtodeeplearning.com/",
             desc:
-              "Khoá ngắn của MIT, cập nhật mỗi năm. Bài giảng kèm lab thực hành.",
+              "Khóa ngắn của MIT, cập nhật mỗi năm. Bài giảng kèm lab thực hành.",
             tags: [TAG_FREE, TAG_CLS_MIT],
           },
           {
@@ -420,7 +420,7 @@ export const SECTIONS: Section[] = [
             title: "Machine Learning Crash Course · Google",
             href: "https://developers.google.com/machine-learning/crash-course/",
             desc:
-              "Khoá rút gọn 15 giờ của Google, kèm bài tập tương tác.",
+              "Khóa rút gọn 15 giờ của Google, kèm bài tập tương tác.",
             tags: [TAG_FREE],
           },
           {
@@ -447,7 +447,7 @@ export const SECTIONS: Section[] = [
             title: "CS231n · CNNs for Visual Recognition",
             href: "http://cs231n.github.io/",
             desc:
-              "Khoá nổi tiếng của Stanford về thị giác máy tính: slide, bài tập, video.",
+              "Khóa nổi tiếng của Stanford về thị giác máy tính: slide, bài tập, video.",
             tags: [TAG_FREE, TAG_CLS_STANFORD],
           },
           {
@@ -475,7 +475,7 @@ export const SECTIONS: Section[] = [
             title: "MLOps Specialization",
             href: "https://www.coursera.org/specializations/machine-learning-engineering-for-production-mlops",
             desc:
-              "DeepLearning.AI. Chuyên về vận hành model ML ở quy mô sản xuất.",
+              "DeepLearning.AI. Chuyên về vận hành model ML ở quy mô production.",
             tags: [TAG_PAID, TAG_FMT_FA],
           },
           {
@@ -503,7 +503,7 @@ export const SECTIONS: Section[] = [
             title: "Introduction to Data-Centric AI · MIT",
             href: "https://dcai.csail.mit.edu/",
             desc:
-              "Cách tiếp cận lấy dữ liệu làm trung tâm thay vì lấy model.",
+              "Lấy dữ liệu làm trung tâm thay vì model. Cách tiếp cận data-centric AI.",
             tags: [TAG_FREE, TAG_CLS_MIT],
           },
         ],
@@ -523,14 +523,14 @@ export const SECTIONS: Section[] = [
             title: "Prompt Engineering for Vision Models",
             href: "https://www.deeplearning.ai/short-courses/prompt-engineering-for-vision-models/",
             desc:
-              "Khoá ngắn của DeepLearning.AI về prompt cho model thị giác.",
+              "Khóa ngắn của DeepLearning.AI về prompt cho model thị giác.",
             tags: [TAG_FREE],
           },
           {
             title: "ML Observability Fundamentals",
             href: "https://arize.com/ml-observability-fundamentals/",
             desc:
-              "Arize. Nguyên lý quan sát model ML trong sản xuất.",
+              "Arize. Nguyên lý giám sát model ML khi đưa vào production.",
             tags: [TAG_FREE],
           },
           {
@@ -586,7 +586,7 @@ export const SECTIONS: Section[] = [
             title: "Lilian Weng",
             href: "https://lilianweng.github.io/",
             desc:
-              "Tổng hợp survey-style về RL, agent, diffusion. Lý tưởng để vào chủ đề mới.",
+              "Bài tổng hợp dạng survey về RL, agent, diffusion. Lý tưởng để vào chủ đề mới.",
           },
           {
             title: "Andrew Trask",
@@ -609,7 +609,7 @@ export const SECTIONS: Section[] = [
           {
             title: "LightTag NLP Blog",
             href: "https://lighttag.io/blog",
-            desc: "Annotation, dataset, kỹ thuật nhãn hoá cho NLP.",
+            desc: "Annotation, dataset, kỹ thuật gán nhãn cho NLP.",
           },
           {
             title: "Kaggle Blog",
@@ -723,14 +723,14 @@ export const SECTIONS: Section[] = [
     num: "04",
     title: "Lộ trình cho người mới",
     desc:
-      "Lộ trình do Sebastian Raschka đề xuất. Bắt đầu từ một khoá nhập môn dễ chịu, rồi đi sâu dần vào sách kinh điển.",
+      "Lộ trình do Sebastian Raschka đề xuất. Bắt đầu từ một khóa học cho người mới, rồi đi sâu dần vào sách kinh điển.",
     intro:
-      "Nếu phải xếp lộ trình cho người mới hoàn toàn, tôi sẽ bắt đầu bằng một khoá học nhập môn nhẹ nhàng, rồi mới chuyển sang sách 'data mining' và sau cùng là các sách lý thuyết thống kê. Mục tiêu không phải hiểu ngay mọi công thức, mà là hiểu dữ liệu, hiểu khi nào nên dùng ML, khi nào không.",
+      "Nếu phải xếp lộ trình cho người mới hoàn toàn, tôi sẽ bắt đầu bằng một khóa nhập môn cơ bản, rồi mới chuyển sang sách 'data mining' và sau cùng là các sách lý thuyết thống kê. Mục tiêu không phải hiểu ngay mọi công thức, mà là hiểu dữ liệu, hiểu khi nào nên dùng ML, khi nào không.",
     quote:
       "Nếu trong tay bạn chỉ có cây búa, mọi thứ đều trông như cái đinh.",
     steps: [
       {
-        title: "Khoá nhập môn dễ chịu",
+        title: "Khóa học cho người mới",
         segments: [
           "Bắt đầu với ",
           {
@@ -809,7 +809,7 @@ export const SECTIONS: Section[] = [
             pin: "Toàn cầu · tổng hợp",
             title: "AI và ML Events",
             desc:
-              "Tổng hợp các hội nghị và triển lãm sắp diễn ra về AI/ML, đã được biên tập tay.",
+              "Tổng hợp các hội nghị và triển lãm sắp diễn ra về AI/ML, được tuyển chọn thủ công.",
             href: "https://aiml.events",
           },
           {
