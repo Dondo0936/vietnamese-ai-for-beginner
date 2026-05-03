@@ -47,7 +47,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Từ 'là' xuất hiện trong 3/4 tài liệu. TF-IDF của nó sẽ như thế nào?",
     options: [
       "Rất cao vì xuất hiện nhiều",
-      "Thấp vì IDF nhỏ — từ quá phổ biến không giúp phân biệt tài liệu",
+      "Thấp vì IDF nhỏ. Từ quá phổ biến không giúp phân biệt tài liệu",
       "Trung bình",
       "Bằng 0",
     ],
@@ -101,7 +101,7 @@ export default function TfIdfTopic() {
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử thách">
         <PredictionGate
           question={`Trong 4 bài viết về Hà Nội, từ nào giúp bạn nhận ra bài viết NÀO nói về ẩm thực: "Hà Nội", "phở", hay "là"?`}
-          options={['"Hà Nội" — vì liên quan đến Hà Nội', '"phở" — vì chỉ bài ẩm thực mới có', '"là" — vì xuất hiện nhiều']}
+          options={['"Hà Nội": vì liên quan đến Hà Nội', '"phở": vì chỉ bài ẩm thực mới có', '"là": vì xuất hiện nhiều']}
           correct={1}
           explanation={`"Hà Nội" xuất hiện ở nhiều bài → không đặc biệt. "là" xuất hiện khắp nơi → vô dụng. Nhưng "phở" chỉ có trong bài ẩm thực → rất ĐẶC TRƯNG! TF-IDF chính là cách đo mức độ "đặc trưng" này.`}
         />
@@ -119,7 +119,7 @@ export default function TfIdfTopic() {
             <div className="space-y-2">
               {DOCS.map((doc) => (
                 <div key={doc.id} className="flex items-center gap-3 rounded-lg bg-background/50 border border-border px-3 py-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-accent">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-foreground">
                     {doc.id}
                   </span>
                   <p className="text-sm text-foreground flex-1">{doc.text}</p>
@@ -159,7 +159,7 @@ export default function TfIdfTopic() {
               <p className="text-sm text-muted">
                 <strong className="text-accent">phở</strong>{" "}
                 và <strong className="text-purple-500">Grab</strong>{" "}
-                có TF-IDF cao nhất vì chỉ xuất hiện trong 1 tài liệu — rất đặc trưng!
+                có TF-IDF cao nhất vì chỉ xuất hiện trong 1 tài liệu, rất đặc trưng!
               </p>
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function TfIdfTopic() {
       {/* ── Step 4: Interactive Calculator ── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử nghiệm">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Kéo thanh trượt bên dưới để hiểu mối quan hệ giữa TF, DF và TF-IDF. Thử tăng DF lên thật cao — chuyện gì xảy ra?
+          Kéo thanh trượt bên dưới để hiểu mối quan hệ giữa TF, DF và TF-IDF. Thử tăng DF lên thật cao. Chuyện gì xảy ra?
         </p>
 
           <div className="space-y-5">
@@ -223,21 +223,25 @@ export default function TfIdfTopic() {
             {/* Formula visualization */}
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <div className="rounded-xl border-2 border-blue-500 bg-blue-500/10 px-4 py-3 text-center">
-                <p className="text-xs text-blue-400">TF</p>
-                <p className="text-2xl font-bold text-blue-500">{tf}</p>
+                <p className="text-xs font-semibold text-blue-900 dark:text-blue-200">TF</p>
+                <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{tf}</p>
               </div>
               <span className="text-2xl text-muted font-bold">&times;</span>
               <div className="rounded-xl border-2 border-purple-500 bg-purple-500/10 px-4 py-3 text-center">
-                <p className="text-xs text-purple-400">IDF = log(N/DF)</p>
-                <p className="text-2xl font-bold text-purple-500">{idf.toFixed(2)}</p>
+                <p className="text-xs font-semibold text-purple-900 dark:text-purple-200">IDF = log(N/DF)</p>
+                <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">{idf.toFixed(2)}</p>
               </div>
               <span className="text-2xl text-muted font-bold">=</span>
               <div className={`rounded-xl border-2 px-4 py-3 text-center ${
                 tfidf > 10 ? "border-green-500 bg-green-500/10" : tfidf > 5 ? "border-yellow-500 bg-yellow-500/10" : "border-red-500 bg-red-500/10"
               }`}>
-                <p className="text-xs text-muted">TF-IDF</p>
+                <p className="text-xs font-semibold text-foreground">TF-IDF</p>
                 <p className={`text-2xl font-bold ${
-                  tfidf > 10 ? "text-green-500" : tfidf > 5 ? "text-yellow-500" : "text-red-500"
+                  tfidf > 10
+                    ? "text-green-900 dark:text-green-100"
+                    : tfidf > 5
+                    ? "text-yellow-900 dark:text-yellow-100"
+                    : "text-red-900 dark:text-red-100"
                 }`}>
                   {tfidf.toFixed(2)}
                 </p>
@@ -252,7 +256,7 @@ export default function TfIdfTopic() {
                   ? "Quan trọng vừa phải."
                   : df >= totalDocs
                   ? "TF-IDF = 0! Từ xuất hiện ở MỌI tài liệu → hoàn toàn vô dụng."
-                  : "Ít quan trọng — từ này quá phổ biến."}
+                  : "Ít quan trọng. Từ này quá phổ biến."}
               </p>
             </div>
           </div>
@@ -263,8 +267,8 @@ export default function TfIdfTopic() {
         <InlineChallenge
           question="Bạn tìm kiếm 'phở bò Hà Nội' trên Google. Từ nào trong query có trọng số TF-IDF cao nhất khi so sánh giữa các trang web?"
           options={[
-            "'Hà Nội' — vì rất nhiều trang web nhắc đến",
-            "'phở bò' — vì ít trang web có từ này hơn, nên nó đặc trưng hơn",
+            "'Hà Nội': vì rất nhiều trang web nhắc đến",
+            "'phở bò': vì ít trang web có từ này hơn, nên nó đặc trưng hơn",
             "Tất cả từ đều quan trọng như nhau",
           ]}
           correct={1}
@@ -301,7 +305,7 @@ export default function TfIdfTopic() {
             <div className="space-y-2">
               <p>
                 <strong>Google Search:</strong>{" "}
-                TF-IDF là nền tảng ban đầu của search engine — xếp hạng trang web theo từ khóa tìm kiếm.
+                TF-IDF là nền tảng ban đầu của search engine, xếp hạng trang web theo từ khóa tìm kiếm.
               </p>
               <p>
                 <strong>Shopee/Tiki:</strong>{" "}
@@ -355,11 +359,11 @@ for i, review in enumerate(reviews):
         <MiniSummary
           title="Ghi nhớ về TF-IDF"
           points={[
-            "TF-IDF = TF x IDF — kết hợp tần suất cục bộ và độ hiếm toàn cục.",
+            "TF-IDF = TF x IDF: kết hợp tần suất cục bộ và độ hiếm toàn cục.",
             "Từ phổ biến (là, và, của) có IDF thấp → TF-IDF thấp → bị 'phạt'.",
             "Từ đặc trưng (phở, Grab) có IDF cao → TF-IDF cao → được 'thưởng'.",
             "Ứng dụng: search engine, trích xuất từ khóa, phân loại văn bản.",
-            "Hạn chế: vẫn không hiểu ngữ nghĩa — Word Embeddings giải quyết điều này.",
+            "Hạn chế: vẫn không hiểu ngữ nghĩa. Word Embeddings giải quyết điều này.",
           ]}
         />
       </LessonSection>
