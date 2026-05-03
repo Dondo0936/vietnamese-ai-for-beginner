@@ -88,7 +88,7 @@ const PROBLEM_SCENARIOS: ProblemScenario[] = [
     icon: Mail,
     title: "Chặn email rác",
     prompt:
-      "Hộp thư nhận 1000 email mỗi ngày. Phân biệt email thật và email rác — kiểu rác thay đổi liên tục.",
+      "Hộp thư nhận 1000 email mỗi ngày. Phân biệt email thật và email rác. Kiểu rác thay đổi liên tục.",
     rightChoice: "ml",
     why:
       "Spammer đổi từ ngữ mỗi tuần. Không ai viết nổi một bộ luật if-else bám kịp. ML học pattern từ hàng triệu email thật, tự cập nhật khi có dữ liệu mới.",
@@ -98,7 +98,7 @@ const PROBLEM_SCENARIOS: ProblemScenario[] = [
     icon: Camera,
     title: "Nhận ra mèo trong ảnh",
     prompt:
-      "Cho một ảnh bất kỳ, cần biết trong ảnh có con mèo hay không — không phụ thuộc giống, màu lông, tư thế.",
+      "Cho một ảnh bất kỳ, cần biết trong ảnh có con mèo hay không, không phụ thuộc giống, màu lông, tư thế.",
     rightChoice: "ml",
     why:
       "Mèo có hàng nghìn biến thể. Không thể viết luật \"tai nhọn + râu dài\" vì luật đó cũng đúng với cáo, chồn. ML học từ hàng triệu ảnh có nhãn, tự rút ra đặc điểm.",
@@ -131,7 +131,7 @@ function RuleBasedChef() {
       <ul className="space-y-1.5 text-xs text-foreground/85 leading-relaxed">
         <li className="flex items-start gap-2">
           <span className="text-blue-500 font-bold">1.</span>
-          <span>Mở sách: &ldquo;Phở bò — 3 lít nước, 500g bò&rdquo;.</span>
+          <span>Mở sách: &ldquo;Phở bò: 3 lít nước, 500g bò&rdquo;.</span>
         </li>
         <li className="flex items-start gap-2">
           <span className="text-blue-500 font-bold">2.</span>
@@ -143,7 +143,7 @@ function RuleBasedChef() {
         </li>
       </ul>
       <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 text-xs text-foreground/80 leading-relaxed">
-        Nếu hôm nay thịt hơi khác, nước hơi mặn — đầu bếp này vẫn làm y
+        Nếu hôm nay thịt hơi khác, nước hơi mặn, đầu bếp này vẫn làm y
         như sách. Vị thay đổi, nhưng quy trình không đổi.
       </div>
     </div>
@@ -158,10 +158,10 @@ function LearningChef() {
   }, []);
 
   const stages = [
-    "Nồi thứ 1: quá mặn — ghi nhớ.",
+    "Nồi thứ 1: quá mặn. Ghi nhớ.",
     "Nồi thứ 10: bớt muối được rồi.",
-    "Nồi thứ 50: vị đang ổn — nếm thêm chút.",
-    "Nồi thứ 200: ai cũng khen — công thức trong đầu đã chín.",
+    "Nồi thứ 50: vị đang ổn. Nếm thêm chút.",
+    "Nồi thứ 200: ai cũng khen. Công thức trong đầu đã chín.",
   ];
 
   return (
@@ -198,7 +198,7 @@ function LearningChef() {
       </div>
       <p className="text-xs text-muted italic leading-relaxed">
         Không ai đọc công thức cho đầu bếp này. Cô ấy tự tích kinh nghiệm
-        — càng nấu nhiều, càng chuẩn.
+        sau mỗi lần nếm thử, nên càng nấu nhiều thì càng nấu chuẩn.
       </p>
     </div>
   );
@@ -500,7 +500,7 @@ function ApproachPicker() {
       <div className="flex items-center justify-between gap-3 pt-1">
         <p className="text-xs text-muted">
           Đã làm {answeredCount}/{PROBLEM_SCENARIOS.length}
-          {answeredCount > 0 && ` — đúng ${correctCount}`}
+          {answeredCount > 0 && `, đúng ${correctCount}`}
         </p>
         <div className="flex gap-2">
           <button
@@ -548,15 +548,15 @@ const PIPE_STAGES = [
     w: 140,
     color: "#3b82f6",
     title: "Học",
-    lines: ["Máy đọc ví dụ,", "đoán, so đáp án,", "tự chỉnh — lặp", "hàng triệu lần."],
+    lines: ["Máy đọc ví dụ,", "đoán, so đáp án,", "tự chỉnh, lặp", "hàng triệu lần."],
     highlight: false,
   },
   {
     x: 380,
     w: 130,
-    color: "#3b82f6",
+    color: "#20B8B0",
     title: "Mô hình",
-    lines: ["Bộ não đã học", "— có thể dùng", "cho việc mới."],
+    lines: ["Bộ não đã học,", "có thể dùng", "cho việc mới."],
     highlight: true,
   },
   {
@@ -686,7 +686,7 @@ export default function WhatIsMlTopic() {
         ],
         correct: 1,
         explanation:
-          "Đây là điểm cốt lõi. Lập trình thường — bạn viết if-else. ML — bạn đưa ví dụ, máy tự rút ra luật. Giống đầu bếp đọc sách so với đầu bếp học từ nếm thử.",
+          "Đây là điểm cốt lõi. Lập trình thường: bạn viết if-else. ML: bạn đưa ví dụ, máy tự rút ra luật. Giống đầu bếp đọc sách so với đầu bếp học từ nếm thử.",
       },
       {
         question:
@@ -699,15 +699,15 @@ export default function WhatIsMlTopic() {
         ],
         correct: 2,
         explanation:
-          "Ba cái còn lại đều có công thức rõ ràng. Chữ viết tay mỗi người một khác — không thể viết luật, nhưng có thể học từ hàng triệu mẫu.",
+          "Ba cái còn lại đều có công thức rõ ràng. Chữ viết tay mỗi người một khác. Không thể viết luật, nhưng có thể học từ hàng triệu mẫu.",
       },
       {
         question:
           "Gmail tự động lọc email rác vào thư mục riêng. Đây là ML hay lập trình thường?",
         options: [
-          "Lập trình thường — Google đã viết hàng ngàn luật if-else",
-          "Machine Learning — hệ thống học từ hàng tỷ email được đánh dấu",
-          "Không phải cả hai — chỉ là danh sách đen địa chỉ gửi",
+          "Lập trình thường: Google đã viết hàng ngàn luật if-else",
+          "Machine Learning: hệ thống học từ hàng tỷ email được đánh dấu",
+          "Không phải cả hai, chỉ là danh sách đen địa chỉ gửi",
           "Cả hai kết hợp đều đặn 50-50",
         ],
         correct: 1,
@@ -745,10 +745,10 @@ export default function WhatIsMlTopic() {
         question:
           "Cô Lan mở quán cà phê. Cô muốn ước tính doanh thu ngày mai dựa trên: ngày trong tuần, thời tiết, có lễ hay không, số khách tuần trước. Cô có log 2 năm. Cách nào phù hợp?",
         options: [
-          "Viết hàm if-else tay — dựa vào linh tính của cô",
-          "Dùng ML — cho máy học 2 năm dữ liệu, tìm pattern phức tạp giữa nhiều yếu tố",
+          "Viết hàm if-else tay, dựa vào linh tính của cô",
+          "Dùng ML: cho máy học 2 năm dữ liệu, tìm pattern phức tạp giữa nhiều yếu tố",
           "Gọi điện hỏi quán khác xem doanh thu bao nhiêu",
-          "Không dự đoán — đóng cửa nếu trời mưa",
+          "Không dự đoán, đóng cửa nếu trời mưa",
         ],
         correct: 1,
         explanation:
@@ -758,14 +758,14 @@ export default function WhatIsMlTopic() {
         question:
           "Một startup quảng cáo: 'AI của chúng tôi luôn đúng 100%'. Vì sao câu này ĐÁNG NGHI?",
         options: [
-          "Vì AI không bao giờ đúng 100% — cờ đỏ rằng họ đã kiểm tra trên chính dữ liệu đã dùng để học, hoặc đang nói quá",
+          "Vì AI không bao giờ đúng 100%. Cờ đỏ: họ đang test trên chính dữ liệu đã dùng để học, hoặc đang nói quá",
           "Vì startup luôn nói dối",
           "Vì AI chỉ đúng khi trời nắng",
           "Vì 100% là con số quá lớn",
         ],
         correct: 0,
         explanation:
-          "Trong ML thực tế, ngay cả Google và OpenAI cũng không đạt 100%. Khi ai đó khoe con số này, thường là họ test trên chính dữ liệu huấn luyện — giống như cho học sinh làm lại đúng đề đã học thuộc.",
+          "Trong ML thực tế, ngay cả Google và OpenAI cũng không đạt 100%. Khi ai đó khoe con số này, thường là họ test trên chính dữ liệu huấn luyện. Giống như cho học sinh làm lại đúng đề đã học thuộc.",
       },
     ],
     [],
@@ -791,20 +791,28 @@ export default function WhatIsMlTopic() {
           </div>
 
           <p className="text-sm text-foreground/90 leading-relaxed">
-            <strong>Đầu bếp 1</strong> mở sách công thức, đọc từng dòng:
-            &ldquo;3 lít nước, 500g xương, 2 hoa hồi&rdquo;. Làm đúng y
-            bản in. Nấu xong có tô phở — đúng như sách ghi.
+            <strong>Đầu bếp 1</strong> mở sách công thức và đọc từng dòng:
+            &ldquo;3 lít nước, 500g xương, 2 hoa hồi&rdquo;. Cô làm đúng
+            y như sách ghi, không thêm không bớt một thìa muối nào. Nấu
+            xong, tô phở ra đúng như mô tả: cùng vị, cùng mùi, cùng độ
+            trong.
           </p>
           <p className="text-sm text-foreground/90 leading-relaxed">
-            <strong>Đầu bếp 2</strong> chưa bao giờ đọc sách. Cô ấy đứng
-            bếp hàng trăm lần, nếm, chỉnh, nếm tiếp. Lần đầu mặn quá. Lần
-            mười đỡ rồi. Lần một trăm thì khách khen nức nở.
+            <strong>Đầu bếp 2</strong> thì chưa bao giờ đọc một quyển
+            sách nấu ăn nào. Thay vào đó, cô đứng bếp hàng trăm lần. Mỗi
+            nồi cô đều nếm thử, ghi nhớ chỗ nào quá tay, rồi lần sau
+            chỉnh lại. Nồi đầu tiên mặn quá nên cô bớt muối, đến nồi thứ
+            mười vị bắt đầu cân đối hơn. Đến nồi thứ một trăm, khách ăn
+            xong khen nức nở mà cô vẫn không có một dòng công thức nào
+            trong sổ.
           </p>
           <div className="rounded-xl border border-accent/40 bg-card p-4 text-sm text-foreground/90 leading-relaxed">
-            <strong>Lập trình thường</strong> = đầu bếp 1. Người viết
-            công thức, máy làm theo.{" "}
-            <strong>Machine Learning (ML)</strong> = đầu bếp 2. Máy học
-            từ ví dụ, tự rút ra công thức.
+            Hai cách nấu này tương ứng với hai cách viết phần mềm.{" "}
+            <strong>Lập trình thường</strong> giống đầu bếp 1: người viết
+            tay toàn bộ quy tắc, máy chỉ chạy đúng những gì đã được ghi
+            sẵn. Còn <strong>Machine Learning (ML)</strong> giống đầu
+            bếp 2: thay vì có quy tắc sẵn, máy được cho xem rất nhiều ví
+            dụ thật rồi tự rút ra quy tắc cho mình.
           </div>
         </div>
 
@@ -825,7 +833,7 @@ export default function WhatIsMlTopic() {
             "Gợi ý phim dựa trên thói quen xem của hàng triệu người dùng",
           ]}
           correct={1}
-          explanation="Tính hoá đơn có công thức rõ ràng, đầu vào là số, kết quả đúng/sai tuyệt đối — đây là đất của lập trình thường. Ba bài còn lại có hàng triệu biến thể (giọng, từ mới trong spam, sở thích cá nhân) mà không ai viết hết luật được — ML mới hợp. Cạm bẫy của người mới là dùng ML cho cả bài toán đơn giản."
+          explanation="Tính hoá đơn có công thức rõ ràng: đầu vào là số, công thức chỉ vài dòng, kết quả đúng hay sai có thể kiểm tra ngay. Trường hợp này lập trình thường giải gọn gàng, không cần đến ML. Ba bài còn lại thì khác. Giọng nói, từ mới trong spam, sở thích người xem phim đều có hàng triệu biến thể mà không ai ngồi viết hết luật được. Khi đó ML mới phát huy. Cạm bẫy của người mới học là cứ thấy bài toán nào cũng nghĩ đến ML, kể cả khi một dòng công thức là đủ."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Tiếp theo, bạn sẽ thấy hai cách nấu cùng một bài toán đứng
@@ -843,7 +851,7 @@ export default function WhatIsMlTopic() {
               <div className="flex items-center gap-2">
                 <Mail size={18} className="text-accent" />
                 <h3 className="text-base font-semibold text-foreground">
-                  Cùng bài toán lọc email rác — hai cách khác nhau
+                  Cùng một bài toán lọc email rác, giải bằng hai cách rất khác nhau
                 </h3>
               </div>
 
@@ -939,7 +947,7 @@ export default function WhatIsMlTopic() {
                       </div>
                     </div>
                     <Callout variant="tip" title="Điểm mạnh">
-                      Có kiểu rác mới? Thêm vài nghìn ví dụ, chạy lại —
+                      Có kiểu rác mới? Thêm vài nghìn ví dụ, chạy lại,
                       không cần viết dòng luật nào. Máy tự thích nghi.
                     </Callout>
                   </div>
@@ -954,13 +962,15 @@ export default function WhatIsMlTopic() {
               <div className="flex items-center gap-2">
                 <Zap size={18} className="text-accent" />
                 <h3 className="text-base font-semibold text-foreground">
-                  Xem máy học dần — qua từng vòng
+                  Xem máy học dần qua từng vòng
                 </h3>
               </div>
               <p className="text-sm text-muted leading-relaxed">
-                Máy không giỏi ngay. Nó đoán sai, bị sửa, đoán tốt hơn, lại
-                sai, lại sửa… Hàng triệu lần. Bấm &ldquo;Chạy thêm&rdquo;
-                để thấy quá trình:
+                Máy không giỏi ngay từ đầu. Vòng đầu tiên nó đoán bừa,
+                bị sửa, vòng sau đoán tốt hơn nhưng vẫn sai, lại bị sửa
+                tiếp. Quá trình này lặp đi lặp lại hàng triệu lần cho
+                đến khi máy đoán gần đúng. Bấm &ldquo;Chạy thêm&rdquo;
+                để xem từng giai đoạn:
               </p>
               <TrainingLoopDemo />
             </div>
@@ -987,7 +997,7 @@ export default function WhatIsMlTopic() {
           Bốn bước của mọi hệ thống ML
         </h3>
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Từ Grab, Shopee đến ChatGPT — mọi hệ thống ML đều đi qua bốn
+          Từ Grab, Shopee đến ChatGPT, mọi hệ thống ML đều đi qua bốn
           bước này. Bấm &ldquo;Tiếp tục&rdquo; để mở từng bước:
         </p>
 
@@ -1010,20 +1020,23 @@ export default function WhatIsMlTopic() {
                   className="text-emerald-600 dark:text-emerald-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Dữ liệu — nguyên liệu nấu ăn
+                  Dữ liệu: nguyên liệu nấu ăn
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Trước khi máy học được gì, phải có ví dụ. Với app nhận ảnh
-                mèo: cần hàng triệu ảnh, mỗi ảnh có nhãn rõ
+                Trước khi máy có thể học được điều gì, người làm ML phải
+                chuẩn bị ví dụ cho nó xem. Với app nhận diện ảnh mèo,
+                cần hàng triệu ảnh và mỗi ảnh phải có nhãn rõ ràng là
                 &ldquo;mèo&rdquo; hay &ldquo;không phải mèo&rdquo;. Với
-                Grab: cần log hàng triệu chuyến đi thật. Dữ liệu càng
-                nhiều, càng chất lượng → máy học càng tốt.
+                Grab, cần log hàng triệu chuyến đi thật, kèm thời gian,
+                lộ trình, giá cước. Dữ liệu càng nhiều và càng chất
+                lượng, máy càng có nhiều ví dụ để rút ra pattern, kết
+                quả học cũng càng tốt.
               </p>
               <div className="rounded-lg bg-card border border-border p-3 text-xs text-muted italic leading-relaxed">
-                &ldquo;Rác vào, rác ra&rdquo; — đây là câu nằm lòng của
-                mọi người làm ML. Dữ liệu kém thì mô hình kém, không thuật
-                toán nào cứu được.
+                &ldquo;Rác vào, rác ra&rdquo; là câu nằm lòng của mọi
+                người làm ML. Nếu dữ liệu kém, mô hình cũng sẽ kém theo,
+                và không có thuật toán nào cứu được.
               </div>
             </div>,
             <div
@@ -1036,13 +1049,13 @@ export default function WhatIsMlTopic() {
                   className="text-blue-600 dark:text-blue-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Học — máy đang &ldquo;nếm thử&rdquo;
+                  Học: máy đang &ldquo;nếm thử&rdquo;
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Máy đọc từng ví dụ, đoán đáp án, so với đáp án thật, rồi
                 tự điều chỉnh để lần sau đoán ít sai hơn. Lặp đi lặp lại
-                hàng triệu lần — giống đầu bếp 2 nấu hàng trăm nồi phở.
+                hàng triệu lần, giống đầu bếp 2 nấu hàng trăm nồi phở.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Đây là giai đoạn &ldquo;huấn luyện&rdquo; (training). Máy
@@ -1057,20 +1070,22 @@ export default function WhatIsMlTopic() {
               <div className="flex items-center gap-2">
                 <Sparkles size={18} className="text-accent" />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Mô hình — bộ não đã học xong
+                  Mô hình: bộ não đã học xong
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Sau khi học xong, máy tạo ra một thứ gọi là{" "}
-                <strong>mô hình</strong> — giống như cái đầu bếp 2 mang
-                sẵn công thức &ldquo;trong đầu&rdquo;. Mô hình không còn
-                cần dữ liệu gốc nữa; nó đã cô đọng mọi pattern thành một
-                bộ số.
+                <strong>mô hình</strong>, giống như đầu bếp 2 mang theo
+                công thức đã thuộc nằm lòng &ldquo;trong đầu&rdquo;. Mô
+                hình không còn cần đến dữ liệu gốc nữa, vì nó đã cô đọng
+                mọi pattern học được thành một bộ số.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Mô hình ChatGPT nặng vài GB. Mô hình nhận ảnh trong điện
-                thoại bạn chỉ vài MB. Đây là phần &ldquo;đi làm&rdquo;
-                được đóng gói gọn lại.
+                Kích thước mô hình thay đổi rất nhiều theo bài toán. Mô
+                hình ChatGPT nặng vài chục GB, còn mô hình nhận diện ảnh
+                trong điện thoại của bạn có khi chỉ vài MB. Đây là phần
+                &ldquo;đi làm&rdquo; thực sự, được đóng gói gọn lại để
+                chạy ở khắp nơi.
               </p>
             </div>,
             <div
@@ -1083,19 +1098,21 @@ export default function WhatIsMlTopic() {
                   className="text-purple-600 dark:text-purple-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Phản hồi — vòng học không kết thúc
+                  Phản hồi: vòng học không kết thúc
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Mô hình đi vào đời thật, gặp dữ liệu mới, đoán. Người
-                dùng bấm &ldquo;Báo cáo rác&rdquo;, &ldquo;Đây không phải
-                mèo&rdquo;… Mọi phản hồi đó trở thành dữ liệu mới cho lần
-                học tiếp theo.
+                Khi mô hình đã được đóng gói và đưa vào sản phẩm thật,
+                nó bắt đầu gặp dữ liệu mà nó chưa từng thấy lúc học.
+                Người dùng bấm &ldquo;Báo cáo rác&rdquo;, &ldquo;Đây
+                không phải mèo&rdquo;, và mọi phản hồi như vậy lại trở
+                thành dữ liệu mới cho lần học tiếp theo.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Vòng này quay đều quay đều. Gmail của bạn ngày càng giỏi
-                lọc rác là nhờ hàng tỷ lần người dùng bấm nút &ldquo;Báo
-                cáo&rdquo; mỗi ngày.
+                Vòng này không bao giờ kết thúc. Gmail của bạn ngày càng
+                giỏi lọc rác chính là nhờ hàng tỷ lần người dùng bấm nút
+                &ldquo;Báo cáo&rdquo; mỗi ngày, mỗi lần là một ví dụ mới
+                đẩy mô hình đi xa hơn một chút.
               </p>
             </div>,
           ]}
@@ -1113,15 +1130,17 @@ export default function WhatIsMlTopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Aha">
         <AhaMoment>
           <p className="leading-relaxed">
-            ML không &ldquo;hiểu&rdquo; theo kiểu con người.
-            <br />
-            Nó <strong>tìm ra pattern trong dữ liệu</strong> — và pattern
-            đó chính là công thức ẩn mà không ai biết cách viết ra.
+            ML không &ldquo;hiểu&rdquo; như con người hiểu một bài toán.
+            Thay vào đó, nó nhìn vào hàng triệu ví dụ và{" "}
+            <strong>tìm ra pattern lặp lại</strong> trong những ví dụ
+            đó. Pattern ấy chính là công thức ẩn mà không ai biết cách
+            viết ra bằng tay.
           </p>
-          <p className="mt-2 text-sm font-normal text-muted">
-            Đưa cho máy dữ liệu tốt → kết quả tốt.
-            <br />
-            Đưa rác → ra rác. Không có phép màu.
+          <p className="mt-2 text-sm font-normal text-muted leading-relaxed">
+            Vì vậy, nếu dữ liệu bạn đưa cho máy là dữ liệu tốt và đa
+            dạng, mô hình sẽ học ra công thức tốt. Nếu dữ liệu sai,
+            thiếu hay lệch một chiều, mô hình sẽ học ra một công thức
+            sai theo. Không có thuật toán nào cứu được dữ liệu kém.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -1132,9 +1151,9 @@ export default function WhatIsMlTopic() {
           <InlineChallenge
             question="Trung tâm tiếng Anh muốn làm hệ thống chấm phát âm cho học viên. Bài toán phù hợp nhất với cách nào?"
             options={[
-              "Lập trình thường — viết luật kiểu 'nếu phát âm đúng thì 10 điểm'",
-              "Machine Learning — cho máy nghe hàng nghìn bản ghi của người bản xứ và học viên",
-              "Không cần máy — để giáo viên chấm tay cho từng học viên",
+              "Lập trình thường: viết luật kiểu 'nếu phát âm đúng thì 10 điểm'",
+              "Machine Learning: cho máy nghe hàng nghìn bản ghi của người bản xứ và học viên",
+              "Không cần máy: để giáo viên chấm tay cho từng học viên",
               "Đưa cho mỗi học viên một máy đo độ dài âm thanh",
             ]}
             correct={1}
@@ -1144,21 +1163,21 @@ export default function WhatIsMlTopic() {
           <InlineChallenge
             question="Bạn viết một app đếm số học sinh trong lớp từ ảnh camera. Lớp có đúng 40 học sinh luôn. Có nên dùng ML không?"
             options={[
-              "Có — ML luôn tốt hơn lập trình thường",
-              "Không — nếu ai cũng phải điểm danh đủ thì cứ in sẵn '40'",
-              "Có — cần dùng ML để nhận diện khuôn mặt từng học sinh",
+              "Có, vì ML luôn tốt hơn lập trình thường",
+              "Không, vì ai cũng phải điểm danh đủ thì cứ in sẵn '40'",
+              "Có, cần dùng ML để nhận diện khuôn mặt từng học sinh",
               "Không, vì ML chỉ dùng cho bài toán lớn",
             ]}
             correct={2}
-            explanation="Đếm học sinh từ ảnh (mà số lượng có thể thay đổi do vắng) là bài nhận ảnh — rất phù hợp với ML vì tư thế, ánh sáng, góc chụp đều khác nhau. Đáp án B sai vì lớp 40 học sinh không có nghĩa ngày nào cũng đủ 40."
+            explanation="Đếm học sinh từ ảnh (mà số lượng có thể thay đổi do vắng) là bài nhận ảnh, rất phù hợp với ML vì tư thế, ánh sáng, góc chụp đều khác nhau. Đáp án B sai vì lớp 40 học sinh không có nghĩa ngày nào cũng đủ 40."
           />
 
           <InlineChallenge
             question="Bạn có 20 ảnh X-quang để làm app phát hiện gãy xương. Bạn huấn luyện xong, máy đạt 100% đúng trên 20 ảnh đó. Đáng ăn mừng không?"
             options={[
-              "Có — 100% là tuyệt",
-              "Không — 20 ảnh quá ít, máy có thể chỉ 'học thuộc lòng' 20 ảnh đó, gặp ảnh mới là sai hết",
-              "Có — máy đã hiểu sâu về giải phẫu",
+              "Có, 100% là tuyệt",
+              "Không, 20 ảnh quá ít, máy có thể chỉ 'học thuộc lòng' 20 ảnh đó, gặp ảnh mới là sai hết",
+              "Có, máy đã hiểu sâu về giải phẫu",
               "Chỉ nên ăn mừng nếu có ảnh màu",
             ]}
             correct={1}
@@ -1171,9 +1190,12 @@ export default function WhatIsMlTopic() {
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kết nối">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="text-sm leading-relaxed">
-            Vậy Machine Learning không phải phép thuật. Nó là một cách
-            tiếp cận khác — thay vì đi viết luật, ta thu thập ví dụ và
-            để máy tự rút luật. Ba điểm cần nhớ:
+            Machine Learning không phải một loại trí tuệ siêu nhiên. Nó
+            chỉ là một cách viết phần mềm khác với cách truyền thống.
+            Thay vì lập trình viên ngồi nghĩ ra mọi quy tắc rồi gõ thành
+            if-else, ta thu thập rất nhiều ví dụ thật và để máy tự tìm
+            quy tắc bên trong những ví dụ đó. Ba điểm cần nhớ về cách
+            tiếp cận này:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 not-prose my-4">
@@ -1188,9 +1210,10 @@ export default function WhatIsMlTopic() {
                 </h4>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Pattern phức tạp không thể viết tay (ảnh, giọng nói, ngôn
-                ngữ, hành vi người dùng). Có đủ dữ liệu. Sẵn lòng chấp
-                nhận máy đôi khi sai.
+                Khi pattern quá phức tạp để viết tay, ví dụ ảnh, giọng
+                nói, ngôn ngữ, hành vi người dùng. Bạn có sẵn dữ liệu đủ
+                lớn để máy học, và bạn chấp nhận máy đôi khi sai chứ
+                không bắt buộc luôn đúng tuyệt đối.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card p-4 space-y-2">
@@ -1204,9 +1227,10 @@ export default function WhatIsMlTopic() {
                 </h4>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Có công thức rõ ràng (tính thuế, đổi đơn vị). Không có
-                dữ liệu. Sai là chết người và cần giải thích được từng
-                quyết định.
+                Khi công thức đã quá rõ ràng, như tính thuế hay đổi đơn
+                vị. Khi bạn chưa có dữ liệu để máy học. Hoặc khi sai một
+                quyết định là gây hậu quả nghiêm trọng và bạn cần giải
+                thích được vì sao máy ra quyết định đó.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card p-4 space-y-2">
@@ -1217,9 +1241,11 @@ export default function WhatIsMlTopic() {
                 </h4>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                AI là cái ô lớn. ML là một nhánh của AI — nhánh đông
-                đúc nhất hiện nay. Deep Learning lại là một nhánh bên
-                trong ML, dùng cho ảnh và ngôn ngữ.
+                AI là khái niệm rộng nhất, bao gồm mọi cách làm cho máy
+                hành xử thông minh. ML là một nhánh trong AI, hiện là
+                nhánh đông đúc nhất. Deep Learning lại là một nhánh nhỏ
+                hơn nằm trong ML, chuyên dùng cho ảnh, giọng nói và
+                ngôn ngữ.
               </p>
             </div>
           </div>
@@ -1227,17 +1253,17 @@ export default function WhatIsMlTopic() {
           <Callout variant="insight" title="Ba ví dụ ML ngay quanh bạn">
             <ul className="list-disc pl-5 space-y-1 text-sm">
               <li>
-                <strong>Grab</strong> đoán giá cước và thời gian tới nơi
-                — học từ hàng triệu chuyến đi thật trên đường phố Việt
+                <strong>Grab</strong> đoán giá cước và thời gian tới nơi,
+                học từ hàng triệu chuyến đi thật trên đường phố Việt
                 Nam.
               </li>
               <li>
-                <strong>Shopee</strong> gợi ý sản phẩm — học từ lịch sử
+                <strong>Shopee</strong> gợi ý sản phẩm, học từ lịch sử
                 bấm, mua, đánh giá của hàng triệu người dùng.
               </li>
               <li>
                 <strong>TikTok</strong> đoán video tiếp theo bạn sẽ
-                thích — học từ cách bạn vuốt, xem lâu, bấm tim.
+                thích, học từ cách bạn vuốt, xem lâu, bấm tim.
               </li>
             </ul>
           </Callout>
@@ -1253,7 +1279,7 @@ export default function WhatIsMlTopic() {
               <TopicLink slug="data-and-datasets">
                 dữ liệu được tổ chức thế nào
               </TopicLink>{" "}
-              — trái tim của mọi mô hình ML.
+              (trái tim của mọi mô hình ML).
             </p>
           </Callout>
         </ExplanationSection>
@@ -1263,10 +1289,10 @@ export default function WhatIsMlTopic() {
             title="Năm điều mang theo"
             points={[
               "ML = máy tự rút ra quy tắc từ ví dụ, thay vì người viết tay từng luật if-else.",
-              "Giống đầu bếp học từ nếm thử, không đọc công thức — càng nhiều kinh nghiệm càng giỏi.",
+              "Giống đầu bếp học từ nếm thử, không đọc công thức. Càng nhiều kinh nghiệm càng giỏi.",
               "Bốn bước: Dữ liệu → Học → Mô hình → Dự đoán (và phản hồi để học tiếp).",
               "Dùng ML khi pattern phức tạp và có dữ liệu. Đừng dùng khi công thức đã rõ.",
-              "Rác vào, rác ra — chất lượng dữ liệu quyết định mọi thứ.",
+              "Rác vào, rác ra. Chất lượng dữ liệu quyết định mọi thứ.",
             ]}
           />
         </div>
