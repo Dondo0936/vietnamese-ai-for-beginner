@@ -223,28 +223,20 @@ export default function TfIdfTopic() {
             {/* Formula visualization */}
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <div className="rounded-xl border-2 border-blue-500 bg-blue-500/10 px-4 py-3 text-center">
-                <p className="text-xs font-semibold text-blue-900 dark:text-blue-200">TF</p>
-                <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{tf}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">TF</p>
+                <p className="text-2xl font-bold text-foreground">{tf}</p>
               </div>
               <span className="text-2xl text-muted font-bold">&times;</span>
               <div className="rounded-xl border-2 border-purple-500 bg-purple-500/10 px-4 py-3 text-center">
-                <p className="text-xs font-semibold text-purple-900 dark:text-purple-200">IDF = log(N/DF)</p>
-                <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">{idf.toFixed(2)}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">IDF = log(N/DF)</p>
+                <p className="text-2xl font-bold text-foreground">{idf.toFixed(2)}</p>
               </div>
               <span className="text-2xl text-muted font-bold">=</span>
               <div className={`rounded-xl border-2 px-4 py-3 text-center ${
                 tfidf > 10 ? "border-green-500 bg-green-500/10" : tfidf > 5 ? "border-yellow-500 bg-yellow-500/10" : "border-red-500 bg-red-500/10"
               }`}>
-                <p className="text-xs font-semibold text-foreground">TF-IDF</p>
-                <p className={`text-2xl font-bold ${
-                  tfidf > 10
-                    ? "text-green-900 dark:text-green-100"
-                    : tfidf > 5
-                    ? "text-yellow-900 dark:text-yellow-100"
-                    : "text-red-900 dark:text-red-100"
-                }`}>
-                  {tfidf.toFixed(2)}
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-foreground/70">TF-IDF</p>
+                <p className="text-2xl font-bold text-foreground">{tfidf.toFixed(2)}</p>
               </div>
             </div>
 

@@ -17,7 +17,7 @@ Vietnamese diacritics make low-contrast text harder to scan than English at the 
 ## The two failure modes that keep recurring
 
 1. **Same-hue collision.** Title text in the turquoise/green family on a panel that is *also* tinted from the same family (e.g. `text-accent-dark` on `bg-accent-light`, `text-emerald-700` on `bg-emerald-50`). The contrast ratio passes AA, but the title hue and panel hue are the same family at low saturation, so the title visually washes into the panel. Fix: jump two steps (e.g. `-700` → `-900` for text, or swap to a different scale like `turquoise-700` over `accent-dark`).
-2. **`text-foreground` rule for state buttons.** When a button changes background to signal state (`bg-emerald-100` for correct, `bg-red-100` for wrong), prefer `text-foreground font-semibold` over `text-emerald-900` / `text-red-900`. The colored border + bg already carries the semantic; the body text just needs to be maximally legible. Reserve the colored hue for short badge words like "Chính xác!" or "Chưa đúng."
+2. **`text-foreground` rule for tinted-bg cards.** Whenever a card's background is a low-opacity tint (e.g. `bg-blue-500/10`, `bg-emerald-100`, `bg-amber-100`) and the colored border + bg already carries the visual identity (state-button correct/wrong, formula card "TF / IDF / TF-IDF", ranking card, identity badge), the body text and large numerals inside MUST default to `text-foreground` (with `font-semibold` or `font-bold` for emphasis). Even `text-{hue}-900` can read washed on the project's paper bg, especially when the body is a tall numeral. Reserve the colored hue for short badge words like "Chính xác!" / "Chưa đúng." / a small label.
 
 ## Required floor for body text
 
@@ -26,6 +26,7 @@ Vietnamese diacritics make low-contrast text harder to scan than English at the 
 | Body text on tinted panel | `text-{hue}-800` or `text-foreground` | `text-{hue}-200` or `text-foreground` |
 | Title on tinted panel | `text-{hue}-900` (different scale than the panel if same family) | `text-{hue}-200` |
 | Selected/correct/wrong button | `text-foreground font-semibold` | `text-{hue}-100` |
+| Body / large numeral inside tinted-identity card (`bg-{hue}-500/10` etc.) | `text-foreground` (with `font-bold` for numerals) | same, or `text-{hue}-100` |
 
 `text-{hue}-{50,100,200,300,400,500,600}` on a same-family `bg-{hue}-{50,100}` is **banned in shipped UI** even when math passes.
 
@@ -41,8 +42,9 @@ Vietnamese diacritics make low-contrast text harder to scan than English at the 
 
 - `Callout` (insight + tip variants — turquoise/green-on-tinted-panel)
 - `InlineChallenge` (correct / wrong option button + feedback card — emerald/red on emerald/red panel)
-- `PredictionGate` (selected pre-reveal option — accent on accent-light)
+- `PredictionGate` (pre-reveal selected option, post-reveal correct/wrong button, post-reveal explanation card — three separate spots)
 - `ApproachPicker` and similar custom pickers inside topic files (correct/wrong explanation labels at `text-{hue}-700`)
+- Topic-file "formula cards" or "identity cards" with `border-2 border-X-500 bg-X-500/10` (e.g. tf-idf Step 4 TF/IDF/TF-IDF cards) — body numeral must be `text-foreground`, not `text-{hue}-{500..900}`.
 
 When you change a primitive, the audit applies to **every topic that imports it**, not just the page you tested.
 
