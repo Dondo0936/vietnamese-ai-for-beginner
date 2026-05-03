@@ -21,10 +21,10 @@ const VARIANT_CONFIG: Record<
 > = {
   tip: {
     icon: Lightbulb,
-    borderClass: "border-l-green-400 dark:border-l-green-600",
+    borderClass: "border-l-green-500 dark:border-l-green-500",
     bgClass: "bg-green-50 dark:bg-green-900/20",
-    iconClass: "text-green-600 dark:text-green-400",
-    titleClass: "text-green-800 dark:text-green-300",
+    iconClass: "text-green-700 dark:text-green-300",
+    titleClass: "text-green-900 dark:text-green-200",
   },
   warning: {
     icon: AlertTriangle,
@@ -37,8 +37,8 @@ const VARIANT_CONFIG: Record<
     icon: Sparkles,
     borderClass: "border-l-accent",
     bgClass: "bg-accent-light dark:bg-accent/10",
-    iconClass: "text-accent",
-    titleClass: "text-accent-dark dark:text-accent",
+    iconClass: "text-turquoise-700 dark:text-turquoise-300",
+    titleClass: "text-turquoise-700 dark:text-turquoise-200",
   },
   info: {
     icon: Info,

@@ -30,7 +30,7 @@ export default function PredictionGate({
 
     if (!revealed) {
       if (selected === index) {
-        return `${base} border-accent bg-accent-light text-accent-dark`;
+        return `${base} border-accent bg-accent-light text-turquoise-700 dark:text-turquoise-200 font-semibold`;
       }
       return `${base} border-border bg-card text-foreground hover:bg-surface hover:border-accent/50`;
     }

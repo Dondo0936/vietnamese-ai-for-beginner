@@ -470,8 +470,8 @@ function ApproachPicker() {
                           <span
                             className={`inline-flex items-center gap-1 font-semibold ${
                               correct
-                                ? "text-emerald-700 dark:text-emerald-300"
-                                : "text-amber-700 dark:text-amber-300"
+                                ? "text-emerald-800 dark:text-emerald-200"
+                                : "text-amber-800 dark:text-amber-200"
                             }`}
                           >
                             {correct ? (

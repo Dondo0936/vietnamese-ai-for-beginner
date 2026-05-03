@@ -29,10 +29,10 @@ export default function InlineChallenge({
     }
 
     if (index === correct) {
-      return `${base} border-emerald-600 bg-emerald-100 text-emerald-900 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700`;
+      return `${base} border-emerald-600 bg-emerald-100 text-foreground font-semibold dark:bg-emerald-900/30 dark:text-emerald-100 dark:border-emerald-600`;
     }
     if (index === selected) {
-      return `${base} border-red-500 bg-red-100 text-red-900 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700`;
+      return `${base} border-red-500 bg-red-100 text-foreground font-semibold dark:bg-red-900/30 dark:text-red-100 dark:border-red-600`;
     }
     return `${base} border-border bg-card text-muted opacity-50`;
   }
@@ -74,13 +74,19 @@ export default function InlineChallenge({
             className="overflow-hidden"
           >
             <div
-              className={`rounded-xl border p-3 text-sm leading-relaxed mt-1 ${
+              className={`rounded-xl border p-3 text-sm leading-relaxed mt-1 text-foreground ${
                 selected === correct
-                  ? "border-emerald-500 bg-emerald-100 text-emerald-900 dark:border-green-700 dark:bg-green-900/20 dark:text-green-300"
-                  : "border-red-400 bg-red-100 text-red-900 dark:border-red-700 dark:bg-red-900/20 dark:text-red-300"
+                  ? "border-emerald-600 bg-emerald-50 dark:border-emerald-600 dark:bg-emerald-900/20"
+                  : "border-red-500 bg-red-50 dark:border-red-600 dark:bg-red-900/20"
               }`}
             >
-              <span className="font-semibold">
+              <span
+                className={`font-semibold ${
+                  selected === correct
+                    ? "text-emerald-800 dark:text-emerald-200"
+                    : "text-red-800 dark:text-red-200"
+                }`}
+              >
                 {selected === correct ? "Chính xác! " : "Chưa đúng. "}
               </span>
               {explanation}
