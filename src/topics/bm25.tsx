@@ -24,7 +24,7 @@ export const metadata: TopicMeta = {
 
 /* ──────────────────────────────────────────────────────────────
    Tiny in-file corpus để demo BM25 tương tác. Chúng ta dùng
-   3 tài liệu tiếng Việt về chủ đề khác nhau — cố tình có chênh
+   3 tài liệu tiếng Việt về chủ đề khác nhau, cố tình có chênh
    lệch về độ dài để người học thấy tác dụng của length norm.
    ──────────────────────────────────────────────────────────── */
 type Doc = {
@@ -36,20 +36,20 @@ type Doc = {
 const DOCS: Doc[] = [
   {
     id: "D1",
-    title: "D1 — Tin ngắn (22 từ)",
+    title: "D1: Tin ngắn (22 từ)",
     tokens:
       "luật lao động việt nam quy định rõ quyền lợi người lao động về lương thưởng và nghỉ phép hằng năm".split(" "),
   },
   {
     id: "D2",
-    title: "D2 — Bài báo dài (52 từ)",
+    title: "D2: Bài báo dài (52 từ)",
     tokens:
       "bộ luật lao động mới ban hành đã cập nhật nhiều điều khoản trong đó có quy định về lương tối thiểu vùng và thời giờ làm việc người lao động được bảo đảm quyền nghỉ ngơi thời gian nghỉ phép và chế độ bảo hiểm cùng các quyền lợi khác theo đúng luật"
         .split(" "),
   },
   {
     id: "D3",
-    title: "D3 — Bài lạc đề (18 từ)",
+    title: "D3: Bài lạc đề (18 từ)",
     tokens:
       "luật giao thông đường bộ quy định rõ tốc độ tối đa của ô tô xe máy trên cao tốc".split(" "),
   },
@@ -58,7 +58,7 @@ const DOCS: Doc[] = [
 const AVGDL = DOCS.reduce((acc, d) => acc + d.tokens.length, 0) / DOCS.length;
 const N_DOCS = DOCS.length;
 
-/* Chỉ gợi ý các query có sẵn — user có thể gõ tự do. */
+/* Chỉ gợi ý các query có sẵn. User có thể gõ tự do. */
 const PRESET_QUERIES: string[] = [
   "luật lao động",
   "quyền người lao động",
@@ -200,7 +200,7 @@ export default function BM25Topic() {
         question: "Tại sao BM25 vẫn quan trọng dù đã có semantic search?",
         options: [
           "BM25 miễn phí còn semantic search tốn tiền",
-          "BM25 giỏi khớp chính xác tên riêng, mã sản phẩm, thuật ngữ — nơi semantic search yếu",
+          "BM25 giỏi khớp chính xác tên riêng, mã sản phẩm, thuật ngữ. Đây là chỗ semantic search yếu",
           "BM25 luôn chính xác hơn",
           "BM25 không cần GPU",
         ],
@@ -224,7 +224,7 @@ export default function BM25Topic() {
         question: "IDF trong BM25 khác với IDF cổ điển thế nào?",
         options: [
           "Giống hệt nhau",
-          "BM25 dùng ln((N - df + 0.5)/(df + 0.5) + 1) — tránh giá trị âm và ổn định hơn khi df lớn",
+          "BM25 dùng ln((N - df + 0.5)/(df + 0.5) + 1): tránh giá trị âm và ổn định hơn khi df lớn",
           "BM25 không dùng IDF",
           "BM25 dùng TF thay IDF",
         ],
@@ -233,7 +233,7 @@ export default function BM25Topic() {
           "IDF cổ điển ln(N/df) có thể âm khi df > N/2. BM25 Okapi dùng công thức Robertson-Spärck-Jones với +0.5 smoothing và +1 bên ngoài ln để đảm bảo kết quả không âm, ổn định với df cao.",
       },
       {
-        question: "Khi nào BM25 FAIL — không tìm được document đúng?",
+        question: "Khi nào BM25 FAIL, không tìm được document đúng?",
         options: [
           "Khi user viết đồng nghĩa hoặc paraphrase (hỏi 'thú cưng' nhưng doc viết 'chó mèo')",
           "Khi doc quá ngắn",
@@ -242,7 +242,7 @@ export default function BM25Topic() {
         ],
         correct: 0,
         explanation:
-          "BM25 là lexical matching — chỉ khớp chính xác. Không hiểu đồng nghĩa, viết tắt, ngữ cảnh, đa ngôn ngữ. Đây là lý do tồn tại Semantic Search (vector embedding) và Hybrid Search.",
+          "BM25 là lexical matching: chỉ khớp chính xác. Không hiểu đồng nghĩa, viết tắt, ngữ cảnh, đa ngôn ngữ. Đây là lý do tồn tại Semantic Search (vector embedding) và Hybrid Search.",
       },
       {
         question: "Hybrid Search kết hợp BM25 với cái gì, và vì sao?",
@@ -265,27 +265,27 @@ export default function BM25Topic() {
           { answer: "IDF", accept: ["inverse document frequency", "độ hiếm"] },
         ],
         explanation:
-          "TF (Term Frequency) đếm tần suất từ trong một tài liệu — nhưng bão hoà để tránh thiên vị. IDF (Inverse Document Frequency) nâng điểm cho từ hiếm, hạ điểm cho từ phổ biến như 'và', 'là'. BM25 = TF x IDF + chuẩn hoá độ dài.",
+          "TF (Term Frequency) đếm tần suất từ trong một tài liệu, nhưng bão hoà để tránh thiên vị. IDF (Inverse Document Frequency) nâng điểm cho từ hiếm, hạ điểm cho từ phổ biến như 'và', 'là'. BM25 = TF x IDF + chuẩn hoá độ dài.",
       },
       {
         question:
           "Bão hoà TF (saturation) trong BM25 có nghĩa là gì, và tại sao có lợi?",
         options: [
           "TF luôn giảm dần theo thời gian",
-          "Từ lặp thêm 1 lần khi đã có nhiều lần sẽ đóng góp ít hơn 1 lần đầu — chống keyword stuffing và phản ánh thực tế ngôn ngữ",
+          "Từ lặp thêm 1 lần khi đã có nhiều lần sẽ đóng góp ít hơn 1 lần đầu, chống keyword stuffing và phản ánh thực tế ngôn ngữ",
           "TF bị cắt tuyệt đối sau 10 lần",
           "TF được chia cho số từ trong tài liệu",
         ],
         correct: 1,
         explanation:
-          "Hàm tf·(k1+1)/(tf + k1·…) là một đường cong tiệm cận — TF=1 đóng góp nhiều nhất, TF=2 chỉ hơn TF=1 một chút, TF=10 gần bằng TF=20. Lý do: sau khi đã biết chủ đề tài liệu, việc gặp lại cùng từ không mang thêm thông tin nhiều. Đây là insight key của Robertson, giúp BM25 vượt TF-IDF.",
+          "Hàm tf·(k1+1)/(tf + k1·…) là một đường cong tiệm cận. TF=1 đóng góp nhiều nhất, TF=2 chỉ hơn TF=1 một chút, TF=10 gần bằng TF=20. Lý do: sau khi đã biết chủ đề tài liệu, việc gặp lại cùng từ không mang thêm thông tin nhiều. Đây là insight key của Robertson, giúp BM25 vượt TF-IDF.",
       },
       {
         question:
           "Với query 2 từ và một doc chứa cả hai từ nhưng cách xa nhau 500 từ, BM25 tính điểm thế nào?",
         options: [
           "Phạt nặng vì 2 từ xa nhau",
-          "Cộng độc lập điểm từng từ — BM25 không quan tâm vị trí/khoảng cách giữa các từ trong query",
+          "Cộng độc lập điểm từng từ. BM25 không quan tâm vị trí hay khoảng cách giữa các từ trong query",
           "Chỉ tính từ đầu tiên",
           "Trả về 0",
         ],
@@ -315,7 +315,7 @@ export default function BM25Topic() {
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Dưới đây là <strong className="text-foreground">BM25 calculator</strong>{" "}thật: 3 tài liệu,
           một query, và hai slider kiểm soát <LaTeX>{"k_1"}</LaTeX> (bão hoà TF) và <LaTeX>{"b"}</LaTeX>{" "}
-          (chuẩn hoá độ dài). Các con số được tính trực tiếp trong trình duyệt — bạn có thể kiểm chứng
+          (chuẩn hoá độ dài). Các con số được tính trực tiếp trong trình duyệt. Bạn có thể kiểm chứng
           bằng công thức ở phần Lý thuyết.
         </p>
         <VisualizationSection>
@@ -542,7 +542,7 @@ export default function BM25Topic() {
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-3">
-                  <p className="text-xs font-bold uppercase text-blue-700 dark:text-blue-400">Xếp hạng BM25</p>
+                  <p className="text-xs font-bold uppercase text-blue-900 dark:text-blue-200">Xếp hạng BM25</p>
                   <ol className="mt-2 space-y-1.5">
                     {rankedByBm25.map((entry, idx) => (
                       <li
@@ -561,7 +561,7 @@ export default function BM25Topic() {
                             style={{ width: `${(entry.bm25Total / maxBm25) * 100}%` }}
                           />
                         </span>
-                        <span className="font-mono text-blue-700 dark:text-blue-400 w-14 text-right">
+                        <span className="font-mono text-blue-800 dark:text-blue-200 w-14 text-right">
                           {entry.bm25Total.toFixed(2)}
                         </span>
                       </li>
@@ -569,7 +569,7 @@ export default function BM25Topic() {
                   </ol>
                 </div>
                 <div className="rounded-xl border border-pink-500/30 bg-pink-500/10 p-3">
-                  <p className="text-xs font-bold uppercase text-pink-700 dark:text-pink-400">Xếp hạng TF-IDF</p>
+                  <p className="text-xs font-bold uppercase text-pink-900 dark:text-pink-200">Xếp hạng TF-IDF</p>
                   <ol className="mt-2 space-y-1.5">
                     {rankedByTfidf.map((entry, idx) => (
                       <li
@@ -588,7 +588,7 @@ export default function BM25Topic() {
                             style={{ width: `${(entry.tfidfTotal / maxTfidf) * 100}%` }}
                           />
                         </span>
-                        <span className="font-mono text-pink-700 dark:text-pink-400 w-14 text-right">
+                        <span className="font-mono text-pink-800 dark:text-pink-200 w-14 text-right">
                           {entry.tfidfTotal.toFixed(2)}
                         </span>
                       </li>
@@ -597,8 +597,8 @@ export default function BM25Topic() {
                 </div>
               </div>
               <p className="mt-2 text-[11px] text-muted leading-relaxed">
-                Hãy thử kéo <LaTeX>{"b"}</LaTeX> về 0 — length norm tắt, điểm của <code>D2</code>{" "}
-                (doc dài) sẽ tăng. Kéo <LaTeX>{"k_1"}</LaTeX> về 1.2 — bão hoà mạnh, từ lặp nhiều lần
+                Hãy thử kéo <LaTeX>{"b"}</LaTeX> về 0. Length norm tắt, điểm của <code>D2</code>{" "}
+                (doc dài) sẽ tăng. Kéo <LaTeX>{"k_1"}</LaTeX> về 1.2: bão hoà mạnh, từ lặp nhiều lần
                 không còn được cộng nhiều. BM25 = TF-IDF &quot;biết điều chỉnh&quot;.
               </p>
             </div>
@@ -620,10 +620,10 @@ export default function BM25Topic() {
             <TopicLink slug="hybrid-search">hybrid search</TopicLink>.
           </p>
           <p className="mt-3">
-            Điểm &quot;aha&quot;: <LaTeX>{"k_1"}</LaTeX> không phải con số ma thuật — nó là cách bạn nói
-            với hệ thống &quot;tôi muốn nhấn mạnh từ lặp nhiều lần bao nhiêu&quot;. <LaTeX>{"b"}</LaTeX>{" "}
-            cũng vậy — &quot;tôi muốn phạt doc dài bao nhiêu&quot;. Hai núm vặn, hai câu hỏi ngôn ngữ
-            tự nhiên, một công thức đẹp.
+            Điểm &quot;aha&quot;: <LaTeX>{"k_1"}</LaTeX> không phải con số ngẫu nhiên. Nó là cách bạn
+            nói với hệ thống &quot;tôi muốn nhấn mạnh từ lặp nhiều lần bao nhiêu&quot;.{" "}
+            <LaTeX>{"b"}</LaTeX>{" "}cũng vậy: &quot;tôi muốn phạt doc dài bao nhiêu&quot;. Hai núm vặn,
+            hai câu hỏi ngôn ngữ tự nhiên, một công thức đẹp.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -633,11 +633,11 @@ export default function BM25Topic() {
           question="Người dùng tìm 'thú cưng đáng yêu' nhưng tài liệu viết 'chó mèo dễ thương'. BM25 tìm được không?"
           options={[
             "Được, BM25 hiểu đồng nghĩa",
-            "KHÔNG, BM25 chỉ khớp chính xác từ — 'thú cưng' != 'chó mèo', 'đáng yêu' != 'dễ thương'",
+            "KHÔNG. BM25 chỉ khớp chính xác từ ('thú cưng' != 'chó mèo', 'đáng yêu' != 'dễ thương')",
             "Được nếu tăng k1 lên cao",
           ]}
           correct={1}
-          explanation="BM25 là lexical search — chỉ khớp chính xác chuỗi ký tự. Không hiểu đồng nghĩa, viết tắt, hay ngữ cảnh. Đây là lý do cần Semantic Search bổ sung, tạo thành Hybrid Search!"
+          explanation="BM25 là lexical search: chỉ khớp chính xác chuỗi ký tự. Không hiểu đồng nghĩa, viết tắt, hay ngữ cảnh. Đây là lý do cần Semantic Search bổ sung, tạo thành Hybrid Search!"
         />
 
         <div className="mt-5">
@@ -646,7 +646,7 @@ export default function BM25Topic() {
             options={[
               "Tăng k1 (cho phép TF lớn) và tăng b (phạt mạnh doc dài)",
               "Giảm k1 (bão hoà sớm, chống keyword stuffing) và giảm b nhẹ (không phạt quá mức vì mô tả dài có lý do)",
-              "Giữ mặc định k1=1.5, b=0.75 — không bao giờ cần tune",
+              "Giữ mặc định k1=1.5, b=0.75. Không bao giờ cần tune",
               "Đặt k1=0 và b=1 để chỉ xét IDF",
             ]}
             correct={1}
@@ -732,7 +732,7 @@ export default function BM25Topic() {
           </Callout>
 
           <p className="mt-4">
-            <strong>So sánh chi tiết TF-IDF vs BM25 — bảng cheat sheet:</strong>
+            <strong>So sánh chi tiết TF-IDF vs BM25 (cheat sheet):</strong>
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse">
@@ -752,27 +752,27 @@ export default function BM25Topic() {
                 <tr className="border-b border-border/40">
                   <td className="py-2 pr-3 font-semibold">Bão hoà TF</td>
                   <td className="py-2 pr-3">Không (hoặc log rất nhẹ)</td>
-                  <td className="py-2 pr-3">Có — kiểm soát bằng <LaTeX>{"k_1"}</LaTeX></td>
+                  <td className="py-2 pr-3">Có, kiểm soát bằng <LaTeX>{"k_1"}</LaTeX></td>
                 </tr>
                 <tr className="border-b border-border/40">
                   <td className="py-2 pr-3 font-semibold">Length norm</td>
                   <td className="py-2 pr-3">Không, hoặc cosine sau chuẩn hoá</td>
-                  <td className="py-2 pr-3">Có — kiểm soát bằng <LaTeX>{"b"}</LaTeX></td>
+                  <td className="py-2 pr-3">Có, kiểm soát bằng <LaTeX>{"b"}</LaTeX></td>
                 </tr>
                 <tr className="border-b border-border/40">
                   <td className="py-2 pr-3 font-semibold">IDF smoothing</td>
-                  <td className="py-2 pr-3">Không — <LaTeX>{"\\log(N/\\text{df})"}</LaTeX> có thể âm</td>
-                  <td className="py-2 pr-3">Có — <LaTeX>{"+0.5"}</LaTeX> smoothing Robertson-SJ</td>
+                  <td className="py-2 pr-3">Không, <LaTeX>{"\\log(N/\\text{df})"}</LaTeX> có thể âm</td>
+                  <td className="py-2 pr-3">Có, <LaTeX>{"+0.5"}</LaTeX> smoothing Robertson-SJ</td>
                 </tr>
                 <tr className="border-b border-border/40">
                   <td className="py-2 pr-3 font-semibold">Parameters tune</td>
                   <td className="py-2 pr-3">0 (không có)</td>
-                  <td className="py-2 pr-3">2 (<LaTeX>{"k_1, b"}</LaTeX>) — tune được</td>
+                  <td className="py-2 pr-3">2 (<LaTeX>{"k_1, b"}</LaTeX>), tune được</td>
                 </tr>
                 <tr className="border-b border-border/40">
                   <td className="py-2 pr-3 font-semibold">Probabilistic foundation</td>
                   <td className="py-2 pr-3">Heuristic</td>
-                  <td className="py-2 pr-3">Có — Probabilistic Relevance Model</td>
+                  <td className="py-2 pr-3">Có, Probabilistic Relevance Model</td>
                 </tr>
                 <tr>
                   <td className="py-2 pr-3 font-semibold">Benchmark wins</td>
@@ -784,10 +784,10 @@ export default function BM25Topic() {
           </div>
 
           <p className="mt-4 text-sm leading-relaxed">
-            Một cách đơn giản để nhớ: <strong>BM25 = TF-IDF sau khi đi học về xác suất</strong>. Robertson
-            và nhóm Cambridge đã chính thức hoá TF-IDF trong khung Probabilistic Relevance Framework, và
-            mỗi &quot;hack&quot; của BM25 (saturation, length norm, IDF smoothing) đều có giải thích toán
-            học — không phải magic number.
+            Một cách dễ nhớ: <strong>BM25 = TF-IDF sau khi đi học về xác suất</strong>. Robertson và nhóm
+            Cambridge đã chính thức hoá TF-IDF trong khung Probabilistic Relevance Framework. Mỗi
+            &quot;hack&quot; của BM25 (saturation, length norm, IDF smoothing) đều có giải thích toán học,
+            không phải magic number.
           </p>
 
           <Callout variant="insight" title="Saturation effect: vì sao từ lặp 20 lần ≠ 20x điểm">
@@ -800,7 +800,7 @@ export default function BM25Topic() {
             <p className="mt-2 text-sm">
               Khi <LaTeX>{"f = 1"}</LaTeX>: tf-score = <LaTeX>{"(k_1+1)/(1+k_1)"}</LaTeX> ≈ 1. Khi{" "}
               <LaTeX>{"f \\to \\infty"}</LaTeX>: tf-score → <LaTeX>{"k_1 + 1"}</LaTeX> (giá trị cận trên).
-              Với <LaTeX>{"k_1 = 1.2"}</LaTeX>, điểm tối đa là 2.2 — từ xuất hiện 1000 lần cũng không vượt
+              Với <LaTeX>{"k_1 = 1.2"}</LaTeX>, điểm tối đa là 2.2. Từ xuất hiện 1000 lần cũng không vượt
               được con số này.
             </p>
             <p className="mt-2 text-sm">
@@ -810,8 +810,8 @@ export default function BM25Topic() {
               giảm dần (diminishing returns) trong kinh tế học.
             </p>
             <p className="mt-2 text-sm">
-              So sánh với TF-IDF cổ điển: nếu dùng raw TF, doc lặp từ 100 lần có điểm gấp 100 doc lặp 1 lần —
-              cực dễ bị thao túng. Log TF (1 + log f) đỡ hơn nhưng vẫn không có cận trên. BM25 là thuật
+              So sánh với TF-IDF cổ điển: nếu dùng raw TF, doc lặp từ 100 lần có điểm gấp 100 doc lặp 1 lần.
+              Cực dễ bị thao túng. Log TF (1 + log f) đỡ hơn nhưng vẫn không có cận trên. BM25 là thuật
               toán duy nhất trong họ có cận trên rõ ràng.
             </p>
           </Callout>
@@ -820,16 +820,16 @@ export default function BM25Topic() {
             <p>
               BM25F (F = Field) cho phép gán trọng số cho từng field: title, body, tags. Ví dụ tìm
               &quot;iPhone&quot;, match trong <code>title</code> quan trọng hơn match trong{" "}
-              <code>body</code>. Elasticsearch hỗ trợ qua <code>multi_match</code> với boost — nội bộ
+              <code>body</code>. Elasticsearch hỗ trợ qua <code>multi_match</code> với boost. Nội bộ
               vẫn là BM25F.
             </p>
             <p className="mt-2 text-xs">
               Công thức: score = Σ (IDF × saturated_TF), trong đó saturated_TF tổng hợp TF từ tất cả
-              field với weight riêng cho từng field trước khi bão hoà — không bão hoà từng field riêng.
+              field với weight riêng cho từng field trước khi bão hoà (không bão hoà từng field riêng).
             </p>
           </Callout>
 
-          <Callout variant="tip" title="Khi nào tune k1, b — và khi nào để mặc định">
+          <Callout variant="tip" title="Khi nào tune k1, b, và khi nào để mặc định">
             <p>
               Với đa số corpus tiếng Anh/Việt trung bình, <LaTeX>{"k_1 = 1.2-1.5"}</LaTeX> và{" "}
               <LaTeX>{"b = 0.75"}</LaTeX> là giá trị tốt. Tune khi: (1) bạn có tập query-relevance labels
@@ -847,11 +847,11 @@ export default function BM25Topic() {
             </p>
           </Callout>
 
-          <CodeBlock language="python" title="BM25 với rank_bm25 — ví dụ đầy đủ">
+          <CodeBlock language="python" title="BM25 với rank_bm25 (ví dụ đầy đủ)">
 {`from rank_bm25 import BM25Okapi
 import numpy as np
 
-# 1. Tokenize corpus — quan trọng: lowercase, loại stopwords nếu cần
+# 1. Tokenize corpus. Quan trọng: lowercase, loại stopwords nếu cần
 corpus_raw = [
     "Luật lao động Việt Nam quy định quyền người lao động.",
     "Bộ luật lao động mới đã cập nhật điều khoản lương tối thiểu vùng.",
@@ -991,7 +991,7 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
     return sorted(scores.items(), key=lambda x: -x[1])`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Các variant của BM25 — và khi nào dùng cái nào">
+          <CollapsibleDetail title="Các variant của BM25 và khi nào dùng cái nào">
             <p className="text-sm leading-relaxed">
               BM25 có nhiều họ hàng đã được đề xuất để khắc phục các khiếm khuyết nhỏ. Biết chúng giúp bạn
               chọn đúng cho use case:
@@ -1012,11 +1012,11 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
                 <strong>BM25F:</strong>{" "}mở rộng cho doc có nhiều field với weight khác nhau.
               </li>
               <li>
-                <strong>BM25T:</strong>{" "}dùng <em>term-specific</em> <LaTeX>{"k_1"}</LaTeX> — mỗi từ có{" "}
+                <strong>BM25T:</strong>{" "}dùng <em>term-specific</em> <LaTeX>{"k_1"}</LaTeX>: mỗi từ có{" "}
                 <LaTeX>{"k_1"}</LaTeX> riêng, tune từ data.
               </li>
               <li>
-                <strong>BM25-adpt:</strong>{" "}adaptive k1 theo document length — hiếm khi cần trong thực
+                <strong>BM25-adpt:</strong>{" "}adaptive k1 theo document length. Hiếm khi cần trong thực
                 tế.
               </li>
             </ul>
@@ -1047,14 +1047,14 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
             </LaTeX>
             <p className="mt-2 text-sm leading-relaxed">
               Điểm quan trọng: <em>length normalization và weighting xảy ra TRƯỚC bão hoà</em>. Nếu bão hoà
-              từng field riêng rồi cộng, match 5 lần ở title sẽ không khác 1 lần ở title + 4 lần ở body —
-              sai. BM25F gộp &quot;pseudo-TF&quot; có trọng số trước, rồi mới bão hoà một lần.
+              từng field riêng rồi cộng, match 5 lần ở title sẽ không khác 1 lần ở title + 4 lần ở body
+              (sai). BM25F gộp &quot;pseudo-TF&quot; có trọng số trước, rồi mới bão hoà một lần.
             </p>
             <p className="mt-2 text-sm leading-relaxed">
               <strong>Tune trong thực tế:</strong> title thường có{" "}
               <LaTeX>{"w_c = 3-5"}</LaTeX>, body <LaTeX>{"w_c = 1"}</LaTeX>, tags <LaTeX>{"w_c = 2"}</LaTeX>.
-              Elasticsearch expose qua <code>multi_match</code> với <code>fields: [&quot;title^3&quot;, &quot;body&quot;]</code>{" "}
-              — số sau <code>^</code> là boost tương đương <LaTeX>{"w_c"}</LaTeX>.
+              Elasticsearch expose qua <code>multi_match</code> với <code>fields: [&quot;title^3&quot;, &quot;body&quot;]</code>:
+              số sau <code>^</code> là boost tương đương <LaTeX>{"w_c"}</LaTeX>.
             </p>
 
             <p className="mt-3 text-sm font-semibold text-foreground">
@@ -1070,12 +1070,12 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
             </LaTeX>
             <p className="mt-2 text-sm leading-relaxed">
               <LaTeX>{"\\delta"}</LaTeX> là một &quot;hằng số công bằng&quot; đảm bảo doc chứa từ query
-              luôn có điểm tối thiểu dương. Trên TREC robust track, BM25+ cho +2-3% MAP vs BM25 — không
+              luôn có điểm tối thiểu dương. Trên TREC robust track, BM25+ cho +2-3% MAP vs BM25. Không
               khổng lồ nhưng ổn định.
             </p>
             <p className="mt-2 text-sm leading-relaxed">
               <strong>Khi nào dùng BM25+?</strong> Corpus có doc rất dài (&gt;5000 từ) và bạn muốn recall
-              cao hơn — news articles, research papers, legal documents. Với e-commerce descriptions
+              cao hơn: news articles, research papers, legal documents. Với e-commerce descriptions
               ngắn, BM25+ không khác biệt rõ.
             </p>
 
@@ -1090,7 +1090,7 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="BM25 với proximity / phrase matching — mở rộng bag-of-words">
+          <CollapsibleDetail title="BM25 với proximity / phrase matching: mở rộng bag-of-words">
             <p className="text-sm leading-relaxed">
               BM25 gốc là bag-of-words: &quot;machine learning&quot; khớp với doc chứa &quot;machine&quot;{" "}
               ở đầu và &quot;learning&quot; ở cuối (cách 500 từ) y như với doc có hai từ đó cạnh nhau.
@@ -1132,15 +1132,15 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
             </p>
             <ul className="mt-1 list-disc list-inside space-y-1 pl-2 text-sm">
               <li>
-                <strong>Whitespace tokenize:</strong>{" "}đơn giản nhưng &quot;lao động&quot; thành 2 token
-                — query &quot;luật lao động&quot; vẫn match nhưng không &quot;hiểu&quot; cụm.
+                <strong>Whitespace tokenize:</strong>{" "}đơn giản nhưng &quot;lao động&quot; thành 2 token.
+                Query &quot;luật lao động&quot; vẫn match nhưng không &quot;hiểu&quot; cụm.
               </li>
               <li>
                 <strong>Word segmentation (underthesea, pyvi):</strong>{" "}tách theo ranh giới từ tiếng
-                Việt thực — &quot;lao_động&quot; thành 1 token. Match chính xác hơn.
+                Việt thực: &quot;lao_động&quot; thành 1 token. Match chính xác hơn.
               </li>
               <li>
-                <strong>Character n-gram:</strong>{" "}fallback khi không có tokenizer — bắt được cả từ
+                <strong>Character n-gram:</strong>{" "}fallback khi không có tokenizer. Bắt được cả từ
                 viết sai chính tả.
               </li>
               <li>
@@ -1193,14 +1193,14 @@ def rrf_fuse(bm25_results, vector_results, k: int = 60):
             </p>
           </Callout>
 
-          <CodeBlock language="python" title="BM25S — implementation cực nhanh với sparse matrix (2024)">
-{`# BM25S (Lu 2024) — reimagine BM25 dùng scipy.sparse
-# GitHub: xhluca/bm25s — nhanh hơn rank_bm25 10-100x trên corpus lớn.
+          <CodeBlock language="python" title="BM25S: implementation cực nhanh với sparse matrix (2024)">
+{`# BM25S (Lu 2024): reimagine BM25 dùng scipy.sparse
+# GitHub: xhluca/bm25s. Nhanh hơn rank_bm25 10-100x trên corpus lớn.
 # Ý tưởng chính: precompute IDF × (k1+1) / (TF + k1·len-norm) dưới dạng
-# sparse CSR matrix, query thành nhân vector sparse—sparse (cực nhanh).
+# sparse CSR matrix, query thành nhân vector sparse × sparse (cực nhanh).
 
 import bm25s
-import Stemmer  # optional — giảm số token độc nhất
+import Stemmer  # optional, giảm số token độc nhất
 
 # 1. Dataset
 corpus = [
@@ -1215,11 +1215,11 @@ corpus = [
 stemmer = Stemmer.Stemmer("english")  # None cho tiếng Việt
 corpus_tokens = bm25s.tokenize(corpus, stopwords="en", stemmer=stemmer)
 
-# 3. Index — tạo sparse matrix, tính sẵn IDF
+# 3. Index: tạo sparse matrix, tính sẵn IDF
 retriever = bm25s.BM25(k1=1.5, b=0.75)
 retriever.index(corpus_tokens)
 
-# 4. Query — nhanh hơn rank_bm25 ở batch mode
+# 4. Query: nhanh hơn rank_bm25 ở batch mode
 query = "quyền người lao động"
 query_tokens = bm25s.tokenize(query, stemmer=stemmer)
 
@@ -1228,11 +1228,11 @@ results, scores = retriever.retrieve(query_tokens, k=3)
 for i, (idx, score) in enumerate(zip(results[0], scores[0])):
     print(f"#{i+1} score={score:.3f} → {corpus[idx]}")
 
-# 5. Save / Load index — chỉ một thư mục sparse files
+# 5. Save / Load index: chỉ một thư mục sparse files
 retriever.save("bm25s_index")
 retriever = bm25s.BM25.load("bm25s_index")
 
-# 6. Batch query — nhanh nhất khi bạn có 1000+ queries
+# 6. Batch query: nhanh nhất khi bạn có 1000+ queries
 queries = ["lương tối thiểu", "phở bò", "giao thông đường bộ"]
 query_tokens_batch = bm25s.tokenize(queries, stemmer=stemmer)
 results_batch, scores_batch = retriever.retrieve(query_tokens_batch, k=2)
@@ -1252,29 +1252,29 @@ results_batch, scores_batch = retriever.retrieve(query_tokens_batch, k=2)
             </p>
             <ul className="list-disc list-inside space-y-1 text-sm mt-2">
               <li>
-                <strong>Title stuffing:</strong> nhồi keyword vào title (BM25F boost title cao) — doc có
+                <strong>Title stuffing:</strong> nhồi keyword vào title (BM25F boost title cao). Doc có
                 thể lên top dù body lạc đề.
               </li>
               <li>
-                <strong>Rare term injection:</strong> chèn từ hiếm nhưng bất ngờ xuất hiện trong query —
+                <strong>Rare term injection:</strong> chèn từ hiếm nhưng bất ngờ xuất hiện trong query.
                 IDF cao của từ hiếm boost điểm mạnh.
               </li>
               <li>
-                <strong>Synonym farming:</strong> viết nhiều biến thể cùng nghĩa để tránh saturation —
-                &quot;xe hơi, ô tô, auto, automobile&quot; cùng một doc.
+                <strong>Synonym farming:</strong> viết nhiều biến thể cùng nghĩa để tránh saturation,
+                ví dụ &quot;xe hơi, ô tô, auto, automobile&quot; cùng một doc.
               </li>
               <li>
                 <strong>Cloaking:</strong> hiển thị văn bản khác nhau cho crawler và user.
               </li>
             </ul>
             <p className="mt-2 text-sm">
-              Các search engine lớn đối phó bằng: (1) signal thứ cấp — PageRank, click-through rate,
+              Các search engine lớn đối phó bằng: (1) signal thứ cấp như PageRank, click-through rate,
               freshness, (2) spam classifier trước retrieval, (3) diversification trong ranking, (4)
               re-ranking với model học từ feedback.
             </p>
           </Callout>
 
-          <Callout variant="info" title="BM25 vs BM25F vs BM25+ — decision tree thực chiến">
+          <Callout variant="info" title="BM25 vs BM25F vs BM25+: decision tree thực chiến">
             <p className="text-sm">
               <strong>Dùng BM25 Okapi</strong> khi: doc là một khối text (news body, blog post), độ dài
               tương đối đồng đều, không cần tune field-level. Đây là default 95% use case.
@@ -1286,7 +1286,7 @@ results_batch, scores_batch = retriever.retrieve(query_tokens_batch, k=2)
             </p>
             <p className="mt-2 text-sm">
               <strong>Dùng BM25+</strong> khi: corpus có doc rất dài (legal, scientific, news) và bạn
-              quan sát thấy recall thấp ở doc dài — BM25+ shift điểm tối thiểu lên để không &quot;bỏ
+              quan sát thấy recall thấp ở doc dài. BM25+ shift điểm tối thiểu lên để không &quot;bỏ
               sót&quot; doc dài có TF thấp.
             </p>
             <p className="mt-2 text-sm">
@@ -1299,8 +1299,8 @@ results_batch, scores_batch = retriever.retrieve(query_tokens_batch, k=2)
           <p className="mt-4 text-xs text-muted leading-relaxed">
             Lịch sử ngắn: BM25 là kết tinh từ dòng nghiên cứu Probabilistic Retrieval Model của Stephen
             Robertson, Karen Spärck Jones và team Cambridge/City University. &quot;BM&quot; là viết tắt
-            của &quot;Best Matching&quot; — số 25 là phiên bản thứ 25 trong chuỗi thử nghiệm. Phiên bản
-            này &quot;may mắn&quot; vừa đơn giản, vừa robust, vừa có parameter tune được → trở thành
+            của &quot;Best Matching&quot;. Số 25 là phiên bản thứ 25 trong chuỗi thử nghiệm. Phiên bản
+            này &quot;may mắn&quot; vừa đơn giản, vừa robust, vừa có parameter tune được, nên trở thành
             chuẩn de-facto trong 30 năm.
           </p>
           <p className="mt-2 text-xs text-muted leading-relaxed">
@@ -1316,7 +1316,7 @@ results_batch, scores_batch = retriever.retrieve(query_tokens_batch, k=2)
           points={[
             "BM25 = TF (tần suất, bão hoà) × IDF (độ hiếm) × Length Normalization (chuẩn hoá độ dài).",
             "Parameter k1 kiểm soát bão hoà TF (1.2-2.0), b kiểm soát phạt theo độ dài (0-1, mặc định 0.75).",
-            "IDF của BM25 dùng công thức Okapi ln((N-df+0.5)/(df+0.5)+1) — an toàn với df lớn, không âm.",
+            "IDF của BM25 dùng công thức Okapi ln((N-df+0.5)/(df+0.5)+1): an toàn với df lớn, không âm.",
             "Giỏi khớp chính xác: tên riêng, mã sản phẩm, thuật ngữ. Yếu: đồng nghĩa, paraphrase, ngữ cảnh.",
             "Vẫn là baseline mạnh, kết hợp semantic search trong Hybrid Search là chuẩn hiện đại.",
             "Biến thể (BM25F, BM25L, BM25+, BM25T) giải quyết case đặc biệt; mặc định BM25 Okapi đủ tốt cho 95% tình huống.",
