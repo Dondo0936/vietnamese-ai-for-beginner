@@ -7,6 +7,34 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "how-ai-reads-pdf",
+    title: "AI đọc PDF như thế nào. Vì sao việc tưởng dễ lại khó.",
+    dek: "Bạn kéo thả một file PDF 50 trang báo cáo tài chính vào Claude, hỏi 'doanh thu Q3 là bao nhiêu', nhận đúng con số 245 tỷ trong bốn giây. Cảm giác trơn tru, nhưng bên trong là một quy trình cồng kềnh. PDF được Adobe thiết kế năm 1993 để in ra giấy, không phải để máy đọc. File chỉ chứa lệnh 'vẽ glyph X tại tọa độ (x, y)', không có khái niệm đoạn văn, tiêu đề, hay bảng. Mọi cấu trúc người đọc cảm nhận được đều phải tự tái dựng. Bài viết mổ xẻ hai chiến lược các sản phẩm AI dùng năm 2026 để giải bài toán này: vision-first (multimodal model nhìn ảnh từng trang) và parse-first (Marker, Mistral OCR, LlamaParse bóc tách Markdown trước). Mỗi chiến lược thắng ở một loại tài liệu, nhưng cách thắng tổng thể lại là kết hợp cả hai.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/how-ai-reads-pdf",
+    },
+    date: "2026-05-05",
+    readingTime: "8 phút",
+    category: "infra",
+    tag: "giải thích",
+    lessonRefs: [
+      "multimodal",
+      "rag",
+      "chunking",
+      "embedding-model",
+      "tokenization",
+    ],
+    relatedArticles: [
+      "claude-in-excel-how-it-works",
+      "tts-how-it-works",
+      "claude-controls-apps-adobe",
+    ],
+    heroViz: "pdf-curtain",
+    isLead: true,
+  },
+  {
     slug: "midjourney-vs-chatgpt-image-2",
     title:
       "Midjourney V8.1 vẽ đẹp, ChatGPT Images 2.0 vẽ đúng chữ.",
