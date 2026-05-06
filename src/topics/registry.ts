@@ -2693,7 +2693,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "data-and-datasets",
     title: "Data & Datasets",
-    titleVi: "Dữ liệu — thức ăn của ML",
+    titleVi: "Dữ liệu: thức ăn của ML",
     description:
       "Dữ liệu là thức ăn của Machine Learning. Chất lượng đầu vào quyết định chất lượng đầu ra. Làm quen với đặc trưng, nhãn, và ba tập train/val/test.",
     category: "foundations",
