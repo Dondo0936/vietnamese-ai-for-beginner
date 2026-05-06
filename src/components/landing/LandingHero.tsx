@@ -38,9 +38,7 @@ export function LandingHero() {
         </h1>
         <p className="ld-lede">
           260+ chủ đề viết lại cho người Việt<br className="hide-mobile" />
-          Hình minh hoạ, bảng điều khiển, biểu đồ, giải thích.<br className="hide-mobile" />
-          Mỗi bài đi qua tám bước:<br className="hide-mobile" />
-          đoán, hình, à-ha, thử, hiểu, tóm, quiz.
+          Hình minh hoạ, bảng điều khiển, biểu đồ, giải thích.
         </p>
         <div className="ld-cta-row">
           <Link

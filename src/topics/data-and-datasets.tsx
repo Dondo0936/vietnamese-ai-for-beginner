@@ -43,7 +43,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "data-and-datasets",
   title: "Data & Datasets",
-  titleVi: "Dữ liệu — thức ăn của ML",
+  titleVi: "Dữ liệu: thức ăn của ML",
   description:
     "Dữ liệu là thức ăn của Machine Learning. Chất lượng đầu vào quyết định chất lượng đầu ra. Làm quen với đặc trưng, nhãn, và ba tập train/val/test.",
   category: "foundations",
@@ -124,7 +124,7 @@ function DatasetInspector() {
       <div className="flex items-center gap-2">
         <Database size={18} className="text-accent" />
         <h3 className="text-base font-semibold text-foreground">
-          Bảng dữ liệu nhà ở Hà Nội — tương tác được
+          Bấm cột để chọn nhãn cho bảng nhà ở Hà Nội
         </h3>
       </div>
 
@@ -133,8 +133,8 @@ function DatasetInspector() {
         <strong className="text-amber-600 dark:text-amber-400">nhãn</strong>{" "}
         (thứ máy cần đoán). Các cột còn lại tự động trở thành{" "}
         <strong className="text-blue-600 dark:text-blue-400">đặc trưng</strong>{" "}
-        (thông tin đầu vào). Bấm nút con mắt để ẩn cột — xem máy sẽ có
-        bao nhiêu đầu vào.
+        (thông tin đầu vào). Bấm nút con mắt để ẩn cột. Bạn sẽ thấy
+        máy còn bao nhiêu đầu vào.
       </p>
 
       {/* Các nút ẩn/hiện cột */}
@@ -313,7 +313,7 @@ function DatasetInspector() {
         </p>
         <p>
           <strong>Nhãn:</strong> {labelInfo?.label}
-          {labelInfo?.unit ? ` (${labelInfo.unit})` : ""} — máy sẽ học
+          {labelInfo?.unit ? ` (${labelInfo.unit})` : ""}. Máy sẽ học
           cách đoán giá trị này dựa trên {featureCols.length} đặc trưng
           còn lại.
         </p>
@@ -358,11 +358,11 @@ function SplitVisualization({ train, val }: SplitVisArgs) {
 
   let warning = "";
   if (trainPct < 50)
-    warning = "Tập train quá nhỏ — máy không đủ ví dụ để học.";
+    warning = "Tập train quá nhỏ. Máy không đủ ví dụ để học.";
   else if (testPct < 10)
-    warning = "Tập test quá nhỏ — kết quả đo không đáng tin.";
+    warning = "Tập test quá nhỏ. Kết quả đo không đáng tin.";
   else if (valPct === 0)
-    warning = "Không có tập val — khó chọn mô hình tốt nhất.";
+    warning = "Không có tập val. Khó chọn mô hình tốt nhất.";
 
   return (
     <div className="w-full space-y-4">
@@ -399,19 +399,19 @@ function SplitVisualization({ train, val }: SplitVisArgs) {
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-blue-500" />
             <span className="text-foreground/90">
-              Train — để máy học ({trainStones}/{totalStones})
+              Train · để máy học ({trainStones}/{totalStones})
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-amber-500" />
             <span className="text-foreground/90">
-              Val — điều chỉnh ({valStones}/{totalStones})
+              Val · điều chỉnh ({valStones}/{totalStones})
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
             <span className="text-foreground/90">
-              Test — kiểm tra ({testStones}/{totalStones})
+              Test · kiểm tra ({testStones}/{totalStones})
             </span>
           </div>
         </div>
@@ -667,21 +667,21 @@ export default function DataAndDatasetsTopic() {
         question:
           "Trong bảng dữ liệu nhà ở, cột nào thường được chọn làm NHÃN?",
         options: [
-          "Quận — nơi nhà tọa lạc",
-          "Diện tích — số m²",
+          "Quận (nơi nhà tọa lạc)",
+          "Diện tích (số m²)",
           "Số phòng",
-          "Giá nhà — thứ ta muốn dự đoán",
+          "Giá nhà (thứ ta muốn dự đoán)",
         ],
         correct: 3,
         explanation:
-          "Nhãn là thứ ta muốn máy đoán. Quận, diện tích, số phòng là ĐẦU VÀO (đặc trưng) để máy học cách suy ra giá (nhãn).",
+          "Nhãn là thứ ta muốn máy đoán, ở đây là giá. Quận, diện tích, số phòng là đầu vào (feature) để máy học cách suy ra giá đó.",
       },
       {
         question:
           "Vì sao phải chia dữ liệu thành tập huấn luyện (train) và tập kiểm tra (test)?",
         options: [
           "Để máy tính chạy nhanh hơn",
-          "Để có thể đánh giá mô hình trên dữ liệu nó chưa từng thấy — giống đi thi với đề mới",
+          "Để có thể đánh giá mô hình trên dữ liệu nó chưa từng thấy, giống đi thi với đề mới",
           "Vì dữ liệu quá lớn, phải cắt nhỏ",
           "Để có 2 mô hình khác nhau",
         ],
@@ -695,12 +695,12 @@ export default function DataAndDatasetsTopic() {
         options: [
           "Mô hình rất tốt, nên đưa vào sử dụng ngay",
           "Tập test bị lỗi",
-          "Mô hình học thuộc lòng tập train — gọi là overfitting",
+          "Mô hình học thuộc lòng tập train, gọi là overfitting",
           "Cần tăng số GPU",
         ],
         correct: 2,
         explanation:
-          "Đây là overfitting — mô hình nhớ đáp án cụ thể thay vì học quy luật chung. Giống học sinh học vẹt 20 đề rồi bó tay khi gặp đề 21.",
+          "Đây là overfitting. Mô hình nhớ đáp án cụ thể thay vì học quy luật chung. Giống học sinh học vẹt 20 đề rồi bó tay khi gặp đề 21.",
       },
       {
         type: "fill-blank",
@@ -713,7 +713,7 @@ export default function DataAndDatasetsTopic() {
           },
         ],
         explanation:
-          "Mỗi hàng = một quan sát thực tế (1 căn nhà, 1 email, 1 bức ảnh). Tiếng Anh gọi là 'sample' hoặc 'instance'.",
+          "Mỗi hàng là một quan sát thực tế (1 căn nhà, 1 email, 1 bức ảnh). Tiếng Anh gọi là sample hoặc instance.",
       },
       {
         question:
@@ -732,8 +732,8 @@ export default function DataAndDatasetsTopic() {
         question:
           "Công ty có 10.000 ảnh chó/mèo, nhưng 9.000 ảnh chó và 1.000 ảnh mèo. Vấn đề gì có thể xảy ra?",
         options: [
-          "Không có vấn đề gì — càng nhiều ảnh càng tốt",
-          "Mô hình có thể 'lười' đoán toàn chó và vẫn đúng 90% — thực tế rất kém với mèo",
+          "Không có vấn đề gì, càng nhiều ảnh càng tốt",
+          "Mô hình có thể 'lười' đoán toàn chó và vẫn đúng 90%, nhưng thực tế rất kém với mèo",
           "Máy sẽ chạy chậm hơn",
           "Mô hình không biết phân biệt màu",
         ],
@@ -752,7 +752,7 @@ export default function DataAndDatasetsTopic() {
         ],
         correct: 1,
         explanation:
-          "Câu nói kinh điển của ML. Đừng mong thuật toán hay cứu được dữ liệu tệ. 60-70% thời gian của người làm ML là làm sạch dữ liệu — không phải chạy thuật toán.",
+          "Câu nói kinh điển của ML. Đừng mong thuật toán hay cứu được dữ liệu tệ. 60-70% thời gian của người làm ML là làm sạch dữ liệu, không phải chạy thuật toán.",
       },
     ],
     [],
@@ -760,7 +760,7 @@ export default function DataAndDatasetsTopic() {
 
   return (
     <>
-      {/* ══════════════════ BƯỚC 1 — HOOK ══════════════════ */}
+      {/* ══════════════════ BƯỚC 1 · HOOK ══════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Bắt đầu">
         <div className="rounded-2xl border-2 border-accent/30 bg-gradient-to-br from-accent-light/50 to-surface p-6 space-y-4">
           <div className="flex items-center gap-3">
@@ -779,7 +779,7 @@ export default function DataAndDatasetsTopic() {
 
           <p className="text-sm text-foreground/90 leading-relaxed">
             Bạn có thể có đầu bếp giỏi nhất thế giới, nhưng nếu nguyên
-            liệu là thịt ôi, rau héo — đĩa ăn cuối cùng cũng chỉ là rác.
+            liệu là thịt ôi, rau héo, đĩa ăn cuối cùng cũng chỉ là rác.
             ML cũng thế.
           </p>
 
@@ -820,34 +820,34 @@ export default function DataAndDatasetsTopic() {
           </div>
 
           <div className="rounded-xl border border-border bg-card p-4 text-sm italic text-foreground/85 leading-relaxed">
-            &ldquo;Rác vào, rác ra&rdquo; — câu nằm lòng của mọi người
+            &ldquo;Rác vào, rác ra&rdquo; là câu nằm lòng của mọi người
             làm ML. 60-70% công việc là làm sạch và chuẩn bị dữ liệu,
             không phải chạy thuật toán.
           </div>
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
+      {/* ══════════════════ BƯỚC 2 · DỰ ĐOÁN ══════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bảng 10.000 căn hộ có 4 cột: diện tích, quận, số phòng, giá. Bạn muốn dạy mô hình đoán GIÁ cho căn hộ mới. Khi huấn luyện và khi dự đoán, bạn đưa vào cột nào?"
           options={[
-            "Đưa cả 4 cột lúc huấn luyện và cả 4 cột lúc dự đoán — mô hình tự chọn cột nào cần thiết",
-            "Huấn luyện: đưa 3 cột đầu kèm 'giá' làm đáp án đúng. Dự đoán: chỉ đưa 3 cột đầu để mô hình đoán giá",
-            "Huấn luyện: chỉ đưa cột 'giá'. Dự đoán: đưa 3 cột còn lại",
-            "Bỏ cột 'quận' đi vì là chữ, ML chỉ hiểu số",
+            "Đưa cả 4 cột lúc huấn luyện và cả 4 cột lúc dự đoán, mô hình tự chọn cột nào cần thiết",
+            "Huấn luyện: đưa 3 cột đầu kèm cột giá làm đáp án đúng. Dự đoán: chỉ đưa 3 cột đầu để mô hình đoán giá",
+            "Huấn luyện: chỉ đưa cột giá. Dự đoán: đưa 3 cột còn lại",
+            "Bỏ cột quận đi vì là chữ, ML chỉ hiểu số",
           ]}
           correct={1}
-          explanation="Ba cột đầu là 'đặc trưng' (feature) — đầu vào. 'Giá' là 'nhãn' (label) — thứ mô hình phải đoán. Khi huấn luyện bạn đưa đủ cả đặc trưng lẫn nhãn để mô hình học mối quan hệ; khi dự đoán cho căn mới, nhãn chính là thứ bạn chưa biết — nếu đưa vào thì mô hình chỉ việc copy (rò rỉ nhãn). Cột chữ như 'quận' sẽ được mã hoá thành số ở bước tiền xử lý — bạn không cần bỏ."
+          explanation="Ba cột đầu là đặc trưng (feature), tức là đầu vào. Giá là nhãn (label), tức là thứ mô hình phải đoán. Khi huấn luyện bạn đưa đủ cả đặc trưng lẫn nhãn để mô hình học mối quan hệ. Khi dự đoán cho căn mới, nhãn chính là thứ bạn chưa biết, nếu đưa vào thì mô hình chỉ việc copy (rò rỉ nhãn). Cột chữ như quận sẽ được mã hoá thành số ở bước tiền xử lý, bạn không cần bỏ."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
-            Tiếp theo, bạn sẽ thấy dữ liệu ML trông như thế nào — và bạn
+            Tiếp theo, bạn sẽ thấy dữ liệu ML trông như thế nào, và bạn
             sẽ tự tay chọn cột nào là nhãn, cột nào là đặc trưng.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 3 — REVEAL ══════════════════ */}
+      {/* ══════════════════ BƯỚC 3 · REVEAL ══════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-8">
@@ -880,7 +880,7 @@ export default function DataAndDatasetsTopic() {
                   {" "}
                   Test
                 </strong>{" "}
-                (để chấm điểm cuối). Kéo hai thanh dưới — test sẽ tự
+                (để chấm điểm cuối). Kéo hai thanh dưới, test sẽ tự
                 điều chỉnh.
               </p>
 
@@ -889,7 +889,7 @@ export default function DataAndDatasetsTopic() {
                 sliders={[
                   {
                     key: "train",
-                    label: "Train (%) — tập huấn luyện",
+                    label: "Train (%): tập huấn luyện",
                     min: 0,
                     max: 100,
                     step: 5,
@@ -898,7 +898,7 @@ export default function DataAndDatasetsTopic() {
                   },
                   {
                     key: "val",
-                    label: "Val (%) — tập kiểm chứng",
+                    label: "Val (%): tập kiểm chứng",
                     min: 0,
                     max: 100,
                     step: 5,
@@ -932,7 +932,7 @@ export default function DataAndDatasetsTopic() {
                 <p className="text-muted">
                   Tỉ lệ chuẩn nhất cho người mới: 70/15/15 hoặc 80/10/10.
                   Dataset càng lớn thì tập test có thể tỉ lệ càng nhỏ (vì
-                  10% của 1 triệu mẫu đã là 100.000 — quá đủ).
+                  10% của 1 triệu mẫu đã là 100.000, quá đủ).
                 </p>
               </div>
             </div>
@@ -944,7 +944,7 @@ export default function DataAndDatasetsTopic() {
               <div className="flex items-center gap-2">
                 <BookOpen size={18} className="text-accent" />
                 <h3 className="text-base font-semibold text-foreground">
-                  Dữ liệu đi qua bốn trạm — xem từng bước
+                  Dữ liệu đi qua bốn trạm trước khi máy học
                 </h3>
               </div>
               <p className="text-sm text-muted leading-relaxed">
@@ -958,7 +958,7 @@ export default function DataAndDatasetsTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 4 — DEEPEN (StepReveal pipeline chi tiết) ══════════════════ */}
+      {/* ══════════════════ BƯỚC 4 · DEEPEN (StepReveal pipeline chi tiết) ══════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground mb-2">
           Bốn chặng của một bộ dữ liệu tốt
@@ -988,7 +988,7 @@ export default function DataAndDatasetsTopic() {
                   className="text-rose-600 dark:text-rose-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Chặng 1: Thu thập — dữ liệu từ đâu?
+                  Chặng 1: Thu thập. Dữ liệu từ đâu?
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
@@ -1022,14 +1022,14 @@ export default function DataAndDatasetsTopic() {
                   className="text-blue-600 dark:text-blue-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Chặng 2: Làm sạch — lau lại bàn ăn
+                  Chặng 2: Làm sạch. Lau lại bàn ăn.
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Thống nhất định dạng (m² không phải m2), xử lý ô trống
                 (bỏ hoặc điền bằng trung bình), xóa dòng trùng, sửa lỗi
                 chính tả. Đây thường là công việc tốn nhiều thời gian
-                nhất — nhưng bỏ qua là tự chuốc họa.
+                nhất. Tuy nhiên, bỏ qua là tự chuốc họa.
               </p>
               <div className="rounded-lg bg-card border border-border p-3 text-xs font-mono text-foreground/80 space-y-1">
                 <p>
@@ -1056,14 +1056,14 @@ export default function DataAndDatasetsTopic() {
                   className="text-amber-600 dark:text-amber-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Chặng 3: Gắn nhãn — chỉ ra đáp án đúng
+                  Chặng 3: Gắn nhãn. Chỉ ra đáp án đúng.
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Nếu là học có giám sát, mỗi mẫu cần đáp án đúng. Ảnh
                 chó → nhãn &ldquo;chó&rdquo;. Email quảng cáo → nhãn
-                &ldquo;rác&rdquo;. Công việc này thường tốn sức người —
-                các công ty lớn thuê cả đội hàng nghìn người làm việc
+                &ldquo;rác&rdquo;. Công việc này thường tốn sức người.
+                Các công ty lớn thuê cả đội hàng nghìn người làm việc
                 này. Nhãn sai = mô hình sai.
               </p>
               <div className="rounded-lg bg-card border border-border p-3 text-xs font-mono text-foreground/80 space-y-1">
@@ -1091,14 +1091,14 @@ export default function DataAndDatasetsTopic() {
                   className="text-emerald-600 dark:text-emerald-400"
                 />
                 <h4 className="text-sm font-semibold text-foreground">
-                  Chặng 4: Chia — không trộn lẫn
+                  Chặng 4: Chia. Tập test phải đóng kín.
                 </h4>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Chia ngẫu nhiên thành ba tập: train (để học), val (để
                 tinh chỉnh trong quá trình học), test (để chấm điểm
                 cuối). Quan trọng: tập test là &ldquo;đề thi đóng dấu
-                kín&rdquo; — chỉ mở ra khi đã làm xong mô hình. Dùng
+                kín&rdquo;, chỉ mở ra khi đã làm xong mô hình. Dùng
                 trộm test để tinh chỉnh = lừa dối bản thân.
               </p>
               <div className="rounded-lg bg-card border border-border p-3 text-xs font-mono text-foreground/80 space-y-1">
@@ -1120,7 +1120,7 @@ export default function DataAndDatasetsTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 5 — CHALLENGE (DragDrop) ══════════════════ */}
+      {/* ══════════════════ BƯỚC 5 · CHALLENGE (DragDrop) ══════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <div className="space-y-6">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3">
@@ -1144,7 +1144,7 @@ export default function DataAndDatasetsTopic() {
                 },
                 {
                   id: "t3",
-                  label: "Đề thi cuối kỳ — chỉ mở khi đã xong mô hình",
+                  label: "Đề thi cuối kỳ, chỉ mở khi đã xong mô hình",
                 },
                 {
                   id: "t4",
@@ -1156,7 +1156,7 @@ export default function DataAndDatasetsTopic() {
                 },
                 {
                   id: "t6",
-                  label: "Báo cáo kết quả cho sếp — đo tính hiệu quả thật",
+                  label: "Báo cáo kết quả cho sếp, đo tính hiệu quả thật",
                 },
               ]}
               zones={[
@@ -1180,22 +1180,22 @@ export default function DataAndDatasetsTopic() {
           </div>
 
           <InlineChallenge
-            question="Bạn có 300 ảnh X-quang bệnh nhân. Team hỏi: 'Chia thế nào?'. Đề xuất tốt nhất là?"
+            question="Bạn có 300 ảnh X-quang bệnh nhân, cần chia train/val/test. Đề xuất tốt nhất là?"
             options={[
-              "Dùng hết 300 ảnh để train, không test gì — tin tưởng máy",
-              "Train 210 · Val 45 · Test 45 — tỉ lệ 70/15/15",
-              "Train 1 · Val 1 · Test 298 — cần test nhiều cho chắc",
+              "Dùng hết 300 ảnh để train, không test gì, tin tưởng máy",
+              "Train 210 · Val 45 · Test 45 (tỉ lệ 70/15/15)",
+              "Train 1 · Val 1 · Test 298 (cần test nhiều cho chắc)",
               "Chia ngẫu nhiên bằng cách tung đồng xu cho mỗi ảnh",
             ]}
             correct={1}
-            explanation="Tỉ lệ 70/15/15 là kinh điển cho dataset vừa nhỏ. Đủ train để máy học, đủ val/test để đo lường. Đừng tiếc test — đó là cái đảm bảo mô hình thực sự hoạt động, không phải học thuộc."
+            explanation="Tỉ lệ 70/15/15 là kinh điển cho dataset vừa nhỏ. Đủ train để máy học, đủ val/test để đo lường. Đừng tiếc test. Đó là cái đảm bảo mô hình thực sự hoạt động, không phải học thuộc."
           />
 
           <InlineChallenge
             question="Team phát hiện: 95% dữ liệu là nam, 5% là nữ. Khi deploy, mô hình nhận diện giọng hoạt động tệ với nữ. Đây là vấn đề gì?"
             options={[
-              "Không có vấn đề — tỷ lệ tự nhiên",
-              "Thiên lệch dữ liệu (dataset bias) — mô hình học tốt nhóm đa số, kém nhóm thiểu số",
+              "Không có vấn đề, tỷ lệ tự nhiên",
+              "Dataset bias (thiên lệch dữ liệu). Mô hình học tốt nhóm đa số, kém nhóm thiểu số",
               "Máy cần thêm RAM",
               "Cần đổi thuật toán khác",
             ]}
@@ -1205,7 +1205,7 @@ export default function DataAndDatasetsTopic() {
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 6 — AHA ══════════════════ */}
+      {/* ══════════════════ BƯỚC 6 · AHA ══════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Aha">
         <AhaMoment>
           <p className="leading-relaxed">
@@ -1217,13 +1217,13 @@ export default function DataAndDatasetsTopic() {
           </p>
           <p className="mt-2 text-sm font-normal text-muted">
             Nếu chỉ được chọn một thứ để đầu tư thời gian khi mới bắt
-            đầu — hãy chọn <strong>làm sạch dữ liệu</strong>, không
+            đầu, hãy chọn <strong>làm sạch dữ liệu</strong>, không
             phải chọn thuật toán xịn hơn.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 7 — KẾT NỐI ══════════════════ */}
+      {/* ══════════════════ BƯỚC 7 · KẾT NỐI ══════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kết nối">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="text-sm leading-relaxed">
@@ -1262,7 +1262,7 @@ export default function DataAndDatasetsTopic() {
               <li>
                 <strong>Rò rỉ test.</strong> Nếu bạn &ldquo;lén&rdquo;
                 dùng test để chỉnh mô hình, kết quả báo cáo không còn
-                trung thực. Tập test chỉ mở một lần — cuối cùng.
+                trung thực. Tập test chỉ mở một lần, ở cuối cùng.
               </li>
             </ul>
           </Callout>
@@ -1271,7 +1271,7 @@ export default function DataAndDatasetsTopic() {
             Khi mới học, bạn không cần tự đi thu thập dữ liệu. Có hàng
             nghìn bộ dữ liệu công khai miễn phí trên Kaggle,
             HuggingFace, UCI Machine Learning Repository. Tải về, mở
-            ra, thử ngay — đó là cách tốt nhất để quen với dữ liệu thật.
+            ra, thử ngay. Đó là cách tốt nhất để quen với dữ liệu thật.
           </Callout>
 
           <p className="text-sm leading-relaxed">
@@ -1283,7 +1283,7 @@ export default function DataAndDatasetsTopic() {
             <TopicLink slug="supervised-unsupervised-rl">
               ba kiểu học máy
             </TopicLink>{" "}
-            — nơi các bộ dữ liệu này được đem ra sử dụng thật.
+            (nơi các bộ dữ liệu này được đem ra sử dụng thật).
           </p>
         </ExplanationSection>
 
@@ -1295,14 +1295,14 @@ export default function DataAndDatasetsTopic() {
               "Đặc trưng (features) là đầu vào; nhãn (label) là thứ máy cần đoán.",
               "Chia dữ liệu thành ba tập: train (học), val (tinh chỉnh), test (chấm).",
               "Tỉ lệ phổ biến: 70/15/15 hoặc 80/10/10. Dataset càng lớn thì test tỉ lệ càng nhỏ.",
-              "Tập test là đề thi đóng kín — chỉ mở khi đã xong mô hình. Đừng 'lén' dùng.",
-              "Rác vào, rác ra — chất lượng dữ liệu quyết định mọi thứ, hơn cả thuật toán.",
+              "Tập test là đề thi đóng kín, chỉ mở khi đã xong mô hình. Đừng 'lén' dùng.",
+              "Rác vào, rác ra. Chất lượng dữ liệu quyết định mọi thứ, hơn cả thuật toán.",
             ]}
           />
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 8 — QUIZ ══════════════════ */}
+      {/* ══════════════════ BƯỚC 8 · QUIZ ══════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
