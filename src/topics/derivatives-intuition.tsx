@@ -33,10 +33,10 @@ import type { TopicMeta } from "@/lib/types";
 
 export const metadata: TopicMeta = {
   slug: "derivatives-intuition",
-  title: "Derivatives — an Intuitive Introduction",
-  titleVi: "Đạo hàm — tốc độ thay đổi trông thế nào",
+  title: "Derivatives: an Intuitive Introduction",
+  titleVi: "Đạo hàm là độ dốc tại một điểm",
   description:
-    "Đạo hàm không phải là con số khó hiểu. Nó là độ dốc của một đường cong tại một điểm — và bạn sẽ nhìn tận mắt nó xuất hiện khi kéo một tiếp tuyến trên SVG.",
+    "Đạo hàm chỉ là độ dốc của đường cong tại một điểm. Bạn kéo một tiếp tuyến trên SVG và nhìn con số đó xuất hiện theo thời gian thực.",
   category: "math-foundations",
   tags: ["calculus", "intuition", "fundamentals"],
   difficulty: "beginner",
@@ -72,7 +72,7 @@ function hillSlope(x: number): number {
   return -dfdx;
 }
 
-/* Một đường cong thứ hai: f(x) = (x-210)^2/400 + 40 — parabol */
+/* Một đường cong thứ hai: f(x) = (x-210)^2/400 + 40, parabol */
 
 function parabola(x: number): number {
   return 180 - ((x - 210) ** 2) / 400;
@@ -386,14 +386,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Một quả bóng ném lên cao rồi rơi xuống. Độ cao của bóng theo thời gian là một đường cong hình chuông úp ngược. Đạo hàm tại đỉnh của đường cong đó bằng bao nhiêu?",
     options: [
-      "Âm — vì bóng đang rơi xuống.",
-      "Dương — vì bóng đang đi lên.",
-      "Bằng 0 — tại đỉnh, bóng không đi lên cũng không đi xuống.",
-      "Không xác định — tại đỉnh đạo hàm không tồn tại.",
+      "Âm, vì bóng đang rơi xuống.",
+      "Dương, vì bóng đang đi lên.",
+      "Bằng 0. Tại đỉnh, bóng không đi lên cũng không đi xuống.",
+      "Không xác định. Tại đỉnh đạo hàm không tồn tại.",
     ],
     correct: 2,
     explanation:
-      "Tại đỉnh của đường cong, tiếp tuyến nằm ngang — độ dốc bằng 0. Đây là đặc trưng của cực trị (maximum hoặc minimum): đạo hàm luôn bằng 0. Thuật toán gradient descent tìm tối ưu chính bằng cách đi về phía đạo hàm = 0.",
+      "Tại đỉnh của đường cong, tiếp tuyến nằm ngang nên độ dốc bằng 0. Đây là đặc trưng của cực trị (maximum hoặc minimum): đạo hàm luôn bằng 0. Thuật toán gradient descent tìm tối ưu chính bằng cách đi về phía đạo hàm bằng 0.",
   },
   {
     question:
@@ -406,14 +406,14 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Dốc đứng = trị tuyệt đối lớn. Đi xuống = dấu âm. Vì vậy đạo hàm là âm lớn, ví dụ −2.5. Biết đọc dấu và độ lớn của đạo hàm là nền tảng để hiểu học máy — nhất là gradient descent, nơi dấu quyết định đi theo hướng nào.",
+      "Dốc đứng tương ứng với trị tuyệt đối lớn. Đi xuống tương ứng với dấu âm. Vì vậy đạo hàm là âm lớn, ví dụ −2.5. Biết đọc dấu và độ lớn của đạo hàm là nền tảng để hiểu học máy, nhất là gradient descent, nơi dấu quyết định đi theo hướng nào.",
   },
   {
     question:
       "Trong định nghĩa đạo hàm bằng giới hạn, đại lượng Δx đóng vai trò gì?",
     options: [
       "Là sai số ngẫu nhiên.",
-      "Là đoạn nhỏ theo trục x — khi Δx tiến về 0, cát tuyến biến thành tiếp tuyến.",
+      "Là đoạn nhỏ theo trục x. Khi Δx tiến về 0, cát tuyến biến thành tiếp tuyến.",
       "Là đạo hàm bậc hai.",
       "Là giá trị của hàm số tại điểm đang xét.",
     ],
@@ -425,27 +425,27 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Đạo hàm của một hàm hằng f(x) = 5 (đường thẳng ngang) bằng bao nhiêu tại mọi điểm?",
     options: [
-      "5 — bằng chính giá trị hàm.",
-      "0 — vì đường thẳng ngang không đổi, độ dốc bằng 0.",
-      "1 — vì đạo hàm của số luôn là 1.",
+      "5, bằng chính giá trị hàm.",
+      "0, vì đường thẳng ngang không đổi nên độ dốc bằng 0.",
+      "1, vì đạo hàm của số luôn là 1.",
       "Không xác định.",
     ],
     correct: 1,
     explanation:
-      "Đường thẳng ngang không đi lên cũng không đi xuống — độ dốc bằng 0 ở mọi nơi. Đây là trường hợp đơn giản nhất của đạo hàm, và là viên gạch cơ bản để bạn xây dựng trực giác trước khi gặp các hàm phức tạp hơn.",
+      "Đường thẳng ngang không đi lên cũng không đi xuống nên độ dốc bằng 0 ở mọi nơi. Đây là trường hợp cơ bản nhất của đạo hàm, và là viên gạch nền để bạn xây dựng trực giác trước khi gặp các hàm phức tạp hơn.",
   },
   {
     question:
       "Tại sao người ta hay dùng đạo hàm trong học máy?",
     options: [
       "Vì đạo hàm làm cho công thức ngắn hơn.",
-      "Vì đạo hàm cho biết hướng và mức độ thay đổi của loss — từ đó biết điều chỉnh tham số theo chiều nào để giảm loss.",
+      "Vì đạo hàm cho biết hướng và mức độ thay đổi của loss. Nhờ vậy ta biết điều chỉnh tham số theo chiều nào để giảm loss.",
       "Vì đạo hàm bắt buộc phải có trong mọi bài toán toán học.",
       "Vì đạo hàm giúp máy tính chạy nhanh hơn.",
     ],
     correct: 1,
     explanation:
-      "Huấn luyện mạng nơ-ron là quá trình đi tìm giá trị tham số sao cho loss nhỏ nhất. Đạo hàm của loss theo tham số cho biết: nếu tăng tham số này thêm một chút, loss sẽ tăng hay giảm. Dựa vào đó, gradient descent cập nhật tham số theo hướng ngược đạo hàm — và loss giảm dần.",
+      "Huấn luyện mạng nơ-ron là quá trình đi tìm giá trị tham số sao cho loss nhỏ nhất. Đạo hàm của loss theo tham số cho biết: nếu tăng tham số này thêm một chút, loss sẽ tăng hay giảm. Dựa vào đó, gradient descent cập nhật tham số theo hướng ngược đạo hàm, và loss giảm dần.",
   },
 ];
 
@@ -503,15 +503,15 @@ export default function DerivativesIntuitionTopic() {
           options={[
             "Quãng đường đã đi.",
             "Tổng thời gian từ lúc xuất phát.",
-            "Đạo hàm của độ cao theo thời gian — tức độ dốc của đường cong vị trí.",
-            "Không có đại lượng nào — đó chỉ là cảm giác chủ quan.",
+            "Đạo hàm của độ cao theo thời gian, tức độ dốc của đường cong vị trí.",
+            "Không có đại lượng nào, đó chỉ là cảm giác chủ quan.",
           ]}
           correct={2}
-          explanation="Đạo hàm chính là 'tốc độ thay đổi'. Khi đường cong đi lên nhanh — đạo hàm lớn dương. Lên chậm — đạo hàm dương nhỏ. Đi xuống — đạo hàm âm. Phẳng — đạo hàm bằng 0. Bài này cho bạn nhìn tận mắt con số đó."
+          explanation="Đạo hàm chính là 'tốc độ thay đổi'. Đường cong đi lên nhanh thì đạo hàm dương lớn. Lên chậm thì đạo hàm dương nhỏ. Đi xuống thì đạo hàm âm. Phẳng thì đạo hàm bằng 0. Bài này cho bạn nhìn tận mắt con số đó."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             <strong>Khi xe đang lên dốc, tốc độ tăng chậm hay nhanh?</strong>{" "}
-            Đạo hàm đo chính cái đó. Không phải là số bí ẩn — chỉ là độ dốc của
+            Đạo hàm đo chính cái đó. Không phải là số bí ẩn, chỉ là độ dốc của
             tiếp tuyến.
           </p>
         </PredictionGate>
@@ -521,8 +521,8 @@ export default function DerivativesIntuitionTopic() {
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <Mountain size={20} className="text-accent" /> Đạo hàm = độ dốc tại
-            một điểm
+            <Mountain size={20} className="text-accent" /> Đạo hàm là độ dốc
+            tại một điểm
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Hãy tưởng tượng bạn đang đi bộ trên một con đường có dốc lên, dốc
@@ -531,37 +531,38 @@ export default function DerivativesIntuitionTopic() {
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Câu trả lời đó chính là <strong>đạo hàm</strong>. Nó chỉ là một con
-            số — có thể dương (đang lên), âm (đang xuống), hoặc gần 0 (phẳng).
-            Trị tuyệt đối của con số cho biết <em>dốc đến mức nào</em>.
+            số. Số dương nghĩa là đang lên, số âm nghĩa là đang xuống, gần 0
+            nghĩa là phẳng. Trị tuyệt đối của con số cho biết <em>dốc đến mức
+            nào</em>.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-200">
                 <TrendingUp size={16} />
                 <span className="text-sm font-semibold">Đạo hàm dương</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Đường cong đang đi lên. Bước tới bên phải — chiều cao tăng.
+                Đường cong đang đi lên. Bước tới bên phải, chiều cao tăng.
               </p>
             </div>
             <div className="rounded-xl border border-slate-200 bg-slate-50 dark:bg-slate-900/20 dark:border-slate-800 p-4 space-y-1">
               <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
                 <MinusCircle size={16} />
-                <span className="text-sm font-semibold">Đạo hàm = 0</span>
+                <span className="text-sm font-semibold">Đạo hàm bằng 0</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 Đường cong đang nằm ngang. Đỉnh núi, đáy thung lũng, hoặc đoạn
-                phẳng đều có đạo hàm = 0.
+                phẳng đều có đạo hàm bằng 0.
               </p>
             </div>
             <div className="rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300">
+              <div className="flex items-center gap-2 text-rose-800 dark:text-rose-200">
                 <TrendingDown size={16} />
                 <span className="text-sm font-semibold">Đạo hàm âm</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Đường cong đang đi xuống. Bước tới bên phải — chiều cao giảm.
+                Đường cong đang đi xuống. Bước tới bên phải, chiều cao giảm.
               </p>
             </div>
           </div>
@@ -575,7 +576,7 @@ export default function DerivativesIntuitionTopic() {
           <LessonSection label="Thử nghiệm 1: Kéo tiếp tuyến trên đồi" step={1}>
             <p className="text-sm text-muted mb-4 leading-relaxed">
               Đường cong xanh là con đường bạn đang đi bộ. Đoạn thẳng đỏ là{" "}
-              <strong>tiếp tuyến</strong> — chỉ chạm đường cong tại đúng một
+              <strong>tiếp tuyến</strong>, chỉ chạm đường cong tại đúng một
               điểm. Kéo thanh dưới (hoặc bấm vào SVG) để di chuyển điểm đỏ. Bảng
               bên phải hiển thị độ dốc ở vị trí hiện tại.
             </p>
@@ -614,9 +615,9 @@ export default function DerivativesIntuitionTopic() {
                 className="w-full accent-accent"
               />
               <p className="text-xs text-muted mt-2 leading-relaxed">
-                Thử kéo tới đỉnh đồi (khoảng x = 105) — tiếp tuyến gần như nằm
-                ngang, slope ≈ 0. Thử kéo đoạn dốc xuống phía phải — tiếp tuyến
-                nghiêng xuống, slope âm.
+                Thử kéo tới đỉnh đồi (khoảng x = 105). Tiếp tuyến gần như nằm
+                ngang và slope tiến về 0. Sau đó kéo sang đoạn dốc xuống phía
+                phải. Tiếp tuyến nghiêng xuống và slope chuyển âm.
               </p>
             </div>
           </LessonSection>
@@ -632,7 +633,7 @@ export default function DerivativesIntuitionTopic() {
             </p>
 
             <SliderGroup
-              title="Tìm đỉnh parabol — nơi slope = 0"
+              title="Tìm đỉnh parabol, nơi slope bằng 0"
               sliders={[
                 {
                   key: "x",
@@ -699,7 +700,7 @@ export default function DerivativesIntuitionTopic() {
 
             <p className="text-xs text-muted mt-3 italic text-center">
               Parabol ở đây có đỉnh tại x = 210. Khi bạn kéo sát đỉnh, slope
-              của tiếp tuyến tiến về 0 — đó là đặc điểm nhận biết cực trị.
+              của tiếp tuyến tiến về 0. Đó là đặc điểm nhận biết cực trị.
               (Giá trị hiển thị trên panel bên dưới dùng cho vị trí bạn vừa
               chạm cuối cùng.)
             </p>
@@ -710,11 +711,11 @@ export default function DerivativesIntuitionTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ══════ DEEPEN — StepReveal: secant → tangent ══════ */}
+      {/* ══════ DEEPEN: StepReveal: secant tới tangent ══════ */}
       <LessonSection step={4} totalSteps={8} label="Đào sâu: Từ cát tuyến sang tiếp tuyến">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Tiếp tuyến nghe có vẻ huyền bí. Thực ra nó là <em>giới hạn</em> của
-          một thứ rất bình thường: đường thẳng nối hai điểm trên đường cong —
+          một thứ rất bình thường: đường thẳng nối hai điểm trên đường cong,
           gọi là <strong>cát tuyến</strong>. Khi hai điểm đó tiến sát nhau
           (Δx → 0), cát tuyến trở thành tiếp tuyến.
         </p>
@@ -733,8 +734,8 @@ export default function DerivativesIntuitionTopic() {
             >
               <p className="text-sm text-foreground leading-relaxed">
                 <strong>Cát tuyến</strong> là đường thẳng nối hai điểm trên
-                đường cong. Độ dốc của nó = (chiều cao cuối − chiều cao đầu) ÷
-                (khoảng cách ngang giữa hai điểm) = Δy / Δx.
+                đường cong. Độ dốc của nó bằng (chiều cao cuối trừ chiều cao
+                đầu) chia (khoảng cách ngang giữa hai điểm), tức Δy / Δx.
               </p>
               <TangentExplorer
                 curve={hillCurve}
@@ -846,8 +847,9 @@ export default function DerivativesIntuitionTopic() {
             >
               <p className="text-sm text-foreground leading-relaxed">
                 Bấm nút dưới để xem Δx tự động co về 0. Cát tuyến vàng trượt
-                dần đến khi trùng khít với tiếp tuyến đỏ. <strong>Đây là
-                đạo hàm</strong> — giới hạn của độ dốc cát tuyến khi Δx → 0.
+                dần đến khi trùng khít với tiếp tuyến đỏ. <strong>Đây chính
+                là đạo hàm</strong>: giới hạn của độ dốc cát tuyến khi Δx tiến
+                về 0.
               </p>
               <button
                 type="button"
@@ -868,7 +870,7 @@ export default function DerivativesIntuitionTopic() {
                     className="flex items-center gap-2 text-xs text-emerald-700 dark:text-emerald-300"
                   >
                     <Sparkles size={12} />
-                    Sai số rất nhỏ — cát tuyến đã gần như trùng với tiếp
+                    Sai số rất nhỏ. Cát tuyến đã gần như trùng với tiếp
                     tuyến.
                   </motion.div>
                 )}
@@ -882,13 +884,13 @@ export default function DerivativesIntuitionTopic() {
       <LessonSection step={5} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
           Đạo hàm không phải công thức bí hiểm. Nó là <strong>độ dốc của
-          tiếp tuyến</strong> tại một điểm — và tiếp tuyến chỉ là cát tuyến
-          khi hai điểm sát lại nhau.
+          tiếp tuyến</strong> tại một điểm. Mà tiếp tuyến chỉ là cát tuyến khi
+          hai điểm sát lại nhau.
           <br />
           <br />
-          Toàn bộ học máy sâu — gradient descent, backpropagation, optimizer —
-          đều dựa vào ý tưởng đơn giản này: <em>biết độ dốc, biết đi theo
-          hướng nào để giảm loss</em>.
+          Toàn bộ deep learning, từ gradient descent, backpropagation, đến
+          optimizer, đều dựa vào ý tưởng đơn giản này: <em>biết độ dốc, biết
+          đi theo hướng nào để giảm loss</em>.
         </AhaMoment>
       </LessonSection>
 
@@ -896,8 +898,8 @@ export default function DerivativesIntuitionTopic() {
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <p className="text-sm text-muted leading-relaxed mb-4">
           Dưới đây là một parabol. <strong>Bấm vào điểm trên đường cong mà
-          bạn cho rằng slope = 0</strong> (tiếp tuyến nằm ngang). Hệ thống sẽ
-          cho bạn biết có đúng không.
+          bạn cho rằng slope bằng 0</strong> (tiếp tuyến nằm ngang). Hệ thống
+          sẽ cho bạn biết có đúng không.
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">
@@ -925,7 +927,7 @@ export default function DerivativesIntuitionTopic() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted">Slope thật tại đây</span>
+                    <span className="text-muted">Slope thực tại đây</span>
                     <span
                       className="font-mono font-bold"
                       style={{
@@ -947,8 +949,8 @@ export default function DerivativesIntuitionTopic() {
                 title={challengeCorrect ? "Chính xác!" : "Hơi lệch"}
               >
                 {challengeCorrect
-                  ? "Đỉnh parabol nằm tại x ≈ 210, nơi slope = 0. Bạn đã phát hiện đúng đặc điểm của cực trị."
-                  : `Đỉnh parabol nằm tại x = 210 (nơi slope = 0). Bạn chọn x = ${challengeX.toFixed(0)}, còn cách đỉnh khoảng ${Math.abs(challengeX - 210).toFixed(0)} đơn vị.`}
+                  ? "Đỉnh parabol nằm tại x ≈ 210, nơi slope bằng 0. Bạn đã phát hiện đúng đặc điểm của cực trị."
+                  : `Đỉnh parabol nằm tại x = 210 (nơi slope bằng 0). Bạn chọn x = ${challengeX.toFixed(0)}, còn cách đỉnh khoảng ${Math.abs(challengeX - 210).toFixed(0)} đơn vị.`}
               </Callout>
             )}
 
@@ -968,10 +970,10 @@ export default function DerivativesIntuitionTopic() {
           <InlineChallenge
             question="Một đường cong có slope = +2 tại x = 5, và slope = −3 tại x = 10. Giữa hai điểm đó, chắc chắn có ít nhất một chỗ slope = ?"
             options={[
-              "0 — slope phải đi qua 0 khi đổi từ dương sang âm.",
-              "+1 — trung bình cộng.",
-              "−1 — điểm nghiệm.",
-              "Không thể kết luận gì — cần thêm thông tin.",
+              "0, vì slope phải đi qua 0 khi đổi từ dương sang âm.",
+              "+1, trung bình cộng.",
+              "−1, điểm nghiệm.",
+              "Không thể kết luận gì, cần thêm thông tin.",
             ]}
             correct={0}
             explanation="Đây là trực giác của định lý giá trị trung gian: nếu slope đổi dấu từ +2 xuống −3 mà đường cong liên tục, chắc chắn có một chỗ slope bằng 0 ở giữa. Đó là một điểm cực trị (max hoặc min) nằm giữa hai điểm đã biết. Kiến thức này là xương sống của thuật toán tìm nghiệm trong học máy."
@@ -984,7 +986,7 @@ export default function DerivativesIntuitionTopic() {
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bạn đã cảm nhận được đạo hàm bằng mắt. Giờ là lúc đặt cho nó một
-            cái tên chính thức và công thức gọn — để lần sau nhìn thấy trong
+            cái tên chính thức và công thức gọn, để lần sau nhìn thấy trong
             sách giáo khoa không bị bất ngờ.
           </p>
 
@@ -999,13 +1001,13 @@ export default function DerivativesIntuitionTopic() {
           <p className="text-sm leading-relaxed">
             <strong>Bằng tiếng Việt thông thường:</strong> đạo hàm của hàm số
             f tại điểm x là giới hạn của &ldquo;độ dốc cát tuyến&rdquo; khi hai
-            điểm tiến sát nhau. Độ dốc cát tuyến = (chiều cao cuối − chiều cao
-            đầu) ÷ (khoảng cách ngang).
+            điểm tiến sát nhau. Độ dốc cát tuyến bằng (chiều cao cuối trừ
+            chiều cao đầu) chia (khoảng cách ngang).
           </p>
 
           <p className="text-sm leading-relaxed">
-            <strong>Đạo hàm = tốc độ thay đổi tức thời. Không phải là số bí
-            ẩn — nó chỉ là độ dốc của tiếp tuyến.</strong>
+            <strong>Đạo hàm là tốc độ thay đổi tức thời. Không phải con số
+            bí ẩn, mà chỉ là độ dốc của tiếp tuyến.</strong>
           </p>
 
           <Callout variant="info" title="Ký hiệu f'(x) và dy/dx">
@@ -1026,8 +1028,8 @@ export default function DerivativesIntuitionTopic() {
                 f(x) = x²
               </div>
               <p className="text-xs text-muted leading-snug">
-                Parabol. Đạo hàm = 2x. Tại gốc (x = 0), slope = 0. Đi xa gốc,
-                slope tăng theo x.
+                Parabol. Đạo hàm bằng 2x. Tại gốc (x = 0), slope bằng 0. Càng
+                xa gốc, slope càng tăng theo x.
               </p>
               <svg viewBox="0 0 100 60" className="w-full">
                 <path
@@ -1043,8 +1045,8 @@ export default function DerivativesIntuitionTopic() {
                 f(x) = x
               </div>
               <p className="text-xs text-muted leading-snug">
-                Đường thẳng chéo. Đạo hàm = 1 ở mọi nơi — vì slope của đường
-                thẳng luôn bằng nhau.
+                Đường thẳng chéo. Đạo hàm bằng 1 ở mọi nơi, vì slope của một
+                đường thẳng luôn bằng nhau.
               </p>
               <svg viewBox="0 0 100 60" className="w-full">
                 <line
@@ -1062,8 +1064,8 @@ export default function DerivativesIntuitionTopic() {
                 f(x) = 5
               </div>
               <p className="text-xs text-muted leading-snug">
-                Đường thẳng ngang. Đạo hàm = 0. Hàm hằng không thay đổi, nên
-                độ dốc luôn 0.
+                Đường thẳng ngang. Đạo hàm bằng 0. Hàm hằng không thay đổi
+                nên độ dốc luôn bằng 0.
               </p>
               <svg viewBox="0 0 100 60" className="w-full">
                 <line
@@ -1081,8 +1083,8 @@ export default function DerivativesIntuitionTopic() {
           <Callout variant="tip" title="Đạo hàm dẫn đến mọi thứ trong deep learning">
             Khi bạn huấn luyện một mạng nơ-ron, máy cần biết &ldquo;tăng trọng
             số này một chút thì loss tăng hay giảm?&rdquo;. Đó là đạo hàm của
-            loss theo trọng số. Biết đạo hàm → biết đi theo hướng nào để loss
-            nhỏ đi. Đó là toàn bộ triết lý của{" "}
+            loss theo trọng số. Biết đạo hàm thì biết đi theo hướng nào để
+            loss nhỏ đi. Đó là toàn bộ triết lý của{" "}
             <TopicLink slug="gradient-descent">gradient descent</TopicLink>.
           </Callout>
 
@@ -1092,15 +1094,15 @@ export default function DerivativesIntuitionTopic() {
               Vi tích phân cho backpropagation
             </TopicLink>
             . Ở đó bạn sẽ thấy đạo hàm &ldquo;riêng&rdquo; (partial
-            derivative) và cách chúng chồng nhau theo chain rule — nền tảng của
-            mọi khung deep learning như PyTorch và TensorFlow.
+            derivative) và cách chúng chồng nhau theo chain rule. Đây là nền
+            tảng của mọi khung deep learning như PyTorch và TensorFlow.
           </p>
 
           <CollapsibleDetail title="Đạo hàm và &quot;tốc độ&quot; trong vật lý">
             <p className="text-sm leading-relaxed">
               Nếu f(t) là vị trí của một vật theo thời gian t, thì f&apos;(t) là{" "}
-              <strong>vận tốc</strong> của nó. Vận tốc = tốc độ thay đổi của vị
-              trí theo thời gian. Và đạo hàm của vận tốc, tức f&apos;&apos;(t),
+              <strong>vận tốc</strong> của nó. Vận tốc là tốc độ thay đổi của
+              vị trí theo thời gian. Và đạo hàm của vận tốc, tức f&apos;&apos;(t),
               chính là <strong>gia tốc</strong>. Bạn vừa học calculus ở trường
               đời rồi mà không biết.
             </p>
@@ -1109,38 +1111,38 @@ export default function DerivativesIntuitionTopic() {
           <CollapsibleDetail title="Vì sao người ta nói đạo hàm là &quot;giới hạn&quot;?">
             <p className="text-sm leading-relaxed">
               Vì ta không thể tính &ldquo;slope tại đúng một điểm&rdquo; trực
-              tiếp — slope cần hai điểm. Mẹo của người xưa: lấy cát tuyến
+              tiếp, do slope cần hai điểm. Mẹo của người xưa: lấy cát tuyến
               (hai điểm), rồi <em>co hai điểm lại</em> cho đến khi cách nhau một
               khoảng nhỏ xíu. Khái niệm giới hạn là công cụ toán học để nói
               &ldquo;khoảng cách nhỏ xíu&rdquo; một cách chặt chẽ. Newton và
-              Leibniz phát minh ra ý tưởng này độc lập ở thế kỷ 17 — và nhờ nó
-              mà chúng ta có cả calculus lẫn deep learning.
+              Leibniz phát minh ra ý tưởng này độc lập ở thế kỷ 17. Nhờ vậy
+              chúng ta có cả calculus lẫn deep learning.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ══════ CONNECT — Mini summary + tip ══════ */}
+      {/* ══════ CONNECT: Mini summary + tip ══════ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & kết nối">
         <MiniSummary
           title="5 điều cần giữ lại"
           points={[
-            "Đạo hàm = độ dốc của tiếp tuyến tại một điểm. Số dương = đi lên, số âm = đi xuống, 0 = nằm ngang.",
+            "Đạo hàm là độ dốc của tiếp tuyến tại một điểm. Số dương nghĩa là đi lên, số âm nghĩa là đi xuống, 0 nghĩa là nằm ngang.",
             "Trị tuyệt đối của đạo hàm cho biết dốc đến mức nào. 0.1 là thoai thoải, 1.0 là dốc đứng.",
-            "Tiếp tuyến là giới hạn của cát tuyến khi Δx → 0. Đó là định nghĩa chính thức của đạo hàm.",
-            "Cực trị (đỉnh/đáy của đường cong) luôn có đạo hàm = 0. Thuật toán tối ưu tìm nghiệm bằng cách đi về chỗ đạo hàm = 0.",
-            "Trong học máy, đạo hàm của loss theo tham số cho biết đi theo hướng nào để giảm loss. Toàn bộ huấn luyện dựa trên ý tưởng này.",
+            "Tiếp tuyến là giới hạn của cát tuyến khi Δx tiến về 0. Đó là định nghĩa chính thức của đạo hàm.",
+            "Cực trị (đỉnh hoặc đáy của đường cong) luôn có đạo hàm bằng 0. Thuật toán tối ưu tìm nghiệm bằng cách đi về chỗ đạo hàm bằng 0.",
+            "Trong học máy, đạo hàm của loss theo tham số cho biết đi theo hướng nào để giảm loss. Toàn bộ việc huấn luyện dựa trên ý tưởng này.",
           ]}
         />
 
         <div className="mt-5">
           <Callout variant="tip" title="Bước tiếp theo">
-            Bạn đã nắm trực giác đạo hàm. Tiếp theo học cách áp dụng nó với
-            nhiều biến và chain rule trong{" "}
+            Bạn đã nắm trực giác đạo hàm. Bước kế tiếp là học cách áp dụng nó
+            với nhiều biến và chain rule trong{" "}
             <TopicLink slug="calculus-for-backprop">
               Vi tích phân cho backpropagation
             </TopicLink>
-            . Hoặc xem trực tiếp đạo hàm được dùng để huấn luyện mô hình ở{" "}
+            . Hoặc xem trực tiếp đạo hàm được dùng để huấn luyện model ở{" "}
             <TopicLink slug="gradient-descent">Gradient Descent</TopicLink>.
           </Callout>
         </div>

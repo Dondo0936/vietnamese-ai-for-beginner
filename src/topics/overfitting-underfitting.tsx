@@ -39,9 +39,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "overfitting-underfitting",
   title: "Overfitting & Underfitting",
-  titleVi: "Học quá khớp vs học chưa đủ — Overfit & Underfit",
+  titleVi: "Overfit và underfit: hai cách học sai của model",
   description:
-    "Hai thái cực ngược nhau khi luyện mô hình. Học thuộc đề cũ → chết khi đề mới (overfit). Học mỗi lý thuyết → nhớ nhưng không làm nổi (underfit).",
+    "Hai thái cực ngược nhau khi huấn luyện model. Thuộc lòng đề cũ thì gặp đề mới là trượt (overfit). Đọc mỗi lý thuyết, chưa luyện bài thì cũng không làm nổi (underfit).",
   category: "classic-ml",
   tags: ["training", "generalization", "fundamentals"],
   difficulty: "intermediate",
@@ -52,7 +52,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ════════════════════════════════════════════════════════════════════════
-   DATA — 12 điểm train + 8 điểm test, nằm quanh đường cong "thật"
+   DATA: 12 điểm train + 8 điểm test, nằm quanh đường cong "thật"
    y = sin(x) + x/4 với nhiễu nhỏ.
    ════════════════════════════════════════════════════════════════════════ */
 type Pt = { x: number; y: number };
@@ -101,7 +101,7 @@ function toY(v: number) {
 }
 
 /* ════════════════════════════════════════════════════════════════════════
-   POLYNOMIAL FIT — least squares via normal equations for small degrees
+   POLYNOMIAL FIT: least squares via normal equations for small degrees
    (d ≤ 20). Good enough for the visualization.
    ════════════════════════════════════════════════════════════════════════ */
 function solveLinearSystem(A: number[][], b: number[]): number[] {
@@ -161,16 +161,16 @@ function mse(points: Pt[], coefs: number[]): number {
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Train loss = 0.01, Validation loss = 2.5. Mô hình đang gặp vấn đề gì?",
+      "Train loss = 0.01, validation loss = 2.5. Model đang gặp vấn đề gì?",
     options: [
-      "Underfit — mô hình quá đơn giản",
-      "Overfit — mô hình thuộc lòng train nhưng kém trên dữ liệu mới",
-      "Good fit — train loss thấp là tốt",
+      "Underfit. Model quá đơn giản",
+      "Overfit. Model thuộc lòng train nhưng yếu trên dữ liệu mới",
+      "Good fit. Train loss thấp là tốt",
       "Không đủ thông tin để kết luận",
     ],
     correct: 1,
     explanation:
-      "Khoảng cách khổng lồ giữa train loss (0.01) và val loss (2.5) chính là dấu hiệu rõ ràng nhất của overfit. Mô hình 'nhớ' từng điểm train nhưng không nắm được quy luật chung.",
+      "Khoảng cách rất lớn giữa train loss (0.01) và val loss (2.5) chính là dấu hiệu rõ nhất của overfit. Model nhớ từng điểm train nhưng không nắm được quy luật chung.",
   },
   {
     question: "Early stopping dừng huấn luyện khi nào?",
@@ -182,31 +182,31 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Validation loss giảm → mô hình đang học tốt. Khi val loss tăng lại → bắt đầu overfit. Early stopping lưu mô hình tại điểm val loss thấp nhất rồi dừng.",
+      "Val loss giảm tức là model đang học tốt. Khi val loss tăng lại, model bắt đầu overfit. Early stopping lưu lại model tại điểm val loss thấp nhất rồi dừng.",
   },
   {
     question:
       "Cách nào KHÔNG giúp giảm overfit?",
     options: [
-      "Thêm regularization (L2 / Dropout)",
+      "Thêm regularization (L2 hoặc dropout)",
       "Tăng số lượng dữ liệu huấn luyện",
-      "Tăng bậc đa thức lên rất cao để mô hình mạnh hơn",
-      "Dùng cross-validation để chọn mô hình",
+      "Tăng bậc đa thức lên rất cao để model mạnh hơn",
+      "Dùng cross-validation để chọn model",
     ],
     correct: 2,
     explanation:
-      "Tăng bậc đa thức = tăng độ phức tạp = càng dễ overfit. Các cách còn lại đều giảm overfit: thêm dữ liệu, thêm ràng buộc, chọn mô hình trên val thay vì train.",
+      "Tăng bậc đa thức nghĩa là tăng độ phức tạp, model càng dễ overfit. Ba cách còn lại đều kéo overfit xuống: thêm dữ liệu, thêm ràng buộc, chọn model dựa trên val thay vì train.",
   },
   {
     type: "fill-blank",
     question:
-      "Nếu train loss = 0.5 và val loss = 0.52, cả hai đều cao, khoảng cách nhỏ → mô hình đang bị {blank}. Nếu train loss = 0.01 nhưng val loss = 1.8 → mô hình đang bị {blank}.",
+      "Nếu train loss = 0.5 và val loss = 0.52, cả hai đều cao và khoảng cách nhỏ, model đang bị {blank}. Nếu train loss = 0.01 nhưng val loss = 1.8, model đang bị {blank}.",
     blanks: [
       { answer: "underfit", accept: ["underfitting", "chưa khớp", "chưa đủ"] },
       { answer: "overfit", accept: ["overfitting", "quá khớp", "thuộc lòng"] },
     ],
     explanation:
-      "Underfit: cả hai loss đều cao, khoảng cách nhỏ — mô hình chưa học đủ. Overfit: train loss thấp nhưng val loss cao — mô hình nhớ train nhưng không tổng quát hoá.",
+      "Underfit: cả hai loss đều cao, khoảng cách nhỏ. Model chưa học đủ. Overfit: train loss thấp nhưng val loss cao. Model nhớ train nhưng không tổng quát hoá được.",
   },
 ];
 
@@ -240,20 +240,20 @@ export default function OverfittingUnderfittingTopic() {
     if (degree <= 1)
       return {
         text: "Underfit",
-        label: "Đơn giản quá — chưa học nổi quy luật",
+        label: "Quá đơn giản. Chưa bắt được quy luật",
         color: "#3b82f6",
         emoji: TrendingDown,
       };
     if (degree <= 5)
       return {
         text: "Good fit",
-        label: "Vừa đủ — bắt được quy luật, bỏ qua nhiễu",
+        label: "Vừa đủ. Bắt được quy luật, bỏ qua nhiễu",
         color: "#22c55e",
         emoji: Sparkles,
       };
     return {
       text: "Overfit",
-      label: "Phức tạp quá — nhớ luôn cả nhiễu trong train",
+      label: "Quá phức tạp. Nhớ luôn cả nhiễu trong train",
       color: "#ef4444",
       emoji: TrendingUp,
     };
@@ -296,75 +296,74 @@ export default function OverfittingUnderfittingTopic() {
 
   return (
     <>
-      {/* ═══════════ STEP 1 — HOOK + PREDICTION ═══════════ */}
+      {/* ═══════════ STEP 1 · HOOK + PREDICTION ═══════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Hook">
         <div className="rounded-2xl border border-border bg-card p-6 mb-5">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2 mb-3">
             <BookOpen size={20} className="text-accent" />
-            Học thuộc lòng vs học lý thuyết — hai kiểu trượt kỳ thi
+            Hai kiểu trượt thi: thuộc đề cũ và đọc mỗi lý thuyết
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-4 space-y-2">
-              <p className="text-sm font-semibold text-red-700 dark:text-red-300 flex items-center gap-2">
-                <AlertTriangle size={14} /> Học thuộc 10 đề cũ
+              <p className="text-sm font-semibold text-red-900 dark:text-red-200 flex items-center gap-2">
+                <AlertTriangle size={14} /> Thuộc lòng 10 đề cũ
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Nhớ rõ từng câu trong 10 đề đã làm. Vào phòng thi gặp đề mới — lạ từ câu 1.
+                Nhớ rõ từng câu trong 10 đề đã làm. Vào phòng thi gặp đề mới, lạ từ câu 1.
                 Điểm rất thấp. Đây là <strong>overfit</strong>.
               </p>
             </div>
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-2">
-              <p className="text-sm font-semibold text-sky-700 dark:text-sky-300 flex items-center gap-2">
-                <Brain size={14} /> Học mỗi lý thuyết, không làm bài
+              <p className="text-sm font-semibold text-sky-900 dark:text-sky-200 flex items-center gap-2">
+                <Brain size={14} /> Đọc mỗi lý thuyết, không luyện đề
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Đọc hiểu lý thuyết nhưng chưa luyện bài nào. Gặp đề thật — bí từ đầu, không áp
-                dụng được. Đây là <strong>underfit</strong>.
+                Đọc hiểu lý thuyết nhưng chưa luyện bài nào. Gặp đề thật, bí ngay từ đầu, không
+                áp dụng được. Đây là <strong>underfit</strong>.
               </p>
             </div>
           </div>
           <p className="text-sm text-muted mt-4 leading-relaxed">
-            Mô hình ML cũng y như thế. Có hai cách &ldquo;trượt&rdquo;: học ít quá (underfit)
-            hoặc học nhiều quá đến mức thuộc cả nhiễu (overfit). Mục tiêu là <em>ở giữa</em> —
-            đủ phức tạp để bắt được quy luật, đủ đơn giản để không nhớ rác.
+            Model ML cũng vậy. Có hai cách trượt: học ít quá (underfit) hoặc học nhiều quá đến
+            mức nhớ luôn cả nhiễu (overfit). Mục tiêu nằm ở <em>giữa</em>. Đủ phức tạp để bắt
+            được quy luật, đủ đơn giản để không nhớ rác.
           </p>
         </div>
 
         <PredictionGate
-          question="Bạn tăng bậc đa thức (polynomial degree) từ 1 lên 20 để fit đường cong qua các điểm dữ liệu. Train loss (lỗi trên dữ liệu cũ) sẽ thay đổi thế nào?"
+          question="Bạn tăng bậc đa thức (polynomial degree) từ 1 lên 20 để fit một đường cong qua các điểm dữ liệu. Train loss (lỗi trên dữ liệu cũ) sẽ thay đổi thế nào?"
           options={[
             "Giảm dần rồi tăng lại khi quá phức tạp",
-            "Luôn giảm — càng nhiều bậc, càng khớp chặt các điểm train",
+            "Luôn giảm. Càng nhiều bậc, đường cong càng khớp chặt các điểm train",
             "Luôn giữ nguyên, không đổi",
             "Giảm đến bậc 3 rồi dừng hẳn",
           ]}
           correct={1}
-          explanation="Train loss LUÔN giảm khi tăng độ phức tạp — mô hình mạnh hơn, có nhiều 'tự do' hơn để uốn éo vừa mọi điểm. Nhưng ở đây là cái bẫy: train loss = 0 không có nghĩa mô hình tốt. Phải xem loss trên dữ liệu mới (test) mới biết mô hình có thực sự hiểu quy luật hay chỉ 'thuộc lòng'."
+          explanation="Train loss luôn giảm khi tăng độ phức tạp. Model có nhiều bậc tự do hơn để uốn vừa mọi điểm. Nhưng đây chính là cái bẫy: train loss = 0 không có nghĩa model tốt. Phải xem loss trên dữ liệu mới (test) mới biết model có thực sự hiểu quy luật hay chỉ thuộc lòng."
         />
       </LessonSection>
 
-      {/* ═══════════ STEP 2 — REVEAL: Interactive polynomial fit ═══════════ */}
+      {/* ═══════════ STEP 2 · REVEAL: Interactive polynomial fit ═══════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Đây là <strong className="text-foreground">12 điểm dữ liệu train (cam)</strong> nằm
-          gần một đường cong &ldquo;thật&rdquo; (chưa hiện). Kéo thanh trượt để chọn{" "}
+          quanh một đường cong &ldquo;thật&rdquo; (chưa hiện). Kéo thanh trượt để chọn{" "}
           <strong className="text-foreground">bậc đa thức</strong> dùng để fit các điểm này.
-          Quan sát đường xanh biến dạng thế nào, rồi <strong>bật test data</strong> để xem mô
-          hình có &ldquo;đoán đúng&rdquo; điểm mới không.
+          Quan sát đường xanh biến dạng thế nào, rồi <strong>bật test data</strong> để xem
+          model có đoán đúng điểm mới không.
         </p>
 
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             {/* Status badge */}
             <div
-              className="flex items-center justify-center gap-3 rounded-xl p-3 text-center"
+              className="flex items-center justify-center gap-3 rounded-xl p-3 text-center text-foreground"
               style={{
-                color: status.color,
                 backgroundColor: `${status.color}15`,
                 border: `1px solid ${status.color}40`,
               }}
             >
-              <status.emoji size={18} />
+              <status.emoji size={18} style={{ color: status.color }} />
               <div>
                 <p className="text-base font-bold">{status.text}</p>
                 <p className="text-xs opacity-90">{status.label}</p>
@@ -524,7 +523,7 @@ export default function OverfittingUnderfittingTopic() {
                   {trainLoss.toFixed(3)}
                 </p>
                 <p className="text-[10px] text-muted mt-1">
-                  Càng tăng bậc, càng giảm về 0.
+                  Càng tăng bậc, train loss càng giảm về 0.
                 </p>
               </div>
               <div className="rounded-lg border border-border bg-background p-4 text-center">
@@ -537,7 +536,7 @@ export default function OverfittingUnderfittingTopic() {
                 </p>
                 {overfitRatio > 2 && showTest && (
                   <p className="text-[10px] text-red-500 mt-1 font-medium">
-                    Test &raquo; train &rArr; overfit!
+                    Test cao hơn train rất nhiều: overfit!
                   </p>
                 )}
                 {!showTest && (
@@ -598,86 +597,87 @@ export default function OverfittingUnderfittingTopic() {
             </div>
 
             <Callout variant="tip" title="Hãy thử ba mốc">
-              Nhấn nút &ldquo;= 1&rdquo; → đường gần như thẳng, bỏ sót hầu hết điểm (underfit).
-              Nhấn &ldquo;= 3&rdquo; → đường cong mượt, ôm đúng hình dạng quy luật (good fit).
-              Nhấn &ldquo;= 20&rdquo; → đường uốn éo cực mạnh để đi qua từng điểm train — nhưng
-              bật test và bạn sẽ thấy nó sai bét ngoài vùng train (overfit).
+              Nhấn nút &ldquo;= 1&rdquo;, đường gần như thẳng, bỏ sót hầu hết điểm (underfit).
+              Nhấn &ldquo;= 3&rdquo;, đường cong mượt, ôm đúng hình dạng quy luật (good fit).
+              Nhấn &ldquo;= 20&rdquo;, đường uốn éo cực mạnh để đi qua từng điểm train. Bật
+              test và bạn sẽ thấy nó sai bét ngoài vùng train (overfit).
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══════════ STEP 3 — AHA ═══════════ */}
+      {/* ═══════════ STEP 3 · AHA ═══════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            <strong>Train loss thấp không có nghĩa là mô hình tốt.</strong> Mục tiêu thực sự là{" "}
-            <em>loss thấp trên dữ liệu mới</em>, chưa hề thấy. Mô hình overfit thuộc lòng train
-            data (loss ≈ 0) nhưng sai bét trên test — giống học sinh thuộc đáp án 10 đề cũ
-            nhưng thi trượt vì đề mới.
+            <strong>Train loss thấp không có nghĩa model tốt.</strong> Mục tiêu thực sự là{" "}
+            <em>loss thấp trên dữ liệu mới</em>, chưa hề thấy. Model overfit thuộc lòng train
+            data (loss xấp xỉ 0) nhưng sai bét trên test, giống học sinh thuộc đáp án 10 đề
+            cũ rồi đi thi trượt vì đề mới.
           </p>
           <p className="mt-3">
-            Good fit &ne; train loss thấp nhất. Good fit = <strong>khoảng cách nhỏ</strong>{" "}
-            giữa train loss và test loss, cả hai đều ở mức hợp lý.
+            Good fit không phải train loss thấp nhất. Good fit là{" "}
+            <strong>khoảng cách nhỏ</strong> giữa train loss và test loss, và cả hai đều ở mức
+            hợp lý.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══════════ STEP 4 — DEEPEN: 3 regimes revealed step by step ═══════════ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ba chế độ — mổ xẻ từng chế độ">
+      {/* ═══════════ STEP 4 · DEEPEN: 3 regimes revealed step by step ═══════════ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ba chế độ, mổ xẻ từng chế độ">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Bấm <strong>&ldquo;Tiếp tục&rdquo;</strong> để đi qua ba chế độ của cùng dữ liệu
-          train: bậc 1 → bậc 3 → bậc 20. Mỗi chế độ sẽ kèm hình minh hoạ và chẩn đoán.
+          Bấm <strong>&ldquo;Tiếp tục&rdquo;</strong> để đi qua ba chế độ của cùng tập train:
+          bậc 1, bậc 3, bậc 20. Mỗi chế độ kèm hình minh hoạ và phần chẩn đoán.
         </p>
 
         <StepReveal
           labels={[
-            "Bậc 1 — Underfit",
-            "Bậc 3 — Good fit",
-            "Bậc 20 — Overfit",
+            "Bậc 1 · Underfit",
+            "Bậc 3 · Good fit",
+            "Bậc 20 · Overfit",
             "So sánh cả 3",
           ]}
         >
           {[
             <RegimeCard
               key="d1"
-              title="Bậc 1 — đường thẳng"
+              title="Bậc 1: đường thẳng"
               color="#3b82f6"
               degree={1}
               verdict="Underfit"
-              summary="Mô hình chỉ có 2 tham số (độ dốc + chặn). Không đủ linh hoạt để uốn theo đỉnh và đáy của dữ liệu. Cả train loss lẫn test loss đều cao, gần bằng nhau."
+              summary="Model chỉ có 2 tham số (độ dốc và chặn). Không đủ linh hoạt để uốn theo đỉnh và đáy của dữ liệu. Cả train loss lẫn test loss đều cao và gần bằng nhau."
               diagnosis={[
-                "Train loss: cao (~0.55)",
-                "Test loss: cao (~0.58)",
+                "Train loss: cao (khoảng 0.55)",
+                "Test loss: cao (khoảng 0.58)",
                 "Triệu chứng: cả hai đều cao, khoảng cách nhỏ",
                 "Cách chữa: tăng độ phức tạp, thêm feature",
               ]}
             />,
             <RegimeCard
               key="d3"
-              title="Bậc 3 — đường cong mềm"
+              title="Bậc 3: đường cong mềm"
               color="#22c55e"
               degree={3}
               verdict="Good fit"
-              summary="Mô hình đủ linh hoạt để ôm được hình chữ 'U' trong dữ liệu — dip ở giữa, tăng ở hai đầu — nhưng không quá uốn éo. Loss hợp lý trên cả train và test."
+              summary="Model đủ linh hoạt để ôm được hình chữ 'U' trong dữ liệu (dip ở giữa, tăng ở hai đầu) nhưng không quá uốn éo. Loss hợp lý trên cả train và test."
               diagnosis={[
-                "Train loss: thấp (~0.04)",
-                "Test loss: thấp (~0.06)",
+                "Train loss: thấp (khoảng 0.04)",
+                "Test loss: thấp (khoảng 0.06)",
                 "Triệu chứng: cả hai đều thấp, khoảng cách nhỏ",
                 "Đây là mục tiêu bạn cần nhắm tới",
               ]}
             />,
             <RegimeCard
               key="d20"
-              title="Bậc 20 — đường uốn éo cực đại"
+              title="Bậc 20: đường uốn éo cực đại"
               color="#ef4444"
               degree={20}
               verdict="Overfit"
-              summary="Mô hình có 21 tham số — đủ tự do để uốn qua từng điểm train. Train loss gần 0. Nhưng giữa các điểm, đường cong dao động hỗn loạn → test loss cực cao."
+              summary="Model có 21 tham số, đủ tự do để uốn qua từng điểm train. Train loss gần bằng 0. Nhưng giữa các điểm, đường cong dao động hỗn loạn nên test loss cực cao."
               diagnosis={[
-                "Train loss: rất thấp (~0.002)",
-                "Test loss: rất cao (~10+)",
-                "Triệu chứng: khoảng cách KHỔNG LỒ giữa train và test",
+                "Train loss: rất thấp (khoảng 0.002)",
+                "Test loss: rất cao (trên 10)",
+                "Triệu chứng: khoảng cách rất lớn giữa train và test",
                 "Cách chữa: giảm bậc, thêm dữ liệu, regularization",
               ]}
             />,
@@ -718,14 +718,14 @@ export default function OverfittingUnderfittingTopic() {
                     <tr>
                       <td className="py-1.5 pr-3 font-medium">Chữa bằng</td>
                       <td className="py-1.5 pr-3">Tăng phức tạp</td>
-                      <td className="py-1.5 pr-3">—</td>
-                      <td className="py-1.5">Thêm data / regularize</td>
+                      <td className="py-1.5 pr-3">·</td>
+                      <td className="py-1.5">Thêm data hoặc regularize</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <p className="text-xs text-muted italic">
-                Quy tắc ngầm: mô hình tốt là mô hình <strong>đủ phức tạp để bắt quy luật</strong>,
+                Quy tắc ngầm: model tốt là model <strong>đủ phức tạp để bắt quy luật</strong>,
                 nhưng <strong>không phức tạp tới mức nhớ luôn nhiễu</strong>.
               </p>
             </div>,
@@ -733,24 +733,25 @@ export default function OverfittingUnderfittingTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ═══════════ STEP 5 — CHALLENGE ═══════════ */}
+      {/* ═══════════ STEP 5 · CHALLENGE ═══════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Early stopping = dừng huấn luyện khi validation loss bắt đầu TĂNG trở lại (không chờ train loss về 0). Vì sao kỹ thuật này chống overfit hiệu quả?"
+          question="Early stopping nghĩa là dừng huấn luyện khi validation loss bắt đầu TĂNG trở lại (không chờ train loss về 0). Vì sao kỹ thuật này chống overfit hiệu quả?"
           options={[
-            "Vì dừng sớm → train nhanh hơn, tiết kiệm điện",
-            "Vì val loss tăng là dấu hiệu mô hình bắt đầu nhớ nhiễu — dừng ngay sẽ giữ được mô hình ở điểm tổng quát tốt nhất",
-            "Vì sau epoch đó mô hình sẽ quên hết kiến thức cũ",
+            "Vì dừng sớm thì train nhanh hơn, tiết kiệm điện",
+            "Vì val loss tăng là dấu hiệu model bắt đầu nhớ nhiễu, dừng ngay sẽ giữ được model ở điểm tổng quát tốt nhất",
+            "Vì sau epoch đó model sẽ quên hết kiến thức cũ",
             "Vì val loss tăng nghĩa là dữ liệu bị hỏng",
           ]}
           correct={1}
-          explanation="Train loss luôn giảm khi train lâu hơn (mô hình càng ngày càng hợp với train data). Val loss ban đầu cũng giảm (vì mô hình đang học quy luật), nhưng sau một điểm nó BẮT ĐẦU TĂNG — lúc này mô hình chuyển từ 'học quy luật' sang 'nhớ nhiễu'. Early stopping: lưu mô hình tại điểm val loss thấp nhất, bỏ qua phần sau. Đây là cách đơn giản, miễn phí, hiệu quả nhất để chống overfit."
+          explanation="Train loss luôn giảm khi train lâu hơn vì model ngày càng hợp với train data. Val loss ban đầu cũng giảm vì model đang học quy luật. Nhưng sau một điểm, val loss BẮT ĐẦU TĂNG. Lúc này model chuyển từ học quy luật sang nhớ nhiễu. Early stopping: lưu lại model tại điểm val loss thấp nhất, bỏ qua phần sau. Đây là cách miễn phí và hiệu quả nhất để chống overfit."
         />
 
         <div className="mt-5">
           <p className="mb-3 text-sm text-muted leading-relaxed">
-            Bên dưới là biểu đồ &ldquo;kinh điển&rdquo;: đường train loss (xanh) luôn giảm, đường
-            val loss (đỏ) giảm rồi tăng. Đường xanh lá đứt nét là <strong>điểm early stop</strong>.
+            Bên dưới là biểu đồ kinh điển. Đường train loss (xanh dương) luôn giảm. Đường val
+            loss (đỏ) giảm rồi tăng. Đường xanh lá đứt nét đánh dấu{" "}
+            <strong>điểm early stop</strong>.
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-5">
@@ -812,7 +813,7 @@ export default function OverfittingUnderfittingTopic() {
                 fill="currentColor"
                 className="text-muted"
               >
-                Cả hai giảm — đang học quy luật
+                Cả hai cùng giảm. Model đang học quy luật
               </text>
               <text
                 x={280}
@@ -821,7 +822,7 @@ export default function OverfittingUnderfittingTopic() {
                 fill="#ef4444"
                 fontWeight={600}
               >
-                Val tăng — bắt đầu overfit
+                Val tăng. Model bắt đầu overfit
               </text>
 
               {/* Legend */}
@@ -836,14 +837,14 @@ export default function OverfittingUnderfittingTopic() {
         </div>
       </LessonSection>
 
-      {/* ═══════════ STEP 6 — EXPLAIN ═══════════ */}
+      {/* ═══════════ STEP 6 · EXPLAIN ═══════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
-            Khi ta luyện một mô hình, có <strong>hai lỗi</strong> hoàn toàn khác nhau cần phân
-            biệt: lỗi trên dữ liệu đã thấy (<em>train error</em>) và lỗi trên dữ liệu chưa thấy
-            (<em>test error</em>). Mục tiêu cuối cùng luôn là{" "}
-            <strong>thu nhỏ test error</strong>, vì chỉ khi đó mô hình mới thực sự hữu ích.
+            Khi huấn luyện một model, có <strong>hai loại lỗi</strong> hoàn toàn khác nhau cần
+            phân biệt: lỗi trên dữ liệu đã thấy (<em>train error</em>) và lỗi trên dữ liệu chưa
+            thấy (<em>test error</em>). Mục tiêu cuối cùng luôn là{" "}
+            <strong>thu nhỏ test error</strong>, vì chỉ khi đó model mới thực sự hữu ích.
           </p>
 
           <LaTeX block>
@@ -851,29 +852,29 @@ export default function OverfittingUnderfittingTopic() {
           </LaTeX>
 
           <p className="leading-relaxed mt-3">
-            <strong>Generalization gap</strong> (khoảng cách tổng quát hoá) chính là khoảng cách
-            giữa &ldquo;điểm bài tập về nhà&rdquo; và &ldquo;điểm thi&rdquo;. Mục tiêu là giữ
-            khoảng cách này nhỏ — không phải bằng cách &ldquo;hạ&rdquo; train error về 0, mà
-            bằng cách chọn mô hình <em>đủ linh hoạt vừa phải</em>.
+            <strong>Generalization gap</strong> (khoảng cách tổng quát hoá) chính là khoảng
+            cách giữa &ldquo;điểm bài tập về nhà&rdquo; và &ldquo;điểm thi&rdquo;. Mục tiêu là
+            giữ khoảng cách này nhỏ. Không phải bằng cách hạ train error về 0, mà bằng cách
+            chọn model <em>đủ linh hoạt vừa phải</em>.
           </p>
 
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
-            So sánh hai mô hình cực trị
+            So sánh hai model ở hai cực
           </h4>
 
           <ToggleCompare
             labelA="Underfit (bậc 1)"
             labelB="Overfit (bậc 20)"
-            description="Cùng dữ liệu train, hai đường cong khác nhau kinh khủng."
+            description="Cùng một tập train, hai đường cong khác nhau kinh khủng."
             childA={
               <div className="rounded-lg bg-background p-4 space-y-2">
                 <p className="text-sm font-semibold text-blue-500">
-                  Underfit = học chưa đủ
+                  Underfit là học chưa đủ
                 </p>
                 <ul className="list-disc list-inside text-sm text-foreground/85 space-y-1">
-                  <li>Mô hình quá đơn giản (ít tham số)</li>
+                  <li>Model quá đơn giản (ít tham số)</li>
                   <li>Cả train và test error đều cao</li>
-                  <li>Ẩn dụ: chỉ học lý thuyết, chưa luyện đề</li>
+                  <li>Ẩn dụ: chỉ đọc lý thuyết, chưa luyện đề</li>
                   <li>Giải pháp: tăng độ phức tạp, thêm feature, huấn luyện lâu hơn</li>
                 </ul>
               </div>
@@ -882,12 +883,12 @@ export default function OverfittingUnderfittingTopic() {
               <div className="rounded-lg bg-background p-4 space-y-2">
                 <p className="inline-flex items-center gap-1 text-sm font-semibold text-red-500">
                   <AlertCircle size={14} aria-hidden="true" />
-                  Overfit = học thuộc nhiễu
+                  Overfit là học thuộc cả nhiễu
                 </p>
                 <ul className="list-disc list-inside text-sm text-foreground/85 space-y-1">
-                  <li>Mô hình quá phức tạp (quá nhiều tham số)</li>
+                  <li>Model quá phức tạp (quá nhiều tham số)</li>
                   <li>Train error rất thấp, test error rất cao</li>
-                  <li>Ẩn dụ: học thuộc đáp án 10 đề cũ, gặp đề mới trượt</li>
+                  <li>Ẩn dụ: thuộc đáp án 10 đề cũ, gặp đề mới là trượt</li>
                   <li>
                     Giải pháp: thêm dữ liệu,{" "}
                     <TopicLink slug="regularization">regularization</TopicLink>, early stopping,
@@ -952,7 +953,7 @@ export default function OverfittingUnderfittingTopic() {
 
           <Callout variant="tip" title="Quy trình làm việc thực tế">
             <ol className="list-decimal list-inside space-y-1 mt-1">
-              <li>Chọn mô hình đủ lớn để <em>ban đầu</em> overfit nhẹ trên train.</li>
+              <li>Chọn model đủ lớn để <em>ban đầu</em> overfit nhẹ trên train.</li>
               <li>
                 Dùng <TopicLink slug="cross-validation">cross-validation</TopicLink> hoặc{" "}
                 <TopicLink slug="train-val-test">train/val/test split</TopicLink> để đo
@@ -962,67 +963,68 @@ export default function OverfittingUnderfittingTopic() {
                 Nếu overfit: thêm dữ liệu, early stopping,{" "}
                 <TopicLink slug="regularization">regularization</TopicLink>.
               </li>
-              <li>Nếu underfit: tăng số tham số / thêm feature / train lâu hơn.</li>
+              <li>Nếu underfit: tăng số tham số, thêm feature, train lâu hơn.</li>
               <li>Lặp lại tới khi val loss không còn tốt hơn được nữa.</li>
             </ol>
           </Callout>
 
-          <CollapsibleDetail title="Mẹo nhận diện thêm — không chỉ xem loss">
+          <CollapsibleDetail title="Mẹo nhận diện thêm, không chỉ xem loss">
             <p className="text-sm leading-relaxed">
               Ngoài việc so loss, còn vài dấu hiệu khác:
             </p>
             <ul className="list-disc list-inside text-sm space-y-1 text-foreground/80 mt-2">
               <li>
-                <strong>Đường cong học</strong>: train loss giảm, val loss tăng → overfit rõ.
+                <strong>Đường cong học</strong>: train loss giảm trong khi val loss tăng là
+                dấu hiệu overfit rõ.
               </li>
               <li>
-                <strong>Độ phức tạp vs dữ liệu</strong>: nếu số tham số &gt; số mẫu &times; 10 → nguy
-                cơ overfit rất cao, đặc biệt với dataset &lt; 1000 mẫu.
+                <strong>Độ phức tạp so với dữ liệu</strong>: nếu số tham số lớn hơn số mẫu
+                &times; 10, nguy cơ overfit rất cao, đặc biệt với dataset dưới 1000 mẫu.
               </li>
               <li>
-                <strong>Độ nhạy với seed</strong>: mô hình overfit thường cho kết quả rất
-                khác nhau giữa các lần huấn luyện (với cùng data nhưng khác random seed).
+                <strong>Độ nhạy với seed</strong>: model overfit thường cho kết quả rất khác
+                nhau giữa các lần huấn luyện (cùng data nhưng khác random seed).
               </li>
               <li>
-                <strong>Kiểm tra bằng mắt</strong> (khi có thể): vẽ đường fit cùng data. Nếu
-                đường uốn éo bất thường quanh mỗi điểm &rArr; overfit.
+                <strong>Kiểm tra bằng mắt</strong> (khi có thể): vẽ đường fit cùng dữ liệu.
+                Nếu đường uốn éo bất thường quanh mỗi điểm thì model đang overfit.
               </li>
             </ul>
           </CollapsibleDetail>
 
           <Callout variant="warning" title="Cái bẫy lớn nhất: nhìn train loss rồi tự hào">
-            Rất nhiều người mới tự tin khi thấy train loss về gần 0 và nghĩ &ldquo;xong rồi&rdquo;.
-            <strong>Train loss thấp là điều dễ đạt nhất trong ML</strong> — chỉ cần tăng độ phức
-            tạp đủ lớn là được. Giá trị thật của một mô hình nằm ở <em>test loss</em>, không
-            phải train loss. Luôn giữ một phần dữ liệu (test set) tuyệt đối ngoài tầm với của
-            quá trình huấn luyện.
+            Rất nhiều người mới tự tin khi thấy train loss về gần 0 và nghĩ &ldquo;xong rồi&rdquo;.{" "}
+            <strong>Train loss thấp là thứ dễ đạt nhất trong ML</strong>, chỉ cần tăng độ phức
+            tạp đủ lớn là được. Giá trị thật của một model nằm ở <em>test loss</em>, không
+            phải train loss. Luôn giữ một phần dữ liệu (test set) tuyệt đối nằm ngoài tầm với
+            của quá trình huấn luyện.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ═══════════ STEP 7 — CONNECT / SUMMARY ═══════════ */}
+      {/* ═══════════ STEP 7 · CONNECT / SUMMARY ═══════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
-          title="4 điều cần nhớ về overfit vs underfit"
+          title="4 điều cần nhớ về overfit và underfit"
           points={[
-            "Underfit = mô hình quá đơn giản; train & test loss đều cao. Overfit = mô hình quá phức tạp; train loss thấp, test loss cao.",
-            "Good fit không phải train loss thấp nhất — mà là khoảng cách nhỏ giữa train và test loss.",
-            "Early stopping: dừng khi val loss bắt đầu tăng. Cách đơn giản, miễn phí, cực kỳ hiệu quả.",
-            "Quy trình: ban đầu overfit nhẹ, rồi dùng regularization / thêm dữ liệu để thu hẹp gap. Không bao giờ bắt đầu với mô hình quá nhỏ.",
+            "Underfit là model quá đơn giản: train và test loss đều cao. Overfit là model quá phức tạp: train loss thấp, test loss cao.",
+            "Good fit không phải train loss thấp nhất, mà là khoảng cách nhỏ giữa train loss và test loss.",
+            "Early stopping: dừng khi val loss bắt đầu tăng. Miễn phí và cực kỳ hiệu quả.",
+            "Quy trình: bắt đầu cho overfit nhẹ, rồi dùng regularization hoặc thêm dữ liệu để thu hẹp gap. Đừng bao giờ bắt đầu với một model quá nhỏ.",
           ]}
         />
 
         <Callout variant="tip" title="Xem ứng dụng thực tế">
-          Muốn thấy overfit gây hại thực sự thế nào khi triển khai? Xem{" "}
+          Muốn thấy overfit gây hại thế nào khi triển khai thật? Xem{" "}
           <TopicLink slug="overfitting-underfitting-in-compas">
             Overfit trong COMPAS
-          </TopicLink>{" "}
-          — công cụ chấm điểm rủi ro tái phạm ở Mỹ, nơi 137 đặc trưng phức tạp cho ra kết quả{" "}
-          <em>tệ hơn</em> mô hình 2 biến đơn giản.
+          </TopicLink>
+          , công cụ chấm điểm rủi ro tái phạm ở Mỹ. Ở đó, 137 đặc trưng phức tạp lại cho ra
+          kết quả <em>tệ hơn</em> một model 2 biến đơn giản.
         </Callout>
       </LessonSection>
 
-      {/* ═══════════ STEP 8 — QUIZ ═══════════ */}
+      {/* ═══════════ STEP 8 · QUIZ ═══════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
@@ -1031,7 +1033,7 @@ export default function OverfittingUnderfittingTopic() {
 }
 
 /* ════════════════════════════════════════════════════════════════════════
-   LOCAL HELPER — RegimeCard
+   LOCAL HELPER: RegimeCard
    ════════════════════════════════════════════════════════════════════════ */
 interface RegimeCardProps {
   title: string;
@@ -1066,7 +1068,7 @@ function RegimeCard({
       style={{ borderColor: `${color}60`, backgroundColor: `${color}0D` }}
     >
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-bold" style={{ color }}>
+        <h4 className="text-sm font-bold text-foreground">
           {title}
         </h4>
         <span

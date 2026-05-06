@@ -35,9 +35,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "probability-statistics-in-spam-filter",
   title: "Probability & Statistics in Spam Filtering",
-  titleVi: "Xác suất trong lọc spam",
+  titleVi: "Xác suất Bayes lọc spam ra sao",
   description:
-    "Cách Gmail dùng xác suất Bayes để chặn 15 tỷ email rác mỗi ngày — bạn sẽ tự tay chỉnh các công tắc đặc trưng và xem thanh điểm spam nhảy.",
+    "Cách Gmail dùng xác suất Bayes để chặn 15 tỷ email rác mỗi ngày. Bạn sẽ tự tay chỉnh các công tắc đặc trưng và xem thanh điểm spam nhảy.",
   category: "math-foundations",
   tags: ["bayesian-filtering", "spam-detection", "application"],
   difficulty: "beginner",
@@ -53,7 +53,7 @@ export const metadata: TopicMeta = {
   sources: [
     {
       title:
-        "Spam Does Not Bring Us Joy — Ridding Gmail of 100 Million More Spam Messages with TensorFlow",
+        "Spam Does Not Bring Us Joy: Ridding Gmail of 100 Million More Spam Messages with TensorFlow",
       publisher: "Google Workspace Blog",
       url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
       date: "2019-02",
@@ -109,7 +109,7 @@ const INBOX: InboxEmail[] = [
   {
     id: "e1",
     sender: "khuyen-mai@nofreefaker.win",
-    subject: "BẠN ĐÃ TRÚNG THƯỞNG iPhone 16 Pro — BẤM NGAY!!!",
+    subject: "BẠN ĐÃ TRÚNG THƯỞNG iPhone 16 Pro. BẤM NGAY!!!",
     snippet:
       "Chào bạn, bạn là khách hàng may mắn. Bấm vào link dưới đây để nhận miễn phí trong 24 giờ...",
     truth: "spam",
@@ -131,7 +131,7 @@ const INBOX: InboxEmail[] = [
   {
     id: "e3",
     sender: "security@paypall-login.co",
-    subject: "Tài khoản của bạn sẽ bị khoá — hành động ngay",
+    subject: "Tài khoản của bạn sẽ bị khoá. Hành động ngay",
     snippet:
       "Chúng tôi phát hiện hoạt động bất thường. Vui lòng đăng nhập trong vòng 12 giờ qua đường link này để tránh mất tài khoản.",
     truth: "spam",
@@ -144,7 +144,7 @@ const INBOX: InboxEmail[] = [
   {
     id: "e4",
     sender: "giaovien@thpt.example",
-    subject: "Lịch họp phụ huynh lớp 12A3 — thứ Bảy 25/04",
+    subject: "Lịch họp phụ huynh lớp 12A3, thứ Bảy 25/04",
     snippet:
       "Kính gửi quý phụ huynh, trường kính mời quý vị tham dự buổi họp lớp vào lúc 8h sáng thứ Bảy. Trân trọng.",
     truth: "ham",
@@ -157,7 +157,7 @@ const INBOX: InboxEmail[] = [
   {
     id: "e5",
     sender: "promo@fastmoney-investment.biz",
-    subject: "Đầu tư 10 triệu — lời 50%/tháng CAM KẾT",
+    subject: "Đầu tư 10 triệu, lời 50%/tháng CAM KẾT",
     snippet:
       "Cơ hội duy nhất! Không cần kinh nghiệm. Đăng ký hôm nay nhận ngay combo khoá học đầu tư miễn phí.",
     truth: "spam",
@@ -171,7 +171,7 @@ const INBOX: InboxEmail[] = [
 
 /* ─────────────────────────────────────────────────────────
    DỮ LIỆU: ĐẶC TRƯNG (FEATURE) CÓ THỂ BẬT/TẮT
-   Mỗi feature có trọng số theo Bayes: khi có → cộng "điểm spam"
+   Mỗi feature có trọng số theo Bayes: khi có thì cộng "điểm spam"
    ───────────────────────────────────────────────────────── */
 
 interface SpamFeature {
@@ -187,22 +187,22 @@ const FEATURES: SpamFeature[] = [
   {
     id: "giveaway",
     icon: Gift,
-    label: "Cụm từ \u201Ctrúng thưởng\u201D",
+    label: "Cụm từ trúng thưởng",
     description: "Xuất hiện trong 85% email spam, chỉ 2% email thật.",
     weight: 1.8,
   },
   {
     id: "urgent",
     icon: AlertTriangle,
-    label: "Tạo cảm giác gấp — \u201Chành động ngay\u201D",
+    label: "Tạo cảm giác gấp, đòi hành động ngay",
     description:
-      "Cụm từ gấp gáp như \u201Ckhoá tài khoản\u201D, \u201Ctrong 24 giờ\u201D.",
+      "Cụm từ gấp gáp như khoá tài khoản, hết hạn trong 24 giờ.",
     weight: 1.2,
   },
   {
     id: "click",
     icon: MousePointerClick,
-    label: "Link \u201Cbấm vào đây\u201D nổi bật",
+    label: "Link bấm vào đây nổi bật",
     description:
       "Gần một nửa spam có link gắn sẵn với anchor-text kiểu kêu gọi hành động.",
     weight: 0.9,
@@ -212,7 +212,7 @@ const FEATURES: SpamFeature[] = [
     icon: Zap,
     label: "Tên miền lạ hoặc viết sai chính tả",
     description:
-      "paypall thay vì paypal, shoppe thay vì shopee — cảnh báo phishing.",
+      "paypall thay vì paypal, shoppe thay vì shopee. Dấu hiệu phishing.",
     weight: 1.5,
   },
   {
@@ -249,9 +249,9 @@ function SpamGauge({ score }: { score: number }) {
     pct < 30 ? "#10b981" : pct < 60 ? "#f59e0b" : pct < 85 ? "#f97316" : "#ef4444";
   const verdict =
     pct < 30
-      ? "An toàn — gần như chắc chắn là email thật"
+      ? "An toàn. Gần như chắc chắn là email thật"
       : pct < 60
-        ? "Đáng ngờ — cần kiểm tra thêm"
+        ? "Đáng ngờ. Cần kiểm tra thêm"
         : pct < 85
           ? "Khả năng cao là spam"
           : "Gần như chắc chắn là spam";
@@ -279,9 +279,9 @@ function SpamGauge({ score }: { score: number }) {
         />
       </div>
       <div className="flex justify-between text-[10px] text-tertiary">
-        <span>0% — ham</span>
+        <span>0%: ham</span>
         <span>50%</span>
-        <span>100% — spam</span>
+        <span>100%: spam</span>
       </div>
       <p
         className="text-sm font-medium text-center"
@@ -298,7 +298,7 @@ function SpamGauge({ score }: { score: number }) {
    ───────────────────────────────────────────────────────── */
 
 export default function ProbabilityStatisticsInSpamFilter() {
-  /* Phần 1 — đoán thủ công */
+  /* Phần 1: đoán thủ công */
   const [guesses, setGuesses] = useState<Record<string, "spam" | "ham" | null>>(
     Object.fromEntries(INBOX.map((e) => [e.id, null])) as Record<
       string,
@@ -319,7 +319,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
     setGuesses((prev) => ({ ...prev, [id]: g }));
   }, []);
 
-  /* Phần 2 — chỉnh feature, quan sát gauge */
+  /* Phần 2: chỉnh feature, quan sát gauge */
   const [prior, setPrior] = useState(0.3);
   const [active, setActive] = useState<Record<string, boolean>>(
     Object.fromEntries(FEATURES.map((f) => [f.id, false])),
@@ -347,7 +347,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
         topicSlug="probability-statistics-in-spam-filter"
       >
         <p>
-          Mỗi ngày Gmail chặn khoảng <strong>15 tỷ</strong> email rác — tức
+          Mỗi ngày Gmail chặn khoảng <strong>15 tỷ</strong> email rác, tức
           khoảng 10 triệu thư mỗi phút. Với 1,8 tỷ người dùng, đây là dịch vụ
           email lớn nhất thế giới và cũng là mục tiêu hàng đầu của các chiến
           dịch spam.
@@ -443,8 +443,8 @@ export default function ProbabilityStatisticsInSpamFilter() {
                         exit={{ opacity: 0 }}
                         className={`ml-auto inline-flex items-center gap-1 text-[11px] font-semibold ${
                           correct
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-rose-600 dark:text-rose-400"
+                            ? "text-emerald-800 dark:text-emerald-200"
+                            : "text-rose-800 dark:text-rose-200"
                         }`}
                       >
                         {correct ? (
@@ -454,7 +454,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
                         )}
                         {correct
                           ? "Chính xác"
-                          : `Sai — thực ra là ${email.truth}`}
+                          : `Sai. Thực ra là ${email.truth}`}
                       </motion.span>
                     )}
                   </AnimatePresence>
@@ -498,12 +498,12 @@ export default function ProbabilityStatisticsInSpamFilter() {
               variant={correctCount === INBOX.length ? "tip" : "insight"}
               title={
                 correctCount === INBOX.length
-                  ? "Hoàn hảo — bạn đã đọc được mọi đặc trưng"
+                  ? "Hoàn hảo. Bạn đã đọc được mọi đặc trưng"
                   : `Bạn đoán đúng ${correctCount}/${INBOX.length}`
               }
             >
               Bộ lọc Gmail tự động làm việc này hàng tỷ lần mỗi ngày. Nó không
-              đoán mò — nó dùng xác suất. Ở phần tiếp theo, bạn sẽ thấy điểm
+              đoán mò, mà dùng xác suất. Ở phần tiếp theo, bạn sẽ thấy điểm
               spam nhảy như thế nào khi bật/tắt từng đặc trưng.
             </Callout>
           </div>
@@ -513,14 +513,14 @@ export default function ProbabilityStatisticsInSpamFilter() {
       <ApplicationProblem topicSlug="probability-statistics-in-spam-filter">
         <p>
           Email rác chiếm hơn một nửa tổng email toàn cầu. Nội dung spam thay
-          đổi liên tục — từ quảng cáo thuốc giả, lừa đảo tài chính đến phishing
+          đổi liên tục, từ quảng cáo thuốc giả, lừa đảo tài chính đến phishing
           (giả danh ngân hàng để đánh cắp thông tin).
         </p>
         <p>
           Thách thức cốt lõi: phân biệt spam và email thật trong{" "}
           <strong>mili-giây</strong>, khi kẻ gửi spam liên tục đổi chiêu.
-          Chặn nhầm → mất email quan trọng. Lọt spam → người dùng bực. Mỗi sai
-          sót nhỏ nhân lên với 1,8 tỷ người dùng.
+          Chặn nhầm thì mất email quan trọng. Lọt spam thì người dùng bực. Mỗi
+          sai sót nhỏ nhân lên với 1,8 tỷ người dùng.
         </p>
       </ApplicationProblem>
 
@@ -530,11 +530,11 @@ export default function ProbabilityStatisticsInSpamFilter() {
       >
         <Beat step={1}>
           <p>
-            <strong>Lọc Bayes — nền tảng xác suất.</strong> Năm 2002, Paul
+            <strong>Lọc Bayes đặt nền tảng xác suất.</strong> Năm 2002, Paul
             Graham công bố bài &ldquo;A Plan for Spam&rdquo; đặt nền móng cho
             lọc spam bằng xác suất. Với mỗi từ trong email, hệ thống ước lượng
             P(spam | từ) dựa trên tần suất từ đó xuất hiện trong spam và trong
-            email thật. Nhiều từ gộp lại cho ra xác suất tổng — nếu vượt ngưỡng
+            email thật. Nhiều từ gộp lại cho ra xác suất tổng. Nếu vượt ngưỡng
             0,9 thì đánh dấu là spam.
           </p>
         </Beat>
@@ -556,11 +556,11 @@ export default function ProbabilityStatisticsInSpamFilter() {
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>RETVec — bộ mã hoá bền vững (2023).</strong> RETVec chuyển
-            văn bản thành vector trực tiếp từ byte, chỉ với 200.000 tham số. Nó
-            miễn nhiễm với chiêu lẩn tránh như chèn ký tự vô hình, thay chữ
-            bằng emoji, hoặc dùng ký tự nhìn giống nhau. RETVec tăng 38% phát
-            hiện, giảm 19,4% chặn nhầm, tiết kiệm 83% tài nguyên.
+            <strong>RETVec đem lại bộ mã hoá bền vững (2023).</strong> RETVec
+            chuyển văn bản thành vector trực tiếp từ byte, chỉ với 200.000 tham
+            số. Nó miễn nhiễm với chiêu lẩn tránh như chèn ký tự vô hình, thay
+            chữ bằng emoji, hoặc dùng ký tự nhìn giống nhau. RETVec tăng 38%
+            phát hiện, giảm 19,4% chặn nhầm, tiết kiệm 83% tài nguyên.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -569,8 +569,8 @@ export default function ProbabilityStatisticsInSpamFilter() {
       <LessonSection label="Trải nghiệm 2: Kéo công tắc, xem thanh spam nhảy">
         <p className="text-sm text-muted leading-relaxed mb-4">
           Giả sử bạn có một email. Bật từng công tắc dưới đây để mô phỏng
-          &ldquo;email này có đặc trưng đó&rdquo;. Thanh điểm spam sẽ nhảy theo
-          — đây là cách Gmail cộng dồn bằng chứng.
+          &ldquo;email này có đặc trưng đó&rdquo;. Thanh điểm spam sẽ nhảy
+          theo. Đây là cách Gmail cộng dồn bằng chứng.
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -632,17 +632,13 @@ export default function ProbabilityStatisticsInSpamFilter() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <span
-                          className={`text-sm font-semibold ${
-                            on ? "text-rose-800 dark:text-rose-200" : "text-foreground"
-                          }`}
-                        >
+                        <span className="text-sm font-semibold text-foreground">
                           {f.label}
                         </span>
                         <span
                           className={`text-[10px] tabular-nums font-mono rounded-full px-2 py-0.5 ${
                             on
-                              ? "bg-rose-200 text-rose-900 dark:bg-rose-800 dark:text-rose-100"
+                              ? "bg-rose-200 text-foreground font-bold dark:bg-rose-800 dark:text-rose-100"
                               : "bg-surface text-muted"
                           }`}
                         >
@@ -717,7 +713,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
                         active[f.id] ? "text-rose-500" : "text-tertiary"
                       }`}
                     >
-                      {active[f.id] ? `+${f.weight.toFixed(1)}` : "—"}
+                      {active[f.id] ? `+${f.weight.toFixed(1)}` : "·"}
                     </span>
                   </div>
                 ))}
@@ -738,7 +734,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
       {/* ══════ INTERACTIVE SECTION 3: TREE BAYES ══════ */}
       <LessonSection label="Trải nghiệm 3: Từ bằng chứng tới cập nhật niềm tin">
         <p className="text-sm text-muted leading-relaxed mb-4">
-          Gmail cập nhật niềm tin của mình từng bước — như cách bạn kết luận
+          Gmail cập nhật niềm tin của mình từng bước, giống cách bạn kết luận
           &ldquo;trời sắp mưa&rdquo; sau khi thấy mây đen, gió mạnh, nhiệt độ
           giảm.
         </p>
@@ -857,13 +853,13 @@ export default function ProbabilityStatisticsInSpamFilter() {
         <InlineChallenge
           question="Bạn nhận một email có từ 'trúng thưởng' với P('trúng thưởng' | spam) = 80%, P('trúng thưởng' | email thật) = 5%. Tỷ lệ spam trong hộp thư là 40%. Áp Bayes, P(spam | 'trúng thưởng') gần nhất với giá trị nào?"
           options={[
-            "40% — cùng tỷ lệ spam nền.",
-            "Khoảng 60% — cao hơn một chút.",
-            "Khoảng 91% — một từ thôi cũng đẩy niềm tin lên rất cao.",
-            "100% — chắc chắn là spam.",
+            "40%, cùng tỷ lệ spam nền.",
+            "Khoảng 60%, cao hơn một chút.",
+            "Khoảng 91%, một từ thôi cũng đẩy niềm tin lên rất cao.",
+            "100%, chắc chắn là spam.",
           ]}
           correct={2}
-          explanation="Bayes: P(spam | từ) = P(từ | spam) × P(spam) / P(từ). Mẫu số P(từ) = 0,8 × 0,4 + 0,05 × 0,6 = 0,35. Tử số = 0,32. Kết quả ≈ 0,914 = 91,4%. Đây là lý do vì sao bộ lọc Gmail có thể đưa quyết định rất chắc chắn dù chỉ dựa trên vài từ — miễn là likelihood chênh lệch lớn."
+          explanation="Bayes: P(spam | từ) = P(từ | spam) × P(spam) / P(từ). Mẫu số P(từ) = 0,8 × 0,4 + 0,05 × 0,6 = 0,35. Tử số = 0,32. Kết quả ≈ 0,914 = 91,4%. Đây là lý do bộ lọc Gmail có thể đưa quyết định rất chắc chắn dù chỉ dựa trên vài từ, miễn là likelihood chênh lệch lớn."
         />
       </LessonSection>
 
@@ -895,8 +891,8 @@ export default function ProbabilityStatisticsInSpamFilter() {
       >
         <p>
           Không có mô hình xác suất, hệ thống lọc chỉ có thể dùng{" "}
-          <strong>danh sách đen</strong> (blacklist — chặn địa chỉ cố định)
-          hoặc <strong>luật cứng</strong> (rule-based — kiểm từ khoá cố
+          <strong>danh sách đen</strong> (blacklist, chặn địa chỉ cố định)
+          hoặc <strong>luật cứng</strong> (rule-based, kiểm từ khoá cố
           định). Cả hai đều dễ qua mặt: kẻ gửi spam chỉ cần đổi địa chỉ hoặc
           thay từ là lọt qua.
         </p>
@@ -917,7 +913,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
             "Mỗi email được Gmail chấm một điểm spam từ 0 đến 100. Ngưỡng 90% là biên giới vào Spam.",
             "Mỗi đặc trưng (từ khoá, tên miền, viết hoa) cộng thêm một chút vào điểm. Nhiều đặc trưng nhỏ cộng lại thành kết luận chắc chắn.",
             "Prior (tỷ lệ spam ban đầu) và likelihood (bằng chứng trong email) đều quan trọng. Quên một cái, kết quả sai lệch.",
-            "Bayes không đoán mò — nó cập nhật niềm tin dựa trên dữ liệu, giống cách bạn kết luận trời sắp mưa từ nhiều dấu hiệu nhỏ.",
+            "Bayes không đoán mò. Nó cập nhật niềm tin dựa trên dữ liệu, giống cách bạn kết luận trời sắp mưa từ nhiều dấu hiệu nhỏ.",
           ]}
         />
 
@@ -927,8 +923,7 @@ export default function ProbabilityStatisticsInSpamFilter() {
             <TopicLink slug="probability-statistics">
               Xác suất và thống kê
             </TopicLink>{" "}
-            — nơi bạn tự tay tung đồng xu, xây histogram, và chơi với cây
-            Bayes.
+            để tự tay tung đồng xu, xây histogram, và chơi với cây Bayes.
           </Callout>
         </div>
       </LessonSection>

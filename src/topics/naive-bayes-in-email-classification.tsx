@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
   title: "Naive Bayes in Email Classification",
   titleVi: "Naive Bayes lọc email",
   description:
-    "Cách Gmail và SpamAssassin dùng Naive Bayes để chặn 15 tỷ email rác mỗi ngày với tỷ lệ nhầm dưới 0,2%. Thử phân loại ba email mẫu, rồi kéo thanh Laplace để thấy bộ lọc xử lý từ lạ thế nào.",
+    "Cách Gmail và SpamAssassin dùng Naive Bayes để chặn 15 tỷ email rác mỗi ngày với tỷ lệ nhầm dưới 0,2%. Thử phân loại ba email mẫu, rồi kéo thanh Laplace để thấy bộ lọc xử lý từ lạ ra sao.",
   category: "classic-ml",
   tags: ["classification", "email", "spam", "application"],
   difficulty: "intermediate",
@@ -66,7 +66,7 @@ export const metadata: TopicMeta = {
     },
     {
       title:
-        "Spam does not bring us joy — ridding Gmail of 100 million more spam messages with TensorFlow",
+        "Spam does not bring us joy: ridding Gmail of 100 million more spam messages with TensorFlow",
       publisher: "Google Workspace Blog",
       url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
       date: "2019-02",
@@ -121,7 +121,7 @@ const EMAILS: DemoEmail[] = [
   },
   {
     id: "work",
-    subject: "Báo cáo tuần — dự án CRM",
+    subject: "Báo cáo tuần dự án CRM",
     preview:
       "Chào anh, gửi anh báo cáo tuần của dự án CRM. Chúng ta sẽ họp vào sáng mai về deadline giai đoạn 2...",
     from: "lan.nguyen@company.example",
@@ -136,7 +136,7 @@ const EMAILS: DemoEmail[] = [
   },
   {
     id: "mixed",
-    subject: "Ưu đãi cho khách hàng doanh nghiệp — mời họp giới thiệu",
+    subject: "Ưu đãi cho khách hàng doanh nghiệp, mời họp giới thiệu",
     preview:
       "Kính gửi quý khách, khuyến mãi đặc biệt cho khách hàng doanh nghiệp. Kính mời quý khách họp giới thiệu sản phẩm...",
     from: "sales@partner.example",
@@ -216,11 +216,11 @@ export default function NaiveBayesInEmailClassification() {
         topicSlug="naive-bayes-in-email-classification"
       >
         <p>
-          Mỗi sáng bạn mở hộp thư Gmail và thấy mọi thứ sạch sẽ — không
+          Mỗi sáng bạn mở hộp thư Gmail và thấy mọi thứ sạch sẽ. Không
           quảng cáo thuốc giả, không lừa đảo trúng thưởng. Bạn có bao giờ
           tự hỏi ai đã chặn chúng lại? Phần lớn công việc đó do một thuật
-          toán <strong>hơn 20 năm tuổi</strong> — Naive Bayes — thực hiện
-          thầm lặng ngay trước khi email chạm tới bạn.
+          toán <strong>hơn 20 năm tuổi</strong> thực hiện thầm lặng ngay
+          trước khi email chạm tới bạn. Tên của nó là <strong>Naive Bayes</strong>.
         </p>
         <p>
           Bài luận <em>&ldquo;A Plan for Spam&rdquo;</em> của Paul Graham
@@ -285,7 +285,7 @@ export default function NaiveBayesInEmailClassification() {
           Vấn đề cốt lõi: phân loại mỗi email thành <strong>spam</strong> hoặc{" "}
           <strong>ham</strong> (thư hợp lệ) với sai số cực thấp. Chặn nhầm
           một email quan trọng (false positive) gây hậu quả nghiêm trọng
-          hơn nhiều so với để lọt vài thư rác.
+          hơn nhiều so với việc để lọt vài thư rác.
         </p>
       </ApplicationProblem>
 
@@ -295,21 +295,22 @@ export default function NaiveBayesInEmailClassification() {
       >
         <Beat step={1}>
           <p>
-            <strong>Thu thập dữ liệu huấn luyện — ham và spam.</strong>{" "}
+            <strong>Thu thập dữ liệu huấn luyện cho cả ham và spam.</strong>{" "}
             Hệ thống cần tối thiểu khoảng 200 email spam và 200 email ham
-            để bắt đầu. SpamAssassin cho phép người dùng tự gán nhãn; Gmail
-            dùng phản hồi từ hàng tỷ lượt nhấn <em>&ldquo;Báo cáo
-            spam&rdquo;</em> mỗi ngày làm tín hiệu huấn luyện.
+            để bắt đầu. SpamAssassin cho phép người dùng tự gán nhãn, còn
+            Gmail dùng phản hồi từ hàng tỷ lượt nhấn{" "}
+            <em>&ldquo;Báo cáo spam&rdquo;</em> mỗi ngày làm tín hiệu huấn
+            luyện.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
             <strong>Tính xác suất có điều kiện cho từng từ.</strong> Với
             mỗi từ trong kho từ vựng, hệ thống tính{" "}
-            <em>P(từ|spam)</em> — tỉ lệ email spam chứa từ đó — và{" "}
-            <em>P(từ|ham)</em>. Ví dụ: &ldquo;trúng thưởng&rdquo; có
-            P(từ|spam) rất cao, còn tên đồng nghiệp của bạn có P(từ|ham)
-            rất cao.
+            <em>P(từ|spam)</em>, tức tỉ lệ email spam chứa từ đó, rồi tính
+            tiếp <em>P(từ|ham)</em>. Lấy ví dụ, từ &ldquo;trúng
+            thưởng&rdquo; có P(từ|spam) rất cao, còn tên đồng nghiệp của
+            bạn có P(từ|ham) rất cao.
           </p>
         </Beat>
         <Beat step={3}>
@@ -326,7 +327,8 @@ export default function NaiveBayesInEmailClassification() {
             <strong>So sánh với ngưỡng quyết định.</strong> Nếu P(spam|email)
             vượt ngưỡng (thường từ 0,9 trở lên để hạn chế chặn nhầm), email
             bị đánh dấu là spam. Ngưỡng cao đồng nghĩa ưu tiên giảm false
-            positive — tỷ lệ nhầm thư hợp lệ thành spam dưới 0,2%.
+            positive. Nhờ vậy, tỷ lệ nhầm thư hợp lệ thành spam giữ được
+            dưới 0,2%.
           </p>
         </Beat>
         <Beat step={5}>
@@ -334,7 +336,7 @@ export default function NaiveBayesInEmailClassification() {
             <strong>Vòng phản hồi từ người dùng.</strong> Khi bạn nhấn{" "}
             <em>&ldquo;Báo cáo spam&rdquo;</em> hoặc kéo email ra khỏi
             thùng rác, hệ thống cập nhật bảng xác suất. Gmail thu thập tín
-            hiệu từ <strong>1,8 tỷ người dùng</strong> — bộ lọc tự cải
+            hiệu từ <strong>1,8 tỷ người dùng</strong>. Bộ lọc tự cải
             thiện liên tục mà không cần kỹ sư can thiệp thủ công.
           </p>
         </Beat>
@@ -345,15 +347,15 @@ export default function NaiveBayesInEmailClassification() {
         <div className="flex items-center gap-2">
           <Eye size={18} className="text-accent" />
           <h3 className="text-base font-semibold text-foreground">
-            Hộp thư mô phỏng — bấm vào email để xem bộ lọc chạy
+            Hộp thư mô phỏng. Bấm vào email để xem bộ lọc chạy
           </h3>
         </div>
 
         <p className="text-sm text-muted leading-relaxed">
           Bạn là bộ lọc Naive Bayes. Mỗi email dưới đây có cụm từ đặc
-          trưng riêng. Bấm vào một email để xem: (1) các từ được chọn
-          làm bằng chứng, (2) từng từ &ldquo;bỏ phiếu&rdquo; bao nhiêu
-          phần trăm cho spam/ham, (3) tổng P(Spam) cuối cùng.
+          trưng riêng. Bấm vào một email để xem ba thứ: (1) các từ được
+          chọn làm bằng chứng, (2) từng từ &ldquo;bỏ phiếu&rdquo; bao
+          nhiêu phần trăm cho spam hoặc ham, (3) tổng P(Spam) cuối cùng.
         </p>
 
         {/* Inbox */}
@@ -552,13 +554,10 @@ export default function NaiveBayesInEmailClassification() {
             ) : (
               <Inbox size={18} style={{ color: predictionColor }} />
             )}
-            <span
-              className="text-sm font-semibold"
-              style={{ color: predictionColor }}
-            >
+            <span className="text-sm font-semibold text-foreground">
               {result.prediction === "SPAM"
-                ? "→ Chuyển vào thư mục Spam (hoặc Thùng rác)"
-                : "→ Giữ lại trong hộp thư đến (Inbox)"}
+                ? "Chuyển vào thư mục Spam (hoặc Thùng rác)"
+                : "Giữ lại trong hộp thư đến (Inbox)"}
             </span>
           </div>
 
@@ -566,12 +565,11 @@ export default function NaiveBayesInEmailClassification() {
           {active.id === "mixed" && (
             <Callout variant="warning" title="Trường hợp khó">
               Email này thực tế là thư công việc (HAM), nhưng có chứa từ
-              &ldquo;khuyến mãi&rdquo; — một từ rất điển hình của spam.
-              Naive Bayes vẫn phân loại đúng vì có hai từ công việc
-              &ldquo;họp&rdquo; và &ldquo;báo cáo&rdquo; cân bằng lại.
-              Nếu chỉ có một từ &ldquo;khuyến mãi&rdquo; mà thiếu các từ
-              công việc, bộ lọc có thể chặn nhầm — đây là một bài toán
-              khó thực tế.
+              &ldquo;khuyến mãi&rdquo;, vốn rất điển hình của spam. Naive
+              Bayes vẫn phân loại đúng vì hai từ công việc &ldquo;họp&rdquo;
+              và &ldquo;báo cáo&rdquo; cân bằng lại. Nếu chỉ có một từ
+              &ldquo;khuyến mãi&rdquo; mà thiếu các từ công việc, bộ lọc
+              có thể chặn nhầm. Đây là một bài toán khó thực tế.
             </Callout>
           )}
         </div>
@@ -603,13 +601,13 @@ export default function NaiveBayesInEmailClassification() {
       <section className="mb-10 space-y-4">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
           <Sparkles size={16} className="text-accent" />
-          Kéo thanh Laplace — xem bộ lọc xử lý từ lạ thế nào
+          Kéo thanh Laplace để xem bộ lọc xử lý từ lạ ra sao
         </h3>
         <p className="text-sm text-muted leading-relaxed">
           Khi gặp một từ chưa từng có trong dữ liệu huấn luyện
-          (P(từ|Spam) = 0), phép nhân xác suất sẽ bằng 0 ngay — một từ lạ
-          có thể &ldquo;giết&rdquo; cả dự đoán. Giải pháp:{" "}
-          <strong>Laplace smoothing</strong> — thêm một lượng nhỏ vào mọi
+          (P(từ|Spam) = 0), phép nhân xác suất sẽ bằng 0 ngay. Một từ lạ
+          có thể &ldquo;giết&rdquo; cả dự đoán. Giải pháp là{" "}
+          <strong>Laplace smoothing</strong>: thêm một lượng nhỏ vào mọi
           đếm để không xác suất nào bằng 0. Kéo thanh α bên dưới để thấy
           tác dụng.
         </p>
@@ -665,7 +663,7 @@ export default function NaiveBayesInEmailClassification() {
                     </div>
                     <p className="text-[10px] text-muted mt-1 leading-snug">
                       {alpha === 0
-                        ? "Không có smoothing → toàn bộ tích = 0"
+                        ? "Không có smoothing nên toàn bộ tích bằng 0"
                         : "Sau khi làm mượt: số rất nhỏ nhưng khác 0"}
                     </p>
                   </div>
@@ -686,7 +684,7 @@ export default function NaiveBayesInEmailClassification() {
                     </div>
                     <p className="text-[10px] text-muted mt-1 leading-snug">
                       {alpha === 0
-                        ? "Cả hai phe đều tích về 0 — không thể so sánh"
+                        ? "Cả hai phe đều tích về 0, không thể so sánh"
                         : `P(Spam) = ${(pSpamFinal * 100).toFixed(1)}%`}
                     </p>
                   </div>
@@ -694,12 +692,12 @@ export default function NaiveBayesInEmailClassification() {
                 <div className="rounded-lg bg-surface/50 border border-border p-3 text-xs text-foreground/85 leading-relaxed">
                   <strong>Quan sát:</strong>{" "}
                   {alpha === 0
-                    ? "Với α = 0, một từ lạ duy nhất có thể làm toàn bộ tích bằng 0 — thuật toán mất khả năng phân loại dù có bằng chứng mạnh khác."
+                    ? "Với α = 0, một từ lạ duy nhất có thể làm toàn bộ tích bằng 0. Thuật toán mất khả năng phân loại dù có bằng chứng mạnh khác."
                     : alpha < 0.3
-                      ? "α nhỏ (ít làm mượt) — từ lạ vẫn có trọng lượng rất thấp, dự đoán nghiêng nặng về phe có bằng chứng."
+                      ? "α nhỏ (ít làm mượt). Từ lạ vẫn có trọng lượng rất thấp, dự đoán nghiêng nặng về phe có bằng chứng."
                       : alpha < 1.2
-                        ? "α chuẩn (1.0 là mặc định của scikit-learn). Từ lạ được xử lý hợp lý — không quá nặng, không quá nhẹ."
-                        : "α lớn (quá làm mượt) — mọi từ gần bằng nhau, dự đoán yếu đi vì bộ lọc “ngờ vực” mọi bằng chứng."}
+                        ? "α chuẩn (1.0 là mặc định của scikit-learn). Từ lạ được xử lý hợp lý, không quá nặng, không quá nhẹ."
+                        : "α lớn (làm mượt quá tay). Mọi từ gần bằng nhau, dự đoán yếu đi vì bộ lọc “ngờ vực” mọi bằng chứng."}
                 </div>
               </div>
             );
@@ -707,11 +705,11 @@ export default function NaiveBayesInEmailClassification() {
         />
 
         <Callout variant="tip" title="Giá trị α phổ biến trong thực tế">
-          Gần như mọi thư viện (scikit-learn, NLTK) mặc định α = 1 —{" "}
-          <em>Laplace smoothing</em>. Khi dataset rất lớn có thể dùng
-          α = 0.1 để các xác suất gần sát quan sát thật. Hiếm khi cần
-          điều chỉnh, nhưng biết tồn tại thanh này giúp bạn hiểu vì sao
-          scikit-learn không bao giờ cho ra P = 0 tuyệt đối.
+          Gần như mọi thư viện (scikit-learn, NLTK) mặc định α = 1, tức
+          đúng kiểu <em>Laplace smoothing</em>. Khi dataset rất lớn có
+          thể dùng α = 0.1 để các xác suất gần sát quan sát thật. Hiếm
+          khi cần điều chỉnh, nhưng biết tồn tại thanh này giúp bạn hiểu
+          vì sao scikit-learn không bao giờ cho ra P = 0 tuyệt đối.
         </Callout>
       </section>
 
@@ -723,8 +721,8 @@ export default function NaiveBayesInEmailClassification() {
         </h3>
         <p className="text-sm text-muted leading-relaxed">
           Naive Bayes sinh ra năm 2002 từ bài luận của Paul Graham.
-          Ngày nay Gmail dùng nhiều tầng, nhưng Naive Bayes vẫn ở tầng
-          đầu vì tốc độ và khả năng học từ phản hồi.
+          Gmail hiện chạy nhiều tầng lọc, nhưng Naive Bayes vẫn giữ tầng
+          đầu nhờ tốc độ huấn luyện nhanh và khả năng học từ phản hồi.
         </p>
 
         <div className="relative rounded-xl border border-border bg-card p-5">
@@ -733,8 +731,8 @@ export default function NaiveBayesInEmailClassification() {
             {[
               {
                 year: "2002",
-                title: "Paul Graham — “A Plan for Spam”",
-                desc: "Chứng minh bộ lọc Bayesian đạt 99,5% chỉ bằng đếm từ. Biến đổi hoàn toàn cuộc chiến chống spam.",
+                title: "Paul Graham công bố “A Plan for Spam”",
+                desc: "Chứng minh bộ lọc Bayesian đạt 99,5% chỉ bằng đếm từ. Cuộc chiến chống spam được viết lại từ gốc.",
                 color: "#0ea5e9",
               },
               {
@@ -751,14 +749,14 @@ export default function NaiveBayesInEmailClassification() {
               },
               {
                 year: "2015",
-                title: "Adversarial evolution — Bayesian poisoning",
+                title: "Bayesian poisoning bùng nổ ở phía spammer",
                 desc: "Spammer bắt đầu chèn văn bản “vô hại” để pha loãng. Google phản ứng bằng cách kết hợp nhiều tín hiệu ngoài nội dung.",
                 color: "#f59e0b",
               },
               {
                 year: "2019",
                 title: "TensorFlow thêm vào hệ thống Gmail",
-                desc: "Mô hình học sâu bổ sung, chặn thêm 100 triệu spam/ngày mà bộ lọc cũ bỏ lỡ. Naive Bayes vẫn ở tầng đầu — bộ lọc mới ở tầng sâu hơn.",
+                desc: "Mô hình học sâu bổ sung, chặn thêm 100 triệu spam mỗi ngày mà bộ lọc cũ bỏ lỡ. Naive Bayes vẫn ở tầng đầu, bộ lọc mới chạy ở tầng sâu hơn.",
                 color: "#22c55e",
               },
             ].map((t) => (
@@ -797,7 +795,7 @@ export default function NaiveBayesInEmailClassification() {
         </h3>
         <p className="text-sm text-muted leading-relaxed">
           Khi bộ lọc sai, có hai kiểu sai khác hẳn nhau. Gmail cố ý
-          nghiêng về một kiểu — dùng ngưỡng quyết định cao để ưu tiên
+          nghiêng về một kiểu, dùng ngưỡng quyết định cao để ưu tiên
           an toàn.
         </p>
 
@@ -805,7 +803,7 @@ export default function NaiveBayesInEmailClassification() {
           <div className="rounded-xl border-2 border-red-300 bg-red-50/60 dark:bg-red-900/20 dark:border-red-700 p-4 space-y-2">
             <div className="flex items-center gap-2">
               <AlertTriangle size={16} className="text-red-600 dark:text-red-400" />
-              <span className="text-sm font-bold text-red-800 dark:text-red-200">
+              <span className="text-sm font-bold text-red-900 dark:text-red-200">
                 False positive (chặn nhầm email hợp lệ)
               </span>
             </div>
@@ -813,13 +811,13 @@ export default function NaiveBayesInEmailClassification() {
               Bộ lọc nói &ldquo;SPAM&rdquo; nhưng thực tế là email
               quan trọng từ sếp, khách hàng, hoặc ngân hàng.
             </p>
-            <div className="rounded bg-red-100 dark:bg-red-900/30 px-2 py-1.5 text-[11px] text-red-800 dark:text-red-200">
+            <div className="rounded bg-red-100 dark:bg-red-900/30 px-2 py-1.5 text-[11px] text-foreground">
               <strong>Tỉ lệ ở Gmail: &lt; 0,2%</strong> (cứ 1.000 email
               hợp lệ chỉ chặn nhầm tối đa 2 cái)
             </div>
           </div>
           <div className="rounded-xl border-2 border-amber-300 bg-amber-50/60 dark:bg-amber-900/20 dark:border-amber-700 p-4 space-y-2">
-            <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+            <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200">
               <AlertTriangle size={16} aria-hidden="true" />
               <span className="text-sm font-bold">
                 False negative (lọt spam vào Inbox)
@@ -829,19 +827,19 @@ export default function NaiveBayesInEmailClassification() {
               Bộ lọc nói &ldquo;HAM&rdquo; nhưng thực tế là spam. Bạn
               thấy vài quảng cáo trong hộp thư đến.
             </p>
-            <div className="rounded bg-amber-100 dark:bg-amber-900/30 px-2 py-1.5 text-[11px] text-amber-800 dark:text-amber-200">
-              <strong>Tỉ lệ ở Gmail: &lt; 0,5%</strong> — được chấp
-              nhận cao hơn vì hậu quả nhẹ hơn chặn nhầm
+            <div className="rounded bg-amber-100 dark:bg-amber-900/30 px-2 py-1.5 text-[11px] text-foreground">
+              <strong>Tỉ lệ ở Gmail: &lt; 0,5%</strong>. Mức này được
+              chấp nhận cao hơn vì hậu quả nhẹ hơn việc chặn nhầm.
             </div>
           </div>
         </div>
 
         <Callout variant="insight" title="Tại sao nghiêng về chấp nhận lọt spam?">
-          Nếu bạn chặn nhầm một email từ ngân hàng báo nợ quá hạn —
-          hậu quả có thể là nợ xấu. Nếu bạn thấy một email quảng cáo
-          trong Inbox — bạn chỉ cần xoá. Hậu quả không đối xứng nên
-          bộ lọc cũng đặt ngưỡng không đối xứng — P(Spam) phải rất
-          cao (thường ≥ 0,9) mới chặn.
+          Nếu bạn chặn nhầm một email từ ngân hàng báo nợ quá hạn, hậu
+          quả có thể là nợ xấu. Nếu bạn thấy một email quảng cáo trong
+          Inbox, bạn chỉ cần xoá. Hậu quả không đối xứng nên bộ lọc cũng
+          đặt ngưỡng không đối xứng. P(Spam) phải rất cao (thường ≥ 0,9)
+          mới chặn.
         </Callout>
       </section>
 
@@ -849,7 +847,7 @@ export default function NaiveBayesInEmailClassification() {
       <ApplicationTryIt topicSlug="naive-bayes-in-email-classification">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Bạn là bộ lọc Naive Bayes. Đây là các tình huống thường gặp
-          trong đời thực — hãy thử phán đoán.
+          trong đời thực, hãy thử phán đoán.
         </p>
 
         <div className="space-y-4">
@@ -857,7 +855,7 @@ export default function NaiveBayesInEmailClassification() {
             question="Email tiêu đề: 'Đơn hàng #HN2034 đã được giao thành công'. Nội dung: tên sản phẩm, thời gian giao, đường link theo dõi. Dự đoán?"
             options={["SPAM", "HAM (email hợp lệ)", "Không thể quyết định"]}
             correct={1}
-            explanation="Các từ trong email này — “đơn hàng”, “giao thành công”, số hiệu — đều có P(từ|Ham) rất cao, P(từ|Spam) rất thấp. Naive Bayes phân loại là HAM với độ tin cậy cao. Đây là trường hợp dễ."
+            explanation="Các từ trong email này (“đơn hàng”, “giao thành công”, số hiệu) đều có P(từ|Ham) rất cao, P(từ|Spam) rất thấp. Naive Bayes phân loại là HAM với độ tin cậy cao. Đây là trường hợp dễ."
           />
 
           <InlineChallenge
@@ -869,51 +867,51 @@ export default function NaiveBayesInEmailClassification() {
               "Email tự động được phân loại là HAM",
             ]}
             correct={1}
-            explanation="Một xác suất bằng 0 trong phép nhân kéo toàn bộ tích về 0. Cả P(Spam|email) lẫn P(Ham|email) đều bằng 0 — bộ lọc không thể quyết định. Đó là lý do mọi thư viện đều bật Laplace smoothing mặc định."
+            explanation="Một xác suất bằng 0 trong phép nhân kéo toàn bộ tích về 0. Cả P(Spam|email) lẫn P(Ham|email) đều bằng 0, bộ lọc không thể quyết định. Đó là lý do mọi thư viện đều bật Laplace smoothing mặc định."
           />
 
           <InlineChallenge
             question="Kẻ gửi spam cố tình chèn 50 từ vô hại (tên, địa chỉ, câu chúc) vào email chứa 'trúng thưởng'. Chiêu này có đánh lừa được Naive Bayes không?"
             options={[
-              "Có — nhiều từ vô hại “pha loãng” bằng chứng spam, bộ lọc phân loại sai là HAM",
-              "Không — Naive Bayes vẫn giữ được dấu hiệu quyết định nhờ từ “trúng thưởng” có likelihood ratio cực lớn (41:1)",
+              "Có. Nhiều từ vô hại “pha loãng” bằng chứng spam, bộ lọc phân loại sai là HAM",
+              "Không. Naive Bayes vẫn giữ được dấu hiệu quyết định nhờ từ “trúng thưởng” có likelihood ratio cực lớn (41:1)",
               "Không thể biết trước",
               "Tùy thuộc ngày trong tuần",
             ]}
             correct={0}
-            explanation="Đây chính xác là chiêu “Bayesian poisoning”. Hàng chục từ vô hại (likelihood ratio gần 1) tạo bằng chứng nhẹ về phía ham; nhân chung với tín hiệu spam mạnh có thể kéo xác suất vượt ngưỡng. Giải pháp thực tế: Gmail kết hợp Naive Bayes với nhiều tín hiệu khác (IP người gửi, chữ ký DKIM, phản hồi người dùng) để chống chiêu này."
+            explanation="Đây chính xác là chiêu “Bayesian poisoning”. Hàng chục từ vô hại (likelihood ratio gần 1) tạo bằng chứng nhẹ về phía ham, nhân chung với tín hiệu spam mạnh có thể kéo xác suất vượt ngưỡng. Giải pháp thực tế: Gmail kết hợp Naive Bayes với nhiều tín hiệu khác (IP người gửi, chữ ký DKIM, phản hồi người dùng) để chống chiêu này."
           />
 
           <InlineChallenge
             question="Bạn nhấn 'Báo cáo spam' cho một email. Điều gì xảy ra ở phía Gmail?"
             options={[
               "Email bị xoá vĩnh viễn, không ảnh hưởng gì khác",
-              "Hệ thống cập nhật bảng P(từ|spam) cho các từ trong email đó — bộ lọc học được chiêu mới",
+              "Hệ thống cập nhật bảng P(từ|spam) cho các từ trong email đó, bộ lọc học được chiêu mới",
               "Một kỹ sư Google sẽ xem xét thủ công",
-              "Không có gì xảy ra — chỉ là chức năng trên giao diện",
+              "Không có gì xảy ra, chỉ là chức năng trên giao diện",
             ]}
             correct={1}
-            explanation="Mỗi lần bạn báo cáo spam, Gmail cộng +1 vào đếm cho mỗi từ trong email đó ở lớp “spam”. Khi 100 người khác cũng báo cáo cùng email (hoặc email tương tự), tần suất các từ đó trong lớp spam tăng → P(từ|spam) tăng → lần sau bộ lọc tự chặn. Đây là vòng phản hồi quy mô 1,8 tỷ người dùng."
+            explanation="Mỗi lần bạn báo cáo spam, Gmail cộng +1 vào đếm cho mỗi từ trong email đó ở lớp “spam”. Khi 100 người khác cũng báo cáo cùng email (hoặc email tương tự), tần suất các từ đó trong lớp spam tăng, P(từ|spam) tăng theo, và lần sau bộ lọc tự chặn. Đây là vòng phản hồi quy mô 1,8 tỷ người dùng."
           />
         </div>
 
         <div className="mt-6">
           <Callout variant="insight" title="Vì sao Naive Bayes sống sót đến 2026">
-            Dù ngày nay Gmail dùng nhiều tầng (TensorFlow, RNN, reputation
-            scoring), <strong>Naive Bayes vẫn chạy ở lớp đầu</strong> vì
-            huấn luyện cực nhanh (chỉ đếm từ), dễ cập nhật từng giờ từ
+            Dù Gmail hiện dùng nhiều tầng (TensorFlow, RNN, reputation
+            scoring), <strong>Naive Bayes vẫn chạy ở lớp đầu</strong>.
+            Huấn luyện cực nhanh (chỉ đếm từ), dễ cập nhật từng giờ từ
             phản hồi người dùng, và giải thích được (mỗi từ có đóng góp
-            rõ ràng). Khi có thuật toán mới 20 năm tuổi vẫn là xương sống
-            của hệ thống chặn 15 tỷ email/ngày, bạn biết nó đã vượt qua
-            mọi bài kiểm tra thực tế khắc nghiệt nhất.
+            rõ ràng). Khi một thuật toán hơn 20 năm tuổi vẫn là xương
+            sống của hệ thống chặn 15 tỷ email mỗi ngày, bạn biết nó đã
+            vượt qua mọi bài kiểm tra thực tế khắc nghiệt nhất.
           </Callout>
         </div>
 
         <div className="mt-4 flex items-center justify-center">
           <div className="flex items-center gap-2 rounded-full border border-border bg-surface/40 px-4 py-2 text-xs text-muted">
             <ChevronRight size={14} />
-            Kế tiếp: tìm hiểu thuật toán khác — logistic regression —
-            mô hình tính xác suất không cần giả định độc lập.
+            Kế tiếp: tìm hiểu logistic regression, mô hình tính xác suất
+            không cần giả định các đặc trưng độc lập.
           </div>
         </div>
       </ApplicationTryIt>
@@ -929,10 +927,10 @@ export default function NaiveBayesInEmailClassification() {
           &ldquo;cuộc chạy đua vũ trang mà người phòng thủ luôn thua&rdquo;.
         </p>
         <p>
-          Naive Bayes thay đổi cuộc chơi: thay vì đối phó từng chiêu trò
+          Naive Bayes thay đổi cuộc chơi. Thay vì đối phó từng chiêu trò
           riêng lẻ, thuật toán nhìn vào xác suất tổng hợp của toàn bộ nội
           dung. Kẻ gửi spam phải thay đổi gần như toàn bộ email mới qua
-          được — và khi đó, email không còn đủ &ldquo;hấp dẫn&rdquo; để
+          được, mà khi đó email không còn đủ &ldquo;hấp dẫn&rdquo; để
           lừa người đọc nữa.
         </p>
       </ApplicationCounterfactual>

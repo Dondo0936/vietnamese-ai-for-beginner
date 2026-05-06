@@ -35,9 +35,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "information-theory",
   title: "Information Theory",
-  titleVi: "Lý thuyết thông tin",
+  titleVi: "Lý thuyết thông tin: đo bất ngờ bằng bit",
   description:
-    "Entropy, cross-entropy và KL divergence — đo 'độ bất ngờ' của dữ liệu bằng bit, nền tảng của mọi loss function.",
+    "Entropy, cross-entropy và KL divergence. Cùng đo độ bất ngờ của dữ liệu bằng bit và đặt nền cho mọi loss function.",
   category: "math-foundations",
   tags: ["entropy", "kl-divergence", "cross-entropy"],
   difficulty: "intermediate",
@@ -72,7 +72,7 @@ function fmt(n: number, digits = 2): string {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Coin entropy — slider cho P(ngửa)
+   Coin entropy. Slider cho P(ngửa)
    ───────────────────────────────────────────────────────────── */
 function CoinEntropyVisual({ pHeads }: { pHeads: number }) {
   const p = Math.max(0.01, Math.min(0.99, pHeads / 100));
@@ -151,16 +151,16 @@ function CoinEntropyVisual({ pHeads }: { pHeads: number }) {
       </svg>
 
       <p className="text-xs text-muted leading-relaxed">
-        Entropy đạt đỉnh <strong>1 bit</strong> khi đồng xu công bằng (P = 0.5) — bất
-        định tối đa. Khi đồng xu lệch hẳn (P = 0.99), entropy tụt về gần 0 — gần như
-        luôn biết trước kết quả.
+        Entropy đạt đỉnh <strong>1 bit</strong> khi đồng xu công bằng (P = 0.5). Đó là
+        lúc bất định tối đa. Khi đồng xu lệch hẳn (P = 0.99), entropy tụt về gần 0,
+        tức là gần như luôn biết trước kết quả.
       </p>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Dice entropy — xúc xắc 4 mặt / 6 mặt
+   Dice entropy. Xúc xắc 4 mặt và 6 mặt
    ───────────────────────────────────────────────────────────── */
 type DiceMode = "uniform4" | "uniform6" | "loaded";
 
@@ -295,7 +295,7 @@ function DiceEntropyVisual() {
               transition={{ duration: 0.2 }}
               className="text-sm"
             >
-              Trúng mặt <strong className="text-accent">{lastRoll + 1}</strong> — surprise ={" "}
+              Trúng mặt <strong className="text-accent">{lastRoll + 1}</strong>. Surprise ={" "}
               <strong className="font-mono">{fmt(surprise(dist[lastRoll]))} bit</strong>.{" "}
               <span className="text-muted">
                 {surprise(dist[lastRoll]) < 1.5
@@ -312,14 +312,14 @@ function DiceEntropyVisual() {
       <p className="text-xs text-muted leading-relaxed">
         <strong>Nhận xét:</strong> xúc xắc 4 mặt fair có H = 2 bit; xúc xắc 6 mặt fair có
         H ≈ 2.58 bit; xúc xắc gian (lệch về mặt 1) có H ≈ 2.02 bit. <em>Càng nhiều mặt
-        và càng cân bằng</em> → entropy càng cao.
+        và càng cân bằng</em>, entropy càng cao.
       </p>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Cross-entropy explorer — hai phân phối, cross-entropy + KL
+   Cross-entropy explorer. Hai phân phối, cross-entropy và KL
    ───────────────────────────────────────────────────────────── */
 function CrossEntropyExplorer() {
   const [qPct, setQPct] = useState(50);
@@ -343,7 +343,7 @@ function CrossEntropyExplorer() {
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/20">
           <p className="mb-2 text-[11px] font-semibold text-blue-700 dark:text-blue-300">
-            p — phân phối thật (cố định)
+            p: phân phối thật (cố định)
           </p>
           <div className="grid grid-cols-2 gap-2">
             <DistBar label="Mặt 1" p={p[0]} color="#2563eb" />
@@ -353,7 +353,7 @@ function CrossEntropyExplorer() {
         </div>
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-800 dark:bg-red-900/20">
           <p className="mb-2 text-[11px] font-semibold text-red-700 dark:text-red-300">
-            q — dự đoán của mô hình
+            q: dự đoán của model
           </p>
           <div className="grid grid-cols-2 gap-2">
             <DistBar label="Mặt 1" p={q[0]} color="#dc2626" />
@@ -370,7 +370,7 @@ function CrossEntropyExplorer() {
               aria-label="q[Mặt 1]"
             />
             <p className="text-[10px] text-muted">
-              q[Mặt 1] = {qPct}% — kéo để di chuyển
+              q[Mặt 1] = {qPct}%. Kéo để di chuyển.
             </p>
           </div>
         </div>
@@ -389,7 +389,7 @@ function CrossEntropyExplorer() {
           style={{ borderColor: barColor(ce) }}
         >
           <div className="text-[11px] font-semibold" style={{ color: barColor(ce) }}>
-            H(p, q) — CE loss
+            H(p, q): CE loss
           </div>
           <div className="mt-1 font-mono text-lg font-bold text-foreground">
             {isFinite(ce) ? fmt(ce) : "∞"} bit
@@ -416,8 +416,8 @@ function CrossEntropyExplorer() {
 
       <p className="text-xs text-muted leading-relaxed">
         <strong>Quan hệ then chốt:</strong> H(p, q) = H(p) + KL(p ‖ q). Khi q = p (slider ở 50%),
-        KL = 0 và cross-entropy = H(p) — không thể giảm thêm. Đẩy q về 1% hoặc 99%, KL tăng vọt
-        — đúng với ý nghĩa &quot;mô hình tự tin sai thì bị phạt rất nặng&quot;.
+        KL = 0 và cross-entropy = H(p), tức là không thể giảm thêm. Đẩy q về 1% hoặc 99%, KL tăng
+        vọt, đúng với ý nghĩa &quot;model tự tin sai thì bị phạt rất nặng&quot;.
       </p>
     </div>
   );
@@ -559,7 +559,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Information = −log₂ P. Sự kiện hiếm có nhiều bit thông tin hơn. 'Nắng' có P cao → −log₂(0.95) ≈ 0.07 bit. 'Mưa đá' có P thấp → −log₂(0.001) ≈ 10 bit. Đó là lý do tin tức chỉ đưa tin bất ngờ — vì chúng mang nhiều thông tin hơn.",
+      "Information = −log₂ P. Sự kiện hiếm có nhiều bit thông tin hơn. 'Nắng' có P cao → −log₂(0.95) ≈ 0.07 bit. 'Mưa đá' có P thấp → −log₂(0.001) ≈ 10 bit. Đó là lý do tin tức chỉ đưa tin bất ngờ, vì chúng mang nhiều thông tin hơn.",
   },
   {
     question:
@@ -572,7 +572,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "KL(p ‖ q) = 0 khi và chỉ khi p = q. Đây là lý do KL được gọi là 'độ lệch' giữa hai phân phối — càng gần nhau, KL càng nhỏ; trùng nhau thì KL = 0.",
+      "KL(p ‖ q) = 0 khi và chỉ khi p = q. Đây là lý do KL được gọi là 'độ lệch' giữa hai phân phối: càng gần nhau, KL càng nhỏ; trùng nhau thì KL = 0.",
   },
   {
     type: "fill-blank",
@@ -590,13 +590,13 @@ const quizQuestions: QuizQuestion[] = [
       "Trong machine learning, cross-entropy H(p, q) được dùng làm loss function. Minimize cross-entropy đồng nghĩa với việc làm gì?",
     options: [
       "Làm entropy H(p) bằng 0",
-      "Làm phân phối q (mô hình) gần p (nhãn thật) nhất có thể",
+      "Làm phân phối q (model) gần p (nhãn thật) nhất có thể",
       "Tăng entropy của q",
       "Bỏ qua nhãn thật",
     ],
     correct: 1,
     explanation:
-      "H(p, q) = H(p) + KL(p ‖ q). Vì H(p) không phụ thuộc mô hình (nhãn là cố định), tối thiểu cross-entropy tương đương tối thiểu KL(p ‖ q) — tức là kéo q về gần p. Đây là lý do cross-entropy là loss mặc định cho bài toán phân loại.",
+      "H(p, q) = H(p) + KL(p ‖ q). Vì H(p) không phụ thuộc model (nhãn là cố định), tối thiểu cross-entropy tương đương tối thiểu KL(p ‖ q), tức là kéo q về gần p. Đây là lý do cross-entropy là loss mặc định cho bài toán phân loại.",
   },
 ];
 
@@ -604,45 +604,46 @@ const quizQuestions: QuizQuestion[] = [
 export default function InformationTheoryTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1. DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn đọc hai tin trên báo: (A) 'Trời Sài Gòn hôm nay nắng', (B) 'Mưa đá giữa trưa tháng 4 ở Sài Gòn'. Tin nào chứa NHIỀU THÔNG TIN hơn?"
           options={[
-            "A — vì quan trọng hơn",
-            "B — sự kiện hiếm có nhiều thông tin hơn sự kiện gần như chắc chắn",
+            "A vì quan trọng hơn",
+            "B vì sự kiện hiếm chứa nhiều thông tin hơn sự kiện gần như chắc chắn",
             "Bằng nhau",
             "Phụ thuộc vào tâm trạng người đọc",
           ]}
           correct={1}
-          explanation="Entropy và thông tin đo sự 'bất ngờ'. 'Nắng' có xác suất ≈ 0.95 → không ai lạ → gần như 0 bit thông tin. 'Mưa đá' có xác suất ≈ 0.001 → rất hiếm → khoảng 10 bit thông tin. Tin tức chỉ đưa tin bất ngờ vì chúng mang nhiều thông tin — đây chính là trực giác Shannon đặt nền cho toàn bộ lý thuyết thông tin."
+          explanation="Entropy và thông tin đo sự 'bất ngờ'. 'Nắng' có xác suất ≈ 0.95 → không ai lạ → gần như 0 bit thông tin. 'Mưa đá' có xác suất ≈ 0.001 → rất hiếm → khoảng 10 bit thông tin. Tin tức chỉ đưa tin bất ngờ vì chúng mang nhiều thông tin. Đây chính là trực giác Shannon đặt nền cho toàn bộ lý thuyết thông tin."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Hôm nay bạn sẽ học ba thước đo cốt lõi: <strong>entropy</strong> (đo bất định),{" "}
-            <strong>KL divergence</strong> (đo sự khác nhau giữa hai phân phối), và{" "}
+            <strong>KL divergence</strong> (đo độ khác nhau giữa hai phân phối), và{" "}
             <strong>cross-entropy</strong> (loss function của machine learning). Cả ba đều
             tính bằng <em>bit</em>.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2. ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <CloudLightning size={20} className="text-accent" /> Entropy = &quot;độ bất ngờ trung bình&quot;
+            <CloudLightning size={20} className="text-accent" /> Entropy là độ bất ngờ trung bình
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Hãy tưởng tượng bạn đang nhắn tin cho bạn bè về thời tiết ở Sài Gòn bằng{" "}
-            <em>điện báo tính tiền theo ký tự</em>. Nếu hầu hết ngày là nắng, bạn nên đặt{" "}
-            &quot;nắng&quot; = một ký tự ngắn, còn &quot;mưa đá&quot; thì nhận ký tự dài — vì nó hiếm,
-            dùng ký tự dài cũng không phí nhiều lần. Trung bình, bạn gửi rất ít ký tự mỗi tin.
+            Tưởng tượng bạn nhắn tin cho bạn bè về thời tiết ở Sài Gòn qua một{" "}
+            <em>điện báo tính tiền theo ký tự</em>. Vì hầu hết ngày là nắng, bạn nên đặt{" "}
+            &quot;nắng&quot; bằng một ký tự ngắn. &quot;Mưa đá&quot; thì nhận ký tự dài: nó hiếm,
+            nên dùng ký tự dài cũng không phí nhiều lần. Trung bình, bạn gửi rất ít ký tự
+            mỗi tin.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Ngược lại, ở một thành phố ôn đới mỗi loại thời tiết xuất hiện đều đều, bạn buộc phải
-            dùng ký tự dài hơn cho tất cả. Shannon chứng minh: <strong>số bit trung bình ngắn
-            nhất</strong> bạn có thể dùng để mã hoá một bản tin chính là <strong>entropy H</strong> của
-            phân phối thời tiết ở đó.
+            Ngược lại, ở một thành phố ôn đới nơi mỗi loại thời tiết xuất hiện đều đều, bạn buộc
+            phải dùng ký tự dài hơn cho tất cả. Shannon chứng minh: <strong>số bit trung bình
+            ngắn nhất</strong> bạn có thể dùng để mã hoá một bản tin chính là{" "}
+            <strong>entropy H</strong> của phân phối thời tiết ở đó.
           </p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-emerald-800 dark:bg-emerald-900/20">
@@ -667,11 +668,11 @@ export default function InformationTheoryTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — KHÁM PHÁ (playgrounds) ━━━ */}
+      {/* ━━━ BƯỚC 3. KHÁM PHÁ (playgrounds) ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <h3 className="mb-1 text-base font-semibold text-foreground">
-            Playground 1 — Đồng xu nghiêng dần
+            Playground 1: đồng xu nghiêng dần
           </h3>
           <p className="mb-4 text-sm text-muted leading-relaxed">
             Kéo thanh trượt để thay đổi P(ngửa). Chấm đỏ chạy theo đường cong entropy. Khi P
@@ -686,7 +687,7 @@ export default function InformationTheoryTopic() {
           />
 
           <h3 className="mt-8 mb-1 text-base font-semibold text-foreground">
-            Playground 2 — Xúc xắc 4 mặt vs 6 mặt vs &quot;gian&quot;
+            Playground 2: xúc xắc 4 mặt, 6 mặt, và &quot;gian&quot;
           </h3>
           <p className="mb-4 text-sm text-muted leading-relaxed">
             Chọn chế độ và quan sát thanh entropy. Uniform càng nhiều mặt → entropy càng cao.
@@ -695,18 +696,18 @@ export default function InformationTheoryTopic() {
           <DiceEntropyVisual />
 
           <h3 className="mt-8 mb-1 text-base font-semibold text-foreground">
-            Playground 3 — Cross-entropy khi mô hình sai
+            Playground 3: cross-entropy khi model đoán sai
           </h3>
           <p className="mb-4 text-sm text-muted leading-relaxed">
             Đây là phân phối thật p của một đồng xu (giả sử nhãn ta quan sát thấy chính là xác
-            suất P(ngửa) = 50%). Kéo q — dự đoán của mô hình — xem cross-entropy và KL divergence
+            suất P(ngửa) = 50%). Kéo q (dự đoán của model) để xem cross-entropy và KL divergence
             thay đổi. Khi q = p → KL = 0; càng lệch → loss càng cao.
           </p>
           <CrossEntropyExplorer />
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — ĐI SÂU (StepReveal công thức) ━━━ */}
+      {/* ━━━ BƯỚC 4. ĐI SÂU (StepReveal công thức) ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
         <h3 className="mb-3 text-base font-semibold text-foreground">
           Entropy được dựng lên từng mảnh
@@ -735,7 +736,7 @@ export default function InformationTheoryTopic() {
               <p className="text-xs text-muted">
                 Lý do dùng log: khi hai sự kiện độc lập xảy ra cùng lúc, surprise của chúng
                 cộng lại. Nếu bạn dùng −p thay cho −log p, hai sự kiện độc lập sẽ nhân chứ không
-                cộng — ít trực quan hơn.
+                cộng, kém trực quan hơn.
               </p>
             </div>,
             <div
@@ -746,7 +747,7 @@ export default function InformationTheoryTopic() {
                 <strong>Trung bình theo xác suất.</strong> Mỗi sự kiện có surprise riêng. Để
                 có một con số duy nhất cho toàn phân phối, ta nhân surprise của mỗi sự kiện với
                 xác suất của nó, rồi cộng tổng. Đây chính là &quot;giá trị kỳ vọng của
-                surprise&quot; — sự bất ngờ trung bình mà bạn phải chịu khi rút một mẫu.
+                surprise&quot;, tức là sự bất ngờ trung bình mà bạn phải chịu khi rút một mẫu.
               </p>
             </div>,
             <div
@@ -768,26 +769,26 @@ export default function InformationTheoryTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 5. AHA ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            <strong>Entropy = mức bất ngờ trung bình.</strong> Cross-entropy = số bit trung bình
-            khi bạn mã hoá dữ liệu thật <em>bằng mô hình sai</em>. KL divergence = phần &quot;chi
+            <strong>Entropy là mức bất ngờ trung bình.</strong> Cross-entropy là số bit trung bình
+            khi bạn mã hoá dữ liệu thật <em>bằng một model sai</em>. KL divergence là phần &quot;chi
             phí&quot; dư ra giữa hai con số đó.
           </p>
           <p className="mt-2">
             Vì vậy, khi bạn bấm nút &quot;train&quot; trên một mạng nơ-ron phân loại, bạn đang
-            làm <em>một việc rất đơn giản</em>: thu nhỏ phần chi phí dư — tức là làm xác suất
-            mô hình phát ra tiến về xác suất thật của nhãn.
+            làm <em>đúng một việc</em>: thu nhỏ phần chi phí dư, tức là kéo xác suất model phát
+            ra về sát xác suất thật của nhãn.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 6. THỬ THÁCH ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Xúc xắc 6 mặt công bằng — entropy bao nhiêu bit?"
+          question="Xúc xắc 6 mặt công bằng có entropy bao nhiêu bit?"
           options={[
             "1 bit",
             "2 bit",
@@ -800,7 +801,7 @@ export default function InformationTheoryTopic() {
 
         <div className="mt-6">
           <InlineChallenge
-            question="Một mô hình phân loại 10 lớp chưa học gì, nên output q gần uniform. Cross-entropy loss trung bình trên mỗi mẫu xấp xỉ bao nhiêu?"
+            question="Một model phân loại 10 lớp chưa học gì, nên output q gần uniform. Cross-entropy loss trung bình trên mỗi mẫu xấp xỉ bao nhiêu?"
             options={[
               "≈ 0 bit",
               "≈ 1 bit",
@@ -808,24 +809,24 @@ export default function InformationTheoryTopic() {
               "≈ 10 bit",
             ]}
             correct={2}
-            explanation="Với nhãn one-hot và q uniform trên 10 lớp (mỗi lớp 0.1), CE = −log(0.1) = log 10 ≈ 3,32 bit. Đây là 'baseline ngu' — mô hình chưa học gì nên loss ở ngưỡng này. Khi bắt đầu train, loss phải giảm dưới mức này thì mô hình mới đang học."
+            explanation="Với nhãn one-hot và q uniform trên 10 lớp (mỗi lớp 0.1), CE = −log(0.1) = log 10 ≈ 3,32 bit. Đây là baseline khi model chưa học, nên loss đứng ở ngưỡng này. Khi bắt đầu train, loss phải giảm dưới mức này thì model mới thực sự đang học."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — GIẢI THÍCH (LaTeX ≤3) ━━━ */}
+      {/* ━━━ BƯỚC 7. GIẢI THÍCH (LaTeX ≤3) ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
-            Dưới đây là ba công thức &quot;nền&quot; — bạn sẽ gặp lại chúng ở{" "}
+            Dưới đây là ba công thức &quot;nền&quot;. Bạn sẽ gặp lại chúng ở{" "}
             <TopicLink slug="loss-functions">loss functions</TopicLink>, VAE, decision tree, và
             knowledge distillation. Mỗi công thức đi kèm một hình để bám vào.
           </p>
 
-          {/* Công thức 1 — Entropy */}
+          {/* Công thức 1. Entropy */}
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
             <p className="mb-2 text-sm font-semibold text-foreground">
-              1) Entropy H(X) — độ bất định trung bình
+              1) Entropy H(X): độ bất định trung bình
             </p>
             <LaTeX block>{"H(X) = -\\sum_{x} p(x) \\log_2 p(x)"}</LaTeX>
             <div className="mt-3 flex justify-center">
@@ -833,14 +834,14 @@ export default function InformationTheoryTopic() {
             </div>
             <p className="mt-3 text-xs text-muted leading-relaxed">
               Lấy −log₂ xác suất của mỗi kết quả (= surprise), nhân với xác suất tương ứng, rồi
-              cộng lại. Đường cong là entropy của đồng xu theo P(ngửa) — đỉnh ở 0.5.
+              cộng lại. Đường cong là entropy của đồng xu theo P(ngửa), đỉnh nằm ở 0.5.
             </p>
           </div>
 
-          {/* Công thức 2 — KL divergence */}
+          {/* Công thức 2. KL divergence */}
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
             <p className="mb-2 text-sm font-semibold text-foreground">
-              2) KL divergence — độ &quot;lệch&quot; giữa hai phân phối
+              2) KL divergence: độ &quot;lệch&quot; giữa hai phân phối
             </p>
             <LaTeX block>{"D_{KL}(p \\| q) = \\sum_{x} p(x) \\log_2 \\frac{p(x)}{q(x)} \\geq 0"}</LaTeX>
             <div className="mt-3 flex justify-center">
@@ -848,45 +849,45 @@ export default function InformationTheoryTopic() {
             </div>
             <p className="mt-3 text-xs text-muted leading-relaxed">
               KL = 0 khi và chỉ khi p = q. <strong>Không đối xứng</strong>: KL(p ‖ q) ≠ KL(q ‖ p).
-              Khi bạn train, p là nhãn thật (one-hot) và q là output softmax — KL đo mô hình
-              lệch bao xa so với sự thật.
+              Khi bạn train, p là nhãn thật (one-hot) và q là output softmax. KL đo model lệch
+              bao xa so với sự thật.
             </p>
           </div>
 
-          {/* Công thức 3 — Cross-entropy */}
+          {/* Công thức 3. Cross-entropy */}
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
             <p className="mb-2 text-sm font-semibold text-foreground">
-              3) Cross-entropy H(p, q) — loss function
+              3) Cross-entropy H(p, q): loss function
             </p>
             <LaTeX block>{"H(p, q) = -\\sum_{x} p(x) \\log_2 q(x) = H(p) + D_{KL}(p \\| q)"}</LaTeX>
             <div className="mt-3 flex justify-center">
               <CrossEntropyShape />
             </div>
             <p className="mt-3 text-xs text-muted leading-relaxed">
-              Vì H(p) không phụ thuộc mô hình, tối thiểu cross-entropy <em>tương đương</em> tối
-              thiểu KL. Khi nhãn là one-hot, công thức rút gọn thành −log q[lớp đúng] — chính là
-              loss cho phân loại ở PyTorch, TensorFlow.
+              Vì H(p) không phụ thuộc model, tối thiểu cross-entropy <em>tương đương</em> tối
+              thiểu KL. Khi nhãn là one-hot, công thức rút gọn thành −log q[lớp đúng]. Đây chính
+              là loss cho phân loại trong PyTorch và TensorFlow.
             </p>
           </div>
 
           <Callout variant="tip" title="Trực giác 'bảng mã'">
             Shannon chứng minh: số bit trung bình ngắn nhất để mã hoá một ký tự sinh ra từ phân
             phối p chính là H(p). Nếu bạn dùng <em>bảng mã sai</em> (tối ưu cho q thay vì p),
-            số bit trung bình là H(p, q) — luôn lớn hơn hoặc bằng H(p). Phần dư chính là KL(p ‖ q).
-            Trong ML: &quot;bảng mã&quot; = mô hình, &quot;phần dư&quot; = loss.
+            số bit trung bình là H(p, q), luôn lớn hơn hoặc bằng H(p). Phần dư chính là KL(p ‖ q).
+            Nói trong ngôn ngữ ML: &quot;bảng mã&quot; là model, còn &quot;phần dư&quot; là loss.
           </Callout>
 
           <Callout variant="warning" title="KL không đối xứng">
             KL(p ‖ q) và KL(q ‖ p) khác nhau về ý nghĩa thực hành. KL(p ‖ q) phạt nặng chỗ p có
             mass mà q gán gần 0 (&quot;phủ các mode&quot;). KL(q ‖ p) phạt nặng chỗ ngược lại
             (&quot;săn một mode&quot;). VAE dùng KL(q ‖ p); phần lớn phân loại dùng KL(p ‖ q) =
-            cross-entropy. Nếu cần khoảng cách đối xứng, dùng Jensen–Shannon divergence.
+            cross-entropy. Nếu cần khoảng cách đối xứng, dùng Jensen-Shannon divergence.
           </Callout>
 
-          <CollapsibleDetail title="Mutual information — mối liên hệ giữa hai biến">
+          <CollapsibleDetail title="Mutual information: mối liên hệ giữa hai biến">
             <p className="text-sm leading-relaxed">
               <strong>I(X; Y) = H(X) − H(X | Y).</strong> Đo lượng thông tin bạn biết thêm về X
-              nếu biết Y. Bằng 0 khi X và Y độc lập. Là nền tảng của contrastive learning
+              nếu biết Y. Bằng 0 khi X và Y độc lập. Đây là nền tảng của contrastive learning
               (InfoNCE trong CLIP, SimCLR), feature selection, và phân cụm dựa trên thông tin.
             </p>
           </CollapsibleDetail>
@@ -897,14 +898,14 @@ export default function InformationTheoryTopic() {
             </p>
             <p className="mb-3 text-sm leading-relaxed text-foreground/85">
               Giả sử bạn đoán liệu một người có đậu phỏng vấn không. Trước khi biết gì, entropy
-              của &quot;đậu/không đậu&quot; trong tập huấn luyện là ~ 1 bit (hai lớp xấp xỉ cân
-              bằng). Sau khi biết thêm đặc trưng &quot;điểm IELTS ≥ 7.0&quot;, phân phối trở nên
-              lệch — entropy điều kiện giảm xuống, ví dụ còn 0,6 bit.
+              của &quot;đậu/không đậu&quot; trong tập huấn luyện là khoảng 1 bit (hai lớp xấp xỉ
+              cân bằng). Sau khi biết thêm đặc trưng &quot;điểm IELTS ≥ 7.0&quot;, phân phối trở
+              nên lệch và entropy điều kiện giảm xuống, ví dụ còn 0,6 bit.
             </p>
             <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-center dark:border-blue-800 dark:bg-blue-900/20">
                 <div className="text-[11px] font-semibold text-blue-700 dark:text-blue-300">
-                  H(Y) — trước khi biết
+                  H(Y): trước khi biết
                 </div>
                 <div className="mt-1 font-mono text-lg font-bold text-foreground">1,00 bit</div>
               </div>
@@ -924,14 +925,14 @@ export default function InformationTheoryTopic() {
             <p className="text-xs text-muted leading-relaxed">
               Cây quyết định (ID3, C4.5) chọn đặc trưng có <strong>information gain lớn nhất</strong>{" "}
               làm điểm chia. Đây là một trong những ứng dụng cổ điển và trực quan nhất của entropy
-              trong machine learning — bạn đã nhìn thấy Shannon trong phòng họp rồi.
+              trong machine learning. Bạn đã nhìn thấy Shannon trong phòng họp rồi.
             </p>
           </div>
 
           <Callout variant="info" title="Vì sao 'log' xuất hiện khắp nơi trong ML?">
             Bạn sẽ gặp log trong: cross-entropy loss, KL divergence, log-likelihood, log-odds,
             log-softmax, PPL (perplexity). Lý do chung: log biến <em>phép nhân xác suất</em>{" "}
-            thành <em>phép cộng</em> — dễ tối ưu, tránh underflow, cộng độc lập giữa các sự kiện
+            thành <em>phép cộng</em>, dễ tối ưu, tránh underflow, cộng độc lập giữa các sự kiện
             độc lập. Mỗi khi thấy log, hãy nhớ: đây là &quot;ngôn ngữ cộng&quot; của xác suất.
           </Callout>
 
@@ -947,7 +948,7 @@ export default function InformationTheoryTopic() {
                 </p>
                 Entropy cao không phải là tiêu cực. Dữ liệu lý thuyết đa dạng (nhiều kết quả đều
                 nhau) <em>cần</em> entropy cao để mô tả. Ví dụ: ảnh nén sau cùng (JPEG đã nén
-                mạnh) có entropy gần cực đại — nhưng đó là vì đã bỏ hết dư thừa, không phải vì
+                mạnh) có entropy gần cực đại, nhưng đó là vì đã bỏ hết dư thừa, không phải vì
                 tệ.
               </div>
               <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-amber-800 dark:bg-amber-900/10">
@@ -956,14 +957,14 @@ export default function InformationTheoryTopic() {
                   Nhầm entropy với variance (phương sai)
                 </p>
                 Variance đo độ phân tán quanh trung bình (biến số liên tục). Entropy đo độ bất
-                định (bao nhiêu kết quả có thể). Hai khái niệm khác hẳn nhau — dùng sai sẽ sai
+                định (bao nhiêu kết quả có thể). Hai khái niệm khác hẳn nhau, dùng sai sẽ sai
                 toàn bộ phân tích.
               </div>
               <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-blue-800 dark:bg-blue-900/10">
                 <p className="mb-1 text-sm font-semibold text-blue-700 dark:text-blue-300">
                   Quên rằng KL không đối xứng
                 </p>
-                Viết KL(p ‖ q) rồi &quot;dùng lại&quot; cho KL(q ‖ p) — hai giá trị có thể khác
+                Viết KL(p ‖ q) rồi &quot;dùng lại&quot; cho KL(q ‖ p): hai giá trị có thể khác
                 xa nhau. Luôn đọc kỹ thứ tự; nếu cần đối xứng, dùng Jensen-Shannon divergence.
               </div>
             </div>
@@ -971,29 +972,29 @@ export default function InformationTheoryTopic() {
 
           <div className="my-5 rounded-xl border border-border bg-surface/30 p-5">
             <p className="mb-3 text-sm font-semibold text-foreground">
-              Đi từ entropy đến mô hình ngôn ngữ (LLM)
+              Đi từ entropy đến language model (LLM)
             </p>
             <p className="mb-3 text-sm leading-relaxed text-foreground/85">
-              Mô hình ngôn ngữ dự đoán ký tự (hoặc token) tiếp theo dựa trên các ký tự đã xuất
-              hiện. Chất lượng của mô hình thường được đo bằng <strong>perplexity</strong>:
+              Một language model dự đoán ký tự (hoặc token) tiếp theo dựa trên các ký tự đã xuất
+              hiện. Chất lượng của model thường được đo bằng <strong>perplexity</strong>:
             </p>
             <div className="mb-3 rounded-lg bg-card p-3 text-center font-mono text-sm">
               PPL = 2<sup>H(p, q)</sup>
             </div>
             <p className="text-sm leading-relaxed text-foreground/85">
-              Nếu cross-entropy của mô hình trên một đoạn văn bản là 2 bit/token, thì perplexity
-              là 4 — trung bình mô hình &quot;cân đối&quot; giữa 4 token khả dĩ mỗi bước. Càng
-              nhỏ càng giỏi. Các LLM tiếng Anh hiện đại đạt PPL khoảng 10–30 trên văn bản thông
-              thường.
+              Nếu cross-entropy của model trên một đoạn văn bản là 2 bit/token thì perplexity là
+              4. Trung bình model đang &quot;cân đối&quot; giữa 4 token khả dĩ ở mỗi bước. Càng
+              nhỏ càng giỏi. Các LLM tiếng Anh hiện đại đạt PPL khoảng 10 đến 30 trên văn bản
+              thông thường.
             </p>
           </div>
 
-          <CollapsibleDetail title="Bit vs nat — đơn vị đo thông tin">
+          <CollapsibleDetail title="Bit và nat: đơn vị đo thông tin">
             <p className="text-sm leading-relaxed">
               <strong>Bit</strong> dùng log cơ số 2, trực quan cho khoa học máy tính và mã hoá.{" "}
               <strong>Nat</strong> dùng logarit tự nhiên (ln), mặc định trong giải tích và các thư
               viện như scipy, torch. Quy đổi: 1 nat ≈ 1.443 bit. Kết quả cross-entropy loss
-              hiển thị ở PyTorch thường tính bằng nat — nếu bạn muốn đọc ra bit, nhân với 1.443.
+              hiển thị ở PyTorch thường tính bằng nat. Nếu bạn muốn đọc ra bit, nhân với 1.443.
             </p>
           </CollapsibleDetail>
 
@@ -1002,8 +1003,8 @@ export default function InformationTheoryTopic() {
             <TopicLink slug="loss-functions">loss functions</TopicLink>,{" "}
             <TopicLink slug="vae">VAE</TopicLink>, distillation, decision tree (information
             gain), và cả trong <TopicLink slug="information-theory-in-compression">nén dữ liệu</TopicLink>{" "}
-            (ZIP, JPEG, H.265). Nó là &quot;ngôn ngữ chung&quot; nối giữa xác suất, thống kê và
-            học máy.
+            (ZIP, JPEG, H.265). Đây là &quot;ngôn ngữ chung&quot; nối xác suất, thống kê và machine
+            learning.
           </p>
 
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
@@ -1037,7 +1038,7 @@ export default function InformationTheoryTopic() {
                   </tr>
                   <tr className="bg-surface/20">
                     <td className="px-3 py-2 font-semibold text-foreground">Văn bản tiếng Việt</td>
-                    <td className="px-3 py-2 text-muted">Có dấu — phân phối lệch</td>
+                    <td className="px-3 py-2 text-muted">Có dấu, phân phối lệch</td>
                     <td className="px-3 py-2 font-mono text-accent">≈ 4,7 bit/ký tự</td>
                   </tr>
                   <tr className="bg-card">
@@ -1049,24 +1050,24 @@ export default function InformationTheoryTopic() {
               </table>
             </div>
             <p className="mt-3 text-xs text-muted leading-relaxed">
-              Văn bản có &quot;dư thừa&quot; lớn: lý thuyết cần 8 bit/ký tự ASCII, nhưng thực tế chỉ
-              cần ~4,7 bit/ký tự tiếng Việt. Đây là lý do ZIP nén văn bản rất tốt — nó chỉ cần
-              &quot;đánh thuế&quot; phần dư thừa đó.
+              Văn bản có &quot;dư thừa&quot; lớn: lý thuyết cần 8 bit/ký tự ASCII, nhưng thực tế
+              chỉ cần khoảng 4,7 bit/ký tự tiếng Việt. Đây là lý do ZIP nén văn bản rất tốt: nó
+              chỉ cần &quot;đánh thuế&quot; phần dư thừa đó.
             </p>
           </div>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
-      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt & Kiểm tra">
+      {/* ━━━ BƯỚC 8. TÓM TẮT + QUIZ ━━━ */}
+      <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt và Kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ"
           points={[
-            "Surprise của một sự kiện = −log₂ p — càng hiếm càng bất ngờ.",
-            "Entropy H(X) là surprise trung bình. Max khi phân phối đồng đều, = 0 khi chắc chắn.",
-            "Cross-entropy H(p, q) = loss function cho phân loại — tối thiểu CE = tối thiểu KL.",
-            "KL(p ‖ q) ≥ 0, = 0 khi p = q. Không đối xứng — chọn thứ tự có chủ đích.",
-            "Bit và nat chỉ khác nhau về cơ số logarit — kết quả lý thuyết giống nhau.",
+            "Surprise của một sự kiện bằng −log₂ p. Càng hiếm càng bất ngờ.",
+            "Entropy H(X) là surprise trung bình. Max khi phân phối đồng đều, bằng 0 khi chắc chắn.",
+            "Cross-entropy H(p, q) là loss function cho phân loại. Tối thiểu CE đồng nghĩa tối thiểu KL.",
+            "KL(p ‖ q) ≥ 0, bằng 0 khi p = q. Không đối xứng, nên chọn thứ tự có chủ đích.",
+            "Bit và nat chỉ khác nhau về cơ số logarit, kết quả lý thuyết là một.",
           ]}
         />
 
@@ -1075,9 +1076,9 @@ export default function InformationTheoryTopic() {
             <strong>Xem ứng dụng thực tế:</strong>{" "}
             <TopicLink slug="information-theory-in-compression">
               Entropy trong nén file (ZIP, JPEG, H.265)
-            </TopicLink>{" "}
-            — cách Shannon đặt giới hạn lý thuyết cho mọi thuật toán nén, và Huffman gán mã
-            ngắn cho ký tự phổ biến.
+            </TopicLink>
+            . Bài này cho thấy Shannon đặt giới hạn lý thuyết cho mọi thuật toán nén, và Huffman
+            gán mã ngắn cho ký tự phổ biến.
           </p>
         </div>
 

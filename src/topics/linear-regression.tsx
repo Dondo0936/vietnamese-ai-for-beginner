@@ -35,7 +35,7 @@ export const metadata: TopicMeta = {
   title: "Linear Regression",
   titleVi: "Hồi quy tuyến tính",
   description:
-    "Làm sao vẽ một đường thẳng 'hợp nhất' qua một đám điểm dữ liệu? Bạn thử trước bằng mắt, rồi so với cách máy tính tìm đường tối ưu.",
+    "Làm sao vẽ một đường thẳng 'hợp nhất' qua một đám điểm dữ liệu? Bạn thử trước bằng mắt, rồi so với cách máy tính tìm ra đường tối ưu.",
   category: "classic-ml",
   tags: ["regression", "supervised-learning", "fundamentals"],
   difficulty: "beginner",
@@ -44,7 +44,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   TIỆN ÍCH — tính đường hồi quy và MSE
+   TIỆN ÍCH: tính đường hồi quy và MSE
    ═══════════════════════════════════════════════════════════════════ */
 
 type Pt = { x: number; y: number };
@@ -165,7 +165,7 @@ const quizQuestions: QuizQuestion[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
-   DRAGGABLE SCATTER — giữ SVG gốc, mở rộng với chế độ người dùng
+   DRAGGABLE SCATTER: giữ SVG gốc, mở rộng với chế độ người dùng
    tự chỉnh độ dốc / điểm chặn
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -269,14 +269,14 @@ function ScatterPlayground() {
     }
     return {
       tone: "below" as const,
-      text: "Lạ thật — trong trường hợp này MSE của bạn còn thấp hơn? Kiểm tra lại cách bạn di chuyển điểm.",
+      text: "Lạ thật. Trong trường hợp này MSE của bạn còn thấp hơn. Kiểm tra lại cách bạn di chuyển điểm.",
     };
   }, [userMSE, optMSE, showOptimal]);
 
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted leading-relaxed">
-        Đây là bàn làm việc của bạn. <strong>Kéo thanh trượt</strong> để chỉnh độ dốc và điểm chặn —
+        Đây là bàn làm việc của bạn. <strong>Kéo thanh trượt</strong> để chỉnh độ dốc và điểm chặn,
         thử vẽ một đường mà bạn thấy &ldquo;hợp&rdquo; với đám điểm. Khi đã ưng ý, bật{" "}
         <em>Đường tối ưu</em> để so với cách máy tìm.
       </p>
@@ -526,10 +526,10 @@ function ScatterPlayground() {
               <Target size={16} />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-wide text-blue-700 dark:text-blue-300 font-semibold">
+              <div className="text-[10px] uppercase tracking-wide text-foreground font-semibold">
                 MSE của bạn
               </div>
-              <div className="text-lg font-mono font-bold text-blue-800 dark:text-blue-200 tabular-nums">
+              <div className="text-lg font-mono font-bold text-foreground tabular-nums">
                 {userMSE.toFixed(1)}
               </div>
             </div>
@@ -552,7 +552,7 @@ function ScatterPlayground() {
               <div
                 className={`text-[10px] uppercase tracking-wide font-semibold ${
                   showOptimal
-                    ? "text-emerald-700 dark:text-emerald-300"
+                    ? "text-foreground"
                     : "text-tertiary"
                 }`}
               >
@@ -561,11 +561,11 @@ function ScatterPlayground() {
               <div
                 className={`text-lg font-mono font-bold tabular-nums ${
                   showOptimal
-                    ? "text-emerald-800 dark:text-emerald-200"
+                    ? "text-foreground"
                     : "text-muted"
                 }`}
               >
-                {showOptimal ? optMSE.toFixed(1) : "—"}
+                {showOptimal ? optMSE.toFixed(1) : "..."}
               </div>
             </div>
           </div>
@@ -578,10 +578,10 @@ function ScatterPlayground() {
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className={`rounded-lg border p-3 text-xs leading-relaxed ${
+              className={`rounded-lg border p-3 text-xs leading-relaxed text-foreground ${
                 comparison.tone === "match"
-                  ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200 dark:border-emerald-700"
-                  : "border-amber-300 bg-amber-50 text-amber-900 dark:bg-amber-900/20 dark:text-amber-100 dark:border-amber-700"
+                  ? "border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700"
+                  : "border-amber-300 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-700"
               }`}
             >
               {comparison.text}
@@ -594,7 +594,7 @@ function ScatterPlayground() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   DEEPEN — StepReveal: tính residual, rồi tổng SSR, rồi tìm min
+   DEEPEN: StepReveal tính residual, rồi tổng SSR, rồi tìm min
    ═══════════════════════════════════════════════════════════════════ */
 
 function ResidualBreakdown() {
@@ -659,8 +659,8 @@ function ResidualBreakdown() {
         <div key="step2" className="rounded-lg border border-border bg-surface/60 p-4 space-y-3">
           <p className="text-sm text-foreground leading-relaxed">
             Có nhiều điểm thì làm sao? Bình phương từng sai số rồi cộng lại. Bình phương giúp hai
-            việc: (1) bỏ dấu âm — âm hay dương đều đáng lo như nhau; (2){" "}
-            <em>phạt nặng các sai số lớn</em> — một sai số gấp đôi thì đóng góp gấp bốn.
+            việc: (1) bỏ dấu âm, vì âm hay dương đều đáng lo như nhau; (2){" "}
+            <em>phạt nặng các sai số lớn</em>, một sai số gấp đôi thì đóng góp gấp bốn.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse">
@@ -690,10 +690,10 @@ function ResidualBreakdown() {
                   </tr>
                 ))}
                 <tr className="bg-amber-50 dark:bg-amber-900/20">
-                  <td colSpan={4} className="py-1.5 px-2 font-semibold text-right">
+                  <td colSpan={4} className="py-1.5 px-2 font-semibold text-right text-foreground">
                     Tổng bình phương sai số (SSR):
                   </td>
-                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-amber-700 dark:text-amber-300">
+                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-foreground">
                     {sumSquared.toFixed(0)}
                   </td>
                 </tr>
@@ -730,7 +730,7 @@ function ResidualBreakdown() {
           </svg>
           <p className="text-xs text-muted leading-relaxed">
             Đồ thị hình parabol: trục ngang là các độ dốc có thể của đường thẳng, trục dọc là tổng
-            sai số bình phương. Máy tìm đáy parabol ấy — chính là bộ (slope, intercept) tối ưu.
+            sai số bình phương. Máy tìm đáy parabol ấy. Đó chính là bộ (slope, intercept) tối ưu.
           </p>
         </div>,
       ]}
@@ -745,18 +745,18 @@ function ResidualBreakdown() {
 export default function LinearRegressionTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1: HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Bạn bán phở. Nhật ký cả tuần cho thấy: trời 35°C bán 80 tô, trời 25°C bán 120 tô, trời 18°C bán 150 tô. Ngày mai dự báo 30°C — bạn nấu bao nhiêu?"
+          question="Bạn bán phở. Nhật ký cả tuần cho thấy: trời 35°C bán 80 tô, trời 25°C bán 120 tô, trời 18°C bán 150 tô. Ngày mai dự báo 30°C, bạn nấu bao nhiêu?"
           options={[
-            "Khoảng 100 tô — nội suy giữa các mốc đã biết",
+            "Khoảng 100 tô, nội suy giữa các mốc đã biết",
             "150 tô cho chắc, thừa thì bán sau",
-            "Không đoán được — cần thêm dữ liệu",
+            "Không đoán được, cần thêm dữ liệu",
             "Ngẫu nhiên, vì thời tiết không ảnh hưởng gì",
           ]}
           correct={0}
-          explanation="Bạn vừa tự làm hồi quy tuyến tính trong đầu! Trong đầu bạn đã vẽ một đường nối các cặp (nhiệt độ, số tô) rồi chiếu 30°C lên đường đó. Hôm nay bạn sẽ chính thức 'thấy' cái đường ấy."
+          explanation="Bạn vừa tự làm hồi quy tuyến tính trong đầu! Bạn đã vẽ một đường nối các cặp (nhiệt độ, số tô) rồi chiếu 30°C lên đường đó. Hôm nay bạn sẽ chính thức 'thấy' cái đường ấy."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Hãy tưởng tượng bạn đang đứng trước một đám chấm dữ liệu bừa bộn trên giấy. Câu hỏi
@@ -766,35 +766,35 @@ export default function LinearRegressionTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2: ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <Ruler size={18} className="text-accent" />
-            Hồi quy tuyến tính = tìm quy luật &ldquo;mỗi lần tăng X thì Y thay đổi bao nhiêu&rdquo;
+            Hồi quy tìm nhịp &ldquo;X tăng 1 thì Y thay đổi bao nhiêu&rdquo;
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Đi ăn cưới, bạn để ý: quãng đường càng xa, tiền xăng càng nhiều. Mỗi km thêm bao nhiêu
-            tiền? Đây là <strong>quy luật tuyến tính</strong> — khi một thứ tăng, thứ kia tăng (hoặc
+            Đi ăn cưới, bạn để ý quãng đường càng xa thì tiền xăng càng nhiều. Mỗi km thêm bao nhiêu
+            tiền? Đây là <strong>quy luật tuyến tính</strong>: khi một thứ tăng, thứ kia tăng (hoặc
             giảm) theo một nhịp cố định. Hồi quy tuyến tính là công cụ máy dùng để{" "}
             <em>tự học ra con số nhịp đó</em> từ dữ liệu quan sát.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border-l-4 border-l-sky-400 bg-sky-50 dark:bg-sky-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-sky-700 dark:text-sky-300">Bia hơi Tạ Hiện</p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs font-semibold text-foreground">Bia hơi Tạ Hiện</p>
+              <p className="text-xs text-foreground leading-relaxed">
                 Nhiệt độ càng cao → bán càng chạy. Biến cảm giác thành một công thức đo được.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Phòng trọ HUST</p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs font-semibold text-foreground">Phòng trọ HUST</p>
+              <p className="text-xs text-foreground leading-relaxed">
                 Diện tích tăng → giá tăng. Máy học được &ldquo;mỗi m² đắt thêm bao tiền&rdquo;.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">Điểm thi đại học</p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs font-semibold text-foreground">Điểm thi đại học</p>
+              <p className="text-xs text-foreground leading-relaxed">
                 Giờ học thêm tăng → điểm kỳ vọng tăng. Nhịp cụ thể là bao nhiêu? Hồi quy trả lời.
               </p>
             </div>
@@ -802,7 +802,7 @@ export default function LinearRegressionTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HOÁ TƯƠNG TÁC ━━━ */}
+      {/* ━━━ BƯỚC 3: TRỰC QUAN HOÁ TƯƠNG TÁC ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <ScatterPlayground />
@@ -810,17 +810,17 @@ export default function LinearRegressionTopic() {
             <Callout variant="insight" title="Điều quan trọng cần tự thấy">
               Chỉ có một bộ (slope, intercept) <strong>duy nhất</strong> làm MSE nhỏ nhất. Bạn có
               thể lầm tưởng mình đã chọn &ldquo;đường đẹp&rdquo;, nhưng khi bật đường tối ưu lên,
-              máy thường tìm được đường khác cho MSE thấp hơn. Hoàn toàn bình thường — máy không
+              máy thường tìm được đường khác cho MSE thấp hơn. Hoàn toàn bình thường: máy không
               giỏi hơn bạn, nó chỉ có thể tính chính xác hàng trăm lần mỗi giây.
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4: AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
-          Hồi quy tuyến tính <strong>không phải phép màu</strong>. Nó chỉ là bài toán đơn giản:
+          Hồi quy tuyến tính <strong>không phải phép màu</strong>. Nó chỉ là một bài toán nhỏ:
           &ldquo;tìm cặp (slope, intercept) làm tổng bình phương sai số nhỏ nhất&rdquo;.
           <br />
           <br />
@@ -829,67 +829,67 @@ export default function LinearRegressionTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — DEEPEN ━━━ */}
+      {/* ━━━ BƯỚC 5: DEEPEN ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2 mb-3">
           <Lightbulb size={18} className="text-accent" />
-          Máy tìm đường tối ưu như thế nào? — 3 bước
+          Máy tìm đường tối ưu qua 3 bước
         </h3>
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Đừng lo công thức. Chỉ cần nắm ý tưởng: tính sai số từng điểm → bình phương rồi cộng lại
-          → tìm đường làm tổng nhỏ nhất. Bấm <em>Tiếp tục</em> để xem từng bước.
+          Đừng lo công thức. Chỉ cần nắm ý tưởng: tính sai số từng điểm, bình phương rồi cộng lại,
+          tìm đường làm tổng nhỏ nhất. Bấm <em>Tiếp tục</em> để xem từng bước.
         </p>
         <ResidualBreakdown />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 6: CHALLENGE ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Sau khi fit, bạn nhận được MSE = 0 trên tập huấn luyện. Điều này có nghĩa là gì?"
           options={[
-            "Đường hồi quy hoàn hảo với đúng tập dữ liệu huấn luyện — MỌI điểm nằm đúng trên đường",
+            "Đường hồi quy khớp hoàn hảo với tập huấn luyện. Mọi điểm nằm đúng trên đường.",
             "Mô hình sai, không bao giờ đạt được như thế",
-            "Chỉ có một cách — đó là đường thẳng bằng trục x",
+            "Chỉ có một cách: đường thẳng bằng trục x",
             "MSE không thể bằng 0",
           ]}
           correct={0}
-          explanation="MSE = 0 nghĩa là mỗi giá trị thực đều bằng giá trị dự đoán → mọi điểm nằm đúng trên đường. Nhưng đây cũng là dấu hiệu nguy hiểm trong thực tế: có thể bạn đang overfit (quá khớp với dữ liệu huấn luyện), và mô hình sẽ đoán tệ với dữ liệu mới."
+          explanation="MSE = 0 nghĩa là mỗi giá trị thực đều bằng giá trị dự đoán, tức mọi điểm nằm đúng trên đường. Nhưng đây cũng là dấu hiệu nguy hiểm trong thực tế: có thể bạn đang overfit (quá khớp với dữ liệu huấn luyện), và mô hình sẽ đoán tệ với dữ liệu mới."
         />
 
         <div className="mt-4">
           <InlineChallenge
             question="Bạn fit đường hồi quy cho giá nhà: y = 0.04·(diện tích) + 0.2 (đơn vị tỷ VNĐ, m²). Một căn 100m² thực tế bán 5 tỷ. Sai số (residual) của điểm này?"
             options={[
-              "+0.8 tỷ — mô hình đoán thấp hơn giá thực",
-              "−0.8 tỷ — mô hình đoán cao hơn giá thực",
-              "4.2 tỷ — đây chính là giá dự đoán",
+              "+0.8 tỷ. Mô hình đoán thấp hơn giá thực.",
+              "−0.8 tỷ. Mô hình đoán cao hơn giá thực.",
+              "4.2 tỷ. Đây chính là giá dự đoán.",
               "Không tính được vì thiếu thông tin",
             ]}
             correct={0}
-            explanation="ŷ = 0.04 × 100 + 0.2 = 4.2 tỷ. Residual = y − ŷ = 5 − 4.2 = +0.8 tỷ. Dương nghĩa là mô hình ước lượng thấp hơn giá thực. Nếu thấy nhiều residual cùng dương, quan hệ thực có thể không còn tuyến tính nữa — cần thử mô hình khác."
+            explanation="ŷ = 0.04 × 100 + 0.2 = 4.2 tỷ. Residual = y − ŷ = 5 − 4.2 = +0.8 tỷ. Dương nghĩa là mô hình ước lượng thấp hơn giá thực. Nếu thấy nhiều residual cùng dương, quan hệ thực có thể không còn tuyến tính nữa, cần thử mô hình khác."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — EXPLAIN (tối đa 3 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 7: EXPLAIN (tối đa 3 LaTeX) ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             <strong>Hồi quy tuyến tính</strong> tìm đường thẳng &ldquo;hợp nhất&rdquo; với dữ liệu
-            bằng phương pháp <em>bình phương tối thiểu</em> (OLS — Ordinary Least Squares). Hãy đọc
-            ba công thức sau theo kiểu &ldquo;tóm tắt bằng ký hiệu&rdquo; — phần giải thích nằm ngay
+            bằng phương pháp <em>bình phương tối thiểu</em> (OLS, Ordinary Least Squares). Hãy đọc
+            ba công thức sau theo kiểu &ldquo;tóm tắt bằng ký hiệu&rdquo;. Phần giải thích nằm ngay
             dưới mỗi công thức, bằng tiếng Việt.
           </p>
 
-          {/* Công thức 1 — phương trình đường thẳng */}
+          {/* Công thức 1: phương trình đường thẳng */}
           <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
             1. Phương trình đường thẳng
           </h4>
           <LaTeX block>{"\\hat{y} = w_1 \\cdot x + w_0"}</LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>giá trị dự đoán bằng độ dốc nhân với đầu vào cộng điểm chặn</em>. w₁ nói{" "}
-            &ldquo;x tăng 1 đơn vị thì ŷ tăng bao nhiêu&rdquo;. w₀ là giá trị ŷ khi x = 0 — nơi đường
-            cắt trục y. Toàn bộ bài toán hồi quy là tìm đúng cặp (w₁, w₀).
+            &ldquo;x tăng 1 đơn vị thì ŷ tăng bao nhiêu&rdquo;. w₀ là giá trị ŷ khi x = 0, tức nơi
+            đường cắt trục y. Toàn bộ bài toán hồi quy là tìm đúng cặp (w₁, w₀).
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
@@ -917,13 +917,13 @@ export default function LinearRegressionTopic() {
             </svg>
           </div>
 
-          {/* Công thức 2 — MSE */}
+          {/* Công thức 2: MSE */}
           <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
-            2. Thước đo chất lượng — MSE (Mean Squared Error)
+            2. Thước đo chất lượng MSE (Mean Squared Error)
           </h4>
           <LaTeX block>{"\\text{MSE} = \\frac{1}{n} \\sum_{i=1}^{n} (y_i - \\hat{y}_i)^2"}</LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Đọc: <em>với mỗi điểm, lấy sai số (thực − dự đoán), bình phương, rồi lấy trung bình
+            Đọc: <em>với mỗi điểm, lấy sai số (thực trừ dự đoán), bình phương, rồi lấy trung bình
             toàn bộ</em>. Bình phương làm hai việc: bỏ dấu âm (sai trên hay sai dưới đều là sai) và
             phạt nặng các sai số lớn. MSE càng nhỏ, đường càng sát dữ liệu.
           </p>
@@ -933,17 +933,17 @@ export default function LinearRegressionTopic() {
             đường rất tệ. Bình phương giữ mọi sai số dương để chúng cộng dồn lại đúng cách.
           </Callout>
 
-          {/* Công thức 3 — OLS closed form */}
+          {/* Công thức 3: OLS closed form */}
           <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
-            3. Lời giải đóng — cách máy tìm (w₀, w₁) không cần đoán
+            3. Lời giải đóng cho (w₀, w₁) không cần đoán
           </h4>
           <LaTeX block>{"w_1 = \\frac{n\\sum x_i y_i - \\sum x_i \\sum y_i}{n\\sum x_i^2 - (\\sum x_i)^2}, \\quad w_0 = \\bar{y} - w_1 \\bar{x}"}</LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>nhìn qua cho biết có lời giải &ldquo;cắm cốc&rdquo;, không phải lo</em>. Đây
-            chính là lý do bạn không phải thử hàng triệu đường — máy tính được (w₁, w₀) tối ưu
-            bằng đúng hai phép tổng (Σxy, Σx, Σy, Σx²). Với dữ liệu hàng tỷ mẫu, người ta dùng{" "}
+            chính là lý do bạn không phải thử hàng triệu đường. Máy tính được (w₁, w₀) tối ưu
+            bằng đúng bốn phép tổng (Σxy, Σx, Σy, Σx²). Với dữ liệu hàng tỷ mẫu, người ta dùng{" "}
             <TopicLink slug="gradient-descent">gradient descent</TopicLink> thay vì công thức đóng,
-            nhưng ý tưởng vẫn là: đi tìm đáy parabol của hàm MSE.
+            nhưng ý tưởng vẫn là đi tìm đáy parabol của hàm MSE.
           </p>
 
           <Callout variant="insight" title="Tổng hợp trong một câu">
@@ -965,13 +965,13 @@ export default function LinearRegressionTopic() {
           <CollapsibleDetail title="Có đáng để học sâu hơn không?">
             <p className="text-sm leading-relaxed">
               Rất đáng. Khi bạn học mạng nơ-ron sau này, tầng cuối cùng của mạng rất hay là một{" "}
-              &ldquo;linear layer&rdquo; — chính là hồi quy tuyến tính trá hình. Nắm chắc ý tưởng
+              &ldquo;linear layer&rdquo;, chính là hồi quy tuyến tính trá hình. Nắm chắc ý tưởng
               này là nắm chắc nền tảng cho gần như mọi mô hình ML hiện đại.
             </p>
           </CollapsibleDetail>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Nhiều biến thì sao? — từ đường thẳng thành &ldquo;siêu phẳng&rdquo;
+            Nhiều biến thì sao? Đường thẳng nâng lên thành &ldquo;siêu phẳng&rdquo;
           </h4>
           <p className="leading-relaxed">
             Khi bạn có nhiều đặc trưng (diện tích, số phòng, tuổi nhà, hướng), công thức mở rộng
@@ -1006,7 +1006,7 @@ export default function LinearRegressionTopic() {
                   w_tuổi_nhà = −0.03
                 </span>
                 <span className="text-foreground/85">
-                  Căn già thêm 1 năm thì giá giảm 0.03 tỷ. Dấu âm = &ldquo;tăng biến này, giảm biến kia&rdquo;.
+                  Căn già thêm 1 năm thì giá giảm 0.03 tỷ. Dấu âm nghĩa là &ldquo;tăng biến này, giảm biến kia&rdquo;.
                 </span>
               </div>
             </div>
@@ -1015,7 +1015,7 @@ export default function LinearRegressionTopic() {
           <Callout variant="warning" title="Một cái bẫy khi so hệ số">
             Nếu bạn thấy w_phòng_ngủ = 0.3 to hơn w_diện_tích = 0.04, đừng vội kết luận &ldquo;thêm
             phòng quan trọng hơn thêm diện tích&rdquo;. Các hệ số phụ thuộc{" "}
-            <em>đơn vị đo</em> — phòng đếm bằng số nguyên, diện tích đếm bằng m². Để so công bằng,
+            <em>đơn vị đo</em>: phòng đếm bằng số nguyên, diện tích đếm bằng m². Để so công bằng,
             người ta chuẩn hoá (standardize) các biến về cùng thang trước khi so sánh.
           </Callout>
 
@@ -1038,7 +1038,7 @@ export default function LinearRegressionTopic() {
             </li>
             <li className="leading-relaxed">
               <strong>Đánh giá trên tập kiểm tra.</strong> Nếu MSE trên train rất nhỏ mà trên test
-              lại lớn — dấu hiệu overfitting: mô hình đã học thuộc thay vì học quy luật.
+              lại lớn, đây là dấu hiệu overfitting: mô hình đã học thuộc thay vì học quy luật.
             </li>
           </ol>
 
@@ -1049,7 +1049,7 @@ export default function LinearRegressionTopic() {
             hơn bạn tưởng, và việc tốn GPU để chạy mô hình phức tạp là lãng phí.
           </Callout>
 
-          <CollapsibleDetail title="Regularization — khi hồi quy cần 'dây cương'">
+          <CollapsibleDetail title="Regularization: khi hồi quy cần 'dây cương'">
             <p className="text-sm leading-relaxed mb-2">
               Khi có nhiều biến mà dữ liệu ít, hồi quy dễ overfit. Hai mở rộng quan trọng là{" "}
               <strong>Ridge</strong> (thêm phạt L2: tổng bình phương các hệ số không được quá lớn)
@@ -1075,16 +1075,16 @@ export default function LinearRegressionTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ về hồi quy tuyến tính"
           points={[
             "Mục tiêu: tìm đường thẳng ŷ = w₁·x + w₀ khớp nhất với dữ liệu.",
-            "Thước đo: MSE — trung bình bình phương sai số. Nhỏ hơn = đường sát hơn.",
+            "Thước đo: MSE, trung bình bình phương sai số. Nhỏ hơn nghĩa là đường sát hơn.",
             "Có công thức đóng: máy tính (w₁, w₀) tối ưu ngay lập tức với dữ liệu nhỏ; với dữ liệu lớn dùng gradient descent.",
             "Nhạy cảm với ngoại lai: một điểm lệch xa có thể kéo cả đường.",
-            "Chỉ bắt được quan hệ đường thẳng. Dữ liệu cong → cần mô hình khác.",
+            "Chỉ bắt được quan hệ đường thẳng. Dữ liệu cong cần mô hình khác.",
           ]}
         />
 
@@ -1093,8 +1093,8 @@ export default function LinearRegressionTopic() {
             Muốn xem hồi quy tuyến tính giải bài toán định giá nhà ở Việt Nam? Đọc tiếp:{" "}
             <TopicLink slug="linear-regression-in-housing">
               Hồi quy tuyến tính trong giá nhà
-            </TopicLink>{" "}
-            — nơi bạn kéo thanh diện tích, số phòng, vùng và thấy giá cập nhật theo công thức vừa
+            </TopicLink>
+            . Bạn sẽ kéo thanh diện tích, số phòng, vùng và thấy giá cập nhật theo công thức vừa
             học.
           </Callout>
         </div>

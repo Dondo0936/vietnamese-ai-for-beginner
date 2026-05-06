@@ -35,9 +35,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "train-val-test",
   title: "Train / Validation / Test Split",
-  titleVi: "Tập train, val, test — Bài tập, thi thử, thi thật",
+  titleVi: "Tập train, val, test: bài tập, thi thử, thi thật",
   description:
-    "Train = bài tập. Val = đề thi thử. Test = đề thi thật. Không được xem test trước — nếu không, điểm không có ý nghĩa.",
+    "Train là bài tập. Val là đề thi thử. Test là đề thi thật. Hé test trước, điểm thi mất ý nghĩa.",
   category: "foundations",
   tags: ["train", "validation", "test", "split"],
   difficulty: "intermediate",
@@ -103,9 +103,9 @@ function buildCurve(
 }
 
 const PRESETS: Array<{ label: string; split: Split; note: string }> = [
-  { label: "60 / 20 / 20", split: { train: 60, val: 20, test: 20 }, note: "Dữ liệu ít — để val/test đủ lớn đánh giá đáng tin." },
+  { label: "60 / 20 / 20", split: { train: 60, val: 20, test: 20 }, note: "Dữ liệu ít. Cần val/test đủ lớn để đánh giá đáng tin." },
   { label: "70 / 15 / 15", split: { train: 70, val: 15, test: 15 }, note: "Mặc định phổ biến cho dataset vừa (10k–100k)." },
-  { label: "80 / 10 / 10", split: { train: 80, val: 10, test: 10 }, note: "Dataset lớn (&gt;1M): 10% đủ tin cậy cho val/test." },
+  { label: "80 / 10 / 10", split: { train: 80, val: 10, test: 10 }, note: "Dataset lớn (&gt;1M). 10% đủ tin cậy cho val/test." },
 ];
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -117,39 +117,39 @@ const quizQuestions: QuizQuestion[] = [
       "Tại sao KHÔNG được dùng test set để chọn model hay tune hyperparameters?",
     options: [
       "Test set quá nhỏ",
-      "Nếu dùng test set để quyết định → model được 'tối ưu' cho test set → không còn khách quan, đánh giá giả tạo",
+      "Nếu dùng test set để quyết định, model sẽ được 'tối ưu' cho chính test set. Không còn khách quan, đánh giá giả tạo.",
       "Test set không có nhãn",
       "Test set đã bị chia đúng một lần",
     ],
     correct: 1,
     explanation:
-      "Test set là 'đề thi cuối kỳ' — chỉ mở 1 lần để đánh giá. Nếu 'luyện đề thi', điểm cao nhưng không phản ánh năng lực thật. Validation set là 'đề thi thử' — dùng để tune, không phải để báo cáo.",
+      "Test set là 'đề thi cuối kỳ', chỉ mở một lần để đánh giá. Nếu 'luyện đề thi', điểm cao nhưng không phản ánh năng lực thật. Validation set mới là 'đề thi thử', dùng để tune, không phải để báo cáo.",
   },
   {
     question:
       "Model accuracy: Train=99%, Val=75%, Test=73%. Vấn đề gì?",
     options: [
-      "Model tốt — 99% accuracy",
-      "Overfitting: model học thuộc train (99%) nhưng không tổng quát hoá (75% val, 73% test). Gap 24% quá lớn.",
+      "Model tốt vì 99% accuracy",
+      "Overfitting: model học thuộc train (99%) nhưng không tổng quát hoá (75% val, 73% test). Khoảng cách 24% quá lớn.",
       "Test set quá khó",
       "Validation set chọn sai",
     ],
     correct: 1,
     explanation:
-      "Train-val gap = 24% → overfitting nghiêm trọng. Val ≈ test (75 vs 73) cho thấy val đại diện tốt cho test. Giải pháp: regularization, thêm dữ liệu, giảm độ phức tạp, early stopping.",
+      "Khoảng cách train-val 24% là overfitting nghiêm trọng. Val xấp xỉ test (75 vs 73) cho thấy val đại diện tốt cho test. Giải pháp: regularization, thêm dữ liệu, giảm độ phức tạp, early stopping.",
   },
   {
     question:
       "Một đồng nghiệp train, nhìn kết quả test, sửa kiến trúc, lại train, nhìn test, lặp 20 lần. Chuyện gì đang xảy ra?",
     options: [
-      "Đây là quy trình chuẩn — lặp lại đến khi tốt",
-      "Test set đã bị 'đốt' — mỗi lần nhìn test rồi sửa là một dạng tuning trên test → test không còn khách quan",
+      "Đây là quy trình chuẩn, cứ lặp lại đến khi tốt",
+      "Test set đã bị 'đốt'. Mỗi lần nhìn test rồi sửa là một dạng tuning trên test, khiến test không còn khách quan.",
       "Không vấn đề gì vì không dùng test để train trực tiếp",
       "Cần tăng kích thước test set",
     ],
     correct: 1,
     explanation:
-      "Dù không train trực tiếp trên test, việc lặp 'nhìn test → sửa → nhìn test' là leakage gián tiếp. Kết quả: test accuracy cao hơn thực tế. Nguyên tắc vàng: tune bằng val, chỉ mở test 1 lần ở cuối cùng.",
+      "Dù không train trực tiếp trên test, việc lặp 'nhìn test rồi sửa rồi nhìn test' là leakage gián tiếp. Kết quả là độ chính xác trên test cao hơn thực tế. Nguyên tắc vàng: tune bằng val, chỉ mở test một lần ở cuối cùng.",
   },
   {
     type: "fill-blank",
@@ -159,7 +159,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "train", accept: ["training", "tập train", "tập huấn luyện"] },
     ],
     explanation:
-      "Data leakage thường xảy ra khi preprocessing 'nhìn' được toàn bộ dữ liệu. Fit scaler TRÊN TOÀN BỘ data trước khi chia → scaler đã biết phân phối của test → kết quả evaluation không khách quan. Fit chỉ trên train → transform val/test bằng scaler đó.",
+      "Data leakage thường xảy ra khi preprocessing 'nhìn' được toàn bộ dữ liệu. Fit scaler trên toàn bộ data trước khi chia, scaler đã biết phân phối của test, kết quả đánh giá không còn khách quan. Cách đúng: fit chỉ trên train, rồi transform val/test bằng scaler đó.",
   },
 ];
 
@@ -244,7 +244,7 @@ export default function TrainValTestTopic() {
 
   return (
     <>
-      {/* ═══════════ STEP 1 — HOOK ═══════════ */}
+      {/* ═══════════ STEP 1: HOOK ═══════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Hook">
         <div className="rounded-2xl border border-border bg-card p-6 mb-5">
           <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
@@ -257,21 +257,21 @@ export default function TrainValTestTopic() {
               icon={BookOpen}
               label="Train"
               metaphor="Bài tập về nhà"
-              desc="Mô hình HỌC ở đây. Cập nhật tham số, lặp đi lặp lại tới khi hiểu quy luật."
+              desc="Model học ở đây. Cập nhật tham số, lặp đi lặp lại tới khi hiểu quy luật."
             />
             <RoleCard
               color={COLOR_VAL}
               icon={PencilLine}
               label="Validation"
               metaphor="Đề thi thử"
-              desc="Mô hình CHỈNH ở đây. Tune hyperparameter, chọn kiến trúc, quyết early stopping."
+              desc="Model chỉnh ở đây. Tune hyperparameter, chọn kiến trúc, quyết early stopping."
             />
             <RoleCard
               color={COLOR_TEST}
               icon={GraduationCap}
               label="Test"
               metaphor="Đề thi thật"
-              desc="Mô hình ĐƯỢC ĐÁNH GIÁ ở đây. Mở đúng 1 LẦN ở cuối. Không được nhìn trước."
+              desc="Model được đánh giá ở đây. Mở đúng một lần ở cuối. Không được nhìn trước."
             />
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed mt-4">
@@ -280,31 +280,31 @@ export default function TrainValTestTopic() {
               <AlertTriangle size={14} aria-hidden="true" />
               không được nhìn test trước khi nộp
             </strong>
-            . Một khi đã nhìn, dù chỉ một lần, điểm test không còn ý nghĩa — nó trở thành một
+            . Một khi đã nhìn, dù chỉ một lần, điểm test không còn ý nghĩa. Nó trở thành một
             phần của quá trình tuning, không phải một phép đo khách quan.
           </p>
         </div>
 
         <PredictionGate
-          question="Bạn đã chia train / val / test đúng. Bạn thử 50 kiến trúc mô hình khác nhau, MỖI LẦN đo điểm test để xem cái nào cao nhất, rồi báo cáo điểm test của mô hình thắng cuộc. Con số báo cáo đó có còn tin được không?"
+          question="Bạn đã chia train / val / test đúng. Bạn thử 50 kiến trúc model khác nhau, MỖI LẦN đo điểm test để xem cái nào cao nhất, rồi báo cáo điểm test của model thắng cuộc. Con số báo cáo đó có còn tin được không?"
           options={[
-            "Có — bạn vẫn đo trên test set nên hoàn toàn khách quan",
+            "Có, vì bạn vẫn đo trên test set nên hoàn toàn khách quan",
             "Có thể tin, vì đo 50 lần rồi lấy trung bình càng chính xác",
-            "Không — bạn đã biến test thành val ngầm; trong 50 lần thử thế nào cũng có một mô hình 'may mắn' khớp đặc thù tập test, con số đẹp đó là ảo",
+            "Không. Bạn đã biến test thành val ngầm. Trong 50 lần thử, thế nào cũng có một model 'may mắn' khớp đặc thù tập test, con số đẹp đó chỉ là ảo.",
             "Không, vì đáng ra phải đo test trước khi tune thì mới đúng",
           ]}
           correct={2}
-          explanation="Quy tắc 'chỉ mở test một lần' không phải mê tín. Khi bạn chọn mô hình thắng dựa vào điểm test, test đang bị dùng làm val — một trong 50 mô hình sẽ trúng đúng đặc thù ngẫu nhiên của tập test và cho điểm ảo đẹp. Đúng quy trình: dùng val để so 50 mô hình, chọn 1, rồi mở test đúng 1 lần để báo cáo. Bài sau bạn sẽ bật chế độ 'nhìn test trước' và thấy điểm test phồng lên bao nhiêu."
+          explanation="Quy tắc 'chỉ mở test một lần' không phải mê tín. Khi bạn chọn model thắng dựa vào điểm test, test đang bị dùng làm val. Một trong 50 model sẽ trúng đúng đặc thù ngẫu nhiên của tập test và cho điểm ảo đẹp. Đúng quy trình: dùng val để so 50 model, chọn 1, rồi mở test đúng một lần để báo cáo. Bài sau bạn sẽ bật chế độ 'nhìn test trước' và thấy điểm test phồng lên bao nhiêu."
         />
       </LessonSection>
 
-      {/* ═══════════ STEP 2 — REVEAL: Interactive split ═══════════ */}
+      {/* ═══════════ STEP 2: REVEAL Interactive split ═══════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Bên dưới là <strong>1.000 điểm dữ liệu</strong>. Kéo các thanh trượt để chia thành
-          train / val / test. Xem đường cong accuracy thay đổi thế nào. Rồi thử bật{" "}
-          <strong>&ldquo;Nhìn test trước&rdquo;</strong> &mdash; bạn sẽ thấy test accuracy
-          &ldquo;đẹp&rdquo; lên một cách giả tạo.
+          train / val / test. Xem đường cong độ chính xác thay đổi thế nào. Rồi thử bật{" "}
+          <strong>&ldquo;Nhìn test trước&rdquo;</strong>. Bạn sẽ thấy độ chính xác trên test
+          phồng lên một cách giả tạo.
         </p>
 
         <VisualizationSection topicSlug={metadata.slug}>
@@ -490,14 +490,14 @@ export default function TrainValTestTopic() {
                 <LegendDot color={COLOR_VAL} label="Val acc" />
                 <LegendDot
                   color={peeked ? COLOR_LEAK : COLOR_TEST}
-                  label={peeked ? "Test (bị peek — tăng giả!)" : "Test acc"}
+                  label={peeked ? "Test (bị peek, tăng giả)" : "Test acc"}
                 />
               </div>
               <svg
                 viewBox={`0 0 ${CURVE_W} ${CURVE_H + 30}`}
                 className="mx-auto w-full max-w-2xl rounded-md border border-border bg-background"
                 role="img"
-                aria-label="Đường cong accuracy theo epoch"
+                aria-label="Đường cong độ chính xác theo epoch"
               >
                 <line x1={30} y1={14} x2={30} y2={CURVE_H - 16} stroke="currentColor" className="text-muted" strokeWidth={1} />
                 <line x1={30} y1={CURVE_H - 16} x2={CURVE_W - 20} y2={CURVE_H - 16} stroke="currentColor" className="text-muted" strokeWidth={1} />
@@ -551,7 +551,7 @@ export default function TrainValTestTopic() {
                   exit={{ opacity: 0 }}
                 >
                   <Callout variant="warning" title="Phát hiện data leakage!">
-                    Test accuracy tăng lên một cách giả tạo vì bạn đang &ldquo;nhìn&rdquo; vào
+                    Độ chính xác trên test phồng lên giả tạo vì bạn đang &ldquo;nhìn&rdquo; vào
                     test set trong lúc tuning. Kết quả này không phản ánh hiệu năng thật. Hãy
                     tắt toggle và chỉ mở test set đúng một lần ở cuối.
                   </Callout>
@@ -562,36 +562,37 @@ export default function TrainValTestTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══════════ STEP 3 — AHA ═══════════ */}
+      {/* ═══════════ STEP 3: AHA ═══════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
             Ba tập, ba vai trò <strong>không thay thế nhau</strong>: train để học, val để
-            chỉnh, test để đánh giá. Nếu bạn dùng test để chỉnh (dù chỉ 1 lần), test đã trở
-            thành val &mdash; và bạn không còn một phép đo khách quan nào nữa.
+            chỉnh, test để đánh giá. Nếu bạn dùng test để chỉnh, dù chỉ một lần, test đã trở
+            thành val. Bạn không còn một phép đo khách quan nào nữa.
           </p>
           <p className="mt-3">
-            Train loss thấp = mô hình nhớ bài tập. Val loss thấp = mô hình hợp với đề thi thử.
-            Test loss thấp (được đo đúng 1 lần) = <strong>mô hình thực sự tổng quát hoá</strong>.
+            Train loss thấp nghĩa là model nhớ bài tập. Val loss thấp nghĩa là model hợp với
+            đề thi thử. Test loss thấp (được đo đúng một lần) là dấu hiệu{" "}
+            <strong>model thực sự tổng quát hoá</strong>.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══════════ STEP 4 — DEEPEN: Typical ML workflow ═══════════ */}
+      {/* ═══════════ STEP 4: DEEPEN Typical ML workflow ═══════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Quy trình chuẩn">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Bấm <strong>&ldquo;Tiếp tục&rdquo;</strong> để đi qua từng giai đoạn trong một
-          workflow ML chuẩn. Chú ý: test set xuất hiện rất muộn &mdash; chỉ ở bước cuối cùng.
+          workflow ML chuẩn. Chú ý: test set xuất hiện rất muộn, chỉ ở bước cuối cùng.
         </p>
 
         <StepReveal
           labels={[
-            "1 — Thu thập dữ liệu",
-            "2 — Chia 3 tập (SPLIT TRƯỚC!)",
-            "3 — Huấn luyện mô hình",
-            "4 — Tune trên val",
-            "5 — Đánh giá test (1 lần)",
-            "6 — Triển khai",
+            "1. Thu thập dữ liệu",
+            "2. Chia 3 tập (SPLIT TRƯỚC!)",
+            "3. Huấn luyện model",
+            "4. Tune trên val",
+            "5. Đánh giá test (1 lần)",
+            "6. Triển khai",
           ]}
         >
           {[
@@ -608,8 +609,8 @@ export default function TrainValTestTopic() {
             />,
             <WorkflowStep
               key="w2"
-              step="Chia 3 tập — LÀM NGAY TỪ ĐẦU"
-              desc="Chia trước khi làm bất cứ preprocessing nào. Ví dụ 60/20/20 → 6.000 train + 2.000 val + 2.000 test. Test set bị 'khoá' ngay lập tức."
+              step="Chia 3 tập, làm ngay từ đầu"
+              desc="Chia trước khi làm bất cứ preprocessing nào. Ví dụ 60/20/20: 6.000 train, 2.000 val, 2.000 test. Test set bị 'khoá' ngay lập tức."
               color={COLOR_VAL}
               visual={
                 <div className="flex h-12 rounded-lg overflow-hidden">
@@ -627,15 +628,15 @@ export default function TrainValTestTopic() {
             />,
             <WorkflowStep
               key="w3"
-              step="Huấn luyện mô hình"
-              desc="Mô hình LUYỆN trên train. Cập nhật tham số qua nhiều epoch. Chưa chạm tới val/test."
+              step="Huấn luyện model"
+              desc="Model luyện trên train. Cập nhật tham số qua nhiều epoch. Chưa chạm tới val/test."
               color={COLOR_TRAIN}
               visual={
                 <div className="flex items-center gap-3 rounded-lg bg-background border border-border p-3">
                   <BookOpen size={32} className="text-blue-500" />
                   <div>
                     <p className="text-sm font-semibold text-foreground">Train: 6.000 mẫu</p>
-                    <p className="text-xs text-muted">Mô hình đang học pattern</p>
+                    <p className="text-xs text-muted">Model đang học pattern</p>
                   </div>
                 </div>
               }
@@ -643,11 +644,11 @@ export default function TrainValTestTopic() {
             <WorkflowStep
               key="w4"
               step="Tune trên val"
-              desc="Thử các hyperparameter khác nhau: learning rate, số lớp, số epoch. Mỗi lần đo accuracy trên val. Giữ cấu hình cho val accuracy cao nhất."
+              desc="Thử các hyperparameter khác nhau: learning rate, số lớp, số epoch. Mỗi lần đo độ chính xác trên val. Giữ cấu hình cho độ chính xác val cao nhất."
               color={COLOR_VAL}
               visual={
                 <div className="rounded-lg bg-background border border-border p-3 space-y-2">
-                  <p className="text-xs font-semibold text-amber-500">Val accuracy khi thử:</p>
+                  <p className="text-xs font-semibold text-amber-500">Độ chính xác val khi thử:</p>
                   <div className="flex items-center gap-3 text-xs">
                     <span className="text-muted">lr=0.001: 78%</span>
                     <span className="text-muted">lr=0.01: 82% ✓</span>
@@ -658,15 +659,15 @@ export default function TrainValTestTopic() {
             />,
             <WorkflowStep
               key="w5"
-              step="Đánh giá test — ĐÚNG 1 LẦN"
-              desc="Cấu hình đã chốt từ val. Giờ mới mở test set. Đo accuracy một lần duy nhất. Con số này là 'điểm thi thật'."
+              step="Đánh giá test, đúng một lần"
+              desc="Cấu hình đã chốt từ val. Giờ mới mở test set. Đo độ chính xác một lần duy nhất. Con số này là 'điểm thi thật'."
               color={COLOR_TEST}
               visual={
                 <div className="rounded-lg bg-background border border-border p-3 flex items-center gap-3">
                   <GraduationCap size={32} className="text-green-500" />
                   <div>
-                    <p className="text-sm font-bold text-foreground">Test accuracy: 80%</p>
-                    <p className="text-xs text-muted">Báo cáo — không tune nữa</p>
+                    <p className="text-sm font-bold text-foreground">Độ chính xác test: 80%</p>
+                    <p className="text-xs text-muted">Báo cáo. Không tune nữa.</p>
                   </div>
                 </div>
               }
@@ -674,14 +675,14 @@ export default function TrainValTestTopic() {
             <WorkflowStep
               key="w6"
               step="Triển khai"
-              desc="Nếu test accuracy chấp nhận được → đưa mô hình vào production. Nếu không → quay lại bước 3 với insight mới, nhưng LƯU Ý: mỗi lần nhìn test là 1 lần 'đốt' nó. Sau 5-10 lần, test không còn đáng tin."
+              desc="Nếu độ chính xác test chấp nhận được, đưa model vào production. Nếu không, quay lại bước 3 với insight mới. Lưu ý: mỗi lần nhìn test là một lần 'đốt' nó. Sau 5 đến 10 lần, test không còn đáng tin."
               color="#8b5cf6"
               visual={
                 <div className="rounded-lg bg-background border border-border p-3 flex items-center gap-3">
                   <CheckCircle2 size={24} className="text-purple-500" />
                   <div>
                     <p className="text-sm font-semibold text-foreground">
-                      Mô hình triển khai
+                      Model đã triển khai
                     </p>
                     <p className="text-xs text-muted">Monitor hiệu năng thực tế, cập nhật định kỳ</p>
                   </div>
@@ -692,18 +693,18 @@ export default function TrainValTestTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ═══════════ STEP 5 — CHALLENGE ═══════════ */}
+      {/* ═══════════ STEP 5: CHALLENGE ═══════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Vì sao validation set (chứ không phải test set) được dùng để tune hyperparameters? Cả hai đều là 'data mô hình chưa thấy' cơ mà?"
+          question="Vì sao validation set (chứ không phải test set) được dùng để tune hyperparameters? Cả hai đều là 'data model chưa thấy' cơ mà?"
           options={[
-            "Không có lý do đặc biệt — dùng tập nào cũng được",
-            "Khi tune, bạn chọn cấu hình cho điểm cao nhất → tập đó đã 'bị dùng' để quyết định → không còn khách quan. Test set phải được giữ nguyên vẹn tới cuối để đo khách quan.",
+            "Không có lý do đặc biệt, dùng tập nào cũng được",
+            "Khi tune, bạn chọn cấu hình cho điểm cao nhất, tập đó đã 'bị dùng' để quyết định nên không còn khách quan. Test set phải được giữ nguyên vẹn tới cuối để đo khách quan.",
             "Validation set thường lớn hơn test set",
             "Validation set đã được shuffle sẵn",
           ]}
           correct={1}
-          explanation="Đây là cốt lõi. Dù không train trực tiếp trên val, việc chọn cấu hình dựa trên val đã 'gắn' val vào mô hình. Sau 50 thử nghiệm, mô hình tuning hiện tại là kết quả của 50 lần tối ưu trên val → val không còn 'khách quan'. Test set phải tránh chuyện đó: chỉ mở khi mọi quyết định đã chốt."
+          explanation="Đây là cốt lõi. Dù không train trực tiếp trên val, việc chọn cấu hình dựa trên val đã 'gắn' val vào model. Sau 50 thử nghiệm, model tuning hiện tại là kết quả của 50 lần tối ưu trên val. Val không còn khách quan. Test set phải tránh chuyện đó: chỉ mở khi mọi quyết định đã chốt."
         />
 
         <div className="mt-5">
@@ -711,22 +712,22 @@ export default function TrainValTestTopic() {
             question="Dataset chuỗi thời gian (giá cổ phiếu theo ngày). Chia train/val/test thế nào?"
             options={[
               "Random shuffle rồi chia 70/15/15 như bình thường",
-              "Chia theo thời gian: train = dữ liệu cũ nhất, val = giữa, test = mới nhất. KHÔNG shuffle.",
+              "Chia theo thời gian: train là dữ liệu cũ nhất, val ở giữa, test mới nhất. KHÔNG shuffle.",
               "Không cần chia vì dữ liệu thời gian đặc biệt",
               "Dùng cross-validation luôn, bỏ qua test set",
             ]}
             correct={1}
-            explanation="Time series KHÔNG được shuffle — sẽ gây leakage tương lai vào quá khứ (model 'biết trước' giá tương lai). Cách đúng: chia theo thứ tự thời gian. Ví dụ: train 2020-2022, val 2023, test 2024. Ở thực tế, đây là cách duy nhất mô phỏng đúng tình huống production (dự đoán tương lai từ quá khứ)."
+            explanation="Time series KHÔNG được shuffle. Shuffle sẽ gây leakage tương lai vào quá khứ (model 'biết trước' giá tương lai). Cách đúng: chia theo thứ tự thời gian. Ví dụ: train 2020-2022, val 2023, test 2024. Ở thực tế, đây là cách duy nhất mô phỏng đúng tình huống production (dự đoán tương lai từ quá khứ)."
           />
         </div>
       </LessonSection>
 
-      {/* ═══════════ STEP 6 — EXPLAIN ═══════════ */}
+      {/* ═══════════ STEP 6: EXPLAIN ═══════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
             <strong>Train / Val / Test split</strong> chia dữ liệu thành ba tập riêng biệt để
-            đảm bảo đánh giá mô hình <em>khách quan</em>. Đây là nền tảng phương pháp luận của
+            đảm bảo đánh giá model <em>khách quan</em>. Đây là nền tảng phương pháp luận của
             mọi dự án ML.
           </p>
 
@@ -737,7 +738,7 @@ export default function TrainValTestTopic() {
           <p className="leading-relaxed mt-3">
             Trong đó <em>Generalization Error</em> là lỗi kỳ vọng trên dữ liệu chưa hề thấy.
             Chúng ta không đo được con số này trực tiếp (dữ liệu tương lai là vô hạn), nên dùng
-            test error làm ước lượng tốt nhất &mdash; với điều kiện: test set phải được{" "}
+            test error làm ước lượng tốt nhất, với điều kiện: test set phải được{" "}
             <strong>giữ nguyên vẹn</strong>.
           </p>
 
@@ -783,21 +784,21 @@ export default function TrainValTestTopic() {
             </table>
           </div>
 
-          <Callout variant="warning" title="Cạm bẫy — data leakage kinh điển">
+          <Callout variant="warning" title="Cạm bẫy data leakage kinh điển">
             <ul className="list-disc list-inside space-y-1 mt-1">
               <li>
-                Fit scaler / encoder trên <strong>toàn bộ</strong> dữ liệu trước khi split →
-                preprocessing &ldquo;nhìn&rdquo; được phân phối của test.
+                Fit scaler / encoder trên <strong>toàn bộ</strong> dữ liệu trước khi split.
+                Preprocessing &ldquo;nhìn&rdquo; được phân phối của test.
               </li>
               <li>
-                Oversample / SMOTE trước khi split → bản sao của train có thể xuất hiện trong
+                Oversample / SMOTE trước khi split. Bản sao của train có thể xuất hiện trong
                 val/test.
               </li>
               <li>
-                Time series bị shuffle → tương lai lọt vào tập train.
+                Time series bị shuffle. Tương lai lọt vào tập train.
               </li>
               <li>
-                Cùng một &ldquo;subject&rdquo; (bệnh nhân, user) có mẫu ở cả 2 tập → mô hình
+                Cùng một &ldquo;subject&rdquo; (bệnh nhân, user) có mẫu ở cả hai tập. Model
                 &ldquo;nhớ mặt&rdquo; chứ không học đặc điểm.
               </li>
             </ul>
@@ -812,10 +813,10 @@ export default function TrainValTestTopic() {
 
           <CollapsibleDetail title="Vì sao val set 'hết thiêng' sau vài chục thử nghiệm?">
             <p className="text-sm leading-relaxed">
-              Mỗi khi bạn chọn hyperparameter dựa trên val accuracy, bạn đang &ldquo;nhét&rdquo;
-              một chút thông tin về val set vào mô hình (qua quyết định của bạn). Sau vài chục
-              lần thử, mô hình gián tiếp &ldquo;biết&rdquo; val set &mdash; val accuracy bắt
-              đầu overfit tương tự train. Giải pháp:
+              Mỗi khi bạn chọn hyperparameter dựa trên độ chính xác val, bạn đang
+              &ldquo;nhét&rdquo; một chút thông tin về val set vào model qua quyết định của
+              bạn. Sau vài chục lần thử, model gián tiếp &ldquo;biết&rdquo; val set. Độ chính
+              xác val bắt đầu overfit tương tự train. Giải pháp:
             </p>
             <ul className="list-disc list-inside space-y-1 text-sm mt-2">
               <li>Giới hạn số thử nghiệm (Optuna với pruning, Bayesian optimization).</li>
@@ -831,24 +832,24 @@ export default function TrainValTestTopic() {
             <p className="text-sm leading-relaxed">
               Quy tắc: với sai số mong muốn ±2% và độ tin cậy 95%, cần khoảng{" "}
               <strong>~1.000–2.500 mẫu test</strong>. Công thức xấp xỉ:{" "}
-              <code>n &ge; 1.96² × p(1-p) / &epsilon;²</code>. Với p ≈ 0.9, &epsilon; = 0.02 →
-              ~864 mẫu. Nếu dataset tổng &lt; 2.000 mẫu, hãy dùng cross-validation thay vì
-              hold-out &mdash; con số &ldquo;accuracy 92%&rdquo; trên test 100 mẫu có khoảng
-              tin cậy rộng tới ±5% điểm %.
+              <code>n &ge; 1.96² × p(1-p) / &epsilon;²</code>. Với p ≈ 0.9, &epsilon; = 0.02,
+              ra khoảng 864 mẫu. Nếu dataset tổng &lt; 2.000 mẫu, hãy dùng cross-validation
+              thay vì hold-out. Con số &ldquo;độ chính xác 92%&rdquo; trên test 100 mẫu có
+              khoảng tin cậy rộng tới ±5 điểm phần trăm.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ═══════════ STEP 7 — SUMMARY ═══════════ */}
+      {/* ═══════════ STEP 7: SUMMARY ═══════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="5 điều cần nhớ về train / val / test"
           points={[
-            "Train = bài tập (học). Val = đề thi thử (tune). Test = đề thi thật (đánh giá, chỉ 1 lần).",
-            "Không bao giờ dùng test để chọn hyperparameter — nếu làm, test không còn khách quan.",
+            "Train là bài tập (học). Val là đề thi thử (tune). Test là đề thi thật (đánh giá, chỉ một lần).",
+            "Không bao giờ dùng test để chọn hyperparameter. Nếu làm, test không còn khách quan.",
             "SPLIT TRƯỚC khi làm preprocessing. Fit scaler/encoder CHỈ trên train. Transform val/test bằng scaler của train.",
-            "Dataset chuỗi thời gian: chia theo thời gian (train = cũ, test = mới). Không shuffle.",
+            "Dataset chuỗi thời gian: chia theo thời gian (train là cũ, test là mới). Không shuffle.",
             "Dataset nhỏ (<10k): dùng cross-validation. Dataset lớn (>1M): hold-out 90/5/5 là đủ.",
           ]}
         />
@@ -863,7 +864,7 @@ export default function TrainValTestTopic() {
         </Callout>
       </LessonSection>
 
-      {/* ═══════════ STEP 8 — QUIZ ═══════════ */}
+      {/* ═══════════ STEP 8: QUIZ ═══════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

@@ -32,7 +32,7 @@ export const metadata: TopicMeta = {
   title: "Information Theory in Data Compression",
   titleVi: "Lý thuyết thông tin trong nén file",
   description:
-    "Vì sao file .txt toàn chữ 'a' nén rất nhỏ còn file ngẫu nhiên gần như không nén được? Entropy Shannon đặt giới hạn — Huffman tiến gần nó.",
+    "Vì sao file .txt toàn chữ 'a' nén rất nhỏ còn file ngẫu nhiên gần như không nén được? Entropy Shannon đặt giới hạn lý thuyết. Huffman tiến gần đến đó.",
   category: "classic-ml",
   tags: ["entropy", "compression", "information-theory", "application"],
   difficulty: "intermediate",
@@ -93,7 +93,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   HUFFMAN CODES (giả lập — cho nén 6 ký tự A, B, C, D, E, F)
+   HUFFMAN CODES (giả lập, cho nén 6 ký tự A, B, C, D, E, F)
    ───────────────────────────────────────────────────────────── */
 const ALPHABET = ["A", "B", "C", "D", "E", "F"] as const;
 type Letter = (typeof ALPHABET)[number];
@@ -115,16 +115,16 @@ const DISTS: Record<DistMode, { label: string; probs: number[]; note: string }> 
   uniform: {
     label: "Đồng đều",
     probs: [1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6],
-    note: "Ký tự nào cũng xuất hiện như nhau — khó nén.",
+    note: "Ký tự nào cũng xuất hiện như nhau, rất khó nén.",
   },
   random: {
     label: "Gần như ngẫu nhiên",
     probs: [0.17, 0.17, 0.17, 0.17, 0.16, 0.16],
-    note: "Tệp dữ liệu đã được mã hoá ngẫu nhiên — entropy đỉnh.",
+    note: "Tệp dữ liệu đã được mã hoá ngẫu nhiên. Entropy ở mức đỉnh.",
   },
 };
 
-/* Huffman codes cho 4 phân phối — đã tính sẵn để ổn định UI */
+/* Huffman codes cho 4 phân phối, đã tính sẵn để ổn định UI */
 const HUFFMAN_CODES: Record<DistMode, Record<Letter, string>> = {
   peaked: { A: "0", B: "10", C: "110", D: "1110", E: "11110", F: "11111" },
   skewed: { A: "0", B: "10", C: "110", D: "1110", E: "11110", F: "11111" },
@@ -311,8 +311,8 @@ function HuffmanBuilder() {
           Tiết kiệm được{" "}
           <strong className="text-emerald-600 dark:text-emerald-400">
             {(saving * 100).toFixed(0)}%
-          </strong>{" "}
-          — và khoảng cách giữa mã Huffman và entropy chính là &quot;khoảng dự phòng
+          </strong>
+          . Khoảng cách giữa mã Huffman và entropy chính là &quot;khoảng dự phòng
           không thể thu hẹp thêm&quot; mà Shannon đã chứng minh.
         </p>
       </div>
@@ -380,7 +380,7 @@ function BarRow({
 }
 
 /* ─────────────────────────────────────────────────────────────
-   ENCODING LIVE — demo thực sự encode/decode
+   ENCODING LIVE: demo thực sự encode/decode
    ───────────────────────────────────────────────────────────── */
 function EncodingLiveDemo() {
   const [text, setText] = useState("AAAABBC");
@@ -437,7 +437,7 @@ function EncodingLiveDemo() {
               <span>
                 {" "}
                 · tiết kiệm{" "}
-                <strong className="text-emerald-600 dark:text-emerald-400">
+                <strong className="text-foreground font-bold">
                   {(
                     ((noCompressBits.length - bits.length) / noCompressBits.length) *
                     100
@@ -458,10 +458,10 @@ function EncodingLiveDemo() {
             animate={{ opacity: 1 }}
             className="rounded-lg bg-surface/40 p-3 text-[11px] leading-relaxed text-muted"
           >
-            <strong className="text-foreground">Cách đọc:</strong> mỗi ký tự được thay
-            bằng chuỗi bit theo bảng mã Huffman ở trên. A (phổ biến nhất) được gán mã
-            ngắn nhất (<code className="font-mono text-accent">0</code>), còn F (hiếm
-            nhất) có mã dài (
+            <strong className="text-foreground">Cách đọc:</strong> mỗi ký tự được
+            thay bằng chuỗi bit theo bảng mã Huffman ở trên. A (phổ biến nhất) được
+            gán mã ngắn nhất (<code className="font-mono text-accent">0</code>), còn
+            F (hiếm nhất) có mã dài (
             <code className="font-mono text-accent">11111</code>).
           </motion.div>
         )}
@@ -474,7 +474,7 @@ function EncodingLiveDemo() {
    HUFFMAN TREE STEP REVEAL
    ───────────────────────────────────────────────────────────── */
 function TreeStepA() {
-  // Bước 1: mỗi ký tự là một lá — hiển thị tần suất
+  // Bước 1: mỗi ký tự là một lá, hiển thị tần suất
   const leaves = [
     { label: "A", f: 45, x: 40, y: 120 },
     { label: "B", f: 13, x: 110, y: 120 },
@@ -607,7 +607,7 @@ function TreeStepB() {
 }
 
 function TreeStepC() {
-  // Bước 3: toàn bộ cây hoàn chỉnh — tất cả nút trong được vẽ
+  // Bước 3: toàn bộ cây hoàn chỉnh, tất cả nút trong được vẽ
   return (
     <svg viewBox="0 0 480 240" className="w-full">
       {/* Lá */}
@@ -708,13 +708,13 @@ const quizQuestions: QuizQuestion[] = [
       "Vì sao một file .txt chứa toàn chữ 'a' có thể nén nhỏ hơn hẳn so với một file toàn ký tự ngẫu nhiên?",
     options: [
       "Vì file chữ 'a' được lưu ở định dạng đặc biệt",
-      "Vì entropy rất thấp (gần như không có bất ngờ) — thuật toán có thể thay 'aaaa...' bằng vài bit mô tả 'lặp n lần'",
+      "Vì entropy rất thấp (gần như không có bất ngờ), thuật toán có thể thay 'aaaa...' bằng vài bit mô tả 'lặp n lần'",
       "Vì file ngẫu nhiên luôn bị lỗi",
       "Vì chữ 'a' chiếm ít byte hơn trên máy tính",
     ],
     correct: 1,
     explanation:
-      "File toàn chữ 'a' có entropy cực thấp (gần 0) — rất dễ đoán kết quả tiếp theo. Thuật toán nén lợi dụng sự dư thừa đó để thay bằng mã ngắn. File ngẫu nhiên có entropy cao gần cực đại, không có gì để 'dự đoán', nên gần như không nén được — đúng theo giới hạn Shannon.",
+      "File toàn chữ 'a' có entropy cực thấp (gần 0), rất dễ đoán kết quả tiếp theo. Thuật toán nén lợi dụng sự dư thừa đó để thay bằng mã ngắn. File ngẫu nhiên có entropy cao gần cực đại, không có gì để 'dự đoán', nên gần như không nén được, đúng theo giới hạn Shannon.",
   },
   {
     question:
@@ -727,32 +727,32 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Ý tưởng cốt lõi: nếu ký tự xuất hiện thường xuyên, bạn nên dành chuỗi bit ngắn cho nó để tổng độ dài nhỏ. Ký tự hiếm có thể nhận mã dài mà không ảnh hưởng trung bình nhiều. Đây là nguyên lý của mã Morse (E = '.', Z = '--..').",
+      "Ý tưởng cốt lõi: nếu ký tự xuất hiện thường xuyên, hãy dành chuỗi bit ngắn cho nó để tổng độ dài nhỏ. Ký tự hiếm có thể nhận mã dài mà không ảnh hưởng trung bình nhiều. Đây cũng là nguyên lý của mã Morse (E = '.', Z = '--..').",
   },
   {
     question: "Entropy Shannon đặt giới hạn gì cho bài toán nén?",
     options: [
-      "Giới hạn trên — không nén được nhỏ hơn H bit/ký tự (lossless)",
-      "Giới hạn trên — có thể nén tuỳ ý nhỏ",
+      "Giới hạn sàn: không nén được nhỏ hơn H bit cho mỗi ký tự (lossless)",
+      "Giới hạn trần: có thể nén tuỳ ý nhỏ",
       "Không liên quan đến nén",
       "Chỉ áp dụng cho video",
     ],
     correct: 0,
     explanation:
-      "Shannon chứng minh: với nén không mất mát, số bit trung bình ngắn nhất cho mỗi ký tự không thể nhỏ hơn entropy H(X) của nguồn. Đây là sàn lý thuyết — Huffman tiệm cận nhưng không vượt qua được.",
+      "Shannon chứng minh: với nén không mất mát, số bit trung bình ngắn nhất cho mỗi ký tự không thể nhỏ hơn entropy H(X) của nguồn. Đây là sàn lý thuyết. Huffman tiệm cận nhưng không đi qua được.",
   },
   {
     question:
       "Một phân phối có entropy H = 1.8 bit/kt. Bạn dùng Huffman và đạt 1.85 bit/kt trung bình. Có thể nén tốt hơn nữa không?",
     options: [
       "Có, xuống 0 bit/kt nếu chạy nhiều lần",
-      "Rất ít dư địa — chỉ có thể tiến tới 1.8 bit/kt, khoảng cách đang rất nhỏ",
+      "Rất ít dư địa: chỉ có thể tiến tới 1.8 bit/kt, khoảng cách đang rất nhỏ",
       "Không, Huffman đã là giới hạn tuyệt đối",
       "Tuỳ CPU và dung lượng ổ cứng",
     ],
     correct: 1,
     explanation:
-      "Giới hạn Shannon là 1.8 bit/kt. Huffman đang ở 1.85 — chỉ còn 0.05 bit dư địa. Các kỹ thuật như arithmetic coding có thể thu hẹp thêm, nhưng không thể đi dưới 1.8. Đây là lý do mọi thuật toán nén hiện đại (ZIP, JPEG, H.265) đều dùng entropy làm mốc.",
+      "Giới hạn Shannon là 1.8 bit/kt. Huffman đang ở 1.85, chỉ còn 0.05 bit dư địa. Các kỹ thuật như arithmetic coding có thể thu hẹp thêm, nhưng không thể đi dưới 1.8. Đây là lý do mọi thuật toán nén hiện đại (ZIP, JPEG, H.265) đều dùng entropy làm mốc.",
   },
 ];
 
@@ -767,15 +767,16 @@ export default function InformationTheoryInCompression() {
         >
           <p>
             &quot;Sao file .txt toàn chữ &lsquo;a&rsquo; lại nhỏ hơn hẳn file toàn chữ
-            ngẫu nhiên?&quot; — đây là câu hỏi đánh thẳng vào bản chất của nén dữ liệu.
-            Câu trả lời nằm trong một bài báo 1948 của Claude Shannon: mọi phân phối
-            dữ liệu đều có một <strong>giới hạn nén lý thuyết</strong> đo bằng entropy,
-            và không thuật toán nào vượt qua được giới hạn đó mà không mất thông tin.
+            ngẫu nhiên?&quot; Đây là câu hỏi đánh thẳng vào bản chất của nén dữ liệu.
+            Câu trả lời nằm trong một bài báo năm 1948 của Claude Shannon: mọi phân
+            phối dữ liệu đều có một <strong>giới hạn nén lý thuyết</strong> đo bằng
+            entropy, và không thuật toán nào đi qua được giới hạn đó mà không mất
+            thông tin.
           </p>
           <p>
-            Dưới đây là một bộ mã Huffman sống. Chọn một kiểu phân phối đầu vào — bạn sẽ
-            thấy độ dài mã trung bình thay đổi, và kích thước file sau nén dịch chuyển
-            theo thời gian thực.
+            Dưới đây là một bộ mã Huffman sống. Chọn một kiểu phân phối đầu vào, bạn
+            sẽ thấy độ dài mã trung bình thay đổi, và kích thước file sau khi nén
+            dịch chuyển theo thời gian thực.
           </p>
           <div className="not-prose mt-5">
             <HuffmanBuilder />
@@ -784,14 +785,16 @@ export default function InformationTheoryInCompression() {
 
         <ApplicationProblem topicSlug="information-theory-in-compression">
           <p>
-            Mỗi ngày internet truyền hàng exabyte dữ liệu. Không nén, băng thông sẽ sập,
-            ổ cứng nhanh đầy, điện thoại chụp ảnh xong không còn chỗ lưu. Câu hỏi lớn:{" "}
+            Mỗi ngày internet truyền hàng exabyte dữ liệu. Không nén, băng thông sẽ
+            sập, ổ cứng nhanh đầy, điện thoại chụp ảnh xong không còn chỗ lưu. Câu
+            hỏi lớn:{" "}
             <strong>làm sao biểu diễn cùng một lượng thông tin bằng ít bit hơn?</strong>
           </p>
           <p>
-            Với nén không mất mát (lossless — ZIP), mọi bit phải giữ nguyên. Với nén có
-            mất mát (lossy — JPEG, H.265), câu hỏi là: bỏ đến mức nào thì mắt/tai người
-            không nhận ra? Cả hai hướng đều dùng entropy làm la bàn.
+            Với nén không mất mát (lossless, ví dụ ZIP), mọi bit phải giữ nguyên. Với
+            nén có mất mát (lossy, ví dụ JPEG hay H.265), câu hỏi là: bỏ đến mức nào
+            thì mắt và tai người không nhận ra? Cả hai hướng đều dùng entropy làm la
+            bàn.
           </p>
           <div className="not-prose mt-5">
             <EncodingLiveDemo />
@@ -804,21 +807,21 @@ export default function InformationTheoryInCompression() {
         >
           <Beat step={1}>
             <p>
-              <strong>Đếm tần suất ký tự.</strong> Bước đầu tiên của mọi thuật toán nén:
-              nhìn dữ liệu và đếm xem mỗi ký tự (hoặc chuỗi byte) xuất hiện bao nhiêu
-              lần. Từ đó suy ra xác suất — càng lệch, càng có dư địa để nén. File toàn
-              &lsquo;a&rsquo; có xác suất 99% cho &lsquo;a&rsquo;, nghĩa là entropy ≈ 0
-              — gần như không có gì để &quot;bất ngờ&quot;.
+              <strong>Đếm tần suất ký tự.</strong> Bước đầu tiên của mọi thuật toán
+              nén: nhìn dữ liệu và đếm xem mỗi ký tự (hoặc chuỗi byte) xuất hiện bao
+              nhiêu lần. Từ đó suy ra xác suất. Phân phối càng lệch, càng có dư địa
+              để nén. File toàn &lsquo;a&rsquo; có xác suất 99% cho &lsquo;a&rsquo;,
+              nghĩa là entropy ≈ 0. Gần như không có gì để &quot;bất ngờ&quot;.
             </p>
           </Beat>
 
           <Beat step={2}>
             <p>
-              <strong>Xây cây Huffman — ký tự phổ biến được gán mã ngắn.</strong>{" "}
+              <strong>Xây cây Huffman: ký tự phổ biến được gán mã ngắn.</strong>{" "}
               Thuật toán bắt đầu từ sáu ký tự độc lập, ghép hai ký tự hiếm nhất thành
-              một nút, lặp lại cho đến khi còn một gốc duy nhất. Đường đi từ gốc xuống
-              lá cho ta mã của mỗi ký tự — đi trái = &lsquo;0&rsquo;, đi phải =
-              &lsquo;1&rsquo;.
+              một nút, lặp lại cho đến khi còn một gốc duy nhất. Đường đi từ gốc
+              xuống lá cho ta mã của mỗi ký tự: đi trái là &lsquo;0&rsquo;, đi phải
+              là &lsquo;1&rsquo;.
             </p>
             <div className="not-prose mt-4">
               <StepReveal
@@ -855,9 +858,9 @@ export default function InformationTheoryInCompression() {
                     className="space-y-2 rounded-xl border border-border bg-surface/50 p-4"
                   >
                     <p className="text-sm text-foreground leading-relaxed">
-                      Lặp lại cho đến khi còn một gốc duy nhất. Đi từ gốc xuống mỗi lá
-                      — chuỗi &lsquo;0&rsquo;/&lsquo;1&rsquo; ta đi qua chính là mã
-                      Huffman của ký tự đó.
+                      Lặp lại cho đến khi còn một gốc duy nhất. Đi từ gốc xuống mỗi
+                      lá. Chuỗi &lsquo;0&rsquo; và &lsquo;1&rsquo; ta đi qua chính là
+                      mã Huffman của ký tự đó.
                     </p>
                     <TreeStepC />
                   </div>,
@@ -868,10 +871,11 @@ export default function InformationTheoryInCompression() {
 
           <Beat step={3}>
             <p>
-              <strong>Huffman tiệm cận entropy Shannon.</strong> Shannon đặt giới hạn:
-              không thể nén nhỏ hơn H(X) bit/ký tự trung bình. Huffman đạt được một
-              giá trị rất gần với H — thường chỉ lớn hơn một chút. Đó là lý do Huffman
-              được gọi là &quot;tối ưu gần toàn cục&quot; cho mã có độ dài nguyên.
+              <strong>Huffman tiệm cận entropy Shannon.</strong> Shannon đặt giới
+              hạn: không thể nén nhỏ hơn H(X) bit cho mỗi ký tự trung bình. Huffman
+              đạt được một giá trị rất gần với H, thường chỉ lớn hơn một chút. Đó là
+              lý do Huffman được gọi là &quot;tối ưu gần toàn cục&quot; cho mã có độ
+              dài nguyên.
             </p>
           </Beat>
 
@@ -886,12 +890,12 @@ export default function InformationTheoryInCompression() {
 
           <Beat step={5}>
             <p>
-              <strong>JPEG &amp; H.265 — nén có mất mát.</strong> Với ảnh/video, ta
+              <strong>JPEG và H.265: nén có mất mát.</strong> Với ảnh và video, ta
               không cần khôi phục từng bit. JPEG chia ảnh thành khối 8×8, chuyển sang
-              miền tần số (DCT), và <em>lượng tử hoá</em> thô các thành phần tần số cao
-              mà mắt ít nhạy. H.265 làm tương tự cho video + mã hoá số học (CABAC). Cả
-              hai đều dùng entropy để biết &quot;bỏ được bao nhiêu mà không ai nhận
-              ra&quot;.
+              miền tần số (DCT), rồi <em>lượng tử hoá</em> thô các thành phần tần số
+              cao mà mắt ít nhạy. H.265 làm tương tự cho video, kèm thêm mã hoá số
+              học (CABAC). Cả hai đều dùng entropy để biết &quot;bỏ được bao nhiêu
+              mà không ai nhận ra&quot;.
             </p>
           </Beat>
         </ApplicationMechanism>
@@ -901,7 +905,7 @@ export default function InformationTheoryInCompression() {
           topicSlug="information-theory-in-compression"
         >
           <Metric
-            value="JPEG đạt tỷ lệ nén 10:1 — ảnh 12 MB còn 1,2 MB mà mắt thường không phân biệt"
+            value="JPEG đạt tỷ lệ nén 10:1. Ảnh 12 MB còn 1,2 MB mà mắt thường không phân biệt"
             sourceRef={3}
           />
           <Metric
@@ -923,26 +927,26 @@ export default function InformationTheoryInCompression() {
           topicSlug="information-theory-in-compression"
         >
           <p>
-            Không có lý thuyết thông tin của Shannon, các kỹ sư sẽ thiết kế thuật toán
-            nén mà <em>không biết giới hạn nằm ở đâu</em> — như đào vàng mà không biết
-            mỏ sâu bao nhiêu. Họ không biết khi nào đã đạt tối ưu, khi nào còn có thể
-            cải thiện.
+            Không có lý thuyết thông tin của Shannon, các kỹ sư sẽ thiết kế thuật
+            toán nén mà <em>không biết giới hạn nằm ở đâu</em>, giống như đào vàng
+            mà không biết mỏ sâu bao nhiêu. Họ không biết khi nào đã đạt tối ưu, khi
+            nào còn có thể cải thiện.
           </p>
           <p>
-            Entropy cho biết chính xác bao nhiêu bit là đủ và bao nhiêu là dư thừa. Nhờ
-            vậy Huffman biết cách gán mã ngắn cho ký tự phổ biến, JPEG biết bỏ được bao
-            nhiêu chi tiết, H.265 biết xác suất nào cần ước lượng. Internet như chúng
-            ta biết — ảnh tải nhanh, video không giật, file gửi gọn — đều bắt nguồn từ
-            một bài báo 78 trang năm 1948.
+            Entropy cho biết chính xác bao nhiêu bit là đủ và bao nhiêu là dư thừa.
+            Nhờ vậy Huffman biết cách gán mã ngắn cho ký tự phổ biến, JPEG biết bỏ
+            được bao nhiêu chi tiết, H.265 biết xác suất nào cần ước lượng. Internet
+            mà bạn đang dùng (ảnh tải nhanh, video không giật, file gửi gọn) đều bắt
+            nguồn từ một bài báo 78 trang năm 1948.
           </p>
 
           <div className="not-prose mt-5">
             <Callout variant="insight" title="Một phép đo đổi hẳn ngành truyền thông">
               Trước 1948, không ai biết cách đo &quot;lượng thông tin&quot; bằng một
-              con số. Shannon đề xuất entropy — và lập tức cả lĩnh vực viễn thông,
-              mã hoá, lưu trữ có chung một ngôn ngữ. Hôm nay, khi bạn gửi một tin nhắn
+              con số. Shannon đề xuất entropy. Lập tức cả lĩnh vực viễn thông, mã
+              hoá, lưu trữ có chung một ngôn ngữ. Hôm nay, khi bạn gửi một tin nhắn
               qua Wi-Fi, nén một ảnh selfie, hay xem Netflix 4K không giật, bạn đang
-              hưởng thành quả trực tiếp của một biểu thức đơn giản:{" "}
+              hưởng thành quả trực tiếp của một biểu thức gọn gàng:{" "}
               <span className="font-mono">H = −Σ p log p</span>.
             </Callout>
           </div>
@@ -957,25 +961,25 @@ export default function InformationTheoryInCompression() {
         <InlineChallenge
           question="Một ảnh chỉ chứa 2 màu xen kẽ đều đặn (như bàn cờ). Dùng Huffman, trung bình mỗi pixel cần bao nhiêu bit?"
           options={[
-            "Khoảng 1 bit — 2 màu đồng đều, entropy = 1",
+            "Khoảng 1 bit, hai màu đồng đều, entropy = 1",
             "0.5 bit vì có thể nén một nửa",
             "8 bit như ảnh màu thông thường",
             "Không xác định",
           ]}
           correct={0}
-          explanation="2 màu với phân phối 50/50 → entropy H = 1 bit. Huffman đạt đúng 1 bit/pixel (A = '0', B = '1'). Ảnh bàn cờ không 'nén thêm' được ở mức pixel độc lập — phải chuyển sang nén chuỗi (RLE) để khai thác cấu trúc lặp."
+          explanation="2 màu với phân phối 50/50 cho entropy H = 1 bit. Huffman đạt đúng 1 bit cho mỗi pixel (A = '0', B = '1'). Ảnh bàn cờ không 'nén thêm' được ở mức pixel độc lập. Phải chuyển sang nén chuỗi (RLE) để khai thác cấu trúc lặp."
         />
 
         <InlineChallenge
           question="File gốc 1 MB. Sau khi nén ZIP còn 200 KB. Tỷ lệ nén là bao nhiêu?"
           options={[
-            "5:1 — kích thước ban đầu gấp 5 lần kết quả",
+            "5:1, kích thước ban đầu gấp 5 lần kết quả",
             "1:5",
             "200%",
             "Không thể tính",
           ]}
           correct={0}
-          explanation="Tỷ lệ nén = kích thước gốc / kích thước nén = 1000 KB / 200 KB = 5. Ghi là 5:1. Với văn bản thông thường, 3:1–5:1 là bình thường; ảnh JPEG 10:1; video H.265 50:1 hoặc hơn."
+          explanation="Tỷ lệ nén = kích thước gốc / kích thước nén = 1000 KB / 200 KB = 5. Ghi là 5:1. Với văn bản thông thường, mức 3:1 đến 5:1 là bình thường. Ảnh JPEG đạt 10:1. Video H.265 đạt 50:1 hoặc hơn."
         />
       </section>
 
@@ -983,10 +987,10 @@ export default function InformationTheoryInCompression() {
         <MiniSummary
           title="4 điều rút ra"
           points={[
-            "Entropy Shannon = giới hạn sàn cho nén không mất mát — không thuật toán nào xuống dưới được.",
-            "Huffman gán mã ngắn cho ký tự phổ biến, mã dài cho ký tự hiếm — tiệm cận giới hạn Shannon.",
-            "ZIP = LZ77 (tìm chuỗi lặp) + Huffman — hai tầng bổ sung cho nhau.",
-            "JPEG/H.265 là nén có mất mát: bỏ bớt chi tiết ít nhạy cảm với mắt/tai, vẫn dùng entropy làm chỉ dẫn.",
+            "Entropy Shannon là giới hạn sàn cho nén không mất mát. Không thuật toán nào xuống dưới được.",
+            "Huffman gán mã ngắn cho ký tự phổ biến, mã dài cho ký tự hiếm, tiệm cận giới hạn Shannon.",
+            "ZIP = LZ77 (tìm chuỗi lặp) cộng với Huffman. Hai tầng bổ sung cho nhau.",
+            "JPEG và H.265 là nén có mất mát: bỏ bớt chi tiết ít nhạy cảm với mắt và tai, vẫn dùng entropy làm chỉ dẫn.",
           ]}
         />
 
@@ -996,8 +1000,8 @@ export default function InformationTheoryInCompression() {
             <strong>Quay lại lý thuyết:</strong>{" "}
             <TopicLink slug="information-theory">
               Entropy, cross-entropy và KL divergence
-            </TopicLink>{" "}
-            — hiểu sâu hơn ba thước đo mà mọi thuật toán nén đều dùng làm chuẩn.
+            </TopicLink>
+            . Hiểu sâu hơn ba thước đo mà mọi thuật toán nén đều dùng làm chuẩn.
           </div>
         </div>
       </section>

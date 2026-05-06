@@ -34,9 +34,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "neural-network-overview",
   title: "Neural Network Overview",
-  titleVi: "Mạng nơ-ron là gì — bộ não nhỏ trong máy tính",
+  titleVi: "Mạng nơ-ron: bộ não nhỏ trong máy tính",
   description:
-    "Nhiều nơ-ron đơn giản kết nối lại thành một mạng thông minh. Kéo slider, bấm vào từng nơ-ron, xem tín hiệu lan truyền — bạn sẽ hiểu vì sao ý tưởng này thay đổi cả thế giới AI.",
+    "Nhiều nơ-ron đơn giản kết nối lại thành một mạng thông minh. Kéo slider, bấm vào từng nơ-ron, xem tín hiệu lan truyền. Bạn sẽ hiểu bộ khung chung đứng sau mọi mô hình AI hiện nay.",
   category: "neural-fundamentals",
   tags: ["neural-network", "overview", "mlp", "deep-learning"],
   difficulty: "beginner",
@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   KIẾN TRÚC DEMO — 2 input → 3 hidden → 2 output
+   KIẾN TRÚC DEMO. 2 input → 3 hidden → 2 output.
    Trọng số cố định, mô phỏng mạng phân loại nhỏ.
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -66,7 +66,7 @@ interface NeuronId {
   index: number;
 }
 
-/* Trọng số mặc định — người học có thể chỉnh trong demo. */
+/* Trọng số mặc định. Người học có thể chỉnh trong demo. */
 const DEFAULT_W1: number[][] = [
   // hidden h1 nhận (x1, x2)
   [0.8, -0.6],
@@ -145,9 +145,9 @@ function neuronY(layer: LayerIndex, index: number): number {
 }
 
 function neuronFill(layer: LayerIndex): string {
-  if (layer === 0) return "#3b82f6"; // blue — input
-  if (layer === 1) return "#f59e0b"; // amber — hidden
-  return "#10b981"; // green — output
+  if (layer === 0) return "#3b82f6"; // blue, input
+  if (layer === 1) return "#f59e0b"; // amber, hidden
+  return "#10b981"; // green, output
 }
 
 function sameNeuron(a: NeuronId | null, b: NeuronId): boolean {
@@ -182,7 +182,7 @@ function neuronOpacity(value: number, maxValue: number): number {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   MLP PLAYGROUND — kéo input, click nơ-ron, xem output
+   MLP PLAYGROUND. Kéo input, click nơ-ron, xem output.
    ═══════════════════════════════════════════════════════════════════ */
 
 function MLPPlayground() {
@@ -229,9 +229,9 @@ function MLPPlayground() {
   return (
     <div className="space-y-5">
       <p className="text-sm text-muted leading-relaxed">
-        Đây là một mạng nơ-ron nhỏ: <strong>2 đầu vào</strong> → 3 nơ-ron ẩn →{" "}
-        <strong>2 đầu ra</strong>. Mỗi đầu ra là một xác suất &ldquo;mạng nghĩ
-        dữ liệu thuộc lớp nào&rdquo;.
+        Đây là một mạng nơ-ron nhỏ: <strong>2 đầu vào</strong> qua 3 nơ-ron ẩn
+        rồi tới <strong>2 đầu ra</strong>. Mỗi đầu ra là một xác suất, cho biết
+        mạng đang nghĩ dữ liệu thuộc lớp nào.
       </p>
 
       {/* ─── Input sliders ─── */}
@@ -239,7 +239,7 @@ function MLPPlayground() {
         <div className="flex items-center gap-2 mb-1">
           <MousePointerClick size={14} className="text-accent" />
           <span className="text-xs font-semibold text-foreground uppercase tracking-wide">
-            Bước 1 — Kéo hai đầu vào
+            Bước 1. Kéo hai đầu vào
           </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -288,7 +288,7 @@ function MLPPlayground() {
           <div className="flex items-center gap-2">
             <Network size={14} className="text-accent" />
             <span className="text-xs font-semibold text-foreground uppercase tracking-wide">
-              Bước 2 — Bấm vào một nơ-ron để xem dây nối
+              Bước 2. Bấm vào một nơ-ron để xem dây nối
             </span>
           </div>
           <button
@@ -389,7 +389,7 @@ function MLPPlayground() {
             }),
           )}
 
-          {/* Nơ-ron cả ba lớp — dùng chung một vòng lặp */}
+          {/* Nơ-ron cả ba lớp, dùng chung một vòng lặp */}
           {(
             [
               { layer: 0 as LayerIndex, size: INPUT_SIZE, label: "x", values: pass.input, maxVal: 1, formatOutput: false },
@@ -439,7 +439,7 @@ function MLPPlayground() {
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block w-6 h-1.5 rounded bg-amber-500" />
-            Dây dày = trọng số lớn
+            Dây càng dày, trọng số càng lớn
           </span>
         </div>
       </div>
@@ -449,13 +449,13 @@ function MLPPlayground() {
         <div className="flex items-center gap-2 mb-1">
           <Zap size={14} className="text-accent" />
           <span className="text-xs font-semibold text-foreground uppercase tracking-wide">
-            Bước 3 — Thử vặn các trọng số w (lớp ẩn)
+            Bước 3. Thử vặn các trọng số w (lớp ẩn)
           </span>
         </div>
         <p className="text-[11px] text-muted leading-relaxed">
           Mỗi dây từ đầu vào sang nơ-ron ẩn có một con số gọi là <em>trọng số</em>.
-          Trọng số lớn = ảnh hưởng mạnh. Kéo thử và quan sát phần trăm đầu ra thay
-          đổi theo thời gian thực.
+          Trọng số càng lớn thì ảnh hưởng càng mạnh. Kéo thử và quan sát phần
+          trăm đầu ra thay đổi theo thời gian thực.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {Array.from({ length: HIDDEN_SIZE }, (_, j) => (
@@ -505,14 +505,14 @@ function MLPPlayground() {
             {pass.a1.map((a, j) => (
               <span
                 key={`ha-${j}`}
-                className="rounded-md bg-amber-500/15 px-2 py-1 text-xs font-mono text-amber-700 dark:text-amber-300 tabular-nums"
+                className="rounded-md bg-amber-500/15 px-2 py-1 text-xs font-mono text-foreground font-semibold tabular-nums"
               >
                 h{j + 1}: {a.toFixed(2)}
               </span>
             ))}
           </div>
           <p className="text-[10px] text-muted mt-2 italic">
-            ReLU: giữ nguyên nếu dương, biến về 0 nếu âm.
+            ReLU giữ nguyên giá trị dương và biến giá trị âm về 0.
           </p>
         </div>
         <div className="rounded-xl border-2 border-emerald-400/60 bg-emerald-50 dark:bg-emerald-900/15 p-4">
@@ -526,15 +526,15 @@ function MLPPlayground() {
                 className={`rounded-md px-2 py-1 text-xs font-mono tabular-nums ${
                   k + 1 === predictedClass
                     ? "bg-emerald-500 text-white font-bold"
-                    : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                    : "bg-emerald-500/15 text-foreground font-semibold"
                 }`}
               >
                 y{k + 1}: {(p * 100).toFixed(1)}%
               </span>
             ))}
           </div>
-          <p className="text-[11px] text-emerald-700 dark:text-emerald-300 mt-2 font-semibold">
-            → Mạng nghĩ đây là lớp {predictedClass}
+          <p className="text-[11px] text-foreground mt-2 font-semibold">
+            Mạng nghĩ đây là lớp {predictedClass}
           </p>
         </div>
       </div>
@@ -554,8 +554,8 @@ function MLPPlayground() {
                 : `Đầu ra y${selected.index + 1}`}
           </p>
           <p className="text-muted mt-1">
-            Dây dày nối với nơ-ron này đã được làm nổi bật — kèm con số trọng số.
-            Màu xanh dương là dương, đỏ là âm, đậm là mạnh.
+            Dây dày nối với nơ-ron này đang được làm nổi bật, kèm con số trọng
+            số. Màu xanh dương là dương, đỏ là âm, đậm là mạnh.
           </p>
         </motion.div>
       )}
@@ -564,7 +564,7 @@ function MLPPlayground() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   DEEPEN — StepReveal: tín hiệu đi qua từng lớp
+   DEEPEN. StepReveal: tín hiệu đi qua từng lớp.
    ═══════════════════════════════════════════════════════════════════ */
 
 interface FlowStep {
@@ -584,22 +584,22 @@ function SignalFlow() {
   const steps: FlowStep[] = [
     {
       label: "Nhận đầu vào",
-      title: "Bước 1 — Hai con số đi vào",
+      title: "Bước 1. Hai con số đi vào mạng",
       description:
-        "Mạng nhận hai đặc trưng của dữ liệu — ví dụ kích thước và màu sắc của một bông hoa. Đây là hai cảm giác đầu tiên.",
+        "Mạng nhận hai đặc trưng của dữ liệu, ví dụ kích thước và màu sắc của một bông hoa. Đây là hai cảm giác đầu tiên.",
       highlightLayer: 0,
       values: [
         { label: "x1", value: inputs[0].toFixed(2), tone: "blue" },
         { label: "x2", value: inputs[1].toFixed(2), tone: "blue" },
       ],
       explain:
-        "Giống như bộ não, cảm giác đến từ các giác quan — ở đây là hai kênh dữ liệu thô.",
+        "Giống như bộ não, cảm giác đến từ các giác quan. Ở đây là hai kênh dữ liệu thô.",
     },
     {
       label: "Tính lớp ẩn",
-      title: "Bước 2 — Ba nơ-ron ẩn cùng &ldquo;cân&rdquo; tín hiệu",
+      title: "Bước 2. Ba nơ-ron ẩn cùng cân tín hiệu",
       description:
-        "Mỗi nơ-ron ẩn nhận cả hai đầu vào, nhân với trọng số riêng của nó rồi cộng lại. Con số ra đôi khi dương, đôi khi âm — phụ thuộc vào việc nơ-ron đó &ldquo;chú ý&rdquo; gì.",
+        "Mỗi nơ-ron ẩn nhận cả hai đầu vào, nhân với trọng số riêng của nó rồi cộng lại. Con số ra có thể dương hoặc âm, tuỳ vào việc nơ-ron đó đang &ldquo;chú ý&rdquo; tới đặc trưng nào.",
       highlightLayer: 1,
       values: [
         { label: "z1 (h1)", value: pass.z1[0].toFixed(2), tone: "amber" },
@@ -607,13 +607,13 @@ function SignalFlow() {
         { label: "z3 (h3)", value: pass.z1[2].toFixed(2), tone: "amber" },
       ],
       explain:
-        "Công thức cho mỗi nơ-ron: z = w₁·x₁ + w₂·x₂ + b. Đây là phép &ldquo;cân đong&rdquo; đầu vào.",
+        "Công thức cho mỗi nơ-ron: z = w₁·x₁ + w₂·x₂ + b. Đây là phép cân đong đầu vào.",
     },
     {
       label: "Qua ReLU",
-      title: "Bước 3 — Công tắc ReLU: âm thì tắt, dương thì mở",
+      title: "Bước 3. Công tắc ReLU: âm thì tắt, dương thì mở",
       description:
-        "Mỗi nơ-ron ẩn có một công tắc. Nếu z dương, giữ nguyên. Nếu z âm, biến về 0. Đây chính là phép &ldquo;phi tuyến&rdquo; làm mạng thông minh hơn phép nhân thông thường.",
+        "Mỗi nơ-ron ẩn có một công tắc. Nếu z dương, giữ nguyên. Nếu z âm, biến về 0. Đây chính là phép phi tuyến giúp mạng học được những quy luật cong, mà phép nhân thuần tuyến tính không làm nổi.",
       highlightLayer: 1,
       values: [
         { label: "a1", value: pass.a1[0].toFixed(2), tone: "amber" },
@@ -625,22 +625,22 @@ function SignalFlow() {
     },
     {
       label: "Đến đầu ra",
-      title: "Bước 4 — Hai nơ-ron đầu ra tổng hợp ý kiến",
+      title: "Bước 4. Hai nơ-ron đầu ra tổng hợp ý kiến",
       description:
-        "Mỗi đầu ra đọc toàn bộ ba nơ-ron ẩn, cân lại lần nữa, rồi cộng. Ra hai con số chưa chuẩn hoá.",
+        "Mỗi đầu ra đọc toàn bộ ba nơ-ron ẩn, cân lại lần nữa, rồi cộng. Kết quả là hai con số chưa chuẩn hoá.",
       highlightLayer: 2,
       values: [
         { label: "z1 (y1)", value: pass.z2[0].toFixed(2), tone: "emerald" },
         { label: "z2 (y2)", value: pass.z2[1].toFixed(2), tone: "emerald" },
       ],
       explain:
-        "Vẫn là công thức quen thuộc: z = Σw·a + b. Mỗi đầu ra &ldquo;nghe&rdquo; từ cả ba nơ-ron ẩn.",
+        "Vẫn là công thức quen thuộc: z = Σw·a + b. Mỗi đầu ra lắng nghe từ cả ba nơ-ron ẩn.",
     },
     {
       label: "Softmax",
-      title: "Bước 5 — Softmax biến hai con số thành xác suất",
+      title: "Bước 5. Softmax biến hai con số thành xác suất",
       description:
-        "Hai con số đầu ra được &ldquo;dịch&rdquo; thành hai xác suất cộng lại bằng 100%. Lớp nào phần trăm cao hơn, mạng chọn lớp đó.",
+        "Hai con số đầu ra được &ldquo;dịch&rdquo; thành hai xác suất, cộng lại bằng 100%. Lớp nào phần trăm cao hơn, mạng chọn lớp đó.",
       highlightLayer: 2,
       values: [
         {
@@ -655,7 +655,7 @@ function SignalFlow() {
         },
       ],
       explain:
-        "Softmax giữ số to to hơn, số bé bé đi — dễ đọc, dễ so sánh. Tổng luôn bằng 1.",
+        "Softmax giữ số to to hơn, số bé bé đi, nhờ vậy dễ đọc và dễ so sánh. Tổng luôn bằng 1.",
     },
   ];
 
@@ -694,10 +694,10 @@ function SignalFlow() {
               {step.values.map((v, i) => {
                 const toneClasses =
                   v.tone === "blue"
-                    ? "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-400/40"
+                    ? "bg-blue-500/15 text-foreground font-semibold border-blue-400/40"
                     : v.tone === "amber"
-                      ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-400/40"
-                      : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-400/40";
+                      ? "bg-amber-500/15 text-foreground font-semibold border-amber-400/40"
+                      : "bg-emerald-500/15 text-foreground font-semibold border-emerald-400/40";
                 return (
                   <span
                     key={`v-${idx}-${i}`}
@@ -721,7 +721,7 @@ function SignalFlow() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   QUIZ — 6 câu, pha trộn MCQ và fill-blank
+   QUIZ. 6 câu, pha trộn MCQ và fill-blank.
    ═══════════════════════════════════════════════════════════════════ */
 
 const quizQuestions: QuizQuestion[] = [
@@ -736,7 +736,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mạng nơ-ron chỉ vay ý tưởng: nhiều đơn vị đơn giản (nơ-ron) kết nối thành mạng thì có thể giải quyết việc phức tạp. Nơ-ron nhân tạo chỉ là phép tính đơn giản — tổng có trọng số cộng bias, rồi qua một công tắc. Sức mạnh đến từ số lượng và cách kết nối.",
+      "Mạng nơ-ron chỉ vay ý tưởng: nhiều đơn vị đơn giản (nơ-ron) kết nối thành mạng thì có thể giải quyết việc phức tạp. Nơ-ron nhân tạo chỉ là một phép tính giản đơn: tổng có trọng số cộng bias, rồi qua một công tắc. Sức mạnh đến từ số lượng và cách kết nối.",
   },
   {
     question: "Một nơ-ron trong mạng làm công việc gì với các đầu vào?",
@@ -748,7 +748,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Công thức cơ bản: z = w₁·x₁ + w₂·x₂ + ... + b. Sau đó a = σ(z), với σ là hàm kích hoạt (ReLU, sigmoid, tanh). Trọng số w chính là &ldquo;ý kiến&rdquo; của nơ-ron về độ quan trọng của từng đầu vào.",
+      "Công thức cơ bản: z = w₁·x₁ + w₂·x₂ + ... + b. Sau đó a = σ(z), với σ là hàm kích hoạt (ReLU, sigmoid, tanh). Trọng số w chính là &ldquo;ý kiến&rdquo; của nơ-ron về mức độ quan trọng của từng đầu vào.",
   },
   {
     question: "Vì sao mạng cần có hàm kích hoạt như ReLU?",
@@ -760,7 +760,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Phép nhân ma trận xếp chồng nhau vẫn chỉ ra phép nhân ma trận. Hàm kích hoạt đưa &ldquo;khúc gãy&rdquo; (phi tuyến) vào mạch tính toán, giúp mạng học được các ranh giới cong, các quy luật phức tạp như phân biệt mèo với chó.",
+      "Phép nhân ma trận xếp chồng nhau vẫn chỉ ra phép nhân ma trận. Hàm kích hoạt đưa &ldquo;khúc gãy&rdquo; (phi tuyến) vào mạch tính toán. Nhờ vậy, mạng học được các ranh giới cong, các quy luật phức tạp như phân biệt mèo với chó.",
   },
   {
     type: "fill-blank",
@@ -770,38 +770,38 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "ẩn", accept: ["an", "hidden", "lớp ẩn"] },
     ],
     explanation:
-      "Lớp ở giữa được gọi là &ldquo;lớp ẩn&rdquo; (hidden layer) vì người quan sát bên ngoài không nhìn thấy trực tiếp — họ chỉ thấy đầu vào và đầu ra. Mạng có nhiều lớp ẩn gọi là mạng &ldquo;sâu&rdquo; (deep network).",
+      "Lớp ở giữa được gọi là &ldquo;lớp ẩn&rdquo; (hidden layer) vì người quan sát bên ngoài không nhìn thấy trực tiếp. Họ chỉ thấy đầu vào và đầu ra. Mạng có nhiều lớp ẩn gọi là mạng &ldquo;sâu&rdquo; (deep network).",
   },
   {
     question:
       "Một mạng có 2 đầu vào, 3 nơ-ron ẩn và 2 đầu ra. Nếu bạn tăng một trọng số w(x₁ → h₂) từ 0.5 lên 1.5, điều gì sẽ xảy ra?",
     options: [
       "Không có gì thay đổi",
-      "Nơ-ron h₂ sẽ nhận tín hiệu từ x₁ mạnh hơn → kéo theo các nơ-ron ở lớp đầu ra cũng thay đổi",
+      "Nơ-ron h₂ sẽ nhận tín hiệu từ x₁ mạnh hơn, kéo theo các nơ-ron ở lớp đầu ra cũng thay đổi",
       "Toàn bộ mạng sẽ ngừng hoạt động",
       "Chỉ x₁ đổi giá trị",
     ],
     correct: 1,
     explanation:
-      "Một trọng số thay đổi gây ra chuỗi lan truyền: h₂ đổi → z ở đầu ra đổi → xác suất softmax đổi. Đây là lý do tại sao việc huấn luyện (chỉnh trọng số) lại làm mạng hành xử khác đi.",
+      "Một trọng số thay đổi gây ra chuỗi lan truyền: h₂ đổi, z ở đầu ra đổi, xác suất softmax đổi theo. Đây là lý do tại sao việc huấn luyện (chỉnh trọng số) lại làm mạng hành xử khác đi.",
   },
   {
     question:
       "Softmax ở đầu ra có công dụng gì?",
     options: [
       "Làm mạng chạy chậm lại để dễ debug",
-      "Biến các con số đầu ra thành các xác suất cộng lại bằng 100%, để mạng &ldquo;chọn&rdquo; được lớp có phần trăm cao nhất",
+      "Biến các con số đầu ra thành xác suất cộng lại bằng 100%, để mạng chọn được lớp có phần trăm cao nhất",
       "Xoá các nơ-ron yếu",
       "Tăng số lượng nơ-ron",
     ],
     correct: 1,
     explanation:
-      "Softmax nén các con số đầu ra (có thể âm, dương, lớn, bé tuỳ ý) về một phân phối xác suất: mỗi số trong khoảng [0, 1], tổng bằng 1. Lớp có xác suất lớn nhất là lớp mạng &ldquo;đoán&rdquo;.",
+      "Softmax nén các con số đầu ra (có thể âm, dương, lớn, bé tuỳ ý) về một phân phối xác suất: mỗi số nằm trong khoảng [0, 1], tổng bằng 1. Lớp có xác suất lớn nhất chính là lớp mà mạng đoán.",
   },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
-   NƠ-RON ẨN DỤ — hình minh hoạ một nơ-ron duy nhất
+   NƠ-RON ẨN DỤ. Hình minh hoạ một nơ-ron duy nhất.
    ═══════════════════════════════════════════════════════════════════ */
 
 function SingleNeuronIllustration() {
@@ -948,7 +948,7 @@ function SingleNeuronIllustration() {
 export default function NeuralNetworkOverviewTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1. HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bộ não người có khoảng 86 tỷ nơ-ron, mỗi nơ-ron là một tế bào phức tạp. Mạng nơ-ron trong máy tính 'bắt chước' bộ não ở mức nào?"
@@ -959,7 +959,7 @@ export default function NeuralNetworkOverviewTopic() {
             "Không liên quan gì tới não",
           ]}
           correct={1}
-          explanation="Mạng nơ-ron chỉ vay một ý tưởng lớn: nhiều đơn vị đơn giản kết nối thành mạng thì có thể làm việc phức tạp. Nơ-ron nhân tạo chỉ là một phép cộng có trọng số, rồi qua một công tắc. Đơn giản vậy thôi — nhưng xếp hàng triệu cái lại thì ra được ChatGPT, Google Translate, Tesla Autopilot."
+          explanation="Mạng nơ-ron chỉ vay một ý tưởng lớn: nhiều đơn vị đơn giản kết nối thành mạng thì có thể làm việc phức tạp. Nơ-ron nhân tạo chỉ là một phép cộng có trọng số, rồi qua một công tắc. Đơn giản vậy thôi, nhưng xếp hàng triệu cái lại thì ra được ChatGPT, Google Translate, Tesla Autopilot."
         >
           <div className="mt-4 rounded-xl border border-border bg-card/80 p-4 space-y-2">
             <div className="flex items-center gap-2 text-accent">
@@ -970,15 +970,15 @@ export default function NeuralNetworkOverviewTopic() {
             </div>
             <p className="text-sm text-foreground/85 leading-relaxed">
               Ở phần tiếp theo, bạn sẽ thấy một mạng nhỏ có 2 đầu vào, 3 nơ-ron ẩn
-              và 2 đầu ra. Kéo slider, bấm vào nơ-ron — xem tín hiệu đi. Bạn sẽ
-              hiểu bộ khung chung cho cả GPT-4, ResNet, AlphaGo — dù các mô hình đó
-              có hàng tỷ nơ-ron, bộ khung vẫn là cái bạn đang học.
+              và 2 đầu ra. Kéo slider, bấm vào nơ-ron, xem tín hiệu đi. Sau đó bạn
+              sẽ hiểu bộ khung chung của GPT-4, ResNet và AlphaGo. Các mô hình đó
+              có hàng tỷ nơ-ron, nhưng bộ khung vẫn là cái bạn đang học.
             </p>
           </div>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2. ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -988,61 +988,61 @@ export default function NeuralNetworkOverviewTopic() {
           <p className="text-sm text-foreground/85 leading-relaxed">
             Hãy tưởng tượng một <strong>thợ cân đồ</strong>. Thợ nhận nhiều nguồn
             hàng, mỗi nguồn có độ &ldquo;tin cậy&rdquo; khác nhau. Thợ cân từng
-            nguồn với độ tin cậy tương ứng, cộng lại, rồi quyết định:{" "}
-            <em>&ldquo;Tổng này có đủ lớn để đáng tin không?&rdquo;</em> Nếu có —
-            gửi tín hiệu đi tiếp. Nếu không — im lặng. Đó là toàn bộ công việc của
+            nguồn với độ tin cậy tương ứng, cộng lại, rồi tự hỏi:{" "}
+            <em>&ldquo;Tổng này có đủ lớn để đáng tin không?&rdquo;</em> Nếu có,
+            gửi tín hiệu đi tiếp. Nếu không, im lặng. Đó là toàn bộ công việc của
             một nơ-ron nhân tạo.
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-4">
             <SingleNeuronIllustration />
             <p className="text-xs text-muted text-center mt-2 italic leading-relaxed">
-              Ba đầu vào × ba trọng số → cộng lại → qua công tắc ReLU → ra tín hiệu.
-              Tất cả nơ-ron trong mọi mạng lớn đều chỉ làm chuyện này.
+              Ba đầu vào nhân với ba trọng số, cộng lại, qua công tắc ReLU, rồi
+              ra tín hiệu. Tất cả nơ-ron trong mọi mạng lớn đều chỉ làm chuyện này.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
             <div className="rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+              <div className="flex items-center gap-2 text-foreground">
                 <span className="text-sm font-semibold">Đầu vào (xᵢ)</span>
               </div>
-              <p className="text-xs text-foreground/85 leading-relaxed">
-                Nguồn dữ liệu thô. Với bài phân loại hoa: có thể là kích thước
-                cánh và màu sắc.
+              <p className="text-xs text-foreground leading-relaxed">
+                Nguồn dữ liệu thô. Với bài phân loại hoa, đầu vào có thể là
+                kích thước cánh và màu sắc.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <div className="flex items-center gap-2 text-foreground">
                 <span className="text-sm font-semibold">Trọng số (wᵢ)</span>
               </div>
-              <p className="text-xs text-foreground/85 leading-relaxed">
-                Con số &ldquo;nơ-ron tin nguồn này bao nhiêu&rdquo;. Lớn = tin
-                nhiều. Âm = không thích. Đây là thứ được học.
+              <p className="text-xs text-foreground leading-relaxed">
+                Con số nói rằng nơ-ron tin nguồn này bao nhiêu. Lớn nghĩa là
+                tin nhiều, âm nghĩa là không thích. Đây là thứ được học.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-foreground">
                 <span className="text-sm font-semibold">Đầu ra (a)</span>
               </div>
-              <p className="text-xs text-foreground/85 leading-relaxed">
-                &ldquo;Kết luận&rdquo; của nơ-ron sau khi cân nhắc. Gửi tiếp cho
-                nơ-ron ở lớp sau.
+              <p className="text-xs text-foreground leading-relaxed">
+                Kết luận của nơ-ron sau khi cân nhắc. Tín hiệu được gửi tiếp
+                cho nơ-ron ở lớp sau.
               </p>
             </div>
           </div>
 
           <Callout variant="insight" title="Tại sao một nơ-ron đơn lẻ lại yếu?">
             Một nơ-ron chỉ vẽ được đúng một đường thẳng trong không gian dữ liệu.
-            Nhưng xếp ba nơ-ron song song ở một lớp, rồi ghép nhiều lớp chồng lên
-            nhau — bạn có một mạng có thể uốn cong, xoắn, vẽ biên giới phức tạp
-            quanh bất cứ đám dữ liệu nào. Sức mạnh đến từ{" "}
-            <strong>cách kết nối</strong>, không phải từ mỗi nơ-ron.
+            Nhưng khi xếp ba nơ-ron song song ở một lớp rồi ghép nhiều lớp chồng
+            lên nhau, bạn có một mạng có thể uốn cong, xoắn, vẽ biên giới phức
+            tạp quanh bất cứ đám dữ liệu nào. Sức mạnh đến từ{" "}
+            <strong>cách kết nối</strong>, không phải từ mỗi nơ-ron riêng lẻ.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HOÁ TƯƠNG TÁC ━━━ */}
+      {/* ━━━ BƯỚC 3. TRỰC QUAN HOÁ TƯƠNG TÁC ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <MLPPlayground />
@@ -1050,45 +1050,44 @@ export default function NeuralNetworkOverviewTopic() {
             <Callout variant="insight" title="Điều bạn vừa thấy trên màn hình">
               Mỗi lần bạn kéo slider x₁ hoặc x₂, hai con số đó đi qua 6 dây (2 ×
               3) sang ba nơ-ron ẩn. Mỗi nơ-ron ẩn cân, cộng, qua công tắc, rồi
-              gửi tiếp qua 6 dây nữa (3 × 2) đến hai nơ-ron đầu ra. Chỉ có{" "}
-              <strong>phép nhân và phép cộng</strong> — không có phép màu.
+              gửi tiếp qua 6 dây nữa (3 × 2) đến hai nơ-ron đầu ra. Tất cả chỉ
+              gồm <strong>phép nhân và phép cộng</strong>. Không có phép màu.
             </Callout>
             <Callout variant="tip" title="Thử thêm: vặn trọng số w">
               Ở phần &ldquo;Bước 3&rdquo; bạn có 6 slider w. Vặn thử một cái về
-              âm rất sâu — bạn sẽ thấy một nơ-ron ẩn &ldquo;tắt&rdquo; hẳn (ReLU
-              cắt âm về 0), và xác suất đầu ra thay đổi mạnh. Đây chính là cách
-              huấn luyện thay đổi hành vi của mạng: chỉ đổi trọng số, không đổi
-              kiến trúc.
+              âm rất sâu, bạn sẽ thấy một nơ-ron ẩn tắt hẳn (ReLU cắt âm về 0),
+              và xác suất đầu ra thay đổi mạnh. Đây chính là cách huấn luyện
+              thay đổi hành vi của mạng: chỉ đổi trọng số, không đổi kiến trúc.
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4. AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
           <p>
             Mạng nơ-ron chỉ là <strong>phép nhân và phép cộng</strong>, xếp thành
-            nhiều lớp, xen kẽ với một vài &ldquo;công tắc&rdquo; (như ReLU). Mọi{" "}
-            <em>trí tuệ</em> nằm trong các con số trọng số — không nằm trong cấu
-            trúc phức tạp.
+            nhiều lớp, xen kẽ với một vài công tắc như ReLU. Mọi{" "}
+            <em>trí tuệ</em> nằm trong các con số trọng số, không nằm trong một
+            cấu trúc phức tạp nào cả.
           </p>
           <p className="mt-3">
             Sức mạnh đến từ <strong>số lượng và cách kết nối</strong>: một nơ-ron
-            yếu, một triệu nơ-ron kết nối khéo thì viết được thơ, dịch được tiếng,
-            chơi được cờ vây.
+            thì yếu, nhưng một triệu nơ-ron kết nối khéo thì viết được thơ, dịch
+            được tiếng, chơi được cờ vây.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — ĐI SÂU ━━━ */}
+      {/* ━━━ BƯỚC 5. ĐI SÂU ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2 mb-3">
           <Layers size={18} className="text-accent" />
-          Tín hiệu đi qua mạng như thế nào? — Năm chặng
+          Tín hiệu đi qua mạng như thế nào? Năm chặng dưới đây
         </h3>
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Cùng &ldquo;đi theo&rdquo; hai con số đầu vào{" "}
+          Cùng đi theo hai con số đầu vào{" "}
           <span className="font-mono text-foreground">x₁ = 0.6, x₂ = −0.4</span>{" "}
           xem chúng biến đổi thành hai phần trăm đầu ra thế nào. Bấm{" "}
           <em>Tiếp tục</em> để mở từng chặng.
@@ -1096,7 +1095,7 @@ export default function NeuralNetworkOverviewTopic() {
         <SignalFlow />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 6. THỬ THÁCH ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Một nơ-ron có đầu vào x₁ = 2, x₂ = -1. Trọng số w₁ = 0.5, w₂ = 1. Bias b = 0. Giá trị z trước ReLU là bao nhiêu?"
@@ -1107,7 +1106,7 @@ export default function NeuralNetworkOverviewTopic() {
             "z = 3 (chỉ cộng đầu vào)",
           ]}
           correct={0}
-          explanation="Công thức: z = w₁·x₁ + w₂·x₂ + b = 0.5·2 + 1·(-1) + 0 = 1 + (-1) + 0 = 0. Sau ReLU, a = max(0, 0) = 0 — nơ-ron này 'ngủ' ở ca này."
+          explanation="Công thức: z = w₁·x₁ + w₂·x₂ + b = 0.5·2 + 1·(-1) + 0 = 1 + (-1) + 0 = 0. Sau ReLU, a = max(0, 0) = 0. Nơ-ron này đang &ldquo;ngủ&rdquo; ở ca này."
         />
 
         <div className="mt-4">
@@ -1120,7 +1119,7 @@ export default function NeuralNetworkOverviewTopic() {
               "6 trọng số (chỉ đếm một chiều)",
             ]}
             correct={2}
-            explanation="Mỗi đầu vào nối tới từng nơ-ron ẩn → 2 × 3 = 6. Mỗi nơ-ron ẩn nối tới từng đầu ra → 3 × 2 = 6. Tổng 12 trọng số. Nếu có bias thì cộng thêm 3 + 2 = 5 bias nữa (bỏ qua ở đây)."
+            explanation="Mỗi đầu vào nối tới từng nơ-ron ẩn nên có 2 × 3 = 6 trọng số. Mỗi nơ-ron ẩn nối tới từng đầu ra nên có 3 × 2 = 6 trọng số nữa. Tổng 12 trọng số. Nếu có bias thì cộng thêm 3 + 2 = 5 bias nữa (bỏ qua ở đây)."
           />
         </div>
 
@@ -1130,21 +1129,21 @@ export default function NeuralNetworkOverviewTopic() {
             options={[
               "Mạng chạy nhanh hơn, không vấn đề gì",
               "Mạng vẫn học được các quy luật cong như trước",
-              "Toàn bộ mạng, dù có bao nhiêu lớp, tương đương một phép nhân ma trận duy nhất — chỉ học được đường thẳng",
+              "Toàn bộ mạng, dù có bao nhiêu lớp, tương đương một phép nhân ma trận duy nhất nên chỉ học được đường thẳng",
               "Mạng tự tạo ra ReLU mới",
             ]}
             correct={2}
-            explanation="Không có phi tuyến, phép nhân ma trận xếp chồng nhau vẫn ra một phép nhân ma trận. Mạng sẽ mất toàn bộ khả năng học quy luật cong. ReLU (hay tanh, sigmoid) tạo ra các 'khúc gãy' giúp mạng uốn cong không gian dữ liệu."
+            explanation="Không có phi tuyến, phép nhân ma trận xếp chồng nhau vẫn ra một phép nhân ma trận. Mạng sẽ mất toàn bộ khả năng học quy luật cong. ReLU (hay tanh, sigmoid) tạo ra các &ldquo;khúc gãy&rdquo;, nhờ vậy mạng có thể uốn cong không gian dữ liệu."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — GIẢI THÍCH ━━━ */}
+      {/* ━━━ BƯỚC 7. GIẢI THÍCH ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bạn đã thấy một mạng nhỏ hoạt động. Giờ gom lại thành hai công thức
-            cốt lõi — đủ để hiểu mọi mạng nơ-ron, từ mạng nhỏ bạn vừa chơi cho
+            cốt lõi, đủ để hiểu mọi mạng nơ-ron, từ mạng nhỏ bạn vừa chơi cho
             đến GPT-4 với cả nghìn tỷ trọng số.
           </p>
 
@@ -1155,16 +1154,16 @@ export default function NeuralNetworkOverviewTopic() {
             {"z = \\sum_{i} w_i \\cdot x_i + b \\quad \\Longrightarrow \\quad a = \\sigma(z)"}
           </LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Đọc đơn giản: &ldquo;lấy từng đầu vào nhân với trọng số của nó, cộng
-            tất cả lại, thêm bias b, rồi cho qua một hàm σ&rdquo;. Hàm σ có thể
-            là ReLU (nếu dương giữ nguyên, âm về 0), sigmoid (ép về khoảng 0–1),
-            hoặc tanh (ép về khoảng −1–+1). Trong ba hàm, ReLU là &ldquo;ngôi
-            sao&rdquo; vì đơn giản và học nhanh.
+            Đọc theo cách dân dã: &ldquo;lấy từng đầu vào nhân với trọng số của
+            nó, cộng tất cả lại, thêm bias b, rồi cho qua một hàm σ&rdquo;. Hàm
+            σ có thể là ReLU (nếu dương giữ nguyên, âm về 0), sigmoid (ép về
+            khoảng 0 đến 1), hoặc tanh (ép về khoảng −1 đến +1). Trong ba hàm,
+            ReLU là ngôi sao vì đơn giản và học nhanh.
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
             <p className="text-xs text-muted font-semibold uppercase tracking-wide mb-2">
-              Hình hoá ReLU — công tắc &ldquo;âm thì tắt&rdquo;
+              Hình hoá ReLU: công tắc &ldquo;âm thì tắt&rdquo;
             </p>
             <svg viewBox="0 0 300 150" className="w-full max-w-xs mx-auto">
               <line x1={20} y1={120} x2={280} y2={120} stroke="currentColor" className="text-muted" strokeWidth={1} />
@@ -1188,15 +1187,15 @@ export default function NeuralNetworkOverviewTopic() {
             Đọc đơn giản: &ldquo;đầu ra của lớp l bằng ma trận trọng số W nhân
             với đầu ra lớp trước, cộng bias, rồi qua hàm kích hoạt&rdquo;. Thay
             vì tính từng nơ-ron một, máy tính làm cả lớp trong một phép nhân ma
-            trận — nhanh gấp nghìn lần trên GPU. Đây cũng là lý do card đồ hoạ
-            NVIDIA bỗng dưng trở thành đế chế AI: chúng giỏi nhân ma trận.
+            trận. Nhờ vậy GPU chạy nhanh gấp nghìn lần, và đó cũng là lý do card
+            đồ hoạ NVIDIA bỗng dưng trở thành đế chế AI: chúng giỏi nhân ma trận.
           </p>
 
           <Callout variant="tip" title="Đếm trọng số của một mạng">
             Lớp có n_in đầu vào và n_out đầu ra thì có n_in × n_out trọng số,
             cộng thêm n_out bias. Một mạng 2 → 3 → 2 (giống demo) có: (2×3 + 3) +
-            (3×2 + 2) = 9 + 8 = 17 tham số. GPT-4 có khoảng 1.8 nghìn tỷ tham số
-            — gấp hơn 100 tỷ lần mạng nhỏ bạn vừa chơi!
+            (3×2 + 2) = 9 + 8 = 17 tham số. GPT-4 có khoảng 1.8 nghìn tỷ tham số,
+            gấp hơn 100 tỷ lần mạng nhỏ bạn vừa chơi!
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
@@ -1204,37 +1203,37 @@ export default function NeuralNetworkOverviewTopic() {
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
             <div className="rounded-xl border-l-4 border-l-blue-400 bg-blue-50 dark:bg-blue-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-blue-700 dark:text-blue-300">
-                MLP — Multi-Layer Perceptron
+              <p className="text-xs font-semibold text-foreground">
+                MLP: Multi-Layer Perceptron
               </p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Kiểu bạn vừa thấy: các lớp &ldquo;đầy đủ&rdquo; (mỗi nơ-ron nối
                 với tất cả nơ-ron lớp sau). Tốt cho dữ liệu bảng.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
-                CNN — Convolutional
+              <p className="text-xs font-semibold text-foreground">
+                CNN: Convolutional
               </p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Thêm phép tích chập, quét &ldquo;ô vuông nhỏ&rdquo; trên ảnh. Tốt
                 cho ảnh, video. ResNet, YOLO thuộc loại này.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+              <p className="text-xs font-semibold text-foreground">
                 RNN / LSTM
               </p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Nơ-ron có &ldquo;trí nhớ&rdquo;, đọc chuỗi từ trái sang phải.
                 Từng là vua xử lý ngôn ngữ trước Transformer.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-rose-400 bg-rose-50 dark:bg-rose-900/20 p-3 space-y-1">
-              <p className="text-xs font-semibold text-rose-700 dark:text-rose-300">
+              <p className="text-xs font-semibold text-foreground">
                 Transformer
               </p>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Kiến trúc đứng sau GPT, Gemini, Claude. Nơ-ron có thể &ldquo;chú
                 ý&rdquo; đến bất kỳ phần nào của đầu vào.
               </p>
@@ -1261,7 +1260,7 @@ export default function NeuralNetworkOverviewTopic() {
               },
               {
                 left: "Hàm kích hoạt",
-                right: "Công tắc phi tuyến — chặn giá trị âm hoặc ép về khoảng nhất định",
+                right: "Công tắc phi tuyến: chặn giá trị âm hoặc ép về khoảng nhất định",
               },
               {
                 left: "Softmax",
@@ -1291,8 +1290,8 @@ export default function NeuralNetworkOverviewTopic() {
               <strong>
                 mạng bắt đầu với trọng số ngẫu nhiên, chạy thử, so với đáp án đúng,
                 rồi tự điều chỉnh trọng số theo hướng giảm sai
-              </strong>{" "}
-              — lặp hàng triệu lần. Quá trình tính &ldquo;hướng giảm sai&rdquo;
+              </strong>
+              , lặp hàng triệu lần. Quá trình tính &ldquo;hướng giảm sai&rdquo;
               gọi là{" "}
               <TopicLink slug="backpropagation">lan truyền ngược</TopicLink>, và
               cách bước đi gọi là &ldquo;gradient descent&rdquo;.
@@ -1304,14 +1303,14 @@ export default function NeuralNetworkOverviewTopic() {
               Toán học: hợp của hai phép tuyến tính vẫn là một phép tuyến tính. W₂
               × (W₁ × x + b₁) + b₂ = (W₂W₁) × x + (W₂b₁ + b₂). Dù bạn xếp 100 lớp
               chồng nhau, kết quả cuối cùng chỉ tương đương một lớp tuyến tính
-              duy nhất. Phi tuyến (ReLU, tanh, sigmoid) phá vỡ tính chất này —
-              giúp mạng có thể &ldquo;uốn cong&rdquo; không gian dữ liệu và học
-              quy luật phức tạp.
+              duy nhất. Phi tuyến (ReLU, tanh, sigmoid) phá vỡ tính chất này.
+              Nhờ vậy mạng có thể &ldquo;uốn cong&rdquo; không gian dữ liệu và
+              học được các quy luật phức tạp.
             </p>
           </CollapsibleDetail>
 
           <p className="mt-4 leading-relaxed">
-            Mạng nơ-ron không chỉ nằm trong máy học lý thuyết — nó đang chạy mỗi
+            Mạng nơ-ron không chỉ nằm trong máy học lý thuyết. Nó đang chạy mỗi
             lần bạn hỏi Siri, dùng Google Dịch, mở khoá iPhone bằng khuôn mặt.
             Bước tiếp theo: đọc{" "}
             <TopicLink slug="perceptron">perceptron</TopicLink> để hiểu nơ-ron
@@ -1334,16 +1333,16 @@ export default function NeuralNetworkOverviewTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8. TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & Kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ về mạng nơ-ron"
           points={[
             "Mạng nơ-ron = nhiều nơ-ron đơn giản xếp thành lớp, kết nối với nhau. Ý tưởng vay từ bộ não, nhưng đơn giản hơn rất nhiều.",
             "Mỗi nơ-ron chỉ làm một việc: nhân các đầu vào với trọng số, cộng lại, thêm bias, rồi qua một công tắc (hàm kích hoạt).",
-            "Một lớp được tính đồng thời bằng phép nhân ma trận — đó là lý do GPU (giỏi nhân ma trận) chạy AI nhanh hơn CPU nhiều lần.",
-            "Hàm kích hoạt phi tuyến (ReLU, sigmoid, tanh) là bắt buộc — không có nó, dù bao nhiêu lớp cũng chỉ học được đường thẳng.",
-            "Softmax ở đầu ra biến các con số thành xác suất — mạng 'chọn' lớp có xác suất cao nhất.",
+            "Một lớp được tính đồng thời bằng phép nhân ma trận. Nhờ vậy GPU (giỏi nhân ma trận) chạy AI nhanh hơn CPU nhiều lần.",
+            "Hàm kích hoạt phi tuyến (ReLU, sigmoid, tanh) là bắt buộc. Không có nó, dù bao nhiêu lớp cũng chỉ học được đường thẳng.",
+            "Softmax ở đầu ra biến các con số thành xác suất, và mạng 'chọn' lớp có xác suất cao nhất.",
           ]}
         />
 
@@ -1362,7 +1361,7 @@ export default function NeuralNetworkOverviewTopic() {
         <div className="mt-6 flex items-center gap-2 text-xs text-muted">
           <Eye size={12} />
           <span>
-            Trước khi chuyển, kiểm tra nhanh xem bạn đã hiểu đến đâu — sáu câu
+            Trước khi chuyển, kiểm tra nhanh xem bạn đã hiểu đến đâu. Sáu câu
             ngắn, mất khoảng hai phút.
           </span>
         </div>

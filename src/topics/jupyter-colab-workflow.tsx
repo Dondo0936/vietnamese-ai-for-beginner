@@ -42,9 +42,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "jupyter-colab-workflow",
   title: "Jupyter / Google Colab",
-  titleVi: "Jupyter và Google Colab — Notebook là IDE của data scientist",
+  titleVi: "Jupyter và Google Colab: notebook là IDE của data scientist",
   description:
-    "Notebook là IDE của data scientist: viết code, chạy, thấy kết quả ngay, viết chú thích, tiếp tục. Bài thực hành chỉ cho bạn cách dùng trong ngày đầu tiên.",
+    "Mở notebook lên, gõ code vào một ô, ấn Shift+Enter, kết quả hiện ngay phía dưới. Bài này chỉ bạn cách dùng Jupyter và Google Colab trong ngày đầu tiên.",
   category: "foundations",
   tags: ["jupyter", "colab", "notebook", "tools", "workflow"],
   difficulty: "intermediate",
@@ -53,7 +53,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU: NOTEBOOK MÔ PHỎNG — 4 CELL MINI-ANALYSIS
+   DỮ LIỆU: NOTEBOOK MÔ PHỎNG (4 CELL MINI-ANALYSIS)
    ──────────────────────────────────────────────────────────── */
 
 type CellKind = "markdown" | "code";
@@ -107,7 +107,7 @@ interface CellState extends MockCell {
 }
 
 /* ────────────────────────────────────────────────────────────
-   NOTEBOOK MOCK — TRÌNH MÔ PHỎNG CUỘN
+   NOTEBOOK MOCK: TRÌNH MÔ PHỎNG CUỘN
    ──────────────────────────────────────────────────────────── */
 
 function NotebookMock() {
@@ -172,7 +172,7 @@ function NotebookMock() {
 
   return (
     <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-sm">
-      {/* Thanh công cụ phía trên — mô phỏng toolbar của Colab */}
+      {/* Thanh công cụ phía trên (mô phỏng toolbar của Colab) */}
       <div className="flex flex-wrap items-center gap-2 px-4 py-2 border-b border-border bg-card">
         <Notebook size={16} className="text-accent" />
         <span className="text-xs font-mono text-foreground">
@@ -213,7 +213,7 @@ function NotebookMock() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mx-auto mt-2 flex max-w-md items-center gap-2 rounded-lg border border-emerald-400/50 bg-emerald-50 px-3 py-2 text-xs text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-700/50"
+            className="mx-auto mt-2 flex max-w-md items-center gap-2 rounded-lg border border-emerald-400/50 bg-emerald-50 px-3 py-2 text-xs text-foreground dark:bg-emerald-900/20 dark:border-emerald-700/50"
           >
             <CheckCircle2 size={14} />
             <span>
@@ -329,7 +329,7 @@ function CellView({ cell, onRun }: { cell: CellState; onRun: () => void }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   MINI HISTOGRAM — OUTPUT giả cho cell cuối
+   MINI HISTOGRAM: OUTPUT giả cho cell cuối
    ──────────────────────────────────────────────────────────── */
 
 function MiniHistogram() {
@@ -436,23 +436,23 @@ const TOOL_PROFILES: Record<ToolId, ToolProfile> = {
     summary:
       "Notebook gốc chạy trực tiếp trên máy tính của bạn. Bạn tự lo mọi thứ: Python, thư viện, phần cứng.",
     pros: [
-      "Không giới hạn thời gian — máy của bạn, bạn toàn quyền",
-      "Dữ liệu không rời khỏi máy, phù hợp hồ sơ nhạy cảm",
-      "Có thể dùng mọi thư viện, kể cả bản sửa đổi do bạn tự viết",
+      "Không giới hạn thời gian. Máy của bạn, bạn toàn quyền.",
+      "Dữ liệu không rời khỏi máy, phù hợp hồ sơ nhạy cảm.",
+      "Dùng được mọi thư viện, kể cả bản sửa đổi do bạn tự viết.",
     ],
     cons: [
-      "Cần cài Python, pip, jupyter lần đầu — bước đầu thường rối",
-      "Không có GPU trừ khi máy bạn có card rời",
-      "Chia sẻ khó hơn — người nhận phải tự cài lại môi trường",
+      "Cần cài Python, pip, jupyter lần đầu. Bước đầu thường rối.",
+      "Không có GPU trừ khi máy bạn có card rời.",
+      "Chia sẻ khó hơn vì người nhận phải tự cài lại môi trường.",
     ],
     startSteps: [
-      "Cài Python 3.10 trở lên qua python.org hoặc Anaconda",
-      'Mở terminal, gõ: pip install notebook',
-      'Gõ tiếp: jupyter notebook — trình duyệt sẽ tự mở',
-      "Tạo notebook mới từ nút New → Python 3",
+      "Cài Python 3.10 trở lên qua python.org hoặc Anaconda.",
+      "Mở terminal, gõ: pip install notebook.",
+      "Gõ tiếp: jupyter notebook. Trình duyệt sẽ tự mở.",
+      "Tạo notebook mới từ nút New, chọn Python 3.",
     ],
     bestFor:
-      "Khi bạn cần bảo mật dữ liệu, hoặc muốn học sâu về môi trường Python.",
+      "Khi bạn cần bảo mật dữ liệu, hoặc muốn hiểu sâu về môi trường Python.",
   },
   colab: {
     id: "colab",
@@ -462,24 +462,24 @@ const TOOL_PROFILES: Record<ToolId, ToolProfile> = {
     summary:
       "Notebook chạy trên cloud của Google. Mở trình duyệt là có GPU miễn phí ngay.",
     pros: [
-      "Không cần cài gì — chỉ cần tài khoản Google",
-      "GPU Tesla T4 miễn phí cho mỗi phiên (bật trong Runtime settings)",
-      "Chia sẻ giống Google Docs — gửi link là xong",
-      "Tích hợp sẵn với Google Drive cho dataset và mô hình đã lưu",
+      "Không cần cài gì, chỉ cần tài khoản Google.",
+      "GPU Tesla T4 miễn phí cho mỗi phiên (bật trong Runtime settings).",
+      "Chia sẻ giống Google Docs, gửi link là xong.",
+      "Tích hợp sẵn với Google Drive cho dataset và model đã lưu.",
     ],
     cons: [
-      "Phiên tối đa khoảng 12 giờ, rảnh quá 90 phút bị kết thúc",
-      "Khi phiên hết, mọi biến trong RAM biến mất",
-      "Đôi lúc phải xếp hàng chờ GPU nếu dùng miễn phí quá nhiều",
+      "Phiên tối đa khoảng 12 giờ, rảnh quá 90 phút bị kết thúc.",
+      "Khi phiên hết, mọi biến trong RAM biến mất.",
+      "Đôi lúc phải xếp hàng chờ GPU nếu dùng miễn phí quá nhiều.",
     ],
     startSteps: [
-      "Vào colab.research.google.com và đăng nhập Google",
-      "Bấm File → New notebook (Tệp mới)",
-      "Vào Runtime → Change runtime type, chọn T4 GPU nếu cần",
-      "Bấm vào ô code đầu tiên, gõ code, ấn Shift+Enter",
+      "Vào colab.research.google.com và đăng nhập Google.",
+      "Bấm File, chọn New notebook (Tệp mới).",
+      "Vào Runtime, chọn Change runtime type, chọn T4 GPU nếu cần.",
+      "Bấm vào ô code đầu tiên, gõ code, ấn Shift+Enter.",
     ],
     bestFor:
-      "Người mới học deep learning — GPU miễn phí là lý do số một để chọn Colab.",
+      "Người mới học deep learning. GPU miễn phí là lý do số một để chọn Colab.",
   },
   vscode: {
     id: "vscode",
@@ -489,23 +489,23 @@ const TOOL_PROFILES: Record<ToolId, ToolProfile> = {
     summary:
       "Mở file .ipynb ngay trong VS Code. Phù hợp khi bạn đã quen dùng editor này cho code thường.",
     pros: [
-      "Cùng một editor cho cả file .py và .ipynb — không phải đổi ngữ cảnh",
-      "Tích hợp Git, debugger, autocomplete mạnh",
-      "Có thể kết nối kernel từ xa (máy chủ, WSL, remote SSH)",
+      "Cùng một editor cho cả file .py và .ipynb, không phải đổi ngữ cảnh.",
+      "Tích hợp Git, debugger, autocomplete mạnh.",
+      "Có thể kết nối kernel từ xa (máy chủ, WSL, remote SSH).",
     ],
     cons: [
-      "Cần cài VS Code + extension Jupyter + kernel Python",
-      "Không có GPU ảo — phụ thuộc máy bạn đang chạy",
-      "Nút Run có vị trí hơi khác so với Jupyter classic",
+      "Cần cài VS Code, extension Jupyter, kernel Python.",
+      "Không có GPU ảo, phụ thuộc máy bạn đang chạy.",
+      "Nút Run có vị trí hơi khác so với Jupyter classic.",
     ],
     startSteps: [
-      "Cài VS Code từ code.visualstudio.com",
-      "Vào Extensions, cài Python và Jupyter (cả hai của Microsoft)",
-      "Tạo file mới với đuôi .ipynb, VS Code tự mở đúng giao diện notebook",
-      "Chọn kernel Python ở góc trên phải, rồi bấm Run Cell",
+      "Cài VS Code từ code.visualstudio.com.",
+      "Vào Extensions, cài Python và Jupyter (cả hai của Microsoft).",
+      "Tạo file mới với đuôi .ipynb. VS Code tự mở đúng giao diện notebook.",
+      "Chọn kernel Python ở góc trên phải, rồi bấm Run Cell.",
     ],
     bestFor:
-      "Dự án vừa có notebook khám phá vừa có module Python dùng lại — một cửa sổ là đủ.",
+      "Dự án vừa có notebook khám phá vừa có module Python dùng lại. Một cửa sổ là đủ.",
   },
   kaggle: {
     id: "kaggle",
@@ -515,20 +515,20 @@ const TOOL_PROFILES: Record<ToolId, ToolProfile> = {
     summary:
       "Notebook cloud của Kaggle, tích hợp sâu với dataset công cộng và các cuộc thi ML.",
     pros: [
-      "30 giờ GPU P100 mỗi tuần miễn phí — nhiều hơn Colab miễn phí",
-      "Dataset Kaggle đã cài sẵn ở /kaggle/input, không cần tải về",
-      "Notebook công khai có thể lên trending, bạn xây dựng hồ sơ cá nhân",
+      "30 giờ GPU P100 mỗi tuần miễn phí, nhiều hơn Colab miễn phí.",
+      "Dataset Kaggle có sẵn ở /kaggle/input, không cần tải về.",
+      "Notebook công khai có thể lên trending, giúp bạn xây dựng hồ sơ cá nhân.",
     ],
     cons: [
-      "Phiên tối đa 9 giờ, output nhỏ hơn 20 GB",
-      "Không phù hợp cho dự án riêng tư hoặc dữ liệu nội bộ",
-      "Giao diện khác Colab chút ít — cần làm quen",
+      "Phiên tối đa 9 giờ, output nhỏ hơn 20 GB.",
+      "Không phù hợp cho dự án riêng tư hoặc dữ liệu nội bộ.",
+      "Giao diện khác Colab chút ít, cần làm quen.",
     ],
     startSteps: [
-      "Tạo tài khoản trên kaggle.com và xác thực số điện thoại",
-      "Vào tab Code, bấm + New Notebook",
-      "Thêm dataset qua nút + Add Data ở bên phải",
-      "Bật GPU trong Settings → Accelerator nếu cần",
+      "Tạo tài khoản trên kaggle.com và xác thực số điện thoại.",
+      "Vào tab Code, bấm + New Notebook.",
+      "Thêm dataset qua nút + Add Data ở bên phải.",
+      "Bật GPU trong Settings, mục Accelerator nếu cần.",
     ],
     bestFor:
       "Tham gia cuộc thi ML hoặc khám phá dataset công khai với GPU miễn phí.",
@@ -623,7 +623,7 @@ function ToolDeepenTab({ profile }: { profile: ToolProfile }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   PHÍM TẮT NOTEBOOK — VISUAL KEYBOARD
+   PHÍM TẮT NOTEBOOK: VISUAL KEYBOARD
    ──────────────────────────────────────────────────────────── */
 
 type ShortcutMode = "both" | "command" | "edit";
@@ -654,21 +654,21 @@ const SHORTCUTS: Shortcut[] = [
     mode: "edit",
     label: "Vào chế độ command",
     detail:
-      "Rời chế độ gõ. Khung ô chuyển sang xanh dương — giờ bàn phím điều khiển ô, không phải gõ vào ô.",
+      "Rời chế độ gõ. Khung ô chuyển sang xanh dương. Bàn phím lúc này điều khiển ô, không phải gõ vào ô.",
   },
   {
     keys: ["Enter"],
     mode: "command",
     label: "Vào chế độ edit",
     detail:
-      "Quay lại chế độ gõ. Khung ô chuyển sang xanh lá — giờ bạn gõ được code hoặc markdown.",
+      "Quay lại chế độ gõ. Khung ô chuyển sang xanh lá. Lúc này bạn gõ được code hoặc markdown.",
   },
   {
     keys: ["A"],
     mode: "command",
     label: "Thêm ô phía trên",
     detail:
-      "Nhanh khi bạn quên một bước khởi tạo và muốn chèn ô mới ở trên ô hiện tại.",
+      "Tiện khi bạn quên một bước khởi tạo và muốn chèn ô mới ở trên ô hiện tại.",
   },
   {
     keys: ["B"],
@@ -682,7 +682,7 @@ const SHORTCUTS: Shortcut[] = [
     mode: "command",
     label: "Xoá ô (ấn D hai lần)",
     detail:
-      "Ấn D liền nhau hai lần. Thiết kế an toàn: đề phòng bạn ấn nhầm một lần.",
+      "Ấn D liền nhau hai lần. Thiết kế an toàn để đề phòng bạn ấn nhầm một lần.",
   },
   {
     keys: ["Y"],
@@ -796,7 +796,7 @@ export default function JupyterColabWorkflowTopic() {
         ],
         correct: 1,
         explanation:
-          "Dấu ! cho phép bạn chạy lệnh shell ngay trong notebook — y như bạn gõ trong terminal. Nhờ vậy bạn có thể cài gói, kiểm tra GPU, hay tải file mà không cần rời khỏi notebook.",
+          "Dấu ! cho phép bạn chạy lệnh shell ngay trong notebook, y như bạn gõ trong terminal. Nhờ vậy bạn có thể cài gói, kiểm tra GPU, hay tải file mà không cần rời khỏi notebook.",
       },
       {
         question:
@@ -829,13 +829,13 @@ export default function JupyterColabWorkflowTopic() {
           "Vì sao sau khi runtime Colab hết phiên, mọi biến trong notebook của bạn biến mất?",
         options: [
           "Google xoá notebook khỏi Drive",
-          "Runtime là máy ảo dùng một lần — phiên hết thì máy ảo bị thu hồi",
+          "Runtime là máy ảo dùng một lần. Hết phiên thì máy ảo bị thu hồi.",
           "Biến quá lớn nên hệ thống dọn rác đã giải phóng",
           "Notebook tự động ghi biến vào file backup",
         ],
         correct: 1,
         explanation:
-          "Mỗi phiên Colab là một VM tạm, hết phiên là bị huỷ. Muốn giữ kết quả, hãy lưu ra Drive bằng pickle, joblib hoặc pd.to_csv — và chỉ load lại .pkl do CHÍNH BẠN tạo (file .pkl lạ có thể chạy code tuỳ ý khi load).",
+          "Mỗi phiên Colab là một VM tạm, hết phiên là bị huỷ. Muốn giữ kết quả, hãy lưu ra Drive bằng pickle, joblib hoặc pd.to_csv. Và chỉ load lại .pkl do CHÍNH BẠN tạo (file .pkl lạ có thể chạy code tuỳ ý khi load).",
       },
       {
         question:
@@ -843,7 +843,7 @@ export default function JupyterColabWorkflowTopic() {
         options: ["Ctrl+Enter", "Shift+Enter", "Alt+Enter", "Tab"],
         correct: 1,
         explanation:
-          "Shift+Enter là phím tắt biểu tượng của mọi notebook. Ctrl+Enter chạy ô nhưng ở nguyên tại vị trí — dùng khi bạn muốn chỉnh lại cùng ô đó nhiều lần.",
+          "Shift+Enter là phím tắt biểu tượng của mọi notebook. Ctrl+Enter chạy ô nhưng ở nguyên tại vị trí, dùng khi bạn muốn chỉnh lại cùng ô đó nhiều lần.",
       },
       {
         question:
@@ -864,7 +864,7 @@ export default function JupyterColabWorkflowTopic() {
 
   return (
     <>
-      {/* ═══ BƯỚC 1 — HOOK ═══ */}
+      {/* ═══ BƯỚC 1 · HOOK ═══ */}
       <LessonSection step={1} totalSteps={8} label="Notebook là IDE của data scientist">
         <div className="rounded-2xl border border-border bg-accent-light p-6 space-y-3">
           <div className="flex items-start gap-3">
@@ -876,46 +876,46 @@ export default function JupyterColabWorkflowTopic() {
                 Notebook là IDE của data scientist
               </h2>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Viết code, chạy, thấy kết quả ngay, viết chú thích, tiếp tục.
-                Cứ vòng lặp đó mỗi ngày. Nếu lập trình web thường cần chạy lại
-                cả chương trình để xem một thay đổi, thì với notebook, bạn chỉ
-                cần ấn <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 text-[11px] font-mono">Shift</kbd>
+                Viết code, chạy, thấy kết quả ngay, viết chú thích, rồi tiếp
+                tục. Cứ vòng lặp đó mỗi ngày. Nếu lập trình web thường cần chạy
+                lại cả chương trình để xem một thay đổi, thì với notebook, bạn
+                chỉ cần ấn <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 text-[11px] font-mono">Shift</kbd>
                 {" + "}
                 <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 text-[11px] font-mono">Enter</kbd> và thấy kết quả tại chỗ.
               </p>
               <p className="text-sm text-foreground/80 leading-relaxed">
-                Bài thực hành này chỉ bạn cách sử dụng notebook trong ngày đầu
-                tiên: từ tạo ô đầu tiên, chạy thử một bài phân tích mini, đến
-                chọn giữa Jupyter chạy local hay Google Colab trên cloud.
+                Bài này chỉ bạn cách dùng notebook trong ngày đầu tiên: từ tạo
+                ô đầu tiên, chạy thử một bài phân tích mini, đến chọn giữa
+                Jupyter chạy local hay Google Colab trên cloud.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ═══ BƯỚC 2 — DỰ ĐOÁN ═══ */}
+      {/* ═══ BƯỚC 2 · DỰ ĐOÁN ═══ */}
       <LessonSection step={2} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn muốn huấn luyện một mạng nơ-ron nhỏ nhưng máy tính không có GPU. Công cụ nào cho bạn GPU miễn phí để bắt đầu ngay trong buổi chiều nay?"
           options={[
-            "Jupyter Notebook chạy trên máy — có thể bật GPU ảo",
-            "Google Colab — chạy trên trình duyệt, có Tesla T4 miễn phí",
-            "VS Code Notebooks — luôn có GPU ảo khi mở file .ipynb",
+            "Jupyter Notebook chạy trên máy, có thể bật GPU ảo",
+            "Google Colab chạy trên trình duyệt, có Tesla T4 miễn phí",
+            "VS Code Notebooks luôn có GPU ảo khi mở file .ipynb",
             "Không có cách nào ngoài việc mua card GPU",
           ]}
           correct={1}
-          explanation="Colab cấp phát GPU Tesla T4 miễn phí cho mỗi phiên — bạn chỉ cần đổi Runtime trong menu là có. Jupyter local không ảo GPU; nó chỉ dùng phần cứng trên máy bạn."
+          explanation="Colab cấp phát GPU Tesla T4 miễn phí cho mỗi phiên. Bạn chỉ cần đổi Runtime trong menu là có. Jupyter local không ảo GPU. Nó chỉ dùng phần cứng trên máy bạn."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
-            Nếu bạn trả lời đúng — xin chúc mừng, bạn đã nắm lý do tại sao
-            Colab trở thành công cụ số một cho người mới học deep learning.
-            Nếu chưa, đừng lo. Phần tiếp theo sẽ cho bạn nghịch thử một
-            notebook mô phỏng để cảm nhận vòng lặp viết-chạy-xem.
+            Nếu bạn trả lời đúng, xin chúc mừng. Bạn đã nắm lý do tại sao Colab
+            trở thành công cụ số một cho người mới học deep learning. Nếu
+            chưa, đừng lo. Phần tiếp theo sẽ cho bạn nghịch thử một notebook
+            mô phỏng để cảm nhận vòng lặp viết, chạy, xem.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ═══ BƯỚC 3 — REVEAL: NOTEBOOK MOCK ═══ */}
+      {/* ═══ BƯỚC 3 · REVEAL: NOTEBOOK MOCK ═══ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-4">
@@ -934,8 +934,8 @@ export default function JupyterColabWorkflowTopic() {
             <NotebookMock />
 
             <Callout variant="insight" title="Điều cần cảm nhận">
-              Chú ý cảm giác: <strong>code ↔ kết quả ở cạnh nhau</strong>. Bạn
-              không cần chạy cả chương trình, không cần save file rồi mở
+              Chú ý cảm giác: <strong>code và kết quả ở cạnh nhau</strong>.
+              Bạn không cần chạy cả chương trình, không cần save file rồi mở
               terminal. Một ô, một Enter, một dòng kết quả. Đó là lý do
               notebook thắng mọi editor khác khi bạn đang khám phá dữ liệu.
             </Callout>
@@ -965,8 +965,8 @@ export default function JupyterColabWorkflowTopic() {
                   </p>
                 </div>
                 <p className="text-xs text-muted leading-snug">
-                  Python thật, chạy thật. Số trong ngoặc vuông là thứ tự chạy
-                  — tăng dần mỗi lần bạn chạy ô.
+                  Python thật, chạy thật. Số trong ngoặc vuông là thứ tự chạy,
+                  tăng dần mỗi lần bạn chạy ô.
                 </p>
               </div>
               <div className="rounded-xl border border-border bg-card p-3">
@@ -979,8 +979,8 @@ export default function JupyterColabWorkflowTopic() {
                   </p>
                 </div>
                 <p className="text-xs text-muted leading-snug">
-                  Xuất hiện ngay dưới ô code. Text, bảng, biểu đồ, hình
-                  ảnh — tất cả chung một dòng chảy.
+                  Xuất hiện ngay dưới ô code. Text, bảng, biểu đồ, hình ảnh,
+                  tất cả chung một dòng chảy.
                 </p>
               </div>
             </div>
@@ -988,7 +988,7 @@ export default function JupyterColabWorkflowTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══ BƯỚC 4 — AHA ═══ */}
+      {/* ═══ BƯỚC 4 · AHA ═══ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
           Notebook không phải là một <em>file code</em>. Nó là một{" "}
@@ -999,14 +999,14 @@ export default function JupyterColabWorkflowTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══ BƯỚC 5 — DEEPEN: TABVIEW 4 CÔNG CỤ ═══ */}
+      {/* ═══ BƯỚC 5 · DEEPEN: TABVIEW 4 CÔNG CỤ ═══ */}
       <LessonSection step={5} totalSteps={8} label="So sánh 4 công cụ notebook">
         <div className="space-y-3">
           <p className="text-sm text-muted leading-relaxed">
-            Không có công cụ &ldquo;tốt nhất&rdquo; tuyệt đối — chỉ có công
-            cụ phù hợp nhất cho hoàn cảnh của bạn. Bốn tab dưới đây tóm tắt
-            ưu nhược điểm của từng lựa chọn phổ biến, kèm cách bắt đầu
-            trong 4 bước cho mỗi công cụ.
+            Không có công cụ &ldquo;tốt nhất&rdquo; tuyệt đối. Chỉ có công cụ
+            phù hợp nhất cho hoàn cảnh của bạn. Bốn tab dưới đây tóm tắt ưu
+            nhược điểm của từng lựa chọn phổ biến, kèm cách bắt đầu trong 4
+            bước cho mỗi công cụ.
           </p>
 
           <TabView
@@ -1031,17 +1031,17 @@ export default function JupyterColabWorkflowTopic() {
           />
 
           <Callout variant="tip" title="Lộ trình đề xuất cho người mới">
-            Bắt đầu với <strong>Google Colab</strong> cho vài tuần đầu — không
+            Bắt đầu với <strong>Google Colab</strong> cho vài tuần đầu. Không
             cài gì, có GPU, bạn tập trung vào việc học ML thay vì gỡ rối môi
-            trường. Khi bạn đã quen notebook và muốn kiểm soát sâu hơn, chuyển
-            dần sang <strong>VS Code Notebooks</strong>. Chuyển sang{" "}
+            trường. Khi đã quen notebook và muốn kiểm soát sâu hơn, chuyển dần
+            sang <strong>VS Code Notebooks</strong>. Chuyển sang{" "}
             <strong>Jupyter local</strong> chỉ khi bạn cần xử lý dữ liệu không
             được phép rời máy.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ═══ BƯỚC 6 — CHALLENGE ═══ */}
+      {/* ═══ BƯỚC 6 · CHALLENGE ═══ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Bạn là sinh viên mới bắt đầu học deep learning, máy laptop cũ không có GPU. Vì sao Colab lại là lựa chọn gần như hoàn hảo cho giai đoạn này?"
@@ -1056,14 +1056,14 @@ export default function JupyterColabWorkflowTopic() {
         />
       </LessonSection>
 
-      {/* ═══ BƯỚC 7 — EXPLAIN ═══ */}
+      {/* ═══ BƯỚC 7 · EXPLAIN ═══ */}
       <ExplanationSection topicSlug={metadata.slug}>
-        <LessonSection label="Phím tắt — ngôn ngữ cơ thể của notebook" step={1}>
+        <LessonSection label="Phím tắt: ngôn ngữ cơ thể của notebook" step={1}>
           <p className="leading-relaxed">
             Notebook có hai chế độ: <strong>command</strong> (bàn phím điều
-            khiển ô) và <strong>edit</strong> (bàn phím gõ vào ô). Biết được
-            bạn đang ở chế độ nào — và biết vài phím tắt quan trọng — sẽ tăng
-            tốc độ bạn làm việc lên gấp đôi trong tuần đầu tiên.
+            khiển ô) và <strong>edit</strong> (bàn phím gõ vào ô). Biết bạn
+            đang ở chế độ nào, cộng với vài phím tắt quan trọng, sẽ tăng tốc
+            độ bạn làm việc lên gấp đôi trong tuần đầu tiên.
           </p>
           <div className="flex items-center gap-2 text-xs text-muted">
             <KeyboardIcon size={14} className="text-accent" />
@@ -1092,7 +1092,7 @@ export default function JupyterColabWorkflowTopic() {
               <div className="flex items-center gap-2">
                 <Terminal size={16} className="text-sky-500" />
                 <h4 className="text-sm font-semibold text-foreground">
-                  1. !pip install — cài thư viện mới
+                  1. !pip install: cài thư viện mới
                 </h4>
               </div>
               <p className="text-sm text-muted leading-relaxed">
@@ -1116,7 +1116,7 @@ print(sns.__version__)`}
               <div className="flex items-center gap-2">
                 <Cpu size={16} className="text-emerald-500" />
                 <h4 className="text-sm font-semibold text-foreground">
-                  2. !nvidia-smi — kiểm tra GPU đang được cấp
+                  2. !nvidia-smi: kiểm tra GPU đang được cấp
                 </h4>
               </div>
               <p className="text-sm text-muted leading-relaxed">
@@ -1142,7 +1142,7 @@ print('Tên GPU:', torch.cuda.get_device_name(0))`}
               <div className="flex items-center gap-2">
                 <HardDrive size={16} className="text-amber-500" />
                 <h4 className="text-sm font-semibold text-foreground">
-                  3. drive.mount — gắn Google Drive vào notebook
+                  3. drive.mount: gắn Google Drive vào notebook
                 </h4>
               </div>
               <p className="text-sm text-muted leading-relaxed">
@@ -1159,8 +1159,8 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
               </CodeBlock>
               <p className="text-xs text-muted leading-snug">
                 Khi chạy, Colab sẽ mở cửa sổ yêu cầu bạn đăng nhập Google và
-                cấp quyền. Nhớ xoá ô drive.mount trước khi chia sẻ notebook —
-                bạn không muốn ai cũng nhìn thấy đường dẫn riêng của mình.
+                cấp quyền. Nhớ xoá ô drive.mount trước khi chia sẻ notebook.
+                Bạn không muốn ai cũng nhìn thấy đường dẫn riêng của mình.
               </p>
             </div>
           </div>
@@ -1168,17 +1168,17 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
           <Callout variant="warning" title="Ba lỗi hay gặp với pip trong notebook">
             <ul className="list-disc list-inside space-y-1">
               <li>
-                <strong>ModuleNotFoundError sau khi !pip install</strong> —
+                <strong>ModuleNotFoundError sau khi !pip install</strong>:
                 đôi khi pip cài vào interpreter khác với kernel. Cách sửa:
                 dùng <code>%pip install</code> thay cho <code>!pip install</code>.
               </li>
               <li>
-                <strong>Không restart kernel sau khi nâng cấp</strong> —
-                vài gói (như numpy) chỉ load một lần mỗi phiên. Ấn Runtime →
-                Restart session khi cần chắc ăn.
+                <strong>Không restart kernel sau khi nâng cấp</strong>: vài gói
+                (như numpy) chỉ load một lần mỗi phiên. Ấn Runtime → Restart
+                session khi cần chắc ăn.
               </li>
               <li>
-                <strong>Quên ghi phiên bản</strong> — <code>!pip install pkg</code>{" "}
+                <strong>Quên ghi phiên bản</strong>: <code>!pip install pkg</code>{" "}
                 lấy bản mới nhất. Một tuần sau pkg cập nhật, code bạn gãy. Luôn{" "}
                 <code>pkg==X.Y</code>.
               </li>
@@ -1194,7 +1194,7 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
           </p>
           <ol className="list-decimal list-inside space-y-2 pl-2 text-sm text-foreground/90 leading-relaxed">
             <li>
-              <strong>Đổi runtime</strong> — Menu <code>Runtime → Change runtime type</code>
+              <strong>Đổi runtime</strong>: vào menu <code>Runtime → Change runtime type</code>
               , chọn T4 GPU nếu cần. Đổi runtime sẽ xoá toàn bộ biến cũ.
             </li>
             <li>
@@ -1209,8 +1209,8 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
               bản.
             </li>
             <li>
-              <strong>import và kiểm tra __version__</strong> — đảm bảo
-              kernel thấy đúng bản.
+              <strong>import và kiểm tra __version__</strong>: đảm bảo kernel
+              thấy đúng bản.
             </li>
             <li>
               <strong>Cập nhật đường dẫn dataset</strong> thành biến hằng ở
@@ -1227,7 +1227,7 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
             </p>
             <p className="text-sm leading-relaxed">
               Thử nghiệm nhanh: tạo ô <code>x = 10</code>, ô tiếp{" "}
-              <code>print(x)</code>. Chạy ô dưới trước ô trên — Python báo
+              <code>print(x)</code>. Chạy ô dưới trước ô trên. Python báo
               <code> NameError: name &apos;x&apos; is not defined</code>. Đó
               chính là cảm giác &ldquo;chạy sai thứ tự&rdquo; nhân với một
               notebook có 40 ô.
@@ -1235,7 +1235,7 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
           </CollapsibleDetail>
         </LessonSection>
 
-        <LessonSection label="Khi nào cần công thức — dùng LaTeX trong markdown" step={4}>
+        <LessonSection label="Khi nào cần công thức: dùng LaTeX trong markdown" step={4}>
           <p className="leading-relaxed">
             Notebook cho phép viết công thức toán bằng LaTeX ngay trong ô
             markdown. Điều này cực hữu ích khi bạn cần trình bày một metric.
@@ -1266,29 +1266,30 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
         <LessonSection label="Bẫy hay gặp với runtime và cách tránh" step={5}>
           <ul className="list-disc list-inside space-y-2 pl-2 text-sm text-foreground/90 leading-relaxed">
             <li>
-              <strong>Idle timeout 90 phút</strong> — Colab miễn phí cắt
-              runtime khi bạn rời tab quá lâu. Mở tab trước khi đi uống cà
-              phê dài là đủ mất cả phiên.
+              <strong>Idle timeout 90 phút</strong>: Colab miễn phí cắt runtime
+              khi bạn rời tab quá lâu. Mở tab trước khi đi uống cà phê dài là
+              đủ mất cả phiên.
             </li>
             <li>
-              <strong>Quên lưu mô hình ra Drive</strong> — sau khi huấn
-              luyện, luôn{" "}
+              <strong>Quên lưu mô hình ra Drive</strong>: sau khi huấn luyện,
+              luôn{" "}
               <code>joblib.dump(clf, &apos;/content/drive/.../model.pkl&apos;)</code>. Runtime hết là mô hình mất.
               <span className="block mt-1 text-[11px] text-amber-700 dark:text-amber-300">
-                ⚠️ Chỉ <code>joblib.load</code> trên file do chính bạn tạo —
-                file <code>.pkl</code> lạ có thể chạy code Python tuỳ ý khi load.
+                ⚠️ Chỉ <code>joblib.load</code> trên file do chính bạn tạo. File{" "}
+                <code>.pkl</code> lạ có thể chạy code Python tuỳ ý khi load.
               </span>
             </li>
             <li>
-              <strong>Execution count nhảy lung tung</strong> — các số
-              trong ngoặc vuông như [3][8][1][5] là dấu hiệu bạn đã chạy ô
-              lộn xộn. Trước khi chia sẻ, luôn <code>Runtime → Restart and run all</code> để kiểm tra notebook chạy sạch từ đầu.
+              <strong>Execution count nhảy lung tung</strong>: các số trong
+              ngoặc vuông như [3][8][1][5] là dấu hiệu bạn đã chạy ô lộn xộn.
+              Trước khi chia sẻ, luôn <code>Runtime → Restart and run all</code>{" "}
+              để kiểm tra notebook chạy sạch từ đầu.
             </li>
             <li>
-              <strong>Biến &ldquo;ma&rdquo;</strong> — bạn xoá định nghĩa
-              một hàm khỏi ô, nhưng hàm vẫn còn trong runtime nên vẫn gọi
-              được. Người nhận mở lại bị lỗi. Cách chữa: restart kernel
-              thường xuyên, và nhớ rằng file .ipynb phải chạy độc lập.
+              <strong>Biến &ldquo;ma&rdquo;</strong>: bạn xoá định nghĩa một
+              hàm khỏi ô, nhưng hàm vẫn còn trong runtime nên vẫn gọi được.
+              Người nhận mở lại bị lỗi. Cách chữa: restart kernel thường xuyên,
+              và nhớ rằng file .ipynb phải chạy độc lập.
             </li>
           </ul>
 
@@ -1299,7 +1300,7 @@ df = pd.read_csv('/content/drive/MyDrive/data/iris.csv')`}
             share thư mục ấy.
           </Callout>
 
-          <CollapsibleDetail title="Tăng tốc khi dữ liệu ở Drive — sao chép về /content">
+          <CollapsibleDetail title="Tăng tốc khi dữ liệu ở Drive: sao chép về /content">
             <p className="text-sm leading-relaxed mb-2">
               Đọc file từ Drive qua mạng chậm (mỗi file nhỏ mất khoảng 100
               ms). Nếu bạn có 10.000 ảnh, thời gian I/O có thể chiếm 90%
@@ -1317,8 +1318,8 @@ if not os.path.exists(DST):
     print(f'Copied in {time.time()-t0:.1f}s')`}
             </CodeBlock>
             <p className="text-sm leading-relaxed">
-              Trên dataset lớn, trick này tăng tốc huấn luyện từ 3 đến 10
-              lần — chi phí chỉ là thời gian copy ban đầu.
+              Trên dataset lớn, trick này tăng tốc huấn luyện từ 3 đến 10 lần.
+              Chi phí chỉ là thời gian copy ban đầu.
             </p>
           </CollapsibleDetail>
         </LessonSection>
@@ -1329,28 +1330,28 @@ if not os.path.exists(DST):
           </p>
           <ul className="list-disc list-inside space-y-1 text-sm leading-relaxed pl-2">
             <li>
-              <TopicLink slug="python-for-ml">Python cho ML</TopicLink> — kỹ
+              <TopicLink slug="python-for-ml">Python cho ML</TopicLink>: kỹ
               năng lập trình nền tảng bạn dùng trong mọi ô code.
             </li>
             <li>
-              <TopicLink slug="data-preprocessing">Tiền xử lý dữ liệu</TopicLink>{" "}
-              — bước tự nhiên tiếp theo sau khi load dataset.
+              <TopicLink slug="data-preprocessing">Tiền xử lý dữ liệu</TopicLink>
+              : bước tự nhiên tiếp theo sau khi load dataset.
             </li>
             <li>
-              <TopicLink slug="end-to-end-ml-project">Dự án ML end-to-end</TopicLink>{" "}
-              — ghép các mảnh rời thành pipeline hoàn chỉnh.
+              <TopicLink slug="end-to-end-ml-project">Dự án ML end-to-end</TopicLink>
+              : ghép các mảnh rời thành pipeline hoàn chỉnh.
             </li>
           </ul>
         </LessonSection>
       </ExplanationSection>
 
-      {/* ═══ BƯỚC 8 — TÓM TẮT + QUIZ ═══ */}
+      {/* ═══ BƯỚC 8 · TÓM TẮT + QUIZ ═══ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           title="6 điểm cần nhớ"
           points={[
             "Notebook là IDE sống: code và kết quả cạnh nhau, vòng lặp viết-chạy-xem chỉ mất vài giây.",
-            "Mỗi ô code có execution count riêng — thứ tự bạn chạy quan trọng hơn thứ tự ô xếp trong file.",
+            "Mỗi ô code có execution count riêng. Thứ tự bạn chạy quan trọng hơn thứ tự ô xếp trong file.",
             "Colab là lựa chọn số một cho người mới học deep learning: không cần cài, có GPU T4 miễn phí.",
             "Thứ tự chuẩn mỗi phiên Colab: đổi runtime → kiểm tra GPU → mount Drive → cài gói → import và kiểm tra version.",
             "Dấu ! biến ô thành shell: !pip install, !nvidia-smi, !ls đều chạy được y như terminal.",
@@ -1370,7 +1371,7 @@ if not os.path.exists(DST):
             </a>{" "}
             ngay sau khi đóng bài này. Tạo notebook mới, chạy thử 3 câu lệnh{" "}
             <code>!pip install</code>, <code>!nvidia-smi</code>,{" "}
-            <code>drive.mount</code> — ấn Shift+Enter từng dòng. Đó là cách
+            <code>drive.mount</code>. Ấn Shift+Enter từng dòng. Đó là cách
             chắc chắn nhất để kiến thức dính lại.
           </Callout>
         </div>
@@ -1381,7 +1382,7 @@ if not os.path.exists(DST):
         <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted">
           <Lightbulb size={12} />
           <span>
-            Làm lại bất cứ lúc nào — quiz này không chấm điểm thật, mục tiêu
+            Làm lại bất cứ lúc nào. Quiz này không chấm điểm thật, mục tiêu
             chỉ là củng cố trí nhớ.
           </span>
         </div>

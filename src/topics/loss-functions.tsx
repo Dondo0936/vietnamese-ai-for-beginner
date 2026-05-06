@@ -36,9 +36,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "loss-functions",
   title: "Loss Functions",
-  titleVi: "Hàm mất mát — Điểm số của mô hình",
+  titleVi: "Hàm loss: điểm số của model",
   description:
-    "Loss là 'điểm số' của mô hình — càng thấp càng tốt. Chọn sai loss đồng nghĩa mô hình học sai mục tiêu. Kéo điểm dự đoán và thấy MSE, MAE, cross-entropy phản ứng rất khác nhau.",
+    "Loss là 'điểm số' của model. Càng thấp càng tốt. Chọn sai loss thì model sẽ học sai mục tiêu. Kéo từng điểm dự đoán và thấy MSE, MAE, cross-entropy phản ứng rất khác nhau.",
   category: "neural-fundamentals",
   tags: ["training", "optimization", "fundamentals"],
   difficulty: "intermediate",
@@ -51,7 +51,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ══════════════════════════════════════════════════════════════════
-   HELPERS — CÁC HÀM MẤT MÁT CƠ BẢN
+   HELPERS · CÁC HÀM MẤT MÁT CƠ BẢN
    ══════════════════════════════════════════════════════════════════ */
 
 type LossKey = "mse" | "mae" | "huber" | "ce";
@@ -98,7 +98,7 @@ function averageLoss(
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   DỮ LIỆU MẶC ĐỊNH — 7 điểm (giá nhà / nhiệt độ tuỳ vocab)
+   DỮ LIỆU MẶC ĐỊNH · 7 điểm (giá nhà / nhiệt độ tuỳ vocab)
    ══════════════════════════════════════════════════════════════════ */
 
 const INITIAL_POINTS: Point[] = [
@@ -116,7 +116,7 @@ const SVG_H = 260;
 const MARGIN = 30;
 
 /* ══════════════════════════════════════════════════════════════════
-   SCATTER — Kéo từng điểm "dự đoán" để thấy loss thay đổi
+   SCATTER · Kéo từng điểm "dự đoán" để thấy loss thay đổi
    ══════════════════════════════════════════════════════════════════ */
 
 function LossScatter({ lossKey }: { lossKey: LossKey }) {
@@ -182,7 +182,7 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
       ? "MSE (bình phương trung bình)"
       : lossKey === "mae"
         ? "MAE (trị tuyệt đối trung bình)"
-        : "Huber (hỗn hợp)";
+        : "Huber (kết hợp MSE và MAE)";
 
   const lossColor =
     lossKey === "mse"
@@ -195,9 +195,9 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
     <div className="space-y-4">
       <p className="text-sm text-muted leading-relaxed">
         Mỗi chấm cam là <strong>giá trị thực</strong>. Mỗi chấm xanh là{" "}
-        <strong>dự đoán của mô hình</strong>.{" "}
-        <em>Kéo chấm xanh lên xuống</em> để thấy từng loại hàm mất mát &ldquo;la&rdquo; to
-        nhỏ khác nhau.
+        <strong>dự đoán của model</strong>. Hãy{" "}
+        <em>kéo chấm xanh lên xuống</em> và quan sát từng hàm loss &ldquo;la&rdquo; to
+        nhỏ khác nhau ra sao.
       </p>
 
       <div className="rounded-xl border border-border bg-card p-4 space-y-3">
@@ -249,7 +249,7 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
             );
           })}
 
-          {/* Giá trị thực — chấm cam */}
+          {/* Giá trị thực: chấm cam */}
           {points.map((p) => (
             <circle
               key={`actual-${p.id}`}
@@ -262,7 +262,7 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
             />
           ))}
 
-          {/* Dự đoán — chấm màu theo loss, có thể kéo */}
+          {/* Dự đoán: chấm màu theo loss, có thể kéo */}
           {points.map((p, idx) => {
             const contribution = perPointLoss[idx] / maxPerPoint;
             const radius = 6 + contribution * 3;
@@ -321,10 +321,10 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
           <button
             type="button"
             onClick={addOutlier}
-            className="flex items-center gap-1 rounded-lg border border-rose-300 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-700 px-3 py-1.5 text-xs font-medium text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/40"
+            className="flex items-center gap-1 rounded-lg border border-rose-300 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-700 px-3 py-1.5 text-xs font-semibold text-foreground dark:text-rose-100 hover:bg-rose-100 dark:hover:bg-rose-900/40"
           >
             <AlertTriangle size={11} />
-            Đẩy một điểm thành ngoại lai
+            Đẩy một điểm thành outlier
           </button>
           <button
             type="button"
@@ -379,7 +379,7 @@ function LossScatter({ lossKey }: { lossKey: LossKey }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   BCE VISUAL — trục xác suất dự đoán, nhãn thực y = 0 hoặc y = 1
+   BCE VISUAL · trục xác suất dự đoán, nhãn thực y = 0 hoặc y = 1
    ══════════════════════════════════════════════════════════════════ */
 
 function CrossEntropyExplorer() {
@@ -409,17 +409,17 @@ function CrossEntropyExplorer() {
 
   const tone =
     currentLoss < 0.3
-      ? { label: "Loss rất thấp — dự đoán tốt", color: "#10b981" }
+      ? { label: "Loss rất thấp. Dự đoán tốt.", color: "#10b981" }
       : currentLoss < 1.2
-        ? { label: "Loss vừa — còn phải học thêm", color: "#f59e0b" }
-        : { label: "Loss rất cao — phạt nặng vì tự tin sai", color: "#ef4444" };
+        ? { label: "Loss vừa. Còn phải học thêm.", color: "#f59e0b" }
+        : { label: "Loss rất cao. Phạt nặng vì tự tin sai.", color: "#ef4444" };
 
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted leading-relaxed">
-        Trong phân loại, mô hình không đoán một con số, mà đoán một{" "}
+        Trong phân loại, model không đoán một con số, mà đoán một{" "}
         <strong>xác suất</strong> (ví dụ &ldquo;email này là spam với xác suất
-        0.82&rdquo;). Cross-Entropy phạt <em>rất nặng</em> khi mô hình tự tin nhưng
+        0.82&rdquo;). Cross-entropy phạt <em>rất nặng</em> khi model tự tin nhưng
         sai. Hãy kéo xác suất dự đoán và đảo nhãn thực để cảm nhận.
       </p>
 
@@ -442,7 +442,7 @@ function CrossEntropyExplorer() {
                     : "border-border bg-card text-muted hover:text-foreground"
                 }`}
               >
-                {t === 1 ? "y = 1 — là spam" : "y = 0 — không phải spam"}
+                {t === 1 ? "y = 1 (là spam)" : "y = 0 (không phải spam)"}
               </button>
             );
           })}
@@ -536,7 +536,7 @@ function CrossEntropyExplorer() {
             textAnchor="middle"
             transform="rotate(-90 14 100)"
           >
-            Cross-Entropy
+            Cross-entropy
           </text>
 
           {/* Nhãn giá trị hiện tại */}
@@ -579,9 +579,9 @@ function CrossEntropyExplorer() {
             className="w-full h-2 accent-accent"
           />
           <div className="flex justify-between text-[10px] text-tertiary mt-0.5">
-            <span>gần 0 — chắc không spam</span>
-            <span>0.5 — không chắc</span>
-            <span>gần 1 — chắc là spam</span>
+            <span>gần 0 (chắc không spam)</span>
+            <span>0.5 (không chắc)</span>
+            <span>gần 1 (chắc là spam)</span>
           </div>
           <p
             className="mt-2 text-xs italic text-center"
@@ -602,71 +602,71 @@ function CrossEntropyExplorer() {
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Mô hình dự đoán xác suất spam = 0.99 nhưng email thực tế KHÔNG phải spam (y = 0). Cross-Entropy sẽ thế nào?",
+      "Model dự đoán xác suất spam = 0.99 nhưng email thực tế KHÔNG phải spam (y = 0). Cross-entropy sẽ thế nào?",
     options: [
-      "Rất thấp — dự đoán gần 1 nên tốt",
-      "Rất cao — mô hình &ldquo;tự tin sai&rdquo; nên CE phạt cực nặng",
-      "Bằng 0 — CE chỉ xem đúng sai",
-      "Âm — loss không bao giờ âm",
+      "Rất thấp vì dự đoán gần 1 nên tốt",
+      "Rất cao vì model tự tin sai nên CE phạt cực nặng",
+      "Bằng 0 vì CE chỉ xem đúng sai",
+      "Âm vì loss không bao giờ âm",
     ],
     correct: 1,
     explanation:
-      "CE = −log(1 − 0.99) = −log(0.01) ≈ 4.6 — loss cực cao! Cross-Entropy phạt mô hình nặng nhất khi nó tự tin nhưng sai. Đây chính là cơ chế giúp CE hiệu quả hơn MSE trong phân loại.",
+      "CE = −log(1 − 0.99) = −log(0.01) ≈ 4.6, loss cực cao. Cross-entropy phạt model nặng nhất khi nó tự tin nhưng sai. Đây chính là cơ chế giúp CE hiệu quả hơn MSE trong phân loại.",
   },
   {
     question:
-      "Dữ liệu giá nhà có vài căn biệt thự 100 tỷ (ngoại lai). Chọn MSE sẽ xảy ra gì?",
+      "Dữ liệu giá nhà có vài căn biệt thự 100 tỷ (outlier). Chọn MSE sẽ xảy ra gì?",
     options: [
-      "Mô hình dự đoán chính xác hơn nhờ dữ liệu phong phú",
-      "MSE phạt bình phương nên biệt thự 100 tỷ kéo cả đường fit bị lệch về phía outlier",
-      "Không ảnh hưởng — MSE tự động bỏ qua outlier",
+      "Model dự đoán chính xác hơn nhờ dữ liệu phong phú",
+      "MSE phạt bình phương nên biệt thự 100 tỷ kéo cả đường fit lệch về phía outlier",
+      "Không ảnh hưởng vì MSE tự động bỏ qua outlier",
       "MSE biến mất khi có outlier",
     ],
     correct: 1,
     explanation:
-      "MSE bình phương sai lệch: một điểm lệch 100 đơn vị đóng góp 10.000 vào loss, bóp méo cả mô hình. MAE hoặc Huber Loss (hỗn hợp MSE + MAE) robust hơn với outlier.",
+      "MSE bình phương sai lệch. Một điểm lệch 100 đơn vị đóng góp 10.000 vào loss, bóp méo cả model. MAE hoặc Huber loss (kết hợp MSE và MAE) robust hơn với outlier.",
   },
   {
     question:
       "Bài toán phân loại ảnh 10 loài động vật. Loss phù hợp nhất là gì?",
     options: [
-      "Binary Cross-Entropy — vì có nhãn",
-      "MSE — vì output là số",
-      "Categorical Cross-Entropy (Softmax + CE) — cho phân loại nhiều lớp",
-      "Hinge Loss — chỉ cho hồi quy",
+      "Binary cross-entropy vì có nhãn",
+      "MSE vì output là số",
+      "Categorical cross-entropy (softmax + CE) cho phân loại nhiều lớp",
+      "Hinge loss chỉ cho hồi quy",
     ],
     correct: 2,
     explanation:
-      "Nhiều lớp cần Categorical Cross-Entropy kết hợp Softmax. Binary CE chỉ cho 2 lớp, MSE/MAE dùng cho hồi quy, Hinge thường dùng cho SVM (phân loại biên cứng), không phải hồi quy.",
+      "Nhiều lớp cần categorical cross-entropy kết hợp softmax. Binary CE chỉ cho 2 lớp. MSE và MAE dùng cho hồi quy. Hinge thường dùng cho SVM (phân loại biên cứng), không phải hồi quy.",
   },
   {
     type: "fill-blank",
     question:
-      "Cross-Entropy phân loại nhị phân: L = −[y · log(ŷ) + (1 − y) · log(1 − {blank})]. Số hạng này phạt khi y = 0 mà ŷ lại gần 1.",
+      "Cross-entropy phân loại nhị phân: L = −[y · log(ŷ) + (1 − y) · log(1 − {blank})]. Số hạng này phạt khi y = 0 mà ŷ lại gần 1.",
     blanks: [{ answer: "ŷ", accept: ["y_hat", "pred", "p", "yhat"] }],
     explanation:
-      "Khi y = 0, phần đầu biến mất, chỉ còn −log(1 − ŷ). Nếu ŷ → 0 (đúng) loss nhỏ; nếu ŷ → 1 (sai và tự tin) log(1 − ŷ) → −∞, loss bùng nổ. Đây là đặc trưng chính khiến CE &ldquo;la to&rdquo; khi mô hình chủ quan sai.",
+      "Khi y = 0, phần đầu biến mất, chỉ còn −log(1 − ŷ). Nếu ŷ → 0 (đúng) loss nhỏ. Nếu ŷ → 1 (sai và tự tin) log(1 − ŷ) → −∞, loss bùng nổ. Đây là đặc trưng chính khiến CE &ldquo;la to&rdquo; khi model chủ quan sai.",
   },
   {
     question:
-      "Bạn đang huấn luyện mô hình xếp hạng (ranking) kết quả tìm kiếm. Loss nào phù hợp?",
+      "Bạn đang huấn luyện model xếp hạng (ranking) kết quả tìm kiếm. Loss nào phù hợp?",
     options: [
-      "MSE — xếp hạng là dự đoán số",
-      "Hinge Loss hoặc Pairwise Ranking Loss — phạt khi đôi cặp bị sắp sai thứ tự",
-      "MAE — vì dữ liệu có outlier",
-      "BCE — vì có nhãn 0/1",
+      "MSE vì xếp hạng là dự đoán số",
+      "Hinge loss hoặc pairwise ranking loss vì phạt khi cặp bị sắp sai thứ tự",
+      "MAE vì dữ liệu có outlier",
+      "BCE vì có nhãn 0/1",
     ],
     correct: 1,
     explanation:
-      "Xếp hạng không cần giá trị dự đoán khớp con số thực, mà cần thứ tự đúng. Hinge Loss hoặc Pairwise Ranking phạt mỗi lần cặp (A, B) bị xếp sai thứ tự, phù hợp với bản chất bài toán.",
+      "Xếp hạng không cần giá trị dự đoán khớp con số thực, mà cần thứ tự đúng. Hinge loss hoặc pairwise ranking phạt mỗi lần cặp (A, B) bị xếp sai thứ tự, phù hợp với bản chất bài toán.",
   },
   {
     question:
-      "Loss function thể hiện điều gì cho thuật toán huấn luyện?",
+      "Hàm loss thể hiện điều gì cho thuật toán huấn luyện?",
     options: [
-      "Tốc độ học của mô hình",
-      "Số tham số của mô hình",
-      "Điểm số &ldquo;mô hình đang sai bao nhiêu&rdquo;, để gradient biết hướng điều chỉnh",
+      "Tốc độ học của model",
+      "Số tham số của model",
+      "Điểm số &ldquo;model đang sai bao nhiêu&rdquo;, để gradient biết hướng điều chỉnh",
       "Kích thước dữ liệu",
     ],
     correct: 2,
@@ -682,89 +682,89 @@ const quizQuestions: QuizQuestion[] = [
 export default function LossFunctionsTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1 · HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Bạn bắn cung, mũi tên cách tâm 50 cm. Huấn luyện viên muốn bạn tiến bộ nhanh — nên phạt thế nào?"
+          question="Bạn bắn cung, mũi tên cách tâm 50 cm. Huấn luyện viên muốn bạn tiến bộ nhanh, nên phạt thế nào?"
           options={[
             "Phạt bằng khoảng cách: 50 điểm",
-            "Phạt bằng bình phương khoảng cách: 2.500 điểm — càng xa, phạt càng nặng lên nhanh",
+            "Phạt bằng bình phương khoảng cách: 2.500 điểm. Càng xa, phạt càng nặng lên nhanh",
             "Phạt đúng 1 điểm nếu trượt, 0 nếu trúng",
-            "Không phạt — chỉ khen khi trúng tâm",
+            "Không phạt, chỉ khen khi trúng tâm",
           ]}
           correct={1}
-          explanation="Phạt bình phương khoảng cách (MSE) khiến bạn ưu tiên sửa những cú bắn lệch xa trước — vì sai 50 cm bị 2.500 điểm, còn sai 5 cm chỉ 25 điểm. Đây chính là cách loss function 'nói chuyện' với mô hình: càng sai, càng đau, càng phải sửa."
+          explanation="Phạt bình phương khoảng cách (MSE) khiến bạn ưu tiên sửa những cú bắn lệch xa trước. Sai 50 cm bị 2.500 điểm, còn sai 5 cm chỉ 25 điểm. Đây chính là cách hàm loss 'nói chuyện' với model: càng sai, càng đau, càng phải sửa."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
-            <strong>Loss</strong> là &ldquo;điểm số&rdquo; của mô hình — càng thấp càng tốt.
-            Nhưng chọn sai loss đồng nghĩa mô hình sẽ học <em>sai mục tiêu</em>. Hôm nay
+            <strong>Loss</strong> là &ldquo;điểm số&rdquo; của model. Càng thấp càng tốt.
+            Nhưng chọn sai loss thì model sẽ học <em>sai mục tiêu</em>. Hôm nay
             bạn sẽ <strong>kéo từng điểm dự đoán</strong> và thấy MSE, MAE, Huber,
-            Cross-Entropy phản ứng rất khác nhau cùng một dữ liệu.
+            cross-entropy phản ứng rất khác nhau cùng một dữ liệu.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2 · ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <Gauge size={20} className="text-accent" /> Loss giống &ldquo;kim la
+            <Gauge size={20} className="text-accent" /> Loss đóng vai &ldquo;kim la
             bàn&rdquo; trên đường học
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Tưởng tượng mô hình đang đi tìm đáp án trong sương mù. Nó không nhìn
-            thấy gì cả — chỉ nghe một <strong>tiếng la</strong> sau mỗi bước đi.
-            Tiếng la đó là loss. Loss lớn = &ldquo;đi sai đường!&rdquo;. Loss nhỏ =
-            &ldquo;đang đúng hướng&rdquo;. Gradient descent chỉ việc{" "}
-            <em>đi theo tiếng la nhỏ dần</em>.
+            Hãy hình dung model đang đi tìm đáp án trong sương mù. Nó không nhìn
+            thấy gì cả, chỉ nghe một <strong>tiếng la</strong> sau mỗi bước đi.
+            Tiếng la đó là loss. Loss lớn nghĩa là &ldquo;đi sai đường&rdquo;.
+            Loss nhỏ nghĩa là &ldquo;đang đúng hướng&rdquo;. Gradient descent
+            chỉ việc <em>đi theo tiếng la nhỏ dần</em>.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Nhưng &ldquo;la&rdquo; có nhiều kiểu. Một giáo viên khó tính phạt 5 điểm
             cho mỗi lỗi. Một giáo viên gắt gao nhân đôi hình phạt khi bạn sai
             nặng. Một giáo viên công tâm ngó lơ vài outlier. Chọn{" "}
-            <strong>kiểu giáo viên</strong> tức là chọn loss function.
+            <strong>kiểu giáo viên</strong> tức là chọn hàm loss.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
             <div className="rounded-xl border border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+              <div className="flex items-center gap-2 text-blue-900 dark:text-blue-200">
                 <Target size={16} />
-                <span className="text-sm font-semibold">MSE — Hồi quy</span>
+                <span className="text-sm font-semibold">MSE cho hồi quy</span>
               </div>
-              <p className="text-xs text-foreground/80 leading-relaxed">
-                Phạt bình phương. Sai 2 lần → đau 4 lần. Dành cho số liên tục: giá
-                nhà, nhiệt độ, doanh thu.
+              <p className="text-xs text-foreground leading-relaxed">
+                Phạt bình phương. Sai 2 lần thì đau 4 lần. Dành cho số liên tục:
+                giá nhà, nhiệt độ, doanh thu.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
                 <ShieldCheck size={16} />
-                <span className="text-sm font-semibold">MAE — Robust</span>
+                <span className="text-sm font-semibold">MAE robust với outlier</span>
               </div>
-              <p className="text-xs text-foreground/80 leading-relaxed">
-                Phạt trị tuyệt đối. Sai 2 lần → đau 2 lần. Không bị outlier kéo
+              <p className="text-xs text-foreground leading-relaxed">
+                Phạt trị tuyệt đối. Sai 2 lần thì đau 2 lần. Không bị outlier kéo
                 lệch: thời gian giao hàng, ETA taxi.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200">
                 <Flame size={16} />
-                <span className="text-sm font-semibold">CE — Phân loại</span>
+                <span className="text-sm font-semibold">CE cho phân loại</span>
               </div>
-              <p className="text-xs text-foreground/80 leading-relaxed">
-                Phạt theo logarit. Tự tin đúng → loss 0. Tự tin sai → loss bùng
-                nổ. Dành cho spam/không spam, chó/mèo, nhãn ảnh.
+              <p className="text-xs text-foreground leading-relaxed">
+                Phạt theo logarit. Tự tin đúng thì loss bằng 0. Tự tin sai thì loss
+                bùng nổ. Dành cho spam/không spam, chó/mèo, nhãn ảnh.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — REVEAL / TƯƠNG TÁC CHÍNH ━━━ */}
+      {/* ━━━ BƯỚC 3 · REVEAL / TƯƠNG TÁC CHÍNH ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3 leading-relaxed">
-            Bấm một tab để đổi loss function. Trong mỗi tab, <strong>kéo chấm
+            Bấm một tab để đổi hàm loss. Trong mỗi tab, <strong>kéo chấm
             xanh (dự đoán) lên xuống</strong> và quan sát: cùng một dữ liệu nhưng
             cách mỗi loss &ldquo;tính điểm&rdquo; khác hẳn nhau.
           </p>
@@ -775,17 +775,17 @@ export default function LossFunctionsTopic() {
                 label: "MSE",
                 content: (
                   <div className="space-y-4">
-                    <Callout variant="info" title="MSE — Mean Squared Error">
+                    <Callout variant="info" title="MSE (mean squared error)">
                       Bình phương mỗi sai lệch rồi lấy trung bình. Hậu quả:{" "}
                       <strong>một điểm lệch xa đóng góp rất nhiều</strong> vào
                       tổng loss. Hãy kéo một chấm xanh ra thật xa chấm cam, xem
-                      cột đóng góp đội lên như thế nào.
+                      cột đóng góp đội lên ra sao.
                     </Callout>
                     <LossScatter lossKey="mse" />
                     <Callout variant="warning" title="Điểm yếu">
-                      Thử bấm &ldquo;Đẩy một điểm thành ngoại lai&rdquo;. Tổng MSE tăng đột
-                      biến do điểm #4 đóng góp quá nhiều — mô hình huấn luyện
-                      với MSE sẽ &ldquo;bị thu hút&rdquo; bởi điểm đó.
+                      Thử bấm &ldquo;Đẩy một điểm thành outlier&rdquo;. Tổng MSE
+                      tăng đột biến do điểm #4 đóng góp quá nhiều. Model huấn
+                      luyện với MSE sẽ &ldquo;bị thu hút&rdquo; bởi điểm đó.
                     </Callout>
                   </div>
                 ),
@@ -794,17 +794,17 @@ export default function LossFunctionsTopic() {
                 label: "MAE",
                 content: (
                   <div className="space-y-4">
-                    <Callout variant="info" title="MAE — Mean Absolute Error">
+                    <Callout variant="info" title="MAE (mean absolute error)">
                       Lấy trị tuyệt đối mỗi sai lệch, không bình phương.
                       Hậu quả: <strong>một điểm lệch xa không còn quá ghê gớm</strong>.
                       So với MSE, MAE &ldquo;bình tĩnh&rdquo; hơn với outlier.
                     </Callout>
                     <LossScatter lossKey="mae" />
                     <Callout variant="tip" title="Điểm mạnh">
-                      Thử đẩy một điểm thành ngoại lai. Tổng MAE tăng nhẹ hơn
-                      nhiều so với MSE — đây chính là lý do Shopee dùng MAE để
-                      dự đoán thời gian giao hàng: vài gói bị kẹt không nên kéo
-                      cả hệ thống đoán chậm cho mọi người.
+                      Thử đẩy một điểm thành outlier. Tổng MAE chỉ tăng nhẹ so
+                      với MSE. Đây chính là lý do Shopee dùng MAE để dự đoán
+                      thời gian giao hàng. Vài gói bị kẹt không nên kéo cả hệ
+                      thống đoán chậm cho mọi người.
                     </Callout>
                   </div>
                 ),
@@ -813,41 +813,40 @@ export default function LossFunctionsTopic() {
                 label: "Huber",
                 content: (
                   <div className="space-y-4">
-                    <Callout variant="info" title="Huber — Hỗn hợp MSE + MAE">
+                    <Callout variant="info" title="Huber kết hợp MSE và MAE">
                       Khi sai lệch nhỏ (≤ δ) &rArr; hành xử như MSE (học nhanh,
                       mượt). Khi sai lệch lớn &rArr; chuyển sang MAE (không bị
-                      outlier kéo). Huber là &ldquo;đứa con lai&rdquo; mạnh nhất của hai
-                      loss hồi quy phổ biến.
+                      outlier kéo). Huber là &ldquo;đứa con lai&rdquo; mạnh nhất
+                      của hai loss hồi quy phổ biến.
                     </Callout>
                     <LossScatter lossKey="huber" />
                     <Callout variant="tip" title="Khi nào dùng Huber?">
                       Khi bạn muốn tốc độ học mượt của MSE ở vùng gần, nhưng cần
                       robust với outlier. Computer vision hay dùng Smooth L1
-                      (một biến thể của Huber) để huấn luyện mô hình phát hiện
+                      (một biến thể của Huber) để huấn luyện model phát hiện
                       vật thể.
                     </Callout>
                   </div>
                 ),
               },
               {
-                label: "Cross-Entropy",
+                label: "Cross-entropy",
                 content: (
                   <div className="space-y-4">
                     <Callout
                       variant="info"
-                      title="Binary Cross-Entropy — Phạt tự tin sai"
+                      title="Binary cross-entropy phạt tự tin sai"
                     >
                       Phân loại không đoán một con số, mà đoán một{" "}
                       <strong>xác suất</strong>. CE phạt theo logarit, nghĩa là
-                      khi mô hình càng tự tin nhưng càng sai, loss càng bùng
-                      nổ.
+                      khi model càng tự tin nhưng càng sai, loss càng bùng nổ.
                     </Callout>
                     <CrossEntropyExplorer />
                     <Callout variant="tip" title="Vì sao không dùng MSE cho phân loại?">
-                      MSE có đạo hàm rất nhỏ khi đầu ra sigmoid gần 0 hoặc 1 →
-                      mô hình học chậm. CE có đạo hàm mạnh mẽ ở vùng đó → học
-                      nhanh. Vì thế CE + Softmax là combo mặc định cho mọi bài
-                      toán phân loại hiện đại.
+                      MSE có đạo hàm rất nhỏ khi đầu ra sigmoid gần 0 hoặc 1.
+                      Model học chậm. CE có đạo hàm mạnh mẽ ở vùng đó nên học
+                      nhanh. Vì thế CE và softmax là combo mặc định cho mọi
+                      bài toán phân loại hiện đại.
                     </Callout>
                   </div>
                 ),
@@ -857,33 +856,33 @@ export default function LossFunctionsTopic() {
 
           <div className="mt-5">
             <Callout variant="insight" title="Tự rút ra">
-              Cùng một bộ điểm, cùng cách dự đoán — nhưng <strong>loss khác
-              nhau thì mô hình sẽ học theo hướng khác nhau</strong>. MSE dồn sức
-              &ldquo;kéo&rdquo; các điểm xa, MAE &ldquo;bình đẳng&rdquo; với mọi điểm,
-              Huber dung hoà, CE chỉ quan tâm xác suất đúng. Chọn loss = chọn
-              ưu tiên của mô hình.
+              Cùng một bộ điểm, cùng cách dự đoán, nhưng <strong>loss khác
+              nhau thì model sẽ học theo hướng khác nhau</strong>. MSE dồn sức
+              &ldquo;kéo&rdquo; các điểm xa. MAE &ldquo;bình đẳng&rdquo; với mọi
+              điểm. Huber dung hoà. CE chỉ quan tâm xác suất đúng. Chọn loss
+              tức là chọn ưu tiên của model.
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4 · AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Loss không phải &ldquo;một công thức toán&rdquo;. Nó là <strong>định nghĩa
-            của cái đúng</strong> mà bạn dạy cho mô hình.
+            Loss không phải &ldquo;một công thức toán&rdquo;. Nó là <strong>định
+            nghĩa của cái đúng</strong> mà bạn dạy cho model.
           </p>
           <p className="mt-3">
-            Dạy bằng MSE — mô hình sẽ tránh mọi sai số lớn bằng mọi giá.
-            Dạy bằng MAE — mô hình sẽ không hoảng lên vì vài outlier.
-            Dạy bằng CE — mô hình sẽ rất thận trọng trước khi &ldquo;chắc chắn&rdquo;.
-            Đổi loss = đổi <em>giáo viên</em>, mô hình sẽ ra <em>tính cách</em> khác.
+            Dạy bằng MSE, model sẽ tránh mọi sai số lớn bằng mọi giá. Dạy bằng
+            MAE, model sẽ không hoảng lên vì vài outlier. Dạy bằng CE, model
+            sẽ rất thận trọng trước khi &ldquo;chắc chắn&rdquo;. Đổi loss tức
+            là đổi <em>giáo viên</em>, model sẽ ra <em>tính cách</em> khác.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — DEEPEN ━━━ */}
+      {/* ━━━ BƯỚC 5 · DEEPEN ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2 mb-3">
           <Layers size={18} className="text-accent" /> Khi nào dùng loss nào?
@@ -896,10 +895,10 @@ export default function LossFunctionsTopic() {
 
         <StepReveal
           labels={[
-            "1. MSE — Hồi quy dữ liệu sạch",
-            "2. Cross-Entropy — Phân loại",
-            "3. Huber — Hồi quy có outlier",
-            "4. Hinge — Phân loại biên cứng (SVM)",
+            "1. MSE cho hồi quy dữ liệu sạch",
+            "2. Cross-entropy cho phân loại",
+            "3. Huber cho hồi quy có outlier",
+            "4. Hinge cho phân loại biên cứng (SVM)",
           ]}
         >
           {[
@@ -907,17 +906,17 @@ export default function LossFunctionsTopic() {
               key="s1"
               className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-4 space-y-2"
             >
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold text-sm">
+              <div className="flex items-center gap-2 text-blue-900 dark:text-blue-200 font-semibold text-sm">
                 <Target size={14} /> MSE cho hồi quy dữ liệu &ldquo;đẹp&rdquo;
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">
+              <p className="text-sm text-foreground leading-relaxed">
                 Khi đầu ra là một con số liên tục (giá nhà, doanh thu, nhiệt
                 độ) và dữ liệu không nhiều outlier. MSE cho gradient mượt,
                 học nhanh, dễ tối ưu.
               </p>
-              <p className="text-xs text-muted leading-relaxed">
-                <strong>Ví dụ thực tế:</strong> mô hình dự đoán giá nhà trên
-                Batdongsan.com, nhiệt độ ngày mai, lượng khách đặt bàn — dữ
+              <p className="text-xs text-foreground leading-relaxed">
+                <strong>Ví dụ thực tế:</strong> model dự đoán giá nhà trên
+                Batdongsan.com, nhiệt độ ngày mai, lượng khách đặt bàn. Dữ
                 liệu &ldquo;sạch sẽ&rdquo;, không có siêu biệt thự làm rối.
               </p>
             </div>,
@@ -925,15 +924,15 @@ export default function LossFunctionsTopic() {
               key="s2"
               className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4 space-y-2"
             >
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 font-semibold text-sm">
-                <Flame size={14} /> Cross-Entropy cho phân loại
+              <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200 font-semibold text-sm">
+                <Flame size={14} /> Cross-entropy cho phân loại
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">
+              <p className="text-sm text-foreground leading-relaxed">
                 Khi đầu ra là một nhãn (spam/không spam, chó/mèo/chim, hành
-                động người dùng). CE ép mô hình học xác suất đúng, phạt nặng
-                tự tin sai, phối hợp mượt với Softmax.
+                động người dùng). CE ép model học xác suất đúng, phạt nặng
+                tự tin sai, phối hợp mượt với softmax.
               </p>
-              <p className="text-xs text-muted leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 <strong>Ví dụ thực tế:</strong> Gmail chặn spam, YouTube nhận
                 diện nội dung vi phạm, Tiki gợi ý nhãn ngành hàng cho sản
                 phẩm mới.
@@ -943,35 +942,35 @@ export default function LossFunctionsTopic() {
               key="s3"
               className="rounded-lg border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-900/20 p-4 space-y-2"
             >
-              <div className="flex items-center gap-2 text-violet-700 dark:text-violet-300 font-semibold text-sm">
+              <div className="flex items-center gap-2 text-violet-900 dark:text-violet-200 font-semibold text-sm">
                 <ShieldCheck size={14} /> Huber cho hồi quy có outlier
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">
+              <p className="text-sm text-foreground leading-relaxed">
                 Khi dữ liệu &ldquo;bẩn&rdquo;: có vài giá trị ngoại lệ rất lớn mà
-                bạn không muốn bỏ đi nhưng cũng không muốn chúng chi phối mô
-                hình. Huber hành xử như MSE ở vùng nhỏ (học nhanh) và MAE ở
-                vùng lớn (robust).
+                bạn không muốn bỏ đi nhưng cũng không muốn chúng chi phối model.
+                Huber hành xử như MSE ở vùng nhỏ (học nhanh) và MAE ở vùng lớn
+                (robust).
               </p>
-              <p className="text-xs text-muted leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 <strong>Ví dụ thực tế:</strong> Grab dự đoán thời gian giao
-                hàng — phần lớn đơn 20–40 phút nhưng thỉnh thoảng một đơn 3
-                tiếng vì kẹt xe. Huber giữ mô hình ổn định.
+                hàng. Phần lớn đơn 20 đến 40 phút nhưng thỉnh thoảng một đơn
+                3 tiếng vì kẹt xe. Huber giữ model ổn định.
               </p>
             </div>,
             <div
               key="s4"
               className="rounded-lg border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-900/20 p-4 space-y-2"
             >
-              <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300 font-semibold text-sm">
-                <Snowflake size={14} /> Hinge Loss cho SVM
+              <div className="flex items-center gap-2 text-rose-900 dark:text-rose-200 font-semibold text-sm">
+                <Snowflake size={14} /> Hinge loss cho SVM
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">
-                Khi bạn cần một <em>biên quyết định rõ ràng</em> giữa hai lớp
-                — không cần xác suất, chỉ cần đúng/sai với khoảng cách an
-                toàn. Hinge không phạt khi dự đoán đã &ldquo;đủ chắc chắn đúng&rdquo;,
+              <p className="text-sm text-foreground leading-relaxed">
+                Khi bạn cần một <em>biên quyết định rõ ràng</em> giữa hai lớp.
+                Không cần xác suất, chỉ cần đúng/sai với khoảng cách an toàn.
+                Hinge không phạt khi dự đoán đã &ldquo;đủ chắc chắn đúng&rdquo;,
                 chỉ phạt khi quá gần biên hoặc sai.
               </p>
-              <p className="text-xs text-muted leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 <strong>Ví dụ thực tế:</strong> SVM phân loại ung thư từ xét
                 nghiệm, nhận diện kí tự số viết tay MNIST thời trước deep
                 learning. Hiện nay hinge ít dùng độc lập nhưng vẫn xuất hiện
@@ -982,7 +981,7 @@ export default function LossFunctionsTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 6 · CHALLENGE ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <p className="text-sm text-muted mb-3 leading-relaxed">
           Trước khi đi tiếp, hãy thử ba tình huống thực tế. Chọn loss bạn
@@ -990,55 +989,55 @@ export default function LossFunctionsTopic() {
         </p>
         <div className="space-y-4">
           <InlineChallenge
-            question="Bài toán: dự đoán giá căn hộ tại Hà Nội, dữ liệu có vài biệt thự 100 tỷ (ngoại lai). Chọn loss nào?"
+            question="Bài toán: dự đoán giá căn hộ tại Hà Nội, dữ liệu có vài biệt thự 100 tỷ (outlier). Chọn loss nào?"
             options={[
-              "MSE — đơn giản, đủ dùng",
-              "Binary Cross-Entropy — vì có nhãn giá",
-              "Huber Loss — robust với ngoại lai, mượt với giá trị thường",
-              "Hinge Loss — vì cần biên rõ ràng",
+              "MSE vì đơn giản, đủ dùng",
+              "Binary cross-entropy vì có nhãn giá",
+              "Huber loss vì robust với outlier, mượt với giá trị thường",
+              "Hinge loss vì cần biên rõ ràng",
             ]}
             correct={2}
-            explanation="Dữ liệu có ngoại lai: MSE sẽ bị kéo lệch, CE không phù hợp cho hồi quy, Hinge cho phân loại. Huber là lựa chọn chuẩn — hành xử như MSE ở vùng gần, MAE ở vùng xa, không để biệt thự 100 tỷ bóp méo mô hình."
+            explanation="Dữ liệu có outlier. MSE sẽ bị kéo lệch. CE không phù hợp cho hồi quy. Hinge cho phân loại. Huber là lựa chọn chuẩn: hành xử như MSE ở vùng gần, MAE ở vùng xa, không để biệt thự 100 tỷ bóp méo model."
           />
           <InlineChallenge
-            question="Bài toán: phân loại ảnh chó / mèo (2 lớp). Chọn loss nào?"
+            question="Bài toán: phân loại ảnh chó hoặc mèo (2 lớp). Chọn loss nào?"
             options={[
-              "MSE — vì đơn giản",
-              "Binary Cross-Entropy — chuẩn cho 2 lớp, có xác suất",
-              "MAE — robust",
-              "Categorical Cross-Entropy — cho nhiều lớp",
+              "MSE vì đơn giản",
+              "Binary cross-entropy chuẩn cho 2 lớp, có xác suất",
+              "MAE vì robust",
+              "Categorical cross-entropy cho nhiều lớp",
             ]}
             correct={1}
-            explanation="2 lớp = Binary Cross-Entropy. CE phạt nặng khi mô hình tự tin sai, giúp sigmoid học nhanh. Nếu đổi sang 10 lớp (ảnh ImageNet chẳng hạn) thì mới dùng Categorical Cross-Entropy + Softmax."
+            explanation="Hai lớp thì dùng binary cross-entropy. CE phạt nặng khi model tự tin sai, giúp sigmoid học nhanh. Nếu đổi sang 10 lớp (ảnh ImageNet chẳng hạn) thì mới dùng categorical cross-entropy và softmax."
           />
           <InlineChallenge
-            question="Bài toán: hệ thống xếp hạng kết quả tìm kiếm Tiki — item nào liên quan hơn thì xếp trước. Chọn loss nào?"
+            question="Bài toán: hệ thống xếp hạng kết quả tìm kiếm Tiki, item nào liên quan hơn thì xếp trước. Chọn loss nào?"
             options={[
               "MSE giữa điểm dự đoán và điểm đánh giá",
-              "Cross-Entropy cho từng item",
-              "Pairwise Ranking Loss (Hinge-style) — phạt mỗi khi cặp (A, B) bị xếp sai thứ tự",
-              "Huber Loss — dữ liệu có outlier",
+              "Cross-entropy cho từng item",
+              "Pairwise ranking loss (kiểu hinge) phạt mỗi khi cặp (A, B) bị xếp sai thứ tự",
+              "Huber loss vì dữ liệu có outlier",
             ]}
             correct={2}
-            explanation="Xếp hạng không cần giá trị dự đoán khớp con số — chỉ cần THỨ TỰ đúng. Pairwise Ranking Loss phạt mỗi cặp bị sắp sai. Đây là loss chuẩn trong search, recommendation, ads ranking."
+            explanation="Xếp hạng không cần giá trị dự đoán khớp con số. Chỉ cần thứ tự đúng. Pairwise ranking loss phạt mỗi cặp bị sắp sai. Đây là loss chuẩn trong search, recommendation, ads ranking."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — EXPLAIN (tối đa 3 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 7 · EXPLAIN (tối đa 3 LaTeX) ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Ba công thức dưới đây là ba &ldquo;tiếng la&rdquo; phổ biến nhất. Mỗi
             công thức đi kèm một hình minh hoạ và một câu giải thích bằng tiếng
-            Việt. Bạn không cần thuộc — chỉ cần{" "}
+            Việt. Bạn không cần thuộc lòng. Chỉ cần{" "}
             <em>đọc được &ldquo;đại ý&rdquo;</em> để chọn loss đúng khi gặp bài toán
             mới.
           </p>
 
-          {/* Công thức 1 — MSE */}
+          {/* Công thức 1: MSE */}
           <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
-            1. MSE — Bình phương trung bình sai số
+            1. MSE: bình phương trung bình sai số
           </h4>
           <LaTeX block>
             {"\\text{MSE} = \\frac{1}{N} \\sum_{i=1}^{N} (y_i - \\hat{y}_i)^2"}
@@ -1046,7 +1045,7 @@ export default function LossFunctionsTopic() {
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>với mỗi điểm, lấy sai số (thực − dự đoán), bình phương,
             rồi lấy trung bình</em>. Bình phương làm hai việc quan trọng: (1) bỏ
-            dấu — sai trên hay sai dưới đều đáng lo; (2) phạt nặng sai số lớn.
+            dấu, sai trên hay sai dưới đều đáng lo; (2) phạt nặng sai số lớn.
             Nếu bạn đã học{" "}
             <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink>,
             đây chính là loss mà OLS tối thiểu hoá.
@@ -1132,9 +1131,9 @@ export default function LossFunctionsTopic() {
             </svg>
           </div>
 
-          {/* Công thức 2 — MAE */}
+          {/* Công thức 2: MAE */}
           <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
-            2. MAE — Trị tuyệt đối trung bình sai số
+            2. MAE: trị tuyệt đối trung bình sai số
           </h4>
           <LaTeX block>
             {"\\text{MAE} = \\frac{1}{N} \\sum_{i=1}^{N} |y_i - \\hat{y}_i|"}
@@ -1142,8 +1141,8 @@ export default function LossFunctionsTopic() {
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>với mỗi điểm, lấy trị tuyệt đối sai số, rồi lấy trung
             bình</em>. Không có bình phương nên mỗi điểm đóng góp tỉ lệ thuận
-            với sai lệch — không có &ldquo;hình vuông&rdquo; làm hình phạt bùng nổ. Vì
-            thế MAE <strong>robust</strong> với ngoại lai.
+            với sai lệch. Không còn &ldquo;hình vuông&rdquo; làm hình phạt bùng nổ. Nhờ vậy
+            MAE <strong>robust</strong> với ngoại lai.
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
@@ -1152,12 +1151,12 @@ export default function LossFunctionsTopic() {
             </p>
             <svg viewBox="0 0 360 130" className="w-full max-w-md mx-auto">
               <line x1={20} y1={110} x2={340} y2={110} stroke="var(--border)" strokeWidth={1} />
-              {/* MAE — bên trái: đoạn thẳng đậm */}
+              {/* MAE: bên trái, đoạn thẳng đậm */}
               <line x1={100} y1={30} x2={100} y2={110} stroke="#22c55e" strokeWidth={5} />
               <circle cx={100} cy={30} r={5} fill="#f97316" />
               <circle cx={100} cy={110} r={5} fill="#22c55e" />
               <text x={100} y={124} fontSize={11} fill="#22c55e" textAnchor="middle" fontWeight={600}>MAE = chiều dài</text>
-              {/* MSE — bên phải: hình vuông */}
+              {/* MSE: bên phải, hình vuông */}
               <rect x={240} y={30} width={80} height={80} fill="#3b82f6" opacity={0.22} />
               <line x1={240} y1={30} x2={240} y2={110} stroke="#3b82f6" strokeWidth={2} />
               <circle cx={240} cy={30} r={5} fill="#f97316" />
@@ -1166,17 +1165,17 @@ export default function LossFunctionsTopic() {
             </svg>
           </div>
 
-          {/* Công thức 3 — Cross-Entropy */}
+          {/* Công thức 3: Cross-Entropy */}
           <h4 className="text-sm font-semibold text-foreground mt-4 mb-2">
-            3. Binary Cross-Entropy — Phạt &ldquo;tự tin sai&rdquo;
+            3. Binary Cross-Entropy: phạt &ldquo;tự tin sai&rdquo;
           </h4>
           <LaTeX block>
             {"\\text{BCE} = -\\big[y \\log(\\hat{y}) + (1 - y) \\log(1 - \\hat{y})\\big]"}
           </LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>nếu nhãn thực y = 1, loss = −log(ŷ). Nếu y = 0, loss =
-            −log(1 − ŷ)</em>. Khi mô hình đoán đúng và tự tin (ŷ gần nhãn
-            thực), −log(số gần 1) ≈ 0 → loss thấp. Khi mô hình đoán sai và tự
+            −log(1 − ŷ)</em>. Khi model đoán đúng và tự tin (ŷ gần nhãn
+            thực), −log(số gần 1) ≈ 0 → loss thấp. Khi model đoán sai và tự
             tin (ŷ ngược với nhãn thực), −log(số gần 0) → ∞ → loss bùng nổ.
             Đây là cơ chế &ldquo;phạt tự tin sai&rdquo; mà MSE không có.
           </p>
@@ -1185,15 +1184,15 @@ export default function LossFunctionsTopic() {
             variant="tip"
             title="Vì sao CE dùng logarit mà không dùng (y − ŷ)²?"
           >
-            Với xác suất gần biên (ŷ gần 0 hoặc 1), đạo hàm của MSE rất nhỏ —
-            mô hình học chậm. Đạo hàm của CE khi đó vẫn mạnh → tín hiệu
+            Với xác suất gần biên (ŷ gần 0 hoặc 1), đạo hàm của MSE rất nhỏ.
+            Model học chậm. Đạo hàm của CE khi đó vẫn mạnh → tín hiệu
             gradient rõ ràng → học nhanh. Nhờ vậy{" "}
             <strong>Softmax + Cross-Entropy</strong> trở thành tổ hợp chuẩn
             của mọi mạng phân loại hiện đại, từ ResNet đến GPT.
           </Callout>
 
           <Callout variant="warning" title="Bẫy hay gặp">
-            MAE có đạo hàm không xác định tại 0 — thực tế hay dùng{" "}
+            MAE có đạo hàm không xác định tại 0. Thực tế hay dùng{" "}
             <em>Smooth L1</em> (một biến thể của Huber) thay thế. Cross-Entropy
             cần &ldquo;clamp&rdquo; ŷ tránh log(0) = −∞, nên các thư viện như PyTorch
             mặc định dùng{" "}
@@ -1296,30 +1295,30 @@ export default function LossFunctionsTopic() {
             title="Một câu để gói cả bài"
           >
             Loss là <strong>mục tiêu duy nhất</strong> mà thuật toán huấn luyện
-            được phép nhìn thấy. Đổi loss = đổi mục tiêu. Chọn loss đúng quan
-            trọng hơn chọn mô hình đúng — sai loss thì mô hình càng mạnh càng
+            được phép nhìn thấy. Đổi loss tức là đổi mục tiêu. Chọn loss đúng quan
+            trọng hơn chọn model đúng. Sai loss thì model càng mạnh càng
             đi sai xa.
           </Callout>
 
           <CollapsibleDetail title="Tại sao không gộp vài loss lại rồi cộng?">
             <p className="text-sm leading-relaxed">
               Thực tế người ta <strong>có</strong> gộp, gọi là{" "}
-              <em>multi-task loss</em>. Ví dụ: một mô hình tự lái xe vừa học
+              <em>multi-task loss</em>. Ví dụ: một model tự lái xe vừa học
               phân loại biển báo (CE) vừa học ước lượng khoảng cách (MSE).
               Loss tổng = α · CE + β · MSE, với α và β là hệ số cân bằng hai
-              mục tiêu. Tuy nhiên cân bằng này rất nhạy — chọn α/β sai thì mô
-              hình sẽ ưu tiên một mục tiêu và bỏ rơi mục tiêu kia. Nên mới có
+              mục tiêu. Tuy nhiên cân bằng này rất nhạy. Chọn α/β sai thì model
+              sẽ ưu tiên một mục tiêu và bỏ rơi mục tiêu kia. Vì vậy mới có
               cả một hướng nghiên cứu &ldquo;loss balancing&rdquo; riêng.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Loss vs. Metric — khác nhau thế nào?">
+          <CollapsibleDetail title="Loss và metric khác nhau thế nào?">
             <p className="text-sm leading-relaxed">
-              <strong>Loss</strong> là thứ mô hình tối thiểu hoá — phải khả
+              <strong>Loss</strong> là thứ model tối thiểu hoá. Nó phải khả
               vi (có đạo hàm) để gradient descent hoạt động. <strong>Metric</strong>{" "}
-              là thước đo bạn báo cáo cho người khác — có thể là accuracy, F1,
+              là thước đo bạn báo cáo cho người khác, có thể là accuracy, F1,
               RMSE, MAPE, AUC... Metric không cần khả vi. Ví dụ bạn huấn luyện
-              phân loại với Cross-Entropy (loss) nhưng báo cáo Accuracy
+              phân loại với Cross-Entropy (loss) nhưng báo cáo accuracy
               (metric) cho sếp. Accuracy có đạo hàm 0 ở hầu khắp nơi nên không
               thể làm loss, nhưng rất dễ hiểu nên phù hợp để báo cáo.
             </p>
@@ -1327,28 +1326,28 @@ export default function LossFunctionsTopic() {
 
           <p className="leading-relaxed mt-4">
             Loss đi tay trong tay với{" "}
-            <TopicLink slug="gradient-descent">gradient descent</TopicLink> —
-            loss cho biết &ldquo;đang sai bao nhiêu&rdquo;, gradient cho biết &ldquo;phải đi
+            <TopicLink slug="gradient-descent">gradient descent</TopicLink>.
+            Loss cho biết &ldquo;đang sai bao nhiêu&rdquo;, gradient cho biết &ldquo;phải đi
             theo hướng nào để sai ít hơn&rdquo;. Không có loss thì gradient
-            descent không có thứ để tối thiểu hoá; không có gradient descent
+            descent không có thứ để tối thiểu hoá. Không có gradient descent
             thì loss chỉ là một con số vô nghĩa.{" "}
             <TopicLink slug="backpropagation">Backpropagation</TopicLink> sau
             đó đưa gradient của loss về từng tham số trong mạng. Ba khái niệm
-            làm thành &ldquo;bộ ba huấn luyện&rdquo; của mọi mô hình hiện đại.
+            làm thành &ldquo;bộ ba huấn luyện&rdquo; của mọi model hiện đại.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8 · TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ về hàm mất mát"
           points={[
-            "Loss là 'điểm số' của mô hình — càng thấp càng tốt. Chọn sai loss = mô hình học sai mục tiêu.",
+            "Loss là 'điểm số' của model. Càng thấp càng tốt. Chọn sai loss tức là model học sai mục tiêu.",
             "Hồi quy dữ liệu sạch → MSE. Hồi quy có outlier → MAE hoặc Huber. Phân loại → Cross-Entropy. Xếp hạng → Hinge / Pairwise.",
             "MSE phạt bình phương: một outlier đóng góp rất nhiều. MAE phạt tuyến tính: outlier không thống trị được.",
-            "Cross-Entropy phạt 'tự tin sai' bằng logarit — đạo hàm vẫn mạnh khi sigmoid ở biên, nên học nhanh hơn MSE trong phân loại.",
-            "Loss phải khả vi để gradient descent hoạt động. Metric (accuracy, F1...) là thứ bạn báo cáo, không phải thứ mô hình tối thiểu hoá.",
+            "Cross-Entropy phạt 'tự tin sai' bằng logarit. Đạo hàm vẫn mạnh khi sigmoid ở biên, nên học nhanh hơn MSE trong phân loại.",
+            "Loss phải khả vi để gradient descent hoạt động. Metric (accuracy, F1...) là thứ bạn báo cáo, không phải thứ model tối thiểu hoá.",
           ]}
         />
 

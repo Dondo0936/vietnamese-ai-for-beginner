@@ -23,14 +23,14 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ══════════════════════════════════════════════════════════════════════
-   METADATA — không đổi slug/category/tags
+   METADATA. Không đổi slug/category/tags
    ══════════════════════════════════════════════════════════════════════ */
 export const metadata: TopicMeta = {
   slug: "epochs-batches",
   title: "Epochs & Batches",
-  titleVi: "Epoch và batch — Chia nhỏ đề thi để mô hình không ngộp",
+  titleVi: "Epoch và batch: chia nhỏ đề thi để model không ngộp",
   description:
-    "Máy học không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Xem sự thay đổi của đường loss khi bạn kéo thanh batch size.",
+    "Model không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Kéo thanh batch size để xem đường loss đổi hình dáng.",
   category: "neural-fundamentals",
   tags: ["training", "fundamentals"],
   difficulty: "intermediate",
@@ -48,10 +48,10 @@ const BATCH_CHOICES = [1, 32, 128, 1000] as const;
 type BatchChoice = (typeof BATCH_CHOICES)[number];
 
 const BATCH_MEANING: Record<BatchChoice, string> = {
-  1: "SGD thuần — gradient rất nhiễu",
-  32: "Mini-batch nhỏ — mặc định nhiều bài hướng dẫn",
-  128: "Mini-batch lớn — mượt, cần nhiều RAM hơn",
-  1000: "Full-batch — cả dataset trong một bước",
+  1: "SGD thuần. Gradient rất nhiễu",
+  32: "Mini-batch nhỏ. Mặc định trong nhiều bài hướng dẫn",
+  128: "Mini-batch lớn. Mượt hơn, cần nhiều RAM hơn",
+  1000: "Full-batch. Cả dataset trong một bước",
 };
 
 const BATCH_COLOR: Record<BatchChoice, string> = {
@@ -69,7 +69,7 @@ const SHUFFLE_W = 560;
 const SHUFFLE_H = 160;
 
 /* ══════════════════════════════════════════════════════════════════════
-   MATHS — tạo đường loss mô phỏng theo batch size
+   MATHS. Tạo đường loss mô phỏng theo batch size
    ══════════════════════════════════════════════════════════════════════ */
 
 function seededRandom(seed: number): () => number {
@@ -114,7 +114,7 @@ function lossPath(points: number[], visible: number): string {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   SHUFFLE STRIPE — 1000 ô dữ liệu, tô theo batch đang chạy
+   SHUFFLE STRIPE. 1000 ô dữ liệu, tô theo batch đang chạy
    ══════════════════════════════════════════════════════════════════════ */
 
 interface ShuffleStripeProps {
@@ -181,14 +181,14 @@ function ShuffleStripe({
         fill="#94a3b8"
         fontSize={11}
       >
-        Epoch {epochIndex + 1} — batch {activeBatchIndex + 1}/{totalBatches} đang được học
+        Epoch {epochIndex + 1} · batch {activeBatchIndex + 1}/{totalBatches} đang được học
       </text>
     </svg>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   LOSS CURVE — đường loss theo iteration, gạch phân cách epoch
+   LOSS CURVE. Đường loss theo iteration, gạch phân cách epoch
    ══════════════════════════════════════════════════════════════════════ */
 
 interface LossChartProps {
@@ -309,7 +309,7 @@ function LossChart({
         <rect width={180} height={22} rx={6} fill="#1e293b" opacity={0.9} />
         <circle cx={12} cy={11} r={4} fill={stroke} />
         <text x={22} y={15} fill="#e2e8f0" fontSize={11}>
-          batch {batch} · {BATCH_MEANING[batch].split("—")[0].trim()}
+          batch {batch} · {BATCH_MEANING[batch].split(".")[0].trim()}
         </text>
       </g>
     </svg>
@@ -317,7 +317,7 @@ function LossChart({
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   TRAINING PLAYGROUND — slider batch size + animation shuffling + loss
+   TRAINING PLAYGROUND. Slider batch size + animation shuffling + loss
    ══════════════════════════════════════════════════════════════════════ */
 
 interface TrainingPlaygroundProps {
@@ -462,7 +462,7 @@ function TrainingPlayground({ batch, epochs }: TrainingPlaygroundProps) {
       <div className="rounded-lg border border-border bg-background/30 p-3">
         <div className="flex items-center gap-2 text-[11px] text-muted mb-2">
           <Shuffle size={12} className="text-accent" />
-          Mỗi epoch tráo dữ liệu một lần — chấm sáng là batch đang được học
+          Mỗi epoch tráo dữ liệu một lần. Chấm sáng là batch đang được học
         </div>
         <ShuffleStripe
           batch={batch}
@@ -475,7 +475,7 @@ function TrainingPlayground({ batch, epochs }: TrainingPlaygroundProps) {
 
       <div className="rounded-lg border border-border bg-background/30 p-3">
         <p className="text-[11px] text-muted mb-2">
-          Đường loss theo iteration — gạch đứt là ranh giới giữa các epoch
+          Đường loss theo iteration. Gạch đứt là ranh giới giữa các epoch
         </p>
         <LossChart
           points={points}
@@ -511,7 +511,7 @@ function makeShuffledOrders(epochs: number, batch: BatchChoice): number[][] {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   COMPARE — SGD vs MINI-BATCH vs FULL-BATCH (ToggleCompare)
+   COMPARE. SGD vs MINI-BATCH vs FULL-BATCH (ToggleCompare)
    Vẽ hai đường loss tĩnh trong mỗi nhánh so sánh
    ══════════════════════════════════════════════════════════════════════ */
 
@@ -620,22 +620,22 @@ function StaticLossComparison({
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   QUIZ — 5 câu, hỗn hợp MCQ + fill-blank
+   QUIZ. 5 câu, hỗn hợp MCQ + fill-blank
    ══════════════════════════════════════════════════════════════════════ */
 
 const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     question:
-      "Dataset 10.000 mẫu, batch size = 100, train 5 epoch. Tổng cộng bao nhiêu lần cập nhật trọng số?",
+      "Dataset 10.000 mẫu, batch size = 100, huấn luyện 5 epoch. Tổng cộng bao nhiêu lần cập nhật trọng số?",
     options: [
       "50 lần (5 × 10)",
-      "500 lần — (10.000 / 100) × 5",
-      "50.000 lần — 10.000 × 5",
-      "100 lần — 10.000 / 100",
+      "500 lần, vì (10.000 / 100) × 5",
+      "50.000 lần, vì 10.000 × 5",
+      "100 lần, vì 10.000 / 100",
     ],
     correct: 1,
     explanation:
-      "Mỗi epoch có 10.000 / 100 = 100 iteration. Năm epoch → 100 × 5 = 500 lần cập nhật. Công thức tổng quát: iterations = (N / B) × E.",
+      "Mỗi epoch có 10.000 / 100 = 100 iteration. Năm epoch cho ra 100 × 5 = 500 lần cập nhật. Công thức tổng quát: iterations = (N / B) × E.",
   },
   {
     question:
@@ -643,30 +643,30 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     options: [
       "Đường loss vẫn dao động y hệt cũ",
       "Đường loss mượt hơn vì gradient lấy trung bình trên nhiều mẫu, nhiễu giảm",
-      "Đường loss xấu hẳn đi, mô hình không học được",
+      "Đường loss xấu hẳn đi, model không học được",
       "Đường loss biến mất",
     ],
     correct: 1,
     explanation:
-      "Nhiễu của gradient tỉ lệ với 1/√B. Tăng batch từ 8 lên 128 (×16) làm nhiễu giảm khoảng ×4 → đường loss mượt hơn rõ rệt.",
+      "Nhiễu của gradient tỉ lệ với 1/√B. Tăng batch từ 8 lên 128 (gấp 16) làm nhiễu giảm khoảng 4 lần. Nhờ vậy đường loss mượt hơn rõ rệt.",
   },
   {
     question:
       "Vì sao thường tráo (shuffle) dữ liệu trước mỗi epoch?",
     options: [
       "Để GPU chạy nhanh hơn",
-      "Để mỗi epoch các batch khác nhau → gradient đa dạng → mô hình không học theo thứ tự",
+      "Để mỗi epoch có chuỗi batch khác nhau, gradient đa dạng, model không học theo thứ tự",
       "Vì Python yêu cầu",
       "Shuffle không có tác dụng gì",
     ],
     correct: 1,
     explanation:
-      "Không shuffle nghĩa là epoch nào cũng thấy cùng chuỗi batch. Mô hình có thể học mẹo theo vị trí thay vì nội dung. Shuffle làm gradient đa dạng, thường generalize tốt hơn.",
+      "Không shuffle nghĩa là epoch nào cũng thấy cùng chuỗi batch. Model có thể học mẹo theo vị trí thay vì nội dung. Shuffle làm gradient đa dạng, model thường generalize tốt hơn.",
   },
   {
     type: "fill-blank",
     question:
-      "Dataset 1.000 mẫu, batch size = 50, train 10 epoch. Số iteration trong 1 epoch = 1000 / {blank} = 20.",
+      "Dataset 1.000 mẫu, batch size = 50, huấn luyện 10 epoch. Số iteration trong 1 epoch = 1000 / {blank} = 20.",
     blanks: [{ answer: "50", accept: ["50", "batch", "batch size", "B"] }],
     explanation:
       "Chia tổng số mẫu cho batch size: 1000 / 50 = 20 iteration mỗi epoch. Nhân với số epoch: 20 × 10 = 200 lần cập nhật.",
@@ -675,10 +675,10 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     question:
       "Khi nào batch = 1 (SGD thuần) lại có lợi so với full-batch?",
     options: [
-      "Không bao giờ — batch càng lớn càng tốt",
+      "Không bao giờ, batch càng lớn càng tốt",
       "Khi muốn nhiễu tự nhiên giúp thoát khỏi local minima cạn và cập nhật liên tục",
       "Khi muốn GPU chạy nhanh nhất",
-      "Khi dataset rất nhỏ (< 10 mẫu)",
+      "Khi dataset rất nhỏ (dưới 10 mẫu)",
     ],
     correct: 1,
     explanation:
@@ -707,20 +707,20 @@ export default function EpochsBatchesTopic() {
   return (
     <>
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 1 — HOOK (ẩn dụ ôn thi)
+          BƯỚC 1. HOOK (ẩn dụ ôn thi)
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={1} totalSteps={8} label="Bắt đầu từ hình ảnh">
         <div className="rounded-2xl border border-border bg-gradient-to-br from-accent-light/60 to-surface/40 p-6 space-y-4">
           <div className="flex items-center gap-2">
             <BookOpen size={20} className="text-accent" />
             <h3 className="text-base font-semibold text-foreground">
-              Ôn thi không bao giờ là một phát 100 đề
+              Không ai ôn 1000 đề trong một buổi
             </h3>
           </div>
           <p className="text-sm text-foreground/90 leading-relaxed">
-            Tưởng tượng bạn đang ôn thi đại học với kho 1000 câu. Bạn sẽ không
-            ngồi xuống làm tất cả trong một buổi — vừa đuối, vừa không nhớ nổi.
-            Cách mà học sinh giỏi thường làm:
+            Tưởng tượng bạn đang ôn thi đại học với kho 1000 câu. Ngồi xuống
+            làm tất cả trong một buổi thì vừa đuối, vừa không nhớ nổi. Cách
+            học sinh giỏi thường làm gồm ba bước:
           </p>
           <ul className="space-y-2 text-sm text-foreground/85">
             <li className="flex items-start gap-2">
@@ -730,19 +730,19 @@ export default function EpochsBatchesTopic() {
             </li>
             <li className="flex items-start gap-2">
               <span className="mt-1.5 h-2 w-2 rounded-full bg-accent shrink-0" />
-              Làm hết các đợt trong một <strong>buổi học</strong> — đó là một{" "}
-              <strong>epoch</strong>.
+              Làm hết các đợt trong một <strong>buổi học</strong>. Trọn một
+              buổi là một <strong>epoch</strong>.
             </li>
             <li className="flex items-start gap-2">
               <span className="mt-1.5 h-2 w-2 rounded-full bg-accent shrink-0" />
               Hôm sau <strong>tráo thứ tự câu</strong>, học lại cả kho. Đó là
               epoch thứ hai. Mỗi lần giải xong một đợt là một{" "}
-              <strong>iteration</strong> — một nhịp cập nhật kiến thức.
+              <strong>iteration</strong>, tức là một nhịp cập nhật kiến thức.
             </li>
           </ul>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Mạng nơ-ron học cũng hệt vậy. Dataset = kho câu hỏi. Batch = đợt
-            nhỏ. Epoch = một vòng qua toàn bộ. Iteration = một lần cập nhật
+            Mạng nơ-ron học cũng hệt vậy. Dataset là kho câu hỏi, batch là đợt
+            nhỏ, epoch là một vòng qua toàn bộ, iteration là một lần cập nhật
             trọng số. Phần sau bạn sẽ tự kéo thanh batch size để thấy đường
             loss thay đổi hình dạng ra sao.
           </p>
@@ -750,39 +750,39 @@ export default function EpochsBatchesTopic() {
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 2 — PREDICTION GATE
+          BƯỚC 2. PREDICTION GATE
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={2} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Dataset có 1000 mẫu. Bạn chọn batch size = 100 và train 5 epoch. Bao nhiêu lần mô hình cập nhật trọng số?"
+          question="Dataset có 1000 mẫu. Bạn chọn batch size = 100 và huấn luyện 5 epoch. Model cập nhật trọng số bao nhiêu lần?"
           options={[
-            "5 lần — mỗi epoch cập nhật một lần",
-            "100 lần — mỗi batch một lần",
-            "50 lần — (1000 / 100) × 5",
-            "5000 lần — 1000 × 5",
+            "5 lần, vì mỗi epoch cập nhật một lần",
+            "100 lần, vì mỗi batch một lần",
+            "50 lần, vì (1000 / 100) × 5",
+            "5000 lần, vì 1000 × 5",
           ]}
           correct={2}
-          explanation="Mỗi epoch có 1000 / 100 = 10 iteration. Năm epoch × 10 = 50 lần cập nhật. Mỗi iteration = một lần forward + backward + cập nhật trọng số dựa trên 100 mẫu của batch đó."
+          explanation="Mỗi epoch có 1000 / 100 = 10 iteration. Năm epoch nhân 10 cho 50 lần cập nhật. Mỗi iteration gồm một lần forward, một lần backward, rồi cập nhật trọng số dựa trên 100 mẫu của batch đó."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Ở bước sau, bạn sẽ kéo thanh batch size qua các giá trị 1, 32, 128
             và 1000. Chú ý xem đường loss thay đổi hình dáng thế nào khi batch
-            tăng lên — và vì sao cả batch quá nhỏ hay quá lớn đều có nhược
-            điểm.
+            tăng lên. Đồng thời quan sát vì sao cả batch quá nhỏ và batch quá
+            lớn đều có nhược điểm.
           </p>
         </PredictionGate>
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 3 — REVEAL: training visualizer, slider batch, loss curve
+          BƯỚC 3. REVEAL: training visualizer, slider batch, loss curve
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-6">
             <p className="text-sm text-foreground/85 leading-relaxed">
               Dưới đây là một khu vui chơi huấn luyện. Kéo thanh{" "}
-              <strong>batch size</strong> và <strong>số epoch</strong>, bấm
-              <strong> Chạy training</strong> để xem:
+              <strong>batch size</strong> và <strong>số epoch</strong>, rồi bấm
+              <strong> Chạy training</strong> để xem ba thứ sau:
             </p>
             <ul className="space-y-1.5 text-sm text-foreground/80 pl-1">
               <li className="flex items-start gap-2">
@@ -791,7 +791,7 @@ export default function EpochsBatchesTopic() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
-                Chấm nào đang <em>sáng màu</em> là batch đang được mô hình học.
+                Chấm nào đang <em>sáng màu</em> là batch model đang học.
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
@@ -857,23 +857,21 @@ export default function EpochsBatchesTopic() {
             />
 
             <Callout variant="insight" title="Để ý đường loss">
-              Khi batch = 1, đường loss zig-zag mạnh — mỗi bước chỉ nhìn một
+              Khi batch = 1, đường loss zig-zag mạnh, vì mỗi bước chỉ nhìn một
               mẫu nên gradient rất nhiễu. Khi batch = 128, đường loss xuống
-              gần như mượt. Khi batch = 1000 (full-batch), chỉ có một vài điểm
-              trên đường — vì cả epoch chỉ có duy nhất một lần cập nhật trọng
-              số.
+              gần như mượt. Khi batch = 1000 (full-batch), chỉ có vài điểm
+              trên đường, vì cả epoch chỉ có đúng một lần cập nhật trọng số.
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 4 — AHA
+          BƯỚC 4. AHA
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc vỡ ra">
         <AhaMoment>
-          Ba khái niệm tưởng lạ thật ra chỉ là ba tên gọi cho một ý rất đơn
-          giản:
+          Ba khái niệm tưởng lạ thật ra chỉ là ba tên gọi cho một ý rất gọn:
           <br />
           <br />
           <strong>Batch</strong> là &ldquo;một đợt nhỏ dữ liệu&rdquo;.{" "}
@@ -882,33 +880,33 @@ export default function EpochsBatchesTopic() {
           duyệt hết toàn bộ dataset&rdquo;.
           <br />
           <br />
-          Máy học bằng cách <em>lặp đi lặp lại</em> — giống bạn ôn đề: không
+          Model học bằng cách <em>lặp đi lặp lại</em>, giống bạn ôn đề. Không
           phải một phát hiểu hết, mà là hàng trăm nhịp chỉnh nhẹ.
         </AhaMoment>
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 5 — DEEPEN: ToggleCompare SGD vs Mini-batch vs Full-batch
+          BƯỚC 5. DEEPEN: ToggleCompare SGD vs Mini-batch vs Full-batch
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={5} totalSteps={8} label="Đi sâu: ba kiểu chia batch">
+      <LessonSection step={5} totalSteps={8} label="Ba kiểu chia batch">
         <div className="space-y-4">
           <p className="text-sm text-foreground/85 leading-relaxed">
             Cộng đồng deep learning chia cách cập nhật trọng số thành ba kiểu
             chính. Bấm hai nút bên dưới để so sánh từng cặp. Mỗi biểu đồ vẽ
-            đường loss của cùng một mô hình, chỉ khác batch size.
+            đường loss của cùng một model, chỉ khác batch size.
           </p>
 
           <ToggleCompare
             labelA="SGD (batch = 1)"
             labelB="Mini-batch (batch = 32)"
-            description="Bên A chỉ nhìn đúng một mẫu mỗi bước — nhiễu, nảy lung tung. Bên B nhìn 32 mẫu một lúc — lấy trung bình, mượt hơn hẳn."
+            description="Bên A chỉ nhìn đúng một mẫu mỗi bước, gradient nhiễu, đường loss nảy lung tung. Bên B nhìn 32 mẫu một lúc, lấy trung bình, mượt hơn hẳn."
             childA={
               <StaticLossComparison
                 primary={1}
                 secondary={32}
                 primaryLabel="Batch = 1 (SGD): nhiễu, nảy"
                 secondaryLabel="Batch = 32 (mini-batch): mượt hơn"
-                description="Gradient của SGD có phương sai lớn vì chỉ dựa trên 1 mẫu. Mini-batch trung bình trên 32 mẫu → gradient ổn định hơn nhưng vẫn giữ một ít nhiễu có ích."
+                description="Gradient của SGD có phương sai lớn vì chỉ dựa trên 1 mẫu. Mini-batch trung bình trên 32 mẫu cho gradient ổn định hơn, nhưng vẫn giữ một ít nhiễu có ích."
                 epochs={3}
               />
             }
@@ -918,7 +916,7 @@ export default function EpochsBatchesTopic() {
                 secondary={128}
                 primaryLabel="Batch = 32: mềm vừa"
                 secondaryLabel="Batch = 128: rất mượt"
-                description="Tăng batch từ 32 lên 128 (×4) làm nhiễu giảm khoảng ×2. Đường loss gần như đi thẳng xuống. Cái giá phải trả: RAM gấp 4, và ít nhiễu đôi khi khiến mô hình kẹt ở minimum 'sắc' khó generalize."
+                description="Tăng batch từ 32 lên 128 (gấp 4) làm nhiễu giảm khoảng 2 lần. Đường loss gần như đi thẳng xuống. Cái giá phải trả là RAM gấp 4, và ít nhiễu đôi khi khiến model kẹt ở minimum 'sắc' khó generalize."
                 epochs={3}
               />
             }
@@ -927,14 +925,14 @@ export default function EpochsBatchesTopic() {
           <ToggleCompare
             labelA="Mini-batch (batch = 32)"
             labelB="Full-batch (batch = 1000)"
-            description="Bên trái cập nhật nhiều lần trong 1 epoch. Bên phải chỉ cập nhật một lần duy nhất cho cả dataset → chính xác nhưng cực chậm và có nguy cơ kẹt."
+            description="Bên trái cập nhật nhiều lần trong 1 epoch. Bên phải chỉ cập nhật đúng một lần cho cả dataset, chính xác nhưng cực chậm và có nguy cơ kẹt."
             childA={
               <StaticLossComparison
                 primary={32}
                 secondary={1000}
                 primaryLabel="Batch = 32: hàng chục lần cập nhật/epoch"
                 secondaryLabel="Batch = 1000 (full-batch): 1 lần/epoch"
-                description="Full-batch dùng cả dataset cho mỗi bước — gradient cực chính xác nhưng phải nhìn toàn bộ mới được cập nhật một lần. Với dataset lớn, cách này chậm kinh khủng."
+                description="Full-batch dùng cả dataset cho mỗi bước. Gradient cực chính xác, nhưng phải nhìn toàn bộ mới được cập nhật một lần. Với dataset lớn, cách này chậm kinh khủng."
                 epochs={3}
               />
             }
@@ -944,7 +942,7 @@ export default function EpochsBatchesTopic() {
                 secondary={1000}
                 primaryLabel="Batch = 128: vẫn có nhiều nhịp mỗi epoch"
                 secondaryLabel="Batch = 1000: chỉ vài điểm trên đường"
-                description="Khi batch = kích thước dataset, mỗi epoch chỉ có đúng một iteration. Đường loss gần như là đường thẳng — chậm, thiếu nhiễu, dễ kẹt."
+                description="Khi batch bằng kích thước dataset, mỗi epoch chỉ có đúng một iteration. Đường loss gần như là đường thẳng. Chậm, thiếu nhiễu, dễ kẹt."
                 epochs={3}
               />
             }
@@ -957,7 +955,7 @@ export default function EpochsBatchesTopic() {
                 đường loss nảy lung tung. Rẻ RAM, hay thoát local minima cạn.
               </li>
               <li>
-                <strong>Batch = 32 – 256 (mini-batch):</strong> &ldquo;điểm
+                <strong>Batch = 32 đến 256 (mini-batch):</strong> &ldquo;điểm
                 ngọt&rdquo; cho hầu hết bài toán. Tận dụng GPU, đủ mượt, vẫn có
                 chút nhiễu regularize tự nhiên.
               </li>
@@ -972,17 +970,17 @@ export default function EpochsBatchesTopic() {
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 6 — CHALLENGE + EXPLAIN
+          BƯỚC 6. CHALLENGE + EXPLAIN
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <LessonSection step={6} totalSteps={8} label="Thử thách & giải thích">
+      <LessonSection step={6} totalSteps={8} label="Thử thách và giải thích">
         <div className="space-y-6">
           <InlineChallenge
             question="Dataset có 10.000 mẫu, bạn chọn batch size = 100. Một epoch có bao nhiêu iteration?"
             options={[
               "10 iteration",
-              "100 iteration — vì 10.000 chia 100 = 100",
-              "10.000 iteration — mỗi mẫu 1 iteration",
-              "1 iteration — cả dataset một lượt",
+              "100 iteration, vì 10.000 chia 100 = 100",
+              "10.000 iteration, mỗi mẫu 1 iteration",
+              "1 iteration, cả dataset một lượt",
             ]}
             correct={1}
             explanation="Chia tổng số mẫu cho batch size: 10.000 / 100 = 100 iteration trong một epoch. Mỗi iteration xử lý đúng 100 mẫu và cập nhật trọng số một lần."
@@ -991,7 +989,7 @@ export default function EpochsBatchesTopic() {
           <ExplanationSection topicSlug={metadata.slug}>
             <p className="leading-relaxed">
               Giờ bạn đã thấy rõ ba thuật ngữ. Hãy đóng gói chúng bằng một
-              công thức rất ngắn: với N là tổng số mẫu, B là batch size, E là
+              công thức rất ngắn. Với N là tổng số mẫu, B là batch size, E là
               số epoch, thì <strong>số lần cập nhật trọng số</strong> trong cả
               khoá huấn luyện là:
             </p>
@@ -1002,8 +1000,8 @@ export default function EpochsBatchesTopic() {
 
             <p className="text-sm text-muted leading-relaxed">
               Dấu trần (ceiling) xuất hiện vì batch cuối của mỗi epoch có thể
-              không đủ B mẫu. Ví dụ dataset 1000, batch 300 → 4 iteration/epoch
-              (batch thứ tư chỉ có 100 mẫu).
+              không đủ B mẫu. Lấy ví dụ dataset 1000, batch 300, ta được 4
+              iteration mỗi epoch (batch thứ tư chỉ có 100 mẫu).
             </p>
 
             <div className="grid gap-3 sm:grid-cols-3">
@@ -1016,7 +1014,7 @@ export default function EpochsBatchesTopic() {
                   Batch
                 </p>
                 <p className="text-xs text-muted leading-snug">
-                  Một đợt nhỏ dữ liệu đưa vào mô hình cùng lúc. Ví dụ B = 32.
+                  Một đợt nhỏ dữ liệu đưa vào model cùng lúc. Lấy ví dụ B = 32.
                 </p>
               </div>
               <div
@@ -1060,12 +1058,12 @@ export default function EpochsBatchesTopic() {
             </LaTeX>
 
             <p className="text-sm text-muted leading-relaxed">
-              Nói bằng tiếng Việt: trọng số mới = trọng số cũ trừ đi một bước
+              Nói bằng tiếng Việt: trọng số mới bằng trọng số cũ trừ đi một bước
               nhỏ theo hướng <em>trung bình</em> của độ dốc trên B mẫu. η là{" "}
-              <TopicLink slug="learning-rate">learning rate</TopicLink> — độ
-              dài bước. B càng lớn, trung bình càng &ldquo;đại diện&rdquo; cho
-              toàn dataset → đường loss càng mượt. B càng nhỏ, trung bình chỉ
-              dựa trên ít mẫu → nhiễu lớn, nhưng mỗi bước tính cực nhanh.
+              <TopicLink slug="learning-rate">learning rate</TopicLink>, tức là
+              độ dài mỗi bước. B càng lớn, trung bình càng &ldquo;đại diện&rdquo; cho
+              toàn dataset, nhờ vậy đường loss càng mượt. B càng nhỏ, trung bình chỉ
+              dựa trên ít mẫu nên nhiễu lớn, nhưng đổi lại mỗi bước tính cực nhanh.
             </p>
 
             <Callout variant="warning" title="Ba cạm bẫy hay gặp">
@@ -1092,7 +1090,7 @@ export default function EpochsBatchesTopic() {
               </ul>
             </Callout>
 
-            <CollapsibleDetail title="Gradient accumulation — thủ thuật giả vờ batch to khi GPU nhỏ">
+            <CollapsibleDetail title="Gradient accumulation: cách giả vờ batch to khi GPU nhỏ">
               <p className="text-sm leading-relaxed">
                 Bạn có GPU chỉ chạy nổi batch = 16, nhưng bài báo đòi batch =
                 64. Thay vì mua GPU mới, bạn có thể: chạy forward + backward
@@ -1107,11 +1105,11 @@ export default function EpochsBatchesTopic() {
               <p className="text-sm leading-relaxed">
                 Nghiên cứu của Keskar và cộng sự (2017) chỉ ra: khi batch rất
                 lớn (vài nghìn trở lên), SGD gần như biến thành full-batch GD
-                và hay hạ cánh vào <em>sharp minima</em> — vùng đáy hẹp, độ
-                dốc thay đổi mạnh. Những minimum loại này nhìn thì thấp nhưng
-                generalize kém sang dữ liệu test. Nhiễu vừa phải của mini-batch
-                đóng vai trò regularize, giúp tìm vùng đáy rộng và &ldquo;êm&rdquo;
-                hơn.
+                và hay hạ cánh vào <em>sharp minima</em>, tức là vùng đáy hẹp
+                với độ dốc thay đổi mạnh. Những minimum loại này nhìn thì thấp
+                nhưng generalize kém sang dữ liệu test. Nhiễu vừa phải của
+                mini-batch đóng vai trò regularize, giúp tìm vùng đáy rộng và
+                &ldquo;êm&rdquo; hơn.
               </p>
             </CollapsibleDetail>
 
@@ -1128,7 +1126,7 @@ export default function EpochsBatchesTopic() {
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 7 — MINI SUMMARY
+          BƯỚC 7. MINI SUMMARY
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
@@ -1138,7 +1136,7 @@ export default function EpochsBatchesTopic() {
             "Công thức iteration: ⌈N / B⌉ × E. Ví dụ 1000 mẫu, batch 100, 5 epoch ⇒ 50 lần cập nhật.",
             "Tráo dữ liệu trước mỗi epoch để các batch khác nhau qua các vòng, gradient đa dạng, thường generalize tốt hơn.",
             "Batch nhỏ (≤ 32) cho đường loss zig-zag nhưng chính nhiễu đó có tác dụng regularize. Batch lớn (128+) cho đường loss mượt, cần nhiều RAM.",
-            "Full-batch chỉ hợp với dataset nhỏ. Với dataset lớn, hãy dùng mini-batch — và nếu thiếu RAM, dùng gradient accumulation để giả vờ batch to.",
+            "Full-batch chỉ hợp với dataset nhỏ. Với dataset lớn, hãy dùng mini-batch. Nếu thiếu RAM, dùng gradient accumulation để giả vờ batch to.",
           ]}
         />
         <div className="mt-4">
@@ -1153,7 +1151,7 @@ export default function EpochsBatchesTopic() {
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          BƯỚC 8 — QUIZ
+          BƯỚC 8. QUIZ
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={QUIZ_QUESTIONS} />

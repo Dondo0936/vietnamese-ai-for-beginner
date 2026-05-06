@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
   title: "Neural Networks in Voice Assistants",
   titleVi: "Mạng nơ-ron trong trợ lý giọng nói",
   description:
-    'Khi bạn nói "Hey Siri, đặt hẹn giờ 10 phút" — giọng của bạn đi qua mạng nơ-ron sâu nhiều lần để biến thành hành động. Xem từng chặng của hành trình đó.',
+    'Bạn nói "Hey Siri, đặt hẹn giờ 10 phút". Giọng của bạn đi qua nhiều mạng nơ-ron sâu nối tiếp nhau rồi biến thành một hành động trên điện thoại. Xem từng chặng của hành trình đó.',
   category: "neural-fundamentals",
   tags: ["neural-network", "speech-recognition", "application"],
   difficulty: "beginner",
@@ -100,7 +100,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   HINH MINH HOẠ — Sóng âm → Spectrogram → Đặc trưng → Phân loại
+   HINH MINH HOA. Song am, spectrogram, dac trung, phan loai
    ═══════════════════════════════════════════════════════════════════ */
 
 type PipelineStage =
@@ -130,7 +130,7 @@ const STAGES: StageConfig[] = [
     bgTint: "bg-blue-50 dark:bg-blue-900/20",
     summary: "Micro thu sóng áp suất, lấy mẫu 16.000 lần/giây.",
     detail:
-      "Giọng nói là các dao động không khí. Micro chuyển chúng thành một dãy số — mỗi số đo áp suất tại một khoảnh khắc. Trong một giây có 16.000 số.",
+      "Giọng nói là các dao động không khí. Micro chuyển chúng thành một dãy số. Mỗi số đo áp suất tại một khoảnh khắc, và trong một giây có 16.000 số.",
   },
   {
     key: "spectrogram",
@@ -150,7 +150,7 @@ const STAGES: StageConfig[] = [
     bgTint: "bg-amber-50 dark:bg-amber-900/20",
     summary: "Rút gọn ảnh nhiệt thành vài chục con số mô tả tiếng.",
     detail:
-      "Ảnh nhiệt vẫn quá chi tiết. Thuật toán chọn 40–80 con số quan trọng nhất — đủ để phân biệt âm /a/, /b/, /ngh/ mà không cần hình ảnh đầy đủ.",
+      "Ảnh nhiệt vẫn quá chi tiết. Thuật toán chọn 40–80 con số quan trọng nhất, đủ để phân biệt âm /a/, /b/, /ngh/ mà không cần hình ảnh đầy đủ.",
   },
   {
     key: "phoneme",
@@ -180,7 +180,7 @@ const STAGES: StageConfig[] = [
     bgTint: "bg-rose-50 dark:bg-rose-900/20",
     summary: "Mạng thứ ba phân loại ý định và kích hoạt API phù hợp.",
     detail:
-      "Khi đã có văn bản, mạng NLU (hiểu ngôn ngữ) tìm ra &ldquo;ý định&rdquo; — ví dụ đặt_hẹn_giờ — và các &ldquo;tham số&rdquo; — 10 phút. Rồi nó gọi API bình thường trên điện thoại.",
+      "Khi đã có văn bản, mạng NLU (hiểu ngôn ngữ) tìm ra &ldquo;ý định&rdquo; (ví dụ đặt_hẹn_giờ) cùng các &ldquo;tham số&rdquo; (10 phút). Sau đó nó gọi API bình thường trên điện thoại.",
   },
 ];
 
@@ -200,8 +200,8 @@ function PipelineExplorer() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted leading-relaxed">
-        Bạn nói <strong>&ldquo;Hey Siri, đặt hẹn giờ 10 phút&rdquo;</strong> —
-        giọng của bạn đi qua sáu chặng. Bấm từng chặng để xem nó làm gì.
+        Bạn nói <strong>&ldquo;Hey Siri, đặt hẹn giờ 10 phút&rdquo;</strong>.
+        Giọng của bạn đi qua sáu chặng. Bấm từng chặng để xem nó làm gì.
       </p>
 
       {/* Thanh pipeline horizontal */}
@@ -320,7 +320,7 @@ function WaveformVisual() {
   return (
     <div className="rounded-lg bg-white/40 dark:bg-black/20 border border-border p-3">
       <p className="text-[10px] uppercase tracking-wide text-blue-700 dark:text-blue-300 font-semibold mb-2">
-        Một giây giọng nói — 16.000 con số đo áp suất không khí
+        Một giây giọng nói. 16.000 con số đo áp suất không khí
       </p>
       <svg viewBox="0 0 320 120" className="w-full">
         <line x1={0} y1={60} x2={320} y2={60} stroke="#94a3b8" strokeWidth={0.5} strokeDasharray="2 3" />
@@ -349,7 +349,7 @@ function SpectrogramVisual() {
   return (
     <div className="rounded-lg bg-white/40 dark:bg-black/20 border border-border p-3">
       <p className="text-[10px] uppercase tracking-wide text-violet-700 dark:text-violet-300 font-semibold mb-2">
-        Phổ tần số — chia thành khung 10ms, mỗi khung một cột màu
+        Phổ tần số. Chia thành khung 10ms, mỗi khung một cột màu
       </p>
       <svg viewBox="0 0 320 130" className="w-full">
         {cells.map((c, idx) => (
@@ -378,7 +378,7 @@ function FeaturesVisual() {
   return (
     <div className="rounded-lg bg-white/40 dark:bg-black/20 border border-border p-3">
       <p className="text-[10px] uppercase tracking-wide text-amber-700 dark:text-amber-300 font-semibold mb-2">
-        Vector đặc trưng — 40 con số mô tả &ldquo;hình dạng&rdquo; âm thanh
+        Vector đặc trưng. 40 con số mô tả &ldquo;hình dạng&rdquo; âm thanh
       </p>
       <div className="flex items-end gap-[2px] h-24">
         {values.map((v, i) => (
@@ -402,7 +402,7 @@ function PhonemeVisual() {
   return (
     <div className="rounded-lg bg-white/40 dark:bg-black/20 border border-border p-3">
       <p className="text-[10px] uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-semibold mb-2">
-        Mạng nơ-ron sâu — nhiều lớp chồng nhau đoán âm vị
+        Mạng nơ-ron sâu. Nhiều lớp chồng nhau đoán âm vị
       </p>
       <svg viewBox="0 0 340 160" className="w-full">
         {/* 4 lớp: 3-4-4-3 */}
@@ -477,32 +477,32 @@ function WordVisual() {
   return (
     <div className="rounded-lg bg-white/40 dark:bg-black/20 border border-border p-3 space-y-2">
       <p className="text-[10px] uppercase tracking-wide text-cyan-700 dark:text-cyan-300 font-semibold mb-2">
-        Từ âm vị thành từ — mô hình ngôn ngữ chọn chuỗi hợp lý
+        Từ âm vị thành từ. Mô hình ngôn ngữ chọn chuỗi hợp lý
       </p>
       <div className="flex items-center gap-2 flex-wrap text-xs">
-        <span className="rounded-md bg-violet-500/15 px-2 py-1 font-mono text-violet-700 dark:text-violet-300">
+        <span className="rounded-md bg-violet-500/15 px-2 py-1 font-mono text-foreground font-semibold">
           /h/ /eɪ/ /s/ /i/ /r/ /i/
         </span>
         <ChevronRight size={14} className="text-muted" />
-        <span className="rounded-md bg-cyan-500/15 px-2 py-1 font-mono text-cyan-700 dark:text-cyan-300">
+        <span className="rounded-md bg-cyan-500/15 px-2 py-1 font-mono text-foreground font-semibold">
           &ldquo;Hey Siri&rdquo;
         </span>
       </div>
       <div className="flex items-center gap-2 flex-wrap text-xs">
-        <span className="rounded-md bg-violet-500/15 px-2 py-1 font-mono text-violet-700 dark:text-violet-300">
+        <span className="rounded-md bg-violet-500/15 px-2 py-1 font-mono text-foreground font-semibold">
           /d/ /a/ /t/ /h/ /e/ /n/ /j/ /o/
         </span>
         <ChevronRight size={14} className="text-muted" />
-        <span className="rounded-md bg-cyan-500/15 px-2 py-1 font-mono text-cyan-700 dark:text-cyan-300">
+        <span className="rounded-md bg-cyan-500/15 px-2 py-1 font-mono text-foreground font-semibold">
           &ldquo;đặt hẹn giờ&rdquo;
         </span>
       </div>
       <div className="flex items-center gap-2 flex-wrap text-xs">
-        <span className="rounded-md bg-violet-500/15 px-2 py-1 font-mono text-violet-700 dark:text-violet-300">
+        <span className="rounded-md bg-violet-500/15 px-2 py-1 font-mono text-foreground font-semibold">
           /m/ /ɨ/ /ɨ/ /i/ /p/ /h/ /u/ /t/
         </span>
         <ChevronRight size={14} className="text-muted" />
-        <span className="rounded-md bg-cyan-500/15 px-2 py-1 font-mono text-cyan-700 dark:text-cyan-300">
+        <span className="rounded-md bg-cyan-500/15 px-2 py-1 font-mono text-foreground font-semibold">
           &ldquo;mười phút&rdquo;
         </span>
       </div>
@@ -522,34 +522,34 @@ function ActionVisual() {
       </p>
       <div className="flex flex-col gap-2 text-xs">
         <div className="rounded-lg bg-cyan-100 dark:bg-cyan-900/30 p-2">
-          <span className="font-semibold text-cyan-800 dark:text-cyan-200">Văn bản:</span>{" "}
+          <span className="font-semibold text-foreground">Văn bản:</span>{" "}
           <span className="text-foreground">&ldquo;đặt hẹn giờ 10 phút&rdquo;</span>
         </div>
         <ChevronRight size={14} className="mx-auto text-muted rotate-90" />
         <div className="rounded-lg bg-purple-100 dark:bg-purple-900/30 p-2 space-y-1">
           <div>
-            <span className="font-semibold text-purple-800 dark:text-purple-200">Ý định:</span>{" "}
-            <code className="bg-purple-200 dark:bg-purple-800/50 px-1 rounded">
+            <span className="font-semibold text-foreground">Ý định:</span>{" "}
+            <code className="bg-purple-200 dark:bg-purple-800/50 px-1 rounded text-foreground">
               đặt_hẹn_giờ
             </code>
           </div>
           <div>
-            <span className="font-semibold text-purple-800 dark:text-purple-200">Tham số:</span>{" "}
-            <code className="bg-purple-200 dark:bg-purple-800/50 px-1 rounded">
+            <span className="font-semibold text-foreground">Tham số:</span>{" "}
+            <code className="bg-purple-200 dark:bg-purple-800/50 px-1 rounded text-foreground">
               thời_lượng = 10 phút
             </code>
           </div>
         </div>
         <ChevronRight size={14} className="mx-auto text-muted rotate-90" />
         <div className="rounded-lg bg-emerald-100 dark:bg-emerald-900/30 p-2">
-          <span className="font-semibold text-emerald-800 dark:text-emerald-200">Hành động:</span>{" "}
-          <code className="bg-emerald-200 dark:bg-emerald-800/50 px-1 rounded">
+          <span className="font-semibold text-foreground">Hành động:</span>{" "}
+          <code className="bg-emerald-200 dark:bg-emerald-800/50 px-1 rounded text-foreground">
             hẹn_giờ.tạo(thời_lượng=600s)
           </code>
         </div>
         <div className="rounded-lg bg-amber-100 dark:bg-amber-900/30 p-2 text-center">
           <Clock size={12} className="inline mr-1 text-amber-700 dark:text-amber-300" />
-          <span className="text-amber-800 dark:text-amber-200 font-semibold">
+          <span className="text-foreground font-semibold">
             Siri: &ldquo;Đã đặt hẹn giờ 10 phút.&rdquo;
           </span>
         </div>
@@ -559,7 +559,7 @@ function ActionVisual() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   DEEPEN — StepReveal: theo một câu thật đi qua các lớp
+   DEEPEN. StepReveal theo mot cau that di qua cac lop
    ═══════════════════════════════════════════════════════════════════ */
 
 function QueryJourney() {
@@ -608,7 +608,7 @@ function QueryJourney() {
           <p className="text-sm text-foreground/85 leading-relaxed">
             32.000 con số quá nhiều và quá thô. Máy chia chúng thành{" "}
             <strong>200 khung</strong> (mỗi khung 10 mili-giây), rồi tính phổ
-            tần số cho mỗi khung. Kết quả: <strong>200 cột màu</strong> — mỗi
+            tần số cho mỗi khung. Kết quả là <strong>200 cột màu</strong>: mỗi
             cột cho biết ở khoảnh khắc đó có âm trầm nhiều hay âm cao nhiều.
           </p>
           <div className="flex items-end gap-0.5 h-12">
@@ -641,19 +641,19 @@ function QueryJourney() {
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
             <div className="rounded bg-emerald-500/15 border border-emerald-400/40 p-2 text-center">
-              <div className="font-mono font-bold text-emerald-700 dark:text-emerald-300">
+              <div className="font-mono font-bold text-foreground">
                 /đ/
               </div>
               <div className="text-[10px] text-muted">97%</div>
             </div>
             <div className="rounded bg-emerald-500/15 border border-emerald-400/40 p-2 text-center">
-              <div className="font-mono font-bold text-emerald-700 dark:text-emerald-300">
+              <div className="font-mono font-bold text-foreground">
                 /a/
               </div>
               <div className="text-[10px] text-muted">94%</div>
             </div>
             <div className="rounded bg-emerald-500/15 border border-emerald-400/40 p-2 text-center">
-              <div className="font-mono font-bold text-emerald-700 dark:text-emerald-300">
+              <div className="font-mono font-bold text-foreground">
                 /t/
               </div>
               <div className="text-[10px] text-muted">91%</div>
@@ -680,7 +680,7 @@ function QueryJourney() {
             <strong>&ldquo;đặt hẹn giờ 10 phút&rdquo;</strong>.
           </p>
           <div className="rounded-lg bg-cyan-100 dark:bg-cyan-900/30 p-3 text-sm">
-            <span className="font-semibold text-cyan-800 dark:text-cyan-200">
+            <span className="font-semibold text-foreground">
               Văn bản:
             </span>{" "}
             <span className="text-foreground font-medium">
@@ -698,8 +698,8 @@ function QueryJourney() {
             </h4>
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Một mạng thứ ba — mạng hiểu ngôn ngữ (NLU) — đọc văn bản và trả
-            lời hai câu hỏi: <em>Người dùng muốn làm gì?</em> (ý định) và{" "}
+            Một mạng thứ ba (mạng hiểu ngôn ngữ, NLU) đọc văn bản và trả lời
+            hai câu hỏi: <em>Người dùng muốn làm gì?</em> (ý định) và{" "}
             <em>Cần tham số gì?</em>. Kết quả là một cấu trúc dữ liệu mà phần
             mềm truyền thống đọc được.
           </p>
@@ -730,18 +730,18 @@ function QueryJourney() {
           <p className="text-sm text-foreground/85 leading-relaxed">
             Phần mềm thường (không phải mạng nơ-ron) nhận cấu trúc trên, gọi
             API hẹn giờ với thời lượng 600 giây, rồi sinh câu trả lời. Cuối
-            cùng, <strong>một mạng nơ-ron nữa</strong> (TTS — văn bản thành
-            giọng nói) biến câu trả lời thành âm thanh tự nhiên phát ra loa.
+            cùng, <strong>một mạng nơ-ron nữa</strong> (TTS, tức là văn bản
+            thành giọng nói) biến câu trả lời thành âm thanh tự nhiên phát ra loa.
           </p>
           <div className="rounded-lg bg-rose-100 dark:bg-rose-900/30 p-3 text-sm flex items-center gap-2">
             <Volume2 size={14} className="text-rose-700 dark:text-rose-300" />
-            <span className="text-rose-800 dark:text-rose-200 font-medium">
+            <span className="text-foreground font-medium">
               &ldquo;Đã đặt hẹn giờ 10 phút.&rdquo;
             </span>
           </div>
           <p className="text-[11px] text-muted italic">
-            Toàn bộ sáu chặng — thường xong trong dưới 500 mili-giây. Bạn
-            thường không nhận ra.
+            Toàn bộ sáu chặng thường xong trong dưới 500 mili-giây. Bạn thậm chí
+            không kịp nhận ra.
           </p>
         </div>,
       ]}
@@ -750,7 +750,7 @@ function QueryJourney() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   QUIZ — 4 câu MCQ
+   QUIZ. 5 cau MCQ
    ═══════════════════════════════════════════════════════════════════ */
 
 const quizQuestions: QuizQuestion[] = [
@@ -760,7 +760,7 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Chỉ một mạng duy nhất làm hết",
       "Ít nhất ba mạng khác nhau: một mạng nhận dạng âm thanh, một mạng hiểu ý định, một mạng tạo giọng trả lời",
-      "Không cần mạng nơ-ron nào — chỉ cần khớp mẫu đơn giản",
+      "Không cần mạng nơ-ron nào, chỉ cần khớp mẫu đơn giản là đủ",
       "Mạng nơ-ron chỉ làm phần phát lại giọng",
     ],
     correct: 1,
@@ -799,25 +799,25 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Để tiết kiệm điện cho máy chủ",
       "Để mạng ngừng hoạt động khi mất mạng",
-      "Để giảm độ trễ (dưới 200ms) và giữ giọng người dùng ở trên máy — không cần gửi âm thanh lên mạng",
+      "Để giảm độ trễ xuống dưới 200ms và giữ giọng người dùng ở trên máy, không cần gửi âm thanh lên mạng",
       "Vì mạng nơ-ron không chạy được trên máy chủ",
     ],
     correct: 2,
     explanation:
-      "Chạy trên thiết bị có hai lợi ích: (1) độ trễ thấp — Siri phản hồi tức thì khi nghe &ldquo;Hey Siri&rdquo;, (2) riêng tư — âm thanh không rời khỏi điện thoại cho đến khi xác nhận đúng lệnh gọi. Đây là lý do các trợ lý thế hệ mới đầu tư vào chip chuyên biệt cho mạng nơ-ron.",
+      "Chạy trên thiết bị có hai lợi ích. Một là độ trễ thấp, Siri phản hồi tức thì khi nghe &ldquo;Hey Siri&rdquo;. Hai là riêng tư, âm thanh không rời khỏi điện thoại cho đến khi xác nhận đúng lệnh gọi. Đây là lý do các trợ lý thế hệ mới đầu tư vào chip chuyên biệt cho mạng nơ-ron.",
   },
   {
     question:
       "Nếu không có mạng nơ-ron sâu, trợ lý giọng nói dùng mô hình thống kê truyền thống. Điểm yếu lớn nhất của mô hình đó là gì?",
     options: [
       "Chạy quá nhanh, khó debug",
-      "Mỗi khung âm thanh được xử lý gần như độc lập, không nắm được ngữ cảnh dài — dẫn đến tỉ lệ lỗi cao",
+      "Mỗi khung âm thanh được xử lý gần như độc lập, không nắm được ngữ cảnh dài, do đó tỉ lệ lỗi cao",
       "Không thể chạy trên máy tính",
       "Chỉ hoạt động với tiếng Anh",
     ],
     correct: 1,
     explanation:
-      "HMM/GMM truyền thống xử lý từng khung 10ms tương đối độc lập. Nhưng giọng nói phụ thuộc mạnh vào ngữ cảnh — âm /t/ phát sau /s/ khác /t/ phát sau /a/. Mạng nơ-ron sâu, đặc biệt là LSTM và Transformer, giữ được ngữ cảnh dài nên đoán chính xác hơn nhiều.",
+      "HMM/GMM truyền thống xử lý từng khung 10ms tương đối độc lập. Nhưng giọng nói phụ thuộc mạnh vào ngữ cảnh: âm /t/ phát sau /s/ khác hẳn /t/ phát sau /a/. Mạng nơ-ron sâu, đặc biệt là LSTM và transformer, giữ được ngữ cảnh dài nên đoán chính xác hơn nhiều.",
   },
 ];
 
@@ -844,7 +844,7 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  &ldquo;Hey Siri&rdquo; — &ldquo;OK Google&rdquo;
+                  &ldquo;Hey Siri&rdquo;, &ldquo;OK Google&rdquo;
                 </p>
                 <p className="text-xs text-muted">
                   Giọng của bạn → văn bản → hành động. Mạng nơ-ron ở mọi chặng.
@@ -852,7 +852,7 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               </div>
             </div>
             <p className="text-sm text-foreground/85 leading-relaxed">
-              Bạn nói vài từ — chỉ trong vài trăm mili-giây, điện thoại đã hiểu
+              Bạn nói vài từ. Chỉ trong vài trăm mili-giây, điện thoại đã hiểu
               và phản hồi. Đằng sau sự nhanh nhạy đó là hàng loạt{" "}
               <strong>mạng nơ-ron sâu</strong> nối tiếp nhau, mỗi mạng làm một
               việc: nghe âm, hiểu nghĩa, tạo giọng trả lời.
@@ -861,28 +861,28 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border-l-4 border-l-blue-400 bg-blue-50 dark:bg-blue-900/20 p-3">
-              <p className="text-[10px] uppercase tracking-wide text-blue-700 dark:text-blue-300 font-bold mb-1">
+              <p className="text-[10px] uppercase tracking-wide text-foreground font-bold mb-1">
                 Trước 2012
               </p>
-              <p className="text-xs text-foreground/85 leading-snug">
-                Tỉ lệ lỗi từ trên 23% — cứ bốn từ sai một. Dùng mô hình thống
-                kê HMM/GMM.
+              <p className="text-xs text-foreground leading-snug">
+                Tỉ lệ lỗi từ trên 23%, cứ bốn từ thì sai một. Hệ thống chạy bằng
+                mô hình thống kê HMM/GMM.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-3">
-              <p className="text-[10px] uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-bold mb-1">
+              <p className="text-[10px] uppercase tracking-wide text-foreground font-bold mb-1">
                 Sau 2015
               </p>
-              <p className="text-xs text-foreground/85 leading-snug">
-                Chuyển sang mạng nơ-ron sâu: tỉ lệ lỗi giảm xuống 4,9% — gần
-                ngang khả năng của con người.
+              <p className="text-xs text-foreground leading-snug">
+                Chuyển sang mạng nơ-ron sâu: tỉ lệ lỗi giảm xuống 4,9%, gần
+                ngang khả năng nghe của con người.
               </p>
             </div>
             <div className="rounded-xl border-l-4 border-l-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3">
-              <p className="text-[10px] uppercase tracking-wide text-amber-700 dark:text-amber-300 font-bold mb-1">
+              <p className="text-[10px] uppercase tracking-wide text-foreground font-bold mb-1">
                 Hôm nay
               </p>
-              <p className="text-xs text-foreground/85 leading-snug">
+              <p className="text-xs text-foreground leading-snug">
                 Hơn 4,2 tỷ thiết bị có trợ lý giọng nói. Đã trở thành công
                 cụ hàng ngày.
               </p>
@@ -904,8 +904,8 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
                 Giọng không ai giống ai
               </p>
               <p className="text-xs text-muted leading-snug">
-                Bắc, Trung, Nam, nam, nữ, già, trẻ — cùng một từ có thể phát
-                âm theo hàng chục cách.
+                Bắc, Trung, Nam, nam, nữ, già, trẻ. Cùng một từ có thể phát âm
+                theo hàng chục cách.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card p-3 space-y-1">
@@ -913,8 +913,8 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
                 Tiếng ồn ở khắp nơi
               </p>
               <p className="text-xs text-muted leading-snug">
-                Xe máy, TV, tiếng trẻ con — hệ thống phải &ldquo;gạn đục&rdquo;
-                lấy đúng giọng nói.
+                Xe máy, TV, tiếng trẻ con cùng vọng vào. Hệ thống phải gạn đục
+                khơi trong, lấy đúng giọng nói.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-card p-3 space-y-1">
@@ -937,10 +937,10 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
           </div>
 
           <Callout variant="warning" title="Vì sao mô hình cổ điển thất bại">
-            Trước 2012 người ta dùng HMM (mô hình Markov ẩn) kết hợp GMM (mô
-            hình hỗn hợp Gauss). Vấn đề: cả hai xử lý mỗi khung âm thanh gần
-            như độc lập, không giữ được ngữ cảnh dài. Kết quả: tỉ lệ lỗi hơn
-            23% — mức khó dùng hàng ngày.
+            Trước 2012, hệ thống dùng HMM (mô hình Markov ẩn) kết hợp GMM (mô
+            hình hỗn hợp Gauss). Cả hai xử lý mỗi khung âm thanh gần như độc
+            lập, không giữ được ngữ cảnh dài. Hậu quả là tỉ lệ lỗi vượt 23%,
+            mức quá tệ để dùng hàng ngày.
           </Callout>
         </div>
       </ApplicationProblem>
@@ -956,15 +956,14 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               <strong>Thu âm và chuyển thành phổ tần số.</strong>
             </p>
             <p className="text-sm text-foreground/85 leading-relaxed">
-              Micro lấy mẫu 16.000 lần/giây. Thuật toán chia thành khung 10ms,
-              tính phổ tần số — ra một &ldquo;ảnh nhiệt&rdquo; nhỏ cho mỗi
-              khung.
+              Micro lấy mẫu 16.000 lần/giây. Thuật toán chia thành khung 10ms
+              rồi tính phổ tần số, mỗi khung ra một &ldquo;ảnh nhiệt&rdquo; nhỏ.
             </p>
             <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-2 text-xs">
-              <span className="font-semibold text-blue-700 dark:text-blue-300">
+              <span className="font-semibold text-foreground">
                 Kết quả:
               </span>{" "}
-              một ma trận phổ — đầu vào cho mạng nơ-ron.
+              <span className="text-foreground">một ma trận phổ làm đầu vào cho mạng nơ-ron.</span>
             </div>
           </div>
         </Beat>
@@ -981,11 +980,13 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               <em>âm vị</em> (đơn vị âm nhỏ nhất).
             </p>
             <div className="rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-2 text-xs">
-              <span className="font-semibold text-emerald-700 dark:text-emerald-300">
+              <span className="font-semibold text-foreground">
                 Trái tim:
               </span>{" "}
-              đây là nơi mạng nơ-ron đóng vai trò quan trọng nhất. Trước khi có
-              nó, tỉ lệ lỗi cao. Có nó, tỉ lệ lỗi giảm mạnh.
+              <span className="text-foreground">
+                đây là nơi mạng nơ-ron đóng vai trò quan trọng nhất. Trước khi có
+                nó, tỉ lệ lỗi cao. Có nó, tỉ lệ lỗi giảm mạnh.
+              </span>
             </div>
           </div>
         </Beat>
@@ -997,16 +998,18 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
             </p>
             <p className="text-sm text-foreground/85 leading-relaxed">
               Mạng ra xác suất cho từng âm vị, nhưng âm vị chưa phải từ. Bộ
-              giải mã dùng thuật toán <em>beam search</em> — giữ nhiều giả
-              thuyết tốt nhất — kết hợp mô hình ngôn ngữ (cũng là một mạng
+              giải mã dùng thuật toán <em>beam search</em> (giữ nhiều giả
+              thuyết tốt nhất) kết hợp mô hình ngôn ngữ (cũng là một mạng
               nơ-ron) để chọn chuỗi từ hợp lý nhất.
             </p>
             <div className="rounded-lg bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 p-2 text-xs">
-              <span className="font-semibold text-cyan-700 dark:text-cyan-300">
+              <span className="font-semibold text-foreground">
                 Ví dụ:
               </span>{" "}
-              &ldquo;đặt hẹn giờ&rdquo; thắng &ldquo;đạt hẹn giò&rdquo; vì mô
-              hình ngôn ngữ đã đọc hàng tỷ câu tiếng Việt.
+              <span className="text-foreground">
+                &ldquo;đặt hẹn giờ&rdquo; thắng &ldquo;đạt hẹn giò&rdquo; vì mô
+                hình ngôn ngữ đã đọc hàng tỷ câu tiếng Việt.
+              </span>
             </div>
           </div>
         </Beat>
@@ -1020,7 +1023,7 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               Văn bản đi qua một mạng NLU (hiểu ngôn ngữ tự nhiên) để tìm{" "}
               <em>ý định</em> (&ldquo;đặt_hẹn_giờ&rdquo;) và các <em>tham số</em>{" "}
               (&ldquo;10 phút&rdquo;). Phần mềm thường nhận cấu trúc đó, gọi
-              API, rồi trả lời bằng giọng — tất cả trong dưới nửa giây.
+              API rồi trả lời bằng giọng. Tất cả gói gọn trong dưới nửa giây.
             </p>
           </div>
         </Beat>
@@ -1042,16 +1045,16 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
               Giả lập toàn bộ hành trình của câu{" "}
-              <strong>&ldquo;Đặt hẹn giờ 10 phút&rdquo;</strong> — bấm{" "}
-              <em>Tiếp tục</em> để mở từng bước và xem từng lớp của pipeline
-              biến đổi dữ liệu như thế nào.
+              <strong>&ldquo;Đặt hẹn giờ 10 phút&rdquo;</strong>. Bấm{" "}
+              <em>Tiếp tục</em> để mở từng bước và xem mỗi lớp của pipeline
+              biến đổi dữ liệu ra sao.
             </p>
             <QueryJourney />
           </div>
 
           <div className="mt-6 space-y-3">
             <h3 className="text-base font-semibold text-foreground mb-2">
-              Thử thách kiểm tra hiểu biết
+              Thử trả lời hai câu hỏi
             </h3>
             <InlineChallenge
               question="Siri nhận ra từ 'Hey Siri' ngay cả khi điện thoại nằm xa, tiếng ồn xung quanh nhiều. Điều gì quan trọng nhất giúp làm được chuyện đó?"
@@ -1088,7 +1091,7 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
         topicSlug={metadata.slug}
       >
         <Metric
-          value="Tỉ lệ lỗi từ của Google giảm từ 23% (2013) xuống 4,9% (2017) nhờ chuyển sang mạng nơ-ron sâu — gần ngang khả năng nghe của con người"
+          value="Tỉ lệ lỗi từ của Google giảm từ 23% (2013) xuống 4,9% (2017) nhờ chuyển sang mạng nơ-ron sâu, gần ngang khả năng nghe của con người"
           sourceRef={5}
         />
         <Metric
@@ -1104,7 +1107,7 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
           sourceRef={3}
         />
         <Metric
-          value="Giọng trả lời của Siri từ 2017 dùng mô hình Deep Mixture Density — sinh giọng mượt tự nhiên như người thật"
+          value="Giọng trả lời của Siri từ 2017 dùng mô hình Deep Mixture Density, sinh giọng mượt tự nhiên như người thật"
           sourceRef={2}
         />
       </ApplicationMetrics>
@@ -1117,17 +1120,17 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
         <div className="space-y-3">
           <p className="text-sm text-foreground/90 leading-relaxed">
             Nếu không có mạng nơ-ron sâu, trợ lý giọng nói sẽ vẫn dùng mô hình
-            thống kê cũ với tỉ lệ lỗi hơn 20% — <strong>cứ 5 từ lại sai 1
-            từ</strong>. Trải nghiệm đó quá tệ để dùng hàng ngày.
+            thống kê cũ với tỉ lệ lỗi hơn 20%, tức là <strong>cứ 5 từ thì sai
+            1</strong>. Trải nghiệm đó quá tệ để dùng hàng ngày.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-xl border-2 border-rose-300 bg-rose-50 dark:bg-rose-900/20 p-3">
-              <p className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-rose-700 dark:text-rose-300 font-bold mb-2">
-                <XCircle size={12} aria-hidden="true" />
+              <p className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground font-bold mb-2">
+                <XCircle size={12} aria-hidden="true" className="text-rose-500" />
                 Thế giới không có mạng nơ-ron
               </p>
-              <ul className="text-xs text-foreground/85 space-y-1 list-disc list-inside">
+              <ul className="text-xs text-foreground space-y-1 list-disc list-inside">
                 <li>Siri, Google Assistant gần như không tồn tại</li>
                 <li>Gõ vẫn nhanh hơn nói</li>
                 <li>Loa thông minh trở thành đồ chơi bất tiện</li>
@@ -1135,11 +1138,11 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
               </ul>
             </div>
             <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 p-3">
-              <p className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-bold mb-2">
-                <CheckCircle2 size={12} aria-hidden="true" />
+              <p className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground font-bold mb-2">
+                <CheckCircle2 size={12} aria-hidden="true" className="text-emerald-600" />
                 Thế giới có mạng nơ-ron (bây giờ)
               </p>
-              <ul className="text-xs text-foreground/85 space-y-1 list-disc list-inside">
+              <ul className="text-xs text-foreground space-y-1 list-disc list-inside">
                 <li>Hơn 4,2 tỷ thiết bị có trợ lý giọng nói</li>
                 <li>Nói tự nhiên, máy hiểu ngay</li>
                 <li>Xe hơi tự lái hiểu lệnh bằng giọng</li>
@@ -1150,9 +1153,9 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
 
           <Callout variant="insight" title="Ý tưởng lớn">
             Mạng nơ-ron sâu đã học trực tiếp từ hàng triệu giờ giọng nói. Nó
-            nắm được ngữ cảnh dài — thứ mô hình thống kê không thể. Nhờ đó,
-            trợ lý giọng nói bỗng dưng &ldquo;dùng được&rdquo; trong cuộc sống
-            hàng ngày — và thay đổi cách con người giao tiếp với máy.
+            nắm được ngữ cảnh dài, thứ mà mô hình thống kê không làm nổi. Nhờ
+            vậy, trợ lý giọng nói bỗng dưng &ldquo;dùng được&rdquo; trong cuộc
+            sống hàng ngày, và thay đổi cách con người giao tiếp với máy.
           </Callout>
         </div>
 
@@ -1160,21 +1163,21 @@ export default function NeuralNetworkOverviewInVoiceAssistants() {
           <MiniSummary
             title="3 điều cần nhớ"
             points={[
-              "Trợ lý giọng nói không phải một mạng lớn — mà là nhiều mạng nối tiếp: nhận âm vị, ghép từ, hiểu ý định, tạo giọng trả lời.",
+              "Trợ lý giọng nói không phải một mạng lớn duy nhất, mà là nhiều mạng nối tiếp: nhận âm vị, ghép từ, hiểu ý định, tạo giọng trả lời.",
               "Chuyển từ mô hình thống kê (HMM/GMM) sang mạng nơ-ron sâu đã giảm tỉ lệ lỗi từ trên 23% xuống dưới 5%.",
-              "Chạy mạng nơ-ron trực tiếp trên chip điện thoại (Neural Engine của Apple) giữ độ trễ thấp và bảo vệ riêng tư — âm thanh không cần rời máy.",
+              "Chạy mạng nơ-ron trực tiếp trên chip điện thoại (Neural Engine của Apple) giữ độ trễ thấp và bảo vệ riêng tư, âm thanh không cần rời máy.",
             ]}
           />
         </div>
 
         <div className="mt-5">
           <Callout variant="tip" title="Đọc lại nền tảng">
-            Nếu bạn muốn hiểu kỹ hơn vì sao mạng có nhiều lớp lại mạnh đến thế,
-            quay lại bài lý thuyết:{" "}
+            Nếu bạn muốn hiểu kỹ hơn vì sao mạng nhiều lớp lại mạnh đến thế,
+            quay lại bài lý thuyết{" "}
             <TopicLink slug="neural-network-overview">
               Mạng nơ-ron là gì
-            </TopicLink>{" "}
-            — nơi bạn có thể kéo slider, bấm vào từng nơ-ron và xem tín hiệu
+            </TopicLink>
+            . Ở đó, bạn có thể kéo slider, bấm vào từng nơ-ron và xem tín hiệu
             lan truyền.
           </Callout>
         </div>

@@ -35,9 +35,9 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 export const metadata: TopicMeta = {
   slug: "vectors-and-matrices-in-photo-search",
   title: "Vectors & Matrices in Photo Search",
-  titleVi: "Vector trong tìm kiếm ảnh",
+  titleVi: "Google Photos biến ảnh thành vector để tìm",
   description:
-    "Bạn gõ 'hoàng hôn bãi biển' và Google Photos tìm ra đúng ảnh. Mỗi ảnh trở thành một vector. So sánh hai ảnh = so sánh hai vector.",
+    "Bạn gõ 'hoàng hôn bãi biển' và Google Photos lôi ra đúng những tấm cần tìm. Mỗi ảnh được chuyển thành một vector. So sánh hai ảnh trở thành so sánh hai vector.",
   category: "math-foundations",
   tags: ["vectors", "embeddings", "photo-search", "application"],
   difficulty: "beginner",
@@ -55,7 +55,7 @@ export const metadata: TopicMeta = {
       title:
         "FaceNet: A Unified Embedding for Face Recognition and Clustering",
       publisher:
-        "Florian Schroff, Dmitry Kalenichenko, James Philbin — CVPR 2015",
+        "Florian Schroff, Dmitry Kalenichenko, James Philbin, CVPR 2015",
       url: "https://arxiv.org/abs/1503.03832",
       date: "2015-06",
       kind: "paper",
@@ -69,7 +69,7 @@ export const metadata: TopicMeta = {
     },
     {
       title:
-        "Google Photos Now Stores Over 9 Trillion Photos — And the Number Is Growing Fast",
+        "Google Photos Now Stores Over 9 Trillion Photos: And the Number Is Growing Fast",
       publisher: "PetaPixel",
       url: "https://petapixel.com/2025/02/18/google-photos-now-stores-over-9-trillion-photos/",
       date: "2025-02",
@@ -85,11 +85,11 @@ export const metadata: TopicMeta = {
     },
   ],
   tocSections: [
-    { id: "hero", labelVi: "Vấn đề thật" },
-    { id: "problem", labelVi: "Tại sao khó" },
-    { id: "mechanism", labelVi: "Cách giải quyết" },
-    { id: "metrics", labelVi: "Con số thật" },
-    { id: "counterfactual", labelVi: "Nếu không có" },
+    { id: "hero", labelVi: "Bài toán thật" },
+    { id: "problem", labelVi: "Vì sao khó" },
+    { id: "mechanism", labelVi: "Cách Google làm" },
+    { id: "metrics", labelVi: "Số liệu thật" },
+    { id: "counterfactual", labelVi: "Nếu không có vector" },
   ],
 };
 
@@ -254,7 +254,7 @@ function PhotoCard({ photo, similarity, highlight }: PhotoCardProps) {
           {photo.label}
         </div>
 
-        {/* 3 thanh tín hiệu — "embedding mini" */}
+        {/* 3 thanh tín hiệu, "embedding mini" */}
         <div className="space-y-1">
           <BarRow
             icon={Sun}
@@ -309,7 +309,7 @@ function BarRow({ icon: Icon, label, value, color }: BarRowProps) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   QUIZ — kiểm tra hiểu biết sau khi xem ứng dụng
+   QUIZ: kiểm tra hiểu biết sau khi xem ứng dụng
    ──────────────────────────────────────────────────────────── */
 
 const quizQuestions: QuizQuestion[] = [
@@ -324,7 +324,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Vector 128 chiều đơn giản là một dãy 128 con số. Mỗi con số đại diện cho một 'đặc điểm' được mô hình FaceNet học ra — chúng thay thế hàng triệu pixel bằng 128 con số giữ lại ý nghĩa.",
+      "Vector 128 chiều chỉ là một dãy 128 con số. Mỗi con số đại diện cho một 'đặc điểm' mà mô hình FaceNet học ra. Chúng thay thế hàng triệu pixel bằng 128 con số giữ lại ý nghĩa.",
   },
   {
     question:
@@ -337,20 +337,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Hai ảnh của cùng một bà ngoại chụp trong ngày nắng và trong nhà có pixel rất khác. Nhưng vector embedding của chúng vẫn chỉ cùng một hướng. Cosine đo hướng, không đo độ dài — đó là lý do nó bền vững trước thay đổi ánh sáng.",
+      "Hai ảnh của cùng một bà ngoại chụp ngoài nắng và trong nhà có pixel rất khác. Nhưng vector embedding của chúng vẫn chỉ cùng một hướng. Cosine đo hướng, không đo độ dài. Nhờ vậy, nó bền vững trước thay đổi ánh sáng.",
   },
   {
     question:
       "Nếu Google tìm ảnh bằng cách so sánh vector truy vấn với 9 nghìn tỷ vector khác, chuyện gì sẽ xảy ra?",
     options: [
       "Kết quả trả về trong 1 mili-giây",
-      "Sẽ tốn hàng giờ đến hàng ngày cho mỗi truy vấn — không khả thi",
+      "Mỗi truy vấn tốn hàng giờ đến hàng ngày, không khả thi",
       "Máy chủ Google sẽ tự tắt",
       "Ảnh sẽ tự xoá",
     ],
     correct: 1,
     explanation:
-      "Đây là lý do Google dùng thuật toán Approximate Nearest Neighbor (ANN). Thay vì so từng vector, ANN xây dựng cấu trúc chỉ mục để loại bỏ 99% vector rõ ràng xa và chỉ kiểm tra vài chục vector gần. Đánh đổi chút chính xác lấy tốc độ nhanh hàng nghìn lần.",
+      "Đây là lý do Google dùng thuật toán Approximate Nearest Neighbor (ANN). Thay vì so từng vector, ANN xây dựng cấu trúc chỉ mục để loại bỏ 99% vector rõ ràng xa và chỉ kiểm tra vài chục vector gần. Đánh đổi chút độ chính xác để lấy tốc độ nhanh hàng nghìn lần.",
   },
   {
     question:
@@ -363,7 +363,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Cosine 0,97 rất gần mức tối đa (1,0) — hai vector chỉ gần như cùng một hướng. Trong thực tế, Google đặt ngưỡng quyết định (ví dụ 0,9) để tự động gom hai ảnh vào cùng một album khuôn mặt.",
+      "Cosine 0,97 rất gần mức tối đa (1,0). Hai vector chỉ gần như cùng một hướng. Trong thực tế, Google đặt ngưỡng quyết định (ví dụ 0,9) để tự động gom hai ảnh vào cùng một album khuôn mặt.",
   },
 ];
 
@@ -396,11 +396,11 @@ export default function VectorsAndMatricesInPhotoSearch() {
     pairCosine > 0.95
       ? "Hai ảnh gần như giống hệt theo cả ba tín hiệu"
       : pairCosine > 0.85
-        ? "Rất giống nhau — cùng một 'họ' ảnh"
+        ? "Rất giống nhau, cùng một 'họ' ảnh"
         : pairCosine > 0.65
-          ? "Hơi giống — có điểm chung nhưng khác nhiều"
+          ? "Hơi giống, có điểm chung nhưng vẫn khác nhiều"
           : pairCosine > 0.4
-            ? "Khác nhiều — chỉ có chút điểm chung"
+            ? "Khác nhiều, chỉ có chút điểm chung"
             : "Hầu như khác hẳn";
 
   const pairColor =
@@ -415,28 +415,28 @@ export default function VectorsAndMatricesInPhotoSearch() {
   return (
     <ApplicationLayout metadata={metadata} parentTitleVi="Vector và ma trận">
       {/* ═══════════════════════════════════════════════════════════
-          HERO — Vì sao Google Photos nhận ra ảnh giống nhau
+          HERO: Vì sao Google Photos nhận ra ảnh giống nhau
           ═══════════════════════════════════════════════════════════ */}
       <ApplicationHero
         parentTitleVi="Vector và ma trận"
         topicSlug="vectors-and-matrices-in-photo-search"
       >
         <p>
-          Bạn mở Google Photos, gõ &ldquo;hoàng hôn bãi biển&rdquo; —
-          hàng trăm tấm ảnh của bạn suốt 5 năm qua hiện ra trong một
-          giây. Không phải bạn đã dán nhãn cho từng tấm. Máy tự nhận ra.
-          Làm sao?
+          Bạn mở Google Photos, gõ &ldquo;hoàng hôn bãi biển&rdquo; rồi
+          chờ. Hàng trăm tấm ảnh của bạn suốt 5 năm qua hiện ra trong
+          một giây. Không phải bạn đã dán nhãn cho từng tấm. Máy tự
+          nhận ra. Làm sao được?
         </p>
         <p>
           Câu trả lời ngắn: <strong>mỗi ảnh được biến thành một mũi tên</strong>{" "}
-          (vector) trong không gian nhiều chiều. Hai ảnh giống nhau →
-          hai mũi tên chỉ cùng hướng. Việc &ldquo;so sánh hai bức ảnh&rdquo;
-          phức tạp được thu gọn thành: so sánh hai mũi tên có cùng hướng
-          không. Mà cái đó thì bạn đã biết làm — nó chính là{" "}
+          (vector) trong không gian nhiều chiều. Hai ảnh giống nhau cho
+          ra hai mũi tên chỉ cùng hướng. Việc &ldquo;so sánh hai bức
+          ảnh&rdquo; phức tạp thu gọn lại thành so sánh hai mũi tên có
+          cùng hướng không. Mà việc đó bạn đã biết làm rồi. Nó chính là{" "}
           <TopicLink slug="vectors-and-matrices">
             tích vô hướng và cosine similarity
           </TopicLink>{" "}
-          bạn vừa học ở bài trước.
+          ở bài trước.
         </p>
 
         {/* Mini demo 1: ảnh thật trở thành 3 thanh số */}
@@ -452,8 +452,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
             Mỗi thẻ ảnh dưới đây có 3 thanh màu. Mỗi thanh là một con số
             giữa 0 và 1, mô tả một đặc điểm của ảnh: ấm/lạnh, rộng/hẹp,
             nhiều chi tiết/ít chi tiết. Trong thực tế, Google dùng{" "}
-            <strong>128 đến 2048 con số</strong> cho mỗi ảnh — nhưng
-            nguyên tắc giống hệt.
+            <strong>128 đến 2048 con số</strong> cho mỗi ảnh, nhưng
+            nguyên tắc vẫn giống hệt.
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -527,29 +527,29 @@ export default function VectorsAndMatricesInPhotoSearch() {
           <p className="text-[11px] text-tertiary italic">
             Quan sát: hai ảnh ngoài trời (hoàng hôn và bãi biển) có
             cosine cao. Ảnh bếp và ảnh núi thì cosine thấp. Cả một bài
-            toán &ldquo;hai ảnh có giống nhau không?&rdquo; thu gọn
+            toán &ldquo;hai ảnh có giống nhau không?&rdquo; thu gọn lại
             thành <em>một con số duy nhất</em>.
           </p>
         </div>
       </ApplicationHero>
 
       {/* ═══════════════════════════════════════════════════════════
-          PROBLEM — Tại sao bài toán khó
+          PROBLEM: Tại sao bài toán khó
           ═══════════════════════════════════════════════════════════ */}
       <ApplicationProblem topicSlug="vectors-and-matrices-in-photo-search">
         <p>
           Google Photos lưu trữ hơn <strong>9 nghìn tỷ</strong> tấm ảnh,
           phục vụ <strong>1,5 tỷ</strong> người dùng mỗi tháng, với{" "}
-          <strong>28 tỷ ảnh mới</strong> được tải lên mỗi tuần. Bạn có
-          thể có 20.000 tấm trong thư viện cá nhân — chụp từ nhiều năm,
-          nhiều góc, nhiều đèn, nhiều mùa.
+          <strong>28 tỷ ảnh mới</strong> tải lên mỗi tuần. Riêng bạn có
+          thể có 20.000 tấm trong thư viện cá nhân, chụp từ nhiều năm,
+          nhiều góc, nhiều đèn, nhiều mùa khác nhau.
         </p>
         <p>
           Bài toán cốt lõi: khi bạn gõ từ khoá hoặc bấm vào khuôn mặt bà
-          ngoại, máy phải trả về đúng những ảnh liên quan, trong{" "}
+          ngoại, máy phải trả về đúng những ảnh liên quan trong{" "}
           <strong>mili-giây</strong>, và phải đúng dù bà đang đội nón
           lá, đeo kính, hay cười to. Không có thời gian cho máy &ldquo;xem
-          từng tấm và nghĩ&rdquo;.
+          từng tấm rồi nghĩ&rdquo;.
         </p>
 
         {/* Minh hoạ: đống ảnh và một phép đọc số */}
@@ -563,27 +563,29 @@ export default function VectorsAndMatricesInPhotoSearch() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="rounded-lg border border-rose-200 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 p-3 space-y-2">
-              <div className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 dark:text-rose-300">
+              <div className="inline-flex items-center gap-1 text-xs font-semibold text-rose-800 dark:text-rose-200">
                 <X size={12} aria-hidden="true" />
                 Cách ngây thơ: so sánh từng pixel
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed">
-                Mỗi ảnh 1 triệu pixel. So sánh 2 ảnh = 1 triệu phép trừ.
-                Hai ảnh cùng chủ thể chụp khác góc → pixel khác hoàn toàn
-                → sai. Hai ảnh khác nhau mà cùng màu → pixel giống → sai.
+                Mỗi ảnh 1 triệu pixel. So sánh 2 ảnh là 1 triệu phép
+                trừ. Hai ảnh cùng chủ thể chụp khác góc cho ra pixel
+                khác hoàn toàn, kết quả sai. Hai ảnh khác nhau mà cùng
+                màu lại cho pixel giống, kết quả vẫn sai.
                 <strong> Vô dụng.</strong>
               </p>
             </div>
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-3 space-y-2">
-              <div className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+              <div className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 dark:text-emerald-200">
                 <Check size={12} aria-hidden="true" />
                 Cách của Google: biến ảnh thành vector ý nghĩa
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed">
-                Mỗi ảnh → một mũi tên 128 chiều (vector nhúng). Hai ảnh
-                cùng chủ thể → mũi tên chỉ cùng hướng, bất kể góc chụp
-                hay ánh sáng. So sánh = tính cosine. Mili-giây trên hàng
-                tỷ ảnh. <strong>Hoạt động.</strong>
+                Mỗi ảnh trở thành một mũi tên 128 chiều (vector
+                embedding). Hai ảnh cùng chủ thể cho ra hai mũi tên chỉ
+                cùng hướng, bất kể góc chụp hay ánh sáng. So sánh là
+                tính cosine. Mili-giây trên hàng tỷ ảnh.{" "}
+                <strong>Hoạt động.</strong>
               </p>
             </div>
           </div>
@@ -591,19 +593,19 @@ export default function VectorsAndMatricesInPhotoSearch() {
           <InlineChallenge
             question="Bạn có 20.000 ảnh trong thư viện. Nếu so sánh pixel-từng-pixel cho mỗi truy vấn, việc tìm kiếm sẽ tốn bao lâu trên điện thoại?"
             options={[
-              "Gần như ngay lập tức — điện thoại rất nhanh",
+              "Gần như ngay lập tức, điện thoại rất nhanh",
               "Vài giây là xong",
-              "Hàng phút — không đủ nhanh cho trải nghiệm người dùng",
+              "Hàng phút, không đủ nhanh cho trải nghiệm người dùng",
               "Không so sánh được, thuật toán báo lỗi",
             ]}
             correct={2}
-            explanation="So sánh pixel cần khối lượng tính toán khổng lồ: 20.000 ảnh × 1 triệu pixel × so sánh từng màu = không kịp. Đó là lý do Google biến mỗi ảnh thành một vector nhỏ 128 chiều — so sánh 128 con số nhanh hơn 1 triệu pixel hàng triệu lần."
+            explanation="So sánh pixel cần khối lượng tính toán khổng lồ: 20.000 ảnh nhân 1 triệu pixel nhân số phép so sánh từng màu, không kịp. Đó là lý do Google biến mỗi ảnh thành một vector nhỏ 128 chiều. So sánh 128 con số nhanh hơn 1 triệu pixel hàng triệu lần."
           />
         </div>
       </ApplicationProblem>
 
       {/* ═══════════════════════════════════════════════════════════
-          MECHANISM — 4 bước giải quyết
+          MECHANISM: 4 bước giải quyết
           ═══════════════════════════════════════════════════════════ */}
       <ApplicationMechanism
         parentTitleVi="Vector và ma trận"
@@ -613,8 +615,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
           <p>
             <strong>Phát hiện đối tượng trong ảnh</strong> (face detection,
             object detection). Một mô hình nhỏ quét qua ảnh, khoanh hình
-            chữ nhật quanh khuôn mặt, xe, cây, món ăn. Mục tiêu chỉ là:
-            tách phần đáng quan tâm khỏi nền.
+            chữ nhật quanh khuôn mặt, xe, cây, món ăn. Mục tiêu chỉ là
+            tách phần đáng quan tâm ra khỏi nền.
           </p>
           <div className="not-prose mt-3 rounded-lg border border-border bg-card p-3">
             <div className="flex items-center gap-2 text-xs text-muted">
@@ -627,11 +629,11 @@ export default function VectorsAndMatricesInPhotoSearch() {
         <Beat step={2}>
           <p>
             <strong>Biến ảnh thành vector (embedding)</strong>. Mạng
-            FaceNet của Google nhận vùng ảnh khuôn mặt và nhả ra một
-            vector 128 chiều. Được huấn luyện trên 100-200 triệu ảnh,
-            mạng học được quy tắc: cùng người → hai vector gần nhau,
-            khác người → hai vector xa nhau, bất kể ánh sáng hay góc
-            chụp.
+            FaceNet của Google nhận vùng ảnh khuôn mặt và trả ra một
+            vector 128 chiều. Sau khi được huấn luyện trên 100-200 triệu
+            ảnh, mạng học được một quy tắc bền vững: cùng một người cho
+            ra hai vector gần nhau, khác người cho ra hai vector xa
+            nhau, bất kể ánh sáng hay góc chụp.
           </p>
 
           {/* Minh hoạ: 3 ảnh và embedding của chúng */}
@@ -646,8 +648,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
             </div>
             <p className="text-xs text-muted italic">
               Hai ảnh đầu (hoàng hôn và bãi biển) có ba thanh gần giống
-              nhau → vector gần nhau. Ảnh núi có thanh &ldquo;ấm&rdquo;
-              rất thấp → vector xa.
+              nhau, vector của chúng gần nhau. Ảnh núi có thanh
+              &ldquo;ấm&rdquo; rất thấp nên vector lệch ra xa.
             </p>
           </div>
         </Beat>
@@ -656,8 +658,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
           <p>
             <strong>Đo khoảng cách giữa các vector</strong>. Với hai
             vector đã tính, Google dùng cosine similarity hoặc khoảng
-            cách Euclid. Cosine gần 1 → cùng người / cùng cảnh. Gần 0 →
-            hai bức ảnh không liên quan.
+            cách Euclid. Cosine gần 1 nghĩa là cùng người, cùng cảnh.
+            Gần 0 nghĩa là hai bức ảnh không liên quan.
           </p>
 
           {/* Mini demo 3: query vector bằng SliderGroup */}
@@ -713,10 +715,11 @@ export default function VectorsAndMatricesInPhotoSearch() {
         <Beat step={4}>
           <p>
             <strong>Gom các ảnh gần nhau thành cụm</strong> (clustering).
-            Tất cả ảnh của cùng một người được xếp chung nhóm → album
-            &ldquo;Bà Ngoại&rdquo;. Với hàng tỷ ảnh, Google dùng kỹ thuật
-            tìm láng giềng gần đúng (ANN) để trả kết quả trong mili-giây
-            thay vì so sánh hết 20.000 vector cá nhân của bạn.
+            Tất cả ảnh của cùng một người được xếp chung một nhóm, và
+            Google đặt tên nhóm đó là album &ldquo;Bà Ngoại&rdquo;. Với
+            hàng tỷ ảnh, Google dùng kỹ thuật tìm láng giềng gần đúng
+            (ANN) để trả kết quả trong mili-giây, thay vì phải so sánh
+            hết 20.000 vector cá nhân của bạn.
           </p>
 
           {/* Minh hoạ clustering: các ảnh gom nhóm */}
@@ -788,22 +791,22 @@ export default function VectorsAndMatricesInPhotoSearch() {
             question="Bạn đang có 20.000 ảnh trong thư viện. Google cần tìm tất cả ảnh của bà ngoại. Thuật toán nào giúp việc này chạy trong mili-giây?"
             options={[
               "So sánh vector bà với toàn bộ 20.000 vector khác, chờ vài giây",
-              "Dùng tìm láng giềng gần đúng (ANN) — bỏ qua hầu hết vector rõ ràng khác, chỉ kiểm tra những vector có khả năng gần",
+              "Dùng tìm láng giềng gần đúng (ANN), bỏ qua hầu hết vector rõ ràng khác và chỉ kiểm tra những vector có khả năng gần",
               "Tạo một ảnh mẫu bà rồi đếm pixel",
               "Hỏi người dùng dán nhãn thủ công",
             ]}
             correct={1}
-            explanation="ANN (Approximate Nearest Neighbor) là chìa khoá. Thay vì so từng vector một, ANN xây dựng trước một cấu trúc chỉ mục sao cho khi có câu truy vấn, hệ thống loại bỏ 99% vector rõ ràng xa và chỉ kiểm tra vài chục vector có khả năng gần. Đổi lại chút sai số nhỏ, tốc độ nhanh hàng nghìn lần."
+            explanation="ANN (Approximate Nearest Neighbor) là chìa khoá. Thay vì so từng vector một, ANN xây dựng trước một cấu trúc chỉ mục. Khi có câu truy vấn, hệ thống loại bỏ 99% vector rõ ràng xa và chỉ kiểm tra vài chục vector có khả năng gần. Đổi lại chút sai số nhỏ, tốc độ nhanh hàng nghìn lần."
           />
         </Beat>
 
-        <Callout variant="insight" title="Đại số tuyến tính cứu cuộc sống">
-          Mỗi lần bạn tìm &ldquo;chó&rdquo;, &ldquo;bánh sinh nhật&rdquo;, hay bấm
-          vào khuôn mặt em trai, cả hệ thống đang: (1) chuyển ảnh thành
-          vector, (2) tính cosine với một vector truy vấn, (3) sắp xếp
-          theo cosine giảm dần, (4) trả về top 50. Toán của bài trước —
-          cộng vector, nhân vô hướng, tích vô hướng — đã làm được điều
-          kỳ diệu đó.
+        <Callout variant="insight" title="Đại số tuyến tính làm hết việc khó">
+          Mỗi lần bạn tìm &ldquo;chó&rdquo;, &ldquo;bánh sinh nhật&rdquo;, hay
+          bấm vào khuôn mặt em trai, cả hệ thống đang chạy đúng bốn
+          bước: (1) chuyển ảnh thành vector, (2) tính cosine với một
+          vector truy vấn, (3) sắp xếp theo cosine giảm dần, (4) trả về
+          top 50. Toán của bài trước, cộng vector, nhân vô hướng, tích
+          vô hướng, đã làm được điều bạn vẫn dùng mỗi ngày.
         </Callout>
       </ApplicationMechanism>
 
@@ -815,11 +818,11 @@ export default function VectorsAndMatricesInPhotoSearch() {
         topicSlug="vectors-and-matrices-in-photo-search"
       >
         <Metric
-          value="Độ chính xác 99,63% trên bộ chuẩn LFW (nhận diện khuôn mặt) — vượt mức 97,53% của con người"
+          value="Độ chính xác 99,63% trên bộ chuẩn LFW (nhận diện khuôn mặt), cao hơn mức 97,53% của con người"
           sourceRef={1}
         />
         <Metric
-          value="Mỗi khuôn mặt được biểu diễn bằng vector 128 chiều — thay vì so sánh hàng triệu pixel"
+          value="Mỗi khuôn mặt được biểu diễn bằng vector 128 chiều, thay cho việc so sánh hàng triệu pixel"
           sourceRef={1}
         />
         <Metric
@@ -840,27 +843,27 @@ export default function VectorsAndMatricesInPhotoSearch() {
         topicSlug="vectors-and-matrices-in-photo-search"
       >
         <p>
-          Không có vector embedding, Google Photos sẽ phải so sánh
-          trực tiếp từng điểm ảnh của mỗi khuôn mặt với hàng tỷ khuôn
-          mặt khác. Chỉ cần bạn đội mũ, đeo kính, hoặc chụp ở ánh sáng
-          khác — kết quả sai hoàn toàn.
+          Không có vector embedding, Google Photos sẽ phải so sánh trực
+          tiếp từng điểm ảnh của mỗi khuôn mặt với hàng tỷ khuôn mặt
+          khác. Chỉ cần bạn đội mũ, đeo kính, hoặc chụp ở ánh sáng
+          khác, kết quả lập tức sai hoàn toàn.
         </p>
         <p>
-          Biến mỗi khuôn mặt thành vector 128 chiều, Google chuyển một
-          bài toán nhận diện ảnh siêu phức tạp thành phép đo khoảng
-          cách đơn giản giữa hai mảng số. Đây là bí mật giúp mọi tính
-          năng tìm kiếm thông minh của Photos hoạt động — và cũng là
-          cốt lõi của Spotify gợi ý nhạc, TikTok gợi ý video, và hầu
-          hết AI hiện đại.
+          Khi biến mỗi khuôn mặt thành vector 128 chiều, Google đã
+          chuyển một bài toán nhận diện ảnh rất phức tạp thành phép đo
+          khoảng cách giữa hai mảng số. Đây là cốt lõi giúp mọi tính
+          năng tìm kiếm thông minh của Photos chạy được. Spotify gợi ý
+          nhạc, TikTok gợi ý video, và phần lớn AI hiện đại đều dùng
+          đúng kỹ thuật này.
         </p>
 
         <div className="not-prose mt-5">
           <MiniSummary
             title="Ba điều cần nhớ từ ứng dụng này"
             points={[
-              "Mỗi ảnh được biến thành một vector 128 chiều — hai ảnh giống nhau có vector gần nhau.",
-              "So sánh hai ảnh = so sánh hai vector = tính cosine similarity. Bài toán phức tạp thu gọn về một con số.",
-              "Hàng tỷ ảnh × hàng tỷ người dùng hoạt động được trong mili-giây nhờ thuật toán tìm láng giềng gần đúng.",
+              "Mỗi ảnh được biến thành một vector 128 chiều. Hai ảnh giống nhau cho ra hai vector gần nhau.",
+              "So sánh hai ảnh trở thành so sánh hai vector, tức tính cosine similarity. Bài toán phức tạp thu gọn về một con số.",
+              "Hàng tỷ ảnh trên hàng tỷ người dùng vẫn chạy được trong mili-giây nhờ thuật toán tìm láng giềng gần đúng.",
             ]}
           />
         </div>
@@ -872,8 +875,8 @@ export default function VectorsAndMatricesInPhotoSearch() {
             bài{" "}
             <TopicLink slug="vectors-and-matrices">
               Vector và ma trận
-            </TopicLink>{" "}
-            — ba sân chơi tương tác ở đó chính là nền cho toàn bộ hệ
+            </TopicLink>
+            . Ba sân chơi tương tác ở đó chính là nền cho toàn bộ hệ
             thống này.
           </Callout>
         </div>
@@ -887,7 +890,7 @@ export default function VectorsAndMatricesInPhotoSearch() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   COMPONENT PHỤ: QueryResult — hiển thị top 3 ảnh khớp với query
+   COMPONENT PHỤ: QueryResult, hiển thị top 3 ảnh khớp với query
    ════════════════════════════════════════════════════════════ */
 
 interface QueryResultProps {
@@ -988,8 +991,8 @@ function QueryResult({ values }: QueryResultProps) {
       </div>
 
       <p className="text-[11px] text-tertiary italic text-center">
-        Kéo thanh → vector truy vấn đổi → Top 3 cũng thay đổi. Google
-        làm y hệt, nhưng trên 20.000 ảnh riêng của bạn và 128 chiều
+        Kéo thanh, vector truy vấn đổi, Top 3 cũng đổi theo. Google làm
+        y hệt, chỉ khác là trên 20.000 ảnh riêng của bạn và 128 chiều
         thay vì 3.
       </p>
     </div>

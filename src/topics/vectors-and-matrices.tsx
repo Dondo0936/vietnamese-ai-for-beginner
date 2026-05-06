@@ -31,9 +31,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "vectors-and-matrices",
   title: "Vectors & Matrices",
-  titleVi: "Vector và ma trận — mũi tên và bảng số",
+  titleVi: "Vector là mũi tên, ma trận là máy biến hình",
   description:
-    "Vector là mũi tên, ma trận là bảng số biến đổi mũi tên. Kéo thử, chỉnh thử, nhìn toán 'động đậy' ngay trước mắt.",
+    "Vector là mũi tên trên mặt phẳng. Ma trận 2x2 là bảng số biến đổi cả không gian. Kéo thử, chỉnh thử, nhìn toán động đậy ngay trước mắt.",
   category: "math-foundations",
   tags: ["vectors", "matrices", "dot-product", "linear-algebra"],
   difficulty: "beginner",
@@ -159,7 +159,7 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Điểm có toạ độ (3, 4)",
       "Điểm có toạ độ (4, 3)",
-      "Điểm có toạ độ (0, 7) — cộng lại",
+      "Điểm có toạ độ (0, 7), lấy bằng cách cộng hai số lại",
       "Điểm ở giữa trục x và trục y",
     ],
     correct: 0,
@@ -177,7 +177,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Tích vô hướng đo mức độ hai vector 'chỉ cùng hướng'. Nếu chúng vuông góc, chúng không cùng hướng mà cũng không ngược hướng — nên tích vô hướng bằng 0. Đây là dấu hiệu nhận biết vuông góc bằng đại số.",
+      "Tích vô hướng đo mức độ hai vector 'chỉ cùng hướng'. Khi chúng vuông góc, chúng không cùng hướng mà cũng không ngược hướng. Nhờ vậy tích vô hướng rơi đúng về 0. Đây là dấu hiệu nhận biết vuông góc bằng đại số.",
   },
   {
     question:
@@ -190,7 +190,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Ma trận đơn vị là phép biến đổi 'không làm gì cả' — giống số 1 trong phép nhân thường. Bất kỳ vector nào nhân với I sẽ ra chính nó.",
+      "Ma trận đơn vị là phép biến đổi 'không làm gì cả', giống vai trò của số 1 trong phép nhân thường. Bất kỳ vector nào nhân với I cũng ra chính nó.",
   },
   {
     question:
@@ -203,7 +203,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Ma trận đường chéo [[2, 0], [0, 2]] nhân chiều x với 2 và chiều y với 2 — tức là phóng đều 2 lần ra mọi hướng. Đường chéo khác thì phóng khác tỷ lệ.",
+      "Ma trận đường chéo [[2, 0], [0, 2]] nhân chiều x với 2 và chiều y với 2. Tức là phóng đều 2 lần ra mọi hướng. Hai số trên đường chéo khác nhau thì phóng khác tỷ lệ.",
   },
   {
     type: "fill-blank",
@@ -211,7 +211,7 @@ const quizQuestions: QuizQuestion[] = [
       "Tích vô hướng của vector [2, 3] và [4, 1] bằng: 2 × 4 + 3 × 1 = {blank}",
     blanks: [{ answer: "11", accept: ["11"] }],
     explanation:
-      "2 × 4 = 8, 3 × 1 = 3, cộng lại: 8 + 3 = 11. Quy tắc: nhân từng cặp thành phần rồi cộng tất cả. Đó là toàn bộ 'tích vô hướng'.",
+      "2 × 4 = 8, 3 × 1 = 3, cộng lại: 8 + 3 = 11. Quy tắc: nhân từng cặp thành phần rồi cộng tất cả. Đó là toàn bộ phép tích vô hướng.",
   },
   {
     question:
@@ -224,7 +224,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Một tầng mạng nơ-ron thực chất là một phép nhân ma trận khổng lồ. Ma trận giúp (1) đóng gói hàng nghìn tham số gọn gàng, (2) thực hiện hàng triệu phép tính cùng lúc nhờ GPU. Đây là lý do GPU trở thành phần cứng cốt lõi của AI.",
+      "Một tầng mạng nơ-ron thực chất là một phép nhân ma trận khổng lồ. Ma trận giúp đóng gói hàng nghìn tham số gọn gàng, đồng thời thực hiện hàng triệu phép tính cùng lúc nhờ GPU. Đây là lý do GPU trở thành phần cứng cốt lõi của AI.",
   },
 ];
 
@@ -471,52 +471,53 @@ export default function VectorsAndMatricesTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1: DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn có một mũi tên chỉ về phía đông bắc. Bạn nhân nó với một 'bảng số' 2x2. Chuyện gì CÓ THỂ xảy ra với mũi tên?"
+          question="Bạn vẽ một mũi tên chỉ về phía đông bắc, rồi nhân nó với một bảng 4 số xếp vuông 2x2. Chuyện gì có thể xảy ra với mũi tên?"
           options={[
             "Mũi tên bị xoá khỏi mặt phẳng",
             "Mũi tên chỉ có thể bị kéo dài hoặc rút ngắn theo đúng hướng cũ",
-            "Mũi tên có thể xoay, co giãn, lật, nghiêng — hầu như mọi phép biến đổi hình học",
+            "Mũi tên có thể xoay, co giãn, lật, nghiêng, hầu như mọi phép biến đổi hình học",
             "Mũi tên luôn xoay đúng 90 độ, không có chọn lựa khác",
           ]}
           correct={2}
-          explanation="Một ma trận 2x2 là một 'bảng số' mô tả một phép biến đổi hình học. Chỉ với 4 con số, nó có thể xoay, kéo dài, lật gương, nghiêng — hoặc pha trộn tất cả cùng lúc. Bài này sẽ giúp bạn thấy từng phép biến đổi ngay trên màn hình."
+          explanation="Một ma trận 2x2 là một bảng số mô tả một phép biến đổi hình học. Chỉ với 4 con số, nó có thể xoay, kéo dài, lật gương, nghiêng, hoặc pha trộn tất cả cùng lúc. Bài này sẽ giúp bạn thấy từng phép biến đổi ngay trên màn hình."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
-            Hãy tưởng tượng bạn đang chơi một trò chơi điện tử. Nhân vật của
-            bạn là một mũi tên. Bạn có một thẻ phép thuật (ma trận) — chỉ
-            cần 4 con số, bạn ra lệnh cho cả thế giới xoay, giãn, hoặc
-            nghiêng. Đó chính là cách AI nhìn dữ liệu: mọi thứ là mũi tên,
-            mọi phép toán là một bảng số biến đổi mũi tên.
+            Hãy tưởng tượng bạn đang chơi một trò chơi điện tử. Nhân vật
+            của bạn là một mũi tên. Bạn cầm trong tay một thẻ phép thuật
+            (ma trận). Chỉ cần 4 con số, bạn ra lệnh cho cả thế giới xoay,
+            giãn, hoặc nghiêng. Đó chính là cách AI nhìn dữ liệu: mọi thứ
+            là mũi tên, mọi phép toán là một bảng số biến đổi mũi tên.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — HIỂU BẰNG HÌNH ẢNH ━━━ */}
+      {/* ━━━ BƯỚC 2: HIỂU BẰNG HÌNH ẢNH ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <ArrowRight size={20} className="text-accent" /> Vector = mũi tên. Ma trận = bảng số biến đổi mũi tên.
+            <ArrowRight size={20} className="text-accent" /> Vector là mũi tên. Ma trận biến đổi mũi tên.
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            <strong>Vector</strong> (véc-tơ) chỉ đơn giản là một{" "}
-            <em>mũi tên</em> có gốc tại O và ngọn chỉ về một điểm. Hai con
-            số [a, b] cho bạn biết mũi tên đi sang phải bao nhiêu và lên
-            trên bao nhiêu. Vậy thôi. Không có gì phức tạp.
+            Bạn vẽ một mũi tên trên giấy ô vuông, gốc đặt tại O, ngọn chỉ
+            về một điểm bất kỳ. Hai con số [a, b] cho biết mũi tên đi sang
+            phải bao nhiêu và lên trên bao nhiêu. Mũi tên có hai số như
+            vậy được gọi là <strong>vector</strong>. Vậy thôi. Không có gì
+            phức tạp.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            <strong>Ma trận 2x2</strong> là một bảng 4 ô số. Nhưng đừng
-            nghĩ nó là &ldquo;bốn con số rời rạc&rdquo;. Hãy nghĩ nó như một{" "}
-            <strong>chiếc máy biến hình</strong>: bỏ một mũi tên vào, mũi
-            tên kia chui ra — có thể bị xoay, kéo dài, lật gương, hay
-            nghiêng đi. Bài này chúng ta sẽ chơi với cái máy đó.
+            Bây giờ thêm một bảng 4 ô vuông. Bỏ một mũi tên vào bảng đó,
+            mũi tên khác chui ra. Mũi tên mới có thể bị xoay, kéo dài, lật
+            gương, hay nghiêng đi. Bảng 4 số ấy gọi là <strong>ma trận
+            2x2</strong>. Nói cách khác, ma trận là một chiếc máy biến
+            hình. Bài này bạn sẽ tự tay chơi với cái máy đó.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+              <div className="flex items-center gap-2 text-sky-800 dark:text-sky-200">
                 <Move size={16} />
                 <span className="text-sm font-semibold">Vector</span>
               </div>
@@ -526,17 +527,17 @@ export default function VectorsAndMatricesTopic() {
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-200">
                 <Maximize2 size={16} />
                 <span className="text-sm font-semibold">Ma trận</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Bảng số 2x2. Một máy biến hình — bỏ mũi tên vào, mũi tên
+                Bảng số 2x2. Một máy biến hình. Bỏ mũi tên vào, mũi tên
                 khác ra.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                 <Sparkles size={16} />
                 <span className="text-sm font-semibold">AI</span>
               </div>
@@ -549,19 +550,19 @@ export default function VectorsAndMatricesTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — KHÁM PHÁ (VISUALIZATION) ━━━ */}
+      {/* ━━━ BƯỚC 3: KHÁM PHÁ (VISUALIZATION) ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-10">
             {/* ── PANEL 1: Kéo hai vector, xem tích vô hướng ── */}
             <div className="space-y-4">
               <h3 className="text-base font-semibold text-foreground">
-                Sân chơi 1: Kéo hai mũi tên, xem chúng &ldquo;đồng ý&rdquo; đến đâu
+                Sân chơi 1: Kéo hai mũi tên, xem chúng đồng ý đến đâu
               </h3>
               <p className="text-sm text-muted leading-relaxed">
-                Kéo đầu mũi tên xanh (a) hoặc đỏ (b). Thanh &ldquo;tích vô
-                hướng&rdquo; cho bạn biết hai mũi tên đang chỉ cùng hướng
-                (số dương), vuông góc (bằng 0), hay ngược hướng (số âm).
+                Kéo đầu mũi tên xanh (a) hoặc đỏ (b). Thanh tích vô hướng
+                cho bạn biết hai mũi tên đang cùng hướng (số dương), vuông
+                góc (bằng 0), hay ngược hướng (số âm).
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -783,9 +784,9 @@ export default function VectorsAndMatricesTopic() {
                   </div>
 
                   <Callout variant="tip" title="Thử nhanh">
-                    Kéo hai mũi tên sao cho chúng chỉ cùng một hướng — bạn
-                    sẽ thấy cosine gần +1. Kéo chúng vuông góc — cosine
-                    rơi về 0. Ngược hướng — cosine rơi về -1.
+                    Kéo hai mũi tên sao cho chúng chỉ cùng một hướng. Bạn
+                    sẽ thấy cosine gần +1. Kéo chúng vuông góc, cosine rơi
+                    về 0. Kéo ngược hướng, cosine rơi về -1.
                   </Callout>
                 </div>
               </div>
@@ -796,12 +797,13 @@ export default function VectorsAndMatricesTopic() {
             {/* ── PANEL 2: Ma trận biến đổi ngôi nhà ── */}
             <div className="space-y-4">
               <h3 className="text-base font-semibold text-foreground">
-                Sân chơi 2: Ngôi nhà nhỏ và cái máy biến hình 2x2
+                Sân chơi 2: Cho ngôi nhà chui qua máy biến hình 2x2
               </h3>
               <p className="text-sm text-muted leading-relaxed">
                 Đây là một ngôi nhà nhỏ làm từ 5 điểm. Gõ 4 con số vào ma
-                trận, hoặc bấm nút preset, rồi xem ngôi nhà và lưới nền
-                biến đổi tức thì. Mỗi con số bạn gõ kéo cả không gian.
+                trận, hoặc bấm một preset, rồi xem ngôi nhà và lưới nền
+                biến đổi tức thì. Mỗi con số bạn gõ vào sẽ kéo cả không
+                gian theo.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1009,7 +1011,7 @@ export default function VectorsAndMatricesTopic() {
               <Callout variant="insight" title="Mẹo đọc ma trận">
                 Cột thứ nhất của ma trận (a, c) cho biết vector (1, 0) sẽ
                 bay đến đâu. Cột thứ hai (b, d) cho biết vector (0, 1) sẽ
-                bay đến đâu. Biết hai cột là biết mọi thứ — vì mọi vector
+                bay đến đâu. Biết hai cột là biết mọi thứ, vì mọi vector
                 khác đều là tổ hợp của hai cột ấy.
               </Callout>
             </div>
@@ -1019,12 +1021,13 @@ export default function VectorsAndMatricesTopic() {
             {/* ── PANEL 3: Cộng vector và nhân vô hướng ── */}
             <div className="space-y-4">
               <h3 className="text-base font-semibold text-foreground">
-                Sân chơi 3: Cộng hai vector và nhân với một số
+                Sân chơi 3: Cộng hai vector, nhân vector với một số
               </h3>
               <p className="text-sm text-muted leading-relaxed">
-                Dùng thanh trượt để điều chỉnh u, v và hằng số nhân. Xem
-                mũi tên tổng u + v đi theo &ldquo;quy tắc đầu-đuôi&rdquo;:
-                đặt đuôi của v vào ngọn của u, vẽ từ gốc tới ngọn cuối.
+                Dùng thanh trượt để điều chỉnh u, v và hằng số nhân. Mũi
+                tên tổng u + v đi theo quy tắc đầu-đuôi: đặt đuôi của v
+                vào ngọn của u, rồi vẽ một mũi tên mới từ gốc tới ngọn
+                cuối.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1192,11 +1195,11 @@ export default function VectorsAndMatricesTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — ĐI SÂU (STEP REVEAL) ━━━ */}
+      {/* ━━━ BƯỚC 4: ĐI SÂU (STEP REVEAL) ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Chúng ta đã thấy 3 thao tác cơ bản: cộng vector, nhân vô hướng,
-          tích vô hướng. Giờ hãy tách ra từng bước để hiểu kỹ.
+          Bạn vừa nghịch ba thao tác cơ bản: cộng vector, nhân vô hướng,
+          tích vô hướng. Giờ hãy tách ra từng bước để hiểu kỹ từng phép.
         </p>
 
         <StepReveal
@@ -1229,7 +1232,7 @@ export default function VectorsAndMatricesTopic() {
               </div>
               <p className="text-xs text-muted italic">
                 Ứng dụng: khi bạn di chuyển trong game, mỗi frame cộng
-                vector vận tốc vào vị trí hiện tại — đó chính là phép cộng
+                vector vận tốc vào vị trí hiện tại. Đó chính là phép cộng
                 vector.
               </p>
             </div>,
@@ -1252,8 +1255,8 @@ export default function VectorsAndMatricesTopic() {
                 </div>
               </div>
               <p className="text-xs text-muted italic">
-                Ứng dụng: chỉnh độ sáng ảnh (nhân tất cả pixel với 1.2 →
-                sáng lên 20%) chính là nhân vô hướng một vector pixel.
+                Ứng dụng: chỉnh độ sáng ảnh (nhân tất cả pixel với 1.2,
+                ảnh sáng lên 20%) chính là nhân vô hướng một vector pixel.
               </p>
             </div>,
 
@@ -1276,8 +1279,8 @@ export default function VectorsAndMatricesTopic() {
                 <div className="text-emerald-600 font-mono font-bold">11</div>
               </div>
               <p className="text-xs text-muted italic">
-                Ứng dụng: trong cơ chế Attention của ChatGPT, mỗi từ hỏi
-                các từ khác thông qua tích vô hướng — số càng lớn, từ đó
+                Ứng dụng: trong cơ chế attention của ChatGPT, mỗi từ hỏi
+                các từ khác thông qua tích vô hướng. Số càng lớn, hai từ
                 càng liên quan.
               </p>
             </div>,
@@ -1307,8 +1310,8 @@ export default function VectorsAndMatricesTopic() {
                 </div>
               </div>
               <p className="text-xs text-muted italic">
-                Ứng dụng: Photoshop xoay ảnh 30° = nhân mỗi pixel với ma
-                trận xoay. Mạng nơ-ron xử lý câu = nhân vector câu với
+                Ứng dụng: Photoshop xoay ảnh 30° là nhân mỗi pixel với ma
+                trận xoay. Mạng nơ-ron xử lý câu là nhân vector câu với
                 chuỗi ma trận trọng số.
               </p>
             </div>,
@@ -1316,15 +1319,15 @@ export default function VectorsAndMatricesTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — AHA + THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 5: AHA + THỬ THÁCH ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Aha và thử thách">
         <AhaMoment>
-          Mỗi mô hình AI mà bạn biết — ChatGPT, Google Photos, Spotify —
-          bên trong chỉ là chuỗi các <strong>ma trận</strong> nhân với{" "}
-          <strong>vector</strong>. Dữ liệu (ảnh, từ, bài hát) biến thành
-          vector. Mô hình là hàng trăm ma trận nối tiếp. Kết quả là một
-          vector mới, ta đọc ra câu trả lời. Toàn bộ AI hiện đại, chỉ dùng
-          hai ý tưởng này.
+          Mỗi model AI bạn biết (ChatGPT, Google Photos, Spotify), bên
+          trong chỉ là chuỗi <strong>ma trận</strong> nhân với{" "}
+          <strong>vector</strong>. Dữ liệu (ảnh, từ, bài hát) được biến
+          thành vector. Model là hàng trăm ma trận nối tiếp. Kết quả là
+          một vector mới, ta đọc ra câu trả lời. Toàn bộ AI hiện đại chỉ
+          dùng hai ý tưởng này.
         </AhaMoment>
 
         <div className="mt-5 space-y-4">
@@ -1351,18 +1354,18 @@ export default function VectorsAndMatricesTopic() {
               "Bằng -5, ngược hướng",
             ]}
             correct={1}
-            explanation="Tích vô hướng = 3·0 + 0·5 = 0. Đây là dấu hiệu chắc chắn của hai vector vuông góc. [3, 0] chỉ sang phải, [0, 5] chỉ lên trên — vuông góc với nhau."
+            explanation="Tích vô hướng = 3·0 + 0·5 = 0. Đây là dấu hiệu chắc chắn của hai vector vuông góc. [3, 0] chỉ sang phải, [0, 5] chỉ lên trên, vuông góc với nhau."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — GIẢI THÍCH ━━━ */}
+      {/* ━━━ BƯỚC 6: GIẢI THÍCH ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bây giờ bạn đã <em>thấy</em> vector và ma trận hoạt động ra
-            sao. Phần này đóng gói lại thành ngôn ngữ toán — nhưng luôn
-            kèm hình dung, để con số không biến lại thành mớ rối.
+            sao. Phần này đóng gói lại thành ngôn ngữ toán, kèm hình dung
+            song song, để con số không biến lại thành mớ rối.
           </p>
 
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
@@ -1381,7 +1384,7 @@ export default function VectorsAndMatricesTopic() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-4">
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-3">
-              <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 mb-1">
+              <div className="text-xs font-semibold text-emerald-800 dark:text-emerald-200 mb-1">
                 Tích vô hướng &gt; 0
               </div>
               <p className="text-xs text-foreground/80">
@@ -1399,7 +1402,7 @@ export default function VectorsAndMatricesTopic() {
               </p>
             </div>
             <div className="rounded-lg border border-rose-200 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 p-3">
-              <div className="text-xs font-semibold text-rose-700 dark:text-rose-300 mb-1">
+              <div className="text-xs font-semibold text-rose-800 dark:text-rose-200 mb-1">
                 Tích vô hướng &lt; 0
               </div>
               <p className="text-xs text-foreground/80">
@@ -1426,8 +1429,8 @@ export default function VectorsAndMatricesTopic() {
           <Callout variant="insight" title="Nhìn ma trận qua hai cột">
             Một ma trận 2x2 có hai cột. Cột đầu nói cho bạn biết{" "}
             <em>vector (1, 0) bay đến đâu</em>. Cột sau nói cho biết{" "}
-            <em>vector (0, 1) bay đến đâu</em>. Và vì mọi vector khác đều
-            là tổ hợp của hai vector này, nên biết hai cột = biết toàn bộ
+            <em>vector (0, 1) bay đến đâu</em>. Mọi vector khác đều là tổ
+            hợp của hai vector này, nên biết hai cột tức là biết toàn bộ
             phép biến đổi. Đó là mẹo đọc ma trận của 3Blue1Brown.
           </Callout>
 
@@ -1461,42 +1464,43 @@ export default function VectorsAndMatricesTopic() {
             ))}
           </div>
 
-          <Callout variant="tip" title="Ma trận đơn vị — 'không làm gì'">
-            Ma trận [[1, 0], [0, 1]] là &ldquo;số 1&rdquo; của thế giới
-            ma trận. Nhân vector với nó, vector giữ nguyên. Ma trận này
-            xuất hiện nhiều nơi trong AI — ví dụ, mạng nơ-ron có một thủ
-            thuật tên là &ldquo;residual connection&rdquo;, về cơ bản là
-            cộng thêm một ma trận đơn vị để thông tin không bị mất.
+          <Callout variant="tip" title="Ma trận đơn vị, vai trò 'không làm gì'">
+            Ma trận [[1, 0], [0, 1]] đóng vai &ldquo;số 1&rdquo; của thế
+            giới ma trận. Nhân vector với nó, vector giữ nguyên. Ma trận
+            này xuất hiện nhiều nơi trong AI. Ví dụ, mạng nơ-ron có một
+            thủ thuật tên là <strong>residual connection</strong>, về cơ
+            bản là cộng thêm một ma trận đơn vị để thông tin không bị
+            mất.
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
             Từ 2D sang hàng nghìn chiều
           </h4>
           <p className="text-sm leading-relaxed">
-            Mọi thứ bạn vừa học ở 2D — vector có 2 số, ma trận có 4 ô —
-            mở rộng thẳng lên nhiều chiều. Trong GPT-4, mỗi từ trở thành
-            một vector <strong>12.288 chiều</strong>, và các ma trận bên
-            trong có kích thước{" "}
+            Mọi thứ bạn vừa học ở 2D (vector có 2 số, ma trận có 4 ô) mở
+            rộng thẳng lên nhiều chiều. Trong GPT-4, mỗi từ trở thành một
+            vector <strong>12.288 chiều</strong>, và các ma trận bên trong
+            có kích thước{" "}
             <span className="font-mono">12.288 × 12.288</span>. Quy tắc
             vẫn đúng: nhân từng cặp rồi cộng. Chỉ khác duy nhất ở{" "}
-            <em>số lượng</em> — chiều nào cũng &ldquo;gấp hàng nghìn
-            lần&rdquo; so với 2D.
+            <em>số lượng</em>. Chiều nào cũng gấp hàng nghìn lần so với
+            2D.
           </p>
 
-          <Callout variant="warning" title="GPU = phần cứng nhân ma trận">
+          <Callout variant="warning" title="GPU là phần cứng nhân ma trận">
             Bạn có bao giờ thắc mắc vì sao NVIDIA trở thành công ty nghìn
-            tỉ đô nhờ AI? Vì GPU ban đầu được thiết kế để xử lý đồ hoạ 3D
-            — mà 3D chỉ là hàng triệu phép nhân ma trận mỗi giây. Khi AI
-            bùng nổ, người ta phát hiện huấn luyện mạng nơ-ron cũng chỉ
-            là nhân ma trận liên tục. Cùng một phần cứng, cùng một phép
-            toán — chỉ khác mục đích.
+            tỉ đô nhờ AI? GPU ban đầu được thiết kế để xử lý đồ hoạ 3D, mà
+            3D chỉ là hàng triệu phép nhân ma trận mỗi giây. Khi AI bùng
+            nổ, người ta phát hiện huấn luyện mạng nơ-ron cũng chỉ là
+            nhân ma trận liên tục. Cùng một phần cứng, cùng một phép
+            toán, chỉ khác mục đích.
           </Callout>
 
           <CollapsibleDetail title="Vì sao gọi là 'tích vô hướng' mà lại có hướng?">
             <p className="text-sm leading-relaxed">
               Tên gọi hơi gây hiểu nhầm. &ldquo;Vô hướng&rdquo; nghĩa là{" "}
-              <em>kết quả</em> là một con số, không có hướng — khác với
-              vector. Nhưng để <em>tính</em> tích vô hướng, bạn dùng
+              <em>kết quả</em> là một con số, không có hướng, khác với
+              vector. Nhưng để <em>tính</em> tích vô hướng, bạn vẫn dùng
               thông tin về hướng của cả hai vector. Có thể gọi cho dễ
               nhớ: &ldquo;phép nhân ra một số, không ra mũi tên&rdquo;.
             </p>
@@ -1514,7 +1518,7 @@ export default function VectorsAndMatricesTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — TÓM TẮT + KẾT NỐI ━━━ */}
+      {/* ━━━ BƯỚC 7: TÓM TẮT + KẾT NỐI ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Năm điều cần nhớ về vector và ma trận"
@@ -1523,7 +1527,7 @@ export default function VectorsAndMatricesTopic() {
             "Cộng vector = cộng từng cặp thành phần. Nhân với số k = kéo dài hoặc rút ngắn mũi tên k lần.",
             "Tích vô hướng = nhân cặp rồi cộng. Dương: cùng hướng. Bằng 0: vuông góc. Âm: ngược hướng.",
             "Ma trận 2x2 = 4 số gói gọn một phép biến đổi cả không gian. Hai cột cho biết vector cơ sở bay đến đâu.",
-            "Mọi mô hình AI (ChatGPT, Spotify, Google Photos) bên trong chỉ là chuỗi ma trận nhân với vector — chỉ khác số chiều.",
+            "Mọi model AI (ChatGPT, Spotify, Google Photos) bên trong chỉ là chuỗi ma trận nhân với vector. Chỉ khác nhau ở số chiều.",
           ]}
         />
 
@@ -1536,13 +1540,13 @@ export default function VectorsAndMatricesTopic() {
           . Nếu muốn học tiếp về toán, hãy thử{" "}
           <TopicLink slug="eigendecomposition-pca">
             Phân tích thành phần chính (PCA)
-          </TopicLink>{" "}
-          — cách rút gọn 100 con số xuống còn 2 mà vẫn giữ được câu
+          </TopicLink>
+          . Đó là cách rút gọn 100 con số xuống còn 2 mà vẫn giữ được câu
           chuyện chính.
         </Callout>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

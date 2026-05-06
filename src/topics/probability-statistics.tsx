@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
   title: "Probability & Statistics",
   titleVi: "Xác suất và thống kê",
   description:
-    "Tung đồng xu, đếm kết quả, đoán xem điều gì xảy ra. Xác suất thực ra chỉ là tần số dài hạn — và thống kê là cách bạn mô tả tần số đó.",
+    "Tung đồng xu, đếm kết quả, đoán xem điều gì xảy ra. Xác suất thực ra chỉ là tần số dài hạn. Thống kê là cách bạn mô tả tần số đó.",
   category: "math-foundations",
   tags: ["probability", "bayes", "distribution", "statistics"],
   difficulty: "beginner",
@@ -196,7 +196,7 @@ function Histogram({
 }
 
 /* ─────────────────────────────────────────────────────────
-   CÂY BAYES — TREE DIAGRAM CHO LỌC SPAM
+   CÂY BAYES: TREE DIAGRAM CHO LỌC SPAM
    ───────────────────────────────────────────────────────── */
 
 type BayesBranch = "spam" | "ham";
@@ -305,14 +305,14 @@ function BayesTree({
         <button
           type="button"
           onClick={() => onToggle("spam")}
-          className="rounded-lg border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-700 px-3 py-2 text-xs font-medium text-red-800 dark:text-red-300 hover:bg-red-100"
+          className="rounded-lg border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-700 px-3 py-2 text-xs font-semibold text-foreground hover:bg-red-100"
         >
           {openBranch === "spam" ? "Đóng" : "Mở"} nhánh spam
         </button>
         <button
           type="button"
           onClick={() => onToggle("ham")}
-          className="rounded-lg border border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700 px-3 py-2 text-xs font-medium text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100"
+          className="rounded-lg border border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700 px-3 py-2 text-xs font-semibold text-foreground hover:bg-emerald-100"
         >
           {openBranch === "ham" ? "Đóng" : "Mở"} nhánh email thật
         </button>
@@ -339,13 +339,13 @@ const quizQuestions: QuizQuestion[] = [
       "Bạn tung một đồng xu công bằng 10 lần và ra đầu 8 lần. Kết luận nào hợp lý nhất?",
     options: [
       "Đồng xu chắc chắn bị lệch, không công bằng.",
-      "10 lần là quá ít để kết luận — hiện tượng này vẫn có thể xảy ra ngẫu nhiên với đồng xu công bằng.",
+      "10 lần là quá ít để kết luận. Hiện tượng này vẫn có thể xảy ra ngẫu nhiên với đồng xu công bằng.",
       "Lần tung tiếp theo xác suất cao sẽ ra sấp để &ldquo;cân bằng&rdquo;.",
       "Xác suất ra đầu thực sự là 80%.",
     ],
     correct: 1,
     explanation:
-      "Với đồng xu công bằng, xác suất ra 8 đầu trong 10 lần khoảng 4,4%. Nhỏ nhưng không hiếm. Luật số lớn chỉ đúng khi n rất lớn — 10 lần chưa đủ. Ý tưởng &ldquo;cân bằng&rdquo; là sai lầm của người cờ bạc (gambler's fallacy): mỗi lần tung độc lập, xúc xắc không có trí nhớ.",
+      "Với đồng xu công bằng, xác suất ra 8 đầu trong 10 lần khoảng 4,4%. Nhỏ nhưng không hiếm. Luật số lớn chỉ đúng khi n rất lớn, và 10 lần thì chưa đủ. Ý tưởng &ldquo;cân bằng&rdquo; là sai lầm của người cờ bạc (gambler's fallacy). Mỗi lần tung độc lập, xúc xắc không có trí nhớ.",
   },
   {
     question:
@@ -358,20 +358,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mean = điểm giữa. Std = trung bình khoảng cách của mỗi điểm dữ liệu đến điểm giữa. Hai tập dữ liệu có cùng mean có thể có std hoàn toàn khác nhau — một tập chụm sát, một tập tản mác.",
+      "Mean là điểm giữa. Std là trung bình khoảng cách của mỗi điểm dữ liệu đến điểm giữa. Hai tập dữ liệu có cùng mean vẫn có thể có std hoàn toàn khác nhau. Một tập chụm sát, một tập tản mác.",
   },
   {
     question:
       "Định lý Bayes cho phép bạn làm gì mà trực giác thường làm sai?",
     options: [
       "Tính nhanh hơn các phép cộng trừ.",
-      "Cập nhật niềm tin khi có bằng chứng mới — và nhắc bạn rằng base rate (tỷ lệ nền) quan trọng không kém likelihood.",
+      "Cập nhật niềm tin khi có bằng chứng mới, và nhắc bạn rằng base rate (tỷ lệ nền) quan trọng ngang likelihood.",
       "Dự đoán tương lai chính xác 100%.",
       "Biến một biến ngẫu nhiên thành biến tất định.",
     ],
     correct: 1,
     explanation:
-      "Bayes: P(A|B) = P(B|A) · P(A) / P(B). Nhiều người quên P(A) — xác suất ban đầu — và dán quá nhiều sức nặng vào P(B|A). Đây là lý do các bài toán y tế dễ làm người ta ngộ nhận: khi bệnh hiếm, dù test chính xác 95%, phần lớn dương tính vẫn là giả.",
+      "Bayes: P(A|B) = P(B|A) · P(A) / P(B). Nhiều người quên P(A) (xác suất ban đầu) và dán quá nhiều sức nặng vào P(B|A). Đây là lý do các bài toán y tế dễ làm người ta ngộ nhận. Khi bệnh hiếm, dù test chính xác 95%, phần lớn dương tính vẫn là giả.",
   },
   {
     type: "fill-blank",
@@ -385,20 +385,20 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "luật", accept: ["định luật", "quy luật", "law"] },
     ],
     explanation:
-      "Luật số lớn (law of large numbers) nói rằng trung bình mẫu hội tụ về xác suất thực khi cỡ mẫu đủ lớn. Đây là lý do khi tung xu vài lần có thể thấy kết quả lệch, nhưng tung hàng nghìn lần tỷ lệ gần như chính xác 50%.",
+      "Luật số lớn (law of large numbers) nói rằng trung bình mẫu hội tụ về xác suất thực khi cỡ mẫu đủ lớn. Đây là lý do khi tung xu vài lần có thể thấy kết quả lệch, nhưng tung hàng nghìn lần thì tỷ lệ gần như chính xác 50%.",
   },
   {
     question:
       "Bạn nhìn vào một histogram có hình chuông lệch phải. Trung vị (median) và trung bình (mean) sẽ nằm ở đâu?",
     options: [
       "Trung vị và trung bình đều nằm ở giữa, bằng nhau.",
-      "Trung bình nằm lệch phải hơn trung vị — vì các giá trị lớn kéo trung bình về phía đuôi phải.",
+      "Trung bình nằm lệch phải hơn trung vị, vì các giá trị lớn kéo trung bình về phía đuôi phải.",
       "Trung vị nằm lệch phải hơn trung bình.",
       "Không thể biết nếu không có công thức chính xác.",
     ],
     correct: 1,
     explanation:
-      "Đây là tính chất của phân phối lệch phải: mean bị kéo về phía đuôi dài. Ví dụ: thu nhập người dân — trung bình cao hơn trung vị vì một nhóm nhỏ rất giàu kéo trung bình lên.",
+      "Đây là tính chất của phân phối lệch phải: mean bị kéo về phía đuôi dài. Lấy ví dụ thu nhập người dân. Trung bình cao hơn trung vị vì một nhóm nhỏ rất giàu kéo trung bình lên.",
   },
   {
     question:
@@ -411,20 +411,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đây là base rate fallacy. Ví dụ bệnh mắc 1%, test đúng 95%: trong 1.000 người có 10 người bệnh (9 dương tính thật) và 990 khỏe (50 dương tính giả). Phần lớn dương tính là giả. Hiểu Bayes giúp tránh cả sai lầm này trong y tế lẫn trong máy học.",
+      "Đây là base rate fallacy. Lấy ví dụ bệnh mắc 1%, test đúng 95%. Trong 1.000 người có 10 người bệnh (9 dương tính thật) và 990 khỏe (50 dương tính giả). Phần lớn dương tính là giả. Hiểu Bayes giúp tránh cả sai lầm này trong y tế lẫn trong máy học.",
   },
   {
     question:
       "Variance (phương sai) được tính thế nào, và vì sao ta lại bình phương khoảng cách?",
     options: [
-      "Bình phương để số luôn dương — nếu chỉ cộng (x − mean) thì các chênh lệch âm và dương sẽ triệt tiêu.",
+      "Bình phương để số luôn dương. Nếu chỉ cộng (x − mean) thì các chênh lệch âm và dương sẽ triệt tiêu.",
       "Bình phương để tốn ít bộ nhớ hơn.",
       "Không cần bình phương, chỉ cần cộng là đủ.",
       "Bình phương là quy ước lịch sử, không có lý do kỹ thuật.",
     ],
     correct: 0,
     explanation:
-      "Nếu chỉ cộng (x − mean), phần dương và âm triệt tiêu nhau, cho kết quả luôn = 0. Bình phương bảo đảm mọi khoảng cách đều đóng góp dương. Std = căn của variance để đưa đơn vị về đúng đơn vị gốc của dữ liệu.",
+      "Nếu chỉ cộng (x − mean), phần dương và âm triệt tiêu nhau, cho kết quả luôn bằng 0. Bình phương bảo đảm mọi khoảng cách đều đóng góp dương. Std bằng căn của variance để đưa đơn vị về đúng đơn vị gốc của dữ liệu.",
   },
 ];
 
@@ -488,18 +488,18 @@ export default function ProbabilityStatisticsTopic() {
         <PredictionGate
           question="Bạn tung xu ba lần liên tiếp ra đầu cả ba. Đồng xu có bị lệch không?"
           options={[
-            "Chắc chắn có — ba lần đầu liên tiếp là bằng chứng rõ ràng.",
-            "Không hẳn — ba lần quá ít, kết quả này vẫn có thể xảy ra với đồng xu công bằng.",
+            "Chắc chắn có. Ba lần đầu liên tiếp là bằng chứng rõ ràng.",
+            "Không hẳn. Ba lần quá ít, kết quả này vẫn có thể xảy ra với đồng xu công bằng.",
             "Lần thứ tư chắc chắn sẽ ra sấp để cân bằng lại.",
             "Không đoán được nếu không có phần mềm chuyên dụng.",
           ]}
           correct={1}
-          explanation="Với đồng xu công bằng, xác suất ra đầu ba lần liên tiếp là 1/2 × 1/2 × 1/2 = 12,5%. Không quá hiếm! Suy diễn từ 3 lần để kết luận về 'bản chất' của đồng xu là sai lầm kinh điển — xác suất chỉ bộc lộ bản thân khi bạn tung nhiều lần."
+          explanation="Với đồng xu công bằng, xác suất ra đầu ba lần liên tiếp là 1/2 × 1/2 × 1/2 = 12,5%. Không quá hiếm! Suy diễn từ 3 lần để kết luận về 'bản chất' của đồng xu là sai lầm kinh điển. Xác suất chỉ bộc lộ bản thân khi bạn tung nhiều lần."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Bài hôm nay, bạn sẽ tự tay <strong>tung đồng xu hàng trăm lần</strong>{" "}
             ngay trong trình duyệt, vẽ histogram, và thấy xác suất tự động hiện
-            ra như thế nào. Không công thức khó — chỉ đếm và quan sát.
+            ra như thế nào. Không có công thức khó. Chỉ đếm và quan sát.
           </p>
         </PredictionGate>
       </LessonSection>
@@ -508,26 +508,26 @@ export default function ProbabilityStatisticsTopic() {
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <Coins size={20} className="text-accent" /> Xác suất = tần số
-            dài hạn
+            <Coins size={20} className="text-accent" /> Xác suất chính là tần
+            số dài hạn
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Bạn không cần biết công thức trước. Hãy tưởng tượng bạn ngồi ở quán
             trà sữa, lôi ra một đồng xu, tung 1000 lần. Bạn ghi tổng số mặt
             ngửa và chia cho 1000. Con số đó sẽ <em>tiến gần</em> đến một giá
-            trị cố định — chính là <strong>xác suất ra ngửa</strong> của đồng
-            xu này.
+            trị cố định, và đó chính là <strong>xác suất ra ngửa</strong> của
+            đồng xu này.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Xác suất không phải một ý niệm huyền bí. Nó là <em>tỷ lệ bạn quan
             sát được</em> khi thí nghiệm đủ lâu. Tiếng Anh gọi đó là{" "}
             <strong>frequentist view</strong> (góc nhìn tần suất). Cả một
-            ngành thống kê đặt nền trên điều đơn giản này.
+            ngành thống kê đặt nền trên ý đơn giản này.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+              <div className="flex items-center gap-2 text-sky-800 dark:text-sky-200">
                 <Dice5 size={16} />
                 <span className="text-sm font-semibold">Thử nghiệm ít</span>
               </div>
@@ -536,23 +536,23 @@ export default function ProbabilityStatisticsTopic() {
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-200">
                 <TrendingUp size={16} />
                 <span className="text-sm font-semibold">Thử nghiệm vừa</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Tung 100 lần — tỷ lệ bắt đầu ổn định quanh giá trị thật. Vẫn
-                dao động vài phần trăm.
+                Tung 100 lần. Tỷ lệ bắt đầu ổn định quanh giá trị thật, nhưng
+                vẫn dao động vài phần trăm.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
                 <Sparkles size={16} />
                 <span className="text-sm font-semibold">Thử nghiệm nhiều</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Tung 1.000 lần — tỷ lệ cực gần giá trị thật. Đây là luật số
-                lớn.
+                Tung 1.000 lần. Tỷ lệ cực gần giá trị thật. Đây chính là luật
+                số lớn.
               </p>
             </div>
           </div>
@@ -603,9 +603,9 @@ export default function ProbabilityStatisticsTopic() {
                   }}
                 />
                 <div className="flex justify-between text-[10px] text-tertiary mt-1">
-                  <span>0.10 — gần như luôn sấp</span>
-                  <span>0.50 — công bằng</span>
-                  <span>0.90 — gần như luôn ngửa</span>
+                  <span>0.10: gần như luôn sấp</span>
+                  <span>0.50: công bằng</span>
+                  <span>0.90: gần như luôn ngửa</span>
                 </div>
                 <p className="text-xs text-muted mt-1.5 italic text-center">
                   {label}
@@ -657,7 +657,7 @@ export default function ProbabilityStatisticsTopic() {
                   </div>
                   <div className="font-mono text-lg font-bold text-accent tabular-nums">
                     {flipCount === 0
-                      ? "—"
+                      ? "..."
                       : `${((flipResult.heads / flipCount) * 100).toFixed(1)}%`}
                   </div>
                 </div>
@@ -691,7 +691,7 @@ export default function ProbabilityStatisticsTopic() {
 
           {/* ── Thử nghiệm 2: Mean, Variance, STD ── */}
           <LessonSection
-            label="Thử nghiệm 2: Mean, Variance, Std — đều từ cùng dữ liệu"
+            label="Thử nghiệm 2: Mean, Variance, Std từ cùng một dữ liệu"
             step={2}
           >
             <p className="text-sm text-muted mb-4 leading-relaxed">
@@ -727,7 +727,7 @@ export default function ProbabilityStatisticsTopic() {
                   <p className="text-xs text-muted leading-relaxed">
                     Chú ý: giá trị này chính là{" "}
                     <strong>tỷ lệ mặt ngửa</strong> bạn đã quan sát. Trong
-                    trường hợp xu 0/1, mean = xác suất thực nghiệm.
+                    trường hợp xu 0/1, mean bằng xác suất thực nghiệm.
                   </p>
                 </div>,
                 <div
@@ -748,9 +748,9 @@ export default function ProbabilityStatisticsTopic() {
                     </span>
                   </div>
                   <p className="text-xs text-muted leading-relaxed">
-                    Variance lớn nhất khi mean = 0.5 (xu công bằng) — vì lúc đó
-                    kết quả thay đổi nhiều nhất. Khi bias = 0.9, gần như lần
-                    nào cũng ra 1 → variance nhỏ.
+                    Variance lớn nhất khi mean bằng 0.5 (xu công bằng), vì lúc
+                    đó kết quả thay đổi nhiều nhất. Khi bias bằng 0.9, gần như
+                    lần nào cũng ra 1 nên variance nhỏ.
                   </p>
                 </div>,
                 <div
@@ -759,8 +759,8 @@ export default function ProbabilityStatisticsTopic() {
                 >
                   <p className="text-sm text-foreground leading-relaxed">
                     <strong>Std (độ lệch chuẩn):</strong> căn bậc hai của
-                    variance. Mục đích: đưa đơn vị về đúng đơn vị gốc. Nếu
-                    variance = 0.25 kg² thì std = 0.5 kg.
+                    variance. Mục đích là đưa đơn vị về đúng đơn vị gốc. Nếu
+                    variance bằng 0.25 kg² thì std bằng 0.5 kg.
                   </p>
                   <div className="rounded-md bg-card border border-border p-3 flex items-center justify-between">
                     <span className="text-xs text-muted">Std hiện tại</span>
@@ -770,8 +770,8 @@ export default function ProbabilityStatisticsTopic() {
                   </div>
                   <p className="text-xs text-muted leading-relaxed">
                     Khi bạn đọc báo nói &ldquo;chiều cao trung bình 1m65, lệch
-                    chuẩn 7cm&rdquo; — nghĩa là hầu hết mọi người cao từ 1m58
-                    đến 1m72 (mean ± 1 std).
+                    chuẩn 7cm&rdquo;, nghĩa là hầu hết mọi người cao từ 1m58
+                    đến 1m72 (mean cộng trừ 1 std).
                   </p>
                 </div>,
               ]}
@@ -794,7 +794,7 @@ export default function ProbabilityStatisticsTopic() {
               sliders={[
                 {
                   key: "biasA",
-                  label: "Đồng xu A — lệch mặt sấp",
+                  label: "Đồng xu A: lệch mặt sấp",
                   min: 10,
                   max: 50,
                   step: 5,
@@ -803,7 +803,7 @@ export default function ProbabilityStatisticsTopic() {
                 },
                 {
                   key: "biasB",
-                  label: "Đồng xu B — công bằng",
+                  label: "Đồng xu B: công bằng",
                   min: 30,
                   max: 70,
                   step: 5,
@@ -812,7 +812,7 @@ export default function ProbabilityStatisticsTopic() {
                 },
                 {
                   key: "biasC",
-                  label: "Đồng xu C — lệch mặt ngửa",
+                  label: "Đồng xu C: lệch mặt ngửa",
                   min: 50,
                   max: 90,
                   step: 5,
@@ -850,7 +850,7 @@ export default function ProbabilityStatisticsTopic() {
                     );
                   })}
                   <p className="text-[10px] text-tertiary text-center italic mt-2">
-                    Thanh càng dài = đồng xu càng thiên về mặt ngửa.
+                    Thanh càng dài thì đồng xu càng thiên về mặt ngửa.
                   </p>
                 </div>
               )}
@@ -862,14 +862,14 @@ export default function ProbabilityStatisticsTopic() {
       {/* ══════ AHA ══════ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Xác suất không phải là một con số huyền bí đến từ trời cao —{" "}
-          <strong>nó là tần số bạn quan sát được</strong> khi thí nghiệm đủ
+          Xác suất không phải là một con số huyền bí đến từ trời cao.{" "}
+          <strong>Nó là tần số bạn quan sát được</strong> khi thí nghiệm đủ
           nhiều. Mean, variance, std đều là ba cách khác nhau để mô tả cùng một
           đám dữ liệu: điểm giữa ở đâu, và dữ liệu có tản mác không.
           <br />
           <br />
           Toàn bộ thống kê đứng trên hai ý đơn giản đó. Từ thăm dò dư luận đến
-          huấn luyện AI — tất cả chỉ là đếm, chia, rồi rút kết luận.
+          huấn luyện AI, tất cả chỉ là đếm, chia, rồi rút kết luận.
         </AhaMoment>
       </LessonSection>
 
@@ -930,8 +930,8 @@ export default function ProbabilityStatisticsTopic() {
                           : "text-muted"
                       }`}
                     >
-                      Bias thật: {h.truth.toFixed(2)} —{" "}
-                      {isMax ? "mean cao nhất" : "thấp hơn"}
+                      Bias thật: {h.truth.toFixed(2)} (
+                      {isMax ? "mean cao nhất" : "thấp hơn"})
                     </div>
                   )}
                 </button>
@@ -946,20 +946,20 @@ export default function ProbabilityStatisticsTopic() {
             >
               Histogram có đỉnh lệch về bên phải (gần 10) là histogram có mean
               cao nhất. Đây là cách bạn &ldquo;đọc&rdquo; phân phối chỉ bằng
-              mắt — không cần máy tính.
+              mắt, không cần máy tính.
             </Callout>
           )}
 
           <InlineChallenge
             question="Một hộp có 70 bi đỏ và 30 bi xanh. Bạn bốc 1 bi (không nhìn màu), rồi bốc thêm 1 bi nữa (không trả viên đầu lại). Xác suất viên THỨ HAI là đỏ bằng bao nhiêu?"
             options={[
-              "70% — như xác suất ban đầu.",
-              "69,9% — giảm một chút vì đã lấy một viên.",
+              "70%, như xác suất ban đầu.",
+              "69,9%, giảm một chút vì đã lấy một viên.",
               "Không tính được nếu chưa biết viên đầu màu gì.",
-              "50% — cứ đỏ hoặc xanh, 50/50.",
+              "50%, cứ đỏ hoặc xanh, 50/50.",
             ]}
             correct={0}
-            explanation="Dùng luật xác suất toàn phần: P(thứ 2 đỏ) = P(thứ 1 đỏ) × P(thứ 2 đỏ | thứ 1 đỏ) + P(thứ 1 xanh) × P(thứ 2 đỏ | thứ 1 xanh) = 0,7 × 69/99 + 0,3 × 70/99 = 0,7 × 0,697 + 0,3 × 0,707 = 0,7. Khi không có thông tin gì về viên đầu, xác suất hai lần rút như nhau."
+            explanation="Dùng luật xác suất toàn phần: P(thứ 2 đỏ) = P(thứ 1 đỏ) × P(thứ 2 đỏ | thứ 1 đỏ) + P(thứ 1 xanh) × P(thứ 2 đỏ | thứ 1 xanh) = 0,7 × 69/99 + 0,3 × 70/99 = 0,7 × 0,697 + 0,3 × 0,707 = 0,7. Khi không có thông tin gì về viên đầu, xác suất hai lần rút bằng nhau."
           />
         </div>
       </LessonSection>
@@ -970,13 +970,13 @@ export default function ProbabilityStatisticsTopic() {
           <p className="leading-relaxed">
             Ở trên bạn đã nhìn <strong>luật số lớn</strong> và{" "}
             <strong>ba con số mô tả dữ liệu</strong> bằng mắt. Phần này là tên
-            gọi chính thức và công thức tối thiểu — để lần sau bạn nhìn thấy
+            gọi chính thức và công thức tối thiểu, để lần sau bạn nhìn thấy
             chúng trong sách giáo khoa vẫn nhận ra.
           </p>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2 flex items-center gap-2">
-            <Calculator size={14} className="text-accent" /> Công thức 1 —
-            Trung bình
+            <Calculator size={14} className="text-accent" /> Công thức 1: Trung
+            bình
           </h4>
 
           <LaTeX block>
@@ -986,7 +986,7 @@ export default function ProbabilityStatisticsTopic() {
           <p className="text-sm leading-relaxed">
             <strong>Bằng lời:</strong> cộng tất cả các giá trị lại, chia cho
             số lượng. Đơn giản vậy thôi. Đây là con số &ldquo;điểm giữa&rdquo;
-            của cả đám dữ liệu — ký hiệu bằng chữ Hy Lạp{" "}
+            của cả đám dữ liệu, ký hiệu bằng chữ Hy Lạp{" "}
             <LaTeX>{String.raw`\mu`}</LaTeX> (đọc là &ldquo;mu&rdquo;). Trong
             ví dụ xu 0/1, trung bình chính là{" "}
             <em>tỷ lệ mặt ngửa bạn quan sát được</em>.
@@ -1001,8 +1001,8 @@ export default function ProbabilityStatisticsTopic() {
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2 flex items-center gap-2">
-            <GitBranch size={14} className="text-accent" /> Công thức 2 —
-            Định lý Bayes
+            <GitBranch size={14} className="text-accent" /> Công thức 2: Định
+            lý Bayes
           </h4>
 
           <LaTeX block>
@@ -1011,9 +1011,9 @@ export default function ProbabilityStatisticsTopic() {
 
           <p className="text-sm leading-relaxed">
             <strong>Bằng lời:</strong> xác suất A xảy ra khi biết B đã xảy ra
-            = &ldquo;xác suất thấy B nếu A đúng&rdquo; × &ldquo;niềm tin ban
-            đầu vào A&rdquo;, chia cho &ldquo;xác suất B xảy ra nói chung&rdquo;.
-            Nghe rắc rối nhưng bản chất chỉ là{" "}
+            bằng &ldquo;xác suất thấy B nếu A đúng&rdquo; nhân &ldquo;niềm tin
+            ban đầu vào A&rdquo;, chia cho &ldquo;xác suất B xảy ra nói
+            chung&rdquo;. Nghe rắc rối nhưng bản chất chỉ là{" "}
             <strong>cập nhật niềm tin khi có bằng chứng mới</strong>.
           </p>
 
@@ -1100,9 +1100,10 @@ export default function ProbabilityStatisticsTopic() {
           <p className="text-sm leading-relaxed">
             Khi bạn tăng tỷ lệ spam ban đầu (prior), P(spam | có từ đó) cũng
             tăng. Khi bạn nâng P(từ | email thật) (nhiều email thật cũng có
-            từ đó), P(spam | có từ đó) giảm — dù likelihood trong spam không
+            từ đó), P(spam | có từ đó) giảm, dù likelihood trong spam không
             đổi. <strong>Đây là sức mạnh của Bayes</strong>: cả prior lẫn
-            likelihood đều quan trọng. Trực giác hay quên prior, nên thường sai.
+            likelihood đều quan trọng. Trực giác hay quên prior, nên thường
+            sai.
           </p>
 
           <Callout variant="tip" title="Xem ứng dụng thực tế">
@@ -1116,7 +1117,7 @@ export default function ProbabilityStatisticsTopic() {
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Phân phối thường gặp — chỉ cần biết tên
+            Bốn phân phối thường gặp, chỉ cần biết tên
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1136,7 +1137,7 @@ export default function ProbabilityStatisticsTopic() {
               </div>
               <p className="text-xs text-muted leading-snug">
                 Đếm số lần thành công trong n thử nghiệm độc lập. Chính là
-                histogram xu bạn vừa thấy. Khi n lớn, binomial trông gần giống
+                histogram xu bạn vừa thấy. Khi n lớn, binomial trông gần như
                 Gaussian.
               </p>
             </div>
@@ -1163,12 +1164,12 @@ export default function ProbabilityStatisticsTopic() {
 
           <CollapsibleDetail title="Vì sao phải bình phương khi tính variance?">
             <p className="text-sm leading-relaxed">
-              Variance đo độ lan. Cách tự nhiên nhất: lấy trung bình của (x −
-              mean). Vấn đề: các giá trị nằm bên trái mean đóng góp âm, bên
-              phải đóng góp dương — triệt tiêu, kết quả luôn bằng 0. Để khắc
-              phục, người ta bình phương trước khi cộng: (x − mean)². Mọi
-              đóng góp bây giờ đều dương. Sau khi cộng xong, lấy căn để đưa
-              đơn vị về lại như ban đầu — đó chính là std.
+              Variance đo độ lan. Cách tự nhiên nhất là lấy trung bình của (x
+              − mean). Vấn đề là các giá trị nằm bên trái mean đóng góp âm,
+              bên phải đóng góp dương, nên triệt tiêu nhau, kết quả luôn bằng
+              0. Để khắc phục, người ta bình phương trước khi cộng: (x −
+              mean)². Mọi đóng góp bây giờ đều dương. Sau khi cộng xong, lấy
+              căn để đưa đơn vị về lại như ban đầu, và đó chính là std.
             </p>
           </CollapsibleDetail>
 
@@ -1177,17 +1178,17 @@ export default function ProbabilityStatisticsTopic() {
               Tiến hoá không thiết kế não bộ cho xác suất. Tổ tiên cần phản
               ứng nhanh với hổ trong bụi cỏ, không cần tính xác suất chính
               xác. Nhà tâm lý học Daniel Kahneman và Amos Tversky đã liệt kê
-              hàng loạt &ldquo;lối tắt&rdquo; mà não dùng — rất hữu dụng trong
-              đời thường, nhưng sai bét khi gặp bài toán xác suất.
+              hàng loạt &ldquo;lối tắt&rdquo; mà não dùng. Chúng rất hữu dụng
+              trong đời thường, nhưng sai bét khi gặp bài toán xác suất.
             </p>
             <p className="text-sm leading-relaxed mt-2">
               Hai ví dụ kinh điển:{" "}
-              <strong>base rate neglect</strong> (quên tỷ lệ nền — đã gặp ở
-              thử thách trên) và <strong>gambler&apos;s fallacy</strong>{" "}
+              <strong>base rate neglect</strong> (quên tỷ lệ nền, đã gặp ở thử
+              thách trên) và <strong>gambler&apos;s fallacy</strong>{" "}
               (ảo tưởng người cờ bạc: tin rằng sau 5 lần đỏ, lần tiếp theo
               &ldquo;phải&rdquo; là đen). Cả hai đều là lý do tại sao học xác
-              suất chính thống là kỹ năng quan trọng — nó sửa sai cho trực
-              giác của bạn.
+              suất chính thống là kỹ năng quan trọng. Nó sửa sai cho trực giác
+              của bạn.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>
@@ -1198,11 +1199,11 @@ export default function ProbabilityStatisticsTopic() {
         <MiniSummary
           title="5 điều cần nhớ"
           points={[
-            "Xác suất = tần số dài hạn. Nếu bạn tung đủ nhiều lần, tỷ lệ quan sát sẽ tiến đến xác suất thật.",
-            "Mean = điểm giữa của dữ liệu. Median = giá trị nằm chính giữa. Khi có giá trị cực đoan, median ổn định hơn.",
+            "Xác suất chính là tần số dài hạn. Nếu bạn tung đủ nhiều lần, tỷ lệ quan sát sẽ tiến đến xác suất thật.",
+            "Mean là điểm giữa của dữ liệu. Median là giá trị nằm chính giữa. Khi có giá trị cực đoan, median ổn định hơn.",
             "Variance và std đo độ lan. Std cùng đơn vị với dữ liệu gốc, dễ dùng hơn variance.",
             "Bayes: cả prior (tỷ lệ nền) và likelihood (bằng chứng mới) đều quan trọng. Quên một cái, kết luận sai.",
-            "Phân phối chuẩn, nhị thức, đều, Poisson — bốn người bạn thường gặp. Chưa cần nhớ công thức, chỉ cần nhớ tình huống nào dùng phân phối nào.",
+            "Phân phối chuẩn, nhị thức, đều, Poisson là bốn người bạn thường gặp. Chưa cần nhớ công thức, chỉ cần nhớ tình huống nào dùng phân phối nào.",
           ]}
         />
 
@@ -1212,8 +1213,8 @@ export default function ProbabilityStatisticsTopic() {
             email spam mỗi ngày? Xem{" "}
             <TopicLink slug="probability-statistics-in-spam-filter">
               Xác suất trong lọc spam
-            </TopicLink>{" "}
-            — cùng lý thuyết, nhưng chạy trong production ở Google.
+            </TopicLink>
+            . Cùng lý thuyết, nhưng chạy trong production ở Google.
           </Callout>
         </div>
       </LessonSection>

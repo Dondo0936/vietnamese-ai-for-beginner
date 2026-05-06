@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
   title: "Data Preprocessing in Uber ETA",
   titleVi: "Tiền xử lý trong ETA của Uber",
   description:
-    "Uber nhận về hàng tỷ điểm GPS mỗi ngày — bẩn, lệch, mất tín hiệu, múi giờ khác nhau. Đi qua từng bước dọn dẹp để thấy một vệt GPS biến từ chấm loạn thành đường đi thật.",
+    "Uber nhận về hàng tỷ điểm GPS mỗi ngày. Tín hiệu bẩn, lệch, mất sóng, múi giờ lộn xộn. Đi qua từng bước dọn dẹp để thấy một vệt GPS biến từ chấm loạn thành đường đi thật.",
   category: "foundations",
   tags: ["preprocessing", "eta-prediction", "application"],
   difficulty: "intermediate",
@@ -85,17 +85,17 @@ export const metadata: TopicMeta = {
   ],
   tocSections: [
     { id: "hero", labelVi: "Công ty nào?" },
-    { id: "problem", labelVi: "Vấn đề" },
-    { id: "mechanism", labelVi: "Cách giải quyết" },
+    { id: "problem", labelVi: "Vấn đề thật" },
+    { id: "mechanism", labelVi: "Uber giải ra sao" },
     { id: "tryIt", labelVi: "Thử tự tay" },
     { id: "metrics", labelVi: "Con số thật" },
-    { id: "counterfactual", labelVi: "Nếu không có" },
+    { id: "counterfactual", labelVi: "Nếu bỏ bước này" },
   ],
 };
 
 /* ────────────────────────────────────────────────────────────
-   Dữ liệu mô phỏng — một chuyến đi ngắn trong nội thành.
-   Mỗi "bước dọn dẹp" sẽ chiếu một lớp khác lên cùng một tập điểm.
+   Dữ liệu mô phỏng cho một chuyến đi ngắn trong nội thành.
+   Mỗi "bước dọn dẹp" chiếu một lớp khác lên cùng một tập điểm.
    ──────────────────────────────────────────────────────────── */
 
 type GpsPoint = {
@@ -107,7 +107,7 @@ type GpsPoint = {
   tz?: "UTC" | "local"; // minh hoạ cho bước đổi múi giờ
 };
 
-/* Đường đi "thật" — sạch, là mục tiêu cuối */
+/* Đường đi "thật": sạch, là mục tiêu cuối */
 const CLEAN_PATH: GpsPoint[] = [
   { t: 0, lat: 60, lon: 260 },
   { t: 15, lat: 90, lon: 240 },
@@ -122,7 +122,7 @@ const CLEAN_PATH: GpsPoint[] = [
   { t: 150, lat: 395, lon: 68 },
 ];
 
-/* Dữ liệu GPS thô — đã thêm nhiễu, trùng, gap, timezone sai */
+/* Dữ liệu GPS thô: đã thêm nhiễu, trùng, gap, timezone sai */
 const RAW_POINTS: GpsPoint[] = [
   { t: 0, lat: 60, lon: 260, tz: "local" },
   { t: 3, lat: 75, lon: 278, tz: "local" },             // nhiễu urban canyon
@@ -140,22 +140,22 @@ const RAW_POINTS: GpsPoint[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   Quiz — ≥ 3 câu tiếng Việt, giải thích chi tiết
+   Quiz: ≥ 3 câu tiếng Việt, giải thích chi tiết
    ──────────────────────────────────────────────────────────── */
 
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Tín hiệu GPS ở trung tâm thành phố hay bị lệch 20–50 m vì sao?",
+      "Vì sao tín hiệu GPS ở trung tâm thành phố hay bị lệch 20–50 m?",
     options: [
       "Điện thoại hết pin",
-      "Hiệu ứng urban canyon — tín hiệu bật qua lại giữa các toà nhà cao tầng trước khi đến máy thu",
+      "Hiệu ứng urban canyon: tín hiệu bật qua lại giữa các toà nhà cao tầng trước khi đến máy thu",
       "GPS chỉ hoạt động ngoài trời ở vùng nông thôn",
       "Vì Uber cố tình thêm nhiễu để bảo mật",
     ],
     correct: 1,
     explanation:
-      "Urban canyon: tín hiệu từ vệ tinh bật qua các toà nhà trước khi đến điện thoại, thời gian di chuyển bị sai → vị trí tính ra lệch 20–50 m. Uber dùng map-matching (HMM) để 'kéo' điểm GPS về đoạn đường gần nhất. Hết pin làm mất tín hiệu, không phải lệch.",
+      "Urban canyon: tín hiệu vệ tinh bật qua các toà nhà cao tầng trước khi đến điện thoại. Thời gian di chuyển bị sai, nên vị trí tính ra lệch 20–50 m. Uber dùng map-matching (HMM) để 'kéo' điểm GPS về đoạn đường gần nhất. Hết pin chỉ làm mất tín hiệu, không gây lệch.",
   },
   {
     question:
@@ -163,57 +163,58 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Huỷ chuyến",
       "Chờ lái xe ra khỏi hầm",
-      "Dùng sensor fusion — kết hợp gia tốc kế, con quay hồi chuyển, và áp kế trên điện thoại để ước lượng vị trí",
+      "Dùng sensor fusion: kết hợp gia tốc kế, con quay hồi chuyển, và áp kế trên điện thoại để ước lượng vị trí",
       "Đoán bừa bằng toạ độ trung tâm thành phố",
     ],
     correct: 2,
     explanation:
-      "Khi GPS mất, điện thoại vẫn có các cảm biến khác. Gia tốc kế đo chuyển động, con quay hồi chuyển đo quay, áp kế đo độ cao — kết hợp lại cho ước lượng khá tốt vị trí dù không có tín hiệu vệ tinh. Đây là kỹ thuật 'điền missing' ở quy mô production, thay vì đơn thuần điền mean.",
+      "Khi GPS mất, điện thoại vẫn còn các cảm biến khác. Gia tốc kế đo chuyển động, con quay hồi chuyển đo quay, áp kế đo độ cao. Kết hợp ba nguồn cho ước lượng khá sát vị trí dù không có tín hiệu vệ tinh. Đây là cách điền missing ở quy mô production, không chỉ dừng ở việc điền giá trị trung bình.",
   },
   {
     question:
       "Uber chia giá trị liên tục (khoảng cách, giờ trong ngày) thành nhóm (bucket) trước khi đưa vào DeepETA. Lý do chính?",
     options: [
       "Để tiết kiệm bộ nhớ",
-      "Để model học pattern tốt hơn và giảm ảnh hưởng của ngoại lai — giờ 17:00 và 17:05 coi như một nhóm 'giờ cao điểm'",
+      "Giúp model học pattern tốt hơn và giảm ảnh hưởng của ngoại lai. Giờ 17:00 và 17:05 cùng nằm trong nhóm 'giờ cao điểm'",
       "Vì model không đọc được số thực",
       "Vì Python không hỗ trợ số thực trên GPU",
     ],
     correct: 1,
     explanation:
-      "Bucketing (rời rạc hoá) là một dạng feature engineering: giá trị gần nhau được gộp thành một nhóm, giảm nhiễu và ảnh hưởng của ngoại lai. DeepETA thực nghiệm cho thấy bucketing đặc trưng liên tục cho accuracy tốt hơn dùng raw — đặc biệt với dữ liệu giao thông có nhiều biến động cục bộ.",
+      "Bucketing (rời rạc hoá) là một dạng feature engineering. Các giá trị gần nhau được gộp thành một nhóm, giảm nhiễu và ảnh hưởng của ngoại lai. DeepETA thực nghiệm cho thấy bucketing đặc trưng liên tục cho độ chính xác cao hơn so với dùng giá trị thô, đặc biệt với dữ liệu giao thông có nhiều biến động cục bộ.",
   },
   {
     question:
-      "Nếu bỏ qua toàn bộ bước tiền xử lý GPS, ETA của Uber sẽ như thế nào?",
+      "Nếu bỏ qua toàn bộ bước tiền xử lý GPS, ETA của Uber sẽ ra sao?",
     options: [
-      "Chính xác hơn — model tự biết lọc",
-      "Không đổi — preprocessing chỉ làm đẹp",
-      "Sai lệch hàng chục phút vì nhiễu urban canyon, điểm trùng, mất tín hiệu làm model 'nghĩ' lái xe đứng yên / nhảy teleport",
+      "Chính xác hơn vì model tự biết lọc",
+      "Không đổi, preprocessing chỉ làm đẹp dữ liệu",
+      "Sai lệch hàng chục phút vì nhiễu urban canyon, điểm trùng và đoạn mất tín hiệu khiến model nghĩ lái xe đứng yên hoặc nhảy teleport",
       "Pin điện thoại nhanh hết hơn",
     ],
     correct: 2,
     explanation:
-      "Đây là nền tảng của mọi hệ thống ML sản xuất: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây → hàng triệu điểm sai → ETA có thể lệch 20–30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và dung hoà cả gap, giúp ETA sai lệch chỉ vài chục giây.",
+      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20–30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các gap, giúp ETA chỉ lệch vài chục giây.",
   },
   {
     question:
-      "DeepETA chạy feature real-time trong mili-giây qua Kafka. Đâu KHÔNG phải đặc trưng thời gian thực điển hình?",
+      "DeepETA chạy real-time feature trong mili-giây qua Kafka. Đâu KHÔNG phải đặc trưng thời gian thực điển hình?",
     options: [
       "Tốc độ trung bình của từng đoạn đường hiện tại",
       "Năm sinh của lái xe",
       "Thời gian đã đi qua segment trước",
-      "Loại chuyến đi (giao hàng / đi chung / chuyến riêng)",
+      "Loại chuyến đi (giao hàng, đi chung, chuyến riêng)",
     ],
     correct: 1,
     explanation:
-      "Real-time feature là các đại lượng thay đổi theo thời gian của chuyến đi: tốc độ trung bình segment, thời gian đã đi qua segment, loại chuyến. Năm sinh lái xe là thông tin tĩnh, không liên quan đến ETA — không nằm trong pipeline feature real-time.",
+      "Real-time feature là các đại lượng thay đổi theo thời gian của chuyến đi: tốc độ trung bình segment, thời gian đã đi qua segment, loại chuyến. Năm sinh lái xe là thông tin tĩnh, không liên quan đến ETA, nên không nằm trong pipeline real-time feature.",
   },
 ];
 
 /* ────────────────────────────────────────────────────────────
    COMPONENT CHÍNH
    ──────────────────────────────────────────────────────────── */
+
 
 type CleanStep = "raw" | "dedupe" | "interp" | "tz" | "snap";
 
@@ -225,7 +226,7 @@ const STEP_META: Record<
 > = {
   raw: {
     label: "Raw",
-    subtitle: "GPS thô — 13 điểm, loạn và lệch",
+    subtitle: "GPS thô: 13 điểm, loạn và lệch",
     color: "#ef4444",
     icon: Satellite,
   },
@@ -326,7 +327,7 @@ export default function DataPreprocessingInUberEta() {
   const tzMixed =
     new Set(pointsToShow.map((p) => p.tz ?? "local")).size > 1;
 
-  /* ETA giả lập — sai số giảm dần theo số bước */
+  /* ETA giả lập: sai số giảm dần theo số bước */
   const etaError = useMemo(() => {
     const order = STEP_ORDER.indexOf(step);
     const errs = [23, 17, 11, 7, 2];
@@ -347,7 +348,7 @@ export default function DataPreprocessingInUberEta() {
           <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1">
             <Car size={14} className="text-emerald-600" />
             <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-              Uber — DeepETA
+              Uber · DeepETA
             </span>
           </div>
           <div className="flex items-center gap-2 rounded-full bg-sky-500/10 border border-sky-500/30 px-3 py-1">
@@ -365,17 +366,17 @@ export default function DataPreprocessingInUberEta() {
         </div>
 
         <p>
-          Bạn mở ứng dụng Uber, màn hình hiện &ldquo;Tài xế đến trong 4
-          phút.&rdquo; Con số đó không phải đoán mò — nó đến từ DeepETA, hệ
-          thống học sâu của Uber, phục vụ hàng triệu chuyến đi mỗi ngày ở hơn
-          10.000 thành phố.
+          Bạn mở ứng dụng Uber. Màn hình hiện &ldquo;Tài xế đến trong 4
+          phút.&rdquo; Con số đó không phải đoán mò. Nó đến từ DeepETA, hệ
+          thống deep learning của Uber, phục vụ hàng triệu chuyến đi mỗi
+          ngày ở hơn 10.000 thành phố.
         </p>
         <p>
-          Trước khi bất kỳ mô hình nào chạy, Uber phải giải bài toán &ldquo;rửa
-          rau&rdquo;: dữ liệu GPS từ hàng triệu điện thoại bị nhiễu, toạ độ
-          nhảy giữa các toà nhà cao tầng, mất tín hiệu trong hầm, và múi giờ
-          lộn xộn giữa các chuyến. Không có bước tiền xử lý, ETA có thể sai
-          hàng chục phút.
+          Trước khi bất kỳ model nào chạy, Uber phải giải bài toán &ldquo;rửa
+          rau&rdquo; trước. Dữ liệu GPS từ hàng triệu điện thoại bị nhiễu,
+          toạ độ nhảy giữa các toà nhà cao tầng, mất tín hiệu trong hầm, múi
+          giờ lộn xộn giữa các chuyến. Không có bước tiền xử lý, ETA có thể
+          sai hàng chục phút.
         </p>
       </ApplicationHero>
 
@@ -390,31 +391,31 @@ export default function DataPreprocessingInUberEta() {
             icon={Satellite}
             title="Urban canyon"
             color="#ef4444"
-            body="Tín hiệu từ vệ tinh bật qua các toà nhà trước khi đến điện thoại → vị trí lệch 20–50 m giữa phố cổ hoặc khu đô thị mới."
+            body="Tín hiệu vệ tinh bật qua các toà nhà cao tầng trước khi đến điện thoại. Vị trí lệch 20–50 m ở phố cổ hoặc khu đô thị mới."
           />
           <ProblemCard
             icon={WifiOff}
             title="Mất tín hiệu"
             color="#f59e0b"
-            body="Hầm đỗ xe, garage ngầm, đường hầm → GPS mất hàng chục giây. Chuỗi toạ độ xuất hiện 'lỗ đen' mà model không biết cách xử lý."
+            body="Hầm đỗ xe, garage ngầm, đường hầm: GPS mất hàng chục giây. Chuỗi toạ độ xuất hiện 'lỗ đen' mà model không biết cách xử lý."
           />
           <ProblemCard
             icon={Layers}
             title="Điểm trùng lặp"
             color="#3b82f6"
-            body="Điện thoại gửi cùng toạ độ 2–3 lần do lỗi mạng / retry. Nếu đếm cả điểm trùng, model nghĩ xe đang đứng yên."
+            body="Điện thoại gửi cùng toạ độ 2–3 lần do lỗi mạng hoặc retry. Nếu đếm cả điểm trùng, model nghĩ xe đang đứng yên."
           />
           <ProblemCard
             icon={Clock}
             title="Múi giờ lộn xộn"
             color="#8b5cf6"
-            body="Có thiết bị gửi UTC, có thiết bị gửi giờ thành phố. Trừ nhầm múi giờ → sai giờ đón 7 tiếng."
+            body="Có thiết bị gửi UTC, có thiết bị gửi giờ thành phố. Trừ nhầm múi giờ là sai giờ đón 7 tiếng."
           />
         </div>
         <p>
-          Giao thông thì biến động liên tục: một tai nạn có thể biến đoạn 5
-          phút thành 30 phút. &ldquo;Garbage in, garbage out&rdquo; — nếu
-          không làm sạch, DeepETA không thể dự đoán sát thực tế.
+          Giao thông thì biến động liên tục. Một vụ tai nạn có thể kéo đoạn 5
+          phút thành 30 phút. Garbage in, garbage out: nếu không làm sạch,
+          DeepETA không thể dự đoán sát thực tế.
         </p>
       </ApplicationProblem>
 
@@ -427,11 +428,12 @@ export default function DataPreprocessingInUberEta() {
           <p>
             <strong>Khử nhiễu GPS bằng map-matching.</strong> GPS thô báo bạn
             đang đứng giữa toà nhà, nhưng thực ra bạn đang đi trên đường. Uber
-            dùng Hidden Markov Model (HMM — mô hình Markov ẩn) để &ldquo;kéo&rdquo;
-            mỗi điểm về đoạn đường gần nhất trong bản đồ. Hệ thống có hai
-            tầng: online matcher cho hiển thị thời gian thực, và offline
-            reprocess chạy lại chính xác hơn để huấn luyện model. Bước này
-            giảm sai số vị trí từ 50–100 m xuống dưới 5 m.
+            dùng Hidden Markov Model (HMM, mô hình Markov ẩn) để
+            &ldquo;kéo&rdquo; mỗi điểm về đoạn đường gần nhất trong bản đồ.
+            Hệ thống có hai tầng: online matcher chạy nhanh để hiển thị thời
+            gian thực, và offline reprocess chạy kỹ hơn để sinh dữ liệu huấn
+            luyện sạch cho model. Bước này giảm sai số vị trí từ 50–100 m
+            xuống dưới 5 m.
           </p>
         </Beat>
         <Beat step={2}>
@@ -439,9 +441,9 @@ export default function DataPreprocessingInUberEta() {
             <strong>Xử lý missing bằng sensor fusion.</strong> Khi GPS mất
             tín hiệu (hầm, garage), Uber không &ldquo;bỏ qua&rdquo; như một
             imputer thông thường. Thay vào đó, hệ thống kết hợp gia tốc kế,
-            con quay hồi chuyển, và áp kế trên điện thoại để ước lượng vị trí
-            — giống như đi với la bàn khi bạn bịt mắt. Đây là cách &ldquo;điền
-            missing&rdquo; ở quy mô công nghiệp.
+            con quay hồi chuyển và áp kế trên điện thoại để ước lượng vị trí,
+            giống như đi với la bàn khi bịt mắt. Đây là cách điền missing ở
+            quy mô công nghiệp.
           </p>
         </Beat>
         <Beat step={3}>
@@ -449,36 +451,36 @@ export default function DataPreprocessingInUberEta() {
             <strong>Feature discretization (rời rạc hoá đặc trưng).</strong>{" "}
             DeepETA không dùng giá trị liên tục trực tiếp. Khoảng cách, giờ
             trong ngày, ngày trong tuần đều được gộp thành bucket (nhóm).
-            Toạ độ (lat, lon) được mã hoá vào lưới đa phân giải — trung tâm
-            Manhattan cần ô lưới nhỏ, vùng ngoại ô dùng ô to. Thực nghiệm của
-            Uber cho thấy bucketing giúp model học pattern tốt hơn raw value.
+            Toạ độ (lat, lon) được mã hoá vào lưới đa phân giải. Trung tâm
+            Manhattan cần ô lưới nhỏ, còn vùng ngoại ô dùng ô to. Thực nghiệm
+            của Uber cho thấy bucketing giúp model học pattern tốt hơn so
+            với giá trị thô.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Feature real-time qua Kafka.</strong> Mỗi yêu cầu ETA cần
+            <strong>Real-time feature qua Kafka.</strong> Mỗi yêu cầu ETA cần
             đặc trưng cập nhật trong mili-giây: tốc độ trung bình từng đoạn
             đường (tính từ stream GPS của mọi tài xế), thời gian đã đi qua
-            segment, và đặc trưng hiệu chỉnh phân biệt loại chuyến (giao
-            hàng, đi chung, chuyến riêng). Pipeline này chạy trên Kafka với
-            độ trễ dưới 100 ms.
+            segment, và đặc trưng phân biệt loại chuyến (giao hàng, đi chung,
+            chuyến riêng). Pipeline này chạy trên Kafka với độ trễ dưới 100 ms.
           </p>
         </Beat>
       </ApplicationMechanism>
 
-      {/* ━━━ TRY IT — sandbox GPS + feature engineering ━━━ */}
+      {/* ━━━ TRY IT: sandbox GPS + feature engineering ━━━ */}
       <ApplicationTryIt topicSlug="data-preprocessing-in-uber-eta">
         <div className="space-y-6">
           {/* ── Sandbox 1: làm sạch vệt GPS ── */}
           <div>
             <h3 className="text-base font-semibold text-foreground mb-2">
-              Sandbox 1 — Chạy lại từng bước làm sạch một vệt GPS
+              Sandbox 1. Chạy lại từng bước làm sạch một vệt GPS
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
-              Bấm qua các tab dưới đây. Mỗi lần bấm, bạn sẽ thấy vệt GPS từ
+              Bấm qua các tab dưới đây. Mỗi lần bấm, vệt GPS từ
               &ldquo;loạn xạ&rdquo; dần dần gọn lại thành một đường đi có
-              thật. Quan sát số điểm, số duplicate, và sai số ETA thay đổi
-              như thế nào.
+              thật. Quan sát số điểm, số duplicate và sai số ETA thay đổi
+              ra sao.
             </p>
 
             {/* Thanh chọn bước */}
@@ -574,22 +576,22 @@ export default function DataPreprocessingInUberEta() {
             </div>
 
             <Callout variant="insight" title="Điều cần quan sát">
-              Ở bước <code>raw</code>, sai số ETA lên tới ±23 phút — lý do mà
-              app giao hàng những năm 2010 liên tục &ldquo;đánh lừa&rdquo;
+              Ở bước <code>raw</code>, sai số ETA lên tới ±23 phút. Đây là lý do
+              các app giao hàng những năm 2010 liên tục &ldquo;đánh lừa&rdquo;
               khách. Khi toàn bộ pipeline chạy xong, sai số rớt còn ±2 phút,
-              gần sát khoảng Uber công bố trên blog DeepETA.
+              gần sát con số Uber công bố trên blog DeepETA.
             </Callout>
           </div>
 
           {/* ── Sandbox 2: Feature engineering cho chuyến đi ── */}
           <div>
             <h3 className="text-base font-semibold text-foreground mb-2">
-              Sandbox 2 — Feature engineering trên từng chuyến đi
+              Sandbox 2. Feature engineering trên từng chuyến đi
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
               Chọn một đặc trưng, xem Uber rời rạc hoá giá trị liên tục thành
-              nhóm thế nào. Mỗi cột là một &ldquo;bucket&rdquo; — số chuyến đi
-              được đếm vào ô tương ứng.
+              nhóm thế nào. Mỗi cột là một bucket. Số chuyến đi được đếm vào
+              ô tương ứng.
             </p>
 
             <div className="flex flex-wrap gap-2 mb-3">
@@ -625,23 +627,23 @@ export default function DataPreprocessingInUberEta() {
             </div>
 
             <Callout variant="tip" title="Vì sao phải rời rạc hoá?">
-              Giờ 17:02 và 17:05 chẳng khác gì nhau về mặt giao thông — cả hai
-              đều là &ldquo;giờ cao điểm&rdquo;. Gộp thành bucket giúp model
+              Giờ 17:02 và 17:05 chẳng khác gì nhau về mặt giao thông. Cả hai
+              đều thuộc &ldquo;giờ cao điểm&rdquo;. Gộp thành bucket giúp model
               ổn định hơn trước nhiễu nhỏ và đếm đủ dữ liệu mỗi nhóm để học
-              pattern. Ngược lại, tọa độ trung tâm Manhattan cần bucket nhỏ
-              vì mật độ chuyến đi rất cao — Uber dùng lưới đa phân giải.
+              pattern. Ngược lại, toạ độ trung tâm Manhattan cần bucket nhỏ
+              vì mật độ chuyến đi rất cao, nên Uber dùng lưới đa phân giải.
             </Callout>
           </div>
 
           {/* ── Sandbox 3: Step reveal pipeline vận hành ── */}
           <div>
             <h3 className="text-base font-semibold text-foreground mb-2">
-              Sandbox 3 — Pipeline từ GPS tới ETA, theo thứ tự
+              Sandbox 3. Pipeline từ GPS tới ETA, theo thứ tự
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
               Bấm &ldquo;Tiếp tục&rdquo; để mở từng giai đoạn. Đây là bộ
               khung mà mọi ứng dụng vị trí thời gian thực (Grab, Gojek, Lyft,
-              ShopeeFood) đều có, dù chi tiết khác nhau.
+              ShopeeFood) đều có, dù chi tiết mỗi nơi mỗi khác.
             </p>
 
             <StepReveal
@@ -738,7 +740,7 @@ gps["dist_bucket"]  = pd.cut(
                 "Chờ 45 giây không làm gì",
               ]}
               correct={2}
-              explanation="Đây là kỹ thuật sensor fusion — một dạng 'điền missing' ở quy mô production. Điện thoại có rất nhiều cảm biến, chỉ riêng GPS không đủ. Khi tín hiệu vệ tinh có lại, map-matching chuẩn hoá toàn bộ chuỗi điểm vừa nội suy để tránh drift tích luỹ."
+              explanation="Đây là kỹ thuật sensor fusion, một dạng điền missing ở quy mô production. Điện thoại có rất nhiều cảm biến, chỉ riêng GPS không đủ. Khi tín hiệu vệ tinh có lại, map-matching chuẩn hoá toàn bộ chuỗi điểm vừa nội suy để tránh drift tích luỹ."
             />
 
             <div className="mt-4">
@@ -746,12 +748,12 @@ gps["dist_bucket"]  = pd.cut(
                 question="DeepETA biến cột 'giờ đặt chuyến' thành 48 bucket (mỗi bucket 30 phút). Lợi ích quan trọng nhất?"
                 options={[
                   "Giảm kích thước model",
-                  "Model học được pattern giờ cao điểm ổn định hơn so với giá trị float — và bớt nhạy với nhiễu nhỏ (17:02 vs 17:05 là cùng một bucket)",
+                  "Model học được pattern giờ cao điểm ổn định hơn so với giá trị float, đồng thời bớt nhạy với nhiễu nhỏ (17:02 và 17:05 cùng rơi vào một bucket)",
                   "Tránh phải dùng GPU",
                   "Bỏ qua bước quan trọng khác",
                 ]}
                 correct={1}
-                explanation="Bucketing là một dạng regularisation nhẹ: cùng nhóm giá trị gần nhau về ý nghĩa, giảm variance và ảnh hưởng ngoại lai. DeepETA thực nghiệm cho thấy bucketing giờ / khoảng cách cho accuracy tốt hơn raw — đặc biệt khi dữ liệu có nhiều nhiễu do GPS."
+                explanation="Bucketing là một dạng regularisation nhẹ: gộp các giá trị gần nhau về ý nghĩa, giảm variance và ảnh hưởng ngoại lai. Thực nghiệm của Uber cho thấy bucketing giờ và khoảng cách cho độ chính xác tốt hơn dùng giá trị thô, nhất là khi dữ liệu nhiều nhiễu do GPS."
               />
             </div>
 
@@ -760,7 +762,7 @@ gps["dist_bucket"]  = pd.cut(
                 question="Vì sao Uber phải giữ 2 tầng: online matcher và offline reprocess cho map-matching?"
                 options={[
                   "Để tốn gấp đôi tiền server",
-                  "Online matcher chạy nhanh (ms) cho hiển thị real-time; offline reprocess chạy kỹ hơn (phút) với nhiều context để sinh dữ liệu huấn luyện sạch — hai vai trò khác nhau",
+                  "Online matcher chạy nhanh (ms) cho hiển thị real-time. Offline reprocess chạy kỹ hơn (phút) với nhiều context để sinh dữ liệu huấn luyện sạch. Hai vai trò khác nhau",
                   "Vì chỉ có một thuật toán HMM",
                   "Vì Uber dùng nhiều nhà cung cấp GPS",
                 ]}
@@ -774,10 +776,10 @@ gps["dist_bucket"]  = pd.cut(
           <MiniSummary
             title="Bốn điều Uber dạy cho pipeline tiền xử lý của bạn"
             points={[
-              "GPS thô bẩn hơn bạn tưởng — map-matching giảm sai số vị trí từ 50–100 m xuống dưới 5 m.",
-              "Missing values không chỉ điền bằng mean — sensor fusion là 'điền missing' ở quy mô production.",
-              "Rời rạc hoá đặc trưng (bucketing) không phải thủ thuật — DeepETA đo được accuracy tốt hơn raw.",
-              "Feature real-time qua Kafka: bước tiền xử lý không dừng khi train xong, mà chạy liên tục khi serve.",
+              "GPS thô bẩn hơn bạn tưởng. Map-matching kéo sai số vị trí từ 50–100 m xuống dưới 5 m.",
+              "Missing values không chỉ điền bằng mean. Sensor fusion là cách điền missing ở quy mô production.",
+              "Rời rạc hoá đặc trưng (bucketing) không phải thủ thuật. DeepETA đo được độ chính xác tốt hơn so với dùng giá trị thô.",
+              "Feature real-time qua Kafka: bước tiền xử lý không dừng khi huấn luyện xong, mà chạy liên tục khi serve.",
             ]}
           />
 
@@ -805,7 +807,7 @@ gps["dist_bucket"]  = pd.cut(
           sourceRef={3}
         />
         <Metric
-          value="Feature discretization (bucketing) cho accuracy tốt hơn dùng giá trị liên tục trực tiếp"
+          value="Feature discretization (bucketing) cho độ chính xác tốt hơn so với dùng giá trị liên tục trực tiếp"
           sourceRef={1}
         />
         <Metric
@@ -821,7 +823,7 @@ gps["dist_bucket"]  = pd.cut(
       >
         <p>
           Bỏ qua bước tiền xử lý, GPS nhiễu sẽ khiến model nghĩ tài xế đang ở
-          toà nhà bên cạnh thay vì trên đường — ETA có thể sai hàng chục phút.
+          toà nhà bên cạnh thay vì trên đường. ETA có thể sai hàng chục phút.
           Ngoại lai (tốc độ 300 km/h do GPS nhảy) kéo lệch mọi thống kê trung
           bình. Dữ liệu thiếu trong hầm và garage tạo &ldquo;lỗ đen&rdquo;,
           khiến model không thể tính thời gian qua đoạn.
@@ -830,8 +832,8 @@ gps["dist_bucket"]  = pd.cut(
           Tiền xử lý biến dữ liệu thô đầy nhiễu thành đầu vào sạch: map
           matching sửa vị trí, sensor fusion lấp lỗ hổng, bucketing chuẩn hoá
           thang đo, và pipeline real-time đảm bảo đặc trưng luôn mới. Đây là
-          lý do 80% công sức ML nằm ở xử lý dữ liệu — muốn luyện tập thêm kỹ
-          năng pandas cốt lõi, ghé{" "}
+          lý do 80% công sức ML nằm ở xử lý dữ liệu. Muốn luyện thêm kỹ năng
+          pandas cốt lõi, ghé{" "}
           <TopicLink slug="data-preprocessing">Tiền xử lý dữ liệu</TopicLink>
           {" "}và{" "}
           <TopicLink slug="python-for-ml">Python cho ML</TopicLink>.
@@ -913,7 +915,7 @@ function GpsMap({
         />
       ))}
 
-      {/* Đường đi sạch (ground truth) — luôn có, mờ mờ */}
+      {/* Đường đi sạch (ground truth): luôn có, mờ mờ */}
       <polyline
         points={CLEAN_PATH.map((p) => `${p.lat},${p.lon}`).join(" ")}
         fill="none"
@@ -924,7 +926,7 @@ function GpsMap({
         strokeDasharray={showClean ? undefined : "4,4"}
       />
 
-      {/* Raw points mờ nền — chỉ ở bước raw */}
+      {/* Raw points mờ nền: chỉ ở bước raw */}
       {raw?.map((p, i) => (
         <circle
           key={`raw-${i}`}
@@ -936,7 +938,7 @@ function GpsMap({
         />
       ))}
 
-      {/* Current cleaned points — chuyển mượt */}
+      {/* Current cleaned points: chuyển mượt */}
       <AnimatePresence>
         {current.map((p, i) => (
           <motion.circle
@@ -1029,7 +1031,7 @@ function FeatureBuckets({
 }: {
   choice: "hour" | "dow" | "dist";
 }) {
-  /* Dữ liệu minh hoạ — 1 ngày chuyến đi giả lập */
+  /* Dữ liệu minh hoạ: 1 ngày chuyến đi giả lập */
   const buckets: { label: string; count: number; highlight?: boolean }[] = (() => {
     if (choice === "hour") {
       return [

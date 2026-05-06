@@ -35,9 +35,9 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 export const metadata: TopicMeta = {
   slug: "logistic-regression-in-spam-filter",
   title: "Logistic Regression in Spam Filtering",
-  titleVi: "Hồi quy logistic trong lọc spam",
+  titleVi: "Gmail biến email thành xác suất spam",
   description:
-    "Cách Gmail dùng hồi quy logistic để biến mỗi email thành một xác suất spam, rồi chuyển vào hộp thư hay thùng rác.",
+    "Mỗi sáng hộp thư đến của bạn rất gọn vì Gmail vừa chấm xác suất spam cho hàng tỷ email. Bên trong là một mô hình logistic regression chạy trên hàng trăm đặc trưng.",
   category: "classic-ml",
   tags: ["classification", "email", "spam", "application"],
   difficulty: "beginner",
@@ -53,7 +53,7 @@ export const metadata: TopicMeta = {
   sources: [
     {
       title:
-        "Spam does not bring us joy — ridding Gmail of 100 million more spam messages with TensorFlow",
+        "Spam does not bring us joy: ridding Gmail of 100 million more spam messages with TensorFlow",
       publisher: "Google Workspace Blog",
       url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
       date: "2019-02",
@@ -99,7 +99,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   MOCK INBOX — 6 email tiếng Việt, mỗi cái có các đặc trưng
+   MOCK INBOX. 6 email tiếng Việt, mỗi cái có các đặc trưng
    ───────────────────────────────────────────────────────────── */
 interface MockEmail {
   id: string;
@@ -219,7 +219,7 @@ function spamScore(
   return 1 / (1 + Math.exp(-z));
 }
 
-/* Ground-truth label dùng để tính precision/recall — lấy xác suất ở cài đặt mặc định */
+/* Ground-truth label dùng để tính precision/recall, lấy xác suất ở cài đặt mặc định */
 const TRUE_LABEL: Record<string, 0 | 1> = {
   e1: 0,
   e2: 1,
@@ -321,7 +321,7 @@ function InboxDemo() {
       <div>
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-foreground">
-            Ngưỡng &quot;spam&quot;
+            Ngưỡng phán &quot;spam&quot;
           </label>
           <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-xs font-bold text-accent">
             {(threshold * 100).toFixed(0)}%
@@ -338,8 +338,8 @@ function InboxDemo() {
           aria-label="Ngưỡng spam"
         />
         <div className="mt-1 flex justify-between text-[10px] text-tertiary">
-          <span>10% - dễ đánh dấu spam</span>
-          <span>95% - phải rất chắc mới cho là spam</span>
+          <span>10%, dễ đánh dấu spam</span>
+          <span>95%, phải rất chắc mới cho là spam</span>
         </div>
       </div>
 
@@ -357,7 +357,7 @@ function InboxDemo() {
               ))}
             </AnimatePresence>
             {inbox.length === 0 && (
-              <p className="text-xs italic text-muted">(Tất cả email bị chuyển qua thùng rác)</p>
+              <p className="text-xs italic text-muted">(Mọi email đã rơi sang thùng rác.)</p>
             )}
           </div>
         </div>
@@ -374,7 +374,7 @@ function InboxDemo() {
               ))}
             </AnimatePresence>
             {junk.length === 0 && (
-              <p className="text-xs italic text-muted">(Chưa có email nào bị đánh dấu spam)</p>
+              <p className="text-xs italic text-muted">(Chưa có email nào bị gắn nhãn spam.)</p>
             )}
           </div>
         </div>
@@ -383,9 +383,9 @@ function InboxDemo() {
       {/* Confusion table */}
       <div className="grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-4">
         <StatTile label="TP (bắt đúng spam)" value={confusion.tp} color="#16a34a" />
-        <StatTile label="FP (báo nhầm)" value={confusion.fp} color="#f59e0b" />
-        <StatTile label="FN (bỏ sót)" value={confusion.fn} color="#dc2626" />
-        <StatTile label="TN (thư thường đúng)" value={confusion.tn} color="#6b7280" />
+        <StatTile label="FP (báo nhầm thư thường)" value={confusion.fp} color="#f59e0b" />
+        <StatTile label="FN (bỏ sót spam)" value={confusion.fn} color="#dc2626" />
+        <StatTile label="TN (thư thường giữ đúng)" value={confusion.tn} color="#6b7280" />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -394,11 +394,11 @@ function InboxDemo() {
       </div>
 
       <p className="text-xs text-muted leading-relaxed">
-        <strong>Precision</strong> = tỉ lệ email bị đánh dấu spam{" "}
-        <em>đúng thật là spam</em>. <strong>Recall</strong> = tỉ lệ email spam thật{" "}
-        <em>bị hệ thống bắt được</em>. Khi bạn tăng ngưỡng, precision tăng (ít báo nhầm)
-        nhưng recall giảm (bỏ sót nhiều hơn). Gmail cân bằng hai chỉ số này trên hàng tỷ
-        email mỗi ngày.
+        <strong>Precision</strong> đếm tỉ lệ email bị gắn nhãn spam mà{" "}
+        <em>đúng là spam thật</em>. <strong>Recall</strong> đếm tỉ lệ email spam thật mà{" "}
+        <em>hệ thống bắt được</em>. Khi bạn tăng ngưỡng, precision lên (ít báo nhầm) còn
+        recall xuống (bỏ sót nhiều hơn). Gmail phải cân hai số này trên hàng tỷ email
+        mỗi ngày.
       </p>
     </div>
   );
@@ -445,11 +445,11 @@ function EmailRow({
       <div className="mt-1 truncate text-foreground/80">{row.email.subject}</div>
       <div className="mt-0.5 truncate text-muted">{row.email.snippet}</div>
       {!isCorrect && (
-        <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-amber-700 dark:text-amber-400">
+        <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-foreground">
           <AlertTriangle size={10} aria-hidden="true" />
           {row.predicted === 1
-            ? "Đánh dấu nhầm — email này thật sự là thư thường."
-            : "Bỏ sót — email này thật sự là spam."}
+            ? "Đánh dấu nhầm. Email này thật sự là thư thường."
+            : "Bỏ sót. Email này thật sự là spam."}
         </p>
       )}
     </motion.div>
@@ -517,7 +517,7 @@ function ProbabilityMeter() {
   return (
     <div className="rounded-xl border border-border bg-card p-5">
       <h4 className="mb-3 text-sm font-semibold text-foreground">
-        Một email — bật/tắt từng dấu hiệu để xem P(spam) đổi
+        Bật tắt từng dấu hiệu, xem P(spam) đổi theo
       </h4>
       <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {[
@@ -593,76 +593,76 @@ function ProbabilityMeter() {
           />
         </div>
         <div className="mt-2 flex justify-between text-[11px] text-tertiary">
-          <span>0% - an toàn</span>
-          <span>50% - ngưỡng mặc định</span>
-          <span>100% - chắc chắn spam</span>
+          <span>0%, an toàn</span>
+          <span>50%, ngưỡng mặc định</span>
+          <span>100%, chắc chắn spam</span>
         </div>
       </div>
 
       <p className="mt-3 text-xs text-muted leading-relaxed">
-        Mỗi lần bạn bật/tắt một đặc trưng, xác suất nhảy theo. Bạn vừa quan sát bản chất
-        của hồi quy logistic: mỗi đặc trưng đóng góp một phần vào &quot;điểm spam&quot;,
-        rồi hàm sigmoid biến tổng thành xác suất.
+        Mỗi lần bạn bật một dấu hiệu, xác suất nhảy theo. Bạn vừa nhìn thấy bản chất của
+        logistic regression: mỗi đặc trưng góp một phần vào &quot;điểm spam&quot;, rồi
+        hàm sigmoid bóp tổng đó về một số trong khoảng 0 tới 1.
       </p>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────
-   QUIZ — 3 câu trở lên
+   QUIZ. 3 câu trở lên
    ───────────────────────────────────────────────────────────── */
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Gmail muốn giảm số email bị đánh dấu nhầm là spam (False Positive). Họ nên chỉnh ngưỡng thế nào?",
+      "Gmail muốn giảm số email thư thường bị gắn nhầm là spam (False Positive). Họ nên chỉnh ngưỡng theo hướng nào?",
     options: [
-      "Giảm ngưỡng xuống 0.2 — dễ đánh dấu spam hơn",
-      "Tăng ngưỡng lên 0.8 — chỉ khi rất chắc mới gọi là spam",
-      "Bỏ mô hình, dùng luật cứng",
-      "Không thể giảm False Positive nếu đã có mô hình",
+      "Hạ ngưỡng xuống 0.2 cho dễ gắn nhãn spam hơn",
+      "Nâng ngưỡng lên 0.8, chỉ gọi là spam khi rất chắc",
+      "Bỏ mô hình, quay về luật cứng",
+      "Không có cách nào giảm False Positive khi đã có mô hình",
     ],
     correct: 1,
     explanation:
-      "Tăng ngưỡng → chỉ đánh dấu spam khi xác suất rất cao → ít False Positive (ít báo nhầm). Nhưng đổi lại, recall giảm (bỏ sót một số spam thật). Đây là đánh đổi kinh điển precision vs recall.",
+      "Nâng ngưỡng tức là chỉ gắn nhãn spam khi xác suất đủ cao, vì vậy số False Positive giảm đi (ít báo nhầm). Đổi lại, recall giảm theo (bỏ sót một phần spam thật). Đây là đánh đổi kinh điển giữa precision và recall.",
   },
   {
     question:
-      "Vì sao Gmail dùng xác suất thay vì luật cứng kiểu 'nếu có chữ TRÚNG THƯỞNG thì chặn'?",
+      "Vì sao Gmail chọn xác suất thay vì luật cứng kiểu 'có chữ TRÚNG THƯỞNG thì chặn'?",
     options: [
       "Luật cứng dễ viết hơn nên không ai dùng",
-      "Xác suất cho phép kết hợp nhiều dấu hiệu nhẹ, và tự học khi kẻ spam đổi chiến thuật",
+      "Xác suất gộp được nhiều dấu hiệu nhẹ và tự học khi kẻ gửi spam đổi chiến thuật",
       "Luật cứng chỉ chạy trên máy chủ cũ",
       "Xác suất nhanh hơn luật cứng",
     ],
     correct: 1,
     explanation:
-      "Luật cứng dễ bị lách (chỉ cần viết 'TRÚNG_THƯỞNG' có gạch dưới là qua). Mô hình xác suất tổng hợp nhiều đặc trưng nhẹ (link lạ, người gửi lạ, VIẾT HOA) thành một điểm số — kẻ spam phải lách tất cả cùng lúc, khó hơn nhiều.",
+      "Luật cứng rất dễ bị lách: chỉ cần viết 'TRÚNG_THƯỞNG' có gạch dưới là qua. Mô hình xác suất gộp nhiều đặc trưng nhẹ (link lạ, người gửi lạ, VIẾT HOA) thành một điểm số. Nhờ vậy, kẻ gửi spam phải lách tất cả đặc trưng cùng lúc, khó hơn rất nhiều.",
   },
   {
     question:
-      "Một email có 0 dấu hiệu đáng ngờ nhưng vẫn bị mô hình chấm P(spam) = 90%. Điều gì khả năng cao đã xảy ra?",
+      "Một email không có dấu hiệu đáng ngờ nào trong demo, nhưng mô hình vẫn chấm P(spam) = 90%. Khả năng cao đã xảy ra chuyện gì?",
     options: [
       "Mô hình luôn sai với mọi email",
-      "Có đặc trưng khác mà mô hình đang dùng mà bạn không thấy (header IP, lịch sử tương tác, embedding nội dung)",
-      "Sigmoid bị lỗi",
-      "Tất cả email đều bị chấm 90%",
+      "Mô hình đang dùng những đặc trưng khác mà bạn không nhìn thấy (header IP, lịch sử tương tác, embedding nội dung)",
+      "Hàm sigmoid bị lỗi",
+      "Mọi email đều bị chấm 90%",
     ],
     correct: 1,
     explanation:
-      "Gmail dùng hàng trăm đặc trưng, không chỉ 4 dấu hiệu bạn thấy ở đây. Nhiều dấu hiệu rất tinh vi (IP người gửi nằm trong danh sách đen, domain mới tạo, hành vi click trong quá khứ) — người dùng cuối không nhìn thấy được.",
+      "Gmail dùng hàng trăm đặc trưng, không chỉ 4 dấu hiệu hiện trong demo này. Nhiều dấu hiệu rất tinh vi (IP người gửi nằm trong danh sách đen, domain mới tạo, hành vi click trong quá khứ). Người dùng cuối không nhìn thấy được những tín hiệu đó.",
   },
   {
     question:
-      "Bạn là admin IT nhận yêu cầu 'tuyệt đối không bỏ sót email lừa đảo cho nhân viên tài chính'. Bạn đặt ngưỡng ra sao?",
+      "Bạn là admin IT, sếp yêu cầu 'tuyệt đối không bỏ sót email lừa đảo cho nhân viên tài chính'. Bạn đặt ngưỡng ra sao?",
     options: [
-      "Ngưỡng thấp (ví dụ 0.3) — dễ đánh dấu spam hơn để tăng recall",
-      "Ngưỡng cao (0.9) — cho chắc chắn",
+      "Ngưỡng thấp (ví dụ 0.3) cho dễ gắn nhãn spam hơn để tăng recall",
+      "Ngưỡng cao (0.9) cho chắc chắn",
       "Không cần ngưỡng, chặn mọi email lạ",
       "Để ngưỡng mặc định 0.5 là đủ",
     ],
     correct: 0,
     explanation:
-      "Ưu tiên 'không bỏ sót' = tối đa recall, chấp nhận một số False Positive. Ngưỡng thấp = dễ đánh dấu spam hơn. Sau đó có thể cho nhân viên review thùng spam để hồi phục email bị báo nhầm.",
+      "Ưu tiên 'không bỏ sót' nghĩa là tối đa recall và chấp nhận một số False Positive. Ngưỡng thấp giúp dễ gắn nhãn spam hơn. Sau đó cho nhân viên rà thùng spam để cứu lại email bị báo nhầm.",
   },
 ];
 
@@ -676,15 +676,15 @@ export default function LogisticRegressionInSpamFilter() {
           topicSlug="logistic-regression-in-spam-filter"
         >
           <p>
-            Mỗi sáng bạn mở Gmail và hộp thư đến rất gọn — không có email giả ngân hàng,
-            không có &quot;trúng thưởng 500 triệu&quot;, không có &quot;xác thực tài
-            khoản NGAY&quot;. Bạn hiếm khi thấy vì chúng đã bị âm thầm chuyển vào thùng
-            rác trước khi bạn kịp nhìn.
+            Mỗi sáng bạn mở Gmail và hộp thư đến rất gọn. Không có email giả mạo ngân
+            hàng, không có &quot;trúng thưởng 500 triệu&quot;, không có &quot;xác thực
+            tài khoản NGAY&quot;. Bạn hiếm khi thấy chúng vì hệ thống đã âm thầm chuyển
+            sang thùng rác từ trước.
           </p>
           <p>
-            Dưới đây là một hộp thư mô phỏng để bạn nhìn thẳng vào cơ chế. Thử bật/tắt
-            các đặc trưng và kéo ngưỡng — cùng một dãy email, nhưng cách phân loại thay
-            đổi từng giây.
+            Dưới đây là một hộp thư mô phỏng để bạn nhìn thẳng vào cơ chế đó. Thử bật
+            tắt các đặc trưng rồi kéo ngưỡng. Cùng một dãy email nhưng cách phân loại
+            thay đổi theo từng giây.
           </p>
           <div className="not-prose mt-5">
             <InboxDemo />
@@ -695,14 +695,14 @@ export default function LogisticRegressionInSpamFilter() {
           <p>
             Gmail phục vụ 1,8 tỷ người dùng. Mỗi ngày hệ thống nhận hàng chục tỷ email,
             trong đó khoảng 15 tỷ là thư rác. Kẻ gửi spam liên tục đổi chiến thuật: viết
-            sai chính tả cố ý (tr-úng th-ưởng), chèn ký tự đặc biệt, thay domain mới, ẩn
-            chữ vào hình ảnh.
+            sai chính tả cố ý (tr-úng th-ưởng), chèn ký tự đặc biệt, đổi sang domain
+            mới, giấu chữ vào hình ảnh.
           </p>
           <p>
-            Vấn đề cốt lõi: mỗi email phải được gán{" "}
-            <strong>một xác suất spam</strong>, rồi hệ thống tự quyết định vào hộp thư
-            hay thùng rác. Sai chiều này (để lọt spam) gây phiền; sai chiều kia (chặn
-            nhầm email quan trọng của sếp) gây hậu quả nghiêm trọng.
+            Vấn đề cốt lõi nằm ở chỗ: mỗi email phải được gán{" "}
+            <strong>một xác suất spam</strong>, sau đó hệ thống tự quyết định cho vào
+            hộp thư hay thùng rác. Sai chiều này (để lọt spam) chỉ gây phiền. Sai chiều
+            kia (chặn nhầm email quan trọng của sếp) có thể gây hậu quả nghiêm trọng.
           </p>
 
           <div className="not-prose mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -712,8 +712,8 @@ export default function LogisticRegressionInSpamFilter() {
                 <span className="text-sm font-semibold">Nếu bắt được</span>
               </div>
               <p className="text-xs leading-relaxed text-foreground/85">
-                Bạn không bao giờ nhìn thấy — hộp thư sạch. Đây là &quot;công việc im
-                lặng&quot; làm Gmail đáng dùng.
+                Bạn không bao giờ nhìn thấy spam đó. Hộp thư sạch. Đây là phần việc im
+                lặng giúp Gmail đáng dùng mỗi ngày.
               </p>
             </div>
             <div className="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
@@ -722,8 +722,8 @@ export default function LogisticRegressionInSpamFilter() {
                 <span className="text-sm font-semibold">Nếu bỏ sót hoặc báo nhầm</span>
               </div>
               <p className="text-xs leading-relaxed text-foreground/85">
-                Bỏ sót = mất tiền (lừa đảo trúng ví). Báo nhầm = mất hợp đồng (email sếp
-                vào thùng rác).
+                Bỏ sót thì mất tiền (lừa đảo trúng ví). Báo nhầm thì mất hợp đồng (email
+                của sếp lạc vào thùng rác).
               </p>
             </div>
           </div>
@@ -735,10 +735,10 @@ export default function LogisticRegressionInSpamFilter() {
         >
           <Beat step={1}>
             <p>
-              <strong>Trích xuất đặc trưng từ email.</strong> Hệ thống bóc tách mọi dấu
-              hiệu có thể: số từ VIẾT HOA, số link, từ khoá đáng ngờ, domain người gửi,
-              IP máy chủ, cấu trúc HTML. Mỗi email trở thành một{" "}
-              <strong>danh sách con số</strong> — đặc trưng (feature).
+              <strong>Bóc đặc trưng từ email.</strong> Hệ thống quét mọi dấu hiệu có
+              thể: số từ VIẾT HOA, số link, từ khoá đáng ngờ, domain người gửi, IP máy
+              chủ, cấu trúc HTML. Mỗi email biến thành một{" "}
+              <strong>danh sách con số</strong>, tức là một vector feature.
             </p>
             <div className="not-prose mt-4">
               <ProbabilityMeter />
@@ -748,18 +748,20 @@ export default function LogisticRegressionInSpamFilter() {
           <Beat step={2}>
             <p>
               <strong>Tính điểm tuyến tính w·x + b.</strong> Mỗi đặc trưng được nhân với
-              một trọng số (đặc trưng nào &quot;nặng ký&quot; hơn — ví dụ domain lạ — có
-              trọng số lớn hơn). Cộng tất cả vào thành một điểm số z duy nhất. Đây là
-              phần <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink> trong
-              lòng mô hình.
+              một trọng số. Đặc trưng nào &quot;nặng ký&quot; hơn (ví dụ domain lạ) sẽ
+              mang trọng số lớn hơn. Cộng tất cả lại thành một điểm số z duy nhất. Đây
+              chính là phần{" "}
+              <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink> nằm
+              trong lòng mô hình.
             </p>
           </Beat>
 
           <Beat step={3}>
             <p>
-              <strong>Ép qua sigmoid → xác suất.</strong> Điểm z có thể là bất kỳ số nào,
-              nhưng ta cần một xác suất trong (0, 1) để ra quyết định. Hàm sigmoid ép z
-              thành một số trong khoảng đó — chính là P(email này là spam).
+              <strong>Bóp z qua sigmoid để ra xác suất.</strong> Điểm z có thể là bất
+              kỳ số nào trên trục thực, nhưng ta cần một xác suất nằm trong khoảng
+              (0, 1) để ra quyết định. Hàm sigmoid ép z về đúng khoảng đó. Số ra chính
+              là P(email này là spam).
             </p>
             <div className="not-prose mt-4">
               <StepReveal
@@ -770,16 +772,16 @@ export default function LogisticRegressionInSpamFilter() {
                     key="z-low"
                     className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-foreground/85 dark:border-emerald-800 dark:bg-emerald-900/20"
                   >
-                    <strong>z = −3:</strong> σ(z) ≈ 0.05. Email rất có khả năng là thư
-                    thường. Vào hộp thư đến.
+                    <strong>z = −3:</strong> σ(z) ≈ 0.05. Email gần như chắc chắn là
+                    thư thường. Vào hộp thư đến.
                   </div>,
                   <div
                     key="z-mid"
                     className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-foreground/85 dark:border-amber-800 dark:bg-amber-900/20"
                   >
-                    <strong>z = 0:</strong> σ(z) = 0.5. Không chắc — nằm ngay biên. Nếu
-                    ngưỡng mặc định là 0.5, Gmail sẽ nghi ngờ và có thể đưa vào tab{" "}
-                    <em>Khuyến mại</em> hoặc hỏi bạn.
+                    <strong>z = 0:</strong> σ(z) = 0.5. Email nằm ngay biên, mô hình
+                    không chắc. Với ngưỡng mặc định 0.5, Gmail sẽ nghi ngờ rồi đẩy vào
+                    tab <em>Khuyến mại</em> hoặc hỏi bạn.
                   </div>,
                   <div
                     key="z-high"
@@ -795,21 +797,21 @@ export default function LogisticRegressionInSpamFilter() {
 
           <Beat step={4}>
             <p>
-              <strong>Đặt ngưỡng để ra quyết định.</strong> Ngưỡng mặc định là 0.5,
-              nhưng Gmail có thể chỉnh cao hơn cho người dùng doanh nghiệp (sợ báo
-              nhầm) hoặc thấp hơn cho tài khoản hay bị tấn công. Hộp thư đến nhận mọi
-              email có P &lt; ngưỡng; thùng rác nhận phần còn lại.
+              <strong>Đặt ngưỡng để chốt quyết định.</strong> Ngưỡng mặc định là 0.5.
+              Gmail có thể nâng cao hơn cho người dùng doanh nghiệp (sợ báo nhầm) hoặc
+              hạ thấp hơn cho tài khoản hay bị tấn công. Hộp thư đến nhận mọi email có
+              P nhỏ hơn ngưỡng. Thùng rác nhận phần còn lại.
             </p>
           </Beat>
 
           <Beat step={5}>
             <p>
-              <strong>Học liên tục từ phản hồi.</strong> Khi bạn bấm &quot;Đánh dấu là
-              spam&quot;, Gmail học thêm. Khi bạn kéo email từ thùng rác về, Gmail cũng
-              học. Qua hàng tỷ phản hồi mỗi ngày, các trọng số w và bias b được cập nhật
-              liên tục bằng cross-entropy loss + gradient descent. Dù bộ lọc ngày nay
-              đã mở rộng sang mạng nơ-ron (RETVec), cơ chế nền &quot;tính xác suất rồi
-              phân loại&quot; của hồi quy logistic vẫn là tư duy gốc.
+              <strong>Học liên tục từ phản hồi của bạn.</strong> Khi bạn bấm &quot;Đánh
+              dấu là spam&quot;, Gmail học thêm. Khi bạn kéo email từ thùng rác về, Gmail
+              cũng học. Qua hàng tỷ phản hồi mỗi ngày, trọng số w và bias b được cập
+              nhật liên tục bằng cross-entropy loss và gradient descent. Bộ lọc ngày nay
+              đã mở rộng sang mạng nơ-ron (RETVec), nhưng cơ chế &quot;tính xác suất
+              rồi phân loại&quot; của logistic regression vẫn là tư duy gốc.
             </p>
           </Beat>
         </ApplicationMechanism>
@@ -819,7 +821,7 @@ export default function LogisticRegressionInSpamFilter() {
           topicSlug="logistic-regression-in-spam-filter"
         >
           <Metric
-            value="Độ chính xác 99,9% — chỉ 1 trong 1.000 thư rác lọt qua"
+            value="Độ chính xác 99,9%. Chỉ 1 trong 1.000 thư rác lọt qua."
             sourceRef={3}
           />
           <Metric
@@ -831,7 +833,7 @@ export default function LogisticRegressionInSpamFilter() {
             sourceRef={3}
           />
           <Metric
-            value="RETVec cải thiện tỷ lệ phát hiện spam thêm 38%"
+            value="RETVec nâng tỉ lệ phát hiện spam thêm 38%"
             sourceRef={2}
           />
         </ApplicationMetrics>
@@ -841,43 +843,44 @@ export default function LogisticRegressionInSpamFilter() {
           topicSlug="logistic-regression-in-spam-filter"
         >
           <p>
-            Không có hồi quy logistic, bộ lọc spam sẽ dựa vào luật cứng do con người viết
-            tay: &quot;nếu email chứa từ X thì chặn&quot;. Cách này dễ bị qua mặt (chỉ cần
-            viết sai chính tả) và không mở rộng được khi kẻ gửi spam đổi chiến thuật.
+            Không có logistic regression, bộ lọc spam sẽ phải dựa vào luật cứng do con
+            người viết tay: &quot;nếu email chứa từ X thì chặn&quot;. Cách này rất dễ
+            bị qua mặt (chỉ cần viết sai chính tả là thoát) và không co giãn được khi
+            kẻ gửi spam đổi chiến thuật.
           </p>
           <p>
-            Hồi quy logistic biến mỗi email thành một <strong>xác suất</strong>, kết hợp
-            nhiều đặc trưng nhẹ thành một điểm số. Kẻ spam giờ phải lách tất cả đặc trưng
-            cùng lúc — khó hơn nhiều. Ý tưởng &quot;tính xác suất nhị phân từ đặc trưng đầu
-            vào&quot; này đã trở thành viên gạch nền của mọi hệ thống phân loại email hiện
-            đại.
+            Logistic regression biến mỗi email thành một <strong>xác suất</strong>, gộp
+            nhiều đặc trưng nhẹ thành một điểm số chung. Kẻ gửi spam giờ phải lách tất
+            cả đặc trưng cùng lúc, khó hơn rất nhiều. Ý tưởng &quot;tính xác suất nhị
+            phân từ đặc trưng đầu vào&quot; đã trở thành viên gạch nền của mọi hệ thống
+            phân loại email hiện đại.
           </p>
 
           <div className="not-prose mt-5">
             <Callout variant="insight" title="Một con số đổi hẳn ngành email">
-              Trước năm 2002, email spam tăng 500% mỗi năm. Sau khi Paul Graham đề xuất
-              bộ lọc xác suất (tiền thân của logistic + cross-entropy), spam bị đẩy lùi về
-              dưới 10% tổng email. Gmail và các dịch vụ khác chỉ việc mở rộng quy mô ý
-              tưởng đó — từ vài nghìn từ khoá đến hàng triệu đặc trưng, và sau này là mạng
-              nơ-ron. Nhưng trái tim vẫn là: &quot;biến dữ liệu thành xác suất, rồi quyết
-              định dựa trên ngưỡng&quot;.
+              Trước năm 2002, lượng email spam tăng 500% mỗi năm. Sau khi Paul Graham đề
+              xuất bộ lọc xác suất (tiền thân của logistic regression cộng với
+              cross-entropy), spam bị đẩy lùi về dưới 10% tổng email. Gmail và các dịch
+              vụ khác chỉ việc mở rộng quy mô ý tưởng đó. Từ vài nghìn từ khoá lên hàng
+              triệu đặc trưng, rồi sau này là mạng nơ-ron. Nhưng trái tim vẫn là một
+              câu: &quot;biến dữ liệu thành xác suất, rồi quyết định theo ngưỡng&quot;.
             </Callout>
           </div>
         </ApplicationCounterfactual>
       </ApplicationLayout>
 
-      {/* ━━━ THỬ THÁCH + QUIZ — ngoài ApplicationLayout để bám đúng skeleton ━━━ */}
+      {/* ━━━ THỬ THÁCH + QUIZ. Ngoài ApplicationLayout để bám đúng skeleton ━━━ */}
       <section className="mb-10">
         <InlineChallenge
-          question="Ngưỡng hiện tại là 0.5. Một email spam tinh vi cho P = 0.42 (dưới ngưỡng). Nó vào đâu?"
+          question="Ngưỡng đang là 0.5. Một email spam tinh vi cho P = 0.42 (dưới ngưỡng). Nó vào đâu?"
           options={[
-            "Thùng rác — vì Gmail luôn chặn thư lạ",
-            "Hộp thư đến — vì P < 0.5, mô hình coi là thư thường",
+            "Thùng rác, vì Gmail luôn chặn thư lạ",
+            "Hộp thư đến, vì P nhỏ hơn 0.5 nên mô hình coi là thư thường",
             "Chờ người dùng xác nhận",
             "Xoá vĩnh viễn",
           ]}
           correct={1}
-          explanation="P = 0.42 dưới ngưỡng 0.5 → mô hình cho là không phải spam → vào hộp thư đến. Đây chính là một False Negative. Gmail phải giảm ngưỡng hoặc bổ sung đặc trưng mới để bắt những email khéo léo như vậy."
+          explanation="P = 0.42 nằm dưới ngưỡng 0.5, nên mô hình coi đây không phải spam và đẩy vào hộp thư đến. Trường hợp này chính là một False Negative. Để bắt được email khéo léo như vậy, Gmail phải hạ ngưỡng hoặc bổ sung đặc trưng mới."
         />
       </section>
 
@@ -886,44 +889,44 @@ export default function LogisticRegressionInSpamFilter() {
           title="4 điều rút ra từ bộ lọc spam Gmail"
           points={[
             "Mỗi email biến thành một danh sách đặc trưng: số link, từ đáng ngờ, domain lạ, VIẾT HOA, v.v.",
-            "Hồi quy logistic cộng các đặc trưng thành điểm số z, rồi sigmoid ép thành xác suất P(spam).",
-            "Ngưỡng chốt: P ≥ ngưỡng → thùng rác. Ngưỡng cao = ít báo nhầm, ngưỡng thấp = bắt nhiều hơn.",
-            "Mỗi lần bạn đánh dấu 'spam' hay 'không spam', Gmail học lại trọng số — mô hình sống chứ không cố định.",
+            "Logistic regression cộng các đặc trưng thành điểm số z, rồi sigmoid ép z thành xác suất P(spam).",
+            "Ngưỡng chốt quyết định: P lớn hơn hoặc bằng ngưỡng thì rơi vào thùng rác. Ngưỡng cao thì ít báo nhầm, ngưỡng thấp thì bắt được nhiều hơn.",
+            "Mỗi lần bạn đánh dấu 'spam' hay 'không spam', Gmail cập nhật lại trọng số. Mô hình sống chứ không cố định.",
           ]}
         />
 
         <div className="rounded-xl border border-border bg-card p-5">
           <p className="mb-3 text-sm font-semibold text-foreground">
-            Bốn &quot;chiêu&quot; của kẻ spam — mô hình sống lại học
+            Bốn chiêu của kẻ gửi spam và cách mô hình học lại
           </p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-lg border border-border bg-surface/50 p-3 text-xs leading-relaxed text-foreground/85">
               <p className="mb-1 text-sm font-semibold text-foreground">
                 1. Sai chính tả cố ý
               </p>
-              &quot;tr-úng th-ưởng&quot;, &quot;m1ễn ph1&quot; — né được bộ lọc dựa vào chuỗi
-              chữ chính xác. Đối phó: dùng RETVec / character-level embedding.
+              &quot;tr-úng th-ưởng&quot;, &quot;m1ễn ph1&quot; né được bộ lọc dựa trên chuỗi
+              chữ chính xác. Đối phó bằng RETVec hoặc character-level embedding.
             </div>
             <div className="rounded-lg border border-border bg-surface/50 p-3 text-xs leading-relaxed text-foreground/85">
               <p className="mb-1 text-sm font-semibold text-foreground">
-                2. Chữ trong hình ảnh
+                2. Chữ giấu trong hình ảnh
               </p>
-              Chèn toàn bộ nội dung vào một tấm ảnh, không có text để quét. Đối phó: OCR nội
-              dung ảnh, mô hình đa-phương tiện.
+              Toàn bộ nội dung được đẩy vào một tấm ảnh, bộ lọc không có text để quét. Đối
+              phó bằng OCR nội dung ảnh và mô hình đa-phương tiện.
             </div>
             <div className="rounded-lg border border-border bg-surface/50 p-3 text-xs leading-relaxed text-foreground/85">
               <p className="mb-1 text-sm font-semibold text-foreground">
                 3. Domain giả danh ngân hàng
               </p>
-              &quot;no-reply@vietcom-bank.top&quot; thay cho &quot;vietcombank.com.vn&quot;. Đối
-              phó: kiểm tra whois + DMARC + lịch sử domain.
+              &quot;no-reply@vietcom-bank.top&quot; thay cho &quot;vietcombank.com.vn&quot;.
+              Đối phó bằng kiểm tra whois, DMARC và lịch sử domain.
             </div>
             <div className="rounded-lg border border-border bg-surface/50 p-3 text-xs leading-relaxed text-foreground/85">
               <p className="mb-1 text-sm font-semibold text-foreground">
                 4. Thay đổi liên tục theo ngày
               </p>
-              Sáng nay một mẫu, chiều đã khác. Đối phó: mô hình học online (online learning) —
-              cập nhật trọng số trên dòng dữ liệu.
+              Sáng nay một mẫu, chiều đã khác. Đối phó bằng mô hình học online (online
+              learning), cập nhật trọng số ngay trên dòng dữ liệu.
             </div>
           </div>
         </div>

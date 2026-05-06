@@ -40,9 +40,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "what-is-ml",
   title: "What is Machine Learning?",
-  titleVi: "Machine Learning là gì?",
+  titleVi: "Machine Learning: máy học từ ví dụ, không từ luật",
   description:
-    "Làm quen với Machine Learning qua hình ảnh quen thuộc: một đầu bếp học nấu từ nếm thử, khác với công thức cứng. Bạn sẽ thấy máy học từ ví dụ như thế nào.",
+    "Hai đầu bếp nấu cùng một bát phở: một người đọc sách, một người nếm rồi chỉnh. Cùng cách đó, Machine Learning cho máy học từ hàng triệu ví dụ thật thay vì chạy theo luật if-else cứng.",
   category: "foundations",
   tags: ["introduction", "machine-learning", "basics"],
   difficulty: "beginner",
@@ -57,7 +57,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ──────────────────────────────────────────────────────────────
-   DỮ LIỆU: ba bài toán — với mỗi bài, người học chọn cách tiếp
+   DỮ LIỆU: ba bài toán. Với mỗi bài, người học chọn cách tiếp
    cận phù hợp (lập trình thường hay ML).
    ────────────────────────────────────────────────────────────── */
 
@@ -116,7 +116,7 @@ const PROBLEM_SCENARIOS: ProblemScenario[] = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
-   COMPONENT PHỤ: Bếp — animation nhỏ so sánh hai đầu bếp
+   COMPONENT PHỤ: Bếp. Animation nhỏ so sánh hai đầu bếp
    ────────────────────────────────────────────────────────────── */
 
 function RuleBasedChef() {
@@ -205,7 +205,7 @@ function LearningChef() {
 }
 
 /* ──────────────────────────────────────────────────────────────
-   COMPONENT PHỤ: Vòng lặp huấn luyện — ví dụ đoán giá nước cam
+   COMPONENT PHỤ: Vòng lặp huấn luyện. Ví dụ đoán giá nước cam
    ────────────────────────────────────────────────────────────── */
 
 type GuessSample = {
@@ -358,7 +358,7 @@ function TrainingLoopDemo() {
 }
 
 /* ──────────────────────────────────────────────────────────────
-   COMPONENT PHỤ: Bảng chọn tiếp cận — người học bấm, thấy giải
+   COMPONENT PHỤ: Bảng chọn tiếp cận. Người học bấm, thấy giải
    thích tức thì.
    ────────────────────────────────────────────────────────────── */
 
@@ -424,8 +424,8 @@ function ApproachPicker() {
                       className={`rounded-lg border px-3 py-2 text-xs font-medium transition-all ${
                         picked === "classic"
                           ? p.rightChoice === "classic"
-                            ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200"
-                            : "border-rose-500 bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-200"
+                            ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 text-foreground font-semibold"
+                            : "border-rose-500 bg-rose-100 dark:bg-rose-900/40 text-foreground font-semibold"
                           : picked !== null
                             ? "border-border bg-card text-muted opacity-60"
                             : "border-border bg-card text-foreground hover:border-accent/60"
@@ -444,8 +444,8 @@ function ApproachPicker() {
                       className={`rounded-lg border px-3 py-2 text-xs font-medium transition-all ${
                         picked === "ml"
                           ? p.rightChoice === "ml"
-                            ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200"
-                            : "border-rose-500 bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-200"
+                            ? "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 text-foreground font-semibold"
+                            : "border-rose-500 bg-rose-100 dark:bg-rose-900/40 text-foreground font-semibold"
                           : picked !== null
                             ? "border-border bg-card text-muted opacity-60"
                             : "border-border bg-card text-foreground hover:border-accent/60"
@@ -470,8 +470,8 @@ function ApproachPicker() {
                           <span
                             className={`inline-flex items-center gap-1 font-semibold ${
                               correct
-                                ? "text-emerald-800 dark:text-emerald-200"
-                                : "text-amber-800 dark:text-amber-200"
+                                ? "text-emerald-900 dark:text-emerald-200"
+                                : "text-amber-900 dark:text-amber-200"
                             }`}
                           >
                             {correct ? (
@@ -531,7 +531,7 @@ function ApproachPicker() {
 }
 
 /* ──────────────────────────────────────────────────────────────
-   PIPELINE SVG — vẽ theo dữ liệu để đỡ cồng kềnh
+   PIPELINE SVG · vẽ theo dữ liệu để đỡ cồng kềnh
    ────────────────────────────────────────────────────────────── */
 
 const PIPE_STAGES = [
@@ -773,7 +773,7 @@ export default function WhatIsMlTopic() {
 
   return (
     <>
-      {/* ══════════════════ BƯỚC 1 — HOOK ══════════════════ */}
+      {/* ══════════════════ BƯỚC 1 · HOOK ══════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Bắt đầu">
         <div className="rounded-2xl border-2 border-accent/30 bg-gradient-to-br from-accent-light to-surface p-6 space-y-4">
           <div className="flex items-center gap-3">
@@ -785,34 +785,33 @@ export default function WhatIsMlTopic() {
                 Hai đầu bếp, một bát phở
               </h3>
               <p className="text-xs text-muted">
-                Hãy tưởng tượng bạn đang tập nấu ăn…
+                Tưởng tượng bạn đang tập nấu ăn.
               </p>
             </div>
           </div>
 
           <p className="text-sm text-foreground/90 leading-relaxed">
-            <strong>Đầu bếp 1</strong> mở sách công thức và đọc từng dòng:
-            &ldquo;3 lít nước, 500g xương, 2 hoa hồi&rdquo;. Cô làm đúng
-            y như sách ghi, không thêm không bớt một thìa muối nào. Nấu
-            xong, tô phở ra đúng như mô tả: cùng vị, cùng mùi, cùng độ
-            trong.
+            <strong>Đầu bếp 1</strong> mở quyển sách công thức và đọc
+            từng dòng: &ldquo;3 lít nước, 500g xương, 2 hoa hồi&rdquo;.
+            Cô làm đúng y như sách ghi, không thêm không bớt một thìa
+            muối nào. Nấu xong, tô phở bưng ra đúng như mô tả: cùng vị,
+            cùng mùi, cùng độ trong.
           </p>
           <p className="text-sm text-foreground/90 leading-relaxed">
-            <strong>Đầu bếp 2</strong> thì chưa bao giờ đọc một quyển
-            sách nấu ăn nào. Thay vào đó, cô đứng bếp hàng trăm lần. Mỗi
-            nồi cô đều nếm thử, ghi nhớ chỗ nào quá tay, rồi lần sau
-            chỉnh lại. Nồi đầu tiên mặn quá nên cô bớt muối, đến nồi thứ
-            mười vị bắt đầu cân đối hơn. Đến nồi thứ một trăm, khách ăn
-            xong khen nức nở mà cô vẫn không có một dòng công thức nào
-            trong sổ.
+            <strong>Đầu bếp 2</strong> thì chưa từng đọc một quyển sách
+            nấu ăn nào. Cô đứng bếp hàng trăm lần, mỗi nồi đều nếm thử
+            rồi ghi nhớ chỗ nào quá tay để lần sau chỉnh lại. Nồi đầu
+            tiên mặn quá, cô bớt muối. Đến nồi thứ mười, vị bắt đầu cân
+            đối hơn. Đến nồi thứ một trăm, khách ăn xong khen nức nở mà
+            cô vẫn không có một dòng công thức nào trong sổ.
           </p>
           <div className="rounded-xl border border-accent/40 bg-card p-4 text-sm text-foreground/90 leading-relaxed">
             Hai cách nấu này tương ứng với hai cách viết phần mềm.{" "}
             <strong>Lập trình thường</strong> giống đầu bếp 1: người viết
-            tay toàn bộ quy tắc, máy chỉ chạy đúng những gì đã được ghi
-            sẵn. Còn <strong>Machine Learning (ML)</strong> giống đầu
-            bếp 2: thay vì có quy tắc sẵn, máy được cho xem rất nhiều ví
-            dụ thật rồi tự rút ra quy tắc cho mình.
+            tay toàn bộ quy tắc, máy chỉ chạy đúng những gì đã ghi sẵn.
+            Còn <strong>Machine Learning (ML)</strong> giống đầu bếp 2.
+            Thay vì có quy tắc sẵn, máy được cho xem rất nhiều ví dụ
+            thật rồi tự rút ra quy tắc cho mình.
           </div>
         </div>
 
@@ -822,7 +821,7 @@ export default function WhatIsMlTopic() {
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
+      {/* ══════════════════ BƯỚC 2 · DỰ ĐOÁN ══════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn cần viết phần mềm cho bốn bài toán sau. Bài nào ML thường KHÔNG phải lựa chọn tốt hơn lập trình thường?"
@@ -842,7 +841,7 @@ export default function WhatIsMlTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 3 — REVEAL ══════════════════ */}
+      {/* ══════════════════ BƯỚC 3 · REVEAL ══════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-8">
@@ -851,14 +850,14 @@ export default function WhatIsMlTopic() {
               <div className="flex items-center gap-2">
                 <Mail size={18} className="text-accent" />
                 <h3 className="text-base font-semibold text-foreground">
-                  Cùng một bài toán lọc email rác, giải bằng hai cách rất khác nhau
+                  Lọc email rác giải theo hai cách rất khác nhau
                 </h3>
               </div>
 
               <ToggleCompare
                 labelA="Lập trình thường"
                 labelB="Machine Learning"
-                description="Chạm vào hai tab để thấy cách mỗi phương pháp xử lý email rác."
+                description="Bấm hai tab để thấy mỗi cách xử lý email rác ra sao."
                 childA={
                   <div className="space-y-3 py-2">
                     <p className="text-xs text-muted">
@@ -867,31 +866,31 @@ export default function WhatIsMlTopic() {
                     </p>
                     <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-4 font-mono text-xs text-foreground space-y-1.5 leading-relaxed">
                       <div>
-                        <span className="text-blue-600 dark:text-blue-400">
+                        <span className="text-blue-800 dark:text-blue-200">
                           nếu
                         </span>{" "}
                         tiêu đề chứa &ldquo;trúng thưởng&rdquo;{" "}
-                        <span className="text-blue-600 dark:text-blue-400">
+                        <span className="text-blue-800 dark:text-blue-200">
                           thì
                         </span>{" "}
                         → rác
                       </div>
                       <div>
-                        <span className="text-blue-600 dark:text-blue-400">
+                        <span className="text-blue-800 dark:text-blue-200">
                           nếu
                         </span>{" "}
                         người gửi ở danh sách đen{" "}
-                        <span className="text-blue-600 dark:text-blue-400">
+                        <span className="text-blue-800 dark:text-blue-200">
                           thì
                         </span>{" "}
                         → rác
                       </div>
                       <div>
-                        <span className="text-blue-600 dark:text-blue-400">
+                        <span className="text-blue-800 dark:text-blue-200">
                           nếu
                         </span>{" "}
                         chứa &ldquo;khuyến mãi 99%&rdquo;{" "}
-                        <span className="text-blue-600 dark:text-blue-400">
+                        <span className="text-blue-800 dark:text-blue-200">
                           thì
                         </span>{" "}
                         → rác
@@ -967,10 +966,10 @@ export default function WhatIsMlTopic() {
               </div>
               <p className="text-sm text-muted leading-relaxed">
                 Máy không giỏi ngay từ đầu. Vòng đầu tiên nó đoán bừa,
-                bị sửa, vòng sau đoán tốt hơn nhưng vẫn sai, lại bị sửa
-                tiếp. Quá trình này lặp đi lặp lại hàng triệu lần cho
-                đến khi máy đoán gần đúng. Bấm &ldquo;Chạy thêm&rdquo;
-                để xem từng giai đoạn:
+                bị sửa, vòng sau đoán tốt hơn nhưng vẫn sai, rồi lại bị
+                sửa tiếp. Quá trình này lặp đi lặp lại hàng triệu lần
+                cho đến khi máy đoán gần đúng. Bấm &ldquo;Chạy thêm&rdquo;
+                để xem từng giai đoạn.
               </p>
               <TrainingLoopDemo />
             </div>
@@ -991,14 +990,14 @@ export default function WhatIsMlTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 4 — DEEPEN (StepReveal) ══════════════════ */}
+      {/* ══════════════════ BƯỚC 4 · DEEPEN (StepReveal) ══════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground mb-2">
-          Bốn bước của mọi hệ thống ML
+          Mọi hệ thống ML đều đi qua bốn bước
         </h3>
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Từ Grab, Shopee đến ChatGPT, mọi hệ thống ML đều đi qua bốn
-          bước này. Bấm &ldquo;Tiếp tục&rdquo; để mở từng bước:
+          Từ Grab, Shopee đến ChatGPT, đường đi đều giống nhau ở bốn
+          bước này. Bấm &ldquo;Tiếp tục&rdquo; để mở từng bước.
         </p>
 
         <StepReveal
@@ -1120,13 +1119,13 @@ export default function WhatIsMlTopic() {
 
         <div className="mt-6 rounded-xl border border-border bg-card p-5">
           <h4 className="text-sm font-semibold text-foreground mb-3">
-            Vòng học trực quan hóa
+            Vẽ vòng học của ML
           </h4>
           <PipelineSVG />
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 5 — AHA ══════════════════ */}
+      {/* ══════════════════ BƯỚC 5 · AHA ══════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Aha">
         <AhaMoment>
           <p className="leading-relaxed">
@@ -1145,7 +1144,7 @@ export default function WhatIsMlTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 6 — CHALLENGE ══════════════════ */}
+      {/* ══════════════════ BƯỚC 6 · CHALLENGE ══════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách">
         <div className="space-y-5">
           <InlineChallenge
@@ -1186,7 +1185,7 @@ export default function WhatIsMlTopic() {
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 7 — KẾT NỐI ══════════════════ */}
+      {/* ══════════════════ BƯỚC 7 · KẾT NỐI ══════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kết nối">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="text-sm leading-relaxed">
@@ -1298,7 +1297,7 @@ export default function WhatIsMlTopic() {
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 8 — QUIZ ══════════════════ */}
+      {/* ══════════════════ BƯỚC 8 · QUIZ ══════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

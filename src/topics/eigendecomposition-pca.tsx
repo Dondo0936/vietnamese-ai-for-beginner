@@ -34,9 +34,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "eigendecomposition-pca",
   title: "Eigendecomposition & PCA",
-  titleVi: "Phân tích thành phần chính (PCA) — tìm trục chính của dữ liệu",
+  titleVi: "PCA: tìm trục chính của dữ liệu",
   description:
-    "Nếu phải mô tả một đám đông bằng một câu, bạn nói gì? PCA tìm 'trục chính' — hướng mà dữ liệu trải ra nhiều nhất.",
+    "Nếu phải mô tả một đám đông bằng một câu, bạn nói gì? PCA tìm trục chính, tức là hướng mà dữ liệu trải ra nhiều nhất.",
   category: "math-foundations",
   tags: ["pca", "eigenvalues", "dimensionality-reduction"],
   difficulty: "beginner",
@@ -76,7 +76,7 @@ function mulberry32(seed: number) {
 }
 
 const NUM_POINTS = 50;
-const TRUE_ANGLE = 0.5236; // ~30 độ — hướng "trục chính" thật
+const TRUE_ANGLE = 0.5236; // ~30 độ, hướng trục chính thật
 const SIGMA1 = 1.6; // độ trải dọc PC1
 const SIGMA2 = 0.4; // độ trải dọc PC2
 
@@ -182,13 +182,13 @@ const quizQuestions: QuizQuestion[] = [
       "PCA cố gắng tìm điều gì khi đưa dữ liệu từ nhiều chiều xuống ít chiều?",
     options: [
       "Hướng ngẫu nhiên bất kỳ",
-      "Hướng mà dữ liệu trải ra nhiều nhất — giữ được nhiều sự khác biệt nhất",
+      "Hướng mà dữ liệu trải ra nhiều nhất, giữ được nhiều sự khác biệt nhất",
       "Hướng có nhiều điểm giống nhau nhất",
       "Hướng song song với trục x của hệ toạ độ gốc",
     ],
     correct: 1,
     explanation:
-      "PCA tìm hướng mà các điểm dữ liệu 'trải ra' nhiều nhất (phương sai lớn nhất). Đó là hướng giữ được nhiều thông tin nhất — những chiều ít phương sai chỉ thêm rác.",
+      "PCA tìm hướng mà các điểm dữ liệu trải ra nhiều nhất, tức là phương sai lớn nhất. Đó là hướng giữ được nhiều thông tin nhất. Những chiều ít phương sai chỉ thêm rác.",
   },
   {
     question:
@@ -201,7 +201,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Nếu không trung tâm hoá, trục 'quan trọng nhất' sẽ bị kéo về phía trung bình thay vì theo hướng dữ liệu trải ra. Trung tâm hoá là bước 1 của mọi thuật toán PCA.",
+      "Nếu không trung tâm hoá, trục quan trọng nhất sẽ bị kéo về phía trung bình thay vì theo hướng dữ liệu trải ra. Trung tâm hoá là bước 1 của mọi thuật toán PCA.",
   },
   {
     question:
@@ -209,7 +209,7 @@ const quizQuestions: QuizQuestion[] = [
     options: ["85%", "90%", "95%", "100%"],
     correct: 2,
     explanation:
-      "Tỷ lệ phương sai cộng dồn: 85% + 10% = 95%. Chỉ cần giữ hai trục này là giữ được gần hết câu chuyện của dữ liệu — 5% còn lại thường là nhiễu.",
+      "Tỷ lệ phương sai cộng dồn: 85% + 10% = 95%. Chỉ cần giữ hai trục này là giữ được gần hết câu chuyện của dữ liệu. 5% còn lại thường là nhiễu.",
   },
   {
     type: "fill-blank",
@@ -222,33 +222,33 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "PC1 là trục đầu tiên theo thứ tự phương sai giảm dần. Phương sai càng lớn, càng nhiều sự đa dạng được giữ lại sau khi chiếu.",
+      "PC1 là trục đầu tiên theo thứ tự phương sai giảm dần. Phương sai càng lớn thì càng nhiều sự đa dạng được giữ lại sau khi chiếu.",
   },
   {
     question:
       "Bạn có 100 đặc trưng mô tả một khách hàng (tuổi, thu nhập, giờ dùng app...). Chạy PCA và thấy 5 thành phần đầu giải thích 92% phương sai. Điều này có nghĩa là gì?",
     options: [
       "Dữ liệu hoàn toàn ngẫu nhiên, không có cấu trúc",
-      "Từ 100 con số, 5 'trục tổng hợp' đã nắm được gần như toàn bộ câu chuyện — cực kỳ hữu ích để nén và vẽ biểu đồ",
+      "Từ 100 con số, 5 trục tổng hợp đã nắm được gần như toàn bộ câu chuyện. Rất hữu ích để nén và vẽ biểu đồ",
       "Phải dùng đúng 100 chiều, không được giảm",
       "PCA thất bại với dữ liệu này",
     ],
     correct: 1,
     explanation:
-      "Đây là kết quả trong mơ của một nhà phân tích: dữ liệu thực tế có rất nhiều đặc trưng 'nói cùng một chuyện'. PCA phát hiện ra điều đó và gói gọn 100 con số thành 5 trục mới — chạy mô hình nhanh hơn, vẽ biểu đồ được, giảm tốn bộ nhớ.",
+      "Đây là kết quả trong mơ của một nhà phân tích. Dữ liệu thực tế có rất nhiều đặc trưng nói cùng một chuyện. PCA phát hiện ra điều đó và gói gọn 100 con số thành 5 trục mới. Nhờ vậy, mô hình chạy nhanh hơn, vẽ được biểu đồ, giảm tốn bộ nhớ.",
   },
   {
     question:
       "Vector riêng (eigenvector) của một ma trận là gì, hiểu theo cách đơn giản nhất?",
     options: [
       "Một vector bất kỳ trong không gian",
-      "Một hướng đặc biệt mà khi ma trận 'tác động' vào, vector chỉ bị kéo giãn hoặc rút ngắn, không bị xoay",
+      "Một hướng đặc biệt mà khi ma trận tác động vào, vector chỉ bị kéo giãn hoặc rút ngắn, không bị xoay",
       "Vector có độ dài đúng bằng 1",
       "Dòng đầu tiên của ma trận",
     ],
     correct: 1,
     explanation:
-      "Eigenvector là 'hướng bất biến' — sau khi ma trận tác động, nó vẫn chỉ cùng hướng cũ, chỉ có độ dài thay đổi. Hệ số thay đổi độ dài chính là eigenvalue (trị riêng). Trong PCA, eigenvector của ma trận hiệp phương sai chính là các trục PC.",
+      "Eigenvector là hướng bất biến. Sau khi ma trận tác động, nó vẫn chỉ cùng hướng cũ, chỉ có độ dài thay đổi. Hệ số thay đổi độ dài chính là eigenvalue (trị riêng). Trong PCA, eigenvector của ma trận hiệp phương sai chính là các trục PC.",
   },
 ];
 
@@ -365,19 +365,19 @@ export default function EigendecompositionPcaTopic() {
   const phaseHint =
     phase === "pc1"
       ? varianceRatio > 0.9
-        ? "Rất gần rồi — bấm khoá PC1!"
+        ? "Rất gần rồi. Bấm khoá PC1!"
         : varianceRatio > 0.7
           ? "Ấm dần… xoay thêm chút"
           : varianceRatio > 0.5
             ? "Còn hơi lạnh"
-            : "Lạnh — thử xoay hướng khác"
+            : "Lạnh. Thử xoay hướng khác"
       : phase === "pc2"
-        ? "PC1 đã khoá. PC2 tự động vuông góc — bấm Hoàn thành"
+        ? "PC1 đã khoá. PC2 tự động vuông góc. Bấm Hoàn thành"
         : "Xong! Xem kết quả phân tích bên dưới";
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1: DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn phải mô tả cả một đám đông bằng MỘT câu duy nhất. Cách nào giữ được nhiều thông tin nhất?"
@@ -388,31 +388,32 @@ export default function EigendecompositionPcaTopic() {
             "Đếm số người rồi báo con số",
           ]}
           correct={2}
-          explanation="Câu C chính là ý tưởng của PCA. Nếu bạn phải tóm tắt một nhóm sinh viên, câu 'điểm trung bình học lực' giữ được nhiều thông tin hơn 'chiều cao trung bình' — vì học lực là chiều mà các sinh viên khác biệt nhau nhiều nhất. PCA tìm đúng cái 'đặc điểm phân biệt nhất' đó, nhưng làm tự động, ở hàng trăm chiều cùng lúc."
+          explanation="Câu C chính là ý tưởng của PCA. Nếu bạn phải tóm tắt một nhóm sinh viên, câu điểm trung bình học lực giữ được nhiều thông tin hơn chiều cao trung bình. Lý do: học lực là chiều mà các sinh viên khác biệt nhau nhiều nhất. PCA tìm đúng cái đặc điểm phân biệt nhất đó, nhưng làm tự động, ở hàng trăm chiều cùng lúc."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Bài này bạn sẽ chơi với một đám mây điểm 2D. Nhiệm vụ: xoay
             một thanh thẳng sao cho các điểm khi chiếu xuống nó{" "}
-            <strong>trải ra nhiều nhất</strong>. Đó chính là PC1 — trục
-            chính thứ nhất. PCA mở rộng trò chơi này lên 100 hay 10.000
-            chiều và làm tự động trong mili-giây.
+            <strong>trải ra nhiều nhất</strong>. Đó chính là PC1, tức là
+            trục chính thứ nhất. PCA mở rộng trò chơi này lên 100 hay
+            10.000 chiều và làm tự động trong mili-giây.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — HIỂU BẰNG HÌNH ẢNH ━━━ */}
+      {/* ━━━ BƯỚC 2: HIỂU BẰNG HÌNH ẢNH ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <Compass size={20} className="text-accent" /> PCA = tìm
-            &ldquo;góc chụp ảnh&rdquo; đẹp nhất của dữ liệu
+            <Compass size={20} className="text-accent" /> PCA tìm góc
+            chụp ảnh đẹp nhất của dữ liệu
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Hãy tưởng tượng bạn có một tác phẩm điêu khắc 3D và chỉ được
             chụp <em>một</em> bức ảnh 2D. Bạn chọn góc nào? Chắc chắn
-            không phải góc trực diện (chi tiết chồng lên nhau), mà là góc
-            bạn <strong>thấy được nhiều chiều sâu nhất</strong>. PCA làm
-            chính xác vậy — nhưng cho dữ liệu hàng trăm chiều.
+            không phải góc trực diện, vì chi tiết chồng lên nhau. Bạn
+            chọn góc <strong>thấy được nhiều chiều sâu nhất</strong>.
+            PCA làm chính xác như vậy, nhưng cho dữ liệu hàng trăm
+            chiều.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
@@ -421,19 +422,19 @@ export default function EigendecompositionPcaTopic() {
                 icon: Users,
                 title: "Dữ liệu",
                 desc: "Một đám mây điểm. Mỗi điểm là một bạn sinh viên với hàng chục con số (điểm môn, giờ học, chiều cao…).",
-                color: "border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-900/20 text-sky-700 dark:text-sky-300",
+                color: "border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-900/20 text-sky-800 dark:text-sky-200",
               },
               {
                 icon: Target,
                 title: "Mục tiêu",
                 desc: "Tìm một, hai, ba 'trục' mới sao cho khi chiếu điểm xuống đó, các bạn vẫn khác biệt rõ nhất.",
-                color: "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300",
+                color: "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200",
               },
               {
                 icon: Eye,
                 title: "Kết quả",
                 desc: "Vẽ được biểu đồ 2D của dữ liệu 100 chiều. Nhóm nào rõ, nhóm nào trộn, ta nhìn thấy ngay.",
-                color: "border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300",
+                color: "border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200",
               },
             ].map((card) => {
               const Icon = card.icon;
@@ -456,7 +457,7 @@ export default function EigendecompositionPcaTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — KHÁM PHÁ ━━━ */}
+      {/* ━━━ BƯỚC 3: KHÁM PHÁ ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-8">
@@ -467,7 +468,7 @@ export default function EigendecompositionPcaTopic() {
               <p className="text-sm text-muted leading-relaxed">
                 Kéo chấm xanh để xoay đường thẳng qua tâm đám mây. Khi
                 đường thẳng đi đúng hướng mà dữ liệu trải ra nhiều nhất,
-                thanh &ldquo;phương sai&rdquo; sẽ gần đầy — đó là PC1.
+                thanh phương sai sẽ gần đầy. Đó là PC1.
               </p>
 
               {/* Thanh phương sai */}
@@ -678,8 +679,8 @@ export default function EigendecompositionPcaTopic() {
                     className="rounded-lg px-4 py-2 text-sm font-medium bg-accent text-white hover:bg-accent-dark disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     {isNearPC1
-                      ? "Khoá PC1 — tuyệt vời!"
-                      : "Chưa đủ gần PC1 — tiếp tục xoay"}
+                      ? "Khoá PC1, tuyệt vời!"
+                      : "Chưa đủ gần PC1, tiếp tục xoay"}
                   </button>
                 )}
                 {phase === "pc2" && (
@@ -687,7 +688,7 @@ export default function EigendecompositionPcaTopic() {
                     onClick={handleFinish}
                     className="rounded-lg px-4 py-2 text-sm font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
                   >
-                    Hoàn thành — xem kết quả
+                    Hoàn thành. Xem kết quả
                   </button>
                 )}
                 <button
@@ -717,7 +718,7 @@ export default function EigendecompositionPcaTopic() {
                         <div className="font-mono font-bold text-blue-500 text-lg">
                           {totalFound > 0
                             ? ((foundPC1Var / totalFound) * 100).toFixed(1)
-                            : "—"}
+                            : "..."}
                           %
                         </div>
                         <div className="text-xs text-muted">phương sai</div>
@@ -727,7 +728,7 @@ export default function EigendecompositionPcaTopic() {
                         <div className="font-mono font-bold text-red-500 text-lg">
                           {totalFound > 0
                             ? ((foundPC2Var / totalFound) * 100).toFixed(1)
-                            : "—"}
+                            : "..."}
                           %
                         </div>
                         <div className="text-xs text-muted">phương sai</div>
@@ -736,7 +737,7 @@ export default function EigendecompositionPcaTopic() {
                     <p className="text-xs text-muted leading-relaxed">
                       Ở 2D, hai trục PC giữ 100% thông tin. Nhưng với dữ
                       liệu 100 chiều, thường chỉ 5-10 trục PC đầu tiên đã
-                      giữ được 95% thông tin — phần còn lại là nhiễu.
+                      giữ được 95% thông tin. Phần còn lại là nhiễu.
                     </p>
                   </motion.div>
                 )}
@@ -746,11 +747,11 @@ export default function EigendecompositionPcaTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — ĐI SÂU (STEP REVEAL): 3 bước PCA ━━━ */}
+      {/* ━━━ BƯỚC 4: ĐI SÂU (STEP REVEAL), 3 bước PCA ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Thuật toán PCA thực tế chạy 3 bước. Bấm &ldquo;Tiếp tục&rdquo;
-          để mở từng bước:
+          Thuật toán PCA thực tế chạy 3 bước. Bấm Tiếp tục để mở từng
+          bước.
         </p>
 
         <StepReveal
@@ -766,10 +767,10 @@ export default function EigendecompositionPcaTopic() {
               className="rounded-lg bg-surface/60 border border-border p-4 space-y-3"
             >
               <p className="text-sm text-foreground leading-relaxed">
-                <strong>Trung tâm hoá = đưa trọng tâm đám mây về gốc toạ độ.</strong>{" "}
+                <strong>Trung tâm hoá nghĩa là đưa trọng tâm đám mây về gốc toạ độ.</strong>{" "}
                 Tính điểm trung bình (x̄, ȳ), rồi trừ nó ra khỏi mỗi điểm.
                 Sau bước này, đám mây vẫn có đúng hình dáng cũ, chỉ là
-                &ldquo;dọn về giữa&rdquo; để các trục sau đi qua tâm.
+                dọn về giữa để các trục sau đi qua tâm.
               </p>
               <MiniCenteringDiagram />
               <p className="text-xs text-muted italic">
@@ -784,17 +785,17 @@ export default function EigendecompositionPcaTopic() {
             >
               <p className="text-sm text-foreground leading-relaxed">
                 <strong>
-                  Tìm hướng mà đám mây &ldquo;trải ra&rdquo; nhiều nhất.
+                  Tìm hướng mà đám mây trải ra nhiều nhất.
                 </strong>{" "}
                 Máy tính không thử từng góc như bạn vừa làm ở sân chơi.
-                Nó giải một phương trình toán — eigenvector của ma trận
-                hiệp phương sai — để tìm ra hướng đó ngay lập tức.
+                Nó giải một phương trình toán (eigenvector của ma trận
+                hiệp phương sai) để tìm ra hướng đó ngay lập tức.
               </p>
               <MiniEigenDiagram />
               <p className="text-xs text-muted italic">
-                Eigenvector = &ldquo;hướng mà ma trận tác động chỉ kéo
-                giãn, không xoay&rdquo;. Với ma trận hiệp phương sai, nó
-                chính là hướng dữ liệu trải ra nhiều nhất.
+                Eigenvector là hướng mà ma trận tác động chỉ kéo giãn,
+                không xoay. Với ma trận hiệp phương sai, nó chính là
+                hướng dữ liệu trải ra nhiều nhất.
               </p>
             </div>,
 
@@ -818,7 +819,7 @@ export default function EigendecompositionPcaTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — THỬ THÁCH + AHA ━━━ */}
+      {/* ━━━ BƯỚC 5: THỬ THÁCH + AHA ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <div className="space-y-5">
           <p className="text-sm text-muted leading-relaxed">
@@ -870,28 +871,28 @@ export default function EigendecompositionPcaTopic() {
             question="Dữ liệu 10 chiều có eigenvalues lần lượt: [5, 3, 1, 0.5, 0.2, ...]. PC1 giải thích khoảng bao nhiêu phần trăm phương sai?"
             options={["30%", "50%", "80%", "100%"]}
             correct={1}
-            explanation="Tổng eigenvalues ≈ 10. PC1 có λ₁ = 5. Tỷ lệ = 5 / 10 = 50%. Riêng PC1 đã giữ một nửa thông tin của toàn bộ 10 chiều."
+            explanation="Tổng eigenvalues khoảng 10. PC1 có λ₁ = 5. Tỷ lệ = 5 / 10 = 50%. Riêng PC1 đã giữ một nửa thông tin của toàn bộ 10 chiều."
           />
         </div>
 
         <div className="mt-6">
           <AhaMoment>
-            Máy tính không phải đứng đó &ldquo;thử xoay từng góc&rdquo;
-            như bạn vừa làm. Nó giải một phương trình đại số — tìm{" "}
-            <strong>eigenvector</strong> của ma trận hiệp phương sai — và{" "}
-            <em>ra ngay kết quả</em>. Cả một bài toán &ldquo;tìm trục
-            quan trọng nhất&rdquo; được thu gọn thành một phép tính ma
-            trận. Đó là sức mạnh của đại số tuyến tính.
+            Máy tính không phải đứng đó thử xoay từng góc như bạn vừa
+            làm. Nó giải một phương trình đại số (tìm{" "}
+            <strong>eigenvector</strong> của ma trận hiệp phương sai) và{" "}
+            <em>ra ngay kết quả</em>. Cả một bài toán tìm trục quan
+            trọng nhất được thu gọn thành một phép tính ma trận. Đó là
+            sức mạnh của đại số tuyến tính.
           </AhaMoment>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — GIẢI THÍCH ━━━ */}
+      {/* ━━━ BƯỚC 6: GIẢI THÍCH ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bạn đã thấy PCA hoạt động. Giờ hãy nhìn hai công thức đứng
-            đằng sau — và hiểu chúng bằng tiếng Việt trước khi nhìn
+            đằng sau, và hiểu chúng bằng tiếng Việt trước khi nhìn
             tiếng toán.
           </p>
 
@@ -902,12 +903,13 @@ export default function EigendecompositionPcaTopic() {
             {String.raw`C = \frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x})(x_i - \bar{x})^T`}
           </LaTeX>
           <p className="text-sm leading-relaxed">
-            <strong>Đọc bằng tiếng Việt:</strong> &ldquo;Lấy mỗi điểm trừ
-            đi trung bình (trung tâm hoá), rồi gom tất cả lại thành một
+            <strong>Đọc bằng tiếng Việt:</strong> lấy mỗi điểm trừ đi
+            trung bình (trung tâm hoá), rồi gom tất cả lại thành một
             bảng số vuông cho biết{" "}
-            <em>mỗi cặp đặc trưng thay đổi cùng nhau đến đâu</em>&rdquo;.
-            Nếu C<sub>ij</sub> dương, đặc trưng i và j tăng cùng nhau.
-            Bằng 0: chúng không liên quan. Âm: khi i tăng thì j giảm.
+            <em>mỗi cặp đặc trưng thay đổi cùng nhau đến đâu</em>. Nếu
+            C<sub>ij</sub> dương, đặc trưng i và j tăng cùng nhau. Bằng
+            0 nghĩa là chúng không liên quan. Âm nghĩa là khi i tăng
+            thì j giảm.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-3">
@@ -915,19 +917,19 @@ export default function EigendecompositionPcaTopic() {
               {
                 title: "C > 0",
                 example: "Chiều cao và cân nặng",
-                desc: "Cao thường nặng hơn — chúng tăng cùng nhau.",
+                desc: "Cao thường nặng hơn. Chúng tăng cùng nhau.",
                 color: "#10b981",
               },
               {
                 title: "C ≈ 0",
                 example: "Số giày và điểm văn",
-                desc: "Không ảnh hưởng lẫn nhau — thay đổi độc lập.",
+                desc: "Không ảnh hưởng lẫn nhau, thay đổi độc lập.",
                 color: "#6b7280",
               },
               {
                 title: "C < 0",
                 example: "Giờ ngủ và giờ chơi game",
-                desc: "Ngủ nhiều → chơi ít. Một tăng thì một giảm.",
+                desc: "Ngủ nhiều thì chơi ít. Một tăng thì một giảm.",
                 color: "#ef4444",
               },
             ].map((c) => (
@@ -954,37 +956,37 @@ export default function EigendecompositionPcaTopic() {
           </h4>
           <LaTeX block>{String.raw`C \vec{v} = \lambda \vec{v}`}</LaTeX>
           <p className="text-sm leading-relaxed">
-            <strong>Đọc bằng tiếng Việt:</strong> &ldquo;Có những hướng{" "}
+            <strong>Đọc bằng tiếng Việt:</strong> có những hướng{" "}
             <em>đặc biệt</em> mà ma trận C tác động vào chỉ{" "}
             <strong>kéo giãn</strong>, không xoay. Chúng gọi là{" "}
             <em>vector riêng</em> (eigenvector). Hệ số kéo giãn gọi là{" "}
-            <em>trị riêng</em> (eigenvalue)&rdquo;. Trong PCA:
+            <em>trị riêng</em> (eigenvalue). Trong PCA:
           </p>
 
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              Eigenvector của C = các <strong>trục PC</strong>.
+              Eigenvector của C chính là các <strong>trục PC</strong>.
             </li>
             <li>
-              Eigenvalue λ = <strong>lượng phương sai</strong> trục đó
+              Eigenvalue λ là <strong>lượng phương sai</strong> trục đó
               giữ được.
             </li>
             <li>
-              Sắp λ từ lớn đến nhỏ → chọn vài λ đầu là đã giữ gần hết
+              Sắp λ từ lớn đến nhỏ, rồi chọn vài λ đầu là đã giữ gần hết
               thông tin.
             </li>
           </ul>
 
           <Callout variant="insight" title="Phép ẩn dụ: cánh cửa bản lề">
-            Tưởng tượng bạn đẩy một cánh cửa. Bản lề là eigenvector —
-            cửa chỉ xoay quanh bản lề, không đi đâu khác. Eigenvalue cho
+            Tưởng tượng bạn đẩy một cánh cửa. Bản lề là eigenvector. Cửa
+            chỉ xoay quanh bản lề, không đi đâu khác. Eigenvalue cho
             biết cánh cửa mở rộng bao nhiêu lần. Với ma trận hiệp phương
-            sai: bản lề = hướng dữ liệu trải ra, độ mở = độ trải ra đó
-            có lớn cỡ nào.
+            sai, bản lề chính là hướng dữ liệu trải ra, còn độ mở cho
+            biết độ trải ra đó lớn cỡ nào.
           </Callout>
 
           <Callout variant="tip" title="Tại sao chỉ cần 2 công thức này?">
-            Phần lớn sách giáo khoa PCA trình bày hàng trang công thức —
+            Phần lớn sách giáo khoa PCA trình bày hàng trang công thức:
             SVD, whitening, kernel trick, probabilistic PCA. Nhưng cốt
             lõi chỉ có 2 thứ này: <em>đo sự thay đổi cùng nhau</em> (ma
             trận hiệp phương sai) và <em>tìm hướng bất biến</em>{" "}
@@ -997,7 +999,7 @@ export default function EigendecompositionPcaTopic() {
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-2">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-200">
                 <Sparkles size={16} />
                 <span className="text-sm font-semibold">Nên dùng PCA</span>
               </div>
@@ -1009,7 +1011,7 @@ export default function EigendecompositionPcaTopic() {
               </ul>
             </div>
             <div className="rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 p-4 space-y-2">
-              <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300">
+              <div className="flex items-center gap-2 text-rose-800 dark:text-rose-200">
                 <Compass size={16} />
                 <span className="text-sm font-semibold">Tránh PCA</span>
               </div>
@@ -1024,29 +1026,29 @@ export default function EigendecompositionPcaTopic() {
 
           <CollapsibleDetail title="Tại sao phải sắp xếp eigenvalue từ lớn đến nhỏ?">
             <p className="text-sm leading-relaxed">
-              Vì eigenvalue chính là &ldquo;lượng phương sai&rdquo; mỗi
-              trục giữ được. Trục có eigenvalue lớn giữ nhiều thông tin
-              hơn. Khi giảm chiều từ d xuống k, ta chọn k trục ứng với k
-              eigenvalue lớn nhất — vứt bỏ những trục ít thông tin.
-              Giống khi bạn tóm tắt một cuốn sách: giữ chương quan trọng,
-              bỏ chương phụ.
+              Vì eigenvalue chính là lượng phương sai mỗi trục giữ
+              được. Trục có eigenvalue lớn giữ nhiều thông tin hơn. Khi
+              giảm chiều từ d xuống k, ta chọn k trục ứng với k
+              eigenvalue lớn nhất, vứt bỏ những trục ít thông tin.
+              Giống khi bạn tóm tắt một cuốn sách: giữ chương quan
+              trọng, bỏ chương phụ.
             </p>
           </CollapsibleDetail>
 
           <CollapsibleDetail title="Một ứng dụng thú vị: PageRank">
             <p className="text-sm leading-relaxed">
               Google xếp hạng các trang web bằng cách tìm{" "}
-              <em>eigenvector</em> của ma trận link giữa các trang. Trang
-              nào có &ldquo;giá trị&rdquo; cao trong eigenvector ấy là
-              trang quan trọng nhất. Ý tưởng y hệt PCA, chỉ khác dữ liệu
-              là web thay vì đám điểm. Đại số tuyến tính lặng lẽ làm
-              nhiều việc hơn bạn nghĩ.
+              <em>eigenvector</em> của ma trận link giữa các trang.
+              Trang nào có giá trị cao trong eigenvector ấy là trang
+              quan trọng nhất. Ý tưởng y hệt PCA, chỉ khác dữ liệu là
+              web thay vì đám điểm. Đại số tuyến tính lặng lẽ làm nhiều
+              việc hơn bạn nghĩ.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      {/* ━━━ BƯỚC 7: TÓM TẮT ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Năm điều cần nhớ về PCA"
@@ -1069,7 +1071,7 @@ export default function EigendecompositionPcaTopic() {
         </Callout>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
@@ -1329,8 +1331,8 @@ function ChallengeScatterCard({
           <span
             className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${
               isCorrect
-                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                : "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300"
+                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200"
+                : "bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-200"
             }`}
           >
             {isCorrect ? (
@@ -1437,10 +1439,10 @@ function ChallengeScatterCard({
                 " border-border bg-card text-foreground hover:border-accent/50 hover:bg-surface";
             } else if (isAnswer) {
               cls +=
-                " border-emerald-500 bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300";
+                " border-emerald-500 bg-emerald-50 text-foreground font-semibold dark:bg-emerald-900/30";
             } else if (isUserChoice) {
               cls +=
-                " border-rose-500 bg-rose-50 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300";
+                " border-rose-500 bg-rose-50 text-foreground font-semibold dark:bg-rose-900/30";
             } else {
               cls += " border-border bg-card text-muted opacity-60";
             }

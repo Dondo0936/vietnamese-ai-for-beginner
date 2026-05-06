@@ -35,9 +35,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "activation-functions",
   title: "Activation Functions",
-  titleVi: "Hàm kích hoạt — Cái uốn cong của mạng nơ-ron",
+  titleVi: "Hàm kích hoạt: cái uốn cong của mạng nơ-ron",
   description:
-    "Không có hàm kích hoạt, cả một mạng nơ-ron chỉ là một phép tính tuyến tính khổng lồ. Kéo, thử, so sánh để thấy vì sao 5 đường cong nhỏ lại thay đổi mọi thứ.",
+    "Bỏ hàm kích hoạt đi, cả một mạng nơ-ron sâu chỉ còn là một phép tính tuyến tính khổng lồ. Kéo, thử, so sánh để thấy vì sao 5 đường cong nhỏ lại thay đổi mọi thứ.",
   category: "neural-fundamentals",
   tags: ["neural-network", "fundamentals", "activation", "non-linearity"],
   difficulty: "beginner",
@@ -69,7 +69,7 @@ const ACT_META: Record<ActKey, ActivationMeta> = {
   relu: {
     key: "relu",
     label: "ReLU",
-    shortVi: "Cắt thẳng ở 0 — âm thành 0, dương giữ nguyên",
+    shortVi: "Cắt thẳng ở 0: âm thành 0, dương giữ nguyên",
     color: "#22c55e",
     rangeVi: "[0, +∞)",
     whenVi: "Mặc định cho lớp ẩn của CNN, MLP, ResNet",
@@ -88,12 +88,12 @@ const ACT_META: Record<ActKey, ActivationMeta> = {
     shortVi: "Bóp về khoảng −1 tới 1, đối xứng quanh 0",
     color: "#f59e0b",
     rangeVi: "(−1, 1)",
-    whenVi: "Trạng thái ứng viên trong RNN, LSTM",
+    whenVi: "Trạng thái ứng viên trong RNN và LSTM",
   },
   leaky: {
     key: "leaky",
     label: "Leaky ReLU",
-    shortVi: "ReLU nhưng vùng âm rò rỉ một chút",
+    shortVi: "ReLU nhưng vùng âm vẫn rò rỉ một chút",
     color: "#ef4444",
     rangeVi: "(−∞, +∞)",
     whenVi: "Khi ReLU bắt đầu có nơ-ron chết",
@@ -136,7 +136,7 @@ function scalarActivation(name: ActKey, x: number): number {
   if (name === "sigmoid") return sigmoid(x);
   if (name === "tanh") return tanh(x);
   if (name === "leaky") return leaky(x);
-  // softmax của một giá trị đơn lẻ không có ý nghĩa — trả về sigmoid để giữ đường mượt
+  // softmax của một giá trị đơn lẻ không có ý nghĩa, trả về sigmoid để giữ đường mượt
   return sigmoid(x);
 }
 
@@ -303,7 +303,7 @@ function CurvePanel({ actKey, inputX }: CurvePanelProps) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Softmax — thanh xác suất
+   Softmax: thanh xác suất
    ──────────────────────────────────────────────────────────── */
 
 const SOFTMAX_CLASSES = ["chó", "mèo", "cá", "chim"];
@@ -321,22 +321,22 @@ function SoftmaxPanel({ logits, setLogit }: SoftmaxPanelProps) {
     <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-4">
       <div className="flex items-center justify-between">
         <span className="text-sm font-semibold" style={{ color: meta.color }}>
-          Softmax — biến điểm số thành xác suất
+          Softmax: biến điểm số thành xác suất
         </span>
         <span className="text-[11px] text-tertiary">Miền: {meta.rangeVi}</span>
       </div>
       <p className="text-xs text-muted leading-relaxed">
-        Hãy tưởng tượng mô hình vừa nhìn một tấm ảnh và đưa ra bốn{" "}
+        Hãy tưởng tượng model vừa nhìn một tấm ảnh và đưa ra bốn{" "}
         <strong>điểm số thô</strong> (logit) cho bốn lớp. Kéo từng thanh để đổi
-        điểm số, và xem softmax biến chúng thành{" "}
-        <strong>xác suất cộng lại bằng 1</strong> như thế nào.
+        điểm số, rồi xem softmax biến chúng thành{" "}
+        <strong>xác suất cộng lại bằng 1</strong> ra sao.
       </p>
       <div className="space-y-3">
         {SOFTMAX_CLASSES.map((name, i) => (
           <div key={name} className="space-y-1">
             <div className="flex items-center justify-between text-xs text-foreground/80">
               <span>
-                Lớp <strong>{name}</strong> — điểm số z
+                Lớp <strong>{name}</strong>, điểm số z
                 <sub>{i + 1}</sub> ={" "}
                 <span className="tabular-nums">{logits[i].toFixed(1)}</span>
               </span>
@@ -515,7 +515,7 @@ function BoundaryPanel({ variant }: { variant: "linear" | "nonlinear" }) {
           </>
         ) : (
           <>
-            {/* Bốn góc nhận hai màu xen kẽ — vùng quyết định phi tuyến */}
+            {/* Bốn góc nhận hai màu xen kẽ: vùng quyết định phi tuyến */}
             <rect
               x={0}
               y={0}
@@ -579,15 +579,15 @@ function BoundaryPanel({ variant }: { variant: "linear" | "nonlinear" }) {
       </svg>
       <p className="text-[11px] text-muted leading-relaxed">
         {variant === "linear"
-          ? "Chỉ được kẻ một đường thẳng — không thể tách hai nhóm xen kẽ. Dù xếp bao nhiêu lớp cũng vẫn là một đường thẳng."
-          : "Thêm hàm kích hoạt sau mỗi lớp — mạng uốn được đường ranh giới cong, ôm được cấu hình xen kẽ này."}
+          ? "Chỉ được kẻ đúng một đường thẳng. Không thể tách hai nhóm xen kẽ, dù xếp bao nhiêu lớp cũng vẫn là một đường thẳng."
+          : "Thêm hàm kích hoạt sau mỗi lớp, mạng uốn được đường ranh giới cong và ôm được cấu hình xen kẽ này."}
       </p>
     </div>
   );
 }
 
 /* ────────────────────────────────────────────────────────────
-   Vanishing gradient — chồng 8 lớp sigmoid
+   Vanishing gradient: chồng 8 lớp sigmoid
    ──────────────────────────────────────────────────────────── */
 
 interface SigmoidChainProps {
@@ -608,9 +608,9 @@ function SigmoidChain({ startX, depth }: SigmoidChainProps) {
     <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-3">
       <p className="text-xs text-muted leading-relaxed">
         Nếu bạn đưa đầu vào x qua sigmoid{" "}
-        <strong>{depth} lần liên tiếp</strong>, kết quả luôn nén về gần 0,5 —
-        và gradient đi ngược lại qua {depth} lớp bị nhân với một con số cực
-        nhỏ.
+        <strong>{depth} lần liên tiếp</strong>, kết quả luôn nén về gần 0,5.
+        Gradient đi ngược qua {depth} lớp cũng bị nhân với một con số cực
+        nhỏ theo.
       </p>
       <div className="flex items-end gap-1 overflow-x-auto">
         {values.map((val, i) => (
@@ -653,7 +653,7 @@ function SigmoidChain({ startX, depth }: SigmoidChainProps) {
         <strong className="text-amber-600 dark:text-amber-400">0,25</strong>.
         Sau {depth} lớp, gradient bị nhân với{" "}
         <strong className="text-red-500">0,25^{depth} ≈ {finalGrad.toExponential(2)}</strong>
-        . Đây là lý do mạng sâu dùng sigmoid gần như không học được — hiện
+        . Đây là lý do mạng sâu dùng sigmoid gần như không học được, tức hiện
         tượng <em>vanishing gradient</em>.
       </div>
     </div>
@@ -669,14 +669,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Không có hàm kích hoạt, một mạng nơ-ron 100 lớp sẽ tương đương với điều gì?",
     options: [
-      "100 lớp khác nhau — mỗi lớp đóng góp một phần",
+      "100 lớp khác nhau, mỗi lớp đóng góp một phần",
       "50 lớp tuyến tính cộng với 50 lớp phi tuyến",
-      "Đúng một lớp tuyến tính — tất cả rút gọn thành một phép nhân ma trận",
-      "Không có gì đặc biệt — vẫn học được mọi thứ",
+      "Đúng một lớp tuyến tính, tất cả rút gọn thành một phép nhân ma trận",
+      "Không có gì đặc biệt, vẫn học được mọi thứ",
     ],
     correct: 2,
     explanation:
-      "Nhân nhiều ma trận luôn cho một ma trận khác. Dù có 1 000 lớp tuyến tính, kết quả vẫn là một phép biến đổi tuyến tính duy nhất — không thể uốn cong đường ranh giới.",
+      "Nhân nhiều ma trận luôn cho một ma trận khác. Dù có 1 000 lớp tuyến tính, kết quả vẫn là một phép biến đổi tuyến tính duy nhất, tức là không thể uốn cong đường ranh giới.",
   },
   {
     question:
@@ -689,7 +689,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "σ'(x) = σ(x)·(1−σ(x)), đạt cực đại 0,25 tại x = 0. Xếp 10 lớp sigmoid ⇒ gradient bị nhân với (0,25)^10 ≈ 10⁻⁶. Cực kỳ nhỏ — các lớp đầu gần như không cập nhật được.",
+      "σ'(x) = σ(x)·(1−σ(x)), đạt cực đại 0,25 tại x = 0. Xếp 10 lớp sigmoid thì gradient bị nhân với (0,25)^10 ≈ 10⁻⁶. Quá nhỏ, các lớp đầu gần như không cập nhật được.",
   },
   {
     type: "fill-blank",
@@ -700,20 +700,20 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "3", accept: ["3.0"] },
     ],
     explanation:
-      "ReLU cắt mọi giá trị âm về 0 và giữ nguyên giá trị dương. Đây cũng là lý do gradient ở vùng dương luôn bằng 1 — không bị nén như sigmoid.",
+      "ReLU cắt mọi giá trị âm về 0 và giữ nguyên giá trị dương. Đây cũng là lý do gradient ở vùng dương luôn bằng 1, không bị nén như sigmoid.",
   },
   {
     question:
       "Softmax thường được đặt ở đâu trong một mạng phân loại đa lớp?",
     options: [
       "Sau mỗi lớp ẩn để chuẩn hoá tín hiệu",
-      "Chỉ ở lớp đầu ra — biến các điểm số thành xác suất cộng bằng 1",
+      "Chỉ ở lớp đầu ra, biến các điểm số thành xác suất cộng bằng 1",
       "Trước lớp đầu tiên để làm sạch đầu vào",
       "Không dùng trong mạng nơ-ron",
     ],
     correct: 1,
     explanation:
-      "Softmax chỉ dùng ở lớp cuối cùng, biến một véc-tơ điểm số thành một phân phối xác suất (các giá trị trong khoảng (0, 1), tổng bằng 1) — phù hợp cho bài toán phân loại nhiều lớp.",
+      "Softmax chỉ dùng ở lớp cuối cùng, biến một véc-tơ điểm số thành một phân phối xác suất (các giá trị trong khoảng (0, 1), tổng bằng 1). Đây là dạng phù hợp cho bài toán phân loại nhiều lớp.",
   },
   {
     question:
@@ -726,7 +726,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 3,
     explanation:
-      "Tăng learning rate mạnh thường làm tình hình tệ hơn — một bước lớn có thể đẩy thêm pre-activation sang vùng âm, khiến nhiều nơ-ron hơn bị chết. Các phương án còn lại đều là cách chuẩn để tránh dying ReLU.",
+      "Tăng learning rate mạnh thường làm tình hình tệ hơn. Một bước lớn có thể đẩy thêm pre-activation sang vùng âm, khiến nhiều nơ-ron hơn bị chết. Các phương án còn lại đều là cách chuẩn để tránh dying ReLU.",
   },
   {
     type: "fill-blank",
@@ -743,10 +743,10 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Nên chọn hàm kích hoạt nào ở lớp đầu ra cho bài toán hồi quy dự đoán giá nhà (một số thực dương)?",
     options: [
-      "Sigmoid — để đầu ra nằm trong (0, 1)",
-      "Softmax — để đầu ra là xác suất",
-      "Không dùng hàm kích hoạt — đầu ra là số thực không giới hạn",
-      "ReLU bắt buộc — vì giá nhà không thể âm",
+      "Sigmoid để đầu ra nằm trong (0, 1)",
+      "Softmax để đầu ra là xác suất",
+      "Không dùng hàm kích hoạt, đầu ra là số thực không giới hạn",
+      "ReLU bắt buộc vì giá nhà không thể âm",
     ],
     correct: 2,
     explanation:
@@ -774,7 +774,7 @@ export default function ActivationFunctionsTopic() {
 
   return (
     <>
-      {/* ━━━━━ BƯỚC 1 — HOOK ━━━━━ */}
+      {/* ━━━━━ BƯỚC 1 · HOOK ━━━━━ */}
       <LessonSection step={1} totalSteps={8} label="Câu chuyện mở đầu">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">
@@ -786,19 +786,21 @@ export default function ActivationFunctionsTopic() {
             </h3>
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Một mạng nơ-ron nhân đầu vào với rất nhiều ma trận, hết lớp này đến
-            lớp khác. Nhưng có một sự thật lạ: <strong>nhân bao nhiêu ma trận
-            rồi cũng ra một ma trận khác</strong>. Nếu bạn xếp 10, 100 hay 1 000
-            lớp tuyến tính mà không thêm gì, cả mạng gộp lại{" "}
-            <em>vẫn chỉ là một phép tính tuyến tính khổng lồ</em>.
+            Hãy hình dung bạn xếp 100 lớp tuyến tính lên nhau, mỗi lớp là một
+            phép nhân ma trận. Đầu vào đi qua lớp một, ra một véc-tơ mới, đi
+            tiếp lớp hai, lại ra một véc-tơ mới, cứ thế suốt 100 tầng. Bạn kỳ
+            vọng mạng càng sâu càng giỏi. Nhưng có một sự thật lạ:{" "}
+            <strong>nhân bao nhiêu ma trận rồi cũng ra một ma trận khác</strong>.
+            Cả 100 lớp gộp lại <em>vẫn chỉ là một phép tính tuyến tính khổng lồ</em>.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Tuyến tính nghĩa là: bạn chỉ uốn lượn được bằng các đường thẳng.
-            Nhưng thế giới thực toàn đường cong — ảnh con mèo không nằm trên
+            Tuyến tính nghĩa là bạn chỉ uốn lượn được bằng các đường thẳng. Trong
+            khi đó, thế giới thực toàn đường cong: ảnh con mèo không nằm trên
             một mặt phẳng, hai nhóm khách hàng cũng không tách được bằng một nét
-            bút. <strong>Hàm kích hoạt</strong> là cái cần nhỏ sau mỗi lớp, uốn
-            thẳng thành cong. Chỉ cần bẻ cong một chút ở mỗi tầng, mạng bỗng
-            nhiên biểu diễn được mọi thứ.
+            bút. Cái cần nhỏ giải quyết việc này gọi là{" "}
+            <strong>hàm kích hoạt</strong>. Mỗi lớp chèn thêm một đường cong nhỏ
+            để uốn thẳng thành cong. Nhờ vậy, chỉ cần bẻ cong một chút ở mỗi
+            tầng, mạng bỗng biểu diễn được gần như mọi thứ.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border border-border bg-surface/50 p-3 space-y-1">
@@ -814,7 +816,7 @@ export default function ActivationFunctionsTopic() {
                 <Waves size={14} className="text-accent" /> Cần thứ gì đó?
               </div>
               <p className="text-[11px] text-muted leading-snug">
-                Một đường cong nhỏ xen giữa hai lớp — phi tuyến.
+                Một đường cong nhỏ xen giữa hai lớp, gọi là phi tuyến.
               </p>
             </div>
             <div className="rounded-xl border border-border bg-surface/50 p-3 space-y-1">
@@ -822,7 +824,7 @@ export default function ActivationFunctionsTopic() {
                 <SparkIcon size={14} className="text-accent" /> Sau khi thêm
               </div>
               <p className="text-[11px] text-muted leading-snug">
-                Mạng uốn được vô số đường cong — biểu diễn cả ảnh, âm thanh,
+                Mạng uốn được vô số đường cong, biểu diễn cả ảnh, âm thanh,
                 ngôn ngữ.
               </p>
             </div>
@@ -830,35 +832,35 @@ export default function ActivationFunctionsTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 2 — DỰ ĐOÁN ━━━━━ */}
+      {/* ━━━━━ BƯỚC 2 · DỰ ĐOÁN ━━━━━ */}
       <LessonSection step={2} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn đã biết cần một hàm kích hoạt phi tuyến để 'bẻ cong' sau mỗi lớp. Trong bốn hàm dưới, hàm nào KHÔNG thật sự giúp mạng học đường biên cong?"
           options={[
-            "f(x) = max(0, x) — ReLU, chặn phần âm về 0",
-            "f(x) = 1 / (1 + e^(−x)) — sigmoid hình chữ S",
-            "f(x) = 2·x + 5 — đường thẳng dịch lên 5 đơn vị",
-            "f(x) = tanh(x) — hình chữ S chạy từ −1 tới 1",
+            "f(x) = max(0, x), tức ReLU, chặn phần âm về 0",
+            "f(x) = 1 / (1 + e^(−x)), tức sigmoid hình chữ S",
+            "f(x) = 2·x + 5, một đường thẳng dịch lên 5 đơn vị",
+            "f(x) = tanh(x), hình chữ S chạy từ −1 tới 1",
           ]}
           correct={2}
-          explanation="2·x + 5 là hàm tuyến tính; xếp chồng nhiều lớp kèm một phép 'bẻ cong' kiểu này vẫn thu gọn được thành một phép tuyến tính duy nhất. ReLU, sigmoid, tanh đều có 'khúc gãy' hoặc 'chữ S' — chính cái khúc đó cho phép các lớp kết hợp thành đường biên cong. Bài sau bạn sẽ kéo x qua từng hàm và thấy khúc gãy ở đâu."
+          explanation="2·x + 5 là hàm tuyến tính. Xếp chồng nhiều lớp kèm một phép 'bẻ cong' kiểu này vẫn thu gọn được thành một phép tuyến tính duy nhất. ReLU, sigmoid, tanh đều có 'khúc gãy' hoặc 'chữ S'. Chính cái khúc đó cho phép các lớp kết hợp thành đường biên cong. Bài sau bạn sẽ kéo x qua từng hàm và thấy khúc gãy ở đâu."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Cả bài học này là để bạn <strong>tay cầm slider</strong>, xem năm
-            đường cong nhỏ — ReLU, sigmoid, tanh, Leaky ReLU và softmax — biến
-            một tín hiệu thô thành tín hiệu hữu ích như thế nào.
+            đường cong nhỏ (ReLU, sigmoid, tanh, Leaky ReLU và softmax) biến
+            một tín hiệu thô thành tín hiệu hữu ích ra sao.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 3 — REVEAL (TabView + so sánh) ━━━━━ */}
+      {/* ━━━━━ BƯỚC 3 · REVEAL (TabView + so sánh) ━━━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             <div className="space-y-2">
               <p className="text-sm text-muted leading-relaxed">
                 Đây là năm hàm kích hoạt phổ biến nhất. Mỗi tab cho bạn một đường
-                cong — hãy <strong>kéo thanh trượt bên dưới</strong> để đẩy đầu
+                cong. Hãy <strong>kéo thanh trượt bên dưới</strong> để đẩy đầu
                 vào x chạy từ −5 đến 5 và quan sát điểm màu nhảy theo.
               </p>
               <div className="flex items-center gap-3 max-w-sm">
@@ -890,9 +892,9 @@ export default function ActivationFunctionsTopic() {
                         <strong className="text-green-600 dark:text-green-400">
                           Cú hích của deep learning hiện đại.
                         </strong>{" "}
-                        Cắt mọi số âm về 0, giữ nguyên số dương. Cực nhanh và
-                        gradient không bị nén ở vùng dương — nhưng nơ-ron có thể
-                        chết nếu rơi luôn vào vùng âm.
+                        Cắt mọi số âm về 0, giữ nguyên số dương. Cực nhanh, và
+                        gradient không bị nén ở vùng dương. Tuy nhiên, nơ-ron có
+                        thể chết nếu rơi luôn vào vùng âm.
                       </div>
                     </div>
                   ),
@@ -907,8 +909,8 @@ export default function ActivationFunctionsTopic() {
                           Cái nút công tắc kinh điển.
                         </strong>{" "}
                         Bóp mọi số về khoảng (0, 1). Hay được dùng ở đầu ra nhị
-                        phân, nhưng ở lớp ẩn thì gây triệt tiêu gradient — bạn
-                        sẽ thấy ở bước sau.
+                        phân, nhưng ở lớp ẩn thì gây triệt tiêu gradient. Bạn sẽ
+                        thấy hiện tượng này ở bước sau.
                       </div>
                     </div>
                   ),
@@ -923,7 +925,7 @@ export default function ActivationFunctionsTopic() {
                           Người họ hàng đối xứng của sigmoid.
                         </strong>{" "}
                         Bóp về (−1, 1) và có tâm ở 0, nên gradient đỡ lệch hơn.
-                        Thường gặp trong RNN/LSTM để giữ trạng thái ứng viên.
+                        Thường gặp trong RNN và LSTM để giữ trạng thái ứng viên.
                       </div>
                     </div>
                   ),
@@ -938,7 +940,7 @@ export default function ActivationFunctionsTopic() {
                           ReLU có một khe nhỏ cho vùng âm.
                         </strong>{" "}
                         Công thức f(x) = 0,01x khi x ≤ 0. Chỉ cho một chút tín
-                        hiệu rỉ xuống — đủ để nơ-ron có cơ hội hồi sinh.
+                        hiệu rỉ xuống, đủ để nơ-ron có cơ hội hồi sinh.
                       </div>
                     </div>
                   ),
@@ -962,8 +964,8 @@ export default function ActivationFunctionsTopic() {
                 </span>
               </div>
               <p className="text-xs text-muted leading-relaxed">
-                Giữ thanh trượt ở trên, quan sát bốn hàm phản ứng khác nhau thế
-                nào với cùng một x. Đây là cách nhanh nhất để cảm nhận{" "}
+                Giữ thanh trượt ở trên, quan sát bốn hàm phản ứng khác nhau ra
+                sao với cùng một x. Đây là cách nhanh nhất để cảm nhận{" "}
                 <strong>tính cách</strong> của mỗi hàm.
               </p>
               <SideBySide inputX={inputX} />
@@ -972,7 +974,7 @@ export default function ActivationFunctionsTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 4 — DEEPEN (StepReveal: vì sao phi tuyến) ━━━━━ */}
+      {/* ━━━━━ BƯỚC 4 · DEEPEN (StepReveal: vì sao phi tuyến) ━━━━━ */}
       <LessonSection step={4} totalSteps={8} label="Đi sâu: vì sao cần uốn cong">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Bấm từng bước để thấy vì sao chỉ một chút phi tuyến đã mở ra toàn bộ
@@ -998,8 +1000,8 @@ export default function ActivationFunctionsTopic() {
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Có bốn cụm điểm: hai cụm cam ở góc trên phải và dưới trái, hai
                 cụm xanh ở hai góc còn lại. Nhìn mắt thường, ai cũng thấy hai
-                màu &mdash; nhưng chúng <strong>xen kẽ</strong>. Đây là bài toán
-                kinh điển mà mọi mô hình tuyến tính đều thất bại.
+                màu, nhưng chúng <strong>xen kẽ</strong>. Đây là bài toán kinh
+                điển mà mọi mô hình tuyến tính đều thất bại.
               </p>
             </div>,
             <div key="s2" className="space-y-3">
@@ -1007,14 +1009,14 @@ export default function ActivationFunctionsTopic() {
               <p className="text-xs text-muted leading-relaxed">
                 Mô hình tuyến tính chỉ được kẻ <strong>đúng một đường thẳng</strong>.
                 Dù xoay thế nào, bạn cũng không thể chia hai nhóm màu xen kẽ.
-                Thêm 100 lớp tuyến tính ⇒ vẫn một đường thẳng, vì nhân ma trận
-                liên tiếp cho ra ma trận khác.
+                Thêm 100 lớp tuyến tính cũng vẫn cho một đường thẳng, vì nhân
+                ma trận liên tiếp luôn cho ra một ma trận khác.
               </p>
             </div>,
             <div key="s3" className="space-y-3">
               <BoundaryPanel variant="nonlinear" />
               <p className="text-xs text-muted leading-relaxed">
-                Thêm ReLU hoặc tanh sau mỗi lớp ⇒ mạng <strong>uốn được</strong>
+                Thêm ReLU hoặc tanh sau mỗi lớp, mạng <strong>uốn được</strong>
                 . Đường ranh giới có thể cong, gấp khúc, thậm chí bao quanh một
                 cụm. Giờ mô hình tách được cả cấu hình xen kẽ.
               </p>
@@ -1030,7 +1032,7 @@ export default function ActivationFunctionsTopic() {
                 Hàm kích hoạt là cái bản lề nhỏ giữa hai lớp, nhưng nhờ nó mà
                 mạng nhiều lớp <strong>thật sự</strong> có ý nghĩa. Không có
                 bản lề, các lớp xếp vào nhau chỉ tạo ra một đường thẳng. Có bản
-                lề, bạn được cả một mặt phẳng gấp khúc — đủ ôm mọi hình dạng
+                lề, bạn được cả một mặt phẳng gấp khúc, đủ ôm mọi hình dạng
                 trong dữ liệu thực.
               </p>
             </div>,
@@ -1038,18 +1040,18 @@ export default function ActivationFunctionsTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 5 — CHALLENGE ━━━━━ */}
+      {/* ━━━━━ BƯỚC 5 · CHALLENGE ━━━━━ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Khi bạn xếp 10 lớp sigmoid liên tiếp và cho backprop chạy ngược, gradient ở lớp đầu tiên thường gần với số nào nhất?"
           options={[
-            "Khoảng 1 — gradient vẫn lành lặn",
-            "Khoảng 0,25 — đúng bằng đạo hàm cực đại một lớp",
-            "Gần 0 (cỡ 10⁻⁶ trở xuống) — vì bị nhân đạo hàm ≤ 0,25 suốt 10 lần",
-            "Lớn hơn 1 rất nhiều — gradient bùng nổ",
+            "Khoảng 1, gradient vẫn lành lặn",
+            "Khoảng 0,25, đúng bằng đạo hàm cực đại một lớp",
+            "Gần 0 (cỡ 10⁻⁶ trở xuống), vì bị nhân đạo hàm ≤ 0,25 suốt 10 lần",
+            "Lớn hơn 1 rất nhiều, gradient bùng nổ",
           ]}
           correct={2}
-          explanation="Mỗi lớp sigmoid nhân gradient với một số không vượt quá 0,25. Sau 10 lớp: (0,25)¹⁰ ≈ 10⁻⁶. Các lớp đầu gần như không nhận được tín hiệu để cập nhật — đây là hiện tượng triệt tiêu gradient, lý do chính khiến sigmoid không được dùng ở lớp ẩn của mạng sâu hiện đại."
+          explanation="Mỗi lớp sigmoid nhân gradient với một số không vượt quá 0,25. Sau 10 lớp: (0,25)¹⁰ ≈ 10⁻⁶. Các lớp đầu gần như không nhận được tín hiệu để cập nhật. Đây chính là hiện tượng triệt tiêu gradient, lý do chính khiến sigmoid không được dùng ở lớp ẩn của mạng sâu hiện đại."
         />
         <div className="mt-5">
           <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-3">
@@ -1092,25 +1094,25 @@ export default function ActivationFunctionsTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 6 — AHA ━━━━━ */}
+      {/* ━━━━━ BƯỚC 6 · AHA ━━━━━ */}
       <LessonSection step={6} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Hàm kích hoạt không phải là <strong>tính năng phụ</strong> — nó là
-          cái biến một phép nhân ma trận thành một mạng học được.
+          Hàm kích hoạt không phải là <strong>tính năng phụ</strong>. Nó chính
+          là cái biến một phép nhân ma trận thành một mạng học được.
           <br />
           <br />
           Một mạng tuyến tính là một đường thẳng. Thêm một đường cong nhỏ vào
-          mỗi lớp, bạn được một mạng <strong>vô cùng linh hoạt</strong> — có
+          mỗi lớp, bạn được một mạng <strong>vô cùng linh hoạt</strong>: có
           thể xấp xỉ mọi hàm, ôm mọi ranh giới, phân biệt mọi cấu hình dữ liệu.
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 7 — EXPLAIN (LaTeX ≤3) ━━━━━ */}
+      {/* ━━━━━ BƯỚC 7 · EXPLAIN (LaTeX ≤3) ━━━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bạn đã thấy năm đường cong trong phần khám phá. Bên dưới là ba công
-            thức <strong>ngắn nhất</strong> có thể — mỗi công thức đi kèm một
+            thức <strong>ngắn nhất</strong> có thể, mỗi công thức đi kèm một
             hình minh hoạ và một câu giải thích bằng tiếng Việt. Đừng thuộc
             lòng; nhớ hình dáng đường cong là đủ.
           </p>
@@ -1120,7 +1122,7 @@ export default function ActivationFunctionsTopic() {
             <div className="flex items-center gap-2">
               <Zap size={18} className="text-green-500" />
               <h4 className="text-base font-semibold text-foreground">
-                ReLU — cắt vuông ở 0
+                ReLU cắt vuông ở 0
               </h4>
             </div>
             <LaTeX block>{"\\mathrm{ReLU}(x) = \\max(0, x)"}</LaTeX>
@@ -1128,7 +1130,7 @@ export default function ActivationFunctionsTopic() {
               <CurvePanel actKey="relu" inputX={1.5} />
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Bằng lời: <strong>nếu x âm, ra 0; nếu x dương, giữ nguyên</strong>
-                . Một cái chặn ánh sáng đơn giản — nhưng cực nhanh, và là hàm
+                . Một cái chặn ánh sáng đơn giản nhưng cực nhanh, và là hàm
                 kích hoạt mặc định cho hầu hết các mô hình thị giác máy tính
                 hiện đại.
               </p>
@@ -1140,7 +1142,7 @@ export default function ActivationFunctionsTopic() {
             <div className="flex items-center gap-2">
               <Droplet size={18} className="text-blue-500" />
               <h4 className="text-base font-semibold text-foreground">
-                Sigmoid — bóp mọi số về (0, 1)
+                Sigmoid bóp mọi số về (0, 1)
               </h4>
             </div>
             <LaTeX block>{"\\sigma(x) = \\frac{1}{1 + e^{-x}}"}</LaTeX>
@@ -1160,7 +1162,7 @@ export default function ActivationFunctionsTopic() {
             <div className="flex items-center gap-2">
               <Waves size={18} className="text-purple-500" />
               <h4 className="text-base font-semibold text-foreground">
-                Softmax — biến bảng điểm thành bảng xác suất
+                Softmax biến bảng điểm thành bảng xác suất
               </h4>
             </div>
             <LaTeX block>
@@ -1171,7 +1173,7 @@ export default function ActivationFunctionsTopic() {
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Bằng lời: <strong>ai điểm cao sẽ chiếm phần lớn xác suất, các
                 lớp còn lại chia phần còn lại</strong>. Công thức trông rối
-                nhưng ý nghĩa đơn giản — tổng luôn bằng 1. Đây là cách chuẩn
+                nhưng ý nghĩa khá thẳng: tổng luôn bằng 1. Đây là cách chuẩn
                 đưa mạng đa lớp về một phân phối xác suất.
               </p>
             </div>
@@ -1187,10 +1189,10 @@ export default function ActivationFunctionsTopic() {
           </Callout>
 
           <Callout variant="warning" title="Bẫy thường gặp">
-            Đừng thêm softmax vào <em>trong</em> mô hình rồi cộng thêm
-            CrossEntropyLoss (với PyTorch). Loss đó đã tự làm log-softmax bên
-            trong — thêm lần nữa gây sai gradient. Giữ lớp cuối dạng tuyến tính
-            và để hàm loss lo phần còn lại.
+            Đừng thêm softmax vào <em>trong</em> model rồi cộng thêm
+            CrossEntropyLoss (với PyTorch). Hàm loss đó đã tự làm log-softmax
+            bên trong, thêm lần nữa sẽ gây sai gradient. Giữ lớp cuối dạng tuyến
+            tính và để hàm loss lo phần còn lại.
           </Callout>
 
           <CollapsibleDetail title="Bảng nhanh: đặc điểm của 5 hàm">
@@ -1224,17 +1226,17 @@ export default function ActivationFunctionsTopic() {
             <div className="space-y-2 text-sm leading-relaxed text-foreground/85">
               <p>
                 Có ba lý do thực tế. <strong>Một</strong>: ReLU chỉ cần một phép
-                so sánh với 0 — cực rẻ trên GPU. <strong>Hai</strong>: gradient ở
+                so sánh với 0, cực rẻ trên GPU. <strong>Hai</strong>: gradient ở
                 vùng dương luôn là 1, nên dù có 50 lớp, tín hiệu học vẫn đi xuyên
                 qua nguyên vẹn ở phần dương. <strong>Ba</strong>: đầu ra
                 &ldquo;thưa&rdquo; (nhiều nơ-ron trả 0) khiến mạng tự đơn giản
-                hoá — một dạng regularization ngầm.
+                hoá, một dạng regularization ngầm.
               </p>
               <p>
                 Đổi lại, ReLU có điểm yếu: nếu một nơ-ron rơi vào vùng âm và
                 không thoát ra được, nó sẽ <em>chết</em> vĩnh viễn. Leaky ReLU,
                 ELU, GELU đều là các biến thể giúp vùng âm có tí gradient, tránh
-                bẫy này.
+                được bẫy này.
               </p>
             </div>
           </CollapsibleDetail>
@@ -1244,22 +1246,22 @@ export default function ActivationFunctionsTopic() {
             <TopicLink slug="vanishing-exploding-gradients">
               Vanishing &amp; Exploding Gradient
             </TopicLink>
-            . Lý thuyết về lớp perceptron một đơn vị — tổ tiên của mạng nhiều
-            lớp — xem tại <TopicLink slug="perceptron">Perceptron</TopicLink>.
+            . Lý thuyết về lớp perceptron một đơn vị (tổ tiên của mạng nhiều
+            lớp) xem tại <TopicLink slug="perceptron">Perceptron</TopicLink>.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━━━ BƯỚC 8 — CONNECT + QUIZ ━━━━━ */}
+      {/* ━━━━━ BƯỚC 8 · CONNECT + QUIZ ━━━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ"
           points={[
-            "Không có hàm kích hoạt, cả một mạng nơ-ron chỉ là một phép tính tuyến tính lớn — không uốn được đường cong.",
+            "Không có hàm kích hoạt, cả một mạng nơ-ron chỉ là một phép tính tuyến tính lớn, không uốn được đường cong.",
             "ReLU cắt vuông ở 0: mặc định cho lớp ẩn vì nhanh và gradient không nén ở vùng dương.",
             "Sigmoid bóp về (0, 1): hợp cho đầu ra nhị phân, nhưng gây triệt tiêu gradient ở mạng sâu.",
-            "Softmax dùng ở lớp cuối của phân loại đa lớp — biến điểm số thành xác suất cộng bằng 1.",
-            "Tanh & Leaky ReLU là hai bản đối xứng / sửa lỗi của sigmoid và ReLU — dùng khi gradient lệch tâm hoặc có nơ-ron chết.",
+            "Softmax dùng ở lớp cuối của phân loại đa lớp, biến điểm số thành xác suất cộng bằng 1.",
+            "Tanh và Leaky ReLU là hai bản đối xứng hoặc sửa lỗi của sigmoid và ReLU, dùng khi gradient lệch tâm hoặc có nơ-ron chết.",
           ]}
         />
         <div className="mt-4">
@@ -1277,7 +1279,7 @@ export default function ActivationFunctionsTopic() {
         </div>
         <div className="mt-4 flex items-center justify-center text-xs text-muted gap-2">
           <AlertTriangle size={12} />
-          Bạn có thể làm lại quiz bất kỳ lúc nào — học thuộc hình dáng đường
+          Bạn có thể làm lại quiz bất kỳ lúc nào. Học thuộc hình dáng đường
           cong trước khi học thuộc công thức.
         </div>
       </LessonSection>

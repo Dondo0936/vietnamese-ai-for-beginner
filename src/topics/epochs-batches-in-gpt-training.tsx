@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
   title: "Epochs & Batches in GPT Training",
   titleVi: "Epoch và batch khi huấn luyện GPT",
   description:
-    "GPT-4 đọc khoảng 13 nghìn tỉ token — một lượt duy nhất, chia thành hàng triệu batch. Xem cách các lab AI vặn batch size, lên lịch epoch và tránh hết RAM GPU.",
+    "GPT-4 đọc khoảng 13 nghìn tỉ token trong một lượt duy nhất, chia thành hàng triệu batch. Xem cách các lab AI vặn batch size, lên lịch epoch và tránh hết RAM GPU.",
   category: "neural-fundamentals",
   tags: ["epochs-batches", "training", "gpt", "application"],
   difficulty: "intermediate",
@@ -94,7 +94,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — ba mô hình ngôn ngữ lớn với ngân sách dữ liệu rất
+   DU LIEU. Ba mô hình ngôn ngữ lớn với ngân sách dữ liệu rất
    khác nhau. Dùng để so sánh số token, số batch, số iteration.
    Nguồn: Chinchilla (2022), LLaMA 2 (2023), GPT-3 (2020).
    ──────────────────────────────────────────────────────────── */
@@ -132,7 +132,7 @@ const MODELS: ModelProfile[] = [
     epochs: "~1 epoch",
     status: "under",
     verdictVi:
-      "Quá thiếu dữ liệu. Mô hình to nhưng chưa được 'đọc' đủ sách — học vẹt nhiều hơn là hiểu.",
+      "Quá thiếu dữ liệu. Mô hình to nhưng chưa được 'đọc' đủ sách. Hệ quả là học vẹt nhiều hơn hiểu.",
   },
   {
     id: "chinchilla",
@@ -148,7 +148,7 @@ const MODELS: ModelProfile[] = [
     epochs: "~1 epoch",
     status: "balanced",
     verdictVi:
-      "Đúng tỉ lệ vàng: 20 token cho mỗi tham số. Nhỏ hơn GPT-3 gấp 2,5 lần nhưng làm tốt hơn trên hầu hết bài kiểm tra.",
+      "Đúng tỉ lệ vàng: 20 token cho mỗi tham số. Nhỏ hơn GPT-3 gấp 2,5 lần nhưng làm tốt hơn trên hầu hết bài benchmark.",
   },
   {
     id: "llama2",
@@ -164,7 +164,7 @@ const MODELS: ModelProfile[] = [
     epochs: "~1 epoch",
     status: "balanced",
     verdictVi:
-      "Vượt mốc Chinchilla một chút — đầu tư dữ liệu cao hơn để đổi lấy khả năng nói tiếng nhiều vùng hơn.",
+      "Vượt mốc Chinchilla một chút. Đội huấn luyện đầu tư dữ liệu cao hơn để đổi lấy khả năng nói nhiều ngôn ngữ.",
   },
   {
     id: "gpt4",
@@ -180,12 +180,12 @@ const MODELS: ModelProfile[] = [
     epochs: "~2 epoch",
     status: "over",
     verdictVi:
-      "Mô hình khổng lồ, dữ liệu đã gần hết. Bắt đầu cần lặp lại — nhưng lặp quá nhiều thì mô hình học thuộc lòng.",
+      "Model rất lớn, dữ liệu đã gần hết. Bắt đầu cần lặp lại, nhưng lặp quá nhiều thì model học thuộc lòng.",
   },
 ];
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — bốn cặp batch size + learning rate để xem khi cạn
+   DU LIEU. Bốn cặp batch size + learning rate để xem khi cạn
    RAM GPU thì mô hình gãy thế nào. Hình dung: mỗi batch = "bàn
    ăn", model = "đầu bếp", RAM GPU = "độ rộng bếp".
    ──────────────────────────────────────────────────────────── */
@@ -209,7 +209,7 @@ function computeScenario(bsTokens: number, gpuRamGB: number): BatchScenario {
   if (oom) {
     label = "Hết RAM (OOM)";
     noteVi =
-      "GPU hết bộ nhớ — quá trình huấn luyện dừng hẳn. Cần batch nhỏ hơn hoặc dùng gradient accumulation (gom từng batch nhỏ rồi mới cập nhật).";
+      "GPU hết bộ nhớ. Quá trình huấn luyện dừng hẳn. Cần batch nhỏ hơn hoặc dùng gradient accumulation (gom từng batch nhỏ rồi mới cập nhật).";
   } else if (ramFree < 2) {
     label = "Ngay ngưỡng nguy hiểm";
     noteVi =
@@ -227,7 +227,7 @@ function computeScenario(bsTokens: number, gpuRamGB: number): BatchScenario {
 }
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — scaling laws giả lập: loss giảm theo compute (log).
+   DU LIEU. Scaling laws giả lập: loss giảm theo compute (log).
    Dùng cho biểu đồ "đường cong thu nhỏ dần" trong Mechanism.
    ──────────────────────────────────────────────────────────── */
 
@@ -247,7 +247,7 @@ const SCALING_CURVE: ScalingPoint[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   HELPER — định dạng token/tham số thành "nghìn tỉ / tỉ / triệu".
+   HELPER. Định dạng token/tham số thành "nghìn tỉ / tỉ / triệu".
    ──────────────────────────────────────────────────────────── */
 
 function fmtBig(n: number): string {
@@ -266,7 +266,7 @@ function fmtIterations(tokens: number, batchTokens: number): string {
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT CON — Biểu đồ "một dải token dài đứt quãng thành
+   COMPONENT CON. Biểu đồ "một dải token dài đứt quãng thành
    các batch". Vẽ SVG tĩnh, đổi theo tổng token và batch size.
    ──────────────────────────────────────────────────────────── */
 
@@ -307,7 +307,7 @@ function BatchStripChart({ totalTokens, batchTokens, color }: StripChartProps) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT CON — Đường cong scaling laws (loss giảm theo compute)
+   COMPONENT CON. Đường cong scaling laws (loss giảm theo compute)
    ──────────────────────────────────────────────────────────── */
 
 function ScalingCurveSvg() {
@@ -412,37 +412,37 @@ export default function EpochsBatchesInGptTraining() {
         topicSlug="epochs-batches-in-gpt-training"
       >
         <p>
-          Khi bạn chat với GPT-4, bạn đang nói chuyện với một mô hình đã &ldquo;đọc&rdquo;
-          khoảng <strong>13 nghìn tỉ token</strong> văn bản trên internet &mdash; tương đương
-          khoảng 50 triệu cuốn sách, gấp hàng nghìn lần số chữ một người có thể đọc trong cả
-          đời. Câu hỏi tự nhiên: làm thế nào để nhét ngần ấy dữ liệu vào một mô hình trong
-          vài tháng huấn luyện?
+          Mở ChatGPT, gõ một câu hỏi rồi nhấn Enter. Phía sau câu trả lời đó là một model đã
+          đọc khoảng <strong>13 nghìn tỉ token</strong> văn bản trên internet, tương đương
+          khoảng 50 triệu cuốn sách, gấp hàng nghìn lần số chữ một người đọc trong cả đời.
+          Câu hỏi tự nhiên: làm sao nhét ngần ấy dữ liệu vào một model chỉ trong vài tháng
+          huấn luyện?
         </p>
         <p>
-          Câu trả lời gọi là <strong>epoch</strong> (lượt duyệt qua toàn bộ dữ liệu) và{" "}
-          <strong>batch</strong> (lô &mdash; nhóm mẫu xử lý cùng lúc). GPT-4 thường chỉ chạy
-          một hoặc hai epoch &mdash; vì một lượt đã đủ nhiều. Nhưng mỗi lượt đó được chặt
-          thành <strong>hàng triệu batch</strong>, mỗi batch là một bước cập nhật trọng số
-          trên hàng ngàn GPU chạy song song. Bài này sẽ cho bạn thấy cách các lab AI thực sự
-          vặn những con số đó, và vì sao một sai lầm nhỏ trong batch size có thể đốt hàng
-          chục triệu đô-la vô ích.
+          Câu trả lời nằm ở hai khái niệm. <strong>Epoch</strong> là một lượt duyệt qua toàn
+          bộ dữ liệu, còn <strong>batch</strong> là lô mẫu mà GPU xử lý cùng lúc. GPT-4
+          thường chỉ chạy một hoặc hai epoch, vì một lượt đã đủ nhiều. Nhưng mỗi lượt đó
+          được chia thành <strong>hàng triệu batch</strong>, và mỗi batch là một bước cập
+          nhật trọng số trên hàng nghìn GPU chạy song song. Bài này cho bạn thấy cách các
+          lab AI vặn từng con số đó, và vì sao một sai lầm nhỏ trong batch size có thể đốt
+          hàng chục triệu đô-la vô ích.
         </p>
       </ApplicationHero>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━ PROBLEM ━━━━━━━━━━━━━━━━━━━━━━ */}
       <ApplicationProblem topicSlug="epochs-batches-in-gpt-training">
         <p>
-          Hãy hình dung bạn có <strong>13 nghìn tỉ token</strong> văn bản. Không GPU nào trên
-          trái đất có đủ RAM để ôm toàn bộ dữ liệu cùng lúc. Ngay cả một chiếc H100
-          (card đồ hoạ chuyên dụng cho AI, RAM 80 GB) cũng chỉ chứa nổi vài triệu token.
-          Vậy mô hình &ldquo;đọc&rdquo; kiểu gì?
+          Hình dung bạn có <strong>13 nghìn tỉ token</strong> văn bản. Không GPU nào trên
+          trái đất đủ RAM để ôm toàn bộ dữ liệu cùng lúc. Ngay cả một chiếc H100 (card đồ
+          hoạ chuyên dụng cho AI, RAM 80 GB) cũng chỉ chứa nổi vài triệu token. Vậy model
+          đọc kiểu gì?
         </p>
         <p>
-          Và đây mới là câu hỏi đắt giá: nên <em>lặp lại dữ liệu nhiều lần</em> (nhiều
-          epoch, dữ liệu ít) hay <em>đọc một lượt thật kỹ</em> (một epoch, dữ liệu khổng
-          lồ)? Batch nên to bao nhiêu để không hết RAM nhưng vẫn đủ ổn định? Mỗi quyết
-          định ảnh hưởng trực tiếp tới <strong>chi phí hàng chục đến hàng trăm triệu đô-la</strong>
-          {" "}cho một đợt huấn luyện &mdash; và quyết định chất lượng mô hình cuối.
+          Đây là câu hỏi đắt giá. Nên <em>lặp lại dữ liệu nhiều lần</em> (nhiều epoch, ít
+          dữ liệu) hay <em>đọc một lượt thật kỹ</em> (một epoch, dữ liệu khổng lồ)? Batch
+          nên lớn cỡ nào để không hết RAM nhưng vẫn đủ ổn định? Mỗi quyết định ảnh hưởng
+          trực tiếp tới <strong>chi phí hàng chục đến hàng trăm triệu đô-la</strong> cho
+          một đợt huấn luyện, và quyết định chất lượng model cuối.
         </p>
 
         <div className="not-prose mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -459,7 +459,7 @@ export default function EpochsBatchesInGptTraining() {
               <Server size={16} className="text-accent" /> Hạn chế RAM GPU
             </div>
             <p className="text-xs text-muted leading-relaxed">
-              H100 có 80 GB. Một batch 4 triệu token đã chiếm ~100 GB &rarr; phải chia tiếp.
+              H100 có 80 GB. Một batch 4 triệu token đã chiếm ~100 GB, buộc phải chia tiếp.
             </p>
           </div>
           <div className="rounded-xl border border-border bg-card p-4 space-y-1">
@@ -467,7 +467,7 @@ export default function EpochsBatchesInGptTraining() {
               <Flame size={16} className="text-accent" /> Chi phí đốt triệu đô
             </div>
             <p className="text-xs text-muted leading-relaxed">
-              Mỗi ngày GPU-cluster &asymp; hàng trăm nghìn đô. Chọn sai batch = cháy tiền.
+              Mỗi ngày một GPU cluster ngốn hàng trăm nghìn đô. Chọn sai batch là cháy tiền.
             </p>
           </div>
         </div>
@@ -483,44 +483,44 @@ export default function EpochsBatchesInGptTraining() {
             <strong>Chia dữ liệu thành batch, mỗi batch là một bước cập nhật.</strong>{" "}
             Thay vì nạp cả 13 nghìn tỉ token cùng lúc, lab AI chia dữ liệu thành những khối
             nhỏ gọi là <em>batch</em>. Với LLaMA 2, mỗi batch chứa khoảng <strong>4 triệu
-            token</strong> &mdash; tương đương 1.000 chuỗi, mỗi chuỗi 4.096 token. Sau khi
-            xem xong một batch, mô hình cập nhật trọng số một lần, rồi đọc batch kế tiếp.
+            token</strong>, tương đương 1.000 chuỗi, mỗi chuỗi 4.096 token. Sau khi xem
+            xong một batch, model cập nhật trọng số một lần, rồi đọc batch kế tiếp.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
             <strong>Quy luật Chinchilla: khoảng 20 token cho mỗi tham số.</strong> Năm 2022
-            DeepMind công bố kết quả chấn động: GPT-3 (175 tỉ tham số) dùng chỉ 300 tỉ token
-            &mdash; tức 1,7 token/tham số &mdash; &ldquo;đói&rdquo; dữ liệu trầm trọng.
-            Chinchilla 70 tỉ tham số được huấn luyện đúng tỉ lệ <em>20 token cho mỗi tham số</em>
-            {" "}và đánh bại GPT-3 trên gần hết bài kiểm tra. Bài học: tăng dữ liệu đúng tỉ lệ
-            thường đáng giá hơn tăng kích thước mô hình.
+            DeepMind công bố một kết quả chấn động. GPT-3 (175 tỉ tham số) chỉ dùng 300 tỉ
+            token, tức 1,7 token/tham số, đói dữ liệu trầm trọng. Chinchilla 70 tỉ tham số
+            được huấn luyện đúng tỉ lệ <em>20 token cho mỗi tham số</em> và thắng GPT-3
+            trên gần hết các benchmark. Bài học: tăng dữ liệu đúng tỉ lệ thường đáng giá
+            hơn tăng kích thước model.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
             <strong>Hàng trăm nghìn đến vài triệu iteration trong một epoch.</strong> Lấy 2
-            nghìn tỉ token của LLaMA 2 chia cho batch 4 triệu token &rarr; khoảng{" "}
-            <em>500.000 iteration</em> (lần lặp &mdash; mỗi lần là một forward + backward +
-            cập nhật). Toàn bộ 500.000 bước này gộp thành <em>một epoch</em>. Một đợt huấn
+            nghìn tỉ token của LLaMA 2 chia cho batch 4 triệu token, ra khoảng{" "}
+            <em>500.000 iteration</em> (lần lặp, mỗi lần là một forward + backward + cập
+            nhật). Toàn bộ 500.000 bước này gộp thành <em>một epoch</em>. Một đợt huấn
             luyện thường chạy trong 2 đến 4 tháng trên cluster hàng nghìn GPU.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
             <strong>Gradient accumulation: nhiều batch nhỏ đóng vai một batch lớn.</strong>{" "}
-            Nếu một GPU chỉ chứa nổi 500 nghìn token, nhưng bạn muốn batch hiệu dụng 4 triệu
-            token, bạn gom gradient của 8 mini-batch rồi mới cập nhật một lần. Đây là mẹo
-            vàng giúp các đội nhỏ huấn luyện được mô hình to &mdash; họ &ldquo;mô phỏng&rdquo;
-            batch lớn bằng cách lặp lại batch nhỏ trước khi cập nhật.
+            Nếu một GPU chỉ chứa nổi 500 nghìn token, nhưng bạn muốn batch hiệu dụng 4
+            triệu token, bạn gom gradient của 8 mini-batch rồi mới cập nhật một lần. Đây là
+            mẹo vàng giúp các đội nhỏ huấn luyện được model lớn. Họ mô phỏng batch lớn bằng
+            cách lặp lại batch nhỏ trước khi cập nhật.
           </p>
         </Beat>
         <Beat step={5}>
           <p>
-            <strong>Lặp dữ liệu quá 4 epoch bắt đầu gây hại.</strong> Muennighoff và cộng sự
-            (2023) chỉ ra: lặp dữ liệu 1&ndash;2 lần gần như miễn phí, 3&ndash;4 lần có ích
-            giảm dần, sau 4 lần thì giá trị biên gần như bằng 0. Lý do: mô hình bắt đầu{" "}
-            <em>thuộc lòng</em> thay vì học mẫu tổng quát. Vì vậy các lab lớn đầu tư mạnh
+            <strong>Lặp dữ liệu quá 4 epoch bắt đầu gây hại.</strong> Muennighoff và cộng
+            sự (2023) chỉ ra: lặp dữ liệu 1 đến 2 lần gần như miễn phí, 3 đến 4 lần có ích
+            giảm dần, sau 4 lần thì giá trị biên gần bằng 0. Lý do là model bắt đầu{" "}
+            <em>thuộc lòng</em> thay vì học mẫu tổng quát. Nhờ vậy các lab lớn đầu tư mạnh
             vào <em>thu thập dữ liệu mới</em> thay vì chạy nhiều epoch trên bộ dữ liệu cũ.
           </p>
         </Beat>
@@ -533,27 +533,26 @@ export default function EpochsBatchesInGptTraining() {
           </h3>
           <p className="text-xs text-muted leading-relaxed mb-3">
             Trục hoành là tổng phép tính (compute, thang log). Trục tung là loss (sai số).
-            Mỗi chấm là một mô hình thật đã được công bố. Đường cong cho thấy quy luật:
-            &ldquo;nhân đôi compute &rarr; loss giảm theo một tỉ lệ dự đoán được&rdquo;.
+            Mỗi chấm là một model thật đã được công bố. Đường cong cho thấy một quy luật:
+            nhân đôi compute thì loss giảm theo một tỉ lệ dự đoán được.
           </p>
           <ScalingCurveSvg />
           <p className="text-xs text-muted leading-relaxed mt-3 italic text-center">
-            Mỗi khi tăng gấp 10 lần compute, loss giảm khoảng 15&ndash;20%. Các lab lên kế
-            hoạch huấn luyện dựa trên những đường cong như thế này &mdash; trước khi chi
-            tiền.
+            Mỗi khi tăng gấp 10 lần compute, loss giảm khoảng 15 đến 20%. Các lab lên lịch
+            huấn luyện dựa trên những đường cong như thế này, trước khi chi tiền.
           </p>
         </div>
       </ApplicationMechanism>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━ TRY IT ━━━━━━━━━━━━━━━━━━━━━━ */}
       <ApplicationTryIt topicSlug="epochs-batches-in-gpt-training">
-        {/* ── Phần 1: model picker — cùng bối cảnh, ngân sách khác ── */}
+        {/* ── Phần 1: model picker, cùng bối cảnh, ngân sách khác ── */}
         <h3 className="text-base font-semibold text-foreground mb-2">
-          So sánh ngân sách huấn luyện của bốn mô hình thật
+          So sánh ngân sách huấn luyện của bốn model thật
         </h3>
         <p className="text-sm text-muted leading-relaxed mb-4">
-          Bấm chọn từng mô hình để xem dữ liệu, tỉ lệ token/tham số, và biểu đồ dải batch
-          tương ứng. Bạn sẽ thấy GPT-3 &ldquo;đói&rdquo; dữ liệu rõ rệt so với Chinchilla.
+          Bấm chọn từng model để xem dữ liệu, tỉ lệ token/tham số và biểu đồ dải batch
+          tương ứng. Bạn sẽ thấy GPT-3 đói dữ liệu rõ rệt so với Chinchilla.
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
@@ -601,7 +600,7 @@ export default function EpochsBatchesInGptTraining() {
             >
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-wide text-tertiary">
-                  Mô hình
+                  Model
                 </div>
                 <div className="text-base font-bold mt-0.5" style={{ color: activeModelProfile.color }}>
                   {activeModelProfile.name}
@@ -662,7 +661,7 @@ export default function EpochsBatchesInGptTraining() {
               />
               <p className="text-xs text-muted leading-relaxed text-center">
                 Mô phỏng chia {activeModelProfile.tokens} token thành các batch 4 triệu token.
-                Trên thực tế, số ô nhiều hơn rất nhiều &mdash; đây chỉ là minh hoạ.
+                Thực tế số ô nhiều hơn rất nhiều, đây chỉ là minh hoạ.
               </p>
               <div className="flex items-center justify-center gap-4 text-[10px] text-muted pt-1">
                 <span className="flex items-center gap-1">
@@ -676,14 +675,14 @@ export default function EpochsBatchesInGptTraining() {
           </motion.div>
         </AnimatePresence>
 
-        {/* ── Phần 2: Slider batch size — gradient accumulation sống động ── */}
+        {/* ── Phần 2: Slider batch size, gradient accumulation sống động ── */}
         <h3 className="text-base font-semibold text-foreground mb-2 mt-8">
-          Vặn batch size &mdash; nhìn RAM GPU và nhịp gradient thay đổi
+          Vặn batch size: RAM GPU và nhịp gradient thay đổi ra sao
         </h3>
         <p className="text-sm text-muted leading-relaxed mb-4">
           Bạn đang ngồi trên một GPU H100 (RAM 80 GB). Kéo thanh để đổi batch size (tính
-          bằng token). Bạn sẽ thấy: batch quá nhỏ &rarr; gradient nhiễu; vừa phải &rarr; an
-          toàn; quá lớn &rarr; GPU hết RAM.
+          bằng token). Batch quá nhỏ thì gradient nhiễu, vừa phải thì an toàn, quá lớn thì
+          GPU hết RAM.
         </p>
 
         <SliderGroup
@@ -781,30 +780,30 @@ export default function EpochsBatchesInGptTraining() {
         />
 
         <Callout variant="insight" title="Mẹo: gradient accumulation cứu GPU nhỏ">
-          Nếu GPU bạn quá nhỏ để chạy batch 4 triệu token, đừng giảm batch &mdash; hãy chia
-          thành <strong>8 mini-batch 500 nghìn token</strong>, gom gradient lại, rồi mới cập
-          nhật. Kết quả toán học tương đương batch 4 triệu &mdash; chỉ chậm hơn, không tệ hơn.
-          Đây là cách các đội sinh viên huấn luyện được mô hình tỉ tham số trên cluster khiêm
-          tốn.
+          Nếu GPU của bạn quá nhỏ để chạy batch 4 triệu token, đừng giảm batch. Hãy chia
+          thành <strong>8 mini-batch 500 nghìn token</strong>, gom gradient lại, rồi mới
+          cập nhật. Kết quả toán học tương đương batch 4 triệu, chỉ chậm hơn, không tệ hơn.
+          Đây là cách các đội sinh viên huấn luyện được model tỉ tham số trên cluster
+          khiêm tốn.
         </Callout>
 
-        {/* ── Phần 3: StepReveal — lịch huấn luyện cho mô hình 1B tham số ── */}
+        {/* ── Phần 3: StepReveal, lịch huấn luyện cho mô hình 1B tham số ── */}
         <h3 className="text-base font-semibold text-foreground mb-2 mt-10">
-          Lên lịch huấn luyện thực tế cho một mô hình 1 tỉ tham số
+          Lên lịch huấn luyện thực tế cho một model 1 tỉ tham số
         </h3>
         <p className="text-sm text-muted leading-relaxed mb-4">
-          Giả sử bạn là một đội startup muốn huấn luyện một mô hình 1 tỉ tham số. Dưới đây là
-          từng bước một đội thật sự đi qua &mdash; từ tính ngân sách token đến chạy epoch
-          cuối. Bấm &ldquo;Tiếp tục&rdquo; để đi qua từng bước.
+          Giả sử bạn là một đội startup muốn huấn luyện một model 1 tỉ tham số. Dưới đây là
+          từng bước một đội thật sự đi qua, từ tính ngân sách token đến chạy epoch cuối.
+          Bấm &ldquo;Tiếp tục&rdquo; để đi qua từng bước.
         </p>
 
         <StepReveal
           labels={[
-            "Bước 1 — tính ngân sách token",
-            "Bước 2 — quyết định batch size",
-            "Bước 3 — phân bổ GPU",
-            "Bước 4 — lịch epoch và kiểm tra",
-            "Bước 5 — kiểm chứng cuối",
+            "Bước 1. Tính ngân sách token",
+            "Bước 2. Quyết định batch size",
+            "Bước 3. Phân bổ GPU",
+            "Bước 4. Lịch epoch và kiểm tra",
+            "Bước 5. Kiểm chứng cuối",
           ]}
         >
           {[
@@ -816,10 +815,10 @@ export default function EpochsBatchesInGptTraining() {
                 </span>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Mô hình 1 tỉ tham số theo tỉ lệ Chinchilla cần <strong>~20 tỉ token</strong>.
-                Bạn chuẩn bị dữ liệu: Common Crawl đã lọc + Wikipedia + sách + code &mdash;
-                tổng ~25 tỉ token để dư phòng. Đây là bước quan trọng nhất &mdash; thiếu dữ
-                liệu thì mô hình dù to cũng chỉ là con vẹt.
+                Model 1 tỉ tham số theo tỉ lệ Chinchilla cần <strong>~20 tỉ token</strong>.
+                Bạn chuẩn bị dữ liệu: Common Crawl đã lọc + Wikipedia + sách + code, tổng
+                ~25 tỉ token để dư phòng. Đây là bước quan trọng nhất. Thiếu dữ liệu thì
+                model dù lớn cũng chỉ là con vẹt.
               </p>
               <div className="rounded-lg bg-surface/50 border border-border p-3 text-xs text-foreground/85 leading-relaxed">
                 <strong>Kiểm tra thực tế: </strong>Chinchilla 70B dùng 1,4 nghìn tỉ token
@@ -853,16 +852,16 @@ export default function EpochsBatchesInGptTraining() {
                 </span>
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Mỗi H100 chỉ ôm nổi ~250 nghìn token/bước cho mô hình 1B (kể cả optimizer
+                Mỗi H100 chỉ ôm nổi ~250 nghìn token/bước cho model 1B (kể cả optimizer
                 states). Bạn chia batch 2 triệu thành <strong>8 mini-batch 250 nghìn trên 8
-                GPU</strong>, chạy song song, rồi lấy trung bình gradient &mdash; đúng một
-                batch 2 triệu. Để tăng tốc, bạn dùng <strong>8 node &times; 8 GPU = 64
-                GPU</strong>, và mỗi node giữ một bản của mô hình.
+                GPU</strong>, chạy song song, rồi lấy trung bình gradient. Kết quả tương đương
+                đúng một batch 2 triệu. Để tăng tốc, bạn dùng <strong>8 node &times; 8 GPU = 64
+                GPU</strong>, và mỗi node giữ một bản của model.
               </p>
               <div className="rounded-lg bg-surface/50 border border-border p-3 text-xs text-foreground/85 leading-relaxed">
                 <strong>Chi phí ước tính: </strong>64 GPU &times; $2/giờ &times; 24 giờ
                 &times; 30 ngày &asymp; <strong>$92.000/tháng</strong>. Thật. Một đợt huấn
-                luyện cơ bản thường mất 1&ndash;2 tháng.
+                luyện cơ bản thường mất 1 đến 2 tháng.
               </div>
             </div>,
             <div key="s4" className="rounded-xl border border-border bg-card p-4 space-y-2">
@@ -875,12 +874,12 @@ export default function EpochsBatchesInGptTraining() {
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Learning rate không giữ nguyên suốt 10.000 iteration. Bạn <strong>warm-up</strong>{" "}
                 trong 2.000 bước đầu (tăng dần từ 0 tới mức đỉnh), rồi <strong>cosine decay</strong>{" "}
-                giảm dần về gần 0 ở bước 10.000. Mỗi 500 bước bạn lưu checkpoint &mdash; phòng
-                khi cluster sập, còn chỗ để phục hồi.
+                giảm dần về gần 0 ở bước 10.000. Mỗi 500 bước bạn lưu checkpoint, phòng khi
+                cluster sập thì còn chỗ để phục hồi.
               </p>
               <div className="rounded-lg bg-surface/50 border border-border p-3 text-xs text-foreground/85 leading-relaxed">
-                <strong>Bài học: </strong>nếu chạy 1 epoch, đừng lặp dữ liệu quá 1&ndash;2
-                lần. Nghiên cứu 2023 cho thấy lặp quá 4 lần thì mô hình bắt đầu thuộc lòng
+                <strong>Bài học: </strong>nếu chạy 1 epoch, đừng lặp dữ liệu quá 1 đến 2
+                lần. Nghiên cứu 2023 cho thấy lặp quá 4 lần thì model bắt đầu thuộc lòng
                 thay vì học.
               </div>
             </div>,
@@ -893,41 +892,41 @@ export default function EpochsBatchesInGptTraining() {
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Sau 10.000 iteration (1 epoch), loss cuối rơi vào khoảng <strong>2,0
-                &plusmn; 0,1</strong> &mdash; đúng với dự đoán của scaling laws. Nếu loss cao
-                hơn dự đoán đáng kể, bạn đã chọn sai hyperparameter; nếu thấp bất thường, kiểm
+                &plusmn; 0,1</strong>, đúng với dự đoán của scaling laws. Nếu loss cao hơn
+                dự đoán đáng kể, bạn đã chọn sai hyperparameter. Nếu thấp bất thường, kiểm
                 tra dữ liệu rò rỉ (data leakage). Đội trưởng đội huấn luyện thường dành cả
                 đêm mở dashboard để ngồi nhìn đường cong loss.
               </p>
               <div className="rounded-lg bg-surface/50 border border-border p-3 text-xs text-foreground/85 leading-relaxed">
-                <strong>Sau epoch đầu: </strong>đánh giá trên tập validation. Nếu mô hình
-                còn tốt &mdash; kết thúc. Nếu muốn nhích thêm, thử thêm 0,3 epoch dữ liệu
-                mới &mdash; rẻ và an toàn hơn lặp dữ liệu cũ.
+                <strong>Sau epoch đầu: </strong>đánh giá trên tập validation. Nếu model
+                còn tốt thì kết thúc. Nếu muốn nhích thêm, thử thêm 0,3 epoch dữ liệu mới.
+                Cách này rẻ và an toàn hơn lặp dữ liệu cũ.
               </div>
             </div>,
           ]}
         </StepReveal>
 
-        {/* ── Phần 4: InlineChallenge — 24GB GPU thiếu 10× RAM ── */}
+        {/* ── Phần 4: InlineChallenge, 24GB GPU thiếu 10× RAM ── */}
         <h3 className="text-base font-semibold text-foreground mb-2 mt-10">
           Thử thách: bạn là nhà nghiên cứu với GPU 24 GB
         </h3>
         <p className="text-sm text-muted leading-relaxed mb-4">
-          Một tình huống có thật: bạn muốn huấn luyện mô hình 1 tỉ tham số với{" "}
-          <strong>batch size 1 triệu token</strong>, nhưng bạn chỉ có một GPU 24 GB
-          &mdash; thiếu <strong>~10 lần RAM</strong> so với nhu cầu (một batch 1 triệu token
-          +optimizer states tiêu tốn khoảng 240 GB). Bạn chọn cách nào?
+          Một tình huống có thật. Bạn muốn huấn luyện model 1 tỉ tham số với{" "}
+          <strong>batch size 1 triệu token</strong>, nhưng bạn chỉ có một GPU 24 GB.
+          Thiếu <strong>~10 lần RAM</strong> so với nhu cầu (một batch 1 triệu token
+          cộng optimizer states tiêu tốn khoảng 240 GB). Bạn chọn cách nào?
         </p>
 
         <InlineChallenge
           question="Bạn có GPU 24 GB, muốn batch hiệu dụng 1 triệu token, nhưng thiếu ~10× RAM. Giải pháp nào khả thi và giữ nguyên chất lượng?"
           options={[
-            "Giảm batch size xuống 100 nghìn token — chấp nhận gradient nhiễu và chất lượng kém hơn",
-            "Dùng gradient accumulation: chia thành 10 mini-batch 100 nghìn, gom gradient 10 bước rồi mới cập nhật — toán học tương đương batch 1 triệu, chỉ chậm hơn 10 lần",
-            "Tắt optimizer để bớt RAM — chỉ chạy forward pass, bỏ backward",
+            "Giảm batch size xuống 100 nghìn token, chấp nhận gradient nhiễu và chất lượng kém hơn",
+            "Dùng gradient accumulation: chia thành 10 mini-batch 100 nghìn, gom gradient 10 bước rồi mới cập nhật. Toán học tương đương batch 1 triệu, chỉ chậm hơn 10 lần",
+            "Tắt optimizer để bớt RAM, chỉ chạy forward pass và bỏ backward",
             "Đợi GPU mới 240 GB ra mắt",
           ]}
           correct={1}
-          explanation="Gradient accumulation là công cụ chuẩn trong hoàn cảnh này. Bạn chia batch mục tiêu thành nhiều mini-batch nhỏ, mỗi mini-batch tính gradient như bình thường nhưng chưa cập nhật trọng số — thay vào đó bạn cộng dồn gradient lại. Sau khi đủ 10 mini-batch, bạn mới chia trung bình và cập nhật một lần. Về mặt toán học, kết quả giống hệt như bạn đã chạy batch 1 triệu token một lần. Cái giá duy nhất là thời gian: bạn chạy chậm hơn 10 lần. Các đội sinh viên dùng kỹ thuật này mỗi ngày để huấn luyện mô hình lớn trên cụm GPU khiêm tốn."
+          explanation="Gradient accumulation là công cụ chuẩn trong hoàn cảnh này. Bạn chia batch mục tiêu thành nhiều mini-batch nhỏ, mỗi mini-batch tính gradient như bình thường nhưng chưa cập nhật trọng số. Thay vào đó, bạn cộng dồn gradient lại. Sau khi đủ 10 mini-batch, bạn mới chia trung bình và cập nhật một lần. Về mặt toán học, kết quả giống hệt như bạn đã chạy batch 1 triệu token một lần. Cái giá duy nhất là thời gian: bạn chạy chậm hơn 10 lần. Các đội sinh viên dùng kỹ thuật này mỗi ngày để huấn luyện model lớn trên cụm GPU khiêm tốn."
         />
 
         <div className="mt-4">
@@ -940,7 +939,7 @@ export default function EpochsBatchesInGptTraining() {
               "Giảm learning rate về 0 ngay lập tức",
             ]}
             correct={1}
-            explanation="Nghiên cứu 2023 cho thấy: 1 token dữ liệu mới quý hơn nhiều lần 1 token lặp lại. Chạy tiếp trên dữ liệu cũ 5 epoch là bẫy phổ biến — mô hình bắt đầu thuộc lòng thay vì học mẫu tổng quát. Tăng batch size không giải quyết vấn đề nền tảng về dữ liệu. Giảm learning rate về 0 sẽ khiến mô hình ngừng học. Lựa chọn đúng: mở rộng bộ dữ liệu — ngay cả chỉ thêm 10 tỉ token mới cũng đáng giá hơn nhiều chạy đi chạy lại dữ liệu cũ."
+            explanation="Nghiên cứu 2023 cho thấy: 1 token dữ liệu mới quý hơn nhiều lần 1 token lặp lại. Chạy tiếp trên dữ liệu cũ 5 epoch là bẫy phổ biến. Model bắt đầu thuộc lòng thay vì học mẫu tổng quát. Tăng batch size không giải quyết vấn đề nền tảng về dữ liệu. Giảm learning rate về 0 sẽ khiến model ngừng học. Lựa chọn đúng là mở rộng bộ dữ liệu. Ngay cả chỉ thêm 10 tỉ token mới cũng đáng giá hơn nhiều chạy đi chạy lại dữ liệu cũ."
           />
         </div>
 
@@ -948,23 +947,23 @@ export default function EpochsBatchesInGptTraining() {
           <InlineChallenge
             question="Cộng sự đề xuất: 'Thay vì 1 epoch trên 20 tỉ token, hãy chạy 4 epoch trên 5 tỉ token để tiết kiệm chi phí thu thập dữ liệu'. Bạn phản biện thế nào?"
             options={[
-              "Đồng ý vì tổng số token 'đi qua' mô hình vẫn là 20 tỉ",
-              "Đồng ý vì 4 epoch cho mô hình 'nghĩ kỹ' hơn",
-              "Phản đối: 5 tỉ token 4 epoch cho loss tệ hơn đáng kể so với 20 tỉ token 1 epoch — dữ liệu đa dạng mới là chìa khoá",
+              "Đồng ý vì tổng số token 'đi qua' model vẫn là 20 tỉ",
+              "Đồng ý vì 4 epoch cho model 'nghĩ kỹ' hơn",
+              "Phản đối: 5 tỉ token 4 epoch cho loss tệ hơn đáng kể so với 20 tỉ token 1 epoch. Dữ liệu đa dạng mới là chìa khoá",
               "Phản đối vì 4 epoch làm overfit",
             ]}
             correct={2}
-            explanation="Đây là bẫy tư duy cổ điển: nhìn 'tổng token đã xử lý' thì có vẻ bằng nhau, nhưng thực tế không phải. Scaling laws cho thấy rất rõ: mô hình học được mẫu tổng quát dựa trên đa dạng dữ liệu, không chỉ số lần nhìn. 5 tỉ token lặp 4 lần cho mô hình học thuộc 5 tỉ token đó, trong khi 20 tỉ token khác nhau cho mô hình học được bức tranh rộng hơn nhiều. Lựa chọn D (overfit) đúng một phần nhưng không phải lý do chính — lý do sâu hơn là đa dạng dữ liệu thiếu."
+            explanation="Đây là bẫy tư duy cổ điển. Nhìn 'tổng token đã xử lý' thì có vẻ bằng nhau, nhưng thực tế không phải. Scaling laws cho thấy rất rõ: model học được mẫu tổng quát dựa trên đa dạng dữ liệu, không chỉ số lần nhìn. 5 tỉ token lặp 4 lần cho model học thuộc 5 tỉ token đó, trong khi 20 tỉ token khác nhau cho model học được bức tranh rộng hơn nhiều. Lựa chọn D (overfit) đúng một phần nhưng không phải lý do chính. Lý do sâu hơn là đa dạng dữ liệu thiếu."
           />
         </div>
 
         <Callout variant="warning" title="Bẫy thường gặp: 'cứ lặp thêm sẽ tốt hơn'">
-          Với dữ liệu thường (ảnh, âm thanh, bảng), nhiều epoch thực sự giúp mô hình học kỹ.
+          Với dữ liệu thường (ảnh, âm thanh, bảng), nhiều epoch thực sự giúp model học kỹ.
           Nhưng với <strong>dữ liệu văn bản quy mô internet</strong>, mỗi cuốn sách, mỗi bài
-          báo là <em>không thể thay thế</em>. Lặp dữ liệu cũ sau 2&ndash;4 lần không giúp mô
-          hình giỏi hơn &mdash; mà bắt đầu biến nó thành một cỗ máy ghi nhớ. Các lab AI hàng
-          đầu đầu tư <strong>nhiều tiền vào thu thập và lọc dữ liệu mới</strong> hơn là
-          &ldquo;ép&rdquo; mô hình học thêm trên dữ liệu cũ.
+          báo là <em>không thể thay thế</em>. Lặp dữ liệu cũ sau 2 đến 4 lần không giúp model
+          giỏi hơn, mà bắt đầu biến nó thành một cỗ máy ghi nhớ. Các lab AI hàng đầu đầu tư{" "}
+          <strong>nhiều tiền vào thu thập và lọc dữ liệu mới</strong> hơn là{" "}
+          &ldquo;ép&rdquo; model học thêm trên dữ liệu cũ.
         </Callout>
       </ApplicationTryIt>
 
@@ -974,19 +973,19 @@ export default function EpochsBatchesInGptTraining() {
         topicSlug="epochs-batches-in-gpt-training"
       >
         <Metric
-          value="Chinchilla 70B (1,4 nghìn tỉ token, ~20 token/tham số) vượt Gopher 280B (300 tỉ token, ~1 token/tham số) — dữ liệu quan trọng hơn kích thước mô hình"
+          value="Chinchilla 70B (1,4 nghìn tỉ token, ~20 token/tham số) thắng Gopher 280B (300 tỉ token, ~1 token/tham số). Dữ liệu quan trọng hơn kích thước model"
           sourceRef={1}
         />
         <Metric
-          value="LLaMA 2 huấn luyện trên 2 nghìn tỉ token với global batch size 4 triệu token — khoảng 500.000 iteration trong 1 epoch"
+          value="LLaMA 2 huấn luyện trên 2 nghìn tỉ token với global batch size 4 triệu token, khoảng 500.000 iteration trong 1 epoch"
           sourceRef={3}
         />
         <Metric
-          value="Tỉ lệ tối ưu Chinchilla: khoảng 20 token dữ liệu cho mỗi tham số mô hình"
+          value="Tỉ lệ tối ưu Chinchilla: khoảng 20 token dữ liệu cho mỗi tham số model"
           sourceRef={4}
         />
         <Metric
-          value="Lặp dữ liệu quá 4 epoch khiến giá trị biên giảm gần bằng 0 — ưu tiên dữ liệu mới hơn lặp dữ liệu cũ"
+          value="Lặp dữ liệu quá 4 epoch khiến giá trị biên giảm gần bằng 0. Ưu tiên dữ liệu mới hơn lặp dữ liệu cũ"
           sourceRef={2}
         />
       </ApplicationMetrics>
@@ -999,18 +998,18 @@ export default function EpochsBatchesInGptTraining() {
         <p>
           Hãy tưởng tượng OpenAI quên quy luật Chinchilla và huấn luyện GPT-4 với tỉ lệ 1,7
           token/tham số như GPT-3. Với 1,8 nghìn tỉ tham số, họ sẽ chỉ dùng ~3 nghìn tỉ
-          token &mdash; và kết quả sẽ là một mô hình đói dữ liệu trầm trọng, hiệu năng kém
-          hơn nhiều so với phiên bản thực tế dùng 13 nghìn tỉ token. Toàn bộ khoản đầu tư
-          hạ tầng có thể biến thành một mô hình tầm trung &mdash; mất hàng trăm triệu đô
-          và lợi thế cạnh tranh.
+          token. Kết quả sẽ là một model đói dữ liệu trầm trọng, hiệu năng kém hơn nhiều
+          so với phiên bản thực tế dùng 13 nghìn tỉ token. Toàn bộ khoản đầu tư hạ tầng
+          có thể biến thành một model tầm trung, đồng nghĩa mất hàng trăm triệu đô và
+          lợi thế cạnh tranh.
         </p>
         <p>
           Theo chiều ngược lại, nếu không có khái niệm batch và gradient accumulation, các
-          đội nhỏ sẽ không bao giờ huấn luyện được mô hình tỉ tham số &mdash; chỉ những
-          công ty có cluster GPU khổng lồ mới tham gia cuộc chơi. Đây chính là lý do batch
-          và epoch không phải chỉ là chi tiết kỹ thuật: chúng là <em>đòn bẩy dân chủ hoá</em>
-          {" "}huấn luyện AI. Hiểu đúng epoch/batch là khác biệt giữa đốt hàng chục triệu
-          đô-la và có một mô hình ra hồn.
+          đội nhỏ sẽ không bao giờ huấn luyện được model tỉ tham số. Chỉ những công ty có
+          cluster GPU khổng lồ mới tham gia cuộc chơi. Đây chính là lý do batch và epoch
+          không phải chỉ là chi tiết kỹ thuật: chúng là <em>đòn bẩy dân chủ hoá</em>{" "}
+          huấn luyện AI. Hiểu đúng epoch/batch là khác biệt giữa đốt hàng chục triệu
+          đô-la và có một model ra hồn.
         </p>
       </ApplicationCounterfactual>
 
@@ -1019,9 +1018,9 @@ export default function EpochsBatchesInGptTraining() {
         <MiniSummary
           title="4 điều rút ra từ cách GPT được huấn luyện"
           points={[
-            "Epoch = một lượt duyệt toàn bộ dữ liệu. GPT-4 chỉ chạy 1–2 epoch vì 13 nghìn tỉ token đã quá đủ cho một lượt.",
-            "Batch = một khối dữ liệu xử lý cùng lúc. LLaMA 2 dùng batch 4 triệu token → ~500 nghìn iteration cho 1 epoch.",
-            "Tỉ lệ vàng Chinchilla: ~20 token dữ liệu cho mỗi tham số. Thiếu thì mô hình đói; thừa thì cần lặp và dễ thuộc lòng.",
+            "Epoch là một lượt duyệt toàn bộ dữ liệu. GPT-4 chỉ chạy 1 đến 2 epoch vì 13 nghìn tỉ token đã quá đủ cho một lượt.",
+            "Batch là một khối dữ liệu xử lý cùng lúc. LLaMA 2 dùng batch 4 triệu token, ra ~500 nghìn iteration cho 1 epoch.",
+            "Tỉ lệ vàng Chinchilla: ~20 token dữ liệu cho mỗi tham số. Thiếu thì model đói. Thừa thì cần lặp và dễ thuộc lòng.",
             "Hết RAM GPU? Dùng gradient accumulation: chia thành mini-batch, gom gradient rồi mới cập nhật. Toán học tương đương, chỉ chậm hơn.",
           ]}
         />
@@ -1029,16 +1028,16 @@ export default function EpochsBatchesInGptTraining() {
           <p>
             Muốn hiểu cặn kẽ vì sao một epoch chia thành nhiều batch, và công thức tính số
             iteration chính xác? Xem bài lý thuyết{" "}
-            <TopicLink slug="epochs-batches">Epoch, batch và iteration</TopicLink>{" "}
-            &mdash; nơi chúng ta mổ xẻ cơ chế từng bước cho một mạng nơ-ron nhỏ, trước khi
-            áp dụng cho mô hình khổng lồ như GPT.
+            <TopicLink slug="epochs-batches">Epoch, batch và iteration</TopicLink>. Bài đó
+            mổ xẻ cơ chế từng bước cho một mạng nơ-ron nhỏ, trước khi áp dụng cho model
+            khổng lồ như GPT.
           </p>
         </div>
         <div className="mt-4 flex items-center justify-center text-xs text-muted gap-2">
           <Cpu size={12} />
           <span>
-            GPT-4: 13 nghìn tỉ token, 2 tháng, hàng nghìn GPU &mdash; tất cả được điều khiển
-            bởi hai khái niệm đơn giản: epoch và batch.
+            GPT-4: 13 nghìn tỉ token, 2 tháng, hàng nghìn GPU. Tất cả được điều khiển bởi
+            hai khái niệm đơn giản: epoch và batch.
           </span>
         </div>
       </section>

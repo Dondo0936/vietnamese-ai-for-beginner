@@ -38,9 +38,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "gradient-descent-in-training",
   title: "Gradient Descent in GPT Training",
-  titleVi: "Gradient Descent trong huấn luyện mô hình",
+  titleVi: "Gradient descent chạy suốt 34 ngày để huấn luyện GPT-3",
   description:
-    "Huấn luyện GPT-3 tốn ~12 triệu USD chỉ cho tính toán, phần lớn là chạy gradient descent. Vặn thử learning rate, momentum, batch size — xem loss hội tụ, dao động hay nổ tung.",
+    "Huấn luyện GPT-3 tốn khoảng 12 triệu USD chỉ riêng phần tính toán, và phần lớn số tiền đó dồn vào gradient descent. Vặn thử learning rate, momentum, batch size để xem loss hội tụ, dao động hay nổ tung.",
   category: "neural-fundamentals",
   tags: ["gradient-descent", "optimization", "training", "application"],
   difficulty: "intermediate",
@@ -56,14 +56,14 @@ export const metadata: TopicMeta = {
   sources: [
     {
       title: "Language Models are Few-Shot Learners (GPT-3)",
-      publisher: "Brown et al. — OpenAI, NeurIPS 2020",
+      publisher: "Brown et al., OpenAI, NeurIPS 2020",
       url: "https://arxiv.org/abs/2005.14165",
       date: "2020-07",
       kind: "paper",
     },
     {
       title: "Decoupled Weight Decay Regularization (AdamW)",
-      publisher: "Loshchilov & Hutter — ICLR 2019",
+      publisher: "Loshchilov & Hutter, ICLR 2019",
       url: "https://arxiv.org/abs/1711.05101",
       date: "2019-01",
       kind: "paper",
@@ -71,21 +71,21 @@ export const metadata: TopicMeta = {
     {
       title:
         "Analyzing & Reducing the Need for Learning Rate Warmup in GPT Training",
-      publisher: "Kosson et al. — arXiv 2410.23922",
+      publisher: "Kosson et al., arXiv 2410.23922",
       url: "https://arxiv.org/abs/2410.23922",
       date: "2024-10",
       kind: "paper",
     },
     {
       title: "On the difficulty of training Recurrent Neural Networks",
-      publisher: "Pascanu et al. — ICML 2013 (gradient clipping)",
+      publisher: "Pascanu et al., ICML 2013 (gradient clipping)",
       url: "https://arxiv.org/abs/1211.5063",
       date: "2013-02",
       kind: "paper",
     },
     {
       title: "The cost of training GPT-3 and scaling laws for neural LMs",
-      publisher: "Lambda Labs — engineering blog",
+      publisher: "Lambda Labs (engineering blog)",
       url: "https://lambdalabs.com/blog/demystifying-gpt-3",
       date: "2020-06",
       kind: "engineering-blog",
@@ -101,7 +101,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   SIMULATION — toy MNIST-like binary classifier learning w* ≈ 1.5
+   SIMULATION. Toy MNIST-like binary classifier learning w* ≈ 1.5
    ──────────────────────────────────────────────────────────── */
 
 interface TrainingPoint {
@@ -191,9 +191,9 @@ function diagnoseRun(points: TrainingPoint[]): Diagnosis {
   const anyDiverged = points.some((p) => p.diverged);
   if (anyDiverged || maxLoss > first.loss * 6) {
     return {
-      label: "Phân kỳ — loss nổ tung",
+      label: "Phân kỳ. Loss nổ tung",
       accent: "#ef4444",
-      note: "Learning rate quá lớn. Bước cập nhật nhảy qua đáy thung lũng sang sườn còn dốc hơn. Trong thực tế, một run 12 triệu USD có thể hỏng vĩnh viễn kiểu này — phải rollback checkpoint và giảm η.",
+      note: "Learning rate quá lớn. Bước cập nhật nhảy qua đáy thung lũng sang sườn còn dốc hơn. Một lần huấn luyện 12 triệu USD có thể hỏng vĩnh viễn theo kiểu này. Lúc đó kỹ sư phải rollback checkpoint và giảm η.",
       icon: Flame,
       tone: "explode",
     };
@@ -206,7 +206,7 @@ function diagnoseRun(points: TrainingPoint[]): Diagnosis {
   }
   if (flips > points.length * 0.45 && final.loss > 0.2) {
     return {
-      label: "Dao động mạnh — loss nhấp nhô",
+      label: "Dao động mạnh. Loss nhấp nhô",
       accent: "#f59e0b",
       note: "Learning rate hoặc batch noise hơi to. Mô hình bước qua đáy rồi bật ngược. Giảm η hoặc tăng batch size để trung hoà noise.",
       icon: Activity,
@@ -215,18 +215,18 @@ function diagnoseRun(points: TrainingPoint[]): Diagnosis {
   }
   if (final.loss > first.loss * 0.7) {
     return {
-      label: "Plateau — loss đứng yên",
+      label: "Plateau. Loss đứng yên",
       accent: "#0ea5e9",
-      note: "Learning rate quá nhỏ. Mỗi bước nhích không đáng kể — lãng phí giờ GPU. Tăng η, hoặc thêm momentum để vượt saddle point.",
+      note: "Learning rate quá nhỏ. Mỗi bước nhích không đáng kể, tức là lãng phí giờ GPU. Tăng η, hoặc thêm momentum để vượt saddle point.",
       icon: Snowflake,
       tone: "plateau",
     };
   }
   if (final.loss < 0.2) {
     return {
-      label: "Hội tụ êm — lý tưởng",
+      label: "Hội tụ êm. Lý tưởng",
       accent: "#22c55e",
-      note: "Learning rate + momentum + batch size phối hợp tốt. Loss giảm đều, accuracy tăng đều, phân bố trọng số ổn định. Đây là tín hiệu OpenAI theo dõi suốt 34 ngày.",
+      note: "Learning rate, momentum và batch size phối hợp tốt. Loss giảm đều, độ chính xác tăng đều, phân bố trọng số ổn định. Đây là tín hiệu OpenAI theo dõi suốt 34 ngày.",
       icon: Target,
       tone: "converge",
     };
@@ -256,10 +256,10 @@ interface Preset {
 }
 
 const PRESETS: Preset[] = [
-  { key: "low", label: "Too low", desc: "η quá nhỏ — loss gần như đứng yên", color: "#0ea5e9", lr: 0.008, momentum: 0.2, batchSize: 64, icon: Snowflake },
-  { key: "good", label: "Just right", desc: "Cân bằng — loss giảm êm, accuracy tăng đều", color: "#22c55e", lr: 0.08, momentum: 0.85, batchSize: 64, icon: Target },
-  { key: "high", label: "Too high", desc: "η hơi lớn — loss dao động quanh đáy", color: "#f59e0b", lr: 0.45, momentum: 0.9, batchSize: 16, icon: Activity },
-  { key: "diverge", label: "Diverge", desc: "η quá lớn + momentum cao — loss nổ", color: "#ef4444", lr: 1.1, momentum: 0.95, batchSize: 8, icon: Flame },
+  { key: "low", label: "Too low", desc: "η quá nhỏ. Loss gần như đứng yên", color: "#0ea5e9", lr: 0.008, momentum: 0.2, batchSize: 64, icon: Snowflake },
+  { key: "good", label: "Just right", desc: "Cân bằng. Loss giảm êm, độ chính xác tăng đều", color: "#22c55e", lr: 0.08, momentum: 0.85, batchSize: 64, icon: Target },
+  { key: "high", label: "Too high", desc: "η hơi lớn. Loss dao động quanh đáy", color: "#f59e0b", lr: 0.45, momentum: 0.9, batchSize: 16, icon: Activity },
+  { key: "diverge", label: "Diverge", desc: "η quá lớn cộng momentum cao. Loss nổ", color: "#ef4444", lr: 1.1, momentum: 0.95, batchSize: 8, icon: Flame },
 ];
 
 /* ────────────────────────────────────────────────────────────
@@ -275,25 +275,25 @@ export default function GradientDescentInTraining() {
       {/* ━━━ HERO ━━━ */}
       <ApplicationHero parentTitleVi="Gradient Descent" topicSlug={metadata.slug}>
         <p>
-          Tháng 6 năm 2020, OpenAI công bố <strong>GPT-3</strong> — mô hình
-          ngôn ngữ 175 tỉ tham số. Con số ấn tượng không kém: theo Lambda
-          Labs, chi phí tính toán để huấn luyện một lần là{" "}
-          <strong>khoảng 12 triệu USD</strong>. Phần lớn số tiền đó không tiêu
-          vào kiến trúc sang trọng. Nó tiêu vào một việc duy nhất, lặp lại
-          hàng triệu lần trên 1.024 GPU V100.
+          Tháng 6 năm 2020, OpenAI công bố <strong>GPT-3</strong>, mô hình
+          ngôn ngữ 175 tỉ tham số. Theo Lambda Labs, chi phí tính toán để
+          huấn luyện một lần rơi vào{" "}
+          <strong>khoảng 12 triệu USD</strong>. Phần lớn số tiền đó không
+          chảy vào kiến trúc sang trọng. Nó chảy vào một việc duy nhất, lặp
+          lại hàng triệu lần trên 1.024 GPU V100.
         </p>
         <p>
-          Việc đó tên là <strong>gradient descent</strong> — thuật toán hỏi
-          &ldquo;nếu ta nhích trọng số này xuống một chút, loss giảm bao
-          nhiêu?&rdquo; rồi trả lời bằng một bước rất nhỏ về phía đáy thung
-          lũng mất mát. Lặp vài trăm triệu lần, mô hình đi từ ngẫu nhiên hoàn
-          toàn tới trả lời được câu hỏi tiếng Việt. Tại sao OpenAI chọn thuật
-          toán đơn giản này thay vì gì đó kỳ diệu hơn?
+          Việc duy nhất đó được gọi là <strong>gradient descent</strong>.
+          Thuật toán hỏi &ldquo;nếu ta nhích trọng số này xuống một chút,
+          loss giảm bao nhiêu?&rdquo; rồi trả lời bằng một bước rất nhỏ về
+          phía đáy thung lũng mất mát. Lặp vài trăm triệu lần, mô hình đi từ
+          ngẫu nhiên hoàn toàn tới trả lời được câu hỏi tiếng Việt. Tại sao
+          OpenAI chọn thuật toán mộc mạc này thay vì một thứ kỳ diệu hơn?
         </p>
 
         <div className="not-prose my-4 rounded-xl border border-border bg-card p-4 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-tertiary">
-            Chi phí của một run gradient descent (ước lượng GPT-3)
+            Chi phí của một lần huấn luyện gradient descent (ước lượng GPT-3)
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
@@ -315,7 +315,7 @@ export default function GradientDescentInTraining() {
           được với bất kỳ số chiều (kể cả 175 tỉ), và có nhiều biến thể
           (AdamW, momentum, learning-rate schedule) giúp ổn định khi scale.
           Bài này bạn sẽ tự vặn learning rate, momentum, batch size của một
-          mô hình toy và xem loss, accuracy, phân bố trọng số đổi ra sao.
+          mô hình nhỏ và xem loss, độ chính xác, phân bố trọng số đổi ra sao.
         </p>
       </ApplicationHero>
 
@@ -323,16 +323,16 @@ export default function GradientDescentInTraining() {
       <ApplicationProblem topicSlug={metadata.slug}>
         <p>
           Bề mặt mất mát (loss surface) của GPT-3 sống trong không gian 175
-          tỉ chiều. Bạn không thể &ldquo;nhìn&rdquo; nó, nhưng OpenAI phải
-          tìm một điểm thấp trong đó, bằng cách chỉ tính gradient — hướng
-          dốc nhất — tại vị trí hiện tại.
+          tỉ chiều. Bạn không thể &ldquo;nhìn&rdquo; nó. Vậy mà OpenAI phải
+          tìm một điểm thấp trong đó, bằng cách chỉ tính gradient (hướng dốc
+          nhất) tại vị trí hiện tại.
         </p>
 
         <div className="not-prose my-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { title: "Saddle point", desc: "Điểm yên ngựa: gradient gần 0 nhưng không phải đáy. SGD thuần dễ kẹt. Momentum giúp trượt qua.", color: "#8b5cf6", icon: Mountain },
-            { title: "Noisy gradient", desc: "Mỗi batch chỉ vài triệu token. Gradient trên batch lệch trung bình thật. Batch to → ít nhiễu nhưng đắt.", color: "#3b82f6", icon: Wind },
-            { title: "Exploding loss", desc: "Một batch dị thường có thể đẩy gradient lên 1000×. Không clip, 34 ngày công sức tan theo một bước.", color: "#ef4444", icon: Flame },
+            { title: "Noisy gradient", desc: "Mỗi batch chỉ vài triệu token. Gradient trên batch lệch trung bình thật. Batch lớn thì ít nhiễu nhưng đắt.", color: "#3b82f6", icon: Wind },
+            { title: "Exploding loss", desc: "Một batch dị thường có thể đẩy gradient lên 1000 lần. Không clip, 34 ngày công sức tan theo một bước.", color: "#ef4444", icon: Flame },
           ].map((card) => {
             const Icon = card.icon;
             return (
@@ -348,12 +348,12 @@ export default function GradientDescentInTraining() {
         </div>
 
         <p>
-          Bài toán của OpenAI không phải &ldquo;tìm thuật toán mới&rdquo;. Là{" "}
-          <strong>giữ gradient descent ổn định</strong> qua 300 tỉ token dữ
-          liệu, trên 1.024 GPU, trong 34 ngày, với chi phí 12 triệu USD. Sai
-          learning rate 3× có thể tốn hàng triệu USD. Vì thế mỗi
-          hyperparameter — η, β₁, β₂, batch size, clip threshold — đều được
-          chọn từ hàng trăm thí nghiệm trên mô hình nhỏ.
+          Bài toán của OpenAI không phải &ldquo;tìm thuật toán mới&rdquo;.
+          Bài toán là <strong>giữ gradient descent ổn định</strong> qua 300
+          tỉ token dữ liệu, trên 1.024 GPU, trong 34 ngày, với chi phí 12
+          triệu USD. Sai learning rate 3 lần có thể tốn hàng triệu USD. Vì
+          thế mỗi hyperparameter (η, β₁, β₂, batch size, clip threshold)
+          đều được chọn từ hàng trăm thí nghiệm trên mô hình nhỏ.
         </p>
       </ApplicationProblem>
 
@@ -361,10 +361,10 @@ export default function GradientDescentInTraining() {
       <ApplicationMechanism parentTitleVi="Gradient Descent" topicSlug={metadata.slug}>
         <Beat step={1}>
           <p>
-            <strong>Lấy một mini-batch ngẫu nhiên.</strong> Thay vì dùng toàn
-            bộ 300 tỉ token cho mỗi bước (không thể nào), OpenAI chia dữ liệu
-            thành các mini-batch cỡ 3,2 triệu token. Mỗi GPU xử lý một phần,
-            gradient cục bộ được tổng hợp qua all-reduce.
+            <strong>Lấy một mini-batch ngẫu nhiên.</strong> Dùng toàn bộ 300
+            tỉ token cho mỗi bước là không thể. Thay vào đó, OpenAI chia dữ
+            liệu thành các mini-batch cỡ 3,2 triệu token. Mỗi GPU xử lý một
+            phần, gradient cục bộ được tổng hợp qua all-reduce.
           </p>
           <BeatVisualToggle active={activeBeat === 1} onClick={() => setActiveBeat(activeBeat === 1 ? 0 : 1)} />
           <BeatVisual beatIndex={1} activeBeat={activeBeat}><MiniBatchSketch /></BeatVisual>
@@ -374,8 +374,8 @@ export default function GradientDescentInTraining() {
           <p>
             <strong>Tính gradient qua backprop.</strong> Với mini-batch hiện
             tại, tính loss rồi lan truyền ngược qua 96 lớp Transformer để có
-            gradient của mọi tham số. Đây là bước đắt nhất — chiếm phần lớn
-            chi phí GPU của run 12 triệu USD.
+            gradient của mọi tham số. Đây là bước đắt nhất, chiếm phần lớn
+            chi phí GPU của lần huấn luyện 12 triệu USD.
           </p>
           <BeatVisualToggle active={activeBeat === 2} onClick={() => setActiveBeat(activeBeat === 2 ? 0 : 2)} />
           <BeatVisual beatIndex={2} activeBeat={activeBeat}><BackpropSketch /></BeatVisual>
@@ -383,12 +383,13 @@ export default function GradientDescentInTraining() {
 
         <Beat step={3}>
           <p>
-            <strong>AdamW cập nhật trọng số.</strong> Không dùng SGD thuần.
-            OpenAI dùng AdamW: giữ trung bình động của gradient (momentum) và
-            của gradient bình phương (variance). Mỗi trọng số có bước thích
-            ứng riêng — trọng số nào gradient lớn bị rút bước, nhỏ được đẩy
-            nhanh. Weight decay tách riêng khỏi gradient giúp mô hình không{" "}
-            &ldquo;bơm&rdquo; trọng số lên quá lớn.
+            <strong>AdamW cập nhật trọng số.</strong> OpenAI không dùng SGD
+            thuần. Họ dùng AdamW, vốn giữ trung bình động của gradient
+            (momentum) và của gradient bình phương (variance). Mỗi trọng số
+            có bước thích ứng riêng: trọng số nào gradient lớn thì bị rút
+            bước, nhỏ thì được đẩy nhanh. Weight decay tách riêng khỏi
+            gradient giúp mô hình không &ldquo;bơm&rdquo; trọng số lên quá
+            lớn.
           </p>
           <BeatVisualToggle active={activeBeat === 3} onClick={() => setActiveBeat(activeBeat === 3 ? 0 : 3)} />
           <BeatVisual beatIndex={3} activeBeat={activeBeat}><AdamWSketch /></BeatVisual>
@@ -398,8 +399,8 @@ export default function GradientDescentInTraining() {
           <p>
             <strong>Clip gradient, rồi cập nhật.</strong> Trước khi áp bước,
             cắt gradient sao cho norm không vượt 1,0. Nếu một batch dị
-            thường tạo gradient khổng lồ, clip biến nó về cỡ bình thường.
-            Đây là phanh cứu cả run khỏi phân kỳ.
+            thường tạo gradient khổng lồ, clip kéo nó về cỡ bình thường.
+            Đây là phanh cứu cả lần huấn luyện khỏi phân kỳ.
           </p>
           <BeatVisualToggle active={activeBeat === 4} onClick={() => setActiveBeat(activeBeat === 4 ? 0 : 4)} />
           <BeatVisual beatIndex={4} activeBeat={activeBeat}><ClipSketch /></BeatVisual>
@@ -407,16 +408,16 @@ export default function GradientDescentInTraining() {
 
         <Beat step={5}>
           <p>
-            <strong>Lặp lại — cho đến khi loss không giảm nữa.</strong> Vòng
-            lặp trên chạy khoảng 500 tỉ lần cho GPT-3. Theo dõi loss +
-            accuracy + phân bố trọng số sau vài nghìn bước. Nếu đúng hướng,
+            <strong>Lặp lại cho đến khi loss không giảm nữa.</strong> Vòng
+            lặp trên chạy khoảng 500 tỉ lần cho GPT-3. Theo dõi loss, độ
+            chính xác và phân bố trọng số sau vài nghìn bước. Nếu đúng hướng,
             giữ nguyên. Nếu lệch, rollback checkpoint và điều chỉnh η.
           </p>
           <BeatVisualToggle active={activeBeat === 5} onClick={() => setActiveBeat(activeBeat === 5 ? 0 : 5)} />
           <BeatVisual beatIndex={5} activeBeat={activeBeat}><LoopSketch /></BeatVisual>
         </Beat>
 
-        {/* ── REVEAL — LIVE SIMULATOR ── */}
+        {/* REVEAL. Live simulator */}
         <li className="mt-8">
           <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-5 space-y-5">
             <div className="flex items-start gap-3">
@@ -425,13 +426,13 @@ export default function GradientDescentInTraining() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-foreground">
-                  Simulator: huấn luyện mô hình toy phân loại MNIST
+                  Simulator: huấn luyện mô hình nhỏ phân loại MNIST
                 </h3>
                 <p className="text-xs text-muted leading-relaxed mt-1">
                   Mô hình nhỏ (một trọng số w, mục tiêu w* ≈ 1,5) học phân
-                  loại nhị phân có nhiễu. Vặn learning rate, momentum, batch
-                  size — xem loss, accuracy, phân bố trọng số đổi qua 50
-                  epoch giả lập.
+                  loại nhị phân có nhiễu. Vặn learning rate, momentum và
+                  batch size để xem loss, độ chính xác, phân bố trọng số đổi
+                  qua 50 epoch giả lập.
                 </p>
               </div>
             </div>
@@ -469,16 +470,16 @@ export default function GradientDescentInTraining() {
             />
 
             <Callout variant="insight" title="Ba biểu đồ, một câu chuyện">
-              Loss cho biết mô hình có đi xuống đáy. Accuracy cho biết nó có
-              học phân loại (đôi khi loss giảm nhưng accuracy không tăng —
-              dấu hiệu overfitting). Weight histogram cho biết trọng số có
-              đang bùng nổ hoặc co về 0 — chỉ số sức khoẻ mà kỹ sư của OpenAI
-              theo dõi suốt 34 ngày.
+              Loss cho biết mô hình có đi xuống đáy. Độ chính xác cho biết
+              nó có học phân loại (đôi khi loss giảm nhưng độ chính xác
+              không tăng, đó là dấu hiệu overfitting). Weight histogram cho
+              biết trọng số có đang bùng nổ hoặc co về 0. Đó là chỉ số sức
+              khoẻ mà kỹ sư của OpenAI theo dõi suốt 34 ngày.
             </Callout>
           </div>
         </li>
 
-        {/* ── DEEPEN — training quirks ── */}
+        {/* DEEPEN. Training quirks */}
         <li className="mt-6">
           <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
             <div className="flex items-center gap-3">
@@ -498,29 +499,29 @@ export default function GradientDescentInTraining() {
 
             <StepReveal labels={["1 · Warmup", "2 · Learning-rate decay", "3 · Gradient clipping"]}>
               <QuirkCard
-                title="Warmup — khởi động chậm vài nghìn bước đầu"
-                tagline="η tăng tuyến tính từ gần 0 tới đỉnh trong ~375 triệu token đầu"
+                title="Warmup. Khởi động chậm vài nghìn bước đầu"
+                tagline="η tăng tuyến tính từ gần 0 tới đỉnh trong khoảng 375 triệu token đầu"
                 color="#0ea5e9"
                 icon={Thermometer}
-                body="Đầu huấn luyện, trọng số là số ngẫu nhiên, gradient có thể lệch cỡ lớn. Nếu cho η đỉnh ngay bước 1, bước cập nhật đầu có thể làm hỏng hệ thống trước cả khi nó ổn định. Warmup nâng dần η qua vài nghìn bước đầu — như để xe ấm máy trước khi đạp ga."
+                body="Đầu huấn luyện, trọng số là số ngẫu nhiên, gradient có thể lệch cỡ lớn. Nếu cho η chạm đỉnh ngay bước 1, bước cập nhật đầu có thể làm hỏng hệ thống trước cả khi nó ổn định. Warmup nâng dần η qua vài nghìn bước đầu, giống như để xe ấm máy trước khi đạp ga."
               >
                 <WarmupSketch />
               </QuirkCard>
               <QuirkCard
-                title="Learning-rate decay — giảm dần về cuối"
-                tagline="η giảm theo cosine xuống ~10% giá trị đỉnh cuối run"
+                title="Learning-rate decay. Giảm dần về cuối"
+                tagline="η giảm theo cosine xuống còn khoảng 10% giá trị đỉnh ở cuối lần huấn luyện"
                 color="#22c55e"
                 icon={TrendingDown}
-                body="Cuối huấn luyện, mô hình đã gần đáy. Bước nhảy to lúc này sẽ vọt qua đáy. Decay làm η nhỏ dần — mô hình &ldquo;rón rén&rdquo; vào đáy. Cosine schedule (hình nửa sóng) là chuẩn cho GPT-3, GPT-4, LLaMA."
+                body="Cuối huấn luyện, mô hình đã gần đáy. Bước nhảy to lúc này sẽ vọt qua đáy. Decay làm η nhỏ dần để mô hình &ldquo;rón rén&rdquo; vào đáy. Cosine schedule (hình nửa sóng) là chuẩn cho GPT-3, GPT-4, LLaMA."
               >
                 <DecaySketch />
               </QuirkCard>
               <QuirkCard
-                title="Gradient clipping — phanh chống nổ"
-                tagline="Cắt ngưỡng norm tại 1,0 — một batch bệnh không phá cả run"
+                title="Gradient clipping. Phanh chống nổ"
+                tagline="Cắt ngưỡng norm tại 1,0. Một batch bệnh không phá nổi cả lần huấn luyện"
                 color="#ef4444"
                 icon={Scissors}
-                body="Một batch với dữ liệu dị thường có thể đẩy gradient lên 1000× bình thường. Không clip, một bước kiểu này quẳng trọng số sang vùng loss vô cùng. Clip bó norm gradient về 1,0 trước khi áp bước. Đây là lý do run 12 triệu USD của OpenAI không vỡ giữa chừng."
+                body="Một batch với dữ liệu dị thường có thể đẩy gradient lên 1000 lần bình thường. Không clip, một bước kiểu này quẳng trọng số sang vùng loss vô cùng. Clip bó norm gradient về 1,0 trước khi áp bước. Đây là lý do lần huấn luyện 12 triệu USD của OpenAI không vỡ giữa chừng."
               >
                 <ClippingCurveSketch />
               </QuirkCard>
@@ -528,11 +529,11 @@ export default function GradientDescentInTraining() {
           </div>
         </li>
 
-        {/* ── CHALLENGE ── */}
+        {/* CHALLENGE */}
         <li className="mt-6">
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Activity className="h-4 w-4 text-accent" /> Chẩn đoán 3 loss
+              <Activity className="h-4 w-4 text-accent" /> Chẩn đoán ba loss
               curve kỳ lạ
             </h3>
             <p className="text-xs text-muted leading-relaxed">
@@ -541,39 +542,39 @@ export default function GradientDescentInTraining() {
             </p>
 
             <InlineChallenge
-              question="Biểu đồ 1 — loss jagged (răng cưa): giảm được vài bước rồi nhảy tung lên cao, rồi lại giảm, lặp đi lặp lại suốt 20 epoch. Accuracy cũng nhấp nhô. Nguyên nhân khả dĩ nhất?"
+              question="Biểu đồ 1, loss jagged (răng cưa): giảm được vài bước rồi nhảy tung lên cao, rồi lại giảm, lặp đi lặp lại suốt 20 epoch. Độ chính xác cũng nhấp nhô. Nguyên nhân khả dĩ nhất?"
               options={[
-                "Batch size quá to → gradient chính xác quá → mô hình bị kẹt",
-                "Learning rate hơi lớn hoặc batch size quá nhỏ → mỗi bước noise cao + bước to → bước qua đáy rồi bật ngược",
-                "Dữ liệu bị lỗi — phải dừng run và làm sạch dữ liệu",
-                "Gradient clipping đã bị tắt — cần bật lại",
+                "Batch size quá to, gradient chính xác quá, mô hình bị kẹt",
+                "Learning rate hơi lớn hoặc batch size quá nhỏ, nên mỗi bước có noise cao cộng bước to, bước qua đáy rồi bật ngược",
+                "Dữ liệu bị lỗi, phải dừng huấn luyện và làm sạch dữ liệu",
+                "Gradient clipping đã bị tắt, cần bật lại",
               ]}
               correct={1}
-              explanation="Loss răng cưa mãn tính là dấu hiệu kinh điển của dao động. Mô hình bước qua đáy rồi bật ngược lại. Giảm η khoảng 2× hoặc tăng batch size để noise gradient thấp hơn. Nếu là lỗi dữ liệu, curve sẽ lệch hẳn, không đối xứng."
+              explanation="Loss răng cưa mãn tính là dấu hiệu kinh điển của dao động. Mô hình bước qua đáy rồi bật ngược lại. Giảm η khoảng 2 lần hoặc tăng batch size để noise gradient thấp hơn. Nếu là lỗi dữ liệu, curve sẽ lệch hẳn, không đối xứng."
             />
 
             <InlineChallenge
-              question="Biểu đồ 2 — loss plateau (nằm ngang): giảm rất nhanh trong 5 epoch đầu rồi phẳng lì 30 epoch tiếp theo, không nhúc nhích. Accuracy kẹt ở 62%. Bước nào nên thử TRƯỚC?"
+              question="Biểu đồ 2, loss plateau (nằm ngang): giảm rất nhanh trong 5 epoch đầu rồi phẳng lì 30 epoch tiếp theo, không nhúc nhích. Độ chính xác kẹt ở 62%. Bước nào nên thử TRƯỚC?"
               options={[
-                "Khởi động lại run từ đầu với η lớn hơn 10 lần",
-                "Bật momentum (β₁) từ 0,0 lên 0,9 và / hoặc dùng warm restart — tăng η một bậc giữa chừng",
+                "Khởi động lại từ đầu với η lớn hơn 10 lần",
+                "Bật momentum (β₁) từ 0,0 lên 0,9 hoặc dùng warm restart, tức là tăng η một bậc giữa chừng",
                 "Tăng epoch lên gấp đôi và chờ",
                 "Tắt weight decay",
               ]}
               correct={1}
-              explanation="Plateau giữa run thường là saddle point — gradient gần bằng 0, SGD thuần không có lực đẩy. Momentum tích luỹ hướng cũ nên đẩy mô hình vượt qua saddle. Tăng η &ldquo;một bậc&rdquo; (warm restart) cũng là kỹ thuật thực tế."
+              explanation="Plateau giữa lần huấn luyện thường là saddle point: gradient gần bằng 0 nên SGD thuần không có lực đẩy. Momentum tích luỹ hướng cũ nên đẩy mô hình vượt qua saddle. Tăng η &ldquo;một bậc&rdquo; (warm restart) cũng là kỹ thuật thực tế."
             />
 
             <InlineChallenge
-              question="Biểu đồ 3 — loss = NaN sau epoch 12: loss giảm đẹp tới epoch 11, sang epoch 12 thì toàn biểu đồ đầy NaN. Team nên làm gì?"
+              question="Biểu đồ 3, loss = NaN sau epoch 12: loss giảm đẹp tới epoch 11, sang epoch 12 thì toàn biểu đồ đầy NaN. Team nên làm gì?"
               options={[
-                "Chờ — thường NaN sẽ tự biến mất sau vài epoch",
-                "Rollback tới checkpoint epoch 10, giảm learning rate khoảng 3 lần, bật gradient clipping nếu chưa có, khởi động lại",
+                "Chờ. Thường NaN sẽ tự biến mất sau vài epoch",
+                "Rollback tới checkpoint epoch 10, giảm learning rate khoảng 3 lần, bật gradient clipping nếu chưa có, rồi khởi động lại",
                 "Đổi kiến trúc mô hình sang thứ khác",
                 "Xoá toàn bộ dữ liệu và bắt đầu lại từ đầu",
               ]}
               correct={1}
-              explanation="NaN gần như luôn là gradient nổ — một batch dị thường tạo gradient khổng lồ, nhân với η lớn thành bước vô cùng. Ba biện pháp chuẩn: (1) rollback checkpoint trước khi nổ, (2) giảm η, (3) siết clip threshold. Không bao giờ &ldquo;chờ&rdquo; — NaN không tự khỏi, nó lan ra toàn bộ trọng số."
+              explanation="NaN gần như luôn là gradient nổ: một batch dị thường tạo gradient khổng lồ, nhân với η lớn thành bước vô cùng. Ba biện pháp chuẩn: (1) rollback checkpoint trước khi nổ, (2) giảm η, (3) siết clip threshold. Không bao giờ &ldquo;chờ&rdquo;, vì NaN không tự khỏi mà lan ra toàn bộ trọng số."
             />
           </div>
         </li>
@@ -589,7 +590,7 @@ export default function GradientDescentInTraining() {
               <CheatCard title="Loss giảm êm" tone="success" body="Giữ nguyên. Theo dõi accuracy và weight histogram để phát hiện sớm vấn đề. Đừng vội giảm η cho tới khi plateau rõ ràng." />
               <CheatCard title="Loss răng cưa, dao động" tone="warning" body="Giảm η 1,5×–2×, hoặc tăng batch size 2× để giảm noise. Nếu vẫn dao động, tăng momentum để bước đi &ldquo;nặng&rdquo; hơn." />
               <CheatCard title="Loss plateau, không giảm" tone="info" body="Có thể saddle point: bật / tăng momentum. Có thể η quá nhỏ: nhân η cho 2–3. Có thể dataset học hết: lúc dừng huấn luyện." />
-              <CheatCard title="Loss tăng dần (chưa NaN)" tone="warning" body="η hơi lớn — mỗi bước làm loss tăng. Giảm η ngay, hoặc rollback checkpoint. Nếu mới tăng vài bước, bật warmup có thể xử lý." />
+              <CheatCard title="Loss tăng dần (chưa NaN)" tone="warning" body="η hơi lớn, mỗi bước làm loss tăng. Giảm η ngay, hoặc rollback checkpoint. Nếu mới tăng vài bước, bật warmup có thể xử lý." />
               <CheatCard title="Loss nổ / NaN đột ngột" tone="danger" body="Rollback checkpoint trước khi nổ. Giảm η 3–5×. Bật / siết gradient clipping. Kiểm tra batch gần nhất có bất thường không." />
               <CheatCard title="Accuracy tăng, loss phẳng" tone="info" body="Cross-entropy và độ chính xác đo hai thứ khác nhau. Mô hình vẫn học đúng, chỉ &ldquo;tự tin&rdquo; chưa đủ. Thường là tín hiệu ổn." />
             </div>
@@ -620,9 +621,9 @@ export default function GradientDescentInTraining() {
       {/* ━━━ METRICS ━━━ */}
       <ApplicationMetrics sources={metadata.sources!} topicSlug={metadata.slug}>
         <Metric value="GPT-3 huấn luyện trên 300 tỉ token, dùng AdamW với β₁ = 0,9, β₂ = 0,95, weight decay = 0,1" sourceRef={1} />
-        <Metric value="Peak learning rate cho GPT-3 là 6×10⁻⁵ — warmup tuyến tính trong 375 triệu token đầu, rồi decay cosine tới 10% giá trị đỉnh" sourceRef={1} />
+        <Metric value="Peak learning rate cho GPT-3 là 6×10⁻⁵. Warmup tuyến tính trong 375 triệu token đầu, rồi decay cosine tới 10% giá trị đỉnh" sourceRef={1} />
         <Metric value="Chi phí tính toán huấn luyện GPT-3 ước lượng ~12 triệu USD, chạy trên 1.024 GPU V100 trong khoảng 34 ngày" sourceRef={5} />
-        <Metric value="AdamW (Loshchilov & Hutter 2019) cải thiện generalization so với Adam chuẩn bằng cách tách weight decay khỏi gradient — tiêu chuẩn vàng cho Transformer" sourceRef={2} />
+        <Metric value="AdamW (Loshchilov & Hutter 2019) cải thiện generalization so với Adam chuẩn bằng cách tách weight decay khỏi gradient. Đây là tiêu chuẩn vàng cho Transformer" sourceRef={2} />
         <Metric value="Warmup ~2.000 bước đầu giảm đáng kể rủi ro phân kỳ; nghiên cứu 2024 chỉ ra có thể rút ngắn nếu khởi tạo trọng số cẩn thận" sourceRef={3} />
         <Metric value="Gradient clipping (Pascanu et al. 2013) là biện pháp ngăn gradient nổ; threshold 1,0 được dùng phổ biến cho LLM lớn" sourceRef={4} />
       </ApplicationMetrics>
@@ -633,7 +634,7 @@ export default function GradientDescentInTraining() {
           Không có gradient descent, không có cách nào điều chỉnh 175 tỉ
           trọng số theo một tín hiệu loss duy nhất. Mọi kỹ thuật thay thế
           (grid search, đạo hàm số, tiến hoá) đều có độ phức tạp tăng theo số
-          chiều — bất khả thi ở quy mô tỉ tham số.
+          chiều, tức là bất khả thi ở quy mô tỉ tham số.
         </p>
         <p>
           Không có AdamW, mô hình sẽ cần tinh chỉnh learning rate thủ công
@@ -646,9 +647,8 @@ export default function GradientDescentInTraining() {
           <strong>Bài học rút ra:</strong> gradient descent không phải công
           thức kỳ diệu. Nó đơn giản đến nỗi một thuật toán 70 năm tuổi vẫn
           làm nền tảng cho GPT-3, GPT-4 và mọi mô hình sau đó. Cái khó nằm ở
-          việc giữ nó ổn định suốt 34 ngày trên 1.024 GPU — và đó là nơi
-          AdamW, warmup, decay, clipping cộng dồn thành 12 triệu USD tiêu
-          đúng chỗ.
+          việc giữ nó ổn định suốt 34 ngày trên 1.024 GPU. Đó là chỗ AdamW,
+          warmup, decay, clipping cộng dồn thành 12 triệu USD tiêu đúng chỗ.
         </p>
       </ApplicationCounterfactual>
     </ApplicationLayout>
@@ -668,7 +668,7 @@ function SimulatorSlider({ preset, onManualChange }: SimulatorSliderProps) {
   return (
     <div key={preset.key} onPointerDown={onManualChange}>
       <SliderGroup
-        title="Hyperparameter — thả tay vặn thử"
+        title="Hyperparameter: thả tay vặn thử"
         sliders={[
           { key: "lr", label: "Learning rate η", min: 0.001, max: 1.5, step: 0.001, defaultValue: preset.lr },
           { key: "momentum", label: "Momentum β", min: 0, max: 0.99, step: 0.01, defaultValue: preset.momentum },
@@ -908,7 +908,7 @@ function MiniBatchSketch() {
 function BackpropSketch() {
   return (
     <svg viewBox="0 0 480 120" className="w-full" role="img" aria-label="Backprop truyền gradient ngược qua 96 lớp Transformer">
-      <title>Backprop — gradient chảy ngược qua 96 lớp của GPT-3.</title>
+      <title>Backprop. Gradient chảy ngược qua 96 lớp của GPT-3.</title>
       <defs>
         <marker id="bp-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
           <path d="M 0 0 L 8 4 L 0 8 z" fill="#8b5cf6" />
@@ -939,7 +939,7 @@ function BackpropSketch() {
 function AdamWSketch() {
   return (
     <svg viewBox="0 0 480 150" className="w-full" role="img" aria-label="AdamW dùng momentum và variance để cập nhật trọng số">
-      <title>AdamW — bước cập nhật thích ứng cho mỗi trọng số.</title>
+      <title>AdamW. Bước cập nhật thích ứng cho mỗi trọng số.</title>
       <defs>
         <marker id="aw-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
           <path d="M 0 0 L 8 4 L 0 8 z" fill="var(--text-secondary)" />
@@ -960,7 +960,7 @@ function AdamWSketch() {
         Trọng số nào gradient to sẽ bị rút ngắn bước; gradient nhỏ được đẩy nhanh hơn.
       </text>
       <text x={240} y={128} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)">
-        Weight decay áp riêng — đây là &ldquo;W&rdquo; trong AdamW.
+        Weight decay áp riêng. Đó là &ldquo;W&rdquo; trong AdamW.
       </text>
     </svg>
   );
@@ -969,7 +969,7 @@ function AdamWSketch() {
 function ClipSketch() {
   return (
     <svg viewBox="0 0 480 160" className="w-full" role="img" aria-label="Gradient clipping cắt bớt norm gradient quá lớn">
-      <title>Gradient clipping — chặn gradient vượt ngưỡng về bằng 1,0.</title>
+      <title>Gradient clipping. Chặn gradient vượt ngưỡng về bằng 1,0.</title>
       <line x1={30} y1={80} x2={450} y2={80} stroke="var(--border)" strokeWidth={1} />
       <line x1={240} y1={30} x2={240} y2={140} stroke="var(--border)" strokeWidth={1} />
       <text x={250} y={26} fontSize={11} fill="var(--text-tertiary)">gradient norm</text>
@@ -1067,7 +1067,7 @@ function WarmupSketch() {
 
   return (
     <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Learning rate tăng tuyến tính trong giai đoạn warmup">
-      <title>Warmup — η tăng tuyến tính từ 0 tới đỉnh trong ~375 triệu token đầu.</title>
+      <title>Warmup. η tăng tuyến tính từ 0 tới đỉnh trong khoảng 375 triệu token đầu.</title>
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <rect x={toPX(0)} y={20} width={toPX(warmupEnd) - toPX(0)} height={plotH - 44} fill="#0ea5e9" opacity={0.08} />
@@ -1095,7 +1095,7 @@ function DecaySketch() {
 
   return (
     <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Learning rate decay theo cosine xuống 10% giá trị đỉnh">
-      <title>Cosine decay — η giảm dần về cuối huấn luyện.</title>
+      <title>Cosine decay. η giảm dần về cuối huấn luyện.</title>
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={toPY(peak * 0.1)} x2={plotW - 20} y2={toPY(peak * 0.1)} stroke="#22c55e" strokeWidth={1} strokeDasharray="3,3" opacity={0.6} />

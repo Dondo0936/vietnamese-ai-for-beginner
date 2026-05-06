@@ -35,7 +35,7 @@ export const metadata: TopicMeta = {
   title: "Calculus for Backpropagation in Model Training",
   titleVi: "Giải tích trong huấn luyện mô hình",
   description:
-    "Bên trong một vòng lặp huấn luyện: weights ngẫu nhiên → dự đoán → loss → gradient → cập nhật. Mỗi bước là một phép tính đạo hàm.",
+    "Bên trong một vòng lặp huấn luyện. Weights ngẫu nhiên, dự đoán, loss, gradient, cập nhật. Mỗi bước là một phép tính đạo hàm.",
   category: "math-foundations",
   tags: ["calculus", "backpropagation", "training-loop", "learning-rate"],
   difficulty: "intermediate",
@@ -58,7 +58,7 @@ export const metadata: TopicMeta = {
     },
     {
       title: "LLaMA: Open and Efficient Foundation Language Models",
-      publisher: "Hugo Touvron et al. — Meta AI, 2023",
+      publisher: "Hugo Touvron et al., Meta AI, 2023",
       url: "https://arxiv.org/abs/2302.13971",
       date: "2023-02",
       kind: "paper",
@@ -66,7 +66,7 @@ export const metadata: TopicMeta = {
     {
       title:
         "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM",
-      publisher: "Deepak Narayanan et al. — SC 2021",
+      publisher: "Deepak Narayanan et al., SC 2021",
       url: "https://arxiv.org/abs/2104.04473",
       date: "2021-11",
       kind: "paper",
@@ -82,7 +82,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   SIMULATION — một vòng lặp huấn luyện đơn giản hoá
+   SIMULATION: một vòng lặp huấn luyện đơn giản hoá
    Loss: L(w) = (w − 2)² + 0.2 quanh một minimum tại w = 2.
    Update: w ← w − η · dL/dw = w − η · 2(w − 2)
    ──────────────────────────────────────────────────────────── */
@@ -137,10 +137,10 @@ function classifyRun(points: EpochPoint[]): {
 
   if (maxLoss > firstLoss * 5) {
     return {
-      label: "Phân kỳ — loss nổ tung",
+      label: "Phân kỳ: loss nổ tung",
       tone: "explode",
       accent: "#ef4444",
-      note: "Learning rate quá lớn: bước cập nhật nhảy QUA đáy thung lũng, sang sườn bên kia còn DỐC hơn. Lặp lại → loss tăng lên vô cùng.",
+      note: "Learning rate quá lớn. Bước cập nhật nhảy QUA đáy thung lũng, sang sườn bên kia còn DỐC hơn. Lặp lại, loss tăng lên vô cùng.",
       icon: Flame,
     };
   }
@@ -157,7 +157,7 @@ function classifyRun(points: EpochPoint[]): {
       label: "Dao động mạnh",
       tone: "oscillate",
       accent: "#f59e0b",
-      note: "Learning rate hơi to: mỗi bước bước QUA minimum rồi bật ngược, rồi lại bước qua… Loss giảm nhưng nảy tưng tưng quanh đáy thay vì yên vị.",
+      note: "Learning rate hơi to. Mỗi bước nhảy QUA minimum rồi bật ngược, rồi lại nhảy qua. Loss giảm nhưng nảy tưng tưng quanh đáy thay vì yên vị.",
       icon: Wind,
     };
   }
@@ -167,7 +167,7 @@ function classifyRun(points: EpochPoint[]): {
       label: "Hội tụ êm",
       tone: "converge",
       accent: "#22c55e",
-      note: "Learning rate vừa phải: mỗi bước rút ngắn khoảng cách tới đáy thung lũng, loss giảm đều và dừng yên ở minimum.",
+      note: "Learning rate vừa phải. Mỗi bước rút ngắn khoảng cách tới đáy thung lũng, loss giảm đều và dừng yên ở minimum.",
       icon: Target,
     };
   }
@@ -176,13 +176,13 @@ function classifyRun(points: EpochPoint[]): {
     label: "Đi quá chậm",
     tone: "slow",
     accent: "#0ea5e9",
-    note: "Learning rate quá nhỏ: mỗi bước nhích một chút xíu. Đúng hướng, nhưng cần HÀNG TRIỆU bước để về đáy — lãng phí thời gian GPU.",
+    note: "Learning rate quá nhỏ. Mỗi bước nhích một chút xíu. Đúng hướng, nhưng cần HÀNG TRIỆU bước để về đáy. Lãng phí thời gian GPU.",
     icon: Snowflake,
   };
 }
 
 /* ────────────────────────────────────────────────────────────
-   HELPER — Mini pipeline visual (used in beats)
+   HELPER: Mini pipeline visual (used in beats)
    ──────────────────────────────────────────────────────────── */
 
 interface PipelineNodeSpec {
@@ -203,7 +203,7 @@ const PIPELINE_NODES: PipelineNodeSpec[] = [
 
 function PipelineStrip({ highlighted }: { highlighted?: string }) {
   return (
-    <svg viewBox="0 0 680 110" className="w-full" role="img" aria-label="Vòng lặp huấn luyện: khởi tạo ngẫu nhiên → dự đoán → loss → gradient → cập nhật.">
+    <svg viewBox="0 0 680 110" className="w-full" role="img" aria-label="Vòng lặp huấn luyện: khởi tạo ngẫu nhiên, dự đoán, loss, gradient, cập nhật.">
       <title>Pipeline huấn luyện 5 bước nối tiếp.</title>
       {PIPELINE_NODES.map((node, i) => {
         const Icon = node.icon;
@@ -318,7 +318,7 @@ function PipelineStrip({ highlighted }: { highlighted?: string }) {
    ──────────────────────────────────────────────────────────── */
 
 export default function CalculusForBackpropInModelTraining() {
-  /* ── Mini hero viz — auto-cycling pipeline ── */
+  /* ── Mini hero viz: auto-cycling pipeline ── */
   const [heroStep, setHeroStep] = useState<string>("init");
 
   /* ── Mechanism interactive state ── */
@@ -331,27 +331,27 @@ export default function CalculusForBackpropInModelTraining() {
       metadata={metadata}
       parentTitleVi="Giải tích cho backprop"
     >
-      {/* ━━━ HERO — giới thiệu + training loop visualization ━━━ */}
+      {/* ━━━ HERO: giới thiệu + training loop visualization ━━━ */}
       <ApplicationHero
         parentTitleVi="Giải tích cho backprop"
         topicSlug={metadata.slug}
       >
         <p>
-          Tháng 1 năm 2024, Meta bắt đầu huấn luyện <strong>LLaMA 3.1 405B</strong>{" "}
-          — mô hình ngôn ngữ có 405 tỉ tham số. 16.384 GPU H100 chạy liên tục 54
+          Tháng 1 năm 2024, Meta bắt đầu huấn luyện <strong>LLaMA 3.1 405B</strong>,
+          mô hình ngôn ngữ có 405 tỉ tham số. 16.384 GPU H100 chạy liên tục 54
           ngày. Mỗi giây trôi qua, mỗi tham số đều được{" "}
           <strong>hỏi một câu duy nhất</strong>: &ldquo;Nếu tôi nhích một tí, loss
           thay đổi bao nhiêu?&rdquo;
         </p>
         <p>
-          Đó chính là <strong>đạo hàm</strong>. Và để trả lời câu hỏi đó cho cả 405
+          Câu hỏi đó chính là <strong>đạo hàm</strong>. Để trả lời cho cả 405
           tỉ tham số trong vài trăm mili-giây, Meta dùng một vòng lặp 5 bước
           không thay đổi từ thời Rosenblatt:
         </p>
 
         <div className="not-prose my-4 rounded-xl border border-border bg-card p-4">
           <p className="text-xs text-muted mb-3 leading-relaxed">
-            Di chuột qua một bước để xem vai trò của nó trong vòng lặp:
+            Di chuột qua một bước để xem vai trò của nó trong vòng lặp.
           </p>
 
           {/* Interactive pipeline strip */}
@@ -392,34 +392,34 @@ export default function CalculusForBackpropInModelTraining() {
               >
                 {heroStep === "init" && (
                   <>
-                    <strong>Khởi tạo.</strong> Mọi weight đều là số ngẫu nhiên
-                    — mô hình không biết gì. Loss rất cao. Đây là điểm xuất phát.
+                    <strong>Khởi tạo.</strong> Mọi weight đều là số ngẫu nhiên,
+                    mô hình chưa biết gì. Loss rất cao. Đây là điểm xuất phát.
                   </>
                 )}
                 {heroStep === "predict" && (
                   <>
                     <strong>Dự đoán (forward).</strong> Cho một batch dữ liệu, mô
-                    hình chạy từ input qua 126 lớp Transformer, tạo ra đầu ra &ŷ.
+                    hình chạy từ input qua 126 lớp Transformer, tạo ra đầu ra ŷ.
                   </>
                 )}
                 {heroStep === "loss" && (
                   <>
-                    <strong>Loss.</strong> So &ŷ với nhãn thật y bằng hàm
-                    cross-entropy. Kết quả là một con số: càng nhỏ, mô hình càng đúng.
+                    <strong>Loss.</strong> So ŷ với nhãn thật y bằng hàm
+                    cross-entropy. Kết quả là một con số. Càng nhỏ, mô hình càng đúng.
                   </>
                 )}
                 {heroStep === "grad" && (
                   <>
                     <strong>Gradient (backward).</strong> Đây là lúc đạo hàm và
-                    quy tắc chuỗi vào cuộc. Backprop đi ngược từ loss về từng
-                    weight, trả lời: &ldquo;weight này nên nhích bao nhiêu?&rdquo;
+                    chain rule vào cuộc. Backprop đi ngược từ loss về từng
+                    weight, trả lời câu &ldquo;weight này nên nhích bao nhiêu?&rdquo;
                   </>
                 )}
                 {heroStep === "update" && (
                   <>
                     <strong>Cập nhật.</strong> Mỗi weight nhích một chút theo
                     công thức w ← w − η·dL/dw. Với η (learning rate) đủ nhỏ, loss
-                    giảm. Rồi quay về bước 2. Lặp lại hàng triệu lần.
+                    giảm, rồi quay về bước 2. Lặp lại hàng triệu lần.
                   </>
                 )}
               </motion.div>
@@ -429,7 +429,7 @@ export default function CalculusForBackpropInModelTraining() {
 
         <p>
           Bài này cho bạn nhìn từng bước trong vòng lặp đó, với một mô hình nhỏ
-          xíu — chỉ một weight — để bạn thấy <strong>đạo hàm thực sự làm gì</strong>{" "}
+          xíu (chỉ một weight) để bạn thấy <strong>đạo hàm thực sự làm gì</strong>{" "}
           khi learning rate quá to, quá nhỏ, và vừa đủ.
         </p>
       </ApplicationHero>
@@ -439,14 +439,14 @@ export default function CalculusForBackpropInModelTraining() {
         <p>
           LLaMA 3.1 405B phải học từ <strong>15,6 nghìn tỉ token</strong> (đơn vị
           văn bản). Mỗi lần đi qua một batch, mô hình cần điều chỉnh 405 tỉ tham
-          số — cộng lại là con số khổng lồ.
+          số. Cộng lại là con số khổng lồ.
         </p>
         <p>
           Vấn đề gốc rễ: <strong>không thể thử từng tham số một</strong>. Nếu mỗi
           lần muốn biết gradient của một tham số, ta phải chạy lại forward pass,
-          thì sẽ cần 405 tỉ forward pass cho một bước cập nhật duy nhất — không
-          thể nào xong trong một đời người. Chain rule biến bài toán đó từ không
-          khả thi thành khả thi.
+          thì sẽ cần 405 tỉ forward pass cho một bước cập nhật duy nhất. Một đời
+          người chạy không xong. Chain rule biến bài toán đó từ không khả thi
+          thành khả thi.
         </p>
 
         <div className="not-prose my-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -458,12 +458,12 @@ export default function CalculusForBackpropInModelTraining() {
             },
             {
               title: "126 lớp nối tiếp",
-              desc: "Mạng sâu → chain rule nhân hàng trăm đạo hàm cục bộ xuyên qua các lớp.",
+              desc: "Mạng sâu, chain rule phải nhân hàng trăm đạo hàm cục bộ xuyên qua các lớp.",
               color: "#8b5cf6",
             },
             {
               title: "3,8 × 10²⁵ FLOP",
-              desc: "Tổng phép tính. Không có chain rule + song song hoá, bài toán là bất khả thi.",
+              desc: "Tổng phép tính. Không có chain rule cộng với song song hoá, bài toán là bất khả thi.",
               color: "#ec4899",
             },
           ].map((c) => (
@@ -479,17 +479,18 @@ export default function CalculusForBackpropInModelTraining() {
         </div>
       </ApplicationProblem>
 
-      {/* ━━━ MECHANISM — mỗi beat có visual nhỏ ━━━ */}
+      {/* ━━━ MECHANISM: mỗi beat có visual nhỏ ━━━ */}
       <ApplicationMechanism
         parentTitleVi="Giải tích cho backprop"
         topicSlug={metadata.slug}
       >
         <Beat step={1}>
           <p>
-            <strong>Forward pass — dự đoán từ weights hiện tại.</strong> Đưa một
+            <strong>Forward pass: dự đoán từ weights hiện tại.</strong> Đưa một
             batch dữ liệu (hàng triệu token) qua 126 lớp Transformer. Mỗi lớp
-            thực hiện phép nhân ma trận rồi hàm kích hoạt. Cuối cùng, cross-entropy
-            ra một con số duy nhất L — sai lệch hiện tại.
+            thực hiện phép nhân ma trận rồi đến hàm kích hoạt. Cuối cùng,
+            cross-entropy cho ra một con số duy nhất L, chính là sai lệch hiện
+            tại.
           </p>
           <div className="not-prose mt-3">
             <MechanismBeatVisual activeBeat={activeBeat} beatIndex={1} />
@@ -499,7 +500,7 @@ export default function CalculusForBackpropInModelTraining() {
 
         <Beat step={2}>
           <p>
-            <strong>Backward pass — chain rule trôi ngược.</strong> Đây là nơi đạo
+            <strong>Backward pass: chain rule trôi ngược.</strong> Đây là nơi đạo
             hàm vào cuộc. Thuật toán backprop đi ngược từ L qua từng lớp:{" "}
             <em>∂L/∂w = ∂L/∂aₙ · ∂aₙ/∂aₙ₋₁ · … · ∂a₁/∂w</em>. Mỗi lớp chỉ cần tính
             đạo hàm cục bộ của mình, rồi nhân với gradient truyền từ lớp sau.
@@ -512,10 +513,10 @@ export default function CalculusForBackpropInModelTraining() {
 
         <Beat step={3}>
           <p>
-            <strong>AdamW — bộ tối ưu thông minh hơn gradient descent cơ bản.</strong>{" "}
+            <strong>AdamW: bộ tối ưu thông minh hơn gradient descent cơ bản.</strong>{" "}
             Thay vì trừ thẳng gradient, AdamW theo dõi trung bình động của
             gradient và gradient bình phương, rồi điều chỉnh bước cập nhật cho
-            từng tham số riêng. Kết quả: hội tụ ổn định hơn trên không gian 405
+            từng tham số riêng. Nhờ vậy, hội tụ ổn định hơn trên không gian 405
             tỉ chiều, ít nhạy với lựa chọn learning rate.
           </p>
           <div className="not-prose mt-3">
@@ -526,11 +527,11 @@ export default function CalculusForBackpropInModelTraining() {
 
         <Beat step={4}>
           <p>
-            <strong>Gradient checkpointing — đánh đổi tính toán lấy bộ nhớ.</strong>{" "}
-            Mỗi GPU H100 chỉ có 80 GB HBM3 — không đủ lưu toàn bộ giá trị trung
+            <strong>Gradient checkpointing: đánh đổi tính toán lấy bộ nhớ.</strong>{" "}
+            Mỗi GPU H100 chỉ có 80 GB HBM3, không đủ lưu toàn bộ giá trị trung
             gian cho 126 lớp. Giải pháp: chỉ lưu tại một vài lớp &ldquo;mốc&rdquo;,
-            phần còn lại tính lại khi backprop cần. Giảm bộ nhớ từ O(n) xuống O(√n)
-            nhưng tăng khoảng 30% tính toán.
+            phần còn lại tính lại khi backprop cần. Bộ nhớ giảm từ O(n) xuống
+            O(√n), đổi lại tăng khoảng 30% tính toán.
           </p>
           <div className="not-prose mt-3">
             <MechanismBeatVisual activeBeat={activeBeat} beatIndex={4} />
@@ -544,7 +545,7 @@ export default function CalculusForBackpropInModelTraining() {
             tensor parallelism (chia từng lớp ra nhiều GPU), pipeline parallelism
             (chia các lớp thành nhóm nối tiếp), data parallelism (mỗi nhóm GPU
             xử lý batch riêng rồi đồng bộ gradient). Tất cả gradient vẫn được tính
-            bằng cùng công thức chain rule — chỉ khác là được phân tán ra nghìn
+            bằng cùng công thức chain rule, chỉ khác là được phân tán ra nghìn
             máy.
           </p>
           <div className="not-prose mt-3">
@@ -562,7 +563,7 @@ export default function CalculusForBackpropInModelTraining() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-foreground">
-                  Thí nghiệm: kéo learning rate, xem loss hạ — hoặc nổ
+                  Kéo learning rate, xem loss hạ hay nổ
                 </h3>
                 <p className="text-xs text-muted">
                   Mô hình thu nhỏ: 1 weight, loss L(w) = (w − 2)² + 0.2. Đáp án:
@@ -600,7 +601,7 @@ export default function CalculusForBackpropInModelTraining() {
 
             <Callout variant="tip" title="Thực tế ở Meta">
               Cho LLaMA 3.1 405B, Meta dùng learning rate đỉnh khoảng 8 × 10⁻⁵ với
-              lịch cosine warmup/decay. Không ai chọn số đó bằng tay — nó đến từ
+              lịch cosine warmup/decay. Không ai chọn số đó bằng tay. Nó đến từ
               hàng trăm run thử nghiệm trên mô hình nhỏ, rồi scale theo công thức
               đã kiểm chứng. Một learning rate sai lệch 10× có thể làm hư toàn bộ
               run 54 ngày.
@@ -617,7 +618,7 @@ export default function CalculusForBackpropInModelTraining() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-foreground">
-                  Bên trong MỘT vòng lặp — dữ liệu di chuyển thế nào
+                  Bên trong MỘT vòng lặp: dữ liệu di chuyển thế nào
                 </h3>
                 <p className="text-xs text-muted">
                   Bấm &ldquo;Tiếp tục&rdquo; để thấy từng giai đoạn với dữ liệu
@@ -636,23 +637,23 @@ export default function CalculusForBackpropInModelTraining() {
             >
               <IterationStep
                 kind="forward"
-                title="Forward pass — input chảy xuôi"
-                description="Một batch (ví dụ 4 triệu token của LLaMA) chảy qua các lớp. Mỗi lớp nhận vector từ lớp trước, nhân ma trận, kích hoạt, đẩy sang lớp sau. Cuối chuỗi: đầu ra ŷ."
+                title="Forward pass: input chảy xuôi"
+                description="Một batch (ví dụ 4 triệu token của LLaMA) chảy qua các lớp. Mỗi lớp nhận vector từ lớp trước, nhân ma trận, kích hoạt, đẩy sang lớp sau. Cuối chuỗi cho ra đầu ra ŷ."
               />
               <IterationStep
                 kind="loss"
                 title="Tính loss"
-                description="So ŷ với nhãn y bằng cross-entropy. Kết quả: một con số duy nhất L. Với LLaMA 3.1 đầu huấn luyện, L thường khoảng 10; cuối 54 ngày giảm về ~1.5."
+                description="So ŷ với nhãn y bằng cross-entropy. Kết quả là một con số duy nhất L. Với LLaMA 3.1 đầu huấn luyện, L thường khoảng 10. Cuối 54 ngày, L giảm về tầm 1.5."
               />
               <IterationStep
                 kind="backward"
-                title="Backward pass — gradient chảy ngược"
-                description="Bắt đầu từ L, tính ∂L/∂ŷ. Rồi chain rule nhân ngược qua 126 lớp. Mỗi lớp tự biết ∂(output)/∂(input) của mình — backprop nối chúng lại. Khi xong, mỗi weight w có một con số ∂L/∂w."
+                title="Backward pass: gradient chảy ngược"
+                description="Bắt đầu từ L, tính ∂L/∂ŷ. Rồi chain rule nhân ngược qua 126 lớp. Mỗi lớp tự biết ∂(output)/∂(input) của mình. Backprop nối chúng lại. Khi xong, mỗi weight w có một con số ∂L/∂w."
               />
               <IterationStep
                 kind="update"
-                title="Update — weights nhích xuống đồi"
-                description="w ← w − η · ∂L/∂w. Với AdamW, có thêm hai moving average điều chỉnh bước cho từng weight. Sau bước này, mọi weight đã mới hơn một chút. Rồi quay về bước 1 với batch dữ liệu kế tiếp."
+                title="Update: weights nhích xuống đồi"
+                description="w ← w − η · ∂L/∂w. Với AdamW, có thêm hai moving average điều chỉnh bước cho từng weight. Sau bước này, mọi weight đã mới hơn một chút, rồi quay về bước 1 với batch dữ liệu kế tiếp."
               />
             </StepReveal>
           </div>
@@ -663,13 +664,13 @@ export default function CalculusForBackpropInModelTraining() {
           <InlineChallenge
             question="Trong thí nghiệm ở trên, bạn kéo η lên 0.9. Loss đầu tiên giảm, nhưng sau đó loss NHẢY TUNG lên rồi phân kỳ. Tại sao?"
             options={[
-              "Vì mô hình quên mất nhãn y — gradient đảo dấu",
-              "Vì mỗi bước cập nhật (η · gradient) quá lớn — nhảy QUA minimum sang sườn bên kia còn dốc hơn, gradient ở đó lớn hơn, bước kế tiếp nhảy lại xa hơn → vòng lặp leo lên vô cùng",
+              "Vì mô hình quên mất nhãn y, gradient đảo dấu",
+              "Vì mỗi bước cập nhật (η · gradient) quá lớn, nhảy QUA minimum sang sườn bên kia còn dốc hơn. Gradient ở đó lớn hơn, bước kế tiếp nhảy lại xa hơn, vòng lặp leo lên vô cùng",
               "Vì chain rule không còn chính xác khi η > 0.5",
               "Vì batch size quá nhỏ nên gradient không đáng tin",
             ]}
             correct={1}
-            explanation="Gradient descent giả định một bước nhỏ xuống dốc sẽ làm loss giảm. Nếu η quá to, bước đó vượt QUA đáy và rơi xuống phía dốc hơn. Gradient tại điểm mới LỚN HƠN → bước kế tiếp còn xa hơn → loss leo lên theo hàm mũ. Trong thực tế, đây là lý do Meta dùng gradient clipping + warmup: tránh bước đầu quá mạnh làm hư toàn bộ run."
+            explanation="Gradient descent giả định một bước nhỏ xuống dốc sẽ làm loss giảm. Nếu η quá to, bước đó vượt QUA đáy và rơi xuống phía dốc hơn. Gradient tại điểm mới LỚN HƠN, bước kế tiếp còn xa hơn, loss leo lên theo hàm mũ. Trong thực tế, đây là lý do Meta dùng gradient clipping cùng warmup: tránh bước đầu quá mạnh làm hư toàn bộ run."
           />
         </li>
 
@@ -678,32 +679,32 @@ export default function CalculusForBackpropInModelTraining() {
           <div className="rounded-xl border border-border bg-card p-5 space-y-3">
             <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
               <Flame className="h-4 w-4 text-accent" /> Ba dấu hiệu loss đang
-              &ldquo;kêu cứu&rdquo; trong quá trình huấn luyện
+              &ldquo;kêu cứu&rdquo; khi đang huấn luyện
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="rounded-lg border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-900/20 p-3 space-y-1">
-                <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
+                <p className="text-xs font-bold text-foreground">
                   Loss = NaN
                 </p>
-                <p className="text-[11px] text-foreground/80 leading-relaxed">
+                <p className="text-[11px] text-foreground leading-relaxed">
                   Gradient phát nổ. Giảm η, bật gradient clipping, kiểm tra khởi
                   tạo weight.
                 </p>
               </div>
               <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-3 space-y-1">
-                <p className="text-xs font-bold text-amber-700 dark:text-amber-300">
+                <p className="text-xs font-bold text-foreground">
                   Loss đứng yên
                 </p>
-                <p className="text-[11px] text-foreground/80 leading-relaxed">
+                <p className="text-[11px] text-foreground leading-relaxed">
                   η quá nhỏ hoặc vanishing gradient. Tăng η, đổi activation sang
                   ReLU, thêm residual.
                 </p>
               </div>
               <div className="rounded-lg border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-900/20 p-3 space-y-1">
-                <p className="text-xs font-bold text-sky-700 dark:text-sky-300">
-                  Loss giảm → tăng lại
+                <p className="text-xs font-bold text-foreground">
+                  Loss giảm rồi tăng lại
                 </p>
-                <p className="text-[11px] text-foreground/80 leading-relaxed">
+                <p className="text-[11px] text-foreground leading-relaxed">
                   η đột ngột quá lớn (thường do dữ liệu batch dị thường). Thêm
                   gradient clipping, kiểm tra pipeline.
                 </p>
@@ -717,9 +718,9 @@ export default function CalculusForBackpropInModelTraining() {
           <MiniSummary
             title="Điều bạn thấy rõ hôm nay"
             points={[
-              "Vòng lặp huấn luyện là 5 bước lặp đi lặp lại: init → forward → loss → backward → update.",
-              "Backward là nơi ĐẠO HÀM và CHAIN RULE thực sự làm việc — tính gradient cho 405 tỉ tham số trong vài trăm mili-giây.",
-              "Learning rate là tham số hiệu chỉnh quan trọng nhất: quá to → nổ, quá nhỏ → không bao giờ tới đáy, vừa phải → hội tụ.",
+              "Vòng lặp huấn luyện là 5 bước lặp đi lặp lại: init, forward, loss, backward, update.",
+              "Backward là nơi ĐẠO HÀM và CHAIN RULE thực sự làm việc, tính gradient cho 405 tỉ tham số trong vài trăm mili-giây.",
+              "Learning rate là tham số hiệu chỉnh quan trọng nhất. Quá to thì nổ, quá nhỏ thì không bao giờ tới đáy, vừa phải thì hội tụ.",
               "Mọi trick tiên tiến (AdamW, gradient checkpointing, mixed precision, gradient clipping, warmup) đều phục vụ một mục tiêu duy nhất: giữ vòng lặp trên ổn định khi scale lên tỉ tham số.",
             ]}
           />
@@ -732,7 +733,7 @@ export default function CalculusForBackpropInModelTraining() {
               </TopicLink>
               . Muốn cảm nhận gradient trên mặt 2D tương tác, xem{" "}
               <TopicLink slug="gradient-intuition">
-                Gradient — mũi tên chỉ đường xuống dốc
+                Gradient: mũi tên chỉ đường xuống dốc
               </TopicLink>
               .
             </Callout>
@@ -754,7 +755,7 @@ export default function CalculusForBackpropInModelTraining() {
           sourceRef={1}
         />
         <Metric
-          value="15,6 nghìn tỉ token dữ liệu huấn luyện — mỗi token tham gia ít nhất một lần vào backprop"
+          value="15,6 nghìn tỉ token dữ liệu huấn luyện. Mỗi token tham gia ít nhất một lần vào backprop"
           sourceRef={1}
         />
         <Metric
@@ -762,7 +763,7 @@ export default function CalculusForBackpropInModelTraining() {
           sourceRef={3}
         />
         <Metric
-          value="LLaMA-13B (13 tỉ tham số) vượt GPT-3 175B trên nhiều benchmark — cùng thuật toán backprop + chọn lọc kỹ dữ liệu và tối ưu"
+          value="LLaMA-13B (13 tỉ tham số) thắng GPT-3 175B trên nhiều benchmark, cùng thuật toán backprop, chọn lọc kỹ dữ liệu và tối ưu"
           sourceRef={2}
         />
       </ApplicationMetrics>
@@ -774,13 +775,13 @@ export default function CalculusForBackpropInModelTraining() {
       >
         <p>
           Không có chain rule, không có cách nào tính gradient cho 405 tỉ tham số
-          qua 126 lớp. Mỗi tham số sẽ phải được thử sai riêng lẻ — cần hàng trăm
+          qua 126 lớp. Mỗi tham số sẽ phải được thử sai riêng lẻ, cần hàng trăm
           tỉ lần forward pass cho một bước cập nhật duy nhất, biến bài toán 54
           ngày thành hàng triệu năm.
         </p>
         <p>
           Backpropagation biến chi phí tính gradient từ O(n) forward pass xuống{" "}
-          <strong>O(1)</strong> — chỉ cần một lần lan truyền ngược. Kết hợp với
+          <strong>O(1)</strong>, chỉ cần một lần lan truyền ngược. Kết hợp với
           AdamW, gradient checkpointing, song song hoá 16.384 GPU và mixed
           precision BF16, giải tích là nền tảng toán học duy nhất khiến việc huấn
           luyện mô hình hàng trăm tỉ tham số trở nên khả thi.
@@ -824,7 +825,7 @@ function BeatToggle({
   );
 }
 
-/** Visual per beat — tiny schematic that expands when the beat is active. */
+/** Visual per beat: tiny schematic that expands when the beat is active. */
 function MechanismBeatVisual({
   activeBeat,
   beatIndex,
@@ -923,7 +924,7 @@ function ForwardPassSketch() {
 function BackwardPassSketch() {
   return (
     <svg viewBox="0 0 480 140" className="w-full" role="img" aria-label="Backward pass: gradient chảy ngược qua các lớp bằng chain rule.">
-      <title>Backward pass — chain rule nhân gradient qua các lớp.</title>
+      <title>Backward pass: chain rule nhân gradient qua các lớp.</title>
       <text x={20} y={20} fontSize={11} fill="var(--text-secondary)">
         Loss L
       </text>
@@ -980,8 +981,8 @@ function BackwardPassSketch() {
 
 function AdamWSketch() {
   return (
-    <svg viewBox="0 0 480 140" className="w-full" role="img" aria-label="AdamW — hai moving average điều chỉnh bước cập nhật cho từng weight.">
-      <title>AdamW — gradient + bình phương gradient → bước cập nhật thích ứng.</title>
+    <svg viewBox="0 0 480 140" className="w-full" role="img" aria-label="AdamW: hai moving average điều chỉnh bước cập nhật cho từng weight.">
+      <title>AdamW: gradient và bình phương gradient cho ra bước cập nhật thích ứng.</title>
       <rect x={40} y={30} width={110} height={50} rx={8} fill="#3b82f6" opacity={0.18} stroke="#3b82f6" />
       <text x={95} y={52} textAnchor="middle" fontSize={11} fill="#1e40af" fontWeight={600}>
         m̂ (momentum)
@@ -1025,7 +1026,7 @@ function AdamWSketch() {
 function CheckpointSketch() {
   return (
     <svg viewBox="0 0 480 130" className="w-full" role="img" aria-label="Gradient checkpointing: chỉ lưu activation tại một số lớp, phần còn lại tính lại.">
-      <title>Gradient checkpointing — đổi tính toán lấy bộ nhớ.</title>
+      <title>Gradient checkpointing: đổi tính toán lấy bộ nhớ.</title>
       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
         const cx = 40 + i * 42;
         const isCheckpoint = i % 3 === 0;
@@ -1070,7 +1071,7 @@ function CheckpointSketch() {
         );
       })}
       <text x={240} y={125} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
-        Giảm RAM từ O(n) xuống O(√n), đổi lại +30% tính toán — cần thiết với 80GB HBM3.
+        Giảm RAM từ O(n) xuống O(√n), đổi lại +30% tính toán. Cần thiết với 80GB HBM3.
       </text>
     </svg>
   );
@@ -1111,7 +1112,7 @@ function ParallelSketch() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   TRAINING LOSS CHART — rendered inside SliderGroup
+   TRAINING LOSS CHART: rendered inside SliderGroup
    ──────────────────────────────────────────────────────────── */
 
 function TrainingLossChart({
@@ -1150,7 +1151,7 @@ function TrainingLossChart({
         viewBox={`0 0 ${plotW} ${plotH}`}
         className="w-full"
         role="img"
-        aria-label={`Loss theo epoch — ${diagnosis.label}.`}
+        aria-label={`Loss theo epoch. ${diagnosis.label}.`}
       >
         <title>
           Loss qua {epochs} epoch với learning rate η = {lr.toFixed(3)}, w₀ ={" "}
@@ -1251,7 +1252,7 @@ function TrainingLossChart({
 }
 
 /* ────────────────────────────────────────────────────────────
-   ITERATION STEP CARDS — rendered inside StepReveal
+   ITERATION STEP CARDS: rendered inside StepReveal
    ──────────────────────────────────────────────────────────── */
 
 function IterationStep({

@@ -37,9 +37,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "perceptron",
   title: "Perceptron",
-  titleVi: "Perceptron — Nơ-ron đơn giản nhất",
+  titleVi: "Perceptron: viên gạch đầu tiên của mạng nơ-ron",
   description:
-    "Một nơ-ron nhân tạo có thể làm gì? Cộng có trọng số mọi đầu vào, rồi quyết định 'có' hay 'không'. Bạn sẽ tự tay chỉnh trọng số và nhìn đường quyết định xoay theo.",
+    "Một nơ-ron nhân tạo làm được gì? Nó cộng có trọng số mọi đầu vào rồi trả lời 'có' hoặc 'không'. Bạn tự tay kéo trọng số và nhìn đường quyết định xoay theo.",
   category: "neural-fundamentals",
   tags: ["neural-network", "fundamentals", "classification", "perceptron"],
   difficulty: "beginner",
@@ -116,7 +116,7 @@ const INITIAL_POINTS: LabeledPoint[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   PLAYGROUND CHÍNH — slider + scatter + click-to-add
+   PLAYGROUND CHÍNH: slider + scatter + click-to-add
    ───────────────────────────────────────────────────────────── */
 
 function PerceptronPlayground() {
@@ -167,8 +167,8 @@ function PerceptronPlayground() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted leading-relaxed">
-        Kéo ba thanh trượt dưới đây — <strong>w₁</strong> và <strong>w₂</strong> là trọng số của hai
-        đầu vào, <strong>b</strong> là bias (độ lệch). Đường đứt tím là{" "}
+        Kéo ba thanh trượt dưới đây. <strong>w₁</strong> và <strong>w₂</strong> là trọng số của hai
+        đầu vào, <strong>b</strong> là bias (độ lệch). Đường đứt tím chính là{" "}
         <em>quyết định</em> của perceptron. <strong>Nhấn vào biểu đồ</strong> để thêm điểm mới theo
         nhãn đang chọn.
       </p>
@@ -399,7 +399,7 @@ function PerceptronPlayground() {
             </div>
             <p className="text-muted mt-1">
               {accuracy === 100
-                ? "Hoàn hảo — bạn tìm được một đường thẳng chia đúng toàn bộ."
+                ? "Hoàn hảo. Bạn tìm được một đường thẳng chia đúng toàn bộ."
                 : "Kéo thêm các thanh để xoay hoặc dịch đường tím."}
             </p>
           </div>
@@ -449,17 +449,17 @@ function PerceptronPlayground() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   DEEPEN — Luật học perceptron (StepReveal)
+   DEEPEN: Luật học perceptron (StepReveal)
    Một điểm sai → điều chỉnh trọng số → đường thẳng dịch sang bên cần chia đúng.
    ───────────────────────────────────────────────────────────── */
 
 type LearningDemoPoint = { x: number; y: number; cls: PointLabel; note?: string };
 
 const LEARNING_POINTS: LearningDemoPoint[] = [
-  { x: 80, y: 240, cls: 0, note: "điểm xanh: sinh viên mệt — không đi học" },
+  { x: 80, y: 240, cls: 0, note: "điểm xanh: sinh viên mệt, không đi học" },
   { x: 120, y: 200, cls: 0 },
   { x: 150, y: 180, cls: 0 },
-  { x: 260, y: 140, cls: 1, note: "điểm đỏ: tỉnh táo — đi học" },
+  { x: 260, y: 140, cls: 1, note: "điểm đỏ: tỉnh táo, đi học" },
   { x: 310, y: 110, cls: 1 },
   { x: 330, y: 90, cls: 1 },
 ];
@@ -475,14 +475,14 @@ function LearningRuleDemo() {
       w2: -0.4,
       b: 0,
       badIdx: 5,
-      note: "Khởi tạo ngẫu nhiên. Cả ba điểm đỏ đang bị đoán thành 0 — đường chưa chia được gì.",
+      note: "Khởi tạo ngẫu nhiên. Cả ba điểm đỏ đang bị đoán thành 0. Đường chưa chia được gì.",
     },
     {
       w1: 0.2,
       w2: 0.15,
       b: -1.0,
       badIdx: 4,
-      note: "Điểm đỏ phải cùng đã được sửa. Đường dịch lên, nhưng hai điểm đỏ còn lại vẫn sai phía.",
+      note: "Điểm đỏ phải cùng đã được sửa. Đường dịch lên, nhưng hai điểm đỏ còn lại vẫn nằm sai phía.",
     },
     {
       w1: 0.3,
@@ -496,7 +496,7 @@ function LearningRuleDemo() {
       w2: 0.5,
       b: -3.0,
       badIdx: null,
-      note: "Perceptron học xong — đường chia đúng hai cụm màu.",
+      note: "Perceptron học xong. Đường chia đúng hai cụm màu.",
     },
   ];
 
@@ -507,7 +507,7 @@ function LearningRuleDemo() {
     <div className="space-y-4">
       <p className="text-sm text-muted leading-relaxed">
         Luật học perceptron chỉ làm đúng một việc: mỗi điểm bị đoán sai thì trọng số được đẩy một
-        chút theo hướng sửa điểm ấy. Xem bốn ảnh dưới đây — đường tím dịch dần cho tới khi chia
+        chút theo hướng sửa điểm ấy. Xem bốn ảnh dưới đây. Đường tím dịch dần cho tới khi chia
         đúng toàn bộ.
       </p>
 
@@ -515,7 +515,7 @@ function LearningRuleDemo() {
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full max-w-xl mx-auto rounded-lg border border-border bg-background/60"
         role="img"
-        aria-label={`Luật học perceptron — bước ${step + 1}/4`}
+        aria-label={`Luật học perceptron, bước ${step + 1}/4`}
       >
         {Array.from({ length: 9 }).map((_, i) => {
           const x = (i + 1) * (VIEW_W / 10);
@@ -631,7 +631,7 @@ function LearningRuleDemo() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   SỞ ĐỒ PERCEPTRON — input → Σ → step → output (SVG)
+   SƠ ĐỒ PERCEPTRON: input → Σ → step → output (SVG)
    ───────────────────────────────────────────────────────────── */
 
 function PerceptronDiagram({
@@ -748,7 +748,7 @@ function PerceptronDiagram({
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MINI DEMO — ba cổng logic (AND / OR / XOR)
+   MINI DEMO: ba cổng logic (AND / OR / XOR)
    AND & OR phân tách được; XOR thì không.
    ───────────────────────────────────────────────────────────── */
 
@@ -890,20 +890,20 @@ function LogicGatesDemo() {
             {gate === "AND" && (
               <>
                 <li>Chỉ khi <em>cả hai</em> đầu vào cùng bằng 1.</li>
-                <li>Một đường thẳng chia góc phải trên ra khỏi ba góc còn lại — perceptron làm được.</li>
+                <li>Một đường thẳng chia góc phải trên ra khỏi ba góc còn lại. Perceptron làm được.</li>
               </>
             )}
             {gate === "OR" && (
               <>
                 <li>Khi <em>ít nhất một</em> đầu vào bằng 1.</li>
-                <li>Một đường thẳng cắt qua góc trái dưới — perceptron làm được.</li>
+                <li>Một đường thẳng cắt qua góc trái dưới. Perceptron làm được.</li>
               </>
             )}
             {gate === "XOR" && (
               <>
                 <li>Khi <em>đúng một</em> đầu vào bằng 1 (khác nhau).</li>
                 <li>
-                  Thử đi — bạn không thể vẽ một đường thẳng nào tách hai điểm đỏ ra khỏi hai điểm
+                  Thử đi. Bạn không thể vẽ một đường thẳng nào tách hai điểm đỏ ra khỏi hai điểm
                   xanh. Đây chính là <strong>giới hạn tuyến tính</strong> của perceptron.
                 </li>
               </>
@@ -915,7 +915,7 @@ function LogicGatesDemo() {
               Một bộ trọng số giải được: w₁ = {cfg.w1}, w₂ = {cfg.w2}, b = {cfg.b}
             </p>
           ) : (
-            <p className="font-mono text-xs text-rose-500 bg-rose-500/10 rounded p-2">
+            <p className="font-mono text-xs text-foreground font-semibold bg-rose-500/10 rounded p-2">
               Không tồn tại (w₁, w₂, b) nào giải được XOR.
             </p>
           )}
@@ -954,7 +954,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Bias giống như di chuyển toàn bộ đường thẳng lên xuống. Hướng đường (do w₁ và w₂ quyết định) không đổi. Trọng số quyết định 'nghiêng thế nào', bias quyết định 'ở đâu'.",
+      "Bias giống như di chuyển toàn bộ đường thẳng lên xuống. Hướng đường (do w₁ và w₂ quyết định) không đổi. Trọng số quyết định nghiêng thế nào, bias quyết định ở đâu.",
   },
   {
     question:
@@ -967,7 +967,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "XOR có hai điểm đỏ ở chéo này và hai điểm xanh ở chéo kia. Mọi đường thẳng đều phải hy sinh ít nhất một điểm — đây là bản chất 'không phân tách tuyến tính'. Năm 1969 Minsky & Papert đã chỉ ra giới hạn này.",
+      "XOR có hai điểm đỏ ở chéo này và hai điểm xanh ở chéo kia. Mọi đường thẳng đều phải hy sinh ít nhất một điểm. Đây là bản chất 'không phân tách tuyến tính'. Năm 1969 Minsky & Papert đã chỉ ra giới hạn này.",
   },
   {
     question:
@@ -995,13 +995,13 @@ const quizQuestions: QuizQuestion[] = [
       "Bạn đang xây perceptron phân loại 'mèo / chó' từ chiều dài tai và cân nặng. Nếu dữ liệu có chồng lấn (mèo to gần bằng chó nhỏ), perceptron sẽ:",
     options: [
       "Luôn đạt 100% vì có đủ dữ liệu",
-      "Không thể đạt 100% — sẽ luôn có điểm ở 'sai bên' đường",
+      "Không thể đạt 100%. Sẽ luôn có điểm ở 'sai bên' đường",
       "Biến hàm bước thành hàm cong để chia được",
       "Tự ngừng học và báo lỗi",
     ],
     correct: 1,
     explanation:
-      "Perceptron chỉ vẽ được đường thẳng. Nếu hai lớp chồng lấn, không đường thẳng nào chia đúng tuyệt đối — luật học sẽ đi lòng vòng mãi. Đây là lý do người ta cần MLP với nhiều lớp và hàm kích hoạt phi tuyến.",
+      "Perceptron chỉ vẽ được đường thẳng. Nếu hai lớp chồng lấn, không đường thẳng nào chia đúng tuyệt đối, nên luật học sẽ đi lòng vòng mãi. Đây là lý do người ta cần MLP với nhiều lớp và hàm kích hoạt phi tuyến.",
   },
 ];
 
@@ -1021,13 +1021,13 @@ export default function PerceptronTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1: HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn là người phỏng vấn và đưa ra yêu cầu rằng ứng viên cần có 5 năm kinh nghiệm (x₁) và có bằng đại học (x₂). Ứng viên mới đến có 5 năm kinh nghiệm (x₁ = 1) nhưng không có bằng đại học (x₂ = 0). Bạn đã đặt ra 'quy tắc ngầm': kinh nghiệm quan trọng gấp 3 lần bằng cấp. Nên nhận hay không?"
           options={[
-            "Nhận — vì cộng có trọng số ra kết quả lớn hơn ngưỡng 'chấp nhận'",
-            "Từ chối — thiếu bằng cấp là yếu tố loại trực tiếp",
+            "Nhận. Cộng có trọng số ra kết quả lớn hơn ngưỡng 'chấp nhận'",
+            "Từ chối. Thiếu bằng cấp là yếu tố loại trực tiếp",
             "Cần bấm máy tính, không thể đoán bằng đầu",
             "Chưa đủ dữ kiện",
           ]}
@@ -1039,14 +1039,14 @@ export default function PerceptronTopic() {
             Bạn cân hai yếu tố, gán mỗi yếu tố một mức độ quan trọng, cộng lại,
             so với một ngưỡng trong đầu, rồi trả về &ldquo;có&rdquo; hoặc
             &ldquo;không&rdquo;. Thao tác đó có một tên gọi riêng:{" "}
-            <strong>perceptron</strong> — đơn vị tính toán đầu tiên của mạng nơ-ron.
+            <strong>perceptron</strong>, đơn vị tính toán đầu tiên của mạng nơ-ron.
             Bài này đưa bạn từ câu trả lời vừa xong đến cơ chế bên trong, và vì
             sao mọi mạng sâu hiện đại vẫn dựa trên ý tưởng ấy.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2: ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -1055,50 +1055,50 @@ export default function PerceptronTopic() {
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Nhớ lại ứng viên vừa xong: 5 năm kinh nghiệm, không có bằng. Bạn nhân
-            3·1 cho kinh nghiệm, cộng 1·0 cho bằng cấp, trừ đi bias 2 — kết quả ra
+            3·1 cho kinh nghiệm, cộng 1·0 cho bằng cấp, trừ đi bias 2. Kết quả ra
             1, lớn hơn 0, nên bạn nhận. Thao tác đó gọi là{" "}
             <strong>tổng có trọng số</strong> (weighted sum): mỗi đầu vào xᵢ được
             nhân với <em>trọng số</em> wᵢ thể hiện mức độ quan trọng của nó, rồi
-            cộng tất cả lại, cộng thêm bias — một hằng số điều chỉnh{" "}
-            <em>ngưỡng</em> mà perceptron mới chịu nói &ldquo;có&rdquo;. Nhờ vậy,
+            cộng tất cả lại, cộng thêm bias (một hằng số điều chỉnh{" "}
+            <em>ngưỡng</em> mà perceptron mới chịu nói &ldquo;có&rdquo;). Nhờ vậy,
             thay đổi trọng số là thay đổi ưu tiên; thay đổi bias là thay đổi độ
             &ldquo;khó tính&rdquo; của nơ-ron.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
-                <ThumbsUp size={16} />
+              <div className="flex items-center gap-2 text-foreground">
+                <ThumbsUp size={16} className="text-sky-700 dark:text-sky-300" />
                 <span className="text-sm font-semibold">Đầu vào (xᵢ)</span>
               </div>
-              <p className="text-xs text-foreground/80 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Dữ liệu quan sát được: kinh nghiệm, bằng cấp, chiều cao, điểm thi... thường là số.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <Zap size={16} />
+              <div className="flex items-center gap-2 text-foreground">
+                <Zap size={16} className="text-emerald-700 dark:text-emerald-300" />
                 <span className="text-sm font-semibold">Trọng số (wᵢ) và bias (b)</span>
               </div>
-              <p className="text-xs text-foreground/80 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Mức độ quan trọng của từng đầu vào, và &ldquo;ngưỡng cá tính&rdquo; của nơ-ron. Đây
                 là phần nơ-ron <em>học</em>.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-                <ThumbsDown size={16} />
+              <div className="flex items-center gap-2 text-foreground">
+                <ThumbsDown size={16} className="text-amber-700 dark:text-amber-300" />
                 <span className="text-sm font-semibold">Đầu ra (y)</span>
               </div>
-              <p className="text-xs text-foreground/80 leading-relaxed">
-                Một con số duy nhất: 0 hoặc 1. Không có &ldquo;có lẽ&rdquo;, không có xác suất — chỉ
+              <p className="text-xs text-foreground leading-relaxed">
+                Một con số duy nhất: 0 hoặc 1. Không có &ldquo;có lẽ&rdquo;, không có xác suất, chỉ
                 &ldquo;có&rdquo; hoặc &ldquo;không&rdquo;.
               </p>
             </div>
           </div>
 
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Chỉ một phép cộng và một ngưỡng — vậy mà đủ để phân loại. Đây chính
+            Chỉ một phép cộng và một ngưỡng, vậy mà đủ để phân loại. Đây chính
             là lý do perceptron là <strong>viên gạch đầu tiên</strong> của mọi mạng
             nơ-ron hiện đại. Mạng phức tạp đến mấy, cuối cùng vẫn là hàng triệu
             phép tính như thế xếp chồng lên nhau.
@@ -1106,7 +1106,7 @@ export default function PerceptronTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HOÁ ━━━ */}
+      {/* ━━━ BƯỚC 3: TRỰC QUAN HOÁ ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-6">
@@ -1202,8 +1202,8 @@ export default function PerceptronTopic() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
                     className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-bold ${out === 1
-                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
-                        : "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300"
+                        ? "bg-emerald-100 text-foreground dark:bg-emerald-900/30"
+                        : "bg-rose-100 text-foreground dark:bg-rose-900/30"
                       }`}
                   >
                     Nơ-ron nói: {out === 1 ? "CÓ" : "KHÔNG"}
@@ -1215,7 +1215,7 @@ export default function PerceptronTopic() {
             <LessonSection label="Ba cổng logic: AND, OR và kẻ thù XOR" step={3}>
               <p className="text-sm text-muted mb-3 leading-relaxed">
                 Perceptron có thể học ba cổng logic cơ bản? Bấm vào từng cổng dưới đây. Hai cổng
-                đầu — một đường thẳng đủ. Cổng thứ ba là nơi mọi chuyện vỡ kế hoạch.
+                đầu chỉ cần một đường thẳng. Cổng thứ ba là nơi mọi chuyện vỡ kế hoạch.
               </p>
               <LogicGatesDemo />
             </LessonSection>
@@ -1223,10 +1223,10 @@ export default function PerceptronTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4: AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Mỗi nơ-ron — dù nằm trong GPT-4 hay trong mạng nhận diện chó mèo — vẫn chỉ làm đúng một
+          Mỗi nơ-ron, dù nằm trong GPT-4 hay trong mạng nhận diện chó mèo, vẫn chỉ làm đúng một
           việc: <strong>cộng có trọng số rồi bật / tắt</strong>.
           <br />
           <br />
@@ -1235,7 +1235,7 @@ export default function PerceptronTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — DEEPEN (luật học) ━━━ */}
+      {/* ━━━ BƯỚC 5: DEEPEN (luật học) ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu hơn">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2 mb-2">
           <Lightbulb size={18} className="text-accent" />
@@ -1244,7 +1244,7 @@ export default function PerceptronTopic() {
         <LearningRuleDemo />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 6: CHALLENGE ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Vì sao một perceptron KHÔNG thể giải được bài toán XOR? (chọn câu trả lời đúng và sát nhất)"
@@ -1255,16 +1255,16 @@ export default function PerceptronTopic() {
             "Vì perceptron cần quá nhiều dữ liệu để học",
           ]}
           correct={1}
-          explanation="4 điểm của XOR nằm ở 4 góc của hình vuông. Các cặp cùng nhãn nằm chéo nhau — không có đường thẳng nào chia được. Cách thoát: xếp nhiều perceptron thành lớp (MLP), tạo ra các đường cong."
+          explanation="4 điểm của XOR nằm ở 4 góc của hình vuông. Các cặp cùng nhãn nằm chéo nhau, không có đường thẳng nào chia được. Cách thoát: xếp nhiều perceptron thành lớp (MLP), tạo ra các đường cong."
         />
 
         <div className="mt-4">
           <InlineChallenge
             question="Bạn muốn một perceptron quyết định 'mở cửa hàng hôm nay' dựa trên x₁ (trời nắng) và x₂ (cuối tuần). Cả hai đều phải đúng mới mở. Cổng logic nào mô tả điều này?"
             options={[
-              "OR — chỉ cần một trong hai là đủ",
-              "AND — phải cả hai cùng đúng",
-              "XOR — đúng một trong hai",
+              "OR. Chỉ cần một trong hai là đủ",
+              "AND. Phải cả hai cùng đúng",
+              "XOR. Đúng một trong hai",
               "Không mô tả được bằng cổng logic",
             ]}
             correct={1}
@@ -1273,29 +1273,29 @@ export default function PerceptronTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — EXPLAIN (≤ 2 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 7: EXPLAIN (≤ 2 LaTeX) ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Năm 1958, Frank Rosenblatt tại Cornell nối một bộ điện trở chỉnh bằng
-            tay vào một mảng quang điện tử rồi chiếu hình lên đó. Chiếc máy —
-            Mark I Perceptron — nhìn hình, đoán nhãn, nhận phản hồi đúng/sai, rồi
+            tay vào một mảng quang điện tử rồi chiếu hình lên đó. Chiếc máy ấy
+            (Mark I Perceptron) nhìn hình, đoán nhãn, nhận phản hồi đúng/sai, rồi
             tự điều chỉnh các điện trở để lần sau đoán tốt hơn. Không ai gõ
-            &ldquo;nếu sáng thì nhãn A&rdquo; vào mã nguồn — máy{" "}
+            &ldquo;nếu sáng thì nhãn A&rdquo; vào mã nguồn. Máy{" "}
             <em>tự học</em> quy tắc từ dữ liệu. Dưới đây là hai công thức cốt lõi
-            đằng sau cơ chế đó — mỗi công thức kèm lời giải thích và một hình
+            đằng sau cơ chế đó. Mỗi công thức kèm lời giải thích và một hình
             minh hoạ để bạn &ldquo;thấy&rdquo; nó hoạt động.
           </p>
 
-          {/* Công thức 1 — Tổng có trọng số */}
+          {/* Công thức 1: Tổng có trọng số */}
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
             1. Tổng có trọng số (weighted sum)
           </h4>
           <LaTeX block>{"z = w_1 x_1 + w_2 x_2 + \\cdots + w_n x_n + b"}</LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đọc: <em>nhân từng đầu vào với trọng số của nó, cộng tất cả lại, rồi cộng thêm
-              bias</em>. Trọng số wᵢ cao = đầu vào xᵢ quan trọng. Bias b giống như &ldquo;ngưỡng
-            cá tính&rdquo; của nơ-ron — b âm lớn nghĩa là nơ-ron &ldquo;khó tính&rdquo;, phải cộng
+              bias</em>. Trọng số wᵢ cao tức là đầu vào xᵢ quan trọng. Bias b giống như &ldquo;ngưỡng
+            cá tính&rdquo; của nơ-ron: b âm lớn nghĩa là nơ-ron &ldquo;khó tính&rdquo;, phải cộng
             được nhiều mới qua được 0.
           </p>
 
@@ -1352,7 +1352,7 @@ export default function PerceptronTopic() {
             </svg>
           </div>
 
-          {/* Công thức 2 — Hàm bước */}
+          {/* Công thức 2: Hàm bước */}
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
             2. Hàm bước (step function)
           </h4>
@@ -1362,7 +1362,7 @@ export default function PerceptronTopic() {
             Đây là bước &ldquo;quyết định&rdquo; biến một phép cộng liên tục thành một câu trả lời
             nhị phân. Các mạng hiện đại thay hàm bước bằng{" "}
             <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> trơn hơn như sigmoid,
-            ReLU — nhưng ý tưởng &ldquo;bật/tắt dựa trên tổng&rdquo; vẫn giữ nguyên.
+            ReLU. Tuy nhiên, ý tưởng &ldquo;bật/tắt dựa trên tổng&rdquo; vẫn giữ nguyên.
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
@@ -1393,7 +1393,7 @@ export default function PerceptronTopic() {
             </svg>
             <p className="text-xs text-muted text-center italic leading-relaxed">
               Một cầu thang bằng: bên trái 0 tất cả là 0, bên phải 0 tất cả là 1. Chính vì góc nhọn
-              tại z = 0 mà hàm bước không thể dùng cho mạng sâu — không có đạo hàm để học ngược.
+              tại z = 0 mà hàm bước không thể dùng cho mạng sâu, không có đạo hàm để học ngược.
             </p>
           </div>
 
@@ -1408,7 +1408,7 @@ export default function PerceptronTopic() {
           </Callout>
 
           <Callout variant="warning" title="Mùa đông AI đầu tiên">
-            Năm 1969, Minsky và Papert chứng minh perceptron không giải được XOR — một bài toán
+            Năm 1969, Minsky và Papert chứng minh perceptron không giải được XOR, một bài toán
             tưởng đơn giản. Niềm tin đang lên cao về AI bị dội gáo nước lạnh. Ngân sách nghiên cứu
             bị cắt, gần một thập kỷ gần như không có tiến bộ. Giải pháp không được công nhận rộng
             rãi cho tới khi có <strong>
@@ -1430,7 +1430,7 @@ export default function PerceptronTopic() {
 
           <CollapsibleDetail title="Vì sao phải có bias? Gộp vào trọng số không được à?">
             <p className="text-sm leading-relaxed">
-              Thực ra được — người ta hay &ldquo;gộp&rdquo; bias bằng cách thêm một đầu vào giả x₀ =
+              Thực ra được. Người ta hay &ldquo;gộp&rdquo; bias bằng cách thêm một đầu vào giả x₀ =
               1 với trọng số w₀ = b. Khi đó công thức chỉ còn một tổng. Trong code máy học thực tế,
               thư viện làm điều này tự động để bạn không phải quản lý riêng bias. Nhưng khi giảng
               dạy, tách bias ra giúp trực giác rõ hơn: trọng số &ldquo;xoay&rdquo; đường quyết
@@ -1439,11 +1439,11 @@ export default function PerceptronTopic() {
           </CollapsibleDetail>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Bốn điểm kết nối — perceptron đi đâu từ đây?
+            Bốn điểm kết nối: perceptron đi đâu từ đây?
           </h4>
           <ul className="list-disc pl-5 space-y-2 text-sm text-foreground/85 leading-relaxed">
             <li>
-              Xếp nhiều perceptron thành từng lớp = <TopicLink slug="mlp">MLP (Multi-Layer Perceptron)</TopicLink>.
+              Xếp nhiều perceptron thành từng lớp tức là <TopicLink slug="mlp">MLP (Multi-Layer Perceptron)</TopicLink>.
               Mỗi lớp học một kiểu &ldquo;đặc trưng&rdquo; của dữ liệu. Với 2 lớp trở lên, mạng có
               thể học được XOR và các bài toán phi tuyến.
             </li>
@@ -1456,7 +1456,7 @@ export default function PerceptronTopic() {
             <li>
               Dùng{" "}
               <TopicLink slug="gradient-descent">gradient descent</TopicLink> để tối ưu trọng số
-              thay vì luật học đơn giản — đây là cách mọi mạng sâu ngày nay được huấn luyện.
+              thay vì luật học cũ. Đây là cách mọi mạng sâu ngày nay được huấn luyện.
             </li>
             <li>
               Hiểu <em>đường quyết định</em> → hiểu luôn{" "}
@@ -1468,25 +1468,25 @@ export default function PerceptronTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & kiểm tra">
         <MiniSummary
           title="4 điều cần nhớ về perceptron"
           points={[
             "Một perceptron = cộng có trọng số mọi đầu vào + bias, rồi bật/tắt theo hàm bước.",
             "Trọng số quyết định hướng đường chia; bias dịch song song đường chia.",
-            "Chỉ chia được dữ liệu phân tách tuyến tính — làm được AND, OR; KHÔNG làm được XOR.",
+            "Chỉ chia được dữ liệu phân tách tuyến tính. Làm được AND, OR; KHÔNG làm được XOR.",
             "Luật học Rosenblatt: điểm sai → kéo trọng số theo hướng sửa đúng điểm ấy.",
           ]}
         />
 
         <div className="mt-6">
-          <Callout variant="tip" title="Bước tiếp theo — xem perceptron trong ứng dụng thật">
+          <Callout variant="tip" title="Bước tiếp theo: xem perceptron trong ứng dụng thật">
             Muốn biết perceptron thực sự được dùng để làm gì? Xem ứng dụng:{" "}
             <TopicLink slug="perceptron-in-image-classification">
               Perceptron nhận diện ảnh
-            </TopicLink>{" "}
-            — trực quan hoá cách một perceptron xử lý ảnh chữ số 28×28 từ bộ MNIST.
+            </TopicLink>
+            . Bài đó trực quan hoá cách một perceptron xử lý ảnh chữ số 28×28 từ bộ MNIST.
           </Callout>
         </div>
 

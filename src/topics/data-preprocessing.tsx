@@ -37,9 +37,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "data-preprocessing",
   title: "Data Preprocessing",
-  titleVi: "Tiền xử lý dữ liệu — Làm sạch trước khi học",
+  titleVi: "Tiền xử lý dữ liệu: làm sạch trước khi học",
   description:
-    "80% thời gian của một data scientist là làm sạch dữ liệu. Bài này cho bạn nhìn thấy từng thao tác: điền thiếu, lọc ngoại lai, chuẩn hoá, mã hoá — kèm đoạn pandas ngắn cho từng bước.",
+    "80% thời gian của một data scientist là làm sạch dữ liệu. Bài này cho bạn nhìn thấy từng thao tác (điền thiếu, lọc ngoại lai, chuẩn hoá, mã hoá), kèm đoạn pandas ngắn cho từng bước.",
   category: "foundations",
   tags: ["preprocessing", "cleaning", "normalization", "data"],
   difficulty: "beginner",
@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ────────────────────────────────────────────────────────────
-   DATASET giả lập — 8 hàng căn hộ Hà Nội, có đủ lỗi thường gặp.
+   DATASET giả lập. 8 hàng căn hộ Hà Nội, có đủ lỗi thường gặp.
    ──────────────────────────────────────────────────────────── */
 
 type Row = {
@@ -76,7 +76,7 @@ const RAW_ROWS: Row[] = [
 const QUAN_LIST = ["Hoàn Kiếm", "Ba Đình", "Cầu Giấy"] as const;
 const LOAI_LIST = ["Chung cư", "Nhà phố", "Biệt thự"] as const;
 
-/* Helpers — thống kê đơn giản trên mảng đã lọc null */
+/* Helpers. Thống kê đơn giản trên mảng đã lọc null */
 
 function mean(values: number[]): number {
   if (values.length === 0) return 0;
@@ -105,7 +105,7 @@ function minMax(values: number[]): [number, number] {
 }
 
 /* ────────────────────────────────────────────────────────────
-   QUIZ — 5 câu, có cả multiple-choice và fill-blank.
+   QUIZ. 5 câu, có cả multiple-choice và fill-blank.
    ──────────────────────────────────────────────────────────── */
 
 const quizQuestions: QuizQuestion[] = [
@@ -113,27 +113,27 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Cột 'thu_nhập' có một hàng ghi 9999 triệu/tháng (rõ ràng lỗi nhập). Bạn nên xử lý thế nào đầu tiên?",
     options: [
-      "Kệ nó — model sẽ tự bỏ qua",
+      "Kệ nó, model sẽ tự bỏ qua",
       "Xoá cả cột 'thu_nhập'",
       "Điều tra nguyên nhân, sửa nếu là lỗi nhập hoặc loại ra, dùng median để tóm tắt vì median không bị outlier kéo",
       "Tăng temperature để AI học thêm trường hợp lạ",
     ],
     correct: 2,
     explanation:
-      "Outlier kiểu lỗi nhập phải được điều tra và xử lý. Median rất 'lì' trước outlier (giá trị ở giữa, không bị một con 9999 kéo lệch), còn mean thì bị bóp méo ngay lập tức. Luôn điều tra — có outlier thật (CEO thu nhập rất cao) cần giữ lại.",
+      "Outlier kiểu lỗi nhập phải được điều tra và xử lý. Median rất 'lì' trước outlier (giá trị ở giữa, không bị một con 9999 kéo lệch), còn mean thì bị bóp méo ngay lập tức. Luôn điều tra trước. Có outlier thật (CEO thu nhập rất cao) cần giữ lại.",
   },
   {
     question:
       "Cột 'quận' có 3 giá trị: Hoàn Kiếm, Ba Đình, Cầu Giấy (không có thứ tự). Cách encode hợp lý nhất?",
     options: [
-      "Gán 0, 1, 2 — đơn giản nhất",
-      "One-hot encoding — mỗi quận thành một cột 0/1",
+      "Gán 0, 1, 2 cho gọn",
+      "One-hot encoding: mỗi quận thành một cột 0/1",
       "Xoá cột vì model không hiểu chữ",
       "Giữ nguyên dạng chuỗi",
     ],
     correct: 1,
     explanation:
-      "Các quận không có thứ tự tự nhiên (Hoàn Kiếm không 'lớn hơn' Ba Đình). Nếu gán 0/1/2, model sẽ hiểu nhầm là có thứ bậc. One-hot tạo 3 cột nhị phân, mỗi cột đại diện cho một giá trị — model học đúng bản chất. Với cấp bậc (junior/senior) mới dùng ordinal (số có thứ tự).",
+      "Các quận không có thứ tự tự nhiên (Hoàn Kiếm không 'lớn hơn' Ba Đình). Nếu gán 0/1/2, model sẽ hiểu nhầm là có thứ bậc. One-hot tạo 3 cột nhị phân, mỗi cột đại diện cho một giá trị, nhờ vậy model học đúng bản chất. Với cấp bậc (junior/senior) mới dùng ordinal (số có thứ tự).",
   },
   {
     type: "fill-blank",
@@ -141,40 +141,40 @@ const quizQuestions: QuizQuestion[] = [
       "Công thức z-score: z = (x − {blank}) / σ. Điền ký hiệu hoặc tên của giá trị trung bình.",
     blanks: [{ answer: "μ", accept: ["mean", "trung bình", "mu", "M"] }],
     explanation:
-      "z-score = (x − μ) / σ: trừ trung bình rồi chia độ lệch chuẩn. Sau biến đổi, mỗi đặc trưng có μ = 0 và σ = 1 — gradient descent và KNN không còn bị một đặc trưng 'to' lấn át các đặc trưng nhỏ.",
+      "z-score = (x − μ) / σ: trừ trung bình rồi chia độ lệch chuẩn. Sau biến đổi, mỗi đặc trưng có μ = 0 và σ = 1. Nhờ vậy gradient descent và KNN không còn bị một đặc trưng 'to' lấn át các đặc trưng nhỏ.",
   },
   {
     question:
       "Cột 'điện_thoại_phụ' có 35% giá trị bị thiếu. Phương án hợp lý nhất?",
     options: [
       "Mean imputation cho mọi trường hợp",
-      "Drop cả cột luôn — quá nhiều thiếu",
-      "Điều tra tại sao thiếu. Nếu 'thiếu' mang thông tin (khách không có) → tạo cột chỉ báo is_missing=1, có thể drop cột gốc. Nếu thiếu ngẫu nhiên và cần cột này → dùng mô hình imputer hoặc drop cột",
+      "Drop cả cột luôn vì quá nhiều thiếu",
+      "Điều tra tại sao thiếu. Nếu 'thiếu' mang thông tin (khách không có) thì tạo cột chỉ báo is_missing=1, có thể drop cột gốc. Nếu thiếu ngẫu nhiên và cần cột này thì dùng mô hình imputer hoặc drop cột",
       "Điền bằng giá trị 0 cho chắc",
     ],
     correct: 2,
     explanation:
-      "35% missing là ngưỡng cần cân nhắc. 'Thiếu' đôi khi mang nhiều thông tin hơn giá trị thật — ví dụ khách hàng không có điện thoại phụ. Hãy tạo cờ is_missing trước, rồi tuỳ tình huống mới drop. Điền 0 cho dữ liệu số rất nguy hiểm — 0 có nghĩa là giá trị thật, không phải 'không biết'.",
+      "35% missing là ngưỡng cần cân nhắc. 'Thiếu' đôi khi mang nhiều thông tin hơn giá trị thật. Lấy ví dụ khách hàng không có điện thoại phụ. Hãy tạo cờ is_missing trước, rồi tuỳ tình huống mới drop. Điền 0 cho dữ liệu số rất nguy hiểm vì 0 có nghĩa là giá trị thật, không phải 'không biết'.",
   },
   {
     question:
       "Bạn fit StandardScaler trên toàn bộ dữ liệu (gồm cả tập test) rồi mới chia train/test. Hậu quả?",
     options: [
-      "Tốt hơn — scaler thấy toàn bộ phân phối",
+      "Tốt hơn vì scaler thấy toàn bộ phân phối",
       "Không ảnh hưởng gì",
-      "Data leakage — thông tin của tập test rò rỉ vào scaler, khiến độ chính xác báo cáo cao giả tạo",
+      "Data leakage: thông tin của tập test rò rỉ vào scaler, khiến độ chính xác báo cáo cao giả tạo",
       "Chỉ sai khi dùng deep learning",
     ],
     correct: 2,
     explanation:
-      "Lỗi kinh điển. Đúng quy trình: chia train/val/test TRƯỚC, sau đó fit scaler chỉ trên train, rồi gọi transform cho val và test. Nếu fit trên toàn bộ, mean và std của tập test đã 'chui' vào bước biến đổi của tập train — kết quả báo cáo đẹp nhưng khi deploy gặp dữ liệu mới sẽ sụp đổ.",
+      "Lỗi kinh điển. Đúng quy trình: chia train/val/test TRƯỚC, sau đó fit scaler chỉ trên train, rồi gọi transform cho val và test. Nếu fit trên toàn bộ, mean và std của tập test đã 'chui' vào bước biến đổi của tập train. Báo cáo đẹp, nhưng khi deploy gặp dữ liệu mới sẽ sụp đổ.",
   },
   {
     question:
       "Tree-based model (Random Forest, XGBoost) có cần scale đặc trưng không?",
     options: [
-      "Có — mọi model đều cần scale",
-      "Không — cây chỉ so sánh theo ngưỡng (x < t), scale không đổi thứ tự các điểm nên split giữ nguyên",
+      "Có. Mọi model đều cần scale",
+      "Không. Cây chỉ so sánh theo ngưỡng (x < t), scale không đổi thứ tự các điểm nên split giữ nguyên",
       "Chỉ cần khi có missing values",
       "Chỉ cần khi có one-hot",
     ],
@@ -249,7 +249,7 @@ export default function DataPreprocessingTopic() {
   const formatNumber = useCallback(
     (value: number | null, kind: "tuoi" | "thu_nhap") => {
       if (value == null) {
-        return <span className="text-red-500 font-semibold italic">NaN</span>;
+        return <span className="text-foreground font-semibold italic">NaN</span>;
       }
       if (!normalized) {
         return <span className="text-foreground">{value}</span>;
@@ -269,34 +269,34 @@ export default function DataPreprocessingTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1. DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Hook">
         <PredictionGate
-          question="Bạn có bảng dữ liệu căn hộ: 15% cột 'diện tích' bị thiếu, một hàng ghi tuổi chủ = -3 (lỗi nhập), một hàng ghi thu nhập = 9999 triệu (nhập nhầm). Bạn huấn luyện model, accuracy chỉ 55%. Vì sao?"
+          question="Bạn có bảng dữ liệu căn hộ: 15% cột 'diện tích' bị thiếu, một hàng ghi tuổi chủ = -3 (lỗi nhập), một hàng ghi thu nhập = 9999 triệu (nhập nhầm). Bạn huấn luyện model, độ chính xác chỉ 55%. Vì sao?"
           options={[
-            "Vì model quá đơn giản — phải dùng deep learning",
+            "Vì model quá đơn giản, phải dùng deep learning",
             "Vì dữ liệu bẩn: 'garbage in, garbage out'. Phải làm sạch trước khi huấn luyện",
-            "Vì chưa đủ dữ liệu — cần thêm 10x dataset",
+            "Vì chưa đủ dữ liệu, cần thêm 10 lần dataset",
             "Vì chưa dùng temperature đủ cao",
           ]}
           correct={1}
-          explanation="Đây là bài học số 1 của mọi data scientist. Missing values làm model 'loạn', outlier kéo lệch thống kê, giá trị vô nghĩa (tuổi âm) huấn luyện thành tín hiệu sai. Làm sạch dữ liệu là bước có tác động lớn nhất lên chất lượng — hơn cả việc đổi kiến trúc model."
+          explanation="Đây là bài học số 1 của mọi data scientist. Missing values làm model 'loạn', outlier kéo lệch thống kê, giá trị vô nghĩa (tuổi âm) huấn luyện thành tín hiệu sai. Làm sạch dữ liệu là bước có tác động lớn nhất lên chất lượng, hơn cả việc đổi kiến trúc model."
         >
           <div className="mt-4 rounded-2xl border border-border bg-card p-5 space-y-3">
             <div className="flex items-center gap-2">
               <Database size={18} className="text-accent" />
               <h3 className="text-sm font-semibold text-foreground">
-                80% thời gian của một data scientist = làm sạch dữ liệu
+                80% thời gian của một data scientist là làm sạch dữ liệu
               </h3>
             </div>
             <p className="text-sm text-foreground/85 leading-relaxed">
               Khi bạn đọc blog về Machine Learning, mọi người hay khoe model
               &ldquo;state of the art&rdquo;. Nhưng ngoài thực tế, một ML
               engineer dành{" "}
-              <strong>phần lớn thời gian để rửa dữ liệu</strong> — điền chỗ
+              <strong>phần lớn thời gian để rửa dữ liệu</strong>: điền chỗ
               thiếu, bỏ giá trị vô lý, chuẩn hoá đơn vị, mã hoá cột chữ. Bài này
-              cho bạn chạm tay vào từng bước đó: bấm nút, thấy dữ liệu biến
-              đổi, và đọc đoạn pandas tương ứng.
+              cho bạn chạm tay vào từng bước đó. Bấm nút, thấy dữ liệu biến
+              đổi, đọc đoạn pandas tương ứng.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {[
@@ -323,56 +323,56 @@ export default function DataPreprocessingTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ / BỨC TRANH LỚN ━━━ */}
+      {/* ━━━ BƯỚC 2. ẨN DỤ / BỨC TRANH LỚN ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
             <Sparkles size={18} className="text-accent" />
-            Dữ liệu thô giống rau vừa hái — chưa rửa, chưa nhặt
+            Dữ liệu thô giống rau vừa hái: chưa rửa, chưa nhặt
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Bạn đi chợ mua mớ rau cải. Ở ngoài đồng, có bùn, có lá sâu, có cọng
             héo, có con ốc bám rễ. Đầu bếp giỏi không bao giờ cho nguyên mớ rau
-            vào nồi — người đó nhặt, rửa, cắt, rồi mới nấu.
+            vào nồi. Người đó nhặt, rửa, cắt, rồi mới nấu.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
             <strong>Dữ liệu thô cũng thế.</strong> Thu thập từ form, từ cảm
-            biến, từ log ứng dụng — luôn có ô để trống, có giá trị lỗi, có đơn
-            vị khác nhau. Nếu &ldquo;cho luôn vào nồi&rdquo; (train model),
-            món ăn sẽ dở — dù bạn có công thức &ldquo;state of the art&rdquo;.
+            biến, từ log ứng dụng, luôn có ô để trống, có giá trị lỗi, có đơn
+            vị khác nhau. Nếu &ldquo;cho luôn vào nồi&rdquo; (đem đi huấn luyện
+            model), món ăn sẽ dở, dù bạn có công thức &ldquo;state of the art&rdquo;.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-4">
-              <p className="inline-flex items-center gap-1 text-xs font-semibold text-red-700 dark:text-red-300 mb-1">
+              <p className="inline-flex items-center gap-1 text-xs font-semibold text-red-900 dark:text-red-200 mb-1">
                 <XCircle size={12} aria-hidden="true" />
                 Không làm sạch
               </p>
-              <p className="text-xs text-foreground/80 leading-relaxed">
-                Model &ldquo;học&rdquo; cả NaN và outlier → dự đoán lệch → báo
-                cáo sai → sếp mất tiền.
+              <p className="text-xs text-foreground leading-relaxed">
+                Model &ldquo;học&rdquo; cả NaN và outlier, dự đoán lệch, báo
+                cáo sai, sếp mất tiền.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4">
-              <p className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300 mb-1">
+              <p className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-900 dark:text-emerald-200 mb-1">
                 <CheckCircle2 size={12} aria-hidden="true" />
                 Có làm sạch
               </p>
-              <p className="text-xs text-foreground/80 leading-relaxed">
-                Model nhận dữ liệu &ldquo;chín tới&rdquo; → học ra pattern
-                thật → dự đoán ổn định cả khi deploy.
+              <p className="text-xs text-foreground leading-relaxed">
+                Model nhận dữ liệu &ldquo;chín tới&rdquo;, học ra pattern
+                thật, dự đoán ổn định cả khi deploy.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — REVEAL / SANDBOX ━━━ */}
+      {/* ━━━ BƯỚC 3. REVEAL / SANDBOX ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Sandbox">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-4 leading-relaxed">
             Đây là 8 hàng dữ liệu căn hộ Hà Nội. Cột có vấn đề đã được{" "}
             <strong>đánh dấu nền vàng</strong>. Bấm từng nút dưới đây để thấy
-            hàng biến đổi thế nào. Bấm lại để tắt bước đó — so sánh trước / sau.
+            hàng biến đổi thế nào. Bấm lại để tắt bước đó, so sánh trước với sau.
           </p>
 
           {/* ── Thanh nút 4 thao tác ── */}
@@ -545,12 +545,12 @@ export default function DataPreprocessingTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — DEEPEN / TABVIEW THEO CHUYÊN ĐỀ ━━━ */}
+      {/* ━━━ BƯỚC 4. DEEPEN / TABVIEW THEO CHUYÊN ĐỀ ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đào sâu">
         <p className="text-sm text-muted mb-3 leading-relaxed">
-          Bốn thao tác trên không phải là &ldquo;một nút bấm&rdquo; duy nhất —
-          mỗi thao tác có nhiều biến thể tuỳ tình huống. Bấm qua các tab để
-          thấy trước/sau của từng lựa chọn, kèm đoạn pandas ngắn.
+          Bốn thao tác trên không phải là &ldquo;một nút bấm&rdquo; duy nhất.
+          Mỗi thao tác có nhiều biến thể tuỳ tình huống. Bấm qua các tab để
+          thấy trước và sau của từng lựa chọn, kèm đoạn pandas ngắn.
         </p>
         <TabView
           tabs={[
@@ -579,7 +579,7 @@ export default function DataPreprocessingTopic() {
                     />
                     <MissingCard
                       title="Median imputation"
-                      desc="Điền bằng trung vị. 'Lì' hơn trước outlier — lựa chọn mặc định an toàn."
+                      desc="Điền bằng trung vị. 'Lì' hơn trước outlier, là lựa chọn mặc định an toàn."
                       color="#10b981"
                       before="[28, NaN, 45, 500]"
                       after="[28, 45, 45, 500]"
@@ -592,7 +592,7 @@ export default function DataPreprocessingTopic() {
                       after="[1.0, 1.0, 1.0, 1.3]"
                     />
                   </div>
-                  <CodeBlock language="python" title="pandas — 4 cách xử lý missing">
+                  <CodeBlock language="python" title="pandas: 4 cách xử lý missing">
 {`import pandas as pd
 
 df.dropna(subset=["thu_nhap"])                  # 1. Drop row
@@ -601,10 +601,10 @@ df["thu_nhap"].fillna(df["thu_nhap"].median())   # 3. Median
 df["thu_nhap"].ffill()                           # 4. Forward-fill`}
                   </CodeBlock>
                   <Callout variant="tip" title="Mẹo chọn nhanh">
-                    &lt; 5% thiếu ngẫu nhiên → drop row. 5–30% → median (hoặc
-                    KNN imputer). &gt; 30% → cân nhắc drop cột, hoặc tạo cờ{" "}
-                    <code>is_missing</code> vì &ldquo;thiếu&rdquo; chính là tín
-                    hiệu.
+                    Dưới 5% thiếu ngẫu nhiên thì drop row. Từ 5 đến 30% thì
+                    median (hoặc KNN imputer). Trên 30% thì cân nhắc drop cột,
+                    hoặc tạo cờ <code>is_missing</code> vì &ldquo;thiếu&rdquo;
+                    chính là tín hiệu.
                   </Callout>
                 </div>
               ),
@@ -627,7 +627,7 @@ df["thu_nhap"].ffill()                           # 4. Forward-fill`}
                             trung bình.
                           </p>
                           <p className="text-[11px] text-muted mt-1">
-                            Điều kiện: |z| &gt; 3 → coi là ngoại lai.
+                            Điều kiện: |z| &gt; 3 thì coi là ngoại lai.
                           </p>
                         </>
                       }
@@ -655,7 +655,7 @@ df_clean = df[df["x"].between(lo, hi)]`}
                   </div>
                   <Callout variant="warning" title="Đừng xoá outlier vội">
                     Luôn điều tra trước. Một CEO có thu nhập 500 triệu/tháng
-                    không phải lỗi — họ tồn tại thật. Với dữ liệu lệch phải
+                    không phải lỗi, họ tồn tại thật. Với dữ liệu lệch phải
                     (income, price), hãy thử log-transform thay vì xoá.
                   </Callout>
                 </div>
@@ -691,7 +691,7 @@ X_s = scaler.fit_transform(X_train)`}
                   </div>
                   <div className="rounded-xl border border-border bg-surface/40 p-4">
                     <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-2">
-                      Trực quan — cùng 6 giá trị thu nhập, ba thang đo khác nhau
+                      Trực quan: cùng 6 giá trị thu nhập, ba thang đo khác nhau
                     </p>
                     <ScaleComparisonSvg values={[25, 30, 40, 48, 55, 500]} />
                   </div>
@@ -704,7 +704,7 @@ X_s = scaler.fit_transform(X_train)`}
                 <div className="space-y-4">
                   <p className="text-sm text-foreground/85 leading-relaxed">
                     Model chỉ &ldquo;nhìn&rdquo; được số. Với cột chữ (quận,
-                    loại nhà, cấp bậc), bạn cần biến chữ thành số — và có
+                    loại nhà, cấp bậc), bạn cần biến chữ thành số, và có
                     nhiều cách.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -721,7 +721,7 @@ X_s = scaler.fit_transform(X_train)`}
                       note="Giữ được thứ tự, nhưng model sẽ 'hiểu nhầm' nếu category không có thứ tự thật."
                     />
                   </div>
-                  <CodeBlock language="python" title="pandas + sklearn — cả hai cách encode">
+                  <CodeBlock language="python" title="pandas + sklearn: cả hai cách encode">
 {`# One-hot với pandas
 df = pd.get_dummies(df, columns=["quan"], prefix="quan")
 
@@ -786,12 +786,12 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 5. AHA ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Aha">
         <AhaMoment>
           <p>
             <strong>
-              Mô hình không biết dữ liệu của bạn bẩn đâu — nó học đúng những gì
+              Model không biết dữ liệu của bạn bẩn đâu. Nó học đúng những gì
               bạn đưa vào.
             </strong>{" "}
             Nếu bạn đưa tuổi = -3, model sẽ &ldquo;học&rdquo; rằng có tồn tại
@@ -800,21 +800,21 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
             chỉ nghe &ldquo;thu nhập&rdquo;.
           </p>
           <p className="mt-3">
-            Làm sạch dữ liệu không &ldquo;xa xỉ&rdquo; — nó là khoản đầu tư có
-            lợi tức cao nhất trong toàn bộ pipeline ML. Data sạch + model đơn
-            giản thường đánh bại data bẩn + model phức tạp.
+            Làm sạch dữ liệu không phải bước &ldquo;xa xỉ&rdquo;. Đó là việc có
+            lợi suất cao nhất trong toàn bộ pipeline ML. Data sạch và model đơn
+            giản thường đánh bại data bẩn và model phức tạp.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 6. CHALLENGE ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
           question="Bạn đang xử lý dataset khách hàng với cột 'email_phụ'. 30% hàng có giá trị thiếu. Phương án hợp lý nhất?"
           options={[
             "Điền mọi ô thiếu bằng 0 (dù đây là cột chữ) để không còn NaN",
             "Drop ngay cột vì hơn 5% thiếu",
-            "Hỏi: tại sao thiếu? Nếu khách không có email phụ (tức 'thiếu' mang thông tin) → tạo cờ has_secondary_email, rồi có thể bỏ cột gốc",
+            "Hỏi: tại sao thiếu? Nếu khách không có email phụ (tức 'thiếu' mang thông tin) thì tạo cờ has_secondary_email, rồi có thể bỏ cột gốc",
             "Dùng temperature cao để AI bù vào",
           ]}
           correct={2}
@@ -826,17 +826,17 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
             question="Bạn có cột 'thu_nhập' range 5–500 triệu và cột 'tuổi' range 18–65. Bạn dùng KNN để phân loại. Vấn đề?"
             options={[
               "Không có vấn đề gì",
-              "KNN tính khoảng cách bằng Euclidean. Thu_nhập (max 500) lấn át tuổi (max 65) → kết quả chỉ dựa trên thu nhập",
+              "KNN tính khoảng cách bằng Euclidean. Thu_nhập (max 500) lấn át tuổi (max 65), kết quả chỉ dựa trên thu nhập",
               "KNN chỉ chạy được với cột chữ",
               "Tuổi không phải đặc trưng hợp lệ",
             ]}
             correct={1}
-            explanation="Khoảng cách Euclidean: sqrt((495)^2 + (47)^2) ≈ 498. Tuổi bị ignore hoàn toàn. Fix: StandardScaler hoặc MinMaxScaler cho cả hai cột → khoảng cách cân bằng. KNN, K-Means, SVM, Logistic Regression đều cần scale."
+            explanation="Khoảng cách Euclidean: sqrt((495)^2 + (47)^2) ≈ 498. Tuổi bị ignore hoàn toàn. Fix: StandardScaler hoặc MinMaxScaler cho cả hai cột để khoảng cách cân bằng. KNN, K-Means, SVM, Logistic Regression đều cần scale."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — EXPLAIN ━━━ */}
+      {/* ━━━ BƯỚC 7. EXPLAIN ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p>
@@ -847,7 +847,7 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
             <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-2">
-              Công thức 1 — Chuẩn hoá bằng z-score
+              Công thức 1: chuẩn hoá bằng z-score
             </p>
             <LaTeX block>{"z = \\dfrac{x - \\mu}{\\sigma}"}</LaTeX>
             <p className="text-sm text-foreground/80 leading-relaxed">
@@ -860,7 +860,7 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
             <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-2">
-              Công thức 2 — Min-max scaling
+              Công thức 2: min-max scaling
             </p>
             <LaTeX block>
               {"x' = \\dfrac{x - x_{\\min}}{x_{\\max} - x_{\\min}}"}
@@ -868,7 +868,7 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
             <p className="text-sm text-foreground/80 leading-relaxed">
               Kéo mọi giá trị vào đoạn [0, 1]. Hữu ích khi model yêu cầu đầu vào
               bị giới hạn (sigmoid, image pixels). Nhược điểm: nhạy với
-              outlier — một giá trị cực đại sẽ &ldquo;dí&rdquo; mọi giá trị
+              outlier. Một giá trị cực đại sẽ &ldquo;dí&rdquo; mọi giá trị
               khác về gần 0.
             </p>
           </div>
@@ -892,14 +892,14 @@ X_val_mm    = minmax.transform(X_val[["tuoi", "thu_nhap"]])`}
           <Callout variant="warning" title="Quy tắc vàng: fit trên train, transform cho val/test">
             Mọi bước biến đổi (imputer, scaler, encoder) chỉ được học từ tập
             train. Val và test chỉ được gọi <code>transform</code>. Vi phạm quy
-            tắc này gọi là <strong>data leakage</strong> — kết quả báo cáo cao
-            giả tạo, khi deploy sẽ lộ ra.
+            tắc này gọi là <strong>data leakage</strong>. Hậu quả: kết quả báo
+            cáo cao giả tạo, khi deploy sẽ lộ ra.
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
             Ghép pipeline đầu tới cuối
           </h4>
-          <CodeBlock language="python" title="sklearn Pipeline — mọi bước trong 1 object">
+          <CodeBlock language="python" title="sklearn Pipeline gói mọi bước trong 1 object">
 {`from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
@@ -916,8 +916,8 @@ clf.score(X_test, y_test)`}
 
           <Callout variant="tip" title="Vì sao nên dùng Pipeline">
             Pipeline đóng gói tất cả các bước vào 1 object. Khi deploy, bạn chỉ
-            cần gọi <code>clf.predict(new_row)</code> — các bước tiền xử lý
-            được áp dụng tự động, không sợ lệch giữa training và serving.
+            cần gọi <code>clf.predict(new_row)</code>. Các bước tiền xử lý được
+            áp dụng tự động, không sợ lệch giữa training và serving.
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-5 mb-2">
@@ -927,7 +927,7 @@ clf.score(X_test, y_test)`}
             Khi cột số và cột chữ cần xử lý khác nhau, tách thành hai nhánh rồi
             gộp lại bằng <code>ColumnTransformer</code>:
           </p>
-          <CodeBlock language="python" title="2 nhánh — định nghĩa pipeline từng loại">
+          <CodeBlock language="python" title="2 nhánh: định nghĩa pipeline từng loại">
 {`from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 
@@ -971,24 +971,24 @@ X_test_clean  = prep.transform(X_test)  # không fit!`}
             Khi dữ liệu đã sạch, bước tiếp theo là{" "}
             <TopicLink slug="feature-engineering">
               feature engineering
-            </TopicLink>{" "}
-            — tạo đặc trưng mới có ý nghĩa. Để ôn kỹ năng pandas nền tảng, xem
+            </TopicLink>
+            : tạo đặc trưng mới có ý nghĩa. Để ôn kỹ năng pandas nền tảng, xem
             lại{" "}
             <TopicLink slug="python-for-ml">Python cho ML</TopicLink>.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8. TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Ôn tập">
         <MiniSummary
           title="5 điều cần nhớ về tiền xử lý"
           points={[
-            "Làm sạch dữ liệu là bước có tác động lớn nhất lên chất lượng model — trước cả việc đổi kiến trúc.",
+            "Làm sạch dữ liệu có tác động lớn nhất lên chất lượng model, trước cả việc đổi kiến trúc.",
             "4 thao tác cốt lõi: điền missing, lọc outlier, encode category, scale số.",
             "Luôn chia train/val/test TRƯỚC, rồi fit mọi biến đổi chỉ trên train.",
-            "Median 'lì' trước outlier — dùng khi phân phối lệch hoặc có giá trị cực trị.",
-            "Dùng sklearn Pipeline để đóng gói — mỗi bước áp dụng tự động khi deploy.",
+            "Median 'lì' trước outlier. Dùng khi phân phối lệch hoặc có giá trị cực trị.",
+            "Dùng sklearn Pipeline để đóng gói. Mỗi bước áp dụng tự động khi deploy.",
           ]}
         />
 
@@ -1001,7 +1001,7 @@ X_test_clean  = prep.transform(X_test)  # không fit!`}
 
         <div className="mt-6">
           <Callout variant="tip" title="Xem ứng dụng thực tế">
-            Uber xử lý hàng tỷ điểm GPS nhiễu để tính ETA — đó là bài toán tiền
+            Uber xử lý hàng tỷ điểm GPS nhiễu để tính ETA. Đó là bài toán tiền
             xử lý quy mô lớn. Đọc{" "}
             <TopicLink slug="data-preprocessing-in-uber-eta">
               Tiền xử lý trong Uber ETA
@@ -1016,7 +1016,7 @@ X_test_clean  = prep.transform(X_test)  # không fit!`}
 }
 
 /* ────────────────────────────────────────────────────────────
-   HELPERS cục bộ — tách nhỏ để JSX chính đọc dễ.
+   HELPERS cục bộ. Tách nhỏ để JSX chính đọc dễ.
    ──────────────────────────────────────────────────────────── */
 
 function buildLiveSnippet({
@@ -1139,7 +1139,7 @@ function ScaleCard({
     <div className="rounded-xl border border-border bg-card p-4 space-y-2">
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-foreground">{title}</p>
-        <span className="text-[10px] font-mono text-emerald-500 px-2 py-0.5 rounded-full bg-emerald-500/10">
+        <span className="text-[10px] font-mono text-foreground font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10">
           {range}
         </span>
       </div>
@@ -1239,7 +1239,7 @@ function EncodeCard({
       <p className="text-xs text-foreground/80 leading-snug">
         <strong>Dùng khi:</strong> {when}
       </p>
-      <p className="text-[11px] font-mono text-blue-500 bg-blue-500/10 rounded px-2 py-1">
+      <p className="text-[11px] font-mono text-foreground bg-blue-500/10 rounded px-2 py-1">
         {example}
       </p>
       <p className="text-[11px] text-muted italic leading-snug">{note}</p>

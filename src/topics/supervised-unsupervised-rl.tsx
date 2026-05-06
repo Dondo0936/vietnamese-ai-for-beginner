@@ -37,9 +37,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "supervised-unsupervised-rl",
   title: "Learning Paradigms",
-  titleVi: "Ba kiểu học: có giám sát, không giám sát, tăng cường",
+  titleVi: "Ba kiểu học máy: supervised, unsupervised, reinforcement",
   description:
-    "Ba cách máy học: học có người chấm bài, tự nhóm theo trực giác, và thử–sai nhận thưởng. Ba cách ấy giống hệt ba cách bạn đã từng học trong đời thật.",
+    "Ba cách máy học giống ba cách bạn đã từng học. Có giám sát (supervised) là làm đề rồi xem đáp án. Không giám sát (unsupervised) là tự gom đồ chơi theo cảm nhận. Tăng cường (reinforcement) là tập đạp xe: ngã thì đau, đi được thì vui.",
   category: "foundations",
   tags: ["supervised", "unsupervised", "reinforcement-learning"],
   difficulty: "beginner",
@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   DỮ LIỆU — SUPERVISED: FLASHCARD CLICKER
+   DU LIEU SUPERVISED: FLASHCARD CLICKER
    ═══════════════════════════════════════════════════════════════════ */
 
 type FruitCard = {
@@ -69,27 +69,27 @@ const FLASHCARDS: FruitCard[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
-   DỮ LIỆU — UNSUPERVISED: 2D POINTS TỰ NHÓM
+   DU LIEU UNSUPERVISED: 2D POINTS TU NHOM
    ═══════════════════════════════════════════════════════════════════ */
 
 type Cluster2DPoint = { id: number; x: number; y: number };
 
 const CLUSTER_POINTS: Cluster2DPoint[] = [
-  // Nhóm A — góc dưới trái
+  // Nhom A goc duoi trai
   { id: 1, x: 90, y: 220 },
   { id: 2, x: 115, y: 245 },
   { id: 3, x: 80, y: 260 },
   { id: 4, x: 140, y: 230 },
   { id: 5, x: 105, y: 275 },
   { id: 6, x: 150, y: 255 },
-  // Nhóm B — trên cao giữa
+  // Nhom B tren cao giua
   { id: 7, x: 245, y: 95 },
   { id: 8, x: 275, y: 80 },
   { id: 9, x: 260, y: 115 },
   { id: 10, x: 290, y: 105 },
   { id: 11, x: 230, y: 125 },
   { id: 12, x: 300, y: 130 },
-  // Nhóm C — phải
+  // Nhom C phai
   { id: 13, x: 400, y: 220 },
   { id: 14, x: 425, y: 245 },
   { id: 15, x: 440, y: 210 },
@@ -113,7 +113,7 @@ function assignCluster(p: Cluster2DPoint, centers: Array<{ x: number; y: number 
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   DỮ LIỆU — RL: GRID WORLD
+   DU LIEU RL: GRID WORLD
    ═══════════════════════════════════════════════════════════════════ */
 
 const GRID_ROWS = 5;
@@ -162,27 +162,27 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Bạn có 5.000 ảnh đã được dán nhãn 'chó' hoặc 'mèo'. Bạn muốn AI tự đoán con vật trong ảnh mới. Đây là kiểu học nào?",
     options: [
-      "Học có giám sát — mỗi ảnh đã có nhãn đúng, model học cách đoán nhãn",
-      "Học không giám sát — model tự nhóm ảnh giống nhau",
-      "Học tăng cường — model nhận thưởng khi đoán đúng",
+      "Học có giám sát (supervised). Mỗi ảnh đã có nhãn đúng, model học cách đoán nhãn",
+      "Học không giám sát (unsupervised). Model tự nhóm ảnh giống nhau",
+      "Học tăng cường (reinforcement). Model nhận thưởng khi đoán đúng",
       "Không kiểu nào trong ba kiểu trên",
     ],
     correct: 0,
     explanation:
-      "Có dữ liệu và đã có nhãn đúng cho từng mẫu → học có giám sát. Model xem nhiều ảnh 'chó' + nhãn 'chó', nhiều ảnh 'mèo' + nhãn 'mèo', rồi học quy luật. Giống hệt cách bạn luyện đề thi: có đề, có đáp án, bạn so lại.",
+      "Có dữ liệu và đã có nhãn đúng cho từng mẫu, vậy là học có giám sát (supervised). Model xem nhiều ảnh 'chó' kèm nhãn 'chó', nhiều ảnh 'mèo' kèm nhãn 'mèo', rồi học quy luật. Giống hệt cách bạn luyện đề thi: có đề, có đáp án, bạn so lại.",
   },
   {
     question:
-      "Shopee muốn chia 50 triệu khách thành các nhóm theo sở thích mua sắm — chưa ai biết phải có bao nhiêu nhóm hay tên từng nhóm là gì. Kiểu học nào phù hợp?",
+      "Shopee muốn chia 50 triệu khách thành các nhóm theo sở thích mua sắm. Chưa ai biết phải có bao nhiêu nhóm hay tên từng nhóm là gì. Kiểu học nào phù hợp?",
     options: [
-      "Học có giám sát",
-      "Học không giám sát — tự tìm cấu trúc nhóm trong dữ liệu chưa có nhãn",
-      "Học tăng cường",
+      "Học có giám sát (supervised)",
+      "Học không giám sát (unsupervised). Tự tìm cấu trúc nhóm trong dữ liệu chưa có nhãn",
+      "Học tăng cường (reinforcement)",
       "Phải gọi điện hỏi từng khách",
     ],
     correct: 1,
     explanation:
-      "Không ai biết trước có bao nhiêu nhóm, cũng không có 'nhãn đúng' cho mỗi khách → học không giám sát. Thuật toán như K-means tự gom các khách có hành vi tương tự thành cụm. Sau đó đội marketing mới đặt tên cho từng cụm.",
+      "Không ai biết trước có bao nhiêu nhóm, cũng không có nhãn đúng cho mỗi khách. Đây là học không giám sát (unsupervised). Thuật toán như K-means tự gom các khách có hành vi tương tự thành cụm. Sau đó đội marketing mới đặt tên cho từng cụm.",
   },
   {
     question:
@@ -190,12 +190,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Học có giám sát vì có người cho điểm",
       "Học không giám sát vì không ai dạy cách đi",
-      "Học tăng cường — action (bước đi) + reward (điểm cộng/trừ) + thử nhiều lần",
+      "Học tăng cường (reinforcement). Mỗi bước đi là một action, điểm cộng/trừ là reward, thử rất nhiều lần",
       "Học bắt chước từ video người khác",
     ],
     correct: 2,
     explanation:
-      "Không ai nói trước bước nào đúng, bước nào sai — chỉ có tín hiệu thưởng/phạt sau mỗi hành động. Đây chính là học tăng cường. Robot khám phá, thử, nhớ cái nào đưa lại điểm cao rồi lặp lại.",
+      "Không ai nói trước bước nào đúng, bước nào sai. Robot chỉ nhận được tín hiệu thưởng hoặc phạt sau mỗi hành động. Đây chính là học tăng cường (reinforcement learning). Robot khám phá, thử, nhớ cái nào cho điểm cao rồi lặp lại.",
   },
   {
     type: "fill-blank",
@@ -207,7 +207,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "phần thưởng", accept: ["reward", "thưởng"] },
     ],
     explanation:
-      "Ba thành phần khác nhau mang lại ba kiểu học khác nhau: nhãn → có giám sát, chỉ có input thô → không giám sát, reward sau mỗi action → tăng cường.",
+      "Ba thành phần khác nhau làm nên ba kiểu học khác nhau. Có nhãn thì supervised. Chỉ có input thô thì unsupervised. Có reward sau mỗi action thì reinforcement.",
   },
   {
     question:
@@ -220,25 +220,25 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Biết kiểu học giúp bạn không phí công: nếu dữ liệu không có nhãn, đừng mơ chạy supervised; nếu môi trường tĩnh, đừng ép dùng RL. Chọn đúng kiểu tiết kiệm rất nhiều thời gian và tiền.",
+      "Biết kiểu học giúp bạn không phí công. Nếu dữ liệu không có nhãn, đừng mơ chạy supervised. Nếu môi trường tĩnh, đừng ép dùng RL. Chọn đúng kiểu tiết kiệm rất nhiều thời gian và tiền.",
   },
   {
     question:
-      "Kiểu học nào phù hợp NHẤT cho việc huấn luyện ChatGPT trả lời đúng ý người dùng — nơi con người xếp hạng các câu trả lời?",
+      "Kiểu học nào phù hợp NHẤT để huấn luyện ChatGPT trả lời đúng ý người dùng, khi con người xếp hạng các câu trả lời?",
     options: [
-      "Thuần tuý có giám sát",
-      "Thuần tuý không giám sát",
-      "Học tăng cường từ phản hồi con người (RLHF) — kết hợp RL + nhãn xếp hạng của người",
+      "Thuần tuý có giám sát (supervised)",
+      "Thuần tuý không giám sát (unsupervised)",
+      "Học tăng cường từ phản hồi con người (RLHF). Kết hợp RL với nhãn xếp hạng của người",
       "Không liên quan đến ba kiểu học",
     ],
     correct: 2,
     explanation:
-      "RLHF = Reinforcement Learning from Human Feedback. Con người xếp hạng các phản hồi AI đưa ra. Điểm xếp hạng trở thành phần thưởng. AI điều chỉnh cách trả lời để tối đa phần thưởng đó. Đây là cách ChatGPT, Claude được 'tinh chỉnh' để trò chuyện tự nhiên hơn.",
+      "RLHF là viết tắt của Reinforcement Learning from Human Feedback. Con người xếp hạng các phản hồi AI đưa ra. Điểm xếp hạng trở thành reward. AI điều chỉnh cách trả lời để tối đa reward đó. Đây là cách ChatGPT và Claude được tinh chỉnh để trò chuyện tự nhiên hơn.",
   },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
-   COMPONENT — FLASHCARD CLICKER (SUPERVISED)
+   COMPONENT FLASHCARD CLICKER (SUPERVISED)
    ═══════════════════════════════════════════════════════════════════ */
 
 function FlashcardClicker() {
@@ -353,7 +353,7 @@ function FlashcardClicker() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   COMPONENT — 2D DRAGGABLE POINTS (UNSUPERVISED)
+   COMPONENT 2D DRAGGABLE POINTS (UNSUPERVISED)
    ═══════════════════════════════════════════════════════════════════ */
 
 function UnsupervisedDragCanvas() {
@@ -403,9 +403,9 @@ function UnsupervisedDragCanvas() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted leading-relaxed">
-        Không ai nói trước đâu là nhóm A, B, C. Bạn chỉ thấy 18 chấm &mdash; hãy kéo <strong>tâm
-        cụm</strong> (vòng tròn nét đứt) đến vị trí bạn nghĩ là &ldquo;trung tâm&rdquo; của từng
-        nhóm. Khi bấm <em>Xem kết quả</em>, thuật toán sẽ gán mỗi điểm vào tâm gần nhất.
+        Không ai nói trước đâu là nhóm A, B, C. Bạn chỉ thấy 18 chấm. Hãy kéo <strong>tâm cụm</strong>
+        {" "}(vòng tròn nét đứt) đến vị trí bạn nghĩ là &ldquo;trung tâm&rdquo; của từng nhóm. Khi bấm{" "}
+        <em>Xem kết quả</em>, thuật toán sẽ gán mỗi điểm vào tâm gần nhất.
       </p>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -560,8 +560,8 @@ function UnsupervisedDragCanvas() {
         <Boxes size={14} className="text-accent shrink-0 mt-0.5" />
         <p className="leading-relaxed">
           {revealed
-            ? `Với K = ${k}, mỗi điểm được gán màu theo tâm gần nhất. Hãy kéo tâm để xem cách nhóm thay đổi — đó chính là một bước của thuật toán K-means.`
-            : `Tất cả 18 điểm ban đầu đều xám — không có nhãn. Chỉ riêng việc bạn kéo được ${k} tâm ra đúng chỗ, máy đã 'học không giám sát' thành công.`}
+            ? `Với K = ${k}, mỗi điểm được gán màu theo tâm gần nhất. Hãy kéo tâm để xem cách nhóm thay đổi. Đó chính là một bước của thuật toán K-means.`
+            : `Tất cả 18 điểm ban đầu đều xám, không có nhãn. Chỉ riêng việc bạn kéo được ${k} tâm ra đúng chỗ, máy đã học không giám sát thành công.`}
         </p>
       </div>
     </div>
@@ -569,7 +569,7 @@ function UnsupervisedDragCanvas() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   COMPONENT — RL GRID WORLD
+   COMPONENT RL GRID WORLD
    ═══════════════════════════════════════════════════════════════════ */
 
 function RLGridWorld() {
@@ -807,8 +807,8 @@ function RLGridWorld() {
         <Gamepad2 size={14} className="text-accent shrink-0 mt-0.5" />
         <p className="leading-relaxed">
           {mode === "learned"
-            ? "Sau hàng ngàn ván chơi thử, robot đã nhớ: đường đi qua mép trên → biên phải → xuống đích là an toàn. Mỗi bước tốn −1, đến đích +10, nhưng tránh được hố −10."
-            : "Lúc chưa học, robot đi lung tung, rơi vào hố và mất 10 điểm ngay lập tức. Mỗi lần rơi là một bài học — lần sau nó sẽ tránh đi gần ô đó."}
+            ? "Sau hàng ngàn ván chơi thử, robot đã nhớ một đường đi an toàn. Đi qua mép trên, vòng sang biên phải, rồi xuống đích. Mỗi bước tốn −1, đến đích được +10, đổi lại tránh được hố −10."
+            : "Lúc chưa học, robot đi lung tung, rơi vào hố và mất 10 điểm ngay lập tức. Mỗi lần rơi là một bài học. Lần sau nó sẽ tránh đi gần ô đó."}
         </p>
       </div>
     </div>
@@ -822,27 +822,28 @@ function RLGridWorld() {
 export default function SupervisedUnsupervisedRLTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* BUOC 1: HOOK / DU DOAN */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
-          question="Một đứa trẻ học cái gì đó trong ba tình huống sau. Bạn đoán xem tình huống nào giống 'học tăng cường' nhất?"
+          question="Một đứa trẻ học cái gì đó trong ba tình huống sau. Bạn đoán xem tình huống nào giống học tăng cường (reinforcement) nhất?"
           options={[
             "Bố mẹ chỉ vào quả và nói tên: 'đây là cam, đây là táo', nhiều lần",
             "Bé tự xếp đống đồ chơi thành mấy chồng theo cảm nhận riêng",
-            "Bé tập đi xe đạp: ngã thì đau, giữ thăng bằng thì vui; cứ thế cho tới khi quen",
+            "Bé tập đi xe đạp: ngã thì đau, giữ thăng bằng thì vui, cứ thế cho tới khi quen",
             "Bé tra Google mỗi khi không biết",
           ]}
           correct={2}
-          explanation="Đạp xe = học tăng cường. Không ai nói trước 'nghiêng người sang trái 5 độ là đúng'. Bé thử, ngã (phạt), đứng vững (thưởng), rồi tự chỉnh. Tình huống 1 là học có giám sát (có người dạy nhãn). Tình huống 2 là học không giám sát (tự nhóm không cần nhãn)."
+          explanation="Đạp xe chính là reinforcement learning. Không ai nói trước 'nghiêng người sang trái 5 độ là đúng'. Bé thử, ngã (phạt), đứng vững (thưởng), rồi tự chỉnh. Tình huống 1 là supervised (có người dạy nhãn). Tình huống 2 là unsupervised (tự nhóm không cần nhãn)."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
-            Máy cũng học theo <strong>ba cách</strong> giống bạn đã từng: có người chấm bài, tự gom
-            theo trực giác, và thử–sai nhận thưởng. Hôm nay bạn sẽ tự tay chạy thử cả ba.
+            Máy cũng học theo <strong>ba cách</strong> giống bạn đã từng. Có người chấm bài
+            (supervised), tự gom theo trực giác (unsupervised), và thử rồi nhận thưởng
+            (reinforcement). Hôm nay bạn sẽ tự tay chạy thử cả ba.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* BUOC 2: AN DU */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -852,48 +853,49 @@ export default function SupervisedUnsupervisedRLTopic() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border-l-4 border-l-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-4 space-y-2">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-                <GraduationCap size={16} />
+              <div className="flex items-center gap-2 text-foreground">
+                <GraduationCap size={16} className="text-emerald-600 dark:text-emerald-400" />
                 <span className="text-sm font-semibold">Học với thầy cô</span>
               </div>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Bạn làm đề, thầy khoanh đỏ, trả đáp án đúng. Lần sau gặp đề tương tự, bạn biết phải
-                làm sao. Đây là <strong>học có giám sát</strong>.
+                làm sao. Đây là <strong>học có giám sát</strong> (supervised learning).
               </p>
             </div>
 
             <div className="rounded-xl border-l-4 border-l-sky-400 bg-sky-50 dark:bg-sky-900/20 p-4 space-y-2">
-              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
-                <Boxes size={16} />
+              <div className="flex items-center gap-2 text-foreground">
+                <Boxes size={16} className="text-sky-600 dark:text-sky-400" />
                 <span className="text-sm font-semibold">Tự gom đồ chơi</span>
               </div>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Không ai dạy, nhưng bạn vẫn xếp được một chồng xe ô tô, một chồng búp bê, một chồng
-                thú nhồi bông. Đây là <strong>học không giám sát</strong>.
+                thú nhồi bông. Đây là <strong>học không giám sát</strong> (unsupervised learning).
               </p>
             </div>
 
             <div className="rounded-xl border-l-4 border-l-amber-400 bg-amber-50 dark:bg-amber-900/20 p-4 space-y-2">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-                <Gamepad2 size={16} />
+              <div className="flex items-center gap-2 text-foreground">
+                <Gamepad2 size={16} className="text-amber-600 dark:text-amber-400" />
                 <span className="text-sm font-semibold">Tập đạp xe</span>
               </div>
-              <p className="text-xs text-foreground/85 leading-relaxed">
+              <p className="text-xs text-foreground leading-relaxed">
                 Ngã thì đau, đi được thì vui. Dần dần cơ thể học ra công thức giữ thăng bằng. Đây
-                là <strong>học tăng cường</strong>.
+                là <strong>học tăng cường</strong> (reinforcement learning).
               </p>
             </div>
           </div>
 
           <Callout variant="insight" title="Cốt lõi phải nhớ">
-            Ba kiểu khác nhau ở chỗ <strong>tín hiệu</strong> mà máy nhận được:{" "}
-            <em>nhãn đúng sẵn</em> (có giám sát), <em>không tín hiệu nào</em> (không giám sát), hay{" "}
-            <em>điểm thưởng sau hành động</em> (tăng cường). Đổi tín hiệu = đổi kiểu học.
+            Ba kiểu khác nhau ở chỗ <strong>tín hiệu</strong> mà máy nhận được. Có{" "}
+            <em>nhãn đúng sẵn</em> thì là supervised. <em>Không có tín hiệu nào</em> thì là
+            unsupervised. Có <em>điểm thưởng sau mỗi hành động</em> thì là reinforcement. Đổi tín
+            hiệu là đổi kiểu học.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — KHÁM PHÁ TƯƠNG TÁC ━━━ */}
+      {/* BUOC 3: KHAM PHA TUONG TAC */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <TabView
@@ -905,7 +907,7 @@ export default function SupervisedUnsupervisedRLTopic() {
                     <div className="flex items-center gap-2 mb-1">
                       <GraduationCap size={16} className="text-emerald-500" />
                       <h3 className="text-base font-semibold text-foreground">
-                        Học có giám sát — mở thẻ để xem nhãn
+                        Học có giám sát: mở thẻ để xem nhãn
                       </h3>
                     </div>
                     <FlashcardClicker />
@@ -919,7 +921,7 @@ export default function SupervisedUnsupervisedRLTopic() {
                     <div className="flex items-center gap-2 mb-1">
                       <Boxes size={16} className="text-sky-500" />
                       <h3 className="text-base font-semibold text-foreground">
-                        Học không giám sát — kéo tâm cụm
+                        Học không giám sát: kéo tâm cụm
                       </h3>
                     </div>
                     <UnsupervisedDragCanvas />
@@ -933,7 +935,7 @@ export default function SupervisedUnsupervisedRLTopic() {
                     <div className="flex items-center gap-2 mb-1">
                       <Gamepad2 size={16} className="text-amber-500" />
                       <h3 className="text-base font-semibold text-foreground">
-                        Học tăng cường — robot tìm đường nhận thưởng
+                        Học tăng cường: robot tìm đường nhận thưởng
                       </h3>
                     </div>
                     <RLGridWorld />
@@ -945,28 +947,28 @@ export default function SupervisedUnsupervisedRLTopic() {
 
           <div className="mt-5">
             <Callout variant="tip" title="Hãy chạy cả ba tab">
-              Bấm qua lại giữa ba tab. Bạn sẽ cảm nhận ngay: cùng một đám dữ liệu, tuỳ kiểu học máy
-              làm ra những kết quả rất khác. Dữ liệu có nhãn thì dùng có giám sát, dữ liệu không
-              nhãn thì không giám sát, có môi trường tương tác thì tăng cường.
+              Bấm qua lại giữa ba tab. Bạn sẽ cảm nhận ngay rằng cùng một đám dữ liệu, tuỳ kiểu học
+              máy cho ra những kết quả rất khác. Dữ liệu có nhãn thì dùng supervised. Dữ liệu không
+              nhãn thì unsupervised. Có môi trường tương tác thì reinforcement.
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* BUOC 4: AHA */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
           Ba kiểu học không đua với nhau xem kiểu nào &ldquo;thông minh nhất&rdquo;. Chúng là{" "}
           <strong>ba công cụ</strong> cho ba loại dữ liệu khác nhau.
           <br />
           <br />
-          Có nhãn &rArr; học có giám sát. Không nhãn &rArr; học không giám sát. Có môi trường để
-          thử &rArr; học tăng cường. <strong>Dữ liệu của bạn quyết định kiểu học</strong>, không
-          phải ngược lại.
+          Có nhãn thì dùng supervised. Không nhãn thì dùng unsupervised. Có môi trường để thử thì
+          dùng reinforcement. <strong>Dữ liệu của bạn quyết định kiểu học</strong>, không phải
+          ngược lại.
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — DEEPEN ━━━ */}
+      {/* BUOC 5: DEEPEN */}
       <LessonSection step={5} totalSteps={8} label="Hiểu sâu">
         <div className="space-y-4">
           <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
@@ -974,9 +976,8 @@ export default function SupervisedUnsupervisedRLTopic() {
             Ghép công việc thực tế với kiểu học phù hợp
           </h3>
           <p className="text-sm text-muted leading-relaxed">
-            Năm tình huống đời thực dưới đây. Hãy ghép mỗi việc với kiểu học mà bạn sẽ chọn. Nhớ:
-            câu trả lời nằm ở <em>bạn có gì trong tay</em> — nhãn, dữ liệu thô, hay môi trường tương
-            tác.
+            Năm tình huống đời thực dưới đây. Hãy ghép mỗi việc với kiểu học mà bạn sẽ chọn. Câu
+            trả lời nằm ở <em>bạn có gì trong tay</em>: nhãn, dữ liệu thô, hay môi trường tương tác.
           </p>
 
           <MatchPairs
@@ -984,23 +985,23 @@ export default function SupervisedUnsupervisedRLTopic() {
             pairs={[
               {
                 left: "Dự đoán điểm thi cuối kỳ từ điểm các bài kiểm tra trong năm",
-                right: "Có giám sát — đã biết 'điểm cuối kỳ' thực của hàng ngàn học sinh khoá trước",
+                right: "Supervised. Đã biết điểm cuối kỳ thực của hàng ngàn học sinh khoá trước",
               },
               {
                 left: "Phân hơn 1 triệu khách hàng Tiki thành các nhóm sở thích",
-                right: "Không giám sát — chưa ai biết có bao nhiêu nhóm",
+                right: "Unsupervised. Chưa ai biết có bao nhiêu nhóm",
               },
               {
                 left: "AI tự chơi cờ vua, dần dần chơi hay như đại kiện tướng",
-                right: "Tăng cường — thắng +1, thua −1, tự thử hàng triệu ván",
+                right: "Reinforcement. Thắng +1, thua −1, tự thử hàng triệu ván",
               },
               {
                 left: "Lọc email spam dựa trên 10 nghìn email người dùng đã đánh dấu",
-                right: "Có giám sát — mỗi email đều có nhãn spam / không spam",
+                right: "Supervised. Mỗi email đều có nhãn spam hoặc không spam",
               },
               {
                 left: "Tìm nhóm bệnh hiếm trong hồ sơ 500 nghìn bệnh nhân chưa ai chẩn đoán",
-                right: "Không giám sát — để tự phát hiện cụm bất thường",
+                right: "Unsupervised. Để tự phát hiện cụm bất thường",
               },
             ]}
           />
@@ -1013,39 +1014,41 @@ export default function SupervisedUnsupervisedRLTopic() {
             labels={[
               "Bước 1: Dữ liệu có nhãn không?",
               "Bước 2: Có môi trường tương tác không?",
-              "Bước 3: Hỏi ngược: mình muốn gì?",
+              "Bước 3: Hỏi ngược, mình muốn gì?",
               "Bước 4: Chọn công cụ",
             ]}
           >
             {[
               <div key="s1" className="rounded-lg bg-surface/60 border border-border p-4">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <strong>Có nhãn đúng sẵn cho mỗi mẫu không?</strong> Ví dụ: 10 nghìn ảnh đã dán
-                  nhãn &ldquo;chó/mèo&rdquo;; 50 nghìn giao dịch đã được bank xác nhận là{" "}
-                  &ldquo;gian lận/hợp lệ&rdquo;. Nếu có &rArr; ưu tiên <strong>học có giám sát</strong>,
-                  vì đây là cách nhanh và chắc nhất.
+                  <strong>Có nhãn đúng sẵn cho mỗi mẫu không?</strong> Ví dụ, 10 nghìn ảnh đã dán
+                  nhãn &ldquo;chó/mèo&rdquo;, hoặc 50 nghìn giao dịch đã được bank xác nhận là{" "}
+                  &ldquo;gian lận/hợp lệ&rdquo;. Nếu có, hãy ưu tiên <strong>supervised</strong>, vì
+                  đây là cách nhanh và chắc nhất.
                 </p>
               </div>,
               <div key="s2" className="rounded-lg bg-surface/60 border border-border p-4">
                 <p className="text-sm text-foreground leading-relaxed">
                   <strong>Nếu không có nhãn nhưng có môi trường tương tác?</strong> Game, robot,
-                  chatbot trả lời khách — mỗi hành động đều được đo ngay bằng một con số (thắng/thua,
-                  đi bao xa, khách hài lòng mức nào). Đây là đất diễn của <strong>học tăng cường</strong>.
+                  chatbot trả lời khách. Mỗi hành động đều được đo ngay bằng một con số: thắng hay
+                  thua, đi bao xa, khách hài lòng mức nào. Đây là đất diễn của{" "}
+                  <strong>reinforcement learning</strong>.
                 </p>
               </div>,
               <div key="s3" className="rounded-lg bg-surface/60 border border-border p-4">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <strong>Không nhãn, không môi trường — chỉ có dữ liệu thô?</strong> Vậy hãy hỏi:
-                  mình muốn AI <em>dự đoán</em> gì, hay chỉ <em>khám phá cấu trúc</em>? Nếu chỉ muốn
-                  tìm nhóm, tìm bất thường, giảm chiều dữ liệu &rArr; <strong>học không giám sát</strong>.
+                  <strong>Không nhãn, không môi trường, chỉ có dữ liệu thô?</strong> Vậy hãy hỏi
+                  mình muốn AI <em>dự đoán</em> gì, hay chỉ <em>khám phá cấu trúc</em>? Nếu chỉ
+                  muốn tìm nhóm, tìm bất thường, giảm chiều dữ liệu, hãy chọn{" "}
+                  <strong>unsupervised</strong>.
                 </p>
               </div>,
               <div key="s4" className="rounded-lg bg-surface/60 border border-border p-4">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <strong>Chọn thuật toán phù hợp:</strong> Có giám sát &rArr;{" "}
-                  <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink>, cây quyết định,
-                  mạng nơ-ron. Không giám sát &rArr; K-means, phân tích thành phần chính. Tăng cường
-                  &rArr; Q-learning, deep reinforcement learning.
+                  <strong>Chọn thuật toán phù hợp.</strong> Supervised dùng{" "}
+                  <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink>, cây quyết
+                  định, mạng nơ-ron. Unsupervised dùng K-means, phân tích thành phần chính (PCA).
+                  Reinforcement dùng Q-learning, deep reinforcement learning.
                 </p>
               </div>,
             ]}
@@ -1053,38 +1056,38 @@ export default function SupervisedUnsupervisedRLTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — CHALLENGE ━━━ */}
+      {/* BUOC 6: CHALLENGE */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
-          question="Một startup giao hàng muốn huấn luyện AI điều phối shipper sao cho đơn đến nhanh nhất. Họ có: 500 nghìn đơn lịch sử (có thời gian thực tế), bản đồ giao thông cập nhật theo phút, và bộ mô phỏng thành phố để AI thử các chiến lược. Kiểu học NÀO HỢP NHẤT cho việc chọn tuyến cho mỗi đơn mới?"
+          question="Một startup giao hàng muốn huấn luyện AI điều phối shipper sao cho đơn đến nhanh nhất. Họ có 500 nghìn đơn lịch sử (kèm thời gian thực tế), bản đồ giao thông cập nhật theo phút, và bộ mô phỏng thành phố để AI thử các chiến lược. Kiểu học NÀO HỢP NHẤT cho việc chọn tuyến cho mỗi đơn mới?"
           options={[
-            "Chỉ có giám sát — vì đã có lịch sử đơn kèm thời gian",
-            "Chỉ không giám sát — nhóm các shipper theo tốc độ",
-            "Tăng cường, thậm chí kết hợp có giám sát — vì có môi trường mô phỏng, hành động (chọn tuyến) + phần thưởng (thời gian ngắn) và dữ liệu lịch sử để khởi đầu",
+            "Chỉ supervised, vì đã có lịch sử đơn kèm thời gian",
+            "Chỉ unsupervised, để nhóm các shipper theo tốc độ",
+            "Reinforcement, kết hợp thêm supervised. Có môi trường mô phỏng, có action (chọn tuyến), có reward (thời gian ngắn), và có dữ liệu lịch sử để khởi đầu",
             "Không kiểu nào phù hợp, phải thuê shipper nhiều hơn",
           ]}
           correct={2}
-          explanation="Khi có môi trường tương tác (bộ mô phỏng) và tín hiệu đo được (thời gian đến), tăng cường là lựa chọn tự nhiên. Dữ liệu lịch sử vẫn hữu ích để 'mồi' (warm-start) policy ban đầu, nhưng chính sự thử–sai trong mô phỏng mới là nơi AI vượt qua lịch sử."
+          explanation="Khi có môi trường tương tác (bộ mô phỏng) và tín hiệu đo được (thời gian đến), reinforcement là lựa chọn tự nhiên. Dữ liệu lịch sử vẫn hữu ích để mồi (warm-start) policy ban đầu. Nhưng chính việc thử và sai trong mô phỏng mới là nơi AI vượt qua lịch sử."
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — EXPLAIN ━━━ */}
+      {/* BUOC 7: EXPLAIN */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
-            Ba kiểu học máy khác nhau ở <strong>loại dữ liệu</strong> và <strong>loại tín hiệu
-            học</strong>. Bạn không cần nhớ công thức — chỉ cần nhớ ba bộ ba dưới đây.
+            Ba kiểu học máy khác nhau ở <strong>loại dữ liệu</strong> và <strong>loại tín hiệu học
+            </strong>. Bạn không cần nhớ công thức, chỉ cần nhớ ba bộ ba dưới đây.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-5">
             <div className="rounded-xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/20 p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <GraduationCap size={18} className="text-emerald-600 dark:text-emerald-400" />
-                <span className="font-semibold text-emerald-800 dark:text-emerald-300">
+                <span className="font-semibold text-foreground">
                   Học có giám sát
                 </span>
               </div>
-              <div className="text-xs text-foreground/85 leading-relaxed space-y-1.5">
+              <div className="text-xs text-foreground leading-relaxed space-y-1.5">
                 <p><strong>Dữ liệu:</strong> mỗi mẫu có nhãn đúng.</p>
                 <p><strong>Tín hiệu:</strong> sai số giữa dự đoán và nhãn.</p>
                 <p><strong>Ví dụ:</strong> dự đoán giá nhà, nhận diện chữ viết tay, lọc spam.</p>
@@ -1099,11 +1102,11 @@ export default function SupervisedUnsupervisedRLTopic() {
             <div className="rounded-xl border-2 border-sky-300 dark:border-sky-700 bg-sky-50 dark:bg-sky-900/20 p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <Boxes size={18} className="text-sky-600 dark:text-sky-400" />
-                <span className="font-semibold text-sky-800 dark:text-sky-300">
+                <span className="font-semibold text-foreground">
                   Học không giám sát
                 </span>
               </div>
-              <div className="text-xs text-foreground/85 leading-relaxed space-y-1.5">
+              <div className="text-xs text-foreground leading-relaxed space-y-1.5">
                 <p><strong>Dữ liệu:</strong> chỉ có input, không nhãn.</p>
                 <p><strong>Tín hiệu:</strong> khoảng cách, mật độ, cấu trúc ẩn.</p>
                 <p><strong>Ví dụ:</strong> phân nhóm khách hàng, phát hiện giao dịch bất thường.</p>
@@ -1117,11 +1120,11 @@ export default function SupervisedUnsupervisedRLTopic() {
             <div className="rounded-xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <Gamepad2 size={18} className="text-amber-600 dark:text-amber-400" />
-                <span className="font-semibold text-amber-800 dark:text-amber-300">
+                <span className="font-semibold text-foreground">
                   Học tăng cường
                 </span>
               </div>
-              <div className="text-xs text-foreground/85 leading-relaxed space-y-1.5">
+              <div className="text-xs text-foreground leading-relaxed space-y-1.5">
                 <p><strong>Dữ liệu:</strong> chuỗi (trạng thái, hành động, phần thưởng).</p>
                 <p><strong>Tín hiệu:</strong> tổng phần thưởng tích luỹ.</p>
                 <p><strong>Ví dụ:</strong> AlphaGo, robot tự lái, gợi ý Netflix.</p>
@@ -1145,95 +1148,95 @@ export default function SupervisedUnsupervisedRLTopic() {
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
                 <span>
-                  <strong>Có nhãn đúng để so → có giám sát.</strong> Giống thầy cô chấm bài: bạn đoán
-                  &ldquo;cam&rdquo;, đáp án là &ldquo;táo&rdquo;, sai. Lần sau điều chỉnh.
+                  <strong>Có nhãn đúng để so, vậy là supervised.</strong> Giống thầy cô chấm bài.
+                  Bạn đoán &ldquo;cam&rdquo;, đáp án là &ldquo;táo&rdquo;, sai. Lần sau điều chỉnh.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-sky-500 shrink-0" />
                 <span>
-                  <strong>Không có tín hiệu nào → không giám sát.</strong> Máy tự tìm cấu trúc dựa
-                  trên &ldquo;những điểm nào gần nhau&rdquo;.
+                  <strong>Không có tín hiệu nào, vậy là unsupervised.</strong> Máy tự tìm cấu trúc
+                  dựa trên &ldquo;những điểm nào gần nhau&rdquo;.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 h-2 w-2 rounded-full bg-amber-500 shrink-0" />
                 <span>
-                  <strong>Chỉ có điểm thưởng sau mỗi hành động → tăng cường.</strong> Máy không được
-                  bảo đúng/sai cụ thể, chỉ biết &ldquo;hành động vừa rồi tốt hay xấu&rdquo;.
+                  <strong>Chỉ có reward sau mỗi hành động, vậy là reinforcement.</strong> Máy không
+                  được bảo đúng hay sai cụ thể, chỉ biết &ldquo;hành động vừa rồi tốt hay xấu&rdquo;.
                 </span>
               </li>
             </ul>
           </div>
 
           <Callout variant="warning" title="Bẫy phổ biến cho người mới">
-            &ldquo;Dữ liệu càng nhiều càng tốt&rdquo; — đúng, nhưng với có giám sát,{" "}
+            &ldquo;Dữ liệu càng nhiều càng tốt&rdquo; là câu đúng, nhưng với supervised thì{" "}
             <strong>chất lượng nhãn</strong> quan trọng hơn số lượng. 10 nghìn ảnh dán nhãn cẩu thả
             thua 1 nghìn ảnh dán cẩn thận. Hãy đầu tư thời gian cho việc gắn nhãn đúng.
           </Callout>
 
-          <Callout variant="tip" title="Kiểu học 'lai' ngoài sách giáo khoa">
-            Trong thực tế, các đội AI hay dùng <strong>học bán giám sát</strong> (ít nhãn + nhiều
-            dữ liệu thô) và <strong>học tự giám sát</strong> (máy tự tạo nhãn từ chính dữ liệu —
-            ví dụ GPT đoán từ tiếp theo). GPT-4, Claude được huấn luyện kết hợp cả tự giám sát lẫn{" "}
-            <TopicLink slug="rlhf">RLHF</TopicLink>.
+          <Callout variant="tip" title="Kiểu học lai ngoài sách giáo khoa">
+            Trong thực tế, các đội AI hay dùng <strong>semi-supervised</strong> (ít nhãn cộng với
+            nhiều dữ liệu thô) và <strong>self-supervised</strong> (máy tự tạo nhãn từ chính dữ
+            liệu, ví dụ GPT đoán từ tiếp theo). GPT-4 và Claude được huấn luyện kết hợp cả
+            self-supervised lẫn <TopicLink slug="rlhf">RLHF</TopicLink>.
           </Callout>
 
-          <CollapsibleDetail title="Khi nào có giám sát 'học thuộc lòng' mà không hiểu (overfitting)?">
+          <CollapsibleDetail title="Khi nào supervised học thuộc lòng mà không hiểu (overfitting)?">
             <p className="text-sm leading-relaxed">
               Khi model quá to so với dữ liệu hoặc bạn huấn luyện quá lâu, nó nhớ nguyên tập huấn
-              luyện nhưng tệ với dữ liệu mới. Dấu hiệu: độ chính xác trên train rất cao (99%), trên
-              test lại thấp (70%). Cách xử lý: thêm dữ liệu, regularization, giảm kích thước model,
-              dừng sớm (early stopping). Xem{" "}
-              <TopicLink slug="overfitting-underfitting">overfitting &amp; underfitting</TopicLink>.
+              luyện nhưng tệ với dữ liệu mới. Dấu hiệu là độ chính xác trên train rất cao (99%) còn
+              trên test lại thấp (70%). Cách xử lý: thêm dữ liệu, regularization, giảm kích thước
+              model, dừng sớm (early stopping). Xem{" "}
+              <TopicLink slug="overfitting-underfitting">overfitting và underfitting</TopicLink>.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Khi nào không giám sát cho kết quả khó tin?">
+          <CollapsibleDetail title="Khi nào unsupervised cho kết quả khó tin?">
             <p className="text-sm leading-relaxed">
-              Vì không có nhãn đúng để so, việc &ldquo;đánh giá chất lượng&rdquo; cụm rất chủ quan.
-              Bạn phải dựa vào các chỉ số nội bộ (Silhouette, Davies-Bouldin) và kiến thức về bài
-              toán. Đôi khi 3 cụm và 4 cụm đều &ldquo;đẹp&rdquo; về toán, nhưng chỉ một cách có ý
-              nghĩa với đội marketing.
+              Vì không có nhãn đúng để so, việc đánh giá chất lượng cụm rất chủ quan. Bạn phải dựa
+              vào các chỉ số nội bộ (Silhouette, Davies-Bouldin) và kiến thức về bài toán. Đôi khi
+              3 cụm và 4 cụm đều &ldquo;đẹp&rdquo; về toán, nhưng chỉ một cách có ý nghĩa với đội
+              marketing.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Vì sao học tăng cường khó hơn hai cái kia?">
+          <CollapsibleDetail title="Vì sao reinforcement learning khó hơn hai cái kia?">
             <p className="text-sm leading-relaxed">
-              Ba lý do: (1) <em>phần thưởng thưa</em> — có khi phải đi hàng trăm bước mới có tín
-              hiệu; (2) <em>đánh đổi khám phá vs khai thác</em> — thử cái mới có thể thua, bám cái
-              cũ có thể bỏ lỡ; (3) <em>vòng nhân quả</em> — hành động hôm nay ảnh hưởng trạng thái
-              ngày mai. Đó là lý do huấn luyện AlphaGo ngốn hàng triệu ván cờ.
+              Ba lý do. Một, <em>reward thưa</em>, có khi phải đi hàng trăm bước mới có tín hiệu.
+              Hai, <em>đánh đổi giữa exploration và exploitation</em>, thử cái mới có thể thua, bám
+              cái cũ có thể bỏ lỡ. Ba, <em>vòng nhân quả</em>, hành động hôm nay ảnh hưởng trạng
+              thái ngày mai. Đó là lý do huấn luyện AlphaGo ngốn hàng triệu ván cờ.
             </p>
           </CollapsibleDetail>
 
           <p className="leading-relaxed mt-4">
-            <strong>Nhớ điều này trên hết:</strong> kiểu học đúng không đến từ &ldquo;thuật toán
-            nào hot nhất trên Twitter&rdquo;. Nó đến từ việc bạn nhìn kỹ <em>dữ liệu mình đang có</em>
-            {" "}— có nhãn, không nhãn, hay có môi trường. Chọn nhầm là đi lạc cả dự án.
+            <strong>Nhớ điều này trên hết.</strong> Kiểu học đúng không đến từ &ldquo;thuật toán
+            nào hot nhất trên Twitter&rdquo;. Nó đến từ việc bạn nhìn kỹ <em>dữ liệu mình đang có
+            </em>: có nhãn, không nhãn, hay có môi trường. Chọn nhầm là đi lạc cả dự án.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* BUOC 8: TOM TAT + QUIZ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & kiểm tra">
         <MiniSummary
           title="4 điều cần nhớ về ba kiểu học"
           points={[
-            "Có giám sát: dữ liệu có nhãn → học từ 'đáp án'. Dùng cho dự đoán, phân loại.",
-            "Không giám sát: dữ liệu không nhãn → tự tìm cấu trúc. Dùng cho phân nhóm, phát hiện bất thường.",
-            "Tăng cường: action + phần thưởng → học chính sách. Dùng cho game, robot, chatbot.",
-            "Dữ liệu của bạn quyết định kiểu học, không phải ngược lại. Chọn nhầm = đi lạc cả dự án.",
+            "Supervised: dữ liệu có nhãn, học từ đáp án. Dùng cho dự đoán, phân loại.",
+            "Unsupervised: dữ liệu không nhãn, tự tìm cấu trúc. Dùng cho phân nhóm, phát hiện bất thường.",
+            "Reinforcement: có action và reward, học ra policy. Dùng cho game, robot, chatbot.",
+            "Dữ liệu của bạn quyết định kiểu học, không phải ngược lại. Chọn nhầm là đi lạc cả dự án.",
           ]}
         />
 
         <div className="mt-6">
           <Callout variant="tip" title="Bài ứng dụng liên quan">
-            Muốn xem ba kiểu học này phối hợp cùng lúc trong một sản phẩm thực? Hãy đọc tiếp:{" "}
+            Muốn xem ba kiểu học này phối hợp cùng lúc trong một sản phẩm thực? Hãy đọc tiếp{" "}
             <TopicLink slug="supervised-unsupervised-rl-in-netflix">
               Ba kiểu học trong Netflix
-            </TopicLink>{" "}
-            — nơi có giám sát đoán điểm, không giám sát chia nhóm sở thích, và tăng cường chọn ảnh
+            </TopicLink>
+            . Ở đó supervised đoán điểm, unsupervised chia nhóm sở thích, và reinforcement chọn ảnh
             bìa hiển thị.
           </Callout>
         </div>

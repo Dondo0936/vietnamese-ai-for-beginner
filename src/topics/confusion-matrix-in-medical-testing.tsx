@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
   title: "Confusion Matrix in Medical Testing",
   titleVi: "Ma trận nhầm lẫn trong xét nghiệm y tế",
   description:
-    "Câu chuyện xét nghiệm COVID-19: chính xác 99% nghe hay, nhưng khi tỷ lệ nhiễm trong cộng đồng thấp, hàng nghìn người vẫn có thể nhận kết quả dương tính giả.",
+    "Câu chuyện xét nghiệm COVID-19: chính xác 99% nghe rất yên tâm. Nhưng khi tỷ lệ nhiễm trong cộng đồng thấp, hàng nghìn người vẫn có thể nhận kết quả dương tính giả.",
   category: "classic-ml",
   tags: ["evaluation", "medical", "covid", "application"],
   difficulty: "intermediate",
@@ -58,7 +58,7 @@ export const metadata: TopicMeta = {
     },
     {
       title:
-        "False Negative Tests for SARS-CoV-2 Infection — Challenges and Implications",
+        "False Negative Tests for SARS-CoV-2 Infection: Challenges and Implications",
       publisher: "New England Journal of Medicine",
       url: "https://www.nejm.org/doi/full/10.1056/NEJMp2015897",
       date: "2020-06",
@@ -91,7 +91,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   POPULATION SIMULATOR — visual component rendering 10 000
+   POPULATION SIMULATOR. Visual component rendering 10 000
    people as a grid of 100 × 100 dots, color-coded by result.
    ──────────────────────────────────────────────────────────── */
 
@@ -165,7 +165,7 @@ function PopulationSimulator({
 
   return (
     <div className="w-full space-y-4">
-      {/* Grid visualisation — 100 people = each dot represents 100 in a 10 000 population */}
+      {/* Grid visualisation. 100 people = each dot represents 100 in a 10 000 population */}
       <div className="rounded-lg border border-border bg-card/60 p-3">
         <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide mb-2 text-center">
           100 người đại diện cho cộng đồng 10 000 người
@@ -180,12 +180,12 @@ function PopulationSimulator({
               transition={{ duration: 0.2 }}
               title={
                 dot.type === "TP"
-                  ? "Bệnh — xét nghiệm bắt đúng"
+                  ? "Bệnh, xét nghiệm bắt đúng"
                   : dot.type === "FN"
-                    ? "Bệnh — xét nghiệm bỏ sót (âm tính giả)"
+                    ? "Bệnh, xét nghiệm bỏ sót (âm tính giả)"
                     : dot.type === "FP"
-                      ? "Khoẻ — xét nghiệm báo nhầm (dương tính giả)"
-                      : "Khoẻ — xét nghiệm đúng"
+                      ? "Khoẻ, xét nghiệm báo nhầm (dương tính giả)"
+                      : "Khoẻ, xét nghiệm đúng"
               }
             />
           ))}
@@ -196,22 +196,22 @@ function PopulationSimulator({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
         <TallyBox
           color={COLORS.TP}
-          label="Bệnh — bắt được"
+          label="Bệnh, bắt được"
           count={counts.truePos}
         />
         <TallyBox
           color={COLORS.FN}
-          label="Bệnh — bỏ sót"
+          label="Bệnh, bỏ sót"
           count={counts.falseNeg}
         />
         <TallyBox
           color={COLORS.FP}
-          label="Khoẻ — báo nhầm"
+          label="Khoẻ, báo nhầm"
           count={counts.falsePos}
         />
         <TallyBox
           color={COLORS.TN}
-          label="Khoẻ — đúng"
+          label="Khoẻ, đúng"
           count={counts.trueNeg}
         />
       </div>
@@ -226,13 +226,12 @@ function PopulationSimulator({
           initial={{ scale: 1.2, opacity: 0.6 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.25 }}
-          className="text-3xl font-bold tabular-nums"
-          style={{ color: "#a855f7" }}
+          className="text-3xl font-bold tabular-nums text-foreground"
         >
           {ppvPercent}%
         </motion.div>
-        <p className="text-xs text-purple-700 dark:text-purple-300 mt-1">
-          Gọi là <strong>PPV (Positive Predictive Value)</strong> — giá trị tiên đoán dương
+        <p className="text-xs text-foreground mt-1">
+          Gọi là <strong>PPV (Positive Predictive Value)</strong>, tức giá trị tiên đoán dương
         </p>
       </div>
     </div>
@@ -240,7 +239,7 @@ function PopulationSimulator({
 }
 
 /* ────────────────────────────────────────────────────────────
-   SENSITIVITY TIMELINE — independent SVG rendering
+   SENSITIVITY TIMELINE. Independent SVG rendering.
    ──────────────────────────────────────────────────────────── */
 
 const KUCIRKA_DATA: Array<{ day: number; sensitivity: number; note?: string }> = [
@@ -251,7 +250,7 @@ const KUCIRKA_DATA: Array<{ day: number; sensitivity: number; note?: string }> =
   { day: 5, sensitivity: 70 },
   { day: 6, sensitivity: 75 },
   { day: 7, sensitivity: 78 },
-  { day: 8, sensitivity: 80, note: "đỉnh — thời điểm vàng" },
+  { day: 8, sensitivity: 80, note: "đỉnh, thời điểm vàng" },
   { day: 9, sensitivity: 78 },
   { day: 10, sensitivity: 74 },
   { day: 12, sensitivity: 65 },
@@ -382,7 +381,7 @@ function SensitivityTimeline() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   PREVALENCE BREAKDOWN — used in ToggleCompare
+   PREVALENCE BREAKDOWN. Used in ToggleCompare.
    ──────────────────────────────────────────────────────────── */
 
 function PrevalenceBreakdown({
@@ -425,11 +424,11 @@ function PrevalenceBreakdown({
         <p className="text-[11px] font-semibold text-purple-700 dark:text-purple-300 uppercase tracking-wide mb-1">
           Trong {positiveCalls.toLocaleString("vi-VN")} ca dương tính, tỉ lệ thật sự nhiễm
         </p>
-        <p className="text-3xl font-bold tabular-nums" style={{ color: "#a855f7" }}>
+        <p className="text-3xl font-bold tabular-nums text-foreground">
           {(c.ppv * 100).toFixed(1)}%
         </p>
         <p className="text-[11px] text-muted mt-1">
-          (PPV — giá trị tiên đoán dương)
+          (PPV, tức giá trị tiên đoán dương)
         </p>
       </div>
     </div>
@@ -437,7 +436,7 @@ function PrevalenceBreakdown({
 }
 
 /* ────────────────────────────────────────────────────────────
-   ANALOGY CARD — four industry examples
+   ANALOGY CARD. Four industry examples.
    ──────────────────────────────────────────────────────────── */
 
 function AnalogyCard({
@@ -508,33 +507,36 @@ export default function ConfusionMatrixInMedicalTesting() {
       >
         <p>
           Năm 2020, hàng tỷ người trên thế giới xếp hàng ngoáy mũi để xét nghiệm COVID-19
-          bằng RT-PCR (phản ứng chuỗi polymerase phiên mã ngược — phương pháp phát hiện
-          vật liệu di truyền của virus). Kết quả trả về chỉ hai chữ: dương tính hoặc âm tính.
-          Một nhãn rất &ldquo;sạch&rdquo;, rất dễ hiểu — nhưng lại che giấu một nghịch lý thống kê
-          lớn đến mức nó từng khiến các nước tạm dừng xét nghiệm đại trà.
+          bằng RT-PCR. Đây là phản ứng chuỗi polymerase phiên mã ngược, một phương pháp
+          phát hiện vật liệu di truyền của virus. Kết quả trả về chỉ hai chữ: dương tính
+          hoặc âm tính. Một nhãn nhìn rất &ldquo;sạch&rdquo; và rất dễ hiểu. Tuy nhiên đằng
+          sau nó là một nghịch lý thống kê lớn đến mức nó từng khiến nhiều nước phải tạm
+          dừng xét nghiệm đại trà.
         </p>
         <p>
           Các bộ xét nghiệm thường được quảng cáo là &ldquo;chính xác 99%&rdquo;. Nghe thật
           yên tâm. Nhưng khi tỷ lệ nhiễm trong cộng đồng còn thấp (ví dụ 1%), cứ 100 người
-          nhận kết quả dương tính thì có thể tới một nửa <em>không thật sự nhiễm</em>. Hôm
-          nay chúng ta sẽ dùng chính bộ công cụ của bài{" "}
-          <TopicLink slug="confusion-matrix">Ma trận nhầm lẫn</TopicLink> để hiểu vì sao.
+          nhận kết quả dương tính thì có thể tới một nửa <em>không thật sự nhiễm</em>. Bài
+          này dùng đúng bộ công cụ của bài{" "}
+          <TopicLink slug="confusion-matrix">Ma trận nhầm lẫn</TopicLink> để giải thích vì
+          sao.
         </p>
       </ApplicationHero>
 
       <ApplicationProblem topicSlug="confusion-matrix-in-medical-testing">
         <p>
           Xét nghiệm RT-PCR không hoàn hảo. Theo Kucirka và cộng sự (Annals of Internal
-          Medicine, 2020), độ nhạy (sensitivity — tỷ lệ phát hiện đúng người bệnh) dao
+          Medicine, 2020), độ nhạy (sensitivity, tức tỷ lệ phát hiện đúng người bệnh) dao
           động cực lớn theo thời điểm lấy mẫu: gần 0% trong ngày đầu sau phơi nhiễm (virus
           chưa nhân bản đủ), đạt đỉnh khoảng 80% vào ngày thứ tám, rồi giảm dần.
         </p>
         <p>
           Vấn đề cốt lõi của bài học này là: hai chỉ số &ldquo;đẹp&rdquo; trên tờ hướng dẫn (độ
           nhạy và độ đặc hiệu) <strong>không đủ</strong> để trả lời câu hỏi mà bệnh nhân
-          thật sự quan tâm: &ldquo;Tôi vừa có kết quả dương tính — khả năng tôi thật sự nhiễm bệnh
-          là bao nhiêu?&rdquo; Câu trả lời còn phụ thuộc nặng vào tỷ lệ nhiễm của cộng đồng
-          bạn đang sống. Hiệu ứng này gọi là <em>nghịch lý xét nghiệm chẩn đoán</em>.
+          thật sự quan tâm: &ldquo;Tôi vừa có kết quả dương tính. Khả năng tôi thật sự
+          nhiễm bệnh là bao nhiêu?&rdquo; Câu trả lời còn phụ thuộc nặng vào tỷ lệ nhiễm
+          của cộng đồng bạn đang sống. Hiệu ứng này được gọi là <em>nghịch lý xét nghiệm
+          chẩn đoán</em>.
         </p>
       </ApplicationProblem>
 
@@ -547,7 +549,7 @@ export default function ConfusionMatrixInMedicalTesting() {
             <strong>Độ nhạy (sensitivity).</strong> Trong 100 người thật sự nhiễm bệnh,
             xét nghiệm bắt đúng bao nhiêu? Với RT-PCR COVID-19, con số này dao động từ
             70% đến 98% tuỳ thời điểm lấy mẫu. Khi lấy mẫu sớm quá (ngày 1–2) hoặc muộn
-            quá (ngày 14+), độ nhạy tụt nhanh — vì vậy bác sĩ thường yêu cầu xét nghiệm
+            quá (ngày 14+), độ nhạy tụt nhanh. Vì vậy bác sĩ thường yêu cầu xét nghiệm
             lại sau 48 giờ nếu còn nghi ngờ.
           </p>
         </Beat>
@@ -556,8 +558,8 @@ export default function ConfusionMatrixInMedicalTesting() {
             <strong>Độ đặc hiệu (specificity).</strong> Trong 100 người thật sự khoẻ mạnh,
             xét nghiệm xác nhận đúng bao nhiêu người khoẻ? RT-PCR có độ đặc hiệu rất cao,
             khoảng 99,1% đến 99,8%. Nghĩa là cứ 1 000 người khoẻ đi xét nghiệm, chỉ 2–9
-            người nhận kết quả dương tính giả. Nghe rất tốt — nhưng chính con số nhỏ này
-            là nguồn gốc của nghịch lý.
+            người nhận kết quả dương tính giả. Nghe rất tốt. Tuy nhiên chính con số nhỏ
+            này lại là nguồn gốc của nghịch lý.
           </p>
         </Beat>
         <Beat step={3}>
@@ -566,25 +568,25 @@ export default function ConfusionMatrixInMedicalTesting() {
             sử một thành phố có tỷ lệ nhiễm 1%. Lấy 10 000 người đi xét nghiệm: chỉ 100
             người thật sự nhiễm. Với độ nhạy 80%, bắt được 80 ca dương tính thật. Nhưng
             với 9 900 người khoẻ và độ đặc hiệu 99%, vẫn có 99 người bị báo nhầm. Tổng cộng
-            179 người nhận kết quả dương tính — <strong>trong đó 99 người không hề bệnh</strong>.
+            179 người nhận kết quả dương tính, trong đó <strong>99 người không hề bệnh</strong>.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
             <strong>PPV (giá trị tiên đoán dương) = TP / (TP + FP).</strong> Đây mới là
             con số bệnh nhân thật sự quan tâm: &ldquo;khi xét nghiệm báo dương, khả năng tôi
-            nhiễm là bao nhiêu?&rdquo;. Với cộng đồng tỷ lệ nhiễm 1%, PPV chỉ khoảng 45% —
-            dương tính giả gần bằng dương tính thật. Khi tỷ lệ nhiễm lên 20% (sóng dịch
-            mạnh), PPV vọt lên 95% — cùng bộ xét nghiệm, cùng độ nhạy và đặc hiệu.
+            nhiễm là bao nhiêu?&rdquo;. Với cộng đồng tỷ lệ nhiễm 1%, PPV chỉ khoảng 45%,
+            tức dương tính giả gần bằng dương tính thật. Khi tỷ lệ nhiễm lên 20% (sóng
+            dịch mạnh), PPV vọt lên 95%. Vẫn cùng bộ xét nghiệm, cùng độ nhạy và đặc hiệu.
           </p>
         </Beat>
         <Beat step={5}>
           <p>
             <strong>Chiến lược vàng: xét nghiệm có mục tiêu.</strong> WHO và CDC đều
             khuyến cáo không xét nghiệm đại trà khi tỷ lệ nhiễm thấp, mà tập trung vào nhóm
-            có triệu chứng hoặc tiếp xúc gần. Lý do đơn giản: tăng prevalence &rArr; tăng
+            có triệu chứng hoặc tiếp xúc gần. Lý do rất rõ: tăng prevalence &rArr; tăng
             PPV &rArr; giảm số người lo lắng, cách ly, nghỉ việc vì dương tính giả. Đây là
-            một trong những bài học quan trọng nhất của dịch tễ học hiện đại — và nó xuất
+            một trong những bài học quan trọng nhất của dịch tễ học hiện đại, và nó xuất
             phát trực tiếp từ bốn ô trong ma trận nhầm lẫn.
           </p>
         </Beat>
@@ -595,8 +597,8 @@ export default function ConfusionMatrixInMedicalTesting() {
         <p className="mb-4 text-sm leading-relaxed">
           Ba thanh trượt dưới đây kể hết câu chuyện. Kéo <strong>Prevalence</strong> xuống 1%
           để thấy nghịch lý: ngay cả xét nghiệm 99% chính xác cũng sinh ra hàng trăm kết
-          quả dương tính giả trong cộng đồng 10 000 người. Kéo lên 20% để thấy bộ xét
-          nghiệm cùng chất lượng bỗng trở nên &ldquo;đáng tin&rdquo; hơn hẳn.
+          quả dương tính giả trong cộng đồng 10 000 người. Kéo lên 20% và bộ xét nghiệm
+          cùng chất lượng bỗng trở nên &ldquo;đáng tin&rdquo; hơn hẳn.
         </p>
 
         <SliderGroup
@@ -613,7 +615,7 @@ export default function ConfusionMatrixInMedicalTesting() {
             },
             {
               key: "sensitivity",
-              label: "Độ nhạy (sensitivity) — bắt được ca bệnh thật",
+              label: "Độ nhạy (sensitivity), bắt được ca bệnh thật",
               min: 50,
               max: 99,
               step: 1,
@@ -622,7 +624,7 @@ export default function ConfusionMatrixInMedicalTesting() {
             },
             {
               key: "specificity",
-              label: "Độ đặc hiệu (specificity) — xác nhận đúng người khoẻ",
+              label: "Độ đặc hiệu (specificity), xác nhận đúng người khoẻ",
               min: 90,
               max: 100,
               step: 0.1,
@@ -639,16 +641,16 @@ export default function ConfusionMatrixInMedicalTesting() {
           </h3>
           <p className="text-sm text-muted leading-relaxed">
             Ấn <em>Tiếp tục</em> để xem mô hình Bayes đơn giản sinh ra con số gây sốc. Bộ xét
-            nghiệm chúng ta dùng có độ nhạy 80%, độ đặc hiệu 99%.
+            nghiệm dùng trong bài có độ nhạy 80%, độ đặc hiệu 99%.
           </p>
 
           <StepReveal
             labels={[
-              "Bước 1 — chia dân số",
-              "Bước 2 — đếm TP + FN",
-              "Bước 3 — đếm FP + TN",
-              "Bước 4 — tổng hợp dương tính",
-              "Bước 5 — tính PPV",
+              "Bước 1: chia dân số",
+              "Bước 2: đếm TP + FN",
+              "Bước 3: đếm FP + TN",
+              "Bước 4: tổng hợp dương tính",
+              "Bước 5: tính PPV",
             ]}
           >
             {[
@@ -704,7 +706,7 @@ export default function ConfusionMatrixInMedicalTesting() {
                     <p className="text-sm text-foreground leading-relaxed">
                       Tổng số người nhận kết quả dương tính = TP + FP = 80 + 99 ={" "}
                       <strong>179 người</strong>. Đây là những người hôm nay được gọi báo &ldquo;kết quả
-                      dương tính — vui lòng cách ly&rdquo;.
+                      dương tính, vui lòng cách ly&rdquo;.
                     </p>
                   </div>
                 </div>
@@ -715,10 +717,10 @@ export default function ConfusionMatrixInMedicalTesting() {
                   <div>
                     <p className="text-sm text-foreground leading-relaxed">
                       PPV = TP / (TP + FP) = 80 / 179 ={" "}
-                      <strong className="text-purple-600 text-lg">44,7%</strong>. Nghĩa là
+                      <strong className="text-foreground font-bold text-lg">44,7%</strong>. Nghĩa là
                       chưa đến một nửa số người nhận kết quả dương tính là thật sự nhiễm. Đây
-                      chính là lý do các nước yêu cầu <strong>xét nghiệm lại lần hai</strong> hoặc kết
-                      hợp PCR định lượng trước khi kết luận — để lọc bỏ phần lớn dương tính
+                      chính là lý do các nước yêu cầu <strong>xét nghiệm lại lần hai</strong> hoặc
+                      kết hợp PCR định lượng trước khi kết luận, để lọc bỏ phần lớn dương tính
                       giả trước khi quyết định cách ly hay điều trị.
                     </p>
                   </div>
@@ -732,13 +734,13 @@ export default function ConfusionMatrixInMedicalTesting() {
           <InlineChallenge
             question="Một thành phố đạt tỷ lệ nhiễm 15% trong đợt sóng dịch mạnh. Bộ xét nghiệm có độ nhạy 80%, độ đặc hiệu 99%. PPV bây giờ khoảng bao nhiêu?"
             options={[
-              "Vẫn 45% như trường hợp 1% — vì bộ xét nghiệm không đổi",
-              "Khoảng 93% — vì prevalence cao hơn khiến số bệnh thật nhiều hơn số báo nhầm",
-              "100% — mọi ca dương đều đúng",
+              "Vẫn 45% như trường hợp 1%, vì bộ xét nghiệm không đổi",
+              "Khoảng 93%, vì prevalence cao hơn khiến số bệnh thật nhiều hơn số báo nhầm",
+              "100%, mọi ca dương đều đúng",
               "Không thể tính nếu không biết số người đi xét nghiệm",
             ]}
             correct={1}
-            explanation="Với 10 000 người × 15% prevalence: có 1 500 bệnh × 80% = 1 200 TP. Có 8 500 khoẻ × 1% = 85 FP. PPV = 1 200 / (1 200 + 85) ≈ 93%. Cùng bộ xét nghiệm, khi dịch bùng phát, con số đột ngột trở nên đáng tin — đó là toán học, không phải phép màu."
+            explanation="Với 10 000 người × 15% prevalence: có 1 500 bệnh × 80% = 1 200 TP. Có 8 500 khoẻ × 1% = 85 FP. PPV = 1 200 / (1 200 + 85) ≈ 93%. Cùng bộ xét nghiệm, khi dịch bùng phát, con số đột ngột trở nên đáng tin. Đó là toán học, không phải phép màu."
           />
         </div>
 
@@ -747,7 +749,7 @@ export default function ConfusionMatrixInMedicalTesting() {
             question="Bạn có kết quả xét nghiệm nhanh dương tính ở tỉnh đang có prevalence rất thấp (~1%). Bước khôn ngoan nhất là gì?"
             options={[
               "Tự cách ly luôn 14 ngày và không cần gì thêm",
-              "Bỏ qua — chắc chắn là dương tính giả",
+              "Bỏ qua, chắc chắn là dương tính giả",
               "Làm xét nghiệm PCR xác nhận trong 24 giờ; nếu có triệu chứng, cách ly tạm thời trong khi chờ",
               "Đi xét nghiệm lại 10 bộ test khác cùng lúc",
             ]}
@@ -763,16 +765,16 @@ export default function ConfusionMatrixInMedicalTesting() {
           viên, phát hiện deepfake. Luôn hỏi prevalence trước khi tin vào &ldquo;accuracy 99%&rdquo;.
         </Callout>
 
-        {/* Kucirka timeline — sensitivity theo ngày kể từ phơi nhiễm */}
+        {/* Kucirka timeline. Sensitivity theo ngày kể từ phơi nhiễm. */}
         <div className="mt-8">
           <h3 className="text-base font-semibold text-foreground mb-2">
-            Độ nhạy thay đổi theo ngày — nghiên cứu Kucirka (Annals of Internal Medicine, 2020)
+            Độ nhạy thay đổi theo ngày: nghiên cứu Kucirka (Annals of Internal Medicine, 2020)
           </h3>
           <p className="text-sm text-muted leading-relaxed mb-4">
-            Cùng một bộ xét nghiệm, cùng một người bệnh — nhưng kết quả phụ thuộc nặng vào{" "}
+            Cùng một bộ xét nghiệm, cùng một người bệnh, nhưng kết quả phụ thuộc nặng vào{" "}
             <strong>bạn lấy mẫu ngày thứ mấy</strong> kể từ khi phơi nhiễm. Virus cần thời gian để
-            nhân bản đến mức máy đọc được. Biểu đồ dưới đây tóm tắt hai mươi mốt ngày đầu — vì sao
-            bác sĩ luôn yêu cầu xét nghiệm lại sau 48 giờ nếu nghi ngờ vẫn còn.
+            nhân bản đến mức máy đọc được. Biểu đồ dưới đây tóm tắt hai mươi mốt ngày đầu, và giải
+            thích vì sao bác sĩ luôn yêu cầu xét nghiệm lại sau 48 giờ nếu nghi ngờ vẫn còn.
           </p>
 
           <div className="rounded-xl border border-border bg-card p-4">
@@ -782,15 +784,15 @@ export default function ConfusionMatrixInMedicalTesting() {
           <Callout variant="info" title="Vì sao bác sĩ thường yêu cầu làm lại xét nghiệm sau 48 giờ?">
             Nhìn biểu đồ: ngày 1–3 độ nhạy rất thấp (virus chưa đủ). Ngày 7–9 đạt đỉnh (thời điểm vàng).
             Sau ngày 14 độ nhạy tụt nhanh vì virus bắt đầu bị miễn dịch tiêu diệt. Một xét nghiệm âm
-            tính ngày 2 và một xét nghiệm âm tính ngày 8 có <em>ý nghĩa khác hẳn</em> — dù cùng dòng
+            tính ngày 2 và một xét nghiệm âm tính ngày 8 có <em>ý nghĩa khác hẳn</em>, dù cùng dòng
             chữ &ldquo;âm tính&rdquo; trên tờ kết quả.
           </Callout>
         </div>
 
-        {/* Prevalence toggle — dramatic contrast */}
+        {/* Prevalence toggle. Dramatic contrast. */}
         <div className="mt-8">
           <h3 className="text-base font-semibold text-foreground mb-2">
-            Cùng bộ xét nghiệm, hai đợt dịch khác nhau — PPV thay đổi ra sao?
+            Cùng bộ xét nghiệm, hai đợt dịch khác nhau, PPV thay đổi ra sao?
           </h3>
           <p className="text-sm text-muted leading-relaxed mb-4">
             Bộ xét nghiệm giữ nguyên độ nhạy 80%, độ đặc hiệu 99%. Chỉ tỷ lệ nhiễm trong cộng đồng
@@ -801,7 +803,7 @@ export default function ConfusionMatrixInMedicalTesting() {
           <ToggleCompare
             labelA="Prevalence 1% (dịch yếu)"
             labelB="Prevalence 20% (sóng dịch mạnh)"
-            description="Cùng bộ test — cùng độ nhạy 80%, độ đặc hiệu 99%. Chỉ thay đổi tỷ lệ nhiễm."
+            description="Cùng bộ test, cùng độ nhạy 80%, độ đặc hiệu 99%. Chỉ thay đổi tỷ lệ nhiễm."
             childA={
               <PrevalenceBreakdown population={10000} prevalence={1} sens={80} spec={99} />
             }
@@ -850,7 +852,7 @@ export default function ConfusionMatrixInMedicalTesting() {
               emoji="📧"
               title="Lọc email phishing"
               prevalence="~1% email doanh nghiệp"
-              lesson="Mô hình tốt cần độ đặc hiệu cực cao (99,99%+) mới dùng được, vì xoá nhầm email thật của khách hàng tốn hơn nhiều so với bỏ sót một email phishing — sẽ có lớp phòng thủ khác bắt nó."
+              lesson="Mô hình tốt cần độ đặc hiệu cực cao (99,99%+) mới dùng được. Lý do: xoá nhầm email thật của khách hàng tốn hơn nhiều so với bỏ sót một email phishing, vì sẽ có lớp phòng thủ khác bắt nó."
             />
           </div>
         </div>
@@ -887,7 +889,7 @@ export default function ConfusionMatrixInMedicalTesting() {
           sourceRef={3}
         />
         <Metric
-          value="PPV phụ thuộc prevalence cộng đồng — WHO khuyến cáo xét nghiệm có mục tiêu"
+          value="PPV phụ thuộc prevalence cộng đồng. WHO khuyến cáo xét nghiệm có mục tiêu"
           sourceRef={4}
         />
       </ApplicationMetrics>
@@ -905,9 +907,9 @@ export default function ConfusionMatrixInMedicalTesting() {
         <p>
           Ma trận nhầm lẫn buộc ta đặt đúng câu hỏi: &ldquo;xét nghiệm này sai ở đâu và sai bao
           nhiêu?&rdquo; Nhờ phân tích bốn ô và con số PPV, các cơ quan y tế đưa ra hướng dẫn
-          cụ thể — xét nghiệm lại sau 48 giờ nếu nghi ngờ, ưu tiên lấy mẫu vào ngày có
+          cụ thể: xét nghiệm lại sau 48 giờ nếu nghi ngờ, ưu tiên lấy mẫu vào ngày có
           triệu chứng, và không dựa vào một kết quả duy nhất để ra quyết định quan trọng.
-          Một bảng 2 × 2 đơn giản đã cứu rất nhiều sinh mạng.
+          Một bảng 2 × 2 nhìn đơn giản đã cứu rất nhiều sinh mạng.
         </p>
       </ApplicationCounterfactual>
 
@@ -916,10 +918,10 @@ export default function ConfusionMatrixInMedicalTesting() {
         <MiniSummary
           title="4 điều cần nhớ khi đọc kết quả xét nghiệm bất kỳ"
           points={[
-            "Chính xác (accuracy) không phải là đáng tin. Luôn hỏi thêm độ nhạy, độ đặc hiệu và prevalence cộng đồng.",
-            "PPV (xác suất thật sự bệnh khi dương tính) phụ thuộc mạnh vào tỷ lệ nhiễm — cùng bộ xét nghiệm, PPV có thể 45% hay 95% tuỳ tình huống.",
+            "Chính xác (accuracy) không đồng nghĩa với đáng tin. Luôn hỏi thêm độ nhạy, độ đặc hiệu và prevalence cộng đồng.",
+            "PPV (xác suất thật sự bệnh khi dương tính) phụ thuộc mạnh vào tỷ lệ nhiễm. Cùng bộ xét nghiệm, PPV có thể 45% hay 95% tuỳ tình huống.",
             "Khi prevalence thấp, xét nghiệm đại trà sinh ra rất nhiều dương tính giả. Xét nghiệm có mục tiêu hiệu quả hơn về tổng thể.",
-            "Âm tính giả trong sóng dịch là nguy hiểm nhất — người bệnh yên tâm ra ngoài lây lan. Luôn kết hợp với triệu chứng và bối cảnh.",
+            "Âm tính giả trong sóng dịch là nguy hiểm nhất, vì người bệnh yên tâm ra ngoài lây lan. Luôn kết hợp với triệu chứng và bối cảnh.",
           ]}
         />
       </section>

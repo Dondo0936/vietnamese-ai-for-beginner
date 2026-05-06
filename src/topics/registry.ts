@@ -120,7 +120,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "perceptron",
     title: "Perceptron",
-    titleVi: "Perceptron — Nơ-ron đơn giản nhất",
+    titleVi: "Perceptron: viên gạch đầu tiên của mạng nơ-ron",
     description: "Một nơ-ron nhân tạo có thể làm gì? Cộng có trọng số mọi đầu vào, rồi quyết định 'có' hay 'không'. Bạn sẽ tự tay chỉnh trọng số và nhìn đường quyết định xoay theo.",
     category: "neural-fundamentals",
     tags: ["neuron", "weights", "bias"],
@@ -131,8 +131,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "mlp",
     title: "Multilayer Perceptron",
-    titleVi: "MLP — Xếp nhiều perceptron thành mạng",
-    description: "Một perceptron chỉ vẽ được đường thẳng. Xếp chúng thành nhiều lớp, bạn sẽ có được đường cong — chìa khoá cho gần như mọi mô hình hiện đại.",
+    titleVi: "MLP: xếp nhiều perceptron thành mạng",
+    description: "Một perceptron chỉ vẽ được đường thẳng. Xếp chúng thành nhiều lớp, bạn có đường cong. Đó là chìa khoá cho gần như mọi mô hình hiện đại.",
     category: "neural-fundamentals",
     tags: ["neural-network", "layers", "deep-learning"],
     difficulty: "beginner",
@@ -142,7 +142,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "activation-functions",
     title: "Activation Functions",
-    titleVi: "Hàm kích hoạt — Cái uốn cong của mạng nơ-ron",
+    titleVi: "Hàm kích hoạt: cái uốn cong của mạng nơ-ron",
     description: "Không có hàm kích hoạt, cả một mạng nơ-ron chỉ là một phép tính tuyến tính khổng lồ. Kéo, thử, so sánh để thấy vì sao 5 đường cong nhỏ lại thay đổi mọi thứ.",
     category: "neural-fundamentals",
     tags: ["sigmoid", "relu", "tanh"],
@@ -154,7 +154,7 @@ export const topicList: TopicMeta[] = [
     slug: "forward-propagation",
     title: "Forward Propagation",
     titleVi: "Lan truyền thuận",
-    description: "Dữ liệu đi qua mạng như tin nhắn qua các trạm — mỗi trạm xử lý rồi chuyển cho trạm sau.",
+    description: "Dữ liệu đi qua mạng như tin nhắn qua các trạm. Mỗi trạm xử lý một chút rồi chuyển cho trạm sau.",
     category: "neural-fundamentals",
     tags: ["inference", "computation", "layers"],
     difficulty: "intermediate",
@@ -164,8 +164,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "backpropagation",
     title: "Backpropagation",
-    titleVi: "Lan truyền ngược — truy ngược lỗi qua từng lớp",
-    description: "Mạng đoán sai — lỗi đến từ lớp nào, weight nào cần sửa bao nhiêu? Backprop dùng quy tắc chuỗi để truy ngược lỗi từ đầu ra về từng trọng số, chỉ trong một lần duyệt.",
+    titleVi: "Lan truyền ngược: truy ngược lỗi qua từng lớp",
+    description: "Mạng đoán sai. Lỗi đến từ lớp nào, weight nào cần sửa bao nhiêu? Backpropagation dùng quy tắc chuỗi để truy ngược lỗi từ đầu ra về từng trọng số, chỉ trong một lần duyệt.",
     category: "neural-fundamentals",
     tags: ["gradient", "training", "chain-rule"],
     difficulty: "intermediate",
@@ -175,7 +175,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "gradient-descent",
     title: "Gradient Descent",
-    titleVi: "Thuật toán Gradient Descent — xoay trọng số (weight) để giảm mất mát (loss)",
+    titleVi: "Gradient descent: xoay weight để loss giảm dần",
     description: "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật: xoay các trọng số (weight) theo từng bước để mất mát (loss) giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
     category: "neural-fundamentals",
     tags: ["optimization", "training", "convergence"],
@@ -208,8 +208,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "loss-functions",
     title: "Loss Functions",
-    titleVi: "Hàm mất mát — Điểm số của mô hình",
-    description: "Loss là 'điểm số' của mô hình — càng thấp càng tốt. Chọn sai loss đồng nghĩa mô hình học sai mục tiêu. Kéo điểm dự đoán và thấy MSE, MAE, cross-entropy phản ứng rất khác nhau.",
+    titleVi: "Hàm loss: điểm số của model",
+    description: "Loss là 'điểm số' của model. Càng thấp càng tốt. Chọn sai loss thì model sẽ học sai mục tiêu. Kéo từng điểm dự đoán và thấy MSE, MAE, cross-entropy phản ứng rất khác nhau.",
     category: "neural-fundamentals",
     tags: ["mse", "cross-entropy", "training"],
     difficulty: "intermediate",
@@ -219,7 +219,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "overfitting-underfitting",
     title: "Overfitting & Underfitting",
-    titleVi: "Học quá khớp vs học chưa đủ — Overfit & Underfit",
+    titleVi: "Overfit và underfit: hai cách học sai của model",
     description: "Hai thái cực ngược nhau khi luyện mô hình. Học thuộc đề cũ → chết khi đề mới (overfit). Học mỗi lý thuyết → nhớ nhưng không làm nổi (underfit).",
     category: "classic-ml",
     tags: ["generalization", "model-complexity", "validation"],
@@ -285,7 +285,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "epochs-batches",
     title: "Epochs, Batches & Iterations",
-    titleVi: "Epoch và batch — Chia nhỏ đề thi để mô hình không ngộp",
+    titleVi: "Epoch và batch: chia nhỏ đề thi để model không ngộp",
     description: "Máy học không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Xem sự thay đổi của đường loss khi bạn kéo thanh batch size.",
     category: "neural-fundamentals",
     tags: ["training", "batch-size", "iterations"],
@@ -323,7 +323,7 @@ export const topicList: TopicMeta[] = [
     slug: "logistic-regression",
     title: "Logistic Regression",
     titleVi: "Hồi quy logistic",
-    description: "Khi câu trả lời chỉ có hai lựa chọn — có hay không. Hồi quy logistic ép số thực vào khoảng 0–1 để dự đoán xác suất.",
+    description: "Khi câu trả lời chỉ có hai lựa chọn (có hay không), hồi quy logistic ép một số thực bất kỳ vào khoảng 0 đến 1 để đọc thành xác suất.",
     category: "classic-ml",
     tags: ["classification", "sigmoid", "probability"],
     difficulty: "beginner",
@@ -334,7 +334,7 @@ export const topicList: TopicMeta[] = [
     slug: "decision-trees",
     title: "Decision Trees",
     titleVi: "Cây quyết định",
-    description: "Hỏi 20 câu để đoán đồ vật — mỗi câu chia nhỏ khả năng. Cây quyết định làm đúng như vậy, thử tự tay xây một cái xem.",
+    description: "Hỏi 20 câu để đoán đồ vật. Mỗi câu chia nhỏ khả năng còn lại. Cây quyết định làm đúng như vậy, thử tự tay xây một cái xem.",
     category: "classic-ml",
     tags: ["classification", "regression", "tree"],
     difficulty: "intermediate",
@@ -377,8 +377,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "knn",
     title: "K-Nearest Neighbors",
-    titleVi: "k láng giềng gần nhất (k-NN)",
-    description: "Muốn biết một điểm thuộc nhóm nào? Hỏi k láng giềng gần nhất rồi lấy theo đa số. Đơn giản, trực quan — và đủ mạnh để làm nền cho nhiều hệ thống gợi ý.",
+    titleVi: "k-NN: hỏi k hàng xóm gần nhất rồi bỏ phiếu",
+    description: "Muốn biết một điểm thuộc nhóm nào? Hỏi k láng giềng gần nhất rồi lấy theo đa số. Đơn giản, trực quan, và đủ mạnh để làm nền cho nhiều hệ thống gợi ý.",
     category: "classic-ml",
     tags: ["classification", "distance", "non-parametric"],
     difficulty: "intermediate",
@@ -389,7 +389,7 @@ export const topicList: TopicMeta[] = [
     slug: "k-means",
     title: "K-Means Clustering",
     titleVi: "Phân cụm k-means",
-    description: "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên — từ đặt kho hàng Grab đến phân khúc khách hàng.",
+    description: "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên: từ đặt kho hàng Grab đến phân khúc khách hàng.",
     category: "classic-ml",
     tags: ["clustering", "unsupervised", "centroids"],
     difficulty: "intermediate",
@@ -432,7 +432,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "naive-bayes",
     title: "Naive Bayes",
-    titleVi: "Naive Bayes — Cộng dồn bằng chứng",
+    titleVi: "Naive Bayes: cộng dồn bằng chứng từng từ",
     description: "Khi có nhiều manh mối độc lập cùng trỏ về một kết luận, bạn tự tin hơn hẳn. Naive Bayes biến trực giác đó thành phép nhân xác suất đơn giản.",
     category: "classic-ml",
     tags: ["classification", "probability", "bayes"],
@@ -443,7 +443,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "bias-variance",
     title: "Bias-Variance Tradeoff",
-    titleVi: "Bias và Variance — lệch tâm hay đạn rải",
+    titleVi: "Bias và Variance: lệch tâm hay đạn rải",
     description: "Ẩn dụ bắn cung: bias là xa tâm, variance là đạn rải. Bốn tổ hợp xuất hiện khi bạn thay đổi độ phức tạp của mô hình.",
     category: "classic-ml",
     tags: ["generalization", "model-complexity", "error"],
@@ -454,8 +454,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "cross-validation",
     title: "Cross-Validation",
-    titleVi: "Kiểm định chéo — xoay vòng 5 đề thi thử",
-    description: "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần và xoay vòng — đó là kiểm định chéo.",
+    titleVi: "Kiểm định chéo. Xoay vòng 5 đề thi thử",
+    description: "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần rồi xoay vòng. Đó là kiểm định chéo.",
     category: "classic-ml",
     tags: ["evaluation", "k-fold", "validation"],
     difficulty: "intermediate",
@@ -466,7 +466,7 @@ export const topicList: TopicMeta[] = [
     slug: "confusion-matrix",
     title: "Confusion Matrix / Precision / Recall / F1",
     titleVi: "Ma trận nhầm lẫn",
-    description: "Mô hình đoán 'có bệnh' — đúng hay sai đáng quan tâm thế nào? Bốn loại kết quả và cách ma trận 2×2 phân loại chúng.",
+    description: "Mô hình đoán 'có bệnh'. Đúng hay sai đáng quan tâm thế nào? Bốn loại kết quả và cách ma trận 2×2 phân loại chúng.",
     category: "classic-ml",
     tags: ["evaluation", "precision", "recall", "f1"],
     difficulty: "intermediate",
@@ -1811,7 +1811,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "supervised-unsupervised-rl",
     title: "Supervised / Unsupervised / Reinforcement Learning",
-    titleVi: "Ba kiểu học: có giám sát, không giám sát, tăng cường",
+    titleVi: "Ba kiểu học máy: supervised, unsupervised, reinforcement",
     description: "Ba cách máy học: học có người chấm bài, tự nhóm theo trực giác, và thử–sai nhận thưởng. Ba cách ấy giống hệt ba cách bạn đã từng học trong đời thật.",
     category: "foundations",
     tags: ["paradigms", "supervised", "unsupervised", "reinforcement"],
@@ -1822,7 +1822,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "feature-engineering",
     title: "Feature Engineering",
-    titleVi: "Xây dựng đặc trưng — Chọn nguyên liệu cho AI",
+    titleVi: "Feature engineering: chọn nguyên liệu cho mô hình",
     description: "Mô hình hay không nằm ở việc bạn đưa cho nó dữ liệu thô hay đã chế biến thành đặc trưng có ý nghĩa. Chạm vào từng cột để xem phép biến đổi thực sự làm gì.",
     category: "foundations",
     tags: ["features", "selection", "transformation"],
@@ -1833,8 +1833,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "train-val-test",
     title: "Train / Validation / Test Split",
-    titleVi: "Tập train, val, test — Bài tập, thi thử, thi thật",
-    description: "Train = bài tập. Val = đề thi thử. Test = đề thi thật. Không được xem test trước — nếu không, điểm không có ý nghĩa.",
+    titleVi: "Tập train, val, test: bài tập, thi thử, thi thật",
+    description: "Train là bài tập. Val là đề thi thử. Test là đề thi thật. Hé test trước, điểm thi mất ý nghĩa.",
     category: "foundations",
     tags: ["data-split", "evaluation", "methodology"],
     difficulty: "intermediate",
@@ -1888,8 +1888,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "data-preprocessing",
     title: "Data Preprocessing",
-    titleVi: "Tiền xử lý dữ liệu — Làm sạch trước khi học",
-    description: "80% thời gian của một data scientist là làm sạch dữ liệu. Bài này cho bạn nhìn thấy từng thao tác: điền thiếu, lọc ngoại lai, chuẩn hoá, mã hoá — kèm đoạn pandas ngắn cho từng bước.",
+    titleVi: "Tiền xử lý dữ liệu: làm sạch trước khi học",
+    description: "80% thời gian của một data scientist là làm sạch dữ liệu. Bài này cho bạn nhìn thấy từng thao tác (điền thiếu, lọc ngoại lai, chuẩn hoá, mã hoá), kèm đoạn pandas ngắn cho từng bước.",
     category: "foundations",
     tags: ["cleaning", "normalization", "encoding"],
     difficulty: "beginner",
@@ -1899,8 +1899,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "neural-network-overview",
     title: "Neural Network Overview",
-    titleVi: "Mạng nơ-ron là gì — bộ não nhỏ trong máy tính",
-    description: "Nhiều nơ-ron đơn giản kết nối lại thành một mạng thông minh. Kéo slider, bấm vào từng nơ-ron, xem tín hiệu lan truyền — bạn sẽ hiểu vì sao ý tưởng này thay đổi cả thế giới AI.",
+    titleVi: "Mạng nơ-ron: bộ não nhỏ trong máy tính",
+    description: "Nhiều nơ-ron đơn giản kết nối lại thành một mạng thông minh. Kéo slider, bấm vào từng nơ-ron, xem tín hiệu lan truyền. Bạn sẽ hiểu bộ khung chung đứng sau mọi mô hình AI hiện nay.",
     category: "neural-fundamentals",
     tags: ["overview", "neural-network", "introduction"],
     difficulty: "beginner",
@@ -1910,7 +1910,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "what-is-ml",
     title: "What is Machine Learning?",
-    titleVi: "Machine Learning là gì?",
+    titleVi: "Machine Learning: máy học từ ví dụ, không từ luật",
     description: "Làm quen với Machine Learning qua hình ảnh quen thuộc: một đầu bếp học nấu từ nếm thử, khác với công thức cứng. Bạn sẽ thấy máy học từ ví dụ như thế nào.",
     category: "foundations",
     tags: ["introduction", "machine-learning", "basics"],
@@ -1921,7 +1921,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "python-for-ml",
     title: "Python for Machine Learning",
-    titleVi: "Python cho ML — NumPy & Pandas trong 45 phút",
+    titleVi: "Python cho ML: NumPy và Pandas trong 45 phút",
     description: "Python không phải ngôn ngữ nhanh nhất, nhưng NumPy và Pandas biến nó thành lingua franca của ML. Bài này chỉ cho bạn đọc một đoạn code ML và biết nó đang làm gì.",
     category: "foundations",
     tags: ["python", "numpy", "pandas", "matplotlib", "tools"],
@@ -1933,7 +1933,7 @@ export const topicList: TopicMeta[] = [
     slug: "model-evaluation-selection",
     title: "Model Evaluation & Selection",
     titleVi: "Đánh giá và chọn mô hình",
-    description: "Bốn mô hình cùng giải một bài toán — ai thắng? Bạn kéo trọng số cho accuracy, precision, latency, rồi xem thứ hạng đổi theo thời gian thực.",
+    description: "Bốn model cùng giải một bài toán phát hiện gian lận, không model nào thắng mọi metric. Bạn kéo trọng số cho độ chính xác, precision, latency và xem thứ hạng đổi theo thời gian thực.",
     category: "classic-ml",
     tags: ["evaluation", "model-selection", "metrics", "comparison"],
     difficulty: "intermediate",
@@ -1943,7 +1943,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "jupyter-colab-workflow",
     title: "Jupyter & Google Colab Workflow",
-    titleVi: "Jupyter và Google Colab — Notebook là IDE của data scientist",
+    titleVi: "Jupyter và Google Colab: notebook là IDE của data scientist",
     description: "Notebook là IDE của data scientist: viết code, chạy, thấy kết quả ngay, viết chú thích, tiếp tục. Bài thực hành chỉ cho bạn cách dùng trong ngày đầu tiên.",
     category: "foundations",
     tags: ["jupyter", "colab", "notebook", "tools", "workflow"],
@@ -1954,8 +1954,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "end-to-end-ml-project",
     title: "End-to-End ML Project",
-    titleVi: "Dự án ML từ đầu đến cuối",
-    description: "Dự án tổng kết (Capstone) — đi trọn vẹn một dự án ML: từ câu hỏi kinh doanh đến mô hình chạy thật, được theo dõi mỗi ngày.",
+    titleVi: "Đi trọn một dự án ML từ câu hỏi sếp đến model chạy thật",
+    description: "Bài tổng kết (capstone) đi qua một dự án ML hoàn chỉnh: từ câu hỏi kinh doanh, qua dữ liệu và model, đến endpoint chạy production và dashboard theo dõi mỗi ngày.",
     category: "foundations",
     tags: ["project", "pipeline", "end-to-end", "capstone"],
     difficulty: "intermediate",
@@ -2163,7 +2163,7 @@ export const topicList: TopicMeta[] = [
     slug: "probability-statistics",
     title: "Probability & Statistics",
     titleVi: "Xác suất và thống kê",
-    description: "Tung đồng xu, đếm kết quả, đoán xem điều gì xảy ra. Xác suất thực ra chỉ là tần số dài hạn — và thống kê là cách bạn mô tả tần số đó.",
+    description: "Tung đồng xu, đếm kết quả, đoán xem điều gì xảy ra. Xác suất thực ra chỉ là tần số dài hạn. Thống kê là cách bạn mô tả tần số đó.",
     category: "math-foundations",
     tags: ["probability", "bayes", "distribution", "cross-entropy"],
     difficulty: "beginner",
@@ -2174,7 +2174,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "calculus-for-backprop",
     title: "Calculus for Backpropagation",
-    titleVi: "Giải tích cho lan truyền ngược (backpropagation)",
+    titleVi: "Giải tích cho backpropagation",
     description: "Đạo hàm là câu trả lời cho câu hỏi: thay đổi nhỏ này làm loss thay đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
     category: "math-foundations",
     tags: ["derivatives", "chain-rule", "gradient-descent", "learning-rate"],
@@ -2186,8 +2186,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "derivatives-intuition",
     title: "Derivatives — an Intuitive Introduction",
-    titleVi: "Đạo hàm — tốc độ thay đổi trông thế nào",
-    description: "Đạo hàm không phải là con số khó hiểu. Nó là độ dốc của một đường cong tại một điểm — và bạn sẽ nhìn tận mắt nó xuất hiện khi kéo một tiếp tuyến trên SVG.",
+    titleVi: "Đạo hàm là độ dốc tại một điểm",
+    description: "Đạo hàm chỉ là độ dốc của đường cong tại một điểm. Bạn kéo một tiếp tuyến trên SVG và nhìn con số đó xuất hiện theo thời gian thực.",
     category: "math-foundations",
     tags: ["calculus", "intuition", "fundamentals"],
     difficulty: "beginner",
@@ -2198,8 +2198,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "gradient-intuition",
     title: "Gradient Intuition",
-    titleVi: "Gradient — mũi tên chỉ đường xuống dốc",
-    description: "Trên một đồi sương mù bạn chỉ nhìn được mặt đất dưới chân. Gradient là ngón tay chỉ hướng dốc nhất — đi NGƯỢC lại để xuống núi.",
+    titleVi: "Gradient: mũi tên chỉ đường xuống dốc",
+    description: "Đứng trên đồi sương mù, bạn chỉ thấy được mặt đất dưới chân. Gradient là ngón tay chỉ hướng dốc nhất. Đi ngược hướng đó để xuống núi.",
     category: "math-foundations",
     tags: ["gradient", "optimization", "intuition"],
     difficulty: "intermediate",
@@ -2210,8 +2210,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "information-theory",
     title: "Information Theory",
-    titleVi: "Lý thuyết thông tin",
-    description: "Entropy, cross-entropy và KL divergence — đo 'độ bất ngờ' của dữ liệu bằng bit, nền tảng của mọi loss function.",
+    titleVi: "Lý thuyết thông tin: đo bất ngờ bằng bit",
+    description: "Entropy, cross-entropy và KL divergence. Cùng đo độ bất ngờ của dữ liệu bằng bit và đặt nền cho mọi loss function.",
     category: "math-foundations",
     tags: ["entropy", "kl-divergence", "cross-entropy"],
     difficulty: "intermediate",
@@ -2373,7 +2373,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "k-means-in-music-recs",
     title: "K-Means in Music Recommendations",
-    titleVi: "k-means trong gợi ý nhạc",
+    titleVi: "k-means dựng Discover Weekly cho Spotify",
     description:
       "Cách Spotify biến sở thích của 600 triệu người thành các điểm trong không gian 40 chiều, tìm đồng minh thẩm mỹ, và xây Discover Weekly mỗi thứ Hai.",
     category: "classic-ml",
@@ -2453,7 +2453,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "backpropagation-in-translation",
     title: "Backpropagation in Translation",
-    titleVi: "Lan truyền ngược — khi Google Translate học từ lỗi",
+    titleVi: "Lan truyền ngược: Google Translate học từ mỗi câu sai",
     description:
       "Mỗi câu dịch sai là một lần Google Translate tự chỉnh trọng số. Xem một cặp câu Anh–Việt đi qua forward, loss, backward và update.",
     category: "neural-fundamentals",
@@ -2681,9 +2681,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "math-readiness",
     title: "Math Readiness for ML",
-    titleVi: "Toán cần biết — đừng lo",
+    titleVi: "Toán cần biết cho ML, đừng lo",
     description:
-      "Bốn ngôi sao Bắc Đẩu của Machine Learning: đại số tuyến tính, xác suất, đạo hàm, thống kê. Không cần giỏi toán — chỉ cần biết chúng để làm gì.",
+      "Bốn ngôi sao Bắc Đẩu của Machine Learning: đại số tuyến tính, xác suất, đạo hàm, thống kê. Không cần giỏi toán. Chỉ cần biết chúng để làm gì.",
     category: "foundations",
     tags: ["functions", "notation", "summation", "prerequisites"],
     difficulty: "beginner",
@@ -2710,7 +2710,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "vectors-and-matrices",
     title: "Vectors & Matrices",
-    titleVi: "Vector và ma trận — mũi tên và bảng số",
+    titleVi: "Vector là mũi tên, ma trận là máy biến hình",
     description:
       "Vector là mũi tên, ma trận là bảng số biến đổi mũi tên. Kéo thử, chỉnh thử, nhìn toán 'động đậy' ngay trước mắt.",
     category: "math-foundations",
@@ -2726,9 +2726,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "eigendecomposition-pca",
     title: "Eigendecomposition & PCA",
-    titleVi: "Phân tích thành phần chính (PCA) — tìm trục chính của dữ liệu",
+    titleVi: "PCA: tìm trục chính của dữ liệu",
     description:
-      "Nếu phải mô tả một đám đông bằng một câu, bạn nói gì? PCA tìm 'trục chính' — hướng mà dữ liệu trải ra nhiều nhất.",
+      "Nếu phải mô tả một đám đông bằng một câu, bạn nói gì? PCA tìm trục chính, tức là hướng mà dữ liệu trải ra nhiều nhất.",
     category: "math-foundations",
     tags: ["eigenvalues", "pca", "dimensionality-reduction"],
     difficulty: "beginner",
@@ -2738,7 +2738,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "vectors-and-matrices-in-photo-search",
     title: "Vectors & Matrices in Photo Search",
-    titleVi: "Vector trong tìm kiếm ảnh",
+    titleVi: "Google Photos biến ảnh thành vector để tìm",
     description:
       "Bạn gõ 'hoàng hôn bãi biển' và Google Photos tìm ra đúng ảnh. Mỗi ảnh trở thành một vector. So sánh hai ảnh = so sánh hai vector.",
     category: "math-foundations",
@@ -2805,9 +2805,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "probability-statistics-in-spam-filter",
     title: "Probability & Statistics in Spam Filtering",
-    titleVi: "Xác suất trong lọc spam",
+    titleVi: "Xác suất Bayes lọc spam ra sao",
     description:
-      "Cách Gmail dùng xác suất Bayes để chặn 15 tỷ email rác mỗi ngày — bạn sẽ tự tay chỉnh các công tắc đặc trưng và xem thanh điểm spam nhảy.",
+      "Cách Gmail dùng xác suất Bayes để chặn 15 tỷ email rác mỗi ngày. Bạn sẽ tự tay chỉnh các công tắc đặc trưng và xem thanh điểm spam nhảy.",
     category: "math-foundations",
     tags: ["bayesian-filtering", "spam-detection", "application"],
     difficulty: "beginner",
@@ -2986,7 +2986,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "linear-regression-in-housing",
     title: "Linear Regression in Housing Valuation",
-    titleVi: "Hồi quy tuyến tính trong giá nhà",
+    titleVi: "Linear regression đoán giá nhà tại TP.HCM và Hà Nội",
     description:
       "Hà Nội và TP.HCM: căn hộ 80m² ở TP Thủ Đức giá bao nhiêu? Kéo các thanh diện tích, số phòng, quận và xem công thức hồi quy tuyến tính ước giá trực tiếp.",
     category: "classic-ml",
@@ -3042,7 +3042,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "logistic-regression-in-spam-filter",
     title: "Logistic Regression in Spam Filtering",
-    titleVi: "Hồi quy logistic trong lọc spam",
+    titleVi: "Gmail biến email thành xác suất spam",
     description:
       "Cách Gmail dùng hồi quy logistic để biến mỗi email thành một xác suất spam, rồi chuyển vào hộp thư hay thùng rác.",
     category: "classic-ml",
@@ -3107,7 +3107,7 @@ export const topicList: TopicMeta[] = [
     title: "Information Theory in Data Compression",
     titleVi: "Lý thuyết thông tin trong nén file",
     description:
-      "Vì sao file .txt toàn chữ 'a' nén rất nhỏ còn file ngẫu nhiên gần như không nén được? Entropy Shannon đặt giới hạn — Huffman tiến gần nó.",
+      "Vì sao file .txt toàn chữ 'a' nén rất nhỏ còn file ngẫu nhiên gần như không nén được? Entropy Shannon đặt giới hạn lý thuyết. Huffman tiến gần đến đó.",
     category: "classic-ml",
     tags: ["entropy", "compression", "information-theory", "application"],
     difficulty: "intermediate",
@@ -3231,7 +3231,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "knn-in-symptom-checker",
     title: "KNN in Symptom Checkers",
-    titleVi: "k-NN trong kiểm tra triệu chứng",
+    titleVi: "k-NN đoán bệnh từ triệu chứng",
     description:
       "App chatbot hỏi bạn vài triệu chứng → so với hàng ngàn ca bệnh cũ → gợi ý bệnh gần nhất. Cốt lõi chính là k-NN.",
     category: "classic-ml",
@@ -3399,7 +3399,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "bias-variance-in-netflix-prize",
     title: "Bias-Variance in the Netflix Prize",
-    titleVi: "Bias-Variance trong Netflix Prize",
+    titleVi: "Netflix Prize: vì sao đội thắng gộp 800 mô hình",
     description:
       "Netflix Prize 1 triệu đô: vì sao đội thắng cần 800+ mô hình gộp lại? Câu chuyện kinh điển về ensemble và giới hạn của việc giảm variance trong thực tế.",
     category: "classic-ml",
@@ -3448,9 +3448,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "overfitting-underfitting-in-compas",
     title: "Overfitting & Underfitting in COMPAS",
-    titleVi: "Overfit trong COMPAS — 137 đặc trưng thua 2 biến",
+    titleVi: "COMPAS overfit: 137 đặc trưng thua 2 biến",
     description:
-      "COMPAS dùng 137 đặc trưng để chấm điểm rủi ro tái phạm nhưng chỉ đạt 65% chính xác — mô hình 2 biến đạt 67%, bóc trần hiện tượng overfit lên thiên kiến lịch sử",
+      "COMPAS dùng 137 đặc trưng để chấm điểm rủi ro tái phạm nhưng chỉ đạt 65% độ chính xác. Một model 2 biến lại đạt 67%, lộ ra hiện tượng overfit lên thiên kiến lịch sử.",
     category: "classic-ml",
     tags: ["fairness", "criminal-justice", "bias", "application"],
     difficulty: "intermediate",
@@ -3497,7 +3497,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "cross-validation-in-kaggle",
     title: "Cross-Validation in Kaggle Competitions",
-    titleVi: "CV trong Kaggle — Trust Your CV",
+    titleVi: "CV trong Kaggle: tin local CV, đừng tin public LB",
     description:
       "Public leaderboard có thể đánh lừa. Đội xếp hạng 1.485 đã nhảy lên hạng 1 private chỉ vì tin vào CV của mình, không chạy theo public LB.",
     category: "classic-ml",
@@ -3546,7 +3546,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "train-val-test-in-youtube",
     title: "Train / Val / Test in YouTube Recommendations",
-    titleVi: "Tập train/val/test trong YouTube — chia theo thời gian",
+    titleVi: "YouTube chia train/val/test theo thời gian, không ngẫu nhiên",
     description:
       "YouTube dùng dữ liệu của 2 tỷ người dùng. Chia ngẫu nhiên sẽ gây leakage tương lai → quá khứ. Họ chia theo thời gian rồi A/B test trên người dùng thật.",
     category: "classic-ml",
@@ -3661,9 +3661,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "perceptron-in-image-classification",
     title: "Perceptron in Image Classification",
-    titleVi: "Perceptron nhận diện ảnh — chữ số 0 hay 1?",
+    titleVi: "Perceptron nhận diện ảnh: chữ số 0 hay 1?",
     description:
-      "Một perceptron nhìn vào ảnh 28×28 pixel và quyết định đó là chữ số '0' hay '1'. Bạn tô pixel bằng chuột và thấy dự đoán đổi ngay lập tức — rồi khám phá vì sao một nơ-ron là chưa đủ cho ảnh phức tạp.",
+      "Một perceptron nhìn vào ảnh 28×28 pixel và quyết định đó là chữ số '0' hay '1'. Bạn tô pixel bằng chuột, thấy dự đoán đổi ngay lập tức, rồi khám phá vì sao một nơ-ron chưa đủ cho ảnh phức tạp.",
     category: "neural-fundamentals",
     tags: ["perceptron", "image-classification", "application"],
     difficulty: "beginner",
@@ -3779,7 +3779,7 @@ export const topicList: TopicMeta[] = [
     title: "Activation Functions in AlphaGo",
     titleVi: "Hàm kích hoạt trong AlphaGo",
     description:
-      "AlphaGo thắng kỳ thủ hàng đầu thế giới — mỗi nước đi là hàng triệu nơ-ron với ReLU và softmax phối hợp. Bấm một ô trên bàn cờ để thấy mạng chính sách nghĩ gì.",
+      "AlphaGo thắng kỳ thủ hàng đầu thế giới. Mỗi nước đi là hàng triệu nơ-ron với ReLU và softmax phối hợp. Bấm một ô trên bàn cờ để thấy mạng chính sách nghĩ gì.",
     category: "neural-fundamentals",
     tags: ["activation-functions", "reinforcement-learning", "application"],
     difficulty: "intermediate",
@@ -3835,7 +3835,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "forward-propagation-in-chat-response",
     title: "Forward Propagation in Chat Response",
-    titleVi: "Lan truyền thuận trong trợ lý chat",
+    titleVi: "Mỗi token ChatGPT gõ ra là một lượt lan truyền thuận",
     description:
       "Bạn gõ một câu, 20 mili-giây sau ChatGPT đáp. Mở từng giai đoạn của lượt lan truyền thuận để thấy điều gì xảy ra trong khoảnh khắc đó.",
     category: "neural-fundamentals",
@@ -3894,9 +3894,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "gradient-descent-in-training",
     title: "Gradient Descent in GPT-4 Training",
-    titleVi: "Gradient Descent trong huấn luyện mô hình",
+    titleVi: "Gradient descent chạy suốt 34 ngày để huấn luyện GPT-3",
     description:
-      "Huấn luyện GPT-3 tốn ~12 triệu USD chỉ cho tính toán, phần lớn là chạy gradient descent. Vặn thử learning rate, momentum, batch size — xem loss hội tụ, dao động hay nổ tung.",
+      "Huấn luyện GPT-3 tốn ~12 triệu USD chỉ cho tính toán, phần lớn là chạy gradient descent. Vặn thử learning rate, momentum, batch size để xem loss hội tụ, dao động hay nổ tung.",
     category: "neural-fundamentals",
     tags: ["gradient-descent", "optimization", "application"],
     difficulty: "intermediate",
@@ -3952,9 +3952,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "loss-functions-in-recommendation",
     title: "Loss Functions in YouTube Recommendations",
-    titleVi: "Hàm mất mát trong hệ gợi ý — Shopee, TikTok, Spotify, YouTube",
+    titleVi: "Hàm loss định hình bảng xếp hạng Shopee, TikTok, Spotify, YouTube",
     description:
-      "Cùng một lịch sử người dùng, cùng một mô hình — đổi hàm mất mát thì bảng xếp hạng top 10 đổi hoàn toàn. Vì sao MSE thua pairwise/ranking loss ở Shopee, TikTok, Spotify, YouTube.",
+      "Cùng một lịch sử người dùng, cùng một model. Đổi hàm loss thì bảng xếp hạng top 10 đổi hoàn toàn. Vì sao MSE thua pairwise và ranking loss ở Shopee, TikTok, Spotify, YouTube.",
     category: "neural-fundamentals",
     tags: ["loss-functions", "recommendation", "application"],
     difficulty: "intermediate",
@@ -4003,7 +4003,7 @@ export const topicList: TopicMeta[] = [
     title: "Epochs & Batches in GPT Training",
     titleVi: "Epoch và batch khi huấn luyện GPT",
     description:
-      "GPT-4 đọc khoảng 13 nghìn tỉ token — một lượt duy nhất, chia thành hàng triệu batch. Xem cách các lab AI vặn batch size, lên lịch epoch và tránh hết RAM GPU.",
+      "GPT-4 đọc khoảng 13 nghìn tỉ token trong một lượt duy nhất, chia thành hàng triệu batch. Xem cách các lab AI vặn batch size, lên lịch epoch và tránh hết RAM GPU.",
     category: "neural-fundamentals",
     tags: ["epochs-batches", "training", "application"],
     difficulty: "intermediate",
@@ -4059,7 +4059,7 @@ export const topicList: TopicMeta[] = [
     title: "Data Preprocessing in Uber ETA",
     titleVi: "Tiền xử lý trong ETA của Uber",
     description:
-      "Uber nhận về hàng tỷ điểm GPS mỗi ngày — bẩn, lệch, mất tín hiệu, múi giờ khác nhau. Đi qua từng bước dọn dẹp để thấy một vệt GPS biến từ chấm loạn thành đường đi thật.",
+      "Uber nhận về hàng tỷ điểm GPS mỗi ngày. Tín hiệu bẩn, lệch, mất sóng, múi giờ lộn xộn. Đi qua từng bước dọn dẹp để thấy một vệt GPS biến từ chấm loạn thành đường đi thật.",
     category: "foundations",
     tags: ["preprocessing", "eta-prediction", "application"],
     difficulty: "intermediate",
@@ -4124,7 +4124,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "feature-engineering-in-fraud-detection",
     title: "Feature Engineering in Fraud Detection",
-    titleVi: "Xây dựng đặc trưng trong chống gian lận",
+    titleVi: "Stripe Radar bóc mặt nạ gian lận trong 100ms",
     description:
       "Cách Stripe Radar chế tạo hơn 1.000 đặc trưng từ vài trường giao dịch thô để phát hiện gian lận trong chưa đầy 100 mili-giây.",
     category: "foundations",
@@ -4190,7 +4190,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "model-evaluation-selection-in-kaggle",
     title: "Model Evaluation & Selection in Kaggle",
-    titleVi: "Chọn mô hình trong Kaggle",
+    titleVi: "Chọn model trên Kaggle: ai trụ được khi private leaderboard lật bài",
     description:
       "Gấu hay cáo? Kéo dòng thời gian Kaggle để xem early submission, ensemble stacking, và final submission strategy quyết định ai đứng top private leaderboard.",
     category: "classic-ml",

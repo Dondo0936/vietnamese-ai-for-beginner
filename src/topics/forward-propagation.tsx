@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
   title: "Forward Propagation",
   titleVi: "Lan truyền thuận",
   description:
-    "Dữ liệu đi qua mạng như tin nhắn qua các trạm — mỗi trạm xử lý rồi chuyển cho trạm sau.",
+    "Dữ liệu đi qua mạng như tin nhắn qua các trạm. Mỗi trạm xử lý một chút rồi chuyển cho trạm sau.",
   category: "neural-fundamentals",
   tags: ["neural-network", "training", "fundamentals"],
   difficulty: "intermediate",
@@ -117,7 +117,7 @@ function forward(x: number[]): LayerSnapshot {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   HÌNH HỌC SVG — dùng chung cho bức vẽ "mạng 3 lớp"
+   HÌNH HỌC SVG. Dùng chung cho bức vẽ "mạng 3 lớp"
    ═══════════════════════════════════════════════════════════════════ */
 
 const SVG_W = 720;
@@ -228,7 +228,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "b", accept: ["bias", "B", "b_l", "b[l]"] },
     ],
     explanation:
-      "b là bias — một hằng số cộng thêm cho mỗi nơ-ron, giúp mạng dịch chuyển đường kích hoạt lên xuống mà không phụ thuộc vào đầu vào.",
+      "b là bias, một hằng số cộng thêm cho mỗi nơ-ron, giúp mạng dịch chuyển đường kích hoạt lên xuống mà không phụ thuộc vào đầu vào.",
   },
 ];
 
@@ -365,13 +365,13 @@ export default function ForwardPropagationTopic() {
 
   const stepCaption = [
     "Chưa có dữ liệu. Nhấn Phát để bắt đầu.",
-    "Bước 1 — Đầu vào x đi vào lớp nhập.",
-    "Bước 2 — Lớp ẩn tính z = W·x + b rồi ReLU.",
-    "Bước 3 — Lớp ra tính z = W·a + b (chưa chuẩn hoá).",
-    "Bước 4 — Softmax biến z thành xác suất.",
+    "Bước 1. Đầu vào x đi vào lớp nhập.",
+    "Bước 2. Lớp ẩn tính z = W·x + b rồi ReLU.",
+    "Bước 3. Lớp ra tính z = W·a + b (chưa chuẩn hoá).",
+    "Bước 4. Softmax biến z thành xác suất.",
   ];
 
-  /* ═════════════ DEEPEN — giá trị cụ thể dùng để hiển thị ═════════════ */
+  /* ═════════════ DEEPEN. Giá trị cụ thể dùng để hiển thị ═════════════ */
   const z1Text = snapshot.z1.map((v) => v.toFixed(2));
   const a1Text = snapshot.a1.map((v) => v.toFixed(2));
   const z2Text = snapshot.z2.map((v) => v.toFixed(2));
@@ -379,7 +379,7 @@ export default function ForwardPropagationTopic() {
 
   return (
     <>
-      {/* ═══════════════ BƯỚC 1 — HOOK ═══════════════ */}
+      {/* ═══════════════ BƯỚC 1. HOOK ═══════════════ */}
       <LessonSection step={1} totalSteps={8} label="Ẩn dụ">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -388,15 +388,15 @@ export default function ForwardPropagationTopic() {
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Hãy tưởng tượng bạn gửi một tin nhắn từ Sài Gòn ra Hà Nội. Tin nhắn
-            không bay thẳng — nó đi qua nhiều <strong>trạm</strong>: trạm đầu
+            không bay thẳng. Nó đi qua nhiều <strong>trạm</strong>: trạm đầu
             mã hoá, trạm giữa chuyển tiếp, trạm cuối giải mã và đưa tới người
             nhận. Mỗi trạm <em>xử lý một chút</em> rồi chuyển cho trạm sau.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            <strong>Lan truyền thuận</strong> trong mạng nơ-ron hoạt động giống
-            hệt vậy: dữ liệu đầu vào đi qua từng lớp, mỗi lớp biến đổi một
-            chút, rồi chuyển cho lớp sau — cho đến khi lớp cuối cùng đưa ra dự
-            đoán.
+            Quá trình này được gọi là <strong>forward propagation</strong> (lan
+            truyền thuận). Dữ liệu đầu vào đi qua từng lớp, mỗi lớp biến đổi
+            một chút rồi chuyển cho lớp sau, cho đến khi lớp cuối cùng đưa ra
+            dự đoán.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
@@ -416,8 +416,8 @@ export default function ForwardPropagationTopic() {
                 <span className="text-sm font-semibold">Trạm giữa</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Các lớp ẩn — pha trộn các đặc trưng, thêm tính phi tuyến để học
-                được khái niệm phức tạp.
+                Các lớp ẩn pha trộn đặc trưng và thêm tính phi tuyến, nhờ vậy
+                mạng học được khái niệm phức tạp.
               </p>
             </div>
             <div className="rounded-xl border border-violet-200 bg-violet-50 dark:bg-violet-900/20 dark:border-violet-800 p-4 space-y-1">
@@ -426,15 +426,15 @@ export default function ForwardPropagationTopic() {
                 <span className="text-sm font-semibold">Trạm cuối</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Đưa ra dự đoán — thường là vector xác suất các lớp có thể xảy
-                ra.
+                Đưa ra dự đoán, thường là vector xác suất cho các lớp có thể
+                xảy ra.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 2 — DISCOVER (PredictionGate) ═══════════════ */}
+      {/* ═══════════════ BƯỚC 2. DISCOVER (PredictionGate) ═══════════════ */}
       <LessonSection step={2} totalSteps={8} label="Dự đoán">
         <PredictionGate
           question="Tại MỖI lớp trạm, lớp đó phải làm phép tính gì với đầu ra của lớp ngay trước để cho ra đầu vào cho lớp sau?"
@@ -442,7 +442,7 @@ export default function ForwardPropagationTopic() {
             "Chọn giá trị lớn nhất trong đầu ra lớp trước rồi bỏ phần còn lại",
             "Tổ hợp tuyến tính (W·x + b) rồi uốn qua một hàm kích hoạt phi tuyến",
             "Cộng thêm một số ngẫu nhiên để mạng khám phá ngẫu nhiên",
-            "Sao chép nguyên đầu ra lớp trước — chỉ lớp cuối mới thực sự tính toán",
+            "Sao chép nguyên đầu ra lớp trước. Chỉ lớp cuối mới thực sự tính toán",
           ]}
           correct={1}
           explanation="Mỗi lớp làm đúng hai việc nhỏ: (1) phép nhân ma trận với trọng số W rồi cộng bias b, (2) đi qua một hàm kích hoạt (ReLU, sigmoid…) để 'bẻ cong'. Không có bước 1 thì không pha trộn đặc trưng được; không có bước 2 thì 100 lớp rút gọn thành một. Ở phần sau bạn sẽ thấy đúng hai phép đó chạy qua từng trạm."
@@ -456,7 +456,7 @@ export default function ForwardPropagationTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 3 — REVEAL ═══════════════ */}
+      {/* ═══════════════ BƯỚC 3. REVEAL ═══════════════ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
@@ -471,7 +471,7 @@ export default function ForwardPropagationTopic() {
               </p>
             </div>
 
-            {/* Sliders — parent sở hữu state, không đi vòng qua SliderGroup */}
+            {/* Sliders. Parent sở hữu state, không đi vòng qua SliderGroup */}
             <div className="rounded-xl border border-border bg-card p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-semibold text-foreground">
@@ -535,8 +535,8 @@ export default function ForwardPropagationTopic() {
                 {/* Nhãn cột */}
                 {[
                   { x: layerX(0), t: "Đầu vào (3)" },
-                  { x: layerX(1), t: "Lớp ẩn — ReLU (4)" },
-                  { x: layerX(2), t: "Lớp ra — Softmax (3)" },
+                  { x: layerX(1), t: "Lớp ẩn (ReLU, 4 nơ-ron)" },
+                  { x: layerX(2), t: "Lớp ra (Softmax, 3 nơ-ron)" },
                 ].map((col, i) => (
                   <text
                     key={`col-${i}`}
@@ -614,7 +614,7 @@ export default function ForwardPropagationTopic() {
                   />
                 ))}
 
-                {/* Nút hidden — hiển thị a1 (sau ReLU) khi đã qua bước 2 */}
+                {/* Nút hidden. Hiển thị a1 (sau ReLU) khi đã qua bước 2 */}
                 {snapshot.a1.map((v, j) => (
                   <NetworkNode
                     key={`hid-${j}`}
@@ -627,7 +627,7 @@ export default function ForwardPropagationTopic() {
                   />
                 ))}
 
-                {/* Nút output — dùng a2 (xác suất) khi softmax xong, nếu
+                {/* Nút output. Dùng a2 (xác suất) khi softmax xong, nếu
                     mới ở bước 3 thì hiển thị z2 (logit thô). */}
                 {snapshot.a2.map((v, k) => {
                   const raw = activeOutput
@@ -811,17 +811,17 @@ export default function ForwardPropagationTopic() {
         </VisualizationSection>
 
         <Callout variant="info" title="Lưu ý khi kéo slider">
-          Thay đổi x làm mạng tính lại TOÀN BỘ các giá trị z và a — nhưng trọng
-          số W, b không đổi. Đó là điều cốt lõi của lan truyền thuận: cùng một
-          công thức, cùng một bộ trọng số, chỉ khác đầu vào.
+          Thay đổi x làm mạng tính lại TOÀN BỘ các giá trị z và a, nhưng trọng
+          số W và b vẫn giữ nguyên. Đó là điều cốt lõi của forward propagation:
+          cùng một công thức, cùng một bộ weights, chỉ khác đầu vào.
         </Callout>
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 4 — DEEPEN (StepReveal) ═══════════════ */}
+      {/* ═══════════════ BƯỚC 4. DEEPEN (StepReveal) ═══════════════ */}
       <LessonSection step={4} totalSteps={8} label="Đi sâu">
         <VisualizationSection topicSlug={metadata.slug}>
           <h3 className="text-base font-semibold text-foreground mb-2">
-            Một vòng lan truyền thuận, mở ra từng lớp
+            Mở từng lớp trong một vòng forward propagation
           </h3>
           <p className="text-sm text-muted leading-relaxed mb-4">
             Dưới đây là năm khoảnh khắc bên trong mạng cho đầu vào x ={" "}
@@ -829,8 +829,8 @@ export default function ForwardPropagationTopic() {
               [{input[0].toFixed(2)}, {input[1].toFixed(2)},{" "}
               {input[2].toFixed(2)}]
             </span>
-            . Nhấn <strong>Tiếp tục</strong> để lần lượt mở từng lớp — hãy chú
-            ý ai đang nói chuyện với ai.
+            . Nhấn <strong>Tiếp tục</strong> để lần lượt mở từng lớp. Hãy chú
+            ý xem ai đang nói chuyện với ai.
           </p>
 
           <StepReveal
@@ -848,7 +848,7 @@ export default function ForwardPropagationTopic() {
                 className="rounded-lg border border-border bg-surface/50 p-4 space-y-2"
               >
                 <p className="text-sm font-semibold text-foreground">
-                  Đầu vào — vector ba đặc trưng
+                  Đầu vào: vector ba đặc trưng
                 </p>
                 <div className="grid grid-cols-3 gap-2">
                   {input.map((v, i) => (
@@ -859,7 +859,7 @@ export default function ForwardPropagationTopic() {
                       <p className="text-[10px] text-muted">
                         {INPUT_LABELS[i]}
                       </p>
-                      <p className="font-mono text-sm text-sky-300">
+                      <p className="font-mono text-sm font-bold text-foreground">
                         {v.toFixed(2)}
                       </p>
                     </div>
@@ -867,7 +867,7 @@ export default function ForwardPropagationTopic() {
                 </div>
                 <p className="text-xs text-muted leading-relaxed">
                   Đây là tin nhắn gốc mà mạng nhận được. Không có phép tính nào
-                  diễn ra ở lớp này — nó chỉ truyền nguyên x cho lớp sau.
+                  diễn ra ở lớp này. Nó chỉ truyền nguyên x cho lớp sau.
                 </p>
               </div>,
               <div
@@ -875,12 +875,12 @@ export default function ForwardPropagationTopic() {
                 className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
               >
                 <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <ArrowRight size={14} className="text-accent" /> Bước 1 —
-                  Trạm ẩn cộng-có-trọng-số
+                  <ArrowRight size={14} className="text-accent" /> Bước 1.
+                  Trạm ẩn cộng có trọng số
                 </p>
                 <p className="text-xs text-muted leading-relaxed">
                   Mỗi nơ-ron ẩn tính tổng có trọng số từ cả 3 đặc trưng đầu
-                  vào, rồi cộng bias. Kết quả là vector z gồm 4 số — chưa qua
+                  vào rồi cộng bias. Kết quả là vector z gồm 4 số, chưa qua
                   bất kỳ hàm kích hoạt nào.
                 </p>
                 <div className="grid grid-cols-4 gap-2">
@@ -890,7 +890,7 @@ export default function ForwardPropagationTopic() {
                       className="rounded-md bg-violet-500/10 border border-violet-500/30 p-2 text-center"
                     >
                       <p className="text-[10px] text-muted">z₁[{j + 1}]</p>
-                      <p className="font-mono text-sm text-violet-300">
+                      <p className="font-mono text-sm font-bold text-foreground">
                         {z1Text[j]}
                       </p>
                     </div>
@@ -907,14 +907,14 @@ export default function ForwardPropagationTopic() {
                 className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
               >
                 <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <ArrowRight size={14} className="text-accent" /> Bước 2 — Áp
+                  <ArrowRight size={14} className="text-accent" /> Bước 2. Áp
                   dụng ReLU
                 </p>
                 <p className="text-xs text-muted leading-relaxed">
                   ReLU cắt bỏ phần âm: giữ nguyên nếu &ge; 0, đẩy về 0 nếu &lt;
                   0. Đây là bước <strong>phi tuyến</strong> duy nhất trong lớp
-                  ẩn — nếu bỏ nó đi, toàn bộ mạng sụp về một phép biến đổi
-                  tuyến tính.
+                  ẩn. Bỏ nó đi, toàn bộ mạng sụp về một phép biến đổi tuyến
+                  tính.
                 </p>
                 <div className="grid grid-cols-4 gap-2">
                   {snapshot.a1.map((v, j) => {
@@ -933,7 +933,7 @@ export default function ForwardPropagationTopic() {
                           {v.toFixed(2)}
                         </p>
                         {wasNeg && (
-                          <p className="text-[9px] text-red-400">(bị cắt)</p>
+                          <p className="text-[9px] text-foreground">(bị cắt)</p>
                         )}
                       </div>
                     );
@@ -945,12 +945,12 @@ export default function ForwardPropagationTopic() {
                 className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
               >
                 <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <ArrowRight size={14} className="text-accent" /> Bước 3 —
-                  Lớp ra cộng-có-trọng-số
+                  <ArrowRight size={14} className="text-accent" /> Bước 3.
+                  Lớp ra cộng có trọng số
                 </p>
                 <p className="text-xs text-muted leading-relaxed">
                   Lặp lại công thức z = W·a + b, nhưng lần này dùng a₁ (đầu ra
-                  của lớp ẩn) làm đầu vào. Kết quả là vector logits — ba số
+                  của lớp ẩn) làm đầu vào. Kết quả là vector logits, gồm ba số
                   thực chưa chuẩn hoá.
                 </p>
                 <div className="grid grid-cols-3 gap-2">
@@ -960,9 +960,9 @@ export default function ForwardPropagationTopic() {
                       className="rounded-md bg-emerald-500/10 border border-emerald-500/30 p-2 text-center"
                     >
                       <p className="text-[10px] text-muted">
-                        z₂ — {CLASS_LABELS[k]}
+                        z₂ cho {CLASS_LABELS[k]}
                       </p>
-                      <p className="font-mono text-sm text-emerald-300">
+                      <p className="font-mono text-sm font-bold text-foreground">
                         {z2Text[k]}
                       </p>
                     </div>
@@ -978,13 +978,13 @@ export default function ForwardPropagationTopic() {
                 className="rounded-lg border border-border bg-surface/50 p-4 space-y-3"
               >
                 <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <Sparkles size={14} className="text-accent" /> Bước 4 —
+                  <Sparkles size={14} className="text-accent" /> Bước 4.
                   Softmax chuẩn hoá
                 </p>
                 <p className="text-xs text-muted leading-relaxed">
-                  Softmax mũ hoá và chia đều: mỗi logit &rarr; e^{"{z_k}"}, rồi
-                  chia cho tổng. Kết quả: ba số &ge; 0, cộng lại bằng 1 → đây
-                  là <em>phân phối xác suất</em>.
+                  Softmax mũ hoá và chia đều: mỗi logit thành e^{"{z_k}"}, rồi
+                  chia cho tổng. Kết quả là ba số &ge; 0, cộng lại bằng 1. Đây
+                  chính là một <em>phân phối xác suất</em>.
                 </p>
                 <div className="grid grid-cols-3 gap-2">
                   {snapshot.a2.map((p, k) => (
@@ -1010,8 +1010,8 @@ export default function ForwardPropagationTopic() {
                   <strong className="text-accent">
                     {CLASS_LABELS[snapshot.prediction]}
                   </strong>
-                  . Lan truyền thuận kết thúc ở đây — đây cũng là đầu ra để so
-                  với nhãn thực khi huấn luyện.
+                  . Forward propagation kết thúc ở đây. Đây cũng là đầu ra để
+                  so với nhãn thực khi huấn luyện.
                 </p>
               </div>,
             ]}
@@ -1021,12 +1021,12 @@ export default function ForwardPropagationTopic() {
         <Callout variant="tip" title="Quan sát cốt lõi">
           Cả hai lớp đều lặp lại cùng một <strong>cặp phép tính</strong>: (1)
           tổng có trọng số cộng bias, (2) hàm kích hoạt. Khác biệt duy nhất là
-          kích thước ma trận và hàm kích hoạt. Dù mạng có 3 lớp hay 300 lớp,
-          cấu trúc vẫn giống hệt — chỉ lặp nhiều hơn.
+          kích thước ma trận và lựa chọn hàm kích hoạt. Dù mạng có 3 lớp hay
+          300 lớp, cấu trúc vẫn giống hệt, chỉ lặp nhiều hơn.
         </Callout>
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 5 — CHALLENGE ═══════════════ */}
+      {/* ═══════════════ BƯỚC 5. CHALLENGE ═══════════════ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <p className="text-sm text-muted mb-3 leading-relaxed">
           Bạn được cho một lớp ẩn nhỏ với hai đầu vào và hai nơ-ron. Thử tính
@@ -1063,20 +1063,20 @@ export default function ForwardPropagationTopic() {
         />
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 6 — AHA ═══════════════ */}
+      {/* ═══════════════ BƯỚC 6. AHA ═══════════════ */}
       <LessonSection step={6} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Lan truyền thuận không phải thứ gì bí ẩn — nó chỉ là hai phép tính
-          lặp lại ở mỗi lớp: <strong>z = W·a + b</strong> rồi{" "}
+          Forward propagation không có gì bí ẩn. Nó chỉ là hai phép tính lặp
+          lại ở mỗi lớp: <strong>z = W·a + b</strong> rồi{" "}
           <strong>a = f(z)</strong>.
           <br />
           <br />
           Dữ liệu đi một chiều, mỗi trạm biến đổi một chút. Dù mạng có ba lớp
-          hay ba trăm lớp, công thức vẫn đúng — chỉ lặp nhiều hơn.
+          hay ba trăm lớp, công thức vẫn đúng. Chỉ là lặp nhiều hơn.
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 7 — EXPLAIN ═══════════════ */}
+      {/* ═══════════════ BƯỚC 7. EXPLAIN ═══════════════ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p>
@@ -1119,7 +1119,7 @@ export default function ForwardPropagationTopic() {
           </LaTeX>
           <div className="rounded-lg border border-border bg-surface/40 p-3 text-sm text-foreground/85 leading-relaxed">
             <strong>Ý nghĩa:</strong> lấy mũ của mỗi logit rồi chia đều, ép các
-            con số thành phân phối xác suất — cộng lại bằng 1, không âm. Đó là
+            con số thành phân phối xác suất (cộng lại bằng 1, không âm). Đó là
             lý do đầu ra của mô hình phân loại luôn đọc được như &ldquo;70%
             Mèo, 20% Chó, 10% Chim&rdquo;.
           </div>
@@ -1127,7 +1127,7 @@ export default function ForwardPropagationTopic() {
           {/* SVG minh hoạ so sánh logits vs softmax */}
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-4">
             <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-3">
-              Từ logits tới xác suất — ảnh chụp cho đầu vào hiện tại
+              Từ logits tới xác suất, ảnh chụp cho đầu vào hiện tại
             </p>
             <svg viewBox="0 0 520 180" className="w-full max-w-xl mx-auto">
               <line
@@ -1164,7 +1164,7 @@ export default function ForwardPropagationTopic() {
                       fontSize={11}
                       fill="var(--text-secondary)"
                     >
-                      z — {CLASS_LABELS[k]}
+                      z cho {CLASS_LABELS[k]}
                     </text>
                     <text
                       x={x + 18}
@@ -1228,16 +1228,16 @@ export default function ForwardPropagationTopic() {
               })}
             </svg>
             <p className="text-[11px] text-muted text-center mt-2 italic leading-relaxed">
-              Bên trái: logits z (có thể âm). Bên phải: sau softmax — phân phối
-              xác suất, cột cao nhất chính là dự đoán.
+              Bên trái: logits z (có thể âm). Bên phải: sau softmax, phân phối
+              xác suất với cột cao nhất chính là dự đoán.
             </p>
           </div>
 
-          <Callout variant="warning" title="Bỏ hàm kích hoạt = mất sức mạnh">
+          <Callout variant="warning" title="Bỏ hàm kích hoạt là mất sức mạnh phi tuyến">
             Nếu tất cả lớp chỉ có phép nhân ma trận và không có hàm kích hoạt,
             toàn mạng sẽ sụp về <em>một phép biến đổi tuyến tính duy nhất</em>.
-            Dù xếp 100 lớp, mạng vẫn tương đương một đường thẳng — không vẽ
-            được ranh giới cong. ReLU / sigmoid / tanh là chính thứ tạo ra sức
+            Dù xếp 100 lớp, mạng vẫn tương đương một đường thẳng và không vẽ
+            được ranh giới cong. ReLU, sigmoid, tanh chính là thứ tạo ra sức
             mạnh phi tuyến của mạng nơ-ron.
           </Callout>
 
@@ -1246,7 +1246,7 @@ export default function ForwardPropagationTopic() {
               &ldquo;Forward&rdquo; ở đây nghĩa là đi{" "}
               <strong>theo chiều xuôi</strong>: đầu vào &rarr; lớp 1 &rarr; lớp
               2 &rarr; ... &rarr; lớp cuối &rarr; đầu ra. Khi huấn luyện,
-              chúng ta đi chiều ngược lại để tính gradient — gọi là{" "}
+              chúng ta đi chiều ngược lại để tính gradient. Chiều đó gọi là{" "}
               <TopicLink slug="backpropagation">
                 lan truyền ngược (backpropagation)
               </TopicLink>
@@ -1258,9 +1258,9 @@ export default function ForwardPropagationTopic() {
           <CollapsibleDetail title="Tại sao dùng ReLU ở lớp ẩn mà không dùng sigmoid?">
             <p className="text-sm leading-relaxed">
               Lịch sử ban đầu dùng sigmoid cho mọi lớp. Nhưng sigmoid có hai
-              vấn đề khi mạng sâu: (1) giá trị bị đẩy về giữa 0 và 1 nên{" "}
+              vấn đề khi mạng sâu: (1) giá trị bị ép về giữa 0 và 1 nên{" "}
               <em>tín hiệu bão hoà</em>, mạng khó học; (2) tính đạo hàm tốn
-              kém. ReLU chỉ là &ldquo;max(0, z)&rdquo; — rẻ, không bão hoà phía
+              kém. ReLU chỉ là &ldquo;max(0, z)&rdquo;: rẻ, không bão hoà phía
               dương, và đã trở thành lựa chọn mặc định cho lớp ẩn trong hầu hết
               các kiến trúc hiện đại. Chi tiết thêm trong bài{" "}
               <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink>.
@@ -1269,26 +1269,26 @@ export default function ForwardPropagationTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ═══════════════ BƯỚC 8 — CONNECT + QUIZ ═══════════════ */}
+      {/* ═══════════════ BƯỚC 8. CONNECT + QUIZ ═══════════════ */}
       <LessonSection step={8} totalSteps={8} label="Kết nối & Kiểm tra">
         <MiniSummary
-          title="Lan truyền thuận — 5 điều cần nhớ"
+          title="Forward propagation: 5 điều cần nhớ"
           points={[
             "Dữ liệu đi MỘT CHIỀU: đầu vào → lớp ẩn → lớp ra. Không bao giờ quay lại.",
             "Mỗi lớp lặp đúng hai phép tính: z = W·a + b, rồi a = f(z).",
-            "Hàm kích hoạt (ReLU, sigmoid, tanh...) cung cấp tính phi tuyến. Bỏ nó đi, mạng sụp về một đường thẳng.",
+            "Hàm kích hoạt (ReLU, sigmoid, tanh) cung cấp tính phi tuyến. Bỏ nó đi, mạng sụp về một đường thẳng.",
             "Với phân loại, lớp cuối thường dùng softmax để biến logits thành xác suất cộng = 1.",
-            "W và b cố định trong lan truyền thuận; chúng chỉ đổi khi huấn luyện (qua lan truyền ngược).",
+            "W và b cố định trong forward propagation. Chúng chỉ đổi khi huấn luyện, qua backpropagation.",
           ]}
         />
 
         <div className="h-6" />
 
-        <Callout variant="tip" title="Bước tiếp theo: sửa sai bằng lan truyền ngược">
-          Lan truyền thuận cho ra dự đoán ŷ. Nếu ŷ chưa khớp nhãn thực y, mạng
-          phải học cách sửa. Quy trình này đi ngược chiều vừa rồi — mỗi lớp
-          hỏi &ldquo;tôi đã đóng góp bao nhiêu vào sai số?&rdquo; rồi cập nhật
-          trọng số. Xem tiếp tại{" "}
+        <Callout variant="tip" title="Bước tiếp theo: sửa sai bằng backpropagation">
+          Forward propagation cho ra dự đoán ŷ. Nếu ŷ chưa khớp nhãn thực y,
+          mạng phải học cách sửa. Quy trình này đi ngược chiều vừa rồi: mỗi
+          lớp hỏi &ldquo;tôi đã đóng góp bao nhiêu vào sai số?&rdquo; rồi cập
+          nhật trọng số. Xem tiếp tại{" "}
           <TopicLink slug="backpropagation">lan truyền ngược</TopicLink>, hoặc
           ôn lại{" "}
           <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink> và{" "}

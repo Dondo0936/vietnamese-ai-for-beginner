@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
   title: "K-Means Clustering",
   titleVi: "Phân cụm k-means",
   description:
-    "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên — từ đặt kho hàng Grab đến phân khúc khách hàng.",
+    "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên: từ đặt kho hàng Grab đến phân khúc khách hàng.",
   category: "classic-ml",
   tags: ["clustering", "unsupervised-learning"],
   difficulty: "intermediate",
@@ -75,7 +75,7 @@ const COLORS = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — 3 cụm tự nhiên, 30 điểm
+   DỮ LIỆU: 3 cụm tự nhiên, 30 điểm
    ──────────────────────────────────────────────────────────── */
 
 const SEED_POINTS: Pt[] = [
@@ -209,53 +209,53 @@ function runToConvergence(pts: Pt[], k: number, seed: number) {
 
 const quizQuestions: QuizQuestion[] = [
   {
-    question: "K-means thuộc loại học máy nào?",
+    question: "k-means thuộc loại học máy nào?",
     options: [
-      "Học có giám sát — cần dữ liệu gán nhãn",
-      "Học không giám sát — tự tìm cấu trúc trong dữ liệu không có nhãn",
-      "Học tăng cường — thông qua phần thưởng và hình phạt",
+      "Supervised learning, cần dữ liệu đã gán nhãn",
+      "Unsupervised learning, tự tìm cấu trúc trong dữ liệu chưa có nhãn",
+      "Reinforcement learning, học qua phần thưởng và hình phạt",
       "Không phải học máy",
     ],
     correct: 1,
     explanation:
-      "K-means là ví dụ tiêu biểu của học không giám sát (unsupervised learning). Dữ liệu đầu vào chỉ gồm các điểm — không ai nói trước điểm nào thuộc cụm nào. Thuật toán tự tìm cấu trúc nhóm.",
+      "k-means là ví dụ tiêu biểu của unsupervised learning. Dữ liệu đầu vào chỉ gồm các điểm. Không ai nói trước điểm nào thuộc cụm nào, thuật toán tự tìm cấu trúc nhóm.",
   },
   {
     question:
       "Một vòng lặp k-means gồm 2 bước. Đó là hai bước nào?",
     options: [
-      "Đếm cụm → Xếp hạng cụm",
-      "Gán mỗi điểm đến tâm cụm gần nhất → Di chuyển mỗi tâm về trung bình cụm",
-      "Thêm điểm → Xoá điểm",
-      "Tính trung vị → Tính phương sai",
+      "Đếm cụm rồi xếp hạng cụm",
+      "Gán mỗi điểm đến tâm cụm gần nhất, sau đó dời mỗi tâm về trung bình của cụm",
+      "Thêm điểm rồi xoá điểm",
+      "Tính trung vị rồi tính phương sai",
     ],
     correct: 1,
     explanation:
-      "Hai bước: (1) gán điểm đến tâm cụm gần nhất — gọi là E-step, (2) di chuyển mỗi tâm về trung bình toạ độ các điểm trong cụm — gọi là M-step. Lặp đến khi tâm không dời nữa.",
+      "Hai bước. (1) Gán điểm đến tâm cụm gần nhất, gọi là E-step. (2) Dời mỗi tâm về trung bình toạ độ của các điểm trong cụm, gọi là M-step. Lặp đến khi tâm không dời nữa.",
   },
   {
     question:
       "Dữ liệu có 4 cụm tự nhiên, nhưng bạn chạy k-means với k = 2. Chuyện gì xảy ra?",
     options: [
       "Thuật toán báo lỗi và dừng",
-      "Hai cụm gần nhau bị gộp thành một — k-means luôn trả về đúng k cụm",
-      "K-means tự động tăng k lên 4",
+      "Hai cụm gần nhau bị gộp thành một, vì k-means luôn trả về đúng k cụm",
+      "k-means tự động tăng k lên 4",
       "Kết quả không xác định",
     ],
     correct: 1,
     explanation:
-      "K-means không biết “số cụm tự nhiên” là bao nhiêu. Nó trả về đúng k cụm theo yêu cầu. Nếu k nhỏ hơn số cụm thực, các cụm gần nhau bị gộp. Để tìm k phù hợp, dùng phương pháp Elbow hoặc Silhouette.",
+      "k-means không biết “số cụm tự nhiên” là bao nhiêu. Nó trả về đúng k cụm theo yêu cầu. Nếu k nhỏ hơn số cụm thực, các cụm gần nhau bị gộp lại. Để tìm k phù hợp, dùng phương pháp Elbow hoặc Silhouette.",
   },
   {
     type: "fill-blank",
     question:
-      "Tâm cụm (centroid) được cập nhật bằng cách tính {blank} toạ độ của các điểm trong cụm. Điều này tương đương tối thiểu hoá tổng {blank} khoảng cách — còn gọi là inertia.",
+      "Tâm cụm (centroid) được cập nhật bằng cách tính {blank} toạ độ của các điểm trong cụm. Điều này tương đương tối thiểu hoá tổng {blank} khoảng cách, còn gọi là inertia.",
     blanks: [
       { answer: "trung bình", accept: ["mean", "giá trị trung bình"] },
       { answer: "bình phương", accept: ["squared", "bình phương"] },
     ],
     explanation:
-      "Trung bình toạ độ là điểm tối thiểu hoá tổng bình phương khoảng cách từ các điểm trong cụm đến tâm. Đây là lý do k-means dùng trung bình — không phải trung vị hay điểm tuỳ ý khác.",
+      "Trung bình toạ độ là điểm tối thiểu hoá tổng bình phương khoảng cách từ các điểm trong cụm đến tâm. Đây là lý do k-means dùng trung bình, không phải trung vị hay điểm tuỳ ý khác.",
   },
 ];
 
@@ -391,39 +391,39 @@ export default function KMeansTopic() {
 
   return (
     <>
-      {/* BƯỚC 1 — DỰ ĐOÁN */}
+      {/* BƯỚC 1: DỰ ĐOÁN */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn là chủ thương hiệu cà phê, có 30 cửa hàng rải rác khắp Hà Nội. Đội vận hành muốn đặt 3 kho nguyên liệu sao cho mọi cửa hàng đến kho gần nhất là ngắn nhất. Bạn đặt kho ở đâu?"
           options={[
-            "Đặt đều ở 3 hướng: Đông, Tây, Nam thành phố",
+            "Đặt đều ở 3 hướng Đông, Tây, Nam thành phố",
             "Đặt gần trung tâm vì nhiều cửa hàng ở đó",
-            "Đặt ở trung tâm mỗi cụm cửa hàng tự nhiên — gần nhau thì chung một kho",
+            "Đặt ở trung tâm của từng cụm cửa hàng tự nhiên, gần nhau thì chung một kho",
             "Đặt ngẫu nhiên cho công bằng",
           ]}
           correct={2}
-          explanation="Chính xác! Đặt kho ở trung tâm mỗi cụm cửa hàng. Đó là ý tưởng cốt lõi của k-means: 'tụ điểm' (centroid) là trung bình của các điểm thuộc về nó. Nhưng có điều kỳ lạ: trước khi đặt kho bạn không biết cửa hàng nào thuộc nhóm nào. Thuật toán giải quyết 'gà có trước hay trứng có trước' bằng cách... đoán rồi sửa dần."
+          explanation="Chính xác. Đặt kho ở trung tâm của từng cụm cửa hàng. Đó là ý tưởng cốt lõi của k-means: tâm cụm (centroid) là trung bình của các điểm thuộc về nó. Nhưng có một chỗ kẹt. Trước khi đặt kho, bạn không biết cửa hàng nào thuộc nhóm nào. Thuật toán giải quyết câu hỏi gà có trước hay trứng có trước bằng cách đoán trước rồi sửa dần."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Chưa có ai dán nhãn &ldquo;cụm bắc&rdquo; hay &ldquo;cụm
             nam&rdquo; cho 30 cửa hàng. Nhưng dữ liệu thường{" "}
-            <em>tự gom nhóm</em> — cửa hàng gần nhau thì về địa lý đã
+            <em>tự gom nhóm</em>: cửa hàng gần nhau thì về địa lý đã
             &ldquo;đồng nhóm&rdquo; rồi. k-means là cách để máy tính tìm
             ra những tụ điểm tự nhiên đó mà không cần ai nói trước.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* BƯỚC 2 — ẨN DỤ */}
+      {/* BƯỚC 2: ẨN DỤ */}
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <MapPin size={20} className="text-accent" /> Gà có trước hay trứng có trước?
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Bạn không biết cửa hàng nào thuộc cụm nào — để biết điều đó
+            Bạn không biết cửa hàng nào thuộc cụm nào. Để biết điều đó
             cần có vị trí kho. Nhưng vị trí kho lại phụ thuộc vào danh
-            sách cửa hàng trong cụm. Vòng tròn!
+            sách cửa hàng trong cụm. Vòng tròn luẩn quẩn.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
             <strong>Mẹo của k-means: bắt đầu bằng một phỏng đoán thô,
@@ -432,45 +432,45 @@ export default function KMeansTopic() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
+              <div className="flex items-center gap-2 text-sky-900 dark:text-sky-200">
                 <Target size={16} />
                 <span className="text-sm font-semibold">Bước 1: Đoán</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Đặt 3 kho ở 3 vị trí bất kỳ — thậm chí là ngẫu nhiên.
+                Đặt 3 kho ở 3 vị trí bất kỳ, thậm chí là ngẫu nhiên.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+              <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
                 <MousePointerClick size={16} />
                 <span className="text-sm font-semibold">Bước 2: Gán</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Mỗi cửa hàng → chọn kho gần nhất. Cụm được &ldquo;khai
-                sinh&rdquo;.
+                Mỗi cửa hàng chọn kho gần nhất. Cụm được &ldquo;khai
+                sinh&rdquo; từ đây.
               </p>
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200">
                 <Zap size={16} />
                 <span className="text-sm font-semibold">Bước 3: Dời</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Dời mỗi kho về trung bình cụm. Quay lại bước 2. Lặp đến
-                khi không ai dời nữa.
+                Dời mỗi kho về trung bình của cụm. Quay lại bước 2. Lặp
+                đến khi không ai dời nữa.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* BƯỚC 3 — TRỰC QUAN HOÁ */}
+      {/* BƯỚC 3: TRỰC QUAN HOÁ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             <p className="text-sm text-muted leading-relaxed">
               Canvas bên dưới là bản đồ giả định. 30 chấm xám là cửa
-              hàng đã có sẵn — bạn có thể{" "}
+              hàng đã có sẵn. Bạn có thể{" "}
               <strong>nhấp vào ô trống</strong> để thêm cửa hàng mới.
               Kéo thanh <strong>số kho (k)</strong> rồi bấm{" "}
               <strong>Play</strong> để xem thuật toán chạy.
@@ -519,14 +519,14 @@ export default function KMeansTopic() {
                 </div>
                 <div className="rounded-lg bg-surface/60 p-2 text-[11px] text-muted text-center leading-snug">
                   {phase === "place" &&
-                    "Tâm cụm đã đặt xong — bấm Play hoặc “1 bước” để bắt đầu gán"}
+                    "Tâm cụm đã đặt xong. Bấm Play hoặc “1 bước” để bắt đầu gán."}
                   {phase === "assigned" &&
-                    "Điểm đã được gán vào cụm gần nhất. Tiếp theo: dời tâm"}
+                    "Điểm đã được gán vào cụm gần nhất. Tiếp theo: dời tâm."}
                   {phase === "moved" &&
-                    "Tâm đã dời. Gán lại điểm để kiểm tra có thay đổi không"}
+                    "Tâm đã dời. Gán lại điểm để kiểm tra có gì thay đổi không."}
                   {phase === "converged" && (
                     <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                      Hội tụ! Tâm không dời nữa.
+                      Hội tụ. Tâm không dời nữa.
                     </span>
                   )}
                 </div>
@@ -784,8 +784,8 @@ export default function KMeansTopic() {
                   })()}
                 </svg>
                 <p className="text-[10px] text-muted mt-1 italic">
-                  Inertia luôn giảm hoặc giữ nguyên — nếu bạn thấy nó
-                  tăng, có lỗi trong cài đặt!
+                  Inertia luôn giảm hoặc giữ nguyên. Nếu bạn thấy nó
+                  tăng, chắc chắn có lỗi trong cài đặt.
                 </p>
               </div>
             )}
@@ -793,19 +793,19 @@ export default function KMeansTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* BƯỚC 4 — MỔ XẺ MỘT VÒNG LẶP */}
+      {/* BƯỚC 4: MỔ XẺ MỘT VÒNG LẶP */}
       <LessonSection step={4} totalSteps={8} label="Mổ xẻ một vòng lặp">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Bấm &ldquo;Tiếp tục&rdquo; để đi qua từng bước trong một vòng
-          lặp: tính khoảng cách → gán cụm → dời tâm. Mỗi bước có hình
-          ảnh riêng.
+          lặp: tính khoảng cách, gán cụm, rồi dời tâm. Mỗi bước có
+          hình ảnh riêng.
         </p>
 
         <StepReveal
           labels={[
             "Bước 1: Đo khoảng cách từ điểm đến mỗi tâm",
             "Bước 2: Gán điểm về tâm gần nhất",
-            "Bước 3: Dời tâm về trung bình cụm",
+            "Bước 3: Dời tâm về trung bình của cụm",
           ]}
         >
           {[
@@ -816,38 +816,38 @@ export default function KMeansTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* BƯỚC 5 — AHA */}
+      {/* BƯỚC 5: AHA */}
       <LessonSection step={5} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
           k-means giải bài toán &ldquo;gà và trứng&rdquo; bằng cách{" "}
-          <strong>luân phiên</strong> — giả vờ biết một phần, giải phần
+          <strong>luân phiên</strong>: giả vờ biết một phần, giải phần
           còn lại, rồi đảo ngược.
           <br />
           <br />
-          Đây là một ví dụ của một họ thuật toán lớn hơn gọi là{" "}
+          Đây là một ví dụ trong họ thuật toán lớn hơn gọi là{" "}
           <em>Expectation-Maximization</em>. Bạn sẽ gặp lại ý tưởng này
-          ở nhiều nơi — Gaussian Mixture Model, thuật toán EM cho hidden
+          ở nhiều nơi: Gaussian Mixture Model, thuật toán EM cho hidden
           Markov, thậm chí cả cách bạn tự điều chỉnh kỳ vọng khi gặp
           người mới.
         </AhaMoment>
       </LessonSection>
 
-      {/* BƯỚC 6 — THỬ THÁCH */}
+      {/* BƯỚC 6: THỬ THÁCH */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Bạn có n điểm. Chạy k-means với k = 1 và k = n (số cụm bằng số điểm). Chuyện gì xảy ra?"
           options={[
-            "k = 1: mọi điểm chung một cụm → tâm là trung bình cả tập; k = n: mỗi điểm là một cụm riêng → inertia = 0 nhưng vô nghĩa",
+            "k = 1: mọi điểm chung một cụm, tâm là trung bình cả tập. k = n: mỗi điểm là một cụm riêng, inertia = 0 nhưng vô nghĩa.",
             "Cả hai trường hợp đều báo lỗi",
             "k = 1 cho kết quả tốt, k = n cho kết quả kém",
-            "Không có gì khác thường — k-means xử lý bình thường",
+            "Không có gì khác thường, k-means vẫn xử lý bình thường",
           ]}
           correct={0}
-          explanation="Với k = 1: mọi điểm thuộc cùng một cụm, tâm là trung bình toàn tập — inertia lớn nhất có thể. Với k = n: mỗi điểm tự là một cụm, tâm trùng chính điểm đó, inertia = 0 tuyệt đối — nhưng hoàn toàn vô nghĩa cho phân tích. Đây là lý do cần chọn k cẩn thận: inertia luôn giảm khi tăng k, không phải lúc nào k nhỏ hơn cũng tệ."
+          explanation="Với k = 1: mọi điểm thuộc cùng một cụm, tâm là trung bình toàn tập. Inertia lúc này lớn nhất có thể. Với k = n: mỗi điểm tự là một cụm, tâm trùng chính điểm đó, inertia = 0 tuyệt đối. Tuy nhiên, kết quả này hoàn toàn vô nghĩa cho việc phân tích. Đây là lý do cần chọn k cẩn thận: inertia luôn giảm khi tăng k, không phải lúc nào k nhỏ hơn cũng tệ."
         />
       </LessonSection>
 
-      {/* BƯỚC 7 — GIẢI THÍCH */}
+      {/* BƯỚC 7: GIẢI THÍCH */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
@@ -858,7 +858,7 @@ export default function KMeansTopic() {
             phổ biến nhất. Nó chia dữ liệu thành k nhóm sao cho{" "}
             <strong>tổng bình phương khoảng cách</strong> từ mỗi điểm
             đến tâm cụm của nó là nhỏ nhất. Đại lượng này gọi là{" "}
-            <em>inertia</em> hoặc <em>within-cluster sum of squares</em>.
+            <em>inertia</em>, hay còn gọi là <em>within-cluster sum of squares</em>.
           </p>
 
           <div className="rounded-xl border border-border bg-card p-5 my-4 space-y-3">
@@ -871,8 +871,8 @@ export default function KMeansTopic() {
               <LaTeX>{"\\mu_k"}</LaTeX> là tâm cụm k,{" "}
               <LaTeX>{"C_k"}</LaTeX> là tập điểm thuộc cụm k. Mục tiêu:
               tìm bộ tâm và phân cụm sao cho J nhỏ nhất. Vì inertia giảm
-              đơn điệu qua mỗi vòng lặp, thuật toán luôn hội tụ — nhưng
-              chỉ đảm bảo về cực tiểu địa phương.
+              đơn điệu qua mỗi vòng lặp, thuật toán luôn hội tụ. Tuy
+              nhiên, hội tụ chỉ đảm bảo về cực tiểu địa phương.
             </p>
           </div>
 
@@ -884,10 +884,10 @@ export default function KMeansTopic() {
             <LaTeX block>{"\\mu_k = \\frac{1}{|C_k|} \\sum_{x \\in C_k} x"}</LaTeX>
             <p className="text-xs text-muted leading-relaxed">
               Tâm mới là trung bình toạ độ của các điểm trong cụm. Không
-              phải trung vị, không phải một điểm bất kỳ — <em>trung bình</em>.
-              Lý do: trung bình chính là điểm tối thiểu hoá tổng bình
-              phương khoảng cách (đạo hàm J theo <LaTeX>{"\\mu_k"}</LaTeX>
-              bằng 0 cho ra đúng công thức này).
+              phải trung vị, không phải một điểm bất kỳ, mà chính là{" "}
+              <em>trung bình</em>. Lý do: trung bình là điểm tối thiểu
+              hoá tổng bình phương khoảng cách (đạo hàm J theo{" "}
+              <LaTeX>{"\\mu_k"}</LaTeX> bằng 0 cho ra đúng công thức này).
             </p>
           </div>
 
@@ -895,18 +895,18 @@ export default function KMeansTopic() {
             Chọn k bằng phương pháp Elbow
           </h4>
           <p className="text-sm text-muted leading-relaxed mb-3">
-            Inertia luôn giảm khi k tăng (k càng lớn → cụm càng nhỏ →
-            điểm càng gần tâm). Nhưng ở một điểm nào đó, tăng k không
-            còn giảm inertia đáng kể nữa — đó là &ldquo;khuỷu tay&rdquo;.
+            Inertia luôn giảm khi k tăng (k càng lớn thì cụm càng nhỏ,
+            điểm càng gần tâm). Nhưng đến một điểm nào đó, tăng k không
+            còn giảm inertia đáng kể nữa. Đó là &ldquo;khuỷu tay&rdquo;.
           </p>
           <ElbowChart data={elbowData} />
 
           <Callout variant="tip" title="Mẹo chọn k trong thực tế">
             Elbow là phương pháp trực quan nhưng đôi khi mơ hồ. Các cách
-            bổ sung: (1) <em>Silhouette score</em> — đo mức độ &ldquo;chặt&rdquo;
-            của cụm; (2) <em>Gap statistic</em> — so sánh inertia thật với
-            dữ liệu ngẫu nhiên; (3) <em>Ràng buộc nghiệp vụ</em> — đôi
-            khi bạn biết trước cần 4 phân khúc khách hàng, 3 gói dịch vụ.
+            bổ sung: (1) <em>Silhouette score</em>: đo mức độ &ldquo;chặt&rdquo;
+            của cụm. (2) <em>Gap statistic</em>: so sánh inertia thật với
+            dữ liệu ngẫu nhiên. (3) <em>Ràng buộc nghiệp vụ</em>: đôi
+            khi bạn biết trước cần 4 phân khúc khách hàng hoặc 3 gói dịch vụ.
           </Callout>
 
           <Callout variant="warning" title="Những cạm bẫy thường gặp">
@@ -920,17 +920,17 @@ export default function KMeansTopic() {
               <li>
                 <strong>Khởi tạo tồi:</strong> k-means rất nhạy với vị
                 trí tâm ban đầu. Dùng <em>k-means++</em> (chọn tâm xa nhau)
-                thay vì ngẫu nhiên — scikit-learn mặc định đã bật.
+                thay vì ngẫu nhiên. scikit-learn mặc định đã bật sẵn.
               </li>
               <li>
                 <strong>Cụm hình không phải cầu:</strong> k-means giả định
                 cụm có dạng tròn (isotropic). Cụm cong hoặc mật độ khác
-                nhau → dùng DBSCAN hoặc Spectral Clustering.
+                nhau thì nên dùng DBSCAN hoặc Spectral Clustering.
               </li>
               <li>
                 <strong>Outlier:</strong> k-means dùng trung bình nên rất
-                nhạy outlier. Xử lý bằng k-medoids (dùng điểm thật làm
-                tâm) hoặc lọc outlier trước.
+                nhạy với outlier. Xử lý bằng k-medoids (dùng điểm thật
+                làm tâm) hoặc lọc outlier trước khi chạy.
               </li>
             </ul>
           </Callout>
@@ -940,11 +940,11 @@ export default function KMeansTopic() {
               Hàm mục tiêu J giảm đơn điệu qua mỗi vòng lặp (bước E không
               tăng J, bước M không tăng J), và J bị chặn dưới bởi 0.
               Thêm vào đó, số cách phân hoạch n điểm thành k cụm là hữu
-              hạn, nên J không thể giảm mãi — thuật toán hội tụ trong
-              hữu hạn vòng. <em>Lưu ý quan trọng:</em> chỉ hội tụ đến
-              cực tiểu <strong>địa phương</strong>, không đảm bảo toàn
-              cục. Đó là lý do scikit-learn chạy 10 lần với seed khác
-              nhau và chọn nghiệm tốt nhất (tham số{" "}
+              hạn, nên J không thể giảm mãi. Vì vậy, thuật toán hội tụ
+              trong hữu hạn vòng. <em>Lưu ý quan trọng:</em> chỉ hội tụ
+              đến cực tiểu <strong>địa phương</strong>, không đảm bảo
+              toàn cục. Đó là lý do scikit-learn chạy 10 lần với seed
+              khác nhau rồi chọn nghiệm tốt nhất (tham số{" "}
               <code>n_init=10</code>).
             </p>
           </CollapsibleDetail>
@@ -953,7 +953,7 @@ export default function KMeansTopic() {
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <strong>Phân khúc khách hàng:</strong> gom khách thành
-                4–8 cụm hành vi để gửi email/ưu đãi khác nhau.
+                4-8 cụm hành vi để gửi email và ưu đãi khác nhau.
               </li>
               <li>
                 <strong>Nén ảnh (color quantization):</strong> gom các
@@ -961,7 +961,7 @@ export default function KMeansTopic() {
               </li>
               <li>
                 <strong>Phát hiện bất thường:</strong> điểm xa mọi tâm
-                là outlier — dùng cho phát hiện gian lận thẻ tín dụng.
+                là outlier, dùng cho phát hiện gian lận thẻ tín dụng.
               </li>
               <li>
                 <strong>Phân cụm tài liệu:</strong> gom tin tức thành chủ
@@ -970,23 +970,23 @@ export default function KMeansTopic() {
               <li>
                 <strong>Gợi ý nhạc:</strong> Spotify dùng k-means trên
                 vector nghe của người dùng để tìm &ldquo;đồng minh thẩm
-                mỹ&rdquo; — xem bài ứng dụng.
+                mỹ&rdquo;. Xem chi tiết ở bài ứng dụng.
               </li>
             </ul>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* BƯỚC 8 — TÓM TẮT + QUIZ */}
+      {/* BƯỚC 8: TÓM TẮT + QUIZ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt và kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ về k-means"
           points={[
             "Ý tưởng gốc: lặp giữa gán điểm đến tâm gần nhất (E-step) và dời tâm về trung bình cụm (M-step) đến khi không ai dời nữa.",
-            "Hàm mục tiêu là inertia — tổng bình phương khoảng cách; luôn giảm đơn điệu và hội tụ đến cực tiểu địa phương.",
+            "Hàm mục tiêu là inertia, tức tổng bình phương khoảng cách. Đại lượng này luôn giảm đơn điệu và hội tụ đến cực tiểu địa phương.",
             "Phải chọn k trước khi chạy. Dùng Elbow hoặc Silhouette để tìm k phù hợp với dữ liệu.",
-            "Nhạy với khởi tạo — luôn dùng k-means++ và chạy nhiều lần (n_init ≥ 10) để tránh nghiệm xấu.",
-            "Chỉ phù hợp cụm hình cầu. Dữ liệu cong hoặc mật độ khác nhau → dùng DBSCAN, Spectral, hoặc GMM.",
+            "Nhạy với khởi tạo. Luôn dùng k-means++ và chạy nhiều lần (n_init ≥ 10) để tránh nghiệm xấu.",
+            "Chỉ phù hợp cụm hình cầu. Dữ liệu cong hoặc mật độ khác nhau thì nên dùng DBSCAN, Spectral, hoặc GMM.",
           ]}
         />
 
@@ -997,7 +997,7 @@ export default function KMeansTopic() {
         <div className="mt-10">
           <Callout variant="tip" title="Ứng dụng thực tế">
             Spotify dùng một họ thuật toán phân cụm (bao gồm k-means và
-            ma trận phân rã) để tạo ra Discover Weekly — 30 bài hát mới
+            ma trận phân rã) để tạo ra Discover Weekly: 30 bài hát mới
             mỗi tuần &ldquo;hợp gu lạ kỳ&rdquo;. Xem cách họ làm ở bài
             ứng dụng:{" "}
             <TopicLink slug="k-means-in-music-recs">
@@ -1141,8 +1141,8 @@ function ElbowChart({
       </svg>
       <p className="text-xs text-muted mt-2 italic leading-relaxed">
         Quan sát: từ k = 1 đến k = 3, inertia giảm mạnh. Từ k = 3 trở
-        đi, giảm rất chậm — đó là &ldquo;khuỷu tay&rdquo;, gợi ý k = 3
-        là số cụm tự nhiên của dữ liệu này.
+        đi, đường cong giảm rất chậm. Đó là &ldquo;khuỷu tay&rdquo;,
+        gợi ý k = 3 là số cụm tự nhiên của dữ liệu này.
       </p>
     </div>
   );
@@ -1209,7 +1209,7 @@ function StepDistance() {
       </svg>
       <p className="text-xs text-muted italic leading-relaxed">
         Số bên cạnh mỗi đường là khoảng cách. Đường đậm (xanh lá, d ={" "}
-        {dists[nearest].toFixed(0)}) là tâm gần nhất — điểm sẽ được gán
+        {dists[nearest].toFixed(0)}) là tâm gần nhất. Điểm sẽ được gán
         về cụm đó.
       </p>
     </div>
@@ -1221,7 +1221,7 @@ function StepAssign() {
     <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
       <p className="text-sm text-foreground leading-relaxed">
         Lặp lại phép đo cho <strong>tất cả điểm dữ liệu</strong>. Mỗi
-        điểm chọn tâm gần nhất — và lấy luôn màu của tâm đó. Đây là
+        điểm chọn tâm gần nhất, rồi lấy luôn màu của tâm đó. Đây là
         bước <em>E-step</em> (expectation).
       </p>
       <svg viewBox="0 0 360 220" className="w-full rounded-lg border border-border bg-background">
@@ -1278,9 +1278,9 @@ function StepUpdate() {
     <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
       <p className="text-sm text-foreground leading-relaxed">
         Với mỗi cụm, tính <strong>trung bình toạ độ</strong> của các
-        điểm trong cụm — đó là tâm mới. Đây là bước <em>M-step</em>{" "}
-        (maximization — nhưng cho k-means tương đương minimization của
-        inertia).
+        điểm trong cụm. Đó là tâm mới. Đây là bước <em>M-step</em>{" "}
+        (maximization, riêng cho k-means thì tương đương với việc
+        minimization inertia).
       </p>
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-card border border-border p-3">
@@ -1369,9 +1369,9 @@ function StepUpdate() {
       </svg>
       <p className="text-xs text-muted italic leading-relaxed">
         Tâm mới luôn nằm ở &ldquo;trung tâm khối lượng&rdquo; của cụm.
-        Sau khi dời, lặp lại bước 1 — đôi khi một số điểm gần biên sẽ
-        đổi cụm. Quay lại bước 2. Khi không điểm nào đổi cụm nữa →
-        hội tụ.
+        Sau khi dời, lặp lại bước 1. Đôi khi một số điểm gần biên sẽ
+        đổi cụm. Quay lại bước 2. Khi không điểm nào đổi cụm nữa thì
+        thuật toán hội tụ.
       </p>
     </div>
   );

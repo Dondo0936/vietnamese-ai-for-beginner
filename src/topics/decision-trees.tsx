@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
   title: "Decision Trees",
   titleVi: "Cây quyết định",
   description:
-    "Hỏi 20 câu để đoán đồ vật — mỗi câu chia nhỏ khả năng. Cây quyết định làm đúng như vậy, thử tự tay xây một cái xem.",
+    "Hỏi 20 câu để đoán đồ vật. Mỗi câu chia nhỏ khả năng còn lại. Cây quyết định làm đúng như vậy, thử tự tay xây một cái xem.",
   category: "classic-ml",
   tags: ["classification", "supervised-learning", "interpretable"],
   difficulty: "intermediate",
@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ════════════════════════════════════════════════════════════════════
- * DỮ LIỆU MẪU — 24 điểm, 2 đặc trưng, 2 lớp
+ * DỮ LIỆU MẪU. 24 điểm, 2 đặc trưng, 2 lớp
  * - x1 = "giờ học / tuần", x2 = "điểm kiểm tra gần nhất"
  * - nhãn: qua môn (1) hoặc rớt (0)
  * - ba cụm có chủ ý: học ít + điểm thấp → rớt, học nhiều hoặc điểm cao → qua
@@ -88,7 +88,7 @@ const X_MAX = 12;
 const Y_MAX = 10;
 
 /* ════════════════════════════════════════════════════════════════════
- * GINI + ENTROPY — hai tiêu chí đo độ lẫn lộn của một nút
+ * GINI + ENTROPY. Hai tiêu chí đo độ lẫn lộn của một nút
  * ════════════════════════════════════════════════════════════════════ */
 function giniOf(samples: Sample[]): number {
   if (samples.length === 0) return 0;
@@ -196,7 +196,7 @@ function buildTree(
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * VẼ SCATTER — dùng chung cho hầu hết demo
+ * VẼ SCATTER. Dùng chung cho hầu hết demo
  * ════════════════════════════════════════════════════════════════════ */
 interface Rect {
   x0: number;
@@ -238,7 +238,7 @@ function yToPx(score: number): number {
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * DEMO 1 — XÂY CÂY BẰNG TAY
+ * DEMO 1. XÂY CÂY BẰNG TAY
  * Người học chọn "chia theo giờ học" hoặc "chia theo điểm",
  * rồi kéo thanh threshold. Cây mọc đúng một tầng. Lặp lại đến depth 3.
  * ════════════════════════════════════════════════════════════════════ */
@@ -363,7 +363,7 @@ function ManualTreeBuilder() {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Scatter trái — dữ liệu + vùng quyết định */}
+        {/* Scatter trái. Dữ liệu cộng vùng quyết định */}
         <div className="rounded-xl border border-border bg-surface/40 p-3">
           <div className="flex items-center gap-2 mb-2">
             <Eye size={14} className="text-accent" />
@@ -541,12 +541,12 @@ function ManualTreeBuilder() {
           </span>
           {activeLeaf ? (
             <span className="text-xs text-foreground">
-              {activeLeaf.id === "root" ? "Gốc" : "Lá " + activeLeaf.id} —{" "}
+              {activeLeaf.id === "root" ? "Gốc" : "Lá " + activeLeaf.id}:{" "}
               <span className="text-muted">{activeLeaf.samples.length} mẫu</span>
             </span>
           ) : (
             <span className="text-xs text-muted">
-              Không còn lá nào đủ điều kiện chia — cây đã đạt độ sâu 3.
+              Không còn lá nào đủ điều kiện chia. Cây đã đạt độ sâu 3.
             </span>
           )}
         </div>
@@ -850,13 +850,13 @@ function TreeView({ tree, activeId, onPickLeaf, highlightPath }: TreeViewProps) 
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * DEMO 2 — SO SÁNH GINI vs ENTROPY & max_depth
+ * DEMO 2. SO SÁNH GINI vs ENTROPY & max_depth
  * ════════════════════════════════════════════════════════════════════ */
 function ImpurityDepthDemo() {
   const initial = { maxDepth: 3 };
   return (
     <SliderGroup
-      title="Thử thay đổi max_depth — xem cây 'mọc' sâu hơn hay bị cắt tỉa"
+      title="Thử đổi max_depth: xem cây 'mọc' sâu hơn hay bị cắt tỉa"
       sliders={[
         {
           key: "maxDepth",
@@ -889,7 +889,7 @@ function ImpurityDepthDemo() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="rounded-xl border border-border bg-card p-3">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-300">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-foreground">
                     GINI
                   </span>
                   <span className="text-[10px] text-muted">
@@ -900,7 +900,7 @@ function ImpurityDepthDemo() {
               </div>
               <div className="rounded-xl border border-border bg-card p-3">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-300">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-500/10 text-foreground">
                     ENTROPY
                   </span>
                   <span className="text-[10px] text-muted">
@@ -912,7 +912,7 @@ function ImpurityDepthDemo() {
             </div>
             <p className="text-[11px] text-muted leading-relaxed text-center">
               Gini và Entropy thường cho kết quả rất gần nhau. Khi max_depth lớn hơn, cây sâu
-              hơn — accuracy trên tập train tăng nhưng rủi ro overfitting cũng tăng.
+              hơn. Độ chính xác trên tập train tăng nhưng rủi ro overfitting cũng tăng theo.
             </p>
           </div>
         );
@@ -922,8 +922,8 @@ function ImpurityDepthDemo() {
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * DEMO 3 — CHẤM ĐIỂM MÀ MÁY TÍNH CHỌN
- * Thuật toán greedy chọn split giảm Gini nhiều nhất — so sánh 3 lựa chọn
+ * DEMO 3. CHẤM ĐIỂM MÀ MÁY TÍNH CHỌN
+ * Thuật toán greedy chọn split giảm Gini nhiều nhất, so sánh 3 lựa chọn
  * ════════════════════════════════════════════════════════════════════ */
 function ImpurityChoiceChallenge() {
   const options: { feature: Feature; threshold: number; label: string }[] = [
@@ -945,12 +945,12 @@ function ImpurityChoiceChallenge() {
 
   return (
     <InlineChallenge
-      question="Lựa chọn chia nào giảm Gini nhiều nhất? (Gini gốc của 24 mẫu là 0.500 — hai lớp cân bằng)"
+      question="Lựa chọn chia nào giảm Gini nhiều nhất? (Gini gốc của 24 mẫu là 0.500 vì hai lớp cân bằng)"
       options={scored.map(
         (s) => `${s.label} → Gini sau = ${s.giniAfter.toFixed(3)} (giảm ${s.gain.toFixed(3)})`,
       )}
       correct={bestIdx}
-      explanation={`Đáp án: ${scored[bestIdx].label}. Máy tính thử TẤT CẢ các khả năng rồi chọn cái giảm Gini nhiều nhất — đó chính là thuật toán của cây quyết định (CART). Lựa chọn C tạo ra một nhánh gần như trống, nên gần như không học được gì.`}
+      explanation={`Đáp án: ${scored[bestIdx].label}. Máy tính thử TẤT CẢ các khả năng rồi chọn cái giảm Gini nhiều nhất. Đó chính là thuật toán của cây quyết định (CART). Lựa chọn C tạo ra một nhánh gần như trống, nên gần như không học được gì.`}
     />
   );
 }
@@ -970,7 +970,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Thuật toán CART thử tất cả các cặp (đặc trưng, ngưỡng) ứng viên, tính Gini sau khi chia, rồi chọn cặp cho Gini nhỏ nhất — tức giảm độ lẫn lộn nhiều nhất.",
+      "Thuật toán CART thử tất cả các cặp (đặc trưng, ngưỡng) ứng viên, tính Gini sau khi chia, rồi chọn cặp cho Gini nhỏ nhất. Tức là giảm độ lẫn lộn nhiều nhất.",
   },
   {
     question:
@@ -985,7 +985,7 @@ const QUIZ: QuizQuestion[] = [
       "Cây quyết định quá sâu (max_depth rất lớn) thường gặp vấn đề gì?",
     options: [
       "Chạy chậm khi train, nhưng dự đoán chính xác hơn",
-      "Học thuộc cả nhiễu trong dữ liệu huấn luyện (overfitting) — trên dữ liệu mới sẽ sai",
+      "Học thuộc cả nhiễu trong dữ liệu huấn luyện (overfitting), nên gặp dữ liệu mới sẽ sai",
       "Không phân loại được dữ liệu có hai lớp",
       "Bị giới hạn cứng ở độ sâu 10 vì kiến trúc CPU",
     ],
@@ -1009,13 +1009,13 @@ const QUIZ: QuizQuestion[] = [
       "Ưu điểm lớn nhất của cây quyết định so với nhiều thuật toán khác là gì?",
     options: [
       "Luôn chính xác hơn mạng nơ-ron",
-      "Có thể đọc từng nhánh để giải thích tại sao — ngân hàng, y tế rất cần điều này",
+      "Có thể đọc từng nhánh để giải thích tại sao, ngân hàng và y tế rất cần điều này",
       "Không cần dữ liệu huấn luyện",
       "Chạy nhanh hơn mọi thuật toán trên mọi tập dữ liệu",
     ],
     correct: 1,
     explanation:
-      "Cây quyết định tạo ra luật IF–THEN mà con người đọc được. Trong tài chính, y tế — nơi cần giải thích quyết định — đây là lợi thế rất lớn.",
+      "Cây quyết định tạo ra luật IF–THEN mà con người đọc được. Trong tài chính và y tế, nơi cần giải thích quyết định, đây là lợi thế rất lớn.",
   },
 ];
 
@@ -1025,7 +1025,7 @@ const QUIZ: QuizQuestion[] = [
 export default function DecisionTreesTopic() {
   const TOTAL = 8;
 
-  /* Bộ đếm split đang áp dụng — dùng bởi Manual builder */
+  /* Bộ đếm split đang áp dụng, dùng bởi Manual builder */
   const builder = useMemo(() => <ManualTreeBuilder />, []);
 
   /* Ba câu hỏi demo kiểu '20 câu hỏi' để HOOK */
@@ -1033,18 +1033,18 @@ export default function DecisionTreesTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK + DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1. HOOK + DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL} label="Hook">
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
             <TreePine size={18} className="text-accent" /> Hỏi 20 câu để đoán đồ vật
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Hồi nhỏ bạn từng chơi game &ldquo;Tôi đang nghĩ đến một con vật&rdquo; — bạn hỏi
+            Hồi nhỏ bạn từng chơi game &ldquo;Tôi đang nghĩ đến một con vật&rdquo;. Bạn hỏi
             liên tục: <em>Nó sống trên cạn không?</em> → <em>Có 4 chân không?</em> →{" "}
             <em>Nó có sọc không?</em>. Mỗi câu hỏi <strong>chia đôi khả năng</strong> cho đến
-            khi chỉ còn lại một đáp án. <strong>Cây quyết định làm đúng như vậy</strong> —
-            chỉ khác là máy tính chọn câu hỏi có ích nhất bằng một công thức thay vì linh cảm.
+            khi chỉ còn lại một đáp án. <strong>Cây quyết định làm đúng như vậy</strong>.
+            Khác biệt duy nhất: máy tính chọn câu hỏi có ích nhất bằng một công thức thay vì linh cảm.
           </p>
           {twentyQCtx}
         </div>
@@ -1059,17 +1059,17 @@ export default function DecisionTreesTopic() {
               "Luôn bắt đầu bằng đặc trưng nằm ở cột đầu tiên của dữ liệu",
             ]}
             correct={2}
-            explanation="Cây quyết định không đoán — nó thử hết mọi câu hỏi hợp lệ, đo xem câu nào làm dữ liệu 'sạch' nhất sau khi chia, rồi chọn câu đó. Đây là phần brute-force cốt lõi của thuật toán CART."
+            explanation="Cây quyết định không đoán. Nó thử hết mọi câu hỏi hợp lệ, đo xem câu nào làm dữ liệu 'sạch' nhất sau khi chia, rồi chọn câu đó. Đây là phần brute-force cốt lõi của thuật toán CART."
           >
             <p className="text-sm text-muted mt-4 leading-relaxed">
-              Trong phần tiếp theo bạn sẽ tự tay chọn câu hỏi cho cây — và xem máy tính đánh giá
+              Ở phần tiếp theo bạn sẽ tự tay chọn câu hỏi cho cây, đồng thời xem máy tính đánh giá
               từng lựa chọn bằng Gini ngay trên biểu đồ.
             </p>
           </PredictionGate>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ / CÁCH ĐỌC CÂY ━━━ */}
+      {/* ━━━ BƯỚC 2. ẨN DỤ / CÁCH ĐỌC CÂY ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL} label="Cách đọc cây">
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <p className="text-sm text-foreground/85 leading-relaxed">
@@ -1085,7 +1085,7 @@ export default function DecisionTreesTopic() {
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 Mỗi nút bên trong cây là một câu hỏi kiểu{" "}
-                <em>&ldquo;đặc trưng X ≤ ngưỡng T?&rdquo;</em>. Nhánh trái (≤) — nhánh phải (&gt;).
+                <em>&ldquo;đặc trưng X ≤ ngưỡng T?&rdquo;</em>. Nhánh trái (≤), nhánh phải (&gt;).
               </p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 dark:bg-emerald-900/15 dark:border-emerald-800 p-3">
@@ -1116,18 +1116,18 @@ export default function DecisionTreesTopic() {
             Trên biểu đồ scatter, một câu hỏi kiểu &ldquo;giờ học ≤ 5.5&rdquo; là một{" "}
             <strong>đường thẳng đứng</strong>. Một câu hỏi &ldquo;điểm ≤ 6.5&rdquo; là một{" "}
             <strong>đường nằm ngang</strong>. Cả cây sẽ tạo ra những &ldquo;ô chữ nhật&rdquo; tô
-            màu — nền xanh là vùng dự đoán qua môn, nền đỏ là vùng rớt.
+            màu: nền xanh là vùng dự đoán qua môn, nền đỏ là vùng rớt.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN: XÂY CÂY + THỬ GINI ━━━ */}
+      {/* ━━━ BƯỚC 3. TRỰC QUAN: XÂY CÂY + THỬ GINI ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <LessonSection step={1} label="Thử nghiệm 1 · Tự tay xây cây">
             <p className="text-sm text-muted leading-relaxed mb-3">
               Chọn đặc trưng, kéo ngưỡng, và xem cây mọc ra. Mỗi lần áp dụng một split, cây
-              mọc thêm một tầng. Tối đa độ sâu 3 — chính là mức dùng trong thực tế để tránh
+              mọc thêm một tầng. Tối đa độ sâu 3, đúng mức thường dùng trong thực tế để tránh
               overfitting.
             </p>
             {builder}
@@ -1143,10 +1143,10 @@ export default function DecisionTreesTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4. AHA ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Cây quyết định <strong>không thông minh hơn bạn</strong> — nó chỉ{" "}
+          Cây quyết định <strong>không thông minh hơn bạn</strong>, nó chỉ{" "}
           <strong>chăm chỉ hơn</strong>. Nó thử mọi câu hỏi có thể, đo độ lẫn lộn của dữ liệu
           sau khi chia bằng công thức Gini, và chọn câu hỏi giảm độ lẫn lộn nhiều nhất. Lặp
           lại quy trình đó ở từng nút → bạn có một cây tự mọc ra từ dữ liệu, đọc được từng
@@ -1154,39 +1154,39 @@ export default function DecisionTreesTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 5. CHALLENGE ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL} label="Thử thách">
         <InlineChallenge
           question="Bạn có 2 cây: A (sâu 2, acc_train = 82%, acc_val = 80%) vs B (sâu 8, acc_train = 99%, acc_val = 73%). Chọn cây nào đem ra dùng thật?"
           options={[
-            "Cây B — accuracy trên tập train cao hơn",
-            "Cây A — val accuracy cao hơn, không bị overfitting",
-            "Không có cây nào ổn — cần thử cây sâu hơn nữa",
+            "Cây B vì độ chính xác trên tập train cao hơn",
+            "Cây A vì val accuracy cao hơn, không bị overfitting",
+            "Không có cây nào ổn, cần thử cây sâu hơn nữa",
             "Trung bình kết quả của cả hai cây",
           ]}
           correct={1}
-          explanation="Val accuracy là thước đo thật, vì mô hình sẽ gặp dữ liệu mới tương tự val set. Cây A tổng quát tốt hơn. Cây B đã học thuộc nhiễu — khoảng cách giữa train và val là cờ đỏ của overfitting. Luôn chọn theo val/test."
+          explanation="Val accuracy là thước đo thật, vì mô hình sẽ gặp dữ liệu mới tương tự val set. Cây A tổng quát tốt hơn. Cây B đã học thuộc nhiễu, và khoảng cách giữa train với val là cờ đỏ của overfitting. Luôn chọn theo val/test."
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — GIẢI THÍCH ━━━ */}
+      {/* ━━━ BƯỚC 6. GIẢI THÍCH ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
             Ở mỗi nút, cây quyết định trả lời đúng một câu:{" "}
             <strong>trong tất cả cách chia, cách nào làm dữ liệu &ldquo;sạch&rdquo; nhất?</strong>{" "}
-            Có hai công thức phổ biến để đo độ sạch — cả hai đều nhỏ khi dữ liệu đã gần như
+            Có hai công thức phổ biến để đo độ sạch. Cả hai đều nhỏ khi dữ liệu đã gần như
             cùng một lớp.
           </p>
 
           <h4 className="text-sm font-semibold text-foreground mt-5">
-            Công thức 1 — Gini impurity (mặc định của scikit-learn)
+            Công thức 1. Gini impurity (mặc định của scikit-learn)
           </h4>
           <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
             <LaTeX block>{"\\text{Gini} = 1 - \\sum_{k} p_k^2"}</LaTeX>
             <p className="text-xs text-muted leading-relaxed">
-              Nói bằng tiếng Việt đời thường: &ldquo;Nếu bạn rút ngẫu nhiên 1 mẫu ra, và đoán
-              nhãn cho nó bằng cách lại rút ngẫu nhiên 1 mẫu nữa — xác suất đoán sai là bao
+              Nói bằng tiếng Việt đời thường: &ldquo;Nếu bạn rút ngẫu nhiên 1 mẫu ra, rồi đoán
+              nhãn cho nó bằng cách lại rút ngẫu nhiên 1 mẫu nữa, xác suất đoán sai là bao
               nhiêu?&rdquo;. Dữ liệu thuần một lớp → Gini = 0. Hai lớp cân bằng 50/50 → Gini =
               0.5 (cao nhất).
             </p>
@@ -1194,15 +1194,15 @@ export default function DecisionTreesTopic() {
           </div>
 
           <h4 className="text-sm font-semibold text-foreground mt-5">
-            Công thức 2 — Entropy (nền tảng lý thuyết thông tin)
+            Công thức 2. Entropy (nền tảng lý thuyết thông tin)
           </h4>
           <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-2">
             <LaTeX block>{"H = -\\sum_{k} p_k \\log_2 p_k"}</LaTeX>
             <p className="text-xs text-muted leading-relaxed">
               Nói bằng tiếng Việt đời thường: &ldquo;Cần trung bình bao nhiêu câu hỏi yes/no để
               biết chắc nhãn của một mẫu?&rdquo;. Thuần 1 lớp → cần 0 câu, H = 0. 50/50 → cần 1
-              câu, H = 1 (cho 2 lớp). Gini và Entropy thường cho cây gần như giống nhau — chọn
-              cái nào cũng ổn, scikit-learn mặc định dùng Gini vì nhanh hơn (không có log).
+              câu, H = 1 (cho 2 lớp). Gini và Entropy thường cho cây gần như giống nhau, chọn
+              cái nào cũng ổn. Scikit-learn mặc định dùng Gini vì nhanh hơn (không có log).
             </p>
           </div>
 
@@ -1243,7 +1243,7 @@ export default function DecisionTreesTopic() {
               <div key="s4" className="rounded-lg border border-border bg-surface/60 p-4">
                 <p className="text-sm text-foreground leading-relaxed">
                   <strong>Chọn cặp tốt nhất, đệ quy.</strong> Áp dụng split tốt nhất vào nút,
-                  rồi lặp lại toàn bộ quy trình cho hai nút con — cho đến khi dữ liệu sạch
+                  rồi lặp lại toàn bộ quy trình cho hai nút con, cho đến khi dữ liệu sạch
                   hoặc đạt max_depth.
                 </p>
               </div>,
@@ -1272,7 +1272,7 @@ export default function DecisionTreesTopic() {
               },
               {
                 name: "ccp_alpha",
-                desc: "Cost-complexity pruning — 'phạt' cây lớn. Tăng α → cây nhỏ hơn. Là cách hiện đại để tránh overfit thay cho min_samples.",
+                desc: "Cost-complexity pruning, 'phạt' cây lớn. Tăng α → cây nhỏ hơn. Là cách hiện đại để tránh overfit thay cho min_samples.",
                 color: "#f59e0b",
               },
             ].map((p) => (
@@ -1289,7 +1289,7 @@ export default function DecisionTreesTopic() {
 
           <Callout variant="warning" title="Một cây đơn có variance rất cao">
             Đổi vài điểm trong tập huấn luyện → cây có thể đổi gần như toàn bộ. Đó là lý do
-            trong thực tế hiếm khi bạn dùng một cây đơn — mà dùng{" "}
+            trong thực tế hiếm khi bạn dùng một cây đơn, mà dùng{" "}
             <TopicLink slug="random-forests">Random Forest</TopicLink> (trung bình hàng trăm
             cây) hoặc <TopicLink slug="gradient-boosting">Gradient Boosting</TopicLink>{" "}
             (XGBoost, LightGBM). Cây đơn chỉ nên dùng khi bạn cần đọc được luật để trình bày
@@ -1301,21 +1301,21 @@ export default function DecisionTreesTopic() {
             <TopicLink slug="overfitting-underfitting">overfitting/underfitting</TopicLink>{" "}
             giải thích vì sao phải giới hạn độ sâu,{" "}
             <TopicLink slug="bias-variance">đánh đổi bias-variance</TopicLink> là khung lý
-            thuyết chung, và khi bạn thấy cây quyết định &ldquo;đọc&rdquo; xong, bạn cũng đã
+            thuyết chung. Khi bạn thấy cây quyết định &ldquo;đọc&rdquo; xong, bạn cũng đã
             sẵn sàng học <TopicLink slug="random-forests">Random Forest</TopicLink>.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      {/* ━━━ BƯỚC 7. TÓM TẮT ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL} label="Tóm tắt">
         <MiniSummary
           title="4 điều cần nhớ về cây quyết định"
           points={[
             "Cây quyết định = chuỗi câu hỏi 'đặc trưng ≤ ngưỡng?'. Dự đoán = đi theo câu hỏi từ gốc đến khi chạm lá.",
-            "Chọn split tốt nhất ở mỗi nút bằng Gini (hoặc Entropy) — thử hết mọi cặp (đặc trưng, ngưỡng), chọn cái giảm độ lẫn lộn nhiều nhất.",
+            "Chọn split tốt nhất ở mỗi nút bằng Gini (hoặc Entropy): thử hết mọi cặp (đặc trưng, ngưỡng), chọn cái giảm độ lẫn lộn nhiều nhất.",
             "Ưu điểm: dễ đọc, không cần chuẩn hóa dữ liệu, xử lý đặc trưng hỗn hợp tự nhiên, robust với outlier.",
-            "Nhược điểm: cây sâu = overfit. Kiểm soát bằng max_depth, min_samples_leaf, ccp_alpha; hoặc dùng Random Forest / Boosting để mạnh hơn hẳn.",
+            "Nhược điểm: cây sâu = overfit. Kiểm soát bằng max_depth, min_samples_leaf, ccp_alpha. Hoặc dùng Random Forest / Boosting để mạnh hơn hẳn.",
           ]}
         />
         <div className="mt-4">
@@ -1323,14 +1323,14 @@ export default function DecisionTreesTopic() {
             Xem ứng dụng chấm điểm tín dụng:{" "}
             <TopicLink slug="decision-trees-in-loan-scoring">
               Cây quyết định trong chấm điểm tín dụng
-            </TopicLink>{" "}
-            — cách ngân hàng và FICO dùng cây để quyết cho vay hay không, và vì sao tính
+            </TopicLink>
+            . Cách ngân hàng và FICO dùng cây để quyết cho vay hay không, và vì sao tính
             &ldquo;đọc được&rdquo; của cây là yêu cầu pháp lý.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8. QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL} label="Kiểm tra">
         <QuizSection questions={QUIZ} />
       </LessonSection>
@@ -1339,7 +1339,7 @@ export default function DecisionTreesTopic() {
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * HOOK PHỤ — MINI GAME "20 CÂU HỎI"
+ * HOOK PHỤ. MINI GAME "20 CÂU HỎI"
  * Không dùng useContext, chỉ để HOOK section có một tương tác nhỏ đặc biệt.
  * ════════════════════════════════════════════════════════════════════ */
 function useTwentyQuestions() {
@@ -1376,7 +1376,7 @@ function useTwentyQuestions() {
             <div className="flex items-center gap-2">
               <Sparkles size={14} className="text-accent" />
               <span className="text-sm text-foreground">
-                <strong>{node.answer}</strong> — cây đã dẫn bạn qua{" "}
+                <strong>{node.answer}</strong>. Cây đã dẫn bạn qua{" "}
                 <span className="text-accent font-semibold">{path.length}</span> câu hỏi!
               </span>
             </div>
@@ -1390,7 +1390,7 @@ function useTwentyQuestions() {
           <button
             type="button"
             onClick={() => setPath((p) => [...p, "yes"])}
-            className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20"
+            className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-foreground font-semibold border border-emerald-500/30 hover:bg-emerald-500/20"
           >
             <Check size={12} aria-hidden="true" />
             Đúng
@@ -1398,7 +1398,7 @@ function useTwentyQuestions() {
           <button
             type="button"
             onClick={() => setPath((p) => [...p, "no"])}
-            className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-red-500/10 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/20"
+            className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full bg-red-500/10 text-foreground font-semibold border border-red-500/30 hover:bg-red-500/20"
           >
             <X size={12} aria-hidden="true" />
             Sai
@@ -1447,7 +1447,7 @@ const QUESTION_TREE: QNode = {
 };
 
 /* ════════════════════════════════════════════════════════════════════
- * MÔ PHỎNG GINI — biểu đồ dải Gini theo p₁
+ * MÔ PHỎNG GINI. Biểu đồ dải Gini theo p₁
  * ════════════════════════════════════════════════════════════════════ */
 function GiniVisual() {
   const points = useMemo(() => {
@@ -1501,7 +1501,7 @@ function GiniVisual() {
             strokeOpacity={0.06}
           />
         ))}
-        {/* Entropy (chia 2 cho dễ nhìn chung trục) — thực tế max = 1 */}
+        {/* Entropy (chia 2 cho dễ nhìn chung trục), thực tế max = 1 */}
         <path d={pathEntropy} stroke="#a855f7" strokeWidth={1.6} fill="none" />
         <path d={pathGini} stroke="#0ea5e9" strokeWidth={2} fill="none" />
         {/* hover marker */}

@@ -38,9 +38,9 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 export const metadata: TopicMeta = {
   slug: "feature-engineering-in-fraud-detection",
   title: "Feature Engineering in Fraud Detection",
-  titleVi: "Xây dựng đặc trưng trong chống gian lận",
+  titleVi: "Stripe Radar bóc mặt nạ gian lận trong 100ms",
   description:
-    "Cách Stripe Radar chế tạo hơn 1.000 đặc trưng từ vài trường giao dịch thô để phát hiện gian lận trong chưa đầy 100 mili-giây.",
+    "Stripe Radar nặn hơn 1.000 feature từ vài trường giao dịch thô. Chấm điểm xong trong chưa đầy 100ms.",
   category: "foundations",
   tags: ["feature-engineering", "fraud-detection", "application"],
   difficulty: "intermediate",
@@ -92,17 +92,17 @@ export const metadata: TopicMeta = {
     },
   ],
   tocSections: [
-    { id: "hero", labelVi: "Công ty nào?" },
-    { id: "problem", labelVi: "Vấn đề" },
-    { id: "mechanism", labelVi: "Cách giải quyết" },
-    { id: "tryIt", labelVi: "Thử tự tay" },
+    { id: "hero", labelVi: "Công ty nào" },
+    { id: "problem", labelVi: "Vấn đề ở đâu" },
+    { id: "mechanism", labelVi: "Stripe giải bằng cách nào" },
+    { id: "tryIt", labelVi: "Tự tay bật từng feature" },
     { id: "metrics", labelVi: "Con số thật" },
-    { id: "counterfactual", labelVi: "Nếu không có" },
+    { id: "counterfactual", labelVi: "Bỏ feature thì sao" },
   ],
 };
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU MÔ PHỎNG — 8 giao dịch, 4 gian lận, 4 hợp lệ
+   DỮ LIỆU MÔ PHỎNG. 8 giao dịch, 4 gian lận, 4 hợp lệ
    ──────────────────────────────────────────────────────────── */
 
 interface Transaction {
@@ -200,7 +200,7 @@ const TRANSACTIONS: Transaction[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   FEATURE TOGGLES — người học bật tắt
+   FEATURE TOGGLES. Người học bật tắt
    ──────────────────────────────────────────────────────────── */
 
 type FeatureKey = "hour" | "velocity" | "distance" | "amount_vs_avg";
@@ -217,27 +217,27 @@ interface FeatureToggle {
 const FEATURE_TOGGLES: FeatureToggle[] = [
   {
     key: "hour",
-    label: "Giờ bất thường (0 – 5h)",
+    label: "Giờ bất thường (0 đến 5h)",
     icon: Clock,
     color: "#0ea5e9",
     score: (tx) => (tx.hour <= 5 || tx.hour >= 23 ? 1 : 0),
-    hint: "Giao dịch lúc 2 – 4h sáng hiếm với người bình thường.",
+    hint: "Người bình thường ít quẹt thẻ lúc 2 đến 4 giờ sáng.",
   },
   {
     key: "velocity",
-    label: "Velocity cao (> 5 lần / 10 phút)",
+    label: "Velocity cao (hơn 5 lần trong 10 phút)",
     icon: Network,
     color: "#a855f7",
     score: (tx) => Math.min(tx.velocity_10m / 20, 1),
-    hint: "Card testing: kẻ gian thử thẻ liên tiếp để tìm mã còn dùng được.",
+    hint: "Card testing. Kẻ gian quẹt thẻ liên tiếp để dò mã còn dùng được.",
   },
   {
     key: "distance",
-    label: "Khoảng cách IP lạ (> 500 km)",
+    label: "Khoảng cách IP lạ (hơn 500 km)",
     icon: MapPin,
     color: "#f59e0b",
     score: (tx) => (tx.distance_km > 500 ? 1 : 0),
-    hint: "IP ở xa địa chỉ thanh toán &rArr; dấu hiệu VPN / proxy.",
+    hint: "IP cách xa địa chỉ thanh toán: dấu hiệu VPN hoặc proxy.",
   },
   {
     key: "amount_vs_avg",
@@ -245,7 +245,7 @@ const FEATURE_TOGGLES: FeatureToggle[] = [
     icon: Wallet,
     color: "#ef4444",
     score: (tx) => Math.min(tx.amount_vs_avg / 20, 1),
-    hint: "Giao dịch 8 triệu khi user thường chỉ tiêu 500k là bất thường.",
+    hint: "User quen tiêu 500k mà nay tiêu 8 triệu là điểm bất thường.",
   },
 ];
 
@@ -311,7 +311,7 @@ function confusion(
 }
 
 /* ────────────────────────────────────────────────────────────
-   PLAYGROUND — bật / tắt feature, xem điểm phân tách cải thiện
+   PLAYGROUND. Bật tắt feature, xem điểm phân tách cải thiện
    ──────────────────────────────────────────────────────────── */
 
 function FeatureTogglePlayground() {
@@ -342,9 +342,9 @@ function FeatureTogglePlayground() {
     <div className="space-y-5 rounded-xl border border-border bg-card p-5">
       <p className="text-sm text-foreground/85 leading-relaxed">
         Bảng bên dưới có 8 giao dịch, 4 gian lận (đỏ) và 4 hợp lệ (xanh).
-        Hãy bật/tắt từng feature và xem điểm AUC (khả năng tách biệt
-        gian/hợp) thay đổi. Ở cấu hình rỗng, mô hình không có tín hiệu
-        &mdash; AUC ~0.5 (đoán bừa).
+        Hãy bật tắt từng feature rồi nhìn điểm AUC (khả năng tách biệt
+        gian và hợp) thay đổi. Khi chưa bật feature nào, model không có
+        tín hiệu nào để bám: AUC khoảng 0.5, tức là đoán bừa.
       </p>
 
       {/* Feature toggles */}
@@ -394,7 +394,7 @@ function FeatureTogglePlayground() {
       <div>
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium text-foreground">
-            Ngưỡng chặn (risk ≥ ngưỡng &rArr; chặn)
+            Ngưỡng chặn (risk lớn hơn hoặc bằng ngưỡng thì chặn)
           </label>
           <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-xs font-bold text-accent">
             {(threshold * 100).toFixed(0)}%
@@ -412,7 +412,7 @@ function FeatureTogglePlayground() {
         />
       </div>
 
-      {/* AUC bar — điểm tách biệt */}
+      {/* AUC bar: điểm tách biệt */}
       <AucBar auc={stats.auc} activeCount={active.size} />
 
       {/* Confusion tiles */}
@@ -423,14 +423,14 @@ function FeatureTogglePlayground() {
         <StatTile label="TN (cho hợp lệ qua)" value={stats.tn} color="#6b7280" />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <PctTile label="Precision" value={stats.precision} />
-        <PctTile label="Recall" value={stats.recall} />
+        <PctTile label="Độ chính xác (precision)" value={stats.precision} />
+        <PctTile label="Độ phủ (recall)" value={stats.recall} />
       </div>
 
       {/* Ranked transactions */}
       <div>
         <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide mb-2">
-          Giao dịch xếp theo risk (cao xuống thấp)
+          Giao dịch xếp theo risk, từ cao xuống thấp
         </p>
         <div className="space-y-1.5">
           <AnimatePresence initial={false}>
@@ -457,8 +457,8 @@ function AucBar({ auc, activeCount }: { auc: number; activeCount: number }) {
     auc < 0.6
       ? "Gần như đoán bừa"
       : auc < 0.8
-        ? "Có tín hiệu, chưa đủ"
-        : "Tách biệt gian / hợp tốt";
+        ? "Có tín hiệu, chưa đủ mạnh"
+        : "Tách biệt gian và hợp tốt";
   return (
     <div className="rounded-lg border border-border bg-surface/50 p-3 space-y-2">
       <div className="flex items-center justify-between">
@@ -482,7 +482,7 @@ function AucBar({ auc, activeCount }: { auc: number; activeCount: number }) {
       </div>
       <p className="text-[11px] text-muted italic">
         {activeCount === 0
-          ? "Chưa bật feature nào — mô hình đoán bừa."
+          ? "Chưa bật feature nào. Model đoán bừa."
           : `${activeCount} feature đang bật · ${verdict}.`}
       </p>
     </div>
@@ -542,8 +542,8 @@ function TransactionRow({
       <span
         className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${
           blocked
-            ? "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
-            : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+            ? "bg-red-100 text-foreground font-semibold dark:bg-red-900/40"
+            : "bg-emerald-100 text-foreground font-semibold dark:bg-emerald-900/40"
         }`}
       >
         {blocked ? "CHẶN" : "CHO QUA"}
@@ -588,17 +588,17 @@ function PctTile({ label, value }: { label: string; value: number }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   CASE STUDY — StepReveal qua 1 vụ gian lận thật
+   CASE STUDY. StepReveal qua 1 vụ gian lận thật
    ──────────────────────────────────────────────────────────── */
 
 function FraudCaseReveal() {
   return (
     <StepReveal
       labels={[
-        "Bước 1: Giao dịch xuất hiện",
-        "Bước 2: Velocity bóc mặt nạ",
-        "Bước 3: Device fingerprint",
-        "Bước 4: Network graph đóng sầm cửa",
+        "Bước 1: Giao dịch xuất hiện, trông sạch",
+        "Bước 2: Velocity feature lộ tẩy",
+        "Bước 3: Device fingerprint khớp ba vụ cũ",
+        "Bước 4: Network graph khép vòng vây",
       ]}
     >
       {[
@@ -609,9 +609,9 @@ function FraudCaseReveal() {
           title="Giao dịch trông bình thường"
         >
           <p>
-            Thẻ Visa, mua đồ điện tử 6.9 triệu tại một shop ở Nga. Số tiền
-            hợp lý cho đồ công nghệ, thẻ hợp lệ, 3D Secure bỏ qua. Nếu chỉ
-            nhìn raw data, nhiều ngân hàng sẽ cho qua.
+            Thẻ Visa quẹt 6,9 triệu cho một shop điện tử ở Nga. Số tiền
+            hợp lý với đồ công nghệ, thẻ còn hạn, 3D Secure không yêu cầu.
+            Nhìn raw data đơn thuần, nhiều ngân hàng sẽ cho qua.
           </p>
         </CaseCard>,
         <CaseCard
@@ -621,10 +621,10 @@ function FraudCaseReveal() {
           title="Velocity feature: 14 lần trong 10 phút"
         >
           <p>
-            Nhưng Stripe đã tính một cột mà raw data không có:{" "}
-            <code>velocity_10m</code>. Thẻ này vừa thử 14 lần ở các
-            merchant khác trong 10 phút &mdash; đặc trưng kinh điển của
-            &ldquo;card testing&rdquo;.
+            Stripe đã nặn thêm một cột mà raw data không có:{" "}
+            <code>velocity_10m</code>. Thẻ này vừa quẹt thử 14 lần ở các
+            merchant khác trong 10 phút. Đó là dấu hiệu kinh điển của{" "}
+            <em>card testing</em>.
           </p>
         </CaseCard>,
         <CaseCard
@@ -634,8 +634,8 @@ function FraudCaseReveal() {
           title="Device fingerprint khớp 3 vụ cũ"
         >
           <p>
-            Stripe.js thu &ldquo;dấu vân tay&rdquo; trình duyệt: resolution,
-            font, timezone, WebGL renderer. Vân tay này từng xuất hiện ở 3
+            Stripe.js thu dấu vân tay trình duyệt: resolution, font,
+            timezone, WebGL renderer. Vân tay này từng xuất hiện ở 3
             merchant khác, cả 3 đều đã bị chargeback.
           </p>
         </CaseCard>,
@@ -643,13 +643,13 @@ function FraudCaseReveal() {
           key="s4"
           icon={Globe2}
           color="#ef4444"
-          title="Network graph đóng lại vòng vây"
+          title="Network graph khép vòng vây"
         >
           <p>
-            Email thanh toán trùng một tài khoản đã bị đánh dấu tháng
-            trước. IP ở Nga, địa chỉ giao hàng ở Đức, thẻ phát hành tại
-            Mỹ. Ba thực thể được nối lại thành một &ldquo;cụm rủi ro&rdquo;
-            &mdash; giao dịch bị chặn trong &lt; 100 ms.
+            Email thanh toán trùng một tài khoản đã bị flag tháng trước.
+            IP ở Nga, địa chỉ giao hàng ở Đức, thẻ phát hành tại Mỹ. Ba
+            thực thể được nối lại thành một cụm rủi ro. Giao dịch bị chặn
+            trong dưới 100ms.
           </p>
         </CaseCard>,
       ]}
@@ -696,60 +696,60 @@ function CaseCard({
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Vì sao Stripe phải tự chế 'velocity feature' thay vì dựa vào cột có sẵn trong giao dịch?",
+      "Vì sao Stripe phải tự nặn velocity feature thay vì dựa vào cột có sẵn trong giao dịch?",
     options: [
-      "Vì raw transaction chỉ có số tiền, thẻ, IP — không có khái niệm 'thử bao nhiêu lần trong 10 phút'. Cần tính từ lịch sử",
+      "Vì raw transaction chỉ có số tiền, thẻ, IP. Không có sẵn ý niệm 'thử bao nhiêu lần trong 10 phút', cần tính từ lịch sử",
       "Vì Stripe muốn giao dịch chạy chậm hơn",
-      "Vì velocity là một tính năng miễn phí của SQL",
+      "Vì velocity là tính năng miễn phí của SQL",
       "Vì luật EU yêu cầu",
     ],
     correct: 0,
     explanation:
-      "Velocity là feature phái sinh: bạn phải nhìn cửa sổ thời gian trước đó để biết 'thẻ này vừa thử 14 lần trong 10 phút'. Không có sẵn trong bảng giao dịch gốc — đây chính là trọng tâm của feature engineering.",
+      "Velocity là feature phái sinh. Bạn phải nhìn lại cửa sổ thời gian trước đó để biết 'thẻ này vừa quẹt 14 lần trong 10 phút'. Bảng giao dịch gốc không có cột này. Đây chính là trọng tâm của feature engineering.",
   },
   {
     question:
       "Device fingerprint thuộc loại feature engineering nào?",
     options: [
-      "Scaling số liên tục",
-      "Tổng hợp nhiều tín hiệu nhỏ (resolution, font, timezone...) thành một định danh duy nhất",
+      "Scaling cho số liên tục",
+      "Tổng hợp nhiều tín hiệu nhỏ (resolution, font, timezone) thành một định danh duy nhất",
       "One-hot encoding",
       "Không phải feature engineering, chỉ là tracking",
     ],
     correct: 1,
     explanation:
-      "Device fingerprint là interaction feature ở quy mô lớn: mỗi tín hiệu (resolution, font, WebGL renderer) một mình không ý nghĩa, nhưng tổ hợp hàng chục tín hiệu tạo ra định danh gần như duy nhất cho mỗi thiết bị.",
+      "Device fingerprint là interaction feature ở quy mô lớn. Mỗi tín hiệu riêng lẻ (resolution, font, WebGL renderer) chẳng nói lên điều gì, nhưng tổ hợp hàng chục tín hiệu lại tạo ra định danh gần như duy nhất cho mỗi thiết bị.",
   },
   {
     question:
-      "Stripe chạy toàn bộ pipeline 1.000+ feature trong < 100ms. Hệ quả quan trọng nhất cho feature engineering là gì?",
+      "Stripe chạy toàn bộ pipeline với hơn 1.000 feature trong dưới 100ms. Hệ quả quan trọng nhất cho feature engineering là gì?",
     options: [
-      "Feature phải tính được RẤT NHANH tại thời điểm dự đoán — không chờ query nặng hay model ngoài",
+      "Feature phải tính được rất nhanh tại thời điểm dự đoán, không chờ query nặng hay model ngoài",
       "Feature càng nhiều càng tốt",
       "Feature chỉ cần đúng khi train, không cần khi serving",
       "Không ảnh hưởng gì",
     ],
     correct: 0,
     explanation:
-      "Constraint 100ms buộc Stripe: (1) pre-compute aggregates trong feature store, (2) tránh feature yêu cầu gọi API bên thứ 3, (3) chọn feature rẻ để tính. Đây là lý do 'online' và 'offline' feature engineering có luật chơi khác nhau.",
+      "Ràng buộc 100ms buộc Stripe phải pre-compute các aggregate trong feature store, tránh feature cần gọi API bên thứ ba, và chọn feature rẻ để tính. Đây là lý do online và offline feature engineering có luật chơi rất khác nhau.",
   },
   {
     question:
-      "Network graph feature (thẻ A từng dùng cùng thiết bị với thẻ B đã bị flag) mạnh vì sao?",
+      "Network graph feature (thẻ A từng dùng chung thiết bị với thẻ B đã bị flag) mạnh vì sao?",
     options: [
       "Vì tên gọi nghe ngầu",
-      "Vì nó khai thác data của TOÀN MẠNG merchant — một merchant đơn lẻ không thể tạo được feature này",
+      "Vì nó khai thác dữ liệu của toàn mạng merchant. Một merchant đơn lẻ không thể tạo được feature này",
       "Vì graph chạy trên GPU",
       "Vì graph thay thế deep learning",
     ],
     correct: 1,
     explanation:
-      "Lợi thế quy mô của Stripe: hàng triệu merchant chia sẻ dữ liệu qua Stripe. Khi kẻ gian chuyển qua merchant B, Stripe vẫn nhớ thiết bị đó đã phạm lỗi ở merchant A. Một shop nhỏ không có 'tầm nhìn mạng lưới' này.",
+      "Lợi thế quy mô của Stripe nằm ở chỗ hàng triệu merchant cùng chia sẻ dữ liệu qua Stripe. Khi kẻ gian chuyển sang merchant B, Stripe vẫn nhớ thiết bị đó đã từng phạm lỗi ở merchant A. Một shop nhỏ không có tầm nhìn toàn mạng như vậy.",
   },
   {
     type: "fill-blank",
     question:
-      "Khi dữ liệu có 99,9% giao dịch hợp lệ và 0,1% gian lận, mô hình dễ đoán 'không gian lận' cho mọi giao dịch và vẫn đạt 99,9% accuracy. Hiện tượng này gọi là {blank} data.",
+      "Khi dữ liệu có 99,9% giao dịch hợp lệ và 0,1% gian lận, model dễ đoán 'không gian lận' cho mọi giao dịch và vẫn đạt 99,9% độ chính xác. Hiện tượng này gọi là {blank} data.",
     blanks: [
       {
         answer: "imbalanced",
@@ -757,7 +757,7 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "Imbalanced data (dữ liệu mất cân bằng) là bệnh kinh điển của chống gian lận. Accuracy 99,9% mà recall = 0 là vô dụng. Stripe dùng các metric như AUC, recall@precision ≥ X, và cân nhắc weighted loss để khắc phục.",
+      "Imbalanced data (dữ liệu mất cân bằng) là bệnh kinh điển của chống gian lận. Độ chính xác 99,9% mà độ phủ bằng 0 là vô dụng. Stripe dùng các metric như AUC, recall ở mức precision tối thiểu, cùng với weighted loss để khắc phục.",
   },
 ];
 
@@ -777,18 +777,17 @@ export default function FeatureEngineeringInFraudDetection() {
         topicSlug={metadata.slug}
       >
         <p>
-          Bạn mua hàng online, nhập số thẻ, nhấn &ldquo;Thanh toán&rdquo;
-          &mdash; và trong chưa đầy 100 mili-giây, Stripe Radar (công cụ
-          chống gian lận của Stripe) đã chấm điểm hơn 1.000 đặc trưng để
-          quyết định cho qua hay chặn.
+          Bạn mua hàng online, nhập số thẻ rồi bấm Thanh toán. Trong chưa
+          đầy 100ms, Stripe Radar (công cụ chống gian lận của Stripe) đã
+          chấm điểm hơn 1.000 feature để quyết định cho qua hay chặn lại.
         </p>
         <p>
-          Bí quyết không nằm ở mô hình phức tạp. Nó nằm ở cách kỹ sư Stripe
-          biến vài trường dữ liệu thô của một giao dịch (số thẻ, IP, số
+          Bí quyết không nằm ở model phức tạp. Nó nằm ở cách kỹ sư Stripe
+          biến vài trường raw data của một giao dịch (số thẻ, IP, số
           tiền, thời gian) thành hàng trăm tín hiệu có ý nghĩa: velocity
           feature (tốc độ dùng thẻ), device fingerprint (dấu vân tay thiết
-          bị), network graph (liên kết giữa các thực thể). Đây chính là
-          feature engineering ở quy mô toàn cầu.
+          bị), network graph (mối liên kết giữa các thực thể). Đây chính
+          là feature engineering ở quy mô toàn cầu.
         </p>
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
           <HeroBadge icon={CreditCard} label="Thẻ thanh toán" />
@@ -802,33 +801,33 @@ export default function FeatureEngineeringInFraudDetection() {
       <ApplicationProblem topicSlug={metadata.slug}>
         <p>
           Stripe xử lý hàng trăm tỷ đô-la thanh toán mỗi năm. Chỉ khoảng
-          0,1% là gian lận &mdash; nhưng con số tuyệt đối lên tới hàng tỷ
+          0,1% là gian lận, nhưng con số tuyệt đối đã lên tới hàng tỷ
           đô-la. Mỗi giao dịch chỉ cung cấp vài trường raw data: số thẻ,
-          số tiền, IP, thời gian, vài metadata.
+          số tiền, IP, thời gian, ít metadata kèm theo.
         </p>
         <p>
-          Vấn đề lõi: từ vài trường đó, làm sao tạo ra tín hiệu đủ mạnh
-          để phân biệt giao dịch thật và gian? Kẻ gian liên tục thay đổi
-          chiêu: VPN, thẻ ảo, danh tính giả. Dữ liệu mất cân bằng cực
-          đoan: đoán &ldquo;hợp lệ&rdquo; cho tất cả vẫn đạt accuracy
-          99,9% &mdash; nhưng recall bằng 0, vô dụng.
+          Vấn đề lõi nằm ở chỗ: từ vài trường đó, làm sao nặn ra tín
+          hiệu đủ mạnh để tách giao dịch thật ra khỏi giao dịch gian?
+          Kẻ gian liên tục đổi chiêu: VPN, thẻ ảo, danh tính giả. Dữ
+          liệu lại mất cân bằng cực đoan. Đoán hợp lệ cho tất cả thì
+          độ chính xác vẫn lên 99,9%, nhưng độ phủ bằng 0, vô dụng.
         </p>
 
         <div className="my-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
           <ProblemPill
             icon={ShieldAlert}
-            title="Imbalanced 1:1000"
-            body="Accuracy 99,9% có thể = recall 0. Cần feature mạnh hơn cả mô hình."
+            title="Imbalanced 1 trên 1000"
+            body="Độ chính xác 99,9% có thể đi kèm độ phủ bằng 0. Cần feature mạnh hơn cả model."
           />
           <ProblemPill
             icon={Clock}
-            title="< 100 ms/giao dịch"
-            body="Mọi feature phải tính được real-time, không được chậm."
+            title="Dưới 100ms mỗi giao dịch"
+            body="Mọi feature phải tính được real-time, không cho phép chậm."
           />
           <ProblemPill
             icon={Globe2}
             title="Kẻ gian đổi chiêu liên tục"
-            body="Feature hôm nay mạnh, mai cũ. Phải cập nhật liên tục."
+            body="Feature hôm nay mạnh, mai đã cũ. Phải cập nhật đều."
           />
         </div>
       </ApplicationProblem>
@@ -840,40 +839,40 @@ export default function FeatureEngineeringInFraudDetection() {
       >
         <Beat step={1}>
           <p>
-            <strong>Velocity features (đặc trưng tốc độ).</strong> Stripe
-            tính &ldquo;thẻ này đã thử bao nhiêu giao dịch trong 10 phút /
-            1 giờ / 24 giờ qua?&rdquo; Giao dịch hợp lệ thường 1 – 2 lần
-            mỗi ngày. Kẻ gian thử hàng chục lần liên tiếp (card testing).
-            Velocity bắt ngay pattern bất thường đó. Stripe có hệ thống
-            tính velocity real-time trên toàn mạng lưới.
+            <strong>Velocity feature (đặc trưng tốc độ).</strong> Stripe
+            tính: thẻ này đã thử bao nhiêu giao dịch trong 10 phút, 1 giờ,
+            24 giờ qua? User hợp lệ thường quẹt 1 đến 2 lần mỗi ngày, còn
+            kẻ gian thử hàng chục lần liên tiếp (card testing). Velocity
+            tóm ngay cái pattern bất thường đó. Stripe có hệ thống tính
+            velocity real-time trên toàn mạng lưới.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>Device fingerprinting (dấu vân tay thiết bị).</strong>{" "}
-            Stripe.js thu độ phân giải, font, timezone, WebGL renderer,
-            ngôn ngữ hệ thống. Tổ hợp các tín hiệu tạo &ldquo;vân tay&rdquo;
-            gần như duy nhất. Kẻ gian đổi danh tính nhưng giữ laptop
-            &mdash; vân tay vẫn lộ.
+            <strong>Device fingerprint (dấu vân tay thiết bị).</strong>{" "}
+            Stripe.js thu resolution, font, timezone, WebGL renderer,
+            ngôn ngữ hệ thống. Tổ hợp các tín hiệu này tạo ra một dấu
+            vân tay gần như duy nhất. Kẻ gian có đổi danh tính nhưng vẫn
+            giữ chiếc laptop cũ. Vân tay vẫn lộ.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>Network graph features (đồ thị mạng lưới).</strong>{" "}
+            <strong>Network graph feature (đồ thị mạng lưới).</strong>{" "}
             Stripe nối mọi giao dịch trên toàn mạng: thẻ A đã dùng ở
-            merchant B, từ thiết bị C, với email D. Thẻ mới dùng cùng thiết
-            bị với thẻ đã bị chargeback &rArr; cảnh báo ngay. Đây là lợi
-            thế quy mô của Stripe: hàng triệu merchant chia sẻ tầm nhìn
-            mạng lưới.
+            merchant B, từ thiết bị C, với email D. Thẻ mới quẹt từ cùng
+            thiết bị với thẻ đã bị chargeback thì cảnh báo bật ngay. Đây
+            là lợi thế quy mô của Stripe: hàng triệu merchant chia sẻ
+            chung tầm nhìn mạng lưới.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Aggregated risk scoring.</strong> 1.000+ feature đưa
-            vào mô hình ML. Mỗi giao dịch nhận một risk score. Rủi ro cao
-            &rArr; chặn hoặc yêu cầu 3D Secure. Toàn bộ pipeline chạy
-            trong &lt; 100 ms. Stripe báo cáo cải thiện &gt; 20% hiệu suất
-            mỗi năm nhờ liên tục thêm feature mới.
+            <strong>Aggregated risk scoring.</strong> Hơn 1.000 feature
+            được đưa vào model ML, mỗi giao dịch nhận về một risk score.
+            Rủi ro cao thì chặn hoặc yêu cầu 3D Secure. Toàn bộ pipeline
+            chạy trong dưới 100ms. Stripe báo cáo hiệu suất phát hiện
+            tăng hơn 20% mỗi năm nhờ liên tục thêm feature mới.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -882,40 +881,41 @@ export default function FeatureEngineeringInFraudDetection() {
       <ApplicationTryIt topicSlug={metadata.slug}>
         <div className="space-y-6">
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Dưới đây là phiên bản tinh gọn của ý tưởng: bạn có 8 giao dịch
-            (4 gian lận, 4 hợp lệ) và 4 feature để bật/tắt. Xem AUC tăng
-            thế nào khi bạn bật từng feature &mdash; chính là trải nghiệm
-            của kỹ sư Stripe khi thêm một cột mới vào pipeline.
+            Dưới đây là phiên bản tinh gọn của ý tưởng. Bạn có 8 giao dịch
+            (4 gian lận, 4 hợp lệ) và 4 feature để bật tắt. Hãy quan sát
+            AUC nhích lên thế nào khi bạn bật thêm từng feature. Đó cũng
+            chính là trải nghiệm của kỹ sư Stripe khi thêm một cột mới
+            vào pipeline.
           </p>
           <FeatureTogglePlayground />
 
           <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-3">
             <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
               <ShieldAlert size={14} className="text-accent" /> Một vụ gian
-              lận thật — từng feature bóc mặt nạ
+              lận thật, từng feature bóc dần lớp mặt nạ
             </h4>
             <p className="text-xs text-muted leading-relaxed">
-              Theo dõi một giao dịch giả trông bình thường bị hệ thống tóm
+              Theo dõi một giao dịch trông sạch sẽ bị hệ thống tóm gọn
               qua bốn bước feature khác nhau.
             </p>
             <FraudCaseReveal />
           </div>
 
           <InlineChallenge
-            question="Bạn là kỹ sư Stripe, cần thêm 1 feature nữa để bắt thêm các vụ gian lận dùng thẻ quà (gift card). Feature nào có khả năng hữu ích nhất?"
+            question="Bạn là kỹ sư Stripe, cần thêm 1 feature nữa để tóm các vụ gian lận dùng thẻ quà (gift card). Feature nào nhiều khả năng hữu ích nhất?"
             options={[
               "User-agent string của trình duyệt",
-              "Tần suất thẻ được dùng ở merchant thuộc nhóm 'gift card / crypto / prepaid' trong 24 giờ qua",
+              "Tần suất thẻ được dùng ở merchant thuộc nhóm gift card, crypto, prepaid trong 24 giờ qua",
               "Số ký tự trong email thanh toán",
               "Tên đầu tiên của chủ thẻ",
             ]}
             correct={1}
-            explanation="Gian lận thẻ quà và crypto có pattern rõ: kẻ gian biến thẻ ăn cắp thành tiền mặt qua các merchant này. Feature 'tần suất ở merchant loại risky' trong cửa sổ 24h là ví dụ kinh điển của velocity feature có domain knowledge — mạnh hơn hẳn các đặc trưng chung chung."
+            explanation="Gian lận thẻ quà và crypto có pattern rõ. Kẻ gian biến thẻ ăn cắp thành tiền mặt qua các merchant này. Feature 'tần suất giao dịch ở merchant loại rủi ro' trong cửa sổ 24h là ví dụ kinh điển của velocity feature gắn với domain knowledge. Nó mạnh hơn hẳn những đặc trưng chung chung."
           />
 
           <div>
             <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide mb-2">
-              Code mẫu — tính velocity feature với pandas
+              Code mẫu: tính velocity feature với pandas
             </p>
             <CodeBlock
               language="python"
@@ -948,7 +948,7 @@ df["vel_1h"] = (
 
           <div>
             <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide mb-2">
-              Code mẫu — ghép feature vào risk score
+              Code mẫu: ghép feature vào risk score
             </p>
             <CodeBlock
               language="python"
@@ -973,7 +973,7 @@ df["risk_score"] = model.predict_proba(X)[:, 1]`}
 
           <Callout variant="tip" title="Bài học quan trọng">
             Khi bật đủ 4 feature trong playground, AUC chạm ~100% với 8
-            giao dịch giả lập này &mdash; nhưng trên dữ liệu thật Stripe
+            giao dịch giả lập này. Tuy nhiên trên dữ liệu thật, Stripe
             phải cân bằng hàng chục feature chồng chéo, và mỗi feature
             chỉ thêm vài phần trăm. Đó là lý do họ cần 1.000+ feature chứ
             không phải 4.
@@ -1019,7 +1019,7 @@ df["risk_score"] = model.predict_proba(X)[:, 1]`}
         </p>
         <p>
           Feature thông minh biến raw data vô hồn thành tín hiệu có ý
-          nghĩa &mdash; như thám tử không chỉ nhìn hiện trường mà còn kiểm
+          nghĩa. Giống như thám tử không chỉ nhìn hiện trường mà còn kiểm
           tra tiền sử, mối quan hệ, hành vi quá khứ. Đây là lý do cùng
           một mô hình ML, người có feature tốt hơn luôn thắng.
         </p>
@@ -1027,9 +1027,9 @@ df["risk_score"] = model.predict_proba(X)[:, 1]`}
           <MiniSummary
             title="3 điều đáng nhớ từ Stripe Radar"
             points={[
-              "Raw data có thể chỉ có 5 trường, nhưng feature phái sinh có thể lên đến hàng nghìn — velocity, fingerprint, graph là ba kiểu mạnh nhất cho fraud.",
+              "Raw data có thể chỉ có 5 trường, nhưng feature phái sinh có thể lên đến hàng nghìn. Velocity, fingerprint, graph là ba kiểu mạnh nhất cho fraud.",
               "Mọi feature phải tính được trong real-time (< 100 ms). Tính nhanh là ràng buộc khắc nghiệt nhưng bắt buộc.",
-              "Lợi thế quy mô (dữ liệu toàn mạng) tạo ra những feature mà merchant đơn lẻ không thể có — đó là lý do Stripe chiến thắng.",
+              "Lợi thế quy mô (dữ liệu toàn mạng) tạo ra những feature mà merchant đơn lẻ không thể có. Đó là lý do Stripe chiến thắng.",
             ]}
           />
         </div>

@@ -39,9 +39,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "gradient-descent",
   title: "Gradient Descent",
-  titleVi: "Thuật toán Gradient Descent — xoay trọng số (weight) để giảm mất mát (loss)",
+  titleVi: "Gradient descent: xoay weight để loss giảm dần",
   description:
-    "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật: xoay các trọng số (weight) theo từng bước để mất mát (loss) giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
+    "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật. Mỗi bước xoay các weight để loss giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
   category: "neural-fundamentals",
   tags: ["optimization", "training", "fundamentals"],
   difficulty: "intermediate",
@@ -57,9 +57,9 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   MẶT LOSS 2D — hai weight w1, w2 (thung lũng hẹp)
+   MẶT LOSS 2D: hai weight w1, w2 (thung lũng hẹp)
    L(w1, w2) = 0.5·(w1 − 1)² + 2·(w2 + 0.5)²
-   Cực tiểu tại (1, −0.5). Hẹp theo trục w2 → dễ so sánh
+   Cực tiểu tại (1, −0.5). Hẹp theo trục w2 nên dễ so sánh
    ba optimizer cảm nhận được "hình dạng thung lũng".
    ──────────────────────────────────────────────────────────── */
 
@@ -89,7 +89,7 @@ function gradAt(w1: number, w2: number): [number, number] {
 }
 
 /* ────────────────────────────────────────────────────────────
-   ĐƯỜNG ĐỒNG MỨC — sample bằng cách bắn tia từ điểm cực tiểu
+   ĐƯỜNG ĐỒNG MỨC: sample bằng cách bắn tia từ điểm cực tiểu
    ──────────────────────────────────────────────────────────── */
 
 const CONTOUR_LEVELS = [0.3, 0.8, 1.6, 2.8, 4.5, 7, 10];
@@ -264,7 +264,7 @@ const quizQuestions: QuizQuestion[] = [
       "Adam được gọi là 'Momentum + RMSprop với hiệu chỉnh'. Ưu điểm nổi bật nhất?",
     options: [
       "Luôn cho loss = 0",
-      "Mỗi weight tự có learning rate riêng, thích nghi theo lịch sử gradient — gần như chạy tốt ngay cả khi chưa tinh chỉnh siêu tham số",
+      "Mỗi weight tự có learning rate riêng, thích nghi theo lịch sử gradient. Gần như chạy tốt ngay cả khi chưa tinh chỉnh siêu tham số",
       "Không cần tính gradient",
       "Chỉ chạy trên GPU",
     ],
@@ -276,14 +276,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "So sánh Batch GD, Mini-batch GD và SGD (theo lượng dữ liệu mỗi bước). Phương án nào được dùng phổ biến nhất trong deep learning ngày nay?",
     options: [
-      "Batch GD — dùng toàn bộ tập dữ liệu mỗi bước",
-      "Mini-batch GD — dùng một lô nhỏ (thường 32–256 mẫu)",
-      "SGD thuần — đúng 1 mẫu mỗi bước",
-      "Không có phương án nào được dùng — deep learning không dùng gradient descent",
+      "Batch GD: dùng toàn bộ tập dữ liệu mỗi bước",
+      "Mini-batch GD: dùng một lô nhỏ (thường 32–256 mẫu)",
+      "SGD thuần: đúng 1 mẫu mỗi bước",
+      "Không có phương án nào được dùng. Deep learning không dùng gradient descent",
     ],
     correct: 1,
     explanation:
-      "Mini-batch cân bằng giữa ổn định (gradient ít nhiễu) và tốc độ (không cần quét toàn bộ dataset). Batch GD không chạy nổi trên dataset lớn (ImageNet, GPT) — dùng toàn bộ 10M ảnh để tính 1 bước là bất khả thi. SGD thuần quá nhiễu. Mini-batch là cân bằng vàng.",
+      "Mini-batch cân bằng giữa ổn định (gradient ít nhiễu) và tốc độ (không cần quét toàn bộ dataset). Batch GD không chạy nổi trên dataset lớn như ImageNet hay GPT. Dùng toàn bộ 10M ảnh để tính một bước là bất khả thi. SGD thuần quá nhiễu. Mini-batch là cân bằng vàng.",
   },
   {
     type: "fill-blank",
@@ -296,27 +296,27 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "η (eta) hoặc α (alpha) là learning rate — kiểm soát kích thước mỗi bước. Quá to → phân kỳ, quá nhỏ → stall. Tinh chỉnh η là kỹ năng quan trọng nhất khi huấn luyện mạng thật.",
+      "η (eta) hoặc α (alpha) là learning rate, kiểm soát kích thước mỗi bước. Quá to → phân kỳ, quá nhỏ → stall. Tinh chỉnh η là kỹ năng quan trọng nhất khi huấn luyện mạng thật.",
   },
   {
     question:
       "Mạng nơ-ron có 175 tỉ weight (ví dụ GPT-3). Khi chạy gradient descent, mỗi bước ta phải tính gradient cho bao nhiêu weight?",
     options: [
-      "Chỉ 1 weight — chọn ngẫu nhiên",
+      "Chỉ 1 weight, chọn ngẫu nhiên",
       "Chỉ các weight của lớp cuối",
-      "Tất cả 175 tỉ — mỗi weight cần gradient của loss theo chính nó để cập nhật",
+      "Tất cả 175 tỉ. Mỗi weight cần gradient của loss theo chính nó để cập nhật",
       "Không cần tính gradient khi mạng lớn",
     ],
     correct: 2,
     explanation:
-      "Mỗi weight cần gradient riêng để cập nhật. Với 175 tỉ weight, mỗi bước tính 175 tỉ gradient. Đó là lý do cần GPU/TPU và backpropagation (thuật toán tính gradient hiệu quả qua đồ thị tính toán). Không có backprop, deep learning hiện đại không tồn tại.",
+      "Mỗi weight cần gradient riêng để cập nhật. Với 175 tỉ weight, mỗi bước tính 175 tỉ gradient. Đó là lý do cần GPU và TPU, cộng với backpropagation (thuật toán tính gradient hiệu quả qua đồ thị tính toán). Không có backprop, deep learning hiện đại không tồn tại.",
   },
 ];
 
 /* ────────────────────────────────────────────────────────────
    SUB-COMPONENT 1: LOSS SURFACE + BALL + 3 OPTIMIZER
    TabView chuyển giữa Vanilla / Momentum / Adam, cùng điểm xuất
-   phát, cùng LR — người học thấy khác biệt rõ rệt.
+   phát, cùng LR. Người học thấy khác biệt rõ rệt.
    ──────────────────────────────────────────────────────────── */
 
 type OptimKind = "vanilla" | "momentum" | "adam";
@@ -341,7 +341,7 @@ const OPTIM_META: Record<OptimKind, OptimCtx> = {
     label: "Momentum",
     tint: "#8b5cf6",
     description:
-      "Thêm 'quán tính' — mỗi bước là trung bình luỹ kế của gradient. Giảm zigzag, đi mượt xuống đáy thung lũng.",
+      "Thêm 'quán tính'. Mỗi bước là trung bình luỹ kế của gradient. Giảm zigzag, đi mượt xuống đáy thung lũng.",
   },
   adam: {
     kind: "adam",
@@ -452,7 +452,7 @@ function LossSurfacePlayground() {
           <div className="flex items-center gap-2 text-xs">
             <Target className="h-3.5 w-3.5 text-accent" />
             <span className="font-semibold text-foreground">
-              Mặt loss L(w₁, w₂) — đáy tại (1, −0.5)
+              Mặt loss L(w₁, w₂). Đáy tại (1, −0.5)
             </span>
           </div>
           <div className="flex items-center gap-2 text-[11px] text-tertiary tabular-nums">
@@ -471,7 +471,7 @@ function LossSurfacePlayground() {
             aria-label="Bản đồ loss: bấm để đặt điểm bắt đầu, quan sát đường đi của optimizer."
           >
             <title>
-              Bản đồ loss contour — điểm hiện tại tại w₁={current.x.toFixed(2)},
+              Bản đồ loss contour. Điểm hiện tại tại w₁={current.x.toFixed(2)},
               w₂={current.y.toFixed(2)}, loss={current.loss.toFixed(3)}.
             </title>
 
@@ -616,7 +616,7 @@ function LossSurfacePlayground() {
             disabled={step >= fullTrail.length - 1}
             className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors ${
               running
-                ? "border-rose-400 bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-200"
+                ? "border-rose-400 bg-rose-50 text-foreground font-semibold dark:bg-rose-900/30 dark:text-rose-100"
                 : "border-border bg-card text-foreground hover:border-accent/50"
             } disabled:opacity-40`}
           >
@@ -675,7 +675,7 @@ function LossSurfacePlayground() {
 
   return (
     <div className="space-y-5">
-      {/* Optim picker — a thin layer above TabView so state stays coupled */}
+      {/* Optim picker: a thin layer above TabView so state stays coupled */}
       <div className="rounded-xl border border-border bg-card overflow-hidden">
         <div className="flex border-b border-border">
           {(["vanilla", "momentum", "adam"] as OptimKind[]).map((kind) => (
@@ -708,7 +708,7 @@ function LossSurfacePlayground() {
 
           {surfacePanel}
 
-          {/* LR slider — wrapping SliderGroup via a small bridge that pushes
+          {/* LR slider: wrapping SliderGroup via a small bridge that pushes
               the slider's internal value up so the simulation can react. */}
           <SliderGroup
             title="Điều chỉnh learning rate"
@@ -753,7 +753,7 @@ function LossSurfacePlayground() {
         </div>
       </div>
 
-      {/* Secondary TabView — side-by-side comparison + usage guide */}
+      {/* Secondary TabView: side-by-side comparison + usage guide */}
       <TabView
         tabs={[
           {
@@ -809,7 +809,7 @@ function LossCurveMini({
   const cursor = coords[Math.min(step, coords.length - 1)];
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
-      <title>Đường cong loss theo bước — bóng tại bước hiện tại.</title>
+      <title>Đường cong loss theo bước. Bóng tại bước hiện tại.</title>
       {/* Axis baseline */}
       <line
         x1={pad}
@@ -916,7 +916,7 @@ function LrGauge({
   );
 }
 
-/* Diagnostic — tells the learner what happened */
+/* Diagnostic: tells the learner what happened */
 function OptimDiagnostic({
   trail,
   step,
@@ -943,7 +943,7 @@ function OptimDiagnostic({
     return (
       <Callout variant="warning" title="Vanilla GD + LR hơi to → zigzag rõ rệt">
         Quan sát đường đi xanh lam: trục w₂ dốc nên mỗi bước nhảy qua đáy sang
-        vách đối diện. Đây chính là bệnh zigzag — Momentum và Adam sẽ khắc phục.
+        vách đối diện. Đây chính là bệnh zigzag. Momentum và Adam sẽ khắc phục.
       </Callout>
     );
   }
@@ -951,7 +951,7 @@ function OptimDiagnostic({
     return (
       <Callout variant="info" title="Vẫn đang bò về đáy">
         Loss hiện tại còn lớn hơn {ratio.toFixed(1)}× so với loss cuối đường đi.
-        Bấm thêm bước — hoặc tăng η một chút (nhưng đừng quá 0.4 với Vanilla).
+        Bấm thêm bước, hoặc tăng η một chút (nhưng đừng quá 0.4 với Vanilla).
       </Callout>
     );
   }
@@ -974,7 +974,7 @@ function OptimDiagnostic({
   return (
     <Callout variant="tip" title="Vanilla GD đã hội tụ">
       Với η vừa phải, Vanilla GD vẫn tới được đáy. Trên mạng thật nó chậm hơn
-      nhiều so với Momentum/Adam — nhưng ý tưởng gốc vẫn là &ldquo;đi ngược
+      nhiều so với Momentum và Adam, nhưng ý tưởng gốc vẫn là &ldquo;đi ngược
       gradient&rdquo;.
     </Callout>
   );
@@ -1010,7 +1010,7 @@ function ThreeOptimComparison({
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted leading-relaxed">
-        Cùng điểm xuất phát, cùng learning rate, 60 bước — ba optimizer vẽ ba
+        Cùng điểm xuất phát, cùng learning rate, 60 bước. Ba optimizer vẽ ba
         đường đi rất khác nhau trên mặt loss.
       </p>
       <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -1019,8 +1019,8 @@ function ThreeOptimComparison({
           className="w-full bg-gradient-to-br from-sky-50 via-white to-rose-50 dark:from-sky-950/30 dark:via-neutral-950 dark:to-rose-950/30"
         >
           <title>
-            Ba đường đi của ba optimizer trên cùng bản đồ loss — xanh lam =
-            Vanilla, tím = Momentum, xanh ngọc = Adam.
+            Ba đường đi của ba optimizer trên cùng bản đồ loss. Xanh lam là
+            Vanilla, tím là Momentum, xanh ngọc là Adam.
           </title>
 
           {/* Contours */}
@@ -1163,7 +1163,7 @@ function OptimUsageGuide() {
         </div>
         <p className="text-muted">
           Mặc định cho Transformer, LLM, diffusion. Chạy tốt ngay cả khi chưa
-          tinh chỉnh kỹ — siêu tham số mặc định (η = 1e-3, β₁ = 0.9, β₂ = 0.999)
+          tinh chỉnh kỹ. Siêu tham số mặc định (η = 1e-3, β₁ = 0.9, β₂ = 0.999)
           thường đủ dùng.
         </p>
       </div>
@@ -1191,7 +1191,7 @@ function OneStepDetail() {
   const labels = [
     "1. Tính loss tại weight hiện tại",
     "2. Tính gradient của loss theo weight",
-    "3. Cập nhật weight — trừ đi η × gradient",
+    "3. Cập nhật weight: trừ đi η × gradient",
   ];
 
   return (
@@ -1248,7 +1248,7 @@ function OneStepPhase1({ w1, w2, L }: { w1: number; w2: number; L: number }) {
 
       {/* Mini viz: point on a 1D slice to show "how high" */}
       <svg viewBox="0 0 420 80" className="w-full">
-        <title>Loss tại điểm hiện tại — cao hay thấp so với đáy.</title>
+        <title>Loss tại điểm hiện tại. Cao hay thấp so với đáy.</title>
         <line x1={30} y1={60} x2={390} y2={60} stroke="#cbd5e1" strokeWidth={1} />
         <text x={30} y={74} fontSize={11} fill="var(--text-tertiary)">
           đáy (loss = 0)
@@ -1308,7 +1308,7 @@ function OneStepPhase2({
             2. Tính gradient của loss theo weight
           </h4>
           <p className="text-xs text-muted">
-            Mỗi weight có một đạo hàm riêng — cho biết weight đó ảnh hưởng đến loss ra sao.
+            Mỗi weight có một đạo hàm riêng, cho biết weight đó ảnh hưởng đến loss ra sao.
           </p>
         </div>
       </div>
@@ -1434,7 +1434,7 @@ function OneStepPhase3({
         </div>
         <div>
           <h4 className="text-sm font-semibold text-foreground">
-            3. Cập nhật weight — trừ đi η × gradient
+            3. Cập nhật weight: trừ đi η × gradient
           </h4>
           <p className="text-xs text-muted">
             Mỗi weight dịch một chút NGƯỢC chiều gradient của chính nó.
@@ -1478,7 +1478,7 @@ function OneStepPhase3({
 
       {/* Mini viz: arrow from old to new point over contour */}
       <svg viewBox="0 0 420 110" className="w-full">
-        <title>Weight dịch từ điểm cũ sang điểm mới — loss giảm.</title>
+        <title>Weight dịch từ điểm cũ sang điểm mới. Loss giảm.</title>
         {[30, 45, 60, 75].map((r, i) => (
           <ellipse
             key={r}
@@ -1527,10 +1527,10 @@ function OneStepPhase3({
 
       <div className="rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-3 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-emerald-800 dark:text-emerald-200 font-medium">
+          <span className="text-foreground font-semibold">
             Loss đã giảm
           </span>
-          <strong className="tabular-nums text-emerald-700 dark:text-emerald-300">
+          <strong className="tabular-nums text-foreground font-bold">
             Δ = {delta.toFixed(3)} {delta < 0 ? "↓" : "↑"}
           </strong>
         </div>
@@ -1545,7 +1545,7 @@ function OneStepPhase3({
 }
 
 /* ────────────────────────────────────────────────────────────
-   SUB-COMPONENT 3: BATCH / MINI-BATCH / SGD — compact card triad
+   SUB-COMPONENT 3: BATCH / MINI-BATCH / SGD: compact card triad
    (dùng cho phần CHALLENGE context)
    ──────────────────────────────────────────────────────────── */
 
@@ -1622,7 +1622,7 @@ function BatchTriad() {
 export default function GradientDescentTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK ━━━ */}
+      {/* ━━━ BƯỚC 1: HOOK ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Bắt cầu từ intuition">
         <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-6 space-y-4">
           <div className="flex items-start gap-4">
@@ -1637,19 +1637,19 @@ export default function GradientDescentTopic() {
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Ở bài{" "}
                 <TopicLink slug="gradient-intuition">
-                  gradient — mũi tên chỉ đường xuống dốc
+                  gradient, mũi tên chỉ đường xuống dốc
                 </TopicLink>
                 , bạn đã thấy một viên bi lăn trên đồi sương mù. Bi là vị trí, đồi
                 là loss, ngón tay chỉ hướng là gradient.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Giờ đến phần thật sự áp dụng: trong huấn luyện, &ldquo;tọa
+                Giờ đến phần thật sự áp dụng. Trong huấn luyện, &ldquo;tọa
                 độ&rdquo; không phải (x, y) mà là <strong>các weight</strong> của
                 mạng nơ-ron. Mỗi bước gradient descent sẽ <strong>xoay các
                 weight này</strong> để loss giảm.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Bài này tập trung vào <strong>THUẬT TOÁN</strong> — cách máy
+                Bài này tập trung vào <strong>thuật toán</strong>, tức cách máy
                 thực sự đi từng bước. Bạn sẽ gặp ba biến thể bước: Vanilla,
                 Momentum, Adam. Cùng một địa hình, ba tính cách đi khác nhau.
               </p>
@@ -1668,21 +1668,21 @@ export default function GradientDescentTopic() {
               <Compass className="mx-auto h-6 w-6 text-amber-500" />
               <p className="text-[11px] font-semibold text-foreground">Ngón tay</p>
               <p className="text-[10px] text-muted leading-tight">
-                Gradient ∇L — mỗi thành phần tương ứng một weight.
+                Gradient ∇L. Mỗi thành phần tương ứng một weight.
               </p>
             </div>
             <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
               <Footprints className="mx-auto h-6 w-6 text-emerald-500" />
               <p className="text-[11px] font-semibold text-foreground">Bước</p>
               <p className="text-[10px] text-muted leading-tight">
-                θ ← θ − η·∇L — cập nhật tất cả weight cùng lúc.
+                θ ← θ − η·∇L. Cập nhật tất cả weight cùng lúc.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — DISCOVER ━━━ */}
+      {/* ━━━ BƯỚC 2: DISCOVER ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Mặt loss có dạng thung lũng hẹp (một trục dốc, một trục thoải). Bạn bật Vanilla GD với learning rate vừa phải. Đường đi của weight sẽ như thế nào?"
@@ -1697,16 +1697,16 @@ export default function GradientDescentTopic() {
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Dưới đây bạn sẽ thấy chính xác hành vi đó trên một loss thung lũng
-            hẹp — rồi đổi sang Momentum và Adam để xem cải thiện.
+            hẹp, rồi đổi sang Momentum và Adam để xem cải thiện.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — REVEAL (loss surface + 3 optimizers) ━━━ */}
+      {/* ━━━ BƯỚC 3: REVEAL (loss surface + 3 optimizers) ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá tương tác">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-4 leading-relaxed">
-            Mặt loss L(w₁, w₂) = 0.5·(w₁ − 1)² + 2·(w₂ + 0.5)² — đáy tại
+            Mặt loss L(w₁, w₂) = 0.5·(w₁ − 1)² + 2·(w₂ + 0.5)². Đáy tại
             (1, −0.5), thung lũng hẹp theo trục w₂. Bấm vào bản đồ để đổi điểm
             xuất phát, chỉnh learning rate, rồi bấm &ldquo;Tự chạy&rdquo; để
             xem bi lăn.
@@ -1715,8 +1715,8 @@ export default function GradientDescentTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — DEEPEN (one step zoomed in) ━━━ */}
-      <LessonSection step={4} totalSteps={8} label="Đi sâu — một bước">
+      {/* ━━━ BƯỚC 4: DEEPEN (one step zoomed in) ━━━ */}
+      <LessonSection step={4} totalSteps={8} label="Đi sâu vào một bước">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Giờ mổ xẻ CHÍNH XÁC một bước Vanilla GD ở điểm cụ thể:
           (w₁, w₂) = (−1.2, 1.5), η = 0.2. Bấm &ldquo;Tiếp tục&rdquo; để xem
@@ -1727,14 +1727,14 @@ export default function GradientDescentTopic() {
         <div className="mt-6">
           <AhaMoment>
             <strong>Gradient descent là vòng lặp ba dòng:</strong> tính loss,
-            tính gradient, cập nhật weight. Toàn bộ quá trình huấn luyện — từ
-            MNIST đến GPT-4 — là vòng lặp này <em>lặp hàng trăm triệu lần</em>,
+            tính gradient, cập nhật weight. Toàn bộ quá trình huấn luyện, từ
+            MNIST đến GPT-4, là vòng lặp này <em>lặp hàng trăm triệu lần</em>,
             chỉ khác cỡ mạng và cách chọn bước.
           </AhaMoment>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 5: CHALLENGE ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Một quyết định kỹ thuật quan trọng: mỗi bước gradient descent, ta
@@ -1745,7 +1745,7 @@ export default function GradientDescentTopic() {
 
         <div className="mt-5">
           <InlineChallenge
-            question="Bạn huấn luyện ResNet trên ImageNet (1,2 triệu ảnh). Dùng BATCH GD (toàn bộ dataset mỗi bước) — điều gì xảy ra?"
+            question="Bạn huấn luyện ResNet trên ImageNet (1,2 triệu ảnh). Dùng BATCH GD (toàn bộ dataset mỗi bước) thì điều gì xảy ra?"
             options={[
               "Huấn luyện siêu nhanh vì gradient chính xác nhất",
               "Mỗi bước phải forward + backward qua 1,2 triệu ảnh → nửa ngày chỉ được 1 bước, RAM GPU không đủ, gần như bất khả thi",
@@ -1753,7 +1753,7 @@ export default function GradientDescentTopic() {
               "Tự động chuyển sang Adam",
             ]}
             correct={1}
-            explanation="Đây là lý do Batch GD chỉ dạy để hiểu nguyên lý. Thực tế ta dùng Mini-batch (ví dụ 256 ảnh mỗi bước) — vừa ổn định, vừa tận dụng được song song hoá GPU. Với 1,2 triệu ảnh và batch 256 → ~4 700 bước/epoch, chạy được trong giờ."
+            explanation="Đây là lý do Batch GD chỉ dạy để hiểu nguyên lý. Thực tế ta dùng Mini-batch (ví dụ 256 ảnh mỗi bước), vừa ổn định, vừa tận dụng được song song hoá GPU. Với 1,2 triệu ảnh và batch 256 → ~4 700 bước/epoch, chạy được trong giờ."
           />
         </div>
 
@@ -1762,22 +1762,22 @@ export default function GradientDescentTopic() {
             question="Khi nào bạn NÊN ưu tiên SGD thuần (batch size = 1) thay vì Mini-batch?"
             options={[
               "Luôn ưu tiên vì SGD nhanh nhất",
-              "Không bao giờ — SGD thuần hầu như không được dùng trong deep learning thực tế do nhiễu quá lớn và không tận dụng được GPU",
+              "Không bao giờ. SGD thuần hầu như không được dùng trong deep learning thực tế do nhiễu quá lớn và không tận dụng được GPU",
               "Khi dataset siêu lớn",
               "Khi mạng có nhiều lớp",
             ]}
             correct={1}
-            explanation="&lsquo;SGD&rsquo; trong ngôn ngữ deep learning ngày nay thực chất ám chỉ Mini-batch GD, không phải SGD thuần. Thuần 1 mẫu gây nhiễu cực lớn và không khai thác được song song GPU/TPU — mỗi mẫu bỏ không 99 % sức mạnh tính toán của mỗi CUDA core."
+            explanation="&lsquo;SGD&rsquo; trong ngôn ngữ deep learning hiện hành thực chất ám chỉ Mini-batch GD, không phải SGD thuần. Thuần 1 mẫu gây nhiễu cực lớn và không khai thác được song song GPU/TPU. Mỗi mẫu bỏ không 99 % sức mạnh tính toán của mỗi CUDA core."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — EXPLAIN (≤3 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 6: EXPLAIN (≤3 LaTeX) ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Giải thích toán">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Ba công thức đóng gói toàn bộ thuật toán. Mỗi công thức đi kèm một
-            visual nhỏ và một câu giải thích bằng tiếng Việt đời thường — để
+            visual nhỏ và một câu giải thích bằng tiếng Việt đời thường, để
             bạn đọc được chứ không chỉ nhìn mà sợ.
           </p>
 
@@ -1789,7 +1789,7 @@ export default function GradientDescentTopic() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground">
-                  Vanilla Gradient Descent — công thức gốc
+                  Vanilla Gradient Descent: công thức gốc
                 </p>
                 <p className="text-xs text-muted">
                   θ là vector toàn bộ weight. η là learning rate. ∇L(θ) là
@@ -1829,7 +1829,7 @@ export default function GradientDescentTopic() {
 
             <p className="text-xs text-muted italic leading-relaxed">
               &ldquo;Lấy weight cũ, trừ đi một bước theo hướng gradient, ra được
-              weight mới sát đáy hơn. Đúng một dòng — nhưng lặp nó hàng triệu
+              weight mới sát đáy hơn. Đúng một dòng. Nhưng lặp nó hàng triệu
               lần thì huấn luyện được GPT.&rdquo;
             </p>
           </div>
@@ -1842,7 +1842,7 @@ export default function GradientDescentTopic() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground">
-                  Mini-batch SGD — dùng một lô nhỏ dữ liệu thay vì cả tập
+                  Mini-batch SGD: dùng một lô nhỏ dữ liệu thay vì cả tập
                 </p>
                 <p className="text-xs text-muted">
                   B là tập 32–256 mẫu random từ dataset. Gradient được tính
@@ -1916,7 +1916,7 @@ export default function GradientDescentTopic() {
 
             <p className="text-xs text-muted italic leading-relaxed">
               &ldquo;Thay vì đọc toàn bộ sách trước khi bước, ta đọc nhanh vài
-              trang ngẫu nhiên — đủ để biết nên đi hướng nào. Gradient có ồn hơn
+              trang ngẫu nhiên, đủ để biết nên đi hướng nào. Gradient có ồn hơn
               một chút, nhưng 1000× nhanh hơn.&rdquo;
             </p>
           </div>
@@ -1929,10 +1929,10 @@ export default function GradientDescentTopic() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground">
-                  Momentum — thêm &ldquo;quán tính&rdquo; vào bước
+                  Momentum: thêm &ldquo;quán tính&rdquo; vào bước
                 </p>
                 <p className="text-xs text-muted">
-                  v là velocity — tổng luỹ kế có chiết khấu của gradient cũ
+                  v là velocity, tức tổng luỹ kế có chiết khấu của gradient cũ
                   cộng gradient mới. β thường là 0.9, giữ lại 90 % đà cũ mỗi
                   bước (bước hiệu quả ổn định ≈ η / (1 − β)).
                 </p>
@@ -1961,7 +1961,7 @@ export default function GradientDescentTopic() {
                 <line x1={220} y1={60} x2={400} y2={30} stroke="#8b5cf6" strokeWidth={3.5} />
                 <path d="M 400 30 L 388 27 L 392 37 Z" fill="#8b5cf6" />
                 <text x={300} y={75} fontSize={11} fill="#6d28d9" fontWeight={700} textAnchor="middle">
-                  v — quán tính cộng dồn
+                  v: quán tính cộng dồn
                 </text>
 
                 <text x={120} y={18} fontSize={11} fill="#6d28d9" fontWeight={600} textAnchor="middle">
@@ -1971,33 +1971,33 @@ export default function GradientDescentTopic() {
             </div>
 
             <p className="text-xs text-muted italic leading-relaxed">
-              &ldquo;Vanilla GD = người đi bộ, mỗi bước chỉ nhìn ngay dưới chân.
-              Momentum = quả bóng có đà — khi gradient chỉ cùng hướng nhiều
+              &ldquo;Vanilla GD giống người đi bộ, mỗi bước chỉ nhìn ngay dưới chân.
+              Momentum giống quả bóng có đà. Khi gradient chỉ cùng hướng nhiều
               bước liền, bóng tăng tốc. Khi gradient đổi chiều nhẹ, đà cũ lấn
               át → triệt tiêu zigzag.&rdquo;
             </p>
           </div>
 
-          <Callout variant="info" title="Adam — tại sao lại là mặc định">
+          <Callout variant="info" title="Vì sao Adam là mặc định">
             Adam kết hợp Momentum (công thức 3) với RMSprop (chia mỗi gradient
             cho căn của trung bình bình phương gradient). Kết quả: mỗi weight
             có learning rate riêng, tự thích nghi theo lịch sử. Thêm một chi
-            tiết quan trọng là &ldquo;bias correction&rdquo; cho các bước đầu —
-            khi v chưa ổn định. Đó là lý do Adam gần như luôn chạy được với
-            siêu tham số mặc định, còn Vanilla GD cần tinh chỉnh kỹ.
+            tiết quan trọng là &ldquo;bias correction&rdquo; cho các bước đầu,
+            khi v chưa ổn định. Nhờ vậy Adam gần như luôn chạy được với siêu
+            tham số mặc định, còn Vanilla GD cần tinh chỉnh kỹ.
           </Callout>
 
           <CollapsibleDetail title="Vì sao phải trừ η·∇L mà không phải cộng?">
             <div className="space-y-2 text-sm leading-relaxed text-muted">
               <p>
                 Gradient theo định nghĩa toán học chỉ hướng loss <em>tăng</em>{" "}
-                nhanh nhất. Để loss giảm nhanh nhất, ta phải đi NGƯỢC lại —
+                nhanh nhất. Để loss giảm nhanh nhất, ta phải đi NGƯỢC lại,
                 tức TRỪ gradient. Nhầm dấu là lỗi phổ biến khi viết trainer thủ
                 công: nếu bạn quên dấu trừ, loss sẽ <strong>tăng</strong> thay
                 vì giảm, và sau vài bước mạng chập hoàn toàn.
               </p>
               <p>
-                Thư viện như PyTorch đã ẩn chi tiết này — khi bạn gọi{" "}
+                Thư viện như PyTorch đã ẩn chi tiết này. Khi bạn gọi{" "}
                 <code className="rounded bg-surface px-1 py-0.5 text-accent">
                   optimizer.step()
                 </code>
@@ -2008,11 +2008,11 @@ export default function GradientDescentTopic() {
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Learning rate — vì sao nó là siêu tham số khó nhất">
+          <CollapsibleDetail title="Vì sao learning rate là siêu tham số khó nhất">
             <div className="space-y-2 text-sm leading-relaxed text-muted">
               <p>
                 η (eta) kiểm soát cỡ bước. Không có công thức &ldquo;chọn η
-                đúng&rdquo; — phụ thuộc hoàn toàn vào bài toán:
+                đúng&rdquo;, vì η phụ thuộc hoàn toàn vào bài toán:
               </p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>
@@ -2029,8 +2029,8 @@ export default function GradientDescentTopic() {
                 </li>
               </ul>
               <p>
-                Thực tế: người ta dùng{" "}
-                <strong>learning rate scheduler</strong> — ban đầu η lớn để
+                Thực tế người ta dùng{" "}
+                <strong>learning rate scheduler</strong>: ban đầu η lớn để
                 tiến nhanh, cuối quá trình η nhỏ để tinh chỉnh. Ba lịch phổ
                 biến: step decay, cosine annealing, warmup+cosine (GPT-3 dùng
                 lịch thứ ba).
@@ -2040,7 +2040,7 @@ export default function GradientDescentTopic() {
                 <TopicLink slug="learning-rate">
                   learning rate
                 </TopicLink>
-                {" "}— một bài riêng cho siêu tham số then chốt này.
+                , một bài riêng cho siêu tham số then chốt này.
               </p>
             </div>
           </CollapsibleDetail>
@@ -2054,22 +2054,22 @@ export default function GradientDescentTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — CONNECT ━━━ */}
+      {/* ━━━ BƯỚC 7: CONNECT ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt & Liên kết">
         <MiniSummary
           title="Ba ý bạn mang về"
           points={[
             "Gradient descent là vòng lặp ba dòng: tính loss → tính gradient → cập nhật weight theo θ ← θ − η·∇L. Toàn bộ huấn luyện là lặp vòng này hàng triệu lần.",
             "Vanilla GD hay zigzag trên thung lũng hẹp. Momentum thêm quán tính → đi mượt hơn. Adam tự thích nghi learning rate cho từng weight → mặc định trong deep learning hiện đại.",
-            "Mỗi bước ta dùng một MINI-BATCH (32–256 mẫu) thay vì toàn bộ dataset — đó là cân bằng vàng giữa chính xác và tốc độ, tận dụng song song hoá GPU.",
+            "Mỗi bước ta dùng một MINI-BATCH (32–256 mẫu) thay vì toàn bộ dataset. Đó là cân bằng vàng giữa độ chính xác và tốc độ, tận dụng song song hoá GPU.",
           ]}
         />
 
         <div className="mt-5 space-y-3">
           <Callout variant="tip" title="Hai mảnh ghép tiếp theo">
             Gradient descent cần biết ∇L. Với mạng nhiều lớp, ta tính ∇L qua{" "}
-            <TopicLink slug="backpropagation">backpropagation</TopicLink>{" "}
-            — thuật toán truyền ngược sai số qua từng lớp. Và để chia dữ liệu
+            <TopicLink slug="backpropagation">backpropagation</TopicLink>
+            , thuật toán truyền ngược sai số qua từng lớp. Và để chia dữ liệu
             thành các lần quét, ta cần hiểu{" "}
             <TopicLink slug="epochs-batches">epoch và batch</TopicLink>
             . Ba bài này hợp lại = toàn bộ vòng huấn luyện.
@@ -2081,12 +2081,12 @@ export default function GradientDescentTopic() {
             2006–2012 người ta mới tìm được cách <em>giữ gradient không
             chết</em> qua nhiều lớp (ReLU, dropout, khởi tạo Xavier/He, batch
             normalization) để ý tưởng cũ kỹ này hoạt động trên mạng sâu 100+
-            lớp — và toàn bộ kỷ nguyên deep learning hiện đại bùng nổ từ đó.
+            lớp. Nhờ vậy toàn bộ kỷ nguyên deep learning hiện đại bùng nổ từ đó.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
         <div className="mt-6 flex items-center justify-center text-xs text-muted gap-2">

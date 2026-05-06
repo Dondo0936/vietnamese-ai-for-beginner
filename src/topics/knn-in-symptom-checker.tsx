@@ -37,9 +37,9 @@ import VisualizationSection from "@/components/topic/VisualizationSection";
 export const metadata: TopicMeta = {
   slug: "knn-in-symptom-checker",
   title: "KNN in Symptom Checkers",
-  titleVi: "k-NN trong kiểm tra triệu chứng",
+  titleVi: "k-NN đoán bệnh từ triệu chứng",
   description:
-    "App chatbot hỏi bạn vài triệu chứng → so với hàng ngàn ca bệnh cũ → gợi ý bệnh gần nhất. Cốt lõi chính là k-NN.",
+    "Chatbot hỏi bạn vài triệu chứng, đối chiếu với hàng ngàn ca bệnh cũ, rồi gợi ý bệnh gần nhất. Cốt lõi chính là k-NN.",
   category: "classic-ml",
   tags: ["classification", "healthcare", "knn", "application"],
   difficulty: "intermediate",
@@ -76,7 +76,7 @@ export const metadata: TopicMeta = {
     },
     {
       title: "Machine Learning Approaches for Disease Prediction from Symptoms: A Review",
-      publisher: "PMC — International Journal of Environmental Research and Public Health",
+      publisher: "PMC, International Journal of Environmental Research and Public Health",
       url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9518091/",
       date: "2022-09",
       kind: "paper",
@@ -100,7 +100,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ════════════════════════════════════════════════════════════════════
- * DỮ LIỆU GIẢ LẬP — 24 ca bệnh đã được chẩn đoán
+ * DỮ LIỆU GIẢ LẬP: 24 ca bệnh đã được chẩn đoán
  * 8 triệu chứng. Vector 8 chiều; hiển thị qua chiếu 2D (cosine simil).
  * ════════════════════════════════════════════════════════════════════ */
 type SymptomKey =
@@ -182,7 +182,7 @@ const ADVICE_COLOR: Record<Case["advice"], string> = {
   urgent: "#dc2626",
 };
 
-/* Giả lập 24 ca — vector triệu chứng, disease, advice */
+/* Giả lập 24 ca với vector triệu chứng, disease, advice */
 function mkVec(vals: Partial<Record<SymptomKey, 1>>): Record<SymptomKey, 0 | 1> {
   const out: Record<SymptomKey, 0 | 1> = {
     fever: 0,
@@ -201,42 +201,42 @@ function mkVec(vals: Partial<Record<SymptomKey, 1>>): Record<SymptomKey, 0 | 1> 
 }
 
 const CASES: Case[] = [
-  /* Cảm lạnh — chảy mũi, đau họng nhẹ, không sốt cao */
+  /* Cảm lạnh: chảy mũi, đau họng nhẹ, không sốt cao */
   { id: 1, vec: mkVec({ runnyNose: 1, soreThroat: 1, cough: 1 }), disease: "cold", advice: "self-care" },
   { id: 2, vec: mkVec({ runnyNose: 1, cough: 1 }), disease: "cold", advice: "self-care" },
   { id: 3, vec: mkVec({ runnyNose: 1, soreThroat: 1 }), disease: "cold", advice: "self-care" },
   { id: 4, vec: mkVec({ cough: 1, soreThroat: 1, fatigue: 1 }), disease: "cold", advice: "self-care" },
-  /* Cúm — sốt + mệt + đau cơ */
+  /* Cúm: sốt + mệt + đau cơ */
   { id: 5, vec: mkVec({ fever: 1, muscleAche: 1, fatigue: 1, cough: 1 }), disease: "flu", advice: "appointment" },
   { id: 6, vec: mkVec({ fever: 1, fatigue: 1, muscleAche: 1, headache: 1 }), disease: "flu", advice: "appointment" },
   { id: 7, vec: mkVec({ fever: 1, cough: 1, muscleAche: 1 }), disease: "flu", advice: "appointment" },
   { id: 8, vec: mkVec({ fever: 1, fatigue: 1, cough: 1, headache: 1 }), disease: "flu", advice: "appointment" },
-  /* COVID / cúm nặng — sốt + ho + mệt nặng + khó thở (giả lập bằng muscleAche+fever+fatigue tất cả) */
+  /* COVID / cúm nặng: sốt + ho + mệt nặng + khó thở (giả lập bằng muscleAche+fever+fatigue tất cả) */
   { id: 9, vec: mkVec({ fever: 1, cough: 1, fatigue: 1, muscleAche: 1, headache: 1 }), disease: "covid", advice: "urgent" },
   { id: 10, vec: mkVec({ fever: 1, cough: 1, fatigue: 1, muscleAche: 1, soreThroat: 1 }), disease: "covid", advice: "urgent" },
   { id: 11, vec: mkVec({ fever: 1, cough: 1, fatigue: 1, headache: 1, muscleAche: 1 }), disease: "covid", advice: "urgent" },
-  /* Viêm họng liên cầu — sốt + đau họng dữ dội, không ho/chảy mũi */
+  /* Viêm họng liên cầu: sốt + đau họng dữ dội, không ho/chảy mũi */
   { id: 12, vec: mkVec({ fever: 1, soreThroat: 1, headache: 1 }), disease: "strep", advice: "appointment" },
   { id: 13, vec: mkVec({ fever: 1, soreThroat: 1 }), disease: "strep", advice: "appointment" },
   { id: 14, vec: mkVec({ fever: 1, soreThroat: 1, nausea: 1 }), disease: "strep", advice: "appointment" },
-  /* Dị ứng — chảy mũi + đau họng không sốt */
+  /* Dị ứng: chảy mũi + đau họng không sốt */
   { id: 15, vec: mkVec({ runnyNose: 1 }), disease: "allergy", advice: "self-care" },
   { id: 16, vec: mkVec({ runnyNose: 1, cough: 1, headache: 1 }), disease: "allergy", advice: "self-care" },
   { id: 17, vec: mkVec({ runnyNose: 1, soreThroat: 1, fatigue: 1 }), disease: "allergy", advice: "self-care" },
-  /* Migraine — đau đầu + buồn nôn, không sốt */
+  /* Migraine: đau đầu + buồn nôn, không sốt */
   { id: 18, vec: mkVec({ headache: 1, nausea: 1 }), disease: "migraine", advice: "appointment" },
   { id: 19, vec: mkVec({ headache: 1, nausea: 1, fatigue: 1 }), disease: "migraine", advice: "appointment" },
-  /* Ngộ độc thực phẩm — buồn nôn + mệt, không sốt cao */
+  /* Ngộ độc thực phẩm: buồn nôn + mệt, không sốt cao */
   { id: 20, vec: mkVec({ nausea: 1, fatigue: 1 }), disease: "foodPoisoning", advice: "self-care" },
   { id: 21, vec: mkVec({ nausea: 1, fatigue: 1, muscleAche: 1 }), disease: "foodPoisoning", advice: "appointment" },
   { id: 22, vec: mkVec({ nausea: 1 }), disease: "foodPoisoning", advice: "self-care" },
-  /* Đau đầu căng thẳng — chỉ đau đầu + mệt */
+  /* Đau đầu căng thẳng: chỉ đau đầu + mệt */
   { id: 23, vec: mkVec({ headache: 1 }), disease: "tension", advice: "self-care" },
   { id: 24, vec: mkVec({ headache: 1, fatigue: 1 }), disease: "tension", advice: "self-care" },
 ];
 
 /* ════════════════════════════════════════════════════════════════════
- * PROJECTION 2D — MDS đơn giản qua hai trục chính
+ * PROJECTION 2D: MDS đơn giản qua hai trục chính
  *  trục x = 1 - similarity với "cold" trung tâm (điểm nhiều dị ứng/cảm)
  *  trục y = 1 - similarity với "flu" trung tâm (điểm nhiều cúm/covid)
  * Đây là chiếu deterministic để dễ hiển thị; thực tế Buoy dùng embeddings.
@@ -276,7 +276,7 @@ function projY(v: number) {
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * k-NN — predict disease + advice from feature vec
+ * k-NN: predict disease + advice from feature vec
  * ════════════════════════════════════════════════════════════════════ */
 function predictDisease(
   vec: Record<SymptomKey, 0 | 1>,
@@ -429,7 +429,7 @@ function SymptomPlayground() {
               />
             </div>
             <p className="text-[10px] text-tertiary leading-relaxed">
-              k lẻ để tránh hoà phiếu. Quá nhỏ → nhạy với nhiễu, quá lớn → bỏ qua bệnh
+              k lẻ để tránh hoà phiếu. Quá nhỏ thì nhạy với nhiễu, quá lớn thì bỏ qua bệnh
               hiếm.
             </p>
           </div>
@@ -449,7 +449,7 @@ function SymptomPlayground() {
           <div className="flex items-center gap-2">
             <HeartPulse size={16} className="text-accent" />
             <span className="text-sm font-semibold text-foreground">
-              Không gian bệnh nhân — ca của bạn so với 24 ca có sẵn
+              Không gian bệnh nhân: ca của bạn so với 24 ca có sẵn
             </span>
           </div>
           <svg
@@ -557,8 +557,8 @@ function SymptomPlayground() {
             )}
           </svg>
           <p className="text-[10px] text-tertiary text-center leading-relaxed">
-            Mỗi chấm = một ca cũ đã được bác sĩ chẩn đoán. Ca càng gần ca của bạn trong
-            không gian này = triệu chứng càng trùng. Đường nối = k ca gần nhất.
+            Mỗi chấm là một ca cũ đã được bác sĩ chẩn đoán. Ca càng gần ca của bạn trong
+            không gian này thì triệu chứng càng trùng. Đường nối nối tới k ca gần nhất.
           </p>
         </div>
       </div>
@@ -618,7 +618,7 @@ function SymptomPlayground() {
               </div>
               <p className="text-[10px] text-foreground/85 mt-2 leading-relaxed">
                 Quyết định này dựa trên đa số trong {k} ca có triệu chứng giống bạn nhất.{" "}
-                <strong>Đây không phải lời khuyên y khoa</strong> — nếu có triệu chứng
+                <strong>Đây không phải lời khuyên y khoa.</strong> Nếu có triệu chứng
                 nặng, liên hệ bác sĩ hoặc cơ sở y tế gần nhất.
               </p>
             </div>
@@ -693,7 +693,7 @@ function SymptomPlayground() {
 }
 
 /* ════════════════════════════════════════════════════════════════════
- * SCENARIO — 1 ca thực tế, đi qua 3 bước
+ * SCENARIO: 1 ca thực tế, đi qua 3 bước
  * ════════════════════════════════════════════════════════════════════ */
 function ScenarioWalkthrough() {
   const example = mkVec({
@@ -733,7 +733,7 @@ function ScenarioWalkthrough() {
           <p className="text-xs text-foreground/80 leading-relaxed">
             Minh, 24 tuổi, mở app Buoy Health lúc 10 giờ đêm. Các triệu chứng: sốt, ho,
             mệt mỏi, đau cơ. App biến bộ triệu chứng này thành một{" "}
-            <strong>vector 8 chiều</strong> — mỗi chiều là một triệu chứng, giá trị 1 (có)
+            <strong>vector 8 chiều</strong>. Mỗi chiều là một triệu chứng, giá trị 1 (có)
             hoặc 0 (không).
           </p>
         </div>,
@@ -752,20 +752,20 @@ function ScenarioWalkthrough() {
                   style={{ backgroundColor: DISEASE_COLOR[t.case_.disease] }}
                 />
                 <span className="text-foreground">
-                  Ca #{t.case_.id} — {DISEASE_LABEL[t.case_.disease]}
+                  Ca #{t.case_.id}: {DISEASE_LABEL[t.case_.disease]}
                 </span>
                 <span className="text-muted ml-auto">khoảng cách d = {t.d}</span>
               </li>
             ))}
           </ol>
           <p className="text-xs text-foreground/80 leading-relaxed">
-            Khoảng cách Hamming = số triệu chứng KHÁC biệt. d = 1 nghĩa là ca tham chiếu
+            Khoảng cách Hamming đếm số triệu chứng KHÁC biệt. d = 1 nghĩa là ca tham chiếu
             có 7/8 triệu chứng giống hệt Minh. k = 5 ca gần nhất sẽ được dùng để bỏ phiếu.
           </p>
         </div>,
         <div key="s3" className="rounded-xl border border-border bg-surface/60 p-4 space-y-2">
           <div className="text-xs font-semibold text-foreground">
-            Đa số trong 5 ca gần nhất →
+            Đa số trong 5 ca gần nhất chọn:
           </div>
           <div
             className="rounded-lg p-3 border"
@@ -793,12 +793,12 @@ function ScenarioWalkthrough() {
             </div>
             <p className="text-[11px] text-foreground/85 mt-2 leading-relaxed">
               App gợi ý Minh nên đặt lịch khám bác sĩ trong vòng 1–2 ngày, uống nhiều nước
-              và nghỉ ngơi. Nếu sốt trên 39 °C hoặc khó thở → cấp cứu.
+              và nghỉ ngơi. Nếu sốt trên 39 °C hoặc khó thở thì đi cấp cứu ngay.
             </p>
           </div>
           <p className="text-[10px] text-tertiary leading-relaxed">
-            Đằng sau 3 bước đó là chính là k-NN. Không có &ldquo;AI thần kỳ&rdquo; — chỉ
-            có đo khoảng cách và bỏ phiếu.
+            Đằng sau 3 bước đó chính là k-NN. Không có &ldquo;AI thần kỳ&rdquo; nào cả,
+            chỉ có đo khoảng cách và bỏ phiếu.
           </p>
         </div>,
       ]}
@@ -823,30 +823,30 @@ export default function KnnInSymptomChecker() {
           Nửa đêm, bạn đau đầu kèm sốt nhẹ. Thay vì gõ Google rồi tự doạ mình với kết quả
           u não, bạn mở app kiểm tra triệu chứng như Buoy Health. Chatbot hỏi vài câu:
           &ldquo;Bạn có sốt không?&rdquo;, &ldquo;Bạn có ho không?&rdquo;. Sau 30 giây,
-          app gợi ý: nhiều khả năng là cảm cúm thường, nghỉ ngơi và uống nước; đến bác sĩ
-          nếu triệu chứng kéo dài quá 3 ngày.
+          app gợi ý nhiều khả năng là cảm cúm thường, nên nghỉ ngơi và uống nước, và đến
+          bác sĩ nếu triệu chứng kéo dài quá 3 ngày.
         </p>
         <p>
           Đằng sau phần &ldquo;gợi ý&rdquo; đó chính là k-NN. App biến bộ triệu chứng của
-          bạn thành một vector số, so với hàng ngàn ca bệnh đã được bác sĩ chẩn đoán,
-          chọn các ca gần nhất và gợi ý bệnh phổ biến trong các ca đó. Phần tiếp theo sẽ
-          cho bạn thử chính quy trình ấy — chỉ việc bật/tắt các nút triệu chứng.
+          bạn thành một vector số, đối chiếu với hàng ngàn ca bệnh đã được bác sĩ chẩn
+          đoán, chọn các ca gần nhất, rồi gợi ý bệnh phổ biến trong các ca đó. Phần tiếp
+          theo sẽ cho bạn thử chính quy trình ấy bằng cách bật tắt vài nút triệu chứng.
         </p>
       </ApplicationHero>
 
       <ApplicationProblem topicSlug="knn-in-symptom-checker">
         <p>
-          Hàng trăm triệu lượt tìm kiếm triệu chứng bệnh trên internet mỗi tháng — riêng
-          WebMD có hơn 95 triệu lượt truy cập/tháng. Nhưng tìm kiếm thông thường trả về
-          kết quả gây hoang mang: một cơn đau đầu có thể là cảm, cũng có thể là u não.
-          Người dùng cần một công cụ đưa ra <em>gợi ý có trọng tâm</em>, không phải danh
-          sách mọi bệnh có thể.
+          Hàng trăm triệu lượt tìm kiếm triệu chứng bệnh trên internet mỗi tháng. Riêng
+          WebMD có hơn 95 triệu lượt truy cập mỗi tháng. Tìm kiếm thông thường thì trả
+          về kết quả gây hoang mang: một cơn đau đầu có thể là cảm, cũng có thể là u
+          não. Người dùng cần một công cụ đưa ra <em>gợi ý có trọng tâm</em>, không
+          phải danh sách mọi bệnh có thể.
         </p>
         <p>
-          Vấn đề cốt lõi: từ một bộ triệu chứng (tất cả đều rời rạc có/không), chọn ra
-          một vài bệnh khả năng cao nhất và phân loại mức độ khẩn cấp (triage). Phải đủ
-          nhanh để trả lời trong 1–2 giây, đủ chính xác để không bỏ sót cấp cứu, và đủ
-          đơn giản để cập nhật liên tục khi có ca mới.
+          Vấn đề cốt lõi nằm ở chỗ: từ một bộ triệu chứng (tất cả đều rời rạc có hoặc
+          không), chọn ra một vài bệnh khả năng cao nhất và phân loại mức độ khẩn cấp
+          (triage). Công cụ phải đủ nhanh để trả lời trong 1 đến 2 giây, đủ chính xác
+          để không bỏ sót cấp cứu, và đủ đơn giản để cập nhật liên tục khi có ca mới.
         </p>
       </ApplicationProblem>
 
@@ -857,54 +857,56 @@ export default function KnnInSymptomChecker() {
         <Beat step={1}>
           <p>
             <strong>Biến triệu chứng thành vector số.</strong> Mỗi triệu chứng (sốt, ho,
-            mệt mỏi, đau đầu...) là một chiều. Bệnh nhân trả lời có/không, hệ thống ghi
-            lại 1 hoặc 0. Nếu theo dõi 200 triệu chứng, mỗi người là một vector 200 chiều.
-            Với mức độ nghiêm trọng có thể dùng số liên tục (ví dụ &ldquo;sốt 38.5°C&rdquo;
-            thay vì chỉ 0/1).
+            mệt mỏi, đau đầu...) là một chiều. Bệnh nhân trả lời có hoặc không, hệ thống
+            ghi lại 1 hoặc 0. Nếu theo dõi 200 triệu chứng, mỗi người là một vector 200
+            chiều. Với mức độ nghiêm trọng có thể dùng số liên tục, ví dụ ghi
+            &ldquo;sốt 38.5°C&rdquo; thay vì chỉ 0 hoặc 1.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
             <strong>Tính khoảng cách với các ca đã có.</strong> Hệ thống so vector mới
-            với mọi ca trong cơ sở dữ liệu bằng khoảng cách phù hợp: <em>Hamming</em> (đếm
-            số chiều khác nhau — phù hợp với dữ liệu 0/1 như triệu chứng có/không),{" "}
-            <em>Euclid</em> (khi chiều liên tục), hoặc <em>Cosine</em> (khi quan trọng
-            tỉ lệ chứ không phải giá trị tuyệt đối). Ca nào có vector &ldquo;gần&rdquo; bạn
-            nhất = có triệu chứng giống bạn nhất.
+            với mọi ca trong cơ sở dữ liệu bằng khoảng cách phù hợp: <em>Hamming</em>{" "}
+            đếm số chiều khác nhau, phù hợp với dữ liệu 0 hoặc 1 như triệu chứng có hoặc
+            không; <em>Euclid</em> dùng khi chiều liên tục; <em>Cosine</em> dùng khi
+            quan trọng là tỉ lệ chứ không phải giá trị tuyệt đối. Ca nào có vector
+            &ldquo;gần&rdquo; bạn nhất là ca có triệu chứng giống bạn nhất.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>Chọn k ca gần nhất.</strong> Lấy k ca (thường 5, 7 hoặc 11 — số lẻ để
-            tránh hoà phiếu). k quá nhỏ → nhạy với ca cá biệt; k quá lớn → bỏ qua bệnh
-            hiếm. Trong y tế, k được tinh chỉnh qua cross-validation trên dữ liệu ca đã
-            biết.
+            <strong>Chọn k ca gần nhất.</strong> Lấy k ca (thường 5, 7 hoặc 11, là các
+            số lẻ để tránh hoà phiếu). k quá nhỏ thì nhạy với ca cá biệt, k quá lớn thì
+            bỏ qua bệnh hiếm. Trong y tế, k được tinh chỉnh qua cross-validation trên
+            dữ liệu ca đã biết.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Bỏ phiếu đa số.</strong> Trong k ca gần nhất, bệnh nào xuất hiện nhiều
-            nhất được chọn. Có thể dùng weighted voting — ca gần hơn thì phiếu nặng hơn.
-            Ví dụ: 5/7 ca là cúm, 2/7 là viêm họng → app gợi ý cúm với độ tin cậy ~71%.
+            <strong>Bỏ phiếu đa số.</strong> Trong k ca gần nhất, bệnh nào xuất hiện
+            nhiều nhất được chọn. Có thể dùng weighted voting, tức ca gần hơn thì phiếu
+            nặng hơn. Lấy ví dụ, 5 trên 7 ca là cúm, 2 trên 7 là viêm họng, app sẽ gợi
+            ý cúm với độ tin cậy khoảng 71%.
           </p>
         </Beat>
         <Beat step={5}>
           <p>
-            <strong>Phân loại mức độ khẩn cấp (triage).</strong> Kết hợp kết quả k-NN với
-            luật y khoa đơn giản: nếu có một số tổ hợp triệu chứng &ldquo;đèn đỏ&rdquo;
-            (đau ngực, khó thở, sốt rất cao), luôn ưu tiên đi cấp cứu — bất kể k-NN gợi ý
-            gì. Đây là lớp an toàn để tránh bỏ sót ca nặng.
+            <strong>Phân loại mức độ khẩn cấp (triage).</strong> Kết hợp kết quả k-NN
+            với luật y khoa đơn giản: nếu có một số tổ hợp triệu chứng &ldquo;đèn
+            đỏ&rdquo; (đau ngực, khó thở, sốt rất cao), luôn ưu tiên đi cấp cứu, bất
+            kể k-NN gợi ý gì. Đây là lớp an toàn để tránh bỏ sót ca nặng.
           </p>
         </Beat>
       </ApplicationMechanism>
 
       {/* ═══ TRỰC QUAN HÓA ═══ */}
       <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection label="Thử nhập triệu chứng — xem k-NN chạy" step={1}>
+        <LessonSection label="Thử nhập triệu chứng, xem k-NN chạy" step={1}>
           <p className="text-sm text-muted mb-3 leading-relaxed">
-            Bật/tắt các nút triệu chứng bên trái. Bên phải bạn sẽ thấy ca của mình xuất
-            hiện trong &ldquo;không gian bệnh nhân&rdquo; — càng gần một cụm màu, bệnh
-            càng có khả năng cao. Các đường nối là k ca gần nhất đang được bỏ phiếu.
+            Bật tắt các nút triệu chứng bên trái. Bên phải bạn sẽ thấy ca của mình
+            xuất hiện trong &ldquo;không gian bệnh nhân&rdquo;. Càng gần một cụm màu,
+            bệnh càng có khả năng cao. Các đường nối là k ca gần nhất đang được bỏ
+            phiếu.
           </p>
           <SymptomPlayground />
         </LessonSection>
@@ -916,25 +918,25 @@ export default function KnnInSymptomChecker() {
           <ScenarioWalkthrough />
         </LessonSection>
 
-        <LessonSection label="Thử thách — Điểm yếu của k-NN khi dữ liệu lớn" step={3}>
+        <LessonSection label="Thử thách: điểm yếu của k-NN khi dữ liệu lớn" step={3}>
           <InlineChallenge
             question="Tại sao app kiểm tra triệu chứng không nhanh khi database có hàng triệu ca?"
             options={[
               "Vì model k-NN phải được huấn luyện lại mỗi ngày",
-              "Vì k-NN không có bước train — mỗi query phải đo khoảng cách với TẤT CẢ ca, chi phí O(N · d) tăng tuyến tính với N",
+              "Vì k-NN không có bước train, mỗi query phải đo khoảng cách với TẤT CẢ ca, chi phí O(N · d) tăng tuyến tính với N",
               "Vì Hamming là công thức rất chậm",
               "Vì bác sĩ phải kiểm tra thủ công từng gợi ý",
             ]}
             correct={1}
-            explanation="Cái giá cho việc 'không cần train' là lúc dự đoán cực đắt. Với N = 1 triệu ca và d = 200 triệu chứng, mỗi query = 200 triệu phép so sánh. Giải pháp thực tế: KD-tree / Ball-tree (khi d nhỏ), hoặc approximate NN như HNSW và FAISS (chính Buoy dùng cấu trúc tương tự) để giảm xuống O(log N)."
+            explanation="Cái giá cho việc 'không cần train' là lúc dự đoán cực đắt. Với N = 1 triệu ca và d = 200 triệu chứng, mỗi query bằng 200 triệu phép so sánh. Giải pháp thực tế: KD-tree hoặc Ball-tree khi d nhỏ, hoặc approximate NN như HNSW và FAISS (chính Buoy dùng cấu trúc tương tự) để giảm xuống O(log N)."
           />
           <div className="mt-4">
             <Callout variant="warning" title="App gợi ý ≠ bác sĩ">
-              App triệu chứng giúp bạn <em>quyết định có nên đi khám hay không</em> — chứ
-              không thay bác sĩ chẩn đoán. Nghiên cứu cho thấy các công cụ này đúng trong
-              top-3 gợi ý khoảng 51% các ca — tốt cho định hướng, không đủ cho kết luận.
-              Luôn đi khám nếu triệu chứng nặng lên, hoặc nếu app đưa ra khuyến nghị cấp
-              cứu.
+              App triệu chứng giúp bạn <em>quyết định có nên đi khám hay không</em>,
+              chứ không thay bác sĩ chẩn đoán. Nghiên cứu cho thấy các công cụ này
+              đúng trong top-3 gợi ý khoảng 51% các ca, tốt cho định hướng nhưng không
+              đủ cho kết luận. Luôn đi khám nếu triệu chứng nặng lên, hoặc nếu app đưa
+              ra khuyến nghị cấp cứu.
             </Callout>
           </div>
         </LessonSection>
@@ -953,7 +955,7 @@ export default function KnnInSymptomChecker() {
           sourceRef={2}
         />
         <Metric
-          value="Hơn 95 triệu lượt truy cập WebMD mỗi tháng — nhu cầu kiểm tra triệu chứng rất lớn"
+          value="Hơn 95 triệu lượt truy cập WebMD mỗi tháng cho thấy nhu cầu kiểm tra triệu chứng rất lớn"
           sourceRef={5}
         />
         <Metric
@@ -967,34 +969,36 @@ export default function KnnInSymptomChecker() {
         topicSlug="knn-in-symptom-checker"
       >
         <p>
-          Không có k-NN, app kiểm tra triệu chứng sẽ phải quay về hai cách cũ: (1){" "}
-          <em>expert system</em> — bác sĩ viết hàng ngàn luật &ldquo;nếu có A và B thì có
-          thể là C&rdquo;, rất tốn công và khó cập nhật; hoặc (2) mô hình phức tạp (neural
-          net) — chính xác hơn nhưng không giải thích được vì sao chọn chẩn đoán cụ thể,
-          gây khó cho việc điều chỉnh và kiểm toán y khoa.
+          Không có k-NN, app kiểm tra triệu chứng sẽ phải quay về hai cách cũ. Cách thứ
+          nhất là <em>expert system</em>, tức bác sĩ viết hàng ngàn luật dạng &ldquo;nếu
+          có A và B thì có thể là C&rdquo;, rất tốn công và khó cập nhật. Cách thứ hai
+          là dùng mô hình phức tạp như neural net, chính xác hơn nhưng không giải thích
+          được vì sao chọn chẩn đoán cụ thể, gây khó cho việc điều chỉnh và kiểm toán y
+          khoa.
         </p>
         <p>
-          k-NN đơn giản đến mức dễ giải thích: &ldquo;gợi ý cúm vì 4/5 ca có triệu chứng
-          giống bạn nhất đều được chẩn đoán cúm&rdquo;. Điều đó giúp bác sĩ kiểm tra
-          nhanh, và giúp người dùng tin vào app. Khi có ca mới → chỉ cần thêm vào database,
-          không cần huấn luyện lại. Sự đơn giản đó chính là lý do k-NN xuất hiện ở nền
-          của nhiều công cụ triage — trước khi hệ thống được nâng cấp với embedding deep
-          learning và approximate nearest neighbor để chạy được trên triệu ca.
+          k-NN đơn giản đến mức dễ giải thích: &ldquo;gợi ý cúm vì 4 trên 5 ca có triệu
+          chứng giống bạn nhất đều được chẩn đoán cúm&rdquo;. Điều đó giúp bác sĩ kiểm
+          tra nhanh, và giúp người dùng tin vào app. Khi có ca mới, chỉ cần thêm vào
+          database, không cần huấn luyện lại. Sự đơn giản đó chính là lý do k-NN xuất
+          hiện ở nền của nhiều công cụ triage trước khi hệ thống được nâng cấp với
+          embedding deep learning và approximate nearest neighbor để chạy được trên
+          triệu ca.
         </p>
         <div className="mt-4">
           <MiniSummary
             title="Bài học từ app triệu chứng"
             points={[
-              "App biến triệu chứng thành vector, rồi so khoảng cách Hamming/Euclid với mọi ca cũ — đó là k-NN.",
-              "k lẻ, thường 5–11, chọn bằng cross-validation. Quyết định triage có thêm lớp luật y khoa 'đèn đỏ'.",
-              "k-NN đơn giản, dễ giải thích — nhưng chậm khi N lớn. Giải pháp: KD-tree hoặc approximate NN (HNSW, FAISS).",
-              "App gợi ý ≠ chẩn đoán của bác sĩ. Chính xác top-3 ~51% — đủ để định hướng, không đủ để thay bác sĩ.",
+              "App biến triệu chứng thành vector, rồi so khoảng cách Hamming hoặc Euclid với mọi ca cũ. Đó chính là k-NN.",
+              "k lẻ, thường 5 đến 11, chọn bằng cross-validation. Quyết định triage có thêm lớp luật y khoa 'đèn đỏ'.",
+              "k-NN đơn giản, dễ giải thích, nhưng chậm khi N lớn. Giải pháp: KD-tree hoặc approximate NN (HNSW, FAISS).",
+              "App gợi ý ≠ chẩn đoán của bác sĩ. Chính xác top-3 khoảng 51%, đủ để định hướng nhưng không đủ để thay bác sĩ.",
             ]}
           />
         </div>
         <p className="mt-4 text-sm leading-relaxed">
-          Muốn hiểu kỹ phần thuật toán đứng sau — k là gì, chọn k thế nào, các thước đo
-          khoảng cách — xem bài lý thuyết:{" "}
+          Muốn hiểu kỹ phần thuật toán đứng sau (k là gì, chọn k thế nào, các thước đo
+          khoảng cách), xem bài lý thuyết:{" "}
           <TopicLink slug="knn">k láng giềng gần nhất (k-NN)</TopicLink>.
         </p>
       </ApplicationCounterfactual>

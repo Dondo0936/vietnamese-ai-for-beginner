@@ -33,9 +33,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "math-readiness",
   title: "Math Readiness for ML",
-  titleVi: "Toán cần biết — đừng lo",
+  titleVi: "Toán cần biết cho ML, đừng lo",
   description:
-    "Bốn ngôi sao Bắc Đẩu của Machine Learning: đại số tuyến tính, xác suất, đạo hàm, thống kê. Không cần giỏi toán — chỉ cần biết chúng để làm gì.",
+    "Bốn ngôi sao Bắc Đẩu của Machine Learning: đại số tuyến tính, xác suất, đạo hàm, thống kê. Không cần giỏi toán. Chỉ cần biết chúng để làm gì.",
   category: "foundations",
   tags: ["functions", "notation", "summation", "prerequisites"],
   difficulty: "beginner",
@@ -60,7 +60,7 @@ interface StarInfo {
   x: number;
   y: number;
   color: string;
-  /** Một câu mô tả ngắn — dùng làm tagline */
+  /** Một câu mô tả ngắn, dùng làm tagline */
   tagline: string;
   /** Ẩn dụ đời thường */
   analogy: string;
@@ -83,12 +83,12 @@ const STARS: StarInfo[] = [
     color: "#3b82f6",
     tagline: "Ngôn ngữ để mô tả mọi thứ bằng con số.",
     analogy:
-      "Giống tọa độ trên Google Maps: một địa điểm = một cặp số (kinh độ, vĩ độ). Một bức ảnh = một dãy dài toàn số. Một bài hát = một dãy khác.",
+      "Giống tọa độ trên Google Maps: một địa điểm là một cặp số (kinh độ, vĩ độ). Một bức ảnh là một dãy dài toàn số. Một bài hát là một dãy khác.",
     whereInML:
-      "Dữ liệu nào vào máy cũng phải thành dãy số. Ảnh, văn bản, âm thanh — tất cả trở thành vector. Ma trận là bảng chứa nhiều vector xếp cạnh nhau.",
+      "Dữ liệu nào vào máy cũng phải thành dãy số. Ảnh, văn bản, âm thanh, tất cả trở thành vector. Ma trận là bảng chứa nhiều vector xếp cạnh nhau.",
     needLevel: "quen mặt là đủ",
     example:
-      "Ảnh chân dung → ảnh trở thành lưới số 28×28 pixel = một ma trận. Cộng hai vector giống như ghép hai danh sách lại cột một.",
+      "Ảnh chân dung trở thành lưới số 28×28 pixel, tức là một ma trận. Cộng hai vector giống như ghép hai danh sách lại theo từng cột.",
   },
   {
     id: "prob",
@@ -98,31 +98,31 @@ const STARS: StarInfo[] = [
     x: 370,
     y: 90,
     color: "#10b981",
-    tagline: "Máy không chắc chắn — nó đo độ chắc bằng xác suất.",
+    tagline: "Máy không chắc chắn. Nó đo độ chắc bằng xác suất.",
     analogy:
       "Bạn xem thời tiết: &ldquo;70% khả năng có mưa&rdquo;. Đó là xác suất. Máy ML cũng nói kiểu đó: &ldquo;95% đây là ảnh mèo&rdquo;.",
     whereInML:
-      "Khi máy đoán, nó không nói &ldquo;đây là mèo&rdquo; chắc nịch mà nói &ldquo;mèo với độ chắc 0.95&rdquo;. Số càng gần 1 = càng tin. Gần 0.5 = đang lưỡng lự.",
+      "Khi máy đoán, nó không nói &ldquo;đây là mèo&rdquo; chắc nịch mà nói &ldquo;mèo với độ chắc 0.95&rdquo;. Số càng gần 1 thì máy càng tin. Gần 0.5 nghĩa là đang lưỡng lự.",
     needLevel: "biết sơ qua",
     example:
-      "Tung đồng xu 100 lần được 53 lần ngửa → xác suất ngửa ≈ 0.53. Dự đoán thời tiết, khám bệnh, chatbot — tất cả đều chạy trên xác suất.",
+      "Tung đồng xu 100 lần được 53 lần ngửa, vậy xác suất ngửa khoảng 0.53. Dự đoán thời tiết, khám bệnh, chatbot, tất cả đều chạy trên xác suất.",
   },
   {
     id: "deriv",
     name: "Đạo hàm",
-    subtitle: "Độ dốc — bạn đang đi lên hay xuống",
+    subtitle: "Độ dốc khi bạn đi lên hay đi xuống",
     icon: TrendingUp,
     x: 130,
     y: 260,
     color: "#f59e0b",
     tagline: "Công cụ để tự sửa sai khi máy đang học.",
     analogy:
-      "Bạn đang leo núi trong sương mù. Không thấy đỉnh, nhưng biết chân đang nghiêng về hướng nào. Đạo hàm cho biết hướng dốc — đi ngược hướng dốc là tới thấp nhất.",
+      "Bạn đang leo núi trong sương mù. Không thấy đỉnh, nhưng biết chân đang nghiêng về hướng nào. Đạo hàm cho biết hướng dốc. Đi ngược hướng dốc là tới chỗ thấp nhất.",
     whereInML:
       "Lỗi của mô hình là một cái &ldquo;đồi&rdquo;. Máy muốn xuống đáy (lỗi thấp nhất). Đạo hàm cho biết nên bước theo hướng nào. Đây là linh hồn của huấn luyện.",
     needLevel: "biết sơ qua",
     example:
-      "Xe máy đang chạy, bạn nhìn đồng hồ tốc độ tăng dần — đạo hàm đang dương. Đang phanh, đồng hồ giảm — đạo hàm âm. Đó là toàn bộ ý tưởng.",
+      "Xe máy đang chạy, bạn nhìn đồng hồ tốc độ tăng dần, đạo hàm đang dương. Đang phanh, đồng hồ giảm, đạo hàm âm. Đó là toàn bộ ý tưởng.",
   },
   {
     id: "stats",
@@ -134,7 +134,7 @@ const STARS: StarInfo[] = [
     color: "#a855f7",
     tagline: "Đọc được câu chuyện dữ liệu đang kể.",
     analogy:
-      "Giáo viên nhìn điểm thi của cả lớp: trung bình bao nhiêu, lệch nhau thế nào, có ai thi 0 điểm không. Đó là thống kê — tóm gọn hàng nghìn số thành vài con số có ý nghĩa.",
+      "Giáo viên nhìn điểm thi của cả lớp: trung bình bao nhiêu, lệch nhau thế nào, có ai thi 0 điểm không. Đó là thống kê. Hàng nghìn số được tóm gọn thành vài con số có ý nghĩa.",
     whereInML:
       "Trước khi huấn luyện, bạn phải biết dữ liệu có gì: bao nhiêu ví dụ, phân bố ra sao, có sai lệch không. Sau khi huấn luyện, cần đo mô hình đúng bao nhiêu phần trăm.",
     needLevel: "nhớ kiến thức cấp 3",
@@ -144,7 +144,7 @@ const STARS: StarInfo[] = [
 ];
 
 /* ══════════════════════════════════════════════════════════════
-   Tự đánh giá — mỗi ô là một mini-quiz biết/chưa biết
+   Tự đánh giá: mỗi ô là một mini-quiz biết/chưa biết
    ══════════════════════════════════════════════════════════════ */
 
 type SelfAssessState = Record<string, "known" | "unsure" | "nope" | null>;
@@ -469,11 +469,11 @@ function SelfAssessment() {
       adviceColor = "#22c55e";
     } else if (knownCount >= 3) {
       advice =
-        "Ổn rồi. Vài chỗ chưa chắc — nhưng hoàn toàn đủ để bắt đầu. Các bài tiếp theo sẽ ôn lại khi cần.";
+        "Ổn rồi. Vài chỗ chưa chắc, nhưng hoàn toàn đủ để bắt đầu. Các bài tiếp theo sẽ ôn lại khi cần.";
       adviceColor = "#84cc16";
     } else {
       advice =
-        "Đừng nản! ML không cần giỏi toán — cần quen mặt. Mỗi khi gặp ký hiệu lạ, bạn chỉ cần hỏi 'cái này dùng để làm gì?' — không cần chứng minh được.";
+        "Đừng nản! ML không đòi giỏi toán, chỉ cần quen mặt. Mỗi khi gặp ký hiệu lạ, bạn chỉ cần hỏi 'cái này dùng để làm gì?'. Không cần chứng minh được.";
       adviceColor = "#f59e0b";
     }
   }
@@ -487,7 +487,7 @@ function SelfAssessment() {
         </h3>
       </div>
       <p className="text-sm text-muted leading-relaxed">
-        Sáu câu hỏi nhỏ để tự kiểm tra. Đừng lo đúng sai — chỉ bấm cái
+        Sáu câu hỏi nhỏ để tự kiểm tra. Đừng lo đúng sai, chỉ bấm cái
         bạn cảm thấy thật. Cuối cùng sẽ có lời khuyên dựa trên kết quả.
       </p>
 
@@ -647,33 +647,33 @@ export default function MathReadinessTopic() {
         ],
         correct: 1,
         explanation:
-          "Máy nhìn mọi thứ bằng số. Ảnh 28x28 = ma trận 28x28 con số. Đây là lý do đại số tuyến tính (vector, ma trận) là ngôi sao số một — vì dữ liệu nào cũng phải trở thành dãy số.",
+          "Máy nhìn mọi thứ bằng số. Ảnh 28x28 là một ma trận 28x28 con số. Đây là lý do đại số tuyến tính (vector và ma trận) là ngôi sao số một, vì dữ liệu nào cũng phải trở thành dãy số.",
       },
       {
         question:
           "Khi mô hình ML đưa ra dự đoán, nó thường trả về điều gì?",
         options: [
-          "Chỉ có đáp án đúng — không bao giờ sai",
+          "Chỉ có đáp án đúng, không bao giờ sai",
           "Xác suất hoặc độ tin cậy (ví dụ 0.87 = 87% chắc chắn)",
           "Một câu tiếng Anh",
           "Số phức",
         ],
         correct: 1,
         explanation:
-          "Máy ML không nói chắc nịch — nó nói độ chắc. &ldquo;Đây là ảnh mèo với độ tin 0.95&rdquo;. Đó là lý do xác suất là ngôi sao quan trọng thứ hai.",
+          "Máy ML không nói chắc nịch. Nó nói độ chắc. &ldquo;Đây là ảnh mèo với độ tin 0.95&rdquo;. Đó là lý do xác suất là ngôi sao quan trọng thứ hai.",
       },
       {
         question:
           "Đạo hàm (độ dốc) được dùng để làm gì trong ML?",
         options: [
           "Để đo chiều cao mô hình",
-          "Để máy biết đi theo hướng nào thì lỗi giảm — giống leo núi trong sương mù",
+          "Để máy biết đi theo hướng nào thì lỗi giảm, giống leo núi trong sương mù",
           "Để vẽ đồ thị đẹp",
           "Không dùng, chỉ có trong sách toán",
         ],
         correct: 1,
         explanation:
-          "Huấn luyện ML thực chất là đi tìm điểm thấp nhất của đồi lỗi. Đạo hàm chỉ hướng đi — đi ngược dốc là xuống. Đây chính là thuật toán &ldquo;gradient descent&rdquo; mà bạn sẽ nghe nhiều.",
+          "Huấn luyện ML thực chất là đi tìm điểm thấp nhất của đồi lỗi. Đạo hàm chỉ hướng đi: đi ngược dốc là xuống. Đây chính là thuật toán &ldquo;gradient descent&rdquo; mà bạn sẽ nghe nhiều.",
       },
       {
         type: "fill-blank",
@@ -692,14 +692,14 @@ export default function MathReadinessTopic() {
         question:
           "Bạn muốn bắt đầu học ML nhưng không giỏi toán. Lời khuyên nào hợp lý nhất?",
         options: [
-          "Bỏ ý định — không giỏi toán thì không học được",
-          "Học bốn khái niệm ở mức hiểu ý — không cần chứng minh công thức — và học dần khi gặp lại ở các bài sau",
+          "Bỏ ý định, không giỏi toán thì không học được",
+          "Học bốn khái niệm ở mức hiểu ý, không cần chứng minh công thức, rồi học dần khi gặp lại ở các bài sau",
           "Học toán ba năm trước khi đụng đến ML",
           "Chỉ học Python, bỏ hết toán",
         ],
         correct: 1,
         explanation:
-          "Đây là cách của hầu hết người làm ML hiện nay. Biết để làm gì > biết chứng minh. Khi gặp lại trong bài sau, kiến thức sẽ dần sâu hơn một cách tự nhiên.",
+          "Đây là cách của hầu hết người làm ML hiện nay. Biết để làm gì quan trọng hơn biết chứng minh. Khi gặp lại trong bài sau, kiến thức sẽ dần sâu hơn một cách tự nhiên.",
       },
       {
         question:
@@ -712,7 +712,7 @@ export default function MathReadinessTopic() {
         ],
         correct: 2,
         explanation:
-          "Sai ở câu C. Bạn chỉ cần &ldquo;quen mặt&rdquo; các khái niệm — không cần tính tay giải phương trình. Rất nhiều lập trình viên ML đã từng &ldquo;sợ toán&rdquo; hồi trung học.",
+          "Sai ở câu C. Bạn chỉ cần &ldquo;quen mặt&rdquo; các khái niệm, không cần tính tay giải phương trình. Rất nhiều lập trình viên ML đã từng &ldquo;sợ toán&rdquo; hồi trung học.",
       },
     ],
     [],
@@ -720,7 +720,7 @@ export default function MathReadinessTopic() {
 
   return (
     <>
-      {/* ══════════════════ BƯỚC 1 — HOOK ══════════════════ */}
+      {/* ══════════════════ BƯỚC 1: HOOK ══════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Bắt đầu">
         <div className="rounded-2xl border-2 border-accent/30 bg-gradient-to-br from-surface via-accent-light/40 to-surface p-6 space-y-4">
           <div className="flex items-start gap-3">
@@ -729,7 +729,7 @@ export default function MathReadinessTopic() {
             </div>
             <div>
               <h3 className="text-lg font-bold text-foreground leading-tight">
-                Đừng lo — bạn không cần giỏi toán để học ML.
+                Bạn không cần giỏi toán để học ML.
               </h3>
               <p className="text-sm text-muted mt-1">
                 Nhưng có <strong>bốn ngôi sao Bắc Đẩu</strong> bạn cần
@@ -742,11 +742,11 @@ export default function MathReadinessTopic() {
             <p>
               Rất nhiều bạn trẻ nghĩ: &ldquo;Tôi dốt toán, ML không phải
               cho tôi&rdquo;. Sai rồi. Làm ML phổ thông giống như lái xe:
-              bạn cần biết vô-lăng, chân ga, chân phanh là gì — không cần
+              bạn cần biết vô-lăng, chân ga, chân phanh là gì. Không cần
               hiểu piston và hộp số hoạt động ra sao.
             </p>
             <p>
-              Trong bài này bạn sẽ gặp bốn khái niệm quan trọng nhất. Với
+              Bốn khái niệm quan trọng nhất sẽ xuất hiện ngay sau đây. Với
               mỗi khái niệm, bạn chỉ cần biết:{" "}
               <em>&ldquo;Cái này tên là gì, nó dùng để làm gì trong
               ML?&rdquo;</em>
@@ -755,34 +755,34 @@ export default function MathReadinessTopic() {
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 2 — DỰ ĐOÁN ══════════════════ */}
+      {/* ══════════════════ BƯỚC 2: DỰ ĐOÁN ══════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn được cho bốn mảnh toán. Mảnh nào bạn sẽ ÍT khi gặp nhất trong công việc ML đời thường (không phải nghiên cứu hàn lâm)?"
           options={[
-            "Vector và ma trận — để biểu diễn dữ liệu và ảnh",
-            "Đạo hàm — để hiểu mô hình 'học' theo hướng nào",
-            "Xác suất và thống kê — để đánh giá mô hình và hiểu dữ liệu",
+            "Vector và ma trận để biểu diễn dữ liệu và ảnh",
+            "Đạo hàm để hiểu mô hình 'học' theo hướng nào",
+            "Xác suất và thống kê để đánh giá mô hình và hiểu dữ liệu",
             "Chứng minh chặt chẽ theo dạng epsilon-delta của giải tích",
           ]}
           correct={3}
-          explanation="Ba mảnh đầu xuất hiện mỗi ngày khi làm ML công nghiệp; chúng là 'vocab' bạn đọc mọi tài liệu. Chứng minh epsilon-delta là nền tảng hàn lâm — đẹp, quan trọng cho nhà nghiên cứu — nhưng người viết app ML hiếm khi phải viết lại. Mục tiêu của bài là giúp bạn quen mặt ba mảnh đầu ở mức hiểu ý."
+          explanation="Ba mảnh đầu xuất hiện mỗi ngày khi làm ML công nghiệp. Chúng là 'vocab' bạn đọc mọi tài liệu. Chứng minh epsilon-delta là nền tảng hàn lâm, đẹp và quan trọng cho nhà nghiên cứu, nhưng người viết app ML hiếm khi phải viết lại. Mục tiêu của bài là giúp bạn quen mặt ba mảnh đầu ở mức hiểu ý."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
-            Tiếp theo, mình sẽ vẽ cho bạn chòm sao Bắc Đẩu của ML —
+            Tiếp theo, mình sẽ vẽ cho bạn chòm sao Bắc Đẩu của ML, gồm
             bốn điểm mốc dẫn đường.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 3 — REVEAL (Chòm sao) ══════════════════ */}
+      {/* ══════════════════ BƯỚC 3: REVEAL (Chòm sao) ══════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-5">
             <div className="flex items-center gap-2">
               <Star size={18} className="text-accent" />
               <h3 className="text-base font-semibold text-foreground">
-                Chòm sao Bắc Đẩu — bấm vào từng ngôi sao
+                Chòm sao Bắc Đẩu: bấm vào từng ngôi sao
               </h3>
             </div>
             <p className="text-sm text-muted leading-relaxed">
@@ -827,40 +827,40 @@ export default function MathReadinessTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 4 — DEEPEN (Tự đánh giá) ══════════════════ */}
+      {/* ══════════════════ BƯỚC 4: DEEPEN (Tự đánh giá) ══════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Tự kiểm">
         <SelfAssessment />
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 5 — CHALLENGE (Match + Challenge) ══════════════════ */}
+      {/* ══════════════════ BƯỚC 5: CHALLENGE (Match + Challenge) ══════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <div className="space-y-6">
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-foreground">
-              Ghép: công việc ML ↔ ngôi sao toán cần dùng
+              Ghép công việc ML với ngôi sao toán cần dùng
             </h3>
             <p className="text-sm text-muted leading-relaxed">
               Với mỗi công việc ML thật dưới đây, ngôi sao nào được dùng
-              nhiều nhất? Kéo để ghép:
+              nhiều nhất? Kéo để ghép.
             </p>
             <MatchPairs
               instruction="Ghép mỗi công việc ML (Cột A) với ngôi sao toán học chủ đạo (Cột B)."
               pairs={[
                 {
                   left: "Biểu diễn một ảnh chân dung thành bảng số",
-                  right: "Đại số tuyến tính — ảnh thành ma trận pixel",
+                  right: "Đại số tuyến tính: ảnh thành ma trận pixel",
                 },
                 {
                   left: "Tính khả năng đây là email rác",
-                  right: "Xác suất — trả về một số từ 0 đến 1",
+                  right: "Xác suất: trả về một số từ 0 đến 1",
                 },
                 {
                   left: "Máy tự sửa khi đoán sai trong quá trình học",
-                  right: "Đạo hàm — biết đi hướng nào để lỗi giảm",
+                  right: "Đạo hàm: biết đi hướng nào để lỗi giảm",
                 },
                 {
                   left: "Đo xem mô hình đúng bao nhiêu % trên 1000 ảnh test",
-                  right: "Thống kê — tóm gọn kết quả nhiều lần đo",
+                  right: "Thống kê: tóm gọn kết quả nhiều lần đo",
                 },
               ]}
             />
@@ -875,19 +875,19 @@ export default function MathReadinessTopic() {
               "Thống kê",
             ]}
             correct={2}
-            explanation="Đạo hàm (độ dốc) chỉ cho máy biết đi theo hướng nào thì lỗi giảm nhanh nhất. Đây là ý tưởng cốt lõi của gradient descent — thuật toán chạy đằng sau mọi mô hình deep learning."
+            explanation="Đạo hàm (độ dốc) chỉ cho máy biết đi theo hướng nào thì lỗi giảm nhanh nhất. Đây là ý tưởng cốt lõi của gradient descent, thuật toán chạy đằng sau mọi mô hình deep learning."
           />
 
           <InlineChallenge
             question="Bạn nhập ảnh chó vào app, app báo 'đây là chó với độ tin 0.98'. Con số 0.98 đến từ đâu?"
             options={[
               "Đạo hàm",
-              "Xác suất — ước lượng máy về độ chắc chắn",
+              "Xác suất, ước lượng của máy về độ chắc chắn",
               "Thống kê mô tả",
               "Đại số tuyến tính",
             ]}
             correct={1}
-            explanation="Mọi mô hình ML đều trả lời bằng xác suất. 0.98 nghĩa là 'tôi 98% tin đây là chó, 2% còn lại để ngỏ'. Không bao giờ có câu trả lời 100% tuyệt đối — đó là bản chất của ML."
+            explanation="Mọi mô hình ML đều trả lời bằng xác suất. 0.98 nghĩa là 'tôi 98% tin đây là chó, 2% còn lại để ngỏ'. Không bao giờ có câu trả lời 100% tuyệt đối. Đó là bản chất của ML."
           />
 
           <InlineChallenge
@@ -899,17 +899,17 @@ export default function MathReadinessTopic() {
               "Thống kê mô tả",
             ]}
             correct={3}
-            explanation="Đây là thống kê mô tả — đo đạc, đếm, tính trung bình trên một mẫu thật. Mọi báo cáo kết quả mô hình đều cần thống kê để người đọc biết tin bao nhiêu."
+            explanation="Đây là thống kê mô tả: đo đạc, đếm, tính trung bình trên một mẫu thật. Mọi báo cáo kết quả mô hình đều cần thống kê để người đọc biết tin bao nhiêu."
           />
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 6 — GIẢI THÍCH + AHA + TÓM TẮT ══════════════════ */}
+      {/* ══════════════════ BƯỚC 6: GIẢI THÍCH + AHA + TÓM TẮT ══════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Gắn kết">
         <AhaMoment>
           <p className="leading-relaxed">
-            Bốn ngôi sao không đứng riêng lẻ —{" "}
-            <strong>chúng là bốn ngôn ngữ</strong> mà ML dùng để nói
+            Bốn ngôi sao không đứng riêng lẻ.{" "}
+            <strong>Chúng là bốn ngôn ngữ</strong> mà ML dùng để nói
             chuyện với dữ liệu.
           </p>
           <p className="mt-2 text-sm font-normal text-muted">
@@ -923,8 +923,8 @@ export default function MathReadinessTopic() {
           <ExplanationSection topicSlug={metadata.slug}>
             <p className="text-sm leading-relaxed">
               Bạn không cần học sâu từng nhánh để bắt đầu. Mỗi bài sau
-              trong chuỗi này sẽ chạm tới một ngôi sao ở mức vừa đủ — khi
-              bạn cần, không phải khi nó còn xa. Cách làm này gọi là{" "}
+              trong chuỗi này sẽ chạm tới một ngôi sao ở mức vừa đủ, ngay
+              khi bạn cần, không phải khi nó còn xa. Cách làm này gọi là{" "}
               <em>just-in-time learning</em>: học đúng lúc cần.
             </p>
 
@@ -943,7 +943,7 @@ export default function MathReadinessTopic() {
                 <li>
                   <strong>Gặp lại là cơ hội.</strong> Không hiểu ngay
                   lần đầu là bình thường. Bài sau sẽ gặp lại, sâu hơn
-                  một chút — dần bạn sẽ thấm.
+                  một chút. Dần bạn sẽ thấm.
                 </li>
               </ol>
             </Callout>
@@ -958,7 +958,7 @@ export default function MathReadinessTopic() {
                   thời tiết).
                 </li>
                 <li>
-                  Hiểu đạo hàm qua ẩn dụ &ldquo;leo núi&rdquo; — không
+                  Hiểu đạo hàm qua ẩn dụ &ldquo;leo núi&rdquo;, không
                   cần tính tay.
                 </li>
                 <li>
@@ -972,8 +972,8 @@ export default function MathReadinessTopic() {
               Sau bài này, hãy tiếp tục tới{" "}
               <TopicLink slug="data-and-datasets">
                 dữ liệu và tập dữ liệu
-              </TopicLink>{" "}
-              — nơi bạn sẽ thấy ngôi sao &ldquo;đại số tuyến tính&rdquo;
+              </TopicLink>
+              , nơi bạn sẽ thấy ngôi sao &ldquo;đại số tuyến tính&rdquo;
               được dùng thật để sắp xếp dữ liệu. Hoặc quay lại{" "}
               <TopicLink slug="what-is-ml">
                 Machine Learning là gì?
@@ -987,17 +987,17 @@ export default function MathReadinessTopic() {
           <MiniSummary
             title="Bốn điều mang theo"
             points={[
-              "Không cần giỏi toán để học ML — cần biết bốn ngôi sao dùng để làm gì.",
-              "Đại số tuyến tính: ngôn ngữ biến mọi thứ thành số (ảnh, văn bản, âm thanh → vector/ma trận).",
+              "Không cần giỏi toán để học ML, cần biết bốn ngôi sao dùng để làm gì.",
+              "Đại số tuyến tính: ngôn ngữ biến mọi thứ thành số (ảnh, văn bản, âm thanh → vector và ma trận).",
               "Xác suất: máy ML luôn trả lời bằng độ tin cậy, không phải chắc nịch.",
-              "Đạo hàm: la bàn trong sương mù — chỉ hướng đi để lỗi giảm khi máy đang học.",
+              "Đạo hàm: la bàn trong sương mù, chỉ hướng đi để lỗi giảm khi máy đang học.",
               "Thống kê: đọc câu chuyện của dữ liệu trước và sau khi huấn luyện.",
             ]}
           />
         </div>
       </LessonSection>
 
-      {/* ══════════════════ BƯỚC 7 — QUIZ ══════════════════ */}
+      {/* ══════════════════ BƯỚC 7: QUIZ ══════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

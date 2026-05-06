@@ -36,9 +36,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "backpropagation-in-translation",
   title: "Backpropagation in Translation",
-  titleVi: "Lan truyền ngược — khi Google Translate học từ lỗi",
+  titleVi: "Lan truyền ngược: Google Translate học từ mỗi câu sai",
   description:
-    "Mỗi câu dịch sai là một lần Google Translate tự chỉnh trọng số. Xem một cặp câu Anh–Việt đi qua forward, loss, backward và update.",
+    "Mỗi câu dịch sai là một lần Google Translate tự chỉnh trọng số. Xem một cặp câu Anh-Việt đi qua forward, loss, backward và update.",
   category: "neural-fundamentals",
   tags: ["backpropagation", "translation", "application"],
   difficulty: "intermediate",
@@ -92,10 +92,10 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — ba cặp câu Anh → Việt
-   Mỗi cặp có: bản dịch hiện tại (weights chưa hoàn hảo),
-   bản dịch đích (ground truth), và xác suất của top-4 lựa chọn
-   cho token đầu tiên của câu đích.
+   DU LIEU: ba cap cau Anh -> Viet
+   Moi cap co: ban dich hien tai (weights chua hoan hao),
+   ban dich dich (ground truth), va xac suat cua top-4 lua chon
+   cho token dau tien cua cau dich.
    ──────────────────────────────────────────────────────────── */
 
 interface TokenProbability {
@@ -138,13 +138,13 @@ const TRANSLATION_PAIRS: TranslationPair[] = [
     ],
     loss: 0.34,
     lossNote:
-      "Token đầu đã đúng (Tôi). Token thứ hai sai nhẹ (em thay vì bạn) → loss trung bình thấp.",
+      "Token đầu đã đúng (Tôi). Token thứ hai sai nhẹ (em thay vì bạn). Loss trung bình thấp.",
     gradientLayers: [
       { name: "Embedding", correction: 0.08, note: "chỉnh nhẹ nhúng của 'you'" },
       { name: "Encoder L1-L4", correction: 0.12, note: "lớp thấp bắt cú pháp, ít sai" },
       { name: "Encoder L5-L8", correction: 0.24, note: "lớp cao giữ ngữ nghĩa tình cảm" },
       { name: "Attention", correction: 0.55, note: "phải học nối 'you' với 'bạn' thay vì 'em'" },
-      { name: "Decoder L1-L4", correction: 0.38, note: "sinh từ sai — gradient mạnh vào đây" },
+      { name: "Decoder L1-L4", correction: 0.38, note: "sinh từ sai, gradient mạnh vào đây" },
       { name: "Decoder L5-L8", correction: 0.62, note: "lớp gần output nhận chỉnh sửa lớn nhất" },
       { name: "Softmax head", correction: 0.81, note: "phải đẩy xác suất 'bạn' lên, 'em' xuống" },
     ],
@@ -164,12 +164,12 @@ const TRANSLATION_PAIRS: TranslationPair[] = [
     ],
     loss: 0.58,
     lossNote:
-      "Sai cấu trúc 'buổi sáng' và chọn 'giáo viên' thay vì 'thầy giáo' (kính ngữ) → loss cao hơn.",
+      "Sai cấu trúc 'buổi sáng' và chọn 'giáo viên' thay vì 'thầy giáo' (kính ngữ). Loss cao hơn.",
     gradientLayers: [
       { name: "Embedding", correction: 0.11, note: "tinh chỉnh nhúng của 'teacher'" },
       { name: "Encoder L1-L4", correction: 0.18, note: "cú pháp cụm 'good morning'" },
       { name: "Encoder L5-L8", correction: 0.31, note: "ngữ cảnh lớp học, kính ngữ" },
-      { name: "Attention", correction: 0.72, note: "phải học 'teacher' → 'thầy giáo' (không phải giáo viên)" },
+      { name: "Attention", correction: 0.72, note: "phải học 'teacher' → 'thầy giáo', không phải 'giáo viên'" },
       { name: "Decoder L1-L4", correction: 0.54, note: "thiếu 'buổi' trong cụm 'buổi sáng'" },
       { name: "Decoder L5-L8", correction: 0.79, note: "phải sinh đúng thứ tự nhiều token" },
       { name: "Softmax head", correction: 0.92, note: "đẩy 'thầy giáo' cao hơn 'giáo viên'" },
@@ -184,19 +184,19 @@ const TRANSLATION_PAIRS: TranslationPair[] = [
     predicted: "Bà đi thị trường",
     firstTokenDistribution: [
       { token: "Cô", prob: 0.31, isCorrect: true, note: "đúng nhưng xác suất thấp" },
-      { token: "Bà", prob: 0.42, isCorrect: false, note: "đang đứng đầu — sai tuổi tác" },
+      { token: "Bà", prob: 0.42, isCorrect: false, note: "đang đứng đầu, sai tuổi tác" },
       { token: "Chị", prob: 0.18, isCorrect: false, note: "hợp văn cảnh khác" },
       { token: "Nó", prob: 0.09, isCorrect: false, note: "quá suồng sã" },
     ],
     loss: 0.87,
     lossNote:
-      "Sai ngay token đầu ('Bà' thay vì 'Cô ấy'), sai 'thị trường' (dịch từ điển) thay vì 'chợ' → loss cao.",
+      "Sai ngay token đầu ('Bà' thay vì 'Cô ấy'), sai 'thị trường' (dịch từ điển) thay vì 'chợ'. Loss cao.",
     gradientLayers: [
       { name: "Embedding", correction: 0.22, note: "nhúng 'she' và 'market' lệch khỏi mục tiêu" },
       { name: "Encoder L1-L4", correction: 0.35, note: "cú pháp chủ-động-tân đúng, ít chỉnh" },
       { name: "Encoder L5-L8", correction: 0.58, note: "lớp cao phải nhớ 'market' thường là 'chợ' ở câu đời thường" },
-      { name: "Attention", correction: 0.88, note: "phải học 'she' → 'cô ấy' thay vì 'bà' — chỉnh mạnh" },
-      { name: "Decoder L1-L4", correction: 0.82, note: "token đầu tiên sai → gradient lớn" },
+      { name: "Attention", correction: 0.88, note: "phải học 'she' → 'cô ấy' thay vì 'bà', chỉnh mạnh" },
+      { name: "Decoder L1-L4", correction: 0.82, note: "token đầu tiên sai, gradient lớn" },
       { name: "Decoder L5-L8", correction: 0.91, note: "phải thay đổi phân phối cho cả hai vị trí" },
       { name: "Softmax head", correction: 0.98, note: "đẩy 'Cô' lên đỉnh, 'Bà' xuống sâu" },
     ],
@@ -265,8 +265,8 @@ export default function BackpropagationInTranslation() {
           Bạn gõ <strong>&ldquo;Xin chào&rdquo;</strong> vào Google Translate và
           ngay lập tức nhận được <strong>&ldquo;Hello&rdquo;</strong>. Đằng sau
           khoảnh khắc đó là hàng triệu cặp câu Anh-Việt mà mô hình đã nhìn qua
-          trong lúc huấn luyện. Mỗi cặp là một <strong>cơ hội mắc lỗi</strong>{" "}
-          — và mỗi lỗi là một lần thuật toán <em>lan truyền ngược</em> đi đánh
+          trong lúc huấn luyện. Mỗi cặp là một <strong>cơ hội mắc lỗi</strong>,
+          và mỗi lỗi là một lần thuật toán <em>lan truyền ngược</em> đi đánh
           dấu lại hàng triệu trọng số bên trong mạng nơ-ron.
         </p>
         <p>
@@ -274,7 +274,7 @@ export default function BackpropagationInTranslation() {
           vào đến đầu ra, xem mô hình dự đoán sai chỗ nào, rồi nhìn gradient
           (mũi tên sửa lỗi) chảy ngược qua từng lớp. Sau khi cập nhật, cùng cặp
           câu đó sẽ cho kết quả tốt hơn một chút. Nhân chuyện nhỏ đó lên hàng
-          tỉ lần → ra hệ thống Google Translate.
+          tỉ lần thì ra hệ thống Google Translate.
         </p>
 
         <div className="not-prose my-5 rounded-2xl border border-border bg-card p-5 space-y-3">
@@ -367,12 +367,12 @@ export default function BackpropagationInTranslation() {
             <strong>Chọn một cặp câu từ dữ liệu.</strong> Hệ thống bốc ngẫu
             nhiên một cặp (câu nguồn, câu đích) từ kho 36 triệu cặp song ngữ.
             Câu nguồn đi vào encoder, câu đích giữ lại làm &ldquo;đáp án&rdquo;.
-            Lúc này mô hình chưa biết câu đích — nó phải tự đoán.
+            Lúc này mô hình chưa biết câu đích, nó phải tự đoán.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>Forward — encoder nén câu nguồn, decoder sinh câu đích.</strong>{" "}
+            <strong>Forward: encoder nén câu nguồn, decoder sinh câu đích.</strong>{" "}
             8 lớp LSTM encoder đọc &ldquo;I love you&rdquo; rồi nén thành một
             chuỗi vector ngữ nghĩa. 8 lớp LSTM decoder lần lượt sinh ra từng
             token của câu đích. Tại mỗi bước, decoder cho ra phân phối xác suất
@@ -381,7 +381,7 @@ export default function BackpropagationInTranslation() {
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>Loss — so với bản dịch đúng.</strong> Token do mô hình dự
+            <strong>Loss: so với bản dịch đúng.</strong> Token do mô hình dự
             đoán được so với token đúng bằng cross-entropy. Nếu mô hình tự tin
             sai (ví dụ đẩy &ldquo;em&rdquo; lên 0.7 thay vì &ldquo;bạn&rdquo;),
             loss lớn. Loss của câu = tổng loss trên tất cả các token của câu đích.
@@ -389,17 +389,17 @@ export default function BackpropagationInTranslation() {
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Backward — gradient chảy ngược qua 16 lớp.</strong> Bắt đầu
+            <strong>Backward: gradient chảy ngược qua 16 lớp.</strong> Bắt đầu
             từ loss, thuật toán backprop đi ngược qua softmax head, decoder
-            (lớp cao → lớp thấp), attention, rồi encoder. Mỗi trọng số nhận về
-            một con số: &ldquo;bạn đang đóng góp bao nhiêu vào lỗi này?&rdquo;.
+            (lớp cao xuống lớp thấp), attention, rồi encoder. Mỗi trọng số nhận
+            về một con số: &ldquo;bạn đang đóng góp bao nhiêu vào lỗi này?&rdquo;.
             Kết nối tắt (residual) giữ gradient không bị triệt tiêu khi qua
             nhiều lớp.
           </p>
         </Beat>
         <Beat step={5}>
           <p>
-            <strong>Update — trọng số nhích theo gradient.</strong> Mỗi trọng
+            <strong>Update: trọng số nhích theo gradient.</strong> Mỗi trọng
             số <em>w</em> được cập nhật bằng công thức đơn giản: trừ đi tốc độ
             học nhân với gradient. Lớp softmax head và decoder cao (gần đầu ra)
             thường nhận chỉnh sửa mạnh nhất vì gần loss. Lớp encoder thấp (gần
@@ -408,7 +408,7 @@ export default function BackpropagationInTranslation() {
         </Beat>
 
         {/* ══════════════════════════════════════════════════════
-           REVEAL — TOY TRANSLATION DEMO with confidence scores
+           REVEAL: TOY TRANSLATION DEMO with confidence scores
            ══════════════════════════════════════════════════════ */}
         <li className="mt-8">
           <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-5 space-y-5">
@@ -572,7 +572,7 @@ export default function BackpropagationInTranslation() {
                           </p>
                         )}
                         {isTop && t.isCorrect && (
-                          <p className="inline-flex items-center gap-0.5 text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                          <p className="inline-flex items-center gap-0.5 text-[9px] text-foreground font-semibold">
                             <CheckCircle2 size={10} aria-hidden="true" />
                             đang chọn
                           </p>
@@ -634,7 +634,7 @@ export default function BackpropagationInTranslation() {
               <p className="text-xs text-muted leading-relaxed max-w-md">
                 Bấm &ldquo;Chạy một bước&rdquo; để thấy gradient chảy ngược qua
                 các lớp. Mỗi lớp nhận một &ldquo;liều chỉnh sửa&rdquo; khác
-                nhau — lớp gần đầu ra nhận mạnh hơn.
+                nhau, lớp gần đầu ra nhận mạnh hơn.
               </p>
               <div className="flex items-center gap-2">
                 {phase === "idle" && (
@@ -682,7 +682,7 @@ export default function BackpropagationInTranslation() {
         </li>
 
         {/* ══════════════════════════════════════════════════════
-           DEEPEN — StepReveal one training example
+           DEEPEN: StepReveal one training example
            ══════════════════════════════════════════════════════ */}
         <li className="mt-8">
           <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
@@ -692,7 +692,7 @@ export default function BackpropagationInTranslation() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-foreground">
-                  Bên trong một bước huấn luyện — bốn pha không bao giờ đổi
+                  Bên trong một bước huấn luyện: bốn pha không bao giờ đổi
                 </h3>
                 <p className="text-xs text-muted">
                   Bấm &ldquo;Tiếp tục&rdquo; để theo dõi cặp câu &ldquo;I love
@@ -703,55 +703,55 @@ export default function BackpropagationInTranslation() {
 
             <StepReveal
               labels={[
-                "1 · Forward — sinh bản dịch tạm",
-                "2 · Loss — đo sai lệch",
-                "3 · Backward — gradient chảy ngược",
-                "4 · Update — trọng số nhích",
+                "1 · Forward: sinh bản dịch tạm",
+                "2 · Loss: đo sai lệch",
+                "3 · Backward: gradient chảy ngược",
+                "4 · Update: trọng số nhích",
               ]}
             >
               <TrainingStepCard
                 kind="forward"
-                title="Forward — encoder nén, decoder sinh"
-                description="Câu 'I love you' được tách thành ba wordpiece. 8 lớp LSTM encoder đọc lần lượt, tạo ra ba vector ngữ cảnh. 8 lớp LSTM decoder bắt đầu sinh token tiếng Việt: đầu tiên là 'Tôi' (xác suất 0.72 — đúng), sau đó là 'yêu' (đúng), rồi 'em' (xác suất 0.51 — SAI, nên là 'bạn')."
+                title="Forward: encoder nén, decoder sinh"
+                description="Câu 'I love you' được tách thành ba wordpiece. 8 lớp LSTM encoder đọc lần lượt, tạo ra ba vector ngữ cảnh. 8 lớp LSTM decoder bắt đầu sinh token tiếng Việt: đầu tiên là 'Tôi' (xác suất 0.72, đúng), sau đó là 'yêu' (đúng), rồi 'em' (xác suất 0.51, SAI, nên là 'bạn')."
               />
               <TrainingStepCard
                 kind="loss"
-                title="Loss — cross-entropy đo sai lệch"
-                description="So chuỗi dự đoán 'Tôi yêu em' với đáp án 'Tôi yêu bạn'. Cross-entropy phạt mạnh khi mô hình TỰ TIN SAI. Token thứ ba sai → loss cho token này cao, hai token đầu đúng → loss gần 0. Loss tổng của câu = 0.34."
+                title="Loss: cross-entropy đo sai lệch"
+                description="So chuỗi dự đoán 'Tôi yêu em' với đáp án 'Tôi yêu bạn'. Cross-entropy phạt mạnh khi mô hình TỰ TIN SAI. Token thứ ba sai nên loss cho token này cao, hai token đầu đúng nên loss gần 0. Loss tổng của câu = 0.34."
               />
               <TrainingStepCard
                 kind="backward"
-                title="Backward — chain rule đi ngược 16 lớp"
-                description="Gradient bắt đầu từ loss. Softmax head nhận chỉnh sửa MẠNH NHẤT (0.81) — phải đẩy 'bạn' lên, 'em' xuống. Qua decoder (từ lớp cao xuống thấp), rồi attention, rồi encoder. Mỗi lớp nhân với đạo hàm cục bộ của mình — đó là chain rule."
+                title="Backward: chain rule đi ngược 16 lớp"
+                description="Gradient bắt đầu từ loss. Softmax head nhận chỉnh sửa MẠNH NHẤT (0.81), phải đẩy 'bạn' lên, 'em' xuống. Qua decoder (từ lớp cao xuống thấp), rồi attention, rồi encoder. Mỗi lớp nhân với đạo hàm cục bộ của mình. Đó chính là chain rule."
               />
               <TrainingStepCard
                 kind="update"
-                title="Update — trọng số nhích một chút"
-                description="Mỗi trọng số w nhích theo công thức: w mới = w cũ − (tốc độ học × gradient). Với GNMT, tốc độ học ban đầu 1e-4, giảm dần theo thời gian. Sau bước này, nếu cho câu 'I love you' vào lại, xác suất 'bạn' sẽ cao hơn một chút so với 'em'. Một chút thôi — nhưng nhân với 36 triệu cặp câu = mô hình biết dịch."
+                title="Update: trọng số nhích một chút"
+                description="Mỗi trọng số w nhích theo công thức: w mới = w cũ − (tốc độ học × gradient). Với GNMT, tốc độ học ban đầu 1e-4, giảm dần theo thời gian. Sau bước này, nếu cho câu 'I love you' vào lại, xác suất 'bạn' sẽ cao hơn một chút so với 'em'. Một chút thôi, nhưng nhân với 36 triệu cặp câu thì ra mô hình biết dịch."
               />
             </StepReveal>
           </div>
         </li>
 
         {/* ══════════════════════════════════════════════════════
-           CHALLENGE — mini-batch of 32 sentence pairs
+           CHALLENGE: mini-batch of 32 sentence pairs
            ══════════════════════════════════════════════════════ */}
         <li className="mt-8">
           <InlineChallenge
             question="Google huấn luyện GNMT không dùng từng cặp câu một, mà gộp 32 cặp thành MỘT mini-batch rồi backprop trung bình gradient. Lợi ích chính của cách này là gì?"
             options={[
-              "Giảm số lần forward pass xuống 32 lần ít hơn — tiết kiệm bộ nhớ GPU",
-              "Trung bình gradient khử đi nhiễu của từng câu riêng lẻ — hướng cập nhật ổn định hơn, đồng thời khai thác được song song trên GPU",
+              "Giảm số lần forward pass xuống 32 lần ít hơn, tiết kiệm bộ nhớ GPU",
+              "Trung bình gradient khử đi nhiễu của từng câu riêng lẻ, cho hướng cập nhật ổn định hơn, đồng thời khai thác được song song trên GPU",
               "Mô hình học nhanh hơn 32 lần vì mỗi bước là một batch thay vì một câu",
               "Mini-batch cho phép chain rule bỏ qua các lớp không quan trọng",
             ]}
             correct={1}
-            explanation="Gradient từ MỘT cặp câu luôn nhiễu — ví dụ một cặp ngắn chỉ có 3 từ sẽ kéo toàn bộ weights theo chiều hướng của riêng 3 từ đó, nhưng chưa chắc đúng với 36 triệu cặp còn lại. Trung bình gradient của 32 cặp khử bớt nhiễu, cho ra HƯỚNG GẦN VỚI GRADIENT THẬT của toàn bộ tập dữ liệu. Thêm vào đó, GPU có thể xử lý 32 cặp song song — gần như không tốn thời gian thêm. Đây cũng là lý do batch size là một siêu tham số cực kỳ quan trọng: quá nhỏ → gradient nhiễu, quá to → ít bước cập nhật trong một epoch và dễ bị cực tiểu phẳng."
+            explanation="Gradient từ MỘT cặp câu luôn nhiễu. Ví dụ một cặp ngắn chỉ có 3 từ sẽ kéo toàn bộ weights theo chiều hướng của riêng 3 từ đó, nhưng chưa chắc đúng với 36 triệu cặp còn lại. Trung bình gradient của 32 cặp khử bớt nhiễu, cho ra HƯỚNG GẦN VỚI GRADIENT THẬT của toàn bộ tập dữ liệu. Thêm vào đó, GPU có thể xử lý 32 cặp song song, gần như không tốn thời gian thêm. Đây cũng là lý do batch size là một siêu tham số cực kỳ quan trọng: quá nhỏ thì gradient nhiễu, quá to thì ít bước cập nhật trong một epoch và dễ bị cực tiểu phẳng."
           />
         </li>
 
         {/* ══════════════════════════════════════════════════════
-           GRADIENT DEPTH — one more visual: how corrections
+           GRADIENT DEPTH: one more visual: how corrections
            distribute across layers
            ══════════════════════════════════════════════════════ */}
         <li className="mt-8">
@@ -759,13 +759,13 @@ export default function BackpropagationInTranslation() {
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-accent" />
               <h3 className="text-sm font-semibold text-foreground">
-                Gradient không phân phối đều — lớp nào nhận nhiều chỉnh sửa nhất?
+                Gradient không phân phối đều: lớp nào nhận nhiều chỉnh sửa nhất?
               </h3>
             </div>
             <p className="text-xs text-muted leading-relaxed">
               Cùng cặp câu bạn đang xem, các lớp khác nhau nhận các mức &ldquo;liều
               chỉnh&rdquo; khác nhau. Lớp gần output (nơi loss phát sinh) thường
-              nhận gradient lớn, lớp gần input thường nhận gradient nhỏ — đó là
+              nhận gradient lớn, lớp gần input thường nhận gradient nhỏ. Đó là
               lý do mạng sâu không kết nối tắt dễ bị &ldquo;biến mất
               gradient&rdquo; ở lớp thấp.
             </p>
@@ -780,9 +780,9 @@ export default function BackpropagationInTranslation() {
           <MiniSummary
             title="Bốn điều cần nhớ về backprop trong dịch máy"
             points={[
-              "Mỗi cặp câu Anh-Việt là một bài học: forward sinh dự đoán → loss đo sai → backward trôi ngược → update nhích weights.",
-              "Gradient của lớp gần output thường lớn; lớp gần input nhỏ. Kết nối tắt giữ gradient không bị triệt tiêu khi qua 16 lớp.",
-              "Mini-batch 32 cặp câu khử nhiễu gradient, tận dụng GPU song song — cân bằng giữa ổn định và tốc độ.",
+              "Mỗi cặp câu Anh-Việt là một bài học: forward sinh dự đoán, loss đo sai, backward trôi ngược, update nhích weights.",
+              "Gradient của lớp gần output thường lớn, lớp gần input nhỏ. Kết nối tắt giữ gradient không bị triệt tiêu khi qua 16 lớp.",
+              "Mini-batch 32 cặp câu khử nhiễu gradient, tận dụng GPU song song. Cân bằng giữa ổn định và tốc độ.",
               "Không có backprop, không có Google Translate như hôm nay: 36 triệu cặp câu × hàng trăm triệu trọng số không thể chỉnh tay.",
             ]}
           />
@@ -832,7 +832,7 @@ export default function BackpropagationInTranslation() {
         <p>
           Hơn <strong>500 triệu người dùng</strong> Google Translate mỗi ngày sẽ
           nhận bản dịch kém hơn đáng kể. Học sinh làm bài tập, khách du lịch
-          đọc thực đơn, bác sĩ đọc hồ sơ bệnh nhân nước ngoài — tất cả đều nhận
+          đọc thực đơn, bác sĩ đọc hồ sơ bệnh nhân nước ngoài: tất cả đều nhận
           một trải nghiệm tệ hơn rất nhiều.
         </p>
         <p className="mt-3">
@@ -849,8 +849,8 @@ export default function BackpropagationInTranslation() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   SUB-COMPONENT — Backprop layer animation
-   Shows 16 layers and gradient chevrons flowing right → left
+   SUB-COMPONENT: Backprop layer animation
+   Shows 16 layers and gradient chevrons flowing right -> left
    as phase changes.
    ──────────────────────────────────────────────────────────── */
 
@@ -870,10 +870,10 @@ function BackpropLayerAnimation({
     <div className="rounded-xl border border-border bg-card p-4 space-y-3">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <p className="text-sm font-semibold text-foreground">
-          {forwardActive && "Pha 1 · Forward — dữ liệu chảy xuôi"}
-          {lossActive && "Pha 2 · Loss — đo sai lệch ở cuối chuỗi"}
-          {backwardActive && "Pha 3 · Backward — gradient chảy ngược"}
-          {updateActive && "Pha 4 · Update — weights nhích một chút"}
+          {forwardActive && "Pha 1 · Forward: dữ liệu chảy xuôi"}
+          {lossActive && "Pha 2 · Loss: đo sai lệch ở cuối chuỗi"}
+          {backwardActive && "Pha 3 · Backward: gradient chảy ngược"}
+          {updateActive && "Pha 4 · Update: weights nhích một chút"}
         </p>
         <div className="flex items-center gap-1">
           {(["forward", "loss", "backward", "update"] as const).map((p) => {
@@ -1149,8 +1149,8 @@ function BackpropLayerAnimation({
               <Gauge className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
               <span>
                 So với đáp án <strong>&ldquo;{pair.target}&rdquo;</strong> bằng
-                cross-entropy. Loss = <strong>{pair.loss.toFixed(2)}</strong> —
-                con số này trở thành điểm xuất phát cho backward pass.
+                cross-entropy. Loss = <strong>{pair.loss.toFixed(2)}</strong>.
+                Con số này trở thành điểm xuất phát cho backward pass.
               </span>
             </>
           )}
@@ -1160,7 +1160,7 @@ function BackpropLayerAnimation({
               <span>
                 Chain rule đi ngược từ loss qua softmax head, decoder, attention,
                 encoder. Mỗi lớp biết đạo hàm cục bộ của mình và nhân nó với
-                gradient truyền từ lớp sau — kết quả: một con số ∂L/∂w cho mỗi
+                gradient truyền từ lớp sau. Kết quả: một con số ∂L/∂w cho mỗi
                 trọng số.
               </span>
             </>
@@ -1182,7 +1182,7 @@ function BackpropLayerAnimation({
 }
 
 /* ────────────────────────────────────────────────────────────
-   SUB-COMPONENT — Gradient magnitude bar chart across layers
+   SUB-COMPONENT: Gradient magnitude bar chart across layers
    ──────────────────────────────────────────────────────────── */
 
 function GradientMagnitudeChart({ pair }: { pair: TranslationPair }) {
@@ -1247,7 +1247,7 @@ function GradientMagnitudeChart({ pair }: { pair: TranslationPair }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   SUB-COMPONENT — Training step card (rendered inside StepReveal)
+   SUB-COMPONENT: Training step card (rendered inside StepReveal)
    ──────────────────────────────────────────────────────────── */
 
 function TrainingStepCard({
@@ -1286,7 +1286,7 @@ function TrainingStepCard({
       {/* Mini flow diagram */}
       <div className="rounded-lg bg-card border border-border p-3">
         <svg viewBox="0 0 440 70" className="w-full" role="img" aria-label={`Bước ${kind}`}>
-          <title>Bước {kind} — minh họa dòng chảy dữ liệu.</title>
+          <title>Bước {kind}: minh họa dòng chảy dữ liệu.</title>
 
           <rect
             x={20}

@@ -40,9 +40,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "end-to-end-ml-project",
   title: "End-to-End ML Project",
-  titleVi: "Dự án ML từ đầu đến cuối",
+  titleVi: "Đi trọn một dự án ML từ câu hỏi sếp đến model chạy thật",
   description:
-    "Dự án tổng kết (Capstone) — đi trọn vẹn một dự án ML: từ câu hỏi kinh doanh đến mô hình chạy thật, được theo dõi mỗi ngày.",
+    "Bài tổng kết (capstone) đi qua một dự án ML hoàn chỉnh: từ câu hỏi kinh doanh, qua dữ liệu và model, đến endpoint chạy production và dashboard theo dõi mỗi ngày.",
   category: "foundations",
   tags: ["project", "pipeline", "end-to-end", "capstone"],
   difficulty: "intermediate",
@@ -56,7 +56,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ─────────────────────────────────────────────────────────────────────────────
- * 1. Bản đồ 8 giai đoạn — mỗi giai đoạn có: icon, màu, tóm tắt, đầu vào, đầu ra,
+ * 1. Bản đồ 8 giai đoạn. Mỗi giai đoạn có: icon, màu, tóm tắt, đầu vào, đầu ra,
  *    một diagram nhỏ, một đoạn code ≤15 dòng, một "key insight" ngắn gọn.
  *    Người học bấm từng ô để mở rộng thành case study mini.
  * ─────────────────────────────────────────────────────────────────────────── */
@@ -85,11 +85,11 @@ const STAGES: Stage[] = [
     color: "#f97316",
     tagline: "Biến câu hỏi kinh doanh mơ hồ thành bài toán ML rõ ràng.",
     input: "Câu hỏi sếp: “Làm sao giảm đơn hủy?”",
-    output: "ML task: phân loại nhị phân + metric + baseline.",
+    output: "ML task: phân loại nhị phân, kèm metric và baseline.",
     insight:
-      "Nếu không chốt target và metric ngay bây giờ, mọi thứ phía sau sẽ đi chệch.",
-    codeTitle: "Chốt target và metric bằng văn bản — chưa code",
-    code: `# spec.yaml — bản cam kết với sếp trước khi code
+      "Không chốt target và metric ngay bây giờ thì mọi thứ phía sau sẽ đi chệch.",
+    codeTitle: "Chốt target và metric bằng văn bản (chưa code)",
+    code: `# spec.yaml: bản cam kết với sếp trước khi code
 target: don_bi_huy_trong_24h
 ml_task: binary_classification
 metric_chinh: pr_auc        # ưu tiên recall cho class positive
@@ -97,7 +97,7 @@ metric_phu: recall@precision=0.8
 baseline: du_doan_luon_khong_huy   # ~92% accuracy vẫn 0 recall
 quyet_dinh_trien_khai: recall >= 0.65 @ precision 0.80`,
     codeExplain:
-      "Đây chưa phải code — là bản spec. Viết ra rõ ràng target, metric chính, baseline, và ngưỡng để ra quyết định. Nếu không có dòng này, sau 2 tháng sếp sẽ hỏi “kết quả thế nào?” và bạn không biết trả lời sao.",
+      "Đây chưa phải code, đây là bản spec. Viết ra rõ ràng target, metric chính, baseline, và ngưỡng để ra quyết định. Thiếu dòng này thì sau 2 tháng sếp sẽ hỏi “kết quả thế nào?” và bạn không biết trả lời sao.",
   },
   {
     id: 2,
@@ -109,8 +109,8 @@ quyet_dinh_trien_khai: recall >= 0.65 @ precision 0.80`,
     input: "Database đơn hàng + logs hành vi + CRM khách hàng.",
     output: "Dataset thô đã được lưu snapshot (có version).",
     insight:
-      "Không lưu snapshot = 6 tháng sau không tái tạo được kết quả. Mỗi lần chạy phải được 'đóng dấu'.",
-    codeTitle: "SQL kéo dữ liệu đơn hàng Shopee 90 ngày gần nhất",
+      "Không lưu snapshot, 6 tháng sau bạn sẽ không tái tạo được kết quả. Mỗi lần chạy phải được đóng dấu.",
+    codeTitle: "SQL kéo đơn hàng Shopee 90 ngày gần nhất",
     code: `SELECT
   o.order_id, o.user_id, o.shop_id,
   o.created_at, o.gmv_vnd,
@@ -127,14 +127,14 @@ WHERE o.created_at >= CURRENT_DATE - INTERVAL '90 days'
   {
     id: 3,
     key: "eda",
-    name: "Khám phá & làm sạch",
+    name: "Khám phá và làm sạch",
     icon: Search,
     color: "#22c55e",
-    tagline: "Nhìn dữ liệu trước khi cho máy học — phát hiện lỗi, outlier, pattern.",
+    tagline: "Nhìn dữ liệu trước khi cho máy học. Bắt lỗi, outlier, pattern sớm.",
     input: "Dataset thô, schema, domain knowledge.",
-    output: "Bản ghi chú EDA + dữ liệu đã làm sạch.",
+    output: "Bản ghi chú EDA và dữ liệu đã làm sạch.",
     insight:
-      "Bỏ qua EDA là mua vé tàu vào ‘thế giới Garbage In, Garbage Out’.",
+      "Bỏ qua EDA là mua vé tàu vào thế giới Garbage In, Garbage Out.",
     codeTitle: "EDA 5 dòng: phân phối target và missing",
     code: `import pandas as pd
 df = pd.read_parquet("shopee_orders_90d.parquet")
@@ -143,7 +143,7 @@ print(df.shape, "| tỉ lệ hủy:", df["is_cancelled"].mean().round(3))
 print(df.isnull().mean().sort_values(ascending=False).head(10))
 print(df.groupby("city")["is_cancelled"].mean().sort_values().tail(5))`,
     codeExplain:
-      "Bốn dòng nhỏ nhưng trả lời ba câu hỏi lớn: (1) tỉ lệ hủy có cân bằng không? (2) cột nào hay thiếu? (3) thành phố nào tỉ lệ hủy cao bất thường? Nếu tỉ lệ hủy chỉ 3% thì accuracy không còn là metric đáng tin — phải dùng PR-AUC.",
+      "Bốn dòng nhỏ nhưng trả lời ba câu hỏi lớn: (1) tỉ lệ hủy có cân bằng không? (2) cột nào hay thiếu? (3) thành phố nào tỉ lệ hủy cao bất thường? Nếu tỉ lệ hủy chỉ 3% thì độ chính xác không còn là metric đáng tin. Phải dùng PR-AUC.",
   },
   {
     id: 4,
@@ -155,8 +155,8 @@ print(df.groupby("city")["is_cancelled"].mean().sort_values().tail(5))`,
     input: "Dữ liệu đã làm sạch + hiểu biết về nghiệp vụ.",
     output: "Bảng đặc trưng (features) dùng chung cho train và serve.",
     insight:
-      "Feature tốt thường đánh bại mô hình phức tạp. Đây thường là đòn bẩy lớn nhất.",
-    codeTitle: "Tạo 3 feature kinh điển cho bài toán đơn hủy",
+      "Feature tốt thường thắng model phức tạp. Đây hay là đòn bẩy lớn nhất.",
+    codeTitle: "Gói 3 nhóm feature kinh điển cho bài toán đơn hủy",
     code: `from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -169,20 +169,20 @@ pre = ColumnTransformer([
     ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols),
 ])`,
     codeExplain:
-      "Dùng ColumnTransformer để gom mọi phép biến đổi vào một chỗ. Số thì scale (đưa về cùng thang đo), chữ thì one-hot (chuyển thành cột 0/1). Đóng gói trong Pipeline giúp bạn không bị data leakage ở bước đánh giá.",
+      "Dùng ColumnTransformer để gom mọi phép biến đổi vào một chỗ. Số thì scale (đưa về cùng thang đo), chữ thì one-hot (chuyển thành cột 0/1). Đóng gói trong Pipeline giúp bạn tránh data leakage ở bước đánh giá.",
   },
   {
     id: 5,
     key: "train",
-    name: "Huấn luyện & kiểm định",
+    name: "Huấn luyện và kiểm định",
     icon: Brain,
     color: "#a855f7",
-    tagline: "Chọn thuật toán phù hợp, cross-validation để ước lượng thật.",
-    input: "Feature table + split train/val/test.",
-    output: "Nhiều mô hình ứng viên + điểm CV có độ lệch.",
+    tagline: "Chọn thuật toán phù hợp. Dùng cross-validation để ước lượng thật.",
+    input: "Feature table cùng split train/val/test.",
+    output: "Vài model ứng viên kèm điểm CV có độ lệch.",
     insight:
-      "Baseline đơn giản (logistic) trước — bất kỳ mô hình phức tạp nào cũng phải vượt qua nó.",
-    codeTitle: "Pipeline + cross-validation với StratifiedKFold",
+      "Baseline đơn giản (logistic) đi trước. Bất kỳ model phức tạp nào cũng phải thắng nó.",
+    codeTitle: "Pipeline cùng cross-validation bằng StratifiedKFold",
     code: `from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score, StratifiedKFold
@@ -194,20 +194,20 @@ cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 scores = cross_val_score(model, X_train, y_train, cv=cv, scoring="average_precision")
 print(f"PR-AUC = {scores.mean():.3f} ± {scores.std():.3f}")`,
     codeExplain:
-      "StratifiedKFold giữ tỉ lệ class đều trong từng fold — quan trọng cho dữ liệu lệch. Metric ‘average_precision’ chính là PR-AUC. Con số ± cho bạn biết độ ổn định: nếu lệch ±0.1 nghĩa là mô hình chưa đáng tin.",
+      "StratifiedKFold giữ tỉ lệ class đều trong từng fold, rất quan trọng khi dữ liệu lệch. Metric ‘average_precision’ chính là PR-AUC. Con số ± cho bạn biết độ ổn định: lệch ±0.1 nghĩa là model chưa đáng tin.",
   },
   {
     id: 6,
     key: "evaluate",
-    name: "Đánh giá & chọn mô hình",
+    name: "Đánh giá và chọn model",
     icon: ClipboardCheck,
     color: "#ec4899",
-    tagline: "Không chỉ 1 số — confusion matrix, error slicing, business metric.",
-    input: "Nhiều mô hình ứng viên.",
-    output: "Một mô hình ‘champion’ + báo cáo lỗi chi tiết.",
+    tagline: "Không chỉ một con số. Phải có confusion matrix, error slicing, business metric.",
+    input: "Vài model ứng viên.",
+    output: "Một model ‘champion’ kèm báo cáo lỗi chi tiết.",
     insight:
-      "Đừng chỉ nhìn overall — slice theo vùng/thời gian để tìm điểm yếu.",
-    codeTitle: "Đánh giá chi tiết trên test set ‘chưa từng thấy’",
+      "Đừng chỉ nhìn overall. Slice theo vùng và thời gian để tìm điểm yếu.",
+    codeTitle: "Đánh giá chi tiết trên test set chưa từng thấy",
     code: `from sklearn.metrics import (precision_recall_curve,
                               classification_report, confusion_matrix)
 
@@ -219,7 +219,7 @@ print(classification_report(y_test, pred, digits=3))
 print(confusion_matrix(y_test, pred))
 p, r, t = precision_recall_curve(y_test, proba)`,
     codeExplain:
-      "Ba output: classification_report (precision/recall/F1 của từng class), confusion_matrix (để đếm FP và FN thật sự), và đường cong precision-recall (để chọn ngưỡng theo yêu cầu sếp). Đừng chỉ báo cáo accuracy — không ai quan tâm.",
+      "Ba output: classification_report (precision, recall, F1 của từng class), confusion_matrix (để đếm FP và FN thật sự), và đường cong precision-recall (để chọn ngưỡng theo yêu cầu sếp). Đừng chỉ báo cáo độ chính xác. Không ai quan tâm.",
   },
   {
     id: 7,
@@ -227,11 +227,11 @@ p, r, t = precision_recall_curve(y_test, proba)`,
     name: "Triển khai",
     icon: Rocket,
     color: "#3b82f6",
-    tagline: "Đóng gói mô hình thành API + rollout từ từ để an toàn.",
-    input: "Model đã huấn luyện + pipeline preprocessing.",
-    output: "Endpoint HTTP có thể nhận request và trả về dự đoán.",
+    tagline: "Đóng gói model thành API. Rollout từ từ để an toàn.",
+    input: "Model đã huấn luyện kèm pipeline preprocessing.",
+    output: "Endpoint HTTP nhận request và trả về dự đoán.",
     insight:
-      "Transform offline và online phải giống hệt nhau — đây là nguồn lỗi số 1 khi deploy.",
+      "Transform offline và online phải giống hệt nhau. Đây là nguồn lỗi số 1 khi deploy.",
     codeTitle: "Lưu model và dựng endpoint FastAPI ngắn gọn",
     code: `import joblib
 from fastapi import FastAPI
@@ -249,19 +249,19 @@ class OrderIn(BaseModel):
 def predict(o: OrderIn):
     return {"p": float(clf.predict_proba([o.dict()])[0, 1])}`,
     codeExplain:
-      "joblib lưu nguyên Pipeline (gồm preprocessing + model) vào 1 file .pkl — quan trọng vì khi load lại, preprocessing tự chạy đúng. FastAPI dựng endpoint chỉ vài dòng. pydantic kiểm tra input để không bị lỗi schema. ⚠️ Chỉ joblib.load / pickle.load trên file do CHÍNH BẠN tạo hoặc nguồn đã xác minh — file .pkl lạ có thể chạy code tuỳ ý khi load, dùng picklescan hoặc convert sang safetensors trước.",
+      "joblib lưu nguyên Pipeline (gồm preprocessing và model) vào một file .pkl. Việc này quan trọng vì khi load lại, preprocessing tự chạy đúng. FastAPI dựng endpoint chỉ vài dòng. pydantic kiểm tra input để không bị lỗi schema. Lưu ý an toàn: chỉ joblib.load hoặc pickle.load trên file do chính bạn tạo hoặc nguồn đã xác minh. File .pkl lạ có thể chạy code tuỳ ý khi load. Dùng picklescan hoặc convert sang safetensors trước.",
   },
   {
     id: 8,
     key: "monitor",
-    name: "Giám sát & vòng lặp",
+    name: "Giám sát và vòng lặp",
     icon: Activity,
     color: "#14b8a6",
-    tagline: "Model không phải đích đến — là bắt đầu. Data drift, retrain.",
-    input: "Logs request + feedback thực tế.",
-    output: "Dashboard drift + lịch retrain + cảnh báo.",
+    tagline: "Model không phải đích đến mà là điểm bắt đầu. Lo data drift và retrain.",
+    input: "Logs request và feedback thực tế.",
+    output: "Dashboard drift, lịch retrain, cảnh báo.",
     insight:
-      "Model thầm lặng ‘thối rữa’ nếu không ai nhìn. Luôn có dashboard và alert.",
+      "Model thầm lặng thối rữa nếu không ai nhìn. Luôn có dashboard và alert.",
     codeTitle: "Đo data drift bằng PSI giữa train và production",
     code: `import numpy as np
 
@@ -275,12 +275,12 @@ def psi(expected, actual, bins=10):
 
 print("PSI(gmv) =", psi(train_gmv, prod_gmv_last7d))`,
     codeExplain:
-      "PSI (Population Stability Index) so sánh phân phối train và phân phối production gần đây. PSI < 0.1 yên tâm, 0.1–0.25 cần chú ý, > 0.25 là drift nặng — retrain. Hàm này ngắn và đủ dùng cho dashboard nội bộ.",
+      "PSI (Population Stability Index) so sánh phân phối train và phân phối production gần đây. PSI < 0.1 yên tâm, 0.1 đến 0.25 cần chú ý, > 0.25 là drift nặng nên phải retrain. Hàm này ngắn và đủ dùng cho dashboard nội bộ.",
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────────
- * 2. Case study Shopee — walkthrough StepReveal qua 8 giai đoạn với số liệu thật.
+ * 2. Case study Shopee. Walkthrough StepReveal qua 8 giai đoạn với số liệu thật.
  * ─────────────────────────────────────────────────────────────────────────── */
 
 type ShopeeStep = {
@@ -293,9 +293,9 @@ type ShopeeStep = {
 const SHOPEE_STEPS: ShopeeStep[] = [
   {
     stageId: 1,
-    headline: "Sếp: ‘Đơn hủy tuần qua tăng 18%. Làm gì đó đi.’",
+    headline: "Sếp gửi tin lúc 9 giờ tối: ‘Đơn hủy tuần qua tăng 18%. Làm gì đó đi.’",
     narrative:
-      "Bạn không nhảy vào code. Bạn hỏi lại: hủy ở đâu? hủy lúc nào? hủy vì lý do gì? Sau 2 buổi họp, các bên đồng ý: ưu tiên đơn hủy trong 24h đầu, do người mua tự hủy (không phải shop). Chốt metric PR-AUC vì dữ liệu hủy rất lệch (~8% positive).",
+      "Bạn không nhảy vào code. Bạn hỏi lại: hủy ở đâu? hủy lúc nào? hủy vì lý do gì? Sau 2 buổi họp, các bên đồng ý: ưu tiên đơn hủy trong 24h đầu, do người mua tự hủy (không phải shop). Chốt metric PR-AUC vì dữ liệu hủy rất lệch (khoảng 8% positive).",
     numbers: [
       { label: "Tỉ lệ hủy", value: "8.1%", tone: "warn" },
       { label: "Baseline accuracy", value: "91.9%", tone: "bad" },
@@ -305,7 +305,7 @@ const SHOPEE_STEPS: ShopeeStep[] = [
   },
   {
     stageId: 2,
-    headline: "Kéo dữ liệu 90 ngày — 12.3 triệu đơn hàng.",
+    headline: "Kéo dữ liệu 90 ngày, 12.3 triệu đơn hàng.",
     narrative:
       "Query từ warehouse. Join với bảng user (tenure, city), bảng shop (rating, category). Lưu snapshot dạng parquet có version theo ngày chạy: shopee_orders_2026_03_01.parquet. Nếu 3 tháng sau cần tái tạo, chỉ load đúng file này.",
     numbers: [
@@ -317,9 +317,9 @@ const SHOPEE_STEPS: ShopeeStep[] = [
   },
   {
     stageId: 3,
-    headline: "EDA ‘nhìn trước khi cho máy học’ — tìm ra 3 bất thường.",
+    headline: "EDA ‘nhìn trước khi cho máy học’: tìm ra 3 bất thường.",
     narrative:
-      "Histogram GMV: lệch phải cực mạnh, nhiều đơn > 5 triệu là outlier. Missing: cột payment_method mất 4% ở mobile app phiên bản cũ. Theo giờ: tỉ lệ hủy tăng vọt sau 22h (người mua buồn ngủ đặt nhầm). Phát hiện này về sau trở thành feature quan trọng.",
+      "Histogram GMV lệch phải cực mạnh, nhiều đơn trên 5 triệu là outlier. Missing: cột payment_method mất 4% ở mobile app phiên bản cũ. Theo giờ: tỉ lệ hủy tăng vọt sau 22h (người mua buồn ngủ đặt nhầm). Phát hiện này về sau trở thành feature quan trọng.",
     numbers: [
       { label: "Missing cao nhất", value: "4.1%", tone: "warn" },
       { label: "Outlier GMV", value: "2.3%", tone: "warn" },
@@ -329,9 +329,9 @@ const SHOPEE_STEPS: ShopeeStep[] = [
   },
   {
     stageId: 4,
-    headline: "Tạo 24 feature — một nửa từ hiểu biết nghiệp vụ.",
+    headline: "Tạo 24 feature, một nửa đến từ hiểu biết nghiệp vụ.",
     narrative:
-      "Numeric: GMV, tenure_days, hour_of_day, avg_order_in_7d. Categorical: city, device, payment_method, shop_category. Time-based: is_late_night (22h–2h), day_of_week, is_weekend. Interaction: gmv / tenure_days (người mới chi nhiều → rủi ro). Feature về sau đều giữ được khi deploy vì pipeline đóng gói chung.",
+      "Numeric: GMV, tenure_days, hour_of_day, avg_order_in_7d. Categorical: city, device, payment_method, shop_category. Time-based: is_late_night (22h tới 2h), day_of_week, is_weekend. Interaction: gmv chia tenure_days (người mới chi nhiều thường đi kèm rủi ro). Feature về sau đều giữ được khi deploy vì pipeline đóng gói chung.",
     numbers: [
       { label: "Tổng feature", value: "24", tone: "neutral" },
       { label: "Numeric", value: "9", tone: "neutral" },
@@ -341,7 +341,7 @@ const SHOPEE_STEPS: ShopeeStep[] = [
   },
   {
     stageId: 5,
-    headline: "Train 4 mô hình ứng viên — baseline trước, fancy sau.",
+    headline: "Train 4 mô hình ứng viên: baseline trước, fancy sau.",
     narrative:
       "Baseline: LogisticRegression PR-AUC = 0.412. Random Forest: 0.501. LightGBM mặc định: 0.573. LightGBM + tune: 0.612. Gap LightGBM vs Forest chủ yếu đến từ việc LightGBM xử lý categorical tốt hơn, không phải vì phức tạp hơn.",
     numbers: [
@@ -367,7 +367,7 @@ const SHOPEE_STEPS: ShopeeStep[] = [
     stageId: 7,
     headline: "Đóng gói thành API + canary rollout 5% → 25% → 100%.",
     narrative:
-      "Model + preprocessing gói chung thành Pipeline rồi lưu joblib. Dựng FastAPI, đóng Docker, deploy lên Kubernetes. Bật A/B test: 5% lưu lượng gọi model, 95% dùng rule cũ. Theo dõi 48h thấy p99 latency 38ms, không có lỗi serialize. Tăng lên 25% — ổn. Một tuần sau: 100%.",
+      "Model và preprocessing gói chung thành Pipeline rồi lưu joblib. Dựng FastAPI, đóng Docker, deploy lên Kubernetes. Bật A/B test: 5% lưu lượng gọi model, 95% dùng rule cũ. Theo dõi 48h thấy p99 latency 38ms, không có lỗi serialize. Tăng lên 25% vẫn ổn. Một tuần sau: 100%.",
     numbers: [
       { label: "p99 latency", value: "38 ms", tone: "good" },
       { label: "Error rate", value: "0.02%", tone: "good" },
@@ -461,7 +461,7 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Thuật toán quá yếu, cần chuyển sang deep learning",
       "Server bị lỗi khi tính metric",
-      "Dữ liệu lệch (8% positive) + chọn sai metric — accuracy không đánh giá được class hiếm",
+      "Dữ liệu lệch (8% positive) cộng với chọn sai metric: accuracy không đánh giá được class hiếm",
       "Chưa tuning đủ, cần GridSearch rộng hơn",
     ],
     correct: 2,
@@ -472,7 +472,7 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Mô hình đã deploy 14 ngày; precision rớt từ 0.80 xuống 0.63. Nguyên nhân KHẢ THI nhất?",
     options: [
-      "Code deploy bị sai — rollback ngay lập tức",
+      "Code deploy bị sai. Rollback ngay lập tức",
       "Phân phối dữ liệu đầu vào ở production đã thay đổi so với lúc train (data drift)",
       "Server chậm, latency cao làm metric giảm",
       "Python version khác nhau giữa train và serve",
@@ -486,7 +486,7 @@ const quizQuestions: QuizQuestion[] = [
       "Tại sao phải đóng gói cả preprocessing và model vào một Pipeline rồi mới lưu joblib?",
     options: [
       "Để file .pkl nhỏ hơn",
-      "Để tránh ‘train/serve skew’ — đảm bảo online nhận đầu vào qua cùng các phép biến đổi như offline",
+      "Để tránh ‘train/serve skew’: đảm bảo online nhận đầu vào qua cùng các phép biến đổi như offline",
       "Vì sklearn yêu cầu bắt buộc",
       "Để chạy nhanh hơn",
     ],
@@ -498,9 +498,9 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Trong dự án ML thực tế, phần trăm thời gian dành cho ‘training mô hình’ thường là bao nhiêu?",
     options: [
-      "70-90% — vì model là linh hồn của dự án",
-      "10-20% — phần lớn thời gian nằm ở data collection, EDA, feature engineering, deploy, monitor",
-      "50% — chia đều với xử lý dữ liệu",
+      "70-90% vì model là linh hồn của dự án",
+      "10-20% vì phần lớn thời gian nằm ở data collection, EDA, feature engineering, deploy, monitor",
+      "50%, chia đều với xử lý dữ liệu",
       "Không có quy tắc chung",
     ],
     correct: 1,
@@ -516,12 +516,12 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "stratifiedkfold", accept: ["StratifiedKFold", "stratified k-fold", "stratified kfold"] },
     ],
     explanation:
-      "PR-AUC (average precision) tập trung vào class positive — phù hợp khi dữ liệu lệch. StratifiedKFold giữ tỉ lệ class đồng đều trong mọi fold, giúp điểm CV đáng tin.",
+      "PR-AUC (average precision) tập trung vào class positive nên phù hợp khi dữ liệu lệch. StratifiedKFold giữ tỉ lệ class đồng đều trong mọi fold, giúp điểm CV đáng tin.",
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────────
- * 5. Helper component — SVG flowchart overview of the 8 stages
+ * 5. Helper component: SVG flowchart overview of the 8 stages
  * ─────────────────────────────────────────────────────────────────────────── */
 
 function StageFlowchart({
@@ -635,7 +635,7 @@ function StageFlowchart({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
- * 6. Helper — colored "metric chip" for case study
+ * 6. Helper: colored "metric chip" for case study
  * ─────────────────────────────────────────────────────────────────────────── */
 
 function MetricChip({
@@ -685,7 +685,7 @@ export default function EndToEndMlProjectTopic() {
   return (
     <>
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         HOOK — đặt vấn đề, gợi mở bản đồ
+         HOOK: đặt vấn đề, gợi mở bản đồ
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={1} totalSteps={8} label="Mở bài">
         <div className="rounded-2xl border-2 border-accent/40 bg-gradient-to-br from-accent/5 via-surface/60 to-accent/5 p-6">
@@ -701,11 +701,11 @@ export default function EndToEndMlProjectTopic() {
                 Từ <strong>câu hỏi kinh doanh</strong> → <strong>dữ liệu</strong> →{" "}
                 <strong>mô hình</strong> → <strong>triển khai</strong> →{" "}
                 <strong>theo dõi</strong>. Đây là bản đồ bạn cần trong đầu trước mọi
-                dự án ML — không có nó, bạn sẽ đi lạc ngay ở tuần thứ hai.
+                dự án ML. Thiếu nó, bạn sẽ đi lạc ngay ở tuần thứ hai.
               </p>
               <p className="text-sm text-muted leading-relaxed">
                 Bài này đưa bạn đi qua 8 giai đoạn, kèm một case study Shopee
-                thật — từ yêu cầu mơ hồ của sếp đến mô hình chạy production và
+                thật, từ yêu cầu mơ hồ của sếp đến mô hình chạy production và
                 tự phục hồi khi dữ liệu đổi.
               </p>
             </div>
@@ -714,29 +714,29 @@ export default function EndToEndMlProjectTopic() {
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         DISCOVER — PredictionGate
+         DISCOVER: PredictionGate
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={2} totalSteps={8} label="Dự đoán">
         <PredictionGate
           question="Sếp giao dự án 2 tháng dự đoán đơn hủy Shopee. Bạn có dữ liệu 12 triệu đơn. Bước đi đầu tiên ĐÚNG nhất là gì?"
           options={[
-            "Train LightGBM ngay — dữ liệu đã đủ, sáng mai báo cáo sếp",
+            "Train LightGBM ngay vì dữ liệu đã đủ, sáng mai báo cáo sếp",
             "Gặp stakeholder chốt target, metric, baseline, rồi làm EDA trước khi chạm mô hình",
             "Đọc paper SOTA để tìm thuật toán tốt nhất cho bài toán dự đoán hủy",
             "Thuê cloud GPU để xử lý song song 12 triệu đơn cho nhanh",
           ]}
           correct={1}
-          explanation="Problem framing là bước đầu tiên và quan trọng nhất. ‘Hủy’ nghĩa là gì — user tự hủy hay shop hủy? Trong bao lâu? Metric nào phù hợp? Nếu không chốt bây giờ, 6 tuần sau bạn sẽ phải train lại từ đầu. Một ngày họp framing tiết kiệm một tháng làm lại."
+          explanation="Problem framing là bước đầu tiên và quan trọng nhất. ‘Hủy’ nghĩa là gì: user tự hủy hay shop hủy? Trong bao lâu? Metric nào phù hợp? Nếu không chốt bây giờ, 6 tuần sau bạn sẽ phải train lại từ đầu. Một ngày họp framing tiết kiệm một tháng làm lại."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Bấm qua từng giai đoạn bên dưới để hiểu vì sao thứ tự 8 bước này
-            là bắt buộc — và mỗi bước bỏ qua đều trả giá về sau.
+            là bắt buộc, và vì sao mỗi bước bỏ qua đều trả giá về sau.
           </p>
         </PredictionGate>
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         REVEAL — Interactive flowchart + mini case study per stage
+         REVEAL: Interactive flowchart + mini case study per stage
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={3} totalSteps={8} label="Bản đồ 8 giai đoạn">
         <VisualizationSection topicSlug={metadata.slug}>
@@ -744,7 +744,7 @@ export default function EndToEndMlProjectTopic() {
             <p className="text-sm text-muted leading-relaxed">
               Bấm vào từng hình chữ nhật để mở case study mini: đầu vào,
               đầu ra, đoạn code ngắn, và bài học chính. Đường nét đứt màu xanh
-              ở dưới là <strong>vòng retrain</strong> — model không bao giờ
+              ở dưới là <strong>vòng retrain</strong>. Model không bao giờ
               là đích đến.
             </p>
 
@@ -936,7 +936,7 @@ export default function EndToEndMlProjectTopic() {
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         DEEPEN — Case study Shopee walkthrough
+         DEEPEN: Case study Shopee walkthrough
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={4} totalSteps={8} label="Case study Shopee">
         <div className="mb-4 rounded-2xl border-2 border-orange-500/40 bg-orange-500/10 p-5">
@@ -959,7 +959,7 @@ export default function EndToEndMlProjectTopic() {
         <StepReveal
           labels={SHOPEE_STEPS.map(
             (s, i) =>
-              `Giai đoạn ${s.stageId} — ${STAGES[s.stageId - 1].name} (${i + 1}/8)`,
+              `Giai đoạn ${s.stageId}: ${STAGES[s.stageId - 1].name} (${i + 1}/8)`,
           )}
         >
           {SHOPEE_STEPS.map((step) => {
@@ -1006,30 +1006,30 @@ export default function EndToEndMlProjectTopic() {
 
         <AhaMoment>
           <p className="leading-relaxed">
-            Thấy chưa — 8 giai đoạn không phải lý thuyết. Mỗi ô là một quyết
+            Thấy chưa, 8 giai đoạn không phải lý thuyết. Mỗi ô là một quyết
             định cụ thể, một con số, một tình huống. <strong>Giá trị</strong>{" "}
             không nằm ở mô hình LightGBM, mà nằm ở việc bạn có hiểu sếp, có
             chạy EDA, có slice error, có monitor drift hay không. Engineer ML
-            giỏi = người biết đi hết vòng lặp này, không phải người biết nhiều
+            giỏi là người biết đi hết vòng lặp này, không phải người biết nhiều
             thuật toán nhất.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         CHALLENGE — InlineChallenge về drift
+         CHALLENGE: InlineChallenge về drift
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Mô hình đã deploy 2 tuần; accuracy rớt 2 điểm phần trăm, precision rớt 17 điểm. Đâu là nhóm nguyên nhân KHẢ THI nhất? (Chọn đáp án đầy đủ nhất.)"
           options={[
-            "Chỉ do code deploy lỗi — kiểm tra git log và rollback",
-            "Chỉ do server chậm — upgrade cluster và tăng replica",
-            "Data drift (phân phối input đổi) + concept drift (quan hệ input-output đổi) + có thể kèm vấn đề hạ tầng (skew giữa offline và online)",
-            "Không thể xác định — phải retrain liên tục mỗi ngày cho chắc",
+            "Chỉ do code deploy lỗi. Kiểm tra git log và rollback",
+            "Chỉ do server chậm. Upgrade cluster và tăng replica",
+            "Data drift (phân phối input đổi) cộng với concept drift (quan hệ input-output đổi), có thể kèm vấn đề hạ tầng (skew giữa offline và online)",
+            "Không thể xác định, phải retrain liên tục mỗi ngày cho chắc",
           ]}
           correct={2}
-          explanation="Đây là triệu chứng kinh điển của drift. Có ba nguồn: (1) data drift — phân phối feature đổi (ví dụ: app mới ra, tỉ lệ user iOS tăng). (2) concept drift — mối quan hệ X→y đổi (ví dụ: mùa sale làm user hay hủy đơn hơn). (3) train/serve skew — logic preprocessing online khác offline. Quy trình đúng: chạy PSI/KS để tìm cột drift, so sánh feature online vs offline, rồi quyết định retrain hay sửa pipeline."
+          explanation="Đây là triệu chứng kinh điển của drift. Có ba nguồn: (1) data drift, tức phân phối feature đổi (ví dụ: app mới ra, tỉ lệ user iOS tăng). (2) concept drift, tức mối quan hệ X→y đổi (ví dụ: mùa sale làm user hay hủy đơn hơn). (3) train/serve skew, tức logic preprocessing online khác offline. Quy trình đúng: chạy PSI/KS để tìm cột drift, so sánh feature online vs offline, rồi quyết định retrain hay sửa pipeline."
         />
 
         <div className="mt-4">
@@ -1042,18 +1042,18 @@ export default function EndToEndMlProjectTopic() {
               "Hai tuần đầu đọc paper SOTA, hai tuần sau code",
             ]}
             correct={2}
-            explanation="Khảo sát thực tế: data work chiếm ~55% effort, training chỉ 10-15%, còn lại là eval + deploy + monitor. Option C phản ánh đúng: dành nhiều thời gian cho framing, EDA, feature — đây là nơi sinh ra giá trị. Dành quá nhiều thời gian cho training là cái bẫy quen thuộc."
+            explanation="Khảo sát thực tế: data work chiếm ~55% effort, training chỉ 10-15%, còn lại là eval cộng deploy cộng monitor. Option C phản ánh đúng: dành nhiều thời gian cho framing, EDA, feature, vì đây là nơi sinh ra giá trị. Dành quá nhiều thời gian cho training là cái bẫy quen thuộc."
           />
         </div>
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         EXPLAIN — Checklist, pitfalls, pipeline bones
+         EXPLAIN: Checklist, pitfalls, pipeline bones
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={6} totalSteps={8} label="Giải thích & tham chiếu">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
-            Dự án ML không phải chuỗi tuyến tính — nó là <strong>vòng lặp</strong>.
+            Dự án ML không phải chuỗi tuyến tính. Nó là <strong>vòng lặp</strong>.
             Bạn có thể hình dung bằng một phép lặp đơn giản: mỗi lần monitoring
             phát hiện drift, bạn quay về feature engineering hoặc data
             collection, rồi đi lại từ đó đến deploy.
@@ -1073,7 +1073,7 @@ export default function EndToEndMlProjectTopic() {
             Checklist trước khi báo cáo sếp ‘dự án xong’
           </h4>
           <p className="text-xs text-muted leading-relaxed">
-            Tám dòng bên dưới là đủ — không cần dài hơn. Thiếu một dòng là
+            Tám dòng bên dưới là đủ, không cần dài hơn. Thiếu một dòng là
             một rủi ro mà bạn đang đẩy sang tương lai.
           </p>
           <div className="my-3 grid gap-2">
@@ -1093,7 +1093,7 @@ export default function EndToEndMlProjectTopic() {
           </div>
 
           <h4 className="mt-6 text-sm font-semibold text-foreground">
-            Bảng ‘5 cú vấp kinh điển’ — đọc để đừng vấp lần nữa
+            Bảng ‘5 cú vấp kinh điển’: đọc để đừng vấp lần nữa
           </h4>
           <div className="my-3 overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm">
@@ -1138,19 +1138,19 @@ export default function EndToEndMlProjectTopic() {
           </div>
 
           <h4 className="mt-6 text-sm font-semibold text-foreground">
-            Bộ xương ‘ML Pipeline’ — tối thiểu bạn cần biết viết
+            Bộ xương ‘ML Pipeline’: tối thiểu bạn cần biết viết
           </h4>
           <p className="text-xs text-muted leading-relaxed">
             Ba đoạn code dưới đây là mẫu xương sống. Mỗi đoạn dưới 15 dòng và
-            đi kèm giải thích ngay dưới — bạn có thể copy-adapt cho dự án
+            đi kèm giải thích ngay dưới, bạn có thể copy-adapt cho dự án
             đầu tay của mình.
           </p>
 
-          {/* Pipeline bones — Code 1 */}
+          {/* Pipeline bones: Code 1 */}
           <div className="my-4 grid gap-3 md:grid-cols-[1fr_1fr] md:items-start">
             <CodeBlock
               language="python"
-              title="1. sklearn Pipeline — tránh data leakage bằng thiết kế"
+              title="1. sklearn Pipeline tránh data leakage bằng thiết kế"
             >
               {`from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -1176,18 +1176,18 @@ pipe = Pipeline([
                 được gói chung vào một <code>Pipeline</code>. Khi bạn gọi
                 <code> pipe.fit(X_train) </code>, nội bộ sẽ tự fit scaler chỉ
                 trên train, transform rồi train model. Khi{" "}
-                <code>pipe.predict(X_test)</code>, scaler dùng tham số đã fit —
-                không bị data leakage. Đây là <strong>thói quen bắt buộc</strong>{" "}
+                <code>pipe.predict(X_test)</code>, scaler dùng tham số đã fit
+                nên không bị data leakage. Đây là <strong>thói quen bắt buộc</strong>{" "}
                 cho mọi dự án ML.
               </p>
             </div>
           </div>
 
-          {/* Pipeline bones — Code 2 */}
+          {/* Pipeline bones: Code 2 */}
           <div className="my-4 grid gap-3 md:grid-cols-[1fr_1fr] md:items-start">
             <CodeBlock
               language="python"
-              title="2. joblib — lưu pipeline để deploy dùng lại hệt train"
+              title="2. joblib lưu pipeline để deploy dùng lại hệt train"
             >
               {`import joblib
 
@@ -1208,7 +1208,7 @@ proba = loaded.predict_proba(X_new)[:, 1]`}
                 preprocessing) chứ không chỉ model. Khi load lại,
                 <code> predict_proba </code> tự động chạy đủ chuỗi: scale → one-hot → predict.
                 Đây là cách <strong>duy nhất đáng tin</strong> để đảm bảo transform
-                online giống hệt offline — tránh train/serve skew.
+                online giống hệt offline, tránh train/serve skew.
               </p>
               <p className="mt-2 inline-flex items-start gap-1 text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
                 <AlertTriangle size={12} aria-hidden="true" className="mt-0.5 shrink-0" />
@@ -1224,11 +1224,11 @@ proba = loaded.predict_proba(X_new)[:, 1]`}
             </div>
           </div>
 
-          {/* Pipeline bones — Code 3 */}
+          {/* Pipeline bones: Code 3 */}
           <div className="my-4 grid gap-3 md:grid-cols-[1fr_1fr] md:items-start">
             <CodeBlock
               language="python"
-              title="3. FastAPI endpoint — wrap model thành HTTP service"
+              title="3. FastAPI endpoint: wrap model thành HTTP service"
             >
               {`from fastapi import FastAPI
 from pydantic import BaseModel
@@ -1252,18 +1252,18 @@ def predict(o: Order):
               </p>
               <p className="text-xs text-foreground/85 leading-relaxed">
                 FastAPI dựng API chỉ vài dòng. <code>pydantic</code> kiểm tra
-                input trước khi chạy — nếu thiếu trường hoặc sai kiểu, trả lỗi
-                rõ ràng thay vì mô hình crash. <code>model.predict_proba</code>{" "}
+                input trước khi chạy. Nếu thiếu trường hoặc sai kiểu, FastAPI trả lỗi
+                rõ ràng thay vì để mô hình crash. <code>model.predict_proba</code>{" "}
                 trả về xác suất; chia tiếp theo ngưỡng của sản phẩm (0.5 mặc
                 định, hoặc điều chỉnh theo yêu cầu recall/precision).
               </p>
             </div>
           </div>
 
-          <CollapsibleDetail title="Chi tiết — vì sao dùng xác suất mà không dùng nhãn trực tiếp?">
+          <CollapsibleDetail title="Chi tiết: vì sao dùng xác suất mà không dùng nhãn trực tiếp?">
             <p className="text-sm text-muted leading-relaxed">
               Mỗi bài toán phân loại có một <strong>ngưỡng</strong> (threshold)
-              chuyển xác suất thành nhãn 0/1. Ngưỡng mặc định là 0.5 — nhưng
+              chuyển xác suất thành nhãn 0/1. Ngưỡng mặc định là 0.5, nhưng
               không phải lúc nào cũng tốt. Nếu muốn{" "}
               <strong>recall cao</strong> (không bỏ sót), hạ ngưỡng xuống 0.3;
               nếu muốn <strong>precision cao</strong> (ít báo động sai), nâng
@@ -1273,7 +1273,7 @@ def predict(o: Order):
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Chi tiết — công thức PSI và cách đọc">
+          <CollapsibleDetail title="Chi tiết: công thức PSI và cách đọc">
             <p className="text-sm text-muted leading-relaxed">
               PSI (Population Stability Index) là một chỉ số so sánh hai phân
               phối. Công thức:
@@ -1284,8 +1284,8 @@ def predict(o: Order):
             <p className="text-sm text-muted leading-relaxed">
               Trong đó <code>e_i</code> là tỉ lệ của bin i ở phân phối train,{" "}
               <code>a_i</code> là tỉ lệ ở phân phối production gần đây. Đọc
-              kết quả: PSI &lt; 0.1 — phân phối ổn định. 0.1 ≤ PSI &lt; 0.25 —
-              có drift, cần theo dõi. PSI ≥ 0.25 — drift nặng, retrain ngay.
+              kết quả: PSI &lt; 0.1 nghĩa là phân phối ổn định. 0.1 ≤ PSI &lt; 0.25
+              tức có drift, cần theo dõi. PSI ≥ 0.25 là drift nặng, retrain ngay.
             </p>
           </CollapsibleDetail>
 
@@ -1295,20 +1295,20 @@ def predict(o: Order):
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
               <TopicLink slug="data-preprocessing">Tiền xử lý dữ liệu</TopicLink>{" "}
-              — chi tiết về missing values, scaling, encoding.
+              cho chi tiết về missing values, scaling, encoding.
             </li>
             <li>
               <TopicLink slug="feature-engineering">Feature engineering</TopicLink>{" "}
-              — kỹ thuật tạo và chọn đặc trưng.
+              cho kỹ thuật tạo và chọn đặc trưng.
             </li>
             <li>
               <TopicLink slug="model-evaluation-selection">
                 Đánh giá và chọn mô hình
               </TopicLink>{" "}
-              — PR-AUC, cross-validation, chọn ngưỡng.
+              cho PR-AUC, cross-validation, chọn ngưỡng.
             </li>
             <li>
-              <TopicLink slug="python-for-ml">Python cho ML</TopicLink> —
+              <TopicLink slug="python-for-ml">Python cho ML</TopicLink> với
               pandas, sklearn, matplotlib nền tảng.
             </li>
           </ul>
@@ -1316,18 +1316,18 @@ def predict(o: Order):
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         CONNECT — bridge to AI Engineer path
+         CONNECT: bridge to AI Engineer path
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={7} totalSteps={8} label="Chốt lại & nối tiếp">
         <MiniSummary
           title="6 điều phải khắc cốt"
           points={[
-            "Dự án ML là vòng lặp 8 giai đoạn — Framing → Data → EDA → Features → Train → Eval → Deploy → Monitor — không phải chuỗi tuyến tính.",
+            "Dự án ML là vòng lặp 8 giai đoạn (Framing → Data → EDA → Features → Train → Eval → Deploy → Monitor), không phải chuỗi tuyến tính.",
             "Bắt đầu ở Framing: chốt target, metric, baseline trước khi chạm dữ liệu. Thiếu bước này là đi lạc.",
-            "Data work (EDA + Features) chiếm >50% thời gian — và thường là đòn bẩy lớn nhất cho chất lượng.",
-            "Luôn đóng gói preprocessing + model vào một Pipeline, lưu joblib — tránh train/serve skew, tránh leakage.",
+            "Data work (EDA cộng Features) chiếm >50% thời gian, và thường là đòn bẩy lớn nhất cho chất lượng.",
+            "Luôn đóng gói preprocessing và model vào một Pipeline, lưu joblib để tránh train/serve skew và tránh leakage.",
             "Đánh giá phải slice theo segment; accuracy một con số cho imbalanced là dối lòng.",
-            "Deploy xong chưa xong — monitoring drift + retrain loop mới là đích đến thật sự.",
+            "Deploy xong chưa xong. Monitoring drift cộng retrain loop mới là đích đến thật sự.",
           ]}
         />
 
@@ -1337,12 +1337,12 @@ def predict(o: Order):
             title="Bạn đã qua cổng Student. Đường tiếp theo: AI Engineer."
           >
             <p className="leading-relaxed">
-              Bài này là <strong>capstone</strong> của hành trình Student — bạn
+              Bài này là <strong>capstone</strong> của hành trình Student. Bạn
               đã có bản đồ, case study, và bộ xương code để triển khai. Nhưng
               một ML engineer chuyên nghiệp còn cần: feature store, CI/CD cho
               model, vector database, LLM-in-production, guardrails, và nhiều
               thứ MLOps khác. Nếu bạn muốn đi tiếp, chuyển sang{" "}
-              <strong>lộ trình AI Engineer</strong> — nơi bạn sẽ học cách
+              <strong>lộ trình AI Engineer</strong>. Ở đó bạn sẽ học cách
               đóng gói mọi thứ thành hệ thống sản xuất cho nhóm hàng triệu
               người dùng.
             </p>
@@ -1367,7 +1367,7 @@ def predict(o: Order):
             <strong>Ghi nhớ cuối:</strong> dự án ML đầu tay sẽ KHÔNG đẹp. Bạn
             sẽ sai metric, bị leakage ít nhất một lần, quên monitoring. Điều
             đó bình thường. Cái khiến bạn khác người là: lần thứ hai bạn sẽ
-            không mắc cùng lỗi đó. Bản đồ 8 giai đoạn ở trên là la bàn — đem
+            không mắc cùng lỗi đó. Bản đồ 8 giai đoạn ở trên là la bàn, đem
             theo bên mình cho dự án đầu tiên, rồi bạn sẽ tự biết khi nào cần
             cập nhật.
           </p>
@@ -1375,12 +1375,12 @@ def predict(o: Order):
       </LessonSection>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         QUIZ — 6 câu VN có giải thích
+         QUIZ: 6 câu VN có giải thích
          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <p className="mb-3 text-sm text-muted leading-relaxed">
           Sáu câu cuối để chốt toàn bộ bản đồ. Mỗi câu đều gắn với một giai
-          đoạn trong pipeline — nếu làm sai, hãy đọc lại đúng giai đoạn đó.
+          đoạn trong pipeline. Nếu làm sai, hãy đọc lại đúng giai đoạn đó.
         </p>
         <QuizSection questions={quizQuestions} />
       </LessonSection>

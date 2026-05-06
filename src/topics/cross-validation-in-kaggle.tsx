@@ -1,7 +1,7 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  CROSS-VALIDATION IN KAGGLE — Ứng dụng thực tế
+ *  CROSS-VALIDATION IN KAGGLE. Application topic.
  *  ─────────────────────────────────────────────────────────────────────────
  *  Rewrite for the student path. Visualisation-first, no code, no LaTeX.
  *  Core story: "Trust Your CV". Public leaderboard lies; local CV doesn't.
@@ -42,9 +42,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "cross-validation-in-kaggle",
   title: "Cross-Validation in Kaggle Competitions",
-  titleVi: "CV trong Kaggle — Trust Your CV",
+  titleVi: "CV trong Kaggle: tin local CV, đừng tin public LB",
   description:
-    "Public leaderboard có thể đánh lừa. Đội xếp hạng 1.485 đã nhảy lên hạng 1 private chỉ vì tin vào CV của mình, không chạy theo public LB.",
+    "Public leaderboard có thể đánh lừa. Một đội xếp hạng 1.485 nhảy lên hạng 1 private chỉ vì họ tin vào CV của mình, không chạy theo public LB.",
   category: "classic-ml",
   tags: ["evaluation", "competition", "leaderboard", "application"],
   difficulty: "intermediate",
@@ -74,7 +74,7 @@ export const metadata: TopicMeta = {
       kind: "engineering-blog",
     },
     {
-      title: "Winning Solutions and Tips — The Kaggle Book",
+      title: "Winning Solutions and Tips. The Kaggle Book",
       publisher: "Konrad Banachewicz & Luca Massaron, Packt",
       url: "https://www.kaggle.com/discussion/351571",
       date: "2022-06",
@@ -102,22 +102,24 @@ export default function CrossValidationInKaggle() {
         topicSlug="cross-validation-in-kaggle"
       >
         <p>
-          Kaggle (nền tảng thi khoa học dữ liệu của Google) tổ chức hàng trăm
-          cuộc thi mỗi năm. Hàng nghìn đội nộp bài và theo dõi thứ hạng trên{" "}
-          <strong>public leaderboard</strong> — bảng xếp hạng công khai, cập
-          nhật sau mỗi lần nộp bài. Nhưng public leaderboard chỉ được tính trên
-          khoảng <strong>1/3 dữ liệu kiểm tra</strong>.
+          Bạn nộp bài Kaggle, F5 trang leaderboard, thấy thứ hạng nhảy. Cảm
+          giác như chấm điểm trực tiếp vào kết quả thật. Bảng đó được gọi là{" "}
+          <strong>public leaderboard</strong>: bảng xếp hạng công khai, cập
+          nhật sau mỗi lần submission. Vấn đề là nó chỉ được tính trên khoảng{" "}
+          <strong>1/3 dữ liệu test</strong>. Hai phần ba còn lại bị giấu kín
+          tới cuối giải.
         </p>
         <p>
-          Khi cuộc thi kết thúc, <strong>private leaderboard</strong> (bảng xếp
-          hạng chính thức) dùng 2/3 dữ liệu còn lại &mdash; và xáo trộn thứ
-          hạng cực kinh. Có trường hợp đội hạng 1.485 public nhảy lên hạng 1
-          private. Châm ngôn của các Grandmaster: <em>&ldquo;Trust Your
-          CV&rdquo;</em> &mdash; tin vào cross-validation nội bộ, không chạy
-          theo bảng xếp hạng công khai.
+          Khi cuộc thi kết thúc, ban tổ chức công bố{" "}
+          <strong>private leaderboard</strong>, tức bảng xếp hạng chính thức
+          chấm trên 2/3 dữ liệu còn lại. Thứ hạng xáo trộn rất mạnh: có trường
+          hợp đội hạng 1.485 public nhảy lên hạng 1 private. Vì vậy các
+          Grandmaster có một câu nằm lòng: <em>&ldquo;Trust Your CV&rdquo;</em>.
+          Tin vào cross-validation chạy trên máy của mình, không chạy theo bảng
+          xếp hạng công khai.
         </p>
 
-        {/* HOOK — Before/after leaderboard drift */}
+        {/* HOOK. Before/after leaderboard drift */}
         <div className="not-prose mt-5">
           <LeaderboardShockCard />
         </div>
@@ -125,20 +127,22 @@ export default function CrossValidationInKaggle() {
 
       <ApplicationProblem topicSlug="cross-validation-in-kaggle">
         <p>
-          Public leaderboard tạo cám dỗ cực mạnh: mỗi lần nộp, bạn nhận phản
-          hồi. Nếu thứ hạng tăng, bạn giữ lại thay đổi vừa thực hiện. Nếu giảm,
-          bỏ đi. Lặp lại 50, 100 lần. <strong>Blum &amp; Hardt (ICML 2015)</strong>
-          chứng minh: hành vi này tương đương overfit trên tập kiểm tra.
-          &ldquo;Mô hình&rdquo; ở đây không chỉ là mạng nơ-ron mà còn là{" "}
-          <em>quyết định của bạn</em> về việc giữ/bỏ mỗi thay đổi.
+          Public leaderboard tạo cám dỗ rất mạnh. Mỗi lần submission, bạn nhận
+          phản hồi gần như tức thì. Thứ hạng tăng thì bạn giữ thay đổi vừa
+          làm, thứ hạng giảm thì bỏ đi. Lặp lại 50, 100 lần.{" "}
+          <strong>Blum &amp; Hardt (ICML 2015)</strong> chứng minh hành vi này
+          tương đương với overfit trên tập test. Cái bị overfit ở đây không
+          chỉ là weights của model mà còn là <em>quyết định của bạn</em> về
+          việc giữ hay bỏ mỗi thay đổi.
         </p>
         <p>
-          Vấn đề cốt lõi: làm sao đánh giá <em>đáng tin cậy</em> hiệu suất mô
-          hình khi public leaderboard có thể đánh lừa? Câu trả lời:{" "}
-          <strong>cross-validation nội bộ</strong> &mdash; chia tập huấn luyện
-          thành nhiều fold, xoay vòng kiểm định, rồi trung bình K điểm. CV này
-          là &ldquo;bảng xếp hạng cá nhân&rdquo; của mỗi đội &mdash; và nó
-          đáng tin hơn public LB.
+          Câu hỏi cốt lõi đặt ra: làm sao đánh giá <em>đáng tin cậy</em> hiệu
+          suất của model khi public leaderboard có thể đánh lừa? Câu trả lời là{" "}
+          <strong>cross-validation chạy trên máy của bạn</strong>. Bạn chia
+          tập train thành nhiều fold, xoay vòng kiểm định, rồi trung bình K
+          điểm lại. Kết quả CV chính là &ldquo;bảng xếp hạng cá nhân&rdquo;
+          của mỗi đội. Nó đáng tin hơn public LB vì đã trung bình qua nhiều
+          cách chia, không phụ thuộc vào một phần test cố định.
         </p>
 
         <div className="not-prose mt-5">
@@ -152,62 +156,64 @@ export default function CrossValidationInKaggle() {
       >
         <Beat step={1}>
           <p>
-            <strong>Cross-validation nội bộ là nguồn tin đáng tin cậy nhất.</strong>{" "}
-            Trước khi nộp bài, thí sinh chia dữ liệu huấn luyện thành k phần
-            (thường K = 5 hoặc 10). Với mỗi fold, train trên k-1 phần, test
-            trên phần còn lại. Trung bình k điểm = &ldquo;CV score&rdquo;.
-            Các Grandmaster tin CV score hơn cả public LB vì nó đã trung bình
-            qua nhiều cách chia khác nhau.
+            <strong>CV chạy trên máy là nguồn tin đáng tin cậy nhất.</strong>{" "}
+            Trước khi submission, thí sinh chia tập train thành K phần (thường
+            K = 5 hoặc 10). Với mỗi fold, train trên K-1 phần và test trên
+            phần còn lại. Trung bình K điểm là &ldquo;CV score&rdquo;. Các
+            Grandmaster tin CV score hơn cả public LB vì nó đã trung bình qua
+            nhiều cách chia, không phụ thuộc vào may rủi của một lát cắt duy
+            nhất.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>So sánh CV score vs public LB.</strong> Nếu hai chỉ số đi
-            cùng chiều &rArr; yên tâm. Nếu CV tăng nhưng public giảm (hoặc
-            ngược lại) &rArr; đèn đỏ: có thể public LB đang &ldquo;nhìn&rdquo;
-            một góc nhỏ không đại diện, hoặc mô hình đang overfit. Quy tắc
-            vàng: <em>ưu tiên CV</em>.
+            <strong>So sánh CV score và public LB.</strong> Nếu hai chỉ số đi
+            cùng chiều, bạn yên tâm. Nếu CV tăng mà public giảm (hoặc ngược
+            lại), đèn đỏ bật: có thể public LB đang nhìn vào một góc nhỏ
+            không đại diện, hoặc model đang overfit theo public. Quy tắc vàng
+            là <em>ưu tiên CV</em>.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>&ldquo;Trust Your CV&rdquo; &mdash; phép thử thời
-            khắc.</strong> Trong cuộc thi &ldquo;Decoding Brain Signals&rdquo;,
-            một đội xếp hạng 1.485 public leaderboard (gần cuối). Nhưng CV
-            score của họ vẫn cao. Họ chọn submission dựa trên CV thay vì public
-            LB &mdash; và khi private được công bố, họ ở <strong>hạng 1</strong>.
-            1.484 đội đã overfit public LB và bị tụt thảm hại.
+            <strong>&ldquo;Trust Your CV&rdquo;: phép thử thời khắc.</strong>{" "}
+            Trong cuộc thi &ldquo;Decoding Brain Signals&rdquo;, một đội xếp
+            hạng 1.485 trên public leaderboard, gần đáy bảng. Nhưng CV score
+            của họ vẫn cao. Họ chọn submission dựa trên CV thay vì public LB.
+            Khi private được công bố, họ ở <strong>hạng 1</strong>. 1.484 đội
+            phía trên đã overfit public LB và tụt hạng thảm hại.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Hai bài nộp cuối quyết định.</strong> Kaggle chỉ cho phép
-            mỗi đội chọn <strong>2 submission</strong> để chấm trên private.
-            Chiến lược tối ưu: một bài có CV score cao nhất (bảo thủ, &ldquo;đánh
-            chắc&rdquo;), một bài cân bằng giữa CV và public (rủi ro vừa phải).
-            Đây là lúc cross-validation thực sự quyết định thắng thua.
+            <strong>Hai bài submission cuối quyết định thắng thua.</strong>{" "}
+            Kaggle chỉ cho phép mỗi đội chọn <strong>2 submission</strong> để
+            chấm trên private. Chiến lược tối ưu là chọn một bài có CV score
+            cao nhất (bảo thủ, đánh chắc) và một bài cân bằng giữa CV và public
+            (rủi ro vừa phải). Đây là lúc cross-validation thực sự quyết định
+            ai về đích trước.
           </p>
         </Beat>
 
-        {/* DEEPEN — SliderGroup for fold count */}
+        {/* DEEPEN. SliderGroup for fold count */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <CheckCircle2 size={16} className="text-accent" />
-            Số fold càng lớn, ước lượng càng ổn định
+            Tăng số fold làm ước lượng ổn định hơn
           </h3>
           <FoldStabilityDemo />
         </div>
 
-        {/* DEEPEN — StepReveal stratified folds */}
+        {/* DEEPEN. StepReveal stratified folds */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">
-            Stratified CV: khi các lớp không cân bằng
+            Stratified CV giữ tỷ lệ lớp cân bằng giữa các fold
           </h3>
           <StepReveal
             labels={[
-              "Tình huống — dataset mất cân bằng",
-              "K-Fold thường — nguy hiểm",
-              "Stratified K-Fold — an toàn",
+              "Tình huống: dataset mất cân bằng",
+              "K-Fold thường: nguy hiểm",
+              "Stratified K-Fold: an toàn",
               "So sánh kết quả",
             ]}
           >
@@ -220,21 +226,21 @@ export default function CrossValidationInKaggle() {
                 className="rounded-xl border border-border bg-surface/60 p-4 space-y-3"
               >
                 <h4 className="text-sm font-bold text-foreground">
-                  Tổng kết — tại sao stratified là mặc định cho phân loại
+                  Vì sao stratified là mặc định cho bài toán phân loại
                 </h4>
                 <ul className="list-disc list-inside text-sm text-foreground/85 space-y-1">
                   <li>
-                    K-Fold thường: mỗi fold có tỷ lệ lớp ngẫu nhiên &rArr; có
-                    thể có fold thiếu hoàn toàn lớp hiếm.
+                    K-Fold thường: tỷ lệ lớp trong mỗi fold là ngẫu nhiên, nên
+                    có thể có fold thiếu hoàn toàn lớp hiếm.
                   </li>
                   <li>
                     Stratified K-Fold: mỗi fold giữ đúng tỷ lệ lớp như toàn bộ
-                    dataset &rArr; mọi fold đều &ldquo;đại diện&rdquo;.
+                    dataset, nhờ vậy mọi fold đều mang tính đại diện.
                   </li>
                   <li>
-                    Chi phí: bằng K-Fold thường. Scikit-learn có sẵn{" "}
-                    <code>StratifiedKFold</code>. Lý do không dùng là: không
-                    biết.
+                    Chi phí ngang K-Fold thường. Scikit-learn có sẵn{" "}
+                    <code>StratifiedKFold</code>. Lý do duy nhất không dùng là
+                    không biết tới nó.
                   </li>
                 </ul>
               </div>,
@@ -242,11 +248,11 @@ export default function CrossValidationInKaggle() {
           </StepReveal>
         </div>
 
-        {/* DEEPEN — drift chart public → private scatter */}
+        {/* DEEPEN. drift chart public → private scatter */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <AlertTriangle size={16} className="text-amber-500" />
-            Tản mát public vs private &mdash; không phải mối quan hệ 1:1
+            Public và private không có quan hệ 1:1
           </h3>
           <DriftScatter />
         </div>
@@ -254,29 +260,29 @@ export default function CrossValidationInKaggle() {
         {/* CHALLENGE */}
         <div className="not-prose mt-6">
           <InlineChallenge
-            question="Bạn đang thi Kaggle. CV score tăng từ 0.82 → 0.85 sau thay đổi X. Cùng lúc, public LB giảm từ 0.88 → 0.86. Bạn nên làm gì?"
+            question="Bạn đang thi Kaggle. CV score tăng từ 0.82 lên 0.85 sau thay đổi X. Cùng lúc, public LB giảm từ 0.88 xuống 0.86. Bạn nên làm gì?"
             options={[
-              "Bỏ thay đổi X ngay — public LB nói vậy",
-              "Giữ thay đổi X — CV score đáng tin hơn public LB, và public LB chỉ dùng 1/3 dữ liệu test",
+              "Bỏ thay đổi X ngay vì public LB nói vậy",
+              "Giữ thay đổi X. CV score đáng tin hơn public LB, và public LB chỉ dùng 1/3 dữ liệu test",
               "Chờ xem thay đổi tiếp theo",
               "Thử nộp thêm 20 submissions khác",
             ]}
             correct={1}
-            explanation="Đây là tình huống kinh điển &ldquo;Trust Your CV&rdquo;. CV score trung bình qua K lần chia → ít phụ thuộc vào may rủi hơn. Public LB chỉ thấy 1/3 dữ liệu, dễ dao động. Nếu CV tăng mà public giảm → có lẽ public LB đang 'nhìn' một góc đặc biệt; sau khi private công bố, thay đổi X thường thắng. Dĩ nhiên, phải đảm bảo CV pipeline sạch (không có leakage)."
+            explanation="Đây là tình huống kinh điển “Trust Your CV”. CV score được trung bình qua K lần chia, nên ít phụ thuộc vào may rủi hơn. Public LB chỉ thấy 1/3 dữ liệu test nên dễ dao động. Nếu CV tăng mà public giảm, nhiều khả năng public LB đang nhìn vào một góc đặc biệt. Khi private công bố, thay đổi X thường thắng. Dĩ nhiên, điều kiện là CV pipeline phải sạch, không có leakage."
           />
         </div>
 
         <div className="not-prose mt-6">
           <InlineChallenge
-            question="Trong 3 tuần cuối cuộc thi, bạn nộp 50 submissions/ngày để 'tune' theo public LB. Public LB score tăng đều. Nhưng CV score chỉ tăng 0.002. Nhận định nào đúng?"
+            question="Trong 3 tuần cuối cuộc thi, bạn nộp 50 submissions mỗi ngày để tune theo public LB. Public LB score tăng đều, nhưng CV score chỉ tăng 0.002. Nhận định nào đúng?"
             options={[
-              "Bạn đang làm tốt — cả hai đều tăng",
-              "Nguy hiểm: bạn đang overfit public LB (mỗi submission = một lần 'tune trên test'). Sau khi private công bố, khả năng cao bạn tụt hạng.",
+              "Bạn đang làm tốt vì cả hai đều tăng",
+              "Nguy hiểm. Bạn đang overfit public LB (mỗi submission là một lần tune trên test). Khi private công bố, khả năng cao bạn tụt hạng.",
               "CV score không quan trọng, tập trung public LB",
-              "Nên nộp thêm 100 submissions/ngày",
+              "Nên nộp thêm 100 submissions mỗi ngày",
             ]}
             correct={1}
-            explanation="Nộp nhiều lần và điều chỉnh dựa vào public LB = overfitting gián tiếp lên test set (Blum & Hardt 2015 chứng minh). CV score tăng chậm (0.002) nghĩa là cải tiến thật sự rất nhỏ; public LB tăng nhanh là do bạn tình cờ 'hợp' với 1/3 dữ liệu public. Khi private mở, 2/3 dữ liệu còn lại sẽ lộ ra sự thật. Giải pháp: giới hạn submission, tin CV, dành 2 submission cuối cho CV score cao nhất."
+            explanation="Nộp nhiều lần và điều chỉnh dựa vào public LB là một dạng overfitting gián tiếp lên test set (Blum và Hardt 2015 đã chứng minh). CV score chỉ tăng 0.002 nghĩa là cải tiến thật sự rất nhỏ. Public LB tăng nhanh là do bạn tình cờ hợp với 1/3 dữ liệu public. Khi private mở, 2/3 dữ liệu còn lại sẽ lộ ra sự thật. Giải pháp: giới hạn số submission, tin CV, và dành 2 submission cuối cho bài có CV score cao nhất."
           />
         </div>
       </ApplicationMechanism>
@@ -290,11 +296,11 @@ export default function CrossValidationInKaggle() {
           sourceRef={3}
         />
         <Metric
-          value="Xáo trộn cực đoan: hạng 1.485 (public) → hạng 1 (private)"
+          value="Xáo trộn cực đoan: hạng 1.485 trên public nhảy lên hạng 1 private"
           sourceRef={2}
         />
         <Metric
-          value="Blum & Hardt (2015): nộp bài nhiều lần = overfit trên test set"
+          value="Blum và Hardt (2015): nộp bài nhiều lần tương đương overfit trên test set"
           sourceRef={1}
         />
         <Metric
@@ -309,32 +315,34 @@ export default function CrossValidationInKaggle() {
       >
         <p>
           Không có cross-validation, thí sinh sẽ hoàn toàn phụ thuộc vào public
-          leaderboard &mdash; một nguồn phản hồi chỉ đại diện cho 1/3 test data
-          và dễ bị overfit. Kết quả: hàng loạt đội leo top 10 public rồi rơi
-          tự do khi private được công bố. Đây là câu chuyện lặp đi lặp lại
+          leaderboard. Đó là một nguồn phản hồi chỉ đại diện cho 1/3 test data
+          và rất dễ bị overfit. Kết quả là hàng loạt đội leo top 10 public rồi
+          rơi tự do khi private được công bố. Câu chuyện này lặp đi lặp lại
           trong gần như mọi cuộc thi Kaggle.
         </p>
         <p>
-          Cross-validation cho mỗi thí sinh một &ldquo;bảng xếp hạng cá
-          nhân&rdquo; đáng tin cậy hơn cả leaderboard chính thức. Đó là lý do{" "}
+          Cross-validation cho mỗi thí sinh một bảng xếp hạng cá nhân đáng tin
+          cậy hơn cả leaderboard chính thức. Vì vậy{" "}
           <strong>&ldquo;Trust Your CV&rdquo;</strong> trở thành bài học đầu
-          tiên mọi Kaggle Grandmaster truyền lại cho người mới &mdash; và cũng
-          là nguyên tắc áp dụng được cho mọi dự án ML, không chỉ thi đấu.
+          tiên mọi Kaggle Grandmaster truyền lại cho người mới. Đây cũng là
+          nguyên tắc áp dụng được cho mọi dự án ML thật, không chỉ riêng đấu
+          trường Kaggle.
         </p>
 
         <div className="not-prose mt-5">
-          <CollapsibleDetail title="Ngoài Kaggle: bài học cho dự án ML thực tế">
+          <CollapsibleDetail title="Ngoài Kaggle: bài học cho dự án ML thật">
             <p className="text-sm leading-relaxed">
-              Public leaderboard trong thực tế là bất cứ chỉ số bạn đo và tinh
-              chỉnh nhiều lần: test accuracy khi tuning hyperparameter, chỉ số
-              demo cho sếp, metric trên tập hold-out bạn đã &ldquo;nhìn&rdquo;
-              quá nhiều. Mỗi lần điều chỉnh dựa trên cùng tập này = một lần
-              overfit nhẹ vào nó.
+              Public leaderboard trong dự án thật là bất cứ chỉ số nào bạn đo
+              và tinh chỉnh nhiều lần. Chẳng hạn test accuracy khi tuning
+              hyperparameter, chỉ số demo cho sếp, hoặc metric trên tập
+              hold-out bạn đã nhìn quá nhiều. Mỗi lần bạn điều chỉnh dựa trên
+              cùng tập đó là một lần overfit nhẹ vào nó.
             </p>
             <p className="text-sm leading-relaxed mt-2">
-              Giải pháp: <strong>tune bằng validation set (hoặc CV)</strong>,
-              giữ test set tuyệt đối ngoài quy trình tuning, và chỉ mở test một
-              lần cuối khi báo cáo kết quả.
+              Giải pháp là{" "}
+              <strong>tune bằng validation set (hoặc CV)</strong>. Giữ test
+              set tuyệt đối ngoài quy trình tuning, và chỉ mở test một lần
+              cuối khi báo cáo kết quả.
             </p>
           </CollapsibleDetail>
         </div>
@@ -343,16 +351,18 @@ export default function CrossValidationInKaggle() {
           <ol className="list-decimal list-inside space-y-1 text-sm mt-1">
             <li>
               Luôn đặt preprocessing (scaler, encoder) bên trong pipeline của
-              mỗi fold &mdash; không fit trên toàn bộ dữ liệu trước CV.
+              mỗi fold. Không fit trên toàn bộ dữ liệu trước khi chạy CV.
             </li>
             <li>
-              Báo cáo kèm <strong>mean ± std</strong>. Std thấp = ổn định. Std
-              cao = có fold đặc biệt, cần tìm nguyên nhân.
+              Báo cáo kèm <strong>mean ± std</strong>. Std thấp nghĩa là kết
+              quả ổn định. Std cao nghĩa là có fold đặc biệt, cần tìm nguyên
+              nhân.
             </li>
             <li>
-              Với phân loại mất cân bằng: <strong>Stratified K-Fold</strong>.
-              Với dữ liệu thời gian: <strong>Time Series Split</strong>. Với
-              nhóm tự nhiên: <strong>Group K-Fold</strong>.
+              Với phân loại mất cân bằng, dùng{" "}
+              <strong>Stratified K-Fold</strong>. Với dữ liệu thời gian, dùng{" "}
+              <strong>Time Series Split</strong>. Với dữ liệu có nhóm tự
+              nhiên, dùng <strong>Group K-Fold</strong>.
             </li>
           </ol>
         </Callout>
@@ -366,28 +376,28 @@ export default function CrossValidationInKaggle() {
             <div className="rounded-lg border border-border bg-card p-3 space-y-1">
               <p className="inline-flex items-center gap-1 text-xs font-semibold text-green-600">
                 <CheckCircle2 size={12} aria-hidden="true" />
-                Submission 1 &mdash; an toàn
+                Submission 1: an toàn
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Bài có <strong>CV score cao nhất</strong>. Đây là &ldquo;đánh
-                chắc&rdquo; &mdash; kết quả CV được trung bình qua K lần chia,
-                ít may rủi nhất. Nếu mô hình tốt thật, nó sẽ ổn trên private.
+                Bài có <strong>CV score cao nhất</strong>. Đây là cách đánh
+                chắc, vì kết quả CV được trung bình qua K lần chia nên ít may
+                rủi nhất. Nếu model tốt thật, nó sẽ ổn trên private.
               </p>
             </div>
             <div className="rounded-lg border border-border bg-card p-3 space-y-1">
               <p className="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
                 <AlertTriangle size={12} aria-hidden="true" />
-                Submission 2 &mdash; cân bằng
+                Submission 2: cân bằng
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Bài cân bằng giữa CV score và public LB. Đây là &ldquo;rủi ro
-                vừa phải&rdquo; &mdash; nếu public LB thật sự có tín hiệu (không
-                phải toàn noise), bài này sẽ thắng.
+                Bài cân bằng giữa CV score và public LB. Đây là mức rủi ro
+                vừa phải. Nếu public LB thật sự có tín hiệu (không phải toàn
+                noise), bài này sẽ thắng.
               </p>
             </div>
           </div>
           <p className="text-xs text-muted italic leading-relaxed">
-            Tuyệt đối không chọn cả 2 bài dựa hoàn toàn vào public LB &mdash;
+            Tuyệt đối không chọn cả 2 bài dựa hoàn toàn vào public LB. Khi đó
             bạn đang cược hết vào một nguồn tin đã được chứng minh là không
             đáng tin.
           </p>
@@ -396,17 +406,18 @@ export default function CrossValidationInKaggle() {
         <Callout variant="tip" title="Vài gợi ý bổ sung cho thí sinh Việt Nam">
           <ul className="list-disc list-inside space-y-1 text-sm mt-1">
             <li>
-              Nếu mới bắt đầu, hãy đặt mục tiêu nhỏ: đạt top 25% &mdash; đây
-              đã là mốc đòi hỏi CV được tổ chức tốt.
+              Nếu mới bắt đầu, đặt mục tiêu nhỏ là vào top 25%. Mốc này đã đòi
+              hỏi CV được tổ chức tốt.
             </li>
             <li>
-              Ghi chép mọi thử nghiệm (tool như Weights &amp; Biases miễn phí
-              cho public project). Khi có 50 thử nghiệm, bạn cần biết cái nào
+              Ghi chép mọi thử nghiệm. Tool như Weights &amp; Biases miễn phí
+              cho public project. Khi có 50 thử nghiệm, bạn cần biết cái nào
               tốt hơn cái nào.
             </li>
             <li>
-              Tham gia cộng đồng (Kaggle VN trên Facebook, Discord) &mdash; đọc
-              kernel của winner sau mỗi cuộc thi là cách học nhanh nhất về CV.
+              Tham gia cộng đồng (Kaggle VN trên Facebook, Discord) và đọc
+              kernel của winner sau mỗi cuộc thi. Đó là cách học nhanh nhất về
+              CV.
             </li>
           </ul>
         </Callout>
@@ -416,7 +427,7 @@ export default function CrossValidationInKaggle() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  LOCAL HELPERS — visual components
+ *  LOCAL HELPERS. Visual components
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 function LeaderboardShockCard() {
@@ -426,15 +437,15 @@ function LeaderboardShockCard() {
     <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
       <p className="text-sm font-semibold text-foreground flex items-center gap-2">
         <Trophy size={16} className="text-accent" />
-        Cuộc thi &ldquo;Decoding Brain Signals&rdquo; &mdash; câu chuyện kinh điển
+        Cuộc thi &ldquo;Decoding Brain Signals&rdquo;: câu chuyện kinh điển
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="rounded-xl border border-border bg-background p-4 space-y-2">
           <p className="text-xs text-muted font-semibold">Public LB (trong cuộc thi)</p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Một đội &mdash; hãy gọi họ là <strong>Đội X</strong> &mdash; xếp
-            hạng <strong className="text-red-500">1.485 / ~1.700</strong>. Gần
+            Một đội (gọi là <strong>Đội X</strong>) xếp hạng{" "}
+            <strong className="text-red-500">1.485 / ~1.700</strong>, tức gần
             cuối bảng. Nhiều người nghĩ họ thua chắc.
           </p>
           <div className="flex items-center gap-1 text-xs text-red-500">
@@ -459,7 +470,7 @@ function LeaderboardShockCard() {
                   tin vào CV thay vì public LB.
                 </p>
                 <div className="flex items-center gap-1 text-xs text-green-600">
-                  <Medal size={12} /> Hạng 1 — thắng giải
+                  <Medal size={12} /> Hạng 1, thắng giải
                 </div>
               </motion.div>
             ) : (
@@ -477,9 +488,9 @@ function LeaderboardShockCard() {
       </div>
 
       <p className="text-xs text-muted italic leading-relaxed">
-        Đây là câu chuyện thật từ cuộc thi Kaggle 2015–2016. Đội X chọn mô hình
-        dựa trên CV score cao thay vì public LB &mdash; và 1.484 đội đã overfit
-        public LB và tụt hạng thảm hại khi private công bố.
+        Đây là câu chuyện thật từ cuộc thi Kaggle 2015–2016. Đội X chọn model
+        dựa trên CV score cao thay vì public LB. Trong khi đó 1.484 đội phía
+        trên đã overfit public LB và tụt hạng thảm hại khi private công bố.
       </p>
     </div>
   );
@@ -513,7 +524,7 @@ function PublicVsPrivateChart() {
     <div className="rounded-xl border border-border bg-card p-5 space-y-3">
       <p className="text-sm font-semibold text-foreground flex items-center gap-2">
         <AlertTriangle size={16} className="text-amber-500" />
-        Public vs Private — thứ hạng bị xáo trộn cực lớn
+        Public và private xáo trộn thứ hạng cực lớn
       </p>
 
       <svg
@@ -524,7 +535,7 @@ function PublicVsPrivateChart() {
       >
         {/* Axis labels */}
         <text x={100} y={18} fontSize={11} fill="#3b82f6" fontWeight={700}>
-          Public LB (leo top → sụp)
+          Public LB (leo top rồi sụp)
         </text>
         <text x={360} y={18} fontSize={11} fill="#22c55e" fontWeight={700}>
           Private LB (sự thật)
@@ -597,9 +608,10 @@ function PublicVsPrivateChart() {
       </svg>
 
       <p className="text-xs text-muted leading-relaxed italic">
-        Đội A-F có public score cao nhất nhưng private score thấp &mdash; họ
-        overfit public LB. Đội G-L khiêm tốn public, mạnh private &mdash; họ tin
-        vào CV. Đây là lý do công thức vàng: <strong>Trust Your CV</strong>.
+        Đội A-F có public score cao nhất nhưng private score thấp, đó là dấu
+        hiệu họ overfit public LB. Trong khi đó đội G-L khiêm tốn ở public
+        nhưng mạnh ở private vì họ tin vào CV. Đây là lý do công thức vàng{" "}
+        <strong>Trust Your CV</strong> tồn tại.
       </p>
     </div>
   );
@@ -690,9 +702,9 @@ function FoldStabilityDemo() {
       </div>
 
       <p className="text-xs text-muted italic leading-relaxed">
-        Kéo slider để thấy: số fold tăng &rArr; độ lệch chuẩn giảm &rArr; ước
-        lượng ổn định hơn. Nhưng chi phí tính toán tăng tuyến tính. Thực tế
-        cân bằng ở K = 5 hoặc 10.
+        Kéo slider để thấy: số fold tăng làm độ lệch chuẩn giảm, nhờ vậy ước
+        lượng ổn định hơn. Đổi lại, chi phí tính toán tăng tuyến tính. Điểm
+        cân bằng trong thực tế nằm ở K = 5 hoặc 10.
       </p>
     </div>
   );
@@ -705,10 +717,10 @@ function ImbalanceIntro() {
         Dataset mất cân bằng: 95% âm, 5% dương
       </p>
       <p className="text-sm text-foreground/85 leading-relaxed">
-        Thi Kaggle về phát hiện gian lận thẻ tín dụng. Trong 10.000 giao dịch,
-        chỉ 500 là gian lận (5%). Nếu chia ngẫu nhiên thành 5 fold, mỗi fold
-        &ldquo;lý thuyết&rdquo; có 100 giao dịch gian lận &mdash; nhưng <em>
-        thực tế</em> có thể lệch mạnh: fold này 60, fold kia 140.
+        Bạn thi Kaggle về phát hiện gian lận thẻ tín dụng. Trong 10.000 giao
+        dịch chỉ có 500 là gian lận (5%). Chia ngẫu nhiên thành 5 fold, theo
+        lý thuyết mỗi fold có 100 giao dịch gian lận. Nhưng{" "}
+        <em>thực tế</em> có thể lệch rất mạnh: fold này 60, fold kia 140.
       </p>
       <div className="flex items-center gap-2 mt-2">
         <div className="h-6 rounded bg-green-500" style={{ width: "95%" }} />
@@ -736,7 +748,7 @@ function VanillaKFoldImbalance() {
     <div className="rounded-xl border-2 border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/10 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <AlertTriangle size={14} className="text-red-500" />
-        <h4 className="text-sm font-bold text-red-500">K-Fold thường — phân bố lệch</h4>
+        <h4 className="text-sm font-bold text-foreground">K-Fold thường: phân bố lệch</h4>
       </div>
       <div className="space-y-2">
         {folds.map((f) => {
@@ -762,9 +774,9 @@ function VanillaKFoldImbalance() {
         })}
       </div>
       <p className="text-xs text-foreground/80 leading-relaxed">
-        Fold 4 chỉ 3.5% gian lận — mô hình học trên fold này sẽ thấy lớp dương
-        &ldquo;hiếm hơn&rdquo; thực tế. Recall trên fold này cũng không còn đại
-        diện được cho toàn bộ dataset.
+        Fold 4 chỉ có 3.5% gian lận, nên model học trên fold này sẽ thấy lớp
+        dương hiếm hơn so với thực tế. Độ phủ (recall) trên fold này cũng
+        không còn đại diện được cho toàn bộ dataset.
       </p>
     </div>
   );
@@ -783,8 +795,8 @@ function StratifiedKFoldSafe() {
     <div className="rounded-xl border-2 border-green-200 dark:border-green-800 bg-green-50/40 dark:bg-green-900/10 p-4 space-y-3">
       <div className="flex items-center gap-2">
         <CheckCircle2 size={14} className="text-green-600" />
-        <h4 className="text-sm font-bold text-green-600">
-          Stratified K-Fold — tỷ lệ lớp đồng đều
+        <h4 className="text-sm font-bold text-foreground">
+          Stratified K-Fold: tỷ lệ lớp đồng đều
         </h4>
       </div>
       <div className="space-y-2">
@@ -808,16 +820,16 @@ function StratifiedKFoldSafe() {
         ))}
       </div>
       <p className="text-xs text-foreground/80 leading-relaxed">
-        Stratified đảm bảo mỗi fold có đúng tỷ lệ 5% &mdash; mọi fold đều &ldquo;đại
-        diện&rdquo; như toàn bộ dataset. Đánh giá ổn định, recall đáng tin,
-        không có fold &ldquo;may&rdquo; hoặc &ldquo;xui&rdquo;.
+        Stratified đảm bảo mỗi fold có đúng tỷ lệ 5%. Nhờ vậy mọi fold đều
+        đại diện cho toàn bộ dataset. Đánh giá ổn định, độ phủ đáng tin,
+        không còn fold &ldquo;may&rdquo; hay &ldquo;xui&rdquo;.
       </p>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   DriftScatter — illustrate non-1:1 relation between public and private.
+   DriftScatter. Illustrate non-1:1 relation between public and private.
    ───────────────────────────────────────────────────────────────────────── */
 function DriftScatter() {
   // Synthetic 40 teams, noisy public-private correlation
@@ -843,7 +855,7 @@ function DriftScatter() {
   return (
     <div className="rounded-xl border border-border bg-card p-5 space-y-3">
       <p className="text-sm font-semibold text-foreground">
-        40 đội tham dự — chấm cả public và private
+        40 đội tham dự, chấm cả public và private
       </p>
 
       <svg
@@ -897,16 +909,17 @@ function DriftScatter() {
         {/* Legend */}
         <g transform="translate(300, 40)">
           <circle cx={0} cy={0} r={5} fill="#22c55e" opacity={0.8} />
-          <text x={10} y={3} fontSize={11} fill="#22c55e">Tin CV → giữ vị trí</text>
+          <text x={10} y={3} fontSize={11} fill="#22c55e">Tin CV, giữ vị trí</text>
           <circle cx={0} cy={16} r={5} fill="#ef4444" opacity={0.8} />
-          <text x={10} y={19} fontSize={11} fill="#ef4444">Overfit public → tụt</text>
+          <text x={10} y={19} fontSize={11} fill="#ef4444">Overfit public, tụt</text>
         </g>
       </svg>
 
       <p className="text-xs text-muted leading-relaxed italic">
-        Các đội tin vào CV (xanh) chủ yếu nằm trên hoặc quanh đường y = x. Các
-        đội chạy theo public LB (đỏ) nằm dưới đường y = x &mdash; nghĩa là public
-        score cao hơn private score, họ bị tụt hạng khi private mở.
+        Các đội tin vào CV (xanh) chủ yếu nằm trên hoặc quanh đường y = x.
+        Trong khi đó các đội chạy theo public LB (đỏ) nằm dưới đường y = x,
+        nghĩa là public score cao hơn private score và họ bị tụt hạng khi
+        private mở.
       </p>
     </div>
   );

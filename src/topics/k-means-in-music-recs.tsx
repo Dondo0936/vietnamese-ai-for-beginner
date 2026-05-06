@@ -33,9 +33,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "k-means-in-music-recs",
   title: "K-Means in Music Recommendations",
-  titleVi: "k-means trong gợi ý nhạc",
+  titleVi: "k-means dựng Discover Weekly cho Spotify",
   description:
-    "Cách Spotify biến sở thích của 600 triệu người thành các điểm trong không gian 40 chiều, tìm đồng minh thẩm mỹ, và xây Discover Weekly mỗi thứ Hai.",
+    "Spotify biến 600 triệu người nghe thành điểm trong không gian 40 chiều. Sáng thứ Hai, một thuật toán phân cụm tìm đồng minh thẩm mỹ và dựng Discover Weekly cho từng tài khoản.",
   category: "classic-ml",
   tags: ["clustering", "recommendation", "application"],
   difficulty: "intermediate",
@@ -66,7 +66,7 @@ export const metadata: TopicMeta = {
     },
     {
       title: "Logistic Matrix Factorization for Implicit Feedback Data",
-      publisher: "Chris Johnson, Spotify — NIPS 2014 Workshop",
+      publisher: "Chris Johnson, Spotify (NIPS 2014 Workshop)",
       url: "https://research.atspotify.com/publications/logistic-matrix-factorization-for-implicit-feedback-data",
       date: "2014-12",
       kind: "paper",
@@ -95,7 +95,7 @@ export const metadata: TopicMeta = {
     },
     {
       title:
-        "How Fans Discover Your Music on Spotify — Made to Be Found",
+        "How Fans Discover Your Music on Spotify (Made to Be Found)",
       publisher: "Spotify for Artists",
       url: "https://artists.spotify.com/en/blog/how-fans-discover-music-on-spotify-playlists-made-to-be-found",
       date: "2022-03",
@@ -113,7 +113,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — 18 bài hát giả lập, 4 cụm thể loại
+   DỮ LIỆU. 18 bài hát giả lập, 4 cụm thể loại
    ──────────────────────────────────────────────────────────── */
 
 type Genre = "pop" | "chill" | "rock" | "bolero";
@@ -223,18 +223,17 @@ export default function KMeansInMusicRecs() {
         topicSlug="k-means-in-music-recs"
       >
         <p>
-          Sáng thứ Hai nào đó bạn mở Spotify (dịch vụ phát nhạc lớn nhất
-          thế giới) và thấy Discover Weekly — 30 bài hát mới — đã sẵn
-          sàng. Bài đầu tiên lạ hoắc nhưng <em>hợp gu đến kỳ lạ</em>.
-          Làm sao Spotify biết bạn thích bài này, khi bạn còn chưa từng
-          nghe?
+          Sáng thứ Hai, bạn mở Spotify (dịch vụ phát nhạc lớn nhất thế
+          giới) và thấy Discover Weekly đã sẵn sàng với 30 bài hát mới.
+          Bài đầu tiên lạ hoắc nhưng <em>hợp gu đến kỳ lạ</em>. Làm sao
+          Spotify biết bạn thích bài này, khi bạn còn chưa từng nghe?
         </p>
         <p>
-          Đằng sau sự &ldquo;tiên tri&rdquo; đó là một cách nhìn thú vị:
+          Đằng sau sự &ldquo;tiên tri&rdquo; đó là một cách nhìn thú vị.
           Spotify biến bạn và mỗi bài hát thành{" "}
           <strong>một điểm trong không gian nhiều chiều</strong>. Gu âm
-          nhạc của bạn là một toạ độ. Nhiệm vụ duy nhất: tìm các bài
-          hát có toạ độ gần bạn — dùng đúng kỹ thuật phân cụm bạn đã
+          nhạc của bạn là một toạ độ. Nhiệm vụ duy nhất là tìm các bài
+          hát có toạ độ gần bạn, dùng đúng kỹ thuật clustering bạn đã
           học ở bài lý thuyết.
         </p>
       </ApplicationHero>
@@ -243,8 +242,8 @@ export default function KMeansInMusicRecs() {
         <p>
           Spotify có hơn <strong>100 triệu bài hát</strong> và hơn{" "}
           <strong>600 triệu người dùng</strong>. Dịch vụ này phân loại
-          tới 6.291 thể loại vi mô (micro-genre) — từ &ldquo;trance
-          guru&rdquo; đến &ldquo;cult-progressive-rock&rdquo;.
+          tới 6.291 thể loại vi mô (micro-genre), từ &ldquo;trance
+          guru&rdquo; tới &ldquo;cult-progressive-rock&rdquo;.
         </p>
 
         <div className="grid gap-3 sm:grid-cols-3 my-4">
@@ -252,19 +251,19 @@ export default function KMeansInMusicRecs() {
             {
               icon: Music,
               title: "Kho nhạc khổng lồ",
-              desc: "100 triệu bài. Đọc thủ công mỗi bài mất 10 năm làm việc không nghỉ.",
+              desc: "100 triệu bài. Nghe thử mỗi bài một phút thôi cũng mất gần 200 năm liên tục.",
               color: "#3b82f6",
             },
             {
               icon: User,
               title: "Gu rất đa dạng",
-              desc: "600 triệu người nghe. Không có hai người có gu giống nhau 100%.",
+              desc: "600 triệu người nghe. Không có hai người trùng gu 100%.",
               color: "#a855f7",
             },
             {
               icon: Sparkles,
               title: "Phải cá nhân hoá",
-              desc: "Gợi ý chung kiểu “Top 50 toàn cầu” không ai xem. Cần riêng cho từng người.",
+              desc: "Gợi ý chung kiểu “Top 50 toàn cầu” không ai xem. Cần một danh sách riêng cho từng người.",
               color: "#ec4899",
             },
           ].map((c) => (
@@ -292,8 +291,9 @@ export default function KMeansInMusicRecs() {
         <p>
           Vấn đề cốt lõi: từ ma trận tương tác (ai đã nghe bài gì) giữa
           hàng trăm triệu người và bài hát, làm sao tìm ra những nhóm
-          người nghe có gu giống nhau? Rồi gợi ý bài hát mà &ldquo;đồng
-          minh thẩm mỹ&rdquo; của bạn yêu thích mà bạn chưa từng nghe.
+          người nghe có gu giống nhau, rồi gợi ý cho bạn các bài mà
+          &ldquo;đồng minh thẩm mỹ&rdquo; của bạn yêu thích nhưng bạn
+          chưa từng nghe?
         </p>
       </ApplicationProblem>
 
@@ -303,48 +303,49 @@ export default function KMeansInMusicRecs() {
       >
         <Beat step={1}>
           <p>
-            <strong>Thu thập phản hồi ẩn (implicit feedback).</strong>{" "}
-            Spotify không hỏi bạn thích bài gì — quá rườm rà. Thay vào
-            đó, họ ghi lại lượt nghe đủ lâu (&gt;30 giây), lưu vào
-            playlist, bỏ qua giữa chừng — khoảng <strong>1 TB mỗi
-            ngày</strong> trên toàn hệ thống.
+            <strong>Thu thập implicit feedback.</strong> Spotify không
+            hỏi thẳng bạn thích bài gì, vì hỏi thì rườm rà mà câu trả
+            lời thường không trung thực. Thay vào đó, họ ghi lại lượt
+            nghe đủ lâu (trên 30 giây), lượt lưu vào playlist, lượt bỏ
+            qua giữa chừng. Cộng dồn cả hệ thống là khoảng{" "}
+            <strong>1 TB mỗi ngày</strong>.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
             <strong>Biến người và bài hát thành &ldquo;điểm&rdquo;.</strong>{" "}
             Ma trận khổng lồ {`{người × bài}`} được phân rã thành hai
-            ma trận nhỏ: người dùng trở thành vector 40 chiều, bài hát
-            cũng trở thành vector 40 chiều. Hai điểm gần nhau trong
-            không gian 40 chiều = gu âm nhạc tương đồng.
+            ma trận nhỏ. Mỗi người dùng trở thành một vector 40 chiều,
+            mỗi bài hát cũng là một vector 40 chiều. Hai điểm gần nhau
+            trong không gian 40 chiều nghĩa là gu âm nhạc tương đồng.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
             <strong>Tìm láng giềng gần nhất.</strong> Với vector của
             bạn, Spotify dùng thư viện <em>Voyager</em> (nhanh hơn
-            Annoy 10 lần) để tìm bài hát có vector gần nhất — đúng
-            logic của k-means, nhưng với k rất lớn và không gian nhiều
-            chiều. Việc này tương đương: tìm cụm bài hát phù hợp nhất
-            với mỗi người nghe.
+            Annoy 10 lần) để tìm các bài hát có vector gần nhất. Đây
+            chính là logic của k-means, chỉ khác ở chỗ k rất lớn và
+            không gian nhiều chiều. Việc này tương đương với tìm cụm
+            bài hát phù hợp nhất cho mỗi người nghe.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Bổ sung tín hiệu âm thanh.</strong> Bài hát mới
-            chưa có lịch sử nghe (cold-start)? CNN (mạng nơ-ron tích
-            chập) phân tích phổ âm thanh thô của bài đó để dự đoán
-            vector — không cần chờ nghìn lượt nghe để &ldquo;hiểu&rdquo;
-            bài này.
+            <strong>Bổ sung tín hiệu âm thanh.</strong> Một bài hát
+            mới chưa có ai nghe thì sao? Bài toán này gọi là cold-start.
+            CNN (mạng nơ-ron tích chập) phân tích phổ âm thanh thô của
+            bài đó và dự đoán vector luôn, không cần chờ tới hàng nghìn
+            lượt nghe đầu tiên.
           </p>
         </Beat>
         <Beat step={5}>
           <p>
             <strong>Vòng phản hồi mỗi thứ Hai.</strong> Bạn nghe một
-            bài trong Discover Weekly, bỏ qua bài khác. Mỗi hành động
-            cập nhật vector của bạn một chút — tâm gu (user centroid)
-            dịch chuyển nhẹ về bài bạn vừa thích. Tuần sau, 30 bài mới
-            đã phản ánh dịch chuyển đó.
+            bài trong Discover Weekly và bỏ qua một bài khác. Mỗi hành
+            động cập nhật vector của bạn một chút. Tâm gu (user
+            centroid) dịch chuyển nhẹ về phía bài bạn vừa thích, và
+            tuần sau, 30 bài mới đã phản ánh dịch chuyển đó.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -359,11 +360,11 @@ export default function KMeansInMusicRecs() {
         </div>
 
         <p className="text-sm text-muted leading-relaxed">
-          Thực tế Spotify dùng 40 chiều, nhưng chỉ 2 chiều cũng đủ thấy
-          các cụm tự nhiên. Mỗi chấm là một bài hát tiếng Việt. Trục X
-          là <strong>energy</strong> (năng lượng), trục Y là{" "}
-          <strong>danceability</strong> (khiêu vũ). Bấm vào một bài để
-          xem nó thuộc cụm nào.
+          Spotify thực tế dùng 40 chiều, nhưng chỉ 2 chiều cũng đủ để
+          thấy các cụm tự nhiên hiện ra. Mỗi chấm là một bài hát tiếng
+          Việt. Trục X là <strong>energy</strong> (năng lượng), trục Y
+          là <strong>danceability</strong> (độ khiêu vũ). Bấm vào một
+          bài để xem nó thuộc cụm nào.
         </p>
 
         <div className="rounded-xl border border-border bg-background overflow-hidden">
@@ -693,7 +694,7 @@ export default function KMeansInMusicRecs() {
                     {s.title}
                   </span>
                   <span className="text-[10px] text-tertiary truncate">
-                    — {s.artist}
+                    · {s.artist}
                   </span>
                 </button>
                 <button
@@ -726,11 +727,11 @@ export default function KMeansInMusicRecs() {
                 size={16}
                 className="text-amber-600 dark:text-amber-400"
               />
-              <span className="text-sm font-semibold text-amber-800 dark:text-amber-200">
+              <span className="text-sm font-semibold text-amber-900 dark:text-amber-200">
                 Dành cho bạn (mô phỏng Discover Weekly)
               </span>
             </div>
-            <span className="text-[10px] text-amber-700 dark:text-amber-300">
+            <span className="text-[10px] text-amber-900 dark:text-amber-200">
               {liked.length} bài đã thích
             </span>
           </div>
@@ -753,7 +754,7 @@ export default function KMeansInMusicRecs() {
                       transition={{ delay: idx * 0.08 }}
                       className="flex items-center gap-3 rounded-lg bg-card border border-border p-2.5"
                     >
-                      <span className="flex h-6 w-6 items-center justify-center rounded bg-amber-500/20 text-[10px] font-bold text-amber-700 dark:text-amber-300 shrink-0">
+                      <span className="flex h-6 w-6 items-center justify-center rounded bg-amber-500/20 text-[10px] font-bold text-foreground shrink-0">
                         #{idx + 1}
                       </span>
                       <span
@@ -787,7 +788,7 @@ export default function KMeansInMusicRecs() {
         <p className="text-xs text-muted italic leading-relaxed">
           Quan sát: mỗi lần bạn bấm tim thêm một bài, chấm vàng (gu của
           bạn) dời nhẹ. Các bài được gợi ý là những bài có khoảng cách
-          d nhỏ nhất đến chấm vàng. Spotify thực tế làm điều này trên
+          d nhỏ nhất tới chấm vàng. Spotify thực tế làm điều này trên
           40 chiều và hàng triệu bài hát, nhưng nguyên lý giống hệt.
         </p>
       </section>
@@ -818,7 +819,7 @@ export default function KMeansInMusicRecs() {
       <section className="mb-10 space-y-4">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
           <Sparkles size={16} className="text-accent" />
-          Gu của bạn cập nhật thế nào khi thích bài mới?
+          Gu của bạn cập nhật thế nào khi thích thêm bài mới?
         </h3>
         <p className="text-sm text-muted leading-relaxed">
           Mỗi khi bạn bấm tim, Spotify không viết lại toàn bộ hồ sơ. Nó
@@ -856,48 +857,48 @@ export default function KMeansInMusicRecs() {
             question="Bạn vừa tạo tài khoản Spotify mới và chưa nghe bài nào. Hệ thống sẽ gợi ý thế nào?"
             options={[
               "Gợi ý 30 bài ngẫu nhiên",
-              "Gợi ý bài phổ biến nhất toàn cầu — vì chưa có dữ liệu cá nhân, Spotify phải dùng prior của đám đông",
-              "Từ chối gợi ý cho đến khi có đủ dữ liệu",
+              "Gợi ý bài phổ biến nhất toàn cầu, vì chưa có dữ liệu cá nhân, Spotify phải dùng prior của đám đông",
+              "Từ chối gợi ý cho tới khi có đủ dữ liệu",
               "Gợi ý bài bạn của bạn đang nghe",
             ]}
             correct={1}
-            explanation="Đây chính là bài toán “cold-start” (khởi đầu lạnh). Khi chưa có vector cá nhân, Spotify mặc định dùng vector trung bình của tất cả người dùng (hoặc phân khúc khu vực) — bài phổ biến toàn cầu. Khi bạn thích/bỏ qua vài bài, vector cá nhân bắt đầu hình thành và gợi ý chính xác dần."
+            explanation="Đây chính là bài toán cold-start (khởi đầu lạnh). Khi chưa có vector cá nhân, Spotify mặc định dùng vector trung bình của tất cả người dùng (hoặc của phân khúc khu vực): bài phổ biến toàn cầu. Khi bạn thích hoặc bỏ qua vài bài, vector cá nhân bắt đầu hình thành và gợi ý chính xác dần."
           />
 
           <InlineChallenge
             question="Bạn nghe 9 bài bolero và 1 bài EDM liên tục. Tuần sau Discover Weekly chủ yếu có gì?"
             options={[
-              "50% bolero + 50% EDM — chia đều",
-              "Chủ yếu bolero — vì 9/10 lượt nghe là bolero, user centroid nằm rất gần cụm bolero",
-              "Chủ yếu EDM — vì bài EDM nghe gần đây nhất, ảnh hưởng nhất",
-              "Toàn bài pop — phổ biến nhất",
+              "50% bolero và 50% EDM, chia đều",
+              "Chủ yếu bolero, vì 9/10 lượt nghe là bolero nên user centroid nằm rất gần cụm bolero",
+              "Chủ yếu EDM, vì bài EDM nghe gần đây nhất, ảnh hưởng nhất",
+              "Toàn bài pop, vì là loại phổ biến nhất",
             ]}
             correct={1}
-            explanation="User centroid là trung bình có trọng số của các bài đã nghe. 9 bài bolero “kéo” centroid về cụm bolero; bài EDM đơn lẻ không đủ để dịch chuyển nhiều. Kết quả: bolero thắng lớn trong Discover Weekly, nhưng có thể xuất hiện 1-2 bài “thăm dò” ngoài gu để thuật toán học thêm."
+            explanation="User centroid là trung bình có trọng số của các bài đã nghe. 9 bài bolero kéo centroid về cụm bolero, còn một bài EDM đơn lẻ không đủ để dịch chuyển nhiều. Kết quả: bolero thắng lớn trong Discover Weekly. Tuy vậy, có thể xuất hiện một hai bài thăm dò ngoài gu để thuật toán học thêm."
           />
 
           <InlineChallenge
-            question="Spotify ra bài mới chưa có ai nghe. Làm sao đưa vào gợi ý mà không chờ hàng ngàn lượt nghe đầu tiên?"
+            question="Spotify ra bài mới chưa có ai nghe. Làm sao đưa vào gợi ý mà không phải chờ hàng nghìn lượt nghe đầu tiên?"
             options={[
-              "Bỏ bài đó ra khỏi hệ thống cho đến khi đủ dữ liệu",
+              "Bỏ bài đó ra khỏi hệ thống cho tới khi đủ dữ liệu",
               "CNN phân tích phổ âm thanh (mel-spectrogram) để tự động dự đoán vector của bài hát",
               "Gửi email cho toàn bộ 600 triệu người",
               "Chỉ gợi ý cho nghệ sĩ thân thiết",
             ]}
             correct={1}
-            explanation="Đây là đóng góp của Sander Dieleman (2014): dùng CNN trên mel-spectrogram để dự đoán vector 40 chiều chỉ từ bản thu âm — không cần lịch sử nghe. Nhờ vậy bài mới ra ngay lập tức có thể được gợi ý cho người có gu phù hợp. Đây là sức mạnh khi kết hợp phân cụm cộng tác (collaborative) với đặc trưng nội dung (content-based)."
+            explanation="Đây là đóng góp của Sander Dieleman (2014): dùng CNN trên mel-spectrogram để dự đoán vector 40 chiều chỉ từ bản thu âm, không cần lịch sử nghe. Nhờ vậy, bài mới ra ngay lập tức có thể được gợi ý cho người có gu phù hợp. Đây là sức mạnh khi kết hợp clustering cộng tác (collaborative) với đặc trưng nội dung (content-based)."
           />
 
           <InlineChallenge
-            question="Tại sao Spotify dùng 40 chiều mà không phải 2 chiều (energy + dance) như đồ thị trên?"
+            question="Tại sao Spotify dùng 40 chiều mà không phải 2 chiều (energy và danceability) như đồ thị trên?"
             options={[
               "40 chiều đẹp hơn",
-              "2 chiều không đủ tách biệt mọi gu — một bài pop buồn và một bài chill vui có thể trùng (energy=50, dance=50) nhưng thực tế rất khác. Càng nhiều chiều → tách càng mịn",
+              "2 chiều không đủ tách biệt mọi gu. Một bài pop buồn và một bài chill vui có thể trùng (energy=50, dance=50) nhưng thực tế rất khác. Càng nhiều chiều thì tách càng mịn",
               "40 là con số may mắn trong văn hoá Bắc Âu",
               "Để tốn thêm CPU",
             ]}
             correct={1}
-            explanation="Với 2 chiều, “rock Việt thập niên 90” và “pop Hàn Quốc đương đại” có thể có cùng toạ độ mà nghe hoàn toàn khác. 40 chiều cho phép nắm bắt nhiều yếu tố: tempo, giọng, nhạc cụ, ngôn ngữ, thể loại con, cảm xúc... Đây là nguyên lý của embedding — nén thông tin rộng vào không gian vector vẫn giữ được cấu trúc gần/xa."
+            explanation="Với 2 chiều, “rock Việt thập niên 90” và “pop Hàn Quốc đương đại” có thể có cùng toạ độ mà nghe hoàn toàn khác. 40 chiều cho phép nắm bắt nhiều yếu tố cùng lúc: tempo, giọng, nhạc cụ, ngôn ngữ, thể loại con, cảm xúc. Đây chính là nguyên lý của embedding: nén thông tin rộng vào một không gian vector mà vẫn giữ được cấu trúc gần và xa."
           />
         </div>
 
@@ -905,10 +906,10 @@ export default function KMeansInMusicRecs() {
           <Callout variant="insight" title="Tại sao thứ Hai?">
             Spotify nhận thấy người dùng có thói quen &ldquo;nghe nhạc
             mới&rdquo; nhiều nhất đầu tuần. Discover Weekly ra đời năm
-            2015 cố ý nhắm vào khung giờ đó — và ngay tuần đầu đã đạt
+            2015 và cố ý nhắm vào khung giờ đó. Ngay tuần đầu đã đạt
             <strong> 40 triệu người dùng</strong>, trở thành một trong
             những sản phẩm thành công nhất của công ty. Thuật toán thì
-            đã có từ trước; cái mới là <em>đóng gói nó thành một khoảnh
+            đã có từ trước. Cái mới là <em>đóng gói nó thành một khoảnh
             khắc nghi thức hàng tuần</em>.
           </Callout>
         </div>
@@ -919,28 +920,28 @@ export default function KMeansInMusicRecs() {
         topicSlug="k-means-in-music-recs"
       >
         <p>
-          Không có phân cụm và biểu diễn vector, Spotify sẽ phải so
-          sánh trực tiếp mỗi người dùng với hàng trăm triệu người khác
-          — bất khả thi về mặt tính toán. Một truy vấn gợi ý đơn giản
-          sẽ mất hàng giờ thay vì mili-giây.
+          Không có clustering và biểu diễn vector, Spotify sẽ phải so
+          sánh trực tiếp mỗi người dùng với hàng trăm triệu người khác.
+          Việc này bất khả thi về mặt tính toán. Một truy vấn gợi ý đơn
+          giản sẽ mất hàng giờ thay vì mili-giây.
         </p>
         <p>
-          Kỹ thuật phân rã ma trận và phân cụm biến mỗi người, mỗi bài
-          hát thành vector ngắn gọn — biến bài toán so sánh thành phép
-          nhân vector đơn giản. Thư viện tìm kiếm láng giềng gần đúng
-          (Voyager) tiếp tục tăng tốc bằng cách không duyệt toàn bộ
-          không gian. Kết quả: Discover Weekly có thể tạo ra cho 600
-          triệu người mỗi thứ Hai, xong trong vài giờ tính toán ngắn
-          ngủi — một con số không thể tưởng tượng được nếu so từng
-          cặp.
+          Kỹ thuật phân rã ma trận và clustering biến mỗi người, mỗi
+          bài hát thành vector ngắn gọn. Bài toán so sánh giờ trở thành
+          phép nhân vector đơn giản. Thư viện tìm kiếm láng giềng gần
+          đúng (Voyager) tiếp tục tăng tốc bằng cách không duyệt toàn
+          bộ không gian. Kết quả: Discover Weekly có thể tạo ra cho 600
+          triệu người mỗi thứ Hai, xong trong vài giờ tính toán. Nếu
+          phải so từng cặp, đây là một con số không thể tưởng tượng
+          được.
         </p>
         <div className="mt-4 flex items-center gap-2 rounded-lg border border-border bg-surface/40 px-3 py-2">
           <Plus size={14} className="text-accent" />
           <p className="text-xs text-muted leading-snug">
-            Nguyên lý này không chỉ dành cho nhạc — Netflix dùng cho
+            Nguyên lý này không chỉ dành cho nhạc. Netflix dùng cho
             phim, TikTok cho video, Shopee cho sản phẩm. Tất cả đều
-            quy về bài toán: biến người và sản phẩm thành điểm, rồi
-            tìm láng giềng gần nhất.
+            quy về cùng một bài toán: biến người và sản phẩm thành
+            điểm, rồi tìm láng giềng gần nhất.
           </p>
         </div>
       </ApplicationCounterfactual>
@@ -956,14 +957,14 @@ function StepInitialTaste() {
   return (
     <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
       <p className="text-sm text-foreground leading-relaxed">
-        Bạn mới tạo tài khoản — Spotify chưa biết gì về gu của bạn.
-        Vector khởi đầu là một giá trị mặc định (thường là trung bình
-        toàn hệ thống, kiểu &ldquo;người nghe phổ thông&rdquo;).
+        Bạn mới tạo tài khoản. Spotify chưa biết gì về gu của bạn nên
+        vector khởi đầu là một giá trị mặc định, thường là trung bình
+        toàn hệ thống, kiểu &ldquo;người nghe phổ thông&rdquo;.
       </p>
       <Mini2DPlot
         centroid={{ x: 55, y: 52 }}
         highlighted={[]}
-        caption="Gu của bạn (chấm vàng) nằm giữa — chưa có hướng rõ ràng."
+        caption="Gu của bạn (chấm vàng) nằm giữa. Chưa có hướng rõ ràng."
       />
     </div>
   );
@@ -974,9 +975,9 @@ function StepFirstLike() {
     <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
       <p className="text-sm text-foreground leading-relaxed">
         Bạn bấm tim cho <strong>&ldquo;Mưa Tháng Sáu&rdquo;</strong>{" "}
-        (energy = 30, danceability = 36 — cụm Chill). Vector của bạn{" "}
-        <em>dịch chuyển</em> — không phải nhảy thẳng về bài đó, mà là
-        trung bình của (vector cũ + vector bài mới).
+        (energy = 30, danceability = 36, thuộc cụm Chill). Vector của
+        bạn <em>dịch chuyển</em>. Nó không nhảy thẳng về bài đó, mà
+        bằng trung bình của vector cũ và vector bài mới.
       </p>
       <Mini2DPlot
         centroid={{ x: 43, y: 44 }}
@@ -992,8 +993,8 @@ function StepSecondLike() {
     <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
       <p className="text-sm text-foreground leading-relaxed">
         Bạn thích thêm <strong>&ldquo;Hôm Nay Tôi Buồn&rdquo;</strong>{" "}
-        (energy = 28, danceability = 32 — cũng Chill). Hai bài cùng
-        cụm kéo tâm của bạn mạnh hơn về phía cụm đó.
+        (energy = 28, danceability = 32, cũng thuộc cụm Chill). Hai
+        bài cùng cụm kéo tâm của bạn mạnh hơn về phía cụm đó.
       </p>
       <Mini2DPlot
         centroid={{ x: 38, y: 40 }}
@@ -1012,8 +1013,8 @@ function StepTasteShifted() {
     <div className="rounded-xl border border-border bg-surface/60 p-5 space-y-3">
       <p className="text-sm text-foreground leading-relaxed">
         Sau 5 bài Chill liên tiếp, tâm của bạn đã &ldquo;trôi&rdquo;
-        nằm gọn trong cụm Chill. Discover Weekly tuần sau: 80% sẽ là
-        chill / acoustic — Spotify đã &ldquo;hiểu&rdquo; bạn.
+        nằm gọn trong cụm Chill. Discover Weekly tuần sau sẽ có khoảng
+        80% là chill và acoustic. Spotify đã &ldquo;hiểu&rdquo; bạn.
       </p>
       <Mini2DPlot
         centroid={{ x: 33, y: 37 }}
@@ -1027,11 +1028,10 @@ function StepTasteShifted() {
         caption="Tâm vàng đã định cư trong cụm Chill. Mọi gợi ý từ giờ trở đi nằm quanh đây."
       />
       <div className="rounded-lg border border-amber-300 bg-amber-50/60 dark:bg-amber-900/20 dark:border-amber-700 p-3">
-        <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
+        <p className="text-xs text-foreground leading-relaxed">
           <strong>Kết quả:</strong> Spotify học được bạn thích chill
           mà không cần bạn tự tay gắn thẻ gu. Đây chính là phép màu
-          của phản hồi ẩn (implicit feedback) — hành động thay cho lời
-          nói.
+          của implicit feedback. Hành động thay cho lời nói.
         </p>
       </div>
     </div>

@@ -26,9 +26,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "forward-propagation-in-chat-response",
   title: "Forward Propagation in Chat Response",
-  titleVi: "Lan truyền thuận trong trợ lý chat",
+  titleVi: "Mỗi token ChatGPT gõ ra là một lượt lan truyền thuận",
   description:
-    "Bạn gõ một câu, 20 mili-giây sau ChatGPT đáp. Mở từng giai đoạn của lượt lan truyền thuận để thấy điều gì xảy ra trong khoảnh khắc đó.",
+    "Bạn gõ một câu rồi nhấn Enter. 20 mili-giây sau, ChatGPT bắt đầu gõ. Mở từng giai đoạn của lượt lan truyền thuận để thấy điều gì xảy ra trong khoảnh khắc đó.",
   category: "neural-fundamentals",
   tags: ["forward-propagation", "inference", "application"],
   difficulty: "intermediate",
@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
     },
     {
       title: "All About Transformer Inference: How to Scale Your Model",
-      publisher: "JAX ML — The Scaling Book",
+      publisher: "JAX ML, The Scaling Book",
       url: "https://jax-ml.github.io/scaling-book/inference/",
       date: "2024-01", kind: "documentation",
     },
@@ -98,42 +98,42 @@ const STAGES: Stage[] = [
     id: "input", label: "Bạn gõ câu hỏi", subLabel: "Input",
     tagline: "Chuỗi ký tự còn thô", icon: Keyboard, color: "#0ea5e9",
     description:
-      "Câu hỏi của bạn lúc này vẫn là dãy ký tự — chưa phải con số. Trước khi mô hình đọc được, cần chuyển nó sang thứ mạng nơ-ron hiểu: các con số.",
+      "Câu hỏi của bạn lúc này vẫn là dãy ký tự, chưa phải con số. Trước khi model đọc được, cần chuyển nó sang thứ mạng nơ-ron hiểu được: các con số.",
     miniViz: "input",
   },
   {
     id: "tokenize", label: "Tách thành token", subLabel: "Tokenize",
     tagline: "Cắt câu thành mảnh nhỏ", icon: Scissors, color: "#6366f1",
     description:
-      "Câu bị cắt thành các mảnh gọi là token — có thể là một từ, một nửa từ, hoặc vài ký tự. Mỗi token được gán một mã số duy nhất trong từ điển của mô hình.",
+      "Câu bị cắt thành các mảnh gọi là token. Một token có thể là một từ, một nửa từ, hoặc vài ký tự. Mỗi token được gán một mã số duy nhất trong từ điển của model.",
     miniViz: "tokenize",
   },
   {
     id: "embed", label: "Nhúng thành vector", subLabel: "Embed",
     tagline: "Gắn ý nghĩa vào toạ độ", icon: Boxes, color: "#8b5cf6",
     description:
-      "Mỗi mã số token được thay bằng một mảng hàng ngàn con số gọi là embedding. Các token có ý nghĩa tương tự nhau sẽ nằm gần nhau trong không gian này.",
+      "Mỗi mã số token được thay bằng một mảng hàng ngàn con số gọi là embedding. Các token có ý nghĩa tương tự sẽ nằm gần nhau trong không gian này.",
     miniViz: "embed",
   },
   {
     id: "transformer", label: "Đi qua các tầng Transformer", subLabel: "Transformer layers",
     tagline: "Trộn ngữ cảnh, nhiều lần", icon: Layers, color: "#ec4899",
     description:
-      "Chồng mấy chục tới hàng trăm tầng Transformer lần lượt trộn thông tin giữa các token qua cơ chế chú ý. Sau mỗi tầng, vector của mỗi token ngày càng biết rõ vị trí của mình trong câu.",
+      "Vài chục tới vài trăm tầng Transformer xếp chồng lên nhau, lần lượt trộn thông tin giữa các token qua cơ chế attention. Sau mỗi tầng, vector của mỗi token ngày càng biết rõ vị trí của mình trong câu.",
     miniViz: "transformer",
   },
   {
     id: "softmax", label: "Dựng phân phối xác suất", subLabel: "Softmax",
     tagline: "Chấm điểm mọi token có thể", icon: BarChart3, color: "#f59e0b",
     description:
-      "Tầng cuối biến vector ra thành một danh sách điểm số — mỗi token trong từ điển một điểm. Softmax nén chúng lại thành xác suất: tổng 100%, token nào hợp ngữ cảnh hơn sẽ có điểm cao hơn.",
+      "Tầng cuối biến vector đầu ra thành một danh sách điểm số: mỗi token trong từ điển một điểm. Softmax nén chúng lại thành xác suất, tổng cộng 100%. Token nào hợp ngữ cảnh hơn sẽ có điểm cao hơn.",
     miniViz: "softmax",
   },
   {
     id: "sample", label: "Bốc thăm token tiếp theo", subLabel: "Sampling",
     tagline: "Chọn một token để gõ ra", icon: Dice5, color: "#10b981",
     description:
-      "Hệ thống bốc thăm một token dựa trên các xác suất vừa tính. Token được gõ ra màn hình, rồi chu trình quay lại đầu: gắn vào đầu vào, chạy lần nữa cho token kế tiếp.",
+      "Hệ thống bốc thăm một token dựa trên các xác suất vừa tính. Token được gõ ra màn hình, rồi chu trình quay lại đầu: gắn vào đầu vào, chạy lần nữa để sinh token kế tiếp.",
     miniViz: "sample",
   },
 ];
@@ -241,8 +241,8 @@ function MiniVizInput() {
         </div>
       </div>
       <p className="text-xs text-muted leading-relaxed">
-        Mô hình không hiểu chữ cái. Nó chỉ biết các con số. Giai đoạn kế tiếp sẽ chuyển
-        chuỗi này thành các mã số mà mô hình có trong từ điển của mình.
+        Model không hiểu chữ cái. Nó chỉ biết các con số. Giai đoạn kế tiếp sẽ chuyển
+        chuỗi này thành các mã số mà model có trong từ điển của mình.
       </p>
     </div>
   );
@@ -278,8 +278,8 @@ function MiniVizTokenize() {
         <p className="text-xs text-muted leading-relaxed">
           Thuật toán BPE (Byte Pair Encoding) chọn cách cắt sao cho các cụm hay gặp như{" "}
           <strong>&ldquo; bạn&rdquo;</strong> hay <strong>&ldquo; tiết&rdquo;</strong>{" "}
-          đều là một token duy nhất. Một tiếng trong tiếng Việt có dấu thường tốn một
-          token, dấu câu là một token riêng.
+          đều gói thành một token duy nhất. Một tiếng tiếng Việt có dấu thường tốn một
+          token, còn dấu câu là một token riêng.
         </p>
       </div>
     </div>
@@ -335,7 +335,7 @@ function MiniVizEmbed() {
         </div>
         <p className="text-xs text-muted leading-relaxed">
           Mỗi thanh là một chiều. Vector thật có khoảng{" "}
-          <strong>4.096 chiều</strong> — quá dài để vẽ hết. Ý nghĩa của token được rải
+          <strong>4.096 chiều</strong>, quá dài để vẽ hết. Ý nghĩa của token được rải
           khắp cả nghìn con số, không chiều nào mang ý nghĩa riêng lẻ.
         </p>
       </div>
@@ -371,13 +371,13 @@ function MiniVizTransformer() {
   return (
     <div className="space-y-3">
       <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
-        Mỗi tầng trộn thông tin giữa các token bằng cơ chế chú ý
+        Mỗi tầng trộn thông tin giữa các token bằng cơ chế attention
       </p>
       <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-3">
         <div className="flex gap-2 items-start">
           <div className="grow max-w-[260px]">
             <p className="text-[11px] font-semibold text-foreground mb-1">
-              Bản đồ chú ý của tầng đang chọn
+              Bản đồ attention của tầng đang chọn
             </p>
             <div
               className="grid gap-[2px] rounded-lg border border-border bg-card p-2"
@@ -434,8 +434,8 @@ function MiniVizTransformer() {
 
         <p className="text-xs text-muted leading-relaxed">
           Ô càng hồng đậm nghĩa là token hàng đó đang &ldquo;nhìn&rdquo; token cột đó
-          nhiều. Nửa trên-phải luôn mờ vì token không được phép xem tương lai (đặc điểm
-          cơ bản của mô hình sinh văn bản).
+          càng nhiều. Nửa trên-phải luôn mờ vì token không được phép xem tương lai. Đó
+          là đặc điểm cơ bản của model sinh văn bản.
         </p>
       </div>
     </div>
@@ -488,7 +488,7 @@ function MiniVizSoftmax() {
           })}
         </div>
         <p className="text-xs text-muted leading-relaxed mt-3">
-          Trong từ điển GPT-4 có khoảng 100.000 token; đây chỉ là 8 token đầu bảng. Phần
+          Trong từ điển GPT-4 có khoảng 100.000 token. Đây chỉ là 8 token đầu bảng. Phần
           còn lại có xác suất gần 0 và gần như không bao giờ được chọn.
         </p>
       </div>
@@ -528,7 +528,7 @@ function MiniVizSample() {
   return (
     <div className="space-y-3">
       <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
-        Mô hình bốc thăm một token theo phân phối xác suất
+        Model bốc thăm một token theo phân phối xác suất
       </p>
       <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
@@ -584,10 +584,10 @@ function MiniVizSample() {
         )}
 
         <p className="text-xs text-muted leading-relaxed">
-          Bấm nhiều lần: token có xác suất cao (như <strong>&ldquo; thế&rdquo;</strong>{" "}
+          Bấm nhiều lần xem: token có xác suất cao (như <strong>&ldquo; thế&rdquo;</strong>{" "}
           hay <strong>&ldquo; ra&rdquo;</strong>) xuất hiện thường xuyên hơn, nhưng đôi
-          khi mô hình &ldquo;rẽ&rdquo; sang hướng khác — đó là lý do chạy cùng một câu
-          hai lần có thể cho câu trả lời khác nhau.
+          khi model &ldquo;rẽ&rdquo; sang hướng khác. Đó là lý do chạy cùng một câu hai
+          lần có thể cho hai câu trả lời khác nhau.
         </p>
       </div>
     </div>
@@ -606,8 +606,8 @@ function PipelineExplorer() {
   return (
     <div className="not-prose space-y-4">
       <p className="text-xs text-muted leading-relaxed">
-        Mỗi khối dưới đây là một giai đoạn của lượt lan truyền thuận. Bấm để mở mini-viz
-        tương ứng.
+        Mỗi khối dưới đây là một giai đoạn của lượt lan truyền thuận. Bấm vào khối để mở
+        mini-viz tương ứng.
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         {STAGES.map((stage, i) => (
@@ -687,14 +687,14 @@ function LatencyHero() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <MessageSquare size={16} className="text-accent" />
-          <span className="text-sm font-semibold text-foreground">Mô phỏng: ChatGPT đáp lại</span>
+          <span className="text-sm font-semibold text-foreground">Mô phỏng: ChatGPT trả lời</span>
         </div>
         <button
           type="button" onClick={start} disabled={running}
           className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           <Play size={12} />
-          {running ? "Đang sinh..." : idx > 0 ? "Chạy lại" : "Gõ câu hỏi"}
+          {running ? "Đang sinh..." : idx > 0 ? "Chạy lại" : "Nhấn Enter"}
         </button>
       </div>
       <div className="rounded-lg border border-border bg-card px-3 py-2 mb-3">
@@ -704,8 +704,8 @@ function LatencyHero() {
       <div className="flex items-center gap-2 mb-2 text-[11px] text-tertiary">
         <Clock size={12} />
         <span>
-          Mỗi token mới mất khoảng <strong className="text-foreground">20 mili-giây</strong>{" "}
-          — chạy qua toàn bộ mạng nơ-ron GPT-4
+          Mỗi token mới tốn khoảng <strong className="text-foreground">20 mili-giây</strong>,
+          chạy qua toàn bộ mạng nơ-ron GPT-4
         </span>
       </div>
       <div className="rounded-lg border border-dashed border-accent/40 bg-accent-light/40 px-3 py-2 min-h-[52px]">
@@ -735,16 +735,16 @@ function LatencyHero() {
         </div>
       </div>
       <p className="text-xs text-muted leading-relaxed mt-3">
-        Mỗi từ xuất hiện là một <strong>lượt lan truyền thuận</strong> đi xuyên qua
-        hàng trăm tỉ tham số. Trong 20 mili-giây đó, mô hình làm rất nhiều việc — và
-        phần tiếp theo mở ra từng bước.
+        Mỗi từ xuất hiện trên màn hình là một <strong>lượt lan truyền thuận</strong> đi
+        xuyên qua hàng trăm tỉ tham số. Trong 20 mili-giây đó, model làm rất nhiều việc.
+        Phần tiếp theo mở ra từng bước.
       </p>
     </div>
   );
 }
 
 /* ────────────────────────────────────────────────────────────
-   BEAT 4 — KV CACHE mini animation
+   BEAT 4: KV CACHE mini animation
    ──────────────────────────────────────────────────────────── */
 
 function KvCacheDemo() {
@@ -771,8 +771,8 @@ function KvCacheDemo() {
         </span>
       </div>
       <div className="flex gap-2">
-        {modeBtn("naive", "Không có cache (tính lại tất cả)", "border-red-400 bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300")}
-        {modeBtn("cached", "Có cache (chỉ tính token mới)", "border-emerald-400 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300")}
+        {modeBtn("naive", "Không có cache (tính lại tất cả)", "border-red-400 bg-red-50 text-foreground dark:bg-red-900/30")}
+        {modeBtn("cached", "Có cache (chỉ tính token mới)", "border-emerald-400 bg-emerald-50 text-foreground dark:bg-emerald-900/30")}
       </div>
       <div className="flex items-center gap-1 justify-center flex-wrap">
         {cells.map((_, i) => {
@@ -786,8 +786,8 @@ function KvCacheDemo() {
               className={`flex h-10 w-10 items-center justify-center rounded-md border text-[10px] font-semibold ${
                 isComputed
                   ? isNewToken
-                    ? "border-emerald-400 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                    : "border-red-400 bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                    ? "border-emerald-400 bg-emerald-100 text-foreground dark:bg-emerald-900/40"
+                    : "border-red-400 bg-red-100 text-foreground dark:bg-red-900/40"
                   : "border-border bg-card text-muted"
               }`}
             >
@@ -799,15 +799,15 @@ function KvCacheDemo() {
       <p className="text-xs text-muted leading-relaxed">
         {mode === "naive" ? (
           <>
-            <strong className="text-red-600 dark:text-red-400">Đỏ = phải tính lại</strong>.
-            Không có cache, mỗi token mới buộc mô hình chạy lại cả 9 token từ đầu. Câu
-            trả lời 200 từ &rArr; lặp hàng chục nghìn lần.
+            <strong className="text-red-600 dark:text-red-400">Đỏ là phải tính lại</strong>.
+            Không có cache, mỗi token mới buộc model chạy lại cả 9 token từ đầu. Câu trả
+            lời 200 từ kéo theo hàng chục nghìn lần lặp.
           </>
         ) : (
           <>
-            <strong className="text-emerald-600 dark:text-emerald-400">Xanh = chỉ tính token mới</strong>
-            . Các token cũ đã lưu key và value — chỉ cần tính cho token thứ 9, tiết kiệm
-            hàng tỉ phép tính mỗi bước.
+            <strong className="text-emerald-600 dark:text-emerald-400">Xanh là chỉ tính token mới</strong>
+            . Các token cũ đã lưu key và value, nên chỉ cần tính cho token thứ 9. Mỗi
+            bước tiết kiệm hàng tỉ phép tính.
           </>
         )}
       </p>
@@ -816,7 +816,7 @@ function KvCacheDemo() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   DEEPEN — StepReveal qua một bước sinh token
+   DEEPEN: StepReveal qua một bước sinh token
    ──────────────────────────────────────────────────────────── */
 
 function SingleStepReveal() {
@@ -826,9 +826,9 @@ function SingleStepReveal() {
       <StepReveal
         labels={[
           "1. Có chuỗi token hiện tại",
-          "2. Embedding co lại từng vector",
+          "2. Mỗi token thành một vector embedding",
           "3. Attention liếc nhìn ngữ cảnh",
-          "4. Tầng cuối cho logits",
+          "4. Tầng cuối cho ra logits",
           "5. Bốc thăm token tiếp theo",
         ]}
       >
@@ -848,8 +848,8 @@ function SingleStepReveal() {
               </span>
             </div>
             <p className="text-xs text-muted leading-relaxed">
-              Mô hình nhận vào tất cả token đã có cho tới lúc này — vừa là câu hỏi của
-              bạn, vừa là các token mà chính nó vừa sinh ra.
+              Model nhận vào tất cả token đã có cho tới lúc này: vừa là câu hỏi của bạn,
+              vừa là các token mà chính nó vừa sinh ra.
             </p>
           </div>,
           <div key="s2" className="rounded-xl border border-border bg-surface/60 p-4 space-y-2">
@@ -878,7 +878,7 @@ function SingleStepReveal() {
                 </div>
               ))}
               <p className="text-[11px] text-tertiary italic">
-                ... đọc tương tự cho các token còn lại
+                ... các token còn lại biến đổi tương tự
               </p>
             </div>
           </div>,
@@ -905,14 +905,14 @@ function SingleStepReveal() {
               })}
             </div>
             <p className="text-xs text-muted leading-relaxed">
-              Tầng chú ý phát hiện: để đoán từ tiếp theo,{" "}
+              Tầng attention phát hiện: để đoán từ tiếp theo,{" "}
               <strong>&ldquo; tiết&rdquo;</strong> và <strong>&ldquo; thời&rdquo;</strong>{" "}
-              là hai token quan trọng nhất — chúng được &ldquo;soi&rdquo; nhiều nhất.
+              là hai token quan trọng nhất, nên chúng được &ldquo;soi&rdquo; nhiều nhất.
             </p>
           </div>,
           <div key="s4" className="rounded-xl border border-border bg-surface/60 p-4 space-y-2">
             <p className="text-xs font-semibold text-foreground">
-              Mô hình chấm điểm mọi token có thể
+              Model chấm điểm mọi token có thể
             </p>
             <div className="space-y-1">
               {CANDIDATE_TOKENS.slice(0, 6).map((c) => (
@@ -930,13 +930,13 @@ function SingleStepReveal() {
               ))}
             </div>
             <p className="text-xs text-muted leading-relaxed">
-              Con số thô này gọi là <strong>logit</strong>. Càng cao nghĩa là token
-              càng hợp ngữ cảnh theo kinh nghiệm của mô hình.
+              Con số thô này gọi là <strong>logit</strong>. Logit càng cao nghĩa là token
+              càng hợp ngữ cảnh theo kinh nghiệm của model.
             </p>
           </div>,
           <div key="s5" className="rounded-xl border border-emerald-300 bg-emerald-50 dark:border-emerald-700 dark:bg-emerald-900/20 p-4 space-y-2">
             <p className="text-xs font-semibold text-foreground">
-              Sau softmax và bốc thăm &rArr; token mới được chọn
+              Sau softmax và bốc thăm: token mới được chọn
             </p>
             <div className="flex flex-wrap items-center gap-1.5">
               {focusTokens.map((t, i) => (
@@ -947,15 +947,15 @@ function SingleStepReveal() {
               <motion.span
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="rounded-md border-2 border-emerald-500 bg-emerald-100 dark:bg-emerald-900/50 px-2 py-0.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300 whitespace-pre"
+                className="rounded-md border-2 border-emerald-500 bg-emerald-100 dark:bg-emerald-900/50 px-2 py-0.5 text-sm font-semibold text-foreground whitespace-pre"
               >
                 {" thế"}
               </motion.span>
             </div>
             <p className="text-xs text-muted leading-relaxed">
               Token <strong>&ldquo; thế&rdquo;</strong> được gắn vào cuối chuỗi. Lượt
-              forward pass tiếp theo bắt đầu — lần này chuỗi đã dài thêm một token.
-              Quay lại bước 1, lặp lại cho tới khi mô hình sinh ra token dừng.
+              forward pass tiếp theo bắt đầu, lần này chuỗi đã dài thêm một token. Quay
+              lại bước 1, lặp lại cho tới khi model sinh ra token dừng.
             </p>
           </div>,
         ]}
@@ -978,16 +978,16 @@ export default function ForwardPropagationInChatResponse() {
       >
         <p>
           Bạn gõ <strong>&ldquo;Chào bạn&rdquo;</strong> vào ChatGPT (trợ lý chat của
-          OpenAI). Khoảng <strong>20 mili-giây</strong> sau, token đầu tiên hiện ra.
-          Rồi từng token kế tiếp, cứ đều đặn hơn chục mili-giây một cái. Câu trả lời
-          dài 200 từ xuất hiện trong chưa tới 5 giây.
+          OpenAI) rồi nhấn Enter. Khoảng <strong>20 mili-giây</strong> sau, token đầu
+          tiên hiện ra. Rồi từng token kế tiếp, cứ đều đặn hơn chục mili-giây một cái.
+          Câu trả lời dài 200 từ xuất hiện trong chưa tới 5 giây.
         </p>
         <p>
           Trong mỗi 20 mili-giây đó, dữ liệu của bạn chạy xuyên qua{" "}
-          <strong>hàng trăm tỉ tham số</strong> — con số mà mô hình đã học từ hàng
-          ngàn tỉ từ văn bản. Quá trình này gọi là <em>lan truyền thuận</em> (forward
+          <strong>hàng trăm tỉ tham số</strong>, con số mà model đã học từ hàng ngàn tỉ
+          từ văn bản. Quá trình này gọi là <em>lan truyền thuận</em> (forward
           propagation): dữ liệu đi một chiều từ đầu vào qua các tầng, tới đầu ra, không
-          quay lại. Bài này mở ra từng bước của một lượt lan truyền đó.
+          quay lại. Bài này mở từng bước của một lượt lan truyền đó.
         </p>
 
         <LatencyHero />
@@ -997,24 +997,24 @@ export default function ForwardPropagationInChatResponse() {
       <ApplicationProblem topicSlug="forward-propagation-in-chat-response">
         <p>
           ChatGPT cần đọc lại toàn bộ đoạn hội thoại đã có, rồi đoán token tiếp theo
-          hợp nhất. Với mỗi token mới, quá trình lặp lại — nghĩa là một câu trả lời 200
-          từ cần khoảng <strong>250 – 300 lượt lan truyền</strong>.
+          hợp nhất. Với mỗi token mới, quá trình lặp lại. Nói cách khác, một câu trả lời
+          200 từ cần khoảng <strong>250 đến 300 lượt lan truyền</strong>.
         </p>
         <p>
           Mỗi lượt đi qua <strong>hàng chục tới hàng trăm tầng Transformer</strong> (khối
-          mạng chuyên xử lý chuỗi), thực hiện hàng trăm tỉ phép tính nhân-cộng. Nhưng
-          người dùng chỉ chịu được vài giây chờ — nếu lâu hơn, trải nghiệm chat thời gian
-          thực sẽ không dùng được.
+          mạng chuyên xử lý chuỗi), thực hiện hàng trăm tỉ phép tính nhân-cộng. Trong khi
+          đó, người dùng chỉ chịu được vài giây chờ. Lâu hơn nữa thì trải nghiệm chat
+          thời gian thực coi như mất.
         </p>
         <p>
-          Thêm một vấn đề nhức hơn: <strong>cửa sổ ngữ cảnh</strong> (context window)
-          có giới hạn. Mô hình chỉ nhớ được một số token nhất định trong một lần gọi —
-          vài nghìn tới vài trăm nghìn tuỳ phiên bản. Vì sao? Phần Deepen sẽ dẫn bạn
+          Còn một vấn đề khác đáng chú ý: <strong>cửa sổ ngữ cảnh</strong> (context
+          window) có giới hạn. Model chỉ nhớ được một số token nhất định trong một lần
+          gọi, vài nghìn tới vài trăm nghìn tuỳ phiên bản. Vì sao? Phần Deepen sẽ dẫn bạn
           tới đáp án qua một câu đố nhỏ.
         </p>
       </ApplicationProblem>
 
-      {/* ━━━ MECHANISM — pipeline explorer + Beats ━━━ */}
+      {/* ━━━ MECHANISM: pipeline explorer + Beats ━━━ */}
       <ApplicationMechanism
         parentTitleVi="Lan truyền thuận"
         topicSlug="forward-propagation-in-chat-response"
@@ -1023,7 +1023,7 @@ export default function ForwardPropagationInChatResponse() {
           <div className="mb-2">
             <p className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
               <Sparkles size={14} className="text-accent" />
-              Pipeline tương tác — bấm mở từng giai đoạn
+              Pipeline tương tác: bấm mở từng giai đoạn
             </p>
           </div>
           <PipelineExplorer />
@@ -1043,8 +1043,8 @@ export default function ForwardPropagationInChatResponse() {
         <Beat step={2}>
           <p>
             <strong>Embed.</strong> Mỗi mã số được thay bằng một <em>vector
-            embedding</em> — mảng vài nghìn con số mang ý nghĩa của token đó. Đây là
-            dạng &ldquo;ngôn ngữ&rdquo; duy nhất mà mạng nơ-ron hiểu được. Mô hình cộng
+            embedding</em>, một mảng vài nghìn con số mang ý nghĩa của token đó. Đây là
+            dạng &ldquo;ngôn ngữ&rdquo; duy nhất mà mạng nơ-ron hiểu được. Model cộng
             thêm một vector vị trí để biết thứ tự các token trong câu.
           </p>
         </Beat>
@@ -1052,8 +1052,8 @@ export default function ForwardPropagationInChatResponse() {
         <Beat step={3}>
           <p>
             <strong>Transformer.</strong> Chồng vector đi qua hàng chục đến hàng trăm
-            tầng Transformer. Trong mỗi tầng, cơ chế <em>chú ý</em> (attention) để mỗi
-            token &ldquo;nhìn&rdquo; các token khác và trộn thông tin. Sau đó là mạng
+            tầng Transformer. Trong mỗi tầng, cơ chế <em>attention</em> cho mỗi token
+            &ldquo;nhìn&rdquo; các token khác và trộn thông tin. Sau đó là mạng
             feed-forward xử lý thêm. Vector của mỗi token ngày càng giàu ngữ cảnh hơn.
           </p>
         </Beat>
@@ -1061,57 +1061,57 @@ export default function ForwardPropagationInChatResponse() {
         <Beat step={4}>
           <p>
             <strong>Softmax &amp; sampling.</strong> Tầng cuối cho ra một danh sách
-            điểm số (logit) trên toàn bộ từ điển. Softmax biến logit thành xác suất —
-            tổng 100%. Hệ thống bốc thăm một token theo xác suất này (nhiệt độ càng
-            cao, càng sẵn sàng chọn token ít phổ biến). Token mới được gắn vào chuỗi và
+            điểm số (logit) trên toàn bộ từ điển. Softmax biến logit thành xác suất, tổng
+            cộng 100%. Hệ thống bốc thăm một token theo xác suất này. Nhiệt độ càng cao,
+            model càng sẵn sàng chọn token ít phổ biến. Token mới được gắn vào chuỗi và
             chu trình lặp lại cho token tiếp theo.
           </p>
         </Beat>
 
         <Beat step={5}>
           <p>
-            <strong>KV Cache — mẹo giúp nhanh hơn rất nhiều.</strong> Thay vì tính lại
+            <strong>KV Cache, mẹo giúp nhanh lên rất nhiều.</strong> Thay vì tính lại
             từ đầu cho mỗi token, hệ thống lưu các khoá (key) và giá trị (value) của
-            các token cũ vào bộ nhớ đệm. Chỉ cần tính phần gia tăng cho token mới — tiết
-            kiệm hàng tỉ phép tính mỗi bước.
+            các token cũ vào bộ nhớ đệm. Mỗi bước chỉ cần tính phần gia tăng cho token
+            mới, nhờ vậy tiết kiệm hàng tỉ phép tính.
           </p>
           <KvCacheDemo />
         </Beat>
 
         <Callout variant="insight" title="Nhìn từ xa">
-          Tất cả các bước trên là <strong>một lượt lan truyền thuận duy nhất</strong> —
+          Tất cả các bước trên là <strong>một lượt lan truyền thuận duy nhất</strong>:
           dữ liệu chảy một chiều qua mạng để cho ra một token. Câu trả lời bạn thấy là
           hàng trăm lượt như vậy nối đuôi nhau, mỗi lượt &ldquo;dán&rdquo; thêm một
           token vào cuối.
         </Callout>
       </ApplicationMechanism>
 
-      {/* ━━━ DEEPEN — StepReveal một lượt sinh token ━━━ */}
+      {/* ━━━ DEEPEN: StepReveal một lượt sinh token ━━━ */}
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
           <Layers size={18} className="text-accent" />
           Mở bên trong một lượt sinh token
         </h2>
         <p className="text-sm text-muted leading-relaxed mb-5">
-          Theo chân một token được sinh ra. Mỗi bước bấm{" "}
-          <em>Tiếp tục</em> để mở thêm một công đoạn. Dữ liệu dùng ở đây là câu gõ dở{" "}
-          <em>&ldquo;Chào bạn, hôm nay thời tiết&rdquo;</em> — mô hình đang cố đoán từ
-          tiếp theo.
+          Theo chân một token được sinh ra. Mỗi lần bấm{" "}
+          <em>Tiếp tục</em> sẽ mở thêm một công đoạn. Dữ liệu dùng ở đây là câu gõ dở{" "}
+          <em>&ldquo;Chào bạn, hôm nay thời tiết&rdquo;</em>, lúc này model đang cố đoán
+          từ tiếp theo.
         </p>
 
         <SingleStepReveal />
 
         <div className="mt-6">
           <InlineChallenge
-            question="Vì sao cửa sổ ngữ cảnh (context window) của mô hình lại có giới hạn, không thể vô hạn?"
+            question="Vì sao cửa sổ ngữ cảnh (context window) của model lại có giới hạn, không thể vô hạn?"
             options={[
               "Vì tiếng Việt không có đủ từ để lấp đầy cửa sổ lớn hơn",
-              "Vì mỗi token mới cần liếc qua mọi token đã có. Số cặp cần xử lý tăng theo bình phương số token — càng dài càng chậm và tốn bộ nhớ rất nhanh",
-              "Vì mô hình được huấn luyện trên câu ngắn nên không đoán được câu dài",
+              "Vì mỗi token mới cần liếc qua mọi token đã có. Số cặp cần xử lý tăng theo bình phương số token, nên càng dài thì càng chậm và càng tốn bộ nhớ rất nhanh",
+              "Vì model được huấn luyện trên câu ngắn nên không đoán được câu dài",
               "Vì máy chủ của OpenAI chỉ bật mỗi lần 4.096 token để tiết kiệm điện",
             ]}
             correct={1}
-            explanation="Trong cơ chế chú ý, mỗi token phải so sánh với mọi token trước đó — số phép tính tăng theo bình phương độ dài chuỗi. Thêm nữa, bộ nhớ cho KV cache cũng phình ra theo cửa sổ. Các phiên bản mới dùng kỹ thuật giảm độ phức tạp này, nhưng ngay cả khi đó vẫn có giới hạn phần cứng cứng."
+            explanation="Trong cơ chế attention, mỗi token phải so sánh với mọi token trước đó. Số phép tính tăng theo bình phương độ dài chuỗi. Thêm nữa, bộ nhớ cho KV cache cũng phình ra theo cửa sổ. Các phiên bản mới dùng kỹ thuật giảm độ phức tạp này, nhưng ngay cả khi đó vẫn có giới hạn phần cứng cứng."
           />
         </div>
       </section>
@@ -1145,14 +1145,14 @@ export default function ForwardPropagationInChatResponse() {
           title="Ba điều đáng nhớ"
           points={[
             "Mỗi token ChatGPT gõ ra là một lượt lan truyền thuận xuyên qua pipeline: tokenize → embed → transformer → softmax → sample.",
-            "Nhiệt độ (temperature) điều chỉnh bước sampling — thấp thì chọn chắc, cao thì dám chọn token hiếm.",
+            "Nhiệt độ (temperature) điều chỉnh bước sampling. Thấp thì chọn chắc, cao thì dám chọn token hiếm.",
             "KV Cache và song song hoá GPU là lý do một lượt lan truyền qua hàng trăm tỉ tham số kết thúc trong khoảng 20 mili-giây.",
           ]}
         />
         <div className="mt-4">
-          <Callout variant="tip" title="Muốn xem bên dưới kỹ hơn?">
+          <Callout variant="tip" title="Muốn xem kỹ hơn bên dưới?">
             Bài lý thuyết <strong>Lan truyền thuận</strong> mở từng lớp của mạng nơ-ron
-            nhỏ và cho bạn kéo từng đầu vào. Nó chính là phiên bản &ldquo;thu nhỏ&rdquo;
+            nhỏ và cho bạn kéo từng đầu vào. Đó chính là phiên bản &ldquo;thu nhỏ&rdquo;
             của thứ đang chạy bên trong ChatGPT mà bạn vừa xem.
           </Callout>
         </div>
@@ -1164,14 +1164,14 @@ export default function ForwardPropagationInChatResponse() {
         topicSlug="forward-propagation-in-chat-response"
       >
         <p>
-          Nếu không có lan truyền thuận — tức là không có cơ chế đưa dữ liệu có hệ
-          thống qua các tầng — mạng nơ-ron sẽ không biết biến đầu vào thành đầu ra.
+          Nếu không có lan truyền thuận, tức là không có cơ chế đưa dữ liệu có hệ
+          thống qua các tầng, mạng nơ-ron sẽ không biết biến đầu vào thành đầu ra.
           Không có lan truyền thuận, không có ChatGPT.
         </p>
         <p>
           Nếu có lan truyền thuận nhưng <strong>không có KV Cache và GPU song song
           hoá</strong>, mỗi token mới sẽ phải tính lại từ đầu toàn bộ chuỗi. Một câu trả
-          lời 200 token sẽ chậm gấp hàng trăm lần — thay vì vài giây, bạn phải chờ vài
+          lời 200 token sẽ chậm gấp hàng trăm lần. Thay vì vài giây, bạn phải chờ vài
           phút. Trải nghiệm chat thời gian thực sẽ biến mất.
         </p>
 
@@ -1182,13 +1182,13 @@ export default function ForwardPropagationInChatResponse() {
               className="shrink-0 text-amber-600 dark:text-amber-400 mt-0.5"
             />
             <div>
-              <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
+              <p className="text-sm font-semibold text-amber-900 dark:text-amber-200 mb-1">
                 Mặt trái của tốc độ
               </p>
               <p className="text-xs text-foreground/85 leading-relaxed">
-                Tốc độ sinh token nhanh tới mức người dùng dễ tin tưởng quá. Mô hình đôi
+                Tốc độ sinh token nhanh tới mức người dùng dễ tin tưởng quá. Model đôi
                 khi &ldquo;bốc thăm&rdquo; trúng một token ít phổ biến và rẽ cả câu trả
-                lời sang hướng sai — đây là nguyên nhân gốc của hiện tượng ảo giác
+                lời sang hướng sai. Đó là nguyên nhân gốc của hiện tượng ảo giác
                 (hallucination). Nhanh không đồng nghĩa đúng.
               </p>
             </div>

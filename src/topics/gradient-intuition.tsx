@@ -34,9 +34,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "gradient-intuition",
   title: "Gradient Intuition",
-  titleVi: "Gradient — mũi tên chỉ đường xuống dốc",
+  titleVi: "Gradient: mũi tên chỉ đường xuống dốc",
   description:
-    "Trên một đồi sương mù bạn chỉ nhìn được mặt đất dưới chân. Gradient là ngón tay chỉ hướng dốc nhất — đi NGƯỢC lại để xuống núi.",
+    "Đứng trên đồi sương mù, bạn chỉ thấy được mặt đất dưới chân. Gradient là ngón tay chỉ hướng dốc nhất. Đi ngược hướng đó để xuống núi.",
   category: "math-foundations",
   tags: ["gradient", "optimization", "intuition"],
   difficulty: "intermediate",
@@ -45,7 +45,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   LOSS SURFACE — đơn giản nhưng rõ ràng
+   LOSS SURFACE: đơn giản nhưng rõ ràng
    L(x, y) = 0.18 (x − 1.5)² + 0.28 (y + 0.5)² + 0.15·x·y − 0.1·sin(x)
    Minimum xấp xỉ (1.5, -0.5).
    ──────────────────────────────────────────────────────────── */
@@ -86,7 +86,7 @@ function gradAt(x: number, y: number): [number, number] {
 }
 
 /* ────────────────────────────────────────────────────────────
-   CONTOUR LINES — pre-computed polyline samples
+   CONTOUR LINES: pre-computed polyline samples
    ──────────────────────────────────────────────────────────── */
 
 const CONTOUR_LEVELS = [0.3, 0.7, 1.3, 2.2, 3.5, 5.2, 7.5, 10.5];
@@ -147,20 +147,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Gradient ∇L là vector chỉ hướng loss tăng nhanh nhất tại điểm hiện tại. Đó là lý do gradient descent đi NGƯỢC gradient — để loss giảm nhanh nhất.",
+      "Gradient ∇L là vector chỉ hướng loss tăng nhanh nhất tại điểm hiện tại. Đó là lý do gradient descent đi ngược gradient để loss giảm nhanh nhất.",
   },
   {
     question:
       "Bạn đứng trên sườn đồi sương mù. Tay phải cảm thấy đất cao hơn, tay trái cảm thấy đất thấp hơn. Để xuống nhanh nhất, bạn nên bước về hướng nào?",
     options: [
-      "Hướng tay phải — nơi đất cao",
-      "Hướng tay trái — nơi đất thấp",
+      "Hướng tay phải, nơi đất cao",
+      "Hướng tay trái, nơi đất thấp",
       "Đi thẳng về phía trước",
-      "Không đi — đứng yên an toàn hơn",
+      "Không đi, đứng yên an toàn hơn",
     ],
     correct: 1,
     explanation:
-      "Đất cao hơn = hướng loss tăng = gradient. Đất thấp hơn = hướng loss giảm = −gradient. Gradient descent bảo bạn đi ngược gradient, tức về phía đất thấp hơn.",
+      "Đất cao hơn nghĩa là hướng loss tăng, tức gradient. Đất thấp hơn là hướng loss giảm, tức −gradient. Gradient descent bảo bạn đi ngược gradient, về phía đất thấp hơn.",
   },
   {
     question:
@@ -168,12 +168,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Gradient tại điểm hiện tại",
       "Loss hiện tại",
-      "Learning rate — kiểm soát độ lớn mỗi bước",
+      "Learning rate, kiểm soát độ lớn mỗi bước",
       "Số chiều của không gian tham số",
     ],
     correct: 2,
     explanation:
-      "η là learning rate. Quá to → nhảy qua minimum, loss phát nổ. Quá nhỏ → bước lí tí, huấn luyện chậm. Tìm đúng η là nghệ thuật tinh chỉnh của mọi đội ML.",
+      "η là learning rate. Quá to thì nhảy qua minimum, loss phát nổ. Quá nhỏ thì bước lí tí, huấn luyện chậm. Tìm đúng η là nghệ thuật tinh chỉnh của mọi đội ML.",
   },
   {
     type: "fill-blank",
@@ -186,7 +186,7 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "η (eta) là learning rate. Trong thí nghiệm ở trên, η quá to làm bóng nảy khắp nơi; η quá nhỏ làm bóng nhích không thấy.",
+      "η (eta) là learning rate. Trong thí nghiệm ở trên, η quá to làm bóng nảy khắp nơi. Ngược lại, η quá nhỏ làm bóng nhích không thấy.",
   },
   {
     question:
@@ -199,7 +199,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đây là phân kỳ. Bước quá dài → vượt qua đáy thung lũng → rơi xuống sườn có gradient lớn hơn → bước kế tiếp xa hơn → loss leo lên theo hàm mũ. Giải pháp: giảm η hoặc dùng gradient clipping.",
+      "Đây là hiện tượng phân kỳ. Bước quá dài làm điểm mới vượt qua đáy thung lũng, rơi xuống sườn có gradient lớn hơn, bước kế tiếp xa hơn nữa, loss leo lên theo hàm mũ. Giải pháp: giảm η hoặc dùng gradient clipping.",
   },
   {
     question:
@@ -212,7 +212,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Với mạng nơ-ron lớn, mặt loss rất gồ ghề với nhiều saddle point và minimum cục bộ. May mắn: trong thực tế, nhiều minimum cục bộ cho kết quả gần như tương đương — và các trick như momentum, Adam giúp gradient descent thoát khỏi nhiều bẫy cạn.",
+      "Với mạng nơ-ron lớn, mặt loss rất gồ ghề với nhiều saddle point và minimum cục bộ. May mắn là trong thực tế, nhiều minimum cục bộ cho kết quả gần như tương đương. Các trick như momentum, Adam còn giúp gradient descent thoát khỏi nhiều bẫy cạn.",
   },
 ];
 
@@ -328,25 +328,25 @@ export default function GradientIntuitionTopic() {
   const iterationSteps = [
     {
       title: "1. Đọc tọa độ hiện tại",
-      body: "Bạn đang ở điểm (x, y) trên đồi. Không nhìn thấy đỉnh vì sương mù — chỉ nhìn được đất dưới chân.",
+      body: "Bạn đang ở điểm (x, y) trên đồi. Sương mù che kín đỉnh, bạn chỉ nhìn được đất ngay dưới chân.",
       icon: Compass,
       color: "#0ea5e9",
     },
     {
       title: "2. Cảm nhận gradient",
-      body: "Đưa tay lên, cảm nhận mặt đất nghiêng về hướng nào. Đây là gradient ∇L — mũi tên chỉ LÊN dốc (loss tăng).",
+      body: "Đưa tay lên, cảm nhận mặt đất nghiêng về hướng nào. Đây là gradient ∇L, mũi tên chỉ lên dốc (loss tăng).",
       icon: Mountain,
       color: "#f59e0b",
     },
     {
       title: "3. Bước ngược gradient",
-      body: "Bước một bước theo hướng NGƯỢC gradient, độ dài bằng η × |∇L|. Nếu η vừa phải, bạn sẽ thấp hơn một chút.",
+      body: "Bước một bước theo hướng ngược gradient, độ dài bằng η × |∇L|. Nếu η vừa phải, bạn sẽ thấp hơn một chút.",
       icon: Footprints,
       color: "#22c55e",
     },
     {
       title: "4. Lặp lại",
-      body: "Tại điểm mới, cảm nhận gradient lần nữa, bước tiếp. Sau nhiều lần, bạn dừng ở đáy — nơi gradient ≈ 0.",
+      body: "Tại điểm mới, cảm nhận gradient lần nữa, bước tiếp. Sau nhiều lần, bạn dừng ở đáy, nơi gradient ≈ 0.",
       icon: RotateCcw,
       color: "#8b5cf6",
     },
@@ -354,7 +354,7 @@ export default function GradientIntuitionTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK (núi sương mù) ━━━ */}
+      {/* ━━━ BƯỚC 1 · HOOK (núi sương mù) ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Ẩn dụ mở đầu">
         <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-6 space-y-4">
           <div className="flex items-start gap-4">
@@ -371,14 +371,14 @@ export default function GradientIntuitionTopic() {
                 ẩn. Làm sao đi được khi không thấy gì xa hơn chân mình?
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Câu trả lời đơn giản: <strong>đi về phía dốc xuống mạnh nhất</strong>.
-                Nhìn đất dưới chân, bên nào thấp hơn rõ rệt — bước về đó. Lặp lại.
-                Cuối cùng bạn sẽ tới đáy — có thể không phải đáy sâu nhất, nhưng
+                Câu trả lời rất gọn: <strong>đi về phía dốc xuống mạnh nhất</strong>.
+                Nhìn đất dưới chân, bên nào thấp hơn rõ rệt thì bước về đó. Lặp lại.
+                Cuối cùng bạn sẽ tới đáy. Có thể không phải đáy sâu nhất, nhưng
                 chắc chắn là <em>một đáy</em>.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Đó chính là <strong>gradient descent</strong>. Máy học cũng đi
-                đúng như vậy — chỉ khác, đồi của nó là <em>mặt loss</em>, và tọa
+                đúng như vậy. Chỉ khác là đồi của nó là <em>mặt loss</em>, và tọa
                 độ là <em>weights</em>.
               </p>
             </div>
@@ -390,55 +390,55 @@ export default function GradientIntuitionTopic() {
               <Mountain className="mx-auto h-6 w-6 text-stone-500" />
               <p className="text-[11px] font-semibold text-foreground">Đồi</p>
               <p className="text-[10px] text-muted leading-tight">
-                Mặt loss L(x, y) — mỗi tọa độ là một bộ weight.
+                Mặt loss L(x, y). Mỗi tọa độ là một bộ weight.
               </p>
             </div>
             <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
               <Compass className="mx-auto h-6 w-6 text-amber-500" />
               <p className="text-[11px] font-semibold text-foreground">Ngón tay</p>
               <p className="text-[10px] text-muted leading-tight">
-                Gradient ∇L — chỉ hướng dốc lên.
+                Gradient ∇L: chỉ hướng dốc lên.
               </p>
             </div>
             <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
               <Footprints className="mx-auto h-6 w-6 text-emerald-500" />
               <p className="text-[11px] font-semibold text-foreground">Bước chân</p>
               <p className="text-[10px] text-muted leading-tight">
-                θ ← θ − η∇L — bước ngược lại để xuống.
+                θ ← θ − η∇L: bước ngược lại để xuống.
               </p>
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
+      {/* ━━━ BƯỚC 2 · DISCOVER (PredictionGate) ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn đã biết phải đi ngược hướng dốc xuống. Giờ chọn độ dài MỖI BƯỚC. Bạn đặt bước rất to (η lớn) để xuống thật nhanh. Chuyện gì dễ xảy ra nhất?"
           options={[
-            "Xuống đáy sau đúng một bước — ai cũng thích bước to",
+            "Xuống đáy sau đúng một bước, ai cũng thích bước to",
             "Nhảy vọt qua đáy sang sườn đối diện, rồi lại nhảy về, loss không chịu giảm",
             "Bước to làm gradient trở về 0, thuật toán dừng sớm",
             "Máy tính tự phát hiện và âm thầm chia nhỏ bước hộ bạn",
           ]}
           correct={1}
-          explanation="Bước quá to = đi quá đà. Ở đáy thung lũng hẹp, cú bước lớn sẽ đẩy bạn sang vách bên kia, rồi bước tiếp lại đẩy về bên đây — dao động, thậm chí phân kỳ (loss càng lúc càng to). Ngược lại, bước quá nhỏ đi mãi không tới. Learning rate η phải vừa đủ — bài sau bạn sẽ tự điều chỉnh để thấy cả ba chế độ."
+          explanation="Bước quá to nghĩa là đi quá đà. Ở đáy thung lũng hẹp, cú bước lớn sẽ đẩy bạn sang vách bên kia, rồi bước tiếp lại đẩy về bên đây. Bóng dao động, thậm chí phân kỳ khi loss càng lúc càng to. Ngược lại, bước quá nhỏ đi mãi không tới. Learning rate η phải vừa đủ. Bài sau bạn sẽ tự điều chỉnh để thấy cả ba chế độ."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
             Giờ ta sẽ thả một viên bi lên mặt loss 2D thật và xem nó lăn. Bạn
-            điều chỉnh learning rate — xem điều gì xảy ra khi quá to, quá nhỏ.
+            điều chỉnh learning rate để xem điều gì xảy ra khi quá to, quá nhỏ.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — REVEAL (contour map + clickable ball) ━━━ */}
+      {/* ━━━ BƯỚC 3 · REVEAL (contour map + clickable ball) ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá tương tác">
         <VisualizationSection topicSlug={metadata.slug}>
           <LessonSection label="Thí nghiệm 1: Thả bóng lên mặt loss" step={1}>
             <p className="text-sm text-muted mb-3 leading-relaxed">
               <strong>Bấm vào bản đồ contour</strong> để đặt bóng ở vị trí đó. Các
-              đường cong là các &ldquo;đường đồng mức&rdquo; loss — như đường đồng
-              mức trên bản đồ địa hình. Xanh = thấp (gần đáy), đỏ = cao.
+              đường cong là &ldquo;đường đồng mức&rdquo; loss, giống đường đồng
+              mức trên bản đồ địa hình. Xanh là thấp (gần đáy), đỏ là cao.
             </p>
 
             <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -469,7 +469,7 @@ export default function GradientIntuitionTopic() {
                   onClick={onClickSurface}
                 >
                   <title>
-                    Mặt loss L(x, y) — bóng ở ({ballPos[0].toFixed(1)},{" "}
+                    Mặt loss L(x, y). Bóng ở ({ballPos[0].toFixed(1)},{" "}
                     {ballPos[1].toFixed(1)}), gradient |∇L| = {gradMag.toFixed(2)}
                   </title>
 
@@ -542,7 +542,7 @@ export default function GradientIntuitionTopic() {
                     />
                   ))}
 
-                  {/* Gradient arrow (uphill) — red, from ball */}
+                  {/* Gradient arrow (uphill): red, from ball */}
                   {gradMag > 0.03 && (
                     <>
                       <defs>
@@ -655,7 +655,7 @@ export default function GradientIntuitionTopic() {
                     onClick={() => setRunning((r) => !r)}
                     className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors ${
                       running
-                        ? "border-rose-400 bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-200"
+                        ? "border-rose-400 bg-rose-50 text-foreground dark:bg-rose-900/30"
                         : "border-border bg-card text-foreground hover:border-accent/50"
                     }`}
                   >
@@ -723,10 +723,10 @@ export default function GradientIntuitionTopic() {
                     }}
                   />
                   <div className="flex justify-between mt-1 text-[10px] text-tertiary">
-                    <span>0.01 — stall</span>
-                    <span>0.25 — êm</span>
-                    <span>0.7 — nảy</span>
-                    <span>1.5 — nổ</span>
+                    <span>0.01 · stall</span>
+                    <span>0.25 · êm</span>
+                    <span>0.7 · nảy</span>
+                    <span>1.5 · nổ</span>
                   </div>
                 </div>
               </div>
@@ -751,30 +751,30 @@ export default function GradientIntuitionTopic() {
                 className="mt-3"
               >
                 {lr < 0.05 && (
-                  <Callout variant="info" title="Learning rate rất nhỏ — bóng nhích không thấy">
+                  <Callout variant="info" title="Learning rate rất nhỏ, bóng nhích không thấy">
                     Mỗi bước chỉ là một &ldquo;hạt gạo&rdquo; trên bản đồ. Đúng
                     hướng, nhưng đến đáy sẽ tốn hàng ngàn lần bấm. Đây là &ldquo;đi
-                    quá chậm&rdquo; — lãng phí thời gian tính toán.
+                    quá chậm&rdquo;, lãng phí thời gian tính toán.
                   </Callout>
                 )}
                 {lr >= 0.05 && lr <= 0.55 && (
-                  <Callout variant="tip" title="Learning rate vừa phải — bóng lăn êm">
+                  <Callout variant="tip" title="Learning rate vừa phải, bóng lăn êm">
                     Quan sát bóng lăn gần như thẳng về đáy theo đường cong tự
-                    nhiên. Đây là vùng &ldquo;hội tụ mượt&rdquo; — mục tiêu của
+                    nhiên. Đây là vùng &ldquo;hội tụ mượt&rdquo;, mục tiêu của
                     mọi setup huấn luyện.
                   </Callout>
                 )}
                 {lr > 0.55 && lr <= 0.9 && (
-                  <Callout variant="warning" title="Learning rate hơi to — bóng nảy quanh đáy">
-                    Bóng vẫn tìm được đáy, nhưng mỗi bước hơi lố — nó nhảy qua
-                    minimum rồi bật ngược. Loss giảm nhưng dao động. Tăng nữa
+                  <Callout variant="warning" title="Learning rate hơi to, bóng nảy quanh đáy">
+                    Bóng vẫn tìm được đáy, nhưng mỗi bước hơi lố. Nó nhảy qua
+                    minimum rồi bật ngược, loss giảm nhưng dao động. Tăng nữa
                     sẽ phân kỳ.
                   </Callout>
                 )}
                 {lr > 0.9 && (
-                  <Callout variant="warning" title="Learning rate quá to — bóng phát nổ">
-                    Mỗi bước vượt QUA đáy sang sườn bên kia có gradient còn LỚN
-                    HƠN. Bước kế tiếp xa hơn → loss leo lên vô cùng. Đây chính
+                  <Callout variant="warning" title="Learning rate quá to, bóng phát nổ">
+                    Mỗi bước vượt qua đáy sang sườn bên kia có gradient còn lớn
+                    hơn. Bước kế tiếp xa hơn nữa, loss leo lên vô cùng. Đây chính
                     là điều xảy ra khi huấn luyện thật và η sai lệch 10×.
                   </Callout>
                 )}
@@ -782,7 +782,7 @@ export default function GradientIntuitionTopic() {
             </AnimatePresence>
           </LessonSection>
 
-          {/* Preset buttons — quick tours */}
+          {/* Preset buttons: quick tours */}
           <LessonSection label="Thí nghiệm 2: Ba tình huống mẫu" step={2}>
             <p className="text-sm text-muted mb-3 leading-relaxed">
               Bấm một nút để xem kịch bản đã cấu hình sẵn. Bóng sẽ được đặt ở vị
@@ -805,7 +805,7 @@ export default function GradientIntuitionTopic() {
                   </span>
                 </div>
                 <p className="text-[11px] text-muted leading-snug">
-                  Bóng thả trên đồi cao, η = 0.20 → lăn từ từ xuống đáy.
+                  Bóng thả trên đồi cao, η = 0.20, bóng lăn từ từ xuống đáy.
                 </p>
               </button>
 
@@ -824,7 +824,7 @@ export default function GradientIntuitionTopic() {
                   </span>
                 </div>
                 <p className="text-[11px] text-muted leading-snug">
-                  η = 0.05 → bước nhỏ xíu, mỏi tay bấm mà bóng gần như không
+                  η = 0.05, bước nhỏ xíu, mỏi tay bấm mà bóng gần như không
                   nhúc nhích.
                 </p>
               </button>
@@ -844,7 +844,7 @@ export default function GradientIntuitionTopic() {
                   </span>
                 </div>
                 <p className="text-[11px] text-muted leading-snug">
-                  η = 1.05 → bóng văng khắp bản đồ, loss tăng thay vì giảm.
+                  η = 1.05, bóng văng khắp bản đồ, loss tăng thay vì giảm.
                 </p>
               </button>
             </div>
@@ -852,10 +852,10 @@ export default function GradientIntuitionTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — DEEPEN (StepReveal of one iteration) ━━━ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu — một vòng">
+      {/* ━━━ BƯỚC 4 · DEEPEN (StepReveal of one iteration) ━━━ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu vào một vòng">
         <p className="text-sm text-muted mb-4 leading-relaxed">
-          Giờ mổ xẻ chi tiết MỘT bước gradient descent. Bấm &ldquo;Tiếp tục&rdquo;
+          Giờ mổ xẻ chi tiết một bước gradient descent. Bấm &ldquo;Tiếp tục&rdquo;
           để xem từng giai đoạn.
         </p>
 
@@ -889,54 +889,54 @@ export default function GradientIntuitionTopic() {
 
         <div className="mt-6">
           <AhaMoment>
-            <strong>Gradient descent không phải phép thuật</strong> — nó chỉ là
+            <strong>Gradient descent không phải phép thuật</strong>. Nó chỉ là
             nguyên tắc cũ nhất của người leo núi: <em>khi sương mù, hãy đi về
             phía dốc xuống mạnh nhất</em>. Điều duy nhất chúng ta thêm vào là
-            hằng số η (learning rate) — để kiểm soát cỡ bước sao cho không lao
+            hằng số η (learning rate), để kiểm soát cỡ bước sao cho không lao
             đầu xuống vực.
           </AhaMoment>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 5 · CHALLENGE ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
           question="Bạn đặt bóng ở đỉnh đồi cao (ví dụ tọa độ (6, 3)), rồi bật learning rate to (η = 1.3). Bấm 'Tự chạy'. Điều gì xảy ra?"
           options={[
             "Bóng lăn nhanh về đáy vì η to giúp xuống dốc nhanh",
             "Bóng dừng ngay tại đỉnh vì gradient bằng 0",
-            "Bóng bị văng ra xa, mỗi bước vượt qua minimum và đáp vào sườn có gradient lớn hơn → loss tăng theo cấp số nhân",
+            "Bóng bị văng ra xa, mỗi bước vượt qua minimum và đáp vào sườn có gradient lớn hơn, loss tăng theo cấp số nhân",
             "Bóng đi thẳng tới minimum rồi dừng",
           ]}
           correct={2}
-          explanation="Phân kỳ. Khi bước cập nhật η·∇L quá lớn, điểm mới vượt qua đáy và rơi vào vùng có gradient lớn hơn. Mỗi vòng lặp khuếch đại sai số. Giải pháp: giảm η, hoặc dùng các trick như gradient clipping, learning-rate warmup."
+          explanation="Đây là phân kỳ. Khi bước cập nhật η·∇L quá lớn, điểm mới vượt qua đáy và rơi vào vùng có gradient lớn hơn. Mỗi vòng lặp khuếch đại sai số. Giải pháp: giảm η, hoặc dùng các trick như gradient clipping, learning-rate warmup."
         />
 
         <div className="mt-5">
           <InlineChallenge
             question="Bóng của bạn đang lăn ngoan về đáy. Sau vài bước, gradient tại vị trí bóng giảm dần. Điều này có nghĩa là gì?"
             options={[
-              "Bóng đang mất phương hướng — nên đặt lại",
-              "Gradient giảm nhỏ = độ dốc gần 0 = bóng gần tới đáy. Các bước sau sẽ ngắn hơn một cách tự nhiên",
+              "Bóng đang mất phương hướng, nên đặt lại",
+              "Gradient nhỏ tức là độ dốc gần 0, bóng gần tới đáy. Các bước sau sẽ ngắn hơn một cách tự nhiên",
               "Learning rate đang tự điều chỉnh",
               "Mạng nơ-ron đã bị lỗi",
             ]}
             correct={1}
-            explanation="Đây chính là tính chất hay của gradient descent: càng gần minimum, gradient càng nhỏ → bước càng ngắn → dừng tự nhiên. Không cần cơ chế phức tạp để biết đã tới đích — chỉ cần theo dõi |∇L|."
+            explanation="Đây chính là tính chất hay của gradient descent: càng gần minimum, gradient càng nhỏ, bước càng ngắn, bóng dừng tự nhiên. Không cần cơ chế phức tạp để biết đã tới đích, chỉ cần theo dõi |∇L|."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — EXPLAIN (≤2 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 6 · EXPLAIN (≤2 LaTeX) ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích toán">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Đã thấy bằng hình: bóng lăn xuống đồi, ngón tay chỉ hướng dốc lên,
-            bước ngược hướng đó. Giờ ghi lại bằng hai công thức — mỗi công thức
+            bước ngược hướng đó. Giờ ghi lại bằng hai công thức, mỗi công thức
             đi kèm một câu giải thích bằng tiếng Việt đời thường.
           </p>
 
-          {/* Formula 1 — gradient definition */}
+          {/* Formula 1: gradient definition */}
           <div className="rounded-xl border border-border bg-surface/50 p-5 my-4 space-y-3">
             <div className="flex items-start gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white text-sm font-bold">
@@ -1006,7 +1006,7 @@ export default function GradientIntuitionTopic() {
             </p>
           </div>
 
-          {/* Formula 2 — update rule */}
+          {/* Formula 2: update rule */}
           <div className="rounded-xl border border-border bg-surface/50 p-5 my-4 space-y-3">
             <div className="flex items-start gap-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white text-sm font-bold">
@@ -1014,7 +1014,7 @@ export default function GradientIntuitionTopic() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground">
-                  Công thức cập nhật — một dòng, cả kỷ nguyên deep learning
+                  Công thức cập nhật: một dòng gói cả kỷ nguyên deep learning
                 </p>
                 <p className="text-xs text-muted">
                   η (eta) kiểm soát cỡ bước. Vector θ chứa toàn bộ weight của mô
@@ -1072,27 +1072,27 @@ export default function GradientIntuitionTopic() {
 
             <p className="text-xs text-muted italic leading-relaxed">
               &ldquo;Ở tọa độ cũ, cộng thêm một mũi tên ngược gradient, bạn ra
-              tọa độ mới — gần đáy hơn.&rdquo;
+              tọa độ mới, gần đáy hơn.&rdquo;
             </p>
           </div>
 
           <Callout variant="info" title="Tại sao mặt loss thực tế gồ ghề hơn nhiều?">
-            Trong bài này mặt loss chỉ có 2 chiều — để bạn nhìn được. Thực tế mạng
+            Trong bài này mặt loss chỉ có 2 chiều, để bạn nhìn được. Thực tế mạng
             nơ-ron có hàng tỉ chiều, mặt loss rất gồ ghề với nhiều{" "}
             <strong>saddle point</strong> (điểm yên ngựa) và{" "}
-            <strong>local minimum</strong>. May mắn, thực nghiệm cho thấy hầu hết
-            các local minimum trên mạng lớn cho chất lượng tương đương — và các
+            <strong>local minimum</strong>. May mắn là thực nghiệm cho thấy hầu hết
+            các local minimum trên mạng lớn cho chất lượng tương đương. Các
             biến thể như <TopicLink slug="gradient-descent">gradient descent</TopicLink>{" "}
             + momentum giúp thoát khỏi nhiều bẫy cạn.
           </Callout>
 
-          <CollapsibleDetail title="Vì sao gradient luôn chỉ LÊN dốc, không phải xuống?">
+          <CollapsibleDetail title="Vì sao gradient luôn chỉ lên dốc, không phải xuống?">
             <div className="space-y-2 text-sm leading-relaxed text-muted">
               <p>
                 Theo định nghĩa toán học: gradient là vector chứa đạo hàm riêng
-                dương theo mỗi biến, và tại mỗi điểm nó là hướng mà loss tăng
+                theo mỗi biến, và tại mỗi điểm nó là hướng mà loss tăng
                 nhanh nhất. Đó là lý do ta viết <em>trừ</em> gradient (không phải
-                cộng) trong công thức cập nhật — để đi ngược lại, tức xuống dốc.
+                cộng) trong công thức cập nhật, để đi ngược lại, tức xuống dốc.
               </p>
               <p>
                 Nếu ai đó &ldquo;gradient descent&rdquo; bằng cách cộng gradient, bạn
@@ -1110,8 +1110,8 @@ export default function GradientIntuitionTopic() {
               </p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>
-                  <strong>Momentum:</strong> thêm &ldquo;quán tính&rdquo; vào bước
-                  — như viên bi lăn. Giúp vượt các &ldquo;bẫy cạn&rdquo;.
+                  <strong>Momentum:</strong> thêm &ldquo;quán tính&rdquo; vào bước,
+                  như viên bi lăn. Giúp vượt các &ldquo;bẫy cạn&rdquo;.
                 </li>
                 <li>
                   <strong>Adam / AdamW:</strong> điều chỉnh learning rate cho
@@ -1123,7 +1123,7 @@ export default function GradientIntuitionTopic() {
                 </li>
               </ul>
               <p>
-                Dù khác nhau, tất cả vẫn là &ldquo;đi ngược gradient&rdquo; — chỉ khác
+                Dù khác nhau, tất cả vẫn là &ldquo;đi ngược gradient&rdquo;, chỉ khác
                 ở cách quyết định cỡ bước.
               </p>
             </div>
@@ -1131,7 +1131,7 @@ export default function GradientIntuitionTopic() {
 
           <p className="leading-relaxed mt-4">
             Khi bạn huấn luyện mạng nơ-ron thực, gradient descent là vòng lặp cốt
-            lõi — còn cách <em>tính</em> gradient qua các lớp là công việc của{" "}
+            lõi. Còn cách <em>tính</em> gradient qua các lớp là công việc của{" "}
             <TopicLink slug="calculus-for-backprop">
               giải tích cho backprop
             </TopicLink>
@@ -1141,14 +1141,14 @@ export default function GradientIntuitionTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — CONNECT ━━━ */}
+      {/* ━━━ BƯỚC 7 · CONNECT ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt & Liên kết">
         <MiniSummary
           title="Ba ý bạn mang về"
           points={[
-            "Gradient là vector chỉ hướng loss TĂNG nhanh nhất. Đi NGƯỢC gradient để loss giảm nhanh nhất — đó là gradient descent.",
-            "Learning rate η kiểm soát cỡ bước: quá to → phân kỳ, quá nhỏ → stall, vừa đủ → hội tụ. Tinh chỉnh η là nghệ thuật quan trọng bậc nhất trong ML.",
-            "Trên mặt loss thực tế (hàng tỉ chiều), gradient descent không đảm bảo tới minimum toàn cục — nhưng trong thực nghiệm, local minimum đa phần cho chất lượng tương đương.",
+            "Gradient là vector chỉ hướng loss tăng nhanh nhất. Đi ngược gradient để loss giảm nhanh nhất, đó là gradient descent.",
+            "Learning rate η kiểm soát cỡ bước. Quá to thì phân kỳ, quá nhỏ thì stall, vừa đủ thì hội tụ. Tinh chỉnh η là nghệ thuật quan trọng bậc nhất trong ML.",
+            "Trên mặt loss thực tế (hàng tỉ chiều), gradient descent không đảm bảo tới minimum toàn cục. Tuy nhiên trong thực nghiệm, local minimum đa phần cho chất lượng tương đương.",
           ]}
         />
 
@@ -1169,16 +1169,16 @@ export default function GradientIntuitionTopic() {
 
           <Callout variant="insight" title="Một sự thật nhỏ">
             Khi Geoffrey Hinton và đồng nghiệp huấn luyện được mạng sâu vào
-            2006-2012, họ không phát minh ra gradient descent — thuật toán này
-            có từ Cauchy năm 1847. Cái họ tìm ra là cách <em>giữ cho gradient không
-            chết</em> qua nhiều lớp (ReLU, dropout, khởi tạo thông minh) để ý
-            tưởng &ldquo;đi ngược gradient&rdquo; vẫn hoạt động trên mạng 100+
+            giai đoạn 2006-2012, họ không phát minh ra gradient descent. Thuật toán này
+            đã có từ Cauchy năm 1847. Cái họ tìm ra là cách <em>giữ cho gradient không
+            chết</em> qua nhiều lớp (ReLU, dropout, khởi tạo thông minh), để ý
+            tưởng &ldquo;đi ngược gradient&rdquo; vẫn hoạt động trên mạng hơn 100
             lớp.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8 · QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
         <div className="mt-6 flex items-center justify-center text-xs text-muted gap-2">
@@ -1191,7 +1191,7 @@ export default function GradientIntuitionTopic() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   SUB-COMPONENT — tiny animated visual for each iteration step
+   SUB-COMPONENT: tiny animated visual for each iteration step
    ──────────────────────────────────────────────────────────── */
 
 function IterationMiniVisual({ phase, color }: { phase: string; color: string }) {
@@ -1221,10 +1221,10 @@ function IterationMiniVisual({ phase, color }: { phase: string; color: string })
     );
   }
   if (phase.startsWith("2.")) {
-    // Upward arrow — gradient uphill
+    // Upward arrow: gradient uphill
     return (
       <svg viewBox="0 0 440 80" className="w-full">
-        <title>Cảm nhận gradient ∇L — mũi tên chỉ lên dốc.</title>
+        <title>Cảm nhận gradient ∇L: mũi tên chỉ lên dốc.</title>
         <circle cx={140} cy={52} r={7} fill={color} stroke="#fff" strokeWidth={2} />
         <line x1={140} y1={52} x2={280} y2={16} stroke="#ef4444" strokeWidth={2.5} />
         <path d="M 280 16 L 272 15 L 274 23 Z" fill="#ef4444" />
@@ -1235,10 +1235,10 @@ function IterationMiniVisual({ phase, color }: { phase: string; color: string })
     );
   }
   if (phase.startsWith("3.")) {
-    // Downward step — animated dot moving
+    // Downward step: animated dot moving
     return (
       <svg viewBox="0 0 440 80" className="w-full">
-        <title>Bước ngược gradient — đi xuống dốc.</title>
+        <title>Bước ngược gradient: đi xuống dốc.</title>
         <circle cx={140} cy={52} r={7} fill={color} stroke="#fff" strokeWidth={2} opacity={0.4} />
         <motion.circle
           cx={140}
@@ -1265,7 +1265,7 @@ function IterationMiniVisual({ phase, color }: { phase: string; color: string })
       </svg>
     );
   }
-  // phase "4." — loop
+  // phase "4.": loop
   return (
     <svg viewBox="0 0 440 80" className="w-full">
       <title>Lặp lại quá trình cho đến khi gradient ≈ 0.</title>

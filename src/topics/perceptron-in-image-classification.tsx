@@ -38,9 +38,9 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 export const metadata: TopicMeta = {
   slug: "perceptron-in-image-classification",
   title: "Perceptron in Image Classification",
-  titleVi: "Perceptron nhận diện ảnh — chữ số 0 hay 1?",
+  titleVi: "Perceptron nhận diện ảnh: chữ số 0 hay 1?",
   description:
-    "Một perceptron nhìn vào ảnh 28×28 pixel và quyết định đó là chữ số '0' hay '1'. Bạn tô pixel bằng chuột và thấy dự đoán đổi ngay lập tức — rồi khám phá vì sao một nơ-ron là chưa đủ cho ảnh phức tạp.",
+    "Một perceptron nhìn vào ảnh 28×28 pixel và quyết định đó là chữ số '0' hay '1'. Bạn tô pixel bằng chuột, thấy dự đoán đổi ngay lập tức, rồi khám phá vì sao một nơ-ron chưa đủ cho ảnh phức tạp.",
   category: "neural-fundamentals",
   tags: ["perceptron", "image-classification", "application", "mnist"],
   difficulty: "beginner",
@@ -79,7 +79,7 @@ export const metadata: TopicMeta = {
     },
     {
       title:
-        "Simple 2-layer linear classifier on MNIST — baseline accuracy ~88%",
+        "Simple 2-layer linear classifier on MNIST: baseline accuracy ~88%",
       publisher: "MNIST benchmark page",
       url: "http://yann.lecun.com/exdb/mnist/",
       date: "1998-01",
@@ -96,7 +96,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   DỮ LIỆU — hai ảnh chữ số 28×28 (0 và 1) dạng mảng boolean
+   DỮ LIỆU: hai ảnh chữ số 28×28 (0 và 1) dạng mảng boolean.
    Mỗi phần tử 1 = pixel đen, 0 = pixel trắng.
    ───────────────────────────────────────────────────────────── */
 
@@ -116,7 +116,7 @@ function stampGrid(strokes: [number, number][]): Grid {
   return g;
 }
 
-/* Chữ số '0' — một vòng oval */
+/* Chữ số '0': một vòng oval */
 const DIGIT_ZERO_STROKES: [number, number][] = [
   // Đỉnh trên
   [5, 11], [5, 12], [5, 13], [5, 14], [5, 15], [5, 16],
@@ -140,7 +140,7 @@ const DIGIT_ZERO_STROKES: [number, number][] = [
   [21, 11], [21, 12], [21, 13], [21, 14], [21, 15], [21, 16],
 ];
 
-/* Chữ số '1' — một đường dọc có mũ và chân đế */
+/* Chữ số '1': một đường dọc có mũ và chân đế */
 const DIGIT_ONE_STROKES: [number, number][] = [
   // Mũ
   [5, 13], [5, 14],
@@ -217,13 +217,13 @@ function weightedSum(grid: Grid, weights: number[][], bias: number): number {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   KHU VỰC TƯƠNG TÁC 1: Pixel viewer — toggle để thay đổi dự đoán
+   KHU VỰC TƯƠNG TÁC 1: Pixel viewer, toggle để thay đổi dự đoán
    ───────────────────────────────────────────────────────────── */
 
 type DigitPreset = "zero" | "one" | "blank" | "confused";
 
 const CONFUSED_STROKES: [number, number][] = [
-  // Một chữ số "mơ hồ" — vừa có vòng vừa có đường thẳng
+  // Một chữ số "mơ hồ": vừa có vòng vừa có đường thẳng
   [7, 13], [7, 14], [8, 12], [8, 13], [8, 14], [8, 15],
   [9, 12], [9, 15], [10, 12], [10, 15], [11, 12], [11, 15],
   [12, 13], [12, 14], [13, 14], [14, 14], [15, 14], [16, 14],
@@ -245,7 +245,7 @@ function PixelViewer() {
   const rawSum = useMemo(() => weightedSum(grid, TRAINED_WEIGHTS, BIAS), [grid]);
   const prediction: 0 | 1 = rawSum > 0 ? 1 : 0;
 
-  // Confidence — dùng |rawSum| đã được scale nhẹ để tránh số quá to
+  // Confidence: dùng |rawSum| đã được scale nhẹ để tránh số quá to
   const confidence = Math.min(1, Math.abs(rawSum) / 12);
   const activePixels = useMemo(
     () => grid.flat().filter((v) => v === 1).length,
@@ -301,7 +301,7 @@ function PixelViewer() {
         </div>
         <div>
           <p className="text-sm font-bold text-foreground">
-            Lưới 28×28 — tô pixel, xem dự đoán đổi
+            Lưới 28×28. Tô pixel, xem dự đoán đổi.
           </p>
           <p className="text-xs text-muted leading-snug">
             Nhấn vào từng ô để bật/tắt pixel. Perceptron tính lại và đưa ra
@@ -685,11 +685,11 @@ function PipelineDemo() {
         >
           <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <Target size={16} className="text-accent" />
-            Bước 4: So với 0 — &ldquo;1&rdquo; hay &ldquo;0&rdquo;?
+            Bước 4: so với 0, chọn &ldquo;1&rdquo; hay &ldquo;0&rdquo;?
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đây là bước quyết định. Perceptron chỉ biết một câu hỏi: <em>tổng vừa tính lớn hơn 0 hay không?</em>
-            Không có &ldquo;80% tự tin&rdquo;, không có &ldquo;có thể&rdquo; — chỉ có hai khả năng.
+            Không có &ldquo;80% tự tin&rdquo;, không có &ldquo;có thể&rdquo;, chỉ có hai khả năng.
           </p>
           <svg viewBox="0 0 360 140" className="w-full max-w-md mx-auto">
             <line x1={30} y1={70} x2={330} y2={70} stroke="currentColor" className="text-muted" strokeWidth={1} />
@@ -724,7 +724,7 @@ function PipelineDemo() {
             </text>
           </svg>
           <p className="text-xs text-muted italic">
-            Trên bức ảnh bạn vừa tô, perceptron chạy đúng đường này — 784 phép nhân, một phép cộng, một phép so sánh với 0.
+            Trên bức ảnh bạn vừa tô, perceptron chạy đúng đường này. 784 phép nhân, một phép cộng, một phép so sánh với 0.
           </p>
         </div>,
       ]}
@@ -742,7 +742,7 @@ const COMPARISON_CASES = [
     title: "Chữ 1 thẳng, viết đúng giữa",
     pctPerceptron: 99,
     pctDeep: 99.9,
-    note: "Mẫu gần giống dữ liệu huấn luyện — một perceptron cũng xử lý được.",
+    note: "Mẫu gần giống dữ liệu huấn luyện. Một perceptron cũng xử lý được.",
     color: "#22c55e",
   },
   {
@@ -758,7 +758,7 @@ const COMPARISON_CASES = [
     title: "Chữ 1 bị dịch sang bên phải 5 pixel",
     pctPerceptron: 48,
     pctDeep: 99.5,
-    note: "Perceptron phụ thuộc chặt vị trí — pixel dịch đi là lẫn ngay.",
+    note: "Perceptron phụ thuộc chặt vào vị trí. Pixel dịch đi là lẫn ngay.",
     color: "#f97316",
   },
   {
@@ -848,7 +848,7 @@ function ComparisonTable() {
             <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
               Mạng sâu (CNN nhỏ)
             </span>
-            <span className="font-mono text-xl font-bold tabular-nums text-emerald-600">
+            <span className="font-mono text-xl font-bold tabular-nums text-foreground">
               {active.pctDeep}%
             </span>
           </div>
@@ -861,7 +861,7 @@ function ComparisonTable() {
               className="h-full bg-emerald-500"
             />
           </div>
-          <p className="text-[11px] text-emerald-700 dark:text-emerald-300 leading-snug">
+          <p className="text-[11px] text-foreground leading-snug">
             Nhiều lớp + convolution = tự học đặc trưng bất biến với dịch chuyển / xoay / co giãn.
           </p>
         </div>
@@ -871,7 +871,7 @@ function ComparisonTable() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   QUIZ — kiểm tra nhanh sau khi trải nghiệm
+   QUIZ: kiểm tra nhanh sau khi trải nghiệm
    ───────────────────────────────────────────────────────────── */
 
 const quizQuestions: QuizQuestion[] = [
@@ -892,7 +892,7 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Sau khi huấn luyện để phân biệt 0 vs 1, 'bản đồ trọng số' có đặc điểm gì?",
     options: [
-      "Tất cả trọng số gần bằng 0 — vì ảnh phần lớn là trắng",
+      "Tất cả trọng số gần bằng 0, vì ảnh phần lớn là trắng",
       "Cột giữa có trọng số dương (đặc trưng của 1), rìa oval có trọng số âm (đặc trưng của 0)",
       "Trọng số ngẫu nhiên như lúc khởi tạo",
       "Chỉ có 1 trọng số khác 0, tất cả còn lại đều bằng 0",
@@ -905,27 +905,27 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Với bài phân loại nhị phân 0-vs-1 trên MNIST, một perceptron đơn đạt quanh bao nhiêu phần trăm chính xác?",
     options: [
-      "50% — gần như đoán mò",
+      "50%, gần như đoán mò",
       "75%",
-      "Khoảng 99% — gần tối đa",
-      "100% — mọi ảnh đều đúng",
+      "Khoảng 99%, gần tối đa",
+      "100%, mọi ảnh đều đúng",
     ],
     correct: 2,
     explanation:
-      "Bài 0-vs-1 gần như phân tách tuyến tính, nên một perceptron đủ để đạt gần 99%. Nhưng với đủ 10 lớp chữ số (0–9) thì perceptron chỉ đạt ~88%; CNN sâu đạt 99%+.",
+      "Bài 0-vs-1 gần như phân tách tuyến tính, nên một perceptron đủ để đạt gần 99%. Nhưng với đủ 10 lớp chữ số (0 đến 9) thì perceptron chỉ đạt khoảng 88%, còn CNN sâu đạt trên 99%.",
   },
   {
     question:
       "Tại sao một perceptron không xử lý tốt ảnh bị dịch chuyển vài pixel sang phải?",
     options: [
       "Perceptron không biết nhận diện chữ bị nghiêng",
-      "Mỗi trọng số gắn cứng với một vị trí pixel cụ thể — dịch ảnh là phá vỡ mối liên hệ đó",
+      "Mỗi trọng số gắn cứng với một vị trí pixel cụ thể, dịch ảnh là phá vỡ mối liên hệ đó",
       "Vì perceptron không có đủ dữ liệu",
       "Vì hàm bước không đo được khoảng cách",
     ],
     correct: 1,
     explanation:
-      "Perceptron coi mỗi vị trí pixel là một đầu vào riêng biệt. Nếu chữ số dịch sang phải 5 pixel, pixel quan trọng giờ nằm ở cột khác — trọng số cũ không phát hiện. CNN giải bài này bằng cách trượt cùng bộ trọng số qua mọi vị trí (convolution).",
+      "Perceptron coi mỗi vị trí pixel là một đầu vào riêng biệt. Nếu chữ số dịch sang phải 5 pixel, pixel quan trọng giờ nằm ở cột khác, nên trọng số cũ không phát hiện được. CNN giải bài này bằng cách trượt cùng bộ trọng số qua mọi vị trí (convolution).",
   },
   {
     type: "fill-blank",
@@ -955,12 +955,12 @@ export default function PerceptronInImageClassification() {
         <p>
           Bài toán đầu bài: <em>cho một ảnh 28×28, nhận diện đó là chữ số
           &ldquo;0&rdquo; hay chữ số &ldquo;1&rdquo;</em>. Nghe đơn giản đến
-          mức mọi người hỏi: một perceptron đơn — <TopicLink slug="perceptron">
-          chính là viên gạch mà bạn vừa học
-          </TopicLink> — có đủ không? Câu trả lời rất đáng ngạc nhiên: cho bài
-          toán 0 vs 1, một perceptron đạt quanh <strong>99%</strong> chính xác
-          trên dữ liệu gọn gàng. Nhưng chỉ cần xoay ảnh 20°, đưa vào 10 chữ số
-          thay vì 2, hoặc nét viết đậm hơn — perceptron đuối sức ngay.
+          mức mọi người hỏi: một perceptron đơn (
+          <TopicLink slug="perceptron">chính là viên gạch mà bạn vừa học</TopicLink>
+          ) có đủ không? Câu trả lời rất đáng ngạc nhiên. Với bài toán 0 vs 1,
+          một perceptron đạt quanh <strong>99%</strong> chính xác trên dữ liệu
+          gọn gàng. Nhưng chỉ cần xoay ảnh 20°, đưa vào 10 chữ số thay vì 2,
+          hoặc nét viết đậm hơn, perceptron đuối sức ngay.
         </p>
         <p>
           Phần dưới sẽ cho bạn <strong>tô thử một lưới 28×28</strong>, xem
@@ -981,7 +981,7 @@ export default function PerceptronInImageClassification() {
         <p>
           Cơ quan Bưu chính Hoa Kỳ và AT&T đặt một câu hỏi kỹ thuật: có mô
           hình nào <em>tự học</em> nhận dạng chữ số từ hàng chục nghìn ví dụ?
-          Perceptron — ý tưởng đã có từ 1958 — được kéo ra khỏi &ldquo;mùa
+          Perceptron (ý tưởng đã có từ 1958) được kéo ra khỏi &ldquo;mùa
           đông AI&rdquo; và chạy thử trên MNIST như một mô hình chuẩn đối
           chứng (baseline).
         </p>
@@ -991,14 +991,14 @@ export default function PerceptronInImageClassification() {
             <p className="text-sm font-bold text-foreground">784 đầu vào</p>
             <p className="text-xs text-muted leading-snug">
               Mỗi ảnh 28×28 duỗi phẳng thành 784 số. Perceptron cần đúng 784
-              trọng số — không nhiều hơn, không ít hơn.
+              trọng số, không nhiều hơn, không ít hơn.
             </p>
           </div>
           <div className="rounded-xl border bg-card p-4 space-y-1.5 border-l-4 border-l-amber-500">
             <p className="text-sm font-bold text-foreground">1 đầu ra</p>
             <p className="text-xs text-muted leading-snug">
               Chỉ có hai câu trả lời: &ldquo;0&rdquo; hoặc &ldquo;1&rdquo;.
-              Đây là bài toán phân loại nhị phân — vừa vặn với hàm bước của
+              Đây là bài toán phân loại nhị phân, vừa vặn với hàm bước của
               perceptron.
             </p>
           </div>
@@ -1019,7 +1019,7 @@ export default function PerceptronInImageClassification() {
             <strong>Đưa ảnh thành vector 784 số.</strong> Ảnh được chuyển về
             xám, co về kích thước 28×28, rồi duỗi phẳng thành một dãy 784 giá
             trị x₁, x₂, ..., x₇₈₄. Mỗi số đại diện độ sáng của một ô pixel.
-            Perceptron không nhìn &ldquo;bức tranh&rdquo; — nó nhìn một danh
+            Perceptron không nhìn &ldquo;bức tranh&rdquo;. Nó nhìn một danh
             sách dài.
           </p>
         </Beat>
@@ -1027,7 +1027,7 @@ export default function PerceptronInImageClassification() {
           <p>
             <strong>Khởi tạo 784 trọng số ngẫu nhiên.</strong> Perceptron bắt
             đầu mỗi trọng số bằng một số ngẫu nhiên nhỏ. Ở lúc này, trọng số
-            chưa nói được gì — bấm nút &ldquo;predict&rdquo; chỉ cho ra một
+            chưa nói được gì. Bấm nút &ldquo;predict&rdquo; chỉ cho ra một
             câu trả lời tuỳ tiện.
           </p>
         </Beat>
@@ -1046,7 +1046,7 @@ export default function PerceptronInImageClassification() {
             <strong>Hội tụ sau vài chục vòng.</strong> Rosenblatt chứng minh
             (1958): nếu dữ liệu phân tách tuyến tính, luật học này{" "}
             <em>chắc chắn hội tụ</em> sau một số hữu hạn bước. MNIST 0-vs-1
-            về cơ bản là phân tách tuyến tính — nên vài chục lần quét là đủ.
+            về cơ bản là phân tách tuyến tính, nên vài chục lần quét là đủ.
           </p>
         </Beat>
         <Beat step={5}>
@@ -1086,11 +1086,11 @@ export default function PerceptronInImageClassification() {
           sourceRef={4}
         />
         <Metric
-          value="Bài toán nhị phân 0-vs-1 dễ hơn: perceptron đạt quanh 99% — gần tối đa có thể"
+          value="Bài toán nhị phân 0-vs-1 dễ hơn: perceptron đạt quanh 99%, gần tối đa có thể"
           sourceRef={2}
         />
         <Metric
-          value="Mạng CNN nhỏ (2 lớp tích chập) của LeCun năm 1998 đạt 99.2% trên 10 lớp — gấp nhiều lần perceptron"
+          value="Mạng CNN nhỏ (2 lớp tích chập) của LeCun năm 1998 đạt 99.2% trên 10 lớp, gấp nhiều lần perceptron"
           sourceRef={1}
         />
       </ApplicationMetrics>
@@ -1111,13 +1111,13 @@ export default function PerceptronInImageClassification() {
           <InlineChallenge
             question="Vì sao một perceptron lại gặp khó khăn khi ảnh chữ số bị dịch chuyển vài pixel sang phải?"
             options={[
-              "Vì perceptron không biết nhân — nó chỉ cộng được",
+              "Vì perceptron không biết nhân, nó chỉ cộng được",
               "Vì mỗi trọng số gắn cứng với một vị trí pixel cụ thể; dịch ảnh là phá vỡ mối liên hệ đó",
               "Vì perceptron cần nhiều dữ liệu hơn",
               "Vì hàm bước không xử lý được số lớn",
             ]}
             correct={1}
-            explanation="Perceptron học một trọng số cho mỗi pixel ở mỗi vị trí. Nếu chữ số dịch sang phải, pixel quan trọng giờ nằm ở cột khác — trọng số cũ không phát hiện ra. CNN giải bài này bằng convolution: cùng một bộ trọng số được trượt trên mọi vị trí, nên đặc trưng 'đường dọc' được nhận ra dù nó ở đâu."
+            explanation="Perceptron học một trọng số cho mỗi pixel ở mỗi vị trí. Nếu chữ số dịch sang phải, pixel quan trọng giờ nằm ở cột khác, nên trọng số cũ không phát hiện ra. CNN giải bài này bằng convolution: cùng một bộ trọng số được trượt trên mọi vị trí, nên đặc trưng 'đường dọc' được nhận ra dù nó ở đâu."
           />
 
           <div className="mt-4">
@@ -1125,12 +1125,12 @@ export default function PerceptronInImageClassification() {
               question="Vì sao mạng sâu (deep nets) vượt xa một perceptron trên bài toán ảnh thực tế?"
               options={[
                 "Vì mạng sâu có nhiều GPU hơn",
-                "Vì mạng sâu xếp nhiều lớp trọng số — mỗi lớp học một kiểu đặc trưng: cạnh → hình dạng → chữ cái. Một perceptron chỉ có một lớp đơn.",
+                "Vì mạng sâu xếp nhiều lớp trọng số: mỗi lớp học một kiểu đặc trưng (cạnh, hình dạng, rồi chữ cái). Một perceptron chỉ có một lớp đơn.",
                 "Vì perceptron chỉ làm được khi ảnh là vuông",
                 "Vì mạng sâu dùng hàm bước thay vì hàm kích hoạt",
               ]}
               correct={1}
-              explanation="Ảnh thật có cấu trúc phân cấp: pixel → cạnh → hình dạng → bộ phận → vật thể. Một perceptron chỉ có một lớp cộng có trọng số — chỉ phân biệt được những gì 'tuyến tính'. Mạng sâu xếp lớp để từng lớp học một mức trừu tượng cao hơn. Thêm vào convolution giúp các đặc trưng độc lập với vị trí."
+              explanation="Ảnh thật có cấu trúc phân cấp: pixel → cạnh → hình dạng → bộ phận → vật thể. Một perceptron chỉ có một lớp cộng có trọng số, nên chỉ phân biệt được những gì 'tuyến tính'. Mạng sâu xếp lớp để từng lớp học một mức trừu tượng cao hơn. Thêm vào convolution giúp các đặc trưng độc lập với vị trí."
             />
           </div>
         </LessonSection>
@@ -1154,8 +1154,8 @@ export default function PerceptronInImageClassification() {
           bất biến với xoay / dịch) là cú hích đẩy ngành AI sang{" "}
           <TopicLink slug="mlp">mạng nhiều lớp (MLP)</TopicLink>,{" "}
           <TopicLink slug="cnn">mạng tích chập (CNN)</TopicLink>, và hàng loạt
-          kiến trúc sâu. MNIST vẫn là benchmark đầu tiên mọi sinh viên ML thử
-          — vì nó nhỏ đủ để chạy trong vài giây, nhưng đủ phức tạp để lộ ra
+          kiến trúc sâu. MNIST vẫn là benchmark đầu tiên mọi sinh viên ML thử,
+          vì nó nhỏ đủ để chạy trong vài giây, nhưng đủ phức tạp để lộ ra
           hạn chế của mô hình đơn giản.
         </p>
       </ApplicationCounterfactual>
@@ -1167,7 +1167,7 @@ export default function PerceptronInImageClassification() {
           points={[
             "Ảnh 28×28 duỗi phẳng thành 784 số; perceptron có đúng 784 trọng số.",
             "Sau khi học, 'bản đồ trọng số' cho thấy những vị trí pixel quan trọng để phân biệt hai lớp.",
-            "Bài 0-vs-1 đạt ~99% — một perceptron đủ cho dữ liệu gọn gàng, phân tách tuyến tính.",
+            "Bài 0-vs-1 đạt khoảng 99%. Một perceptron đủ cho dữ liệu gọn gàng, phân tách tuyến tính.",
             "Ảnh xoay, dịch, đậm khác hoặc bài 10 lớp → perceptron gãy; phải dùng mạng sâu (MLP, CNN).",
           ]}
         />
@@ -1176,9 +1176,9 @@ export default function PerceptronInImageClassification() {
           <Callout variant="insight" title="Từ một nơ-ron tới mạng sâu">
             Viên gạch <TopicLink slug="perceptron">perceptron</TopicLink> bạn vừa học là nguyên
             thuỷ của mọi mạng nơ-ron hiện đại. Xếp chúng thành lớp, thay hàm bước bằng hàm kích
-            hoạt trơn, dùng gradient descent — bạn có{" "}
+            hoạt trơn, dùng gradient descent. Bạn có{" "}
             <TopicLink slug="mlp">MLP</TopicLink>. Thêm convolution để xử lý ảnh bất biến vị
-            trí — bạn có <TopicLink slug="cnn">CNN</TopicLink>. Mỗi bước là một mở rộng tự
+            trí. Bạn có <TopicLink slug="cnn">CNN</TopicLink>. Mỗi bước là một mở rộng tự
             nhiên từ nền móng này.
           </Callout>
         </div>

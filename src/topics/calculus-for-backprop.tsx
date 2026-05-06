@@ -33,9 +33,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "calculus-for-backprop",
   title: "Calculus for Backpropagation",
-  titleVi: "Giải tích cho lan truyền ngược (backpropagation)",
+  titleVi: "Giải tích cho backpropagation",
   description:
-    "Đạo hàm là câu trả lời cho câu hỏi: thay đổi nhỏ này làm loss thay đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
+    "Đạo hàm trả lời câu hỏi: thay đổi nhỏ này làm loss đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
   category: "math-foundations",
   tags: ["derivatives", "chain-rule", "gradient", "backprop"],
   difficulty: "intermediate",
@@ -44,13 +44,13 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   HOOK: đầu bếp nếm canh — metaphor cho gradient
+   HOOK: đầu bếp nếm canh, metaphor cho gradient
    ──────────────────────────────────────────────────────────── */
 
 const TOTAL_STEPS = 8;
 
 /* ────────────────────────────────────────────────────────────
-   VISUALIZATION 1 — Pipe diagram: x → g(x) → f(g(x))
+   VISUALIZATION 1: Pipe diagram x → g(x) → f(g(x))
    Learner clicks a junction and sees local derivative
    ──────────────────────────────────────────────────────────── */
 
@@ -108,7 +108,7 @@ function computeChain(x: number) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   VISUALIZATION 2 — Two-layer chain walk-through
+   VISUALIZATION 2: Two-layer chain walk-through
    ──────────────────────────────────────────────────────────── */
 
 interface ChainStep {
@@ -120,31 +120,31 @@ interface ChainStep {
 
 const CHAIN_STEPS: ChainStep[] = [
   {
-    title: "Bước 1 — Lớp vào",
+    title: "Bước 1: Lớp vào",
     label: "x → a₁",
     description:
-      "Giá trị đầu vào x chạy qua lớp đầu tiên: a₁ = w₁·x + b₁. Đạo hàm cục bộ của a₁ theo x chính là w₁ — hệ số của lớp này.",
+      "Giá trị đầu vào x chạy qua lớp đầu tiên theo công thức a₁ = w₁·x + b₁. Đạo hàm cục bộ của a₁ theo x chính là w₁, tức là hệ số của lớp này.",
     icon: Activity,
   },
   {
-    title: "Bước 2 — Lớp ẩn",
+    title: "Bước 2: Lớp ẩn",
     label: "a₁ → a₂",
     description:
       "a₁ tiếp tục chạy qua lớp thứ hai: a₂ = w₂·a₁ + b₂. Đạo hàm cục bộ của a₂ theo a₁ là w₂.",
     icon: Layers,
   },
   {
-    title: "Bước 3 — Đầu ra & Loss",
+    title: "Bước 3: Đầu ra và loss",
     label: "a₂ → L",
     description:
-      "Cuối cùng, L đo sai khác giữa a₂ và nhãn đúng y. Đạo hàm cục bộ của L theo a₂ cho biết: nếu a₂ tăng 1, loss thay đổi bao nhiêu.",
+      "Cuối cùng, L đo sai khác giữa a₂ và nhãn đúng y. Đạo hàm cục bộ của L theo a₂ cho biết nếu a₂ tăng 1 thì loss đổi bao nhiêu.",
     icon: Gauge,
   },
   {
-    title: "Bước 4 — Nhân chuỗi",
+    title: "Bước 4: Nhân chuỗi",
     label: "∂L/∂x = ∂L/∂a₂ · ∂a₂/∂a₁ · ∂a₁/∂x",
     description:
-      "Quy tắc chuỗi nói: muốn biết loss thay đổi bao nhiêu khi x thay đổi, hãy NHÂN các đạo hàm cục bộ qua từng lớp. Mỗi lớp đóng góp một số, và tích của chúng là câu trả lời.",
+      "Quy tắc chuỗi nói: muốn biết loss đổi bao nhiêu khi x đổi, hãy NHÂN các đạo hàm cục bộ qua từng lớp. Mỗi lớp đóng góp một số, và tích của chúng là câu trả lời.",
     icon: Link2,
   },
 ];
@@ -165,7 +165,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đạo hàm đo tốc độ thay đổi. dL/dw = -4 nghĩa là theo tương quan tuyến tính hiện tại, tăng w thêm 1 sẽ làm loss giảm 4. Dấu âm = 'tăng w làm giảm loss' → gradient descent sẽ tăng w để loss nhỏ hơn.",
+      "Đạo hàm đo tốc độ thay đổi. dL/dw = -4 nghĩa là theo tương quan tuyến tính hiện tại, tăng w thêm 1 sẽ làm loss giảm 4. Dấu âm cho biết tăng w sẽ làm loss giảm. Vì vậy gradient descent sẽ tăng w để loss nhỏ hơn.",
   },
   {
     question:
@@ -178,20 +178,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Quy tắc chuỗi nhân các đạo hàm cục bộ, trong đó mỗi đạo hàm được tính TẠI điểm tương ứng — f' tại g, g' tại h, h' tại x. Không phải f' tại x.",
+      "Quy tắc chuỗi nhân các đạo hàm cục bộ, trong đó mỗi đạo hàm được tính TẠI điểm tương ứng: f' tại g, g' tại h, h' tại x. Không phải f' tại x.",
   },
   {
     question:
       "Trong mạng nơ-ron 3 lớp, đạo hàm cục bộ mỗi lớp đều bằng 0.5. Chain rule cho biết đạo hàm tổng hợp bằng bao nhiêu?",
     options: [
-      "1.5 — tổng các đạo hàm",
-      "0.5 — vẫn bằng đạo hàm mỗi lớp",
-      "0.125 — tích 0.5 × 0.5 × 0.5",
-      "0 — các đạo hàm triệt tiêu nhau",
+      "1.5, tổng các đạo hàm",
+      "0.5, vẫn bằng đạo hàm mỗi lớp",
+      "0.125, tức tích 0.5 × 0.5 × 0.5",
+      "0, các đạo hàm triệt tiêu nhau",
     ],
     correct: 2,
     explanation:
-      "Chain rule nhân các đạo hàm cục bộ: 0.5³ = 0.125. Đây là lý do mạng sâu dễ gặp 'vanishing gradient' — nhân nhiều số nhỏ hơn 1 làm gradient nhanh chóng tiến về 0.",
+      "Chain rule nhân các đạo hàm cục bộ: 0.5³ = 0.125. Đây là lý do mạng sâu dễ gặp vanishing gradient. Nhân nhiều số nhỏ hơn 1 làm gradient nhanh chóng tiến về 0.",
   },
   {
     type: "fill-blank",
@@ -207,27 +207,27 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Gradient ∇L là gì theo cách hiểu hình học?",
     options: [
-      "Một số đơn — đo độ lớn của loss",
-      "Một vector — mỗi thành phần là đạo hàm riêng của L theo một weight, chỉ hướng loss tăng nhanh nhất",
+      "Một số đơn, đo độ lớn của loss",
+      "Một vector, mỗi thành phần là đạo hàm riêng của L theo một weight, chỉ hướng loss tăng nhanh nhất",
       "Ma trận vuông lưu mọi cặp đạo hàm",
       "Tên khác của learning rate",
     ],
     correct: 1,
     explanation:
-      "Gradient là một vector gom tất cả đạo hàm riêng. Tại mỗi điểm, nó chỉ hướng loss TĂNG nhanh nhất. Đó là lý do ta đi NGƯỢC gradient để loss giảm — công thức update w ← w − η∇L.",
+      "Gradient là một vector gom tất cả đạo hàm riêng. Tại mỗi điểm, nó chỉ hướng loss TĂNG nhanh nhất. Đó là lý do ta đi NGƯỢC gradient để loss giảm. Công thức update là w ← w − η∇L.",
   },
   {
     question:
       "Vì sao chain rule cho phép backprop chạy hiệu quả trên mạng hàng tỉ tham số?",
     options: [
       "Nhờ chain rule, ta có công thức đóng cho mọi gradient",
-      "Mỗi lớp chỉ cần tính đạo hàm cục bộ của mình, rồi nhân với gradient truyền ngược từ lớp sau — không cần tính riêng cho từng weight",
+      "Mỗi lớp chỉ cần tính đạo hàm cục bộ của mình, rồi nhân với gradient truyền ngược từ lớp sau, không cần tính riêng cho từng weight",
       "Chain rule tự động bỏ qua các weight không quan trọng",
       "Chain rule biến đạo hàm thành phép cộng rẻ hơn",
     ],
     correct: 1,
     explanation:
-      "Không có chain rule, để tính gradient của mỗi weight, bạn phải forward pass lại gần như toàn bộ mạng — O(n²). Chain rule biến chi phí thành O(n): một forward + một backward pass, tái sử dụng các đạo hàm cục bộ.",
+      "Không có chain rule, để tính gradient của mỗi weight, bạn phải forward pass lại gần như toàn bộ mạng, chi phí O(n²). Chain rule kéo chi phí xuống O(n): một forward và một backward pass, tái sử dụng các đạo hàm cục bộ.",
   },
 ];
 
@@ -240,7 +240,7 @@ export default function CalculusForBackpropTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK (đầu bếp nếm canh) ━━━ */}
+      {/* ━━━ BƯỚC 1: HOOK (đầu bếp nếm canh) ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Ẩn dụ mở đầu">
         <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-6 space-y-4">
           <div className="flex items-start gap-4">
@@ -253,34 +253,35 @@ export default function CalculusForBackpropTopic() {
               </h3>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Đầu bếp múc một thìa canh, nếm, rồi quyết định: <strong>mặn hơn hay
-                nhạt hơn bao nhiêu</strong>? Nếu quá nhạt một chút, thêm nhúm muối.
-                Nếu quá mặn, đổ thêm nước. Việc &ldquo;bao nhiêu&rdquo; quan trọng
-                không kém việc &ldquo;hướng nào&rdquo; — nêm tay nặng sẽ hỏng nồi canh.
+                nhạt hơn bao nhiêu</strong>? Nếu hơi nhạt, thêm một nhúm muối.
+                Nếu hơi mặn, đổ thêm chút nước. Câu hỏi &ldquo;bao nhiêu&rdquo; quan
+                trọng không kém câu hỏi &ldquo;hướng nào&rdquo;. Nêm tay nặng sẽ
+                hỏng nồi canh.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Đó chính là <strong>đạo hàm</strong>: câu trả lời cho câu hỏi &ldquo;thay
-                đổi nhỏ này làm kết quả thay đổi bao nhiêu?&rdquo; Và{" "}
-                <strong>quy tắc chuỗi</strong> chính là cách đầu bếp truy ngược xem{" "}
-                <em>mỗi bước nấu</em> (thêm muối → đun sôi → rắc hành) đóng góp bao
-                nhiêu vào vị canh cuối cùng.
+                Cái đầu bếp đo bằng tay đó chính là <strong>đạo hàm</strong>: câu
+                trả lời cho câu hỏi &ldquo;thay đổi nhỏ này làm kết quả đổi bao
+                nhiêu?&rdquo;. Còn <strong>quy tắc chuỗi</strong> là cách đầu bếp
+                truy ngược xem <em>mỗi bước nấu</em> (thêm muối → đun sôi → rắc
+                hành) đóng góp bao nhiêu vào vị canh cuối cùng.
               </p>
             </div>
           </div>
 
-          {/* Mini sketch — bowl + spoon + arrow */}
+          {/* Mini sketch: bowl + spoon + arrow */}
           <div className="grid grid-cols-3 gap-3 pt-3">
             <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
               <Soup className="mx-auto h-6 w-6 text-amber-500" />
               <p className="text-[11px] font-semibold text-foreground">Bước nấu</p>
               <p className="text-[10px] text-muted leading-tight">
-                Thêm muối, đun sôi, rắc hành — mỗi bước là một hàm.
+                Thêm muối, đun sôi, rắc hành. Mỗi bước là một hàm.
               </p>
             </div>
             <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
               <Gauge className="mx-auto h-6 w-6 text-sky-500" />
               <p className="text-[11px] font-semibold text-foreground">Nếm vị</p>
               <p className="text-[10px] text-muted leading-tight">
-                So với &ldquo;vị mong muốn&rdquo; — ra một con số: loss.
+                So với &ldquo;vị mong muốn&rdquo; ra một con số gọi là loss.
               </p>
             </div>
             <div className="rounded-xl bg-white/70 dark:bg-white/5 p-3 text-center space-y-1">
@@ -294,37 +295,36 @@ export default function CalculusForBackpropTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
+      {/* ━━━ BƯỚC 2: DISCOVER (PredictionGate) ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn biết chain rule là NHÂN các đạo hàm cục bộ trên đường ống. Đường ống có ba đoạn với đạo hàm cục bộ lần lượt là 2, 3, và 4. Đạo hàm tổng (output theo đầu vào) bằng bao nhiêu?"
           options={[
-            "2 + 3 + 4 = 9 — cộng là đủ",
-            "2 × 3 × 4 = 24 — nhân dọc theo đường ống",
-            "(2 + 3 + 4) / 3 = 3 — lấy trung bình",
+            "2 + 3 + 4 = 9, cộng là đủ",
+            "2 × 3 × 4 = 24, nhân dọc theo đường ống",
+            "(2 + 3 + 4) / 3 = 3, lấy trung bình",
             "Không đủ thông tin để tính",
           ]}
           correct={1}
-          explanation="Chain rule NHÂN, không cộng: mỗi đoạn khuếch đại (hoặc thu nhỏ) thay đổi, nên tác động tổng hợp bằng tích. Nếu mỗi đoạn đạo hàm là 2 thì qua 100 đoạn bạn có 2¹⁰⁰ — bùng nổ gradient. Nếu mỗi đoạn là 0.5 thì qua 100 đoạn còn ~0 — gradient tan biến. Bài sau bạn sẽ thấy chính hai hiện tượng đó trên đường ống tương tác."
+          explanation="Chain rule NHÂN, không cộng. Mỗi đoạn khuếch đại (hoặc thu nhỏ) thay đổi, nên tác động tổng hợp bằng tích. Nếu mỗi đoạn đạo hàm là 2 thì qua 100 đoạn bạn có 2¹⁰⁰, hiện tượng bùng nổ gradient. Nếu mỗi đoạn là 0.5 thì qua 100 đoạn còn xấp xỉ 0, gradient tan biến. Bài sau bạn sẽ thấy chính hai hiện tượng đó trên đường ống tương tác."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
-            Bài này cho bạn nhìn rõ chain rule bằng hình ảnh đường ống — mỗi lớp là
-            một đoạn ống có đạo hàm cục bộ riêng. Và câu hỏi &ldquo;tổng cộng&rdquo; được
-            trả lời bằng cách <strong>nhân</strong> các đạo hàm trên đường ống đó.
+            Bài này cho bạn nhìn rõ chain rule bằng hình ảnh đường ống. Mỗi lớp là
+            một đoạn ống có đạo hàm cục bộ riêng. Và câu hỏi &ldquo;tổng cộng&rdquo;
+            được trả lời bằng cách <strong>nhân</strong> các đạo hàm trên đường ống đó.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — REVEAL (pipe diagram + SliderGroup) ━━━ */}
+      {/* ━━━ BƯỚC 3: REVEAL (pipe diagram + SliderGroup) ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá tương tác">
         <VisualizationSection topicSlug={metadata.slug}>
-          <LessonSection label="Thí nghiệm 1: Đường ống hàm hợp" step={1}>
+          <LessonSection label="Thí nghiệm 1: đường ống hàm hợp" step={1}>
             <p className="text-sm text-muted mb-4 leading-relaxed">
               Dữ liệu <code className="px-1.5 py-0.5 rounded bg-surface">x</code> chảy
               qua ba đoạn ống <em>g → h → f</em>. Mỗi đoạn có một{" "}
-              <strong>đạo hàm cục bộ</strong> — thay đổi nhỏ ở đầu vào của đoạn đó
-              làm đầu ra của đoạn đó thay đổi bao nhiêu. Bấm vào một nút giao để
-              xem chi tiết.
+              <strong>đạo hàm cục bộ</strong>, tức là thay đổi nhỏ ở đầu vào của
+              đoạn đó làm đầu ra đổi bao nhiêu. Bấm vào một nút giao để xem chi tiết.
             </p>
 
             <SliderGroup
@@ -587,12 +587,12 @@ export default function CalculusForBackpropTopic() {
             />
           </LessonSection>
 
-          {/* Thí nghiệm 2: minh hoạ riêng — đạo hàm như độ dốc */}
-          <LessonSection label="Thí nghiệm 2: Đạo hàm là độ dốc" step={2}>
+          {/* Thí nghiệm 2: minh hoạ riêng, đạo hàm như độ dốc */}
+          <LessonSection label="Thí nghiệm 2: đạo hàm là độ dốc" step={2}>
             <p className="text-sm text-muted mb-4 leading-relaxed">
               Kéo thanh để di chuyển điểm trên parabol{" "}
               <code className="px-1.5 py-0.5 rounded bg-surface">L(w) = (w − 3)² + 1</code>
-              . Đường tiếp tuyến màu cam cho biết <strong>độ dốc tại điểm đó</strong> —
+              . Đường tiếp tuyến màu cam cho biết <strong>độ dốc tại điểm đó</strong>,
               đúng bằng giá trị đạo hàm.
             </p>
 
@@ -802,10 +802,10 @@ export default function CalculusForBackpropTopic() {
 
                     <p className="text-xs text-muted italic text-center leading-relaxed">
                       {Math.abs(dL) < 0.2
-                        ? "Gần đáy — độ dốc ≈ 0, ta đang ở cực tiểu."
+                        ? "Gần đáy, độ dốc ≈ 0, ta đang ở cực tiểu."
                         : dL > 0
-                          ? "Độ dốc dương → loss đang tăng về bên phải → cần giảm w."
-                          : "Độ dốc âm → loss đang giảm về bên phải → cần tăng w."}
+                          ? "Độ dốc dương: loss đang tăng về bên phải, cần giảm w."
+                          : "Độ dốc âm: loss đang giảm về bên phải, cần tăng w."}
                     </p>
                   </div>
                 );
@@ -815,8 +815,8 @@ export default function CalculusForBackpropTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — DEEPEN (StepReveal: 2-layer chain walk) ━━━ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu — mạng hai lớp">
+      {/* ━━━ BƯỚC 4: DEEPEN (StepReveal: 2-layer chain walk) ━━━ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu hơn vào mạng hai lớp">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Giờ ta rút gọn mạng nơ-ron thành ba giai đoạn: vào → lớp ẩn → đầu ra → loss.
           Bấm &ldquo;Tiếp tục&rdquo; để thấy từng mảnh đạo hàm cục bộ xuất hiện, rồi
@@ -924,24 +924,24 @@ export default function CalculusForBackpropTopic() {
         {/* AhaMoment after the walk */}
         <div className="mt-6">
           <AhaMoment>
-            <strong>Chain rule không phải phép thuật</strong> — nó chỉ là một cách
-            tổ chức việc cộng hưởng các thay đổi nhỏ. Mỗi lớp chỉ cần biết đạo hàm
+            <strong>Chain rule không phải phép thuật</strong>. Nó chỉ là cách tổ
+            chức việc cộng hưởng các thay đổi nhỏ. Mỗi lớp chỉ cần biết đạo hàm
             cục bộ CỦA RIÊNG NÓ. Sau đó, gradient của toàn mạng được ráp lại bằng
-            phép nhân. Đó là lý do mạng tỉ tham số hôm nay tập luyện được trong giờ,
-            chứ không phải hàng tháng.
+            phép nhân. Nhờ vậy, mạng tỉ tham số hôm nay huấn luyện được trong vài
+            giờ, chứ không phải vài tháng.
           </AhaMoment>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 5: CHALLENGE ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
           question="Cho f(g(x)) với g(x) = 3x và f(g) = g². Áp dụng chain rule, df/dx tại x = 2 bằng bao nhiêu?"
           options={[
-            "6 — đơn giản là f'(x)",
-            "12 — df/dg × dg/dx = 2g × 3 = 2(3·2) × 3",
-            "36 — df/dg × dg/dx = 2g × 3, với g = 6 → 12 × 3",
-            "4 — bằng f(x) tại x = 2",
+            "6, đơn giản là f'(x)",
+            "12, tính theo df/dg × dg/dx = 2g × 3 = 2(3·2) × 3",
+            "36, tính theo df/dg × dg/dx = 2g × 3, với g = 6 ra 12 × 3",
+            "4, bằng f(x) tại x = 2",
           ]}
           correct={2}
           explanation="Chain rule: df/dx = df/dg · dg/dx. Ta có df/dg = 2g và dg/dx = 3. Tại x = 2 thì g = 3·2 = 6, nên df/dg = 2·6 = 12. Kết quả: 12 × 3 = 36. Lỗi thường gặp là nhầm df/dg với df/dx."
@@ -951,23 +951,23 @@ export default function CalculusForBackpropTopic() {
           <InlineChallenge
             question="Trong một mạng 5 lớp, mọi đạo hàm cục bộ đều bằng 0.3. Gradient của loss theo weight ở lớp đầu tiên (tính qua chain rule) có độ lớn bao nhiêu?"
             options={[
-              "1.5 — tổng 0.3 + 0.3 + 0.3 + 0.3 + 0.3",
-              "0.3 — không đổi sau mỗi lớp",
-              "0.00243 — tích 0.3⁵",
-              "0 — gradient luôn triệt tiêu",
+              "1.5, tổng 0.3 + 0.3 + 0.3 + 0.3 + 0.3",
+              "0.3, không đổi sau mỗi lớp",
+              "0.00243, tích 0.3⁵",
+              "0, gradient luôn triệt tiêu",
             ]}
             correct={2}
-            explanation="Chain rule nhân: 0.3⁵ ≈ 0.00243. Đây là 'vanishing gradient' — nhân nhiều số nhỏ hơn 1 làm gradient teo nhỏ rất nhanh, khiến lớp đầu gần như không học được. Giải pháp: ReLU (gradient ≈ 1) và skip connections."
+            explanation="Chain rule nhân: 0.3⁵ ≈ 0.00243. Đây là vanishing gradient. Nhân nhiều số nhỏ hơn 1 làm gradient teo nhỏ rất nhanh, khiến lớp đầu gần như không học được. Giải pháp: ReLU (gradient ≈ 1) và skip connections."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — EXPLAIN (≤3 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 6: EXPLAIN (≤3 LaTeX) ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích toán">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bạn đã thấy bằng hình: mỗi lớp là một &ldquo;đoạn ống&rdquo; có đạo hàm
-            cục bộ. Giờ ta viết lại bằng ba công thức — mỗi công thức đi kèm một câu
+            cục bộ. Giờ ta viết lại bằng ba công thức, mỗi công thức đi kèm một câu
             &ldquo;nó nghĩa là gì bằng tiếng Việt đời thường&rdquo;.
           </p>
 
@@ -1036,11 +1036,11 @@ export default function CalculusForBackpropTopic() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground">
-                  Đạo hàm riêng — một biến mỗi lần
+                  Đạo hàm riêng: một biến mỗi lần
                 </p>
                 <p className="text-xs text-muted">
                   Khi loss L phụ thuộc nhiều weight, ∂L/∂wᵢ chỉ hỏi: &ldquo;giữ các
-                  weight khác yên, đổi riêng wᵢ thì L đổi bao nhiêu?&rdquo;
+                  weight khác yên, đổi riêng wᵢ thì L đổi bao nhiêu?&rdquo;.
                 </p>
               </div>
             </div>
@@ -1052,7 +1052,7 @@ export default function CalculusForBackpropTopic() {
             {/* Mini visual */}
             <div className="rounded-lg bg-card border border-border p-3">
               <svg viewBox="0 0 440 100" className="w-full">
-                <title>Đạo hàm riêng — chỉ lắc thanh wᵢ, giữ các thanh khác yên.</title>
+                <title>Đạo hàm riêng: chỉ lắc thanh wᵢ, giữ các thanh khác yên.</title>
                 {[0, 1, 2, 3, 4].map((i) => {
                   const active = i === 2;
                   const x = 40 + i * 80;
@@ -1126,11 +1126,11 @@ export default function CalculusForBackpropTopic() {
               </div>
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-foreground">
-                  Gradient — gom tất cả đạo hàm riêng thành một vector
+                  Gradient: gom tất cả đạo hàm riêng thành một vector
                 </p>
                 <p className="text-xs text-muted">
                   Mỗi thành phần ứng với một weight. Vector này chỉ hướng loss tăng
-                  nhanh nhất — ta đi NGƯỢC nó.
+                  nhanh nhất, nên ta đi NGƯỢC nó.
                 </p>
               </div>
             </div>
@@ -1139,10 +1139,10 @@ export default function CalculusForBackpropTopic() {
               {"\\nabla L = \\left[ \\frac{\\partial L}{\\partial w_1}, \\frac{\\partial L}{\\partial w_2}, \\ldots, \\frac{\\partial L}{\\partial w_n} \\right]"}
             </LaTeX>
 
-            {/* Mini visual — arrows on a hill */}
+            {/* Mini visual: arrows on a hill */}
             <div className="rounded-lg bg-card border border-border p-3">
               <svg viewBox="0 0 440 120" className="w-full">
-                <title>Gradient tại một điểm — mũi tên chỉ hướng loss tăng mạnh nhất.</title>
+                <title>Gradient tại một điểm: mũi tên chỉ hướng loss tăng mạnh nhất.</title>
                 {/* Elliptical contours */}
                 {[60, 90, 120].map((r, i) => (
                   <ellipse
@@ -1201,9 +1201,10 @@ export default function CalculusForBackpropTopic() {
           </div>
 
           <Callout variant="insight" title="Ba công thức, một câu chuyện">
-            Đạo hàm (một biến) → đạo hàm riêng (nhiều biến, lắc một thanh) → gradient
-            (gom lại thành vector) → quy tắc chuỗi (nhân các gradient cục bộ xuyên
-            qua các lớp). Đây là toàn bộ bộ công cụ toán bạn cần để hiểu{" "}
+            Đạo hàm (một biến) đi tới đạo hàm riêng (nhiều biến, lắc một thanh),
+            rồi tới gradient (gom lại thành vector), cuối cùng là quy tắc chuỗi
+            (nhân các gradient cục bộ xuyên qua các lớp). Đây là toàn bộ bộ công cụ
+            toán bạn cần để hiểu{" "}
             <TopicLink slug="backpropagation">backpropagation</TopicLink>.
           </Callout>
 
@@ -1212,14 +1213,14 @@ export default function CalculusForBackpropTopic() {
               <p>
                 Trực giác: tưởng tượng một chuỗi <strong>tỉ lệ</strong>. Nếu giá vé
                 máy bay đổi 1 đồng làm chi phí chuyến đi đổi 2 đồng, và chi phí
-                chuyến đi đổi 1 đồng làm ngân sách gia đình đổi 1.5 đồng — thì giá
+                chuyến đi đổi 1 đồng làm ngân sách gia đình đổi 1.5 đồng, thì giá
                 vé đổi 1 đồng làm ngân sách đổi 2 × 1.5 = 3 đồng. Các tỉ lệ dọc
                 chuỗi <strong>nhân nhau</strong>, không cộng.
               </p>
               <p>
                 Toán học: khi bạn tiệm cận về giới hạn h → 0 trong định nghĩa đạo
                 hàm, các hạng tử bậc cao bị bỏ qua và chỉ còn lại tích các hệ số
-                tuyến tính — chính là chain rule.
+                tuyến tính. Đó chính là chain rule.
               </p>
             </div>
           </CollapsibleDetail>
@@ -1227,12 +1228,13 @@ export default function CalculusForBackpropTopic() {
           <CollapsibleDetail title="Sao &lsquo;vanishing gradient&rsquo; lại đáng sợ đến vậy?">
             <div className="space-y-2 text-sm leading-relaxed text-muted">
               <p>
-                Sigmoid có đạo hàm tối đa ≈ 0.25. Nhân qua 50 lớp: 0.25⁵⁰ ≈ 10⁻³⁰.
-                Gradient ở lớp đầu gần như bằng 0 → các weight ở lớp đó không được
-                cập nhật → mạng không học được đặc trưng sơ cấp. Đây là lý do{" "}
-                <strong>ReLU</strong> (đạo hàm = 1 khi x &gt; 0) và{" "}
-                <strong>skip connection</strong> (tạo đường tắt cho gradient) được
-                phát minh. Xem thêm ở{" "}
+                Sigmoid có đạo hàm tối đa khoảng 0.25. Nhân qua 50 lớp: 0.25⁵⁰
+                xấp xỉ 10⁻³⁰. Gradient ở lớp đầu gần như bằng 0, kéo theo các weight
+                ở lớp đó không được cập nhật, và mạng không học được đặc trưng sơ
+                cấp. Vì vậy người ta phát minh{" "}
+                <strong>ReLU</strong> (đạo hàm bằng 1 khi x &gt; 0) và{" "}
+                <strong>skip connection</strong> (tạo đường tắt cho gradient). Xem
+                thêm ở{" "}
                 <TopicLink slug="backpropagation">backpropagation</TopicLink>.
               </p>
             </div>
@@ -1240,28 +1242,28 @@ export default function CalculusForBackpropTopic() {
 
           <p className="leading-relaxed mt-4">
             Công cụ đã đủ. Bước kế tiếp là ráp chúng lại thành một thuật toán huấn
-            luyện hoàn chỉnh — xem{" "}
-            <TopicLink slug="gradient-intuition">Gradient — mũi tên chỉ đường xuống dốc</TopicLink>{" "}
+            luyện hoàn chỉnh. Xem{" "}
+            <TopicLink slug="gradient-intuition">Gradient: mũi tên chỉ đường xuống dốc</TopicLink>{" "}
             để thấy gradient descent hoạt động trên một mặt 2D có thể tương tác.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — CONNECT (summary + redirect) ━━━ */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt & Liên kết">
+      {/* ━━━ BƯỚC 7: CONNECT (summary + redirect) ━━━ */}
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt và liên kết">
         <MiniSummary
           title="Bốn ý bạn mang về"
           points={[
-            "Đạo hàm trả lời: 'thay đổi nhỏ này làm kết quả thay đổi bao nhiêu'. Trong ML, đó là dL/dw.",
+            "Đạo hàm trả lời: 'thay đổi nhỏ này làm kết quả đổi bao nhiêu'. Trong ML, đó là dL/dw.",
             "Đạo hàm riêng giữ mọi biến khác yên, chỉ lắc một biến. Gradient là vector gom mọi đạo hàm riêng lại.",
-            "Quy tắc chuỗi nhân các đạo hàm cục bộ xuyên qua mạng — là nền tảng của backpropagation.",
+            "Quy tắc chuỗi nhân các đạo hàm cục bộ xuyên qua mạng. Đó là nền tảng của backpropagation.",
             "Mỗi lớp chỉ cần biết đạo hàm cục bộ của mình. Backprop ráp các mảnh lại bằng phép nhân, không cần thần thánh.",
           ]}
         />
 
         <div className="mt-5">
           <Callout variant="tip" title="Xem ứng dụng thực tế">
-            Toán này không chỉ là lý thuyết — Meta dùng đúng những công thức trên
+            Toán này không chỉ là lý thuyết. Meta dùng đúng những công thức trên
             để huấn luyện LLaMA 3.1 với 405 tỉ tham số. Xem cách làm ở{" "}
             <TopicLink slug="calculus-for-backprop-in-model-training">
               Giải tích trong huấn luyện mô hình
@@ -1271,7 +1273,7 @@ export default function CalculusForBackpropTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
         <div className="mt-6 flex items-center justify-center text-xs text-muted gap-2">

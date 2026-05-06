@@ -42,9 +42,9 @@ type SliderConfig = {
 export const metadata: TopicMeta = {
   slug: "linear-regression-in-housing",
   title: "Linear Regression in Housing Valuation",
-  titleVi: "Hồi quy tuyến tính trong giá nhà",
+  titleVi: "Linear regression đoán giá nhà tại TP.HCM và Hà Nội",
   description:
-    "Hà Nội và TP.HCM: căn hộ 80m² ở TP Thủ Đức giá bao nhiêu? Kéo các thanh diện tích, số phòng, quận và xem công thức hồi quy tuyến tính ước giá trực tiếp.",
+    "Căn hộ 80m² tại Quận 2 giá bao nhiêu? Kéo thanh diện tích, số phòng, chọn quận, công thức linear regression cho ra con số trực tiếp như Batdongsan vẫn làm.",
   category: "classic-ml",
   tags: ["regression", "real-estate", "application"],
   difficulty: "beginner",
@@ -80,7 +80,7 @@ export const metadata: TopicMeta = {
       kind: "documentation",
     },
     {
-      title: "Meey Land — nền tảng ước giá bất động sản tại Việt Nam",
+      title: "Meey Land. Nền tảng ước giá bất động sản tại Việt Nam",
       publisher: "Meey Group",
       url: "https://meeyland.com/",
       date: "2024-01",
@@ -88,17 +88,17 @@ export const metadata: TopicMeta = {
     },
   ],
   tocSections: [
-    { id: "hero", labelVi: "Công ty nào?" },
-    { id: "problem", labelVi: "Vấn đề" },
-    { id: "mechanism", labelVi: "Cách giải quyết" },
-    { id: "tryIt", labelVi: "Thử tự tay" },
-    { id: "metrics", labelVi: "Con số thật" },
+    { id: "hero", labelVi: "Ai đang dùng?" },
+    { id: "problem", labelVi: "Bài toán" },
+    { id: "mechanism", labelVi: "Cách máy đoán giá" },
+    { id: "tryIt", labelVi: "Tự tay đoán giá" },
+    { id: "metrics", labelVi: "Con số thị trường" },
     { id: "counterfactual", labelVi: "Nếu không có" },
   ],
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   DỮ LIỆU — Các quận Hà Nội và TP.HCM với &ldquo;hệ số vị trí&rdquo;
+   DỮ LIỆU. Các quận Hà Nội và TP.HCM với &ldquo;hệ số vị trí&rdquo;
    Đây là con số minh hoạ, không phải giá thị trường thật.
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -113,42 +113,42 @@ type District = {
 const housingQuizQuestions: QuizQuestion[] = [
   {
     question:
-      "Batdongsan.com.vn ước giá căn hộ 80m², 2 phòng ngủ, 5 tuổi ở Quận 2 khoảng 6,5 tỷ. Con số đó đến từ đâu?",
+      "Batdongsan.com.vn ước giá một căn hộ 80m², 2 phòng ngủ, 5 năm tuổi ở Quận 2 khoảng 6,5 tỷ. Con số đó đến từ đâu?",
     options: [
       "Một chuyên viên môi giới ngồi xem từng tin",
-      "Công thức hồi quy tuyến tính học từ hàng chục nghìn giao dịch thực tế — máy thay các đặc điểm của căn vào công thức",
+      "Công thức linear regression học từ hàng chục nghìn giao dịch thực, máy thay đặc điểm của căn vào công thức rồi cho ra giá",
       "Giá trung bình của toàn TP.HCM",
-      "Do hệ thống sinh ngẫu nhiên trong khoảng 5–10 tỷ",
+      "Hệ thống sinh ngẫu nhiên trong khoảng 5–10 tỷ",
     ],
     correct: 1,
     explanation:
-      "Các nền tảng như Batdongsan, Meey Land đều dùng mô hình hồi quy. Máy học công thức từ giao dịch đã xảy ra, sau đó thay số của căn mới vào để ra giá. Nhanh, minh bạch, có thể giải thích.",
+      "Batdongsan, Meey Land và nhiều nền tảng tương tự đều dựa trên mô hình hồi quy. Máy học công thức từ những giao dịch đã hoàn tất, sau đó thay số của căn mới vào để ra giá. Nhanh, minh bạch, có thể giải thích từng phần.",
   },
   {
     question:
-      "Một mô hình hồi quy giá nhà cho ra hệ số 0.08 cho biến 'diện tích' (đơn vị tỷ/m²). Ý nghĩa thực tế là gì?",
+      "Một mô hình hồi quy giá nhà cho ra hệ số 0.08 cho biến diện tích (đơn vị tỷ/m²). Ý nghĩa thực tế là gì?",
     options: [
       "Căn nào cũng đắt 0.08 tỷ",
-      "Khi diện tích tăng 1m² (giữ nguyên các biến khác), giá ước tính tăng khoảng 80 triệu",
+      "Khi diện tích tăng 1m² và giữ nguyên các biến khác, giá ước tính tăng khoảng 80 triệu",
       "Căn có 0.08 m² thì miễn phí",
       "Không diễn giải được",
     ],
     correct: 1,
     explanation:
-      "Hệ số trong hồi quy có ý nghĩa rất cụ thể: 'x tăng 1 đơn vị → y tăng bao nhiêu, các biến khác giữ nguyên'. Đây là lý do hồi quy tuyến tính được ưa chuộng — hệ số dễ giải thích với khách, với sếp, với cơ quan quản lý.",
+      "Hệ số trong hồi quy có ý nghĩa rất cụ thể: x tăng 1 đơn vị thì y tăng bao nhiêu, các biến khác giữ nguyên. Đó là lý do linear regression được ưa chuộng. Hệ số dễ giải thích với khách, với sếp, với cơ quan quản lý.",
   },
   {
     question:
-      "Bạn dùng mô hình giá nhà học trên căn 30–200m² để ước giá một biệt thự 800m². Nên tin con số mô hình đưa ra không?",
+      "Bạn dùng mô hình giá nhà học trên căn 30–200m² để ước giá một biệt thự 800m². Có nên tin con số mô hình đưa ra không?",
     options: [
       "Có, vì máy luôn đúng",
-      "Không — đây là ngoại suy (extrapolation) ra khỏi khoảng dữ liệu đã học, kết quả không đáng tin cậy",
+      "Không. Đây là extrapolation, tức là dự đoán ra ngoài khoảng dữ liệu đã học, kết quả không đáng tin cậy",
       "Có, vì biệt thự gì cũng như nhau",
       "Có nếu cộng thêm 10%",
     ],
     correct: 1,
     explanation:
-      "Hồi quy chỉ đáng tin trong khoảng dữ liệu đã huấn luyện. Ngoại suy (dự đoán ra ngoài khoảng đó) rất nguy hiểm vì quan hệ có thể không còn tuyến tính. Luôn kiểm tra 'ca mới có giống tập huấn luyện không'.",
+      "Hồi quy chỉ đáng tin trong khoảng dữ liệu đã huấn luyện. Ra ngoài khoảng đó (extrapolation) rất nguy hiểm vì quan hệ có thể không còn tuyến tính. Luôn kiểm tra: ca mới có giống tập huấn luyện không?",
   },
   {
     type: "fill-blank",
@@ -159,20 +159,20 @@ const housingQuizQuestions: QuizQuestion[] = [
       { answer: "điểm chặn", accept: ["intercept", "b", "w0", "w_0", "bias", "chặn"] },
     ],
     explanation:
-      "Công thức hồi quy nhiều biến luôn có một điểm chặn (intercept) — giá trị cơ sở không phụ thuộc đặc trưng nào. Trong thực tế, điểm chặn thường phản ánh các chi phí cố định chung cho thị trường.",
+      "Công thức hồi quy nhiều biến luôn có một điểm chặn (intercept). Đó là giá trị cơ sở không phụ thuộc đặc trưng nào. Trong thực tế, điểm chặn thường phản ánh các chi phí cố định chung cho cả thị trường.",
   },
   {
     question:
-      "Mô hình khớp 100% trên 150 giao dịch đã có, nhưng khi dự đoán 30 giao dịch mới, sai số trung bình 35%. Đây là vấn đề gì?",
+      "Mô hình khớp 100% trên 150 giao dịch đã có, nhưng khi dự đoán 30 giao dịch mới thì sai số trung bình lên tới 35%. Đây là vấn đề gì?",
     options: [
       "Mô hình quá đơn giản",
-      "Overfitting — mô hình đã 'thuộc lòng' tập huấn luyện nhưng không nắm quy luật chung",
+      "Overfitting. Mô hình đã thuộc lòng tập huấn luyện nhưng không nắm được quy luật chung",
       "Dữ liệu mới bị lỗi",
       "Hồi quy tuyến tính luôn vậy",
     ],
     correct: 1,
     explanation:
-      "Khớp hoàn hảo train nhưng tệ test là dấu hiệu overfitting. Thường xảy ra khi có quá nhiều biến so với số mẫu. Giải pháp: thêm dữ liệu, bỏ biến rác, dùng regularization (Ridge, Lasso).",
+      "Khớp hoàn hảo trên tập train nhưng tệ trên tập test là dấu hiệu kinh điển của overfitting. Thường xảy ra khi có quá nhiều biến so với số mẫu. Giải pháp: thêm dữ liệu, bỏ biến rác, hoặc dùng regularization (Ridge, Lasso).",
   },
 ];
 
@@ -219,7 +219,7 @@ function predictPrice(
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   DỮ LIỆU SCATTER — 20 giao dịch &ldquo;thực&rdquo; cho Quận 2
+   DỮ LIỆU SCATTER. 20 giao dịch &ldquo;thực&rdquo; cho Quận 2
    (minh hoạ, không phải số thật từ thị trường)
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -287,8 +287,8 @@ function HousePricePredictor() {
   return (
     <div className="space-y-5">
       <p className="text-sm text-muted leading-relaxed">
-        Hãy chơi vai một nhân viên định giá nhà của Batdongsan.com.vn. Chọn quận bạn quan tâm, kéo
-        các thanh đặc điểm, và xem công thức hồi quy tuyến tính cho ra con số.
+        Hãy đóng vai một nhân viên định giá nhà của Batdongsan.com.vn. Chọn quận bạn quan tâm, kéo
+        các thanh đặc điểm, và xem công thức linear regression cho ra con số.
       </p>
 
       {/* Chọn quận */}
@@ -367,14 +367,14 @@ function HousePricePredictor() {
                     transition={{ type: "spring", stiffness: 240, damping: 20 }}
                     className="rounded-xl border-2 border-amber-400 bg-amber-50 dark:bg-amber-900/20 p-4"
                   >
-                    <div className="text-[10px] uppercase tracking-wide text-amber-700 dark:text-amber-300 font-semibold mb-1">
+                    <div className="text-[10px] uppercase tracking-wide text-foreground font-semibold mb-1">
                       Giá ước tính
                     </div>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-mono font-bold text-amber-700 dark:text-amber-300 tabular-nums">
+                      <span className="text-3xl font-mono font-bold text-foreground tabular-nums">
                         {price.toFixed(2)}
                       </span>
-                      <span className="text-sm text-amber-700 dark:text-amber-300 font-semibold">
+                      <span className="text-sm text-foreground font-semibold">
                         tỷ VNĐ
                       </span>
                     </div>
@@ -417,9 +417,9 @@ function HousePricePredictor() {
       />
 
       <Callout variant="tip" title="Hệ số vị trí nói lên điều gì?">
-        Mỗi quận có một &ldquo;hệ số vị trí&rdquo; riêng (số góc trên thẻ ở trên). Hoàn Kiếm 250
+        Mỗi quận có một &ldquo;hệ số vị trí&rdquo; riêng (số nhỏ ở góc thẻ phía trên). Hoàn Kiếm 250
         cao gấp hơn năm lần Bình Chánh 45, vì thế cùng một căn 80m² ở hai nơi có giá rất khác nhau.
-        Đây là cách hồi quy tuyến tính &ldquo;mã hoá&rdquo; vị trí bằng một con số dễ nhân chia.
+        Đó là cách linear regression mã hoá vị trí thành một con số dễ nhân chia.
       </Callout>
     </div>
   );
@@ -452,7 +452,7 @@ function HouseIllustration({
   bedrooms: number;
   age: number;
 }) {
-  // Kích thước minh hoạ co giãn theo diện tích — nhìn thấy thấy được nhỏ/to
+  // Kích thước minh hoạ co giãn theo diện tích, nhìn vào thấy nhà nhỏ hay to
   const scale = Math.max(0.55, Math.min(1.1, area / 110));
   const floors = Math.min(4, Math.ceil(bedrooms / 1.5));
   const windows = Math.max(2, bedrooms + 1);
@@ -531,8 +531,8 @@ function Q2ScatterPlot() {
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted leading-relaxed">
-        Dữ liệu giao dịch minh hoạ tại Quận 2 (TP Thủ Đức): 20 căn hộ đã bán. Đường xanh là đường
-        hồi quy tuyến tính đi qua đám điểm đó. Bấm một chấm để xem <em>sai số</em> (residual) —
+        Dữ liệu giao dịch minh hoạ tại Quận 2 (TP Thủ Đức) gồm 20 căn hộ đã bán. Đường xanh là
+        đường linear regression đi qua đám điểm. Bấm một chấm để xem <em>sai số</em> (residual),
         chênh lệch giữa giá thực và giá mô hình dự đoán.
       </p>
 
@@ -650,8 +650,8 @@ function Q2ScatterPlot() {
             className="rounded-lg border-2 border-amber-400 bg-amber-50 dark:bg-amber-900/20 p-4 space-y-2"
           >
             <div className="flex items-center gap-2 mb-1">
-              <Target size={14} className="text-amber-700 dark:text-amber-300" />
-              <span className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+              <Target size={14} className="text-amber-600 dark:text-amber-400" />
+              <span className="text-sm font-semibold text-foreground">
                 Giao dịch #{selectedSale.id}
               </span>
             </div>
@@ -675,33 +675,27 @@ function Q2ScatterPlot() {
             </div>
             <div className="pt-2 border-t border-amber-300 dark:border-amber-700 grid grid-cols-2 gap-3 text-xs">
               <div>
-                <div className="text-[10px] uppercase tracking-wide text-emerald-700 dark:text-emerald-400 font-semibold">
+                <div className="text-[10px] uppercase tracking-wide text-foreground font-semibold">
                   Mô hình dự đoán
                 </div>
-                <div className="font-mono text-emerald-700 dark:text-emerald-300 tabular-nums">
+                <div className="font-mono text-foreground tabular-nums">
                   {lineAt(selectedSale.area).toFixed(2)} tỷ
                 </div>
               </div>
               <div>
-                <div className="text-[10px] uppercase tracking-wide text-amber-700 dark:text-amber-400 font-semibold">
+                <div className="text-[10px] uppercase tracking-wide text-foreground font-semibold">
                   Sai số (residual)
                 </div>
-                <div
-                  className={`font-mono tabular-nums font-bold ${
-                    residual > 0
-                      ? "text-emerald-700 dark:text-emerald-300"
-                      : "text-rose-600"
-                  }`}
-                >
+                <div className="font-mono tabular-nums font-bold text-foreground">
                   {residual > 0 ? "+" : ""}
                   {residual.toFixed(2)} tỷ
                 </div>
               </div>
             </div>
-            <p className="text-xs text-foreground/80 leading-relaxed pt-1">
+            <p className="text-xs text-foreground leading-relaxed pt-1">
               {residual > 0
-                ? "Giá thực cao hơn mô hình đoán — có thể căn này ở vị trí đẹp hơn, nội thất xịn hơn, hoặc chủ đang muốn bán gấp."
-                : "Giá thực thấp hơn mô hình đoán — có thể căn bị cũ hơn mô hình biết, hoặc đang có đợt khuyến mãi."}
+                ? "Giá thực cao hơn mô hình đoán. Có thể căn này ở vị trí đẹp hơn, nội thất xịn hơn, hoặc chủ đang muốn bán gấp."
+                : "Giá thực thấp hơn mô hình đoán. Có thể căn cũ hơn mô hình biết, hoặc đang có đợt khuyến mãi."}
             </p>
           </motion.div>
         ) : (
@@ -735,26 +729,26 @@ export default function LinearRegressionInHousing() {
       >
         <p>
           Bạn đang tìm căn hộ đầu tiên. Mở Batdongsan.com.vn, gõ &ldquo;Quận 2, 80m², 2 phòng
-          ngủ&rdquo; — ngay lập tức thấy một con số: 6,5 tỷ &plusmn; 8%. Con số đó không phải cảm
-          tính, cũng không phải do một chuyên gia môi giới nhập tay.
+          ngủ&rdquo;. Ngay lập tức màn hình hiện một con số: 6,5 tỷ &plusmn; 8%. Con số đó không
+          đến từ cảm tính, cũng không phải do một chuyên viên môi giới nhập tay.
         </p>
         <p>
-          Đằng sau là một công thức hồi quy tuyến tính &mdash; &ldquo;giá = a×diện tích + b×số phòng
-          + c×hệ số vị trí &minus; d×tuổi nhà + ...&rdquo; &mdash; được máy học từ hàng trăm nghìn
-          giao dịch thực tế. Khi bạn gõ đặc điểm, máy thay số vào công thức và ra giá trong tích
-          tắc.
+          Đằng sau là một công thức linear regression dạng &ldquo;giá = a×diện tích + b×số phòng
+          + c×hệ số vị trí &minus; d×tuổi nhà + ...&rdquo;, được máy học từ hàng trăm nghìn giao
+          dịch thực. Khi bạn gõ đặc điểm, máy thay số vào công thức và trả ra giá trong tích tắc.
         </p>
       </ApplicationHero>
 
       <ApplicationProblem topicSlug="linear-regression-in-housing">
         <p>
-          Thị trường nhà tại TP.HCM và Hà Nội có hàng triệu giao dịch mỗi năm, mỗi căn khác nhau
-          về diện tích, vị trí, tuổi, số phòng, hướng, tầng, v.v. Trước đây, muốn ước giá phải
-          nhờ một nhân viên môi giới địa phương &mdash; tốn thời gian, giá khác nhau tuỳ người.
+          Thị trường nhà tại TP.HCM và Hà Nội có hàng triệu giao dịch mỗi năm. Mỗi căn lại khác
+          nhau về diện tích, vị trí, tuổi, số phòng, hướng, tầng. Trước đây muốn ước giá phải nhờ
+          một chuyên viên môi giới địa phương: tốn thời gian, mỗi người báo một mức.
         </p>
         <p>
-          Vấn đề cốt lõi: làm sao từ hàng chục nghìn giao dịch đã hoàn tất, xây một công thức{" "}
-          <strong>tự động, minh bạch, và nhanh</strong> để định giá bất kỳ căn nào chưa từng bán?
+          Bài toán cốt lõi là: từ hàng chục nghìn giao dịch đã hoàn tất, làm sao xây một công
+          thức <strong>tự động, minh bạch, và nhanh</strong> để định giá bất kỳ căn nào chưa
+          từng bán?
         </p>
       </ApplicationProblem>
 
@@ -764,39 +758,41 @@ export default function LinearRegressionInHousing() {
       >
         <Beat step={1}>
           <p>
-            <strong>Thu thập giao dịch.</strong> Các nền tảng như Batdongsan, Meey Land thu dữ
-            liệu từ tin đăng đã bán, hồ sơ công chứng, và mạng lưới môi giới. Mỗi bản ghi gồm giá
-            bán thực tế kèm nhiều đặc trưng: diện tích, số phòng, tuổi nhà, hướng, tầng, đường vào.
+            <strong>Thu thập giao dịch.</strong> Batdongsan, Meey Land và các nền tảng tương tự
+            gom dữ liệu từ tin đăng đã bán, hồ sơ công chứng, và mạng lưới môi giới. Mỗi bản ghi
+            gồm giá bán thực tế kèm nhiều feature: diện tích, số phòng, tuổi nhà, hướng, tầng,
+            đường vào.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>Chuẩn bị đặc trưng (feature engineering).</strong> &ldquo;Vị trí&rdquo; là chữ,
-            mà máy chỉ hiểu số. Nên mỗi quận được biểu diễn bằng một con số &mdash; ví dụ Hoàn Kiếm
-            250, Bình Chánh 45. Số này được tính từ trung bình giá bán đã biết ở từng quận. Đây là
-            bước quyết định độ chính xác nhất.
+            <strong>Chuẩn bị feature (feature engineering).</strong> &ldquo;Vị trí&rdquo; là chữ,
+            mà máy chỉ hiểu số. Vì vậy mỗi quận được biểu diễn bằng một con số. Hoàn Kiếm 250,
+            Bình Chánh 45. Con số đó được tính từ trung bình giá bán đã biết ở từng quận. Đây
+            là bước quyết định độ chính xác nhất của cả hệ thống.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>Fit công thức hồi quy tuyến tính.</strong> Máy tìm đường thẳng (hoặc siêu
-            phẳng khi có nhiều biến) sao cho &ldquo;giá dự đoán&rdquo; gần nhất với &ldquo;giá bán
-            thực tế&rdquo; trong tập dữ liệu. Kết quả là một công thức dạng &ldquo;giá = a × diện
-            tích + b × số phòng + c × hệ số quận &minus; d × tuổi nhà + ...&rdquo;.
+            <strong>Fit công thức linear regression.</strong> Máy tìm đường thẳng (hoặc siêu
+            phẳng khi có nhiều biến) sao cho giá dự đoán gần nhất với giá bán thực tế trong tập
+            dữ liệu. Kết quả là một công thức dạng &ldquo;giá = a × diện tích + b × số phòng
+            + c × hệ số quận &minus; d × tuổi nhà + ...&rdquo;.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
             <strong>Ước giá cho căn chưa từng bán.</strong> Khi bạn gõ một căn mới, máy thay số
-            vào công thức vừa học, ra giá và kèm biên độ sai số. Vì công thức minh bạch, người
-            dùng thấy được &ldquo;giá cao vì diện tích lớn&rdquo; hay &ldquo;giá thấp vì nhà cũ&rdquo;.
+            vào công thức vừa học, trả ra giá kèm biên độ sai số. Vì công thức minh bạch, người
+            dùng thấy được vì sao &ldquo;giá cao do diện tích lớn&rdquo; hay &ldquo;giá thấp do
+            nhà cũ&rdquo;.
           </p>
         </Beat>
         <Beat step={5}>
           <p>
-            <strong>Cập nhật liên tục.</strong> Mỗi tháng có hàng nghìn giao dịch mới. Máy huấn
-            luyện lại công thức, các hệ số đổi theo thị trường. Khi hạ tầng tuyến metro mở, hệ số
-            vị trí quận mới đó tự tăng.
+            <strong>Cập nhật liên tục.</strong> Mỗi tháng có hàng nghìn giao dịch mới. Máy
+            huấn luyện lại công thức, các hệ số đổi theo thị trường. Khi một tuyến metro mở,
+            hệ số vị trí của quận đó tự tăng theo dữ liệu mới.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -817,14 +813,14 @@ export default function LinearRegressionInHousing() {
           <section className="space-y-3">
             <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Activity size={18} className="text-accent" />
-              20 giao dịch thật quanh bạn &mdash; đường thẳng của mô hình
+              20 giao dịch thật và đường thẳng mô hình vẽ qua chúng
             </h3>
             <Q2ScatterPlot />
             <Callout variant="info" title="Sai số nói lên điều gì?">
-              Khi bạn thấy một điểm <em>cao hơn</em> đường thẳng, nghĩa là giá thực cao hơn mô
-              hình dự đoán &mdash; có thể căn đó có đặc điểm mô hình chưa biết (view đẹp, tầng cao,
-              hướng Đông Nam). Ngược lại, điểm <em>dưới</em> đường thường là căn bị cũ, đường hẹp,
-              hay chủ muốn bán gấp.
+              Khi bạn thấy một điểm <em>cao hơn</em> đường thẳng, giá thực cao hơn giá mô hình
+              đoán. Có thể căn đó mang đặc điểm mô hình chưa biết: view đẹp, tầng cao, hướng Đông
+              Nam. Ngược lại, một điểm <em>dưới</em> đường thường là căn cũ, đường vào hẹp, hay
+              chủ muốn bán gấp.
             </Callout>
           </section>
 
@@ -836,73 +832,73 @@ export default function LinearRegressionInHousing() {
             </h3>
 
             <InlineChallenge
-              question="Đội dữ liệu của bạn fit hồi quy chỉ với 2 biến: diện tích và số phòng. Nhưng họ có 30 đặc trưng khác (hướng, tầng, đường vào, view, pháp lý…) mà KHÔNG đưa vào mô hình. Nguy cơ lớn nhất là gì?"
+              question="Đội dữ liệu của bạn fit hồi quy chỉ với 2 biến: diện tích và số phòng. Nhưng còn 30 feature khác (hướng, tầng, đường vào, view, pháp lý…) mà KHÔNG được đưa vào mô hình. Nguy cơ lớn nhất là gì?"
               options={[
                 "Mô hình sẽ rất nhanh vì ít biến",
-                "Mô hình sẽ 'gán' toàn bộ ảnh hưởng của các biến bỏ sót vào hai biến còn lại — hệ số bị lệch, dự đoán sai có hệ thống",
+                "Mô hình gán toàn bộ ảnh hưởng của các biến bỏ sót vào hai biến còn lại. Hệ số bị lệch, dự đoán sai có hệ thống",
                 "Mô hình không chạy được",
                 "Độ chính xác tăng vì ít biến thì ít nhiễu",
               ]}
               correct={1}
-              explanation="Hiện tượng gọi là 'omitted variable bias' — khi bạn bỏ biến quan trọng, ảnh hưởng của chúng bị dồn vào các biến còn lại. Ví dụ: bỏ 'hướng', thì hệ số 'diện tích' có thể bị phồng lên nếu những căn lớn hay nằm hướng đẹp. Kết quả: công thức trông có lý nhưng ước giá sai với những căn có hướng xấu."
+              explanation="Hiện tượng đó gọi là omitted variable bias. Khi bạn bỏ biến quan trọng, ảnh hưởng của chúng bị dồn vào các biến còn lại. Ví dụ: bỏ biến hướng nhà, hệ số diện tích có thể phồng lên nếu các căn lớn hay nằm hướng đẹp. Kết quả là công thức trông có lý nhưng ước giá sai với những căn hướng xấu."
             />
 
             <div className="mt-4">
               <InlineChallenge
-                question="Một mô hình dự đoán giá nhà khớp 100% trên 200 giao dịch huấn luyện. Khi đem dự đoán 50 căn mới, sai số trung bình 30%. Vì sao?"
+                question="Một mô hình dự đoán giá nhà khớp 100% trên 200 giao dịch huấn luyện. Khi đem dự đoán 50 căn mới thì sai số trung bình 30%. Vì sao?"
                 options={[
                   "Mô hình quá đơn giản",
-                  "Mô hình quá phức tạp so với dữ liệu (overfit) — nó học thuộc từng giao dịch mà không nắm được quy luật chung",
+                  "Mô hình quá phức tạp so với dữ liệu (overfit). Nó học thuộc từng giao dịch mà không nắm được quy luật chung",
                   "Dữ liệu 50 căn mới bị lỗi",
                   "Hồi quy tuyến tính không bao giờ đúng",
                 ]}
                 correct={1}
-                explanation="Mô hình khớp 100% train nhưng sai nhiều trên test là dấu hiệu kinh điển của overfitting. Thường xảy ra khi có quá nhiều biến so với số mẫu, hoặc dùng mô hình quá phức tạp. Giải pháp: thêm dữ liệu, bớt biến rác, hoặc thêm regularization."
+                explanation="Mô hình khớp 100% trên train nhưng sai nhiều trên test là dấu hiệu kinh điển của overfitting. Thường xảy ra khi có quá nhiều biến so với số mẫu, hoặc dùng mô hình quá phức tạp. Giải pháp: thêm dữ liệu, bớt biến rác, hoặc thêm regularization."
               />
             </div>
 
             <div className="mt-4">
               <InlineChallenge
-                question="Khách hỏi: 'Căn 400m² của tôi ở biệt thự ngoại thành nên bao nhiêu?' Mô hình trả lời 18 tỷ. Bạn có nên tin?"
+                question="Khách hỏi: 'Căn 400m² biệt thự ngoại thành của tôi nên bao nhiêu?'. Mô hình trả lời 18 tỷ. Bạn có nên tin?"
                 options={[
                   "Có, vì mô hình đã học từ triệu giao dịch",
-                  "Không chắc — mô hình được huấn luyện chủ yếu trên căn 30–200m² ở quận trung tâm, 400m² biệt thự ngoại thành nằm NGOÀI khoảng dữ liệu. Kết quả rất không đáng tin",
+                  "Không chắc. Mô hình huấn luyện chủ yếu trên căn 30–200m² ở quận trung tâm, một căn 400m² ngoại thành nằm NGOÀI khoảng dữ liệu. Kết quả rất khó tin",
                   "Có, hồi quy tuyến tính luôn đúng",
                   "Không, mô hình chỉ biết HCM",
                 ]}
                 correct={1}
-                explanation="Đây là hiện tượng 'extrapolation' (ngoại suy). Mô hình chỉ chạy tốt trong khoảng dữ liệu đã thấy. Vượt ra ngoài khoảng đó, công thức tuyến tính có thể nội suy ra các số vô lý. Luôn kiểm tra xem ca mới có 'giống' tập huấn luyện không trước khi tin con số."
+                explanation="Đây là hiện tượng extrapolation (dự đoán ra ngoài khoảng dữ liệu đã học). Mô hình chỉ chạy tốt trong khoảng đã thấy. Vượt khỏi đó, công thức tuyến tính có thể trả ra các số vô lý. Luôn kiểm tra ca mới có giống tập huấn luyện không trước khi tin con số."
               />
             </div>
           </section>
 
           <Callout variant="warning" title="Hạn chế của phương pháp">
-            Hồi quy tuyến tính không biết về các biến quan trọng mà bạn chưa cho vào: view, hướng,
-            pháp lý, khu tiện ích... Nó cũng giả định mọi quan hệ đều là đường thẳng &mdash; trên
-            thực tế giá có thể tăng theo bậc thang (mỗi 20m² thêm một mức), hoặc cong theo tuổi
-            nhà. Khi thấy hệ số kỳ lạ, hãy hỏi: &ldquo;mình có thiếu biến nào không?&rdquo;.
+            Linear regression không biết về các biến quan trọng mà bạn chưa cho vào: view, hướng,
+            pháp lý, khu tiện ích. Nó cũng giả định mọi quan hệ đều là đường thẳng. Trong thực tế,
+            giá có thể tăng theo bậc thang (mỗi 20m² thêm một mức), hoặc cong theo tuổi nhà. Khi
+            thấy hệ số kỳ lạ, hãy tự hỏi: mình có thiếu biến nào không?
           </Callout>
 
           <MiniSummary
-            title="Batdongsan &amp; các nền tảng dùng hồi quy tuyến tính như thế nào?"
+            title="Batdongsan và các nền tảng dùng linear regression như thế nào?"
             points={[
               "Mỗi quận được mã hoá thành một con số (hệ số vị trí) dựa trên giá trung bình đã biết.",
               "Công thức: giá ≈ a·diện tích + b·phòng + c·hệ số vị trí − d·tuổi nhà + điểm chặn.",
               "Máy tự tìm a, b, c, d từ hàng chục nghìn giao dịch thực bằng phương pháp bình phương tối thiểu.",
-              "Mỗi hệ số dễ giải thích cho khách: 'tăng diện tích 10m² tại Quận 2 thêm khoảng 810 triệu'.",
-              "Vẫn cần kiểm tra sai số và không ngoại suy ra khỏi khoảng dữ liệu đã huấn luyện.",
+              "Mỗi hệ số dễ giải thích cho khách: tăng diện tích 10m² tại Quận 2 thêm khoảng 810 triệu.",
+              "Vẫn cần kiểm tra sai số và không dự đoán ra ngoài khoảng dữ liệu đã huấn luyện.",
             ]}
           />
 
           <p className="text-sm text-muted leading-relaxed">
             Chưa rõ cơ chế bên trong?{" "}
             <TopicLink slug="linear-regression">
-              Quay lại bài lý thuyết hồi quy tuyến tính
+              Quay lại bài lý thuyết linear regression
             </TopicLink>{" "}
             để tự kéo điểm và xem đường thẳng thay đổi như thế nào.
           </p>
 
-          {/* Quiz — kiểm tra hiểu biết ứng dụng */}
+          {/* Quiz: kiểm tra hiểu biết ứng dụng */}
           <section className="mt-6">
             <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
               <Sparkles size={18} className="text-accent" />
@@ -940,14 +936,14 @@ export default function LinearRegressionInHousing() {
         topicSlug="linear-regression-in-housing"
       >
         <p>
-          Không có hồi quy tuyến tính, mọi việc định giá nhà phải quay lại thời &ldquo;hỏi ba cò
-          môi giới, ai nói đúng thì tin&rdquo;. Chậm, đắt, và rất chủ quan.
+          Không có linear regression, việc định giá nhà phải quay lại thời &ldquo;hỏi ba người
+          môi giới, ai nói nghe lọt tai thì tin&rdquo;. Chậm, đắt, và rất chủ quan.
         </p>
         <p>
-          Với hồi quy tuyến tính, một người mua nhà mới có thể ngồi ở Hà Nội, ước giá một căn ở
-          TP.HCM trong ba giây &mdash; và quan trọng hơn, hiểu <em>vì sao</em> giá đó: bao nhiêu
-          đến từ diện tích, bao nhiêu từ quận, bao nhiêu bị trừ vì nhà cũ. Đó chính là vẻ đẹp của
-          công thức tuyến tính: vừa nhanh, vừa minh bạch.
+          Với linear regression, một người mua nhà mới có thể ngồi ở Hà Nội, ước giá một căn ở
+          TP.HCM trong ba giây. Quan trọng hơn, người dùng hiểu <em>vì sao</em> con số đó: bao
+          nhiêu đến từ diện tích, bao nhiêu từ quận, bao nhiêu bị trừ vì nhà cũ. Đó chính là vẻ
+          đẹp của công thức tuyến tính: vừa nhanh, vừa minh bạch.
         </p>
       </ApplicationCounterfactual>
     </ApplicationLayout>

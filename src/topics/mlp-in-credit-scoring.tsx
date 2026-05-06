@@ -117,7 +117,7 @@ function sigmoid(z: number) {
   return 1 / (1 + Math.exp(-z));
 }
 
-/** MLP mô phỏng với 2 lớp ẩn — coefficient được chọn tay để minh hoạ trực quan */
+/** MLP mô phỏng với 2 lớp ẩn. Coefficient được chọn tay để minh hoạ trực quan. */
 function simulateMlp(inp: LoanInputs): MlpOutput {
   // Chuẩn hoá đầu vào về khoảng gần 0..1
   const incomeN = Math.min(1, inp.income / 60); // 0..60tr/tháng
@@ -126,7 +126,7 @@ function simulateMlp(inp: LoanInputs): MlpOutput {
   const eduN = inp.education / 3; // 0..3
   const loanN = Math.min(1, inp.loanAmount / 500); // 0..500tr
 
-  // Lớp ẩn 1 (4 nơ-ron) — mỗi nơ-ron đại diện 1 khía cạnh
+  // Lớp ẩn 1 (4 nơ-ron). Mỗi nơ-ron đại diện 1 khía cạnh.
   const hStability = Math.tanh(
     2.1 * jobN + 1.4 * eduN + 0.7 * incomeN - 1.2 * dtiN - 0.4
   );
@@ -140,7 +140,7 @@ function simulateMlp(inp: LoanInputs): MlpOutput {
     1.8 * eduN + 1.2 * jobN + 0.6 * incomeN - 0.1
   );
 
-  // Lớp ẩn 2 (3 nơ-ron) — tổ hợp các khía cạnh
+  // Lớp ẩn 2 (3 nơ-ron). Tổ hợp các khía cạnh.
   const hRisk = Math.tanh(
     -1.9 * hStability - 1.5 * hCapacity + 2.4 * hBurden - 1.1 * hGrowth + 0.2
   );
@@ -190,7 +190,7 @@ function DecisionCard({ result }: { result: MlpOutput }) {
       bg: "bg-emerald-50 dark:bg-emerald-900/20",
       border: "border-emerald-300 dark:border-emerald-800",
       icon: CheckCircle2,
-      note: "Rủi ro thấp — hồ sơ đủ điều kiện duyệt tự động.",
+      note: "Rủi ro thấp. Hồ sơ đủ điều kiện duyệt tự động.",
     },
     review: {
       label: "Cần xét duyệt tay",
@@ -198,7 +198,7 @@ function DecisionCard({ result }: { result: MlpOutput }) {
       bg: "bg-amber-50 dark:bg-amber-900/20",
       border: "border-amber-300 dark:border-amber-800",
       icon: AlertTriangle,
-      note: "Vùng xám — chuyên viên tín dụng sẽ xem thêm tài liệu bổ sung.",
+      note: "Vùng xám. Chuyên viên tín dụng sẽ xem thêm tài liệu bổ sung.",
     },
     reject: {
       label: "Từ chối",
@@ -206,7 +206,7 @@ function DecisionCard({ result }: { result: MlpOutput }) {
       bg: "bg-rose-50 dark:bg-rose-900/20",
       border: "border-rose-300 dark:border-rose-800",
       icon: XCircle,
-      note: "Rủi ro cao — mô hình khuyến nghị không cấp khoản vay này.",
+      note: "Rủi ro cao. Model khuyến nghị không cấp khoản vay này.",
     },
   };
   const cfg = decisionConfig[result.decision];
@@ -237,10 +237,7 @@ function DecisionCard({ result }: { result: MlpOutput }) {
           <p className="text-[10px] uppercase tracking-wide text-muted font-semibold">
             Xác suất vỡ nợ
           </p>
-          <p
-            className="text-xl font-bold tabular-nums"
-            style={{ color: cfg.color }}
-          >
+          <p className="text-xl font-bold tabular-nums text-foreground">
             {(result.riskProb * 100).toFixed(1)}%
           </p>
         </div>
@@ -296,10 +293,7 @@ function DecisionCard({ result }: { result: MlpOutput }) {
                   transition={{ type: "spring", stiffness: 120, damping: 22 }}
                 />
               </div>
-              <span
-                className="w-10 text-right font-mono tabular-nums"
-                style={{ color: positive ? "#10b981" : "#ef4444" }}
-              >
+              <span className="w-10 text-right font-mono tabular-nums text-foreground">
                 {positive ? "+" : "−"}
                 {Math.abs(f.impact).toFixed(2)}
               </span>
@@ -312,7 +306,7 @@ function DecisionCard({ result }: { result: MlpOutput }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   Approval flow visualization — ba ô hồ sơ nhỏ chạy qua 4 bước
+   Approval flow visualization. Ba ô hồ sơ nhỏ chạy qua 4 bước.
    ══════════════════════════════════════════════════════════════════ */
 
 interface Applicant {
@@ -376,10 +370,10 @@ export default function MlpInCreditScoringTopic() {
         topicSlug="mlp-in-credit-scoring"
       >
         <p>
-          Bạn mở app ngân hàng, bấm &ldquo;Vay tiêu dùng&rdquo;, điền 5 ô —
-          thu nhập, công việc, học vấn, nợ hiện tại, số tiền muốn vay — bấm
-          gửi. Trong vòng vài giây, app đã trả về: <strong>duyệt, cần xem
-          thêm, hay từ chối</strong>, kèm lãi suất đề xuất.
+          Bạn mở app ngân hàng, bấm &ldquo;Vay tiêu dùng&rdquo;, điền 5 ô (thu
+          nhập, công việc, học vấn, nợ hiện tại, số tiền muốn vay) rồi bấm
+          gửi. Vài giây sau, app trả về một trong ba kết quả: <strong>duyệt,
+          cần xem thêm, hay từ chối</strong>, kèm lãi suất đề xuất.
         </p>
         <p>
           Đằng sau cái nút ấy không còn là con người ngồi đọc hồ sơ. Đó là
@@ -389,7 +383,7 @@ export default function MlpInCreditScoringTopic() {
         </p>
         <p>
           Ở Mỹ, <strong>Upstart</strong> tiên phong hướng đi này từ 2014, dùng
-          MLP để chấm điểm những người vay &ldquo;thin file&rdquo; — hồ sơ tín
+          MLP để chấm điểm những người vay &ldquo;thin file&rdquo;: hồ sơ tín
           dụng mỏng, bị FICO từ chối oan. Kết quả: duyệt thêm 27% người vay,
           lãi suất trung bình thấp hơn 16%. Các ngân hàng Việt cũng đang đi
           cùng con đường, áp dụng cho vay tiêu dùng qua app.
@@ -400,23 +394,23 @@ export default function MlpInCreditScoringTopic() {
         <p>
           Hệ thống chấm điểm truyền thống (ở Mỹ là FICO, ở Việt Nam là điểm
           CIC) chỉ nhìn khoảng 20 biến tài chính: lịch sử trả nợ, tổng dư nợ,
-          số năm có tín dụng. Mô hình đứng sau là <strong>hồi quy logistic
-          </strong> — tiêu chuẩn ngành ngân hàng từ thập niên 1980.
+          số năm có tín dụng. Model đứng sau là <strong>hồi quy logistic
+          </strong>, tiêu chuẩn ngành ngân hàng từ thập niên 1980.
         </p>
         <p>
           Hạn chế lớn nhất của hồi quy logistic:{" "}
           <em>chỉ bắt được quan hệ tuyến tính</em>. Nó cho rằng &ldquo;thu nhập
           cao hơn 1 triệu = giảm 0,5% rủi ro&rdquo;, đều đặn ở mọi ngưỡng. Thực
           tế đời sống không như vậy: một người thu nhập 5 triệu vay 100 triệu
-          và người thu nhập 50 triệu vay 100 triệu có mức rủi ro khác nhau
+          và người thu nhập 50 triệu vay 100 triệu có mức rủi ro khác nhau,
           không theo tỉ lệ thẳng.
         </p>
         <p>
           Hậu quả: hàng triệu người Việt{" "}
-          <strong>thực sự có khả năng trả nợ</strong> — sinh viên vừa ra
-          trường, người tự do, tiểu thương — bị ngân hàng từ chối oan chỉ vì{" "}
-          <em>hồ sơ mỏng</em> hoặc vì hồ sơ không khớp vào đường thẳng của mô
-          hình cũ. Cần một cách chấm điểm:
+          <strong>thực sự có khả năng trả nợ</strong> (sinh viên vừa ra trường,
+          người tự do, tiểu thương) bị ngân hàng từ chối oan chỉ vì{" "}
+          <em>hồ sơ mỏng</em> hoặc vì hồ sơ không khớp vào đường thẳng của model
+          cũ. Cần một cách chấm điểm:
         </p>
         <ul>
           <li>Bắt được quan hệ phi tuyến giữa thu nhập, nợ, nghề nghiệp.</li>
@@ -425,7 +419,7 @@ export default function MlpInCreditScoringTopic() {
           </li>
           <li>Duyệt được trong vài giây để app hoạt động &ldquo;thời gian thật&rdquo;.</li>
           <li>
-            Vẫn kiểm tra được bởi cơ quan quản lý — tức là giải thích được vì
+            Vẫn kiểm tra được bởi cơ quan quản lý, tức là giải thích được vì
             sao từng hồ sơ bị từ chối hay duyệt.
           </li>
         </ul>
@@ -452,19 +446,19 @@ export default function MlpInCreditScoringTopic() {
             &ldquo;ổn định công việc&rdquo;, &ldquo;khả năng trả&rdquo;,
             &ldquo;gánh nặng nợ hiện tại&rdquo;. <em>Lớp ẩn 2</em> tổ hợp
             chúng thành các khái niệm phức tạp hơn, ví dụ &ldquo;pattern rủi
-            ro của khách hàng trẻ có bằng đại học mới ra trường&rdquo; —
-            những pattern mà hồi quy logistic không thể bắt vì đòi hỏi tổ
-            hợp phi tuyến.
+            ro của khách hàng trẻ có bằng đại học mới ra trường&rdquo;.
+            Đây là những pattern mà hồi quy logistic không thể bắt, vì đòi
+            hỏi tổ hợp phi tuyến.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
             <strong>Đầu ra là xác suất vỡ nợ.</strong> Lớp cuối cùng dùng hàm
             sigmoid (hàm S, nén giá trị về khoảng 0..1). Kết quả là một xác
-            suất — ví dụ 0,18 nghĩa là ước lượng 18% khả năng người này
-            không trả nợ đúng hạn. Dưới ngưỡng thấp → duyệt tự động, trên
-            ngưỡng cao → từ chối, ở giữa → đẩy sang chuyên viên tín dụng xem
-            thêm hồ sơ.
+            suất, ví dụ 0,18 nghĩa là ước lượng 18% khả năng người này
+            không trả nợ đúng hạn. Dưới ngưỡng thấp thì duyệt tự động, trên
+            ngưỡng cao thì từ chối, ở giữa thì đẩy sang chuyên viên tín dụng
+            xem thêm hồ sơ.
           </p>
         </Beat>
         <Beat step={4}>
@@ -473,7 +467,7 @@ export default function MlpInCreditScoringTopic() {
             hàng triệu khoản vay quá khứ đã biết kết quả (trả đúng, trả
             muộn, hay vỡ nợ). Dùng backpropagation (lan truyền ngược) để
             mạng tự chỉnh trọng số: những cấu hình hồ sơ từng dẫn đến vỡ nợ
-            sẽ được đẩy về xác suất cao, ngược lại. Mỗi tháng, mô hình được
+            sẽ được đẩy về xác suất cao, ngược lại. Mỗi tháng, model được
             huấn luyện lại với dữ liệu mới để theo kịp nền kinh tế.
           </p>
         </Beat>
@@ -488,11 +482,11 @@ export default function MlpInCreditScoringTopic() {
         topicSlug="mlp-in-credit-scoring"
       >
         <Metric
-          value="Mô hình MLP của Upstart duyệt thêm 27% người vay so với mô hình hồi quy logistic truyền thống, với cùng ngưỡng rủi ro"
+          value="MLP của Upstart duyệt thêm 27% người vay so với hồi quy logistic truyền thống, ở cùng ngưỡng rủi ro"
           sourceRef={1}
         />
         <Metric
-          value="Lãi suất trung bình thấp hơn 16% so với mô hình chỉ dùng FICO — nhờ bắt đúng hồ sơ 'thin file' chất lượng tốt"
+          value="Lãi suất trung bình thấp hơn 16% so với model chỉ dùng FICO, nhờ bắt đúng hồ sơ 'thin file' chất lượng tốt"
           sourceRef={1}
         />
         <Metric
@@ -500,7 +494,7 @@ export default function MlpInCreditScoringTopic() {
           sourceRef={3}
         />
         <Metric
-          value="Upstart IPO tháng 12 năm 2020 với định giá 1,5 tỉ USD — thị trường vốn công nhận hiệu quả của mô hình MLP chấm tín dụng"
+          value="Upstart IPO tháng 12 năm 2020 với định giá 1,5 tỉ USD. Thị trường vốn công nhận hiệu quả của MLP chấm tín dụng"
           sourceRef={3}
         />
       </ApplicationMetrics>
@@ -514,9 +508,9 @@ export default function MlpInCreditScoringTopic() {
         </p>
         <ul>
           <li>
-            Hàng triệu người vay &ldquo;thin file&rdquo; &mdash; sinh viên mới
-            ra trường, người tự do, tiểu thương &mdash; tiếp tục bị từ chối
-            oan hoặc phải vay với lãi suất quá cao.
+            Hàng triệu người vay &ldquo;thin file&rdquo; (sinh viên mới ra
+            trường, người tự do, tiểu thương) tiếp tục bị từ chối oan hoặc
+            phải vay với lãi suất quá cao.
           </li>
           <li>
             Ngân hàng vẫn an toàn <em>về thống kê</em>, nhưng bỏ lỡ một thị
@@ -528,10 +522,10 @@ export default function MlpInCreditScoringTopic() {
           </li>
         </ul>
         <p>
-          MLP không thay thế chuyên viên tín dụng — nó <strong>mở rộng phạm
-          vi</strong> ngân hàng tiếp cận. Những hồ sơ rõ ràng được duyệt tự
-          động; hồ sơ rìa được chuyển đến đúng người, với bối cảnh đầy đủ. Cả
-          ngân hàng và khách hàng đều hưởng lợi.
+          MLP không thay thế chuyên viên tín dụng. Nó <strong>mở rộng phạm
+          vi</strong> ngân hàng tiếp cận: hồ sơ rõ ràng được duyệt tự động,
+          hồ sơ rìa được chuyển đến đúng người với bối cảnh đầy đủ. Cả ngân
+          hàng và khách hàng đều hưởng lợi.
         </p>
         <div className="not-prose mt-6">
           <ApplicationLearnMoreBlock />
@@ -542,7 +536,7 @@ export default function MlpInCreditScoringTopic() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   LOAN PLAYGROUND — phần chính người dùng tương tác
+   LOAN PLAYGROUND. Phần chính người dùng tương tác.
    ══════════════════════════════════════════════════════════════════ */
 
 function LoanPlayground() {
@@ -553,7 +547,7 @@ function LoanPlayground() {
       <div className="space-y-3">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
           <Banknote size={18} className="text-accent" />
-          Hồ sơ vay &mdash; bạn điền, MLP chấm
+          Bạn điền hồ sơ, MLP chấm tức thì
         </h3>
         <p className="text-sm text-muted leading-relaxed">
           Kéo 5 thanh bên dưới để thử nhiều kiểu hồ sơ vay. MLP sẽ tính lại xác
@@ -583,7 +577,7 @@ function LoanPlayground() {
                 <p
                   className={`text-xs font-semibold ${active ? "text-accent-dark" : "text-foreground"}`}
                 >
-                  {app.name} &mdash; {app.shortLabel}
+                  {app.name}: {app.shortLabel}
                 </p>
                 <p className="text-[11px] text-muted mt-1 leading-snug">
                   {app.description}
@@ -604,8 +598,8 @@ function LoanPlayground() {
       <Callout variant="tip" title="Một con số, nhiều góc nhìn">
         Cùng một con số xác suất vỡ nợ 25% có thể nghĩa là: hồ sơ rìa cần xem
         thêm giấy tờ, hoặc cần lãi suất cao hơn để bù rủi ro. MLP không đưa ra
-        quyết định đạo đức &mdash; nó chỉ đưa ra ước lượng. Quyết định cuối
-        cùng vẫn thuộc về chính sách tín dụng của từng ngân hàng.
+        quyết định đạo đức, nó chỉ đưa ra ước lượng. Quyết định cuối cùng vẫn
+        thuộc về chính sách tín dụng của từng ngân hàng.
       </Callout>
 
       <FairnessSection />
@@ -742,7 +736,7 @@ function ApplicantSummary({ inputs }: { inputs: LoanInputs }) {
     {
       icon: GraduationCap,
       label: "Học vấn",
-      value: eduLabels[inputs.education] ?? "—",
+      value: eduLabels[inputs.education] ?? "?",
       color: "#8b5cf6",
     },
     {
@@ -793,8 +787,7 @@ function ApprovalFlowReveal() {
       </h4>
       <p className="text-sm text-muted leading-relaxed">
         Bấm <em>Tiếp tục</em> để xem từng bước. Cả quy trình chỉ tính bằng giây
-        ở phần tự động, cộng vài giờ &mdash; vài ngày nếu cần chuyên viên xem
-        tay.
+        ở phần tự động, cộng vài giờ tới vài ngày nếu cần chuyên viên xem tay.
       </p>
       <StepReveal
         labels={[
@@ -819,7 +812,7 @@ function ApprovalFlowReveal() {
             icon={ShieldCheck}
             title="Kiểm tra định danh"
             time="vài giây"
-            body="eKYC: quét CCCD, nhận diện khuôn mặt, đối chiếu với cơ sở dữ liệu quốc gia. Ngăn giả mạo ngay từ cổng &mdash; nếu không qua bước này, MLP không được gọi đến."
+            body="eKYC: quét CCCD, nhận diện khuôn mặt, đối chiếu với cơ sở dữ liệu quốc gia. Ngăn giả mạo ngay từ cổng. Nếu không qua bước này, MLP không được gọi đến."
             color="#8b5cf6"
           />,
           <ApprovalStep
@@ -835,7 +828,7 @@ function ApprovalFlowReveal() {
             icon={AlertTriangle}
             title="Áp dụng chính sách"
             time="< 1 giây"
-            body="Ngân hàng có các ngưỡng: rủi ro < 0,22 &rarr; duyệt tự động; 0,22–0,5 &rarr; chuyển chuyên viên xem thêm tài liệu; > 0,5 &rarr; từ chối. Các quy định chống phân biệt cũng được áp ở đây."
+            body="Ngân hàng có các ngưỡng: rủi ro < 0,22 thì duyệt tự động; 0,22–0,5 thì chuyển chuyên viên xem thêm tài liệu; > 0,5 thì từ chối. Các quy định chống phân biệt cũng được áp ở đây."
             color="#f59e0b"
           />,
           <ApprovalStep
@@ -843,7 +836,7 @@ function ApprovalFlowReveal() {
             icon={CheckCircle2}
             title="Phản hồi khách"
             time="tức thì"
-            body="Nếu duyệt: app hiện số tiền, lãi suất, kỳ hạn. Nếu từ chối: app phải nêu lý do chính, thường là một trong các yếu tố MLP đã đánh dấu đóng góp lớn nhất &mdash; đây là yêu cầu pháp lý."
+            body="Nếu duyệt: app hiện số tiền, lãi suất, kỳ hạn. Nếu từ chối: app phải nêu lý do chính, thường là một trong các yếu tố MLP đã đánh dấu đóng góp lớn nhất. Đây là yêu cầu pháp lý."
             color="#ef4444"
           />,
         ]}
@@ -901,14 +894,14 @@ function FairnessSection() {
     <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
       <h4 className="text-base font-semibold text-foreground flex items-center gap-2">
         <ShieldCheck size={18} className="text-accent" />
-        Công bằng và kiểm toán &mdash; phần ít ai nói nhưng quan trọng nhất
+        Công bằng và kiểm toán: phần ít ai nói nhưng quan trọng nhất
       </h4>
       <p className="text-sm text-foreground/85 leading-relaxed">
         MLP là một &ldquo;hộp đen&rdquo; hơn hồi quy logistic. Với cùng một
         quyết định từ chối, hồi quy logistic trả về đúng một danh sách hệ số
-        &ldquo;thu nhập: −0,4, tỉ lệ nợ: +0,6, học vấn: −0,1&rdquo; &mdash; dễ
-        nói với khách hàng. MLP có hàng chục nghìn trọng số ẩn, giải thích
-        không đơn giản như vậy. Vì thế ngân hàng phải làm thêm vài việc:
+        &ldquo;thu nhập: −0,4, tỉ lệ nợ: +0,6, học vấn: −0,1&rdquo;, dễ nói
+        với khách hàng. MLP có hàng chục nghìn trọng số ẩn, giải thích không
+        đơn giản như vậy. Vì thế ngân hàng phải làm thêm vài việc:
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <FairnessCard
@@ -923,7 +916,7 @@ function FairnessSection() {
         />
         <FairnessCard
           title="Giải thích từng quyết định"
-          body="Dùng SHAP, LIME hoặc lớp giải thích riêng để báo cho khách 'vì sao bạn bị từ chối' — thường là 3 yếu tố lớn nhất. Đây là yêu cầu pháp lý ở nhiều nước."
+          body="Dùng SHAP, LIME hoặc lớp giải thích riêng để báo cho khách 'vì sao bạn bị từ chối', thường là 3 yếu tố lớn nhất. Đây là yêu cầu pháp lý ở nhiều nước."
           color="#10b981"
         />
       </div>
@@ -932,7 +925,7 @@ function FairnessSection() {
         lịch sử có định kiến (ví dụ: trước đây ngân hàng từ chối người vay
         vùng nông thôn, dẫn đến ít dữ liệu, ít ví dụ trả tốt), MLP sẽ học lại
         định kiến đó. Trách nhiệm đảm bảo công bằng thuộc về <em>con người
-        thiết kế mô hình</em>, không phải mô hình.
+        thiết kế model</em>, không phải bản thân model.
       </Callout>
     </div>
   );
@@ -971,21 +964,21 @@ function FairnessChallenge() {
       <InlineChallenge
         question="MLP đang từ chối một lượng lớn hồ sơ từ sinh viên mới ra trường (dưới 1 năm đi làm). Đội vận hành phải phản ứng thế nào?"
         options={[
-          "Không làm gì — MLP biết rõ ai rủi ro",
+          "Không làm gì, MLP biết rõ ai rủi ro",
           "Xem lại dữ liệu huấn luyện: có thể thiếu ví dụ sinh viên trả tốt, khiến MLP chưa 'thấy' nhóm này; có thể cần thu thập thêm dữ liệu hoặc áp ngưỡng mềm hơn cho nhóm thin file",
           "Xoá biến 'số tháng làm việc' để tránh phân biệt",
           "Tăng lãi suất gấp đôi cho mọi sinh viên",
         ]}
         correct={1}
-        explanation="Khi mô hình ra quyết định thiên lệch với một nhóm, gốc rễ thường ở dữ liệu. Lời giải dài hạn: thu thập thêm dữ liệu cho nhóm thiếu đại diện, hoặc tách thành mô hình con cho nhóm 'thin file'. Xoá biến không giải quyết vì các biến khác (thu nhập, vị trí...) có thể gián tiếp 'mã hoá' lại nhóm đó."
+        explanation="Khi model ra quyết định thiên lệch với một nhóm, gốc rễ thường ở dữ liệu. Lời giải dài hạn: thu thập thêm dữ liệu cho nhóm thiếu đại diện, hoặc tách thành model con cho nhóm 'thin file'. Xoá biến không giải quyết, vì các biến khác (thu nhập, vị trí...) có thể gián tiếp 'mã hoá' lại nhóm đó."
       />
       <InlineChallenge
         question="Một khách bị từ chối và khởi kiện ngân hàng vì 'không biết vì sao'. Ngân hàng cần gì để bảo vệ quyết định này?"
         options={[
-          "Không cần gì — MLP là thuật toán, không ai bắt bẻ được",
+          "Không cần gì, MLP là thuật toán, không ai bắt bẻ được",
           "Cần log đầu vào + một báo cáo giải thích kể ra 3 yếu tố lớn nhất dẫn đến từ chối (dùng SHAP hoặc tương đương), kèm chính sách tín dụng áp dụng",
           "Chỉ cần in giấy 'AI đã quyết định'",
-          "Đưa khách hàng số điện thoại của nhà cung cấp mô hình",
+          "Đưa khách hàng số điện thoại của nhà cung cấp model",
         ]}
         correct={1}
         explanation="Ở hầu hết các nước, luật bảo vệ người tiêu dùng yêu cầu ngân hàng phải giải thích được quyết định từ chối với các lý do cụ thể, có thể kiểm tra lại được. SHAP/LIME chính là cầu nối giữa 'hộp đen' MLP và nghĩa vụ pháp lý đó."
@@ -1001,11 +994,11 @@ function FairnessChallenge() {
 function ApplicationLearnMoreBlock() {
   const summaryPoints = useMemo(
     () => [
-      "MLP = nhiều perceptron xếp thành nhiều lớp — đủ linh hoạt để bắt quan hệ phi tuyến giữa hàng trăm biến.",
+      "MLP là nhiều perceptron xếp thành nhiều lớp, đủ linh hoạt để bắt quan hệ phi tuyến giữa hàng trăm biến.",
       "Quy trình: nhập hồ sơ → chuẩn hoá → lan truyền qua 2–4 lớp ẩn → sigmoid → xác suất vỡ nợ → áp chính sách.",
       "Lợi thế: duyệt thêm ~27% hồ sơ, lãi suất trung bình thấp hơn 16% so với chỉ dùng FICO (số liệu Upstart 2021).",
-      "Rủi ro lớn: hộp đen + định kiến dữ liệu. Cần SHAP/LIME để giải thích, kiểm tra disparate impact, và loại biến nhạy cảm.",
-      "MLP không thay thế chuyên viên tín dụng — nó mở rộng phạm vi ngân hàng tiếp cận đúng khách hàng.",
+      "Rủi ro lớn: hộp đen cộng định kiến dữ liệu. Cần SHAP/LIME để giải thích, kiểm tra disparate impact, và loại biến nhạy cảm.",
+      "MLP không thay thế chuyên viên tín dụng. Nó mở rộng phạm vi ngân hàng tiếp cận đúng khách hàng.",
     ],
     []
   );
@@ -1016,9 +1009,9 @@ function ApplicationLearnMoreBlock() {
       <div className="flex items-center gap-2 text-sm text-muted">
         <ArrowRight size={14} />
         <span>
-          Muốn hiểu bên trong MLP hoạt động thế nào &mdash; cách xếp lớp tạo
-          ra đường biên phi tuyến? Quay lại bài lý thuyết:{" "}
-          <TopicLink slug="mlp">MLP &mdash; Xếp nhiều perceptron thành mạng</TopicLink>
+          Muốn hiểu bên trong MLP hoạt động thế nào, cách xếp lớp tạo ra đường
+          biên phi tuyến? Quay lại bài lý thuyết:{" "}
+          <TopicLink slug="mlp">MLP: xếp nhiều perceptron thành mạng</TopicLink>
           .
         </span>
       </div>

@@ -33,9 +33,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "mlp",
   title: "Multilayer Perceptron",
-  titleVi: "MLP — Xếp nhiều perceptron thành mạng",
+  titleVi: "MLP: xếp nhiều perceptron thành mạng",
   description:
-    "Một perceptron chỉ vẽ được đường thẳng. Xếp chúng thành nhiều lớp, bạn sẽ có được đường cong — chìa khoá cho gần như mọi mô hình hiện đại.",
+    "Một perceptron chỉ vẽ được đường thẳng. Xếp chúng thành nhiều lớp, bạn có đường cong. Đó là chìa khoá cho gần như mọi mô hình hiện đại.",
   category: "neural-fundamentals",
   tags: ["neural-network", "deep-learning", "architecture", "mlp"],
   difficulty: "beginner",
@@ -90,7 +90,7 @@ const XOR_POINTS: Pt2[] = [
 ];
 
 /* ══════════════════════════════════════════════════════════════════
-   NUMERIC HELPERS — mô phỏng MLP nhỏ với hàm kích hoạt tanh
+   NUMERIC HELPERS: mô phỏng MLP nhỏ với hàm kích hoạt tanh
    ══════════════════════════════════════════════════════════════════ */
 
 function tanh(z: number) {
@@ -102,7 +102,7 @@ function sigmoid(z: number) {
 }
 
 /**
- * Khởi tạo trọng số ổn định bằng seeded PRNG — cùng config sẽ luôn
+ * Khởi tạo trọng số ổn định bằng seeded PRNG. Cùng config sẽ luôn
  * cho cùng đường biên, tránh trôi ảnh giữa các lần render.
  */
 function makeSeededRng(seed: number) {
@@ -417,7 +417,7 @@ const quizQuestions: QuizQuestion[] = [
       "Một đường cong phức tạp tuỳ ý",
       "Đúng một đường thẳng chia mặt phẳng thành hai nửa",
       "Một đường tròn",
-      "Không vẽ được gì — chỉ nhớ nhãn",
+      "Không vẽ được gì, chỉ nhớ nhãn",
     ],
     correct: 1,
     explanation:
@@ -430,11 +430,11 @@ const quizQuestions: QuizQuestion[] = [
       "Luôn thành đường tròn",
       "Chỉ thay đổi độ dốc, vẫn là đường thẳng",
       "Có thể uốn thành đường cong, bao quanh được các cụm lồi lõm",
-      "Không thay đổi — vẫn là đường thẳng",
+      "Không thay đổi, vẫn là đường thẳng",
     ],
     correct: 2,
     explanation:
-      "Mỗi nơ-ron ẩn tương đương với một đường thẳng nhỏ; lớp tiếp theo tổ hợp các đường ấy thành các khối cong. Nhiều lớp hơn = tổ hợp càng linh hoạt → đường biên càng mịn, càng khớp.",
+      "Mỗi nơ-ron ẩn tương đương với một đường thẳng nhỏ; lớp tiếp theo tổ hợp các đường ấy thành các khối cong. Nhiều lớp hơn nghĩa là tổ hợp càng linh hoạt, đường biên càng mịn và càng khớp.",
   },
   {
     question:
@@ -447,20 +447,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Phép nhân ma trận là tuyến tính. Nhiều ma trận liên tiếp có thể gộp lại thành một ma trận duy nhất. Muốn mạng học được đường cong, cần chen vào giữa một hàm phi tuyến — đó là 'cái gãy' giúp sinh ra đường cong.",
+      "Phép nhân ma trận là tuyến tính. Nhiều ma trận liên tiếp có thể gộp lại thành một ma trận duy nhất. Muốn mạng học được đường cong, cần chen vào giữa một hàm phi tuyến. Đó là 'cái gãy' giúp sinh ra đường cong.",
   },
   {
     question:
       "Bài toán XOR có 4 điểm (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0. Nó nói lên điều gì?",
     options: [
       "Perceptron đơn giải được XOR bằng cách tăng số vòng huấn luyện",
-      "Không tồn tại đường thẳng nào chia đúng hai lớp của XOR — phải cần MLP",
+      "Không tồn tại đường thẳng nào chia đúng hai lớp của XOR, phải cần MLP",
       "XOR chỉ là ví dụ lý thuyết, không liên quan ML",
       "Cần tăng learning rate là giải được",
     ],
     correct: 1,
     explanation:
-      "XOR nổi tiếng vì đã khiến AI ngưng trệ gần 15 năm: không có đường thẳng nào tách được. Khi MLP với 1 lớp ẩn 2 nơ-ron ra đời, XOR giải được ngay — mở đường cho deep learning.",
+      "XOR nổi tiếng vì đã khiến AI ngưng trệ gần 15 năm: không có đường thẳng nào tách được. Khi MLP với 1 lớp ẩn 2 nơ-ron ra đời, XOR giải được ngay, mở đường cho deep learning.",
   },
   {
     type: "fill-blank",
@@ -480,7 +480,7 @@ const quizQuestions: QuizQuestion[] = [
       "Nhớ một mẫu cụ thể từ tập huấn luyện",
       "Vẽ một 'đường thẳng nhỏ' trong không gian đặc trưng rồi truyền mức độ kích hoạt tới lớp sau",
       "Chia đều dữ liệu thành các nhóm",
-      "Không làm gì — chỉ truyền đầu vào nguyên",
+      "Không làm gì, chỉ truyền đầu vào nguyên",
     ],
     correct: 1,
     explanation:
@@ -495,37 +495,37 @@ const quizQuestions: QuizQuestion[] = [
 export default function MlpTopic() {
   return (
     <>
-      {/* ━━━━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 1: HOOK / DỰ ĐOÁN ━━━━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn có một đám điểm hình hai vầng trăng đan vào nhau. Một perceptron đơn sẽ phân loại được bao nhiêu điểm đúng?"
           options={[
-            "Gần 100% — chỉ cần đủ vòng huấn luyện",
-            "Khoảng một nửa — vì chỉ có thể vẽ một đường thẳng, không ôm được hình trăng",
+            "Gần 100%, chỉ cần đủ vòng huấn luyện",
+            "Khoảng một nửa, vì chỉ vẽ được một đường thẳng nên không ôm được hình trăng",
             "Đúng 0 điểm",
             "Phụ thuộc ngẫu nhiên",
           ]}
           correct={1}
-          explanation="Perceptron đơn chỉ đẻ ra một đường thẳng. Hai vầng trăng xếp xen kẽ không có đường thẳng nào chia được đúng — tối đa khoảng 50–70% tuỳ vị trí đường. Muốn vẽ đường cong bao quanh, bạn phải xếp nhiều perceptron thành nhiều lớp."
+          explanation="Perceptron đơn chỉ đẻ ra một đường thẳng. Hai vầng trăng xếp xen kẽ không có đường thẳng nào chia được đúng. Tối đa khoảng 50–70% tuỳ vị trí đường. Muốn vẽ đường cong bao quanh, bạn phải xếp nhiều perceptron thành nhiều lớp."
         >
           <div className="mt-4 space-y-2 text-sm text-muted leading-relaxed">
             <p>
               Hãy tưởng tượng một perceptron là một thước kẻ thẳng. Đưa cho bạn 10
               thước kẻ và yêu cầu vẽ một đường{" "}
-              <em>ôm quanh cái ly trên bàn</em> — bạn sẽ ghép nối chúng theo nhiều
+              <em>ôm quanh cái ly trên bàn</em>. Bạn sẽ ghép nối chúng theo nhiều
               hướng để tạo thành đường gần giống đường cong.
             </p>
             <p>
               <strong>MLP (Multilayer Perceptron)</strong> làm y hệt: nhiều perceptron
               nhỏ xếp thành nhiều lớp, mỗi lớp sau tổ hợp các &ldquo;thước thẳng&rdquo;
-              của lớp trước thành các hình phức tạp hơn. Kết quả: một đường biên đủ
+              của lớp trước thành các hình phức tạp hơn. Kết quả là một đường biên đủ
               mềm để bao quanh gần như mọi dạng dữ liệu.
             </p>
           </div>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 2 — ẨN DỤ ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 2: ẨN DỤ ━━━━━━ */}
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -535,12 +535,12 @@ export default function MlpTopic() {
           <p className="text-sm text-foreground/85 leading-relaxed">
             Bạn thử tuyển dụng bạn mới vào quán bún. Một người quản lý chỉ dám kết
             luận &ldquo;ứng viên này hợp hay không&rdquo; dựa trên <em>một tiêu
-            chí duy nhất</em> — ví dụ kinh nghiệm. Nếu tuyển theo mỗi tiêu chí này,
+            chí duy nhất</em>, ví dụ kinh nghiệm. Nếu tuyển theo mỗi tiêu chí này,
             nhiều ứng viên tốt sẽ bị bỏ lỡ.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Thêm vài chuyên gia nữa — một người đánh giá thái độ, một người đánh giá
-            sức khoẻ, một người quan sát giao tiếp — và cuối cùng có <strong>một
+            Thêm vài chuyên gia nữa (một người đánh giá thái độ, một người đánh giá
+            sức khoẻ, một người quan sát giao tiếp) và cuối cùng có <strong>một
             người điều phối tổng hợp ý kiến</strong>. Đó chính là{" "}
             <strong>MLP</strong>: mỗi nơ-ron ẩn là một chuyên gia &ldquo;nhỏ&rdquo;
             nhìn vào dữ liệu theo một góc, lớp cuối tổ hợp ý kiến lại thành kết luận.
@@ -580,36 +580,36 @@ export default function MlpTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 3 — TRỰC QUAN HOÁ (REVEAL) ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 3: TRỰC QUAN HOÁ (REVEAL) ━━━━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <MlpBuilder />
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 4 — AHA ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 4: AHA ━━━━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
-          Một perceptron = một đường thẳng. Hai lớp = một đường gấp khúc. Ba lớp
-          trở lên = một đường cong mịn, bao quanh gần như mọi dạng dữ liệu.
+          Một perceptron là một đường thẳng. Hai lớp cho ra một đường gấp khúc. Ba
+          lớp trở lên cho ra một đường cong mịn, bao quanh gần như mọi dạng dữ liệu.
           <br />
           <br />
-          <strong>Chiều sâu</strong> không phải sự phức tạp cho vui — nó là cơ chế
+          <strong>Chiều sâu</strong> không phải sự phức tạp cho vui. Nó là cơ chế
           cho phép mạng &ldquo;học từ nét đơn giản đến hình phức tạp&rdquo;. Đó là
           lý do deep learning được gọi là <em>deep</em>.
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 5 — DEEPEN (XOR TOGGLE COMPARE) ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 5: DEEPEN (XOR TOGGLE COMPARE) ━━━━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <div className="space-y-4">
           <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
             <GitBranch size={18} className="text-accent" />
-            Bài toán XOR — viên gạch đã làm AI đình trệ 15 năm
+            XOR là bài toán khiến AI đình trệ 15 năm
           </h3>
           <p className="text-sm text-muted leading-relaxed">
             XOR là phép &ldquo;khác nhau&rdquo;: (0,0)→0, (1,1)→0, còn (0,1)→1 và
-            (1,0)→1. Bốn điểm này xếp thành hình quả trám: hai điểm cùng nhãn nằm
+            (1,0)→1. Bốn điểm này xếp thành hình quả trám, hai điểm cùng nhãn nằm
             chéo nhau. <strong>Không có đường thẳng nào chia đúng</strong>. Hãy xem
             tận mắt.
           </p>
@@ -633,33 +633,33 @@ export default function MlpTopic() {
             Năm 1969 Marvin Minsky và Seymour Papert công bố cuốn{" "}
             <em>Perceptrons</em>, chỉ ra perceptron đơn không giải được XOR. AI gần
             như ngủ đông suốt thập kỷ 1970. Đến thập niên 1980, khi backpropagation
-            được khám phá lại, MLP đã giải XOR một cách gọn gàng — và deep learning
+            được khám phá lại, MLP đã giải XOR một cách gọn gàng. Deep learning
             hiện đại chính là nhánh phát triển tiếp từ đó.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 6 — CHALLENGE ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 6: CHALLENGE ━━━━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <div className="space-y-4">
           <InlineChallenge
             question="Bạn có một MLP 10 lớp nhưng BỎ HẾT hàm kích hoạt (tanh, ReLU...). Mạng này tương đương với gì?"
             options={[
-              "Một MLP 5 lớp — chia đôi",
+              "Một MLP 5 lớp (chia đôi)",
               "Một phép biến đổi tuyến tính duy nhất, y hệt perceptron đơn",
-              "Vẫn là MLP — chỉ chạy chậm hơn",
-              "Không chạy được — sẽ báo lỗi",
+              "Vẫn là MLP, chỉ chạy chậm hơn",
+              "Không chạy được, sẽ báo lỗi",
             ]}
             correct={1}
-            explanation="Tích của 10 ma trận vẫn là một ma trận duy nhất (theo quy tắc nhân ma trận). Không có phi tuyến ở giữa, 10 lớp sụp đổ thành 1 lớp — không thể vẽ đường cong. Hàm kích hoạt chính là 'cái gãy' giúp đường cong sinh ra."
+            explanation="Tích của 10 ma trận vẫn là một ma trận duy nhất (theo quy tắc nhân ma trận). Không có phi tuyến ở giữa, 10 lớp sụp đổ thành 1 lớp, không thể vẽ đường cong. Hàm kích hoạt chính là 'cái gãy' giúp đường cong sinh ra."
           />
           <InlineChallenge
             question="Với cùng 2.000 tham số, chiến lược nào thường học được đường biên phức tạp hơn cho dữ liệu như ảnh?"
             options={[
-              "1 lớp ẩn rất rộng (chẳng hạn 1.000 nơ-ron) — chiều rộng tối đa",
-              "Vài lớp ẩn vừa phải (ví dụ 4 lớp × ~30 nơ-ron) — chiều sâu",
-              "Không ẩn, chỉ có đầu vào và đầu ra — siêu nông",
-              "Không quan trọng — kết quả y hệt nhau",
+              "1 lớp ẩn rất rộng (chẳng hạn 1.000 nơ-ron), tối đa chiều rộng",
+              "Vài lớp ẩn vừa phải (ví dụ 4 lớp × ~30 nơ-ron), tối đa chiều sâu",
+              "Không ẩn, chỉ có đầu vào và đầu ra, siêu nông",
+              "Không quan trọng, kết quả y hệt nhau",
             ]}
             correct={1}
             explanation="Cùng ngân sách tham số, mạng sâu thường biểu diễn hàm phức tạp hơn mạng rộng. Lý do trực quan: lớp sâu tái sử dụng đặc trưng của lớp nông (cạnh → hình → vật thể), trong khi mạng rộng 1 lớp phải nhớ từng mẫu riêng lẻ."
@@ -667,7 +667,7 @@ export default function MlpTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 7 — GIẢI THÍCH ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 7: GIẢI THÍCH ━━━━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
@@ -680,7 +680,7 @@ export default function MlpTopic() {
           </h4>
           <LaTeX block>{"h^{[l]} = f\\big(W^{[l]}\\,h^{[l-1]} + b^{[l]}\\big)"}</LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Đọc: <em>đầu ra của lớp l = hàm kích hoạt của (ma trận trọng số nhân
+            Đọc: <em>đầu ra của lớp l bằng hàm kích hoạt của (ma trận trọng số nhân
             đầu ra lớp trước, cộng bias)</em>. <strong>W</strong> quyết định
             &ldquo;lớp này để ý đến tổ hợp đặc trưng nào&rdquo;, <strong>b</strong>{" "}
             dịch đường biên lên hay xuống, còn <strong>f</strong> (ví dụ ReLU, tanh)
@@ -695,18 +695,18 @@ export default function MlpTopic() {
             Đọc: <em>dự đoán cuối cùng là kết quả áp dụng lớp 1, rồi lớp 2, rồi...
             đến lớp L</em>. Mỗi lớp nhận đầu ra của lớp trước. Nếu bỏ hàm kích hoạt
             <em> f</em>, toàn bộ dãy phép nhân ma trận sẽ gộp lại thành một ma trận
-            duy nhất — và bạn trở về với perceptron đơn.
+            duy nhất, và bạn trở về với perceptron đơn.
           </p>
 
-          <Callout variant="tip" title="Không cần nhớ công thức — nhớ hình ảnh">
+          <Callout variant="tip" title="Không cần nhớ công thức, hãy nhớ hình ảnh">
             Mỗi lớp làm <em>hai việc</em>: (1) trộn đặc trưng đầu vào theo trọng số,
-            (2) bẻ cong bằng hàm kích hoạt. Cứ mỗi cặp &ldquo;trộn — bẻ cong&rdquo;
+            (2) bẻ cong bằng hàm kích hoạt. Cứ mỗi cặp &ldquo;trộn rồi bẻ cong&rdquo;
             ấy là một lớp. Xếp nhiều lớp là xếp nhiều lần trộn-bẻ-cong. Tất cả chỉ
             có vậy.
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Ba loại lớp — ba công việc khác nhau
+            Ba loại lớp làm ba công việc khác nhau
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1.5">
@@ -715,7 +715,7 @@ export default function MlpTopic() {
                 <span className="text-xs font-semibold uppercase tracking-wide">Lớp đầu vào</span>
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed">
-                Chỉ chứa dữ liệu thô, không có phép biến đổi. Số nơ-ron = số đặc
+                Chỉ chứa dữ liệu thô, không có phép biến đổi. Số nơ-ron bằng số đặc
                 trưng. Với ảnh 28×28 pixel: 784 nơ-ron.
               </p>
             </div>
@@ -743,7 +743,7 @@ export default function MlpTopic() {
           </div>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Dòng chảy dữ liệu — xem từng bước
+            Dòng chảy dữ liệu, từng bước một
           </h4>
           <StepReveal
             labels={[
@@ -758,21 +758,21 @@ export default function MlpTopic() {
                 <p className="text-sm text-foreground leading-relaxed">
                   Dữ liệu thô đi vào lớp đầu vào. Ví dụ bài phân loại ảnh 28×28: mỗi
                   pixel là một nơ-ron, tất cả có 784 con số đầu vào trong khoảng 0–1.
-                  Lớp đầu vào không làm phép tính — chỉ là nơi đặt dữ liệu.
+                  Lớp đầu vào không làm phép tính, chỉ là nơi đặt dữ liệu.
                 </p>
               </div>,
               <div key="s2" className="rounded-lg border border-border bg-surface/60 p-4">
                 <p className="text-sm text-foreground leading-relaxed">
                   Lớp ẩn 1: mỗi nơ-ron lấy toàn bộ 784 đầu vào, nhân với trọng số,
-                  cộng bias, rồi qua hàm kích hoạt. Kết quả: một vector &ldquo;đặc
-                  trưng cấp 1&rdquo; — tương đương nét cạnh, góc, mảng đậm nhạt.
+                  cộng bias, rồi qua hàm kích hoạt. Kết quả là một vector &ldquo;đặc
+                  trưng cấp 1&rdquo;, tương đương nét cạnh, góc, mảng đậm nhạt.
                 </p>
               </div>,
               <div key="s3" className="rounded-lg border border-border bg-surface/60 p-4">
                 <p className="text-sm text-foreground leading-relaxed">
                   Lớp ẩn 2: tổ hợp &ldquo;nét&rdquo; thành &ldquo;hình dạng&rdquo;.
                   Ví dụ với chữ số viết tay: lớp này đã nhận ra vòng cong phía
-                  trên, thanh dọc giữa — những thành phần đặc trưng của chữ số.
+                  trên, thanh dọc giữa, những thành phần đặc trưng của chữ số.
                 </p>
               </div>,
               <div key="s4" className="rounded-lg border border-border bg-surface/60 p-4">
@@ -786,13 +786,13 @@ export default function MlpTopic() {
           </StepReveal>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Đếm tham số — vì sao mô hình lớn lại &ldquo;lớn&rdquo;
+            Đếm tham số: vì sao mô hình lớn lại &ldquo;lớn&rdquo;
           </h4>
           <p className="leading-relaxed">
             Giữa hai lớp liên tiếp với <em>a</em> và <em>b</em> nơ-ron, số trọng số
             là <strong>a × b</strong>, cộng <em>b</em> bias. Một MLP kiểu 784 → 256
             → 128 → 10 đã có khoảng <strong>235.000 tham số</strong>. GPT-4 có tới
-            hàng nghìn tỷ — nhưng công thức đếm vẫn y hệt, chỉ là số lớp và số
+            hàng nghìn tỷ, nhưng công thức đếm vẫn y hệt, chỉ là số lớp và số
             nơ-ron nhiều hơn rất nhiều.
           </p>
           <div className="overflow-x-auto">
@@ -828,7 +828,7 @@ export default function MlpTopic() {
                   <td colSpan={3} className="py-1.5 px-2 font-semibold text-right">
                     Tổng tham số MLP này:
                   </td>
-                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-amber-700 dark:text-amber-300">
+                  <td className="py-1.5 px-2 font-mono tabular-nums font-bold text-foreground">
                     235.146
                   </td>
                 </tr>
@@ -839,12 +839,12 @@ export default function MlpTopic() {
           <Callout variant="warning" title="Lớp đầu thường nặng nhất">
             Với bài toán ảnh flatten 784 → 256, chỉ một cặp lớp đã chiếm gần 86%
             tham số của cả mạng. Đây là lý do &ldquo;nặng ký&rdquo; của MLP khi áp
-            lên ảnh — và là động lực khiến người ta chuyển sang CNN, nơi trọng số
+            lên ảnh, và là động lực khiến người ta chuyển sang CNN, nơi trọng số
             được <em>chia sẻ</em> giữa các vùng ảnh.
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Chọn kiến trúc — vài quy tắc ngón tay cái
+            Chọn kiến trúc: vài quy tắc ngón tay cái
           </h4>
           <ol className="list-decimal list-inside space-y-2 text-sm pl-1">
             <li className="leading-relaxed">
@@ -852,16 +852,16 @@ export default function MlpTopic() {
               chiều đầu vào. Chỉ tăng chiều sâu khi kết quả chưa đủ tốt.
             </li>
             <li className="leading-relaxed">
-              <strong>Thiếu khớp (underfitting) → tăng chiều rộng hoặc chiều sâu.
+              <strong>Thiếu khớp (underfitting) thì tăng chiều rộng hoặc chiều sâu.
               </strong> Mạng quá nhỏ không thể vẽ đường biên đủ phức tạp.
             </li>
             <li className="leading-relaxed">
-              <strong>Quá khớp (overfitting) → giảm mạng lại, thêm dropout/L2.
+              <strong>Quá khớp (overfitting) thì giảm mạng lại, thêm dropout/L2.
               </strong> Mạng quá lớn sẽ thuộc lòng dữ liệu huấn luyện, đoán tệ với
               dữ liệu mới.
             </li>
             <li className="leading-relaxed">
-              <strong>Dữ liệu có cấu trúc → dùng kiến trúc tương ứng.</strong> Ảnh
+              <strong>Dữ liệu có cấu trúc thì dùng kiến trúc tương ứng.</strong> Ảnh
               dùng CNN; chuỗi dùng Transformer hoặc RNN; đồ thị dùng GNN. MLP vẫn
               là nền tảng, nhưng không phải lựa chọn tối ưu cho mọi bài.
             </li>
@@ -871,14 +871,14 @@ export default function MlpTopic() {
             <p className="text-sm leading-relaxed">
               Giữa hai lớp liền kề, <strong>mọi nơ-ron</strong> của lớp trước nối
               với <strong>mọi nơ-ron</strong> của lớp sau. Không có cấu trúc
-              &ldquo;bỏ&rdquo; — mỗi đầu vào đều ảnh hưởng đến mỗi đầu ra của lớp
+              &ldquo;bỏ&rdquo;: mỗi đầu vào đều ảnh hưởng đến mỗi đầu ra của lớp
               tiếp theo qua một trọng số riêng. Đây là kiểu đơn giản nhất. CNN,
               Transformer... tất cả đều là biến thể &ldquo;kết nối có chọn lọc&rdquo;
               của ý tưởng này.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Universal Approximation Theorem — MLP xấp xỉ được những gì?">
+          <CollapsibleDetail title="Universal Approximation Theorem: MLP xấp xỉ được những gì?">
             <p className="text-sm leading-relaxed">
               Định lý Cybenko (1989) và Hornik (1991) phát biểu: một MLP với{" "}
               <em>một lớp ẩn đủ rộng</em> và một hàm kích hoạt phi tuyến khả vi có
@@ -890,12 +890,12 @@ export default function MlpTopic() {
               <strong>có tồn tại</strong> bộ trọng số tốt, không nói{" "}
               <em>làm sao tìm ra</em>. Trên thực tế, mạng sâu (nhiều lớp mỏng)
               thường học nhanh hơn và khái quát tốt hơn mạng rộng (một lớp siêu
-              rộng) — đó là lý do deep learning &ldquo;deep&rdquo;.
+              rộng). Đó là lý do deep learning &ldquo;deep&rdquo;.
             </p>
           </CollapsibleDetail>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            MLP học thế nào — liên kết tới backpropagation
+            MLP học thế nào: liên kết tới backpropagation
           </h4>
           <p className="leading-relaxed">
             Đến đây bạn đã hiểu MLP là gì. Còn <em>cách nó tìm ra trọng số tốt</em>{" "}
@@ -905,7 +905,7 @@ export default function MlpTopic() {
             <TopicLink slug="forward-propagation">lan truyền tiến</TopicLink>. Ngắn
             gọn: mạng dự đoán, so với đáp án, đo sai số, rồi dùng quy tắc đạo hàm
             chuỗi để biết &ldquo;nên chỉnh trọng số nào, theo hướng nào&rdquo;. Lặp
-            hàng triệu lần → trọng số hội tụ về bộ tốt.
+            hàng triệu lần thì trọng số hội tụ về bộ tốt.
           </p>
           <p className="leading-relaxed">
             Hàm kích hoạt <em>f</em> có nhiều lựa chọn: tanh, sigmoid, ReLU, GELU...
@@ -916,16 +916,16 @@ export default function MlpTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━━━━ */}
+      {/* ━━━━━━ BƯỚC 8: TÓM TẮT + QUIZ ━━━━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & Kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ về MLP"
           points={[
-            "Một perceptron = một đường thẳng. MLP xếp nhiều perceptron thành nhiều lớp → vẽ được đường cong tuỳ ý.",
-            "Hàm kích hoạt phi tuyến (ReLU, tanh, sigmoid) là BẮT BUỘC ở giữa các lớp — không có nó, cả mạng sụp thành một phép tuyến tính.",
-            "Perceptron đơn KHÔNG giải được XOR. MLP với 1 lớp ẩn 2–4 nơ-ron giải được ngay — mở đường cho deep learning.",
-            "Số tham số giữa hai lớp = (nơ-ron lớp trước) × (nơ-ron lớp sau) + bias. Lớp đầu tiên thường nặng ký nhất.",
-            "MLP là điểm xuất phát lý tưởng cho dữ liệu bảng; ảnh/chuỗi dùng CNN/Transformer sẽ hiệu quả hơn.",
+            "Một perceptron là một đường thẳng. MLP xếp nhiều perceptron thành nhiều lớp nên vẽ được đường cong tuỳ ý.",
+            "Hàm kích hoạt phi tuyến (ReLU, tanh, sigmoid) là BẮT BUỘC ở giữa các lớp. Không có nó, cả mạng sụp thành một phép tuyến tính.",
+            "Perceptron đơn KHÔNG giải được XOR. MLP với 1 lớp ẩn 2–4 nơ-ron giải được ngay, mở đường cho deep learning.",
+            "Số tham số giữa hai lớp bằng (nơ-ron lớp trước) × (nơ-ron lớp sau) cộng bias. Lớp đầu tiên thường nặng ký nhất.",
+            "MLP là điểm xuất phát lý tưởng cho dữ liệu bảng; ảnh và chuỗi dùng CNN hoặc Transformer sẽ hiệu quả hơn.",
           ]}
         />
 
@@ -936,15 +936,15 @@ export default function MlpTopic() {
             <TopicLink slug="mlp-in-credit-scoring">
               MLP trong chấm điểm tín dụng
             </TopicLink>
-            {" "}— cùng mạng nơ-ron, nhưng áp vào một bài toán có thưởng phạt kinh
-            tế rõ ràng.
+            : cùng mạng nơ-ron, nhưng áp vào một bài toán có thưởng phạt kinh tế
+            rõ ràng.
           </Callout>
         </div>
 
         <div className="mt-8 flex items-center gap-2 text-xs text-muted">
           <Sparkles size={12} />
           <span>
-            Kiểm tra nhanh 6 câu — mỗi câu kèm giải thích để bạn chắc kiến thức.
+            Kiểm tra nhanh 6 câu, mỗi câu kèm giải thích để bạn chắc kiến thức.
           </span>
           <ArrowRight size={12} />
         </div>
@@ -958,7 +958,7 @@ export default function MlpTopic() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   MLP BUILDER — SliderGroup chỉnh hidden units & hidden layers,
+   MLP BUILDER: SliderGroup chỉnh hidden units & hidden layers,
    đường biên hai vầng trăng cập nhật tức thì
    ══════════════════════════════════════════════════════════════════ */
 
@@ -969,11 +969,11 @@ function MlpBuilder() {
       <div className="space-y-2">
         <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
           <Network size={18} className="text-accent" />
-          Xây MLP của bạn — xem đường biên phân loại biến đổi
+          Tự xây MLP và xem đường biên phân loại biến đổi
         </h3>
         <p className="text-sm text-muted leading-relaxed">
           Kéo hai thanh bên dưới để thay đổi <strong>số lớp ẩn</strong> và{" "}
-          <strong>số nơ-ron mỗi lớp</strong>. Mạng đang cố tách hai vầng trăng —
+          <strong>số nơ-ron mỗi lớp</strong>. Mạng đang cố tách hai vầng trăng:
           đám điểm đỏ và đám điểm xanh xếp xen kẽ theo hình lưỡi liềm. Khi bạn
           tăng hidden units, đường biên sẽ mềm dần, ôm lấy từng vầng trăng.
         </p>
@@ -1008,9 +1008,9 @@ function MlpBuilder() {
           const coverage = approxAccuracy(TWO_MOON_POINTS, probAt);
           const regime =
             units === 1
-              ? "Một đường thẳng — y hệt perceptron đơn"
+              ? "Một đường thẳng, y hệt perceptron đơn"
               : layers === 1 && units <= 2
-                ? "Vài đường thẳng ghép lại — vẫn hơi thô"
+                ? "Vài đường thẳng ghép lại, vẫn hơi thô"
                 : layers === 1 && units >= 6
                   ? "Một đường gấp khúc khá mềm"
                   : layers >= 2 && units >= 4
@@ -1056,12 +1056,12 @@ function MlpBuilder() {
       />
 
       <Callout variant="insight" title="Quan sát chính">
-        Khi <strong>số nơ-ron = 1 và số lớp = 1</strong>, mạng không hơn perceptron
+        Khi <strong>số nơ-ron là 1 và số lớp là 1</strong>, mạng không hơn perceptron
         đơn: đường biên vẫn thẳng. Chỉ cần bật lên <strong>2–3 lớp × 4–8 nơ-ron
-        </strong>, đường biên đã uốn cong bao lấy từng vầng trăng — y đúng như lời
+        </strong>, đường biên đã uốn cong bao lấy từng vầng trăng, đúng như lời
         hứa của Universal Approximation Theorem. Bấm &ldquo;Khởi tạo lại trọng
         số&rdquo; để thấy: cùng kiến trúc nhưng trọng số khác sẽ cho đường biên
-        hơi khác — vì mỗi lần khởi tạo là một điểm xuất phát khác trên cùng không
+        hơi khác, vì mỗi lần khởi tạo là một điểm xuất phát khác trên cùng không
         gian tham số.
       </Callout>
 
@@ -1071,11 +1071,11 @@ function MlpBuilder() {
         </p>
         <ul className="text-xs text-muted space-y-1 list-disc list-inside">
           <li>
-            Giảm nơ-ron xuống 1, giữ 1 lớp → đường biên trở lại kiểu &ldquo;một
-            đường thẳng chéo&rdquo; — đủ để nhắc bạn về perceptron.
+            Giảm nơ-ron xuống 1, giữ 1 lớp thì đường biên trở lại kiểu &ldquo;một
+            đường thẳng chéo&rdquo;, đủ để nhắc bạn về perceptron.
           </li>
           <li>
-            Tăng lên 3 lớp × 8 nơ-ron → đường biên uốn lượn quanh cả hai vầng
+            Tăng lên 3 lớp × 8 nơ-ron thì đường biên uốn lượn quanh cả hai vầng
             trăng. Đây là &ldquo;đường cong phức tạp&rdquo; mà HOOK đã hứa ở đầu
             bài.
           </li>
@@ -1090,7 +1090,7 @@ function MlpBuilder() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   XOR MLP PLOT — hiển thị đường biên MLP cố định giải XOR
+   XOR MLP PLOT: hiển thị đường biên MLP cố định giải XOR
    ══════════════════════════════════════════════════════════════════ */
 
 function XorMlpPlot() {
@@ -1115,7 +1115,7 @@ function XorMlpPlot() {
       size={260}
       data={XOR_POINTS}
       probAt={probAt}
-      caption="MLP dựng hai 'đường thẳng nhỏ' ở lớp ẩn, rồi tổ hợp ở lớp ra → đường biên hình chữ X mềm mại, bao đúng hai cặp điểm chéo."
+      caption="MLP dựng hai 'đường thẳng nhỏ' ở lớp ẩn, rồi tổ hợp ở lớp ra. Đường biên hình chữ X mềm mại, bao đúng hai cặp điểm chéo."
     />
   );
 }

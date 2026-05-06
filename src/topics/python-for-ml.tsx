@@ -39,9 +39,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "python-for-ml",
   title: "Python for Machine Learning",
-  titleVi: "Python cho ML — NumPy & Pandas trong 45 phút",
+  titleVi: "Python cho ML: NumPy và Pandas trong 45 phút",
   description:
-    "Python không phải ngôn ngữ nhanh nhất, nhưng NumPy và Pandas biến nó thành lingua franca của ML. Bài này chỉ cho bạn đọc một đoạn code ML và biết nó đang làm gì.",
+    "Python không phải ngôn ngữ nhanh nhất. Nhưng NumPy và Pandas biến nó thành lingua franca của ML. Bài này chỉ cho bạn cách đọc một đoạn code ML và biết nó đang làm gì.",
   category: "foundations",
   tags: ["python", "numpy", "pandas", "matplotlib", "tools"],
   difficulty: "intermediate",
@@ -56,7 +56,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ────────────────────────────────────────────────────────────────────────
-   VISUAL HELPERS — những khối SVG/bảng tái sử dụng cho từng CodeBlock.
+   VISUAL HELPERS: những khối SVG/bảng tái sử dụng cho từng CodeBlock.
    Mỗi khối là một miếng "kết quả mong đợi" đi kèm một đoạn code.
    ──────────────────────────────────────────────────────────────────────── */
 
@@ -188,7 +188,7 @@ function DataTable({
 }
 
 /* ────────────────────────────────────────────────────────────────────────
-   NUMPY — các slice code ≤15 dòng kèm visual
+   NUMPY: các slice code ≤15 dòng kèm visual
    ──────────────────────────────────────────────────────────────────────── */
 
 function NumpyCreate() {
@@ -218,8 +218,8 @@ print(e)  # [0.   0.25 0.5  0.75 1.  ]`}
           <ArrayPills values={["0.00", "0.25", "0.50", "0.75", "1.00"]} color="#f59e0b" />
         </OutputBox>
         <p className="text-[11px] text-tertiary italic leading-relaxed">
-          Bốn cách tạo phổ biến nhất. <code className="font-mono">arange</code> như{" "}
-          <code className="font-mono">range()</code> của Python,{" "}
+          Bốn cách tạo phổ biến nhất. <code className="font-mono">arange</code> giống{" "}
+          <code className="font-mono">range()</code> của Python.{" "}
           <code className="font-mono">linspace</code> chia đều khoảng thành n điểm.
         </p>
       </div>
@@ -234,7 +234,7 @@ function NumpyShape() {
 {`import numpy as np
 
 a = np.array([1, 2, 3, 4, 5, 6])
-print(a.shape)   # (6,)  — 1 chiều, 6 phần tử
+print(a.shape)   # (6,)  -> 1 chiều, 6 phần tử
 
 M = a.reshape(2, 3)
 print(M.shape)   # (2, 3)
@@ -242,18 +242,18 @@ print(M)
 # [[1 2 3]
 #  [4 5 6]]
 
-print(M.ndim)    # 2  — số chiều
-print(M.size)    # 6  — tổng phần tử`}
+print(M.ndim)    # 2  -> số chiều
+print(M.size)    # 6  -> tổng số phần tử`}
       </CodeBlock>
       <div className="space-y-2.5">
-        <OutputBox label="a — shape (6,)">
+        <OutputBox label="a có shape (6,)">
           <ArrayPills values={[1, 2, 3, 4, 5, 6]} color="#6366f1" />
         </OutputBox>
         <div className="flex items-center gap-2">
           <ArrowRight size={16} className="text-accent" />
           <span className="text-[11px] font-semibold text-accent">a.reshape(2, 3)</span>
         </div>
-        <OutputBox label="M — shape (2, 3)">
+        <OutputBox label="M có shape (2, 3)">
           <MatrixGrid
             rows={[
               [1, 2, 3],
@@ -263,8 +263,7 @@ print(M.size)    # 6  — tổng phần tử`}
           />
         </OutputBox>
         <p className="text-[11px] text-tertiary italic leading-relaxed">
-          Cùng một &ldquo;ruột&rdquo; dữ liệu, chỉ đổi cách bạn &ldquo;nhìn&rdquo; nó. Tổng số phần tử không đổi:
-          6 = 2 × 3.
+          Cùng một khối dữ liệu, chỉ đổi cách bạn nhìn nó. Tổng số phần tử không đổi: 6 = 2 × 3.
         </p>
       </div>
     </div>
@@ -274,7 +273,7 @@ print(M.size)    # 6  — tổng phần tử`}
 function NumpyBroadcasting() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <CodeBlock language="python" title="Broadcasting — không cần vòng lặp">
+      <CodeBlock language="python" title="Broadcasting: không cần vòng lặp">
 {`import numpy as np
 
 a = np.array([1, 2, 3, 4])
@@ -282,7 +281,7 @@ print(a * 2)         # [2 4 6 8]
 print(a + 10)        # [11 12 13 14]
 
 # Array + scalar OK.
-# Array (4,) + array (4,) OK — cộng từng phần tử.
+# Array (4,) + array (4,) OK, cộng từng phần tử.
 b = np.array([10, 20, 30, 40])
 print(a + b)         # [11 22 33 44]
 
@@ -309,7 +308,8 @@ print((M + a).shape) # (3, 4)`}
         </OutputBox>
         <p className="text-[11px] text-tertiary italic leading-relaxed">
           Không cần viết <code className="font-mono">for i in range(...)</code>. NumPy tự động phát
-          (broadcast) giá trị nhỏ ra toàn mảng, chạy bằng C bên dưới — nhanh gấp trăm lần Python loop.
+          (broadcast) giá trị nhỏ ra toàn mảng, chạy bằng C bên dưới. Nhờ vậy nhanh gấp trăm lần
+          Python loop.
         </p>
       </div>
     </div>
@@ -336,7 +336,7 @@ print(np.log(a + 1))
 
 # Axis trên ma trận 2D
 M = np.array([[1, 2, 3], [4, 5, 6]])
-print(M.sum(axis=0))  # [5 7 9] — cộng theo cột`}
+print(M.sum(axis=0))  # [5 7 9], cộng theo cột`}
       </CodeBlock>
       <div className="space-y-2.5">
         <OutputBox label="a = [3, 1, 4, 1, 5, 9, 2, 6]">
@@ -363,7 +363,7 @@ print(M.sum(axis=0))  # [5 7 9] — cộng theo cột`}
             ))}
           </div>
         </OutputBox>
-        <OutputBox label="M.sum(axis=0) — cộng theo cột">
+        <OutputBox label="M.sum(axis=0) cộng theo cột">
           <MatrixGrid
             rows={[
               [1, 2, 3],
@@ -381,7 +381,7 @@ print(M.sum(axis=0))  # [5 7 9] — cộng theo cột`}
 }
 
 /* ────────────────────────────────────────────────────────────────────────
-   PANDAS — các slice code ≤15 dòng kèm visual
+   PANDAS: các slice code ≤15 dòng kèm visual
    ──────────────────────────────────────────────────────────────────────── */
 
 function PandasCreate() {
@@ -408,12 +408,12 @@ print(df.columns)  # Index(['ten', 'tuoi', 'lop', 'diem'])
 print(df.dtypes)   # object, int64, object, float64`}
       </CodeBlock>
       <div className="space-y-2.5">
-        <OutputBox label="df — 4 hàng × 4 cột">
+        <OutputBox label="df có 4 hàng × 4 cột">
           <DataTable columns={["ten", "tuoi", "lop", "diem"]} rows={rows} />
         </OutputBox>
         <p className="text-[11px] text-tertiary italic leading-relaxed">
           DataFrame giống sheet Excel: mỗi cột một tên, một kiểu dữ liệu riêng (chuỗi, số nguyên,
-          số thực). Mỗi cột dưới lòng là một NumPy array — đó là lý do mọi phép tính đều nhanh.
+          số thực). Bên dưới mỗi cột là một NumPy array. Đó là lý do mọi phép tính đều nhanh.
         </p>
       </div>
     </div>
@@ -434,10 +434,10 @@ function PandasSelect() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <CodeBlock language="python" title="Chọn cột & lọc hàng">
-{`# Chọn 1 cột — trả về Series
+{`# Chọn 1 cột, trả về Series
 ten = df["ten"]
 
-# Chọn nhiều cột — trả về DataFrame
+# Chọn nhiều cột, trả về DataFrame
 nhieu = df[["ten", "diem"]]
 
 # Xem 5 hàng đầu
@@ -451,7 +451,7 @@ print(gioi)
 lop_a_gioi = df[(df["lop"] == "10A") & (df["diem"] >= 8)]`}
       </CodeBlock>
       <div className="space-y-2.5">
-        <OutputBox label="df[&quot;diem&quot;] — một Series" tone="info">
+        <OutputBox label="df[&quot;diem&quot;] trả về một Series" tone="info">
           <ArrayPills values={[8.5, 7.0, 9.0, 6.5]} color="#0ea5e9" />
         </OutputBox>
         <OutputBox label="df[df[&quot;diem&quot;] >= 8.0]" tone="success">
@@ -463,8 +463,8 @@ lop_a_gioi = df[(df["lop"] == "10A") & (df["diem"] >= 8)]`}
         </OutputBox>
         <p className="text-[11px] text-tertiary italic leading-relaxed">
           <code className="font-mono">df[&quot;diem&quot;] &gt;= 8.0</code> tạo ra một mảng True/False.
-          Truyền mảng đó làm chỉ mục thì chỉ những hàng &ldquo;True&rdquo; được giữ lại — đây là
-          boolean mask, &ldquo;vũ khí chính&rdquo; của Pandas.
+          Truyền mảng đó làm chỉ mục thì chỉ những hàng True được giữ lại. Đây là
+          boolean mask, công cụ chính của Pandas.
         </p>
         <div className="flex flex-wrap gap-1 mt-1">
           {[
@@ -477,7 +477,7 @@ lop_a_gioi = df[(df["lop"] == "10A") & (df["diem"] >= 8)]`}
               key={i}
               className={`inline-flex h-6 items-center justify-center rounded-md px-2 font-mono text-[10px] tabular-nums ${
                 x.keep
-                  ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                  ? "bg-emerald-100 text-foreground font-semibold dark:bg-emerald-900/40"
                   : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-500 line-through"
               }`}
             >
@@ -497,7 +497,7 @@ function PandasGroupby() {
   ];
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <CodeBlock language="python" title="Groupby — PivotTable của Pandas">
+      <CodeBlock language="python" title="Groupby: PivotTable của Pandas">
 {`# Nhóm theo lớp, tính trung bình + đếm
 tb_theo_lop = df.groupby("lop")["diem"].mean()
 print(tb_theo_lop)
@@ -544,7 +544,7 @@ print(summary)`}
             <Layers size={13} /> .groupby(&quot;lop&quot;)
           </div>
         </div>
-        <OutputBox label="Sau: mỗi lớp → 1 dòng tổng hợp" tone="success">
+        <OutputBox label="Sau: mỗi lớp gom thành 1 dòng tổng hợp" tone="success">
           <DataTable
             columns={["lop", "diem_tb", "so_hs"]}
             rows={grouped}
@@ -574,7 +574,7 @@ function PandasMerge() {
   ];
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <CodeBlock language="python" title="Merge — nối 2 bảng">
+      <CodeBlock language="python" title="Merge: nối 2 bảng">
 {`import pandas as pd
 
 hs = pd.DataFrame({
@@ -592,17 +592,17 @@ print(ket_qua)`}
       </CodeBlock>
       <div className="space-y-2">
         <div className="flex gap-2 items-start flex-wrap">
-          <OutputBox label="hs — bảng học sinh">
+          <OutputBox label="hs là bảng học sinh">
             <DataTable columns={["ten", "lop"]} rows={left} highlightCol={1} />
           </OutputBox>
           <div className="flex items-center justify-center h-24">
             <span className="text-xl font-bold text-accent">⨝</span>
           </div>
-          <OutputBox label="gv — bảng giáo viên">
+          <OutputBox label="gv là bảng giáo viên">
             <DataTable columns={["lop", "giao_vien"]} rows={right} highlightCol={0} />
           </OutputBox>
         </div>
-        <OutputBox label="Kết quả — merge on &quot;lop&quot;" tone="success">
+        <OutputBox label="Kết quả sau merge on &quot;lop&quot;" tone="success">
           <DataTable columns={["ten", "lop", "giao_vien"]} rows={merged} highlightCol={2} />
         </OutputBox>
         <p className="text-[11px] text-tertiary italic leading-relaxed">
@@ -616,7 +616,7 @@ print(ket_qua)`}
 }
 
 /* ────────────────────────────────────────────────────────────────────────
-   MINI-PIPELINE 3 BƯỚC — mô phỏng phân tích điểm học sinh
+   MINI-PIPELINE 3 BƯỚC: mô phỏng phân tích điểm học sinh
    ──────────────────────────────────────────────────────────────────────── */
 
 function Step1LoadCSV() {
@@ -641,20 +641,20 @@ function Step1LoadCSV() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <CodeBlock language="python" title="3 dòng — nạp và ngó nhanh">
+        <CodeBlock language="python" title="3 dòng để nạp và ngó nhanh">
 {`import pandas as pd
 
 df = pd.read_csv("diem_hoc_sinh.csv")
 print(df.head())
 # (500 hàng, 5 cột)`}
         </CodeBlock>
-        <OutputBox label="df.head() — 5 hàng đầu" tone="info">
+        <OutputBox label="df.head() trả về 5 hàng đầu" tone="info">
           <DataTable
             columns={["stt", "ten", "lop", "toan", "van"]}
             rows={preview}
           />
           <p className="mt-2 text-[11px] text-tertiary">
-            500 hàng, 5 cột &mdash; <code className="font-mono">head()</code> chỉ hiển thị 5 hàng đầu.
+            500 hàng, 5 cột. <code className="font-mono">head()</code> chỉ hiển thị 5 hàng đầu.
           </p>
         </OutputBox>
       </div>
@@ -679,12 +679,12 @@ function Step2FilterGroupby() {
         <div>
           <h4 className="text-sm font-semibold text-foreground">Lọc học sinh giỏi rồi gom theo lớp</h4>
           <p className="text-[11px] text-muted">
-            Filter + groupby — cặp đôi bạn sẽ gõ mỗi ngày trong phân tích dữ liệu.
+            Filter và groupby là cặp đôi bạn sẽ gõ mỗi ngày trong phân tích dữ liệu.
           </p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <CodeBlock language="python" title="5 dòng — lọc & gom nhóm">
+        <CodeBlock language="python" title="5 dòng để lọc và gom nhóm">
 {`df["tb"] = (df["toan"] + df["van"]) / 2
 gioi = df[df["tb"] >= 8.0]
 
@@ -693,7 +693,7 @@ summary = gioi.groupby("lop").agg(
     so_hs=("ten", "count"),
 )`}
         </CodeBlock>
-        <OutputBox label="summary — điểm TB mỗi lớp" tone="success">
+        <OutputBox label="summary chứa điểm TB mỗi lớp" tone="success">
           <div className="space-y-2">
             {groupData.map((g) => (
               <div key={g.lop} className="flex items-center gap-2">
@@ -722,7 +722,7 @@ summary = gioi.groupby("lop").agg(
             ))}
           </div>
           <p className="mt-2 text-[11px] text-tertiary italic leading-relaxed">
-            Một bảng 500 hàng biến thành 4 dòng tổng hợp &mdash; có thể in ra báo cáo ngay.
+            Một bảng 500 hàng biến thành 4 dòng tổng hợp. Có thể in ra báo cáo ngay.
           </p>
         </OutputBox>
       </div>
@@ -753,12 +753,12 @@ function Step3Plot() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <CodeBlock language="python" title="4 dòng — dựng histogram">
+        <CodeBlock language="python" title="4 dòng để dựng histogram">
 {`import matplotlib.pyplot as plt
 
 plt.hist(df["tb"], bins=5, color="#6366f1", edgecolor="white")
 plt.xlabel("Điểm trung bình"); plt.ylabel("Số học sinh")
-plt.title("Phân phối điểm — 500 học sinh")
+plt.title("Phân phối điểm: 500 học sinh")
 plt.show()`}
         </CodeBlock>
         <OutputBox label="Biểu đồ hiển thị khi plt.show() chạy" tone="info">
@@ -829,7 +829,7 @@ plt.show()`}
             </text>
           </svg>
           <p className="mt-1 text-[11px] text-tertiary italic leading-relaxed text-center">
-            Phân phối &ldquo;đỉnh ở giữa&rdquo; điển hình &mdash; đa số học sinh đạt 7-9 điểm.
+            Phân phối &ldquo;đỉnh ở giữa&rdquo; điển hình. Đa số học sinh đạt 7-9 điểm.
           </p>
         </OutputBox>
       </div>
@@ -847,7 +847,7 @@ const quizQuestions: QuizQuestion[] = [
     options: ["(6,)", "(2, 3)", "(3, 2)", "Lỗi vì không thể reshape"],
     correct: 1,
     explanation:
-      "reshape(2, 3) yêu cầu mảng có 2 hàng × 3 cột = 6 phần tử — khớp với 6 phần tử ban đầu, nên hợp lệ. shape trả về (2, 3). Nếu bạn muốn (3, 2) thì phải gọi reshape(3, 2).",
+      "reshape(2, 3) yêu cầu mảng có 2 hàng × 3 cột = 6 phần tử. Con số đó khớp với 6 phần tử ban đầu, nên hợp lệ. shape trả về (2, 3). Nếu bạn muốn (3, 2) thì phải gọi reshape(3, 2).",
   },
   {
     question:
@@ -860,16 +860,16 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "df[\"diem\"] >= 8.0 trả về Series gồm True/False cho từng hàng. Truyền Series đó làm chỉ mục cho df thì chỉ những hàng True được giữ — đây là boolean mask. df gốc không đổi, kết quả là một DataFrame mới.",
+      "df[\"diem\"] >= 8.0 trả về Series gồm True/False cho từng hàng. Truyền Series đó làm chỉ mục cho df thì chỉ những hàng True được giữ. Đây là boolean mask. df gốc không đổi, kết quả là một DataFrame mới.",
   },
   {
     question:
       "Python thuần mất 2 giây để bình phương 10 triệu số bằng for-loop. NumPy làm cùng việc đó mất bao lâu (xấp xỉ)?",
     options: [
-      "Khoảng 2 giây — tốc độ tương đương",
-      "Khoảng 0,01 giây — nhanh hơn ~200 lần nhờ vectorization",
-      "Khoảng 20 giây — chậm hơn vì overhead import",
-      "Không so sánh được — hai thư viện làm việc khác nhau",
+      "Khoảng 2 giây, tốc độ tương đương",
+      "Khoảng 0,01 giây, nhanh hơn ~200 lần nhờ vectorization",
+      "Khoảng 20 giây, chậm hơn vì overhead import",
+      "Không so sánh được, vì hai thư viện làm việc khác nhau",
     ],
     correct: 1,
     explanation:
@@ -878,40 +878,40 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "Broadcasting trong NumPy hoạt động thế nào khi bạn viết a + 10 với a có shape (4,)?",
     options: [
-      "Lỗi — không thể cộng mảng với số",
-      "Tạo array [10, 10, 10, 10] rồi cộng từng phần tử — kết quả shape (4,)",
-      "Biến 10 thành list rồi nối vào cuối a — kết quả shape (5,)",
+      "Lỗi, không thể cộng mảng với số",
+      "Tạo array [10, 10, 10, 10] rồi cộng từng phần tử, kết quả shape (4,)",
+      "Biến 10 thành list rồi nối vào cuối a, kết quả shape (5,)",
       "Trả về tổng của tất cả phần tử cộng 10",
     ],
     correct: 1,
     explanation:
-      "Broadcasting là quy tắc cho phép NumPy &ldquo;phát&rdquo; scalar hoặc mảng nhỏ ra khớp shape của mảng lớn. Về mặt logic, 10 được coi như [10, 10, 10, 10] rồi cộng element-wise. Trên thực tế NumPy không tạo mảng phụ — nó chỉ duyệt vòng lặp C cộng 10 vào từng ô, rất tiết kiệm bộ nhớ.",
+      "Broadcasting là quy tắc cho phép NumPy phát scalar hoặc mảng nhỏ ra khớp shape của mảng lớn. Về mặt logic, 10 được coi như [10, 10, 10, 10] rồi cộng element-wise. Trên thực tế NumPy không tạo mảng phụ. Nó chỉ duyệt vòng lặp C cộng 10 vào từng ô, rất tiết kiệm bộ nhớ.",
   },
   {
     question:
       "df.groupby(\"lop\").agg(tb=(\"diem\", \"mean\")) trả về cái gì?",
     options: [
-      "Một số duy nhất — điểm trung bình toàn bảng",
+      "Một số duy nhất, tức là điểm trung bình toàn bảng",
       "DataFrame mới với index là các giá trị của cột &ldquo;lop&rdquo;, cột &ldquo;tb&rdquo; là mean(diem) của mỗi nhóm",
       "Danh sách các lớp đã xuất hiện trong df",
       "Sắp xếp df theo cột &ldquo;lop&rdquo; rồi theo &ldquo;diem&rdquo;",
     ],
     correct: 1,
     explanation:
-      "groupby chia df thành các nhóm dựa trên giá trị cột &ldquo;lop&rdquo;. agg áp dụng phép &ldquo;mean&rdquo; lên cột &ldquo;diem&rdquo; cho mỗi nhóm, đặt tên kết quả là &ldquo;tb&rdquo;. Kết quả là DataFrame nhỏ gọn, mỗi hàng là một lớp, mỗi cột là một số liệu tổng hợp — đây là PivotTable của Pandas.",
+      "groupby chia df thành các nhóm dựa trên giá trị cột lop. agg áp dụng phép mean lên cột diem cho mỗi nhóm, đặt tên kết quả là tb. Kết quả là một DataFrame nhỏ gọn, mỗi hàng là một lớp, mỗi cột là một số liệu tổng hợp. Đây chính là PivotTable của Pandas.",
   },
   {
     question:
       "Khi bạn viết hs.merge(gv, on=\"lop\", how=\"left\"), cái gì quyết định các hàng xuất hiện trong kết quả?",
     options: [
       "Số hàng của bảng bên phải (gv)",
-      "Số hàng của bảng bên trái (hs) — hs giữ nguyên mọi hàng, gv nối vào theo cột &ldquo;lop&rdquo;",
+      "Số hàng của bảng bên trái (hs). hs giữ nguyên mọi hàng, gv nối vào theo cột lop",
       "Tổng số hàng của hs và gv cộng lại",
-      "Giao (intersection) của hai bảng — chỉ hàng nào có &ldquo;lop&rdquo; ở cả hai",
+      "Giao (intersection) của hai bảng, tức là chỉ giữ hàng nào có lop ở cả hai",
     ],
     correct: 1,
     explanation:
-      "how=&quot;left&quot; giữ mọi hàng của bảng bên trái, và tìm hàng khớp bên phải dựa trên cột chỉ định. Hàng nào bên hs không có match bên gv thì các cột mới sẽ là NaN — không bị xóa. Nếu đổi sang how=&quot;inner&quot; thì chỉ giữ hàng nào có match cả hai.",
+      "how=&quot;left&quot; giữ mọi hàng của bảng bên trái, và tìm hàng khớp bên phải dựa trên cột chỉ định. Hàng nào bên hs không có match bên gv thì các cột mới sẽ là NaN, không bị xóa. Nếu đổi sang how=&quot;inner&quot; thì chỉ giữ hàng nào có match cả hai.",
   },
 ];
 
@@ -950,7 +950,7 @@ export default function PythonForMlTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1 · HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-3 mb-5">
           <div className="flex items-center gap-2">
@@ -960,7 +960,7 @@ export default function PythonForMlTopic() {
             </h3>
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Python <strong>không phải</strong> ngôn ngữ nhanh nhất &mdash; chạy một vòng lặp
+            Python <strong>không phải</strong> ngôn ngữ nhanh nhất. Chạy một vòng lặp
             bằng Python thuần chậm hơn C khoảng 100 lần. Nhưng nó có <strong>hai thư viện</strong>
             {" "}biến nó thành ngôn ngữ chung của ML:{" "}
             <span className="font-semibold text-sky-600 dark:text-sky-400">NumPy</span>
@@ -979,33 +979,33 @@ export default function PythonForMlTopic() {
             "NumPy nén mảng lại chỉ còn 1% số phần tử nên ít việc hơn",
           ]}
           correct={1}
-          explanation="Mỗi bước trong for-loop Python phải qua interpreter — kiểm tra kiểu, unbox số, boxing lại — rất đắt. NumPy lưu mảng dạng buffer C thuần, vòng lặp chạy bằng mã C đã biên dịch, không mất chi phí đó. Đây gọi là 'vectorization'. Không phải song song đa core, không phải GPU ngầm — chỉ là vòng lặp C thay vì vòng lặp Python. Bài sau bạn sẽ đặt hai đoạn code cạnh nhau và đo thật."
+          explanation="Mỗi bước trong for-loop Python phải qua interpreter (kiểm tra kiểu, unbox số, boxing lại) nên rất đắt. NumPy lưu mảng dạng buffer C thuần, vòng lặp chạy bằng mã C đã biên dịch, không mất chi phí đó. Đây gọi là vectorization. Không phải song song đa core, không phải GPU ngầm. Chỉ là vòng lặp C thay vì vòng lặp Python. Bài sau bạn sẽ đặt hai đoạn code cạnh nhau và đo thật."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Trong phần dưới, bạn sẽ thấy cùng một tác vụ mà NumPy rút gọn vòng lặp 20 dòng xuống
-            1 dòng, và Pandas rút gọn PivotTable Excel xuống 1 câu lệnh. Không phải ma thuật —
-            chỉ là vectorization và API thiết kế tốt.
+            1 dòng, và Pandas rút gọn PivotTable Excel xuống 1 câu lệnh. Không phải ma thuật.
+            Chỉ là vectorization và API thiết kế tốt.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — REVEAL — CODE PLAYGROUND ━━━ */}
+      {/* ━━━ BƯỚC 2 · REVEAL · CODE PLAYGROUND ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-4 leading-relaxed">
             Chọn một thư viện ở tab, rồi chọn một thao tác. Code bên trái, kết quả mong đợi bên
-            phải &mdash; không cần cài Python để học.
+            phải. Không cần cài Python để học.
           </p>
 
           <TabView
             tabs={[
               {
-                label: "NumPy — mảng số",
+                label: "NumPy: mảng số",
                 content: (
                   <div className="space-y-4">
                     <p className="text-xs text-muted">
-                      NumPy cung cấp <code className="font-mono">ndarray</code> &mdash; mảng N chiều
-                      chứa số, lưu liên tiếp trong bộ nhớ, tính toán bằng C. Nền tảng của PyTorch,
+                      NumPy cung cấp <code className="font-mono">ndarray</code>: mảng N chiều
+                      chứa số, lưu liên tiếp trong bộ nhớ, tính toán bằng C. Đây là nền tảng của PyTorch,
                       TensorFlow, scikit-learn.
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -1047,12 +1047,12 @@ export default function PythonForMlTopic() {
                 ),
               },
               {
-                label: "Pandas — bảng dữ liệu",
+                label: "Pandas: bảng dữ liệu",
                 content: (
                   <div className="space-y-4">
                     <p className="text-xs text-muted">
                       Pandas xây trên NumPy, thêm nhãn cho hàng và cột. <code className="font-mono">DataFrame</code>
-                      {" "}= bảng Excel có siêu năng lực: đọc CSV 1 dòng, lọc 1 dòng, groupby 1 dòng.
+                      {" "}là bảng Excel có siêu năng lực: đọc CSV 1 dòng, lọc 1 dòng, groupby 1 dòng.
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {pandasTabs.map((t) => {
@@ -1097,21 +1097,21 @@ export default function PythonForMlTopic() {
 
           <Callout variant="insight" title="Tại sao chia nhỏ từng thao tác?">
             Mỗi đoạn code trên chỉ làm <strong>một việc</strong> và kết quả của nó hiện ngay
-            bên cạnh. Đây là cách đọc code ML thực tế: bạn không cần hiểu cả script 300 dòng &mdash;
-            bạn nhận ra từng miếng nhỏ (tạo array, lọc, groupby) rồi ghép chúng lại.
+            bên cạnh. Đây là cách đọc code ML thực tế: bạn không cần hiểu cả script 300 dòng.
+            Bạn nhận ra từng miếng nhỏ (tạo array, lọc, groupby) rồi ghép chúng lại.
           </Callout>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — DEEPEN — PIPELINE 3 BƯỚC ━━━ */}
+      {/* ━━━ BƯỚC 3 · DEEPEN · PIPELINE 3 BƯỚC ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Phân tích thật">
         <div className="rounded-2xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-1">
-            Phân tích thực tế — 3 bước, 12 dòng code
+            Phân tích thực tế gói gọn trong 3 bước, 12 dòng code
           </h3>
           <p className="text-sm text-muted mb-5 leading-relaxed">
             Mỗi bước dưới đây là một câu hỏi kinh doanh + code + kết quả trực quan. Bấm{" "}
-            <strong>Tiếp tục</strong> để lần lượt mở ra từng bước &mdash; giống như bạn đang viết
+            <strong>Tiếp tục</strong> để lần lượt mở ra từng bước, giống như bạn đang viết
             code trong Jupyter notebook.
           </p>
           <StepReveal
@@ -1136,7 +1136,7 @@ export default function PythonForMlTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 4 · CHALLENGE ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <div className="space-y-3">
           <div className="rounded-xl border border-border bg-surface/60 p-4">
@@ -1166,15 +1166,15 @@ export default function PythonForMlTopic() {
           <InlineChallenge
             question="NumPy broadcasting: a = np.array([1, 2, 3]) có shape (3,). M = np.array([[10,10,10],[20,20,20]]) có shape (2, 3). a + M sẽ cho shape gì và giá trị ra sao?"
             options={[
-              "Lỗi ValueError — shape (3,) không broadcast được với (2, 3)",
-              "Shape (2, 3), giá trị [[11,12,13],[21,22,23]] — a được phát ra thành 2 hàng",
-              "Shape (3,), giá trị [11,22,33] — chỉ lấy đường chéo",
-              "Shape (6,), giá trị [11,12,13,20,20,20] — nối 2 mảng lại",
+              "Lỗi ValueError, shape (3,) không broadcast được với (2, 3)",
+              "Shape (2, 3), giá trị [[11,12,13],[21,22,23]], a được phát ra thành 2 hàng",
+              "Shape (3,), giá trị [11,22,33], chỉ lấy đường chéo",
+              "Shape (6,), giá trị [11,12,13,20,20,20], nối 2 mảng lại",
             ]}
             correct={1}
-            explanation="Quy tắc broadcasting: so sánh shape từ phải sang trái. a là (3,), M là (2, 3). Chiều cuối cùng khớp (3 = 3). Chiều còn lại của a thiếu thì được 'thêm' bằng 1 — a được coi như shape (1, 3), sau đó phát ra (2, 3) bằng cách lặp hàng. Kết quả: [[1+10, 2+10, 3+10], [1+20, 2+20, 3+20]] = [[11,12,13],[21,22,23]]. Broadcasting chỉ hoạt động khi mỗi chiều hoặc bằng nhau, hoặc một trong hai bằng 1."
+            explanation="Quy tắc broadcasting: so sánh shape từ phải sang trái. a là (3,), M là (2, 3). Chiều cuối cùng khớp (3 = 3). Chiều còn lại của a thiếu thì được thêm bằng 1, tức là a được coi như shape (1, 3), sau đó phát ra (2, 3) bằng cách lặp hàng. Kết quả: [[1+10, 2+10, 3+10], [1+20, 2+20, 3+20]] = [[11,12,13],[21,22,23]]. Broadcasting chỉ hoạt động khi mỗi chiều hoặc bằng nhau, hoặc một trong hai bằng 1."
           />
-          <Callout variant="warning" title="Quy tắc broadcasting — học thuộc 3 câu này">
+          <Callout variant="warning" title="Quy tắc broadcasting: học thuộc 3 câu này">
             (1) So sánh shape từ <strong>phải sang trái</strong>. (2) Hai chiều tương thích khi{" "}
             <strong>bằng nhau</strong> hoặc <strong>một trong hai bằng 1</strong>. (3) Chiều
             thiếu được coi là 1. Nếu không thỏa cả 3 &rarr; <code className="font-mono">ValueError</code>.
@@ -1182,24 +1182,24 @@ export default function PythonForMlTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 5 · AHA ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Khoảnh khắc hiểu">
         <AhaMoment>
           <p>
             Đọc một đoạn code ML không phải là đọc từng dòng một. Bạn nhận ra{" "}
             <strong>những miếng nhỏ quen thuộc</strong>: &ldquo;À, đây là tạo array&rdquo;, &ldquo;À,
-            đây là groupby&rdquo;, &ldquo;À, đây là vẽ biểu đồ&rdquo; &mdash; rồi ghép lại.
+            đây là groupby&rdquo;, &ldquo;À, đây là vẽ biểu đồ&rdquo;, rồi ghép lại.
           </p>
           <p className="mt-3">
             Cả bộ sinh thái ML hiện đại chỉ là <strong>NumPy + Pandas + Matplotlib</strong>, đi
             kèm một vài thư viện model (scikit-learn, PyTorch...). Mỗi thư viện model đều nhận
-            NumPy array làm đầu vào và trả NumPy array ra đầu ra. Bạn không cần biết hết &mdash;
-            bạn chỉ cần <em>biết đủ để đọc</em>.
+            NumPy array làm đầu vào và trả NumPy array ra đầu ra. Bạn không cần biết hết.
+            Bạn chỉ cần <em>biết đủ để đọc</em>.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — EXPLAIN ━━━ */}
+      {/* ━━━ BƯỚC 6 · EXPLAIN ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
@@ -1228,13 +1228,13 @@ export default function PythonForMlTopic() {
                 icon: CheckCircle2,
                 color: "#f59e0b",
                 title: "Dùng .copy() khi cần",
-                body: "df2 = df[df['diem'] >= 8] đôi khi là 'view' — sửa df2 cũng sửa df gốc. Thêm .copy() để tránh bug thầm lặng.",
+                body: "df2 = df[df['diem'] >= 8] đôi khi là một view, tức là sửa df2 cũng sửa df gốc. Thêm .copy() để tránh bug thầm lặng.",
               },
               {
                 icon: CheckCircle2,
                 color: "#ef4444",
                 title: "Đặt seed khi có ngẫu nhiên",
-                body: "np.random.seed(42) để kết quả lặp lại được. Không có seed, mỗi lần chạy ra một con số khác — không debug được.",
+                body: "np.random.seed(42) để kết quả lặp lại được. Không có seed, mỗi lần chạy ra một con số khác, không debug được.",
               },
             ].map((t) => {
               const Icon = t.icon;
@@ -1255,7 +1255,7 @@ export default function PythonForMlTopic() {
           </div>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Vectorization — &ldquo;phép màu&rdquo; dưới lòng NumPy
+            Vectorization tạo ra phép màu dưới lòng NumPy
           </h4>
           <p className="leading-relaxed">
             Khi bạn viết <code className="font-mono">a + b</code> với hai array NumPy có shape
@@ -1265,7 +1265,7 @@ export default function PythonForMlTopic() {
           <p className="leading-relaxed text-sm">
             Nghĩa là: lấy phần tử thứ i của a cộng phần tử thứ i của b, lưu vào c. Công việc
             giống y hệt for-loop Python, <em>nhưng</em> code C đã biên dịch trước, không có
-            overhead của Python interpreter &mdash; nhanh hơn khoảng 100 lần. Tương tự với
+            overhead của Python interpreter, nên nhanh hơn khoảng 100 lần. Tương tự với
             <code className="font-mono"> np.sqrt(a)</code>, <code className="font-mono">a * 2</code>,
             <code className="font-mono"> a @ b</code> (nhân ma trận):
           </p>
@@ -1278,7 +1278,7 @@ export default function PythonForMlTopic() {
           </p>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Cheat sheet &mdash; 15 lệnh dùng nhiều nhất
+            Cheat sheet 15 lệnh dùng nhiều nhất
           </h4>
           <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-xs">
@@ -1322,8 +1322,8 @@ export default function PythonForMlTopic() {
               Pandas xây <strong>trên</strong> NumPy. Mỗi cột trong DataFrame thực chất là một
               NumPy array có nhãn. Khi bạn viết <code className="font-mono">df[&quot;diem&quot;].mean()</code>,
               Pandas chỉ chuyển cuộc gọi sang <code className="font-mono">np.mean</code> trên array
-              bên dưới. Điều đó nghĩa là mọi phép vectorization của NumPy đều có sẵn trong Pandas
-              &mdash; bạn không trả thêm chi phí nào cho nhãn.
+              bên dưới. Nói cách khác, mọi phép vectorization của NumPy đều có sẵn trong Pandas,
+              và bạn không trả thêm chi phí nào cho nhãn.
             </p>
           </CollapsibleDetail>
 
@@ -1333,7 +1333,7 @@ export default function PythonForMlTopic() {
               không đồng nhất (ví dụ: mỗi hàng có một danh sách dài khác nhau) thì{" "}
               <strong>dict Python</strong> hoặc <strong>polars</strong> có thể phù hợp hơn. Dữ
               liệu nhiều terabyte thì dùng <strong>Spark</strong> hoặc <strong>Dask</strong>.
-              Nhưng cho 95% dự án ML bạn gặp đầu tiên &mdash; NumPy + Pandas là đủ.
+              Nhưng với 95% dự án ML bạn gặp đầu tiên, NumPy và Pandas là đủ.
             </p>
           </CollapsibleDetail>
 
@@ -1348,12 +1348,12 @@ export default function PythonForMlTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — SUMMARY ━━━ */}
+      {/* ━━━ BƯỚC 7 · SUMMARY ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="5 điều cần nhớ về NumPy + Pandas"
           points={[
-            "NumPy = mảng số tốc độ C. Thay vì for-loop, viết a + b, a * 2, a.mean() — nhanh hơn ~100 lần.",
+            "NumPy là mảng số tốc độ C. Thay vì for-loop, viết a + b, a * 2, a.mean(). Nhanh hơn khoảng 100 lần.",
             "Broadcasting = NumPy tự phát mảng nhỏ ra khớp mảng lớn. Quy tắc: so shape từ phải, mỗi chiều bằng nhau hoặc bằng 1.",
             "Pandas = bảng dữ liệu. Ba lệnh đầu tiên với dataset mới: head(), info(), describe().",
             "Combo thông dụng nhất: read_csv → filter bằng boolean mask → groupby → visualize.",
@@ -1371,7 +1371,7 @@ export default function PythonForMlTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8 · QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

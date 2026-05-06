@@ -39,9 +39,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "backpropagation",
   title: "Backpropagation",
-  titleVi: "Lan truyền ngược — truy ngược lỗi qua từng lớp",
+  titleVi: "Lan truyền ngược: truy ngược lỗi qua từng lớp",
   description:
-    "Mạng đoán sai — lỗi đến từ lớp nào, weight nào cần sửa bao nhiêu? Backprop dùng quy tắc chuỗi để truy ngược lỗi từ đầu ra về từng trọng số, chỉ trong một lần duyệt.",
+    "Mạng đoán sai. Lỗi đến từ lớp nào, weight nào cần sửa bao nhiêu? Backpropagation dùng quy tắc chuỗi để truy ngược lỗi từ đầu ra về từng trọng số, chỉ trong một lần duyệt.",
   category: "neural-fundamentals",
   tags: ["neural-network", "training", "optimization", "gradient", "chain-rule"],
   difficulty: "intermediate",
@@ -59,7 +59,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ────────────────────────────────────────────────────────────
-   MẠNG NƠ-RON 2-3-1 — forward + backward
+   MẠNG NƠ-RON 2-3-1: forward + backward
    Đầu vào: x1, x2. Hidden: 3 nơ-ron (sigmoid). Output: 1 (sigmoid).
    Target y = 0.8. Loss = ½(y − ŷ)².
    ──────────────────────────────────────────────────────────── */
@@ -169,25 +169,25 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Dự đoán của mạng là bao nhiêu?",
       "Loss hiện tại của mạng là bao nhiêu?",
-      "Mỗi weight nên thay đổi bao nhiêu để loss giảm? — và quan trọng: nó dùng quy tắc chuỗi để trả lời cho MỌI weight trong một lần duyệt ngược",
+      "Mỗi weight nên thay đổi bao nhiêu để loss giảm. Quan trọng hơn: nó dùng quy tắc chuỗi để trả lời cho MỌI weight trong một lần duyệt ngược",
       "Mạng có bao nhiêu tham số?",
     ],
     correct: 2,
     explanation:
-      "Backprop không tính dự đoán — đó là việc của forward pass. Nó trả lời câu hỏi 'mỗi weight ảnh hưởng loss bao nhiêu' (gradient ∂L/∂w) cho toàn bộ weight, chỉ tốn một lần forward + một lần backward. Đây là lý do mạng tỉ tham số huấn luyện được.",
+      "Backpropagation không tính dự đoán. Đó là việc của forward pass. Nó trả lời câu hỏi 'mỗi weight ảnh hưởng loss bao nhiêu' (gradient ∂L/∂w) cho toàn bộ weight, chỉ tốn một lần forward cộng một lần backward. Đây là lý do mạng tỉ tham số huấn luyện được.",
   },
   {
     question:
       "Mạng sâu 100 lớp, mỗi lớp có đạo hàm cục bộ khoảng 0.5. Gradient ở LỚP ĐẦU TIÊN (xa đầu ra nhất) sẽ có độ lớn xấp xỉ bao nhiêu?",
     options: [
-      "50 — cộng 0.5 qua 100 lần",
-      "0.5 — không đổi vì chain rule giữ nguyên",
-      "0.5 mũ 100 ≈ 8·10⁻³¹ — gradient tan biến, lớp đầu gần như không học được",
-      "100 — mỗi lớp nhân thêm một bậc",
+      "50 (cộng 0.5 qua 100 lần)",
+      "0.5 (không đổi vì chain rule giữ nguyên)",
+      "0.5 mũ 100 xấp xỉ 8·10⁻³¹: gradient tan biến, lớp đầu gần như không học được",
+      "100 (mỗi lớp nhân thêm một bậc)",
     ],
     correct: 2,
     explanation:
-      "Chain rule NHÂN các đạo hàm cục bộ. 0.5^100 ≈ 7.9·10⁻³¹ — gần như bằng 0. Đây chính là vanishing gradient. Giải pháp lịch sử: thay sigmoid bằng ReLU (đạo hàm = 1 khi z > 0), thêm Batch Normalization, hoặc dùng Residual Connection của ResNet để gradient có đường tắt.",
+      "Chain rule NHÂN các đạo hàm cục bộ. 0.5^100 xấp xỉ 7.9·10⁻³¹, gần như bằng 0. Đây chính là vanishing gradient. Giải pháp lịch sử: thay sigmoid bằng ReLU (đạo hàm bằng 1 khi z lớn hơn 0), thêm Batch Normalization, hoặc dùng Residual Connection của ResNet để gradient có đường tắt.",
   },
   {
     question:
@@ -200,7 +200,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Công thức cập nhật: w_mới = w_cũ − η · ∂L/∂w = 0.80 − 0.5 · 0.12 = 0.74. Dấu TRỪ rất quan trọng — gradient chỉ hướng loss TĂNG, ta đi NGƯỢC để loss GIẢM.",
+      "Công thức cập nhật: w_mới = w_cũ − η · ∂L/∂w = 0.80 − 0.5 · 0.12 = 0.74. Dấu TRỪ rất quan trọng. Gradient chỉ hướng loss TĂNG, ta đi NGƯỢC để loss GIẢM.",
   },
   {
     type: "fill-blank",
@@ -220,20 +220,20 @@ const quizQuestions: QuizQuestion[] = [
       "Vì sao backprop đi từ CUỐI (đầu ra) về ĐẦU (đầu vào), mà không đi xuôi?",
     options: [
       "Vì ngược tốn ít bộ nhớ hơn",
-      "Vì loss được tính ở đầu ra, và ta cần ∂L/∂(mọi weight) — bắt đầu từ ∂L/∂output là có cơ sở, rồi dùng chain rule trườn ngược về từng lớp. Đi xuôi sẽ phải tính lại O(N²) lần",
+      "Vì loss được tính ở đầu ra, và ta cần ∂L/∂(mọi weight). Bắt đầu từ ∂L/∂output là có cơ sở, rồi dùng chain rule trườn ngược về từng lớp. Đi xuôi sẽ phải tính lại O(N²) lần",
       "Vì GPU thiết kế cho phép toán từ phải sang trái",
       "Vì thuật toán gradient descent yêu cầu vậy",
     ],
     correct: 1,
     explanation:
-      "Đi ngược (reverse-mode autodiff) là cách rẻ nhất khi có nhiều đầu vào (tham số) và một đầu ra (loss). Bắt đầu từ ∂L/∂output = 1, nhân xuống từng lớp: sau một lần duyệt, ta có ∂L/∂ mọi weight. Đi xuôi sẽ tốn O(N²) — không khả thi cho mạng tỉ tham số.",
+      "Đi ngược (reverse-mode autodiff) là cách rẻ nhất khi có nhiều đầu vào (tham số) và một đầu ra (loss). Bắt đầu từ ∂L/∂output = 1, nhân xuống từng lớp: sau một lần duyệt, ta có ∂L/∂ mọi weight. Đi xuôi sẽ tốn O(N²), không khả thi cho mạng tỉ tham số.",
   },
   {
     question:
       "Khi backprop, lớp ẩn cần nhớ giá trị gì từ forward pass để tính đạo hàm cục bộ?",
     options: [
       "Chỉ cần nhớ loss cuối cùng",
-      "Nhớ giá trị activation h (hoặc z) đã tính ở forward — để tính ∂h/∂z = h(1−h) cho sigmoid hoặc ∂h/∂z = 1 khi z > 0 cho ReLU",
+      "Nhớ giá trị activation h (hoặc z) đã tính ở forward, để tính ∂h/∂z = h(1−h) cho sigmoid hoặc ∂h/∂z = 1 khi z > 0 cho ReLU",
       "Không cần nhớ gì, backprop tính lại từ đầu",
       "Nhớ giá trị dự đoán ŷ của các ví dụ khác trong batch",
     ],
@@ -246,18 +246,18 @@ const quizQuestions: QuizQuestion[] = [
       "Sau một bước backprop + cập nhật weight, điều gì xảy ra với loss?",
     options: [
       "Loss luôn về 0 ngay lập tức",
-      "Loss thường giảm một chút (nếu learning rate hợp lý) — lặp hàng ngàn lần mới hội tụ",
+      "Loss thường giảm một chút (nếu learning rate hợp lý). Lặp hàng ngàn lần mới hội tụ",
       "Loss không đổi",
       "Loss tăng lên vì weight bị phá",
     ],
     correct: 1,
     explanation:
-      "Một bước gradient descent chỉ giảm loss một lượng nhỏ — tương ứng cỡ bước η·∇L. Huấn luyện thực tế lặp hàng triệu bước (trên nhiều batch) mới hội tụ. Nếu learning rate quá to, loss có thể tăng; nếu quá nhỏ, giảm lâu.",
+      "Một bước gradient descent chỉ giảm loss một lượng nhỏ, tương ứng cỡ bước η·∇L. Huấn luyện thực tế lặp hàng triệu bước (trên nhiều batch) mới hội tụ. Nếu learning rate quá to, loss có thể tăng. Nếu quá nhỏ, loss giảm lâu.",
   },
 ];
 
 /* ────────────────────────────────────────────────────────────
-   SƠ ĐỒ MẠNG — forward + backward animation
+   SƠ ĐỒ MẠNG: forward + backward animation
    ──────────────────────────────────────────────────────────── */
 
 type FlowMode = "idle" | "forward" | "backward";
@@ -487,7 +487,7 @@ function NetworkDiagram({ W1, W2, fp, grad, mode, tick }: NetworkDiagramProps) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   DEEPEN — mini SVG cho mỗi bước
+   DEEPEN: mini SVG cho mỗi bước
    ──────────────────────────────────────────────────────────── */
 
 interface DeepenStepVisualProps {
@@ -683,7 +683,7 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
           {numbers.loss.toFixed(4)}
         </text>
         <text x={190} y={125} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
-          Càng khác xa target → loss càng to.
+          Càng khác xa target, loss càng to.
         </text>
       </svg>
     );
@@ -711,7 +711,7 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
           ∂L/∂ŷ = {numbers.dL_dOut.toFixed(3)}
         </text>
         <text x={220} y={100} textAnchor="middle" fontSize={11} fill="var(--text-secondary)" fontStyle="italic">
-          Dấu âm: ŷ đang nhỏ hơn target, tăng ŷ một tí → loss giảm.
+          Dấu âm: ŷ đang nhỏ hơn target, tăng ŷ một tí, loss giảm theo.
         </text>
       </svg>
     );
@@ -734,7 +734,7 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
           = {numbers.dL_dH.toFixed(3)}
         </text>
         <text x={220} y={174} textAnchor="middle" fontSize={11} fill="var(--text-tertiary)" fontStyle="italic">
-          Tích ba thừa số — gradient đã lan về lớp ẩn.
+          Tích ba thừa số. Gradient đã lan về lớp ẩn.
         </text>
       </svg>
     );
@@ -765,7 +765,7 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
       </svg>
     );
   }
-  // phase 6 — update rule applied to three weights
+  // phase 6: update rule applied to three weights
   const rows = [
     { y: 30, name: "w₂", old: numbers.w2, grad: numbers.dL_dW2, nw: numbers.w2New },
     { y: 70, name: "w₁ₐ", old: numbers.w1a, grad: numbers.dL_dW1a, nw: numbers.w1aNew },
@@ -799,7 +799,7 @@ function DeepenStepVisual({ phase, numbers }: DeepenStepVisualProps) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   DEEPEN CARD — khung chung cho mỗi bước StepReveal
+   DEEPEN CARD: khung chung cho mỗi bước StepReveal
    ──────────────────────────────────────────────────────────── */
 
 type CardTone = "sky" | "amber" | "rose" | "emerald" | "violet" | "indigo";
@@ -853,7 +853,7 @@ function DeepenCard({
 }
 
 /* ────────────────────────────────────────────────────────────
-   FORMULA BOX — khung chung cho ba LaTeX + minh hoạ ở Explain
+   FORMULA BOX: khung chung cho ba LaTeX + minh hoạ ở Explain
    ──────────────────────────────────────────────────────────── */
 
 interface FormulaBoxProps {
@@ -885,7 +885,7 @@ function FormulaBox({ idx, title, subtitle, latex, caption, children }: FormulaB
 }
 
 /* ────────────────────────────────────────────────────────────
-   ACTION BUTTON — nút điều khiển chung
+   ACTION BUTTON: nút điều khiển chung
    ──────────────────────────────────────────────────────────── */
 
 interface ActionBtnProps {
@@ -1003,7 +1003,7 @@ export default function BackpropagationTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK ━━━ */}
+      {/* ━━━ BƯỚC 1: HOOK ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Ẩn dụ mở đầu">
         <div className="rounded-2xl border-2 border-accent/30 bg-accent-light p-6 space-y-4">
           <div className="flex items-start gap-4">
@@ -1012,19 +1012,19 @@ export default function BackpropagationTopic() {
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-foreground leading-snug">
-                Mạng đoán sai — vậy lỗi đến từ LỚP NÀO?
+                Mạng đoán sai. Vậy lỗi đến từ LỚP NÀO?
               </h3>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Hình dung bạn là giáo viên chấm bài nhóm. Cả nhóm cùng làm một bài
                 tập, kết quả cuối <strong>sai 5 điểm</strong> so với đáp án. Câu
-                hỏi quan trọng không phải &ldquo;sai hay đúng&rdquo; — mà là{" "}
+                hỏi quan trọng không phải &ldquo;sai hay đúng&rdquo;, mà là{" "}
                 <em>mỗi thành viên góp bao nhiêu vào cái sai đó</em>, để bạn biết
                 ai cần học lại phần gì.
               </p>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Mạng nơ-ron cũng vậy. Khi ŷ khác target 0.2 đơn vị, câu hỏi thú
                 vị là: <strong>weight nào chịu trách nhiệm bao nhiêu?</strong>{" "}
-                Câu trả lời — cho cả <em>triệu</em> weight cùng một lúc — chính là{" "}
+                Câu trả lời cho cả <em>triệu</em> weight cùng một lúc chính là{" "}
                 <strong>backpropagation</strong>. Nó &ldquo;truy ngược lỗi&rdquo;
                 từ đầu ra về từng lớp bằng quy tắc chuỗi, chỉ tốn một lần duyệt
                 ngược.
@@ -1045,7 +1045,7 @@ export default function BackpropagationTopic() {
                 icon: Target,
                 iconCls: "text-amber-500",
                 title: "So loss",
-                desc: "So dự đoán với đáp án — ra một con số sai lệch.",
+                desc: "So dự đoán với đáp án, ra một con số sai lệch.",
               },
               {
                 icon: ArrowLeft,
@@ -1067,30 +1067,30 @@ export default function BackpropagationTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — DISCOVER (PredictionGate) ━━━ */}
+      {/* ━━━ BƯỚC 2: DISCOVER (PredictionGate) ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn đã biết phải 'truy ngược lỗi qua từng lớp'. Mạng có 1 triệu weight. Nếu bạn truy ngược NGÂY THƠ — mỗi weight chạy lại cả mạng một lần để đo ảnh hưởng — thì mất bao nhiêu lần duyệt mạng cho một bước cập nhật?"
+          question="Bạn đã biết phải 'truy ngược lỗi qua từng lớp'. Mạng có 1 triệu weight. Nếu bạn truy ngược NGÂY THƠ, tức mỗi weight chạy lại cả mạng một lần để đo ảnh hưởng, thì mất bao nhiêu lần duyệt mạng cho một bước cập nhật?"
           options={[
-            "Một lần duyệt — chain rule miễn phí",
-            "Khoảng 1.000 lần — vì mỗi lớp một lần",
-            "Khoảng 1 triệu lần — mỗi weight một lần chạy lại",
-            "Đúng 2 lần — một forward một backward",
+            "Một lần duyệt (chain rule miễn phí)",
+            "Khoảng 1.000 lần (vì mỗi lớp một lần)",
+            "Khoảng 1 triệu lần (mỗi weight một lần chạy lại)",
+            "Đúng 2 lần (một forward một backward)",
           ]}
           correct={2}
-          explanation="Cách ngây thơ (numerical differentiation) cần đổi từng weight rồi chạy lại cả mạng → O(N) lần duyệt, với N = số weight. 1 triệu weight nghĩa là 1 triệu lần duyệt — bất khả thi. Backprop thật sự chỉ tốn ĐÚNG một forward + một backward = 2 lần duyệt, nhờ chia sẻ các đạo hàm cục bộ đã tính được. Đây là lý do mạng tỉ tham số mới huấn luyện được trên đời."
+          explanation="Cách ngây thơ (numerical differentiation) cần đổi từng weight rồi chạy lại cả mạng, ra O(N) lần duyệt với N là số weight. 1 triệu weight nghĩa là 1 triệu lần duyệt, bất khả thi. Backpropagation thật sự chỉ tốn ĐÚNG một forward cộng một backward, tổng cộng 2 lần duyệt, nhờ chia sẻ các đạo hàm cục bộ đã tính được. Đây là lý do mạng tỉ tham số mới huấn luyện được trên đời."
         >
           <p className="text-sm text-muted mt-3 leading-relaxed">
-            Trong sơ đồ mạng bên dưới, bạn sẽ thấy đúng cái ý tưởng đó chạy: bấm{" "}
+            Trong sơ đồ mạng bên dưới, bạn sẽ thấy đúng cái ý tưởng đó chạy. Bấm{" "}
             <em>Forward</em> để dữ liệu chảy tới, rồi bấm <em>Backward</em> để
             gradient chảy về. Mỗi cạnh hiển thị chính{" "}
-            <strong>gradient của weight đó</strong> — đúng một con số, đúng một
+            <strong>gradient của weight đó</strong>, đúng một con số, đúng một
             lượt.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — REVEAL (interactive network) ━━━ */}
+      {/* ━━━ BƯỚC 3: REVEAL (interactive network) ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá tương tác">
         <VisualizationSection topicSlug={metadata.slug}>
           <LessonSection label="Thí nghiệm 1: Sơ đồ mạng 2-3-1" step={1}>
@@ -1130,7 +1130,7 @@ export default function BackpropagationTopic() {
                 onClick={() => setAutoRunning((r) => !r)}
                 className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                   autoRunning
-                    ? "bg-rose-50 text-rose-700 border border-rose-300 dark:bg-rose-900/30 dark:text-rose-200"
+                    ? "bg-rose-50 text-foreground font-semibold border border-rose-300 dark:bg-rose-900/30"
                     : "bg-card border border-border text-foreground hover:border-accent/50"
                 }`}
               >
@@ -1171,7 +1171,7 @@ export default function BackpropagationTopic() {
                 </span>
               </div>
               <p className="text-[11px] text-tertiary mt-1 text-center italic">
-                η nhỏ → học chậm. η vừa → mượt. η lớn → dao động hoặc phân kỳ.
+                η nhỏ thì học chậm. η vừa thì mượt. η lớn thì dao động hoặc phân kỳ.
               </p>
             </div>
 
@@ -1213,15 +1213,7 @@ export default function BackpropagationTopic() {
                     ) : null}
                     {cell.label}
                   </p>
-                  <p
-                    className={`text-sm font-bold tabular-nums ${
-                      cell.tone === "ok"
-                        ? "text-emerald-800 dark:text-emerald-200"
-                        : cell.tone === "warn"
-                          ? "text-amber-800 dark:text-amber-200"
-                          : "text-foreground"
-                    }`}
-                  >
+                  <p className="text-sm font-bold tabular-nums text-foreground">
                     {cell.value}
                   </p>
                 </div>
@@ -1269,11 +1261,11 @@ export default function BackpropagationTopic() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="mt-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 p-3 text-sm text-emerald-700 dark:text-emerald-300 text-center max-w-lg mx-auto"
+                  className="mt-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 p-3 text-sm text-foreground text-center max-w-lg mx-auto"
                 >
-                  Mạng đã hội tụ sau <strong>{step}</strong> bước huấn luyện!
-                  Loss &lt; 0.005 — ŷ gần sát target. Bạn vừa xem backprop chạy
-                  hết một vòng đời huấn luyện.
+                  Mạng đã hội tụ sau <strong>{step}</strong> bước huấn luyện.
+                  Loss &lt; 0.005, ŷ gần sát target. Bạn vừa xem backpropagation
+                  chạy hết một vòng đời huấn luyện.
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1293,7 +1285,7 @@ export default function BackpropagationTopic() {
                   icon: TriangleAlert,
                   iconCls: "text-sky-500",
                   hoverCls: "hover:border-sky-400",
-                  title: "η = 0.20 — chậm",
+                  title: "η = 0.20: chậm",
                   desc: "Loss giảm đều nhưng rất lâu mới chạm đáy. An toàn, không dao động.",
                 },
                 {
@@ -1301,7 +1293,7 @@ export default function BackpropagationTopic() {
                   icon: Sparkles,
                   iconCls: "text-emerald-500",
                   hoverCls: "hover:border-emerald-400",
-                  title: "η = 0.90 — êm",
+                  title: "η = 0.90: êm",
                   desc: "Hội tụ trong vài chục bước. Đây là vùng \u201csweet spot\u201d cho mạng nhỏ này.",
                 },
                 {
@@ -1309,7 +1301,7 @@ export default function BackpropagationTopic() {
                   icon: TriangleAlert,
                   iconCls: "text-rose-500",
                   hoverCls: "hover:border-rose-400",
-                  title: "η = 2.80 — nổ",
+                  title: "η = 2.80: nổ",
                   desc: "Bước quá to, loss có thể nảy lên thay vì giảm. Quan sát đường loss răng cưa.",
                 },
               ].map((preset) => {
@@ -1339,7 +1331,7 @@ export default function BackpropagationTopic() {
 
           <Callout variant="insight" title="Ba điều đáng chú ý trong thí nghiệm">
             Thứ nhất: gradient ở cạnh cuối (hidden → output) có con số đáng kể.
-            Thứ hai: gradient ở cạnh đầu (input → hidden) nhỏ hơn — vì đã bị
+            Thứ hai: gradient ở cạnh đầu (input → hidden) nhỏ hơn, vì đã bị
             nhân thêm σ&prime;(z) &lt; 0.25. Thứ ba: sau mỗi bước, weight nào có
             gradient lớn thì đổi nhiều hơn weight nào có gradient nhỏ. Đây chính
             là &ldquo;phân bổ trách nhiệm&rdquo; bằng toán.
@@ -1347,8 +1339,8 @@ export default function BackpropagationTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — DEEPEN (6-step walk-through) ━━━ */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu — sáu bước cụ thể">
+      {/* ━━━ BƯỚC 4: DEEPEN (6-step walk-through) ━━━ */}
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu vào sáu bước cụ thể">
         <p className="text-sm text-muted mb-4 leading-relaxed">
           Giờ mổ xẻ một <em>mạng mini</em> (một đầu vào → một ẩn → một ra) với
           số nhỏ để bạn có thể theo dõi mọi con số. Bấm <em>Tiếp tục</em> để
@@ -1371,7 +1363,7 @@ export default function BackpropagationTopic() {
               key="d1"
               icon={ArrowRight}
               tone="sky"
-              title="Bước 1 — Forward: lấy ŷ"
+              title="Bước 1. Forward: lấy ŷ"
               formula="x → z = w₁·x → h = σ(z) → z_out = w₂·h → ŷ = σ(z_out)"
               phase={1}
               numbers={deepenNumbers}
@@ -1381,14 +1373,14 @@ export default function BackpropagationTopic() {
               activation h = σ(z) = {deepenNumbers.h.toFixed(3)}. Qua lớp ra:
               z_out = w₂·h = {deepenNumbers.zOut.toFixed(3)}, và dự đoán{" "}
               <strong>ŷ = σ(z_out) = {deepenNumbers.yHat.toFixed(3)}</strong>.
-              Forward KHÔNG vứt đi các con số này — chúng sẽ dùng lại ở
+              Forward KHÔNG vứt đi các con số này. Chúng sẽ dùng lại ở
               backward.
             </DeepenCard>,
             <DeepenCard
               key="d2"
               icon={Target}
               tone="amber"
-              title="Bước 2 — Tính loss"
+              title="Bước 2. Tính loss"
               formula="L = ½(y − ŷ)²"
               phase={2}
               numbers={deepenNumbers}
@@ -1403,30 +1395,30 @@ export default function BackpropagationTopic() {
               key="d3"
               icon={ArrowLeft}
               tone="rose"
-              title="Bước 3 — ∂L/∂ŷ (điểm khởi đầu của backward)"
+              title="Bước 3. ∂L/∂ŷ là điểm khởi đầu của backward"
               formula="∂L/∂ŷ = −(y − ŷ)"
               phase={3}
               numbers={deepenNumbers}
             >
-              Backward bắt đầu ở đây — con số DUY NHẤT ta biết trực tiếp. Thay
-              số: ∂L/∂ŷ = −({TARGET} − {deepenNumbers.yHat.toFixed(3)}) ={" "}
+              Backward bắt đầu ở đây. Đây là con số DUY NHẤT ta biết trực tiếp.
+              Thay số: ∂L/∂ŷ = −({TARGET} − {deepenNumbers.yHat.toFixed(3)}) ={" "}
               <strong>{deepenNumbers.dL_dOut.toFixed(3)}</strong>. Dấu âm nói:
-              ŷ đang thấp hơn target, tăng ŷ một chút → loss giảm. Dấu này
+              ŷ đang thấp hơn target, tăng ŷ một chút thì loss giảm. Dấu này
               quyết định hướng sửa weight.
             </DeepenCard>,
             <DeepenCard
               key="d4"
               icon={Link2}
               tone="emerald"
-              title="Bước 4 — Chain rule: ∂L/∂h qua ba thừa số"
+              title="Bước 4. Chain rule cho ∂L/∂h qua ba thừa số"
               formula="∂L/∂h = ∂L/∂ŷ · ∂ŷ/∂z_out · ∂z_out/∂h"
               phase={4}
               numbers={deepenNumbers}
             >
               Chain rule xuất hiện. Ba thừa số: (a) ∂L/∂ŷ ={" "}
-              {deepenNumbers.dL_dOut.toFixed(3)} — ở bước 3; (b) ∂ŷ/∂z_out =
-              ŷ·(1−ŷ) = {deepenNumbers.dOut_dZout.toFixed(3)} — đạo hàm sigmoid
-              output; (c) ∂z_out/∂h = w₂ = {deepenNumbers.w2}. Nhân ba: ∂L/∂h ={" "}
+              {deepenNumbers.dL_dOut.toFixed(3)} (đã có ở bước 3); (b) ∂ŷ/∂z_out =
+              ŷ·(1−ŷ) = {deepenNumbers.dOut_dZout.toFixed(3)} (đạo hàm sigmoid
+              output); (c) ∂z_out/∂h = w₂ = {deepenNumbers.w2}. Nhân ba: ∂L/∂h ={" "}
               <strong>{deepenNumbers.dL_dH.toFixed(3)}</strong>. Gradient đã lan
               về lớp ẩn mà không cần chạy lại mạng.
             </DeepenCard>,
@@ -1434,13 +1426,13 @@ export default function BackpropagationTopic() {
               key="d5"
               icon={Layers}
               tone="violet"
-              title="Bước 5 — ∂L/∂w₁ cho mỗi weight lớp vào"
+              title="Bước 5. ∂L/∂w₁ cho mỗi weight lớp vào"
               formula="∂L/∂w₁ⱼ = ∂L/∂h · σ′(z) · xⱼ"
               phase={5}
               numbers={deepenNumbers}
             >
               Tiếp chain rule. σ&prime;(z) = h·(1−h) ={" "}
-              {deepenNumbers.dH_dZ.toFixed(3)} — đạo hàm sigmoid ở lớp ẩn. Với
+              {deepenNumbers.dH_dZ.toFixed(3)} (đạo hàm sigmoid ở lớp ẩn). Với
               w₁ₐ (nối x₁ → h): nhân thêm x₁ = {deepenNumbers.x1} ra{" "}
               <strong>{deepenNumbers.dL_dW1a.toFixed(3)}</strong>. Với w₁_b (nối
               x₂ → h): nhân thêm x₂ = {deepenNumbers.x2} ra{" "}
@@ -1451,7 +1443,7 @@ export default function BackpropagationTopic() {
               key="d6"
               icon={TrendingDown}
               tone="indigo"
-              title="Bước 6 — Cập nhật: w ← w − η · ∂L/∂w"
+              title="Bước 6. Cập nhật weight: w ← w − η · ∂L/∂w"
               formula="với η = 0.8 (learning rate)"
               phase={6}
               numbers={deepenNumbers}
@@ -1462,63 +1454,63 @@ export default function BackpropagationTopic() {
               <strong>{deepenNumbers.w1aNew.toFixed(3)}</strong>, w₁_b mới ={" "}
               <strong>{deepenNumbers.w1bNew.toFixed(3)}</strong>. Dấu TRỪ bảo ta
               đi NGƯỢC gradient (gradient chỉ hướng tăng loss, ta muốn giảm).
-              Sau một bước, chạy forward lại — loss sẽ nhỏ hơn một chút.
+              Sau một bước, chạy forward lại. Loss sẽ nhỏ hơn một chút.
             </DeepenCard>,
           ]}
         </StepReveal>
 
         <div className="mt-6">
           <AhaMoment>
-            <strong>Sáu bước — chỉ nhân và cộng</strong>. Không phép thuật. Mỗi
+            <strong>Sáu bước, chỉ nhân và cộng</strong>. Không phép thuật. Mỗi
             lớp nhớ activation của mình, tính đạo hàm cục bộ (một hai dòng),
             rồi nhân vào gradient truyền ngược. Làm như thế qua 100 lớp cũng
-            không khó hơn — chỉ dài hơn. Đây là lý do bạn có thể viết
+            không khó hơn, chỉ dài hơn. Đây là lý do bạn có thể viết
             backpropagation bằng tay cho mạng nhỏ, và framework làm tự động
             cho mạng tỉ tham số.
           </AhaMoment>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — CHALLENGE ━━━ */}
+      {/* ━━━ BƯỚC 5: CHALLENGE ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
           question="Mạng 2-3-1. Bạn tính được ∂L/∂ŷ = 0.3, ŷ = 0.7, và weight w₂ nối h₁ → ŷ bằng 0.5. Áp dụng chain rule, ∂L/∂h₁ bằng bao nhiêu?"
           options={[
-            "∂L/∂h₁ = 0.3 + 0.5 = 0.8 — cộng ba thành phần",
+            "∂L/∂h₁ = 0.3 + 0.5 = 0.8 (cộng ba thành phần)",
             "∂L/∂h₁ = 0.3 · ŷ(1−ŷ) · w₂ = 0.3 · 0.21 · 0.5 = 0.0315",
-            "∂L/∂h₁ = 0.3 · 0.5 = 0.15 — chỉ cần hai thừa số",
+            "∂L/∂h₁ = 0.3 · 0.5 = 0.15 (chỉ cần hai thừa số)",
             "∂L/∂h₁ = w₂ / ∂L/∂ŷ = 0.5 / 0.3 ≈ 1.67",
           ]}
           correct={1}
-          explanation="Chain rule nhân ba thừa số để đi từ ŷ về h₁: (1) ∂L/∂ŷ = 0.3 đã có; (2) ∂ŷ/∂z_out = ŷ·(1−ŷ) = 0.7·0.3 = 0.21 — đạo hàm sigmoid output; (3) ∂z_out/∂h₁ = w₂ = 0.5. Tích: 0.3 · 0.21 · 0.5 = 0.0315. Lỗi thường gặp là quên đạo hàm sigmoid, hoặc cộng thay vì nhân."
+          explanation="Chain rule nhân ba thừa số để đi từ ŷ về h₁: (1) ∂L/∂ŷ = 0.3 đã có; (2) ∂ŷ/∂z_out = ŷ·(1−ŷ) = 0.7·0.3 = 0.21 (đạo hàm sigmoid output); (3) ∂z_out/∂h₁ = w₂ = 0.5. Tích: 0.3 · 0.21 · 0.5 = 0.0315. Lỗi thường gặp là quên đạo hàm sigmoid, hoặc cộng thay vì nhân."
         />
 
         <div className="mt-5">
           <InlineChallenge
             question="Mạng 50 lớp, toàn sigmoid. Đạo hàm sigmoid cực đại = 0.25 (đạt khi activation = 0.5). Gradient ở LỚP ĐẦU TIÊN (xa output nhất) có độ lớn xấp xỉ bao nhiêu so với gradient ở lớp CUỐI?"
             options={[
-              "Giống nhau — chain rule giữ gradient không đổi",
-              "To hơn 50 lần — mỗi lớp cộng thêm 0.25",
-              "Nhỏ hơn khoảng 0.25^50 ≈ 1.1·10⁻³⁰ — gần như bằng 0 (vanishing gradient)",
+              "Giống nhau, vì chain rule giữ gradient không đổi",
+              "To hơn 50 lần, vì mỗi lớp cộng thêm 0.25",
+              "Nhỏ hơn khoảng 0.25^50 ≈ 1.1·10⁻³⁰, gần như bằng 0 (vanishing gradient)",
               "Lớn hơn vì lớp đầu nhiều weight hơn",
             ]}
             correct={2}
-            explanation="Chain rule NHÂN đạo hàm cục bộ. 0.25^50 ≈ 10⁻³⁰ — gradient teo tới mức gần 0 trước khi về đến lớp đầu. Hệ quả: lớp đầu gần như không được cập nhật → mạng không học được đặc trưng sơ cấp. Giải pháp thực tế: thay sigmoid bằng ReLU (đạo hàm = 1 khi z > 0), dùng Batch Normalization, hoặc Residual Connection (skip connection) của ResNet để gradient có đường tắt."
+            explanation="Chain rule NHÂN đạo hàm cục bộ. 0.25^50 ≈ 10⁻³⁰. Gradient teo tới mức gần 0 trước khi về đến lớp đầu. Hệ quả: lớp đầu gần như không được cập nhật, nên mạng không học được đặc trưng sơ cấp. Giải pháp thực tế: thay sigmoid bằng ReLU (đạo hàm = 1 khi z > 0), dùng Batch Normalization, hoặc Residual Connection (skip connection) của ResNet để gradient có đường tắt."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — EXPLAIN (exactly 3 LaTeX) ━━━ */}
+      {/* ━━━ BƯỚC 6: EXPLAIN (exactly 3 LaTeX) ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích toán">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bạn đã thấy backprop chạy bằng số trong mạng mini ở Bước 4. Giờ ta
-            viết lại bằng ba công thức tổng quát — mỗi công thức kèm một hình
+            viết lại bằng ba công thức tổng quát. Mỗi công thức kèm một hình
             minh hoạ và một câu &ldquo;nó nghĩa là gì bằng tiếng Việt đời
             thường&rdquo;.
           </p>
 
-          {/* Công thức 1 — chain rule áp dụng cho mạng */}
+          {/* Công thức 1: chain rule áp dụng cho mạng */}
           <FormulaBox
             idx={1}
             title="Quy tắc chuỗi xuyên mạng"
@@ -1570,13 +1562,13 @@ export default function BackpropagationTopic() {
 
           <FormulaBox
             idx={2}
-            title="Gradient loss theo một weight — dạng gọn"
+            title="Gradient loss theo một weight, dạng gọn"
             subtitle="Mỗi weight wᵢⱼ (nối nơ-ron j → nơ-ron i) có công thức: gradient sai số lan về nhân với activation đi vào."
             latex="\\frac{\\partial L}{\\partial w_{ij}} = \\delta_i \\cdot a_j"
             caption={"\u201cWeight giữa A và B được cập nhật theo tích của hai thứ: A phát ra bao nhiêu (a_j), và B chịu trách nhiệm bao nhiêu cho lỗi cuối (δ_i).\u201d"}
           >
             <svg viewBox="0 0 440 130" className="w-full">
-              <title>Công thức δ · a — gradient của weight nối hai nơ-ron.</title>
+              <title>Công thức δ · a: gradient của weight nối hai nơ-ron.</title>
               <circle cx={100} cy={65} r={28} fill="#3b82f622" stroke="#3b82f6" strokeWidth={2} />
               <text x={100} y={70} textAnchor="middle" fontSize={12} fill="#1e3a8a" fontWeight={700} fontFamily="monospace">a_j</text>
               <text x={100} y={30} textAnchor="middle" fontSize={11} fill="#1e3a8a">activation đi vào</text>
@@ -1596,10 +1588,10 @@ export default function BackpropagationTopic() {
 
           <FormulaBox
             idx={3}
-            title="Cập nhật weight — gradient descent"
+            title="Cập nhật weight bằng gradient descent"
             subtitle="Sau khi backprop xong, áp dụng công thức này cho MỌI weight cùng một lúc."
             latex="w \\leftarrow w - \\eta \\, \\frac{\\partial L}{\\partial w}"
-            caption={"\u201cWeight cũ trừ đi cỡ bước (η) nhân trách nhiệm (gradient). Làm đồng thời cho mọi weight — đó là một lần gradient descent trên toàn mạng.\u201d"}
+            caption={"\u201cWeight cũ trừ đi cỡ bước (η) nhân trách nhiệm (gradient). Làm đồng thời cho mọi weight. Đó là một lần gradient descent trên toàn mạng.\u201d"}
           >
             <svg viewBox="0 0 440 100" className="w-full">
               <title>Weight cũ trừ η·gradient = weight mới.</title>
@@ -1620,7 +1612,7 @@ export default function BackpropagationTopic() {
             (1) Chain rule cho biết làm sao đi ngược qua mạng; (2) công thức δ·a
             biến chain rule thành một phép tính cục bộ ở từng cạnh weight; (3)
             update rule dùng gradient để đi về phía loss nhỏ hơn. Ba mảnh này
-            là toàn bộ thuật toán backpropagation — những thứ còn lại (batch,
+            là toàn bộ thuật toán backpropagation. Những thứ còn lại (batch,
             momentum, Adam, learning rate schedule) chỉ là cải tiến xung quanh
             lõi này.
           </Callout>
@@ -1636,7 +1628,7 @@ export default function BackpropagationTopic() {
               </p>
               <p>
                 Toán học: khi h → 0 trong định nghĩa đạo hàm, các hạng tử bậc
-                cao bị bỏ qua, và chỉ còn tích các hệ số tuyến tính — chính là
+                cao bị bỏ qua, và chỉ còn tích các hệ số tuyến tính. Đó chính là
                 chain rule.
               </p>
               <p>
@@ -1663,7 +1655,7 @@ export default function BackpropagationTopic() {
               <p>
                 Cái tên chuyên môn là <em>reverse-mode automatic
                 differentiation</em> (autodiff ngược). Nó KHÔNG phải tính đạo
-                hàm tượng trưng, cũng KHÔNG phải xấp xỉ số — nó tính đạo hàm
+                hàm tượng trưng, cũng KHÔNG phải xấp xỉ số. Nó tính đạo hàm
                 CHÍNH XÁC bằng cách ráp các đạo hàm cục bộ đã biết. Chi phí:
                 thêm ~1 lần duyệt nữa so với forward, và bộ nhớ gấp đôi (phải
                 lưu activation của mọi lớp).
@@ -1680,35 +1672,35 @@ export default function BackpropagationTopic() {
             . Để hiểu cách <em>dùng</em> gradient để đi về minimum (learning
             rate, momentum, Adam), đọc{" "}
             <TopicLink slug="gradient-descent">gradient descent</TopicLink>.
-            Backprop chỉ tính gradient — việc đi xuống đồi là của gradient
+            Backprop chỉ tính gradient. Việc đi xuống đồi là của gradient
             descent.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — CONNECT ━━━ */}
+      {/* ━━━ BƯỚC 7: CONNECT ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt & Liên kết">
         <MiniSummary
           title="Năm ý bạn mang về"
           points={[
             "Backprop trả lời câu hỏi: mỗi weight ảnh hưởng loss bao nhiêu. Gradient ∂L/∂w là đơn vị đo của 'trách nhiệm'.",
             "Cách làm: bắt đầu từ ∂L/∂output (con số duy nhất biết trực tiếp), rồi áp quy tắc chuỗi để lan ngược về từng lớp.",
-            "Công thức gọn cho một weight: ∂L/∂w_ij = δ_i · a_j — tích của gradient lan về và activation đi vào.",
+            "Công thức gọn cho một weight: ∂L/∂w_ij = δ_i · a_j. Tích của gradient lan về và activation đi vào.",
             "Gradient descent cập nhật: w ← w − η · ∂L/∂w. Dấu TRỪ vì gradient chỉ hướng TĂNG của loss.",
-            "Thách thức thực tế ở mạng sâu: vanishing / exploding gradient — giải pháp: ReLU, Batch Normalization, Residual Connection.",
+            "Thách thức thực tế ở mạng sâu: vanishing hoặc exploding gradient. Giải pháp: ReLU, Batch Normalization, Residual Connection.",
           ]}
         />
 
         <div className="mt-5 space-y-3">
           <Callout variant="tip" title="Bước kế tiếp trong lộ trình">
-            Backprop chỉ TÍNH gradient — phần quyết định đi về đâu là của{" "}
+            Backprop chỉ TÍNH gradient. Phần quyết định đi về đâu là của{" "}
             <TopicLink slug="gradient-descent">gradient descent</TopicLink>{" "}
             (bao gồm các biến thể như momentum, Adam). Và nền tảng toán của
             chain rule xuyên mạng nằm ở{" "}
             <TopicLink slug="calculus-for-backprop">
               giải tích cho backprop
-            </TopicLink>{" "}
-            — nếu bạn thấy mấy công thức trên hơi khó, đọc bài đó trước rồi
+            </TopicLink>
+            . Nếu bạn thấy mấy công thức trên hơi khó, đọc bài đó trước rồi
             quay lại sẽ dễ hơn rất nhiều.
           </Callout>
 
@@ -1717,14 +1709,14 @@ export default function BackpropagationTopic() {
             (1974), nhưng phải đến bài báo của Rumelhart, Hinton, Williams
             (1986) cộng đồng mới nhìn ra sức mạnh thực sự của nó cho mạng đa
             tầng. Gần 40 năm sau, mọi framework deep learning (PyTorch,
-            TensorFlow, JAX) đều xây quanh đúng thuật toán này — và nó là công
-            cụ toán học đứng sau mọi mô hình lớn ngày nay, từ GPT đến Stable
+            TensorFlow, JAX) đều xây quanh đúng thuật toán này. Nó là công
+            cụ toán học đứng sau mọi model lớn hiện tại, từ GPT đến Stable
             Diffusion.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8: QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
         <div className="mt-6 flex items-center justify-center text-xs text-muted gap-2">

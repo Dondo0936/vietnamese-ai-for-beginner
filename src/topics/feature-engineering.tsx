@@ -39,9 +39,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "feature-engineering",
   title: "Feature Engineering",
-  titleVi: "Xây dựng đặc trưng — Chọn nguyên liệu cho AI",
+  titleVi: "Feature engineering: chọn nguyên liệu cho mô hình",
   description:
-    "Mô hình hay không nằm ở việc bạn đưa cho nó dữ liệu thô hay đã chế biến thành đặc trưng có ý nghĩa. Chạm vào từng cột để xem phép biến đổi thực sự làm gì.",
+    "Mô hình giỏi hay dở nằm ở việc bạn đưa cho nó dữ liệu thô hay đã chế biến thành feature có ý nghĩa. Chạm vào từng cột để xem phép biến đổi thực sự làm gì.",
   category: "foundations",
   tags: ["features", "engineering", "transformation", "selection"],
   difficulty: "intermediate",
@@ -52,7 +52,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU BẢNG THÔ — 5 hàng, 4 cột thô
+   DỮ LIỆU BẢNG THÔ. 5 hàng, 4 cột thô
    ──────────────────────────────────────────────────────────── */
 
 type RawColumnKey = "date_of_birth" | "price" | "address" | "category";
@@ -104,7 +104,7 @@ const RAW_ROWS: RawRow[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   PHÉP BIẾN ĐỔI — ứng với từng cột thô, cho ra cột phái sinh
+   PHÉP BIẾN ĐỔI. Ứng với từng cột thô, cho ra cột phái sinh
    ──────────────────────────────────────────────────────────── */
 
 type TransformId =
@@ -130,7 +130,7 @@ const TRANSFORMS: TransformView[] = [
     column: "date_of_birth",
     label: "Tách thành tuổi + thế hệ",
     idea:
-      "'1995-05-30' không nói gì cho mô hình. 'Tuổi 30' + 'Millennial' mới là tín hiệu có ý nghĩa.",
+      "'1995-05-30' không nói gì cho model. 'Tuổi 30' và 'Millennial' mới là tín hiệu có ý nghĩa.",
     code: `import pandas as pd
 
 df["dob"] = pd.to_datetime(df["dob"])
@@ -142,14 +142,14 @@ df["gen"] = pd.cut(
 )`,
     derivedKeys: ["age", "gen"],
     explain:
-      "Mỗi ngày sinh khác nhau thì mô hình xem là một giá trị khác — không có quan hệ. Khi bạn tách thành tuổi (số) và thế hệ (nhóm), mô hình học được 'càng trẻ càng có xu hướng mua đồ công nghệ', 'Gen Z thích app X'.",
+      "Mỗi ngày sinh khác nhau thì model xem là một giá trị khác, không có quan hệ gì với nhau. Khi bạn tách thành tuổi (số) và thế hệ (nhóm), model học được 'càng trẻ càng có xu hướng mua đồ công nghệ', 'Gen Z thích app X'.",
   },
   {
     id: "price-binning",
     column: "price",
     label: "Chia thành khoảng (binning)",
     idea:
-      "Giá 125.000đ và 450.000đ trông rất khác nhau — nhưng có thể cùng nhóm 'giá rẻ'. Binning biến số liên tục thành nhóm.",
+      "Giá 125.000đ và 450.000đ trông rất khác nhau, nhưng vẫn có thể cùng nhóm 'giá rẻ'. Binning biến số liên tục thành nhóm.",
     code: `df["price_bin"] = pd.cut(
     df["price"],
     bins=[0, 200_000, 1_000_000, 5_000_000, 1e9],
@@ -157,40 +157,40 @@ df["gen"] = pd.cut(
 )`,
     derivedKeys: ["price_bin"],
     explain:
-      "Binning giảm nhiễu: các mô hình tuyến tính hay bị outlier kéo. Thay vì học 'cứ đắt hơn 1đ thì xác suất mua giảm một chút', mô hình học 'ở nhóm giá rẻ khách mua nhiều, ở nhóm cao mua ít'.",
+      "Binning giảm nhiễu, tránh để outlier kéo lệch các model tuyến tính. Thay vì học 'cứ đắt hơn 1đ thì xác suất mua giảm một chút', model học 'ở nhóm giá rẻ khách mua nhiều, ở nhóm cao mua ít'.",
   },
   {
     id: "price-log",
     column: "price",
     label: "Biến đổi log",
     idea:
-      "Giá từ 65k đến 8.5M kéo dài 2 bậc thập phân. log(giá) ép phân phối về gần đối xứng — mô hình tuyến tính dễ học hơn.",
+      "Giá từ 65k đến 8.5M kéo dài 2 bậc thập phân. log(giá) ép phân phối về gần đối xứng. Nhờ vậy model tuyến tính dễ học hơn.",
     code: `import numpy as np
 
 df["log_price"] = np.log1p(df["price"])`,
     derivedKeys: ["log_price"],
     explain:
-      "Phân phối lệch phải (long tail) là bệnh kinh điển của giá tiền, thu nhập, lượt view. log1p(x) = log(1+x) nén đuôi dài mà không làm đổi thứ tự, giúp sai số MSE không bị một vài outlier nuốt chửng.",
+      "Phân phối lệch phải (long tail) là bệnh kinh điển của giá tiền, thu nhập, lượt view. log1p(x) = log(1+x) nén đuôi dài mà không làm đổi thứ tự, giúp sai số MSE không bị một vài outlier nuốt chửng cả tổng.",
   },
   {
     id: "address-split",
     column: "address",
     label: "Tách thành phố / quận",
     idea:
-      "'42 Lý Thường Kiệt, Hoàn Kiếm, Hà Nội' là chuỗi văn bản. Tách ra thành 2 cột city + district để mô hình dùng được.",
+      "'42 Lý Thường Kiệt, Hoàn Kiếm, Hà Nội' chỉ là một chuỗi văn bản. Tách thành hai cột city và district thì model mới dùng được.",
     code: `parts = df["address"].str.split(", ")
 df["city"] = parts.str[-1]
 df["district"] = parts.str[-2]`,
     derivedKeys: ["city", "district"],
     explain:
-      "Cùng số nhà ở Hà Nội và TP HCM có giá khác nhau hoàn toàn. Tách ra cho mô hình thấy 'TP HCM' là một tín hiệu, 'Quận 1' là một tín hiệu mạnh hơn nữa. Đây là bước đệm trước khi one-hot hay target encoding.",
+      "Cùng số nhà ở Hà Nội và TP HCM có giá khác nhau hoàn toàn. Tách ra cho model thấy 'TP HCM' là một tín hiệu, 'Quận 1' là một tín hiệu mạnh hơn nữa. Đây là bước đệm trước khi one-hot hay target encoding.",
   },
   {
     id: "category-onehot",
     column: "category",
     label: "One-hot encoding",
     idea:
-      "Mô hình tuyến tính không hiểu chữ. One-hot biến mỗi giá trị thành một cột 0/1.",
+      "Model tuyến tính không hiểu chữ. One-hot biến mỗi giá trị thành một cột 0/1.",
     code: `cat_dummies = pd.get_dummies(
     df["category"],
     prefix="cat",
@@ -199,7 +199,7 @@ df["district"] = parts.str[-2]`,
 df = pd.concat([df, cat_dummies.astype(int)], axis=1)`,
     derivedKeys: ["cat_food", "cat_electronics", "cat_fashion"],
     explain:
-      "Với ít giá trị (≤ 20 loại), one-hot là lựa chọn đầu tiên. Khi category có hàng ngàn giá trị (ví dụ 700 quận), one-hot tạo ma trận thưa — lúc đó chuyển sang target encoding.",
+      "Với ít giá trị (≤ 20 loại), one-hot là lựa chọn đầu tiên. Khi category có hàng ngàn giá trị (ví dụ 700 quận), one-hot tạo ma trận thưa. Lúc đó chuyển sang target encoding.",
   },
 ];
 
@@ -253,7 +253,7 @@ function derivedCell(row: RawRow, key: string): string | number {
     case "cat_fashion":
       return row.category === "fashion" ? 1 : 0;
     default:
-      return "—";
+      return "";
   }
 }
 
@@ -262,7 +262,7 @@ function formatPrice(n: number): string {
 }
 
 /* ────────────────────────────────────────────────────────────
-   PLAYGROUND — chạm vào cột thô để xem biến đổi khả dụng
+   PLAYGROUND. Chạm vào cột thô để xem biến đổi khả dụng
    ──────────────────────────────────────────────────────────── */
 
 const COLUMN_META: Record<
@@ -302,7 +302,7 @@ function RawTablePlayground() {
       <p className="text-sm text-muted leading-relaxed">
         Bảng dưới đây có năm hàng và bốn cột thô. Chạm vào một{" "}
         <strong>đầu cột</strong> để xem các phép biến đổi dành cho cột đó. Mỗi
-        phép biến đổi kèm một đoạn code ngắn và kết quả đã sinh — so sánh
+        phép biến đổi kèm một đoạn code ngắn và kết quả đã sinh, so sánh
         &ldquo;trước&rdquo; với &ldquo;sau&rdquo; ngay tại chỗ.
       </p>
 
@@ -510,7 +510,7 @@ function BeforeAfter({ transform }: { transform: TransformView }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   BIỂU ĐỒ SVG — minh hoạ log-transform nén long tail
+   BIỂU ĐỒ SVG. Minh hoạ log-transform nén long tail
    ──────────────────────────────────────────────────────────── */
 
 function LogTransformChart() {
@@ -553,7 +553,7 @@ function LogTransformChart() {
           })}
         </svg>
         <p className="text-[11px] text-muted italic mt-1">
-          Một hàng lấn át tất cả — outlier kéo hết trung bình.
+          Một hàng lấn át tất cả. Outlier kéo lệch cả trung bình.
         </p>
       </div>
 
@@ -589,7 +589,7 @@ function LogTransformChart() {
           })}
         </svg>
         <p className="text-[11px] text-muted italic mt-1">
-          Các cột đều đặn hơn — mô hình tuyến tính sẽ học ổn định.
+          Các cột đều đặn hơn. Model tuyến tính học ổn định.
         </p>
       </div>
     </div>
@@ -597,7 +597,7 @@ function LogTransformChart() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   MINI VISUALS — binning, one-hot, aggregation
+   MINI VISUALS. Binning, one-hot, aggregation
    ──────────────────────────────────────────────────────────── */
 
 function BinningViz() {
@@ -631,7 +631,7 @@ function BinningViz() {
         ))}
       </div>
       <p className="text-[11px] text-muted italic mt-2">
-        Một cột số liên tục → 4 nhóm có ý nghĩa. Mô hình học từ nhóm, không
+        Một cột số liên tục → 4 nhóm có ý nghĩa. Model học từ nhóm, không
         phải từng số lẻ.
       </p>
     </div>
@@ -740,7 +740,7 @@ function DatetimeDecompViz() {
             <span
               className={`font-mono text-center rounded-md py-0.5 ${
                 r.is_weekend
-                  ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                  ? "bg-amber-100 text-foreground font-semibold dark:bg-amber-900/30"
                   : "bg-surface text-muted"
               }`}
             >
@@ -789,7 +789,7 @@ function AggregationViz() {
         </tbody>
       </table>
       <p className="text-[11px] text-muted italic mt-2">
-        Mỗi hàng trước đây là 1 giao dịch → giờ là 1 user. Đây là RFM kinh
+        Mỗi hàng trước đây là 1 giao dịch, giờ thành 1 user. Đây là RFM kinh
         điển trong e-commerce.
       </p>
     </div>
@@ -812,46 +812,46 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "user_id là định danh ngẫu nhiên — không có quan hệ với hành vi. Đưa vào mô hình chỉ làm nó học nhiễu. Ba cái còn lại là bộ RFM (Recency, Frequency, Monetary) — kinh điển và cực mạnh cho bài toán dự đoán churn/tái mua.",
+      "user_id là định danh ngẫu nhiên, không có quan hệ với hành vi. Đưa vào model chỉ làm nó học nhiễu. Ba cái còn lại là bộ RFM (Recency, Frequency, Monetary), bộ feature kinh điển và cực mạnh cho bài toán dự đoán churn hay tái mua.",
   },
   {
     question:
       "Cột 'ngày sinh' ở dạng chuỗi '1995-05-30'. Cách xử lý tốt nhất là gì?",
     options: [
-      "Để nguyên chuỗi — mô hình tự hiểu",
+      "Để nguyên chuỗi, model tự hiểu",
       "Biến thành timestamp Unix rồi coi như số nguyên",
       "Tính tuổi và nhóm thế hệ (Gen Z, Millennial...) từ ngày sinh",
       "Bỏ cột này",
     ],
     correct: 2,
     explanation:
-      "Ngày sinh thô không nói gì. Nhưng tuổi (số) và thế hệ (nhóm) là hai feature mạnh: người cùng thế hệ có sở thích tương tự. Đây là ví dụ kinh điển của datetime decomposition.",
+      "Ngày sinh thô không nói gì. Tuổi (số) và thế hệ (nhóm) mới là hai feature mạnh, vì người cùng thế hệ có sở thích tương tự. Đây là ví dụ kinh điển của datetime decomposition.",
   },
   {
     question:
       "Cột giá bán có phân phối rất lệch phải (vài giao dịch 100 triệu, đa số dưới 1 triệu). Trước khi đưa vào hồi quy tuyến tính, nên làm gì?",
     options: [
-      "Để nguyên — hồi quy tuyến tính tự xử lý",
+      "Để nguyên, hồi quy tuyến tính tự xử lý",
       "Áp dụng log(1 + price) để nén đuôi dài",
       "Chia cho 1000 để đỡ lớn",
       "Chỉ giữ các giao dịch dưới 1 triệu",
     ],
     correct: 1,
     explanation:
-      "Phân phối log-normal là bệnh kinh điển của giá cả. log1p ép về gần Gaussian mà không đổi thứ tự, giúp MSE không bị outlier kéo. Tree-based (XGBoost) ít cần hơn vì chia bằng threshold.",
+      "Phân phối log-normal là bệnh kinh điển của giá cả. log1p ép về gần Gaussian mà không đổi thứ tự, giúp MSE không bị outlier kéo lệch. Tree-based (XGBoost) ít cần hơn vì chia bằng threshold.",
   },
   {
     question:
       "One-hot encoding cho cột 'quận' có 700 giá trị khác nhau. Vấn đề gì xảy ra?",
     options: [
-      "Không sao — cứ thêm 700 cột",
-      "Ma trận thưa, tốn bộ nhớ, và mỗi cột quá hiếm → mô hình dễ overfit. Nên cân nhắc target encoding hoặc gộp quận ít xuất hiện",
-      "Mô hình sẽ chạy nhanh hơn vì nhiều cột",
+      "Không sao, cứ thêm 700 cột",
+      "Ma trận thưa, tốn bộ nhớ, và mỗi cột quá hiếm khiến model dễ overfit. Nên cân nhắc target encoding hoặc gộp quận ít xuất hiện",
+      "Model sẽ chạy nhanh hơn vì nhiều cột",
       "Python sẽ báo lỗi",
     ],
     correct: 1,
     explanation:
-      "Khi cardinality cao, one-hot tạo ra ma trận 700 cột 0/1 — tốn bộ nhớ và làm mỗi cột chỉ khác 0 ở vài hàng. Target encoding (thay category bằng mean của target trong category đó) hoặc entity embedding là giải pháp phổ biến hơn.",
+      "Khi cardinality cao, one-hot tạo ra ma trận 700 cột 0/1, tốn bộ nhớ và làm mỗi cột chỉ khác 0 ở vài hàng. Target encoding (thay category bằng mean của target trong category đó) hoặc entity embedding là giải pháp phổ biến hơn.",
   },
   {
     question:
@@ -859,12 +859,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Thêm càng nhiều feature càng tốt",
       "Feature engineering chỉ cần thiết khi dùng deep learning",
-      "Feature tốt + mô hình đơn giản thường thắng feature tệ + mô hình phức tạp",
+      "Feature tốt và model đơn giản thường thắng feature tệ và model phức tạp",
       "Tree-based cần scaling giống linear",
     ],
     correct: 2,
     explanation:
-      "'Garbage in, garbage out' — nguyên liệu quyết định món ăn. Andrew Ng ước tính 80% thời gian ML là feature engineering. Thêm feature vô tội vạ làm tăng chiều, tăng rủi ro overfit.",
+      "'Garbage in, garbage out': nguyên liệu quyết định món ăn. Andrew Ng ước tính 80% thời gian ML là feature engineering. Thêm feature vô tội vạ làm tăng chiều, tăng rủi ro overfit.",
   },
   {
     type: "fill-blank",
@@ -877,7 +877,7 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "Interaction feature (đặc trưng tương tác) kết hợp hai feature để mô hình tuyến tính nắm được quan hệ phi cộng tính — điều mà tree-based, neural net tự học được, còn linear regression thì cần bạn làm tay.",
+      "Interaction feature (đặc trưng tương tác) kết hợp hai feature để model tuyến tính nắm được quan hệ phi cộng tính. Đây là việc mà tree-based và neural net tự học được, còn linear regression thì cần bạn làm tay.",
   },
 ];
 
@@ -888,10 +888,10 @@ const quizQuestions: QuizQuestion[] = [
 export default function FeatureEngineeringTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* BƯỚC 1. HOOK / DỰ ĐOÁN */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn có bảng dữ liệu khách hàng với cột 'Ngày sinh = 1995-05-30'. Mô hình học máy sẽ làm gì với con số này?"
+          question="Bạn có bảng dữ liệu khách hàng với cột 'Ngày sinh = 1995-05-30'. Model học máy sẽ làm gì với con số này?"
           options={[
             "Hiểu được đây là tuổi 30 và nhóm Millennial",
             "Xem 1995-05-30 là một giá trị duy nhất, không liên quan gì đến 1995-05-29 hay 1996-05-30",
@@ -899,7 +899,7 @@ export default function FeatureEngineeringTopic() {
             "Coi như số thứ tự theo thời gian",
           ]}
           correct={1}
-          explanation="Mô hình thấy 1995-05-30 và 1995-05-29 là hai giá trị khác nhau — như hai từ ngẫu nhiên. Muốn mô hình học được 'tuổi 30 thích laptop hơn tuổi 60', bạn phải tự tay biến đổi: tính tuổi, gom thế hệ. Đó chính là feature engineering."
+          explanation="Model nhìn 1995-05-30 và 1995-05-29 như hai giá trị xa lạ, không có quan hệ với nhau. Muốn model học được 'tuổi 30 thích laptop hơn tuổi 60', bạn phải tự tay biến đổi: tính tuổi, gom thế hệ. Đó chính là feature engineering."
         >
           <div className="mt-4 rounded-xl border border-border bg-card p-5 space-y-3">
             <p className="text-sm text-foreground/85 leading-relaxed">
@@ -907,7 +907,7 @@ export default function FeatureEngineeringTopic() {
               tươi, gạo ngon, rau sạch (feature tốt) thì bếp bình thường cũng
               nấu ra món ngon. Nguyên liệu hỏng thì đầu bếp giỏi cỡ nào cũng
               khó cứu. Andrew Ng từng nói 80% thời gian của dự án ML là chế
-              biến dữ liệu — chỉ 20% là chạy mô hình.
+              biến dữ liệu, chỉ 20% là chạy model.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <MiniTile
@@ -930,24 +930,24 @@ export default function FeatureEngineeringTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ / HIỂU BẰNG HÌNH ━━━ */}
+      {/* BƯỚC 2. ẨN DỤ / HIỂU BẰNG HÌNH */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hiểu bằng hình">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
             <Layers size={18} className="text-accent" /> Raw data và feature
-            thực ra khác nhau thế nào?
+            khác nhau thế nào?
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Raw data là những gì người dùng đánh vào hoặc hệ thống log lại:
             ngày sinh, địa chỉ dài dòng, số tiền, nhãn danh mục dưới dạng chữ.
-            Feature là phiên bản đã <strong>được mô hình hiểu</strong>: tuổi
+            Feature là phiên bản đã <strong>được model hiểu</strong>: tuổi
             (số nguyên), quận (đã tách khỏi địa chỉ), log(giá), cột 0/1 cho
             mỗi danh mục.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4">
               <p className="text-xs font-semibold text-amber-700 dark:text-amber-300 uppercase tracking-wide mb-2">
-                Raw — mô hình KHÔNG hiểu
+                Raw. Model KHÔNG hiểu
               </p>
               <div className="space-y-1 font-mono text-xs text-foreground/85">
                 <p>dob = &quot;1995-05-30&quot;</p>
@@ -958,7 +958,7 @@ export default function FeatureEngineeringTopic() {
             </div>
             <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4">
               <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide mb-2">
-                Sau khi engineer — mô hình ĐÃ hiểu
+                Sau khi engineer. Model ĐÃ hiểu
               </p>
               <div className="space-y-1 font-mono text-xs text-foreground/85">
                 <p>age = 30, gen = &quot;Millennial&quot;</p>
@@ -971,7 +971,7 @@ export default function FeatureEngineeringTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — KHÁM PHÁ / PLAYGROUND ━━━ */}
+      {/* BƯỚC 3. KHÁM PHÁ / PLAYGROUND */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <RawTablePlayground />
@@ -990,23 +990,23 @@ export default function FeatureEngineeringTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* BƯỚC 4. AHA */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           <p>
-            Mô hình không biết &ldquo;1995&rdquo; là năm, không biết
+            Model không biết &ldquo;1995&rdquo; là năm, không biết
             &ldquo;electronics&rdquo; là danh mục, không biết
             &ldquo;Hoàn Kiếm&rdquo; là một quận đắt đỏ.
             <br />
             <br />
-            <strong>Feature engineering là bước bạn dịch ngôn ngữ của con người sang ngôn ngữ của mô hình.</strong>{" "}
+            <strong>Feature engineering là bước bạn dịch ngôn ngữ của con người sang ngôn ngữ của model.</strong>{" "}
             Và đúng như nấu ăn, người dịch giỏi thường thắng người có bếp
             đắt tiền.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — THỬ THÁCH ━━━ */}
+      {/* BƯỚC 5. THỬ THÁCH */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
           question="Bạn dự đoán liệu khách Shopee có mua hàng trong 7 ngày tới. Data có: user_id, giới tính, ngày đăng ký, danh sách đơn hàng gần đây (mỗi đơn có ngày, số tiền). Feature nào sẽ mạnh nhất?"
@@ -1017,17 +1017,17 @@ export default function FeatureEngineeringTopic() {
             "Độ dài user_id tính bằng ký tự",
           ]}
           correct={2}
-          explanation="RFM (Recency, Frequency, Monetary) là bộ ba feature kinh điển cho dự đoán hành vi mua. Thêm tuổi tài khoản (ngày đăng ký → số ngày) để phân biệt khách mới / khách lâu năm. user_id và độ dài chuỗi không phải feature — là định danh và nhiễu."
+          explanation="RFM (Recency, Frequency, Monetary) là bộ ba feature kinh điển cho dự đoán hành vi mua. Thêm tuổi tài khoản (ngày đăng ký → số ngày) để phân biệt khách mới với khách lâu năm. user_id và độ dài chuỗi không phải feature, chỉ là định danh và nhiễu."
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — GIẢI THÍCH ━━━ */}
+      {/* BƯỚC 6. GIẢI THÍCH */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
-            Feature engineering xoay quanh ba câu hỏi: (1) mô hình cần loại
+            Feature engineering xoay quanh ba câu hỏi: (1) model cần loại
             tín hiệu nào, (2) raw data đang ở dạng gì, (3) phép biến đổi nào
-            ép nó về dạng mô hình tiêu hoá được. Bốn nhóm dữ liệu phổ biến
+            ép nó về dạng model tiêu hoá được. Bốn nhóm dữ liệu phổ biến
             sau đây xuất hiện trong hầu hết bài toán công nghiệp, mỗi nhóm có
             bộ kỹ thuật riêng.
           </p>
@@ -1055,7 +1055,7 @@ export default function FeatureEngineeringTopic() {
 
           {/* Công thức 1: log transform */}
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2 flex items-center gap-2">
-            <LineIcon size={14} className="text-accent" /> Công thức 1 —
+            <LineIcon size={14} className="text-accent" /> Công thức 1.
             Log transform
           </h4>
           <p className="leading-relaxed text-sm">
@@ -1067,15 +1067,15 @@ export default function FeatureEngineeringTopic() {
             {"x' = \\log(1 + x)"}
           </LaTeX>
           <p className="text-xs text-muted leading-relaxed">
-            Nói nôm na: 1 nghìn và 10 nghìn từng cách nhau 9 nghìn
-            &rArr; sau log, khoảng cách chỉ còn ~2.3. Mô hình tuyến tính không
-            bị một vài giao dịch 100 triệu nuốt chửng trung bình.
+            Nói nôm na: 1 nghìn và 10 nghìn từng cách nhau 9 nghìn,
+            sau log, khoảng cách chỉ còn ~2.3. Nhờ vậy model tuyến tính không
+            bị vài giao dịch 100 triệu nuốt chửng trung bình.
           </p>
           <LogTransformChart />
 
           {/* Công thức 2: target encoding */}
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2 flex items-center gap-2">
-            <Grid3x3 size={14} className="text-accent" /> Công thức 2 —
+            <Grid3x3 size={14} className="text-accent" /> Công thức 2.
             Target encoding có smoothing
           </h4>
           <p className="leading-relaxed text-sm">
@@ -1099,7 +1099,7 @@ export default function FeatureEngineeringTopic() {
           <Callout variant="warning" title="Cảnh báo: data leakage">
             Fit target encoder trên toàn bộ data TRƯỚC khi chia train/val sẽ
             làm target val rò rỉ vào train. Luôn fit encoder trên train fold,
-            rồi transform val/test — đúng hệt cách bạn làm với{" "}
+            rồi transform val/test, đúng hệt cách bạn làm với{" "}
             <code>StandardScaler</code>.
           </Callout>
 
@@ -1123,24 +1123,24 @@ export default function FeatureEngineeringTopic() {
             <p className="text-sm">
               Decision tree chia node bằng threshold (ví dụ: price &lt;
               500k). Thứ tự giá trị mới quan trọng, không phải scale. Do đó
-              StandardScaler / MinMaxScaler là no-op với XGBoost, Random
+              StandardScaler hay MinMaxScaler là no-op với XGBoost, Random
               Forest, LightGBM. Ngược lại, hồi quy tuyến tính và neural net
-              cộng weighted sum — nếu một feature có scale 1e6 và feature
-              khác 0 – 1, gradient bị feature to đè, training mất ổn định.
+              cộng weighted sum. Nếu một feature có scale 1e6 còn feature
+              khác chỉ 0 đến 1, gradient bị feature to đè, training mất ổn định.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      {/* BƯỚC 7. TÓM TẮT */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="4 ý cần nhớ về feature engineering"
           points={[
-            "Mô hình không hiểu chuỗi, không hiểu ngày, không hiểu địa chỉ dài. Bạn phải biến chúng thành số hoặc ma trận 0/1.",
+            "Model không hiểu chuỗi, không hiểu ngày, không hiểu địa chỉ dài. Bạn phải biến chúng thành số hoặc ma trận 0/1.",
             "Bốn nhóm kỹ thuật chính: numerical (log, bin, scale), categorical (one-hot, target encode), datetime (hour, dow, age), text (TF-IDF, embedding).",
-            "Thêm feature vô tội vạ làm mô hình overfit. Thêm ít feature có ý nghĩa luôn thắng.",
-            "Đóng gói toàn bộ pipeline bằng sklearn.Pipeline + ColumnTransformer để tránh leak và tái lập được.",
+            "Thêm feature vô tội vạ làm model overfit. Thêm ít feature có ý nghĩa luôn thắng.",
+            "Đóng gói toàn bộ pipeline bằng sklearn.Pipeline và ColumnTransformer để tránh leak và tái lập được.",
           ]}
         />
         <div className="mt-4">
@@ -1155,7 +1155,7 @@ export default function FeatureEngineeringTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* BƯỚC 8. QUIZ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
         <div className="mt-6 flex items-center justify-center">
@@ -1197,9 +1197,9 @@ function NumericalTab() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-foreground/85 leading-relaxed">
-        Feature số là dễ nhất vì mô hình đã hiểu số. Nhưng &ldquo;hiểu&rdquo;
-        không có nghĩa &ldquo;học tốt&rdquo; — bạn vẫn cần giúp bằng cách
-        nén, chuẩn hoá, hoặc phân nhóm.
+        Feature số là dễ nhất vì model đã hiểu số. Nhưng &ldquo;hiểu&rdquo;
+        không đồng nghĩa với &ldquo;học tốt&rdquo;. Bạn vẫn phải giúp model
+        bằng cách nén, chuẩn hoá, hoặc phân nhóm.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <MiniCard
@@ -1252,8 +1252,8 @@ function CategoricalTab() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-foreground/85 leading-relaxed">
-        Mô hình tuyến tính không hiểu chữ &mdash; phải chuyển về số. Tuỳ
-        vào số giá trị (cardinality), bạn chọn kỹ thuật khác nhau.
+        Model tuyến tính không hiểu chữ, nên bạn phải chuyển về số. Tuỳ
+        vào số giá trị (cardinality), kỹ thuật phù hợp sẽ khác nhau.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <MiniCard
@@ -1307,8 +1307,8 @@ function DatetimeTab() {
     <div className="space-y-4">
       <p className="text-sm text-foreground/85 leading-relaxed">
         Một timestamp chứa rất nhiều tín hiệu: giờ trong ngày, ngày trong
-        tuần, mùa, chu kỳ. Đừng đưa datetime nguyên thuỷ vào mô hình — nó
-        sẽ bối rối. Tách thành các tín hiệu cụ thể.
+        tuần, mùa, chu kỳ. Đừng đưa datetime nguyên thuỷ vào model. Nó sẽ
+        bối rối. Hãy tách thành các tín hiệu cụ thể.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <MiniCard
@@ -1361,8 +1361,8 @@ function TextTab() {
     <div className="space-y-4">
       <p className="text-sm text-foreground/85 leading-relaxed">
         Text là loại dữ liệu khó nhất: không có thứ tự số, không có phân
-        phối. Bạn phải vector hoá — biến mỗi đoạn text thành một vector cố
-        định chiều.
+        phối. Bạn phải vector hoá, tức là biến mỗi đoạn text thành một
+        vector cố định chiều.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <MiniCard

@@ -36,9 +36,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "cross-validation",
   title: "Cross-Validation",
-  titleVi: "Kiểm định chéo — xoay vòng 5 đề thi thử",
+  titleVi: "Kiểm định chéo. Xoay vòng 5 đề thi thử",
   description:
-    "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần và xoay vòng — đó là kiểm định chéo.",
+    "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần rồi xoay vòng. Đó là kiểm định chéo.",
   category: "classic-ml",
   tags: ["evaluation", "model-selection", "theory"],
   difficulty: "intermediate",
@@ -101,25 +101,25 @@ const quizQuestions: QuizQuestion[] = [
     question: "Tại sao cross-validation tốt hơn chia train/test một lần?",
     options: [
       "Cross-validation chạy nhanh hơn",
-      "Mỗi điểm dữ liệu đều được dùng để test đúng 1 lần → ước lượng ổn định hơn, ít phụ thuộc vào cú cắt may rủi",
-      "Cross-validation luôn cho accuracy cao hơn",
+      "Mỗi điểm dữ liệu đều được dùng để test đúng 1 lần, ước lượng ổn định hơn và ít phụ thuộc vào cú cắt may rủi",
+      "Cross-validation luôn cho độ chính xác cao hơn",
       "Cross-validation giúp mô hình học nhiều hơn",
     ],
     correct: 1,
     explanation:
-      "Chia 1 lần → kết quả phụ thuộc vào 'may rủi' của lần cắt đó. Cross-validation thử K lần cắt khác nhau → trung bình ổn định hơn. Đồng thời, mọi mẫu đều được dùng để đánh giá.",
+      "Chia 1 lần thì kết quả phụ thuộc vào may rủi của lần cắt đó. Cross-validation thử K lần cắt khác nhau, trung bình ổn định hơn. Đồng thời, mọi mẫu đều được dùng để đánh giá.",
   },
   {
     question: "K=5 hay K=10 tốt hơn?",
     options: [
       "K=10 luôn tốt hơn vì test nhiều hơn",
-      "Tuỳ: K=5 rẻ hơn, K=10 ước lượng ổn định hơn nhưng chậm gấp đôi. K=5 là mặc định phổ biến.",
+      "Tuỳ trường hợp. K=5 rẻ hơn, K=10 ước lượng ổn định hơn nhưng chậm gấp đôi. K=5 là mặc định phổ biến.",
       "K=5 luôn tốt hơn vì tập train lớn hơn",
       "Không khác gì nhau",
     ],
     correct: 1,
     explanation:
-      "K nhỏ → mỗi tập train nhỏ hơn → bias cao hơn. K lớn → test có ít mẫu → variance ước lượng cao hơn. K=5 hoặc K=10 là lựa chọn cân bằng. Thực tế thường bắt đầu với K=5.",
+      "K nhỏ thì mỗi tập train nhỏ hơn nên bias cao hơn. K lớn thì test có ít mẫu nên variance ước lượng cao hơn. K=5 hoặc K=10 là lựa chọn cân bằng. Thực tế thường bắt đầu với K=5.",
   },
   {
     question:
@@ -127,12 +127,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Dataset hàng triệu mẫu",
       "Dataset rất nhỏ (vài chục mẫu) và thuật toán huấn luyện rất nhanh",
-      "Luôn luôn — càng nhiều fold càng tốt",
+      "Luôn luôn. Càng nhiều fold càng tốt",
       "Chuỗi thời gian",
     ],
     correct: 1,
     explanation:
-      "Leave-One-Out = K = n: mỗi lần chỉ bỏ ra 1 mẫu làm test. Bias thấp nhất nhưng chi phí cực cao. Chỉ khả thi khi: (1) dataset nhỏ nên n × thời gian 1 lần train vẫn chịu được, (2) dataset quá nhỏ khiến K-Fold thường có fold kém ổn định.",
+      "Leave-One-Out là K = n. Mỗi lần chỉ bỏ ra 1 mẫu làm test. Bias thấp nhất nhưng chi phí cực cao. Chỉ khả thi khi: (1) dataset nhỏ nên n × thời gian 1 lần train vẫn chịu được, (2) dataset quá nhỏ khiến K-Fold thường có fold kém ổn định.",
   },
   {
     type: "fill-blank",
@@ -143,7 +143,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "trung bình", accept: ["mean", "giá trị trung bình"] },
     ],
     explanation:
-      "Đây là tính chất cốt lõi của K-Fold: mỗi mẫu test đúng 1 lần (không bỏ qua, không lặp). Kết quả cuối là trung bình của K lượt → ổn định hơn chia 1 lần.",
+      "Đây là tính chất cốt lõi của K-Fold: mỗi mẫu test đúng 1 lần (không bỏ qua, không lặp). Kết quả cuối là trung bình của K lượt, ổn định hơn chia 1 lần.",
   },
 ];
 
@@ -193,7 +193,7 @@ export default function CrossValidationTopic() {
 
   return (
     <>
-      {/* ═══════════ STEP 1 — HOOK + PREDICTION ═══════════ */}
+      {/* ═══════════ STEP 1 - HOOK + PREDICTION ═══════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Hook">
         <div className="rounded-2xl border border-border bg-card p-6 mb-5">
           <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
@@ -209,24 +209,24 @@ export default function CrossValidationTopic() {
             Đó chính là cross-validation trong ML.{" "}
             <strong>Kiểm định chéo chia dữ liệu thành K phần bằng nhau, rồi xoay vòng</strong>:
             mỗi lượt một phần làm &ldquo;đề thi&rdquo;, K-1 phần còn lại làm &ldquo;sách ôn&rdquo;.
-            K điểm đánh giá &rArr; trung bình = thực lực mô hình.
+            K điểm đánh giá rồi tính trung bình. Đó là thực lực mô hình.
           </p>
         </div>
 
         <PredictionGate
           question="Bạn đã biết chia K phần và xoay vòng. Dataset có 500 mẫu. So K = 2 với K = 500 (leave-one-out). Đánh đổi chính là gì?"
           options={[
-            "K càng lớn càng tốt — K = 500 luôn thắng K = 2",
+            "K càng lớn càng tốt. K = 500 luôn thắng K = 2",
             "K = 2 chỉ dùng 250 mẫu mỗi lần train (thiếu) còn K = 500 dùng 499 mẫu (sát thật) nhưng phải huấn luyện 500 lần",
             "K = 2 và K = 500 cho kết quả y hệt vì trung bình bằng nhau",
-            "K không ảnh hưởng gì — chỉ để đặt tên file kết quả",
+            "K không ảnh hưởng gì. Chỉ để đặt tên file kết quả",
           ]}
           correct={1}
-          explanation="K nhỏ (như 2) khiến mỗi lần train thiếu dữ liệu → kết quả bi quan hơn thực tế. K lớn (như N) cho train gần đủ dataset, nhưng phải fit mô hình N lần — cực tốn thời gian, và các fold chồng chéo nên std cuối cùng thường nhỏ giả. Thực tế K = 5 hoặc K = 10 dung hoà được cả hai phía; bài sau bạn sẽ đổi K để tận mắt thấy."
+          explanation="K nhỏ (như 2) khiến mỗi lần train thiếu dữ liệu nên kết quả bi quan hơn thực tế. K lớn (như N) cho train gần đủ dataset, nhưng phải fit mô hình N lần. Cực tốn thời gian, và các fold chồng chéo nên std cuối cùng thường nhỏ giả. Thực tế K = 5 hoặc K = 10 dung hoà được cả hai phía. Bài sau bạn sẽ đổi K để tận mắt thấy."
         />
       </LessonSection>
 
-      {/* ═══════════ STEP 2 — REVEAL: K-Fold interactive ═══════════ */}
+      {/* ═══════════ STEP 2 - REVEAL: K-Fold interactive ═══════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Bên dưới là minh hoạ K-Fold. Chọn <strong>K</strong> để đổi số phần, bấm từng fold để
@@ -270,7 +270,7 @@ export default function CrossValidationTopic() {
                 textAnchor="middle"
                 fontWeight={700}
               >
-                {k}-Fold CV — Fold F{activeFold + 1} đang làm test
+                {k}-Fold CV. Fold F{activeFold + 1} đang làm test
               </text>
 
               {/* Column headers */}
@@ -486,43 +486,43 @@ export default function CrossValidationTopic() {
 
             <p className="text-xs text-muted text-center leading-relaxed italic">
               Quan sát: K càng lớn, mỗi phần (fold) càng nhỏ, nhưng tổng số lượt huấn luyện
-              cũng tăng theo &rArr; tốn thời gian hơn.
+              cũng tăng theo, tốn thời gian hơn.
             </p>
           </div>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══════════ STEP 3 — AHA ═══════════ */}
+      {/* ═══════════ STEP 3 - AHA ═══════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            <strong>Một đề không nói lên gì — K đề cho ta trung bình đáng tin.</strong> Mỗi mẫu
+            <strong>Một đề không nói lên gì. K đề cho ta trung bình đáng tin.</strong> Mỗi mẫu
             trong dataset đều được thử làm &ldquo;đề thi&rdquo; đúng 1 lần, và &ldquo;sách
             ôn&rdquo; (K-1) lần. Điểm cuối cùng không phải một con số mà là{" "}
             <strong>cặp (trung bình, độ lệch chuẩn)</strong>.
           </p>
           <p className="mt-3">
-            Độ lệch chuẩn thấp = mô hình ổn định. Độ lệch chuẩn cao = có fold đặc biệt dễ/khó
-            → nên kiểm tra dữ liệu có cân đối không.
+            Độ lệch chuẩn thấp nghĩa là mô hình ổn định. Độ lệch chuẩn cao nghĩa là có fold
+            đặc biệt dễ hoặc khó, nên kiểm tra dữ liệu có cân đối không.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══════════ STEP 4 — DEEPEN: 20-row dataset animated through 5-fold ═══════════ */}
+      {/* ═══════════ STEP 4 - DEEPEN: 20-row dataset animated through 5-fold ═══════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Mổ xẻ từng lượt">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Bên dưới là dataset 20 hàng, chia thành 5 fold (4 hàng mỗi fold). Bấm{" "}
-          <strong>&ldquo;Tiếp tục&rdquo;</strong> để xem 5 lượt huấn luyện &mdash; mỗi lượt,
-          một fold chuyển thành test (màu), 4 fold còn lại là train (xám).
+          <strong>&ldquo;Tiếp tục&rdquo;</strong> để xem 5 lượt huấn luyện. Mỗi lượt, một fold
+          chuyển thành test (màu), 4 fold còn lại là train (xám).
         </p>
 
         <StepReveal
           labels={[
-            "Lượt 1 — Fold 1 test",
-            "Lượt 2 — Fold 2 test",
-            "Lượt 3 — Fold 3 test",
-            "Lượt 4 — Fold 4 test",
-            "Lượt 5 — Fold 5 test",
+            "Lượt 1. Fold 1 test",
+            "Lượt 2. Fold 2 test",
+            "Lượt 3. Fold 3 test",
+            "Lượt 4. Fold 4 test",
+            "Lượt 5. Fold 5 test",
             "Tổng kết 5 lượt",
           ]}
         >
@@ -543,8 +543,8 @@ export default function CrossValidationTopic() {
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Mỗi hàng dữ liệu đã được thử nghiệm đúng 1 lần. Ước lượng độ chính xác thực tế:{" "}
                 <strong className="text-green-600">86.2% ± 2.6%</strong>. So với &ldquo;chia
-                một lần được 88%&rdquo;, con số trung bình này đáng tin hơn vì nó đã &ldquo;trải
-                qua&rdquo; 5 cách chia khác nhau.
+                một lần được 88%&rdquo;, con số trung bình này đáng tin hơn vì nó đã đi qua
+                5 cách chia khác nhau.
               </p>
               <div className="grid grid-cols-5 gap-2">
                 {[0.85, 0.88, 0.82, 0.9, 0.86].map((s, i) => (
@@ -567,42 +567,42 @@ export default function CrossValidationTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ═══════════ STEP 5 — CHALLENGE ═══════════ */}
+      {/* ═══════════ STEP 5 - CHALLENGE ═══════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
           question="Leave-One-Out CV (LOO) là K-Fold với K = n (n là số mẫu dataset). Khi nào dùng LOO hợp lý nhất?"
           options={[
             "Khi có hàng triệu mẫu để tận dụng GPU",
             "Khi dataset rất nhỏ (vài chục mẫu) và thuật toán huấn luyện nhanh, ta cần tận dụng tối đa dữ liệu cho train",
-            "Luôn luôn — càng nhiều fold càng tốt",
-            "Khi muốn accuracy cao hơn",
+            "Luôn luôn. Càng nhiều fold càng tốt",
+            "Khi muốn độ chính xác cao hơn",
           ]}
           correct={1}
-          explanation="LOO = n lần huấn luyện (mỗi lần giữ lại đúng 1 mẫu làm test). Ưu: bias thấp nhất, tận dụng tối đa dữ liệu cho train. Nhược: cực kỳ tốn (n lần train). Chỉ dùng khi: (1) dataset quá nhỏ — K-Fold thường cho fold kém ổn định, (2) thuật toán huấn luyện rẻ (ví dụ linear regression có công thức đóng). Với dataset lớn, K = 5 hoặc 10 là đủ."
+          explanation="LOO là n lần huấn luyện, mỗi lần giữ lại đúng 1 mẫu làm test. Ưu điểm: bias thấp nhất, tận dụng tối đa dữ liệu cho train. Nhược điểm: cực kỳ tốn (n lần train). Chỉ dùng khi: (1) dataset quá nhỏ, K-Fold thường cho fold kém ổn định, (2) thuật toán huấn luyện rẻ (ví dụ linear regression có công thức đóng). Với dataset lớn, K = 5 hoặc 10 là đủ."
         />
 
         <div className="mt-5">
           <InlineChallenge
             question="Bạn chạy 5-Fold CV và nhận được scores [95%, 50%, 93%, 48%, 94%]. Trung bình là 76%. Điểm đáng chú ý là gì?"
             options={[
-              "Mô hình tốt — 76% là điểm thực tế",
-              "Độ lệch chuẩn cực lớn (dao động 48–95%) — có fold dễ và fold khó bất thường, có thể do phân bố lớp không đều hoặc có data leakage cục bộ",
+              "Mô hình tốt. 76% là điểm thực tế",
+              "Độ lệch chuẩn cực lớn (dao động 48-95%), có fold dễ và fold khó bất thường, có thể do phân bố lớp không đều hoặc có data leakage cục bộ",
               "Cần tăng K lên 10 để &ldquo;sửa&rdquo;",
               "Mô hình cần huấn luyện thêm epoch",
             ]}
             correct={1}
-            explanation="Chênh lệch ~47% giữa các fold là cờ đỏ. Trung bình (76%) che giấu vấn đề. Cần: (1) kiểm tra phân bố lớp giữa các fold → dùng Stratified K-Fold nếu mất cân bằng, (2) kiểm tra data leakage — có thể một fold có mẫu 'dễ' vì chung nhóm với train, (3) xem xét xem các mẫu gây fold 'xấu' có điểm gì đặc biệt không."
+            explanation="Chênh lệch khoảng 47% giữa các fold là cờ đỏ. Trung bình (76%) che giấu vấn đề. Cần: (1) kiểm tra phân bố lớp giữa các fold, dùng Stratified K-Fold nếu mất cân bằng, (2) kiểm tra data leakage. Có thể một fold có mẫu dễ vì chung nhóm với train, (3) xem xét các mẫu gây fold xấu có điểm gì đặc biệt không."
           />
         </div>
       </LessonSection>
 
-      {/* ═══════════ STEP 6 — EXPLAIN ═══════════ */}
+      {/* ═══════════ STEP 6 - EXPLAIN ═══════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
-            <strong>K-Fold Cross-Validation</strong> là cách &ldquo;nhân bản&rdquo; phép đo hiệu
-            năng. Dataset được chia thành K phần bằng nhau. Ta lặp K lần: mỗi lần, 1 phần làm
-            test, K-1 phần còn lại làm train. K điểm đánh giá &rArr; trung bình và độ lệch
+            <strong>K-Fold Cross-Validation</strong> là cách nhân bản phép đo hiệu năng.
+            Dataset được chia thành K phần bằng nhau. Ta lặp K lần: mỗi lần, 1 phần làm test,
+            K-1 phần còn lại làm train. Có K điểm đánh giá, từ đó tính trung bình và độ lệch
             chuẩn.
           </p>
 
@@ -645,21 +645,21 @@ export default function CrossValidationTopic() {
             <VariantCard
               color="#ef4444"
               title="Group K-Fold"
-              desc="Giữ các mẫu cùng nhóm (bệnh nhân, user) trong cùng một fold — tránh data leakage."
+              desc="Giữ các mẫu cùng nhóm (bệnh nhân, user) trong cùng một fold để tránh data leakage."
             />
             <VariantCard
               color="#14b8a6"
               title="Repeated K-Fold"
-              desc="Chạy K-Fold nhiều lần với seed khác → ước lượng cực kỳ ổn định, tính được khoảng tin cậy."
+              desc="Chạy K-Fold nhiều lần với seed khác. Ước lượng cực kỳ ổn định, tính được khoảng tin cậy."
             />
           </div>
 
-          <Callout variant="warning" title="Cạm bẫy — data leakage trong pipeline">
+          <Callout variant="warning" title="Cạm bẫy: data leakage trong pipeline">
             <p>
               KHÔNG được fit scaler / feature selection / imputer trên{" "}
               <strong>toàn bộ dữ liệu</strong> trước khi CV. Phải đặt trong một pipeline để mỗi
-              fold có preprocessing riêng. Nếu không, thông tin từ test lọt vào train &rArr; kết
-              quả CV &ldquo;ảo&rdquo; (lạc quan hơn thực tế).
+              fold có preprocessing riêng. Nếu không, thông tin từ test lọt vào train, kết quả
+              CV &ldquo;ảo&rdquo; (lạc quan hơn thực tế).
             </p>
           </Callout>
 
@@ -675,36 +675,36 @@ export default function CrossValidationTopic() {
           </h4>
           <ul className="list-disc list-inside space-y-1 text-sm">
             <li>
-              Dataset nhỏ (&lt; 10k mẫu): <strong>CV</strong> &mdash; tận dụng tối đa dữ liệu.
+              Dataset nhỏ (&lt; 10k mẫu): <strong>CV</strong> để tận dụng tối đa dữ liệu.
             </li>
             <li>
               Dataset lớn (&gt; 100k mẫu):{" "}
-              <TopicLink slug="train-val-test">train/val/test split</TopicLink> một lần là đủ —
+              <TopicLink slug="train-val-test">train/val/test split</TopicLink> một lần là đủ,
               variance tự nhiên đã thấp.
             </li>
             <li>
-              Cần báo cáo khoa học / benchmark chính thức:{" "}
+              Cần báo cáo khoa học hoặc benchmark chính thức:{" "}
               <strong>Repeated K-Fold</strong> hoặc <strong>Nested CV</strong>.
             </li>
             <li>
-              Có time series / group / mất cân bằng: dùng biến thể tương ứng (TimeSeriesSplit,
+              Có time series, group hoặc mất cân bằng: dùng biến thể tương ứng (TimeSeriesSplit,
               GroupKFold, StratifiedKFold).
             </li>
           </ul>
 
-          <CollapsibleDetail title="Bias-variance của K — vì sao K=5 hoặc K=10 là mặc định?">
+          <CollapsibleDetail title="Bias-variance của K. Vì sao K=5 hoặc K=10 là mặc định?">
             <p className="text-sm leading-relaxed">
               Chọn K là một sự đánh đổi:
             </p>
             <ul className="list-disc list-inside space-y-1 text-sm mt-2">
               <li>
-                <strong>K nhỏ (ví dụ K=2):</strong> tập train chỉ ~50% dataset → mô hình học từ
-                ít dữ liệu → ước lượng lỗi cao hơn thực tế (bias dương).
+                <strong>K nhỏ (ví dụ K=2):</strong> tập train chỉ chiếm khoảng 50% dataset, mô
+                hình học từ ít dữ liệu, ước lượng lỗi cao hơn thực tế (bias dương).
               </li>
               <li>
-                <strong>K lớn (ví dụ K=n):</strong> tập train gần như toàn bộ → bias thấp, nhưng
-                K tập train rất giống nhau → K điểm đánh giá tương quan cao → variance không
-                giảm như kỳ vọng.
+                <strong>K lớn (ví dụ K=n):</strong> tập train gần như toàn bộ nên bias thấp,
+                nhưng K tập train rất giống nhau, K điểm đánh giá tương quan cao, variance
+                không giảm như kỳ vọng.
               </li>
               <li>
                 <strong>K = 5 hoặc 10:</strong> cân bằng tốt. Kohavi (1995) thực nghiệm đề xuất
@@ -713,10 +713,10 @@ export default function CrossValidationTopic() {
             </ul>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Nested CV — khi cần báo cáo không thiên vị">
+          <CollapsibleDetail title="Nested CV. Khi cần báo cáo không thiên vị">
             <p className="text-sm leading-relaxed">
               Khi dùng GridSearchCV, điểm tốt nhất đã là kết quả của quá trình chọn lọc trên CV
-              &rArr; lạc quan hơn điểm thực tế. Nested CV giải quyết bằng 2 vòng:
+              nên lạc quan hơn điểm thực tế. Nested CV giải quyết bằng 2 vòng:
             </p>
             <ul className="list-disc list-inside space-y-1 text-sm mt-2">
               <li>
@@ -734,7 +734,7 @@ export default function CrossValidationTopic() {
           </CollapsibleDetail>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Sáu tình huống thực tế &mdash; chọn biến thể CV nào?
+            Sáu tình huống thực tế. Chọn biến thể CV nào?
           </h4>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
@@ -797,7 +797,7 @@ export default function CrossValidationTopic() {
             K-Fold là mặc định vì dữ liệu tín dụng và gian lận thường rất mất cân bằng
             (&lt; 5% dương). Các nhóm ML cũng thường dùng thêm một tập hold-out &ldquo;cuối
             cùng&rdquo; không bao giờ chạm đến trong quá trình thử nghiệm, chỉ mở khi sếp yêu
-            cầu báo cáo chính thức &mdash; cách này an toàn nhất để tránh overfitting lên CV.
+            cầu báo cáo chính thức. Cách này an toàn nhất để tránh overfitting lên CV.
           </Callout>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
@@ -806,16 +806,16 @@ export default function CrossValidationTopic() {
           <div className="space-y-3">
             <MistakeCard
               wrong="Fit StandardScaler trên toàn bộ X trước khi chạy cross_val_score"
-              why="Scaler đã biết mean/std của test fold → leakage. Kết quả CV lạc quan hơn thực tế 3-8%."
-              fix="Đặt scaler TRONG pipeline → scaler fit riêng trên mỗi fold train, rồi transform fold test."
+              why="Scaler đã biết mean/std của test fold nên leakage. Kết quả CV lạc quan hơn thực tế 3-8%."
+              fix="Đặt scaler TRONG pipeline. Scaler fit riêng trên mỗi fold train, rồi transform fold test."
             />
             <MistakeCard
               wrong="Shuffle dữ liệu chuỗi thời gian rồi K-Fold"
-              why="Tương lai (fold train) 'biết' quá khứ (fold test) → mô hình không phải học dự đoán, mà học nội suy."
-              fix="Dùng TimeSeriesSplit — luôn train trước test, không bao giờ ngược lại."
+              why="Tương lai (fold train) biết quá khứ (fold test). Mô hình không phải học dự đoán, mà học nội suy."
+              fix="Dùng TimeSeriesSplit. Luôn train trước test, không bao giờ ngược lại."
             />
             <MistakeCard
-              wrong="Báo cáo 'accuracy 87%' mà không kèm độ lệch chuẩn"
+              wrong="Báo cáo 'độ chính xác 87%' mà không kèm độ lệch chuẩn"
               why="Có thể đây là 87% ± 9% (rất không ổn định) hoặc 87% ± 1% (rất ổn định). Hai tình huống khác hẳn."
               fix="Luôn báo cáo (mean ± std) của K fold. Nếu cần so sánh 2 mô hình, dùng paired test."
             />
@@ -823,36 +823,36 @@ export default function CrossValidationTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ═══════════ STEP 7 — SUMMARY ═══════════ */}
+      {/* ═══════════ STEP 7 - SUMMARY ═══════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="5 điều cần nhớ về cross-validation"
           points={[
-            "Chia một lần = một đề thi may rủi. Chia K phần và xoay vòng = K đề, trung bình ổn định hơn.",
+            "Chia một lần là một đề thi may rủi. Chia K phần và xoay vòng cho K đề, trung bình ổn định hơn.",
             "K=5 hoặc K=10 là mặc định. Báo cáo luôn kèm mean ± std. Std cao là cờ đỏ.",
             "Stratified cho phân loại mất cân bằng, Time Series Split cho dữ liệu thời gian, Group K-Fold cho dữ liệu có nhóm tự nhiên.",
-            "Cạm bẫy: fit preprocessing TRƯỚC CV → leakage. Luôn đặt scaler/encoder trong pipeline để mỗi fold có preprocessing riêng.",
-            "Leave-One-Out chỉ dùng khi dataset cực nhỏ; Repeated K-Fold khi cần báo cáo khoa học với khoảng tin cậy.",
+            "Cạm bẫy: fit preprocessing TRƯỚC CV sẽ gây leakage. Luôn đặt scaler/encoder trong pipeline để mỗi fold có preprocessing riêng.",
+            "Leave-One-Out chỉ dùng khi dataset cực nhỏ. Repeated K-Fold khi cần báo cáo khoa học với khoảng tin cậy.",
           ]}
         />
 
         <Callout variant="tip" title="Xem ứng dụng thực tế">
           Muốn thấy cross-validation quan trọng thế nào khi thi đấu thật? Xem{" "}
-          <TopicLink slug="cross-validation-in-kaggle">CV trong Kaggle</TopicLink> &mdash; nơi
-          đội xếp 1.485 trên public leaderboard nhảy lên hạng 1 trên private, chỉ vì tin vào CV
-          của mình thay vì chạy theo bảng xếp hạng công khai.
+          <TopicLink slug="cross-validation-in-kaggle">CV trong Kaggle</TopicLink>. Có đội xếp
+          1.485 trên public leaderboard nhảy lên hạng 1 trên private, chỉ vì tin vào CV của
+          mình thay vì chạy theo bảng xếp hạng công khai.
         </Callout>
 
         <Callout variant="info" title="Một cảnh báo cuối">
           Cross-validation không phải thuốc chữa bách bệnh. Nếu dataset quá nhỏ
-          (&lt; 50 mẫu), mọi phương pháp CV đều cho variance cao &mdash; hãy tập trung vào thu
-          thập dữ liệu trước. Nếu dataset có data leakage nội tại (ví dụ: nhãn được dán bởi
-          cùng một người cho cả train và test), CV sẽ che giấu vấn đề chứ không giải quyết nó.
+          (&lt; 50 mẫu), mọi phương pháp CV đều cho variance cao. Hãy tập trung vào thu thập
+          dữ liệu trước. Nếu dataset có data leakage nội tại (ví dụ: nhãn được dán bởi cùng
+          một người cho cả train và test), CV sẽ che giấu vấn đề chứ không giải quyết nó.
           Luôn kiểm tra phân phối của từng fold trước khi tin vào con số trung bình.
         </Callout>
       </LessonSection>
 
-      {/* ═══════════ STEP 8 — QUIZ ═══════════ */}
+      {/* ═══════════ STEP 8 - QUIZ ═══════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
@@ -927,7 +927,7 @@ function FoldRound({
   testFold: number;
   score: number;
 }) {
-  // Build 5 × 4 grid — each row = one fold
+  // Build 5 x 4 grid: each row = one fold
   const rowsPerFold = 4;
   const color = FOLD_COLORS[testFold];
 
@@ -940,7 +940,7 @@ function FoldRound({
         <div className="flex items-center gap-2">
           <Shuffle size={14} style={{ color }} />
           <h4 className="text-sm font-bold" style={{ color }}>
-            Lượt {testFold + 1} &mdash; Fold F{testFold + 1} làm test
+            Lượt {testFold + 1}. Fold F{testFold + 1} làm test
           </h4>
         </div>
         <span

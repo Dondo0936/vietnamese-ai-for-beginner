@@ -33,7 +33,7 @@ export const metadata: TopicMeta = {
   title: "Confusion Matrix",
   titleVi: "Ma trận nhầm lẫn",
   description:
-    "Mô hình đoán 'có bệnh' — đúng hay sai đáng quan tâm thế nào? Bốn loại kết quả và cách ma trận 2×2 phân loại chúng.",
+    "Mô hình đoán 'có bệnh'. Đúng hay sai đáng quan tâm thế nào? Bốn loại kết quả và cách ma trận 2×2 phân loại chúng.",
   category: "classic-ml",
   tags: ["evaluation", "classification", "metrics"],
   difficulty: "intermediate",
@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — 20 bệnh nhân với điểm nguy cơ (score) của mô hình
+   DỮ LIỆU: 20 bệnh nhân với điểm nguy cơ (score) của mô hình
    và nhãn thực tế (có bệnh / không). Dữ liệu được thiết kế để
    khi kéo ngưỡng, các ô TP/FP/FN/TN thay đổi nhịp nhàng.
    ──────────────────────────────────────────────────────────── */
@@ -91,31 +91,31 @@ const CATEGORY_META: Record<
   { label: string; color: string; bg: string; description: string }
 > = {
   TP: {
-    label: "Đoán có bệnh — đúng",
+    label: "Đoán có bệnh, đúng",
     color: "#10b981",
     bg: "#d1fae5",
-    description: "Đoán 'có bệnh' và thực tế có bệnh — bắt đúng ca cần chữa.",
+    description: "Đoán 'có bệnh' và thực tế có bệnh. Bắt đúng ca cần chữa.",
   },
   FP: {
     label: "Báo động giả",
     color: "#f59e0b",
     bg: "#fef3c7",
     description:
-      "Đoán 'có bệnh' nhưng thực tế không bệnh — làm bệnh nhân lo và tốn xét nghiệm.",
+      "Đoán 'có bệnh' nhưng thực tế không bệnh. Làm bệnh nhân lo và tốn xét nghiệm.",
   },
   FN: {
     label: "Bỏ sót",
     color: "#ef4444",
     bg: "#fee2e2",
     description:
-      "Đoán 'không bệnh' nhưng thực tế có bệnh — nguy hiểm, bệnh nhân về nhà không được chữa.",
+      "Đoán 'không bệnh' nhưng thực tế có bệnh. Nguy hiểm, bệnh nhân về nhà không được chữa.",
   },
   TN: {
-    label: "Đoán không bệnh — đúng",
+    label: "Đoán không bệnh, đúng",
     color: "#3b82f6",
     bg: "#dbeafe",
     description:
-      "Đoán 'không bệnh' và thực tế không bệnh — cho bệnh nhân yên tâm ra về.",
+      "Đoán 'không bệnh' và thực tế không bệnh. Cho bệnh nhân yên tâm ra về.",
   },
 };
 
@@ -166,26 +166,26 @@ const quizQuestions: QuizQuestion[] = [
     options: ["50%", "98.8%", "12%", "100%"],
     correct: 1,
     explanation:
-      "988/1000 email là ham, luôn đoán 'không spam' bắt đúng 988 ca — tức 98.8% accuracy. Nhưng mô hình này bỏ sót toàn bộ 12 spam. Đây là lý do chúng ta cần ma trận nhầm lẫn và các chỉ số như Recall.",
+      "988/1000 email là ham, luôn đoán 'không spam' bắt đúng 988 ca, tức 98.8% accuracy. Nhưng mô hình này bỏ sót toàn bộ 12 spam. Đây là lý do chúng ta cần ma trận nhầm lẫn và các chỉ số như recall.",
   },
   {
     question:
       "Bạn xây dựng hệ thống sàng lọc ung thư giai đoạn sớm. Loại lỗi nào nguy hiểm hơn?",
     options: [
-      "FP (báo động giả) — vì tốn thêm xét nghiệm kiểm tra",
-      "FN (bỏ sót) — vì bệnh nhân về nhà không được chữa, có thể di căn",
-      "Cả hai như nhau — mọi lỗi đều tệ",
-      "Không có loại nào nguy hiểm — mô hình luôn đúng",
+      "FP (báo động giả). Vì tốn thêm xét nghiệm kiểm tra.",
+      "FN (bỏ sót). Vì bệnh nhân về nhà không được chữa, có thể di căn.",
+      "Cả hai như nhau. Mọi lỗi đều tệ.",
+      "Không có loại nào nguy hiểm. Mô hình luôn đúng.",
     ],
     correct: 1,
     explanation:
-      "FN (bỏ sót) nguy hiểm hơn trong sàng lọc ung thư: bệnh nhân tin mình khoẻ, bỏ qua thời gian vàng. FP chỉ tốn thêm một lượt xét nghiệm xác nhận. Vì vậy hệ thống y tế ưu tiên recall cao — chấp nhận báo động giả để không bỏ sót.",
+      "FN (bỏ sót) nguy hiểm hơn trong sàng lọc ung thư: bệnh nhân tin mình khoẻ, bỏ qua thời gian vàng. FP chỉ tốn thêm một lượt xét nghiệm xác nhận. Vì vậy hệ thống y tế ưu tiên recall cao, chấp nhận báo động giả để không bỏ sót.",
   },
   {
     question: "F1 là gì?",
     options: [
-      "Trung bình cộng của Precision và Recall",
-      "Trung bình điều hoà của Precision và Recall — phạt mạnh nếu một trong hai thấp",
+      "Trung bình cộng của precision và recall",
+      "Trung bình điều hoà của precision và recall, phạt mạnh nếu một trong hai thấp",
       "Tỉ lệ dự đoán đúng trên tổng",
       "Điểm tin cậy cao nhất của mô hình",
     ],
@@ -202,7 +202,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "FN", accept: ["False Negative", "false negative", "bỏ sót"] },
     ],
     explanation:
-      "FP = báo động giả, FN = bỏ sót. Hai loại lỗi này tốn chi phí khác nhau tuỳ bài toán — việc chọn metric phải xuất phát từ chi phí thật trong tình huống cụ thể.",
+      "FP = báo động giả, FN = bỏ sót. Hai loại lỗi này tốn chi phí khác nhau tuỳ bài toán. Việc chọn metric phải xuất phát từ chi phí thật trong tình huống cụ thể.",
   },
   {
     question:
@@ -215,20 +215,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Ngưỡng cao → mô hình 'khó tính' → ít dự đoán dương → ít báo nhầm (Precision tăng) nhưng cũng bỏ sót thêm ca thật (Recall giảm). Đây là bản chất của đánh đổi Precision–Recall.",
+      "Ngưỡng cao thì mô hình 'khó tính', ít dự đoán dương, nên ít báo nhầm (precision tăng) nhưng cũng bỏ sót thêm ca thật (recall giảm). Đây là bản chất của đánh đổi precision/recall.",
   },
   {
     question:
       "Với xét nghiệm nhanh HIV sàng lọc diện rộng, nên ưu tiên metric nào?",
     options: [
-      "Precision — vì báo dương tính giả tổn thương tâm lý nặng",
-      "Recall — tuyệt đối không được bỏ sót ca nhiễm (sau đó có xét nghiệm xác nhận)",
+      "Precision. Vì báo dương tính giả tổn thương tâm lý nặng.",
+      "Recall. Tuyệt đối không được bỏ sót ca nhiễm (sau đó có xét nghiệm xác nhận).",
       "Accuracy tuyệt đối",
       "Không cần metric, chỉ cần mô hình chạy nhanh",
     ],
     correct: 1,
     explanation:
-      "HIV cần phát hiện sớm. Vì đã có Western blot xác nhận ở bước hai, xét nghiệm sàng lọc được thiết kế recall cực cao — chấp nhận FP để không bỏ sót ai. Đây là chiến lược 'lưới lớn rồi lọc'.",
+      "HIV cần phát hiện sớm. Vì đã có Western blot xác nhận ở bước hai, xét nghiệm sàng lọc được thiết kế recall cực cao, chấp nhận FP để không bỏ sót ai. Đây là chiến lược 'lưới lớn rồi lọc'.",
   },
 ];
 
@@ -243,12 +243,12 @@ export default function ConfusionMatrixTopic() {
   // Tính mô tả trạng thái ngưỡng
   const thresholdMode =
     threshold <= 0.3
-      ? "Lưới rất rộng — bắt gần hết ca bệnh, nhiều báo động giả"
+      ? "Lưới rất rộng. Bắt gần hết ca bệnh, nhiều báo động giả."
       : threshold <= 0.55
-        ? "Cân bằng — mặc định ban đầu"
+        ? "Cân bằng. Mặc định ban đầu."
         : threshold <= 0.8
-          ? "Khó tính — chỉ báo khi rất chắc, bỏ sót tăng"
-          : "Quá khó tính — hầu như không báo ai, bỏ sót rất nhiều";
+          ? "Khó tính. Chỉ báo khi rất chắc, bỏ sót tăng."
+          : "Quá khó tính. Hầu như không báo ai, bỏ sót rất nhiều.";
 
   const thresholdColor =
     threshold <= 0.3
@@ -261,28 +261,28 @@ export default function ConfusionMatrixTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1 - HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Một bệnh viện có mô hình sàng lọc ung thư đạt 99% accuracy. Chỉ 2 trong 100 bệnh nhân thực sự mắc bệnh. Bạn có yên tâm với con số 99% đó?"
           options={[
-            "Có — 99% rất cao, mô hình rất tốt.",
-            "Không — vì nếu mô hình luôn đoán 'không bệnh', nó đã đạt 98% accuracy mà không bắt được ai.",
-            "Tuỳ — cần biết mô hình chạy nhanh hay chậm.",
+            "Có. 99% rất cao, mô hình rất tốt.",
+            "Không. Nếu mô hình luôn đoán 'không bệnh', nó đã đạt 98% accuracy mà không bắt được ai.",
+            "Tuỳ. Cần biết mô hình chạy nhanh hay chậm.",
             "Không đủ dữ liệu để kết luận về model.",
           ]}
           correct={1}
-          explanation="Đúng. Chỉ 2% bệnh nhân thật sự bệnh, nên 'luôn đoán khoẻ' vô tình đạt 98% — nhưng bỏ sót toàn bộ 2 ca bệnh. Accuracy không đủ để đánh giá. Ta cần xem mô hình sai ở đâu, không chỉ sai bao nhiêu — và đó chính là nhiệm vụ của ma trận nhầm lẫn."
+          explanation="Đúng. Chỉ 2% bệnh nhân thật sự bệnh, nên 'luôn đoán khoẻ' vô tình đạt 98%, nhưng bỏ sót toàn bộ 2 ca bệnh. Accuracy không đủ để đánh giá. Ta cần xem mô hình sai ở đâu, không chỉ sai bao nhiêu. Đó chính là nhiệm vụ của ma trận nhầm lẫn."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Bài hôm nay sẽ cho bạn chạm vào đúng bốn ô của ma trận đó. Bạn sẽ kéo một thanh ngưỡng
-            và thấy 20 bệnh nhân nhảy qua lại giữa bốn ô — hiểu ngay vì sao mô hình &ldquo;khó tính&rdquo;
+            và thấy 20 bệnh nhân nhảy qua lại giữa bốn ô. Bạn sẽ hiểu ngay vì sao mô hình &ldquo;khó tính&rdquo;
             khác với mô hình &ldquo;rộng lượng&rdquo;.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ BẰNG HÌNH ẢNH ━━━ */}
+      {/* ━━━ BƯỚC 2 - ẨN DỤ BẰNG HÌNH ẢNH ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -328,12 +328,12 @@ export default function ConfusionMatrixTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HOÁ CHÍNH ━━━ */}
+      {/* ━━━ BƯỚC 3 - TRỰC QUAN HOÁ CHÍNH ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-4 leading-relaxed">
             Dưới đây là <strong>20 bệnh nhân</strong>. Mỗi người có một <em>điểm nguy cơ</em> do mô
-            hình tính ra, từ 0 (chắc chắn khoẻ) đến 1 (chắc chắn bệnh). Bạn đặt một ngưỡng — ai vượt
+            hình tính ra, từ 0 (chắc chắn khoẻ) đến 1 (chắc chắn bệnh). Bạn đặt một ngưỡng. Ai vượt
             ngưỡng thì gán là &ldquo;có bệnh&rdquo;. Kéo thanh trượt và quan sát từng bệnh nhân nhảy qua lại giữa bốn ô.
           </p>
 
@@ -367,9 +367,9 @@ export default function ConfusionMatrixTopic() {
               }}
             />
             <div className="flex justify-between mt-1.5 text-[10px] text-tertiary">
-              <span>0.05 — lưới rất rộng</span>
-              <span>0.50 — mặc định</span>
-              <span>0.95 — chỉ ca hiển nhiên</span>
+              <span>0.05 · lưới rất rộng</span>
+              <span>0.50 · mặc định</span>
+              <span>0.95 · chỉ ca hiển nhiên</span>
             </div>
             <p className="text-xs text-muted mt-2 text-center italic">
               {thresholdMode}
@@ -379,7 +379,7 @@ export default function ConfusionMatrixTopic() {
           {/* ── Hàng bệnh nhân ── */}
           <div className="rounded-xl border border-border bg-card/50 p-4 mb-5">
             <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide mb-3">
-              20 bệnh nhân — mỗi biểu tượng là một ca thật
+              20 bệnh nhân, mỗi biểu tượng là một ca thật
             </p>
             <div className="grid grid-cols-10 gap-2">
               {PATIENTS.map((p) => {
@@ -395,15 +395,12 @@ export default function ConfusionMatrixTopic() {
                       borderColor: meta.color,
                     }}
                     transition={{ duration: 0.25 }}
-                    title={`Bệnh nhân #${p.id} — điểm ${p.score.toFixed(2)} · ${
+                    title={`Bệnh nhân #${p.id} · điểm ${p.score.toFixed(2)} · ${
                       p.isSick ? "thực tế BỆNH" : "thực tế KHOẺ"
                     } · mô hình: ${c}`}
                   >
                     <UserRound size={18} style={{ color: meta.color }} />
-                    <span
-                      className="text-[9px] font-bold mt-0.5 tabular-nums"
-                      style={{ color: meta.color }}
-                    >
+                    <span className="text-[9px] font-bold mt-0.5 tabular-nums text-foreground">
                       {p.score.toFixed(2)}
                     </span>
                     <span
@@ -426,7 +423,7 @@ export default function ConfusionMatrixTopic() {
                       style={{ backgroundColor: meta.color }}
                     />
                     <span className="text-muted">
-                      <strong style={{ color: meta.color }}>{key}</strong> — {meta.label}
+                      <strong style={{ color: meta.color }}>{key}</strong>: {meta.label}
                     </span>
                   </div>
                 );
@@ -489,18 +486,18 @@ export default function ConfusionMatrixTopic() {
           </div>
 
           <Callout variant="insight" title="Quan sát quan trọng khi kéo thanh">
-            Khi ngưỡng <strong>thấp</strong> (T ≤ 0.3): Precision giảm vì báo nhầm nhiều (FP cao), nhưng Recall
-            gần 100% — bạn bắt gần hết người bệnh. Khi ngưỡng <strong>cao</strong> (T ≥ 0.8): Precision cao
-            (hầu như đoán là chắc chắn đúng) nhưng Recall giảm — nhiều bệnh nhân thật bị bỏ sót. Không có con số
-            &ldquo;đúng&rdquo; tuyệt đối — nó phụ thuộc chi phí thật của FP và FN trong bài toán cụ thể.
+            Khi ngưỡng <strong>thấp</strong> (T ≤ 0.3): precision giảm vì báo nhầm nhiều (FP cao), nhưng recall
+            gần 100%, bạn bắt gần hết người bệnh. Khi ngưỡng <strong>cao</strong> (T ≥ 0.8): precision cao
+            (hầu như đoán là chắc chắn đúng) nhưng recall giảm, nhiều bệnh nhân thật bị bỏ sót. Không có con số
+            &ldquo;đúng&rdquo; tuyệt đối. Nó phụ thuộc chi phí thật của FP và FN trong bài toán cụ thể.
           </Callout>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4 - AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Một con số <strong>Accuracy</strong> không cho bạn biết mô hình đang <em>sai ở đâu</em>.
+          Một con số <strong>accuracy</strong> không cho bạn biết mô hình đang <em>sai ở đâu</em>.
           Mô hình có thể đạt 99% accuracy mà vẫn vô dụng nếu nó bỏ sót 100% ca bệnh.
           <br />
           <br />
@@ -510,7 +507,7 @@ export default function ConfusionMatrixTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — ĐI SÂU: CHI PHÍ KHÔNG CÂN BẰNG ━━━ */}
+      {/* ━━━ BƯỚC 5 - ĐI SÂU: CHI PHÍ KHÔNG CÂN BẰNG ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <div className="mb-4">
           <h3 className="text-base font-semibold text-foreground mb-2">
@@ -521,9 +518,9 @@ export default function ConfusionMatrixTopic() {
             cảm nhận vì sao một con số metric không đủ.
           </p>
           <ToggleCompare
-            labelA="Ưu tiên Recall"
-            labelB="Ưu tiên Precision"
-            description="Hai tình huống — hai cách cân bằng khác nhau."
+            labelA="Ưu tiên recall"
+            labelB="Ưu tiên precision"
+            description="Hai tình huống, hai cách cân bằng khác nhau."
             childA={
               <div className="space-y-3 text-sm text-foreground/85 leading-relaxed">
                 <div className="flex items-start gap-3">
@@ -539,9 +536,9 @@ export default function ConfusionMatrixTopic() {
                   </div>
                 </div>
                 <div className="rounded-lg border border-rose-200 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 p-3">
-                  <p className="text-xs text-rose-700 dark:text-rose-300">
+                  <p className="text-xs text-foreground">
                     <strong>Chiến lược:</strong> hạ ngưỡng xuống thấp, chấp nhận nhiều FP để bảo đảm{" "}
-                    <strong>Recall cao</strong>. Mô hình sàng lọc thường chỉ là bước đầu — đội y tế
+                    <strong>recall cao</strong>. Mô hình sàng lọc thường chỉ là bước đầu, đội y tế
                     sẽ kiểm tra kỹ những ca báo dương.
                   </p>
                 </div>
@@ -562,9 +559,9 @@ export default function ConfusionMatrixTopic() {
                   </div>
                 </div>
                 <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-3">
-                  <p className="text-xs text-emerald-700 dark:text-emerald-300">
+                  <p className="text-xs text-foreground">
                     <strong>Chiến lược:</strong> nâng ngưỡng cao, chỉ gợi ý những món{" "}
-                    <strong>rất chắc chắn</strong> khách sẽ thích — ưu tiên Precision cao, chấp nhận
+                    <strong>rất chắc chắn</strong> khách sẽ thích, ưu tiên precision cao, chấp nhận
                     bỏ sót nhiều cơ hội.
                   </p>
                 </div>
@@ -576,7 +573,7 @@ export default function ConfusionMatrixTopic() {
         {/* Real-world matrix table: four industries side by side */}
         <div className="mt-6">
           <h3 className="text-base font-semibold text-foreground mb-2">
-            Bốn bài toán thực tế — cùng công cụ, bốn chiến lược khác nhau
+            Bốn bài toán thực tế, bốn chiến lược khác nhau từ cùng một công cụ
           </h3>
           <p className="text-sm text-muted leading-relaxed mb-3">
             Mỗi ngành nghề có cấu trúc chi phí FP / FN riêng. Bảng dưới đây tóm tắt cách bốn lĩnh
@@ -587,7 +584,7 @@ export default function ConfusionMatrixTopic() {
               emoji="🏥"
               name="Sàng lọc ung thư"
               fpCost="Thêm một lượt xét nghiệm xác nhận"
-              fnCost="Bỏ sót bệnh nhân — có thể tử vong"
+              fnCost="Bỏ sót bệnh nhân, có thể tử vong"
               priority="Recall cao"
               color="#ef4444"
             />
@@ -595,23 +592,23 @@ export default function ConfusionMatrixTopic() {
               emoji="📨"
               name="Lọc spam email công ty"
               fpCost="Xoá nhầm email khách hàng quan trọng"
-              fnCost="Spam lọt vào hộp thư — bất tiện nhưng không nguy hiểm"
+              fnCost="Spam lọt vào hộp thư, bất tiện nhưng không nguy hiểm"
               priority="Precision cao"
               color="#10b981"
             />
             <IndustryCase
               emoji="💳"
               name="Phát hiện gian lận thẻ"
-              fpCost="Chặn giao dịch thật — khách bực, có thể đổi ngân hàng"
-              fnCost="Để lọt gian lận — thẻ bị hack, thiệt hại tiền thật"
-              priority="Cân bằng F-beta (β≈0.5) — ưu tiên Precision nhẹ"
+              fpCost="Chặn giao dịch thật, khách bực, có thể đổi ngân hàng"
+              fnCost="Để lọt gian lận, thẻ bị hack, thiệt hại tiền thật"
+              priority="Cân bằng F-beta (β≈0.5), ưu tiên precision nhẹ"
               color="#f59e0b"
             />
             <IndustryCase
               emoji="🚨"
               name="Cảnh báo cháy rừng"
               fpCost="Triển khai xe cứu hoả không cần thiết (tốn nhân lực)"
-              fnCost="Bỏ sót đám cháy — thiệt hại rất lớn, bất khả hồi phục"
+              fnCost="Bỏ sót đám cháy, thiệt hại rất lớn, bất khả hồi phục"
               priority="Recall rất cao"
               color="#dc2626"
             />
@@ -660,8 +657,8 @@ export default function ConfusionMatrixTopic() {
               >
                 <p className="text-sm text-foreground leading-relaxed">
                   <strong>Chi phí FP và FN có cân bằng không?</strong> Nếu một FN = 10 FP về tổn
-                  thất thật, mô hình tối ưu Accuracy sẽ cho kết quả tệ. Bạn cần chọn metric khớp
-                  với chi phí — thường là Recall, Precision, hoặc F-beta.
+                  thất thật, mô hình tối ưu accuracy sẽ cho kết quả tệ. Bạn cần chọn metric khớp
+                  với chi phí, thường là recall, precision, hoặc F-beta.
                 </p>
               </div>,
               <div
@@ -671,7 +668,7 @@ export default function ConfusionMatrixTopic() {
                 <p className="text-sm text-foreground leading-relaxed">
                   <strong>Kéo ngưỡng theo hướng cần thiết.</strong> Bỏ sót nhiều quá &rArr; hạ
                   ngưỡng. Báo nhầm nhiều quá &rArr; nâng ngưỡng. Đừng đổi mô hình trước khi thử
-                  điều chỉnh thanh trượt này — đó là cách rẻ nhất.
+                  điều chỉnh thanh trượt này. Đó là cách rẻ nhất.
                 </p>
               </div>,
             ]}
@@ -679,41 +676,41 @@ export default function ConfusionMatrixTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 6 - THỬ THÁCH ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Với xét nghiệm nhanh HIV cho mục đích sàng lọc diện rộng ở cộng đồng, bạn nên ưu tiên metric nào?"
           options={[
-            "Precision — vì báo dương tính giả gây tổn thương tâm lý",
-            "Recall — tuyệt đối không bỏ sót ca nhiễm (xét nghiệm xác nhận sẽ làm sau)",
+            "Precision. Vì báo dương tính giả gây tổn thương tâm lý.",
+            "Recall. Tuyệt đối không bỏ sót ca nhiễm (xét nghiệm xác nhận sẽ làm sau).",
             "Accuracy đơn thuần",
-            "Không quan trọng — mô hình nào cũng được",
+            "Không quan trọng. Mô hình nào cũng được.",
           ]}
           correct={1}
-          explanation="HIV cần phát hiện càng sớm càng tốt. Sau xét nghiệm nhanh dương tính, sẽ có Western blot/PCR xác nhận — nên FP có thể sửa được. Nhưng FN (bỏ sót) khiến người nhiễm tiếp tục lây và không được điều trị. Vì vậy xét nghiệm sàng lọc thường được thiết kế Recall cực cao (~99%), chấp nhận Precision thấp hơn một chút."
+          explanation="HIV cần phát hiện càng sớm càng tốt. Sau xét nghiệm nhanh dương tính, sẽ có Western blot/PCR xác nhận, nên FP có thể sửa được. Nhưng FN (bỏ sót) khiến người nhiễm tiếp tục lây và không được điều trị. Vì vậy xét nghiệm sàng lọc thường được thiết kế recall cực cao (~99%), chấp nhận precision thấp hơn một chút."
         />
 
         <div className="mt-5">
           <InlineChallenge
             question="Một nhóm phát hiện gian lận thẻ tín dụng thấy mô hình đang chặn nhầm 30% giao dịch hợp pháp (FP cao) nhưng vẫn để lọt 5% gian lận (FN thấp). Họ nên làm gì trước?"
             options={[
-              "Nâng ngưỡng để giảm FP — khách hàng đang bị làm phiền quá mức",
-              "Hạ ngưỡng để giảm FN — lọt gian lận là tuyệt đối không được",
+              "Nâng ngưỡng để giảm FP. Khách hàng đang bị làm phiền quá mức.",
+              "Hạ ngưỡng để giảm FN. Lọt gian lận là tuyệt đối không được.",
               "Đổi sang mô hình hoàn toàn khác",
-              "Không làm gì — 5% lọt là chấp nhận được",
+              "Không làm gì. 5% lọt là chấp nhận được.",
             ]}
             correct={0}
-            explanation="30% FP là thảm hoạ trải nghiệm: khách hàng bị chặn thẻ khi mua cà phê, họ sẽ đổi ngân hàng. Trong khi 5% FN đã ở mức thấp và có hệ thống kiểm tra thứ cấp (SMS xác nhận, khoá thẻ chờ) bắt những ca lọt. Chỉnh ngưỡng cao lên là việc rẻ nhất — đổi mô hình là lựa chọn cuối cùng, sau khi mọi thanh trượt đều đã thử."
+            explanation="30% FP là thảm hoạ trải nghiệm: khách hàng bị chặn thẻ khi mua cà phê, họ sẽ đổi ngân hàng. Trong khi đó 5% FN đã ở mức thấp và có hệ thống kiểm tra thứ cấp (SMS xác nhận, khoá thẻ chờ) bắt những ca lọt. Chỉnh ngưỡng cao lên là việc rẻ nhất. Đổi mô hình là lựa chọn cuối cùng, sau khi mọi thanh trượt đều đã thử."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — GIẢI THÍCH (công thức + trực quan) ━━━ */}
+      {/* ━━━ BƯỚC 7 - GIẢI THÍCH (công thức + trực quan) ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Bốn ô TP, FP, FN, TN sinh ra ba chỉ số thường dùng nhất. Mỗi công thức đi kèm một câu
-            giải thích bằng tiếng Việt thường ngày — bạn không cần nhớ công thức nếu nhớ ý nghĩa.
+            giải thích bằng tiếng Việt thường ngày, bạn không cần nhớ công thức nếu nhớ ý nghĩa.
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-5 my-4 space-y-5">
@@ -730,7 +727,7 @@ export default function ConfusionMatrixTopic() {
               </LaTeX>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Trong <strong>mọi lần mô hình báo có bệnh</strong>, bao nhiêu phần trăm là đúng?
-                Precision cao = mô hình ít báo nhầm.
+                Precision cao nghĩa là mô hình ít báo nhầm.
               </p>
               <div className="mt-3 flex items-center gap-2 flex-wrap">
                 <span className="text-[11px] text-muted">Ví dụ hình dung:</span>
@@ -749,7 +746,7 @@ export default function ConfusionMatrixTopic() {
                   ))}
                 </div>
                 <span className="text-[11px] text-muted">
-                  Mô hình báo 5 ca → 4 đúng, 1 nhầm → Precision = 4/5 = 80%.
+                  Mô hình báo 5 ca: 4 đúng, 1 nhầm. Precision = 4/5 = 80%.
                 </span>
               </div>
             </div>
@@ -767,7 +764,7 @@ export default function ConfusionMatrixTopic() {
               </LaTeX>
               <p className="text-sm text-foreground/85 leading-relaxed">
                 Trong <strong>tất cả người thực sự có bệnh</strong>, bao nhiêu phần trăm bị mô
-                hình bắt được? Recall cao = mô hình ít bỏ sót.
+                hình bắt được? Recall cao nghĩa là mô hình ít bỏ sót.
               </p>
               <div className="mt-3 flex items-center gap-2 flex-wrap">
                 <span className="text-[11px] text-muted">Ví dụ hình dung:</span>
@@ -786,7 +783,7 @@ export default function ConfusionMatrixTopic() {
                   ))}
                 </div>
                 <span className="text-[11px] text-muted">
-                  Có 5 người bệnh → mô hình bắt được 3, bỏ sót 2 → Recall = 3/5 = 60%.
+                  Có 5 người bệnh, mô hình bắt được 3, bỏ sót 2. Recall = 3/5 = 60%.
                 </span>
               </div>
             </div>
@@ -803,11 +800,11 @@ export default function ConfusionMatrixTopic() {
                 {"F_1 = 2 \\cdot \\frac{\\text{Precision} \\cdot \\text{Recall}}{\\text{Precision} + \\text{Recall}}"}
               </LaTeX>
               <p className="text-sm text-foreground/85 leading-relaxed">
-                Trung bình điều hoà của Precision và Recall. Nếu một trong hai rất thấp, F1 cũng
-                sẽ thấp — khác với trung bình cộng (bị lừa khi một bên cao bù một bên thấp).
+                Trung bình điều hoà của precision và recall. Nếu một trong hai rất thấp, F1 cũng
+                sẽ thấp, khác với trung bình cộng (bị lừa khi một bên cao bù một bên thấp).
               </p>
               <div className="mt-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 p-2">
-                <p className="text-[11px] text-purple-700 dark:text-purple-300">
+                <p className="text-[11px] text-foreground">
                   Ví dụ: Precision = 0.9, Recall = 0.1. Trung bình cộng = 0.5 (nghe tốt), nhưng F1
                   = 0.18 (phản ánh đúng việc mô hình bỏ sót 90% ca bệnh).
                 </p>
@@ -825,31 +822,31 @@ export default function ConfusionMatrixTopic() {
                 title="Precision"
                 color="#10b981"
                 highlight={["TP", "FP"]}
-                note="Nhìn cột 'đoán dương' — cộng TP và FP, hỏi tỉ lệ đúng."
+                note="Nhìn cột 'đoán dương': cộng TP và FP, hỏi tỉ lệ đúng."
               />
               <MetricFocus
                 title="Recall"
                 color="#3b82f6"
                 highlight={["TP", "FN"]}
-                note="Nhìn hàng 'thực tế dương' — cộng TP và FN, hỏi bắt được bao nhiêu."
+                note="Nhìn hàng 'thực tế dương': cộng TP và FN, hỏi bắt được bao nhiêu."
               />
               <MetricFocus
                 title="Accuracy"
                 color="#a855f7"
                 highlight={["TP", "TN"]}
-                note="Nhìn đường chéo — tỉ lệ cả TP và TN trên tổng."
+                note="Nhìn đường chéo: tỉ lệ cả TP và TN trên tổng."
               />
             </div>
             <p className="text-xs text-muted leading-relaxed mt-3 italic">
-              Vì Precision và Recall nhìn các phần khác nhau của ma trận, chúng có thể cùng cao,
-              cùng thấp, hoặc ngược chiều — phụ thuộc cách mô hình phân bố lỗi. Luôn xem cả ba con
+              Vì precision và recall nhìn các phần khác nhau của ma trận, chúng có thể cùng cao,
+              cùng thấp, hoặc ngược chiều, phụ thuộc cách mô hình phân bố lỗi. Luôn xem cả ba con
               số để tránh mù điểm.
             </p>
           </div>
 
           {/* Cost-based decision helper */}
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Công thức ngón tay cái: khi FP và FN có chi phí khác nhau
+            Mẹo nhanh khi FP và FN có chi phí khác nhau
           </h4>
           <p className="text-sm leading-relaxed">
             Nếu một lỗi FN tốn chi phí <strong>C<sub>FN</sub></strong> và một lỗi FP tốn{" "}
@@ -861,7 +858,7 @@ export default function ConfusionMatrixTopic() {
             </span>
           </div>
           <p className="text-sm leading-relaxed">
-            Khi bạn không chắc &ldquo;nên ưu tiên Precision hay Recall&rdquo;, hãy ước lượng hai con
+            Khi bạn không chắc &ldquo;nên ưu tiên precision hay recall&rdquo;, hãy ước lượng hai con
             số <strong>C<sub>FN</sub></strong> và <strong>C<sub>FP</sub></strong>:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
@@ -869,22 +866,22 @@ export default function ConfusionMatrixTopic() {
               title="Sàng lọc ung thư"
               cFn="10 000 (tổn thương sức khoẻ nặng, mất thời gian vàng)"
               cFp="200 (một lượt xét nghiệm bổ sung)"
-              conclusion="C_FN / C_FP = 50 → hạ ngưỡng, ưu tiên Recall rất cao."
+              conclusion="C_FN / C_FP = 50 → hạ ngưỡng, ưu tiên recall rất cao."
               color="#ef4444"
             />
             <CostExample
               title="Gợi ý sản phẩm"
               cFn="1 (chỉ là cơ hội bán hàng bị bỏ qua)"
               cFp="5 (slot gợi ý trên trang chủ là tài nguyên khan hiếm)"
-              conclusion="C_FN / C_FP ≈ 0.2 → nâng ngưỡng, ưu tiên Precision cao."
+              conclusion="C_FN / C_FP ≈ 0.2 → nâng ngưỡng, ưu tiên precision cao."
               color="#10b981"
             />
           </div>
 
-          <Callout variant="warning" title="Bẫy Accuracy với dữ liệu mất cân bằng">
-            Với dữ liệu mà lớp dương chỉ chiếm 1–5% (spam, gian lận, bệnh hiếm), mô hình luôn đoán
-            &ldquo;âm&rdquo; đạt 95–99% accuracy nhưng Recall = 0%. Đây là <strong>sai lầm tuyển dụng ML</strong>
-            phổ biến nhất. Luôn đi kèm Precision, Recall, F1 — và với dữ liệu rất mất cân bằng, xem cả{" "}
+          <Callout variant="warning" title="Bẫy accuracy với dữ liệu mất cân bằng">
+            Với dữ liệu mà lớp dương chỉ chiếm 1-5% (spam, gian lận, bệnh hiếm), mô hình luôn đoán
+            &ldquo;âm&rdquo; đạt 95-99% accuracy nhưng recall = 0%. Đây là <strong>sai lầm tuyển dụng ML</strong>
+            phổ biến nhất. Luôn đi kèm precision, recall, F1. Với dữ liệu rất mất cân bằng, xem cả{" "}
             <TopicLink slug="cross-validation">cross-validation</TopicLink> để đảm bảo ổn định.
           </Callout>
 
@@ -898,7 +895,7 @@ export default function ConfusionMatrixTopic() {
           <p className="mt-4 leading-relaxed">
             Ma trận nhầm lẫn là cánh cửa đầu tiên để hiểu hiệu suất phân loại. Khi bạn đã quen, hãy
             xem thêm{" "}
-            <TopicLink slug="logistic-regression">hồi quy logistic</TopicLink> — mô hình sinh ra
+            <TopicLink slug="logistic-regression">hồi quy logistic</TopicLink>, mô hình sinh ra
             điểm xác suất mà chúng ta đang đặt ngưỡng ở đây. Sau đó{" "}
             <TopicLink slug="cross-validation">cross-validation</TopicLink> giúp bạn ước lượng các
             chỉ số một cách ổn định, không bị lừa bởi một tập test may mắn.
@@ -906,16 +903,16 @@ export default function ConfusionMatrixTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8 - TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & Kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ về ma trận nhầm lẫn"
           points={[
             "Mỗi dự đoán rơi vào đúng một trong bốn ô: TP, FP, FN, TN. Ma trận này là nguồn gốc của mọi chỉ số.",
-            "Accuracy có thể lừa bạn khi dữ liệu mất cân bằng — hãy luôn nhìn Precision, Recall cùng lúc.",
-            "Precision = 'khi tôi báo dương, tôi đúng bao nhiêu?'. Recall = 'trong các ca dương thật, tôi bắt được bao nhiêu?'.",
-            "Ngưỡng là cái nút trực tiếp: nâng lên → Precision tăng, Recall giảm. Hạ xuống → Recall tăng, Precision giảm.",
-            "Chọn metric khớp chi phí thật: y tế → Recall, gợi ý sản phẩm → Precision, nhiều bài toán chung → F1.",
+            "Accuracy có thể lừa bạn khi dữ liệu mất cân bằng. Hãy luôn nhìn precision, recall cùng lúc.",
+            "Precision trả lời 'khi tôi báo dương, tôi đúng bao nhiêu?'. Recall trả lời 'trong các ca dương thật, tôi bắt được bao nhiêu?'.",
+            "Ngưỡng là cái nút trực tiếp: nâng lên thì precision tăng, recall giảm; hạ xuống thì recall tăng, precision giảm.",
+            "Chọn metric khớp chi phí thật: y tế ưu tiên recall, gợi ý sản phẩm ưu tiên precision, nhiều bài toán chung dùng F1.",
           ]}
         />
 
@@ -941,7 +938,7 @@ export default function ConfusionMatrixTopic() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT PHỤ — IndustryCase
+   COMPONENT PHỤ: IndustryCase
    ──────────────────────────────────────────────────────────── */
 
 function IndustryCase({
@@ -987,7 +984,7 @@ function IndustryCase({
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT PHỤ — MetricFocus: mini 2x2 highlighting cells
+   COMPONENT PHỤ: MetricFocus, mini 2x2 highlighting cells
    ──────────────────────────────────────────────────────────── */
 
 function MetricFocus({
@@ -1036,7 +1033,7 @@ function MetricFocus({
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT PHỤ — CostExample
+   COMPONENT PHỤ: CostExample
    ──────────────────────────────────────────────────────────── */
 
 function CostExample({
@@ -1074,7 +1071,7 @@ function CostExample({
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT PHỤ — ô ma trận
+   COMPONENT PHỤ: ô ma trận
    ──────────────────────────────────────────────────────────── */
 
 function MatrixCell({
@@ -1106,8 +1103,7 @@ function MatrixCell({
         initial={{ scale: 1.3, opacity: 0.6 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.2 }}
-        className="text-2xl font-bold my-0.5"
-        style={{ color: meta.color }}
+        className="text-2xl font-bold my-0.5 text-foreground"
       >
         {count}
       </motion.div>
@@ -1119,7 +1115,7 @@ function MatrixCell({
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT PHỤ — thẻ chỉ số
+   COMPONENT PHỤ: thẻ chỉ số
    ──────────────────────────────────────────────────────────── */
 
 function MetricCard({

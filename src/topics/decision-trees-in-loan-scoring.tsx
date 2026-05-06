@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
   title: "Decision Trees in Credit Scoring",
   titleVi: "Cây quyết định chấm tín dụng",
   description:
-    "Khách có vay được không? Nhập thu nhập, nợ, lịch sử rồi xem cây quyết định chạy qua từng câu hỏi để đưa ra câu trả lời có/không.",
+    "Khách có vay được không? Nhập thu nhập, nợ, lịch sử rồi xem cây quyết định chạy qua từng câu hỏi và trả lời có hoặc không.",
   category: "classic-ml",
   tags: ["classification", "finance", "credit-scoring", "application"],
   difficulty: "intermediate",
@@ -79,7 +79,7 @@ export const metadata: TopicMeta = {
     },
     {
       title: "A Survey of Credit Scoring Research Based on Machine Learning",
-      publisher: "Springer — Computational Economics",
+      publisher: "Springer Computational Economics",
       url: "https://link.springer.com/article/10.1007/s10614-023-10467-7",
       date: "2023-08",
       kind: "paper",
@@ -105,7 +105,7 @@ export const metadata: TopicMeta = {
 /* ════════════════════════════════════════════════════════════════════
  * CÂY QUYẾT ĐỊNH ĐƠN GIẢN HÓA
  * Mô phỏng pha đầu của hệ chấm điểm tín dụng: 4 câu hỏi, 8 lá.
- * Không phải model thật của FICO, chỉ lấy cho dễ hiểu — các tiêu chí
+ * Không phải model thật của FICO, chỉ lấy cho dễ hiểu. Các tiêu chí
  * đúng tinh thần ngành (thu nhập, nợ hiện có, lịch sử trễ hạn, thời
  * gian mở tài khoản tín dụng đầu tiên).
  * ════════════════════════════════════════════════════════════════════ */
@@ -151,7 +151,7 @@ const TREE: Record<QNodeId, DTNode> = {
     id: "root",
     kind: "question",
     text: "Thu nhập ≥ 15 triệu / tháng?",
-    hint: "Bước 1 — khả năng trả nợ cơ bản",
+    hint: "Bước 1: khả năng trả nợ cơ bản",
     feature: "income",
     condition: (a) => a.income >= 15,
     yesId: "qDebt",
@@ -161,7 +161,7 @@ const TREE: Record<QNodeId, DTNode> = {
     id: "qDebt",
     kind: "question",
     text: "Tỉ lệ nợ / thu nhập ≤ 40%?",
-    hint: "Bước 2 — đã gánh quá nhiều nợ hiện có chưa",
+    hint: "Bước 2: đã gánh quá nhiều nợ hiện có chưa",
     feature: "debtRatio",
     condition: (a) => a.debtRatio <= 0.4,
     yesId: "qLate",
@@ -171,7 +171,7 @@ const TREE: Record<QNodeId, DTNode> = {
     id: "qLate",
     kind: "question",
     text: "Không có khoản trễ hạn > 30 ngày trong 24 tháng?",
-    hint: "Bước 3 — lịch sử thanh toán",
+    hint: "Bước 3: lịch sử thanh toán",
     feature: "hasLatePayment",
     condition: (a) => !a.hasLatePayment,
     yesId: "qHistory",
@@ -181,7 +181,7 @@ const TREE: Record<QNodeId, DTNode> = {
     id: "qHistory",
     kind: "question",
     text: "Có ít nhất 3 năm lịch sử tín dụng?",
-    hint: "Bước 4 — thời gian mở tài khoản",
+    hint: "Bước 4: thời gian mở tài khoản",
     feature: "yearsOfHistory",
     condition: (a) => a.yearsOfHistory >= 3,
     yesId: "leafApprove",
@@ -191,7 +191,7 @@ const TREE: Record<QNodeId, DTNode> = {
     id: "qHistory2",
     kind: "question",
     text: "Có ít nhất 5 năm lịch sử tín dụng?",
-    hint: "Bước 2b — với thu nhập thấp, lịch sử dài quan trọng hơn",
+    hint: "Bước 2b: với thu nhập thấp, lịch sử dài quan trọng hơn",
     feature: "yearsOfHistory",
     condition: (a) => a.yearsOfHistory >= 5,
     yesId: "qDebt2",
@@ -201,7 +201,7 @@ const TREE: Record<QNodeId, DTNode> = {
     id: "qDebt2",
     kind: "question",
     text: "Tỉ lệ nợ / thu nhập ≤ 30%?",
-    hint: "Bước 3b — với thu nhập thấp, ngưỡng nợ chặt hơn",
+    hint: "Bước 3b: với thu nhập thấp, ngưỡng nợ chặt hơn",
     feature: "debtRatio",
     condition: (a) => a.debtRatio <= 0.3,
     yesId: "leafApproveLow",
@@ -210,51 +210,51 @@ const TREE: Record<QNodeId, DTNode> = {
   leafApprove: {
     id: "leafApprove",
     kind: "approve",
-    outcomeLabel: "Duyệt — hạn mức cao",
+    outcomeLabel: "Duyệt, hạn mức cao",
     outcomeReason:
-      "Thu nhập tốt, nợ dưới ngưỡng, không trễ hạn, lịch sử dài — hồ sơ đạt mọi tiêu chí ưu tiên.",
+      "Thu nhập tốt, nợ dưới ngưỡng, không trễ hạn, lịch sử dài. Hồ sơ đạt mọi tiêu chí ưu tiên.",
   },
   leafApproveCond: {
     id: "leafApproveCond",
     kind: "approve-low",
-    outcomeLabel: "Duyệt có điều kiện — hạn mức trung bình",
+    outcomeLabel: "Duyệt có điều kiện, hạn mức trung bình",
     outcomeReason:
-      "Thu nhập và nợ ổn, lịch sử chưa đủ 3 năm → duyệt nhưng hạn mức ban đầu thấp hơn để giảm rủi ro.",
+      "Thu nhập và nợ ổn, lịch sử chưa đủ 3 năm. Hệ thống duyệt nhưng hạn mức ban đầu thấp hơn để giảm rủi ro.",
   },
   leafApproveLow: {
     id: "leafApproveLow",
     kind: "approve-low",
-    outcomeLabel: "Duyệt — hạn mức thấp",
+    outcomeLabel: "Duyệt, hạn mức thấp",
     outcomeReason:
-      "Thu nhập dưới mức ưu tiên nhưng có lịch sử lâu năm và nợ rất thấp → duyệt với hạn mức bảo thủ.",
+      "Thu nhập dưới mức ưu tiên nhưng có lịch sử lâu năm và nợ rất thấp. Hệ thống duyệt với hạn mức bảo thủ.",
   },
   leafReview: {
     id: "leafReview",
     kind: "review",
     outcomeLabel: "Xem xét thêm hồ sơ",
     outcomeReason:
-      "Thu nhập thấp, lịch sử ngắn → hệ thống không đủ cơ sở quyết; chuyển hồ sơ cho chuyên viên xem xét.",
+      "Thu nhập thấp, lịch sử ngắn. Hệ thống không đủ cơ sở để quyết và chuyển hồ sơ cho chuyên viên xem xét.",
   },
   leafReject: {
     id: "leafReject",
     kind: "reject",
     outcomeLabel: "Từ chối",
     outcomeReason:
-      "Thu nhập đạt mức nhưng tỉ lệ nợ đã cao hơn 40% — thêm nợ nữa sẽ khiến người vay quá tải.",
+      "Thu nhập đạt mức nhưng tỉ lệ nợ đã cao hơn 40%. Thêm nợ nữa sẽ khiến người vay quá tải.",
   },
   leafRejectHistory: {
     id: "leafRejectHistory",
     kind: "reject",
     outcomeLabel: "Từ chối",
     outcomeReason:
-      "Có khoản trễ hạn trên 30 ngày trong 24 tháng — tín hiệu rủi ro cao theo thống kê ngành.",
+      "Có khoản trễ hạn trên 30 ngày trong 24 tháng. Đây là tín hiệu rủi ro cao theo thống kê ngành.",
   },
   leafRejectDebt: {
     id: "leafRejectDebt",
     kind: "reject",
     outcomeLabel: "Từ chối",
     outcomeReason:
-      "Thu nhập thấp cộng với nợ hiện có trên 30% → hồ sơ không đáp ứng yêu cầu cẩn trọng của ngân hàng.",
+      "Thu nhập thấp cộng với nợ hiện có trên 30%. Hồ sơ không đáp ứng yêu cầu cẩn trọng của ngân hàng.",
   },
   leafApproveHistory: {
     id: "leafApproveHistory",
@@ -346,27 +346,27 @@ function outcomeStyle(kind: DTNode["kind"]) {
 /* Ba hồ sơ mẫu cho StepReveal */
 const CASES: { label: string; applicant: Applicant; story: string }[] = [
   {
-    label: "Hồ sơ 1 — Kỹ sư phần mềm, 28 tuổi",
+    label: "Hồ sơ 1: Kỹ sư phần mềm, 28 tuổi",
     applicant: { income: 35, debtRatio: 0.25, hasLatePayment: false, yearsOfHistory: 6 },
     story:
       "Thu nhập 35 triệu/tháng, hiện đang trả góp điện thoại (nợ 25% thu nhập), chưa từng trễ hạn, có thẻ tín dụng 6 năm. Hệ thống chạy qua 4 câu hỏi trong cây và ra kết quả duyệt hạn mức cao.",
   },
   {
-    label: "Hồ sơ 2 — Nhân viên bán hàng, 24 tuổi",
+    label: "Hồ sơ 2: Nhân viên bán hàng, 24 tuổi",
     applicant: { income: 11, debtRatio: 0.22, hasLatePayment: false, yearsOfHistory: 1 },
     story:
-      "Thu nhập 11 triệu/tháng, nợ hiện tại bằng 22% thu nhập, chưa có lịch sử trễ hạn, nhưng mới mở thẻ tín dụng đầu tiên năm ngoái. Thu nhập dưới ngưỡng 15 triệu → cây rẽ sang nhánh khác và đòi hỏi nhiều bằng chứng hơn.",
+      "Thu nhập 11 triệu/tháng, nợ hiện tại bằng 22% thu nhập, chưa có lịch sử trễ hạn, nhưng mới mở thẻ tín dụng đầu tiên năm ngoái. Vì thu nhập dưới ngưỡng 15 triệu, cây rẽ sang nhánh khác và đòi hỏi nhiều bằng chứng hơn.",
   },
   {
-    label: "Hồ sơ 3 — Chủ quán ăn, 35 tuổi",
+    label: "Hồ sơ 3: Chủ quán ăn, 35 tuổi",
     applicant: { income: 22, debtRatio: 0.55, hasLatePayment: false, yearsOfHistory: 8 },
     story:
-      "Thu nhập 22 triệu/tháng, nhưng nợ hiện tại đã chiếm 55% thu nhập (vay mua quán), chưa trễ hạn, lịch sử tín dụng 8 năm. Dù lịch sử tốt, tỉ lệ nợ vượt ngưỡng an toàn → cây trả về kết quả từ chối.",
+      "Thu nhập 22 triệu/tháng, nhưng nợ hiện tại đã chiếm 55% thu nhập (vay mua quán), chưa trễ hạn, lịch sử tín dụng 8 năm. Dù lịch sử tốt, tỉ lệ nợ đã vượt ngưỡng an toàn nên cây trả về kết quả từ chối.",
   },
 ];
 
 /* ════════════════════════════════════════════════════════════════════
- * COMPONENT ĐƠN — form nhập + cây highlight
+ * COMPONENT ĐƠN: form nhập + cây highlight
  * ════════════════════════════════════════════════════════════════════ */
 function LoanPlayground() {
   const [applicant, setApplicant] = useState<Applicant>({
@@ -393,12 +393,12 @@ function LoanPlayground() {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* FORM trái — đơn vay */}
+        {/* FORM trái: đơn vay */}
         <div className="rounded-2xl border border-border bg-card p-4 space-y-4">
           <div className="flex items-center gap-2">
             <FileSignature size={16} className="text-accent" />
             <span className="text-sm font-semibold text-foreground">
-              Đơn xin vay — thông tin khách hàng
+              Đơn xin vay: thông tin khách hàng
             </span>
           </div>
 
@@ -508,7 +508,7 @@ function LoanPlayground() {
                   }
                   className={`flex-1 text-xs px-3 py-1.5 rounded-full border transition-colors ${
                     !applicant.hasLatePayment
-                      ? "bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-semibold"
+                      ? "bg-emerald-500/10 border-emerald-500 text-foreground font-semibold"
                       : "border-border bg-card text-muted hover:bg-surface"
                   }`}
                 >
@@ -521,7 +521,7 @@ function LoanPlayground() {
                   }
                   className={`flex-1 text-xs px-3 py-1.5 rounded-full border transition-colors ${
                     applicant.hasLatePayment
-                      ? "bg-red-500/10 border-red-500 text-red-700 dark:text-red-300 font-semibold"
+                      ? "bg-red-500/10 border-red-500 text-foreground font-semibold"
                       : "border-border bg-card text-muted hover:bg-surface"
                   }`}
                 >
@@ -571,7 +571,7 @@ function LoanPlayground() {
           </AnimatePresence>
         </div>
 
-        {/* CÂY phải — highlight đường đi */}
+        {/* CÂY phải: highlight đường đi */}
         <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-center gap-2 mb-2">
             <ArrowDownRight size={16} className="text-accent" />
@@ -783,32 +783,32 @@ export default function DecisionTreesInLoanScoring() {
         topicSlug="decision-trees-in-loan-scoring"
       >
         <p>
-          Bạn nộp đơn vay mua xe máy. Chỉ vài giây sau khi bấm nút, ngân hàng đã biết bạn
-          có được duyệt hay không — và nếu được, mức lãi suất là bao nhiêu. Đằng sau
-          quyết định &ldquo;chỉ vài giây&rdquo; đó là cây quyết định chạy qua vài câu hỏi
-          về thu nhập, nợ hiện tại, lịch sử thanh toán.
+          Bạn nộp đơn vay mua xe máy. Vài giây sau khi bấm nút, ngân hàng đã biết bạn có
+          được duyệt hay không, và nếu được thì mức lãi suất là bao nhiêu. Đằng sau quyết
+          định &ldquo;chỉ vài giây&rdquo; đó là một cây quyết định (decision tree) chạy
+          qua vài câu hỏi về thu nhập, nợ hiện tại, lịch sử thanh toán.
         </p>
         <p>
-          Phần tiếp theo sẽ cho bạn đóng vai hệ thống chấm điểm: kéo thanh thu nhập,
-          chọn &ldquo;có/không&rdquo; trễ hạn, và xem cây sáng lên từng bước cho đến khi
-          ra kết quả. Không cần lập trình, không cần công thức.
+          Phần tiếp theo sẽ cho bạn đóng vai hệ thống chấm điểm. Kéo thanh thu nhập, chọn
+          có hoặc không cho ô trễ hạn, và xem cây sáng lên từng bước cho đến khi ra kết
+          quả. Không cần lập trình, không cần công thức.
         </p>
       </ApplicationHero>
 
       <ApplicationProblem topicSlug="decision-trees-in-loan-scoring">
         <p>
-          Mỗi ngày các ngân hàng lớn ở Việt Nam nhận hàng chục nghìn đơn vay: từ vay tiêu
+          Mỗi ngày các ngân hàng lớn ở Việt Nam nhận hàng chục nghìn đơn vay, từ vay tiêu
           dùng nhỏ (mua điện thoại, xe máy) đến vay trung dài hạn (mua nhà, ô tô). Không
-          có chuyên viên nào đọc tay đủ nhanh cho ngần ấy đơn. Hệ thống chấm điểm tự động
-          phải phân loại người vay thành các nhóm rủi ro — nhưng cũng phải giải thích
-          được lý do khi từ chối.
+          chuyên viên nào đọc tay đủ nhanh cho ngần ấy đơn. Hệ thống chấm điểm tự động
+          phải phân loại người vay thành các nhóm rủi ro, đồng thời phải giải thích được
+          lý do khi từ chối.
         </p>
         <p>
           Luật tín dụng ở Mỹ (Equal Credit Opportunity Act, Đạo luật cơ hội tín dụng bình
           đẳng) và hướng dẫn của Ngân hàng Nhà nước Việt Nam đều yêu cầu: khi từ chối, tổ
-          chức tín dụng phải nêu lý do cụ thể. Mô hình &ldquo;hộp đen&rdquo; không đáp
-          ứng được yêu cầu này — cây quyết định thì có, vì mỗi nhánh là một lý do đọc
-          được.
+          chức tín dụng phải nêu lý do cụ thể. Một model &ldquo;hộp đen&rdquo; không đáp
+          ứng được yêu cầu này. Cây quyết định thì đáp ứng được, vì mỗi nhánh là một lý
+          do đọc được.
         </p>
       </ApplicationProblem>
 
@@ -821,34 +821,34 @@ export default function DecisionTreesInLoanScoring() {
             <strong>Gom thông tin đầu vào.</strong> Hệ thống lấy thông tin tài chính của
             người vay từ nhiều nguồn: thu nhập khai báo, dữ liệu ngân hàng liên kết, lịch
             sử thanh toán với các khoản vay cũ, thời gian đã mở thẻ tín dụng đầu tiên, tỉ
-            lệ nợ đang gánh so với thu nhập. Mỗi con số sẽ là một &ldquo;đặc trưng&rdquo;
-            mà cây quyết định sẽ đặt câu hỏi về nó.
+            lệ nợ đang gánh so với thu nhập. Mỗi con số là một đặc trưng (feature) mà cây
+            quyết định sẽ đặt câu hỏi về.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
             <strong>Chạy qua chuỗi câu hỏi.</strong> Bắt đầu từ gốc: &ldquo;Thu nhập có
-            đủ không?&rdquo;. Nếu có, cây rẽ sang nhánh câu hỏi tiếp: &ldquo;Tỉ lệ nợ
-            dưới 40% không?&rdquo;. Nếu không có thu nhập cao, cây đi nhánh khác với yêu
-            cầu chặt hơn về lịch sử. Mỗi câu hỏi loại bớt một phần khả năng — giống trò
-            &ldquo;20 câu hỏi&rdquo; bạn chơi hồi nhỏ.
+            đủ không?&rdquo;. Nếu có, cây rẽ sang câu hỏi tiếp theo: &ldquo;Tỉ lệ nợ dưới
+            40% không?&rdquo;. Nếu thu nhập thấp hơn, cây đi nhánh khác với yêu cầu chặt
+            hơn về lịch sử. Mỗi câu hỏi loại bớt một phần khả năng, giống trò &ldquo;20
+            câu hỏi&rdquo; bạn chơi hồi nhỏ.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>Chạm lá — kết luận.</strong> Sau 3–4 câu hỏi, đường đi chạm một lá.
-            Mỗi lá là một quyết định cụ thể: duyệt hạn mức cao, duyệt có điều kiện, yêu
-            cầu xem xét thêm, hoặc từ chối. Quan trọng: mỗi lá đi kèm lý do — là chính
-            chuỗi câu hỏi vừa trả lời. Người vay nhận được thư từ chối có nêu rõ:
-            &ldquo;Tỉ lệ nợ vượt ngưỡng an toàn&rdquo;.
+            <strong>Chạm lá và ra kết luận.</strong> Sau 3 đến 4 câu hỏi, đường đi chạm
+            một lá. Mỗi lá là một quyết định cụ thể: duyệt hạn mức cao, duyệt có điều
+            kiện, yêu cầu xem xét thêm, hoặc từ chối. Điều quan trọng là mỗi lá đi kèm lý
+            do, chính là chuỗi câu hỏi vừa trả lời. Người vay nhận được thư từ chối có
+            nêu rõ: &ldquo;Tỉ lệ nợ vượt ngưỡng an toàn&rdquo;.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Nhiều cây hợp lực.</strong> Một cây đơn hay thay đổi khi dữ liệu
+            <strong>Nhiều cây hợp lực.</strong> Một cây đơn lẻ dễ chao đảo khi dữ liệu
             biến động. Thực tế FICO và các hệ thống lớn dùng{" "}
-            <strong>gradient boosted trees</strong> — hàng trăm cây được xây tuần tự, mỗi
-            cây sửa lỗi của cây trước, rồi bỏ phiếu chung. Điều này tăng độ chính xác lên
+            <strong>gradient boosted trees</strong>: hàng trăm cây được xây tuần tự, mỗi
+            cây sửa lỗi của cây trước, rồi cùng bỏ phiếu. Cách làm này tăng độ chính xác
             khoảng 20% so với scorecard cổ điển, mà vẫn giải thích được từng quyết định
             nhờ cấu trúc cây.
           </p>
@@ -857,22 +857,22 @@ export default function DecisionTreesInLoanScoring() {
 
       {/* ═══ TRỰC QUAN HÓA ═══ */}
       <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection label="Nộp thử một đơn vay — xem cây chạy" step={1}>
+        <LessonSection label="Nộp thử một đơn vay và xem cây chạy" step={1}>
           <p className="text-sm text-muted mb-3 leading-relaxed">
             Bạn vừa ngồi vào ghế của hệ thống chấm điểm. Điều chỉnh bốn ô bên dưới để mô
-            phỏng một hồ sơ, rồi xem bên phải: cây sẽ sáng dần từ gốc xuống lá, mỗi bước
-            trả lời một câu hỏi về bạn.
+            phỏng một hồ sơ, rồi nhìn sang bên phải. Cây sẽ sáng dần từ gốc xuống lá, mỗi
+            bước trả lời một câu hỏi về bạn.
           </p>
           <LoanPlayground />
         </LessonSection>
 
-        <LessonSection label="Ba hồ sơ mẫu — ba kết quả khác nhau" step={2}>
+        <LessonSection label="Ba hồ sơ mẫu cho ba kết quả khác nhau" step={2}>
           <p className="text-sm text-muted mb-3 leading-relaxed">
             Ba câu chuyện dưới đây là các hồ sơ đặc trưng của khách hàng Việt Nam. Nhấn{" "}
             &ldquo;Tiếp tục&rdquo; để đi qua từng hồ sơ và xem vì sao mỗi hồ sơ dẫn đến
             một kết quả riêng.
           </p>
-          <StepReveal labels={CASES.map((c) => c.label.split(" — ")[0])}>
+          <StepReveal labels={CASES.map((c) => c.label.split(": ")[0])}>
             {CASES.map((c, idx) => {
               const path = runTree(c.applicant);
               const leaf = TREE[path[path.length - 1]];
@@ -934,26 +934,26 @@ export default function DecisionTreesInLoanScoring() {
           </StepReveal>
         </LessonSection>
 
-        <LessonSection label="Thử thách — Cây chỉ &ldquo;dán nhãn&rdquo;, nhưng có công bằng không?" step={3}>
+        <LessonSection label="Cây dán nhãn nhanh, nhưng có công bằng không?" step={3}>
           <InlineChallenge
             question="Giả sử một cây được huấn luyện trên dữ liệu cũ và nó luôn từ chối người không có xe hơi. Điều này có công bằng không?"
             options={[
-              "Công bằng — vì dữ liệu lịch sử cho thấy người có xe hơi ít nợ xấu hơn",
-              "Không công bằng — 'có xe hơi' phản ánh thu nhập và tầng lớp hơn là khả năng trả nợ; và gián tiếp lọc theo giới tính / vùng miền",
+              "Công bằng, vì dữ liệu lịch sử cho thấy người có xe hơi ít nợ xấu hơn",
+              "Không công bằng. Việc 'có xe hơi' phản ánh thu nhập và tầng lớp hơn là khả năng trả nợ, đồng thời lọc gián tiếp theo giới tính và vùng miền",
               "Chỉ có bác sĩ mới đánh giá được",
-              "Không quan trọng — miễn là cây có accuracy cao",
+              "Không quan trọng, miễn là cây có độ chính xác cao",
             ]}
             correct={1}
-            explanation="Đây là ví dụ kinh điển của 'proxy bias' (thành kiến gián tiếp). Đặc trưng có vẻ trung tính (có/không xe hơi) lại gắn chặt với thu nhập, vùng sinh sống, giới. Cây quyết định 'học thuộc' mẫu có sẵn trong dữ liệu cũ, trong đó nhiều nhóm bị từ chối không công bằng. Giải pháp: kiểm tra fairness sau khi train, loại bỏ feature proxy, và dùng các kỹ thuật giảm thiên lệch (reweighing, adversarial debiasing)."
+            explanation="Đây là ví dụ kinh điển của proxy bias (thành kiến gián tiếp). Một feature trông có vẻ trung tính (có hoặc không xe hơi) lại gắn chặt với thu nhập, vùng sinh sống, giới tính. Cây quyết định học thuộc mẫu có sẵn trong dữ liệu cũ, trong đó nhiều nhóm đã bị từ chối không công bằng. Giải pháp: kiểm tra fairness sau khi huấn luyện, loại bỏ proxy feature, và áp dụng các kỹ thuật giảm thiên lệch như reweighing hay adversarial debiasing."
           />
           <div className="mt-4">
             <Callout variant="warning" title="Đừng nhầm 'giải thích được' với 'công bằng'">
-              Cây quyết định <em>giải thích được</em> từng quyết định — đó là lý do pháp
-              luật yêu cầu nó trong tín dụng. Nhưng &ldquo;giải thích được&rdquo; không
-              tự động có nghĩa &ldquo;công bằng&rdquo;. Một cây giải thích rõ ràng lý do
-              từ chối, nhưng nếu lý do đó dựa trên đặc trưng thay thế cho chủng tộc hay
-              giới tính, thì quyết định vẫn bất công. Ngân hàng nghiêm túc phải kiểm tra
-              công bằng song song với kiểm tra độ chính xác.
+              Cây quyết định <em>giải thích được</em> từng quyết định. Đó là lý do pháp
+              luật yêu cầu nó trong tín dụng. Tuy vậy, &ldquo;giải thích được&rdquo; không
+              tự động đồng nghĩa với &ldquo;công bằng&rdquo;. Một cây có thể trình bày rõ
+              ràng lý do từ chối, nhưng nếu lý do đó dựa trên đặc trưng thay thế cho chủng
+              tộc hay giới tính, thì quyết định vẫn bất công. Ngân hàng nghiêm túc phải
+              kiểm tra công bằng song song với kiểm tra độ chính xác.
             </Callout>
           </div>
         </LessonSection>
@@ -986,32 +986,33 @@ export default function DecisionTreesInLoanScoring() {
         topicSlug="decision-trees-in-loan-scoring"
       >
         <p>
-          Không có cây quyết định, hệ chấm điểm tín dụng hoặc phải quay về viết luật tay
-          (tốn công, không bắt kịp dữ liệu mới) hoặc dùng mạng nơ-ron &ldquo;hộp
-          đen&rdquo; (chính xác hơn nhưng không giải thích được từng quyết định — vi phạm
-          quy định của Ngân hàng Nhà nước và hướng dẫn công bằng tín dụng quốc tế).
+          Không có cây quyết định, hệ chấm điểm tín dụng phải lựa giữa hai con đường. Một
+          là quay về viết luật tay (tốn công, không bắt kịp dữ liệu mới). Hai là dùng
+          mạng nơ-ron kiểu &ldquo;hộp đen&rdquo; (chính xác hơn nhưng không giải thích
+          được từng quyết định, vi phạm quy định của Ngân hàng Nhà nước và hướng dẫn công
+          bằng tín dụng quốc tế).
         </p>
         <p>
           Cây quyết định mang lại điều hiếm có: vừa phân loại chính xác, vừa giải thích
-          minh bạch. Mỗi nhánh là một lý do đọc được — từ &ldquo;trễ hạn 30 ngày&rdquo;
-          đến &ldquo;nợ vượt ngưỡng an toàn&rdquo;. Trong lĩnh vực nơi mỗi quyết định
-          ảnh hưởng đến cuộc sống một con người, tính minh bạch này không chỉ là ưu điểm
-          kỹ thuật mà còn là yêu cầu đạo đức và pháp lý.
+          minh bạch. Mỗi nhánh là một lý do đọc được, từ &ldquo;trễ hạn 30 ngày&rdquo;
+          cho tới &ldquo;nợ vượt ngưỡng an toàn&rdquo;. Trong lĩnh vực mà mỗi quyết định
+          ảnh hưởng đến cuộc sống của một con người, tính minh bạch này không chỉ là ưu
+          điểm kỹ thuật mà còn là yêu cầu đạo đức và pháp lý.
         </p>
         <div className="mt-4">
           <MiniSummary
             title="Bài học chính từ hồ sơ thật"
             points={[
-              "Cây quyết định trả lời câu hỏi 'duyệt hay không' bằng 3–4 câu hỏi rõ ràng, không có ma thuật.",
-              "Đường đi qua cây chính là lời giải thích — ngân hàng có thể đưa trực tiếp cho khách hàng khi từ chối.",
-              "Một cây đơn yếu. Thực tế dùng nhiều cây ensemble (boosted trees) để tăng accuracy, vẫn giữ tính đọc được.",
-              "Giải thích được ≠ công bằng: vẫn phải kiểm tra fairness để tránh proxy bias dựa vào vùng miền, giới, tuổi.",
+              "Cây quyết định trả lời câu hỏi 'duyệt hay không' bằng 3 đến 4 câu hỏi rõ ràng, không có ma thuật.",
+              "Đường đi qua cây chính là lời giải thích. Ngân hàng có thể đưa trực tiếp cho khách hàng khi từ chối.",
+              "Một cây đơn lẻ thì yếu. Thực tế dùng nhiều cây ensemble (boosted trees) để tăng độ chính xác, vẫn giữ tính đọc được.",
+              "Giải thích được không đồng nghĩa với công bằng. Vẫn phải kiểm tra fairness để tránh proxy bias dựa vào vùng miền, giới tính, tuổi.",
             ]}
           />
         </div>
         <p className="mt-4 text-sm leading-relaxed">
-          Muốn hiểu kỹ hơn phần thuật toán đứng sau — cách cây tự chọn câu hỏi, Gini, max
-          depth — xem lại bài lý thuyết:{" "}
+          Muốn hiểu kỹ hơn phần thuật toán đứng sau, gồm cách cây tự chọn câu hỏi, chỉ số
+          Gini và max depth, xem lại bài lý thuyết:{" "}
           <TopicLink slug="decision-trees">Cây quyết định</TopicLink>.
         </p>
       </ApplicationCounterfactual>

@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
   title: "Model Evaluation & Selection",
   titleVi: "Đánh giá và chọn mô hình",
   description:
-    "Bốn mô hình cùng giải một bài toán — ai thắng? Bạn kéo trọng số cho accuracy, precision, latency, rồi xem thứ hạng đổi theo thời gian thực.",
+    "Bốn model cùng giải một bài toán phát hiện gian lận, không model nào thắng mọi metric. Bạn kéo trọng số cho độ chính xác, precision, latency và xem thứ hạng đổi theo thời gian thực.",
   category: "classic-ml",
   tags: ["evaluation", "model-selection", "metrics", "comparison"],
   difficulty: "intermediate",
@@ -53,9 +53,9 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — 4 mô hình candidate cho cùng bài toán phát hiện gian
-   lận. Các số được thiết kế để mỗi model "nổi" ở một trục khác
-   nhau: không model nào thống trị mọi metric.
+   DỮ LIỆU. Bốn model candidate cho cùng bài toán phát hiện
+   gian lận. Các số được thiết kế để mỗi model "nổi" ở một
+   trục khác nhau, không model nào thống trị mọi metric.
    ──────────────────────────────────────────────────────────── */
 
 type ModelId = "logreg" | "rf" | "xgb" | "nn";
@@ -87,7 +87,7 @@ const MODELS: CandidateModel[] = [
     latencyMs: 0.8,
     trainMin: 2,
     story:
-      "Siêu nhanh, dễ giải thích, accuracy cao ngất — nhưng chính accuracy cao đang đánh lừa bạn. Nó bỏ sót hơn nửa số ca gian lận.",
+      "Siêu nhanh, dễ giải thích, độ chính xác cao ngất. Nhưng chính độ chính xác cao đang đánh lừa bạn vì nó bỏ sót hơn nửa số ca gian lận.",
   },
   {
     id: "rf",
@@ -101,7 +101,7 @@ const MODELS: CandidateModel[] = [
     latencyMs: 4.2,
     trainMin: 18,
     story:
-      "Cân bằng tốt giữa precision và recall. Train nhanh, nhưng inference chậm hơn logistic vì phải hỏi cả trăm cây.",
+      "Cân bằng tốt giữa precision và recall. Huấn luyện nhanh, nhưng inference chậm hơn logistic vì phải hỏi cả trăm cây.",
   },
   {
     id: "xgb",
@@ -115,7 +115,7 @@ const MODELS: CandidateModel[] = [
     latencyMs: 2.1,
     trainMin: 35,
     story:
-      "F1 cao nhất, inference nhanh, nhưng train lâu và cần tuning nhiều tham số. Ứng viên hàng đầu cho production.",
+      "F1 cao nhất, inference nhanh, nhưng huấn luyện lâu và cần tuning nhiều tham số. Ứng viên hàng đầu cho production.",
   },
   {
     id: "nn",
@@ -129,7 +129,7 @@ const MODELS: CandidateModel[] = [
     latencyMs: 8.5,
     trainMin: 120,
     story:
-      "Recall tốt nhất — bắt được nhiều ca gian lận nhất. Bù lại train lâu nhất và inference chậm nhất. Chọn nó khi chi phí bỏ sót cao.",
+      "Recall tốt nhất, bắt được nhiều ca gian lận nhất. Bù lại huấn luyện lâu nhất và inference chậm nhất. Chọn nó khi chi phí bỏ sót cao.",
   },
 ];
 
@@ -154,7 +154,7 @@ const METRIC_SPECS: MetricSpec[] = [
   {
     key: "accuracy",
     label: "Accuracy",
-    hint: "Tỉ lệ dự đoán đúng trên toàn bộ test set",
+    hint: "Tỉ lệ dự đoán đúng trên toàn bộ tập test",
     higherIsBetter: true,
     color: "#64748b",
   },
@@ -182,15 +182,15 @@ const METRIC_SPECS: MetricSpec[] = [
   {
     key: "latencyMs",
     label: "Latency",
-    hint: "Thời gian chấm 1000 giao dịch (ms) — càng thấp càng tốt",
+    hint: "Thời gian chấm 1000 giao dịch (ms). Càng thấp càng tốt.",
     unit: " ms",
     higherIsBetter: false,
     color: "#f59e0b",
   },
   {
     key: "trainMin",
-    label: "Train time",
-    hint: "Thời gian huấn luyện một lần (phút) — càng thấp càng tốt",
+    label: "Thời gian huấn luyện",
+    hint: "Thời gian huấn luyện một lần (phút). Càng thấp càng tốt.",
     unit: " ph",
     higherIsBetter: false,
     color: "#ef4444",
@@ -198,8 +198,8 @@ const METRIC_SPECS: MetricSpec[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   HÀM TÍNH ĐIỂM TỔNG HỢP
-   Mỗi metric được chuẩn hoá min-max trong số liệu 4 mô hình,
+   HÀM TÍNH ĐIỂM TỔNG HỢP.
+   Mỗi metric được chuẩn hoá min-max trong số liệu 4 model,
    nhân với weight do người học chọn, rồi cộng lại.
    ──────────────────────────────────────────────────────────── */
 
@@ -261,7 +261,7 @@ function ModelSelectionDashboard() {
         <div className="flex items-center gap-2 mb-3">
           <Scale size={16} className="text-accent" />
           <span className="text-sm font-semibold text-foreground">
-            Trọng số cho mỗi metric — kéo để ưu tiên điều bạn quan tâm
+            Trọng số cho mỗi metric. Kéo để ưu tiên điều bạn quan tâm.
           </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -421,7 +421,7 @@ function ModelSelectionDashboard() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   CONFUSION MATRIX VISUAL — dùng cho tab "Classification"
+   CONFUSION MATRIX VISUAL - dùng cho tab "Classification"
    ──────────────────────────────────────────────────────────── */
 
 function ConfusionVisual() {
@@ -470,8 +470,8 @@ function ConfusionVisual() {
     <div className="space-y-3">
       <p className="text-xs text-muted leading-relaxed">
         Kéo ngưỡng (threshold) để thấy confusion matrix đổi ra sao. Threshold
-        thấp: bắt nhiều gian lận (recall cao) nhưng báo động giả nhiều
-        (precision thấp). Threshold cao: ngược lại.
+        thấp thì bắt nhiều gian lận (recall cao) nhưng báo động giả nhiều
+        (precision thấp). Threshold cao thì ngược lại.
       </p>
 
       <input
@@ -492,33 +492,33 @@ function ConfusionVisual() {
         <div className="rounded-lg border-2 border-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-3 text-center">
           <div className="inline-flex items-center justify-center gap-1 text-[10px] uppercase text-emerald-700 dark:text-emerald-400 font-semibold">
             <Check size={11} aria-hidden="true" />
-            TP — đúng
+            TP (đúng)
           </div>
-          <div className="text-xl font-bold text-emerald-700 dark:text-emerald-400 tabular-nums">
+          <div className="text-xl font-bold text-foreground tabular-nums">
             {tp}
           </div>
         </div>
         <div className="rounded-lg border-2 border-amber-400 bg-amber-50 dark:bg-amber-900/20 p-3 text-center">
           <div className="inline-flex items-center justify-center gap-1 text-[10px] uppercase text-amber-700 dark:text-amber-400 font-semibold">
             <AlertTriangle size={11} aria-hidden="true" />
-            FP — báo giả
+            FP (báo giả)
           </div>
-          <div className="text-xl font-bold text-amber-700 dark:text-amber-400 tabular-nums">
+          <div className="text-xl font-bold text-foreground tabular-nums">
             {fp}
           </div>
         </div>
         <div className="rounded-lg border-2 border-red-400 bg-red-50 dark:bg-red-900/20 p-3 text-center">
           <div className="inline-flex items-center justify-center gap-1 text-[10px] uppercase text-red-700 dark:text-red-400 font-semibold">
             <X size={11} aria-hidden="true" />
-            FN — bỏ sót
+            FN (bỏ sót)
           </div>
-          <div className="text-xl font-bold text-red-700 dark:text-red-400 tabular-nums">
+          <div className="text-xl font-bold text-foreground tabular-nums">
             {fn}
           </div>
         </div>
         <div className="rounded-lg border-2 border-slate-400 bg-slate-50 dark:bg-slate-800/40 p-3 text-center">
           <div className="text-[10px] uppercase text-slate-700 dark:text-slate-300 font-semibold">
-            TN — đúng âm
+            TN (đúng âm)
           </div>
           <div className="text-xl font-bold text-slate-700 dark:text-slate-300 tabular-nums">
             {tn}
@@ -551,7 +551,7 @@ function ConfusionVisual() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   REGRESSION METRICS VISUAL — scatter predicted vs actual + bar RMSE/MAE
+   REGRESSION METRICS VISUAL - scatter predicted vs actual + bar RMSE/MAE
    ──────────────────────────────────────────────────────────── */
 
 function RegressionVisual() {
@@ -583,8 +583,8 @@ function RegressionVisual() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted leading-relaxed">
-        Kéo nhiễu (noise) để thấy RMSE, MAE, R² đổi ra sao. Scatter bám đường
-        chéo = model tốt.
+        Kéo nhiễu (noise) để thấy RMSE, MAE, R² đổi ra sao. Điểm scatter bám
+        sát đường chéo nghĩa là model dự đoán gần với giá trị thực.
       </p>
       <input
         type="range"
@@ -677,7 +677,7 @@ function RegressionVisual() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   RANKING METRIC VISUAL — NDCG/MAP: thứ tự kết quả
+   RANKING METRIC VISUAL - NDCG/MAP: thứ tự kết quả
    ──────────────────────────────────────────────────────────── */
 
 function RankingVisual() {
@@ -700,9 +700,9 @@ function RankingVisual() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted leading-relaxed">
-        Trong các hệ thống gợi ý, Google Search, Shopee tìm kiếm — thứ tự kết
-        quả mới là thứ quan trọng, không phải đúng/sai đơn thuần. NDCG thưởng
-        model đặt kết quả hay lên đầu.
+        Trong hệ thống gợi ý, Google Search hay Shopee tìm kiếm, thứ tự kết
+        quả mới là thứ quan trọng chứ không phải đúng/sai đơn thuần. NDCG
+        thưởng model nào đặt kết quả hay lên đầu.
       </p>
       <div className="flex gap-2 justify-center">
         {(["good", "bad"] as const).map((key) => (
@@ -760,8 +760,8 @@ function RankingVisual() {
         </div>
         <div className="text-[10px] text-muted mt-1">
           {ordering === "good"
-            ? "Kết quả liên quan nhất ở top → NDCG gần 1"
-            : "Kết quả tốt bị đẩy xuống → NDCG giảm mạnh"}
+            ? "Kết quả liên quan nhất ở top, NDCG gần 1"
+            : "Kết quả tốt bị đẩy xuống, NDCG giảm mạnh"}
         </div>
       </div>
     </div>
@@ -769,7 +769,7 @@ function RankingVisual() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   CALIBRATION VISUAL — reliability diagram
+   CALIBRATION VISUAL - reliability diagram
    ──────────────────────────────────────────────────────────── */
 
 function CalibrationVisual() {
@@ -791,9 +791,9 @@ function CalibrationVisual() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted leading-relaxed">
-        Calibration hỏi: khi model nói &ldquo;70% chắc là gian lận&rdquo;, thực
-        tế có đúng 70% ca trong nhóm đó là gian lận không? Đường chéo = hoàn
-        hảo.
+        Calibration đặt câu hỏi: khi model nói &ldquo;70% chắc là gian
+        lận&rdquo;, thực tế có đúng 70% ca trong nhóm đó là gian lận không?
+        Đường chéo là hiệu chuẩn hoàn hảo.
       </p>
       <div className="flex gap-1.5 justify-center">
         {(["good", "over", "under"] as const).map((key) => (
@@ -868,14 +868,14 @@ function CalibrationVisual() {
         ))}
       </svg>
       <div className="text-[11px] text-center text-muted italic">
-        Trục X: xác suất model dự đoán — Trục Y: tỉ lệ thực tế đúng
+        Trục X là xác suất model dự đoán, trục Y là tỉ lệ thực tế đúng.
       </div>
     </div>
   );
 }
 
 /* ────────────────────────────────────────────────────────────
-   ROC-AUC VISUAL — dùng trong ExplanationSection
+   ROC-AUC VISUAL - dùng trong ExplanationSection
    ──────────────────────────────────────────────────────────── */
 
 function RocAucChart() {
@@ -984,7 +984,7 @@ function RocAucChart() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   DECISION TREE VISUAL — metric by problem type
+   DECISION TREE VISUAL - metric by problem type
    ──────────────────────────────────────────────────────────── */
 
 function MetricDecisionTree() {
@@ -1082,42 +1082,42 @@ function MetricDecisionTree() {
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Bạn có 4 model dự đoán gian lận. Tất cả đều đạt accuracy 98%. Nên nhìn vào đâu tiếp theo?",
+      "Bạn có 4 model dự đoán gian lận. Tất cả đều đạt độ chính xác 98%. Nên nhìn vào đâu tiếp theo?",
     options: [
-      "Chọn đại model đầu tiên — đằng nào cũng giống nhau",
-      "Precision, Recall, F1 — vì với dữ liệu mất cân bằng, accuracy cao không nói lên điều gì",
+      "Chọn đại model đầu tiên vì đằng nào cũng giống nhau",
+      "Precision, Recall, F1, vì với dữ liệu mất cân bằng, độ chính xác cao không nói lên điều gì",
       "Chọn model có tên hay nhất",
       "Chờ thu thêm dữ liệu",
     ],
     correct: 1,
     explanation:
-      "Với 2% gian lận trong tổng số giao dịch, một model luôn đoán 'không gian lận' cũng đạt 98%. Accuracy 98% là con số rỗng. Cần xem precision/recall/F1 để biết model thực sự bắt được gian lận hay chỉ đoán mặc định lớp đa số.",
+      "Với 2% gian lận trong tổng số giao dịch, một model luôn đoán 'không gian lận' cũng đạt 98%. Độ chính xác 98% là con số rỗng. Cần xem precision, recall, F1 để biết model thực sự bắt được gian lận hay chỉ đoán mặc định lớp đa số.",
   },
   {
     question:
-      "Model A: ROC AUC = 0.95, Accuracy = 55%. Giải thích hợp lý nhất?",
+      "Model A có ROC AUC = 0,95 nhưng độ chính xác chỉ 55%. Giải thích hợp lý nhất?",
     options: [
       "Có lỗi trong tính toán",
-      "Model xếp hạng tốt (AUC cao) nhưng threshold mặc định đang sai — precision/recall bị lệch",
-      "AUC luôn bằng accuracy",
+      "Model xếp hạng tốt (AUC cao) nhưng threshold mặc định đang sai, khiến precision và recall bị lệch",
+      "AUC luôn bằng độ chính xác",
       "Dữ liệu bị leak",
     ],
     correct: 1,
     explanation:
-      "AUC đo khả năng xếp hạng — model có tách được dương và âm hay không. Accuracy phụ thuộc vào một threshold cụ thể. Model có thể xếp hạng tuyệt vời nhưng threshold 0.5 rơi vào vùng hầu hết điểm score nằm cùng phía → accuracy sập. Giải pháp: calibrate hoặc chọn threshold theo precision-recall mong muốn.",
+      "AUC đo khả năng xếp hạng, tức là model có tách được dương và âm hay không. Trong khi đó, độ chính xác phụ thuộc vào một threshold cụ thể. Model có thể xếp hạng tuyệt vời, nhưng nếu threshold 0,5 rơi vào vùng hầu hết điểm score nằm cùng phía thì độ chính xác sập. Giải pháp là calibrate xác suất hoặc chọn threshold theo precision và recall mong muốn.",
   },
   {
     question:
       "Cross-validation 5-fold giúp gì khi so sánh hai model có F1 tương đương nhau?",
     options: [
-      "Tăng tốc độ training",
-      "Ước lượng F1 trên nhiều tập validation — nếu F1 trung bình ± std không overlap, model A ổn định hơn model B",
+      "Tăng tốc độ huấn luyện",
+      "Ước lượng F1 trên nhiều tập validation. Nếu F1 trung bình ± std của hai model không overlap, model nào std nhỏ hơn ổn định hơn",
       "Tự động tinh chỉnh hyperparameter",
       "Giảm kích thước dữ liệu",
     ],
     correct: 1,
     explanation:
-      "Cross-validation đưa ra phân phối hiệu suất chứ không phải một con số. Khi so sánh, nếu F1(A) = 0.82 ± 0.01 còn F1(B) = 0.81 ± 0.08, model A đáng tin cậy hơn dù trung bình gần nhau. Đây là lý do luôn báo cáo cả mean và std khi chọn model.",
+      "Cross-validation đưa ra phân phối hiệu suất chứ không phải một con số. Khi so sánh, nếu F1(A) = 0,82 ± 0,01 còn F1(B) = 0,81 ± 0,08 thì model A đáng tin cậy hơn dù trung bình gần nhau. Đây là lý do luôn báo cáo cả mean và std khi chọn model.",
   },
   {
     type: "fill-blank",
@@ -1130,20 +1130,20 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "F1 = 2·P·R/(P+R). Khác trung bình cộng ở chỗ F1 phạt nặng khi một trong hai yếu tố thấp — phù hợp với dữ liệu mất cân bằng vì không cho phép đánh đổi cực đoan.",
+      "F1 = 2·P·R/(P+R). Khác với trung bình cộng, F1 phạt nặng khi một trong hai yếu tố thấp. Nhờ vậy nó phù hợp với dữ liệu mất cân bằng và không cho phép đánh đổi cực đoan.",
   },
   {
     question:
-      "Latency của model XGBoost = 2ms/yêu cầu, Neural Net = 8ms/yêu cầu. Trang web cần phản hồi trong 100ms, trung bình mỗi request cần gọi 5 lần. Chọn gì?",
+      "Latency của XGBoost là 2ms mỗi yêu cầu, Neural Net là 8ms. Trang web cần phản hồi trong 100ms, trung bình mỗi request gọi model 5 lần. Chọn gì?",
     options: [
-      "Neural Net — vì học sâu hơn",
-      "XGBoost — vì 2ms × 5 = 10ms, còn nhiều ngân sách. Neural Net 40ms chiếm gần nửa budget",
+      "Neural Net vì học sâu hơn",
+      "XGBoost. 2ms × 5 = 10ms, còn nhiều ngân sách. Neural Net 40ms chiếm gần nửa budget",
       "Cả hai như nhau",
       "Không cần quan tâm latency",
     ],
     correct: 1,
     explanation:
-      "Ở production, latency nhân lên theo số lần gọi. XGBoost cho phép bạn cộng thêm logic khác (feature fetch, validation) mà vẫn dưới 100ms. Neural Net ngay từ đầu đã ăn 40% budget — rủi ro timeout khi tải tăng. Latency luôn phải nằm trong bảng so sánh cùng với F1.",
+      "Ở production, latency nhân lên theo số lần gọi. XGBoost cho phép bạn cộng thêm logic khác (feature fetch, validation) mà vẫn dưới 100ms. Neural Net ngay từ đầu đã ăn 40% budget, rủi ro timeout khi tải tăng. Latency luôn phải nằm trong bảng so sánh cùng với F1.",
   },
 ];
 
@@ -1152,61 +1152,61 @@ const quizQuestions: QuizQuestion[] = [
 export default function ModelEvaluationSelectionTopic() {
   return (
     <>
-      {/* STEP 1 — HOOK */}
+      {/* STEP 1 - HOOK */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="5 model candidate cùng dự đoán gian lận thẻ. Model A accuracy 98,4%, Model B accuracy 97,9%. A thắng? "
+          question="Năm model candidate cùng dự đoán gian lận thẻ. Model A đạt độ chính xác 98,4%, Model B đạt 97,9%. A thắng?"
           options={[
-            "Đúng — accuracy cao hơn là tốt hơn",
-            "Chưa chắc — cần xem model nào bắt được nhiều ca gian lận thật, latency bao nhiêu, và trade-off với false alarm",
+            "Đúng, độ chính xác cao hơn là tốt hơn",
+            "Chưa chắc. Cần xem model nào bắt được nhiều ca gian lận thật, latency bao nhiêu và đánh đổi với false alarm ra sao",
             "Không quan trọng, chọn model nào cũng được",
             "Chờ dữ liệu thêm",
           ]}
           correct={1}
-          explanation="Với dữ liệu 98% không gian lận, một model luôn đoán 'không gian lận' cũng đạt 98% accuracy. Câu hỏi 'chọn model nào' không bao giờ có một con số trả lời — mà là một quy trình: xác định metric quan trọng, cân nhắc trade-off, đo nhiều lần với cross-validation, rồi so sánh. Bài này dạy bạn quy trình đó."
+          explanation="Với dữ liệu 98% không gian lận, một model luôn đoán 'không gian lận' cũng đạt 98% độ chính xác. Câu hỏi 'chọn model nào' không bao giờ có một con số trả lời. Đó là một quy trình: xác định metric quan trọng, cân nhắc đánh đổi, đo nhiều lần với cross-validation, rồi so sánh. Bài này dạy bạn quy trình đó."
         >
           <div className="mt-4 rounded-xl border border-accent/30 bg-accent-light p-4">
             <div className="flex items-start gap-3">
               <Trophy className="text-accent shrink-0 mt-0.5" size={18} />
               <p className="text-sm text-foreground/90 leading-relaxed">
                 Hãy tưởng tượng bạn đang duyệt 5 ứng viên CV cho cùng một vị
-                trí. Ai cũng có điểm mạnh riêng — người nhanh, người cẩn thận,
+                trí. Ai cũng có điểm mạnh riêng: người nhanh, người cẩn thận,
                 người rẻ. Bạn không chọn được trước khi biết <em>công ty cần
-                gì nhất</em>. Model selection cũng vậy: không có model &ldquo;tốt
-                nhất&rdquo;, chỉ có model phù hợp nhất cho một bộ yêu cầu cụ
-                thể.
+                gì nhất</em>. Model selection cũng vậy. Không có model
+                &ldquo;tốt nhất&rdquo;, chỉ có model phù hợp nhất cho một bộ
+                yêu cầu cụ thể.
               </p>
             </div>
           </div>
         </PredictionGate>
       </LessonSection>
 
-      {/* STEP 2 — REVEAL: dashboard tương tác */}
+      {/* STEP 2 - REVEAL: dashboard tương tác */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-3 mb-4">
             <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
-              <BarChart3 size={18} className="text-accent" /> 4 model đã huấn
-              luyện — chọn cái nào?
+              <BarChart3 size={18} className="text-accent" /> Bốn model đã
+              huấn luyện. Bạn chọn cái nào?
             </h3>
             <p className="text-sm text-muted leading-relaxed">
               Bốn model dưới đây đã chạy xong trên cùng tập dữ liệu phát hiện
               gian lận. Con số của chúng được thiết kế để không model nào
-              thống trị: mỗi model mạnh ở một trục khác nhau. Bạn kéo trọng số
-              cho từng metric — dashboard sẽ sắp xếp lại thứ hạng ngay tức khắc.
-              Hãy thử:
+              thống trị, mỗi model mạnh ở một trục khác nhau. Bạn kéo trọng
+              số cho từng metric, dashboard sẽ sắp xếp lại thứ hạng ngay tức
+              khắc. Hãy thử:
             </p>
             <ul className="text-xs text-muted space-y-1 pl-4 list-disc">
-              <li>Chỉ quan tâm accuracy → ai lên đầu?</li>
-              <li>Tăng weight recall (sợ bỏ sót gian lận) → thứ tự đổi ra sao?</li>
-              <li>Cần latency thấp cho thanh toán realtime → ai rơi xuống?</li>
+              <li>Chỉ quan tâm độ chính xác. Ai lên đầu?</li>
+              <li>Tăng weight recall (sợ bỏ sót gian lận). Thứ tự đổi ra sao?</li>
+              <li>Cần latency thấp cho thanh toán realtime. Ai rơi xuống?</li>
             </ul>
           </div>
           <ModelSelectionDashboard />
         </VisualizationSection>
       </LessonSection>
 
-      {/* STEP 3 — DEEPEN: TabView 4 nhóm metric */}
+      {/* STEP 3 - DEEPEN: TabView 4 nhóm metric */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Đào sâu">
         <p className="text-sm text-muted leading-relaxed mb-4">
           Metrics không phải một loại. Mỗi bài toán có nhóm metrics riêng.
@@ -1296,40 +1296,40 @@ plt.legend(); plt.show()`}
         />
       </LessonSection>
 
-      {/* STEP 4 — AHA */}
+      {/* STEP 4 - AHA */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc hiểu">
         <AhaMoment>
           <p>
-            Chọn model không phải tìm <strong>&ldquo;model tốt nhất&rdquo;</strong>{" "}
-            — mà là <strong>biên soạn một bộ yêu cầu</strong> rồi tìm model
-            thoả mãn nó.
+            Chọn model không phải đi tìm <strong>&ldquo;model tốt nhất&rdquo;</strong>.
+            Việc của bạn là <strong>biên soạn một bộ yêu cầu</strong> rồi tìm
+            model thoả mãn bộ đó.
           </p>
           <p className="mt-3">
             Bộ yêu cầu thường gồm: <em>metric chính</em> (tuỳ bài toán),{" "}
-            <em>ràng buộc thời gian</em> (train, inference), <em>khả năng giải
-            thích</em> (cho khách hàng, quy định), và <em>chi phí</em> (tính
-            toán, bảo trì). Khi bạn đã viết bộ yêu cầu, model trả lời gần như
-            hiện ra.
+            <em>ràng buộc thời gian</em> (huấn luyện, inference),{" "}
+            <em>khả năng giải thích</em> (cho khách hàng, cho cơ quan quản
+            lý), và <em>chi phí</em> (tính toán, bảo trì). Khi bộ yêu cầu đã
+            viết xong, câu trả lời về model gần như tự hiện ra.
           </p>
         </AhaMoment>
       </LessonSection>
 
-      {/* STEP 5 — CHALLENGE */}
+      {/* STEP 5 - CHALLENGE */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Model X được quảng cáo: ROC AUC = 0,95. Bạn triển khai thử — accuracy chỉ 55%. Chuyện gì xảy ra?"
+          question="Model X được quảng cáo ROC AUC = 0,95. Bạn triển khai thử thì accuracy chỉ 55%. Chuyện gì xảy ra?"
           options={[
-            "Có bug trong code — phải có ít nhất 95% accuracy",
-            "Model xếp hạng (ranking) tốt nhưng threshold mặc định đang sai — điểm score của đa số mẫu rơi về cùng một phía của threshold",
+            "Có bug trong code, vì AUC cao thì accuracy phải cao theo",
+            "Model xếp hạng (ranking) tốt, nhưng threshold mặc định đang sai. Score của đa số mẫu rơi về cùng một phía của threshold",
             "AUC tính sai",
             "Phải đổi sang model khác ngay",
           ]}
           correct={1}
-          explanation="AUC = 0,95 nghĩa là nếu bạn xếp hạng tất cả mẫu theo score model, dương và âm tách rõ. Nhưng accuracy phụ thuộc vào một threshold. Ví dụ: nếu phần lớn score nằm ở vùng 0,55-0,95, threshold mặc định 0,5 sẽ gắn tất cả vào dương — accuracy sập. Cách xử lý: (1) calibrate probability, (2) chọn threshold theo nhu cầu precision/recall, hoặc (3) dùng ngưỡng tối ưu F1 từ precision-recall curve."
+          explanation="AUC = 0,95 nghĩa là khi bạn xếp hạng tất cả mẫu theo score model, dương và âm tách rõ. Trong khi đó, accuracy phụ thuộc vào một threshold cụ thể. Ví dụ: nếu phần lớn score rơi vào vùng 0,55 đến 0,95, threshold mặc định 0,5 sẽ gắn tất cả mẫu vào lớp dương, khiến accuracy sập. Cách xử lý có ba lối: (1) calibrate probability, (2) chọn threshold theo nhu cầu precision và recall, (3) lấy ngưỡng tối ưu F1 từ precision-recall curve."
         />
       </LessonSection>
 
-      {/* STEP 6 — EXPLAIN */}
+      {/* STEP 6 - EXPLAIN */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
@@ -1342,7 +1342,7 @@ plt.legend(); plt.show()`}
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-4">
             <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
               <Repeat size={16} className="text-accent" /> Quy trình 5 bước so
-              sánh model khoa học
+              sánh model một cách khoa học
             </h4>
             <StepReveal
               labels={[
@@ -1350,7 +1350,7 @@ plt.legend(); plt.show()`}
                 "2. Chọn metric chính",
                 "3. Chạy baseline",
                 "4. Cross-validation",
-                "5. Chọn — và giải thích",
+                "5. Chọn rồi giải thích",
               ]}
             >
               {[
@@ -1361,9 +1361,9 @@ plt.legend(); plt.show()`}
                   <p className="text-sm text-foreground leading-relaxed">
                     Trước khi mở editor, hãy viết ra giấy: bài toán là
                     classification hay regression? Dữ liệu cân bằng không?
-                    Latency giới hạn bao nhiêu? Chi phí sai âm (bỏ sót) vs sai
-                    dương (báo giả) khác nhau ra sao? Bộ yêu cầu này là la
-                    bàn — mọi quyết định sau đó đều nhìn nó.
+                    Latency giới hạn bao nhiêu? Chi phí sai âm (bỏ sót) so với
+                    sai dương (báo giả) lệch nhau ra sao? Bộ yêu cầu này là
+                    la bàn. Mọi quyết định sau đó đều phải nhìn lại nó.
                   </p>
                 </div>,
                 <div
@@ -1372,9 +1372,11 @@ plt.legend(); plt.show()`}
                 >
                   <p className="text-sm text-foreground leading-relaxed">
                     Chọn <strong>một</strong> metric làm &ldquo;điểm chính&rdquo;
-                    (primary metric) và 2-3 metric phụ. Ví dụ: gian lận →
-                    primary F1, phụ precision (giữ trust), latency (UX).
-                    Không bao giờ tối ưu 6 metric cùng lúc — sẽ tê liệt.
+                    (primary metric) và 2-3 metric phụ. Ví dụ: bài toán gian
+                    lận lấy F1 làm primary, precision phụ (giữ niềm tin của
+                    người dùng), latency phụ (giữ trải nghiệm). Đừng bao giờ
+                    tối ưu sáu metric cùng lúc, vì khi đó cả nhóm sẽ tê liệt
+                    không ai dám quyết.
                   </p>
                 </div>,
                 <div
@@ -1384,9 +1386,9 @@ plt.legend(); plt.show()`}
                   <p className="text-sm text-foreground leading-relaxed">
                     Chạy <strong>baseline đơn giản</strong> trước: logistic
                     regression hoặc majority-class. Đây là &ldquo;sàn&rdquo;
-                    để mọi model phức tạp phải vượt qua. Nếu neural net 100M
-                    tham số chỉ nhỉnh hơn logistic 0,5% F1 — có thật sự đáng
-                    deploy?
+                    mà mọi model phức tạp phải vượt qua. Nếu một neural net
+                    100M tham số chỉ nhỉnh hơn logistic 0,5% F1, bạn có thật
+                    sự nên deploy nó không?
                   </p>
                 </div>,
                 <div
@@ -1406,10 +1408,11 @@ plt.legend(); plt.show()`}
                   className="rounded-lg bg-card border border-border p-4"
                 >
                   <p className="text-sm text-foreground leading-relaxed">
-                    Ghi lại lý do chọn: &ldquo;chọn XGBoost vì F1=0,77 (± 0,01),
-                    latency 2ms/yêu cầu, train time chấp nhận được, dễ giải
-                    thích qua feature importance cho bộ phận compliance&rdquo;.
-                    Khi stakeholder hỏi, bạn đã có câu trả lời.
+                    Ghi lại lý do chọn: &ldquo;chọn XGBoost vì F1 = 0,77 (±
+                    0,01), latency 2ms mỗi yêu cầu, thời gian huấn luyện chấp
+                    nhận được, dễ giải thích qua feature importance cho bộ
+                    phận compliance&rdquo;. Khi stakeholder hỏi, bạn đã có
+                    sẵn câu trả lời.
                   </p>
                 </div>,
               ]}
@@ -1417,7 +1420,7 @@ plt.legend(); plt.show()`}
           </div>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            ROC AUC — công thức một dòng, ý nghĩa một đời
+            ROC AUC: một dòng công thức, một đời dùng được
           </h4>
           <p className="text-sm text-foreground/85 leading-relaxed">
             ROC AUC là xác suất model đưa ra score cao hơn cho một mẫu dương
@@ -1429,18 +1432,17 @@ plt.legend(); plt.show()`}
             }
           </LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Nói ngắn gọn: đưa model hai giao dịch — một gian lận thật, một
-            bình thường. AUC = 0,95 nghĩa là 95% số lần model xếp giao dịch
-            gian lận có score cao hơn. AUC 0,50 = đoán mò. AUC 1,0 = hoàn
-            hảo. Biểu đồ dưới cho 3 mức AUC:
+            Nói ngắn gọn: đưa cho model hai giao dịch, một là gian lận thật,
+            một là giao dịch bình thường. AUC = 0,95 có nghĩa là 95% số lần
+            model xếp giao dịch gian lận với score cao hơn. AUC 0,50 nghĩa
+            là đoán mò. AUC 1,0 là hoàn hảo. Biểu đồ dưới đây so ba mức AUC:
           </p>
           <div className="rounded-xl border border-border bg-surface/40 p-4 my-3">
             <RocAucChart />
           </div>
 
           <h4 className="text-sm font-semibold text-foreground mt-6 mb-2">
-            Average Precision (AP) — bạn bè thân thiết của AUC cho dữ liệu mất
-            cân bằng
+            Average Precision (AP): bạn đồng hành của AUC khi dữ liệu mất cân bằng
           </h4>
           <LaTeX block>
             {
@@ -1449,21 +1451,21 @@ plt.legend(); plt.show()`}
           </LaTeX>
           <p className="text-sm text-foreground/85 leading-relaxed">
             AP là diện tích dưới precision-recall curve. Khi gian lận chỉ
-            chiếm 1% dữ liệu, AUC có thể cao giả tạo (vì TN rất nhiều). AP
-            nhìn trực tiếp vào đường precision-recall — phản ánh thực chất
-            hơn. Quy tắc: dữ liệu mất cân bằng trên 1:20 → ưu tiên AP hơn
-            AUC.
+            chiếm 1% dữ liệu, AUC có thể cao một cách giả tạo do TN rất
+            nhiều. Trong khi đó, AP nhìn trực tiếp vào đường precision-recall
+            nên phản ánh thực chất hơn. Quy tắc: dữ liệu mất cân bằng trên
+            1:20 thì ưu tiên AP hơn AUC.
           </p>
 
           <Callout
             variant="warning"
-            title="Accuracy — người bạn cũ hay phản bội"
+            title="Accuracy: người bạn cũ hay phản bội"
           >
             Khi dữ liệu mất cân bằng (fraud 1%, disease detection 2%, spam
             3%), accuracy là <strong>metric tệ nhất</strong>. Một model ngốc
             nghếch đoán &ldquo;không có&rdquo; cho mọi mẫu cũng đạt 99%
-            accuracy. Hãy đổi sang F1, AP, hoặc matthews correlation
-            coefficient (MCC) — xem{" "}
+            accuracy. Hãy đổi sang F1, AP, hoặc Matthews correlation
+            coefficient (MCC). Xem{" "}
             <TopicLink slug="confusion-matrix">
               Confusion Matrix
             </TopicLink>{" "}
@@ -1523,80 +1525,81 @@ print("Best:", grid.best_params_, "score:", grid.best_score_)`}
 
           <CollapsibleDetail title="Khi nào F1 là metric tệ?">
             <p className="text-sm leading-relaxed">
-              F1 giả định precision và recall quan trọng như nhau. Nhưng có
-              bài toán thì không:
+              F1 giả định precision và recall quan trọng ngang nhau. Nhưng
+              có bài toán thì không:
             </p>
             <ul className="text-sm list-disc list-inside space-y-1 mt-2">
               <li>
                 <strong>Sàng lọc ung thư</strong>: bỏ sót (recall thấp) nguy
-                hiểm gấp nhiều lần báo giả. Dùng F2 (nhấn recall) hoặc hẳn
-                recall với ràng buộc precision sàn.
+                hiểm gấp nhiều lần báo giả. Hãy dùng F2 (nhấn recall) hoặc
+                tối ưu hẳn recall với ràng buộc precision sàn.
               </li>
               <li>
                 <strong>Thư rác</strong>: chuyển nhầm email công việc vào
-                spam (precision thấp) rất bực mình. Dùng F0.5 (nhấn
+                spam (precision thấp) rất bực mình. Hãy dùng F0.5 (nhấn
                 precision).
               </li>
               <li>
-                <strong>Ranking</strong>: thứ tự quan trọng hơn đúng/sai →
-                NDCG, MAP.
+                <strong>Ranking</strong>: thứ tự quan trọng hơn đúng hay
+                sai. Khi đó hãy chọn NDCG hoặc MAP.
               </li>
             </ul>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="No Free Lunch Theorem — và vì sao bạn vẫn nên thử">
+          <CollapsibleDetail title="No Free Lunch Theorem và lý do bạn vẫn nên thử nhiều thuật toán">
             <p className="text-sm leading-relaxed">
               Định lý No Free Lunch (Wolpert 1996) phát biểu: khi tính trung
               bình trên TOÀN BỘ bài toán có thể có, không thuật toán nào tốt
-              hơn thuật toán khác. Nghe như khiến việc chọn model vô nghĩa —
-              nhưng thực tế:
+              hơn thuật toán khác. Nghe có vẻ khiến việc chọn model trở
+              thành vô nghĩa, nhưng thực tế thì khác:
             </p>
             <ul className="text-sm list-disc list-inside space-y-1 mt-2">
               <li>
-                Bạn không gặp &ldquo;toàn bộ bài toán&rdquo; — bạn gặp một
+                Bạn không gặp &ldquo;toàn bộ bài toán&rdquo;. Bạn chỉ gặp một
                 bài toán cụ thể với cấu trúc cụ thể.
               </li>
               <li>
-                Mỗi thuật toán có <em>inductive bias</em> — giả định ngầm về
-                cấu trúc dữ liệu. Tree giả định dữ liệu có hierarchy, linear
-                giả định additive, NN giả định hierarchy phi tuyến.
+                Mỗi thuật toán mang theo một <em>inductive bias</em>, tức là
+                giả định ngầm về cấu trúc dữ liệu. Tree giả định dữ liệu có
+                hierarchy, linear giả định additive, neural network giả
+                định hierarchy phi tuyến.
               </li>
               <li>
-                Do đó việc thử 3-5 thuật toán khác nhau luôn hợp lý — bạn
-                đang đánh cược về inductive bias nào khớp với bài toán của
-                mình nhất.
+                Nhờ vậy, việc thử 3 đến 5 thuật toán khác nhau luôn hợp lý.
+                Bạn đang đánh cược xem inductive bias nào khớp với bài toán
+                của mình nhất.
               </li>
             </ul>
           </CollapsibleDetail>
         </ExplanationSection>
       </LessonSection>
 
-      {/* STEP 7 — CONNECT */}
+      {/* STEP 7 - CONNECT */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="5 điều nhớ khi chọn model"
           points={[
-            "Không có model 'tốt nhất' chung — chỉ có model phù hợp nhất cho bộ yêu cầu cụ thể của bài toán.",
-            "Accuracy bị đánh lừa khi dữ liệu mất cân bằng — luôn kèm precision/recall/F1 hoặc AP.",
-            "ROC AUC đo khả năng xếp hạng; accuracy đo trên một threshold — hai câu chuyện khác nhau.",
-            "Cross-validation 5-fold + báo cáo mean ± std, không chỉ một con số.",
-            "Latency, train time, khả năng giải thích luôn nằm cùng bàn cân với F1 — đừng chỉ nhìn một trục.",
+            "Không có model 'tốt nhất' chung. Chỉ có model phù hợp nhất với bộ yêu cầu cụ thể của bài toán.",
+            "Accuracy bị đánh lừa khi dữ liệu mất cân bằng. Luôn kèm precision, recall, F1 hoặc AP.",
+            "ROC AUC đo khả năng xếp hạng, còn accuracy đo trên một threshold cụ thể. Hai câu chuyện khác nhau.",
+            "Cross-validation 5-fold rồi báo cáo cả mean và std, không chỉ một con số.",
+            "Latency, thời gian huấn luyện, khả năng giải thích luôn nằm cùng bàn cân với F1. Đừng chỉ nhìn một trục.",
           ]}
         />
         <div className="mt-4">
           <Callout variant="tip" title="Xem ứng dụng thực tế">
             Chiến thuật chọn model trong các cuộc thi Kaggle có gì khác so với
-            bài toán sản xuất?{" "}
+            bài toán production?{" "}
             <TopicLink slug="model-evaluation-selection-in-kaggle">
               Đánh giá &amp; chọn mô hình trên Kaggle
             </TopicLink>{" "}
-            — câu chuyện về leaderboard shakeup, ensemble stacking và nghệ
-            thuật chọn 2 bài nộp cuối.
+            kể câu chuyện về leaderboard shakeup, ensemble stacking và nghệ
+            thuật chọn hai bài nộp cuối.
           </Callout>
         </div>
       </LessonSection>
 
-      {/* STEP 8 — QUIZ */}
+      {/* STEP 8 - QUIZ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

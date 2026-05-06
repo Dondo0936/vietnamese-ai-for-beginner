@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
   title: "Activation Functions in AlphaGo",
   titleVi: "Hàm kích hoạt trong AlphaGo",
   description:
-    "AlphaGo thắng kỳ thủ hàng đầu thế giới — mỗi nước đi là hàng triệu nơ-ron với ReLU và softmax phối hợp. Bấm một ô trên bàn cờ để thấy mạng chính sách nghĩ gì.",
+    "AlphaGo thắng kỳ thủ hàng đầu thế giới. Mỗi nước đi là hàng triệu nơ-ron với ReLU và softmax phối hợp. Bấm một ô trên bàn cờ để thấy mạng chính sách nghĩ gì.",
   category: "neural-fundamentals",
   tags: ["activation-functions", "reinforcement-learning", "application", "alphago"],
   difficulty: "intermediate",
@@ -92,7 +92,7 @@ export const metadata: TopicMeta = {
    Dữ liệu bàn cờ & heatmap giả lập (đúng ý nghĩa AlphaGo)
    Mỗi tình huống: danh sách quân đen/trắng + heatmap xác suất
    nước đi tiếp theo (softmax qua 361 ô của bàn 19×19).
-   Heatmap ở đây là biểu diễn trực quan — không phải trọng số
+   Heatmap ở đây là biểu diễn trực quan, không phải trọng số
    thật của AlphaGo nhưng bám theo kiểu logic chính sách (chú ý
    quanh nhóm quân đang chiến đấu, các điểm cắt, ô trống rộng).
    ──────────────────────────────────────────────────────────── */
@@ -111,7 +111,7 @@ interface GoScenario {
   hotSpots: { x: number; y: number; weight: number; whyVi: string }[];
   /** Nước AlphaGo thực sự chọn (để highlight) */
   aiMove: { x: number; y: number };
-  /** Nước con người thường chọn — để so sánh. */
+  /** Nước con người thường chọn, để so sánh. */
   humanMove?: { x: number; y: number };
 }
 
@@ -121,14 +121,14 @@ const SCENARIOS: GoScenario[] = [
     labelVi: "Khai cuộc",
     subVi: "Chiếm đất ngoài, chưa đụng độ",
     story:
-      "Vài nước đầu, bàn cờ gần như trống. Mạng chính sách chưa thấy điểm chiến đấu — nó tản xác suất về các điểm sao (hoshi) truyền thống.",
+      "Vài nước đầu, bàn cờ gần như trống. Mạng chính sách chưa thấy điểm chiến đấu, nên nó tản xác suất về các điểm sao (hoshi) truyền thống.",
     stones: [
       { x: 3, y: 3, color: 1 },
       { x: 15, y: 3, color: 2 },
       { x: 3, y: 15, color: 1 },
     ],
     hotSpots: [
-      { x: 15, y: 15, weight: 0.42, whyVi: "Điểm sao còn lại — mở bốn góc" },
+      { x: 15, y: 15, weight: 0.42, whyVi: "Điểm sao còn lại, mở bốn góc" },
       { x: 15, y: 9, weight: 0.18, whyVi: "Hình sao cạnh, mở rộng thế" },
       { x: 9, y: 3, weight: 0.14, whyVi: "Cản đối phương xây đất cạnh trên" },
       { x: 9, y: 15, weight: 0.1, whyVi: "Mở rộng khung bên trái" },
@@ -143,7 +143,7 @@ const SCENARIOS: GoScenario[] = [
     labelVi: "Đụng độ giữa bàn",
     subVi: "Hai nhóm quân đang giành khí",
     story:
-      "Tới trung cuộc, hai nhóm quân tiếp xúc. Mạng chính sách dồn phần lớn xác suất vào các điểm cắt và điểm khí — nơi một nước sai lệch có thể đổi hoàn toàn cục diện.",
+      "Tới trung cuộc, hai nhóm quân tiếp xúc. Mạng chính sách dồn phần lớn xác suất vào các điểm cắt và điểm khí, nơi một nước sai lệch có thể đổi hoàn toàn cục diện.",
     stones: [
       { x: 9, y: 9, color: 1 },
       { x: 10, y: 9, color: 1 },
@@ -155,11 +155,11 @@ const SCENARIOS: GoScenario[] = [
       { x: 11, y: 9, color: 2 },
     ],
     hotSpots: [
-      { x: 9, y: 8, weight: 0.45, whyVi: "Cắt cặp trắng — tạo hai nhóm yếu" },
+      { x: 9, y: 8, weight: 0.45, whyVi: "Cắt cặp trắng, tạo hai nhóm yếu" },
       { x: 10, y: 11, weight: 0.22, whyVi: "Vươn khí cho nhóm đen" },
       { x: 12, y: 10, weight: 0.14, whyVi: "Áp sát nhóm trắng bên phải" },
       { x: 7, y: 10, weight: 0.09, whyVi: "Chạy nối với quân đen bên trái" },
-      { x: 10, y: 7, weight: 0.06, whyVi: "Chặn trên — chia hai nhóm trắng" },
+      { x: 10, y: 7, weight: 0.06, whyVi: "Chặn trên, chia hai nhóm trắng" },
       { x: 11, y: 12, weight: 0.04, whyVi: "Tạo hình mới, không chắc chắn" },
     ],
     aiMove: { x: 9, y: 8 },
@@ -170,7 +170,7 @@ const SCENARIOS: GoScenario[] = [
     labelVi: "Nước 37 huyền thoại",
     subVi: "AlphaGo vs. Lee Sedol, ván 2",
     story:
-      "Nước đi thứ 37 của AlphaGo ở vòng thứ năm làm cả giới cờ vây sửng sốt. Một nước 'vai thứ năm' (shoulder hit tại hàng 5) mà không kỳ thủ chuyên nghiệp nào tính tới — nhưng mạng chính sách vẫn dồn đủ xác suất cho nó nhờ các tầng ReLU học được mẫu thế trận khác thường.",
+      "Nước đi thứ 37 của AlphaGo ở vòng thứ năm làm cả giới cờ vây sửng sốt. Một nước 'vai thứ năm' (shoulder hit tại hàng 5) mà không kỳ thủ chuyên nghiệp nào tính tới. Tuy vậy, mạng chính sách vẫn dồn đủ xác suất cho nó nhờ các tầng ReLU học được mẫu thế trận khác thường.",
     stones: [
       { x: 3, y: 3, color: 2 },
       { x: 15, y: 3, color: 1 },
@@ -185,7 +185,7 @@ const SCENARIOS: GoScenario[] = [
       { x: 10, y: 4, weight: 0.35, whyVi: "Nước 37: vai thứ năm bất ngờ" },
       { x: 14, y: 8, weight: 0.18, whyVi: "Tuyến phòng thủ truyền thống" },
       { x: 6, y: 13, weight: 0.14, whyVi: "Kéo quân trắng đi tiếp" },
-      { x: 12, y: 10, weight: 0.12, whyVi: "Giữa bàn — bàn đạp cho cả hai bên" },
+      { x: 12, y: 10, weight: 0.12, whyVi: "Giữa bàn, bàn đạp cho cả hai bên" },
       { x: 17, y: 5, weight: 0.1, whyVi: "Góc phải trên vẫn trống" },
       { x: 4, y: 7, weight: 0.06, whyVi: "Áp sát nhóm trắng bên trái" },
     ],
@@ -195,7 +195,7 @@ const SCENARIOS: GoScenario[] = [
 ];
 
 /* ────────────────────────────────────────────────────────────
-   Bàn cờ 19×19 — SVG, click để xem heatmap, highlight nước AI
+   Bàn cờ 19×19 (SVG): click để xem heatmap, highlight nước AI
    ──────────────────────────────────────────────────────────── */
 
 interface GoBoardProps {
@@ -278,7 +278,7 @@ function GoBoard({ scenario, showHeatmap, selected, onSelect }: GoBoardProps) {
         return <circle key={i} cx={cx} cy={cy} r={2.2} fill="#5a3c16" />;
       })}
 
-      {/* Heatmap softmax — lớp dưới quân cờ */}
+      {/* Heatmap softmax: lớp dưới quân cờ */}
       {showHeatmap && (
         <>
           {scenario.hotSpots.map((h, i) => {
@@ -303,7 +303,7 @@ function GoBoard({ scenario, showHeatmap, selected, onSelect }: GoBoardProps) {
         </>
       )}
 
-      {/* Click layer — mỗi ô một vùng nhấn */}
+      {/* Click layer: mỗi ô một vùng nhấn */}
       {Array.from({ length: BOARD_SIZE }, (_, yi) =>
         Array.from({ length: BOARD_SIZE }, (_, xi) => {
           const [cx, cy] = cellCenter(xi, yi);
@@ -348,7 +348,7 @@ function GoBoard({ scenario, showHeatmap, selected, onSelect }: GoBoardProps) {
         );
       })}
 
-      {/* Nước AlphaGo chọn — ngôi sao đỏ */}
+      {/* Nước AlphaGo chọn: ngôi sao đỏ */}
       {(() => {
         const [cx, cy] = cellCenter(scenario.aiMove.x, scenario.aiMove.y);
         return (
@@ -396,7 +396,7 @@ function GoBoard({ scenario, showHeatmap, selected, onSelect }: GoBoardProps) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Panel heatmap — mô tả top xác suất của mạng chính sách
+   Panel heatmap: mô tả top xác suất của mạng chính sách
    ──────────────────────────────────────────────────────────── */
 
 function HeatmapLegend({ scenario }: { scenario: GoScenario }) {
@@ -417,14 +417,14 @@ function HeatmapLegend({ scenario }: { scenario: GoScenario }) {
           <div key={i} className="space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-red-500/15 text-red-500 text-[10px] font-bold flex items-center justify-center">
+                <span className="w-5 h-5 rounded-full bg-red-500/15 text-foreground text-[10px] font-bold flex items-center justify-center">
                   {i + 1}
                 </span>
                 <span className="text-foreground">
                   {String.fromCharCode(65 + h.x)}
                   {BOARD_SIZE - h.y}
                 </span>
-                <span className="text-tertiary">— {h.whyVi}</span>
+                <span className="text-tertiary">· {h.whyVi}</span>
               </span>
               <span className="font-mono font-bold text-red-500">
                 {(h.weight * 100).toFixed(1)}%
@@ -447,7 +447,7 @@ function HeatmapLegend({ scenario }: { scenario: GoScenario }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Mạng sâu — hình ảnh 13 tầng CNN với ReLU ở giữa
+   Mạng sâu: hình ảnh 13 tầng CNN với ReLU ở giữa
    ──────────────────────────────────────────────────────────── */
 
 function NetworkStackVisual() {
@@ -458,7 +458,7 @@ function NetworkStackVisual() {
       color: "#22c55e",
       kind: "hidden" as const,
     })),
-    { name: "Tầng 13 — đầu ra", color: "#8b5cf6", kind: "out" },
+    { name: "Tầng 13: đầu ra", color: "#8b5cf6", kind: "out" },
     { name: "Softmax qua 361 ô", color: "#ef4444", kind: "softmax" },
   ];
 
@@ -467,7 +467,7 @@ function NetworkStackVisual() {
       <div className="flex items-center gap-2">
         <Layers3 size={16} className="text-accent" />
         <h4 className="text-sm font-semibold text-foreground">
-          Bên trong mạng chính sách — 13 tầng nối nhau
+          Bên trong mạng chính sách: 13 tầng nối nhau
         </h4>
       </div>
       <div className="flex items-end gap-1.5 overflow-x-auto pb-2">
@@ -497,7 +497,7 @@ function NetworkStackVisual() {
         ))}
       </div>
       <p className="text-xs text-muted leading-relaxed">
-        <strong>12 tầng ẩn</strong> ở giữa đều dùng ReLU — cắt vuông ở 0 để
+        <strong>12 tầng ẩn</strong> ở giữa đều dùng ReLU, cắt vuông ở 0 để
         gradient không bị triệt tiêu khi học qua hàng triệu ván đánh.{" "}
         <strong>Lớp cuối</strong> cho 361 điểm số thô, rồi{" "}
         <strong>softmax</strong> biến chúng thành xác suất chọn từng ô trên bàn
@@ -509,7 +509,7 @@ function NetworkStackVisual() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Khung tương tác chính — chọn tình huống + bấm ô
+   Khung tương tác chính: chọn tình huống + bấm ô
    ──────────────────────────────────────────────────────────── */
 
 function BoardPlayground() {
@@ -625,7 +625,7 @@ function BoardPlayground() {
                 className="rounded-lg border border-border bg-card p-3 space-y-1.5"
               >
                 <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
-                  Ô đã chọn —{" "}
+                  Ô đã chọn ·{" "}
                   <span className="text-foreground normal-case tracking-normal">
                     {String.fromCharCode(65 + selected.x)}
                     {BOARD_SIZE - selected.y}
@@ -636,8 +636,8 @@ function BoardPlayground() {
                     Ô này đã có một quân{" "}
                     <strong>
                       {selectedStone.color === 1 ? "đen" : "trắng"}
-                    </strong>{" "}
-                    — mạng chính sách đặt xác suất gần như bằng 0 cho những ô
+                    </strong>
+                    . Mạng chính sách đặt xác suất gần như bằng 0 cho những ô
                     đã có quân.
                   </p>
                 ) : selectedHotspot ? (
@@ -663,7 +663,7 @@ function BoardPlayground() {
                   </>
                 ) : (
                   <p className="text-xs text-foreground/85 leading-relaxed">
-                    Mạng chính sách gán xác suất rất nhỏ cho ô này — không nằm
+                    Mạng chính sách gán xác suất rất nhỏ cho ô này, không nằm
                     trong 6 ứng viên hàng đầu. Softmax chia 100% cho 361 ô, nên
                     phần lớn ô chỉ nhận một phần trăm nhỏ.
                   </p>
@@ -676,7 +676,7 @@ function BoardPlayground() {
                 animate={{ opacity: 1 }}
                 className="rounded-lg border border-dashed border-border bg-surface/30 p-3 text-xs text-muted leading-relaxed"
               >
-                Bấm vào một điểm bất kỳ trên bàn cờ — bạn sẽ thấy mạng chính
+                Bấm vào một điểm bất kỳ trên bàn cờ. Bạn sẽ thấy mạng chính
                 sách của AlphaGo giải thích vì sao nó coi ô đó quan trọng hay
                 không.
               </motion.div>
@@ -690,7 +690,7 @@ function BoardPlayground() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Cảnh "cắt ReLU" → hư gradient — minh hoạ counterfactual
+   Cảnh "cắt ReLU" → hư gradient: minh hoạ counterfactual
    ──────────────────────────────────────────────────────────── */
 
 function CounterfactualDemo() {
@@ -710,10 +710,10 @@ function CounterfactualDemo() {
         strength: Math.pow(0.25, i) * 0.9,
       }));
     }
-    // Không kích hoạt — mọi tầng tuyến tính thu về một phép nhân
+    // Không kích hoạt: mọi tầng tuyến tính thu về một phép nhân
     return Array.from({ length: 13 }, (_, i) => ({
       layer: i + 1,
-      strength: i === 0 ? 0.6 : 0.6, // giữ không đổi — tượng trưng cho "một lớp"
+      strength: i === 0 ? 0.6 : 0.6, // giữ không đổi, tượng trưng cho "một lớp"
     }));
   }, [mode]);
 
@@ -774,10 +774,10 @@ function CounterfactualDemo() {
       </div>
       <p className="text-xs text-muted leading-relaxed">
         {mode === "relu"
-          ? "Dùng ReLU — tín hiệu đi gần như nguyên vẹn qua 13 tầng. Mạng học được đặc trưng phức tạp từ hàng triệu ván cờ."
+          ? "Dùng ReLU, tín hiệu đi gần như nguyên vẹn qua 13 tầng. Mạng học được đặc trưng phức tạp từ hàng triệu ván cờ."
           : mode === "sigmoid"
-            ? "Nếu thay bằng sigmoid — mỗi tầng nhân gradient với số ≤ 0,25. Sau 13 tầng, tín hiệu co lại gần bằng 0 — mạng không học được gì."
-            : "Nếu bỏ hẳn hàm kích hoạt — cả 13 tầng sụp thành một phép biến đổi tuyến tính duy nhất. Không khác gì chơi cờ vây bằng đường thẳng."}
+            ? "Nếu thay bằng sigmoid, mỗi tầng nhân gradient với số ≤ 0,25. Sau 13 tầng, tín hiệu co lại gần bằng 0 nên mạng không học được gì."
+            : "Nếu bỏ hẳn hàm kích hoạt, cả 13 tầng sụp thành một phép biến đổi tuyến tính duy nhất. Không khác gì chơi cờ vây bằng đường thẳng."}
       </p>
     </div>
   );
@@ -811,17 +811,17 @@ export default function ActivationFunctionsInAlphaGo() {
             </div>
             <p className="text-sm text-foreground/85 leading-relaxed">
               Cờ vây được coi là thành trì cuối cùng của trí tuệ con người
-              trước máy tính. Một bàn cờ 19×19 có hơn 10 mũ 170 thế cờ —
-              nhiều hơn số nguyên tử trong vũ trụ. Không cỗ máy nào duyệt hết
-              được. AlphaGo không duyệt; nó <strong>cảm nhận</strong> — bằng
-              hàng triệu nơ-ron phối hợp qua 13 tầng, mỗi tầng có một hàm kích
+              trước máy tính. Một bàn cờ 19×19 có hơn 10 mũ 170 thế cờ, nhiều
+              hơn số nguyên tử trong vũ trụ. Không cỗ máy nào duyệt hết được.
+              AlphaGo không duyệt; nó <strong>cảm nhận</strong> bằng hàng
+              triệu nơ-ron phối hợp qua 13 tầng, mỗi tầng có một hàm kích
               hoạt.
             </p>
             <p className="text-sm text-foreground/85 leading-relaxed">
               Trong một nước đi, AlphaGo đọc cả bàn cờ, chạy qua 12 tầng ẩn có
               ReLU, rồi để softmax phân bổ 100% xác suất cho 361 ô. Từ đó nó
               chọn ra một vài ô nóng để cây tìm kiếm Monte Carlo đào sâu. Không
-              có ReLU, 13 tầng sụp thành một đường thẳng; không có softmax, AI
+              có ReLU, 13 tầng sụp thành một đường thẳng. Không có softmax, AI
               không biết mỗi nước đi đáng tin bao nhiêu.
             </p>
           </div>
@@ -842,7 +842,7 @@ export default function ActivationFunctionsInAlphaGo() {
               <div className="rounded-xl border border-border bg-surface/50 p-3 space-y-1">
                 <p className="text-xs font-semibold text-accent">Đặc điểm 1</p>
                 <p className="text-[11px] text-foreground/80 leading-snug">
-                  361 ô, 10 mũ 170 thế cờ — không thể duyệt.
+                  361 ô, 10 mũ 170 thế cờ. Không thể duyệt.
                 </p>
               </div>
               <div className="rounded-xl border border-border bg-surface/50 p-3 space-y-1">
@@ -854,7 +854,7 @@ export default function ActivationFunctionsInAlphaGo() {
               <div className="rounded-xl border border-border bg-surface/50 p-3 space-y-1">
                 <p className="text-xs font-semibold text-accent">Đặc điểm 3</p>
                 <p className="text-[11px] text-foreground/80 leading-snug">
-                  Phần thưởng chỉ hiện ở cuối ván — mạng phải học lâu.
+                  Phần thưởng chỉ hiện ở cuối ván, nên mạng phải học lâu.
                 </p>
               </div>
             </div>
@@ -879,7 +879,7 @@ export default function ActivationFunctionsInAlphaGo() {
           <div className="space-y-3">
             <p>
               <strong>Mã hoá bàn cờ.</strong> Bàn cờ 19×19 được biến thành một
-              khối số 19×19×48 — 48 kênh mô tả quân đen, quân trắng, lịch sử
+              khối số 19×19×48: 48 kênh mô tả quân đen, quân trắng, lịch sử
               8 nước gần nhất, số khí của mỗi nhóm quân, tuổi của từng viên đá
               và thông tin lượt đi. Đây là đầu vào mà cả hai mạng cùng nhìn.
             </p>
@@ -889,18 +889,18 @@ export default function ActivationFunctionsInAlphaGo() {
         <Beat step={2}>
           <div className="space-y-3">
             <p>
-              <strong>Mạng chính sách — 12 tầng ReLU.</strong> Đầu vào chạy qua
+              <strong>Mạng chính sách: 12 tầng ReLU.</strong> Đầu vào chạy qua
               tầng đầu với bộ lọc 5×5, rồi 11 tầng tích chập 3×3. Sau mỗi tầng
               là một hàm kích hoạt ReLU: ai âm thành 0, ai dương giữ nguyên.
               Tại sao phải ReLU chứ không phải sigmoid? Vì ReLU cho gradient
               bằng 1 ở vùng dương, nên tín hiệu học lan ngược qua 12 tầng mà
               không bị nén. Nếu dùng sigmoid, mỗi tầng nhân gradient với tối
-              đa 0,25 — sau 12 tầng còn chưa tới 10 mũ âm 7.
+              đa 0,25, sau 12 tầng còn chưa tới 10 mũ âm 7.
             </p>
-            <Callout variant="insight" title="Vì sao đây là lựa chọn lớn">
+            <Callout variant="insight" title="ReLU rẻ, nhanh, và giữ được gradient qua 12 tầng">
               ReLU là quyết định thiết kế quan trọng nhất ở lớp ẩn. Nó rẻ
               (chỉ một phép so sánh), nhanh trên GPU, và không giết gradient.
-              Nhờ ReLU, AlphaGo huấn luyện được trên 30 triệu ván đánh của
+              Nhờ vậy, AlphaGo huấn luyện được trên 30 triệu ván đánh của
               chuyên gia.
             </Callout>
           </div>
@@ -908,9 +908,9 @@ export default function ActivationFunctionsInAlphaGo() {
         <Beat step={3}>
           <div className="space-y-3">
             <p>
-              <strong>Softmax ở đầu ra — biến điểm thô thành xác suất.</strong>{" "}
+              <strong>Softmax ở đầu ra: biến điểm thô thành xác suất.</strong>{" "}
               Tầng cuối cho 361 điểm số thô, một cho mỗi ô trên bàn. Nhưng
-              điểm thô không dùng được — có thể số âm, có thể số to bất
+              điểm thô không dùng được, có thể số âm, có thể số to bất
               thường. Softmax biến tất cả thành 361 xác suất cộng bằng 100%.
               Ô nào xác suất cao, đó là nước AlphaGo nghĩ tới đầu tiên.
             </p>
@@ -920,12 +920,12 @@ export default function ActivationFunctionsInAlphaGo() {
         <Beat step={4}>
           <div className="space-y-3">
             <p>
-              <strong>Mạng giá trị — thêm tanh ở đầu ra.</strong> Song song
+              <strong>Mạng giá trị: thêm tanh ở đầu ra.</strong> Song song
               với mạng chính sách, một mạng khác cùng kiến trúc (13 tầng,
               ReLU ở giữa) được huấn luyện để trả lời câu hỏi khác:{" "}
               <em>từ thế cờ hiện tại, bên đang đi có cơ hội thắng bao
               nhiêu?</em> Đầu ra là một nơ-ron duy nhất với hàm kích hoạt
-              tanh — cho số trong khoảng từ −1 (thua chắc) tới +1 (thắng
+              tanh, cho số trong khoảng từ −1 (thua chắc) tới +1 (thắng
               chắc). Tại sao tanh chứ không phải sigmoid? Vì tanh đối xứng
               quanh 0, nên &ldquo;hoà&rdquo; nằm ở giữa và gradient dễ học
               hơn.
@@ -938,21 +938,21 @@ export default function ActivationFunctionsInAlphaGo() {
               <strong>Hợp nhất với cây tìm kiếm.</strong> Hàng triệu nơ-ron
               phối hợp qua ReLU ở lớp ẩn và softmax ở đầu ra giúp AlphaGo{" "}
               <strong>thu hẹp không gian tìm kiếm</strong>: từ 250 lựa chọn
-              mỗi nước xuống chỉ còn 5–10 ứng viên đáng để đào sâu. Cây Monte
-              Carlo lấy các xác suất đó làm điểm khởi đầu, mô phỏng vài vạn
-              ván nháp, rồi chọn nước tốt nhất. Không có ReLU, không có
+              mỗi nước xuống chỉ còn 5 đến 10 ứng viên đáng để đào sâu. Cây
+              Monte Carlo lấy các xác suất đó làm điểm khởi đầu, mô phỏng vài
+              vạn ván nháp, rồi chọn nước tốt nhất. Không có ReLU, không có
               softmax, toàn bộ quy trình này sụp đổ.
             </p>
             <InlineChallenge
               question="Vì sao AlphaGo dùng softmax chứ không phải sigmoid ở tầng cuối của mạng chính sách?"
               options={[
                 "Vì sigmoid chạy chậm hơn softmax trên GPU",
-                "Vì cần đúng một xác suất cho một nước đi — mà có 361 ô cần chọn một, nên phải là phân phối cộng bằng 1",
+                "Vì cần đúng một xác suất cho một nước đi: có 361 ô cần chọn một, nên phải là phân phối cộng bằng 1",
                 "Vì sigmoid không có đạo hàm tại 0",
                 "Vì softmax là hàm duy nhất DeepMind biết lúc đó",
               ]}
               correct={1}
-              explanation="Softmax biến một bảng 361 điểm số thành một phân phối xác suất — các giá trị trong (0, 1) và tổng đúng bằng 1. Đây là cách chuẩn khi cần chọn một lựa chọn trong nhiều. Sigmoid chỉ dùng khi đầu ra là nhị phân (có/không), không phù hợp khi cần phân bổ xác suất giữa 361 ô."
+              explanation="Softmax biến một bảng 361 điểm số thành một phân phối xác suất, các giá trị trong (0, 1) và tổng đúng bằng 1. Đây là cách chuẩn khi cần chọn một lựa chọn trong nhiều. Sigmoid chỉ dùng khi đầu ra là nhị phân (có/không), không phù hợp khi cần phân bổ xác suất giữa 361 ô."
             />
           </div>
         </Beat>
@@ -963,13 +963,13 @@ export default function ActivationFunctionsInAlphaGo() {
           <div className="flex items-center gap-2">
             <Sparkles size={18} className="text-accent" />
             <h3 className="text-base font-semibold text-foreground">
-              Nước 37 của AlphaGo — ván 2, 10/3/2016
+              Nước 37 của AlphaGo: ván 2, 10/3/2016
             </h3>
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed">
             Đây là khoảnh khắc nổi tiếng nhất lịch sử cờ vây máy tính. Lee
             Sedol đang cầm đen, AlphaGo cầm trắng. Đến nước thứ 37, AlphaGo
-            bất ngờ đánh vai thứ năm — một nước mà bình luận viên
+            bất ngờ đánh vai thứ năm. Đó là một nước mà bình luận viên
             Michael Redmond 9-đẳng sau này gọi là &ldquo;không ai trong số
             chúng tôi nghĩ đến, nhưng khi máy đánh rồi, bạn nhận ra nó rất
             đẹp&rdquo;.
@@ -989,7 +989,7 @@ export default function ActivationFunctionsInAlphaGo() {
               >
                 <p className="text-sm text-foreground/85 leading-relaxed">
                   Sau 36 nước, hai bên đã xây dựng thế trận. Các kỳ thủ hàng
-                  đầu thường chọn lối đánh ổn định ở đường 4 — bảo toàn đất.
+                  đầu thường chọn lối đánh ổn định ở đường 4 để bảo toàn đất.
                   AlphaGo đứng trước lựa chọn: theo sách vở, hay đi một nước
                   khác lạ.
                 </p>
@@ -1002,7 +1002,7 @@ export default function ActivationFunctionsInAlphaGo() {
                   Mạng chính sách dồn 35% xác suất cho vai thứ năm (điểm K16
                   trong ký hiệu chuẩn), 18% cho nước theo sách ở đường 4.
                   Softmax không &ldquo;cứng&rdquo;: nó cho cả hai cơ hội,
-                  nhưng điểm số của nước vai cao hơn hẳn — vì 12 tầng ReLU
+                  nhưng điểm số của nước vai cao hơn hẳn vì 12 tầng ReLU
                   phía trước đã học được một mẫu thế trận mà con người chưa
                   tổng kết thành sách.
                 </p>
@@ -1014,7 +1014,7 @@ export default function ActivationFunctionsInAlphaGo() {
                 <p className="text-sm text-foreground/85 leading-relaxed">
                   Cây Monte Carlo tiếp nhận xác suất này, mô phỏng sâu vào
                   tương lai, và xác nhận: nước vai cho xác suất thắng cao
-                  hơn. AlphaGo đánh nó. Lee Sedol cúi đầu suy nghĩ 12 phút —
+                  hơn. AlphaGo đánh nó. Lee Sedol cúi đầu suy nghĩ 12 phút,
                   rồi thua ván đó. Nước 37 trở thành biểu tượng: một AI không
                   chỉ bắt chước con người, mà tìm ra điều con người chưa
                   thấy.
@@ -1042,13 +1042,13 @@ export default function ActivationFunctionsInAlphaGo() {
         <InlineChallenge
           question="Bạn đang thiết kế phiên bản AlphaGo cho cờ tướng Việt (bàn 10×9 = 90 ô). Nên dùng hàm gì ở tầng cuối của mạng chính sách?"
           options={[
-            "Sigmoid — để mỗi ô cho xác suất từ 0 đến 1",
-            "Softmax trên 90 ô — để tổng xác suất chọn nước bằng 100%",
-            "ReLU — để ô nào có điểm dương thì được chọn",
-            "Tanh — để có cả giá trị âm và dương",
+            "Sigmoid: để mỗi ô cho xác suất từ 0 đến 1",
+            "Softmax trên 90 ô: để tổng xác suất chọn nước bằng 100%",
+            "ReLU: để ô nào có điểm dương thì được chọn",
+            "Tanh: để có cả giá trị âm và dương",
           ]}
           correct={1}
-          explanation="Mỗi lượt chỉ chọn một nước từ 90 ô có thể đi — đây là phân loại đa lớp. Softmax là hàm chuẩn cho việc này: các giá trị trong (0, 1) và tổng bằng 1. Sigmoid sẽ cho 90 xác suất độc lập không cộng về 1 — không biểu diễn được 'chọn một trong 90'."
+          explanation="Mỗi lượt chỉ chọn một nước từ 90 ô có thể đi. Đây là phân loại đa lớp. Softmax là hàm chuẩn cho việc này: các giá trị trong (0, 1) và tổng bằng 1. Sigmoid sẽ cho 90 xác suất độc lập không cộng về 1, không biểu diễn được 'chọn một trong 90'."
         />
         <div className="mt-4">
           <CounterfactualDemo />
@@ -1060,7 +1060,7 @@ export default function ActivationFunctionsInAlphaGo() {
         topicSlug={metadata.slug}
       >
         <Metric
-          value="Mạng chính sách dự đoán nước đi chuyên gia với độ chính xác 57,0% — vượt xa mọi hệ thống trước đó"
+          value="Mạng chính sách dự đoán nước đi chuyên gia với độ chính xác 57,0%, hơn xa mọi hệ thống trước đó"
           sourceRef={1}
         />
         <Metric
@@ -1068,7 +1068,7 @@ export default function ActivationFunctionsInAlphaGo() {
           sourceRef={1}
         />
         <Metric
-          value="Thắng Lee Sedol (9 đẳng) 4-1 vào tháng 3/2016 — lần đầu AI hạ kỳ thủ cờ vây chuyên nghiệp"
+          value="Thắng Lee Sedol (9 đẳng) 4-1 vào tháng 3/2016: lần đầu AI hạ kỳ thủ cờ vây chuyên nghiệp"
           sourceRef={3}
         />
         <Metric
@@ -1097,7 +1097,7 @@ export default function ActivationFunctionsInAlphaGo() {
                 <span>
                   <strong>Nếu 12 tầng ẩn dùng sigmoid</strong> thay cho
                   ReLU: gradient nhân với tối đa 0,25 ở mỗi tầng. Sau 12
-                  tầng, tín hiệu học co về khoảng 10 mũ âm 8 — mạng gần như
+                  tầng, tín hiệu học co về khoảng 10 mũ âm 8, nên mạng gần như
                   không cập nhật được các tầng đầu. AlphaGo sẽ không thể học
                   được đặc trưng bàn cờ phức tạp.
                 </span>
@@ -1110,7 +1110,7 @@ export default function ActivationFunctionsInAlphaGo() {
                 <span>
                   <strong>Nếu bỏ hẳn hàm kích hoạt</strong>: 13 tầng nhân ma
                   trận tuần tự sụp về đúng một phép biến đổi tuyến tính. AI
-                  chơi cờ vây bằng đường thẳng — không phân biệt được nhóm
+                  chơi cờ vây bằng đường thẳng, không phân biệt được nhóm
                   quân chiến đấu với một vùng đất rộng.
                 </span>
               </li>
@@ -1121,23 +1121,24 @@ export default function ActivationFunctionsInAlphaGo() {
                 />
                 <span>
                   <strong>Nếu thay softmax bằng sigmoid</strong> ở tầng cuối:
-                  mỗi ô cho xác suất độc lập, tổng có thể là 50 hoặc 200 —
-                  không biểu diễn được &ldquo;chọn một trong 361 ô&rdquo;.
-                  Cây tìm kiếm Monte Carlo mất điểm khởi đầu, phải mò trong
-                  không gian khổng lồ.
+                  mỗi ô cho xác suất độc lập, tổng có thể là 50 hoặc 200, không
+                  biểu diễn được &ldquo;chọn một trong 361 ô&rdquo;. Cây tìm
+                  kiếm Monte Carlo mất điểm khởi đầu, phải mò trong không gian
+                  khổng lồ.
                 </span>
               </li>
             </ul>
           </div>
 
-          <Callout variant="tip" title="Điều gì đọng lại">
+          <Callout variant="tip" title="AlphaGo thắng nhờ ba lựa chọn hàm kích hoạt đúng">
             AlphaGo không thắng nhờ một thuật toán kỳ diệu duy nhất. Nó thắng
             nhờ <strong>một chuỗi lựa chọn nhỏ đúng</strong>: ReLU cho lớp ẩn
             vì gradient không triệt tiêu, softmax cho lớp cuối vì cần phân
-            phối xác suất, tanh cho mạng giá trị vì đầu ra đối xứng. Năm
+            phối xác suất, tanh cho value network vì đầu ra đối xứng. Năm
             đường cong bạn vừa học ở{" "}
             <TopicLink slug="activation-functions">Hàm kích hoạt</TopicLink>{" "}
-            là <em>đồ nghề gốc</em> của một hệ AI chinh phục đỉnh cao cờ vây.
+            chính là <em>đồ nghề gốc</em> của một hệ AI chinh phục đỉnh cao cờ
+            vây.
           </Callout>
         </div>
       </ApplicationCounterfactual>
@@ -1146,10 +1147,10 @@ export default function ActivationFunctionsInAlphaGo() {
         <MiniSummary
           title="5 điều cần nhớ về AlphaGo và hàm kích hoạt"
           points={[
-            "AlphaGo dùng hai mạng nơ-ron tích chập 13 tầng — một cho chính sách (chọn nước), một cho giá trị (ước lượng thắng).",
-            "12 tầng ẩn đều có ReLU: gradient đi qua nguyên vẹn ở vùng dương, giúp mạng học được từ 30 triệu ván cờ.",
-            "Tầng cuối của mạng chính sách là softmax trên 361 ô — cho xác suất chọn mỗi nước, tổng bằng 1.",
-            "Tầng cuối của mạng giá trị là tanh — cho số từ −1 (thua chắc) tới +1 (thắng chắc), đối xứng quanh 0.",
+            "AlphaGo dùng hai mạng nơ-ron tích chập 13 tầng: một policy network để chọn nước, một value network để ước lượng cơ hội thắng.",
+            "12 tầng ẩn đều có ReLU. Gradient đi qua nguyên vẹn ở vùng dương, giúp mạng học được từ 30 triệu ván cờ.",
+            "Tầng cuối của policy network là softmax trên 361 ô. Nó cho xác suất chọn mỗi nước, tổng bằng 1.",
+            "Tầng cuối của value network là tanh. Nó cho số từ −1 (thua chắc) tới +1 (thắng chắc), đối xứng quanh 0.",
             "Nước 37 ván 2 vs Lee Sedol là minh chứng: năm đường cong nhỏ phối hợp tạo ra sáng tạo mà con người chưa từng thấy.",
           ]}
         />

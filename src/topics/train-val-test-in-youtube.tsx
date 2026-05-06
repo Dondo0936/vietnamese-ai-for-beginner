@@ -1,7 +1,7 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  TRAIN / VAL / TEST IN YOUTUBE — Ứng dụng thực tế
+ *  TRAIN / VAL / TEST IN YOUTUBE. Ứng dụng thực tế
  *  ─────────────────────────────────────────────────────────────────────────
  *  Rewrite for the student path. Visualisation-first, no code, no LaTeX.
  *  Core story: YouTube does NOT split randomly. It splits by TIME because
@@ -43,9 +43,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "train-val-test-in-youtube",
   title: "Train / Val / Test in YouTube Recommendations",
-  titleVi: "Tập train/val/test trong YouTube — chia theo thời gian",
+  titleVi: "YouTube chia train/val/test theo thời gian, không ngẫu nhiên",
   description:
-    "YouTube dùng dữ liệu của 2 tỷ người dùng. Chia ngẫu nhiên sẽ gây leakage tương lai → quá khứ. Họ chia theo thời gian rồi A/B test trên người dùng thật.",
+    "YouTube nắm dữ liệu của 2 tỷ người dùng. Chia ngẫu nhiên làm tương lai lọt vào tập train. Họ cắt theo thời gian rồi A/B test trên người dùng thật.",
   category: "classic-ml",
   tags: ["data-split", "recommendation", "ab-testing", "application"],
   difficulty: "intermediate",
@@ -82,7 +82,7 @@ export const metadata: TopicMeta = {
     },
   ],
   tocSections: [
-    { id: "hero", labelVi: "Công ty nào?" },
+    { id: "hero", labelVi: "Công ty nào" },
     { id: "problem", labelVi: "Vấn đề" },
     { id: "mechanism", labelVi: "Cách giải quyết" },
     { id: "metrics", labelVi: "Con số thật" },
@@ -111,15 +111,16 @@ export default function TrainValTestInYoutube() {
           <strong>80 tỷ tín hiệu mỗi ngày</strong>.
         </p>
         <p>
-          Nhưng mỗi mô hình gợi ý không được triển khai ngay sau khi huấn
-          luyện. YouTube có một quy trình chia dữ liệu nghiêm ngặt &mdash;{" "}
-          <strong>train, validation, test</strong> &mdash; rồi kết hợp với{" "}
-          <strong>A/B testing</strong> (thử nghiệm so sánh trên người dùng
-          thật) để đảm bảo mô hình mới thực sự cải thiện trải nghiệm, không
-          chỉ cải thiện con số trên giấy.
+          Nhưng không model gợi ý nào được triển khai ngay sau khi huấn
+          luyện xong. YouTube có một quy trình chia dữ liệu nghiêm ngặt
+          (<strong>train</strong>, <strong>validation</strong>,{" "}
+          <strong>test</strong>) rồi kết hợp với <strong>A/B testing</strong>
+          {" "}(thử nghiệm so sánh trên người dùng thật). Mục tiêu là bảo đảm
+          model mới thực sự cải thiện trải nghiệm, không chỉ cải thiện con
+          số trên giấy.
         </p>
 
-        {/* HOOK — Why random split fails */}
+        {/* HOOK. Why random split fails */}
         <div className="not-prose mt-5">
           <RandomVsTimeHook />
         </div>
@@ -129,19 +130,19 @@ export default function TrainValTestInYoutube() {
         <p>
           YouTube thu thập dữ liệu tương tác từ 2 tỷ người dùng: lượt xem,
           thời gian xem, nhấn like, chia sẻ, bình luận, bỏ qua. Tổng cộng hơn
-          80 tỷ tín hiệu mỗi ngày. Thách thức không chỉ là mô hình chính xác
-          trên dữ liệu quá khứ, mà là <strong>dự đoán đúng hành vi người
-          dùng trong tương lai</strong> &mdash; vốn thay đổi liên tục: xu
-          hướng mới, sự kiện thời sự, sáng tạo viên mới.
+          80 tỷ tín hiệu mỗi ngày. Thách thức không chỉ là model chính xác
+          trên dữ liệu quá khứ, mà còn phải <strong>đoán đúng hành vi người
+          dùng trong tương lai</strong>. Tương lai thì luôn thay đổi: xu
+          hướng mới, sự kiện thời sự, creator mới.
         </p>
         <p>
-          Nếu chia dữ liệu <em>ngẫu nhiên</em> như cách &ldquo;sách giáo
-          khoa&rdquo;, YouTube sẽ phạm lỗi chết người: <strong>thông tin về
-          tương lai lọt vào tập train</strong>. Mô hình học trên dữ liệu đã
-          &ldquo;nhìn thấy&rdquo; tương lai &rArr; offline metric đẹp &rArr;
-          thực tế thảm hại. Lối đúng là chia theo <strong>thời gian</strong>:
-          train = dữ liệu cũ, val = dữ liệu trung gian, test = dữ liệu mới
-          nhất &mdash; cộng thêm A/B test trên người dùng thật.
+          Nếu chia dữ liệu <em>ngẫu nhiên</em> theo kiểu sách giáo khoa,
+          YouTube sẽ phạm một lỗi chết người: <strong>thông tin tương lai
+          lọt vào tập train</strong>. Model học trên dữ liệu đã nhìn thấy
+          tương lai. Offline metric trông đẹp. Production thì thảm hại. Lối
+          đúng là chia theo <strong>thời gian</strong>: train là dữ liệu cũ,
+          val là dữ liệu trung gian, test là dữ liệu mới nhất. Cộng thêm
+          A/B test trên người dùng thật để chốt quyết định.
         </p>
 
         <div className="not-prose mt-5">
@@ -155,70 +156,70 @@ export default function TrainValTestInYoutube() {
       >
         <Beat step={1}>
           <p>
-            <strong>Tập huấn luyện: học từ lịch sử.</strong> YouTube dùng hàng
-            tỷ sự kiện tương tác trong quá khứ để huấn luyện mạng nơ-ron sâu.
-            Kiến trúc 2 giai đoạn (Covington et al., RecSys 2016): mạng ứng
-            viên (candidate generation) chọn vài trăm video từ 800 triệu, rồi
-            mạng xếp hạng (ranking) sắp xếp chúng. Dữ liệu được cân bằng cẩn
-            thận theo người dùng: mỗi user đóng góp cùng số lượng ví dụ, tránh
-            mô hình bị chi phối bởi nhóm xem nhiều.
+            <strong>Tập train: học từ lịch sử.</strong> YouTube dùng hàng tỷ
+            sự kiện tương tác trong quá khứ để huấn luyện mạng nơ-ron sâu.
+            Kiến trúc 2 giai đoạn (Covington et al., RecSys 2016) gồm mạng
+            ứng viên (candidate generation) chọn vài trăm video từ 800 triệu,
+            rồi mạng xếp hạng (ranking) sắp xếp chúng. Dữ liệu được cân bằng
+            cẩn thận theo người dùng. Mỗi user đóng góp cùng số lượng ví dụ
+            để tránh model bị chi phối bởi nhóm xem nhiều.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>Tập kiểm định: chia theo user (và theo thời gian).</strong>{" "}
-            YouTube chia theo người dùng, không chia theo sự kiện ngẫu nhiên.
-            Toàn bộ lịch sử của một user nằm <em>hoàn toàn</em> trong train
-            hoặc <em>hoàn toàn</em> trong val &mdash; không chia đôi. Đồng
-            thời, cắt theo thời gian: val là dữ liệu <em>gần đây nhất</em> so
-            với train. Tập val dùng để chọn hyperparameter, so sánh kiến trúc,
-            early stopping.
+            <strong>Tập val: chia theo user và theo thời gian.</strong>{" "}
+            YouTube chia theo người dùng chứ không chia theo sự kiện ngẫu
+            nhiên. Toàn bộ lịch sử của một user nằm <em>hoàn toàn</em> trong
+            train hoặc <em>hoàn toàn</em> trong val, không bao giờ chia đôi.
+            Đồng thời, cắt theo thời gian. Val là dữ liệu <em>gần đây
+            nhất</em> so với train. Tập val dùng để chọn hyperparameter, so
+            sánh kiến trúc, làm early stopping.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
             <strong>A/B test trên người dùng thật: đề thi thật.</strong> Sau
-            khi mô hình vượt qua đánh giá offline, YouTube chạy A/B test: chia
-            người dùng thành nhóm control (mô hình cũ) và nhóm treatment (mô
-            hình mới). So sánh chỉ số thực tế (watch time, lượt hài lòng, tỷ
-            lệ dừng xem sớm). YouTube thực hiện <strong>hàng chục nghìn A/B
-            test mỗi năm</strong>. Chỉ mô hình vượt qua A/B test mới được
-            triển khai.
+            khi model vượt qua đánh giá offline, YouTube chạy A/B test. Họ
+            chia người dùng thành nhóm control (model cũ) và nhóm treatment
+            (model mới), rồi so sánh chỉ số thực tế: watch time, lượt hài
+            lòng, tỷ lệ dừng xem sớm. YouTube chạy <strong>hàng chục nghìn
+            A/B test mỗi năm</strong>. Chỉ model vượt qua A/B test mới được
+            triển khai rộng.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Quyết định từ chỉ số thực tế, không chỉ số offline.</strong>{" "}
-            YouTube nhiều lần phát hiện: mô hình có offline metric cao hơn
-            nhưng lại <em>giảm</em> watch time trong A/B test. Nguyên nhân
-            thường là mô hình tối ưu cho click (nhấp chuột) thay vì sự hài
-            lòng &mdash; người dùng click nhiều hơn nhưng thoát nhanh hơn. Chỉ
-            A/B test mới phát hiện được sự khác biệt này. Đó là lý do A/B test
-            được coi là &ldquo;test set thật&rdquo;.
+            <strong>Quyết định từ chỉ số thực tế, không phải chỉ số offline.</strong>{" "}
+            YouTube nhiều lần phát hiện ra một nghịch lý. Model có offline
+            metric cao hơn nhưng lại <em>giảm</em> watch time trong A/B test.
+            Nguyên nhân thường là model tối ưu cho click (nhấp chuột) thay vì
+            sự hài lòng. Người dùng click nhiều hơn rồi thoát ra nhanh hơn.
+            Chỉ A/B test mới phát hiện được sự khác biệt này. Đó là lý do A/B
+            test được coi là <em>test set thật</em>.
           </p>
         </Beat>
 
-        {/* DEEPEN — ToggleCompare: random split vs time-based split */}
+        {/* DEEPEN. ToggleCompare: random split vs time-based split */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <AlertTriangle size={16} className="text-accent" />
-            Chia ngẫu nhiên vs chia theo thời gian — ảnh hưởng tới độ tin cậy
+            Chia ngẫu nhiên hay chia theo thời gian. Cách chọn quyết định độ tin cậy.
           </h3>
           <RandomVsTimeCompare />
         </div>
 
-        {/* DEEPEN — StepReveal A/B test rollout flow */}
+        {/* DEEPEN. StepReveal A/B test rollout flow */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">
             Quy trình A/B test rollout của YouTube
           </h3>
           <StepReveal
             labels={[
-              "1 — Offline evaluation",
-              "2 — Shadow deployment",
-              "3 — A/B test 1% người dùng",
-              "4 — Mở rộng dần",
-              "5 — Triển khai toàn cầu",
+              "1. Offline evaluation",
+              "2. Shadow deployment",
+              "3. A/B test 1% người dùng",
+              "4. Mở rộng dần",
+              "5. Triển khai toàn cầu",
             ]}
           >
             {[
@@ -227,7 +228,7 @@ export default function TrainValTestInYoutube() {
                 stage="1"
                 title="Offline evaluation"
                 color="#3b82f6"
-                desc="Đo mô hình mới trên val và test set đã chuẩn bị. Watch time prediction, recall@k, precision@k... Nếu không vượt baseline → dừng ngay, không tốn tài nguyên."
+                desc="Đo model mới trên val và test set đã chuẩn bị. Watch time prediction, recall@k, precision@k. Nếu không vượt baseline thì dừng ngay, không tốn tài nguyên."
                 visual="Val acc: 82.3% → 83.1% ✓ | NDCG@20: 0.42 → 0.44 ✓"
               />,
               <ABStage
@@ -235,23 +236,23 @@ export default function TrainValTestInYoutube() {
                 stage="2"
                 title="Shadow deployment"
                 color="#f59e0b"
-                desc="Chạy mô hình mới song song với mô hình cũ, nhưng KHÔNG hiển thị kết quả. Chỉ ghi log. Mục đích: đo độ ổn định infrastructure (latency, throughput), không phải chất lượng. Chạy vài ngày."
-                visual="Mô hình mới: 42ms trung bình, p99 = 180ms ✓ Stable"
+                desc="Chạy model mới song song với model cũ nhưng KHÔNG hiển thị kết quả ra ngoài. Chỉ ghi log. Mục đích là đo độ ổn định của hạ tầng (latency, throughput), không phải chất lượng. Chạy vài ngày."
+                visual="Model mới: 42ms trung bình, p99 = 180ms ✓ Stable"
               />,
               <ABStage
                 key="a3"
                 stage="3"
                 title="A/B test 1% người dùng"
                 color="#22c55e"
-                desc="Chọn ngẫu nhiên 1% user (hàng triệu người — đủ lớn để có ý nghĩa thống kê). Một nửa nhìn mô hình cũ (control), nửa kia nhìn mô hình mới (treatment). Đo watch time, satisfaction survey, churn rate."
-                visual="Treatment: watch time +1.8% (p = 0.003 → có ý nghĩa)"
+                desc="Chọn ngẫu nhiên 1% user (hàng triệu người, đủ lớn để có ý nghĩa thống kê). Một nửa nhìn model cũ (control), nửa kia nhìn model mới (treatment). Đo watch time, satisfaction survey, churn rate."
+                visual="Treatment: watch time +1.8% (p = 0.003, có ý nghĩa)"
               />,
               <ABStage
                 key="a4"
                 stage="4"
-                title="Mở rộng dần: 10% → 50%"
+                title="Mở rộng dần: 10% rồi 50%"
                 color="#8b5cf6"
-                desc="Nếu A/B test 1% thành công, tăng lên 10%, rồi 50%. Vẫn monitor các chỉ số phụ: có nhóm user nào bị ảnh hưởng tiêu cực không? Creator nào bị thiệt? Giữ quyền rollback ngay lập tức."
+                desc="Nếu A/B test 1% thành công, tăng lên 10%, rồi 50%. Vẫn theo dõi các chỉ số phụ: có nhóm user nào bị ảnh hưởng tiêu cực không, creator nào bị thiệt. Giữ quyền rollback ngay lập tức."
                 visual="10%: +1.6% WT | 50%: +1.7% WT (ổn định, không cần rollback)"
               />,
               <ABStage
@@ -259,18 +260,18 @@ export default function TrainValTestInYoutube() {
                 stage="5"
                 title="Triển khai toàn cầu 100%"
                 color="#ef4444"
-                desc="Chuyển toàn bộ user sang mô hình mới. Bật monitoring dài hạn (30+ ngày) — xu hướng có thể thay đổi sau khi người dùng quen với hệ thống mới. Giữ mô hình cũ 'stand-by' phòng trường hợp cần rollback."
+                desc="Chuyển toàn bộ user sang model mới. Bật monitoring dài hạn (từ 30 ngày trở lên). Xu hướng có thể thay đổi sau khi người dùng quen với hệ thống mới. Giữ model cũ ở chế độ stand-by phòng trường hợp cần rollback."
                 visual="Production: 100% user. Monitor 30 ngày tiếp theo."
               />,
             ]}
           </StepReveal>
         </div>
 
-        {/* DEEPEN — offline vs online metric divergence */}
+        {/* DEEPEN. offline vs online metric divergence */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <AlertTriangle size={16} className="text-amber-500" />
-            Offline metric vs trải nghiệm thật — không luôn đi cùng chiều
+            Offline metric và trải nghiệm thật không luôn đi cùng chiều
           </h3>
           <OfflineOnlineDivergence />
         </div>
@@ -278,36 +279,36 @@ export default function TrainValTestInYoutube() {
         {/* CHALLENGE */}
         <div className="not-prose mt-6">
           <InlineChallenge
-            question="Bạn phát triển một mô hình gợi ý video. Offline val accuracy tăng từ 82% → 85%. Bạn có nên triển khai ngay?"
+            question="Bạn phát triển một model gợi ý video. Độ chính xác trên val tăng từ 82% lên 85%. Có nên triển khai ngay không?"
             options={[
-              "Có — offline val đã cho tín hiệu rõ ràng",
-              "Không — cần A/B test trên người dùng thật. Offline metric có thể đánh lừa; mô hình tối ưu click có thể giảm watch time thật.",
-              "Chỉ cần xem test accuracy là đủ",
-              "Dùng luôn cho 100% user rồi đo sau",
+              "Có. Offline val đã cho tín hiệu rõ ràng.",
+              "Không. Cần A/B test trên người dùng thật. Offline metric có thể đánh lừa; model tối ưu cho click có thể giảm watch time thực.",
+              "Chỉ cần xem độ chính xác trên test là đủ.",
+              "Dùng luôn cho 100% user rồi đo sau.",
             ]}
             correct={1}
-            explanation="Bài học YouTube: offline metric và trải nghiệm thật không luôn đi cùng chiều. Mô hình tối ưu click-bait có thể 'đẹp' trên val nhưng giảm watch time thực. A/B test trên một phần nhỏ người dùng là cách duy nhất phát hiện điều này trước khi ảnh hưởng đến 2 tỷ người. Dùng rollout theo giai đoạn: 1% → 10% → 50% → 100%."
+            explanation="Bài học YouTube: offline metric và trải nghiệm thật không luôn đi cùng chiều. Model tối ưu click-bait có thể đẹp trên val nhưng giảm watch time thực. A/B test trên một phần nhỏ người dùng là cách duy nhất phát hiện điều này trước khi ảnh hưởng đến 2 tỷ người. Dùng rollout theo giai đoạn: 1%, 10%, 50%, rồi 100%."
           />
         </div>
 
         <div className="not-prose mt-6">
           <InlineChallenge
-            question="Bạn có 3 năm dữ liệu hành vi user (2022-2024). Chia thế nào cho đúng?"
+            question="Bạn có 3 năm dữ liệu hành vi user (2022 đến 2024). Chia thế nào cho đúng?"
             options={[
-              "Shuffle tất cả rồi 70/15/15 ngẫu nhiên",
-              "Chia theo thời gian: 2022 = train, 2023 = val, 2024 = test. Không shuffle.",
-              "Chia theo user: 70% user → train, 15% → val, 15% → test",
-              "Kết hợp: chia theo thời gian + theo user (train = user cũ × năm cũ, test = user mới × năm mới)",
+              "Shuffle tất cả rồi 70/15/15 ngẫu nhiên.",
+              "Chia theo thời gian: 2022 là train, 2023 là val, 2024 là test. Không shuffle.",
+              "Chia theo user: 70% user vào train, 15% vào val, 15% vào test.",
+              "Kết hợp cả hai: chia theo thời gian và theo user (train là user cũ × năm cũ, test là user mới × năm mới).",
             ]}
             correct={3}
-            explanation="Đáp án tốt nhất cho YouTube-style: kết hợp cả hai. Chia theo thời gian để mô phỏng đúng production (tương lai là bí ẩn). Đồng thời chia theo user để đánh giá được khả năng tổng quát hoá tới user mới. Chỉ một trong hai chưa đủ: chia theo user không xử lý được drift thời gian; chia theo thời gian không đánh giá được user mới. YouTube paper 2016 mô tả đúng kiến trúc này."
+            explanation="Đáp án tốt nhất theo phong cách YouTube là kết hợp cả hai. Chia theo thời gian để mô phỏng đúng production, vì tương lai là bí ẩn. Đồng thời chia theo user để đánh giá khả năng tổng quát hoá tới user mới. Chỉ một trong hai chưa đủ. Chia theo user không xử lý được drift thời gian. Chia theo thời gian không đánh giá được user mới. Paper YouTube 2016 mô tả đúng kiến trúc này."
           />
         </div>
 
-        {/* DEEPEN — Two-stage architecture */}
+        {/* DEEPEN. Two-stage architecture */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">
-            Kiến trúc 2 giai đoạn của YouTube &mdash; mỗi giai đoạn chia tập riêng
+            Kiến trúc 2 giai đoạn của YouTube. Mỗi giai đoạn chia tập riêng.
           </h3>
           <TwoStageArchitecture />
         </div>
@@ -330,7 +331,7 @@ export default function TrainValTestInYoutube() {
           sourceRef={1}
         />
         <Metric
-          value="Hàng chục nghìn A/B test mỗi năm — không mô hình nào triển khai mà không qua A/B"
+          value="Hàng chục nghìn A/B test mỗi năm. Không model nào được triển khai mà chưa qua A/B."
           sourceRef={2}
         />
       </ApplicationMetrics>
@@ -340,37 +341,35 @@ export default function TrainValTestInYoutube() {
         topicSlug="train-val-test-in-youtube"
       >
         <p>
-          Không chia tập theo thời gian, YouTube sẽ &ldquo;nhìn thấy tương
-          lai&rdquo; trong lúc huấn luyện &mdash; mô hình trông có vẻ chính
-          xác trên val/test nhưng thảm hại khi gặp xu hướng mới mà nó chưa
-          từng thấy. Không có A/B test, YouTube sẽ triển khai mô hình chỉ
-          dựa trên offline metric &mdash; và nhiều thay đổi &ldquo;tốt trên
-          giấy&rdquo; sẽ làm giảm trải nghiệm thực: click-bait được ưa chuộng,
-          sáng tạo viên có chất lượng bị thiệt.
+          Không chia tập theo thời gian, YouTube sẽ nhìn thấy tương lai
+          trong lúc huấn luyện. Model trông có vẻ chính xác trên val và
+          test nhưng thảm hại khi gặp xu hướng mới mà nó chưa từng thấy.
+          Không có A/B test, YouTube sẽ triển khai model chỉ dựa trên
+          offline metric. Nhiều thay đổi tốt trên giấy sẽ làm giảm trải
+          nghiệm thực: click-bait được ưu tiên, creator chất lượng bị thiệt.
         </p>
         <p>
           Quy trình 3 bước (train trên quá khứ, val trên tập tách riêng đúng
-          cách, A/B test trên người dùng thật) đảm bảo mỗi thay đổi thuật
+          cách, A/B test trên người dùng thật) bảo đảm mỗi thay đổi thuật
           toán phải vượt qua cả đánh giá lý thuyết lẫn thử thách thực tế
           trước khi chạm đến 2 tỷ người dùng. <strong>Đây là áp dụng đúng của
-          nguyên tắc test set: chỉ mở khi mọi quyết định đã chốt</strong>
-          &mdash; ở đây, &ldquo;mở&rdquo; nghĩa là A/B test thật.
+          nguyên tắc test set: chỉ mở khi mọi quyết định đã chốt</strong>.
+          Ở đây, mở nghĩa là A/B test thật.
         </p>
 
         <div className="not-prose mt-5">
           <CollapsibleDetail title="Ngoài YouTube: bài học cho mọi hệ thống recommendation">
             <p className="text-sm leading-relaxed">
-              Nguyên tắc &ldquo;chia theo thời gian&rdquo; áp dụng cho mọi hệ
-              thống dự đoán tương lai: Spotify chọn nhạc, Netflix gợi ý phim,
-              Shopee xếp hạng sản phẩm, Tiktok cá nhân hoá feed. Chia ngẫu
-              nhiên sẽ cho phép mô hình &ldquo;biết trước&rdquo; xu hướng
-              tương lai, tạo ra offline metric đẹp nhưng không có giá trị
-              production.
+              Nguyên tắc chia theo thời gian áp dụng cho mọi hệ thống dự
+              đoán tương lai: Spotify chọn nhạc, Netflix gợi ý phim, Shopee
+              xếp hạng sản phẩm, Tiktok cá nhân hoá feed. Chia ngẫu nhiên sẽ
+              cho phép model biết trước xu hướng tương lai, tạo ra offline
+              metric đẹp nhưng không có giá trị production.
             </p>
             <p className="text-sm leading-relaxed mt-2">
-              Đồng thời, <strong>không có A/B test = không biết mô hình có
-              thực sự tốt hơn</strong>. Mọi offline metric chỉ là ước lượng;
-              phản hồi từ người dùng thật là sự thật cuối cùng.
+              Đồng thời, <strong>không có A/B test thì không biết model có
+              thực sự tốt hơn hay không</strong>. Mọi offline metric chỉ là
+              ước lượng. Phản hồi từ người dùng thật mới là sự thật cuối cùng.
             </p>
           </CollapsibleDetail>
         </div>
@@ -383,11 +382,11 @@ export default function TrainValTestInYoutube() {
             </li>
             <li>
               <strong>Chia theo user</strong>: không để dữ liệu của cùng một
-              user ở cả train và val/test (data leakage).
+              user ở cả train và val hay test (data leakage).
             </li>
             <li>
-              <strong>A/B test là &ldquo;test set thật&rdquo;</strong>:
-              offline metric chỉ là sàng lọc, không phải quyết định cuối cùng.
+              <strong>A/B test là test set thật</strong>: offline metric chỉ
+              là sàng lọc, không phải quyết định cuối cùng.
             </li>
           </ol>
         </Callout>
@@ -399,10 +398,9 @@ export default function TrainValTestInYoutube() {
           </h4>
           <ol className="list-decimal list-inside space-y-2 text-sm text-foreground/85 leading-relaxed">
             <li>
-              <strong>Bước 1:</strong> Xác định &ldquo;mũi tên thời gian&rdquo;
-              trong dữ liệu của bạn. Nếu có &mdash; dù là đơn hàng theo ngày,
-              click theo giờ, lượt like theo tuần &mdash; <em>chia theo thời
-              gian là bắt buộc</em>.
+              <strong>Bước 1:</strong> Xác định mũi tên thời gian trong dữ
+              liệu của bạn. Nếu có (đơn hàng theo ngày, click theo giờ, lượt
+              like theo tuần) thì <em>chia theo thời gian là bắt buộc</em>.
             </li>
             <li>
               <strong>Bước 2:</strong> Xác định nhóm tự nhiên (user, khách hàng,
@@ -411,14 +409,14 @@ export default function TrainValTestInYoutube() {
             </li>
             <li>
               <strong>Bước 3:</strong> Thiết lập một quy trình A/B test đơn
-              giản. Ở startup nhỏ, A/B test có thể là &ldquo;tuần 1 dùng model
-              A, tuần 2 dùng model B&rdquo; &mdash; vẫn tốt hơn offline metric
-              một mình.
+              giản. Ở startup nhỏ, A/B test có thể là dạng tuần 1 dùng model
+              A, tuần 2 dùng model B. Vẫn tốt hơn dựa vào offline metric một
+              mình.
             </li>
             <li>
-              <strong>Bước 4:</strong> Luôn có mô hình baseline cũ sẵn sàng
-              &ldquo;rollback&rdquo;. Một A/B test có ý nghĩa khi bạn <em>có
-              thể dừng nó</em> nếu phát hiện ảnh hưởng tiêu cực.
+              <strong>Bước 4:</strong> Luôn có model baseline cũ sẵn sàng
+              rollback. Một A/B test có ý nghĩa khi bạn <em>có thể dừng
+              nó</em> nếu phát hiện ảnh hưởng tiêu cực.
             </li>
           </ol>
           <p className="text-xs text-muted italic leading-relaxed">
@@ -428,7 +426,7 @@ export default function TrainValTestInYoutube() {
           </p>
         </div>
 
-        <Callout variant="warning" title="Cảnh báo — những gì A/B test KHÔNG phát hiện được">
+        <Callout variant="warning" title="Những gì A/B test KHÔNG phát hiện được">
           <ul className="list-disc list-inside space-y-1 text-sm mt-1">
             <li>
               <strong>Tác động dài hạn</strong>: A/B test 2 tuần không thấy
@@ -436,13 +434,13 @@ export default function TrainValTestInYoutube() {
             </li>
             <li>
               <strong>Ảnh hưởng đến creator</strong>: model mới có thể ưu tiên
-              video ngắn, bỏ qua creator làm video dài có giá trị. Cần
-              monitor riêng.
+              video ngắn, bỏ qua creator làm video dài có giá trị. Cần theo
+              dõi riêng.
             </li>
             <li>
               <strong>Tác động xã hội</strong>: tối ưu engagement có thể dẫn
-              tới nội dung cực đoan &mdash; chỉ số engagement đẹp nhưng hậu
-              quả xã hội xấu.
+              tới nội dung cực đoan. Chỉ số engagement đẹp nhưng hậu quả xã
+              hội xấu.
             </li>
           </ul>
         </Callout>
@@ -452,7 +450,7 @@ export default function TrainValTestInYoutube() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  LOCAL HELPERS — visual components
+ *  LOCAL HELPERS. visual components
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 function RandomVsTimeHook() {
@@ -464,22 +462,21 @@ function RandomVsTimeHook() {
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="rounded-xl border-2 border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/10 p-4 space-y-2">
-          <p className="text-sm font-semibold text-red-500 flex items-center gap-1">
-            <XCircle size={14} /> Chia ngẫu nhiên
+          <p className="text-sm font-semibold text-foreground flex items-center gap-1">
+            <XCircle size={14} className="text-red-500" /> Chia ngẫu nhiên
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Train có dữ liệu từ 2024, test có dữ liệu từ 2021. Mô hình
-            &ldquo;biết trước&rdquo; xu hướng &mdash; offline metric cực đẹp,
-            thực tế bị tụt thảm.
+            Train có dữ liệu từ 2024, test có dữ liệu từ 2021. Model biết
+            trước xu hướng. Offline metric cực đẹp, thực tế bị tụt thảm.
           </p>
         </div>
         <div className="rounded-xl border-2 border-green-200 dark:border-green-800 bg-green-50/40 dark:bg-green-900/10 p-4 space-y-2">
-          <p className="text-sm font-semibold text-green-600 flex items-center gap-1">
-            <CheckCircle2 size={14} /> Chia theo thời gian
+          <p className="text-sm font-semibold text-foreground flex items-center gap-1">
+            <CheckCircle2 size={14} className="text-green-600" /> Chia theo thời gian
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Train: 2020-2022 (cũ). Val: 2023 (trung). Test: 2024 (mới). Mô
-            phỏng đúng việc dự đoán tương lai từ quá khứ.
+            Train là 2020 đến 2022 (cũ), val là 2023 (trung), test là 2024
+            (mới). Mô phỏng đúng việc đoán tương lai từ quá khứ.
           </p>
         </div>
       </div>
@@ -555,8 +552,8 @@ function TimelineVisualization() {
       </svg>
 
       <p className="text-xs text-muted leading-relaxed italic">
-        Ba tập dữ liệu offline + một tập &ldquo;test thật&rdquo; là A/B trên
-        người dùng hiện tại. Chỉ mô hình vượt qua cả bốn mới được triển khai.
+        Ba tập dữ liệu offline cộng một tập test thật là A/B trên người dùng
+        hiện tại. Chỉ model vượt qua cả bốn mới được triển khai.
       </p>
     </div>
   );
@@ -606,12 +603,12 @@ function SplitVisual({ mode }: { mode: "random" | "time" }) {
         {isLeaky ? (
           <>
             <XCircle size={14} className="text-red-500" />
-            <h5 className="text-sm font-bold text-red-500">Random split — leakage</h5>
+            <h5 className="text-sm font-bold text-red-500">Random split: có leakage</h5>
           </>
         ) : (
           <>
             <CheckCircle2 size={14} className="text-green-600" />
-            <h5 className="text-sm font-bold text-green-600">Time-based split — sạch</h5>
+            <h5 className="text-sm font-bold text-green-600">Time-based split: sạch</h5>
           </>
         )}
       </div>
@@ -642,9 +639,10 @@ function SplitVisual({ mode }: { mode: "random" | "time" }) {
               Vấn đề:
             </p>
             <p className="text-xs text-foreground/85 leading-relaxed">
-              T3 (tháng 3) nằm trong test, nhưng T5, T9 (tháng 5, 9 &mdash; tương
-              lai so với T3) lại ở train. Mô hình &ldquo;biết trước&rdquo; xu
-              hướng tương lai khi đoán T3. Kết quả offline đẹp, production thảm.
+              T3 (tháng 3) nằm trong test, nhưng T5 và T9 (tháng 5, 9, vốn
+              là tương lai so với T3) lại ở train. Model biết trước xu
+              hướng tương lai khi đoán T3. Kết quả offline đẹp, production
+              thảm.
             </p>
           </div>
         ) : (
@@ -654,9 +652,9 @@ function SplitVisual({ mode }: { mode: "random" | "time" }) {
               Ưu điểm:
             </p>
             <p className="text-xs text-foreground/85 leading-relaxed">
-              Train = T1-T8 (cũ), Val = T9-T10, Test = T11-T12 (mới nhất). Mô
-              phỏng đúng production: dự đoán tương lai từ quá khứ. Không có
-              leakage.
+              Train là T1 đến T8 (cũ), val là T9 và T10, test là T11 và T12
+              (mới nhất). Mô phỏng đúng production: đoán tương lai từ quá
+              khứ. Không có leakage.
             </p>
           </div>
         )}
@@ -699,15 +697,15 @@ function ABStage({ stage, title, color, desc, visual }: ABStageProps) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   TwoStageArchitecture — visualize YouTube's candidate + ranking pipeline
+   TwoStageArchitecture. visualize YouTube's candidate + ranking pipeline
    ───────────────────────────────────────────────────────────────────────── */
 function TwoStageArchitecture() {
   return (
     <div className="rounded-xl border border-border bg-card p-5 space-y-4">
       <p className="text-sm text-muted leading-relaxed">
-        YouTube không có <em>một</em> mô hình gợi ý. Họ có <strong>hai</strong>
-        &mdash; mỗi cái có dữ liệu train/val/test riêng, được đánh giá theo
-        metric riêng.
+        YouTube không có <em>một</em> model gợi ý. Họ có{" "}
+        <strong>hai model</strong>, mỗi cái có dữ liệu train, val, test
+        riêng, được đánh giá theo metric riêng.
       </p>
 
       <svg
@@ -815,16 +813,16 @@ function TwoStageArchitecture() {
 
       <p className="text-xs text-muted italic leading-relaxed">
         Mỗi giai đoạn có data split và metric riêng. Candidate cần recall cao
-        (không bỏ sót video hay); ranking cần thứ tự đúng. A/B test đánh giá
-        cả hai cộng lại trên người dùng thật. Đây là mô hình điển hình cho các
-        hệ thống recommendation lớn (Netflix, Spotify, Tiktok).
+        (không bỏ sót video hay), ranking cần thứ tự đúng. A/B test đánh giá
+        cả hai cộng lại trên người dùng thật. Đây là kiến trúc điển hình cho
+        các hệ thống recommendation lớn (Netflix, Spotify, Tiktok).
       </p>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   OfflineOnlineDivergence — three scenarios showing metric divergence
+   OfflineOnlineDivergence. three scenarios showing metric divergence
    ───────────────────────────────────────────────────────────────────────── */
 function OfflineOnlineDivergence() {
   const scenarios = [
@@ -836,7 +834,7 @@ function OfflineOnlineDivergence() {
       onlineValue: "-4%",
       onlineTone: "bad" as const,
       lesson:
-        "Mô hình tối ưu CTR → chọn thumbnail gây tò mò nhưng nội dung không hợp → user bỏ xem sớm.",
+        "Model tối ưu CTR sẽ chọn thumbnail gây tò mò nhưng nội dung không hợp. User bỏ xem sớm.",
     },
     {
       title: "Highly-relevant model",
@@ -846,25 +844,25 @@ function OfflineOnlineDivergence() {
       onlineValue: "+6%",
       onlineTone: "good" as const,
       lesson:
-        "Offline metric tăng nhẹ, nhưng user thích hơn rõ rệt — trải nghiệm thật mới nói lên tất cả.",
+        "Offline metric tăng nhẹ, nhưng user thích hơn rõ rệt. Trải nghiệm thật mới nói lên tất cả.",
     },
     {
       title: "Diversity-boosting model",
-      offlineMetric: "Accuracy",
+      offlineMetric: "Độ chính xác",
       offlineValue: "-1%",
       onlineMetric: "Satisfaction survey",
       onlineValue: "+8%",
       onlineTone: "good" as const,
       lesson:
-        "Accuracy giảm (model gợi ý đa dạng hơn, không phải 'an toàn nhất'), nhưng user hài lòng hơn dài hạn.",
+        "Độ chính xác giảm (model gợi ý đa dạng hơn, không phải an toàn nhất), nhưng user hài lòng hơn về dài hạn.",
     },
   ];
 
   return (
     <div className="rounded-xl border border-border bg-card p-5 space-y-4">
       <p className="text-sm text-muted leading-relaxed">
-        Ba tình huống thật từ nghiên cứu YouTube &mdash; mỗi tình huống cho
-        thấy vì sao A/B test là không thể thiếu.
+        Ba tình huống thật từ nghiên cứu YouTube. Mỗi tình huống cho thấy
+        vì sao A/B test là không thể thiếu.
       </p>
 
       <div className="space-y-3">
@@ -910,8 +908,8 @@ function OfflineOnlineDivergence() {
 
       <p className="text-xs text-muted italic leading-relaxed">
         Kết luận: mọi chỉ số offline chỉ là proxy. Quyết định cuối cùng luôn
-        thuộc về A/B test trên người dùng thật &mdash; đây chính là
-        &ldquo;đề thi thật&rdquo; của một hệ thống recommendation.
+        thuộc về A/B test trên người dùng thật. Đây chính là đề thi thật
+        của một hệ thống recommendation.
       </p>
     </div>
   );

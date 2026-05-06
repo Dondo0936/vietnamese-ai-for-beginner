@@ -1,7 +1,7 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  OVERFITTING & UNDERFITTING IN COMPAS — Ứng dụng thực tế
+ *  OVERFITTING & UNDERFITTING IN COMPAS. Ứng dụng thực tế
  *  ─────────────────────────────────────────────────────────────────────────
  *  Rewrite for the student path. Visualisation-first, no code, no LaTeX.
  *  Core story: a 137-feature model overfit historical bias and performed
@@ -41,9 +41,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "overfitting-underfitting-in-compas",
   title: "Overfitting & Underfitting in COMPAS",
-  titleVi: "Overfit trong COMPAS — 137 đặc trưng thua 2 biến",
+  titleVi: "COMPAS overfit: 137 đặc trưng thua 2 biến",
   description:
-    "COMPAS dùng 137 đặc trưng để chấm điểm rủi ro tái phạm nhưng chỉ đạt 65% chính xác — mô hình 2 biến đạt 67%, bóc trần hiện tượng overfit lên thiên kiến lịch sử",
+    "COMPAS dùng 137 đặc trưng để chấm điểm rủi ro tái phạm nhưng chỉ đạt 65% độ chính xác. Một model 2 biến lại đạt 67%, lộ ra hiện tượng overfit lên thiên kiến lịch sử.",
   category: "classic-ml",
   tags: ["fairness", "criminal-justice", "bias", "application"],
   difficulty: "intermediate",
@@ -74,7 +74,7 @@ export const metadata: TopicMeta = {
     },
     {
       title: "How We Analyzed the COMPAS Recidivism Algorithm",
-      publisher: "ProPublica — Methodology",
+      publisher: "ProPublica, Methodology",
       url: "https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm",
       date: "2016-05",
       kind: "documentation",
@@ -90,7 +90,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  TOY DATASET — 24 bị cáo giả định với 2 features (tuổi, số tiền án) và
+ *  TOY DATASET. 24 bị cáo giả định với 2 features (tuổi, số tiền án) và
  *  một nhãn "race" (A/B) để minh hoạ overfit thiên kiến.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -103,7 +103,7 @@ interface Defendant {
 }
 
 const DEFENDANTS: Defendant[] = [
-  // Nhóm A — dữ liệu lịch sử có thiên kiến nhẹ
+  // Nhóm A. Dữ liệu lịch sử có thiên kiến nhẹ
   { id: 1, age: 22, priors: 3, race: "A", recidivated: 1 },
   { id: 2, age: 35, priors: 1, race: "A", recidivated: 0 },
   { id: 3, age: 28, priors: 0, race: "A", recidivated: 0 },
@@ -116,7 +116,7 @@ const DEFENDANTS: Defendant[] = [
   { id: 10, age: 45, priors: 0, race: "A", recidivated: 0 },
   { id: 11, age: 26, priors: 2, race: "A", recidivated: 0 },
   { id: 12, age: 33, priors: 1, race: "A", recidivated: 0 },
-  // Nhóm B — cùng hồ sơ tội phạm nhưng bị ghi nhận "tái phạm" nhiều hơn
+  // Nhóm B. Cùng hồ sơ tội phạm nhưng bị ghi nhận "tái phạm" nhiều hơn
   // trong dữ liệu lịch sử (do tuần tra dày hơn, không phải do hành vi).
   { id: 13, age: 20, priors: 3, race: "B", recidivated: 1 },
   { id: 14, age: 36, priors: 1, race: "B", recidivated: 1 },
@@ -146,7 +146,7 @@ function simpleRiskScore(d: Defendant): number {
 }
 
 function overfitRiskScore(d: Defendant): number {
-  // "Overfit" — dùng thêm race làm proxy, khuếch đại thiên kiến lịch sử.
+  // "Overfit": dùng thêm race làm proxy, khuếch đại thiên kiến lịch sử.
   const base = simpleRiskScore(d);
   const bias = d.race === "B" ? 0.25 : -0.05;
   return Math.max(0, Math.min(1, base + bias));
@@ -157,7 +157,7 @@ function predictHighRisk(score: number) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  METRICS — tỉ lệ dương tính giả (FP) theo nhóm
+ *  METRICS. Tỉ lệ dương tính giả (FP) theo nhóm
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 interface FairnessStats {
@@ -207,43 +207,43 @@ export default function OverfittingUnderfittingInCompas() {
       >
         <p>
           Tại Mỹ, hơn 1 triệu người đã từng được công cụ COMPAS (Correctional
-          Offender Management Profiling for Alternative Sanctions &mdash; hệ
-          thống chấm điểm rủi ro tái phạm) đánh giá. Phần mềm này thu thập 137
-          đặc trưng rồi trả về một con số: rủi ro cao hay thấp. Thẩm phán dùng
-          con số này để quyết định tạm giam hay tại ngoại.
+          Offender Management Profiling for Alternative Sanctions, hệ thống
+          chấm điểm rủi ro tái phạm) đánh giá. Phần mềm này thu thập 137 đặc
+          trưng rồi trả về một con số: rủi ro cao hay thấp. Thẩm phán dùng
+          con số đó để quyết định tạm giam hay tại ngoại.
         </p>
         <p>
-          Năm 2016, ProPublica phát hiện: COMPAS đánh giá sai một cách có hệ
-          thống &mdash; người da đen bị gán nhãn &ldquo;rủi ro cao&rdquo; nhầm
-          gần gấp đôi so với người da trắng. Hai năm sau, Dressel &amp; Farid
-          (Dartmouth) chứng minh: <strong>mô hình chỉ dùng 2 biến</strong> (tuổi
-          + số tiền án) đạt chính xác <strong>67%</strong>, cao hơn cả COMPAS
-          137 biến (<strong>65%</strong>). Đây là ví dụ giáo khoa về overfit
-          trong thế giới thật.
+          Năm 2016, ProPublica phát hiện COMPAS đánh giá sai một cách có hệ
+          thống. Người da đen bị gán nhãn &ldquo;rủi ro cao&rdquo; nhầm gần
+          gấp đôi so với người da trắng. Hai năm sau, Dressel &amp; Farid
+          (Dartmouth) chứng minh: <strong>model chỉ dùng 2 biến</strong> (tuổi
+          và số tiền án) đạt độ chính xác <strong>67%</strong>, cao hơn cả
+          COMPAS 137 biến (<strong>65%</strong>). Đây là ví dụ giáo khoa về
+          overfit trong thế giới thật.
         </p>
 
         {/* HOOK: So sánh trực quan số biến vs độ chính xác */}
         <div className="not-prose mt-5 rounded-2xl border border-border bg-card p-5">
           <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <TrendingDown size={16} className="text-red-500" />
-            Cái bẫy: thêm đặc trưng &ne; thêm chính xác
+            Cái bẫy: thêm đặc trưng không có nghĩa là thêm độ chính xác
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <MiniModelCard
-              label="Mô hình 2 biến"
-              sub="Chỉ tuổi + số tiền án"
+              label="Model 2 biến"
+              sub="Chỉ tuổi và số tiền án"
               accuracy="67%"
               tone="good"
             />
             <MiniModelCard
-              label="COMPAS — 137 biến"
+              label="COMPAS, 137 biến"
               sub="Tuổi, tiền án, bảng hỏi tâm lý, mối quan hệ..."
               accuracy="65%"
               tone="bad"
             />
           </div>
           <p className="text-xs text-muted mt-3 leading-relaxed italic">
-            135 đặc trưng bổ sung KHÔNG giúp — chúng khiến mô hình học thuộc
+            135 đặc trưng bổ sung KHÔNG giúp. Chúng khiến model học thuộc
             lòng thiên kiến trong dữ liệu lịch sử.
           </p>
         </div>
@@ -251,20 +251,20 @@ export default function OverfittingUnderfittingInCompas() {
 
       <ApplicationProblem topicSlug="overfitting-underfitting-in-compas">
         <p>
-          Dữ liệu tư pháp Mỹ vốn chứa thiên kiến lịch sử: cảnh sát tuần tra dày
+          Dữ liệu tư pháp Mỹ vốn chứa thiên kiến lịch sử. Cảnh sát tuần tra dày
           hơn ở khu vực người thiểu số, nên các nhóm này bị ghi nhận &ldquo;tái
           phạm&rdquo; với tỷ lệ cao hơn <em>trên giấy tờ</em>, dù hành vi thực
-          không nhất thiết khác. Khi mô hình &ldquo;học&rdquo; dữ liệu này với
-          137 đặc trưng, nó không học &ldquo;ai thực sự có nguy cơ tái
-          phạm&rdquo; &mdash; nó học <strong>các khuôn mẫu nhân khẩu học</strong>
-          tương quan với lịch sử giam giữ.
+          tế không nhất thiết khác. Khi model &ldquo;học&rdquo; dữ liệu này
+          với 137 đặc trưng, nó không học &ldquo;ai thực sự có nguy cơ tái
+          phạm&rdquo;. Thay vào đó, nó học <strong>các khuôn mẫu nhân khẩu
+          học</strong> tương quan với lịch sử giam giữ.
         </p>
         <p>
-          Đây chính là overfit trong hình hài nguy hiểm nhất: mô hình có{" "}
-          <em>train loss</em> thấp trên dữ liệu cũ, nhưng khi triển khai cho hai
-          người có cùng hồ sơ tội phạm (cùng tuổi, cùng số tiền án) nhưng khác
-          chủng tộc, nó cho ra hai điểm rủi ro hoàn toàn khác nhau. Hậu quả:
-          công lý không đồng đều giữa các công dân.
+          Đây chính là overfit trong hình hài nguy hiểm nhất. Model có{" "}
+          <em>train loss</em> thấp trên dữ liệu cũ, nhưng khi triển khai cho
+          hai người có cùng hồ sơ tội phạm (cùng tuổi, cùng số tiền án) nhưng
+          khác chủng tộc, nó cho ra hai điểm rủi ro hoàn toàn khác nhau. Hậu
+          quả là công lý không đồng đều giữa các công dân.
         </p>
 
         {/* Visual: nhóm tuần tra & dữ liệu ghi nhận */}
@@ -281,19 +281,19 @@ export default function OverfittingUnderfittingInCompas() {
           <p>
             <strong>COMPAS thu thập 137 đặc trưng.</strong> Hệ thống hỏi bị cáo
             hàng chục câu về hoàn cảnh sống, lịch sử gia đình, bạn bè, công
-            việc, kết hợp với hồ sơ tư pháp. Với hàng chục thông tin này, mô
-            hình có quá nhiều &ldquo;tự do&rdquo; để khớp từng đặc điểm nhỏ
-            nhất trong dữ liệu huấn luyện &mdash; y hệt mô hình đa thức bậc 20
-            bạn vừa gặp ở bài lý thuyết.
+            việc, kết hợp với hồ sơ tư pháp. Với hàng chục thông tin như vậy,
+            model có quá nhiều &ldquo;tự do&rdquo; để khớp từng đặc điểm nhỏ
+            nhất trong dữ liệu huấn luyện. Đây chính là kịch bản đa thức bậc
+            20 mà bạn vừa gặp ở bài lý thuyết.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
             <strong>Overfit lên thiên kiến lịch sử.</strong> ProPublica phân
-            tích 7.000 hồ sơ tại hạt Broward, Florida: tỷ lệ dương tính giả
-            (false positive &mdash; gán &ldquo;rủi ro cao&rdquo; cho người
-            không tái phạm) ở người da đen là <strong>44,9%</strong>, gần gấp
-            đôi so với <strong>23,5%</strong> ở người da trắng. Mô hình đang
+            tích 7.000 hồ sơ tại hạt Broward, Florida. Tỷ lệ dương tính giả
+            (false positive: gán &ldquo;rủi ro cao&rdquo; cho người không tái
+            phạm) ở người da đen là <strong>44,9%</strong>, gần gấp đôi so
+            với <strong>23,5%</strong> ở người da trắng. Model đang
             &ldquo;nhớ&rdquo; các mối tương quan xã hội thay vì học nguy cơ
             tái phạm thực sự.
           </p>
@@ -301,43 +301,44 @@ export default function OverfittingUnderfittingInCompas() {
         <Beat step={3}>
           <p>
             <strong>Dressel &amp; Farid (2018): 2 biến đạt 67%.</strong> Họ
-            thay thế 137 đặc trưng bằng <em>hai</em> biến duy nhất: tuổi và số
-            tiền án. Mô hình đơn giản hơn &mdash; nhưng chính xác cao hơn
-            COMPAS. Đây là bằng chứng giáo khoa: thêm đặc trưng không luôn
-            giúp, và nhiều khi chúng phá hoại vì mô hình bắt đầu học nhiễu.
+            thay 137 đặc trưng bằng <em>hai</em> biến duy nhất là tuổi và số
+            tiền án. Model đơn giản hơn nhưng độ chính xác lại cao hơn COMPAS.
+            Đây là bằng chứng giáo khoa cho thấy thêm đặc trưng không phải
+            lúc nào cũng giúp. Nhiều khi chúng phá hoại vì model bắt đầu học
+            nhiễu.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Con người cũng chỉ đạt 63–67%.</strong> Cùng nghiên cứu,
-            400 tình nguyện viên không chuyên dự đoán tái phạm dựa trên mô tả
-            ngắn &mdash; cũng đạt 63–67%. Điều này lộ ra giới hạn nội tại của
-            bài toán: dự đoán tái phạm cá nhân có trần tự nhiên ~67%. Mọi đặc
-            trưng thêm vào không phá được trần đó &mdash; chỉ làm mô hình phức
-            tạp hơn và overfit nhiều hơn.
+            <strong>Con người cũng chỉ đạt 63–67%.</strong> Cùng nghiên cứu
+            đó, 400 tình nguyện viên không chuyên dự đoán tái phạm dựa trên mô
+            tả ngắn. Họ cũng đạt 63–67%. Điều này lộ ra giới hạn nội tại của
+            bài toán: dự đoán tái phạm cá nhân có trần tự nhiên khoảng 67%.
+            Mọi đặc trưng thêm vào không phá được trần đó. Nó chỉ làm model
+            phức tạp hơn và overfit nhiều hơn.
           </p>
         </Beat>
 
-        {/* DEEPEN — ToggleCompare */}
+        {/* DEEPEN: ToggleCompare */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <ShieldAlert size={16} className="text-accent" />
-            Mô hình overfit vs mô hình cân bằng — hiệu ứng công bằng
+            Model overfit và model cân bằng cho ra công bằng khác nhau ra sao
           </h3>
           <FairnessCompare />
         </div>
 
-        {/* DEEPEN — StepReveal through the "why" */}
+        {/* DEEPEN: StepReveal through the "why" */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">
-            Vì sao mô hình 137 biến lại thua mô hình 2 biến?
+            Vì sao model 137 biến lại thua model 2 biến?
           </h3>
           <StepReveal
             labels={[
-              "1 — Nhiều biến, nhiều tự do",
-              "2 — Học nhiễu thay vì quy luật",
-              "3 — Khi mang ra thực tế",
-              "4 — Hậu quả cho công dân",
+              "1. Nhiều biến, nhiều tự do",
+              "2. Học nhiễu thay vì quy luật",
+              "3. Khi mang ra thực tế",
+              "4. Hậu quả cho công dân",
             ]}
           >
             {[
@@ -346,11 +347,11 @@ export default function OverfittingUnderfittingInCompas() {
                 className="rounded-lg border border-border bg-surface/60 p-4"
               >
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Thêm đặc trưng = thêm &ldquo;nút vặn&rdquo; cho mô hình. Với
-                  137 nút, mô hình có thể vặn vừa đúng từng đặc điểm nhỏ trong
-                  dữ liệu lịch sử — kể cả những đặc điểm ngẫu nhiên không liên
-                  quan đến tái phạm (ví dụ: mã vùng nhà ở, câu trả lời bảng
-                  hỏi tâm lý bất thường).
+                  Thêm đặc trưng tức là thêm &ldquo;nút vặn&rdquo; cho model.
+                  Với 137 nút, model có thể vặn vừa đúng từng đặc điểm nhỏ
+                  trong dữ liệu lịch sử, kể cả những đặc điểm ngẫu nhiên không
+                  liên quan đến tái phạm (ví dụ: mã vùng nhà ở, một câu trả
+                  lời bảng hỏi tâm lý bất thường).
                 </p>
               </div>,
               <div
@@ -358,12 +359,11 @@ export default function OverfittingUnderfittingInCompas() {
                 className="rounded-lg border border-border bg-surface/60 p-4"
               >
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Với dữ liệu đào tạo (lịch sử tư pháp Mỹ), các đặc điểm này
-                  <em> tình cờ </em>
-                  tương quan với nhãn &ldquo;tái phạm&rdquo; do lịch sử tuần
-                  tra và giam giữ không đồng đều. Mô hình &ldquo;học
-                  thuộc&rdquo; các tương quan giả này &mdash; giống học sinh
-                  thuộc đáp án đề cũ mà không hiểu quy luật.
+                  Với dữ liệu huấn luyện (lịch sử tư pháp Mỹ), các đặc điểm
+                  này <em>tình cờ</em> tương quan với nhãn &ldquo;tái
+                  phạm&rdquo; do lịch sử tuần tra và giam giữ không đồng đều.
+                  Model &ldquo;học thuộc&rdquo; các tương quan giả đó, giống
+                  như học sinh thuộc đáp án đề cũ mà không hiểu quy luật.
                 </p>
               </div>,
               <div
@@ -371,12 +371,12 @@ export default function OverfittingUnderfittingInCompas() {
                 className="rounded-lg border border-border bg-surface/60 p-4"
               >
                 <p className="text-sm text-foreground/85 leading-relaxed">
-                  Khi một bị cáo mới bước vào toà, mô hình áp dụng các tương
+                  Khi một bị cáo mới bước vào toà, model áp dụng các tương
                   quan đã học. Hai người có cùng tuổi, cùng số tiền án nhưng
-                  khác khu phố, khác trả lời bảng hỏi &mdash; nhận hai điểm
-                  rủi ro khác nhau. Phần khác biệt đó <em>không phải</em> rủi
-                  ro thực, mà là tiếng vọng của thiên kiến trong dữ liệu huấn
-                  luyện.
+                  khác khu phố, khác câu trả lời bảng hỏi sẽ nhận hai điểm
+                  rủi ro khác nhau. Phần khác biệt đó <em>không phải</em> là
+                  rủi ro thực, mà là tiếng vọng của thiên kiến trong dữ liệu
+                  huấn luyện.
                 </p>
               </div>,
               <div
@@ -385,20 +385,20 @@ export default function OverfittingUnderfittingInCompas() {
               >
                 <p className="text-sm text-foreground/85 leading-relaxed">
                   Tỷ lệ dương tính giả (gán &ldquo;rủi ro cao&rdquo; nhầm) ở
-                  người da đen gấp đôi người da trắng &rArr; nhiều người vô
-                  tội bị từ chối tại ngoại. Mô hình 2 biến sạch sẽ hơn: bỏ qua
-                  nhân khẩu học, chỉ dựa trên hai thứ có căn cứ rõ ràng.
+                  người da đen gấp đôi người da trắng. Hệ quả là nhiều người
+                  vô tội bị từ chối tại ngoại. Model 2 biến sạch sẽ hơn: bỏ
+                  qua nhân khẩu học, chỉ dựa trên hai thứ có căn cứ rõ ràng.
                 </p>
               </div>,
             ]}
           </StepReveal>
         </div>
 
-        {/* DEEPEN — Features vs accuracy curve (slider driven) */}
+        {/* DEEPEN: Features vs accuracy curve (slider driven) */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <TrendingDown size={16} className="text-accent" />
-            Số đặc trưng vs độ chính xác — đường cong chữ ∩
+            Số đặc trưng và độ chính xác đi theo đường cong chữ ∩
           </h3>
           <FeatureCountCurve />
         </div>
@@ -406,29 +406,29 @@ export default function OverfittingUnderfittingInCompas() {
         {/* CHALLENGE */}
         <div className="not-prose mt-6">
           <InlineChallenge
-            question="Một nhà phát triển AI nói: 'Tôi sẽ thêm 50 feature nữa vào mô hình dự đoán tín dụng để tăng độ chính xác.' Căn cứ bài học COMPAS, nhận định nào là ĐÚNG nhất?"
+            question="Một kỹ sư AI nói: 'Tôi sẽ thêm 50 feature nữa vào model dự đoán tín dụng để tăng độ chính xác.' Căn cứ bài học COMPAS, nhận định nào là ĐÚNG nhất?"
             options={[
-              "Đúng — càng nhiều feature càng chính xác",
-              "Sai — thêm feature có thể làm mô hình overfit lên thiên kiến trong dữ liệu lịch sử; phải so sánh với baseline đơn giản trước",
-              "Đúng, miễn là feature có giá trị p < 0.05",
-              "Không liên quan — COMPAS là ngành khác",
+              "Đúng. Càng nhiều feature thì càng chính xác.",
+              "Sai. Thêm feature có thể khiến model overfit lên thiên kiến trong dữ liệu lịch sử. Phải so sánh với baseline đơn giản trước.",
+              "Đúng, miễn là feature có giá trị p < 0.05.",
+              "Không liên quan. COMPAS là ngành khác.",
             ]}
             correct={1}
-            explanation="Bài học COMPAS: mô hình 2 biến thắng mô hình 137 biến. Luôn bắt đầu bằng baseline đơn giản, chỉ thêm feature khi chúng THỰC SỰ cải thiện test accuracy (không phải train). Và quan trọng hơn: kiểm tra fairness metrics (tỷ lệ dương tính giả theo nhóm), không chỉ accuracy tổng."
+            explanation="Bài học COMPAS: model 2 biến thắng model 137 biến. Luôn bắt đầu bằng một baseline đơn giản, chỉ thêm feature khi chúng THỰC SỰ cải thiện test accuracy (không phải train). Và quan trọng hơn nữa, hãy kiểm tra fairness metrics (tỷ lệ dương tính giả theo nhóm) chứ không chỉ độ chính xác tổng."
           />
         </div>
 
         <div className="not-prose mt-6">
           <InlineChallenge
-            question="Bạn là kỹ sư ML được giao dự đoán rủi ro tín dụng tại một ngân hàng Việt Nam. Ngân hàng có dữ liệu lịch sử 10 năm, nhưng bạn biết: trong quá khứ, một số chi nhánh từ chối đơn của người ngoại tỉnh nhiều hơn (thiên kiến địa phương). Bạn nên làm gì?"
+            question="Bạn là kỹ sư ML được giao dự đoán rủi ro tín dụng tại một ngân hàng Việt Nam. Ngân hàng có dữ liệu lịch sử 10 năm, nhưng bạn biết trong quá khứ một số chi nhánh từ chối đơn của người ngoại tỉnh nhiều hơn (thiên kiến địa phương). Bạn nên làm gì?"
             options={[
-              "Dùng tất cả dữ liệu 10 năm vì nhiều dữ liệu luôn tốt hơn",
-              "Loại bỏ biến 'quê quán' khỏi mô hình và kiểm tra fairness metrics theo từng vùng — tránh lặp lại bài học COMPAS",
-              "Không quan trọng vì mô hình sẽ tự học quy luật đúng",
-              "Dùng mô hình cực phức tạp để mô hình tự phân biệt đúng-sai",
+              "Dùng toàn bộ dữ liệu 10 năm vì nhiều dữ liệu luôn tốt hơn.",
+              "Loại bỏ biến 'quê quán' khỏi model và kiểm tra fairness metrics theo từng vùng để tránh lặp lại bài học COMPAS.",
+              "Không quan trọng vì model sẽ tự học quy luật đúng.",
+              "Dùng model cực phức tạp để model tự phân biệt đúng và sai.",
             ]}
             correct={1}
-            explanation="Đúng cách làm ở Việt Nam: (1) ý thức được dữ liệu lịch sử có thiên kiến địa phương, (2) loại hoặc ít nhất giám sát các biến proxy (quê quán, mã bưu điện, tên), (3) đo fairness metrics (accuracy, false positive rate, false negative rate) theo từng phân khúc người dùng. Mô hình phức tạp hơn không 'tự sửa' được thiên kiến — nó chỉ giỏi hơn trong việc nhớ lại."
+            explanation="Cách làm đúng ở Việt Nam: (1) ý thức được dữ liệu lịch sử có thiên kiến địa phương, (2) loại bỏ hoặc ít nhất giám sát các biến proxy (quê quán, mã bưu điện, tên), (3) đo fairness metrics (độ chính xác, false positive rate, false negative rate) theo từng phân khúc người dùng. Model phức tạp hơn không 'tự sửa' được thiên kiến. Nó chỉ giỏi hơn trong việc nhớ lại các tương quan giả."
           />
         </div>
       </ApplicationMechanism>
@@ -438,7 +438,7 @@ export default function OverfittingUnderfittingInCompas() {
         topicSlug="overfitting-underfitting-in-compas"
       >
         <Metric
-          value="COMPAS (137 đặc trưng): chính xác 65% — mô hình 2 biến: 67%"
+          value="COMPAS (137 đặc trưng) đạt 65% độ chính xác. Model 2 biến đạt 67%."
           sourceRef={2}
         />
         <Metric
@@ -450,7 +450,7 @@ export default function OverfittingUnderfittingInCompas() {
           sourceRef={3}
         />
         <Metric
-          value="Tình nguyện viên không chuyên đạt 63–67% — ngang COMPAS"
+          value="Tình nguyện viên không chuyên đạt 63–67%, ngang COMPAS"
           sourceRef={2}
         />
       </ApplicationMetrics>
@@ -460,39 +460,39 @@ export default function OverfittingUnderfittingInCompas() {
         topicSlug="overfitting-underfitting-in-compas"
       >
         <p>
-          Nếu không hiểu overfit, ta dễ tin &ldquo;mô hình càng nhiều biến càng
-          chính xác&rdquo;. COMPAS minh hoạ điều ngược lại: 137 đặc trưng không
-          cải thiện dự đoán mà còn <em>giấu</em> thiên kiến trong lớp vỏ phức
-          tạp, khiến việc kiểm tra và phản biện trở nên cực kỳ khó khăn.
+          Nếu không hiểu overfit, ta dễ tin rằng &ldquo;model càng nhiều biến
+          càng chính xác&rdquo;. COMPAS minh hoạ điều ngược lại. 137 đặc trưng
+          không cải thiện dự đoán mà còn <em>giấu</em> thiên kiến trong lớp vỏ
+          phức tạp, khiến việc kiểm tra và phản biện trở nên cực kỳ khó khăn.
         </p>
         <p>
-          Hiểu overfit giúp đặt câu hỏi đúng: <strong>trước khi thêm đặc
-          trưng</strong>, hãy hỏi &ldquo;Mô hình đơn giản nhất đạt bao nhiêu phần
-          trăm?&rdquo; Nếu mô hình 2 biến đã đạt 67% và mô hình 137 biến chỉ
-          đạt 65%, vấn đề không phải thiếu dữ liệu &mdash; mà là bài toán có
-          giới hạn nội tại, và thêm phức tạp chỉ thêm rủi ro thiên kiến.
+          Hiểu overfit giúp ta đặt câu hỏi đúng. <strong>Trước khi thêm đặc
+          trưng</strong>, hãy hỏi &ldquo;Model đơn giản nhất đạt bao nhiêu
+          phần trăm?&rdquo;. Nếu model 2 biến đã đạt 67% mà model 137 biến chỉ
+          đạt 65%, vấn đề không phải thiếu dữ liệu. Bài toán có giới hạn nội
+          tại, và thêm phức tạp chỉ thêm rủi ro thiên kiến.
         </p>
 
-        {/* CONNECT — collapsible theory reminder */}
+        {/* CONNECT: collapsible theory reminder */}
         <div className="not-prose mt-5">
           <CollapsibleDetail title="Nối lại với bài lý thuyết">
             <p className="text-sm leading-relaxed">
               Trong bài &ldquo;Overfit vs Underfit&rdquo;, bạn đã thấy đa thức
-              bậc 20 khớp 12 điểm train hoàn hảo nhưng sai bét trên test. COMPAS
-              là ví dụ cùng bản chất, nhưng hậu quả không phải điểm test tệ
-              &mdash; mà là <strong>công lý không đồng đều</strong> cho hàng
-              triệu công dân.
+              bậc 20 khớp 12 điểm train hoàn hảo nhưng sai bét trên test.
+              COMPAS là ví dụ cùng bản chất, nhưng hậu quả không phải là điểm
+              test tệ. Hậu quả là <strong>công lý không đồng đều</strong> cho
+              hàng triệu công dân.
             </p>
             <p className="text-sm leading-relaxed mt-2">
-              Bài học chung cho mọi dự án ML: <em>luôn có mô hình baseline đơn
-              giản</em>, <em>đo khoảng cách train-test</em>,{" "}
-              <em>kiểm tra fairness</em> theo các nhóm bảo vệ &mdash; không
-              chỉ accuracy tổng.
+              Bài học chung cho mọi dự án ML: <em>luôn có một model baseline
+              đơn giản</em>, <em>đo khoảng cách train và test</em>,{" "}
+              <em>kiểm tra fairness</em> theo các nhóm cần được bảo vệ, chứ
+              không chỉ độ chính xác tổng.
             </p>
           </CollapsibleDetail>
         </div>
 
-        <Callout variant="insight" title="Ba câu hỏi nên hỏi trước khi thêm feature">
+        <Callout variant="insight" title="Ba câu hỏi nên đặt trước khi thêm feature">
           <ol className="list-decimal list-inside space-y-1 text-sm mt-1">
             <li>
               Baseline đơn giản đạt bao nhiêu? Feature mới cải thiện bao nhiêu
@@ -503,8 +503,8 @@ export default function OverfittingUnderfittingInCompas() {
               tính, thu nhập)?
             </li>
             <li>
-              Tỷ lệ dương tính giả / âm tính giả có đồng đều giữa các nhóm dân
-              số không?
+              Tỷ lệ dương tính giả và âm tính giả có đồng đều giữa các nhóm
+              dân số không?
             </li>
           </ol>
         </Callout>
@@ -514,7 +514,7 @@ export default function OverfittingUnderfittingInCompas() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  LOCAL HELPERS — visual mini-components
+ *  LOCAL HELPERS: visual mini-components
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 interface MiniModelCardProps {
@@ -557,7 +557,7 @@ function TiltedDataDiagram() {
         <g>
           <rect x={20} y={30} width={220} height={120} rx={12} fill="#3b82f6" opacity={0.08} stroke="#3b82f6" strokeOpacity={0.35} />
           <text x={130} y={50} fontSize={12} fill="#3b82f6" fontWeight={700} textAnchor="middle">
-            Khu phố A — tuần tra thưa
+            Khu phố A, tuần tra thưa
           </text>
           <text x={130} y={68} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
             Cùng số tội → ít bị ghi nhận hơn
@@ -589,7 +589,7 @@ function TiltedDataDiagram() {
         <g>
           <rect x={280} y={30} width={220} height={120} rx={12} fill="#f97316" opacity={0.08} stroke="#f97316" strokeOpacity={0.35} />
           <text x={390} y={50} fontSize={12} fill="#f97316" fontWeight={700} textAnchor="middle">
-            Khu phố B — tuần tra dày
+            Khu phố B, tuần tra dày
           </text>
           <text x={390} y={68} fontSize={11} fill="currentColor" className="text-muted" textAnchor="middle">
             Cùng số tội → bị ghi nhận nhiều hơn
@@ -617,9 +617,9 @@ function TiltedDataDiagram() {
         </g>
       </svg>
       <p className="text-xs text-muted leading-relaxed">
-        Nếu hành vi thực tế hai nhóm như nhau, nhưng dữ liệu đã nghiêng &mdash;
-        mô hình sẽ &ldquo;học&rdquo; sự nghiêng đó thành quy luật. Mô hình càng
-        phức tạp, càng ghi nhớ chính xác độ nghiêng &mdash; và càng xuất ra
+        Nếu hành vi thực tế hai nhóm như nhau nhưng dữ liệu đã nghiêng, model
+        sẽ &ldquo;học&rdquo; sự nghiêng đó thành quy luật. Model càng phức
+        tạp, càng ghi nhớ chính xác độ nghiêng. Hệ quả là nó càng xuất ra
         điểm rủi ro cao cho nhóm B một cách hệ thống.
       </p>
     </div>
@@ -633,25 +633,25 @@ function FairnessCompare() {
 
   return (
     <ToggleCompare
-      labelA="Mô hình 2 biến (công bằng)"
-      labelB="Mô hình 137 biến (overfit)"
-      description="Cùng 24 bị cáo giả định — đổi mô hình để thấy hậu quả công bằng."
+      labelA="Model 2 biến (công bằng)"
+      labelB="Model 137 biến (overfit)"
+      description="Cùng 24 bị cáo giả định. Đổi model để thấy hậu quả công bằng."
       childA={
         <FairnessPanel
           onSelect={() => setModel("simple")}
           stats={model === "simple" ? stats : computeStats(simpleRiskScore)}
-          title="Mô hình 2 biến"
+          title="Model 2 biến"
           tone="good"
-          caption="Chỉ dùng tuổi + số tiền án. Tỷ lệ dương tính giả (FP) gần nhau giữa hai nhóm."
+          caption="Chỉ dùng tuổi và số tiền án. Tỷ lệ dương tính giả (FP) gần nhau giữa hai nhóm."
         />
       }
       childB={
         <FairnessPanel
           onSelect={() => setModel("overfit")}
           stats={model === "overfit" ? stats : computeStats(overfitRiskScore)}
-          title="Mô hình 137 biến overfit"
+          title="Model 137 biến overfit"
           tone="bad"
-          caption="Thêm biến proxy cho nhân khẩu học → tỷ lệ FP nhóm B tăng vọt."
+          caption="Thêm biến proxy cho nhân khẩu học khiến tỷ lệ FP nhóm B tăng vọt."
         />
       }
     />
@@ -700,11 +700,11 @@ function FairnessPanel({ stats, title, tone, caption }: FairnessPanelProps) {
           <strong className="text-foreground">Khoảng cách FP:</strong>{" "}
           {Math.abs(stats.fpRateB - stats.fpRateA) * 100 < 10 ? (
             <span className="text-green-600 font-semibold">
-              {((stats.fpRateB - stats.fpRateA) * 100).toFixed(0)}% &mdash; gần như đều
+              {((stats.fpRateB - stats.fpRateA) * 100).toFixed(0)}%, gần như đều
             </span>
           ) : (
             <span className="text-red-600 font-semibold">
-              +{((stats.fpRateB - stats.fpRateA) * 100).toFixed(0)}% ở nhóm B &mdash; bất công!
+              +{((stats.fpRateB - stats.fpRateA) * 100).toFixed(0)}% ở nhóm B, bất công!
             </span>
           )}
         </p>
@@ -745,7 +745,7 @@ function FPBar({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   FeatureCountCurve — interactive slider: số feature vs train/test acc
+   FeatureCountCurve: interactive slider for số feature vs train/test acc
    ───────────────────────────────────────────────────────────────────────── */
 function FeatureCountCurve() {
   const [nFeatures, setNFeatures] = useState(2);
@@ -858,9 +858,9 @@ function FeatureCountCurve() {
           Trần ~67%
         </text>
 
-        {/* Train curve — keeps rising */}
+        {/* Train curve: keeps rising */}
         <path d={curvePoints.train} fill="none" stroke="#f59e0b" strokeWidth={2.2} />
-        {/* Test curve — arcs then drops */}
+        {/* Test curve: arcs then drops */}
         <path d={curvePoints.test} fill="none" stroke="#22c55e" strokeWidth={2.2} strokeDasharray="4,3" />
 
         {/* Cursor */}
@@ -895,10 +895,11 @@ function FeatureCountCurve() {
       </div>
 
       <p className="text-xs text-muted italic leading-relaxed">
-        Kéo slider từ 2 đến 137 feature. Đường train (cam) luôn tăng &mdash; thêm
-        feature luôn giúp khớp train. Đường test (xanh, đứt nét) tăng tới mốc
-        3&ndash;5 feature rồi <strong>đi ngang hoặc giảm</strong>. Đây là chữ ∩
-        kinh điển của overfit: thêm phức tạp chỉ giúp tới một điểm.
+        Kéo slider từ 2 đến 137 feature. Đường train (cam) luôn tăng vì thêm
+        feature luôn giúp khớp dữ liệu train. Đường test (xanh, đứt nét) tăng
+        tới mốc 3&ndash;5 feature rồi <strong>đi ngang hoặc giảm</strong>.
+        Đây là chữ ∩ kinh điển của overfit: thêm phức tạp chỉ giúp tới một
+        điểm.
       </p>
     </div>
   );

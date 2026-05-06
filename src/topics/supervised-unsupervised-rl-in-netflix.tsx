@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
   title: "Supervised, Unsupervised & RL in Netflix",
   titleVi: "Ba kiểu học trong Netflix",
   description:
-    "Netflix dùng cả ba kiểu học máy cùng lúc: có giám sát đoán điểm phim, không giám sát chia 2.000+ nhóm sở thích, tăng cường chọn ảnh bìa. Mỗi hàng phim trên trang chủ có một thuật toán đằng sau.",
+    "Netflix chạy cả ba kiểu học máy cùng lúc. Có giám sát đoán điểm phim, không giám sát chia hơn 2.000 nhóm sở thích, tăng cường chọn ảnh bìa. Mỗi hàng phim trên trang chủ có một thuật toán riêng đứng sau.",
   category: "classic-ml",
   tags: [
     "supervised-learning",
@@ -104,7 +104,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   DỮ LIỆU MÔ PHỎNG — 4 hàng phim trên trang chủ Netflix
+   DỮ LIỆU MÔ PHỎNG: 4 hàng phim trên trang chủ Netflix
    ═══════════════════════════════════════════════════════════════════ */
 
 type LearningKind = "supervised" | "unsupervised" | "rl";
@@ -136,11 +136,11 @@ const RAILS: Rail[] = [
     subtitle: "Popularity + một chút cá nhân",
     kind: "supervised",
     explainer:
-      "Netflix huấn luyện một mô hình có giám sát: dữ liệu là 'người xem đã chấm bao nhiêu sao cho phim nào'. Mô hình đoán điểm bạn sẽ chấm cho từng phim, rồi sắp theo điểm cao nhất. Đây là phiên bản cốt lõi từ thời giải thưởng Netflix Prize 1 triệu USD năm 2009.",
+      "Netflix huấn luyện một model có giám sát. Dữ liệu là 'người xem đã chấm bao nhiêu sao cho phim nào'. Model đoán điểm bạn sẽ chấm cho từng phim, rồi sắp theo điểm cao nhất. Đây là phiên bản cốt lõi từ thời giải thưởng Netflix Prize 1 triệu USD năm 2009.",
     mini: {
       title: "Đoán điểm đánh giá",
       detail:
-        "Với mỗi cặp (bạn, phim), mô hình xuất ra một số — ví dụ 4.2/5. Top 10 là 10 phim có điểm đoán cao nhất trong bộ sưu tập phim đang thịnh.",
+        "Với mỗi cặp (bạn, phim), model xuất ra một số. Ví dụ 4.2/5. Top 10 là 10 phim có điểm đoán cao nhất trong bộ sưu tập phim đang thịnh.",
     },
     tiles: [
       { id: "t1", title: "Phim trinh thám", emoji: "🕵️", gradient: ["#ef4444", "#b91c1c"] },
@@ -153,14 +153,14 @@ const RAILS: Rail[] = [
   {
     id: "for-you",
     name: "Gợi ý cho bạn",
-    subtitle: "Taste community — bạn thuộc nhóm nào?",
+    subtitle: "Taste community: bạn thuộc nhóm nào?",
     kind: "unsupervised",
     explainer:
-      "Netflix gom 247 triệu người dùng thành hơn 2.000 'cộng đồng sở thích' bằng thuật toán không giám sát. Không ai dán nhãn 'bạn là người mê phim trinh thám Bắc Âu'. Máy tự thấy nhóm người có hành vi xem giống nhau rồi gộp lại. Hàng này gợi ý phim thịnh trong nhóm của bạn.",
+      "Netflix gom 247 triệu người dùng thành hơn 2.000 'cộng đồng sở thích' bằng thuật toán không giám sát. Không ai dán nhãn 'bạn là người mê phim trinh thám Bắc Âu'. Máy tự thấy nhóm người có hành vi xem giống nhau rồi gộp lại. Hàng này gợi ý phim đang thịnh trong nhóm của bạn.",
     mini: {
       title: "Phân cụm người xem",
       detail:
-        "Người có lịch sử xem tương tự bạn cũng vừa xem phim X — nên X xuất hiện ở hàng này. Không cần ai dạy trước có bao nhiêu nhóm.",
+        "Người có lịch sử xem tương tự bạn cũng vừa xem phim X. Vì vậy X xuất hiện ở hàng này. Không cần ai dạy trước có bao nhiêu nhóm.",
     },
     tiles: [
       { id: "u1", title: "Điều tra hình sự", emoji: "🔎", gradient: ["#64748b", "#1e293b"] },
@@ -176,11 +176,11 @@ const RAILS: Rail[] = [
     subtitle: "Phim cùng nhóm sở thích ẩn",
     kind: "unsupervised",
     explainer:
-      "Cũng là học không giám sát, nhưng ở tầng phim: Netflix biểu diễn mỗi phim bằng một 'vector đặc điểm ẩn' (latent features) — những đặc điểm máy tự nghĩ ra dựa trên cách người ta xem, chứ không phải do con người gán nhãn. Phim gần Money Heist trong không gian ấy sẽ được xếp vào hàng này.",
+      "Cũng là học không giám sát, nhưng lần này ở tầng phim. Netflix biểu diễn mỗi phim bằng một vector đặc điểm ẩn (latent features). Đó là những đặc điểm máy tự nghĩ ra dựa trên cách người ta xem, chứ không phải do con người gán nhãn. Phim nằm gần Money Heist trong không gian ấy sẽ được xếp vào hàng này.",
     mini: {
       title: "Phim tương tự",
       detail:
-        "Máy không hỏi 'phim này có căng thẳng không' — nó tự suy ra từ hàng trăm triệu lượt xem chung. Two phim có người xem trùng nhau nhiều = gần nhau trong không gian ẩn.",
+        "Máy không hỏi 'phim này có căng thẳng không'. Nó tự suy ra từ hàng trăm triệu lượt xem chung. Hai phim có người xem trùng nhau nhiều thì nằm gần nhau trong không gian ẩn.",
     },
     tiles: [
       { id: "b1", title: "Breaking Bad", emoji: "⚗️", gradient: ["#84cc16", "#3f6212"] },
@@ -196,11 +196,11 @@ const RAILS: Rail[] = [
     subtitle: "Chọn ảnh bìa để kéo bạn nhấn",
     kind: "rl",
     explainer:
-      "Đây là nơi học tăng cường toả sáng. Cùng một bộ phim, Netflix có 10+ ảnh bìa khác nhau. Với mỗi người, hệ thống chọn một ảnh, đo xem bạn có nhấn vào không, rồi cập nhật xác suất chọn ảnh đó trong tương lai. Đây là mô hình 'multi-armed bandit' — thử và khai thác (exploration vs exploitation).",
+      "Đây là nơi học tăng cường toả sáng. Cùng một bộ phim, Netflix có hơn 10 ảnh bìa khác nhau. Với mỗi người, hệ thống chọn một ảnh, đo xem bạn có nhấn vào không, rồi cập nhật xác suất chọn ảnh đó trong tương lai. Cách làm này gọi là multi-armed bandit. Hệ vừa khám phá (exploration) ảnh mới, vừa khai thác (exploitation) ảnh đã biết hiệu quả.",
     mini: {
       title: "Bandit chọn ảnh",
       detail:
-        "Nhấn = phần thưởng +1. Lướt qua = phần thưởng 0. Sau hàng triệu hiển thị, ảnh nào có tỉ lệ nhấn cao sẽ được ưu tiên — nhưng hệ thống vẫn thi thoảng thử ảnh mới để không bỏ lỡ ảnh tốt hơn.",
+        "Nhấn cho phần thưởng +1. Lướt qua cho phần thưởng 0. Sau hàng triệu lần hiển thị, ảnh nào có tỉ lệ nhấn cao sẽ được ưu tiên. Tuy nhiên hệ thống vẫn thi thoảng thử ảnh mới để không bỏ lỡ ảnh tốt hơn.",
     },
     tiles: [
       { id: "r1", title: "Hành động căng thẳng", emoji: "🔥", gradient: ["#ef4444", "#7f1d1d"] },
@@ -217,27 +217,27 @@ const netflixQuizQuestions: QuizQuestion[] = [
     question:
       "Netflix hiển thị hàng 'Top 10 Việt Nam hôm nay'. Đây chủ yếu là sản phẩm của kiểu học nào?",
     options: [
-      "Học có giám sát — đoán điểm từng phim cho từng người rồi xếp hạng",
-      "Học không giám sát — phân cụm phim",
-      "Học tăng cường — bandit chọn ảnh bìa",
+      "Học có giám sát: đoán điểm từng phim cho từng người rồi xếp hạng",
+      "Học không giám sát: phân cụm phim",
+      "Học tăng cường: bandit chọn ảnh bìa",
       "Không phải học máy, chỉ là bảng xếp hạng thủ công",
     ],
     correct: 0,
     explanation:
-      "Top 10 phối hợp popularity với điểm dự đoán riêng cho từng người. Điểm dự đoán đến từ mô hình có giám sát đã học trên hàng triệu cặp (người, phim, sao).",
+      "Top 10 phối hợp popularity với điểm dự đoán riêng cho từng người. Điểm dự đoán đến từ model có giám sát đã học trên hàng triệu cặp (người, phim, sao).",
   },
   {
     question:
       "Netflix phân 247 triệu người thành hơn 2.000 cộng đồng sở thích mà không ai đặt tên trước. Kỹ thuật nào đứng sau?",
     options: [
-      "Học có giám sát — ai đó đã gán nhãn 'mê phim trinh thám' cho từng người",
-      "Học không giám sát (phân cụm) — máy tự thấy nhóm từ hành vi xem",
+      "Học có giám sát: ai đó đã gán nhãn 'mê phim trinh thám' cho từng người",
+      "Học không giám sát (phân cụm): máy tự thấy nhóm từ hành vi xem",
       "Học tăng cường với reward là 'thuộc cụm'",
       "Không phải học máy, con người chia tay",
     ],
     correct: 1,
     explanation:
-      "Không ai dán nhãn trước cho từng người. Máy nhìn hành vi xem và tự nhóm những người có pattern tương tự. Đây là phân cụm — học không giám sát kinh điển.",
+      "Không ai dán nhãn trước cho từng người. Máy nhìn hành vi xem và tự nhóm những người có pattern tương tự. Đây là phân cụm, một dạng học không giám sát kinh điển.",
   },
   {
     question:
@@ -245,12 +245,12 @@ const netflixQuizQuestions: QuizQuestion[] = [
     options: [
       "Học có giám sát",
       "Học không giám sát",
-      "Học tăng cường (multi-armed bandit) — chọn ảnh, đo tỉ lệ nhấn, cập nhật xác suất",
+      "Học tăng cường (multi-armed bandit): chọn ảnh, đo tỉ lệ nhấn, cập nhật xác suất",
       "Chọn ảnh ngẫu nhiên hoàn toàn",
     ],
     correct: 2,
     explanation:
-      "Bandit là mô hình học tăng cường đơn giản: hệ thống chọn một 'cánh tay' (ảnh), nhận phản hồi (nhấn hay không), và cập nhật xác suất chọn lần sau. Thăng bằng giữa khai thác (ảnh đã biết hiệu quả) và khám phá (thử ảnh mới).",
+      "Bandit là mô hình học tăng cường đơn giản. Hệ thống chọn một 'cánh tay' (ảnh), nhận phản hồi (nhấn hay không), rồi cập nhật xác suất chọn lần sau. Thăng bằng giữa khai thác (ảnh đã biết hiệu quả) và khám phá (thử ảnh mới).",
   },
   {
     type: "fill-blank",
@@ -262,20 +262,20 @@ const netflixQuizQuestions: QuizQuestion[] = [
       { answer: "chọn ảnh bìa", accept: ["chọn ảnh", "tối ưu ảnh bìa", "banner"] },
     ],
     explanation:
-      "Ba vai trò khác nhau, phối hợp trong cùng một sản phẩm. Có giám sát dùng để xếp hạng phim; không giám sát để hiểu người dùng thuộc nhóm nào; tăng cường để tối ưu hiển thị ảnh.",
+      "Ba vai trò khác nhau, phối hợp trong cùng một sản phẩm. Có giám sát dùng để xếp hạng phim. Không giám sát dùng để hiểu người dùng thuộc nhóm nào. Tăng cường dùng để tối ưu hiển thị ảnh.",
   },
   {
     question:
       "Giả sử Netflix chỉ dùng học có giám sát và bỏ hai kiểu còn lại. Hệ thống sẽ yếu ở chỗ nào nhất?",
     options: [
       "Không còn đoán được điểm phim",
-      "Không biết bạn thuộc nhóm nào, nên 'Gợi ý cho bạn' thành gợi ý trung bình cho tất cả; và ảnh bìa hiển thị cứng, không tự cải tiến theo phản hồi",
+      "Không biết bạn thuộc nhóm nào, nên 'Gợi ý cho bạn' thành gợi ý trung bình cho tất cả. Đồng thời ảnh bìa hiển thị cứng, không tự cải tiến theo phản hồi",
       "Không còn thu thập được dữ liệu",
       "Vẫn tốt, không khác gì hiện tại",
     ],
     correct: 1,
     explanation:
-      "Chính vì mỗi kiểu học giỏi một việc, Netflix phải kết hợp. Bỏ không giám sát → không hiểu cấu trúc người dùng. Bỏ tăng cường → không tối ưu được ảnh bìa theo thời gian thực.",
+      "Mỗi kiểu học giỏi một việc khác nhau, vì vậy Netflix phải kết hợp. Bỏ không giám sát thì không hiểu cấu trúc người dùng. Bỏ tăng cường thì không tối ưu được ảnh bìa theo thời gian thực.",
   },
 ];
 
@@ -307,7 +307,7 @@ const KIND_META: Record<
 };
 
 /* ═══════════════════════════════════════════════════════════════════
-   TILE — một ô phim mô phỏng
+   TILE: một ô phim mô phỏng
    ═══════════════════════════════════════════════════════════════════ */
 
 function MovieTileBox({ tile }: { tile: MovieTile }) {
@@ -331,7 +331,7 @@ function MovieTileBox({ tile }: { tile: MovieTile }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   MÀN HÌNH NETFLIX GIẢ — 4 hàng có thể bấm để xem giải thích
+   MÀN HÌNH NETFLIX GIẢ: 4 hàng có thể bấm để xem giải thích
    ═══════════════════════════════════════════════════════════════════ */
 
 function NetflixHomepageMock() {
@@ -345,7 +345,7 @@ function NetflixHomepageMock() {
     <div className="space-y-5">
       <p className="text-sm text-muted leading-relaxed">
         Đây là phiên bản rút gọn của trang chủ Netflix. Mỗi hàng là một thuật toán khác nhau. Bấm
-        vào một hàng để xem kiểu học máy đứng sau nó.
+        vào một hàng để xem kiểu học máy nào đứng sau nó.
       </p>
 
       {/* Trang chủ giả */}
@@ -399,7 +399,7 @@ function NetflixHomepageMock() {
         })}
       </div>
 
-      {/* Khối giải thích — hiện khi chọn */}
+      {/* Khối giải thích: hiện khi chọn */}
       <AnimatePresence mode="wait">
         {active && (
           <motion.div
@@ -418,7 +418,7 @@ function NetflixHomepageMock() {
                 );
               })()}
               <h4 className="text-base font-semibold text-foreground">
-                Đằng sau &ldquo;{active.name}&rdquo; là{" "}
+                Đằng sau hàng &ldquo;{active.name}&rdquo; là{" "}
                 <span style={{ color: KIND_META[active.kind].color }}>
                   {KIND_META[active.kind].label}
                 </span>
@@ -511,9 +511,9 @@ function SupervisedMiniViz() {
       </div>
 
       <div className="rounded-md bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-2 text-center">
-        <span className="inline-flex items-center gap-1 text-xs text-emerald-800 dark:text-emerald-300">
-          <Check size={12} aria-hidden="true" />
-          Sai số chỉ {Math.abs(active.trueStars - active.predictedStars).toFixed(2)} sao — đủ tốt
+        <span className="inline-flex items-center gap-1 text-xs text-foreground">
+          <Check size={12} aria-hidden="true" className="text-emerald-600 dark:text-emerald-400" />
+          Sai số chỉ {Math.abs(active.trueStars - active.predictedStars).toFixed(2)} sao. Đủ tốt
           để xếp phim.
         </span>
       </div>
@@ -522,7 +522,7 @@ function SupervisedMiniViz() {
 }
 
 function UnsupervisedMiniViz() {
-  // Sáu &ldquo;người xem&rdquo; với ba cụm màu
+  // Chín &ldquo;người xem&rdquo; với ba cụm màu
   const viewers = [
     { x: 25, y: 70, cluster: 0 },
     { x: 45, y: 85, cluster: 0 },
@@ -540,7 +540,7 @@ function UnsupervisedMiniViz() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted">
-        Mỗi chấm = một người xem. Netflix tự thấy 3 nhóm hành vi, không ai đặt tên trước.
+        Mỗi chấm là một người xem. Netflix tự thấy 3 nhóm hành vi, không ai đặt tên trước.
       </p>
       <svg viewBox="0 0 360 130" className="w-full rounded-md bg-surface/40">
         {viewers.map((v, i) => (
@@ -587,7 +587,7 @@ function UnsupervisedMiniViz() {
         ))}
       </svg>
       <p className="text-xs text-muted">
-        Bạn rơi vào một trong ba cụm đó. Hàng &ldquo;Gợi ý cho bạn&rdquo; lấy phim thịnh trong cụm.
+        Bạn rơi vào một trong ba cụm đó. Hàng &ldquo;Gợi ý cho bạn&rdquo; lấy phim đang thịnh trong cụm.
       </p>
     </div>
   );
@@ -626,7 +626,7 @@ function RLMiniViz() {
     <div className="space-y-3">
       <p className="text-xs text-muted">
         Ba ảnh bìa cho cùng một bộ phim. Bấm &ldquo;Nhấn&rdquo; hoặc &ldquo;Lướt qua&rdquo; vài lần
-        cho mỗi ảnh, xem bandit học ra tỉ lệ ưa thích nào.
+        cho mỗi ảnh, rồi xem bandit học ra tỉ lệ ưa thích nào.
       </p>
       <div className="grid grid-cols-3 gap-2">
         {banners.map((b) => (
@@ -670,7 +670,7 @@ function RLMiniViz() {
         ))}
       </div>
       <p className="text-xs text-muted leading-relaxed">
-        Bandit chọn ảnh có tỉ lệ nhấn cao nhất để hiển thị nhiều hơn — nhưng vẫn thi thoảng thử
+        Bandit chọn ảnh có tỉ lệ nhấn cao nhất để hiển thị nhiều hơn. Tuy nhiên hệ vẫn thi thoảng thử
         ảnh yếu hơn, phòng khi tỉ lệ đổi. Đó là thăng bằng giữa khai thác và khám phá.
       </p>
     </div>
@@ -693,22 +693,22 @@ export default function SupervisedUnsupervisedRlInNetflix() {
       >
         <p>
           Bạn mở Netflix buổi tối, lướt dọc trang chủ và liên tục nghĩ &ldquo;phim này hợp gu
-          mình&rdquo;. Đó không phải tình cờ &mdash; mỗi hàng phim bạn thấy đều đến từ một thuật
+          mình&rdquo;. Đó không phải tình cờ. Mỗi hàng phim bạn thấy đều đến từ một thuật
           toán khác nhau.
         </p>
         <p>
-          Netflix kết hợp cả ba kiểu học máy cùng lúc: có giám sát đoán điểm phim bạn sẽ chấm,
-          không giám sát chia 247 triệu người dùng thành hơn 2.000 cộng đồng sở thích, và tăng
-          cường chọn ảnh bìa nào khiến bạn nhấn vào. Ba công cụ, một trang chủ &mdash; hàng tỉ đô
-          la doanh thu năm.
+          Netflix kết hợp cả ba kiểu học máy cùng lúc. Có giám sát đoán điểm phim bạn sẽ chấm.
+          Không giám sát chia 247 triệu người dùng thành hơn 2.000 cộng đồng sở thích. Học tăng
+          cường chọn ảnh bìa nào khiến bạn nhấn vào. Ba công cụ, một trang chủ, hàng tỉ đô
+          la doanh thu mỗi năm.
         </p>
       </ApplicationHero>
 
       <ApplicationProblem topicSlug="supervised-unsupervised-rl-in-netflix">
         <p>
           Thư viện Netflix có hàng nghìn phim và series. Với 247 triệu thuê bao, không một biên
-          tập viên nào có thể chọn phim cho từng người. Nếu trang chủ hiển thị sai &mdash; hàng
-          phim nhàm chán, ảnh bìa không hấp dẫn &mdash; người dùng rời đi và huỷ thuê bao.
+          tập viên nào có thể chọn phim cho từng người. Nếu trang chủ hiển thị sai (hàng phim
+          nhàm chán, ảnh bìa không hấp dẫn), người dùng rời đi và huỷ thuê bao.
         </p>
         <p>
           Vấn đề cốt lõi: với mỗi người trong số hàng trăm triệu thuê bao, Netflix phải{" "}
@@ -725,53 +725,53 @@ export default function SupervisedUnsupervisedRlInNetflix() {
         <Beat step={1}>
           <p>
             <strong>Thu thập mọi dấu vết hành vi.</strong> Lượt xem, thời lượng, tua lại, dừng,
-            thiết bị, thời gian trong ngày &mdash; Netflix ghi lại tất cả. Đây là &ldquo;nguyên
+            thiết bị, thời gian trong ngày, Netflix ghi lại tất cả. Đây là &ldquo;nguyên
             liệu&rdquo; cho cả ba kiểu học máy.
           </p>
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>Học có giám sát &mdash; đoán điểm đánh giá.</strong> Với cặp (người dùng, phim)
-            đã có điểm, Netflix huấn luyện mô hình đoán điểm cho phim bạn chưa xem. Đây là trái
+            <strong>Học có giám sát: đoán điểm đánh giá.</strong> Với cặp (người dùng, phim)
+            đã có điểm, Netflix huấn luyện model đoán điểm cho phim bạn chưa xem. Đây là trái
             tim của hệ thống từ thời giải thưởng Netflix Prize (1 triệu đô-la Mỹ, 2009). Sau này
-            kỹ thuật tiến hoá sang &ldquo;matrix factorization&rdquo; và deep learning, nhưng ý
+            kỹ thuật tiến hoá sang matrix factorization và deep learning, nhưng ý
             tưởng vẫn là <em>học từ nhãn có sẵn</em>.
           </p>
         </Beat>
         <Beat step={3}>
           <p>
-            <strong>Học không giám sát &mdash; phân nhóm sở thích.</strong> Netflix chia 247 triệu
-            người thành hơn 2.000 &ldquo;cộng đồng sở thích&rdquo; (taste communities) bằng thuật
-            toán phân cụm. Không ai đặt tên &ldquo;cộng đồng mê phim Bắc Âu lạnh&rdquo; trước &mdash;
-            máy tự thấy nhóm và gộp lại. Hàng &ldquo;Gợi ý cho bạn&rdquo; dùng chính cấu trúc ẩn
+            <strong>Học không giám sát: phân nhóm sở thích.</strong> Netflix chia 247 triệu
+            người thành hơn 2.000 cộng đồng sở thích (taste communities) bằng thuật
+            toán phân cụm. Không ai đặt tên &ldquo;cộng đồng mê phim Bắc Âu lạnh&rdquo; trước.
+            Máy tự thấy nhóm và gộp lại. Hàng &ldquo;Gợi ý cho bạn&rdquo; dùng chính cấu trúc ẩn
             này.
           </p>
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Học tăng cường &mdash; chọn ảnh bìa tối ưu.</strong> Mỗi phim có 10+ ảnh bìa.
-            Netflix dùng mô hình bandit: với mỗi người, chọn một ảnh, đo tỉ lệ nhấn, cập nhật xác
-            suất chọn lần sau. Thăng bằng giữa <em>khai thác</em> (ảnh đã biết hiệu quả) và{" "}
-            <em>khám phá</em> (ảnh mới có thể còn tốt hơn).
+            <strong>Học tăng cường: chọn ảnh bìa tối ưu.</strong> Mỗi phim có hơn 10 ảnh bìa.
+            Netflix dùng mô hình bandit. Với mỗi người, hệ chọn một ảnh, đo tỉ lệ nhấn, rồi cập
+            nhật xác suất chọn lần sau. Thăng bằng giữa <em>khai thác</em> (ảnh đã biết hiệu
+            quả) và <em>khám phá</em> (ảnh mới có thể còn tốt hơn).
           </p>
         </Beat>
         <Beat step={5}>
           <p>
             <strong>A/B testing liên tục.</strong> Hàng trăm thử nghiệm chạy song song. Kết quả
-            phản hồi ngược vào cả ba loại mô hình. Mỗi click, mỗi giây xem đều cải thiện hệ thống
+            phản hồi ngược vào cả ba loại model. Mỗi click, mỗi giây xem đều cải thiện hệ thống
             cho lần tới.
           </p>
         </Beat>
       </ApplicationMechanism>
 
-      {/* ═══════════════ TRY IT — Trang chủ Netflix mô phỏng + SplitView + Challenge ═══════════════ */}
+      {/* ═══════════════ TRY IT: Trang chủ Netflix mô phỏng + SplitView + Challenge ═══════════════ */}
       <ApplicationTryIt topicSlug="supervised-unsupervised-rl-in-netflix">
         <div className="space-y-8">
           {/* Phần 1: Trang chủ mô phỏng */}
           <section className="space-y-3">
             <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Film size={18} className="text-accent" />
-              Trang chủ Netflix &mdash; bấm từng hàng để hiện thuật toán phía sau
+              Bấm từng hàng để xem thuật toán phía sau trang chủ Netflix
             </h3>
             <NetflixHomepageMock />
           </section>
@@ -784,7 +784,7 @@ export default function SupervisedUnsupervisedRlInNetflix() {
             </h3>
             <p className="text-sm text-muted leading-relaxed">
               Giả sử bạn vừa xem hết <em>Money Heist</em>. Cùng một sự kiện đó, ba hệ thống bên
-              trong Netflix rút ra ba kết luận rất khác nhau:
+              trong Netflix rút ra ba kết luận rất khác nhau.
             </p>
 
             <SplitView
@@ -801,7 +801,7 @@ export default function SupervisedUnsupervisedRlInNetflix() {
                     Heist. Cập nhật bảng điểm trong bộ nhớ.&rdquo;
                   </p>
                   <div className="text-xs text-muted pt-1 border-t border-border">
-                    Kết quả dùng cho hàng &ldquo;Top 10&rdquo; — xếp phim theo điểm đoán.
+                    Kết quả dùng cho hàng &ldquo;Top 10&rdquo;. Xếp phim theo điểm đoán.
                   </div>
                 </div>
               }
@@ -825,14 +825,14 @@ export default function SupervisedUnsupervisedRlInNetflix() {
             <div className="rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Gamepad2 size={16} className="text-amber-600 dark:text-amber-400" />
-                <span className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+                <span className="text-sm font-semibold text-foreground">
                   Và học tăng cường làm gì?
                 </span>
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">
-                Nó không học gì thêm về Money Heist. Nó nhớ: &ldquo;với người này, ảnh bìa &lsquo;bí
-                ẩn u tối&rsquo; vừa được hiển thị và họ đã nhấn vào. Tăng xác suất chọn ảnh đó lần
-                tới.&rdquo; Đó là tất cả.
+              <p className="text-sm text-foreground leading-relaxed">
+                Nó không học gì thêm về Money Heist. Nó chỉ nhớ một việc: &ldquo;với người này,
+                ảnh bìa &lsquo;bí ẩn u tối&rsquo; vừa được hiển thị và họ đã nhấn vào. Tăng xác
+                suất chọn ảnh đó lần tới.&rdquo; Vậy là xong.
               </p>
             </div>
           </section>
@@ -847,13 +847,13 @@ export default function SupervisedUnsupervisedRlInNetflix() {
             <InlineChallenge
               question="Netflix muốn tự động gán nhãn 'phù hợp với trẻ em' cho 10.000 phim chưa được kiểm duyệt thủ công, dựa trên một ít phim ĐÃ kiểm duyệt và đánh dấu trước đó. Đây là bài toán thuộc kiểu học nào?"
               options={[
-                "Học không giám sát thuần — chỉ chia cụm phim",
-                "Học có giám sát — có nhãn 'trẻ em / người lớn' cho tập đã kiểm duyệt, máy học từ đó để đoán nhãn cho phim mới",
-                "Học tăng cường — thưởng khi đoán đúng",
+                "Học không giám sát thuần: chỉ chia cụm phim",
+                "Học có giám sát: có nhãn 'trẻ em / người lớn' cho tập đã kiểm duyệt, máy học từ đó để đoán nhãn cho phim mới",
+                "Học tăng cường: thưởng khi đoán đúng",
                 "Không kiểu nào phù hợp, phải thuê người xem từng phim",
               ]}
               correct={1}
-              explanation="Có nhãn sẵn cho một phần dữ liệu + mục tiêu đoán nhãn cho phần còn lại = kinh điển có giám sát. Nếu phần chưa có nhãn lớn hơn rất nhiều, người ta sẽ kết hợp bán giám sát, nhưng lõi vẫn là có giám sát."
+              explanation="Một phần dữ liệu đã có nhãn sẵn, mục tiêu là đoán nhãn cho phần còn lại. Đây là bài toán có giám sát kinh điển. Nếu phần chưa có nhãn lớn hơn nhiều, người ta sẽ kết hợp bán giám sát, nhưng lõi vẫn là có giám sát."
             />
 
             <div className="mt-3">
@@ -861,30 +861,31 @@ export default function SupervisedUnsupervisedRlInNetflix() {
                 question="Netflix phát hiện một bộ phim mới có lượt xem cao bất thường ở một nhóm người dùng mà trước nay không ai xem loại phim ấy. Hệ thống nào đã 'ghi nhận' hiện tượng này trước tiên?"
                 options={[
                   "Hệ có giám sát, vì nó đoán điểm rất chính xác",
-                  "Hệ không giám sát — nó tự thấy một cụm mới hình thành trong hành vi xem, mà không cần ai dạy trước",
+                  "Hệ không giám sát: nó tự thấy một cụm mới hình thành trong hành vi xem, mà không cần ai dạy trước",
                   "Hệ RL, vì nó thử và nhận thưởng",
                   "Hệ thống A/B testing, không liên quan đến học máy",
                 ]}
                 correct={1}
-                explanation="Khi một mẫu mới xuất hiện mà chưa ai định nghĩa trước, học không giám sát là con đường nhanh nhất để 'thấy' nó. Sau đó đội marketing có thể đặt tên cho cụm đó, rồi training tiếp có giám sát."
+                explanation="Khi một mẫu mới xuất hiện mà chưa ai định nghĩa trước, học không giám sát là con đường nhanh nhất để 'thấy' nó. Sau đó đội marketing có thể đặt tên cho cụm đó, rồi huấn luyện tiếp có giám sát."
               />
             </div>
           </section>
 
-          <Callout variant="insight" title="Tầm quan trọng của việc phối hợp">
-            Không một kiểu học nào giải cả bài toán Netflix. Có giám sát cần nhãn — nhưng 247
-            triệu người thì ai dán nhãn sở thích? Không giám sát tự thấy nhóm — nhưng không xếp
-            hạng được phim. Tăng cường tối ưu hiển thị — nhưng không biết nội dung nào phù hợp
-            ngay từ đầu. Ba kiểu đan xen mới thành trang chủ mà bạn thấy mỗi tối.
+          <Callout variant="insight" title="Vì sao phải phối hợp cả ba kiểu học">
+            Không một kiểu học nào giải cả bài toán Netflix. Có giám sát cần nhãn, nhưng với
+            247 triệu người thì ai dán nhãn sở thích cho từng người? Không giám sát tự thấy
+            nhóm, nhưng không xếp hạng được phim. Tăng cường tối ưu hiển thị, nhưng không biết
+            nội dung nào phù hợp ngay từ đầu. Ba kiểu đan xen mới thành trang chủ mà bạn thấy
+            mỗi tối.
           </Callout>
 
           <MiniSummary
             title="Netflix dùng ba kiểu học như thế nào?"
             points={[
-              "Có giám sát → đoán điểm bạn sẽ chấm cho phim (dùng cho Top 10, xếp hạng).",
-              "Không giám sát → chia 247 triệu người thành 2.000+ cộng đồng sở thích (dùng cho 'Gợi ý cho bạn', 'Vì bạn đã xem').",
-              "Tăng cường → chọn ảnh bìa có tỉ lệ nhấn cao nhất cho mỗi người (dùng cho banner đầu trang).",
-              "Ba kiểu phối hợp — mỗi hàng phim bạn thấy đều có một thuật toán riêng đứng sau.",
+              "Có giám sát: đoán điểm bạn sẽ chấm cho phim (dùng cho Top 10, xếp hạng).",
+              "Không giám sát: chia 247 triệu người thành hơn 2.000 cộng đồng sở thích (dùng cho 'Gợi ý cho bạn', 'Vì bạn đã xem').",
+              "Tăng cường: chọn ảnh bìa có tỉ lệ nhấn cao nhất cho mỗi người (dùng cho banner đầu trang).",
+              "Ba kiểu phối hợp: mỗi hàng phim bạn thấy đều có một thuật toán riêng đứng sau.",
             ]}
           />
 
@@ -896,7 +897,7 @@ export default function SupervisedUnsupervisedRlInNetflix() {
             để tự chạy lại ba kiểu bằng tay.
           </p>
 
-          {/* Quiz cuối — kiểm tra hiểu biết về ba kiểu học trong Netflix */}
+          {/* Quiz cuối: kiểm tra hiểu biết về ba kiểu học trong Netflix */}
           <section className="mt-6">
             <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
               <Sparkles size={18} className="text-accent" />
@@ -934,14 +935,14 @@ export default function SupervisedUnsupervisedRlInNetflix() {
         topicSlug="supervised-unsupervised-rl-in-netflix"
       >
         <p>
-          Nếu chỉ dùng một kiểu học, Netflix sẽ hỏng ở một phía. Chỉ có giám sát &mdash; đoán điểm
-          chính xác nhưng không hiểu bạn thuộc nhóm nào. Chỉ không giám sát &mdash; thấy được nhóm
-          nhưng không biết xếp phim nào lên đầu. Chỉ tăng cường &mdash; chọn ảnh bìa tối ưu nhưng
+          Nếu chỉ dùng một kiểu học, Netflix sẽ hỏng ở một phía. Chỉ có giám sát thì đoán điểm
+          chính xác nhưng không hiểu bạn thuộc nhóm nào. Chỉ không giám sát thì thấy được nhóm
+          nhưng không biết xếp phim nào lên đầu. Chỉ tăng cường thì chọn ảnh bìa tối ưu nhưng
           không biết nội dung phim nào đáng hiển thị.
         </p>
         <p>
-          Không có kết hợp cả ba, trang chủ sẽ trở lại thời &ldquo;Hot 100 cho tất cả mọi
-          người&rdquo;. Và với 247 triệu người gu khác nhau, một bảng xếp hạng chung là con đường
+          Bỏ đi một trong ba, trang chủ sẽ trở lại thời &ldquo;Hot 100 cho tất cả mọi
+          người&rdquo;. Với 247 triệu người gu khác nhau, một bảng xếp hạng chung là con đường
           nhanh nhất để mất thuê bao.
         </p>
       </ApplicationCounterfactual>

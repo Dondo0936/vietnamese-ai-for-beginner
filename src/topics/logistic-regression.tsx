@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
   title: "Logistic Regression",
   titleVi: "Hồi quy logistic",
   description:
-    "Khi câu trả lời chỉ có hai lựa chọn — có hay không. Hồi quy logistic ép số thực vào khoảng 0–1 để dự đoán xác suất.",
+    "Khi câu trả lời chỉ có hai lựa chọn (có hay không), hồi quy logistic ép một số thực bất kỳ vào khoảng 0 đến 1 để đọc thành xác suất.",
   category: "classic-ml",
   tags: ["classification", "supervised-learning", "probability"],
   difficulty: "beginner",
@@ -71,7 +71,7 @@ const INITIAL_POINTS: Pt[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   Playground chính — kéo điểm, chỉnh trọng số, xem biên phân loại
+   Playground chính: kéo điểm, chỉnh trọng số, xem biên phân loại
    ───────────────────────────────────────────────────────────── */
 interface PlaygroundProps {
   weight: number;
@@ -149,7 +149,7 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
         className="w-full rounded-lg border border-border bg-background cursor-crosshair"
         style={{ touchAction: dragIdx !== null ? "none" : "auto" }}
         role="img"
-        aria-label={`Bộ phân loại logistic — ${points.length} điểm, accuracy ${(stats.accuracy * 100).toFixed(0)}%`}
+        aria-label={`Bộ phân loại logistic. ${points.length} điểm, độ chính xác ${(stats.accuracy * 100).toFixed(0)}%`}
         onClick={onSvgClick}
         onPointerMove={onPointerMove}
         onPointerUp={() => setDragIdx(null)}
@@ -260,7 +260,7 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
                 }}
               />
               <title>
-                {`Lớp ${p.label} — P(y=1) = ${(prob * 100).toFixed(0)}% ${isCorrect ? "(đúng)" : "(sai)"}`}
+                {`Lớp ${p.label}. P(y=1) = ${(prob * 100).toFixed(0)}% ${isCorrect ? "(đúng)" : "(sai)"}`}
               </title>
             </g>
           );
@@ -270,7 +270,7 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
         <g>
           <rect x={10} y={6} width={180} height={22} rx={4} fill="currentColor" className="text-surface" opacity={0.9} />
           <text x={20} y={21} fontSize={11} fill="currentColor" className="text-foreground" fontWeight={600}>
-            Accuracy: {(stats.accuracy * 100).toFixed(0)}% ({stats.correct}/{stats.total})
+            Độ chính xác: {(stats.accuracy * 100).toFixed(0)}% ({stats.correct}/{stats.total})
           </text>
         </g>
       </svg>
@@ -319,13 +319,13 @@ function SigmoidClassifierPlayground({ weight, bias, threshold }: PlaygroundProp
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Demo linear vs logistic — ToggleCompare
+   Demo linear vs logistic: ToggleCompare
    ───────────────────────────────────────────────────────────── */
 function LinearPredictionCard() {
   return (
     <div className="space-y-3 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
-      <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-        <Activity size={14} />
+      <div className="flex items-center gap-2 text-foreground">
+        <Activity size={14} className="text-amber-600 dark:text-amber-400" />
         <span className="text-sm font-semibold">Dùng hồi quy tuyến tính cho phân loại</span>
       </div>
       <svg viewBox="0 0 380 180" className="w-full">
@@ -364,9 +364,9 @@ function LinearPredictionCard() {
           y &lt; 0 (vô nghĩa)
         </text>
       </svg>
-      <p className="text-xs text-foreground/85 leading-relaxed">
-        Đường thẳng có thể cho output âm hoặc lớn hơn 1. Nhưng xác suất phải nằm
-        trong [0, 1]! Thêm vài điểm ngoại lai, đường thẳng bị kéo hẳn đi — biên phân
+      <p className="text-xs text-foreground leading-relaxed">
+        Đường thẳng có thể cho đầu ra âm hoặc lớn hơn 1, nhưng xác suất buộc phải nằm
+        trong [0, 1]. Thêm vài điểm ngoại lai, đường thẳng bị kéo lệch hẳn đi và biên phân
         loại dịch sai theo.
       </p>
     </div>
@@ -376,8 +376,8 @@ function LinearPredictionCard() {
 function LogisticPredictionCard() {
   return (
     <div className="space-y-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-900/20">
-      <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-        <Target size={14} />
+      <div className="flex items-center gap-2 text-foreground">
+        <Target size={14} className="text-emerald-600 dark:text-emerald-400" />
         <span className="text-sm font-semibold">Dùng hồi quy logistic cho phân loại</span>
       </div>
       <svg viewBox="0 0 380 180" className="w-full">
@@ -417,9 +417,9 @@ function LogisticPredictionCard() {
           <circle key={i} cx={p.x} cy={p.y} r={4} fill={p.c} stroke="#fff" strokeWidth={1} />
         ))}
       </svg>
-      <p className="text-xs text-foreground/85 leading-relaxed">
+      <p className="text-xs text-foreground leading-relaxed">
         Hàm sigmoid <em>ép</em> mọi đầu vào về khoảng (0, 1). Điểm nào nằm trên
-        ngưỡng 0.5 được phân vào lớp 1, dưới ngưỡng là lớp 0. Dù có outlier xa,
+        ngưỡng 0.5 được phân vào lớp 1, còn dưới ngưỡng là lớp 0. Dù có điểm ngoại lai ở rất xa,
         đường cong vẫn bằng phẳng ở hai đầu.
       </p>
     </div>
@@ -427,7 +427,7 @@ function LogisticPredictionCard() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Visual nhỏ — từ đường thẳng đến sigmoid
+   Visual nhỏ: từ đường thẳng đến sigmoid
    ───────────────────────────────────────────────────────────── */
 function SigmoidMiniVisual() {
   return (
@@ -481,7 +481,7 @@ function LogOddsMiniVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   ProbOddsLogOddsVisual — kéo P, xem odds + log-odds cập nhật
+   ProbOddsLogOddsVisual: kéo P, xem odds + log-odds cập nhật
    ───────────────────────────────────────────────────────────── */
 function ProbOddsLogOddsVisual({ pct }: { pct: number }) {
   const p = Math.max(0.01, Math.min(0.99, pct / 100));
@@ -496,7 +496,7 @@ function ProbOddsLogOddsVisual({ pct }: { pct: number }) {
     <div className="w-full space-y-4">
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-center dark:border-blue-800 dark:bg-blue-900/20">
-          <div className="text-[11px] font-semibold text-blue-700 dark:text-blue-300">
+          <div className="text-[11px] font-semibold text-foreground">
             Xác suất P
           </div>
           <div className="mt-1 font-mono text-xl font-bold text-foreground">
@@ -505,7 +505,7 @@ function ProbOddsLogOddsVisual({ pct }: { pct: number }) {
           <div className="mt-1 text-[10px] text-muted">Nằm trong [0, 1]</div>
         </div>
         <div className="rounded-xl border border-purple-200 bg-purple-50 p-3 text-center dark:border-purple-800 dark:bg-purple-900/20">
-          <div className="text-[11px] font-semibold text-purple-700 dark:text-purple-300">
+          <div className="text-[11px] font-semibold text-foreground">
             Odds = P / (1 − P)
           </div>
           <div className="mt-1 font-mono text-xl font-bold text-foreground">
@@ -514,7 +514,7 @@ function ProbOddsLogOddsVisual({ pct }: { pct: number }) {
           <div className="mt-1 text-[10px] text-muted">Tỉ số thắng/thua</div>
         </div>
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center dark:border-emerald-800 dark:bg-emerald-900/20">
-          <div className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+          <div className="text-[11px] font-semibold text-foreground">
             Log-odds = log(odds)
           </div>
           <div className="mt-1 font-mono text-xl font-bold text-foreground">
@@ -556,7 +556,7 @@ function ProbOddsLogOddsVisual({ pct }: { pct: number }) {
       </svg>
 
       <p className="text-xs text-muted leading-relaxed">
-        Logistic <strong>học tuyến tính</strong> trên log-odds — nghĩa là khi đặc trưng x tăng 1
+        Logistic <strong>học tuyến tính</strong> trên log-odds. Nghĩa là khi đặc trưng x tăng 1
         đơn vị, log-odds tăng đúng w đơn vị. Đây là lý do hệ số w của logistic có thể diễn giải
         được trực tiếp: &quot;tăng thêm 1 giờ học&quot; làm log-odds đậu phỏng vấn tăng đúng w.
       </p>
@@ -591,23 +591,23 @@ function CrossEntropyMiniVisual() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   QUIZ — đủ 5 câu tiếng Việt
+   QUIZ: đủ 5 câu tiếng Việt
    ───────────────────────────────────────────────────────────── */
 const quizQuestions: QuizQuestion[] = [
   {
     question: "Vì sao không dùng hồi quy tuyến tính cho bài toán phân loại 'có/không'?",
     options: [
       "Hồi quy tuyến tính chạy chậm hơn",
-      "Hồi quy tuyến tính cho giá trị ngoài [0, 1] — không hợp làm xác suất, và rất nhạy với ngoại lai",
-      "Hồi quy tuyến tính không nhận input số",
+      "Hồi quy tuyến tính cho giá trị ngoài [0, 1], không hợp làm xác suất, và rất nhạy với ngoại lai",
+      "Hồi quy tuyến tính không nhận đầu vào số",
       "Hồi quy tuyến tính chỉ dùng được cho ảnh",
     ],
     correct: 1,
     explanation:
-      "Output tuyến tính có thể âm hoặc vượt 1 — không thể hiểu là xác suất. Thêm ngoại lai, đường thẳng bị xoay lệch nên biên phân loại cũng sai. Sigmoid ép mọi đầu vào vào khoảng (0, 1), ổn định và có ý nghĩa xác suất.",
+      "Đầu ra tuyến tính có thể âm hoặc vượt 1, không thể đọc thành xác suất. Thêm vài điểm ngoại lai, đường thẳng bị xoay lệch nên biên phân loại cũng sai. Sigmoid ép mọi đầu vào vào khoảng (0, 1), ổn định và có ý nghĩa xác suất.",
   },
   {
-    question: "Output của hàm sigmoid σ(z) luôn nằm trong khoảng nào?",
+    question: "Đầu ra của hàm sigmoid σ(z) luôn nằm trong khoảng nào?",
     options: [
       "(−1, 1)",
       "(0, 1)",
@@ -616,19 +616,19 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "σ(z) = 1 / (1 + e^(−z)). Khi z → −∞, σ → 0. Khi z → +∞, σ → 1. Khi z = 0, σ = 0.5. Vì mẫu luôn dương và tử số ≤ mẫu số, giá trị luôn nằm trong khoảng mở (0, 1) — rất hợp làm xác suất.",
+      "σ(z) = 1 / (1 + e^(−z)). Khi z → −∞, σ → 0. Khi z → +∞, σ → 1. Khi z = 0, σ = 0.5. Vì mẫu luôn dương và tử số ≤ mẫu số, giá trị luôn nằm trong khoảng mở (0, 1), rất hợp làm xác suất.",
   },
   {
     question: "Shopee muốn hạn chế bỏ lọt đơn huỷ. Nếu mô hình đang dùng ngưỡng 0.5 và bỏ sót 30% ca huỷ thật, ta nên làm gì?",
     options: [
-      "Tăng ngưỡng lên 0.7 — chỉ báo khi rất chắc",
-      "Giảm ngưỡng xuống 0.3 — dễ đánh dấu 'có thể huỷ' hơn, bắt được nhiều ca thật",
+      "Tăng ngưỡng lên 0.7 (chỉ báo khi rất chắc)",
+      "Giảm ngưỡng xuống 0.3 (dễ đánh dấu 'có thể huỷ' hơn, bắt được nhiều ca thật)",
       "Bỏ sigmoid và dùng tuyến tính",
       "Huấn luyện lại từ đầu với dữ liệu ngẫu nhiên",
     ],
     correct: 1,
     explanation:
-      "Giảm ngưỡng = dễ dán nhãn 'huỷ' hơn → tăng recall (bắt được nhiều ca thật), nhưng precision có thể giảm. Ở các bài toán bỏ sót nguy hiểm (y tế, gian lận), ngưỡng thấp thường được ưu tiên.",
+      "Giảm ngưỡng đồng nghĩa với việc dễ dán nhãn 'huỷ' hơn, nhờ vậy recall tăng (bắt được nhiều ca thật) nhưng precision có thể giảm. Ở các bài toán bỏ sót nguy hiểm (y tế, gian lận), ngưỡng thấp thường được ưu tiên.",
   },
   {
     type: "fill-blank",
@@ -639,19 +639,19 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "lồi", accept: ["convex", "lồi", "Lồi"] },
     ],
     explanation:
-      "Binary cross-entropy (log loss) phạt nặng dự đoán tự tin nhưng sai, và là hàm lồi theo tham số w, b. Nếu dùng MSE với sigmoid, loss sẽ không lồi — gradient descent có thể kẹt ở cực tiểu cục bộ.",
+      "Binary cross-entropy (log loss) phạt nặng dự đoán tự tin nhưng sai, và là hàm lồi theo tham số w, b. Nếu dùng MSE với sigmoid, loss sẽ không lồi và gradient descent có thể kẹt ở cực tiểu cục bộ.",
   },
   {
     question: "Tăng ngưỡng (threshold) từ 0.3 lên 0.7 ảnh hưởng thế nào đến precision/recall?",
     options: [
-      "Precision tăng, recall giảm — báo khắt khe hơn nên ít báo nhầm nhưng bỏ sót nhiều hơn",
+      "Precision tăng, recall giảm: báo khắt khe hơn nên ít báo nhầm nhưng bỏ sót nhiều hơn",
       "Cả precision và recall cùng tăng",
       "Cả precision và recall cùng giảm",
-      "Không thay đổi gì, chỉ đổi accuracy",
+      "Không thay đổi gì, chỉ đổi độ chính xác",
     ],
     correct: 0,
     explanation:
-      "Ngưỡng cao = chỉ báo 'dương' khi mô hình rất chắc → ít False Positive → precision tăng, nhưng bỏ lọt nhiều ca dương thật → recall giảm. Bạn luôn đánh đổi giữa hai chỉ số này.",
+      "Ngưỡng cao nghĩa là mô hình chỉ báo 'dương' khi rất chắc, nhờ vậy False Positive giảm và precision tăng. Tuy nhiên mô hình bỏ lọt nhiều ca dương thật, nên recall giảm. Bạn luôn đánh đổi giữa hai chỉ số này.",
   },
 ];
 
@@ -659,37 +659,37 @@ const quizQuestions: QuizQuestion[] = [
 export default function LogisticRegressionTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1 · DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
           question="Bạn được đưa dữ liệu 'đã đậu phỏng vấn hay chưa' theo điểm IELTS. Đầu ra cần là gì để hữu dụng nhất cho nhà tuyển dụng?"
           options={[
-            "Một con số từ 0 đến vô cùng — càng lớn càng dễ đậu",
-            "Một xác suất từ 0% đến 100% — để nhà tuyển dụng tự chọn ngưỡng cắt",
+            "Một con số từ 0 đến vô cùng (càng lớn càng dễ đậu)",
+            "Một xác suất từ 0% đến 100% để nhà tuyển dụng tự chọn ngưỡng cắt",
             "Một chữ 'đậu' hoặc 'rớt' duy nhất",
             "Không dự đoán được vì đây là con người",
           ]}
           correct={1}
-          explanation="Xác suất linh hoạt nhất: nhà tuyển dụng có thể đặt ngưỡng 0.8 nếu muốn chắc chắn, hoặc 0.4 nếu muốn xét nhiều ứng viên hơn. Hồi quy logistic cho đúng kiểu output này — mọi đầu vào ép về khoảng (0, 1)."
+          explanation="Xác suất linh hoạt nhất: nhà tuyển dụng có thể đặt ngưỡng 0.8 nếu muốn chắc chắn, hoặc 0.4 nếu muốn xét nhiều ứng viên hơn. Hồi quy logistic cho đúng kiểu đầu ra này, mọi đầu vào đều bị ép về khoảng (0, 1)."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Hồi quy tuyến tính trả một số bất kỳ. Nhưng đôi khi bạn chỉ cần câu trả lời:{" "}
             <strong className="text-foreground">có hay không?</strong> (có bệnh, spam, đậu phỏng
-            vấn, khách huỷ đơn…). Logistic là tuyến tính ép vào khoảng 0–1 bằng hàm sigmoid.
+            vấn, khách huỷ đơn). Logistic là tuyến tính ép vào khoảng 0 đến 1 bằng hàm sigmoid.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2 · ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <Wand2 size={20} className="text-accent" /> Cái &quot;kẹp&quot; biến số bất kỳ thành xác suất
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Tưởng tượng bạn có một máy sản xuất số. Đầu vào là bất kỳ số thực nào — có thể +42
+            Tưởng tượng bạn có một máy sản xuất số. Đầu vào là bất kỳ số thực nào, có thể +42
             hoặc −13 000. Bây giờ bạn <strong>kẹp</strong> cỗ máy đó qua một cái ống hình chữ S:
-            mọi số âm rất nhỏ sẽ bị nén về gần 0, mọi số dương rất lớn sẽ bị nén về gần 1, và
+            mọi số âm rất nhỏ sẽ bị nén về gần 0, mọi số dương rất lớn sẽ bị nén về gần 1, còn
             số 0 sẽ nằm đúng giữa (bằng 0.5).
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
@@ -699,28 +699,28 @@ export default function LogisticRegressionTopic() {
           </p>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-blue-800 dark:bg-blue-900/20">
-              <p className="mb-1 text-sm font-semibold text-blue-700 dark:text-blue-300">1. Tuyến tính</p>
+            <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-xs leading-relaxed text-foreground dark:border-blue-800 dark:bg-blue-900/20">
+              <p className="mb-1 text-sm font-semibold text-foreground">1. Tuyến tính</p>
               Tính z = w·x + b cho mỗi mẫu dữ liệu, giống{" "}
               <TopicLink slug="linear-regression">hồi quy tuyến tính</TopicLink>.
             </div>
-            <div className="rounded-xl border border-purple-200 bg-purple-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-purple-800 dark:bg-purple-900/20">
-              <p className="mb-1 text-sm font-semibold text-purple-700 dark:text-purple-300">2. Sigmoid</p>
-              Ép z qua σ(z) = 1 / (1 + e^(−z)). Giờ bạn có một số trong (0, 1) — xác suất.
+            <div className="rounded-xl border border-purple-200 bg-purple-50 p-4 text-xs leading-relaxed text-foreground dark:border-purple-800 dark:bg-purple-900/20">
+              <p className="mb-1 text-sm font-semibold text-foreground">2. Sigmoid</p>
+              Ép z qua σ(z) = 1 / (1 + e^(−z)). Giờ bạn có một số trong (0, 1), tức là xác suất.
             </div>
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-relaxed text-foreground/85 dark:border-emerald-800 dark:bg-emerald-900/20">
-              <p className="mb-1 text-sm font-semibold text-emerald-700 dark:text-emerald-300">3. Ngưỡng</p>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs leading-relaxed text-foreground dark:border-emerald-800 dark:bg-emerald-900/20">
+              <p className="mb-1 text-sm font-semibold text-foreground">3. Ngưỡng</p>
               Nếu xác suất ≥ ngưỡng (mặc định 0.5) → báo lớp 1. Ngược lại → lớp 0.
             </div>
           </div>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — PLAYGROUND CHÍNH ━━━ */}
+      {/* ━━━ BƯỚC 3 · PLAYGROUND CHÍNH ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <h3 className="mb-1 text-base font-semibold text-foreground">
-            Playground — chỉnh trọng số w, bias b, và ngưỡng
+            Playground: chỉnh trọng số w, bias b, và ngưỡng
           </h3>
           <p className="mb-4 text-sm text-muted leading-relaxed">
             Dưới đây là một SVG sống. Nhấp vào canvas để thêm điểm (chọn lớp 0 hoặc 1), kéo điểm
@@ -747,26 +747,26 @@ export default function LogisticRegressionTopic() {
           <Callout variant="insight" title="Ba điều nên thử ngay">
             <ul className="list-disc pl-5 space-y-1">
               <li>
-                Kéo <strong>trọng số w</strong> lên: đường sigmoid dốc hơn — mô hình &quot;quyết
+                Kéo <strong>trọng số w</strong> lên: đường sigmoid dốc hơn, mô hình &quot;quyết
                 đoán&quot; hơn, vùng &quot;không chắc&quot; thu hẹp lại.
               </li>
               <li>
-                Kéo <strong>bias b</strong>: đường cong dịch ngang — biên quyết định di chuyển qua
+                Kéo <strong>bias b</strong>: đường cong dịch ngang, biên quyết định di chuyển qua
                 trái hoặc phải.
               </li>
               <li>
-                Đặt ngưỡng 90% rồi quan sát: nhiều điểm lớp 1 bị tính là lớp 0 — recall giảm, đúng
+                Đặt ngưỡng 90% rồi quan sát: nhiều điểm lớp 1 bị tính là lớp 0, recall giảm đúng
                 như lý thuyết.
               </li>
             </ul>
           </Callout>
 
           <h3 className="mt-8 mb-1 text-base font-semibold text-foreground">
-            Mini playground — Xác suất ↔ Odds ↔ Log-odds
+            Mini playground: xác suất, odds, log-odds
           </h3>
           <p className="mb-4 text-sm text-muted leading-relaxed">
-            Logistic &quot;nói chuyện&quot; với ba con số khác nhau mô tả cùng một sự kiện. Kéo
-            thanh trượt để thấy ba cách biểu diễn chuyển qua nhau — bạn sẽ hiểu vì sao &quot;log
+            Logistic &quot;nói chuyện&quot; với ba con số khác nhau cùng mô tả một sự kiện. Kéo
+            thanh trượt để thấy ba cách biểu diễn chuyển qua nhau. Nhờ vậy bạn sẽ hiểu vì sao &quot;log
             của tỉ số&quot; lại là ngôn ngữ tự nhiên của mô hình.
           </p>
           <SliderGroup
@@ -788,7 +788,7 @@ export default function LogisticRegressionTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — ĐI SÂU (ToggleCompare + StepReveal) ━━━ */}
+      {/* ━━━ BƯỚC 4 · ĐI SÂU (ToggleCompare + StepReveal) ━━━ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Đi sâu">
         <h3 className="mb-3 text-base font-semibold text-foreground">
           Vì sao tuyến tính &quot;vỡ&quot; khi gán cho phân loại?
@@ -796,13 +796,13 @@ export default function LogisticRegressionTopic() {
         <ToggleCompare
           labelA="Tuyến tính gán cho phân loại"
           labelB="Logistic (sigmoid) cho phân loại"
-          description="Chuyển qua lại hai chế độ để thấy sự khác nhau về output."
+          description="Chuyển qua lại hai chế độ để thấy đầu ra khác nhau ở chỗ nào."
           childA={<LinearPredictionCard />}
           childB={<LogisticPredictionCard />}
         />
 
         <h3 className="mt-6 mb-3 text-base font-semibold text-foreground">
-          Tháo rời cơ chế — từng bước một
+          Tháo rời cơ chế từng bước một
         </h3>
         <StepReveal
           labels={[
@@ -835,8 +835,8 @@ export default function LogisticRegressionTopic() {
               <p className="mb-3">
                 <strong>Ép z qua sigmoid.</strong> Số bất kỳ giờ bị &quot;kẹp&quot; vào (0, 1).
                 Đầu ra này là{" "}
-                <strong>xác suất mô hình nghĩ mẫu thuộc lớp 1</strong>. Khi z = 0, xác suất = 0.5 —
-                đúng ranh giới; khi z rất dương, xác suất gần 1; khi z rất âm, xác suất gần 0.
+                <strong>xác suất mô hình nghĩ mẫu thuộc lớp 1</strong>. Khi z = 0, xác suất = 0.5
+                (đúng ranh giới). Khi z rất dương, xác suất gần 1. Khi z rất âm, xác suất gần 0.
               </p>
               <SigmoidMiniVisual />
             </div>,
@@ -847,7 +847,7 @@ export default function LogisticRegressionTopic() {
               <p>
                 <strong>So với ngưỡng.</strong> Ngưỡng mặc định là 0.5, nhưng bạn có thể đặt cao
                 (0.8) nếu cần chắc chắn, hay thấp (0.3) nếu sợ bỏ sót. Ví dụ: máy quét ung thư để
-                ngưỡng thấp cho chắc — thà báo nhầm vài ca còn hơn bỏ lọt một ca thật.
+                ngưỡng thấp cho chắc, thà báo nhầm vài ca còn hơn bỏ lọt một ca thật.
               </p>
             </div>,
             <div
@@ -865,7 +865,7 @@ export default function LogisticRegressionTopic() {
         </StepReveal>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 5 · AHA ━━━ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
@@ -876,10 +876,10 @@ export default function LogisticRegressionTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 6 · THỬ THÁCH ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Output của hàm sigmoid σ(z) = 1 / (1 + e^(−z)) luôn nằm trong khoảng nào?"
+          question="Đầu ra của hàm sigmoid σ(z) = 1 / (1 + e^(−z)) luôn nằm trong khoảng nào?"
           options={[
             "[0, +∞)",
             "(−1, 1)",
@@ -887,36 +887,36 @@ export default function LogisticRegressionTopic() {
             "(−∞, +∞)",
           ]}
           correct={2}
-          explanation="Vì e^(−z) > 0 luôn luôn, mẫu số 1 + e^(−z) > 1, nên tử số 1 chia cho mẫu số > 1 luôn nhỏ hơn 1. Đồng thời, 1 / (số dương) > 0. Kết quả: σ(z) nằm trong khoảng mở (0, 1) — đây là lý do sigmoid hợp làm xác suất."
+          explanation="Vì e^(−z) > 0 luôn luôn, mẫu số 1 + e^(−z) > 1, nên tử số 1 chia cho mẫu số > 1 luôn nhỏ hơn 1. Đồng thời, 1 / (số dương) > 0. Kết quả: σ(z) nằm trong khoảng mở (0, 1). Đây là lý do sigmoid hợp làm xác suất."
         />
 
         <div className="mt-6">
           <InlineChallenge
             question="Một bệnh viện dùng logistic để dự đoán nguy cơ nhồi máu cơ tim. Sai khi nào tốn kém hơn?"
             options={[
-              "Báo sai 'có nguy cơ' (False Positive) — tốn kém hơn, vì làm bệnh nhân lo lắng",
-              "Bỏ sót ca thật (False Negative) — tốn kém hơn, vì bệnh nhân có thể tử vong",
+              "Báo sai 'có nguy cơ' (False Positive) tốn kém hơn, vì làm bệnh nhân lo lắng",
+              "Bỏ sót ca thật (False Negative) tốn kém hơn, vì bệnh nhân có thể tử vong",
               "Cả hai loại sai như nhau",
               "Phụ thuộc hoàn toàn vào tuổi bệnh nhân",
             ]}
             correct={1}
-            explanation="Ở tình huống y tế, False Negative (bỏ sót) thường nguy hiểm hơn. Vì vậy bác sĩ thường đặt ngưỡng thấp (0.3 thay vì 0.5) để dễ đánh dấu 'có nguy cơ' — chấp nhận thêm xét nghiệm còn hơn bỏ lọt ca cần cấp cứu."
+            explanation="Ở tình huống y tế, False Negative (bỏ sót) thường nguy hiểm hơn. Vì vậy bác sĩ thường đặt ngưỡng thấp (0.3 thay vì 0.5) để dễ đánh dấu 'có nguy cơ', chấp nhận thêm xét nghiệm còn hơn bỏ lọt ca cần cấp cứu."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — GIẢI THÍCH (LaTeX ≤3) ━━━ */}
+      {/* ━━━ BƯỚC 7 · GIẢI THÍCH (LaTeX ≤3) ━━━ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
             Sau khi đã cảm nhận bằng tay, đây là ba công thức <em>duy nhất</em> bạn cần biết về
-            hồi quy logistic. Mỗi công thức đi kèm một hình nhỏ — đừng học thuộc, hãy nhìn.
+            hồi quy logistic. Mỗi công thức đi kèm một hình nhỏ. Đừng học thuộc, hãy nhìn.
           </p>
 
-          {/* Công thức 1 — sigmoid */}
+          {/* Công thức 1: sigmoid */}
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
             <p className="mb-2 text-sm font-semibold text-foreground">
-              1) Hàm sigmoid — &quot;cái ống&quot; ép số thực vào (0, 1)
+              1) Hàm sigmoid: &quot;cái ống&quot; ép số thực vào (0, 1)
             </p>
             <LaTeX block>{"\\sigma(z) = \\frac{1}{1 + e^{-z}}, \\quad z = w \\cdot x + b"}</LaTeX>
             <div className="mt-3 flex justify-center">
@@ -928,10 +928,10 @@ export default function LogisticRegressionTopic() {
             </p>
           </div>
 
-          {/* Công thức 2 — log-odds */}
+          {/* Công thức 2: log-odds */}
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
             <p className="mb-2 text-sm font-semibold text-foreground">
-              2) Log-odds — cách logistic &quot;hiểu&quot; xác suất ngược lại
+              2) Log-odds: cách logistic &quot;hiểu&quot; xác suất ngược lại
             </p>
             <LaTeX block>{"\\log \\frac{p}{1 - p} = w \\cdot x + b"}</LaTeX>
             <div className="mt-3 flex justify-center">
@@ -939,16 +939,16 @@ export default function LogisticRegressionTopic() {
             </div>
             <p className="mt-3 text-xs text-muted leading-relaxed">
               Đây là công thức đảo ngược của sigmoid. Nó nói: &quot;nếu tỉ số p : (1 − p) là 2:1,
-              log của nó là log(2) ≈ 0.69 — và bằng với z = w·x + b&quot;. Nhờ thế, ta có thể
+              log của nó là log(2) ≈ 0.69, và bằng với z = w·x + b&quot;. Nhờ thế, ta có thể
               học w và b bằng cách tối thiểu loss, vì mối quan hệ giữa đặc trưng x và log-odds
               là tuyến tính.
             </p>
           </div>
 
-          {/* Công thức 3 — cross-entropy loss */}
+          {/* Công thức 3: cross-entropy loss */}
           <div className="my-5 rounded-xl border border-border bg-surface/50 p-5">
             <p className="mb-2 text-sm font-semibold text-foreground">
-              3) Binary cross-entropy — hàm mất mát
+              3) Binary cross-entropy: hàm mất mát
             </p>
             <LaTeX block>{"\\mathcal{L} = -\\frac{1}{n}\\sum_{i=1}^{n}\\Big[y_i \\log \\hat{p}_i + (1 - y_i) \\log(1 - \\hat{p}_i)\\Big]"}</LaTeX>
             <div className="mt-3 flex justify-center">
@@ -984,22 +984,22 @@ export default function LogisticRegressionTopic() {
               Khi nào nên đặt ngưỡng khác 0.5?
             </p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-red-800 dark:bg-red-900/20">
-                <p className="mb-1 text-sm font-semibold text-red-700 dark:text-red-300">
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs leading-relaxed text-foreground dark:border-red-800 dark:bg-red-900/20">
+                <p className="mb-1 text-sm font-semibold text-foreground">
                   Ngưỡng thấp (0.2 − 0.4)
                 </p>
-                Khi bỏ sót rất tốn kém: ung thư, gian lận thẻ tín dụng, lọc khủng bố. Ưu tiên recall
-                — chấp nhận thêm ca cần xét lại.
+                Khi bỏ sót rất tốn kém: ung thư, gian lận thẻ tín dụng, lọc khủng bố. Ưu tiên recall,
+                chấp nhận thêm ca cần xét lại.
               </div>
-              <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-emerald-800 dark:bg-emerald-900/20">
-                <p className="mb-1 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs leading-relaxed text-foreground dark:border-emerald-800 dark:bg-emerald-900/20">
+                <p className="mb-1 text-sm font-semibold text-foreground">
                   Ngưỡng mặc định (0.5)
                 </p>
                 Cả hai loại sai có giá tương đương. Điểm khởi đầu cho mọi dự án chưa có ràng buộc
                 kinh doanh rõ ràng.
               </div>
-              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-foreground/85 dark:border-amber-800 dark:bg-amber-900/20">
-                <p className="mb-1 text-sm font-semibold text-amber-700 dark:text-amber-300">
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-foreground dark:border-amber-800 dark:bg-amber-900/20">
+                <p className="mb-1 text-sm font-semibold text-foreground">
                   Ngưỡng cao (0.7 − 0.9)
                 </p>
                 Khi báo nhầm rất tốn kém: email marketing (không muốn spam quá tay), quyết định
@@ -1010,7 +1010,7 @@ export default function LogisticRegressionTopic() {
 
           <div className="my-5 rounded-xl border border-border bg-surface/30 p-5">
             <p className="mb-3 text-sm font-semibold text-foreground">
-              Bốn bài toán thường gặp — nên đặt ngưỡng nào?
+              Bốn bài toán thường gặp: nên đặt ngưỡng nào?
             </p>
             <div className="overflow-x-auto rounded-lg border border-border">
               <table className="w-full text-xs">
@@ -1052,7 +1052,7 @@ export default function LogisticRegressionTopic() {
             </p>
           </div>
 
-          <CollapsibleDetail title="Đoán xác suất cho nhiều lớp (multi-class) — softmax">
+          <CollapsibleDetail title="Đoán xác suất cho nhiều lớp (multi-class) với softmax">
             <p className="text-sm leading-relaxed">
               Khi bài toán có 3 lớp trở lên (nhận dạng chữ, phân loại email thành 5 thư mục…),
               người ta tổng quát hoá sigmoid thành <strong>softmax</strong>. Ý tưởng giống hệt:
@@ -1073,16 +1073,16 @@ export default function LogisticRegressionTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8 · TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt & Kiểm tra">
         <MiniSummary
           title="5 điều cần nhớ"
           points={[
-            "Logistic = tuyến tính w·x + b + sigmoid σ — ép số bất kỳ vào khoảng (0, 1).",
+            "Logistic ghép tuyến tính w·x + b với sigmoid σ để ép số bất kỳ vào khoảng (0, 1).",
             "Biên quyết định là nơi xác suất bằng ngưỡng (mặc định 0.5, nhưng bạn có thể chỉnh).",
-            "Cross-entropy là hàm mất mát — lồi, phạt nặng khi mô hình tự tin nhưng sai.",
-            "Ngưỡng cao → precision tăng, recall giảm. Ngưỡng thấp → bắt nhiều ca dương hơn.",
-            "Chỉ phân tách được bằng đường thẳng — dữ liệu cong cần SVM kernel hoặc mạng nơ-ron.",
+            "Cross-entropy là hàm mất mát lồi, phạt nặng khi mô hình tự tin nhưng sai.",
+            "Ngưỡng cao thì precision tăng và recall giảm. Ngưỡng thấp thì bắt nhiều ca dương hơn.",
+            "Chỉ phân tách được bằng đường thẳng. Dữ liệu cong cần SVM kernel hoặc mạng nơ-ron.",
           ]}
         />
 
@@ -1092,8 +1092,8 @@ export default function LogisticRegressionTopic() {
             <strong>Xem ứng dụng thực tế:</strong>{" "}
             <TopicLink slug="logistic-regression-in-spam-filter">
               Logistic trong lọc spam Gmail
-            </TopicLink>{" "}
-            — cách bộ lọc thư rác biến xác suất thành quyết định &quot;vào hộp&quot; hay
+            </TopicLink>
+            . Cách bộ lọc thư rác biến xác suất thành quyết định &quot;vào hộp&quot; hay
             &quot;vào thùng rác&quot; mỗi giây.
           </div>
         </div>

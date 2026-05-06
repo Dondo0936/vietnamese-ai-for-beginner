@@ -24,9 +24,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "bias-variance",
   title: "Bias-Variance Tradeoff",
-  titleVi: "Bias và Variance — lệch tâm hay đạn rải",
+  titleVi: "Bias và Variance: lệch tâm hay đạn rải",
   description:
-    "Ẩn dụ bắn cung: bias là xa tâm, variance là đạn rải. Bốn tổ hợp xuất hiện khi bạn thay đổi độ phức tạp của mô hình.",
+    "Ẩn dụ bắn cung. Bias là xa tâm, variance là đạn rải. Bốn tổ hợp xuất hiện khi bạn thay đổi độ phức tạp của mô hình.",
   category: "classic-ml",
   tags: ["theory", "overfitting", "model-selection"],
   difficulty: "intermediate",
@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   RANDOM — seeded noise so arrows/fits stay stable across renders
+   RANDOM. seeded noise so arrows/fits stay stable across renders
    ──────────────────────────────────────────────────────────── */
 function seededRng(seed: number) {
   let s = seed >>> 0;
@@ -58,7 +58,7 @@ function gaussian(rng: () => number): number {
 }
 
 /* ────────────────────────────────────────────────────────────
-   DỮ LIỆU — 4 tấm bia kinh điển
+   DỮ LIỆU. 4 tấm bia kinh điển
    ──────────────────────────────────────────────────────────── */
 
 type ArcheryCase = {
@@ -76,7 +76,7 @@ const ARCHERY_CASES: ArcheryCase[] = [
   {
     id: "LL",
     title: "Bias thấp · Variance thấp",
-    tagline: "Lý tưởng — như xạ thủ Olympic",
+    tagline: "Lý tưởng. Như xạ thủ Olympic.",
     bias: 0,
     variance: 8,
     color: "#10b981",
@@ -87,34 +87,34 @@ const ARCHERY_CASES: ArcheryCase[] = [
   {
     id: "LH",
     title: "Bias thấp · Variance cao",
-    tagline: "Overfit — như xạ thủ đang ốm",
+    tagline: "Overfit. Như xạ thủ đang ốm.",
     bias: 0,
     variance: 28,
     color: "#f59e0b",
     modelAnalogy:
-      "Mô hình đủ linh hoạt để ngắm trúng tâm, nhưng quá nhạy với nhiễu dữ liệu — mỗi lần huấn luyện trên tập khác, đường tên bay lệch ngẫu nhiên.",
+      "Mô hình đủ linh hoạt để ngắm trúng tâm, nhưng quá nhạy với nhiễu dữ liệu. Mỗi lần huấn luyện trên tập khác, đường tên bay lệch ngẫu nhiên.",
     complexity: "complex-random",
   },
   {
     id: "HL",
     title: "Bias cao · Variance thấp",
-    tagline: "Underfit — ngắm sai nhưng sai đều",
+    tagline: "Underfit. Ngắm sai nhưng sai đều.",
     bias: 40,
     variance: 8,
     color: "#3b82f6",
     modelAnalogy:
-      "Mô hình quá đơn giản, không nắm bắt được đường cong thật. Mũi tên chụm lại ở sai vị trí — luôn sai cùng một cách.",
+      "Mô hình quá đơn giản, không nắm bắt được đường cong thật. Mũi tên chụm lại ở sai vị trí, luôn sai cùng một cách.",
     complexity: "simple",
   },
   {
     id: "HH",
     title: "Bias cao · Variance cao",
-    tagline: "Tệ nhất — ngắm sai và bắn bừa",
+    tagline: "Tệ nhất. Ngắm sai và bắn bừa.",
     bias: 40,
     variance: 28,
     color: "#ef4444",
     modelAnalogy:
-      "Mô hình sai từ cấu trúc và cũng không ổn định. Giải pháp: xem lại toàn bộ pipeline trước khi tinh chỉnh.",
+      "Mô hình sai từ cấu trúc và cũng không ổn định. Cách xử lý là rà lại toàn bộ pipeline trước khi đi tinh chỉnh.",
     complexity: "bad",
   },
 ];
@@ -134,7 +134,7 @@ function generateShots(bias: number, variance: number, seed: number) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   POLY FIT — Compare degree 1 vs 10 on sin(2π x) + noise
+   POLY FIT. Compare degree 1 vs 10 on sin(2π x) + noise
    ──────────────────────────────────────────────────────────── */
 
 type Point = { x: number; y: number };
@@ -246,27 +246,27 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Một mô hình đạt train accuracy 99% nhưng validation accuracy chỉ 70%. Đây là tình huống gì?",
     options: [
-      "Underfitting — bias cao, cần tăng phức tạp",
-      "Overfitting — variance cao, cần giảm phức tạp hoặc thêm dữ liệu",
-      "Sweet spot — kết quả đã tối ưu",
-      "Dữ liệu sai — cần thu thập lại",
+      "Underfitting. Bias cao, cần tăng phức tạp.",
+      "Overfitting. Variance cao, cần giảm phức tạp hoặc thêm dữ liệu.",
+      "Sweet spot. Kết quả đã tối ưu.",
+      "Dữ liệu sai. Cần thu thập lại.",
     ],
     correct: 1,
     explanation:
-      "Khoảng cách lớn giữa train và validation (29%) là dấu hiệu overfitting kinh điển. Mô hình thuộc lòng dữ liệu huấn luyện nhưng không khái quát. Giải pháp: thêm dữ liệu, regularization, giảm phức tạp, hoặc ensemble.",
+      "Khoảng cách lớn giữa train và validation (29%) là dấu hiệu overfitting kinh điển. Mô hình thuộc lòng dữ liệu huấn luyện nhưng không khái quát. Hướng xử lý là thêm dữ liệu, áp regularization, giảm phức tạp, hoặc ensemble.",
   },
   {
     question:
-      "Hồi quy tuyến tính cho dữ liệu có dạng parabol — đây là bias cao hay variance cao?",
+      "Hồi quy tuyến tính cho dữ liệu có dạng parabol. Đây là bias cao hay variance cao?",
     options: [
-      "Variance cao — mô hình quá nhạy",
-      "Bias cao — mô hình quá đơn giản, đường thẳng không bắt được đường cong",
-      "Cả hai đều thấp",
-      "Không thể xác định",
+      "Variance cao. Mô hình quá nhạy.",
+      "Bias cao. Mô hình quá đơn giản, đường thẳng không bắt được đường cong.",
+      "Cả hai đều thấp.",
+      "Không thể xác định.",
     ],
     correct: 1,
     explanation:
-      "Đường thẳng không thể mô tả được parabol — đây là sai số hệ thống (bias cao). Dù thêm dữ liệu, đường thẳng vẫn sai. Cần mô hình phức tạp hơn (polynomial degree 2 trở lên).",
+      "Đường thẳng không thể mô tả được parabol. Đây là sai số hệ thống (bias cao). Dù thêm dữ liệu, đường thẳng vẫn sai. Cần mô hình phức tạp hơn (polynomial degree 2 trở lên).",
   },
   {
     type: "fill-blank",
@@ -278,7 +278,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "U", accept: ["U", "hình U"] },
     ],
     explanation:
-      "Đây là bản chất của đánh đổi Bias-Variance: phức tạp tăng → bias giảm, variance tăng. Tổng sai số có hình chữ U với 'sweet spot' ở đáy.",
+      "Đây là bản chất của đánh đổi Bias-Variance. Khi phức tạp tăng, bias giảm còn variance tăng. Tổng sai số có hình chữ U với 'sweet spot' ở đáy.",
   },
   {
     question:
@@ -291,38 +291,38 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mỗi cây sâu có bias thấp (linh hoạt) và variance cao. Random Forest trung bình nhiều cây độc lập — variance giảm mạnh (nhiễu ngẫu nhiên triệt tiêu) còn bias gần như giữ nguyên. Đây là nguyên tắc vàng của ensemble.",
+      "Mỗi cây sâu có bias thấp (linh hoạt) và variance cao. Random Forest trung bình nhiều cây độc lập, nhờ vậy variance giảm mạnh (nhiễu ngẫu nhiên triệt tiêu) còn bias gần như giữ nguyên. Đây là nguyên tắc vàng của ensemble.",
   },
   {
     question:
-      "Irreducible error (σ² — noise của chính dữ liệu) có thể giảm bằng cách nào?",
+      "Irreducible error (σ², noise của chính dữ liệu) có thể giảm bằng cách nào?",
     options: [
       "Thêm dữ liệu huấn luyện",
       "Tăng độ phức tạp của mô hình",
       "Cải thiện chất lượng đo đạc dữ liệu (cảm biến tốt hơn, định nghĩa chặt hơn, loại outlier)",
-      "Không thể giảm — σ² là hằng số của vũ trụ",
+      "Không thể giảm. σ² là hằng số của vũ trụ.",
     ],
     correct: 2,
     explanation:
-      "σ² phản ánh nhiễu trong chính dữ liệu — không phụ thuộc mô hình. Thêm data, regularize không giảm được nó. Cách duy nhất là nâng chất lượng dữ liệu đầu vào: thiết bị đo tốt hơn, định nghĩa nhãn rõ ràng hơn, xử lý outlier.",
+      "σ² phản ánh nhiễu trong chính dữ liệu, không phụ thuộc mô hình. Thêm data hay regularize không giảm được nó. Cách duy nhất là nâng chất lượng dữ liệu đầu vào: thiết bị đo tốt hơn, định nghĩa nhãn rõ ràng hơn, xử lý outlier.",
   },
   {
     question:
       "Bạn fit đa thức bậc 10 cho 12 điểm dữ liệu. Train MSE = 0.00, Test MSE = 4.5. Vấn đề chính là gì?",
     options: [
-      "Bias quá cao — cần mô hình phức tạp hơn nữa",
-      "Variance bùng nổ — mô hình thuộc lòng 12 điểm nhưng dao động dữ dội giữa chúng",
-      "Thiếu regularization, nên thêm dropout",
-      "Learning rate quá cao",
+      "Bias quá cao. Cần mô hình phức tạp hơn nữa.",
+      "Variance bùng nổ. Mô hình thuộc lòng 12 điểm nhưng dao động dữ dội giữa chúng.",
+      "Thiếu regularization, nên thêm dropout.",
+      "Learning rate quá cao.",
     ],
     correct: 1,
     explanation:
-      "11 tham số fit 12 ràng buộc → đa thức đi qua gần hết điểm train (train MSE ≈ 0) nhưng oscillate kinh khủng ở khoảng giữa — hiện tượng Runge. Test MSE lớn vì variance cực cao. Giải pháp: giảm bậc, thêm dữ liệu, hoặc regularization mạnh.",
+      "11 tham số fit 12 ràng buộc, nên đa thức đi qua gần hết điểm train (train MSE ≈ 0) nhưng oscillate kinh khủng ở khoảng giữa, đó là hiện tượng Runge. Test MSE lớn vì variance cực cao. Hướng xử lý là giảm bậc, thêm dữ liệu, hoặc regularization mạnh.",
   },
 ];
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT — TARGET (1 tấm bia cho 1 archery case)
+   COMPONENT. TARGET (1 tấm bia cho 1 archery case)
    ──────────────────────────────────────────────────────────── */
 
 function ArcheryTarget({
@@ -382,7 +382,7 @@ function ArcheryTarget({
         ))}
       </svg>
       <div className="mt-2 px-1">
-        <div className="text-[11px] font-bold" style={{ color: archCase.color }}>
+        <div className="text-[11px] font-bold text-foreground">
           {archCase.title}
         </div>
         <div className="text-[10px] text-muted leading-tight">
@@ -394,7 +394,7 @@ function ArcheryTarget({
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT — ERROR CURVE (under SliderGroup)
+   COMPONENT. ERROR CURVE (under SliderGroup)
    ──────────────────────────────────────────────────────────── */
 
 function ErrorCurveVisualization({
@@ -431,10 +431,10 @@ function ErrorCurveVisualization({
 
   const zone =
     complexity <= 3
-      ? "Underfit — bias cao"
+      ? "Underfit. Bias cao."
       : complexity <= 8
-        ? "Sweet spot — cân bằng"
-        : "Overfit — variance cao";
+        ? "Sweet spot. Cân bằng."
+        : "Overfit. Variance cao.";
   const zoneColor =
     complexity <= 3 ? "#3b82f6" : complexity <= 8 ? "#10b981" : "#f59e0b";
 
@@ -493,8 +493,8 @@ function ErrorCurveVisualization({
         </span>
       </div>
       <div
-        className="rounded-lg px-3 py-2 text-center text-sm font-semibold"
-        style={{ backgroundColor: zoneColor + "22", color: zoneColor }}
+        className="rounded-lg px-3 py-2 text-center text-sm font-semibold text-foreground"
+        style={{ backgroundColor: zoneColor + "22" }}
       >
         Độ phức tạp = {complexity}/20 → {zone}
       </div>
@@ -503,7 +503,7 @@ function ErrorCurveVisualization({
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT — POLY FIT overlay for ToggleCompare
+   COMPONENT. POLY FIT overlay for ToggleCompare
    ──────────────────────────────────────────────────────────── */
 
 function PolyFitChart({ degree, seed }: { degree: number; seed: number }) {
@@ -605,7 +605,7 @@ function PolyFitChart({ degree, seed }: { degree: number; seed: number }) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   COMPONENT PHỤ — ModelRow & DiagnosisStep
+   COMPONENT PHỤ. ModelRow & DiagnosisStep
    ──────────────────────────────────────────────────────────── */
 
 function badgeColor(label: string): string {
@@ -689,11 +689,11 @@ function DiagnosisStep({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 text-xs">
         <div className="rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-2">
-          <strong className="text-emerald-600">Có &rarr;</strong>{" "}
+          <strong className="text-emerald-900 dark:text-emerald-200">Có &rarr;</strong>{" "}
           <span className="text-foreground/80">{yes}</span>
         </div>
         <div className="rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 p-2">
-          <strong className="text-rose-600">Không &rarr;</strong>{" "}
+          <strong className="text-rose-900 dark:text-rose-200">Không &rarr;</strong>{" "}
           <span className="text-foreground/80">{no}</span>
         </div>
       </div>
@@ -711,35 +711,35 @@ export default function BiasVarianceTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1. HOOK / DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn bắn 10 mũi tên. Cả 10 mũi đều lệch tâm sang phải 20cm nhưng chụm sát nhau thành một cụm nhỏ. Bạn đang gặp vấn đề gì?"
           options={[
-            "Tập trung kém — cần bắn chậm lại để chụm hơn",
-            "Ngắm sai — sai hệ thống cùng chiều. Cần chỉnh thước ngắm sang trái 20cm.",
-            "Tên bị cong — cần đổi tên",
-            "Thời tiết — cần đợi gió lặng",
+            "Tập trung kém. Cần bắn chậm lại để chụm hơn.",
+            "Ngắm sai. Đây là sai hệ thống cùng chiều, cần chỉnh thước ngắm sang trái 20cm.",
+            "Tên bị cong. Cần đổi tên.",
+            "Thời tiết. Cần đợi gió lặng.",
           ]}
           correct={1}
-          explanation="Khi mọi mũi tên lệch cùng hướng, đó là sai hệ thống — gọi là bias cao. Sự chụm lại (variance thấp) cho biết bạn đang ổn định, chỉ cần chỉnh điểm ngắm. Trong ML, mô hình underfit có đúng tính chất này: sai nhất quán, sửa bằng cách tăng độ phức tạp chứ không phải tăng dữ liệu."
+          explanation="Khi mọi mũi tên lệch cùng hướng, đó là sai hệ thống. Hiện tượng đó được gọi là bias cao. Sự chụm lại (variance thấp) cho biết bạn đang ổn định, chỉ cần chỉnh điểm ngắm. Trong ML, mô hình underfit có đúng tính chất này: sai nhất quán, sửa bằng cách tăng độ phức tạp chứ không phải tăng dữ liệu."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Mô hình ML cũng &ldquo;bắn cung&rdquo; vào kết quả đúng. Hôm nay bạn sẽ thấy <strong>bốn tổ hợp</strong>{" "}
-            bias–variance hiện ra thành bốn tấm bia. Biết đang ở tấm bia nào, bạn biết phải chỉnh gì.
+            bias-variance hiện ra thành bốn tấm bia. Biết đang ở tấm bia nào, bạn biết phải chỉnh gì.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ BẮN CUNG (4 tấm bia) ━━━ */}
+      {/* ━━━ BƯỚC 2. ẨN DỤ BẮN CUNG (4 tấm bia) ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Bốn tấm bia">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <TargetIcon size={20} className="text-accent" /> Bốn tổ hợp bias × variance
           </h3>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Bốn tấm bia dưới đây tái hiện bốn tình huống huấn luyện mô hình. Click vào từng tấm để xem
-            mô hình tương ứng trông như thế nào — và tại sao cả hai chiều (xa tâm và rải) đều quan trọng.
+            Bốn tấm bia dưới đây tái hiện bốn tình huống huấn luyện mô hình. Bấm vào từng tấm để xem
+            mô hình tương ứng trông như thế nào, và tại sao cả hai chiều (xa tâm và rải) đều quan trọng.
           </p>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -774,12 +774,12 @@ export default function BiasVarianceTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HOÁ CHÍNH (slider độ phức tạp) ━━━ */}
+      {/* ━━━ BƯỚC 3. TRỰC QUAN HOÁ CHÍNH (slider độ phức tạp) ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-4 leading-relaxed">
-            Đây là quan sát cốt lõi: <strong>độ phức tạp mô hình</strong> là một cái nút. Kéo nút lên —
-            bias giảm, variance tăng. Kéo xuống — bias tăng, variance giảm. Tổng sai số có hình chữ U,
+            Đây là quan sát cốt lõi. <strong>Độ phức tạp mô hình</strong> là một cái nút. Kéo nút lên,
+            bias giảm còn variance tăng. Kéo xuống, bias tăng còn variance giảm. Tổng sai số có hình chữ U,
             và bạn đang đi tìm đáy chữ U đó.
           </p>
 
@@ -801,44 +801,44 @@ export default function BiasVarianceTopic() {
           <Callout variant="insight" title="Ba điều bạn vừa thấy">
             <ul className="list-disc pl-5 space-y-0.5 mt-1">
               <li>
-                <strong>Đường xanh (Bias²):</strong> luôn giảm khi tăng phức tạp — mô hình nhiều
+                <strong>Đường xanh (Bias²):</strong> luôn giảm khi tăng phức tạp. Mô hình nhiều
                 tham số thì bắt được nhiều mẫu hơn.
               </li>
               <li>
-                <strong>Đường cam (Variance):</strong> luôn tăng khi tăng phức tạp — mô hình nhạy
+                <strong>Đường cam (Variance):</strong> luôn tăng khi tăng phức tạp. Mô hình nhạy
                 hơn với từng mẫu dữ liệu cụ thể.
               </li>
               <li>
-                <strong>Đường đỏ đứt (Tổng):</strong> hình chữ U. Đáy chữ U là điểm bạn nên chọn —
-                gọi là <em>sweet spot</em>.
+                <strong>Đường đỏ đứt (Tổng):</strong> hình chữ U. Đáy chữ U là điểm bạn nên chọn,
+                còn gọi là <em>sweet spot</em>.
               </li>
             </ul>
           </Callout>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4. AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          <strong>Bias-Variance Tradeoff</strong> không phải là lỗi cần sửa — nó là bản chất toán học
+          <strong>Bias-Variance Tradeoff</strong> không phải là lỗi cần sửa. Đây là bản chất toán học
           của việc học từ dữ liệu có hạn. Ngắm trúng tâm (bias thấp) và bắn ổn định (variance thấp) là{" "}
           <em>hai kỹ năng khác nhau</em>.
           <br />
           <br />
-          Biết mô hình của bạn đang ở đâu trên trục bias-variance, bạn biết phải thêm gì: thêm độ
+          Biết mô hình của bạn đang ở đâu trên trục bias-variance, bạn biết phải thêm gì. Thêm độ
           phức tạp để giảm bias, thêm dữ liệu hay ensemble để giảm variance, cải thiện đo đạc để
-          giảm noise. Không có <em>một viên đạn bạc</em> — có ba loại thuốc cho ba loại bệnh.
+          giảm noise. Không có <em>một viên đạn bạc</em> nào ở đây, mà là ba loại thuốc cho ba loại bệnh.
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — ĐI SÂU: COMPARE BẬC 1 vs BẬC 10 ━━━ */}
+      {/* ━━━ BƯỚC 5. ĐI SÂU. COMPARE BẬC 1 vs BẬC 10 ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Đi sâu">
         <div className="space-y-4">
           <h3 className="text-base font-semibold text-foreground">
-            Cùng một dữ liệu, hai mô hình — kết quả trái ngược
+            Cùng một dữ liệu, hai mô hình cho kết quả trái ngược
           </h3>
           <p className="text-sm text-muted leading-relaxed">
-            15 điểm dữ liệu được sinh từ hàm sin + nhiễu nhẹ. Bấm qua lại giữa bậc 1 (đường thẳng) và
+            15 điểm dữ liệu được sinh từ hàm sin cộng nhiễu nhẹ. Bấm qua lại giữa bậc 1 (đường thẳng) và
             bậc 10 (đa thức cong) để thấy hai đầu cực đoan của thang bias-variance.
           </p>
 
@@ -850,9 +850,9 @@ export default function BiasVarianceTopic() {
               <div className="space-y-3">
                 <PolyFitChart degree={1} seed={42} />
                 <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3">
-                  <p className="text-xs text-blue-700 dark:text-blue-300">
+                  <p className="text-xs text-foreground">
                     <strong>Bias rất cao.</strong> Đường thẳng không thể mô phỏng đường sin. Mô hình
-                    sai nhất quán ở cả hai đầu — không thể sửa bằng thêm dữ liệu. Cần tăng độ phức tạp
+                    sai nhất quán ở cả hai đầu, và không thể sửa bằng thêm dữ liệu. Cần tăng độ phức tạp
                     (bậc cao hơn).
                   </p>
                 </div>
@@ -862,9 +862,9 @@ export default function BiasVarianceTopic() {
               <div className="space-y-3">
                 <PolyFitChart degree={10} seed={42} />
                 <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3">
-                  <p className="text-xs text-red-700 dark:text-red-300">
+                  <p className="text-xs text-foreground">
                     <strong>Variance bùng nổ.</strong> Đa thức đi qua gần hết điểm, nhưng dao động dữ
-                    dội ở giữa. Train MSE rất thấp nhưng test MSE cao — hiện tượng Runge. Cần giảm
+                    dội ở giữa. Train MSE rất thấp nhưng test MSE cao, đó là hiện tượng Runge. Cần giảm
                     bậc, thêm dữ liệu, hoặc regularization (Ridge, Lasso).
                   </p>
                 </div>
@@ -874,48 +874,48 @@ export default function BiasVarianceTopic() {
 
           <Callout variant="tip" title="Bạn đọc learning curve thế nào?">
             <ul className="list-disc pl-5 space-y-0.5">
-              <li><strong>Train thấp, val thấp:</strong> underfit → tăng phức tạp.</li>
-              <li><strong>Train cao, val thấp (gap lớn):</strong> overfit → thêm dữ liệu, regularize.</li>
-              <li><strong>Cả hai cao, gap nhỏ:</strong> bạn đang ở sweet spot — đủ tốt rồi.</li>
+              <li><strong>Train thấp, val thấp:</strong> underfit, hãy tăng phức tạp.</li>
+              <li><strong>Train cao, val thấp (gap lớn):</strong> overfit, hãy thêm dữ liệu hoặc regularize.</li>
+              <li><strong>Cả hai cao, gap nhỏ:</strong> bạn đang ở sweet spot, vậy là đủ tốt rồi.</li>
               <li>
-                <strong>Val &gt; Train:</strong> hiếm gặp, thường là rò rỉ dữ liệu giữa train và val —
-                kiểm tra lại pipeline.
+                <strong>Val &gt; Train:</strong> hiếm gặp, thường là rò rỉ dữ liệu giữa train và val.
+                Hãy kiểm tra lại pipeline.
               </li>
             </ul>
           </Callout>
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 6. THỬ THÁCH ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
-          question="Bạn có 500 ảnh chó/mèo và train một mạng deep learning 50 triệu tham số. Train accuracy = 100%, val accuracy = 65%. Bạn đang ở bên nào của đường cong chữ U?"
+          question="Bạn có 500 ảnh chó/mèo và huấn luyện một mạng deep learning 50 triệu tham số. Train accuracy = 100%, val accuracy = 65%. Bạn đang ở bên nào của đường cong chữ U?"
           options={[
-            "Bên trái — underfit, cần mô hình lớn hơn nữa",
-            "Bên phải — overfit, cần thêm dữ liệu hoặc giảm phức tạp",
-            "Đúng đáy — kết quả đã tối ưu",
-            "Không thể xác định nếu chưa biết loss function",
+            "Bên trái. Underfit, cần mô hình lớn hơn nữa.",
+            "Bên phải. Overfit, cần thêm dữ liệu hoặc giảm phức tạp.",
+            "Đúng đáy. Kết quả đã tối ưu.",
+            "Không thể xác định nếu chưa biết loss function.",
           ]}
           correct={1}
-          explanation="50 triệu tham số so với 500 ảnh là tỉ lệ rất mất cân. Mạng học thuộc từng ảnh (train 100%) nhưng không khái quát (val 65%). Giải pháp theo thứ tự: data augmentation, pretrained backbone (transfer learning), regularization (dropout, weight decay), hoặc chọn kiến trúc nhỏ hơn. Đây là bên phải đường cong chữ U."
+          explanation="50 triệu tham số so với 500 ảnh là tỉ lệ rất mất cân. Mạng học thuộc từng ảnh (train 100%) nhưng không khái quát (val 65%). Hướng xử lý theo thứ tự: data augmentation, pretrained backbone (transfer learning), regularization (dropout, weight decay), hoặc chọn kiến trúc nhỏ hơn. Đây là bên phải đường cong chữ U."
         />
 
         <div className="mt-5">
           <InlineChallenge
             question="Nhóm nghiên cứu cá ngừ đo 8 đặc điểm của cá để dự đoán tuổi. Mô hình hồi quy tuyến tính cho R² = 0.4 trên cả train và val. Vấn đề là gì?"
             options={[
-              "Overfit — cần giảm feature và regularize",
-              "Underfit — mối quan hệ giữa 8 đặc điểm và tuổi có thể phi tuyến, cần mô hình phức tạp hơn (polynomial, tree-based)",
-              "Noise quá cao — nên bỏ dự án",
-              "Thiếu dữ liệu — nên đo thêm 10 đặc điểm nữa",
+              "Overfit. Cần giảm feature và regularize.",
+              "Underfit. Mối quan hệ giữa 8 đặc điểm và tuổi có thể phi tuyến, cần mô hình phức tạp hơn (polynomial, tree-based).",
+              "Noise quá cao. Nên bỏ dự án.",
+              "Thiếu dữ liệu. Nên đo thêm 10 đặc điểm nữa.",
             ]}
             correct={1}
-            explanation="Train và val cùng thấp là đặc điểm underfit — bias cao. Mô hình tuyến tính đơn giản không nắm được đường cong. Hướng đi: thử polynomial regression, random forest, hoặc gradient boosting. Nếu các mô hình phi tuyến cũng không cải thiện, khi đó mới nên nghi ngờ chất lượng dữ liệu hoặc noise."
+            explanation="Train và val cùng thấp là đặc điểm underfit, tức bias cao. Mô hình tuyến tính đơn giản không nắm được đường cong. Hướng đi là thử polynomial regression, random forest, hoặc gradient boosting. Nếu các mô hình phi tuyến cũng không cải thiện, khi đó mới nên nghi ngờ chất lượng dữ liệu hoặc noise."
           />
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — GIẢI THÍCH (công thức + trực quan) ━━━ */}
+      {/* ━━━ BƯỚC 7. GIẢI THÍCH (công thức + trực quan) ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p className="leading-relaxed">
@@ -923,8 +923,8 @@ export default function BiasVarianceTopic() {
             <span className="font-mono text-sm">ε</span>, phương sai{" "}
             <span className="font-mono text-sm">σ²</span>), giá trị quan sát được là{" "}
             <span className="font-mono text-sm">y = f(x) + ε</span>. Sai số kỳ vọng của dự đoán{" "}
-            <span className="font-mono text-sm">ŷ(x)</span> — lấy trung bình trên nhiều tập huấn
-            luyện khả dĩ — phân rã đẹp đẽ thành <strong>ba thành phần</strong> không âm:
+            <span className="font-mono text-sm">ŷ(x)</span>, lấy trung bình trên nhiều tập huấn
+            luyện khả dĩ, phân rã đẹp đẽ thành <strong>ba thành phần</strong> không âm:
           </p>
 
           <div className="rounded-xl border border-border bg-surface/40 p-5 my-4">
@@ -948,7 +948,7 @@ export default function BiasVarianceTopic() {
                 Khoảng cách trung bình từ dự đoán của mô hình đến giá trị thật. Cao khi mô hình quá
                 đơn giản so với hàm cần học.
               </p>
-              <p className="text-[11px] text-blue-700 dark:text-blue-300">
+              <p className="text-[11px] text-foreground">
                 <strong>Giảm bằng:</strong> tăng độ phức tạp, thêm feature, giảm regularization.
               </p>
             </div>
@@ -963,7 +963,7 @@ export default function BiasVarianceTopic() {
                 Mô hình thay đổi bao nhiêu khi bạn huấn luyện lại trên tập dữ liệu khác cùng phân
                 phối. Cao khi mô hình quá nhạy với nhiễu.
               </p>
-              <p className="text-[11px] text-amber-700 dark:text-amber-300">
+              <p className="text-[11px] text-foreground">
                 <strong>Giảm bằng:</strong> thêm dữ liệu, regularization, ensemble, giảm phức tạp.
               </p>
             </div>
@@ -975,10 +975,10 @@ export default function BiasVarianceTopic() {
                 <span className="text-sm font-semibold text-foreground">Noise không thể giảm</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Nhiễu vốn có của chính dữ liệu — không phụ thuộc mô hình. Là giới hạn dưới của sai số
+                Nhiễu vốn có của chính dữ liệu, không phụ thuộc mô hình. Đây là giới hạn dưới của sai số
                 mà bạn có thể đạt được.
               </p>
-              <p className="text-[11px] text-rose-700 dark:text-rose-300">
+              <p className="text-[11px] text-foreground">
                 <strong>Giảm bằng:</strong> cải thiện đo đạc, định nghĩa nhãn, loại outlier dữ liệu.
               </p>
             </div>
@@ -1015,10 +1015,10 @@ export default function BiasVarianceTopic() {
 
           <Callout variant="warning" title="Bốn sai lầm hay gặp">
             <ol className="list-decimal pl-5 space-y-0.5 mt-1">
-              <li>Chọn mô hình dựa trên train error — luôn dẫn đến model phức tạp nhất, tức overfit.</li>
-              <li>Regularize &ldquo;theo mặc định&rdquo; mà không tune λ — có thể gây underfit ngược.</li>
-              <li>So sánh model nhiều feature bằng R² thô — R² chỉ tăng khi thêm feature, kể cả feature rác.</li>
-              <li>Không cố định random seed khi so sánh — variance giữa các seed che lấp khác biệt thật.</li>
+              <li>Chọn mô hình dựa trên train error. Cách làm này luôn dẫn đến model phức tạp nhất, tức overfit.</li>
+              <li>Regularize &ldquo;theo mặc định&rdquo; mà không tune λ. Việc này có thể gây underfit ngược.</li>
+              <li>So sánh model nhiều feature bằng R² thô. R² chỉ tăng khi thêm feature, kể cả feature rác.</li>
+              <li>Không cố định random seed khi so sánh. Variance giữa các seed sẽ che lấp khác biệt thật.</li>
             </ol>
           </Callout>
 
@@ -1027,8 +1027,8 @@ export default function BiasVarianceTopic() {
             Bản đồ bias-variance cho các mô hình phổ biến
           </h4>
           <p className="text-sm leading-relaxed mb-3">
-            Khi nhìn qua lăng kính bias–variance, các mô hình ML cổ điển xếp khá rõ ràng. Bảng dưới
-            đây là điểm xuất phát — không phải chân lý tuyệt đối, vì các hyperparameter có thể đẩy
+            Khi nhìn qua lăng kính bias-variance, các mô hình ML cổ điển xếp khá rõ ràng. Bảng dưới
+            đây là điểm xuất phát, không phải chân lý tuyệt đối, vì các hyperparameter có thể đẩy
             một mô hình đi theo hướng khác.
           </p>
 
@@ -1053,13 +1053,13 @@ export default function BiasVarianceTopic() {
                   name="Decision tree (sâu)"
                   bias="Rất thấp"
                   variance="Rất cao"
-                  note="Linh hoạt nhưng nhạy. Không ổn định — thay vài mẫu là cây khác hẳn."
+                  note="Linh hoạt nhưng nhạy. Không ổn định, thay vài mẫu là cây khác hẳn."
                 />
                 <ModelRow
                   name="Random Forest"
                   bias="Gần với tree đơn"
                   variance="Thấp"
-                  note="Trung bình nhiều cây → variance giảm mạnh, bias gần như không đổi."
+                  note="Trung bình nhiều cây làm variance giảm mạnh, bias gần như không đổi."
                 />
                 <ModelRow
                   name="KNN (k nhỏ)"
@@ -1083,7 +1083,7 @@ export default function BiasVarianceTopic() {
                   name="Gradient Boosting"
                   bias="Thấp dần theo boost"
                   variance="Tăng dần"
-                  note="Mỗi cây thêm vào giảm bias nhưng tăng variance — early stopping là chìa khoá."
+                  note="Mỗi cây thêm vào giảm bias nhưng tăng variance, nên early stopping là chìa khoá."
                 />
               </tbody>
             </table>
@@ -1094,7 +1094,7 @@ export default function BiasVarianceTopic() {
             Sơ đồ chẩn đoán nhanh khi mô hình chưa tốt
           </h4>
           <p className="text-sm leading-relaxed mb-3">
-            Bốn câu hỏi dưới đây giúp bạn quyết định bước tiếp theo cần làm. Đừng bỏ qua bước 1 — đa
+            Bốn câu hỏi dưới đây giúp bạn quyết định bước tiếp theo cần làm. Đừng bỏ qua bước 1, vì đa
             số người nhảy thẳng sang &ldquo;đổi mô hình&rdquo; trước khi hiểu mình đang ở đâu.
           </p>
 
@@ -1102,7 +1102,7 @@ export default function BiasVarianceTopic() {
             <DiagnosisStep
               num={1}
               q="Train error có thấp không?"
-              yes="Tiếp bước 2 — mô hình đủ phức tạp."
+              yes="Sang bước 2. Mô hình đã đủ phức tạp."
               no="Underfit. Tăng độ phức tạp, thêm feature, giảm regularization. Đừng thêm dữ liệu vội."
               color="#3b82f6"
             />
@@ -1110,13 +1110,13 @@ export default function BiasVarianceTopic() {
               num={2}
               q="Gap giữa train và validation có lớn không?"
               yes="Overfit. Thêm dữ liệu, regularize, ensemble, giảm phức tạp."
-              no="Tiếp bước 3 — mô hình khái quát ổn."
+              no="Sang bước 3. Mô hình khái quát ổn."
               color="#f59e0b"
             />
             <DiagnosisStep
               num={3}
               q="Validation error có đạt target business?"
-              yes="Tiếp bước 4 — gần như xong."
+              yes="Sang bước 4. Gần như xong rồi."
               no="Sweet spot nhưng chưa đủ tốt. Cân nhắc feature engineering, thay đổi kiến trúc, hoặc tăng chất lượng dữ liệu."
               color="#10b981"
             />
@@ -1136,22 +1136,22 @@ export default function BiasVarianceTopic() {
             <TopicLink slug="regularization">Regularization</TopicLink> cho các kỹ thuật như L1/L2,
             dropout. Sau đó{" "}
             <TopicLink slug="random-forests">Random Forest</TopicLink> minh hoạ cách ensemble giảm
-            variance mà không tăng bias — một trong những &ldquo;cú nhảy&rdquo; quan trọng nhất trong ML cổ điển.
+            variance mà không tăng bias. Đây là một trong những &ldquo;cú nhảy&rdquo; quan trọng nhất trong ML cổ điển.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — TÓM TẮT + QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8. TÓM TẮT + QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt & Kiểm tra">
         <MiniSummary
           title="6 điều mang theo ra khỏi bài"
           points={[
             "Tổng sai số = Bias² + Variance + σ². Ba thành phần luôn không âm và không thể triệt tiêu cùng lúc.",
-            "Bias cao = sai hệ thống, mô hình quá đơn giản (underfit). Variance cao = quá nhạy, mô hình quá phức tạp (overfit).",
-            "Tăng phức tạp: bias giảm, variance tăng. Tổng có hình chữ U — sweet spot ở đáy.",
-            "Chẩn đoán: train & val đều thấp → underfit. Train cao, val thấp → overfit. Cả hai cao → sweet spot.",
-            "Giảm bias: tăng phức tạp, thêm feature. Giảm variance: thêm dữ liệu, regularize, ensemble.",
-            "σ² là giới hạn dưới — không thể giảm bằng mô hình. Cải thiện chất lượng dữ liệu là cách duy nhất.",
+            "Bias cao là sai hệ thống, mô hình quá đơn giản (underfit). Variance cao là quá nhạy, mô hình quá phức tạp (overfit).",
+            "Tăng phức tạp thì bias giảm còn variance tăng. Tổng có hình chữ U, sweet spot nằm ở đáy.",
+            "Chẩn đoán: train và val đều thấp là underfit. Train cao, val thấp là overfit. Cả hai cao là sweet spot.",
+            "Muốn giảm bias thì tăng phức tạp hoặc thêm feature. Muốn giảm variance thì thêm dữ liệu, regularize, hoặc ensemble.",
+            "σ² là giới hạn dưới, không thể giảm bằng mô hình. Cải thiện chất lượng dữ liệu là cách duy nhất.",
           ]}
         />
 
@@ -1168,7 +1168,7 @@ export default function BiasVarianceTopic() {
         <div className="mt-6 flex items-center justify-center">
           <div className="flex items-center gap-2 text-xs text-muted">
             <Sparkles size={12} />
-            Một khái niệm — hiện diện trong mọi mô hình ML.
+            Một khái niệm hiện diện trong mọi mô hình ML.
           </div>
         </div>
       </LessonSection>
