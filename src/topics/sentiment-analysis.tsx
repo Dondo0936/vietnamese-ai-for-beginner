@@ -45,9 +45,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "sentiment-analysis",
   title: "Sentiment Analysis",
-  titleVi: "Phân tích cảm xúc văn bản",
+  titleVi: "Sentiment analysis: đọc cảm xúc trong bình luận",
   description:
-    "AI đọc bình luận khách hàng rồi đoán tích cực, tiêu cực hay trung tính — như một nhân viên marketing lướt Facebook nhưng làm với hàng triệu câu mỗi phút.",
+    "AI gom bình luận thành tích cực, tiêu cực hoặc trung tính để đội marketing thấy tín hiệu sớm.",
   category: "nlp",
   tags: ["nlp", "classification", "opinion-mining"],
   difficulty: "intermediate",
@@ -180,7 +180,7 @@ const TRICKY_CASES: TrickyCase[] = [
     text: "Cũng được, không có gì đặc biệt",
     naive: "neutral",
     correct: "neutral",
-    note: "Thực sự trung tính — khách không chê không khen.",
+    note: "Thực sự trung tính, khách không chê không khen.",
   },
   {
     text: "Hơi chán nhưng đáng tiền",
@@ -211,10 +211,10 @@ const TRICKY_CASES: TrickyCase[] = [
 /* ── Quiz ───────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
-    question: `Review Shopee: "Sản phẩm không tệ lắm" — cảm xúc là gì?`,
+    question: `Review Shopee: "Sản phẩm không tệ lắm", cảm xúc là gì?`,
     options: [
-      "Tiêu cực — vì có từ 'tệ'",
-      "Tích cực nhẹ — 'không' + 'tệ' = đảo ngữ",
+      "Tiêu cực, vì có từ 'tệ'",
+      "Tích cực nhẹ, 'không' + 'tệ' = đảo ngữ",
       "Trung tính",
       "Không xác định được",
     ],
@@ -240,7 +240,7 @@ const QUIZ: QuizQuestion[] = [
       "Khách viết: 'Ship siêu nhanh nhé, 10 ngày mới tới 😒'. Vì sao máy dễ đoán sai?",
     options: [
       "Vì có emoji",
-      "Vì đây là MỈA MAI — câu có vẻ khen nhưng ngữ cảnh là chê",
+      "Vì đây là MỈA MAI, câu có vẻ khen nhưng ngữ cảnh là chê",
       "Vì tiếng Việt",
       "Vì không có từ tiêu cực",
     ],
@@ -325,7 +325,7 @@ export default function SentimentAnalysisTopic() {
   return (
     <>
       {/* =================================================================
-          BƯỚC 1 — DỰ ĐOÁN
+          BƯỚC 1, DỰ ĐOÁN
           ================================================================= */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
@@ -336,12 +336,12 @@ export default function SentimentAnalysisTopic() {
             "Hoàn toàn tiêu cực",
           ]}
           correct={1}
-          explanation="Khách khen 'giao nhanh, sản phẩm tốt' nhưng chê nhẹ 'đóng gói sơ sài'. Ba lớp đơn giản (tích cực / tiêu cực / trung tính) không đủ — thực tế đội marketing cần nhìn cả hai mặt để cải thiện đúng chỗ."
+          explanation="Khách khen 'giao nhanh, sản phẩm tốt' nhưng chê nhẹ 'đóng gói sơ sài'. Ba lớp đơn giản (tích cực / tiêu cực / trung tính) không đủ, thực tế đội marketing cần nhìn cả hai mặt để cải thiện đúng chỗ."
         />
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 2 — ẨN DỤ: AI đọc bình luận như người lướt Facebook
+          BƯỚC 2, ẨN DỤ: AI đọc bình luận như người lướt Facebook
           ================================================================= */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
         <div className="space-y-4">
@@ -349,7 +349,7 @@ export default function SentimentAnalysisTopic() {
             Hãy nhớ lại lúc bạn lướt Facebook xem khách bình luận trên trang của
             công ty mình. Chỉ cần liếc qua là bạn biết khách đang <strong>khen</strong>,{" "}
             <strong>chê</strong>, hay chỉ <strong>hỏi giá</strong>. Bộ não bạn đọc
-            mấy chục bình luận/phút đã mệt — AI làm đúng việc đó cho{" "}
+            mấy chục bình luận/phút đã mệt, AI làm đúng việc đó cho{" "}
             <strong>hàng triệu bình luận mỗi giờ</strong>, liên tục, không cần cà
             phê.
           </p>
@@ -406,7 +406,7 @@ export default function SentimentAnalysisTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 3 — BA DEMO TRỰC QUAN
+          BƯỚC 3, BA DEMO TRỰC QUAN
           ================================================================= */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Trực quan hóa">
         <VisualizationSection topicSlug={metadata.slug}>
@@ -421,7 +421,7 @@ export default function SentimentAnalysisTopic() {
               </div>
               <p className="text-xs text-muted leading-relaxed">
                 Gõ một bình luận tiếng Việt bất kỳ. Máy tô từ tích cực (xanh),
-                tiêu cực (đỏ), và từ đảo ngữ như &ldquo;không&rdquo; (cam) — rồi
+                tiêu cực (đỏ), và từ đảo ngữ như &ldquo;không&rdquo; (cam), rồi
                 tổng hợp thành một nhãn.
               </p>
 
@@ -808,7 +808,7 @@ export default function SentimentAnalysisTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 4 — AHA MOMENT
+          BƯỚC 4, AHA MOMENT
           ================================================================= */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
@@ -820,13 +820,13 @@ export default function SentimentAnalysisTopic() {
           </p>
           <p className="text-sm text-muted mt-2">
             Đó là lý do các mô hình hiện đại (BERT, PhoBERT, LLM) thay thế cách
-            làm cũ — chúng không đếm, chúng đọc.
+            làm cũ, chúng không đếm, chúng đọc.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 5 — CHALLENGE NHANH
+          BƯỚC 5, CHALLENGE NHANH
           ================================================================= */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
@@ -843,19 +843,18 @@ export default function SentimentAnalysisTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 6 — GIẢI THÍCH SÂU (visual-heavy)
+          BƯỚC 6, GIẢI THÍCH SÂU (visual-heavy)
           ================================================================= */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
             Phân tích cảm xúc là một dạng riêng của{" "}
-            <TopicLink slug="text-classification">phân loại văn bản</TopicLink>{" "}
-            — thay vì gán nhãn &ldquo;thể thao / kinh tế&rdquo;, ta gán nhãn
+            <TopicLink slug="text-classification">phân loại văn bản</TopicLink>{" "}, thay vì gán nhãn &ldquo;thể thao / kinh tế&rdquo;, ta gán nhãn
             &ldquo;tích cực / tiêu cực&rdquo;. Marketer cần hiểu ba dòng công
             nghệ sau để chọn đúng công cụ.
           </p>
 
-          {/* Ba kỹ thuật — thẻ Callout */}
+          {/* Ba kỹ thuật, thẻ Callout */}
           <div className="grid gap-3 md:grid-cols-3">
             <div className="rounded-xl border border-border bg-card p-4 space-y-2">
               <div className="flex items-center gap-2">
@@ -902,7 +901,7 @@ export default function SentimentAnalysisTopic() {
                 GPT-4 đa ngôn ngữ.
               </p>
               <div className="text-[10px] text-muted">
-                <p><strong>85–95%</strong> — tốt nhất hiện nay.</p>
+                <p><strong>85–95%</strong>, tốt nhất hiện nay.</p>
               </div>
             </div>
           </div>
@@ -915,7 +914,7 @@ export default function SentimentAnalysisTopic() {
             <ToggleCompare
               labelA="Từ điển đếm từ"
               labelB="PhoBERT hiểu ngữ cảnh"
-              description="Cùng một câu, hai cách đọc — bên nào giống đồng nghiệp của bạn hơn?"
+              description="Cùng một câu, hai cách đọc, bên nào giống đồng nghiệp của bạn hơn?"
               childA={
                 <div className="space-y-2">
                   {[
@@ -982,7 +981,7 @@ export default function SentimentAnalysisTopic() {
                   <p className="text-xs font-bold">Phương ngữ</p>
                   <p className="text-[11px] text-muted">
                     &ldquo;Ngon lành cành đào&rdquo; (Bắc), &ldquo;hết sẩy&rdquo;
-                    (Nam) — phải có dữ liệu cả ba miền.
+                    (Nam), phải có dữ liệu cả ba miền.
                   </p>
                 </div>
               </div>
@@ -992,7 +991,7 @@ export default function SentimentAnalysisTopic() {
                   <p className="text-xs font-bold">Viết tắt mạng</p>
                   <p className="text-[11px] text-muted">
                     &ldquo;ko&rdquo;, &ldquo;đc&rdquo;, &ldquo;sl&rdquo;,
-                    &ldquo;ship&rdquo;, &ldquo;nv&rdquo; — nếu tokenizer không
+                    &ldquo;ship&rdquo;, &ldquo;nv&rdquo;, nếu tokenizer không
                     biết là sai ngay.
                   </p>
                 </div>
@@ -1002,7 +1001,7 @@ export default function SentimentAnalysisTopic() {
                 <div>
                   <p className="text-xs font-bold">Mỉa mai</p>
                   <p className="text-[11px] text-muted">
-                    &ldquo;5 sao cho ship chậm&rdquo; — cả BERT lẫn GPT vẫn hay sai.
+                    &ldquo;5 sao cho ship chậm&rdquo;, cả BERT lẫn GPT vẫn hay sai.
                   </p>
                 </div>
               </div>
@@ -1041,7 +1040,7 @@ export default function SentimentAnalysisTopic() {
                 {
                   icon: Smile,
                   title: "Phân tích khảo sát",
-                  desc: "Hàng nghìn câu trả lời tự luận của nhân viên hoặc khách — gom lại trong vài phút.",
+                  desc: "Hàng nghìn câu trả lời tự luận của nhân viên hoặc khách, gom lại trong vài phút.",
                   color: "#22c55e",
                 },
                 {
@@ -1059,7 +1058,7 @@ export default function SentimentAnalysisTopic() {
                 {
                   icon: Lightbulb,
                   title: "Insight sản phẩm",
-                  desc: "Aspect-based tách riêng: giá, chất lượng, ship, dịch vụ — để đội sản phẩm biết sửa gì trước.",
+                  desc: "Aspect-based tách riêng: giá, chất lượng, ship, dịch vụ, để đội sản phẩm biết sửa gì trước.",
                   color: "#a855f7",
                 },
               ].map((u) => (
@@ -1085,7 +1084,7 @@ export default function SentimentAnalysisTopic() {
           {/* MatchPairs: nối review với nhãn */}
           <div className="space-y-2">
             <p className="text-sm font-semibold text-foreground">
-              Nối nhanh — kiểm tra cảm nhận của bạn
+              Nối nhanh, kiểm tra cảm nhận của bạn
             </p>
             <MatchPairs
               instruction="Nối mỗi review (Cột A) với nhãn đúng (Cột B)."
@@ -1101,23 +1100,23 @@ export default function SentimentAnalysisTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 7 — TÓM TẮT
+          BƯỚC 7, TÓM TẮT
           ================================================================= */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về phân tích cảm xúc"
           points={[
-            "AI đọc bình luận rồi gán tích cực / tiêu cực / trung tính — giống bạn lướt Facebook, nhưng chạy ở quy mô triệu bình luận.",
-            "Aspect-based tách riêng từng khía cạnh (món ăn, ship, giá) — giúp biết chỗ nào cần sửa trước.",
+            "AI đọc bình luận rồi gán tích cực / tiêu cực / trung tính, giống bạn lướt Facebook, nhưng chạy ở quy mô triệu bình luận.",
+            "Aspect-based tách riêng từng khía cạnh (món ăn, ship, giá), giúp biết chỗ nào cần sửa trước.",
             "Từ điển đếm từ rẻ nhưng sai với đảo ngữ (‘không tệ’), mỉa mai, emoji.",
-            "BERT / PhoBERT / LLM đọc cả câu, đạt 85–95% — mạnh nhất hiện nay với tiếng Việt.",
+            "BERT / PhoBERT / LLM đọc cả câu, đạt 85–95%, mạnh nhất hiện nay với tiếng Việt.",
             "Ứng dụng văn phòng: giám sát thương hiệu, đánh giá chiến dịch, phân tích khảo sát, cảnh báo khủng hoảng.",
           ]}
         />
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 8 — QUIZ
+          BƯỚC 8, QUIZ
           ================================================================= */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

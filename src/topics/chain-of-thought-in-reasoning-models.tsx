@@ -37,14 +37,14 @@ import {
 import type { TopicMeta } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────────
-// Metadata — giữ nguyên slug và cấu trúc; đổi vizType sang interactive
+// Metadata, giữ nguyên slug và cấu trúc; đổi vizType sang interactive
 // ─────────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "chain-of-thought-in-reasoning-models",
   title: "Chain of Thought in Reasoning Models",
-  titleVi: "Chuỗi suy luận trong Mô hình Lý luận",
+  titleVi: "Chain-of-thought trong reasoning model",
   description:
-    "GPT-o1 và Claude Extended Thinking: mô hình lý luận tự nháp từng bước trước khi trả lời, khiến dân văn phòng tin kết quả hơn.",
+    "Reasoning model tự dành thời gian nháp, nên phù hợp với bài toán cần lập luận hơn là trả lời thật nhanh.",
   category: "llm-concepts",
   tags: ["chain-of-thought", "reasoning", "application"],
   difficulty: "beginner",
@@ -112,7 +112,7 @@ const HERO_TIMELINE: TimelineEvent[] = [
     date: "09/2024",
     title: "OpenAI ra mắt o1",
     subtitle:
-      "Mô hình AI đầu tiên được huấn luyện để 'nghĩ' trước khi nói — tự bật chuỗi suy luận mà không cần người dùng nhắc.",
+      "Mô hình AI đầu tiên được huấn luyện để 'nghĩ' trước khi nói, tự bật chuỗi suy luận mà không cần người dùng nhắc.",
     icon: Rocket,
     tone: "border-accent/60 bg-accent-light",
   },
@@ -120,7 +120,7 @@ const HERO_TIMELINE: TimelineEvent[] = [
     date: "02/2025",
     title: "Anthropic ra Claude 3.7 Sonnet",
     subtitle:
-      "Mô hình lý luận lai đầu tiên — bạn bật/tắt chế độ 'Extended Thinking' và xem tận mắt Claude đang nháp gì.",
+      "Mô hình lý luận lai đầu tiên, bạn bật/tắt chế độ 'Extended Thinking' và xem tận mắt Claude đang nháp gì.",
     icon: Eye,
     tone: "border-accent/60 bg-accent-light",
   },
@@ -180,7 +180,7 @@ function HeroTimeline() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Hình minh họa "chấm nháy" — AI đang suy nghĩ
+// Hình minh họa "chấm nháy", AI đang suy nghĩ
 // ─────────────────────────────────────────────────────────────────────────
 function ThinkingDots() {
   return (
@@ -210,7 +210,7 @@ function ThinkingDots() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// ToggleCompare cho ApplicationProblem — câu hỏi văn phòng nhiều bước
+// ToggleCompare cho ApplicationProblem, câu hỏi văn phòng nhiều bước
 // ─────────────────────────────────────────────────────────────────────────
 function ProblemToggleDemo() {
   return (
@@ -232,7 +232,7 @@ function ProblemToggleDemo() {
       <ToggleCompare
         labelA="Mô hình thường, trả lời nhanh"
         labelB="Mô hình lý luận, suy nghĩ trước"
-        description="Cùng một câu hỏi — chỉ khác ở chỗ mô hình có được phép 'nháp' hay không."
+        description="Cùng một câu hỏi, chỉ khác ở chỗ mô hình có được phép 'nháp' hay không."
         childA={
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -292,7 +292,7 @@ function ProblemToggleDemo() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// ApplicationMechanism — 4 Beat kèm flow trực quan ở trên
+// ApplicationMechanism, 4 Beat kèm flow trực quan ở trên
 // ─────────────────────────────────────────────────────────────────────────
 interface MechanismBeat {
   step: number;
@@ -313,7 +313,7 @@ function MechanismFlow() {
       <div className="flex items-center gap-2">
         <Lightbulb size={16} className="text-accent" />
         <p className="text-xs font-semibold uppercase tracking-wider text-tertiary">
-          Từ prompt của bạn đến câu trả lời cuối — 4 giai đoạn
+          Từ prompt của bạn đến câu trả lời cuối, 4 giai đoạn
         </p>
       </div>
 
@@ -360,13 +360,13 @@ function MechanismFlow() {
 
       <p className="text-xs text-muted leading-relaxed">
         Nhấp vào từng beat bên dưới để đọc chi tiết. Thanh tiến trình cho bạn
-        cảm giác quá trình suy luận — từ “bật chuỗi” đến “chốt đáp án”.
+        cảm giác quá trình suy luận, từ “bật chuỗi” đến “chốt đáp án”.
       </p>
     </div>
   );
 }
 
-// Ô minh họa cho mỗi Beat — cho người đọc cái nhìn trực quan song song với prose
+// Ô minh họa cho mỗi Beat, cho người đọc cái nhìn trực quan song song với prose
 function BeatInlineIllustration({
   step,
 }: {
@@ -461,7 +461,7 @@ function BeatInlineIllustration({
         ))}
       </div>
       <p className="mt-2 text-[11px] italic text-tertiary">
-        Số liệu minh họa — xu hướng chung từ bảng điểm công khai của o1.
+        Số liệu minh họa, xu hướng chung từ bảng điểm công khai của o1.
       </p>
     </div>
   );
@@ -531,7 +531,7 @@ const METRIC_CARDS: MetricCardData[] = [
     suffix: "%",
     decimals: 0,
     icon: Trophy,
-    note: "o1 lọt vào top 49% khi thi đúng luật thật của con người — thành tích chưa từng có với AI trước đó.",
+    note: "o1 lọt vào top 49% khi thi đúng luật thật của con người, thành tích chưa từng có với AI trước đó.",
   },
   {
     label: "Điểm kiểm tra Vật lý sau đại học (GPQA Physics)",
@@ -547,7 +547,7 @@ const METRIC_CARDS: MetricCardData[] = [
     suffix: "%",
     decimals: 1,
     icon: Gauge,
-    note: "Bài test được thiết kế để KHÔNG tra Google ra được — Claude có chuỗi suy luận vẫn đạt rất cao.",
+    note: "Bài test được thiết kế để KHÔNG tra Google ra được, Claude có chuỗi suy luận vẫn đạt rất cao.",
   },
 ];
 
@@ -583,7 +583,7 @@ function MetricCards() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Counterfactual — "không có reasoning model" vs "có"
+// Counterfactual, "không có reasoning model" vs "có"
 // ─────────────────────────────────────────────────────────────────────────
 function CounterfactualToggle() {
   return (
@@ -591,7 +591,7 @@ function CounterfactualToggle() {
       <ToggleCompare
         labelA="Không có mô hình lý luận"
         labelB="Có o1 / Extended Thinking"
-        description="Thử nghĩ: cùng một câu hỏi công việc, cùng một người hỏi — kết quả khác nhau ra sao?"
+        description="Thử nghĩ: cùng một câu hỏi công việc, cùng một người hỏi, kết quả khác nhau ra sao?"
         childA={
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -613,7 +613,7 @@ function CounterfactualToggle() {
               <li className="flex items-start gap-2 rounded-lg border border-border bg-card/50 px-3 py-2">
                 <X size={14} className="mt-0.5 shrink-0 text-red-500" />
                 <span>
-                  Không biết AI đã nháp gì — phải tin tưởng đáp án cuối hoặc
+                  Không biết AI đã nháp gì, phải tin tưởng đáp án cuối hoặc
                   không.
                 </span>
               </li>
@@ -641,21 +641,21 @@ function CounterfactualToggle() {
               <li className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
                 <Sparkles size={14} className="mt-0.5 shrink-0 text-green-600" />
                 <span>
-                  Bạn hỏi bình thường — AI tự quyết định cần nghĩ bao lâu
+                  Bạn hỏi bình thường, AI tự quyết định cần nghĩ bao lâu
                   cho câu này.
                 </span>
               </li>
               <li className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
                 <Sparkles size={14} className="mt-0.5 shrink-0 text-green-600" />
                 <span>
-                  Claude Extended Thinking cho bạn xem từng bước nháp — soi
+                  Claude Extended Thinking cho bạn xem từng bước nháp, soi
                   ra chỗ AI hiểu nhầm ngay.
                 </span>
               </li>
               <li className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
                 <Sparkles size={14} className="mt-0.5 shrink-0 text-green-600" />
                 <span>
-                  Bạn có thể đặt “thinking budget” — cho AI vài giây khi
+                  Bạn có thể đặt “thinking budget”, cho AI vài giây khi
                   hỏi nhanh, vài phút khi hỏi việc phức tạp.
                 </span>
               </li>
@@ -668,7 +668,7 @@ function CounterfactualToggle() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Component chính — giữ nguyên cấu trúc ApplicationLayout / các section
+// Component chính, giữ nguyên cấu trúc ApplicationLayout / các section
 // ─────────────────────────────────────────────────────────────────────────
 export default function ChainOfThoughtInReasoningModels() {
   return (
@@ -681,10 +681,10 @@ export default function ChainOfThoughtInReasoningModels() {
         topicSlug="chain-of-thought-in-reasoning-models"
       >
         <p>
-          Tháng 9 năm 2024, OpenAI ra mắt <strong>o1</strong> — mô hình AI
+          Tháng 9 năm 2024, OpenAI ra mắt <strong>o1</strong>, mô hình AI
           đầu tiên được huấn luyện để &ldquo;suy nghĩ&rdquo; trước khi trả
           lời. Thay vì đưa ra câu trả lời ngay lập tức, o1 tự sinh một chuỗi
-          suy luận (chain of thought — quá trình nháp từng bước) bên trong,
+          suy luận (chain of thought, quá trình nháp từng bước) bên trong,
           tự kiểm tra lỗi và thử nhiều cách tiếp cận.
         </p>
 
@@ -692,12 +692,12 @@ export default function ChainOfThoughtInReasoningModels() {
 
         <p>
           Tháng 2 năm 2025, Anthropic trả lời bằng{" "}
-          <strong>Claude 3.7 Sonnet</strong> — mô hình lý luận lai đầu tiên,
+          <strong>Claude 3.7 Sonnet</strong>, mô hình lý luận lai đầu tiên,
           cho phép người dùng bật chế độ &ldquo;Extended Thinking&rdquo; (suy
           nghĩ mở rộng) để xem Claude trình bày từng bước suy luận trước khi
           đưa ra đáp án cuối cùng. Với dân văn phòng, điều này đồng nghĩa:
           bạn không cần nhớ nhắc &ldquo;hãy suy nghĩ từng bước&rdquo; ở mỗi
-          prompt nữa — AI tự làm, và còn cho bạn đọc nháp.
+          prompt nữa, AI tự làm, và còn cho bạn đọc nháp.
         </p>
 
         <ThinkingDots />
@@ -706,7 +706,7 @@ export default function ChainOfThoughtInReasoningModels() {
       <ApplicationProblem topicSlug="chain-of-thought-in-reasoning-models">
         <p>
           Trước 2024, các AI phổ biến như GPT-4 hay Claude thường mắc lỗi ở
-          những bài cần <strong>nhiều bước suy luận</strong> — tính toán
+          những bài cần <strong>nhiều bước suy luận</strong>, tính toán
           chồng, phân tích pháp lý, so sánh nhiều lựa chọn. Nguyên nhân gốc:
           chúng sinh câu trả lời trong một nhịp, không có chỗ &ldquo;nháp
           nội bộ&rdquo; để tự kiểm tra.
@@ -747,9 +747,9 @@ export default function ChainOfThoughtInReasoningModels() {
           <p>
             <strong>o1 tự bật chuỗi suy luận.</strong> Khác với GPT-4 cần
             người dùng viết &ldquo;hãy suy nghĩ từng bước&rdquo;, o1 được
-            huấn luyện bằng reinforcement learning (học tăng cường — phương
+            huấn luyện bằng reinforcement learning (học tăng cường, phương
             pháp dạy AI bằng phần thưởng) để tự sinh reasoning tokens (token
-            lý luận — các bước nháp nội bộ) trước khi viết câu trả lời cuối
+            lý luận, các bước nháp nội bộ) trước khi viết câu trả lời cuối
             cùng. Bạn chỉ cần hỏi bình thường; phần lý luận diễn ra trong
             &ldquo;đầu&rdquo; mô hình.
           </p>
@@ -759,7 +759,7 @@ export default function ChainOfThoughtInReasoningModels() {
           <p>
             <strong>Mô hình tự sửa lỗi trong quá trình nháp.</strong> o1 học
             cách nhận diện sai lầm, quay lại, và thử hướng khác. Khi gặp bài
-            khó, nó chia thành các bước nhỏ hơn — giống một luật sư phân
+            khó, nó chia thành các bước nhỏ hơn, giống một luật sư phân
             tích hồ sơ, hay một kiểm toán viên đối chiếu nhiều nguồn trước
             khi kết luận.
           </p>
@@ -769,7 +769,7 @@ export default function ChainOfThoughtInReasoningModels() {
           <p>
             <strong>Claude hiển thị nháp cho người dùng.</strong> Claude 3.7
             Sonnet cho phép bật/tắt chế độ Extended Thinking. Khi bật, bạn
-            thấy quá trình suy luận của Claude — cách nó cân nhắc các khả
+            thấy quá trình suy luận của Claude, cách nó cân nhắc các khả
             năng, phát hiện mâu thuẫn, và đi đến kết luận. Với công việc
             văn phòng, bạn có thể chỉ cần đọc phần nháp để biết AI đã hiểu
             yêu cầu của bạn đúng chưa. Lập trình viên có thể đặt
@@ -782,9 +782,9 @@ export default function ChainOfThoughtInReasoningModels() {
           <p>
             <strong>Hiệu suất tăng theo thời gian suy nghĩ.</strong> Cả hai
             mô hình cho thấy một quy luật quan trọng: càng dành nhiều tài
-            nguyên tính toán cho việc suy luận (test-time compute — tài
+            nguyên tính toán cho việc suy luận (test-time compute, tài
             nguyên tính toán khi chạy mô hình), kết quả càng chính xác. Đây
-            là bước ngoặt — hiệu suất không chỉ phụ thuộc vào kích thước mô
+            là bước ngoặt, hiệu suất không chỉ phụ thuộc vào kích thước mô
             hình mà còn vào thời gian nháp. Nói nôm na: trước kia, bạn phải
             đợi hãng ra model mới để AI giỏi hơn; bây giờ, chỉ cần cho AI
             thêm vài phút nghĩ, nó đã thông minh hơn rõ rệt.
@@ -811,7 +811,7 @@ export default function ChainOfThoughtInReasoningModels() {
         />
       </ApplicationMetrics>
 
-      {/* Hiển thị số trực quan — bổ sung phía dưới danh sách Metric có dẫn nguồn ở trên */}
+      {/* Hiển thị số trực quan, bổ sung phía dưới danh sách Metric có dẫn nguồn ở trên */}
       <section className="mb-10">
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-tertiary">
           <Gauge size={14} className="text-accent" />
@@ -819,7 +819,7 @@ export default function ChainOfThoughtInReasoningModels() {
         </div>
         <MetricCards />
         <Callout variant="info" title="Cách đọc các con số">
-          Đây là các bài kiểm tra chuẩn dùng chung cho giới AI — không phải
+          Đây là các bài kiểm tra chuẩn dùng chung cho giới AI, không phải
           thang điểm văn phòng. Với công việc hàng ngày của bạn, chuỗi suy
           luận tự động này nghĩa là: ít phải nhờ đồng nghiệp kiểm lại, ít
           phải bấm máy tính sau lưng AI, và nhiều thời gian hơn để làm việc
@@ -833,7 +833,7 @@ export default function ChainOfThoughtInReasoningModels() {
       >
         <p>
           Nếu không có chuỗi suy luận tự động, AI vẫn sẽ đưa ra câu trả lời
-          &ldquo;bản năng&rdquo; — nhanh nhưng thường sai ở các việc cần
+          &ldquo;bản năng&rdquo;, nhanh nhưng thường sai ở các việc cần
           nhiều bước. Dân văn phòng sẽ phải tự viết &ldquo;hãy suy nghĩ
           từng bước&rdquo; mỗi lần, và vẫn không thể kiểm chứng quá trình
           nháp của AI. Mỗi câu trả lời phức tạp trở thành một canh bạc:
@@ -847,7 +847,7 @@ export default function ChainOfThoughtInReasoningModels() {
           <strong>Claude Extended Thinking</strong> đã chứng minh: dành thêm
           vài giây đến vài phút cho AI &ldquo;nghĩ&rdquo; có thể cải thiện
           đáng kể chất lượng trả lời. Đây là bước đệm cho thế hệ công cụ AI
-          văn phòng tiếp theo — nơi bạn không còn phải đoán &ldquo;liệu AI
+          văn phòng tiếp theo, nơi bạn không còn phải đoán &ldquo;liệu AI
           có đang nghiêm túc với câu hỏi của mình không&rdquo;, vì nháp
           đã nằm ngay trước mặt.
         </p>

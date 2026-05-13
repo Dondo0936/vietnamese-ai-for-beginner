@@ -38,9 +38,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-in-agriculture",
   title: "AI in Agriculture",
-  titleVi: "AI trong Nông nghiệp",
+  titleVi: "AI trong nông nghiệp: nhìn ruộng bằng dữ liệu",
   description:
-    "Ứng dụng AI trong phát hiện sâu bệnh, dự báo mùa vụ và nông nghiệp chính xác tại Việt Nam",
+    "AI phát hiện sâu bệnh, dự báo mùa vụ và gợi ý chăm sóc cây trồng từ ảnh, cảm biến và thời tiết.",
   category: "applied-ai",
   tags: ["crop", "pest-detection", "precision-farming"],
   difficulty: "beginner",
@@ -52,7 +52,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ===========================================================================
-// Demo 1 — Phát hiện bệnh trên lá lúa qua ảnh chụp điện thoại
+// Demo 1, Phát hiện bệnh trên lá lúa qua ảnh chụp điện thoại
 // ===========================================================================
 
 type DiseaseCase = {
@@ -179,7 +179,7 @@ function LeafSVG({
           opacity={0.55}
         />
       ))}
-      {/* AI overlay — pulsing heatmap */}
+      {/* AI overlay, pulsing heatmap */}
       <AnimatePresence>
         {showOverlay &&
           regions.map((r, i) => (
@@ -325,7 +325,7 @@ function DiseaseDetectionDemo() {
 
       <p className="text-[11px] italic text-muted">
         Ứng dụng thật (Plantix, VietGap Scan, FPT.AI ForFarming) chạy được trên
-        điện thoại cũ, không cần 4G — nông dân chụp ngoài ruộng, AI trả lời
+        điện thoại cũ, không cần 4G, nông dân chụp ngoài ruộng, AI trả lời
         trong vòng vài giây.
       </p>
     </div>
@@ -347,7 +347,7 @@ function ConfidenceBar({ value, color }: { value: number; color: string }) {
 }
 
 // ===========================================================================
-// Demo 2 — Bảng điều khiển tưới nước thông minh
+// Demo 2, Bảng điều khiển tưới nước thông minh
 // ===========================================================================
 
 function IrrigationDashboard() {
@@ -356,7 +356,7 @@ function IrrigationDashboard() {
   const [temp, setTemp] = useState<number>(32); // °C
 
   const decision = useMemo(() => {
-    // Simple rules — visible logic for teaching
+    // Simple rules, visible logic for teaching
     if (soil >= 70)
       return {
         action: "Không tưới",
@@ -474,11 +474,10 @@ function IrrigationDashboard() {
 
       <div className="grid grid-cols-1 gap-2 text-[11px] leading-relaxed text-muted sm:grid-cols-2">
         <div className="rounded-lg bg-surface p-2">
-          <strong>Mẹo thử:</strong> đẩy độ ẩm đất xuống 20%, nhiệt độ 36°C —
-          xem AI đổi sang &ldquo;Tưới ngay&rdquo;.
+          <strong>Mẹo thử:</strong> đẩy độ ẩm đất xuống 20%, nhiệt độ 36°C, xem AI đổi sang &ldquo;Tưới ngay&rdquo;.
         </div>
         <div className="rounded-lg bg-surface p-2">
-          <strong>Mẹo thử:</strong> tăng khả năng mưa lên 80% — dù đất khô, AI
+          <strong>Mẹo thử:</strong> tăng khả năng mưa lên 80%, dù đất khô, AI
           khuyên &ldquo;Chờ mưa&rdquo; để tiết kiệm điện bơm.
         </div>
       </div>
@@ -557,7 +556,7 @@ function GaugeCard({
 }
 
 // ===========================================================================
-// Demo 3 — Dự báo năng suất: có AI vs không
+// Demo 3, Dự báo năng suất: có AI vs không
 // ===========================================================================
 
 type YieldBar = {
@@ -609,7 +608,7 @@ function YieldPredictor() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <div className="text-[11px] uppercase tracking-wider text-muted">
-              {bar.crop} — năng suất dự báo
+              {bar.crop}, năng suất dự báo
             </div>
             <div className="text-sm font-semibold text-foreground">
               {bar.region}
@@ -678,7 +677,7 @@ function BarRow({
       <div className="flex items-center justify-between text-[12px]">
         <div>
           <span className="font-semibold text-foreground">{label}</span>{" "}
-          <span className="text-[10px] text-muted">— {sub}</span>
+          <span className="text-[10px] text-muted">, {sub}</span>
         </div>
         <span className="font-bold tabular-nums" style={{ color }}>
           {value.toFixed(1)} t/ha
@@ -731,7 +730,7 @@ export default function AIInAgricultureTopic() {
           "Bác nông dân ở An Giang chụp ảnh lá lúa bằng điện thoại, app AI báo &ldquo;đạo ôn 82% tự tin&rdquo;. Điều này nghĩa là gì?",
         options: [
           "AI chắc chắn 100% là đạo ôn",
-          "AI đã so ảnh với hàng ngàn ảnh lá bệnh trong bộ học và thấy 82% giống đạo ôn nhất — nên hành xử có phần: phun thuốc đạo ôn, nhưng vẫn nên hỏi khuyến nông xã vì 18% còn lại có thể là bệnh khác",
+          "AI đã so ảnh với hàng ngàn ảnh lá bệnh trong bộ học và thấy 82% giống đạo ôn nhất, nên hành xử có phần: phun thuốc đạo ôn, nhưng vẫn nên hỏi khuyến nông xã vì 18% còn lại có thể là bệnh khác",
           "Đạo ôn sẽ lan 82% cánh đồng",
           "Nông dân đã làm sai kỹ thuật 82%",
         ],
@@ -783,39 +782,39 @@ export default function AIInAgricultureTopic() {
           "Thách thức đặc biệt của AI nông nghiệp Việt Nam so với Mỹ, Hà Lan là gì?",
         options: [
           "Đất Việt Nam ít màu mỡ",
-          "(1) Sóng và thiết bị ở nông thôn còn yếu, (2) đa dạng giống cây (lúa Jasmine, ST25, khoai mì KM94) thiếu dữ liệu huấn luyện riêng, (3) rào cản chữ viết cho đồng bào dân tộc — app thường chỉ có tiếng Kinh",
+          "(1) Sóng và thiết bị ở nông thôn còn yếu, (2) đa dạng giống cây (lúa Jasmine, ST25, khoai mì KM94) thiếu dữ liệu huấn luyện riêng, (3) rào cản chữ viết cho đồng bào dân tộc, app thường chỉ có tiếng Kinh",
           "Nông dân Việt Nam không thông minh",
           "Không có thách thức nào",
         ],
         correct: 1,
         explanation:
-          "Ba thách thức đặc thù: (1) Hạ tầng — sóng chập chờn, điện thoại cũ 2–3 GB RAM; (2) Dữ liệu — bộ ảnh Plantix chủ yếu cho cây Âu–Mỹ, phải tự thu thập ảnh lúa ST25, khoai mì KM94...; (3) Ngôn ngữ — đồng bào H'Mông, Ê Đê, Khmer không phải ai cũng đọc tiếng Kinh. Các dự án tốt dùng giao diện giọng nói và biểu tượng trực quan.",
+          "Ba thách thức đặc thù: (1) Hạ tầng, sóng chập chờn, điện thoại cũ 2–3 GB RAM; (2) Dữ liệu, bộ ảnh Plantix chủ yếu cho cây Âu–Mỹ, phải tự thu thập ảnh lúa ST25, khoai mì KM94...; (3) Ngôn ngữ, đồng bào H'Mông, Ê Đê, Khmer không phải ai cũng đọc tiếng Kinh. Các dự án tốt dùng giao diện giọng nói và biểu tượng trực quan.",
       },
       {
         question:
           "Giá cả trên thị trường nông sản biến động lớn. AI có thể giúp nông dân như thế nào?",
         options: [
           "AI không liên quan đến giá",
-          "Dự báo giá 4–12 tuần tới dựa trên thời tiết, sản lượng, xuất khẩu — giúp nông dân quyết định bán ngay hay trữ, chọn giống vụ sau",
+          "Dự báo giá 4–12 tuần tới dựa trên thời tiết, sản lượng, xuất khẩu, giúp nông dân quyết định bán ngay hay trữ, chọn giống vụ sau",
           "AI tự mua nông sản",
           "AI làm giá tăng lên",
         ],
         correct: 1,
         explanation:
-          "Mô hình dự báo giá nông sản dùng dữ liệu lịch sử + thời tiết + tin tức xuất khẩu. Ở Việt Nam, các hợp tác xã cà phê Đắk Lắk đã dùng để quyết định trữ kho hay bán ngay. Với thanh long, giá chênh 3–5 lần giữa mùa và trái mùa — dự báo đúng thời điểm thu hoạch quan trọng sống còn.",
+          "Mô hình dự báo giá nông sản dùng dữ liệu lịch sử + thời tiết + tin tức xuất khẩu. Ở Việt Nam, các hợp tác xã cà phê Đắk Lắk đã dùng để quyết định trữ kho hay bán ngay. Với thanh long, giá chênh 3–5 lần giữa mùa và trái mùa, dự báo đúng thời điểm thu hoạch quan trọng sống còn.",
       },
       {
         question:
           "Hợp tác xã muốn giao cho AI toàn quyền quyết định phun thuốc cho 200 ha. Cách tiếp cận an toàn nhất?",
         options: [
-          "Giao toàn bộ cho AI — máy khách quan hơn",
+          "Giao toàn bộ cho AI, máy khách quan hơn",
           "Dùng AI để khuyến nghị; trạm trưởng kiểm tra ngẫu nhiên 10% khuyến nghị mỗi tuần, AI chỉ được tự động hoá sau khi chứng minh đúng trên 95% nhiều vụ liền",
           "Bỏ AI, làm thủ công",
           "Chỉ dùng AI cho lúa, không cho cây khác",
         ],
         correct: 1,
         explanation:
-          "Nguyên tắc &ldquo;human-in-the-loop&rdquo;: AI khuyến nghị, con người duyệt — đặc biệt khi quyết định ảnh hưởng đến thu nhập hàng trăm hộ. Sau khi AI chứng minh ổn định qua nhiều vụ, mới cân nhắc tự động hoá một phần, và luôn giữ nút &ldquo;dừng khẩn cấp&rdquo; cho con người.",
+          "Nguyên tắc &ldquo;human-in-the-loop&rdquo;: AI khuyến nghị, con người duyệt, đặc biệt khi quyết định ảnh hưởng đến thu nhập hàng trăm hộ. Sau khi AI chứng minh ổn định qua nhiều vụ, mới cân nhắc tự động hoá một phần, và luôn giữ nút &ldquo;dừng khẩn cấp&rdquo; cho con người.",
       },
       {
         type: "fill-blank",
@@ -852,7 +851,7 @@ export default function AIInAgricultureTopic() {
             "Phát hiện sâu bệnh qua ảnh chụp lá bằng điện thoại",
             "Tối ưu lịch tưới nước dựa trên độ ẩm đất và thời tiết",
             "Tư vấn giá bán, thời điểm thu hoạch và chọn giống vụ sau",
-            "Tất cả những việc trên — AI là &ldquo;khuyến nông 24/7&rdquo; trong túi áo",
+            "Tất cả những việc trên, AI là &ldquo;khuyến nông 24/7&rdquo; trong túi áo",
           ]}
           correct={4}
           explanation="Cả bốn ứng dụng đều đã có pilot thật ở Việt Nam từ 2020–2024. Ảnh chụp lá (Plantix, VietGap Scan) phát hiện đạo ôn, cháy bìa lá, vàng lùn. Cảm biến + AI (Mimosatek) điều khiển tưới ở hơn 2000 hộ. Dự báo năng suất (FPT.AI ForFarming) hợp tác với Nestlé cho cà phê. AI không thay khuyến nông, nhưng giúp khuyến nông tới được mọi hộ, kể cả vùng sâu."
@@ -862,10 +861,10 @@ export default function AIInAgricultureTopic() {
               <p>
                 Hãy hình dung bác nông dân trồng{" "}
                 <strong>10 ha lúa ở Đồng Tháp</strong>. Sáng nào bác cũng dậy
-                từ 4 giờ, đi xe máy vòng ruộng. Mắt bác rất tinh — nhưng chỉ
+                từ 4 giờ, đi xe máy vòng ruộng. Mắt bác rất tinh, nhưng chỉ
                 thấy bệnh <em>khi đã có triệu chứng rõ</em>, tức là khi dịch
                 đã lan 5–10%. Đến lúc nhận ra đạo ôn, đã mất 1–3 ha. AI không
-                thay bác — nó biến chiếc smartphone trong túi bác thành một
+                thay bác, nó biến chiếc smartphone trong túi bác thành một
                 &ldquo;kính hiển vi&rdquo; và một &ldquo;khuyến nông
                 24/7&rdquo;.
               </p>
@@ -882,17 +881,16 @@ export default function AIInAgricultureTopic() {
                 AI giải bài toán này bằng <strong>ba cánh tay</strong>: (1)
                 camera điện thoại trên tay nông dân; (2) cảm biến IoT ngoài
                 ruộng (độ ẩm, pH, EC); (3) API thời tiết và giá. Ba nguồn cắm
-                vào mô hình AI nhẹ —{" "}
-                <TopicLink slug="edge-ai">chạy ngay trên điện thoại</TopicLink>{" "}
-                — để đưa ra chẩn đoán cho <em>thửa ruộng nhà bác</em>, không
+                vào mô hình AI nhẹ, {" "}
+                <TopicLink slug="edge-ai">chạy ngay trên điện thoại</TopicLink>{" "}, để đưa ra chẩn đoán cho <em>thửa ruộng nhà bác</em>, không
                 phải cho cả tỉnh chung chung.
               </p>
               <p>
                 Điểm then chốt với Việt Nam là{" "}
                 <strong>app phải chạy khi không có 4G</strong>. Sóng ở An Giang,
                 Hà Giang, Sóc Trăng còn chập chờn; gửi ảnh lên cloud là xa xỉ.
-                Một mô hình nhẹ chạy ngay trong điện thoại — kể cả Android 3
-                GB RAM — trả lời trong vài giây, là khác biệt giữa &ldquo;demo
+                Một mô hình nhẹ chạy ngay trong điện thoại, kể cả Android 3
+                GB RAM, trả lời trong vài giây, là khác biệt giữa &ldquo;demo
                 đẹp&rdquo; và &ldquo;dùng thật ngoài đồng&rdquo;.
               </p>
             </div>
@@ -903,10 +901,10 @@ export default function AIInAgricultureTopic() {
               <div className="space-y-8">
                 <div>
                   <h3 className="mb-1 text-base font-semibold text-foreground">
-                    Bản 1 — Phát hiện bệnh qua ảnh điện thoại
+                    Bản 1, Phát hiện bệnh qua ảnh điện thoại
                   </h3>
                   <p className="mb-3 text-[12px] text-muted">
-                    Chọn một trường hợp — bật/tắt AI phân tích để thấy vùng
+                    Chọn một trường hợp, bật/tắt AI phân tích để thấy vùng
                     &ldquo;nghi ngờ&rdquo; của máy.
                   </p>
                   <DiseaseDetectionDemo />
@@ -914,7 +912,7 @@ export default function AIInAgricultureTopic() {
 
                 <div>
                   <h3 className="mb-1 text-base font-semibold text-foreground">
-                    Bản 2 — Bảng điều khiển tưới nước thông minh
+                    Bản 2, Bảng điều khiển tưới nước thông minh
                   </h3>
                   <p className="mb-3 text-[12px] text-muted">
                     Kéo ba thanh trượt, xem AI đổi quyết định: tưới ngay, chờ
@@ -925,7 +923,7 @@ export default function AIInAgricultureTopic() {
 
                 <div>
                   <h3 className="mb-1 text-base font-semibold text-foreground">
-                    Bản 3 — Năng suất có AI so với không
+                    Bản 3, Năng suất có AI so với không
                   </h3>
                   <p className="mb-3 text-[12px] text-muted">
                     Bốn vùng, năm cây trồng. Chọn vùng để xem chênh lệch
@@ -946,11 +944,11 @@ export default function AIInAgricultureTopic() {
               <p>
                 AI nông nghiệp là <strong>khuyến nông 24/7 bỏ túi</strong>:
                 thay vì chờ cán bộ xã mỗi tuần một lần, bác nông dân có thể
-                &ldquo;hỏi&rdquo; điện thoại bất cứ lúc nào — chụp lá lúa nghi
+                &ldquo;hỏi&rdquo; điện thoại bất cứ lúc nào, chụp lá lúa nghi
                 bệnh, xem có nên tưới hay chờ mưa, biết giá lúa tuần sau. AI
                 không làm nông dân hết việc, mà làm{" "}
                 <em>kinh nghiệm nhiều năm của khuyến nông</em> nhân rộng cho
-                mọi hộ — cả ở Mộc Châu, Cần Thơ, Cà Mau. Giảm 25–35% chi phí
+                mọi hộ, cả ở Mộc Châu, Cần Thơ, Cà Mau. Giảm 25–35% chi phí
                 đầu vào, tăng 15–25% thu nhập, và quan trọng nhất: giảm rủi ro
                 mất trắng do phát hiện bệnh muộn.
               </p>
@@ -960,10 +958,10 @@ export default function AIInAgricultureTopic() {
           <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
             <div className="space-y-4">
               <InlineChallenge
-                question="App AI trả về: 'Lá lúa — nghi đạo ôn, 65% tự tin'. Nông dân nên làm gì?"
+                question="App AI trả về: 'Lá lúa, nghi đạo ôn, 65% tự tin'. Nông dân nên làm gì?"
                 options={[
                   "Phun thuốc đạo ôn toàn ruộng ngay",
-                  "Chụp lại 2–3 ảnh ở góc sáng rõ hơn hoặc gọi cán bộ khuyến nông xã — 65% là dưới ngưỡng 'đủ tin' (thường 70–80%)",
+                  "Chụp lại 2–3 ảnh ở góc sáng rõ hơn hoặc gọi cán bộ khuyến nông xã, 65% là dưới ngưỡng 'đủ tin' (thường 70–80%)",
                   "Bỏ qua hoàn toàn kết quả AI",
                   "Chuyển sang giống khác luôn",
                 ]}
@@ -1033,7 +1031,7 @@ export default function AIInAgricultureTopic() {
 
               <Callout
                 variant="info"
-                title="Case study Việt Nam — 6 dự án đang vận hành"
+                title="Case study Việt Nam, 6 dự án đang vận hành"
               >
                 <ul className="list-disc space-y-1 pl-4 text-[13px]">
                   <li>
@@ -1051,7 +1049,7 @@ export default function AIInAgricultureTopic() {
                   </li>
                   <li>
                     <strong>Hachi Hub</strong>: hệ nhà kính thông minh (Hà
-                    Nam, Đà Lạt) — AI điều khiển nhiệt độ, ẩm, dinh dưỡng
+                    Nam, Đà Lạt), AI điều khiển nhiệt độ, ẩm, dinh dưỡng
                     theo thời gian thực.
                   </li>
                   <li>
@@ -1089,8 +1087,7 @@ export default function AIInAgricultureTopic() {
                   <p>
                     <strong>1. Dữ liệu cho giống cây bản địa.</strong> Bộ ảnh
                     PlantVillage chủ yếu cho cây Âu–Mỹ. Lúa Jasmine, ST25,
-                    khoai mì KM94, cà phê Robusta cao nguyên, xoài Hoà Lộc —
-                    phải tự thu thập. Hợp đồng với hợp tác xã, sinh viên nông
+                    khoai mì KM94, cà phê Robusta cao nguyên, xoài Hoà Lộc, phải tự thu thập. Hợp đồng với hợp tác xã, sinh viên nông
                     nghiệp chụp theo khung chuẩn, bác sĩ cây trồng gán nhãn.
                   </p>
                   <p>
@@ -1122,12 +1119,12 @@ export default function AIInAgricultureTopic() {
                   <li>
                     <strong>Copy mô hình nước ngoài nguyên bản.</strong> Model
                     huấn luyện trên ảnh cà chua Mỹ không nhận được đạo ôn lúa
-                    Việt — cần fine-tune với dữ liệu địa phương.
+                    Việt, cần fine-tune với dữ liệu địa phương.
                   </li>
                   <li>
                     <strong>Bỏ qua ngưỡng tự tin.</strong> Ép AI trả lời
                     trong mọi trường hợp sẽ dẫn đến chẩn đoán sai, nông dân
-                    phun sai thuốc — tổn hại hơn là không có AI.
+                    phun sai thuốc, tổn hại hơn là không có AI.
                   </li>
                   <li>
                     <strong>Không có đường dây khuyến nông.</strong> AI chỉ
@@ -1152,11 +1149,11 @@ export default function AIInAgricultureTopic() {
                       <ol className="list-decimal space-y-1 pl-4 text-[13px] leading-relaxed">
                         <li>
                           Thử app phát hiện bệnh trên một thửa nhỏ. So kết quả
-                          với khuyến nông xã trong 2 tuần — khớp thì mới mở
+                          với khuyến nông xã trong 2 tuần, khớp thì mới mở
                           rộng.
                         </li>
                         <li>
-                          Luôn giữ đường dây khuyến nông — AI chưa đúng 100%.
+                          Luôn giữ đường dây khuyến nông, AI chưa đúng 100%.
                           Gọi khi độ tự tin dưới 70%.
                         </li>
                         <li>
@@ -1194,8 +1191,7 @@ export default function AIInAgricultureTopic() {
                     content: (
                       <ol className="list-decimal space-y-1 pl-4 text-[13px] leading-relaxed">
                         <li>
-                          Dùng dashboard AI phát hiện sớm điểm nóng trong xã —
-                          ưu tiên đi thực địa đúng chỗ.
+                          Dùng dashboard AI phát hiện sớm điểm nóng trong xã, ưu tiên đi thực địa đúng chỗ.
                         </li>
                         <li>
                           Đưa khuyến nghị AI cho nông dân như góc nhìn thứ
@@ -1203,7 +1199,7 @@ export default function AIInAgricultureTopic() {
                         </li>
                         <li>
                           Phản hồi ngược: gán nhãn case AI sai cho đơn vị phát
-                          triển — mô hình cần dữ liệu địa phương.
+                          triển, mô hình cần dữ liệu địa phương.
                         </li>
                       </ol>
                     ),
@@ -1214,7 +1210,7 @@ export default function AIInAgricultureTopic() {
               <ToggleCompare
                 labelA="Chưa có AI"
                 labelB="Có AI hỗ trợ"
-                description="Một vụ lúa 3 tháng — so sánh cách ra quyết định"
+                description="Một vụ lúa 3 tháng, so sánh cách ra quyết định"
                 childA={
                   <div className="space-y-1.5 text-[13px] leading-relaxed">
                     <p><strong>Phát hiện bệnh</strong>: đi thăm ruộng bằng mắt, thấy khi đã lan 5–10%. Phun đôi khi muộn.</p>
@@ -1244,7 +1240,7 @@ export default function AIInAgricultureTopic() {
                 "Việt Nam có hệ sinh thái: Mimosatek, FPT.AI ForFarming, VIFONET, Hachi Hub, Rynan, Agritech startups Cần Thơ/An Giang.",
                 "Hạ tầng 2024–2025: smartphone ≈80% nông thôn, 4G phủ 85–90%. App BẮT BUỘC chạy offline.",
                 "Cạm bẫy: thiếu dữ liệu cho giống cây VN, rào cản ngôn ngữ dân tộc, niềm tin của nông dân, lệ thuộc cảm biến nhập khẩu.",
-                "Nguyên tắc human-in-the-loop: AI khuyến nghị, khuyến nông xã + nông dân quyết định — đặc biệt khi bệnh quan trọng hoặc tự tin dưới 80%.",
+                "Nguyên tắc human-in-the-loop: AI khuyến nghị, khuyến nông xã + nông dân quyết định, đặc biệt khi bệnh quan trọng hoặc tự tin dưới 80%.",
               ]}
             />
           </LessonSection>
@@ -1259,7 +1255,7 @@ export default function AIInAgricultureTopic() {
 }
 
 // ===========================================================================
-// Supporting components — kept below main for readability
+// Supporting components, kept below main for readability
 // ===========================================================================
 
 function UseCaseCard({

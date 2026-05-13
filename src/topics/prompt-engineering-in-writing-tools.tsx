@@ -28,9 +28,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "prompt-engineering-in-writing-tools",
   title: "Prompt Engineering in Writing Tools",
-  titleVi: "Prompt Engineering trong Công cụ Viết",
+  titleVi: "Prompt engineering trong công cụ viết",
   description:
-    "Jasper AI và Notion AI biến prompt engineering thành trải nghiệm “nhấn một nút” cho hàng triệu người dùng văn phòng.",
+    "Jasper và Notion AI biến khung prompt thành nút bấm, giúp người dùng viết nhanh mà vẫn kiểm được giọng văn.",
   category: "llm-concepts",
   tags: ["prompt-engineering", "writing", "application"],
   difficulty: "beginner",
@@ -85,7 +85,7 @@ export const metadata: TopicMeta = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// TIMELINE SVG — 3 mốc Oct 2022 → Feb 2023 → 2M signups
+// TIMELINE SVG, 3 mốc Oct 2022 → Feb 2023 → 2M signups
 // ═══════════════════════════════════════════════════════════════════════════
 function FundingTimeline() {
   const events = [
@@ -117,7 +117,7 @@ function FundingTimeline() {
       <div className="flex items-center gap-2 mb-3">
         <CalendarIcon size={14} className="text-accent" />
         <span className="text-xs font-semibold uppercase tracking-wide text-accent">
-          Dòng thời gian — mùa bùng nổ AI viết
+          Dòng thời gian, mùa bùng nổ AI viết
         </span>
       </div>
 
@@ -269,7 +269,7 @@ function AnimatedCounter({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SỐ LIỆU ĐỘNG — 4 thẻ metrics
+// SỐ LIỆU ĐỘNG, 4 thẻ metrics
 // ═══════════════════════════════════════════════════════════════════════════
 function MetricsGrid() {
   const tiles = [
@@ -334,7 +334,7 @@ function MetricsGrid() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// MINI-VISUAL 1: Thư viện template (Jasper) — card grid
+// MINI-VISUAL 1: Thư viện template (Jasper), card grid
 // ═══════════════════════════════════════════════════════════════════════════
 function TemplateLibraryVisual() {
   const templates = [
@@ -395,7 +395,7 @@ function NotionSlashMock() {
       <div className="flex items-center gap-2 mb-3">
         <Command size={14} className="text-blue-600 dark:text-blue-400" />
         <span className="text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">
-          Giao diện Notion — gõ <code className="font-mono">/ai</code>
+          Giao diện Notion, gõ <code className="font-mono">/ai</code>
         </span>
       </div>
       <div className="rounded-lg border border-blue-300 dark:border-blue-700 bg-card p-3 space-y-2">
@@ -529,7 +529,7 @@ function HiddenSystemPromptDiagram() {
           Lớp 3 · Mô hình AI nhận cả hai lớp trên
         </div>
         <div className="text-xs text-foreground italic">
-          Trả ra email chuyên nghiệp, đúng giọng, đúng cấu trúc — chỉ sau một
+          Trả ra email chuyên nghiệp, đúng giọng, đúng cấu trúc, chỉ sau một
           cú click.
         </div>
       </div>
@@ -641,14 +641,14 @@ function MultiModelRoutingDiagram() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PROBLEM — ToggleCompare trang trắng vs template sẵn
+// PROBLEM, ToggleCompare trang trắng vs template sẵn
 // ═══════════════════════════════════════════════════════════════════════════
 function BlankVsTemplate() {
   return (
     <ToggleCompare
       labelA="Prompt trắng"
       labelB="Template sẵn"
-      description="Cùng nhiệm vụ “viết mô tả sản phẩm” — khác biệt nằm ở chỗ có khung dẫn dắt hay không."
+      description="Cùng nhiệm vụ “viết mô tả sản phẩm”, khác biệt nằm ở chỗ có khung dẫn dắt hay không."
       childA={
         <div className="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 space-y-3">
           <div className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
@@ -670,7 +670,7 @@ function BlankVsTemplate() {
       childB={
         <div className="rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-4 space-y-3">
           <div className="text-xs font-semibold uppercase tracking-wide text-green-700 dark:text-green-300">
-            Template Jasper — &ldquo;Mô tả sản phẩm Amazon&rdquo;
+            Template Jasper, &ldquo;Mô tả sản phẩm Amazon&rdquo;
           </div>
           <div className="space-y-1.5 rounded border border-green-300 dark:border-green-700 bg-card p-3">
             <div className="flex items-center gap-2 text-xs">
@@ -711,14 +711,14 @@ function BlankVsTemplate() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// COUNTERFACTUAL — ToggleCompare trước/sau khi có template prompt
+// COUNTERFACTUAL, ToggleCompare trước/sau khi có template prompt
 // ═══════════════════════════════════════════════════════════════════════════
 function BeforeAfterTemplates() {
   return (
     <ToggleCompare
       labelA="Trước khi có template"
       labelB="Sau khi có template"
-      description="Cùng một người viết content freelance — một ngày làm việc thay đổi thế nào sau khi Jasper và Notion AI ra đời."
+      description="Cùng một người viết content freelance, một ngày làm việc thay đổi thế nào sau khi Jasper và Notion AI ra đời."
       childA={
         <div className="rounded-lg border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 p-4 space-y-3">
           <div className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-300">
@@ -726,19 +726,19 @@ function BeforeAfterTemplates() {
           </div>
           <ul className="text-xs text-foreground space-y-2 pl-4 list-disc marker:text-amber-500">
             <li>
-              <strong>9h</strong> — Thử 5 cách viết prompt cho bài blog, mỗi
+              <strong>9h</strong>, Thử 5 cách viết prompt cho bài blog, mỗi
               lần ChatGPT trả ra giọng khác nhau
             </li>
             <li>
-              <strong>11h</strong> — Ngồi xoá đi viết lại vì không biết mô tả
+              <strong>11h</strong>, Ngồi xoá đi viết lại vì không biết mô tả
               đối tượng đọc ra sao
             </li>
             <li>
-              <strong>14h</strong> — Tự chép công thức prompt từ Reddit để
+              <strong>14h</strong>, Tự chép công thức prompt từ Reddit để
               viết caption Facebook
             </li>
             <li>
-              <strong>17h</strong> — Chỉ ra được 2 bài đạt chuẩn khách hàng
+              <strong>17h</strong>, Chỉ ra được 2 bài đạt chuẩn khách hàng
             </li>
           </ul>
           <div className="rounded border border-amber-300 dark:border-amber-700 bg-card px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
@@ -754,25 +754,25 @@ function BeforeAfterTemplates() {
           </div>
           <ul className="text-xs text-foreground space-y-2 pl-4 list-disc marker:text-green-500">
             <li>
-              <strong>9h</strong> — Chọn template &ldquo;Blog Post
+              <strong>9h</strong>, Chọn template &ldquo;Blog Post
               Outline&rdquo;, điền 3 ô, ra dàn bài sau 30 giây
             </li>
             <li>
-              <strong>10h</strong> — Trong Notion, gõ <code>/ai</code> để
+              <strong>10h</strong>, Trong Notion, gõ <code>/ai</code> để
               đổi giọng văn trang trọng
             </li>
             <li>
-              <strong>12h</strong> — Template &ldquo;Facebook Ad&rdquo; ra 5
+              <strong>12h</strong>, Template &ldquo;Facebook Ad&rdquo; ra 5
               caption khác nhau trong 2 phút
             </li>
             <li>
-              <strong>14h</strong> — Đã bàn giao 6 bài đạt chuẩn, còn thời
+              <strong>14h</strong>, Đã bàn giao 6 bài đạt chuẩn, còn thời
               gian uống cà phê
             </li>
           </ul>
           <div className="rounded border border-green-300 dark:border-green-700 bg-card px-3 py-2 text-xs text-green-800 dark:text-green-200">
             <strong>Kết:</strong> Prompt engineering được &ldquo;đóng
-            gói&rdquo; vào nút bấm — bất kỳ ai cũng dùng được.
+            gói&rdquo; vào nút bấm, bất kỳ ai cũng dùng được.
           </div>
         </div>
       }
@@ -795,14 +795,14 @@ export default function PromptEngineeringInWritingTools() {
         topicSlug="prompt-engineering-in-writing-tools"
       >
         <p>
-          Tháng 10 năm 2022, Jasper AI &mdash; một nền tảng viết nội dung bằng
-          AI &mdash; gọi vốn 125 triệu đô-la Mỹ với định giá 1,5 tỷ đô-la Mỹ.
+          Tháng 10 năm 2022, Jasper AI, một nền tảng viết nội dung bằng
+          AI, gọi vốn 125 triệu đô-la Mỹ với định giá 1,5 tỷ đô-la Mỹ.
           Bí quyết của họ? Biến prompt engineering (kỹ thuật viết câu lệnh cho
           AI) thành sản phẩm dễ xài cho hơn 70.000 khách hàng doanh nghiệp.
         </p>
         <p>
-          Chỉ vài tháng sau, Notion &mdash; ứng dụng quản lý công việc quen
-          thuộc với dân văn phòng &mdash; ra mắt Notion AI, đưa sức mạnh viết
+          Chỉ vài tháng sau, Notion, ứng dụng quản lý công việc quen
+          thuộc với dân văn phòng, ra mắt Notion AI, đưa sức mạnh viết
           bằng AI ngay vào trang note hàng ngày. Hơn 2 triệu người đăng ký
           danh sách chờ trong vài tuần, <strong>gấp 10 lần</strong> dự đoán
           của chính Notion.
@@ -824,8 +824,8 @@ export default function PromptEngineeringInWritingTools() {
           để mô hình AI cho ra kết quả chính xác và đúng ý nhất. Vấn đề?{" "}
           <strong>Phần lớn người dùng không biết viết prompt</strong>. Một câu
           mơ hồ như &ldquo;viết bài quảng cáo&rdquo; cho kết quả chung chung,
-          trong khi prompt có khung rõ ràng &mdash; đối tượng, giọng văn, độ
-          dài, mục tiêu &mdash; cho ra nội dung chuyên nghiệp ngay lập tức.
+          trong khi prompt có khung rõ ràng, đối tượng, giọng văn, độ
+          dài, mục tiêu, cho ra nội dung chuyên nghiệp ngay lập tức.
         </p>
 
         <BlankVsTemplate />
@@ -840,7 +840,7 @@ export default function PromptEngineeringInWritingTools() {
         </p>
       </ApplicationProblem>
 
-      {/* ━━━ MECHANISM — 4 Beats với ProgressSteps + mini-visuals ━━━ */}
+      {/* ━━━ MECHANISM, 4 Beats với ProgressSteps + mini-visuals ━━━ */}
       <ApplicationMechanism
         parentTitleVi="Prompt Engineering"
         topicSlug="prompt-engineering-in-writing-tools"
@@ -865,7 +865,7 @@ export default function PromptEngineeringInWritingTools() {
             sẵn các khung mẫu cho từng tình huống: bài blog, quảng cáo
             Facebook, mô tả sản phẩm Amazon, email bán hàng, caption
             Instagram… Mỗi template là một prompt đã được đội ngũ Jasper
-            tối ưu hóa &mdash; người dùng chỉ điền vài ô trắng là xong.
+            tối ưu hóa, người dùng chỉ điền vài ô trắng là xong.
           </p>
           <TemplateLibraryVisual />
         </Beat>
@@ -890,7 +890,7 @@ export default function PromptEngineeringInWritingTools() {
             email chuyên nghiệp&rdquo;, phía sau hậu trường hệ thống tự
             thêm các ràng buộc về vai trò, cấu trúc, giọng văn, rồi mới gửi
             gói prompt đầy đủ đó đến mô hình AI. Người dùng chỉ thấy kết
-            quả cuối &mdash; sạch, đúng chuẩn.
+            quả cuối, sạch, đúng chuẩn.
           </p>
           <HiddenSystemPromptDiagram />
         </Beat>
@@ -915,7 +915,7 @@ export default function PromptEngineeringInWritingTools() {
         topicSlug="prompt-engineering-in-writing-tools"
       >
         <Metric
-          value="1,5 tỷ đô-la Mỹ — định giá Jasper AI sau vòng Series A 10/2022, phục vụ hơn 70.000 khách hàng trả phí"
+          value="1,5 tỷ đô-la Mỹ, định giá Jasper AI sau vòng Series A 10/2022, phục vụ hơn 70.000 khách hàng trả phí"
           sourceRef={1}
         />
         <Metric
@@ -923,12 +923,12 @@ export default function PromptEngineeringInWritingTools() {
           sourceRef={3}
         />
         <Metric
-          value="45 triệu đô-la Mỹ — doanh thu Jasper năm 2021, dự kiến gấp đôi vào năm 2022"
+          value="45 triệu đô-la Mỹ, doanh thu Jasper năm 2021, dự kiến gấp đôi vào năm 2022"
           sourceRef={2}
         />
       </ApplicationMetrics>
 
-      {/* Khối counter động — bổ sung trực quan cho Metrics */}
+      {/* Khối counter động, bổ sung trực quan cho Metrics */}
       <section className="mb-10">
         <MetricsGrid />
         <Callout variant="insight" title="Đọc con số này thế nào?">
@@ -955,7 +955,7 @@ export default function PromptEngineeringInWritingTools() {
 
         <p>
           Jasper và Notion AI đã biến kỹ năng chuyên môn thành trải nghiệm{" "}
-          <strong>&ldquo;điền form &mdash; bấm nút &mdash; lấy kết quả&rdquo;</strong>{" "}
+          <strong>&ldquo;điền form, bấm nút, lấy kết quả&rdquo;</strong>{" "}
           cho hàng triệu người dùng. Đó là bài học lớn nhất: công nghệ AI
           mạnh đến đâu, người dùng phổ thông vẫn cần một giao diện đơn giản
           để khai thác.

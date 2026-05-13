@@ -24,14 +24,14 @@ import ApplicationCounterfactual from "@/components/application/ApplicationCount
 import { Callout } from "@/components/interactive";
 
 /* ==========================================================================
- *  METADATA — giữ nguyên y nguyên như hiện tại
+ *  METADATA, giữ nguyên y nguyên như hiện tại
  * ========================================================================== */
 export const metadata: TopicMeta = {
   slug: "explainability-in-credit-decisions",
   title: "Explainability in Credit Decisions",
-  titleVi: "Giải thích được trong Quyết định Tín dụng",
+  titleVi: "Explainability trong quyết định tín dụng",
   description:
-    "GDPR và CFPB yêu cầu ngân hàng phải giải thích khi AI từ chối cấp tín dụng — không được dùng hộp đen",
+    "Ngân hàng cần giải thích lý do AI từ chối khoản vay, không thể chỉ nói hệ thống đã quyết.",
   category: "ai-safety",
   tags: ["explainability", "credit", "application"],
   difficulty: "advanced",
@@ -47,7 +47,7 @@ export const metadata: TopicMeta = {
   sources: [
     {
       title:
-        "Art. 22 GDPR — Automated individual decision-making, including profiling",
+        "Art. 22 GDPR, Automated individual decision-making, including profiling",
       publisher: "GDPR-info.eu",
       url: "https://gdpr-info.eu/art-22-gdpr/",
       date: "2018-05",
@@ -88,7 +88,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ==========================================================================
- *  VISUAL: Câu chuyện Apple Card 2019 — 2 cột vợ chồng
+ *  VISUAL: Câu chuyện Apple Card 2019, 2 cột vợ chồng
  *  Cùng tài sản, cùng lịch sử tín dụng, cùng đơn xin → hạn mức khác 20 lần
  * ========================================================================== */
 
@@ -139,7 +139,7 @@ function AppleCardStoryVisual() {
     <div className="my-6 rounded-2xl border-2 border-border bg-background/60 overflow-hidden">
       <div className="px-4 py-3 bg-slate-900 text-white text-sm font-semibold flex items-center gap-2">
         <FileWarning className="h-4 w-4 text-amber-400" />
-        Tháng 11/2019 — Đơn xin thẻ Apple Card của hai vợ chồng
+        Tháng 11/2019, Đơn xin thẻ Apple Card của hai vợ chồng
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
@@ -183,7 +183,7 @@ function AppleCardStoryVisual() {
 
       <div className="px-4 py-3 bg-surface border-t border-border flex items-center justify-between gap-3">
         <p className="text-xs text-muted">
-          Cùng tài sản, cùng đơn — AI ra kết quả khác nhau hoàn toàn.
+          Cùng tài sản, cùng đơn, AI ra kết quả khác nhau hoàn toàn.
         </p>
         <button
           onClick={() => setRevealed(!revealed)}
@@ -203,8 +203,8 @@ function AppleCardStoryVisual() {
           <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
           <p className="text-xs text-foreground/90 leading-relaxed">
             Khi David hỏi Apple &ldquo;Vì sao?&rdquo;, nhân viên đáp:{" "}
-            <em>&ldquo;Đó là thuật toán quyết định.&rdquo;</em> Không ai — kể
-            cả Goldman Sachs (ngân hàng đối tác) — giải thích được. Chuyện lan
+            <em>&ldquo;Đó là thuật toán quyết định.&rdquo;</em> Không ai, kể
+            cả Goldman Sachs (ngân hàng đối tác), giải thích được. Chuyện lan
             nhanh trên mạng xã hội, cơ quan giám sát tài chính New York mở
             điều tra.
           </p>
@@ -215,7 +215,7 @@ function AppleCardStoryVisual() {
 }
 
 /* ==========================================================================
- *  VISUAL: So sánh 2 kịch bản — có giải thích vs không
+ *  VISUAL: So sánh 2 kịch bản, có giải thích vs không
  * ========================================================================== */
 
 interface ContrastCol {
@@ -231,7 +231,7 @@ const CONTRAST_COLS: ContrastCol[] = [
   {
     tone: "red",
     icon: Lock,
-    title: "Trước đây — hộp đen",
+    title: "Trước đây, hộp đen",
     bankReply:
       "Rất tiếc, đơn của anh/chị bị từ chối. Thuật toán AI đã quyết định.",
     customer: "Không biết vì sao. Không biết phải sửa gì. Không thể khiếu nại.",
@@ -241,7 +241,7 @@ const CONTRAST_COLS: ContrastCol[] = [
   {
     tone: "emerald",
     icon: Unlock,
-    title: "Bây giờ — luật bắt buộc giải thích",
+    title: "Bây giờ, luật bắt buộc giải thích",
     bankReply:
       "Đơn bị từ chối vì: (1) tỷ lệ nợ hiện tại 48% thu nhập, (2) lịch sử có 2 khoản chậm trả trong 12 tháng gần nhất.",
     customer: "Hiểu được lý do. Biết phải làm gì. Có thể khiếu nại nếu sai.",
@@ -315,7 +315,7 @@ function ExplanationContrastVisual() {
 }
 
 /* ==========================================================================
- *  VISUAL: Timeline — các cột mốc pháp lý
+ *  VISUAL: Timeline, các cột mốc pháp lý
  * ========================================================================== */
 
 interface TimelineItem {
@@ -340,7 +340,7 @@ const TIMELINE: TimelineItem[] = [
   {
     year: "2019",
     where: "Mỹ",
-    title: "Vụ Apple Card — DHH nổ trên Twitter",
+    title: "Vụ Apple Card, DHH nổ trên Twitter",
     detail:
       "Cơ quan dịch vụ tài chính New York (NYDFS) mở điều tra; Goldman Sachs buộc phải công khai một phần cơ chế.",
     color: "bg-red-500",
@@ -351,7 +351,7 @@ const TIMELINE: TimelineItem[] = [
     where: "Mỹ",
     title: "CFPB Circular 2023-03",
     detail:
-      "Cấm ngân hàng dùng biểu mẫu 'tích ô' chung chung khi từ chối tín dụng — phải nêu lý do cá nhân, cụ thể.",
+      "Cấm ngân hàng dùng biểu mẫu 'tích ô' chung chung khi từ chối tín dụng, phải nêu lý do cá nhân, cụ thể.",
     color: "bg-purple-500",
     icon: "🇺🇸",
   },
@@ -367,7 +367,7 @@ const TIMELINE: TimelineItem[] = [
   {
     year: "2024",
     where: "EU",
-    title: "EU AI Act — xếp tín dụng là 'rủi ro cao'",
+    title: "EU AI Act, xếp tín dụng là 'rủi ro cao'",
     detail:
       "AI dùng cho xét tín dụng, tuyển dụng, y tế, giáo dục bắt buộc có tài liệu giải thích 'thực chất'.",
     color: "bg-indigo-500",
@@ -379,7 +379,7 @@ function LegalTimelineVisual() {
   return (
     <div className="my-6 space-y-3">
       <p className="text-xs text-muted text-center">
-        Từ vụ Apple Card đến các đạo luật bắt buộc giải thích — 6 năm thay đổi
+        Từ vụ Apple Card đến các đạo luật bắt buộc giải thích, 6 năm thay đổi
       </p>
       <div className="relative pl-6 space-y-4 border-l-2 border-dashed border-border ml-3">
         {TIMELINE.map((item, i) => (
@@ -418,7 +418,7 @@ function LegalTimelineVisual() {
 }
 
 /* ==========================================================================
- *  VISUAL: Quy trình xử lý khi bị từ chối — flow các bước
+ *  VISUAL: Quy trình xử lý khi bị từ chối, flow các bước
  * ========================================================================== */
 
 const PROCESS_STEPS: Array<{
@@ -430,14 +430,14 @@ const PROCESS_STEPS: Array<{
   { step: 1, title: "AI ra quyết định", detail: "Mô hình chấm điểm cho hồ sơ vay.", icon: "🤖" },
   { step: 2, title: "Hệ thống giải thích", detail: "Công cụ như SHAP/LIME phân tích mô hình, xác định yếu tố nào đã đẩy quyết định.", icon: "🔍" },
   { step: 3, title: "Kiểm duyệt nội bộ", detail: "Nhân viên ngân hàng kiểm tra: lý do có hợp pháp không? Có yếu tố nhạy cảm lọt vào không?", icon: "⚖️" },
-  { step: 4, title: "Gửi lý do cho khách hàng", detail: "Cá nhân hóa, cụ thể, bằng ngôn ngữ thường — không dùng thuật ngữ kỹ thuật.", icon: "📩" },
+  { step: 4, title: "Gửi lý do cho khách hàng", detail: "Cá nhân hóa, cụ thể, bằng ngôn ngữ thường, không dùng thuật ngữ kỹ thuật.", icon: "📩" },
 ];
 
 function ProcessFlowVisual() {
   return (
     <div className="my-6 space-y-2">
       <p className="text-xs text-muted text-center">
-        Quy trình chuẩn — từ lúc AI ra quyết định đến khi khách hàng nhận lý do
+        Quy trình chuẩn, từ lúc AI ra quyết định đến khi khách hàng nhận lý do
       </p>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
         {PROCESS_STEPS.map((s, i) => (
@@ -483,12 +483,12 @@ export default function ExplainabilityInCreditDecisions() {
         <p>
           Bạn nộp đơn vay mua nhà và bị từ chối. Khi bạn hỏi lý do, nhân viên
           ngân hàng đáp: &ldquo;<em>Thuật toán AI quyết định</em>&rdquo;.
-          Không ai — kể cả chính nhân viên — có thể giải thích tại sao. Đây
+          Không ai, kể cả chính nhân viên, có thể giải thích tại sao. Đây
           không phải kịch bản giả tưởng; đây là câu chuyện của hàng triệu
           người trên thế giới, và đã trở thành chủ đề của nhiều đạo luật lớn.
         </p>
         <p>
-          Chủ đề này không về một công ty duy nhất — nó về <strong>cơ quan
+          Chủ đề này không về một công ty duy nhất, nó về <strong>cơ quan
           quản lý</strong>: GDPR của Liên minh Châu Âu (EU), Cục Bảo vệ Tài
           chính Người tiêu dùng Mỹ (CFPB), và Nghị định 13/2023 của Việt Nam.
           Họ đã ra luật bắt buộc ngân hàng phải giải thích khi AI quyết định
@@ -501,7 +501,7 @@ export default function ExplainabilityInCreditDecisions() {
           <p>
             Năm 2019, lập trình viên David Heinemeier Hansson (DHH, người tạo
             ra framework Ruby on Rails) viết trên Twitter: vợ ông được AI Apple
-            Card cấp hạn mức thấp hơn ông <strong>20 lần</strong> — dù cả hai
+            Card cấp hạn mức thấp hơn ông <strong>20 lần</strong>, dù cả hai
             có tài khoản chung, cùng nộp thuế chung, và điểm tín dụng của vợ
             còn cao hơn. Khi cả hai hỏi, nhân viên đều không giải thích được.
             Câu chuyện lan truyền chỉ sau vài giờ, Steve Wozniak (đồng sáng
@@ -514,7 +514,7 @@ export default function ExplainabilityInCreditDecisions() {
 
       <ApplicationProblem topicSlug="explainability-in-credit-decisions">
         <p>
-          <strong>Explainability</strong> (giải thích được — hay XAI,
+          <strong>Explainability</strong> (giải thích được, hay XAI,
           Explainable AI) là khả năng trình bày lý do cụ thể đằng sau mỗi
           quyết định của AI, bằng ngôn ngữ mà người bình thường có thể hiểu và
           kiểm chứng.
@@ -522,7 +522,7 @@ export default function ExplainabilityInCreditDecisions() {
         <p>
           Nhưng nhiều mô hình chấm điểm tín dụng hiện đại sử dụng học sâu
           (deep learning) với hàng triệu, thậm chí hàng tỷ tham số. Những mô
-          hình này có thể chính xác hơn — nhưng chúng là <strong>hộp đen</strong>:
+          hình này có thể chính xác hơn, nhưng chúng là <strong>hộp đen</strong>:
           ngay cả chính đội ngũ kỹ sư xây dựng cũng khó nói chính xác vì sao
           mô hình cho người A vay mà từ chối người B.
         </p>
@@ -530,8 +530,8 @@ export default function ExplainabilityInCreditDecisions() {
         <ExplanationContrastVisual />
 
         <p>
-          Khi một quyết định AI ảnh hưởng trực tiếp đến cuộc sống — mua nhà,
-          khởi nghiệp, đi du học, chữa bệnh — việc không thể giải thích tại
+          Khi một quyết định AI ảnh hưởng trực tiếp đến cuộc sống, mua nhà,
+          khởi nghiệp, đi du học, chữa bệnh, việc không thể giải thích tại
           sao bị từ chối là vi phạm quyền cơ bản của người tiêu dùng. Đó là lý
           do các nhà làm luật ở châu Âu, Mỹ, và Việt Nam đều đang siết chặt
           yêu cầu giải thích.
@@ -544,12 +544,11 @@ export default function ExplainabilityInCreditDecisions() {
       >
         <Beat step={1}>
           <p>
-            <strong>GDPR Điều 22 — quyền không bị quyết định tự động.</strong>{" "}
+            <strong>GDPR Điều 22, quyền không bị quyết định tự động.</strong>{" "}
             Từ 2018, người dân EU có quyền không bị áp đặt bởi một quyết định
             hoàn toàn tự động nếu nó tạo ra &ldquo;hiệu ứng pháp lý&rdquo; hay
             &ldquo;ảnh hưởng đáng kể tương tự&rdquo;. Tổ chức phải cung cấp{" "}
-            <em>&ldquo;thông tin có ý nghĩa về logic liên quan&rdquo;</em> —
-            không chỉ nói chung chung, mà phải cho phép cá nhân hiểu và phản
+            <em>&ldquo;thông tin có ý nghĩa về logic liên quan&rdquo;</em>, không chỉ nói chung chung, mà phải cho phép cá nhân hiểu và phản
             đối.
           </p>
         </Beat>
@@ -561,7 +560,7 @@ export default function ExplainabilityInCreditDecisions() {
             </strong>{" "}
             Năm 2024, trong vụ Dun &amp; Bradstreet Austria, Tòa án Công lý
             Liên minh Châu Âu (CJEU) ra phán quyết: tổ chức phải giải thích
-            &ldquo;quy trình và nguyên tắc thực sự được áp dụng&rdquo; — không
+            &ldquo;quy trình và nguyên tắc thực sự được áp dụng&rdquo;, không
             được trốn tránh bằng cách mô tả chung chung. Giải thích phải cụ
             thể cho từng trường hợp.
           </p>
@@ -581,8 +580,7 @@ export default function ExplainabilityInCreditDecisions() {
         <Beat step={4}>
           <p>
             <strong>Buộc hiểu mô hình trước khi triển khai.</strong> CFPB
-            tuyên bố rõ: tổ chức tín dụng phải hiểu hệ thống AI của mình —
-            biết đầu vào nào được dùng và ảnh hưởng đến kết quả ra sao —{" "}
+            tuyên bố rõ: tổ chức tín dụng phải hiểu hệ thống AI của mình, biết đầu vào nào được dùng và ảnh hưởng đến kết quả ra sao, {" "}
             <em>bất kể mô hình phức tạp đến đâu</em>. Luật Cơ hội Tín dụng
             Bình đẳng (ECOA) không cho phép dùng &ldquo;hộp đen&rdquo; nếu
             điều đó nghĩa là không giải thích được quyết định.
@@ -591,7 +589,7 @@ export default function ExplainabilityInCreditDecisions() {
 
         <Beat step={5}>
           <p>
-            <strong>Việt Nam — Nghị định 13/2023/NĐ-CP.</strong> Có hiệu lực
+            <strong>Việt Nam, Nghị định 13/2023/NĐ-CP.</strong> Có hiệu lực
             từ tháng 7/2023, nghị định quy định bảo vệ dữ liệu cá nhân, trong
             đó Điều 11 và 12 nói về quyền được biết và phản đối khi dữ liệu
             bị xử lý tự động. Ngân hàng Nhà nước cũng đã có các văn bản hướng
@@ -602,10 +600,10 @@ export default function ExplainabilityInCreditDecisions() {
 
         <Beat step={6}>
           <p>
-            <strong>EU AI Act — tín dụng là &ldquo;rủi ro cao&rdquo;.</strong>{" "}
+            <strong>EU AI Act, tín dụng là &ldquo;rủi ro cao&rdquo;.</strong>{" "}
             Từ 2024, đạo luật AI của EU chính thức phân loại các ứng dụng AI
             theo mức rủi ro. Chấm điểm tín dụng nằm ở nhóm &ldquo;rủi ro
-            cao&rdquo; — bắt buộc có tài liệu kỹ thuật, có quy trình giám sát
+            cao&rdquo;, bắt buộc có tài liệu kỹ thuật, có quy trình giám sát
             con người, và có khả năng giải thích từng quyết định.
           </p>
         </Beat>
@@ -617,7 +615,7 @@ export default function ExplainabilityInCreditDecisions() {
         <Callout variant="tip" title="Điều đang thay đổi ở Việt Nam">
           <p>
             Các ngân hàng lớn như VPBank, Techcombank, MB Bank đều đang triển
-            khai AI chấm điểm tín dụng — nhưng cùng lúc phải đầu tư hệ thống
+            khai AI chấm điểm tín dụng, nhưng cùng lúc phải đầu tư hệ thống
             giải thích. Fintech như Trusting Social, FIIN Credit cũng phải
             tuân thủ Nghị định 13/2023 khi xử lý dữ liệu cá nhân người Việt.
             Xu hướng chung: AI mạnh hơn, nhưng buộc phải &ldquo;trong
@@ -639,7 +637,7 @@ export default function ExplainabilityInCreditDecisions() {
           sourceRef={2}
         />
         <Metric
-          value="CJEU xác nhận quyền được giải thích thực chất — không chỉ giải thích hình thức"
+          value="CJEU xác nhận quyền được giải thích thực chất, không chỉ giải thích hình thức"
           sourceRef={3}
         />
         <Metric
@@ -656,15 +654,14 @@ export default function ExplainabilityInCreditDecisions() {
           <strong>Nếu không có yêu cầu giải thích</strong>, ngân hàng có thể
           triển khai mô hình AI hộp đen mà chính bản thân họ cũng không hiểu
           vì sao người này được duyệt còn người kia bị từ chối. Thiên kiến ẩn
-          trong dữ liệu lịch sử — phân biệt giới tính, chủng tộc, khu vực —
-          sẽ được AI tái tạo và khuếch đại, mà không ai phát hiện trong nhiều
+          trong dữ liệu lịch sử, phân biệt giới tính, chủng tộc, khu vực, sẽ được AI tái tạo và khuếch đại, mà không ai phát hiện trong nhiều
           năm.
         </p>
 
         <Callout variant="warning" title="Vụ Apple Card là bài học">
           <p>
             Mô hình của Goldman Sachs không được thiết kế để phân biệt giới
-            tính — đội ngũ kỹ sư thề rằng họ không hề nạp &ldquo;giới
+            tính, đội ngũ kỹ sư thề rằng họ không hề nạp &ldquo;giới
             tính&rdquo; vào làm đầu vào. Nhưng mô hình vẫn học được sự khác
             biệt qua các yếu tố gián tiếp (proxy): tên riêng, tài khoản mua
             sắm, hành vi chi tiêu. Không ai phát hiện cho đến khi một khách
@@ -673,7 +670,7 @@ export default function ExplainabilityInCreditDecisions() {
           <p className="mt-2">
             <strong>
               Nếu có quy định giải thích ngay từ đầu, lỗi này đã được phát
-              hiện trong giai đoạn kiểm thử — không phải sau khi hàng triệu
+              hiện trong giai đoạn kiểm thử, không phải sau khi hàng triệu
               khách hàng đã bị ảnh hưởng.
             </strong>
           </p>
@@ -681,7 +678,7 @@ export default function ExplainabilityInCreditDecisions() {
 
         <p>
           Yêu cầu giải thích buộc ngành tài chính phải đầu tư vào Explainable
-          AI — tạo ra các mô hình vừa chính xác vừa minh bạch. Công cụ như
+          AI, tạo ra các mô hình vừa chính xác vừa minh bạch. Công cụ như
           SHAP, LIME, counterfactual explanation, và mô hình minh bạch hơn
           (cây quyết định, hồi quy tuyến tính có ràng buộc) được ứng dụng rộng
           rãi trong các ngân hàng hiện đại. Và quan trọng nhất:{" "}
@@ -689,7 +686,7 @@ export default function ExplainabilityInCreditDecisions() {
             lý do từ chối phải là hành vi tài chính cụ thể
           </strong>{" "}
           (ví dụ &ldquo;tỷ lệ nợ 48% vượt ngưỡng 40%&rdquo;), không được dùng
-          yếu tố bị cấm như giới tính, chủng tộc, hay địa chỉ — kể cả khi đó
+          yếu tố bị cấm như giới tính, chủng tộc, hay địa chỉ, kể cả khi đó
           chỉ là &ldquo;proxy&rdquo; gián tiếp.
         </p>
 

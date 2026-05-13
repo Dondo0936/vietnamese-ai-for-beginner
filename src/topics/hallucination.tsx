@@ -31,9 +31,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "hallucination",
   title: "AI Hallucination",
-  titleVi: "Ảo giác của AI",
+  titleVi: "Hallucination: khi AI nói sai rất tự tin",
   description:
-    "Hiện tượng AI tạo ra thông tin nghe rất hợp lý nhưng thực tế sai hoặc bịa đặt — và cách nhận biết, phòng tránh khi làm việc.",
+    "Nhận diện câu trả lời nghe hợp lý nhưng sai, rồi thêm bước kiểm chứng trước khi dùng trong công việc.",
   category: "llm-concepts",
   tags: ["hallucination", "reliability", "safety", "llm"],
   difficulty: "advanced",
@@ -47,7 +47,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ──────────────────────────────────────────────────────────────
- * DỮ LIỆU — Đoạn văn AI sinh có lẫn ảo giác để người học "soi"
+ * DỮ LIỆU, Đoạn văn AI sinh có lẫn ảo giác để người học "soi"
  * Mỗi câu có trường `halluc` (true = bịa / sai sự thật).
  * ──────────────────────────────────────────────────────────────*/
 interface Span {
@@ -73,7 +73,7 @@ const PARAGRAPHS: Paragraph[] = [
       {
         text: " Trong thời gian ở Paris, Người đã gặp trực tiếp Tổng thống Pháp Raymond Poincaré vào năm 1919 để trình Bản yêu sách của nhân dân An Nam.",
         halluc: true,
-        why: "Bản yêu sách 1919 được gửi qua đường công văn tới Hội nghị Versailles — KHÔNG có cuộc gặp trực tiếp nào với Tổng thống Poincaré. AI bịa thêm chi tiết để câu văn nghe chắc nịch.",
+        why: "Bản yêu sách 1919 được gửi qua đường công văn tới Hội nghị Versailles, KHÔNG có cuộc gặp trực tiếp nào với Tổng thống Poincaré. AI bịa thêm chi tiết để câu văn nghe chắc nịch.",
       },
       {
         text: " Người về nước năm 1941, lãnh đạo Cách mạng tháng Tám và đọc Tuyên ngôn Độc lập ngày 2/9/1945 tại quảng trường Ba Đình.",
@@ -92,7 +92,7 @@ const PARAGRAPHS: Paragraph[] = [
       {
         text: " Đáng chú ý, Quỹ Tiền tệ Quốc tế IMF đã trao giải Economy of the Year 2024 cho Việt Nam trong lễ công bố tại Washington.",
         halluc: true,
-        why: "KHÔNG tồn tại giải thưởng nào tên 'Economy of the Year' của IMF. Đây là ảo giác điển hình — AI bịa tên giải, tên tổ chức, địa điểm để câu trả lời nghe ấn tượng.",
+        why: "KHÔNG tồn tại giải thưởng nào tên 'Economy of the Year' của IMF. Đây là ảo giác điển hình, AI bịa tên giải, tên tổ chức, địa điểm để câu trả lời nghe ấn tượng.",
       },
       {
         text: " Ngành du lịch đón hơn 17,5 triệu lượt khách quốc tế, gần bằng mức trước đại dịch Covid-19.",
@@ -111,7 +111,7 @@ const PARAGRAPHS: Paragraph[] = [
       {
         text: ' Câu thơ mở đầu "Trăm năm trong cõi người ta, Chữ tài chữ mệnh khéo là ghét nhau" được Nguyễn Du viết lại nguyên văn từ bài Tỳ Bà Hành của Bạch Cư Dị.',
         halluc: true,
-        why: "Bạch Cư Dị KHÔNG viết câu này. Đây là hai câu mở đầu do chính Nguyễn Du sáng tác. AI ghép hai tên tác giả nổi tiếng với nhau — ảo giác dạng 'trộn sự thật' rất khó phát hiện.",
+        why: "Bạch Cư Dị KHÔNG viết câu này. Đây là hai câu mở đầu do chính Nguyễn Du sáng tác. AI ghép hai tên tác giả nổi tiếng với nhau, ảo giác dạng 'trộn sự thật' rất khó phát hiện.",
       },
       {
         text: " Nguyễn Du qua đời năm 1820 tại Huế, thọ 54 tuổi.",
@@ -122,7 +122,7 @@ const PARAGRAPHS: Paragraph[] = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * COMPONENT — Người học click vào câu để đánh dấu "bịa"
+ * COMPONENT, Người học click vào câu để đánh dấu "bịa"
  * ──────────────────────────────────────────────────────────────*/
 function SpotTheHallucination() {
   const [paraIdx, setParaIdx] = useState(0);
@@ -175,7 +175,7 @@ function SpotTheHallucination() {
         Sau đó bấm <em>Kiểm tra</em> để so với sự thật.
       </Callout>
 
-      {/* Nội dung đoạn văn — click vào câu để đánh dấu */}
+      {/* Nội dung đoạn văn, click vào câu để đánh dấu */}
       <div className="rounded-xl border border-border bg-surface/40 p-5 text-sm leading-relaxed">
         {para.spans.map((s, i) => {
           const isMarked = !!marked[i];
@@ -265,7 +265,7 @@ function SpotTheHallucination() {
 }
 
 /* ──────────────────────────────────────────────────────────────
- * COMPONENT — So sánh cùng câu hỏi ở T=0 và T=0.7
+ * COMPONENT, So sánh cùng câu hỏi ở T=0 và T=0.7
  * ──────────────────────────────────────────────────────────────*/
 function TemperatureCompare() {
   return (
@@ -284,7 +284,7 @@ function TemperatureCompare() {
             viết kịch Lưu Quang Vũ.
           </p>
           <div className="mt-2 text-xs text-muted">
-            Ở T=0, AI luôn chọn token có xác suất cao nhất — nếu kiến thức này
+            Ở T=0, AI luôn chọn token có xác suất cao nhất, nếu kiến thức này
             có sẵn trong dữ liệu huấn luyện, nó sẽ trả lời nhất quán.
           </div>
         </div>
@@ -314,7 +314,7 @@ function TemperatureCompare() {
             </p>
           </div>
           <div className="mt-2 text-xs text-muted">
-            Ở T=0.7, AI được &ldquo;nới&rdquo; xác suất token — mỗi lần chạy lại
+            Ở T=0.7, AI được &ldquo;nới&rdquo; xác suất token, mỗi lần chạy lại
             có thể ra con số khác. Chi tiết phụ (năm vào Hội Nhà văn, nơi mất)
             bắt đầu bịa.
           </div>
@@ -339,7 +339,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "AI được huấn luyện để chọn chuỗi từ 'nghe trôi chảy nhất'. Nó không có một cơ sở dữ liệu sự thật để đối chiếu trong lúc sinh văn bản — nên câu trả lời tự tin không đồng nghĩa với chính xác.",
+      "AI được huấn luyện để chọn chuỗi từ 'nghe trôi chảy nhất'. Nó không có một cơ sở dữ liệu sự thật để đối chiếu trong lúc sinh văn bản, nên câu trả lời tự tin không đồng nghĩa với chính xác.",
   },
   {
     question:
@@ -352,7 +352,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Số liệu cụ thể (tên người, năm, trích dẫn) là nơi ảo giác phát huy nguy hiểm nhất — văn bản nghe chắc nịch nhưng rất có thể bịa. Luôn đối chiếu với nguồn sơ cấp.",
+      "Số liệu cụ thể (tên người, năm, trích dẫn) là nơi ảo giác phát huy nguy hiểm nhất, văn bản nghe chắc nịch nhưng rất có thể bịa. Luôn đối chiếu với nguồn sơ cấp.",
   },
   {
     question:
@@ -365,27 +365,27 @@ const quizQuestions: QuizQuestion[] = [
       ],
     correct: 1,
     explanation:
-      "RAG (Retrieval-Augmented Generation) neo câu trả lời vào tài liệu có thật. Tăng temperature thì ngược lại — làm ảo giác trầm trọng hơn. Hỏi nhiều lần ở T>0 chỉ tạo thêm biến thể bịa.",
+      "RAG (Retrieval-Augmented Generation) neo câu trả lời vào tài liệu có thật. Tăng temperature thì ngược lại, làm ảo giác trầm trọng hơn. Hỏi nhiều lần ở T>0 chỉ tạo thêm biến thể bịa.",
   },
   {
     question:
       'Một luật sư hỏi ChatGPT: "Có án lệ nào về vụ việc tương tự ở Việt Nam không?" AI trả lời kèm tên vụ án, số hiệu và năm. Luật sư NÊN làm gì tiếp?',
     options: [
-      "Tin ngay vì AI đã cho số hiệu rõ ràng — số hiệu nghĩa là có thật.",
+      "Tin ngay vì AI đã cho số hiệu rõ ràng, số hiệu nghĩa là có thật.",
       "Copy vào bản kiến nghị, vì tên tiếng Việt khó mà bịa nổi.",
-      "Tra cứu số hiệu đó trên Cổng thông tin điện tử toà án hoặc cơ sở dữ liệu pháp lý — nếu không tìm thấy, coi như AI bịa.",
-      "Hỏi lại AI 'Có chắc không?' — nếu AI nói 'Chắc', thì tin được.",
+      "Tra cứu số hiệu đó trên Cổng thông tin điện tử toà án hoặc cơ sở dữ liệu pháp lý, nếu không tìm thấy, coi như AI bịa.",
+      "Hỏi lại AI 'Có chắc không?', nếu AI nói 'Chắc', thì tin được.",
     ],
     correct: 2,
     explanation:
-      "AI hoàn toàn có khả năng bịa cả số hiệu vụ án lẫn tên thẩm phán. Nghĩa vụ xác minh với nguồn sơ cấp thuộc về con người — xem thêm vụ Mata v. Avianca 2023.",
+      "AI hoàn toàn có khả năng bịa cả số hiệu vụ án lẫn tên thẩm phán. Nghĩa vụ xác minh với nguồn sơ cấp thuộc về con người, xem thêm vụ Mata v. Avianca 2023.",
   },
   {
     question:
       "Câu nào mô tả ĐÚNG về mối quan hệ giữa độ tự tin của AI và độ chính xác?",
     options: [
       "AI càng trả lời dứt khoát thì càng chính xác.",
-      "Độ tự tin bằng lời nói (tone) và độ chính xác sự thật là HAI chuyện khác nhau — AI được tối ưu để nghe mượt, không phải để đúng.",
+      "Độ tự tin bằng lời nói (tone) và độ chính xác sự thật là HAI chuyện khác nhau, AI được tối ưu để nghe mượt, không phải để đúng.",
       "AI chỉ sai khi nó mở đầu bằng 'Tôi không chắc…'",
       "Độ chính xác luôn tăng khi prompt dài hơn.",
     ],
@@ -397,14 +397,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Trong 4 dạng ảo giác dưới đây, dạng nào khó phát hiện NHẤT?",
     options: [
-      "Bịa toàn bộ — tên người, tên tổ chức, năm đều không tồn tại.",
+      "Bịa toàn bộ, tên người, tên tổ chức, năm đều không tồn tại.",
       'Trộn sự thật: 80% đúng + 1 chi tiết lệch (sai 1 con số, sai 1 tác giả trong câu trích dẫn).',
       "Mâu thuẫn logic rõ ràng trong cùng một đoạn văn.",
       "AI trả lời bằng ngôn ngữ khác với ngôn ngữ câu hỏi.",
     ],
     correct: 1,
     explanation:
-      "Ảo giác 'trộn sự thật' là loại nguy hiểm nhất. Khi phần lớn thông tin đúng, người đọc dễ tin phần sai — và đây là dạng phổ biến trong các câu trả lời có trích dẫn, số liệu.",
+      "Ảo giác 'trộn sự thật' là loại nguy hiểm nhất. Khi phần lớn thông tin đúng, người đọc dễ tin phần sai, và đây là dạng phổ biến trong các câu trả lời có trích dẫn, số liệu.",
   },
 ];
 
@@ -414,7 +414,7 @@ const quizQuestions: QuizQuestion[] = [
 export default function HallucinationTopic() {
   return (
     <>
-      {/* BƯỚC 1 — HOOK / DỰ ĐOÁN */}
+      {/* BƯỚC 1, HOOK / DỰ ĐOÁN */}
       <PredictionGate
         question="Một AI khẳng định: 'Chủ tịch Hồ Chí Minh sinh năm 1890 tại Nghệ An. Năm 1919, Người đã gặp trực tiếp Tổng thống Pháp Raymond Poincaré tại Paris để trình Bản yêu sách của nhân dân An Nam.' Theo bạn, đoạn này là…"
         options={[
@@ -424,21 +424,21 @@ export default function HallucinationTopic() {
           "Không xác định được nếu chưa tra cứu",
         ]}
         correct={1}
-        explanation='Năm sinh và nơi sinh đúng. Năm 1919 có Bản yêu sách thật — nhưng gửi qua đường công văn, KHÔNG có cuộc gặp trực tiếp với Tổng thống Poincaré. Đây là dạng ảo giác "trộn sự thật": 80% đúng + 1 chi tiết bịa thêm để câu văn nghe chắc nịch. Cực kỳ nguy hiểm vì khó phát hiện.'
+        explanation='Năm sinh và nơi sinh đúng. Năm 1919 có Bản yêu sách thật, nhưng gửi qua đường công văn, KHÔNG có cuộc gặp trực tiếp với Tổng thống Poincaré. Đây là dạng ảo giác "trộn sự thật": 80% đúng + 1 chi tiết bịa thêm để câu văn nghe chắc nịch. Cực kỳ nguy hiểm vì khó phát hiện.'
       >
         <p className="mt-3 text-sm text-muted">
-          Hôm nay bạn sẽ học cách nhận ra những chi tiết như vậy — đặc biệt quan
+          Hôm nay bạn sẽ học cách nhận ra những chi tiết như vậy, đặc biệt quan
           trọng nếu công việc của bạn là{" "}
           <strong>nghiên cứu, viết báo, tra cứu pháp lý, soạn giáo án</strong>.
         </p>
       </PredictionGate>
 
-      {/* BƯỚC 2 — ẨN DỤ THỰC TẾ */}
+      {/* BƯỚC 2, ẨN DỤ THỰC TẾ */}
       <p className="mt-8">
         Hãy tưởng tượng AI giống như <strong>một cậu học trò rất tự tin</strong>.
         Được giáo viên hỏi bất kỳ câu gì, cậu thà trả lời trôi chảy một câu{" "}
         <em>nghe có vẻ đúng</em> còn hơn là thừa nhận &ldquo;em không biết&rdquo;.
-        Giọng điệu luôn dứt khoát, diễn đạt mượt mà — nhưng thỉnh thoảng cậu
+        Giọng điệu luôn dứt khoát, diễn đạt mượt mà, nhưng thỉnh thoảng cậu
         bịa ra cả một cái tên, một con số, một câu trích dẫn không hề tồn tại.
       </p>
       <p>
@@ -447,21 +447,21 @@ export default function HallucinationTopic() {
         kiểu có ý đồ. AI đơn giản được thiết kế để chọn từ tiếp theo{" "}
         <strong>nghe trơn tru nhất</strong>, chứ không phải từ{" "}
         <strong>đúng sự thật nhất</strong>. Khi câu hỏi có vẻ đã có đáp án, AI
-        sẽ cố viết một đáp án — ngay cả khi trong &ldquo;trí nhớ&rdquo; của nó
+        sẽ cố viết một đáp án, ngay cả khi trong &ldquo;trí nhớ&rdquo; của nó
         không hề có thông tin đó.
       </p>
       <p>
-        Với người dùng văn phòng — nhất là{" "}
-        <strong>luật sư, nhà báo, giáo viên, giảng viên</strong> — đây là điều
+        Với người dùng văn phòng, nhất là{" "}
+        <strong>luật sư, nhà báo, giáo viên, giảng viên</strong>, đây là điều
         cần thuộc lòng trước khi giao việc cho AI.
       </p>
 
-      {/* BƯỚC 3 — TRỰC QUAN HÓA TƯƠNG TÁC */}
+      {/* BƯỚC 3, TRỰC QUAN HÓA TƯƠNG TÁC */}
       <VisualizationSection topicSlug={metadata.slug}>
         <LessonSection label="Soi ảo giác trong đoạn AI viết" step={1}>
           <p className="mb-3 text-sm text-muted">
             Dưới đây là những đoạn do AI sinh ra khi được hỏi câu hỏi thật từ
-            công việc hàng ngày. Trông đoạn nào cũng trôi chảy — nhưng trong
+            công việc hàng ngày. Trông đoạn nào cũng trôi chảy, nhưng trong
             mỗi đoạn có chính xác <strong>một câu bị bịa</strong>. Thử soi xem
             bạn có tìm được không.
           </p>
@@ -473,7 +473,7 @@ export default function HallucinationTopic() {
             Khi dùng AI qua API hoặc trong công cụ chuyên dụng, bạn có thể điều
             chỉnh tham số <strong>temperature</strong> (nhiệt độ sinh văn bản).
             Nhiệt độ càng thấp, AI càng thận trọng. Nhiệt độ càng cao, AI càng
-            &ldquo;sáng tạo&rdquo; — và cũng càng dễ bịa.
+            &ldquo;sáng tạo&rdquo;, và cũng càng dễ bịa.
           </p>
           <TemperatureCompare />
           <Callout variant="tip" title="Mẹo thực hành">
@@ -538,7 +538,7 @@ export default function HallucinationTopic() {
         </LessonSection>
       </VisualizationSection>
 
-      {/* BƯỚC 4 — KHOẢNH KHẮC AHA */}
+      {/* BƯỚC 4, KHOẢNH KHẮC AHA */}
       <AhaMoment>
         Điểm cần thuộc lòng: <strong>AI không biết rằng nó không biết</strong>.
         Nó được tối ưu để <em>nghe trôi chảy</em>, không phải để{" "}
@@ -546,7 +546,7 @@ export default function HallucinationTopic() {
         <strong>KHÔNG</strong> phải là bằng chứng rằng câu đó chính xác.
       </AhaMoment>
 
-      {/* BƯỚC 5 — THÁCH THỨC NHỎ */}
+      {/* BƯỚC 5, THÁCH THỨC NHỎ */}
       <InlineChallenge
         question="Trong các việc sau, việc nào NGUY HIỂM NHẤT nếu bạn dùng AI mà không kiểm chứng?"
         options={[
@@ -556,22 +556,22 @@ export default function HallucinationTopic() {
           "Nhờ AI tóm tắt đoạn email tiếng Anh sang tiếng Việt.",
         ]}
         correct={2}
-        explanation="Tra cứu văn bản pháp luật là nơi ảo giác nguy hiểm nhất — AI có thể bịa cả số hiệu văn bản, tên luật, ngày ban hành. Slogan và đề mục thuyết trình thì sáng tạo tự do, sai cũng không chết ai. Tóm tắt đoạn văn có sẵn thì AI chủ yếu làm việc với input bạn đưa, rủi ro thấp hơn."
+        explanation="Tra cứu văn bản pháp luật là nơi ảo giác nguy hiểm nhất, AI có thể bịa cả số hiệu văn bản, tên luật, ngày ban hành. Slogan và đề mục thuyết trình thì sáng tạo tự do, sai cũng không chết ai. Tóm tắt đoạn văn có sẵn thì AI chủ yếu làm việc với input bạn đưa, rủi ro thấp hơn."
       />
 
-      {/* BƯỚC 6 — GIẢI THÍCH SÂU */}
+      {/* BƯỚC 6, GIẢI THÍCH SÂU */}
       <ExplanationSection topicSlug={metadata.slug}>
         <p>
           <strong>Ảo giác</strong> (hallucination) là hiện tượng AI tạo ra
           thông tin <em>nghe hợp lý nhưng sai sự thật hoặc bịa đặt</em>. Nó
-          không phải lỗi phần mềm — nó là <strong>hệ quả tự nhiên</strong> của
+          không phải lỗi phần mềm, nó là <strong>hệ quả tự nhiên</strong> của
           cách AI hoạt động.
         </p>
 
-        {/* Vì sao lại xảy ra — sơ đồ 3 bước */}
+        {/* Vì sao lại xảy ra, sơ đồ 3 bước */}
         <div className="my-6 rounded-xl border border-border bg-surface/40 p-5">
           <h4 className="mb-4 text-sm font-semibold text-foreground">
-            Vì sao ảo giác xảy ra — nhìn bên trong một câu trả lời AI
+            Vì sao ảo giác xảy ra, nhìn bên trong một câu trả lời AI
           </h4>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
             <div className="rounded-lg border border-border bg-card p-4">
@@ -602,7 +602,7 @@ export default function HallucinationTopic() {
               </div>
               <p className="text-xs text-muted">
                 AI chọn từng từ tiếp theo có xác suất cao nhất trong ngữ cảnh.
-                Nếu không có thông tin đúng, nó vẫn phải chọn một từ — và chọn
+                Nếu không có thông tin đúng, nó vẫn phải chọn một từ, và chọn
                 từ <em>gần đúng về mặt thống kê</em>.
               </p>
             </div>
@@ -618,7 +618,7 @@ export default function HallucinationTopic() {
               </div>
               <p className="text-xs text-muted">
                 Văn bản ra luôn có giọng điệu mạch lạc. AI không đánh dấu{" "}
-                &ldquo;phần này tôi không chắc&rdquo; — trừ khi bạn yêu cầu rõ.
+                &ldquo;phần này tôi không chắc&rdquo;, trừ khi bạn yêu cầu rõ.
               </p>
             </div>
           </div>
@@ -632,7 +632,7 @@ export default function HallucinationTopic() {
           <Callout variant="warning" title="Sự thật bịa đặt">
             AI đưa ra một thông tin sai trắng trợn: thủ đô Úc là Sydney, GDP
             năm 2024 là 600 tỷ đô, Phó Thủ tướng tên là X. Loại này dễ phát hiện
-            nếu bạn có kiến thức nền — nhưng nguy hiểm với lĩnh vực mới.
+            nếu bạn có kiến thức nền, nhưng nguy hiểm với lĩnh vực mới.
           </Callout>
           <Callout variant="warning" title="Sai ngày/số liệu">
             Thường là lệch một chữ số hoặc lệch một năm. Điện Biên Phủ 1955 thay
@@ -640,7 +640,7 @@ export default function HallucinationTopic() {
             lướt nhanh.
           </Callout>
           <Callout variant="warning" title="Trích dẫn bịa">
-            &ldquo;Theo nghiên cứu của GS. X, ĐH Y (2023)…&rdquo; — nhưng GS. X
+            &ldquo;Theo nghiên cứu của GS. X, ĐH Y (2023)…&rdquo;, nhưng GS. X
             không tồn tại, hoặc có tồn tại nhưng chưa từng công bố nghiên cứu
             đó. Đây là dạng đã khiến nhiều luật sư Mỹ bị phạt.
           </Callout>
@@ -664,7 +664,7 @@ export default function HallucinationTopic() {
             <TopicLink slug="rag">Xem chi tiết về RAG</TopicLink>.
           </li>
           <li>
-            <strong>Yêu cầu AI dẫn nguồn cụ thể — rồi tự tra nguồn đó.</strong>{" "}
+            <strong>Yêu cầu AI dẫn nguồn cụ thể, rồi tự tra nguồn đó.</strong>{" "}
             Ví dụ: &ldquo;Trả lời dựa trên luật hiện hành ở Việt Nam, kèm số
             hiệu văn bản và điều khoản.&rdquo; Sau đó, <em>luôn luôn</em> mở
             văn bản gốc để kiểm chứng.
@@ -678,7 +678,7 @@ export default function HallucinationTopic() {
           <li>
             <strong>Cross-check bằng một mô hình khác.</strong> Hỏi cùng câu
             hỏi với hai AI khác nhau (ví dụ ChatGPT và Gemini). Nếu đáp án
-            lệch, cả hai đều đáng nghi — phải tra nguồn sơ cấp.
+            lệch, cả hai đều đáng nghi, phải tra nguồn sơ cấp.
           </li>
           <li>
             <strong>Kiểm chứng mọi trích dẫn trên nguồn sơ cấp.</strong>{" "}
@@ -793,18 +793,18 @@ export default function HallucinationTopic() {
               nội dung có yếu tố sự thật cần xác minh.
             </li>
             <li>
-              <strong>Không</strong> coi câu trả lời tự tin là bằng chứng — AI
+              <strong>Không</strong> coi câu trả lời tự tin là bằng chứng, AI
               luôn tự tin, kể cả khi sai.
             </li>
           </ol>
         </Callout>
       </ExplanationSection>
 
-      {/* BƯỚC 7 — TÓM TẮT */}
+      {/* BƯỚC 7, TÓM TẮT */}
       <MiniSummary
         title="Những điều cần nhớ về ảo giác của AI"
         points={[
-          "Ảo giác không phải là 'AI nói dối' — AI được tối ưu để nghe trôi chảy, không phải để đúng sự thật.",
+          "Ảo giác không phải là 'AI nói dối', AI được tối ưu để nghe trôi chảy, không phải để đúng sự thật.",
           "Bốn dạng thường gặp: sự thật bịa, sai ngày/số, trích dẫn bịa, mâu thuẫn logic. Dạng 'trộn sự thật' là khó phát hiện nhất.",
           "Nhiệt độ (temperature) càng cao, ảo giác càng nhiều. Với tra cứu sự thật, để T thấp.",
           "Giảm ảo giác bằng RAG (dán tài liệu gốc), cho phép AI nói 'không biết', cross-check, và luôn xác minh trích dẫn.",
@@ -812,7 +812,7 @@ export default function HallucinationTopic() {
         ]}
       />
 
-      {/* BƯỚC 8 — KIỂM TRA */}
+      {/* BƯỚC 8, KIỂM TRA */}
       <QuizSection questions={quizQuestions} />
     </>
   );

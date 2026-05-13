@@ -36,15 +36,15 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ═══════════════════════════════════════════════════════════════════════════
-// METADATA — giữ nguyên để hệ thống điều hướng nhận diện chủ đề
+// METADATA, giữ nguyên để hệ thống điều hướng nhận diện chủ đề
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const metadata: TopicMeta = {
   slug: "getting-started-with-ai",
   title: "Getting Started with AI",
-  titleVi: "Bắt đầu sử dụng AI",
+  titleVi: "Bắt đầu với AI: hỏi đúng việc đầu tiên",
   description:
-    "Hướng dẫn tạo tài khoản, cuộc hội thoại đầu tiên, và mẹo nhận kết quả tốt trong 5 phút.",
+    "Tạo tài khoản, hỏi thử một việc thật và biết cách kiểm kết quả trước khi dùng trong công việc.",
   category: "applied-ai",
   tags: ["beginner", "practical", "office", "getting-started"],
   difficulty: "beginner",
@@ -53,7 +53,7 @@ export const metadata: TopicMeta = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DỮ LIỆU — 5 BƯỚC ĐẦU TIÊN DÙNG AI
+// DỮ LIỆU, 5 BƯỚC ĐẦU TIÊN DÙNG AI
 // ═══════════════════════════════════════════════════════════════════════════
 //
 // Demo 1 dùng danh sách 5 bước: chọn tool → mở tool → gõ prompt đơn giản
@@ -110,7 +110,7 @@ const FIRST_STEPS: FirstStep[] = [
     id: "refine",
     order: 5,
     title: "Chỉnh lại nếu cần",
-    short: "Không hài lòng? Nhắn thêm yêu cầu — AI sẽ viết lại.",
+    short: "Không hài lòng? Nhắn thêm yêu cầu, AI sẽ viết lại.",
     detail:
       '"Viết lại lịch sự hơn", "ngắn hơn một nửa", "thêm phần cảm ơn ở cuối"… Bạn trò chuyện qua lại cho đến khi vừa ý.',
     icon: Edit3,
@@ -118,7 +118,7 @@ const FIRST_STEPS: FirstStep[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DỮ LIỆU — TOOL PICKER (DEMO 2)
+// DỮ LIỆU, TOOL PICKER (DEMO 2)
 // ═══════════════════════════════════════════════════════════════════════════
 //
 // Người dùng chọn 1 trong 4 mục tiêu, widget gợi ý 2-3 tool phù hợp.
@@ -160,7 +160,7 @@ const GOALS: Goal[] = [
       },
       {
         name: "Microsoft Copilot",
-        why: "Nằm thẳng trong Excel/Word/Outlook. Không cần copy dữ liệu ra ngoài — an toàn hơn cho dữ liệu nội bộ.",
+        why: "Nằm thẳng trong Excel/Word/Outlook. Không cần copy dữ liệu ra ngoài, an toàn hơn cho dữ liệu nội bộ.",
         tone: "Office 365",
       },
     ],
@@ -172,7 +172,7 @@ const GOALS: Goal[] = [
     picks: [
       {
         name: "Gemini",
-        why: "Tra cứu có liên kết Google Search, thường kèm nguồn — tiện đối chiếu.",
+        why: "Tra cứu có liên kết Google Search, thường kèm nguồn, tiện đối chiếu.",
         tone: "Tra cứu",
       },
       {
@@ -194,7 +194,7 @@ const GOALS: Goal[] = [
       },
       {
         name: "Claude",
-        why: "Phân loại, nhóm ý, gợi ý framework suy nghĩ — phù hợp khi brainstorm cần có cấu trúc.",
+        why: "Phân loại, nhóm ý, gợi ý framework suy nghĩ, phù hợp khi brainstorm cần có cấu trúc.",
         tone: "Văn dài",
       },
       {
@@ -207,7 +207,7 @@ const GOALS: Goal[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DỮ LIỆU — 4 TOOL PHỔ BIẾN TẠI VIỆT NAM
+// DỮ LIỆU, 4 TOOL PHỔ BIẾN TẠI VIỆT NAM
 // ═══════════════════════════════════════════════════════════════════════════
 
 type ToolCard = {
@@ -255,7 +255,7 @@ const TOOLS: ToolCard[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DỮ LIỆU — BẢNG THỜI GIAN "KHÔNG AI" vs "CÓ AI"
+// DỮ LIỆU, BẢNG THỜI GIAN "KHÔNG AI" vs "CÓ AI"
 // ═══════════════════════════════════════════════════════════════════════════
 
 type Task = {
@@ -272,7 +272,7 @@ const TASKS: Task[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DỮ LIỆU — QUIZ (5 câu)
+// DỮ LIỆU, QUIZ (5 câu)
 // ═══════════════════════════════════════════════════════════════════════════
 
 const QUIZ: QuizQuestion[] = [
@@ -287,7 +287,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Cách học AI nhanh nhất là dùng thử. Tất cả trợ lý phổ biến đều có bản miễn phí, chỉ cần email là đăng ký được. Một yêu cầu nhỏ, đọc kết quả, chỉnh lại — lặp 3-4 lần là bạn đã hiểu hơn bất cứ bài viết lý thuyết nào.",
+      "Cách học AI nhanh nhất là dùng thử. Tất cả trợ lý phổ biến đều có bản miễn phí, chỉ cần email là đăng ký được. Một yêu cầu nhỏ, đọc kết quả, chỉnh lại, lặp 3-4 lần là bạn đã hiểu hơn bất cứ bài viết lý thuyết nào.",
   },
   {
     question:
@@ -306,14 +306,14 @@ const QUIZ: QuizQuestion[] = [
     question:
       "AI trả lời rất tự tin nhưng có thể bị sai ở điểm nào sau đây?",
     options: [
-      "Tên người, số liệu, ngày tháng, trích dẫn — AI có thể tự bịa mà nghe rất hợp lý.",
+      "Tên người, số liệu, ngày tháng, trích dẫn, AI có thể tự bịa mà nghe rất hợp lý.",
       "AI luôn từ chối trả lời mọi câu hỏi.",
       "AI tự gửi email thay bạn.",
       "AI xoá tài khoản của bạn nếu trả lời sai.",
     ],
     correct: 0,
     explanation:
-      'Đây gọi là "hallucination" (ảo giác) — AI sinh ra câu trả lời nghe trơn tru ngay cả khi thông tin không có thật. Luôn đối chiếu số liệu, tên, dẫn chứng quan trọng với nguồn gốc.',
+      'Đây gọi là "hallucination" (ảo giác), AI sinh ra câu trả lời nghe trơn tru ngay cả khi thông tin không có thật. Luôn đối chiếu số liệu, tên, dẫn chứng quan trọng với nguồn gốc.',
   },
   {
     question:
@@ -331,7 +331,7 @@ const QUIZ: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Khi kết quả AI chưa vừa ý, bạn không cần hỏi lại y nguyên câu cũ — hãy {blank} prompt bằng cách thêm chi tiết.",
+      "Khi kết quả AI chưa vừa ý, bạn không cần hỏi lại y nguyên câu cũ, hãy {blank} prompt bằng cách thêm chi tiết.",
     blanks: [
       {
         answer: "tinh chỉnh",
@@ -339,12 +339,12 @@ const QUIZ: QuizQuestion[] = [
       },
     ],
     explanation:
-      "Tinh chỉnh prompt là kỹ năng cốt lõi khi dùng AI. Thêm ngữ cảnh, nêu giọng văn muốn có, hoặc ví dụ mẫu — kết quả thường tốt hơn rõ rệt. Ít khi prompt đầu tiên đã hoàn hảo.",
+      "Tinh chỉnh prompt là kỹ năng cốt lõi khi dùng AI. Thêm ngữ cảnh, nêu giọng văn muốn có, hoặc ví dụ mẫu, kết quả thường tốt hơn rõ rệt. Ít khi prompt đầu tiên đã hoàn hảo.",
   },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// MOCK CHAT UI — dùng cho demo 1 "bước 3" và "bước 4"
+// MOCK CHAT UI, dùng cho demo 1 "bước 3" và "bước 4"
 // ═══════════════════════════════════════════════════════════════════════════
 
 function MockChatBubble({
@@ -400,7 +400,7 @@ function MockChatBubble({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DEMO 1 — INTERACTIVE STEP LIST "5 PHÚT ĐẦU TIÊN"
+// DEMO 1, INTERACTIVE STEP LIST "5 PHÚT ĐẦU TIÊN"
 // ═══════════════════════════════════════════════════════════════════════════
 
 function FiveMinutesDemo() {
@@ -631,7 +631,7 @@ function MockRefineUI() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DEMO 2 — TOOL PICKER
+// DEMO 2, TOOL PICKER
 // ═══════════════════════════════════════════════════════════════════════════
 
 function ToolPickerDemo() {
@@ -717,7 +717,7 @@ function ToolPickerDemo() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DEMO 3 — PROMPT BEFORE / AFTER (ToggleCompare)
+// DEMO 3, PROMPT BEFORE / AFTER (ToggleCompare)
 // ═══════════════════════════════════════════════════════════════════════════
 
 function PromptBeforeAfter() {
@@ -725,7 +725,7 @@ function PromptBeforeAfter() {
     <ToggleCompare
       labelA="Prompt mơ hồ"
       labelB="Prompt có cấu trúc"
-      description="Cùng một AI, cùng một thời điểm — khác biệt nằm ở cách hỏi."
+      description="Cùng một AI, cùng một thời điểm, khác biệt nằm ở cách hỏi."
       childA={
         <div className="space-y-3">
           <div className="rounded-xl border border-border bg-background/40 p-3 space-y-2">
@@ -771,7 +771,7 @@ function PromptBeforeAfter() {
               }
             </p>
             <p className="text-[11px] text-emerald-700 dark:text-emerald-300">
-              Gọn, đủ ý, có link họp — sửa rất ít là gửi được.
+              Gọn, đủ ý, có link họp, sửa rất ít là gửi được.
             </p>
           </div>
         </div>
@@ -836,7 +836,7 @@ function LifecycleFlow() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// BAR CHART — KHÔNG AI vs CÓ AI (count-up animation)
+// BAR CHART, KHÔNG AI vs CÓ AI (count-up animation)
 // ═══════════════════════════════════════════════════════════════════════════
 
 function useCountUp(target: number, duration = 900, trigger = true) {
@@ -1000,7 +1000,7 @@ export default function GettingStartedWithAiTopic() {
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 1 — PREDICTION GATE                                      */}
+      {/* BƯỚC 1, PREDICTION GATE                                      */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
@@ -1009,10 +1009,10 @@ export default function GettingStartedWithAiTopic() {
             "Viết một email khó một mình nghĩ mãi không ra.",
             "Tóm tắt một file PDF 50 trang thành mấy gạch đầu dòng.",
             "Dịch một báo cáo ngắn sang tiếng Anh giữ đúng giọng văn.",
-            "Tất cả cái trên — và còn nhiều hơn thế.",
+            "Tất cả cái trên, và còn nhiều hơn thế.",
           ]}
           correct={3}
-          explanation="Đúng là tất cả. Trong 5 phút, một trợ lý AI hiện nay có thể viết email, tóm tắt tài liệu dài, dịch thuật, brainstorm, chỉnh câu chữ — đủ cho 60-70% việc văn phòng hằng ngày. Bài này sẽ dẫn bạn qua từng thứ, nhẹ nhàng như uống một ly cà phê."
+          explanation="Đúng là tất cả. Trong 5 phút, một trợ lý AI hiện nay có thể viết email, tóm tắt tài liệu dài, dịch thuật, brainstorm, chỉnh câu chữ, đủ cho 60-70% việc văn phòng hằng ngày. Bài này sẽ dẫn bạn qua từng thứ, nhẹ nhàng như uống một ly cà phê."
         >
           <p className="text-base text-foreground/90 leading-relaxed mt-2">
             Bài đầu tiên trong lộ trình sẽ cho bạn{" "}
@@ -1025,7 +1025,7 @@ export default function GettingStartedWithAiTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 2 — ẨN DỤ THƯ KÝ                                          */}
+      {/* BƯỚC 2, ẨN DỤ THƯ KÝ                                          */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
@@ -1045,37 +1045,36 @@ export default function GettingStartedWithAiTopic() {
           </p>
           <p className="text-sm text-foreground/90 leading-relaxed">
             Bạn nói bằng tiếng Việt bình thường. Thư ký hiểu cả tiếng Anh.
-            Bảo viết email — có email. Bảo tóm tắt tài liệu — có bản tóm tắt.
-            Bảo dịch — có bản dịch. Không đúng ý? Bạn nói "viết lại lịch sự
-            hơn" — thư ký viết lại ngay, không hờn dỗi.
+            Bảo viết email, có email. Bảo tóm tắt tài liệu, có bản tóm tắt.
+            Bảo dịch, có bản dịch. Không đúng ý? Bạn nói "viết lại lịch sự
+            hơn", thư ký viết lại ngay, không hờn dỗi.
           </p>
           <p className="text-sm text-foreground/90 leading-relaxed">
-            Điểm trừ duy nhất: <strong>thỉnh thoảng thư ký nói sai</strong> —
-            bịa tên người, nhầm con số, hiểu lệch ý. Bạn vẫn là người ký tên
+            Điểm trừ duy nhất: <strong>thỉnh thoảng thư ký nói sai</strong>, bịa tên người, nhầm con số, hiểu lệch ý. Bạn vẫn là người ký tên
             cuối cùng, nên mọi thứ quan trọng đều phải <strong>đọc lại và
-            kiểm chứng</strong>. Giữ thư ký đó ở cạnh — đừng giao phó toàn
+            kiểm chứng</strong>. Giữ thư ký đó ở cạnh, đừng giao phó toàn
             bộ trách nhiệm cho nó.
           </p>
         </div>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 3 — VISUALIZATION (3 demo con)                            */}
+      {/* BƯỚC 3, VISUALIZATION (3 demo con)                            */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={8} label="Thử tận tay">
         <VisualizationSection topicSlug={metadata.slug}>
-          <LessonSection step={1} totalSteps={3} label="Demo 1 — 5 phút đầu tiên">
+          <LessonSection step={1} totalSteps={3} label="Demo 1, 5 phút đầu tiên">
             <h3 className="text-base font-semibold text-foreground mb-1">
               5 bước đầu tiên khi dùng một trợ lý AI
             </h3>
             <p className="text-sm text-muted mb-4">
-              Click từng bước bên dưới — mỗi bước mở ra một hình minh hoạ
+              Click từng bước bên dưới, mỗi bước mở ra một hình minh hoạ
               giả lập giao diện bạn sẽ thấy.
             </p>
             <FiveMinutesDemo />
           </LessonSection>
 
-          <LessonSection step={2} totalSteps={3} label="Demo 2 — Chọn đúng công cụ">
+          <LessonSection step={2} totalSteps={3} label="Demo 2, Chọn đúng công cụ">
             <h3 className="text-base font-semibold text-foreground mb-1">
               Công cụ nào phù hợp với việc bạn đang làm?
             </h3>
@@ -1086,7 +1085,7 @@ export default function GettingStartedWithAiTopic() {
             <ToolPickerDemo />
           </LessonSection>
 
-          <LessonSection step={3} totalSteps={3} label="Demo 3 — Prompt tốt vs prompt dở">
+          <LessonSection step={3} totalSteps={3} label="Demo 3, Prompt tốt vs prompt dở">
             <h3 className="text-base font-semibold text-foreground mb-1">
               Cùng một AI, khác biệt nằm ở cách hỏi
             </h3>
@@ -1100,7 +1099,7 @@ export default function GettingStartedWithAiTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 4 — AHA MOMENT                                            */}
+      {/* BƯỚC 4, AHA MOMENT                                            */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc aha">
         <AhaMoment>
@@ -1114,7 +1113,7 @@ export default function GettingStartedWithAiTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 5 — INLINE CHALLENGE                                      */}
+      {/* BƯỚC 5, INLINE CHALLENGE                                      */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách nhỏ">
         <InlineChallenge
@@ -1126,12 +1125,12 @@ export default function GettingStartedWithAiTopic() {
             "Tóm tắt một bài báo về xu hướng ngành đăng trên VnExpress.",
           ]}
           correct={2}
-          explanation="Dữ liệu nhạy cảm như bảng lương, CMND, hợp đồng, thông tin khách hàng không nên dán vào AI công cộng — bạn không biết dữ liệu sẽ đi đâu. Nếu bắt buộc xử lý nội bộ, hãy dùng Microsoft Copilot trong Office 365 hoặc phiên bản doanh nghiệp có cam kết bảo mật, hoặc che giấu thông tin riêng tư trước khi gửi."
+          explanation="Dữ liệu nhạy cảm như bảng lương, CMND, hợp đồng, thông tin khách hàng không nên dán vào AI công cộng, bạn không biết dữ liệu sẽ đi đâu. Nếu bắt buộc xử lý nội bộ, hãy dùng Microsoft Copilot trong Office 365 hoặc phiên bản doanh nghiệp có cam kết bảo mật, hoặc che giấu thông tin riêng tư trước khi gửi."
         />
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 6 — EXPLANATION                                           */}
+      {/* BƯỚC 6, EXPLANATION                                           */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={8} label="Hiểu sâu hơn">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -1140,7 +1139,7 @@ export default function GettingStartedWithAiTopic() {
             Vòng đời một lần dùng AI
           </h4>
           <p>
-            Mỗi lần bạn dùng một trợ lý AI, có 5 giai đoạn — như 5 nhịp
+            Mỗi lần bạn dùng một trợ lý AI, có 5 giai đoạn, như 5 nhịp
             trong một điệu nhảy ngắn. Hiểu vòng đời này giúp bạn không
             "dính cứng" vào lần output đầu tiên, và biết khi nào phải
             quay vòng.
@@ -1152,7 +1151,7 @@ export default function GettingStartedWithAiTopic() {
             Bốn trợ lý AI phổ biến tại Việt Nam
           </h4>
           <p>
-            Không có công cụ nào "tốt nhất" cho mọi việc — chỉ có công cụ{" "}
+            Không có công cụ nào "tốt nhất" cho mọi việc, chỉ có công cụ{" "}
             <strong>phù hợp hơn</strong> cho từng tình huống. Bảng dưới
             đây tóm tắt thế mạnh chính của bốn trợ lý bạn sẽ gặp nhiều
             nhất.
@@ -1168,7 +1167,7 @@ export default function GettingStartedWithAiTopic() {
 
           {/* Bảng thời gian count-up */}
           <h4 className="text-base font-semibold text-foreground mt-6">
-            Thời gian tiết kiệm — con số thực tế
+            Thời gian tiết kiệm, con số thực tế
           </h4>
           <p>
             Đây là ước lượng cho người văn phòng trung bình, lần đầu làm
@@ -1202,7 +1201,7 @@ export default function GettingStartedWithAiTopic() {
               </li>
               <li>
                 <strong>Che tên riêng</strong> (tên người, số tài khoản,
-                mã nội bộ) trước khi gõ vào AI công cộng — AI vẫn giúp
+                mã nội bộ) trước khi gõ vào AI công cộng, AI vẫn giúp
                 được logic mà không biết ai là ai.
               </li>
             </ul>
@@ -1210,7 +1209,7 @@ export default function GettingStartedWithAiTopic() {
 
           {/* Ghép cặp công cụ với tình huống */}
           <h4 className="text-base font-semibold text-foreground mt-6">
-            Chọn đúng công cụ cho đúng việc — thử ghép cặp
+            Chọn đúng công cụ cho đúng việc, thử ghép cặp
           </h4>
           <p>
             Ghép mỗi tình huống công việc với công cụ AI phù hợp nhất.
@@ -1276,31 +1275,31 @@ export default function GettingStartedWithAiTopic() {
             <li>Chuẩn bị câu trả lời nháp cho những câu khách thường hỏi.</li>
           </ul>
 
-          {/* Collapsible — lộ trình tiếp theo */}
+          {/* Collapsible, lộ trình tiếp theo */}
           <CollapsibleDetail title="Sắp tới bạn sẽ học gì trong lộ trình văn phòng?">
             <ul className="list-disc list-inside space-y-2 pl-2 text-sm text-foreground/90 mt-2">
               <li>
-                <strong>Cách AI "hiểu" tiếng Việt của bạn</strong> — một bài
+                <strong>Cách AI "hiểu" tiếng Việt của bạn</strong>, một bài
                 ngắn về cách{" "}
                 <TopicLink slug="llm-overview">bài LLM</TopicLink> xử
                 lý chữ để bạn biết giới hạn thực sự của nó.
               </li>
               <li>
-                <strong>Kỹ thuật viết prompt</strong> — từ câu hỏi mơ hồ
+                <strong>Kỹ thuật viết prompt</strong>, từ câu hỏi mơ hồ
                 đến prompt chuyên nghiệp. Học qua đúng 5-6 công thức dễ
                 nhớ.
               </li>
               <li>
-                <strong>So sánh và đánh giá công cụ AI</strong> — khi
+                <strong>So sánh và đánh giá công cụ AI</strong>, khi
                 nào chọn gói trả phí, khi nào bản miễn phí là đủ, và
                 cách test nhanh một tool mới trong 15 phút.
               </li>
               <li>
-                <strong>AI cho Excel, Email, và họp</strong> — 3 bài
+                <strong>AI cho Excel, Email, và họp</strong>, 3 bài
                 chuyên sâu cho 3 việc bạn làm hằng ngày.
               </li>
               <li>
-                <strong>An toàn và đạo đức</strong> — làm gì với dữ liệu
+                <strong>An toàn và đạo đức</strong>, làm gì với dữ liệu
                 nhạy cảm, trách nhiệm khi output sai, và cách nói với
                 sếp/khách hàng rằng bạn dùng AI.
               </li>
@@ -1311,7 +1310,7 @@ export default function GettingStartedWithAiTopic() {
           <Callout variant="insight" title="Giữ tâm thế của người cầm bút">
             AI viết giúp, nhưng chữ ký là của bạn. Khi AI đưa kết quả,
             hãy hỏi: "Nếu gửi bản này đi mà có lỗi, mình có chịu được
-            không?" Nếu không — đọc lại. Nếu có — gửi. Tâm thế đó giúp
+            không?" Nếu không, đọc lại. Nếu có, gửi. Tâm thế đó giúp
             bạn dùng AI bền vững mà không rơi vào hai thái cực: lười đọc
             hoặc sợ hãi không dám dùng.
           </Callout>
@@ -1322,10 +1321,9 @@ export default function GettingStartedWithAiTopic() {
           </h4>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
-              <strong>Tin mọi thứ AI nói:</strong> AI rất tự tin — câu
+              <strong>Tin mọi thứ AI nói:</strong> AI rất tự tin, câu
               văn trau chuốt, dẫn chứng nghe hợp lý. Nhưng nó có thể
-              bịa. Quy tắc: tên người, số liệu, ngày tháng, luật lệ —
-              luôn kiểm tra lại.
+              bịa. Quy tắc: tên người, số liệu, ngày tháng, luật lệ, luôn kiểm tra lại.
             </li>
             <li>
               <strong>Dùng một lần rồi bỏ:</strong> thấy output chưa hay
@@ -1338,8 +1336,8 @@ export default function GettingStartedWithAiTopic() {
           {/* Câu kết nối tiếp */}
           <p className="mt-6">
             Khi bạn thấy thoải mái với một công cụ, bước tiếp theo là hiểu{" "}
-            <TopicLink slug="llm-overview">bài LLM</TopicLink> — cách
-            AI xử lý chữ viết — và{" "}
+            <TopicLink slug="llm-overview">bài LLM</TopicLink>, cách
+            AI xử lý chữ viết, và{" "}
             <TopicLink slug="prompt-engineering">kỹ thuật viết prompt</TopicLink>{" "}
             để nhận kết quả tốt hơn nữa. Khi đã quen dùng 2-3 công cụ,
             hãy xem thêm{" "}
@@ -1352,13 +1350,13 @@ export default function GettingStartedWithAiTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 7 — MINI SUMMARY                                          */}
+      {/* BƯỚC 7, MINI SUMMARY                                          */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           title="Năm điều cần nhớ sau bài đầu tiên"
           points={[
-            "AI văn phòng là một trợ lý miễn phí (hoặc giá thấp), sẵn sàng 24/7 — giúp viết, tóm tắt, dịch, brainstorm cho phần lớn việc hằng ngày.",
+            "AI văn phòng là một trợ lý miễn phí (hoặc giá thấp), sẵn sàng 24/7, giúp viết, tóm tắt, dịch, brainstorm cho phần lớn việc hằng ngày.",
             "Năm bước chuẩn: chọn công cụ → mở và đăng nhập → gõ yêu cầu rõ ràng → đọc kỹ kết quả → nhắn lại để chỉnh. Không bỏ bước 4 và 5.",
             "Bốn tool phổ biến: ChatGPT (đa dụng), Claude (văn dài), Gemini (tra cứu + Google), Microsoft Copilot (Office 365). Chọn theo mục tiêu, không theo danh tiếng.",
             "Prompt cụ thể thắng prompt chung chung. Cho AI biết: bạn cần gì, cho ai, giọng văn nào, độ dài bao nhiêu, có ràng buộc gì.",
@@ -1368,14 +1366,14 @@ export default function GettingStartedWithAiTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 8 — QUIZ                                                  */}
+      {/* BƯỚC 8, QUIZ                                                  */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra nhẹ">
         <QuizSection questions={QUIZ} />
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════ */}
-      {/* CROSSLINK — Cẩm nang Claude (punchlist #10)                    */}
+      {/* CROSSLINK, Cẩm nang Claude (punchlist #10)                    */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={8} label="Đọc thêm">
         <div className="rounded-xl border border-border bg-card p-5">
@@ -1388,7 +1386,7 @@ export default function GettingStartedWithAiTopic() {
               Cẩm nang Claude
             </a>{" "}
             gom đủ khung phong cách, prompt mẫu, và cách dùng Claude
-            cho các tác vụ văn phòng — đọc 10 phút, xài được liền.
+            cho các tác vụ văn phòng, đọc 10 phút, xài được liền.
           </p>
         </div>
       </LessonSection>

@@ -33,9 +33,9 @@ import { InlineChallenge, Callout } from "@/components/interactive";
 export const metadata: TopicMeta = {
   slug: "sentiment-analysis-in-brand-monitoring",
   title: "Sentiment Analysis in Brand Monitoring",
-  titleVi: "Phân tích cảm xúc trong giám sát thương hiệu",
+  titleVi: "Sentiment analysis trong theo dõi thương hiệu",
   description:
-    "Cách Brandwatch, Talkwalker, YouNet Media và Buzzmetrics dùng AI phân tích cảm xúc để theo dõi khen chê trên mạng xã hội, phát hiện khủng hoảng truyền thông trong vài phút.",
+    "Brandwatch, Talkwalker và YouNet Media giúp đội truyền thông thấy khen chê và rủi ro khủng hoảng nhanh hơn.",
   category: "nlp",
   tags: ["sentiment-analysis", "brand-monitoring", "application"],
   difficulty: "intermediate",
@@ -71,21 +71,21 @@ export const metadata: TopicMeta = {
       kind: "news",
     },
     {
-      title: "Talkwalker — AI-Powered Consumer Intelligence Platform",
+      title: "Talkwalker, AI-Powered Consumer Intelligence Platform",
       publisher: "Talkwalker (Hootsuite)",
       url: "https://www.talkwalker.com/",
       date: "2025",
       kind: "documentation",
     },
     {
-      title: "YouNet Media — Social Listening for Vietnam",
+      title: "YouNet Media, Social Listening for Vietnam",
       publisher: "YouNet Group",
       url: "https://younetmedia.com/",
       date: "2025",
       kind: "documentation",
     },
     {
-      title: "Buzzmetrics — Social Intelligence for Vietnamese Brands",
+      title: "Buzzmetrics, Social Intelligence for Vietnamese Brands",
       publisher: "Buzzmetrics Vietnam",
       url: "https://buzzmetrics.com/",
       date: "2025",
@@ -119,7 +119,7 @@ const CRISIS_TIMELINE: CrisisPost[] = [
   { time: "09:00", source: "TikTok", text: "Tẩy chay hãng X đi mọi người ơi 😡", sentiment: "negative", reach: 120 },
   { time: "09:15", source: "Facebook", text: "Mong hãng sớm xử lý và xin lỗi hành khách", sentiment: "neutral", reach: 12 },
   { time: "09:30", source: "Báo chí", text: "Hãng X lên tiếng về video gây bão mạng", sentiment: "neutral", reach: 200 },
-  { time: "10:00", source: "Facebook", text: "Phản hồi nhanh, có trách nhiệm — mình ủng hộ xử lý này", sentiment: "positive", reach: 30 },
+  { time: "10:00", source: "Facebook", text: "Phản hồi nhanh, có trách nhiệm, mình ủng hộ xử lý này", sentiment: "positive", reach: 30 },
   { time: "10:30", source: "Twitter", text: "Hãng X công khai xin lỗi và bồi thường", sentiment: "positive", reach: 90 },
 ];
 
@@ -194,7 +194,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
           tiếng.
         </p>
         <p>
-          Phía sau cảnh báo đó là <strong>phân tích cảm xúc</strong> — AI đọc
+          Phía sau cảnh báo đó là <strong>phân tích cảm xúc</strong>, AI đọc
           hàng triệu bài đăng, phân loại khen / chê / trung tính, rồi vẽ biểu
           đồ theo thời gian. Việc mà vài nghìn nhân viên cũng không thể làm kịp
           bằng tay.
@@ -214,7 +214,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
             {
               icon: Globe,
               title: "Quá nhiều nguồn",
-              desc: "Facebook, TikTok, Twitter, Instagram, forum, báo chí — mỗi nơi một giao diện.",
+              desc: "Facebook, TikTok, Twitter, Instagram, forum, báo chí, mỗi nơi một giao diện.",
               color: "#3b82f6",
             },
             {
@@ -251,8 +251,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
         <p>
           Đội PR / marketing cần biết <strong>ngay lập tức</strong>: ai đang
           khen, ai đang chê, chê về cái gì, ảnh hưởng đến bao nhiêu người. Đó
-          là lúc các nền tảng lắng nghe mạng xã hội (social listening) ra đời —
-          và trái tim của chúng là AI phân tích cảm xúc.
+          là lúc các nền tảng lắng nghe mạng xã hội (social listening) ra đời, và trái tim của chúng là AI phân tích cảm xúc.
         </p>
       </ApplicationProblem>
 
@@ -262,12 +261,12 @@ export default function SentimentAnalysisInBrandMonitoring() {
       >
         <Beat step={1}>
           <p>
-            <strong>Thu thập — quét mọi nguồn công khai.</strong> Brandwatch
+            <strong>Thu thập, quét mọi nguồn công khai.</strong> Brandwatch
             kéo dữ liệu từ hơn{" "}
             <strong>100 triệu nguồn trực tuyến</strong>: mạng xã hội, diễn đàn,
             blog, báo điện tử, đánh giá sản phẩm. Talkwalker thêm cả kênh TV,
             podcast, YouTube comment. YouNet Media và Buzzmetrics tập trung hơn
-            vào Facebook, TikTok, Zalo, báo Việt — những nơi người Việt thật sự
+            vào Facebook, TikTok, Zalo, báo Việt, những nơi người Việt thật sự
             sinh hoạt.
           </p>
           <div className="grid grid-cols-4 gap-2 mt-3">
@@ -292,7 +291,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
 
         <Beat step={2}>
           <p>
-            <strong>Chuẩn hoá — làm sạch trước khi đọc.</strong> Văn bản mạng
+            <strong>Chuẩn hoá, làm sạch trước khi đọc.</strong> Văn bản mạng
             xã hội &ldquo;bẩn&rdquo; kinh khủng: viết tắt (&ldquo;ko&rdquo;,
             &ldquo;đc&rdquo;), tiếng lóng, emoji, hashtag, tên riêng, tên
             thương hiệu. Hệ thống chuyển &ldquo;ko&rdquo; → &ldquo;không&rdquo;,
@@ -303,7 +302,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
 
         <Beat step={3}>
           <p>
-            <strong>Mô hình Transformer — đọc cả câu.</strong> Brandwatch dùng
+            <strong>Mô hình Transformer, đọc cả câu.</strong> Brandwatch dùng
             transformer tiền huấn luyện trên 104 ngôn ngữ, tinh chỉnh trên dữ
             liệu mạng xã hội đã gán nhãn tay từ 12 ngôn ngữ. Mô hình hiểu đảo
             ngữ (&ldquo;not good&rdquo; = tiêu cực), ngữ cảnh, chữ hoa chữ
@@ -314,7 +313,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
 
         <Beat step={4}>
           <p>
-            <strong>Phân tích cảm xúc sâu — 6 cảm xúc cơ bản.</strong> Ngoài
+            <strong>Phân tích cảm xúc sâu, 6 cảm xúc cơ bản.</strong> Ngoài
             ba nhãn tích cực / tiêu cực / trung tính, hệ thống còn phân 6 cảm
             xúc phổ quát: vui mừng, ngạc nhiên, buồn, giận, sợ, ghê tởm. Điều
             này giúp đội truyền thông biết khủng hoảng đang ở mức &ldquo;khó
@@ -333,7 +332,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
         </Beat>
       </ApplicationMechanism>
 
-      {/* ── Dashboard khủng hoảng — visual heavy ──────────── */}
+      {/* ── Dashboard khủng hoảng, visual heavy ──────────── */}
       <div className="my-10 space-y-6 rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center gap-2">
           <Eye size={18} className="text-accent" />
@@ -549,7 +548,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
           sourceRef={2}
         />
         <Metric
-          value="Cải thiện 18% độ chính xác nhờ Transformer + học chuyển giao — Brandwatch"
+          value="Cải thiện 18% độ chính xác nhờ Transformer + học chuyển giao, Brandwatch"
           sourceRef={1}
         />
         <Metric
@@ -570,7 +569,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
         />
       </ApplicationMetrics>
 
-      {/* ── Các nền tảng — grid so sánh ─────────────── */}
+      {/* ── Các nền tảng, grid so sánh ─────────────── */}
       <div className="my-10 space-y-4">
         <h3 className="text-base font-semibold text-foreground">
           Các nền tảng phổ biến trên thị trường
@@ -606,9 +605,9 @@ export default function SentimentAnalysisInBrandMonitoring() {
         </div>
         <Callout variant="tip" title="Chọn nền tảng nào?">
           <p>
-            Nếu thương hiệu của bạn chủ yếu bán cho khách Việt — <strong>YouNet
+            Nếu thương hiệu của bạn chủ yếu bán cho khách Việt, <strong>YouNet
             Media</strong> hoặc <strong>Buzzmetrics</strong> sẽ hiểu teencode, ba
-            miền, Zalo tốt hơn. Nếu đa quốc gia — <strong>Brandwatch</strong>{" "}
+            miền, Zalo tốt hơn. Nếu đa quốc gia, <strong>Brandwatch</strong>{" "}
             hoặc <strong>Talkwalker</strong> phủ ngôn ngữ rộng hơn.
           </p>
         </Callout>
@@ -625,13 +624,13 @@ export default function SentimentAnalysisInBrandMonitoring() {
             question="Bài 1: 'Vừa bay hãng X xong, dịch vụ tuyệt vời, tiếp viên thân thiện lắm! ✈️❤️'"
             options={["Tích cực", "Tiêu cực", "Trung tính"]}
             correct={0}
-            explanation="Từ tuyệt vời, thân thiện + emoji ❤️ — tích cực rõ. Đây là trường hợp dễ nhất cho AI."
+            explanation="Từ tuyệt vời, thân thiện + emoji ❤️, tích cực rõ. Đây là trường hợp dễ nhất cho AI."
           />
           <InlineChallenge
             question="Bài 2: 'Hãng Y hoãn chuyến 3 tiếng mà không một lời xin lỗi. Không bao giờ bay lại.'"
             options={["Tích cực", "Tiêu cực", "Trung tính"]}
             correct={1}
-            explanation="'Không một lời xin lỗi', 'không bao giờ bay lại' — tiêu cực mạnh. Phủ định kép làm mức độ tiêu cực càng cao."
+            explanation="'Không một lời xin lỗi', 'không bao giờ bay lại', tiêu cực mạnh. Phủ định kép làm mức độ tiêu cực càng cao."
           />
           <InlineChallenge
             question="Bài 3: 'Hãng Z vừa mở đường bay HN–ĐN, giá vé từ 1,2 triệu đồng.'"
@@ -643,7 +642,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
             question="Bài 4: 'Ôi dịch vụ 5 sao thật đấy 🙄 Chờ hành lý 2 tiếng luôn.'"
             options={["Tích cực", "Tiêu cực", "Trung tính"]}
             correct={1}
-            explanation="Mỉa mai — '5 sao' trông tích cực nhưng emoji 🙄 + 'chờ 2 tiếng' lật ngược. Đây là thử thách lớn nhất cho AI."
+            explanation="Mỉa mai, '5 sao' trông tích cực nhưng emoji 🙄 + 'chờ 2 tiếng' lật ngược. Đây là thử thách lớn nhất cho AI."
           />
           <InlineChallenge
             question="Bài 5: 'Wifi trên máy bay hãng W không tệ lắm, dùng tạm được.'"
@@ -662,7 +661,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
         <Callout variant="warning" title="Ngay cả AI tốt nhất vẫn sai ~20%">
           <p className="text-sm">
             Chính vì thế Brandwatch / YouNet luôn có chế độ &ldquo;human in the
-            loop&rdquo; — nhân viên review lại những bài có cảm xúc mạnh hoặc
+            loop&rdquo;, nhân viên review lại những bài có cảm xúc mạnh hoặc
             reach lớn. AI lọc bớt 95% công việc, con người xử 5% quan trọng.
           </p>
         </Callout>
@@ -674,7 +673,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
       >
         <p>
           Nếu không có phân tích cảm xúc tự động, một thương hiệu lớn sẽ phải
-          thuê hàng trăm nhân viên đọc bình luận cả ngày — vẫn không theo kịp
+          thuê hàng trăm nhân viên đọc bình luận cả ngày, vẫn không theo kịp
           Facebook, TikTok. Khủng hoảng sẽ bùng phát trước khi ai kịp phát hiện.
         </p>
         <p>
@@ -688,7 +687,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
   );
 }
 
-/* Helper cộng phút vào mốc "HH:MM" — dùng cho group theo 30 phút */
+/* Helper cộng phút vào mốc "HH:MM", dùng cho group theo 30 phút */
 function addMinutes(hhmm: string, mins: number): string {
   const [h, m] = hhmm.split(":").map(Number);
   const total = h * 60 + m + mins;

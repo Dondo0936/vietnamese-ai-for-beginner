@@ -34,9 +34,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "temperature-in-creative-writing",
   title: "Temperature in Creative Writing",
-  titleVi: "Temperature trong Viết Sáng tạo",
+  titleVi: "Temperature trong viết sáng tạo",
   description:
-    "ChatGPT, Sudowrite, Notion AI: tham số temperature điều chỉnh mức độ ngẫu nhiên để AI vừa viết được thơ sáng tạo, vừa trả lời đúng câu hỏi có đáp án.",
+    "Cùng một brief, temperature thấp giữ văn bản ổn định, temperature cao mở thêm ý tưởng và cách diễn đạt.",
   category: "llm-concepts",
   tags: ["temperature", "creative-writing", "application"],
   difficulty: "advanced",
@@ -108,7 +108,7 @@ const WRITING_TIMELINE: TimelineItem[] = [
     tagline: "Game phiêu lưu văn bản do AI kể chuyện",
     color: "#8b5cf6",
     temperatureStory:
-      "Cho phép người chơi chỉnh thanh 'creativity' — thực chất là temperature. Càng cao, AI càng tạo tình huống bất ngờ.",
+      "Cho phép người chơi chỉnh thanh 'creativity', thực chất là temperature. Càng cao, AI càng tạo tình huống bất ngờ.",
   },
   {
     year: "2021",
@@ -140,7 +140,7 @@ const WRITING_TIMELINE: TimelineItem[] = [
     tagline: "Viết & tạo nội dung có thể preview ngay",
     color: "#f97316",
     temperatureStory:
-      "Tự chọn temperature thấp khi sinh code, cao hơn khi viết văn — không cần người dùng quan tâm.",
+      "Tự chọn temperature thấp khi sinh code, cao hơn khi viết văn, không cần người dùng quan tâm.",
   },
 ];
 
@@ -229,7 +229,7 @@ function MockTemperatureUI() {
       icon: MessageSquare,
       color: "#10b981",
       sample:
-        "Buổi họp sáng nay là một trong những cuộc trao đổi thẳng thắn nhất tuần này — cả nhóm rời phòng với kế hoạch rõ ràng cho quý 3.",
+        "Buổi họp sáng nay là một trong những cuộc trao đổi thẳng thắn nhất tuần này, cả nhóm rời phòng với kế hoạch rõ ràng cho quý 3.",
       desc: "Mặc định cho phần lớn công việc",
     },
     {
@@ -239,7 +239,7 @@ function MockTemperatureUI() {
       icon: Flame,
       color: "#f59e0b",
       sample:
-        "Có những buổi họp đi qua như sương — và có buổi họp làm mình nhớ lại vì sao mình chọn công việc này. Sáng nay thuộc loại thứ hai.",
+        "Có những buổi họp đi qua như sương, và có buổi họp làm mình nhớ lại vì sao mình chọn công việc này. Sáng nay thuộc loại thứ hai.",
       desc: "Khi cần ý tưởng có hồn",
     },
   ];
@@ -344,16 +344,16 @@ export default function TemperatureInCreativeWriting() {
 
   return (
     <ApplicationLayout metadata={metadata} parentTitleVi="Temperature">
-      {/* ━━━ HERO — Timeline của các công cụ viết sáng tạo bằng AI ━━━ */}
+      {/* ━━━ HERO, Timeline của các công cụ viết sáng tạo bằng AI ━━━ */}
       <ApplicationHero
         parentTitleVi="Temperature"
         topicSlug="temperature-in-creative-writing"
       >
         <p>
-          Từ 2019 đến nay, lần lượt các công cụ AI viết sáng tạo &mdash; từ{" "}
+          Từ 2019 đến nay, lần lượt các công cụ AI viết sáng tạo, từ{" "}
           <strong>AI Dungeon</strong> (kể chuyện phiêu lưu), <strong>Sudowrite</strong>{" "}
           (trợ lý nhà văn tiểu thuyết), <strong>ChatGPT</strong>, <strong>Notion AI</strong>{" "}
-          cho đến <strong>Claude</strong> &mdash; đều có một tham số ẩn gọi là{" "}
+          cho đến <strong>Claude</strong>, đều có một tham số ẩn gọi là{" "}
           <em>temperature</em> (nhiệt độ) quyết định AI sẽ trả lời &ldquo;an toàn&rdquo; hay
           &ldquo;liều lĩnh&rdquo;. Cái nút nhỏ này đã giúp hàng triệu người dùng văn phòng có
           được một AI <strong>vừa biết viết email đúng mực, vừa biết sáng tác thơ có hồn</strong>.
@@ -438,17 +438,16 @@ export default function TemperatureInCreativeWriting() {
         </div>
 
         <p>
-          Bài này sẽ đi sâu vào <strong>ChatGPT</strong> &mdash; công cụ đại chúng nhất. Bạn sẽ
+          Bài này sẽ đi sâu vào <strong>ChatGPT</strong>, công cụ đại chúng nhất. Bạn sẽ
           thấy cách OpenAI dùng temperature để biến cùng một mô hình thành trợ lý tra cứu cho
-          kế toán, trợ lý viết email cho thư ký, và trợ lý brainstorm cho marketing &mdash;
-          tất cả bằng một con số duy nhất.
+          kế toán, trợ lý viết email cho thư ký, và trợ lý brainstorm cho marketing, tất cả bằng một con số duy nhất.
         </p>
       </ApplicationHero>
 
-      {/* ━━━ PROBLEM — So sánh hai loại công cụ ━━━ */}
+      {/* ━━━ PROBLEM, So sánh hai loại công cụ ━━━ */}
       <ApplicationProblem topicSlug="temperature-in-creative-writing">
         <p>
-          Một mô hình ngôn ngữ lớn (large language model &mdash; loại AI học từ hàng tỷ trang
+          Một mô hình ngôn ngữ lớn (large language model, loại AI học từ hàng tỷ trang
           văn bản) phải phục vụ <strong>hai nhu cầu hoàn toàn trái ngược</strong> cùng lúc:
         </p>
         <ul>
@@ -471,7 +470,7 @@ export default function TemperatureInCreativeWriting() {
           <ToggleCompare
             labelA="Công cụ KHÔNG cho chỉnh"
             labelB="Công cụ CHO chỉnh"
-            description="Cùng một câu hỏi — trải nghiệm rất khác tuỳ công cụ có lộ nút chỉnh ra không."
+            description="Cùng một câu hỏi, trải nghiệm rất khác tuỳ công cụ có lộ nút chỉnh ra không."
             childA={
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
@@ -513,7 +512,7 @@ export default function TemperatureInCreativeWriting() {
                 <div className="rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60 p-3 text-sm text-foreground/85 leading-relaxed">
                   Bạn <strong>chọn thẳng</strong> mức ngẫu nhiên. Cần đa dạng cao &rArr; T = 1.2.
                   Cần kiểm toán chính xác &rArr; T = 0. Đánh đổi: bạn phải hiểu temperature là gì
-                  và khi nào nên vặn bên nào &mdash; chính là thứ bài học này dạy.
+                  và khi nào nên vặn bên nào, chính là thứ bài học này dạy.
                 </div>
               </div>
             }
@@ -527,7 +526,7 @@ export default function TemperatureInCreativeWriting() {
         </p>
       </ApplicationProblem>
 
-      {/* ━━━ MECHANISM — Beats bọc trong ProgressSteps + mock UI ━━━ */}
+      {/* ━━━ MECHANISM, Beats bọc trong ProgressSteps + mock UI ━━━ */}
       <ApplicationMechanism
         parentTitleVi="Temperature"
         topicSlug="temperature-in-creative-writing"
@@ -551,7 +550,7 @@ export default function TemperatureInCreativeWriting() {
           <p>
             <strong>Giao diện web ẩn temperature đi.</strong> Khi bạn mở ChatGPT trên
             chat.openai.com, không có thanh trượt nào. OpenAI <em>tự chọn</em> temperature ~
-            0.7 &mdash; mức cân bằng phổ thông. Lý do: hầu hết người dùng mới không biết
+            0.7, mức cân bằng phổ thông. Lý do: hầu hết người dùng mới không biết
             temperature là gì, và nếu phải hiểu mới dùng được thì rào cản sẽ quá cao.
           </p>
         </Beat>
@@ -572,7 +571,7 @@ export default function TemperatureInCreativeWriting() {
         <Beat step={3}>
           <p>
             <strong>Notion AI và Claude tự chọn theo ngữ cảnh.</strong> Thế hệ mới của các công
-            cụ viết &mdash; Notion AI, Claude Artifacts &mdash; đi xa hơn: chúng <em>đoán</em>{" "}
+            cụ viết, Notion AI, Claude Artifacts, đi xa hơn: chúng <em>đoán</em>{" "}
             bạn đang làm gì và tự đặt temperature. Nhấn &ldquo;Summarize&rdquo; &rArr; hệ thống
             dùng T thấp. Nhấn &ldquo;Brainstorm ideas&rdquo; &rArr; hệ thống dùng T cao. Bạn
             chưa bao giờ thấy con số, nhưng nó đã làm việc thay bạn.
@@ -592,18 +591,18 @@ export default function TemperatureInCreativeWriting() {
 
         <Callout variant="insight" title="Điểm chung của cả 4 bước">
           Dù nút temperature có lộ ra hay không, triết lý thiết kế đều giống nhau:{" "}
-          <strong>cùng một mô hình phải phục vụ nhiều loại nhu cầu</strong> &mdash; và
+          <strong>cùng một mô hình phải phục vụ nhiều loại nhu cầu</strong>, và
           temperature là cái cầu chì cho phép nó làm được điều đó.
         </Callout>
       </ApplicationMechanism>
 
-      {/* ━━━ METRICS — animated counters ━━━ */}
+      {/* ━━━ METRICS, animated counters ━━━ */}
       <ApplicationMetrics
         sources={metadata.sources!}
         topicSlug="temperature-in-creative-writing"
       >
         <Metric
-          value="Temperature 0 cho kết quả lặp lại gần như 100% — lý tưởng cho tác vụ chính xác"
+          value="Temperature 0 cho kết quả lặp lại gần như 100%, lý tưởng cho tác vụ chính xác"
           sourceRef={1}
         />
         <Metric
@@ -620,7 +619,7 @@ export default function TemperatureInCreativeWriting() {
           <AnimatedCounter
             target={0}
             suffix=""
-            label="T tối thiểu — output y hệt nhau mỗi lần chạy"
+            label="T tối thiểu, output y hệt nhau mỗi lần chạy"
             color="#0ea5e9"
           />
           <AnimatedCounter
@@ -632,7 +631,7 @@ export default function TemperatureInCreativeWriting() {
           <AnimatedCounter
             target={2}
             suffix=""
-            label="T tối đa qua API của OpenAI — gần như ngẫu nhiên hoàn toàn"
+            label="T tối đa qua API của OpenAI, gần như ngẫu nhiên hoàn toàn"
             color="#f59e0b"
           />
           <AnimatedCounter
@@ -644,7 +643,7 @@ export default function TemperatureInCreativeWriting() {
         </div>
       </ApplicationMetrics>
 
-      {/* ━━━ COUNTERFACTUAL — so sánh trước/sau ━━━ */}
+      {/* ━━━ COUNTERFACTUAL, so sánh trước/sau ━━━ */}
       <ApplicationCounterfactual
         parentTitleVi="Temperature"
         topicSlug="temperature-in-creative-writing"
@@ -658,7 +657,7 @@ export default function TemperatureInCreativeWriting() {
           <ToggleCompare
             labelA="KHÔNG có temperature"
             labelB="CÓ temperature (thực tế)"
-            description="Cùng một mô hình AI — khác biệt duy nhất là có cái 'nút vặn' sáng tạo hay không."
+            description="Cùng một mô hình AI, khác biệt duy nhất là có cái 'nút vặn' sáng tạo hay không."
             childA={
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
@@ -670,7 +669,7 @@ export default function TemperatureInCreativeWriting() {
                     <span className="mt-1.5 h-2 w-2 rounded-full bg-red-400 shrink-0" />
                     <span>
                       <strong>Nhà sản xuất phải chọn một tính cách.</strong> Hoặc AI luôn khô
-                      khan như từ điển, hoặc luôn bay bổng như nhà thơ &mdash; không thể có
+                      khan như từ điển, hoặc luôn bay bổng như nhà thơ, không thể có
                       cả hai.
                     </span>
                   </li>
@@ -730,7 +729,7 @@ export default function TemperatureInCreativeWriting() {
         <p>
           Nói cách khác: temperature là <strong>lý do một mô hình AI có thể phục vụ cả công
           ty</strong>. Bộ phận kế toán muốn số liệu? Hạ temperature. Bộ phận sáng tạo cần ý
-          tưởng? Nâng temperature. Bạn không cần đổi công cụ &mdash; chỉ cần đổi một con số.
+          tưởng? Nâng temperature. Bạn không cần đổi công cụ, chỉ cần đổi một con số.
         </p>
 
         <div className="not-prose my-5">
@@ -768,7 +767,7 @@ export default function TemperatureInCreativeWriting() {
                 <BookOpen size={18} className="shrink-0 text-accent mt-0.5" />
                 <p className="text-sm text-foreground leading-relaxed">
                   Cả ba người đều dùng <strong>cùng một ChatGPT</strong>. Công ty không phải
-                  mua 3 phần mềm khác nhau &mdash; chỉ cần 3 mức temperature khác nhau cho 3
+                  mua 3 phần mềm khác nhau, chỉ cần 3 mức temperature khác nhau cho 3
                   nhu cầu khác nhau.
                 </p>
               </div>,

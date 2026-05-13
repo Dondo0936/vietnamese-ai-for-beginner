@@ -29,9 +29,9 @@ import { ToggleCompare, Callout } from "@/components/interactive";
 export const metadata: TopicMeta = {
   slug: "in-context-learning-in-chatbots",
   title: "In-Context Learning in Chatbots",
-  titleVi: "Học trong Ngữ cảnh ở Chatbot",
+  titleVi: "In-context learning trong chatbot hỗ trợ",
   description:
-    "Intercom Fin: chatbot hỗ trợ khách hàng dùng học trong ngữ cảnh để trả lời chính xác theo tài liệu riêng của từng công ty.",
+    "Chatbot đọc tài liệu và ví dụ ngay trong cuộc trò chuyện để trả lời sát chính sách của từng công ty.",
   category: "llm-concepts",
   tags: ["in-context-learning", "chatbot", "application"],
   difficulty: "beginner",
@@ -88,7 +88,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ANIMATED COUNTER — dùng cho Con số thật
+// ANIMATED COUNTER, dùng cho Con số thật
 // ─────────────────────────────────────────────────────────────────────────────
 function AnimatedCounter({
   to,
@@ -154,23 +154,23 @@ export default function InContextLearningInChatbots() {
   return (
     <ApplicationLayout metadata={metadata} parentTitleVi="Học trong Ngữ cảnh">
       {/* ═══════════════════════════════════════════════════════════════════
-          HERO — timeline visual
+          HERO, timeline visual
           ═══════════════════════════════════════════════════════════════════ */}
       <ApplicationHero
         parentTitleVi="Học trong Ngữ cảnh"
         topicSlug="in-context-learning-in-chatbots"
       >
         <p>
-          Tháng 3 năm 2023, Intercom &mdash; nền tảng chăm sóc khách hàng phục vụ hơn 25.000
-          doanh nghiệp &mdash; ra mắt <strong>Fin</strong>, chatbot AI thương mại đầu tiên
+          Tháng 3 năm 2023, Intercom, nền tảng chăm sóc khách hàng phục vụ hơn 25.000
+          doanh nghiệp, ra mắt <strong>Fin</strong>, chatbot AI thương mại đầu tiên
           chạy trên GPT-4. Fin không trả lời bằng kiến thức chung chung. Fin đọc chính kho
-          tài liệu hướng dẫn (knowledge base &mdash; tập hợp các bài hướng dẫn, FAQ của từng
+          tài liệu hướng dẫn (knowledge base, tập hợp các bài hướng dẫn, FAQ của từng
           công ty) rồi trả lời khách theo đúng chính sách của riêng công ty đó.
         </p>
         <p>
           Điểm đặc biệt: Fin không cần đào tạo lại mô hình cho mỗi khách hàng. Nó dùng{" "}
-          <strong>học trong ngữ cảnh</strong> &mdash; tức là đưa các đoạn tài liệu liên quan
-          vào prompt ngay lúc khách hỏi &mdash; để AI &ldquo;học tạm&rdquo; về sản phẩm cụ thể
+          <strong>học trong ngữ cảnh</strong>, tức là đưa các đoạn tài liệu liên quan
+          vào prompt ngay lúc khách hỏi, để AI &ldquo;học tạm&rdquo; về sản phẩm cụ thể
           trong đúng một lần trả lời đó.
         </p>
 
@@ -220,7 +220,7 @@ export default function InContextLearningInChatbots() {
       </ApplicationHero>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          PROBLEM — ToggleCompare: chatbot generic vs chatbot biết tone công ty
+          PROBLEM, ToggleCompare: chatbot generic vs chatbot biết tone công ty
           ═══════════════════════════════════════════════════════════════════ */}
       <ApplicationProblem topicSlug="in-context-learning-in-chatbots">
         <p>
@@ -231,12 +231,12 @@ export default function InContextLearningInChatbots() {
         </p>
         <p>
           Chatbot truyền thống hoạt động theo luật cứng (rule-based): ai đó phải lập trình
-          sẵn từng câu hỏi &mdash; từng câu trả lời. Khách hỏi lệch kịch bản → bot &ldquo;tắc
+          sẵn từng câu hỏi, từng câu trả lời. Khách hỏi lệch kịch bản → bot &ldquo;tắc
           tị&rdquo; hoặc trả lời sai rồi đẩy sang nhân viên.
         </p>
         <p>
           Bài toán của Intercom: làm sao để một AI <strong>duy nhất</strong> phục vụ 25.000
-          doanh nghiệp khác nhau, mỗi nơi một bộ chính sách riêng &mdash; mà không phải thuê
+          doanh nghiệp khác nhau, mỗi nơi một bộ chính sách riêng, mà không phải thuê
           25.000 đội kỹ sư đi huấn luyện 25.000 mô hình?
         </p>
 
@@ -244,7 +244,7 @@ export default function InContextLearningInChatbots() {
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <MessageCircle className="h-4 w-4 text-accent" />
-            Khách hỏi: &ldquo;Tôi đặt hàng 5 ngày rồi, vẫn chưa thấy &mdash; hỗ trợ giúp?&rdquo;
+            Khách hỏi: &ldquo;Tôi đặt hàng 5 ngày rồi, vẫn chưa thấy, hỗ trợ giúp?&rdquo;
           </h3>
           <ToggleCompare
             labelA="Chatbot chung chung"
@@ -266,7 +266,7 @@ export default function InContextLearningInChatbots() {
                 <ul className="text-[11px] text-amber-800 dark:text-amber-300 space-y-1">
                   <li>• Nói chung chung, không đúng chính sách công ty.</li>
                   <li>• Không biết mã đơn, không biết khách ở đâu.</li>
-                  <li>• Khách bực, phải gọi tổng đài &mdash; mất thêm 1 nhân viên.</li>
+                  <li>• Khách bực, phải gọi tổng đài, mất thêm 1 nhân viên.</li>
                 </ul>
               </div>
             }
@@ -289,7 +289,7 @@ export default function InContextLearningInChatbots() {
                 </div>
                 <ul className="text-[11px] text-emerald-800 dark:text-emerald-300 space-y-1">
                   <li>• Đúng chính sách riêng của công ty.</li>
-                  <li>• Kèm link tới tài liệu nguồn &mdash; khách kiểm tra được.</li>
+                  <li>• Kèm link tới tài liệu nguồn, khách kiểm tra được.</li>
                   <li>• Mở ticket nội bộ, không cần nhân viên tham gia.</li>
                 </ul>
               </div>
@@ -299,7 +299,7 @@ export default function InContextLearningInChatbots() {
       </ApplicationProblem>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          MECHANISM — Beats với visuals (ProgressSteps-style)
+          MECHANISM, Beats với visuals (ProgressSteps-style)
           ═══════════════════════════════════════════════════════════════════ */}
       <ApplicationMechanism
         parentTitleVi="Học trong Ngữ cảnh"
@@ -309,7 +309,7 @@ export default function InContextLearningInChatbots() {
           <div className="space-y-3">
             <p>
               <strong>Fin quét toàn bộ tài liệu công ty bạn trong vài phút.</strong> Bạn kết
-              nối Fin với help center (trung tâm trợ giúp &mdash; trang tài liệu hướng dẫn)
+              nối Fin với help center (trung tâm trợ giúp, trang tài liệu hướng dẫn)
               hoặc Zendesk của bạn. Fin đọc hết, lập chỉ mục, sẵn sàng trả lời. Không cần
               huấn luyện lại mô hình, không cần đội kỹ sư.
             </p>
@@ -346,7 +346,7 @@ export default function InContextLearningInChatbots() {
         <Beat step={2}>
           <div className="space-y-3">
             <p>
-              <strong>Khách hỏi &mdash; Fin tìm đoạn tài liệu liên quan nhất rồi nhét vào
+              <strong>Khách hỏi, Fin tìm đoạn tài liệu liên quan nhất rồi nhét vào
               prompt.</strong> Đây chính là khoảnh khắc học trong ngữ cảnh: Fin xây một prompt
               mới có dạng &ldquo;Dưới đây là tài liệu công ty về chính sách bảo hành. Dùng
               tài liệu này để trả lời câu hỏi bên dưới&hellip;&rdquo;, kèm câu hỏi thật của
@@ -377,7 +377,7 @@ export default function InContextLearningInChatbots() {
             <Callout variant="insight" title="Đây chính là ICL trong đời thật">
               Không ai huấn luyện lại GPT-4 về sản phẩm của công ty bạn. Fin chỉ &ldquo;dạy
               tạm&rdquo; AI bằng các đoạn tài liệu kèm theo. Khi cuộc trò chuyện kết thúc, AI
-              quên ngay &mdash; nhưng trong đúng lần trả lời đó, nó là &ldquo;chuyên gia&rdquo;
+              quên ngay, nhưng trong đúng lần trả lời đó, nó là &ldquo;chuyên gia&rdquo;
               về sản phẩm của bạn.
             </Callout>
           </div>
@@ -387,8 +387,7 @@ export default function InContextLearningInChatbots() {
           <div className="space-y-3">
             <p>
               <strong>Fin bị &ldquo;khoá miệng&rdquo; để không bịa thông tin.</strong> Intercom
-              ép Fin chỉ được nói những gì có trong tài liệu. Kết quả: tỷ lệ bịa (hallucination
-              &mdash; AI nói sai sự thật) giảm khoảng 10 lần so với bot không có ràng buộc.
+              ép Fin chỉ được nói những gì có trong tài liệu. Kết quả: tỷ lệ bịa (hallucination, AI nói sai sự thật) giảm khoảng 10 lần so với bot không có ràng buộc.
               Mỗi câu trả lời kèm link đến bài viết nguồn để khách tự kiểm tra.
             </p>
             <div className="not-prose grid grid-cols-2 gap-2">
@@ -425,7 +424,7 @@ export default function InContextLearningInChatbots() {
             <p>
               <strong>Khi vượt giới hạn, Fin giao lại cho nhân viên.</strong> Câu hỏi ngoài
               phạm vi tài liệu, hoặc khách bày tỏ bực tức, Fin không đoán mò. Nó chuyển ngay
-              sang nhân viên hỗ trợ cùng toàn bộ lịch sử chat &mdash; để nhân viên không phải
+              sang nhân viên hỗ trợ cùng toàn bộ lịch sử chat, để nhân viên không phải
               hỏi lại từ đầu.
             </p>
             <div className="not-prose rounded-xl border border-border bg-card p-4">
@@ -454,7 +453,7 @@ export default function InContextLearningInChatbots() {
       </ApplicationMechanism>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          METRICS — animated counters
+          METRICS, animated counters
           ═══════════════════════════════════════════════════════════════════ */}
       <ApplicationMetrics
         sources={metadata.sources!}
@@ -469,7 +468,7 @@ export default function InContextLearningInChatbots() {
           sourceRef={1}
         />
         <Metric
-          value="Triển khai không cần cấu hình — chỉ cần kết nối với help center có sẵn"
+          value="Triển khai không cần cấu hình, chỉ cần kết nối với help center có sẵn"
           sourceRef={3}
         />
       </ApplicationMetrics>
@@ -492,7 +491,7 @@ export default function InContextLearningInChatbots() {
               <AnimatedCounter to={50} suffix="%" />
             </div>
             <p className="text-[11px] text-muted">
-              Khoảng một nửa vé hỗ trợ &mdash; Fin xử lý gọn, không cần nhân viên can thiệp.
+              Khoảng một nửa vé hỗ trợ, Fin xử lý gọn, không cần nhân viên can thiệp.
             </p>
           </motion.div>
 
@@ -532,14 +531,14 @@ export default function InContextLearningInChatbots() {
               <AnimatedCounter to={0} suffix=" cấu hình" />
             </div>
             <p className="text-[11px] text-muted">
-              Kết nối help center có sẵn &mdash; Fin tự đọc, tự sẵn sàng. Không cần kỹ sư.
+              Kết nối help center có sẵn, Fin tự đọc, tự sẵn sàng. Không cần kỹ sư.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          COUNTERFACTUAL — ToggleCompare: có ICL vs không có ICL
+          COUNTERFACTUAL, ToggleCompare: có ICL vs không có ICL
           ═══════════════════════════════════════════════════════════════════ */}
       <ApplicationCounterfactual
         parentTitleVi="Học trong Ngữ cảnh"
@@ -547,7 +546,7 @@ export default function InContextLearningInChatbots() {
       >
         <p>
           Không có học trong ngữ cảnh, mỗi doanh nghiệp muốn có chatbot AI &ldquo;biết&rdquo;
-          sản phẩm mình sẽ phải huấn luyện riêng một mô hình &mdash; tốn vài tháng, tốn đội
+          sản phẩm mình sẽ phải huấn luyện riêng một mô hình, tốn vài tháng, tốn đội
           kỹ sư, và mỗi lần cập nhật tài liệu lại phải huấn luyện lại từ đầu.
         </p>
 
@@ -581,7 +580,7 @@ export default function InContextLearningInChatbots() {
                 </div>
                 <ul className="text-xs text-foreground space-y-1.5">
                   <li>• Kết nối help center xong là bật được.</li>
-                  <li>• Không cần kỹ sư ML &mdash; đội hỗ trợ tự làm.</li>
+                  <li>• Không cần kỹ sư ML, đội hỗ trợ tự làm.</li>
                   <li>• Sửa tài liệu → Fin cập nhật trong vài phút.</li>
                   <li>• Chi phí khởi tạo gần bằng 0, trả theo lượt chat.</li>
                   <li>• Quy mô hàng chục nghìn khách hàng trên cùng hạ tầng.</li>
@@ -593,7 +592,7 @@ export default function InContextLearningInChatbots() {
 
         <p className="mt-5">
           Học trong ngữ cảnh cho phép Fin &ldquo;trở thành chuyên gia&rdquo; về bất kỳ sản
-          phẩm nào chỉ bằng cách đọc tài liệu &mdash; giống một nhân viên mới học từ sổ tay
+          phẩm nào chỉ bằng cách đọc tài liệu, giống một nhân viên mới học từ sổ tay
           hướng dẫn trong ngày đầu đi làm, rồi làm việc liền ngay chiều hôm đó.
         </p>
       </ApplicationCounterfactual>

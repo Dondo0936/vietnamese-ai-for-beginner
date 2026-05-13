@@ -34,9 +34,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-in-finance",
   title: "AI in Finance",
-  titleVi: "AI trong Tài chính",
+  titleVi: "AI trong tài chính: phát hiện rủi ro nhanh hơn",
   description:
-    "Ứng dụng AI thực tế tại ngân hàng, ví điện tử và công ty tài chính Việt Nam",
+    "Ngân hàng và ví điện tử dùng AI để chống gian lận, chấm điểm rủi ro và hỗ trợ khách hàng.",
   category: "applied-ai",
   tags: ["fraud-detection", "credit-scoring", "banking", "fintech"],
   difficulty: "beginner",
@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// DEMO 1 — Mô phỏng phát hiện gian lận theo thời gian thực
+// DEMO 1, Mô phỏng phát hiện gian lận theo thời gian thực
 // ---------------------------------------------------------------------------
 
 type SimTxn = {
@@ -196,12 +196,12 @@ function FraudSimulator() {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div className="flex flex-col gap-1">
         <h3 className="text-base font-semibold text-foreground">
-          Demo 1 — Phát hiện gian lận thời gian thực
+          Demo 1, Phát hiện gian lận thời gian thực
         </h3>
         <p className="text-sm text-muted">
           AI chấm điểm rủi ro cho từng giao dịch (0–100). Giao dịch có điểm
           vượt ngưỡng sẽ bị chặn hoặc yêu cầu xác thực thêm. Hãy kéo thanh
-          ngưỡng để thấy AI bắt được fraud — và chặn nhầm người dùng — như
+          ngưỡng để thấy AI bắt được fraud, và chặn nhầm người dùng, như
           thế nào.
         </p>
       </div>
@@ -395,7 +395,7 @@ function StatCard({
 }
 
 // ---------------------------------------------------------------------------
-// DEMO 2 — Credit scoring: giải thích quyết định
+// DEMO 2, Credit scoring: giải thích quyết định
 // ---------------------------------------------------------------------------
 
 type CreditFeature = {
@@ -417,7 +417,7 @@ const CREDIT_FEATURES: CreditFeature[] = [
   {
     key: "dti",
     label: "Nợ/thu nhập < 30%",
-    description: "Hệ số DTI thấp — còn khả năng trả thêm",
+    description: "Hệ số DTI thấp, còn khả năng trả thêm",
     weight: +14,
     baseline: true,
   },
@@ -452,7 +452,7 @@ const CREDIT_FEATURES: CreditFeature[] = [
   {
     key: "many_apps",
     label: "Hỏi vay 5 nơi trong 30 ngày",
-    description: "Khát vốn — tín hiệu rủi ro",
+    description: "Khát vốn, tín hiệu rủi ro",
     weight: -12,
     baseline: false,
   },
@@ -523,7 +523,7 @@ function CreditScoreExplainer() {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h3 className="text-base font-semibold text-foreground">
-          Demo 2 — AI giải thích vì sao cho vay hay từ chối
+          Demo 2, AI giải thích vì sao cho vay hay từ chối
         </h3>
         <p className="text-sm text-muted">
           Hồ sơ ban đầu: chị Lan, 32 tuổi, nhân viên văn phòng tại TP.HCM,
@@ -636,7 +636,7 @@ function CreditScoreExplainer() {
       <Callout variant="warning" title="Quyền được giải thích">
         Theo Nghị định 13/2023 của Chính phủ về bảo vệ dữ liệu cá nhân và
         Thông tư 13/2018 của NHNN, khách hàng bị từ chối vay CÓ QUYỀN yêu
-        cầu ngân hàng giải thích lý do. AI không được là "hộp đen" — ngân
+        cầu ngân hàng giải thích lý do. AI không được là "hộp đen", ngân
         hàng phải trả lời cụ thể: "Hồ sơ bị từ chối chủ yếu do lịch sử chậm
         nợ thẻ tín dụng (−15 điểm) và việc hỏi vay nhiều nơi trong 30 ngày
         (−12 điểm)." Đây là lý do mọi mô hình chấm điểm tín dụng tại VN
@@ -647,7 +647,7 @@ function CreditScoreExplainer() {
 }
 
 // ---------------------------------------------------------------------------
-// DEMO 3 — Bản đồ ứng dụng AI tại các ngân hàng Việt Nam
+// DEMO 3, Bản đồ ứng dụng AI tại các ngân hàng Việt Nam
 // ---------------------------------------------------------------------------
 
 function VietnameseBankMap() {
@@ -693,7 +693,7 @@ function VietnameseBankMap() {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h3 className="text-base font-semibold text-foreground">
-          Demo 3 — Ghép ngân hàng Việt Nam với ứng dụng AI của họ
+          Demo 3, Ghép ngân hàng Việt Nam với ứng dụng AI của họ
         </h3>
         <p className="text-sm text-muted">
           Tám ngân hàng hàng đầu Việt Nam đều đã triển khai AI, nhưng mỗi
@@ -727,7 +727,7 @@ export default function AIInFinanceTopic() {
         ],
         correct: 1,
         explanation:
-          "Mỗi tài khoản có một 'profile' hành vi riêng: giờ hoạt động, địa điểm, hạn mức quen thuộc, loại merchant hay mua. Khi một giao dịch lệch đủ xa khỏi profile đó — ví dụ 3 giờ sáng giờ VN = giờ ngủ, địa điểm mới, thiết bị mới — điểm rủi ro vọt lên. Ngân hàng sẽ chặn hoặc gửi OTP/thông báo để bạn xác nhận. Đây là cơ chế chuẩn tại Vietcombank, Techcombank, MB.",
+          "Mỗi tài khoản có một 'profile' hành vi riêng: giờ hoạt động, địa điểm, hạn mức quen thuộc, loại merchant hay mua. Khi một giao dịch lệch đủ xa khỏi profile đó, ví dụ 3 giờ sáng giờ VN = giờ ngủ, địa điểm mới, thiết bị mới, điểm rủi ro vọt lên. Ngân hàng sẽ chặn hoặc gửi OTP/thông báo để bạn xác nhận. Đây là cơ chế chuẩn tại Vietcombank, Techcombank, MB.",
       },
       {
         question:
@@ -751,7 +751,7 @@ export default function AIInFinanceTopic() {
         ],
         correct: 1,
         explanation:
-          "Nghị định 13/2023 về bảo vệ dữ liệu cá nhân và các văn bản của NHNN yêu cầu các quyết định tự động ảnh hưởng đến quyền lợi khách hàng (ví dụ từ chối vay) phải có khả năng giải thích. Đây cũng là lý do các ngân hàng buộc phải dùng mô hình chấm điểm có thể giải thích được — không thể dùng mô hình 'hộp đen' thuần túy cho quyết định tín dụng.",
+          "Nghị định 13/2023 về bảo vệ dữ liệu cá nhân và các văn bản của NHNN yêu cầu các quyết định tự động ảnh hưởng đến quyền lợi khách hàng (ví dụ từ chối vay) phải có khả năng giải thích. Đây cũng là lý do các ngân hàng buộc phải dùng mô hình chấm điểm có thể giải thích được, không thể dùng mô hình 'hộp đen' thuần túy cho quyết định tín dụng.",
       },
       {
         question:
@@ -763,7 +763,7 @@ export default function AIInFinanceTopic() {
         ],
         correct: 1,
         explanation:
-          "Chatbot ngân hàng 2024–2025 xử lý tốt các câu hỏi lặp đi lặp lại: tra cứu số dư, hướng dẫn mở thẻ, giải thích phí, hỗ trợ reset mật khẩu. Các ca phức tạp hơn — khiếu nại giao dịch, thương thảo lãi vay, tư vấn đầu tư lớn — vẫn chuyển cho nhân viên. Mô hình 'human-in-the-loop' này giảm 40–60% tải tổng đài mà không làm giảm chất lượng dịch vụ.",
+          "Chatbot ngân hàng 2024–2025 xử lý tốt các câu hỏi lặp đi lặp lại: tra cứu số dư, hướng dẫn mở thẻ, giải thích phí, hỗ trợ reset mật khẩu. Các ca phức tạp hơn, khiếu nại giao dịch, thương thảo lãi vay, tư vấn đầu tư lớn, vẫn chuyển cho nhân viên. Mô hình 'human-in-the-loop' này giảm 40–60% tải tổng đài mà không làm giảm chất lượng dịch vụ.",
       },
       {
         question:
@@ -782,7 +782,7 @@ export default function AIInFinanceTopic() {
           "Anh Nam đăng nhập MoMo tại Hà Nội lúc 8h sáng. 10 phút sau, có yêu cầu chuyển 15 triệu VND từ IP Singapore. Hệ thống nên phản ứng thế nào?",
         options: [
           "Chấp nhận luôn vì đã đăng nhập thành công",
-          "Chặn hoặc yêu cầu xác thực mạnh (OTP, Face ID) — vì pattern di chuyển địa lý không thể xảy ra và số tiền lớn",
+          "Chặn hoặc yêu cầu xác thực mạnh (OTP, Face ID), vì pattern di chuyển địa lý không thể xảy ra và số tiền lớn",
           "Gửi tin nhắn xin lỗi rồi chấp nhận",
         ],
         correct: 1,
@@ -793,8 +793,8 @@ export default function AIInFinanceTopic() {
         question:
           "Robo-advisor đưa gợi ý đầu tư cho khách hàng. Trách nhiệm cuối cùng khi gợi ý sai và khách hàng thua lỗ thuộc về ai?",
         options: [
-          "Mô hình AI — nó là thứ đưa ra quyết định",
-          "Ngân hàng hoặc công ty tài chính triển khai robo-advisor — AI là công cụ, trách nhiệm pháp lý vẫn thuộc về tổ chức vận hành",
+          "Mô hình AI, nó là thứ đưa ra quyết định",
+          "Ngân hàng hoặc công ty tài chính triển khai robo-advisor, AI là công cụ, trách nhiệm pháp lý vẫn thuộc về tổ chức vận hành",
           "Khách hàng phải tự chịu 100%",
         ],
         correct: 1,
@@ -843,10 +843,10 @@ export default function AIInFinanceTopic() {
             "Chỉ để chống gian lận giao dịch thẻ",
             "Chỉ để tư vấn đầu tư cho khách VIP",
             "Chỉ để chấm điểm tín dụng khoản vay",
-            "Cả bốn: chống gian lận, chấm điểm tín dụng, chatbot khách hàng, và tư vấn đầu tư — cộng thêm giám sát rửa tiền",
+            "Cả bốn: chống gian lận, chấm điểm tín dụng, chatbot khách hàng, và tư vấn đầu tư, cộng thêm giám sát rửa tiền",
           ]}
           correct={3}
-          explanation="Các ngân hàng top Việt Nam đã triển khai AI ở nhiều mảng cùng lúc. Vietcombank, Techcombank, MB, VPBank, TPBank, VietinBank, BIDV, ACB đều có hệ thống chống gian lận thời gian thực, chấm điểm tín dụng tự động, chatbot/trợ lý ảo và robo-advisor cho khách ưu tiên. Mảng thứ năm — giám sát rửa tiền (AML) — đã trở nên bắt buộc sau Luật Phòng chống rửa tiền 2022."
+          explanation="Các ngân hàng top Việt Nam đã triển khai AI ở nhiều mảng cùng lúc. Vietcombank, Techcombank, MB, VPBank, TPBank, VietinBank, BIDV, ACB đều có hệ thống chống gian lận thời gian thực, chấm điểm tín dụng tự động, chatbot/trợ lý ảo và robo-advisor cho khách ưu tiên. Mảng thứ năm, giám sát rửa tiền (AML), đã trở nên bắt buộc sau Luật Phòng chống rửa tiền 2022."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Phép ẩn dụ">
             <p>
@@ -860,7 +860,7 @@ export default function AIInFinanceTopic() {
             <p>
               Một ngày đẹp trời, camera ghi được chiếc xe đi tốc độ 150km/h
               lúc 3 giờ sáng ở một tỉnh cách nhà 800km. Rất có thể là chủ xe
-              đi công tác đột xuất — nhưng cũng rất có thể xe đã bị trộm.
+              đi công tác đột xuất, nhưng cũng rất có thể xe đã bị trộm.
               Camera không kết luận thay chủ xe. Nó chỉ{" "}
               <strong>nhấc điện thoại gọi hỏi</strong>: "Anh có đang lái chiếc
               xe biển số 30A-12345 không?" Nếu có, mọi chuyện tiếp tục. Nếu
@@ -869,10 +869,9 @@ export default function AIInFinanceTopic() {
             <p>
               AI trong ngân hàng làm đúng việc của hệ thống camera đó. Mỗi
               giao dịch là một "khoảng đường". AI học <em>dáng đi</em> của
-              bạn — giờ nào hay mua gì, địa điểm nào quen thuộc, thiết bị
+              bạn, giờ nào hay mua gì, địa điểm nào quen thuộc, thiết bị
               nào đáng tin. Khi có gì đó <em>lệch quá xa</em> khỏi dáng đi
-              bình thường, nó không tự quyết liệu đây là gian lận hay không
-              — nó <strong>leo thang xác thực</strong>: gửi OTP, yêu cầu
+              bình thường, nó không tự quyết liệu đây là gian lận hay không, nó <strong>leo thang xác thực</strong>: gửi OTP, yêu cầu
               Face ID, gọi điện xác nhận. Con người bạn vẫn là người nói
               "đúng" hay "sai" lời cuối.
             </p>
@@ -901,8 +900,8 @@ export default function AIInFinanceTopic() {
                 người không kịp thấy.
               </p>
               <p>
-                Bài học cốt lõi: mọi ứng dụng — chống gian lận, chấm điểm
-                tín dụng, chatbot, robo-advisor — đều phải trả lời cùng một
+                Bài học cốt lõi: mọi ứng dụng, chống gian lận, chấm điểm
+                tín dụng, chatbot, robo-advisor, đều phải trả lời cùng một
                 câu hỏi:{" "}
                 <em>
                   chi phí khi tôi sai một kiểu so với sai kiểu ngược lại
@@ -923,7 +922,7 @@ export default function AIInFinanceTopic() {
                 "Nâng ngưỡng lên nữa để chắc chắn hơn",
               ]}
               correct={1}
-              explanation="Khiếu nại tăng 300% là chỉ báo trải nghiệm user đã sập. Giải pháp không phải tắt AI, mà điều chỉnh ngưỡng kết hợp với 'leo thang xác thực': giao dịch trong vùng rủi ro trung bình không bị chặn thẳng — chỉ cần OTP hoặc Face ID. User thật vượt qua dễ dàng, kẻ gian thì không có OTP. Đây là cách MoMo, ZaloPay, các ví điện tử VN xử lý."
+              explanation="Khiếu nại tăng 300% là chỉ báo trải nghiệm user đã sập. Giải pháp không phải tắt AI, mà điều chỉnh ngưỡng kết hợp với 'leo thang xác thực': giao dịch trong vùng rủi ro trung bình không bị chặn thẳng, chỉ cần OTP hoặc Face ID. User thật vượt qua dễ dàng, kẻ gian thì không có OTP. Đây là cách MoMo, ZaloPay, các ví điện tử VN xử lý."
             />
             <InlineChallenge
               question="Mô hình chấm điểm tín dụng của ngân hàng B từ chối chị Hoa với lý do 'không đủ điều kiện'. Chị Hoa khiếu nại. Ngân hàng phải làm gì?"
@@ -933,17 +932,17 @@ export default function AIInFinanceTopic() {
                 "Yêu cầu chị Hoa tự chứng minh mình đủ điều kiện",
               ]}
               correct={1}
-              explanation="Nghị định 13/2023 yêu cầu các quyết định tự động ảnh hưởng đến quyền lợi khách hàng phải có khả năng giải thích. Ngân hàng buộc phải cung cấp yếu tố chính khiến hồ sơ bị từ chối. Đây là lý do các mô hình chấm điểm tín dụng tại VN phải kèm lớp giải thích — không thể là hộp đen thuần."
+              explanation="Nghị định 13/2023 yêu cầu các quyết định tự động ảnh hưởng đến quyền lợi khách hàng phải có khả năng giải thích. Ngân hàng buộc phải cung cấp yếu tố chính khiến hồ sơ bị từ chối. Đây là lý do các mô hình chấm điểm tín dụng tại VN phải kèm lớp giải thích, không thể là hộp đen thuần."
             />
             <InlineChallenge
               question="Chatbot MB Buddy trả lời sai một câu hỏi quan trọng về lãi suất và khách hàng đã ra quyết định dựa trên đó. Trách nhiệm thuộc về ai?"
               options={[
-                "Khách hàng tự chịu — đã đồng ý điều khoản sử dụng",
-                "MB Bank — chatbot là công cụ do MB triển khai, mọi phát ngôn qua kênh chính thức đều thuộc trách nhiệm ngân hàng",
-                "Đội kỹ sư AI — họ viết code sai",
+                "Khách hàng tự chịu, đã đồng ý điều khoản sử dụng",
+                "MB Bank, chatbot là công cụ do MB triển khai, mọi phát ngôn qua kênh chính thức đều thuộc trách nhiệm ngân hàng",
+                "Đội kỹ sư AI, họ viết code sai",
               ]}
               correct={1}
-              explanation="Chatbot không phải chủ thể pháp lý. MB Bank chịu trách nhiệm mọi phát ngôn qua kênh chính thức — bất kể do con người hay AI phát ra. Đây là lý do tất cả chatbot ngân hàng VN đều có disclaimer, và các câu hỏi nhạy cảm (lãi vay thực, cam kết pháp lý) thường được chuyển cho nhân viên con người xác nhận."
+              explanation="Chatbot không phải chủ thể pháp lý. MB Bank chịu trách nhiệm mọi phát ngôn qua kênh chính thức, bất kể do con người hay AI phát ra. Đây là lý do tất cả chatbot ngân hàng VN đều có disclaimer, và các câu hỏi nhạy cảm (lãi vay thực, cam kết pháp lý) thường được chuyển cho nhân viên con người xác nhận."
             />
           </LessonSection>
 
@@ -952,7 +951,7 @@ export default function AIInFinanceTopic() {
               <p>
                 Năm mảng lớn của AI trong ngân hàng Việt Nam hiện nay đều đã
                 chạy production tại các ngân hàng top. Mỗi mảng có một câu
-                hỏi cốt lõi riêng — hiểu từng câu hỏi, bạn hiểu 80% bức
+                hỏi cốt lõi riêng, hiểu từng câu hỏi, bạn hiểu 80% bức
                 tranh.
               </p>
 
@@ -1027,7 +1026,7 @@ export default function AIInFinanceTopic() {
                     <span>
                       Phát hiện pattern rửa tiền phức tạp (structuring,
                       smurfing, giao dịch vòng). AI phân tích mạng lưới
-                      giao dịch giữa nhiều tài khoản — điều mà con người
+                      giao dịch giữa nhiều tài khoản, điều mà con người
                       không làm được ở quy mô hàng triệu lệnh/ngày.{" "}
                       <strong>Sau Luật PCRT 2022</strong>, mảng này đã
                       trở thành bắt buộc tại mọi ngân hàng Việt Nam.
@@ -1051,7 +1050,7 @@ export default function AIInFinanceTopic() {
 
               <h3>Bối cảnh pháp lý Việt Nam 2024–2025</h3>
               <p>
-                AI trong ngân hàng không tự do phát triển — nó nằm trong một
+                AI trong ngân hàng không tự do phát triển, nó nằm trong một
                 mạng lưới văn bản pháp lý đan xen nhau. Hiểu đúng bối cảnh
                 này giúp nhân viên ngân hàng biết vì sao một số tính năng
                 AI nghe có vẻ đơn giản lại bị chậm triển khai nhiều tháng
@@ -1065,20 +1064,19 @@ export default function AIInFinanceTopic() {
                     content: (
                       <ul className="list-disc space-y-2 pl-5 text-sm">
                         <li>
-                          <strong>Luật Phòng chống rửa tiền 2022</strong> —
-                          thay thế luật 2012, siết chặt nghĩa vụ báo cáo
+                          <strong>Luật Phòng chống rửa tiền 2022</strong>, thay thế luật 2012, siết chặt nghĩa vụ báo cáo
                           giao dịch đáng ngờ. Là động lực chính để các
                           ngân hàng đầu tư AI AML.
                         </li>
                         <li>
                           <strong>Nghị định 13/2023/NĐ-CP</strong> về bảo
-                          vệ dữ liệu cá nhân — yêu cầu sự đồng ý rõ ràng
+                          vệ dữ liệu cá nhân, yêu cầu sự đồng ý rõ ràng
                           khi xử lý dữ liệu và quyền được giải thích cho
                           các quyết định tự động.
                         </li>
                         <li>
                           <strong>Luật các tổ chức tín dụng 2024</strong>{" "}
-                          (hiệu lực từ 2024) — cập nhật khung pháp lý cho
+                          (hiệu lực từ 2024), cập nhật khung pháp lý cho
                           hoạt động ngân hàng, bao gồm dịch vụ tài chính
                           số.
                         </li>
@@ -1091,17 +1089,16 @@ export default function AIInFinanceTopic() {
                       <ul className="list-disc space-y-2 pl-5 text-sm">
                         <li>
                           <strong>Thông tư 09/2023/TT-NHNN</strong> về
-                          quản trị rủi ro — bao gồm rủi ro mô hình khi
+                          quản trị rủi ro, bao gồm rủi ro mô hình khi
                           dùng AI cho quyết định kinh doanh.
                         </li>
                         <li>
                           <strong>Thông tư 13/2018/TT-NHNN</strong> (và
-                          các sửa đổi) về quản trị rủi ro tín dụng —
-                          ràng buộc các mô hình chấm điểm phải có
+                          các sửa đổi) về quản trị rủi ro tín dụng, ràng buộc các mô hình chấm điểm phải có
                           validation và kiểm tra backtest định kỳ.
                         </li>
                         <li>
-                          <strong>Quy định eKYC</strong> — cho phép mở
+                          <strong>Quy định eKYC</strong>, cho phép mở
                           tài khoản, phát hành thẻ từ xa qua AI nhận
                           diện khuôn mặt và OCR giấy tờ, miễn tuân thủ
                           yêu cầu chống giả mạo (liveness detection).
@@ -1115,16 +1112,16 @@ export default function AIInFinanceTopic() {
                       <ul className="list-disc space-y-2 pl-5 text-sm">
                         <li>
                           <strong>Basel III / Basel IV</strong> về yêu
-                          cầu vốn tối thiểu — buộc các mô hình rủi ro
+                          cầu vốn tối thiểu, buộc các mô hình rủi ro
                           phải có validation độc lập và hệ số vốn phù
                           hợp với chất lượng mô hình.
                         </li>
                         <li>
-                          <strong>FATF 40 Recommendations</strong> — là
+                          <strong>FATF 40 Recommendations</strong>, là
                           tham chiếu cho hệ thống AML của Việt Nam.
                         </li>
                         <li>
-                          <strong>PCI DSS</strong> cho dữ liệu thẻ — áp
+                          <strong>PCI DSS</strong> cho dữ liệu thẻ, áp
                           dụng cho mọi hệ thống lưu trữ hoặc xử lý thẻ
                           tín dụng, kể cả khi AI chỉ đọc để đánh giá.
                         </li>
@@ -1151,7 +1148,7 @@ export default function AIInFinanceTopic() {
                 <StoryCard
                   bank="MB Bank"
                   title="Trợ lý ảo MB Buddy"
-                  body="MB Buddy trên app MB Bank xử lý hàng triệu câu hỏi mỗi tháng, từ tra cứu số dư đến hướng dẫn giao dịch — giải phóng tổng đài cho các ca phức tạp."
+                  body="MB Buddy trên app MB Bank xử lý hàng triệu câu hỏi mỗi tháng, từ tra cứu số dư đến hướng dẫn giao dịch, giải phóng tổng đài cho các ca phức tạp."
                   icon={Bot}
                 />
               </div>
@@ -1169,7 +1166,7 @@ export default function AIInFinanceTopic() {
                   Thứ hai, độ minh bạch: các ngân hàng này thường xuyên
                   công bố báo cáo thường niên, tham dự hội thảo ngành và
                   chia sẻ ca nghiên cứu. Các tổ chức tài chính khác có thể
-                  đang làm AI mạnh không kém — chúng ta chỉ thiếu thông
+                  đang làm AI mạnh không kém, chúng ta chỉ thiếu thông
                   tin công khai để trích dẫn.
                 </p>
               </CollapsibleDetail>
@@ -1190,7 +1187,7 @@ export default function AIInFinanceTopic() {
                   </li>
                   <li>
                     <strong>Chatbot trả lời sai vấn đề nhạy cảm:</strong>{" "}
-                    lãi suất, điều khoản hợp đồng, cam kết pháp lý — các
+                    lãi suất, điều khoản hợp đồng, cam kết pháp lý, các
                     chủ đề này luôn cần human-in-the-loop, không để AI tự
                     trả lời.
                   </li>
@@ -1221,7 +1218,7 @@ export default function AIInFinanceTopic() {
                     <strong>Biết đâu là kênh chính thức.</strong> Hầu hết
                     ngân hàng có LLM nội bộ đã được kiểm duyệt (ví dụ qua
                     Azure OpenAI, Google Vertex có hợp đồng VPN). Không
-                    dùng ChatGPT public cho dữ liệu khách hàng — đây là vi
+                    dùng ChatGPT public cho dữ liệu khách hàng, đây là vi
                     phạm Nghị định 13/2023.
                   </li>
                   <li>
@@ -1244,7 +1241,7 @@ export default function AIInFinanceTopic() {
               <p className="text-sm text-muted">
                 Khi bạn đã nắm năm trụ cột và khung pháp lý này, hầu hết tin
                 tức về "ngân hàng ABC ra mắt AI XYZ" sẽ rơi vào một trong
-                các ô có sẵn — và bạn sẽ biết câu hỏi phù hợp để đặt ra.
+                các ô có sẵn, và bạn sẽ biết câu hỏi phù hợp để đặt ra.
               </p>
             </ExplanationSection>
           </LessonSection>
@@ -1254,8 +1251,8 @@ export default function AIInFinanceTopic() {
               title="Những điều cần nhớ"
               points={[
                 "Năm mảng AI chính trong ngân hàng VN: chống gian lận, chấm điểm tín dụng, chatbot, robo-advisor, giám sát rửa tiền.",
-                "Mọi ứng dụng đều xoay quanh đánh đổi giữa hai loại sai lầm — chi phí của sai kiểu A so với sai kiểu B quyết định ngưỡng tối ưu, không phải accuracy.",
-                "AI trong ngân hàng không thay thế con người — nó lọc và gợi ý, con người vẫn là người ký tên cuối cùng.",
+                "Mọi ứng dụng đều xoay quanh đánh đổi giữa hai loại sai lầm, chi phí của sai kiểu A so với sai kiểu B quyết định ngưỡng tối ưu, không phải accuracy.",
+                "AI trong ngân hàng không thay thế con người, nó lọc và gợi ý, con người vẫn là người ký tên cuối cùng.",
                 "Khung pháp lý VN: Luật PCRT 2022, Nghị định 13/2023 về dữ liệu cá nhân, Thông tư 09/2023 về quản trị rủi ro, cùng các chuẩn Basel III và FATF.",
                 "Các ví dụ thực tế 2024–2025: Techcombank chấm điểm tức thời, VPBank chống fraud, MB Buddy trả lời 24/7, VPBank/Techcombank giám sát AML.",
                 "Quyền khách hàng: được giải thích khi bị từ chối vay, được xác thực thêm thay vì chặn cứng, được khiếu nại với logging đầy đủ.",

@@ -40,9 +40,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "llm-overview",
   title: "Large Language Models",
-  titleVi: "LLM",
+  titleVi: "LLM: máy đoán chữ đứng sau chatbot",
   description:
-    "Làm quen với LLM (mô hình ngôn ngữ lớn) — cỗ máy nằm sau ChatGPT, Claude, Gemini. Hiểu nó đoán chữ thế nào, khi nào tin được, khi nào phải dè chừng.",
+    "Hiểu LLM đọc prompt, đoán token tiếp theo và vì sao câu trả lời cần được kiểm chứng.",
   category: "llm-concepts",
   tags: ["llm", "ai-co-ban", "van-phong", "overview"],
   difficulty: "beginner",
@@ -51,7 +51,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DỮ LIỆU CHO VISUALIZATION 1 — Trò chơi "đoán chữ tiếp theo"
+   DỮ LIỆU CHO VISUALIZATION 1, Trò chơi "đoán chữ tiếp theo"
    ═══════════════════════════════════════════════════════════════════════════ */
 
 type NextWordCandidate = { word: string; prob: number; tone: "safe" | "mid" | "wild" };
@@ -132,7 +132,7 @@ function applyTemperature(
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DỮ LIỆU CHO VISUALIZATION 2 — Cửa sổ ngữ cảnh (context window)
+   DỮ LIỆU CHO VISUALIZATION 2, Cửa sổ ngữ cảnh (context window)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 type ContextBucket = {
@@ -176,7 +176,7 @@ const CONTEXT_BUCKETS: ContextBucket[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DỮ LIỆU CHO EXPLANATION — bảng công việc văn phòng & hallucination
+   DỮ LIỆU CHO EXPLANATION, bảng công việc văn phòng & hallucination
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const OFFICE_TASKS = [
@@ -192,7 +192,7 @@ const OFFICE_TASKS = [
     role: "Giáo viên",
     task: "Chấm 40 bài văn, đưa nhận xét cụ thể cho từng em",
     fit: "rất hợp",
-    note: "Dán bài, yêu cầu nhận xét theo 3 tiêu chí — LLM không biết mệt.",
+    note: "Dán bài, yêu cầu nhận xét theo 3 tiêu chí, LLM không biết mệt.",
   },
   {
     icon: Scale,
@@ -227,7 +227,7 @@ const OFFICE_TASKS = [
     role: "Kế toán",
     task: "Tính thuế thu nhập cá nhân chính xác đến từng nghìn đồng",
     fit: "phải cẩn thận",
-    note: "LLM là máy đoán chữ, không phải máy tính — luôn đối chiếu lại bằng Excel.",
+    note: "LLM là máy đoán chữ, không phải máy tính, luôn đối chiếu lại bằng Excel.",
   },
   {
     icon: ShieldAlert,
@@ -240,7 +240,7 @@ const OFFICE_TASKS = [
 
 const PIPELINE_STEPS = [
   "Người học viết câu hỏi, ví dụ: 'Giúp tôi viết email xin nghỉ phép 3 ngày.'",
-  "Máy cắt câu thành token — các mảnh chữ nhỏ để model xử lý.",
+  "Máy cắt câu thành token, các mảnh chữ nhỏ để model xử lý.",
   "Model đọc hết token, tính xác suất cho MỌI từ có thể xuất hiện tiếp theo.",
   "Chọn một từ theo xác suất, in ra màn hình, rồi lặp lại quá trình cho từ sau.",
   "Lặp đi lặp lại cho tới khi tạo đủ câu trả lời hoặc gặp dấu kết thúc.",
@@ -249,11 +249,11 @@ const PIPELINE_STEPS = [
 const MATCH_PAIRS = [
   {
     left: "Prompt (lời nhắc)",
-    right: "Câu bạn nhập vào khung chat — càng rõ ràng, trả lời càng chính xác.",
+    right: "Câu bạn nhập vào khung chat, càng rõ ràng, trả lời càng chính xác.",
   },
   {
     left: "Token (mảnh chữ)",
-    right: "Đơn vị nhỏ mà LLM đọc — một từ tiếng Việt thường là 2–3 token.",
+    right: "Đơn vị nhỏ mà LLM đọc, một từ tiếng Việt thường là 2–3 token.",
   },
   {
     left: "Context window (cửa sổ ngữ cảnh)",
@@ -265,7 +265,7 @@ const MATCH_PAIRS = [
   },
   {
     left: "Temperature (nhiệt độ)",
-    right: "Nút vặn độ bay bổng — thấp cho câu chắc chắn, cao cho ý tưởng sáng tạo.",
+    right: "Nút vặn độ bay bổng, thấp cho câu chắc chắn, cao cho ý tưởng sáng tạo.",
   },
 ];
 
@@ -292,26 +292,26 @@ const quizQuestions: QuizQuestion[] = [
       "Câu trả lời của ChatGPT đôi khi khác nhau dù bạn hỏi đúng một câu. Vì sao?",
     options: [
       "Máy chủ OpenAI mỗi ngày cập nhật câu trả lời mới",
-      "LLM chọn từ theo xác suất nên có yếu tố ngẫu nhiên — chỉnh bằng temperature",
+      "LLM chọn từ theo xác suất nên có yếu tố ngẫu nhiên, chỉnh bằng temperature",
       "Có người thật gõ trả lời ở phía sau, nên mỗi lần gõ một kiểu",
       "Do tốc độ mạng của bạn chậm hay nhanh quyết định",
     ],
     correct: 1,
     explanation:
-      "Temperature là nút vặn độ ngẫu nhiên. Temperature 0 gần như luôn chọn chữ xác suất cao nhất (đáp án ổn định). Temperature cao cho phép model mạo hiểm — hợp lúc sáng tác, rủi ro khi cần chính xác.",
+      "Temperature là nút vặn độ ngẫu nhiên. Temperature 0 gần như luôn chọn chữ xác suất cao nhất (đáp án ổn định). Temperature cao cho phép model mạo hiểm, hợp lúc sáng tác, rủi ro khi cần chính xác.",
   },
   {
     question:
       "LLM trả lời 'Theo Luật Lao động 2019 Điều 47...' nhưng điều luật đó không tồn tại. Đây là gì?",
     options: [
       "Lỗi đánh máy của LLM",
-      "Hallucination — LLM tự tin nói sai vì nó chỉ đoán chữ 'nghe hợp lý'",
+      "Hallucination, LLM tự tin nói sai vì nó chỉ đoán chữ 'nghe hợp lý'",
       "Luật đã bị thay đổi, LLM dùng bản cũ",
       "Người dùng gõ sai prompt",
     ],
     correct: 1,
     explanation:
-      "Hallucination (ảo giác) là cạm bẫy lớn nhất khi dùng LLM ở công việc. Với chuyện quan trọng — luật, y tế, tài chính — luôn kiểm tra bằng nguồn gốc, hoặc dùng công cụ tra cứu kèm theo (RAG).",
+      "Hallucination (ảo giác) là cạm bẫy lớn nhất khi dùng LLM ở công việc. Với chuyện quan trọng, luật, y tế, tài chính, luôn kiểm tra bằng nguồn gốc, hoặc dùng công cụ tra cứu kèm theo (RAG).",
   },
   {
     type: "fill-blank",
@@ -335,7 +335,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Nếu hợp đồng vượt quá cửa sổ ngữ cảnh, model sẽ 'quên' phần đầu hoặc phần cuối. Hiện nay Claude, Gemini có ngữ cảnh 200K–2M token — đủ cho hợp đồng dài — nhưng vẫn nên chia nhỏ để an toàn.",
+      "Nếu hợp đồng vượt quá cửa sổ ngữ cảnh, model sẽ 'quên' phần đầu hoặc phần cuối. Hiện nay Claude, Gemini có ngữ cảnh 200K–2M token, đủ cho hợp đồng dài, nhưng vẫn nên chia nhỏ để an toàn.",
   },
   {
     question:
@@ -348,12 +348,12 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Tính thuế đòi hỏi độ chính xác tuyệt đối từng con số. LLM là máy đoán chữ, không phải máy tính — nó có thể nhầm phép cộng với số lớn. Luôn đối chiếu bằng Excel hoặc phần mềm kế toán.",
+      "Tính thuế đòi hỏi độ chính xác tuyệt đối từng con số. LLM là máy đoán chữ, không phải máy tính, nó có thể nhầm phép cộng với số lớn. Luôn đối chiếu bằng Excel hoặc phần mềm kế toán.",
   },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Thanh xác suất "đoán chữ tiếp theo"
+   COMPONENT CON, Thanh xác suất "đoán chữ tiếp theo"
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function ProbabilityBars({
@@ -397,7 +397,7 @@ function ProbabilityBars({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Cửa sổ ngữ cảnh trực quan
+   COMPONENT CON, Cửa sổ ngữ cảnh trực quan
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function ContextWindowMeter({ value }: { value: number }) {
@@ -501,7 +501,7 @@ export default function LLMOverviewTopic() {
     return t.fit === "đừng giao một mình";
   });
 
-  /* ─── Viz 4: chữ gõ thử "bắt chước LLM" — animation chạy liên tục ─── */
+  /* ─── Viz 4: chữ gõ thử "bắt chước LLM", animation chạy liên tục ─── */
   const [typedIdx, setTypedIdx] = useState(0);
   const sampleSentence = "Kính gửi anh Minh, em xin phép nghỉ 2 ngày do con ốm. Em sẽ bàn giao";
   const reduce = useReducedMotion();
@@ -518,7 +518,7 @@ export default function LLMOverviewTopic() {
 
   return (
     <>
-      {/* ═══════════ BƯỚC 1 — HOOK / DỰ ĐOÁN ═══════════ */}
+      {/* ═══════════ BƯỚC 1, HOOK / DỰ ĐOÁN ═══════════ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn gõ vào ChatGPT: 'Soạn giúp tôi email xin nghỉ phép 3 ngày'. Theo bạn, trong đầu máy đang diễn ra chuyện gì?"
@@ -529,7 +529,7 @@ export default function LLMOverviewTopic() {
             "Máy dịch câu hỏi sang tiếng Anh, rồi chạy một công thức toán ra đáp án",
           ]}
           correct={1}
-          explanation="Đúng vậy — LLM là một cỗ máy đoán chữ. Nó nhìn toàn bộ câu bạn đã gõ, tính xác suất cho từng từ có thể đứng tiếp theo, chọn một, rồi lặp lại. Cứ thế cho tới khi email thành hình."
+          explanation="Đúng vậy, LLM là một cỗ máy đoán chữ. Nó nhìn toàn bộ câu bạn đã gõ, tính xác suất cho từng từ có thể đứng tiếp theo, chọn một, rồi lặp lại. Cứ thế cho tới khi email thành hình."
         >
           <p className="text-sm text-muted mt-3">
             Bài hôm nay sẽ cho bạn nhìn tận mắt cỗ máy đoán chữ đó làm việc, bằng
@@ -538,13 +538,13 @@ export default function LLMOverviewTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 2 — ẨN DỤ QUÁN PHỞ ═══════════ */}
+      {/* ═══════════ BƯỚC 2, ẨN DỤ QUÁN PHỞ ═══════════ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <p>
           Hình dung một bác bán phở Bát Đàn đứng ba mươi năm ở góc phố. Khách
           vừa bước vào, chưa kịp ngồi xuống bác đã biết hôm nay khách gọi{" "}
           <strong>tái gầu hay chín nạm</strong>, có dưa muối hay không. Bác
-          không đọc được ý nghĩ ai cả — bác chỉ đã nhìn <em>hàng chục vạn</em>{" "}
+          không đọc được ý nghĩ ai cả, bác chỉ đã nhìn <em>hàng chục vạn</em>{" "}
           lượt khách, nên bộ não bác nắm được một quy luật mỏng manh nhưng đáng
           tin: người mặc sơ mi, đi xe tay ga, vào lúc 7 giờ sáng thường gọi cái
           gì.
@@ -560,17 +560,17 @@ export default function LLMOverviewTopic() {
           Điều hay là: vì đã đọc quá nhiều, nó biết văn phong email công sở khác
           văn tin nhắn bạn bè, biết câu trong biên bản họp không giống câu trong
           caption Tiktok. Điều đáng sợ là: khi không biết, nó vẫn{" "}
-          <strong>đoán một cách tự tin</strong> — đôi khi bịa ra điều luật, tên
+          <strong>đoán một cách tự tin</strong>, đôi khi bịa ra điều luật, tên
           sách, trích dẫn không tồn tại. Dùng LLM ở công việc nghĩa là học cách
           phát huy ưu thế và cảnh giác với điểm yếu đó.
         </p>
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 3 — VISUALIZATION TƯƠNG TÁC ═══════════ */}
+      {/* ═══════════ BƯỚC 3, VISUALIZATION TƯƠNG TÁC ═══════════ */}
       <LessonSection step={3} totalSteps={8} label="Nhìn tận mắt">
         <VisualizationSection topicSlug={metadata.slug}>
           {/* ── Demo 1: Trò chơi "đoán chữ tiếp theo" ───────────────────── */}
-          <LessonSection step={1} label="Demo 1 — Đoán chữ tiếp theo">
+          <LessonSection step={1} label="Demo 1, Đoán chữ tiếp theo">
             <h3 className="text-base font-semibold text-foreground mb-1">
               Bạn là LLM: đoán chữ sắp gõ tiếp theo
             </h3>
@@ -632,7 +632,7 @@ export default function LLMOverviewTopic() {
           </LessonSection>
 
           {/* ── Demo 2: Nút vặn temperature ───────────────────────────── */}
-          <LessonSection step={2} label="Demo 2 — Nút vặn 'độ bay bổng'">
+          <LessonSection step={2} label="Demo 2, Nút vặn 'độ bay bổng'">
             <div className="flex items-center gap-2 mb-1">
               <Thermometer size={16} className="text-accent" />
               <h3 className="text-base font-semibold text-foreground">
@@ -641,9 +641,8 @@ export default function LLMOverviewTopic() {
             </div>
             <p className="text-sm text-muted mb-4">
               Cũng tình huống trên, nhưng giờ bạn cầm một nút vặn. Ở{" "}
-              <strong>temperature thấp</strong>, máy luôn chọn chữ an toàn —
-              viết chắc chắn, khô khan. Ở <strong>temperature cao</strong>, máy
-              dám chọn chữ lạ — viết bay bổng, nhưng dễ trượt chân.
+              <strong>temperature thấp</strong>, máy luôn chọn chữ an toàn, viết chắc chắn, khô khan. Ở <strong>temperature cao</strong>, máy
+              dám chọn chữ lạ, viết bay bổng, nhưng dễ trượt chân.
             </p>
 
             <div className="rounded-lg bg-surface p-4">
@@ -670,9 +669,9 @@ export default function LLMOverviewTopic() {
                 }}
               />
               <div className="flex justify-between text-[10px] text-tertiary mt-1">
-                <span>0.00 — cứng như đá</span>
-                <span>0.60 — vừa tay</span>
-                <span>1.20 — bay như thơ</span>
+                <span>0.00, cứng như đá</span>
+                <span>0.60, vừa tay</span>
+                <span>1.20, bay như thơ</span>
               </div>
             </div>
 
@@ -680,10 +679,10 @@ export default function LLMOverviewTopic() {
               {[0.1, 0.55, 1.1].map((t) => {
                 const label =
                   t <= 0.2
-                    ? "Ổn định — hợp lúc viết hợp đồng"
+                    ? "Ổn định, hợp lúc viết hợp đồng"
                     : t <= 0.7
-                    ? "Cân bằng — hợp email hàng ngày"
-                    : "Bay bổng — hợp caption marketing";
+                    ? "Cân bằng, hợp email hàng ngày"
+                    : "Bay bổng, hợp caption marketing";
                 const isActive = Math.abs(t - temperature) < 0.15;
                 return (
                   <button
@@ -704,14 +703,13 @@ export default function LLMOverviewTopic() {
             </div>
 
             <Callout variant="tip" title="Gợi ý thực tế">
-              Khi soạn <strong>hợp đồng, báo cáo số liệu</strong> — để temperature
-              thấp (dưới 0.3). Khi nghĩ <strong>tên chiến dịch, lời quảng cáo</strong> —
-              kéo lên 0.8–1.1 cho ý tưởng đỡ giống nhau.
+              Khi soạn <strong>hợp đồng, báo cáo số liệu</strong>, để temperature
+              thấp (dưới 0.3). Khi nghĩ <strong>tên chiến dịch, lời quảng cáo</strong>, kéo lên 0.8–1.1 cho ý tưởng đỡ giống nhau.
             </Callout>
           </LessonSection>
 
           {/* ── Demo 3: Cửa sổ ngữ cảnh ──────────────────────────────── */}
-          <LessonSection step={3} label="Demo 3 — Cửa sổ ngữ cảnh">
+          <LessonSection step={3} label="Demo 3, Cửa sổ ngữ cảnh">
             <div className="flex items-center gap-2 mb-1">
               <Clock size={16} className="text-accent" />
               <h3 className="text-base font-semibold text-foreground">
@@ -719,7 +717,7 @@ export default function LLMOverviewTopic() {
               </h3>
             </div>
             <p className="text-sm text-muted mb-4">
-              Mỗi model có một <strong>cửa sổ ngữ cảnh</strong> — giống trí nhớ
+              Mỗi model có một <strong>cửa sổ ngữ cảnh</strong>, giống trí nhớ
               ngắn hạn, đo bằng <em>token</em> (mảnh chữ). Kéo thanh dưới để xem
               mức đó tương đương công việc nào.
             </p>
@@ -776,13 +774,12 @@ export default function LLMOverviewTopic() {
 
             <Callout variant="info" title="Mẹo đo trong thực tế">
               Một trang Word (~300 từ tiếng Việt) rơi vào khoảng{" "}
-              <strong>600–900 token</strong>. Hợp đồng 50 trang ≈ 40K token —
-              hầu hết model hiện nay nuốt trọn không vấn đề.
+              <strong>600–900 token</strong>. Hợp đồng 50 trang ≈ 40K token, hầu hết model hiện nay nuốt trọn không vấn đề.
             </Callout>
           </LessonSection>
 
           {/* ── Demo 4: LLM "gõ từng chữ" cạnh câu hoàn chỉnh ─────────── */}
-          <LessonSection step={4} label="Demo 4 — LLM 'gõ' thế nào?">
+          <LessonSection step={4} label="Demo 4, LLM 'gõ' thế nào?">
             <div className="flex items-center gap-2 mb-1">
               <Sparkles size={16} className="text-accent" />
               <h3 className="text-base font-semibold text-foreground">
@@ -790,7 +787,7 @@ export default function LLMOverviewTopic() {
               </h3>
             </div>
             <p className="text-sm text-muted mb-4">
-              Ở chế độ streaming, LLM vừa nghĩ vừa &ldquo;gõ&rdquo; — mỗi chữ
+              Ở chế độ streaming, LLM vừa nghĩ vừa &ldquo;gõ&rdquo;, mỗi chữ
               bạn thấy là một lần máy đoán xác suất và chọn từ. Xem nhịp gõ mô
               phỏng dưới đây.
             </p>
@@ -807,13 +804,13 @@ export default function LLMOverviewTopic() {
             <Callout variant="insight" title="Vì sao điều này quan trọng?">
               Streaming giúp bạn thấy câu trả lời sớm, nhưng cũng là lúc dễ mắc
               bẫy: nửa đầu nghe hợp lý, nửa sau <em>bịa</em>. Đừng dừng đọc ở
-              dòng thứ hai — rà hết câu mới quyết định có dùng hay không.
+              dòng thứ hai, rà hết câu mới quyết định có dùng hay không.
             </Callout>
           </LessonSection>
         </VisualizationSection>
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 4 — AHA MOMENT ═══════════ */}
+      {/* ═══════════ BƯỚC 4, AHA MOMENT ═══════════ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
           LLM không biết điều gì là <strong>đúng</strong>. Nó biết điều gì{" "}
@@ -824,26 +821,26 @@ export default function LLMOverviewTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 5 — THỬ THÁCH GIỮA DÒNG ═══════════ */}
+      {/* ═══════════ BƯỚC 5, THỬ THÁCH GIỮA DÒNG ═══════════ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Sếp giao: 'Dùng ChatGPT soạn email gửi khách VIP xin gia hạn hợp đồng, đồng thời trích Điều 5.2 hợp đồng cũ'. Cách làm nào hợp lý nhất?"
           options={[
             "Gõ prompt rồi copy nguyên xi câu trả lời, gửi đi luôn cho tiết kiệm thời gian",
-            "Dùng LLM soạn phần lời chào và kết, còn Điều 5.2 thì tự copy từ file hợp đồng gốc — đừng để LLM 'nhớ hộ'",
+            "Dùng LLM soạn phần lời chào và kết, còn Điều 5.2 thì tự copy từ file hợp đồng gốc, đừng để LLM 'nhớ hộ'",
             "Yêu cầu LLM tự nhớ Điều 5.2 vì nó đã đọc triệu hợp đồng rồi",
             "Không dùng LLM, tự viết tay toàn bộ vì LLM không biết tiếng Việt",
           ]}
           correct={1}
-          explanation="LLM soạn câu chữ giỏi, nhưng tuyệt đối đừng để nó 'nhớ hộ' điều khoản cụ thể trong hợp đồng của bạn — nó chưa từng đọc hợp đồng đó. Hãy dán trực tiếp đoạn Điều 5.2 vào prompt, hoặc dùng công cụ RAG để LLM đọc từ nguồn thật."
+          explanation="LLM soạn câu chữ giỏi, nhưng tuyệt đối đừng để nó 'nhớ hộ' điều khoản cụ thể trong hợp đồng của bạn, nó chưa từng đọc hợp đồng đó. Hãy dán trực tiếp đoạn Điều 5.2 vào prompt, hoặc dùng công cụ RAG để LLM đọc từ nguồn thật."
         />
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 6 — GIẢI THÍCH SÂU (VISUAL-HEAVY) ═══════════ */}
+      {/* ═══════════ BƯỚC 6, GIẢI THÍCH SÂU (VISUAL-HEAVY) ═══════════ */}
       <LessonSection step={6} totalSteps={8} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
           <p>
-            <strong>LLM (Large Language Model — mô hình ngôn ngữ lớn)</strong>{" "}
+            <strong>LLM (Large Language Model, mô hình ngôn ngữ lớn)</strong>{" "}
             là một cỗ máy đoán chữ tiếp theo, được luyện trên gần như toàn bộ
             chữ viết mà con người từng công khai. Ba chữ &ldquo;lớn&rdquo; có
             nghĩa thật sự:
@@ -859,7 +856,7 @@ export default function LLMOverviewTopic() {
                 ~10.000 tỷ
               </div>
               <div className="text-xs text-muted leading-relaxed">
-                từ đã đọc — tương đương gần hết sách, báo, Wikipedia, diễn đàn
+                từ đã đọc, tương đương gần hết sách, báo, Wikipedia, diễn đàn
                 mở trên Internet.
               </div>
             </div>
@@ -871,7 +868,7 @@ export default function LLMOverviewTopic() {
                 ~1.700 tỷ
               </div>
               <div className="text-xs text-muted leading-relaxed">
-                &ldquo;nút vặn&rdquo; bên trong model — mỗi nút tinh chỉnh cảm
+                &ldquo;nút vặn&rdquo; bên trong model, mỗi nút tinh chỉnh cảm
                 giác về một mẩu ngữ cảnh.
               </div>
             </div>
@@ -883,8 +880,7 @@ export default function LLMOverviewTopic() {
                 ~$100 triệu
               </div>
               <div className="text-xs text-muted leading-relaxed">
-                tiền điện và GPU để huấn luyện một thế hệ model đầu bảng —
-                bằng một dự án xây cầu vừa.
+                tiền điện và GPU để huấn luyện một thế hệ model đầu bảng, bằng một dự án xây cầu vừa.
               </div>
             </div>
           </div>
@@ -901,13 +897,13 @@ export default function LLMOverviewTopic() {
           />
 
           <Callout variant="insight" title="Đơn giản đến bất ngờ">
-            Đằng sau ChatGPT, Claude, Gemini — về cốt lõi — chỉ là vòng lặp
+            Đằng sau ChatGPT, Claude, Gemini, về cốt lõi, chỉ là vòng lặp
             &ldquo;đoán chữ tiếp theo&rdquo;. Sở dĩ nó nghe thông minh là vì
             vòng lặp đó được chạy qua một bộ não khổng lồ đã đọc gần hết kho
             chữ loài người.
           </Callout>
 
-          {/* Năm thuật ngữ quan trọng — MatchPairs */}
+          {/* Năm thuật ngữ quan trọng, MatchPairs */}
           <p>
             Năm thuật ngữ sau sẽ đi cùng bạn suốt hành trình dùng AI. Ghép cặp
             để chắc chắn đã nắm:
@@ -1004,7 +1000,7 @@ export default function LLMOverviewTopic() {
             </AnimatePresence>
           </div>
 
-          {/* So sánh trước & sau có LLM — một chi tiết cụ thể */}
+          {/* So sánh trước & sau có LLM, một chi tiết cụ thể */}
           <p>
             Để thấy khác biệt cụ thể, xem một buổi sáng thứ Hai của bạn trước
             và sau khi biết dùng LLM:
@@ -1026,7 +1022,7 @@ export default function LLMOverviewTopic() {
                 <div className="flex items-center gap-2 text-sm text-foreground">
                   <AlertTriangle size={14} className="text-amber-500 shrink-0" />
                   <span>
-                    Đầu giờ viết kỹ, cuối giờ mệt, câu chữ cụt dần — dễ thiếu lịch sự.
+                    Đầu giờ viết kỹ, cuối giờ mệt, câu chữ cụt dần, dễ thiếu lịch sự.
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-foreground">
@@ -1050,7 +1046,7 @@ export default function LLMOverviewTopic() {
                 <div className="flex items-center gap-2 text-sm text-foreground">
                   <Sparkles size={14} className="text-emerald-500 shrink-0" />
                   <span>
-                    Chất lượng email ổn định từ cái đầu đến cái cuối — LLM không biết mệt.
+                    Chất lượng email ổn định từ cái đầu đến cái cuối, LLM không biết mệt.
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-foreground">
@@ -1068,7 +1064,7 @@ export default function LLMOverviewTopic() {
             <ul className="list-disc pl-5 space-y-1">
               <li>
                 <strong>Ảo giác (<TopicLink slug="hallucination">hallucination</TopicLink>):</strong>{" "}
-                LLM tự tin bịa ra điều luật, trích dẫn, tên sách — đặc biệt khi
+                LLM tự tin bịa ra điều luật, trích dẫn, tên sách, đặc biệt khi
                 bạn hỏi chi tiết nhỏ.
               </li>
               <li>
@@ -1083,10 +1079,10 @@ export default function LLMOverviewTopic() {
             </ul>
           </Callout>
 
-          <CollapsibleDetail title="Dành cho bạn muốn hiểu sâu hơn — làm sao LLM &ldquo;đọc&rdquo; câu của bạn?">
+          <CollapsibleDetail title="Dành cho bạn muốn hiểu sâu hơn, làm sao LLM &ldquo;đọc&rdquo; câu của bạn?">
             <p className="text-sm text-muted leading-relaxed mb-2">
               LLM không nhìn chữ như mắt người. Nó cắt câu thành{" "}
-              <em>token</em> — những mảnh nhỏ. Một câu tiếng Việt như &ldquo;Kính
+              <em>token</em>, những mảnh nhỏ. Một câu tiếng Việt như &ldquo;Kính
               gửi anh Minh&rdquo; có thể bị cắt thành &ldquo;Kính&rdquo;, &ldquo;
               gửi&rdquo;, &ldquo; anh&rdquo;, &ldquo; Minh&rdquo;. Sau đó mỗi
               token được chuyển thành một dãy số nhiều chiều, để máy có thể so
@@ -1114,27 +1110,27 @@ export default function LLMOverviewTopic() {
             trong lộ trình sẽ dạy bạn viết <TopicLink slug="prompt-engineering">
               prompt
             </TopicLink>{" "}
-            sao cho LLM đoán đúng hơn — khác biệt giữa người dùng AI khá và
+            sao cho LLM đoán đúng hơn, khác biệt giữa người dùng AI khá và
             người dùng AI giỏi nằm ở kỹ năng đó.
           </p>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 7 — TÓM TẮT ═══════════ */}
+      {/* ═══════════ BƯỚC 7, TÓM TẮT ═══════════ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           title="Năm điều mang theo ra khỏi bài"
           points={[
             "LLM là cỗ máy đoán chữ tiếp theo, luyện trên gần như toàn bộ chữ viết công khai của loài người.",
-            "Temperature là nút vặn 'độ bay bổng' — thấp cho hợp đồng, cao cho ý tưởng sáng tạo.",
+            "Temperature là nút vặn 'độ bay bổng', thấp cho hợp đồng, cao cho ý tưởng sáng tạo.",
             "Cửa sổ ngữ cảnh là trí nhớ ngắn hạn của LLM; model hiện nay đủ nuốt cả hợp đồng 200 trang.",
-            "LLM viết câu trôi chảy nhưng có thể bịa số liệu, điều luật, trích dẫn — luôn kiểm chứng ở việc quan trọng.",
+            "LLM viết câu trôi chảy nhưng có thể bịa số liệu, điều luật, trích dẫn, luôn kiểm chứng ở việc quan trọng.",
             "Giao cho LLM: soạn email, tóm tắt báo cáo, viết caption. Đừng giao một mình: tính thuế, tư vấn thuốc, khẳng định điều luật.",
           ]}
         />
       </LessonSection>
 
-      {/* ═══════════ BƯỚC 8 — QUIZ ═══════════ */}
+      {/* ═══════════ BƯỚC 8, QUIZ ═══════════ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>

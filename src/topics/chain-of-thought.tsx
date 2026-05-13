@@ -26,14 +26,14 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────────
-// Metadata — giữ nguyên slug + các trường bắt buộc
+// Metadata, giữ nguyên slug + các trường bắt buộc
 // ─────────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "chain-of-thought",
   title: "Chain-of-Thought",
-  titleVi: "Chuỗi suy luận từng bước",
+  titleVi: "Chain-of-thought: cho AI nháp trước khi chốt",
   description:
-    "Kỹ thuật nhắc AI trình bày suy nghĩ theo từng bước trước khi chốt đáp án — giúp dân văn phòng có câu trả lời chắc tay hơn ở những việc nhiều bước.",
+    "Dùng prompt để AI chia việc nhiều bước thành bản nháp, rồi kiểm từng bước trước khi lấy đáp án.",
   category: "llm-concepts",
   tags: ["reasoning", "prompt", "cot", "llm"],
   difficulty: "beginner",
@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────
-// Ngân hàng bài toán — tình huống rất đời thường, không cần biết lập trình
+// Ngân hàng bài toán, tình huống rất đời thường, không cần biết lập trình
 // ─────────────────────────────────────────────────────────────────────────
 interface OfficeProblem {
   id: string;
@@ -107,13 +107,13 @@ const OFFICE_PROBLEMS: OfficeProblem[] = [
       "Viết lại: 1,1 × X = 1.100.000 → X = 1.000.000 đồng (giá chưa thuế thật sự).",
       "Số tiền VAT = 1.100.000 − 1.000.000 = 100.000 đồng.",
       "Kiểm tra lại: 10% của 1.000.000 đúng bằng 100.000. Khớp.",
-      "Như vậy nếu hoàn thuế VAT, bạn chỉ được hoàn 100.000 đồng — không phải 110.000 đồng.",
+      "Như vậy nếu hoàn thuế VAT, bạn chỉ được hoàn 100.000 đồng, không phải 110.000 đồng.",
     ],
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
-// Demo 1 — So sánh “Trả lời thẳng” vs “Suy nghĩ từng bước” trên 3 tình huống
+// Demo 1, So sánh “Trả lời thẳng” vs “Suy nghĩ từng bước” trên 3 tình huống
 // ─────────────────────────────────────────────────────────────────────────
 function DirectVsStepDemo() {
   const [idx, setIdx] = useState(0);
@@ -206,14 +206,14 @@ function DirectVsStepDemo() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Demo 3 — Hai bản prompt song song, kết quả mô phỏng
+// Demo 3, Hai bản prompt song song, kết quả mô phỏng
 // ─────────────────────────────────────────────────────────────────────────
 function PromptTemplateDemo() {
   return (
     <ToggleCompare
       labelA="Prompt kiểu cũ"
       labelB="Prompt theo chuỗi suy luận"
-      description="Cùng một câu hỏi về phụ cấp — chỉ thay đổi vài câu trong prompt, chất lượng câu trả lời đã rất khác."
+      description="Cùng một câu hỏi về phụ cấp, chỉ thay đổi vài câu trong prompt, chất lượng câu trả lời đã rất khác."
       childA={
         <div className="grid gap-3 md:grid-cols-2">
           <div className="rounded-xl border border-border bg-surface/40 p-3">
@@ -233,7 +233,7 @@ function PromptTemplateDemo() {
               “Tổng thu nhập khoảng 9 triệu.”
               <br />
               <span className="text-xs text-muted">
-                Tròn số, không thấy rõ AI tính gì — bạn không kiểm được.
+                Tròn số, không thấy rõ AI tính gì, bạn không kiểm được.
               </span>
             </p>
           </div>
@@ -264,7 +264,7 @@ function PromptTemplateDemo() {
               </li>
             </ol>
             <p className="mt-1.5 text-xs text-muted">
-              Có nháp rõ ràng — bạn kiểm tra từng dòng trong 5 giây.
+              Có nháp rõ ràng, bạn kiểm tra từng dòng trong 5 giây.
             </p>
           </div>
         </div>
@@ -274,7 +274,7 @@ function PromptTemplateDemo() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Thanh tiến trình nhỏ — trang trí cho VisualizationSection
+// Thanh tiến trình nhỏ, trang trí cho VisualizationSection
 // ─────────────────────────────────────────────────────────────────────────
 function DemoStepBadge({
   step,
@@ -293,7 +293,7 @@ function DemoStepBadge({
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Ba mẫu prompt mang sẵn chuỗi suy luận — dùng Callout thay vì CodeBlock
+// Ba mẫu prompt mang sẵn chuỗi suy luận, dùng Callout thay vì CodeBlock
 // ─────────────────────────────────────────────────────────────────────────
 interface PromptTemplate {
   tag: string;
@@ -364,7 +364,7 @@ function PromptTemplateCard({ template }: { template: PromptTemplate }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Bảng Zero-shot vs Few-shot — diagram minh họa
+// Bảng Zero-shot vs Few-shot, diagram minh họa
 // ─────────────────────────────────────────────────────────────────────────
 function ZeroVsFewShotDiagram() {
   return (
@@ -409,7 +409,7 @@ function ZeroVsFewShotDiagram() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Thanh “Khi nào nên dùng / không nên” — trực quan, không cần biểu đồ
+// Thanh “Khi nào nên dùng / không nên”, trực quan, không cần biểu đồ
 // ─────────────────────────────────────────────────────────────────────────
 function WhenToUseChart() {
   const cases: Array<{
@@ -420,12 +420,12 @@ function WhenToUseChart() {
     {
       label: "Tính lương thưởng nhiều khoản",
       good: true,
-      note: "Nhiều bước — rất dễ sai nếu cộng gộp.",
+      note: "Nhiều bước, rất dễ sai nếu cộng gộp.",
     },
     {
       label: "Lên lịch 5 cuộc họp trong 1 ngày",
       good: true,
-      note: "Có ràng buộc thời gian và người — cần nháp.",
+      note: "Có ràng buộc thời gian và người, cần nháp.",
     },
     {
       label: "So sánh 3 nhà cung cấp",
@@ -435,17 +435,17 @@ function WhenToUseChart() {
     {
       label: "Viết một lời chào email",
       good: false,
-      note: "Một câu đơn giản — thêm chuỗi suy luận chỉ tốn thời gian.",
+      note: "Một câu đơn giản, thêm chuỗi suy luận chỉ tốn thời gian.",
     },
     {
       label: "Hỏi thủ đô nước Pháp",
       good: false,
-      note: "Câu hỏi tra cứu — AI chỉ cần nhớ, không cần suy luận.",
+      note: "Câu hỏi tra cứu, AI chỉ cần nhớ, không cần suy luận.",
     },
     {
       label: "Dịch 1 câu tiếng Anh",
       good: false,
-      note: "Việc 1 bước — đừng bắt AI nháp dài dòng.",
+      note: "Việc 1 bước, đừng bắt AI nháp dài dòng.",
     },
   ];
 
@@ -485,7 +485,7 @@ function WhenToUseChart() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Đồng hồ ba điểm chênh lệch — visualize độ chính xác theo cách nhắc
+// Đồng hồ ba điểm chênh lệch, visualize độ chính xác theo cách nhắc
 // ─────────────────────────────────────────────────────────────────────────
 function AccuracyBars() {
   const rows = [
@@ -496,13 +496,13 @@ function AccuracyBars() {
       note: "AI đoán cảm tính, dễ lạc đề ở bài nhiều bước.",
     },
     {
-      label: "Zero-shot CoT — thêm câu 'suy nghĩ từng bước'",
+      label: "Zero-shot CoT, thêm câu 'suy nghĩ từng bước'",
       pct: 62,
       tone: "bg-amber-400 dark:bg-amber-500",
       note: "Chỉ đổi vài chữ trong prompt đã tăng gần gấp đôi độ đúng.",
     },
     {
-      label: "Few-shot CoT — có ví dụ mẫu đã trình bày rõ",
+      label: "Few-shot CoT, có ví dụ mẫu đã trình bày rõ",
       pct: 78,
       tone: "bg-green-500 dark:bg-green-600",
       note: "Đỉnh nhất khi bạn cần format cố định (bảng, email mẫu, báo cáo).",
@@ -532,7 +532,7 @@ function AccuracyBars() {
         </div>
       ))}
       <p className="pt-1 text-[11px] italic text-tertiary">
-        Con số minh họa — tổng hợp từ các thử nghiệm công khai trên bài toán
+        Con số minh họa, tổng hợp từ các thử nghiệm công khai trên bài toán
         nhiều bước. Với tác vụ văn phòng cụ thể của bạn, mức cải thiện thực tế
         có thể khác.
       </p>
@@ -555,7 +555,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "CoT mạnh nhất ở việc có NHIỀU BƯỚC. Tính thưởng Tết phải cộng lương + các loại phụ cấp + trừ thuế — rất dễ sai nếu AI nhảy thẳng. Ba lựa chọn còn lại là việc 1 bước, không cần nháp.",
+      "CoT mạnh nhất ở việc có NHIỀU BƯỚC. Tính thưởng Tết phải cộng lương + các loại phụ cấp + trừ thuế, rất dễ sai nếu AI nhảy thẳng. Ba lựa chọn còn lại là việc 1 bước, không cần nháp.",
   },
   {
     question:
@@ -568,14 +568,14 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Chỉ cần thêm 'Hãy suy nghĩ từng bước trước khi trả lời' (hoặc tiếng Anh 'Let's think step by step') — AI sẽ tự trình bày nháp trước khi kết luận.",
+      "Chỉ cần thêm 'Hãy suy nghĩ từng bước trước khi trả lời' (hoặc tiếng Anh 'Let's think step by step'), AI sẽ tự trình bày nháp trước khi kết luận.",
   },
   {
     question:
       "Đâu là nhược điểm lớn NHẤT khi bạn dùng Chain-of-Thought cho mọi câu hỏi?",
     options: [
       "AI sẽ trả lời bằng ngôn ngữ khác",
-      "Câu trả lời dài hơn, tốn token và tốn thời gian đọc — không cần thiết cho việc đơn giản",
+      "Câu trả lời dài hơn, tốn token và tốn thời gian đọc, không cần thiết cho việc đơn giản",
       "AI sẽ không chịu trả lời nữa",
       "AI chỉ trả lời được bằng chữ in hoa",
     ],
@@ -595,24 +595,24 @@ const quizQuestions: QuizQuestion[] = [
       },
     ],
     explanation:
-      "CoT buộc mô hình viết ra chuỗi từng bước trung gian thay vì nhảy thẳng tới đáp án. Hiệu quả đặc biệt cho các việc nhiều bước — kế toán, lập kế hoạch, so sánh lựa chọn.",
+      "CoT buộc mô hình viết ra chuỗi từng bước trung gian thay vì nhảy thẳng tới đáp án. Hiệu quả đặc biệt cho các việc nhiều bước, kế toán, lập kế hoạch, so sánh lựa chọn.",
   },
   {
     question:
       "Đồng nghiệp gửi bạn hóa đơn 5 dòng bằng ngoại tệ, yêu cầu quy ra VND rồi lọc những khoản > 500.000 VND. Bạn nên viết prompt theo kiểu nào?",
     options: [
-      "'Cho tôi danh sách khoản trên 500.000' — hỏi thẳng",
-      "'Hãy: (1) quy đổi từng dòng sang VND, (2) liệt kê rõ, (3) lọc những dòng > 500.000, (4) tổng cuối cùng' — ép AI đi từng bước",
+      "'Cho tôi danh sách khoản trên 500.000', hỏi thẳng",
+      "'Hãy: (1) quy đổi từng dòng sang VND, (2) liệt kê rõ, (3) lọc những dòng > 500.000, (4) tổng cuối cùng', ép AI đi từng bước",
       "'Tóm tắt hóa đơn bằng 1 câu'",
       "'Viết một bài thơ về hóa đơn này'",
     ],
     correct: 1,
     explanation:
-      "Việc này nhiều bước: quy đổi tỉ giá, lọc điều kiện, cộng tổng. Đây chính là tình huống CoT toả sáng — bạn yêu cầu AI nháp rõ từng bước để kiểm soát độ chính xác.",
+      "Việc này nhiều bước: quy đổi tỉ giá, lọc điều kiện, cộng tổng. Đây chính là tình huống CoT toả sáng, bạn yêu cầu AI nháp rõ từng bước để kiểm soát độ chính xác.",
   },
   {
     question:
-      "Tại sao Chain-of-Thought lại hiệu quả — nói một cách không kỹ thuật?",
+      "Tại sao Chain-of-Thought lại hiệu quả, nói một cách không kỹ thuật?",
     options: [
       "Vì AI được “thưởng” mỗi khi viết dài",
       "Vì khi viết ra từng bước, mỗi bước trở thành gợi ý cho bước tiếp theo, giúp AI ít nhảy cóc sai",
@@ -621,7 +621,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Giống học sinh giải toán: khi phải trình bày lời giải, các em ít nhảy cóc hơn. AI cũng vậy — mỗi câu nháp trung gian trở thành ngữ cảnh cho câu tiếp theo, giảm lỗi tích lũy.",
+      "Giống học sinh giải toán: khi phải trình bày lời giải, các em ít nhảy cóc hơn. AI cũng vậy, mỗi câu nháp trung gian trở thành ngữ cảnh cho câu tiếp theo, giảm lỗi tích lũy.",
   },
 ];
 
@@ -631,17 +631,17 @@ const quizQuestions: QuizQuestion[] = [
 export default function ChainOfThoughtTopic() {
   return (
     <>
-      {/* ============ BƯỚC 1 — DỰ ĐOÁN ============ */}
+      {/* ============ BƯỚC 1, DỰ ĐOÁN ============ */}
       <PredictionGate
         question="Cửa hàng dán bảng 'giảm 20%, thêm 10% tại quầy thanh toán'. Tổng cộng bạn được giảm bao nhiêu phần trăm so với giá gốc?"
         options={[
-          "30% — cộng thẳng hai con số",
-          "28% — giảm kép, ít hơn tổng",
-          "25% — trung bình cộng của hai lần giảm",
-          "32% — có cộng dồn khuyến mãi",
+          "30%, cộng thẳng hai con số",
+          "28%, giảm kép, ít hơn tổng",
+          "25%, trung bình cộng của hai lần giảm",
+          "32%, có cộng dồn khuyến mãi",
         ]}
         correct={1}
-        explanation="Đáp án đúng là 28%. Lần giảm thứ hai (10%) chỉ áp lên giá đã giảm lần một, không phải giá gốc — nên tổng giảm ít hơn 30%. Đây đúng là kiểu bài nhiều bước mà AI hay trả lời cẩu thả khi bị ép đáp án nhanh. Bài học hôm nay chỉ bạn cách buộc AI 'nháp' để không lặp lại lỗi này."
+        explanation="Đáp án đúng là 28%. Lần giảm thứ hai (10%) chỉ áp lên giá đã giảm lần một, không phải giá gốc, nên tổng giảm ít hơn 30%. Đây đúng là kiểu bài nhiều bước mà AI hay trả lời cẩu thả khi bị ép đáp án nhanh. Bài học hôm nay chỉ bạn cách buộc AI 'nháp' để không lặp lại lỗi này."
       >
         <p className="mt-3 text-sm text-muted">
           Câu chuyện về phần trăm giảm kép cũng chính là câu chuyện của tất cả
@@ -651,7 +651,7 @@ export default function ChainOfThoughtTopic() {
         </p>
       </PredictionGate>
 
-      {/* ============ BƯỚC 2 — ẨN DỤ ============ */}
+      {/* ============ BƯỚC 2, ẨN DỤ ============ */}
       <p>
         Hãy nhớ thời đi học: cô giáo luôn dặn{" "}
         <strong>“trình bày bài giải, đừng chỉ viết mỗi đáp án”</strong>. Em
@@ -663,8 +663,7 @@ export default function ChainOfThoughtTopic() {
       <p>
         Một cách so sánh khác: khi luật sư tranh luận trước toà, họ
         <strong> không</strong> nhảy thẳng đến câu “thân chủ tôi vô tội”.
-        Họ dẫn dắt từng mắt xích — chứng cứ A, nhân chứng B, tình tiết C —
-        rồi mới chốt. Nhờ đó toà (và cả chính họ) có cơ hội phát hiện chỗ
+        Họ dẫn dắt từng mắt xích, chứng cứ A, nhân chứng B, tình tiết C, rồi mới chốt. Nhờ đó toà (và cả chính họ) có cơ hội phát hiện chỗ
         lỏng lẻo trước khi quyết định. AI cũng vậy: càng đi qua nhiều mắt
         xích đúng, xác suất đáp án cuối đúng càng cao.
       </p>
@@ -672,12 +671,12 @@ export default function ChainOfThoughtTopic() {
         Trong công việc văn phòng, “nhiều mắt xích” xuất hiện ở khắp nơi:
         tính công nợ qua nhiều kỳ, so sánh 3 hợp đồng, viết báo cáo nhiều đề
         mục, lên lịch họp có ràng buộc. Bạn càng ép AI trình bày nháp, mức
-        kiểm soát của bạn càng cao — và sai sót giảm rõ rệt.
+        kiểm soát của bạn càng cao, và sai sót giảm rõ rệt.
       </p>
 
-      {/* ============ BƯỚC 3 — TRỰC QUAN HÓA ============ */}
+      {/* ============ BƯỚC 3, TRỰC QUAN HÓA ============ */}
       <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection label="Demo 1 — Nhanh vs. nháp kỹ" step={1}>
+        <LessonSection label="Demo 1, Nhanh vs. nháp kỹ" step={1}>
           <DemoStepBadge
             step={1}
             total={3}
@@ -700,7 +699,7 @@ export default function ChainOfThoughtTopic() {
           </Callout>
         </LessonSection>
 
-        <LessonSection label="Demo 2 — Bạn tự xếp các bước" step={2}>
+        <LessonSection label="Demo 2, Bạn tự xếp các bước" step={2}>
           <DemoStepBadge
             step={2}
             total={3}
@@ -734,7 +733,7 @@ export default function ChainOfThoughtTopic() {
           </Callout>
         </LessonSection>
 
-        <LessonSection label="Demo 3 — Hai mẫu prompt" step={3}>
+        <LessonSection label="Demo 3, Hai mẫu prompt" step={3}>
           <DemoStepBadge
             step={3}
             total={3}
@@ -753,17 +752,17 @@ export default function ChainOfThoughtTopic() {
         </LessonSection>
       </VisualizationSection>
 
-      {/* ============ BƯỚC 4 — AHA ============ */}
+      {/* ============ BƯỚC 4, AHA ============ */}
       <AhaMoment>
-        <strong>Chain-of-Thought không làm AI thông minh hơn — nó cho AI
+        <strong>Chain-of-Thought không làm AI thông minh hơn, nó cho AI
         thời gian để suy nghĩ.</strong>{" "}
         Khi bạn bắt AI viết nháp từng bước, mỗi bước trung gian trở thành gợi
         ý cho bước tiếp theo. Cũng một mô hình đó, nhưng được phép trình bày
-        lời giải, tỉ lệ đúng tăng rõ rệt — đặc biệt ở những việc văn phòng có
+        lời giải, tỉ lệ đúng tăng rõ rệt, đặc biệt ở những việc văn phòng có
         nhiều mắt xích.
       </AhaMoment>
 
-      {/* ============ BƯỚC 5 — INLINE CHALLENGE ============ */}
+      {/* ============ BƯỚC 5, INLINE CHALLENGE ============ */}
       <InlineChallenge
         question="Công việc nào SAU ĐÂY sẽ hưởng lợi NHIỀU NHẤT khi bạn thêm 'Hãy suy nghĩ từng bước' vào prompt?"
         options={[
@@ -773,15 +772,14 @@ export default function ChainOfThoughtTopic() {
           "Dịch câu 'Good morning' sang tiếng Việt",
         ]}
         correct={1}
-        explanation="Tính công tác phí là việc nhiều bước: đổi tỉ giá, cộng từng ngày, cộng thuế — rất dễ sai. Ba việc còn lại chỉ một bước, CoT chỉ tốn thêm token chứ không cải thiện gì."
+        explanation="Tính công tác phí là việc nhiều bước: đổi tỉ giá, cộng từng ngày, cộng thuế, rất dễ sai. Ba việc còn lại chỉ một bước, CoT chỉ tốn thêm token chứ không cải thiện gì."
       />
 
-      {/* ============ BƯỚC 6 — GIẢI THÍCH SÂU ============ */}
+      {/* ============ BƯỚC 6, GIẢI THÍCH SÂU ============ */}
       <ExplanationSection topicSlug={metadata.slug}>
         <div className="space-y-3">
           <p>
-            <strong>Chain-of-Thought</strong> là một kỹ thuật viết prompt —
-            KHÔNG phải là một tính năng của AI. Bạn có thể áp dụng ngay với
+            <strong>Chain-of-Thought</strong> là một kỹ thuật viết prompt, KHÔNG phải là một tính năng của AI. Bạn có thể áp dụng ngay với
             ChatGPT, Claude, Gemini hay bất cứ trợ lý AI nào bạn đang dùng mà
             không cần cài thêm gì. Chỉ là cách{" "}
             <TopicLink slug="prompt-engineering">đặt câu hỏi</TopicLink>{" "}
@@ -791,7 +789,7 @@ export default function ChainOfThoughtTopic() {
             Ý tưởng cốt lõi rất gọn: thay vì hỏi “Đáp án là gì?”, bạn yêu cầu
             AI <strong>viết nháp từng bước trước khi ra đáp án</strong>. Khi
             các bước trung gian hiện ra, bạn có thể đọc qua, phát hiện chỗ AI
-            nhầm, và yêu cầu sửa — giống như đọc bài làm của một nhân viên
+            nhầm, và yêu cầu sửa, giống như đọc bài làm của một nhân viên
             thực tập.
           </p>
         </div>
@@ -815,7 +813,7 @@ export default function ChainOfThoughtTopic() {
               Khi nào đừng dùng CoT
             </p>
             <Callout variant="warning" title="Đừng ép AI nháp ở việc một bước">
-              Với câu hỏi tra cứu nhanh, chào hỏi, dịch câu ngắn — CoT không
+              Với câu hỏi tra cứu nhanh, chào hỏi, dịch câu ngắn, CoT không
               những không giúp, mà còn làm câu trả lời dài ra, tốn token và
               khiến bạn đọc mệt. Quy tắc ngón tay cái: nếu một người văn
               phòng làm việc đó trong 10 giây không cần viết nháp, thì AI
@@ -859,7 +857,7 @@ export default function ChainOfThoughtTopic() {
             khái niệm bên trái với định nghĩa bên phải.
           </p>
           <MatchPairs
-            instruction="Nối mỗi thuật ngữ với định nghĩa đúng — thực hành phản xạ trước khi vào quiz."
+            instruction="Nối mỗi thuật ngữ với định nghĩa đúng, thực hành phản xạ trước khi vào quiz."
             pairs={[
               {
                 left: "Chain-of-Thought",
@@ -879,7 +877,7 @@ export default function ChainOfThoughtTopic() {
               {
                 left: "Token",
                 right:
-                  "Đơn vị AI tính tiền và tính độ dài — càng nhiều chữ nháp thì càng tốn",
+                  "Đơn vị AI tính tiền và tính độ dài, càng nhiều chữ nháp thì càng tốn",
               },
             ]}
           />
@@ -928,13 +926,13 @@ export default function ChainOfThoughtTopic() {
           Chain-of-Thought <strong>làm câu trả lời dài hơn</strong>, nên AI
           cũng tính nhiều token hơn (với bản trả phí) và đợi lâu hơn vài
           giây. Chỉ bật CoT cho những việc thực sự nhiều bước. Với câu hỏi
-          đơn giản — cứ hỏi thẳng, AI sẽ trả nhanh và rẻ.
+          đơn giản, cứ hỏi thẳng, AI sẽ trả nhanh và rẻ.
         </Callout>
 
         <div className="pt-2">
           <p>
             <strong>Trong thực tế.</strong> Một số công cụ AI đã tự bật chuỗi
-            suy luận bên trong mà không cần bạn nhắc — ví dụ{" "}
+            suy luận bên trong mà không cần bạn nhắc, ví dụ{" "}
             <TopicLink slug="chain-of-thought-in-reasoning-models">
               GPT-o1 và chế độ “Extended Thinking” của Claude
             </TopicLink>
@@ -945,19 +943,19 @@ export default function ChainOfThoughtTopic() {
         </div>
       </ExplanationSection>
 
-      {/* ============ BƯỚC 7 — TÓM TẮT ============ */}
+      {/* ============ BƯỚC 7, TÓM TẮT ============ */}
       <MiniSummary
         title="Ghi nhớ 5 điều về Chain-of-Thought"
         points={[
-          "Chain-of-Thought là cách ĐẶT CÂU HỎI — bắt AI viết nháp từng bước thay vì nhảy thẳng tới đáp án.",
+          "Chain-of-Thought là cách ĐẶT CÂU HỎI, bắt AI viết nháp từng bước thay vì nhảy thẳng tới đáp án.",
           "Dùng khi việc có nhiều bước: lương thưởng, thuế, so sánh lựa chọn, lên lịch, báo cáo nhiều đề mục.",
-          "Không dùng cho câu hỏi một bước như chào hỏi, tra cứu, dịch câu ngắn — sẽ tốn thời gian vô ích.",
+          "Không dùng cho câu hỏi một bước như chào hỏi, tra cứu, dịch câu ngắn, sẽ tốn thời gian vô ích.",
           "Zero-shot CoT: thêm câu 'Hãy suy nghĩ từng bước'. Few-shot CoT: kèm 1–2 ví dụ mẫu theo đúng format bạn muốn.",
-          "Đánh đổi: câu trả lời dài hơn, tốn token hơn, đợi lâu hơn — nhưng đúng hơn ở những việc nhiều mắt xích.",
+          "Đánh đổi: câu trả lời dài hơn, tốn token hơn, đợi lâu hơn, nhưng đúng hơn ở những việc nhiều mắt xích.",
         ]}
       />
 
-      {/* ============ BƯỚC 8 — QUIZ ============ */}
+      {/* ============ BƯỚC 8, QUIZ ============ */}
       <QuizSection questions={quizQuestions} />
     </>
   );

@@ -39,9 +39,9 @@ import { Callout, ToggleCompare } from "@/components/interactive";
 export const metadata: TopicMeta = {
   slug: "recommendation-systems-in-shopping",
   title: "Recommendation Systems in Shopping",
-  titleVi: "Hệ thống Gợi ý trong Mua sắm",
+  titleVi: "Recommendation system trong mua sắm",
   description:
-    "Shopee dùng AI gợi ý sản phẩm cá nhân hóa cho hàng trăm triệu người dùng Đông Nam Á",
+    "Shopee và sàn thương mại điện tử gợi ý sản phẩm bằng tín hiệu hành vi, lịch sử mua và ngữ cảnh.",
   category: "applied-ai",
   tags: ["recommendation-systems", "e-commerce", "application"],
   difficulty: "intermediate",
@@ -97,7 +97,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   HERO — animated mock Shopee homepage
+   HERO, animated mock Shopee homepage
    Trái: avatar + persona. Giữa: 6 tile gợi ý với hiệu ứng shuffle mỗi 3 giây.
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -253,14 +253,14 @@ function ShopeeMockHero() {
       </div>
 
       <p className="text-[11px] text-muted text-center mt-3 italic">
-        Bấm chấm tròn phía trên để thấy trang chủ Shopee thay đổi theo từng persona — cùng một app, ba giao diện khác nhau.
+        Bấm chấm tròn phía trên để thấy trang chủ Shopee thay đổi theo từng persona, cùng một app, ba giao diện khác nhau.
       </p>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   PROBLEM — ToggleCompare "giống mọi người" vs "cá nhân hóa"
+   PROBLEM, ToggleCompare "giống mọi người" vs "cá nhân hóa"
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function GenericVsPersonal() {
@@ -286,7 +286,7 @@ function GenericVsPersonal() {
     <ToggleCompare
       labelA="Trang chủ chung"
       labelB="Trang chủ cá nhân hóa"
-      description="Cùng một chị Hương — mẹ bỉm 32 tuổi. Hai phiên bản Shopee."
+      description="Cùng một chị Hương, mẹ bỉm 32 tuổi. Hai phiên bản Shopee."
       childA={
         <div>
           <div className="mb-3 rounded-md bg-amber-50 dark:bg-amber-900/20 border border-amber-200/60 p-2.5 text-xs text-foreground">
@@ -347,7 +347,7 @@ function GenericVsPersonal() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   MECHANISM — 4 beats thành ProgressSteps với mini visualization
+   MECHANISM, 4 beats thành ProgressSteps với mini visualization
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function MechanismProgressBar({ current, total }: { current: number; total: number }) {
@@ -391,7 +391,7 @@ function MechanismProgressBar({ current, total }: { current: number; total: numb
   );
 }
 
-/* Beat 1 — Signal collection diagram */
+/* Beat 1, Signal collection diagram */
 function SignalCollectionDiagram() {
   const reduce = useReducedMotion();
   const signals = [
@@ -439,7 +439,7 @@ function SignalCollectionDiagram() {
   );
 }
 
-/* Beat 2 — Similar-users diagram */
+/* Beat 2, Similar-users diagram */
 function SimilarUsersDiagram() {
   const reduce = useReducedMotion();
   const you = { avatar: "Bạn", color: "#ee4d2d" };
@@ -504,7 +504,7 @@ function SimilarUsersDiagram() {
   );
 }
 
-/* Beat 3 — Vietnam vs Thailand vs Indonesia */
+/* Beat 3, Vietnam vs Thailand vs Indonesia */
 function LocalizationDiagram() {
   const reduce = useReducedMotion();
   const markets = [
@@ -572,7 +572,7 @@ function LocalizationDiagram() {
   );
 }
 
-/* Beat 4 — AI Review Summary mock */
+/* Beat 4, AI Review Summary mock */
 function ReviewSummaryMock() {
   const reduce = useReducedMotion();
   const reviews = [
@@ -622,19 +622,19 @@ function ReviewSummaryMock() {
           <div className="rounded-md border border-[#ee4d2d]/30 bg-orange-50 dark:bg-orange-900/20 p-2 text-[11px] text-foreground leading-relaxed">
             <strong className="text-[#ee4d2d]">Ưu:</strong> chất vải mát, giao nhanh, màu đúng ảnh.
             <br />
-            <strong className="text-[#ee4d2d]">Nhược:</strong> size chạy lớn — nên đặt giảm 1 size nếu dưới 50kg.
+            <strong className="text-[#ee4d2d]">Nhược:</strong> size chạy lớn, nên đặt giảm 1 size nếu dưới 50kg.
           </div>
         </div>
       </div>
       <p className="text-[11px] text-muted mt-2 leading-relaxed">
-        Khách không còn đọc 1.800 dòng — đọc 3 dòng là đủ tự tin bấm mua.
+        Khách không còn đọc 1.800 dòng, đọc 3 dòng là đủ tự tin bấm mua.
       </p>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   METRICS — AnimatedCounter tái sử dụng pattern từ llm-overview-in-chat-assistants
+   METRICS, AnimatedCounter tái sử dụng pattern từ llm-overview-in-chat-assistants
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function AnimatedCounter({
@@ -756,7 +756,7 @@ function MetricsShowcase() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COUNTERFACTUAL — Trước vs sau (visual timeline)
+   COUNTERFACTUAL, Trước vs sau (visual timeline)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function CounterfactualTimeline() {
@@ -841,9 +841,8 @@ export default function RecommendationSystemsInShopping() {
         </p>
         <ShopeeMockHero />
         <p>
-          Đằng sau điều đó là hệ thống gợi ý (recommendation system) của Shopee
-          — thuật toán AI ghi nhớ hàng tỷ tương tác mỗi ngày để đoán xem bạn sẽ
-          mua gì tiếp theo. Đây không phải công nghệ phụ — nó là trái tim kinh
+          Đằng sau điều đó là hệ thống gợi ý (recommendation system) của Shopee, thuật toán AI ghi nhớ hàng tỷ tương tác mỗi ngày để đoán xem bạn sẽ
+          mua gì tiếp theo. Đây không phải công nghệ phụ, nó là trái tim kinh
           tế của sàn.
         </p>
         <p>
@@ -872,7 +871,7 @@ export default function RecommendationSystemsInShopping() {
           trường với ngôn ngữ, văn hóa, thu nhập, mùa vụ hoàn toàn khác nhau.
           Đầm maxi bán chạy ở Sài Gòn nhưng không ai mua ở Bangkok. Ngày ăn chay
           Ramadan ở Jakarta cần hoàn toàn khác nhóm sản phẩm. Không có AI thì
-          phải thuê đội biên tập khổng lồ cho mỗi thị trường — tốn kém và vẫn
+          phải thuê đội biên tập khổng lồ cho mỗi thị trường, tốn kém và vẫn
           không chính xác.
         </p>
       </ApplicationProblem>
@@ -888,7 +887,7 @@ export default function RecommendationSystemsInShopping() {
             Shopee gắn một &ldquo;máy ghi âm ngầm&rdquo; vào mọi lượt truy cập:
             bạn xem sản phẩm nào bao lâu, bấm vào đâu, thêm giỏ rồi bỏ hay mua
             hẳn, chấm mấy sao, viết đánh giá nói gì. Mỗi người trung bình tạo ra
-            vài trăm tín hiệu mỗi ngày. Tất cả chảy về kho dữ liệu Shopee — nguyên liệu thô cho các mô hình AI phía sau.
+            vài trăm tín hiệu mỗi ngày. Tất cả chảy về kho dữ liệu Shopee, nguyên liệu thô cho các mô hình AI phía sau.
           </p>
           <SignalCollectionDiagram />
         </Beat>
@@ -899,8 +898,8 @@ export default function RecommendationSystemsInShopping() {
             <strong>Trộn lọc cộng tác với lọc nội dung.</strong> Lọc cộng tác
             (collaborative filtering) tìm những khách có gu mua giống bạn, rồi
             gợi ý những gì họ đã mua mà bạn chưa. Lọc nội dung (content-based
-            filtering) so đặc tính sản phẩm — chất liệu, kiểu dáng, giá, thương
-            hiệu — để đề xuất sản phẩm na ná. Shopee trộn cả hai: lọc cộng tác
+            filtering) so đặc tính sản phẩm, chất liệu, kiểu dáng, giá, thương
+            hiệu, để đề xuất sản phẩm na ná. Shopee trộn cả hai: lọc cộng tác
             cho khách quen (dữ liệu dồi dào), lọc nội dung khi gặp sản phẩm mới
             hoặc khách mới.
           </p>
@@ -926,10 +925,10 @@ export default function RecommendationSystemsInShopping() {
           <p>
             <strong>AI tóm tắt đánh giá để khách quyết định nhanh.</strong> Một
             sản phẩm hot có thể có hàng nghìn review. Không ai đủ thời gian đọc
-            hết — nên nhiều khách do dự rồi thoát app. Shopee dùng AI tóm tắt:
+            hết, nên nhiều khách do dự rồi thoát app. Shopee dùng AI tóm tắt:
             quét toàn bộ đánh giá, trích xuất ưu điểm và nhược điểm phổ biến, in
             thành 3-4 dòng đầu trang sản phẩm. Kết quả: tỷ lệ chuyển đổi
-            (conversion rate — khách xem thành khách mua) tăng rõ rệt, đặc biệt
+            (conversion rate, khách xem thành khách mua) tăng rõ rệt, đặc biệt
             với khách mới chưa quen.
           </p>
           <ReviewSummaryMock />
@@ -958,9 +957,8 @@ export default function RecommendationSystemsInShopping() {
         <Callout variant="info" title="Đọc các con số này như thế nào?">
           <p className="text-sm leading-relaxed">
             52% thị phần nghĩa là <strong>hơn một nửa GMV</strong> thương mại
-            điện tử toàn Đông Nam Á đi qua Shopee — vượt xa Lazada, Tokopedia,
-            Tiki cộng lại. Con số 66,8 tỷ USD là giá trị thị trường (market cap)
-            — tức mức nhà đầu tư định giá Sea Group cho riêng mảng Shopee. Và
+            điện tử toàn Đông Nam Á đi qua Shopee, vượt xa Lazada, Tokopedia,
+            Tiki cộng lại. Con số 66,8 tỷ USD là giá trị thị trường (market cap), tức mức nhà đầu tư định giá Sea Group cho riêng mảng Shopee. Và
             18 triệu cuộc chat cho thấy bot AI Sophie đã thay thế một trung tâm
             CSKH cỡ 5.000-10.000 nhân sự.
           </p>
@@ -974,14 +972,14 @@ export default function RecommendationSystemsInShopping() {
         <p>
           Hình dung Shopee phiên bản không có AI gợi ý: mọi khách đều nhận cùng
           một trang chủ, tìm kiếm là cách duy nhất để mua đúng thứ, và mỗi
-          quốc gia cần đội biên tập khổng lồ. Đây không phải tưởng tượng — đó
+          quốc gia cần đội biên tập khổng lồ. Đây không phải tưởng tượng, đó
           chính xác là mô hình của các trang thương mại điện tử thế hệ đầu
           2000-2010. Gần như không ai sống sót.
         </p>
         <CounterfactualTimeline />
         <p>
           Hệ thống gợi ý cho phép Shopee phục vụ hàng trăm triệu người với trải
-          nghiệm cá nhân hóa — mỗi người thấy một &ldquo;cửa hàng&rdquo; khác
+          nghiệm cá nhân hóa, mỗi người thấy một &ldquo;cửa hàng&rdquo; khác
           nhau, phù hợp với túi tiền, giai đoạn cuộc sống, vùng miền, và cả tâm
           trạng hôm đó. Điều này không chỉ tăng doanh số; nó còn mở cánh cửa
           cho hàng triệu shop nhỏ tiếp cận đúng khách mục tiêu mà không cần
@@ -994,7 +992,7 @@ export default function RecommendationSystemsInShopping() {
             dung &ldquo;nhấc&rdquo; lên dễ hơn, (2) tập trung chăm sóc nhóm
             khách quay lại trong 7-14 ngày đầu (giai đoạn cold start quyết định
             giữ chân), (3) không hoảng khi doanh số dao động 10-15% giữa các
-            tuần — đôi khi chỉ vì Shopee đang thử A/B test một trọng số mới. Đây
+            tuần, đôi khi chỉ vì Shopee đang thử A/B test một trọng số mới. Đây
             là kiến thức nền giúp bạn đối thoại ngang hàng với đội sản phẩm/dữ
             liệu mà không cần biết viết code.
           </p>

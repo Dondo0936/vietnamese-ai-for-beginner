@@ -121,7 +121,7 @@ export const topicList: TopicMeta[] = [
     slug: "perceptron",
     title: "Perceptron",
     titleVi: "Perceptron: viên gạch đầu tiên của mạng nơ-ron",
-    description: "Một nơ-ron nhân tạo có thể làm gì? Cộng có trọng số mọi đầu vào, rồi quyết định 'có' hay 'không'. Bạn sẽ tự tay chỉnh trọng số và nhìn đường quyết định xoay theo.",
+    description: "Một nơ-ron nhân tạo làm được gì? Nó cộng có trọng số mọi đầu vào rồi trả lời 'có' hoặc 'không'. Bạn tự tay kéo trọng số và nhìn đường quyết định xoay theo.",
     category: "neural-fundamentals",
     tags: ["neuron", "weights", "bias"],
     difficulty: "beginner",
@@ -143,7 +143,7 @@ export const topicList: TopicMeta[] = [
     slug: "activation-functions",
     title: "Activation Functions",
     titleVi: "Hàm kích hoạt: cái uốn cong của mạng nơ-ron",
-    description: "Không có hàm kích hoạt, cả một mạng nơ-ron chỉ là một phép tính tuyến tính khổng lồ. Kéo, thử, so sánh để thấy vì sao 5 đường cong nhỏ lại thay đổi mọi thứ.",
+    description: "Bỏ hàm kích hoạt đi, cả một mạng nơ-ron sâu chỉ còn là một phép tính tuyến tính khổng lồ. Kéo, thử, so sánh để thấy vì sao 5 đường cong nhỏ lại thay đổi mọi thứ.",
     category: "neural-fundamentals",
     tags: ["sigmoid", "relu", "tanh"],
     difficulty: "beginner",
@@ -176,7 +176,7 @@ export const topicList: TopicMeta[] = [
     slug: "gradient-descent",
     title: "Gradient Descent",
     titleVi: "Gradient descent: xoay weight để loss giảm dần",
-    description: "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật: xoay các trọng số (weight) theo từng bước để mất mát (loss) giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
+    description: "Bạn đã hiểu gradient là mũi tên chỉ đường. Giờ áp vào bài toán huấn luyện thật. Mỗi bước xoay các weight để loss giảm dần. So sánh ba cách bước: Vanilla, Momentum, Adam.",
     category: "neural-fundamentals",
     tags: ["optimization", "training", "convergence"],
     difficulty: "intermediate",
@@ -220,7 +220,7 @@ export const topicList: TopicMeta[] = [
     slug: "overfitting-underfitting",
     title: "Overfitting & Underfitting",
     titleVi: "Overfit và underfit: hai cách học sai của model",
-    description: "Hai thái cực ngược nhau khi luyện mô hình. Học thuộc đề cũ → chết khi đề mới (overfit). Học mỗi lý thuyết → nhớ nhưng không làm nổi (underfit).",
+    description: "Hai thái cực ngược nhau khi huấn luyện model. Thuộc lòng đề cũ thì gặp đề mới là trượt (overfit). Đọc mỗi lý thuyết, chưa luyện bài thì cũng không làm nổi (underfit).",
     category: "classic-ml",
     tags: ["generalization", "model-complexity", "validation"],
     difficulty: "intermediate",
@@ -286,7 +286,7 @@ export const topicList: TopicMeta[] = [
     slug: "epochs-batches",
     title: "Epochs, Batches & Iterations",
     titleVi: "Epoch và batch: chia nhỏ đề thi để model không ngộp",
-    description: "Máy học không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Xem sự thay đổi của đường loss khi bạn kéo thanh batch size.",
+    description: "Model không nhồi cả 1000 đề thi một phát. Nó chia thành nhiều buổi (epoch), mỗi buổi nhiều đợt nhỏ (batch). Kéo thanh batch size để xem đường loss đổi hình dáng.",
     category: "neural-fundamentals",
     tags: ["training", "batch-size", "iterations"],
     difficulty: "intermediate",
@@ -301,7 +301,7 @@ export const topicList: TopicMeta[] = [
     slug: "linear-regression",
     title: "Linear Regression",
     titleVi: "Hồi quy tuyến tính",
-    description: "Làm sao vẽ một đường thẳng 'hợp nhất' qua một đám điểm dữ liệu? Bạn thử trước bằng mắt, rồi so với cách máy tính tìm đường tối ưu.",
+    description: "Làm sao vẽ một đường thẳng 'hợp nhất' qua một đám điểm dữ liệu? Bạn thử trước bằng mắt, rồi so với cách máy tính tìm ra đường tối ưu.",
     category: "classic-ml",
     tags: ["regression", "prediction", "statistics"],
     difficulty: "beginner",
@@ -433,7 +433,7 @@ export const topicList: TopicMeta[] = [
     slug: "naive-bayes",
     title: "Naive Bayes",
     titleVi: "Naive Bayes: cộng dồn bằng chứng từng từ",
-    description: "Khi có nhiều manh mối độc lập cùng trỏ về một kết luận, bạn tự tin hơn hẳn. Naive Bayes biến trực giác đó thành phép nhân xác suất đơn giản.",
+    description: "Ba người bạn cùng khen một quán phở. Bạn tin hơn hẳn một người khen. Naive Bayes biến trực giác cộng dồn bằng chứng đó thành phép nhân xác suất gọn gàng.",
     category: "classic-ml",
     tags: ["classification", "probability", "bayes"],
     difficulty: "intermediate",
@@ -444,7 +444,7 @@ export const topicList: TopicMeta[] = [
     slug: "bias-variance",
     title: "Bias-Variance Tradeoff",
     titleVi: "Bias và Variance: lệch tâm hay đạn rải",
-    description: "Ẩn dụ bắn cung: bias là xa tâm, variance là đạn rải. Bốn tổ hợp xuất hiện khi bạn thay đổi độ phức tạp của mô hình.",
+    description: "Ẩn dụ bắn cung. Bias là xa tâm, variance là đạn rải. Bốn tổ hợp xuất hiện khi bạn thay đổi độ phức tạp của mô hình.",
     category: "classic-ml",
     tags: ["generalization", "model-complexity", "error"],
     difficulty: "intermediate",
@@ -803,8 +803,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "sentiment-analysis",
     title: "Sentiment Analysis",
-    titleVi: "Phân tích cảm xúc văn bản",
-    description: "AI đọc bình luận khách hàng rồi đoán tích cực, tiêu cực hay trung tính — như một nhân viên marketing lướt Facebook nhưng làm với hàng triệu câu mỗi phút.",
+    titleVi: "Sentiment analysis: đọc cảm xúc trong bình luận",
+    description: "AI gom bình luận thành tích cực, tiêu cực hoặc trung tính để đội marketing thấy tín hiệu sớm.",
     category: "nlp",
     tags: ["classification", "opinion", "emotion"],
     difficulty: "intermediate",
@@ -836,8 +836,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "text-classification",
     title: "Text Classification",
-    titleVi: "Phân loại văn bản",
-    description: "AI đọc tin nhắn rồi gán nhãn — giống nhân viên thư phòng ngày xưa phân loại thư nhưng nhanh hơn triệu lần. Cốt lõi của chatbot, bộ lọc spam, hệ thống hỗ trợ khách hàng.",
+    titleVi: "Text classification: gắn nhãn cho tin nhắn",
+    description: "AI đọc nội dung rồi gán nhãn như spam, khiếu nại, hỏi giá hoặc cần hỗ trợ kỹ thuật.",
     category: "nlp",
     tags: ["classification", "nlp-pipeline", "categories"],
     difficulty: "intermediate",
@@ -1009,8 +1009,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "rag",
     title: "Retrieval-Augmented Generation",
-    titleVi: "RAG - Trợ lý AI biết tra tài liệu công ty",
-    description: "Ghép AI với kho tài liệu công ty để có câu trả lời chính xác, có trích dẫn — không còn lo AI bịa.",
+    titleVi: "RAG: cho AI tra tài liệu trước khi trả lời",
+    description: "Ghép chatbot với kho tài liệu công ty để câu trả lời có căn cứ, có nguồn và ít bịa hơn.",
     category: "search-retrieval",
     tags: ["llm", "search", "retrieval"],
     difficulty: "intermediate",
@@ -1053,8 +1053,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "semantic-search",
     title: "Semantic Search",
-    titleVi: "Tìm kiếm theo ý nghĩa",
-    description: "Tìm tài liệu theo NGHĨA thay vì khớp từ khoá — tra nội quy, hợp đồng, báo cáo mà không phải gõ đúng từng chữ.",
+    titleVi: "Semantic search: tìm theo ý, không theo chữ",
+    description: "Tìm đúng nội dung trong hợp đồng, quy trình và báo cáo dù người dùng không nhớ chính xác từ khóa.",
     category: "search-retrieval",
     tags: ["embeddings", "similarity", "meaning"],
     difficulty: "intermediate",
@@ -1112,8 +1112,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "chain-of-thought",
     title: "Chain of Thought",
-    titleVi: "Chuỗi suy luận từng bước",
-    description: "Kỹ thuật nhắc AI trình bày suy nghĩ theo từng bước trước khi chốt đáp án — giúp dân văn phòng có câu trả lời chắc tay hơn ở những việc nhiều bước.",
+    titleVi: "Chain-of-thought: cho AI nháp trước khi chốt",
+    description: "Dùng prompt để AI chia việc nhiều bước thành bản nháp, rồi kiểm từng bước trước khi lấy đáp án.",
     category: "llm-concepts",
     tags: ["reasoning", "step-by-step", "prompting"],
     difficulty: "beginner",
@@ -1123,8 +1123,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "in-context-learning",
     title: "In-Context Learning",
-    titleVi: "Học trong ngữ cảnh",
-    description: "Khả năng mô hình AI làm tác vụ mới chỉ từ vài ví dụ bạn gửi trong prompt, không cần huấn luyện lại.",
+    titleVi: "In-context learning: dạy AI bằng vài ví dụ",
+    description: "Cho AI xem mẫu ngay trong prompt để nó bắt chước đúng format, giọng văn và quy tắc xử lý.",
     category: "llm-concepts",
     tags: ["few-shot", "zero-shot", "prompting"],
     difficulty: "beginner",
@@ -1134,8 +1134,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "hallucination",
     title: "AI Hallucination",
-    titleVi: "Ảo giác của AI",
-    description: "Hiện tượng AI tạo ra thông tin nghe rất hợp lý nhưng thực tế sai hoặc bịa đặt — và cách nhận biết, phòng tránh khi làm việc.",
+    titleVi: "Hallucination: khi AI nói sai rất tự tin",
+    description: "Nhận diện câu trả lời nghe hợp lý nhưng sai, rồi thêm bước kiểm chứng trước khi dùng trong công việc.",
     category: "llm-concepts",
     tags: ["reliability", "factuality", "safety"],
     difficulty: "advanced",
@@ -1145,8 +1145,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "temperature",
     title: "Temperature",
-    titleVi: "Temperature — Nút sáng tạo của AI",
-    description: "Nút chỉnh độ ngẫu nhiên của AI: khi nào nên vặn thấp để có câu trả lời chắc chắn, khi nào vặn cao để có ý tưởng mới.",
+    titleVi: "Temperature: nút chỉnh độ liều của AI",
+    description: "Biết lúc nào hạ temperature để câu trả lời chắc hơn và lúc nào tăng để có thêm phương án sáng tạo.",
     category: "llm-concepts",
     tags: ["sampling", "randomness", "generation"],
     difficulty: "advanced",
@@ -1167,8 +1167,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "context-window",
     title: "Context Window",
-    titleVi: "Cửa sổ ngữ cảnh",
-    description: "Giới hạn số lượng token mà mô hình có thể xử lý cùng lúc — ảnh hưởng đến khả năng hiểu và nhớ ngữ cảnh.",
+    titleVi: "Context window: bàn làm việc của AI",
+    description: "Hiểu giới hạn token mà AI nhìn thấy cùng lúc để chia tài liệu, đặt thứ tự thông tin và tránh mất ngữ cảnh.",
     category: "llm-concepts",
     tags: ["tokens", "memory", "limitation"],
     difficulty: "advanced",
@@ -1178,8 +1178,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "llm-overview",
     title: "Large Language Models",
-    titleVi: "LLM",
-    description: "Làm quen với LLM (mô hình ngôn ngữ lớn) — cỗ máy nằm sau ChatGPT, Claude, Gemini. Hiểu nó đoán chữ thế nào, khi nào tin được, khi nào phải dè chừng.",
+    titleVi: "LLM: máy đoán chữ đứng sau chatbot",
+    description: "Hiểu LLM đọc prompt, đoán token tiếp theo và vì sao câu trả lời cần được kiểm chứng.",
     category: "llm-concepts",
     tags: ["language-model", "scale", "capabilities"],
     difficulty: "beginner",
@@ -1395,8 +1395,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "agentic-workflows",
     title: "Agentic Workflows",
-    titleVi: "Quy trình AI tự chủ — không code, kéo thả là xong",
-    description: "Zapier, Make, n8n, Gumloop, Dify — năm công cụ cho phép người làm văn phòng Việt dựng quy trình AI tự động mà không viết một dòng code.",
+    titleVi: "Agentic workflow: giao việc cho AI chạy nhiều bước",
+    description: "Dùng Zapier, Make, n8n hoặc Dify để AI đọc dữ liệu, quyết định bước tiếp theo và trả kết quả.",
     category: "ai-agents",
     tags: ["workflow", "patterns", "automation"],
     difficulty: "intermediate",
@@ -1546,8 +1546,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "bias-fairness",
     title: "Bias & Fairness",
-    titleVi: "Thiên kiến & Công bằng trong AI",
-    description: "Nhận diện cách AI học lại định kiến từ dữ liệu quá khứ, và các cách kiểm soát thiên kiến phù hợp với môi trường văn phòng Việt Nam.",
+    titleVi: "Bias và fairness: AI học cả định kiến",
+    description: "Nhìn cách dữ liệu cũ làm AI thiên lệch và cách đặt bước kiểm để quyết định công bằng hơn.",
     category: "ai-safety",
     tags: ["bias", "fairness", "demographics"],
     difficulty: "beginner",
@@ -1557,8 +1557,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "explainability",
     title: "Explainability (XAI)",
-    titleVi: "Giải thích được — AI trong suốt",
-    description: "Các kỹ thuật giúp con người hiểu tại sao mô hình AI đưa ra một quyết định cụ thể.",
+    titleVi: "Explainability: bắt AI giải thích quyết định",
+    description: "Dùng các kỹ thuật giải thích để biết tín hiệu nào khiến AI chấm điểm, gợi ý hoặc từ chối.",
     category: "ai-safety",
     tags: ["interpretability", "shap", "attention"],
     difficulty: "advanced",
@@ -1568,8 +1568,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "guardrails",
     title: "AI Guardrails",
-    titleVi: "Rào chắn an toàn cho AI",
-    description: "Vì sao ChatGPT từ chối một số câu hỏi? Tìm hiểu những lớp an toàn mà các công ty AI dựng lên để giữ chatbot hữu ích mà không gây hại.",
+    titleVi: "Guardrails: rào chắn cho chatbot",
+    description: "Hiểu vì sao chatbot từ chối một số yêu cầu và cách thiết kế rào chắn để công cụ hữu ích nhưng không gây hại.",
     category: "ai-safety",
     tags: ["safety", "filtering", "moderation"],
     difficulty: "intermediate",
@@ -1590,8 +1590,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-governance",
     title: "AI Governance",
-    titleVi: "Quản trị AI — Luật chơi cho trí tuệ nhân tạo",
-    description: "Khung pháp lý, chính sách và quy trình quản lý việc phát triển, triển khai và sử dụng hệ thống AI một cách có trách nhiệm.",
+    titleVi: "AI governance: luật dùng AI trong công ty",
+    description: "Đặt vai trò, quy trình phê duyệt và trách nhiệm để nhân viên dùng AI đúng việc, đúng rủi ro.",
     category: "ai-safety",
     tags: ["regulation", "policy", "ethics"],
     difficulty: "intermediate",
@@ -1812,7 +1812,7 @@ export const topicList: TopicMeta[] = [
     slug: "supervised-unsupervised-rl",
     title: "Supervised / Unsupervised / Reinforcement Learning",
     titleVi: "Ba kiểu học máy: supervised, unsupervised, reinforcement",
-    description: "Ba cách máy học: học có người chấm bài, tự nhóm theo trực giác, và thử–sai nhận thưởng. Ba cách ấy giống hệt ba cách bạn đã từng học trong đời thật.",
+    description: "Ba cách máy học giống ba cách bạn đã từng học. Có giám sát (supervised) là làm đề rồi xem đáp án. Không giám sát (unsupervised) là tự gom đồ chơi theo cảm nhận. Tăng cường (reinforcement) là tập đạp xe: ngã thì đau, đi được thì vui.",
     category: "foundations",
     tags: ["paradigms", "supervised", "unsupervised", "reinforcement"],
     difficulty: "beginner",
@@ -1823,7 +1823,7 @@ export const topicList: TopicMeta[] = [
     slug: "feature-engineering",
     title: "Feature Engineering",
     titleVi: "Feature engineering: chọn nguyên liệu cho mô hình",
-    description: "Mô hình hay không nằm ở việc bạn đưa cho nó dữ liệu thô hay đã chế biến thành đặc trưng có ý nghĩa. Chạm vào từng cột để xem phép biến đổi thực sự làm gì.",
+    description: "Mô hình giỏi hay dở nằm ở việc bạn đưa cho nó dữ liệu thô hay đã chế biến thành feature có ý nghĩa. Chạm vào từng cột để xem phép biến đổi thực sự làm gì.",
     category: "foundations",
     tags: ["features", "selection", "transformation"],
     difficulty: "intermediate",
@@ -1911,7 +1911,7 @@ export const topicList: TopicMeta[] = [
     slug: "what-is-ml",
     title: "What is Machine Learning?",
     titleVi: "Machine Learning: máy học từ ví dụ, không từ luật",
-    description: "Làm quen với Machine Learning qua hình ảnh quen thuộc: một đầu bếp học nấu từ nếm thử, khác với công thức cứng. Bạn sẽ thấy máy học từ ví dụ như thế nào.",
+    description: "Hai đầu bếp nấu cùng một bát phở: một người đọc sách, một người nếm rồi chỉnh. Cùng cách đó, Machine Learning cho máy học từ hàng triệu ví dụ thật thay vì chạy theo luật if-else cứng.",
     category: "foundations",
     tags: ["introduction", "machine-learning", "basics"],
     difficulty: "beginner",
@@ -1922,7 +1922,7 @@ export const topicList: TopicMeta[] = [
     slug: "python-for-ml",
     title: "Python for Machine Learning",
     titleVi: "Python cho ML: NumPy và Pandas trong 45 phút",
-    description: "Python không phải ngôn ngữ nhanh nhất, nhưng NumPy và Pandas biến nó thành lingua franca của ML. Bài này chỉ cho bạn đọc một đoạn code ML và biết nó đang làm gì.",
+    description: "Python không phải ngôn ngữ nhanh nhất. Nhưng NumPy và Pandas biến nó thành lingua franca của ML. Bài này chỉ cho bạn cách đọc một đoạn code ML và biết nó đang làm gì.",
     category: "foundations",
     tags: ["python", "numpy", "pandas", "matplotlib", "tools"],
     difficulty: "intermediate",
@@ -1944,7 +1944,7 @@ export const topicList: TopicMeta[] = [
     slug: "jupyter-colab-workflow",
     title: "Jupyter & Google Colab Workflow",
     titleVi: "Jupyter và Google Colab: notebook là IDE của data scientist",
-    description: "Notebook là IDE của data scientist: viết code, chạy, thấy kết quả ngay, viết chú thích, tiếp tục. Bài thực hành chỉ cho bạn cách dùng trong ngày đầu tiên.",
+    description: "Mở notebook lên, gõ code vào một ô, ấn Shift+Enter, kết quả hiện ngay phía dưới. Bài này chỉ bạn cách dùng Jupyter và Google Colab trong ngày đầu tiên.",
     category: "foundations",
     tags: ["jupyter", "colab", "notebook", "tools", "workflow"],
     difficulty: "intermediate",
@@ -2028,8 +2028,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "recommendation-systems",
     title: "Recommendation Systems",
-    titleVi: "Hệ thống gợi ý",
-    description: "Shopee, Tiki, Netflix, Zing MP3 đều đang đoán sở thích của bạn bằng cùng một công thức. Bài này vẽ ra công thức đó cho dân văn phòng — không mã, không công thức toán.",
+    titleVi: "Recommendation system: máy gợi ý phía sau app",
+    description: "Hiểu cách app đoán món bạn muốn xem, mua hoặc nghe tiếp từ hành vi và người dùng giống bạn.",
     category: "applied-ai",
     tags: ["collaborative-filtering", "content-based", "personalization"],
     difficulty: "intermediate",
@@ -2039,8 +2039,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-in-healthcare",
     title: "AI in Healthcare",
-    titleVi: "AI trong Y tế",
-    description: "AI trong chẩn đoán hình ảnh, phân loại cấp cứu và phát triển thuốc — góc nhìn thực tế cho nhân viên y tế Việt Nam",
+    titleVi: "AI trong y tế: hỗ trợ bác sĩ, không thay bác sĩ",
+    description: "AI đọc ảnh, phân loại ca cấp cứu và tìm tín hiệu thuốc, nhưng kết quả vẫn cần chuyên môn kiểm lại.",
     category: "applied-ai",
     tags: ["medical", "diagnosis", "drug-discovery"],
     difficulty: "beginner",
@@ -2050,8 +2050,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-in-finance",
     title: "AI in Finance",
-    titleVi: "AI trong Tài chính",
-    description: "Ứng dụng AI thực tế tại ngân hàng, ví điện tử và công ty tài chính Việt Nam",
+    titleVi: "AI trong tài chính: phát hiện rủi ro nhanh hơn",
+    description: "Ngân hàng và ví điện tử dùng AI để chống gian lận, chấm điểm rủi ro và hỗ trợ khách hàng.",
     category: "applied-ai",
     tags: ["fraud-detection", "risk", "trading"],
     difficulty: "beginner",
@@ -2062,8 +2062,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-in-agriculture",
     title: "AI in Agriculture",
-    titleVi: "AI trong Nông nghiệp",
-    description: "Ứng dụng AI trong phát hiện sâu bệnh, dự báo mùa vụ và nông nghiệp chính xác tại Việt Nam",
+    titleVi: "AI trong nông nghiệp: nhìn ruộng bằng dữ liệu",
+    description: "AI phát hiện sâu bệnh, dự báo mùa vụ và gợi ý chăm sóc cây trồng từ ảnh, cảm biến và thời tiết.",
     category: "applied-ai",
     tags: ["crop", "pest-detection", "precision-farming"],
     difficulty: "beginner",
@@ -2074,8 +2074,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-in-education",
     title: "AI in Education",
-    titleVi: "AI trong Giáo dục",
-    description: "Ứng dụng AI trong cá nhân hoá học tập, chấm bài tự động và trợ lý giảng dạy thông minh",
+    titleVi: "AI trong giáo dục: trợ giảng cho từng học viên",
+    description: "AI cá nhân hóa bài học, chấm bài nháp và hỗ trợ giáo viên theo dõi lớp mà không thay vai trò sư phạm.",
     category: "applied-ai",
     tags: ["personalization", "tutoring", "assessment"],
     difficulty: "beginner",
@@ -2086,9 +2086,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "getting-started-with-ai",
     title: "Getting Started with AI",
-    titleVi: "Bắt đầu sử dụng AI",
+    titleVi: "Bắt đầu với AI: hỏi đúng việc đầu tiên",
     description:
-      "Hướng dẫn tạo tài khoản, cuộc hội thoại đầu tiên, và mẹo nhận kết quả tốt trong 5 phút.",
+      "Tạo tài khoản, hỏi thử một việc thật và biết cách kiểm kết quả trước khi dùng trong công việc.",
     category: "applied-ai",
     tags: ["beginner", "practical", "office", "getting-started"],
     difficulty: "beginner",
@@ -2098,9 +2098,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-for-writing",
     title: "AI for Writing",
-    titleVi: "AI hỗ trợ viết lách",
+    titleVi: "AI hỗ trợ viết email, báo cáo, slide",
     description:
-      "Dùng AI để viết email, báo cáo, bài thuyết trình, và tóm tắt cuộc họp nhanh hơn.",
+      "Biến ý thô thành bản nháp có cấu trúc, rồi chỉnh giọng văn, độ dài và thông điệp trước khi gửi.",
     category: "applied-ai",
     tags: ["writing", "email", "reports", "practical", "office"],
     difficulty: "intermediate",
@@ -2114,9 +2114,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-for-data-analysis",
     title: "AI for Data Analysis",
-    titleVi: "AI phân tích dữ liệu",
+    titleVi: "AI phân tích bảng tính và biểu đồ",
     description:
-      "Dùng AI để phân tích bảng tính, tạo biểu đồ, viết SQL, và tìm insight từ dữ liệu.",
+      "Dùng AI để đọc dữ liệu, gợi ý câu hỏi, viết công thức hoặc SQL và kiểm lại insight trước khi trình bày.",
     category: "applied-ai",
     tags: ["data-analysis", "spreadsheet", "sql", "practical", "office"],
     difficulty: "intermediate",
@@ -2130,9 +2130,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-tool-evaluation",
     title: "AI Tool Evaluation",
-    titleVi: "Đánh giá AI tool đa chiều",
+    titleVi: "Chọn AI tool bằng bảng tiêu chí",
     description:
-      "Framework 6 tiêu chí (chất lượng, giá, tốc độ, bảo mật, tích hợp, hỗ trợ tiếng Việt) để chọn đúng công cụ AI cho từng tác vụ trong văn phòng Việt Nam.",
+      "So sánh chất lượng, chi phí, tốc độ, bảo mật, tích hợp và tiếng Việt trước khi mua hoặc triển khai.",
     category: "applied-ai",
     tags: ["comparison", "evaluation", "tools", "practical", "office"],
     difficulty: "intermediate",
@@ -2146,9 +2146,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-privacy-security",
     title: "AI Privacy & Security",
-    titleVi: "Bảo mật khi dùng AI",
+    titleVi: "Bảo mật khi dùng AI trong văn phòng",
     description:
-      "Phân loại dữ liệu trước khi dán vào AI, hiểu rủi ro khi dùng AI công cộng, và chọn công cụ AI doanh nghiệp phù hợp để tuân thủ Nghị định 13/2023.",
+      "Biết dữ liệu nào không được dán vào chatbot công cộng và cách chọn công cụ phù hợp với chính sách công ty.",
     category: "ai-safety",
     tags: ["privacy", "security", "data-protection", "practical", "office"],
     difficulty: "intermediate",
@@ -2175,7 +2175,7 @@ export const topicList: TopicMeta[] = [
     slug: "calculus-for-backprop",
     title: "Calculus for Backpropagation",
     titleVi: "Giải tích cho backpropagation",
-    description: "Đạo hàm là câu trả lời cho câu hỏi: thay đổi nhỏ này làm loss thay đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
+    description: "Đạo hàm trả lời câu hỏi: thay đổi nhỏ này làm loss đổi bao nhiêu? Quy tắc chuỗi nối các câu trả lời đó xuyên qua mạng nơ-ron.",
     category: "math-foundations",
     tags: ["derivatives", "chain-rule", "gradient-descent", "learning-rate"],
     difficulty: "intermediate",
@@ -2248,8 +2248,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-coding-assistants",
     title: "AI Coding Assistants",
-    titleVi: "Trợ lý lập trình AI — chuyện đang xảy ra trong ngành",
-    description: "Copilot, Cursor, Claude Code là gì và vì sao văn phòng Việt nên quan tâm — kể cả khi bạn không viết một dòng code nào.",
+    titleVi: "AI coding assistant cho người không code",
+    description: "Hiểu Copilot, Cursor và Claude Code giúp tự động hóa việc văn phòng như thế nào, kể cả khi bạn không lập trình.",
     category: "emerging",
     tags: ["copilot", "code-generation", "developer-tools"],
     difficulty: "intermediate",
@@ -2375,7 +2375,7 @@ export const topicList: TopicMeta[] = [
     title: "K-Means in Music Recommendations",
     titleVi: "k-means dựng Discover Weekly cho Spotify",
     description:
-      "Cách Spotify biến sở thích của 600 triệu người thành các điểm trong không gian 40 chiều, tìm đồng minh thẩm mỹ, và xây Discover Weekly mỗi thứ Hai.",
+      "Spotify biến 600 triệu người nghe thành điểm trong không gian 40 chiều. Sáng thứ Hai, một thuật toán phân cụm tìm đồng minh thẩm mỹ và dựng Discover Weekly cho từng tài khoản.",
     category: "classic-ml",
     tags: ["clustering", "recommendation", "application"],
     difficulty: "intermediate",
@@ -2455,7 +2455,7 @@ export const topicList: TopicMeta[] = [
     title: "Backpropagation in Translation",
     titleVi: "Lan truyền ngược: Google Translate học từ mỗi câu sai",
     description:
-      "Mỗi câu dịch sai là một lần Google Translate tự chỉnh trọng số. Xem một cặp câu Anh–Việt đi qua forward, loss, backward và update.",
+      "Mỗi câu dịch sai là một lần Google Translate tự chỉnh trọng số. Xem một cặp câu Anh-Việt đi qua forward, loss, backward và update.",
     category: "neural-fundamentals",
     tags: ["backpropagation", "translation", "application"],
     difficulty: "intermediate",
@@ -2511,9 +2511,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "hallucination-in-legal-research",
     title: "Hallucination in Legal Research",
-    titleVi: "Ảo giác AI trong Nghiên cứu Pháp lý",
+    titleVi: "Hallucination trong nghiên cứu pháp lý",
     description:
-      "Vụ Mata v. Avianca: luật sư trích dẫn 6 án lệ giả do ChatGPT bịa ra, bị tòa phạt 5.000 đô-la Mỹ",
+      "Vụ Mata v. Avianca cho thấy trích dẫn pháp lý từ AI phải được kiểm nguồn trước khi nộp ra tòa.",
     category: "llm-concepts",
     tags: ["hallucination", "legal", "application"],
     difficulty: "advanced",
@@ -2544,7 +2544,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title:
-          "Mata v. Avianca, Inc., 678 F. Supp. 3d 443 (S.D.N.Y. 2023) — Opinion and Order on Sanctions",
+          "Mata v. Avianca, Inc., 678 F. Supp. 3d 443 (S.D.N.Y. 2023), Opinion and Order on Sanctions",
         publisher: "U.S. District Court, Southern District of New York",
         url: "https://law.justia.com/cases/federal/district-courts/new-york/nysdce/1:2022cv01461/575368/54/",
         date: "2023-06",
@@ -2570,9 +2570,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "bias-fairness-in-hiring",
     title: "Bias & Fairness in Hiring",
-    titleVi: "Thiên kiến & Công bằng trong Tuyển dụng",
+    titleVi: "Bias và fairness trong tuyển dụng",
     description:
-      "Công cụ AI tuyển dụng của Amazon bị huỷ vì phân biệt đối xử với ứng viên nữ",
+      "Bài học từ công cụ tuyển dụng của Amazon: dữ liệu quá khứ có thể khiến AI loại sai ứng viên.",
     category: "ai-safety",
     tags: ["bias-fairness", "hiring", "application"],
     difficulty: "beginner",
@@ -2630,9 +2630,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "sentiment-analysis-in-brand-monitoring",
     title: "Sentiment Analysis in Brand Monitoring",
-    titleVi: "Phân tích cảm xúc trong giám sát thương hiệu",
+    titleVi: "Sentiment analysis trong theo dõi thương hiệu",
     description:
-      "Cách Brandwatch, Talkwalker, YouNet Media và Buzzmetrics dùng AI phân tích cảm xúc để theo dõi khen chê trên mạng xã hội, phát hiện khủng hoảng truyền thông trong vài phút.",
+      "Brandwatch, Talkwalker và YouNet Media giúp đội truyền thông thấy khen chê và rủi ro khủng hoảng nhanh hơn.",
     category: "nlp",
     tags: ["sentiment-analysis", "brand-monitoring", "application"],
     difficulty: "intermediate",
@@ -2712,7 +2712,7 @@ export const topicList: TopicMeta[] = [
     title: "Vectors & Matrices",
     titleVi: "Vector là mũi tên, ma trận là máy biến hình",
     description:
-      "Vector là mũi tên, ma trận là bảng số biến đổi mũi tên. Kéo thử, chỉnh thử, nhìn toán 'động đậy' ngay trước mắt.",
+      "Vector là mũi tên trên mặt phẳng. Ma trận 2x2 là bảng số biến đổi cả không gian. Kéo thử, chỉnh thử, nhìn toán động đậy ngay trước mắt.",
     category: "math-foundations",
     tags: ["vectors", "matrices", "dot-product", "cosine-similarity"],
     difficulty: "beginner",
@@ -2740,7 +2740,7 @@ export const topicList: TopicMeta[] = [
     title: "Vectors & Matrices in Photo Search",
     titleVi: "Google Photos biến ảnh thành vector để tìm",
     description:
-      "Bạn gõ 'hoàng hôn bãi biển' và Google Photos tìm ra đúng ảnh. Mỗi ảnh trở thành một vector. So sánh hai ảnh = so sánh hai vector.",
+      "Bạn gõ 'hoàng hôn bãi biển' và Google Photos lôi ra đúng những tấm cần tìm. Mỗi ảnh được chuyển thành một vector. So sánh hai ảnh trở thành so sánh hai vector.",
     category: "math-foundations",
     tags: ["vectors", "embeddings", "face-recognition", "application"],
     difficulty: "beginner",
@@ -2865,7 +2865,7 @@ export const topicList: TopicMeta[] = [
     title: "Calculus for Backpropagation in Model Training",
     titleVi: "Giải tích trong huấn luyện mô hình",
     description:
-      "Bên trong một vòng lặp huấn luyện: weights ngẫu nhiên → dự đoán → loss → gradient → cập nhật. Mỗi bước là một phép tính đạo hàm.",
+      "Bên trong một vòng lặp huấn luyện. Weights ngẫu nhiên, dự đoán, loss, gradient, cập nhật. Mỗi bước là một phép tính đạo hàm.",
     category: "math-foundations",
     tags: ["calculus", "backpropagation", "model-training", "application"],
     difficulty: "intermediate",
@@ -2925,7 +2925,7 @@ export const topicList: TopicMeta[] = [
     title: "Supervised, Unsupervised & RL in Netflix",
     titleVi: "Ba kiểu học trong Netflix",
     description:
-      "Netflix dùng cả ba kiểu học máy cùng lúc: có giám sát đoán điểm phim, không giám sát chia 2.000+ nhóm sở thích, tăng cường chọn ảnh bìa. Mỗi hàng phim trên trang chủ có một thuật toán đằng sau.",
+      "Netflix chạy cả ba kiểu học máy cùng lúc. Có giám sát đoán điểm phim, không giám sát chia hơn 2.000 nhóm sở thích, tăng cường chọn ảnh bìa. Mỗi hàng phim trên trang chủ có một thuật toán riêng đứng sau.",
     category: "classic-ml",
     tags: ["supervised-learning", "unsupervised-learning", "reinforcement-learning", "recommendation", "application"],
     difficulty: "beginner",
@@ -2988,7 +2988,7 @@ export const topicList: TopicMeta[] = [
     title: "Linear Regression in Housing Valuation",
     titleVi: "Linear regression đoán giá nhà tại TP.HCM và Hà Nội",
     description:
-      "Hà Nội và TP.HCM: căn hộ 80m² ở TP Thủ Đức giá bao nhiêu? Kéo các thanh diện tích, số phòng, quận và xem công thức hồi quy tuyến tính ước giá trực tiếp.",
+      "Căn hộ 80m² tại Quận 2 giá bao nhiêu? Kéo thanh diện tích, số phòng, chọn quận, công thức linear regression cho ra con số trực tiếp như Batdongsan vẫn làm.",
     category: "classic-ml",
     tags: ["regression", "real-estate", "application"],
     difficulty: "beginner",
@@ -3044,7 +3044,7 @@ export const topicList: TopicMeta[] = [
     title: "Logistic Regression in Spam Filtering",
     titleVi: "Gmail biến email thành xác suất spam",
     description:
-      "Cách Gmail dùng hồi quy logistic để biến mỗi email thành một xác suất spam, rồi chuyển vào hộp thư hay thùng rác.",
+      "Mỗi sáng hộp thư đến của bạn rất gọn vì Gmail vừa chấm xác suất spam cho hàng tỷ email. Bên trong là một mô hình logistic regression chạy trên hàng trăm đặc trưng.",
     category: "classic-ml",
     tags: ["classification", "email", "spam", "application"],
     difficulty: "beginner",
@@ -3170,7 +3170,7 @@ export const topicList: TopicMeta[] = [
     title: "Decision Trees in Credit Scoring",
     titleVi: "Cây quyết định chấm tín dụng",
     description:
-      "Khách có vay được không? Nhập thu nhập, nợ, lịch sử rồi xem cây quyết định chạy qua từng câu hỏi để đưa ra câu trả lời có/không.",
+      "Khách có vay được không? Nhập thu nhập, nợ, lịch sử rồi xem cây quyết định chạy qua từng câu hỏi và trả lời có hoặc không.",
     category: "classic-ml",
     tags: ["classification", "finance", "credit-scoring", "application"],
     difficulty: "intermediate",
@@ -3233,7 +3233,7 @@ export const topicList: TopicMeta[] = [
     title: "KNN in Symptom Checkers",
     titleVi: "k-NN đoán bệnh từ triệu chứng",
     description:
-      "App chatbot hỏi bạn vài triệu chứng → so với hàng ngàn ca bệnh cũ → gợi ý bệnh gần nhất. Cốt lõi chính là k-NN.",
+      "Chatbot hỏi bạn vài triệu chứng, đối chiếu với hàng ngàn ca bệnh cũ, rồi gợi ý bệnh gần nhất. Cốt lõi chính là k-NN.",
     category: "classic-ml",
     tags: ["classification", "healthcare", "knn", "application"],
     difficulty: "intermediate",
@@ -3296,7 +3296,7 @@ export const topicList: TopicMeta[] = [
     title: "Naive Bayes in Email Classification",
     titleVi: "Naive Bayes lọc email",
     description:
-      "Cách Gmail và SpamAssassin dùng Naive Bayes để chặn 15 tỷ email rác mỗi ngày với tỷ lệ nhầm dưới 0,2%. Thử phân loại ba email mẫu, rồi kéo thanh Laplace để thấy bộ lọc xử lý từ lạ thế nào.",
+      "Cách Gmail và SpamAssassin dùng Naive Bayes để chặn 15 tỷ email rác mỗi ngày với tỷ lệ nhầm dưới 0,2%. Thử phân loại ba email mẫu, rồi kéo thanh Laplace để thấy bộ lọc xử lý từ lạ ra sao.",
     category: "classic-ml",
     tags: ["classification", "email", "spam", "application"],
     difficulty: "intermediate",
@@ -3345,7 +3345,7 @@ export const topicList: TopicMeta[] = [
     title: "Confusion Matrix in Medical Testing",
     titleVi: "Ma trận nhầm lẫn trong xét nghiệm y tế",
     description:
-      "Câu chuyện xét nghiệm COVID-19: chính xác 99% nghe hay, nhưng khi tỷ lệ nhiễm trong cộng đồng thấp, hàng nghìn người vẫn có thể nhận kết quả dương tính giả.",
+      "Câu chuyện xét nghiệm COVID-19: chính xác 99% nghe rất yên tâm. Nhưng khi tỷ lệ nhiễm trong cộng đồng thấp, hàng nghìn người vẫn có thể nhận kết quả dương tính giả.",
     category: "classic-ml",
     tags: ["evaluation", "medical", "covid", "application"],
     difficulty: "intermediate",
@@ -3401,7 +3401,7 @@ export const topicList: TopicMeta[] = [
     title: "Bias-Variance in the Netflix Prize",
     titleVi: "Netflix Prize: vì sao đội thắng gộp 800 mô hình",
     description:
-      "Netflix Prize 1 triệu đô: vì sao đội thắng cần 800+ mô hình gộp lại? Câu chuyện kinh điển về ensemble và giới hạn của việc giảm variance trong thực tế.",
+      "Netflix Prize 1 triệu đô. Vì sao đội thắng phải gộp hơn 800 mô hình lại với nhau? Câu chuyện kinh điển về ensemble và giới hạn thực tế của việc giảm variance.",
     category: "classic-ml",
     tags: ["ensemble", "recommendation", "competition", "application"],
     difficulty: "intermediate",
@@ -3499,7 +3499,7 @@ export const topicList: TopicMeta[] = [
     title: "Cross-Validation in Kaggle Competitions",
     titleVi: "CV trong Kaggle: tin local CV, đừng tin public LB",
     description:
-      "Public leaderboard có thể đánh lừa. Đội xếp hạng 1.485 đã nhảy lên hạng 1 private chỉ vì tin vào CV của mình, không chạy theo public LB.",
+      "Public leaderboard có thể đánh lừa. Một đội xếp hạng 1.485 nhảy lên hạng 1 private chỉ vì họ tin vào CV của mình, không chạy theo public LB.",
     category: "classic-ml",
     tags: ["evaluation", "competition", "leaderboard", "application"],
     difficulty: "intermediate",
@@ -3548,7 +3548,7 @@ export const topicList: TopicMeta[] = [
     title: "Train / Val / Test in YouTube Recommendations",
     titleVi: "YouTube chia train/val/test theo thời gian, không ngẫu nhiên",
     description:
-      "YouTube dùng dữ liệu của 2 tỷ người dùng. Chia ngẫu nhiên sẽ gây leakage tương lai → quá khứ. Họ chia theo thời gian rồi A/B test trên người dùng thật.",
+      "YouTube nắm dữ liệu của 2 tỷ người dùng. Chia ngẫu nhiên làm tương lai lọt vào tập train. Họ cắt theo thời gian rồi A/B test trên người dùng thật.",
     category: "classic-ml",
     tags: ["data-split", "recommendation", "ab-testing", "application"],
     difficulty: "intermediate",
@@ -3598,7 +3598,7 @@ export const topicList: TopicMeta[] = [
     title: "Neural Networks in Voice Assistants",
     titleVi: "Mạng nơ-ron trong trợ lý giọng nói",
     description:
-      "Cách Google Assistant và Siri dùng mạng nơ-ron sâu để nhận diện giọng nói, giảm tỉ lệ lỗi từ hơn 23% xuống dưới 5%",
+      "Bạn nói \"Hey Siri, đặt hẹn giờ 10 phút\". Giọng của bạn đi qua nhiều mạng nơ-ron sâu nối tiếp nhau rồi biến thành một hành động trên điện thoại. Xem từng chặng của hành trình đó.",
     category: "neural-fundamentals",
     tags: ["neural-network", "speech-recognition", "application"],
     difficulty: "beginner",
@@ -3837,7 +3837,7 @@ export const topicList: TopicMeta[] = [
     title: "Forward Propagation in Chat Response",
     titleVi: "Mỗi token ChatGPT gõ ra là một lượt lan truyền thuận",
     description:
-      "Bạn gõ một câu, 20 mili-giây sau ChatGPT đáp. Mở từng giai đoạn của lượt lan truyền thuận để thấy điều gì xảy ra trong khoảnh khắc đó.",
+      "Bạn gõ một câu rồi nhấn Enter. 20 mili-giây sau, ChatGPT bắt đầu gõ. Mở từng giai đoạn của lượt lan truyền thuận để thấy điều gì xảy ra trong khoảnh khắc đó.",
     category: "neural-fundamentals",
     tags: ["forward-propagation", "inference", "application"],
     difficulty: "intermediate",
@@ -3896,7 +3896,7 @@ export const topicList: TopicMeta[] = [
     title: "Gradient Descent in GPT-4 Training",
     titleVi: "Gradient descent chạy suốt 34 ngày để huấn luyện GPT-3",
     description:
-      "Huấn luyện GPT-3 tốn ~12 triệu USD chỉ cho tính toán, phần lớn là chạy gradient descent. Vặn thử learning rate, momentum, batch size để xem loss hội tụ, dao động hay nổ tung.",
+      "Huấn luyện GPT-3 tốn khoảng 12 triệu USD chỉ riêng phần tính toán, và phần lớn số tiền đó dồn vào gradient descent. Vặn thử learning rate, momentum, batch size để xem loss hội tụ, dao động hay nổ tung.",
     category: "neural-fundamentals",
     tags: ["gradient-descent", "optimization", "application"],
     difficulty: "intermediate",
@@ -4126,7 +4126,7 @@ export const topicList: TopicMeta[] = [
     title: "Feature Engineering in Fraud Detection",
     titleVi: "Stripe Radar bóc mặt nạ gian lận trong 100ms",
     description:
-      "Cách Stripe Radar chế tạo hơn 1.000 đặc trưng từ vài trường giao dịch thô để phát hiện gian lận trong chưa đầy 100 mili-giây.",
+      "Stripe Radar nặn hơn 1.000 feature từ vài trường giao dịch thô. Chấm điểm xong trong chưa đầy 100ms.",
     category: "foundations",
     tags: ["feature-engineering", "fraud-detection", "application"],
     difficulty: "intermediate",
@@ -4192,7 +4192,7 @@ export const topicList: TopicMeta[] = [
     title: "Model Evaluation & Selection in Kaggle",
     titleVi: "Chọn model trên Kaggle: ai trụ được khi private leaderboard lật bài",
     description:
-      "Gấu hay cáo? Kéo dòng thời gian Kaggle để xem early submission, ensemble stacking, và final submission strategy quyết định ai đứng top private leaderboard.",
+      "Gấu hay cáo? Kéo dòng thời gian Kaggle để xem early submission, ensemble stacking và final submission strategy quyết định ai đứng top private leaderboard.",
     category: "classic-ml",
     tags: ["model-evaluation", "kaggle", "application"],
     difficulty: "intermediate",
@@ -4269,9 +4269,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "llm-overview-in-chat-assistants",
     title: "LLM Overview in Chat Assistants",
-    titleVi: "LLM trong trợ lý trò chuyện",
+    titleVi: "LLM trong ChatGPT, Claude, Gemini",
     description:
-      "ChatGPT, Claude, Gemini: ba trợ lý trò chuyện AI đang thay đổi cách hàng trăm triệu người làm việc mỗi ngày.",
+      "Nhìn cách trợ lý chat nhận yêu cầu, giữ ngữ cảnh và trả lời để dùng đúng trong việc văn phòng.",
     category: "llm-concepts",
     tags: ["llm-overview", "chatbot", "application"],
     difficulty: "beginner",
@@ -4310,7 +4310,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title:
-          "AI Act — Shaping Europe's digital future",
+          "AI Act, Shaping Europe's digital future",
         publisher: "European Commission",
         url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
         date: "2024-08",
@@ -4328,9 +4328,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "prompt-engineering-in-writing-tools",
     title: "Prompt Engineering in Writing Tools",
-    titleVi: "Prompt Engineering trong Công cụ Viết",
+    titleVi: "Prompt engineering trong công cụ viết",
     description:
-      "Jasper AI và Notion AI biến prompt engineering thành trải nghiệm “nhấn một nút” cho hàng triệu người dùng văn phòng.",
+      "Jasper và Notion AI biến khung prompt thành nút bấm, giúp người dùng viết nhanh mà vẫn kiểm được giọng văn.",
     category: "llm-concepts",
     tags: ["prompt-engineering", "writing", "application"],
     difficulty: "beginner",
@@ -4387,9 +4387,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "chain-of-thought-in-reasoning-models",
     title: "Chain of Thought in Reasoning Models",
-    titleVi: "Chuỗi suy luận trong Mô hình Lý luận",
+    titleVi: "Chain-of-thought trong reasoning model",
     description:
-      "GPT-o1 và Claude Extended Thinking: mô hình lý luận tự nháp từng bước trước khi trả lời, khiến dân văn phòng tin kết quả hơn.",
+      "Reasoning model tự dành thời gian nháp, nên phù hợp với bài toán cần lập luận hơn là trả lời thật nhanh.",
     category: "llm-concepts",
     tags: ["chain-of-thought", "reasoning", "application"],
     difficulty: "beginner",
@@ -4443,9 +4443,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "in-context-learning-in-chatbots",
     title: "In-Context Learning in Chatbots",
-    titleVi: "Học trong Ngữ cảnh ở Chatbot",
+    titleVi: "In-context learning trong chatbot hỗ trợ",
     description:
-      "Intercom Fin: chatbot hỗ trợ khách hàng dùng học trong ngữ cảnh để trả lời chính xác theo tài liệu riêng của từng công ty.",
+      "Chatbot đọc tài liệu và ví dụ ngay trong cuộc trò chuyện để trả lời sát chính sách của từng công ty.",
     category: "llm-concepts",
     tags: ["in-context-learning", "chatbot", "application"],
     difficulty: "beginner",
@@ -4503,9 +4503,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "temperature-in-creative-writing",
     title: "Temperature in Creative Writing",
-    titleVi: "Temperature trong Viết Sáng tạo",
+    titleVi: "Temperature trong viết sáng tạo",
     description:
-      "ChatGPT, Sudowrite, Notion AI: tham số temperature điều chỉnh mức độ ngẫu nhiên để AI vừa viết được thơ sáng tạo, vừa trả lời đúng câu hỏi có đáp án.",
+      "Cùng một brief, temperature thấp giữ văn bản ổn định, temperature cao mở thêm ý tưởng và cách diễn đạt.",
     category: "llm-concepts",
     tags: ["temperature", "creative-writing", "application"],
     difficulty: "advanced",
@@ -4560,9 +4560,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "context-window-in-long-documents",
     title: "Context Window in Long Documents",
-    titleVi: "Cửa sổ Ngữ cảnh trong Tài liệu Dài",
+    titleVi: "Context window khi đọc tài liệu dài",
     description:
-      "Claude và Gemini xử lý PDF hàng trăm trang: cửa sổ ngữ cảnh 100K+ token thay đổi cách làm việc với tài liệu",
+      "Claude và Gemini có thể đọc nhiều trang hơn, nhưng người dùng vẫn cần đặt câu hỏi và kiểm trích dẫn rõ.",
     category: "llm-concepts",
     tags: ["context-window", "long-documents", "application"],
     difficulty: "advanced",
@@ -4577,7 +4577,7 @@ export const topicList: TopicMeta[] = [
     },
     sources: [
       {
-        title: "Context windows — Claude API Docs",
+        title: "Context windows, Claude API Docs",
         publisher: "Anthropic",
         url: "https://platform.claude.com/docs/en/build-with-claude/context-windows",
         date: "2025-01",
@@ -4617,14 +4617,14 @@ export const topicList: TopicMeta[] = [
     ],
   },
   // ═══════════════════════════════════════════════════════
-  // Batch 7 — Office Stage 3: Safety/Ethics (3 topics)
+  // Batch 7, Office Stage 3: Safety/Ethics (3 topics)
   // ═══════════════════════════════════════════════════════
   {
     slug: "ai-governance-in-enterprise",
     title: "AI Governance in Enterprise",
-    titleVi: "Quản trị AI trong Doanh nghiệp",
+    titleVi: "AI governance trong doanh nghiệp lớn",
     description:
-      "Microsoft Responsible AI Standard: Làm thế nào một tập đoàn 220.000 nhân viên quản trị hàng trăm dự án AI cùng lúc — khung và bài học cho doanh nghiệp Việt Nam.",
+      "Microsoft Responsible AI Standard cho thấy doanh nghiệp cần quy trình rõ trước khi triển khai nhiều dự án AI.",
     category: "ai-safety",
     tags: ["ai-governance", "regulation", "application"],
     difficulty: "intermediate",
@@ -4640,7 +4640,7 @@ export const topicList: TopicMeta[] = [
     sources: [
       {
         title:
-          "AI Act — Shaping Europe's digital future",
+          "AI Act, Shaping Europe's digital future",
         publisher: "European Commission",
         url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
         date: "2024-08",
@@ -4681,9 +4681,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "guardrails-in-chat-assistants",
     title: "Guardrails in Chat Assistants",
-    titleVi: "Rào chắn An toàn trong Trợ lý Trò chuyện",
+    titleVi: "Guardrails trong trợ lý trò chuyện",
     description:
-      "Constitutional AI của Anthropic và Moderation API của OpenAI: hai cách tiếp cận bảo vệ người dùng khỏi nội dung có hại",
+      "Constitutional AI và moderation giúp chatbot lọc yêu cầu nguy hiểm, giữ trải nghiệm an toàn hơn cho người dùng.",
     category: "ai-safety",
     tags: ["guardrails", "safety", "application"],
     difficulty: "intermediate",
@@ -4714,7 +4714,7 @@ export const topicList: TopicMeta[] = [
         kind: "paper",
       },
       {
-        title: "Moderation — OpenAI API Guide",
+        title: "Moderation, OpenAI API Guide",
         publisher: "OpenAI",
         url: "https://developers.openai.com/api/docs/guides/moderation",
         date: "2024-08",
@@ -4740,9 +4740,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "explainability-in-credit-decisions",
     title: "Explainability in Credit Decisions",
-    titleVi: "Giải thích được trong Quyết định Tín dụng",
+    titleVi: "Explainability trong quyết định tín dụng",
     description:
-      "GDPR và CFPB yêu cầu ngân hàng phải giải thích khi AI từ chối cấp tín dụng — không được dùng hộp đen",
+      "Ngân hàng cần giải thích lý do AI từ chối khoản vay, không thể chỉ nói hệ thống đã quyết.",
     category: "ai-safety",
     tags: ["explainability", "credit", "application"],
     difficulty: "advanced",
@@ -4758,7 +4758,7 @@ export const topicList: TopicMeta[] = [
     sources: [
       {
         title:
-          "Art. 22 GDPR — Automated individual decision-making, including profiling",
+          "Art. 22 GDPR, Automated individual decision-making, including profiling",
         publisher: "GDPR-info.eu",
         url: "https://gdpr-info.eu/art-22-gdpr/",
         date: "2018-05",
@@ -4798,14 +4798,14 @@ export const topicList: TopicMeta[] = [
     ],
   },
   // ═══════════════════════════════════════════════════════
-  // Batch 8 — Office Stage 4: NLP Applications (2 topics)
+  // Batch 8, Office Stage 4: NLP Applications (2 topics)
   // ═══════════════════════════════════════════════════════
   {
     slug: "recommendation-systems-in-shopping",
     title: "Recommendation Systems in Shopping",
-    titleVi: "Hệ thống Gợi ý trong Mua sắm",
+    titleVi: "Recommendation system trong mua sắm",
     description:
-      "Shopee dùng AI gợi ý sản phẩm cá nhân hóa cho hàng trăm triệu người dùng Đông Nam Á",
+      "Shopee và sàn thương mại điện tử gợi ý sản phẩm bằng tín hiệu hành vi, lịch sử mua và ngữ cảnh.",
     category: "applied-ai",
     tags: ["recommendation-systems", "e-commerce", "application"],
     difficulty: "intermediate",
@@ -4863,9 +4863,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "text-classification-in-support-routing",
     title: "Text Classification in Support Routing",
-    titleVi: "Phân loại văn bản trong điều phối hỗ trợ",
+    titleVi: "Text classification trong điều phối hỗ trợ",
     description:
-      "Cách Zendesk AI, Intercom Fin, Subiz và FPT.AI dùng phân loại văn bản để tự động gán nhãn, định tuyến ticket đến đúng đội — giảm 45% thời gian phản hồi.",
+      "Zendesk, Intercom và FPT.AI gán nhãn ticket để chuyển đúng đội và giảm thời gian phản hồi.",
     category: "nlp",
     tags: ["text-classification", "support", "application"],
     difficulty: "intermediate",
@@ -4922,7 +4922,7 @@ export const topicList: TopicMeta[] = [
   },
 
   // ═══════════════════════════════════════════════════════
-  // Đánh giá & Quan sát hệ thống AI — AI Engineer path
+  // Đánh giá & Quan sát hệ thống AI, AI Engineer path
   // ═══════════════════════════════════════════════════════
   {
     slug: "llm-evaluation",

@@ -33,9 +33,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "rag",
   title: "RAG",
-  titleVi: "RAG - Trợ lý AI biết tra tài liệu công ty",
+  titleVi: "RAG: cho AI tra tài liệu trước khi trả lời",
   description:
-    "Ghép AI với kho tài liệu công ty để có câu trả lời chính xác, có trích dẫn — không còn lo AI bịa.",
+    "Ghép chatbot với kho tài liệu công ty để câu trả lời có căn cứ, có nguồn và ít bịa hơn.",
   category: "search-retrieval",
   tags: ["retrieval", "generation", "llm", "search"],
   difficulty: "intermediate",
@@ -130,7 +130,7 @@ const PRESETS: QueryPreset[] = [
     hallucinated:
       "Theo luật Việt Nam, nhân viên có tối thiểu 12 ngày phép một năm. Nhiều công ty cho 14-16 ngày tuỳ thâm niên.",
     whyWrong:
-      "Câu trả lời chung chung theo luật — không phải con số CỤ THỂ của công ty bạn. Sếp hỏi lại sẽ lộ là AI đoán.",
+      "Câu trả lời chung chung theo luật, không phải con số CỤ THỂ của công ty bạn. Sếp hỏi lại sẽ lộ là AI đoán.",
     ragAnswer:
       "Theo tài liệu [1], nhân viên chính thức có 14 ngày phép/năm (tăng 2 ngày so với 2025). Đơn nghỉ gửi qua HRMS trước 3 ngày làm việc. Sau khi dùng hết 14 ngày có lương, có thể xin nghỉ không lương tối đa 30 ngày/năm [2].",
   },
@@ -142,7 +142,7 @@ const PRESETS: QueryPreset[] = [
     hallucinated:
       "Dựa trên xu hướng ngành, doanh thu quý 4 của công ty ước tính khoảng 150-200 tỷ đồng, với mức tăng trưởng 10-15% so với cùng kỳ.",
     whyWrong:
-      "AI đang ƯỚC TÍNH dựa trên trung bình ngành. Con số báo cáo tài chính KHÔNG được phép đoán — phải chính xác.",
+      "AI đang ƯỚC TÍNH dựa trên trung bình ngành. Con số báo cáo tài chính KHÔNG được phép đoán, phải chính xác.",
     ragAnswer:
       "Theo tài liệu [1], doanh thu Q4/2025 đạt 185 tỷ đồng, tăng 12% so với cùng kỳ. Mảng B2B đóng góp 68%, bán lẻ 32%. Lợi nhuận ròng 14,3 tỷ, biên lợi nhuận 7,7%.",
   },
@@ -239,7 +239,7 @@ const PipelineSteps = ({
 );
 
 /* ══════════════════════════════════════════════════════════════
-   VIZ 1 — PIPELINE INDEXING: Tài liệu → Cắt đoạn → Vector → Kho
+   VIZ 1, PIPELINE INDEXING: Tài liệu → Cắt đoạn → Vector → Kho
    ══════════════════════════════════════════════════════════════ */
 
 function IndexingStage() {
@@ -344,14 +344,14 @@ function IndexingStage() {
 
       <p className="text-xs leading-relaxed text-muted">
         Bốn bước trên chỉ làm <strong>một lần</strong>. Sau đó mỗi câu hỏi chỉ
-        đi qua phần truy vấn bên dưới — rất nhanh.
+        đi qua phần truy vấn bên dưới, rất nhanh.
       </p>
     </div>
   );
 }
 
 /* ══════════════════════════════════════════════════════════════
-   VIZ 2 — TRUY VẤN: highlight top-K chunk được chọn
+   VIZ 2, TRUY VẤN: highlight top-K chunk được chọn
    ══════════════════════════════════════════════════════════════ */
 
 function QueryStage({ preset, topK }: { preset: QueryPreset; topK: number }) {
@@ -442,7 +442,7 @@ function QueryStage({ preset, topK }: { preset: QueryPreset; topK: number }) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   VIZ 3 — KHỐI KHÔNG-RAG: AI trả lời dựa trên trí nhớ chai lì
+   VIZ 3, KHỐI KHÔNG-RAG: AI trả lời dựa trên trí nhớ chai lì
    ══════════════════════════════════════════════════════════════ */
 
 function WithoutRAGBlock({ preset }: { preset: QueryPreset }) {
@@ -498,7 +498,7 @@ function WithoutRAGBlock({ preset }: { preset: QueryPreset }) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   VIZ 4 — KHỐI CÓ-RAG: pipeline 3 bước + câu trả lời có trích dẫn
+   VIZ 4, KHỐI CÓ-RAG: pipeline 3 bước + câu trả lời có trích dẫn
    ══════════════════════════════════════════════════════════════ */
 
 function StepRow({
@@ -628,7 +628,7 @@ function WithRAGBlock({ preset }: { preset: QueryPreset }) {
                     </span>
                   </div>
                   <p className="pl-5 text-[11px] leading-relaxed text-green-700 dark:text-green-300">
-                    Neo vào tài liệu thật, có trích dẫn [1], [2] — sếp kiểm
+                    Neo vào tài liệu thật, có trích dẫn [1], [2], sếp kiểm
                     tra được.
                   </p>
                 </motion.div>
@@ -642,7 +642,7 @@ function WithRAGBlock({ preset }: { preset: QueryPreset }) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   VIZ 5 — PLAYGROUND: người dùng chọn preset + top-K
+   VIZ 5, PLAYGROUND: người dùng chọn preset + top-K
    ══════════════════════════════════════════════════════════════ */
 
 function RAGPipelinePlayground() {
@@ -701,7 +701,7 @@ function RAGPipelinePlayground() {
 
       <div className="rounded-xl border border-border bg-card p-4">
         <p className="mb-3 text-sm font-semibold text-foreground">
-          Truy vấn online — &quot;{preset.question}&quot;
+          Truy vấn online, &quot;{preset.question}&quot;
         </p>
         <QueryStage preset={preset} topK={topK} />
       </div>
@@ -710,7 +710,7 @@ function RAGPipelinePlayground() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   VIZ 6 — SO SÁNH NAIVE vs NÂNG CAO (ngôn ngữ đời thường)
+   VIZ 6, SO SÁNH NAIVE vs NÂNG CAO (ngôn ngữ đời thường)
    ══════════════════════════════════════════════════════════════ */
 
 type AdvancedMode = "naive" | "rerank" | "rewrite" | "filter";
@@ -843,7 +843,7 @@ function AdvancedComparison() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   BỘ QUIZ — 8 câu, đã bỏ câu code Python
+   BỘ QUIZ, 8 câu, đã bỏ câu code Python
    ══════════════════════════════════════════════════════════════ */
 
 const QUIZ: QuizQuestion[] = [
@@ -877,13 +877,13 @@ const QUIZ: QuizQuestion[] = [
       "AI trả lời: 'Dựa trên xu hướng ngành, doanh thu công ty bạn ước khoảng 150-200 tỷ.' Đây là dấu hiệu gì?",
     options: [
       "AI đang truy xuất đúng tài liệu",
-      "AI đang BỊA theo kiến thức chung vì không có tài liệu — 'ước tính', 'khoảng', 'dựa trên xu hướng' là cờ đỏ",
+      "AI đang BỊA theo kiến thức chung vì không có tài liệu, 'ước tính', 'khoảng', 'dựa trên xu hướng' là cờ đỏ",
       "AI đang thận trọng",
       "Câu trả lời chính xác",
     ],
     correct: 1,
     explanation:
-      "Những từ như 'ước tính', 'khoảng', 'dựa trên trung bình ngành' cho thấy AI đang phỏng đoán. Với số liệu nội bộ, RAG phải trả về con số CỤ THỂ từ báo cáo — nếu không có, phải nói 'không tìm thấy tài liệu'.",
+      "Những từ như 'ước tính', 'khoảng', 'dựa trên trung bình ngành' cho thấy AI đang phỏng đoán. Với số liệu nội bộ, RAG phải trả về con số CỤ THỂ từ báo cáo, nếu không có, phải nói 'không tìm thấy tài liệu'.",
   },
   {
     question: "Vì sao phải cắt tài liệu PDF 100 trang thành nhiều đoạn nhỏ?",
@@ -901,7 +901,7 @@ const QUIZ: QuizQuestion[] = [
     question: "RAG giúp giảm 'hallucination' nhưng nếu tài liệu trong kho cũng SAI thì sao?",
     options: [
       "RAG tự động phát hiện và sửa tài liệu sai",
-      "RAG sẽ 'rác vào → rác ra' — trả lời sai theo tài liệu sai, còn nguy hiểm hơn vì có trích dẫn",
+      "RAG sẽ 'rác vào → rác ra', trả lời sai theo tài liệu sai, còn nguy hiểm hơn vì có trích dẫn",
       "RAG vẫn đúng vì đã có retrieval",
       "RAG sẽ từ chối trả lời",
     ],
@@ -913,8 +913,8 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Đồng nghiệp bạn muốn đưa 50 đoạn tài liệu vào prompt cho 'chắc ăn'. Có nên không?",
     options: [
-      "Nên — càng nhiều càng tốt",
-      "KHÔNG — prompt quá dài tốn chi phí, AI hay 'bỏ sót ý ở giữa' và chậm hơn. K = 3-5 + bộ lọc kỹ hơn thường tốt hơn K = 50",
+      "Nên, càng nhiều càng tốt",
+      "KHÔNG, prompt quá dài tốn chi phí, AI hay 'bỏ sót ý ở giữa' và chậm hơn. K = 3-5 + bộ lọc kỹ hơn thường tốt hơn K = 50",
       "Nên nếu dùng GPT-4",
       "Không quan trọng",
     ],
@@ -927,13 +927,13 @@ const QUIZ: QuizQuestion[] = [
       "Anh chị đang xin nghỉ phép. Dùng chatbot RAG của công ty có lợi gì so với hỏi Google?",
     options: [
       "Chatbot trả lời nhanh hơn Google",
-      "Chatbot dùng đúng NỘI QUY CÔNG TY BẠN, có trích dẫn tài liệu — Google cho luật chung chung, có thể khác thực tế nơi bạn làm",
+      "Chatbot dùng đúng NỘI QUY CÔNG TY BẠN, có trích dẫn tài liệu, Google cho luật chung chung, có thể khác thực tế nơi bạn làm",
       "Chatbot miễn phí",
       "Không có khác biệt",
     ],
     correct: 1,
     explanation:
-      "Google cho luật lao động chung. Chatbot RAG đọc đúng file nội quy công ty bạn (14 ngày thay vì 12, quy trình qua HRMS, v.v.) và chỉ luôn đoạn cần đọc — tiết kiệm thời gian HR trả lời.",
+      "Google cho luật lao động chung. Chatbot RAG đọc đúng file nội quy công ty bạn (14 ngày thay vì 12, quy trình qua HRMS, v.v.) và chỉ luôn đoạn cần đọc, tiết kiệm thời gian HR trả lời.",
   },
   {
     type: "fill-blank",
@@ -964,12 +964,12 @@ export default function RAGTopic() {
         <PredictionGate
           question="Bạn hỏi ChatGPT: 'Công ty mình cho nghỉ phép mấy ngày một năm?' Nó trả lời rất tự tin nhưng SAI. Lý do khả dĩ nhất là gì?"
           options={[
-            "ChatGPT không biết tên công ty bạn — nên đoán bừa theo trung bình ngành",
+            "ChatGPT không biết tên công ty bạn, nên đoán bừa theo trung bình ngành",
             "ChatGPT bị lỗi kỹ thuật tạm thời",
             "ChatGPT cố tình trả lời sai",
           ]}
           correct={0}
-          explanation="ChatGPT chưa bao giờ đọc nội quy công ty bạn. Muốn nó trả lời đúng, phải cho nó quyền TRA CỨU tài liệu nội bộ của bạn trước khi viết — đó chính là ý tưởng RAG."
+          explanation="ChatGPT chưa bao giờ đọc nội quy công ty bạn. Muốn nó trả lời đúng, phải cho nó quyền TRA CỨU tài liệu nội bộ của bạn trước khi viết, đó chính là ý tưởng RAG."
         />
       </LessonSection>
 
@@ -983,7 +983,7 @@ export default function RAGTopic() {
               </p>
               <p className="text-sm text-foreground leading-relaxed">
                 Như một sinh viên học thuộc sách từ 2 năm trước rồi đi thi. Bí
-                câu nào là <strong>đoán bừa</strong> — nói tự tin để &quot;trả
+                câu nào là <strong>đoán bừa</strong>, nói tự tin để &quot;trả
                 có gì đó&quot;. Đây là hallucination.
               </p>
             </div>
@@ -1092,7 +1092,7 @@ export default function RAGTopic() {
             options={[
               "Chatbot thông minh hơn ChatGPT",
               "Chatbot nói được nhiều ngôn ngữ hơn",
-              "Chatbot được đọc chứng từ, báo cáo nội bộ mà ChatGPT không thể thấy — trả lời đúng sổ sách công ty",
+              "Chatbot được đọc chứng từ, báo cáo nội bộ mà ChatGPT không thể thấy, trả lời đúng sổ sách công ty",
             ]}
             correct={2}
             explanation="Lợi thế cốt lõi của RAG doanh nghiệp không phải AI 'thông minh hơn', mà là AI có QUYỀN TRA CỨU dữ liệu riêng của bạn. ChatGPT công cộng không bao giờ thấy sổ sách, hợp đồng, báo cáo nội bộ."
@@ -1104,7 +1104,7 @@ export default function RAGTopic() {
             question="Đồng nghiệp hỏi: 'Đã cài RAG rồi sao vẫn có lúc trả lời sai?'"
             options={[
               "Vì AI chưa đủ tiền bản quyền",
-              "Vì tài liệu trong kho có thể outdated, cắt sai đoạn, hoặc trùng nhau — chất lượng kho QUYẾT ĐỊNH chất lượng câu trả lời",
+              "Vì tài liệu trong kho có thể outdated, cắt sai đoạn, hoặc trùng nhau, chất lượng kho QUYẾT ĐỊNH chất lượng câu trả lời",
               "Vì người dùng gõ sai chính tả",
             ]}
             correct={1}
@@ -1127,14 +1127,14 @@ export default function RAGTopic() {
             </p>
           </div>
 
-          {/* Các thành phần — visual icons */}
+          {/* Các thành phần, visual icons */}
           <h3 className="mt-5 text-base font-semibold text-foreground">
             Các mảnh ghép trong hệ thống RAG
           </h3>
           <div className="grid gap-2 md:grid-cols-2">
             {([
               [Scissors, "text-amber-500", "Cắt đoạn (Chunking)", "Cắt PDF dài thành đoạn 300-800 chữ, overlap 10-20% để không cắt ngang ý.", "chunking"],
-              [Brain, "text-purple-500", "Mã hoá nghĩa (Embedding)", "Biến mỗi đoạn thành vector — 'toạ độ ý nghĩa' trong không gian số.", "embedding-model"],
+              [Brain, "text-purple-500", "Mã hoá nghĩa (Embedding)", "Biến mỗi đoạn thành vector, 'toạ độ ý nghĩa' trong không gian số.", "embedding-model"],
               [Database, "text-green-500", "Kho vector (Vector DB)", "Pinecone, Qdrant, pgvector, Chroma... lưu vector + metadata, tìm nhanh trong triệu đoạn.", "vector-databases"],
               [Search, "text-blue-500", "Retriever", "Lấy top-K đoạn liên quan nhất qua tìm kiếm ngữ nghĩa (K = 3-10).", "semantic-search"],
               [SparklesIcon, "text-pink-500", "Bộ lọc nâng cao", "Cross-encoder chấm lại các ứng viên để chọn đoạn thật sự liên quan.", null],
@@ -1159,7 +1159,7 @@ export default function RAGTopic() {
           <MatchPairs
             instruction="Ghép tình huống công sở với kỹ thuật RAG phù hợp nhất."
             pairs={[
-              { left: "Hỏi 'báo cáo doanh thu quý 4 2025' — có ngày/quý", right: "Lọc metadata trước khi tìm" },
+              { left: "Hỏi 'báo cáo doanh thu quý 4 2025', có ngày/quý", right: "Lọc metadata trước khi tìm" },
               { left: "Nhân viên gõ câu hỏi mơ hồ: 'phép là sao?'", right: "Viết lại câu hỏi thành nhiều biến thể" },
               { left: "Top-5 tìm ra toàn đoạn 'hao hao' không đúng ý", right: "Thêm bộ lọc kỹ hơn (cross-encoder)" },
               { left: "Câu hỏi chung: 'công ty cho nghỉ mấy ngày'", right: "RAG cơ bản: lấy top-3 rồi đưa AI" },
@@ -1173,7 +1173,7 @@ export default function RAGTopic() {
           <ToggleCompare
             labelA="RAG cơ bản"
             labelB="RAG có lọc kỹ"
-            description="Cùng một câu hỏi, cùng một kho — khác nhau số bước xử lý."
+            description="Cùng một câu hỏi, cùng một kho, khác nhau số bước xử lý."
             childA={
               <PipelineSteps
                 steps={[
@@ -1192,12 +1192,12 @@ export default function RAGTopic() {
                   { c: "bg-amber-500", t: "Cross-encoder xếp lại, giữ top-5" },
                   { c: "bg-green-500", t: "Đưa AI viết trả lời" },
                 ]}
-                note="Chậm hơn (~600-800ms). Tăng 5-15 điểm MRR — đáng đồng tiền cho sản phẩm nghiêm túc."
+                note="Chậm hơn (~600-800ms). Tăng 5-15 điểm MRR, đáng đồng tiền cho sản phẩm nghiêm túc."
               />
             }
           />
 
-          {/* Callouts — kinh nghiệm triển khai */}
+          {/* Callouts, kinh nghiệm triển khai */}
           <Callout variant="tip" title="Mẹo chọn chunk size">
             Văn bản kể chuyện (wiki, tin bài): chunk 800-1200 chữ. Văn bản hỏi
             đáp ngắn (FAQ, chat log): chunk 200-400 chữ. Luôn overlap 10-20% để
@@ -1210,7 +1210,7 @@ export default function RAGTopic() {
             prompt.
           </Callout>
 
-          <Callout variant="info" title="Đánh giá RAG — ba chỉ số bắt buộc">
+          <Callout variant="info" title="Đánh giá RAG, ba chỉ số bắt buộc">
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li><strong>Context precision / recall:</strong> đoạn tra đúng không? bỏ sót không?</li>
               <li><strong>Faithfulness:</strong> câu trả lời bám đoạn tra, hay AI &quot;chế&quot;?</li>
@@ -1221,10 +1221,10 @@ export default function RAGTopic() {
 
           <Callout variant="insight" title="Các biến thể RAG nâng cao đáng biết">
             <ul className="list-disc list-inside space-y-1 text-sm">
-              <li><strong>HyDE:</strong> AI tưởng tượng câu trả lời giả trước, rồi tìm đoạn gần câu giả đó — hiệu quả khi câu hỏi ngắn.</li>
+              <li><strong>HyDE:</strong> AI tưởng tượng câu trả lời giả trước, rồi tìm đoạn gần câu giả đó, hiệu quả khi câu hỏi ngắn.</li>
               <li><strong>Self-RAG:</strong> AI tự quyết định khi nào cần tra và đánh giá chất lượng đoạn trước khi dùng.</li>
               <li><strong>Corrective RAG:</strong> điểm tin cậy thấp → fallback sang web search thay vì kho nội bộ.</li>
-              <li><strong>Hybrid search:</strong> ghép từ khoá (BM25) + ngữ nghĩa (vector) — hữu ích khi có mã sản phẩm, tên riêng.</li>
+              <li><strong>Hybrid search:</strong> ghép từ khoá (BM25) + ngữ nghĩa (vector), hữu ích khi có mã sản phẩm, tên riêng.</li>
             </ul>
           </Callout>
 
@@ -1237,7 +1237,7 @@ export default function RAGTopic() {
               ["Chatbot hỏi đáp nội quy", "Nhân viên hỏi 'phép năm nay khác không?' → bot đọc PDF HR trả lời kèm link trang."],
               ["Trợ lý hợp đồng / pháp lý", "'Điều khoản phạt chậm giao hàng hợp đồng A?' → bot trả lời + trích dẫn điều khoản."],
               ["Phân tích báo cáo ngành", "Marketer có 50 PDF báo cáo dược → hỏi xu hướng, bot trả từng số liệu có nguồn."],
-              ["CSKH — FAQ sản phẩm", "Khách hỏi cấu hình, đổi trả → bot đọc manual + chính sách hiện hành, không lạc bản cũ."],
+              ["CSKH, FAQ sản phẩm", "Khách hỏi cấu hình, đổi trả → bot đọc manual + chính sách hiện hành, không lạc bản cũ."],
               ["Tìm email / tài liệu cá nhân", "'Tôi đã gửi hợp đồng với X chưa?' → trợ lý tra hộp thư và Drive cá nhân."],
               ["Giáo viên tra sách giáo khoa", "'Bài Giỗ Tổ Hùng Vương sách lớp 4 dạy gì?' → bot trả đúng đoạn sách."],
             ].map(([t, d]) => (
@@ -1273,8 +1273,7 @@ export default function RAGTopic() {
                 Có ngưỡng tối thiểu + rerank.
               </li>
               <li>
-                <strong>Không đo faithfulness:</strong> accuracy không đủ —
-                kiểm tra AI có thật sự dùng đoạn tra hay vẫn chế từ trí nhớ.
+                <strong>Không đo faithfulness:</strong> accuracy không đủ, kiểm tra AI có thật sự dùng đoạn tra hay vẫn chế từ trí nhớ.
               </li>
             </ul>
           </CollapsibleDetail>
@@ -1285,7 +1284,7 @@ export default function RAGTopic() {
               <li>Kho quá nhỏ (&lt; 20 trang) và thay đổi liên tục: dán trực tiếp vào prompt.</li>
               <li>Yêu cầu độ trễ &lt; 100ms trên thiết bị yếu: RAG thêm 1-2 bước mạng khó đáp ứng.</li>
               <li className="list-none pt-1 italic text-muted">
-                Nhưng hầu hết bài toán doanh nghiệp sẽ đến lúc cần RAG — thiết
+                Nhưng hầu hết bài toán doanh nghiệp sẽ đến lúc cần RAG, thiết
                 kế sẵn &quot;nơi lưu tài liệu&quot; và &quot;nơi embed&quot;.
               </li>
             </ul>
@@ -1298,11 +1297,11 @@ export default function RAGTopic() {
         <MiniSummary
           title="Ghi nhớ về RAG"
           points={[
-            "RAG = cho AI quyền tra cứu tài liệu nội bộ trước khi trả lời — thay vì đoán theo trí nhớ chung chung.",
+            "RAG = cho AI quyền tra cứu tài liệu nội bộ trước khi trả lời, thay vì đoán theo trí nhớ chung chung.",
             "Pipeline offline: Tài liệu → Cắt đoạn → Mã hoá vector → Kho vector. Pipeline online: Câu hỏi → Tìm top-K → Ghép vào prompt → AI viết trả lời có trích dẫn.",
             "Lợi ích lớn nhất với dân văn phòng: câu trả lời ĐÚNG nội quy công ty mình, ĐÚNG số liệu báo cáo, có trích dẫn kiểm chứng được.",
             "Chất lượng RAG = chất lượng kho tài liệu. Rác vào, rác ra. Dọn kho và cập nhật đều đặn quan trọng hơn mô hình AI xịn.",
-            "Muốn khôn hơn: lọc metadata (ngày/phòng ban), viết lại câu hỏi, rerank cross-encoder — tăng precision mà không cần đổi AI.",
+            "Muốn khôn hơn: lọc metadata (ngày/phòng ban), viết lại câu hỏi, rerank cross-encoder, tăng precision mà không cần đổi AI.",
             "Đánh giá cần 3 chỉ số: đoạn tra có đúng không, AI có bám tài liệu không, câu trả lời có trả đúng câu hỏi không.",
           ]}
         />

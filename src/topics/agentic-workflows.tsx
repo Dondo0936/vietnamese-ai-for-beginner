@@ -24,9 +24,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "agentic-workflows",
   title: "Agentic Workflows",
-  titleVi: "Quy trình AI tự chủ — không code, kéo thả là xong",
+  titleVi: "Agentic workflow: giao việc cho AI chạy nhiều bước",
   description:
-    "Zapier, Make, n8n, Gumloop, Dify — năm công cụ cho phép người làm văn phòng Việt dựng quy trình AI tự động mà không viết một dòng code.",
+    "Dùng Zapier, Make, n8n hoặc Dify để AI đọc dữ liệu, quyết định bước tiếp theo và trả kết quả.",
   category: "ai-agents",
   tags: ["no-code", "automation", "zapier", "make", "n8n"],
   difficulty: "intermediate",
@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ─────────────────────────────────────────────────────────────
-// Dữ liệu — 5 công cụ no-code phổ biến
+// Dữ liệu, 5 công cụ no-code phổ biến
 // ─────────────────────────────────────────────────────────────
 
 interface Tool {
@@ -82,7 +82,7 @@ const TOOLS: Tool[] = [
   },
   {
     name: "n8n",
-    tagline: "Tự lưu trữ trên máy chủ công ty — dữ liệu không ra ngoài.",
+    tagline: "Tự lưu trữ trên máy chủ công ty, dữ liệu không ra ngoài.",
     strength: "Mã nguồn mở, tự host được, phù hợp ngành yêu cầu bảo mật chặt.",
     weakness:
       "Cần có người biết chút kỹ thuật để dựng máy chủ ban đầu.",
@@ -94,7 +94,7 @@ const TOOLS: Tool[] = [
   {
     name: "Gumloop",
     tagline:
-      "Sinh sau đẻ muộn nhưng cực mạnh cho quy trình 'có suy nghĩ' — tức có AI ở mỗi bước.",
+      "Sinh sau đẻ muộn nhưng cực mạnh cho quy trình 'có suy nghĩ', tức có AI ở mỗi bước.",
     strength:
       "Nội bộ gắn AI rất sâu, phù hợp quy trình phân tích dài (đọc, tóm tắt, phân loại).",
     weakness: "Ít kết nối app ngoài hơn Zapier / Make.",
@@ -106,7 +106,7 @@ const TOOLS: Tool[] = [
   {
     name: "Dify",
     tagline:
-      "Tập trung xây chatbot và agent nội bộ — có giao diện riêng cho người dùng.",
+      "Tập trung xây chatbot và agent nội bộ, có giao diện riêng cho người dùng.",
     strength:
       "Xây chatbot dựa trên tài liệu công ty nhanh, có thể nhúng lên web.",
     weakness: "Ít phù hợp cho tự động hoá cross-app kiểu Zapier.",
@@ -172,7 +172,7 @@ const EXAMPLES: Example[] = [
     trigger: "Có CV mới gửi vào email tuyển dụng",
     actions: [
       "AI đọc PDF CV, rút các trường: tên, năm KN, kỹ năng",
-      "So với mô tả vị trí bằng AI — cho điểm 1-10",
+      "So với mô tả vị trí bằng AI, cho điểm 1-10",
       "Ghi vào bảng ứng viên trên Airtable",
       "Nếu điểm ≥ 8, gửi thư mời phỏng vấn tự động",
     ],
@@ -257,7 +257,7 @@ function FlowBuilderMock() {
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
           <span className="ml-3 text-[11px] font-mono text-slate-400">
-            Make.com — scenario "Email khách hàng"
+            Make.com, scenario "Email khách hàng"
           </span>
         </div>
         <span className="text-[10px] font-mono text-green-400">● đang chạy</span>
@@ -308,7 +308,7 @@ function FlowBuilderMock() {
       </div>
 
       <div className="bg-[#151b33] px-4 py-2 border-t border-border flex justify-between text-[10px] font-mono text-slate-400">
-        <span>5 bước nối tiếp — không có dòng code nào</span>
+        <span>5 bước nối tiếp, không có dòng code nào</span>
         <span>Chi phí: ~0.01 USD mỗi lần chạy</span>
       </div>
     </div>
@@ -451,9 +451,9 @@ function ManualVsAutomatic() {
           <Row emoji="⚙" text="Workflow chạy ngầm, phát hiện email mới" />
           <Row emoji="AI" text="AI tóm tắt và phân loại tự động trong 3 giây" />
           <Row emoji="▤" text="Ghi vào Sheets cũng trong 3 giây" />
-          <Row emoji="🔔" text="Slack cảnh báo sếp ngay khi có khiếu nại — không bao giờ quên" />
+          <Row emoji="🔔" text="Slack cảnh báo sếp ngay khi có khiếu nại, không bao giờ quên" />
           <p className="text-xs text-muted mt-3">
-            Tổng: <strong>gần 0 phút mỗi ngày</strong> — chỉ tốn khoảng 15 phút{" "}
+            Tổng: <strong>gần 0 phút mỗi ngày</strong>, chỉ tốn khoảng 15 phút{" "}
             <em>một lần</em> lúc dựng workflow ban đầu.
           </p>
         </div>
@@ -585,7 +585,7 @@ const QUIZ: QuizQuestion[] = [
       "Workflow AI kiểu Zapier / Make là gì, nói đơn giản nhất?",
     options: [
       "Một dạng virus máy tính",
-      "Một chuỗi các bước tự động, kéo thả bằng chuột, không cần viết code — giống dây chuyền nhà máy nhưng cho công việc văn phòng",
+      "Một chuỗi các bước tự động, kéo thả bằng chuột, không cần viết code, giống dây chuyền nhà máy nhưng cho công việc văn phòng",
       "Một loại trò chơi điện tử",
     ],
     correct: 1,
@@ -614,19 +614,19 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Workflow chạy lặp rất nhiều lần. Mỗi lần AI tóm tắt tốn ~0.01 USD — không nhiều — nhưng nhân với 10.000 lượt/tháng thì thành con số đáng kể. Luôn đặt giới hạn số lần chạy và theo dõi chi phí tháng đầu.",
+      "Workflow chạy lặp rất nhiều lần. Mỗi lần AI tóm tắt tốn ~0.01 USD, không nhiều, nhưng nhân với 10.000 lượt/tháng thì thành con số đáng kể. Luôn đặt giới hạn số lần chạy và theo dõi chi phí tháng đầu.",
   },
   {
     question:
       "Khi nào bạn KHÔNG nên dùng workflow tự động?",
     options: [
       "Khi việc lặp đi lặp lại hàng ngày",
-      "Khi quyết định có rủi ro cao (ví dụ: chuyển tiền, ký hợp đồng) — các bước này cần có người duyệt, không nên để AI tự chạy đến cùng",
+      "Khi quyết định có rủi ro cao (ví dụ: chuyển tiền, ký hợp đồng), các bước này cần có người duyệt, không nên để AI tự chạy đến cùng",
       "Khi có nhiều app cần nối với nhau",
     ],
     correct: 1,
     explanation:
-      "Quy tắc vàng: workflow tốt cho việc lặp lại & rủi ro thấp (sàng email, ghi dữ liệu, báo cáo). Với việc rủi ro cao — chuyển tiền, duyệt hợp đồng, tuyển dụng cuối — phải có 'chốt người' ở bước cuối. AI đề xuất, người duyệt.",
+      "Quy tắc vàng: workflow tốt cho việc lặp lại & rủi ro thấp (sàng email, ghi dữ liệu, báo cáo). Với việc rủi ro cao, chuyển tiền, duyệt hợp đồng, tuyển dụng cuối, phải có 'chốt người' ở bước cuối. AI đề xuất, người duyệt.",
   },
   {
     type: "fill-blank",
@@ -640,7 +640,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "Dify", accept: ["dify"] },
     ],
     explanation:
-      "Zapier (tiện nhất), Make (kéo-thả đẹp), n8n (tự host), Gumloop (AI sâu), Dify (chatbot nội bộ). Mỗi cái có thế mạnh riêng — không có cái 'tốt nhất', chỉ có cái phù hợp nhất với nhu cầu của bạn.",
+      "Zapier (tiện nhất), Make (kéo-thả đẹp), n8n (tự host), Gumloop (AI sâu), Dify (chatbot nội bộ). Mỗi cái có thế mạnh riêng, không có cái 'tốt nhất', chỉ có cái phù hợp nhất với nhu cầu của bạn.",
   },
 ];
 
@@ -678,7 +678,7 @@ export default function AgenticWorkflowsTopic() {
           <p className="mt-2 text-sm text-muted">
             Bài hôm nay giới thiệu <strong>workflow AI kiểu no-code</strong>:
             Zapier, Make, n8n, Gumloop, Dify. Đây là các công cụ cho phép bạn
-            dựng quy trình "AI tự chạy nhiều bước" bằng cách kéo-thả — không
+            dựng quy trình "AI tự chạy nhiều bước" bằng cách kéo-thả, không
             cần biết lập trình.
           </p>
         </PredictionGate>
@@ -689,8 +689,7 @@ export default function AgenticWorkflowsTopic() {
         <p>
           Hãy tưởng tượng một <strong>dây chuyền trong nhà máy</strong>. Mỗi
           công nhân đứng một vị trí, làm một việc rất nhỏ: lấy linh kiện, vặn
-          ốc, dán nhãn, xếp vào hộp. Công nhân không cần biết hết quy trình —
-          chỉ làm việc của mình khi có đồ tới.
+          ốc, dán nhãn, xếp vào hộp. Công nhân không cần biết hết quy trình, chỉ làm việc của mình khi có đồ tới.
         </p>
         <p>
           Workflow AI y hệt dây chuyền đó, nhưng thay vì công nhân là{" "}
@@ -703,7 +702,7 @@ export default function AgenticWorkflowsTopic() {
         <Callout variant="insight" title="Tại sao đây là cuộc cách mạng im lặng?">
           Trước 2023 muốn nối hai phần mềm (ví dụ Gmail + Google Sheets) phải
           thuê lập trình viên. Bây giờ: một chị phòng kế toán có thể tự làm
-          trong 15 phút. Sức mạnh không còn nằm ở "biết code" — mà ở "biết
+          trong 15 phút. Sức mạnh không còn nằm ở "biết code", mà ở "biết
           sắp xếp công việc".
         </Callout>
       </LessonSection>
@@ -714,7 +713,7 @@ export default function AgenticWorkflowsTopic() {
           <div className="space-y-6">
             <div>
               <p className="text-sm font-semibold text-foreground mb-1">
-                Demo 1 — Bên trong một công cụ kéo-thả
+                Demo 1, Bên trong một công cụ kéo-thả
               </p>
               <p className="text-xs text-muted mb-3">
                 Đây là ảnh chụp dựng lại của một scenario trong Make.com. Mỗi
@@ -723,7 +722,7 @@ export default function AgenticWorkflowsTopic() {
               <FlowBuilderMock />
             </div>
 
-            <LessonSection label="Demo 1b — Thử sắp lại thứ tự các bước">
+            <LessonSection label="Demo 1b, Thử sắp lại thứ tự các bước">
               <p className="text-xs text-muted mb-3">
                 Kéo các khối về đúng thứ tự của workflow 'trợ lý email CSKH'.
                 Thứ tự logic: trigger → AI xử lý → ghi dữ liệu → thông báo.
@@ -735,11 +734,11 @@ export default function AgenticWorkflowsTopic() {
               />
             </LessonSection>
 
-            <LessonSection label="Demo 2 — Thủ công mỗi ngày vs workflow tự động">
+            <LessonSection label="Demo 2, Thủ công mỗi ngày vs workflow tự động">
               <ManualVsAutomatic />
             </LessonSection>
 
-            <LessonSection label="Demo 3 — Năm công cụ no-code phổ biến">
+            <LessonSection label="Demo 3, Năm công cụ no-code phổ biến">
               <p className="text-xs text-muted mb-3">
                 Mỗi công cụ có một triết lý thiết kế. Xem qua từng tab, sau
                 đó thử ghép tên với thế mạnh ở phần dưới.
@@ -768,7 +767,7 @@ export default function AgenticWorkflowsTopic() {
             Sức mạnh workflow AI no-code không phải ở việc{" "}
             <strong>AI giỏi đến đâu</strong>, mà ở việc bạn có thể{" "}
             <strong>ghép AI vào giữa</strong> hai phần mềm mà bình thường
-            không nói chuyện được với nhau — Gmail và Google Sheets, Shopee và
+            không nói chuyện được với nhau, Gmail và Google Sheets, Shopee và
             Zalo, Zoom và Teams. Không cần lập trình viên, không cần phòng IT,
             không cần bất kỳ ai ngoài chính bạn. Đây là lần đầu tiên trong
             lịch sử công sở, người không code có thể tự xây hệ thống tự động
@@ -784,7 +783,7 @@ export default function AgenticWorkflowsTopic() {
           options={[
             "Đọc PDF và rút thông tin như tên, kỹ năng, năm kinh nghiệm",
             "Cho điểm sơ bộ 1-10 dựa trên mô tả công việc",
-            "Gửi thư từ chối cho ứng viên có điểm thấp — phải có người duyệt, vì từ chối một người có thể ảnh hưởng danh tiếng công ty và AI có thể sai thiên lệch",
+            "Gửi thư từ chối cho ứng viên có điểm thấp, phải có người duyệt, vì từ chối một người có thể ảnh hưởng danh tiếng công ty và AI có thể sai thiên lệch",
             "Ghi điểm vào bảng Airtable",
           ]}
           correct={2}
@@ -844,14 +843,13 @@ export default function AgenticWorkflowsTopic() {
                 hành động quan trọng.
               </li>
               <li>
-                <strong>Rò rỉ dữ liệu nhạy cảm:</strong> Zapier, Make là cloud
-                — dữ liệu đi qua máy chủ nước ngoài. Nếu xử lý thông tin khách
+                <strong>Rò rỉ dữ liệu nhạy cảm:</strong> Zapier, Make là cloud, dữ liệu đi qua máy chủ nước ngoài. Nếu xử lý thông tin khách
                 hàng nhạy cảm, cân nhắc n8n tự host.
               </li>
             </ul>
           </Callout>
 
-          <Callout variant="tip" title="Khi nào nên dùng — và khi nào không">
+          <Callout variant="tip" title="Khi nào nên dùng, và khi nào không">
             <p className="text-sm mb-2">
               <strong>Nên dùng khi:</strong> việc lặp đi lặp lại nhiều lần,
               rủi ro thấp, dữ liệu đã có sẵn dạng số, kết quả sai vẫn sửa được
@@ -868,7 +866,7 @@ export default function AgenticWorkflowsTopic() {
             Workflow AI và{" "}
             <TopicLink slug="ai-coding-assistants">AI coding assistants</TopicLink>{" "}
             là hai mặt của cùng một làn sóng: AI đang thò tay vào{" "}
-            <em>mọi khâu công việc</em> — cả coding lẫn văn phòng. Ai biết
+            <em>mọi khâu công việc</em>, cả coding lẫn văn phòng. Ai biết
             kéo-thả trước sẽ có lợi thế trước.
           </p>
         </ExplanationSection>
@@ -879,9 +877,9 @@ export default function AgenticWorkflowsTopic() {
         <MiniSummary
           title="Những điều cần nhớ"
           points={[
-            "Workflow AI = dây chuyền tự động cho công việc văn phòng — kéo thả thay vì code. Trigger → AI node → Action.",
+            "Workflow AI = dây chuyền tự động cho công việc văn phòng, kéo thả thay vì code. Trigger → AI node → Action.",
             "Năm công cụ nên biết: Zapier (nhanh-nhiều app), Make (kéo-thả đẹp), n8n (tự host-bảo mật), Gumloop (AI sâu), Dify (chatbot nội bộ).",
-            "Dùng tốt cho: sàng email, tóm tắt họp, đồng bộ đơn hàng, sàng CV, bản tin sáng — việc lặp & rủi ro thấp.",
+            "Dùng tốt cho: sàng email, tóm tắt họp, đồng bộ đơn hàng, sàng CV, bản tin sáng, việc lặp & rủi ro thấp.",
             "Không nên để AI tự quyết định bước có ảnh hưởng lớn (duyệt tiền, từ chối người, ký hợp đồng). Luôn có 'chốt người'.",
             "Cạm bẫy: chi phí tăng theo lượt chạy, AI phân loại sai, rò rỉ dữ liệu nhạy cảm khi dùng cloud. Theo dõi tháng đầu kỹ.",
           ]}

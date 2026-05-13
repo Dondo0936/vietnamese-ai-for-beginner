@@ -29,9 +29,9 @@ import { ProgressSteps, ToggleCompare, Callout } from "@/components/interactive"
 export const metadata: TopicMeta = {
   slug: "guardrails-in-chat-assistants",
   title: "Guardrails in Chat Assistants",
-  titleVi: "Rào chắn An toàn trong Trợ lý Trò chuyện",
+  titleVi: "Guardrails trong trợ lý trò chuyện",
   description:
-    "Constitutional AI của Anthropic và Moderation API của OpenAI: hai cách tiếp cận bảo vệ người dùng khỏi nội dung có hại",
+    "Constitutional AI và moderation giúp chatbot lọc yêu cầu nguy hiểm, giữ trải nghiệm an toàn hơn cho người dùng.",
   category: "ai-safety",
   tags: ["guardrails", "safety", "application"],
   difficulty: "intermediate",
@@ -61,7 +61,7 @@ export const metadata: TopicMeta = {
       kind: "paper",
     },
     {
-      title: "Moderation — OpenAI API Guide",
+      title: "Moderation, OpenAI API Guide",
       publisher: "OpenAI",
       url: "https://developers.openai.com/api/docs/guides/moderation",
       date: "2024-08",
@@ -93,7 +93,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
- * TIMELINE — các sự cố guardrails lớn trong lịch sử chatbot
+ * TIMELINE, các sự cố guardrails lớn trong lịch sử chatbot
  * ──────────────────────────────────────────────────────────── */
 
 interface TimelineEvent {
@@ -123,7 +123,7 @@ const TIMELINE: TimelineEvent[] = [
   },
   {
     date: "02/2023",
-    title: "DAN jailbreak — ChatGPT bị bẻ khoá bằng đóng vai",
+    title: "DAN jailbreak, ChatGPT bị bẻ khoá bằng đóng vai",
     company: "OpenAI",
     impact: "red",
     summary:
@@ -139,7 +139,7 @@ const TIMELINE: TimelineEvent[] = [
   },
   {
     date: "08/2024",
-    title: "OpenAI ra Moderation API omni — phủ cả ảnh",
+    title: "OpenAI ra Moderation API omni, phủ cả ảnh",
     company: "OpenAI",
     impact: "green",
     summary:
@@ -207,7 +207,7 @@ function IncidentTimeline() {
 }
 
 /* ────────────────────────────────────────────────────────────
- * Mechanism — Progress steps + Beat bodies
+ * Mechanism, Progress steps + Beat bodies
  * ──────────────────────────────────────────────────────────── */
 
 const BEAT_LABELS = [
@@ -235,7 +235,7 @@ function MechanismStepsHeader() {
 }
 
 /* ────────────────────────────────────────────────────────────
- * Metrics — animated counter component
+ * Metrics, animated counter component
  * ──────────────────────────────────────────────────────────── */
 
 function AnimatedCounter({ target, suffix = "", label }: { target: number; suffix?: string; label: string }) {
@@ -270,7 +270,7 @@ function AnimatedCounter({ target, suffix = "", label }: { target: number; suffi
 function MetricsShowcase() {
   return (
     <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-      <AnimatedCounter target={700} suffix="M+" label="Người dùng ChatGPT hàng tuần (10/2025) — rào chắn bảo vệ quy mô này" />
+      <AnimatedCounter target={700} suffix="M+" label="Người dùng ChatGPT hàng tuần (10/2025), rào chắn bảo vệ quy mô này" />
       <AnimatedCounter target={8} suffix="" label="Loại nội dung mà Moderation API của OpenAI phân loại (bạo lực, thù ghét, tự hại&hellip;)" />
       <AnimatedCounter target={95} suffix="%" label="Tỷ lệ chặn jailbreak mà Constitutional Classifiers của Anthropic đạt trong thử nghiệm nội bộ" />
       <AnimatedCounter target={5} suffix="" label="Lượt tin nhắn tối đa mỗi cuộc trò chuyện Bing Chat sau sự cố Sydney (2/2023)" />
@@ -279,7 +279,7 @@ function MetricsShowcase() {
 }
 
 /* ────────────────────────────────────────────────────────────
- * ChatComparison — ToggleCompare có rào chắn vs không
+ * ChatComparison, ToggleCompare có rào chắn vs không
  * ──────────────────────────────────────────────────────────── */
 
 interface ChatMessage {
@@ -340,7 +340,7 @@ const WITH_GUARDRAILS: ChatMessage[] = [
   {
     role: "bot",
     text:
-      "Tôi không thể đoán hoặc cung cấp mật khẩu của người khác — việc này vi phạm quyền riêng tư và an toàn mạng. Nếu bạn là quản trị viên hệ thống có quyền hợp lệ, hãy dùng quy trình đặt lại mật khẩu qua bộ phận IT.",
+      "Tôi không thể đoán hoặc cung cấp mật khẩu của người khác, việc này vi phạm quyền riêng tư và an toàn mạng. Nếu bạn là quản trị viên hệ thống có quyền hợp lệ, hãy dùng quy trình đặt lại mật khẩu qua bộ phận IT.",
   },
 ];
 
@@ -358,11 +358,10 @@ export default function GuardrailsInChatAssistants() {
         <p>
           Khi hàng trăm triệu người dùng ChatGPT, Claude, Gemini mỗi ngày, một câu
           hỏi sống còn xuất hiện: <strong>làm sao giữ chatbot hữu ích mà không
-          gây hại?</strong> Anthropic và OpenAI &mdash; hai công ty AI hàng đầu
-          &mdash; đã đi hai con đường khác nhau nhưng bổ sung cho nhau.
+          gây hại?</strong> Anthropic và OpenAI, hai công ty AI hàng đầu, đã đi hai con đường khác nhau nhưng bổ sung cho nhau.
         </p>
         <p>
-          Anthropic dựng <strong>Constitutional AI</strong> (AI Hiến pháp &mdash; cách huấn luyện
+          Anthropic dựng <strong>Constitutional AI</strong> (AI Hiến pháp, cách huấn luyện
           để mô hình tự đánh giá câu trả lời theo một bộ nguyên tắc). OpenAI xây{" "}
           <strong>Moderation API</strong> (bộ lọc bên ngoài, kiểm tra cả đầu vào lẫn đầu ra). Cả
           hai đều là &ldquo;rào chắn an toàn&rdquo; (guardrails).
@@ -378,10 +377,9 @@ export default function GuardrailsInChatAssistants() {
 
       <ApplicationProblem topicSlug="guardrails-in-chat-assistants">
         <p>
-          Mô hình ngôn ngữ lớn (LLM) học từ hàng nghìn tỷ từ trên internet &mdash;
-          trong đó có cả sách hướng dẫn tội phạm, diễn đàn cực đoan, tài liệu
+          Mô hình ngôn ngữ lớn (LLM) học từ hàng nghìn tỷ từ trên internet, trong đó có cả sách hướng dẫn tội phạm, diễn đàn cực đoan, tài liệu
           nguy hiểm. Nếu bạn hỏi &ldquo;cách chế bom&rdquo;, về mặt kỹ thuật mô hình
-          &ldquo;biết&rdquo;. Vấn đề không phải kiến thức &mdash; mà là{" "}
+          &ldquo;biết&rdquo;. Vấn đề không phải kiến thức, mà là{" "}
           <strong>có nên trả lời hay không</strong>.
         </p>
         <p>
@@ -396,7 +394,7 @@ export default function GuardrailsInChatAssistants() {
           <ToggleCompare
             labelA="Chatbot không có rào chắn"
             labelB="Chatbot có rào chắn"
-            description="Cùng hai câu hỏi nguy hiểm, hai chatbot — cách trả lời hoàn toàn khác."
+            description="Cùng hai câu hỏi nguy hiểm, hai chatbot, cách trả lời hoàn toàn khác."
             childA={
               <div className="space-y-2">
                 {WITHOUT_GUARDRAILS.map((msg, i) => (
@@ -424,7 +422,7 @@ export default function GuardrailsInChatAssistants() {
 
         <p className="mt-4">
           Thách thức không phải &ldquo;chặn càng nhiều càng tốt&rdquo;. Bác sĩ hỏi về triệu chứng, nhà báo
-          nghiên cứu về tội phạm, giáo viên dạy về lịch sử chiến tranh &mdash; tất cả đều là yêu cầu
+          nghiên cứu về tội phạm, giáo viên dạy về lịch sử chiến tranh, tất cả đều là yêu cầu
           hợp lệ. Rào chắn phải <strong>tinh tế đủ để hiểu ngữ cảnh</strong>.
         </p>
       </ApplicationProblem>
@@ -439,7 +437,7 @@ export default function GuardrailsInChatAssistants() {
 
         <Beat step={1}>
           <p>
-            <strong>Constitutional AI — dạy mô hình tự kiểm.</strong> Tháng 12/2022, Anthropic công bố phương pháp mới: thay vì thuê hàng nghìn nhân viên gắn nhãn &ldquo;tốt/xấu&rdquo; cho từng câu trả lời, họ viết ra một bản &ldquo;hiến pháp&rdquo; bằng tiếng Anh thường &mdash; bộ nguyên tắc đạo đức &mdash; và để mô hình tự đánh giá câu trả lời của chính mình theo các nguyên tắc đó, rồi sửa đi sửa lại. Quá trình này lặp đi lặp lại nên mô hình dần hình thành thói quen &ldquo;muốn làm đúng&rdquo;.
+            <strong>Constitutional AI, dạy mô hình tự kiểm.</strong> Tháng 12/2022, Anthropic công bố phương pháp mới: thay vì thuê hàng nghìn nhân viên gắn nhãn &ldquo;tốt/xấu&rdquo; cho từng câu trả lời, họ viết ra một bản &ldquo;hiến pháp&rdquo; bằng tiếng Anh thường, bộ nguyên tắc đạo đức, và để mô hình tự đánh giá câu trả lời của chính mình theo các nguyên tắc đó, rồi sửa đi sửa lại. Quá trình này lặp đi lặp lại nên mô hình dần hình thành thói quen &ldquo;muốn làm đúng&rdquo;.
           </p>
           <div className="not-prose mt-2 rounded-md border border-accent/30 bg-accent-light/60 p-3 text-xs text-foreground">
             <BookOpen className="inline h-3.5 w-3.5 mr-1 text-accent" />
@@ -449,23 +447,23 @@ export default function GuardrailsInChatAssistants() {
 
         <Beat step={2}>
           <p>
-            <strong>RLAIF thay cho RLHF.</strong> Công thức cũ (RLHF &mdash; học từ phản hồi con người) đòi hàng nghìn người đọc nội dung độc để chấm điểm &mdash; đắt, chậm, và gây stress tâm lý cho nhân viên. Constitutional AI dùng <strong>RLAIF</strong> (học từ phản hồi của chính AI): để AI tự so sánh hai câu trả lời và chọn cái đúng theo hiến pháp. Vừa nhanh hơn, vừa không cần cho con người đọc những thứ không nên đọc.
+            <strong>RLAIF thay cho RLHF.</strong> Công thức cũ (RLHF, học từ phản hồi con người) đòi hàng nghìn người đọc nội dung độc để chấm điểm, đắt, chậm, và gây stress tâm lý cho nhân viên. Constitutional AI dùng <strong>RLAIF</strong> (học từ phản hồi của chính AI): để AI tự so sánh hai câu trả lời và chọn cái đúng theo hiến pháp. Vừa nhanh hơn, vừa không cần cho con người đọc những thứ không nên đọc.
           </p>
         </Beat>
 
         <Beat step={3}>
           <p>
-            <strong>Moderation API của OpenAI &mdash; bộ lọc bên ngoài miễn phí.</strong> Trong khi Anthropic dạy mô hình tự chế ngự, OpenAI đi hướng ngược lại: cung cấp một API riêng <em>chỉ để phân loại nội dung</em>. Bạn gửi một đoạn văn bản (hoặc ảnh từ 2024), API trả về điểm số cho từng nhóm: bạo lực, thù ghét, tự hại, tình dục, quấy rối&hellip; Lập trình viên dùng miễn phí để lọc cả đầu vào (chặn trước khi gửi cho GPT) và đầu ra (kiểm câu trả lời).
+            <strong>Moderation API của OpenAI, bộ lọc bên ngoài miễn phí.</strong> Trong khi Anthropic dạy mô hình tự chế ngự, OpenAI đi hướng ngược lại: cung cấp một API riêng <em>chỉ để phân loại nội dung</em>. Bạn gửi một đoạn văn bản (hoặc ảnh từ 2024), API trả về điểm số cho từng nhóm: bạo lực, thù ghét, tự hại, tình dục, quấy rối&hellip; Lập trình viên dùng miễn phí để lọc cả đầu vào (chặn trước khi gửi cho GPT) và đầu ra (kiểm câu trả lời).
           </p>
           <div className="not-prose mt-2 rounded-md border border-blue-400/30 bg-blue-500/10 p-3 text-xs text-foreground">
             <Eye className="inline h-3.5 w-3.5 mr-1 text-blue-500" />
-            <strong>Omni-moderation (08/2024):</strong> phiên bản mới phủ cả văn bản lẫn hình ảnh &mdash; cần thiết khi người dùng có thể tải ảnh lên ChatGPT.
+            <strong>Omni-moderation (08/2024):</strong> phiên bản mới phủ cả văn bản lẫn hình ảnh, cần thiết khi người dùng có thể tải ảnh lên ChatGPT.
           </div>
         </Beat>
 
         <Beat step={4}>
           <p>
-            <strong>Constitutional Classifiers &mdash; thế hệ công nghiệp hoá (01/2025).</strong> Ba năm sau bài báo gốc, Anthropic nâng cấp: huấn luyện các bộ phân loại nhỏ, nhanh dựa trên <em>dữ liệu tổng hợp</em> sinh ra từ hiến pháp. Các classifier này chạy song song ở đầu vào và đầu ra, chuyên bắt những chiêu jailbreak phổ biến &mdash; bao gồm cả &ldquo;universal jailbreak&rdquo; từng thành công với nhiều mô hình. Đây là cách Claude 3.5 và Claude 4 giữ được tỷ lệ từ chối an toàn ngay cả khi người dùng tinh vi.
+            <strong>Constitutional Classifiers, thế hệ công nghiệp hoá (01/2025).</strong> Ba năm sau bài báo gốc, Anthropic nâng cấp: huấn luyện các bộ phân loại nhỏ, nhanh dựa trên <em>dữ liệu tổng hợp</em> sinh ra từ hiến pháp. Các classifier này chạy song song ở đầu vào và đầu ra, chuyên bắt những chiêu jailbreak phổ biến, bao gồm cả &ldquo;universal jailbreak&rdquo; từng thành công với nhiều mô hình. Đây là cách Claude 3.5 và Claude 4 giữ được tỷ lệ từ chối an toàn ngay cả khi người dùng tinh vi.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -475,7 +473,7 @@ export default function GuardrailsInChatAssistants() {
         topicSlug="guardrails-in-chat-assistants"
       >
         <Metric
-          value="Constitutional AI giảm mạnh nhu cầu nhân viên gắn nhãn nội dung độc hại — AI tự đánh giá theo bộ nguyên tắc"
+          value="Constitutional AI giảm mạnh nhu cầu nhân viên gắn nhãn nội dung độc hại, AI tự đánh giá theo bộ nguyên tắc"
           sourceRef={1}
         />
         <Metric
@@ -487,11 +485,11 @@ export default function GuardrailsInChatAssistants() {
           sourceRef={2}
         />
         <Metric
-          value="Sự cố Bing Sydney (02/2023) khiến Microsoft phải giới hạn cuộc trò chuyện xuống chỉ 5 lượt — minh chứng cho việc thiếu rào chắn gây hậu quả tức thời"
+          value="Sự cố Bing Sydney (02/2023) khiến Microsoft phải giới hạn cuộc trò chuyện xuống chỉ 5 lượt, minh chứng cho việc thiếu rào chắn gây hậu quả tức thời"
           sourceRef={5}
         />
         <Metric
-          value="Omni-moderation phủ cả văn bản và hình ảnh — cần thiết khi chatbot đa phương tiện phổ biến"
+          value="Omni-moderation phủ cả văn bản và hình ảnh, cần thiết khi chatbot đa phương tiện phổ biến"
           sourceRef={4}
         />
       </ApplicationMetrics>
@@ -524,13 +522,13 @@ export default function GuardrailsInChatAssistants() {
         </div>
 
         <p>
-          <strong>Constitutional AI</strong> (dạy AI tự kiểm) và <strong>Moderation API</strong> (lọc từ bên ngoài) là hai triết lý bổ sung cho nhau &mdash; giống như việc vừa dạy con đạo đức ở nhà, vừa có lớp học, cảnh sát, luật pháp bên ngoài. Không lớp nào đủ một mình. Kết hợp cả hai tạo nên hệ thống phòng thủ nhiều lớp, giúp hàng trăm triệu người dùng chatbot hằng ngày mà không mở một chiếc hộp Pandora.
+          <strong>Constitutional AI</strong> (dạy AI tự kiểm) và <strong>Moderation API</strong> (lọc từ bên ngoài) là hai triết lý bổ sung cho nhau, giống như việc vừa dạy con đạo đức ở nhà, vừa có lớp học, cảnh sát, luật pháp bên ngoài. Không lớp nào đủ một mình. Kết hợp cả hai tạo nên hệ thống phòng thủ nhiều lớp, giúp hàng trăm triệu người dùng chatbot hằng ngày mà không mở một chiếc hộp Pandora.
         </p>
 
         <div className="not-prose mt-4 rounded-lg border border-accent/30 bg-accent-light/60 p-4 flex items-start gap-3">
           <Sparkles className="h-5 w-5 text-accent shrink-0 mt-0.5" />
           <div className="text-sm leading-relaxed text-foreground">
-            <strong>Bài học cho doanh nghiệp Việt:</strong> nếu bạn xây chatbot cho khách hàng — ngân hàng, sàn thương mại, bệnh viện — hãy kết hợp <strong>cả hai</strong>. Dùng API của Anthropic hoặc OpenAI (đã có rào chắn bẩm sinh), gắn thêm lớp lọc riêng bằng Moderation API hoặc thư viện như Llama Guard, và đặt quy tắc nghiệp vụ cụ thể cho ngành của bạn. Không bao giờ dựa vào một lớp duy nhất.
+            <strong>Bài học cho doanh nghiệp Việt:</strong> nếu bạn xây chatbot cho khách hàng, ngân hàng, sàn thương mại, bệnh viện, hãy kết hợp <strong>cả hai</strong>. Dùng API của Anthropic hoặc OpenAI (đã có rào chắn bẩm sinh), gắn thêm lớp lọc riêng bằng Moderation API hoặc thư viện như Llama Guard, và đặt quy tắc nghiệp vụ cụ thể cho ngành của bạn. Không bao giờ dựa vào một lớp duy nhất.
           </div>
         </div>
 

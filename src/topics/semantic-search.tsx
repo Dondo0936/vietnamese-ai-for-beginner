@@ -24,9 +24,9 @@ import { Search, FileText, AlertTriangle, CheckCircle2 } from "lucide-react";
 export const metadata: TopicMeta = {
   slug: "semantic-search",
   title: "Semantic Search",
-  titleVi: "Tìm kiếm theo ý nghĩa",
+  titleVi: "Semantic search: tìm theo ý, không theo chữ",
   description:
-    "Tìm tài liệu theo NGHĨA thay vì khớp từ khoá — tra nội quy, hợp đồng, báo cáo mà không phải gõ đúng từng chữ.",
+    "Tìm đúng nội dung trong hợp đồng, quy trình và báo cáo dù người dùng không nhớ chính xác từ khóa.",
   category: "search-retrieval",
   tags: ["semantic", "search", "embedding", "nlp"],
   difficulty: "intermediate",
@@ -35,7 +35,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ══════════════════════════════════════════════════════════════
-   DỮ LIỆU — KHO TÀI LIỆU VĂN PHÒNG
+   DỮ LIỆU, KHO TÀI LIỆU VĂN PHÒNG
    8 tài liệu, 3 cụm chủ đề công sở:
      • Nghỉ phép & phúc lợi   (id 0..3)
      • Quy trình khách hàng   (id 4..5)
@@ -159,7 +159,7 @@ function topK<T>(arr: T[], k: number, score: (t: T) => number): T[] {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   PIPELINE LADDER — helper render 1 cột số bước đơn giản
+   PIPELINE LADDER, helper render 1 cột số bước đơn giản
    ══════════════════════════════════════════════════════════════ */
 function PipelineLadder({
   color,
@@ -189,7 +189,7 @@ function PipelineLadder({
 }
 
 /* ══════════════════════════════════════════════════════════════
-   BỘ QUIZ — 8 CÂU, KHÔNG CODE, KHÔNG CÔNG THỨC
+   BỘ QUIZ, 8 CÂU, KHÔNG CODE, KHÔNG CÔNG THỨC
    ══════════════════════════════════════════════════════════════ */
 
 const quizQuestions: QuizQuestion[] = [
@@ -198,26 +198,26 @@ const quizQuestions: QuizQuestion[] = [
       "Bạn gõ 'xin nghỉ phép' trong hệ thống tìm kiếm nội bộ. Tại sao tìm kiếm ngữ nghĩa vẫn trả về 'annual leave policy' dù không chứa từ nào trùng?",
     options: [
       "Vì hệ thống tự dịch từng từ sang tiếng Anh",
-      "Vì mô hình embedding đặt hai câu cùng nghĩa gần nhau trong không gian số — không cần ký tự trùng",
+      "Vì mô hình embedding đặt hai câu cùng nghĩa gần nhau trong không gian số, không cần ký tự trùng",
       "Vì có bảng mapping tay giữa từ khoá",
       "Vì trùng ngẫu nhiên",
     ],
     correct: 1,
     explanation:
-      "Embedding được huấn luyện để câu cùng nghĩa (dù ngôn ngữ khác) có vector gần nhau. Đây là lý do tìm kiếm ngữ nghĩa giải quyết được 'vocabulary mismatch' — khoảng cách từ vựng mà tìm kiếm từ khoá bó tay.",
+      "Embedding được huấn luyện để câu cùng nghĩa (dù ngôn ngữ khác) có vector gần nhau. Đây là lý do tìm kiếm ngữ nghĩa giải quyết được 'vocabulary mismatch', khoảng cách từ vựng mà tìm kiếm từ khoá bó tay.",
   },
   {
     question:
       "Bạn cần tra chính xác số hợp đồng 'HD-2025-008'. Tìm kiếm theo ý nghĩa có phù hợp không?",
     options: [
-      "Có — semantic luôn tốt hơn keyword",
-      "KHÔNG — mã hợp đồng là chuỗi ký tự cụ thể, tìm theo TỪ KHOÁ chính xác phù hợp hơn. Semantic coi mã như token chung chung và dễ trả nhầm",
+      "Có, semantic luôn tốt hơn keyword",
+      "KHÔNG, mã hợp đồng là chuỗi ký tự cụ thể, tìm theo TỪ KHOÁ chính xác phù hợp hơn. Semantic coi mã như token chung chung và dễ trả nhầm",
       "Tuỳ bộ nhớ của AI",
       "Có nếu dùng GPT-4",
     ],
     correct: 1,
     explanation:
-      "Mã hợp đồng, SKU, tên model hiếm là 'nghĩa riêng' — từ khoá khớp chính xác vượt trội. Semantic coi 'HD-2025-008' như một token mờ, khó giữ ký tự chuẩn. Hybrid (keyword + semantic) là giải pháp chuẩn.",
+      "Mã hợp đồng, SKU, tên model hiếm là 'nghĩa riêng', từ khoá khớp chính xác vượt trội. Semantic coi 'HD-2025-008' như một token mờ, khó giữ ký tự chuẩn. Hybrid (keyword + semantic) là giải pháp chuẩn.",
   },
   {
     question:
@@ -225,12 +225,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Chỉ semantic vì hiện đại",
       "Chỉ keyword vì đơn giản",
-      "Hybrid: keyword bắt mã hợp đồng / tên sản phẩm chính xác; semantic bắt câu hỏi tự nhiên, đồng nghĩa — ghép cả hai vượt trội mỗi cách riêng",
+      "Hybrid: keyword bắt mã hợp đồng / tên sản phẩm chính xác; semantic bắt câu hỏi tự nhiên, đồng nghĩa, ghép cả hai vượt trội mỗi cách riêng",
       "Không cần tìm kiếm, chỉ dùng filter",
     ],
     correct: 2,
     explanation:
-      "Tài liệu công ty vừa có mã chính xác (hợp đồng, SKU, số báo cáo) vừa có mô tả tự do (điều khoản, quy trình). Hybrid tận dụng cả hai loại — chuẩn trong mọi sản phẩm tìm kiếm nghiêm túc.",
+      "Tài liệu công ty vừa có mã chính xác (hợp đồng, SKU, số báo cáo) vừa có mô tả tự do (điều khoản, quy trình). Hybrid tận dụng cả hai loại, chuẩn trong mọi sản phẩm tìm kiếm nghiêm túc.",
   },
   {
     question:
@@ -238,7 +238,7 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Không tìm ra vì khác ngôn ngữ",
       "Yêu cầu dịch sang tiếng Việt",
-      "Tìm ra đúng tài liệu nếu dùng embedding đa ngôn ngữ (như BGE-M3) — vì vector của hai câu cùng nghĩa ở hai ngôn ngữ vẫn gần nhau",
+      "Tìm ra đúng tài liệu nếu dùng embedding đa ngôn ngữ (như BGE-M3), vì vector của hai câu cùng nghĩa ở hai ngôn ngữ vẫn gần nhau",
       "Chạy chậm hơn 10 lần",
     ],
     correct: 2,
@@ -249,7 +249,7 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Điểm cosine giữa câu hỏi và tài liệu là 0.88. Ý nghĩa đúng là gì?",
     options: [
-      "Rất giống — gần như giống 88%",
+      "Rất giống, gần như giống 88%",
       "Số tuyệt đối không có nghĩa cố định. 0.88 ở mô hình A có thể là 'rất liên quan', ở mô hình B chỉ là 'trung bình'. Phải so sánh tương đối và calibrate trên dữ liệu thực",
       "Luôn là 'không liên quan'",
       "Là tỷ lệ phần trăm giống nhau",
@@ -269,13 +269,13 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Một vector duy nhất cho 100 trang = toạ độ 'trung bình' mọi ý — truy xuất thường miss. Cắt 300-800 chữ mỗi đoạn giúp mỗi vector giữ đúng một ý cụ thể. Thêm overlap 10-20% để không cắt ngang.",
+      "Một vector duy nhất cho 100 trang = toạ độ 'trung bình' mọi ý, truy xuất thường miss. Cắt 300-800 chữ mỗi đoạn giúp mỗi vector giữ đúng một ý cụ thể. Thêm overlap 10-20% để không cắt ngang.",
   },
   {
     question:
       "Công ty bạn mới 500 tài liệu, chưa đến 200 người dùng. Có nên đầu tư hệ thống semantic search phức tạp?",
     options: [
-      "Nên — càng sớm càng tốt",
+      "Nên, càng sớm càng tốt",
       "Bắt đầu đơn giản: pgvector + embedding đa ngữ mã nguồn mở. Sau vài tháng dùng, đo nhu cầu thực tế mới mở rộng. Không cần Pinecone + cross-encoder từ đầu",
       "Không bao giờ cần",
       "Chỉ khi có GPU",
@@ -287,7 +287,7 @@ const quizQuestions: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Tìm kiếm ngữ nghĩa dùng một {blank} để chuyển câu hỏi và tài liệu thành vector, rồi xếp hạng theo {blank} — càng gần hướng, càng giống nghĩa.",
+      "Tìm kiếm ngữ nghĩa dùng một {blank} để chuyển câu hỏi và tài liệu thành vector, rồi xếp hạng theo {blank}, càng gần hướng, càng giống nghĩa.",
     blanks: [
       {
         answer: "embedding model",
@@ -305,7 +305,7 @@ const quizQuestions: QuizQuestion[] = [
 
 /* ══════════════════════════════════════════════════════════════
    COMPONENT: HEATMAP ĐIỂM TƯƠNG ĐỒNG
-   Hiển thị ma trận (query × doc) bằng ô màu + số — KHÔNG công thức
+   Hiển thị ma trận (query × doc) bằng ô màu + số, KHÔNG công thức
    ══════════════════════════════════════════════════════════════ */
 
 function SimilarityHeatmap() {
@@ -335,7 +335,7 @@ function SimilarityHeatmap() {
         </p>
         <p className="text-[11px] text-muted">
           Xanh đậm = rất liên quan. Xám = không liên quan. Đỏ = trái chủ đề.
-          Số trong ô là điểm gần-xa (cosine), không cần nhớ công thức — chỉ
+          Số trong ô là điểm gần-xa (cosine), không cần nhớ công thức, chỉ
           đọc màu.
         </p>
       </div>
@@ -407,10 +407,10 @@ function SimilarityHeatmap() {
 
       <div className="rounded-lg border border-dashed border-border bg-background/50 p-3 text-[11px] leading-relaxed text-muted">
         <strong className="text-foreground">Đọc bản đồ:</strong> hàng 1 &quot;xin
-        nghỉ phép năm nay&quot; xanh đậm ở cột #0, #1, #2, #3 — cả bốn tài
+        nghỉ phép năm nay&quot; xanh đậm ở cột #0, #1, #2, #3, cả bốn tài
         liệu về phép dù dùng từ vựng khác nhau (tiếng Việt, tiếng Anh,
         &quot;off work&quot;). Hàng 4 &quot;pharma market&quot; xanh cột #7
-        &quot;thị trường dược&quot;, xám/đỏ phần còn lại — ngôn ngữ khác, ý
+        &quot;thị trường dược&quot;, xám/đỏ phần còn lại, ngôn ngữ khác, ý
         khớp.
       </div>
     </div>
@@ -473,14 +473,14 @@ export default function SemanticSearchTopic() {
       {/* ═════ 1. DỰ ĐOÁN ═════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn gõ 'xin nghỉ phép' trong hệ thống tài liệu nội bộ. Có một file tên 'annual leave policy' — không chứa chữ nào trong câu bạn gõ. Hệ thống tìm kiếm theo TỪ KHOÁ có tìm ra file này không?"
+          question="Bạn gõ 'xin nghỉ phép' trong hệ thống tài liệu nội bộ. Có một file tên 'annual leave policy', không chứa chữ nào trong câu bạn gõ. Hệ thống tìm kiếm theo TỪ KHOÁ có tìm ra file này không?"
           options={[
-            "Có — vì hệ thống thông minh",
-            "KHÔNG — tìm theo từ khoá chỉ khớp ký tự, không có chữ nào trùng thì điểm bằng 0",
+            "Có, vì hệ thống thông minh",
+            "KHÔNG, tìm theo từ khoá chỉ khớp ký tự, không có chữ nào trùng thì điểm bằng 0",
             "Có nếu file phổ biến",
           ]}
           correct={1}
-          explanation="Tìm theo từ khoá (BM25, grep) chấm điểm bằng số từ trùng. 'xin', 'nghỉ', 'phép' đều không có trong 'annual leave policy' → điểm 0 → bỏ qua. Đây gọi là 'vocabulary mismatch' — và là lý do tìm kiếm ngữ nghĩa ra đời."
+          explanation="Tìm theo từ khoá (BM25, grep) chấm điểm bằng số từ trùng. 'xin', 'nghỉ', 'phép' đều không có trong 'annual leave policy' → điểm 0 → bỏ qua. Đây gọi là 'vocabulary mismatch', và là lý do tìm kiếm ngữ nghĩa ra đời."
         />
       </LessonSection>
 
@@ -508,7 +508,7 @@ export default function SemanticSearchTopic() {
                 Như <strong>thủ thư lâu năm</strong>: bạn nói &quot;một quyển
                 về nghỉ phép&quot;, cô ấy chạy ngay sang kệ &quot;annual leave
                 policy&quot;, &quot;chính sách phép năm&quot;, &quot;off
-                work&quot; — dù từ bạn dùng không có trên bìa.
+                work&quot;, dù từ bạn dùng không có trên bìa.
               </p>
             </div>
           </div>
@@ -534,7 +534,7 @@ export default function SemanticSearchTopic() {
           {/* ─── B. Side-by-side keyword vs semantic ─── */}
           <div className="mb-6 border-t border-border pt-5">
             <p className="mb-3 text-sm font-semibold text-foreground">
-              B. Cùng một câu hỏi — từ khoá vs ngữ nghĩa trả về khác nhau
+              B. Cùng một câu hỏi, từ khoá vs ngữ nghĩa trả về khác nhau
             </p>
 
             {/* Thanh điều khiển */}
@@ -610,7 +610,7 @@ export default function SemanticSearchTopic() {
             {/* Scatter 2D */}
             <div className="rounded-xl border border-border bg-background p-3">
               <p className="mb-2 text-xs font-semibold text-foreground">
-                Không gian ý nghĩa (đã chiếu về 2D — tài liệu gần nhau = ý gần
+                Không gian ý nghĩa (đã chiếu về 2D, tài liệu gần nhau = ý gần
                 nhau)
               </p>
               <svg viewBox="0 0 500 320" className="w-full">
@@ -828,7 +828,7 @@ export default function SemanticSearchTopic() {
                   .length === 0 ? (
                   <div className="rounded-lg border border-red-300 bg-red-50 p-2 dark:border-red-700 dark:bg-red-900/20">
                     <p className="text-[11px] leading-relaxed text-red-700 dark:text-red-300">
-                      Không tìm ra gì — bằng chứng ưu thế của tìm kiếm ngữ
+                      Không tìm ra gì, bằng chứng ưu thế của tìm kiếm ngữ
                       nghĩa khi từ vựng khác nhau.
                     </p>
                   </div>
@@ -892,7 +892,7 @@ export default function SemanticSearchTopic() {
         <AhaMoment>
           <p>
             <strong>Ý nghĩa có toạ độ.</strong> Mỗi câu trở thành một điểm
-            trong không gian số — hai câu cùng nghĩa ở gần nhau, bất kể ngôn
+            trong không gian số, hai câu cùng nghĩa ở gần nhau, bất kể ngôn
             ngữ, chính tả, hay từ ngữ. Tìm kiếm ngữ nghĩa chỉ là việc &quot;đo
             khoảng cách&quot; từ câu hỏi đến mọi tài liệu, rồi trả về top gần
             nhất.
@@ -912,19 +912,19 @@ export default function SemanticSearchTopic() {
           <InlineChallenge
             question="Nhân viên gõ tên model sản phẩm cụ thể 'MBP-M4-512GB' để tra chính sách bảo hành. Tìm kiếm ngữ nghĩa phù hợp không?"
             options={[
-              "Phù hợp — AI hiểu mã sản phẩm",
-              "KHÔNG tốt cho mã chính xác — cần kết hợp tìm từ khoá để giữ đúng ký tự. Chỉ dùng semantic dễ trả nhầm model khác",
+              "Phù hợp, AI hiểu mã sản phẩm",
+              "KHÔNG tốt cho mã chính xác, cần kết hợp tìm từ khoá để giữ đúng ký tự. Chỉ dùng semantic dễ trả nhầm model khác",
               "Tuỳ ngân sách",
             ]}
             correct={1}
-            explanation="Mã sản phẩm, số hợp đồng, tên model hiếm là 'exact match' — keyword mạnh hơn semantic. Giải pháp chuẩn: hybrid (keyword + semantic) cho phép lấy cả hai lợi thế."
+            explanation="Mã sản phẩm, số hợp đồng, tên model hiếm là 'exact match', keyword mạnh hơn semantic. Giải pháp chuẩn: hybrid (keyword + semantic) cho phép lấy cả hai lợi thế."
           />
           <div className="h-2" />
           <InlineChallenge
             question="Bạn có 5 triệu tài liệu nội bộ. Phòng IT hỏi: 'chấm điểm từng cặp câu hỏi-tài liệu bằng AI chính xác nhất có khả thi?'"
             options={[
-              "Có — với GPU đủ mạnh",
-              "KHÔNG — 5 triệu lần chấm cho MỖI câu hỏi là hàng giờ. Phải lọc 2 tầng: tìm nhanh 100 ứng viên, rồi chấm kỹ 100 đó",
+              "Có, với GPU đủ mạnh",
+              "KHÔNG, 5 triệu lần chấm cho MỖI câu hỏi là hàng giờ. Phải lọc 2 tầng: tìm nhanh 100 ứng viên, rồi chấm kỹ 100 đó",
               "Có nếu dùng LLM",
             ]}
             correct={1}
@@ -948,7 +948,7 @@ export default function SemanticSearchTopic() {
 
           {/* So sánh 2 cột: Keyword vs Semantic */}
           <h3 className="mt-5 text-base font-semibold text-foreground">
-            Từ khoá vs Ngữ nghĩa — mỗi phương pháp mạnh ở đâu?
+            Từ khoá vs Ngữ nghĩa, mỗi phương pháp mạnh ở đâu?
           </h3>
           <div className="grid gap-3 md:grid-cols-2">
             <div className="rounded-lg border border-red-200 bg-red-50/50 p-4 dark:border-red-800 dark:bg-red-900/10">
@@ -956,7 +956,7 @@ export default function SemanticSearchTopic() {
                 Từ khoá (BM25, grep)
               </p>
               <ul className="space-y-1 text-xs leading-relaxed text-foreground">
-                <li>• Khớp mã sản phẩm, số hợp đồng, tên riêng hiếm — CỰC MẠNH</li>
+                <li>• Khớp mã sản phẩm, số hợp đồng, tên riêng hiếm, CỰC MẠNH</li>
                 <li>• Nhanh, rẻ, dễ giải thích kết quả</li>
                 <li>• Yếu khi câu hỏi dùng từ khác tài liệu</li>
                 <li>• Không hiểu ngôn ngữ chéo (VN ↔ EN)</li>
@@ -979,7 +979,7 @@ export default function SemanticSearchTopic() {
 
           {/* ToggleCompare pipeline */}
           <h3 className="mt-5 text-base font-semibold text-foreground">
-            Pipeline tìm kiếm ngữ nghĩa — 1 tầng vs 2 tầng
+            Pipeline tìm kiếm ngữ nghĩa, 1 tầng vs 2 tầng
           </h3>
           <ToggleCompare
             labelA="1 tầng (đơn giản)"
@@ -1019,7 +1019,7 @@ export default function SemanticSearchTopic() {
             pairs={[
               { left: "Tra đúng số hợp đồng HD-2025-008", right: "Từ khoá (khớp chính xác)" },
               { left: "Hỏi 'chính sách nghỉ phép' nhưng file tên 'annual leave'", right: "Ngữ nghĩa (hiểu đồng nghĩa, chéo ngôn ngữ)" },
-              { left: "Kho có cả mã SKU và mô tả tự do về sản phẩm", right: "Hybrid (từ khoá + ngữ nghĩa) — ghép cả hai" },
+              { left: "Kho có cả mã SKU và mô tả tự do về sản phẩm", right: "Hybrid (từ khoá + ngữ nghĩa), ghép cả hai" },
               { left: "Lấy top-100 rồi chọn kỹ top-5 chất lượng", right: "Retrieve then rerank (bi-encoder + cross-encoder)" },
             ]}
           />
@@ -1120,13 +1120,13 @@ export default function SemanticSearchTopic() {
             ))}
           </div>
 
-          <CollapsibleDetail title="Đánh giá chất lượng tìm kiếm — chỉ số nào?">
+          <CollapsibleDetail title="Đánh giá chất lượng tìm kiếm, chỉ số nào?">
             <ul className="list-disc list-inside space-y-1.5 text-sm leading-relaxed">
               <li>
-                <strong>Recall@k:</strong> top-k có bao nhiêu % tài liệu đúng — đo &quot;không miss&quot;.
+                <strong>Recall@k:</strong> top-k có bao nhiêu % tài liệu đúng, đo &quot;không miss&quot;.
               </li>
               <li>
-                <strong>Precision@k:</strong> top-k có bao nhiêu % thật sự liên quan — đo &quot;không nhiễu&quot;.
+                <strong>Precision@k:</strong> top-k có bao nhiêu % thật sự liên quan, đo &quot;không nhiễu&quot;.
               </li>
               <li>
                 <strong>MRR:</strong> trung bình 1/hạng của kết quả đúng đầu tiên. Phù hợp khi chỉ cần 1 đáp án.
@@ -1140,7 +1140,7 @@ export default function SemanticSearchTopic() {
             </ul>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Chi phí vận hành — lưu ý trước khi scale">
+          <CollapsibleDetail title="Chi phí vận hành, lưu ý trước khi scale">
             <ul className="list-disc list-inside space-y-1.5 text-sm leading-relaxed">
               <li>
                 <strong>Bộ nhớ:</strong> 10M vector × 1024 chiều ≈ 40 GB. Product quantization giảm còn 2-4 GB.
@@ -1162,28 +1162,26 @@ export default function SemanticSearchTopic() {
           </h3>
           <ul className="list-disc list-inside space-y-1 text-sm">
             <li>
-              <TopicLink slug="bm25">BM25</TopicLink> — nền tảng tìm theo từ
+              <TopicLink slug="bm25">BM25</TopicLink>, nền tảng tìm theo từ
               khoá, bổ trợ cho semantic trong hybrid.
             </li>
             <li>
-              <TopicLink slug="embedding-model">Embedding Model</TopicLink> —
-              bộ não của semantic search, quyết định chất lượng vector.
+              <TopicLink slug="embedding-model">Embedding Model</TopicLink>, bộ não của semantic search, quyết định chất lượng vector.
             </li>
             <li>
-              <TopicLink slug="vector-databases">Vector Databases</TopicLink> —
-              nơi lưu và truy vấn vector quy mô lớn (pgvector, Qdrant,
+              <TopicLink slug="vector-databases">Vector Databases</TopicLink>, nơi lưu và truy vấn vector quy mô lớn (pgvector, Qdrant,
               Pinecone, Milvus).
             </li>
             <li>
-              <TopicLink slug="hybrid-search">Hybrid Search</TopicLink> — công
+              <TopicLink slug="hybrid-search">Hybrid Search</TopicLink>, công
               thức ghép từ khoá + ngữ nghĩa + rerank.
             </li>
             <li>
-              <TopicLink slug="chunking">Chunking</TopicLink> — cắt tài liệu
+              <TopicLink slug="chunking">Chunking</TopicLink>, cắt tài liệu
               dài thành đoạn trước khi mã hoá.
             </li>
             <li>
-              <TopicLink slug="rag">RAG</TopicLink> — ứng dụng cờ hiệu: dùng
+              <TopicLink slug="rag">RAG</TopicLink>, ứng dụng cờ hiệu: dùng
               semantic search để đưa tri thức vào prompt.
             </li>
           </ul>
@@ -1197,7 +1195,7 @@ export default function SemanticSearchTopic() {
           points={[
             "Tìm kiếm ngữ nghĩa = tìm theo Ý NGHĨA thay vì chữ: chuyển câu thành vector, đo khoảng cách, trả top-K gần nhất.",
             "Giải quyết 'vocabulary mismatch': 'xin nghỉ phép' vẫn tìm ra 'annual leave policy' dù không trùng chữ nào.",
-            "Kém ở mã chính xác (SKU, số hợp đồng, tên riêng hiếm) — đây là địa hạt của tìm từ khoá. Hybrid ghép cả hai thường vượt trội.",
+            "Kém ở mã chính xác (SKU, số hợp đồng, tên riêng hiếm), đây là địa hạt của tìm từ khoá. Hybrid ghép cả hai thường vượt trội.",
             "Pipeline 2 tầng chuẩn: bi-encoder lấy top-100 nhanh → cross-encoder rerank chính xác → top-5 cuối.",
             "Luôn dùng cùng mô hình embedding cho tài liệu và câu hỏi. Chunking hợp lý là bắt buộc với tài liệu dài.",
             "Là bước tra cứu cốt lõi của RAG, chatbot nội bộ, thương mại điện tử và tìm kiếm chéo ngôn ngữ.",

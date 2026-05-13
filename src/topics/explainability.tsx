@@ -34,14 +34,14 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ==========================================================================
- *  METADATA — giữ nguyên
+ *  METADATA, giữ nguyên
  * ========================================================================== */
 export const metadata: TopicMeta = {
   slug: "explainability",
   title: "Explainability",
-  titleVi: "Giải thích được — AI trong suốt",
+  titleVi: "Explainability: bắt AI giải thích quyết định",
   description:
-    "Các kỹ thuật giúp con người hiểu tại sao mô hình AI đưa ra một quyết định cụ thể.",
+    "Dùng các kỹ thuật giải thích để biết tín hiệu nào khiến AI chấm điểm, gợi ý hoặc từ chối.",
   category: "ai-safety",
   tags: ["explainability", "interpretability", "xai", "transparency"],
   difficulty: "advanced",
@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ==========================================================================
- *  DEMO 1 — FEATURE IMPORTANCE CHART
+ *  DEMO 1, FEATURE IMPORTANCE CHART
  *  Khi bạn "tắt" một yếu tố, xem quyết định có đảo chiều không?
  * ========================================================================== */
 
@@ -174,7 +174,7 @@ function FeatureImportanceDemo() {
       <div className="rounded-xl border border-border bg-background/60 p-4 space-y-3">
         <p className="text-sm text-muted leading-relaxed">
           Mỗi thanh là một yếu tố AI cân nhắc khi xét hồ sơ vay. Nhấn vào thanh
-          để tạm <strong>bỏ yếu tố đó ra</strong> — xem quyết định có đổi
+          để tạm <strong>bỏ yếu tố đó ra</strong>, xem quyết định có đổi
           không.
         </p>
 
@@ -288,7 +288,7 @@ function FeatureImportanceDemo() {
 
       <Callout variant="insight" title="Điều bạn vừa thấy">
         <p>
-          Đây chính là <strong>feature importance</strong> — AI không chỉ nói
+          Đây chính là <strong>feature importance</strong>, AI không chỉ nói
           &ldquo;đồng ý&rdquo; hay &ldquo;từ chối&rdquo;, mà cho bạn biết{" "}
           <em>yếu tố nào quan trọng đến đâu</em>. Khi bạn bỏ thu nhập (32 điểm)
           ra, quyết định thường đảo chiều. Khi bỏ học vấn (1 điểm) ra, gần như
@@ -300,7 +300,7 @@ function FeatureImportanceDemo() {
 }
 
 /* ==========================================================================
- *  DEMO 2 — LIME-STYLE HIGHLIGHTED APPLICATION
+ *  DEMO 2, LIME-STYLE HIGHLIGHTED APPLICATION
  *  Không công thức, chỉ tô màu: xanh = giúp được duyệt, đỏ = bị trừ điểm
  * ========================================================================== */
 
@@ -316,7 +316,7 @@ const APPLICATION_CELLS: AppCell[] = [
     label: "Họ và tên",
     value: "Nguyễn Thị Hương",
     effect: "neutral",
-    reason: "Không ảnh hưởng quyết định — chỉ để nhận dạng.",
+    reason: "Không ảnh hưởng quyết định, chỉ để nhận dạng.",
   },
   {
     label: "Thu nhập/tháng",
@@ -344,7 +344,7 @@ const APPLICATION_CELLS: AppCell[] = [
     value: "Phường 12, Quận 8, TP.HCM",
     effect: "hurt",
     reason:
-      "Mã bưu chính này xuất hiện nhiều trong lịch sử nợ xấu của ngân hàng — mô hình giảm điểm. Đây có thể là dấu hiệu của thiên kiến theo khu vực.",
+      "Mã bưu chính này xuất hiện nhiều trong lịch sử nợ xấu của ngân hàng, mô hình giảm điểm. Đây có thể là dấu hiệu của thiên kiến theo khu vực.",
   },
   {
     label: "Độ tuổi",
@@ -383,7 +383,7 @@ function LimeApplicationDemo() {
         <div className="flex items-center gap-2 pb-2 border-b border-border">
           <FileSearch className="h-4 w-4 text-accent" />
           <span className="text-sm font-semibold">
-            Đơn xin vay — đã giải thích
+            Đơn xin vay, đã giải thích
           </span>
         </div>
         {APPLICATION_CELLS.map((cell) => {
@@ -439,13 +439,13 @@ function LimeApplicationDemo() {
   const withoutExplanation = (
     <div className="space-y-3">
       <p className="text-xs text-muted text-center">
-        AI chỉ trả lời &ldquo;có/không&rdquo; — bạn không biết vì sao.
+        AI chỉ trả lời &ldquo;có/không&rdquo;, bạn không biết vì sao.
       </p>
       <div className="rounded-xl border-2 border-dashed border-muted/40 bg-background/40 p-4 space-y-2">
         <div className="flex items-center gap-2 pb-2 border-b border-border">
           <EyeOff className="h-4 w-4 text-muted" />
           <span className="text-sm font-semibold text-muted">
-            Đơn xin vay — không giải thích
+            Đơn xin vay, không giải thích
           </span>
         </div>
         {APPLICATION_CELLS.map((cell) => (
@@ -484,8 +484,8 @@ function LimeApplicationDemo() {
 }
 
 /* ==========================================================================
- *  DEMO 3 — BLACK-BOX vs WHITE-BOX
- *  Cây quyết định vs Mạng nơ-ron — trực quan, không công thức
+ *  DEMO 3, BLACK-BOX vs WHITE-BOX
+ *  Cây quyết định vs Mạng nơ-ron, trực quan, không công thức
  * ========================================================================== */
 
 function WhiteBoxTree() {
@@ -494,7 +494,7 @@ function WhiteBoxTree() {
       viewBox="0 0 360 240"
       className="w-full h-auto"
       role="img"
-      aria-label="Cây quyết định — minh bạch"
+      aria-label="Cây quyết định, minh bạch"
     >
       {/* Node gốc */}
       <g>
@@ -659,7 +659,7 @@ function WhiteBoxTree() {
 
       {/* Chú thích */}
       <text x={180} y={215} textAnchor="middle" fill="#475569" fontSize={11}>
-        Mỗi nhánh là một câu hỏi rõ ràng — con người đọc được.
+        Mỗi nhánh là một câu hỏi rõ ràng, con người đọc được.
       </text>
       <text x={180} y={230} textAnchor="middle" fill="#10b981" fontSize={11} fontWeight={600}>
         Bạn có thể đi từ gốc đến lá và kể lại bằng lời.
@@ -680,7 +680,7 @@ function BlackBoxNeuralNet() {
       viewBox="0 0 360 240"
       className="w-full h-auto"
       role="img"
-      aria-label="Mạng nơ-ron — hộp đen"
+      aria-label="Mạng nơ-ron, hộp đen"
     >
       {/* Nền mờ ám chỉ hộp đen */}
       <rect
@@ -826,7 +826,7 @@ function BlackWhiteBoxDemo() {
               : "bg-surface text-muted hover:bg-surface-hover"
           }`}
         >
-          <Unlock className="inline h-3.5 w-3.5 mr-1" /> Hộp trắng — Cây quyết định
+          <Unlock className="inline h-3.5 w-3.5 mr-1" /> Hộp trắng, Cây quyết định
         </button>
         <button
           onClick={() => setShow("black")}
@@ -836,7 +836,7 @@ function BlackWhiteBoxDemo() {
               : "bg-surface text-muted hover:bg-surface-hover"
           }`}
         >
-          <Lock className="inline h-3.5 w-3.5 mr-1" /> Hộp đen — Mạng nơ-ron sâu
+          <Lock className="inline h-3.5 w-3.5 mr-1" /> Hộp đen, Mạng nơ-ron sâu
         </button>
       </div>
 
@@ -857,7 +857,7 @@ function BlackWhiteBoxDemo() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
         <div className="rounded-lg border border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 p-3 space-y-2">
           <div className="flex items-center gap-2 font-semibold text-emerald-800 dark:text-emerald-200">
-            <Unlock className="h-4 w-4" /> Hộp trắng — dễ giải thích
+            <Unlock className="h-4 w-4" /> Hộp trắng, dễ giải thích
           </div>
           <p className="text-xs text-foreground/80 leading-relaxed">
             Cây quyết định, hồi quy tuyến tính, luật if-then. Bạn đọc lại từng
@@ -867,11 +867,11 @@ function BlackWhiteBoxDemo() {
         </div>
         <div className="rounded-lg border border-slate-400 bg-slate-100 dark:bg-slate-900/40 p-3 space-y-2">
           <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
-            <Lock className="h-4 w-4" /> Hộp đen — khó giải thích
+            <Lock className="h-4 w-4" /> Hộp đen, khó giải thích
           </div>
           <p className="text-xs text-foreground/80 leading-relaxed">
             Mạng nơ-ron sâu, mô hình ngôn ngữ lớn, rừng ngẫu nhiên nhiều cây.
-            Hàng triệu phép nhân nối tiếp — ngay cả kỹ sư cũng không đọc được.
+            Hàng triệu phép nhân nối tiếp, ngay cả kỹ sư cũng không đọc được.
             Cần <strong>công cụ riêng</strong> (SHAP, LIME…) để &ldquo;soi&rdquo;.
           </p>
         </div>
@@ -881,7 +881,7 @@ function BlackWhiteBoxDemo() {
 }
 
 /* ==========================================================================
- *  QUIZ — 6 câu, không công thức
+ *  QUIZ, 6 câu, không công thức
  * ========================================================================== */
 const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
@@ -889,48 +889,48 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       "AI ngân hàng từ chối bạn vay. Theo nghĩa vụ của Explainable AI, bạn có quyền nhận gì?",
     options: [
       "Chỉ biết kết quả &ldquo;đồng ý&rdquo; hoặc &ldquo;từ chối&rdquo;",
-      "Một lời giải thích cá nhân, cụ thể — yếu tố nào đã khiến bạn bị từ chối",
+      "Một lời giải thích cá nhân, cụ thể, yếu tố nào đã khiến bạn bị từ chối",
       "Một bản báo cáo ẩn danh của toàn bộ khách hàng bị từ chối",
       "Không có quyền gì nếu ngân hàng dùng AI",
     ],
     correct: 1,
     explanation:
-      "Explainable AI yêu cầu giải thích CÁ NHÂN cho từng quyết định — không phải biểu mẫu chung chung &ldquo;do thuật toán&rdquo;. Đây là nguyên tắc được luật hóa ở EU (GDPR Điều 22, EU AI Act) và ngày càng được áp dụng ở Việt Nam (Nghị định 13/2023/NĐ-CP).",
+      "Explainable AI yêu cầu giải thích CÁ NHÂN cho từng quyết định, không phải biểu mẫu chung chung &ldquo;do thuật toán&rdquo;. Đây là nguyên tắc được luật hóa ở EU (GDPR Điều 22, EU AI Act) và ngày càng được áp dụng ở Việt Nam (Nghị định 13/2023/NĐ-CP).",
   },
   {
     question:
       "AI từ chối với lý do: &ldquo;Bạn sống ở Quận 8, TP.HCM&rdquo;. Explainability giúp phát hiện điều gì?",
     options: [
       "AI đúng vì Quận 8 có tỷ lệ nợ xấu cao",
-      "Dấu hiệu phân biệt gián tiếp: địa chỉ có thể là &ldquo;proxy&rdquo; cho thu nhập/dân tộc — vi phạm luật chống phân biệt",
+      "Dấu hiệu phân biệt gián tiếp: địa chỉ có thể là &ldquo;proxy&rdquo; cho thu nhập/dân tộc, vi phạm luật chống phân biệt",
       "Nên ẩn lý do để tránh tranh cãi",
       "Explainability không liên quan đến công bằng",
     ],
     correct: 1,
     explanation:
-      "Giá trị thật của Explainable AI: nó phơi bày các yếu tố đáng ngờ như &ldquo;khu vực sinh sống&rdquo; — có thể là proxy cho dân tộc/thu nhập. Khi thấy được lý do, chúng ta mới có thể phát hiện và sửa thiên kiến ẩn trong mô hình.",
+      "Giá trị thật của Explainable AI: nó phơi bày các yếu tố đáng ngờ như &ldquo;khu vực sinh sống&rdquo;, có thể là proxy cho dân tộc/thu nhập. Khi thấy được lý do, chúng ta mới có thể phát hiện và sửa thiên kiến ẩn trong mô hình.",
   },
   {
     question:
-      "Cây quyết định và mạng nơ-ron sâu — loại nào tự nó đã &ldquo;giải thích được&rdquo;?",
+      "Cây quyết định và mạng nơ-ron sâu, loại nào tự nó đã &ldquo;giải thích được&rdquo;?",
     options: [
       "Cả hai đều rõ ràng",
-      "Cây quyết định — mỗi nhánh là một câu hỏi, con người đọc được",
-      "Mạng nơ-ron sâu — vì nó chính xác hơn",
-      "Không loại nào — luôn cần công cụ bên ngoài",
+      "Cây quyết định, mỗi nhánh là một câu hỏi, con người đọc được",
+      "Mạng nơ-ron sâu, vì nó chính xác hơn",
+      "Không loại nào, luôn cần công cụ bên ngoài",
     ],
     correct: 1,
     explanation:
-      "Cây quyết định, hồi quy tuyến tính, luật if-then là &ldquo;mô hình minh bạch&rdquo; (hộp trắng). Mạng nơ-ron sâu với hàng triệu tham số là hộp đen — cần SHAP/LIME/heat-map để &ldquo;soi&rdquo; mới giải thích được.",
+      "Cây quyết định, hồi quy tuyến tính, luật if-then là &ldquo;mô hình minh bạch&rdquo; (hộp trắng). Mạng nơ-ron sâu với hàng triệu tham số là hộp đen, cần SHAP/LIME/heat-map để &ldquo;soi&rdquo; mới giải thích được.",
   },
   {
     question:
       "Bác sĩ dùng AI đọc X-quang. AI nói &ldquo;Có khối u, 87% chắc chắn&rdquo;. Bác sĩ cần gì thêm?",
     options: [
-      "Không cần gì — 87% là đủ",
+      "Không cần gì, 87% là đủ",
       "Một bản đồ nhiệt (heat-map) chỉ rõ VÙNG NÀO trên ảnh AI đang nhìn vào",
       "Danh sách các bệnh nhân khác có triệu chứng giống",
-      "Số % cao hơn — tối thiểu 99%",
+      "Số % cao hơn, tối thiểu 99%",
     ],
     correct: 1,
     explanation:
@@ -940,7 +940,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     question:
       "&ldquo;Local explanation&rdquo;, &ldquo;global explanation&rdquo;, và &ldquo;counterfactual&rdquo; khác nhau thế nào?",
     options: [
-      "Tất cả là một — chỉ là cách gọi khác nhau",
+      "Tất cả là một, chỉ là cách gọi khác nhau",
       "Local = giải thích 1 quyết định cụ thể; Global = mô hình quan tâm gì nói chung; Counterfactual = &ldquo;nếu tôi đổi X thì kết quả có khác không?&rdquo;",
       "Chỉ local là thật sự hữu ích",
       "Counterfactual là kiểu giải thích đã lỗi thời",
@@ -960,7 +960,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "&ldquo;Giải thích giả&rdquo; (fake explainability) là vấn đề nghiêm trọng: công cụ có thể vẽ ra một lý do nghe xuôi tai nhưng không khớp với cách mô hình thực sự tính toán. Đây là lý do EU AI Act yêu cầu giải thích phải &ldquo;thực chất&rdquo; — phản ánh đúng logic bên trong.",
+      "&ldquo;Giải thích giả&rdquo; (fake explainability) là vấn đề nghiêm trọng: công cụ có thể vẽ ra một lý do nghe xuôi tai nhưng không khớp với cách mô hình thực sự tính toán. Đây là lý do EU AI Act yêu cầu giải thích phải &ldquo;thực chất&rdquo;, phản ánh đúng logic bên trong.",
   },
 ];
 
@@ -971,24 +971,24 @@ export default function ExplainabilityTopic() {
   return (
     <>
       {/* =========================================================
-          STEP 1 — PREDICTION GATE
+          STEP 1, PREDICTION GATE
           ========================================================= */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <PredictionGate
           question="Ngân hàng từ chối cho bạn vay. AI đưa ra quyết định. Theo bạn, bạn có quyền đòi hỏi lý do cụ thể không?"
           options={[
-            "Có — theo luật, ngân hàng bắt buộc phải giải thích",
-            "Không — AI là bí mật kinh doanh, không cần giải thích",
+            "Có, theo luật, ngân hàng bắt buộc phải giải thích",
+            "Không, AI là bí mật kinh doanh, không cần giải thích",
             "Chỉ khi bạn đang ở EU (Liên minh Châu Âu)",
             "Chỉ khi khoản vay dưới 50 triệu",
           ]}
           correct={0}
-          explanation="Ở Việt Nam, Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân có điều khoản về quyền được biết lý do khi dữ liệu của bạn bị xử lý tự động. Ở EU, GDPR Điều 22 và EU AI Act đều bắt buộc giải thích. Ở Mỹ, Cục Bảo vệ Tài chính Người tiêu dùng (CFPB) cũng yêu cầu lý do cụ thể. Đây là quyền chung trên toàn thế giới — không chỉ riêng EU."
+          explanation="Ở Việt Nam, Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân có điều khoản về quyền được biết lý do khi dữ liệu của bạn bị xử lý tự động. Ở EU, GDPR Điều 22 và EU AI Act đều bắt buộc giải thích. Ở Mỹ, Cục Bảo vệ Tài chính Người tiêu dùng (CFPB) cũng yêu cầu lý do cụ thể. Đây là quyền chung trên toàn thế giới, không chỉ riêng EU."
         />
       </LessonSection>
 
       {/* =========================================================
-          STEP 2 — PROSE + METAPHOR
+          STEP 2, PROSE + METAPHOR
           ========================================================= */}
       <LessonSection step={2} totalSteps={8} label="Trực giác ban đầu">
         <div className="space-y-4">
@@ -1004,12 +1004,12 @@ export default function ExplainabilityTopic() {
             <p>
               Khi bạn đi siêu thị, nhân viên đưa bạn hóa đơn liệt kê từng món:{" "}
               <em>cà phê 80.000đ, bánh mì 25.000đ…</em>. Bạn không chỉ biết
-              tổng 350.000đ — bạn biết trả cho cái gì. Nếu chỉ đưa tờ giấy
+              tổng 350.000đ, bạn biết trả cho cái gì. Nếu chỉ đưa tờ giấy
               &ldquo;350.000đ&rdquo; không kèm chi tiết, bạn sẽ không tin.
             </p>
             <p className="mt-2">
               AI cũng vậy. Khi nó &ldquo;tính tiền&rdquo; cho một quyết định
-              quan trọng — cho vay, tuyển dụng, chẩn đoán bệnh — bạn cần một
+              quan trọng, cho vay, tuyển dụng, chẩn đoán bệnh, bạn cần một
               &ldquo;hóa đơn&rdquo; liệt kê từng yếu tố đã góp phần vào quyết
               định đó.
             </p>
@@ -1045,7 +1045,7 @@ export default function ExplainabilityTopic() {
       </LessonSection>
 
       {/* =========================================================
-          STEP 3 — VISUALIZATIONS
+          STEP 3, VISUALIZATIONS
           ========================================================= */}
       <LessonSection step={3} totalSteps={8} label="Quan sát">
         <VisualizationSection topicSlug="explainability">
@@ -1075,7 +1075,7 @@ export default function ExplainabilityTopic() {
                   2
                 </span>
                 <h3 className="text-base font-semibold">
-                  Tô màu đơn xin vay — cách LIME giải thích
+                  Tô màu đơn xin vay, cách LIME giải thích
                 </h3>
               </div>
               <p className="text-sm text-muted">
@@ -1093,7 +1093,7 @@ export default function ExplainabilityTopic() {
                   3
                 </span>
                 <h3 className="text-base font-semibold">
-                  Hộp trắng và hộp đen — hai loại AI
+                  Hộp trắng và hộp đen, hai loại AI
                 </h3>
               </div>
               <p className="text-sm text-muted">
@@ -1108,7 +1108,7 @@ export default function ExplainabilityTopic() {
       </LessonSection>
 
       {/* =========================================================
-          STEP 4 — AHA MOMENT
+          STEP 4, AHA MOMENT
           ========================================================= */}
       <LessonSection step={4} totalSteps={8} label="Aha">
         <AhaMoment>
@@ -1117,38 +1117,38 @@ export default function ExplainabilityTopic() {
             nhiên.
           </p>
           <p className="mt-2">
-            Cây quyết định, luật if-then — giải thích sẵn trong chính cấu trúc.
-            Nhưng mạng nơ-ron sâu, mô hình ngôn ngữ lớn (như ChatGPT) —{" "}
+            Cây quyết định, luật if-then, giải thích sẵn trong chính cấu trúc.
+            Nhưng mạng nơ-ron sâu, mô hình ngôn ngữ lớn (như ChatGPT), {" "}
             <strong>là hộp đen</strong>. Để &ldquo;hé lộ&rdquo; chúng, chúng
             ta cần công cụ bên ngoài: <strong>SHAP, LIME, Grad-CAM, Attention
             Maps</strong>.
           </p>
           <p className="mt-2 text-sm">
-            Giống như kính hiển vi không làm thay đổi vi khuẩn — nó chỉ giúp
+            Giống như kính hiển vi không làm thay đổi vi khuẩn, nó chỉ giúp
             bạn nhìn thấy.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* =========================================================
-          STEP 5 — INLINE CHALLENGE
+          STEP 5, INLINE CHALLENGE
           ========================================================= */}
       <LessonSection step={5} totalSteps={8} label="Thử thách nhanh">
         <InlineChallenge
           question="Một công ty bảo hiểm dùng AI để từ chối bồi thường. Họ nói &ldquo;AI tự quyết định, chúng tôi không biết lý do&rdquo;. Lập luận nào ĐÚNG?"
           options={[
-            "Hợp lý — AI quá phức tạp, không ai có thể giải thích",
-            "Không chấp nhận được — họ phải đầu tư công cụ giải thích (SHAP/LIME…) hoặc dùng mô hình minh bạch hơn",
+            "Hợp lý, AI quá phức tạp, không ai có thể giải thích",
+            "Không chấp nhận được, họ phải đầu tư công cụ giải thích (SHAP/LIME…) hoặc dùng mô hình minh bạch hơn",
             "Chỉ cần họ cho xem mã nguồn là đủ",
             "Nếu AI chính xác thì không cần giải thích",
           ]}
           correct={1}
-          explanation="&ldquo;AI phức tạp&rdquo; không phải lý do từ chối giải thích. Cục Bảo vệ Tài chính Mỹ (CFPB) nói rõ: nếu bạn không giải thích được quyết định, bạn không được dùng mô hình đó cho việc ảnh hưởng đến quyền lợi khách hàng. EU AI Act xếp các lĩnh vực như tín dụng, bảo hiểm, tuyển dụng vào &ldquo;rủi ro cao&rdquo; — bắt buộc có giải thích."
+          explanation="&ldquo;AI phức tạp&rdquo; không phải lý do từ chối giải thích. Cục Bảo vệ Tài chính Mỹ (CFPB) nói rõ: nếu bạn không giải thích được quyết định, bạn không được dùng mô hình đó cho việc ảnh hưởng đến quyền lợi khách hàng. EU AI Act xếp các lĩnh vực như tín dụng, bảo hiểm, tuyển dụng vào &ldquo;rủi ro cao&rdquo;, bắt buộc có giải thích."
         />
       </LessonSection>
 
       {/* =========================================================
-          STEP 6 — EXPLANATION (VISUAL-HEAVY)
+          STEP 6, EXPLANATION (VISUAL-HEAVY)
           ========================================================= */}
       <LessonSection step={6} totalSteps={8} label="Đào sâu">
         <ExplanationSection topicSlug="explainability">
@@ -1156,28 +1156,28 @@ export default function ExplainabilityTopic() {
           <div className="space-y-3">
             <h3 className="text-base font-semibold flex items-center gap-2">
               <Layers className="h-4 w-4 text-accent" />
-              Ba kiểu giải thích — ba góc nhìn khác nhau
+              Ba kiểu giải thích, ba góc nhìn khác nhau
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <Callout variant="insight" title="Local — 1 quyết định">
+              <Callout variant="insight" title="Local, 1 quyết định">
                 <p className="text-sm">
                   &ldquo;Vì sao <strong>TÔI</strong> bị từ chối?&rdquo;
                 </p>
                 <p className="text-xs mt-1 text-muted">
-                  Giải thích cho từng trường hợp cá nhân — SHAP, LIME thường
+                  Giải thích cho từng trường hợp cá nhân, SHAP, LIME thường
                   làm việc này.
                 </p>
               </Callout>
-              <Callout variant="info" title="Global — toàn mô hình">
+              <Callout variant="info" title="Global, toàn mô hình">
                 <p className="text-sm">
                   &ldquo;Mô hình nói chung coi trọng yếu tố nào nhất?&rdquo;
                 </p>
                 <p className="text-xs mt-1 text-muted">
-                  Dùng để kiểm tra tổng thể — mô hình có công bằng không, có
+                  Dùng để kiểm tra tổng thể, mô hình có công bằng không, có
                   quan tâm đúng yếu tố không.
                 </p>
               </Callout>
-              <Callout variant="tip" title="Counterfactual — giả định">
+              <Callout variant="tip" title="Counterfactual, giả định">
                 <p className="text-sm">
                   &ldquo;Nếu thu nhập tôi tăng 5 triệu thì có được duyệt
                   không?&rdquo;
@@ -1204,7 +1204,7 @@ export default function ExplainabilityTopic() {
                 },
                 {
                   left: "LIME",
-                  right: "Tô màu từng ô trong đơn xin — xanh là giúp, đỏ là trừ điểm",
+                  right: "Tô màu từng ô trong đơn xin, xanh là giúp, đỏ là trừ điểm",
                 },
                 {
                   left: "Grad-CAM",
@@ -1222,12 +1222,12 @@ export default function ExplainabilityTopic() {
           <div className="space-y-3 pt-4">
             <h3 className="text-base font-semibold flex items-center gap-2">
               <Scale className="h-4 w-4 text-accent" />
-              Khung pháp lý — bạn đang được bảo vệ như thế nào?
+              Khung pháp lý, bạn đang được bảo vệ như thế nào?
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="rounded-xl border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-900/20 p-3 space-y-1">
                 <p className="text-xs font-bold text-blue-800 dark:text-blue-300">
-                  EU — GDPR Điều 22
+                  EU, GDPR Điều 22
                 </p>
                 <p className="text-xs text-foreground/80 leading-relaxed">
                   Bạn có quyền không bị &ldquo;quyết định hoàn toàn tự
@@ -1237,17 +1237,17 @@ export default function ExplainabilityTopic() {
               </div>
               <div className="rounded-xl border-l-4 border-l-purple-500 bg-purple-50 dark:bg-purple-900/20 p-3 space-y-1">
                 <p className="text-xs font-bold text-purple-800 dark:text-purple-300">
-                  EU — AI Act (2024)
+                  EU, AI Act (2024)
                 </p>
                 <p className="text-xs text-foreground/80 leading-relaxed">
                   AI &ldquo;rủi ro cao&rdquo; (tín dụng, tuyển dụng, y tế,
                   giáo dục) <strong>bắt buộc</strong> phải có giải thích
-                  &ldquo;thực chất&rdquo; — không chung chung.
+                  &ldquo;thực chất&rdquo;, không chung chung.
                 </p>
               </div>
               <div className="rounded-xl border-l-4 border-l-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 p-3 space-y-1">
                 <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                  Việt Nam — NĐ 13/2023
+                  Việt Nam, NĐ 13/2023
                 </p>
                 <p className="text-xs text-foreground/80 leading-relaxed">
                   Nghị định về bảo vệ dữ liệu cá nhân có điều khoản về quyền
@@ -1260,7 +1260,7 @@ export default function ExplainabilityTopic() {
 
           {/* Pitfalls */}
           <div className="pt-4">
-            <CollapsibleDetail title="Cạm bẫy: 'giải thích giả' — nghe hay mà không thật">
+            <CollapsibleDetail title="Cạm bẫy: 'giải thích giả', nghe hay mà không thật">
               <div className="space-y-3 pt-2">
                 <p className="text-sm leading-relaxed">
                   Không phải lời giải thích nào của AI cũng đáng tin. Đôi khi
@@ -1293,7 +1293,7 @@ export default function ExplainabilityTopic() {
                   <p className="text-xs">
                     Khi có một lời giải thích từ AI, hãy hỏi:{" "}
                     <em>&ldquo;Ai kiểm chứng được lời giải thích này?&rdquo;</em>{" "}
-                    Nếu không ai làm được — coi chừng đây là giải thích giả.
+                    Nếu không ai làm được, coi chừng đây là giải thích giả.
                   </p>
                 </Callout>
               </div>
@@ -1303,23 +1303,23 @@ export default function ExplainabilityTopic() {
       </LessonSection>
 
       {/* =========================================================
-          STEP 7 — MINI SUMMARY
+          STEP 7, MINI SUMMARY
           ========================================================= */}
       <LessonSection step={7} totalSteps={8} label="Gói gọn">
         <MiniSummary
           title="5 ý cốt lõi"
           points={[
-            "Explainability = AI giải thích vì sao nó ra quyết định — như hóa đơn liệt kê từng khoản thanh toán.",
+            "Explainability = AI giải thích vì sao nó ra quyết định, như hóa đơn liệt kê từng khoản thanh toán.",
             "Có 3 kiểu giải thích: local (1 quyết định), global (toàn mô hình), counterfactual (nếu đổi X thì sao).",
-            "Không phải AI nào cũng tự giải thích được — hộp đen (mạng nơ-ron sâu) cần công cụ bên ngoài như SHAP, LIME, Grad-CAM.",
+            "Không phải AI nào cũng tự giải thích được, hộp đen (mạng nơ-ron sâu) cần công cụ bên ngoài như SHAP, LIME, Grad-CAM.",
             "Luật Việt Nam (NĐ 13/2023), EU (GDPR, AI Act), Mỹ (CFPB) đều yêu cầu giải thích cho AI ảnh hưởng đến quyền lợi con người.",
-            "Coi chừng 'giải thích giả' — một lý do nghe xuôi tai nhưng không phản ánh đúng mô hình bên trong.",
+            "Coi chừng 'giải thích giả', một lý do nghe xuôi tai nhưng không phản ánh đúng mô hình bên trong.",
           ]}
         />
       </LessonSection>
 
       {/* =========================================================
-          STEP 8 — QUIZ
+          STEP 8, QUIZ
           ========================================================= */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra hiểu biết">
         <QuizSection questions={QUIZ_QUESTIONS} />

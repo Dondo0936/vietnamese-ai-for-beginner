@@ -41,9 +41,9 @@ import { ToggleCompare, Callout } from "@/components/interactive";
 export const metadata: TopicMeta = {
   slug: "llm-overview-in-chat-assistants",
   title: "LLM Overview in Chat Assistants",
-  titleVi: "LLM trong trợ lý trò chuyện",
+  titleVi: "LLM trong ChatGPT, Claude, Gemini",
   description:
-    "ChatGPT, Claude, Gemini: ba trợ lý trò chuyện AI đang thay đổi cách hàng trăm triệu người làm việc mỗi ngày.",
+    "Nhìn cách trợ lý chat nhận yêu cầu, giữ ngữ cảnh và trả lời để dùng đúng trong việc văn phòng.",
   category: "llm-concepts",
   tags: ["llm-overview", "chatbot", "application"],
   difficulty: "beginner",
@@ -79,7 +79,7 @@ export const metadata: TopicMeta = {
       kind: "news",
     },
     {
-      title: "AI Act — Shaping Europe's digital future",
+      title: "AI Act, Shaping Europe's digital future",
       publisher: "European Commission",
       url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
       date: "2024-08",
@@ -96,7 +96,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Counter đếm tăng dần khi vào tầm nhìn
+   COMPONENT CON, Counter đếm tăng dần khi vào tầm nhìn
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function AnimatedCounter({
@@ -144,7 +144,7 @@ function AnimatedCounter({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Dòng thời gian 3 mốc (Nov 2022 → Jan 2023 → Oct 2025)
+   COMPONENT CON, Dòng thời gian 3 mốc (Nov 2022 → Jan 2023 → Oct 2025)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function LaunchTimeline() {
@@ -167,7 +167,7 @@ function LaunchTimeline() {
       date: "Tháng 1/2023",
       title: "100 triệu người dùng",
       count: "100 triệu",
-      sub: "trong 2 tháng — nhanh nhất lịch sử",
+      sub: "trong 2 tháng, nhanh nhất lịch sử",
       color: "#6366f1",
       icon: Users,
     },
@@ -199,7 +199,7 @@ function LaunchTimeline() {
       </div>
       <p className="text-xs text-muted mb-3">
         Đường cong đỏ phía dưới là số lượng người dùng hoạt động hàng tuần của
-        ChatGPT — tăng theo đường cong dốc đứng chưa từng thấy ở bất kỳ sản
+        ChatGPT, tăng theo đường cong dốc đứng chưa từng thấy ở bất kỳ sản
         phẩm tiêu dùng nào.
       </p>
 
@@ -348,7 +348,7 @@ function LaunchTimeline() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Trước vs Sau khi có ChatGPT cho một email xin nghỉ phép
+   COMPONENT CON, Trước vs Sau khi có ChatGPT cho một email xin nghỉ phép
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function BeforeAfterEmail() {
@@ -457,7 +457,7 @@ function BeforeAfterEmail() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Progress tracker cho 4 Beats của Mechanism
+   COMPONENT CON, Progress tracker cho 4 Beats của Mechanism
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function MechanismProgress({ current }: { current: number }) {
@@ -502,7 +502,7 @@ function MechanismProgress({ current }: { current: number }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — SVG diagrams nhỏ cho mỗi Beat
+   COMPONENT CON, SVG diagrams nhỏ cho mỗi Beat
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function ChatGPTDiagram() {
@@ -568,7 +568,7 @@ function ChatGPTDiagram() {
         </div>
       </div>
       <p className="text-[11px] text-muted mt-2 leading-relaxed">
-        RLHF (Reinforcement Learning from Human Feedback — học tăng cường từ
+        RLHF (Reinforcement Learning from Human Feedback, học tăng cường từ
         phản hồi của con người): hàng ngàn người chấm điểm câu trả lời, model
         học ưu tiên câu nào được đánh giá cao.
       </p>
@@ -613,7 +613,7 @@ function ClaudeDiagram() {
       <div className="flex items-center gap-2 text-[11px] text-muted">
         <BookOpen size={12} className="shrink-0" />
         <span>
-          Cửa sổ ngữ cảnh Claude 2: <strong>100.000 token</strong> — đọc nổi một
+          Cửa sổ ngữ cảnh Claude 2: <strong>100.000 token</strong>, đọc nổi một
           cuốn sách 300 trang trong một lượt chat.
         </span>
       </div>
@@ -634,7 +634,7 @@ function GeminiDiagram() {
       <div className="flex items-center gap-2 mb-2">
         <Globe size={16} className="text-blue-500" />
         <span className="text-xs font-semibold text-foreground">
-          Đa phương thức (multimodal) — nuốt nhiều loại dữ liệu cùng lúc
+          Đa phương thức (multimodal), nuốt nhiều loại dữ liệu cùng lúc
         </span>
       </div>
 
@@ -681,7 +681,7 @@ function GeminiDiagram() {
       </div>
 
       <p className="text-[11px] text-muted">
-        Gemini 1.5 Pro: cửa sổ ngữ cảnh <strong>1 triệu token</strong> — tương
+        Gemini 1.5 Pro: cửa sổ ngữ cảnh <strong>1 triệu token</strong>, tương
         đương cả một tủ hồ sơ dự án hoặc một cuốn sách dài 2.000 trang đọc
         trong một lần chat.
       </p>
@@ -736,7 +736,7 @@ function CompetitionDiagram() {
                       />
                     </div>
                     <span className="w-10 text-right text-tertiary tabular-nums">
-                      {m.val > 0 ? `${m.val}K` : "—"}
+                      {m.val > 0 ? `${m.val}K` : ", "}
                     </span>
                   </div>
                 );
@@ -750,7 +750,7 @@ function CompetitionDiagram() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Metric ô đẹp với counter động
+   COMPONENT CON, Metric ô đẹp với counter động
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function AnimatedMetricList() {
@@ -770,7 +770,7 @@ function AnimatedMetricList() {
         </>
       ),
       label:
-        "tốc độ cán mốc 1 triệu người dùng — nhanh gấp 15 lần Instagram, 60 lần Facebook",
+        "tốc độ cán mốc 1 triệu người dùng, nhanh gấp 15 lần Instagram, 60 lần Facebook",
       sourceRef: 2,
       color: "from-indigo-400 to-violet-500",
       icon: Rocket,
@@ -820,7 +820,7 @@ function AnimatedMetricList() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   COMPONENT CON — Thế giới văn phòng có/không có ChatGPT
+   COMPONENT CON, Thế giới văn phòng có/không có ChatGPT
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function CounterfactualWorld() {
@@ -829,7 +829,7 @@ function CounterfactualWorld() {
       icon: Mail,
       task: "Soạn 10 email phản hồi khách hàng trong 1 buổi sáng",
       without: "≈ 2h30' nếu viết tay từng email một",
-      with: "≈ 25' — viết 1 prompt, AI gợi 10 bản nháp, chỉnh lại",
+      with: "≈ 25', viết 1 prompt, AI gợi 10 bản nháp, chỉnh lại",
     },
     {
       icon: FileSearch,
@@ -841,7 +841,7 @@ function CounterfactualWorld() {
       icon: BookOpen,
       task: "Làm rõ một điều luật lao động bằng tiếng Việt dễ hiểu",
       without: "Vào thuvienphapluat.vn, lọc, tra chéo, đọc bình luận",
-      with: "Hỏi Gemini, có trích dẫn nguồn — vẫn phải đối chiếu lại",
+      with: "Hỏi Gemini, có trích dẫn nguồn, vẫn phải đối chiếu lại",
     },
     {
       icon: MessageCircle,
@@ -921,16 +921,15 @@ export default function LlmOverviewInChatAssistants() {
         topicSlug="llm-overview-in-chat-assistants"
       >
         <p>
-          Ngày <strong>30 tháng 11 năm 2022</strong>, OpenAI mở cửa ChatGPT —
-          một trợ lý trò chuyện chạy trên LLM (mô hình ngôn ngữ lớn). Chỉ năm
+          Ngày <strong>30 tháng 11 năm 2022</strong>, OpenAI mở cửa ChatGPT, một trợ lý trò chuyện chạy trên LLM (mô hình ngôn ngữ lớn). Chỉ năm
           ngày sau, ChatGPT có 1 triệu người dùng. Hai tháng sau, 100 triệu.
           Đó là tốc độ tăng trưởng chưa từng xuất hiện ở bất cứ ứng dụng tiêu
           dùng nào, kể cả Instagram hay TikTok.
         </p>
         <p>
           Sau ChatGPT, Anthropic ra mắt <strong>Claude</strong>, Google ra mắt{" "}
-          <strong>Gemini</strong>. Ba trợ lý này — mỗi cái dựng trên một LLM
-          riêng — đã trở thành công cụ công việc hàng ngày của hàng trăm triệu
+          <strong>Gemini</strong>. Ba trợ lý này, mỗi cái dựng trên một LLM
+          riêng, đã trở thành công cụ công việc hàng ngày của hàng trăm triệu
           người, từ nhân viên văn phòng ở Hà Nội đến luật sư ở New York.
         </p>
 
@@ -941,7 +940,7 @@ export default function LlmOverviewInChatAssistants() {
             Nếu bạn làm văn phòng ở Việt Nam năm 2026, có xác suất rất cao đồng
             nghiệp hoặc sếp của bạn đã dùng một trong ba trợ lý này. Hiểu ba sản
             phẩm đó khác nhau thế nào sẽ giúp bạn chọn đúng công cụ cho đúng
-            việc — và không bị tụt lại.
+            việc, và không bị tụt lại.
           </Callout>
         </div>
       </ApplicationHero>
@@ -949,20 +948,19 @@ export default function LlmOverviewInChatAssistants() {
       {/* ══════ PROBLEM ══════ */}
       <ApplicationProblem topicSlug="llm-overview-in-chat-assistants">
         <p>
-          Trước năm 2022, LLM đã tồn tại trong phòng thí nghiệm nhiều năm —
-          nhưng chỉ các kỹ sư biết cách gọi API, viết code Python, xử lý chuỗi
+          Trước năm 2022, LLM đã tồn tại trong phòng thí nghiệm nhiều năm, nhưng chỉ các kỹ sư biết cách gọi API, viết code Python, xử lý chuỗi
           token. Người làm văn phòng không có cửa tiếp cận, dù đây là công cụ
           có thể tiết kiệm hàng giờ mỗi ngày.
         </p>
         <p>
-          Công việc văn phòng thường ngày — soạn email, tóm tắt báo cáo, dịch
-          tài liệu, viết caption — phần lớn là xoay chữ: đọc, rút ý, viết lại.
+          Công việc văn phòng thường ngày, soạn email, tóm tắt báo cáo, dịch
+          tài liệu, viết caption, phần lớn là xoay chữ: đọc, rút ý, viết lại.
           Chính là nơi LLM mạnh nhất. Nhưng không có giao diện nào đủ đơn giản
           cho người không biết lập trình.
         </p>
         <p>
           <strong>Bài toán</strong>: làm sao biến một cỗ máy toán học khổng lồ
-          thành một khung chat giống Messenger — nơi bạn gõ câu hỏi tiếng Việt
+          thành một khung chat giống Messenger, nơi bạn gõ câu hỏi tiếng Việt
           và nhận câu trả lời tiếng Việt, không cần biết gì về AI?
         </p>
 
@@ -981,8 +979,7 @@ export default function LlmOverviewInChatAssistants() {
           <p>
             <strong>ChatGPT mở đầu kỷ nguyên trò chuyện với AI.</strong> OpenAI
             lấy GPT-3.5 (sau này là GPT-4), thêm một bước tinh chỉnh gọi là{" "}
-            <strong>RLHF</strong> (Reinforcement Learning from Human Feedback —
-            học tăng cường từ phản hồi của con người). Hàng ngàn người chấm
+            <strong>RLHF</strong> (Reinforcement Learning from Human Feedback, học tăng cường từ phản hồi của con người). Hàng ngàn người chấm
             điểm câu trả lời; model dần biết trả lời nào được ưa, trả lời nào
             bị chê. Kết quả: giọng chat tự nhiên, ít từ chối hơn, ít nói vô
             nghĩa hơn.
@@ -994,10 +991,9 @@ export default function LlmOverviewInChatAssistants() {
           <MechanismProgress current={2} />
           <p>
             <strong>Claude đặt an toàn và ngữ cảnh dài lên hàng đầu.</strong>{" "}
-            Anthropic áp dụng <strong>Constitutional AI</strong> (AI Hiến pháp)
-            — dạy model tuân theo một bộ nguyên tắc đạo đức thay vì chỉ học
+            Anthropic áp dụng <strong>Constitutional AI</strong> (AI Hiến pháp), dạy model tuân theo một bộ nguyên tắc đạo đức thay vì chỉ học
             từng trường hợp. Claude 2 ra mắt với cửa sổ ngữ cảnh 100.000 token,
-            cao gấp 25 lần ChatGPT thời đó — đọc nổi một cuốn sách 300 trang
+            cao gấp 25 lần ChatGPT thời đó, đọc nổi một cuốn sách 300 trang
             trong một lượt chat.
           </p>
           <ClaudeDiagram />
@@ -1007,8 +1003,7 @@ export default function LlmOverviewInChatAssistants() {
           <MechanismProgress current={3} />
           <p>
             <strong>Gemini ôm trọn đa phương thức.</strong> Google dựng Gemini
-            để đọc đồng thời văn bản, hình ảnh, mã nguồn, thậm chí video —
-            không phải ba model riêng mà là một. Gemini 1.5 Pro đẩy cửa sổ ngữ
+            để đọc đồng thời văn bản, hình ảnh, mã nguồn, thậm chí video, không phải ba model riêng mà là một. Gemini 1.5 Pro đẩy cửa sổ ngữ
             cảnh lên <strong>1 triệu token</strong>, đủ chứa cả một tủ hồ sơ
             dự án 2.000 trang vào một cuộc trò chuyện.
           </p>
@@ -1021,7 +1016,7 @@ export default function LlmOverviewInChatAssistants() {
             <strong>Cạnh tranh đẩy nhau chạy không nghỉ.</strong> ChatGPT thêm
             plugin và tìm kiếm web. Claude mở rộng ngữ cảnh lên 1 triệu token,
             rồi đi trước với Agent viết code. Gemini cắm sâu vào Google
-            Workspace — Docs, Gmail, Meet. Cuộc đua diễn ra mỗi quý, người
+            Workspace, Docs, Gmail, Meet. Cuộc đua diễn ra mỗi quý, người
             dùng là bên được lợi nhiều nhất: tính năng mới, giá giảm, tốc độ
             tăng.
           </p>
@@ -1040,7 +1035,7 @@ export default function LlmOverviewInChatAssistants() {
           sourceRef={1}
         />
         <Metric
-          value="1 triệu người dùng trong 5 ngày đầu tiên — nhanh gấp 15 lần Instagram"
+          value="1 triệu người dùng trong 5 ngày đầu tiên, nhanh gấp 15 lần Instagram"
           sourceRef={2}
         />
         <Metric
@@ -1061,8 +1056,7 @@ export default function LlmOverviewInChatAssistants() {
             className="text-xs text-muted italic"
           >
             Để dễ hình dung: 800 triệu người dùng nhiều hơn dân số toàn Liên
-            Minh Châu Âu cộng với dân số Nhật Bản. Và đó mới chỉ là ChatGPT —
-            chưa tính Claude và Gemini.
+            Minh Châu Âu cộng với dân số Nhật Bản. Và đó mới chỉ là ChatGPT, chưa tính Claude và Gemini.
           </motion.p>
         </AnimatePresence>
       </section>
@@ -1074,7 +1068,7 @@ export default function LlmOverviewInChatAssistants() {
       >
         <p>
           Nếu không có LLM, cái gọi là &ldquo;trợ lý AI&rdquo; sẽ dừng ở mức
-          chatbot theo kịch bản (rule-based) — chỉ trả lời được những câu đã
+          chatbot theo kịch bản (rule-based), chỉ trả lời được những câu đã
           được lập trình trước. Không viết được email lịch sự mới, không tóm
           tắt được báo cáo chưa từng đọc, không suy luận được về vấn đề mới.
         </p>
@@ -1086,7 +1080,7 @@ export default function LlmOverviewInChatAssistants() {
         <p>
           Sự bùng nổ của ChatGPT, Claude, Gemini cho thấy một điều cụ thể: LLM
           đã biến trợ lý AI từ một tiện ích hẹp thành một nền tảng phổ dụng.
-          Tất cả nhờ một cơ chế cốt lõi — đoán chữ tiếp theo — được phóng to
+          Tất cả nhờ một cơ chế cốt lõi, đoán chữ tiếp theo, được phóng to
           lên đến mức biết viết, biết dịch, biết tóm tắt ở chất lượng gần
           người. Biết thêm chút về nền tảng đó (ở bài lý thuyết LLM) sẽ giúp
           bạn dùng ba trợ lý này sắc bén hơn đồng nghiệp mình rất nhiều.

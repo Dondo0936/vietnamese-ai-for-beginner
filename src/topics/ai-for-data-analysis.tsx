@@ -38,15 +38,15 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ============================================================================
-// METADATA — giữ nguyên theo yêu cầu
+// METADATA, giữ nguyên theo yêu cầu
 // ============================================================================
 
 export const metadata: TopicMeta = {
   slug: "ai-for-data-analysis",
   title: "AI for Data Analysis",
-  titleVi: "AI phân tích dữ liệu",
+  titleVi: "AI phân tích bảng tính và biểu đồ",
   description:
-    "Dùng AI để phân tích bảng tính, tạo biểu đồ, viết SQL, và tìm insight từ dữ liệu.",
+    "Dùng AI để đọc dữ liệu, gợi ý câu hỏi, viết công thức hoặc SQL và kiểm lại insight trước khi trình bày.",
   category: "applied-ai",
   tags: ["data-analysis", "spreadsheet", "sql", "practical", "office"],
   difficulty: "intermediate",
@@ -61,7 +61,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ============================================================================
-// Dữ liệu giả lập — doanh thu 12 tháng theo vùng
+// Dữ liệu giả lập, doanh thu 12 tháng theo vùng
 // ============================================================================
 
 const MONTHLY_REVENUE: { month: string; revenue: number }[] = [
@@ -109,7 +109,7 @@ function useCountUp(target: number, durationMs = 900, trigger = 0): number {
 }
 
 // ============================================================================
-// DEMO 1 — Chat with your spreadsheet
+// DEMO 1, Chat with your spreadsheet
 // ============================================================================
 
 type ChatPhase = "idle" | "uploading" | "thinking" | "done";
@@ -159,7 +159,7 @@ function SpreadsheetChatDemo() {
             doanh-thu-2025.xlsx
           </p>
           <p className="text-[11px] text-muted">
-            12 dòng × 2 cột (tháng, doanh thu — triệu đồng)
+            12 dòng × 2 cột (tháng, doanh thu, triệu đồng)
           </p>
         </div>
         <span className="rounded-full bg-accent-light px-2 py-0.5 text-[10px] font-semibold text-accent">
@@ -324,30 +324,30 @@ function SpreadsheetChatDemo() {
 }
 
 // ============================================================================
-// DEMO 2 — Question → chart type (MatchPairs)
+// DEMO 2, Question → chart type (MatchPairs)
 // ============================================================================
 
 function QuestionToChartDemo() {
   return (
     <div className="space-y-3">
       <MatchPairs
-        instruction="Ghép câu hỏi với loại biểu đồ phù hợp. Một câu hỏi chỉ có một biểu đồ đúng — đây là nền tảng để chỉ thị cho AI vẽ đúng thứ bạn cần."
+        instruction="Ghép câu hỏi với loại biểu đồ phù hợp. Một câu hỏi chỉ có một biểu đồ đúng, đây là nền tảng để chỉ thị cho AI vẽ đúng thứ bạn cần."
         pairs={[
           {
             left: "Doanh thu thay đổi thế nào qua 12 tháng?",
-            right: "Biểu đồ đường (line) — xu hướng theo thời gian",
+            right: "Biểu đồ đường (line), xu hướng theo thời gian",
           },
           {
-            left: "Khu vực Bắc, Trung, Nam — khu nào bán nhiều nhất?",
-            right: "Biểu đồ cột (bar) — so sánh giữa các nhóm",
+            left: "Khu vực Bắc, Trung, Nam, khu nào bán nhiều nhất?",
+            right: "Biểu đồ cột (bar), so sánh giữa các nhóm",
           },
           {
             left: "Mỗi dòng sản phẩm chiếm bao nhiêu % tổng doanh thu?",
-            right: "Biểu đồ tròn (pie) — tỉ trọng trên tổng thể",
+            right: "Biểu đồ tròn (pie), tỉ trọng trên tổng thể",
           },
           {
             left: "Giá bán có liên quan gì đến số đơn đặt?",
-            right: "Biểu đồ tán xạ (scatter) — quan hệ giữa 2 biến",
+            right: "Biểu đồ tán xạ (scatter), quan hệ giữa 2 biến",
           },
         ]}
       />
@@ -377,7 +377,7 @@ function QuestionToChartDemo() {
 }
 
 // ============================================================================
-// DEMO 3 — Error spotting
+// DEMO 3, Error spotting
 // ============================================================================
 
 function ErrorSpottingDemo() {
@@ -431,7 +431,7 @@ function ErrorSpottingDemo() {
           </div>
           <div className="rounded-lg border border-green-300/40 bg-green-100/50 dark:bg-green-900/20 p-3">
             <p className="text-xs text-foreground">
-              <strong>Bài học:</strong> AI không hiểu dữ liệu — nó đoán theo tên
+              <strong>Bài học:</strong> AI không hiểu dữ liệu, nó đoán theo tên
               cột. Kiểm tra cột nào đang được dùng bằng một câu &ldquo;AI, bạn
               vừa dùng cột nào để tính?&rdquo;
             </p>
@@ -443,7 +443,7 @@ function ErrorSpottingDemo() {
 }
 
 // ============================================================================
-// Dữ liệu Callout — 5 công cụ AI phân tích dữ liệu
+// Dữ liệu Callout, 5 công cụ AI phân tích dữ liệu
 // ============================================================================
 
 const TOOLS = [
@@ -496,7 +496,7 @@ export default function AiForDataAnalysisTopic() {
           "Bạn có file Excel 10.000 dòng. Cách nhanh nhất để dùng AI phân tích là gì?",
         options: [
           "Copy-paste từng 100 dòng một vào ChatGPT free",
-          "Upload thẳng file vào ChatGPT Advanced Data Analysis, Claude, hoặc Gemini — hỏi bằng tiếng Việt",
+          "Upload thẳng file vào ChatGPT Advanced Data Analysis, Claude, hoặc Gemini, hỏi bằng tiếng Việt",
           "Gửi link Google Sheets cho AI",
           "Chỉ cần gõ 'phân tích dữ liệu' là đủ",
         ],
@@ -554,7 +554,7 @@ export default function AiForDataAnalysisTopic() {
         ],
         correct: 1,
         explanation:
-          "Thông tin cá nhân và dữ liệu tài chính nhạy cảm không nên upload lên AI công cộng — dữ liệu có thể được dùng để train model hoặc lộ qua log. Dùng bản enterprise (không train trên dữ liệu) hoặc ẩn danh trước.",
+          "Thông tin cá nhân và dữ liệu tài chính nhạy cảm không nên upload lên AI công cộng, dữ liệu có thể được dùng để train model hoặc lộ qua log. Dùng bản enterprise (không train trên dữ liệu) hoặc ẩn danh trước.",
       },
       {
         question:
@@ -602,29 +602,29 @@ export default function AiForDataAnalysisTopic() {
   return (
     <>
       {/* ========================================================= */}
-      {/* BƯỚC 1 — DỰ ĐOÁN                                          */}
+      {/* BƯỚC 1, DỰ ĐOÁN                                          */}
       {/* ========================================================= */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Bạn có file Excel 10.000 dòng bán hàng. Hỏi ChatGPT Advanced Data Analysis: 'Tháng nào doanh thu cao nhất?' — bao lâu có đáp án?"
+          question="Bạn có file Excel 10.000 dòng bán hàng. Hỏi ChatGPT Advanced Data Analysis: 'Tháng nào doanh thu cao nhất?', bao lâu có đáp án?"
           options={[
-            "Khoảng 10 giây — AI đọc file, chạy phép tính, trả luôn",
-            "Khoảng 1 phút — AI cần thời gian tính toán",
-            "Khoảng 5 phút — file lớn nên chậm",
-            "Không làm được — AI không đọc được file Excel",
+            "Khoảng 10 giây, AI đọc file, chạy phép tính, trả luôn",
+            "Khoảng 1 phút, AI cần thời gian tính toán",
+            "Khoảng 5 phút, file lớn nên chậm",
+            "Không làm được, AI không đọc được file Excel",
           ]}
           correct={0}
           explanation="Sau khi upload file, AI đọc và chạy phép tính gộp (group-by tháng + tìm max) trong 5-12 giây. Thời gian thật sự mất là bước bạn đọc đáp án và kiểm tra cột AI đã dùng."
         >
           <p className="text-sm text-muted mt-4">
-            Nhưng tốc độ chỉ là một phần — phần quan trọng hơn là kiểm tra lại
+            Nhưng tốc độ chỉ là một phần, phần quan trọng hơn là kiểm tra lại
             để đảm bảo AI hiểu đúng câu hỏi.
           </p>
         </PredictionGate>
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 2 — ẨN DỤ THỰC TẾ                                    */}
+      {/* BƯỚC 2, ẨN DỤ THỰC TẾ                                    */}
       {/* ========================================================= */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Góc nhìn">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
@@ -673,7 +673,7 @@ export default function AiForDataAnalysisTopic() {
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 3 — KHÁM PHÁ (3 DEMO)                                */}
+      {/* BƯỚC 3, KHÁM PHÁ (3 DEMO)                                */}
       {/* ========================================================= */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
@@ -681,7 +681,7 @@ export default function AiForDataAnalysisTopic() {
             {/* Demo 1 */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-1">
-                Demo 1 — Hỏi bảng tính bằng tiếng Việt
+                Demo 1, Hỏi bảng tính bằng tiếng Việt
               </h3>
               <p className="text-sm text-muted mb-4">
                 Upload file → hỏi câu → AI đọc, tính, vẽ. Nhấn &ldquo;Gửi câu
@@ -693,7 +693,7 @@ export default function AiForDataAnalysisTopic() {
             {/* Demo 2 */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-1">
-                Demo 2 — Câu hỏi nào cần biểu đồ nào?
+                Demo 2, Câu hỏi nào cần biểu đồ nào?
               </h3>
               <p className="text-sm text-muted mb-4">
                 Khi bạn biết chọn đúng kiểu biểu đồ, prompt của bạn cho AI cũng
@@ -705,7 +705,7 @@ export default function AiForDataAnalysisTopic() {
             {/* Demo 3 */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-1">
-                Demo 3 — Khi AI trả số sai
+                Demo 3, Khi AI trả số sai
               </h3>
               <p className="text-sm text-muted mb-4">
                 Một ví dụ kinh điển: AI tự tin đưa một con số, nhưng đã dùng
@@ -718,7 +718,7 @@ export default function AiForDataAnalysisTopic() {
             <Callout variant="tip" title="Ba quan sát khi chơi 3 demo">
               <ol className="list-decimal list-inside space-y-1 text-sm">
                 <li>
-                  AI chạy phép tính sau hậu trường — bạn không cần viết công
+                  AI chạy phép tính sau hậu trường, bạn không cần viết công
                   thức, chỉ cần đặt câu hỏi.
                 </li>
                 <li>
@@ -735,11 +735,11 @@ export default function AiForDataAnalysisTopic() {
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 4 — AHA MOMENT                                       */}
+      {/* BƯỚC 4, AHA MOMENT                                       */}
       {/* ========================================================= */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
-          AI không &ldquo;hiểu&rdquo; dữ liệu — nó{" "}
+          AI không &ldquo;hiểu&rdquo; dữ liệu, nó{" "}
           <strong>đọc tên cột rồi đoán</strong>. Nhưng bù lại, nó biết chạy
           hàng nghìn phép tính trong vài giây và vẽ biểu đồ không kêu ca. Bạn
           là người hiểu nghiệp vụ, AI là người chạy phép tính.{" "}
@@ -748,7 +748,7 @@ export default function AiForDataAnalysisTopic() {
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 5 — THỬ THÁCH                                        */}
+      {/* BƯỚC 5, THỬ THÁCH                                        */}
       {/* ========================================================= */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
@@ -779,11 +779,11 @@ export default function AiForDataAnalysisTopic() {
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 6 — GIẢI THÍCH (VISUAL-HEAVY)                        */}
+      {/* BƯỚC 6, GIẢI THÍCH (VISUAL-HEAVY)                        */}
       {/* ========================================================= */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Hiểu sâu hơn">
         <ExplanationSection>
-          {/* 6.1 — 5 công cụ */}
+          {/* 6.1, 5 công cụ */}
           <div>
             <h3 className="text-base font-semibold text-foreground mb-3">
               5 công cụ AI phân tích dữ liệu phổ biến
@@ -815,7 +815,7 @@ export default function AiForDataAnalysisTopic() {
             </div>
           </div>
 
-          {/* 6.2 — Workflow */}
+          {/* 6.2, Workflow */}
           <div className="mt-6">
             <h3 className="text-base font-semibold text-foreground mb-3">
               Workflow 5 bước chuẩn
@@ -879,12 +879,12 @@ export default function AiForDataAnalysisTopic() {
               })}
             </div>
             <p className="mt-3 text-xs text-muted italic">
-              Lưu ý: bước 3 là hộp đen — AI chạy code Python/công thức trong
+              Lưu ý: bước 3 là hộp đen, AI chạy code Python/công thức trong
               nền. Bạn không cần nhìn code, chỉ cần hiểu AI đã làm gì.
             </p>
           </div>
 
-          {/* 6.3 — Pitfalls */}
+          {/* 6.3, Pitfalls */}
           <div className="mt-6">
             <h3 className="text-base font-semibold text-foreground mb-3">
               4 cái bẫy kinh điển khi AI phân tích dữ liệu
@@ -903,7 +903,7 @@ export default function AiForDataAnalysisTopic() {
                 },
                 {
                   title: "Số liệu thiếu / null",
-                  desc: "AI có thể bỏ qua, có thể tính null = 0 — hai kết quả khác nhau.",
+                  desc: "AI có thể bỏ qua, có thể tính null = 0, hai kết quả khác nhau.",
                   fix: "Hỏi: 'Bạn xử lý ô trống thế nào?'",
                 },
                 {
@@ -934,11 +934,11 @@ export default function AiForDataAnalysisTopic() {
             </div>
           </div>
 
-          {/* 6.4 — Privacy warning as a block */}
+          {/* 6.4, Privacy warning as a block */}
           <div className="mt-6">
             <Callout
               variant="warning"
-              title="Cảnh báo bảo mật — ĐỌC TRƯỚC KHI UPLOAD"
+              title="Cảnh báo bảo mật, ĐỌC TRƯỚC KHI UPLOAD"
             >
               <div className="space-y-2">
                 <p>
@@ -954,13 +954,13 @@ export default function AiForDataAnalysisTopic() {
                 <p>
                   <strong>An toàn nhất:</strong> bản enterprise (ChatGPT
                   Business, Claude for Work, Gemini Enterprise, Microsoft 365
-                  Copilot) — có cam kết không train trên dữ liệu + audit log.
+                  Copilot), có cam kết không train trên dữ liệu + audit log.
                 </p>
               </div>
             </Callout>
           </div>
 
-          {/* 6.5 — 3 use case bằng tab */}
+          {/* 6.5, 3 use case bằng tab */}
           <div className="mt-6">
             <h3 className="text-base font-semibold text-foreground mb-3">
               3 tình huống công sở điển hình
@@ -1047,14 +1047,14 @@ export default function AiForDataAnalysisTopic() {
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 7 — TÓM TẮT                                          */}
+      {/* BƯỚC 7, TÓM TẮT                                          */}
       {/* ========================================================= */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Những điều cần nhớ về AI phân tích dữ liệu"
           points={[
-            "AI đọc file trực tiếp — upload vào ChatGPT Advanced Data Analysis, Claude, Gemini in Sheets, Excel Copilot hoặc Power BI Copilot.",
-            "Mô tả cột + đặt câu hỏi cụ thể. AI không hiểu dữ liệu — nó đoán tên cột.",
+            "AI đọc file trực tiếp, upload vào ChatGPT Advanced Data Analysis, Claude, Gemini in Sheets, Excel Copilot hoặc Power BI Copilot.",
+            "Mô tả cột + đặt câu hỏi cụ thể. AI không hiểu dữ liệu, nó đoán tên cột.",
             "Chọn đúng loại biểu đồ: line cho xu hướng, bar cho so sánh, pie cho tỉ trọng, scatter cho quan hệ.",
             "Luôn hỏi ngược 'bạn dùng cột nào?' và kiểm tra trên 2-3 dòng trước khi tin đáp án.",
             "Không upload dữ liệu nhạy cảm (CMND, lương, tài khoản) lên AI công cộng. Dùng bản enterprise hoặc ẩn danh.",
@@ -1090,15 +1090,14 @@ export default function AiForDataAnalysisTopic() {
           <p className="text-sm text-muted leading-relaxed">
             Mở một file Excel thật bạn đang làm việc (ẩn danh cột nhạy cảm nếu
             cần). Upload vào ChatGPT Advanced Data Analysis, đặt 3 câu hỏi theo
-            công thức D-A-T-A. Ghi lại 3 điều AI làm đúng và 1 điều AI làm sai
-            — đây là cách nhanh nhất để xây &ldquo;giác quan nghi ngờ&rdquo;
+            công thức D-A-T-A. Ghi lại 3 điều AI làm đúng và 1 điều AI làm sai, đây là cách nhanh nhất để xây &ldquo;giác quan nghi ngờ&rdquo;
             khi làm việc với AI và số liệu.
           </p>
         </div>
       </LessonSection>
 
       {/* ========================================================= */}
-      {/* BƯỚC 8 — QUIZ                                             */}
+      {/* BƯỚC 8, QUIZ                                             */}
       {/* ========================================================= */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />

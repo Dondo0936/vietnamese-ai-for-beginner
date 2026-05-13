@@ -1,7 +1,7 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  BIAS & FAIRNESS IN HIRING — Ứng dụng thực tế
+ *  BIAS & FAIRNESS IN HIRING, Ứng dụng thực tế
  *  ─────────────────────────────────────────────────────────────────────────
  *  Rewrite bởi Opus 4.7. Câu chuyện chính: Amazon huỷ công cụ AI tuyển dụng
  *  sau 3 năm vì phân biệt đối xử với ứng viên nữ. Đặt bên cạnh các trường
@@ -47,14 +47,14 @@ import ApplicationCounterfactual from "@/components/application/ApplicationCount
 import type { TopicMeta } from "@/lib/types";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  METADATA — Giữ nguyên, chỉ đổi vizType sang "interactive"
+ *  METADATA, Giữ nguyên, chỉ đổi vizType sang "interactive"
  * ═══════════════════════════════════════════════════════════════════════════ */
 export const metadata: TopicMeta = {
   slug: "bias-fairness-in-hiring",
   title: "Bias & Fairness in Hiring",
-  titleVi: "Thiên kiến & Công bằng trong Tuyển dụng",
+  titleVi: "Bias và fairness trong tuyển dụng",
   description:
-    "Công cụ AI tuyển dụng của Amazon bị huỷ vì phân biệt đối xử với ứng viên nữ",
+    "Bài học từ công cụ tuyển dụng của Amazon: dữ liệu quá khứ có thể khiến AI loại sai ứng viên.",
   category: "ai-safety",
   tags: ["bias-fairness", "hiring", "application"],
   difficulty: "beginner",
@@ -111,7 +111,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  TIMELINE WIDGET — các mốc lịch sử của AI-tuyển-dụng-đi-sai
+ *  TIMELINE WIDGET, các mốc lịch sử của AI-tuyển-dụng-đi-sai
  * ═══════════════════════════════════════════════════════════════════════════ */
 const TIMELINE_EVENTS = [
   {
@@ -143,7 +143,7 @@ const TIMELINE_EVENTS = [
     actor: "Reuters & giới báo chí",
     title: "Vụ việc lộ ra công chúng",
     detail:
-      "Reuters xuất bản điều tra tháng 10/2018 — trở thành ví dụ kinh điển về thiên kiến AI trong mọi khóa học về đạo đức AI.",
+      "Reuters xuất bản điều tra tháng 10/2018, trở thành ví dụ kinh điển về thiên kiến AI trong mọi khóa học về đạo đức AI.",
     tone: "warn" as const,
   },
   {
@@ -151,7 +151,7 @@ const TIMELINE_EVENTS = [
     actor: "HireVue, Pymetrics, HackerRank",
     title: "Làn sóng AI phỏng vấn nở rộ",
     detail:
-      "Các vendor dùng AI phân tích biểu cảm khuôn mặt, giọng nói, từ vựng — gặp chỉ trích tương tự về bias theo chủng tộc và khuyết tật.",
+      "Các vendor dùng AI phân tích biểu cảm khuôn mặt, giọng nói, từ vựng, gặp chỉ trích tương tự về bias theo chủng tộc và khuyết tật.",
     tone: "warn" as const,
   },
   {
@@ -175,7 +175,7 @@ const TIMELINE_EVENTS = [
     actor: "Việt Nam",
     title: "Nghị định 13/2023 có hiệu lực",
     detail:
-      "Doanh nghiệp Việt Nam xử lý dữ liệu cá nhân nhạy cảm phải thực hiện DPIA — áp dụng trực tiếp cho AI sàng lọc CV.",
+      "Doanh nghiệp Việt Nam xử lý dữ liệu cá nhân nhạy cảm phải thực hiện DPIA, áp dụng trực tiếp cho AI sàng lọc CV.",
     tone: "good" as const,
   },
 ];
@@ -248,7 +248,7 @@ function Timeline() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  ANIMATED COUNTER — cho phần Metrics
+ *  ANIMATED COUNTER, cho phần Metrics
  * ═══════════════════════════════════════════════════════════════════════════ */
 function AnimatedCounter({
   value,
@@ -366,7 +366,7 @@ function ProblemComparison() {
     },
     {
       icon: AlertTriangle,
-      text: "Không có cơ chế khiếu nại — ứng viên bị loại không biết vì sao",
+      text: "Không có cơ chế khiếu nại, ứng viên bị loại không biết vì sao",
     },
     {
       icon: XCircle,
@@ -389,7 +389,7 @@ function ProblemComparison() {
     },
     {
       icon: Scale,
-      text: "Kênh khiếu nại minh bạch — ứng viên được giải thích lý do từ chối",
+      text: "Kênh khiếu nại minh bạch, ứng viên được giải thích lý do từ chối",
     },
   ];
 
@@ -397,7 +397,7 @@ function ProblemComparison() {
     <ToggleCompare
       labelA="Công ty không audit"
       labelB="Công ty có quy trình audit"
-      description="Cùng một công cụ AI — hai cách triển khai hoàn toàn khác nhau."
+      description="Cùng một công cụ AI, hai cách triển khai hoàn toàn khác nhau."
       childA={
         <div className="space-y-2">
           <div className="flex items-center gap-2 rounded-lg bg-red-100 px-3 py-2 dark:bg-red-900/30">
@@ -451,7 +451,7 @@ function ProblemComparison() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  MECHANISM — ProgressSteps driving 5 Beats
+ *  MECHANISM, ProgressSteps driving 5 Beats
  * ═══════════════════════════════════════════════════════════════════════════ */
 const MECHANISM_STEPS = [
   {
@@ -522,7 +522,7 @@ function MechanismStepper({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  HERO — thêm timeline + quote dẫn
+ *  HERO, thêm timeline + quote dẫn
  * ═══════════════════════════════════════════════════════════════════════════ */
 function HeroQuote() {
   return (
@@ -541,8 +541,7 @@ function HeroQuote() {
             be an engine where I&rsquo;m going to give you 100 résumés, it will
             spit out the top five, and we&rsquo;ll hire those.&rdquo;
           </p>
-          <p className="mt-2 text-xs text-muted">
-            &mdash; Nguồn ẩn danh trong đội Amazon, trả lời Reuters 10/2018
+          <p className="mt-2 text-xs text-muted">, Nguồn ẩn danh trong đội Amazon, trả lời Reuters 10/2018
           </p>
         </div>
       </div>
@@ -568,16 +567,15 @@ export default function BiasFairnessInHiring() {
       >
         <p>
           Hãy tưởng tượng bạn nộp hồ sơ xin việc tại một trong những công ty
-          công nghệ lớn nhất thế giới &mdash; nhưng trước khi bất kỳ nhà tuyển
+          công nghệ lớn nhất thế giới, nhưng trước khi bất kỳ nhà tuyển
           dụng nào đọc CV, một <strong>thuật toán</strong> đã âm thầm hạ điểm
-          bạn. Lý do không phải vì bạn thiếu năng lực &mdash; mà vì cỗ máy
+          bạn. Lý do không phải vì bạn thiếu năng lực, mà vì cỗ máy
           &ldquo;học&rdquo; được rằng &ldquo;ứng viên giỏi&rdquo; nghĩa là
           &ldquo;ứng viên nam&rdquo;.
         </p>
         <p>
           Đó chính xác là những gì đã xảy ra tại Amazon từ năm 2014 đến 2017.
-          Một đội 12 kỹ sư tại Edinburgh xây dựng hệ thống chấm CV 1-5 sao &mdash;
-          và mô hình học từ 10 năm dữ liệu đã trừ điểm mọi hồ sơ có từ
+          Một đội 12 kỹ sư tại Edinburgh xây dựng hệ thống chấm CV 1-5 sao, và mô hình học từ 10 năm dữ liệu đã trừ điểm mọi hồ sơ có từ
           &ldquo;women&rsquo;s&rdquo; trong đó.
         </p>
 
@@ -595,16 +593,16 @@ export default function BiasFairnessInHiring() {
         <p>
           <strong>Thiên kiến trong học máy</strong> xảy ra khi mô hình AI học
           và tái tạo các khuôn mẫu phân biệt đối xử có sẵn trong dữ liệu huấn
-          luyện. Khi dữ liệu lịch sử phản ánh sự bất bình đẳng &mdash; ngành
+          luyện. Khi dữ liệu lịch sử phản ánh sự bất bình đẳng, ngành
           công nghệ có khoảng 77% nam giới trong lực lượng lao động kỹ thuật
-          cao theo EEOC &mdash; thuật toán mã hoá sự mất cân bằng đó thành
+          cao theo EEOC, thuật toán mã hoá sự mất cân bằng đó thành
           &ldquo;tiêu chuẩn chất lượng&rdquo;.
         </p>
         <p>
           Kết quả là <strong>vòng lặp tự củng cố</strong>: dữ liệu thiên lệch
           tạo mô hình thiên lệch, mô hình đưa ra quyết định thiên lệch, và
           quyết định đó lại trở thành dữ liệu huấn luyện tiếp theo. Không phá
-          vỡ được vòng lặp, AI không tự &ldquo;khá lên&rdquo; &mdash; nó càng
+          vỡ được vòng lặp, AI không tự &ldquo;khá lên&rdquo;, nó càng
           lúc càng củng cố định kiến cũ.
         </p>
 
@@ -618,7 +616,7 @@ export default function BiasFairnessInHiring() {
             dịch vụ), nhưng lại là thiểu số trong dữ liệu lãnh đạo và công nghệ
             cao. Nếu doanh nghiệp Việt dùng AI tuyển dụng được train trên dữ
             liệu Mỹ hoặc dữ liệu lịch sử nội bộ không cân bằng, kịch bản Amazon
-            hoàn toàn có thể lặp lại &mdash; nhưng với rủi ro pháp lý bổ sung
+            hoàn toàn có thể lặp lại, nhưng với rủi ro pháp lý bổ sung
             từ Nghị định 13/2023 và Điều 8 Bộ luật Lao động 2019.
           </p>
         </Callout>
@@ -644,7 +642,7 @@ export default function BiasFairnessInHiring() {
             </div>
             <p>
               Amazon lấy toàn bộ hồ sơ xin việc của công ty trong 10 năm qua
-              làm dữ liệu huấn luyện &mdash; khoảng 500 mô hình riêng cho
+              làm dữ liệu huấn luyện, khoảng 500 mô hình riêng cho
               từng vị trí và địa điểm. Vấn đề bắt đầu từ đây: phần lớn những
               CV &ldquo;thành công&rdquo; trong quá khứ là của nam giới, vì
               ngành công nghệ vốn đã mất cân bằng giới.
@@ -656,14 +654,14 @@ export default function BiasFairnessInHiring() {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Gauge className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-              <strong>Huấn luyện &mdash; mô hình &ldquo;học&rdquo; chuẩn mực.</strong>
+              <strong>Huấn luyện, mô hình &ldquo;học&rdquo; chuẩn mực.</strong>
             </div>
             <p>
               Hệ thống phân tích khoảng 50.000 thuật ngữ từ CV và tìm ra các
               pattern tương quan với &ldquo;ứng viên tốt&rdquo;. Động từ như
               &ldquo;executed&rdquo;, &ldquo;captured&rdquo; (thường xuất hiện
               trong CV nam) được gán trọng số cao. Không ai nói với mô hình
-              &ldquo;hãy ưu tiên nam&rdquo; &mdash; nó tự kết luận.
+              &ldquo;hãy ưu tiên nam&rdquo;, nó tự kết luận.
             </p>
           </div>
         </Beat>
@@ -679,7 +677,7 @@ export default function BiasFairnessInHiring() {
               &ldquo;women&rsquo;s chess club captain&rdquo;) và tự động trừ
               điểm. Hai trường đại học dành cho nữ giới cũng bị gắn cờ tiêu
               cực. Kỹ sư cố xoá các trigger này, nhưng không đảm bảo được
-              rằng mô hình không tìm ra cách mới để phân biệt &mdash; bởi
+              rằng mô hình không tìm ra cách mới để phân biệt, bởi
               thông tin giới tính rò rỉ qua hàng trăm proxy khác.
             </p>
           </div>
@@ -693,7 +691,7 @@ export default function BiasFairnessInHiring() {
             </div>
             <p>
               Mỗi ngày công cụ xử lý hàng nghìn CV. Ứng viên nữ với cùng năng
-              lực bị xếp hạng thấp hơn nam &mdash; không ai trong đội tuyển
+              lực bị xếp hạng thấp hơn nam, không ai trong đội tuyển
               dụng biết được con số chính xác, vì không có bảng đánh giá công
               bằng. Mô hình cũng đưa ra đề xuất gần như ngẫu nhiên cho nhiều
               vị trí, tệ hơn cả con người.
@@ -705,14 +703,13 @@ export default function BiasFairnessInHiring() {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Scale className="h-4 w-4 text-rose-600 dark:text-rose-400" />
-              <strong>Hậu quả &mdash; Amazon huỷ công cụ.</strong>
+              <strong>Hậu quả, Amazon huỷ công cụ.</strong>
             </div>
             <p>
               Đầu 2017 Amazon giải tán đội và ngừng sử dụng công cụ. Khi
               Reuters công bố điều tra năm 2018, vụ việc trở thành ví dụ kinh
               điển trong mọi khoá đạo đức AI. Amazon tuyên bố
-              &ldquo;không bao giờ hoàn toàn dựa vào&rdquo; xếp hạng &mdash;
-              nhưng hình ảnh công ty vẫn chịu tổn hại, và 3 năm đầu tư kỹ sư
+              &ldquo;không bao giờ hoàn toàn dựa vào&rdquo; xếp hạng, nhưng hình ảnh công ty vẫn chịu tổn hại, và 3 năm đầu tư kỹ sư
               coi như mất trắng.
             </p>
           </div>
@@ -729,14 +726,14 @@ export default function BiasFairnessInHiring() {
               <p>
                 <strong>Vấn đề tương tự</strong>: mô hình cho điểm thấp hơn
                 với người có giọng không chuẩn Mỹ, khuyết tật nói, hay người
-                tự kỷ &mdash; những nhóm không có đủ trong dữ liệu huấn luyện.
+                tự kỷ, những nhóm không có đủ trong dữ liệu huấn luyện.
                 Bias không chỉ về giới, còn về chủng tộc và khuyết tật.
               </p>
               <p>
                 <strong>Khác biệt kết cục</strong>: HireVue không huỷ sản
                 phẩm, chỉ bỏ tính năng phân tích khuôn mặt năm 2021 sau áp lực
                 từ Illinois AI Video Interview Act. Vẫn còn dùng phân tích
-                giọng và từ vựng &mdash; vấn đề chưa thực sự giải quyết.
+                giọng và từ vựng, vấn đề chưa thực sự giải quyết.
               </p>
             </div>
           </CollapsibleDetail>
@@ -766,11 +763,11 @@ export default function BiasFairnessInHiring() {
         />
       </ApplicationMetrics>
 
-      {/* Visual counter grid — nằm ngoài ApplicationMetrics để giữ markdown list gốc */}
+      {/* Visual counter grid, nằm ngoài ApplicationMetrics để giữ markdown list gốc */}
       <section className="mb-10">
         <h3 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
           <Radio className="h-4 w-4 text-accent" />
-          Con số biết nói &mdash; nhìn nhanh
+          Con số biết nói, nhìn nhanh
         </h3>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <CounterCard
@@ -865,22 +862,22 @@ export default function BiasFairnessInHiring() {
                 </div>
                 <ul className="space-y-2 text-xs text-foreground leading-relaxed">
                   <li className="rounded-lg border border-red-200 bg-red-50/50 p-2.5 dark:border-red-800 dark:bg-red-900/10">
-                    Dùng 10 năm dữ liệu thô &mdash; không kiểm tra cân bằng giới
+                    Dùng 10 năm dữ liệu thô, không kiểm tra cân bằng giới
                     trong tập huấn luyện.
                   </li>
                   <li className="rounded-lg border border-red-200 bg-red-50/50 p-2.5 dark:border-red-800 dark:bg-red-900/10">
-                    Triển khai nội bộ sau khi test chức năng &mdash; không test
+                    Triển khai nội bộ sau khi test chức năng, không test
                     công bằng.
                   </li>
                   <li className="rounded-lg border border-red-200 bg-red-50/50 p-2.5 dark:border-red-800 dark:bg-red-900/10">
-                    Phát hiện bias sau khi kỹ sư tình cờ nhận ra &mdash; quá trễ,
+                    Phát hiện bias sau khi kỹ sư tình cờ nhận ra, quá trễ,
                     mô hình đã chạy nhiều tháng.
                   </li>
                   <li className="rounded-lg border border-red-200 bg-red-50/50 p-2.5 dark:border-red-800 dark:bg-red-900/10">
-                    Cố sửa bằng cách xoá từ khoá &mdash; bias chui vào proxy mới.
+                    Cố sửa bằng cách xoá từ khoá, bias chui vào proxy mới.
                   </li>
                   <li className="rounded-lg border border-red-200 bg-red-50/50 p-2.5 dark:border-red-800 dark:bg-red-900/10">
-                    Huỷ toàn bộ dự án &mdash; mất 3 năm, 12 kỹ sư, hình ảnh thương
+                    Huỷ toàn bộ dự án, mất 3 năm, 12 kỹ sư, hình ảnh thương
                     hiệu.
                   </li>
                 </ul>
@@ -896,23 +893,22 @@ export default function BiasFairnessInHiring() {
                 </div>
                 <ul className="space-y-2 text-xs text-foreground leading-relaxed">
                   <li className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5 dark:border-emerald-800 dark:bg-emerald-900/10">
-                    Thực hiện DPIA trước khi huấn luyện &mdash; phát hiện mất cân
+                    Thực hiện DPIA trước khi huấn luyện, phát hiện mất cân
                     bằng 77/23 ngay từ đầu.
                   </li>
                   <li className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5 dark:border-emerald-800 dark:bg-emerald-900/10">
-                    Cân bằng dữ liệu bằng oversampling hoặc reweighting &mdash;
-                    giảm 80% chênh lệch đầu vào.
+                    Cân bằng dữ liệu bằng oversampling hoặc reweighting, giảm 80% chênh lệch đầu vào.
                   </li>
                   <li className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5 dark:border-emerald-800 dark:bg-emerald-900/10">
-                    Audit theo từng nhóm trước khi deploy &mdash; đo TPR, FPR, tỷ
+                    Audit theo từng nhóm trước khi deploy, đo TPR, FPR, tỷ
                     lệ chọn theo giới.
                   </li>
                   <li className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5 dark:border-emerald-800 dark:bg-emerald-900/10">
-                    Human-in-the-loop cho mọi quyết định &mdash; AI chỉ đề xuất,
+                    Human-in-the-loop cho mọi quyết định, AI chỉ đề xuất,
                     HR ký duyệt.
                   </li>
                   <li className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5 dark:border-emerald-800 dark:bg-emerald-900/10">
-                    Có kênh khiếu nại và phúc tra &mdash; bảo vệ uy tín khi AI
+                    Có kênh khiếu nại và phúc tra, bảo vệ uy tín khi AI
                     sai.
                   </li>
                 </ul>
@@ -925,7 +921,7 @@ export default function BiasFairnessInHiring() {
           <TabView
             tabs={[
               {
-                label: "Doanh nghiệp Việt — 5 bước triển khai",
+                label: "Doanh nghiệp Việt, 5 bước triển khai",
                 content: (
                   <ol className="list-decimal pl-5 space-y-2 text-sm text-foreground leading-relaxed">
                     <li>
@@ -962,7 +958,7 @@ export default function BiasFairnessInHiring() {
                         </span>
                       </div>
                       <p>
-                        Cân bằng dữ liệu đầu vào &mdash; oversample nhóm thiểu
+                        Cân bằng dữ liệu đầu vào, oversample nhóm thiểu
                         số, reweighting, hoặc thu thập thêm dữ liệu mục tiêu.
                       </p>
                     </div>
@@ -973,8 +969,7 @@ export default function BiasFairnessInHiring() {
                         </span>
                       </div>
                       <p>
-                        Thêm ràng buộc công bằng vào hàm mục tiêu khi huấn luyện
-                        &mdash; phạt mô hình nếu chênh lệch giữa các nhóm vượt
+                        Thêm ràng buộc công bằng vào hàm mục tiêu khi huấn luyện, phạt mô hình nếu chênh lệch giữa các nhóm vượt
                         ngưỡng.
                       </p>
                     </div>
@@ -985,8 +980,7 @@ export default function BiasFairnessInHiring() {
                         </span>
                       </div>
                       <p>
-                        Điều chỉnh ngưỡng quyết định riêng cho từng nhóm &mdash;
-                        nhanh nhất để triển khai, thường kèm trade-off độ chính
+                        Điều chỉnh ngưỡng quyết định riêng cho từng nhóm, nhanh nhất để triển khai, thường kèm trade-off độ chính
                         xác.
                       </p>
                     </div>
@@ -999,7 +993,7 @@ export default function BiasFairnessInHiring() {
                   <ul className="space-y-2 text-sm text-foreground leading-relaxed pl-5 list-disc">
                     <li>
                       <strong>Không có AI &ldquo;công bằng tuyệt đối&rdquo;</strong>
-                      {" "}&mdash; chỉ có lựa chọn có chứng minh.
+                      {" "}, chỉ có lựa chọn có chứng minh.
                     </li>
                     <li>
                       Khi AI sàng lọc ứng viên, trách nhiệm pháp lý vẫn thuộc
@@ -1010,8 +1004,7 @@ export default function BiasFairnessInHiring() {
                       không phải một lần.
                     </li>
                     <li>
-                      Lưu lại quyết định &ldquo;chọn tiêu chí công bằng nào&rdquo;
-                      &mdash; đây là bảo vệ pháp lý của chính bạn.
+                      Lưu lại quyết định &ldquo;chọn tiêu chí công bằng nào&rdquo;, đây là bảo vệ pháp lý của chính bạn.
                     </li>
                   </ul>
                 ),
@@ -1022,12 +1015,12 @@ export default function BiasFairnessInHiring() {
 
         <Callout variant="insight" title="Bài học cuối cùng">
           <p>
-            Amazon không phải là công ty &ldquo;ác ý&rdquo; &mdash; họ là một
+            Amazon không phải là công ty &ldquo;ác ý&rdquo;, họ là một
             trong những tổ chức có năng lực kỹ thuật cao nhất thế giới, và vẫn
             thất bại. Bài học: <strong>năng lực kỹ thuật không thay thế được
             quy trình đạo đức</strong>. Với doanh nghiệp Việt đang dùng AI tuyển
             dụng, DPIA, audit bias và human-in-the-loop không phải là
-            &ldquo;phần thêm&rdquo; &mdash; đó là điều kiện tiên quyết để không
+            &ldquo;phần thêm&rdquo;, đó là điều kiện tiên quyết để không
             lặp lại 3 năm lãng phí của Amazon.
           </p>
         </Callout>

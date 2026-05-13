@@ -20,9 +20,9 @@ import {
 export const metadata: TopicMeta = {
   slug: "context-window-in-long-documents",
   title: "Context Window in Long Documents",
-  titleVi: "Cửa sổ Ngữ cảnh trong Tài liệu Dài",
+  titleVi: "Context window khi đọc tài liệu dài",
   description:
-    "Claude và Gemini xử lý PDF hàng trăm trang: cửa sổ ngữ cảnh 100K+ token thay đổi cách làm việc với tài liệu",
+    "Claude và Gemini có thể đọc nhiều trang hơn, nhưng người dùng vẫn cần đặt câu hỏi và kiểm trích dẫn rõ.",
   category: "llm-concepts",
   tags: ["context-window", "long-documents", "application"],
   difficulty: "advanced",
@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
   },
   sources: [
     {
-      title: "Context windows — Claude API Docs",
+      title: "Context windows, Claude API Docs",
       publisher: "Anthropic",
       url: "https://platform.claude.com/docs/en/build-with-claude/context-windows",
       date: "2025-01",
@@ -77,7 +77,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────
-// DATA — Dòng thời gian mở rộng context window 2022 → 2026
+// DATA, Dòng thời gian mở rộng context window 2022 → 2026
 // ─────────────────────────────────────────────────────────────────
 type TimelinePoint = {
   year: string;
@@ -131,7 +131,7 @@ const TIMELINE: TimelinePoint[] = [
   },
 ];
 
-// Dòng số đếm động — được animate khi người dùng cuộn tới
+// Dòng số đếm động, được animate khi người dùng cuộn tới
 type Counter = {
   target: number;
   unit: string;
@@ -162,7 +162,7 @@ const COUNTERS: Counter[] = [
     target: 60,
     unit: "tiếng",
     label: "video có thể đưa trực tiếp cho Gemini 1.5 Pro",
-    hint: "Hoặc 11 giờ audio, 30.000 dòng code — cùng một cửa sổ",
+    hint: "Hoặc 11 giờ audio, 30.000 dòng code, cùng một cửa sổ",
   },
 ];
 
@@ -210,15 +210,14 @@ export default function ContextWindowInLongDocuments() {
   return (
     <ApplicationLayout metadata={metadata} parentTitleVi="Cửa sổ Ngữ cảnh">
       {/* ────────────────────────────────────────────────────────── */}
-      {/* HERO — Dòng thời gian mở rộng context                      */}
+      {/* HERO, Dòng thời gian mở rộng context                      */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationHero
         parentTitleVi="Cửa sổ Ngữ cảnh"
         topicSlug="context-window-in-long-documents"
       >
         <p>
-          Năm 2023, Anthropic ra mắt Claude 2 với cửa sổ ngữ cảnh 100.000 token —
-          gấp 25 lần so với GPT-3.5. Lần đầu tiên, bạn có thể tải lên một bản hợp
+          Năm 2023, Anthropic ra mắt Claude 2 với cửa sổ ngữ cảnh 100.000 token, gấp 25 lần so với GPT-3.5. Lần đầu tiên, bạn có thể tải lên một bản hợp
           đồng 200 trang hoặc một cuốn sách dày và hỏi AI bất kỳ câu hỏi nào về
           nội dung, mà AI đọc được toàn bộ trong một lần.
         </p>
@@ -276,17 +275,17 @@ export default function ContextWindowInLongDocuments() {
       </ApplicationHero>
 
       {/* ────────────────────────────────────────────────────────── */}
-      {/* PROBLEM — So sánh cũ vs mới                                */}
+      {/* PROBLEM, So sánh cũ vs mới                                */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationProblem topicSlug="context-window-in-long-documents">
         <p>
-          Cửa sổ ngữ cảnh (context window) là giới hạn số lượng token — đơn vị
-          chữ nhỏ nhất, mỗi từ tiếng Anh khoảng 1,3 token — mà mô hình có thể
+          Cửa sổ ngữ cảnh (context window) là giới hạn số lượng token, đơn vị
+          chữ nhỏ nhất, mỗi từ tiếng Anh khoảng 1,3 token, mà mô hình có thể
           &quot;nhìn thấy&quot; cùng lúc. Quan trọng: con số này <strong>bao gồm
           cả câu hỏi, tài liệu bạn gửi lẫn câu trả lời của AI</strong>.
         </p>
         <p>
-          GPT-3.5 năm 2022 chỉ có cửa sổ 4.096 token — tương đương khoảng 6 trang
+          GPT-3.5 năm 2022 chỉ có cửa sổ 4.096 token, tương đương khoảng 6 trang
           A4. Khi bạn là nhân viên văn phòng cần AI phân tích một hợp đồng 80
           trang, một báo cáo tài chính quý hay một email chuỗi dài, mô hình đơn
           giản không đủ &quot;bàn làm việc&quot; để đọc hết.
@@ -326,7 +325,7 @@ export default function ContextWindowInLongDocuments() {
                 </div>
                 <ul className="list-disc pl-5 space-y-1 text-foreground">
                   <li><strong>1 prompt duy nhất</strong>, AI đọc cả 500 trang</li>
-                  <li>AI hiểu mạch liên kết giữa các chương — không mâu thuẫn</li>
+                  <li>AI hiểu mạch liên kết giữa các chương, không mâu thuẫn</li>
                   <li>Bạn chỉ cần đọc và xác nhận bản tóm tắt cuối</li>
                   <li>Mất 3–8 phút; có thể hỏi tiếp tự nhiên dựa trên cùng bối cảnh</li>
                 </ul>
@@ -339,12 +338,12 @@ export default function ContextWindowInLongDocuments() {
           Trước năm 2023, thói quen &quot;cắt tài liệu thành mảnh vừa ăn&quot; là
           kỹ năng bắt buộc khi làm việc với AI. Hàng triệu nhân viên văn phòng,
           luật sư, kế toán, nhân viên chăm sóc khách hàng đều rơi vào quy trình
-          này mỗi ngày — tốn thời gian và dễ mất ý.
+          này mỗi ngày, tốn thời gian và dễ mất ý.
         </p>
       </ApplicationProblem>
 
       {/* ────────────────────────────────────────────────────────── */}
-      {/* MECHANISM — 4 Beats                                        */}
+      {/* MECHANISM, 4 Beats                                        */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationMechanism
         parentTitleVi="Cửa sổ Ngữ cảnh"
@@ -365,14 +364,14 @@ export default function ContextWindowInLongDocuments() {
           </div>
           <p>
             <strong>Claude 2 mở đường với 100K token (2023).</strong> Anthropic ra
-            mắt mô hình thương mại đầu tiên có cửa sổ 100.000 token — khoảng
+            mắt mô hình thương mại đầu tiên có cửa sổ 100.000 token, khoảng
             75.000 từ, tương đương một cuốn tiểu thuyết ngắn hoặc một bản hợp đồng
             dày. Lần đầu tiên người dùng có thể tải toàn bộ tài liệu pháp lý hay
             báo cáo nghiên cứu và đặt câu hỏi xuyên suốt mà không cần cắt nhỏ.
           </p>
           <div className="not-prose mt-3 rounded-lg border border-border bg-surface/60 p-3 text-xs text-muted leading-relaxed">
             Trước đó, GPT-4 bản phổ thông chỉ có 8K token, bản 32K phải đăng ký
-            riêng. Bước nhảy lên 100K là một trật tự độ lớn — lần đầu &quot;AI
+            riêng. Bước nhảy lên 100K là một trật tự độ lớn, lần đầu &quot;AI
             đọc tài liệu&quot; trở thành thao tác ai cũng dùng được.
           </div>
         </Beat>
@@ -416,7 +415,7 @@ export default function ContextWindowInLongDocuments() {
           </div>
           <p className="mt-3">
             trong <strong>cùng một cửa sổ</strong>. Không còn phải chọn giữa âm
-            thanh, văn bản hay mã nguồn — AI đọc chung tất cả.
+            thanh, văn bản hay mã nguồn, AI đọc chung tất cả.
           </p>
         </Beat>
 
@@ -437,7 +436,7 @@ export default function ContextWindowInLongDocuments() {
             <strong>Claude Sonnet 4 / Opus 4.6 mở rộng 1 triệu token với giá cố
             định (2025–2026).</strong> Anthropic mở rộng dòng Claude lên 1 triệu
             token, với một điểm khác biệt quan trọng cho doanh nghiệp: giá mỗi
-            token <em>không tăng</em> khi cửa sổ lớn hơn — token thứ 900.000 có
+            token <em>không tăng</em> khi cửa sổ lớn hơn, token thứ 900.000 có
             giá bằng token thứ 100.
           </p>
           <div className="not-prose mt-3">
@@ -449,7 +448,7 @@ export default function ContextWindowInLongDocuments() {
                 <div className="text-sm leading-relaxed">
                   Nhiều nhà cung cấp trước đây tính phí &quot;long context&quot;
                   cao hơn 2–4 lần. Một tác vụ 500K token có thể mất{" "}
-                  <strong>vài USD mỗi lần chạy</strong> — không đủ rẻ để dùng
+                  <strong>vài USD mỗi lần chạy</strong>, không đủ rẻ để dùng
                   hằng ngày.
                 </div>
               }
@@ -480,8 +479,8 @@ export default function ContextWindowInLongDocuments() {
           </div>
           <p>
             <strong>Độ chính xác truy xuất đạt 90%.</strong> Anthropic báo cáo
-            Claude Opus 4.6 đạt độ chính xác truy xuất — khả năng tìm đúng thông
-            tin cụ thể trong tài liệu rất dài — ở mức 90% trên toàn bộ cửa sổ 1
+            Claude Opus 4.6 đạt độ chính xác truy xuất, khả năng tìm đúng thông
+            tin cụ thể trong tài liệu rất dài, ở mức 90% trên toàn bộ cửa sổ 1
             triệu token, giảm đáng kể vấn đề &quot;mất thông tin ở phần
             giữa&quot; mà nhiều mô hình trước đây gặp phải.
           </p>
@@ -518,7 +517,7 @@ export default function ContextWindowInLongDocuments() {
             </div>
             <div className="mt-3 text-[11px] text-muted leading-relaxed">
               Số càng cao, AI càng ít bỏ sót thông tin. Ngưỡng 90% là mức mà một
-              chuyên gia văn phòng có thể dựa vào — nhưng vẫn nên kiểm tra lại
+              chuyên gia văn phòng có thể dựa vào, nhưng vẫn nên kiểm tra lại
               các con số quan trọng trước khi gửi sếp.
             </div>
           </div>
@@ -526,14 +525,14 @@ export default function ContextWindowInLongDocuments() {
       </ApplicationMechanism>
 
       {/* ────────────────────────────────────────────────────────── */}
-      {/* METRICS — Số đếm động                                       */}
+      {/* METRICS, Số đếm động                                       */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationMetrics
         sources={metadata.sources!}
         topicSlug="context-window-in-long-documents"
       >
         <Metric
-          value="1 triệu token context window — tương đương khoảng 750.000 từ hoặc 1.500 trang"
+          value="1 triệu token context window, tương đương khoảng 750.000 từ hoặc 1.500 trang"
           sourceRef={2}
         />
         <Metric
@@ -546,7 +545,7 @@ export default function ContextWindowInLongDocuments() {
         />
       </ApplicationMetrics>
 
-      {/* Bảng số đếm trực quan bổ sung — không thay thế ApplicationMetrics */}
+      {/* Bảng số đếm trực quan bổ sung, không thay thế ApplicationMetrics */}
       <section className="not-prose mb-12">
         <div className="rounded-2xl border border-border bg-card p-5">
           <div className="mb-4 flex items-center gap-2">
@@ -590,7 +589,7 @@ export default function ContextWindowInLongDocuments() {
       </section>
 
       {/* ────────────────────────────────────────────────────────── */}
-      {/* COUNTERFACTUAL — Nếu không có 1M context                    */}
+      {/* COUNTERFACTUAL, Nếu không có 1M context                    */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationCounterfactual
         parentTitleVi="Cửa sổ Ngữ cảnh"
@@ -599,7 +598,7 @@ export default function ContextWindowInLongDocuments() {
         <p>
           Nếu cửa sổ ngữ cảnh vẫn bị giới hạn ở vài nghìn token, AI sẽ mãi là
           công cụ trả lời những câu hỏi ngắn. Không ai dám tin tưởng giao cho AI
-          một hợp đồng, một báo cáo tài chính hay một vụ án pháp lý — vì nó chưa
+          một hợp đồng, một báo cáo tài chính hay một vụ án pháp lý, vì nó chưa
           từng đọc hết. Người dùng sẽ tiếp tục cắt tài liệu thành những mảnh
           vụn, tự mình đóng vai biên tập viên.
         </p>
@@ -613,15 +612,15 @@ export default function ContextWindowInLongDocuments() {
               <div className="space-y-3 text-sm leading-relaxed">
                 <ul className="list-disc pl-5 space-y-1">
                   <li>
-                    Nhận hợp đồng 120 trang — <strong>dành 2 giờ</strong> chia
+                    Nhận hợp đồng 120 trang, <strong>dành 2 giờ</strong> chia
                     nhỏ, hỏi AI từng phần
                   </li>
                   <li>
-                    Báo cáo tuân thủ 80 trang — không đủ giờ đọc kỹ, chỉ lướt
+                    Báo cáo tuân thủ 80 trang, không đủ giờ đọc kỹ, chỉ lướt
                     qua mục lục
                   </li>
                   <li>
-                    Sổ tay nhân sự 300 trang — &quot;thôi kệ, khi nào cần tra
+                    Sổ tay nhân sự 300 trang, &quot;thôi kệ, khi nào cần tra
                     cứu thì mở tay&quot;
                   </li>
                   <li>
@@ -639,19 +638,19 @@ export default function ContextWindowInLongDocuments() {
               <div className="space-y-3 text-sm leading-relaxed">
                 <ul className="list-disc pl-5 space-y-1">
                   <li>
-                    Hợp đồng 120 trang — <strong>6 phút</strong>: AI liệt kê 5
+                    Hợp đồng 120 trang, <strong>6 phút</strong>: AI liệt kê 5
                     điều khoản bất thường, bạn tập trung đọc đúng chỗ
                   </li>
                   <li>
-                    Báo cáo tuân thủ 80 trang — hỏi tự do: &quot;còn vướng gì so
+                    Báo cáo tuân thủ 80 trang, hỏi tự do: &quot;còn vướng gì so
                     với Nghị định 13?&quot; trong cùng một phiên
                   </li>
                   <li>
-                    Sổ tay nhân sự 300 trang — trả lời câu hỏi nhân viên tức
+                    Sổ tay nhân sự 300 trang, trả lời câu hỏi nhân viên tức
                     thời thay vì mở đi mở lại tay
                   </li>
                   <li>
-                    Audio họp 2 giờ — đưa thẳng cho Gemini, có ngay biên bản +
+                    Audio họp 2 giờ, đưa thẳng cho Gemini, có ngay biên bản +
                     việc cần làm
                   </li>
                 </ul>
@@ -669,7 +668,7 @@ export default function ContextWindowInLongDocuments() {
           đối tác phân tích tài liệu, với khả năng đọc và hiểu lượng thông tin
           tương đương một chuyên gia nghiên cứu mất nhiều ngày. Trong ba năm,
           công việc &quot;đọc tài liệu dài&quot; đã chuyển từ mấy giờ đồng hồ
-          xuống vài phút — và điều đó thay đổi nghề của rất nhiều người Việt
+          xuống vài phút, và điều đó thay đổi nghề của rất nhiều người Việt
           Nam làm việc với tài liệu hằng ngày.
         </p>
       </ApplicationCounterfactual>

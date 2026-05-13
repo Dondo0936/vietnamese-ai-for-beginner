@@ -39,9 +39,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "temperature",
   title: "Temperature",
-  titleVi: "Temperature — Nút sáng tạo của AI",
+  titleVi: "Temperature: nút chỉnh độ liều của AI",
   description:
-    "Nút chỉnh độ ngẫu nhiên của AI: khi nào nên vặn thấp để có câu trả lời chắc chắn, khi nào vặn cao để có ý tưởng mới.",
+    "Biết lúc nào hạ temperature để câu trả lời chắc hơn và lúc nào tăng để có thêm phương án sáng tạo.",
   category: "llm-concepts",
   tags: ["temperature", "sampling", "llm", "generation"],
   difficulty: "advanced",
@@ -77,7 +77,7 @@ const PROMPT_DEMOS: PromptDemo[] = [
     label: "Câu hỏi có đáp án",
     icon: Search,
     question: "Thủ đô của Việt Nam là gì?",
-    hint: "Đáp án chỉ có một — bạn không cần AI sáng tạo.",
+    hint: "Đáp án chỉ có một, bạn không cần AI sáng tạo.",
     outputs: [
       {
         range: [0.0, 0.3],
@@ -89,7 +89,7 @@ const PROMPT_DEMOS: PromptDemo[] = [
         range: [0.31, 0.9],
         tone: "Chính xác, diễn đạt đa dạng",
         toneColor: "#10b981",
-        text: "Hà Nội là thủ đô của Việt Nam — trung tâm chính trị, văn hóa và lịch sử của cả nước.",
+        text: "Hà Nội là thủ đô của Việt Nam, trung tâm chính trị, văn hóa và lịch sử của cả nước.",
       },
       {
         range: [0.91, 1.4],
@@ -103,7 +103,7 @@ const PROMPT_DEMOS: PromptDemo[] = [
         tone: "Có thể bịa chi tiết",
         toneColor: "#ef4444",
         text:
-          "Thủ đô của Việt Nam là Hà Nội — nơi có 36 phố phường cổ, được thành lập năm 1010 bởi Lý Thái Tổ, và là thành phố đông dân thứ hai cả nước sau TP Đà Nẵng.",
+          "Thủ đô của Việt Nam là Hà Nội, nơi có 36 phố phường cổ, được thành lập năm 1010 bởi Lý Thái Tổ, và là thành phố đông dân thứ hai cả nước sau TP Đà Nẵng.",
         warning:
           "Câu trả lời đã chèn thông tin sai: TP đông dân nhất Việt Nam là TP.HCM, không phải Đà Nẵng.",
       },
@@ -114,13 +114,13 @@ const PROMPT_DEMOS: PromptDemo[] = [
     label: "Ý tưởng sáng tạo",
     icon: Wand2,
     question: "Đặt 1 slogan quảng cáo cho quán cà phê mới mở ở Sài Gòn.",
-    hint: "Bạn đang cần ý tưởng — độ đa dạng chính là giá trị.",
+    hint: "Bạn đang cần ý tưởng, độ đa dạng chính là giá trị.",
     outputs: [
       {
         range: [0.0, 0.3],
         tone: "Nhàm, an toàn",
         toneColor: "#6b7280",
-        text: "“Cà phê ngon — giá hợp lý — phục vụ tận tình.”",
+        text: "“Cà phê ngon, giá hợp lý, phục vụ tận tình.”",
         warning:
           "Quá chung chung. AI chỉ dám chọn cụm từ phổ biến nhất nên slogan mất cá tính.",
       },
@@ -128,19 +128,19 @@ const PROMPT_DEMOS: PromptDemo[] = [
         range: [0.31, 0.9],
         tone: "Hơi mới",
         toneColor: "#3b82f6",
-        text: "“Một ngụm Sài Gòn — buổi sáng nào cũng đáng thức dậy.”",
+        text: "“Một ngụm Sài Gòn, buổi sáng nào cũng đáng thức dậy.”",
       },
       {
         range: [0.91, 1.4],
         tone: "Sáng tạo, có hồn",
         toneColor: "#10b981",
-        text: "“Sài Gòn gọi tên bạn — bằng mùi cà phê lúc 6 giờ sáng.”",
+        text: "“Sài Gòn gọi tên bạn, bằng mùi cà phê lúc 6 giờ sáng.”",
       },
       {
         range: [1.41, 2.0],
         tone: "Quá đà, có thể khó hiểu",
         toneColor: "#ef4444",
-        text: "“Mỗi giọt cà phê — một nốt nhạc lạc trong con hẻm tiền kiếp.”",
+        text: "“Mỗi giọt cà phê, một nốt nhạc lạc trong con hẻm tiền kiếp.”",
         warning:
           "Nghe hay nhưng khách hàng khó hiểu. Đôi khi temperature quá cao sinh ra những câu văn vẻ mà không ai chọn đặt lên biển hiệu.",
       },
@@ -151,7 +151,7 @@ const PROMPT_DEMOS: PromptDemo[] = [
     label: "Email công việc",
     icon: Mail,
     question: "Viết email gửi sếp xin nghỉ phép thứ Sáu tuần sau.",
-    hint: "Cần lịch sự, rõ ràng, có chút ấm áp — không quá máy móc, không quá bay bổng.",
+    hint: "Cần lịch sự, rõ ràng, có chút ấm áp, không quá máy móc, không quá bay bổng.",
     outputs: [
       {
         range: [0.0, 0.3],
@@ -174,15 +174,15 @@ const PROMPT_DEMOS: PromptDemo[] = [
         text:
           "Anh ơi, tuần sau thứ Sáu em có việc nhà hơi cấp, em xin phép nghỉ một hôm nha anh. Em đã giao lại hết task cho Linh rồi, anh yên tâm. Cảm ơn anh lắm ạ!",
         warning:
-          "Văn phong mạng xã hội lọt vào email chính thức — không phải lúc nào sếp cũng thoải mái với tông này.",
+          "Văn phong mạng xã hội lọt vào email chính thức, không phải lúc nào sếp cũng thoải mái với tông này.",
       },
       {
         range: [1.41, 2.0],
         tone: "Lạc đề",
         toneColor: "#ef4444",
         text:
-          "Kính gửi anh — có những ngày thứ Sáu thuộc về sương mù, và ngày thứ Sáu ấy của em là tuần sau. Em xin phép tạm rời văn phòng để trở về với gia đình, rồi quay lại mang theo nhiều năng lượng hơn.",
-        warning: "Không còn giống email công việc — đã biến thành tản văn.",
+          "Kính gửi anh, có những ngày thứ Sáu thuộc về sương mù, và ngày thứ Sáu ấy của em là tuần sau. Em xin phép tạm rời văn phòng để trở về với gia đình, rồi quay lại mang theo nhiều năng lượng hơn.",
+        warning: "Không còn giống email công việc, đã biến thành tản văn.",
       },
     ],
   },
@@ -212,16 +212,16 @@ const REPEAT_RUNS: Record<"T0" | "T07" | "T15", string[]> = {
   ],
   T07: [
     "Buổi họp sáng nay là một trong những cuộc trao đổi rõ ràng nhất tuần này.",
-    "Sáng nay cả nhóm ngồi lại 45 phút — và ra khỏi phòng với kế hoạch cụ thể cho quý sau.",
-    "Có những buổi họp kéo dài nhưng chẳng đi đến đâu, và có những buổi 45 phút thay đổi hẳn hướng đi — sáng nay thuộc loại thứ hai.",
+    "Sáng nay cả nhóm ngồi lại 45 phút, và ra khỏi phòng với kế hoạch cụ thể cho quý sau.",
+    "Có những buổi họp kéo dài nhưng chẳng đi đến đâu, và có những buổi 45 phút thay đổi hẳn hướng đi, sáng nay thuộc loại thứ hai.",
     "Cảm giác rất vui khi buổi họp kết thúc mà ai cũng biết việc mình cần làm tiếp theo.",
     "Nếu phải chọn một cuộc họp đáng giá trong tuần, mình sẽ chọn sáng nay.",
   ],
   T15: [
     "Sáng nay, giữa hai ly cà phê và một bảng kế hoạch đầy màu, team mình đã vỡ òa vì tìm ra lời giải.",
-    "Có những buổi họp bình thường — rồi có buổi họp làm mình muốn viết một bài LinkedIn dài 10 đoạn.",
+    "Có những buổi họp bình thường, rồi có buổi họp làm mình muốn viết một bài LinkedIn dài 10 đoạn.",
     "Bảy con người, một chiếc bảng trắng và vài mảnh giấy note vàng đã viết lại chiến lược của cả quý.",
-    "Không phải buổi họp nào cũng đáng kể — nhưng buổi sáng nay thì làm mình nhớ lại vì sao mình chọn nghề này.",
+    "Không phải buổi họp nào cũng đáng kể, nhưng buổi sáng nay thì làm mình nhớ lại vì sao mình chọn nghề này.",
     "Một vài buổi họp đi qua như sương sớm, một vài buổi họp làm mình đứng lên thay đổi kế hoạch cả năm.",
   ],
 };
@@ -242,15 +242,15 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Temperature cao không làm AI 'quên' kiến thức cơ bản, nó chỉ làm AI sẵn sàng chọn những từ ít phổ biến hơn — dẫn đến câu trả lời dài dòng và đôi khi chèn thêm chi tiết sai.",
+      "Temperature cao không làm AI 'quên' kiến thức cơ bản, nó chỉ làm AI sẵn sàng chọn những từ ít phổ biến hơn, dẫn đến câu trả lời dài dòng và đôi khi chèn thêm chi tiết sai.",
   },
   {
     question:
       "Nhóm kế toán công ty bạn muốn AI trích xuất số hoá đơn và số tiền từ hàng ngàn file PDF. Nên đặt temperature bao nhiêu?",
     options: [
-      "1.5 — để AI sáng tạo hơn",
-      "1.0 — mặc định",
-      "0 đến 0.3 — cần kết quả ổn định, lặp lại được",
+      "1.5, để AI sáng tạo hơn",
+      "1.0, mặc định",
+      "0 đến 0.3, cần kết quả ổn định, lặp lại được",
       "Không quan trọng, temperature không ảnh hưởng tới việc trích xuất",
     ],
     correct: 2,
@@ -281,7 +281,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Với temperature = 0, AI luôn chọn lựa chọn chắc chắn nhất. Vì vậy nếu dùng cho việc brainstorm slogan, bạn sẽ chỉ nhận được một phương án lặp đi lặp lại — không hữu dụng khi cần đa dạng.",
+      "Với temperature = 0, AI luôn chọn lựa chọn chắc chắn nhất. Vì vậy nếu dùng cho việc brainstorm slogan, bạn sẽ chỉ nhận được một phương án lặp đi lặp lại, không hữu dụng khi cần đa dạng.",
   },
   {
     question:
@@ -289,12 +289,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Temperature càng cao càng giảm ảo giác",
       "Temperature không liên quan đến ảo giác",
-      "Temperature cao tăng nguy cơ ảo giác vì AI dễ chọn từ có xác suất thấp — và chi tiết sai thường nằm ở đó",
+      "Temperature cao tăng nguy cơ ảo giác vì AI dễ chọn từ có xác suất thấp, và chi tiết sai thường nằm ở đó",
       "Chỉ có prompt mới ảnh hưởng đến ảo giác",
     ],
     correct: 2,
     explanation:
-      "Khi bạn hỏi câu có đáp án thực tế, thông tin đúng thường tập trung ở một vài từ có xác suất cao. Temperature cao mở cửa cho AI chọn từ ít phổ biến hơn — và chính đó là nơi các chi tiết bịa xuất hiện.",
+      "Khi bạn hỏi câu có đáp án thực tế, thông tin đúng thường tập trung ở một vài từ có xác suất cao. Temperature cao mở cửa cho AI chọn từ ít phổ biến hơn, và chính đó là nơi các chi tiết bịa xuất hiện.",
   },
   {
     question:
@@ -307,7 +307,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Tạo nhiều biến thể cho cùng một nội dung là ví dụ điển hình cần temperature cao. Ba tác vụ còn lại đều cần độ chính xác và nhất quán — nên đặt temperature thấp.",
+      "Tạo nhiều biến thể cho cùng một nội dung là ví dụ điển hình cần temperature cao. Ba tác vụ còn lại đều cần độ chính xác và nhất quán, nên đặt temperature thấp.",
   },
 ];
 
@@ -331,12 +331,12 @@ export default function TemperatureTopic() {
 
   const tempLabel =
     temp <= 0.3
-      ? "Rất thấp — câu trả lời chắc chắn, ít đổi"
+      ? "Rất thấp, câu trả lời chắc chắn, ít đổi"
       : temp <= 0.9
-        ? "Cân bằng — mặc định cho hầu hết công việc"
+        ? "Cân bằng, mặc định cho hầu hết công việc"
         : temp <= 1.4
-          ? "Cao — nhiều đa dạng, phù hợp sáng tạo"
-          : "Rất cao — có thể đi lạc hoặc bịa chi tiết";
+          ? "Cao, nhiều đa dạng, phù hợp sáng tạo"
+          : "Rất cao, có thể đi lạc hoặc bịa chi tiết";
 
   const bandColor =
     temp <= 0.3
@@ -349,7 +349,7 @@ export default function TemperatureTopic() {
 
   return (
     <>
-      {/* ━━━ BƯỚC 1 — DỰ ĐOÁN ━━━ */}
+      {/* ━━━ BƯỚC 1, DỰ ĐOÁN ━━━ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn hỏi AI: 'Thủ đô của Việt Nam là gì?' rồi vặn nút temperature lên rất cao. Chuyện gì sẽ xảy ra?"
@@ -360,7 +360,7 @@ export default function TemperatureTopic() {
             "AI tạo ra địa danh không có thật",
           ]}
           correct={0}
-          explanation="Temperature cao không thay đổi kiến thức của AI — nó chỉ làm AI 'liều' hơn khi chọn từ. Với câu hỏi có đáp án rõ ràng, AI vẫn sẽ nói 'Hà Nội', nhưng câu văn xung quanh sẽ dài hơn, ngẫu nhiên hơn, và đôi khi chèn thêm chi tiết sai."
+          explanation="Temperature cao không thay đổi kiến thức của AI, nó chỉ làm AI 'liều' hơn khi chọn từ. Với câu hỏi có đáp án rõ ràng, AI vẫn sẽ nói 'Hà Nội', nhưng câu văn xung quanh sẽ dài hơn, ngẫu nhiên hơn, và đôi khi chèn thêm chi tiết sai."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Hãy tưởng tượng bạn có một cái <strong>nút vặn</strong> trên mỗi công cụ AI. Vặn thấp: câu
@@ -370,7 +370,7 @@ export default function TemperatureTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ ━━━ */}
+      {/* ━━━ BƯỚC 2, ẨN DỤ ━━━ */}
       <LessonSection step={2} totalSteps={8} label="Hiểu bằng hình ảnh">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
@@ -382,9 +382,9 @@ export default function TemperatureTopic() {
             đầu có tiếng rè, hàng xóm khó chịu, và đôi khi bạn không còn nghe rõ lời.
           </p>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            <strong>Temperature của AI chính là cái nút đó — nhưng cho sự sáng tạo.</strong> Vặn
+            <strong>Temperature của AI chính là cái nút đó, nhưng cho sự sáng tạo.</strong> Vặn
             thấp: AI nói đúng, nói chắc, lặp lại được. Vặn cao: AI sáng tạo, đa dạng, nhưng có thể
-            “rè” — tức là bịa chi tiết hoặc lạc đề.
+            “rè”, tức là bịa chi tiết hoặc lạc đề.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
@@ -420,7 +420,7 @@ export default function TemperatureTopic() {
         </div>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HOÁ ━━━ */}
+      {/* ━━━ BƯỚC 3, TRỰC QUAN HOÁ ━━━ */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
           {/* ── DEMO 1: Nút chỉnh temperature cho 3 prompt ── */}
@@ -471,7 +471,7 @@ export default function TemperatureTopic() {
               <p className="text-sm text-foreground">&ldquo;{activePromptDemo.question}&rdquo;</p>
             </div>
 
-            {/* Output — chuyển mượt theo temperature */}
+            {/* Output, chuyển mượt theo temperature */}
             <div className="rounded-xl border-2 bg-card p-4 min-h-[130px] relative overflow-hidden"
                  style={{ borderColor: currentOutput.toneColor + "80" }}>
               <div className="flex items-center justify-between mb-2">
@@ -535,11 +535,11 @@ export default function TemperatureTopic() {
               />
               <div className="flex justify-between mt-1.5">
                 <span className="text-[10px] text-tertiary flex items-center gap-1">
-                  <Snowflake size={9} /> 0 — cố định
+                  <Snowflake size={9} /> 0, cố định
                 </span>
-                <span className="text-[10px] text-tertiary">1 — mặc định</span>
+                <span className="text-[10px] text-tertiary">1, mặc định</span>
                 <span className="text-[10px] text-tertiary flex items-center gap-1">
-                  <Flame size={9} /> 2 — hỗn loạn
+                  <Flame size={9} /> 2, hỗn loạn
                 </span>
               </div>
               <p className="text-xs text-muted mt-2 text-center italic">{tempLabel}</p>
@@ -583,7 +583,7 @@ export default function TemperatureTopic() {
                       backgroundColor: active ? m.color : undefined,
                     }}
                   >
-                    {m.label} — {m.desc}
+                    {m.label}, {m.desc}
                   </button>
                 );
               })}
@@ -616,7 +616,7 @@ export default function TemperatureTopic() {
 
             <Callout variant="insight" title="Quan sát quan trọng">
               Ở T = 0, cả 5 lần chạy ra câu y hệt. Ở T = 0.7, 5 câu khác nhau nhưng vẫn cùng tông.
-              Ở T = 1.5, 5 câu bay bổng theo 5 hướng khác nhau — hay khi cần ý tưởng, nhưng hỗn
+              Ở T = 1.5, 5 câu bay bổng theo 5 hướng khác nhau, hay khi cần ý tưởng, nhưng hỗn
               loạn khi cần nhất quán.
             </Callout>
           </LessonSection>
@@ -633,23 +633,23 @@ export default function TemperatureTopic() {
               pairs={[
                 {
                   left: "Kiểm tra lỗi chính tả hợp đồng",
-                  right: "T = 0 – 0.2 — cần nhất quán, kiểm toán được",
+                  right: "T = 0 – 0.2, cần nhất quán, kiểm toán được",
                 },
                 {
                   left: "Brainstorm 10 tên sản phẩm mới",
-                  right: "T = 1.0 – 1.3 — cần đa dạng, chấp nhận phương án dở",
+                  right: "T = 1.0 – 1.3, cần đa dạng, chấp nhận phương án dở",
                 },
                 {
                   left: "Viết email gửi khách hàng",
-                  right: "T = 0.5 – 0.8 — cần lịch sự tự nhiên, không máy móc",
+                  right: "T = 0.5 – 0.8, cần lịch sự tự nhiên, không máy móc",
                 },
                 {
                   left: "Tóm tắt biên bản họp",
-                  right: "T = 0.2 – 0.4 — cần trung thành với sự thật",
+                  right: "T = 0.2 – 0.4, cần trung thành với sự thật",
                 },
                 {
                   left: "Viết caption cho bài đăng mạng xã hội",
-                  right: "T = 0.8 – 1.1 — cần có hồn, có cá tính",
+                  right: "T = 0.8 – 1.1, cần có hồn, có cá tính",
                 },
               ]}
             />
@@ -657,11 +657,10 @@ export default function TemperatureTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA ━━━ */}
+      {/* ━━━ BƯỚC 4, AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Temperature không quyết định AI <strong>thông minh</strong> hay <strong>ngu</strong> —
-          nó chỉ quyết định AI có <strong>dám đi chệch</strong> khỏi phương án an toàn hay không.
+          Temperature không quyết định AI <strong>thông minh</strong> hay <strong>ngu</strong>, nó chỉ quyết định AI có <strong>dám đi chệch</strong> khỏi phương án an toàn hay không.
           <br />
           <br />
           Temperature cao không khiến AI giỏi hơn. Temperature thấp không khiến AI dốt đi. Chúng
@@ -670,34 +669,34 @@ export default function TemperatureTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — THỬ THÁCH ━━━ */}
+      {/* ━━━ BƯỚC 5, THỬ THÁCH ━━━ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Bạn là trợ lý giám đốc, cần AI viết 5 phiên bản khác nhau cho cùng một lời mời dự sự kiện khai trương. Nên đặt temperature bao nhiêu?"
           options={[
-            "T = 0 — để câu nào cũng giống nhau cho đỡ rối",
-            "T = 0.2 — gần như cố định, chỉ đổi vài từ",
-            "T = 0.9 – 1.2 — cần đa dạng giữa các phiên bản để giám đốc chọn",
-            "T = 2.0 — càng cao càng tốt",
+            "T = 0, để câu nào cũng giống nhau cho đỡ rối",
+            "T = 0.2, gần như cố định, chỉ đổi vài từ",
+            "T = 0.9 – 1.2, cần đa dạng giữa các phiên bản để giám đốc chọn",
+            "T = 2.0, càng cao càng tốt",
           ]}
           correct={2}
           explanation="Mục tiêu ở đây là 'có 5 bản khác nhau để chọn'. Temperature quanh 1.0 vừa đủ đa dạng mà vẫn giữ được sự lịch sự. T = 2.0 thường cho ra những câu bay bổng quá mức, không phù hợp với thư mời chính thức."
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — GIẢI THÍCH ━━━ */}
+      {/* ━━━ BƯỚC 6, GIẢI THÍCH ━━━ */}
       <LessonSection step={6} totalSteps={8} label="Giải thích">
         <ExplanationSection>
           <p className="leading-relaxed">
             Khi AI viết một câu, nó không biết trước câu đó sẽ như thế nào. Nó chọn{" "}
-            <strong>từ tiếp theo</strong> dựa trên một <strong>danh sách xác suất</strong> — giống
+            <strong>từ tiếp theo</strong> dựa trên một <strong>danh sách xác suất</strong>, giống
             như khi bạn chọn món trong thực đơn, bạn &ldquo;chấm điểm&rdquo; mỗi món rồi chọn. Temperature
             là cái nút quyết định bạn{" "}
             <strong>luôn chọn món điểm cao nhất</strong> hay{" "}
             <strong>thỉnh thoảng thử món lạ</strong>.
           </p>
 
-          {/* Hình minh hoạ phân phối xác suất — SVG, không có LaTeX */}
+          {/* Hình minh hoạ phân phối xác suất, SVG, không có LaTeX */}
           <div className="rounded-xl border border-border bg-surface/40 p-5 my-4">
             <p className="text-xs font-semibold text-tertiary uppercase tracking-wide mb-2">
               AI đang chọn từ tiếp theo cho câu &ldquo;Sáng nay tôi ăn ___&rdquo;
@@ -737,7 +736,7 @@ export default function TemperatureTopic() {
                 const hHigh = item.high * 160;
                 return (
                   <g key={item.label}>
-                    {/* Temperature thấp — thanh đặc */}
+                    {/* Temperature thấp, thanh đặc */}
                     <rect
                       x={xBase}
                       y={200 - hLow}
@@ -747,7 +746,7 @@ export default function TemperatureTopic() {
                       fill={item.color}
                       opacity={0.85}
                     />
-                    {/* Temperature cao — viền nét đứt chồng lên */}
+                    {/* Temperature cao, viền nét đứt chồng lên */}
                     <rect
                       x={xBase}
                       y={200 - hHigh}
@@ -777,7 +776,7 @@ export default function TemperatureTopic() {
               <g>
                 <rect x={50} y={10} width={14} height={10} fill="#0ea5e9" opacity={0.85} rx={2} />
                 <text x={70} y={19} fontSize={11} fill="var(--text-primary)">
-                  Temperature thấp — &ldquo;phở&rdquo; gần như luôn thắng
+                  Temperature thấp, &ldquo;phở&rdquo; gần như luôn thắng
                 </text>
                 <rect
                   x={50}
@@ -791,7 +790,7 @@ export default function TemperatureTopic() {
                   rx={2}
                 />
                 <text x={70} y={35} fontSize={11} fill="var(--text-primary)">
-                  Temperature cao — các món khác cũng có cơ hội
+                  Temperature cao, các món khác cũng có cơ hội
                 </text>
               </g>
             </svg>
@@ -803,7 +802,7 @@ export default function TemperatureTopic() {
 
           <p className="leading-relaxed mt-4">
             Dưới đây là <strong>5 loại công việc phổ biến nhất</strong> ở văn phòng, kèm mức
-            temperature gợi ý. Đây không phải quy tắc cứng — chỉ là điểm xuất phát tốt.
+            temperature gợi ý. Đây không phải quy tắc cứng, chỉ là điểm xuất phát tốt.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
@@ -826,7 +825,7 @@ export default function TemperatureTopic() {
                 icon: MessageCircle,
                 title: "Email & hội thoại",
                 temp: "0.5 – 0.8",
-                desc: "Viết email, trả lời khách hàng — đủ tự nhiên, không máy móc.",
+                desc: "Viết email, trả lời khách hàng, đủ tự nhiên, không máy móc.",
                 color: "#22c55e",
               },
               {
@@ -840,7 +839,7 @@ export default function TemperatureTopic() {
                 icon: Lightbulb,
                 title: "Brainstorm & sáng tạo",
                 temp: "1.0 – 1.3",
-                desc: "Đặt tên sản phẩm, slogan, ý tưởng chiến dịch — cần đa dạng tối đa.",
+                desc: "Đặt tên sản phẩm, slogan, ý tưởng chiến dịch, cần đa dạng tối đa.",
                 color: "#ef4444",
               },
               {
@@ -880,7 +879,7 @@ export default function TemperatureTopic() {
             Khi bạn hỏi AI một <strong>sự thật</strong> (năm sinh, số liệu, tên người, quy định
             pháp luật) với temperature cao, khả năng AI <strong>bịa chi tiết</strong> tăng lên đáng
             kể. Lý do đơn giản: thông tin đúng thường tập trung ở một vài từ có xác suất cao, còn
-            temperature cao làm AI &ldquo;liều&rdquo; chọn những từ ít phổ biến hơn — và chính đó là nơi cái
+            temperature cao làm AI &ldquo;liều&rdquo; chọn những từ ít phổ biến hơn, và chính đó là nơi cái
             sai xuất hiện. Với mọi việc liên quan đến sự thật, hãy vặn temperature xuống dưới 0.3.
           </Callout>
 
@@ -950,7 +949,7 @@ export default function TemperatureTopic() {
 
           <p className="mt-4 leading-relaxed">
             Temperature thường đi cùng với hai tham số anh em: <TopicLink slug="top-k-top-p">top-k và top-p</TopicLink>.
-            Bạn chưa cần học chúng để dùng AI hiệu quả — temperature là đủ cho 90% tình huống văn
+            Bạn chưa cần học chúng để dùng AI hiệu quả, temperature là đủ cho 90% tình huống văn
             phòng. Nhưng nếu bạn bắt đầu gọi AI qua API, đọc thêm về hai tham số đó để kiểm soát
             tốt hơn những trường hợp hiếm gặp.
           </p>
@@ -958,9 +957,9 @@ export default function TemperatureTopic() {
           <CollapsibleDetail title="Vì sao gọi là 'nhiệt độ'?">
             <p className="text-sm leading-relaxed">
               Cái tên &ldquo;temperature&rdquo; mượn từ vật lý. Trong vật lý, khi đun nóng một chất,
-              các phân tử chuyển động hỗn loạn hơn &mdash; giống như khi ta vặn nút sáng tạo của
+              các phân tử chuyển động hỗn loạn hơn, giống như khi ta vặn nút sáng tạo của
               AI lên cao, các lựa chọn từ cũng &ldquo;nhảy nhót&rdquo; hỗn loạn hơn. Khi làm lạnh
-              về gần không độ, các phân tử gần như đứng yên &mdash; giống AI ở temperature = 0
+              về gần không độ, các phân tử gần như đứng yên, giống AI ở temperature = 0
               luôn chọn cùng một từ. Ẩn dụ nghe sang trọng, nhưng ý nghĩa thực tế rất đơn giản: đây
               là <strong>nút điều chỉnh mức độ ngẫu nhiên</strong>.
             </p>
@@ -979,7 +978,7 @@ export default function TemperatureTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      {/* ━━━ BƯỚC 7, TÓM TẮT ━━━ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           title="4 điều cần nhớ về temperature"
@@ -993,7 +992,7 @@ export default function TemperatureTopic() {
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* ━━━ BƯỚC 8, QUIZ ━━━ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
         <div className="mt-6 flex items-center justify-center">

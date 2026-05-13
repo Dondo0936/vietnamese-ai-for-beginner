@@ -39,9 +39,9 @@ import { InlineChallenge, Callout } from "@/components/interactive";
 export const metadata: TopicMeta = {
   slug: "text-classification-in-support-routing",
   title: "Text Classification in Support Routing",
-  titleVi: "Phân loại văn bản trong điều phối hỗ trợ",
+  titleVi: "Text classification trong điều phối hỗ trợ",
   description:
-    "Cách Zendesk AI, Intercom Fin, Subiz và FPT.AI dùng phân loại văn bản để tự động gán nhãn, định tuyến ticket đến đúng đội — giảm 45% thời gian phản hồi.",
+    "Zendesk, Intercom và FPT.AI gán nhãn ticket để chuyển đúng đội và giảm thời gian phản hồi.",
   category: "nlp",
   tags: ["text-classification", "support", "application"],
   difficulty: "intermediate",
@@ -84,21 +84,21 @@ export const metadata: TopicMeta = {
       kind: "documentation",
     },
     {
-      title: "Intercom Fin — AI Agent for Customer Service",
+      title: "Intercom Fin, AI Agent for Customer Service",
       publisher: "Intercom",
       url: "https://www.intercom.com/fin",
       date: "2025",
       kind: "documentation",
     },
     {
-      title: "Subiz — Nền tảng chăm sóc khách hàng đa kênh cho doanh nghiệp Việt",
+      title: "Subiz, Nền tảng chăm sóc khách hàng đa kênh cho doanh nghiệp Việt",
       publisher: "Subiz Vietnam",
       url: "https://subiz.com.vn/",
       date: "2025",
       kind: "documentation",
     },
     {
-      title: "FPT.AI Chat — Trợ lý ảo AI tiếng Việt cho tổng đài và chăm sóc khách",
+      title: "FPT.AI Chat, Trợ lý ảo AI tiếng Việt cho tổng đài và chăm sóc khách",
       publisher: "FPT Smart Cloud",
       url: "https://fpt.ai/vi/chat",
       date: "2025",
@@ -227,7 +227,7 @@ export default function TextClassificationInSupportRouting() {
           <strong>(1) đọc từng ticket</strong>, <strong>(2) đoán nội
           dung</strong>, <strong>(3) kéo thả vào đội đúng</strong>. Với hàng
           nghìn ticket/ngày, việc này biến con người thành... bác nhân viên
-          thư phòng — một công việc hoàn toàn không giúp giải quyết vấn đề của
+          thư phòng, một công việc hoàn toàn không giúp giải quyết vấn đề của
           khách.
         </p>
 
@@ -236,7 +236,7 @@ export default function TextClassificationInSupportRouting() {
             {
               icon: Flame,
               title: "Khách hàng viết tự do",
-              desc: "Không có form chuẩn. Người viết 'app đơ', người viết 'phần mềm không phản hồi' — cùng ý.",
+              desc: "Không có form chuẩn. Người viết 'app đơ', người viết 'phần mềm không phản hồi', cùng ý.",
               color: "#ef4444",
             },
             {
@@ -273,7 +273,7 @@ export default function TextClassificationInSupportRouting() {
         <p>
           Và bài toán khó nhất: <strong>khách không mô tả theo cấu
           trúc</strong>. Họ viết &ldquo;app cứ thế là đơ&rdquo;, &ldquo;mất
-          tiền tự nhiên&rdquo;, &ldquo;các anh lừa đảo à&rdquo; — AI phải hiểu
+          tiền tự nhiên&rdquo;, &ldquo;các anh lừa đảo à&rdquo;, AI phải hiểu
           ý đằng sau lớp vỏ ngôn ngữ rất khó nắm.
         </p>
       </ApplicationProblem>
@@ -305,7 +305,7 @@ export default function TextClassificationInSupportRouting() {
 
         <Beat step={3}>
           <p>
-            <strong>Điều phối thông minh — đúng người, đúng lúc.</strong>{" "}
+            <strong>Điều phối thông minh, đúng người, đúng lúc.</strong>{" "}
             Intelligent Routing cân nhắc nhiều yếu tố: ý định đã phát hiện,
             chuyên môn cần thiết, tải hiện tại của nhân viên, giờ làm việc,
             lịch sử tương tác của khách. Ticket được tự động gán tag và
@@ -327,8 +327,7 @@ export default function TextClassificationInSupportRouting() {
           <p>
             <strong>Học liên tục từ phản hồi.</strong> Khi nhân viên chỉnh
             nhãn (vì AI đoán sai), hệ thống ghi nhận và retrain. Qua vài tuần,
-            mô hình đặc thù cho công ty tăng độ chính xác từ 75% lên 92–95% —
-            đủ tốt để tin gần như hoàn toàn.
+            mô hình đặc thù cho công ty tăng độ chính xác từ 75% lên 92–95%, đủ tốt để tin gần như hoàn toàn.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -478,7 +477,7 @@ export default function TextClassificationInSupportRouting() {
           </div>
         </div>
 
-        {/* Phân phối theo đội — thanh ngang */}
+        {/* Phân phối theo đội, thanh ngang */}
         <div>
           <p className="text-[11px] uppercase tracking-wide text-muted mb-2">
             Phân phối ticket theo đội (hôm nay)
@@ -555,7 +554,7 @@ export default function TextClassificationInSupportRouting() {
           sourceRef={1}
         />
         <Metric
-          value="AI vượt xa so khớp từ khóa — phân tích ý định, ngôn ngữ, cảm xúc, khẩn cấp đồng thời"
+          value="AI vượt xa so khớp từ khóa, phân tích ý định, ngôn ngữ, cảm xúc, khẩn cấp đồng thời"
           sourceRef={2}
         />
         <Metric
@@ -575,7 +574,7 @@ export default function TextClassificationInSupportRouting() {
       {/* ── Nền tảng nào? ────────────────────────────── */}
       <div className="my-10 space-y-4">
         <h3 className="text-base font-semibold text-foreground">
-          Bốn nền tảng phổ biến — chọn cái nào?
+          Bốn nền tảng phổ biến, chọn cái nào?
         </h3>
         <div className="grid gap-3 md:grid-cols-2">
           {PLATFORMS.map((p) => (
@@ -605,9 +604,9 @@ export default function TextClassificationInSupportRouting() {
         <Callout variant="tip" title="Kinh nghiệm chọn công cụ">
           <p className="text-sm">
             Doanh nghiệp Việt Nam phục vụ khách nội địa nên xem{" "}
-            <strong>Subiz</strong> hoặc <strong>FPT.AI</strong> trước — vì hiểu
+            <strong>Subiz</strong> hoặc <strong>FPT.AI</strong> trước, vì hiểu
             tiếng Việt, tích hợp Zalo OA, giá thân thiện. Startup SaaS có khách
-            toàn cầu — <strong>Zendesk</strong> hoặc{" "}
+            toàn cầu, <strong>Zendesk</strong> hoặc{" "}
             <strong>Intercom Fin</strong> phủ rộng hơn và có nhiều macro sẵn.
           </p>
         </Callout>
@@ -647,13 +646,13 @@ export default function TextClassificationInSupportRouting() {
             question="Ticket 5: 'Mất thẻ rồi, khóa gấp giúp mình với 🙏🙏🙏'"
             options={["Kỹ thuật", "Thanh toán / Khóa thẻ khẩn", "Đổi trả", "Câu hỏi chung"]}
             correct={1}
-            explanation="Khẩn cấp tối đa — đây là intent 'khóa thẻ'. Ngân hàng phải xử trong vài phút, vượt qua tất cả queue khác."
+            explanation="Khẩn cấp tối đa, đây là intent 'khóa thẻ'. Ngân hàng phải xử trong vài phút, vượt qua tất cả queue khác."
           />
           <InlineChallenge
             question="Ticket 6: 'Thanks team, refund received so fast!'"
             options={["Kỹ thuật", "Câu hỏi chung (tin tích cực, có thể đóng)", "Khiếu nại", "Thanh toán"]}
             correct={1}
-            explanation="Khách đã hài lòng, không còn vấn đề. AI có thể auto-close hoặc tag 'Positive feedback' để đội CS ghi nhận — không cần người trả lời dài."
+            explanation="Khách đã hài lòng, không còn vấn đề. AI có thể auto-close hoặc tag 'Positive feedback' để đội CS ghi nhận, không cần người trả lời dài."
           />
         </div>
 
@@ -662,7 +661,7 @@ export default function TextClassificationInSupportRouting() {
             Khách ít khi viết rõ ràng. &ldquo;Tôi mất tiền&rdquo; có thể là
             khiếu nại, có thể là thanh toán, có thể là hoàn tiền. AI phải đọc
             cả ngữ cảnh + lịch sử tương tác của khách để chọn đúng. Đó là lý
-            do các nền tảng lớn luôn cho phép nhân viên đổi nhãn — và
+            do các nền tảng lớn luôn cho phép nhân viên đổi nhãn, và
             mô hình học từ đó.
           </p>
         </Callout>
@@ -673,7 +672,7 @@ export default function TextClassificationInSupportRouting() {
         topicSlug="text-classification-in-support-routing"
       >
         <p>
-          Không có phân loại AI, đội hỗ trợ phải ngồi làm thư phòng — đọc từng
+          Không có phân loại AI, đội hỗ trợ phải ngồi làm thư phòng, đọc từng
           ticket, gán nhãn bằng tay, chuyển đội bằng email. Ngày hết 3 tiếng
           chỉ để <em>sắp xếp</em>, chưa kịp <em>giải quyết</em>. Khách hàng
           chờ hàng giờ. Ticket khẩn cấp lẫn vào câu hỏi lặt vặt.

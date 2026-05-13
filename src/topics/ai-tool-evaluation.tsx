@@ -40,14 +40,14 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ═══════════════════════════════════════════════════════════════════════
-   METADATA — preserved
+   METADATA, preserved
    ═══════════════════════════════════════════════════════════════════════ */
 export const metadata: TopicMeta = {
   slug: "ai-tool-evaluation",
   title: "AI Tool Evaluation",
-  titleVi: "Đánh giá AI tool đa chiều",
+  titleVi: "Chọn AI tool bằng bảng tiêu chí",
   description:
-    "Framework 6 tiêu chí (chất lượng, giá, tốc độ, bảo mật, tích hợp, hỗ trợ tiếng Việt) để chọn đúng công cụ AI cho từng tác vụ trong văn phòng Việt Nam.",
+    "So sánh chất lượng, chi phí, tốc độ, bảo mật, tích hợp và tiếng Việt trước khi mua hoặc triển khai.",
   category: "applied-ai",
   tags: ["evaluation", "comparison", "chatgpt", "claude", "gemini", "copilot"],
   difficulty: "intermediate",
@@ -58,7 +58,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ═══════════════════════════════════════════════════════════════════════
-   DATA — 6 tiêu chí
+   DATA, 6 tiêu chí
    ═══════════════════════════════════════════════════════════════════════ */
 
 interface Criterion {
@@ -122,7 +122,7 @@ const CRITERIA: Criterion[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
-   DATA — 5 công cụ phổ biến với điểm 0–5 theo 6 tiêu chí
+   DATA, 5 công cụ phổ biến với điểm 0–5 theo 6 tiêu chí
    ═══════════════════════════════════════════════════════════════════════ */
 
 interface Tool {
@@ -266,7 +266,7 @@ const TOOLS: Tool[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
-   DATA — matchmaker pairs
+   DATA, matchmaker pairs
    ═══════════════════════════════════════════════════════════════════════ */
 
 const MATCH_PAIRS: Pair[] = [
@@ -293,7 +293,7 @@ const MATCH_PAIRS: Pair[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — Scorecard builder with SliderGroup + bar chart
+   COMPONENT, Scorecard builder with SliderGroup + bar chart
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ScorecardViz({ weights }: { weights: Record<string, number> }) {
@@ -383,7 +383,7 @@ function ScorecardBuilder() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — Criteria diagram (6 tiêu chí)
+   COMPONENT, Criteria diagram (6 tiêu chí)
    ═══════════════════════════════════════════════════════════════════════ */
 
 function CriteriaDiagram() {
@@ -419,7 +419,7 @@ function CriteriaDiagram() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — Tool comparison cards (strengths/weaknesses)
+   COMPONENT, Tool comparison cards (strengths/weaknesses)
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ToolCards() {
@@ -480,7 +480,7 @@ function ToolCards() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — Benchmark comparison (mock outputs on same prompt)
+   COMPONENT, Benchmark comparison (mock outputs on same prompt)
    ═══════════════════════════════════════════════════════════════════════ */
 
 function BenchmarkComparison() {
@@ -500,7 +500,7 @@ function BenchmarkComparison() {
       <p className="text-xs text-foreground leading-relaxed">
         <strong>3 hành động:</strong> (1) Rà soát chi phí vận hành, cắt mục không thiết yếu;
         (2) Đầu tư lại vào marketing để khôi phục tăng trưởng khách mới;
-        (3) Phân tích nhóm khách cũ — tăng cross-sell bù cho giảm khách mới.
+        (3) Phân tích nhóm khách cũ, tăng cross-sell bù cho giảm khách mới.
       </p>
       <p className="text-[10px] text-muted italic">≈ 340 ký tự, tốc độ ~2s</p>
     </div>
@@ -514,15 +514,15 @@ function BenchmarkComparison() {
       </div>
       <p className="text-xs text-foreground leading-relaxed">
         <strong>Tóm tắt Q1/2026:</strong> Tín hiệu trái chiều. Doanh thu 45 tỷ tăng mạnh 12% cho thấy sản phẩm còn sức,
-        nhưng lợi nhuận chỉ tăng 5% vì chi phí vận hành tăng 18% — tốc độ chi vượt tốc độ thu. Khách hàng mới giảm 8% là dấu hiệu
+        nhưng lợi nhuận chỉ tăng 5% vì chi phí vận hành tăng 18%, tốc độ chi vượt tốc độ thu. Khách hàng mới giảm 8% là dấu hiệu
         kênh tiếp thị đang mất hiệu quả.
       </p>
       <p className="text-xs text-foreground leading-relaxed">
-        <strong>Đề xuất:</strong> (1) Audit chi phí vận hành — tìm 3 mục tăng nhiều nhất, đặt giới hạn cho Q2;
+        <strong>Đề xuất:</strong> (1) Audit chi phí vận hành, tìm 3 mục tăng nhiều nhất, đặt giới hạn cho Q2;
         (2) Phân tích cohort khách mới Q4/2025 vs Q1/2026 để xác định kênh nào suy yếu, đầu tư lại;
         (3) Khởi động chương trình giữ chân + tăng ARPU trên tập khách cũ để bù.
       </p>
-      <p className="text-[10px] text-muted italic">≈ 520 ký tự, tốc độ ~3s — chi tiết hơn, giữ dấu tốt</p>
+      <p className="text-[10px] text-muted italic">≈ 520 ký tự, tốc độ ~3s, chi tiết hơn, giữ dấu tốt</p>
     </div>
   );
 
@@ -537,10 +537,10 @@ function BenchmarkComparison() {
         Growth có nhưng margin shrinking.
       </p>
       <p className="text-xs text-foreground leading-relaxed">
-        <strong>Actions:</strong> 1. Cost review — tìm chỗ cắt. 2. Reinvest marketing cho acquisition.
+        <strong>Actions:</strong> 1. Cost review, tìm chỗ cắt. 2. Reinvest marketing cho acquisition.
         3. Retention program cho existing customers.
       </p>
-      <p className="text-[10px] text-muted italic">≈ 200 ký tự, tốc độ ~1s — nhanh nhưng mix tiếng Anh</p>
+      <p className="text-[10px] text-muted italic">≈ 200 ký tự, tốc độ ~1s, nhanh nhưng mix tiếng Anh</p>
     </div>
   );
 
@@ -570,7 +570,7 @@ function BenchmarkComparison() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — Decision tree for common VN use cases
+   COMPONENT, Decision tree for common VN use cases
    ═══════════════════════════════════════════════════════════════════════ */
 
 function UseCaseDecisionTree() {
@@ -585,7 +585,7 @@ function UseCaseDecisionTree() {
           <strong>Ưu tiên:</strong> Tích hợp (5/5), bảo mật (5/5), tiếng Việt (4/5)
         </p>
         <p>
-          <strong>Chọn:</strong> <span className="font-semibold text-emerald-700 dark:text-emerald-300">Microsoft 365 Copilot</span> — nếu công ty đã có M365.
+          <strong>Chọn:</strong> <span className="font-semibold text-emerald-700 dark:text-emerald-300">Microsoft 365 Copilot</span>, nếu công ty đã có M365.
           Nếu chưa, dùng <span className="font-semibold">Claude for Work</span> + copy sang Word.
         </p>
         <p className="text-[11px] italic text-muted">
@@ -606,7 +606,7 @@ function UseCaseDecisionTree() {
           <strong>Ưu tiên:</strong> Chất lượng (5/5), tiếng Việt (5/5), bảo mật (5/5)
         </p>
         <p>
-          <strong>Chọn:</strong> <span className="font-semibold text-emerald-700 dark:text-emerald-300">Claude for Work</span> — mạnh nhất ở phân tích văn bản dài.
+          <strong>Chọn:</strong> <span className="font-semibold text-emerald-700 dark:text-emerald-300">Claude for Work</span>, mạnh nhất ở phân tích văn bản dài.
         </p>
         <p className="text-[11px] italic text-muted">
           Lý do: Context window 200K token + reasoning mạnh + giữ dấu tiếng Việt ổn định. Che PII trước khi dán.
@@ -691,7 +691,7 @@ function UseCaseDecisionTree() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — TCO breakdown visual
+   COMPONENT, TCO breakdown visual
    ═══════════════════════════════════════════════════════════════════════ */
 
 interface TcoComponent {
@@ -715,7 +715,7 @@ const TCO_COMPONENTS: TcoComponent[] = [
   {
     label: "Hạ tầng đi kèm",
     share: 15,
-    desc: "Vector DB, orchestration, monitoring, caching — thường bị quên",
+    desc: "Vector DB, orchestration, monitoring, caching, thường bị quên",
     icon: Database,
     color: "text-blue-700 dark:text-blue-300",
     bg: "bg-blue-100 dark:bg-blue-900/30",
@@ -827,7 +827,7 @@ function TcoBreakdown() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   COMPONENT — Red flags
+   COMPONENT, Red flags
    ═══════════════════════════════════════════════════════════════════════ */
 
 function RedFlags() {
@@ -835,7 +835,7 @@ function RedFlags() {
     {
       title: "Chưa có trên thị trường VN",
       detail:
-        "Công cụ chưa có thanh toán bằng thẻ VN, chưa có hóa đơn VAT, chưa có gói doanh nghiệp ở region châu Á — sẽ khó triển khai cho team ở VN.",
+        "Công cụ chưa có thanh toán bằng thẻ VN, chưa có hóa đơn VAT, chưa có gói doanh nghiệp ở region châu Á, sẽ khó triển khai cho team ở VN.",
     },
     {
       title: "Không có gói trả phí rõ ràng",
@@ -860,7 +860,7 @@ function RedFlags() {
     {
       title: "Khóa vendor lock-in nặng",
       detail:
-        "Fine-tune, dataset, prompt format đều độc quyền — sau này muốn đổi phải viết lại từ đầu. Chọn công cụ có portable format.",
+        "Fine-tune, dataset, prompt format đều độc quyền, sau này muốn đổi phải viết lại từ đầu. Chọn công cụ có portable format.",
     },
   ];
 
@@ -899,34 +899,34 @@ export default function AiToolEvaluationTopic() {
         "Bạn cần chọn AI cho 50 nhân viên văn phòng chủ yếu dùng Word và Outlook cho tài liệu và email khách hàng. Chọn tool nào phù hợp nhất?",
       options: [
         "ChatGPT Free cho mọi người, rẻ nhất",
-        "Microsoft 365 Copilot — tích hợp sẵn Word/Outlook, Zero Data Retention, DPA đầy đủ",
+        "Microsoft 365 Copilot, tích hợp sẵn Word/Outlook, Zero Data Retention, DPA đầy đủ",
         "Để nhân viên tự chọn tool họ thích",
         "Gemini Free vì Google là công ty lớn",
       ],
       correct: 1,
       explanation:
-        "M365 Copilot phù hợp nhất vì: (1) workload chính là Word + Outlook — tích hợp native tiết kiệm thời gian; (2) dữ liệu email khách hàng là PII, cần DPA + Zero Data Retention; (3) admin console giúp IT quản lý. Free tier không có DPA nên không dùng cho dữ liệu khách hàng.",
+        "M365 Copilot phù hợp nhất vì: (1) workload chính là Word + Outlook, tích hợp native tiết kiệm thời gian; (2) dữ liệu email khách hàng là PII, cần DPA + Zero Data Retention; (3) admin console giúp IT quản lý. Free tier không có DPA nên không dùng cho dữ liệu khách hàng.",
     },
     {
       question:
         "Phát biểu nào SAI về đánh giá AI tool?",
       options: [
-        "Không có tool {'tốt nhất'} chung — chỉ có tool phù hợp nhất với tác vụ và trọng số của bạn",
+        "Không có tool {'tốt nhất'} chung, chỉ có tool phù hợp nhất với tác vụ và trọng số của bạn",
         "Benchmark công khai như MMLU là thước đo cuối cùng, không cần đánh giá thêm",
         "Multi-model routing (Gemini Flash cho query đơn giản + Claude cho query phức tạp) tiết kiệm được 50–70% chi phí",
         "Tool rẻ nhất về giá API có thể đắt nhất về tổng chi phí khi tính cả công sức integrate và migrate",
       ],
       correct: 1,
       explanation:
-        "Benchmark công khai chỉ là proxy — không thay được việc đánh giá trên workload thật của bạn (domain, tiếng Việt, use case cụ thể). Nên xây một bộ eval set nội bộ 30–50 example từ công việc thật để so sánh head-to-head.",
+        "Benchmark công khai chỉ là proxy, không thay được việc đánh giá trên workload thật của bạn (domain, tiếng Việt, use case cụ thể). Nên xây một bộ eval set nội bộ 30–50 example từ công việc thật để so sánh head-to-head.",
     },
     {
       question:
         "Tại sao đánh giá AI tool phải bao gồm tiêu chí {'Hỗ trợ tiếng Việt'}?",
       options: [
-        "Vì đa số benchmark AI công khai dùng tiếng Anh — chất lượng output trên tiếng Việt có thể chênh 10–20% so với điểm benchmark",
+        "Vì đa số benchmark AI công khai dùng tiếng Anh, chất lượng output trên tiếng Việt có thể chênh 10–20% so với điểm benchmark",
         "Vì Việt Nam không có internet",
-        "Không cần — mọi AI đều hỗ trợ tiếng Việt như nhau",
+        "Không cần, mọi AI đều hỗ trợ tiếng Việt như nhau",
         "Vì chỉ tiếng Việt mới đánh dấu được",
       ],
       correct: 0,
@@ -937,21 +937,21 @@ export default function AiToolEvaluationTopic() {
       question:
         "Công ty fintech có chatbot 8M câu hỏi/tháng, 90% là FAQ đơn giản, 10% là case phức tạp. Chọn kiến trúc nào tối ưu chi phí + chất lượng?",
       options: [
-        "Claude Opus cho toàn bộ 100% — chất lượng cao nhất",
+        "Claude Opus cho toàn bộ 100%, chất lượng cao nhất",
         "Router: Gemini Flash cho 90% FAQ (rẻ + nhanh) + Claude Sonnet cho 10% case phức tạp",
         "Mỗi lần query gọi cả 3 tool, chọn kết quả tốt nhất",
         "ChatGPT Free, lo chất lượng sau",
       ],
       correct: 1,
       explanation:
-        "Router multi-model là pattern chuẩn cho workload có phân phối lệch. 90% FAQ không cần flagship — Flash đủ sức, chi phí bằng 1/10. 10% case phức tạp cần Claude để giữ chất lượng. Tổng chi phí giảm ~65% mà không hạ chất lượng ở phần quan trọng.",
+        "Router multi-model là pattern chuẩn cho workload có phân phối lệch. 90% FAQ không cần flagship, Flash đủ sức, chi phí bằng 1/10. 10% case phức tạp cần Claude để giữ chất lượng. Tổng chi phí giảm ~65% mà không hạ chất lượng ở phần quan trọng.",
     },
     {
       question:
         "Khi chọn AI cho công ty, dấu hiệu {'red flag'} nào sau đây KHÔNG đáng lo?",
       options: [
         "Vendor chỉ có tier miễn phí, không có Team/Enterprise, không có DPA",
-        "Không có đánh giá bên thứ 3 — chỉ có benchmark do chính vendor công bố",
+        "Không có đánh giá bên thứ 3, chỉ có benchmark do chính vendor công bố",
         "Công cụ hỗ trợ nhiều ngôn ngữ bao gồm cả tiếng Việt và có cộng đồng lớn",
         "Bảo mật mập mờ, không có trang trust center, không có chứng chỉ SOC 2",
       ],
@@ -978,19 +978,19 @@ export default function AiToolEvaluationTopic() {
   return (
     <>
       {/* ================================================================
-          BƯỚC 1 — PREDICTION
+          BƯỚC 1, PREDICTION
           ================================================================ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question="Với cùng một tác vụ 'tóm tắt báo cáo 50 trang', bạn thử trên ChatGPT miễn phí và Claude miễn phí. Kết quả KHẢ NĂNG CAO sẽ khác nhau ở điểm nào?"
           options={[
             "Hai tool cho kết quả giống nhau vì cùng là AI",
-            "Khác biệt về độ chi tiết, giữ dấu tiếng Việt, tốc độ, và cách trình bày — mỗi tool có điểm mạnh khác",
+            "Khác biệt về độ chi tiết, giữ dấu tiếng Việt, tốc độ, và cách trình bày, mỗi tool có điểm mạnh khác",
             "ChatGPT luôn tốt hơn Claude vì phổ biến hơn",
             "Claude luôn tốt hơn vì mới ra sau",
           ]}
           correct={1}
-          explanation="Hai tool thường khác nhau đáng kể: chi tiết, độ dài, giữ dấu tiếng Việt, khả năng hiểu ngữ cảnh VN, tốc độ. Không có tool {'tốt nhất'} — chỉ có tool {'phù hợp nhất cho tác vụ cụ thể của bạn'}. Bài này cho bạn một framework 6 tiêu chí để quyết định."
+          explanation="Hai tool thường khác nhau đáng kể: chi tiết, độ dài, giữ dấu tiếng Việt, khả năng hiểu ngữ cảnh VN, tốc độ. Không có tool {'tốt nhất'}, chỉ có tool {'phù hợp nhất cho tác vụ cụ thể của bạn'}. Bài này cho bạn một framework 6 tiêu chí để quyết định."
         >
           <p className="mt-3 text-sm text-muted leading-relaxed">
             Ở cuối bài, bạn sẽ biết: (1) 6 tiêu chí cần so sánh khi chọn AI;
@@ -1001,7 +1001,7 @@ export default function AiToolEvaluationTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 2 — METAPHOR
+          BƯỚC 2, METAPHOR
           ================================================================ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Hình dung">
         <div className="space-y-3">
@@ -1021,12 +1021,12 @@ export default function AiToolEvaluationTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 3 — VISUALIZATION
+          BƯỚC 3, VISUALIZATION
           ================================================================ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thực hành">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-8">
-            {/* Demo 1 — Scorecard */}
+            {/* Demo 1, Scorecard */}
             <div className="space-y-3">
               <div>
                 <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
@@ -1042,7 +1042,7 @@ export default function AiToolEvaluationTopic() {
               <ScorecardBuilder />
             </div>
 
-            {/* Demo 2 — Matchmaker */}
+            {/* Demo 2, Matchmaker */}
             <div className="space-y-3">
               <div>
                 <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
@@ -1059,7 +1059,7 @@ export default function AiToolEvaluationTopic() {
               />
             </div>
 
-            {/* Demo 3 — Benchmark comparison */}
+            {/* Demo 3, Benchmark comparison */}
             <div className="space-y-3">
               <div>
                 <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
@@ -1078,11 +1078,11 @@ export default function AiToolEvaluationTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 4 — AHA
+          BƯỚC 4, AHA
           ================================================================ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Aha">
         <AhaMoment>
-          Không có tool <em>tốt nhất</em> — chỉ có tool{" "}
+          Không có tool <em>tốt nhất</em>, chỉ có tool{" "}
           <strong>phù hợp nhất cho tác vụ cụ thể của bạn</strong>. Thay vì hỏi
           {' "'}ChatGPT hay Claude tốt hơn?{'" '}hãy hỏi: {' "'}với tác vụ X và
           ưu tiên Y của công ty, tool nào thắng trên 6 tiêu chí?{'" '}
@@ -1091,7 +1091,7 @@ export default function AiToolEvaluationTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 5 — CHALLENGE
+          BƯỚC 5, CHALLENGE
           ================================================================ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
@@ -1099,7 +1099,7 @@ export default function AiToolEvaluationTopic() {
           options={[
             "Dùng 1 công cụ duy nhất (ChatGPT Plus) cho mọi việc",
             "Claude Pro (viết content dài tiếng Việt) + Perplexity Pro (research xu hướng) + ChatGPT Plus (tạo ảnh DALL-E). Tổng ~$60/tháng, mỗi công cụ làm việc nó mạnh nhất.",
-            "Chỉ dùng Gemini Free — miễn phí và đủ tốt",
+            "Chỉ dùng Gemini Free, miễn phí và đủ tốt",
             "Thuê agency ngoài, không dùng AI",
           ]}
           correct={1}
@@ -1108,7 +1108,7 @@ export default function AiToolEvaluationTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 6 — EXPLANATION (visual-heavy)
+          BƯỚC 6, EXPLANATION (visual-heavy)
           ================================================================ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -1123,14 +1123,14 @@ export default function AiToolEvaluationTopic() {
                 Với mỗi tác vụ, cho điểm trọng số 0–5 cho mỗi tiêu chí (tổng không
                 bắt buộc là 15). Rồi tính điểm tổng cho từng công cụ: điểm mỗi
                 tiêu chí × trọng số, cộng lại. Công cụ điểm cao nhất là lựa chọn
-                hợp lý — nhưng luôn thử thực tế với 5–10 prompt trước khi commit.
+                hợp lý, nhưng luôn thử thực tế với 5–10 prompt trước khi commit.
               </Callout>
             </div>
 
             {/* Tool cards */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-3">
-                5 công cụ AI phổ biến — mạnh và yếu
+                5 công cụ AI phổ biến, mạnh và yếu
               </h3>
               <ToolCards />
             </div>
@@ -1138,7 +1138,7 @@ export default function AiToolEvaluationTopic() {
             {/* TCO breakdown */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-3">
-                Tổng chi phí sở hữu (TCO) — tính đủ 5 thành phần
+                Tổng chi phí sở hữu (TCO), tính đủ 5 thành phần
               </h3>
               <TcoBreakdown />
             </div>
@@ -1186,29 +1186,29 @@ export default function AiToolEvaluationTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 7 — SUMMARY
+          BƯỚC 7, SUMMARY
           ================================================================ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="5 điều cần nhớ khi chọn AI tool"
           points={[
             "6 tiêu chí: chất lượng, giá, tốc độ, bảo mật, tích hợp, hỗ trợ tiếng Việt. Trọng số khác nhau cho từng tác vụ.",
-            "Không có tool tốt nhất — có tool phù hợp nhất. ChatGPT đa năng, Claude mạnh văn bản dài, Gemini rẻ + nhanh, Copilot gắn chặt M365, Perplexity research.",
+            "Không có tool tốt nhất, có tool phù hợp nhất. ChatGPT đa năng, Claude mạnh văn bản dài, Gemini rẻ + nhanh, Copilot gắn chặt M365, Perplexity research.",
             "Multi-tool stack thường hiệu quả hơn một công cụ duy nhất. Ví dụ: Claude (viết) + Perplexity (research) + ChatGPT (ảnh).",
-            "Red flag: không có enterprise tier, không có DPA, chỉ có benchmark tự công bố, vendor mập mờ — tránh.",
+            "Red flag: không có enterprise tier, không có DPA, chỉ có benchmark tự công bố, vendor mập mờ, tránh.",
             "Trước khi commit công cụ cho công ty, xây eval set 30–50 example từ workload thật, chạy head-to-head, chấm điểm theo rubric.",
           ]}
         />
         <p className="mt-4 text-sm text-muted leading-relaxed">
-          Chọn đúng tool nhưng dùng sai cách vẫn không hiệu quả — xem{" "}
+          Chọn đúng tool nhưng dùng sai cách vẫn không hiệu quả, xem{" "}
           <TopicLink slug="prompt-engineering">Prompt Engineering</TopicLink>.
-          Bảo mật và Nghị định 13/2023 là yếu tố chi phối lựa chọn ở VN — xem{" "}
+          Bảo mật và Nghị định 13/2023 là yếu tố chi phối lựa chọn ở VN, xem{" "}
           <TopicLink slug="ai-privacy-security">Bảo mật khi dùng AI</TopicLink>.
         </p>
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 8 — QUIZ
+          BƯỚC 8, QUIZ
           ================================================================ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <ProgressSteps total={TOTAL_STEPS} current={TOTAL_STEPS} />

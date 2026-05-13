@@ -1,11 +1,11 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  THIÊN KIẾN & CÔNG BẰNG TRONG AI — Phiên bản dành cho nhân viên văn phòng
+ *  THIÊN KIẾN & CÔNG BẰNG TRONG AI, Phiên bản dành cho nhân viên văn phòng
  *  ─────────────────────────────────────────────────────────────────────────
  *  Rewrite bởi Opus 4.7. Đối tượng: HR, quản lý, tuyển dụng, bất cứ ai
  *  phải sống chung với các quyết định do AI đưa ra. Không công thức, không
- *  code — chỉ có sơ đồ, thanh phần trăm và tương tác trực tiếp.
+ *  code, chỉ có sơ đồ, thanh phần trăm và tương tác trực tiếp.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 import { motion } from "framer-motion";
@@ -47,9 +47,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "bias-fairness",
   title: "Bias & Fairness",
-  titleVi: "Thiên kiến & Công bằng trong AI",
+  titleVi: "Bias và fairness: AI học cả định kiến",
   description:
-    "Nhận diện cách AI học lại định kiến từ dữ liệu quá khứ, và các cách kiểm soát thiên kiến phù hợp với môi trường văn phòng Việt Nam.",
+    "Nhìn cách dữ liệu cũ làm AI thiên lệch và cách đặt bước kiểm để quyết định công bằng hơn.",
   category: "ai-safety",
   tags: ["bias", "fairness", "ethics", "hr", "office"],
   difficulty: "beginner",
@@ -58,7 +58,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  DEMO 1 — BIAS SIMULATOR
+ *  DEMO 1, BIAS SIMULATOR
  *  Người học kéo 2 thanh: (1) % nữ trong dữ liệu lịch sử, (2) thiên lệch
  *  điểm số của mô hình đối với nhóm thiểu số. Widget vẽ lại tỷ lệ tuyển dụng
  *  dự đoán cho từng giới tính.
@@ -134,9 +134,9 @@ function BiasSimulator() {
               </div>
               <div className="text-xs mt-1">
                 {gap > 25
-                  ? "Rủi ro cao — AI đang phân biệt rõ rệt"
+                  ? "Rủi ro cao, AI đang phân biệt rõ rệt"
                   : gap > 10
-                    ? "Cần audit — thiên kiến đã hiện lên"
+                    ? "Cần audit, thiên kiến đã hiện lên"
                     : "Gần công bằng"}
               </div>
             </motion.div>
@@ -188,7 +188,7 @@ function BiasBar({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  DEMO 2 — PROTECTED-ATTRIBUTE LEAKAGE
+ *  DEMO 2, PROTECTED-ATTRIBUTE LEAKAGE
  *  So sánh hai mô hình: bỏ cột "Giới tính" vs bỏ cả "Giới tính" lẫn "Tên"
  *  + "Trường học". Giải thích trực quan: AI vẫn "đoán" được giới tính
  *  qua các trường còn lại.
@@ -261,17 +261,17 @@ function LeakageDemo() {
           <div className="space-y-2">
             <LeakageRow
               label="Tên ứng viên"
-              example="Nguyễn Thị Mai — đoán 92% là nữ"
+              example="Nguyễn Thị Mai, đoán 92% là nữ"
               leaks
             />
             <LeakageRow
               label="Trường học"
-              example='"Đại học Phụ nữ" — đoán 99% là nữ'
+              example='"Đại học Phụ nữ", đoán 99% là nữ'
               leaks
             />
             <LeakageRow
               label="Công việc cũ"
-              example='"Nội trợ trước 2018" — đoán 96% là nữ'
+              example='"Nội trợ trước 2018", đoán 96% là nữ'
               leaks
             />
           </div>
@@ -327,7 +327,7 @@ function LeakageDemo() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  DEMO 3 — TYPE SORTER (DragDrop)
+ *  DEMO 3, TYPE SORTER (DragDrop)
  *  Người học kéo 8 ví dụ thực tế vào 4 loại thiên kiến.
  * ═══════════════════════════════════════════════════════════════════════════ */
 const BIAS_ITEMS = [
@@ -348,7 +348,7 @@ const BIAS_ITEMS = [
   {
     id: "historical-2",
     label:
-      "AI sàng lọc CV ưu tiên ứng viên từng là 'đội trưởng' — từ khoá ít xuất hiện trong CV nữ",
+      "AI sàng lọc CV ưu tiên ứng viên từng là 'đội trưởng', từ khoá ít xuất hiện trong CV nữ",
   },
   {
     id: "measurement-1",
@@ -404,7 +404,7 @@ function TypeSorterDemo() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  FAIRNESS METRIC VISUAL — 3 tiêu chí công bằng dưới dạng bar chart
+ *  FAIRNESS METRIC VISUAL, 3 tiêu chí công bằng dưới dạng bar chart
  *  KHÔNG công thức, chỉ có thanh phần trăm + mô tả tiếng Việt.
  * ═══════════════════════════════════════════════════════════════════════════ */
 function FairnessMetricCard({
@@ -498,7 +498,7 @@ function MiniFairnessBar({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  4 BIAS TYPE CARDS — dùng trong ExplanationSection
+ *  4 BIAS TYPE CARDS, dùng trong ExplanationSection
  * ═══════════════════════════════════════════════════════════════════════════ */
 function BiasTypeCard({
   icon: Icon,
@@ -564,7 +564,7 @@ function BiasTypeCard({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  LEGAL PANEL — Bối cảnh pháp lý Việt Nam
+ *  LEGAL PANEL, Bối cảnh pháp lý Việt Nam
  * ═══════════════════════════════════════════════════════════════════════════ */
 function LegalPanel() {
   const laws = [
@@ -573,7 +573,7 @@ function LegalPanel() {
       scope: "Bảo vệ dữ liệu cá nhân",
       points: [
         "Dữ liệu cá nhân nhạy cảm (giới tính, tôn giáo, sức khoẻ, dân tộc) phải có sự đồng ý riêng của chủ thể.",
-        "Doanh nghiệp phải đánh giá tác động (DPIA) khi xử lý dữ liệu nhạy cảm — áp dụng trực tiếp khi dùng AI sàng lọc hồ sơ.",
+        "Doanh nghiệp phải đánh giá tác động (DPIA) khi xử lý dữ liệu nhạy cảm, áp dụng trực tiếp khi dùng AI sàng lọc hồ sơ.",
         "Quyền yêu cầu giải thích quyết định tự động đã có trong luật Việt Nam.",
       ],
     },
@@ -581,7 +581,7 @@ function LegalPanel() {
       name: "Luật An ninh mạng 2018",
       scope: "Ràng buộc lưu trữ và minh bạch",
       points: [
-        "Dữ liệu người dùng Việt Nam phải lưu trữ tại Việt Nam trong một số trường hợp — ảnh hưởng đến cách chọn nhà cung cấp AI.",
+        "Dữ liệu người dùng Việt Nam phải lưu trữ tại Việt Nam trong một số trường hợp, ảnh hưởng đến cách chọn nhà cung cấp AI.",
         "Trách nhiệm giải trình thuộc về doanh nghiệp sử dụng, không phải bên bán mô hình.",
       ],
     },
@@ -620,7 +620,7 @@ function LegalPanel() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  INLINE CHALLENGE — Rủi ro cao nhất
+ *  INLINE CHALLENGE, Rủi ro cao nhất
  * ═══════════════════════════════════════════════════════════════════════════ */
 const HIGH_RISK_CHALLENGE = {
   question:
@@ -645,13 +645,13 @@ const QUIZ: QuizQuestion[] = [
       "Vì sao AI có thể mang thiên kiến dù bản thân nó 'không có ý thức'?",
     options: [
       "Vì AI cố tình phân biệt để tiết kiệm tài nguyên tính toán",
-      "Vì AI học từ dữ liệu quá khứ — nếu quá khứ bất bình đẳng, mô hình sẽ tái tạo lại sự bất bình đẳng đó ở quy mô công nghiệp",
+      "Vì AI học từ dữ liệu quá khứ, nếu quá khứ bất bình đẳng, mô hình sẽ tái tạo lại sự bất bình đẳng đó ở quy mô công nghiệp",
       "Vì AI ở Việt Nam chưa được cập nhật văn hoá địa phương",
       "Vì AI chỉ làm việc đúng khi có người giám sát liên tục",
     ],
     correct: 1,
     explanation:
-      "AI không có ý định — nó chỉ tối ưu theo mẫu trong dữ liệu. Khi dữ liệu lịch sử chứa định kiến (ít hồ sơ nữ thành công, ít khách hàng nông thôn được vay), mô hình xem đó là 'tiêu chuẩn' và tự động tái tạo. Khác với con người, mô hình áp dụng định kiến này cho hàng vạn quyết định mỗi ngày.",
+      "AI không có ý định, nó chỉ tối ưu theo mẫu trong dữ liệu. Khi dữ liệu lịch sử chứa định kiến (ít hồ sơ nữ thành công, ít khách hàng nông thôn được vay), mô hình xem đó là 'tiêu chuẩn' và tự động tái tạo. Khác với con người, mô hình áp dụng định kiến này cho hàng vạn quyết định mỗi ngày.",
   },
   {
     question:
@@ -677,7 +677,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Audit trước, hành động sau. Phải hiểu vì sao có chênh lệch (sampling bias? historical bias? đo sai?) mới biết cách sửa đúng. Tăng trọng số mù quáng có thể tạo ra phân biệt ngược. Bỏ AI không giải quyết gốc rễ — con người cũng có thể có cùng định kiến, chỉ là khó đo hơn.",
+      "Audit trước, hành động sau. Phải hiểu vì sao có chênh lệch (sampling bias? historical bias? đo sai?) mới biết cách sửa đúng. Tăng trọng số mù quáng có thể tạo ra phân biệt ngược. Bỏ AI không giải quyết gốc rễ, con người cũng có thể có cùng định kiến, chỉ là khó đo hơn.",
   },
   {
     question:
@@ -733,20 +733,20 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Ba yếu tố bắt buộc: (1) audit trên dữ liệu thực tế Việt Nam — demo vendor có thể không đại diện; (2) đo chênh lệch theo các nhóm nhạy cảm — không đo thì không biết; (3) có human-in-the-loop và kênh khiếu nại — bảo vệ khi AI sai. Thiếu một trong ba, rủi ro pháp lý và thương hiệu rất cao.",
+      "Ba yếu tố bắt buộc: (1) audit trên dữ liệu thực tế Việt Nam, demo vendor có thể không đại diện; (2) đo chênh lệch theo các nhóm nhạy cảm, không đo thì không biết; (3) có human-in-the-loop và kênh khiếu nại, bảo vệ khi AI sai. Thiếu một trong ba, rủi ro pháp lý và thương hiệu rất cao.",
   },
   {
     question:
       "Vì sao không thể đồng thời đạt tất cả các tiêu chí công bằng (đồng đều tỷ lệ, đồng đều cơ hội, đồng đều TPR+FPR)?",
     options: [
       "Vì chưa có thuật toán đủ mạnh để giải cùng lúc",
-      "Vì khi tỷ lệ phù hợp thực sự khác nhau giữa các nhóm, các tiêu chí này mâu thuẫn nhau — đây là 'định lý bất khả thi', không phải vấn đề kỹ thuật",
+      "Vì khi tỷ lệ phù hợp thực sự khác nhau giữa các nhóm, các tiêu chí này mâu thuẫn nhau, đây là 'định lý bất khả thi', không phải vấn đề kỹ thuật",
       "Vì các thư viện AI tại Việt Nam chưa hỗ trợ",
       "Vì phải chọn theo tôn giáo của chủ doanh nghiệp",
     ],
     correct: 1,
     explanation:
-      "Đây là định lý bất khả thi về công bằng (Chouldechova 2017, Kleinberg 2016): khi tỷ lệ nền thực sự khác nhau giữa các nhóm, không thể đồng thời thoả các tiêu chí. Tổ chức BUỘC phải chọn tiêu chí ưu tiên dựa trên đạo đức và pháp luật. Không có công thức 'công bằng tuyệt đối' — chỉ có lựa chọn được chứng minh rõ ràng.",
+      "Đây là định lý bất khả thi về công bằng (Chouldechova 2017, Kleinberg 2016): khi tỷ lệ nền thực sự khác nhau giữa các nhóm, không thể đồng thời thoả các tiêu chí. Tổ chức BUỘC phải chọn tiêu chí ưu tiên dựa trên đạo đức và pháp luật. Không có công thức 'công bằng tuyệt đối', chỉ có lựa chọn được chứng minh rõ ràng.",
   },
 ];
 
@@ -766,11 +766,10 @@ export default function BiasFairnessTopic() {
           "Tất cả các nhóm trên",
         ]}
         correct={3}
-        explanation="Đáp án đúng là 'tất cả'. 10 năm dữ liệu ngân hàng thường thiếu hồ sơ của cả ba nhóm này — ít người trẻ có lịch sử tín dụng dài, ít phụ nữ có nguồn thu nhập trực tiếp trong hồ sơ, ít người nông thôn dùng dịch vụ ngân hàng. AI học rằng 'thiếu dữ liệu = rủi ro cao', và tự động hạ điểm cả ba. Bài học hôm nay sẽ cho bạn thấy hiện tượng này bằng sơ đồ tương tác."
+        explanation="Đáp án đúng là 'tất cả'. 10 năm dữ liệu ngân hàng thường thiếu hồ sơ của cả ba nhóm này, ít người trẻ có lịch sử tín dụng dài, ít phụ nữ có nguồn thu nhập trực tiếp trong hồ sơ, ít người nông thôn dùng dịch vụ ngân hàng. AI học rằng 'thiếu dữ liệu = rủi ro cao', và tự động hạ điểm cả ba. Bài học hôm nay sẽ cho bạn thấy hiện tượng này bằng sơ đồ tương tác."
       >
         <p className="text-sm text-muted mt-2">
-          Thiên kiến trong AI không phải là &ldquo;lỗi kỹ thuật hiếm gặp&rdquo; &mdash;
-          nó là hệ quả tất yếu khi máy học từ một quá khứ không hoàn hảo.
+          Thiên kiến trong AI không phải là &ldquo;lỗi kỹ thuật hiếm gặp&rdquo;, nó là hệ quả tất yếu khi máy học từ một quá khứ không hoàn hảo.
         </p>
       </PredictionGate>
 
@@ -779,19 +778,19 @@ export default function BiasFairnessTopic() {
         <div className="space-y-4">
           <p className="text-foreground leading-relaxed">
             Hãy hình dung AI như một tấm <strong>gương chiếu</strong>. Nó không
-            tự tạo ra ai, không tự có ý kiến &mdash; nó chỉ phản chiếu lại những
+            tự tạo ra ai, không tự có ý kiến, nó chỉ phản chiếu lại những
             gì đã xảy ra trong dữ liệu 10 năm qua của công ty bạn.
           </p>
           <p className="text-foreground leading-relaxed">
             Nếu 10 năm qua ngân hàng ít duyệt vay cho phụ nữ làm nội trợ, tấm
             gương sẽ nói: &ldquo;nội trợ = rủi ro cao&rdquo;. Nếu công ty công
             nghệ ít tuyển người trên 40 tuổi, tấm gương sẽ nói: &ldquo;40+ = ít
-            phù hợp&rdquo;. Không phải vì tấm gương ác ý &mdash; mà vì đó là
+            phù hợp&rdquo;. Không phải vì tấm gương ác ý, mà vì đó là
             tất cả những gì nó từng thấy.
           </p>
           <Callout variant="insight" title="Khác biệt lớn nhất giữa AI và con người">
             Một nhân viên HR có định kiến có thể sàng 20 CV mỗi ngày. Một mô
-            hình AI có định kiến sàng 20.000 CV mỗi ngày &mdash; cùng một định
+            hình AI có định kiến sàng 20.000 CV mỗi ngày, cùng một định
             kiến, <strong>áp dụng ở tầm công nghiệp</strong>, và không ai kịp
             kiểm tra từng quyết định.
           </Callout>
@@ -800,7 +799,7 @@ export default function BiasFairnessTopic() {
 
       {/* ── BƯỚC 3: VISUALIZATION ───────────────────────────────────────── */}
       <VisualizationSection topicSlug={metadata.slug}>
-        <LessonSection label="Demo 1 — Kéo thanh để xem thiên kiến hình thành" step={2}>
+        <LessonSection label="Demo 1, Kéo thanh để xem thiên kiến hình thành" step={2}>
           <div className="space-y-3">
             <p className="text-sm text-muted">
               Kéo thử thanh &ldquo;tỷ lệ nữ trong dữ liệu&rdquo; xuống thấp,
@@ -811,7 +810,7 @@ export default function BiasFairnessTopic() {
           </div>
         </LessonSection>
 
-        <LessonSection label="Demo 2 — Xoá cột Giới tính là chưa đủ" step={3}>
+        <LessonSection label="Demo 2, Xoá cột Giới tính là chưa đủ" step={3}>
           <div className="space-y-3">
             <p className="text-sm text-muted">
               Nhiều công ty tin rằng bỏ cột giới tính khỏi dữ liệu là đủ. Thực
@@ -822,7 +821,7 @@ export default function BiasFairnessTopic() {
           </div>
         </LessonSection>
 
-        <LessonSection label="Demo 3 — Phân loại 8 ví dụ thực tế" step={4}>
+        <LessonSection label="Demo 3, Phân loại 8 ví dụ thực tế" step={4}>
           <div className="space-y-3">
             <p className="text-sm text-muted">
               Kéo từng ví dụ dưới đây vào đúng loại thiên kiến. Đây là 8 tình
@@ -836,7 +835,7 @@ export default function BiasFairnessTopic() {
       {/* ── BƯỚC 4: AHA MOMENT ──────────────────────────────────────────── */}
       <AhaMoment>
         Xoá cột <strong>&ldquo;giới tính&rdquo;</strong> khỏi dữ liệu không
-        làm cho AI công bằng hơn &mdash; mà chỉ làm cho sự thiên kiến{" "}
+        làm cho AI công bằng hơn, mà chỉ làm cho sự thiên kiến{" "}
         <strong>khó phát hiện hơn</strong>. Tên, trường học, địa chỉ, nghề cũ
         đều có thể rò rỉ cùng một thông tin. Công bằng thật sự đòi hỏi{" "}
         <strong>đo đạc kết quả</strong>, không phải giả vờ không nhìn thấy.
@@ -867,7 +866,7 @@ export default function BiasFairnessTopic() {
               nameVi="Thiên kiến lịch sử"
               nameEn="Historical bias"
               what="Dữ liệu chính xác, nhưng phản ánh một xã hội bất bình đẳng. AI tái tạo quá khứ đó."
-              example="Ngân hàng 10 năm qua duyệt vay ít cho phụ nữ — AI học rằng 'phụ nữ = rủi ro'."
+              example="Ngân hàng 10 năm qua duyệt vay ít cho phụ nữ, AI học rằng 'phụ nữ = rủi ro'."
               tone="amber"
             />
             <BiasTypeCard
@@ -875,7 +874,7 @@ export default function BiasFairnessTopic() {
               nameVi="Thiên kiến đo lường"
               nameEn="Measurement bias"
               what="Cách đo 'kết quả' sai lệch giữa các nhóm. Thước đo không phải là sự thật."
-              example='Đánh giá năng suất bằng "giờ online" — bất lợi cho ai làm việc hiệu quả nhưng ngắn thời gian.'
+              example='Đánh giá năng suất bằng "giờ online", bất lợi cho ai làm việc hiệu quả nhưng ngắn thời gian.'
               tone="purple"
             />
             <BiasTypeCard
@@ -889,7 +888,7 @@ export default function BiasFairnessTopic() {
           </div>
         </LessonSection>
 
-        <LessonSection label="Ba cách đo công bằng — minh hoạ bằng thanh phần trăm" step={6}>
+        <LessonSection label="Ba cách đo công bằng, minh hoạ bằng thanh phần trăm" step={6}>
           <div className="space-y-2">
             <p className="text-sm text-muted">
               Không có một định nghĩa &ldquo;công bằng&rdquo; duy nhất. Có ba
@@ -901,16 +900,16 @@ export default function BiasFairnessTopic() {
             <FairnessMetricCard
               title="Đồng đều tỷ lệ (Demographic Parity)"
               tagline="Tỷ lệ được chọn bằng nhau, bất kể năng lực"
-              metaphor="Câu hỏi: 'Bạn có nhận đủ nam và nữ vào công ty không?' — chỉ nhìn số lượng tổng."
+              metaphor="Câu hỏi: 'Bạn có nhận đủ nam và nữ vào công ty không?', chỉ nhìn số lượng tổng."
               barsA={[{ label: "Tỷ lệ tuyển", pct: 62 }]}
               barsB={[{ label: "Tỷ lệ tuyển", pct: 61 }]}
-              verdict="Đạt: hai cột gần bằng nhau. Nhưng không đảm bảo AI chọn đúng người — có thể đang tuyển đủ số lượng nhưng sai chất lượng để 'bù đắp'."
+              verdict="Đạt: hai cột gần bằng nhau. Nhưng không đảm bảo AI chọn đúng người, có thể đang tuyển đủ số lượng nhưng sai chất lượng để 'bù đắp'."
               verdictTone="good"
             />
             <FairnessMetricCard
               title="Đồng đều cơ hội (Equal Opportunity)"
               tagline="Trong số người THẬT SỰ phù hợp, tỷ lệ được AI chọn bằng nhau"
-              metaphor="Câu hỏi: 'Trong số ứng viên xứng đáng, bao nhiêu % được AI chấp nhận?' — chỉ đo trên nhóm có năng lực."
+              metaphor="Câu hỏi: 'Trong số ứng viên xứng đáng, bao nhiêu % được AI chấp nhận?', chỉ đo trên nhóm có năng lực."
               barsA={[
                 { label: "Người xứng đáng được chọn", pct: 85 },
                 { label: "Tỷ lệ tổng", pct: 62 },
@@ -919,13 +918,13 @@ export default function BiasFairnessTopic() {
                 { label: "Người xứng đáng được chọn", pct: 84 },
                 { label: "Tỷ lệ tổng", pct: 41 },
               ]}
-              verdict="Đạt: 85% và 84% gần bằng nhau ở thanh trên. Tỷ lệ tổng chênh vì nhóm B ít người xứng đáng — không phải bất công từ AI."
+              verdict="Đạt: 85% và 84% gần bằng nhau ở thanh trên. Tỷ lệ tổng chênh vì nhóm B ít người xứng đáng, không phải bất công từ AI."
               verdictTone="good"
             />
             <FairnessMetricCard
               title="Đồng đều sai sót (Equalized Odds)"
               tagline="Cả tỷ lệ chọn đúng và chọn sai phải bằng nhau"
-              metaphor="Câu hỏi kép: 'AI có ưu ái một nhóm theo hai hướng — chọn nhiều hơn cả người xứng đáng LẪN người không xứng đáng?'"
+              metaphor="Câu hỏi kép: 'AI có ưu ái một nhóm theo hai hướng, chọn nhiều hơn cả người xứng đáng LẪN người không xứng đáng?'"
               barsA={[
                 { label: "Chọn đúng (TPR)", pct: 85 },
                 { label: "Chọn sai (FPR)", pct: 28 },
@@ -934,7 +933,7 @@ export default function BiasFairnessTopic() {
                 { label: "Chọn đúng (TPR)", pct: 70 },
                 { label: "Chọn sai (FPR)", pct: 12 },
               ]}
-              verdict="Chưa đạt: nhóm A cao hơn ở cả hai thanh — AI đang 'dễ tính' với A và 'khó tính' với B. Đây là tiêu chí nghiêm ngặt nhất."
+              verdict="Chưa đạt: nhóm A cao hơn ở cả hai thanh, AI đang 'dễ tính' với A và 'khó tính' với B. Đây là tiêu chí nghiêm ngặt nhất."
               verdictTone="warn"
             />
           </div>
@@ -943,7 +942,7 @@ export default function BiasFairnessTopic() {
         <LessonSection label="Bộ công cụ giảm thiên kiến" step={7}>
           <p className="text-sm text-muted mb-3">
             Nối từng kỹ thuật với tình huống phù hợp. Mỗi kỹ thuật giải quyết
-            một lớp vấn đề khác nhau &mdash; không có viên đạn bạc.
+            một lớp vấn đề khác nhau, không có viên đạn bạc.
           </p>
           <MatchPairs
             instruction="Bấm vào một ô Cột A, rồi bấm vào ô Cột B tương ứng."
@@ -981,7 +980,7 @@ export default function BiasFairnessTopic() {
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
             <Callout variant="tip" title="Luôn audit trước triển khai">
               Đo chênh lệch kết quả theo giới tính, độ tuổi, vùng miền trên dữ
-              liệu Việt Nam thật &mdash; không chỉ demo của vendor.
+              liệu Việt Nam thật, không chỉ demo của vendor.
             </Callout>
             <Callout variant="insight" title="Không bao giờ để AI tự quyết một mình">
               Với quyết định ảnh hưởng đến sinh kế (tuyển dụng, sa thải, lương,
@@ -994,7 +993,7 @@ export default function BiasFairnessTopic() {
           </div>
         </LessonSection>
 
-        <CollapsibleDetail title="Bối cảnh pháp lý Việt Nam — những gì doanh nghiệp BẮT BUỘC phải biết">
+        <CollapsibleDetail title="Bối cảnh pháp lý Việt Nam, những gì doanh nghiệp BẮT BUỘC phải biết">
           <div className="pt-3">
             <LegalPanel />
           </div>
@@ -1005,8 +1004,7 @@ export default function BiasFairnessTopic() {
             Một sự thật toán học khó chịu: <strong>không thể đồng thời đạt cả
             ba tiêu chí công bằng</strong> (đồng đều tỷ lệ, đồng đều cơ hội,
             đồng đều sai sót) khi tỷ lệ nền của các nhóm khác nhau. Tổ chức
-            BUỘC phải <em>chọn</em> tiêu chí ưu tiên và ghi lại lý do &mdash;
-            đây là trách nhiệm đạo đức, không phải bài toán kỹ thuật.
+            BUỘC phải <em>chọn</em> tiêu chí ưu tiên và ghi lại lý do, đây là trách nhiệm đạo đức, không phải bài toán kỹ thuật.
           </p>
         </Callout>
       </ExplanationSection>
@@ -1015,10 +1013,10 @@ export default function BiasFairnessTopic() {
       <MiniSummary
         title="5 điều nhân viên văn phòng cần nhớ về thiên kiến AI"
         points={[
-          "AI là tấm gương chiếu quá khứ — quá khứ bất bình đẳng thì AI cũng bất bình đẳng, chỉ có điều ở tầm công nghiệp.",
-          "Bỏ cột 'giới tính' không làm AI công bằng — tên, trường, nghề cũ vẫn rò rỉ thông tin. Phải đo kết quả, không che dữ liệu.",
+          "AI là tấm gương chiếu quá khứ, quá khứ bất bình đẳng thì AI cũng bất bình đẳng, chỉ có điều ở tầm công nghiệp.",
+          "Bỏ cột 'giới tính' không làm AI công bằng, tên, trường, nghề cũ vẫn rò rỉ thông tin. Phải đo kết quả, không che dữ liệu.",
           "Bốn loại thiên kiến: lấy mẫu (sampling), lịch sử (historical), đo lường (measurement), triển khai (deployment). Mỗi loại có cách xử lý riêng.",
-          "Ba cách đo công bằng trả lời ba câu hỏi khác nhau — không thể đạt tất cả cùng lúc, phải chọn và ghi lại lý do.",
+          "Ba cách đo công bằng trả lời ba câu hỏi khác nhau, không thể đạt tất cả cùng lúc, phải chọn và ghi lại lý do.",
           "Ở Việt Nam: Nghị định 13/2023, Luật An ninh mạng, Điều 8 Bộ luật Lao động đều áp dụng cho quyết định do AI đưa ra. Trách nhiệm cuối cùng vẫn thuộc về doanh nghiệp.",
         ]}
       />

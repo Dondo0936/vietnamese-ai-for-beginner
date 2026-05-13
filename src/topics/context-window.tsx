@@ -21,15 +21,15 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────
-// METADATA — giữ nguyên slug, category, tags, relatedSlugs để registry
+// METADATA, giữ nguyên slug, category, tags, relatedSlugs để registry
 // không phải thay đổi theo lần viết lại này.
 // ─────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "context-window",
   title: "Context Window",
-  titleVi: "Cửa sổ ngữ cảnh",
+  titleVi: "Context window: bàn làm việc của AI",
   description:
-    "Giới hạn số lượng token mà mô hình có thể xử lý cùng lúc — ảnh hưởng đến khả năng hiểu và nhớ ngữ cảnh.",
+    "Hiểu giới hạn token mà AI nhìn thấy cùng lúc để chia tài liệu, đặt thứ tự thông tin và tránh mất ngữ cảnh.",
   category: "llm-concepts",
   tags: ["context-window", "tokens", "attention", "llm"],
   difficulty: "advanced",
@@ -38,7 +38,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────
-// DATA — Các mốc context window của mô hình phổ biến.
+// DATA, Các mốc context window của mô hình phổ biến.
 // Dùng cho "Thước đo token" và "So sánh mô hình".
 // ─────────────────────────────────────────────────────────────────────
 type Model = {
@@ -85,7 +85,7 @@ const MODELS: Model[] = [
   },
 ];
 
-// Đoạn văn bản mẫu cho Thước đo token — bật/tắt từng phần tài liệu.
+// Đoạn văn bản mẫu cho Thước đo token, bật/tắt từng phần tài liệu.
 type DocChunk = {
   id: string;
   label: string;
@@ -121,14 +121,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Context window là gì, nói theo cách dễ hiểu nhất cho người dùng văn phòng?",
     options: [
-      "Là tốc độ AI trả lời — càng cao càng tốt",
+      "Là tốc độ AI trả lời, càng cao càng tốt",
       "Là 'trí nhớ ngắn hạn' của AI trong một lần chat: AI chỉ đọc được bấy nhiêu chữ, vượt quá là quên phần cũ",
       "Là kích cỡ ổ cứng mà công ty AI phải mua thêm",
       "Là số câu hỏi bạn được phép gửi mỗi ngày",
     ],
     correct: 1,
     explanation:
-      "Context window = trí nhớ ngắn hạn. Đó là số lượng chữ AI có thể 'nhìn thấy' cùng một lúc — cả phần bạn gửi lẫn phần AI trả lời đều được tính vào đây.",
+      "Context window = trí nhớ ngắn hạn. Đó là số lượng chữ AI có thể 'nhìn thấy' cùng một lúc, cả phần bạn gửi lẫn phần AI trả lời đều được tính vào đây.",
   },
   {
     question:
@@ -136,12 +136,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "AI đọc hết và tóm tắt chính xác toàn bộ cuốn sổ",
       "AI báo lỗi ngay lập tức, không đọc gì cả",
-      "AI chỉ 'nhìn thấy' khoảng 6 trang đầu (hoặc vài trang cuối), phần còn lại bị cắt — tóm tắt sẽ thiếu",
+      "AI chỉ 'nhìn thấy' khoảng 6 trang đầu (hoặc vài trang cuối), phần còn lại bị cắt, tóm tắt sẽ thiếu",
       "AI tự động upload file lên đám mây rồi đọc dần",
     ],
     correct: 2,
     explanation:
-      "ChatGPT miễn phí cắt bớt phần vượt context window. Bản tóm tắt bạn nhận được chỉ dựa trên phần AI thực sự đọc — phần bị cắt 'không tồn tại' trong mắt AI.",
+      "ChatGPT miễn phí cắt bớt phần vượt context window. Bản tóm tắt bạn nhận được chỉ dựa trên phần AI thực sự đọc, phần bị cắt 'không tồn tại' trong mắt AI.",
   },
   {
     question:
@@ -154,27 +154,27 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "AI không lưu cuộc chat lâu dài — nó chỉ 'thấy' đoạn nằm trong cửa sổ. Khi cuộc chat quá dài, lượt cũ nhất sẽ bị cắt để nhường chỗ cho lượt mới.",
+      "AI không lưu cuộc chat lâu dài, nó chỉ 'thấy' đoạn nằm trong cửa sổ. Khi cuộc chat quá dài, lượt cũ nhất sẽ bị cắt để nhường chỗ cho lượt mới.",
   },
   {
     question:
       "Bạn phải tóm tắt báo cáo tài chính 800 trang. Cách nào đáng tin nhất hiện nay?",
     options: [
       "Dán toàn bộ 800 trang vào ChatGPT miễn phí và bấm gửi",
-      "Chia báo cáo thành nhiều phần vừa cỡ context (ví dụ mỗi phần 50 trang), tóm tắt từng phần, rồi gộp tóm tắt lại — hoặc dùng mô hình context lớn như Claude/Gemini",
+      "Chia báo cáo thành nhiều phần vừa cỡ context (ví dụ mỗi phần 50 trang), tóm tắt từng phần, rồi gộp tóm tắt lại, hoặc dùng mô hình context lớn như Claude/Gemini",
       "Chụp ảnh màn hình từng trang rồi gửi liên tiếp thật nhanh",
       "In ra giấy rồi scan lại, AI sẽ đọc kỹ hơn",
     ],
     correct: 1,
     explanation:
-      "Hai chiến lược chuẩn: (a) chunking — chia nhỏ để vừa context, (b) chọn mô hình có context đủ lớn. 800 trang ≈ 520K token, vượt Claude 200K, nên vẫn phải chia, hoặc dùng Gemini 1.5 / Claude 1M beta.",
+      "Hai chiến lược chuẩn: (a) chunking, chia nhỏ để vừa context, (b) chọn mô hình có context đủ lớn. 800 trang ≈ 520K token, vượt Claude 200K, nên vẫn phải chia, hoặc dùng Gemini 1.5 / Claude 1M beta.",
   },
   {
     question:
       "Khi tài liệu rất dài, AI thường đọc phần nào kỹ nhất?",
     options: [
       "Phần giữa tài liệu",
-      "Phần đầu và phần cuối — phần giữa dễ bị 'lơ'",
+      "Phần đầu và phần cuối, phần giữa dễ bị 'lơ'",
       "Phần có nhiều hình ảnh",
       "Phần cuối cùng, bao giờ cũng kỹ nhất",
     ],
@@ -201,7 +201,7 @@ const quizQuestions: QuizQuestion[] = [
 // COMPONENT
 // ─────────────────────────────────────────────────────────────────────
 export default function ContextWindowTopic() {
-  // Thước đo token — chọn mô hình + bật/tắt các phần tài liệu
+  // Thước đo token, chọn mô hình + bật/tắt các phần tài liệu
   const [modelIdx, setModelIdx] = useState<number>(1); // mặc định GPT-4o (128K)
   const [chunksOn, setChunksOn] = useState<Record<string, boolean>>({
     mail: true,
@@ -212,14 +212,14 @@ export default function ContextWindowTopic() {
     archive: false,
   });
 
-  // Prompt Budgeter — ngân sách token theo từng khối
+  // Prompt Budgeter, ngân sách token theo từng khối
   const [sysTokens, setSysTokens] = useState<number>(1_500);
   const [historyTokens, setHistoryTokens] = useState<number>(6_000);
   const [docTokens, setDocTokens] = useState<number>(25_000);
   const [outputReserve, setOutputReserve] = useState<number>(4_000);
   const [budgetModelIdx, setBudgetModelIdx] = useState<number>(2); // mặc định Claude 200K
 
-  // NIAH — chọn một hàng để highlight
+  // NIAH, chọn một hàng để highlight
   const [niahRowIdx, setNiahRowIdx] = useState<number>(2);
 
   const model = MODELS[modelIdx];
@@ -253,7 +253,7 @@ export default function ContextWindowTopic() {
   return (
     <>
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 1 — HOOK / DỰ ĐOÁN                                       */}
+      {/* BƯỚC 1, HOOK / DỰ ĐOÁN                                       */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán trước">
         <div className="mb-3">
@@ -277,12 +277,12 @@ export default function ContextWindowTopic() {
           question="Bạn dán 200 trang tài liệu vào ChatGPT miễn phí và hỏi 'Tóm tắt giúp tôi'. Theo bạn, AI sẽ làm gì?"
           options={[
             "Tóm tắt chính xác toàn bộ 200 trang",
-            "Chỉ đọc phần đầu rồi tóm tắt sai — phần cuối bị bỏ qua",
+            "Chỉ đọc phần đầu rồi tóm tắt sai, phần cuối bị bỏ qua",
             "Báo lỗi 'Tài liệu quá dài', không làm gì cả",
             "Đọc 200 trang xong tự chia ra, tóm tắt mỗi phần",
           ]}
           correct={1}
-          explanation="ChatGPT miễn phí dùng context window rất nhỏ (khoảng 4–8K token, tức 6–12 trang A4). Phần vượt quá bị cắt âm thầm — AI vẫn trả ra một bản tóm tắt, nhưng chỉ dựa trên phần đầu. Đây là vấn đề bạn không 'thấy' mà lại thường xuyên gặp."
+          explanation="ChatGPT miễn phí dùng context window rất nhỏ (khoảng 4–8K token, tức 6–12 trang A4). Phần vượt quá bị cắt âm thầm, AI vẫn trả ra một bản tóm tắt, nhưng chỉ dựa trên phần đầu. Đây là vấn đề bạn không 'thấy' mà lại thường xuyên gặp."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Hôm nay bạn sẽ học chính xác AI có thể &quot;thấy&quot; được bao nhiêu chữ trong
@@ -293,7 +293,7 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 2 — ẨN DỤ / ĐỊNH NGHĨA THÂN THIỆN                        */}
+      {/* BƯỚC 2, ẨN DỤ / ĐỊNH NGHĨA THÂN THIỆN                        */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={8} label="Hình dung cho dễ">
         <div className="grid gap-4 md:grid-cols-3">
@@ -304,7 +304,7 @@ export default function ContextWindowTopic() {
             <p className="text-sm text-foreground leading-relaxed">
               <strong>Context window</strong> giống <strong>bàn làm việc</strong> của AI.
               Bạn đặt tài liệu, câu hỏi, lịch sử hội thoại lên đó. Khi bàn đầy, tờ cũ
-              nhất bị đẩy rơi xuống sàn — AI <em>không còn nhìn thấy</em> nữa.
+              nhất bị đẩy rơi xuống sàn, AI <em>không còn nhìn thấy</em> nữa.
             </p>
           </div>
           <div className="rounded-xl border border-border bg-card p-4">
@@ -314,7 +314,7 @@ export default function ContextWindowTopic() {
             <p className="text-sm text-foreground leading-relaxed">
               Hoặc giống <strong>trí nhớ ngắn hạn</strong> của con người. Bạn chỉ giữ
               được một lượng thông tin nhất định trong đầu trước khi cái mới đẩy cái
-              cũ ra. AI cũng vậy — mỗi mô hình có một dung lượng riêng.
+              cũ ra. AI cũng vậy, mỗi mô hình có một dung lượng riêng.
             </p>
           </div>
           <div className="rounded-xl border border-border bg-card p-4">
@@ -322,7 +322,7 @@ export default function ContextWindowTopic() {
               Hình dung 3
             </div>
             <p className="text-sm text-foreground leading-relaxed">
-              Đơn vị đo là <strong>token</strong> — một mẩu chữ nhỏ. Tiếng Việt thường
+              Đơn vị đo là <strong>token</strong>, một mẩu chữ nhỏ. Tiếng Việt thường
               tốn nhiều token hơn tiếng Anh vì có dấu. Một trang A4 điển hình khoảng{" "}
               <strong>600–700 token</strong>.
             </p>
@@ -357,15 +357,15 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 3 — TRỰC QUAN HÓA 1: THƯỚC ĐO TOKEN                      */}
+      {/* BƯỚC 3, TRỰC QUAN HÓA 1: THƯỚC ĐO TOKEN                      */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={8} label="Tự tay đo thử">
         <VisualizationSection topicSlug={metadata.slug}>
           {/* ──────────────── DEMO 1: THƯỚC ĐO TOKEN ──────────────── */}
-          <LessonSection label="Demo 1 — Thước đo token của từng mô hình">
+          <LessonSection label="Demo 1, Thước đo token của từng mô hình">
             <p className="text-sm text-muted mb-4 leading-relaxed">
               Chọn một mô hình AI. Bật/tắt các loại tài liệu bạn muốn &quot;nhét&quot;
-              vào cuộc chat. Nếu thanh màu chuyển đỏ là vượt ngân sách — phần cuối
+              vào cuộc chat. Nếu thanh màu chuyển đỏ là vượt ngân sách, phần cuối
               sẽ bị AI cắt âm thầm.
             </p>
 
@@ -453,14 +453,14 @@ export default function ContextWindowTopic() {
 
             <Callout variant="tip" title="Cách dùng nhanh">
               Chọn <strong>GPT-3.5 miễn phí</strong> rồi bật &quot;Hợp đồng thương
-              mại&quot; — bạn sẽ thấy thanh đỏ ngay. Đổi sang <strong>Claude 3.5</strong>{" "}
+              mại&quot;, bạn sẽ thấy thanh đỏ ngay. Đổi sang <strong>Claude 3.5</strong>{" "}
               thì còn rộng rãi. Đổi sang <strong>Gemini 1.5 Pro</strong> thì thừa
-              mứa — nhưng thừa mứa không có nghĩa là miễn phí, xem cảnh báo ở Bước 6.
+              mứa, nhưng thừa mứa không có nghĩa là miễn phí, xem cảnh báo ở Bước 6.
             </Callout>
           </LessonSection>
 
           {/* ──────────────── DEMO 2: KIM TRONG ĐỐNG RƠM ──────────────── */}
-          <LessonSection label="Demo 2 — Tìm kim trong đống rơm: AI nhớ đến đâu?">
+          <LessonSection label="Demo 2, Tìm kim trong đống rơm: AI nhớ đến đâu?">
             <p className="text-sm text-muted mb-4 leading-relaxed">
               Hãy tưởng tượng bạn giấu một câu bí mật (&quot;mật khẩu wifi văn phòng
               là <em>cafesang2025</em>&quot;) vào đầu, giữa, hoặc cuối của một tài liệu
@@ -523,7 +523,7 @@ export default function ContextWindowTopic() {
             <ToggleCompare
               labelA="Với tài liệu NGẮN"
               labelB="Với tài liệu DÀI"
-              description="Thay đổi tùy theo tài liệu ngắn hay dài — quan sát khác biệt."
+              description="Thay đổi tùy theo tài liệu ngắn hay dài, quan sát khác biệt."
               childA={
                 <div className="text-sm leading-relaxed">
                   Khi tài liệu ngắn (dưới 10 trang), AI tìm lại thông tin gần như hoàn
@@ -540,7 +540,7 @@ export default function ContextWindowTopic() {
               }
             />
 
-            <Callout variant="warning" title='"Lost in the middle" — hiện tượng thật'>
+            <Callout variant="warning" title='"Lost in the middle", hiện tượng thật'>
               Nhiều bài nghiên cứu (Liu và cộng sự, 2023) đã xác nhận: dù mô hình
               &quot;chứa&quot; được cả triệu token, chất lượng đọc phần giữa vẫn yếu.
               Context lớn không đồng nghĩa với đọc kỹ mọi ngóc ngách.
@@ -548,10 +548,10 @@ export default function ContextWindowTopic() {
           </LessonSection>
 
           {/* ──────────────── DEMO 3: PROMPT BUDGETER ──────────────── */}
-          <LessonSection label="Demo 3 — Bảng cân đối prompt: cái gì chiếm bao nhiêu?">
+          <LessonSection label="Demo 3, Bảng cân đối prompt: cái gì chiếm bao nhiêu?">
             <p className="text-sm text-muted mb-4 leading-relaxed">
               Mỗi lần bạn chat, có 4 khoản luôn cùng nằm trong context. Kéo slider
-              để thấy khoản nào ngốn nhiều nhất — và khi nào ngân sách bị vượt.
+              để thấy khoản nào ngốn nhiều nhất, và khi nào ngân sách bị vượt.
             </p>
 
             {/* Chọn mô hình cho budgeter */}
@@ -659,7 +659,7 @@ export default function ContextWindowTopic() {
                   min: 0,
                   max: 500_000,
                   step: 1_000,
-                  hint: "Email, báo cáo, hợp đồng — cái bạn paste",
+                  hint: "Email, báo cáo, hợp đồng, cái bạn paste",
                 },
                 {
                   label: "Dự phòng cho câu trả lời của AI",
@@ -668,7 +668,7 @@ export default function ContextWindowTopic() {
                   min: 500,
                   max: 20_000,
                   step: 500,
-                  hint: "Phải có chỗ cho AI viết trả lời — thường 2–8K",
+                  hint: "Phải có chỗ cho AI viết trả lời, thường 2–8K",
                 },
               ].map((s) => (
                 <div key={s.label}>
@@ -696,12 +696,12 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 4 — KHOẢNH KHẮC AHA                                      */}
+      {/* BƯỚC 4, KHOẢNH KHẮC AHA                                      */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
           <strong>Context window</strong> là một chiếc bàn có diện tích cố định, không
-          phải bộ nhớ vô hạn. Mọi thứ bạn gửi — câu hỏi, tài liệu, lịch sử —{" "}
+          phải bộ nhớ vô hạn. Mọi thứ bạn gửi, câu hỏi, tài liệu, lịch sử, {" "}
           <strong>cùng phải nằm trên bàn một lúc</strong> với phần trả lời của AI.
           Khi bàn đầy, tờ cũ rơi xuống và <em>AI không còn thấy nó nữa</em>, nhưng
           AI vẫn trả lời trông có vẻ tự tin như thường.
@@ -725,19 +725,19 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 5 — THỬ THÁCH                                             */}
+      {/* BƯỚC 5, THỬ THÁCH                                             */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={8} label="Thử áp dụng">
         <InlineChallenge
           question="Sếp đưa bạn một PDF 500 trang (≈ 350K token) và bảo: 'Tóm tắt cho anh trong 1 đoạn'. Bạn chọn chiến lược nào?"
           options={[
-            "Dán thẳng toàn bộ 500 trang vào ChatGPT miễn phí rồi bấm gửi — được gì hay đó",
+            "Dán thẳng toàn bộ 500 trang vào ChatGPT miễn phí rồi bấm gửi, được gì hay đó",
             "Chia 500 trang thành 10 phần (mỗi phần 50 trang), dùng Claude 3.5 / GPT-4o tóm tắt từng phần, rồi gộp 10 bản tóm tắt nhỏ thành 1 bản tóm tắt cuối",
             "Chụp ảnh từng trang rồi upload liên tiếp",
             "Đọc lướt bằng mắt, không cần AI nữa",
           ]}
           correct={1}
-          explanation="350K token vượt mọi mô hình phổ thông (Claude 200K cũng chưa đủ). Chiến lược 'chia nhỏ — tóm mỗi phần — gộp lại' (map-reduce) là cách chuẩn. Hoặc bạn có thể dùng Gemini 1.5 Pro (2M token) để đọc trong một lần, nhưng vẫn nên tóm theo phần để AI đọc kỹ hơn (nhớ vụ 'lost in the middle'!)."
+          explanation="350K token vượt mọi mô hình phổ thông (Claude 200K cũng chưa đủ). Chiến lược 'chia nhỏ, tóm mỗi phần, gộp lại' (map-reduce) là cách chuẩn. Hoặc bạn có thể dùng Gemini 1.5 Pro (2M token) để đọc trong một lần, nhưng vẫn nên tóm theo phần để AI đọc kỹ hơn (nhớ vụ 'lost in the middle'!)."
         />
 
         <div className="mt-6">
@@ -750,7 +750,7 @@ export default function ContextWindowTopic() {
               {
                 left: "Tài liệu 3 trang, hỏi nhanh 1 câu",
                 right:
-                  "Dán thẳng vào ChatGPT — ngân sách đủ rộng, không cần mẹo gì",
+                  "Dán thẳng vào ChatGPT, ngân sách đủ rộng, không cần mẹo gì",
               },
               {
                 left: "Báo cáo 80 trang, cần bản tóm tắt 1 đoạn",
@@ -773,7 +773,7 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 6 — GIẢI THÍCH SÂU (KHÔNG CODE, KHÔNG MATH)              */}
+      {/* BƯỚC 6, GIẢI THÍCH SÂU (KHÔNG CODE, KHÔNG MATH)              */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={8} label="Hiểu sâu hơn">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -783,7 +783,7 @@ export default function ContextWindowTopic() {
               Các mô hình phổ biến 2025: ai chứa được bao nhiêu trang?
             </h3>
             <p className="text-sm text-muted mb-4">
-              Thang log, chứ không phải tuyến tính — vì GPT-3.5 (4K) tới Gemini 1.5
+              Thang log, chứ không phải tuyến tính, vì GPT-3.5 (4K) tới Gemini 1.5
               (2M) chênh tới <strong>500 lần</strong>. Hàng số bên phải là ước tính
               quy đổi ra trang A4.
             </p>
@@ -828,7 +828,7 @@ export default function ContextWindowTopic() {
             </h3>
             <p className="text-sm text-muted mb-4">
               Khi tài liệu của bạn vượt context của mô hình đang dùng. Không có
-              cách duy nhất đúng — tùy tình huống.
+              cách duy nhất đúng, tùy tình huống.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
@@ -895,7 +895,7 @@ export default function ContextWindowTopic() {
           <Callout variant="warning" title="Cái bẫy âm thầm: AI không báo khi cắt">
             Khác với &quot;lỗi quá dung lượng&quot;, context window bị vượt{" "}
             <strong>không hiện cảnh báo cho người dùng phổ thông</strong>. Bạn dán
-            tài liệu 500 trang, bấm gửi — AI vẫn trả lời trơn tru như không có gì.
+            tài liệu 500 trang, bấm gửi, AI vẫn trả lời trơn tru như không có gì.
             Chỉ khi bạn kiểm tra thật kỹ mới phát hiện nó đang tóm tắt 60 trang đầu
             và &quot;bịa mơ hồ&quot; về phần còn lại.
           </Callout>
@@ -913,30 +913,29 @@ export default function ContextWindowTopic() {
             <p className="text-sm">
               Mỗi lần xử lý, mô hình phải so khớp <strong>mỗi token với mọi token
               khác</strong> trong cửa sổ. Gấp đôi context thì lượng so khớp tăng gấp
-              bốn. Đó là lý do các nhà cung cấp tính tiền theo số token input —
-              và vì sao một prompt 200K token có thể đắt gấp vài trăm lần một
+              bốn. Đó là lý do các nhà cung cấp tính tiền theo số token input, và vì sao một prompt 200K token có thể đắt gấp vài trăm lần một
               prompt 2K token. Khi bạn làm dự án dùng AI ở quy mô công ty, con số
               này nhân với số lượt truy cập mỗi ngày là chi phí thực.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Claude Projects, ChatGPT GPTs, NotebookLM — tự xử lý context giúp bạn?">
+          <CollapsibleDetail title="Claude Projects, ChatGPT GPTs, NotebookLM, tự xử lý context giúp bạn?">
             <p className="text-sm">
               Ba sản phẩm phổ biến này đều âm thầm áp dụng các chiến lược ở trên
               (RAG, chunking, rolling summary). Khi bạn upload PDF 500 trang vào
               Claude Projects hay NotebookLM, hệ thống không nhét trọn 500 trang
-              vào mỗi prompt — nó lưu vào kho và chỉ truy xuất đoạn liên quan khi
+              vào mỗi prompt, nó lưu vào kho và chỉ truy xuất đoạn liên quan khi
               bạn hỏi. Đây là lý do chất lượng thường ổn định hơn so với việc tự
               copy-paste toàn bộ tài liệu vào khung chat.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title='Khi AI "quên" — vì sao nó vẫn trả lời rất tự tin?'>
+          <CollapsibleDetail title='Khi AI "quên", vì sao nó vẫn trả lời rất tự tin?'>
             <p className="text-sm">
               Mô hình ngôn ngữ không biết mình đang quên. Nó chỉ đoán chữ tiếp theo
               dựa trên phần đang &quot;thấy&quot;. Khi phần đầu cuộc chat bị cắt
               (tên bạn, yêu cầu ban đầu, hướng dẫn quan trọng), AI vẫn tiếp tục sinh
-              câu trả lời mượt mà — nhưng có thể sai bối cảnh hoàn toàn. Đây là lý
+              câu trả lời mượt mà, nhưng có thể sai bối cảnh hoàn toàn. Đây là lý
               do cho những câu chuyện &quot;AI đổi giọng giữa chừng&quot; hoặc
               &quot;quên tên tôi sau 100 lượt chat&quot;.
             </p>
@@ -945,13 +944,13 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 7 — TÓM TẮT                                               */}
+      {/* BƯỚC 7, TÓM TẮT                                               */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={8} label="Ghim vào đầu">
         <MiniSummary
           title="5 điều cần nhớ về Context Window"
           points={[
-            "Context window là 'bàn làm việc' của AI — mọi thứ bạn gửi + phần AI trả lời cùng nằm trên bàn một lúc. Vượt ngân sách là tờ cũ bị đẩy xuống.",
+            "Context window là 'bàn làm việc' của AI, mọi thứ bạn gửi + phần AI trả lời cùng nằm trên bàn một lúc. Vượt ngân sách là tờ cũ bị đẩy xuống.",
             "Quy đổi thô dễ nhớ: 1 trang A4 ≈ 700 token; 100 trang ≈ 70K token. Tiếng Việt tốn thêm ~30% so với tiếng Anh.",
             "Các mốc 2025: GPT-3.5 miễn phí 4K (≈ 6 trang), GPT-4o 128K (200 trang), Claude 3.5 200K (310 trang), Gemini 1.5 Pro 2M (3.100 trang).",
             "AI đọc kỹ phần đầu và phần cuối của tài liệu dài hơn phần giữa ('lost in the middle'). Đặt câu hỏi trọng yếu ở đầu hoặc cuối.",
@@ -961,7 +960,7 @@ export default function ContextWindowTopic() {
       </LessonSection>
 
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* BƯỚC 8 — KIỂM TRA                                              */}
+      {/* BƯỚC 8, KIỂM TRA                                              */}
       {/* ════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra hiểu biết">
         <QuizSection questions={quizQuestions} />

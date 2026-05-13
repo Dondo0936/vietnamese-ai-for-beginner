@@ -1,6 +1,6 @@
 "use client";
 
-// AI Governance — Luật giao thông cho trí tuệ nhân tạo.
+// AI Governance, Luật giao thông cho trí tuệ nhân tạo.
 // Bản viết cho dân văn phòng Việt Nam: manager, pháp chế, IT lead.
 // Không code, không công thức, tối đa tương tác trực quan.
 
@@ -44,13 +44,13 @@ import QuizSection from "@/components/topic/QuizSection";
 import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
-// Metadata — KHÔNG ĐỔI. Routing + registry phụ thuộc vào các trường này.
+// Metadata, KHÔNG ĐỔI. Routing + registry phụ thuộc vào các trường này.
 export const metadata: TopicMeta = {
   slug: "ai-governance",
   title: "AI Governance",
-  titleVi: "Quản trị AI — Luật chơi cho trí tuệ nhân tạo",
+  titleVi: "AI governance: luật dùng AI trong công ty",
   description:
-    "Khung pháp lý, chính sách và quy trình quản lý việc phát triển, triển khai và sử dụng hệ thống AI một cách có trách nhiệm.",
+    "Đặt vai trò, quy trình phê duyệt và trách nhiệm để nhân viên dùng AI đúng việc, đúng rủi ro.",
   category: "ai-safety",
   tags: ["governance", "regulation", "policy", "ethics"],
   difficulty: "intermediate",
@@ -60,7 +60,7 @@ export const metadata: TopicMeta = {
 
 const TOTAL_STEPS = 8;
 
-//Dữ liệu Demo 1 — Policy Stack (4 tầng quy định chồng lên nhau)
+//Dữ liệu Demo 1, Policy Stack (4 tầng quy định chồng lên nhau)
 interface PolicyLayer {
   id: string;
   label: string;
@@ -75,62 +75,62 @@ const POLICY_LAYERS: PolicyLayer[] = [
   {
     id: "global",
     label: "Quốc tế",
-    scope: "Hiệu lực xuyên biên giới — áp dụng cho công ty xuất khẩu dịch vụ AI",
+    scope: "Hiệu lực xuyên biên giới, áp dụng cho công ty xuất khẩu dịch vụ AI",
     icon: Globe2,
     color: "#3b82f6",
     tint: "bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700",
     items: [
       { name: "EU AI Act (2024)", note: "Luật AI toàn diện đầu tiên thế giới. Phân 4 mức rủi ro, phạt tới 7% doanh thu toàn cầu." },
       { name: "OECD AI Principles", note: "5 nguyên tắc do 46 quốc gia ký: bao trùm, giá trị con người, minh bạch, vững vàng, trách nhiệm." },
-      { name: "ISO/IEC 42001:2023", note: "Tiêu chuẩn quốc tế đầu tiên về AI Management System — đối tác quốc tế hay yêu cầu." },
+      { name: "ISO/IEC 42001:2023", note: "Tiêu chuẩn quốc tế đầu tiên về AI Management System, đối tác quốc tế hay yêu cầu." },
       { name: "NIST AI RMF (Mỹ)", note: "Khung quản lý rủi ro tự nguyện nhưng bắt buộc với nhà thầu liên bang Hoa Kỳ." },
     ],
   },
   {
     id: "national",
     label: "Quốc gia (Việt Nam)",
-    scope: "Luật pháp Việt Nam — mọi doanh nghiệp hoạt động trong nước phải tuân thủ",
+    scope: "Luật pháp Việt Nam, mọi doanh nghiệp hoạt động trong nước phải tuân thủ",
     icon: Landmark,
     color: "#a855f7",
     tint: "bg-purple-50 dark:bg-purple-900/20 border-purple-300 dark:border-purple-700",
     items: [
-      { name: "Nghị định 13/2023/NĐ-CP", note: "Bảo vệ dữ liệu cá nhân — phiên bản GDPR Việt Nam. AI xử lý dữ liệu phải xin đồng ý." },
-      { name: "Luật An ninh mạng (2018)", note: "Lưu trữ dữ liệu trong nước, kiểm soát nội dung — ảnh hưởng nơi đặt hạ tầng AI." },
-      { name: "Quyết định 127/QĐ-TTg (2021)", note: "Chiến lược quốc gia về AI đến 2030 — định hướng AI có trách nhiệm." },
-      { name: "Luật Giao dịch điện tử (2023)", note: "Chữ ký số, hợp đồng điện tử — áp dụng khi AI tự động tạo hoặc ký hợp đồng." },
+      { name: "Nghị định 13/2023/NĐ-CP", note: "Bảo vệ dữ liệu cá nhân, phiên bản GDPR Việt Nam. AI xử lý dữ liệu phải xin đồng ý." },
+      { name: "Luật An ninh mạng (2018)", note: "Lưu trữ dữ liệu trong nước, kiểm soát nội dung, ảnh hưởng nơi đặt hạ tầng AI." },
+      { name: "Quyết định 127/QĐ-TTg (2021)", note: "Chiến lược quốc gia về AI đến 2030, định hướng AI có trách nhiệm." },
+      { name: "Luật Giao dịch điện tử (2023)", note: "Chữ ký số, hợp đồng điện tử, áp dụng khi AI tự động tạo hoặc ký hợp đồng." },
     ],
   },
   {
     id: "industry",
     label: "Ngành",
-    scope: "Quy định theo lĩnh vực — ngân hàng, y tế, bảo hiểm có thêm lớp riêng",
+    scope: "Quy định theo lĩnh vực, ngân hàng, y tế, bảo hiểm có thêm lớp riêng",
     icon: Factory,
     color: "#f59e0b",
     tint: "bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700",
     items: [
-      { name: "Tài chính — Thông tư 09/2020/TT-NHNN", note: "Ngân hàng dùng AI chấm điểm tín dụng/chống gian lận phải đảm bảo an toàn hệ thống." },
-      { name: "Y tế — Bộ Y tế phê duyệt", note: "AI chẩn đoán phải được cấp phép như thiết bị y tế. Tài liệu đầy đủ, quy trình nghiêm." },
-      { name: "Bảo hiểm — Luật KDBH", note: "AI định giá, duyệt bồi thường phải minh bạch, cho khách quyền khiếu nại." },
+      { name: "Tài chính, Thông tư 09/2020/TT-NHNN", note: "Ngân hàng dùng AI chấm điểm tín dụng/chống gian lận phải đảm bảo an toàn hệ thống." },
+      { name: "Y tế, Bộ Y tế phê duyệt", note: "AI chẩn đoán phải được cấp phép như thiết bị y tế. Tài liệu đầy đủ, quy trình nghiêm." },
+      { name: "Bảo hiểm, Luật KDBH", note: "AI định giá, duyệt bồi thường phải minh bạch, cho khách quyền khiếu nại." },
       { name: "Quảng cáo & tiêu dùng", note: "Luật BVQL người tiêu dùng (2023) buộc minh bạch khi AI cá nhân hoá giá/khuyến mãi." },
     ],
   },
   {
     id: "company",
     label: "Công ty",
-    scope: "Chính sách nội bộ — do từng doanh nghiệp tự xây, thường chặt hơn luật",
+    scope: "Chính sách nội bộ, do từng doanh nghiệp tự xây, thường chặt hơn luật",
     icon: Building2,
     color: "#22c55e",
     tint: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300 dark:border-emerald-700",
     items: [
       { name: "AI Acceptable Use Policy", note: "Nhân viên được dùng ChatGPT/Claude cho việc gì, không được dán dữ liệu nào vào chat." },
       { name: "Hội đồng đạo đức AI", note: "3-7 người (IT, pháp chế, kinh doanh, nhân sự) duyệt dự án AI rủi ro cao trước triển khai." },
-      { name: "Incident response playbook", note: "Khi AI lỗi — ai gọi, tắt hệ thống trong bao lâu, thông báo khách hàng ra sao." },
+      { name: "Incident response playbook", note: "Khi AI lỗi, ai gọi, tắt hệ thống trong bao lâu, thông báo khách hàng ra sao." },
       { name: "Data retention & logging", note: "Giữ log prompt/response bao lâu, ai được xem, xoá khi khách yêu cầu trong bao nhiêu ngày." },
     ],
   },
 ];
 
-//Dữ liệu Demo 2 — Drag-drop xếp use case AI vào 4 mức rủi ro EU AI Act
+//Dữ liệu Demo 2, Drag-drop xếp use case AI vào 4 mức rủi ro EU AI Act
 const RISK_USE_CASES = [
   { id: "spam-filter", label: "Lọc email spam nội bộ" },
   { id: "chatbot-fyi", label: "Chatbot trả lời FAQ sản phẩm" },
@@ -145,27 +145,27 @@ const RISK_USE_CASES = [
 const RISK_ZONES = [
   {
     id: "minimal",
-    label: "Minimal — tự do",
+    label: "Minimal, tự do",
     accepts: ["spam-filter", "content-rec"],
   },
   {
     id: "limited",
-    label: "Limited — cần minh bạch",
+    label: "Limited, cần minh bạch",
     accepts: ["chatbot-fyi"],
   },
   {
     id: "high",
-    label: "High — quy định nghiêm ngặt",
+    label: "High, quy định nghiêm ngặt",
     accepts: ["hiring-cv", "loan-scoring", "medical-dx"],
   },
   {
     id: "unacceptable",
-    label: "Unacceptable — bị cấm",
+    label: "Unacceptable, bị cấm",
     accepts: ["social-score", "emotion-work"],
   },
 ];
 
-//Dữ liệu Demo 3 — Policy template builder (toggle 4 yếu tố → compliance score)
+//Dữ liệu Demo 3, Policy template builder (toggle 4 yếu tố → compliance score)
 interface PolicyElement {
   id: string;
   label: string;
@@ -205,7 +205,7 @@ const POLICY_ELEMENTS: PolicyElement[] = [
   },
 ];
 
-//Dữ liệu 5 trụ cột quản trị AI — dùng cho ExplanationSection
+//Dữ liệu 5 trụ cột quản trị AI, dùng cho ExplanationSection
 const PILLARS = [
   {
     id: "data",
@@ -244,33 +244,33 @@ const PILLARS = [
   },
 ];
 
-//Quiz 8 câu — mix MCQ + fill-blank
+//Quiz 8 câu, mix MCQ + fill-blank
 const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     question:
       "Ngân hàng ABC muốn dùng AI chấm điểm tín dụng. Theo khung EU AI Act, đây là mức rủi ro nào?",
     options: [
-      "Minimal — không cần tuân thủ đặc biệt",
-      "Limited — chỉ cần ghi nhãn 'có AI tham gia'",
-      "High — bắt buộc đánh giá tác động, giải thích được, human oversight, kiểm toán định kỳ",
-      "Unacceptable — bị cấm hoàn toàn",
+      "Minimal, không cần tuân thủ đặc biệt",
+      "Limited, chỉ cần ghi nhãn 'có AI tham gia'",
+      "High, bắt buộc đánh giá tác động, giải thích được, human oversight, kiểm toán định kỳ",
+      "Unacceptable, bị cấm hoàn toàn",
     ],
     correct: 2,
     explanation:
-      "AI tín dụng ảnh hưởng trực tiếp tới quyền tiếp cận dịch vụ tài chính của cá nhân — EU AI Act xếp vào high-risk. Ngân hàng phải: (1) impact assessment trước go-live, (2) giải thích được quyết định cho khách, (3) có người duyệt lại, (4) kiểm toán fairness 6-12 tháng/lần. Vi phạm phạt tới 3% doanh thu toàn cầu.",
+      "AI tín dụng ảnh hưởng trực tiếp tới quyền tiếp cận dịch vụ tài chính của cá nhân, EU AI Act xếp vào high-risk. Ngân hàng phải: (1) impact assessment trước go-live, (2) giải thích được quyết định cho khách, (3) có người duyệt lại, (4) kiểm toán fairness 6-12 tháng/lần. Vi phạm phạt tới 3% doanh thu toàn cầu.",
   },
   {
     question:
       "Nghị định 13/2023/NĐ-CP ảnh hưởng như thế nào khi công ty dùng ChatGPT xử lý email khách hàng?",
     options: [
-      "Không ảnh hưởng — NĐ 13 chỉ quản dữ liệu, không quản AI",
+      "Không ảnh hưởng, NĐ 13 chỉ quản dữ liệu, không quản AI",
       "Phải xin đồng ý khách hàng, thông báo mục đích xử lý, cho phép rút lại, bảo mật dữ liệu, thông báo khi vi phạm",
       "Cấm hoàn toàn không được dán email khách vào AI",
       "Chỉ áp dụng cho công ty có vốn nước ngoài",
     ],
     correct: 1,
     explanation:
-      "NĐ 13 = GDPR Việt Nam. Email khách hàng chứa dữ liệu cá nhân (tên, địa chỉ, số điện thoại) — mọi xử lý bởi AI (bao gồm đưa vào ChatGPT) phải: đồng ý rõ ràng, mục đích cụ thể, cho phép xoá, bảo mật, thông báo nếu có sự cố. Vi phạm phạt tới 100 triệu VND cho cá nhân, cao hơn cho tổ chức.",
+      "NĐ 13 = GDPR Việt Nam. Email khách hàng chứa dữ liệu cá nhân (tên, địa chỉ, số điện thoại), mọi xử lý bởi AI (bao gồm đưa vào ChatGPT) phải: đồng ý rõ ràng, mục đích cụ thể, cho phép xoá, bảo mật, thông báo nếu có sự cố. Vi phạm phạt tới 100 triệu VND cho cá nhân, cao hơn cho tổ chức.",
   },
   {
     question:
@@ -283,7 +283,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "AI governance = đầu tư bảo hiểm. (1) Luật Việt Nam về AI đang soạn thảo — doanh nghiệp chủ động sẽ chuyển đổi dễ hơn. (2) Khách hàng ngày càng chú ý quyền riêng tư. (3) Bias phát hiện sớm rẻ hơn khi đã gây thiệt hại. (4) Đối tác EU/Mỹ gần như luôn yêu cầu tài liệu governance khi ký hợp đồng lớn.",
+      "AI governance = đầu tư bảo hiểm. (1) Luật Việt Nam về AI đang soạn thảo, doanh nghiệp chủ động sẽ chuyển đổi dễ hơn. (2) Khách hàng ngày càng chú ý quyền riêng tư. (3) Bias phát hiện sớm rẻ hơn khi đã gây thiệt hại. (4) Đối tác EU/Mỹ gần như luôn yêu cầu tài liệu governance khi ký hợp đồng lớn.",
   },
   {
     type: "fill-blank",
@@ -303,10 +303,10 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     question:
       "Chatbot của công ty bán lẻ trả lời sai về chính sách đổi trả, khiến khách hàng bị thiệt. Ai chịu trách nhiệm chính?",
     options: [
-      "OpenAI/Anthropic — vì họ xây mô hình nền",
-      "Công ty triển khai chatbot (deployer) — kèm nhà cung cấp mô hình theo hợp đồng. Công ty chịu trách nhiệm với khách hàng trước tiên",
-      "Không ai — AI tự quyết định, không ai chịu",
-      "Khách hàng — vì đã tin lời AI",
+      "OpenAI/Anthropic, vì họ xây mô hình nền",
+      "Công ty triển khai chatbot (deployer), kèm nhà cung cấp mô hình theo hợp đồng. Công ty chịu trách nhiệm với khách hàng trước tiên",
+      "Không ai, AI tự quyết định, không ai chịu",
+      "Khách hàng, vì đã tin lời AI",
     ],
     correct: 1,
     explanation:
@@ -353,7 +353,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
 ];
 
-//Component phụ — Thẻ lớp Policy Stack (dùng trong TabView)
+//Component phụ, Thẻ lớp Policy Stack (dùng trong TabView)
 function PolicyLayerPanel({ layer }: { layer: PolicyLayer }) {
   const Icon = layer.icon;
   return (
@@ -400,7 +400,7 @@ function PolicyLayerPanel({ layer }: { layer: PolicyLayer }) {
   );
 }
 
-//Component phụ — Sơ đồ Policy Stack (SVG xếp chồng)
+//Component phụ, Sơ đồ Policy Stack (SVG xếp chồng)
 function PolicyStackDiagram({
   active,
   onSelect,
@@ -479,7 +479,7 @@ function PolicyStackDiagram({
   );
 }
 
-//Component phụ — Policy Template Builder
+//Component phụ, Policy Template Builder
 function PolicyBuilder() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
@@ -504,12 +504,12 @@ function PolicyBuilder() {
     score >= 80 ? "#22c55e" : score >= 50 ? "#f59e0b" : "#ef4444";
   const scoreLabel =
     score >= 80
-      ? "Đầy đủ — sẵn sàng ký với đối tác quốc tế"
+      ? "Đầy đủ, sẵn sàng ký với đối tác quốc tế"
       : score >= 50
-        ? "Cơ bản — chạy được nội bộ, chưa đủ cho đối tác EU/Mỹ"
+        ? "Cơ bản, chạy được nội bộ, chưa đủ cho đối tác EU/Mỹ"
         : score >= 20
-          ? "Yếu — rủi ro pháp lý và niềm tin khách hàng"
-          : "Thiếu — gần như không có governance";
+          ? "Yếu, rủi ro pháp lý và niềm tin khách hàng"
+          : "Thiếu, gần như không có governance";
 
   return (
     <div className="space-y-4">
@@ -601,7 +601,7 @@ function PolicyBuilder() {
               </div>
               <div className="text-sm text-foreground leading-relaxed space-y-1.5">
                 <p>
-                  <strong>Chính sách sử dụng AI — Công ty ABC.</strong>
+                  <strong>Chính sách sử dụng AI, Công ty ABC.</strong>
                 </p>
                 {selected.has("retention") && (
                   <p>
@@ -664,31 +664,30 @@ export default function AIGovernanceTopic() {
         />
       </div>
 
-      {/* Bước 1 — PredictionGate: ai phải OK dùng ChatGPT?            */}
+      {/* Bước 1, PredictionGate: ai phải OK dùng ChatGPT?            */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question="Công ty bạn muốn dùng ChatGPT để xử lý dữ liệu khách hàng. Ai là người phải 'OK' quyết định này?"
           options={[
-            "Chỉ IT — vì đây là vấn đề kỹ thuật",
-            "Chỉ CEO — vì CEO có thẩm quyền cao nhất",
-            "Cả IT, pháp chế, CISO (bảo mật) và trưởng bộ phận dữ liệu — cần nhiều góc nhìn",
-            "Không ai cần OK — nhân viên tự quyết là được",
+            "Chỉ IT, vì đây là vấn đề kỹ thuật",
+            "Chỉ CEO, vì CEO có thẩm quyền cao nhất",
+            "Cả IT, pháp chế, CISO (bảo mật) và trưởng bộ phận dữ liệu, cần nhiều góc nhìn",
+            "Không ai cần OK, nhân viên tự quyết là được",
           ]}
           correct={2}
-          explanation="Một quyết định AI chạm dữ liệu khách hàng có bốn mặt rủi ro: kỹ thuật (IT), pháp lý (pháp chế, NĐ 13), bảo mật (CISO), và chất lượng dữ liệu (data owner). Thiếu bất kỳ mặt nào đều có thể gây sự cố lớn. Đây chính là lý do AI governance tồn tại — tạo quy trình để các quyết định này được xem xét đầy đủ, không phụ thuộc vào một cá nhân."
+          explanation="Một quyết định AI chạm dữ liệu khách hàng có bốn mặt rủi ro: kỹ thuật (IT), pháp lý (pháp chế, NĐ 13), bảo mật (CISO), và chất lượng dữ liệu (data owner). Thiếu bất kỳ mặt nào đều có thể gây sự cố lớn. Đây chính là lý do AI governance tồn tại, tạo quy trình để các quyết định này được xem xét đầy đủ, không phụ thuộc vào một cá nhân."
         />
       </LessonSection>
 
-      {/* Bước 2 — Phép so sánh: luật giao thông                       */}
+      {/* Bước 2, Phép so sánh: luật giao thông                       */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Phép so sánh">
         <div className="space-y-4">
           <p className="text-sm leading-relaxed text-foreground">
             <strong className="text-accent-dark dark:text-accent">
               Quản trị AI giống luật giao thông
-            </strong>{" "}
-            — không ngăn bạn lái xe, mà đảm bảo không ai đâm ai, không ai vi
+            </strong>{" "}, không ngăn bạn lái xe, mà đảm bảo không ai đâm ai, không ai vi
             phạm, và khi có tai nạn thì có bảo hiểm để xử lý. Biển báo, bằng
-            lái, đăng kiểm, CSGT, bảo hiểm — mỗi thành phần đều có lý do của
+            lái, đăng kiểm, CSGT, bảo hiểm, mỗi thành phần đều có lý do của
             nó.
           </p>
 
@@ -702,10 +701,10 @@ export default function AIGovernanceTopic() {
               </div>
               <ul className="space-y-1.5 text-sm text-muted">
                 <li>• Biển báo, đèn giao thông</li>
-                <li>• Bằng lái — chứng nhận được phép lái</li>
-                <li>• Đăng kiểm — xe an toàn không</li>
-                <li>• CSGT — phát hiện vi phạm</li>
-                <li>• Bảo hiểm — ai đền khi có tai nạn</li>
+                <li>• Bằng lái, chứng nhận được phép lái</li>
+                <li>• Đăng kiểm, xe an toàn không</li>
+                <li>• CSGT, phát hiện vi phạm</li>
+                <li>• Bảo hiểm, ai đền khi có tai nạn</li>
               </ul>
             </div>
             <div className="rounded-lg border border-accent bg-accent-light p-4">
@@ -717,9 +716,9 @@ export default function AIGovernanceTopic() {
               </div>
               <ul className="space-y-1.5 text-sm text-foreground">
                 <li>• Guardrails, policy sử dụng AI</li>
-                <li>• Impact assessment — được phép triển khai không</li>
-                <li>• Audit định kỳ — model có an toàn không</li>
-                <li>• Monitoring dashboard — phát hiện sự cố</li>
+                <li>• Impact assessment, được phép triển khai không</li>
+                <li>• Audit định kỳ, model có an toàn không</li>
+                <li>• Monitoring dashboard, phát hiện sự cố</li>
                 <li>• Hợp đồng + bảo hiểm trách nhiệm khi AI gây hại</li>
               </ul>
             </div>
@@ -734,11 +733,11 @@ export default function AIGovernanceTopic() {
         </div>
       </LessonSection>
 
-      {/* Bước 3 — VisualizationSection: 3 demo tương tác              */}
+      {/* Bước 3, VisualizationSection: 3 demo tương tác              */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Ba ô tương tác">
         <VisualizationSection topicSlug={metadata.slug}>
           <div className="space-y-8">
-            {/* ---------- Demo 1 — Policy Stack Visualizer ---------- */}
+            {/* ---------- Demo 1, Policy Stack Visualizer ---------- */}
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white">
@@ -782,7 +781,7 @@ export default function AIGovernanceTopic() {
 
             <hr className="border-border" />
 
-            {/* ---------- Demo 2 — Risk Tier Classifier ---------- */}
+            {/* ---------- Demo 2, Risk Tier Classifier ---------- */}
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white">
@@ -828,7 +827,7 @@ export default function AIGovernanceTopic() {
                   <AlertTriangle size={14} className="mt-0.5 text-red-500 shrink-0" />
                   <span>
                     <strong className="text-foreground">Unacceptable:</strong>{" "}
-                    vi phạm giá trị con người. BỊ CẤM — không có ngoại lệ.
+                    vi phạm giá trị con người. BỊ CẤM, không có ngoại lệ.
                   </span>
                 </div>
               </div>
@@ -836,14 +835,14 @@ export default function AIGovernanceTopic() {
 
             <hr className="border-border" />
 
-            {/* ---------- Demo 3 — Policy Builder ---------- */}
+            {/* ---------- Demo 3, Policy Builder ---------- */}
             <div>
               <div className="mb-3 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white">
                   3
                 </span>
                 <h3 className="text-sm font-semibold text-foreground">
-                  Tự dựng chính sách AI cho công ty — đo điểm tuân thủ
+                  Tự dựng chính sách AI cho công ty, đo điểm tuân thủ
                 </h3>
               </div>
               <PolicyBuilder />
@@ -852,7 +851,7 @@ export default function AIGovernanceTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* Bước 4 — AhaMoment                                           */}
+      {/* Bước 4, AhaMoment                                           */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           Quản trị AI không phải là <strong>cái phanh</strong> ngăn công ty
@@ -863,7 +862,7 @@ export default function AIGovernanceTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* Bước 5 — InlineChallenge                                     */}
+      {/* Bước 5, InlineChallenge                                     */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
           question="Startup Việt Nam muốn xuất khẩu sản phẩm AI y tế sang EU. Ngoài chất lượng sản phẩm, họ cần gì?"
@@ -886,15 +885,15 @@ export default function AIGovernanceTopic() {
               "Chỉ cần ẩn danh dữ liệu là đủ",
             ]}
             correct={1}
-            explanation="Dữ liệu trẻ em được bảo vệ chặt chẽ ở hầu hết luật: NĐ 13 (VN) và GDPR Điều 8 (EU). Cần đồng ý phụ huynh, minh bạch mục đích/thời gian lưu, tối thiểu hoá dữ liệu, cho phép xoá, không dùng cho profiling. EU AI Act coi AI giáo dục đánh giá học sinh là high-risk — buộc có impact assessment và human oversight."
+            explanation="Dữ liệu trẻ em được bảo vệ chặt chẽ ở hầu hết luật: NĐ 13 (VN) và GDPR Điều 8 (EU). Cần đồng ý phụ huynh, minh bạch mục đích/thời gian lưu, tối thiểu hoá dữ liệu, cho phép xoá, không dùng cho profiling. EU AI Act coi AI giáo dục đánh giá học sinh là high-risk, buộc có impact assessment và human oversight."
           />
         </div>
       </LessonSection>
 
-      {/* Bước 6 — ExplanationSection (visual-heavy)                   */}
+      {/* Bước 6, ExplanationSection (visual-heavy)                   */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Khung kiến thức">
         <ExplanationSection topicSlug={metadata.slug}>
-          {/* ---------- 6a. Bốn khung pháp lý chính — Callout cards ---------- */}
+          {/* ---------- 6a. Bốn khung pháp lý chính, Callout cards ---------- */}
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-foreground">
               Bốn khung pháp lý quan trọng nhất để biết
@@ -916,14 +915,14 @@ export default function AIGovernanceTopic() {
               </Callout>
               <Callout variant="tip" title="ISO/IEC 42001:2023">
                 <p>
-                  Tiêu chuẩn quốc tế đầu tiên về AI Management System — chứng
+                  Tiêu chuẩn quốc tế đầu tiên về AI Management System, chứng
                   nhận tự nguyện. Đối tác quốc tế ngày càng yêu cầu trong đấu
                   thầu lớn.
                 </p>
               </Callout>
               <Callout variant="warning" title="NĐ 13/2023/NĐ-CP (Việt Nam)">
                 <p>
-                  Bảo vệ dữ liệu cá nhân — phiên bản GDPR Việt Nam. AI xử lý
+                  Bảo vệ dữ liệu cá nhân, phiên bản GDPR Việt Nam. AI xử lý
                   dữ liệu phải xin đồng ý, cho phép rút lại. Vi phạm phạt tới
                   100 triệu VND cho cá nhân.
                 </p>
@@ -931,7 +930,7 @@ export default function AIGovernanceTopic() {
             </div>
           </div>
 
-          {/* ---------- 6b. Risk tier matrix — bảng màu 4 mức ---------- */}
+          {/* ---------- 6b. Risk tier matrix, bảng màu 4 mức ---------- */}
           <div className="mt-8 space-y-3">
             <h3 className="text-base font-semibold text-foreground">
               Ma trận 4 mức rủi ro EU AI Act
@@ -966,8 +965,8 @@ export default function AIGovernanceTopic() {
                 color="#22c55e"
                 tint="bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300 dark:border-emerald-700"
                 examples="Lọc spam, AI game, gợi ý sản phẩm"
-                requirement="Tự do — không yêu cầu đặc biệt"
-                penalty="Không phạt — khuyến khích best practices"
+                requirement="Tự do, không yêu cầu đặc biệt"
+                penalty="Không phạt, khuyến khích best practices"
               />
             </div>
           </div>
@@ -1103,9 +1102,9 @@ export default function AIGovernanceTopic() {
                     Doanh nghiệp dựa vào:
                   </p>
                   <ul className="list-disc pl-5 space-y-1 text-foreground/90">
-                    <li>NĐ 13/2023 — bảo vệ dữ liệu cá nhân</li>
-                    <li>Luật An ninh mạng (2018) — lưu trữ trong nước</li>
-                    <li>QĐ 127/QĐ-TTg (2021) — chiến lược AI đến 2030</li>
+                    <li>NĐ 13/2023, bảo vệ dữ liệu cá nhân</li>
+                    <li>Luật An ninh mạng (2018), lưu trữ trong nước</li>
+                    <li>QĐ 127/QĐ-TTg (2021), chiến lược AI đến 2030</li>
                     <li>Quy định theo ngành (ngân hàng, y tế, bảo hiểm)</li>
                   </ul>
                   <p className="text-muted text-xs mt-2">
@@ -1140,37 +1139,37 @@ export default function AIGovernanceTopic() {
             />
           </div>
 
-          {/* ---------- 6f. Collapsible details — kiến thức sâu hơn ---------- */}
+          {/* ---------- 6f. Collapsible details, kiến thức sâu hơn ---------- */}
           <div className="mt-8 space-y-3">
             <h3 className="text-base font-semibold text-foreground">
               Đào sâu thêm (tuỳ chọn)
             </h3>
-            <CollapsibleDetail title="AI Impact Assessment — công ty cần viết gì?">
+            <CollapsibleDetail title="AI Impact Assessment, công ty cần viết gì?">
               <p className="text-sm text-muted">
                 Tài liệu bắt buộc cho mọi AI high-risk. Một bản IA hoàn chỉnh gồm sáu phần:
               </p>
               <ul className="mt-2 list-disc list-inside space-y-1 text-sm text-muted">
                 <li><strong>Mô tả hệ thống:</strong> mục đích, người dùng, phạm vi, dữ liệu vào/ra.</li>
-                <li><strong>Nhóm bị ảnh hưởng:</strong> ai hưởng lợi, ai có thể thiệt — chú ý nhóm yếu thế.</li>
-                <li><strong>Rủi ro:</strong> phân tích 4 trục — công bằng, an toàn, riêng tư, tự chủ.</li>
+                <li><strong>Nhóm bị ảnh hưởng:</strong> ai hưởng lợi, ai có thể thiệt, chú ý nhóm yếu thế.</li>
+                <li><strong>Rủi ro:</strong> phân tích 4 trục, công bằng, an toàn, riêng tư, tự chủ.</li>
                 <li><strong>Mitigation:</strong> kỹ thuật (debiasing) và quy trình (human oversight, appeals).</li>
-                <li><strong>Rủi ro còn lại:</strong> sau khi mitigate — có chấp nhận được không?</li>
-                <li><strong>Chữ ký:</strong> ít nhất 2 người — thường là Product Owner + AI Ethics Officer.</li>
+                <li><strong>Rủi ro còn lại:</strong> sau khi mitigate, có chấp nhận được không?</li>
+                <li><strong>Chữ ký:</strong> ít nhất 2 người, thường là Product Owner + AI Ethics Officer.</li>
               </ul>
             </CollapsibleDetail>
 
-            <CollapsibleDetail title="ISO/IEC 42001:2023 — tiêu chuẩn quốc tế đầu tiên về AI Management">
+            <CollapsibleDetail title="ISO/IEC 42001:2023, tiêu chuẩn quốc tế đầu tiên về AI Management">
               <p className="text-sm text-muted">
-                Ban hành 12/2023, chứng nhận tự nguyện, nhưng đối tác quốc tế ngày càng yêu cầu trong đấu thầu lớn. 10 clauses chính (tương tự ISO 27001), 38 controls trong Annex A. Cấu trúc tương thích EU AI Act — đạt ISO 42001 giúp đáp ứng phần lớn EU AI Act. Chứng nhận mất 6-12 tháng, chi phí vài trăm triệu đến vài tỷ VND.
+                Ban hành 12/2023, chứng nhận tự nguyện, nhưng đối tác quốc tế ngày càng yêu cầu trong đấu thầu lớn. 10 clauses chính (tương tự ISO 27001), 38 controls trong Annex A. Cấu trúc tương thích EU AI Act, đạt ISO 42001 giúp đáp ứng phần lớn EU AI Act. Chứng nhận mất 6-12 tháng, chi phí vài trăm triệu đến vài tỷ VND.
               </p>
             </CollapsibleDetail>
 
-            <CollapsibleDetail title="So sánh EU AI Act, NIST AI RMF, ISO 42001 — dùng cái nào?">
+            <CollapsibleDetail title="So sánh EU AI Act, NIST AI RMF, ISO 42001, dùng cái nào?">
               <div className="space-y-1.5 text-sm text-muted">
                 <p><strong>EU AI Act:</strong> luật bắt buộc nếu bán dịch vụ vào EU. Không có lựa chọn "không tuân thủ".</p>
                 <p><strong>ISO 42001:</strong> chứng nhận tự nguyện để chứng minh với đối tác. Bổ trợ cho EU AI Act.</p>
                 <p><strong>NIST AI RMF:</strong> khung kỹ thuật chi tiết. Sổ tay cho kỹ sư và data scientist.</p>
-                <p><strong>Thực tế:</strong> doanh nghiệp lớn dùng cả ba — EU AI Act làm ranh giới pháp lý, ISO 42001 làm khung chứng nhận, NIST AI RMF làm sổ tay thực thi.</p>
+                <p><strong>Thực tế:</strong> doanh nghiệp lớn dùng cả ba, EU AI Act làm ranh giới pháp lý, ISO 42001 làm khung chứng nhận, NIST AI RMF làm sổ tay thực thi.</p>
               </div>
             </CollapsibleDetail>
 
@@ -1188,7 +1187,7 @@ export default function AIGovernanceTopic() {
         </ExplanationSection>
       </LessonSection>
 
-      {/* Bước 7 — MiniSummary                                         */}
+      {/* Bước 7, MiniSummary                                         */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về quản trị AI"
@@ -1197,13 +1196,13 @@ export default function AIGovernanceTopic() {
             "4 tầng quy định chồng lên công ty: quốc tế → quốc gia → ngành → nội bộ. Mỗi tầng thêm ràng buộc.",
             "EU AI Act phân 4 mức rủi ro: Minimal → Limited → High → Unacceptable. Biết use case của bạn ở mức nào.",
             "Việt Nam: NĐ 13 bảo vệ dữ liệu, QĐ 127 chiến lược AI, Luật An ninh mạng. Đang soạn luật AI riêng.",
-            "5 trụ cột doanh nghiệp: Dữ liệu — Mô hình — Triển khai — Giám sát — Sự cố.",
+            "5 trụ cột doanh nghiệp: Dữ liệu, Mô hình, Triển khai, Giám sát, Sự cố.",
             "Chủ động tuân thủ TRƯỚC khi bắt buộc = lợi thế cạnh tranh, không chỉ là chi phí.",
           ]}
         />
       </LessonSection>
 
-      {/* Bước 8 — QuizSection                                         */}
+      {/* Bước 8, QuizSection                                         */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ_QUESTIONS} />
       </LessonSection>
@@ -1211,7 +1210,7 @@ export default function AIGovernanceTopic() {
   );
 }
 
-//Component phụ — Một bước trong cây quyết định (TabView tab)
+//Component phụ, Một bước trong cây quyết định (TabView tab)
 const DECISION_VARIANTS: Record<
   "red" | "amber" | "blue",
   { box: string; icon: string }
@@ -1282,7 +1281,7 @@ function DecisionStep({
   );
 }
 
-//Component phụ — Một dòng trong ma trận 4 mức rủi ro
+//Component phụ, Một dòng trong ma trận 4 mức rủi ro
 function RiskTierRow({
   tier,
   color,

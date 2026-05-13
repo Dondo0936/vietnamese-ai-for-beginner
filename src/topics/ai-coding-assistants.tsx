@@ -23,9 +23,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-coding-assistants",
   title: "AI Coding Assistants",
-  titleVi: "Trợ lý lập trình AI — chuyện đang xảy ra trong ngành",
+  titleVi: "AI coding assistant cho người không code",
   description:
-    "Copilot, Cursor, Claude Code là gì và vì sao văn phòng Việt nên quan tâm — kể cả khi bạn không viết một dòng code nào.",
+    "Hiểu Copilot, Cursor và Claude Code giúp tự động hóa việc văn phòng như thế nào, kể cả khi bạn không lập trình.",
   category: "emerging",
   tags: ["copilot", "cursor", "claude-code", "industry"],
   difficulty: "intermediate",
@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ─────────────────────────────────────────────────────────────
-// Dữ liệu tĩnh — các mốc thời gian, số liệu ngành, công cụ
+// Dữ liệu tĩnh, các mốc thời gian, số liệu ngành, công cụ
 // ─────────────────────────────────────────────────────────────
 
 interface Milestone {
@@ -51,14 +51,14 @@ const MILESTONES: Milestone[] = [
     year: "2021",
     title: "GitHub Copilot ra mắt",
     detail:
-      "Lần đầu tiên có một công cụ gợi ý code ngay trong lúc gõ — như Gboard cho lập trình viên.",
+      "Lần đầu tiên có một công cụ gợi ý code ngay trong lúc gõ, như Gboard cho lập trình viên.",
     color: "#22c55e",
   },
   {
     year: "2023",
     title: "Cursor xuất hiện",
     detail:
-      "Một trình soạn thảo mới dựng trên VS Code, tích hợp AI ở mọi chỗ — không chỉ autocomplete.",
+      "Một trình soạn thảo mới dựng trên VS Code, tích hợp AI ở mọi chỗ, không chỉ autocomplete.",
     color: "#a855f7",
   },
   {
@@ -72,7 +72,7 @@ const MILESTONES: Milestone[] = [
     year: "2025",
     title: "Ngành bước vào kỷ nguyên agentic",
     detail:
-      "Hơn 50% code mới tại các công ty lớn có bàn tay AI — lập trình viên chuyển sang vai trò thiết kế & kiểm duyệt.",
+      "Hơn 50% code mới tại các công ty lớn có bàn tay AI, lập trình viên chuyển sang vai trò thiết kế & kiểm duyệt.",
     color: "#0ea5e9",
   },
 ];
@@ -163,7 +163,7 @@ function AnimatedNumber({
 }
 
 // ─────────────────────────────────────────────────────────────
-// Demo 1 — mô phỏng autocomplete trong IDE
+// Demo 1, mô phỏng autocomplete trong IDE
 // ─────────────────────────────────────────────────────────────
 
 function IdeAutocompleteMock() {
@@ -188,7 +188,7 @@ function IdeAutocompleteMock() {
         <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
         <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
         <span className="ml-3 text-[11px] font-mono text-slate-400">
-          luong.py — kenhketoan
+          luong.py, kenhketoan
         </span>
         <span className="ml-auto text-[10px] font-mono text-green-400">
           ● Copilot đang theo dõi
@@ -254,7 +254,7 @@ function IdeAutocompleteMock() {
 
       <div className="flex items-center justify-between bg-[#141a32] px-4 py-2 border-t border-border text-[10px] font-mono text-slate-400">
         <span>
-          Gợi ý xuất hiện dạng chữ xám — lập trình viên nhấn Tab để đồng ý
+          Gợi ý xuất hiện dạng chữ xám, lập trình viên nhấn Tab để đồng ý
         </span>
         <span>3 giây</span>
       </div>
@@ -263,15 +263,15 @@ function IdeAutocompleteMock() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Demo 2 — so sánh viết tay vs viết với AI (animated bars)
+// Demo 2, so sánh viết tay vs viết với AI (animated bars)
 // ─────────────────────────────────────────────────────────────
 
 function TimeComparison() {
   return (
     <div className="space-y-4">
       <ToggleCompare
-        labelA="Viết code tay — 2 giờ"
-        labelB="Viết với AI — 30 phút"
+        labelA="Viết code tay, 2 giờ"
+        labelB="Viết với AI, 30 phút"
         description="Cùng một tính năng 'form đăng nhập + gửi email xác minh'. Đây là kết quả trung bình báo cáo năm 2024 trên tác vụ vừa."
         childA={
           <div className="space-y-3">
@@ -280,7 +280,7 @@ function TimeComparison() {
             <Bar label="Sửa lỗi" minutes={25} total={120} color="#64748b" />
             <Bar label="Viết kiểm thử" minutes={10} total={120} color="#64748b" />
             <p className="text-xs text-muted mt-2">
-              Tổng: <strong>120 phút</strong> — rất nhiều thời gian chỉ để tra
+              Tổng: <strong>120 phút</strong>, rất nhiều thời gian chỉ để tra
               cú pháp và tìm ví dụ.
             </p>
           </div>
@@ -292,7 +292,7 @@ function TimeComparison() {
             <Bar label="Lập trình viên đọc & chỉnh" minutes={15} total={30} color="#22c55e" />
             <Bar label="Chạy kiểm thử AI đề xuất" minutes={7} total={30} color="#22c55e" />
             <p className="text-xs text-muted mt-2">
-              Tổng: <strong>30 phút</strong> — vai trò người đổi từ "tay gõ"
+              Tổng: <strong>30 phút</strong>, vai trò người đổi từ "tay gõ"
               sang "người duyệt".
             </p>
           </div>
@@ -334,7 +334,7 @@ function Bar({
 }
 
 // ─────────────────────────────────────────────────────────────
-// Demo — Cursor chat sidebar mock
+// Demo, Cursor chat sidebar mock
 // ─────────────────────────────────────────────────────────────
 
 function CursorSidebarMock() {
@@ -375,7 +375,7 @@ function CursorSidebarMock() {
           <code className="mx-1 text-purple-300">exportToXlsx()</code>,
           (4) nối vào onClick.
           <div className="mt-1 text-[10px] text-purple-300">
-            Sẽ sửa 2 file — nhấn Apply để đồng ý
+            Sẽ sửa 2 file, nhấn Apply để đồng ý
           </div>
         </motion.div>
         <div className="flex gap-2 pt-1">
@@ -398,7 +398,7 @@ function CursorSidebarMock() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Demo — Claude Code terminal mock
+// Demo, Claude Code terminal mock
 // ─────────────────────────────────────────────────────────────
 
 function ClaudeTerminalMock() {
@@ -426,7 +426,7 @@ function ClaudeTerminalMock() {
         <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
         <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
         <span className="ml-3 text-[11px] text-neutral-400">
-          Terminal — claude code
+          Terminal, claude code
         </span>
       </div>
       <div className="p-4 space-y-1 min-h-[200px]">
@@ -459,7 +459,7 @@ function ClaudeTerminalMock() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Demo — market share bar chart (animated)
+// Demo, market share bar chart (animated)
 // ─────────────────────────────────────────────────────────────
 
 function MarketShareBar() {
@@ -469,7 +469,7 @@ function MarketShareBar() {
         Ước tính thị phần công cụ AI coding (2025)
       </p>
       <p className="text-[11px] text-muted mb-3">
-        Dựa trên khảo sát developer công khai — làm tròn để dễ nhìn.
+        Dựa trên khảo sát developer công khai, làm tròn để dễ nhìn.
       </p>
       <div className="space-y-2">
         {MARKET_SHARE.map((r, i) => (
@@ -495,7 +495,7 @@ function MarketShareBar() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Demo — timeline vertical
+// Demo, timeline vertical
 // ─────────────────────────────────────────────────────────────
 
 function TimelineVertical() {
@@ -581,14 +581,14 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 0,
     explanation:
-      "Copilot (ra mắt 2021) — Cursor (2023) — Claude Code (2024). Đây là bộ ba được nhắc nhiều nhất trong ngành AI coding, đại diện cho ba thế hệ: gợi ý trong lúc gõ, trình soạn thảo có AI khắp nơi, AI tự đọc cả dự án.",
+      "Copilot (ra mắt 2021), Cursor (2023), Claude Code (2024). Đây là bộ ba được nhắc nhiều nhất trong ngành AI coding, đại diện cho ba thế hệ: gợi ý trong lúc gõ, trình soạn thảo có AI khắp nơi, AI tự đọc cả dự án.",
   },
   {
     question:
       "Một công ty gia công phần mềm Việt Nam nên phản ứng thế nào trước xu hướng AI coding?",
     options: [
       "Cấm nhân viên dùng AI để giữ job",
-      "Đào tạo nhân viên biết điều khiển AI + tập trung vào thiết kế và review — công việc mới chất lượng cao hơn công việc gõ code đơn thuần",
+      "Đào tạo nhân viên biết điều khiển AI + tập trung vào thiết kế và review, công việc mới chất lượng cao hơn công việc gõ code đơn thuần",
       "Chuyển hẳn sang làm nông",
     ],
     correct: 1,
@@ -600,24 +600,24 @@ const QUIZ: QuizQuestion[] = [
       "Tại sao ngay cả khi bạn không viết code, bạn vẫn nên biết về Copilot / Cursor / Claude Code?",
     options: [
       "Để khoe với bạn bè",
-      "Vì những công cụ này đang định hình lại nền kinh tế số — sản phẩm bạn dùng, dịch vụ bạn mua, công ty bạn làm đều chịu ảnh hưởng",
+      "Vì những công cụ này đang định hình lại nền kinh tế số, sản phẩm bạn dùng, dịch vụ bạn mua, công ty bạn làm đều chịu ảnh hưởng",
       "Không cần biết làm gì",
     ],
     correct: 1,
     explanation:
-      "Phần mềm được làm nhanh hơn 2-5 lần nghĩa là sản phẩm mới ra thị trường nhanh hơn, cạnh tranh khốc liệt hơn, kỹ năng cần có trong nghề nào cũng đổi. Hiểu xu hướng giúp bạn đưa ra quyết định tốt hơn — học, đầu tư, hay tuyển người.",
+      "Phần mềm được làm nhanh hơn 2-5 lần nghĩa là sản phẩm mới ra thị trường nhanh hơn, cạnh tranh khốc liệt hơn, kỹ năng cần có trong nghề nào cũng đổi. Hiểu xu hướng giúp bạn đưa ra quyết định tốt hơn, học, đầu tư, hay tuyển người.",
   },
   {
     question:
       "Rủi ro chính khi doanh nghiệp dùng AI coding mà không chuẩn bị gì là?",
     options: [
       "Máy tính nóng",
-      "Code được sinh ra nhanh nhưng có thể có lỗ hổng bảo mật, hoặc dùng thư viện không tồn tại — nếu không có quy trình kiểm tra thì sự cố sẽ tới",
+      "Code được sinh ra nhanh nhưng có thể có lỗ hổng bảo mật, hoặc dùng thư viện không tồn tại, nếu không có quy trình kiểm tra thì sự cố sẽ tới",
       "Nhân viên trở nên vui hơn",
     ],
     correct: 1,
     explanation:
-      "AI có thể 'ảo giác' (hallucinate) — sinh ra đoạn code nhìn có lý nhưng gọi thư viện không có thật, hoặc chứa lỗ hổng. Doanh nghiệp cần quy trình review, quét bảo mật, và đào tạo người duyệt thì mới hưởng lợi bền.",
+      "AI có thể 'ảo giác' (hallucinate), sinh ra đoạn code nhìn có lý nhưng gọi thư viện không có thật, hoặc chứa lỗ hổng. Doanh nghiệp cần quy trình review, quét bảo mật, và đào tạo người duyệt thì mới hưởng lợi bền.",
   },
   {
     type: "fill-blank",
@@ -672,11 +672,11 @@ export default function AICodingAssistantsTopic() {
           question="Theo bạn, bao nhiêu phần trăm công việc lập trình hiện nay được AI hỗ trợ?"
           options={["Khoảng 10%", "Khoảng 30%", "Khoảng 60%", "Khoảng 90%"]}
           correct={2}
-          explanation="Các khảo sát lớn năm 2024-2025 (GitHub, Stack Overflow, JetBrains) đều cho con số trong khoảng 60-76% lập trình viên chuyên nghiệp đang dùng AI hằng ngày. Tại các công ty lớn, khoảng 40-50% số dòng code mới có bàn tay AI. Con số tăng rất nhanh — chỉ 3 năm trước tỷ lệ này gần bằng 0."
+          explanation="Các khảo sát lớn năm 2024-2025 (GitHub, Stack Overflow, JetBrains) đều cho con số trong khoảng 60-76% lập trình viên chuyên nghiệp đang dùng AI hằng ngày. Tại các công ty lớn, khoảng 40-50% số dòng code mới có bàn tay AI. Con số tăng rất nhanh, chỉ 3 năm trước tỷ lệ này gần bằng 0."
         >
           <p className="mt-2 text-sm text-muted">
             Bài hôm nay không dạy bạn viết code. Bài này giải thích{" "}
-            <strong>điều gì đang xảy ra</strong> trong ngành AI coding — để
+            <strong>điều gì đang xảy ra</strong> trong ngành AI coding, để
             bạn, một người làm văn phòng, hiểu tại sao công cụ này lại lên tất
             cả mặt báo, và tại sao nó ảnh hưởng tới cả những ngành không liên
             quan gì đến lập trình.
@@ -687,7 +687,7 @@ export default function AICodingAssistantsTopic() {
       {/* ───────── 2. ẨN DỤ ───────── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ quen thuộc">
         <p>
-          Hãy tưởng tượng một lập trình viên đang gõ code — như một{" "}
+          Hãy tưởng tượng một lập trình viên đang gõ code, như một{" "}
           <strong>nhân viên kế toán</strong> đang cộng sổ. Trước đây, kế toán
           cộng tay, cộng máy tính bỏ túi, sau đó là Excel. Mỗi bước là một cú
           nhảy lớn: Excel không thay thế kế toán, mà biến công việc lặt vặt
@@ -695,11 +695,11 @@ export default function AICodingAssistantsTopic() {
         </p>
         <p>
           AI coding assistants đang làm điều tương tự với lập trình. Một "Excel
-          cho lập trình viên" — nhưng còn mạnh hơn Excel nhiều. Nó không chỉ
+          cho lập trình viên", nhưng còn mạnh hơn Excel nhiều. Nó không chỉ
           tính: nó <strong>gợi ý cả đoạn code</strong>, tự đọc toàn bộ dự án,
           rồi tự viết, tự sửa, tự kiểm thử.
         </p>
-        <Callout variant="insight" title="Vì sao bạn — không phải lập trình viên — cũng cần biết?">
+        <Callout variant="insight" title="Vì sao bạn, không phải lập trình viên, cũng cần biết?">
           Mỗi app bạn dùng (ngân hàng, Grab, Shopee, Zalo) đều được viết bởi
           một đội ngũ. Khi đội đó nhanh hơn 2-5 lần, sản phẩm ra thị trường
           nhanh hơn, cạnh tranh khốc liệt hơn, và kỹ năng cần có trong{" "}
@@ -713,7 +713,7 @@ export default function AICodingAssistantsTopic() {
           <div className="space-y-6">
             <div>
               <p className="text-sm font-semibold text-foreground mb-1">
-                Demo 1 — Copilot đang làm gì trên màn hình lập trình viên?
+                Demo 1, Copilot đang làm gì trên màn hình lập trình viên?
               </p>
               <p className="text-xs text-muted mb-3">
                 Khi lập trình viên gõ tên hàm, Copilot đề xuất phần còn lại
@@ -722,29 +722,29 @@ export default function AICodingAssistantsTopic() {
               <IdeAutocompleteMock />
             </div>
 
-            <LessonSection label="Demo 1b — Cursor: chat AI ngay trong trình soạn thảo">
+            <LessonSection label="Demo 1b, Cursor: chat AI ngay trong trình soạn thảo">
               <p className="text-xs text-muted mb-3">
-                Cursor không chỉ gợi ý — nó có một cửa sổ chat bên phải. Bạn
+                Cursor không chỉ gợi ý, nó có một cửa sổ chat bên phải. Bạn
                 mô tả yêu cầu bằng tiếng Việt, Cursor đề xuất bản thay đổi
                 cho nhiều file.
               </p>
               <CursorSidebarMock />
             </LessonSection>
 
-            <LessonSection label="Demo 1c — Claude Code: AI trong Terminal">
+            <LessonSection label="Demo 1c, Claude Code: AI trong Terminal">
               <p className="text-xs text-muted mb-3">
                 Claude Code sống trong terminal (cửa sổ đen). Bạn bảo nó đọc
                 repo, nó đọc rồi tự sửa nhiều file, chạy thử, rồi commit.
-                Đây là thế hệ "agentic" — AI tự chủ.
+                Đây là thế hệ "agentic", AI tự chủ.
               </p>
               <ClaudeTerminalMock />
             </LessonSection>
 
-            <LessonSection label="Demo 2 — Thời gian làm một tính năng: trước vs sau">
+            <LessonSection label="Demo 2, Thời gian làm một tính năng: trước vs sau">
               <TimeComparison />
             </LessonSection>
 
-            <LessonSection label="Demo 3 — Ghép công cụ với thế mạnh">
+            <LessonSection label="Demo 3, Ghép công cụ với thế mạnh">
               <p className="text-xs text-muted mb-3">
                 Kéo tên công cụ bên trái, ghép với mô tả bên phải. Mỗi tên
                 lớn đều có một triết lý thiết kế riêng.
@@ -766,7 +766,7 @@ export default function AICodingAssistantsTopic() {
             <strong>"gợi ý một dòng code"</strong> sang{" "}
             <strong>"tự đọc cả dự án và tự commit"</strong>. Khi gần một nửa
             số dòng code mới có bàn tay AI, điều thay đổi không phải là công
-            việc lập trình biến mất — mà là{" "}
+            việc lập trình biến mất, mà là{" "}
             <strong>hình dáng của nó đổi</strong>: bớt gõ, thêm thiết kế, thêm
             duyệt, thêm mô tả yêu cầu bằng ngôn ngữ tự nhiên. Kỹ năng đáng
             học sắp tới không còn là "biết ngôn ngữ X" mà là "biết ra đầu bài
@@ -780,12 +780,12 @@ export default function AICodingAssistantsTopic() {
         <InlineChallenge
           question="Bạn là giám đốc một công ty gia công phần mềm ở TP.HCM có 200 nhân viên. Đối tác nước ngoài bắt đầu đòi giảm giá 30% vì họ 'có thể dùng Claude Code để làm một phần'. Phản ứng tốt nhất?"
           options={[
-            "Hạ giá 30% để giữ khách — ai cũng phải chịu",
+            "Hạ giá 30% để giữ khách, ai cũng phải chịu",
             "Đào tạo đội nhanh dùng AI, chuyển sang báo giá theo kết quả thay vì theo giờ, tập trung vào phần thiết kế-kiến trúc-an toàn mà AI còn yếu",
             "Đóng công ty và chuyển sang kinh doanh cà phê",
           ]}
           correct={1}
-          explanation="Giá trị chuyển từ 'giờ gõ code' sang 'tư vấn thiết kế, đảm bảo an toàn, tích hợp hệ thống phức tạp'. Công ty nào nhanh trí dịch chuyển trước — đào tạo đội, đổi cách báo giá, tập trung vào phần AI chưa làm tốt — sẽ thắng. Đây là câu chuyện mọi ngành gia công phần mềm Việt đang đối mặt."
+          explanation="Giá trị chuyển từ 'giờ gõ code' sang 'tư vấn thiết kế, đảm bảo an toàn, tích hợp hệ thống phức tạp'. Công ty nào nhanh trí dịch chuyển trước, đào tạo đội, đổi cách báo giá, tập trung vào phần AI chưa làm tốt, sẽ thắng. Đây là câu chuyện mọi ngành gia công phần mềm Việt đang đối mặt."
         />
       </LessonSection>
 
@@ -824,8 +824,7 @@ export default function AICodingAssistantsTopic() {
                     <StatsPanel />
                     <p className="text-xs text-muted leading-relaxed">
                       Các con số thay đổi từng quý. Điều quan trọng không phải
-                      con số chính xác mà là <strong>hướng dịch chuyển</strong>{" "}
-                      — tất cả đều đi lên, nhanh.
+                      con số chính xác mà là <strong>hướng dịch chuyển</strong>{" "}, tất cả đều đi lên, nhanh.
                     </p>
                   </div>
                 ),
@@ -842,7 +841,7 @@ export default function AICodingAssistantsTopic() {
               </li>
               <li>
                 <strong>Lỗ hổng bảo mật:</strong> AI có thể sinh code lưu mật
-                khẩu dạng không mã hoá, hoặc có lỗ hổng SQL — nhìn "có vẻ
+                khẩu dạng không mã hoá, hoặc có lỗ hổng SQL, nhìn "có vẻ
                 đúng" nhưng thực ra nguy hiểm. Cần có người biết duyệt.
               </li>
             </ul>
@@ -850,18 +849,18 @@ export default function AICodingAssistantsTopic() {
 
           <Callout variant="tip" title="Quan sát rút ra">
             <p className="text-sm">
-              AI coding không khiến lập trình viên biến mất — nó tách đôi nghề
+              AI coding không khiến lập trình viên biến mất, nó tách đôi nghề
               này thành <strong>hai lớp</strong>: lớp "thợ gõ" giá trị giảm,
               lớp "người thiết kế & duyệt" giá trị tăng. Cùng kỹ năng, khác
               định vị. Với người làm văn phòng, bài học chung là:{" "}
-              <em>học cách mô tả yêu cầu rõ ràng</em> — kỹ năng này quan
+              <em>học cách mô tả yêu cầu rõ ràng</em>, kỹ năng này quan
               trọng hơn bao giờ hết.
             </p>
           </Callout>
 
           <p className="text-sm">
-            Muốn hiểu phần AI tự chạy nhiều bước thay bạn — không chỉ trong
-            code mà trong công việc văn phòng — xem tiếp{" "}
+            Muốn hiểu phần AI tự chạy nhiều bước thay bạn, không chỉ trong
+            code mà trong công việc văn phòng, xem tiếp{" "}
             <TopicLink slug="agentic-workflows">
               Quy trình AI tự chủ
             </TopicLink>
@@ -877,9 +876,9 @@ export default function AICodingAssistantsTopic() {
           points={[
             "Ba tên lớn: GitHub Copilot (2021, gợi ý từng dòng), Cursor (2023, chat trong trình soạn thảo), Claude Code (2024, AI trong terminal đọc cả dự án).",
             "Xu hướng: từ 'gợi ý một dòng' (2021) sang 'AI tự đọc repo và commit' (2025). Gần một nửa code mới ở công ty lớn có bàn tay AI.",
-            "Tác động tới ngành gia công Việt: nghề không mất mà đổi hình dáng — thợ gõ giảm giá trị, người thiết kế và duyệt tăng giá trị.",
+            "Tác động tới ngành gia công Việt: nghề không mất mà đổi hình dáng, thợ gõ giảm giá trị, người thiết kế và duyệt tăng giá trị.",
             "Rủi ro quen thuộc: AI bịa tên thư viện, sinh code có lỗ hổng bảo mật. Doanh nghiệp cần quy trình review và quét bảo mật.",
-            "Bài học cho người không code: kỹ năng 'mô tả yêu cầu rõ ràng bằng tiếng Việt' trở nên rất có giá — nó áp dụng cho mọi công cụ AI, không chỉ AI coding.",
+            "Bài học cho người không code: kỹ năng 'mô tả yêu cầu rõ ràng bằng tiếng Việt' trở nên rất có giá, nó áp dụng cho mọi công cụ AI, không chỉ AI coding.",
           ]}
         />
       </LessonSection>

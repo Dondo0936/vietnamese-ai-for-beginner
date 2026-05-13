@@ -43,9 +43,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "text-classification",
   title: "Text Classification",
-  titleVi: "Phân loại văn bản",
+  titleVi: "Text classification: gắn nhãn cho tin nhắn",
   description:
-    "AI đọc tin nhắn rồi gán nhãn — giống nhân viên thư phòng ngày xưa phân loại thư nhưng nhanh hơn triệu lần. Cốt lõi của chatbot, bộ lọc spam, hệ thống hỗ trợ khách hàng.",
+    "AI đọc nội dung rồi gán nhãn như spam, khiếu nại, hỏi giá hoặc cần hỗ trợ kỹ thuật.",
   category: "nlp",
   tags: ["nlp", "classification", "supervised-learning"],
   difficulty: "intermediate",
@@ -190,7 +190,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Email tới hộp thư công ty: 'BẠN ĐÃ TRÚNG 1 TỶ! Click link nhận ngay'. AI sẽ phân loại vào đâu?",
     options: [
       "Thư quan trọng",
-      "Spam — đây là ứng dụng phân loại văn bản kinh điển",
+      "Spam, đây là ứng dụng phân loại văn bản kinh điển",
       "Thư nội bộ",
       "Thư marketing hợp lệ",
     ],
@@ -202,7 +202,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Một khách hỏi 'Đơn #1234 của tôi đâu rồi ạ?'. Chatbot phải gán intent nào?",
     options: [
       "Khiếu nại",
-      "Tra cứu đơn hàng — intent classification",
+      "Tra cứu đơn hàng, intent classification",
       "Yêu cầu hoàn tiền",
       "Hỏi khuyến mãi",
     ],
@@ -254,7 +254,7 @@ export default function TextClassificationTopic() {
   const [labeledIds, setLabeledIds] = useState<Set<number>>(new Set([1, 3]));
   const [wrongIds, setWrongIds] = useState<Set<number>>(new Set());
 
-  // Độ chính xác mô phỏng — càng nhiều nhãn mới càng cao
+  // Độ chính xác mô phỏng, càng nhiều nhãn mới càng cao
   const accuracy = Math.min(
     0.95,
     0.55 + (labeledIds.size - wrongIds.size) * 0.07,
@@ -273,7 +273,7 @@ export default function TextClassificationTopic() {
   return (
     <>
       {/* =================================================================
-          BƯỚC 1 — DỰ ĐOÁN
+          BƯỚC 1, DỰ ĐOÁN
           ================================================================= */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
@@ -289,17 +289,17 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 2 — ẨN DỤ: nhân viên thư phòng
+          BƯỚC 2, ẨN DỤ: nhân viên thư phòng
           ================================================================= */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
         <div className="space-y-4">
           <p className="text-foreground leading-relaxed">
             Thời ông bà mình, mọi công ty đều có <strong>nhân viên thư
             phòng</strong>. Bác ấy ngồi giữa đống phong bì: đọc qua vài dòng,
-            liếc tem, rồi bỏ vào đúng ngăn — <em>khách hàng</em>, <em>nhà
+            liếc tem, rồi bỏ vào đúng ngăn, <em>khách hàng</em>, <em>nhà
             cung cấp</em>, <em>hóa đơn</em>, <em>khiếu nại</em>. Ngày mấy nghìn
             lá thư. Phân loại văn bản (text classification) là phiên bản máy
-            tính của chính công việc đó — chỉ khác là bác thư phòng xử 2.000
+            tính của chính công việc đó, chỉ khác là bác thư phòng xử 2.000
             thư/ngày, còn AI xử 2 triệu tin nhắn/giây.
           </p>
 
@@ -341,7 +341,7 @@ export default function TextClassificationTopic() {
             <p>
               Lọc spam, gán chuyên mục báo VnExpress, phân loại CV ứng viên,
               đánh giá khẩn cấp hay thường cho tin nhắn y tế, phát hiện toxic
-              trên mạng xã hội — <strong>tất cả đều là phân loại văn
+              trên mạng xã hội, <strong>tất cả đều là phân loại văn
               bản</strong>. Chỉ khác &ldquo;tập nhãn&rdquo; bạn định nghĩa.
             </p>
           </Callout>
@@ -349,7 +349,7 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 3 — BA DEMO TRỰC QUAN
+          BƯỚC 3, BA DEMO TRỰC QUAN
           ================================================================= */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Trực quan hóa">
         <VisualizationSection topicSlug={metadata.slug}>
@@ -448,7 +448,7 @@ export default function TextClassificationTopic() {
               </div>
               <p className="text-xs text-muted leading-relaxed">
                 Thực tế, một tin nhắn có thể thuộc nhiều ngăn. Máy học với
-                nhãn <strong>phẳng</strong> (chỉ chọn 1) sẽ mất thông tin — khi
+                nhãn <strong>phẳng</strong> (chỉ chọn 1) sẽ mất thông tin, khi
                 chuyển sang <strong>đa nhãn phân cấp</strong>, đội xử lý biết
                 đầy đủ hơn.
               </p>
@@ -549,12 +549,12 @@ export default function TextClassificationTopic() {
               <div className="flex items-center gap-2">
                 <Target size={16} className="text-accent" />
                 <h3 className="text-sm font-semibold text-foreground">
-                  Demo 3 · Học chủ động — gán thêm nhãn, xem độ chính xác tăng
+                  Demo 3 · Học chủ động, gán thêm nhãn, xem độ chính xác tăng
                 </h3>
               </div>
               <p className="text-xs text-muted leading-relaxed">
                 Mô phỏng: bạn là người dán nhãn. Hệ thống đã có 2 tin nhắn có
-                nhãn. Nhấn &ldquo;dán nhãn đúng&rdquo; để dạy máy — độ chính
+                nhãn. Nhấn &ldquo;dán nhãn đúng&rdquo; để dạy máy, độ chính
                 xác tăng dần.
               </p>
 
@@ -666,8 +666,7 @@ export default function TextClassificationTopic() {
                   Mô hình học <strong>càng nhiều nhãn thật càng tốt</strong>.
                   Các công ty lớn chi hàng triệu đô để thuê &ldquo;data
                   labelers&rdquo; (người dán nhãn). Active learning giúp máy tự
-                  chọn những mẫu nó thấy <em>mơ hồ nhất</em> để hỏi con người —
-                  tiết kiệm 60–80% công dán nhãn.
+                  chọn những mẫu nó thấy <em>mơ hồ nhất</em> để hỏi con người, tiết kiệm 60–80% công dán nhãn.
                 </p>
               </Callout>
             </div>
@@ -676,18 +675,18 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 4 — AHA
+          BƯỚC 4, AHA
           ================================================================= */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           <p>
             Phân loại văn bản <strong>không phải tìm từ khóa</strong>.
             &ldquo;App bị đơ&rdquo; và &ldquo;phần mềm không phản hồi&rdquo;
-            không trùng một chữ nào — nhưng cùng một ý định. AI hiện đại hiểu
+            không trùng một chữ nào, nhưng cùng một ý định. AI hiện đại hiểu
             điều đó bằng cách đọc <strong>ý nghĩa</strong>, không phải đếm từ.
           </p>
           <p className="text-sm text-muted mt-2">
-            Vì thế bạn chỉ cần đưa vài nghìn ví dụ có nhãn — máy tự học ra khái
+            Vì thế bạn chỉ cần đưa vài nghìn ví dụ có nhãn, máy tự học ra khái
             niệm &ldquo;hỗ trợ kỹ thuật&rdquo; kể cả khi khách viết theo cách
             chưa từng thấy.
           </p>
@@ -695,14 +694,14 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 5 — CHALLENGE
+          BƯỚC 5, CHALLENGE
           ================================================================= */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
           question={`Chatbot ngân hàng nhận tin: "Mình mất thẻ, muốn khóa gấp giúp mình nhé 🙏". Intent đúng là?`}
           options={[
             "Câu hỏi chung",
-            "Khóa thẻ khẩn cấp (intent cụ thể) — phải route ưu tiên cao",
+            "Khóa thẻ khẩn cấp (intent cụ thể), phải route ưu tiên cao",
             "Khiếu nại",
             "Yêu cầu đổi trả",
           ]}
@@ -712,7 +711,7 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 6 — EXPLANATION
+          BƯỚC 6, EXPLANATION
           ================================================================= */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
         <ExplanationSection>
@@ -720,7 +719,7 @@ export default function TextClassificationTopic() {
             Phân loại văn bản là bài toán NLP cơ bản nhất và phổ biến nhất. Về
             bản chất: đưa một đoạn văn vào, lấy ra một (hoặc nhiều){" "}
             <strong>nhãn</strong> đã định nghĩa sẵn. Công thức không quan
-            trọng với dân văn phòng — cái quan trọng là: biết khi nào dùng gì,
+            trọng với dân văn phòng, cái quan trọng là: biết khi nào dùng gì,
             hiểu các đo lường nào, và tránh những cái bẫy thường gặp.
           </p>
 
@@ -818,12 +817,12 @@ export default function TextClassificationTopic() {
             </div>
           </Callout>
 
-          {/* Precision / Recall — visual bars */}
+          {/* Precision / Recall, visual bars */}
           <div className="rounded-xl border border-border bg-card p-4 space-y-4">
             <div className="flex items-center gap-2">
               <TrendingUp size={16} className="text-accent" />
               <p className="text-sm font-semibold text-foreground">
-                Đo lường chất lượng — cách đọc biểu đồ trong báo cáo
+                Đo lường chất lượng, cách đọc biểu đồ trong báo cáo
               </p>
             </div>
 
@@ -843,7 +842,7 @@ export default function TextClassificationTopic() {
               label="F1 (cân bằng cả hai)"
               value={0.75}
               color="#3b82f6"
-              desc="Trung bình điều hòa — chỉ số tổng hợp dùng để so hai mô hình."
+              desc="Trung bình điều hòa, chỉ số tổng hợp dùng để so hai mô hình."
             />
 
             <div className="text-[11px] text-muted leading-relaxed">
@@ -860,28 +859,28 @@ export default function TextClassificationTopic() {
           <Callout variant="warning" title="Bẫy thường gặp khi triển khai">
             <ul className="list-disc pl-5 space-y-1 text-xs text-foreground mt-1">
               <li>
-                <strong>Nhãn thủ công không thống nhất</strong> — 3 nhân viên
+                <strong>Nhãn thủ công không thống nhất</strong>, 3 nhân viên
                 gán 1 tin nhắn ra 3 nhãn. Phải có guideline rõ ràng.
               </li>
               <li>
-                <strong>Dữ liệu lệch (class imbalance)</strong> — 95% tin là
+                <strong>Dữ liệu lệch (class imbalance)</strong>, 95% tin là
                 &ldquo;Câu hỏi chung&rdquo;, 5% là &ldquo;Khóa thẻ gấp&rdquo;.
                 Mô hình thiên vị và bỏ sót khẩn cấp.
               </li>
               <li>
-                <strong>Khái niệm trôi (concept drift)</strong> — khách thay
+                <strong>Khái niệm trôi (concept drift)</strong>, khách thay
                 đổi cách viết (năm 2024 chưa có &ldquo;Livestream chốt đơn&rdquo;,
                 2026 có). Mô hình phải retrain định kỳ.
               </li>
               <li>
-                <strong>Bỏ qua tầm quan trọng của metadata</strong> — đôi khi
+                <strong>Bỏ qua tầm quan trọng của metadata</strong>, đôi khi
                 giờ gửi (3h sáng) hay channel (email vs fanpage) cũng ảnh
                 hưởng nhãn.
               </li>
             </ul>
           </Callout>
 
-          {/* Ứng dụng thực tế — grid */}
+          {/* Ứng dụng thực tế, grid */}
           <div className="space-y-2">
             <p className="text-sm font-semibold text-foreground">
               Dân văn phòng dùng phân loại văn bản ở đâu?
@@ -947,7 +946,7 @@ export default function TextClassificationTopic() {
           {/* MatchPairs */}
           <div className="space-y-2">
             <p className="text-sm font-semibold text-foreground">
-              Nối nhanh — tin nhắn thuộc nhãn nào?
+              Nối nhanh, tin nhắn thuộc nhãn nào?
             </p>
             <MatchPairs
               instruction="Nối từng tin nhắn với nhãn đúng."
@@ -964,14 +963,14 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 7 — SUMMARY
+          BƯỚC 7, SUMMARY
           ================================================================= */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về phân loại văn bản"
           points={[
-            "Phân loại văn bản = gán nhãn cho text — giống nhân viên thư phòng nhưng nhanh hơn triệu lần.",
-            "Bốn dạng chính: nhị phân, đa lớp, đa nhãn, và intent — chatbot hiện đại phân loại đồng thời ý định + mức độ khẩn cấp.",
+            "Phân loại văn bản = gán nhãn cho text, giống nhân viên thư phòng nhưng nhanh hơn triệu lần.",
+            "Bốn dạng chính: nhị phân, đa lớp, đa nhãn, và intent, chatbot hiện đại phân loại đồng thời ý định + mức độ khẩn cấp.",
             "Ba kỹ thuật: rule (nhanh, giòn) → ML cổ điển (đủ tốt) → BERT/LLM (hiểu ý nghĩa).",
             "Đọc báo cáo: Precision cao → ít bắt nhầm. Recall cao → ít bỏ sót. F1 cân bằng.",
             "Ứng dụng: lọc spam, chuyên mục báo, intent chatbot, moderation, triage ticket, review CV.",
@@ -980,7 +979,7 @@ export default function TextClassificationTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 8 — QUIZ
+          BƯỚC 8, QUIZ
           ================================================================= */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />
@@ -1065,7 +1064,7 @@ function ConfusionMatrix() {
       <div className="flex items-center gap-2 mb-3">
         <Layers size={14} className="text-accent" />
         <p className="text-sm font-semibold text-foreground">
-          Ma trận nhầm lẫn — đâu là chỗ máy hay nhầm?
+          Ma trận nhầm lẫn, đâu là chỗ máy hay nhầm?
         </p>
       </div>
 
@@ -1109,7 +1108,7 @@ function ConfusionMatrix() {
 
       <p className="text-[11px] text-muted mt-3 leading-relaxed">
         Đường chéo (xanh) là đúng. Ô đỏ là nhầm. Ví dụ: 8 tin &ldquo;khiếu
-        nại&rdquo; thật bị gán nhầm thành &ldquo;kỹ thuật&rdquo; — khách bực
+        nại&rdquo; thật bị gán nhầm thành &ldquo;kỹ thuật&rdquo;, khách bực
         bội mô tả lỗi app, đội kỹ thuật xử trước rồi chuyển tiếp.
       </p>
     </div>

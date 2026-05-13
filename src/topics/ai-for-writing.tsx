@@ -35,14 +35,14 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// Metadata — giữ nguyên theo yêu cầu của hệ thống routing.
+// Metadata, giữ nguyên theo yêu cầu của hệ thống routing.
 // ---------------------------------------------------------------------------
 export const metadata: TopicMeta = {
   slug: "ai-for-writing",
   title: "AI for Writing",
-  titleVi: "AI hỗ trợ viết lách",
+  titleVi: "AI hỗ trợ viết email, báo cáo, slide",
   description:
-    "Dùng AI để viết email, báo cáo, bài thuyết trình, và tóm tắt cuộc họp nhanh hơn.",
+    "Biến ý thô thành bản nháp có cấu trúc, rồi chỉnh giọng văn, độ dài và thông điệp trước khi gửi.",
   category: "applied-ai",
   tags: ["writing", "email", "reports", "practical", "office"],
   difficulty: "intermediate",
@@ -57,7 +57,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// DEMO 1 — Email drafter: chọn tone + người nhận → email thay đổi realtime
+// DEMO 1, Email drafter: chọn tone + người nhận → email thay đổi realtime
 // ---------------------------------------------------------------------------
 
 interface EmailVariant {
@@ -80,7 +80,7 @@ function buildEmail(
   const subjects = [
     "Xin phép nghỉ 2 ngày",
     "Xin phép nghỉ phép ngày 5-6 tháng tới",
-    "Đơn xin phép nghỉ phép — 2 ngày làm việc",
+    "Đơn xin phép nghỉ phép, 2 ngày làm việc",
   ];
   const greetings = [
     `Chào ${["Minh", "anh Hoàng", "chị Lan"][recipient]},`,
@@ -98,7 +98,7 @@ function buildEmail(
     "Tôi xin phép được nghỉ 2 ngày làm việc trong tuần sau (thứ Năm và thứ Sáu) do có việc gia đình bắt buộc phải có mặt trực tiếp. Các nhiệm vụ đang thực hiện đã được bàn giao đầy đủ cho đồng nghiệp Hải.",
   ];
   const bodyLong = [
-    "Mình xin nghỉ 2 ngày tuần sau (thứ 5 và thứ 6) vì có việc gia đình không thể dời lịch. Các task đang làm mình đã bàn giao cho Hải kèm note chi tiết. Nếu có gì cần mình xử lý gấp, cứ nhắn Zalo — mình sẽ phản hồi trong ngày. Cảm ơn bạn nhiều!",
+    "Mình xin nghỉ 2 ngày tuần sau (thứ 5 và thứ 6) vì có việc gia đình không thể dời lịch. Các task đang làm mình đã bàn giao cho Hải kèm note chi tiết. Nếu có gì cần mình xử lý gấp, cứ nhắn Zalo, mình sẽ phản hồi trong ngày. Cảm ơn bạn nhiều!",
     "Em xin phép nghỉ 2 ngày làm việc tuần sau (thứ 5 và thứ 6) vì có việc gia đình cần em có mặt trực tiếp. Trước khi nghỉ, em đã bàn giao đầy đủ công việc đang dở cho bạn Hải, kèm theo tài liệu và checklist chi tiết. Em vẫn giữ điện thoại thường xuyên và có thể phản hồi qua Zalo khi cần. Mong anh chấp thuận giúp em.",
     "Tôi xin được phép nghỉ 2 ngày làm việc (thứ Năm và thứ Sáu tuần sau) vì có việc gia đình quan trọng yêu cầu có mặt trực tiếp và không thể thu xếp khác. Mọi công việc đang thực hiện đã được bàn giao chi tiết cho đồng nghiệp Hải, bao gồm toàn bộ tài liệu và ghi chú cần thiết. Tôi vẫn duy trì liên lạc qua điện thoại trong thời gian nghỉ và sẽ xử lý ngay các trường hợp khẩn cấp. Rất mong được Quý Trưởng phòng chấp thuận.",
   ];
@@ -165,7 +165,7 @@ function EmailDrafterDemo() {
         </div>
       </div>
 
-      {/* 2 thanh trượt: tone + độ dài — quản lý state tại đây, không qua SliderGroup */}
+      {/* 2 thanh trượt: tone + độ dài, quản lý state tại đây, không qua SliderGroup */}
       <div className="rounded-xl border border-border bg-card p-5 space-y-5">
         <div className="rounded-lg bg-surface p-4 flex items-center justify-center gap-3 text-sm">
           <span
@@ -257,10 +257,10 @@ function EmailDrafterDemo() {
           <p className="text-sm text-foreground">{email.greeting}</p>
           <p className="text-sm text-foreground leading-relaxed">{email.body}</p>
           <p className="text-sm text-foreground">{email.closing}</p>
-          <p className="text-sm text-muted italic">— {email.sign}</p>
+          <p className="text-sm text-muted italic">, {email.sign}</p>
         </motion.div>
         <p className="mt-2 text-[11px] text-muted">
-          Thử đổi 3 thứ ở trên — email tự viết lại trong chưa đầy 1 giây.
+          Thử đổi 3 thứ ở trên, email tự viết lại trong chưa đầy 1 giây.
         </p>
       </div>
     </div>
@@ -268,7 +268,7 @@ function EmailDrafterDemo() {
 }
 
 // ---------------------------------------------------------------------------
-// DEMO 2 — Before/after doc edit
+// DEMO 2, Before/after doc edit
 // ---------------------------------------------------------------------------
 
 function BeforeAfterEditDemo() {
@@ -276,11 +276,11 @@ function BeforeAfterEditDemo() {
     <ToggleCompare
       labelA="Bản nháp"
       labelB="Sau khi AI chỉnh"
-      description="Cùng một đoạn báo cáo tuần — AI chỉ sửa cấu trúc, không bịa thông tin."
+      description="Cùng một đoạn báo cáo tuần, AI chỉ sửa cấu trúc, không bịa thông tin."
       childA={
         <div className="rounded-lg border border-red-200 bg-red-50/50 dark:bg-red-900/10 dark:border-red-900/40 p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-400 mb-2">
-            Bản nháp — rối, lặp từ
+            Bản nháp, rối, lặp từ
           </p>
           <p className="text-sm text-foreground leading-relaxed">
             Tuần này bên mình đã gọi được 47 khách xong có 12 khách hẹn gặp rồi
@@ -294,7 +294,7 @@ function BeforeAfterEditDemo() {
       childB={
         <div className="rounded-lg border border-green-200 bg-green-50/50 dark:bg-green-900/10 dark:border-green-900/40 p-4 space-y-2">
           <p className="text-xs font-semibold uppercase tracking-wide text-green-700 dark:text-green-400">
-            Sau khi AI chỉnh — rõ, có cấu trúc
+            Sau khi AI chỉnh, rõ, có cấu trúc
           </p>
           <div className="text-sm text-foreground leading-relaxed space-y-2">
             <p className="font-semibold">Kết quả tuần:</p>
@@ -318,7 +318,7 @@ function BeforeAfterEditDemo() {
 }
 
 // ---------------------------------------------------------------------------
-// DEMO 3 — Use case gallery (TabView)
+// DEMO 3, Use case gallery (TabView)
 // ---------------------------------------------------------------------------
 
 const USE_CASES = [
@@ -356,14 +356,14 @@ const USE_CASES = [
     scenario:
       "Soạn mô tả 150 từ cho tai nghe không dây trên sàn TMĐT, nhấn vào pin và chống ồn.",
     output:
-      '"Tai nghe BT-X5: pin 32 tiếng, chống ồn chủ động 35dB, bluetooth 5.3 ổn định, nghe nhạc trong như ở phòng thu — dùng cho work from home, đi xe bus, chạy bộ..."',
+      '"Tai nghe BT-X5: pin 32 tiếng, chống ồn chủ động 35dB, bluetooth 5.3 ổn định, nghe nhạc trong như ở phòng thu, dùng cho work from home, đi xe bus, chạy bộ..."',
   },
   {
     key: "pitch",
     label: "Mở đầu thuyết trình",
     icon: Presentation,
     scenario:
-      "Viết 3 phương án mở đầu slide chiến lược Q2 cho ban giám đốc — ngắn, mạnh, có số liệu.",
+      "Viết 3 phương án mở đầu slide chiến lược Q2 cho ban giám đốc, ngắn, mạnh, có số liệu.",
     output:
       '"Q1 chúng ta tăng trưởng 15% so với năm ngoái. Nhưng đối thủ tăng 22%. Q2 sẽ quyết định ai dẫn đầu thị trường."',
   },
@@ -403,7 +403,7 @@ function UseCaseGalleryDemo() {
 }
 
 // ---------------------------------------------------------------------------
-// Dữ liệu Callout — 5 công cụ AI viết dùng nhiều ở Việt Nam
+// Dữ liệu Callout, 5 công cụ AI viết dùng nhiều ở Việt Nam
 // ---------------------------------------------------------------------------
 
 const TOOLS = [
@@ -468,10 +468,10 @@ export default function AiForWritingTopic() {
         question:
           "Trong khung RACE cho prompt viết lách, chữ C nghĩa là gì?",
         options: [
-          "Copy — sao chép nội dung mẫu",
-          "Context — ngữ cảnh và thông tin nền",
-          "Create — tạo nội dung mới hoàn toàn",
-          "Check — kiểm tra lỗi chính tả",
+          "Copy, sao chép nội dung mẫu",
+          "Context, ngữ cảnh và thông tin nền",
+          "Create, tạo nội dung mới hoàn toàn",
+          "Check, kiểm tra lỗi chính tả",
         ],
         correct: 1,
         explanation:
@@ -486,7 +486,7 @@ export default function AiForWritingTopic() {
           { answer: "Action", accept: ["action", "Hành động", "hành động"] },
         ],
         explanation:
-          "RACE = Role + Action + Context + Example — công thức giúp bạn viết prompt rõ ràng khi nhờ AI hỗ trợ viết lách.",
+          "RACE = Role + Action + Context + Example, công thức giúp bạn viết prompt rõ ràng khi nhờ AI hỗ trợ viết lách.",
       },
       {
         question:
@@ -499,27 +499,27 @@ export default function AiForWritingTopic() {
         ],
         correct: 1,
         explanation:
-          "AI có thể bịa nội dung (hallucination) — rất nguy hiểm khi tóm tắt cuộc họp vì thông tin sai ảnh hưởng đến quyết định. Luôn đối chiếu với ghi chú gốc.",
+          "AI có thể bịa nội dung (hallucination), rất nguy hiểm khi tóm tắt cuộc họp vì thông tin sai ảnh hưởng đến quyết định. Luôn đối chiếu với ghi chú gốc.",
       },
       {
         question:
           "Bạn cần tóm tắt báo cáo PDF 80 trang. Công cụ nào phù hợp nhất?",
         options: [
           "ChatGPT free (giới hạn context ngắn)",
-          "Claude Pro với context 200k token — dán cả tài liệu một lần",
+          "Claude Pro với context 200k token, dán cả tài liệu một lần",
           "Copy từng phần nhỏ vào Gemini free",
           "Viết tay để chắc chắn đúng",
         ],
         correct: 1,
         explanation:
-          "Claude có context lớn nhất (~500 trang) — phù hợp phân tích tài liệu dài trong một lượt. Chia nhỏ dễ mất mạch ngữ cảnh.",
+          "Claude có context lớn nhất (~500 trang), phù hợp phân tích tài liệu dài trong một lượt. Chia nhỏ dễ mất mạch ngữ cảnh.",
       },
       {
         question:
           "Bạn gửi email AI soạn mà bỏ qua bước đọc lại. Email bị bịa tên khách hàng. Bài học QUAN TRỌNG NHẤT là gì?",
         options: [
           "Không bao giờ dùng AI nữa",
-          "AI là người soạn nháp, bạn là người gửi — luôn review trước khi gửi",
+          "AI là người soạn nháp, bạn là người gửi, luôn review trước khi gửi",
           "Chuyển sang AI khác là đủ",
           "Chỉ dùng AI cho email nội bộ",
         ],
@@ -545,7 +545,7 @@ export default function AiForWritingTopic() {
           "Pattern an toàn nhất khi triển khai AI viết cho nhân viên doanh nghiệp là gì?",
         options: [
           "Cho mọi người dùng ChatGPT free với tài khoản cá nhân",
-          "Cấp license enterprise — có cam kết không train trên dữ liệu + audit log",
+          "Cấp license enterprise, có cam kết không train trên dữ liệu + audit log",
           "Chặn hoàn toàn mọi AI tại văn phòng",
           "Cho tự do dùng nhưng không ban hành quy định",
         ],
@@ -560,29 +560,29 @@ export default function AiForWritingTopic() {
   return (
     <>
       {/* ================================================================
-          BƯỚC 1 — DỰ ĐOÁN
+          BƯỚC 1, DỰ ĐOÁN
           ================================================================ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử đoán">
         <PredictionGate
-          question="Một email công việc 150 từ — AI viết trong bao lâu?"
+          question="Một email công việc 150 từ, AI viết trong bao lâu?"
           options={[
-            "Khoảng 5 giây — AI sinh chữ gần như tức thì",
-            "Khoảng 30 giây — AI suy nghĩ một chút rồi trả",
-            "Khoảng 2 phút — tương đương bạn tự gõ",
-            "Khoảng 10 phút — chậm hơn viết tay",
+            "Khoảng 5 giây, AI sinh chữ gần như tức thì",
+            "Khoảng 30 giây, AI suy nghĩ một chút rồi trả",
+            "Khoảng 2 phút, tương đương bạn tự gõ",
+            "Khoảng 10 phút, chậm hơn viết tay",
           ]}
           correct={0}
           explanation="Với prompt rõ ràng, AI như ChatGPT/Claude trả lại bản email hoàn chỉnh trong 3-8 giây. Phần lâu hơn chính là bước bạn đọc lại và chỉnh giọng cá nhân."
         >
           <p className="text-sm text-muted mt-4">
-            Tiết kiệm thời gian không nằm ở việc AI gõ nhanh — mà ở cách bạn ra
+            Tiết kiệm thời gian không nằm ở việc AI gõ nhanh, mà ở cách bạn ra
             chỉ thị đủ rõ ngay từ lần đầu.
           </p>
         </PredictionGate>
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
+          BƯỚC 2, ẨN DỤ THỰC TẾ
           ================================================================ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Góc nhìn">
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
@@ -596,7 +596,7 @@ export default function AiForWritingTopic() {
               </p>
               <p className="mt-2 text-sm text-foreground leading-relaxed">
                 Bạn đưa ý, thư ký gõ ra bản nháp. Nhưng khi văn bản gửi đi, tên
-                bạn ký dưới cùng — nên bạn phải duyệt lại để chắc chắn đúng
+                bạn ký dưới cùng, nên bạn phải duyệt lại để chắc chắn đúng
                 giọng, đúng số, đúng tên.
               </p>
             </div>
@@ -623,7 +623,7 @@ export default function AiForWritingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 3 — KHÁM PHÁ (3 DEMO)
+          BƯỚC 3, KHÁM PHÁ (3 DEMO)
           ================================================================ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
@@ -631,11 +631,11 @@ export default function AiForWritingTopic() {
             {/* Demo 1 */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-1">
-                Demo 1 — Máy soạn email thông minh
+                Demo 1, Máy soạn email thông minh
               </h3>
               <p className="text-sm text-muted mb-4">
                 Chọn người nhận + tinh chỉnh 2 thanh trượt, email tự viết lại.
-                Thử đủ 27 tổ hợp — mỗi tổ hợp cho một giọng khác.
+                Thử đủ 27 tổ hợp, mỗi tổ hợp cho một giọng khác.
               </p>
               <EmailDrafterDemo />
             </div>
@@ -643,11 +643,11 @@ export default function AiForWritingTopic() {
             {/* Demo 2 */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-1">
-                Demo 2 — Trước và sau khi AI chỉnh
+                Demo 2, Trước và sau khi AI chỉnh
               </h3>
               <p className="text-sm text-muted mb-4">
                 Cùng một đoạn báo cáo tuần, nhưng một bản rối rắm và một bản có
-                cấu trúc. AI chỉ tổ chức lại — không bịa số liệu.
+                cấu trúc. AI chỉ tổ chức lại, không bịa số liệu.
               </p>
               <BeforeAfterEditDemo />
             </div>
@@ -655,7 +655,7 @@ export default function AiForWritingTopic() {
             {/* Demo 3 */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-1">
-                Demo 3 — Kho tình huống công sở
+                Demo 3, Kho tình huống công sở
               </h3>
               <p className="text-sm text-muted mb-4">
                 5 đầu việc viết phổ biến nhất ở văn phòng Việt Nam. Nhấp từng
@@ -667,7 +667,7 @@ export default function AiForWritingTopic() {
             <Callout variant="tip" title="Ba quan sát khi chơi với 3 demo">
               <ol className="list-decimal list-inside space-y-1 text-sm">
                 <li>Đổi tone/độ dài = đổi câu chữ. AI không viết &quot;đúng một cách duy nhất&quot;.</li>
-                <li>Khi dữ liệu đã đủ rõ, AI không cần phải thông minh — chỉ cần trình bày lại.</li>
+                <li>Khi dữ liệu đã đủ rõ, AI không cần phải thông minh, chỉ cần trình bày lại.</li>
                 <li>Mỗi đầu việc có một khuôn prompt riêng. Tập 1 khuôn ≠ giỏi tất cả.</li>
               </ol>
             </Callout>
@@ -676,11 +676,11 @@ export default function AiForWritingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 4 — AHA MOMENT
+          BƯỚC 4, AHA MOMENT
           ================================================================ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
-          AI là <strong>người soạn nháp</strong> — không phải người gửi thay
+          AI là <strong>người soạn nháp</strong>, không phải người gửi thay
           bạn. Giá trị lớn nhất của AI viết không phải ở tốc độ gõ, mà ở chỗ
           giải phóng bạn khỏi 80% thời gian &quot;bật máy, nghĩ mở đầu, lục
           giọng&quot;. Nhưng bạn vẫn là người ký dưới cùng.
@@ -688,7 +688,7 @@ export default function AiForWritingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 5 — THỬ THÁCH
+          BƯỚC 5, THỬ THÁCH
           ================================================================ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
@@ -697,10 +697,10 @@ export default function AiForWritingTopic() {
             "Thiếu emoji để AI hiểu cảm xúc",
             "Thiếu ngữ cảnh: báo cáo gì, dữ liệu nào, cho ai, format ra sao",
             "Thiếu 'xin vui lòng' để AI lịch sự hơn",
-            "Không thiếu gì — prompt ngắn gọn là tốt",
+            "Không thiếu gì, prompt ngắn gọn là tốt",
           ]}
           correct={1}
-          explanation="Prompt 'Viết báo cáo cho sếp' quá mơ hồ — AI không biết báo cáo gì, cho ai, format nào. Áp dụng khung RACE để bổ sung ngữ cảnh."
+          explanation="Prompt 'Viết báo cáo cho sếp' quá mơ hồ, AI không biết báo cáo gì, cho ai, format nào. Áp dụng khung RACE để bổ sung ngữ cảnh."
         />
 
         <div className="mt-6">
@@ -719,11 +719,11 @@ export default function AiForWritingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 6 — GIẢI THÍCH (VISUAL-HEAVY)
+          BƯỚC 6, GIẢI THÍCH (VISUAL-HEAVY)
           ================================================================ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Hiểu sâu hơn">
         <ExplanationSection>
-          {/* 6.1 — 5 công cụ AI viết */}
+          {/* 6.1, 5 công cụ AI viết */}
           <div>
             <h3 className="text-base font-semibold text-foreground mb-3">
               5 công cụ AI viết dùng nhiều tại Việt Nam
@@ -755,7 +755,7 @@ export default function AiForWritingTopic() {
             </div>
           </div>
 
-          {/* 6.2 — Workflow */}
+          {/* 6.2, Workflow */}
           <div className="mt-6">
             <h3 className="text-base font-semibold text-foreground mb-3">
               Vòng lặp 4 bước: Draft → Polish → Review → Publish
@@ -811,7 +811,7 @@ export default function AiForWritingTopic() {
             </div>
           </div>
 
-          {/* 6.3 — Pitfalls */}
+          {/* 6.3, Pitfalls */}
           <div className="mt-6">
             <h3 className="text-base font-semibold text-foreground mb-3">
               4 cái bẫy thường gặp
@@ -861,7 +861,7 @@ export default function AiForWritingTopic() {
             </div>
           </div>
 
-          {/* 6.4 — 4 template prompts */}
+          {/* 6.4, 4 template prompts */}
           <div className="mt-6">
             <h3 className="text-base font-semibold text-foreground mb-3">
               4 khuôn prompt copy được ngay
@@ -910,7 +910,7 @@ export default function AiForWritingTopic() {
             </div>
           </div>
 
-          <Callout variant="insight" title="RACE — khuôn prompt 4 chữ cái">
+          <Callout variant="insight" title="RACE, khuôn prompt 4 chữ cái">
             <strong>R</strong>ole (vai trò) → <strong>A</strong>ction (hành động) →{" "}
             <strong>C</strong>ontext (ngữ cảnh) → <strong>E</strong>xample (ví
             dụ). Nếu bạn đã quen{" "}
@@ -920,24 +920,24 @@ export default function AiForWritingTopic() {
 
           <Callout variant="warning" title="Khi KHÔNG nên dùng AI viết">
             Email báo tin buồn / chia buồn, văn bản pháp lý quan trọng, thư xin
-            việc vào công ty bạn thực sự muốn, lời cảm ơn cá nhân sâu sắc — nên
+            việc vào công ty bạn thực sự muốn, lời cảm ơn cá nhân sâu sắc, nên
             viết tay để có cảm xúc thật.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 7 — TÓM TẮT
+          BƯỚC 7, TÓM TẮT
           ================================================================ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Những điều cần nhớ về AI hỗ trợ viết lách"
           points={[
             "Khung RACE (Role, Action, Context, Example) giúp viết prompt rõ ràng cho mọi tác vụ.",
-            "5 công cụ phổ biến: ChatGPT, Claude, Gemini, Notion AI, Copilot — chọn theo ngữ cảnh công ty bạn.",
+            "5 công cụ phổ biến: ChatGPT, Claude, Gemini, Notion AI, Copilot, chọn theo ngữ cảnh công ty bạn.",
             "Vòng 4 bước: bạn viết nháp → AI polish → bạn review → publish. Bước review không bao giờ bỏ được.",
             "4 bẫy lớn: tone không khớp, bịa chi tiết, quá dài, từ sáo rỗng. Chặn trước bằng prompt rõ.",
-            "AI là người soạn — bạn là người ký. Luôn kiểm tra tên, số, ngày trước khi gửi.",
+            "AI là người soạn, bạn là người ký. Luôn kiểm tra tên, số, ngày trước khi gửi.",
             "Doanh nghiệp cần bản enterprise (không train trên prompt + audit log) khi xử lý data công ty.",
           ]}
         />
@@ -964,7 +964,7 @@ export default function AiForWritingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          BƯỚC 8 — QUIZ
+          BƯỚC 8, QUIZ
           ================================================================ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />

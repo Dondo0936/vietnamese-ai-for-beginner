@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -10,7 +10,6 @@ import { topicList, topicMap } from "@/topics/registry";
 import {
   getPathNeighbors,
   isAdultPathId,
-  type AdultPathId,
   type PathNeighbors,
 } from "@/lib/paths";
 import BookmarkButton from "./BookmarkButton";
@@ -18,6 +17,7 @@ import RelatedTopics from "./RelatedTopics";
 import ReadingProgressBar from "@/components/ui/ReadingProgressBar";
 import TopicTOC, { DEFAULT_TOC_SECTIONS } from "./TopicTOC";
 import { SectionDuplicateGuard } from "./SectionDuplicateGuard";
+import OfficeVisualBrief from "./OfficeVisualBrief";
 import "./topic-layout.css";
 
 interface TopicLayoutProps {
@@ -71,18 +71,25 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
   // client-side bailout (BAILOUT_TO_CLIENT_SIDE_RENDERING) on every statically
   // prerendered topic page, causing the skeleton fallback to be shipped as
   // the initial HTML and leaving crawlers/SEO with no Vietnamese prose.
-  const [pathId, setPathId] = useState<AdultPathId | null>(null);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const raw = new URLSearchParams(window.location.search).get("path");
-    setPathId(isAdultPathId(raw) ? raw : null);
-  }, []);
+  const pathId = useSyncExternalStore(
+    (onStoreChange) => {
+      if (typeof window === "undefined") return () => {};
+      window.addEventListener("popstate", onStoreChange);
+      return () => window.removeEventListener("popstate", onStoreChange);
+    },
+    () => {
+      if (typeof window === "undefined") return null;
+      const raw = new URLSearchParams(window.location.search).get("path");
+      return isAdultPathId(raw) ? raw : null;
+    },
+    () => null
+  );
   const reduceMotion = useReducedMotion();
 
   const hasMarkedRead = useRef(false);
   const [manuallyMarked, setManuallyMarked] = useState(false);
 
-  // Mark read after 70% scroll — contract-enforced behavior, do not change.
+  // Mark read after 70% scroll. Contract-enforced behavior, do not change.
   useEffect(() => {
     hasMarkedRead.current = false;
 
@@ -103,7 +110,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [meta.slug]);
 
-  // Resolve navigation context — path-aware when a valid ?path= is set and
+  // Resolve navigation context. Path-aware when a valid ?path= is set and
   // this slug exists in that path; otherwise fall back to category.
   const nav: ResolvedNav = useMemo(() => {
     const pathNeighbors = pathId ? getPathNeighbors(pathId, meta.slug) : null;
@@ -130,7 +137,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
     };
   }, [pathId, meta.slug, meta.category]);
 
-  // Build the href for a neighbor topic — when on a path, preserve ?path=
+  // Build the href for a neighbor topic. When on a path, preserve ?path=
   function neighborHref(slug: string): string {
     if (nav.kind === "path") {
       return `/topics/${slug}?path=${nav.path.pathId}`;
@@ -138,7 +145,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
     return `/topics/${slug}`;
   }
 
-  // Back destination — path page when on path, home otherwise
+  // Back destination. Path page when on path, home otherwise
   const backHref = nav.kind === "path" ? `/paths/${nav.path.pathId}` : "/";
   const backLabel =
     nav.kind === "path" ? `Quay lại lộ trình ${nav.path.nameVi}` : "Quay lại trang chủ";
@@ -166,7 +173,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
 
       <div className="tp-page">
         <div className="tp-layout">
-          {/* Left rail — xl+ only */}
+          {/* Left rail, xl+ only */}
           <aside className="tp-rail">
             <div className="tp-rail__sticky">
               <h4 className="tp-rail__head">Trong bài này</h4>
@@ -249,12 +256,16 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
               </div>
             </header>
 
-            {/* Body — unchanged */}
+            {nav.kind === "path" && nav.path.pathId === "office" && (
+              <OfficeVisualBrief slug={meta.slug} />
+            )}
+
+            {/* Body, unchanged */}
             <SectionDuplicateGuard>
               <div>{children}</div>
             </SectionDuplicateGuard>
 
-            {/* Forward link to application topic — shown AFTER reading the concept */}
+            {/* Forward link to application topic, shown AFTER reading the concept */}
             {applicationTopic?.featuredApp && (
               <nav aria-label="Liên kết với bài ứng dụng" className="tp-app">
                 <Link href={neighborHref(applicationTopic.slug)}>
@@ -286,10 +297,10 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
               </button>
             </div>
 
-            {/* Related topics — existing flat chip list below main content */}
+            {/* Related topics, existing flat chip list below main content */}
             <RelatedTopics slugs={meta.relatedSlugs} />
 
-            {/* Pager — prev / chapter / next */}
+            {/* Pager, prev / chapter / next */}
             <nav className="tp-pager">
               {nav.prev ? (
                 <Link href={neighborHref(nav.prev.slug)} className="tp-pager__prev">
@@ -344,7 +355,7 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             </div>
           </motion.article>
 
-          {/* Right rail — xl+ only */}
+          {/* Right rail, xl+ only */}
           <aside className="tp-side">
             <div className="tp-side__sticky">
               {relatedTopicObjects.length > 0 && (

@@ -1,6 +1,6 @@
 "use client";
 
-// AI Governance in Enterprise — case study Microsoft Responsible AI Standard.
+// AI Governance in Enterprise, case study Microsoft Responsible AI Standard.
 // Trình bày dưới góc nhìn người làm văn phòng Việt Nam: timeline, metric động,
 // so sánh trước/sau khi có committee.
 
@@ -31,13 +31,13 @@ import Metric from "@/components/application/Metric";
 import ApplicationCounterfactual from "@/components/application/ApplicationCounterfactual";
 import { ToggleCompare, Callout, ProgressSteps } from "@/components/interactive";
 
-// Metadata — giữ nguyên để không phá routing/TOC.
+// Metadata, giữ nguyên để không phá routing/TOC.
 export const metadata: TopicMeta = {
   slug: "ai-governance-in-enterprise",
   title: "AI Governance in Enterprise",
-  titleVi: "Quản trị AI trong Doanh nghiệp",
+  titleVi: "AI governance trong doanh nghiệp lớn",
   description:
-    "Microsoft Responsible AI Standard: Làm thế nào một tập đoàn 220.000 nhân viên quản trị hàng trăm dự án AI cùng lúc — khung và bài học cho doanh nghiệp Việt Nam.",
+    "Microsoft Responsible AI Standard cho thấy doanh nghiệp cần quy trình rõ trước khi triển khai nhiều dự án AI.",
   category: "ai-safety",
   tags: ["ai-governance", "regulation", "application"],
   difficulty: "intermediate",
@@ -73,7 +73,7 @@ export const metadata: TopicMeta = {
       kind: "engineering-blog",
     },
     {
-      title: "EU AI Act — Shaping Europe's digital future",
+      title: "EU AI Act, Shaping Europe's digital future",
       publisher: "European Commission",
       url: "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
       date: "2024-08",
@@ -97,13 +97,13 @@ export const metadata: TopicMeta = {
   ],
 };
 
-// ---------- Dữ liệu timeline — các mốc trưởng thành AI governance ----------
+// ---------- Dữ liệu timeline, các mốc trưởng thành AI governance ----------
 const TIMELINE = [
   {
     year: "2016",
     label: "FATE Group",
     description:
-      "Microsoft Research thành lập nhóm FATE (Fairness, Accountability, Transparency, Ethics) — những nghiên cứu đầu tiên về AI có trách nhiệm.",
+      "Microsoft Research thành lập nhóm FATE (Fairness, Accountability, Transparency, Ethics), những nghiên cứu đầu tiên về AI có trách nhiệm.",
     icon: Users,
     color: "#3b82f6",
   },
@@ -111,7 +111,7 @@ const TIMELINE = [
     year: "2018",
     label: "Nguyên tắc AI",
     description:
-      "Microsoft công bố 6 nguyên tắc AI (fairness, reliability, privacy, inclusiveness, transparency, accountability) — xương sống mọi chính sách sau này.",
+      "Microsoft công bố 6 nguyên tắc AI (fairness, reliability, privacy, inclusiveness, transparency, accountability), xương sống mọi chính sách sau này.",
     icon: ShieldCheck,
     color: "#a855f7",
   },
@@ -127,7 +127,7 @@ const TIMELINE = [
     year: "2022",
     label: "RAI Standard v2",
     description:
-      "Responsible AI Standard v2 — tiêu chuẩn bắt buộc áp dụng cho mọi team AI toàn công ty: impact assessment, fit-for-purpose test, sign-off.",
+      "Responsible AI Standard v2, tiêu chuẩn bắt buộc áp dụng cho mọi team AI toàn công ty: impact assessment, fit-for-purpose test, sign-off.",
     icon: FileCheck,
     color: "#22c55e",
   },
@@ -154,7 +154,7 @@ const BEATS = [
     body: "Phòng ORA trực thuộc General Counsel, làm trọng tài giữa kỹ thuật và pháp chế. Có quyền dừng dự án nếu phát hiện rủi ro không giảm thiểu được.",
   },
   {
-    title: "Sensitive Uses review — rủi ro cao phải qua hội đồng",
+    title: "Sensitive Uses review, rủi ro cao phải qua hội đồng",
     icon: AlertTriangle,
     body: "Use case chạm nhóm 'sensitive' (nhận diện khuôn mặt, cơ quan chính phủ, y tế, giáo dục trẻ em) tự động kích hoạt review cấp công ty. Có case bị từ chối triển khai.",
   },
@@ -166,7 +166,7 @@ const BEATS = [
   {
     title: "Incident response & cải tiến liên tục",
     icon: LifeBuoy,
-    body: "Sự cố (hallucination có hại, lộ dữ liệu, bias mới) có kênh báo cáo riêng. Bài học đưa trở lại Standard — cập nhật checklist, training, quy trình.",
+    body: "Sự cố (hallucination có hại, lộ dữ liệu, bias mới) có kênh báo cáo riêng. Bài học đưa trở lại Standard, cập nhật checklist, training, quy trình.",
   },
 ];
 
@@ -261,7 +261,7 @@ function GovernanceTimeline() {
   );
 }
 
-// ---------- Một Beat card — hiển thị beat mechanism với icon và progress ----------
+// ---------- Một Beat card, hiển thị beat mechanism với icon và progress ----------
 function BeatCard({
   step,
   total,
@@ -406,15 +406,14 @@ export default function AiGovernanceInEnterprise() {
         topicSlug="ai-governance-in-enterprise"
       >
         <p>
-          Microsoft là một trong những công ty công nghệ lớn nhất thế giới &mdash;
-          220.000 nhân viên, có mặt tại hơn 190 quốc gia, đồng thời cũng là
+          Microsoft là một trong những công ty công nghệ lớn nhất thế giới, 220.000 nhân viên, có mặt tại hơn 190 quốc gia, đồng thời cũng là
           nhà đầu tư lớn nhất của OpenAI. Khi AI bùng nổ năm 2023, Microsoft
           cần một khung quản trị đủ mạnh để vận hành hàng trăm dự án AI cùng
-          lúc &mdash; từ Copilot trong Word cho đến các dịch vụ cloud cho chính
+          lúc, từ Copilot trong Word cho đến các dịch vụ cloud cho chính
           phủ Mỹ.
         </p>
         <p>
-          Câu trả lời là <strong>Responsible AI Standard v2</strong> &mdash; bộ
+          Câu trả lời là <strong>Responsible AI Standard v2</strong>, bộ
           tiêu chuẩn bắt buộc áp dụng nội bộ từ tháng 6/2022, được hậu thuẫn
           bởi <strong>Office of Responsible AI (ORA)</strong>, hội đồng{" "}
           <strong>AETHER</strong>, và nhóm <strong>Responsible AI Champs</strong>{" "}
@@ -428,7 +427,7 @@ export default function AiGovernanceInEnterprise() {
       <ApplicationProblem topicSlug="ai-governance-in-enterprise">
         <p>
           Trước khi có Responsible AI Standard, ngay cả Microsoft cũng từng gặp
-          các sự cố AI đáng kể &mdash; ví dụ Tay Chatbot (2016) bị troll dạy nói
+          các sự cố AI đáng kể, ví dụ Tay Chatbot (2016) bị troll dạy nói
           nội dung phân biệt chủng tộc trong 24 giờ, hay các lo ngại về nhận
           diện khuôn mặt được bán cho cơ quan thực thi pháp luật.
         </p>
@@ -579,7 +578,7 @@ export default function AiGovernanceInEnterprise() {
           có hiệu lực, Microsoft sẽ phải xây lại mọi thứ từ đầu.
         </p>
         <p>
-          Thực tế ngược lại đã xảy ra &mdash; Microsoft triển khai Copilot tương
+          Thực tế ngược lại đã xảy ra, Microsoft triển khai Copilot tương
           đối nhanh trên 190 quốc gia chính vì đã có sẵn Impact Assessment
           template, Sensitive Uses review, và ORA đóng vai trò trọng tài. Công
           ty Việt Nam có hai lựa chọn: đầu tư governance bây giờ (khi AI chưa
@@ -588,7 +587,7 @@ export default function AiGovernanceInEnterprise() {
         </p>
         <p>
           Bài học thực dụng: governance không phải gánh nặng làm chậm AI. Nó
-          là điều kiện cần để AI ra thị trường nhanh &mdash; và bền vững.
+          là điều kiện cần để AI ra thị trường nhanh, và bền vững.
         </p>
       </ApplicationCounterfactual>
     </ApplicationLayout>

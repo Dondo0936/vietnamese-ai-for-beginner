@@ -37,9 +37,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "recommendation-systems",
   title: "Recommendation Systems",
-  titleVi: "Hệ thống gợi ý",
+  titleVi: "Recommendation system: máy gợi ý phía sau app",
   description:
-    "Shopee, Tiki, Netflix, Zing MP3 đều đang đoán sở thích của bạn bằng cùng một công thức. Bài này vẽ ra công thức đó cho dân văn phòng — không mã, không công thức toán.",
+    "Hiểu cách app đoán món bạn muốn xem, mua hoặc nghe tiếp từ hành vi và người dùng giống bạn.",
   category: "applied-ai",
   tags: ["recommendation", "ca-nhan-hoa", "van-phong", "shopee"],
   difficulty: "intermediate",
@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DEMO 1 — COLLABORATIVE FILTERING SIMULATOR
+   DEMO 1, COLLABORATIVE FILTERING SIMULATOR
    4 người dùng × 5 bộ phim. Người học bấm "thêm đánh giá" cho chính mình,
    hệ thống suy ra phim chưa xem sẽ được rating bao nhiêu dựa trên người tương tự.
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -134,7 +134,7 @@ function ratingColor(r: number | null): string {
 }
 
 function CFSimulator() {
-  // "Bạn" là user thứ 5 — ban đầu chưa rate gì.
+  // "Bạn" là user thứ 5, ban đầu chưa rate gì.
   const [you, setYou] = useState<Array<number | null>>([null, null, null, null, null]);
   const [hoverPrediction, setHoverPrediction] = useState<number | null>(null);
 
@@ -175,7 +175,7 @@ function CFSimulator() {
             Giả lập một ngày ở Netflix thu nhỏ
           </h4>
           <p className="text-xs text-muted">
-            Bạn chấm sao vài phim — hệ thống đoán ngay bạn sẽ thích phim còn lại bao nhiêu sao.
+            Bạn chấm sao vài phim, hệ thống đoán ngay bạn sẽ thích phim còn lại bao nhiêu sao.
           </p>
         </div>
         <button
@@ -393,7 +393,7 @@ function CFSimulator() {
           <span className="font-semibold text-emerald-700 dark:text-emerald-300">
             Gợi ý số 1 cho bạn:
           </span>{" "}
-          &quot;{SIM_MOVIES[best.movieIdx].title}&quot; — đoán{" "}
+          &quot;{SIM_MOVIES[best.movieIdx].title}&quot;, đoán{" "}
           {best.value.toFixed(1)}★.
         </motion.div>
       )}
@@ -402,7 +402,7 @@ function CFSimulator() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DEMO 2 — CONTENT-BASED VS COLLABORATIVE (ToggleCompare)
+   DEMO 2, CONTENT-BASED VS COLLABORATIVE (ToggleCompare)
    Cùng một user, 2 công thức gợi ý khác nhau, kết quả nhìn khác hẳn.
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -459,8 +459,8 @@ function ContentVsCollab() {
             <strong className="text-amber-700 dark:text-amber-400">
               Content-based (lọc theo nội dung):
             </strong>{" "}
-            hệ thống nhìn vào <em>đặc tính</em> của phim chị An vừa xem — thể loại,
-            đạo diễn, diễn viên, thời đại — rồi tìm phim khác có đặc tính tương
+            hệ thống nhìn vào <em>đặc tính</em> của phim chị An vừa xem, thể loại,
+            đạo diễn, diễn viên, thời đại, rồi tìm phim khác có đặc tính tương
             tự. Không cần biết ai khác nghĩ gì.
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -492,8 +492,7 @@ function ContentVsCollab() {
             ))}
           </div>
           <div className="rounded-md bg-surface p-2 text-xs text-muted">
-            <strong className="text-foreground">Ưu:</strong> phát hiện sở thích ẩn —
-            fan kiếm hiệp có thể cũng thích Mắt Biếc mà chính họ chưa biết. ·{" "}
+            <strong className="text-foreground">Ưu:</strong> phát hiện sở thích ẩn, fan kiếm hiệp có thể cũng thích Mắt Biếc mà chính họ chưa biết. ·{" "}
             <strong className="text-foreground">Nhược:</strong> phim mới chưa ai xem
             → không xuất hiện.
           </div>
@@ -504,7 +503,7 @@ function ContentVsCollab() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   DEMO 3 — COLD START PROBLEM
+   DEMO 3, COLD START PROBLEM
    User vừa tạo tài khoản, chưa có lịch sử. Người học bật từng cách khắc phục
    để thấy bảng gợi ý thay đổi.
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -540,7 +539,7 @@ const COLD_MODES: Array<{
     label: "Gợi ý hàng hot",
     icon: Flame,
     description:
-      'Tạm lấy danh sách "đang hot trong 24h". Ai cũng thấy một trang chủ giống nhau — nhưng ít ra đỡ nhạt hơn ngẫu nhiên.',
+      'Tạm lấy danh sách "đang hot trong 24h". Ai cũng thấy một trang chủ giống nhau, nhưng ít ra đỡ nhạt hơn ngẫu nhiên.',
     color: "#f97316",
     quality: 45,
     tiles: [
@@ -656,7 +655,7 @@ function ColdStartExplorer() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   METRICS — thanh màu cho Precision@K, Recall@K, nDCG
+   METRICS, thanh màu cho Precision@K, Recall@K, nDCG
    ═══════════════════════════════════════════════════════════════════════════ */
 
 type MetricBar = {
@@ -690,7 +689,7 @@ const METRICS: MetricBar[] = [
     title: "nDCG@10",
     value: 81,
     color: "#a855f7",
-    plain: "Không chỉ trúng hay không — mà sản phẩm HAY có ở vị trí CAO không?",
+    plain: "Không chỉ trúng hay không, mà sản phẩm HAY có ở vị trí CAO không?",
     example: "Sản phẩm trúng nhất cần ở vị trí 1-3, không phải vị trí 9.",
   },
 ];
@@ -741,7 +740,7 @@ const VN_PLATFORMS = [
     name: "Shopee",
     icon: ShoppingBag,
     color: "#ee4d2d",
-    role: "Trang “Gợi ý hôm nay” — gần như toàn bộ cá nhân hóa. Dùng cả lọc cộng tác, lọc nội dung, lẫn học máy từ hành vi scroll.",
+    role: "Trang “Gợi ý hôm nay”, gần như toàn bộ cá nhân hóa. Dùng cả lọc cộng tác, lọc nội dung, lẫn học máy từ hành vi scroll.",
   },
   {
     name: "Tiki",
@@ -817,13 +816,13 @@ export default function RecommendationSystemsTopic() {
         ],
         correct: 1,
         explanation:
-          "Collaborative filtering (lọc cộng tác) hoàn toàn không nhìn vào nội dung sản phẩm. Nó chỉ nhìn vào hành vi — ai đã mua / xem / rate cái gì — rồi tìm người tương tự bạn. Giống anh bán tạp hóa biết nhóm khách hay mua phở thì chiều nào cũng ghé mua trứng vịt lộn, không cần biết món đó tên gì.",
+          "Collaborative filtering (lọc cộng tác) hoàn toàn không nhìn vào nội dung sản phẩm. Nó chỉ nhìn vào hành vi, ai đã mua / xem / rate cái gì, rồi tìm người tương tự bạn. Giống anh bán tạp hóa biết nhóm khách hay mua phở thì chiều nào cũng ghé mua trứng vịt lộn, không cần biết món đó tên gì.",
       },
       {
         question: "Vấn đề cold start (khởi đầu lạnh) xảy ra khi nào?",
         options: [
           "Server của Shopee bị treo.",
-          "Người dùng vừa đăng ký hoặc sản phẩm vừa đăng — chưa có lịch sử tương tác nào nên lọc cộng tác không hoạt động.",
+          "Người dùng vừa đăng ký hoặc sản phẩm vừa đăng, chưa có lịch sử tương tác nào nên lọc cộng tác không hoạt động.",
           "App chạy chậm khi mới mở.",
         ],
         correct: 1,
@@ -835,7 +834,7 @@ export default function RecommendationSystemsTopic() {
           'Vì sao Shopee, Tiki, Lazada đều kết hợp nhiều phương pháp thay vì chỉ dùng một công thức duy nhất?',
         options: [
           "Để quảng cáo nghe kêu hơn.",
-          "Mỗi phương pháp có điểm mù riêng — kết hợp giúp bù lẫn nhau: lọc cộng tác cho khách quen, lọc nội dung cho sản phẩm mới, học máy cho gu tinh tế.",
+          "Mỗi phương pháp có điểm mù riêng, kết hợp giúp bù lẫn nhau: lọc cộng tác cho khách quen, lọc nội dung cho sản phẩm mới, học máy cho gu tinh tế.",
           "Vì dữ liệu nhiều quá không biết dùng gì.",
         ],
         correct: 1,
@@ -857,19 +856,19 @@ export default function RecommendationSystemsTopic() {
           },
         ],
         explanation:
-          'Hai trụ cột: lọc cộng tác (collaborative filtering) — tìm người tương tự bạn rồi xem họ thích thêm gì; lọc nội dung (content-based filtering) — dựa trên đặc điểm sản phẩm (thể loại, thương hiệu, mô tả). Đa số sàn lớn dùng hybrid: trộn hai hướng lại.',
+          'Hai trụ cột: lọc cộng tác (collaborative filtering), tìm người tương tự bạn rồi xem họ thích thêm gì; lọc nội dung (content-based filtering), dựa trên đặc điểm sản phẩm (thể loại, thương hiệu, mô tả). Đa số sàn lớn dùng hybrid: trộn hai hướng lại.',
       },
       {
         question:
           'Trong ba chỉ số Precision@10, Recall@50 và nDCG@10, chỉ số nào đo "sản phẩm hay có ở vị trí cao không"?',
         options: [
-          "Precision@10 — chỉ đo số lượng trúng, không quan tâm thứ tự.",
-          "Recall@50 — đo độ bao phủ, cũng không quan tâm thứ tự.",
-          "nDCG@10 — sản phẩm trúng ở vị trí 1 được thưởng nhiều hơn ở vị trí 9.",
+          "Precision@10, chỉ đo số lượng trúng, không quan tâm thứ tự.",
+          "Recall@50, đo độ bao phủ, cũng không quan tâm thứ tự.",
+          "nDCG@10, sản phẩm trúng ở vị trí 1 được thưởng nhiều hơn ở vị trí 9.",
         ],
         correct: 2,
         explanation:
-          "nDCG cộng thêm trọng số theo vị trí: trúng ở đầu danh sách được tính nặng hơn. Đó là lý do các đội sản phẩm thường để ý nDCG hơn là Precision thuần — vì thực tế người dùng chỉ nhìn 5-10 gợi ý đầu.",
+          "nDCG cộng thêm trọng số theo vị trí: trúng ở đầu danh sách được tính nặng hơn. Đó là lý do các đội sản phẩm thường để ý nDCG hơn là Precision thuần, vì thực tế người dùng chỉ nhìn 5-10 gợi ý đầu.",
       },
       {
         question: "Filter bubble (buồng lọc) là tác dụng phụ gì của cá nhân hóa?",
@@ -880,19 +879,19 @@ export default function RecommendationSystemsTopic() {
         ],
         correct: 1,
         explanation:
-          "Filter bubble là cái giá của cá nhân hóa cực đoan. Giải pháp kinh điển: chừa 5-15% gợi ý cho thứ “lạ” — item ngoài gu hiện tại — để hệ thống vừa chiều bạn vừa giúp bạn mở rộng sở thích. Nhiều sàn gọi là exploration (thăm dò).",
+          "Filter bubble là cái giá của cá nhân hóa cực đoan. Giải pháp kinh điển: chừa 5-15% gợi ý cho thứ “lạ”, item ngoài gu hiện tại, để hệ thống vừa chiều bạn vừa giúp bạn mở rộng sở thích. Nhiều sàn gọi là exploration (thăm dò).",
       },
       {
         question:
           "Shopee có khoảng 200 triệu khách và hàng trăm triệu sản phẩm. Nếu vẽ thành bảng “khách × sản phẩm” thì bảng này có đặc điểm gì?",
         options: [
           "Nhỏ, dễ xử lý thủ công.",
-          "Cực lớn nhưng phần lớn ô trống — mỗi khách chỉ tương tác vài trăm sản phẩm trong hàng trăm triệu.",
+          "Cực lớn nhưng phần lớn ô trống, mỗi khách chỉ tương tác vài trăm sản phẩm trong hàng trăm triệu.",
           "Không lưu được vào máy tính.",
         ],
         correct: 1,
         explanation:
-          "Bảng cực “thưa” (sparse): hơn 99.99% ô trống. Đó là lý do không ai score tất cả — thay vào đó hệ thống chia pipeline: sàng lọc nhanh vài nghìn ứng viên, rồi mới xếp hạng cẩn thận top 50-100. Gần như mọi recommender thực tế đều đi theo kiến trúc 2-3 tầng này.",
+          "Bảng cực “thưa” (sparse): hơn 99.99% ô trống. Đó là lý do không ai score tất cả, thay vào đó hệ thống chia pipeline: sàng lọc nhanh vài nghìn ứng viên, rồi mới xếp hạng cẩn thận top 50-100. Gần như mọi recommender thực tế đều đi theo kiến trúc 2-3 tầng này.",
       },
       {
         question:
@@ -904,7 +903,7 @@ export default function RecommendationSystemsTopic() {
         ],
         correct: 1,
         explanation:
-          "Đây là bài học kinh điển: tín hiệu bạn thu không nhất thiết khớp với mục tiêu kinh doanh. 5 sao đo “gu lý tưởng”, thumbs up/down + thời gian xem đo “thứ họ thật sự sẽ xem”. Với Netflix, mục tiêu là giữ người ở lại — nên tín hiệu thứ hai quan trọng hơn.",
+          "Đây là bài học kinh điển: tín hiệu bạn thu không nhất thiết khớp với mục tiêu kinh doanh. 5 sao đo “gu lý tưởng”, thumbs up/down + thời gian xem đo “thứ họ thật sự sẽ xem”. Với Netflix, mục tiêu là giữ người ở lại, nên tín hiệu thứ hai quan trọng hơn.",
       },
     ],
     []
@@ -912,20 +911,20 @@ export default function RecommendationSystemsTopic() {
 
   return (
     <>
-      {/* ═════════════ BƯỚC 1 — DỰ ĐOÁN ═════════════ */}
+      {/* ═════════════ BƯỚC 1, DỰ ĐOÁN ═════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question='Bạn vừa xem xong 1 phim kiếm hiệp trên Netflix. Lần sau mở app, Netflix sẽ gợi ý kiểu nào?'
           options={[
-            "5 phim kiếm hiệp na ná nhau — vì bạn vừa xem kiếm hiệp.",
+            "5 phim kiếm hiệp na ná nhau, vì bạn vừa xem kiếm hiệp.",
             "5 phim hành động tổng hợp (bom tấn, đua xe, chiến tranh).",
-            "3 phim kiếm hiệp + 2 phim hài gia đình — vì nhóm người cùng xem kiếm hiệp cũng hay xem hai thứ đó.",
-            "Phim ngẫu nhiên từ kho — cho bạn khám phá.",
+            "3 phim kiếm hiệp + 2 phim hài gia đình, vì nhóm người cùng xem kiếm hiệp cũng hay xem hai thứ đó.",
+            "Phim ngẫu nhiên từ kho, cho bạn khám phá.",
           ]}
           correct={2}
-          explanation="Netflix thật sự ghi nhận: những ai thích một loại phim hiếm khi chỉ thích loại đó. Họ có xu hướng xen kẽ. Hệ thống sẽ kết hợp &quot;đặc tính phim bạn vừa xem&quot; (kiếm hiệp) với &quot;nhóm người xem phim kiếm hiệp còn thích gì khác&quot; (hài gia đình, lãng mạn cổ trang). Kết quả 3 + 2 trộn nhau là kiểu hybrid điển hình — vừa giữ gu, vừa tránh buồng lọc."
+          explanation="Netflix thật sự ghi nhận: những ai thích một loại phim hiếm khi chỉ thích loại đó. Họ có xu hướng xen kẽ. Hệ thống sẽ kết hợp &quot;đặc tính phim bạn vừa xem&quot; (kiếm hiệp) với &quot;nhóm người xem phim kiếm hiệp còn thích gì khác&quot; (hài gia đình, lãng mạn cổ trang). Kết quả 3 + 2 trộn nhau là kiểu hybrid điển hình, vừa giữ gu, vừa tránh buồng lọc."
         >
-          {/* ═════════════ BƯỚC 2 — ẨN DỤ ═════════════ */}
+          {/* ═════════════ BƯỚC 2, ẨN DỤ ═════════════ */}
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
             <div className="rounded-xl border border-border bg-card p-5 space-y-3">
               <div className="flex items-center gap-2 mb-1">
@@ -938,7 +937,7 @@ export default function RecommendationSystemsTopic() {
                 Anh bán tạp hóa lâu năm không cần thuật toán. Anh{" "}
                 <strong>nhớ</strong> chị bán bún sáng nào cũng mua 3 quả trứng
                 vịt lộn. Anh <strong>đoán</strong> chị khó ngủ có thể cần thêm
-                lọ mật ong — vì dì Năm hàng xóm có thói quen gần giống cũng mua
+                lọ mật ong, vì dì Năm hàng xóm có thói quen gần giống cũng mua
                 mật ong. Và khi có hàng mới, anh <strong>gợi ý</strong> đúng
                 người hợp gu chứ không tiếp thị tràn lan.
               </p>
@@ -971,7 +970,7 @@ export default function RecommendationSystemsTopic() {
             </div>
           </LessonSection>
 
-          {/* ═════════════ BƯỚC 3 — KHÁM PHÁ ═════════════ */}
+          {/* ═════════════ BƯỚC 3, KHÁM PHÁ ═════════════ */}
           <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
             <VisualizationSection topicSlug="recommendation-systems">
               <div className="space-y-8">
@@ -983,7 +982,7 @@ export default function RecommendationSystemsTopic() {
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-foreground">
-                        Demo 1 — Máy đoán sao
+                        Demo 1, Máy đoán sao
                       </h3>
                       <p className="text-xs text-muted">
                         Bạn chấm sao vài phim, hệ thống đoán phim còn lại bằng cách nhìn &quot;người giống bạn&quot;.
@@ -1000,7 +999,7 @@ export default function RecommendationSystemsTopic() {
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-foreground">
-                        Demo 2 — Hai kiểu gợi ý, hai kiểu kết quả
+                        Demo 2, Hai kiểu gợi ý, hai kiểu kết quả
                       </h3>
                       <p className="text-xs text-muted">
                         Cùng một người vừa xem &quot;Anh Hùng Xạ Điêu&quot;. Bấm để đổi giữa hai cách nhìn.
@@ -1017,7 +1016,7 @@ export default function RecommendationSystemsTopic() {
                     </div>
                     <div>
                       <h3 className="text-base font-semibold text-foreground">
-                        Demo 3 — Khởi đầu lạnh (cold start)
+                        Demo 3, Khởi đầu lạnh (cold start)
                       </h3>
                       <p className="text-xs text-muted">
                         Chị An mới đăng ký Shopee, chưa mua gì. App sẽ làm gì trong 10 phút đầu?
@@ -1030,11 +1029,11 @@ export default function RecommendationSystemsTopic() {
             </VisualizationSection>
 
             <Callout variant="tip" title="Cách đọc ba demo này">
-              Demo 1 cho thấy công thức: <em>tìm người giống bạn → lấy rating của họ → trung bình có trọng số</em>. Demo 2 so sánh hai họ công thức khác nhau để thấy chúng &quot;nhìn thế giới&quot; khác nhau thế nào. Demo 3 cho thấy khi dữ liệu chưa đủ, mọi công thức đều bất lực — và đó là lý do app cần bước khởi đầu khéo léo.
+              Demo 1 cho thấy công thức: <em>tìm người giống bạn → lấy rating của họ → trung bình có trọng số</em>. Demo 2 so sánh hai họ công thức khác nhau để thấy chúng &quot;nhìn thế giới&quot; khác nhau thế nào. Demo 3 cho thấy khi dữ liệu chưa đủ, mọi công thức đều bất lực, và đó là lý do app cần bước khởi đầu khéo léo.
             </Callout>
           </LessonSection>
 
-          {/* ═════════════ BƯỚC 4 — AHA ═════════════ */}
+          {/* ═════════════ BƯỚC 4, AHA ═════════════ */}
           <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
             <AhaMoment>
               <p className="text-center">
@@ -1042,22 +1041,22 @@ export default function RecommendationSystemsTopic() {
               </p>
               <p className="text-center mt-2">
                 Càng nhiều người dùng → có nhiều &quot;hàng xóm&quot; để so sánh.
-                Càng nhiều tương tác trên mỗi người → biết rõ gu hơn. Đó là lý do Shopee, Tiki, Netflix khó bị đánh bại — không phải vì họ có thuật toán bí mật, mà vì họ có kho hành vi của hàng trăm triệu người mà startup mới không sao bắt chước.
+                Càng nhiều tương tác trên mỗi người → biết rõ gu hơn. Đó là lý do Shopee, Tiki, Netflix khó bị đánh bại, không phải vì họ có thuật toán bí mật, mà vì họ có kho hành vi của hàng trăm triệu người mà startup mới không sao bắt chước.
               </p>
             </AhaMoment>
           </LessonSection>
 
-          {/* ═════════════ BƯỚC 5 — THỬ THÁCH ═════════════ */}
+          {/* ═════════════ BƯỚC 5, THỬ THÁCH ═════════════ */}
           <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
             <InlineChallenge
               question="Sàn A có 1 triệu khách, sàn B có 100 triệu khách. Giả sử cả hai dùng cùng một thuật toán lọc cộng tác. Sàn nào có gợi ý “ngửi” đúng gu tốt hơn?"
               options={[
-                "Sàn A — vì ít khách nên dễ quản lý.",
-                "Hai sàn như nhau — cùng thuật toán mà.",
-                "Sàn B — nhiều khách hơn → mỗi người đều có rất nhiều “người giống mình” để so sánh, giảm sai lệch.",
+                "Sàn A, vì ít khách nên dễ quản lý.",
+                "Hai sàn như nhau, cùng thuật toán mà.",
+                "Sàn B, nhiều khách hơn → mỗi người đều có rất nhiều “người giống mình” để so sánh, giảm sai lệch.",
               ]}
               correct={2}
-              explanation="Lọc cộng tác dựa vào mật độ hành vi. Nếu cả sàn chỉ có 1000 khách thích đầm maxi, tìm hàng xóm rất khó. Với 100 triệu khách, bất cứ gu hẹp nào cũng có vài nghìn người tương tự. Đó là “lợi thế dữ liệu” — lý do các sàn lớn ngày càng lớn, còn sàn nhỏ ngày càng khó đuổi kịp."
+              explanation="Lọc cộng tác dựa vào mật độ hành vi. Nếu cả sàn chỉ có 1000 khách thích đầm maxi, tìm hàng xóm rất khó. Với 100 triệu khách, bất cứ gu hẹp nào cũng có vài nghìn người tương tự. Đó là “lợi thế dữ liệu”, lý do các sàn lớn ngày càng lớn, còn sàn nhỏ ngày càng khó đuổi kịp."
             />
 
             <InlineChallenge
@@ -1068,14 +1067,14 @@ export default function RecommendationSystemsTopic() {
                 "Phản hồi ngầm: thời gian xem hết hay lướt bỏ sớm, có xem lại không, có share không, có vuốt chậm lại ở đoạn nào. Những tín hiệu này “thật” hơn cả nút like.",
               ]}
               correct={2}
-              explanation="TikTok nổi tiếng vì khai thác implicit feedback — phản hồi ngầm. Bạn không cần bấm gì, thời lượng xem đã đủ kể. Nếu bạn dừng lại lâu ở một video mèo, hệ thống ghi nhận; nếu bạn lướt qua 3 video nấu ăn liền không dừng, hệ thống cũng ghi nhận. Với vài chục video, hệ thống có hàng trăm tín hiệu — đủ để “hiểu bạn hơn chính bạn”."
+              explanation="TikTok nổi tiếng vì khai thác implicit feedback, phản hồi ngầm. Bạn không cần bấm gì, thời lượng xem đã đủ kể. Nếu bạn dừng lại lâu ở một video mèo, hệ thống ghi nhận; nếu bạn lướt qua 3 video nấu ăn liền không dừng, hệ thống cũng ghi nhận. Với vài chục video, hệ thống có hàng trăm tín hiệu, đủ để “hiểu bạn hơn chính bạn”."
             />
 
             <InlineChallenge
               question="Bạn làm marketing ở Tiki và nhận task: “tăng tỷ lệ khách mới quay lại mua lần 2 trong 30 ngày”. Đội recommender nên ưu tiên cải thiện gì?"
               options={[
                 "Tăng số sản phẩm trên trang chủ lên 50, khách sẽ có nhiều lựa chọn hơn.",
-                "Giải bài toán cold start tốt hơn — vì khách mới chính là nhóm chưa có lịch sử, dễ hụt gợi ý nên cảm thấy “không có gì để mua” rồi bỏ đi.",
+                "Giải bài toán cold start tốt hơn, vì khách mới chính là nhóm chưa có lịch sử, dễ hụt gợi ý nên cảm thấy “không có gì để mua” rồi bỏ đi.",
                 "Xóa bớt đánh giá cũ.",
               ]}
               correct={1}
@@ -1083,7 +1082,7 @@ export default function RecommendationSystemsTopic() {
             />
           </LessonSection>
 
-          {/* ═════════════ BƯỚC 6 — GIẢI THÍCH ═════════════ */}
+          {/* ═════════════ BƯỚC 6, GIẢI THÍCH ═════════════ */}
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích">
             <ExplanationSection topicSlug="recommendation-systems">
               <p>
@@ -1093,17 +1092,17 @@ export default function RecommendationSystemsTopic() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 not-prose">
                 <Callout variant="tip" title="Lọc cộng tác">
                   <p className="text-sm leading-relaxed">
-                    Không đọc mô tả sản phẩm. Chỉ nhìn <strong>ma trận khách × sản phẩm</strong> — ai đã mua/xem/rate cái gì. Tìm khách có hành vi giống bạn. Mạnh ở <em>gu tinh tế</em>, yếu ở <em>khách mới / sản phẩm mới</em>.
+                    Không đọc mô tả sản phẩm. Chỉ nhìn <strong>ma trận khách × sản phẩm</strong>, ai đã mua/xem/rate cái gì. Tìm khách có hành vi giống bạn. Mạnh ở <em>gu tinh tế</em>, yếu ở <em>khách mới / sản phẩm mới</em>.
                   </p>
                 </Callout>
                 <Callout variant="info" title="Lọc nội dung">
                   <p className="text-sm leading-relaxed">
-                    Đọc <strong>đặc tính sản phẩm</strong> — thể loại, thương hiệu, mô tả, ảnh, tag. Gợi ý thứ có đặc tính giống thứ bạn từng thích. Mạnh với <em>sản phẩm mới</em> (chỉ cần metadata), yếu ở <em>phát hiện sở thích lạ</em>.
+                    Đọc <strong>đặc tính sản phẩm</strong>, thể loại, thương hiệu, mô tả, ảnh, tag. Gợi ý thứ có đặc tính giống thứ bạn từng thích. Mạnh với <em>sản phẩm mới</em> (chỉ cần metadata), yếu ở <em>phát hiện sở thích lạ</em>.
                   </p>
                 </Callout>
                 <Callout variant="insight" title="Hybrid &amp; học máy">
                   <p className="text-sm leading-relaxed">
-                    Đa số sàn trộn cả hai, cộng thêm <strong>học máy từ hành vi ngầm</strong> — thời gian xem, scroll, thêm giỏ rồi bỏ. Công thức thay đổi theo ngữ cảnh: khách mới → nội dung, khách cũ → cộng tác.
+                    Đa số sàn trộn cả hai, cộng thêm <strong>học máy từ hành vi ngầm</strong>, thời gian xem, scroll, thêm giỏ rồi bỏ. Công thức thay đổi theo ngữ cảnh: khách mới → nội dung, khách cũ → cộng tác.
                   </p>
                 </Callout>
               </div>
@@ -1129,7 +1128,7 @@ export default function RecommendationSystemsTopic() {
                   {
                     step: 3,
                     title: "Chỉnh trang (re-ranking)",
-                    body: "Đảm bảo đa dạng (không 10 sản phẩm cùng hãng), chèn quảng cáo, tránh lặp, kiểm duyệt nội dung — trước khi trả về màn hình.",
+                    body: "Đảm bảo đa dạng (không 10 sản phẩm cùng hãng), chèn quảng cáo, tránh lặp, kiểm duyệt nội dung, trước khi trả về màn hình.",
                     color: "#a855f7",
                   },
                 ].map((s) => (
@@ -1173,7 +1172,7 @@ export default function RecommendationSystemsTopic() {
                     <strong>Popularity bias (thiên kiến hàng hot):</strong> hệ thống cứ đẩy sản phẩm top → khách bấm càng nhiều → sản phẩm top lại càng top. Các sản phẩm dài đuôi (long-tail) bị nhấn chìm, gây bất lợi cho người bán nhỏ.
                   </li>
                   <li>
-                    <strong>Filter bubble (buồng lọc):</strong> cá nhân hóa cực đoan làm góc nhìn hẹp dần. Giải pháp: chừa 5-15% gợi ý cho thứ &quot;lạ&quot; — explore vs exploit — để phát hiện sở thích mới.
+                    <strong>Filter bubble (buồng lọc):</strong> cá nhân hóa cực đoan làm góc nhìn hẹp dần. Giải pháp: chừa 5-15% gợi ý cho thứ &quot;lạ&quot;, explore vs exploit, để phát hiện sở thích mới.
                   </li>
                 </ul>
               </Callout>
@@ -1191,31 +1190,31 @@ export default function RecommendationSystemsTopic() {
                 <p className="text-sm leading-relaxed">
                   Cỗ máy đằng sau lọc cộng tác hiện đại (kiểu Shopee, TikTok) thật ra dùng chung nền tảng với{" "}
                   <TopicLink slug="embedding-model">embedding</TopicLink> và{" "}
-                  <TopicLink slug="semantic-search">semantic search</TopicLink>: chuyển người dùng và sản phẩm thành hai dãy số nhiều chiều, rồi đo &quot;gần nhau&quot; bằng phép tính đơn giản. Ai học qua cái này sẽ thấy ba bài toán tưởng khác nhau — gợi ý, tìm kiếm thông minh, tóm tắt tài liệu — hóa ra là anh em một nhà.
+                  <TopicLink slug="semantic-search">semantic search</TopicLink>: chuyển người dùng và sản phẩm thành hai dãy số nhiều chiều, rồi đo &quot;gần nhau&quot; bằng phép tính đơn giản. Ai học qua cái này sẽ thấy ba bài toán tưởng khác nhau, gợi ý, tìm kiếm thông minh, tóm tắt tài liệu, hóa ra là anh em một nhà.
                 </p>
               </Callout>
 
               <p className="mt-5">
-                Một chi tiết thực tế cho dân văn phòng: nếu bạn làm marketing hoặc e-commerce ở Việt Nam, hiểu hệ thống gợi ý giúp bạn <strong>viết mô tả sản phẩm đúng trend</strong> (tăng cơ hội được lọc nội dung nhấc lên), <strong>tận dụng sản phẩm hot dịp lễ</strong> (bù cho khách mới), và <strong>đừng hoảng khi doanh số dao động 10-15%</strong> — đôi khi chỉ vì Shopee đổi trọng số giữa lọc cộng tác và lọc nội dung trong một thí nghiệm A/B.
+                Một chi tiết thực tế cho dân văn phòng: nếu bạn làm marketing hoặc e-commerce ở Việt Nam, hiểu hệ thống gợi ý giúp bạn <strong>viết mô tả sản phẩm đúng trend</strong> (tăng cơ hội được lọc nội dung nhấc lên), <strong>tận dụng sản phẩm hot dịp lễ</strong> (bù cho khách mới), và <strong>đừng hoảng khi doanh số dao động 10-15%</strong>, đôi khi chỉ vì Shopee đổi trọng số giữa lọc cộng tác và lọc nội dung trong một thí nghiệm A/B.
               </p>
             </ExplanationSection>
           </LessonSection>
 
-          {/* ═════════════ BƯỚC 7 — TÓM TẮT ═════════════ */}
+          {/* ═════════════ BƯỚC 7, TÓM TẮT ═════════════ */}
           <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               title="Năm điều mang theo ra khỏi bài"
               points={[
                 "Hệ thống gợi ý = anh bán tạp hóa phiên bản số: nhớ hành vi + đoán sở thích ẩn + đẩy đúng người, ở quy mô 200 triệu khách.",
                 "Lọc cộng tác dựa vào người giống bạn; lọc nội dung dựa vào đặc tính sản phẩm; đa số sàn trộn cả hai.",
-                "Cold start (khách / sản phẩm mới) là điểm mù lớn nhất — onboarding + sản phẩm hot + quan sát ngầm là ba cách xử kinh điển.",
-                "Đo chất lượng bằng Precision, Recall, nDCG — trong đó nDCG nhạy với thứ tự (phim hay phải ở vị trí cao).",
+                "Cold start (khách / sản phẩm mới) là điểm mù lớn nhất, onboarding + sản phẩm hot + quan sát ngầm là ba cách xử kinh điển.",
+                "Đo chất lượng bằng Precision, Recall, nDCG, trong đó nDCG nhạy với thứ tự (phim hay phải ở vị trí cao).",
                 "Filter bubble là cái giá của cá nhân hóa cực đoan. Các đội recommender chừa 5-15% để explore thứ bạn chưa biết mình thích.",
               ]}
             />
           </LessonSection>
 
-          {/* ═════════════ BƯỚC 8 — QUIZ ═════════════ */}
+          {/* ═════════════ BƯỚC 8, QUIZ ═════════════ */}
           <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
             <QuizSection questions={quizQuestions} />
           </LessonSection>

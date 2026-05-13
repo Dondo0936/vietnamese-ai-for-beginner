@@ -34,9 +34,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-in-healthcare",
   title: "AI in Healthcare",
-  titleVi: "AI trong Y tế",
+  titleVi: "AI trong y tế: hỗ trợ bác sĩ, không thay bác sĩ",
   description:
-    "AI trong chẩn đoán hình ảnh, phân loại cấp cứu và phát triển thuốc — góc nhìn thực tế cho nhân viên y tế Việt Nam",
+    "AI đọc ảnh, phân loại ca cấp cứu và tìm tín hiệu thuốc, nhưng kết quả vẫn cần chuyên môn kiểm lại.",
   category: "applied-ai",
   tags: ["medical-imaging", "drug-discovery", "clinical-ai", "healthcare"],
   difficulty: "beginner",
@@ -48,7 +48,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// DEMO 1 — Đọc X-quang có và không có AI
+// DEMO 1, Đọc X-quang có và không có AI
 // ---------------------------------------------------------------------------
 
 const GRID_ROWS = 12;
@@ -58,7 +58,7 @@ type LungPixel = {
   row: number;
   col: number;
   intensity: number; // độ sáng X-quang mô phỏng (0..1)
-  isAbnormal: boolean; // ground truth — có tổn thương hay không
+  isAbnormal: boolean; // ground truth, có tổn thương hay không
   aiScore: number; // AI predicted probability
 };
 
@@ -71,7 +71,7 @@ function buildLungScan(): LungPixel[] {
   ];
   for (let r = 0; r < GRID_ROWS; r++) {
     for (let c = 0; c < GRID_COLS; c++) {
-      // Nền phổi — sáng hơn ở vùng giữa, tối hơn ở rìa
+      // Nền phổi, sáng hơn ở vùng giữa, tối hơn ở rìa
       const centerDist = Math.sqrt(
         Math.pow(r - GRID_ROWS / 2, 2) + Math.pow(c - GRID_COLS / 2, 2),
       );
@@ -127,7 +127,7 @@ function LungScanDemo() {
         })}
       </svg>
       <div className="text-xs text-muted">
-        Bác sĩ xem X-quang theo cách cổ điển — không có trợ giúp AI
+        Bác sĩ xem X-quang theo cách cổ điển, không có trợ giúp AI
       </div>
     </div>
   );
@@ -210,11 +210,11 @@ function LungScanDemo() {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h3 className="text-base font-semibold text-foreground">
-          Demo 1 — Đọc X-quang phổi có và không có AI
+          Demo 1, Đọc X-quang phổi có và không có AI
         </h3>
         <p className="text-sm text-muted">
           Cùng một phim X-quang. Bấm chuyển giữa "bác sĩ đọc một mình" và
-          "bác sĩ + AI" để thấy AI tô cam vùng nghi ngờ — giúp bác sĩ tập
+          "bác sĩ + AI" để thấy AI tô cam vùng nghi ngờ, giúp bác sĩ tập
           trung vào khu vực quan trọng thay vì phải quét toàn bộ phim.
         </p>
       </div>
@@ -223,20 +223,20 @@ function LungScanDemo() {
         labelB="Bác sĩ + AI"
         childA={readerOnly}
         childB={withAI}
-        description="AI không đưa ra chẩn đoán cuối cùng — nó chỉ gợi ý vùng cần chú ý."
+        description="AI không đưa ra chẩn đoán cuối cùng, nó chỉ gợi ý vùng cần chú ý."
       />
       <Callout variant="tip" title="Cách đọc visualization">
         Vùng tô cam là nơi AI nghĩ "có thể có tổn thương". Viền xanh lá là
         vùng tổn thương thật do chuyên gia X-quang đã đánh nhãn khi train
         mô hình. AI tốt là khi vùng cam trùng gần hết với viền xanh. Khi
-        chúng không trùng — bác sĩ là người quyết định tin ai.
+        chúng không trùng, bác sĩ là người quyết định tin ai.
       </Callout>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// DEMO 2 — Phân loại cấp cứu
+// DEMO 2, Phân loại cấp cứu
 // ---------------------------------------------------------------------------
 
 type TriageCase = {
@@ -258,7 +258,7 @@ const TRIAGE_CASES: TriageCase[] = [
     symptoms: "Đau ngực trái dữ dội 30 phút, vã mồ hôi, khó thở",
     vitals: "HA 160/95, Nhịp 120, SpO₂ 92%",
     aiUrgency: 1,
-    aiReason: "Nghi nhồi máu cơ tim cấp — cửa sổ can thiệp vàng chỉ vài giờ",
+    aiReason: "Nghi nhồi máu cơ tim cấp, cửa sổ can thiệp vàng chỉ vài giờ",
     correctOrder: 1,
   },
   {
@@ -268,7 +268,7 @@ const TRIAGE_CASES: TriageCase[] = [
     symptoms: "Đau bụng âm ỉ bên phải 2 ngày, sốt nhẹ 38°C",
     vitals: "HA 110/70, Nhịp 88, SpO₂ 98%",
     aiUrgency: 3,
-    aiReason: "Nghi viêm ruột thừa — cần siêu âm và xét nghiệm sớm",
+    aiReason: "Nghi viêm ruột thừa, cần siêu âm và xét nghiệm sớm",
     correctOrder: 3,
   },
   {
@@ -278,7 +278,7 @@ const TRIAGE_CASES: TriageCase[] = [
     symptoms: "Sốt cao 39.5°C, co giật 2 phút, lừ đừ sau cơn",
     vitals: "HA 90/60, Nhịp 140, SpO₂ 96%",
     aiUrgency: 2,
-    aiReason: "Co giật do sốt ở trẻ em — cần theo dõi thần kinh và hạ sốt ngay",
+    aiReason: "Co giật do sốt ở trẻ em, cần theo dõi thần kinh và hạ sốt ngay",
     correctOrder: 2,
   },
   {
@@ -288,7 +288,7 @@ const TRIAGE_CASES: TriageCase[] = [
     symptoms: "Cổ tay sưng đau sau va chạm xe máy, không biến dạng rõ",
     vitals: "HA 125/80, Nhịp 78, SpO₂ 99%",
     aiUrgency: 4,
-    aiReason: "Nghi chấn thương phần mềm hoặc gãy xương kín — chờ X-quang",
+    aiReason: "Nghi chấn thương phần mềm hoặc gãy xương kín, chờ X-quang",
     correctOrder: 4,
   },
   {
@@ -298,7 +298,7 @@ const TRIAGE_CASES: TriageCase[] = [
     symptoms: "Viêm họng, ho khan 3 ngày, không sốt",
     vitals: "HA 118/75, Nhịp 72, SpO₂ 99%",
     aiUrgency: 5,
-    aiReason: "Viêm họng thông thường — có thể chờ phòng khám ngoại trú",
+    aiReason: "Viêm họng thông thường, có thể chờ phòng khám ngoại trú",
     correctOrder: 5,
   },
 ];
@@ -336,7 +336,7 @@ function TriageDemo() {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h3 className="text-base font-semibold text-foreground">
-          Demo 2 — Phân loại cấp cứu (triage) có AI hỗ trợ
+          Demo 2, Phân loại cấp cứu (triage) có AI hỗ trợ
         </h3>
         <p className="text-sm text-muted">
           Năm bệnh nhân vừa vào phòng cấp cứu cùng lúc. Bác sĩ chỉ có thể
@@ -463,9 +463,9 @@ function TriageDemo() {
         )}
       </AnimatePresence>
 
-      <Callout variant="insight" title="AI không thay bác sĩ — AI mua thời gian">
+      <Callout variant="insight" title="AI không thay bác sĩ, AI mua thời gian">
         Trong phòng cấp cứu quá tải, phân loại sai thứ tự có thể làm mất
-        vàng — ví dụ bỏ sót nhồi máu cơ tim sớm. AI phân loại nhanh trong
+        vàng, ví dụ bỏ sót nhồi máu cơ tim sớm. AI phân loại nhanh trong
         vài giây dựa trên dấu hiệu sinh tồn và triệu chứng. Bác sĩ xác
         nhận hoặc đảo lại thứ tự khi có thông tin thêm. Các bệnh viện
         lớn tại VN (Bạch Mai, Chợ Rẫy) đang thử nghiệm các hệ thống
@@ -476,7 +476,7 @@ function TriageDemo() {
 }
 
 // ---------------------------------------------------------------------------
-// DEMO 3 — Timeline phát triển thuốc
+// DEMO 3, Timeline phát triển thuốc
 // ---------------------------------------------------------------------------
 
 type DrugStage = {
@@ -520,7 +520,7 @@ const DRUG_STAGES: DrugStage[] = [
     traditionalYears: 7,
     aiYears: 5,
     description:
-      "Đây là giai đoạn AI chưa rút ngắn nhiều — vì vẫn phải theo dõi bệnh nhân thật theo thời gian thật. AI giúp tuyển chọn bệnh nhân phù hợp nhanh hơn.",
+      "Đây là giai đoạn AI chưa rút ngắn nhiều, vì vẫn phải theo dõi bệnh nhân thật theo thời gian thật. AI giúp tuyển chọn bệnh nhân phù hợp nhanh hơn.",
   },
 ];
 
@@ -554,12 +554,12 @@ function DrugDiscoveryTimeline() {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
       <div>
         <h3 className="text-base font-semibold text-foreground">
-          Demo 3 — Tốc độ phát triển thuốc trước và sau AI
+          Demo 3, Tốc độ phát triển thuốc trước và sau AI
         </h3>
         <p className="text-sm text-muted">
           Một loại thuốc mới cần khoảng 15 năm và hơn 1 tỷ USD để ra thị
           trường. AI (đặc biệt từ 2020 trở đi với AlphaFold và các mô hình
-          sinh phân tử) đang rút ngắn phần lớn các giai đoạn đầu — dù giai
+          sinh phân tử) đang rút ngắn phần lớn các giai đoạn đầu, dù giai
           đoạn thử nghiệm trên người vẫn phải theo nhịp thời gian thật.
           Bấm qua các giai đoạn để so sánh.
         </p>
@@ -700,19 +700,19 @@ export default function AIInHealthcareTopic() {
           "Vai trò đúng nhất của AI đọc X-quang hiện nay tại bệnh viện Việt Nam là gì?",
         options: [
           "Thay thế bác sĩ X-quang vì AI chính xác hơn",
-          "Gợi ý vùng nghi ngờ để bác sĩ tập trung kiểm tra kỹ — bác sĩ vẫn ký kết luận cuối cùng",
+          "Gợi ý vùng nghi ngờ để bác sĩ tập trung kiểm tra kỹ, bác sĩ vẫn ký kết luận cuối cùng",
           "Chỉ dùng cho bệnh nhân không mua bảo hiểm",
         ],
         correct: 1,
         explanation:
-          "AI tốt nhất ở phát hiện pattern trong ảnh, nhanh, nhất quán, không mệt. Bác sĩ tốt nhất ở kết nối hình ảnh với bệnh sử, triệu chứng, kết quả xét nghiệm khác, và hiểu context bệnh nhân. VinAI (VinBrain DrAid), FPT AI Medical tại Việt Nam đều triển khai theo mô hình 'AI gợi ý — bác sĩ quyết định'. Cả FDA Mỹ và Bộ Y tế VN đều yêu cầu mô hình này cho thiết bị y tế dùng AI.",
+          "AI tốt nhất ở phát hiện pattern trong ảnh, nhanh, nhất quán, không mệt. Bác sĩ tốt nhất ở kết nối hình ảnh với bệnh sử, triệu chứng, kết quả xét nghiệm khác, và hiểu context bệnh nhân. VinAI (VinBrain DrAid), FPT AI Medical tại Việt Nam đều triển khai theo mô hình 'AI gợi ý, bác sĩ quyết định'. Cả FDA Mỹ và Bộ Y tế VN đều yêu cầu mô hình này cho thiết bị y tế dùng AI.",
       },
       {
         question:
           "Bệnh nhân tổn thương da vào khám. AI đưa kết luận 'ung thư hắc tố 95%'. Bác sĩ cần làm gì trước khi báo cho bệnh nhân?",
         options: [
           "Nói ngay với bệnh nhân để không lãng phí thời gian",
-          "Kiểm tra liệu AI có được train trên tông da tương tự bệnh nhân không — nhiều AI da liễu hiện nay train chủ yếu trên da sáng, có thể sai khi gặp da tối",
+          "Kiểm tra liệu AI có được train trên tông da tương tự bệnh nhân không, nhiều AI da liễu hiện nay train chủ yếu trên da sáng, có thể sai khi gặp da tối",
           "Chuyển luôn sang hóa trị",
         ],
         correct: 1,
@@ -736,7 +736,7 @@ export default function AIInHealthcareTopic() {
           "Trong phòng cấp cứu đông người, AI phân loại mức độ ưu tiên dựa trên triệu chứng và dấu hiệu sinh tồn. Giá trị lớn nhất là gì?",
         options: [
           "Thay thế điều dưỡng phân loại",
-          "Phát hiện sớm các ca nguy kịch có thể bị che lấp trong đám đông — ví dụ nhồi máu cơ tim ở bệnh nhân trẻ, đột quỵ giai đoạn sớm",
+          "Phát hiện sớm các ca nguy kịch có thể bị che lấp trong đám đông, ví dụ nhồi máu cơ tim ở bệnh nhân trẻ, đột quỵ giai đoạn sớm",
           "Tăng doanh thu bệnh viện",
         ],
         correct: 1,
@@ -748,19 +748,19 @@ export default function AIInHealthcareTopic() {
           "AlphaFold (DeepMind, 2020+) giải quyết vấn đề gì trong y tế?",
         options: [
           "Chẩn đoán bệnh qua hình ảnh",
-          "Dự đoán cấu trúc 3D của protein — giúp các nhà khoa học hiểu cách thiết kế thuốc bám vào đúng protein mục tiêu",
+          "Dự đoán cấu trúc 3D của protein, giúp các nhà khoa học hiểu cách thiết kế thuốc bám vào đúng protein mục tiêu",
           "Tự động kê đơn thuốc",
         ],
         correct: 1,
         explanation:
-          "Thuốc hoạt động bằng cách gắn vào một protein nào đó trong cơ thể (như chìa khóa vào ổ khóa). Để thiết kế chìa khóa đúng, cần biết hình dạng ổ khóa. Trước AlphaFold, xác định cấu trúc một protein mất 1-3 năm phòng thí nghiệm. Bây giờ vài giây máy tính. AlphaFold đã công bố cấu trúc của hơn 200 triệu protein — một đóng góp khổng lồ cho ngành dược.",
+          "Thuốc hoạt động bằng cách gắn vào một protein nào đó trong cơ thể (như chìa khóa vào ổ khóa). Để thiết kế chìa khóa đúng, cần biết hình dạng ổ khóa. Trước AlphaFold, xác định cấu trúc một protein mất 1-3 năm phòng thí nghiệm. Bây giờ vài giây máy tính. AlphaFold đã công bố cấu trúc của hơn 200 triệu protein, một đóng góp khổng lồ cho ngành dược.",
       },
       {
         question:
           "Bệnh viện A train mô hình AI đọc X-quang trên dữ liệu bệnh viện mình, rất chính xác. Khi chuyển sang bệnh viện B, độ chính xác tụt 15%. Nguyên nhân thường gặp nhất?",
         options: [
           "Bác sĩ bệnh viện B kém hơn",
-          "Phân phối dữ liệu khác: máy chụp khác hãng, protocol chụp khác, đặc điểm bệnh nhân khác — mô hình không generalize",
+          "Phân phối dữ liệu khác: máy chụp khác hãng, protocol chụp khác, đặc điểm bệnh nhân khác, mô hình không generalize",
           "AI không thích bệnh viện B",
         ],
         correct: 1,
@@ -771,13 +771,13 @@ export default function AIInHealthcareTopic() {
         question:
           "Bệnh án điện tử của chị Hoa có mô tả 'đau đầu thường xuyên'. AI tóm tắt thành 'đau nửa đầu migraine'. Vấn đề gì đang xảy ra?",
         options: [
-          "Không có vấn đề — AI tiết kiệm thời gian",
-          "AI 'bịa' chẩn đoán không có trong bệnh án gốc (hallucination) — cực kỳ nguy hiểm trong y tế nếu không kiểm tra",
+          "Không có vấn đề, AI tiết kiệm thời gian",
+          "AI 'bịa' chẩn đoán không có trong bệnh án gốc (hallucination), cực kỳ nguy hiểm trong y tế nếu không kiểm tra",
           "Bác sĩ viết bệnh án sai",
         ],
         correct: 1,
         explanation:
-          "Hallucination là khi LLM tự chế thông tin nghe có vẻ hợp lý. 'Đau đầu thường xuyên' không có nghĩa là migraine — đó là chẩn đoán cần bác sĩ khám kỹ. AI tóm tắt bệnh án là công cụ hữu ích NHƯNG phải có lớp review con người. Các đợt thử nghiệm tại bệnh viện Hà Nội và các bệnh viện TP.HCM đều giữ nguyên tắc bác sĩ xác nhận mọi bản tóm tắt AI trước khi ghi vào hồ sơ chính thức.",
+          "Hallucination là khi LLM tự chế thông tin nghe có vẻ hợp lý. 'Đau đầu thường xuyên' không có nghĩa là migraine, đó là chẩn đoán cần bác sĩ khám kỹ. AI tóm tắt bệnh án là công cụ hữu ích NHƯNG phải có lớp review con người. Các đợt thử nghiệm tại bệnh viện Hà Nội và các bệnh viện TP.HCM đều giữ nguyên tắc bác sĩ xác nhận mọi bản tóm tắt AI trước khi ghi vào hồ sơ chính thức.",
       },
       {
         type: "fill-blank",
@@ -802,7 +802,7 @@ export default function AIInHealthcareTopic() {
           },
         ],
         explanation:
-          "Năm trụ cột AI y tế: chẩn đoán hình ảnh (VinBrain DrAid, FPT AI Medical), phân loại cấp cứu (triage), phát triển thuốc (AlphaFold, Isomorphic Labs), tóm tắt bệnh án (dùng LLM với kiểm soát), và hỗ trợ quyết định lâm sàng (clinical decision support — gợi ý cho bác sĩ, không thay quyết định).",
+          "Năm trụ cột AI y tế: chẩn đoán hình ảnh (VinBrain DrAid, FPT AI Medical), phân loại cấp cứu (triage), phát triển thuốc (AlphaFold, Isomorphic Labs), tóm tắt bệnh án (dùng LLM với kiểm soát), và hỗ trợ quyết định lâm sàng (clinical decision support, gợi ý cho bác sĩ, không thay quyết định).",
       },
     ],
     [],
@@ -817,17 +817,17 @@ export default function AIInHealthcareTopic() {
             "Thuê thêm 4 bác sĩ X-quang",
             "Cho AI thay bác sĩ đọc toàn bộ 500 phim",
             "Để bệnh nhân tự đọc phim của mình",
-            "AI lọc trước: 80% phim bình thường được AI xác nhận nhanh, 20% phim nghi ngờ bác sĩ đọc kỹ — bác sĩ ký kết luận cuối",
+            "AI lọc trước: 80% phim bình thường được AI xác nhận nhanh, 20% phim nghi ngờ bác sĩ đọc kỹ, bác sĩ ký kết luận cuối",
           ]}
           correct={3}
-          explanation="Mô hình 'AI-assisted reading' là cách triển khai chuẩn tại các bệnh viện Việt Nam hiện nay (Bạch Mai, Chợ Rẫy, 108, Vinmec, các BV tuyến tỉnh sử dụng DrAid). AI không thay bác sĩ — nó lọc ca dễ để bác sĩ dành thời gian cho ca khó. Kết quả: bác sĩ đọc kỹ hơn, sai sót giảm, thời gian trả kết quả nhanh hơn. FDA Mỹ và Bộ Y tế VN đều cấp phép AI y tế theo mô hình hỗ trợ này, không phải thay thế."
+          explanation="Mô hình 'AI-assisted reading' là cách triển khai chuẩn tại các bệnh viện Việt Nam hiện nay (Bạch Mai, Chợ Rẫy, 108, Vinmec, các BV tuyến tỉnh sử dụng DrAid). AI không thay bác sĩ, nó lọc ca dễ để bác sĩ dành thời gian cho ca khó. Kết quả: bác sĩ đọc kỹ hơn, sai sót giảm, thời gian trả kết quả nhanh hơn. FDA Mỹ và Bộ Y tế VN đều cấp phép AI y tế theo mô hình hỗ trợ này, không phải thay thế."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Phép ẩn dụ">
             <p>
               Hãy hình dung bác sĩ giống như một người lái xe đường dài trong
               đêm. Mắt họ cảnh giác, nhưng sau 10 giờ làm việc, ánh mắt bắt
               đầu mỏi, các chi tiết nhỏ dễ bị bỏ qua. Một chiếc xe hiện đại
-              lắp cảm biến cảnh báo va chạm — nó không lái thay người, nhưng
+              lắp cảm biến cảnh báo va chạm, nó không lái thay người, nhưng
               khi phát hiện vật thể lạ ở điểm mù, nó{" "}
               <strong>nháy đèn và kêu chuông</strong> để tài xế nhìn lại.
             </p>
@@ -835,7 +835,7 @@ export default function AIInHealthcareTopic() {
               AI trong y tế làm đúng việc của chiếc cảm biến đó. Bác sĩ X-quang
               đọc 500 phim một ngày, đến phim thứ 400 mắt đã mỏi rã. AI quét
               qua từng phim trong vài giây, <em>tô cam</em> vùng có thể là
-              tổn thương. Bác sĩ không bắt buộc phải tin AI — nhưng nếu AI tô
+              tổn thương. Bác sĩ không bắt buộc phải tin AI, nhưng nếu AI tô
               cam một điểm và bác sĩ nhìn kỹ lại, có thêm một con mắt không
               mệt mỏi đứng bên cạnh.
             </p>
@@ -844,7 +844,7 @@ export default function AIInHealthcareTopic() {
               <em>giới hạn</em>: cảm biến có thể báo động nhầm (con mèo băng
               qua đường), có thể bỏ sót (sương mù dày). Tài xế vẫn phải là
               người lái, người chịu trách nhiệm. AI y tế cũng vậy: nó là một
-              cặp mắt phụ, không phải một bác sĩ độc lập — và ở Việt Nam cũng
+              cặp mắt phụ, không phải một bác sĩ độc lập, và ở Việt Nam cũng
               như nhiều nước, luật pháp yêu cầu đúng như thế.
             </p>
           </LessonSection>
@@ -866,7 +866,7 @@ export default function AIInHealthcareTopic() {
           >
             <AhaMoment>
               <p>
-                AI trong y tế không thay thế bác sĩ — nó làm{" "}
+                AI trong y tế không thay thế bác sĩ, nó làm{" "}
                 <strong>bác sĩ mạnh hơn</strong>. Bác sĩ một mình không mệt
                 mỏi có thể đọc 100 phim chính xác. Cộng AI đứng cạnh gợi ý,
                 có thể đọc 500 phim với độ chính xác tương đương mà còn phát
@@ -877,8 +877,8 @@ export default function AIInHealthcareTopic() {
                 <em>
                   mỗi ngưỡng cảnh báo của AI là một lựa chọn đạo đức
                 </em>
-                . Đặt ngưỡng thấp, AI báo động nhiều — bác sĩ mệt vì nhiễu.
-                Đặt cao, AI im lặng — có thể bỏ sót ca ung thư sớm. Không có
+                . Đặt ngưỡng thấp, AI báo động nhiều, bác sĩ mệt vì nhiễu.
+                Đặt cao, AI im lặng, có thể bỏ sót ca ung thư sớm. Không có
                 con số "đúng" chung cho mọi bệnh viện. Cùng một mô hình, một
                 bệnh viện cấp cứu và một phòng sàng lọc cộng đồng sẽ đặt
                 ngưỡng khác nhau. Đây là lý do AI y tế luôn là cuộc hợp tác
@@ -892,21 +892,21 @@ export default function AIInHealthcareTopic() {
               question="Một hệ thống AI sàng lọc ung thư vú đạt độ nhạy 98% và độ đặc hiệu 90%. Bệnh viện sàng lọc 10.000 phụ nữ, trong đó 50 có ung thư thật. Ước lượng có bao nhiêu người dương tính giả?"
               options={[
                 "Rất ít vì AI chính xác 95%",
-                "Khoảng 995 người — vì 9.950 người khỏe × 10% dương tính giả ≈ 995, trong khi chỉ ~49 ca ung thư thật được phát hiện đúng",
-                "0 — AI không sai bao giờ",
+                "Khoảng 995 người, vì 9.950 người khỏe × 10% dương tính giả ≈ 995, trong khi chỉ ~49 ca ung thư thật được phát hiện đúng",
+                "0, AI không sai bao giờ",
               ]}
               correct={1}
-              explanation="Đây là 'base rate problem' — một trong những bẫy nhận thức lớn nhất trong y tế. Với bệnh hiếm, ngay cả mô hình độ đặc hiệu 90% cũng tạo ra hàng trăm dương tính giả cho mỗi vài chục ca đúng. Hệ quả: sàng lọc KHÔNG BAO GIỜ được đứng một mình — luôn cần một bước xác minh thứ hai (nhũ ảnh chuyên sâu, sinh thiết) trước khi nói với bệnh nhân 'bạn có ung thư'."
+              explanation="Đây là 'base rate problem', một trong những bẫy nhận thức lớn nhất trong y tế. Với bệnh hiếm, ngay cả mô hình độ đặc hiệu 90% cũng tạo ra hàng trăm dương tính giả cho mỗi vài chục ca đúng. Hệ quả: sàng lọc KHÔNG BAO GIỜ được đứng một mình, luôn cần một bước xác minh thứ hai (nhũ ảnh chuyên sâu, sinh thiết) trước khi nói với bệnh nhân 'bạn có ung thư'."
             />
             <InlineChallenge
               question="AI da liễu được train chủ yếu trên da sáng. Bạn là bác sĩ tại VN, nhiều bệnh nhân có tông da trung bình đến tối. Bạn nên làm gì?"
               options={[
                 "Dùng AI y như hướng dẫn nhà sản xuất",
-                "Yêu cầu nhà cung cấp cho thấy dữ liệu validation trên tông da tương tự bệnh nhân VN — nếu không có, dùng AI một cách thận trọng và luôn đối chiếu với khám lâm sàng",
+                "Yêu cầu nhà cung cấp cho thấy dữ liệu validation trên tông da tương tự bệnh nhân VN, nếu không có, dùng AI một cách thận trọng và luôn đối chiếu với khám lâm sàng",
                 "Bỏ AI, quay về chỉ khám bằng mắt",
               ]}
               correct={1}
-              explanation="Bias dữ liệu không phải lỗi kỹ thuật mờ mịt — nó là câu hỏi lâm sàng trực tiếp. Nghiên cứu Adamson & Smith (2018) cho thấy AI da liễu train trên ISIC (chủ yếu da sáng) có độ nhạy giảm mạnh với da tối. Bác sĩ có quyền và nghĩa vụ hỏi nhà cung cấp: 'Mô hình đã validate trên nhóm bệnh nhân nào?' Thiếu thông tin này = không thể dùng AI cho quyết định nặng nề."
+              explanation="Bias dữ liệu không phải lỗi kỹ thuật mờ mịt, nó là câu hỏi lâm sàng trực tiếp. Nghiên cứu Adamson & Smith (2018) cho thấy AI da liễu train trên ISIC (chủ yếu da sáng) có độ nhạy giảm mạnh với da tối. Bác sĩ có quyền và nghĩa vụ hỏi nhà cung cấp: 'Mô hình đã validate trên nhóm bệnh nhân nào?' Thiếu thông tin này = không thể dùng AI cho quyết định nặng nề."
             />
             <InlineChallenge
               question="Bệnh viện muốn triển khai AI chẩn đoán mới. Ngoài độ chính xác, nhân viên tuân thủ cần kiểm tra điều gì trước khi ký hợp đồng?"
@@ -925,7 +925,7 @@ export default function AIInHealthcareTopic() {
               <p>
                 Năm mảng lớn của AI trong y tế đều đã có sản phẩm thực tế
                 tại Việt Nam hoặc đang trong giai đoạn thử nghiệm lâm sàng.
-                Mỗi mảng có một bài toán riêng và giới hạn riêng — hiểu đúng
+                Mỗi mảng có một bài toán riêng và giới hạn riêng, hiểu đúng
                 cả hai giúp nhân viên y tế phối hợp với AI đúng cách thay
                 vì kỳ vọng thái quá hoặc từ chối cứng.
               </p>
@@ -952,7 +952,7 @@ export default function AIInHealthcareTopic() {
                       AI phân loại mức độ ưu tiên (triage) dựa trên triệu
                       chứng, dấu hiệu sinh tồn, và cảnh báo sớm các ca nguy
                       kịch. Đặc biệt hữu ích với nhồi máu cơ tim, đột quỵ,
-                      nhiễm trùng huyết — nơi "thời gian là não" hoặc "thời
+                      nhiễm trùng huyết, nơi "thời gian là não" hoặc "thời
                       gian là cơ tim".
                     </span>
                   </p>
@@ -963,7 +963,7 @@ export default function AIInHealthcareTopic() {
                     <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
                     <span>
                       AlphaFold (DeepMind) dự đoán cấu trúc hơn 200 triệu
-                      protein — cung cấp "ổ khóa" để các công ty dược thiết
+                      protein, cung cấp "ổ khóa" để các công ty dược thiết
                       kế "chìa khóa". Isomorphic Labs, Recursion, Insilico
                       Medicine đã có thuốc ứng viên vào thử nghiệm lâm sàng
                       chỉ sau 2-3 năm thay vì 7-10.
@@ -979,7 +979,7 @@ export default function AIInHealthcareTopic() {
                       soạn thư giới thiệu giữa các khoa. Giảm tải hành chính
                       cho bác sĩ. <strong>Lưu ý quan trọng:</strong> luôn
                       cần bác sĩ xác nhận trước khi ghi vào hồ sơ chính
-                      thức — hallucination là rủi ro thực.
+                      thức, hallucination là rủi ro thực.
                     </span>
                   </p>
                 </Callout>
@@ -1024,13 +1024,13 @@ export default function AIInHealthcareTopic() {
                 <StoryCard
                   name="FPT AI Medical"
                   sector="Tập đoàn FPT"
-                  body="Nền tảng AI cho bệnh viện VN — từ chatbot y tế đến hỗ trợ chẩn đoán hình ảnh. Hợp tác với các bệnh viện công và tư để triển khai AI tuân thủ quy định VN."
+                  body="Nền tảng AI cho bệnh viện VN, từ chatbot y tế đến hỗ trợ chẩn đoán hình ảnh. Hợp tác với các bệnh viện công và tư để triển khai AI tuân thủ quy định VN."
                   icon={Building2}
                 />
                 <StoryCard
                   name="Bệnh viện FV & Hanoi French Hospital"
                   sector="Bệnh viện tư đa quốc gia"
-                  body="Các bệnh viện tư đa quốc gia tại VN là nơi sớm thử nghiệm AI y tế theo chuẩn quốc tế — đặc biệt cho chẩn đoán hình ảnh và hỗ trợ quyết định lâm sàng."
+                  body="Các bệnh viện tư đa quốc gia tại VN là nơi sớm thử nghiệm AI y tế theo chuẩn quốc tế, đặc biệt cho chẩn đoán hình ảnh và hỗ trợ quyết định lâm sàng."
                   icon={HeartPulse}
                 />
               </div>
@@ -1043,24 +1043,22 @@ export default function AIInHealthcareTopic() {
                     content: (
                       <ul className="list-disc space-y-2 pl-5 text-sm">
                         <li>
-                          <strong>Luật Khám bệnh, chữa bệnh 2023</strong> —
-                          khung pháp lý chung cho hoạt động y tế, bao gồm
+                          <strong>Luật Khám bệnh, chữa bệnh 2023</strong>, khung pháp lý chung cho hoạt động y tế, bao gồm
                           trách nhiệm khi dùng công nghệ hỗ trợ.
                         </li>
                         <li>
                           <strong>Nghị định 98/2021/NĐ-CP</strong> về quản
-                          lý trang thiết bị y tế — AI y tế được phân loại
+                          lý trang thiết bị y tế, AI y tế được phân loại
                           như trang thiết bị y tế, phải đăng ký và cấp phép
                           với Bộ Y tế.
                         </li>
                         <li>
                           <strong>Nghị định 13/2023/NĐ-CP</strong> về bảo
-                          vệ dữ liệu cá nhân — áp dụng đặc biệt nghiêm ngặt
+                          vệ dữ liệu cá nhân, áp dụng đặc biệt nghiêm ngặt
                           cho dữ liệu y tế (thuộc nhóm nhạy cảm).
                         </li>
                         <li>
-                          <strong>Hội đồng đạo đức y học (IRB)</strong> —
-                          bắt buộc cho mọi nghiên cứu dùng dữ liệu bệnh
+                          <strong>Hội đồng đạo đức y học (IRB)</strong>, bắt buộc cho mọi nghiên cứu dùng dữ liệu bệnh
                           nhân, kể cả khi chỉ để train AI.
                         </li>
                       </ul>
@@ -1072,23 +1070,22 @@ export default function AIInHealthcareTopic() {
                       <ul className="list-disc space-y-2 pl-5 text-sm">
                         <li>
                           <strong>FDA SaMD</strong> (Software as a Medical
-                          Device) — phân loại AI y tế theo mức rủi ro,
+                          Device), phân loại AI y tế theo mức rủi ro,
                           quyết định quy trình cấp phép.
                         </li>
                         <li>
-                          <strong>CE Marking (EU MDR)</strong> — chuẩn châu
+                          <strong>CE Marking (EU MDR)</strong>, chuẩn châu
                           Âu cho thiết bị y tế, nhiều sản phẩm AI y tế vào
                           VN qua hồ sơ CE.
                         </li>
                         <li>
-                          <strong>IEC 62304</strong> — chu trình phát triển
+                          <strong>IEC 62304</strong>, chu trình phát triển
                           phần mềm y tế.
                         </li>
                         <li>
                           <strong>
                             Good Machine Learning Practice (GMLP)
-                          </strong>{" "}
-                          — hướng dẫn liên ngành của FDA, Health Canada, và
+                          </strong>{" "}, hướng dẫn liên ngành của FDA, Health Canada, và
                           MHRA về phát triển AI y tế có trách nhiệm.
                         </li>
                       </ul>
@@ -1100,7 +1097,7 @@ export default function AIInHealthcareTopic() {
                       <ul className="list-disc space-y-2 pl-5 text-sm">
                         <li>
                           <strong>Ai chịu trách nhiệm khi AI sai?</strong>{" "}
-                          Hiện tại: bác sĩ ký kết luận — vì vậy bác sĩ có
+                          Hiện tại: bác sĩ ký kết luận, vì vậy bác sĩ có
                           quyền override AI và phải explainable để quyết
                           định có cơ sở.
                         </li>
@@ -1130,7 +1127,7 @@ export default function AIInHealthcareTopic() {
                     <strong>Bias dữ liệu train:</strong> Nghiên cứu nổi
                     tiếng cho thấy AI da liễu train chủ yếu trên da sáng
                     có độ nhạy tụt mạnh với da tối. Nhiều dataset y tế
-                    không đại diện cho đa dạng dân số — điều này đặc biệt
+                    không đại diện cho đa dạng dân số, điều này đặc biệt
                     quan trọng với nhân viên y tế Việt Nam khi đánh giá
                     sản phẩm nước ngoài.
                   </li>
@@ -1138,13 +1135,12 @@ export default function AIInHealthcareTopic() {
                     <strong>Hallucination trong tóm tắt bệnh án:</strong>{" "}
                     LLM có thể "bịa" chẩn đoán hoặc triệu chứng nghe có
                     vẻ hợp lý nhưng không có trong ghi chú gốc. Luôn cần
-                    bác sĩ review — không bao giờ để AI ghi thẳng vào hồ
+                    bác sĩ review, không bao giờ để AI ghi thẳng vào hồ
                     sơ chính thức.
                   </li>
                   <li>
                     <strong>Domain shift giữa các bệnh viện:</strong> Máy
-                    X-quang khác hãng, protocol chụp khác, dân số khác —
-                    mô hình tốt ở bệnh viện A có thể tụt accuracy 10–20%
+                    X-quang khác hãng, protocol chụp khác, dân số khác, mô hình tốt ở bệnh viện A có thể tụt accuracy 10–20%
                     tại bệnh viện B. Vì vậy cần validation trên từng cơ
                     sở trước triển khai.
                   </li>
@@ -1198,24 +1194,22 @@ export default function AIInHealthcareTopic() {
                 </p>
                 <ul className="list-disc space-y-2 pl-5 text-sm">
                   <li>
-                    <strong>Mô hình đa phương thức</strong> — kết hợp ảnh,
+                    <strong>Mô hình đa phương thức</strong>, kết hợp ảnh,
                     văn bản, số liệu xét nghiệm, thậm chí giọng nói bệnh
                     nhân để đưa ra gợi ý tổng hợp. Đã có các foundation
                     model y tế như BiomedGPT, Med-PaLM, MedSAM.
                   </li>
                   <li>
-                    <strong>Federated learning giữa các bệnh viện</strong> —
-                    cho phép bệnh viện train mô hình chung mà không cần
+                    <strong>Federated learning giữa các bệnh viện</strong>, cho phép bệnh viện train mô hình chung mà không cần
                     chuyển dữ liệu bệnh nhân ra ngoài. Giải pháp quan trọng
                     cho bảo mật.
                   </li>
                   <li>
-                    <strong>AI chăm sóc từ xa cho dân số nông thôn</strong>{" "}
-                    — một cơ hội lớn cho VN: dùng AI giúp trạm y tế xã đánh
+                    <strong>AI chăm sóc từ xa cho dân số nông thôn</strong>{" "}, một cơ hội lớn cho VN: dùng AI giúp trạm y tế xã đánh
                     giá ca bệnh, chuyển tuyến kịp thời.
                   </li>
                   <li>
-                    <strong>Khung pháp lý chuẩn hóa</strong> — Bộ Y tế VN
+                    <strong>Khung pháp lý chuẩn hóa</strong>, Bộ Y tế VN
                     dự kiến ban hành thêm hướng dẫn cho AI y tế trong các
                     năm tới, theo hướng hài hòa với FDA SaMD và EU AI Act.
                   </li>
@@ -1224,8 +1218,7 @@ export default function AIInHealthcareTopic() {
 
               <p className="text-sm text-muted">
                 Khi bạn đã nắm năm trụ cột và khung pháp lý, hầu hết tin tức
-                về "AI mới trong y tế" sẽ rơi vào một trong các ô có sẵn —
-                và bạn sẽ biết đặt câu hỏi phù hợp: mô hình train trên ai,
+                về "AI mới trong y tế" sẽ rơi vào một trong các ô có sẵn, và bạn sẽ biết đặt câu hỏi phù hợp: mô hình train trên ai,
                 validate thế nào, ai ký quyết định cuối.
               </p>
             </ExplanationSection>
@@ -1238,7 +1231,7 @@ export default function AIInHealthcareTopic() {
                 "Năm mảng AI y tế chính: chẩn đoán hình ảnh, phân loại cấp cứu, phát triển thuốc, tóm tắt bệnh án, hỗ trợ quyết định lâm sàng.",
                 "Nguyên tắc vàng: AI hỗ trợ, bác sĩ quyết định và ký tên. FDA, Bộ Y tế VN đều cấp phép AI y tế theo mô hình này.",
                 "Tại Việt Nam: VinBrain DrAid đã được Bộ Y tế cấp phép cho đọc X-quang phổi, CT sọ, nhũ ảnh; FPT AI Medical hợp tác nhiều bệnh viện; các BV đa quốc gia như FV, Hanoi French Hospital thử nghiệm sớm theo chuẩn quốc tế.",
-                "Bias dữ liệu là rủi ro lớn: mô hình train chủ yếu trên một nhóm dân số có thể sai khi gặp nhóm khác — luôn kiểm tra validation trên nhóm bệnh nhân của mình.",
+                "Bias dữ liệu là rủi ro lớn: mô hình train chủ yếu trên một nhóm dân số có thể sai khi gặp nhóm khác, luôn kiểm tra validation trên nhóm bệnh nhân của mình.",
                 "Khung pháp lý VN: Luật Khám chữa bệnh 2023, Nghị định 98/2021 (thiết bị y tế), Nghị định 13/2023 (dữ liệu cá nhân), đạo đức IRB. Chuẩn quốc tế: FDA SaMD, CE, GMLP.",
                 "AlphaFold (2020+) đã rút ngắn đáng kể giai đoạn đầu của phát triển thuốc; giai đoạn thử nghiệm lâm sàng trên người vẫn phải theo thời gian thật.",
               ]}
