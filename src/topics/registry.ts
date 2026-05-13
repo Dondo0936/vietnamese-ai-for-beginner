@@ -1101,8 +1101,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "prompt-engineering",
     title: "Prompt Engineering",
-    titleVi: "Kỹ thuật viết prompt",
-    description: "Nghệ thuật thiết kế prompt rõ ràng để AI cho ra kết quả đúng ý — dành cho dân văn phòng, không cần lập trình.",
+    titleVi: "Prompt engineering: dặn AI đúng việc ngay lần đầu",
+    description: "Viết prompt rõ để AI hiểu đúng việc, đúng giọng và đúng độ dài. Dành cho dân văn phòng, không cần lập trình.",
     category: "llm-concepts",
     tags: ["prompting", "techniques", "llm"],
     difficulty: "beginner",

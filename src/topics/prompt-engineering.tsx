@@ -35,9 +35,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "prompt-engineering",
   title: "Prompt Engineering",
-  titleVi: "Kỹ thuật viết prompt",
+  titleVi: "Prompt engineering: dặn AI đúng việc ngay lần đầu",
   description:
-    "Nghệ thuật thiết kế prompt rõ ràng để AI cho ra kết quả đúng ý — dành cho dân văn phòng, không cần lập trình.",
+    "Viết prompt rõ để AI hiểu đúng việc, đúng giọng và đúng độ dài. Dành cho dân văn phòng, không cần lập trình.",
   category: "llm-concepts",
   tags: ["prompt", "llm", "few-shot", "instruction"],
   difficulty: "beginner",
@@ -45,8 +45,8 @@ export const metadata: TopicMeta = {
   vizType: "interactive",
 };
 
-// ─── Dữ liệu cho Demo 1: Prompt Builder ───
-// Mỗi thành phần người học bật/tắt → prompt được dựng lại + điểm chất lượng tăng.
+// Dữ liệu cho Demo 1: Prompt Builder.
+// Mỗi thành phần người học bật/tắt sẽ dựng lại prompt và tăng điểm chất lượng.
 interface PromptComponent {
   id: "role" | "task" | "context" | "format" | "tone" | "example";
   label: string;
@@ -111,7 +111,7 @@ const PROMPT_COMPONENTS: PromptComponent[] = [
   },
 ];
 
-// ─── Dữ liệu cho Tab gallery (4 khung mẫu cho dân văn phòng) ───
+// Dữ liệu cho Tab gallery (4 khung mẫu cho dân văn phòng).
 const TEMPLATES = [
   {
     label: "Email xin nghỉ",
@@ -134,7 +134,7 @@ const TEMPLATES = [
       "Tóm tắt đoạn ghi âm cuộc họp 30 phút về kế hoạch Q2 thành biên bản.",
     slot3: "Ràng buộc",
     slot3Value:
-      "Dưới 200 từ, chia 3 phần: quyết định chính – công việc giao – mốc thời gian.",
+      "Dưới 200 từ, chia 3 phần: quyết định chính, công việc giao, mốc thời gian.",
     preview:
       "Quyết định chính: ra mắt sản phẩm A trong tháng 5. Công việc giao: (1) Hương phụ trách landing page trước 20/4, (2) Tú chạy ads thử nghiệm 5 triệu. Mốc quan trọng: chốt bản demo 25/4, đánh giá kết quả 15/5.",
   },
@@ -166,41 +166,41 @@ const TEMPLATES = [
   },
 ];
 
-// ─── 5 pitfalls phổ biến ───
+// 5 pitfalls phổ biến.
 const PITFALLS: { title: string; bad: string; fix: string; variant: "warning" | "tip" | "insight" }[] = [
   {
-    title: "Bẫy 1 — Prompt quá ngắn, thiếu bối cảnh",
+    title: "Bẫy 1: prompt quá ngắn, thiếu bối cảnh",
     bad: '"Viết email xin lỗi"',
     fix: '"Viết email xin lỗi khách hàng doanh nghiệp vì giao báo cáo trễ 2 ngày. Giọng chuyên nghiệp, có cam kết cụ thể, dưới 100 từ."',
     variant: "warning",
   },
   {
-    title: "Bẫy 2 — Yêu cầu nhiều thứ trong một câu rối",
+    title: "Bẫy 2: yêu cầu nhiều thứ trong một câu rối",
     bad: '"Viết email và tóm tắt cuộc họp và dịch sang tiếng Anh"',
     fix: "Tách thành 3 prompt riêng, mỗi prompt một việc. Dùng xong cái này mới chuyển sang cái kế.",
     variant: "tip",
   },
   {
-    title: "Bẫy 3 — Không nêu đối tượng đọc",
+    title: "Bẫy 3: không nêu đối tượng đọc",
     bad: '"Viết bài giới thiệu sản phẩm"',
     fix: '"Viết bài giới thiệu máy lọc nước cho khách hàng là mẹ bỉm sữa 28-35 tuổi, ở chung cư Hà Nội."',
     variant: "warning",
   },
   {
-    title: "Bẫy 4 — Quên cho ví dụ khi cần giọng đặc thù",
+    title: "Bẫy 4: quên cho ví dụ khi cần giọng đặc thù",
     bad: '"Viết giống giọng của sếp em"',
     fix: "Dán 1-2 email cũ của sếp vào prompt, rồi nói: “Viết tương tự giọng trên, nội dung mới là…”",
     variant: "insight",
   },
   {
-    title: "Bẫy 5 — Không nói rõ độ dài & định dạng",
+    title: "Bẫy 5: không nói rõ độ dài và định dạng",
     bad: '"Tóm tắt báo cáo này"',
-    fix: '"Tóm tắt báo cáo dưới đây thành 5 bullet, mỗi bullet 1 câu, tổng dưới 120 từ."',
+    fix: '"Tóm tắt báo cáo dưới đây thành 5 gạch đầu dòng, mỗi dòng 1 câu, tổng dưới 120 từ."',
     variant: "tip",
   },
 ];
 
-// ─── Quiz cuối bài (5 câu) ───
+// Quiz cuối bài (5 câu).
 const quizQuestions: QuizQuestion[] = [
   {
     question:
@@ -213,7 +213,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Prompt tốt phải có: nhiệm vụ cụ thể, người nhận, lý do, giọng văn, ràng buộc. Option B đủ cả năm yếu tố — AI sẽ không phải đoán bừa.",
+      "Prompt tốt phải có nhiệm vụ cụ thể, người nhận, lý do, giọng văn và ràng buộc. Lựa chọn B đủ cả năm yếu tố nên AI không phải đoán bừa.",
   },
   {
     question:
@@ -233,7 +233,7 @@ const quizQuestions: QuizQuestion[] = [
       "Prompt “Tóm tắt tài liệu này thành 5 gạch đầu dòng, tổng dưới 150 từ, ngôn ngữ đơn giản” tốt vì điều gì?",
     options: [
       "Có nhiều chữ hơn nên AI làm tốt hơn",
-      "Đã nêu rõ định dạng (5 bullet), độ dài (dưới 150 từ), và phong cách (đơn giản)",
+      "Đã nêu rõ định dạng (5 gạch đầu dòng), độ dài (dưới 150 từ), và phong cách (đơn giản)",
       "Viết bằng giọng ra lệnh mạnh",
       "Có từ “tóm tắt” nên AI hiểu ngay",
     ],
@@ -252,24 +252,24 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Prompt engineering là vòng lặp: thử → xem kết quả → chỉnh. Bảo AI sửa phần cụ thể nhanh hơn là viết lại từ đầu.",
+      "Prompt engineering là vòng lặp: thử, xem kết quả, rồi chỉnh. Bảo AI sửa phần cụ thể nhanh hơn là viết lại từ đầu.",
   },
   {
     type: "fill-blank",
     question:
-      "Công thức prompt hiệu quả: {blank} (bạn là ai) + nhiệm vụ cụ thể + {blank} (văn phong) + định dạng & {blank} (bao nhiêu chữ, mấy bullet…).",
+      "Công thức prompt hiệu quả: {blank} (bạn là ai) + nhiệm vụ cụ thể + {blank} (văn phong) + định dạng và {blank} (bao nhiêu chữ, mấy gạch đầu dòng…).",
     blanks: [
       { answer: "vai trò", accept: ["Vai trò", "role", "Role"] },
       { answer: "giọng văn", accept: ["Giọng văn", "tone", "Tone"] },
       { answer: "độ dài", accept: ["Độ dài", "length", "Length"] },
     ],
     explanation:
-      "Bộ khung CRAFT rút gọn: Context (vai trò + bối cảnh) – Role – Action (nhiệm vụ) – Format – Tone. Thiếu bất kỳ mảnh nào, AI sẽ phải đoán.",
+      "Bộ khung CRAFT rút gọn gồm Context (vai trò và bối cảnh), Role, Action (nhiệm vụ), Format và Tone. Thiếu bất kỳ mảnh nào, AI sẽ phải đoán.",
   },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DEMO 1 — PROMPT BUILDER (người học bật/tắt thành phần để dựng prompt)
+// DEMO 1. PROMPT BUILDER (người học bật/tắt thành phần để dựng prompt)
 // ═══════════════════════════════════════════════════════════════════════════
 function PromptBuilderDemo() {
   const [enabled, setEnabled] = useState<Record<PromptComponent["id"], boolean>>({
@@ -361,9 +361,9 @@ function PromptBuilderDemo() {
           <div className="flex items-center gap-2 mb-2">
             <MessageSquare
               size={14}
-              className="text-blue-600 dark:text-blue-400"
+              className="text-blue-700 dark:text-blue-300"
             />
-            <span className="text-xs font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
+            <span className="text-xs font-semibold uppercase tracking-wide text-blue-900 dark:text-blue-200">
               Prompt đang dựng
             </span>
           </div>
@@ -376,7 +376,7 @@ function PromptBuilderDemo() {
               transition={{ duration: 0.2 }}
               className="whitespace-pre-wrap text-sm font-sans leading-relaxed text-foreground"
             >
-              {composed || "(Chưa bật mảnh nào — prompt đang trống)"}
+              {composed || "(Chưa bật mảnh nào, prompt đang trống)"}
             </motion.pre>
           </AnimatePresence>
         </div>
@@ -426,14 +426,14 @@ function PromptBuilderDemo() {
       {score < 85 && (
         <Callout variant="tip" title="Gợi ý">
           Thử bật thêm <strong>Vai trò</strong>, <strong>Bối cảnh</strong> hoặc{" "}
-          <strong>Ví dụ mẫu</strong> — đó là ba mảnh dân văn phòng thường quên,
+          <strong>Ví dụ mẫu</strong>. Đó là ba mảnh dân văn phòng thường quên,
           nhưng giúp AI đi thẳng vào giọng bạn muốn.
         </Callout>
       )}
       {score >= 85 && (
         <Callout variant="insight" title="Đã đủ gia vị!">
           Prompt của bạn giờ có đủ vai trò, nhiệm vụ, ràng buộc và bối cảnh. AI
-          không phải đoán — kết quả sẽ đi đúng ý ngay lần đầu.
+          không phải đoán. Kết quả sẽ đi đúng ý ngay lần đầu.
         </Callout>
       )}
     </div>
@@ -441,7 +441,7 @@ function PromptBuilderDemo() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DEMO 2 — GHÉP CẶP PROMPT MƠ HỒ ↔ PROMPT CỤ THỂ
+// DEMO 2. GHÉP CẶP PROMPT MƠ HỒ VỚI PROMPT CỤ THỂ
 // ═══════════════════════════════════════════════════════════════════════════
 function VagueVsSpecificDemo() {
   return (
@@ -456,7 +456,7 @@ function VagueVsSpecificDemo() {
         {
           left: "Tóm tắt tài liệu này",
           right:
-            "Tóm tắt báo cáo dưới đây thành 5 bullet, tổng dưới 150 từ, dành cho người không chuyên",
+            "Tóm tắt báo cáo dưới đây thành 5 gạch đầu dòng, tổng dưới 150 từ, dành cho người không chuyên",
         },
         {
           left: "Viết bài quảng cáo sản phẩm",
@@ -474,7 +474,7 @@ function VagueVsSpecificDemo() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DEMO 3 — PHẪU THUẬT PROMPT (DragDrop các mảnh còn thiếu vào đúng chỗ)
+// DEMO 3. PHẪU THUẬT PROMPT (DragDrop các mảnh còn thiếu vào đúng chỗ)
 // ═══════════════════════════════════════════════════════════════════════════
 function PromptSurgeryDemo() {
   return (
@@ -483,9 +483,9 @@ function PromptSurgeryDemo() {
         <div className="flex items-center gap-2 mb-2">
           <AlertTriangle
             size={14}
-            className="text-red-600 dark:text-red-400"
+            className="text-red-700 dark:text-red-300"
           />
-          <span className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
+          <span className="text-xs font-semibold uppercase tracking-wide text-red-900 dark:text-red-200">
             Prompt bệnh (khó cứu)
           </span>
         </div>
@@ -496,7 +496,7 @@ function PromptSurgeryDemo() {
 
       <p className="text-sm text-muted">
         Kéo từng mảnh ghép vào đúng vùng điều trị. Mỗi vùng chỉ nhận đúng một
-        mảnh — AI đang chờ bạn làm rõ!
+        mảnh. AI đang chờ bạn làm rõ.
       </p>
 
       <DragDrop
@@ -547,7 +547,7 @@ function PromptSurgeryDemo() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// CRAFT — sơ đồ màu (không phải bullet list)
+// CRAFT. Sơ đồ màu (không phải danh sách gạch đầu dòng)
 // ═══════════════════════════════════════════════════════════════════════════
 function CraftDiagram() {
   const parts = [
@@ -576,7 +576,7 @@ function CraftDiagram() {
       letter: "F",
       label: "Format",
       subLabel: "Định dạng",
-      example: "5 bullet, mỗi bullet 1 câu, dưới 120 từ…",
+      example: "5 gạch đầu dòng, mỗi dòng 1 câu, dưới 120 từ…",
       color: "#D97706",
     },
     {
@@ -592,7 +592,8 @@ function CraftDiagram() {
     <div className="rounded-xl border border-border bg-card p-5 space-y-4">
       <p className="text-sm text-muted">
         CRAFT là 5 chữ cái bạn nên nhắc bản thân mỗi khi gõ prompt. Mỗi ô bên
-        dưới là một mảnh, màu sắc giúp não bạn bám trụ lâu hơn danh sách bullet.
+        dưới là một mảnh, màu sắc giúp não bạn nhớ lâu hơn một danh sách gạch
+        đầu dòng.
       </p>
 
       <div className="grid gap-3 sm:grid-cols-5">
@@ -641,7 +642,7 @@ function CraftDiagram() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// BEFORE / AFTER — hai thẻ cạnh nhau (không phải code)
+// BEFORE / AFTER. Hai thẻ cạnh nhau (không phải code)
 // ═══════════════════════════════════════════════════════════════════════════
 function BeforeAfterCard() {
   return (
@@ -649,7 +650,7 @@ function BeforeAfterCard() {
       <div className="rounded-xl border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 space-y-2">
         <div className="flex items-center gap-2">
           <Ruler size={14} className="text-red-600 dark:text-red-400" />
-          <span className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-300">
+          <span className="text-xs font-semibold uppercase tracking-wide text-red-900 dark:text-red-200">
             Prompt trước
           </span>
         </div>
@@ -657,8 +658,8 @@ function BeforeAfterCard() {
           &ldquo;Viết báo cáo tuần cho team marketing&rdquo;
         </p>
         <div className="pt-2 border-t border-red-200 dark:border-red-800">
-          <span className="text-[11px] font-semibold text-red-700 dark:text-red-300 uppercase tracking-wide">
-            Output mơ hồ
+          <span className="text-[11px] font-semibold text-red-900 dark:text-red-200 uppercase tracking-wide">
+            Kết quả mơ hồ
           </span>
           <p className="text-xs text-foreground mt-1 leading-relaxed">
             &ldquo;Tuần này team đã làm nhiều việc. Các hoạt động diễn ra tốt.
@@ -670,18 +671,18 @@ function BeforeAfterCard() {
       <div className="rounded-xl border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-4 space-y-2">
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-green-600 dark:text-green-400" />
-          <span className="text-xs font-semibold uppercase tracking-wide text-green-700 dark:text-green-300">
+          <span className="text-xs font-semibold uppercase tracking-wide text-green-900 dark:text-green-200">
             Prompt sau
           </span>
         </div>
         <p className="text-sm text-foreground italic">
           &ldquo;Bạn là leader team marketing. Viết báo cáo tuần gửi sếp, 3
-          phần: (1) kết quả chính – có số liệu, (2) vấn đề gặp phải, (3) kế
+          phần: (1) kết quả chính có số liệu, (2) vấn đề gặp phải, (3) kế
           hoạch tuần sau. Mỗi phần dưới 40 từ, giọng trực tiếp.&rdquo;
         </p>
         <div className="pt-2 border-t border-green-200 dark:border-green-800">
-          <span className="text-[11px] font-semibold text-green-700 dark:text-green-300 uppercase tracking-wide">
-            Output đi đúng ý
+          <span className="text-[11px] font-semibold text-green-900 dark:text-green-200 uppercase tracking-wide">
+            Kết quả đi đúng ý
           </span>
           <p className="text-xs text-foreground mt-1 leading-relaxed">
             &ldquo;Kết quả: ads Facebook đạt CPC 4.2k (tốt hơn tuần trước 18%),
@@ -701,7 +702,7 @@ function BeforeAfterCard() {
 export default function PromptEngineeringTopic() {
   return (
     <>
-      {/* ━━━ BƯỚC 1 — HOOK / DỰ ĐOÁN ━━━ */}
+      {/* BƯỚC 1. HOOK / DỰ ĐOÁN */}
       <LessonSection step={1} totalSteps={8} label="Thử đoán">
         <PredictionGate
           question="Bạn nhờ AI viết một email xin nghỉ cho sếp. Hai prompt dưới đây, prompt nào sẽ cho bạn email đúng ý ngay lần đầu?"
@@ -711,48 +712,46 @@ export default function PromptEngineeringTopic() {
             "Cả hai như nhau, AI đủ thông minh để tự đoán",
           ]}
           correct={1}
-          explanation="Prompt B đã nêu rõ đối tượng (sếp), lý do, giọng văn, và độ dài. AI không đọc được suy nghĩ của bạn — bạn phải nói rõ. Đó chính là toàn bộ bản chất của prompt engineering, và bài học hôm nay sẽ biến điều đó thành thói quen."
+          explanation="Prompt B đã nêu rõ người nhận, lý do, giọng văn và độ dài. AI không đọc được suy nghĩ của bạn, nên bạn phải nói rõ. Đó là bản chất của prompt engineering, và bài học hôm nay sẽ biến điều đó thành thói quen."
         >
           <p className="text-sm text-muted mt-4">
-            Viết prompt giống như{" "}
-            <strong className="text-foreground">
-              dặn dò người giúp việc
-            </strong>{" "}
-            — bạn càng nói rõ ngay từ đầu, sau đó càng đỡ phải sửa đi sửa lại.
+            Viết prompt giống như dặn một{" "}
+            <strong className="text-foreground">trợ lý mới</strong>. Bạn càng
+            nói rõ ngay từ đầu, sau đó càng đỡ phải sửa đi sửa lại.
           </p>
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 2 — ẨN DỤ THỰC TẾ ━━━ */}
+      {/* BƯỚC 2. ẨN DỤ THỰC TẾ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <p>
           Hãy tưởng tượng bạn vừa tuyển một trợ lý mới. Người này{" "}
           <strong>
             rất thông minh, đọc cực nhanh, nhớ mọi thứ bạn vừa nói
           </strong>{" "}
-          — nhưng hoàn toàn không biết bạn đang làm gì, khách hàng của bạn là
-          ai, hay sếp của bạn khó tính đến mức nào. Nếu bạn chỉ bảo &ldquo;viết
-          cái email đó đi&rdquo;, trợ lý sẽ đoán bừa. Nếu bạn đưa đủ chi tiết —
-          gửi ai, để làm gì, dài bao nhiêu, giọng nào — trợ lý làm đúng ngay.
+          nhưng chưa biết bạn đang làm gì, khách hàng của bạn là ai, hay sếp
+          của bạn khó tính đến mức nào. Nếu bạn chỉ bảo &ldquo;viết cái email
+          đó đi&rdquo;, trợ lý sẽ đoán bừa. Nếu bạn đưa đủ chi tiết (gửi ai,
+          để làm gì, dài bao nhiêu, giọng nào), trợ lý làm đúng ngay.
         </p>
         <p>
           AI chính là người trợ lý đó. <strong>Prompt là cách bạn dặn dò.</strong>{" "}
-          Chất lượng dặn dò quyết định chất lượng sản phẩm. Dặn mơ hồ → làm mơ
-          hồ. Dặn rõ → làm đúng. Trong phần tiếp theo, bạn sẽ tự tay lắp ráp
-          một prompt từng mảnh và chứng kiến điểm chất lượng tăng ngay trước
-          mắt.
+          Chất lượng dặn dò quyết định chất lượng sản phẩm. Dặn mơ hồ thì kết
+          quả mơ hồ. Dặn rõ thì kết quả sát ý hơn. Trong phần tiếp theo, bạn sẽ
+          tự tay lắp ráp một prompt từng mảnh và nhìn điểm chất lượng tăng ngay
+          trước mắt.
         </p>
         <Callout variant="insight" title="Quy tắc cốt lõi">
-          Chất lượng <strong>output</strong> của AI gần như chỉ phụ thuộc vào
-          chất lượng <strong>prompt</strong> bạn gửi vào. Prompt mơ hồ = output
-          mơ hồ. Không có cách nào khác để AI đọc được suy nghĩ của bạn.
+          Chất lượng kết quả của AI gần như chỉ phụ thuộc vào chất lượng{" "}
+          <strong>prompt</strong> bạn gửi vào. Prompt mơ hồ thì kết quả mơ hồ.
+          Không có cách nào khác để AI đọc được suy nghĩ của bạn.
         </Callout>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 3 — TRỰC QUAN HÓA (3 DEMO) ━━━ */}
+      {/* BƯỚC 3. TRỰC QUAN HÓA (3 DEMO) */}
       <LessonSection step={3} totalSteps={8} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
-          {/* ───── DEMO 1 — PROMPT BUILDER ───── */}
+          {/* DEMO 1. PROMPT BUILDER */}
           <LessonSection step={1} totalSteps={3} label="Demo 1 · Prompt Builder">
             <h3 className="text-base font-semibold text-foreground mb-1">
               Tự tay lắp ráp một prompt
@@ -764,10 +763,10 @@ export default function PromptEngineeringTopic() {
             <PromptBuilderDemo />
           </LessonSection>
 
-          {/* ───── DEMO 2 — MATCH PAIRS ───── */}
+          {/* DEMO 2. MATCH PAIRS */}
           <LessonSection step={2} totalSteps={3} label="Demo 2 · Ghép cặp">
             <h3 className="text-base font-semibold text-foreground mb-1">
-              Prompt mơ hồ ↔ Prompt cụ thể
+              Prompt mơ hồ và prompt cụ thể
             </h3>
             <p className="text-sm text-muted mb-4">
               4 prompt văn phòng đời thường. Nối bản mơ hồ với bản đã được
@@ -776,7 +775,7 @@ export default function PromptEngineeringTopic() {
             <VagueVsSpecificDemo />
           </LessonSection>
 
-          {/* ───── DEMO 3 — DRAG DROP SURGERY ───── */}
+          {/* DEMO 3. DRAG DROP SURGERY */}
           <LessonSection step={3} totalSteps={3} label="Demo 3 · Phẫu thuật">
             <h3 className="text-base font-semibold text-foreground mb-1">
               Phẫu thuật một prompt bệnh
@@ -790,17 +789,17 @@ export default function PromptEngineeringTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 4 — AHA MOMENT ━━━ */}
+      {/* BƯỚC 4. AHA MOMENT */}
       <LessonSection step={4} totalSteps={8} label="Aha">
         <AhaMoment>
-          Prompt không phải là một câu lệnh ma thuật — nó là{" "}
+          Prompt không phải là một câu lệnh ma thuật. Nó là{" "}
           <strong>một bản dặn dò</strong>. Bạn dặn càng rõ ràng ngay từ đầu, AI
-          càng không cần bạn phải ngồi sửa lại mỗi lần. Garbage in → garbage
-          out. Clear in → clear out.
+          càng ít bắt bạn sửa lại. Đầu vào mơ hồ thì đầu ra cũng mơ hồ. Đầu vào
+          rõ thì đầu ra rõ.
         </AhaMoment>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 5 — INLINE CHALLENGE ━━━ */}
+      {/* BƯỚC 5. INLINE CHALLENGE */}
       <LessonSection step={5} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Sếp vừa nhờ bạn gửi bản tóm tắt cuộc họp 30 phút sáng nay. Bạn muốn AI viết giúp. Prompt nào là tốt nhất?"
@@ -811,18 +810,21 @@ export default function PromptEngineeringTopic() {
             "“Giúp tôi viết tóm tắt cuộc họp, làm sao cho hay”",
           ]}
           correct={1}
-          explanation="Option B có đủ: vai trò (thư ký), nhiệm vụ (tóm tắt), định dạng (3 phần rõ), độ dài (dưới 200 từ), và giọng văn. AI sẽ ra bản tóm tắt đúng chuẩn ngay lần đầu — không cần bạn ngồi chỉnh."
+          explanation="Lựa chọn B có đủ vai trò (thư ký), nhiệm vụ (tóm tắt), định dạng (3 phần rõ), độ dài (dưới 200 từ) và giọng văn. AI sẽ trả về bản tóm tắt đúng chuẩn ngay lần đầu, không cần bạn ngồi chỉnh."
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 6 — GIẢI THÍCH SÂU (VISUAL HEAVY) ━━━ */}
+      {/* BƯỚC 6. GIẢI THÍCH SÂU (VISUAL HEAVY) */}
       <LessonSection step={6} totalSteps={8} label="Đi sâu">
         <ExplanationSection>
           <p>
-            <strong>Prompt engineering</strong> là kỹ năng thiết kế lời dặn
-            (prompt) sao cho AI hiểu chính xác bạn muốn gì — đúng format, đúng
-            giọng văn, đúng độ dài, đúng đối tượng. Không cần biết lập trình,
-            không cần học toán. Chỉ cần biết cách nói cho rõ.
+            Mở ChatGPT, Claude hay Gemini, gõ &ldquo;viết email gửi sếp&rdquo;,
+            rồi bạn thường nhận lại một bản nghe được nhưng quá chung chung.
+            Khi bạn thêm người nhận, lý do, độ dài và giọng văn, bản email đổi
+            hẳn. Kỹ năng đó gọi là <strong>prompt engineering</strong>: thiết
+            kế prompt để AI hiểu đúng việc, đúng định dạng, đúng giọng và đúng
+            đối tượng. Bạn không cần biết lập trình hay học toán, chỉ cần biết
+            cách dặn rõ.
           </p>
 
           {/* Sơ đồ CRAFT */}
@@ -840,14 +842,14 @@ export default function PromptEngineeringTopic() {
               <Callout key={i} variant={p.variant} title={p.title}>
                 <div className="space-y-1">
                   <p>
-                    <span className="font-semibold text-red-700 dark:text-red-300">
+                    <span className="font-semibold text-foreground">
                       Bệnh:
                     </span>{" "}
                     {p.bad}
                   </p>
                   <p>
-                    <span className="font-semibold text-green-700 dark:text-green-300">
-                      Thuốc:
+                    <span className="font-semibold text-foreground">
+                      Cách sửa:
                     </span>{" "}
                     {p.fix}
                   </p>
@@ -868,7 +870,7 @@ export default function PromptEngineeringTopic() {
           </h4>
           <p className="text-sm text-muted">
             Bốn tình huống dân văn phòng gặp mỗi tuần. Mỗi khung đã điền sẵn 3
-            ô — bạn chỉ việc đổi nội dung cho hợp hoàn cảnh của mình.
+            ô. Bạn chỉ việc đổi nội dung cho hợp hoàn cảnh của mình.
           </p>
           <TabView
             tabs={TEMPLATES.map((t) => ({
@@ -902,7 +904,7 @@ export default function PromptEngineeringTopic() {
                     <div className="flex items-center gap-2 mb-2">
                       <Sparkles size={14} className="text-accent" />
                       <span className="text-xs font-semibold uppercase tracking-wide text-accent">
-                        AI trả ra
+                        AI trả về
                       </span>
                     </div>
                     <p className="text-sm text-foreground leading-relaxed">
@@ -922,34 +924,34 @@ export default function PromptEngineeringTopic() {
             <TopicLink slug="in-context-learning">in-context learning</TopicLink>{" "}
             (cho AI vài ví dụ mẫu ngay trong prompt). Ngoài ra, tham số{" "}
             <TopicLink slug="temperature">temperature</TopicLink> quyết định AI
-            sáng tạo hay bảo thủ — hữu ích khi bạn muốn AI cho ra nhiều bản
-            nháp khác nhau.
+            sáng tạo hay bảo thủ. Tham số này hữu ích khi bạn muốn AI cho ra
+            nhiều bản nháp khác nhau.
           </p>
 
           <Callout variant="insight" title="Lặp lại là chìa khóa">
-            Không có prompt hoàn hảo ngay lần đầu — kể cả người viết prompt
-            chuyên nghiệp. Bí quyết là: thử nhanh → xem AI trả gì → chỉnh một
-            phần cụ thể (&ldquo;đoạn 2 quá khô, hãy viết lại ấm hơn&rdquo;) →
-            lặp lại. Hai ba lần là ra bản ưng ý, nhanh hơn tự viết rất nhiều.
+            Không có prompt hoàn hảo ngay lần đầu, kể cả với người viết prompt
+            chuyên nghiệp. Bí quyết là thử nhanh, xem AI trả gì, rồi chỉnh một
+            phần cụ thể (&ldquo;đoạn 2 quá khô, hãy viết lại ấm hơn&rdquo;).
+            Hai ba vòng như vậy thường nhanh hơn tự viết từ đầu.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
-      {/* ━━━ BƯỚC 7 — TÓM TẮT ━━━ */}
+      {/* BƯỚC 7. TÓM TẮT */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           title="5 điều cần nhớ khi viết prompt"
           points={[
-            "Prompt là bản dặn dò cho trợ lý — càng rõ ràng, AI càng đi đúng ý ngay lần đầu",
+            "Prompt là bản dặn dò cho trợ lý. Càng rõ ràng, AI càng đi đúng ý ngay lần đầu.",
             "Khung CRAFT: Context (bối cảnh) + Role (vai trò) + Action (nhiệm vụ) + Format (định dạng) + Tone (giọng)",
-            "Luôn nêu rõ đối tượng đọc và độ dài — hai mảnh dân văn phòng hay quên nhất",
-            "Khi muốn AI viết đúng giọng của mình, dán 1-2 ví dụ mẫu vào prompt, đừng mô tả bằng lời",
-            "Không có prompt hoàn hảo lần đầu — nhưng chỉnh sửa từng phần nhanh hơn viết lại từ đầu rất nhiều",
+            "Luôn nêu rõ đối tượng đọc và độ dài. Đây là hai mảnh dân văn phòng hay quên nhất.",
+            "Khi muốn AI viết đúng giọng của mình, dán 1-2 ví dụ mẫu vào prompt, đừng mô tả bằng lời.",
+            "Không có prompt hoàn hảo lần đầu. Chỉnh từng phần nhanh hơn viết lại từ đầu rất nhiều.",
           ]}
         />
       </LessonSection>
 
-      {/* ━━━ BƯỚC 8 — QUIZ ━━━ */}
+      {/* BƯỚC 8. QUIZ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
