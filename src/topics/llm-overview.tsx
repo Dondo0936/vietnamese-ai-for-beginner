@@ -329,7 +329,7 @@ const quizQuestions: QuizQuestion[] = [
       "Sếp giao bạn dùng LLM rà hợp đồng 120 trang. Điều đầu tiên cần kiểm tra là gì?",
     options: [
       "LLM có biết tiếng Việt không",
-      "Cửa sổ ngữ cảnh (context window) của model có đủ chứa 120 trang không",
+      "Context window của model có đủ chứa 120 trang không",
       "Đã cài antivirus chưa",
       "Máy tính có bao nhiêu RAM",
     ],
@@ -709,7 +709,7 @@ export default function LLMOverviewTopic() {
           </LessonSection>
 
           {/* ── Demo 3: Cửa sổ ngữ cảnh ──────────────────────────────── */}
-          <LessonSection step={3} label="Demo 3, Cửa sổ ngữ cảnh">
+          <LessonSection step={3} label="Demo 3, Context window">
             <div className="flex items-center gap-2 mb-1">
               <Clock size={16} className="text-accent" />
               <h3 className="text-base font-semibold text-foreground">
@@ -1123,7 +1123,7 @@ export default function LLMOverviewTopic() {
           points={[
             "LLM là cỗ máy đoán chữ tiếp theo, luyện trên gần như toàn bộ chữ viết công khai của loài người.",
             "Temperature là nút vặn 'độ bay bổng', thấp cho hợp đồng, cao cho ý tưởng sáng tạo.",
-            "Cửa sổ ngữ cảnh là trí nhớ ngắn hạn của LLM; model hiện nay đủ nuốt cả hợp đồng 200 trang.",
+            "Context window là trí nhớ ngắn hạn của LLM; model hiện nay đủ đọc cả hợp đồng 200 trang.",
             "LLM viết câu trôi chảy nhưng có thể bịa số liệu, điều luật, trích dẫn, luôn kiểm chứng ở việc quan trọng.",
             "Giao cho LLM: soạn email, tóm tắt báo cáo, viết caption. Đừng giao một mình: tính thuế, tư vấn thuốc, khẳng định điều luật.",
           ]}

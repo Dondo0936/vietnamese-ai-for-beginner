@@ -552,7 +552,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
           sourceRef={1}
         />
         <Metric
-          value="Hỗ trợ 44 ngôn ngữ, pre-train trên 104 ngôn ngữ, quét trên 100 triệu nguồn"
+  value="Hỗ trợ 44 ngôn ngữ, được huấn luyện trước trên 104 ngôn ngữ, quét trên 100 triệu nguồn"
           sourceRef={1}
         />
         <Metric

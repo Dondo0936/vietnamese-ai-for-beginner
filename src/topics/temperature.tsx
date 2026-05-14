@@ -39,7 +39,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "temperature",
   title: "Temperature",
-  titleVi: "Temperature: nút chỉnh độ liều của AI",
+  titleVi: "Temperature: nút chỉnh độ ngẫu nhiên của AI",
   description:
     "Biết lúc nào hạ temperature để câu trả lời chắc hơn và lúc nào tăng để có thêm phương án sáng tạo.",
   category: "llm-concepts",
@@ -660,7 +660,7 @@ export default function TemperatureTopic() {
       {/* ━━━ BƯỚC 4, AHA ━━━ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc hiểu">
         <AhaMoment>
-          Temperature không quyết định AI <strong>thông minh</strong> hay <strong>ngu</strong>, nó chỉ quyết định AI có <strong>dám đi chệch</strong> khỏi phương án an toàn hay không.
+          Temperature không quyết định AI <strong>giỏi</strong> hay <strong>kém</strong>, nó chỉ quyết định AI có <strong>dám đi chệch</strong> khỏi phương án an toàn hay không.
           <br />
           <br />
           Temperature cao không khiến AI giỏi hơn. Temperature thấp không khiến AI dốt đi. Chúng

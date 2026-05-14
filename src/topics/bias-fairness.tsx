@@ -334,7 +334,7 @@ const BIAS_ITEMS = [
   {
     id: "sampling-1",
     label:
-      "Mô hình chấm điểm tín dụng chỉ train trên khách hàng Hà Nội và TP.HCM",
+      "Mô hình chấm điểm tín dụng chỉ được huấn luyện trên khách hàng Hà Nội và TP.HCM",
   },
   {
     id: "sampling-2",
@@ -368,7 +368,7 @@ const BIAS_ITEMS = [
   {
     id: "deployment-2",
     label:
-      "AI nhận diện khuôn mặt train ở Mỹ được lắp vào cửa văn phòng tại Việt Nam, sai nhiều hơn với người bản địa",
+      "AI nhận diện khuôn mặt huấn luyện ở Mỹ được lắp vào cửa văn phòng tại Việt Nam, sai nhiều hơn với người bản địa",
   },
 ] as const;
 
@@ -758,7 +758,7 @@ export default function BiasFairnessTopic() {
     <>
       {/* ── BƯỚC 1: PREDICTION GATE ─────────────────────────────────────── */}
       <PredictionGate
-        question="Một mô hình AI dự đoán khả năng trả nợ được train trên dữ liệu 10 năm qua của ngân hàng. Theo bạn, ai sẽ bị đánh giá thấp nhất?"
+        question="Một mô hình AI dự đoán khả năng trả nợ được huấn luyện trên dữ liệu 10 năm qua của ngân hàng. Theo bạn, ai sẽ bị đánh giá thấp nhất?"
         options={[
           "Người trẻ mới đi làm",
           "Phụ nữ làm nội trợ trước đây",
@@ -858,7 +858,7 @@ export default function BiasFairnessTopic() {
               nameVi="Thiên kiến lấy mẫu"
               nameEn="Sampling bias"
               what="Dữ liệu huấn luyện không đại diện cho toàn bộ dân số thật. AI chỉ 'biết' những nhóm nó từng thấy."
-              example="Mô hình tuyển dụng train 90% từ ứng viên Hà Nội & TP.HCM, đoán sai với miền Trung."
+              example="Mô hình tuyển dụng huấn luyện 90% từ ứng viên Hà Nội & TP.HCM, đoán sai với miền Trung."
               tone="blue"
             />
             <BiasTypeCard
@@ -881,8 +881,8 @@ export default function BiasFairnessTopic() {
               icon={MapPin}
               nameVi="Thiên kiến triển khai"
               nameEn="Deployment bias"
-              what="AI dùng đúng ở ngữ cảnh này lại sai ở ngữ cảnh khác. Train một nơi, dùng một nẻo."
-              example="Nhận diện khuôn mặt train ở Mỹ, lắp ở Việt Nam sai nhiều hơn với người bản địa."
+              what="AI dùng đúng ở ngữ cảnh này lại sai ở ngữ cảnh khác. Huấn luyện một nơi, triển khai một nẻo."
+              example="Nhận diện khuôn mặt huấn luyện ở Mỹ, lắp ở Việt Nam sai nhiều hơn với người bản địa."
               tone="rose"
             />
           </div>

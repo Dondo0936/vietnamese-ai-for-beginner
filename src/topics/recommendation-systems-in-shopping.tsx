@@ -884,7 +884,7 @@ export default function RecommendationSystemsInShopping() {
           <MechanismProgressBar current={1} total={4} />
           <p>
             <strong>Ghi lại từng hành vi của hàng trăm triệu người dùng.</strong>{" "}
-            Shopee gắn một &ldquo;máy ghi âm ngầm&rdquo; vào mọi lượt truy cập:
+            Shopee gắn một &ldquo;bộ ghi tín hiệu hành vi&rdquo; vào mọi lượt truy cập:
             bạn xem sản phẩm nào bao lâu, bấm vào đâu, thêm giỏ rồi bỏ hay mua
             hẳn, chấm mấy sao, viết đánh giá nói gì. Mỗi người trung bình tạo ra
             vài trăm tín hiệu mỗi ngày. Tất cả chảy về kho dữ liệu Shopee, nguyên liệu thô cho các mô hình AI phía sau.

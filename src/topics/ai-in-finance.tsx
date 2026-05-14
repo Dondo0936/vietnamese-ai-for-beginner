@@ -799,7 +799,7 @@ export default function AIInFinanceTopic() {
         ],
         correct: 1,
         explanation:
-          "AI không phải là chủ thể pháp lý. Ngân hàng/công ty CKDL triển khai robo-advisor phải chịu trách nhiệm về: (1) chất lượng mô hình, (2) bộ câu hỏi đánh giá khẩu vị rủi ro, (3) cảnh báo rủi ro rõ ràng, (4) kênh khiếu nại. Ủy ban CKDL Việt Nam và các quy định về sản phẩm đầu tư bán lẻ áp dụng cho cả sản phẩm dùng AI.",
+          "AI không phải là chủ thể pháp lý. Ngân hàng hoặc công ty chứng khoán triển khai robo-advisor phải chịu trách nhiệm về: (1) chất lượng mô hình, (2) bộ câu hỏi đánh giá khẩu vị rủi ro, (3) cảnh báo rủi ro rõ ràng, (4) kênh khiếu nại. Ủy ban Chứng khoán Nhà nước và các quy định về sản phẩm đầu tư bán lẻ áp dụng cho cả sản phẩm dùng AI.",
       },
       {
         type: "fill-blank",
@@ -950,7 +950,7 @@ export default function AIInFinanceTopic() {
             <ExplanationSection topicSlug={metadata.slug}>
               <p>
                 Năm mảng lớn của AI trong ngân hàng Việt Nam hiện nay đều đã
-                chạy production tại các ngân hàng top. Mỗi mảng có một câu
+                được triển khai thật tại nhiều ngân hàng lớn. Mỗi mảng có một câu
                 hỏi cốt lõi riêng, hiểu từng câu hỏi, bạn hiểu 80% bức
                 tranh.
               </p>
@@ -1176,7 +1176,7 @@ export default function AIInFinanceTopic() {
                   <li>
                     <strong>Lệch phân phối (data drift):</strong> pattern
                     gian lận thay đổi theo mùa, theo công nghệ mới (QR, ví
-                    điện tử). Mô hình không được retrain định kỳ sẽ nhanh
+                    điện tử). Mô hình không được huấn luyện lại định kỳ sẽ nhanh
                     chóng lạc hậu.
                   </li>
                   <li>

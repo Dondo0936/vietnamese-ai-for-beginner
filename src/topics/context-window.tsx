@@ -73,7 +73,7 @@ const MODELS: Model[] = [
     pages: 310,
     color: "#8B5CF6",
     vendor: "Anthropic",
-    vd: "ngốn gọn một hợp đồng 300 trang",
+    vd: "đọc được một hợp đồng 300 trang",
   },
   {
     label: "Gemini 1.5 Pro",
@@ -81,7 +81,7 @@ const MODELS: Model[] = [
     pages: 3_100,
     color: "#3B82F6",
     vendor: "Google",
-    vd: "nuốt cả tủ hồ sơ pháp lý",
+    vd: "đọc được một kho hồ sơ pháp lý lớn",
   },
 ];
 

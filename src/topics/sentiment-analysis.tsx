@@ -258,7 +258,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "PhoBERT (VinAI) pre-train trên kho tiếng Việt khổng lồ → hiểu 'ship', 'sl', 'nv' và dấu thanh chuẩn. Mô hình đa ngôn ngữ thường vấp khi gặp phương ngữ ba miền hoặc tiếng lóng mạng.",
+      "PhoBERT (VinAI) được huấn luyện trước trên kho tiếng Việt khổng lồ → hiểu 'ship', 'sl', 'nv' và dấu thanh chuẩn. Mô hình đa ngôn ngữ thường vấp khi gặp phương ngữ ba miền hoặc tiếng lóng mạng.",
   },
   {
     type: "fill-blank",
@@ -810,7 +810,7 @@ export default function SentimentAnalysisTopic() {
       {/* =================================================================
           BƯỚC 4, AHA MOMENT
           ================================================================= */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
             Cảm xúc tiếng Việt <strong>không bao giờ chỉ là đếm từ xấu / từ đẹp</strong>.

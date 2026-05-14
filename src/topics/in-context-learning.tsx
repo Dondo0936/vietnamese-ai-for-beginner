@@ -178,7 +178,7 @@ const TASK_EXAMPLE_PAIRS = [
   { left: "Tóm tắt email dài thành 3 gạch đầu dòng", right: "0 ví dụ (zero-shot) là đủ" },
   { left: "Viết email theo đúng tone công ty bạn", right: "2–3 ví dụ email cũ của bạn" },
   { left: "Trích xuất 5 trường từ hoá đơn Việt", right: "3–5 ví dụ đầy đủ trường" },
-  { left: "Phân loại phản hồi thành 4 nhãn hiếm gặp", right: "5–8 ví dụ cover mọi nhãn" },
+  { left: "Phân loại phản hồi thành 4 nhãn hiếm gặp", right: "5–8 ví dụ phủ đủ mọi nhãn" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -222,7 +222,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Sau 5–8 ví dụ tốt, lợi ích tăng thêm rất nhỏ (diminishing returns). Bạn chỉ tốn thêm tiền mà không tốt hơn bao nhiêu. 3–5 ví dụ đa dạng thường là sweet spot.",
+      "Sau 5–8 ví dụ tốt, lợi ích tăng thêm rất nhỏ (diminishing returns). Bạn chỉ tốn thêm tiền mà không tốt hơn bao nhiêu. 3–5 ví dụ đa dạng thường là điểm cân bằng tốt.",
   },
   {
     question:
@@ -757,7 +757,7 @@ mỗi thùng là 85.000 đồng. Tổng cộng là
           title="Năm điều cần nhớ về học trong ngữ cảnh"
           points={[
             "Bạn “dạy” AI bằng cách dán vài ví dụ vào prompt, không cần upload, không cần huấn luyện, miễn phí.",
-            "0 ví dụ (zero-shot) hợp việc quen; 3–5 ví dụ (few-shot) là sweet spot cho đa số việc văn phòng; nhiều hơn 8 thường không tốt hơn nữa.",
+            "0 ví dụ (zero-shot) hợp việc quen; 3–5 ví dụ (few-shot) là điểm cân bằng tốt cho đa số việc văn phòng; nhiều hơn 8 thường không tốt hơn nữa.",
             "Chất lượng ví dụ quan trọng hơn số lượng, 3 ví dụ đa dạng ăn đứt 10 ví dụ na ná nhau.",
             "Ví dụ phải phủ mọi nhãn/trường hợp bạn muốn AI trả về, format tuyệt đối nhất quán.",
             "AI quên ngay khi đóng chat, muốn dùng lại, hãy lưu prompt mẫu trong Notion/Google Docs.",

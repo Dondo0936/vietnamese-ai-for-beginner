@@ -969,7 +969,7 @@ export default function AIInEducationTopic() {
                 explanation="Đây là lỗi &ldquo;luyện quá&rdquo;, khi mức thành thạo đã cao (trên 85%), lợi ích của bài tập cùng loại gần như bằng 0 và có thể gây chán. Hệ tốt sẽ chuyển chủ đề hoặc đưa bài ứng dụng (liên môn, thực tế) để giữ hứng thú."
               />
               <InlineChallenge
-                question="Cô Lan chấm bằng AI một xếp 40 bài văn, 3 bài có điểm chênh lệch hơn 2 điểm giữa AI và gợi ý của đồng nghiệp. Bước tiếp theo nên làm gì?"
+                question="Cô Lan dùng AI chấm nháp một xấp 40 bài văn, 3 bài có điểm chênh lệch hơn 2 điểm giữa AI và gợi ý của đồng nghiệp. Bước tiếp theo nên làm gì?"
                 options={[
                   "Tin AI, vì AI khách quan hơn",
                   "Review thủ công 3 bài chênh lệch lớn đó: có thể là bài sáng tạo AI không đọc được, cũng có thể là dấu hiệu học sinh cố tình gian lận (prompt injection)",

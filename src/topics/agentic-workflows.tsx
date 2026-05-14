@@ -699,7 +699,7 @@ export default function AgenticWorkflowsTopic() {
           công nhân. Các công cụ như Zapier và Make biến việc dựng dây chuyền
           thành trò ghép hình.
         </p>
-        <Callout variant="insight" title="Tại sao đây là cuộc cách mạng im lặng?">
+        <Callout variant="insight" title="Vì sao dân văn phòng tự động hoá được nhiều hơn?">
           Trước 2023 muốn nối hai phần mềm (ví dụ Gmail + Google Sheets) phải
           thuê lập trình viên. Bây giờ: một chị phòng kế toán có thể tự làm
           trong 15 phút. Sức mạnh không còn nằm ở "biết code", mà ở "biết
@@ -865,7 +865,7 @@ export default function AgenticWorkflowsTopic() {
           <p className="text-sm">
             Workflow AI và{" "}
             <TopicLink slug="ai-coding-assistants">AI coding assistants</TopicLink>{" "}
-            là hai mặt của cùng một làn sóng: AI đang thò tay vào{" "}
+            là hai mặt của cùng một làn sóng: AI đang đi vào{" "}
             <em>mọi khâu công việc</em>, cả coding lẫn văn phòng. Ai biết
             kéo-thả trước sẽ có lợi thế trước.
           </p>

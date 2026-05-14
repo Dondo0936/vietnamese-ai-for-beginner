@@ -120,7 +120,7 @@ const HERO_TIMELINE: TimelineEvent[] = [
     date: "02/2025",
     title: "Anthropic ra Claude 3.7 Sonnet",
     subtitle:
-      "Mô hình lý luận lai đầu tiên, bạn bật/tắt chế độ 'Extended Thinking' và xem tận mắt Claude đang nháp gì.",
+      "Mô hình lý luận lai đầu tiên, bạn bật/tắt chế độ 'Extended Thinking' và xem bản tóm tắt các bước Claude công bố khi suy luận.",
     icon: Eye,
     tone: "border-accent/60 bg-accent-light",
   },
@@ -634,7 +634,7 @@ function CounterfactualToggle() {
                 Từ 09/2024
               </span>
               <span className="text-sm text-muted">
-                AI tự nháp và cho bạn đọc nháp
+                AI tự nháp và hiển thị phần suy luận phù hợp cho người dùng
               </span>
             </div>
             <ul className="space-y-2 text-sm text-foreground leading-relaxed">
@@ -648,7 +648,7 @@ function CounterfactualToggle() {
               <li className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
                 <Sparkles size={14} className="mt-0.5 shrink-0 text-green-600" />
                 <span>
-                  Claude Extended Thinking cho bạn xem từng bước nháp, soi
+                  Claude Extended Thinking cho bạn xem bản tóm tắt quá trình suy luận, soi
                   ra chỗ AI hiểu nhầm ngay.
                 </span>
               </li>
@@ -697,7 +697,7 @@ export default function ChainOfThoughtInReasoningModels() {
           nghĩ mở rộng) để xem Claude trình bày từng bước suy luận trước khi
           đưa ra đáp án cuối cùng. Với dân văn phòng, điều này đồng nghĩa:
           bạn không cần nhớ nhắc &ldquo;hãy suy nghĩ từng bước&rdquo; ở mỗi
-          prompt nữa, AI tự làm, và còn cho bạn đọc nháp.
+          prompt nữa, AI tự làm và hiển thị phần suy luận phù hợp cho bạn kiểm.
         </p>
 
         <ThinkingDots />
@@ -747,8 +747,8 @@ export default function ChainOfThoughtInReasoningModels() {
           <p>
             <strong>o1 tự bật chuỗi suy luận.</strong> Khác với GPT-4 cần
             người dùng viết &ldquo;hãy suy nghĩ từng bước&rdquo;, o1 được
-            huấn luyện bằng reinforcement learning (học tăng cường, phương
-            pháp dạy AI bằng phần thưởng) để tự sinh reasoning tokens (token
+            huấn luyện bằng reinforcement learning, tức là dạy model bằng
+            phần thưởng và phản hồi, để tự sinh reasoning tokens (token
             lý luận, các bước nháp nội bộ) trước khi viết câu trả lời cuối
             cùng. Bạn chỉ cần hỏi bình thường; phần lý luận diễn ra trong
             &ldquo;đầu&rdquo; mô hình.

@@ -1212,7 +1212,7 @@ export default function RAGTopic() {
 
           <Callout variant="info" title="Đánh giá RAG, ba chỉ số bắt buộc">
             <ul className="list-disc list-inside space-y-1 text-sm">
-              <li><strong>Context precision / recall:</strong> đoạn tra đúng không? bỏ sót không?</li>
+              <li><strong>Độ đúng của đoạn tra:</strong> có lấy đúng đoạn không, có bỏ sót không?</li>
               <li><strong>Faithfulness:</strong> câu trả lời bám đoạn tra, hay AI &quot;chế&quot;?</li>
               <li><strong>Answer relevance:</strong> có thật sự trả lời câu hỏi không?</li>
             </ul>
@@ -1273,7 +1273,7 @@ export default function RAGTopic() {
                 Có ngưỡng tối thiểu + rerank.
               </li>
               <li>
-                <strong>Không đo faithfulness:</strong> accuracy không đủ, kiểm tra AI có thật sự dùng đoạn tra hay vẫn chế từ trí nhớ.
+                <strong>Không đo faithfulness:</strong> độ chính xác không đủ, kiểm tra AI có thật sự dùng đoạn tra hay vẫn chế từ trí nhớ.
               </li>
             </ul>
           </CollapsibleDetail>
@@ -1301,7 +1301,7 @@ export default function RAGTopic() {
             "Pipeline offline: Tài liệu → Cắt đoạn → Mã hoá vector → Kho vector. Pipeline online: Câu hỏi → Tìm top-K → Ghép vào prompt → AI viết trả lời có trích dẫn.",
             "Lợi ích lớn nhất với dân văn phòng: câu trả lời ĐÚNG nội quy công ty mình, ĐÚNG số liệu báo cáo, có trích dẫn kiểm chứng được.",
             "Chất lượng RAG = chất lượng kho tài liệu. Rác vào, rác ra. Dọn kho và cập nhật đều đặn quan trọng hơn mô hình AI xịn.",
-            "Muốn khôn hơn: lọc metadata (ngày/phòng ban), viết lại câu hỏi, rerank cross-encoder, tăng precision mà không cần đổi AI.",
+            "Muốn khôn hơn: lọc metadata (ngày/phòng ban), viết lại câu hỏi, rerank cross-encoder, tăng độ chính xác của đoạn truy xuất mà không cần đổi AI.",
             "Đánh giá cần 3 chỉ số: đoạn tra có đúng không, AI có bám tài liệu không, câu trả lời có trả đúng câu hỏi không.",
           ]}
         />

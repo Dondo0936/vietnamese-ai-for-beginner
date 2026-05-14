@@ -631,7 +631,7 @@ export default function TemperatureInCreativeWriting() {
           <AnimatedCounter
             target={2}
             suffix=""
-            label="T tối đa qua API của OpenAI, gần như ngẫu nhiên hoàn toàn"
+            label="T tối đa qua API của OpenAI, rất ngẫu nhiên và dễ lạc đề nếu dùng sai việc"
             color="#f59e0b"
           />
           <AnimatedCounter

@@ -227,7 +227,7 @@ function LungScanDemo() {
       />
       <Callout variant="tip" title="Cách đọc visualization">
         Vùng tô cam là nơi AI nghĩ "có thể có tổn thương". Viền xanh lá là
-        vùng tổn thương thật do chuyên gia X-quang đã đánh nhãn khi train
+        vùng tổn thương thật do chuyên gia X-quang đã đánh nhãn khi huấn luyện
         mô hình. AI tốt là khi vùng cam trùng gần hết với viền xanh. Khi
         chúng không trùng, bác sĩ là người quyết định tin ai.
       </Callout>
@@ -465,7 +465,7 @@ function TriageDemo() {
 
       <Callout variant="insight" title="AI không thay bác sĩ, AI mua thời gian">
         Trong phòng cấp cứu quá tải, phân loại sai thứ tự có thể làm mất
-        vàng, ví dụ bỏ sót nhồi máu cơ tim sớm. AI phân loại nhanh trong
+        thời gian vàng, ví dụ bỏ sót nhồi máu cơ tim sớm. AI phân loại nhanh trong
         vài giây dựa trên dấu hiệu sinh tồn và triệu chứng. Bác sĩ xác
         nhận hoặc đảo lại thứ tự khi có thông tin thêm. Các bệnh viện
         lớn tại VN (Bạch Mai, Chợ Rẫy) đang thử nghiệm các hệ thống
@@ -712,12 +712,12 @@ export default function AIInHealthcareTopic() {
           "Bệnh nhân tổn thương da vào khám. AI đưa kết luận 'ung thư hắc tố 95%'. Bác sĩ cần làm gì trước khi báo cho bệnh nhân?",
         options: [
           "Nói ngay với bệnh nhân để không lãng phí thời gian",
-          "Kiểm tra liệu AI có được train trên tông da tương tự bệnh nhân không, nhiều AI da liễu hiện nay train chủ yếu trên da sáng, có thể sai khi gặp da tối",
+          "Kiểm tra liệu AI có được huấn luyện và validate trên tông da tương tự bệnh nhân không, nhiều AI da liễu hiện nay huấn luyện chủ yếu trên da sáng, có thể sai khi gặp da tối",
           "Chuyển luôn sang hóa trị",
         ],
         correct: 1,
         explanation:
-          "Bias dữ liệu là một trong những vấn đề lớn nhất của AI y tế. Nghiên cứu Adamson & Smith 2018 cho thấy AI ung thư da train chủ yếu trên da sáng có độ nhạy tụt nghiêm trọng với da tối. Một kết quả 'chắc chắn 95%' trên domain chưa được validate là không đáng tin. Bác sĩ luôn phải kiểm tra mô hình có phù hợp với nhóm bệnh nhân trước mặt mình hay không.",
+          "Bias dữ liệu là một trong những vấn đề lớn nhất của AI y tế. Nghiên cứu Adamson & Smith 2018 cho thấy AI ung thư da huấn luyện chủ yếu trên da sáng có độ nhạy tụt nghiêm trọng với da tối. Một kết quả 'chắc chắn 95%' trên domain chưa được validate là không đáng tin. Bác sĩ luôn phải kiểm tra mô hình có phù hợp với nhóm bệnh nhân trước mặt mình hay không.",
       },
       {
         question:
@@ -757,7 +757,7 @@ export default function AIInHealthcareTopic() {
       },
       {
         question:
-          "Bệnh viện A train mô hình AI đọc X-quang trên dữ liệu bệnh viện mình, rất chính xác. Khi chuyển sang bệnh viện B, độ chính xác tụt 15%. Nguyên nhân thường gặp nhất?",
+          "Bệnh viện A huấn luyện mô hình AI đọc X-quang trên dữ liệu bệnh viện mình, rất chính xác. Khi chuyển sang bệnh viện B, độ chính xác tụt 15%. Nguyên nhân thường gặp nhất?",
         options: [
           "Bác sĩ bệnh viện B kém hơn",
           "Phân phối dữ liệu khác: máy chụp khác hãng, protocol chụp khác, đặc điểm bệnh nhân khác, mô hình không generalize",
@@ -899,14 +899,14 @@ export default function AIInHealthcareTopic() {
               explanation="Đây là 'base rate problem', một trong những bẫy nhận thức lớn nhất trong y tế. Với bệnh hiếm, ngay cả mô hình độ đặc hiệu 90% cũng tạo ra hàng trăm dương tính giả cho mỗi vài chục ca đúng. Hệ quả: sàng lọc KHÔNG BAO GIỜ được đứng một mình, luôn cần một bước xác minh thứ hai (nhũ ảnh chuyên sâu, sinh thiết) trước khi nói với bệnh nhân 'bạn có ung thư'."
             />
             <InlineChallenge
-              question="AI da liễu được train chủ yếu trên da sáng. Bạn là bác sĩ tại VN, nhiều bệnh nhân có tông da trung bình đến tối. Bạn nên làm gì?"
+              question="AI da liễu được huấn luyện chủ yếu trên da sáng. Bạn là bác sĩ tại VN, nhiều bệnh nhân có tông da trung bình đến tối. Bạn nên làm gì?"
               options={[
                 "Dùng AI y như hướng dẫn nhà sản xuất",
                 "Yêu cầu nhà cung cấp cho thấy dữ liệu validation trên tông da tương tự bệnh nhân VN, nếu không có, dùng AI một cách thận trọng và luôn đối chiếu với khám lâm sàng",
                 "Bỏ AI, quay về chỉ khám bằng mắt",
               ]}
               correct={1}
-              explanation="Bias dữ liệu không phải lỗi kỹ thuật mờ mịt, nó là câu hỏi lâm sàng trực tiếp. Nghiên cứu Adamson & Smith (2018) cho thấy AI da liễu train trên ISIC (chủ yếu da sáng) có độ nhạy giảm mạnh với da tối. Bác sĩ có quyền và nghĩa vụ hỏi nhà cung cấp: 'Mô hình đã validate trên nhóm bệnh nhân nào?' Thiếu thông tin này = không thể dùng AI cho quyết định nặng nề."
+              explanation="Bias dữ liệu không phải lỗi kỹ thuật mờ mịt, nó là câu hỏi lâm sàng trực tiếp. Nghiên cứu Adamson & Smith (2018) cho thấy AI da liễu huấn luyện trên ISIC (chủ yếu da sáng) có độ nhạy giảm mạnh với da tối. Bác sĩ có quyền và nghĩa vụ hỏi nhà cung cấp: 'Mô hình đã validate trên nhóm bệnh nhân nào?' Thiếu thông tin này = không thể dùng AI cho quyết định nặng nề."
             />
             <InlineChallenge
               question="Bệnh viện muốn triển khai AI chẩn đoán mới. Ngoài độ chính xác, nhân viên tuân thủ cần kiểm tra điều gì trước khi ký hợp đồng?"
@@ -1059,7 +1059,7 @@ export default function AIInHealthcareTopic() {
                         </li>
                         <li>
                           <strong>Hội đồng đạo đức y học (IRB)</strong>, bắt buộc cho mọi nghiên cứu dùng dữ liệu bệnh
-                          nhân, kể cả khi chỉ để train AI.
+                          nhân, kể cả khi chỉ để huấn luyện AI.
                         </li>
                       </ul>
                     ),
@@ -1085,7 +1085,7 @@ export default function AIInHealthcareTopic() {
                         <li>
                           <strong>
                             Good Machine Learning Practice (GMLP)
-                          </strong>{" "}, hướng dẫn liên ngành của FDA, Health Canada, và
+                          </strong>: hướng dẫn liên ngành của FDA, Health Canada, và
                           MHRA về phát triển AI y tế có trách nhiệm.
                         </li>
                       </ul>
@@ -1124,8 +1124,8 @@ export default function AIInHealthcareTopic() {
               <CollapsibleDetail title="Những cái bẫy thường gặp của AI y tế">
                 <ul className="list-disc space-y-2 pl-5 text-sm">
                   <li>
-                    <strong>Bias dữ liệu train:</strong> Nghiên cứu nổi
-                    tiếng cho thấy AI da liễu train chủ yếu trên da sáng
+                    <strong>Bias dữ liệu huấn luyện:</strong> Nghiên cứu nổi
+                    tiếng cho thấy AI da liễu huấn luyện chủ yếu trên da sáng
                     có độ nhạy tụt mạnh với da tối. Nhiều dataset y tế
                     không đại diện cho đa dạng dân số, điều này đặc biệt
                     quan trọng với nhân viên y tế Việt Nam khi đánh giá
@@ -1200,7 +1200,7 @@ export default function AIInHealthcareTopic() {
                     model y tế như BiomedGPT, Med-PaLM, MedSAM.
                   </li>
                   <li>
-                    <strong>Federated learning giữa các bệnh viện</strong>, cho phép bệnh viện train mô hình chung mà không cần
+                    <strong>Federated learning giữa các bệnh viện</strong>, cho phép bệnh viện huấn luyện mô hình chung mà không cần
                     chuyển dữ liệu bệnh nhân ra ngoài. Giải pháp quan trọng
                     cho bảo mật.
                   </li>
@@ -1218,7 +1218,7 @@ export default function AIInHealthcareTopic() {
 
               <p className="text-sm text-muted">
                 Khi bạn đã nắm năm trụ cột và khung pháp lý, hầu hết tin tức
-                về "AI mới trong y tế" sẽ rơi vào một trong các ô có sẵn, và bạn sẽ biết đặt câu hỏi phù hợp: mô hình train trên ai,
+                về "AI mới trong y tế" sẽ rơi vào một trong các ô có sẵn, và bạn sẽ biết đặt câu hỏi phù hợp: mô hình huấn luyện trên ai,
                 validate thế nào, ai ký quyết định cuối.
               </p>
             </ExplanationSection>
@@ -1231,7 +1231,7 @@ export default function AIInHealthcareTopic() {
                 "Năm mảng AI y tế chính: chẩn đoán hình ảnh, phân loại cấp cứu, phát triển thuốc, tóm tắt bệnh án, hỗ trợ quyết định lâm sàng.",
                 "Nguyên tắc vàng: AI hỗ trợ, bác sĩ quyết định và ký tên. FDA, Bộ Y tế VN đều cấp phép AI y tế theo mô hình này.",
                 "Tại Việt Nam: VinBrain DrAid đã được Bộ Y tế cấp phép cho đọc X-quang phổi, CT sọ, nhũ ảnh; FPT AI Medical hợp tác nhiều bệnh viện; các BV đa quốc gia như FV, Hanoi French Hospital thử nghiệm sớm theo chuẩn quốc tế.",
-                "Bias dữ liệu là rủi ro lớn: mô hình train chủ yếu trên một nhóm dân số có thể sai khi gặp nhóm khác, luôn kiểm tra validation trên nhóm bệnh nhân của mình.",
+                "Bias dữ liệu là rủi ro lớn: mô hình huấn luyện chủ yếu trên một nhóm dân số có thể sai khi gặp nhóm khác, luôn kiểm tra validation trên nhóm bệnh nhân của mình.",
                 "Khung pháp lý VN: Luật Khám chữa bệnh 2023, Nghị định 98/2021 (thiết bị y tế), Nghị định 13/2023 (dữ liệu cá nhân), đạo đức IRB. Chuẩn quốc tế: FDA SaMD, CE, GMLP.",
                 "AlphaFold (2020+) đã rút ngắn đáng kể giai đoạn đầu của phát triển thuốc; giai đoạn thử nghiệm lâm sàng trên người vẫn phải theo thời gian thật.",
               ]}

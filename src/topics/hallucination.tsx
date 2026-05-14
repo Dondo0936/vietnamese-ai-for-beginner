@@ -582,11 +582,11 @@ export default function HallucinationTopic() {
                 </span>
               </div>
               <div className="mb-1 font-semibold text-foreground">
-                So khớp pattern
+                So khớp mẫu ngôn ngữ
               </div>
               <p className="text-xs text-muted">
                 Khi bạn hỏi, AI không tra cứu trong một kho dữ liệu sự thật. Nó
-                so khớp câu hỏi với <em>pattern ngôn ngữ</em> đã học từ hàng tỷ
+                so khớp câu hỏi với <em>mẫu ngôn ngữ</em> đã học từ hàng tỷ
                 trang văn bản trên Internet.
               </p>
             </div>
@@ -676,7 +676,7 @@ export default function HallucinationTopic() {
             giảm đáng kể ảo giác.
           </li>
           <li>
-            <strong>Cross-check bằng một mô hình khác.</strong> Hỏi cùng câu
+            <strong>Đối chiếu bằng một model khác.</strong> Hỏi cùng câu
             hỏi với hai AI khác nhau (ví dụ ChatGPT và Gemini). Nếu đáp án
             lệch, cả hai đều đáng nghi, phải tra nguồn sơ cấp.
           </li>

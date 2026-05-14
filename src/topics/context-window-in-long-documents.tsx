@@ -208,12 +208,12 @@ export default function ContextWindowInLongDocuments() {
   }, []);
 
   return (
-    <ApplicationLayout metadata={metadata} parentTitleVi="Cửa sổ Ngữ cảnh">
+    <ApplicationLayout metadata={metadata} parentTitleVi="Context window">
       {/* ────────────────────────────────────────────────────────── */}
       {/* HERO, Dòng thời gian mở rộng context                      */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationHero
-        parentTitleVi="Cửa sổ Ngữ cảnh"
+        parentTitleVi="Context window"
         topicSlug="context-window-in-long-documents"
       >
         <p>
@@ -279,7 +279,7 @@ export default function ContextWindowInLongDocuments() {
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationProblem topicSlug="context-window-in-long-documents">
         <p>
-          Cửa sổ ngữ cảnh (context window) là giới hạn số lượng token, đơn vị
+          Context window là giới hạn số lượng token, đơn vị
           chữ nhỏ nhất, mỗi từ tiếng Anh khoảng 1,3 token, mà mô hình có thể
           &quot;nhìn thấy&quot; cùng lúc. Quan trọng: con số này <strong>bao gồm
           cả câu hỏi, tài liệu bạn gửi lẫn câu trả lời của AI</strong>.
@@ -346,7 +346,7 @@ export default function ContextWindowInLongDocuments() {
       {/* MECHANISM, 4 Beats                                        */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationMechanism
-        parentTitleVi="Cửa sổ Ngữ cảnh"
+        parentTitleVi="Context window"
         topicSlug="context-window-in-long-documents"
       >
         <Beat step={1}>
@@ -592,7 +592,7 @@ export default function ContextWindowInLongDocuments() {
       {/* COUNTERFACTUAL, Nếu không có 1M context                    */}
       {/* ────────────────────────────────────────────────────────── */}
       <ApplicationCounterfactual
-        parentTitleVi="Cửa sổ Ngữ cảnh"
+        parentTitleVi="Context window"
         topicSlug="context-window-in-long-documents"
       >
         <p>
@@ -664,7 +664,7 @@ export default function ContextWindowInLongDocuments() {
         </div>
 
         <p>
-          Cửa sổ ngữ cảnh 1 triệu token đã biến AI từ một trợ lý hỏi-đáp thành
+          Context window 1 triệu token đã biến AI từ một trợ lý hỏi-đáp thành
           đối tác phân tích tài liệu, với khả năng đọc và hiểu lượng thông tin
           tương đương một chuyên gia nghiên cứu mất nhiều ngày. Trong ba năm,
           công việc &quot;đọc tài liệu dài&quot; đã chuyển từ mấy giờ đồng hồ

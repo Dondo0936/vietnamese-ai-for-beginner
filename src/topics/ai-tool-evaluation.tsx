@@ -100,7 +100,7 @@ const CRITERIA: Criterion[] = [
     label: "Bảo mật",
     short: "Bảo mật",
     icon: ShieldCheck,
-    desc: "Có cam kết không train trên dữ liệu của bạn, DPA, audit log không.",
+    desc: "Có cam kết không dùng dữ liệu của bạn để huấn luyện, DPA, audit log không.",
     color: "#3b82f6",
   },
   {
@@ -159,7 +159,7 @@ const TOOLS: Tool[] = [
     ],
     weaknesses: [
       "Đôi khi mất dấu tiếng Việt ở bài dài",
-      "Tier miễn phí lưu hội thoại có thể dùng để train",
+      "Tier miễn phí lưu hội thoại có thể dùng để huấn luyện",
     ],
     useFor: "Work chung, tạo hình ảnh, tổng hợp đa phương tiện",
   },
@@ -739,7 +739,7 @@ const TCO_COMPONENTS: TcoComponent[] = [
   {
     label: "Chi phí migrate sau này",
     share: 20,
-    desc: "Đổi vendor = viết lại prompt + re-eval + re-train team",
+    desc: "Đổi vendor = viết lại prompt + re-eval + đào tạo lại team",
     icon: TrendingUp,
     color: "text-red-700 dark:text-red-300",
     bg: "bg-red-100 dark:bg-red-900/30",
@@ -845,12 +845,12 @@ function RedFlags() {
     {
       title: "Bảo mật mập mờ",
       detail:
-        "Website không nói rõ có dùng dữ liệu để train không, không có trang trust center, không có chứng chỉ SOC 2 / ISO 27001. Tránh.",
+        "Website không nói rõ có dùng dữ liệu để huấn luyện không, không có trang trust center, không có chứng chỉ SOC 2 / ISO 27001. Tránh.",
     },
     {
       title: "Chỉ có benchmark nội bộ",
       detail:
-        "Vendor chỉ show điểm benchmark do chính họ công bố. Không có đánh giá bên thứ 3 (LMSYS Arena, HELM). Chờ thêm dữ liệu độc lập.",
+        "Nhà cung cấp chỉ công bố điểm benchmark nội bộ. Chưa có đánh giá độc lập từ LMSYS Arena hoặc HELM.",
     },
     {
       title: "Không rõ ai đứng sau",
@@ -970,7 +970,7 @@ export default function AiToolEvaluationTopic() {
       ],
       correct: 1,
       explanation:
-        "Eval-driven là cách chuyên nghiệp. Review bên thứ ba không reflect workload cụ thể. Cảm giác cá nhân dễ bias. Bộ eval set nhỏ (30–50 example) là đủ để thấy khác biệt rõ ràng. Nếu 2 tool sát nhau, câu trả lời đúng là {'multi-model routing'} thay vì chọn một vendor duy nhất.",
+        "Eval-driven là cách chuyên nghiệp. Review bên thứ ba không phản ánh đúng workload của bạn. Cảm giác cá nhân cũng dễ lệch. Bộ eval set nhỏ (30–50 example) là đủ để thấy khác biệt rõ ràng. Nếu 2 tool sát nhau, câu trả lời đúng là {'multi-model routing'} thay vì chọn một vendor duy nhất.",
     },
   ];
 
@@ -1123,7 +1123,7 @@ export default function AiToolEvaluationTopic() {
                 Với mỗi tác vụ, cho điểm trọng số 0–5 cho mỗi tiêu chí (tổng không
                 bắt buộc là 15). Rồi tính điểm tổng cho từng công cụ: điểm mỗi
                 tiêu chí × trọng số, cộng lại. Công cụ điểm cao nhất là lựa chọn
-                hợp lý, nhưng luôn thử thực tế với 5–10 prompt trước khi commit.
+                hợp lý, nhưng luôn thử thực tế với 5–10 prompt trước khi chốt mua hoặc triển khai.
               </Callout>
             </div>
 
@@ -1196,7 +1196,7 @@ export default function AiToolEvaluationTopic() {
             "Không có tool tốt nhất, có tool phù hợp nhất. ChatGPT đa năng, Claude mạnh văn bản dài, Gemini rẻ + nhanh, Copilot gắn chặt M365, Perplexity research.",
             "Multi-tool stack thường hiệu quả hơn một công cụ duy nhất. Ví dụ: Claude (viết) + Perplexity (research) + ChatGPT (ảnh).",
             "Red flag: không có enterprise tier, không có DPA, chỉ có benchmark tự công bố, vendor mập mờ, tránh.",
-            "Trước khi commit công cụ cho công ty, xây eval set 30–50 example từ workload thật, chạy head-to-head, chấm điểm theo rubric.",
+            "Trước khi chốt công cụ cho công ty, xây eval set 30–50 example từ workload thật, chạy head-to-head, chấm điểm theo rubric.",
           ]}
         />
         <p className="mt-4 text-sm text-muted leading-relaxed">

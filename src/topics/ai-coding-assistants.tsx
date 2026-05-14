@@ -769,7 +769,7 @@ export default function AICodingAssistantsTopic() {
             việc lập trình biến mất, mà là{" "}
             <strong>hình dáng của nó đổi</strong>: bớt gõ, thêm thiết kế, thêm
             duyệt, thêm mô tả yêu cầu bằng ngôn ngữ tự nhiên. Kỹ năng đáng
-            học sắp tới không còn là "biết ngôn ngữ X" mà là "biết ra đầu bài
+            học sắp tới không còn là "biết ngôn ngữ X" mà là "biết giao yêu cầu
             rõ ràng cho AI".
           </p>
         </AhaMoment>

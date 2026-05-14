@@ -226,8 +226,8 @@ export default function TextClassificationInSupportRouting() {
           Trong hệ thống hỗ trợ truyền thống, một nhân viên phải:{" "}
           <strong>(1) đọc từng ticket</strong>, <strong>(2) đoán nội
           dung</strong>, <strong>(3) kéo thả vào đội đúng</strong>. Với hàng
-          nghìn ticket/ngày, việc này biến con người thành... bác nhân viên
-          thư phòng, một công việc hoàn toàn không giúp giải quyết vấn đề của
+          nghìn ticket/ngày, việc này kéo nhân viên về vai trò phân loại thư
+          thủ công, một công việc hoàn toàn không giúp giải quyết vấn đề của
           khách.
         </p>
 
@@ -326,7 +326,7 @@ export default function TextClassificationInSupportRouting() {
         <Beat step={5}>
           <p>
             <strong>Học liên tục từ phản hồi.</strong> Khi nhân viên chỉnh
-            nhãn (vì AI đoán sai), hệ thống ghi nhận và retrain. Qua vài tuần,
+            nhãn (vì AI đoán sai), hệ thống ghi nhận và huấn luyện lại. Qua vài tuần,
             mô hình đặc thù cho công ty tăng độ chính xác từ 75% lên 92–95%, đủ tốt để tin gần như hoàn toàn.
           </p>
         </Beat>

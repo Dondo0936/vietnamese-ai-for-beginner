@@ -1145,7 +1145,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "temperature",
     title: "Temperature",
-    titleVi: "Temperature: nút chỉnh độ liều của AI",
+    titleVi: "Temperature: nút chỉnh độ ngẫu nhiên của AI",
     description: "Biết lúc nào hạ temperature để câu trả lời chắc hơn và lúc nào tăng để có thêm phương án sáng tạo.",
     category: "llm-concepts",
     tags: ["sampling", "randomness", "generation"],
@@ -1590,7 +1590,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-governance",
     title: "AI Governance",
-    titleVi: "AI governance: luật dùng AI trong công ty",
+    titleVi: "AI governance: quy trình dùng AI an toàn trong công ty",
     description: "Đặt vai trò, quy trình phê duyệt và trách nhiệm để nhân viên dùng AI đúng việc, đúng rủi ro.",
     category: "ai-safety",
     tags: ["regulation", "policy", "ethics"],

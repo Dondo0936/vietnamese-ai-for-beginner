@@ -30,6 +30,13 @@ const OFFICE_BRIEFS: Record<string, OfficeBrief> = {
     humanCheck: "Giữ thông tin nhạy cảm ngoài chat công cộng nếu chưa rõ chính sách.",
     flow: ["Yêu cầu", "Ngữ cảnh", "Trả lời", "Quyết định"],
   },
+  "prompt-engineering": {
+    title: "Prompt là bản brief cho AI",
+    scene: "Bạn cần email, tóm tắt hoặc báo cáo đúng người nhận.",
+    aiMove: "Prompt nêu vai trò, việc, bối cảnh, định dạng và giọng.",
+    humanCheck: "So bản nháp với mục tiêu trước khi gửi.",
+    flow: ["Việc cần làm", "Prompt đủ khung", "Bản nháp", "Sửa rồi gửi"],
+  },
   "prompt-engineering-in-writing-tools": {
     title: "Công cụ viết đóng gói prompt",
     scene: "Người dùng chọn template thay vì tự nghĩ prompt từ trang trắng.",
@@ -59,14 +66,14 @@ const OFFICE_BRIEFS: Record<string, OfficeBrief> = {
     flow: ["Mẫu đúng", "Prompt", "Mẫu mới", "Kiểm format"],
   },
   "in-context-learning-in-chatbots": {
-    title: "Chatbot học từ tài liệu trong cuộc chat",
-    scene: "Khách hỏi chính sách riêng của công ty, không phải kiến thức chung.",
-    aiMove: "Bot lấy đoạn tài liệu liên quan rồi trả lời theo ngữ cảnh đó.",
-    humanCheck: "Câu trả lời phải khớp tài liệu hiện hành và có đường kiểm tra.",
-    flow: ["Câu hỏi", "Tài liệu", "Trả lời", "Đối chiếu"],
+    title: "Chatbot bắt chước mẫu ngay trong chat",
+    scene: "Agent đưa hai phản hồi đúng mẫu trước câu hỏi mới.",
+    aiMove: "Model giữ format, giọng và quy tắc xử lý từ các ví dụ.",
+    humanCheck: "CS kiểm lại nhãn, giọng trả lời và ngoại lệ trước khi dùng.",
+    flow: ["Mẫu trả lời", "Câu hỏi mới", "Giữ format", "CS kiểm"],
   },
   temperature: {
-    title: "Temperature chỉnh độ liều của câu trả lời",
+    title: "Temperature chỉnh độ ngẫu nhiên của câu trả lời",
     scene: "Cùng một prompt có thể cho câu rất ổn định hoặc nhiều biến thể.",
     aiMove: "Temperature thấp bám sát mẫu, temperature cao mở rộng lựa chọn.",
     humanCheck: "Việc chính xác để thấp, việc nghĩ ý tưởng có thể tăng.",
@@ -178,7 +185,7 @@ const OFFICE_BRIEFS: Record<string, OfficeBrief> = {
     flow: ["CV", "Xếp hạng", "Danh sách", "Kiểm bias"],
   },
   "ai-governance": {
-    title: "AI governance là luật dùng AI trong công ty",
+    title: "AI governance là quy trình dùng AI an toàn",
     scene: "Mỗi phòng ban dùng AI khác nhau, rủi ro cũng khác nhau.",
     aiMove: "Khung governance phân loại use case, quyền truy cập và phê duyệt.",
     humanCheck: "Chỉ triển khai khi có chủ sở hữu, nhật ký và quy trình xử lý lỗi.",
@@ -224,7 +231,7 @@ const OFFICE_BRIEFS: Record<string, OfficeBrief> = {
     scene: "Giao dịch, khoản vay và yêu cầu hỗ trợ tạo ra tín hiệu liên tục.",
     aiMove: "AI phát hiện bất thường, chấm điểm rủi ro và ưu tiên xử lý.",
     humanCheck: "Quyết định ảnh hưởng tiền bạc cần kiểm soát và giải thích được.",
-    flow: ["Dữ liệu", "Tín hiệu", "Cảnh báo", "Xử lý"],
+    flow: ["Giao dịch", "Điểm rủi ro", "Cảnh báo gian lận", "Nhân viên duyệt"],
   },
   "ai-in-healthcare": {
     title: "Y tế dùng AI như lớp hỗ trợ bác sĩ",
@@ -238,7 +245,7 @@ const OFFICE_BRIEFS: Record<string, OfficeBrief> = {
     scene: "Một lớp có học viên nhanh, chậm và mắc lỗi khác nhau.",
     aiMove: "AI gợi ý bài tập, phản hồi nháp và nội dung ôn riêng.",
     humanCheck: "Giáo viên giữ chuẩn đánh giá, động lực và sự công bằng.",
-    flow: ["Bài học", "Phản hồi", "Cá nhân hóa", "Giáo viên"],
+    flow: ["Bài nộp", "Bài tập gợi ý", "Phản hồi nháp", "Giáo viên duyệt"],
   },
   "ai-in-agriculture": {
     title: "Nông nghiệp dùng AI để nhìn ruộng bằng dữ liệu",
@@ -273,14 +280,14 @@ const OFFICE_BRIEFS: Record<string, OfficeBrief> = {
     scene: "Một cụm bình luận tiêu cực có thể lan trước khi đội truyền thông thấy.",
     aiMove: "Hệ thống gom khen chê, phát hiện chủ đề nóng và cảnh báo bất thường.",
     humanCheck: "Đọc mẫu bình luận gốc trước khi phản hồi công khai.",
-    flow: ["Mạng xã hội", "Cảm xúc", "Cảnh báo", "Phản hồi"],
+    flow: ["Bình luận", "Chủ đề nóng", "Cảnh báo PR", "Đọc mẫu gốc"],
   },
   "text-classification": {
     title: "Text classification biến tin nhắn thành nhãn",
     scene: "Hộp thư có khiếu nại, hỏi giá, spam và yêu cầu kỹ thuật lẫn nhau.",
     aiMove: "Model đọc nội dung rồi gán nhãn để hệ thống xử lý tiếp.",
     humanCheck: "Kiểm nhãn sai ở nhóm quan trọng và cập nhật mẫu huấn luyện.",
-    flow: ["Tin nhắn", "Nhãn", "Hàng đợi", "Xử lý"],
+    flow: ["Email/ticket", "Nhãn chủ đề", "Đúng hàng đợi", "Đội xử lý"],
   },
   "text-classification-in-support-routing": {
     title: "Điều phối hỗ trợ bắt đầu từ nhãn đúng",
@@ -308,7 +315,7 @@ export default function OfficeVisualBrief({ slug }: OfficeVisualBriefProps) {
   return (
     <section className="my-8" aria-label="Bản đồ trực quan cho nhân viên văn phòng">
       <div className="mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+        <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
           Nhìn nhanh
         </p>
         <h2 className="text-lg font-semibold text-foreground">{brief.title}</h2>
@@ -317,7 +324,7 @@ export default function OfficeVisualBrief({ slug }: OfficeVisualBriefProps) {
       <ol className="mb-4 grid gap-3 sm:grid-cols-4" aria-label="Luồng làm việc">
         {brief.flow.map((step, index) => (
           <li key={step} className="flex items-center gap-2 text-sm text-foreground">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">
               {index + 1}
             </span>
             <span className="font-medium">{step}</span>

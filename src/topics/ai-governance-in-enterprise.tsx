@@ -156,7 +156,7 @@ const BEATS = [
   {
     title: "Sensitive Uses review, rủi ro cao phải qua hội đồng",
     icon: AlertTriangle,
-    body: "Use case chạm nhóm 'sensitive' (nhận diện khuôn mặt, cơ quan chính phủ, y tế, giáo dục trẻ em) tự động kích hoạt review cấp công ty. Có case bị từ chối triển khai.",
+    body: "Trường hợp sử dụng liên quan nhóm nhạy cảm tự động kích hoạt vòng đánh giá cấp công ty. Có dự án bị từ chối triển khai.",
   },
   {
     title: "Red-team & pre-release testing",
@@ -166,7 +166,7 @@ const BEATS = [
   {
     title: "Incident response & cải tiến liên tục",
     icon: LifeBuoy,
-    body: "Sự cố (hallucination có hại, lộ dữ liệu, bias mới) có kênh báo cáo riêng. Bài học đưa trở lại Standard, cập nhật checklist, training, quy trình.",
+    body: "Sự cố (hallucination có hại, lộ dữ liệu, bias mới) có kênh báo cáo riêng. Bài học đưa trở lại Standard, cập nhật checklist, đào tạo, quy trình.",
   },
 ];
 
@@ -383,7 +383,7 @@ function BeforeAfterToggle() {
                   Tuần 2: Post-mortem không đổ lỗi, sửa hệ thống
                 </div>
                 <p className="text-xs text-muted mt-0.5 leading-relaxed">
-                  Rút bài học, cập nhật checklist, retrain model. Có tài
+                      Rút bài học, cập nhật checklist, huấn luyện lại model. Có tài
                   liệu đầy đủ để làm việc với thanh tra nếu cần.
                 </p>
               </div>
@@ -417,7 +417,7 @@ export default function AiGovernanceInEnterprise() {
           tiêu chuẩn bắt buộc áp dụng nội bộ từ tháng 6/2022, được hậu thuẫn
           bởi <strong>Office of Responsible AI (ORA)</strong>, hội đồng{" "}
           <strong>AETHER</strong>, và nhóm <strong>Responsible AI Champs</strong>{" "}
-          có mặt tại mọi sản phẩm. Đây là case study tốt nhất để người làm văn
+          có mặt tại mọi sản phẩm. Đây là ví dụ dễ hình dung nhất để người làm văn
           phòng Việt Nam hình dung một bộ máy governance thực sự vận hành ra
           sao.
         </p>

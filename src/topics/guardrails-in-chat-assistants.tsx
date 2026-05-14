@@ -361,8 +361,8 @@ export default function GuardrailsInChatAssistants() {
           gây hại?</strong> Anthropic và OpenAI, hai công ty AI hàng đầu, đã đi hai con đường khác nhau nhưng bổ sung cho nhau.
         </p>
         <p>
-          Anthropic dựng <strong>Constitutional AI</strong> (AI Hiến pháp, cách huấn luyện
-          để mô hình tự đánh giá câu trả lời theo một bộ nguyên tắc). OpenAI xây{" "}
+          Anthropic dựng <strong>Constitutional AI</strong> (cách huấn luyện
+          để model tự kiểm theo một bộ nguyên tắc). OpenAI xây{" "}
           <strong>Moderation API</strong> (bộ lọc bên ngoài, kiểm tra cả đầu vào lẫn đầu ra). Cả
           hai đều là &ldquo;rào chắn an toàn&rdquo; (guardrails).
         </p>
@@ -522,7 +522,7 @@ export default function GuardrailsInChatAssistants() {
         </div>
 
         <p>
-          <strong>Constitutional AI</strong> (dạy AI tự kiểm) và <strong>Moderation API</strong> (lọc từ bên ngoài) là hai triết lý bổ sung cho nhau, giống như việc vừa dạy con đạo đức ở nhà, vừa có lớp học, cảnh sát, luật pháp bên ngoài. Không lớp nào đủ một mình. Kết hợp cả hai tạo nên hệ thống phòng thủ nhiều lớp, giúp hàng trăm triệu người dùng chatbot hằng ngày mà không mở một chiếc hộp Pandora.
+          <strong>Constitutional AI</strong> (dạy AI tự kiểm) và <strong>Moderation API</strong> (lọc từ bên ngoài) là hai triết lý bổ sung cho nhau, giống như việc vừa dạy con đạo đức ở nhà, vừa có lớp học, cảnh sát, luật pháp bên ngoài. Không lớp nào đủ một mình. Kết hợp cả hai tạo nên hệ thống phòng thủ nhiều lớp, giúp hàng trăm triệu người dùng chatbot hằng ngày mà không tạo ra rủi ro ngoài tầm kiểm soát.
         </p>
 
         <div className="not-prose mt-4 rounded-lg border border-accent/30 bg-accent-light/60 p-4 flex items-start gap-3">

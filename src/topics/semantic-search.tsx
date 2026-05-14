@@ -1063,7 +1063,7 @@ export default function SemanticSearchTopic() {
           <Callout variant="warning" title="Cạm bẫy thường gặp">
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
-                <strong>Mismatch model:</strong> mã hoá tài liệu bằng model A,
+                <strong>Lệch model:</strong> mã hoá tài liệu bằng model A,
                 mã hoá câu hỏi bằng model B → điểm vô nghĩa. Luôn cùng một
                 model.
               </li>
@@ -1074,7 +1074,7 @@ export default function SemanticSearchTopic() {
               </li>
               <li>
                 <strong>Quên metadata filter:</strong> semantic có thể trả về
-                tài liệu &quot;hết hạn&quot;, &quot;private&quot;. Lọc metadata
+                tài liệu &quot;hết hạn&quot;, &quot;riêng tư&quot;. Lọc metadata
                 trước/sau khi tìm.
               </li>
               <li>

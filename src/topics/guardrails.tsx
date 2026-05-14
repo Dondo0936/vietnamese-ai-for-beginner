@@ -504,7 +504,7 @@ function PolicyDialsVisualization(values: Record<string, number>) {
         );
       })}
       <p className="text-[11px] text-muted italic pt-1">
-        Kéo các thanh trượt bên dưới để thấy mỗi chính sách thay đổi cách chatbot phản hồi. Đặt mọi thứ ở mức tối đa = chatbot &ldquo;điện thoại đá&rdquo; từ chối tất cả.
+        Kéo các thanh trượt bên dưới để thấy mỗi chính sách thay đổi cách chatbot phản hồi. Đặt mọi thứ ở mức tối đa = trợ lý gần như vô dụng vì từ chối tất cả.
       </p>
     </div>
   );
@@ -574,7 +574,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Rào chắn thông minh không chặn mọi câu hỏi y tế, sẽ vô dụng như 'điện thoại đá'. Thay vào đó cho phép thông tin phổ thông và ép lớp đầu ra chèn lời nhắc + số tổng đài.",
+      "Rào chắn thông minh không chặn mọi câu hỏi y tế, vì như vậy trợ lý gần như vô dụng. Thay vào đó cho phép thông tin phổ thông và ép lớp đầu ra chèn lời nhắc + số tổng đài.",
   },
   {
     question: "Vì sao dùng AI để kiểm duyệt AI mà không có gì khác có thể nguy hiểm?",
@@ -993,7 +993,7 @@ export default function GuardrailsTopic() {
           points={[
             "Rào chắn giống lan can cầu, không ngăn sử dụng AI, chỉ ngăn nội dung nguy hiểm. Vô hình với người dùng tốt, cứng với kẻ cố tình lách.",
             "Bốn lớp xếp chồng: Lọc đầu vào · Mô hình tự chế ngự · Lọc đầu ra · Giám sát dài hạn. Mất một lớp là có kẽ hở.",
-            "Không có cài đặt hoàn hảo, luôn đánh đổi giữa an toàn và hữu ích. Chặt quá = điện thoại đá, lỏng quá = mất uy tín.",
+            "Không có cài đặt hoàn hảo, luôn đánh đổi giữa an toàn và hữu ích. Chặt quá = trợ lý gần như vô dụng, lỏng quá = mất uy tín.",
             "Kẻ xấu dùng nhiều cách: xin thẳng, đóng vai, xin lộ chỉ thị, cài bẫy gián tiếp qua tài liệu. Rào chắn phải biết cả bốn.",
             "Ngân hàng, bệnh viện, giáo dục cần rào chắn chặt hơn TMĐT vì rủi ro pháp lý và tính mạng cao hơn.",
             "Rào chắn là hệ thống sống: đo hằng tuần, xem lại trường hợp chặn nhầm, cập nhật quy tắc theo chiêu tấn công mới.",

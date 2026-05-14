@@ -730,7 +730,7 @@ export default function AIInAgricultureTopic() {
           "Bác nông dân ở An Giang chụp ảnh lá lúa bằng điện thoại, app AI báo &ldquo;đạo ôn 82% tự tin&rdquo;. Điều này nghĩa là gì?",
         options: [
           "AI chắc chắn 100% là đạo ôn",
-          "AI đã so ảnh với hàng ngàn ảnh lá bệnh trong bộ học và thấy 82% giống đạo ôn nhất, nên hành xử có phần: phun thuốc đạo ôn, nhưng vẫn nên hỏi khuyến nông xã vì 18% còn lại có thể là bệnh khác",
+          "AI đã so ảnh với hàng ngàn ảnh lá bệnh trong bộ học và thấy 82% giống đạo ôn nhất, nên xử lý thận trọng: kiểm tra thêm ảnh hoặc hỏi khuyến nông trước khi phun thuốc đạo ôn, vì 18% còn lại có thể là bệnh khác",
           "Đạo ôn sẽ lan 82% cánh đồng",
           "Nông dân đã làm sai kỹ thuật 82%",
         ],
@@ -1309,4 +1309,3 @@ function InfraStat({
     </div>
   );
 }
-

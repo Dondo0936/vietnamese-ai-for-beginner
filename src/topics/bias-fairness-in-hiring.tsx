@@ -575,7 +575,7 @@ export default function BiasFairnessInHiring() {
         </p>
         <p>
           Đó chính xác là những gì đã xảy ra tại Amazon từ năm 2014 đến 2017.
-          Một đội 12 kỹ sư tại Edinburgh xây dựng hệ thống chấm CV 1-5 sao, và mô hình học từ 10 năm dữ liệu đã trừ điểm mọi hồ sơ có từ
+          Một đội 12 kỹ sư tại Edinburgh xây hệ thống chấm CV 1-5 sao. Model học từ 10 năm dữ liệu và trừ điểm các hồ sơ có từ
           &ldquo;women&rsquo;s&rdquo; trong đó.
         </p>
 
@@ -614,7 +614,7 @@ export default function BiasFairnessInHiring() {
           <p>
             Phụ nữ chiếm đa số trong nhiều ngành tại Việt Nam (giáo dục, y tế,
             dịch vụ), nhưng lại là thiểu số trong dữ liệu lãnh đạo và công nghệ
-            cao. Nếu doanh nghiệp Việt dùng AI tuyển dụng được train trên dữ
+            cao. Nếu doanh nghiệp Việt dùng AI tuyển dụng được huấn luyện trên dữ
             liệu Mỹ hoặc dữ liệu lịch sử nội bộ không cân bằng, kịch bản Amazon
             hoàn toàn có thể lặp lại, nhưng với rủi ro pháp lý bổ sung
             từ Nghị định 13/2023 và Điều 8 Bộ luật Lao động 2019.

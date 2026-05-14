@@ -369,7 +369,7 @@ const BEATS: BeatVisual[] = [
         Trong số này có <em>Varghese v. China Southern Airlines</em>,{" "}
         <em>Martinez v. Delta Airlines</em>, <em>Miller v. United Airlines</em>.
         Mỗi vụ đều có format giống thật: tên thẩm phán, số trang, trích dẫn
-        pháp lý. Nhưng tất cả do AI <strong>bịa ra từ pattern văn bản</strong>.
+        pháp lý. Nhưng tất cả do AI <strong>bịa ra từ mẫu văn bản đã học</strong>.
       </p>
     ),
     tone: "amber",

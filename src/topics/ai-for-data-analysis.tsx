@@ -431,9 +431,9 @@ function ErrorSpottingDemo() {
           </div>
           <div className="rounded-lg border border-green-300/40 bg-green-100/50 dark:bg-green-900/20 p-3">
             <p className="text-xs text-foreground">
-              <strong>Bài học:</strong> AI không hiểu dữ liệu, nó đoán theo tên
-              cột. Kiểm tra cột nào đang được dùng bằng một câu &ldquo;AI, bạn
-              vừa dùng cột nào để tính?&rdquo;
+              <strong>Bài học:</strong> AI không hiểu nghiệp vụ nếu bạn không
+              mô tả cột rõ. Nó có thể đoán sai ý nghĩa tên cột. Kiểm tra cột nào
+              đang được dùng bằng một câu &ldquo;AI, bạn vừa dùng cột nào để tính?&rdquo;
             </p>
           </div>
         </div>
@@ -554,7 +554,7 @@ export default function AiForDataAnalysisTopic() {
         ],
         correct: 1,
         explanation:
-          "Thông tin cá nhân và dữ liệu tài chính nhạy cảm không nên upload lên AI công cộng, dữ liệu có thể được dùng để train model hoặc lộ qua log. Dùng bản enterprise (không train trên dữ liệu) hoặc ẩn danh trước.",
+        "Thông tin cá nhân và dữ liệu tài chính nhạy cảm không nên upload lên AI công cộng, dữ liệu có thể được dùng để huấn luyện model hoặc lộ qua log. Dùng bản enterprise (không dùng dữ liệu để huấn luyện) hoặc ẩn danh trước.",
       },
       {
         question:
@@ -768,12 +768,12 @@ export default function AiForDataAnalysisTopic() {
             question="Bạn có file Excel lương 150 nhân viên (tên, CMND, lương). Muốn phân tích phân bố lương. Cách an toàn nhất là gì?"
             options={[
               "Upload thẳng lên ChatGPT free để phân tích nhanh",
-              "Xoá cột CMND + ẩn danh tên nhân viên trước khi upload, hoặc dùng bản enterprise không train trên dữ liệu",
+        "Xoá cột CMND + ẩn danh tên nhân viên trước khi upload, hoặc dùng bản enterprise không dùng dữ liệu để huấn luyện",
               "Gửi file cho AI qua email",
               "Copy-paste cả file vào Gemini",
             ]}
             correct={1}
-            explanation="Dữ liệu nhạy cảm cá nhân (CMND, tên, lương) không nên vào AI công cộng. Hai giải pháp an toàn: (1) ẩn danh trước khi upload, (2) dùng bản enterprise có cam kết không train trên dữ liệu."
+              explanation="Dữ liệu nhạy cảm cá nhân (CMND, tên, lương) không nên vào AI công cộng. Hai giải pháp an toàn: (1) ẩn danh trước khi upload, (2) dùng bản enterprise có cam kết không dùng dữ liệu để huấn luyện."
           />
         </div>
       </LessonSection>
@@ -949,12 +949,12 @@ export default function AiForDataAnalysisTopic() {
                 <p>
                   <strong>Có thể upload (sau khi ẩn danh):</strong> doanh thu
                   tổng hợp, số liệu bán hàng không gắn tên cá nhân, dữ liệu
-                  publicly available.
+                  đã công khai.
                 </p>
                 <p>
                   <strong>An toàn nhất:</strong> bản enterprise (ChatGPT
                   Business, Claude for Work, Gemini Enterprise, Microsoft 365
-                  Copilot), có cam kết không train trên dữ liệu + audit log.
+                  Copilot), có cam kết không dùng dữ liệu để huấn luyện + audit log.
                 </p>
               </div>
             </Callout>
@@ -1054,7 +1054,7 @@ export default function AiForDataAnalysisTopic() {
           title="Những điều cần nhớ về AI phân tích dữ liệu"
           points={[
             "AI đọc file trực tiếp, upload vào ChatGPT Advanced Data Analysis, Claude, Gemini in Sheets, Excel Copilot hoặc Power BI Copilot.",
-            "Mô tả cột + đặt câu hỏi cụ thể. AI không hiểu dữ liệu, nó đoán tên cột.",
+            "Mô tả cột + đặt câu hỏi cụ thể. AI không hiểu nghiệp vụ nếu bạn không mô tả cột rõ.",
             "Chọn đúng loại biểu đồ: line cho xu hướng, bar cho so sánh, pie cho tỉ trọng, scatter cho quan hệ.",
             "Luôn hỏi ngược 'bạn dùng cột nào?' và kiểm tra trên 2-3 dòng trước khi tin đáp án.",
             "Không upload dữ liệu nhạy cảm (CMND, lương, tài khoản) lên AI công cộng. Dùng bản enterprise hoặc ẩn danh.",

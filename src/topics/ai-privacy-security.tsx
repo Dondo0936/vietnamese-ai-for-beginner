@@ -118,7 +118,7 @@ const RISKS: RiskCard[] = [
   {
     id: "train",
     icon: Cloud,
-    title: "Dùng để train mô hình",
+    title: "Dữ liệu bị dùng để cải tiến model",
     short: "Tier miễn phí thường mặc định dùng dữ liệu của bạn để cải tiến mô hình.",
     detail:
       "Dữ liệu công ty có thể bị ghi nhớ và xuất ra cho người dùng khác. Giải pháp: chuyển sang tier trả phí có cam kết no-train bằng văn bản (DPA).",
@@ -699,7 +699,7 @@ function PublicVsEnterprise() {
       <ul className="space-y-1.5 text-xs text-foreground">
         <li className="flex items-start gap-2">
           <XCircle size={14} className="mt-0.5 shrink-0 text-red-600 dark:text-red-400" />
-          <span>Dữ liệu có thể dùng để train mô hình</span>
+          <span>Dữ liệu có thể dùng để cải tiến model</span>
         </li>
         <li className="flex items-start gap-2">
           <XCircle size={14} className="mt-0.5 shrink-0 text-red-600 dark:text-red-400" />
@@ -824,7 +824,7 @@ export default function AiPrivacySecurityTopic() {
       ],
       correct: 1,
       explanation:
-        "Zero Data Retention chỉ áp dụng cho interaction với Copilot: prompt và response không được Microsoft giữ lâu dài, không dùng để train. Dữ liệu nghiệp vụ của công ty trong OneDrive/SharePoint/Teams vẫn tuân theo chính sách retention mà công ty thiết lập. Đây là cam kết về luồng AI, không phải xóa toàn bộ dữ liệu.",
+        "Zero Data Retention chỉ áp dụng cho interaction với Copilot: prompt và response không được Microsoft giữ lâu dài, không dùng để huấn luyện. Dữ liệu nghiệp vụ của công ty trong OneDrive/SharePoint/Teams vẫn tuân theo chính sách retention mà công ty thiết lập. Đây là cam kết về luồng AI, không phải xóa toàn bộ dữ liệu.",
       type: "mcq",
     },
     {
@@ -868,12 +868,12 @@ export default function AiPrivacySecurityTopic() {
           question="Bạn dán hợp đồng khách hàng có số điện thoại và số CCCD vào ChatGPT miễn phí để nhờ tóm tắt. Điều gì KHẢ NĂNG CAO sẽ xảy ra với dữ liệu đó?"
           options={[
             "OpenAI xóa ngay sau khi trả lời, không lưu lại",
-            "Được lưu trong log + có thể dùng để cải tiến mô hình (train), bạn không kiểm soát được ai đọc",
+            "Được lưu trong log + có thể dùng để cải tiến model, bạn không kiểm soát được ai đọc",
             "Được công khai trên trang chủ cho mọi người xem",
             "Không ai nhìn thấy, kể cả OpenAI",
           ]}
           correct={1}
-          explanation="Tier miễn phí của hầu hết AI công cộng mặc định: lưu hội thoại trong log dài hạn và có thể dùng để cải tiến mô hình. Không công khai trên web, nhưng cũng không được xóa ngay. Nhân viên OpenAI có quyền truy cập nội dung khi cần (điều tra vi phạm, debug). Dán CCCD/SĐT vào đó đồng nghĩa với việc từ bỏ kiểm soát dữ liệu khách hàng."
+          explanation="Tier miễn phí của hầu hết AI công cộng mặc định: lưu hội thoại trong log dài hạn và có thể dùng để cải tiến mô hình. Không công khai trên web, nhưng cũng không được xóa ngay. Nhà cung cấp có thể truy cập nội dung khi cần điều tra vi phạm hoặc debug hệ thống. Dán CCCD/SĐT vào đó đồng nghĩa với việc từ bỏ kiểm soát dữ liệu khách hàng."
         >
           <p className="mt-3 text-sm text-muted leading-relaxed">
             Bài này giúp bạn biết dữ liệu nào an toàn cho AI công cộng, dữ liệu nào

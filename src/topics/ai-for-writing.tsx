@@ -85,7 +85,7 @@ function buildEmail(
   const greetings = [
     `Chào ${["Minh", "anh Hoàng", "chị Lan"][recipient]},`,
     `Kính gửi ${["bạn Minh", "anh Hoàng", "chị Lan"][recipient]},`,
-    `Kính gửi ${["quý đồng nghiệp Minh", "Trưởng phòng Hoàng", "Quý khách Lan"][recipient]},`,
+    `Kính gửi ${["quý đồng nghiệp Minh", "Trưởng phòng Hoàng", "chị Lan"][recipient]},`,
   ];
   const bodyShort = [
     "Mình xin nghỉ 2 ngày tuần sau để giải quyết việc nhà. Công việc đã bàn giao cho Hải.",
@@ -257,7 +257,7 @@ function EmailDrafterDemo() {
           <p className="text-sm text-foreground">{email.greeting}</p>
           <p className="text-sm text-foreground leading-relaxed">{email.body}</p>
           <p className="text-sm text-foreground">{email.closing}</p>
-          <p className="text-sm text-muted italic">, {email.sign}</p>
+          <p className="text-sm text-muted italic">{email.sign}</p>
         </motion.div>
         <p className="mt-2 text-[11px] text-muted">
           Thử đổi 3 thứ ở trên, email tự viết lại trong chưa đầy 1 giây.
@@ -545,13 +545,13 @@ export default function AiForWritingTopic() {
           "Pattern an toàn nhất khi triển khai AI viết cho nhân viên doanh nghiệp là gì?",
         options: [
           "Cho mọi người dùng ChatGPT free với tài khoản cá nhân",
-          "Cấp license enterprise, có cam kết không train trên dữ liệu + audit log",
+          "Cấp license enterprise, có cam kết không dùng dữ liệu để huấn luyện + audit log",
           "Chặn hoàn toàn mọi AI tại văn phòng",
           "Cho tự do dùng nhưng không ban hành quy định",
         ],
         correct: 1,
         explanation:
-          "Doanh nghiệp cần bản enterprise: data không dùng để train, audit log đầy đủ, SSO + RBAC. Free tier cá nhân không cam kết điều này.",
+          "Doanh nghiệp cần bản enterprise: data không dùng để huấn luyện, audit log đầy đủ, SSO + RBAC. Free tier cá nhân không cam kết điều này.",
       },
     ],
     []
@@ -938,7 +938,7 @@ export default function AiForWritingTopic() {
             "Vòng 4 bước: bạn viết nháp → AI polish → bạn review → publish. Bước review không bao giờ bỏ được.",
             "4 bẫy lớn: tone không khớp, bịa chi tiết, quá dài, từ sáo rỗng. Chặn trước bằng prompt rõ.",
             "AI là người soạn, bạn là người ký. Luôn kiểm tra tên, số, ngày trước khi gửi.",
-            "Doanh nghiệp cần bản enterprise (không train trên prompt + audit log) khi xử lý data công ty.",
+            "Doanh nghiệp cần bản enterprise (không dùng prompt để huấn luyện + audit log) khi xử lý data công ty.",
           ]}
         />
 

@@ -48,7 +48,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-governance",
   title: "AI Governance",
-  titleVi: "AI governance: luật dùng AI trong công ty",
+  titleVi: "AI governance: quy trình dùng AI an toàn trong công ty",
   description:
     "Đặt vai trò, quy trình phê duyệt và trách nhiệm để nhân viên dùng AI đúng việc, đúng rủi ro.",
   category: "ai-safety",
@@ -667,7 +667,7 @@ export default function AIGovernanceTopic() {
       {/* Bước 1, PredictionGate: ai phải OK dùng ChatGPT?            */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Công ty bạn muốn dùng ChatGPT để xử lý dữ liệu khách hàng. Ai là người phải 'OK' quyết định này?"
+          question="Công ty bạn muốn dùng ChatGPT để xử lý dữ liệu khách hàng. Ai cần phê duyệt quyết định này?"
           options={[
             "Chỉ IT, vì đây là vấn đề kỹ thuật",
             "Chỉ CEO, vì CEO có thẩm quyền cao nhất",

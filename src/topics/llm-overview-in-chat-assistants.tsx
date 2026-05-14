@@ -568,8 +568,8 @@ function ChatGPTDiagram() {
         </div>
       </div>
       <p className="text-[11px] text-muted mt-2 leading-relaxed">
-        RLHF (Reinforcement Learning from Human Feedback, học tăng cường từ
-        phản hồi của con người): hàng ngàn người chấm điểm câu trả lời, model
+        RLHF (Reinforcement Learning from Human Feedback): cách huấn luyện
+        model bằng phản hồi của người đánh giá. Hàng ngàn người chấm điểm câu trả lời, model
         học ưu tiên câu nào được đánh giá cao.
       </p>
     </div>
@@ -588,7 +588,7 @@ function ClaudeDiagram() {
       <div className="flex items-center gap-2 mb-2">
         <Shield size={16} className="text-orange-500" />
         <span className="text-xs font-semibold text-foreground">
-          Constitutional AI (AI Hiến pháp)
+          Constitutional AI (dạy model theo một bộ nguyên tắc)
         </span>
       </div>
 
@@ -613,7 +613,7 @@ function ClaudeDiagram() {
       <div className="flex items-center gap-2 text-[11px] text-muted">
         <BookOpen size={12} className="shrink-0" />
         <span>
-          Cửa sổ ngữ cảnh Claude 2: <strong>100.000 token</strong>, đọc nổi một
+          Context window Claude 2: <strong>100.000 token</strong>, đọc nổi một
           cuốn sách 300 trang trong một lượt chat.
         </span>
       </div>
@@ -979,7 +979,7 @@ export default function LlmOverviewInChatAssistants() {
           <p>
             <strong>ChatGPT mở đầu kỷ nguyên trò chuyện với AI.</strong> OpenAI
             lấy GPT-3.5 (sau này là GPT-4), thêm một bước tinh chỉnh gọi là{" "}
-            <strong>RLHF</strong> (Reinforcement Learning from Human Feedback, học tăng cường từ phản hồi của con người). Hàng ngàn người chấm
+            <strong>RLHF</strong> (Reinforcement Learning from Human Feedback): cách huấn luyện model bằng phản hồi của người đánh giá. Hàng ngàn người chấm
             điểm câu trả lời; model dần biết trả lời nào được ưa, trả lời nào
             bị chê. Kết quả: giọng chat tự nhiên, ít từ chối hơn, ít nói vô
             nghĩa hơn.
@@ -991,7 +991,7 @@ export default function LlmOverviewInChatAssistants() {
           <MechanismProgress current={2} />
           <p>
             <strong>Claude đặt an toàn và ngữ cảnh dài lên hàng đầu.</strong>{" "}
-            Anthropic áp dụng <strong>Constitutional AI</strong> (AI Hiến pháp), dạy model tuân theo một bộ nguyên tắc đạo đức thay vì chỉ học
+            Anthropic áp dụng <strong>Constitutional AI</strong> (dạy model theo một bộ nguyên tắc) thay vì chỉ học
             từng trường hợp. Claude 2 ra mắt với cửa sổ ngữ cảnh 100.000 token,
             cao gấp 25 lần ChatGPT thời đó, đọc nổi một cuốn sách 300 trang
             trong một lượt chat.

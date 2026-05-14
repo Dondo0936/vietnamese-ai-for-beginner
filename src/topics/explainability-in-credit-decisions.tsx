@@ -340,7 +340,7 @@ const TIMELINE: TimelineItem[] = [
   {
     year: "2019",
     where: "Mỹ",
-    title: "Vụ Apple Card, DHH nổ trên Twitter",
+    title: "Vụ Apple Card, DHH đăng bài gây chú ý trên Twitter",
     detail:
       "Cơ quan dịch vụ tài chính New York (NYDFS) mở điều tra; Goldman Sachs buộc phải công khai một phần cơ chế.",
     color: "bg-red-500",
@@ -488,7 +488,7 @@ export default function ExplainabilityInCreditDecisions() {
           người trên thế giới, và đã trở thành chủ đề của nhiều đạo luật lớn.
         </p>
         <p>
-          Chủ đề này không về một công ty duy nhất, nó về <strong>cơ quan
+          Bài này không xoay quanh một công ty duy nhất, nó về <strong>cơ quan
           quản lý</strong>: GDPR của Liên minh Châu Âu (EU), Cục Bảo vệ Tài
           chính Người tiêu dùng Mỹ (CFPB), và Nghị định 13/2023 của Việt Nam.
           Họ đã ra luật bắt buộc ngân hàng phải giải thích khi AI quyết định

@@ -677,7 +677,7 @@ export default function TextClassificationTopic() {
       {/* =================================================================
           BƯỚC 4, AHA
           ================================================================= */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
             Phân loại văn bản <strong>không phải tìm từ khóa</strong>.
@@ -870,7 +870,7 @@ export default function TextClassificationTopic() {
               <li>
                 <strong>Khái niệm trôi (concept drift)</strong>, khách thay
                 đổi cách viết (năm 2024 chưa có &ldquo;Livestream chốt đơn&rdquo;,
-                2026 có). Mô hình phải retrain định kỳ.
+                2026 có). Mô hình phải huấn luyện lại định kỳ.
               </li>
               <li>
                 <strong>Bỏ qua tầm quan trọng của metadata</strong>, đôi khi

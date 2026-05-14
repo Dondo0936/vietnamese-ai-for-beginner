@@ -1179,7 +1179,7 @@ export default function RecommendationSystemsTopic() {
 
               <h3 className="text-lg font-semibold text-foreground mt-6 mb-3 flex items-center gap-2">
                 <Store size={18} className="text-accent" />
-                Ở Việt Nam, bạn dùng app nào là đang &quot;ăn&quot; recommender?
+                Ở Việt Nam, bạn dùng app nào là đang dùng recommender mà không để ý?
               </h3>
               <p>
                 Gần như mọi app có scroll đều có. Dưới đây là những cái bạn lướt hằng ngày:

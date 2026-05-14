@@ -1117,7 +1117,7 @@ export default function ExplainabilityTopic() {
             nhiên.
           </p>
           <p className="mt-2">
-            Cây quyết định, luật if-then, giải thích sẵn trong chính cấu trúc.
+            Cây quyết định và luật if-then có phần giải thích nằm sẵn trong chính cấu trúc.
             Nhưng mạng nơ-ron sâu, mô hình ngôn ngữ lớn (như ChatGPT), {" "}
             <strong>là hộp đen</strong>. Để &ldquo;hé lộ&rdquo; chúng, chúng
             ta cần công cụ bên ngoài: <strong>SHAP, LIME, Grad-CAM, Attention
@@ -1307,7 +1307,7 @@ export default function ExplainabilityTopic() {
           ========================================================= */}
       <LessonSection step={7} totalSteps={8} label="Gói gọn">
         <MiniSummary
-          title="5 ý cốt lõi"
+          title="Nhớ: AI quan trọng phải giải thích được"
           points={[
             "Explainability = AI giải thích vì sao nó ra quyết định, như hóa đơn liệt kê từng khoản thanh toán.",
             "Có 3 kiểu giải thích: local (1 quyết định), global (toàn mô hình), counterfactual (nếu đổi X thì sao).",
