@@ -9,6 +9,7 @@ import { CostCurveViz } from "./ai-index-report-2026";
 import { KvRotationViz } from "./turboquant-kv-cache-compression";
 import { TowerOfHanoiHeroViz } from "./neuro-symbolic-robots";
 import { ImageGenSplitHeroViz } from "./midjourney-vs-chatgpt-image-2";
+import { StateMediaSupplyChainHeroViz } from "./state-media-control-llms";
 
 /**
  * Map an article's `heroViz` frontmatter key to the same SVG the
@@ -28,6 +29,7 @@ const map: Record<string, ComponentType> = {
   "kv-rotation": KvRotationViz,
   "tower-of-hanoi": TowerOfHanoiHeroViz,
   "image-gen-split": ImageGenSplitHeroViz,
+  "state-media-supply-chain": StateMediaSupplyChainHeroViz,
 };
 
 export function getHeroViz(key: string | undefined): ComponentType | null {

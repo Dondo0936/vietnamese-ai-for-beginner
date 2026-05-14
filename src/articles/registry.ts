@@ -7,6 +7,34 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "state-media-control-llms",
+    title: "Chatbot không học từ internet trung tính.",
+    dek: "Nature vừa công bố một nghiên cứu theo dõi cách state media đi vào training data rồi hiện lại trong câu trả lời của LLM. Nhóm tác giả tìm thấy 3.1 triệu tài liệu tiếng Trung trong CulturaX khớp với state-coordinated media, cao hơn khoảng 41 lần tỷ lệ Wikipedia tiếng Trung. Khi model được hỏi về chính trị Trung Quốc, câu trả lời bằng tiếng Trung được người chấm đánh giá thuận lợi hơn câu tiếng Anh 75.3% số lần. Điểm chính không phải AI company cố tình chỉnh chatbot, mà là môi trường truyền thông đã để lại dấu vết trong dữ liệu mà chatbot học.",
+    source: {
+      name: "Nature · s41586-026-10506-7",
+      host: "nature.com",
+      url: "https://www.nature.com/articles/s41586-026-10506-7",
+    },
+    date: "2026-05-14",
+    readingTime: "9 phút",
+    category: "paper",
+    tag: "data",
+    lessonRefs: [
+      "data-and-datasets",
+      "ai-governance",
+      "bias-fairness",
+      "llm-evaluation",
+      "rag",
+    ],
+    relatedArticles: [
+      "ai-index-report-2026",
+      "how-ai-reads-pdf",
+      "phogpt-7b-reasoning",
+    ],
+    heroViz: "state-media-supply-chain",
+    isLead: true,
+  },
+  {
     slug: "how-ai-reads-pdf",
     title: "AI đọc PDF như thế nào. Vì sao việc tưởng dễ lại khó.",
     dek: "Bạn kéo thả một file PDF 50 trang báo cáo tài chính vào Claude, hỏi 'doanh thu Q3 là bao nhiêu', nhận đúng con số 245 tỷ trong bốn giây. Cảm giác trơn tru, nhưng bên trong là một quy trình cồng kềnh. PDF được Adobe thiết kế năm 1993 để in ra giấy, không phải để máy đọc. File chỉ chứa lệnh 'vẽ glyph X tại tọa độ (x, y)', không có khái niệm đoạn văn, tiêu đề, hay bảng. Mọi cấu trúc người đọc cảm nhận được đều phải tự tái dựng. Bài viết mổ xẻ hai chiến lược các sản phẩm AI dùng năm 2026 để giải bài toán này: vision-first (multimodal model nhìn ảnh từng trang) và parse-first (Marker, Mistral OCR, LlamaParse bóc tách Markdown trước). Mỗi chiến lược thắng ở một loại tài liệu, nhưng cách thắng tổng thể lại là kết hợp cả hai.",
