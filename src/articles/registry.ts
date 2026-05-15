@@ -8,7 +8,7 @@ import type { ArticleMeta } from "@/lib/article-types";
 export const articleList: ArticleMeta[] = [
   {
     slug: "office-ai-biased-documents",
-    title: "AI có thể học lệch từ tài liệu văn phòng.",
+    title: "File cũ làm AI nói sai.",
     dek: "Bạn hỏi AI về chính sách hoàn tiền, quy trình nghỉ phép, hoặc bảng giá mới. Câu trả lời nghe tự tin, nhưng nếu kho Drive còn đầy template cũ, bản nháp chưa xoá và wiki lỗi thời, AI có thể viết theo nguồn sai. Một nghiên cứu Nature về cách ngôn ngữ lặp lại đi vào training data cho thấy bài học rộng hơn: model không tự phân biệt nguồn nào còn hiệu lực. Với nhân viên văn phòng, cách dùng an toàn là yêu cầu citation, kiểm ngày cập nhật, và coi AI là người viết nháp chứ không phải nguồn sự thật.",
     source: {
       name: "Nature · s41586-026-10506-7",
