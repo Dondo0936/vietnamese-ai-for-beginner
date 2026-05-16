@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "demo:studio": "remotion studio",
     "demo:render": "remotion render DemoComposition public/demo.mp4",
-    "demo:poster": "remotion still DemoComposition public/demo-poster.png --frame=60"
+    "demo:poster": "remotion still DemoComposition public/demo-poster.png --frame=60",
+    "pipeline:manifest:validate": "tsx scripts/pipeline/validate-manifest.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
@@ -28,7 +29,8 @@
     "next": "16.2.3",
     "qrcode": "^1.5.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.448",
@@ -46,6 +48,7 @@
     "jsdom": "^29.0.2",
     "remotion": "^4.0.448",
     "tailwindcss": "^4",
+    "tsx": "^4.22.0",
     "typescript": "^5",
     "vitest": "^4.1.4"
   }

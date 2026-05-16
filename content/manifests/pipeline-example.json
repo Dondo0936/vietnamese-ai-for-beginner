@@ -1,0 +1,115 @@
+{
+  "slug": "pipeline-example",
+  "title": {
+    "vn": "Ví dụ manifest",
+    "en": "Example manifest"
+  },
+  "summary": {
+    "vn": "Bản manifest mẫu dùng cho test contract của pipeline tự xuất bản.",
+    "en": "An example manifest used by the publishing pipeline contract test."
+  },
+  "research": {
+    "sources": [
+      {
+        "url": "https://udemi.tech/articles/how-ai-reads-pdf",
+        "quote": "PDF được Adobe thiết kế năm 1993 để in ra giấy, không phải để máy đọc.",
+        "fetchedAt": "2026-05-16T00:00:00.000Z"
+      }
+    ],
+    "keyPoints": [
+      "Pipeline đọc một manifest duy nhất cho mỗi chủ đề.",
+      "Mỗi giai đoạn ghi lát cắt của mình rồi chuyển sang giai đoạn sau."
+    ]
+  },
+  "scenes": [
+    {
+      "id": 0,
+      "durationFrames": 90,
+      "narration": {
+        "vn": "Bạn đưa một chủ đề vào pipeline.",
+        "en": "You feed a topic into the pipeline."
+      },
+      "visual": {
+        "kind": "image",
+        "prompt": "Editorial illustration of a Vietnamese student typing a topic into a search box."
+      }
+    },
+    {
+      "id": 1,
+      "durationFrames": 120,
+      "narration": {
+        "vn": "Pipeline tạo bản nghiên cứu, bài viết, kịch bản, rồi video.",
+        "en": "The pipeline produces research, an article, a script, then a video."
+      },
+      "visual": {
+        "kind": "clip",
+        "prompt": "Six-second timelapse of a pipeline diagram filling in stage by stage."
+      }
+    }
+  ],
+  "captions": {
+    "vn": {
+      "language": "vi",
+      "duration": 7.0,
+      "words": [
+        { "word": "Bạn", "start": 0.0, "end": 0.4 },
+        { "word": "đưa", "start": 0.4, "end": 0.8 }
+      ]
+    },
+    "en": {
+      "language": "en",
+      "duration": 7.0,
+      "words": [
+        { "word": "You", "start": 0.0, "end": 0.3 },
+        { "word": "feed", "start": 0.3, "end": 0.7 }
+      ]
+    }
+  },
+  "assets": {
+    "audio": {
+      "vn": "public/generated/pipeline-example/audio/vn.mp3",
+      "en": "public/generated/pipeline-example/audio/en.mp3"
+    },
+    "scenes": [
+      { "id": 0, "path": "public/generated/pipeline-example/img/scene-0.png" },
+      { "id": 1, "path": "public/generated/pipeline-example/clip/scene-1.mp4" }
+    ]
+  },
+  "renders": {
+    "wide": {
+      "vn": "out/pipeline-example/wide-vn.mp4",
+      "en": "out/pipeline-example/wide-en.mp4"
+    },
+    "shorts": {
+      "vn": "out/pipeline-example/shorts-vn.mp4",
+      "en": "out/pipeline-example/shorts-en.mp4"
+    }
+  },
+  "social": {
+    "threads": {
+      "caption": "Pipeline tự xuất bản cho udemi.",
+      "hashtags": ["udemi", "ai"]
+    },
+    "instagram": {
+      "caption": "Pipeline tự xuất bản cho udemi.",
+      "hashtags": ["udemi", "ai"]
+    },
+    "facebook": {
+      "caption": "Pipeline tự xuất bản cho udemi.",
+      "hashtags": ["udemi", "ai"]
+    },
+    "linkedin": {
+      "caption": "udemi automated publishing pipeline.",
+      "hashtags": ["udemi", "ai"]
+    },
+    "youtube": {
+      "caption": "udemi automated publishing pipeline.",
+      "hashtags": ["udemi", "ai", "shorts"]
+    }
+  },
+  "state": {
+    "stage": "done",
+    "updatedAt": "2026-05-16T00:00:00.000Z",
+    "published": false
+  }
+}

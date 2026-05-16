@@ -38,3 +38,24 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 2. Use `detect_changes` for code review.
 3. Use `get_affected_flows` to understand impact.
 4. Use `query_graph` pattern="tests_for" to check coverage.
+
+## Automated pipeline (scripts/pipeline/*)
+
+The `udemi-publish-pipeline` skill turns a topic slug into a researched
+article, bilingual narrated video, and multi-platform posts. The spine is
+one typed `TopicManifest` per topic stored at
+`content/manifests/<slug>.json`. Every stage (research → article → script
+→ tts → captions → images → clips → render → publish) reads the manifest,
+writes back its slice, and is gated by Zod validation in
+`scripts/pipeline/manifest.ts`.
+
+- **Plan & status:** `/root/.claude/plans/system-reminder-you-re-running-in-silly-lemon.md`.
+- **Validate a manifest:** `pnpm pipeline:manifest:validate content/manifests/<slug>.json`.
+- **Schema source of truth:** `scripts/pipeline/manifest.ts` (re-export the
+  types from here rather than defining ad-hoc shapes).
+- **Em-dash sweep:** Vietnamese narration in any manifest scene must NOT
+  contain the U+2014 em-dash. The schema rejects it; the test in
+  `src/__tests__/manifest.test.ts` enforces it. English narration is free
+  to use em-dashes.
+- **Env vars:** see `.env.local.example` — pipeline keys are inert for the
+  Next.js app and only read by scripts under `scripts/pipeline/`.
