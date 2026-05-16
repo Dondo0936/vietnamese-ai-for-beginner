@@ -12,7 +12,9 @@
     "demo:studio": "remotion studio",
     "demo:render": "remotion render DemoComposition public/demo.mp4",
     "demo:poster": "remotion still DemoComposition public/demo-poster.png --frame=60",
-    "pipeline:manifest:validate": "tsx scripts/pipeline/validate-manifest.ts"
+    "pipeline:manifest:validate": "tsx scripts/pipeline/validate-manifest.ts",
+    "pipeline:research": "tsx scripts/pipeline/research.ts",
+    "pipeline:article": "tsx scripts/pipeline/article.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.2",

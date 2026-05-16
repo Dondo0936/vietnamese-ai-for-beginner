@@ -15,10 +15,18 @@ import {
 } from "../manifest";
 
 const REPO_ROOT = path.resolve(__dirname, "..", "..", "..");
-const MANIFEST_DIR = path.join(REPO_ROOT, "content", "manifests");
+const DEFAULT_MANIFEST_DIR = path.join(REPO_ROOT, "content", "manifests");
+
+/**
+ * Resolves the manifests directory. Set `UDEMI_PIPELINE_MANIFEST_DIR` in
+ * tests or sandboxes to point at a tmp dir instead of the real one.
+ */
+export function manifestDir(): string {
+  return process.env.UDEMI_PIPELINE_MANIFEST_DIR ?? DEFAULT_MANIFEST_DIR;
+}
 
 export function manifestPath(slug: string): string {
-  return path.join(MANIFEST_DIR, `${slug}.json`);
+  return path.join(manifestDir(), `${slug}.json`);
 }
 
 export async function readManifest(slug: string): Promise<PartialTopicManifest> {
@@ -27,9 +35,19 @@ export async function readManifest(slug: string): Promise<PartialTopicManifest> 
   return PartialTopicManifestSchema.parse(json);
 }
 
+/** True if a manifest file exists for this slug. */
+export async function manifestExists(slug: string): Promise<boolean> {
+  try {
+    await fs.access(manifestPath(slug));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function writeManifest(m: PartialTopicManifest): Promise<void> {
   const validated = PartialTopicManifestSchema.parse(m);
-  await fs.mkdir(MANIFEST_DIR, { recursive: true });
+  await fs.mkdir(manifestDir(), { recursive: true });
   const json = JSON.stringify(validated, null, 2) + "\n";
   await fs.writeFile(manifestPath(validated.slug), json, "utf8");
 }
