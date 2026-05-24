@@ -155,7 +155,7 @@ export default function SGDTopic() {
 
   // Final losses
   const finalLosses = useMemo(() => {
-    const result: Record<Method, string> = { batch: "—", sgd: "—", "mini-batch": "—" };
+    const result: Record<Method, string> = { batch: ":", sgd: ":", "mini-batch": ":" };
     for (const m of ["batch", "sgd", "mini-batch"] as Method[]) {
       const p = paths[m];
       if (p.length > 0) {
@@ -190,13 +190,13 @@ export default function SGDTopic() {
       ],
       correct: 1,
       explanation:
-        "Mini-batch size = 1 nghĩa là cập nhật sau mỗi mẫu — đó chính là SGD thuần. Batch size = N (toàn bộ) là Batch GD.",
+        "Mini-batch size = 1 nghĩa là cập nhật sau mỗi mẫu. đó chính là SGD thuần. Batch size = N (toàn bộ) là Batch GD.",
     },
     {
       question: "Trong thực tế, batch size phổ biến nhất cho deep learning là?",
       options: [
         "1 (SGD thuần)",
-        "N — toàn bộ dataset",
+        "N. toàn bộ dataset",
         "32 đến 256 (mini-batch)",
         "1000 trở lên",
       ],
@@ -207,13 +207,13 @@ export default function SGDTopic() {
     {
       type: "fill-blank",
       question:
-        "SGD là viết tắt của {blank} Gradient Descent — cập nhật sau mỗi mẫu. Trong thực tế, deep learning dùng {blank}-batch với 32-256 mẫu để cân bằng tốc độ và ổn định.",
+        "SGD là viết tắt của {blank} Gradient Descent. cập nhật sau mỗi mẫu. Trong thực tế, deep learning dùng {blank}-batch với 32-256 mẫu để cân bằng tốc độ và ổn định.",
       blanks: [
         { answer: "Stochastic", accept: ["stochastic", "ngẫu nhiên"] },
         { answer: "mini", accept: ["Mini", "nhỏ"] },
       ],
       explanation:
-        "'Stochastic' = ngẫu nhiên: cập nhật sau mỗi mẫu ngẫu nhiên (batch size = 1). Trong thực tế, mọi framework dùng mini-batch (32-256) — gọi là SGD nhưng thật ra là mini-batch GD. Đây là mặc định cho deep learning.",
+        "'Stochastic' = ngẫu nhiên: cập nhật sau mỗi mẫu ngẫu nhiên (batch size = 1). Trong thực tế, mọi framework dùng mini-batch (32-256). gọi là SGD nhưng thật ra là mini-batch GD. Đây là mặc định cho deep learning.",
     },
   ];
 
@@ -230,7 +230,7 @@ export default function SGDTopic() {
             "Đọc review trên Shopee Food rồi tin tưởng hoàn toàn",
           ]}
           correct={2}
-          explanation="Ăn vài quán mỗi khu rồi đánh giá — đó chính là Mini-batch GD! Nhanh hơn ăn hết, đáng tin hơn chỉ thử 1 quán."
+          explanation="Ăn vài quán mỗi khu rồi đánh giá. đó chính là Mini-batch GD! Nhanh hơn ăn hết, đáng tin hơn chỉ thử 1 quán."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Ba cách tiếp cận tìm quán phở tương ứng chính xác với 3 biến thể
@@ -436,7 +436,7 @@ export default function SGDTopic() {
         <AhaMoment>
           <p>
             <strong>SGD</strong>{" "}
-            đánh đổi sự ổn định lấy tốc độ — giống Grab bike len lỏi qua đường
+            đánh đổi sự ổn định lấy tốc độ. giống Grab bike len lỏi qua đường
             đông đúc: nhanh nhưng lắc lư. <strong>Mini-batch GD</strong>{" "}
             là Grab car: ổn định hơn, vẫn nhanh, và là lựa chọn mặc định của mọi
             framework deep learning!
@@ -526,10 +526,10 @@ export default function SGDTopic() {
           </p>
 
           <Callout variant="insight" title="Bí mật của noise">
-            Nhiễu từ SGD/mini-batch không chỉ là nhược điểm — nó hoạt động như
+            Nhiễu từ SGD/mini-batch không chỉ là nhược điểm. nó hoạt động như
             một dạng <strong>regularization tự nhiên</strong>. Nghiên cứu cho thấy
             mô hình huấn luyện bằng SGD tổng quát hóa tốt hơn Batch GD vì noise
-            giúp thoát khỏi các cực tiểu &quot;sắc&quot; (sharp minima) — nơi mô hình
+            giúp thoát khỏi các cực tiểu &quot;sắc&quot; (sharp minima). nơi mô hình
             overfit.
           </Callout>
 
@@ -568,7 +568,7 @@ for epoch in range(10):
           options={[
             "Mô hình học nhanh hơn vì gradient chính xác hơn",
             "Mô hình hội tụ chậm hơn vì ít bước cập nhật hơn mỗi epoch, và có thể cần tăng learning rate",
-            "Không ảnh hưởng gì — batch size và learning rate độc lập",
+            "Không ảnh hưởng gì. batch size và learning rate độc lập",
           ]}
           correct={1}
           explanation="Batch lớn hơn = ít bước cập nhật hơn mỗi epoch. Gradient chính xác hơn nhưng bước đi ít hơn. Quy tắc linear scaling: tăng batch 8x thì tăng LR 8x."
@@ -578,12 +578,12 @@ for epoch in range(10):
       {/* ===== STEP 7: MINI SUMMARY ===== */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
-          title="SGD — Điểm chốt"
+          title="SGD. Điểm chốt"
           points={[
             "Batch GD tính gradient trên toàn bộ dữ liệu: ổn định nhưng chậm và tốn RAM.",
             "SGD cập nhật sau mỗi mẫu: nhanh nhưng dao động mạnh (nhiễu).",
             "Mini-batch GD (32-256 mẫu) là mặc định: cân bằng tốc độ + ổn định + vừa GPU.",
-            "Noise của SGD giúp thoát local minima — một dạng regularization tự nhiên.",
+            "Noise của SGD giúp thoát local minima. một dạng regularization tự nhiên.",
             "Quy tắc: tăng batch size gấp đôi → tăng learning rate gấp đôi (linear scaling).",
           ]}
         />

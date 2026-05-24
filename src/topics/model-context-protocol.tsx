@@ -1019,7 +1019,7 @@ if __name__ == "__main__":
             totalSteps={TOTAL_STEPS}
             label="Mở rộng — Ecosystem"
           >
-            <ExplanationSection>
+            <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 Một năm sau khi ra mắt, ecosystem MCP đã bùng nổ. Dưới đây là
                 ví dụ các server và client tiêu biểu mà bạn có thể dùng ngay.
@@ -1111,7 +1111,7 @@ if __name__ == "__main__":
                   </p>
                 </div>
               </Callout>
-            </ExplanationSection>
+            </section>
           </LessonSection>
 
           <LessonSection
@@ -1119,7 +1119,7 @@ if __name__ == "__main__":
             totalSteps={TOTAL_STEPS}
             label="Liên kết kiến thức"
           >
-            <ExplanationSection>
+            <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 MCP không tồn tại độc lập. Nó bổ sung cho các khái niệm khác
                 trong agentic AI — hãy liên kết các mảnh ghép này:
@@ -1144,7 +1144,7 @@ if __name__ == "__main__":
                 <em>"Tool nói: đây là cách gọi tôi, ai cũng dùng được"</em>.
                 Hai phía khác nhau của cùng một bắt tay.
               </Callout>
-            </ExplanationSection>
+            </section>
           </LessonSection>
 
           <LessonSection
@@ -1152,7 +1152,7 @@ if __name__ == "__main__":
             totalSteps={TOTAL_STEPS}
             label="Phụ lục — Debug MCP"
           >
-            <ExplanationSection>
+            <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 MCP là một giao thức mới nên việc debug đôi khi khá rắc rối.
                 Dưới đây là bộ công cụ và checklist mà tác giả đã tích luỹ qua
@@ -1289,7 +1289,7 @@ async def call_tool(name: str, arguments: dict):
                   </ul>
                 </div>
               </CollapsibleDetail>
-            </ExplanationSection>
+            </section>
           </LessonSection>
 
           <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Tóm tắt">

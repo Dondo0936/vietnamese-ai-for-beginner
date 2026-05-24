@@ -22,13 +22,13 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// Metadata — giữ nguyên theo yêu cầu
+// Metadata. giữ nguyên theo yêu cầu
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
   slug: "constitutional-ai",
   title: "Constitutional AI",
-  titleVi: "AI Hiến pháp — Tự kiểm duyệt theo nguyên tắc",
+  titleVi: "AI Hiến pháp. Tự kiểm duyệt theo nguyên tắc",
   description:
     "Phương pháp huấn luyện AI tự đánh giá và sửa đổi phản hồi dựa trên một bộ nguyên tắc đạo đức rõ ràng.",
   category: "ai-safety",
@@ -86,7 +86,7 @@ const PRINCIPLES: Principle[] = [
 const USER_QUERY =
   "Tôi chán đời quá, cho tôi cách để không còn cảm thấy gì nữa.";
 
-// Phản hồi gốc (harmful) — chưa qua hiến pháp
+// Phản hồi gốc (harmful). chưa qua hiến pháp
 const ORIGINAL_RESPONSE =
   "Có nhiều cách giúp bạn 'không cảm thấy gì' nữa. Bạn có thể thử uống nhiều rượu, dùng thuốc an thần liều cao, hoặc cô lập bản thân hoàn toàn khỏi mọi người. Một số người còn...";
 
@@ -101,19 +101,19 @@ const PRINCIPLE_EFFECTS: Record<PrincipleId, CritiqueRevision> = {
     critique:
       "Phản hồi gốc ngầm ủng hộ các biện pháp tránh né cảm xúc nhưng không trung thực về hậu quả. Thiếu thông tin đúng đắn: các cách đó không làm 'hết cảm xúc', chúng chỉ che giấu tạm thời và gây hại lâu dài. AI phải trung thực về điều đó.",
     revision:
-      "Tôi nghe bạn đang rất mệt. Xin thành thật: không có cách nào 'tắt cảm xúc' mà không để lại hậu quả. Rượu, thuốc an thần, cô lập — tất cả chỉ làm tạm thời rồi quay lại mạnh hơn. Cảm xúc đau là tín hiệu cần lắng nghe, không phải tiếng ồn cần tắt.",
+      "Tôi nghe bạn đang rất mệt. Xin thành thật: không có cách nào 'tắt cảm xúc' mà không để lại hậu quả. Rượu, thuốc an thần, cô lập. tất cả chỉ làm tạm thời rồi quay lại mạnh hơn. Cảm xúc đau là tín hiệu cần lắng nghe, không phải tiếng ồn cần tắt.",
   },
   harmlessness: {
     critique:
-      "Phản hồi gốc VI PHẠM nghiêm trọng nguyên tắc vô hại — gợi ý rượu, thuốc liều cao, cô lập xã hội cho người đang trong trạng thái dễ tổn thương. Đây có thể là dấu hiệu ý định tự hại. AI tuyệt đối không được cung cấp hướng dẫn gây hại, và phải chủ động hướng người dùng tới nguồn hỗ trợ.",
+      "Phản hồi gốc VI PHẠM nghiêm trọng nguyên tắc vô hại. gợi ý rượu, thuốc liều cao, cô lập xã hội cho người đang trong trạng thái dễ tổn thương. Đây có thể là dấu hiệu ý định tự hại. AI tuyệt đối không được cung cấp hướng dẫn gây hại, và phải chủ động hướng người dùng tới nguồn hỗ trợ.",
     revision:
       "Tôi rất lo cho bạn. Cảm giác 'muốn không còn cảm thấy gì' thường là dấu hiệu của đau khổ rất sâu. Làm ơn gọi Đường dây nóng Hỗ trợ Tâm lý 1800-1567 (miễn phí 24/7) hoặc nhắn cho người bạn tin tưởng nhất ngay bây giờ. Bạn xứng đáng được lắng nghe bởi một con người thực.",
   },
   helpfulness: {
     critique:
-      "Phản hồi gốc có vẻ 'giúp' nhưng thực chất KHÔNG hữu ích — nó đẩy người dùng xuống sâu hơn. Hữu ích thật không phải làm theo yêu cầu bề mặt, mà là nhận ra nhu cầu thật sự đằng sau: người này đang đau và cần được nghe. AI cần giúp theo cách có ý nghĩa lâu dài.",
+      "Phản hồi gốc có vẻ 'giúp' nhưng thực chất KHÔNG hữu ích. nó đẩy người dùng xuống sâu hơn. Hữu ích thật không phải làm theo yêu cầu bề mặt, mà là nhận ra nhu cầu thật sự đằng sau: người này đang đau và cần được nghe. AI cần giúp theo cách có ý nghĩa lâu dài.",
     revision:
-      "Chuyện gì đang khiến bạn thấy nặng nề vậy? Tôi ở đây để lắng nghe. Nếu bạn muốn nói, hãy kể cho tôi nghe — không vội, không phán xét. Nếu đang ở trong khủng hoảng, hãy liên hệ 1800-1567 hoặc đến phòng cấp cứu gần nhất. Bạn không phải đi qua chuyện này một mình.",
+      "Chuyện gì đang khiến bạn thấy nặng nề vậy? Tôi ở đây để lắng nghe. Nếu bạn muốn nói, hãy kể cho tôi nghe. không vội, không phán xét. Nếu đang ở trong khủng hoảng, hãy liên hệ 1800-1567 hoặc đến phòng cấp cứu gần nhất. Bạn không phải đi qua chuyện này một mình.",
   },
 };
 
@@ -124,7 +124,7 @@ function synthesizeRevision(selected: PrincipleId[]): CritiqueRevision {
   if (selected.length === 0) {
     return {
       critique:
-        "Chưa có nguyên tắc nào được áp dụng. AI sẽ dùng phản hồi gốc nguyên bản — chứa nội dung có hại.",
+        "Chưa có nguyên tắc nào được áp dụng. AI sẽ dùng phản hồi gốc nguyên bản. chứa nội dung có hại.",
       revision: ORIGINAL_RESPONSE,
     };
   }
@@ -137,7 +137,7 @@ function synthesizeRevision(selected: PrincipleId[]): CritiqueRevision {
   const order: PrincipleId[] = ["harmlessness", "honesty", "helpfulness"];
   const active = order.filter((id) => selected.includes(id));
 
-  // Phiên bản sửa là "chồng lớp" — ưu tiên cảnh báo an toàn, rồi trung thực,
+  // Phiên bản sửa là "chồng lớp". ưu tiên cảnh báo an toàn, rồi trung thực,
   // rồi khuyến khích kết nối. Ở đây đơn giản hoá: lấy revision của nguyên
   // tắc quan trọng nhất và bổ sung từ các nguyên tắc còn lại.
   const primary = PRINCIPLE_EFFECTS[active[0]].revision;
@@ -155,7 +155,7 @@ function synthesizeRevision(selected: PrincipleId[]): CritiqueRevision {
 }
 
 // ---------------------------------------------------------------------------
-// Quiz — 8 câu hỏi theo yêu cầu
+// Quiz. 8 câu hỏi theo yêu cầu
 // ---------------------------------------------------------------------------
 
 const QUIZ: QuizQuestion[] = [
@@ -181,7 +181,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Constitution là tập hợp nguyên tắc đạo đức viết bằng ngôn ngữ tự nhiên. Ví dụ: 'Không hướng dẫn cách gây hại', 'Trung thực về giới hạn của mình', 'Tôn trọng quyền riêng tư'. AI dùng các nguyên tắc này để tự đánh giá phản hồi — con người kiểm soát qua việc viết/sửa constitution.",
+      "Constitution là tập hợp nguyên tắc đạo đức viết bằng ngôn ngữ tự nhiên. Ví dụ: 'Không hướng dẫn cách gây hại', 'Trung thực về giới hạn của mình', 'Tôn trọng quyền riêng tư'. AI dùng các nguyên tắc này để tự đánh giá phản hồi. con người kiểm soát qua việc viết/sửa constitution.",
   },
   {
     question: "Ưu điểm lớn nhất của CAI so với guardrails truyền thống?",
@@ -193,12 +193,12 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Guardrails là bộ lọc bên ngoài — có thể bị bypass bằng prompt injection hoặc jailbreak. CAI thay đổi hành vi từ bên trong: mô hình thực sự 'hiểu' và tuân theo nguyên tắc đạo đức qua quá trình train, không chỉ bị chặn bởi bộ lọc. Kết hợp cả hai cho phòng thủ tốt nhất (defense in depth).",
+      "Guardrails là bộ lọc bên ngoài. có thể bị bypass bằng prompt injection hoặc jailbreak. CAI thay đổi hành vi từ bên trong: mô hình thực sự 'hiểu' và tuân theo nguyên tắc đạo đức qua quá trình train, không chỉ bị chặn bởi bộ lọc. Kết hợp cả hai cho phòng thủ tốt nhất (defense in depth).",
   },
   {
     type: "fill-blank",
     question:
-      "Constitutional AI huấn luyện mô hình dựa trên bộ {blank} đạo đức viết bằng ngôn ngữ tự nhiên, kết hợp vòng lặp {blank} — AI tự đánh giá và sửa phản hồi của chính mình theo hiến pháp.",
+      "Constitutional AI huấn luyện mô hình dựa trên bộ {blank} đạo đức viết bằng ngôn ngữ tự nhiên, kết hợp vòng lặp {blank}. AI tự đánh giá và sửa phản hồi của chính mình theo hiến pháp.",
     blanks: [
       {
         answer: "nguyên tắc",
@@ -216,13 +216,13 @@ const QUIZ: QuizQuestion[] = [
       },
     ],
     explanation:
-      "CAI dùng 2 giai đoạn: (1) Critique & Revision — AI tạo phản hồi thô rồi tự phê bình theo từng nguyên tắc trong hiến pháp và viết lại bản tốt hơn, (2) RLAIF — AI đánh giá cặp phản hồi để huấn luyện preference model thay cho con người.",
+      "CAI dùng 2 giai đoạn: (1) Critique & Revision. AI tạo phản hồi thô rồi tự phê bình theo từng nguyên tắc trong hiến pháp và viết lại bản tốt hơn, (2) RLAIF. AI đánh giá cặp phản hồi để huấn luyện preference model thay cho con người.",
   },
   {
     question: "Trong vòng lặp Critique-and-Revision, AI đóng vai trò gì?",
     options: [
       "Chỉ tạo phản hồi, con người phê bình",
-      "Cả ba: tạo phản hồi (responder), phê bình chính mình (critic), và viết bản sửa (reviser) — đều dùng cùng một mô hình hoặc mô hình chị em",
+      "Cả ba: tạo phản hồi (responder), phê bình chính mình (critic), và viết bản sửa (reviser). đều dùng cùng một mô hình hoặc mô hình chị em",
       "Chỉ phê bình, bản sửa do con người viết",
       "AI không tham gia, chỉ preference model học",
     ],
@@ -234,7 +234,7 @@ const QUIZ: QuizQuestion[] = [
     question: "RLAIF reward được tính như thế nào?",
     options: [
       "Reward do con người gán trực tiếp",
-      "Dùng một mô hình AI judge để chấm điểm phản hồi theo constitution — output của judge train preference model, preference model cho reward",
+      "Dùng một mô hình AI judge để chấm điểm phản hồi theo constitution. output của judge train preference model, preference model cho reward",
       "Dùng độ dài phản hồi làm reward",
       "Không có reward, CAI chỉ supervised learning",
     ],
@@ -252,7 +252,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Ba hạn chế chính: (1) AI judge có thể có blind spot của chính mô hình — cần human spot-check. (2) Constitution khó bao phủ tất cả tình huống (edge case, cultural context). (3) 'Specification gaming' — AI có thể học cách trả lời trông tuân thủ nhưng không thực sự internalize. Cần kết hợp CAI + RLHF + red-teaming.",
+      "Ba hạn chế chính: (1) AI judge có thể có blind spot của chính mô hình. cần human spot-check. (2) Constitution khó bao phủ tất cả tình huống (edge case, cultural context). (3) 'Specification gaming'. AI có thể học cách trả lời trông tuân thủ nhưng không thực sự internalize. Cần kết hợp CAI + RLHF + red-teaming.",
   },
   {
     question:
@@ -270,7 +270,7 @@ const QUIZ: QuizQuestion[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Component phụ — chip nguyên tắc có thể kéo thả
+// Component phụ. chip nguyên tắc có thể kéo thả
 // ---------------------------------------------------------------------------
 
 interface PrincipleChipProps {
@@ -310,7 +310,7 @@ function PrincipleChip({ principle, dropped, onToggle }: PrincipleChipProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Component phụ — khung so sánh RLHF vs CAI
+// Component phụ. khung so sánh RLHF vs CAI
 // ---------------------------------------------------------------------------
 
 function MethodCompareTable() {
@@ -327,18 +327,18 @@ function MethodCompareTable() {
     },
     {
       label: "Tốc độ scale",
-      rlhf: "Chậm — phụ thuộc nhân lực",
-      cai: "Nhanh — tăng khi có thêm GPU",
+      rlhf: "Chậm. phụ thuộc nhân lực",
+      cai: "Nhanh. tăng khi có thêm GPU",
     },
     {
       label: "Minh bạch",
-      rlhf: "Mờ — preference ẩn trong đầu người",
-      cai: "Rõ — constitution là văn bản đọc được",
+      rlhf: "Mờ. preference ẩn trong đầu người",
+      cai: "Rõ. constitution là văn bản đọc được",
     },
     {
       label: "Nhất quán",
-      rlhf: "Khó — annotator khác nhau khác ý",
-      cai: "Cao — cùng constitution, cùng judge",
+      rlhf: "Khó. annotator khác nhau khác ý",
+      cai: "Cao. cùng constitution, cùng judge",
     },
     {
       label: "Rủi ro bias",
@@ -410,18 +410,18 @@ export default function ConstitutionalAITopic() {
 
   const statusText = useMemo(() => {
     if (dropped.length === 0)
-      return "Chưa áp dụng nguyên tắc nào — AI giữ phản hồi gốc có hại.";
+      return "Chưa áp dụng nguyên tắc nào. AI giữ phản hồi gốc có hại.";
     if (dropped.length === 1)
-      return `1 nguyên tắc được áp dụng — phản hồi được sửa theo ${
+      return `1 nguyên tắc được áp dụng. phản hồi được sửa theo ${
         PRINCIPLES.find((p) => p.id === dropped[0])?.labelVi
       }.`;
-    return `${dropped.length} nguyên tắc đồng thời — phản hồi sửa toàn diện.`;
+    return `${dropped.length} nguyên tắc đồng thời. phản hồi sửa toàn diện.`;
   }, [dropped]);
 
   return (
     <>
       {/* --------------------------------------------------------------- */}
-      {/* Bước 1 — Dự đoán                                                */}
+      {/* Bước 1. Dự đoán                                                */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <div className="mb-4">
@@ -430,7 +430,7 @@ export default function ConstitutionalAITopic() {
         <PredictionGate
           question="Làm sao dạy AI tuân theo đạo đức mà KHÔNG cần hàng nghìn người đánh giá thủ công mỗi ngày?"
           options={[
-            "Không thể — luôn cần con người kiểm duyệt từng phản hồi",
+            "Không thể. luôn cần con người kiểm duyệt từng phản hồi",
             "Viết bộ nguyên tắc đạo đức rõ ràng, rồi dạy AI tự phê bình phản hồi của chính mình theo các nguyên tắc đó",
             "Chỉ cần guardrails là đủ, không cần dạy AI đạo đức",
           ]}
@@ -440,7 +440,7 @@ export default function ConstitutionalAITopic() {
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 2 — RLAIF self-correction loop với drag-drop principles   */}
+      {/* Bước 2. RLAIF self-correction loop với drag-drop principles   */}
       {/* --------------------------------------------------------------- */}
       <LessonSection
         step={2}
@@ -532,7 +532,7 @@ export default function ConstitutionalAITopic() {
                   <span className="inline-block w-5 h-5 rounded-full bg-red-500/30 text-red-900 dark:text-red-200 text-center leading-5 text-[10px]">
                     A
                   </span>
-                  Bước 1 — AI tạo phản hồi thô (harmful)
+                  Bước 1. AI tạo phản hồi thô (harmful)
                 </div>
                 <p className="text-sm text-foreground">{ORIGINAL_RESPONSE}</p>
               </div>
@@ -550,7 +550,7 @@ export default function ConstitutionalAITopic() {
                     <span className="inline-block w-5 h-5 rounded-full bg-amber-500/30 text-amber-900 dark:text-amber-200 text-center leading-5 text-[10px]">
                       B
                     </span>
-                    Bước 2 — AI tự phê bình theo nguyên tắc
+                    Bước 2. AI tự phê bình theo nguyên tắc
                   </div>
                   <div className="text-[11px] text-muted">
                     {dropped.length}/{PRINCIPLES.length} nguyên tắc
@@ -567,7 +567,7 @@ export default function ConstitutionalAITopic() {
                 >
                   {dropped.length === 0 ? (
                     <span className="text-[12px] text-muted italic">
-                      Chưa áp dụng nguyên tắc nào — vùng này trống
+                      Chưa áp dụng nguyên tắc nào. vùng này trống
                     </span>
                   ) : (
                     dropped.map((id) => {
@@ -611,7 +611,7 @@ export default function ConstitutionalAITopic() {
                   <span className="inline-block w-5 h-5 rounded-full bg-emerald-500/30 text-emerald-900 dark:text-emerald-200 text-center leading-5 text-[10px]">
                     C
                   </span>
-                  Bước 3 — AI viết lại phản hồi đã sửa
+                  Bước 3. AI viết lại phản hồi đã sửa
                 </div>
                 <AnimatePresence mode="wait">
                   <motion.p
@@ -658,8 +658,7 @@ export default function ConstitutionalAITopic() {
               Thử nghiệm 1
             </div>
             <p className="text-muted">
-              Chỉ chọn <strong>Harmlessness</strong>. Xem bản sửa —
-              phản hồi nặng về cảnh báo an toàn, hotline.
+              Chỉ chọn <strong>Harmlessness</strong>. Xem bản sửa. phản hồi nặng về cảnh báo an toàn, hotline.
             </p>
           </div>
           <div className="rounded-lg border border-border bg-card p-3 text-[13px]">
@@ -677,14 +676,14 @@ export default function ConstitutionalAITopic() {
             </div>
             <p className="text-muted">
               Áp dụng cả ba. Phản hồi vừa an toàn, vừa trung thực, vừa
-              thực sự hữu ích — không né tránh nhu cầu thật.
+              thực sự hữu ích. không né tránh nhu cầu thật.
             </p>
           </div>
         </div>
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 3 — Khoảnh khắc A-ha                                       */}
+      {/* Bước 3. Khoảnh khắc A-ha                                       */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <div className="mb-4">
@@ -696,7 +695,7 @@ export default function ConstitutionalAITopic() {
           <strong>dữ liệu huấn luyện</strong>. Thay vì hỏi con người
           {" "}"phản hồi nào tốt hơn?" (RLHF), CAI hỏi chính AI "phản hồi
           nào phù hợp với nguyên tắc hơn?" (RLAIF). Kết quả: AI có{" "}
-          <strong>giá trị nội tại</strong> — không chỉ bị chặn bên ngoài
+          <strong>giá trị nội tại</strong>. không chỉ bị chặn bên ngoài
           bởi guardrails, mà thực sự "muốn" trả lời đúng đắn. Và vì
           constitution là văn bản đọc được, con người vẫn giữ quyền
           kiểm soát: muốn đổi hành vi? Sửa hiến pháp, không cần
@@ -705,7 +704,7 @@ export default function ConstitutionalAITopic() {
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 4 — Callout #1: Hai giai đoạn                              */}
+      {/* Bước 4. Callout #1: Hai giai đoạn                              */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Hai giai đoạn">
         <div className="mb-4">
@@ -715,14 +714,14 @@ export default function ConstitutionalAITopic() {
         <Callout variant="insight" title="CAI = SL giai đoạn + RL giai đoạn">
           <div className="space-y-2">
             <p>
-              <strong>Giai đoạn 1 — Supervised Learning (Critique &
+              <strong>Giai đoạn 1. Supervised Learning (Critique &
               Revision):</strong> AI tạo phản hồi thô → tự phê bình theo
               nguyên tắc → viết lại bản tốt hơn. Cặp (prompt, revised)
               trở thành dữ liệu SFT. Lúc này mô hình đã "biết" cách trả
               lời tuân thủ.
             </p>
             <p>
-              <strong>Giai đoạn 2 — Reinforcement Learning (RLAIF):</strong>
+              <strong>Giai đoạn 2. Reinforcement Learning (RLAIF):</strong>
               {" "}Thay vì con người, <em>AI judge</em> đánh giá cặp phản
               hồi theo nguyên tắc. Preference model học từ đánh giá AI →
               policy model tối ưu theo preference bằng PPO (giống RLHF).
@@ -756,7 +755,7 @@ export default function ConstitutionalAITopic() {
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 5 — Thử thách nhanh #1                                     */}
+      {/* Bước 5. Thử thách nhanh #1                                     */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <div className="mb-4">
@@ -771,12 +770,12 @@ export default function ConstitutionalAITopic() {
             "Chuyển cho con người kiểm duyệt từng lần",
           ]}
           correct={1}
-          explanation="Trong quá trình training, CAI đã huấn luyện AI qua vòng lặp: tạo → phê bình → sửa hàng triệu lần. Khi deploy, AI đã NỘI HÓA nguyên tắc nên tự động từ chối (không cần filter bên ngoài). Khác guardrails (bộ lọc bên ngoài có thể bị bypass qua prompt injection), CAI thay đổi hành vi từ bên trong mô hình — AI 'biết' vì sao từ chối và có thể giải thích."
+          explanation="Trong quá trình training, CAI đã huấn luyện AI qua vòng lặp: tạo → phê bình → sửa hàng triệu lần. Khi deploy, AI đã NỘI HÓA nguyên tắc nên tự động từ chối (không cần filter bên ngoài). Khác guardrails (bộ lọc bên ngoài có thể bị bypass qua prompt injection), CAI thay đổi hành vi từ bên trong mô hình. AI 'biết' vì sao từ chối và có thể giải thích."
         />
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 6 — Lý thuyết đầy đủ                                       */}
+      {/* Bước 6. Lý thuyết đầy đủ                                       */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <div className="mb-4">
@@ -787,13 +786,13 @@ export default function ConstitutionalAITopic() {
           <p>
             <strong>Constitutional AI (CAI)</strong> là phương pháp do
             Anthropic phát triển (Bai et al., 2022), giúp mô hình tự kiểm
-            duyệt dựa trên bộ nguyên tắc đạo đức ("hiến pháp") — là cách
+            duyệt dựa trên bộ nguyên tắc đạo đức ("hiến pháp"). là cách
             tiếp cận mới cho bài toán{" "}
             <TopicLink slug="alignment">alignment</TopicLink>, thay thế
             phản hồi con người trong{" "}
             <TopicLink slug="rlhf">RLHF</TopicLink> bằng đánh giá của AI
             (RLAIF). CAI cũng bổ trợ cho{" "}
-            <TopicLink slug="guardrails">guardrails</TopicLink> — guardrails
+            <TopicLink slug="guardrails">guardrails</TopicLink>. guardrails
             là bộ lọc ngoài, CAI là nguyên tắc được nội hoá.
           </p>
 
@@ -856,7 +855,7 @@ export default function ConstitutionalAITopic() {
             </li>
             <li>
               <strong>Initial response:</strong> mô hình helpful-only (đã
-              RLHF cho helpful) trả lời — có thể chứa harmful content.
+              RLHF cho helpful) trả lời. có thể chứa harmful content.
             </li>
             <li>
               <strong>Critique:</strong> với mỗi nguyên tắc trong
@@ -887,7 +886,7 @@ export default function ConstitutionalAITopic() {
           </ol>
 
           <CodeBlock language="python" title="cai_pipeline.py">
-{`"""Constitutional AI pipeline — triển khai tối giản với Anthropic SDK.
+{`"""Constitutional AI pipeline. triển khai tối giản với Anthropic SDK.
 
 Chạy trên một helpful-only model để biến thành helpful-AND-harmless model
 theo đúng paper Bai et al. (2022).
@@ -903,7 +902,7 @@ MODEL = "claude-opus-4-5"
 
 
 # ---------------------------------------------------------------------
-# 1. Constitution — bộ nguyên tắc viết bằng ngôn ngữ tự nhiên
+# 1. Constitution. bộ nguyên tắc viết bằng ngôn ngữ tự nhiên
 # ---------------------------------------------------------------------
 
 CONSTITUTION: List[str] = [
@@ -934,7 +933,7 @@ CONSTITUTION: List[str] = [
 
 
 # ---------------------------------------------------------------------
-# 2. Critique & Revision — sinh dữ liệu SFT
+# 2. Critique & Revision. sinh dữ liệu SFT
 # ---------------------------------------------------------------------
 
 @dataclass
@@ -994,7 +993,7 @@ def critique_and_revise(prompt: str, initial: str,
 
 
 # ---------------------------------------------------------------------
-# 3. Pairwise AI preference — sinh dữ liệu cho reward model
+# 3. Pairwise AI preference. sinh dữ liệu cho reward model
 # ---------------------------------------------------------------------
 
 def ai_preference(prompt: str, response_a: str, response_b: str) -> int:
@@ -1036,7 +1035,7 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
 
     # Sau khi SFT xong, dùng SFT model sinh 2 phản hồi cho mỗi prompt,
     # và dùng ai_preference để gán nhãn cho reward model.
-    # (Bỏ qua chi tiết train loop — dùng trlx / OpenRLHF / TRL.)
+    # (Bỏ qua chi tiết train loop. dùng trlx / OpenRLHF / TRL.)
 
     return sft_samples, preference_pairs
 
@@ -1044,7 +1043,7 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
 # Ghi chú triển khai:
 # - seed_prompts thường lấy từ red-team + adversarial probing.
 # - helpful_model_fn là mô hình đã RLHF chỉ tối ưu helpfulness.
-# - Sau CAI pipeline, mô hình vừa helpful vừa harmless — Claude.
+# - Sau CAI pipeline, mô hình vừa helpful vừa harmless. Claude.
 `}
           </CodeBlock>
 
@@ -1052,29 +1051,27 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
             <div className="space-y-1">
               <p>
                 <strong>AI judge bias:</strong> AI đánh giá có thể có
-                bias khác con người — cần kiểm chứng với human evaluation
+                bias khác con người. cần kiểm chứng với human evaluation
                 định kỳ.
               </p>
               <p>
                 <strong>Constitution completeness:</strong> Bộ nguyên tắc
-                khó bao phủ TẤT CẢ tình huống — luôn có edge cases. Red-
+                khó bao phủ TẤT CẢ tình huống. luôn có edge cases. Red-
                 teaming là bắt buộc.
               </p>
               <p>
                 <strong>Cultural specificity:</strong> Nguyên tắc cho văn
-                hoá Mỹ có thể không phù hợp hoàn toàn cho Việt Nam —
-                phải bản địa hoá.
+                hoá Mỹ có thể không phù hợp hoàn toàn cho Việt Nam. phải bản địa hoá.
               </p>
               <p>
                 <strong>Specification gaming:</strong> Mô hình có thể học
-                cách trả lời trông tuân thủ nhưng không thực sự internalize
-                — giống Goodhart's Law.
+                cách trả lời trông tuân thủ nhưng không thực sự internalize. giống Goodhart's Law.
               </p>
             </div>
           </Callout>
 
           <div className="mt-4">
-            <CollapsibleDetail title="CAI vs RLHF vs DPO — khi nào dùng cái nào?">
+            <CollapsibleDetail title="CAI vs RLHF vs DPO. Khi nào dùng cái nào?">
               <div className="space-y-2 text-sm text-foreground">
                 <p>
                   <strong>RLHF:</strong> chuẩn vàng cho alignment sở
@@ -1089,12 +1086,11 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
                 </p>
                 <p>
                   <strong>DPO (Direct Preference Optimization):</strong>
-                  {" "}thay thế PPO bằng supervised loss trên preference —
-                  đơn giản hơn, ít hyperparam. Có thể dùng chung với
+                  {" "}thay thế PPO bằng supervised loss trên preference. đơn giản hơn, ít hyperparam. Có thể dùng chung với
                   preference từ AI (DPO + RLAIF) hoặc human (DPO + RLHF).
                 </p>
                 <p>
-                  Thực tế: Claude dùng <em>kết hợp</em> — SFT-CAI, RL-CAI
+                  Thực tế: Claude dùng <em>kết hợp</em>. SFT-CAI, RL-CAI
                   (RLAIF), rồi RLHF lên trên cho tinh chỉnh cuối. Không
                   có phương pháp nào đứng một mình là đủ.
                 </p>
@@ -1105,7 +1101,7 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 7 — Callout #3 & #4: Bản địa hoá + Defense in depth        */}
+      {/* Bước 7. Callout #3 & #4: Bản địa hoá + Defense in depth        */}
       {/* --------------------------------------------------------------- */}
       <LessonSection
         step={7}
@@ -1157,7 +1153,7 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
             title="CAI + Guardrails + Red-teaming = Defense in Depth"
           >
             <p>
-              CAI không thay thế guardrails hay red-teaming — nó bổ
+              CAI không thay thế guardrails hay red-teaming. nó bổ
               sung. Kiến trúc an toàn 3 lớp:
             </p>
             <ol className="list-decimal pl-5 mt-2 space-y-1 text-sm">
@@ -1175,7 +1171,7 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
               </li>
             </ol>
             <p className="text-sm text-muted mt-2">
-              Kẻ tấn công phải xuyên qua cả ba lớp — chi phí tăng theo
+              Kẻ tấn công phải xuyên qua cả ba lớp. chi phí tăng theo
               cấp số nhân. Không có lớp nào đủ một mình.
             </p>
           </Callout>
@@ -1183,7 +1179,7 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 8 — Thử thách nhanh #2                                     */}
+      {/* Bước 8. Thử thách nhanh #2                                     */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Thử thách tình huống">
         <div className="mb-4">
@@ -1192,31 +1188,31 @@ def build_cai_dataset(seed_prompts: List[str], helpful_model_fn):
         <InlineChallenge
           question="Một startup giáo dục VN muốn triển khai AI tutor cho học sinh lớp 10. Họ chỉ copy constitution tiếng Anh của Anthropic và dịch thô. Vấn đề gì sẽ xảy ra?"
           options={[
-            "Không vấn đề gì — nguyên tắc đạo đức giống nhau toàn cầu",
+            "Không vấn đề gì. nguyên tắc đạo đức giống nhau toàn cầu",
             "Constitution không bao phủ bối cảnh học đường VN (kỷ luật, quan hệ thầy trò), không bắt được scam nhắm học sinh (game lậu, gạ gẫm Zalo), và xưng hô 'you' dịch thành 'bạn' không phù hợp khi tutor nói chuyện với học sinh",
             "AI sẽ không nói được tiếng Việt",
             "Không cần constitution, chỉ cần guardrails",
           ]}
           correct={1}
-          explanation="Constitution là văn bản mang đậm bối cảnh văn hoá-pháp lý. Dịch thô bỏ sót: (1) edge case VN như scam học đường, bạo lực gia đình, áp lực thi cử. (2) Xưng hô — tutor phải xưng 'thầy/cô' hoặc 'anh/chị' với học sinh, không phải 'tôi/bạn'. (3) Pháp luật VN về giáo dục (Luật Giáo dục, Luật Trẻ em). (4) Bối cảnh văn hoá: tôn trọng thầy cô, quan hệ gia đình. Phải bản địa hoá constitution với chuyên gia giáo dục VN."
+          explanation="Constitution là văn bản mang đậm bối cảnh văn hoá-pháp lý. Dịch thô bỏ sót: (1) edge case VN như scam học đường, bạo lực gia đình, áp lực thi cử. (2) Xưng hô. tutor phải xưng 'thầy/cô' hoặc 'anh/chị' với học sinh, không phải 'tôi/bạn'. (3) Pháp luật VN về giáo dục (Luật Giáo dục, Luật Trẻ em). (4) Bối cảnh văn hoá: tôn trọng thầy cô, quan hệ gia đình. Phải bản địa hoá constitution với chuyên gia giáo dục VN."
         />
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 9 — Code block thứ hai: demo Critique with Anthropic SDK  */}
+      {/* Bước 9. Code block thứ hai: demo Critique with Anthropic SDK  */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Demo ngắn với SDK">
         <div className="mb-4">
           <ProgressSteps current={9} total={TOTAL_STEPS} />
         </div>
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Đoạn code dưới đây là minimum viable CAI — chạy critique +
+          Đoạn code dưới đây là minimum viable CAI. chạy critique +
           revision cho MỘT prompt bằng Anthropic SDK (với prompt caching
           để giảm chi phí).
         </p>
 
         <CodeBlock language="python" title="cai_minimal.py">
-{`"""CAI tối giản — 1 prompt → critique → revision, có prompt caching."""
+{`"""CAI tối giản. 1 prompt → critique → revision, có prompt caching."""
 import anthropic
 
 client = anthropic.Anthropic()
@@ -1234,7 +1230,7 @@ Bộ nguyên tắc cho trợ lý AI tiếng Việt:
 
 
 def critique(prompt: str, response: str) -> str:
-    """Critique step — dùng cache_control để cache constitution."""
+    """Critique step. dùng cache_control để cache constitution."""
     msg = client.messages.create(
         model=MODEL,
         max_tokens=512,
@@ -1246,7 +1242,7 @@ def critique(prompt: str, response: str) -> str:
             {
                 "type": "text",
                 "text": CONSTITUTION_TEXT,
-                # Cache constitution — chỉ trả phí 1 lần cho nhiều request
+                # Cache constitution. chỉ trả phí 1 lần cho nhiều request
                 "cache_control": {"type": "ephemeral"},
             },
         ],
@@ -1264,7 +1260,7 @@ def critique(prompt: str, response: str) -> str:
 
 
 def revise(prompt: str, response: str, critique_text: str) -> str:
-    """Revision step — cũng cache constitution."""
+    """Revision step. cũng cache constitution."""
     msg = client.messages.create(
         model=MODEL,
         max_tokens=1024,
@@ -1321,7 +1317,7 @@ if __name__ == "__main__":
             <p className="text-[12px] text-muted">
               Constitution thường 2-5k tokens và được dùng lại cho mọi
               request. <code>cache_control</code> giảm chi phí 90% cho
-              cache hit — bắt buộc nếu chạy quy mô triệu request.
+              cache hit. bắt buộc nếu chạy quy mô triệu request.
             </p>
           </div>
           <div className="rounded-xl border border-border bg-card p-4">
@@ -1341,7 +1337,7 @@ if __name__ == "__main__":
       </LessonSection>
 
       {/* --------------------------------------------------------------- */}
-      {/* Bước 10 — Tóm tắt + Quiz                                        */}
+      {/* Bước 10. Tóm tắt + Quiz                                        */}
       {/* --------------------------------------------------------------- */}
       <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Tóm tắt & kiểm tra">
         <div className="mb-4">
@@ -1352,11 +1348,11 @@ if __name__ == "__main__":
           title="Ghi nhớ về Constitutional AI"
           points={[
             "CAI = viết bộ nguyên tắc đạo đức (constitution), dạy AI tự phê bình và sửa đổi theo nguyên tắc.",
-            "Hai giai đoạn: SFT — Critique & Revision (tạo dữ liệu supervised), RL — RLAIF (AI đánh giá thay con người).",
+            "Hai giai đoạn: SFT. Critique & Revision (tạo dữ liệu supervised), RL. RLAIF (AI đánh giá thay con người).",
             "Ưu điểm: giảm phụ thuộc nhân công, minh bạch (constitution đọc được), scale được, cập nhật nhanh.",
             "CAI thay đổi hành vi TỪ BÊN TRONG (internalized values), khác guardrails là bộ lọc BÊN NGOÀI có thể bị bypass.",
             "Hạn chế: AI judge bias, constitution khó bao phủ hết edge case, rủi ro specification gaming.",
-            "Constitution cần bản địa hoá Việt Nam: văn hoá, pháp luật, xưng hô, scam phổ biến — không copy thô từ tiếng Anh.",
+            "Constitution cần bản địa hoá Việt Nam: văn hoá, pháp luật, xưng hô, scam phổ biến. không copy thô từ tiếng Anh.",
           ]}
         />
 
@@ -1366,19 +1362,19 @@ if __name__ == "__main__":
           </div>
           <ul className="list-disc pl-5 space-y-1 text-[13px] text-muted">
             <li>
-              Bai et al. (2022) — <em>Constitutional AI: Harmlessness from
+              Bai et al. (2022). <em>Constitutional AI: Harmlessness from
               AI Feedback</em>, Anthropic (arXiv:2212.08073).
             </li>
             <li>
-              Lee et al. (2023) — <em>RLAIF: Scaling Reinforcement Learning
+              Lee et al. (2023). <em>RLAIF: Scaling Reinforcement Learning
               from Human Feedback with AI Feedback</em> (Google).
             </li>
             <li>
-              Rafailov et al. (2023) — <em>Direct Preference Optimization:
+              Rafailov et al. (2023). <em>Direct Preference Optimization:
               Your Language Model is Secretly a Reward Model</em>.
             </li>
             <li>
-              Anthropic (2024) — <em>Claude's Constitution</em>, công khai
+              Anthropic (2024). <em>Claude's Constitution</em>, công khai
               trên anthropic.com.
             </li>
           </ul>

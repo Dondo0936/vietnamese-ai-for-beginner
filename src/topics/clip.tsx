@@ -22,12 +22,12 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ──────────────────────────────────────────────────────────────────────────
- * Metadata — giữ nguyên từ phiên bản trước.
+ * Metadata. giữ nguyên từ phiên bản trước.
  * ────────────────────────────────────────────────────────────────────────── */
 export const metadata: TopicMeta = {
   slug: "clip",
   title: "CLIP",
-  titleVi: "CLIP — Kết nối hình ảnh và ngôn ngữ",
+  titleVi: "CLIP. Kết nối hình ảnh và ngôn ngữ",
   description:
     "Mô hình học cách liên kết hình ảnh và văn bản trong cùng một không gian vector, cho phép tìm kiếm ảnh bằng ngôn ngữ tự nhiên.",
   category: "multimodal",
@@ -132,17 +132,17 @@ function simulateSimilarity(label: string, imageId: string): number {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
- * Quiz — 8 câu (yêu cầu: 8 quiz questions).
+ * Quiz. 8 câu (yêu cầu: 8 quiz questions).
  * Hỗn hợp multiple-choice và fill-blank để đa dạng.
  * ────────────────────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
     question: "CLIP được huấn luyện bằng phương pháp nào?",
     options: [
-      "Supervised learning — con người gán nhãn từng ảnh",
-      "Contrastive learning — kéo cặp ảnh-mô tả đúng lại gần, đẩy cặp sai ra xa trong không gian embedding",
-      "Reinforcement learning — thử-sai để tìm cặp phù hợp",
-      "Self-supervised learning — dự đoán phần bị che trong ảnh",
+      "Supervised learning. con người gán nhãn từng ảnh",
+      "Contrastive learning. kéo cặp ảnh-mô tả đúng lại gần, đẩy cặp sai ra xa trong không gian embedding",
+      "Reinforcement learning. thử-sai để tìm cặp phù hợp",
+      "Self-supervised learning. dự đoán phần bị che trong ảnh",
     ],
     correct: 1,
     explanation:
@@ -190,7 +190,7 @@ const QUIZ: QuizQuestion[] = [
       "Trong InfoNCE loss của CLIP, tham số temperature τ (tau) có tác dụng gì?",
     options: [
       "Điều chỉnh learning rate của optimizer",
-      "Điều chỉnh độ 'sắc' của softmax — τ nhỏ làm phân phối tập trung vào cặp đúng, τ lớn làm phân phối mềm hơn",
+      "Điều chỉnh độ 'sắc' của softmax. τ nhỏ làm phân phối tập trung vào cặp đúng, τ lớn làm phân phối mềm hơn",
       "Chỉ dùng khi inference, không ảnh hưởng huấn luyện",
       "Quyết định batch size tối đa có thể dùng",
     ],
@@ -214,13 +214,13 @@ const QUIZ: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Một kỹ thuật phổ biến khi dùng CLIP zero-shot là {blank} — bọc nhãn trong mẫu câu như 'a photo of a {nhãn}' thay vì chỉ dùng nhãn trần. Điều này khớp với phân phối {blank} mà CLIP đã thấy khi huấn luyện.",
+      "Một kỹ thuật phổ biến khi dùng CLIP zero-shot là {blank}. bọc nhãn trong mẫu câu như 'a photo of a {nhãn}' thay vì chỉ dùng nhãn trần. Điều này khớp với phân phối {blank} mà CLIP đã thấy khi huấn luyện.",
     blanks: [
       { answer: "prompt engineering", accept: ["prompt template", "prompting"] },
       { answer: "caption", accept: ["mô tả", "text", "văn bản"] },
     ],
     explanation:
-      "CLIP được huấn luyện trên caption tự nhiên (ví dụ: 'a photo of a cat sitting on the couch'). Nếu ta chỉ cho 'cat', text encoder sẽ thấy lệch phân phối. Bọc bằng template giúp bridge gap này — bài báo CLIP cho biết cải thiện 5% accuracy trên ImageNet chỉ nhờ 'a photo of a {label}'.",
+      "CLIP được huấn luyện trên caption tự nhiên (ví dụ: 'a photo of a cat sitting on the couch'). Nếu ta chỉ cho 'cat', text encoder sẽ thấy lệch phân phối. Bọc bằng template giúp bridge gap này. bài báo CLIP cho biết cải thiện 5% accuracy trên ImageNet chỉ nhờ 'a photo of a {label}'.",
   },
   {
     question:
@@ -233,7 +233,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "CLIP không tạo ảnh — đó là vai trò của diffusion model/GAN. Câu hỏi 'không thể tạo ảnh' không phải là 'điểm yếu' mà là đặc tính: CLIP là mô hình tương phản, không phải mô hình sinh. Các điểm còn lại đều là hạn chế thực sự được liệt kê trong paper gốc.",
+      "CLIP không tạo ảnh. Đó là vai trò của diffusion model/GAN. Câu hỏi 'không thể tạo ảnh' không phải là 'điểm yếu' mà là đặc tính: CLIP là mô hình tương phản, không phải mô hình sinh. Các điểm còn lại đều là hạn chế thực sự được liệt kê trong paper gốc.",
   },
 ];
 
@@ -350,10 +350,10 @@ export default function CLIPTopic() {
           options={[
             "Xem từng ảnh và gán nhãn thủ công",
             "Huấn luyện bộ phân loại ảnh riêng cho phở (cần dữ liệu huấn luyện)",
-            "Dùng mô hình đã hiểu cả ảnh lẫn ngôn ngữ — gõ 'phở bò' và tìm ảnh khớp nhất",
+            "Dùng mô hình đã hiểu cả ảnh lẫn ngôn ngữ. gõ 'phở bò' và tìm ảnh khớp nhất",
           ]}
           correct={2}
-          explanation="Đáp án 3 mô tả chính xác cách CLIP hoạt động! CLIP đã liên kết ảnh và văn bản trong cùng không gian vector, nên bạn chỉ cần gõ mô tả và tìm ảnh có embedding gần nhất. Không cần dữ liệu huấn luyện riêng cho 'phở' — đây là zero-shot search!"
+          explanation="Đáp án 3 mô tả chính xác cách CLIP hoạt động! CLIP đã liên kết ảnh và văn bản trong cùng không gian vector, nên bạn chỉ cần gõ mô tả và tìm ảnh có embedding gần nhất. Không cần dữ liệu huấn luyện riêng cho 'phở'. đây là zero-shot search!"
         />
       </LessonSection>
 
@@ -365,7 +365,7 @@ export default function CLIPTopic() {
 
         <p className="text-sm text-muted mb-4">
           Khi <em>chưa huấn luyện</em>, encoder khởi tạo ngẫu nhiên nên mọi ô đều xấp xỉ nhau.
-          Khi <em>đã huấn luyện</em> bằng contrastive loss, <strong>đường chéo</strong> (ảnh i ↔ mô tả i — cặp đúng) sáng lên, còn các ô <strong>ngoài đường chéo</strong> (cặp sai) tối đi.
+          Khi <em>đã huấn luyện</em> bằng contrastive loss, <strong>đường chéo</strong> (ảnh i ↔ mô tả i. cặp đúng) sáng lên, còn các ô <strong>ngoài đường chéo</strong> (cặp sai) tối đi.
         </p>
 
         <VisualizationSection topicSlug={metadata.slug}>
@@ -555,7 +555,7 @@ export default function CLIPTopic() {
                     <strong style={{ color: scoreColor(hoverInfo.score, hoverInfo.isDiag) }}>
                       {hoverInfo.score.toFixed(3)}
                     </strong>{" "}
-                    ({hoverInfo.isDiag ? "cặp khớp — CLIP kéo GẦN" : "cặp không khớp — CLIP đẩy XA"})
+                    ({hoverInfo.isDiag ? "cặp khớp. CLIP kéo GẦN" : "cặp không khớp. CLIP đẩy XA"})
                   </p>
                 </div>
               ) : (
@@ -602,8 +602,7 @@ export default function CLIPTopic() {
               so với TẤT CẢ ảnh trong batch. Ô sáng nhất trong cột phải là hàng j.
             </p>
             <p>
-              <strong>Loss đối xứng:</strong> CLIP tối ưu <em>cả hai chiều</em>{" "}
-              — softmax theo hàng (image → text retrieval) và softmax theo cột (text → image retrieval). Loss cuối là trung bình cộng.
+              <strong>Loss đối xứng:</strong> CLIP tối ưu <em>cả hai chiều</em>{" "}. softmax theo hàng (image → text retrieval) và softmax theo cột (text → image retrieval). Loss cuối là trung bình cộng.
             </p>
             <p>
               <strong>Đường chéo = tín hiệu học:</strong> mô hình chỉ &quot;được điểm&quot; khi softmax đặt xác suất cao nhất lên ô chéo. Mọi ô khác là &quot;phân tán nhiễu&quot; và bị loss phạt.
@@ -617,12 +616,12 @@ export default function CLIPTopic() {
         <AhaMoment>
           <p>
             <strong>CLIP</strong>{" "}
-            không phải bộ phân loại ảnh — nó là{" "}
+            không phải bộ phân loại ảnh. nó là{" "}
             <strong>bộ dịch giữa hai ngôn ngữ</strong>: ngôn ngữ thị giác và ngôn ngữ văn bản. Bằng cách đặt cả hai vào{" "}
-            <strong>cùng một không gian vector</strong>, bất kỳ ảnh nào cũng có thể được tìm bằng bất kỳ mô tả nào — mà không cần huấn luyện riêng cho từng task!
+            <strong>cùng một không gian vector</strong>, bất kỳ ảnh nào cũng có thể được tìm bằng bất kỳ mô tả nào. mà không cần huấn luyện riêng cho từng task!
           </p>
           <p className="text-sm text-muted mt-2">
-            Nhìn ma trận ở bước 2: sau huấn luyện, đường chéo cháy rực còn ô ngoài tối đi — đó chính là khoảnh khắc hai &quot;ngôn ngữ&quot; tìm thấy nhau trong không gian chung 768 chiều.
+            Nhìn ma trận ở bước 2: sau huấn luyện, đường chéo cháy rực còn ô ngoài tối đi. đó chính là khoảnh khắc hai &quot;ngôn ngữ&quot; tìm thấy nhau trong không gian chung 768 chiều.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -630,10 +629,10 @@ export default function CLIPTopic() {
       {/* ═══ Step 5: ZERO-SHOT CLASSIFIER ═══ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Zero-shot">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Đã hiểu CLIP học gì, giờ ta xem nó <strong>dùng</strong> ra sao. Cho một ảnh bất kỳ và một danh sách nhãn dạng văn bản, CLIP sẽ chọn nhãn có embedding gần với ảnh nhất — <strong>không cần train lại</strong>.
+          Đã hiểu CLIP học gì, giờ ta xem nó <strong>dùng</strong> ra sao. Cho một ảnh bất kỳ và một danh sách nhãn dạng văn bản, CLIP sẽ chọn nhãn có embedding gần với ảnh nhất. <strong>không cần train lại</strong>.
         </p>
 
-        <VisualizationSection topicSlug={metadata.slug}>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="grid gap-5 md:grid-cols-2">
             {/* Cột trái: chọn ảnh + nhập nhãn */}
             <div className="space-y-4">
@@ -769,7 +768,7 @@ export default function CLIPTopic() {
               </p>
             </div>
           </div>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ═══ Step 6: InlineChallenge 1 ═══ */}
@@ -783,7 +782,7 @@ export default function CLIPTopic() {
             "Cần huấn luyện lại CLIP từ đầu",
           ]}
           correct={1}
-          explanation="Zero-shot classification BẮT BUỘC phải chọn trong các nhãn cho sẵn. Khi không có nhãn 'bún chả', CLIP chọn nhãn gần nhất — 'phở' — vì cả hai đều có bún và nước. Bài học: danh sách nhãn phải đủ bao phủ tất cả khả năng!"
+          explanation="Zero-shot classification BẮT BUỘC phải chọn trong các nhãn cho sẵn. Khi không có nhãn 'bún chả', CLIP chọn nhãn gần nhất. 'phở'. vì cả hai đều có bún và nước. Bài học: danh sách nhãn phải đủ bao phủ tất cả khả năng!"
         />
       </LessonSection>
 
@@ -844,7 +843,7 @@ export default function CLIPTopic() {
           </p>
 
           <CodeBlock language="python" title="clip_inference.py">
-            {`# Inference với CLIP — zero-shot classification ảnh ẩm thực Việt
+            {`# Inference với CLIP. zero-shot classification ảnh ẩm thực Việt
 import torch
 from transformers import CLIPProcessor, CLIPModel
 from PIL import Image
@@ -858,7 +857,7 @@ model.eval()
 # 2. Chuẩn bị input
 image = Image.open("mon-an.jpg").convert("RGB")
 
-# Dùng prompt template — cải thiện ~5% accuracy
+# Dùng prompt template. cải thiện ~5% accuracy
 labels_raw = ["pho bo", "banh mi", "com tam", "bun cha"]
 labels = [f"a photo of {lbl}, a Vietnamese dish" for lbl in labels_raw]
 
@@ -869,13 +868,13 @@ inputs = processor(
     padding=True,
 ).to(device)
 
-# 3. Forward pass — lấy logits_per_image đã chia theo temperature
+# 3. Forward pass. lấy logits_per_image đã chia theo temperature
 with torch.inference_mode():
     outputs = model(**inputs)
     logits = outputs.logits_per_image  # shape: [1, num_labels]
     probs = logits.softmax(dim=-1)
 
-# 4. In kết quả — xếp theo xác suất giảm dần
+# 4. In kết quả. xếp theo xác suất giảm dần
 scored = sorted(
     zip(labels_raw, probs[0].cpu().tolist()),
     key=lambda x: x[1],
@@ -909,15 +908,15 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
               </p>
               <p>
                 <strong>Image search:</strong>{" "}
-                Tìm ảnh bằng ngôn ngữ tự nhiên — Google Photos, Apple Photos, Unsplash đều dùng ý tưởng CLIP.
+                Tìm ảnh bằng ngôn ngữ tự nhiên. Google Photos, Apple Photos, Unsplash đều dùng ý tưởng CLIP.
               </p>
               <p>
                 <strong>Zero-shot classification:</strong>{" "}
-                Phân loại ảnh không cần dữ liệu huấn luyện riêng — đạt 76% top-1 ImageNet mà không thấy ImageNet label nào.
+                Phân loại ảnh không cần dữ liệu huấn luyện riêng. đạt 76% top-1 ImageNet mà không thấy ImageNet label nào.
               </p>
               <p>
                 <strong>Image-text retrieval:</strong>{" "}
-                Cho ảnh tìm mô tả, cho mô tả tìm ảnh — cơ sở của các{" "}
+                Cho ảnh tìm mô tả, cho mô tả tìm ảnh. cơ sở của các{" "}
                 <TopicLink slug="vector-databases">vector database</TopicLink>{" "}
                 đa phương thức.
               </p>
@@ -939,7 +938,7 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
                 Contrastive learning học bằng cách <strong>phân biệt cặp đúng với cặp sai</strong>. Trong batch N, mỗi ảnh có đúng 1 mô tả khớp và N−1 mô tả không khớp. Batch nhỏ → ít negative → &quot;dễ đoán&quot; → mô hình học nông.
               </p>
               <p>
-                Bài báo CLIP dùng batch 32.768 chia trên nhiều GPU. Mỗi bước lan truyền ngược, một ảnh phải phân biệt mô tả đúng với 32.767 mô tả sai. Đây là lý do không gian embedding của CLIP rất &quot;sạch&quot; — các lớp ngữ nghĩa tách biệt rõ.
+                Bài báo CLIP dùng batch 32.768 chia trên nhiều GPU. Mỗi bước lan truyền ngược, một ảnh phải phân biệt mô tả đúng với 32.767 mô tả sai. Đây là lý do không gian embedding của CLIP rất &quot;sạch&quot;. các lớp ngữ nghĩa tách biệt rõ.
               </p>
               <p>
                 Kỹ thuật thực tế:{" "}
@@ -956,7 +955,7 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Prompt engineering cho CLIP — mẹo thực dụng">
+          <CollapsibleDetail title="Prompt engineering cho CLIP. mẹo thực dụng">
             <div className="space-y-3 text-sm text-foreground">
               <p>
                 CLIP nhạy cảm với cách bạn viết nhãn. Vài mẹo từ paper và cộng đồng:
@@ -998,13 +997,13 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
         <InlineChallenge
           question="Bạn huấn luyện CLIP trên 100 triệu cặp với batch = 256. Accuracy zero-shot ImageNet chỉ đạt 45% (OpenAI đạt 76%). Lỗi có thể nằm ở đâu NHẤT?"
           options={[
-            "Dữ liệu quá ít — cần ít nhất 1 tỷ cặp",
-            "Batch quá nhỏ — không đủ negative pairs để học không gian embedding tốt",
+            "Dữ liệu quá ít. cần ít nhất 1 tỷ cặp",
+            "Batch quá nhỏ. không đủ negative pairs để học không gian embedding tốt",
             "ViT quá lớn cho batch 256",
             "Phải dùng GPU V100 chứ không phải A100",
           ]}
           correct={1}
-          explanation="Batch 256 chỉ cho 255 negatives/sample — quá ít cho contrastive learning. CLIP gốc dùng 32.768. Khi batch nhỏ, loss rất dễ đạt — mô hình học nông. Dữ liệu ở đây đủ (OpenAI cũng dùng 400M). Giải pháp: dùng gradient accumulation hoặc SigLIP, hoặc tăng GPU count."
+          explanation="Batch 256 chỉ cho 255 negatives/sample. quá ít cho contrastive learning. CLIP gốc dùng 32.768. Khi batch nhỏ, loss rất dễ đạt. mô hình học nông. Dữ liệu ở đây đủ (OpenAI cũng dùng 400M). Giải pháp: dùng gradient accumulation hoặc SigLIP, hoặc tăng GPU count."
         />
       </LessonSection>
 
@@ -1023,14 +1022,13 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
               <strong>Counting yếu:</strong>{" "}
               {`"3 con mèo"`}{" "}và{" "}
               {`"5 con mèo"`}{" "}
-              có similarity gần nhau. CLIP không học số đếm chính xác — caption web hiếm khi nói chính xác số lượng.
+              có similarity gần nhau. CLIP không học số đếm chính xác. caption web hiếm khi nói chính xác số lượng.
             </p>
             <p>
               <strong>Spatial reasoning kém:</strong>{" "}
               {`"mèo trên bàn"`}{" "}
               vs{" "}
-              {`"bàn trên mèo"`}{" "}
-              — CLIP không phân biệt tốt vị trí tương đối. Nó thiên về &quot;bag of concepts&quot; hơn là cấu trúc.
+              {`"bàn trên mèo"`}{" "}. CLIP không phân biệt tốt vị trí tương đối. Nó thiên về &quot;bag of concepts&quot; hơn là cấu trúc.
             </p>
             <p>
               <strong>Fine-grained yếu:</strong>{" "}
@@ -1044,7 +1042,7 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
         </Callout>
 
         <div className="mt-5">
-          <Callout variant="info" title="Kế thừa của CLIP — các mô hình quan trọng cần biết">
+          <Callout variant="info" title="Kế thừa của CLIP. các mô hình quan trọng cần biết">
             <ul className="list-disc pl-6 space-y-1">
               <li>
                 <strong>OpenCLIP (LAION, 2022):</strong>{" "}
@@ -1076,7 +1074,7 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
             points={[
               "CLIP liên kết ảnh và văn bản trong CÙNG MỘT không gian vector bằng contrastive learning trên 400M cặp.",
               "Ma trận N×N similarity: đường chéo = cặp đúng cần kéo gần, ngoài đường chéo = cặp sai cần đẩy xa.",
-              "Zero-shot classification: viết mô tả cho mỗi nhãn, encode, so cosine — không cần fine-tune.",
+              "Zero-shot classification: viết mô tả cho mỗi nhãn, encode, so cosine. không cần fine-tune.",
               "InfoNCE loss đối xứng + temperature τ (~0.07) học được + batch lớn (32k) là ba yếu tố quyết định.",
               "CLIP là nền tảng cho Stable Diffusion (text encoder), image search, VLM, và moderation.",
               "Hạn chế: bias tiếng Anh, yếu counting/spatial reasoning, fine-grained chưa sánh được với classifier chuyên biệt.",
@@ -1101,7 +1099,7 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
  *
  *   - Hàm simulateSimilarity() hoạt động theo keyword matching để phản hồi
  *     thay đổi prompt của người học một cách trực quan. Không phản ánh chính
- *     xác cosine similarity thực tế — chỉ mô phỏng.
+ *     xác cosine similarity thực tế. chỉ mô phỏng.
  *
  *   - Nếu cần mở rộng danh sách ảnh, nhớ cập nhật:
  *       1. mảng IMAGES
@@ -1150,13 +1148,13 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
  *
  *   - Kiểm thử nhanh cho file này (tham khảo):
  *       1. Vào trang /topic/clip
- *       2. Bước 2: bấm "Chạy contrastive training" — đường chéo phải sáng
+ *       2. Bước 2: bấm "Chạy contrastive training". đường chéo phải sáng
  *          lên có hiệu ứng pulse vàng.
- *       3. Bước 2: hover bất kỳ ô nào — khung info phía dưới phải hiện
+ *       3. Bước 2: hover bất kỳ ô nào. khung info phía dưới phải hiện
  *          đúng cặp ảnh-mô tả và giá trị similarity.
  *       4. Bước 5: chọn ảnh bánh mì, đảm bảo nhãn có chứa "bánh mì" hoặc
- *          "banh mi" — xác suất phải ~50-70% (do random thêm 4%).
- *       5. Bước 5: xoá hết nhãn — khu vực kết quả hiện "hãy nhập ít nhất
+ *          "banh mi". xác suất phải ~50-70% (do random thêm 4%).
+ *       5. Bước 5: xoá hết nhãn. khu vực kết quả hiện "hãy nhập ít nhất
  *          một nhãn".
  *       6. Bước 11: làm quiz, 8 câu phải đủ nội dung (3 multiple choice
  *          khác nhau về cơ chế, 2 fill-blank về kiến trúc + prompt, và
@@ -1168,15 +1166,15 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
  *
  *   - Ý tưởng mở rộng tương lai (nếu muốn deepen):
  *       1. Thay mô phỏng bằng CLIP thật qua @xenova/transformers chạy
- *          trong browser — giới hạn bởi bundle size (~200MB với ViT-B/32).
+ *          trong browser. giới hạn bởi bundle size (~200MB với ViT-B/32).
  *       2. Thêm panel "Image retrieval": 100 ảnh thumbnails + ô search,
  *          gõ prompt và trả top-5 ảnh khớp.
  *       3. Visualizer embedding space (t-SNE của 50 ảnh + 50 captions)
  *          cho phép kéo zoom.
- *       4. So sánh inner-product vs cosine với cùng embedding — minh
+ *       4. So sánh inner-product vs cosine với cùng embedding. minh
  *          hoạ tại sao CLIP L2-normalize.
  *       5. Interactive temperature slider: cho xem cùng một ma trận logit
- *          nhưng softmax với τ = 0.01, 0.07, 0.5, 2.0 — tác động đến
+ *          nhưng softmax với τ = 0.01, 0.07, 0.5, 2.0. tác động đến
  *          phân phối đầu ra.
  *
  *   - Interop với các bài khác trong app:
@@ -1187,10 +1185,10 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
  *       - vector-databases.tsx: dùng CLIP embeddings làm key cho FAISS.
  *
  *   - Chất lượng UX đã kiểm tra:
- *       [x] Dark mode — màu ma trận đã test trong cả light và dark.
- *       [x] Mobile — overflow-x-auto cho SVG ma trận để cuộn ngang.
- *       [x] Keyboard — tất cả button focus được bằng Tab.
- *       [x] Reduced motion — motion.rect dùng transition ngắn, chấp nhận
+ *       [x] Dark mode. màu ma trận đã test trong cả light và dark.
+ *       [x] Mobile. overflow-x-auto cho SVG ma trận để cuộn ngang.
+ *       [x] Keyboard. tất cả button focus được bằng Tab.
+ *       [x] Reduced motion. motion.rect dùng transition ngắn, chấp nhận
  *           user preference thông qua CSS media query của framer-motion.
  *
  *   - Lý do chọn 5 × 5 (chứ không 8 × 8 hay 4 × 4) cho ma trận demo:
@@ -1203,7 +1201,7 @@ print("Cosine similarity:", similarity.cpu().tolist())`}
  *       - Slate nhạt → similarity thấp (cặp sai, mong muốn).
  *       - Amber → similarity trung bình (trạng thái "chưa quyết định").
  *       - Green/Emerald → similarity cao (cặp đúng, mong muốn sau train).
- *       - Tránh đỏ để không gây ấn tượng "sai" — vì similarity thấp
+ *       - Tránh đỏ để không gây ấn tượng "sai". vì similarity thấp
  *         với cặp sai thực ra là kết quả TỐT, không phải lỗi.
  *
  *   - Cuối cùng, về triết lý dạy:

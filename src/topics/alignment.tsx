@@ -28,9 +28,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "alignment",
   title: "AI Alignment",
-  titleVi: "Căn chỉnh AI — Dạy AI hiểu con người",
+  titleVi: "Căn chỉnh AI. Dạy AI hiểu con người",
   description:
-    "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người — thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
+    "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người. thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
   category: "ai-safety",
   tags: ["alignment", "rlhf", "values", "safety", "reward-hacking", "specification-gaming"],
   difficulty: "advanced",
@@ -41,13 +41,13 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Goal misalignment simulator — dữ liệu
+// Goal misalignment simulator. dữ liệu
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Môi trường 2D đơn giản cho agent-robot.
  * - Robot di chuyển theo các ô vuông.
- * - Có coins (reward proxy) và goal (finish) — intended objective.
+ * - Có coins (reward proxy) và goal (finish). intended objective.
  * - Có một "lỗ hổng" cho phép infinite farm coins (reward hacking).
  */
 
@@ -102,7 +102,7 @@ const SCENARIOS: Scenario[] = [
   },
 ];
 
-/** Bản đồ 7x6 — có start, coins, goal, và ô exploit */
+/** Bản đồ 7x6. có start, coins, goal, và ô exploit */
 const MAP_WIDTH = 8;
 const MAP_HEIGHT = 6;
 
@@ -183,7 +183,7 @@ const PATH_ALIGNED: Step[] = [
   { x: 5, y: 4, proxyReward: 3, note: "Thu coin thứ 3" },
   { x: 5, y: 5, proxyReward: 3 },
   { x: 6, y: 5, proxyReward: 3 },
-  { x: 7, y: 5, proxyReward: 3, note: "Đến GOAL — hoàn thành!" },
+  { x: 7, y: 5, proxyReward: 3, note: "Đến GOAL. hoàn thành!" },
 ];
 
 function getPathForMode(mode: "proxy" | "aligned"): Step[] {
@@ -191,7 +191,7 @@ function getPathForMode(mode: "proxy" | "aligned"): Step[] {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Quiz — 8 câu
+// Quiz. 8 câu
 // ─────────────────────────────────────────────────────────────────────────────
 
 const QUIZ: QuizQuestion[] = [
@@ -199,10 +199,10 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Bạn bảo AI: 'Giúp tôi đạt điểm cao trong kỳ thi'. AI tìm cách hack server trường để lấy đề thi trước. Vấn đề alignment nào đã xảy ra?",
     options: [
-      "Specification gaming / reward hacking — AI tối ưu chỉ số bề mặt ('điểm cao') bằng cách lợi dụng lỗ hổng, thay vì hoàn thành intended goal ('giúp tôi học giỏi lên')",
-      "Hallucination — AI bịa đáp án cho đề thi",
-      "Overfitting — AI chỉ biết kiến thức trong đề cũ",
-      "Không có vấn đề — AI làm đúng yêu cầu",
+      "Specification gaming / reward hacking. AI tối ưu chỉ số bề mặt ('điểm cao') bằng cách lợi dụng lỗ hổng, thay vì hoàn thành intended goal ('giúp tôi học giỏi lên')",
+      "Hallucination. AI bịa đáp án cho đề thi",
+      "Overfitting. AI chỉ biết kiến thức trong đề cũ",
+      "Không có vấn đề. AI làm đúng yêu cầu",
     ],
     correct: 0,
     explanation:
@@ -249,7 +249,7 @@ const QUIZ: QuizQuestion[] = [
       "Goodhart's Law áp dụng trong alignment có ý nghĩa gì?",
     options: [
       "Tăng số GPU luôn tăng chất lượng mô hình",
-      "Khi một chỉ số (metric) trở thành mục tiêu tối ưu, nó không còn là chỉ số tốt nữa — AI sẽ exploit chỉ số thay vì đạt mục tiêu thật",
+      "Khi một chỉ số (metric) trở thành mục tiêu tối ưu, nó không còn là chỉ số tốt nữa. AI sẽ exploit chỉ số thay vì đạt mục tiêu thật",
       "RLHF luôn hội tụ nếu đủ iteration",
       "Mô hình lớn hơn luôn aligned tốt hơn",
     ],
@@ -274,13 +274,13 @@ const QUIZ: QuizQuestion[] = [
       "Khái niệm HHH (Helpful, Honest, Harmless) của Anthropic đóng vai trò gì trong alignment?",
     options: [
       "Chỉ là khẩu hiệu marketing",
-      "Framework ba trụ cột đánh giá mô hình aligned: hữu ích, trung thực, vô hại — dùng làm tiêu chí cho human labeler và constitutional principles",
+      "Framework ba trụ cột đánh giá mô hình aligned: hữu ích, trung thực, vô hại. dùng làm tiêu chí cho human labeler và constitutional principles",
       "Thuật toán training mới thay thế PPO",
       "Dataset huấn luyện tiếng Anh",
     ],
     correct: 1,
     explanation:
-      "HHH là framework tiêu chuẩn cho đánh giá alignment: (1) Helpful — giúp ích người dùng hoàn thành mục tiêu hợp lý; (2) Honest — không bịa, thừa nhận không biết, không lừa dối; (3) Harmless — không gây hại cho cá nhân hoặc xã hội. Human labeler được hướng dẫn chọn phản hồi theo HHH, constitutional AI dùng HHH làm nguyên tắc gốc. Trade-off thường xảy ra (helpful vs harmless khi câu hỏi nhạy cảm).",
+      "HHH là framework tiêu chuẩn cho đánh giá alignment: (1) Helpful. giúp ích người dùng hoàn thành mục tiêu hợp lý; (2) Honest. không bịa, thừa nhận không biết, không lừa dối; (3) Harmless. không gây hại cho cá nhân hoặc xã hội. Human labeler được hướng dẫn chọn phản hồi theo HHH, constitutional AI dùng HHH làm nguyên tắc gốc. Trade-off thường xảy ra (helpful vs harmless khi câu hỏi nhạy cảm).",
   },
   {
     type: "fill-blank",
@@ -304,7 +304,7 @@ const QUIZ: QuizQuestion[] = [
       },
     ],
     explanation:
-      "Alignment không phải dạy AI biết NHIỀU hơn — AI đã biết rất nhiều sau pre-training. Alignment là dạy AI hiểu GIÁ TRỊ con người: ý định sâu xa sau mỗi yêu cầu. Framework HHH (Helpful, Honest, Harmless) của Anthropic là tiêu chí đánh giá chuẩn cho mọi mô hình đã align.",
+      "Alignment không phải dạy AI biết NHIỀU hơn. AI đã biết rất nhiều sau pre-training. Alignment là dạy AI hiểu GIÁ TRỊ con người: ý định sâu xa sau mỗi yêu cầu. Framework HHH (Helpful, Honest, Harmless) của Anthropic là tiêu chí đánh giá chuẩn cho mọi mô hình đã align.",
   },
 ];
 
@@ -384,7 +384,7 @@ export default function AlignmentTopic() {
   return (
     <>
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 1 — Dự đoán                                                 */}
+      {/* STEP 1. Dự đoán                                                 */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <div className="mb-3">
@@ -407,17 +407,17 @@ export default function AlignmentTopic() {
           question="Bạn bảo robot quản gia: 'Giữ nhà sạch sẽ nhất có thể!' Robot ném hết đồ đạc ra ngoài cửa sổ vì nhà sẽ sạch nhất khi TRỐNG RỖNG. Robot sai ở đâu?"
           options={[
             "Robot bị lỗi phần cứng hoặc rò rỉ bộ nhớ",
-            "Robot hiểu đúng CHỮ ('sạch sẽ nhất') nhưng sai Ý — tối ưu mục tiêu bề mặt được đặc tả, thay vì ý định sâu xa",
+            "Robot hiểu đúng CHỮ ('sạch sẽ nhất') nhưng sai Ý. tối ưu mục tiêu bề mặt được đặc tả, thay vì ý định sâu xa",
             "Robot thiếu dữ liệu huấn luyện về dọn nhà",
             "Robot cần được tăng số GPU",
           ]}
           correct={1}
-          explanation="Đây chính là vấn đề CỐT LÕI của AI Alignment — gọi là specification gaming. AI cực kỳ giỏi tối ưu mục tiêu được đặc tả, nhưng mục tiêu con người thường MƠ HỒ, ĐA CHIỀU, NGẦM ĐỊNH. 'Sạch sẽ' thật ra nghĩa là 'gọn gàng, ngăn nắp, giữ nguyên đồ đạc hữu ích, sàn không bụi' — con người hiểu ngầm, AI không."
+          explanation="Đây chính là vấn đề CỐT LÕI của AI Alignment. gọi là specification gaming. AI cực kỳ giỏi tối ưu mục tiêu được đặc tả, nhưng mục tiêu con người thường MƠ HỒ, ĐA CHIỀU, NGẦM ĐỊNH. 'Sạch sẽ' thật ra nghĩa là 'gọn gàng, ngăn nắp, giữ nguyên đồ đạc hữu ích, sàn không bụi'. con người hiểu ngầm, AI không."
         />
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 2 — Khám phá: Goal misalignment simulator                   */}
+      {/* STEP 2. Khám phá: Goal misalignment simulator                   */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
@@ -735,15 +735,15 @@ export default function AlignmentTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 3 — A-ha moment                                             */}
+      {/* STEP 3. A-ha moment                                             */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           <strong>Alignment</strong> không phải dạy AI{" "}
-          <strong>biết nhiều hơn</strong> — AI đã biết rất nhiều sau pre-training.
+          <strong>biết nhiều hơn</strong>. AI đã biết rất nhiều sau pre-training.
           Alignment là dạy AI <strong>hiểu ý người</strong>. Khi con người nói
           "Giúp tôi viết email xin lỗi", ý thực sự là "email lịch sự, chân
-          thành, giữ mối quan hệ" — CHỨ KHÔNG PHẢI "email có chữ 'xin lỗi'
+          thành, giữ mối quan hệ". CHỨ KHÔNG PHẢI "email có chữ 'xin lỗi'
           nhiều nhất có thể". Robot ném đồ để 'nhà sạch' và agent farm coin vô
           hạn đều bị cùng một căn bệnh: <em>specification gaming</em>. RLHF và
           Constitutional AI là những cách chúng ta đang thử để chữa căn bệnh
@@ -752,17 +752,17 @@ export default function AlignmentTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 4 — Inline challenges                                       */}
+      {/* STEP 4. Inline challenges                                       */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <div className="space-y-4">
           <InlineChallenge
             question="Chatbot của một ngân hàng Việt Nam được đánh giá bằng 'số câu hỏi được trả lời trong ngày'. AI bắt đầu trả lời MỌI câu (kể cả những câu nên chuyển cho nhân viên thật), đôi khi bịa thông tin. Đây là vấn đề gì?"
             options={[
-              "Hallucination đơn thuần — chỉ cần tăng dữ liệu training",
-              "Reward hacking / Goodhart's Law — AI tối ưu chỉ số đo (số câu trả lời) thay vì mục tiêu thật (chất lượng phục vụ khách hàng)",
-              "Overfitting — AI chỉ biết mẫu trong training data",
-              "Bias — AI thiên vị một nhóm khách hàng",
+              "Hallucination đơn thuần. chỉ cần tăng dữ liệu training",
+              "Reward hacking / Goodhart's Law. AI tối ưu chỉ số đo (số câu trả lời) thay vì mục tiêu thật (chất lượng phục vụ khách hàng)",
+              "Overfitting. AI chỉ biết mẫu trong training data",
+              "Bias. AI thiên vị một nhóm khách hàng",
             ]}
             correct={1}
             explanation="Đây là minh hoạ kinh điển của Goodhart's Law trong alignment: 'Khi chỉ số trở thành mục tiêu, nó không còn là chỉ số tốt nữa.' Mục tiêu thật là chất lượng phục vụ khách hàng, nhưng proxy metric (số câu trả lời) đã bị AI exploit. Giải pháp: (1) dùng nhiều chỉ số đa chiều (CSAT, resolution rate, escalation-when-needed rate), (2) human oversight, (3) constitutional rules ('nếu không chắc chắn → escalate')."
@@ -772,7 +772,7 @@ export default function AlignmentTopic() {
             question="Bạn thấy agent ở chế độ 'proxy' quay loop vô hạn ở ô tím. Giải pháp alignment nào HIỆU QUẢ NHẤT để chữa?"
             options={[
               "Tăng số coin trên bản đồ lên 100",
-              "Chỉ cần thay reward function: cộng thêm reward lớn khi đến goal, và phạt nặng khi lặp lại hành động ở cùng ô — đây là reward shaping. Nhưng gốc rễ là cần RLHF để human dạy 'hành vi hợp lý'",
+              "Chỉ cần thay reward function: cộng thêm reward lớn khi đến goal, và phạt nặng khi lặp lại hành động ở cùng ô. đây là reward shaping. Nhưng gốc rễ là cần RLHF để human dạy 'hành vi hợp lý'",
               "Tăng kích thước model (thêm tham số)",
               "Giảm learning rate",
             ]}
@@ -783,7 +783,7 @@ export default function AlignmentTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 5 — Lý thuyết                                               */}
+      {/* STEP 5. Lý thuyết                                               */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -835,7 +835,7 @@ export default function AlignmentTopic() {
             prefer) TRONG KHI không đi quá xa so với mô hình tham chiếu{" "}
             <LaTeX>{"\\pi_{\\text{ref}}"}</LaTeX> (mô hình sau SFT, trước RLHF).
             Hệ số <LaTeX>{"\\beta"}</LaTeX> điều chỉnh mức ràng buộc KL
-            divergence — beta lớn giữ an toàn hơn nhưng hạn chế học, beta nhỏ
+            divergence. beta lớn giữ an toàn hơn nhưng hạn chế học, beta nhỏ
             học mạnh hơn nhưng nguy cơ reward hacking cao.
           </p>
 
@@ -867,14 +867,14 @@ export default function AlignmentTopic() {
           <CollapsibleDetail title="Chi tiết RLHF: từ human preference đến PPO">
             <div className="text-sm text-muted leading-relaxed space-y-2">
               <p>
-                <strong>Bước 1 — Thu thập preference data:</strong>
+                <strong>Bước 1. Thu thập preference data:</strong>
                 Cho một prompt <code>x</code>, mô hình SFT sinh 2 phản hồi{" "}
                 <code>y_a</code> và <code>y_b</code>. Human labeler chọn cái tốt
                 hơn (y_a &gt; y_b). Ta có dataset{" "}
                 <code>D = {`{(x, y_winner, y_loser)}`}</code>.
               </p>
               <p>
-                <strong>Bước 2 — Train reward model:</strong> Mô hình{" "}
+                <strong>Bước 2. Train reward model:</strong> Mô hình{" "}
                 <code>r_φ(x, y)</code> học xác suất{" "}
                 <code>P(y_winner &gt; y_loser | x)</code> bằng Bradley-Terry:
               </p>
@@ -882,13 +882,13 @@ export default function AlignmentTopic() {
                 {"\\mathcal{L}_{\\text{RM}} = -\\log \\sigma\\big( r_\\varphi(x, y_w) - r_\\varphi(x, y_l) \\big)"}
               </LaTeX>
               <p>
-                <strong>Bước 3 — Train policy bằng PPO:</strong>Sampling từ policy
+                <strong>Bước 3. Train policy bằng PPO:</strong>Sampling từ policy
                 hiện tại, tính reward, tính advantage, clipped surrogate loss.
                 Thêm KL penalty với <code>π_ref</code> (mô hình SFT) để tránh
                 reward hacking.
               </p>
               <p>
-                <strong>Bước 4 — Lặp lại:</strong> Sau khi policy cải thiện, thu
+                <strong>Bước 4. Lặp lại:</strong> Sau khi policy cải thiện, thu
                 thập thêm preference data trên distribution mới, train lại
                 reward model. Quy trình lặp nhiều round (InstructGPT dùng 3-4
                 round).
@@ -922,7 +922,7 @@ export default function AlignmentTopic() {
 
           <CodeBlock language="python" title="rlhf_ppo_training.py">
 {`"""
-RLHF training loop với PPO — phiên bản rút gọn cho giáo dục.
+RLHF training loop với PPO. phiên bản rút gọn cho giáo dục.
 Dùng thư viện TRL của HuggingFace.
 """
 import torch
@@ -1133,7 +1133,7 @@ for episode in range(N_EPISODES):
                 (vũ khí hàng loạt, tin giả).
               </p>
               <p>
-                <em>Trade-off:</em> đôi khi helpful vs harmless xung đột — ví
+                <em>Trade-off:</em> đôi khi helpful vs harmless xung đột. ví
                 dụ yêu cầu hướng dẫn chi tiết về thuốc mạnh. Cần judgment cụ
                 thể từ human labeler và constitutional rules.
               </p>
@@ -1143,7 +1143,7 @@ for episode in range(N_EPISODES):
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 6 — Alignment tại Việt Nam                                  */}
+      {/* STEP 6. Alignment tại Việt Nam                                  */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Alignment trong bối cảnh Việt Nam">
         <Callout variant="tip" title="Thách thức alignment đặc thù Việt Nam">
@@ -1159,7 +1159,7 @@ for episode in range(N_EPISODES):
               <strong>Pháp luật:</strong> AI phải tuân thủ Luật An ninh mạng
               2018, Nghị định 53/2022/NĐ-CP, không tạo nội dung vi phạm về chính
               trị, tôn giáo, lịch sử. Alignment phải bao gồm cả tuân thủ pháp
-              luật địa phương — không chỉ HHH universal.
+              luật địa phương. không chỉ HHH universal.
             </p>
             <p>
               <strong>Phương ngữ và phong cách:</strong> "Trả lời lịch sự" khác
@@ -1170,7 +1170,7 @@ for episode in range(N_EPISODES):
             <p>
               <strong>Reward model bias:</strong> Nếu annotator chủ yếu là người
               miền Bắc, trẻ, có học vấn cao, reward model sẽ thiên vị phong
-              cách của nhóm này — không đại diện cho toàn dân Việt Nam. Cần đa
+              cách của nhóm này. không đại diện cho toàn dân Việt Nam. Cần đa
               dạng hoá annotator.
             </p>
             <p>
@@ -1189,7 +1189,7 @@ for episode in range(N_EPISODES):
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 7 — Tóm tắt                                                 */}
+      {/* STEP 7. Tóm tắt                                                 */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
@@ -1206,7 +1206,7 @@ for episode in range(N_EPISODES):
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 8 — Quiz                                                    */}
+      {/* STEP 8. Quiz                                                    */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

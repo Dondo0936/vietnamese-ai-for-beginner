@@ -32,7 +32,7 @@ describe("Navbar", () => {
   it("uses theme-aware text colors for nav links", () => {
     render(<Navbar />);
 
-    const progressLink = screen.getByLabelText("Tiến độ");
+    const progressLink = screen.getByLabelText("Tiến độ học");
     const bookmarkLink = screen.getByLabelText("Đã lưu");
 
     // Should NOT have hardcoded slate colors
@@ -42,8 +42,7 @@ describe("Navbar", () => {
 
   it("renders the search button with theme-aware styling", () => {
     render(<Navbar />);
-    const searchBtn = screen.getByText("Tìm kiếm...");
-    const button = searchBtn.closest("button")!;
+    const button = screen.getByLabelText("Tìm kiếm chủ đề");
 
     // Should NOT use white-based opacity classes
     expect(button.className).not.toContain("border-white/10");

@@ -28,9 +28,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "model-serving",
   title: "Model Serving",
-  titleVi: "Phục vụ mô hình — Đưa AI vào thực tế",
+  titleVi: "Model serving: đưa model thành API",
   description:
-    "Quy trình triển khai và cung cấp mô hình AI dưới dạng dịch vụ, xử lý yêu cầu từ người dùng trong thời gian thực với latency thấp và throughput cao.",
+    "Biến model thành dịch vụ API: nhận request, gom batch, chạy inference và trả kết quả trong giới hạn latency và throughput.",
   category: "infrastructure",
   tags: ["serving", "deployment", "api", "inference"],
   difficulty: "intermediate",
@@ -124,7 +124,7 @@ const SERVER_PROFILES: Record<ServerKind, ServerProfile> = {
   },
   triton: {
     name: "Triton Inference Server",
-    subtitle: "NVIDIA — đa backend (TensorRT, ONNX, PyTorch...)",
+    subtitle: "NVIDIA. đa backend (TensorRT, ONNX, PyTorch...)",
     strengths: [
       "Hỗ trợ nhiều framework và loại model",
       "Model ensemble, scheduler linh hoạt",
@@ -164,7 +164,7 @@ const BATCH_DESCRIPTIONS: Record<BatchMode, string> = {
   dynamic:
     "Batch động: sau một khoảng chờ ngắn (ví dụ 5ms) hoặc khi đủ max batch thì phóng. Cân bằng giữa latency và throughput.",
   continuous:
-    "Continuous batching: request mới được nhét vào batch đang chạy ngay khi có slot trống. GPU luôn bận — chuẩn cho LLM.",
+    "Continuous batching: request mới được nhét vào batch đang chạy ngay khi có slot trống. GPU luôn bận. chuẩn cho LLM.",
 };
 
 const TOTAL_STEPS = 8;
@@ -174,7 +174,7 @@ const TOTAL_STEPS = 8;
 // ---------------------------------------------------------------------------
 
 /**
- * Percentile helper — tính phân vị p của mảng đã sắp xếp tăng dần.
+ * Percentile helper. tính phân vị p của mảng đã sắp xếp tăng dần.
  * Dùng cho P50/P95/P99 latency.
  */
 function percentile(sortedValues: number[], p: number): number {
@@ -452,7 +452,7 @@ export default function ModelServingTopic() {
         ],
         correct: 0,
         explanation:
-          "Autoscale tốt nhất dùng metric đi trước (leading indicator) như QPS / queue depth. Đợi CPU full là quá trễ — request đã dồn đống. Trigger ở ~80% capacity để replica mới warm up kịp trước khi saturate.",
+          "Autoscale tốt nhất dùng metric đi trước (leading indicator) như QPS / queue depth. Đợi CPU full là quá trễ. request đã dồn đống. Trigger ở ~80% capacity để replica mới warm up kịp trước khi saturate.",
       },
       {
         question: "vLLM nổi bật so với TGI/Triton chủ yếu ở điểm nào?",
@@ -470,10 +470,10 @@ export default function ModelServingTopic() {
         question:
           "Một batch tĩnh (static) cỡ 32 bị bottleneck bởi request 'dài nhất'. Hiện tượng này gọi là gì?",
         options: [
-          "Starvation — request ngắn chết đói",
-          "Head-of-line blocking — mọi request trong batch bị kéo theo request chậm nhất",
-          "Thrashing — hoán đổi page liên tục",
-          "Race condition — nhiều thread ghi chung biến",
+          "Starvation. request ngắn chết đói",
+          "Head-of-line blocking. mọi request trong batch bị kéo theo request chậm nhất",
+          "Thrashing. hoán đổi page liên tục",
+          "Race condition. nhiều thread ghi chung biến",
         ],
         correct: 1,
         explanation:
@@ -516,7 +516,7 @@ export default function ModelServingTopic() {
   return (
     <>
       {/* ================================================================
-          STEP 1 — HOOK / DỰ ĐOÁN
+          STEP 1. HOOK / DỰ ĐOÁN
           Kết nối bài học với một tình huống cụ thể ở Việt Nam để
           người học cam kết trả lời trước khi nội dung mở ra.
           ================================================================ */}
@@ -539,15 +539,15 @@ export default function ModelServingTopic() {
         </div>
 
         <PredictionGate
-          question="Đội bạn vừa fine-tune xong một LLM 8B cho chatbot chăm sóc khách hàng của một ngân hàng Việt Nam. 500 nhân viên tổng đài sẽ dùng đồng thời. Bước kế tiếp để đưa model vào sản xuất là gì?"
+          question="Đội bạn vừa fine-tune xong một LLM 8B cho chatbot chăm sóc khách hàng. 500 nhân viên tổng đài sẽ dùng đồng thời. Bước kế tiếp để đưa model vào production là gì?"
           options={[
             "Gửi file checkpoint .bin cho từng nhân viên tự load trên máy cá nhân",
-            "Đưa model lên server GPU, bọc thành HTTP API, đặt load balancer phía trước và thiết lập autoscale theo QPS",
+            "Đưa model lên server GPU, bọc thành HTTP API, đặt load balancer và autoscale theo QPS",
             "Export sang PDF và đính kèm email cho khách hàng",
             "In toàn bộ trọng số ra giấy để backup",
           ]}
           correct={1}
-          explanation="Đúng rồi — model chỉ là file cho đến khi bạn biến nó thành một dịch vụ: server giữ model trong VRAM, nhận request qua API, gom batch rồi gọi GPU, và có nhiều replica chịu tải. Đó chính là Model Serving — mạch sống của mọi hệ thống AI sản xuất."
+          explanation="Đúng rồi. Model chỉ là file cho đến khi bạn biến nó thành một dịch vụ: server giữ model trong VRAM, nhận request qua API, gom batch, gọi GPU và có nhiều replica chịu tải. Đó là model serving trong hệ thống AI production."
         >
           <p className="mt-3 text-sm text-muted leading-relaxed">
             Bài học hôm nay mở ra từng lớp của hệ thống serving: từ client đến
@@ -558,7 +558,7 @@ export default function ModelServingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          STEP 2 — ẨN DỤ / CONTEXT
+          STEP 2. ẨN DỤ / CONTEXT
           Kết nối khái niệm với một hình ảnh đời thường trước khi vào
           phần kỹ thuật.
           ================================================================ */}
@@ -570,7 +570,7 @@ export default function ModelServingTopic() {
           <strong>bếp</strong> chính là GPU. Khi đông khách, lễ tân phân bàn
           đều cho các đầu bếp. Khi một đầu bếp làm nhiều tô cùng lúc cho tiết
           kiệm củi, đó là <em>batching</em>. Khi quản lý thấy hàng chờ dài,
-          anh gọi thêm đầu bếp mới — đó là <em>autoscale</em>.
+          anh gọi thêm đầu bếp mới. Đó là <em>autoscale</em>.
         </p>
 
         <p>
@@ -590,7 +590,7 @@ export default function ModelServingTopic() {
       </LessonSection>
 
       {/* ================================================================
-          STEP 3 — INTERACTIVE VISUALIZATION
+          STEP 3. INTERACTIVE VISUALIZATION
           Kiến trúc inference server đầy đủ, có batching, queue, GPU util,
           latency distribution, autoscale.
           ================================================================ */}
@@ -737,7 +737,7 @@ export default function ModelServingTopic() {
                 type="button"
                 onClick={() => {
                   for (let i = 0; i < 10; i++) {
-                    // Chúng ta chỉ gọi 10 lần — state cập nhật batched bởi React.
+                    // Chúng ta chỉ gọi 10 lần. state cập nhật batched bởi React.
                     simulateBatch();
                   }
                 }}
@@ -969,7 +969,7 @@ export default function ModelServingTopic() {
                 fill="var(--text-secondary)"
                 fontSize={11}
               >
-                Server pool — mỗi replica giữ model trong VRAM
+                Server pool. mỗi replica giữ model trong VRAM
               </text>
 
               {/* Autoscale indicator */}
@@ -1089,8 +1089,8 @@ export default function ModelServingTopic() {
                 })}
               </div>
               <p className="text-[11px] text-muted">
-                Cột xanh — request nhanh. Cột cam — tail. Cột đỏ — outlier
-                (những request 1% xấu nhất — chính chúng quyết định SLA P99).
+                Cột xanh. request nhanh. Cột cam. tail. Cột đỏ. outlier
+                (những request 1% xấu nhất. chính chúng quyết định SLA P99).
               </p>
             </div>
 
@@ -1104,8 +1104,7 @@ export default function ModelServingTopic() {
                 <p className="text-sm font-semibold">
                   {activeProfile.name}
                 </p>
-                <p className="text-[11px] text-muted">
-                  — {activeProfile.subtitle}
+                <p className="text-[11px] text-muted">. {activeProfile.subtitle}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[12px]">
@@ -1133,18 +1132,16 @@ export default function ModelServingTopic() {
             </div>
 
             <Callout variant="tip" title="Thử nghiệm gợi ý">
-              (1) Giữ batching <strong>static</strong> và đẩy QPS lên 30 —
-              quan sát P99 tăng vọt vì head-of-line blocking. (2) Chuyển
-              sang <strong>continuous</strong> — GPU util leo lên gần 100%
-              nhưng P99 giảm. (3) Bật autoscale với 1 replica và QPS 25 —
-              hệ thống sẽ tự tăng lên 2-3 replica.
+              (1) Giữ batching <strong>static</strong> và đẩy QPS lên 30. quan sát P99 tăng vọt vì head-of-line blocking. (2) Chuyển
+              sang <strong>continuous</strong>. GPU util leo lên gần 100%
+              nhưng P99 giảm. (3) Bật autoscale với 1 replica và QPS 25. hệ thống sẽ tự tăng lên 2-3 replica.
             </Callout>
           </div>
         </VisualizationSection>
       </LessonSection>
 
       {/* ================================================================
-          STEP 4 — AHA MOMENT
+          STEP 4. AHA MOMENT
           ================================================================ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
@@ -1155,14 +1152,14 @@ export default function ModelServingTopic() {
             thành một băng chuyền luôn bận: request cũ vừa xong một
             iteration thì request mới đã nhảy vào slot trống. Đó là lý do
             vLLM đạt throughput <strong>5-10×</strong> so với serving
-            kiểu &quot;một request — một inference&quot;, mà vẫn giữ được P99
+            kiểu &quot;một request. một inference&quot;, mà vẫn giữ được P99
             latency thấp.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ================================================================
-          STEP 5 — INLINE CHALLENGES
+          STEP 5. INLINE CHALLENGES
           ================================================================ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
@@ -1183,17 +1180,17 @@ export default function ModelServingTopic() {
             options={[
               "Scale-down vì P50 còn thấp",
               "Giữ nguyên vì GPU chưa 100%",
-              "Scale-up: GPU gần bão hoà và tail latency đã vượt ngưỡng — cần thêm replica để chia tải",
+              "Scale-up: GPU gần bão hoà và tail latency đã vượt ngưỡng. cần thêm replica để chia tải",
               "Reboot server cho chắc",
             ]}
             correct={2}
-            explanation="Ở 95% util, replica sắp bão hoà. Khi bão hoà, queue tăng và P99 bay thẳng lên. Scale-up một bước trước khi nghẽn mới là kịp — replica mới cần ~30-90s để warm up (load weight, allocate KV-cache)."
+            explanation="Ở 95% util, replica sắp bão hoà. Khi bão hoà, queue tăng và P99 bay thẳng lên. Scale-up một bước trước khi nghẽn mới là kịp. replica mới cần ~30-90s để warm up (load weight, allocate KV-cache)."
           />
         </div>
       </LessonSection>
 
       {/* ================================================================
-          STEP 6 — EXPLANATION
+          STEP 6. EXPLANATION
           ================================================================ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
@@ -1244,12 +1241,10 @@ export default function ModelServingTopic() {
               key, rate-limit theo user/tenant, log request.
             </li>
             <li>
-              <strong>Load Balancer (L4/L7):</strong> Envoy, NGINX, AWS ALB —
-              phân phối request, health-check replica, blue/green deploy.
+              <strong>Load Balancer (L4/L7):</strong> Envoy, NGINX, AWS ALB. phân phối request, health-check replica, blue/green deploy.
             </li>
             <li>
-              <strong>Inference Server:</strong> vLLM, TGI, Triton, Ray Serve
-              — đây là nơi model thực thi, batching, và KV-cache sống.
+              <strong>Inference Server:</strong> vLLM, TGI, Triton, Ray Serve. đây là nơi model thực thi, batching, và KV-cache sống.
             </li>
             <li>
               <strong>Request Queue:</strong> đệm khi traffic spike; có thể
@@ -1281,12 +1276,12 @@ export default function ModelServingTopic() {
             </li>
             <li>
               <strong>Continuous batching (iteration-level):</strong> request
-              mới nhảy vào batch đang decode ngay khi có slot — vLLM là
+              mới nhảy vào batch đang decode ngay khi có slot. vLLM là
               người tiên phong. Đây là chuẩn cho LLM hiện đại.
             </li>
           </ul>
 
-          <CodeBlock language="python" title="Serving LLM với vLLM — full example">
+          <CodeBlock language="python" title="Serving LLM với vLLM. full example">
             {`from vllm import LLM, SamplingParams
 from vllm.entrypoints.openai.api_server import run_server
 
@@ -1325,7 +1320,7 @@ for out in llm.generate(prompts, sp):
             Để <strong>max_num_seqs</strong> (kích thước batch continuous)
             quá cao sẽ tốn nhiều VRAM cho KV-cache và dễ OOM. Quá thấp thì
             GPU chưa bão hoà, throughput kém. Tune theo sequence length
-            trung bình và VRAM còn lại — bắt đầu từ 128 rồi điều chỉnh.
+            trung bình và VRAM còn lại. bắt đầu từ 128 rồi điều chỉnh.
           </Callout>
 
           <p>
@@ -1364,14 +1359,14 @@ spec:
         metricName: gpu_util`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Chi tiết — tại sao continuous batching thắng static batching">
+          <CollapsibleDetail title="Chi tiết. tại sao continuous batching thắng static batching">
             <p>
               Trong decoder-only LLM, mỗi token mới cần đúng một bước forward
               qua toàn bộ layer, và bước này gần như không song song được
               trong một request (tuần tự bản chất). GPU chỉ &quot;phí thời
               gian&quot; nếu batch nhỏ so với năng lực của nó. Continuous
               batching giữ batch luôn gần cực đại bằng cách cho request mới
-              lấp chỗ trống ngay lập tức ở mỗi iteration — không cần đợi
+              lấp chỗ trống ngay lập tức ở mỗi iteration. không cần đợi
               request cũ sinh hết 2000 token.
             </p>
             <p className="mt-2">
@@ -1379,30 +1374,30 @@ spec:
               GPU không bao giờ idle nếu hàng chờ còn request. Kết hợp với
               PagedAttention (KV-cache chia page), vLLM có thể nhét nhiều
               request có độ dài khác nhau vào cùng batch mà không phí VRAM
-              cho padding — đây là khác biệt kỹ thuật chính so với các
+              cho padding. đây là khác biệt kỹ thuật chính so với các
               giải pháp cũ.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Chi tiết — so sánh 4 framework ở khía cạnh vận hành">
+          <CollapsibleDetail title="Chi tiết. so sánh 4 framework ở khía cạnh vận hành">
             <ul className="list-disc list-inside space-y-1 pl-2 text-[13px]">
               <li>
-                <strong>vLLM</strong> — throughput vô địch cho LLM.
+                <strong>vLLM</strong>. throughput vô địch cho LLM.
                 OpenAI-compatible API sẵn dùng. Bật prefix caching cho
                 RAG dùng lại system prompt lớn.
               </li>
               <li>
-                <strong>TGI</strong> — Hugging Face stack, đồng bộ tốt với
+                <strong>TGI</strong>. Hugging Face stack, đồng bộ tốt với
                 Hub. Hỗ trợ quantize AWQ/GPTQ + flash-attn. Throughput
                 thường thua vLLM nhẹ nhưng stable.
               </li>
               <li>
-                <strong>Triton</strong> — lựa chọn tốt khi production
+                <strong>Triton</strong>. lựa chọn tốt khi production
                 không chỉ LLM: bạn có vision model + recommender + LLM,
                 tất cả cùng một server. Cần hiểu config.pbtxt.
               </li>
               <li>
-                <strong>Ray Serve</strong> — khi workload là pipeline
+                <strong>Ray Serve</strong>. Khi workload là pipeline
                 phức tạp: embedding → retrieve → rerank → generate. Mỗi
                 bước autoscale độc lập, traffic split A/B dễ.
               </li>
@@ -1410,7 +1405,7 @@ spec:
           </CollapsibleDetail>
 
           <p>
-            <strong>Trong thực tế — stack production Việt Nam:</strong> một
+            <strong>Trong thực tế. stack production Việt Nam:</strong> một
             pattern quen thuộc là Kubernetes (GKE / EKS / FPT Cloud K8s)
             + vLLM + Envoy + KEDA + Prometheus. Cold-start model 70B mất
             60-120 giây nên pre-provision minReplicas = 1 luôn sống,
@@ -1426,13 +1421,13 @@ spec:
       </LessonSection>
 
       {/* ================================================================
-          STEP 7 — SUMMARY
+          STEP 7. SUMMARY
           ================================================================ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="6 điều cốt lõi về Model Serving"
           points={[
-            "Serving biến checkpoint thành dịch vụ online với SLA về latency, throughput, availability — khác hẳn batch inference offline.",
+            "Serving biến checkpoint thành dịch vụ online với SLA về latency, throughput, availability. khác hẳn batch inference offline.",
             "Hai chỉ số nền tảng: latency (thường đo P50/P95/P99) và throughput (req/s). Tail latency quan trọng hơn trung bình.",
             "Continuous batching là đột phá quan trọng nhất cho LLM serving: GPU luôn bận, không còn head-of-line blocking, throughput 5-10× so với static.",
             "Kiến trúc chuẩn: Client → API Gateway → Load Balancer → Inference Server (vLLM/TGI/Triton/Ray Serve) → GPU, kèm Queue và Observability.",
@@ -1443,7 +1438,7 @@ spec:
       </LessonSection>
 
       {/* ================================================================
-          STEP 8 — QUIZ
+          STEP 8. QUIZ
           ================================================================ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />

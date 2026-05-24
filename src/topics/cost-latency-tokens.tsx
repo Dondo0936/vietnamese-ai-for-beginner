@@ -23,9 +23,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "cost-latency-tokens",
   title: "Cost, Latency & Token Economics for LLM Apps",
-  titleVi: "Kinh tế token — Chi phí, độ trễ và hiệu quả",
+  titleVi: "Kinh tế token: chi phí, latency và hiệu quả",
   description:
-    "Đơn vị tiền tệ của LLM production là token. Biết cách đo $/task, phân rã latency (TTFT + decode + retrieval + tool), tính break-even với human baseline, và thấy tức thì tác dụng của prompt caching / model cascade / context compression.",
+    "Đo chi phí theo tác vụ bằng token, TTFT, decode, retrieval và tool call; giá trong bài chỉ là số minh họa để tránh lệ thuộc bảng giá thay đổi.",
   category: "infrastructure",
   tags: ["cost", "latency", "tokens", "caching", "optimization"],
   difficulty: "advanced",
@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
 };
 
 // ──────────────────────────────────────────────────────────────────────
-// DỮ LIỆU MODEL — giá tham khảo theo bảng giá công khai đầu 2026
+// DỮ LIỆU MODEL: giá minh họa, không phải bảng giá hiện hành
 // Đơn vị: USD / 1 triệu token
 // ──────────────────────────────────────────────────────────────────────
 
@@ -234,7 +234,7 @@ function TokenCalculator() {
 
   const result = useMemo(() => computeCost(cfg), [cfg]);
 
-  // Lịch sử cost (USD/ngày) — giữ 20 cấu hình gần nhất để vẽ sparkline.
+  // Lịch sử cost (USD/ngày). giữ 20 cấu hình gần nhất để vẽ sparkline.
   const [history, setHistory] = useState<number[]>([result.perDay]);
   useEffect(() => {
     setHistory((h) => {
@@ -250,14 +250,14 @@ function TokenCalculator() {
   const costRatio = result.perMonth / humanMonthlyUsd;
   const breakEvenText =
     costRatio <= 0.2
-      ? "Rẻ hơn 5× lương người — cascade/caching làm tốt việc"
+      ? "Rẻ hơn 5× lương người. cascade/caching làm tốt việc"
       : costRatio <= 1
-        ? "Rẻ hơn lương 1 người — vẫn trong vùng an toàn"
+        ? "Rẻ hơn lương 1 người. vẫn trong vùng an toàn"
         : costRatio <= 3
-          ? `Bằng khoảng ${costRatio.toFixed(1)} nhân viên — review ngay cost lever`
-          : "Cao hơn 3× lương người — cần dừng traffic không cần thiết";
+          ? `Bằng khoảng ${costRatio.toFixed(1)} nhân viên. review ngay cost lever`
+          : "Cao hơn 3× lương người. cần dừng traffic không cần thiết";
 
-  // Bar chart latency — 4 thanh ngang
+  // Bar chart latency. 4 thanh ngang
   const latencyBars = [
     { label: "TTFT", ms: result.ttftMs, color: "#6366f1" },
     { label: "Decode", ms: result.decodeMs, color: "#22c55e" },
@@ -282,12 +282,12 @@ function TokenCalculator() {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-      {/* ─────────────── LEFT PANEL — SLIDERS + TOGGLES ─────────────── */}
+      {/* ─────────────── LEFT PANEL. SLIDERS + TOGGLES ─────────────── */}
       <div className="rounded-xl border border-border bg-card p-4 space-y-4">
         <div>
           <p className="text-sm font-bold text-foreground">Cấu hình</p>
           <p className="text-[11px] text-muted">
-            Kéo slider, bật toggle — mọi ô bên phải cập nhật ngay.
+            Kéo slider, bật toggle. mọi ô bên phải cập nhật ngay.
           </p>
         </div>
 
@@ -396,28 +396,28 @@ function TokenCalculator() {
             label="Bật model cascade (cheap-first routing)"
             checked={cfg.cascadeOn}
             onChange={(v) => setCfg((c) => ({ ...c, cascadeOn: v }))}
-            hint="Giả định 70% traffic dừng ở model rẻ — $/req giảm ~40%"
+            hint="Giả định 70% traffic dừng ở model rẻ. $/req giảm ~40%"
           />
           <ToggleRow
             label="Context compression 30%"
             checked={cfg.compressOn}
             onChange={(v) => setCfg((c) => ({ ...c, compressOn: v }))}
-            hint="Tóm tắt / nén prompt — input tokens giảm 30%"
+            hint="Tóm tắt / nén prompt. input tokens giảm 30%"
           />
         </div>
       </div>
 
-      {/* ─────────────── RIGHT PANEL — DERIVED ─────────────── */}
+      {/* ─────────────── RIGHT PANEL. DERIVED ─────────────── */}
       <div className="rounded-xl border border-border bg-card p-4 space-y-4">
         <div>
           <p className="text-sm font-bold text-foreground">Ước tính</p>
           <p className="text-[11px] text-muted">
-            Dùng làm điểm khởi đầu — hãy xác thực bằng số đo thực tế trước khi
+            Dùng làm điểm khởi đầu. hãy xác thực bằng số đo thực tế trước khi
             báo cáo sếp.
           </p>
         </div>
 
-        {/* BIG NUMBER — $/ngày */}
+        {/* BIG NUMBER. $/ngày */}
         <motion.div
           key={cfg.modelId + "-big"}
           initial={{ scale: 0.98, opacity: 0.6 }}
@@ -595,7 +595,7 @@ function TokenCalculator() {
               </>
             ) : (
               <>
-                Chưa bật tối ưu nào — thử tăng cache lên 60% để thấy chi phí
+                Chưa bật tối ưu nào. thử tăng cache lên 60% để thấy chi phí
                 input sụt đáng kể.
               </>
             )}
@@ -754,14 +754,14 @@ export default function CostLatencyTokensTopic() {
         ],
         correct: 1,
         explanation:
-          "Ý tưởng cascade: thử model rẻ trước, đánh giá tự tin (confidence, rubric, heuristic), chỉ escalate khi cần. Nếu 80% dừng ở Haiku, 15% lên Sonnet, 5% lên Opus, chi phí trung bình xuống hẳn — thường 60-80% rẻ hơn chạy Opus cho mọi request.",
+          "Ý tưởng cascade: thử model rẻ trước, đánh giá tự tin (confidence, rubric, heuristic), chỉ escalate khi cần. Nếu 80% dừng ở Haiku, 15% lên Sonnet, 5% lên Opus, chi phí trung bình xuống hẳn. thường 60-80% rẻ hơn chạy Opus cho mọi request.",
       },
       {
         question:
           "Bạn có bill $10,000/tháng cho LLM. 70% là input tokens, 30% là output. Đòn bẩy đầu tiên nên thử là gì?",
         options: [
           "Giảm output tokens bằng prompt 'trả lời ngắn'",
-          "Bật prompt caching cho system prompt và tài liệu context thường lặp — giải quyết phần input 70%",
+          "Bật prompt caching cho system prompt và tài liệu context thường lặp. giải quyết phần input 70%",
           "Chuyển sang nhà cung cấp rẻ nhất",
           "Tăng temperature để giảm tokens",
         ],
@@ -774,13 +774,13 @@ export default function CostLatencyTokensTopic() {
           "p95 latency của agent là 8s, user complain. Bạn đo thấy 60% latency là decode, 15% TTFT, 15% tool calls, 10% retrieval. Chiến thuật hợp lý nhất?",
         options: [
           "Tăng cache hit rate lên 90%",
-          "Chuyển sang model nhanh hơn ở bước decode (haiku, mini) hoặc giảm output tokens — vì decode đang là phần chiếm 60% tổng thời gian",
+          "Chuyển sang model nhanh hơn ở bước decode (haiku, mini) hoặc giảm output tokens. vì decode đang là phần chiếm 60% tổng thời gian",
           "Xoá tool calls",
           "Nâng CPU server",
         ],
         correct: 1,
         explanation:
-          "60% ở decode nghĩa là model đang sinh output quá dài/chậm. Hai đòn bẩy: (a) chuyển sang model có tokens/s cao hơn (haiku, mini), (b) cắt output tokens (structured output ngắn, chunking). Tăng cache chỉ tác động 10% phần retrieval — đòn bẩy sai mức.",
+          "60% ở decode nghĩa là model đang sinh output quá dài/chậm. Hai đòn bẩy: (a) chuyển sang model có tokens/s cao hơn (haiku, mini), (b) cắt output tokens (structured output ngắn, chunking). Tăng cache chỉ tác động 10% phần retrieval. đòn bẩy sai mức.",
       },
       {
         type: "fill-blank" as const,
@@ -797,12 +797,12 @@ export default function CostLatencyTokensTopic() {
           },
         ],
         explanation:
-          "Bảng giá chuẩn hiện nay tính theo USD / 1M token (trước 2024 thì tính / 1K). Luôn convert về $/task để hiểu tác động business — $10/1M output nghe rẻ, nhưng 50k request/ngày × 500 output tokens ≈ 25M token × $10 = $250/ngày.",
+          "Bảng giá chuẩn hiện nay tính theo USD / 1M token (trước 2024 thì tính / 1K). Luôn convert về $/task để hiểu tác động business. $10/1M output nghe rẻ, nhưng 50k request/ngày × 500 output tokens ≈ 25M token × $10 = $250/ngày.",
       },
       {
         type: "fill-blank" as const,
         question:
-          "Break-even: chatbot tốn $4.500/tháng có chi phí tương đương khoảng {blank} nhân viên CSKH Việt Nam (lương 15 triệu VND, tỷ giá 25k) — nhưng nếu sau tối ưu còn $900/tháng thì còn {blank} nhân viên.",
+          "Break-even: chatbot tốn $4.500/tháng có chi phí tương đương khoảng {blank} nhân viên CSKH Việt Nam (lương 15 triệu VND, tỷ giá 25k). Nhưng nếu sau tối ưu còn $900/tháng thì còn {blank} nhân viên.",
         blanks: [
           {
             answer: "7.5",
@@ -814,7 +814,7 @@ export default function CostLatencyTokensTopic() {
           },
         ],
         explanation:
-          "15 triệu VND ≈ $600. $4.500 / $600 ≈ 7.5 người; $900 / $600 = 1.5. Biến $/tháng thành 'đơn vị nhân viên' là cách nhanh nhất để sếp hình dung — đừng chỉ đưa con số USD trần trụi.",
+          "15 triệu VND ≈ $600. $4.500 / $600 ≈ 7.5 người; $900 / $600 = 1.5. Biến $/tháng thành 'đơn vị nhân viên' là cách nhanh nhất để sếp hình dung. đừng chỉ đưa con số USD trần trụi.",
       },
     ],
     [],
@@ -827,17 +827,17 @@ export default function CostLatencyTokensTopic() {
         <PredictionGate
           question="CEO hỏi: 'Chatbot hỗ trợ khách hàng tốn bao nhiêu một tháng?' Bạn nên trả lời dựa trên số nào để vừa đúng, vừa an toàn cho quyết định?"
           options={[
-            "Tổng số token / tháng — vì token là thứ chúng ta trả tiền",
-            "$/request — vì đó là đơn vị atomic",
-            "$/task × số task × margin buffer 30% — gắn thẳng với business, cộng đệm cho biến động",
-            "Tổng hóa đơn API tháng trước — đã là fact rồi, không cần đoán",
+            "Tổng số token / tháng. vì token là thứ chúng ta trả tiền",
+            "$/request. vì đó là đơn vị atomic",
+            "$/task × số task × margin buffer 30%. gắn thẳng với business, cộng đệm cho biến động",
+            "Tổng hóa đơn API tháng trước. đã là fact rồi, không cần đoán",
           ]}
           correct={2}
-          explanation="Token là đơn vị kỹ thuật, không phải đơn vị business. $/request quá chi tiết, mất hình dung. Hóa đơn tháng trước là lịch sử, không giúp dự báo. Công thức đúng cho dự báo là $/task × volume × buffer — business hiểu ngay, và buffer bảo vệ bạn khỏi spike + prompt length drift."
+          explanation="Token là đơn vị kỹ thuật, không phải đơn vị business. $/request quá chi tiết, mất hình dung. Hóa đơn tháng trước là lịch sử, không giúp dự báo. Công thức đúng cho dự báo là $/task × volume × buffer. business hiểu ngay, và buffer bảo vệ bạn khỏi spike + prompt length drift."
         >
           <p className="text-sm text-muted mt-2">
             Câu trả lời hay nhất cho sếp luôn là con số gắn với đơn vị tác vụ
-            (task) — không phải token. Bài học hôm nay giúp bạn đi đúng 5 bước
+            (task). không phải token. Bài học hôm nay giúp bạn đi đúng 5 bước
             từ token đến $/task, và chỉ ra chính xác đòn bẩy nào đáng kéo.
           </p>
         </PredictionGate>
@@ -895,18 +895,17 @@ export default function CostLatencyTokensTopic() {
             prompt 5k token + tool schema 2k token, cache hit rate thường đạt
             80-95% trong production steady-state → giảm{" "}
             <strong>70-90% chi phí input</strong>. Đây là lever đầu tiên nên
-            bật — không đánh đổi chất lượng, chỉ đánh đổi một chút phức tạp
+            bật. không đánh đổi chất lượng, chỉ đánh đổi một chút phức tạp
             trong thiết kế prompt.
           </Callout>
 
-          <Callout variant="warning" title="Đừng tối ưu cost sớm — đo trước">
+          <Callout variant="warning" title="Đừng tối ưu cost sớm. đo trước">
             Công thức <em>&quot;làm cái này sẽ giảm 40% cost&quot;</em> nghe
             hấp dẫn, nhưng không nghĩa lý gì nếu chưa biết baseline. Quy trình
             đúng: (1) đặt observability đếm tokens + $ per request, (2) chạy 2
             tuần lấy phân phối, (3) tìm tail nặng nhất (90th percentile request
             thường ngốn 3-5× cost trung bình), (4) tối ưu đúng tail đó. Và
-            trong mọi thay đổi, <strong>task success rate không được sụt</strong>
-            — nếu giảm cost 50% nhưng fail rate tăng 3%, đó không phải là
+            trong mọi thay đổi, <strong>task success rate không được sụt</strong>. nếu giảm cost 50% nhưng fail rate tăng 3%, đó không phải là
             thắng lợi.
           </Callout>
 
@@ -915,16 +914,16 @@ export default function CostLatencyTokensTopic() {
             Mỗi tier có một gate quyết định có escalate hay không (confidence
             score, rubric pass, LLM-as-judge nhỏ, hoặc rule-based). Nếu phân
             phối thực là 80% dừng ở Haiku, 15% ở Sonnet, 5% ở Opus, chi phí
-            trung bình ≈ 0.8×$1 + 0.15×$3 + 0.05×$15 = $2.0/1M — so với
+            trung bình ≈ 0.8×$1 + 0.15×$3 + 0.05×$15 = $2.0/1M. so với
             $15/1M nếu chạy Opus thuần, đó là <strong>giảm ~87%</strong>.
             Thiết kế gate tốt (fail-closed về tier cao khi không chắc) quan
             trọng hơn tối ưu prompt ở từng tier.
           </Callout>
 
-          <Callout variant="insight" title="Latency không chỉ là decode — tool call mới là vết nứt ngầm">
+          <Callout variant="insight" title="Latency không chỉ là decode. tool call mới là vết nứt ngầm">
             Trong một agent điển hình, decode là 30-40% p95. Tool call tuần tự
             (sequential HTTP, DB queries, vendor APIs) có thể là{" "}
-            <strong>40-60%</strong> — mỗi tool 200-500ms, chuỗi 4-5 tool dễ
+            <strong>40-60%</strong>. mỗi tool 200-500ms, chuỗi 4-5 tool dễ
             vượt ngưỡng 2s. Hai đòn bẩy: (a) parallel tool calls khi các tool
             độc lập, (b) tool caching (cache kết quả ổn định như&nbsp;
             <code>get_user_profile</code> trong 1-5 phút). Đừng tối ưu model
@@ -940,7 +939,7 @@ export default function CostLatencyTokensTopic() {
             question="Bill LLM của bạn $10k/tháng. Breakdown: 70% input tokens, 30% output. Chiến thuật nào đáng ưu tiên đầu tiên?"
             options={[
               "Viết prompt ngắn hơn để giảm output",
-              "Bật prompt caching — chi phí chủ yếu nằm ở input; caching đánh vào đúng phần 70% với rủi ro thấp nhất",
+              "Bật prompt caching. chi phí chủ yếu nằm ở input; caching đánh vào đúng phần 70% với rủi ro thấp nhất",
               "Chuyển hết sang nhà cung cấp rẻ nhất",
               "Chuyển sang batch API",
             ]}
@@ -952,12 +951,12 @@ export default function CostLatencyTokensTopic() {
             question="p95 latency = 8s, user phàn nàn. Bạn phân rã: 60% decode, 15% TTFT, 15% tool calls, 10% retrieval. Bước đi đúng?"
             options={[
               "Tăng cache hit rate lên 90%",
-              "Giảm output tokens (structured output ngắn gọn) + đổi sang model có decode tps cao hơn (haiku/mini) — đánh đúng vào 60%",
+              "Giảm output tokens (structured output ngắn gọn) + đổi sang model có decode tps cao hơn (haiku/mini). đánh đúng vào 60%",
               "Parallelize tool calls",
               "Thêm CDN cho retrieval",
             ]}
             correct={1}
-            explanation="60% nằm ở decode — đòn bẩy đầu tiên phải là cắt output hoặc tăng tokens/s. Cache tác động retrieval (10%) nên không đủ mạnh. Parallelize tool đúng nhưng chỉ đánh 15%. Nguyên tắc: tối ưu theo khối to nhất trong breakdown."
+            explanation="60% nằm ở decode. đòn bẩy đầu tiên phải là cắt output hoặc tăng tokens/s. Cache tác động retrieval (10%) nên không đủ mạnh. Parallelize tool đúng nhưng chỉ đánh 15%. Nguyên tắc: tối ưu theo khối to nhất trong breakdown."
           />
         </div>
       </LessonSection>
@@ -994,7 +993,7 @@ export default function CostLatencyTokensTopic() {
             </li>
             <li>
               <code>r</code>: cache hit rate (0..1); <code>d</code>: discount
-              factor cho cached input (thường 0.9 — tức cached tính 10%).
+              factor cho cached input (thường 0.9. tức cached tính 10%).
             </li>
           </ul>
 
@@ -1005,13 +1004,12 @@ export default function CostLatencyTokensTopic() {
             </LaTeX>
           </p>
           <p className="text-sm">
-            <code>TTFT</code> là thời gian từ gửi request đến token đầu tiên —
-            phụ thuộc network, prompt length, và prompt caching.{" "}
+            <code>TTFT</code> là thời gian từ gửi request đến token đầu tiên. phụ thuộc network, prompt length, và prompt caching.{" "}
             <code>R_decode</code> là tốc độ sinh token (tokens/s) đặc trưng cho
             từng model. <code>L_retrieval</code> gồm vector search / rerank /
             reading file. <code>L_tools</code> là tổng thời gian các tool call
             (tuần tự hoặc song song). Phần nào lớn nhất chính là nơi bạn nên
-            tối ưu trước — xem{" "}
+            tối ưu trước. xem{" "}
             <TopicLink slug="kv-cache">KV cache</TopicLink> và{" "}
             <TopicLink slug="inference-optimization">inference
             optimization</TopicLink> để đi sâu.
@@ -1033,7 +1031,7 @@ export default function CostLatencyTokensTopic() {
             bằng A/B trên một subset thật.
           </p>
 
-          <CodeBlock language="python" title="token_budget.py — đo + cảnh báo khi vượt 80%">
+          <CodeBlock language="python" title="token_budget.py. đo + cảnh báo khi vượt 80%">
             {`from dataclasses import dataclass
 from typing import Callable
 
@@ -1051,7 +1049,7 @@ class TokenBudget:
     def record(self, in_tok: int, out_tok: int) -> None:
         self.used_input += in_tok
         self.used_output += out_tok
-        # Gửi metric realtime — dashboard \\$/task dựng trên metric này.
+        # Gửi metric realtime. dashboard \\$/task dựng trên metric này.
         self.emit_metric(
             "llm.tokens.used",
             in_tok + out_tok,
@@ -1076,7 +1074,7 @@ class TokenBudget:
         return self.used_input * eff_in + self.used_output * eff_out`}
           </CodeBlock>
 
-          <CodeBlock language="typescript" title="token-meter.ts — middleware đo tokens / request">
+          <CodeBlock language="typescript" title="token-meter.ts. middleware đo tokens / request">
             {`import type { NextRequest, NextResponse } from "next/server";
 
 interface Usage {
@@ -1097,7 +1095,7 @@ export async function withTokenMeter<T>(
   const { result, usage } = await run();
   const latencyMs = performance.now() - started;
 
-  // Báo về observability (Datadog, Honeycomb, OTLP...) — một record / request.
+  // Báo về observability (Datadog, Honeycomb, OTLP...). một record / request.
   sink({
     ...usage,
     latencyMs,
@@ -1113,18 +1111,18 @@ export async function withTokenMeter<T>(
 // FROM llm_usage WHERE ts > now() - interval '1 hour' GROUP BY route;`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Prompt caching — cơ chế hash + hit rate trong thực tế">
+          <CollapsibleDetail title="Prompt caching. cơ chế hash + hit rate trong thực tế">
             <p className="text-sm">
               Các nhà cung cấp (Anthropic, OpenAI, Gemini) đều hash prefix của
-              prompt — thường là system prompt + tool schema + tài liệu
-              reference — và cache KV states của prefix đó trong 5-10 phút.
+              prompt. thường là system prompt + tool schema + tài liệu
+              reference. Và cache KV states của prefix đó trong 5-10 phút.
               Lần request tiếp theo có cùng prefix sẽ trả cached input price
               (~10% giá chuẩn).
             </p>
             <ul className="list-disc list-inside text-sm space-y-1 pl-2 mt-2">
               <li>
                 <strong>Cache bị invalidate</strong> khi bạn sửa 1 ký tự ở
-                prefix — kể cả whitespace. Giữ prefix ổn định là quan trọng
+                prefix. kể cả whitespace. Giữ prefix ổn định là quan trọng
                 hơn tối ưu wording.
               </li>
               <li>
@@ -1147,7 +1145,7 @@ export async function withTokenMeter<T>(
             </ul>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Distillation vs compression vs cascade — 3 con đường giảm cost có trade-off khác nhau">
+          <CollapsibleDetail title="Distillation vs compression vs cascade. 3 con đường giảm cost có trade-off khác nhau">
             <p className="text-sm">
               Ba hướng cùng mục tiêu &quot;giảm cost&quot;, nhưng đánh đổi
               khác nhau:
@@ -1169,7 +1167,7 @@ export async function withTokenMeter<T>(
               <li>
                 <strong>Cascade</strong>: không đổi model, chỉ thêm lớp
                 routing. Dễ triển khai, dễ rollback. Rủi ro lớn nhất là gate
-                calibration — gate sai khiến phần lớn traffic vẫn lên tier
+                calibration. gate sai khiến phần lớn traffic vẫn lên tier
                 đắt, hoặc tệ hơn, quality degradation vì dừng quá sớm ở tier
                 rẻ.
               </li>
@@ -1185,7 +1183,7 @@ export async function withTokenMeter<T>(
 
           <p className="text-sm mt-3">
             Để theo dõi những con số này realtime, bạn cần tầng quan sát phù
-            hợp — xem{" "}
+            hợp. xem{" "}
             <TopicLink slug="observability-for-ai">
               observability for AI
             </TopicLink>
@@ -1196,7 +1194,7 @@ export async function withTokenMeter<T>(
       </LessonSection>
 
       {/* ───────── 7. CASE STUDY ───────── */}
-      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Case study — MoMo chatbot CSKH">
+      <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Case study. MoMo chatbot CSKH">
         <div className="rounded-xl border border-border bg-card p-4 text-sm space-y-3">
           <p>
             <strong className="text-foreground">Bối cảnh.</strong> Một đội ở
@@ -1208,7 +1206,7 @@ export async function withTokenMeter<T>(
             <strong className="text-foreground">Trước khi đo.</strong> Team
             nghĩ tốn &quot;khoảng vài nghìn đô&quot;. Không có dashboard
             $/task, không có alert khi spike. Cuối tháng hóa đơn về:{" "}
-            <strong>$18.000</strong> — gần bằng 30 nhân viên CSKH. Sếp hỏi tại
+            <strong>$18.000</strong>. gần bằng 30 nhân viên CSKH. Sếp hỏi tại
             sao, không ai trả lời chắc.
           </p>
           <p>
@@ -1225,7 +1223,7 @@ export async function withTokenMeter<T>(
               (yes/no/status).
             </li>
             <li>
-              p95 latency 6.4s — decode 55%, TTFT 20%, tool 15%, retrieval
+              p95 latency 6.4s. decode 55%, TTFT 20%, tool 15%, retrieval
               10%.
             </li>
           </ul>
@@ -1261,7 +1259,7 @@ export async function withTokenMeter<T>(
             <strong className="text-foreground">Bài học.</strong> Thứ tự
             đúng: <em>đo → tìm Pareto → tối ưu đúng chỗ → theo dõi CSAT</em>.
             Nếu team đi thẳng vào &quot;đổi model rẻ hơn&quot; từ đầu, khả
-            năng cao CSAT tụt rồi phải rollback — mất cả tiền và niềm tin
+            năng cao CSAT tụt rồi phải rollback. mất cả tiền và niềm tin
             của sếp vào AI team.
           </p>
         </div>
@@ -1272,12 +1270,12 @@ export async function withTokenMeter<T>(
         <MiniSummary
           title="Những điều cần nhớ về kinh tế token"
           points={[
-            "Đơn vị tính tiền là token, nhưng đơn vị quyết định phải là $/task hoặc $/user — có 5 bước chuyển đổi giữa hai đó.",
+            "Đơn vị tính tiền là token, nhưng đơn vị quyết định phải là $/task hoặc $/user. có 5 bước chuyển đổi giữa hai đó.",
             "Luôn đo trước khi tối ưu: observability tokens/request + dashboard $/task realtime là tiền đề, không phải bonus.",
-            "Latency có 4 thành phần (TTFT + decode + retrieval + tool) — tối ưu theo khối to nhất, không theo khối dễ nhất.",
-            "Prompt caching là đòn bẩy lớn nhất, rủi ro thấp nhất — tiết kiệm 70-90% chi phí input cho system prompt dài.",
-            "Model cascade (Haiku → Sonnet → Opus) tính chi phí kỳ vọng, không chi phí tối đa — gate calibration là phần khó nhất.",
-            "Break-even với human baseline (15tr VND/tháng ≈ $600) là cách nhanh nhất giúp sếp hiểu giá trị đầu tư — đừng chỉ đưa con số USD trần trụi.",
+            "Latency có 4 thành phần (TTFT + decode + retrieval + tool). tối ưu theo khối to nhất, không theo khối dễ nhất.",
+            "Prompt caching là đòn bẩy lớn nhất, rủi ro thấp nhất. tiết kiệm 70-90% chi phí input cho system prompt dài.",
+            "Model cascade (Haiku → Sonnet → Opus) tính chi phí kỳ vọng, không chi phí tối đa. gate calibration là phần khó nhất.",
+            "Break-even với human baseline (15tr VND/tháng ≈ $600) là cách nhanh nhất giúp sếp hiểu giá trị đầu tư. đừng chỉ đưa con số USD trần trụi.",
           ]}
         />
       </LessonSection>

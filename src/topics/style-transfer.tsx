@@ -1057,7 +1057,7 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
             totalSteps={TOTAL_STEPS}
             label="Mở rộng — Timeline"
           >
-            <ExplanationSection>
+            <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 Style transfer tiến hoá rất nhanh. Dưới đây là các cột mốc
                 đáng nhớ:
@@ -1136,7 +1136,7 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
                   </p>
                 </div>
               </Callout>
-            </ExplanationSection>
+            </section>
           </LessonSection>
 
           <LessonSection
@@ -1144,7 +1144,7 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
             totalSteps={TOTAL_STEPS}
             label="Phụ lục — Debug loss"
           >
-            <ExplanationSection>
+            <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 Nhiều người lần đầu chạy style transfer sẽ thấy kết quả lạ:
                 ảnh quá xám, ảnh đầy noise, hoặc gần như không thay đổi. Dưới
@@ -1271,7 +1271,7 @@ with torch.no_grad():
               f"min={gt.min():.4f} "
               f"has_nan={torch.isnan(gt).any().item()}")`}
               </CodeBlock>
-            </ExplanationSection>
+            </section>
           </LessonSection>
 
           <LessonSection
@@ -1279,7 +1279,7 @@ with torch.no_grad():
             totalSteps={TOTAL_STEPS}
             label="Liên kết kiến thức"
           >
-            <ExplanationSection>
+            <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 Style transfer liên quan mật thiết tới các chủ đề khác trong
                 deep learning thị giác — hãy xâu chuỗi:
@@ -1305,7 +1305,7 @@ with torch.no_grad():
                 đầu; Gram matrix trả lời câu sau. Tổng của hai loss là hướng
                 dẫn cho optimizer đi tìm ảnh trung dung.
               </Callout>
-            </ExplanationSection>
+            </section>
           </LessonSection>
 
           <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Tóm tắt">

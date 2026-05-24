@@ -114,7 +114,7 @@ const PEFT_ORDER: PeftMethod[] = ["full", "lora", "adapter", "prefix"];
 
 /* ============================================================
  *  Accuracy vs trainable-% curve (cartoonised but directionally
- *  correct — more parameters tends to raise ceiling with diminishing
+ *  correct. more parameters tends to raise ceiling with diminishing
  *  returns, PEFT methods live far to the left of the curve).
  * ============================================================ */
 interface CurvePoint {
@@ -232,7 +232,7 @@ export default function FineTuningTopic() {
         if (method === "full") {
           active = true;
         } else if (method === "lora") {
-          // Only the "rank" columns of A and rows of B are active — show as
+          // Only the "rank" columns of A and rows of B are active. show as
           // a narrow vertical/horizontal stripe.
           active = c < Math.max(1, Math.round((loraRank / 64) * GRID));
         } else if (method === "adapter") {
@@ -251,7 +251,7 @@ export default function FineTuningTopic() {
   }, [method, loraRank]);
 
   /* ============================================================
-   *  Quiz — 8 questions, mix of MCQ and fill-in-the-blank
+   *  Quiz. 8 questions, mix of MCQ and fill-in-the-blank
    * ============================================================ */
   const quizQuestions: QuizQuestion[] = [
     {
@@ -300,20 +300,20 @@ export default function FineTuningTopic() {
         { answer: "parameter-efficient", accept: ["peft", "parameter efficient"] },
       ],
       explanation:
-        "Full fine-tuning cập nhật toàn bộ θ — mạnh nhưng tốn bộ nhớ. PEFT (Parameter-Efficient Fine-Tuning) như LoRA chỉ học một lượng nhỏ tham số mới, giảm 99% VRAM mà vẫn hiệu quả.",
+        "Full fine-tuning cập nhật toàn bộ θ. mạnh nhưng tốn bộ nhớ. PEFT (Parameter-Efficient Fine-Tuning) như LoRA chỉ học một lượng nhỏ tham số mới, giảm 99% VRAM mà vẫn hiệu quả.",
     },
     {
       question:
         "LoRA phân rã cập nhật trọng số ΔW thành hai ma trận nhỏ A (d × r) và B (r × d). Với r << d, điều này có nghĩa là gì?",
       options: [
-        "Số tham số học = r² — phụ thuộc bình phương rank",
-        "Số tham số học = 2 × d × r — tuyến tính với rank, nhỏ hơn d² rất nhiều",
-        "Số tham số học = d² — như full fine-tuning",
-        "Số tham số học = 1 — chỉ một scalar duy nhất",
+        "Số tham số học = r². phụ thuộc bình phương rank",
+        "Số tham số học = 2 × d × r. tuyến tính với rank, nhỏ hơn d² rất nhiều",
+        "Số tham số học = d². như full fine-tuning",
+        "Số tham số học = 1. chỉ một scalar duy nhất",
       ],
       correct: 1,
       explanation:
-        "A và B có kích thước d×r và r×d, tổng là 2·d·r. Với d = 4096 và r = 8, ta có 65.536 tham số thay vì d² = 16.777.216 — tiết kiệm khoảng 256 lần.",
+        "A và B có kích thước d×r và r×d, tổng là 2·d·r. Với d = 4096 và r = 8, ta có 65.536 tham số thay vì d² = 16.777.216. tiết kiệm khoảng 256 lần.",
     },
     {
       type: "fill-blank",
@@ -324,7 +324,7 @@ export default function FineTuningTopic() {
         { answer: "20", accept: ["15", "10", "20%", "15-20"] },
       ],
       explanation:
-        "Weights + grads + m + v = 4 bản sao (thực tế 3.5–4× tuỳ fp16/fp32). LoRA đóng băng weights gốc (có thể giữ ở int8/int4) và chỉ lưu grad/Adam cho rank-r adapter — thường còn ~15–20% VRAM của full FT.",
+        "Weights + grads + m + v = 4 bản sao (thực tế 3.5–4× tuỳ fp16/fp32). LoRA đóng băng weights gốc (có thể giữ ở int8/int4) và chỉ lưu grad/Adam cho rank-r adapter. thường còn ~15–20% VRAM của full FT.",
     },
     {
       question:
@@ -343,9 +343,9 @@ export default function FineTuningTopic() {
       question:
         "Bạn fine-tune LLaMA trên 100 ví dụ y khoa với lr=5e-4 (gấp 25× so với khuyến nghị) trong 20 epoch. Mô hình nói tiếng Anh rất kỳ cục sau đó. Nguyên nhân chính là gì?",
       options: [
-        "Dữ liệu quá nhiều — nên giảm xuống 10 mẫu",
-        "Catastrophic forgetting + overfitting — lr quá lớn phá kiến thức ngôn ngữ, 20 epoch làm model nhớ vẹt 100 ví dụ",
-        "GPU không đủ mạnh — cần H100",
+        "Dữ liệu quá nhiều. nên giảm xuống 10 mẫu",
+        "Catastrophic forgetting + overfitting. lr quá lớn phá kiến thức ngôn ngữ, 20 epoch làm model nhớ vẹt 100 ví dụ",
+        "GPU không đủ mạnh. cần H100",
         "Tokenizer bị hỏng",
       ],
       correct: 1,
@@ -402,7 +402,7 @@ export default function FineTuningTopic() {
       </LessonSection>
 
       {/* =====================================================
-       *  STEP 2: PEFT VISUALIZATION — 4 methods side by side
+       *  STEP 2: PEFT VISUALIZATION. 4 methods side by side
        * ===================================================== */}
       <LessonSection step={2} totalSteps={10} label="PEFT lab">
         <VisualizationSection topicSlug={metadata.slug}>
@@ -454,7 +454,7 @@ export default function FineTuningTopic() {
               </marker>
             </defs>
 
-            {/* Backbone — frozen or trainable depending on method */}
+            {/* Backbone. frozen or trainable depending on method */}
             <text x="180" y="24" textAnchor="middle" fill="var(--text-primary)" fontSize="13" fontWeight="bold">
               Trọng số backbone W (d × d)
             </text>
@@ -544,7 +544,7 @@ export default function FineTuningTopic() {
                 <text x="150" y="0" textAnchor="middle" fill={activeDef.color} fontSize="14" fontWeight="bold">Mọi ô trong W đều đỏ</text>
                 <text x="150" y="22" textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">100% tham số được cập nhật</text>
                 <text x="150" y="46" textAnchor="middle" fill="var(--text-tertiary)" fontSize="11">→ cần ~16× VRAM so với inference</text>
-                <text x="150" y="66" textAnchor="middle" fill="#ef4444" fontSize="11" fontWeight="bold">Mạnh nhất — nhưng đắt nhất</text>
+                <text x="150" y="66" textAnchor="middle" fill="#ef4444" fontSize="11" fontWeight="bold">Mạnh nhất. Nhưng đắt nhất</text>
               </g>
             )}
           </svg>
@@ -612,12 +612,12 @@ export default function FineTuningTopic() {
        *  STEP 3: ACCURACY vs TRAINABLE % TRADEOFF CHART
        * ===================================================== */}
       <LessonSection step={3} totalSteps={10} label="Accuracy vs params">
-        <VisualizationSection topicSlug={metadata.slug}>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-1">
             Accuracy vs tham số học (log scale)
           </h3>
           <p className="text-sm text-muted mb-4">
-            Càng nhiều tham số học, accuracy càng tăng — nhưng đường cong bão
+            Càng nhiều tham số học, accuracy càng tăng. Nhưng đường cong bão
             hoà rất sớm. LoRA chỉ dùng 0.1–1% tham số đã đạt ~99% accuracy của
             full FT.
           </p>
@@ -719,13 +719,13 @@ export default function FineTuningTopic() {
               <p className="text-xs text-muted">Tiết kiệm so với full FT</p>
             </div>
           </div>
-        </VisualizationSection>
+        </section>
 
         <Callout variant="insight" title="Vì sao đường cong bão hoà sớm?">
           Trong paper LoRA (2021), Hu và cộng sự chứng minh: cập nhật cần thiết
           ΔW thường có <em>rank hiệu dụng rất thấp</em>. Điều này nghĩa là chỉ
           cần một không gian con nhỏ (r = 4–16) để biểu diễn &quot;sự thay
-          đổi&quot; — không cần đụng đến toàn bộ ma trận d × d.
+          đổi&quot;. không cần đụng đến toàn bộ ma trận d × d.
         </Callout>
       </LessonSection>
 
@@ -733,7 +733,7 @@ export default function FineTuningTopic() {
        *  STEP 4: VRAM BAR CHART
        * ===================================================== */}
       <LessonSection step={4} totalSteps={10} label="VRAM">
-        <VisualizationSection topicSlug={metadata.slug}>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-1">
             VRAM sử dụng: LLaMA-7B (ước lượng)
           </h3>
@@ -815,9 +815,9 @@ export default function FineTuningTopic() {
               </li>
             </ul>
           </div>
-        </VisualizationSection>
+        </section>
 
-        <Callout variant="tip" title="QLoRA — khi VRAM quá ít">
+        <Callout variant="tip" title="QLoRA. Khi VRAM quá ít">
           <TopicLink slug="qlora">QLoRA</TopicLink> kết hợp LoRA với lượng tử
           hoá 4-bit cho backbone. Kết quả: fine-tune LLaMA-65B chỉ với một GPU
           48 GB, gần như không mất accuracy. Đây là điểm đột phá giúp cá nhân
@@ -832,7 +832,7 @@ export default function FineTuningTopic() {
         <AhaMoment>
           <p>
             <strong>Fine-tuning</strong> không phải dạy mô hình kiến thức mới từ
-            con số 0 — mà là{" "}
+            con số 0. mà là{" "}
             <strong>kích hoạt và chuyên biệt hoá</strong> kiến thức mà nó đã biết
             sẵn. Giống như bác sĩ đa khoa đã hiểu cơ thể người, chỉ cần học thêm
             chuyên khoa tim mạch thay vì vào lại trường y từ năm nhất.
@@ -840,7 +840,7 @@ export default function FineTuningTopic() {
           <p className="mt-3">
             Điểm then chốt của PEFT:{" "}
             <em>cập nhật cần thiết ΔW có rank hiệu dụng rất thấp</em>. Nghĩa là
-            phần kiến thức mới mà model cần học thực ra rất nhỏ — và LoRA chính
+            phần kiến thức mới mà model cần học thực ra rất nhỏ. Và LoRA chính
             là cách khai thác sự thật đó để tiết kiệm 99% bộ nhớ mà vẫn giữ gần
             như toàn bộ chất lượng.
           </p>
@@ -882,7 +882,7 @@ export default function FineTuningTopic() {
        *  STEP 7: CLASSIC TRAINER LAB
        * ===================================================== */}
       <LessonSection step={7} totalSteps={10} label="Trainer lab">
-        <VisualizationSection topicSlug={metadata.slug}>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-1">
             Phòng thí nghiệm Trainer
           </h3>
@@ -1006,10 +1006,10 @@ export default function FineTuningTopic() {
           <Callout variant="tip" title="Thử nghiệm">
             Tăng learning rate lên 8-10 và quan sát nguy cơ quên kiến thức cũ
             tăng vọt. Đây chính là catastrophic forgetting! Ngược lại, hạ lr
-            xuống 0.1 và tăng epoch — model học rất chậm, rủi ro overfit ít
+            xuống 0.1 và tăng epoch. model học rất chậm, rủi ro overfit ít
             hơn nhưng có thể không đủ thời gian để thích ứng.
           </Callout>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* =====================================================
@@ -1032,7 +1032,7 @@ export default function FineTuningTopic() {
           <p>
             Trong đó <LaTeX>{"\\theta"}</LaTeX> được khởi tạo từ trọng số
             pre-train thay vì ngẫu nhiên. Đây chính là sức mạnh của{" "}
-            <strong>transfer learning</strong> — không phải bắt đầu từ số 0. So
+            <strong>transfer learning</strong>. không phải bắt đầu từ số 0. So
             với <TopicLink slug="prompt-engineering">prompt engineering</TopicLink>
             , fine-tuning thay đổi trọng số mô hình vĩnh viễn (xem thêm{" "}
             <TopicLink slug="fine-tuning-vs-prompting">
@@ -1067,7 +1067,7 @@ export default function FineTuningTopic() {
             </li>
             <li>
               <strong>PEFT (Parameter-Efficient):</strong> Chỉ cập nhật một phần
-              nhỏ trọng số — <TopicLink slug="lora">LoRA</TopicLink>, Adapter,
+              nhỏ trọng số. <TopicLink slug="lora">LoRA</TopicLink>, Adapter,
               Prefix, Prompt Tuning. Tiết kiệm bộ nhớ đáng kể.
             </li>
             <li>
@@ -1117,7 +1117,7 @@ model = AutoModelForCausalLM.from_pretrained(
 # Chèn LoRA adapter
 lora_config = LoraConfig(
     task_type=TaskType.CAUSAL_LM,
-    r=8,                # rank — càng lớn càng nhiều tham số
+    r=8,                # rank. càng lớn càng nhiều tham số
     lora_alpha=16,      # scaling
     lora_dropout=0.05,
     target_modules=["q_proj", "v_proj"],  # chỉ attention Q, V
@@ -1148,21 +1148,21 @@ model.save_pretrained("./llama-medical-lora")  # ~65 MB, không phải 14 GB!`}
             tế (adapter nhỏ, multi-tenant, hot-swap).{" "}
             <strong>QLoRA:</strong> khi VRAM rất eo hẹp.{" "}
             <strong>Prefix/Prompt tuning:</strong> cho bài toán nhẹ, muốn nhỏ
-            nhất có thể — thường kém hơn LoRA 2–5% accuracy nhưng triển khai rất
+            nhất có thể. thường kém hơn LoRA 2–5% accuracy nhưng triển khai rất
             gọn.
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
       {/* =====================================================
-       *  STEP 9: COLLAPSIBLE DETAILS — HISTORY + PITFALLS
+       *  STEP 9: COLLAPSIBLE DETAILS. HISTORY + PITFALLS
        * ===================================================== */}
       <LessonSection step={9} totalSteps={10} label="Lịch sử & Cạm bẫy">
         <div className="space-y-3">
           <CollapsibleDetail title="Lịch sử: từ ULMFiT đến LoRA">
             <div className="space-y-3 text-sm text-foreground/80 leading-relaxed">
               <p>
-                <strong>2018 — ULMFiT (Howard &amp; Ruder).</strong> Bài báo
+                <strong>2018. ULMFiT (Howard &amp; Ruder).</strong> Bài báo
                 &quot;Universal Language Model Fine-Tuning&quot; giới thiệu ý
                 tưởng: dùng chung một language model được pre-train trên
                 Wikipedia, rồi fine-tune cho các tác vụ downstream (phân loại,
@@ -1170,44 +1170,44 @@ model.save_pretrained("./llama-medical-lora")  # ~65 MB, không phải 14 GB!`}
                 NLP.
               </p>
               <p>
-                <strong>2018 — BERT (Devlin và cộng sự).</strong> Chuẩn hoá quy
+                <strong>2018. BERT (Devlin và cộng sự).</strong> Chuẩn hoá quy
                 trình &quot;pre-train + fine-tune&quot; cho Transformer. Mỗi tác
                 vụ GLUE đều được giải bằng cách gắn thêm vài lớp phân loại lên
                 BERT rồi fine-tune toàn bộ.
               </p>
               <p>
-                <strong>2019 — Adapter (Houlsby và cộng sự).</strong> Nhận thấy
+                <strong>2019. Adapter (Houlsby và cộng sự).</strong> Nhận thấy
                 fine-tune toàn bộ BERT cho mỗi tác vụ rất tốn kém, nhóm Google
                 chèn các module MLP nhỏ (adapter) giữa các lớp Transformer. Kết
                 quả: gần như giữ nguyên accuracy với 3% tham số.
               </p>
               <p>
-                <strong>2020 — GPT-3 &amp; few-shot.</strong> OpenAI chứng minh
+                <strong>2020. GPT-3 &amp; few-shot.</strong> OpenAI chứng minh
                 model đủ lớn có thể làm nhiều tác vụ chỉ bằng prompt, không cần
-                fine-tune. Điều này không xoá bỏ fine-tuning — nó chuyển
+                fine-tune. Điều này không xoá bỏ fine-tuning. nó chuyển
                 fine-tuning từ &quot;bắt buộc&quot; thành &quot;khi cần chuyên
                 sâu&quot;.
               </p>
               <p>
-                <strong>2021 — Prefix/Prompt Tuning (Li &amp; Liang; Lester).</strong>{" "}
+                <strong>2021. Prefix/Prompt Tuning (Li &amp; Liang; Lester).</strong>{" "}
                 Hai bài báo gần như đồng thời: thay vì học trọng số, học một
                 chuỗi vector &quot;prefix&quot; ở đầu mỗi lớp attention. Cực kỳ
                 ít tham số.
               </p>
               <p>
-                <strong>2021 — LoRA (Hu và cộng sự, Microsoft).</strong>{" "}
+                <strong>2021. LoRA (Hu và cộng sự, Microsoft).</strong>{" "}
                 Low-Rank Adaptation: ΔW = B·A với rank r thấp. Hiệu quả gần như
                 full FT, chỉ 0.1% tham số. Trở thành phương pháp PEFT phổ biến
                 nhất.
               </p>
               <p>
-                <strong>2023 — QLoRA (Dettmers và cộng sự).</strong> Kết hợp
+                <strong>2023. QLoRA (Dettmers và cộng sự).</strong> Kết hợp
                 LoRA với lượng tử hoá 4-bit NF4 cho backbone. Fine-tune LLaMA-65B
-                trên một GPU 48 GB — bước ngoặt giúp cộng đồng open-source đuổi
+                trên một GPU 48 GB. bước ngoặt giúp cộng đồng open-source đuổi
                 kịp các phòng thí nghiệm lớn.
               </p>
               <p>
-                <strong>2023–2024 — DPO, IPO, KTO.</strong> Thay thế RLHF truyền
+                <strong>2023–2024. DPO, IPO, KTO.</strong> Thay thế RLHF truyền
                 thống bằng loss function đơn giản hơn. Thường chạy trên model đã
                 SFT → kết hợp SFT (fine-tune) + DPO là công thức đào tạo chuẩn
                 cho các model instruction-tuned hiện đại (Zephyr, Tulu,
@@ -1236,7 +1236,7 @@ model.save_pretrained("./llama-medical-lora")  # ~65 MB, không phải 14 GB!`}
               </p>
               <p>
                 <strong>4. Bỏ qua validation set.</strong> Luôn giữ lại 10–20%
-                dữ liệu làm validation — không phải chỉ để chấm điểm cuối cùng
+                dữ liệu làm validation. không phải chỉ để chấm điểm cuối cùng
                 mà để <em>early stopping</em>.
               </p>
               <p>
@@ -1275,7 +1275,7 @@ model.save_pretrained("./llama-medical-lora")  # ~65 MB, không phải 14 GB!`}
         <MiniSummary
           title="Những điều cần nhớ về Fine-tuning"
           points={[
-            "Fine-tuning là huấn luyện thêm mô hình pre-train trên dữ liệu chuyên biệt — tận dụng transfer learning thay vì học từ đầu. Chi phí giảm từ hàng trăm triệu USD xuống hàng trăm USD.",
+            "Fine-tuning là huấn luyện thêm mô hình pre-train trên dữ liệu chuyên biệt. tận dụng transfer learning thay vì học từ đầu. Chi phí giảm từ hàng trăm triệu USD xuống hàng trăm USD.",
             "Ba tham số huấn luyện quan trọng: số lượng dữ liệu (càng đa dạng càng tốt), learning rate (nhỏ: 1-5e-5), số epoch (ít: 2-5).",
             "Catastrophic forgetting: lr quá lớn hoặc fine-tune quá lâu → mô hình quên kiến thức cũ. Luôn đo lại accuracy trên task gốc trước và sau fine-tune.",
             "PEFT là mặc định hiện đại: LoRA (phổ biến nhất, 0.1–1% tham số), Adapter (chèn module nhỏ), Prefix Tuning (thêm vector học được). Thường đạt ≥ 97% accuracy của full FT.",

@@ -24,7 +24,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "dimensionality-curse",
   title: "Curse of Dimensionality",
-  titleVi: "Lời nguyền chiều cao — Khi nhiều hơn lại tệ hơn",
+  titleVi: "Lời nguyền chiều cao. Khi nhiều hơn lại tệ hơn",
   description:
     "Hiện tượng hiệu suất mô hình giảm khi số chiều đặc trưng tăng quá nhiều so với lượng dữ liệu có sẵn.",
   category: "foundations",
@@ -48,7 +48,7 @@ const STEP_LABELS = [
 /* ──────────────────────────────────────────────────────────────────────────
  * DETERMINISTIC PSEUDO-RANDOM
  * We cần random tái lập (cùng seed → cùng kết quả) để slider không "nhảy".
- * Dùng mulberry32 — nhỏ, nhanh, đủ tốt cho trực quan hoá.
+ * Dùng mulberry32. nhỏ, nhanh, đủ tốt cho trực quan hoá.
  * ──────────────────────────────────────────────────────────────────────── */
 function mulberry32(seed: number): () => number {
   let a = seed >>> 0;
@@ -67,7 +67,7 @@ function mulberry32(seed: number): () => number {
  * rồi đếm histogram. Trả về:
  *   - bins: mảng counts theo bucket
  *   - minD, maxD, meanD: thống kê khoảng cách
- *   - sqrtD: giá trị lý thuyết √(D/6) — kỳ vọng khoảng cách Euclid trong cube.
+ *   - sqrtD: giá trị lý thuyết √(D/6). kỳ vọng khoảng cách Euclid trong cube.
  * Độ phức tạp O(N² · D) nên ta giới hạn N ≈ 60 cho trơn tru.
  * ──────────────────────────────────────────────────────────────────────── */
 interface DistanceStats {
@@ -77,7 +77,7 @@ interface DistanceStats {
   meanD: number;
   stdD: number;
   theoreticalMean: number;
-  ratio: number; // (max - min) / mean  — hệ số "thu hẹp"
+  ratio: number; // (max - min) / mean. hệ số "thu hẹp"
 }
 
 function simulateDistances(
@@ -150,7 +150,7 @@ function simulateDistances(
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
- * HISTOGRAM COMPONENT — visualise pairwise distance distribution
+ * HISTOGRAM COMPONENT. visualise pairwise distance distribution
  * ──────────────────────────────────────────────────────────────────────── */
 interface HistogramProps {
   stats: DistanceStats;
@@ -309,7 +309,7 @@ function Histogram({ stats, dims, width, height }: HistogramProps) {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
- * POINT CLOUD PREVIEW — 2D projection (first 2 coords) của N điểm
+ * POINT CLOUD PREVIEW. 2D projection (first 2 coords) của N điểm
  * Chỉ để minh hoạ trực quan "data thưa dần" khi D tăng.
  * ──────────────────────────────────────────────────────────────────────── */
 interface PointCloudProps {
@@ -385,14 +385,14 @@ export default function DimensionalityCurseTopic() {
     [dims, nPoints, seed],
   );
 
-  // Phép đo "curse-index" — khi stdD/meanD → 0, khoảng cách gần như không
+  // Phép đo "curse-index". Khi stdD/meanD → 0, khoảng cách gần như không
   // còn phân biệt. Ta chuẩn hoá về [0, 1]: 0 = đã sập, 1 = còn rộng.
   const concentration = stats.stdD / (stats.meanD || 1);
   const curseIndex = Math.max(0, Math.min(1, concentration / 0.4));
 
   // Tỉ lệ volume "vỏ ngoài" dày 10%: 1 - 0.9^D.
   const shellFraction = 1 - Math.pow(0.9, dims);
-  // Data cần (rule-of-thumb luỹ thừa) — capped ở hiển thị.
+  // Data cần (rule-of-thumb luỹ thừa). capped ở hiển thị.
   const dataNeeded = Math.pow(10, Math.min(dims, 6));
 
   const quizQuestions: QuizQuestion[] = useMemo(
@@ -402,8 +402,8 @@ export default function DimensionalityCurseTopic() {
           "Khi số chiều D tăng, kỳ vọng khoảng cách Euclid giữa hai điểm ngẫu nhiên trong hypercube [0,1]^D xấp xỉ bằng bao nhiêu?",
         options: [
           "Một hằng số không đổi, không phụ thuộc D",
-          "√(D/6) — tăng theo √D, đồng thời phương sai tương đối co lại",
-          "1/D — giảm rất nhanh về 0",
+          "√(D/6). tăng theo √D, đồng thời phương sai tương đối co lại",
+          "1/D. giảm rất nhanh về 0",
         ],
         correct: 1,
         explanation:
@@ -450,7 +450,7 @@ export default function DimensionalityCurseTopic() {
           "Trong hypercube [0,1]^D với D = 100, tỷ lệ thể tích nằm ở 'vỏ ngoài' dày 10% là bao nhiêu?",
         options: [
           "Xấp xỉ 10% (như trực giác ở 2D/3D)",
-          "Xấp xỉ 99.997% — hầu hết khối lượng dồn ra rìa, lõi gần như rỗng",
+          "Xấp xỉ 99.997%. hầu hết khối lượng dồn ra rìa, lõi gần như rỗng",
           "Chính xác 50%",
         ],
         correct: 1,
@@ -461,8 +461,8 @@ export default function DimensionalityCurseTopic() {
         question:
           "Khi D lớn, tỉ số (max pairwise distance − min pairwise distance) / min đi về đâu?",
         options: [
-          "Tiến về ∞ — khoảng cách càng ngày càng phân tán",
-          "Tiến về 0 — max và min xấp xỉ nhau, 'hàng xóm gần nhất' mất nghĩa",
+          "Tiến về ∞. khoảng cách càng ngày càng phân tán",
+          "Tiến về 0. max và min xấp xỉ nhau, 'hàng xóm gần nhất' mất nghĩa",
           "Dao động quanh 1",
         ],
         correct: 1,
@@ -473,13 +473,13 @@ export default function DimensionalityCurseTopic() {
         question:
           "Deep learning có 'miễn nhiễm' với curse of dimensionality không?",
         options: [
-          "Có — transformer xử lý vô hạn chiều",
+          "Có. transformer xử lý vô hạn chiều",
           "Không miễn nhiễm, nhưng nhờ manifold hypothesis (data thật nằm trên manifold thấp chiều) và học representation, DL giảm nhẹ curse",
-          "Có — backprop tự nhiên loại bỏ chiều thừa",
+          "Có. backprop tự nhiên loại bỏ chiều thừa",
         ],
         correct: 1,
         explanation:
-          "Pixels 224×224×3 = 150K chiều, nhưng ảnh mèo thật chỉ chiếm một manifold rất nhỏ. CNN/ViT học projection xuống không gian ý nghĩa. Vẫn cần đủ data so với số tham số — scaling laws là minh chứng.",
+          "Pixels 224×224×3 = 150K chiều, nhưng ảnh mèo thật chỉ chiếm một manifold rất nhỏ. CNN/ViT học projection xuống không gian ý nghĩa. Vẫn cần đủ data so với số tham số. scaling laws là minh chứng.",
       },
       {
         question:
@@ -491,7 +491,7 @@ export default function DimensionalityCurseTopic() {
         ],
         correct: 1,
         explanation:
-          "Ratio 10K/250 = 40:1 — vẫn ok với mô hình tuyến tính đơn giản, nhưng nếu features chứa nhiều noise thì vẫn curse. Thử L1 Lasso (tự zero out), PCA 95%, hoặc tree-based feature importance trước khi đổi model.",
+          "Ratio 10K/250 = 40:1. vẫn ok với mô hình tuyến tính đơn giản, nhưng nếu features chứa nhiều noise thì vẫn curse. Thử L1 Lasso (tự zero out), PCA 95%, hoặc tree-based feature importance trước khi đổi model.",
       },
     ],
     [],
@@ -507,8 +507,8 @@ export default function DimensionalityCurseTopic() {
         <PredictionGate
           question="Bạn có 100 samples, 5 features → model đạt accuracy 90%. Tăng lên 500 features (giữ nguyên 100 samples). Accuracy kỳ vọng?"
           options={[
-            "95% — nhiều features nghĩa là nhiều thông tin hơn",
-            "60–70% — quá nhiều features + ít data → overfit nặng, curse of dimensionality",
+            "95%. nhiều features nghĩa là nhiều thông tin hơn",
+            "60–70%. quá nhiều features + ít data → overfit nặng, curse of dimensionality",
             "Vẫn đúng 90%, không đổi",
           ]}
           correct={1}
@@ -651,12 +651,12 @@ export default function DimensionalityCurseTopic() {
                     />
                   </div>
                   <p className="text-xs text-muted leading-relaxed">
-                    Khi thanh này chạm 0: mọi cặp điểm có cùng khoảng cách —{" "}
+                    Khi thanh này chạm 0: mọi cặp điểm có cùng khoảng cách.{" "}
                     <em>khái niệm "gần" mất ý nghĩa</em>. Thuật toán kNN,
                     clustering khoảng cách (k-means với Euclid), kernel-SVM sẽ
                     thoái hoá. Với D = {dims}, ~
                     {(shellFraction * 100).toFixed(2)}% thể tích hypercube nằm
-                    trong vỏ ngoài dày 10% — "lõi trung tâm" gần như rỗng.
+                    trong vỏ ngoài dày 10%. "lõi trung tâm" gần như rỗng.
                   </p>
                 </div>
 
@@ -691,18 +691,18 @@ export default function DimensionalityCurseTopic() {
                 Thêm 1 chiều = <strong>nhân</strong> không gian, không phải{" "}
                 <em>cộng</em>. Ở D = 20, thể tích hypercube gấp hypercube D = 1
                 đến 10<sup>20</sup> lần với cùng cạnh. Cùng lượng data trở nên{" "}
-                <strong>cực kỳ thưa</strong> — giống 100 người rải ngẫu nhiên
+                <strong>cực kỳ thưa</strong>. giống 100 người rải ngẫu nhiên
                 trên sa mạc Sahara thay vì trong phòng học. Model cần "hàng
                 xóm" để tổng quát hoá, mà ở chiều cao thì không ai còn là hàng
-                xóm của ai nữa — tất cả đều cách nhau xấp xỉ √(D/6).
+                xóm của ai nữa. tất cả đều cách nhau xấp xỉ √(D/6).
               </p>
             </AhaMoment>
 
             <Callout variant="insight" title="Hai bài toán trong một">
               Curse không phải một hiện tượng đơn lẻ: nó gom lại (1){" "}
-              <strong>sparse sampling</strong> — thiếu data để phủ không gian,
-              (2) <strong>distance concentration</strong> — khoảng cách mất
-              phân biệt, (3) <strong>volume on the shell</strong> — thể tích
+              <strong>sparse sampling</strong>. thiếu data để phủ không gian,
+              (2) <strong>distance concentration</strong>. khoảng cách mất
+              phân biệt, (3) <strong>volume on the shell</strong>. thể tích
               dồn ra rìa. Mỗi thuật toán bị ảnh hưởng khác nhau, nhưng gốc rễ
               đều là hình học chiều cao phá vỡ trực giác 2D/3D của ta.
             </Callout>
@@ -717,19 +717,19 @@ export default function DimensionalityCurseTopic() {
                 "Xoá toàn bộ 200 features mới, giữ 50 cũ",
               ]}
               correct={1}
-              explanation="250 features / 10K samples = 1:40 — vẫn ổn cho mô hình tuyến tính, nhưng rõ ràng 200 features mới chứa nhiều noise. (1) Feature importance (gain của gradient boosting), (2) PCA → 50 components giữ 95% variance, (3) L1 Lasso tự động zero out. Xoá toàn bộ features mới là quá thô — khả năng cao có 20–30 tín hiệu tốt bên trong."
+              explanation="250 features / 10K samples = 1:40. vẫn ổn cho mô hình tuyến tính, nhưng rõ ràng 200 features mới chứa nhiều noise. (1) Feature importance (gain của gradient boosting), (2) PCA → 50 components giữ 95% variance, (3) L1 Lasso tự động zero out. Xoá toàn bộ features mới là quá thô. khả năng cao có 20–30 tín hiệu tốt bên trong."
             />
 
             <div className="mt-4">
               <InlineChallenge
                 question="kNN với k=5 trên embedding 2048-dim từ ResNet cho 1M ảnh. Query tốc độ chậm và kết quả 'hàng xóm' có vẻ không ý nghĩa. Nguyên nhân chính?"
                 options={[
-                  "CPU không đủ mạnh — chỉ cần mua GPU",
+                  "CPU không đủ mạnh. chỉ cần mua GPU",
                   "Distance concentration ở D=2048 làm khoảng cách gần như bằng nhau + kNN O(N·D) quá chậm. Giải pháp: giảm chiều (PCA/UMAP) về ~64–128, dùng ANN (FAISS/HNSW)",
                   "k quá nhỏ, tăng k=100",
                 ]}
                 correct={1}
-                explanation="2048-D embedding thường có concentration ratio rất nhỏ — kNN thoái hoá. Giảm chiều bằng PCA hoặc học metric (contrastive) xuống ~128-D, rồi dùng Approximate NN (FAISS IVF/HNSW) để đưa query từ O(N·D) về O(log N · D). Kết quả ý nghĩa hơn và nhanh gấp 1000 lần."
+                explanation="2048-D embedding thường có concentration ratio rất nhỏ. kNN thoái hoá. Giảm chiều bằng PCA hoặc học metric (contrastive) xuống ~128-D, rồi dùng Approximate NN (FAISS IVF/HNSW) để đưa query từ O(N·D) về O(log N · D). Kết quả ý nghĩa hơn và nhanh gấp 1000 lần."
               />
             </div>
           </LessonSection>
@@ -784,7 +784,7 @@ export default function DimensionalityCurseTopic() {
                 {"\\frac{\\max_{i,j} \\|X_i - X_j\\| - \\min_{i,j} \\|X_i - X_j\\|}{\\min_{i,j} \\|X_i - X_j\\|} \\xrightarrow{D \\to \\infty} 0"}
               </LaTeX>
               <p>
-                (Beyer, Goldstein, Ramakrishnan, Shaft 1999 — "When Is Nearest
+                (Beyer, Goldstein, Ramakrishnan, Shaft 1999. "When Is Nearest
                 Neighbor Meaningful?")
               </p>
 
@@ -832,7 +832,7 @@ export default function DimensionalityCurseTopic() {
                 Luôn kết hợp feature importance và early stopping.
               </Callout>
 
-              <Callout variant="info" title="Manifold hypothesis — lý do DL vẫn làm việc được">
+              <Callout variant="info" title="Manifold hypothesis. lý do DL vẫn làm việc được">
                 Dữ liệu thật (ảnh, âm thanh, văn bản) nằm trên manifold có
                 dimensionality nội tại (intrinsic dim) thấp hơn nhiều so với
                 dimensionality ngoại (ambient dim). Ảnh 224×224×3 có ambient =
@@ -887,7 +887,7 @@ export default function DimensionalityCurseTopic() {
                     </li>
                     <li>
                       <strong>Linear/Logistic regression</strong>: nhạy vừa
-                      phải — cần regularization; ước lượng hệ số kém ổn định
+                      phải. cần regularization; ước lượng hệ số kém ổn định
                       khi p &gt; n.
                     </li>
                     <li>
@@ -905,7 +905,7 @@ export default function DimensionalityCurseTopic() {
                     Một điểm tinh tế: không phải cứ "chiều cao" là curse xảy
                     ra. Nếu dữ liệu thực sự nằm trên một manifold có intrinsic
                     dim <em>d</em> rất nhỏ, thuật toán khoảng cách vẫn làm việc
-                    được sau khi chiếu — chiều ngoại D chỉ là biểu diễn, không
+                    được sau khi chiếu. chiều ngoại D chỉ là biểu diễn, không
                     phải bản chất. Đây là lý do học metric (contrastive,
                     triplet, ArcFace) thường đi trước kNN trong các hệ thống
                     nhận dạng khuôn mặt, tìm kiếm ảnh, retrieval.
@@ -915,15 +915,15 @@ export default function DimensionalityCurseTopic() {
                     curse (5 sao = rất nhạy, 1 sao = ít nhạy):
                   </p>
                   <ul className="list-disc list-inside space-y-1 pl-2">
-                    <li>kNN / LOF / DBSCAN với Euclid — ★★★★★</li>
-                    <li>k-means (Lloyd) — ★★★★☆</li>
-                    <li>Gaussian Mixture EM — ★★★★☆</li>
-                    <li>SVM kernel RBF (γ không điều chỉnh) — ★★★★☆</li>
-                    <li>Logistic / Linear regression (không reg) — ★★★☆☆</li>
-                    <li>SVM kernel tuyến tính — ★★☆☆☆</li>
-                    <li>Random Forest / GBM — ★★☆☆☆</li>
-                    <li>CNN / ResNet (dữ liệu thật) — ★★☆☆☆</li>
-                    <li>Transformer (đủ data) — ★☆☆☆☆</li>
+                    <li>kNN / LOF / DBSCAN với Euclid. ★★★★★</li>
+                    <li>k-means (Lloyd). ★★★★☆</li>
+                    <li>Gaussian Mixture EM. ★★★★☆</li>
+                    <li>SVM kernel RBF (γ không điều chỉnh). ★★★★☆</li>
+                    <li>Logistic / Linear regression (không reg). ★★★☆☆</li>
+                    <li>SVM kernel tuyến tính. ★★☆☆☆</li>
+                    <li>Random Forest / GBM. ★★☆☆☆</li>
+                    <li>CNN / ResNet (dữ liệu thật). ★★☆☆☆</li>
+                    <li>Transformer (đủ data). ★☆☆☆☆</li>
                   </ul>
                 </div>
               </CollapsibleDetail>
@@ -947,9 +947,9 @@ def build_pipeline(n_top_features: int = 100, pca_variance: float = 0.95) -> Pip
     return Pipeline([
         # 1) bỏ features có variance gần 0 (hằng số, noise tinh)
         ("var", VarianceThreshold(threshold=1e-4)),
-        # 2) chuẩn hoá trước PCA — bắt buộc, nếu không scale khác nhau sẽ sai lệch
+        # 2) chuẩn hoá trước PCA. bắt buộc, nếu không scale khác nhau sẽ sai lệch
         ("scaler", StandardScaler()),
-        # 3) univariate filter — chọn top_k theo F-statistic
+        # 3) univariate filter. chọn top_k theo F-statistic
         ("select", SelectKBest(f_classif, k=n_top_features)),
         # 4) PCA giữ tỉ lệ variance mong muốn
         ("pca", PCA(n_components=pca_variance, random_state=0)),
@@ -1039,7 +1039,7 @@ if __name__ == "__main__":
 
               <div className="rounded-xl border border-border bg-card p-4 space-y-2 text-sm">
                 <p className="font-semibold text-foreground">
-                  Glossary — thuật ngữ hay gặp
+                  Glossary. thuật ngữ hay gặp
                 </p>
                 <p>
                   <strong>Ambient dimension</strong> (D): số chiều của không
@@ -1059,7 +1059,7 @@ if __name__ == "__main__":
                 </p>
                 <p>
                   <strong>Hubness</strong>: ở chiều cao, một vài điểm trở
-                  thành "hub" — xuất hiện trong k-NN list của rất nhiều điểm
+                  thành "hub". xuất hiện trong k-NN list của rất nhiều điểm
                   khác, làm sai lệch retrieval. Xem Radovanović et al. (2010).
                 </p>
                 <p>
@@ -1069,7 +1069,7 @@ if __name__ == "__main__":
                 </p>
                 <p>
                   <strong>Blessing of dimensionality</strong>: hiện tượng đối
-                  nghịch — ở chiều rất cao, concentration of measure làm một
+                  nghịch. ở chiều rất cao, concentration of measure làm một
                   số thuật toán ngẫu nhiên trở nên đơn giản. VD:
                   Johnson–Lindenstrauss cho phép random projection giữ khoảng
                   cách trong sai số (1 ± ε) với chỉ O(log N / ε²) chiều, bất
@@ -1084,7 +1084,7 @@ if __name__ == "__main__":
                 <p>
                   <strong>Isotropic / anisotropic</strong>: phân phối
                   isotropic có cùng variance mọi hướng (như Gaussian chuẩn);
-                  anisotropic có cấu trúc — đây là nơi PCA/autoencoder tìm
+                  anisotropic có cấu trúc. đây là nơi PCA/autoencoder tìm
                   được hướng có ý nghĩa.
                 </p>
                 <p>
@@ -1105,13 +1105,13 @@ if __name__ == "__main__":
                   <strong>Doubly-stochastic embedding</strong>: nhóm kỹ thuật
                   (t-SNE, UMAP, TriMap) biến khoảng cách → xác suất láng
                   giềng, rồi tối ưu cross-entropy giữa hai phân phối xác
-                  suất — đặc biệt giữ cấu trúc cục bộ khi trực quan hoá 2D/3D.
+                  suất. đặc biệt giữ cấu trúc cục bộ khi trực quan hoá 2D/3D.
                 </p>
               </div>
 
               <p className="mt-4">
-                Để hiểu sâu hơn về một giải pháp cốt lõi — giảm chiều tuyến
-                tính tối ưu theo nghĩa variance — hãy xem{" "}
+                Để hiểu sâu hơn về một giải pháp cốt lõi. giảm chiều tuyến
+                tính tối ưu theo nghĩa variance. hãy xem{" "}
                 <TopicLink slug="pca">
                   Principal Component Analysis
                 </TopicLink>
@@ -1166,14 +1166,12 @@ if __name__ == "__main__":
 
               <p className="mt-3">
                 <strong>Sai lầm thường gặp của người mới.</strong> (1) Cho
-                rằng "cứ thêm feature là tốt" — bỏ qua hiện tượng tiêu cực ở
-                p ≫ n. (2) PCA trước khi chuẩn hoá — scale lệch sẽ sinh
-                component vô nghĩa. (3) Chỉ dùng train accuracy để so sánh —
-                curse làm overfit trên train trở nên tinh vi, phải dựa vào
-                cross-validation hoặc hold-out. (4) Bỏ qua domain knowledge —
-                một vài feature thiết kế thủ công tốt thường thắng 100 feature
+                rằng "cứ thêm feature là tốt". bỏ qua hiện tượng tiêu cực ở
+                p ≫ n. (2) PCA trước khi chuẩn hoá. scale lệch sẽ sinh
+                component vô nghĩa. (3) Chỉ dùng train accuracy để so sánh. curse làm overfit trên train trở nên tinh vi, phải dựa vào
+                cross-validation hoặc hold-out. (4) Bỏ qua domain knowledge. một vài feature thiết kế thủ công tốt thường thắng 100 feature
                 tự động ở dataset nhỏ. (5) Dùng kNN hoặc k-means trên
-                embedding cao chiều chưa chuẩn hoá — hubness sẽ khiến kết quả
+                embedding cao chiều chưa chuẩn hoá. hubness sẽ khiến kết quả
                 lệch nghiêm trọng.
               </p>
 
@@ -1183,8 +1181,7 @@ if __name__ == "__main__":
                 tuyến tính có regularization; n/p &gt; 100 an toàn cho hầu
                 hết mô hình; n/p &lt; 5 cần kỹ thuật đặc biệt (Bayesian,
                 meta-learning, transfer learning). Nhớ rằng "p" ở đây là số
-                features <em>hiệu dụng</em> sau khi tính đến correlation —
-                nếu 200 feature thực chất là 20 nhóm collinear, p_hiệu_dụng
+                features <em>hiệu dụng</em> sau khi tính đến correlation. nếu 200 feature thực chất là 20 nhóm collinear, p_hiệu_dụng
                 chỉ khoảng 20.
               </p>
             </ExplanationSection>
@@ -1194,11 +1191,11 @@ if __name__ == "__main__":
             <MiniSummary
               points={[
                 "Curse of dimensionality = nhiều features + ít data → không gian sparse → model overfit trên noise, accuracy GIẢM thay vì tăng.",
-                "Thêm 1 chiều = NHÂN thể tích (luỹ thừa). Ở D = 100, 99.997% thể tích hypercube nằm trong lớp vỏ ngoài dày 10% — lõi gần như rỗng.",
-                "Distance concentration: E[||X−Y||] ≈ √(D/6), σ/μ ~ 1/√D → 0. Ở D lớn, max/min khoảng cách gần như bằng nhau — kNN & clustering bằng Euclid thoái hoá.",
+                "Thêm 1 chiều = NHÂN thể tích (luỹ thừa). Ở D = 100, 99.997% thể tích hypercube nằm trong lớp vỏ ngoài dày 10%. lõi gần như rỗng.",
+                "Distance concentration: E[||X−Y||] ≈ √(D/6), σ/μ ~ 1/√D → 0. Ở D lớn, max/min khoảng cách gần như bằng nhau. kNN & clustering bằng Euclid thoái hoá.",
                 "Rule of thumb: 10–20 samples per feature cho mô hình tuyến tính. 100 features → cần ít nhất 1K–2K samples để ước lượng hệ số ổn định.",
                 "Giải pháp đa tầng: Feature Selection (MI, L1), PCA / autoencoder, L1/L2 regularization, augmentation, pretraining + fine-tune, chọn mô hình ít nhạy với khoảng cách (tree-based).",
-                "Deep learning không miễn nhiễm, nhưng nhờ manifold hypothesis (ảnh thật chỉ sống trên manifold thấp chiều) và học representation tự động, DL giảm nhẹ curse trong thực tế — miễn là đủ data so với số tham số.",
+                "Deep learning không miễn nhiễm, nhưng nhờ manifold hypothesis (ảnh thật chỉ sống trên manifold thấp chiều) và học representation tự động, DL giảm nhẹ curse trong thực tế. miễn là đủ data so với số tham số.",
               ]}
             />
           </LessonSection>

@@ -17,10 +17,10 @@ export async function generateMetadata({
   const topic = getTopicBySlug(slug);
   if (!topic) return {};
   return {
-    title: `${topic.title} — ${topic.titleVi} | AI Cho Mọi Người`,
+    title: `${topic.title}: ${topic.titleVi} | AI Cho Mọi Người`,
     description: topic.description,
     openGraph: {
-      title: `${topic.title} — ${topic.titleVi}`,
+      title: `${topic.title}: ${topic.titleVi}`,
       description: topic.description,
       type: "article",
     },

@@ -110,7 +110,7 @@ export const categories: Category[] = [
 ];
 
 // ─────────────────────────────────────────────────────────
-// Topics — Full Metadata (canonical count = topicList.length)
+// Topics. Full Metadata (canonical count = topicList.length)
 // ─────────────────────────────────────────────────────────
 
 export const topicList: TopicMeta[] = [
@@ -242,7 +242,7 @@ export const topicList: TopicMeta[] = [
     slug: "batch-normalization",
     title: "Batch Normalization",
     titleVi: "Chuẩn hóa theo lô",
-    description: "Kỹ thuật chuẩn hóa đầu vào mỗi lớp theo thống kê mini-batch để ổn định gradient, tăng tốc hội tụ, và giảm internal covariate shift.",
+    description: "Kỹ thuật chuẩn hóa activation theo mini-batch để ổn định gradient, giúp huấn luyện nhanh hơn và bớt nhạy với khởi tạo.",
     category: "neural-fundamentals",
     tags: ["normalization", "training", "stability"],
     difficulty: "advanced",
@@ -682,8 +682,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "tokenization",
     title: "Tokenization",
-    titleVi: "Tokenization - Tách từ",
-    description: "Quá trình chia văn bản thành các đơn vị nhỏ hơn (token) để máy tính có thể xử lý ngôn ngữ tự nhiên.",
+    titleVi: "Tokenization: chia văn bản thành token",
+    description: "Quá trình chia văn bản thành token như subword, byte hoặc ký tự để model đọc được và tính đúng chi phí.",
     category: "nlp",
     tags: ["text-processing", "bpe", "subword"],
     difficulty: "advanced",
@@ -694,7 +694,7 @@ export const topicList: TopicMeta[] = [
     slug: "bag-of-words",
     title: "Bag of Words",
     titleVi: "Bag of Words - Túi từ",
-    description: "Phương pháp biểu diễn văn bản đơn giản bằng cách đếm tần suất xuất hiện của mỗi từ, bỏ qua thứ tự — nền tảng của mọi kỹ thuật NLP cổ điển.",
+    description: "Phương pháp biểu diễn văn bản đơn giản bằng cách đếm tần suất xuất hiện của mỗi từ, bỏ qua thứ tự. nền tảng của mọi kỹ thuật NLP cổ điển.",
     category: "nlp",
     tags: ["text-representation", "frequency", "simple"],
     difficulty: "beginner",
@@ -782,7 +782,7 @@ export const topicList: TopicMeta[] = [
     slug: "gpt",
     title: "GPT",
     titleVi: "GPT - Mô hình ngôn ngữ tự hồi quy",
-    description: "Mô hình ngôn ngữ sinh văn bản bằng cách dự đoán từ tiếp theo dựa trên các từ trước đó, nền tảng của ChatGPT.",
+    description: "Mô hình ngôn ngữ tự hồi quy sinh văn bản bằng cách dự đoán token tiếp theo từ context trước đó.",
     category: "nlp",
     tags: ["autoregressive", "generative", "language-model"],
     difficulty: "advanced",
@@ -825,7 +825,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "beam-search",
     title: "Beam Search",
-    titleVi: "Beam Search — tìm kiếm chùm tia",
+    titleVi: "Beam search: giữ nhiều ứng viên khi sinh token",
     description: "Thuật toán giải mã giữ lại k ứng viên tốt nhất ở mỗi bước, cân bằng giữa chất lượng và chi phí tính toán.",
     category: "nlp",
     tags: ["decoding", "search", "generation"],
@@ -1101,8 +1101,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "prompt-engineering",
     title: "Prompt Engineering",
-    titleVi: "Prompt engineering: dặn AI đúng việc ngay lần đầu",
-    description: "Viết prompt rõ để AI hiểu đúng việc, đúng giọng và đúng độ dài. Dành cho dân văn phòng, không cần lập trình.",
+    titleVi: "Prompt engineering: biến yêu cầu thành spec",
+    description: "Viết prompt như một spec: mục tiêu, context, định dạng, ví dụ và tiêu chí kiểm để LLM làm đúng việc.",
     category: "llm-concepts",
     tags: ["prompting", "techniques", "llm"],
     difficulty: "beginner",
@@ -1156,7 +1156,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "top-k-top-p",
     title: "Top-K & Top-P Sampling",
-    titleVi: "Top-K và Top-P — Lấy mẫu có chọn lọc",
+    titleVi: "Top-K và Top-P: lấy mẫu có chọn lọc",
     description: "Hai kỹ thuật lọc từ vựng trước khi chọn token tiếp theo, giúp kiểm soát chất lượng và đa dạng.",
     category: "llm-concepts",
     tags: ["sampling", "nucleus", "generation"],
@@ -1190,7 +1190,7 @@ export const topicList: TopicMeta[] = [
     slug: "fine-tuning-vs-prompting",
     title: "Fine-tuning vs Prompting",
     titleVi: "Fine-tuning hay Prompting?",
-    description: "Khi nào nên tinh chỉnh model, khi nào chỉ cần kỹ thuật prompt — hướng dẫn chọn chiến lược phù hợp cho dự án AI của bạn.",
+    description: "Chọn prompting khi cần đổi cách trả lời nhanh, chọn fine-tuning khi lỗi lặp lại và bạn có dữ liệu tốt.",
     category: "llm-concepts",
     tags: ["comparison", "adaptation", "llm"],
     difficulty: "advanced",
@@ -1329,7 +1329,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "function-calling",
     title: "Function Calling",
-    titleVi: "Gọi hàm — Khi AI biết dùng công cụ",
+    titleVi: "Function calling: khi AI biết dùng công cụ",
     description: "Cơ chế cho phép mô hình ngôn ngữ lớn gọi các hàm bên ngoài để lấy dữ liệu hoặc thực thi hành động thực tế.",
     category: "ai-agents",
     tags: ["tools", "json", "api"],
@@ -1340,7 +1340,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "react-framework",
     title: "ReAct Framework",
-    titleVi: "ReAct — Suy luận kết hợp Hành động",
+    titleVi: "ReAct: suy luận rồi hành động",
     description: "Khung tư duy giúp AI luân phiên giữa lý luận (Reasoning) và hành động (Acting) để giải quyết vấn đề phức tạp.",
     category: "ai-agents",
     tags: ["reasoning", "action", "observation"],
@@ -1351,7 +1351,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "agent-architecture",
     title: "Agent Architecture",
-    titleVi: "Kiến trúc Agent — Bộ não của AI tự chủ",
+    titleVi: "Kiến trúc agent: bộ não của AI tự chủ",
     description: "Cấu trúc tổng thể của một AI Agent, bao gồm các thành phần cốt lõi: nhận thức, suy luận, bộ nhớ và hành động.",
     category: "ai-agents",
     tags: ["design", "components", "autonomy"],
@@ -1362,7 +1362,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "planning",
     title: "Planning",
-    titleVi: "Lập kế hoạch — AI biết chia để trị",
+    titleVi: "Lập kế hoạch. AI biết chia để trị",
     description: "Khả năng của AI Agent phân tách vấn đề phức tạp thành chuỗi bước nhỏ hơn và thực hiện có chiến lược.",
     category: "ai-agents",
     tags: ["decomposition", "task-planning", "strategy"],
@@ -1373,7 +1373,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "memory-systems",
     title: "Memory Systems",
-    titleVi: "Hệ thống bộ nhớ — Trí nhớ của AI Agent",
+    titleVi: "Hệ thống bộ nhớ. Trí nhớ của AI Agent",
     description: "Các cơ chế lưu trữ thông tin giúp AI Agent nhớ bối cảnh, kinh nghiệm và kiến thức qua nhiều phiên làm việc.",
     category: "ai-agents",
     tags: ["short-term", "long-term", "retrieval"],
@@ -1384,7 +1384,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "multi-agent",
     title: "Multi-Agent Systems",
-    titleVi: "Hệ thống đa Agent — Đội ngũ AI phối hợp",
+    titleVi: "Hệ thống đa Agent. Đội ngũ AI phối hợp",
     description: "Nhiều AI Agent chuyên biệt cùng phối hợp để giải quyết các bài toán phức tạp mà một Agent đơn lẻ khó xử lý.",
     category: "ai-agents",
     tags: ["collaboration", "multi-agent", "coordination"],
@@ -1406,7 +1406,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "agent-evaluation",
     title: "Agent Evaluation",
-    titleVi: "Đánh giá Agent — Đo lường AI tự chủ",
+    titleVi: "Đánh giá agent: đo hiệu quả và độ an toàn",
     description: "Các phương pháp và tiêu chí để đánh giá hiệu quả, độ chính xác và an toàn của AI Agent.",
     category: "ai-agents",
     tags: ["benchmarks", "metrics", "testing"],
@@ -1417,7 +1417,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "orchestration",
     title: "Orchestration (LangChain, LlamaIndex)",
-    titleVi: "Điều phối — Nhạc trưởng của hệ thống AI",
+    titleVi: "Orchestration: điều phối hệ thống AI",
     description: "Tầng quản lý luồng công việc, điều phối giữa các Agent, công cụ và dịch vụ trong hệ thống AI phức tạp.",
     category: "ai-agents",
     tags: ["langchain", "llamaindex", "framework"],
@@ -1432,7 +1432,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "vlm",
     title: "Vision-Language Models",
-    titleVi: "Mô hình Ngôn ngữ — Thị giác",
+    titleVi: "Mô hình Ngôn ngữ. Thị giác",
     description: "Mô hình AI có khả năng hiểu đồng thời cả hình ảnh và văn bản, cho phép hỏi đáp về nội dung hình ảnh.",
     category: "multimodal",
     tags: ["vision", "language", "multimodal"],
@@ -1443,7 +1443,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "text-to-image",
     title: "Text-to-Image Generation",
-    titleVi: "Tạo ảnh từ văn bản — AI hoạ sĩ",
+    titleVi: "Tạo ảnh từ văn bản. AI hoạ sĩ",
     description: "Mô hình AI tạo ra hình ảnh chất lượng cao từ mô tả bằng ngôn ngữ tự nhiên.",
     category: "multimodal",
     tags: ["generation", "diffusion", "creative"],
@@ -1454,7 +1454,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "text-to-video",
     title: "Text-to-Video Generation",
-    titleVi: "Tạo video từ văn bản — AI đạo diễn",
+    titleVi: "Tạo video từ văn bản. AI đạo diễn",
     description: "Mô hình AI tạo ra đoạn video liền mạch từ mô tả bằng ngôn ngữ tự nhiên, bao gồm cả chuyển động và âm thanh.",
     category: "multimodal",
     tags: ["video", "generation", "temporal"],
@@ -1465,7 +1465,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "speech-recognition",
     title: "Speech Recognition",
-    titleVi: "Nhận dạng giọng nói — Tai nghe AI",
+    titleVi: "Nhận dạng giọng nói. Tai nghe AI",
     description: "Công nghệ chuyển đổi giọng nói con người thành văn bản, là nền tảng cho trợ lý ảo và ghi chú tự động.",
     category: "multimodal",
     tags: ["audio", "transcription", "whisper"],
@@ -1476,7 +1476,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "tts",
     title: "Text-to-Speech",
-    titleVi: "Tổng hợp giọng nói — AI biết nói",
+    titleVi: "Tổng hợp giọng nói. AI biết nói",
     description: "Công nghệ chuyển đổi văn bản thành giọng nói tự nhiên, với khả năng kiểm soát ngữ điệu và cảm xúc.",
     category: "multimodal",
     tags: ["audio", "synthesis", "voice"],
@@ -1487,7 +1487,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "clip",
     title: "CLIP & Contrastive Learning",
-    titleVi: "CLIP — Kết nối hình ảnh và ngôn ngữ",
+    titleVi: "CLIP. Kết nối hình ảnh và ngôn ngữ",
     description: "Mô hình học cách liên kết hình ảnh và văn bản trong cùng một không gian vector, cho phép tìm kiếm ảnh bằng ngôn ngữ tự nhiên.",
     category: "multimodal",
     tags: ["contrastive", "image-text", "openai"],
@@ -1524,8 +1524,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "alignment",
     title: "AI Alignment",
-    titleVi: "Căn chỉnh AI — Dạy AI hiểu con người",
-    description: "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người — thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
+    titleVi: "Căn chỉnh AI. Dạy AI hiểu con người",
+    description: "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người. thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
     category: "ai-safety",
     tags: ["safety", "values", "goals"],
     difficulty: "advanced",
@@ -1535,7 +1535,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "red-teaming",
     title: "Red Teaming",
-    titleVi: "Red Teaming — Thử nghiệm phá vỡ AI",
+    titleVi: "Red teaming: thử phá hệ thống AI trước",
     description: "Phương pháp kiểm thử bảo mật bằng cách cố tình tấn công mô hình AI để phát hiện lỗ hổng và hành vi nguy hiểm.",
     category: "ai-safety",
     tags: ["adversarial", "testing", "vulnerability"],
@@ -1579,7 +1579,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "constitutional-ai",
     title: "Constitutional AI",
-    titleVi: "AI Hiến pháp — Tự kiểm duyệt theo nguyên tắc",
+    titleVi: "AI Hiến pháp. Tự kiểm duyệt theo nguyên tắc",
     description: "Phương pháp huấn luyện AI tự đánh giá và sửa đổi phản hồi dựa trên một bộ nguyên tắc đạo đức rõ ràng.",
     category: "ai-safety",
     tags: ["critique", "revision", "principles"],
@@ -1601,7 +1601,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "adversarial-robustness",
     title: "Adversarial Robustness",
-    titleVi: "Bền vững trước tấn công — AI không dễ bị lừa",
+    titleVi: "Bền vững trước tấn công. AI không dễ bị lừa",
     description: "Khả năng của mô hình AI duy trì hiệu suất chính xác khi đối mặt với dữ liệu đầu vào bị thao túng có chủ đích.",
     category: "ai-safety",
     tags: ["robustness", "perturbation", "defense"],
@@ -1616,8 +1616,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "model-serving",
     title: "Model Serving",
-    titleVi: "Phục vụ mô hình — Đưa AI vào thực tế",
-    description: "Quy trình triển khai và cung cấp mô hình AI dưới dạng dịch vụ, xử lý yêu cầu từ người dùng trong thời gian thực với latency thấp và throughput cao.",
+    titleVi: "Model serving: đưa model thành API",
+    description: "Biến model thành dịch vụ API: nhận request, gom batch, chạy inference và trả kết quả trong giới hạn latency và throughput.",
     category: "infrastructure",
     tags: ["deployment", "api", "serving"],
     difficulty: "intermediate",
@@ -1627,7 +1627,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "inference-optimization",
     title: "Inference Optimization",
-    titleVi: "Tối ưu suy luận — Làm AI nhanh hơn",
+    titleVi: "Tối ưu inference: làm AI nhanh hơn",
     description: "Các kỹ thuật tăng tốc và giảm chi phí khi chạy mô hình AI: KV caching, speculative decoding, batching, quantization và Pareto frontier của throughput-latency.",
     category: "infrastructure",
     tags: ["latency", "throughput", "optimization"],
@@ -1638,7 +1638,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "edge-ai",
     title: "Edge AI",
-    titleVi: "AI biên — AI ngay trên thiết bị",
+    titleVi: "Edge AI: chạy model ngay trên thiết bị",
     description: "Triển khai mô hình AI trực tiếp trên thiết bị đầu cuối (điện thoại, IoT, camera) thay vì trên đám mây.",
     category: "infrastructure",
     tags: ["edge", "mobile", "on-device"],
@@ -1649,7 +1649,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "mlops",
     title: "MLOps",
-    titleVi: "MLOps — DevOps cho máy học",
+    titleVi: "MLOps: DevOps cho máy học",
     description: "Tập hợp thực hành và công cụ để tự động hoá vòng đời phát triển, triển khai và giám sát mô hình máy học.",
     category: "infrastructure",
     tags: ["devops", "pipeline", "automation"],
@@ -1660,7 +1660,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "monitoring",
     title: "Model Monitoring",
-    titleVi: "Giám sát AI — Canh gác mô hình 24/7",
+    titleVi: "Giám sát AI: phát hiện model xuống cấp",
     description: "Theo dõi hiệu suất, phát hiện data drift và cảnh báo khi mô hình AI trong sản phẩm bắt đầu suy giảm chất lượng.",
     category: "infrastructure",
     tags: ["drift", "performance", "alerts"],
@@ -1671,7 +1671,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "containerization",
     title: "Containerization",
-    titleVi: "Container hoá — Đóng gói AI gọn gàng",
+    titleVi: "Container hóa: đóng gói AI gọn gàng",
     description: "Kỹ thuật đóng gói mô hình AI cùng mọi phụ thuộc vào container, đảm bảo chạy nhất quán trên mọi môi trường.",
     category: "infrastructure",
     tags: ["docker", "kubernetes", "deployment"],
@@ -1682,8 +1682,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "gpu-optimization",
     title: "GPU Optimization",
-    titleVi: "Tối ưu GPU — Profiler kéo sập bottleneck",
-    description: "Mở profiler, quan sát từng lát cắt thời gian trên GPU: truyền dữ liệu HBM↔SRAM, tính toán matmul, chu kỳ idle. Bật FP16, gradient checkpointing, tensor cores, data parallel để xem throughput đổi thay.",
+    titleVi: "Tối ưu GPU: đọc profiler trước khi sửa",
+    description: "Dùng profiler để thấy kernel, memory copy, idle gap và bottleneck trước khi chỉnh batch, dtype, tensor core hoặc data parallel.",
     category: "infrastructure",
     tags: ["gpu", "parallelism", "cuda"],
     difficulty: "advanced",
@@ -1693,7 +1693,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "cost-optimization",
     title: "Cost Optimization",
-    titleVi: "Tối ưu chi phí — AI không đốt tiền",
+    titleVi: "Tối ưu chi phí: AI không đốt tiền",
     description: "Chiến lược giảm chi phí vận hành hệ thống AI mà không hy sinh chất lượng, từ chọn mô hình đến caching, routing, nén context và batch API.",
     category: "infrastructure",
     tags: ["cost", "efficiency", "budget"],
@@ -1708,7 +1708,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "reasoning-models",
     title: "Reasoning Models",
-    titleVi: "Mô hình suy luận — AI biết nghĩ sâu",
+    titleVi: "Mô hình suy luận. AI biết nghĩ sâu",
     description: "Thế hệ mô hình AI mới có khả năng suy luận từng bước, giải quyết các bài toán phức tạp đòi hỏi logic và tư duy.",
     category: "emerging",
     tags: ["reasoning", "o1", "thinking"],
@@ -1719,7 +1719,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "test-time-compute",
     title: "Test-Time Compute",
-    titleVi: "Tính toán lúc suy luận — Nghĩ thêm khi cần",
+    titleVi: "Tính toán lúc suy luận. Nghĩ thêm khi cần",
     description: "Chiến lược sử dụng nhiều tài nguyên tính toán hơn tại thời điểm suy luận để cải thiện chất lượng câu trả lời.",
     category: "emerging",
     tags: ["compute", "scaling", "inference"],
@@ -1730,7 +1730,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "moe",
     title: "Mixture of Experts",
-    titleVi: "Hỗn hợp chuyên gia — Chia để trị",
+    titleVi: "Hỗn hợp chuyên gia. Chia để trị",
     description: "Kiến trúc mô hình sử dụng nhiều mạng con chuyên biệt (chuyên gia), chỉ kích hoạt một vài chuyên gia cho mỗi đầu vào.",
     category: "emerging",
     tags: ["routing", "sparse", "efficiency"],
@@ -1741,7 +1741,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "state-space-models",
     title: "State Space Models (Mamba)",
-    titleVi: "Mô hình không gian trạng thái — Đối thủ của Transformer",
+    titleVi: "Mô hình không gian trạng thái. Đối thủ của Transformer",
     description: "Kiến trúc mô hình tuần tự hiệu quả dựa trên lý thuyết hệ thống điều khiển, xử lý chuỗi dài nhanh hơn Transformer.",
     category: "emerging",
     tags: ["mamba", "linear", "sequence"],
@@ -1752,7 +1752,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "small-language-models",
     title: "Small Language Models",
-    titleVi: "Mô hình ngôn ngữ nhỏ — Nhỏ mà có võ",
+    titleVi: "Mô hình ngôn ngữ nhỏ. Nhỏ mà có võ",
     description: "Mô hình ngôn ngữ dưới 10B tham số được tối ưu để chạy trên thiết bị cá nhân với chất lượng ngày càng tiệm cận mô hình lớn.",
     category: "emerging",
     tags: ["small", "efficient", "on-device"],
@@ -1763,7 +1763,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "synthetic-data",
     title: "Synthetic Data",
-    titleVi: "Dữ liệu tổng hợp — AI tạo dữ liệu cho AI",
+    titleVi: "Dữ liệu tổng hợp. AI tạo dữ liệu cho AI",
     description: "Dữ liệu được tạo bằng AI hoặc mô phỏng, dùng để huấn luyện mô hình khi dữ liệu thật khan hiếm, đắt đỏ hoặc nhạy cảm.",
     category: "emerging",
     tags: ["data-generation", "augmentation", "privacy"],
@@ -1774,7 +1774,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "world-models",
     title: "World Models",
-    titleVi: "Mô hình thế giới — AI biết tưởng tượng",
+    titleVi: "Mô hình thế giới. AI biết tưởng tượng",
     description: "Mô hình AI xây dựng biểu diễn nội tại về thế giới, có thể dự đoán hậu quả hành động trước khi thực hiện.",
     category: "emerging",
     tags: ["simulation", "prediction", "environment"],
@@ -1785,7 +1785,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "long-context",
     title: "Long Context",
-    titleVi: "Ngữ cảnh dài — AI đọc cả cuốn sách",
+    titleVi: "Ngữ cảnh dài. AI đọc cả cuốn sách",
     description: "Khả năng mô hình xử lý hàng trăm nghìn đến hàng triệu token trong một lần, cho phép phân tích tài liệu dài.",
     category: "emerging",
     tags: ["context-length", "attention", "scaling"],
@@ -1796,7 +1796,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-for-science",
     title: "AI for Science",
-    titleVi: "AI cho Khoa học — Phòng thí nghiệm ảo",
+    titleVi: "AI cho Khoa học. Phòng thí nghiệm ảo",
     description: "Ứng dụng AI để đẩy nhanh khám phá khoa học, từ dự đoán cấu trúc protein đến thiết kế vật liệu mới.",
     category: "emerging",
     tags: ["science", "discovery", "research"],
@@ -1844,7 +1844,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "roc-auc",
     title: "ROC & AUC",
-    titleVi: "ROC & AUC — Đo khả năng phân biệt",
+    titleVi: "ROC & AUC. Đo khả năng phân biệt",
     description: "Đường cong ROC và diện tích AUC đo lường khả năng mô hình phân biệt lớp dương và lớp âm ở mọi ngưỡng quyết định.",
     category: "foundations",
     tags: ["evaluation", "classification", "threshold"],
@@ -1855,7 +1855,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ensemble-methods",
     title: "Ensemble Methods",
-    titleVi: "Phương pháp kết hợp — Đồng tay vỗ nên kêu",
+    titleVi: "Phương pháp kết hợp. Đồng tay vỗ nên kêu",
     description: "Kỹ thuật kết hợp nhiều mô hình yếu lại thành một mô hình mạnh hơn bất kỳ thành viên đơn lẻ nào.",
     category: "foundations",
     tags: ["bagging", "boosting", "stacking"],
@@ -1866,7 +1866,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "dimensionality-curse",
     title: "Curse of Dimensionality",
-    titleVi: "Lời nguyền chiều cao — Khi nhiều hơn lại tệ hơn",
+    titleVi: "Lời nguyền chiều cao. Khi nhiều hơn lại tệ hơn",
     description: "Hiện tượng hiệu suất mô hình giảm khi số chiều đặc trưng tăng quá nhiều so với lượng dữ liệu có sẵn.",
     category: "foundations",
     tags: ["dimensions", "sparsity", "high-dimensional"],
@@ -1877,7 +1877,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "hyperparameter-tuning",
     title: "Hyperparameter Tuning",
-    titleVi: "Tinh chỉnh siêu tham số — Tìm công thức vàng",
+    titleVi: "Tinh chỉnh siêu tham số. Tìm công thức vàng",
     description: "Quá trình tìm kiếm bộ siêu tham số tối ưu (learning rate, batch size, layers...) để mô hình đạt hiệu suất cao nhất.",
     category: "foundations",
     tags: ["grid-search", "random-search", "bayesian"],
@@ -2185,7 +2185,7 @@ export const topicList: TopicMeta[] = [
   },
   {
     slug: "derivatives-intuition",
-    title: "Derivatives — an Intuitive Introduction",
+    title: "Derivatives. an Intuitive Introduction",
     titleVi: "Đạo hàm là độ dốc tại một điểm",
     description: "Đạo hàm chỉ là độ dốc của đường cong tại một điểm. Bạn kéo một tiếp tuyến trên SVG và nhìn con số đó xuất hiện theo thời gian thực.",
     category: "math-foundations",
@@ -2226,8 +2226,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "agentic-rag",
     title: "Agentic RAG",
-    titleVi: "RAG tăng cường với Agent",
-    description: "Kết hợp RAG với AI Agent để tự quyết định khi nào truy xuất, xác minh và tổng hợp thông tin",
+    titleVi: "Agentic RAG: biết tìm lại khi nguồn yếu",
+    description: "Kết hợp retrieval với agent để kiểm nguồn, đổi truy vấn và tìm lại khi bằng chứng chưa đủ mạnh.",
     category: "emerging",
     tags: ["rag", "agent", "adaptive-retrieval"],
     difficulty: "intermediate",
@@ -2271,7 +2271,7 @@ export const topicList: TopicMeta[] = [
     slug: "computer-use",
     title: "Computer Use",
     titleVi: "AI sử dụng máy tính",
-    description: "Khả năng AI Agent điều khiển giao diện người dùng. Click, gõ phím, chụp ảnh màn hình.",
+    description: "Khả năng AI agent nhìn màn hình, nhấp chuột, gõ phím và kiểm lại kết quả trên giao diện người dùng.",
     category: "emerging",
     tags: ["browser-use", "gui-agent", "automation"],
     difficulty: "advanced",
@@ -2330,7 +2330,7 @@ export const topicList: TopicMeta[] = [
     slug: "tokenizer-comparison",
     title: "Tokenizer Comparison",
     titleVi: "So sánh Tokenizer",
-    description: "So sánh BPE, SentencePiece và WordPiece — ưu nhược điểm và ứng dụng của từng phương pháp",
+    description: "So sánh BPE, SentencePiece và WordPiece theo cách cắt token, chi phí và độ phù hợp với tiếng Việt.",
     category: "nlp",
     tags: ["bpe", "sentencepiece", "wordpiece"],
     difficulty: "advanced",
@@ -2362,8 +2362,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "data-pipelines",
     title: "Data Pipelines",
-    titleVi: "Đường ống dữ liệu",
-    description: "Thiết kế quy trình tự động thu thập, xử lý và chuẩn bị dữ liệu cho huấn luyện mô hình AI",
+    titleVi: "Pipeline dữ liệu",
+    description: "Thiết kế pipeline tự động để thu thập, kiểm tra, xử lý và quản lý phiên bản dữ liệu trước khi huấn luyện model.",
     category: "infrastructure",
     tags: ["etl", "automation", "data-flow"],
     difficulty: "advanced",
@@ -2406,7 +2406,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title: "Logistic Matrix Factorization for Implicit Feedback Data",
-        publisher: "Chris Johnson, Spotify — NIPS 2014 Workshop",
+        publisher: "Chris Johnson, Spotify. NIPS 2014 Workshop",
         url: "https://research.atspotify.com/publications/logistic-matrix-factorization-for-implicit-feedback-data",
         date: "2014-12",
         kind: "paper",
@@ -2435,7 +2435,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title:
-          "How Fans Discover Your Music on Spotify — Made to Be Found",
+          "How Fans Discover Your Music on Spotify. Made to Be Found",
         publisher: "Spotify for Artists",
         url: "https://artists.spotify.com/en/blog/how-fans-discover-music-on-spotify-playlists-made-to-be-found",
         date: "2022-03",
@@ -2758,7 +2758,7 @@ export const topicList: TopicMeta[] = [
         title:
           "FaceNet: A Unified Embedding for Face Recognition and Clustering",
         publisher:
-          "Florian Schroff, Dmitry Kalenichenko, James Philbin — CVPR 2015",
+          "Florian Schroff, Dmitry Kalenichenko, James Philbin. CVPR 2015",
         url: "https://arxiv.org/abs/1503.03832",
         date: "2015-06",
         kind: "paper",
@@ -2787,7 +2787,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title:
-          "Google Photos Now Stores Over 9 Trillion Photos — And the Number Is Growing Fast",
+          "Google Photos Now Stores Over 9 Trillion Photos. And the Number Is Growing Fast",
         publisher: "PetaPixel",
         url: "https://petapixel.com/2025/02/18/google-photos-now-stores-over-9-trillion-photos/",
         date: "2025-02",
@@ -2823,7 +2823,7 @@ export const topicList: TopicMeta[] = [
     sources: [
       {
         title:
-          "Spam Does Not Bring Us Joy — Ridding Gmail of 100 Million More Spam Messages with TensorFlow",
+          "Spam Does Not Bring Us Joy. Ridding Gmail of 100 Million More Spam Messages with TensorFlow",
         publisher: "Google Workspace Blog",
         url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
         date: "2019-02",
@@ -2883,14 +2883,14 @@ export const topicList: TopicMeta[] = [
         title:
           "Language Models are Few-Shot Learners",
         publisher:
-          "Tom Brown et al. — NeurIPS 2020",
+          "Tom Brown et al.. NeurIPS 2020",
         url: "https://arxiv.org/abs/2005.14165",
         date: "2020-07",
         kind: "paper",
       },
       {
         title: "LLaMA: Open and Efficient Foundation Language Models",
-        publisher: "Hugo Touvron et al. — Meta AI, 2023",
+        publisher: "Hugo Touvron et al.. Meta AI, 2023",
         url: "https://arxiv.org/abs/2302.13971",
         date: "2023-02",
         kind: "paper",
@@ -2899,7 +2899,7 @@ export const topicList: TopicMeta[] = [
         title:
           "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM",
         publisher:
-          "Deepak Narayanan et al. — SC 2021",
+          "Deepak Narayanan et al.. SC 2021",
         url: "https://arxiv.org/abs/2104.04473",
         date: "2021-11",
         kind: "paper",
@@ -3059,7 +3059,7 @@ export const topicList: TopicMeta[] = [
     },
     sources: [
       {
-        title: "Spam does not bring us joy — ridding Gmail of 100 million more spam messages with TensorFlow",
+        title: "Spam does not bring us joy. ridding Gmail of 100 million more spam messages with TensorFlow",
         publisher: "Google Workspace Blog",
         url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
         date: "2019-02",
@@ -3207,7 +3207,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title: "A Survey of Credit Scoring Research Based on Machine Learning",
-        publisher: "Springer — Computational Economics",
+        publisher: "Springer. Computational Economics",
         url: "https://link.springer.com/article/10.1007/s10614-023-10467-7",
         date: "2023-08",
         kind: "paper",
@@ -3270,7 +3270,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title: "Machine Learning Approaches for Disease Prediction from Symptoms: A Review",
-        publisher: "PMC — International Journal of Environmental Research and Public Health",
+        publisher: "PMC. International Journal of Environmental Research and Public Health",
         url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9518091/",
         date: "2022-09",
         kind: "paper",
@@ -3325,7 +3325,7 @@ export const topicList: TopicMeta[] = [
         kind: "documentation",
       },
       {
-        title: "Spam does not bring us joy — ridding Gmail of 100 million more spam messages with TensorFlow",
+        title: "Spam does not bring us joy. ridding Gmail of 100 million more spam messages with TensorFlow",
         publisher: "Google Workspace Blog",
         url: "https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow",
         date: "2019-02",
@@ -3367,7 +3367,7 @@ export const topicList: TopicMeta[] = [
         kind: "paper",
       },
       {
-        title: "False Negative Tests for SARS-CoV-2 Infection — Challenges and Implications",
+        title: "False Negative Tests for SARS-CoV-2 Infection. Challenges and Implications",
         publisher: "New England Journal of Medicine",
         url: "https://www.nejm.org/doi/full/10.1056/NEJMp2015897",
         date: "2020-06",
@@ -3480,7 +3480,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title: "How We Analyzed the COMPAS Recidivism Algorithm",
-        publisher: "ProPublica — Methodology",
+        publisher: "ProPublica. Methodology",
         url: "https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm",
         date: "2016-05",
         kind: "documentation",
@@ -3528,7 +3528,7 @@ export const topicList: TopicMeta[] = [
         kind: "engineering-blog",
       },
       {
-        title: "Winning Solutions and Tips — The Kaggle Book",
+        title: "Winning Solutions and Tips. The Kaggle Book",
         publisher: "Konrad Banachewicz & Luca Massaron, Packt",
         url: "https://www.kaggle.com/discussion/351571",
         date: "2022-06",
@@ -3592,7 +3592,7 @@ export const topicList: TopicMeta[] = [
       { id: "counterfactual", labelVi: "Nếu không có" },
     ],
   },
-  // ── Batch 4: Student Stage 4 — Neural Networks ──────────
+  // ── Batch 4: Student Stage 4. Neural Networks ──────────
   {
     slug: "neural-network-overview-in-voice-assistants",
     title: "Neural Networks in Voice Assistants",
@@ -3687,7 +3687,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title:
-          "Professor's Perceptron Paved the Way for AI — 60 Years Too Soon",
+          "Professor's Perceptron Paved the Way for AI. 60 Years Too Soon",
         publisher: "Cornell Chronicle",
         url: "https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon",
         date: "2019-09",
@@ -3862,7 +3862,7 @@ export const topicList: TopicMeta[] = [
       {
         title:
           "All About Transformer Inference: How to Scale Your Model",
-        publisher: "JAX ML — The Scaling Book",
+        publisher: "JAX ML. The Scaling Book",
         url: "https://jax-ml.github.io/scaling-book/inference/",
         date: "2024-01",
         kind: "documentation",
@@ -4232,7 +4232,7 @@ export const topicList: TopicMeta[] = [
       },
       {
         title:
-          "Ensembling with Blending and Stacking Solutions — The Kaggle Book",
+          "Ensembling with Blending and Stacking Solutions. The Kaggle Book",
         publisher: "Packt Publishing (Luca Massaron & Konrad Banachewicz)",
         url: "https://www.oreilly.com/library/view/the-kaggle-book/9781835083208/Text/Chapter_10.xhtml",
         date: "2024-06",
@@ -4264,7 +4264,7 @@ export const topicList: TopicMeta[] = [
     ],
   },
   // ═══════════════════════════════════════════════════════
-  // Batch 6 — Office Stage 1: LLM concepts (6 topics)
+  // Batch 6. Office Stage 1: LLM concepts (6 topics)
   // ═══════════════════════════════════════════════════════
   {
     slug: "llm-overview-in-chat-assistants",
@@ -4927,9 +4927,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "llm-evaluation",
     title: "LLM Evaluation",
-    titleVi: "Đánh giá LLM — Đo chất lượng trước và sau khi deploy",
+    titleVi: "Đánh giá LLM: đo chất lượng trước và sau deploy",
     description:
-      "Khung đánh giá LLM toàn diện: offline (golden set, LLM-as-judge, human eval) + online (shadow traffic, A/B, drift detection) — điều kiện tiên quyết để đưa LLM vào production một cách có trách nhiệm.",
+      "Kết hợp golden set, LLM-as-judge, human eval và shadow traffic để biết model có đủ tốt trước khi mở production.",
     category: "ai-safety",
     tags: ["evaluation", "llm-as-judge", "benchmark", "production"],
     difficulty: "advanced",
@@ -4939,9 +4939,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "rag-evaluation",
     title: "RAG Evaluation",
-    titleVi: "Đánh giá RAG — Bộ ba Faithfulness, Answer & Context Relevance",
+    titleVi: "Đánh giá RAG: faithfulness, answer relevance và context relevance",
     description:
-      "Đo lường hệ thống RAG theo ba trụ cột: độ trung thành với nguồn (faithfulness), độ liên quan câu trả lời (answer relevance), độ liên quan ngữ cảnh truy xuất (context relevance) — và cách chúng sụp đổ khác nhau khi retrieval, prompting, hoặc generation bị lỗi.",
+      "Tách lỗi RAG theo ba lớp: nguồn có liên quan không, câu trả lời có đúng câu hỏi không, và câu trả lời có bám nguồn không.",
     category: "ai-safety",
     tags: ["rag", "evaluation", "faithfulness", "retrieval"],
     difficulty: "advanced",
@@ -4951,9 +4951,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "observability-for-ai",
     title: "Observability for AI Systems",
-    titleVi: "Quan sát hệ thống AI — Trace, Log, Metric cho LLM app",
+    titleVi: "Quan sát hệ thống AI: trace, log và metric",
     description:
-      "Đưa hệ thống LLM ra production cần quan sát được từng bước: distributed tracing đa tầng (retrieval + LLM + tool), metric p50/p95, structured logs có PII-safe redaction, và cảnh báo khi drift. Khung observability AI-native khác biệt với APM truyền thống như thế nào.",
+      "Theo dõi từng request qua retrieval, tool và model call bằng trace, log có che PII, metric p50/p95 và cảnh báo drift.",
     category: "infrastructure",
     tags: ["observability", "tracing", "metrics", "logging", "langfuse"],
     difficulty: "advanced",
@@ -4963,9 +4963,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "cost-latency-tokens",
     title: "Cost, Latency & Token Economics for LLM Apps",
-    titleVi: "Kinh tế token — Chi phí, độ trễ và hiệu quả",
+    titleVi: "Kinh tế token: chi phí, latency và hiệu quả",
     description:
-      "Đơn vị tiền tệ của LLM production là token. Biết cách đo $/task, phân rã latency (TTFT + decode + retrieval + tool), tính break-even với human baseline, và thấy tức thì tác dụng của prompt caching / model cascade / context compression.",
+      "Đo chi phí theo tác vụ bằng token, TTFT, decode, retrieval và tool call; giá trong bài chỉ là số minh họa để tránh lệ thuộc bảng giá thay đổi.",
     category: "infrastructure",
     tags: ["cost", "latency", "tokens", "caching", "optimization"],
     difficulty: "advanced",
@@ -4975,9 +4975,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "prompt-injection-defense",
     title: "Prompt Injection Defense",
-    titleVi: "Phòng thủ Prompt Injection — Lớp bảo vệ nhiều tầng",
+    titleVi: "Phòng thủ prompt injection bằng nhiều lớp",
     description:
-      "Prompt injection là lỗ hổng số 1 của ứng dụng LLM (OWASP LLM01). Bài học xây lớp phòng thủ nhiều tầng: input validation, instruction hierarchy, output filter, tool allowlist, và LLM-judge — mỗi lớp bắt một loại payload khác nhau.",
+      "Prompt injection là rủi ro LLM01 trong OWASP LLM Top 10. Bài học xây input validation, instruction hierarchy, output filter và tool allowlist.",
     category: "ai-safety",
     tags: ["security", "injection", "owasp", "defense-in-depth"],
     difficulty: "advanced",
@@ -4987,9 +4987,9 @@ export const topicList: TopicMeta[] = [
   {
     slug: "canary-releases-llm",
     title: "Canary Releases & Shadow Traffic for LLM",
-    titleVi: "Canary & Shadow Rollout — Triển khai LLM an toàn",
+    titleVi: "Canary và shadow rollout: đổi model an toàn",
     description:
-      "Đổi model LLM trong production không thể 'big bang'. Học cách triển khai gradient: shadow traffic (so sánh không ảnh hưởng user) → 1% canary → 10% → 50% → 100%, với gate theo eval, user-feedback, và cost; cùng rollback tự động khi metric vi phạm SLO.",
+      "Đổi model LLM bằng shadow traffic, canary nhỏ, gate theo eval, phản hồi người dùng, chi phí và rollback tự động khi SLO vi phạm.",
     category: "infrastructure",
     tags: ["deployment", "canary", "shadow", "rollout", "reliability"],
     difficulty: "advanced",

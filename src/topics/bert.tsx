@@ -218,13 +218,13 @@ const QUIZ: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Trong bước tiền huấn luyện MLM, BERT che ngẫu nhiên khoảng {blank}% token trong câu. Trong các token bị chọn: 80% được thay bằng [MASK], 10% được thay bằng token ngẫu nhiên, 10% giữ nguyên — mục đích là để mô hình không bị lệ thuộc vào sự xuất hiện của {blank} khi suy luận.",
+      "Trong bước tiền huấn luyện MLM, BERT che ngẫu nhiên khoảng {blank}% token trong câu. Trong các token bị chọn: 80% được thay bằng [MASK], 10% được thay bằng token ngẫu nhiên, 10% giữ nguyên. mục đích là để mô hình không bị lệ thuộc vào sự xuất hiện của {blank} khi suy luận.",
     blanks: [
       { answer: "15", accept: ["15%", "mười lăm"] },
       { answer: "[MASK]", accept: ["MASK", "mask", "[mask]"] },
     ],
     explanation:
-      "Tỷ lệ 15% là đánh đổi giữa tín hiệu huấn luyện (che nhiều thì học nhiều) và ngữ cảnh còn lại (che ít thì dễ đoán). Phân phối 80/10/10 giúp biểu diễn BERT vẫn hữu ích khi fine-tune trên câu không có [MASK] — nếu lúc huấn luyện luôn thấy [MASK], mô hình sẽ quên cách xử lý token thật.",
+      "Tỷ lệ 15% là đánh đổi giữa tín hiệu huấn luyện (che nhiều thì học nhiều) và ngữ cảnh còn lại (che ít thì dễ đoán). Phân phối 80/10/10 giúp biểu diễn BERT vẫn hữu ích khi fine-tune trên câu không có [MASK]. nếu lúc huấn luyện luôn thấy [MASK], mô hình sẽ quên cách xử lý token thật.",
   },
 ];
 
@@ -642,7 +642,7 @@ export default function BertTopic() {
           </LessonSection>
 
           <LessonSection step={4} totalSteps={8} label="Hai chiều vs Một chiều">
-            <VisualizationSection topicSlug="bert">
+            <section className="my-8 rounded-xl border border-border bg-card p-6">
               <div className="space-y-5">
                 <div className="flex items-center justify-center gap-3">
                   <button
@@ -678,7 +678,7 @@ export default function BertTopic() {
                     : "GPT là mô hình sinh: tại mỗi vị trí, nó chỉ được phép nhìn các token đứng trước. Cơ chế causal mask che nửa ma trận attention để tránh 'nhìn tương lai'."}
                 </Callout>
               </div>
-            </VisualizationSection>
+            </section>
           </LessonSection>
 
           <LessonSection step={5} totalSteps={8} label="Khoảnh khắc Aha">
@@ -733,7 +733,7 @@ export default function BertTopic() {
           </LessonSection>
 
           <LessonSection step={6} totalSteps={8} label="Kiến trúc & tầng biểu diễn">
-            <VisualizationSection topicSlug="bert">
+            <section className="my-8 rounded-xl border border-border bg-card p-6">
               <div className="space-y-5">
                 <p className="text-sm text-foreground/90 leading-relaxed text-center">
                   Mỗi câu đi qua <strong>12 lớp Transformer</strong> (BERT-base). Hãy chọn một lớp
@@ -832,11 +832,11 @@ export default function BertTopic() {
                   </div>
                 </div>
               </div>
-            </VisualizationSection>
+            </section>
           </LessonSection>
 
           <LessonSection step={7} totalSteps={8} label="Fine-tune & Giải thích sâu">
-            <VisualizationSection topicSlug="bert">
+            <section className="my-8 rounded-xl border border-border bg-card p-6">
               <div className="space-y-5">
                 <p className="text-center text-sm text-foreground/80">
                   Cùng một BERT pre-trained, chọn tác vụ để xem cách thêm lớp đầu ra.
@@ -882,7 +882,7 @@ export default function BertTopic() {
                   <p className="text-xs text-muted leading-relaxed">{fineTuneConfig.notes}</p>
                 </div>
               </div>
-            </VisualizationSection>
+            </section>
 
             <ExplanationSection topicSlug="bert">
               <p>
@@ -988,7 +988,7 @@ def preprocess(batch):
 ds = ds.map(preprocess, batched=True)
 ds = ds.rename_column("sentiment", "labels")
 
-# Cấu hình huấn luyện (lr nhỏ, ít epoch — đặc trưng fine-tune)
+# Cấu hình huấn luyện (lr nhỏ, ít epoch. đặc trưng fine-tune)
 args = TrainingArguments(
     output_dir="./out",
     num_train_epochs=3,
@@ -1031,7 +1031,7 @@ docs = ["Sông Hương chảy qua thành phố Huế",
 qv = embed(queries)
 dv = embed(docs)
 scores = qv @ dv.T  # cosine similarity
-print(scores.argmax(dim=1))  # tensor([0, 1]) — khớp đúng!
+print(scores.argmax(dim=1))  # tensor([0, 1]). khớp đúng!
 `}
               </CodeBlock>
 
@@ -1170,7 +1170,7 @@ print(scores.argmax(dim=1))  # tensor([0, 1]) — khớp đúng!
                   fine-tune cho tác vụ cụ thể (phân loại ý định chatbot, phát hiện spam, kiểm
                   duyệt nội dung) nó thường đạt độ chính xác tương đương hoặc cao hơn LLM với
                   chi phí chỉ bằng 1/100. Trong bài toán retrieval (RAG), các encoder nhỏ như
-                  BGE, E5, GTE — đều là hậu duệ kiến trúc BERT — là xương sống của pipeline tìm
+                  BGE, E5, GTE. đều là hậu duệ kiến trúc BERT. là xương sống của pipeline tìm
                   kiếm ngữ nghĩa.
                 </p>
               </Callout>
@@ -1182,7 +1182,7 @@ print(scores.argmax(dim=1))  # tensor([0, 1]) — khớp đúng!
                     nhìn được toàn bộ các token khác (bidirectional attention, mask toàn 1).
                     Trong GPT, mỗi token chỉ nhìn được các token phía trước (causal mask, ma
                     trận tam giác dưới). Chính cấu trúc mask này quyết định mô hình có thể sinh
-                    tự hồi quy (autoregressive) hay không — chứ không phải số lớp hay số tham số.
+                    tự hồi quy (autoregressive) hay không. chứ không phải số lớp hay số tham số.
                   </p>
                   <p>
                     Nếu bạn ép BERT sinh văn bản bằng cách gán [MASK] vào vị trí cần sinh rồi
@@ -1213,7 +1213,7 @@ print(scores.argmax(dim=1))  # tensor([0, 1]) — khớp đúng!
                     </li>
                     <li>
                       <strong>Position embedding</strong>: học được, dài 512 vị trí. Đây là lý
-                      do BERT bị giới hạn 512 token — không thể ngoại suy cho vị trí chưa thấy.
+                      do BERT bị giới hạn 512 token. không thể ngoại suy cho vị trí chưa thấy.
                     </li>
                     <li>
                       <strong>Segment embedding</strong>: chỉ có 2 giá trị (câu A = 0, câu B =
@@ -1224,7 +1224,7 @@ print(scores.argmax(dim=1))  # tensor([0, 1]) — khớp đúng!
                     Ba embedding này được cộng lại, đi qua LayerNorm + Dropout rồi mới vào
                     Transformer layer đầu tiên. Biến thể RoPE (Rotary Position Embedding) trong
                     LLM hiện đại đã thay position embedding học được bằng cách mã hoá vị trí
-                    trực tiếp vào attention — linh hoạt hơn và ngoại suy tốt cho câu dài.
+                    trực tiếp vào attention. linh hoạt hơn và ngoại suy tốt cho câu dài.
                   </p>
                 </div>
               </CollapsibleDetail>

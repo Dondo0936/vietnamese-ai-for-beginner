@@ -12,7 +12,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "multi-agent",
   title: "Multi-Agent Systems",
-  titleVi: "Hệ thống đa Agent — Đội ngũ AI phối hợp",
+  titleVi: "Hệ thống đa Agent. Đội ngũ AI phối hợp",
   description:
     "Nhiều AI Agent chuyên biệt cùng phối hợp để giải quyết các bài toán phức tạp mà một Agent đơn lẻ khó xử lý.",
   category: "ai-agents",
@@ -72,7 +72,7 @@ const AGENTS: AgentConfig[] = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * Kịch bản tin nhắn — mô phỏng flow orchestration.
+ * Kịch bản tin nhắn. mô phỏng flow orchestration.
  * Mỗi bước mô tả 1 message hoặc 1 phase xử lý local.
  *
  *   "send"    : có animation đường bay tin nhắn
@@ -94,7 +94,7 @@ const SCRIPT: Step[] = [
     kind: "send",
     from: "coordinator",
     to: "researcher",
-    text: "Subtask A — Tìm 3 xu hướng LLM agent nổi bật năm 2026. Trả JSON {title, source}.",
+    text: "Subtask A. Tìm 3 xu hướng LLM agent nổi bật năm 2026. Trả JSON {title, source}.",
   },
   {
     kind: "process",
@@ -105,7 +105,7 @@ const SCRIPT: Step[] = [
     kind: "send",
     from: "researcher",
     to: "coordinator",
-    text: "Kết quả: 3 xu hướng — (1) Tool Use nâng cao, (2) Long-context reasoning, (3) Multi-agent orchestration.",
+    text: "Kết quả: 3 xu hướng. (1) Tool Use nâng cao, (2) Long-context reasoning, (3) Multi-agent orchestration.",
   },
   {
     kind: "process",
@@ -116,7 +116,7 @@ const SCRIPT: Step[] = [
     kind: "send",
     from: "coordinator",
     to: "writer",
-    text: "Subtask B — Viết báo cáo 300 từ dựa trên 3 điểm trên. Giọng văn chuyên nghiệp, Tiếng Việt.",
+    text: "Subtask B. Viết báo cáo 300 từ dựa trên 3 điểm trên. Giọng văn chuyên nghiệp, Tiếng Việt.",
   },
   {
     kind: "process",
@@ -127,7 +127,7 @@ const SCRIPT: Step[] = [
     kind: "send",
     from: "writer",
     to: "coordinator",
-    text: "Bản báo cáo 312 từ — sẵn sàng giao cho người dùng.",
+    text: "Bản báo cáo 312 từ. sẵn sàng giao cho người dùng.",
   },
   {
     kind: "final",
@@ -136,28 +136,28 @@ const SCRIPT: Step[] = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * Bộ câu hỏi — 8 quiz questions phủ các mặt của multi-agent.
+ * Bộ câu hỏi. 8 quiz questions phủ các mặt của multi-agent.
  * ────────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
     question: "Khi nào nên dùng multi-agent thay vì single agent?",
     options: [
-      "Luôn luôn — nhiều agent tốt hơn",
+      "Luôn luôn. nhiều agent tốt hơn",
       "Khi nhiệm vụ cần nhiều chuyên môn khác nhau (nghiên cứu + code + viết) hoặc cần debate/kiểm chứng chéo",
       "Khi muốn tiết kiệm chi phí",
       "Khi mô hình LLM yếu",
     ],
     correct: 1,
     explanation:
-      "Multi-agent tốt khi: (1) cần nhiều vai trò chuyên biệt, (2) cần kiểm chứng chéo (reviewer kiểm tra writer), (3) bài toán quá phức tạp cho 1 agent. Nhưng thêm chi phí coordination — đừng dùng cho tác vụ đơn giản.",
+      "Multi-agent tốt khi: (1) cần nhiều vai trò chuyên biệt, (2) cần kiểm chứng chéo (reviewer kiểm tra writer), (3) bài toán quá phức tạp cho 1 agent. Nhưng thêm chi phí coordination. đừng dùng cho tác vụ đơn giản.",
   },
   {
     question: "Mô hình điều phối nào phù hợp nhất khi có 10+ agent cần phối hợp?",
     options: [
-      "Ngang hàng — tất cả giao tiếp trực tiếp",
-      "Phân cấp — coordinator chính quản lý các sub-coordinator, mỗi sub-coordinator quản lý nhóm agent",
-      "Không cần điều phối — để tự quản",
-      "Tuần tự — từng agent chạy lần lượt",
+      "Ngang hàng. tất cả giao tiếp trực tiếp",
+      "Phân cấp. coordinator chính quản lý các sub-coordinator, mỗi sub-coordinator quản lý nhóm agent",
+      "Không cần điều phối. để tự quản",
+      "Tuần tự. từng agent chạy lần lượt",
     ],
     correct: 1,
     explanation:
@@ -167,13 +167,13 @@ const QUIZ: QuizQuestion[] = [
     question: "Debate pattern (tranh luận) giữa 2 agent giúp gì?",
     options: [
       "Tăng tốc độ xử lý",
-      "Giảm hallucination: agent A đưa ra ý kiến, agent B phản biện và kiểm chứng — kết quả cuối được cân nhắc kỹ hơn",
+      "Giảm hallucination: agent A đưa ra ý kiến, agent B phản biện và kiểm chứng. kết quả cuối được cân nhắc kỹ hơn",
       "Giảm chi phí API",
       "Tăng tính sáng tạo",
     ],
     correct: 1,
     explanation:
-      "Debate: Agent A trả lời → Agent B phản biện ('Sai! Vì...') → Agent A phản hồi → Kết luận. Giống peer review trong khoa học — giảm sai sót vì mỗi ý kiến đều được kiểm chứng.",
+      "Debate: Agent A trả lời → Agent B phản biện ('Sai! Vì...') → Agent A phản hồi → Kết luận. Giống peer review trong khoa học. giảm sai sót vì mỗi ý kiến đều được kiểm chứng.",
   },
   {
     question: "Vai trò chính của Coordinator (hay Orchestrator) là gì?",
@@ -190,26 +190,26 @@ const QUIZ: QuizQuestion[] = [
   {
     question: "Chi phí coordination của hệ thống 5 agent P2P (giao tiếp ngang hàng) là gì?",
     options: [
-      "5 kênh — mỗi agent 1 kênh",
+      "5 kênh. mỗi agent 1 kênh",
       "C(5,2) = 10 kênh giao tiếp, mỗi vòng debate có thể gấp đôi số tin nhắn",
       "Không đáng kể",
       "25 kênh",
     ],
     correct: 1,
     explanation:
-      "5 agent P2P có C(5,2) = 10 cặp = 10 kênh. Khi thêm agent thứ 6: 15 kênh. Tăng O(n²). Giải pháp: hub-and-spoke hoặc hierarchical — giảm về O(n).",
+      "5 agent P2P có C(5,2) = 10 cặp = 10 kênh. Khi thêm agent thứ 6: 15 kênh. Tăng O(n²). Giải pháp: hub-and-spoke hoặc hierarchical. giảm về O(n).",
   },
   {
     question: "Shared memory (blackboard) trong multi-agent là gì?",
     options: [
       "1 file cấu hình chung",
-      "Không gian nhớ mà mọi agent cùng đọc/ghi — agent mới vào có thể đọc lịch sử trao đổi thay vì gửi riêng cho từng agent",
+      "Không gian nhớ mà mọi agent cùng đọc/ghi. agent mới vào có thể đọc lịch sử trao đổi thay vì gửi riêng cho từng agent",
       "1 database SQL",
       "Cache tạm thời trên GPU",
     ],
     correct: 1,
     explanation:
-      "Blackboard pattern: 1 state chung (ví dụ: LangGraph state, CrewAI shared memory). Agent đọc state, xử lý, ghi lại. Tránh chuyện mỗi agent phải broadcast cho N−1 agent khác — đặc biệt hữu ích khi có nhiều hơn 5 agent.",
+      "Blackboard pattern: 1 state chung (ví dụ: LangGraph state, CrewAI shared memory). Agent đọc state, xử lý, ghi lại. Tránh chuyện mỗi agent phải broadcast cho N−1 agent khác. đặc biệt hữu ích khi có nhiều hơn 5 agent.",
   },
   {
     question: "Nguy cơ lớn nhất của multi-agent so với single-agent là gì?",
@@ -233,12 +233,12 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "LangGraph: nghĩ workflow như state machine — node là hàm, edge là điều kiện, có thể loop. Mạnh về kiểm soát flow. CrewAI: nghĩ theo 'đội ngũ' — agent có role/goal/backstory, giao tasks theo kiểu manager. Pick-your-poison tuỳ tư duy thiết kế của team.",
+      "LangGraph: nghĩ workflow như state machine. node là hàm, edge là điều kiện, có thể loop. Mạnh về kiểm soát flow. CrewAI: nghĩ theo 'đội ngũ'. agent có role/goal/backstory, giao tasks theo kiểu manager. Pick-your-poison tuỳ tư duy thiết kế của team.",
   },
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * Component chính — VisualizationSection mô phỏng orchestration.
+ * Component chính. VisualizationSection mô phỏng orchestration.
  * ────────────────────────────────────────────────────────────── */
 export default function MultiAgentTopic() {
   const [stepIdx, setStepIdx] = useState(0);
@@ -294,12 +294,12 @@ export default function MultiAgentTopic() {
         <PredictionGate
           question="Bạn cần AI viết báo cáo kỹ thuật: tìm dữ liệu, viết code benchmark, soạn bài, kiểm duyệt. 1 Agent làm tất cả hay nhiều Agent chuyên biệt?"
           options={[
-            "1 Agent — đơn giản hơn và nhanh hơn",
-            "Nhiều Agent chuyên biệt — mỗi Agent giỏi 1 việc, phối hợp cho kết quả tốt hơn, giống đội ngũ sản xuất phim",
-            "2 Agent — 1 làm, 1 kiểm tra là đủ",
+            "1 Agent. đơn giản hơn và nhanh hơn",
+            "Nhiều Agent chuyên biệt. mỗi Agent giỏi 1 việc, phối hợp cho kết quả tốt hơn, giống đội ngũ sản xuất phim",
+            "2 Agent. 1 làm, 1 kiểm tra là đủ",
           ]}
           correct={1}
-          explanation="Mỗi Agent chuyên biệt (researcher, writer, coder, reviewer) giỏi hơn 1 Agent đa năng. Giống đội ngũ: đạo diễn phối hợp quay phim, diễn viên, biên kịch — kết quả tốt hơn 1 người làm tất cả."
+          explanation="Mỗi Agent chuyên biệt (researcher, writer, coder, reviewer) giỏi hơn 1 Agent đa năng. Giống đội ngũ: đạo diễn phối hợp quay phim, diễn viên, biên kịch. kết quả tốt hơn 1 người làm tất cả."
         >
           <p className="text-sm text-muted mt-2">
             Bên dưới, bạn sẽ bấm &quot;Submit task&quot; để quan sát Coordinator
@@ -558,15 +558,14 @@ export default function MultiAgentTopic() {
               <div className="rounded-lg bg-green-500/10 border border-green-500/30 p-3">
                 <div className="text-xs text-muted">Hoàn tất</div>
                 <div className="text-lg font-bold text-green-800 dark:text-green-300">
-                  {stats.isFinal ? "Yes" : "—"}
+                  {stats.isFinal ? "Yes" : ":"}
                 </div>
               </div>
             </div>
 
             <p className="text-xs text-muted">
               Lưu ý: số message tăng gần như tuyến tính với số agent trong
-              hub-and-spoke. Ở pattern peer-to-peer (P2P), con số này là O(n²) —
-              hãy ghi nhớ khi thiết kế hệ thống hơn 5 agent.
+              hub-and-spoke. Ở pattern peer-to-peer (P2P), con số này là O(n²). hãy ghi nhớ khi thiết kế hệ thống hơn 5 agent.
             </p>
           </div>
         </VisualizationSection>
@@ -576,8 +575,7 @@ export default function MultiAgentTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           <p>
-            Multi-agent không chỉ là &quot;nhiều agent chạy song song&quot; — mà
-            là <strong>chuyên môn hoá + kiểm chứng chéo</strong>. Coordinator
+            Multi-agent không chỉ là &quot;nhiều agent chạy song song&quot;. Đó là <strong>chuyên môn hoá + kiểm chứng chéo</strong>. Coordinator
             phân rã, specialist làm sâu, và lỗi của agent này được agent khác
             phát hiện. Giống khoa học: không ai tự peer review bài mình.
             Orchestrator là &quot;lớp keo&quot; biến n agent rời rạc thành 1 hệ
@@ -591,25 +589,25 @@ export default function MultiAgentTopic() {
         <InlineChallenge
           question="5 agent giao tiếp ngang hàng (mọi agent nói chuyện trực tiếp). Có bao nhiêu kênh giao tiếp? Vấn đề gì xảy ra?"
           options={[
-            "5 kênh — mỗi agent 1 kênh",
-            "10 kênh — C(5,2) = 10 cặp. Thông tin dễ xung đột, khó đồng bộ, tốn token",
+            "5 kênh. mỗi agent 1 kênh",
+            "10 kênh. C(5,2) = 10 cặp. Thông tin dễ xung đột, khó đồng bộ, tốn token",
             "25 kênh",
             "Không có vấn đề",
           ]}
           correct={1}
-          explanation="C(5,2) = 10 kênh giao tiếp. Với 20 agent = C(20,2) = 190 kênh! Giải pháp: mô hình phân cấp (coordinator) hoặc pub/sub (shared state) — giảm từ O(n²) xuống O(n)."
+          explanation="C(5,2) = 10 kênh giao tiếp. Với 20 agent = C(20,2) = 190 kênh! Giải pháp: mô hình phân cấp (coordinator) hoặc pub/sub (shared state). giảm từ O(n²) xuống O(n)."
         />
 
         <InlineChallenge
           question="Trong hệ trên (3 agent, 8 message), nếu một LLM call tốn 2 giây và chạy tuần tự, tổng thời gian tối thiểu là bao nhiêu?"
           options={[
-            "2 giây — chạy song song hết",
-            "6 giây — 3 agent × 2 giây",
-            "Khoảng 8 × 2 = 16 giây — mỗi message/phase là 1 LLM call độc lập",
+            "2 giây. chạy song song hết",
+            "6 giây. 3 agent × 2 giây",
+            "Khoảng 8 × 2 = 16 giây. mỗi message/phase là 1 LLM call độc lập",
             "Không tính được",
           ]}
           correct={2}
-          explanation="Mỗi message + phase xử lý trong hub-and-spoke tuần tự = 1 LLM call. 8 bước × 2s ≈ 16s. Song song được chỉ khi 2 subtask độc lập (Researcher + Coder có thể chạy parallel). Latency là chi phí lớn của multi-agent — dùng parallel branches khi được phép."
+          explanation="Mỗi message + phase xử lý trong hub-and-spoke tuần tự = 1 LLM call. 8 bước × 2s ≈ 16s. Song song được chỉ khi 2 subtask độc lập (Researcher + Coder có thể chạy parallel). Latency là chi phí lớn của multi-agent. dùng parallel branches khi được phép."
         />
       </LessonSection>
 
@@ -617,10 +615,9 @@ export default function MultiAgentTopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            <strong>Hệ thống đa Agent</strong> (Multi-Agent System — MAS) sử
+            <strong>Hệ thống đa Agent</strong> (Multi-Agent System. MAS) sử
             dụng nhiều AI Agent chuyên biệt phối hợp để hoàn thành 1 nhiệm vụ.
-            Mỗi agent có: (1) <em>role</em> — vai trò riêng, (2) <em>tools</em> —
-            công cụ riêng, (3) <em>memory</em> — bộ nhớ local hoặc shared. Khác
+            Mỗi agent có: (1) <em>role</em>. vai trò riêng, (2) <em>tools</em>. công cụ riêng, (3) <em>memory</em>. bộ nhớ local hoặc shared. Khác
             với 1 LLM đơn độc, multi-agent chia việc theo chuyên môn và cho phép
             kiểm chứng chéo.
           </p>
@@ -634,7 +631,7 @@ export default function MultiAgentTopic() {
               <strong>Điều phối trung tâm (Hub-and-Spoke):</strong> 1 coordinator
               phân công và giám sát. Đơn giản, dễ debug. Đây chính là pattern
               chúng ta vừa mô phỏng phía trên. Nhược điểm: coordinator là nút
-              cổ chai — nếu nó chậm hoặc bị hallucinate, cả hệ thống chịu.
+              cổ chai. nếu nó chậm hoặc bị hallucinate, cả hệ thống chịu.
             </li>
             <li>
               <strong>Ngang hàng (Peer-to-Peer):</strong> Agent giao tiếp trực
@@ -676,7 +673,7 @@ export default function MultiAgentTopic() {
               hơn chi phí coordination. Tác vụ đơn giản: 1 agent đủ tốt. Một
               nguyên tắc thực nghiệm: nếu single-agent + chain-of-thought đã
               đạt 85% độ chính xác, việc nâng lên 92% bằng multi-agent có thể
-              tốn 5–10× chi phí — tính kỹ ROI.
+              tốn 5–10× chi phí. tính kỹ ROI.
             </p>
           </Callout>
 
@@ -684,7 +681,7 @@ export default function MultiAgentTopic() {
             <ul className="list-disc list-inside text-sm space-y-1">
               <li>Task đơn giản, có thể giải bằng 1 prompt + 1 tool call.</li>
               <li>Latency quan trọng (chatbot realtime): mỗi message là 1 LLM call thêm.</li>
-              <li>Budget hạn hẹp — token cost tăng tuyến tính theo số agent.</li>
+              <li>Budget hạn hẹp. token cost tăng tuyến tính theo số agent.</li>
               <li>
                 Không có cơ chế guardrail tốt cho agent (risk escalation khi
                 agent &quot;cãi&quot; nhau vô hạn).
@@ -692,26 +689,26 @@ export default function MultiAgentTopic() {
             </ul>
           </Callout>
 
-          <Callout variant="info" title="State management — blackboard pattern">
+          <Callout variant="info" title="State management. blackboard pattern">
             <p className="text-sm">
               Trong LangGraph, state là 1 dict được nhiều node cùng đọc/ghi.
               Trong CrewAI, shared memory lưu lịch sử công việc. Blackboard
               pattern giúp agent mới tham gia có thể đọc context thay vì phải
-              được gửi riêng — nhưng phải cẩn thận race condition và versioning
+              được gửi riêng. Nhưng phải cẩn thận race condition và versioning
               nếu agent chạy song song.
             </p>
           </Callout>
 
           <p className="mt-4">
             <strong>Hai framework phổ biến hiện nay</strong>: LangGraph (của
-            LangChain) — workflow graph-based với state + node + edge, phù hợp
+            LangChain). workflow graph-based với state + node + edge, phù hợp
             khi bạn cần kiểm soát flow chi tiết + loop + conditional routing.
-            CrewAI — role-based, trực quan hơn khi bạn nghĩ theo &quot;đội
+            CrewAI. role-based, trực quan hơn khi bạn nghĩ theo &quot;đội
             ngũ&quot;, agent có role/goal/backstory và coordinator gán tasks.
             Code bên dưới minh hoạ 2 style.
           </p>
 
-          <CodeBlock language="python" title="multi_agent_crewai.py — CrewAI style">
+          <CodeBlock language="python" title="multi_agent_crewai.py. CrewAI style">
 {`from crewai import Agent, Task, Crew, Process
 from crewai_tools import SerperDevTool, WebsiteSearchTool
 
@@ -799,7 +796,7 @@ print(result)`}
             conditional, LangGraph tự nhiên hơn.
           </p>
 
-          <CodeBlock language="python" title="multi_agent_langgraph.py — LangGraph style">
+          <CodeBlock language="python" title="multi_agent_langgraph.py. LangGraph style">
 {`from typing import TypedDict, Literal
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import HumanMessage, AIMessage
@@ -818,7 +815,7 @@ class AgentState(TypedDict):
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
 
 
-# ─── 3 node — mỗi node là 1 "agent" ─────────────────
+# ─── 3 node. mỗi node là 1 "agent" ─────────────────
 def researcher_node(state: AgentState) -> AgentState:
     prompt = (
         f"Task: {state['task']}\\n"
@@ -851,7 +848,7 @@ def reviewer_node(state: AgentState) -> AgentState:
     return {**state, "review": resp.content}
 
 
-# ─── Conditional edge — quyết định loop hay kết thúc ─
+# ─── Conditional edge. quyết định loop hay kết thúc ─
 def route_after_review(state: AgentState) -> Literal["writer", "end"]:
     review = (state.get("review") or "").strip().upper()
     iters = state.get("iterations", 0)
@@ -896,7 +893,7 @@ print(final["draft"])`}
             tự&quot; thuần.
           </p>
 
-          <CollapsibleDetail title="Debate pattern — khi 2 agent phản biện giảm hallucination">
+          <CollapsibleDetail title="Debate pattern. Khi 2 agent phản biện giảm hallucination">
             <div className="space-y-2 text-sm text-muted">
               <p>
                 <strong>Setup</strong>: Agent A (proposer) trả lời câu hỏi.
@@ -919,11 +916,11 @@ print(final["draft"])`}
           </CollapsibleDetail>
 
           <p className="text-foreground mt-3">
-            <strong>Self-reflection vs separate reviewer</strong> — một quyết
+            <strong>Self-reflection vs separate reviewer</strong>. một quyết
             định thiết kế thường gặp. Self-reflection (1 agent tự review) rẻ
             hơn, ít latency, nhưng thiên vị: LLM có xu hướng đánh giá tích cực
             với chính output của mình. Separate reviewer tốn 1 LLM call nữa
-            nhưng cho perspective khác — đặc biệt hiệu quả khi reviewer dùng
+            nhưng cho perspective khác. đặc biệt hiệu quả khi reviewer dùng
             model khác writer (ví dụ writer = gpt-4o-mini, reviewer =
             claude-opus). &quot;Cross-model review&quot; giảm systematic bias.
             Rule of thumb: task consequence cao (code production, medical
@@ -932,9 +929,9 @@ print(final["draft"])`}
           </p>
 
           <p className="text-foreground mt-3">
-            <strong>Agent memory — 3 tầng</strong>. Working memory: context
+            <strong>Agent memory. 3 tầng</strong>. Working memory: context
             hiện tại trong 1 lần chạy (thread). Episodic memory: lịch sử các
-            task đã làm — lưu vector DB, retrieve khi task mới vào. Semantic
+            task đã làm. lưu vector DB, retrieve khi task mới vào. Semantic
             memory: kiến thức trừu tượng rút ra (ví dụ &quot;công ty này ưu
             tiên phong cách formal&quot;). Multi-agent càng phức tạp càng cần
             phân biệt rõ: mỗi agent có working memory riêng, nhưng episodic +
@@ -962,8 +959,7 @@ print(final["draft"])`}
               </ul>
               <p>
                 <strong>Công cụ</strong>: LangSmith (LangChain), OpenAI Evals,
-                RAGAS (cho agent có RAG). Luôn log mọi message giữa agents —
-                debug multi-agent không có trace gần như bất khả thi.
+                RAGAS (cho agent có RAG). Luôn log mọi message giữa agents. debug multi-agent không có trace gần như bất khả thi.
               </p>
             </div>
           </CollapsibleDetail>
@@ -1020,7 +1016,7 @@ print(final["draft"])`}
           </div>
 
           <p className="text-sm text-muted mt-3">
-            Không có &quot;đúng&quot;/&quot;sai&quot; — cả 2 framework đều
+            Không có &quot;đúng&quot;/&quot;sai&quot;. cả 2 framework đều
             production-ready. Startup thường bắt đầu với CrewAI để prototype
             nhanh, rồi chuyển sang LangGraph khi flow đủ phức tạp cần kiểm soát.
             Một số team còn kết hợp: dùng LangGraph làm &quot;meta-orchestrator&quot;
@@ -1034,29 +1030,29 @@ print(final["draft"])`}
           </p>
           <ol className="list-decimal list-inside space-y-1 text-sm">
             <li>
-              <strong>Intent Parser</strong> — đọc yêu cầu, trích xuất: điểm
+              <strong>Intent Parser</strong>. đọc yêu cầu, trích xuất: điểm
               đến, thời lượng, số người, ràng buộc (&quot;trẻ nhỏ&quot;).
             </li>
             <li>
-              <strong>Flight/Transport Agent</strong> — tra chuyến bay, thời
+              <strong>Flight/Transport Agent</strong>. tra chuyến bay, thời
               gian, giá qua tool calls API Skyscanner.
             </li>
             <li>
-              <strong>Hotel Agent</strong> — tìm khách sạn family-friendly, có
+              <strong>Hotel Agent</strong>. tìm khách sạn family-friendly, có
               hồ bơi, gần biển.
             </li>
             <li>
-              <strong>Itinerary Agent</strong> — xếp lịch 5 ngày, tính
+              <strong>Itinerary Agent</strong>. xếp lịch 5 ngày, tính
               drive-time giữa các điểm.
             </li>
             <li>
-              <strong>Coordinator</strong> — tổng hợp thành itinerary, kiểm
+              <strong>Coordinator</strong>. tổng hợp thành itinerary, kiểm
               tra conflict (ví dụ: giờ check-in khách sạn &gt; giờ đáp máy bay).
             </li>
           </ol>
           <p className="text-sm text-muted">
             Kết quả: latency ~18s (so với 4s của single-agent), nhưng chất
-            lượng lịch trình cao hơn hẳn — có link booking thật, thời gian
+            lượng lịch trình cao hơn hẳn. có link booking thật, thời gian
             hợp lý. Người dùng chấp nhận latency vì đây là task &quot;thi
             thoảng&quot; chứ không phải realtime chat.
           </p>
@@ -1071,15 +1067,14 @@ print(final["draft"])`}
             </li>
             <li>
               <strong>Explicit contract</strong>: mỗi agent định nghĩa rõ
-              input/output schema (JSON/Pydantic) — giảm ambiguity.
+              input/output schema (JSON/Pydantic). giảm ambiguity.
             </li>
             <li>
               <strong>Timeout + fallback</strong>: nếu 1 agent timeout, có
               strategy thay thế (dùng LLM mạnh hơn? escalate người dùng?).
             </li>
             <li>
-              <strong>Stop condition</strong>: mọi loop phải có điều kiện dừng
-              — max iterations, confidence threshold, hoặc human approval.
+              <strong>Stop condition</strong>: mọi loop phải có điều kiện dừng. max iterations, confidence threshold, hoặc human approval.
             </li>
             <li>
               <strong>Observability</strong>: log mọi message + trace chi phí.
@@ -1116,8 +1111,7 @@ print(final["draft"])`}
               hay chỉ agent đó? Cần checkpoint state (LangGraph có built-in).
             </li>
             <li>
-              <strong>Cost cap</strong>: đặt hard limit token per request —
-              debate loop có thể chạy vô hạn nếu quên stop condition.
+              <strong>Cost cap</strong>: đặt hard limit token per request. debate loop có thể chạy vô hạn nếu quên stop condition.
             </li>
             <li>
               <strong>Prompt drift</strong>: khi 1 agent đổi prompt, downstream
@@ -1160,14 +1154,14 @@ print(final["draft"])`}
           <div className="flex items-center gap-3">
             <ProgressSteps current={8} total={8} />
             <span className="text-sm text-muted">
-              Hoàn tất — bạn đã đi qua toàn bộ 8 bước.
+              Hoàn tất. bạn đã đi qua toàn bộ 8 bước.
             </span>
           </div>
           <p className="text-sm text-foreground">
             Multi-agent là bước tiến tự nhiên khi single-agent bị giới hạn: 1
             LLM không thể vừa làm web search, vừa viết code, vừa kiểm duyệt
             chất lượng tốt như 3 agent chuyên biệt phối hợp. Nhưng thiết kế
-            đúng quan trọng hơn là số lượng agent — 3 agent được orchestrate
+            đúng quan trọng hơn là số lượng agent. 3 agent được orchestrate
             tốt hơn 10 agent chồng chéo nhiệm vụ.
           </p>
           <ul className="text-sm text-muted list-disc list-inside space-y-1">

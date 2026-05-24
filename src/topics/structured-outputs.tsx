@@ -113,7 +113,7 @@ const RAW_EXAMPLES: RawExample[] = [
     label: "Có text thừa trước JSON",
     value:
       'Đây là thông tin sản phẩm bạn yêu cầu:\n{"name": "Phở bò", "price": 65000, "category": "food", "in_stock": true}',
-    hint: "LLM thân thiện thêm câu mào đầu — khiến JSON.parse() văng lỗi ngay token đầu tiên.",
+    hint: "LLM thân thiện thêm câu mào đầu. khiến JSON.parse() văng lỗi ngay token đầu tiên.",
   },
   {
     label: "Price là chuỗi kèm đơn vị",
@@ -124,13 +124,13 @@ const RAW_EXAMPLES: RawExample[] = [
   {
     label: "Thiếu field required",
     value: '{"name": "Bánh mì", "price": 25000, "category": "food"}',
-    hint: "in_stock bị bỏ sót. Nếu code mặc định null thì dashboard hiển thị 'chưa rõ' — khách hàng confused.",
+    hint: "in_stock bị bỏ sót. Nếu code mặc định null thì dashboard hiển thị 'chưa rõ'. khách hàng confused.",
   },
   {
     label: "Field thừa ngoài schema",
     value:
       '{"name": "Trà đào", "price": 45000, "category": "drink", "in_stock": true, "rating": 4.8, "notes": "best seller"}',
-    hint: "LLM sáng tạo thêm rating, notes. Strict mode sẽ reject — free-form sẽ đẩy dữ liệu lạ vào DB.",
+    hint: "LLM sáng tạo thêm rating, notes. Strict mode sẽ reject. free-form sẽ đẩy dữ liệu lạ vào DB.",
   },
   {
     label: "Boolean là chữ",
@@ -142,7 +142,7 @@ const RAW_EXAMPLES: RawExample[] = [
     label: "Markdown fence bao quanh",
     value:
       '```json\n{"name": "Sinh tố bơ", "price": 40000, "category": "drink", "in_stock": true}\n```',
-    hint: "Code fence là sát thủ của JSON.parse(). Strict mode không sinh fence — đây là output free-form điển hình.",
+    hint: "Code fence là sát thủ của JSON.parse(). Strict mode không sinh fence. đây là output free-form điển hình.",
   },
   {
     label: "JSON đúng 100%",
@@ -192,7 +192,7 @@ const FAILURE_PATTERNS: FailurePattern[] = [
     id: "trailing-comma",
     title: "Trailing comma / single quote",
     snippet: "{ 'name': 'Phở', }",
-    why: "LLM học từ JS/Python — dấu phẩy cuối và nháy đơn là hợp lệ ở đó, không hợp lệ trong JSON.",
+    why: "LLM học từ JS/Python. dấu phẩy cuối và nháy đơn là hợp lệ ở đó, không hợp lệ trong JSON.",
     fix: "Grammar JSON chuẩn loại trừ nháy đơn và trailing comma tự động.",
   },
   {
@@ -206,13 +206,13 @@ const FAILURE_PATTERNS: FailurePattern[] = [
     id: "nested-collapse",
     title: "Nested object bị flatten",
     snippet: '"address.city": "Hà Nội"  thay vì  "address": { "city": "Hà Nội" }',
-    why: "Với schema lồng nhiều lớp, LLM đôi khi flatten bằng dấu chấm — phá cấu trúc consumer expect.",
+    why: "Với schema lồng nhiều lớp, LLM đôi khi flatten bằng dấu chấm. phá cấu trúc consumer expect.",
     fix: "Strict mode ép đúng structure. Nếu không dùng strict, validate với JSON schema validator trước khi consume.",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Parser helpers — deterministic, no external deps
+// Parser helpers. deterministic, no external deps
 // ---------------------------------------------------------------------------
 
 function findJsonSlice(raw: string): {
@@ -386,7 +386,7 @@ function parseRaw(raw: string, schema: SchemaField[]): ParseResult {
       value: JSON.stringify(parsed[k]),
       type: "string",
       status: "extra",
-      note: "Không có trong schema — strict mode sẽ reject",
+      note: "Không có trong schema. strict mode sẽ reject",
     });
   });
   const success = tokens.every((t) => t.status === "ok");
@@ -566,7 +566,7 @@ function SchemaEnforcerViz() {
           <ul className="text-[11px] text-tertiary space-y-1">
             {TARGET_SCHEMA.map((f) => (
               <li key={f.name}>
-                <span className="text-foreground font-medium">{f.name}</span> —{" "}
+                <span className="text-foreground font-medium">{f.name}</span>.{" "}
                 {f.description}
               </li>
             ))}
@@ -660,8 +660,8 @@ function SchemaEnforcerViz() {
               </div>
               <p className="text-xs text-foreground">
                 {strictMode
-                  ? "Constrained decoding CHẶN từng token lệch schema — output luôn match 100%."
-                  : "Strict mode đang tắt — bật lên để thấy sự khác biệt."}
+                  ? "Constrained decoding CHẶN từng token lệch schema. output luôn match 100%."
+                  : "Strict mode đang tắt. bật lên để thấy sự khác biệt."}
               </p>
             </div>
           </div>
@@ -701,19 +701,19 @@ function SchemaEnforcerViz() {
         <span className="font-semibold text-foreground">Chú thích:</span>
         <span className="inline-flex items-center gap-1">
           <span className="inline-block w-3 h-3 rounded border border-green-400/60 bg-green-500/20" />
-          OK — đúng schema
+          OK. đúng schema
         </span>
         <span className="inline-flex items-center gap-1">
           <span className="inline-block w-3 h-3 rounded border border-amber-400/60 bg-amber-500/20" />
-          Coerced — ép kiểu được nhưng nguy hiểm
+          Coerced. ép kiểu được nhưng nguy hiểm
         </span>
         <span className="inline-flex items-center gap-1">
           <span className="inline-block w-3 h-3 rounded border border-red-400/60 bg-red-500/20" />
-          Missing — field bắt buộc bị thiếu
+          Missing. field bắt buộc bị thiếu
         </span>
         <span className="inline-flex items-center gap-1">
           <span className="inline-block w-3 h-3 rounded border border-purple-400/60 bg-purple-500/20" />
-          Extra — field không có trong schema
+          Extra. field không có trong schema
         </span>
       </div>
     </div>
@@ -751,19 +751,19 @@ const quizQuestions: QuizQuestion[] = [
     question: "JSON schema strict mode trong API làm gì?",
     options: [
       "Kiểm tra JSON sau khi sinh",
-      "Đảm bảo output LUÔN khớp CHÍNH XÁC với schema đã định nghĩa — mọi field, mọi type, không thừa không thiếu",
+      "Đảm bảo output LUÔN khớp CHÍNH XÁC với schema đã định nghĩa. mọi field, mọi type, không thừa không thiếu",
       "Chỉ hỗ trợ JSON đơn giản",
     ],
     correct: 1,
     explanation:
-      "Strict mode: constrained decoding theo schema. Mọi field required sẽ có, mọi field type sẽ đúng, không có field ngoài schema. 100% compliance — không cần try-catch JSON parse.",
+      "Strict mode: constrained decoding theo schema. Mọi field required sẽ có, mọi field type sẽ đúng, không có field ngoài schema. 100% compliance. không cần try-catch JSON parse.",
   },
   {
     question:
       "Output LLM: 'Đây là JSON:\\n{\"name\":\"A\"}'. Vì sao JSON.parse() ném lỗi?",
     options: [
       "Vì field 'name' sai",
-      "Vì chuỗi bắt đầu bằng text 'Đây là JSON' — parser gặp ký tự không hợp lệ ngay vị trí 0",
+      "Vì chuỗi bắt đầu bằng text 'Đây là JSON'. parser gặp ký tự không hợp lệ ngay vị trí 0",
       "Vì thiếu dấu ngoặc nhọn",
     ],
     correct: 1,
@@ -775,7 +775,7 @@ const quizQuestions: QuizQuestion[] = [
       "Schema khai báo price là integer nhưng LLM trả '35.000đ'. Strict mode làm gì?",
     options: [
       "Chấp nhận và ép thành 35000",
-      "Không cho phép token chữ/ký hiệu xuất hiện ở vị trí price — chỉ digit được unmask",
+      "Không cho phép token chữ/ký hiệu xuất hiện ở vị trí price. chỉ digit được unmask",
       "Báo lỗi sau khi sinh xong",
     ],
     correct: 1,
@@ -785,13 +785,13 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "additionalProperties: false trong JSON schema để làm gì?",
     options: [
-      "Không cho phép field nào ngoài schema — loại bỏ hallucinated keys",
+      "Không cho phép field nào ngoài schema. loại bỏ hallucinated keys",
       "Bắt buộc tất cả field phải có giá trị",
       "Tắt JSON mode",
     ],
     correct: 0,
     explanation:
-      "additionalProperties: false ngăn LLM 'sáng tạo' thêm field ngoài schema (ví dụ rating, notes). Constrained decoder sau khi đóng các required keys sẽ chỉ được phép sinh `}` — không mở key mới.",
+      "additionalProperties: false ngăn LLM 'sáng tạo' thêm field ngoài schema (ví dụ rating, notes). Constrained decoder sau khi đóng các required keys sẽ chỉ được phép sinh `}`. không mở key mới.",
   },
   {
     question: "Overhead của constrained decoding so với free-form?",
@@ -831,12 +831,12 @@ export default function StructuredOutputsTopic() {
         <PredictionGate
           question="Bạn yêu cầu LLM trả về danh sách sản phẩm JSON. 95% lần được JSON đúng, 5% lần LLM thêm 'Đây là danh sách...' trước JSON khiến code parse lỗi. Giải pháp?"
           options={[
-            "Thêm 'chỉ trả về JSON' vào prompt — vẫn không 100%",
+            "Thêm 'chỉ trả về JSON' vào prompt. vẫn không 100%",
             "Dùng structured outputs (constrained decoding): đảm bảo 100% output là JSON hợp lệ theo schema",
             "Parse và retry khi lỗi",
           ]}
           correct={1}
-          explanation="Prompt engineering chỉ giảm lỗi, không triệt để. Structured outputs dùng constrained decoding: tại mỗi bước sinh token, chỉ cho phép tokens tạo JSON hợp lệ. 100% guarantee — giống điền form (chỉ chấp nhận format đúng) thay vì viết thư tự do."
+          explanation="Prompt engineering chỉ giảm lỗi, không triệt để. Structured outputs dùng constrained decoding: tại mỗi bước sinh token, chỉ cho phép tokens tạo JSON hợp lệ. 100% guarantee. giống điền form (chỉ chấp nhận format đúng) thay vì viết thư tự do."
         />
       </LessonSection>
 
@@ -851,7 +851,7 @@ export default function StructuredOutputsTopic() {
           Structured outputs giống <strong>điền form</strong> thay vì{" "}
           <strong>viết thư</strong>. Form chỉ chấp nhận đúng format (tên, email,
           số điện thoại). Thư tự do có thể viết bất kỳ gì. LLM với constrained
-          decoding = <strong>form thông minh</strong> — luôn cho output đúng
+          decoding = <strong>form thông minh</strong>. luôn cho output đúng
           schema, 100% parseable! Đây cũng chính là cơ chế dưới{" "}
           <TopicLink slug="function-calling">function calling</TopicLink>, và là
           cách đáng tin cậy hơn nhiều so với chỉ dựa vào{" "}
@@ -864,7 +864,7 @@ export default function StructuredOutputsTopic() {
         <InlineChallenge
           question="Bạn cần LLM extract thông tin từ CV: tên, email, kinh nghiệm (list), kỹ năng (list). Schema có 4 trường required. Không có structured outputs, 1000 CVs có bao nhiêu sẽ parse lỗi?"
           options={[
-            "0 — LLM luôn trả về JSON đúng",
+            "0. LLM luôn trả về JSON đúng",
             "30-100 CVs (3-10%) sẽ có format lỗi: thiếu trường, sai type, text thừa",
             "Tất cả đều lỗi",
           ]}
@@ -888,7 +888,7 @@ export default function StructuredOutputsTopic() {
         <ExplanationSection>
           <p>
             <strong>Structured Outputs</strong> đảm bảo LLM sinh output theo
-            schema cố định (JSON, XML) thay vì văn bản tự do — thiết yếu cho
+            schema cố định (JSON, XML) thay vì văn bản tự do. thiết yếu cho
             production systems.
           </p>
           <p>
@@ -896,7 +896,7 @@ export default function StructuredOutputsTopic() {
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <strong>Prompt-based:</strong> &quot;Trả về JSON&quot; — khoảng
+              <strong>Prompt-based:</strong> &quot;Trả về JSON&quot;. khoảng
               90-95% compliance. Không đủ cho production
             </li>
             <li>
@@ -918,7 +918,7 @@ export default function StructuredOutputsTopic() {
 
           <Callout variant="warning" title="Bẫy: schema quá rộng">
             Nếu schema cho phép cả string và number cho cùng một field (union
-            type), LLM sẽ tận dụng để output cái dễ hơn — và downstream code vẫn
+            type), LLM sẽ tận dụng để output cái dễ hơn. Và downstream code vẫn
             phải branch. Luôn chọn ONE type nhỏ nhất đủ dùng.
           </Callout>
 
@@ -942,8 +942,7 @@ export default function StructuredOutputsTopic() {
 
           <p className="text-xs text-muted">
             Ý nghĩa: với constrained decoding, xác suất token ngoài tập hợp lệ
-            được đặt về 0 trước softmax. Những token hợp lệ được chuẩn hoá lại
-            — phân phối vẫn &quot;mượt&quot; nhưng không bao giờ rời khỏi grammar.
+            được đặt về 0 trước softmax. Những token hợp lệ được chuẩn hoá lại. phân phối vẫn &quot;mượt&quot; nhưng không bao giờ rời khỏi grammar.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
@@ -986,7 +985,7 @@ export default function StructuredOutputsTopic() {
                 100% match schema
               </div>
               <div className="text-[10px] text-tertiary mt-1">
-                Constrained decoding — chuẩn cho production.
+                Constrained decoding. chuẩn cho production.
               </div>
             </div>
           </div>
@@ -1097,8 +1096,7 @@ result = generator("Phở bò 65.000đ còn hàng")
               KV-cache của transformer.
             </p>
             <p className="text-sm">
-              Điểm quan trọng: mask được áp sau khi logits được tính — tức là
-              model vẫn &quot;nghĩ&quot; tự nhiên, nhưng chỉ được chọn trong
+              Điểm quan trọng: mask được áp sau khi logits được tính, tức là model vẫn &quot;nghĩ&quot; tự nhiên, nhưng chỉ được chọn trong
               tập hợp lệ. Đây là vì sao chất lượng semantic gần như không đổi.
             </p>
           </CollapsibleDetail>
@@ -1133,7 +1131,7 @@ result = generator("Phở bò 65.000đ còn hàng")
 
           <p className="mt-4">
             <strong>Khi schema trở nên phức tạp:</strong> nested objects, arrays
-            of objects, enum với hàng chục giá trị — tất cả đều hỗ trợ. Nhưng
+            of objects, enum với hàng chục giá trị. tất cả đều hỗ trợ. Nhưng
             càng phức tạp, mask càng lớn, và model cũng khó &quot;nhớ&quot;
             thứ tự. Mẹo thực tế: flatten schema khi có thể, dùng enum thay vì
             free string cho category-like fields.
@@ -1151,7 +1149,7 @@ result = generator("Phở bò 65.000đ còn hàng")
           <p>
             <strong>Đo lường compliance trong production:</strong> thêm metric
             &quot;schema_parse_failures_total&quot; vào observability stack.
-            Với strict mode, con số này phải xấp xỉ 0 — nếu tăng đột biến là
+            Với strict mode, con số này phải xấp xỉ 0. nếu tăng đột biến là
             dấu hiệu API provider đang có vấn đề, không phải bug ở code bạn.
           </p>
 
@@ -1186,12 +1184,12 @@ result = generator("Phở bò 65.000đ còn hàng")
       <LessonSection step={6} totalSteps={6} label="Tổng kết">
         <MiniSummary
           points={[
-            "Structured outputs đảm bảo LLM sinh JSON/schema cố định — thiết yếu cho production (0% parse error)",
+            "Structured outputs đảm bảo LLM sinh JSON/schema cố định. thiết yếu cho production (0% parse error)",
             "3 cấp: Prompt (khoảng 95%), JSON mode (khoảng 98%), Schema-strict (100% constrained decoding)",
             "Constrained decoding: mask invalid tokens tại mỗi step trước softmax, dưới 5% overhead",
             "Dùng Pydantic BaseModel → model_json_schema() để tự generate schema từ class Python",
-            "additionalProperties: false để chặn LLM hallucinated extra keys — strict hơn nữa",
-            "Schema đảm bảo SHAPE, không đảm bảo SEMANTICS — vẫn cần business validation layer sau",
+            "additionalProperties: false để chặn LLM hallucinated extra keys. strict hơn nữa",
+            "Schema đảm bảo SHAPE, không đảm bảo SEMANTICS. vẫn cần business validation layer sau",
           ]}
         />
         <QuizSection questions={quizQuestions} />

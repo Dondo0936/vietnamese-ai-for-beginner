@@ -662,7 +662,7 @@ export default function LearningRateTopic() {
             <strong>dốc xuống mạnh nhất</strong>.
           </p>
 
-          <VisualizationSection>
+          <section className="my-8 rounded-xl border border-border bg-card p-6">
             <div className="space-y-3">
               <p className="text-sm text-muted text-center">
                 Trục hoành: log(learning rate) — trục tung: loss sau ít bước huấn luyện
@@ -747,7 +747,7 @@ export default function LearningRateTopic() {
                 </text>
               </svg>
             </div>
-          </VisualizationSection>
+          </section>
 
           <p>
             Nguyên tắc đọc biểu đồ:
@@ -796,14 +796,14 @@ export default function LearningRateTopic() {
 
       {/* ===== STEP 6: SCHEDULER COMPARISON ===== */}
       <LessonSection step={6} totalSteps={10} label="So sánh scheduler">
-        <ExplanationSection>
+        <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p>
             Một LR tốt ở đầu thường quá lớn ở cuối. Giải pháp: <strong>LR scheduler</strong>{" "}
             — một hàm thay đổi LR theo số bước/epoch. Dưới đây là 4 chiến lược phổ biến
             nhất, hãy so sánh hình dáng:
           </p>
 
-          <VisualizationSection>
+          <section className="my-8 rounded-xl border border-border bg-card p-6">
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 {schedulerCurves.map((curve) => {
@@ -927,7 +927,7 @@ export default function LearningRateTopic() {
                 </svg>
               </div>
             </div>
-          </VisualizationSection>
+          </section>
 
           <LaTeX block>
             {"\\alpha_t = \\alpha_0 \\cdot \\frac{1}{2}\\left(1 + \\cos\\left(\\frac{\\pi \\cdot t}{T}\\right)\\right)"}
@@ -1043,12 +1043,12 @@ for epoch in range(100):
             Transformer (GPT, BERT, ViT) rất nhạy với LR ban đầu. Không warmup → gradient
             explosion ở epoch đầu → huấn luyện thất bại. Luôn warmup 5-10% tổng số bước.
           </Callout>
-        </ExplanationSection>
+        </section>
       </LessonSection>
 
       {/* ===== STEP 7: WARMUP VISUALIZATION ===== */}
       <LessonSection step={7} totalSteps={10} label="Warmup">
-        <ExplanationSection>
+        <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p>
             Tại sao Transformer cần <strong>warmup</strong>? Ở bước huấn luyện đầu tiên,
             trọng số được khởi tạo ngẫu nhiên, LayerNorm chưa có statistics ổn định, và
@@ -1058,7 +1058,7 @@ for epoch in range(100):
             từ gần 0 lên giá trị mục tiêu trong vài phần trăm đầu.
           </p>
 
-          <VisualizationSection>
+          <section className="my-8 rounded-xl border border-border bg-card p-6">
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <label className="text-xs text-muted">
@@ -1128,7 +1128,7 @@ for epoch in range(100):
                 </text>
               </svg>
             </div>
-          </VisualizationSection>
+          </section>
 
           <Callout variant="info" title="Công thức warmup tuyến tính">
             <LaTeX block>
@@ -1201,12 +1201,12 @@ for batch in train_loader:
 #     num_cycles=0.5,  # nửa chu kỳ cosine — về 0 ở cuối
 # )`}
           </CodeBlock>
-        </ExplanationSection>
+        </section>
       </LessonSection>
 
       {/* ===== STEP 8: 2D LANDSCAPE — CONVERGENCE PATHS ===== */}
       <LessonSection step={8} totalSteps={10} label="Đường hội tụ 2D">
-        <ExplanationSection>
+        <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p>
             Trong thực tế, loss surface có <strong>nhiều trục với độ cong khác nhau</strong>.
             Đây là hiện tượng &quot;ill-conditioning&quot;. Cùng một LR có thể vừa với
@@ -1214,7 +1214,7 @@ for batch in train_loader:
             có tỉ lệ độ cong 6:1:
           </p>
 
-          <VisualizationSection>
+          <section className="my-8 rounded-xl border border-border bg-card p-6">
             <div className="space-y-3">
               <label className="text-sm text-muted">
                 Learning rate cho đường &quot;vừa phải&quot; (xanh):{" "}
@@ -1346,7 +1346,7 @@ for batch in train_loader:
                 theo trục x.
               </p>
             </div>
-          </VisualizationSection>
+          </section>
 
           <Callout variant="info" title="Đây là lý do ra đời momentum và Adam">
             Khi các trục có độ cong khác nhau, SGD + LR cố định sẽ hoặc{" "}
@@ -1370,7 +1370,7 @@ for batch in train_loader:
               giảm <LaTeX>{"\\kappa"}</LaTeX> thực hiệu dụng.
             </p>
           </CollapsibleDetail>
-        </ExplanationSection>
+        </section>
       </LessonSection>
 
       {/* ===== STEP 9: INLINE CHALLENGE 2 + MINI SUMMARY ===== */}

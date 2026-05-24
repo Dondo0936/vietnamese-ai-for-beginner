@@ -819,7 +819,7 @@ export default function ForwardPropagationTopic() {
 
       {/* ═══════════════ BƯỚC 4. DEEPEN (StepReveal) ═══════════════ */}
       <LessonSection step={4} totalSteps={8} label="Đi sâu">
-        <VisualizationSection topicSlug={metadata.slug}>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-2">
             Mở từng lớp trong một vòng forward propagation
           </h3>
@@ -1016,7 +1016,7 @@ export default function ForwardPropagationTopic() {
               </div>,
             ]}
           </StepReveal>
-        </VisualizationSection>
+        </section>
 
         <Callout variant="tip" title="Quan sát cốt lõi">
           Cả hai lớp đều lặp lại cùng một <strong>cặp phép tính</strong>: (1)

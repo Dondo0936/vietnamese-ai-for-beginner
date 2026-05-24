@@ -18,6 +18,7 @@ import ReadingProgressBar from "@/components/ui/ReadingProgressBar";
 import TopicTOC, { DEFAULT_TOC_SECTIONS } from "./TopicTOC";
 import { SectionDuplicateGuard } from "./SectionDuplicateGuard";
 import OfficeVisualBrief from "./OfficeVisualBrief";
+import PathVisualBrief from "./PathVisualBrief";
 import "./topic-layout.css";
 
 interface TopicLayoutProps {
@@ -258,6 +259,13 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
 
             {nav.kind === "path" && nav.path.pathId === "office" && (
               <OfficeVisualBrief slug={meta.slug} />
+            )}
+            {nav.kind === "path" && nav.path.pathId === "ai-engineer" && (
+              <PathVisualBrief
+                pathId={nav.path.pathId}
+                slug={meta.slug}
+                stageTitle={nav.path.currentStageTitle}
+              />
             )}
 
             {/* Body, unchanged */}

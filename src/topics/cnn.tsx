@@ -36,7 +36,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DỮ LIỆU — chữ số 7 dạng 28×28 (giả lập kiểu MNIST đơn giản hóa)
+// DỮ LIỆU. chữ số 7 dạng 28×28 (giả lập kiểu MNIST đơn giản hóa)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const DIGIT_SEVEN: number[][] = [
@@ -71,7 +71,7 @@ const DIGIT_SEVEN: number[][] = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// KERNEL PRESETS — các bộ lọc cổ điển
+// KERNEL PRESETS. các bộ lọc cổ điển
 // ─────────────────────────────────────────────────────────────────────────────
 
 type Kernel3x3 = number[][];
@@ -87,7 +87,7 @@ const KERNEL_PRESETS: KernelPreset[] = [
   {
     key: "edge-v",
     name: "Cạnh dọc",
-    description: "Sobel dọc — làm nổi bật cạnh dọc của nét chữ",
+    description: "Sobel dọc. làm nổi bật cạnh dọc của nét chữ",
     kernel: [
       [-1, 0, 1],
       [-2, 0, 2],
@@ -97,7 +97,7 @@ const KERNEL_PRESETS: KernelPreset[] = [
   {
     key: "edge-h",
     name: "Cạnh ngang",
-    description: "Sobel ngang — làm nổi bật cạnh ngang (nét trên của số 7)",
+    description: "Sobel ngang. làm nổi bật cạnh ngang (nét trên của số 7)",
     kernel: [
       [-1, -2, -1],
       [0, 0, 0],
@@ -107,7 +107,7 @@ const KERNEL_PRESETS: KernelPreset[] = [
   {
     key: "sharpen",
     name: "Làm sắc",
-    description: "Tăng độ sắc — giữ chi tiết, tăng tương phản",
+    description: "Tăng độ sắc. giữ chi tiết, tăng tương phản",
     kernel: [
       [0, -1, 0],
       [-1, 5, -1],
@@ -117,7 +117,7 @@ const KERNEL_PRESETS: KernelPreset[] = [
   {
     key: "blur",
     name: "Làm mờ",
-    description: "Box blur — giảm nhiễu, làm mịn chi tiết",
+    description: "Box blur. giảm nhiễu, làm mịn chi tiết",
     kernel: [
       [1, 1, 1],
       [1, 1, 1],
@@ -204,7 +204,7 @@ function matrixStats(m: number[][]): { min: number; max: number; sum: number } {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// COMPONENT PHỤ — GRID HIỂN THỊ MỘT MA TRẬN SỐ (ảnh grayscale)
+// COMPONENT PHỤ. GRID HIỂN THỊ MỘT MA TRẬN SỐ (ảnh grayscale)
 // ─────────────────────────────────────────────────────────────────────────────
 
 function MatrixGrid({
@@ -299,7 +299,7 @@ function MatrixGrid({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// COMPONENT PHỤ — KERNEL EDITOR 3×3
+// COMPONENT PHỤ. KERNEL EDITOR 3×3
 // ─────────────────────────────────────────────────────────────────────────────
 
 function KernelEditor({
@@ -353,7 +353,7 @@ function KernelEditor({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// COMPONENT PHỤ — PHÂN BỐ XÁC SUẤT ĐẦU RA (softmax 10 lớp)
+// COMPONENT PHỤ. PHÂN BỐ XÁC SUẤT ĐẦU RA (softmax 10 lớp)
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ClassBars({ probs }: { probs: number[] }) {
@@ -361,7 +361,7 @@ function ClassBars({ probs }: { probs: number[] }) {
   return (
     <div className="rounded-lg border border-border bg-card p-3">
       <p className="mb-2 text-xs font-semibold text-foreground">
-        Softmax — xác suất 10 lớp (0-9)
+        Softmax. xác suất 10 lớp (0-9)
       </p>
       <div className="space-y-1">
         {probs.map((p, i) => {
@@ -478,7 +478,7 @@ const QUIZ: QuizQuestion[] = [
       "Lớp Conv đầu tiên của CNN thường học được đặc trưng gì khi train trên ảnh tự nhiên?",
     options: [
       "Khuôn mặt cụ thể của người trong tập train",
-      "Các cạnh, góc và gradient hướng — các đặc trưng thị giác cấp thấp",
+      "Các cạnh, góc và gradient hướng. các đặc trưng thị giác cấp thấp",
       "Tên của các lớp phân loại",
       "Nhãn của từng pixel",
     ],
@@ -496,7 +496,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "padding", accept: ["đệm"] },
     ],
     explanation:
-      "Kernel (hay filter) là ma trận trọng số nhỏ trượt qua input. Stride là số pixel bộ lọc dịch chuyển mỗi bước. Padding thêm viền 0 quanh ảnh để kiểm soát kích thước output — padding = 1 với kernel 3×3 giữ nguyên kích thước.",
+      "Kernel (hay filter) là ma trận trọng số nhỏ trượt qua input. Stride là số pixel bộ lọc dịch chuyển mỗi bước. Padding thêm viền 0 quanh ảnh để kiểm soát kích thước output. padding = 1 với kernel 3×3 giữ nguyên kích thước.",
   },
   {
     question:
@@ -511,13 +511,13 @@ const QUIZ: QuizQuestion[] = [
       "Tại sao chuyển từ ảnh CIFAR-10 (32×32) sang ImageNet (224×224) thường cần kiến trúc CNN sâu hơn?",
     options: [
       "Vì ảnh to hơn cần nhiều tham số hơn",
-      "Vì receptive field của lớp nông không đủ lớn để nắm vật thể — cần stack nhiều Conv+Pool",
+      "Vì receptive field của lớp nông không đủ lớn để nắm vật thể. cần stack nhiều Conv+Pool",
       "Vì GPU không xử lý được ảnh lớn",
       "Vì ảnh lớn luôn nhiễu nhiều hơn",
     ],
     correct: 1,
     explanation:
-      "Mỗi neuron lớp sâu 'nhìn' một vùng lớn hơn (receptive field). Với ảnh 32×32, vài lớp là đủ phủ toàn ảnh. Với 224×224, cần nhiều block Conv+Pool để receptive field đủ phủ vật thể lớn — đó là lý do VGG/ResNet có chục lớp trở lên.",
+      "Mỗi neuron lớp sâu 'nhìn' một vùng lớn hơn (receptive field). Với ảnh 32×32, vài lớp là đủ phủ toàn ảnh. Với 224×224, cần nhiều block Conv+Pool để receptive field đủ phủ vật thể lớn. Đó là lý do VGG/ResNet có chục lớp trở lên.",
   },
 ];
 
@@ -567,11 +567,11 @@ export default function CnnTopic() {
         question="Ảnh 224×224 có ~150.000 pixel. Nếu mỗi pixel kết nối với mọi neuron (fully-connected), lớp đầu tiên cần hàng tỷ tham số. Có cách nào thông minh hơn không?"
         options={[
           "Giảm kích thước ảnh xuống thật nhỏ",
-          "Dùng bộ lọc nhỏ trượt qua ảnh — mỗi lần chỉ nhìn một vùng",
+          "Dùng bộ lọc nhỏ trượt qua ảnh. mỗi lần chỉ nhìn một vùng",
           "Chuyển ảnh sang đen trắng để giảm dữ liệu",
         ]}
         correct={1}
-        explanation="Đúng rồi! Thay vì nhìn toàn bộ ảnh cùng lúc, ta dùng một bộ lọc nhỏ (như 3×3) trượt qua từng vùng. Giống như bạn dùng kính lúp quét qua tấm bản đồ — mỗi lần chỉ xem một vùng nhỏ nhưng cuối cùng thấy hết."
+        explanation="Đúng rồi! Thay vì nhìn toàn bộ ảnh cùng lúc, ta dùng một bộ lọc nhỏ (như 3×3) trượt qua từng vùng. Giống như bạn dùng kính lúp quét qua tấm bản đồ. mỗi lần chỉ xem một vùng nhỏ nhưng cuối cùng thấy hết."
       />
 
       {/* ──────────────────────────────────────────────────────────────────
@@ -579,11 +579,11 @@ export default function CnnTopic() {
       ────────────────────────────────────────────────────────────────── */}
       <p>
         Hãy tưởng tượng bạn đang ở quán phở. Từ xa nhìn vào, bạn chỉ thấy{" "}
-        <strong>hình dạng tổng thể</strong> — bàn, ghế, người đứng người
+        <strong>hình dạng tổng thể</strong>. bàn, ghế, người đứng người
         ngồi. Tiến lại gần hơn, bạn nhận ra <strong>chi tiết</strong>: tô phở
         bốc khói, bó đũa để nghiêng, lọ tương ớt. Sát tận nơi, bạn nhìn rõ{" "}
         <strong>kết cấu</strong>: sợi phở mềm, lá hành xanh, miếng bò tái
-        hồng. Não bạn đang &quot;nhìn theo tầng&quot; — từ thô đến tinh.
+        hồng. Não bạn đang &quot;nhìn theo tầng&quot;. từ thô đến tinh.
       </p>
       <p>
         <strong>CNN (Convolutional Neural Network)</strong> cũng nhìn ảnh
@@ -597,19 +597,19 @@ export default function CnnTopic() {
         Bí quyết quan trọng nhất: <strong>chia sẻ trọng số</strong>. Cùng một
         bộ lọc 3×3 được dùng ở mọi vị trí trên ảnh. Nhờ vậy, nếu mạng học
         được &quot;cách nhận ra cạnh dọc&quot; ở góc trái, nó cũng nhận ra ở
-        góc phải — không cần học lại. Tính bất biến dịch chuyển này làm CNN
+        góc phải. không cần học lại. Tính bất biến dịch chuyển này làm CNN
         hiệu quả hơn fully-connected hàng nghìn lần.
       </p>
       <p>
         Ở phần tương tác bên dưới, bạn sẽ thấy một chữ số <strong>7</strong>{" "}
         dạng 28×28 đi qua toàn bộ pipeline CNN mini: Conv1 → ReLU → Pool →
         Conv2 → ReLU → Pool → Dense → Softmax. Bạn có thể chỉnh kernel của
-        Conv1 bằng tay và nhìn kết quả thay đổi ở mọi lớp sau — kể cả dự
+        Conv1 bằng tay và nhìn kết quả thay đổi ở mọi lớp sau. kể cả dự
         đoán lớp cuối cùng.
       </p>
 
       {/* ──────────────────────────────────────────────────────────────────
-          3. VISUALIZATION — CNN pipeline 28×28 với kernel editor
+          3. VISUALIZATION. CNN pipeline 28×28 với kernel editor
       ────────────────────────────────────────────────────────────────── */}
       <VisualizationSection topicSlug={metadata.slug}>
         <p className="mb-4 text-sm text-muted">
@@ -619,7 +619,7 @@ export default function CnnTopic() {
         </p>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-[auto_1fr]">
-          {/* CỘT TRÁI — Kernel editor + presets */}
+          {/* CỘT TRÁI. Kernel editor + presets */}
           <div className="space-y-3">
             <div className="rounded-lg border border-border bg-card p-3">
               <p className="mb-2 text-xs font-semibold text-foreground">
@@ -651,11 +651,11 @@ export default function CnnTopic() {
             <KernelEditor kernel={kernel} onChange={setKernel} />
           </div>
 
-          {/* CỘT PHẢI — Pipeline trực quan */}
+          {/* CỘT PHẢI. Pipeline trực quan */}
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-background/50 p-3">
               <p className="mb-2 text-xs font-semibold text-foreground">
-                Lớp 1 — Input &amp; Conv1 (phát hiện cạnh)
+                Lớp 1. Input &amp; Conv1 (phát hiện cạnh)
               </p>
               <div className="flex flex-wrap items-center justify-around gap-3">
                 <MatrixGrid
@@ -689,7 +689,7 @@ export default function CnnTopic() {
 
             <div className="rounded-lg border border-border bg-background/50 p-3">
               <p className="mb-2 text-xs font-semibold text-foreground">
-                Lớp 2 — Pool1 → Conv2 (phát hiện hình dạng)
+                Lớp 2. Pool1 → Conv2 (phát hiện hình dạng)
               </p>
               <div className="flex flex-wrap items-center justify-around gap-3">
                 <MatrixGrid
@@ -716,14 +716,14 @@ export default function CnnTopic() {
               </div>
               <p className="mt-2 text-[11px] italic text-muted">
                 Sau pool, kích thước nhỏ đi một nửa. Conv2 kết hợp các cạnh
-                thành hình dạng phức tạp hơn — phần đầu của &quot;đặc
+                thành hình dạng phức tạp hơn. phần đầu của &quot;đặc
                 trưng&quot; cuối cùng.
               </p>
             </div>
 
             <div className="rounded-lg border border-border bg-background/50 p-3">
               <p className="mb-2 text-xs font-semibold text-foreground">
-                Lớp 3 — Pool2 → Flatten → Dense → Softmax
+                Lớp 3. Pool2 → Flatten → Dense → Softmax
               </p>
               <div className="flex flex-wrap items-center justify-around gap-3">
                 <MatrixGrid
@@ -749,10 +749,9 @@ export default function CnnTopic() {
         <div className="mt-4 rounded-lg border border-accent/30 bg-accent/5 p-4">
           <p className="text-sm text-foreground">
             <strong>Thử nghiệm có chủ đích:</strong> chọn kernel &quot;Cạnh
-            ngang&quot; — Conv1 sẽ làm nổi bật nét nằm ngang trên đầu số 7.
+            ngang&quot;. Conv1 sẽ làm nổi bật nét nằm ngang trên đầu số 7.
             Đổi sang &quot;Cạnh dọc&quot; → nét chéo của số 7 nổi lên. Thử
-            kernel toàn số 0 ở cột giữa (ví dụ [[−1,0,1],[−1,0,1],[−1,0,1]])
-            — bạn vừa tự chế một &quot;edge detector dọc&quot; thủ công.
+            kernel toàn số 0 ở cột giữa (ví dụ [[−1,0,1],[−1,0,1],[−1,0,1]]). bạn vừa tự chế một &quot;edge detector dọc&quot; thủ công.
             Đây chính là điều CNN học tự động qua backprop: hàng triệu kernel
             khởi tạo ngẫu nhiên rồi được tinh chỉnh để tối đa hóa độ chính
             xác phân loại.
@@ -765,7 +764,7 @@ export default function CnnTopic() {
       ────────────────────────────────────────────────────────────────── */}
       <AhaMoment>
         <p>
-          <strong>CNN</strong> không phải một bộ lọc đơn lẻ — nó là hàng chục
+          <strong>CNN</strong> không phải một bộ lọc đơn lẻ. nó là hàng chục
           lớp xếp chồng, mỗi lớp phát hiện đặc trưng phức tạp hơn lớp trước.
           Cạnh → hình dạng → vật thể hoàn chỉnh.
         </p>
@@ -777,7 +776,7 @@ export default function CnnTopic() {
       </AhaMoment>
 
       {/* ──────────────────────────────────────────────────────────────────
-          5. INLINE CHALLENGES — 2 bài
+          5. INLINE CHALLENGES. 2 bài
       ────────────────────────────────────────────────────────────────── */}
       <InlineChallenge
         question="Ảnh 224×224×3 dùng fully-connected cần ~22,5 tỷ tham số cho lớp đầu. CNN với bộ lọc 3×3×3 và 32 filters cần bao nhiêu?"
@@ -787,7 +786,7 @@ export default function CnnTopic() {
           "224 × 224 × 32 = ~1,6 triệu tham số",
         ]}
         correct={1}
-        explanation="Chỉ 896 tham số! Mỗi bộ lọc có 3×3×3 = 27 trọng số + 1 bias = 28. Với 32 bộ lọc: 28 × 32 = 896. Giảm hàng triệu lần so với FC — đây là sức mạnh của chia sẻ trọng số!"
+        explanation="Chỉ 896 tham số! Mỗi bộ lọc có 3×3×3 = 27 trọng số + 1 bias = 28. Với 32 bộ lọc: 28 × 32 = 896. Giảm hàng triệu lần so với FC. đây là sức mạnh của chia sẻ trọng số!"
       />
 
       <InlineChallenge
@@ -820,7 +819,7 @@ export default function CnnTopic() {
           <p>
             Mỗi neuron trong lớp Conv chỉ nhìn một vùng nhỏ của input
             (receptive field), không phải toàn ảnh. Giống kính lúp rọi qua
-            tấm bản đồ — bạn tập trung vào chi tiết cục bộ. Kích thước kernel
+            tấm bản đồ. bạn tập trung vào chi tiết cục bộ. Kích thước kernel
             phổ biến: 3×3, 5×5, 7×7.
           </p>
         </Callout>
@@ -838,14 +837,13 @@ export default function CnnTopic() {
           <p>
             Lớp nông phát hiện cạnh, kết cấu. Lớp giữa kết hợp thành hình
             dạng (mắt, mũi, bánh xe). Lớp sâu nhận diện vật thể hoàn chỉnh
-            (mặt người, ô tô, con mèo). Mỗi lớp xây trên nền lớp trước —
-            giống xếp LEGO.
+            (mặt người, ô tô, con mèo). Mỗi lớp xây trên nền lớp trước. giống xếp LEGO.
           </p>
         </Callout>
 
-        <Callout variant="warning" title="Pitfall — Overfitting khi thiếu regularization">
+        <Callout variant="warning" title="Pitfall. Overfitting khi thiếu regularization">
           <p>
-            CNN sâu có hàng triệu tham số — dễ overfit nếu tập train nhỏ.
+            CNN sâu có hàng triệu tham số. dễ overfit nếu tập train nhỏ.
             Luôn kết hợp <TopicLink slug="data-augmentation">data augmentation</TopicLink>
             , <TopicLink slug="regularization">dropout/weight decay</TopicLink>,
             và <TopicLink slug="batch-normalization">batch normalization</TopicLink>.
@@ -874,18 +872,17 @@ export default function CnnTopic() {
         </LaTeX>
         <p className="text-sm text-muted">
           Ví dụ Conv 3×3 với 64 input channel → 128 output channel có (3×3×64+1)×128
-          = 73.856 params. Không phụ thuộc vào kích thước không gian — đây
+          = 73.856 params. Không phụ thuộc vào kích thước không gian. đây
           chính là weight sharing.
         </p>
 
         <Callout variant="info" title="Các kiến trúc CNN kinh điển">
           <p>
             <strong>LeNet-5</strong> (1998): CNN đầu tiên cho nhận dạng chữ
-            viết tay — 7 lớp, tiền đề của mọi thứ sau.{" "}
+            viết tay. 7 lớp, tiền đề của mọi thứ sau.{" "}
             <strong>AlexNet</strong> (2012): thắng ImageNet áp đảo, khởi đầu
             kỷ nguyên deep learning.{" "}
-            <strong>VGGNet</strong> (2014): chỉ dùng bộ lọc 3×3 xếp chồng —
-            đơn giản nhưng hiệu quả.{" "}
+            <strong>VGGNet</strong> (2014): chỉ dùng bộ lọc 3×3 xếp chồng. đơn giản nhưng hiệu quả.{" "}
             <strong>ResNet</strong> (2015): skip connections, huấn luyện
             được mạng 152 lớp trở lên.{" "}
             <strong>EfficientNet</strong> (2019): tối ưu cân bằng
@@ -897,7 +894,7 @@ export default function CnnTopic() {
 
         <CodeBlock
           language="python"
-          title="PyTorch — CNN cho MNIST 28×28"
+          title="PyTorch. CNN cho MNIST 28×28"
         >
 {`import torch
 import torch.nn as nn
@@ -950,12 +947,12 @@ for images, labels in train_loader:
     loss.backward()
     optimizer.step()
 
-# Tổng tham số: ~30 nghìn — nhỏ gọn nhưng đạt >99% accuracy trên MNIST`}
+# Tổng tham số: ~30 nghìn. nhỏ gọn nhưng đạt >99% accuracy trên MNIST`}
         </CodeBlock>
 
         <CodeBlock
           language="python"
-          title="PyTorch — Trích xuất feature map để debug"
+          title="PyTorch. Trích xuất feature map để debug"
         >
 {`import torch
 import torchvision.models as models
@@ -1011,7 +1008,7 @@ plt.savefig("conv1_features.png", dpi=120)`}
             {String.raw`r_{\ell} = r_{\ell-1} + (k_\ell - 1) \cdot \prod_{i<\ell} s_i`}
           </LaTeX>
           <p className="text-sm">
-            Đây là lý do VGG/ResNet có chục lớp trở lên — để một neuron ở
+            Đây là lý do VGG/ResNet có chục lớp trở lên. để một neuron ở
             tầng sâu cuối mạng đủ receptive field phủ toàn ảnh 224×224 và
             bắt được ngữ cảnh toàn cục của vật thể. Kiến trúc hiện đại như{" "}
             <TopicLink slug="vision-transformer">Vision Transformer</TopicLink>{" "}
@@ -1054,7 +1051,7 @@ plt.savefig("conv1_features.png", dpi=120)`}
           </li>
           <li>
             <strong>Nông nghiệp:</strong> phát hiện sâu bệnh qua ảnh lá cây
-            chụp bằng điện thoại — nông dân chỉ cần một cú chụp.
+            chụp bằng điện thoại. nông dân chỉ cần một cú chụp.
           </li>
           <li>
             <strong>Bán lẻ:</strong> camera AI đếm người, phân tích hành vi
@@ -1062,7 +1059,7 @@ plt.savefig("conv1_features.png", dpi=120)`}
           </li>
           <li>
             <strong>An ninh:</strong> nhận diện khuôn mặt, phát hiện vật
-            đáng ngờ trong video giám sát — luôn cần cân nhắc đạo đức và
+            đáng ngờ trong video giám sát. luôn cần cân nhắc đạo đức và
             quyền riêng tư.
           </li>
           <li>
@@ -1107,13 +1104,13 @@ plt.savefig("conv1_features.png", dpi=120)`}
           </li>
           <li>
             <strong>Quên BatchNorm:</strong> mạng sâu không có BN/LN thường
-            không train được — gradient quá bất ổn. Với batch size nhỏ (&lt;
+            không train được. gradient quá bất ổn. Với batch size nhỏ (&lt;
             8), cân nhắc Group Norm hoặc Layer Norm thay BN.
           </li>
           <li>
             <strong>FC layer khổng lồ:</strong> flatten feature map lớn rồi
             nối FC 1024 là nguyên nhân số một khiến mạng phình tham số. Ưu
-            tiên Global Average Pooling — giảm tham số và thường tăng
+            tiên Global Average Pooling. giảm tham số và thường tăng
             accuracy.
           </li>
           <li>
@@ -1124,7 +1121,7 @@ plt.savefig("conv1_features.png", dpi=120)`}
           </li>
           <li>
             <strong>Kernel size lớn ở lớp đầu:</strong> các model hiện đại
-            thích nhiều Conv 3×3 xếp chồng hơn một Conv 7×7 đơn lẻ — cùng
+            thích nhiều Conv 3×3 xếp chồng hơn một Conv 7×7 đơn lẻ. cùng
             receptive field nhưng ít tham số và nhiều phi tuyến hơn.
           </li>
           <li>
@@ -1140,7 +1137,7 @@ plt.savefig("conv1_features.png", dpi=120)`}
         <ul className="list-disc pl-5 space-y-1 text-sm">
           <li>
             <strong>Feature map:</strong> output 2D của một kernel sau khi
-            tích chập toàn ảnh — mỗi kênh output = 1 feature map.
+            tích chập toàn ảnh. mỗi kênh output = 1 feature map.
           </li>
           <li>
             <strong>Channel (kênh):</strong> chiều sâu của tensor. Ảnh RGB có
@@ -1155,12 +1152,12 @@ plt.savefig("conv1_features.png", dpi=120)`}
             mỗi feature map thành 1 số; thay thế Flatten+FC, cực gọn.
           </li>
           <li>
-            <strong>Dilated/Atrous Conv:</strong> Conv có lỗ — tăng receptive
+            <strong>Dilated/Atrous Conv:</strong> Conv có lỗ. tăng receptive
             field mà không giảm kích thước, dùng nhiều trong segmentation.
           </li>
           <li>
             <strong>Depthwise separable Conv:</strong> tách Conv thành
-            depthwise + pointwise — giảm tham số mạnh, nền tảng của
+            depthwise + pointwise. giảm tham số mạnh, nền tảng của
             MobileNet.
           </li>
         </ul>
@@ -1177,22 +1174,22 @@ plt.savefig("conv1_features.png", dpi=120)`}
       </ExplanationSection>
 
       {/* ──────────────────────────────────────────────────────────────────
-          7. MINI SUMMARY — 6 điểm chốt
+          7. MINI SUMMARY. 6 điểm chốt
       ────────────────────────────────────────────────────────────────── */}
       <MiniSummary
         title="Ghi nhớ về CNN"
         points={[
-          "CNN dùng bộ lọc nhỏ trượt qua ảnh thay vì kết nối đầy đủ — giảm tham số hàng nghìn lần.",
-          "Chia sẻ trọng số tạo tính bất biến dịch chuyển — vật thể ở đâu trong ảnh cũng được nhận ra.",
-          "Phân cấp đặc trưng: cạnh → hình dạng → vật thể — mỗi lớp xây trên nền lớp trước.",
+          "CNN dùng bộ lọc nhỏ trượt qua ảnh thay vì kết nối đầy đủ. giảm tham số hàng nghìn lần.",
+          "Chia sẻ trọng số tạo tính bất biến dịch chuyển. vật thể ở đâu trong ảnh cũng được nhận ra.",
+          "Phân cấp đặc trưng: cạnh → hình dạng → vật thể. mỗi lớp xây trên nền lớp trước.",
           "Kiến trúc điển hình: Conv → ReLU → Pool → ... → Flatten/GAP → FC → Softmax. Stride và padding kiểm soát kích thước.",
           "Thuộc lòng công thức kích thước: O = ⌊(W − K + 2P)/S⌋ + 1 và số params: (K·K·C_in + 1)·C_out.",
-          "Từ LeNet đến ConvNeXt, CNN là nền tảng của thị giác máy tính — và vẫn cạnh tranh hiệu quả với Vision Transformer hiện đại.",
+          "Từ LeNet đến ConvNeXt, CNN là nền tảng của thị giác máy tính. Và vẫn cạnh tranh hiệu quả với Vision Transformer hiện đại.",
         ]}
       />
 
       {/* ──────────────────────────────────────────────────────────────────
-          8. QUIZ — 8 câu cuối bài
+          8. QUIZ. 8 câu cuối bài
       ────────────────────────────────────────────────────────────────── */}
       <QuizSection questions={QUIZ} />
     </>

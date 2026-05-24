@@ -10,7 +10,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ─────────────────────────────────────────────────────────────
-   METADATA — GPT topic
+   METADATA. GPT topic
    Giữ nguyên slug, mở rộng trải nghiệm viz: autoregressive gen
    + attention heatmap + sampling (temp/top-k/top-p) + scaling law
    ───────────────────────────────────────────────────────────── */
@@ -19,7 +19,7 @@ export const metadata: TopicMeta = {
   title: "GPT",
   titleVi: "GPT - Mô hình ngôn ngữ tự hồi quy",
   description:
-    "Mô hình ngôn ngữ sinh văn bản bằng cách dự đoán từ tiếp theo dựa trên các từ trước đó, nền tảng của ChatGPT.",
+    "Mô hình ngôn ngữ tự hồi quy sinh văn bản bằng cách dự đoán token tiếp theo từ context trước đó.",
   category: "nlp",
   tags: ["nlp", "transformer", "language-model"],
   difficulty: "advanced",
@@ -28,13 +28,13 @@ export const metadata: TopicMeta = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   CONSTANTS — Tokenize "Tôi yêu" rồi autoregressive generate
+   CONSTANTS. Tokenize "Tôi yêu" rồi autoregressive generate
    Mô phỏng quá trình 1 layer attention + softmax-based sampling
    trên top-10 token candidates.
    ───────────────────────────────────────────────────────────── */
 const TOTAL_STEPS = 10;
 
-// Prompt ban đầu — đã được tokenize (mỗi phần tử là 1 token)
+// Prompt ban đầu. đã được tokenize (mỗi phần tử là 1 token)
 // Trong GPT thật, tokenizer BPE sẽ chia thành subwords; ở đây ta
 // dùng từ nguyên cho dễ hình dung với người Việt.
 const PROMPT_TOKENS = ["Tôi", "yêu"] as const;
@@ -182,7 +182,7 @@ const SCALING_DATA: ScalingPoint[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   QUIZ — 8 câu
+   QUIZ. 8 câu
    ───────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
@@ -207,7 +207,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "GPT tối đa P(w_t | w_1, ..., w_{t-1}) — xác suất từ tiếp theo. Mục tiêu đơn giản này khi scale lên tạo ra khả năng phi thường (in-context learning, reasoning).",
+      "GPT tối đa P(w_t | w_1, ..., w_{t-1}). xác suất từ tiếp theo. Mục tiêu đơn giản này khi scale lên tạo ra khả năng phi thường (in-context learning, reasoning).",
   },
   {
     question:
@@ -233,7 +233,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Top-k sampling: lấy k token có logit cao nhất, zero-out phần còn lại, chuẩn hoá softmax, rồi sample. Loại bỏ đuôi dài (long tail) các token cực ít khả năng — tránh model output rác.",
+      "Top-k sampling: lấy k token có logit cao nhất, zero-out phần còn lại, chuẩn hoá softmax, rồi sample. Loại bỏ đuôi dài (long tail) các token cực ít khả năng. tránh model output rác.",
   },
   {
     question: "GPT-3 có 175 tỷ tham số. Tại sao scale lớn lại quan trọng?",
@@ -245,7 +245,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Kaplan et al. 2020: loss = (N_c/N)^α — tỉ lệ power law với N=params. GPT-3 175B hiện khả năng few-shot learning, viết code, suy luận — điều GPT-2 (1.5B) không làm được. Đây là emergent abilities.",
+      "Kaplan et al. 2020: loss = (N_c/N)^α. tỉ lệ power law với N=params. GPT-3 175B hiện khả năng few-shot learning, viết code, suy luận. điều GPT-2 (1.5B) không làm được. Đây là emergent abilities.",
   },
   {
     type: "fill-blank",
@@ -256,7 +256,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "autoregressive", accept: ["tự hồi quy", "auto-regressive"] },
     ],
     explanation:
-      "GPT là decoder-only Transformer (không có encoder stack) và sinh token theo kiểu autoregressive — P(w_t | w_1, ..., w_{t-1}). Khác với BERT (encoder-only, non-autoregressive masked LM).",
+      "GPT là decoder-only Transformer (không có encoder stack) và sinh token theo kiểu autoregressive. P(w_t | w_1, ..., w_{t-1}). Khác với BERT (encoder-only, non-autoregressive masked LM).",
   },
   {
     question:
@@ -269,7 +269,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Nucleus sampling (Holtzman et al. 2019): chọn nhóm token NHỎ NHẤT mà tổng xác suất ≥ p. Khác top-k ở chỗ kích thước nhóm thay đổi động: nếu model tự tin (1 token áp đảo), nhóm nhỏ; nếu không chắc, nhóm lớn — linh hoạt hơn top-k.",
+      "Nucleus sampling (Holtzman et al. 2019): chọn nhóm token NHỎ NHẤT mà tổng xác suất ≥ p. Khác top-k ở chỗ kích thước nhóm thay đổi động: nếu model tự tin (1 token áp đảo), nhóm nhỏ; nếu không chắc, nhóm lớn. linh hoạt hơn top-k.",
   },
   {
     question:
@@ -287,7 +287,7 @@ const QUIZ: QuizQuestion[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   HELPER — Softmax với temperature và top-k / top-p filter
+   HELPER. Softmax với temperature và top-k / top-p filter
    Trả về phân phối xác suất đã normalize
    ───────────────────────────────────────────────────────────── */
 function applySampling(
@@ -392,14 +392,14 @@ export default function GptTopic() {
   return (
     <>
       {/* ─────────────────────────────────────────────────
-          STEP 1 — PredictionGate
+          STEP 1. PredictionGate
           ───────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử thách">
         <PredictionGate
-          question={`"Tôi yêu ___" — hãy đoán token tiếp theo mà GPT có khả năng sinh ra nhất!`}
+          question={`"Tôi yêu ___". hãy đoán token tiếp theo mà GPT có khả năng sinh ra nhất!`}
           options={['"em"', '"toán học"', '"xe máy"']}
           correct={0}
-          explanation={`Với prompt "Tôi yêu", GPT tính xác suất cho từng token trong vocab (~50K tokens với GPT-2). "em" có xác suất cao nhất vì pattern "Tôi yêu em..." xuất hiện cực nhiều trong training data. Nhưng quan trọng: GPT KHÔNG đơn giản là memorize — nó học pattern P(token | context) và tổng quát hoá. Đó là lý do nó viết được câu chưa từng thấy.`}
+          explanation={`Với prompt "Tôi yêu", GPT tính xác suất cho từng token trong vocab (~50K tokens với GPT-2). "em" có xác suất cao nhất vì pattern "Tôi yêu em..." xuất hiện cực nhiều trong training data. Nhưng quan trọng: GPT KHÔNG đơn giản là memorize. nó học pattern P(token | context) và tổng quát hoá. Đó là lý do nó viết được câu chưa từng thấy.`}
         />
         <div className="mt-4">
           <ProgressSteps
@@ -422,7 +422,7 @@ export default function GptTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 2 — Visualization chính: autoregressive generation
+          STEP 2. Visualization chính: autoregressive generation
           - Tokenized input "Tôi yêu"
           - Attention heatmap
           - Top-10 next-token distribution
@@ -553,7 +553,7 @@ export default function GptTopic() {
               <p className="text-[11px] text-muted mt-2 italic">
                 Attention cho biết khi dự đoán token tiếp theo, model {`"`}nhìn{`"`}
                 vào token nào trong context nhiều nhất. Thường các token gần sẽ
-                có trọng số cao hơn, nhưng không phải luôn luôn — tuỳ pattern
+                có trọng số cao hơn, nhưng không phải luôn luôn. tuỳ pattern
                 cú pháp.
               </p>
             </div>
@@ -561,7 +561,7 @@ export default function GptTopic() {
             {/* ── Causal mask mini viz ── */}
             <div className="rounded-lg border border-border bg-background/40 p-4">
               <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">
-                Causal mask — GPT chỉ nhìn về quá khứ
+                Causal mask. GPT chỉ nhìn về quá khứ
               </p>
               <div className="flex justify-center gap-0.5">
                 {Array.from({ length: 7 }).map((_, row) => (
@@ -730,7 +730,7 @@ export default function GptTopic() {
                     <strong className="text-accent">{topP.toFixed(2)}</strong>
                   </span>
                   <span className="text-muted">
-                    Nucleus — tổng xác suất tích luỹ ≥ p
+                    Nucleus. tổng xác suất tích luỹ ≥ p
                   </span>
                 </div>
                 <input
@@ -790,7 +790,7 @@ export default function GptTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 3 — AhaMoment
+          STEP 3. AhaMoment
           ───────────────────────────────────────────────── */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
@@ -798,20 +798,19 @@ export default function GptTopic() {
             <strong>GPT</strong> chỉ làm MỘT VIỆC: dự đoán token tiếp theo.
             Nhưng khi được huấn luyện trên hàng tỷ câu với mục tiêu{" "}
             <LaTeX>{`\\max \\log P(w_t | w_{<t})`}</LaTeX>, nó {'"'}hiểu{'"'}{" "}
-            ngôn ngữ đủ sâu để viết văn, trả lời câu hỏi, viết code, giải toán —
-            và thậm chí reason qua nhiều bước!
+            ngôn ngữ đủ sâu để viết văn, trả lời câu hỏi, viết code, giải toán. Và thậm chí reason qua nhiều bước!
           </p>
           <p className="text-sm text-muted mt-1">
             Như người kể chuyện giỏi: chỉ dựa vào những gì đã nói để tiếp tục,
             nhưng nhờ đọc hàng tỷ câu chuyện nên kể rất mạch lạc. Và khi đủ
-            lớn, nó xuất hiện những khả năng mà không ai hard-code được — đó
+            lớn, nó xuất hiện những khả năng mà không ai hard-code được. đó
             chính là <em>emergent abilities</em>.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 4 — InlineChallenge #1
+          STEP 4. InlineChallenge #1
           ───────────────────────────────────────────────── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
@@ -822,12 +821,12 @@ export default function GptTopic() {
             "ChatGPT không thật sự hiểu, chỉ copy-paste từ internet",
           ]}
           correct={1}
-          explanation="Scaling laws + RLHF: khi model đủ lớn + đủ dữ liệu + RLHF alignment, khả năng mới xuất hiện (emergent abilities). GPT-4 với hàng trăm tỷ params có thể suy luận, viết code, giải toán — dù cốt lõi vẫn chỉ 'dự đoán token tiếp theo'. Chain-of-Thought prompting cũng khai thác khả năng reasoning từ LM objective đơn giản này."
+          explanation="Scaling laws + RLHF: khi model đủ lớn + đủ dữ liệu + RLHF alignment, khả năng mới xuất hiện (emergent abilities). GPT-4 với hàng trăm tỷ params có thể suy luận, viết code, giải toán. dù cốt lõi vẫn chỉ 'dự đoán token tiếp theo'. Chain-of-Thought prompting cũng khai thác khả năng reasoning từ LM objective đơn giản này."
         />
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 5 — Callouts sampling strategies
+          STEP 5. Callouts sampling strategies
           ───────────────────────────────────────────────── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Sampling sâu hơn">
         <div className="space-y-4">
@@ -847,18 +846,18 @@ export default function GptTopic() {
             <ul className="list-disc pl-5 space-y-1 text-sm">
               <li>
                 <strong>T=0 / Greedy:</strong> Trích xuất thông tin, code
-                completion — cần ổn định.
+                completion. cần ổn định.
               </li>
               <li>
-                <strong>T=0.7, top-p=0.9:</strong> Mặc định ChatGPT — cân bằng
+                <strong>T=0.7, top-p=0.9:</strong> Mặc định ChatGPT. cân bằng
                 fluency và đa dạng.
               </li>
               <li>
                 <strong>T=1.0+, top-p=0.95:</strong> Brainstorm, viết văn sáng
-                tạo — chấp nhận surprise.
+                tạo. chấp nhận surprise.
               </li>
               <li>
-                <strong>T=2.0+:</strong> Thường tạo văn bản vô nghĩa — tránh trừ
+                <strong>T=2.0+:</strong> Thường tạo văn bản vô nghĩa. tránh trừ
                 khi nghiên cứu.
               </li>
             </ul>
@@ -870,7 +869,7 @@ export default function GptTopic() {
               ứng viên sequence tốt nhất ở mỗi bước và chọn sequence có xác
               suất tích luỹ cao nhất. Dùng cho dịch máy, tóm tắt (cần kết quả
               đúng hơn sáng tạo). Nhưng beam search thường tạo câu lặp lại và
-              {' "'}an toàn quá{'"'} nên ChatGPT không dùng — ưu tiên sampling.
+              {' "'}an toàn quá{'"'} nên ChatGPT không dùng. ưu tiên sampling.
             </p>
           </Callout>
 
@@ -886,7 +885,7 @@ export default function GptTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 6 — Scaling law viz
+          STEP 6. Scaling law viz
           ───────────────────────────────────────────────── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Scaling law">
         <p className="text-sm text-foreground leading-relaxed mb-4">
@@ -896,11 +895,11 @@ export default function GptTopic() {
           thế hệ GPT:
         </p>
 
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-background/40 p-4">
               <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3 text-center">
-                Model size (params) vs Perplexity (WikiText) — log-log
+                Model size (params) vs Perplexity (WikiText). log-log
               </p>
 
               <div className="relative w-full max-w-2xl mx-auto">
@@ -1115,7 +1114,7 @@ export default function GptTopic() {
 
               <p className="text-[11px] text-muted text-center italic mt-3">
                 Đường gạch tím: mô hình power-law L(N) ∝ N^(−α). Mỗi thế hệ
-                mới tiếp tục trượt xuống — chưa có bằng chứng saturate.
+                mới tiếp tục trượt xuống. chưa có bằng chứng saturate.
               </p>
             </div>
 
@@ -1128,7 +1127,7 @@ export default function GptTopic() {
                 <LaTeX block>{`L(N) = \\left(\\frac{N_c}{N}\\right)^{\\alpha_N}, \\quad \\alpha_N \\approx 0.076`}</LaTeX>
                 <p>
                   Tương tự cho dataset size D và compute C. Nếu cả ba tăng cùng
-                  tỷ lệ, loss tiếp tục giảm theo power law — <strong>ít nhất</strong>{" "}
+                  tỷ lệ, loss tiếp tục giảm theo power law. <strong>ít nhất</strong>{" "}
                   trên 7 bậc độ lớn. Đây là nền tảng cho việc OpenAI/DeepMind/
                   Anthropic liên tục build model lớn hơn.
                 </p>
@@ -1141,7 +1140,7 @@ export default function GptTopic() {
               </div>
             </CollapsibleDetail>
 
-            <CollapsibleDetail title="Emergent abilities — tại sao quan trọng?">
+            <CollapsibleDetail title="Emergent abilities. tại sao quan trọng?">
               <div className="space-y-2 text-sm text-foreground">
                 <p>
                   Wei et al. (2022) quan sát: một số tác vụ (arithmetic 3
@@ -1163,26 +1162,26 @@ export default function GptTopic() {
                 </ul>
                 <p>
                   Tranh cãi: có người cho rằng đó là artifact của metric
-                  (Schaeffer et al. 2023 — {'"'}Are Emergent Abilities a Mirage?
+                  (Schaeffer et al. 2023. {'"'}Are Emergent Abilities a Mirage?
                   {'"'}). Dù vậy, thực tế dùng LLM cho thấy scale tạo ra khả
                   năng mà model nhỏ không có.
                 </p>
               </div>
             </CollapsibleDetail>
           </div>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 7 — InlineChallenge #2
+          STEP 7. InlineChallenge #2
           ───────────────────────────────────────────────── */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Thử thách nâng cao">
         <InlineChallenge
           question="Bạn muốn model tạo một đoạn code Python chính xác theo spec. Chọn sampling nào phù hợp nhất?"
           options={[
-            "T=1.5, top-p=0.95 — để model sáng tạo",
-            "T=0.1 (gần greedy), top-k=1 hoặc top-p thấp — ưu tiên ổn định, đúng syntax, đúng spec",
-            "T=2.0, top-k=50 — để thử nhiều hướng",
+            "T=1.5, top-p=0.95. để model sáng tạo",
+            "T=0.1 (gần greedy), top-k=1 hoặc top-p thấp. ưu tiên ổn định, đúng syntax, đúng spec",
+            "T=2.0, top-k=50. để thử nhiều hướng",
           ]}
           correct={1}
           explanation="Code cần đúng (syntax + logic), không cần sáng tạo. Greedy hoặc T≈0.1 giảm khả năng model chọn token kỳ lạ. GitHub Copilot dùng T≈0.2–0.3. Ngược lại, creative writing (thơ, truyện) nên T≈0.8–1.0 với top-p=0.9 để tránh lặp lại."
@@ -1190,7 +1189,7 @@ export default function GptTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 8 — Explanation đầy đủ
+          STEP 8. Explanation đầy đủ
           ───────────────────────────────────────────────── */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
@@ -1199,7 +1198,7 @@ export default function GptTopic() {
             2018) dùng <TopicLink slug="transformer">Transformer</TopicLink>{" "}
             Decoder với{" "}
             <TopicLink slug="self-attention">self-attention</TopicLink>{" "}
-            dạng masked (causal) để sinh văn bản tự hồi quy — dự đoán token
+            dạng masked (causal) để sinh văn bản tự hồi quy. dự đoán token
             tiếp theo dựa trên tất cả token trước đó. Trước khi mô hình xử lý,
             văn bản được chia nhỏ bằng{" "}
             <TopicLink slug="tokenization">tokenization</TopicLink> (BPE / SentencePiece)
@@ -1232,27 +1231,26 @@ export default function GptTopic() {
             <div className="space-y-2 text-sm">
               <p>
                 <strong>GPT-1 (2018):</strong> 117M params, 12 layers, trained
-                on BooksCorpus (~5GB) — chứng minh pre-training + fine-tuning
+                on BooksCorpus (~5GB). chứng minh pre-training + fine-tuning
                 vượt trội.
               </p>
               <p>
                 <strong>GPT-2 (2019):</strong> 1.5B params, 48 layers, 40GB
-                WebText — sinh text giống người; OpenAI ban đầu không release
+                WebText. sinh text giống người; OpenAI ban đầu không release
                 vì lo ngại misuse.
               </p>
               <p>
                 <strong>GPT-3 (2020):</strong> 175B params, 96 layers, 570GB
-                filtered Common Crawl — xuất hiện few-shot learning, viết code,
+                filtered Common Crawl. xuất hiện few-shot learning, viết code,
                 giải toán đơn giản.
               </p>
               <p>
                 <strong>GPT-3.5 / ChatGPT (2022):</strong> + RLHF (Reinforcement
-                Learning from Human Feedback) — model biết follow instruction,
+                Learning from Human Feedback). model biết follow instruction,
                 từ chối câu hỏi độc hại.
               </p>
               <p>
-                <strong>GPT-4 (2023):</strong> Ước tính ~1T+ params (MoE) —
-                multimodal (vision), reasoning phức tạp, pass bar exam ở top
+                <strong>GPT-4 (2023):</strong> Ước tính ~1T+ params (MoE). multimodal (vision), reasoning phức tạp, pass bar exam ở top
                 10%.
               </p>
             </div>
@@ -1385,31 +1383,31 @@ print(tokenizer.decode(generated[0], skip_special_tokens=True))
               (human viết câu trả lời lý tưởng), <strong>(3) RLHF</strong>{" "}
               (human rank nhiều output → train reward model → PPO). Nhờ vậy
               model biết follow instruction, từ chối nội dung độc hại, và trả
-              lời hữu ích — không chỉ là {'"'}autocomplete thông minh{'"'}.
+              lời hữu ích. không chỉ là {'"'}autocomplete thông minh{'"'}.
             </p>
           </Callout>
         </ExplanationSection>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 9 — MiniSummary (6 điểm)
+          STEP 9. MiniSummary (6 điểm)
           ───────────────────────────────────────────────── */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về GPT"
           points={[
-            "GPT = Transformer Decoder-only đọc MỘT CHIỀU (trái→phải) với causal mask, tối đa P(w_t | w_<t) — autoregressive language modeling.",
+            "GPT = Transformer Decoder-only đọc MỘT CHIỀU (trái→phải) với causal mask, tối đa P(w_t | w_<t). autoregressive language modeling.",
             "Mỗi bước sinh: context → self-attention → logits → softmax(l/T) → top-k / top-p filter → sample → lặp lại cho đến EOS hoặc max_length.",
             "Causal mask = ma trận tam giác dưới với −∞ ở trên đường chéo → token hiện tại KHÔNG nhìn thấy token tương lai.",
             "Temperature điều khiển 'độ sáng tạo': T thấp → greedy/ổn định (code); T cao → đa dạng/bất ngờ (creative writing). Top-k và top-p cắt long tail.",
-            "Scaling laws (Kaplan 2020): loss giảm theo power law với N (params), D (tokens), C (compute) — GPT-1 117M → GPT-4 ~1T, perplexity từ 35.8 → 5.2.",
-            "GPT giỏi SINH; BERT giỏi HIỂU. ChatGPT = GPT + SFT + RLHF — từ 'autocomplete' thô thành assistant follow-instruction an toàn và hữu ích.",
+            "Scaling laws (Kaplan 2020): loss giảm theo power law với N (params), D (tokens), C (compute). GPT-1 117M → GPT-4 ~1T, perplexity từ 35.8 → 5.2.",
+            "GPT giỏi SINH; BERT giỏi HIỂU. ChatGPT = GPT + SFT + RLHF. từ 'autocomplete' thô thành assistant follow-instruction an toàn và hữu ích.",
           ]}
         />
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 10 — Quiz
+          STEP 10. Quiz
           ───────────────────────────────────────────────── */}
       <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

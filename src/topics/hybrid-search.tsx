@@ -23,11 +23,11 @@ export const metadata: TopicMeta = {
 };
 
 /* ──────────────────────────────────────────────────────────────
- * DỮ LIỆU — Truy vấn thực tế tiếng Việt: "cách luộc gà"
+ * DỮ LIỆU. Truy vấn thực tế tiếng Việt: "cách luộc gà"
  * Mỗi tài liệu được gán hai điểm: BM25 (lexical overlap) và
  * Dense embedding cosine similarity (ngữ nghĩa). Chúng ta cố ý
  * thiết kế để có tài liệu "chỉ BM25 cao", "chỉ Dense cao", và
- * tài liệu "cao cả hai" — phản ánh đúng pattern của truy xuất
+ * tài liệu "cao cả hai". phản ánh đúng pattern của truy xuất
  * thực tế trên Google, Shopee hay chatbot nấu ăn.
  * ──────────────────────────────────────────────────────────────*/
 interface SearchDoc {
@@ -54,7 +54,7 @@ const CORPUS: SearchDoc[] = [
   {
     id: "d2",
     title: "Bí quyết hầm gà ác với thuốc bắc bổ dưỡng",
-    snippet: "Gà ác hầm cùng kỳ tử, táo đỏ, hạt sen — món ăn tẩm bổ cho phụ nữ sau sinh và người mới ốm dậy...",
+    snippet: "Gà ác hầm cùng kỳ tử, táo đỏ, hạt sen. món ăn tẩm bổ cho phụ nữ sau sinh và người mới ốm dậy...",
     bm25: 1.2,
     dense: 0.78,
     source: "vnexpress.net",
@@ -78,7 +78,7 @@ const CORPUS: SearchDoc[] = [
   {
     id: "d5",
     title: "Cách pha nước chấm gà luộc ngon đúng điệu",
-    snippet: "Muối tiêu chanh, nước mắm gừng ớt, tương ớt Mường Khương — ba loại nước chấm ăn kèm gà luộc miền Bắc...",
+    snippet: "Muối tiêu chanh, nước mắm gừng ớt, tương ớt Mường Khương. ba loại nước chấm ăn kèm gà luộc miền Bắc...",
     bm25: 6.1,
     dense: 0.65,
     source: "cooky.vn",
@@ -94,7 +94,7 @@ const CORPUS: SearchDoc[] = [
   {
     id: "d7",
     title: "Luộc gà bằng nồi cơm điện cho sinh viên",
-    snippet: "Chỉ cần nồi cơm điện 1.8L, một con gà nhỏ và vài lát gừng — hướng dẫn từng bước cho người mới...",
+    snippet: "Chỉ cần nồi cơm điện 1.8L, một con gà nhỏ và vài lát gừng. hướng dẫn từng bước cho người mới...",
     bm25: 5.9,
     dense: 0.88,
     source: "webtretho.com",
@@ -126,7 +126,7 @@ const CORPUS: SearchDoc[] = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * Hàm phụ trợ — chuẩn hoá, xếp hạng, Reciprocal Rank Fusion
+ * Hàm phụ trợ. chuẩn hoá, xếp hạng, Reciprocal Rank Fusion
  * ──────────────────────────────────────────────────────────────*/
 function minMaxNormalize(scores: number[]): number[] {
   const min = Math.min(...scores);
@@ -142,14 +142,14 @@ function rankOf(list: { id: string }[]): Record<string, number> {
 }
 
 /* ──────────────────────────────────────────────────────────────
- * QUIZ — 8 câu hỏi, trộn multiple-choice và fill-blank
+ * QUIZ. 8 câu hỏi, trộn multiple-choice và fill-blank
  * ──────────────────────────────────────────────────────────────*/
 const QUIZ: QuizQuestion[] = [
   {
     question: "Tại sao Hybrid Search thường vượt trội so với dùng riêng BM25 hoặc Dense retrieval?",
     options: [
       "Vì Hybrid Search đơn giản là nhanh hơn cả hai",
-      "BM25 giỏi exact match (tên riêng, mã số), Dense giỏi ngữ nghĩa (đồng nghĩa, paraphrase) — kết hợp bổ sung điểm yếu",
+      "BM25 giỏi exact match (tên riêng, mã số), Dense giỏi ngữ nghĩa (đồng nghĩa, paraphrase). kết hợp bổ sung điểm yếu",
       "Hybrid Search không cần embedding model nên rẻ hơn",
       "Hybrid Search tự động chọn đúng phương pháp mạnh hơn tại runtime",
     ],
@@ -160,7 +160,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Reciprocal Rank Fusion (RRF) hoạt động theo nguyên lý nào?",
     options: [
       "Cộng trực tiếp điểm BM25 và điểm cosine, chuẩn hoá rồi sắp xếp",
-      "Dùng thứ hạng (rank) thay vì điểm: RRF(d) = Σ 1/(k + rank_i(d)) — không cần normalize score",
+      "Dùng thứ hạng (rank) thay vì điểm: RRF(d) = Σ 1/(k + rank_i(d)). không cần normalize score",
       "Chỉ giữ những tài liệu xuất hiện ở cả hai danh sách",
       "Lấy điểm lớn nhất của tài liệu từ hai nguồn",
     ],
@@ -176,7 +176,7 @@ const QUIZ: QuizQuestion[] = [
       "Khi embedding model chưa tinh chỉnh xong",
     ],
     correct: 1,
-    explanation: "Truy vấn 'iPhone 15 Pro Max 256GB màu xanh titan' — BM25 khớp đúng SKU. Dense có thể lạc về 'điện thoại cao cấp chống nước'. Cần α nhỏ, nghiêng BM25.",
+    explanation: "Truy vấn 'iPhone 15 Pro Max 256GB màu xanh titan'. BM25 khớp đúng SKU. Dense có thể lạc về 'điện thoại cao cấp chống nước'. Cần α nhỏ, nghiêng BM25.",
   },
   {
     type: "fill-blank",
@@ -192,16 +192,16 @@ const QUIZ: QuizQuestion[] = [
     options: [
       "Loại bỏ vì BM25 quá thấp",
       "Đưa lên top vì dense cao là đủ",
-      "Giữ lại nhờ nhánh dense, có thể lọt top-K dù lexical overlap thấp — đây chính là ưu điểm chính của hybrid",
+      "Giữ lại nhờ nhánh dense, có thể lọt top-K dù lexical overlap thấp. đây chính là ưu điểm chính của hybrid",
       "Cần người dùng chỉnh tay weight mới hiển thị",
     ],
     correct: 2,
-    explanation: "'Chần gia cầm' ≈ 'luộc gà' ở mức ngữ nghĩa. Dense encoder học được điều này từ corpus lớn. Pure BM25 sẽ bỏ sót, pure dense có thể nhiễu — hybrid là sweet spot.",
+    explanation: "'Chần gia cầm' ≈ 'luộc gà' ở mức ngữ nghĩa. Dense encoder học được điều này từ corpus lớn. Pure BM25 sẽ bỏ sót, pure dense có thể nhiễu. hybrid là sweet spot.",
   },
   {
     question: "Khi nào convex combination KHÔNG hoạt động tốt nếu không chuẩn hoá score?",
     options: [
-      "Khi BM25 = 10.0 còn cosine = 0.85 — hai thang đo lệch nhau, BM25 sẽ luôn áp đảo",
+      "Khi BM25 = 10.0 còn cosine = 0.85. hai thang đo lệch nhau, BM25 sẽ luôn áp đảo",
       "Khi số lượng tài liệu quá nhỏ",
       "Khi người dùng gõ tiếng Anh",
       "Khi chỉ có một nhánh retrieval",
@@ -214,7 +214,7 @@ const QUIZ: QuizQuestion[] = [
     options: [
       "Số lượng nguồn truy xuất",
       "Số tài liệu tối đa trả về",
-      "Hằng số làm mượt (smoothing) — giảm ảnh hưởng của top-1, thường k = 60",
+      "Hằng số làm mượt (smoothing). giảm ảnh hưởng của top-1, thường k = 60",
       "Trọng số của nhánh BM25",
     ],
     correct: 2,
@@ -233,7 +233,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Bạn cần recall top-10 tài liệu sau fuse. Nên lấy bao nhiêu candidate từ mỗi nhánh trước khi RRF?",
     options: [
       "Top-10 mỗi nhánh là đủ, tiết kiệm tài nguyên",
-      "Top-50 đến top-100 mỗi nhánh — để tài liệu tốt ở rank 20 của một nhánh vẫn có cơ hội lên sau fuse",
+      "Top-50 đến top-100 mỗi nhánh. để tài liệu tốt ở rank 20 của một nhánh vẫn có cơ hội lên sau fuse",
       "Top-1000 để tuyệt đối an toàn",
       "Chỉ lấy từ nhánh mạnh hơn",
     ],
@@ -244,18 +244,18 @@ const QUIZ: QuizQuestion[] = [
     question: "Reranker 'relative score' (Weaviate RELATIVE_SCORE) khác với RRF ở điểm cốt lõi nào?",
     options: [
       "Relative score dùng rank, RRF dùng score",
-      "RRF dùng rank không cần normalize; relative score dùng score sau khi normalize về [0,1] theo min-max trong danh sách — nhạy với phân phối score hơn nhưng giữ được thông tin về khoảng cách",
+      "RRF dùng rank không cần normalize; relative score dùng score sau khi normalize về [0,1] theo min-max trong danh sách. nhạy với phân phối score hơn nhưng giữ được thông tin về khoảng cách",
       "Hai cái hoàn toàn giống nhau, chỉ khác tên",
       "Relative score chỉ chạy được trên Weaviate Cloud",
     ],
     correct: 1,
-    explanation: "RELATIVE_SCORE của Weaviate: score_norm = (score - min) / (max - min) từng nhánh rồi weighted sum theo alpha. Giữ 'gap' giữa top-1 và top-2 — nếu BM25 chênh lớn, top-1 thực sự nổi trội. RRF xoá sạch thông tin này, chỉ quan tâm rank. Chọn cái nào tuỳ domain: document có gap lớn chọn relative score, domain phẳng chọn RRF.",
+    explanation: "RELATIVE_SCORE của Weaviate: score_norm = (score - min) / (max - min) từng nhánh rồi weighted sum theo alpha. Giữ 'gap' giữa top-1 và top-2. nếu BM25 chênh lớn, top-1 thực sự nổi trội. RRF xoá sạch thông tin này, chỉ quan tâm rank. Chọn cái nào tuỳ domain: document có gap lớn chọn relative score, domain phẳng chọn RRF.",
   },
   {
-    question: "Cross-encoder re-ranking bị gọi là 'monolithic' — ý nghĩa là gì?",
+    question: "Cross-encoder re-ranking bị gọi là 'monolithic'. ý nghĩa là gì?",
     options: [
       "Nó chạy trên một GPU duy nhất",
-      "Nó encode đồng thời query và document qua cùng một forward pass (concatenate) nên bắt được late interaction — đắt hơn bi-encoder nhưng chính xác hơn nhiều",
+      "Nó encode đồng thời query và document qua cùng một forward pass (concatenate) nên bắt được late interaction. đắt hơn bi-encoder nhưng chính xác hơn nhiều",
       "Nó chỉ dùng một model duy nhất cho mọi domain",
       "Nó không cần tokenizer",
     ],
@@ -332,7 +332,7 @@ export default function HybridSearchTopic() {
   /* ────── Handler ─────────────────────────────────────────── */
   const onAlphaChange = useCallback((v: number) => {
     setAlpha(v);
-    // Tự chuyển sang convex khi kéo α — dùng để minh hoạ trực quan
+    // Tự chuyển sang convex khi kéo α. dùng để minh hoạ trực quan
     setFuseMode("convex");
   }, []);
 
@@ -404,9 +404,9 @@ export default function HybridSearchTopic() {
         <PredictionGate
           question="Bạn xây chatbot nấu ăn tiếng Việt. Người dùng gõ 'cách luộc gà'. BM25 tìm được bài có đúng ba từ 'cách', 'luộc', 'gà'. Dense retrieval tìm được bài 'Kỹ thuật chần gia cầm giữ da giòn' (đồng nghĩa). Lấy kết quả từ đâu?"
           options={[
-            "Chỉ BM25 — đảm bảo kết quả chứa đúng từ người dùng gõ",
-            "Chỉ Dense — luôn hiểu ngữ nghĩa tốt hơn",
-            "KẾT HỢP cả hai — BM25 không bỏ lỡ exact match, Dense không bỏ lỡ đồng nghĩa",
+            "Chỉ BM25. đảm bảo kết quả chứa đúng từ người dùng gõ",
+            "Chỉ Dense. luôn hiểu ngữ nghĩa tốt hơn",
+            "KẾT HỢP cả hai. BM25 không bỏ lỡ exact match, Dense không bỏ lỡ đồng nghĩa",
           ]}
           correct={2}
           explanation="Hybrid Search là tiêu chuẩn vàng trong RAG hiện đại. Không có nhánh nào hoàn hảo: BM25 mù trước đồng nghĩa, dense dễ nhiễu với token hiếm. Hợp nhất bằng RRF là cách robust nhất."
@@ -434,7 +434,7 @@ export default function HybridSearchTopic() {
                     {t}
                   </span>
                 ))}
-                <span className="text-muted/70">— token được tách ra cho nhánh BM25</span>
+                <span className="text-muted/70">: token được tách ra cho nhánh BM25</span>
               </div>
             </div>
 
@@ -671,8 +671,8 @@ export default function HybridSearchTopic() {
         <AhaMoment>
           <p>
             Hybrid Search giống như <strong>hỏi hai chuyên gia bổ sung nhau</strong>: chuyên gia A (BM25)
-            đọc thuộc lòng từng con chữ — tuyệt vời cho tên riêng, mã SKU, số điều luật; chuyên gia B
-            (Dense) hiểu ý định sâu xa — bắt được "chần gia cầm" khi người dùng gõ "luộc gà". Fuse hai
+            đọc thuộc lòng từng con chữ. tuyệt vời cho tên riêng, mã SKU, số điều luật; chuyên gia B
+            (Dense) hiểu ý định sâu xa. bắt được "chần gia cầm" khi người dùng gõ "luộc gà". Fuse hai
             danh sách bằng RRF không tốn chi phí, không cần normalize, và
             <strong>{" "}thắng consistently trên mọi benchmark MTEB, BEIR, MS MARCO so với từng nhánh riêng lẻ</strong>.
             Đây là lý do mọi hệ thống RAG nghiêm túc năm 2025 đều dùng hybrid ngay từ ngày đầu.
@@ -685,11 +685,11 @@ export default function HybridSearchTopic() {
           question="BM25 trả score 0–10, Dense trả cosine 0–1. Bạn cộng thẳng hai số và sort. Chuyện gì xảy ra?"
           options={[
             "Ổn, miễn là cả hai đều dương",
-            "BM25 sẽ luôn áp đảo vì thang lớn hơn — tài liệu top chỉ còn phản ánh BM25, nhánh dense bị vô hiệu",
+            "BM25 sẽ luôn áp đảo vì thang lớn hơn. tài liệu top chỉ còn phản ánh BM25, nhánh dense bị vô hiệu",
             "Kết quả nhanh hơn vì không cần phép chia",
           ]}
           correct={1}
-          explanation="Phải min-max hoặc z-score trước khi cộng. Hoặc dùng RRF — ăn đứt vì dùng rank, không quan tâm scale gốc. Đây là bài học đau thương của nhiều team triển khai hybrid lần đầu."
+          explanation="Phải min-max hoặc z-score trước khi cộng. Hoặc dùng RRF. ăn đứt vì dùng rank, không quan tâm scale gốc. Đây là bài học đau thương của nhiều team triển khai hybrid lần đầu."
         />
       </LessonSection>
 
@@ -697,8 +697,8 @@ export default function HybridSearchTopic() {
         <InlineChallenge
           question="Truy vấn: 'CCCD/CMND eKYC Vietcombank điều 27'. Nên nghiêng weight về nhánh nào?"
           options={[
-            "Dense — vì LLM hiểu ngữ nghĩa tốt hơn mọi từ",
-            "BM25 — vì truy vấn đầy token hiếm, exact match đáng giá hơn ngữ nghĩa",
+            "Dense. vì LLM hiểu ngữ nghĩa tốt hơn mọi từ",
+            "BM25. vì truy vấn đầy token hiếm, exact match đáng giá hơn ngữ nghĩa",
             "Luôn để α = 0.5 cho an toàn",
           ]}
           correct={1}
@@ -742,7 +742,7 @@ export default function HybridSearchTopic() {
               <p>
                 <strong>Vì sao dùng 1/(k + rank) mà không phải 1/rank?</strong> Nếu đặt
                 <LaTeX>{" f(r) = 1/r "}</LaTeX>, tài liệu rank #1 đóng góp 1.0 còn rank
-                #2 chỉ 0.5 — chênh lệch quá lớn. Một tài liệu chỉ cần &quot;thắng sít sao&quot;
+                #2 chỉ 0.5. chênh lệch quá lớn. Một tài liệu chỉ cần &quot;thắng sít sao&quot;
                 ở một nhánh cũng đủ áp đảo. Thêm hằng số k vào mẫu làm mịn đường cong:
                 với k = 60, rank #1 đóng góp 1/61 ≈ 0.0164, rank #2 đóng góp 1/62 ≈ 0.0161,
                 cách nhau 0.0003. Tài liệu xuất hiện đều ở cả hai nhánh sẽ thắng tài liệu
@@ -767,7 +767,7 @@ export default function HybridSearchTopic() {
                 <LaTeX>{"\\text{RRF}(d) = \\sum_{i=1}^{N} w_i \\cdot \\frac{1}{k + r_i(d)}"}</LaTeX>
                 . Với <LaTeX>{"w_i = 1"}</LaTeX> ta có RRF thuần; có thể đặt{" "}
                 <LaTeX>{"w_i"}</LaTeX> khác để &quot;tin&quot; nhánh chất lượng cao hơn
-                (ví dụ SPLADE cao hơn BM25). Khi N tăng, RRF càng ổn định — đây là lý
+                (ví dụ SPLADE cao hơn BM25). Khi N tăng, RRF càng ổn định. đây là lý
                 do Vespa, Vald cho phép 4–5 nhánh fuse.
               </p>
             </div>
@@ -816,12 +816,12 @@ export default function HybridSearchTopic() {
               </p>
               <p>
                 <strong>RRF:</strong>{" "}Dùng rank, không cần normalize, hyperparameter k dễ tune (thường để 60).
-                Phù hợp production — đây là mặc định của Elasticsearch 8.9+, Weaviate, Vespa.
+                Phù hợp production. đây là mặc định của Elasticsearch 8.9+, Weaviate, Vespa.
               </p>
               <p>
                 <strong>Learned Fusion:</strong>{" "}Huấn luyện một mô hình nhỏ (LightGBM, tiny MLP) nhận
                 score hai nhánh + query features để học trọng số tối ưu. Tốt nhất khi có click data hoặc
-                relevance judgements — xem bài của Uber Eats, Spotify, Amazon.
+                relevance judgements. xem bài của Uber Eats, Spotify, Amazon.
               </p>
             </div>
           </Callout>
@@ -831,8 +831,8 @@ export default function HybridSearchTopic() {
               <li>Quên chuẩn hoá BM25 và cosine trước convex → nhánh scale lớn áp đảo, dense gần như vô dụng</li>
               <li>Dùng cùng một HNSW index cho cả hai nhánh → sparse không dùng được HNSW, phải có inverted index</li>
               <li>Lấy top-10 mỗi nhánh rồi fuse → nếu tài liệu tốt nằm ở rank 15 của nhánh kia thì bị rớt, nên lấy top-100 rồi fuse xuống top-10</li>
-              <li>Đặt α cố định cho mọi query — query-dependent fusion bằng LLM classifier thường tăng 3–8% NDCG</li>
-              <li>Bỏ qua bước re-ranking — hybrid chỉ là <em>recall</em>, cross-encoder mới cho <em>precision</em></li>
+              <li>Đặt α cố định cho mọi query. query-dependent fusion bằng LLM classifier thường tăng 3–8% NDCG</li>
+              <li>Bỏ qua bước re-ranking. hybrid chỉ là <em>recall</em>, cross-encoder mới cho <em>precision</em></li>
             </ul>
           </Callout>
 
@@ -843,7 +843,7 @@ export default function HybridSearchTopic() {
               <li><strong>Qdrant 1.10+:</strong>{" "}Query API hỗ trợ sparse + dense + fusion trong một payload</li>
               <li><strong>Pinecone:</strong>{" "}Sparse-dense vectors qua SPLADE</li>
               <li><strong>pgvector + pg_trgm:</strong>{" "}Tự triển khai trong PostgreSQL, kiểm soát 100%</li>
-              <li><strong>Vespa:</strong>{" "}Ranking expressions linh hoạt, nested rank profiles — lựa chọn của Spotify, Yahoo</li>
+              <li><strong>Vespa:</strong>{" "}Ranking expressions linh hoạt, nested rank profiles. lựa chọn của Spotify, Yahoo</li>
             </ul>
           </Callout>
 
@@ -852,7 +852,7 @@ export default function HybridSearchTopic() {
               Nếu corpus nhỏ (&lt; 10k), query ngắn không có token hiếm, và bạn đã có cross-encoder
               re-ranker mạnh, pure dense có thể đủ. Với corpus công khai lớn (Wikipedia, web crawl),
               pure BM25 + cross-encoder cũng xuất sắc (xem ColBERTv2, monoT5). Hybrid tỏa sáng nhất
-              khi corpus chứa hỗn hợp nội dung đa dạng và query chứa cả tên riêng lẫn câu tự nhiên — đây
+              khi corpus chứa hỗn hợp nội dung đa dạng và query chứa cả tên riêng lẫn câu tự nhiên. đây
               chính là trường hợp mọi chatbot doanh nghiệp.
             </p>
           </Callout>
@@ -890,7 +890,7 @@ export default function HybridSearchTopic() {
             <div className="space-y-3 text-sm">
               <p>
                 Giả sử nhánh BM25 có một tài liệu điểm bất thường cao (outlier). Trong convex combination,
-                outlier này sẽ chi phối toàn bộ fusion — các tài liệu khác gần như không đóng góp. Nhưng
+                outlier này sẽ chi phối toàn bộ fusion. các tài liệu khác gần như không đóng góp. Nhưng
                 trong RRF, <em>chỉ rank mới quan trọng</em>. Outlier có BM25 = 1000 hay BM25 = 10 đều dẫn
                 đến cùng một rank #1, đóng góp 1/(k + 1) như nhau.
               </p>
@@ -913,16 +913,16 @@ export default function HybridSearchTopic() {
             <em>zalo-ai-challenge 2021 legal retrieval</em>, pure BM25 đạt NDCG@10 ≈ 0.42, pure
             multilingual-e5-base đạt 0.51, còn hybrid RRF (k = 60) đạt 0.58. Re-rank bằng
             bge-reranker-v2-m3 đẩy lên 0.64. Cải thiện 22% NDCG chỉ bằng việc ghép thêm BM25 và
-            một cross-encoder nhẹ — đây là lý do không team nghiêm túc nào xây RAG tiếng Việt mà
+            một cross-encoder nhẹ. đây là lý do không team nghiêm túc nào xây RAG tiếng Việt mà
             bỏ qua hybrid.
           </p>
 
           <Callout variant="tip" title="Quy tắc ngón tay cái khi chọn α ban đầu">
             <ul className="list-disc list-inside space-y-1 text-sm">
-              <li><strong>α = 0.3</strong>{" "}— domain pháp luật, y tế, tài chính (nhiều token chuyên ngành, code SKU, số điều khoản)</li>
-              <li><strong>α = 0.5</strong>{" "}— domain chung, tin tức, blog, ecommerce đa dạng</li>
-              <li><strong>α = 0.7</strong>{" "}— chatbot tư vấn, hỏi đáp tự nhiên, FAQ ngữ nghĩa</li>
-              <li><strong>α ∈ [0.4, 0.6]</strong>{" "}— điểm mặc định an toàn nếu chưa có click data</li>
+              <li><strong>α = 0.3</strong>{" "}: domain pháp luật, y tế, tài chính (nhiều token chuyên ngành, code SKU, số điều khoản)</li>
+              <li><strong>α = 0.5</strong>{" "}: domain chung, tin tức, blog, ecommerce đa dạng</li>
+              <li><strong>α = 0.7</strong>{" "}: chatbot tư vấn, hỏi đáp tự nhiên, FAQ ngữ nghĩa</li>
+              <li><strong>α ∈ [0.4, 0.6]</strong>{" "}: điểm mặc định an toàn nếu chưa có click data</li>
             </ul>
             <p className="text-sm mt-2">
               Sau khi có ít nhất 1000 click labels, hãy grid-search α ∈ {"{"} 0.1, 0.2, ..., 0.9 {"}"} trên
@@ -930,7 +930,7 @@ export default function HybridSearchTopic() {
             </p>
           </Callout>
 
-          <CollapsibleDetail title="So sánh với SPLADE và ColBERT — hai đối thủ của Hybrid truyền thống">
+          <CollapsibleDetail title="So sánh với SPLADE và ColBERT. hai đối thủ của Hybrid truyền thống">
             <div className="space-y-3 text-sm">
               <p>
                 <strong>SPLADE</strong>{" "}(Sparse Lexical AnD Expansion) sinh sparse vector từ BERT,
@@ -955,7 +955,7 @@ export default function HybridSearchTopic() {
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Cài đặt chi tiết 5 reranker phổ biến — so sánh điểm mạnh/yếu">
+          <CollapsibleDetail title="Cài đặt chi tiết 5 reranker phổ biến. so sánh điểm mạnh/yếu">
             <div className="space-y-3 text-sm">
               <p>
                 <strong>1. MS MARCO MiniLM (cross-encoder/ms-marco-MiniLM-L-6-v2).</strong>
@@ -1006,7 +1006,7 @@ export default function HybridSearchTopic() {
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Cài đặt Weaviate RELATIVE_SCORE fusion — khác RRF thế nào">
+          <CollapsibleDetail title="Cài đặt Weaviate RELATIVE_SCORE fusion. khác RRF thế nào">
             <div className="space-y-3 text-sm">
               <p>
                 Weaviate cung cấp hai fusion strategy: <code>RANKED</code> (RRF) và
@@ -1030,8 +1030,7 @@ export default function HybridSearchTopic() {
                 </li>
               </ol>
               <p>
-                <strong>Khác RRF:</strong> RELATIVE_SCORE giữ &quot;khoảng cách&quot;
-                — nếu BM25 top-1 cách top-2 một khoảng cực lớn, top-1 vẫn áp đảo sau
+                <strong>Khác RRF:</strong> RELATIVE_SCORE giữ &quot;khoảng cách&quot;. nếu BM25 top-1 cách top-2 một khoảng cực lớn, top-1 vẫn áp đảo sau
                 normalize. RRF xoá sạch thông tin này, chỉ quan tâm rank.
               </p>
               <p>
@@ -1044,13 +1043,13 @@ export default function HybridSearchTopic() {
               </p>
               <p>
                 <strong>Ghi nhớ quan trọng:</strong> Weaviate tính alpha = 0 là pure
-                BM25, alpha = 1 là pure vector — ngược với một số hệ khác (ví dụ
+                BM25, alpha = 1 là pure vector. ngược với một số hệ khác (ví dụ
                 Vespa). Luôn đọc doc trước khi chuyển provider.
               </p>
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Cài đặt Qdrant Query API fusion — sparse + dense trong một payload">
+          <CollapsibleDetail title="Cài đặt Qdrant Query API fusion. sparse + dense trong một payload">
             <div className="space-y-3 text-sm">
               <p>
                 Từ Qdrant 1.10, Query API hỗ trợ fusion trực tiếp trong client. Ví dụ
@@ -1080,7 +1079,7 @@ export default function HybridSearchTopic() {
               </CodeBlock>
               <p>
                 Qdrant hỗ trợ <code>fusion: rrf</code> và <code>fusion: dbsf</code>
-                (Distribution-Based Score Fusion — normalize score theo phân phối rồi
+                (Distribution-Based Score Fusion. normalize score theo phân phối rồi
                 cộng). <code>dbsf</code> giống RELATIVE nhưng dùng z-score thay vì
                 min-max; tốt hơn khi có outlier.
               </p>
@@ -1117,7 +1116,7 @@ export default function HybridSearchTopic() {
           </CollapsibleDetail>
 
           <p><strong>Triển khai Elasticsearch 8.9+ native RRF:</strong></p>
-          <CodeBlock language="json" title="POST /cooking-recipes/_search — hybrid BM25 + kNN với RRF">
+          <CodeBlock language="json" title="POST /cooking-recipes/_search. hybrid BM25 + kNN với RRF">
 {`{
   "retriever": {
     "rrf": {
@@ -1268,12 +1267,12 @@ if __name__ == "__main__":
 
       <LessonSection step={7} totalSteps={9} label="Tóm tắt">
         <MiniSummary points={[
-          "Hybrid Search = nhánh BM25 (sparse, exact match) + nhánh Dense (embedding, ngữ nghĩa) — bổ sung điểm yếu của nhau",
+          "Hybrid Search = nhánh BM25 (sparse, exact match) + nhánh Dense (embedding, ngữ nghĩa). bổ sung điểm yếu của nhau",
           "Convex combination: α · dense_norm + (1-α) · bm25_norm, cần chuẩn hoá min-max hoặc z-score trước để hai thang đo không lệch",
-          "RRF = 1/(k + rank_BM25) + 1/(k + rank_Dense), k = 60 mặc định — dùng rank nên không cần normalize, robust với outlier",
+          "RRF = 1/(k + rank_BM25) + 1/(k + rank_Dense), k = 60 mặc định. dùng rank nên không cần normalize, robust với outlier",
           "α gần 0 nghiêng BM25 (tên riêng, mã SKU, điều luật). α gần 1 nghiêng dense (câu hỏi tự nhiên, đồng nghĩa)",
           "Luôn lấy top-100 từ mỗi nhánh rồi fuse xuống top-10; sau đó re-rank bằng cross-encoder để đạt precision tối đa",
-          "Elasticsearch 8.9+, Weaviate, Qdrant, Vespa đều hỗ trợ RRF native — hybrid là tiêu chuẩn RAG năm 2025",
+          "Elasticsearch 8.9+, Weaviate, Qdrant, Vespa đều hỗ trợ RRF native. hybrid là tiêu chuẩn RAG năm 2025",
         ]} />
       </LessonSection>
 

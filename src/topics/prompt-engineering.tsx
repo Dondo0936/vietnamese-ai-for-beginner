@@ -35,9 +35,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "prompt-engineering",
   title: "Prompt Engineering",
-  titleVi: "Prompt engineering: dặn AI đúng việc ngay lần đầu",
+  titleVi: "Prompt engineering: biến yêu cầu thành spec",
   description:
-    "Viết prompt rõ để AI hiểu đúng việc, đúng giọng và đúng độ dài. Dành cho dân văn phòng, không cần lập trình.",
+    "Viết prompt như một spec: mục tiêu, context, định dạng, ví dụ và tiêu chí kiểm để LLM làm đúng việc.",
   category: "llm-concepts",
   tags: ["prompt", "llm", "few-shot", "instruction"],
   difficulty: "beginner",
@@ -105,38 +105,38 @@ const PROMPT_COMPONENTS: PromptComponent[] = [
     label: "Ví dụ mẫu",
     icon: Sparkles,
     snippet:
-      'Ví dụ giọng mong muốn: "Kính gửi anh Minh, em xin phép nghỉ từ thứ 5 đến thứ 7…"',
+      'Ví dụ output đúng: {"intent":"refund","priority":"high","needs_human":true}',
     weight: 10,
     color: "#DC2626",
   },
 ];
 
-// Dữ liệu cho Tab gallery (4 khung mẫu cho dân văn phòng).
+// Dữ liệu cho Tab gallery: các khung mẫu đủ gần việc thật để kiểm prompt.
 const TEMPLATES = [
   {
-    label: "Email xin nghỉ",
+    label: "Trích JSON từ ticket",
     slot1: "Vai trò",
-    slot1Value: "Bạn là nhân viên văn phòng biết viết email khéo léo.",
+    slot1Value: "Bạn là trợ lý phân loại ticket cho đội support.",
     slot2: "Nhiệm vụ",
     slot2Value:
-      "Viết email xin nghỉ 2 ngày gửi sếp, lý do: khám sức khỏe định kỳ.",
+      "Trích sản phẩm, lỗi chính và mức ưu tiên từ nội dung ticket.",
     slot3: "Ràng buộc",
-    slot3Value: "Độ dài ~80 từ, giọng trang trọng, có đề xuất người thay ca.",
+    slot3Value: "Trả về JSON đúng schema, không thêm câu giải thích.",
     preview:
-      "Kính gửi anh Minh, em xin phép nghỉ thứ 5 và thứ 6 tuần này để khám sức khỏe định kỳ. Trong thời gian em vắng, chị Lan sẽ thay em xử lý báo cáo tuần. Em sẽ kiểm tra email vào buổi tối và phản hồi ngay nếu anh cần. Em xin cảm ơn anh.",
+      '{"product":"thẻ tín dụng","issue":"không hoàn tiền","priority":"high"}',
   },
   {
-    label: "Tóm tắt cuộc họp",
+    label: "Eval câu trả lời",
     slot1: "Vai trò",
-    slot1Value: "Bạn là thư ký cuộc họp có khả năng tóm tắt súc tích.",
+    slot1Value: "Bạn là evaluator chấm câu trả lời chatbot.",
     slot2: "Nhiệm vụ",
     slot2Value:
-      "Tóm tắt đoạn ghi âm cuộc họp 30 phút về kế hoạch Q2 thành biên bản.",
+      "Chấm xem câu trả lời có bám nguồn và trả lời đúng câu hỏi không.",
     slot3: "Ràng buộc",
     slot3Value:
-      "Dưới 200 từ, chia 3 phần: quyết định chính, công việc giao, mốc thời gian.",
+      "Trả về điểm 1-5, lý do ngắn và trích dẫn câu sai nếu có.",
     preview:
-      "Quyết định chính: ra mắt sản phẩm A trong tháng 5. Công việc giao: (1) Hương phụ trách landing page trước 20/4, (2) Tú chạy ads thử nghiệm 5 triệu. Mốc quan trọng: chốt bản demo 25/4, đánh giá kết quả 15/5.",
+      '{"score":2,"reason":"Câu trả lời nêu thời hạn 7 ngày nhưng nguồn ghi 15 ngày.","bad_quote":"7 ngày"}',
   },
   {
     label: "Bài đăng LinkedIn",

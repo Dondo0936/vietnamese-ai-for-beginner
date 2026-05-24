@@ -811,7 +811,7 @@ export default function GloveTopic() {
           . Hãy so sánh GloVe và Word2Vec trên 5 query tiếng Việt:
         </p>
 
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="space-y-4">
             {/* Selector */}
             <div className="flex flex-wrap gap-2 justify-center">
@@ -901,7 +901,7 @@ export default function GloveTopic() {
               {currentAnalogy.note}
             </p>
           </div>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
@@ -918,7 +918,7 @@ export default function GloveTopic() {
           <LaTeX>{`f(X_{ij})`}</LaTeX>.
         </p>
 
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-background/40 p-4">
               <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2 text-center">
@@ -1125,7 +1125,7 @@ export default function GloveTopic() {
               </div>
             </CollapsibleDetail>
           </div>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────

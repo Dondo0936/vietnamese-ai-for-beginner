@@ -12,9 +12,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "agentic-rag",
   title: "Agentic RAG",
-  titleVi: "RAG tăng cường với Agent",
+  titleVi: "Agentic RAG: biết tìm lại khi nguồn yếu",
   description:
-    "Kết hợp RAG với AI Agent để tự quyết định khi nào truy xuất, xác minh và tổng hợp thông tin",
+    "Kết hợp retrieval với agent để kiểm nguồn, đổi truy vấn và tìm lại khi bằng chứng chưa đủ mạnh.",
   category: "emerging",
   tags: ["rag", "agent", "adaptive-retrieval"],
   difficulty: "intermediate",
@@ -25,7 +25,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 7;
 
 /* ──────────────────────────────────────────────────────────────
-   Preset câu hỏi cho demo — mỗi câu hỏi "kích hoạt" một chuỗi
+   Preset câu hỏi cho demo. mỗi câu hỏi "kích hoạt" một chuỗi
    hành động khác nhau của agent. Điều này giúp người học thấy
    tính adaptive của Agentic RAG: cùng một agent, nhưng với câu
    hỏi khác nhau, số bước và lựa chọn tool cũng khác.
@@ -112,8 +112,8 @@ const SCENARIOS: AgentScenario[] = [
     ],
     naiveRelevance: 0.58,
     agenticRelevance: 0.94,
-    naiveSummary: "Trả lời 12 ngày (số liệu cũ 2024) — có thể SAI cho năm 2025.",
-    agenticSummary: "Trả lời 15 ngày + trích dẫn văn bản 2025 — chính xác, có nguồn.",
+    naiveSummary: "Trả lời 12 ngày (số liệu cũ 2024). có thể SAI cho năm 2025.",
+    agenticSummary: "Trả lời 15 ngày + trích dẫn văn bản 2025. chính xác, có nguồn.",
   },
   {
     id: "compare",
@@ -131,7 +131,7 @@ const SCENARIOS: AgentScenario[] = [
         id: "n2",
         phase: "answer",
         title: "Generate",
-        detail: "LLM ghép số liệu — nhưng đơn vị khác nhau (triệu vs tỷ VND) → kết luận có thể sai 1000 lần.",
+        detail: "LLM ghép số liệu. Nhưng đơn vị khác nhau (triệu vs tỷ VND) → kết luận có thể sai 1000 lần.",
         score: 0.48,
       },
     ],
@@ -290,7 +290,7 @@ const SCENARIOS: AgentScenario[] = [
     naiveRelevance: 0.6,
     agenticRelevance: 0.99,
     naiveSummary: "Retrieve lãng phí, context nhiễu, có thể chậm + tốn token.",
-    agenticSummary: "Skip retrieve — đúng loại câu hỏi cần trả lời thẳng.",
+    agenticSummary: "Skip retrieve. đúng loại câu hỏi cần trả lời thẳng.",
   },
 ];
 
@@ -377,14 +377,14 @@ export default function AgenticRAGTopic() {
       {
         question: "Khi nào Agentic RAG quyết định KHÔNG retrieve?",
         options: [
-          "Không bao giờ — luôn retrieve để an toàn",
+          "Không bao giờ. luôn retrieve để an toàn",
           "Khi câu hỏi thuộc kiến thức chung mà model đã biết (ví dụ: '1+1=?'), retrieve sẽ lãng phí và có thể gây nhiễu",
           "Khi database trống",
           "Khi user yêu cầu",
         ],
         correct: 1,
         explanation:
-          "Adaptive retrieval: câu hỏi kiến thức chung → trả lời trực tiếp (nhanh, rẻ). Câu hỏi cần thông tin cụ thể → retrieve. Câu hỏi phức tạp → multi-step retrieve. Không phải mọi câu đều cần retrieve — giống không cần tra Google cho '1+1=?'.",
+          "Adaptive retrieval: câu hỏi kiến thức chung → trả lời trực tiếp (nhanh, rẻ). Câu hỏi cần thông tin cụ thể → retrieve. Câu hỏi phức tạp → multi-step retrieve. Không phải mọi câu đều cần retrieve. giống không cần tra Google cho '1+1=?'.",
       },
       {
         question: "Self-RAG technique hoạt động thế nào?",
@@ -416,11 +416,11 @@ export default function AgenticRAGTopic() {
           "Chỉ một điểm số duy nhất cho toàn bộ câu trả lời",
           "Quyết định tiếp theo: dừng và answer, retrieve thêm, reformulate query, hoặc từ chối trả lời",
           "Log để debug",
-          "Không có output — chỉ để đo performance",
+          "Không có output. chỉ để đo performance",
         ],
         correct: 1,
         explanation:
-          "Evaluator đóng vai trò 'bộ não phản xạ': nhìn retrieved docs + câu hỏi gốc → quyết định hành động tiếp theo. Đây là lý do agentic RAG 'thông minh' — có vòng lặp đóng (closed loop) thay vì pipeline một chiều.",
+          "Evaluator đóng vai trò 'bộ não phản xạ': nhìn retrieved docs + câu hỏi gốc → quyết định hành động tiếp theo. Đây là lý do agentic RAG 'thông minh'. có vòng lặp đóng (closed loop) thay vì pipeline một chiều.",
       },
       {
         question: "Multi-source retrieval trong Agentic RAG có lợi ích gì?",
@@ -432,14 +432,14 @@ export default function AgenticRAGTopic() {
         ],
         correct: 1,
         explanation:
-          "Không nguồn nào tốt cho mọi loại câu hỏi. Vector DB giỏi semantic nhưng yếu exact match. SQL chính xác nhưng cứng. Web mới nhưng nhiễu. Agent biết chọn đúng nguồn cho đúng câu hỏi — như một nhà nghiên cứu chuyên nghiệp.",
+          "Không nguồn nào tốt cho mọi loại câu hỏi. Vector DB giỏi semantic nhưng yếu exact match. SQL chính xác nhưng cứng. Web mới nhưng nhiễu. Agent biết chọn đúng nguồn cho đúng câu hỏi. như một nhà nghiên cứu chuyên nghiệp.",
       },
       {
         question: "Trade-off chính của Agentic RAG so với Basic RAG là gì?",
         options: [
           "Agentic RAG luôn nhanh hơn và rẻ hơn",
           "Agentic RAG chính xác hơn nhưng tốn nhiều token/latency do nhiều bước LLM call",
-          "Không có trade-off — Agentic RAG toàn ưu điểm",
+          "Không có trade-off. Agentic RAG toàn ưu điểm",
           "Agentic RAG chỉ chạy được với model nhỏ",
         ],
         correct: 1,
@@ -455,7 +455,7 @@ export default function AgenticRAGTopic() {
           { answer: "self-reflection", accept: ["self reflection", "tự phản hồi", "tự đánh giá", "reflection"] },
         ],
         explanation:
-          "Tool use giúp agent linh hoạt chọn nguồn (vector DB, SQL, web, API). Self-reflection (Self-RAG, CRAG) giúp agent quyết định retrieve tiếp, đổi truy vấn hay từ chối trả lời — chính xác hơn 15-30% so với basic RAG.",
+          "Tool use giúp agent linh hoạt chọn nguồn (vector DB, SQL, web, API). Self-reflection (Self-RAG, CRAG) giúp agent quyết định retrieve tiếp, đổi truy vấn hay từ chối trả lời. chính xác hơn 15-30% so với basic RAG.",
       },
     ],
     [],
@@ -465,21 +465,20 @@ export default function AgenticRAGTopic() {
     <>
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Chatbot công ty bạn dùng Basic RAG. User hỏi 'Chính sách nghỉ phép năm 2025 là gì?' — RAG trả về document 2024 (chưa update). Chatbot trả lời sai. Giải pháp?"
+          question="Chatbot công ty bạn dùng Basic RAG. Người dùng hỏi chính sách nghỉ phép năm 2025, nhưng hệ thống trả về tài liệu 2024 chưa cập nhật. Chatbot trả lời sai. Giải pháp?"
           options={[
-            "Update document thường xuyên hơn",
-            "Dùng Agentic RAG: agent kiểm tra document date, nhận biết outdated, tự động tìm document mới hơn hoặc báo cho user",
+            "Cập nhật tài liệu thường xuyên hơn, nhưng vẫn không kiểm được từng câu hỏi",
+            "Dùng Agentic RAG: agent kiểm ngày tài liệu, nhận ra nguồn đã cũ, rồi tìm tài liệu mới hơn hoặc báo thiếu nguồn",
             "Thay đổi LLM mạnh hơn",
           ]}
           correct={1}
-          explanation="Agentic RAG thông minh hơn: kiểm tra metadata (date, version), cross-check nhiều nguồn, tự nhận biết 'document này từ 2024, câu hỏi về 2025 — có thể outdated'. Agent tự quyết định: retrieve thêm, cảnh báo user, hoặc từ chối trả lời thay vì đưa thông tin sai."
+          explanation="Agentic RAG thêm bước kiểm nguồn: đọc metadata như ngày và version, so nhiều nguồn, rồi tự quyết định tìm tiếp, cảnh báo người dùng, hoặc từ chối trả lời khi bằng chứng yếu."
         >
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Hãy đóng vai người dùng: <strong className="text-foreground">chọn một câu hỏi</strong>, rồi
-          xem cả hai hệ thống chạy từng bước. Chú ý số bước, điểm relevance, và kết luận cuối cùng —
-          sự khác biệt giữa <strong className="text-foreground">naive RAG</strong> và{" "}
+          xem cả hai hệ thống chạy từng bước. Chú ý số bước, điểm relevance, và kết luận cuối cùng. sự khác biệt giữa <strong className="text-foreground">naive RAG</strong> và{" "}
           <strong className="text-foreground">agentic RAG</strong> nằm ở đó.
         </p>
         <VisualizationSection>
@@ -522,7 +521,7 @@ export default function AgenticRAGTopic() {
               </div>
             </div>
 
-            {/* Custom question — illustrative only, routes to closest scenario by keyword */}
+            {/* Custom question. illustrative only, routes to closest scenario by keyword */}
             <div>
               <p className="text-xs uppercase tracking-wide text-muted mb-2">
                 Hoặc thử nhập câu hỏi của bạn (agent sẽ chọn scenario gần nhất)
@@ -600,7 +599,7 @@ export default function AgenticRAGTopic() {
             {/* Run controls */}
             <div>
               <p className="text-xs uppercase tracking-wide text-muted mb-2">
-                3. Chạy agent — xem từng bước
+                3. Chạy agent. xem từng bước
               </p>
               <div className="flex items-center gap-3">
                 <button
@@ -740,8 +739,7 @@ export default function AgenticRAGTopic() {
             </div>
 
             <p className="text-[11px] text-muted leading-relaxed">
-              Chú ý: scenario &quot;1+1&quot; cho thấy agentic RAG có thể <em>ít bước hơn</em> naive RAG —
-              vì agent biết skip retrieve khi không cần. &quot;Nhiều bước&quot; không phải mục tiêu; mục tiêu
+              Chú ý: scenario &quot;1+1&quot; cho thấy agentic RAG có thể <em>ít bước hơn</em> naive RAG. vì agent biết skip retrieve khi không cần. &quot;Nhiều bước&quot; không phải mục tiêu; mục tiêu
               là <em>đúng số bước</em> cho loại câu hỏi.
             </p>
           </div>
@@ -751,14 +749,14 @@ export default function AgenticRAGTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Basic RAG giống <strong>máy tra cứu tự động</strong>{" "}— luôn tìm, luôn trả.
-            Agentic RAG giống <strong>nhà nghiên cứu thông minh</strong>{" "}— suy nghĩ trước khi tìm,
+            Basic RAG giống <strong>máy tra cứu tự động</strong>{" "}: luôn tìm, luôn trả.
+            Agentic RAG giống <strong>nhà nghiên cứu thông minh</strong>{" "}: suy nghĩ trước khi tìm,
             kiểm tra nguồn, cross-check, và biết nói &apos;tôi không chắc chắn&apos; khi thông tin không đủ.
             Bước nhảy từ &apos;retrieve and read&apos; sang{" "}
             <strong>&apos;think, retrieve, verify, synthesize&apos;</strong>.
           </p>
           <p className="mt-3">
-            Khi bạn thêm vòng lặp <LaTeX>{"\\text{Plan} \\to \\text{Retrieve} \\to \\text{Evaluate} \\to \\text{Re-retrieve?}"}</LaTeX>, hệ thống từ một <em>pipeline</em> trở thành một <em>agent</em>. Không phải model giỏi hơn — mà là cấu trúc giỏi hơn.
+            Khi bạn thêm vòng lặp <LaTeX>{"\\text{Plan} \\to \\text{Retrieve} \\to \\text{Evaluate} \\to \\text{Re-retrieve?}"}</LaTeX>, hệ thống từ một <em>pipeline</em> trở thành một <em>agent</em>. Không phải model giỏi hơn. Đó là cấu trúc giỏi hơn.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -784,7 +782,7 @@ export default function AgenticRAGTopic() {
               "Viết rule if/else cho từng loại câu hỏi",
             ]}
             correct={1}
-            explanation="Adaptive retrieval tiết kiệm 80% cost/latency cho các câu đơn giản, đồng thời đảm bảo các câu phức tạp có đủ bước verify. Rule-based cũng được nhưng khó maintain khi chatbot scale — LLM classifier học được ngữ cảnh tốt hơn."
+            explanation="Adaptive retrieval tiết kiệm 80% cost/latency cho các câu đơn giản, đồng thời đảm bảo các câu phức tạp có đủ bước verify. Rule-based cũng được nhưng khó maintain khi chatbot scale. LLM classifier học được ngữ cảnh tốt hơn."
           />
         </div>
       </LessonSection>
@@ -794,7 +792,7 @@ export default function AgenticRAGTopic() {
           <p>
             <strong>Agentic RAG</strong>{" "}
             kết hợp <TopicLink slug="rag">RAG</TopicLink> với AI Agent dựa trên{" "}
-            <TopicLink slug="agent-architecture">agent architecture</TopicLink> — agent tự quyết định khi nào
+            <TopicLink slug="agent-architecture">agent architecture</TopicLink>. agent tự quyết định khi nào
             retrieve, từ nguồn nào, bao nhiêu lần, và có cần verify không. Khả năng điều phối nhiều công cụ đến từ{" "}
             <TopicLink slug="function-calling">function calling</TopicLink>.
           </p>
@@ -824,7 +822,7 @@ export default function AgenticRAGTopic() {
               so với basic RAG.
             </p>
             <p className="mt-2 text-xs">
-              Key insight: evaluator không cần là model lớn — một BERT-class model fine-tune cho task này đủ tốt
+              Key insight: evaluator không cần là model lớn. một BERT-class model fine-tune cho task này đủ tốt
               và rất nhanh. Điều này giúp CRAG chạy ở chi phí thấp.
             </p>
           </Callout>
@@ -833,7 +831,7 @@ export default function AgenticRAGTopic() {
             <p>
               Self-RAG (Asai et al. 2023) huấn luyện model sinh ra các &quot;reflection tokens&quot; đặc biệt xen
               trong output: <code>[Retrieve=Yes/No]</code>, <code>[IsRel]</code>, <code>[IsSup]</code>,{" "}
-              <code>[IsUse]</code>. Mỗi token là một nhãn đánh giá từng bước — từ đó model &quot;tự giám sát&quot;
+              <code>[IsUse]</code>. Mỗi token là một nhãn đánh giá từng bước. từ đó model &quot;tự giám sát&quot;
               chính mình mà không cần evaluator ngoài.
             </p>
           </Callout>
@@ -1007,7 +1005,7 @@ def should_reretrieve(state: AgentState) -> Literal["reformulate", "answer"]:
 def reformulate_node(state: AgentState) -> AgentState:
     """Phase 4: reformulate query."""
     prompt = f"""Query cũ: {state.get('reformulated') or state['question']}
-Docs không đủ tốt. Hãy viết lại query — cụ thể hơn, đổi từ khoá."""
+Docs không đủ tốt. Hãy viết lại query. cụ thể hơn, đổi từ khoá."""
     new_q = llm.invoke([HumanMessage(content=prompt)]).content
     return {**state, "reformulated": new_q, "iterations": state["iterations"] + 1}
 
@@ -1052,7 +1050,7 @@ print(result["answer"])`}
               Chain LangChain cổ điển là DAG một chiều: input → step1 → step2 → output. Agentic RAG cần các cạnh{" "}
               <em>ngược</em> (reformulate → retrieve lại) và <em>có điều kiện</em> (evaluate → branch). LangGraph
               cho phép định nghĩa state machine rõ ràng: mỗi node đọc/ghi state, mỗi cạnh có thể gắn hàm điều
-              kiện. Bạn có thể debug bằng cách in ra trace các state transition — điều gần như bất khả với
+              kiện. Bạn có thể debug bằng cách in ra trace các state transition. điều gần như bất khả với
               prompt-only agent.
             </p>
             <p className="mt-2 text-sm leading-relaxed">
@@ -1064,12 +1062,12 @@ print(result["answer"])`}
 
           <p className="mt-5">
             <strong>Các kiến trúc agentic RAG phổ biến:</strong>{" "}
-            khi design một hệ thống, bạn sẽ chọn giữa các pattern sau — mỗi pattern có trade-off riêng về độ phức
+            khi design một hệ thống, bạn sẽ chọn giữa các pattern sau. mỗi pattern có trade-off riêng về độ phức
             tạp, chi phí và chất lượng:
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <strong>Query Rewriter:</strong>{" "}pattern đơn giản nhất — LLM viết lại query trước khi vào vector
+              <strong>Query Rewriter:</strong>{" "}pattern đơn giản nhất. LLM viết lại query trước khi vào vector
               search. Không có vòng lặp, chi phí thấp, nhưng không thể sửa sai sau retrieval.
             </li>
             <li>
@@ -1089,7 +1087,7 @@ print(result["answer"])`}
               thực thi từng task. Dễ debug, dễ log, dễ caching.
             </li>
             <li>
-              <strong>ReAct loop:</strong>{" "}mix reasoning + acting trong từng turn — là nền tảng của hầu hết
+              <strong>ReAct loop:</strong>{" "}mix reasoning + acting trong từng turn. là nền tảng của hầu hết
               các framework agentic hiện đại.
             </li>
           </ul>
@@ -1105,11 +1103,11 @@ print(result["answer"])`}
                 Khi vượt, agent phải trả lời với gì đang có.
               </li>
               <li>
-                <strong>Tool result cache:</strong>{" "}cache retrieval theo normalized query — cùng câu hỏi không
+                <strong>Tool result cache:</strong>{" "}cache retrieval theo normalized query. cùng câu hỏi không
                 retrieve lại.
               </li>
               <li>
-                <strong>Prompt caching:</strong>{" "}Anthropic SDK cho phép cache system prompt + tool schema — tiết
+                <strong>Prompt caching:</strong>{" "}Anthropic SDK cho phép cache system prompt + tool schema. tiết
                 kiệm 80-90% input token cho các call lặp lại.
               </li>
               <li>
@@ -1153,24 +1151,24 @@ print(result["answer"])`}
             <p>
               Khi agent chạy 5-10 bước, log plain-text không đủ. Dùng LangSmith, Helicone, hoặc OpenTelemetry để
               xem cây call: mỗi node, input/output, token cost, latency. Khi một câu trả lời sai, bạn có thể lần
-              ngược xem agent đã retrieve gì, evaluator đã chấm sao, reformulate thế nào — đây là điểm khác biệt
+              ngược xem agent đã retrieve gì, evaluator đã chấm sao, reformulate thế nào. đây là điểm khác biệt
               giữa prototype và hệ thống production.
             </p>
             <p className="mt-2 text-xs">
               Một pattern hữu ích: gắn <code>trace_id</code> cho mọi request, log state sau mỗi node, và xuất ra
-              JSON để review offline. Bạn sẽ ngạc nhiên về số lần agent &quot;đi vòng&quot; — nhiều hơn dự kiến.
+              JSON để review offline. Bạn sẽ ngạc nhiên về số lần agent &quot;đi vòng&quot;. nhiều hơn dự kiến.
             </p>
           </Callout>
 
           <p className="mt-4 text-xs text-muted leading-relaxed">
             Tóm lại: Agentic RAG không phải một công nghệ cụ thể mà là một <em>hướng tiếp cận</em>. Bạn có thể
-            bắt đầu bằng cách thêm 1 bước evaluator vào basic RAG (CRAG-style), sau đó nâng dần — thêm adaptive
+            bắt đầu bằng cách thêm 1 bước evaluator vào basic RAG (CRAG-style), sau đó nâng dần. thêm adaptive
             retrieval, multi-source, và cuối cùng là self-reflection. Mỗi bước thêm 5-10% accuracy và 20-30% độ
-            phức tạp — hãy dừng khi đủ cho use case của bạn.
+            phức tạp. hãy dừng khi đủ cho use case của bạn.
           </p>
           <p className="mt-2 text-xs text-muted leading-relaxed">
             Một lưu ý cuối: dù agentic, <em>đừng để agent chạy không giới hạn</em>. Luôn có timeout, budget, và
-            fallback path trả lời &quot;tôi không tìm được thông tin đáng tin&quot; — đây là hành vi đáng tin cậy
+            fallback path trả lời &quot;tôi không tìm được thông tin đáng tin&quot;. đây là hành vi đáng tin cậy
             cho production, không phải điểm yếu.
           </p>
         </ExplanationSection>
@@ -1182,9 +1180,9 @@ print(result["answer"])`}
             "Agentic RAG biến pipeline một chiều thành vòng lặp Plan → Retrieve → Evaluate → Re-retrieve → Answer, do agent tự điều phối.",
             "4 năng lực cốt lõi: Adaptive Retrieval, Multi-source, Self-reflection, Iterative Refinement.",
             "CRAG thêm evaluator nhẹ chấm correct/ambiguous/incorrect; Self-RAG huấn luyện model sinh reflection tokens để tự giám sát.",
-            "Adaptive retrieval cho phép skip bước retrieve cho câu kiến thức chung — tiết kiệm cost và tránh nhiễu.",
-            "Multi-source routing giúp chọn đúng công cụ: vector DB, SQL, web, API — tuỳ loại câu hỏi.",
-            "Trade-off chính: +15-30% accuracy, nhưng ×3-10 token và ×2-10 latency — hãy cân nhắc theo use case.",
+            "Adaptive retrieval cho phép skip bước retrieve cho câu kiến thức chung. tiết kiệm cost và tránh nhiễu.",
+            "Multi-source routing giúp chọn đúng công cụ: vector DB, SQL, web, API. tuỳ loại câu hỏi.",
+            "Trade-off chính: +15-30% accuracy, nhưng ×3-10 token và ×2-10 latency. hãy cân nhắc theo use case.",
           ]}
         />
       </LessonSection>

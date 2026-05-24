@@ -671,7 +671,7 @@ export default function InstanceSegmentationTopic() {
           của detection nảy nở dần.
           ============================================================ */}
       <LessonSection step={6} totalSteps={8} label="Pipeline Mask R-CNN">
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-center gap-2">
               {PIPELINE_STAGES.map((s, i) => (
@@ -898,7 +898,7 @@ export default function InstanceSegmentationTopic() {
               </button>
             </div>
           </div>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ============================================================

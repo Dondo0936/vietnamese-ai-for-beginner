@@ -1024,7 +1024,7 @@ if __name__ == "__main__":
 
       {/* ━━━ 6. ARMS RACE TIMELINE ━━━ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Cuộc chạy đua vũ trang">
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="space-y-4">
             <div>
               <h3 className="text-base font-bold text-foreground mb-1">
@@ -1204,7 +1204,7 @@ if __name__ == "__main__":
               </ul>
             </Callout>
           </div>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ━━━ 7. THỰC CHIẾN — PLAYBOOK ━━━ */}

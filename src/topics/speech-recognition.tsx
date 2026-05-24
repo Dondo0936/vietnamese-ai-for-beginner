@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "speech-recognition",
   title: "Speech Recognition",
-  titleVi: "Nhận dạng giọng nói — Tai nghe AI",
+  titleVi: "Nhận dạng giọng nói. Tai nghe AI",
   description:
     "Công nghệ chuyển đổi giọng nói con người thành văn bản, là nền tảng cho trợ lý ảo và ghi chú tự động.",
   category: "multimodal",
@@ -28,7 +28,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 const PIPELINE = [
-  { label: "Sóng âm", color: "#3b82f6", desc: "Thu nhận tín hiệu âm thanh thô từ microphone", detail: "Sóng âm liên tục được số hoá (sampling) thành chuỗi số — thường 16.000 mẫu/giây (16kHz). Mỗi mẫu là một giá trị biên độ." },
+  { label: "Sóng âm", color: "#3b82f6", desc: "Thu nhận tín hiệu âm thanh thô từ microphone", detail: "Sóng âm liên tục được số hoá (sampling) thành chuỗi số. thường 16.000 mẫu/giây (16kHz). Mỗi mẫu là một giá trị biên độ." },
   { label: "Mel-spectrogram", color: "#8b5cf6", desc: "Chuyển sóng âm thành 'ảnh' tần số-thời gian", detail: "STFT chia âm thanh thành cửa sổ 25ms, chuyển sang miền tần số. Mel scale mô phỏng cách tai người nghe: nhạy với tần thấp, ít nhạy với tần cao." },
   { label: "Encoder", color: "#f59e0b", desc: "Transformer encoder trích xuất đặc trưng ngữ nghĩa", detail: "Encoder (thường là Transformer) xử lý spectrogram, tạo ra chuỗi hidden states nắm bắt ý nghĩa âm thanh: nguyên âm, phụ âm, ngữ điệu." },
   { label: "Decoder", color: "#22c55e", desc: "Autoregressive decoder sinh ra chuỗi token văn bản", detail: "Decoder sinh từng token một (giống GPT), sử dụng cross-attention để 'nghe' lại audio features. Token = từ hoặc mảnh từ." },
@@ -46,7 +46,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mel-spectrogram biến đổi tần số theo Mel scale — mô phỏng cách tai người nhạy hơn với tần thấp (giọng nói) và ít nhạy với tần cao. Điều này giúp mô hình tập trung vào thông tin quan trọng nhất của tiếng nói.",
+      "Mel-spectrogram biến đổi tần số theo Mel scale. mô phỏng cách tai người nhạy hơn với tần thấp (giọng nói) và ít nhạy với tần cao. Điều này giúp mô hình tập trung vào thông tin quan trọng nhất của tiếng nói.",
   },
   {
     question: "Người miền Trung nói 'con cá' nhưng Whisper nhận ra 'con ká'. Vấn đề nằm ở đâu?",
@@ -70,16 +70,16 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "CTC (Connectionist Temporal Classification) sinh tất cả token song song — nhanh nhưng mỗi token không biết token trước/sau. Encoder-decoder sinh tuần tự — chậm hơn nhưng hiểu ngữ cảnh, tự sửa lỗi, và thêm dấu câu. Whisper dùng encoder-decoder.",
+      "CTC (Connectionist Temporal Classification) sinh tất cả token song song. nhanh nhưng mỗi token không biết token trước/sau. Encoder-decoder sinh tuần tự. chậm hơn nhưng hiểu ngữ cảnh, tự sửa lỗi, và thêm dấu câu. Whisper dùng encoder-decoder.",
   },
   {
     type: "fill-blank",
-    question: "Mô hình ASR hiện đại như {blank} (OpenAI) chuyển sóng âm thành biểu diễn trung gian gọi là {blank} — một 'ảnh' tần số-thời gian mô phỏng cách tai người nghe.",
+    question: "Mô hình ASR hiện đại như {blank} (OpenAI) chuyển sóng âm thành biểu diễn trung gian gọi là {blank}. một 'ảnh' tần số-thời gian mô phỏng cách tai người nghe.",
     blanks: [
       { answer: "Whisper", accept: ["whisper"] },
       { answer: "Mel-spectrogram", accept: ["mel spectrogram", "mel-spectrogram", "mel", "spectrogram"] },
     ],
-    explanation: "Whisper là mô hình ASR mã nguồn mở phổ biến nhất của OpenAI, hỗ trợ 99 ngôn ngữ. Nó chuyển sóng âm 16kHz thành Mel-spectrogram 80 kênh — biểu diễn tần số theo Mel scale mô phỏng cảm nhận phi tuyến tính của tai người.",
+    explanation: "Whisper là mô hình ASR mã nguồn mở phổ biến nhất của OpenAI, hỗ trợ 99 ngôn ngữ. Nó chuyển sóng âm 16kHz thành Mel-spectrogram 80 kênh. biểu diễn tần số theo Mel scale mô phỏng cảm nhận phi tuyến tính của tai người.",
   },
 ];
 
@@ -171,8 +171,7 @@ export default function SpeechRecognitionTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           Nhận dạng giọng nói thực chất là bài toán{" "}
-          <strong>dịch ngôn ngữ</strong>{" "}
-          — dịch từ{" "}
+          <strong>dịch ngôn ngữ</strong>{" "}. dịch từ{" "}
           <strong>ngôn ngữ âm thanh</strong>{" "}
           (sóng âm) sang{" "}
           <strong>ngôn ngữ văn bản</strong>{" "}
@@ -199,8 +198,8 @@ export default function SpeechRecognitionTopic() {
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
           <p>
-            <strong>Nhận dạng giọng nói (ASR — Automatic Speech Recognition)</strong>{" "}
-            chuyển đổi tín hiệu âm thanh thành văn bản. Đây là nền tảng cho trợ lý ảo (Siri, Alexa), phụ đề tự động, và ghi chú cuộc họp — ngược lại với bài toán{" "}
+            <strong>Nhận dạng giọng nói (ASR. Automatic Speech Recognition)</strong>{" "}
+            chuyển đổi tín hiệu âm thanh thành văn bản. Đây là nền tảng cho trợ lý ảo (Siri, Alexa), phụ đề tự động, và ghi chú cuộc họp. ngược lại với bài toán{" "}
             <TopicLink slug="tts">tổng hợp giọng nói (TTS)</TopicLink>{" "}
             chuyển văn bản thành âm thanh.
           </p>
@@ -312,7 +311,7 @@ for seg in result["segments"]:
           points={[
             "ASR = dịch từ sóng âm sang văn bản. Kiến trúc encoder-decoder (Whisper) là chuẩn hiện đại.",
             "Pipeline: Sóng âm → Mel-spectrogram → Encoder → Decoder → Văn bản có dấu câu.",
-            "Mel scale mô phỏng tai người — lý do spectrogram hiệu quả hơn sóng âm thô.",
+            "Mel scale mô phỏng tai người. lý do spectrogram hiệu quả hơn sóng âm thô.",
             "Tiếng Việt thách thức vì 6 thanh điệu và 3 phương ngữ chính (Bắc/Trung/Nam).",
             "Fine-tune trên dữ liệu đa phương ngữ là bắt buộc để đạt chất lượng tốt cho tiếng Việt.",
           ]}

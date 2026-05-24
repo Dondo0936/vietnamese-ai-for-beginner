@@ -1027,7 +1027,7 @@ def train(model, loader: DataLoader, optim, epochs: int = 10, device="cuda"):
 
       {/* ═══════════════════════ 8. Mã low-level: differential LR ═══════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Mẹo thực chiến">
-        <ExplanationSection>
+        <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p className="text-sm text-muted mb-3">
             Trong thực tế, kỹ thuật quan trọng nhất khi fine-tune là{" "}
             <strong>differential learning rate</strong> — chia mạng thành
@@ -1081,7 +1081,7 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
               <li>Đừng quên freeze BatchNorm stats (eval mode trên các block đóng băng) — đây là bug cực kỳ phổ biến.</li>
             </ol>
           </Callout>
-        </ExplanationSection>
+        </section>
       </LessonSection>
 
       {/* ═══════════════════════ 9. Tóm tắt ═══════════════════════ */}

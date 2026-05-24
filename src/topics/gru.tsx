@@ -1003,7 +1003,7 @@ export default function GruTopic() {
         </div>
 
         {/* Side-by-side architecture diagram */}
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* ══ LSTM Diagram ══ */}
             {(viewMode === "lstm" || viewMode === "both") && (
@@ -1225,7 +1225,7 @@ export default function GruTopic() {
               </div>
             )}
           </div>
-        </VisualizationSection>
+        </section>
 
         <button
           type="button"
@@ -1313,7 +1313,7 @@ export default function GruTopic() {
           tham số trainable của GRU so với LSTM:
         </p>
 
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <div className="rounded-lg border border-border bg-surface p-4">
             {/* Bar chart */}
             <div className="space-y-3">
@@ -1375,7 +1375,7 @@ export default function GruTopic() {
               <span className="font-mono">4×(128·256 + 256·256 + 256)</span>.
             </div>
           </div>
-        </VisualizationSection>
+        </section>
 
         <Callout variant="insight" title="Tiết kiệm không chỉ là tham số">
           <p>

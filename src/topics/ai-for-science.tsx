@@ -24,7 +24,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-for-science",
   title: "AI for Science",
-  titleVi: "AI cho Khoa học — Phòng thí nghiệm ảo",
+  titleVi: "AI cho Khoa học. Phòng thí nghiệm ảo",
   description:
     "Ứng dụng AI để đẩy nhanh khám phá khoa học, từ dự đoán cấu trúc protein đến thiết kế vật liệu mới.",
   category: "emerging",
@@ -40,7 +40,7 @@ const TOTAL_STEPS = 7;
 // DỮ LIỆU TĨNH: CÁC ĐỘT PHÁ & QUY TRÌNH PHÁT HIỆN THUỐC
 // ----------------------------------------------------------------------------
 // BREAKTHROUGHS: timeline rút gọn các cột mốc quan trọng của AI for Science.
-// PIPELINE_STEPS: 5 bước của quy trình drug discovery — dùng cho ProgressSteps.
+// PIPELINE_STEPS: 5 bước của quy trình drug discovery. dùng cho ProgressSteps.
 // ============================================================================
 
 const BREAKTHROUGHS = [
@@ -99,7 +99,7 @@ const PIPELINE_LABELS = [
 // ----------------------------------------------------------------------------
 // Một phân tử ví dụ gồm các nguyên tử (node) và liên kết (edge). Toạ độ là 2D
 // để dễ vẽ. Khi người học bấm "Run AI", ta tính một "binding affinity" giả
-// lập dựa trên tỉ lệ heavy atoms và số liên kết — chỉ mang tính minh hoạ
+// lập dựa trên tỉ lệ heavy atoms và số liên kết. chỉ mang tính minh hoạ
 // pedagogical. Trong thực tế phải dùng docking (AutoDock Vina) hoặc model học
 // sâu (DiffDock, AlphaFold-Multimer).
 // ============================================================================
@@ -135,7 +135,7 @@ const ELEMENT_COLORS: Record<Atom["element"], string> = {
 
 const CAFFEINE: Molecule = {
   name: "Caffeine",
-  hint: "Ức chế adenosine receptor — giữ bạn tỉnh táo khi học.",
+  hint: "Ức chế adenosine receptor. giữ bạn tỉnh táo khi học.",
   atoms: [
     { id: "a1", element: "C", x: 100, y: 120 },
     { id: "a2", element: "N", x: 150, y: 90 },
@@ -173,7 +173,7 @@ const CAFFEINE: Molecule = {
 
 const ASPIRIN: Molecule = {
   name: "Aspirin",
-  hint: "Ức chế COX — giảm đau, hạ sốt.",
+  hint: "Ức chế COX. giảm đau, hạ sốt.",
   atoms: [
     { id: "b1", element: "C", x: 100, y: 150 },
     { id: "b2", element: "C", x: 150, y: 120 },
@@ -208,7 +208,7 @@ const ASPIRIN: Molecule = {
 
 const IBUPROFEN: Molecule = {
   name: "Ibuprofen",
-  hint: "NSAID phổ biến — giảm viêm.",
+  hint: "NSAID phổ biến. giảm viêm.",
   atoms: [
     { id: "c1", element: "C", x: 80, y: 150 },
     { id: "c2", element: "C", x: 130, y: 120 },
@@ -250,7 +250,7 @@ const MOLECULES: Molecule[] = [CAFFEINE, ASPIRIN, IBUPROFEN];
 // ----------------------------------------------------------------------------
 // Trong thực tế, affinity = −log(Kd) và cần docking simulation. Ở đây ta chỉ
 // dùng một công thức đơn giản dựa trên số lượng và loại nguyên tử / liên kết
-// để người học thấy "AI đưa ra một điểm số" — giá trị cụ thể chỉ để demo.
+// để người học thấy "AI đưa ra một điểm số". giá trị cụ thể chỉ để demo.
 // ============================================================================
 
 function simulatedAffinity(mol: Molecule): {
@@ -283,7 +283,7 @@ function simulatedAffinity(mol: Molecule): {
   if (doubleBonds >= 4)
     notes.push("Hệ thơm phong phú → π-stacking với residue aromatic.");
   if (heavy > 18) notes.push("Kích thước lớn → có thể giảm bioavailability.");
-  if (notes.length === 0) notes.push("Cấu trúc đơn giản — cần thêm phân cực.");
+  if (notes.length === 0) notes.push("Cấu trúc đơn giản. cần thêm phân cực.");
 
   return { score, confidence, notes };
 }
@@ -332,7 +332,7 @@ export default function AIForScienceTopic() {
         question: "AlphaFold 2 giải quyết vấn đề gì mà nhà khoa học mất 50 năm?",
         options: [
           "Tạo protein mới",
-          "Dự đoán cấu trúc 3D của protein từ chuỗi amino acid — 'protein folding problem'",
+          "Dự đoán cấu trúc 3D của protein từ chuỗi amino acid. 'protein folding problem'",
           "Tìm thuốc trị COVID",
         ],
         correct: 1,
@@ -343,7 +343,7 @@ export default function AIForScienceTopic() {
         question: "Tại sao AI for Science khác với AI cho ngành khác?",
         options: [
           "Dùng GPU đắt hơn",
-          "Cần hiểu và tôn trọng quy luật vật lý (symmetry, conservation laws) — không chỉ pattern matching",
+          "Cần hiểu và tôn trọng quy luật vật lý (symmetry, conservation laws). không chỉ pattern matching",
           "Chỉ dùng cho nghiên cứu, không cho ứng dụng",
         ],
         correct: 1,
@@ -353,9 +353,9 @@ export default function AIForScienceTopic() {
       {
         question: "AI có thể thay thế nhà khoa học không?",
         options: [
-          "Có — AI đã giải được IMO",
-          "Không hoàn toàn — AI accelerate nghiên cứu (hypothesis generation, simulation) nhưng cần nhà khoa học validate và interpret",
-          "Không — AI chỉ xử lý data",
+          "Có. AI đã giải được IMO",
+          "Không hoàn toàn. AI accelerate nghiên cứu (hypothesis generation, simulation) nhưng cần nhà khoa học validate và interpret",
+          "Không. AI chỉ xử lý data",
         ],
         correct: 1,
         explanation:
@@ -366,19 +366,19 @@ export default function AIForScienceTopic() {
           "Một Graph Neural Network (GNN) biểu diễn phân tử bằng cách nào?",
         options: [
           "Chuỗi SMILES như một chuỗi ký tự",
-          "Graph với atoms là node, bonds là edge — message passing giữa các neighbor để học biểu diễn",
+          "Graph với atoms là node, bonds là edge. message passing giữa các neighbor để học biểu diễn",
           "Hình ảnh 2D của phân tử",
         ],
         correct: 1,
         explanation:
-          "GNN: mỗi atom có một embedding, mỗi bond truyền thông điệp giữa atom liền kề. Sau nhiều vòng message passing, node embedding tổng hợp thông tin local. Kiến trúc này tự nhiên cho molecules — không cần linearize.",
+          "GNN: mỗi atom có một embedding, mỗi bond truyền thông điệp giữa atom liền kề. Sau nhiều vòng message passing, node embedding tổng hợp thông tin local. Kiến trúc này tự nhiên cho molecules. không cần linearize.",
       },
       {
         question:
           "AlphaFold 3 khác AlphaFold 2 ở điểm nổi bật nào?",
         options: [
           "Chạy nhanh gấp 10 lần",
-          "Hỗ trợ đa phân tử: protein-protein, protein-DNA/RNA, protein-ligand — quan trọng cho drug design",
+          "Hỗ trợ đa phân tử: protein-protein, protein-DNA/RNA, protein-ligand. quan trọng cho drug design",
           "Dùng ít GPU hơn",
         ],
         correct: 1,
@@ -390,7 +390,7 @@ export default function AIForScienceTopic() {
           "Vì sao equivariant architectures (MACE, NequIP) cần ít data hơn?",
         options: [
           "Vì model nhỏ hơn",
-          "Vì các đối xứng vật lý (xoay, tịnh tiến) được cài sẵn — model không cần học lại từ data",
+          "Vì các đối xứng vật lý (xoay, tịnh tiến) được cài sẵn. model không cần học lại từ data",
           "Vì chúng chỉ dùng CPU",
         ],
         correct: 1,
@@ -402,7 +402,7 @@ export default function AIForScienceTopic() {
           "Tại sao 'in silico' screening không thay thế được lab screening?",
         options: [
           "AI chưa đủ thông minh",
-          "Model có thể lệch với thực tế (domain shift, ADMET, tác dụng phụ) — cần lab xác nhận",
+          "Model có thể lệch với thực tế (domain shift, ADMET, tác dụng phụ). cần lab xác nhận",
           "Luật chưa cho phép",
         ],
         correct: 1,
@@ -413,7 +413,7 @@ export default function AIForScienceTopic() {
         question:
           "Giá trị thực tế của GNoME là gì?",
         options: [
-          "Khám phá 2.2M candidate vật liệu — 380k trong số đó dự đoán bền ở điều kiện thường, mở đường cho pin, superconductor, catalyst mới",
+          "Khám phá 2.2M candidate vật liệu. 380k trong số đó dự đoán bền ở điều kiện thường, mở đường cho pin, superconductor, catalyst mới",
           "Thay thế toàn bộ nhà khoa học vật liệu",
           "Giải quyết biến đổi khí hậu",
         ],
@@ -437,9 +437,9 @@ export default function AIForScienceTopic() {
         <PredictionGate
           question="Để tìm ra 1 loại thuốc mới, truyền thống mất 10-15 năm và 2.6 tỷ USD. AI có thể giảm bao nhiêu?"
           options={[
-            "Giảm 10% — AI chỉ hỗ trợ phần nhỏ",
-            "Giảm 50-70% thời gian và chi phí — AI accelerate mọi giai đoạn từ target identification đến clinical trials",
-            "Giảm 100% — AI tự thiết kế thuốc hoàn chỉnh",
+            "Giảm 10%. AI chỉ hỗ trợ phần nhỏ",
+            "Giảm 50-70% thời gian và chi phí. AI accelerate mọi giai đoạn từ target identification đến clinical trials",
+            "Giảm 100%. AI tự thiết kế thuốc hoàn chỉnh",
           ]}
           correct={1}
           explanation="AI giảm từ 10-15 năm xuống 3-5 năm, từ 2.6 tỷ USD xuống 500M-1B. AlphaFold dự đoán target structure, ML screen triệu hợp chất, AI optimize lead compounds. Nhưng vẫn cần clinical trials (con người) để validate. Giống buồng mô phỏng: bay giả trước, bay thật sau."
@@ -497,7 +497,7 @@ export default function AIForScienceTopic() {
                         fontSize={11}
                         fontWeight="bold"
                       >
-                        {molecule.name} — {molecule.hint}
+                        {molecule.name}. {molecule.hint}
                       </text>
 
                       {/* Bonds */}
@@ -630,7 +630,7 @@ export default function AIForScienceTopic() {
                       <div className="mt-1 font-mono text-2xl text-accent">
                         {runState === "done"
                           ? result.score.toFixed(2)
-                          : "—"}
+                          : ":"}
                       </div>
                       <div className="text-xs text-muted mt-1">
                         Thang 1-10 (10 = gắn rất chặt).
@@ -644,10 +644,10 @@ export default function AIForScienceTopic() {
                       <div className="mt-1 font-mono text-base text-foreground">
                         {runState === "done"
                           ? `${(result.confidence * 100).toFixed(1)}%`
-                          : "—"}
+                          : ":"}
                       </div>
                       <div className="text-xs text-muted mt-1">
-                        Mô phỏng — thực tế dùng pLDDT / ipTM tương tự
+                        Mô phỏng. thực tế dùng pLDDT / ipTM tương tự
                         AlphaFold.
                       </div>
                     </div>
@@ -787,7 +787,7 @@ export default function AIForScienceTopic() {
                     {pipelineStep === 1 &&
                       "Xác định target: protein gây bệnh. AI (AlphaFold) dự đoán cấu trúc 3D của target → biết 'ổ khoá' cần mở."}
                     {pipelineStep === 2 &&
-                      "Sàng lọc: quét hàng triệu small-molecule trong library. AI docking (DiffDock) loại bỏ 99% hợp chất không khớp — từ 10⁶ còn 10⁴ candidate."}
+                      "Sàng lọc: quét hàng triệu small-molecule trong library. AI docking (DiffDock) loại bỏ 99% hợp chất không khớp. từ 10⁶ còn 10⁴ candidate."}
                     {pipelineStep === 3 &&
                       "Tối ưu hoá lead: generative AI (RFDiffusion, MolGPT) đề xuất biến thể có affinity cao hơn, độc tính thấp hơn, hoà tan tốt hơn."}
                     {pipelineStep === 4 &&
@@ -808,7 +808,7 @@ export default function AIForScienceTopic() {
             <AhaMoment>
               <p>
                 AlphaFold dự đoán cấu trúc{" "}
-                <strong>200 triệu protein</strong> — nhiều hơn tổng số
+                <strong>200 triệu protein</strong>. nhiều hơn tổng số
                 protein đã được giải bởi nhà khoa học trong cả lịch sử loài
                 người! GNoME khám phá{" "}
                 <strong>2.2 triệu vật liệu mới</strong>, tương đương 800 năm
@@ -833,9 +833,9 @@ export default function AIForScienceTopic() {
               <InlineChallenge
                 question="Bạn muốn dùng AI thiết kế vật liệu pin mặt trời mới. Cần mô hình hiểu: đối xứng tinh thể, liên kết hoá học, tính chất điện tử. Kiến trúc ML nào phù hợp?"
                 options={[
-                  "CNN — nhận diện ảnh tinh thể",
-                  "Equivariant GNN — hiểu đồ thị phân tử, tôn trọng đối xứng vật lý (xoay/tịnh tiến phân tử → tính chất không đổi)",
-                  "Transformer — xử lý chuỗi SMILES",
+                  "CNN. nhận diện ảnh tinh thể",
+                  "Equivariant GNN. hiểu đồ thị phân tử, tôn trọng đối xứng vật lý (xoay/tịnh tiến phân tử → tính chất không đổi)",
+                  "Transformer. xử lý chuỗi SMILES",
                 ]}
                 correct={1}
                 explanation="Equivariant GNN (ví dụ: MACE, NequIP) được thiết kế đặc biệt cho molecular systems. Equivariance: xoay phân tử → predictions xoay theo (không thay đổi tính chất scalar). Bảo toàn đối xứng vật lý → model chính xác hơn, generalize tốt hơn, cần ít data hơn."
@@ -844,8 +844,8 @@ export default function AIForScienceTopic() {
               <InlineChallenge
                 question="Bạn chạy AlphaFold cho một protein 'orphan' chưa ai giải cấu trúc, và nhận pLDDT trung bình 45/100. Nên làm gì?"
                 options={[
-                  "Tin hoàn toàn output — AlphaFold rất chính xác",
-                  "Coi là giả thuyết sơ bộ — pLDDT thấp nghĩa là vùng linh động/disordered, cần thêm thí nghiệm (SAXS, NMR) để xác nhận",
+                  "Tin hoàn toàn output. AlphaFold rất chính xác",
+                  "Coi là giả thuyết sơ bộ. pLDDT thấp nghĩa là vùng linh động/disordered, cần thêm thí nghiệm (SAXS, NMR) để xác nhận",
                   "Bỏ đi và dùng mô hình khác",
                 ]}
                 correct={1}
@@ -862,7 +862,7 @@ export default function AIForScienceTopic() {
             <ExplanationSection>
               <p>
                 <strong>AI for Science</strong> ứng dụng AI để đẩy nhanh
-                khám phá khoa học — từ dự đoán cấu trúc protein đến thiết kế
+                khám phá khoa học. từ dự đoán cấu trúc protein đến thiết kế
                 vật liệu và giải toán. Ở những bài toán cần suy luận sâu
                 (AlphaProof, AlphaGeometry), AI for Science tận dụng mạnh
                 các{" "}
@@ -875,8 +875,7 @@ export default function AIForScienceTopic() {
 
               <p>
                 <strong>Physics-Informed ML:</strong> bên cạnh data
-                observations, hàm mất mát còn ràng buộc luật vật lý —
-                bảo toàn năng lượng, đối xứng, tính liên tục...
+                observations, hàm mất mát còn ràng buộc luật vật lý. bảo toàn năng lượng, đối xứng, tính liên tục...
               </p>
               <LaTeX block>
                 {
@@ -917,7 +916,7 @@ export default function AIForScienceTopic() {
                 </li>
                 <li>
                   <strong>Materials:</strong> GNoME (discovery), MACE/NequIP
-                  (ML potentials — simulation nhanh 1000x so với DFT).
+                  (ML potentials. simulation nhanh 1000x so với DFT).
                 </li>
                 <li>
                   <strong>Climate:</strong> GenCast, GraphCast (dự báo thời
@@ -988,13 +987,13 @@ pdb_str = protein_module.to_pdb(prediction)
 with open("output.pdb", "w") as f:
     f.write(pdb_str)
 
-# Thực tế: dùng ColabFold (open-source) — pipeline nhẹ hơn,
+# Thực tế: dùng ColabFold (open-source). pipeline nhẹ hơn,
 # chạy được trên Colab miễn phí, phù hợp lab nhỏ.`}
               </CodeBlock>
 
               <CodeBlock
                 language="python"
-                title="GNN cho binding affinity — khung mẫu với PyTorch Geometric"
+                title="GNN cho binding affinity. khung mẫu với PyTorch Geometric"
               >
 {`import torch
 import torch.nn.functional as F
@@ -1045,7 +1044,7 @@ def train(model, loader, optim):
 # 1. Convert SMILES → graph (RDKit) với atom features + edge index
 # 2. Tạo Dataset, DataLoader
 # 3. Train MolGNN với MSE trên −log(Kd)
-# 4. Đánh giá trên tập ngoài — luôn giữ scaffold split, tránh leakage
+# 4. Đánh giá trên tập ngoài. luôn giữ scaffold split, tránh leakage
 #    do phân tử cùng "khung" rơi vào cả train và test.`}
               </CodeBlock>
 
@@ -1109,7 +1108,7 @@ def train(model, loader, optim):
                   </li>
                 </ul>
                 <p className="text-sm mt-2">
-                  Kết quả là GDT_TS trung bình ~92 trên CASP14 — tương đương
+                  Kết quả là GDT_TS trung bình ~92 trên CASP14. tương đương
                   với phương pháp thực nghiệm tốt nhất, trong vài phút thay
                   vì nhiều tháng.
                 </p>
@@ -1145,14 +1144,14 @@ def train(model, loader, optim):
                       <td className="py-2 pr-4">ColabFold</td>
                       <td className="py-2 pr-4">Protein (nhẹ)</td>
                       <td className="py-2">
-                        Chạy trên Colab free — phù hợp lab nhỏ
+                        Chạy trên Colab free. phù hợp lab nhỏ
                       </td>
                     </tr>
                     <tr className="border-b border-border/60">
                       <td className="py-2 pr-4">RFDiffusion</td>
                       <td className="py-2 pr-4">Protein design</td>
                       <td className="py-2">
-                        Generative — sinh cấu trúc từ constraint
+                        Generative. sinh cấu trúc từ constraint
                       </td>
                     </tr>
                     <tr className="border-b border-border/60">
@@ -1173,7 +1172,7 @@ def train(model, loader, optim):
                       <td className="py-2 pr-4">GenCast</td>
                       <td className="py-2 pr-4">Dự báo thời tiết</td>
                       <td className="py-2">
-                        Diffusion ensemble — 15 ngày, chính xác hơn ECMWF
+                        Diffusion ensemble. 15 ngày, chính xác hơn ECMWF
                       </td>
                     </tr>
                   </tbody>
@@ -1190,12 +1189,12 @@ def train(model, loader, optim):
             <MiniSummary
               title="Ghi nhớ nhanh"
               points={[
-                "AI for Science đẩy nhanh khám phá 100-1000x — AlphaFold, GNoME, GenCast, AlphaProof là các mốc tiêu biểu.",
+                "AI for Science đẩy nhanh khám phá 100-1000x. AlphaFold, GNoME, GenCast, AlphaProof là các mốc tiêu biểu.",
                 "Physics-informed ML: kết hợp data-driven với quy luật vật lý (symmetry, conservation, equivariance).",
-                "Equivariant architectures (GNN, MACE, NequIP) tôn trọng đối xứng vật lý — chính xác hơn, cần ít data hơn.",
+                "Equivariant architectures (GNN, MACE, NequIP) tôn trọng đối xứng vật lý. chính xác hơn, cần ít data hơn.",
                 "AI là 'postdoc siêu năng': dự đoán nhanh, simulate, đề xuất hypothesis. Nhưng nhà khoa học vẫn cần validate.",
                 "Drug discovery: từ 15 năm/2.6B USD xuống 3-5 năm/500M. Materials: 800 năm → 1 năm.",
-                "Luôn xem confidence (pLDDT, ipTM) và kiểm tra OOD — không coi output AI là sự thật cuối cùng.",
+                "Luôn xem confidence (pLDDT, ipTM) và kiểm tra OOD. không coi output AI là sự thật cuối cùng.",
               ]}
             />
           </LessonSection>

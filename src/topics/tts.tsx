@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "tts",
   title: "Text-to-Speech",
-  titleVi: "Tổng hợp giọng nói — AI biết nói",
+  titleVi: "Tổng hợp giọng nói. AI biết nói",
   description:
     "Công nghệ chuyển đổi văn bản thành giọng nói tự nhiên, với khả năng kiểm soát ngữ điệu và cảm xúc.",
   category: "multimodal",
@@ -28,10 +28,10 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 const VOICES = [
-  { id: "neutral", label: "Trung tính", wave: "M0,50 Q50,20 100,50 Q150,80 200,50 Q250,20 300,50", desc: "Giọng đọc tin tức VnExpress — rõ ràng, không cảm xúc quá mức." },
-  { id: "happy", label: "Vui vẻ", wave: "M0,50 Q30,10 60,50 Q90,90 120,50 Q150,10 180,50 Q210,90 240,50 Q270,10 300,50", desc: "Giọng quảng cáo — nhịp nhanh, cao giọng, năng lượng tích cực." },
-  { id: "serious", label: "Nghiêm túc", wave: "M0,50 Q75,35 150,50 Q225,65 300,50", desc: "Giọng thuyết trình — chậm rãi, trầm, nhấn nhá có chủ đích." },
-  { id: "whisper", label: "Thì thầm", wave: "M0,50 Q50,42 100,50 Q150,58 200,50 Q250,42 300,50", desc: "Giọng kể chuyện đêm — biên độ nhỏ, tần số thấp, thân mật." },
+  { id: "neutral", label: "Trung tính", wave: "M0,50 Q50,20 100,50 Q150,80 200,50 Q250,20 300,50", desc: "Giọng đọc tin tức VnExpress. rõ ràng, không cảm xúc quá mức." },
+  { id: "happy", label: "Vui vẻ", wave: "M0,50 Q30,10 60,50 Q90,90 120,50 Q150,10 180,50 Q210,90 240,50 Q270,10 300,50", desc: "Giọng quảng cáo. nhịp nhanh, cao giọng, năng lượng tích cực." },
+  { id: "serious", label: "Nghiêm túc", wave: "M0,50 Q75,35 150,50 Q225,65 300,50", desc: "Giọng thuyết trình. chậm rãi, trầm, nhấn nhá có chủ đích." },
+  { id: "whisper", label: "Thì thầm", wave: "M0,50 Q50,42 100,50 Q150,58 200,50 Q250,42 300,50", desc: "Giọng kể chuyện đêm. biên độ nhỏ, tần số thấp, thân mật." },
 ];
 
 const PIPELINE_STEPS = [
@@ -64,14 +64,14 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "TTS ghép nối (concatenative) cắt-dán các đoạn ghi âm sẵn — nghe máy móc và giật ở chỗ nối. Vocoder neural (HiFi-GAN) sinh sóng âm liên tục từ spectrogram, tạo giọng nói mượt mà và tự nhiên hơn nhiều.",
+      "TTS ghép nối (concatenative) cắt-dán các đoạn ghi âm sẵn. nghe máy móc và giật ở chỗ nối. Vocoder neural (HiFi-GAN) sinh sóng âm liên tục từ spectrogram, tạo giọng nói mượt mà và tự nhiên hơn nhiều.",
   },
   {
     question: "Bạn muốn tạo giọng đọc tin VnExpress tự động bằng TTS. Thách thức lớn nhất với tiếng Việt là gì?",
     options: [
       "Tiếng Việt có quá nhiều từ vựng",
       "Tiếng Việt dùng chữ Latin nên không khác tiếng Anh",
-      "6 thanh điệu quyết định nghĩa từ — nhầm thanh = nhầm nghĩa hoàn toàn, và prosody (ngữ điệu câu) phức tạp",
+      "6 thanh điệu quyết định nghĩa từ. nhầm thanh = nhầm nghĩa hoàn toàn, và prosody (ngữ điệu câu) phức tạp",
       "Tiếng Việt không có phần mềm TTS nào hỗ trợ",
     ],
     correct: 2,
@@ -109,7 +109,7 @@ export default function TTSTopic() {
             "Bỏ qua '36°C' vì không phải chữ",
           ]}
           correct={1}
-          explanation="Đúng! Trước khi tổng hợp giọng, TTS phải chạy text normalization: '36°C' → 'ba mươi sáu độ xê'. Đây là bước quan trọng nhất và phức tạp nhất — ví dụ '10/3' có thể là 'mười phần ba' (phân số) hoặc 'ngày mười tháng ba' (ngày tháng) tuỳ ngữ cảnh!"
+          explanation="Đúng! Trước khi tổng hợp giọng, TTS phải chạy text normalization: '36°C' → 'ba mươi sáu độ xê'. Đây là bước quan trọng nhất và phức tạp nhất. ví dụ '10/3' có thể là 'mười phần ba' (phân số) hoặc 'ngày mười tháng ba' (ngày tháng) tuỳ ngữ cảnh!"
         />
       </LessonSection>
 
@@ -195,8 +195,7 @@ export default function TTSTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           TTS hiện đại không phải{" "}
-          <strong>ghép nối âm thanh ghi sẵn</strong>{" "}
-          — nó{" "}
+          <strong>ghép nối âm thanh ghi sẵn</strong>{" "}. nó{" "}
           <strong>sinh sóng âm hoàn toàn mới</strong>{" "}
           từ spectrogram. Giống như nghệ sĩ lồng tiếng tạo ra mỗi câu thoại là duy nhất, TTS neural tạo giọng nói chưa từng tồn tại, với cảm xúc và ngữ điệu được kiểm soát chính xác.
         </AhaMoment>
@@ -205,7 +204,7 @@ export default function TTSTopic() {
       {/* ── Step 4: InlineChallenge ── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
-          question="Câu 'Tôi ở số 10/3 Nguyễn Huệ' — TTS cần xử lý '10/3' như thế nào?"
+          question="Câu 'Tôi ở số 10/3 Nguyễn Huệ'. TTS cần xử lý '10/3' như thế nào?"
           options={[
             "Đọc 'mười phần ba' vì đó là phân số",
             "Đọc 'mười trên ba' vì đó là tỷ lệ",
@@ -213,7 +212,7 @@ export default function TTSTopic() {
             "Bỏ qua và chỉ đọc 'Nguyễn Huệ'",
           ]}
           correct={2}
-          explanation="Trong ngữ cảnh địa chỉ Việt Nam, '10/3' là số nhà hẻm — đọc 'mười xẹt ba' (ở miền Nam) hoặc 'mười ngách ba' (ở miền Bắc). Đây là ví dụ điển hình cho thấy text normalization cần hiểu ngữ cảnh, không chỉ quy tắc cố định!"
+          explanation="Trong ngữ cảnh địa chỉ Việt Nam, '10/3' là số nhà hẻm. đọc 'mười xẹt ba' (ở miền Nam) hoặc 'mười ngách ba' (ở miền Bắc). Đây là ví dụ điển hình cho thấy text normalization cần hiểu ngữ cảnh, không chỉ quy tắc cố định!"
         />
       </LessonSection>
 
@@ -222,7 +221,7 @@ export default function TTSTopic() {
         <ExplanationSection>
           <p>
             <strong>Text-to-Speech (TTS)</strong>{" "}
-            là công nghệ chuyển đổi văn bản thành giọng nói tự nhiên — ngược lại với bài toán{" "}
+            là công nghệ chuyển đổi văn bản thành giọng nói tự nhiên. ngược lại với bài toán{" "}
             <TopicLink slug="speech-recognition">nhận dạng giọng nói (ASR)</TopicLink>{" "}
             chuyển âm thanh thành chữ. TTS hiện đại không chỉ phát âm chính xác mà còn thể hiện ngữ điệu, cảm xúc, và phong cách nói.
           </p>
@@ -239,7 +238,7 @@ export default function TTSTopic() {
               </p>
               <p>
                 <strong>3. Acoustic Model:</strong>{" "}
-                Tạo Mel-spectrogram — biểu diễn trung gian tần số-thời gian. Các mô hình: VITS, FastSpeech2, Tacotron2.
+                Tạo Mel-spectrogram. biểu diễn trung gian tần số-thời gian. Các mô hình: VITS, FastSpeech2, Tacotron2.
               </p>
               <p>
                 <strong>4. Vocoder:</strong>{" "}
@@ -274,7 +273,7 @@ tts.tts_to_file(
     speed=1.0,        # Tốc độ đọc (1.0 = bình thường)
 )
 
-# Voice cloning — nhân bản giọng nói từ 10 giây mẫu
+# Voice cloning. nhân bản giọng nói từ 10 giây mẫu
 tts_clone = TTS(model_name="tts_models/multilingual/multi-dataset/xtts_v2")
 tts_clone.tts_to_file(
     text="Xin chào, tôi là trợ lý ảo tiếng Việt",
@@ -304,7 +303,7 @@ tts_clone.tts_to_file(
               </p>
               <p>
                 <strong>Audiobook:</strong>{" "}
-                Chuyển sách/truyện tiếng Việt thành sách nói — phục vụ người khiếm thị và người bận rộn.
+                Chuyển sách/truyện tiếng Việt thành sách nói. phục vụ người khiếm thị và người bận rộn.
               </p>
               <p>
                 <strong>Giáo dục:</strong>{" "}
@@ -321,9 +320,9 @@ tts_clone.tts_to_file(
           points={[
             "TTS pipeline: Text Normalization → Prosody → Acoustic Model (Mel-spectrogram) → Vocoder (sóng âm).",
             "Text normalization là bước phức tạp nhất cho tiếng Việt: số, viết tắt, địa chỉ cần hiểu ngữ cảnh.",
-            "6 thanh điệu tiếng Việt quyết định F0 contour — nhầm thanh = nhầm nghĩa hoàn toàn.",
+            "6 thanh điệu tiếng Việt quyết định F0 contour. nhầm thanh = nhầm nghĩa hoàn toàn.",
             "TTS neural (VITS, XTTS) sinh sóng âm mới, khác hẳn TTS ghép nối cũ.",
-            "Voice cloning cần chỉ 3-10 giây mẫu — mạnh mẽ nhưng cũng nguy hiểm cho lừa đảo.",
+            "Voice cloning cần chỉ 3-10 giây mẫu. mạnh mẽ nhưng cũng nguy hiểm cho lừa đảo.",
           ]}
         />
       </LessonSection>

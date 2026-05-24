@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "small-language-models",
   title: "Small Language Models",
-  titleVi: "Mô hình ngôn ngữ nhỏ — Nhỏ mà có võ",
+  titleVi: "Mô hình ngôn ngữ nhỏ. Nhỏ mà có võ",
   description:
     "Mô hình ngôn ngữ dưới 10B tham số được tối ưu để chạy trên thiết bị cá nhân với chất lượng ngày càng tiệm cận mô hình lớn.",
   category: "emerging",
@@ -69,7 +69,7 @@ export default function SmallLanguageModelsTopic() {
         "Chỉ khi không có internet",
       ],
       correct: 1,
-      explanation: "SLM thắng khi: (1) Data nhạy cảm (y tế, tài chính — không muốn gửi lên cloud), (2) Volume cao (1M req/ngày x $0.15 = $150/ngày API vs $0 SLM), (3) Latency yêu cầu (< 100ms), (4) Offline (nhà máy, nông thôn). API thắng khi: cần chất lượng cao nhất, volume thấp, không muốn quản lý infra.",
+      explanation: "SLM thắng khi: (1) Data nhạy cảm (y tế, tài chính. không muốn gửi lên cloud), (2) Volume cao (1M req/ngày x $0.15 = $150/ngày API vs $0 SLM), (3) Latency yêu cầu (< 100ms), (4) Offline (nhà máy, nông thôn). API thắng khi: cần chất lượng cao nhất, volume thấp, không muốn quản lý infra.",
     },
     {
       question: "Kỹ thuật nào KHÔNG giúp SLM đạt chất lượng cao?",
@@ -79,7 +79,7 @@ export default function SmallLanguageModelsTopic() {
         "High-quality curated training data",
       ],
       correct: 1,
-      explanation: "Tăng epoch không giúp — model nhỏ bị overfitting nhanh. Chinook scaling law: model nhỏ cần ÍT DATA HƠN model lớn. Bí quyết: data CHẤT LƯỢNG (textbook, curated) thay vì data NHIỀU. Distillation chuyển kiến thức từ model lớn → hiệu quả hơn train từ scratch.",
+      explanation: "Tăng epoch không giúp. model nhỏ bị overfitting nhanh. Chinook scaling law: model nhỏ cần ÍT DATA HƠN model lớn. Bí quyết: data CHẤT LƯỢNG (textbook, curated) thay vì data NHIỀU. Distillation chuyển kiến thức từ model lớn → hiệu quả hơn train từ scratch.",
     },
     {
       type: "fill-blank",
@@ -88,7 +88,7 @@ export default function SmallLanguageModelsTopic() {
         { answer: "on-device", accept: ["ondevice", "on device", "trên thiết bị", "tren thiet bi"] },
         { answer: "quantization", accept: ["lượng tử hoá", "luong tu hoa", "quantize"] },
       ],
-      explanation: "SLM thường chạy on-device (điện thoại, laptop, edge) để đảm bảo privacy, latency thấp và offline. Quantization INT4 (GGUF, AWQ) giảm 4x bộ nhớ so với FP16 — Phi-3 Mini 3.8B chỉ cần ~2GB RAM sau quantization.",
+      explanation: "SLM thường chạy on-device (điện thoại, laptop, edge) để đảm bảo privacy, latency thấp và offline. Quantization INT4 (GGUF, AWQ) giảm 4x bộ nhớ so với FP16. Phi-3 Mini 3.8B chỉ cần ~2GB RAM sau quantization.",
     },
   ], []);
 
@@ -99,19 +99,18 @@ export default function SmallLanguageModelsTopic() {
         <PredictionGate
           question="Công ty bạn cần chatbot trả lời FAQ khách hàng. 90% câu hỏi đơn giản, 10K requests/ngày. GPT-4 API tốn $150/ngày. Có giải pháp rẻ hơn 10x mà vẫn tốt?"
           options={[
-            "Không — cần GPT-4 để đảm bảo chất lượng",
+            "Không. cần GPT-4 để đảm bảo chất lượng",
             "Tự host Llama-8B trên 1 GPU: miễn phí, accuracy 90% cho FAQ đơn giản",
             "Dùng GPT-3.5 API rẻ hơn một chút",
           ]}
           correct={1}
-          explanation="SLM 8B xử lý FAQ đơn giản rất tốt (accuracy 90%+). Tự host trên 1 GPU: chi phí $3/ngày (so với $150/ngày API). Giảm 50x chi phí! Giống cửa hàng tiện lợi — không cần siêu thị cho nhu cầu hàng ngày."
+          explanation="SLM 8B xử lý FAQ đơn giản rất tốt (accuracy 90%+). Tự host trên 1 GPU: chi phí $3/ngày (so với $150/ngày API). Giảm 50x chi phí! Giống cửa hàng tiện lợi. không cần siêu thị cho nhu cầu hàng ngày."
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          So sánh <strong className="text-foreground">các model ngôn ngữ</strong>{" "}
-          — từ SLM chạy trên điện thoại đến LLM trên cloud.
+          So sánh <strong className="text-foreground">các model ngôn ngữ</strong>{" "}. từ SLM chạy trên điện thoại đến LLM trên cloud.
         </p>
 
         <VisualizationSection>
@@ -184,9 +183,8 @@ export default function SmallLanguageModelsTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            SLM là <strong>cửa hàng tiện lợi</strong>{" "}— không có MỌI THỨ như siêu thị (GPT-4),
-            nhưng có ĐỦ thứ bạn cần hàng ngày. Phi-3 Mini (3.8B) đạt <strong>MMLU 69%</strong>{" "}
-            — ngang GPT-3.5! Bí quyết không phải nhiều tham số, mà là{" "}
+            SLM là <strong>cửa hàng tiện lợi</strong>{" "}: không có MỌI THỨ như siêu thị (GPT-4),
+            nhưng có ĐỦ thứ bạn cần hàng ngày. Phi-3 Mini (3.8B) đạt <strong>MMLU 69%</strong>{" "}. ngang GPT-3.5! Bí quyết không phải nhiều tham số, mà là{" "}
             <strong>dữ liệu huấn luyện chất lượng cao</strong>{" "}(textbook quality data).
           </p>
         </AhaMoment>
@@ -197,12 +195,12 @@ export default function SmallLanguageModelsTopic() {
         <InlineChallenge
           question="Bạn cần chatbot cho ứng dụng y tế trên điện thoại. Data bệnh nhân KHÔNG ĐƯỢC gửi lên cloud (HIPAA compliance). Model cần chạy trên iPhone 15 (8GB RAM). Chọn model nào?"
           options={[
-            "GPT-4 API — mạnh nhất, lo privacy sau",
-            "Phi-3 Mini 3.8B quantized INT4 (~2GB RAM) — chạy on-device, data không rời điện thoại",
-            "Llama 70B — mạnh nhất trong open source",
+            "GPT-4 API. mạnh nhất, lo privacy sau",
+            "Phi-3 Mini 3.8B quantized INT4 (~2GB RAM). chạy on-device, data không rời điện thoại",
+            "Llama 70B. mạnh nhất trong open source",
           ]}
           correct={1}
-          explanation="HIPAA cấm gửi data lên cloud → chỉ có on-device. iPhone 15 có 8GB RAM (chia với OS, còn ~4GB cho app). Phi-3 Mini INT4: ~2GB RAM, chạy được. Llama 70B: 35GB RAM — không thể. Privacy + performance + size — SLM là giải pháp duy nhất!"
+          explanation="HIPAA cấm gửi data lên cloud → chỉ có on-device. iPhone 15 có 8GB RAM (chia với OS, còn ~4GB cho app). Phi-3 Mini INT4: ~2GB RAM, chạy được. Llama 70B: 35GB RAM. không thể. Privacy + performance + size. SLM là giải pháp duy nhất!"
         />
       </LessonSection>
 
@@ -218,7 +216,7 @@ export default function SmallLanguageModelsTopic() {
             (FP16 → INT4) để vừa bộ nhớ thiết bị.
           </p>
 
-          <p><strong>Scaling law mới — chất lượng &gt; số lượng:</strong></p>
+          <p><strong>Scaling law mới. chất lượng &gt; số lượng:</strong></p>
           <LaTeX block>{"\\text{Performance} \\propto \\log(N) \\cdot Q_{\\text{data}} \\quad (N = \\text{params}, Q = \\text{data quality})"}</LaTeX>
           <p>
             Data chất lượng x10 &gt; params x10. Phi-3 (3.8B, textbook data) vượt GPT-3.5 (175B, web data).
@@ -227,8 +225,8 @@ export default function SmallLanguageModelsTopic() {
           <p><strong>3 kỹ thuật tạo SLM chất lượng cao:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Data curation:</strong>{" "}Lọc dữ liệu chất lượng cao, loại bỏ spam/toxic/duplicate. 'Textbook quality' data</li>
-            <li><strong>Knowledge Distillation:</strong>{" "}Model lớn (teacher) dạy model nhỏ (student) — chuyển kiến thức cô đọng</li>
-            <li><strong>Architecture optimization:</strong>{" "}Grouped Query Attention, SwiGLU, RoPE — thiết kế riêng cho SLM</li>
+            <li><strong>Knowledge Distillation:</strong>{" "}Model lớn (teacher) dạy model nhỏ (student). chuyển kiến thức cô đọng</li>
+            <li><strong>Architecture optimization:</strong>{" "}Grouped Query Attention, SwiGLU, RoPE. thiết kế riêng cho SLM</li>
           </ul>
 
           <LaTeX block>{"\\mathcal{L}_{\\text{distill}} = \\alpha \\cdot \\text{KL}(p_{\\text{student}} \\| p_{\\text{teacher}}) + (1 - \\alpha) \\cdot \\mathcal{L}_{\\text{CE}}"}</LaTeX>
@@ -254,7 +252,7 @@ export default function SmallLanguageModelsTopic() {
 # Python client
 from llama_cpp import Llama
 
-# Load model INT4 — chỉ 4.9GB RAM
+# Load model INT4. chỉ 4.9GB RAM
 llm = Llama(
     model_path="llama-3-8b-q4_K_M.gguf",
     n_ctx=4096,           # Context window
@@ -262,7 +260,7 @@ llm = Llama(
     verbose=False,
 )
 
-# Inference — 25 tokens/s trên M2 MacBook
+# Inference. 25 tokens/s trên M2 MacBook
 output = llm(
     "Triệu chứng sốt xuất huyết là gì?",
     max_tokens=256,
@@ -284,7 +282,7 @@ print(output["choices"][0]["text"])
           "SLM (1-10B params) chạy trên điện thoại/laptop, đạt 85-90% chất lượng model lớn cho tác vụ thường ngày.",
           "Bí quyết: data chất lượng cao (textbook quality) + distillation từ model lớn, không phải nhiều params.",
           "On-device: privacy tuyệt đối, latency thấp, offline, miễn phí. Trade-off: kém model lớn ở tác vụ phức tạp.",
-          "Quantization INT4 giảm 4x size: model 8B chỉ 4.9GB RAM — vừa điện thoại.",
+          "Quantization INT4 giảm 4x size: model 8B chỉ 4.9GB RAM. vừa điện thoại.",
           "Xu hướng: SLM + fine-tune domain-specific thay thế API model lớn cho 80% use cases, giảm chi phí 10-50x.",
         ]} />
       </LessonSection>

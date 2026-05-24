@@ -21,7 +21,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA — giữ nguyên theo yêu cầu
+// METADATA. giữ nguyên theo yêu cầu
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -38,7 +38,7 @@ export const metadata: TopicMeta = {
 };
 
 // ---------------------------------------------------------------------------
-// CONSTANTS — pipeline bên trong một ResNet basic block
+// CONSTANTS. pipeline bên trong một ResNet basic block
 // Conv → BN → ReLU → Conv → BN → (+input) → ReLU
 // ---------------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ const BLOCK_LAYERS: BlockLayer[] = [
     name: "Conv 3×3",
     short: "Conv",
     kind: "conv",
-    desc: "Tích chập 3×3 thứ hai. Trọng số W₂ — phần cuối nhánh chính F(x).",
+    desc: "Tích chập 3×3 thứ hai. Trọng số W₂. phần cuối nhánh chính F(x).",
   },
   {
     id: "bn2",
@@ -111,7 +111,7 @@ const BLOCK_LAYERS: BlockLayer[] = [
 const CURVE_POINTS = 40;
 
 const TRAINING_LOSS = {
-  // Không skip — dao động mạnh, thậm chí đi lên, không hội tụ
+  // Không skip. dao động mạnh, thậm chí đi lên, không hội tụ
   noSkip: Array.from({ length: CURVE_POINTS }, (_, i) => {
     const t = i / (CURVE_POINTS - 1);
     // Bắt đầu ở ~2.3 (cross-entropy với 10 lớp), dao động mạnh, drift lên
@@ -120,7 +120,7 @@ const TRAINING_LOSS = {
     const spike = i === 22 ? 0.9 : i === 31 ? 0.7 : 0;
     return Math.max(0, drift + osc + spike);
   }),
-  // Có skip — giảm đều
+  // Có skip. giảm đều
   skip: Array.from({ length: CURVE_POINTS }, (_, i) => {
     const t = i / (CURVE_POINTS - 1);
     const smooth = 2.3 * Math.exp(-3.2 * t) + 0.12;
@@ -129,11 +129,11 @@ const TRAINING_LOSS = {
   }),
 };
 
-// Gradient magnitude per layer (giả lập) — 20 lớp
+// Gradient magnitude per layer (giả lập). 20 lớp
 const GRADIENT_LAYERS = 20;
 
 const GRADIENT_MAIN_PATH = Array.from({ length: GRADIENT_LAYERS }, (_, i) => {
-  // Nhân 0.85^i — vanishing
+  // Nhân 0.85^i. vanishing
   return Math.pow(0.85, i);
 });
 
@@ -159,8 +159,8 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "output = F(x) + x. Nếu F(x) = 0 (lớp không học được gì), output = ?",
     options: [
-      "0 — mất hết thông tin",
-      "x — input truyền thẳng qua, không mất gì! Trường hợp xấu nhất = identity function",
+      "0. mất hết thông tin",
+      "x. input truyền thẳng qua, không mất gì! Trường hợp xấu nhất = identity function",
       "Không xác định",
       "Phụ thuộc vào activation function",
     ],
@@ -172,9 +172,9 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "ResNet-152 có 152 lớp nhưng train tốt. Mạng 20 lớp KHÔNG có skip connection thì sao?",
     options: [
-      "Train tốt — 20 lớp không cần skip connection",
+      "Train tốt. 20 lớp không cần skip connection",
       "Vẫn ok nhưng chậm hơn mạng nông",
-      "Bắt đầu gặp vanishing gradient — gradient bị nhân nhỏ dần qua 20 lớp backprop",
+      "Bắt đầu gặp vanishing gradient. gradient bị nhân nhỏ dần qua 20 lớp backprop",
       "Bung ngay sang exploding gradient",
     ],
     correct: 2,
@@ -222,14 +222,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Giả sử một ResNet-34 có 33 residual block nối tiếp. Nếu mỗi nhánh F có gradient cục bộ ≈ 0, tổng gradient chảy ngược từ output về input xấp xỉ bao nhiêu?",
     options: [
-      "Xấp xỉ 0 — vì tất cả nhánh F đều ~ 0",
-      "Xấp xỉ 1 — vì mỗi block có đường skip với gradient = 1, 1^33 = 1",
+      "Xấp xỉ 0. vì tất cả nhánh F đều ~ 0",
+      "Xấp xỉ 1. vì mỗi block có đường skip với gradient = 1, 1^33 = 1",
       "Không xác định",
-      "Xấp xỉ 33 — vì 33 block cộng dồn",
+      "Xấp xỉ 33. vì 33 block cộng dồn",
     ],
     correct: 1,
     explanation:
-      "Chain rule với skip: ∂L/∂x ≈ ∏(1 + ∂F_i/∂x). Nếu ∂F_i/∂x ≈ 0 thì tích ≈ 1 — gradient vẫn chạy qua đường skip không bị vanishing. Đây là lý do ResNet train được rất sâu.",
+      "Chain rule với skip: ∂L/∂x ≈ ∏(1 + ∂F_i/∂x). Nếu ∂F_i/∂x ≈ 0 thì tích ≈ 1. gradient vẫn chạy qua đường skip không bị vanishing. Đây là lý do ResNet train được rất sâu.",
   },
   {
     question:
@@ -249,7 +249,7 @@ const quizQuestions: QuizQuestion[] = [
       "Tại sao ReLU cuối được đặt SAU phép cộng F(x) + x, chứ không phải SAU F(x) rồi mới cộng?",
     options: [
       "Để tiết kiệm bộ nhớ",
-      "Để identity path không bị ReLU kẹp về 0 — x có thể âm vẫn được giữ nguyên qua skip",
+      "Để identity path không bị ReLU kẹp về 0. x có thể âm vẫn được giữ nguyên qua skip",
       "Vì không quan trọng, hai cách tương đương",
       "Vì ReLU trước cộng làm gradient exploding",
     ],
@@ -260,7 +260,7 @@ const quizQuestions: QuizQuestion[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// HELPER — compute path for training curve
+// HELPER. compute path for training curve
 // ---------------------------------------------------------------------------
 
 function makePath(values: number[], width: number, height: number, maxY: number): string {
@@ -338,19 +338,19 @@ export default function ResidualConnectionsTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 1 — HOOK / PREDICTION GATE
+          BƯỚC 1. HOOK / PREDICTION GATE
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Mạng 20 lớp đạt accuracy 90%. Bạn thêm thành mạng 56 lớp — kỳ vọng accuracy sẽ tăng. Kết quả thực tế trong thí nghiệm của He et al. (2015)?"
+          question="Mạng 20 lớp đạt accuracy 90%. Bạn thêm thành mạng 56 lớp. kỳ vọng accuracy sẽ tăng. Kết quả thực tế trong thí nghiệm của He et al. (2015)?"
           options={[
-            "Accuracy tăng lên 95% — sâu hơn = tốt hơn",
-            "Accuracy GIẢM xuống 72% — gradient biến mất qua nhiều lớp, mạng sâu train tệ hơn mạng nông!",
+            "Accuracy tăng lên 95%. sâu hơn = tốt hơn",
+            "Accuracy GIẢM xuống 72%. gradient biến mất qua nhiều lớp, mạng sâu train tệ hơn mạng nông!",
             "Accuracy giữ nguyên 90%",
-            "Mạng không train được chút nào — loss = NaN từ epoch đầu",
+            "Mạng không train được chút nào. loss = NaN từ epoch đầu",
           ]}
           correct={1}
-          explanation="Đây là 'degradation problem' — mạng sâu hơn lại tệ hơn mạng nông. Và quan trọng: KHÔNG phải do overfitting (training loss cũng tăng). ResNet giải quyết bằng skip connection: output = F(x) + x. Gradient chảy thẳng qua đường tắt."
+          explanation="Đây là 'degradation problem'. mạng sâu hơn lại tệ hơn mạng nông. Và quan trọng: KHÔNG phải do overfitting (training loss cũng tăng). ResNet giải quyết bằng skip connection: output = F(x) + x. Gradient chảy thẳng qua đường tắt."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Đây là hệ quả trực tiếp của{" "}
@@ -362,27 +362,27 @@ export default function ResidualConnectionsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
+          BƯỚC 2. ẨN DỤ THỰC TẾ
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
         <p className="text-sm leading-relaxed text-foreground">
           Hãy tưởng tượng bạn gửi một tin nhắn bằng miệng qua một dãy 20 người truyền
-          miệng. Qua mỗi người, tin nhắn bị méo mó thêm một chút — thiếu một từ, sai một
+          miệng. Qua mỗi người, tin nhắn bị méo mó thêm một chút. thiếu một từ, sai một
           chữ, hoặc bị hiểu lệch. Đến người thứ 20, tin nhắn gốc đã biến thành chuyện
           &quot;tam sao thất bản&quot;, không còn nhận ra được nữa.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-foreground">
           <strong>Skip connection</strong> giống như việc bạn gửi thêm một{" "}
-          <em>bản sao của tin nhắn gốc</em> — bằng giấy, đi thẳng tới người cuối cùng.
+          <em>bản sao của tin nhắn gốc</em>. bằng giấy, đi thẳng tới người cuối cùng.
           Dù đường truyền miệng có méo tới đâu, người cuối vẫn có tin nhắn gốc để đối
           chiếu. Người cuối cùng học cách{" "}
           <strong>sửa tin nhắn miệng bằng tin nhắn gốc</strong>, thay vì phải dựng lại
-          toàn bộ nội dung từ đầu — nhiệm vụ dễ hơn rất nhiều.
+          toàn bộ nội dung từ đầu. nhiệm vụ dễ hơn rất nhiều.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-foreground">
           Trong deep learning, &quot;truyền miệng&quot; là các lớp trung gian học đặc
           trưng, còn &quot;bản sao giấy&quot; là chính input x đi qua đường skip. Mạng
-          chỉ cần học <strong>phần chênh lệch</strong> F(x) = H(x) − x — phần{" "}
+          chỉ cần học <strong>phần chênh lệch</strong> F(x) = H(x) − x. phần{" "}
           <em>residual</em> (phần dư). Thay vì buộc mỗi lớp học một ánh xạ phức tạp H(x),
           ta buộc mỗi lớp học một thay đổi nhỏ F(x). Nếu chẳng có gì đáng thay đổi, F(x)
           chỉ cần = 0.
@@ -390,15 +390,15 @@ export default function ResidualConnectionsTopic() {
         <Callout variant="insight" title="Học phần dư dễ hơn học toàn bộ">
           <p>
             Học &quot;không thay đổi gì&quot; (identity) thông qua một chuỗi Conv + BN +
-            ReLU là rất khó — bạn cần nhiều trọng số phối hợp chính xác. Nhưng học
-            &quot;F(x) ≈ 0&quot; chỉ cần đẩy các trọng số về gần 0 — dễ hơn rất nhiều.
+            ReLU là rất khó. bạn cần nhiều trọng số phối hợp chính xác. Nhưng học
+            &quot;F(x) ≈ 0&quot; chỉ cần đẩy các trọng số về gần 0. dễ hơn rất nhiều.
             ResNet biến bài toán khó thành bài toán dễ.
           </p>
         </Callout>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 3 — VISUALIZATION (ResNet skip connection block + training + grad)
+          BƯỚC 3. VISUALIZATION (ResNet skip connection block + training + grad)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection topicSlug={metadata.slug}>
@@ -406,12 +406,12 @@ export default function ResidualConnectionsTopic() {
             {/* ─── Controls ─── */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                ResNet Basic Block — bật/tắt Skip Connection
+                ResNet Basic Block. bật/tắt Skip Connection
               </h3>
               <p className="text-sm text-muted mb-3 leading-relaxed">
                 Bật skip để thấy đường tắt x chảy song song với nhánh chính F(x) =
                 Conv → BN → ReLU → Conv → BN, sau đó cộng lại rồi qua ReLU cuối. Tắt skip
-                để thấy mạng &quot;plain&quot; — gradient sẽ vanishing khi backprop.
+                để thấy mạng &quot;plain&quot;. gradient sẽ vanishing khi backprop.
               </p>
               <div className="flex flex-wrap gap-2">
                 <button
@@ -825,10 +825,10 @@ export default function ResidualConnectionsTopic() {
             {/* ─── Training curve ─── */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                Training curve — depth = 20 (loss giảm theo epoch)
+                Training curve. depth = 20 (loss giảm theo epoch)
               </h3>
               <p className="text-sm text-muted mb-3 leading-relaxed">
-                Cùng kiến trúc, cùng hyperparameter — chỉ khác có/không skip connection.
+                Cùng kiến trúc, cùng hyperparameter. chỉ khác có/không skip connection.
                 Không skip: loss dao động mạnh và drift lên (diverge). Có skip: loss
                 giảm trơn xuống gần 0.
               </p>
@@ -957,11 +957,11 @@ export default function ResidualConnectionsTopic() {
                     />
                     <line x1={8} y1={12} x2={22} y2={12} stroke="#ef4444" strokeWidth={2} />
                     <text x={28} y={15} fontSize={11} fill="#ef4444">
-                      plain (không skip) — diverge
+                      plain (không skip). diverge
                     </text>
                     <line x1={8} y1={26} x2={22} y2={26} stroke="#22c55e" strokeWidth={2.5} />
                     <text x={28} y={29} fontSize={11} fill="#22c55e">
-                      ResNet (có skip) — converge
+                      ResNet (có skip). converge
                     </text>
                   </g>
                 </svg>
@@ -1005,7 +1005,7 @@ export default function ResidualConnectionsTopic() {
                 ))}
               </div>
               <p className="text-xs text-muted mt-2 leading-relaxed">
-                Khi backprop về layer 1 của mạng plain: gradient ≈ 0.85²⁰ ≈ 0.039 — rất
+                Khi backprop về layer 1 của mạng plain: gradient ≈ 0.85²⁰ ≈ 0.039. rất
                 nhỏ, trọng số gần như không được cập nhật. Với skip, mỗi block giữ lại
                 thành phần = 1 qua đường tắt → tổng gradient giữ ở mức ≥ 1.
               </p>
@@ -1015,14 +1015,13 @@ export default function ResidualConnectionsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 4 — AHA MOMENT
+          BƯỚC 4. AHA MOMENT
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            <strong>output = F(x) + x</strong>. Mạng không cần học toàn bộ ánh xạ H(x) —
-            chỉ cần học <strong>phần dư</strong> F(x) = H(x) − x. Nếu lớp tối ưu là
-            identity (không cần thay đổi gì), F(x) chỉ cần = 0 — dễ hơn rất nhiều so
+            <strong>output = F(x) + x</strong>. Mạng không cần học toàn bộ ánh xạ H(x). chỉ cần học <strong>phần dư</strong> F(x) = H(x) − x. Nếu lớp tối ưu là
+            identity (không cần thay đổi gì), F(x) chỉ cần = 0. dễ hơn rất nhiều so
             với việc học lại identity từ một đống Conv + BN + ReLU.
           </p>
           <p className="text-sm text-muted mt-2">
@@ -1034,33 +1033,33 @@ export default function ResidualConnectionsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 5 — INLINE CHALLENGES (2 câu)
+          BƯỚC 5. INLINE CHALLENGES (2 câu)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <p className="text-sm text-muted leading-relaxed mb-3">
           Residual connections là thành phần cốt lõi của{" "}
-          <TopicLink slug="transformer">Transformer</TopicLink> — được dùng quanh cả
+          <TopicLink slug="transformer">Transformer</TopicLink>. được dùng quanh cả
           attention và FFN. Hai câu hỏi dưới đây kiểm tra mức độ nắm vững cơ chế này.
         </p>
         <div className="space-y-4">
           <InlineChallenge
             question="Transformer có 2 residual connections mỗi lớp. Chúng bao quanh gì?"
             options={[
-              "Chỉ bao quanh Attention — FFN không cần skip",
-              "x + Attention(x) và x + FFN(x) — bao quanh CẢ Attention và FFN riêng biệt",
+              "Chỉ bao quanh Attention. FFN không cần skip",
+              "x + Attention(x) và x + FFN(x). bao quanh CẢ Attention và FFN riêng biệt",
               "Chỉ 1 skip từ input đến output của toàn bộ lớp",
               "Cả 2 skip cùng bao quanh Attention",
             ]}
             correct={1}
-            explanation="Mỗi lớp Transformer: out₁ = x + MultiHeadAttention(x), out₂ = out₁ + FFN(out₁). Hai residual riêng biệt. Gradient chảy tắt qua cả hai — train được GPT-3 96 lớp, PaLM 118 lớp, v.v."
+            explanation="Mỗi lớp Transformer: out₁ = x + MultiHeadAttention(x), out₂ = out₁ + FFN(out₁). Hai residual riêng biệt. Gradient chảy tắt qua cả hai. train được GPT-3 96 lớp, PaLM 118 lớp, v.v."
           />
           <InlineChallenge
             question="Bạn có một mạng plain 56 lớp và một ResNet 56 lớp cùng số tham số, cùng optimizer, cùng learning rate. Training loss sau 100 epoch kỳ vọng?"
             options={[
-              "Mạng plain thấp hơn ResNet — vì đơn giản hơn",
-              "Bằng nhau — skip không ảnh hưởng training loss, chỉ test loss",
-              "ResNet thấp hơn hẳn — và mạng plain thậm chí cao hơn mạng 20 lớp",
-              "ResNet cao hơn — skip làm mạng &apos;lười học&apos;",
+              "Mạng plain thấp hơn ResNet. vì đơn giản hơn",
+              "Bằng nhau. skip không ảnh hưởng training loss, chỉ test loss",
+              "ResNet thấp hơn hẳn. Và mạng plain thậm chí cao hơn mạng 20 lớp",
+              "ResNet cao hơn. skip làm mạng &apos;lười học&apos;",
             ]}
             correct={2}
             explanation="Thí nghiệm gốc cho thấy training loss của plain-56 cao hơn plain-20. Đó là bằng chứng degradation KHÔNG phải do overfitting (overfitting chỉ làm test loss tăng, không làm training loss tăng). ResNet-56 giải quyết vấn đề này."
@@ -1069,7 +1068,7 @@ export default function ResidualConnectionsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 6 — DEPTH VS ACCURACY (bar chart từ bản cũ, giữ lại)
+          BƯỚC 6. DEPTH VS ACCURACY (bar chart từ bản cũ, giữ lại)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Độ sâu vs Accuracy">
         <h3 className="text-sm font-semibold text-foreground mb-3">
@@ -1125,7 +1124,7 @@ export default function ResidualConnectionsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 7 — EXPLANATION SECTION (definition + LaTeX + 2 CodeBlocks +
+          BƯỚC 7. EXPLANATION SECTION (definition + LaTeX + 2 CodeBlocks +
                                        4 Callouts + 2 CollapsibleDetails +
                                        applications + pitfalls)
           ═══════════════════════════════════════════════════════════════════ */}
@@ -1161,11 +1160,11 @@ export default function ResidualConnectionsTopic() {
           <p className="text-sm text-muted mt-2 leading-relaxed">
             Gradient luôn có thành phần <strong>1</strong> từ skip connection cộng với
             dF/dx. Dù dF/dx nhỏ → gradient vẫn ≥ 1. Tổng gradient qua N block xếp chồng
-            là ∏(1 + dF_i/dx), không phải ∏(dF_i/dx) — đây là lý do ResNet không bị
+            là ∏(1 + dF_i/dx), không phải ∏(dF_i/dx). đây là lý do ResNet không bị
             vanishing gradient dù sâu bao nhiêu lớp.
           </p>
 
-          {/* ── Callout 1 — insight: Pre-Norm vs Post-Norm ── */}
+          {/* ── Callout 1. insight: Pre-Norm vs Post-Norm ── */}
           <Callout variant="insight" title="Pre-Norm vs Post-Norm">
             <p>
               <strong>Post-Norm</strong> (ResNet gốc, BERT gốc): y = LayerNorm(x +
@@ -1173,11 +1172,11 @@ export default function ResidualConnectionsTopic() {
               TRÊN đường skip, chặn một phần gradient.{" "}
               <strong>Pre-Norm</strong> (GPT, LLaMA, hầu hết LLM hiện đại): y = x +
               F(LayerNorm(x)). Dễ train hơn vì gradient chảy thẳng qua skip không bị
-              LayerNorm chặn — đổi lại cần một LayerNorm cuối cùng trước output.
+              LayerNorm chặn. đổi lại cần một LayerNorm cuối cùng trước output.
             </p>
           </Callout>
 
-          {/* ── CodeBlock 1 — Residual block cơ bản ── */}
+          {/* ── CodeBlock 1. Residual block cơ bản ── */}
           <CodeBlock language="python" title="residual_block.py">
             {`import torch
 import torch.nn as nn
@@ -1240,8 +1239,8 @@ y = layers(x)
 print(y.shape)  # torch.Size([8, 128, 28, 28])`}
           </CodeBlock>
 
-          {/* ── Callout 2 — tip: Bottleneck block ── */}
-          <Callout variant="tip" title="Bottleneck block — tiết kiệm tham số">
+          {/* ── Callout 2. tip: Bottleneck block ── */}
+          <Callout variant="tip" title="Bottleneck block. tiết kiệm tham số">
             <p>
               ResNet-50/101/152 dùng <em>bottleneck block</em> với 3 lớp: 1×1 (giảm
               kênh) → 3×3 (xử lý không gian) → 1×1 (tăng kênh lại). Tên &quot;bottleneck&quot;
@@ -1250,7 +1249,7 @@ print(y.shape)  # torch.Size([8, 128, 28, 28])`}
             </p>
           </Callout>
 
-          {/* ── CollapsibleDetail 1 — Identity Mapping paper (He 2016) ── */}
+          {/* ── CollapsibleDetail 1. Identity Mapping paper (He 2016) ── */}
           <CollapsibleDetail title="Chứng minh toán: Identity Mapping đảm bảo gradient không bị tiêu biến">
             <p>
               Trong bài báo follow-up &quot;Identity Mappings in Deep Residual
@@ -1271,18 +1270,18 @@ print(y.shape)  # torch.Size([8, 128, 28, 28])`}
             </p>
           </CollapsibleDetail>
 
-          {/* ── Callout 3 — warning: Projection shortcut phá vỡ identity ── */}
+          {/* ── Callout 3. warning: Projection shortcut phá vỡ identity ── */}
           <Callout variant="warning" title="Projection shortcut phá vỡ tính identity">
             <p>
               Khi dùng 1×1 conv trên skip path (option B/C), đường tắt không còn là
-              identity thuần khiết — nó trở thành một phép biến đổi tuyến tính có
+              identity thuần khiết. nó trở thành một phép biến đổi tuyến tính có
               trọng số. Điều này có thể làm giảm nhẹ lợi ích gradient flow, nhưng cần
               thiết khi downsample. Trong thực hành, người ta chỉ dùng projection ở
               block đầu của mỗi stage (khi đổi số kênh), còn lại là identity thuần.
             </p>
           </Callout>
 
-          {/* ── CodeBlock 2 — Pre-Norm Transformer block ── */}
+          {/* ── CodeBlock 2. Pre-Norm Transformer block ── */}
           <CodeBlock language="python" title="transformer_block_pre_norm.py">
             {`import torch
 import torch.nn as nn
@@ -1337,7 +1336,7 @@ y = blocks(x)
 print(y.shape)  # torch.Size([2, 256, 1024])`}
           </CodeBlock>
 
-          {/* ── CollapsibleDetail 2 — Why "residual" helps optimization ── */}
+          {/* ── CollapsibleDetail 2. Why "residual" helps optimization ── */}
           <CollapsibleDetail title="Tại sao &apos;học phần dư&apos; dễ hơn &apos;học toàn bộ&apos;?">
             <p>
               Đây là câu hỏi then chốt. Câu trả lời liên quan đến geometry của loss
@@ -1346,26 +1345,25 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
             <ul className="list-disc list-inside space-y-2 mt-2">
               <li>
                 Nếu ánh xạ tối ưu H*(x) gần với identity (ví dụ: mạng đã khá tốt, chỉ
-                cần &quot;vi chỉnh&quot;), thì F*(x) = H*(x) − x ≈ 0 — gần gốc tọa độ.
+                cần &quot;vi chỉnh&quot;), thì F*(x) = H*(x) − x ≈ 0. gần gốc tọa độ.
               </li>
                 <li>
-                Hàm gần 0 có <em>low magnitude</em> — SGD dễ hội tụ hơn vì khởi tạo
+                Hàm gần 0 có <em>low magnitude</em>. SGD dễ hội tụ hơn vì khởi tạo
                 ngẫu nhiên (mean 0) đã gần với lời giải.
               </li>
               <li>
                 Ngược lại, để mạng plain học identity từ đầu, các trọng số phải phối hợp
-                chính xác (Conv phải khử hiệu ứng BN, BN phải khử hiệu ứng ReLU, ...) —
-                lời giải nằm ở một &quot;hẻm núi hẹp&quot; khó tìm.
+                chính xác (Conv phải khử hiệu ứng BN, BN phải khử hiệu ứng ReLU, ...). lời giải nằm ở một &quot;hẻm núi hẹp&quot; khó tìm.
               </li>
               <li>
                 Thí nghiệm loss landscape (Li et al., 2018) chứng minh ResNet có loss
-                surface <em>trơn hơn hẳn</em> so với plain network cùng depth — thung
+                surface <em>trơn hơn hẳn</em> so với plain network cùng depth. thung
                 lũng rộng, ít local minima xấu.
               </li>
             </ul>
           </CollapsibleDetail>
 
-          {/* ── Callout 4 — info: Ứng dụng ngoài ResNet ── */}
+          {/* ── Callout 4. info: Ứng dụng ngoài ResNet ── */}
           <Callout variant="insight" title="Skip connection có mặt ở khắp mọi nơi">
             <p>
               Ngoài ResNet, skip connection là thành phần bắt buộc của: Transformer
@@ -1390,7 +1388,7 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
             <li>
               <strong>NLP / LLM:</strong> Mọi Transformer (BERT, GPT, T5, LLaMA,
               Claude, Gemini) đều có 2 residual connections mỗi block. GPT-3 96 lớp,
-              GPT-4 ước tính 120+ lớp — không có skip là không train được.
+              GPT-4 ước tính 120+ lớp. không có skip là không train được.
             </li>
             <li>
               <strong>Generative Models:</strong> U-Net backbone của Stable Diffusion
@@ -1415,7 +1413,7 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
           <ul className="list-disc list-inside space-y-2 text-sm">
             <li>
               <strong>Quên cộng x trước ReLU cuối:</strong> Một số implementation đặt
-              ReLU trước phép cộng — điều này cắt toàn bộ giá trị âm của F(x) và có
+              ReLU trước phép cộng. điều này cắt toàn bộ giá trị âm của F(x) và có
               thể làm mạng kém đi. Đặt ReLU SAU phép cộng F(x) + x.
             </li>
             <li>
@@ -1425,12 +1423,12 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
             </li>
             <li>
               <strong>Khởi tạo F(x) quá lớn:</strong> Nếu trọng số của F khởi tạo lớn,
-              F(x) át hẳn x — skip mất tác dụng. Dùng <em>zero-init</em> cho lớp cuối
+              F(x) át hẳn x. skip mất tác dụng. Dùng <em>zero-init</em> cho lớp cuối
               của F hoặc gamma = 0 cho BN cuối (&quot;ZeroInit&quot;, &quot;Fixup&quot;).
             </li>
             <li>
               <strong>BN trên skip path:</strong> Đặt BN trên đường tắt làm skip không
-              còn là identity. Tránh — chỉ đặt BN trong nhánh F(x) hoặc dùng projection
+              còn là identity. Tránh. chỉ đặt BN trong nhánh F(x) hoặc dùng projection
               thật cẩn trọng.
             </li>
             <li>
@@ -1444,7 +1442,7 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
           <p className="mt-4">
             <strong>Trong thực tế:</strong> Gần như mọi kiến trúc sâu hiện đại đều có
             skip connection ở một dạng nào đó. Khi bạn tự thiết kế mạng &gt; 10 lớp,
-            thêm skip gần như không bao giờ hại — chỉ có lợi hoặc không đổi. Đây là
+            thêm skip gần như không bao giờ hại. chỉ có lợi hoặc không đổi. Đây là
             một trong những &quot;default choice&quot; an toàn nhất trong deep
             learning.
           </p>
@@ -1452,7 +1450,7 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 8 — MINI SUMMARY (6 điểm)
+          BƯỚC 8. MINI SUMMARY (6 điểm)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
@@ -1463,13 +1461,13 @@ print(y.shape)  # torch.Size([2, 256, 1024])`}
             "Trường hợp xấu nhất: F(x) = 0 → output = x (identity). Thêm block không bao giờ làm tệ hơn.",
             "Thứ tự chuẩn trong basic block: Conv → BN → ReLU → Conv → BN → (+x) → ReLU. ReLU cuối SAU phép cộng.",
             "Dimension mismatch: dùng projection shortcut (1×1 conv với stride phù hợp) để khớp kích thước x với F(x).",
-            "Skip connection có mặt trong Transformer (2 per block), U-Net, DenseNet, Diffusion U-Net, LSTM/GRU — là default của deep learning hiện đại.",
+            "Skip connection có mặt trong Transformer (2 per block), U-Net, DenseNet, Diffusion U-Net, LSTM/GRU. là default của deep learning hiện đại.",
           ]}
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 9 — QUIZ (8 câu)
+          BƯỚC 9. QUIZ (8 câu)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />

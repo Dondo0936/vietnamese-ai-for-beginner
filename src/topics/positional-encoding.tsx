@@ -40,7 +40,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Tại sao Transformer cần positional encoding? Self-attention không tự biết thứ tự sao?",
     options: [
       "Self-attention biết thứ tự qua Q, K, V",
-      "Self-attention xử lý song song, coi mọi từ như tập hợp không thứ tự — 'mèo bắt chuột' = 'chuột bắt mèo'",
+      "Self-attention xử lý song song, coi mọi từ như tập hợp không thứ tự. 'mèo bắt chuột' = 'chuột bắt mèo'",
       "Chỉ cần cho chuỗi dài, chuỗi ngắn không cần",
       "Positional encoding chỉ dùng cho decoder, encoder không cần",
     ],
@@ -53,7 +53,7 @@ const quizQuestions: QuizQuestion[] = [
       "Để ảnh hưởng mỗi chiều embedding khác nhau",
       "Tần số thấp phân biệt vị trí xa ('đầu vs cuối'), tần số cao phân biệt vị trí gần ('từ 5 vs từ 6')",
       "Để tương thích với FFT",
-      "Không có lý do — chỉ là convention",
+      "Không có lý do. chỉ là convention",
     ],
     correct: 1,
     explanation: "Giống hệ số nhị phân: bit thấp nhất thay đổi nhanh (phân biệt 0 vs 1), bit cao nhất thay đổi chậm (phân biệt 0 vs 128). Tần số thấp → pattern thay đổi chậm → phân biệt vị trí xa. Tần số cao → thay đổi nhanh → phân biệt vị trí gần.",
@@ -62,7 +62,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "RoPE (Rotary Position Embedding) trong LLaMA khác sinusoidal PE thế nào?",
     options: [
       "RoPE thêm PE vào embedding (cộng), giống sinusoidal",
-      "RoPE xoay Q và K vectors theo vị trí thay vì cộng — khoảng cách tương đối được mã hóa trực tiếp vào attention score",
+      "RoPE xoay Q và K vectors theo vị trí thay vì cộng. khoảng cách tương đối được mã hóa trực tiếp vào attention score",
       "RoPE dùng cosine thay vì sine",
       "RoPE không dùng cho attention, chỉ cho FFN",
     ],
@@ -99,18 +99,18 @@ export default function PositionalEncodingTopic() {
       {/* ═══ Step 1: HOOK ═══ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question={`"Mèo bắt chuột" và "Chuột bắt mèo" — nghĩa hoàn toàn khác! Nhưng Self-attention xử lý tất cả từ song song, không biết thứ tự. Nó sẽ cho 2 câu này output giống nhau. Làm sao sửa?`}
+          question={`"Mèo bắt chuột" và "Chuột bắt mèo". nghĩa hoàn toàn khác! Nhưng Self-attention xử lý tất cả từ song song, không biết thứ tự. Nó sẽ cho 2 câu này output giống nhau. Làm sao sửa?`}
           options={[
             "Thêm số thứ tự vào mỗi embedding: 1, 2, 3, ...",
-            "Thêm vector vị trí duy nhất cho mỗi vị trí (dùng sin/cos hoặc học được) — gọi là Positional Encoding",
+            "Thêm vector vị trí duy nhất cho mỗi vị trí (dùng sin/cos hoặc học được). gọi là Positional Encoding",
             "Xử lý tuần tự như RNN thay vì song song",
           ]}
           correct={1}
-          explanation={`Positional Encoding thêm "mã vạch" vị trí cho mỗi từ. Embedding("mèo" ở vị trí 0) ≠ Embedding("mèo" ở vị trí 2). Dùng sin/cos ở nhiều tần số — giống hệ nhị phân: bit thấp phân biệt gần, bit cao phân biệt xa.`}
+          explanation={`Positional Encoding thêm "mã vạch" vị trí cho mỗi từ. Embedding("mèo" ở vị trí 0) ≠ Embedding("mèo" ở vị trí 2). Dùng sin/cos ở nhiều tần số. giống hệ nhị phân: bit thấp phân biệt gần, bit cao phân biệt xa.`}
         />
       </LessonSection>
 
-      {/* ═══ Step 2: DISCOVER — Interactive PE Matrix ═══ */}
+      {/* ═══ Step 2: DISCOVER. Interactive PE Matrix ═══ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá ma trận PE">
         <p className="text-sm text-foreground leading-relaxed mb-3">
           Hãy tưởng tượng mỗi căn nhà trên phố có{" "}
@@ -206,7 +206,7 @@ export default function PositionalEncodingTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Modern variants ═══ */}
+      {/* ═══ Step 4: DEEPEN. Modern variants ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Biến thể hiện đại">
           <div className="space-y-3">
             <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4">
@@ -239,10 +239,10 @@ export default function PositionalEncodingTopic() {
       {/* ═══ Step 5: CHALLENGE ═══ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Train với max 2048 tokens. Test với 4096 tokens. Sinusoidal PE vs Learned PE — cái nào xử lý tốt hơn?"
+          question="Train với max 2048 tokens. Test với 4096 tokens. Sinusoidal PE vs Learned PE. cái nào xử lý tốt hơn?"
           options={[
-            "Learned PE — vì nó linh hoạt hơn",
-            "Sinusoidal PE — vì sin/cos hoạt động với mọi vị trí, không cần học vị trí 2049-4096",
+            "Learned PE. vì nó linh hoạt hơn",
+            "Sinusoidal PE. vì sin/cos hoạt động với mọi vị trí, không cần học vị trí 2049-4096",
             "Cả hai đều thất bại hoàn toàn",
           ]}
           correct={1}
@@ -314,9 +314,9 @@ x = pe(x)  # embedding + positional encoding`}
           title="Ghi nhớ về Positional Encoding"
           points={[
             "Self-attention không biết thứ tự → cần PE để phân biệt 'mèo bắt chuột' vs 'chuột bắt mèo'.",
-            "Sinusoidal PE dùng sin/cos ở nhiều tần số: cao phân biệt gần, thấp phân biệt xa — giống hệ nhị phân.",
+            "Sinusoidal PE dùng sin/cos ở nhiều tần số: cao phân biệt gần, thấp phân biệt xa. giống hệ nhị phân.",
             "input = word_embedding + positional_encoding. PE được cộng trực tiếp vào embedding.",
-            "Biến thể: Learned PE (BERT), RoPE (LLaMA — xoay Q,K theo vị trí), ALiBi (bias khoảng cách).",
+            "Biến thể: Learned PE (BERT), RoPE (LLaMA. xoay Q,K theo vị trí), ALiBi (bias khoảng cách).",
             "RoPE phổ biến nhất hiện nay: mã hóa khoảng cách tương đối, ngoại suy tốt cho context dài.",
           ]}
         />

@@ -23,7 +23,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "long-context",
   title: "Long Context",
-  titleVi: "Ngữ cảnh dài — AI đọc cả cuốn sách",
+  titleVi: "Ngữ cảnh dài. AI đọc cả cuốn sách",
   description:
     "Khả năng mô hình xử lý hàng trăm nghìn đến hàng triệu token trong một lần, cho phép phân tích tài liệu dài.",
   category: "emerging",
@@ -54,7 +54,7 @@ const CONTEXT_PRESETS: ContextPreset[] = [
 
 // ============================================================================
 // Synthetic document: list of chunks. Each chunk is ~4K tokens in the story,
-// rendered as a single card. Chunk 7 holds the "golden answer" — useful for
+// rendered as a single card. Chunk 7 holds the "golden answer". useful for
 // the lost-in-the-middle demonstration.
 // ============================================================================
 
@@ -69,49 +69,49 @@ interface DocChunk {
 const DOCUMENT: DocChunk[] = [
   {
     id: 1,
-    heading: "Chương 1 — Giới thiệu hợp đồng",
+    heading: "Chương 1. Giới thiệu hợp đồng",
     preview:
       "Bên A và Bên B ký hợp đồng dịch vụ phát triển phần mềm quản trị doanh nghiệp trọn gói.",
     approxTokens: 3800,
   },
   {
     id: 2,
-    heading: "Chương 2 — Định nghĩa thuật ngữ",
+    heading: "Chương 2. Định nghĩa thuật ngữ",
     preview:
       "Các thuật ngữ 'Sản phẩm', 'Dịch vụ', 'Deliverable', 'Milestone' được định nghĩa cụ thể.",
     approxTokens: 4100,
   },
   {
     id: 3,
-    heading: "Chương 3 — Phạm vi công việc",
+    heading: "Chương 3. Phạm vi công việc",
     preview:
       "Bên B cam kết cung cấp: web app, mobile app iOS/Android, hạ tầng cloud, tài liệu kỹ thuật.",
     approxTokens: 4500,
   },
   {
     id: 4,
-    heading: "Chương 4 — Lộ trình milestones",
+    heading: "Chương 4. Lộ trình milestones",
     preview:
       "M1 (tháng 1): thiết kế UX. M2 (tháng 3): prototype có thể demo. M3 (tháng 6): GA release.",
     approxTokens: 3900,
   },
   {
     id: 5,
-    heading: "Chương 5 — Tiêu chí nghiệm thu",
+    heading: "Chương 5. Tiêu chí nghiệm thu",
     preview:
       "Acceptance criteria: uptime 99.9%, response p95 < 200ms, không bug P0/P1 trong 7 ngày.",
     approxTokens: 4200,
   },
   {
     id: 6,
-    heading: "Chương 6 — Điều khoản thanh toán",
+    heading: "Chương 6. Điều khoản thanh toán",
     preview:
       "Thanh toán theo milestone: 20% ký HĐ + 30% M1 + 30% M2 + 20% M3. Giữ 10% bảo hành 12 tháng.",
     approxTokens: 4300,
   },
   {
     id: 7,
-    heading: "Chương 7 — ⚠️ Điều khoản phạt (GOLDEN)",
+    heading: "Chương 7. ⚠️ Điều khoản phạt (GOLDEN)",
     preview:
       "Phạt trễ hạn 2%/tuần, tối đa 30% giá trị hợp đồng. Gây thiệt hại Bên A có thể tính thêm ngoài phạt.",
     approxTokens: 4600,
@@ -119,126 +119,126 @@ const DOCUMENT: DocChunk[] = [
   },
   {
     id: 8,
-    heading: "Chương 8 — Bảo mật & IP",
+    heading: "Chương 8. Bảo mật & IP",
     preview:
       "Mọi source code, tài liệu là tài sản của Bên A ngay khi thanh toán milestone tương ứng.",
     approxTokens: 4100,
   },
   {
     id: 9,
-    heading: "Chương 9 — Điều khoản bất khả kháng",
+    heading: "Chương 9. Điều khoản bất khả kháng",
     preview:
-      "Thiên tai, chiến tranh, đại dịch — các bên được miễn trách nhiệm trong thời gian sự kiện kéo dài.",
+      "Thiên tai, chiến tranh, đại dịch. các bên được miễn trách nhiệm trong thời gian sự kiện kéo dài.",
     approxTokens: 3700,
   },
   {
     id: 10,
-    heading: "Chương 10 — Giải quyết tranh chấp",
+    heading: "Chương 10. Giải quyết tranh chấp",
     preview:
       "Trọng tài thương mại VIAC, ngôn ngữ tiếng Việt, địa điểm Hà Nội, phán quyết chung thẩm.",
     approxTokens: 3900,
   },
   {
     id: 11,
-    heading: "Chương 11 — Luật áp dụng",
+    heading: "Chương 11. Luật áp dụng",
     preview:
       "Luật Việt Nam, Bộ luật Dân sự 2015, Luật Thương mại 2005, Nghị định 13/2023 về DL cá nhân.",
     approxTokens: 3600,
   },
   {
     id: 12,
-    heading: "Chương 12 — Chấm dứt hợp đồng",
+    heading: "Chương 12. Chấm dứt hợp đồng",
     preview:
       "Các trường hợp đơn phương chấm dứt: vi phạm nghiêm trọng, phá sản, ngừng hoạt động 30+ ngày.",
     approxTokens: 4000,
   },
   {
     id: 13,
-    heading: "Chương 13 — Điều khoản chuyển nhượng",
+    heading: "Chương 13. Điều khoản chuyển nhượng",
     preview:
       "Không được chuyển nhượng hợp đồng cho bên thứ ba mà không có văn bản đồng ý của bên kia.",
     approxTokens: 3800,
   },
   {
     id: 14,
-    heading: "Chương 14 — Sửa đổi hợp đồng",
+    heading: "Chương 14. Sửa đổi hợp đồng",
     preview:
       "Mọi sửa đổi phải bằng văn bản, có chữ ký của đại diện pháp lý của cả hai bên ký kết.",
     approxTokens: 3500,
   },
   {
     id: 15,
-    heading: "Chương 15 — Thông báo",
+    heading: "Chương 15. Thông báo",
     preview:
       "Email, fax, thư bảo đảm. Ngày hiệu lực tính từ khi bên kia nhận được hoặc xác nhận đã đọc.",
     approxTokens: 3400,
   },
   {
     id: 16,
-    heading: "Chương 16 — Điều khoản tổng thể",
+    heading: "Chương 16. Điều khoản tổng thể",
     preview:
       "Hợp đồng thay thế mọi thoả thuận trước đó. Có 2 bản tiếng Việt, mỗi bên giữ 1 bản gốc.",
     approxTokens: 3300,
   },
   {
     id: 17,
-    heading: "Phụ lục A — SLA chi tiết",
+    heading: "Phụ lục A. SLA chi tiết",
     preview:
       "Uptime guarantee 99.9%, support window 24/7, incident response time theo mức P0/P1/P2/P3.",
     approxTokens: 4400,
   },
   {
     id: 18,
-    heading: "Phụ lục B — Bảng giá",
+    heading: "Phụ lục B. Bảng giá",
     preview:
       "Giá trọn gói 2,5 tỷ VND, bao gồm VAT 10%. Chi phí phát sinh ngoài phạm vi tính theo giờ.",
     approxTokens: 3700,
   },
   {
     id: 19,
-    heading: "Phụ lục C — Danh sách nhân sự",
+    heading: "Phụ lục C. Danh sách nhân sự",
     preview:
       "PM: Nguyễn A. Tech Lead: Trần B. QA Lead: Lê C. DevOps Lead: Phạm D. UX Lead: Hoàng E.",
     approxTokens: 3500,
   },
   {
     id: 20,
-    heading: "Phụ lục D — Template báo cáo",
+    heading: "Phụ lục D. Template báo cáo",
     preview:
       "Báo cáo tuần gồm: tiến độ, rủi ro mới, blocker đang mở, kế hoạch tuần sau, yêu cầu hỗ trợ.",
     approxTokens: 3600,
   },
   {
     id: 21,
-    heading: "Phụ lục E — Security checklist",
+    heading: "Phụ lục E. Security checklist",
     preview:
       "OWASP Top 10 coverage, penetration test định kỳ 6 tháng, SOC 2 Type II trong 18 tháng đầu.",
     approxTokens: 4200,
   },
   {
     id: 22,
-    heading: "Phụ lục F — Môi trường triển khai",
+    heading: "Phụ lục F. Môi trường triển khai",
     preview:
       "AWS ap-southeast-1, multi-AZ, Terraform IaC, CI/CD GitHub Actions, monitoring bằng Datadog.",
     approxTokens: 4300,
   },
   {
     id: 23,
-    heading: "Phụ lục G — Data processing agreement",
+    heading: "Phụ lục G. Data processing agreement",
     preview:
       "Tuân thủ Nghị định 13/2023 về bảo vệ dữ liệu cá nhân, có điều khoản subprocessor.",
     approxTokens: 3900,
   },
   {
     id: 24,
-    heading: "Phụ lục H — Escalation matrix",
+    heading: "Phụ lục H. Escalation matrix",
     preview:
       "P0: 15 phút. P1: 1 giờ. P2: 4 giờ. P3: 1 ngày làm việc. Escalation qua PM → CTO → CEO.",
     approxTokens: 3100,
   },
   {
     id: 25,
-    heading: "Phụ lục cuối — Chữ ký các bên",
+    heading: "Phụ lục cuối. Chữ ký các bên",
     preview:
       "Ngày ký, địa điểm ký, đại diện pháp lý của các bên cùng dấu doanh nghiệp (nếu có).",
     approxTokens: 800,
@@ -331,12 +331,12 @@ export default function LongContextTopic() {
         ],
         correct: 1,
         explanation:
-          "KV cache = 2 x layers x heads x d_head x seq_len x bytes. Với Llama 70B, 1M tokens: KV cache ~ 80GB VRAM — hơn cả model weights! PagedAttention, GQA, quantized KV giảm được 4-8x nhưng vẫn là bottleneck chính.",
+          "KV cache = 2 x layers x heads x d_head x seq_len x bytes. Với Llama 70B, 1M tokens: KV cache ~ 80GB VRAM. hơn cả model weights! PagedAttention, GQA, quantized KV giảm được 4-8x nhưng vẫn là bottleneck chính.",
       },
       {
         question: "'Lost in the middle' problem là gì?",
         options: [
-          "Model quên thông tin ở GIỮA context dài — nhớ tốt đầu và cuối, quên giữa",
+          "Model quên thông tin ở GIỮA context dài. nhớ tốt đầu và cuối, quên giữa",
           "Model mất context khi context quá dài",
           "Token ở giữa bị xoá để tiết kiệm memory",
         ],
@@ -361,19 +361,19 @@ export default function LongContextTopic() {
         options: ["10 lần", "100 lần (vì N² tăng 100x khi N tăng 10x)", "1,000 lần"],
         correct: 1,
         explanation:
-          "N tăng 10x → N² tăng 100x. Đó là lý do attention là bottleneck compute chính ở long context. Flash Attention giảm memory xuống O(N) nhưng FLOPs vẫn O(N²). State-space models (Mamba) có O(N) FLOPs thật sự — đó là động lực nghiên cứu.",
+          "N tăng 10x → N² tăng 100x. Đó là lý do attention là bottleneck compute chính ở long context. Flash Attention giảm memory xuống O(N) nhưng FLOPs vẫn O(N²). State-space models (Mamba) có O(N) FLOPs thật sự. Đó là động lực nghiên cứu.",
       },
       {
         question:
           "Context caching trong Claude/Gemini giúp gì khi query nhiều lần trên cùng tài liệu dài?",
         options: [
           "Không giúp gì đáng kể",
-          "Prefill (forward pass trên document) chỉ tính 1 lần, cache lại KV; các query sau chỉ trả tiền cho phần query mới — rẻ hơn 5-10x",
+          "Prefill (forward pass trên document) chỉ tính 1 lần, cache lại KV; các query sau chỉ trả tiền cho phần query mới. rẻ hơn 5-10x",
           "Làm model chính xác hơn",
         ],
         correct: 1,
         explanation:
-          "Prompt caching / context caching: nếu prefix không đổi (ví dụ tài liệu 500 trang), KV của prefix được cache. Các query sau chỉ cần prefill phần khác nhau. Chi phí giảm 5-10x, latency giảm 80%+. Claude có prompt caching, Gemini có context caching — tính năng bắt buộc cho production long context.",
+          "Prompt caching / context caching: nếu prefix không đổi (ví dụ tài liệu 500 trang), KV của prefix được cache. Các query sau chỉ cần prefill phần khác nhau. Chi phí giảm 5-10x, latency giảm 80%+. Claude có prompt caching, Gemini có context caching. tính năng bắt buộc cho production long context.",
       },
       {
         question:
@@ -385,7 +385,7 @@ export default function LongContextTopic() {
         ],
         correct: 1,
         explanation:
-          "NIAH: nhét 1 câu ngẫu nhiên vào context dài, hỏi lại → chỉ test retrieval. Nhưng use case thực: tổng hợp 5 điều khoản nằm ở chương 3, 7, 12, 18, 22. Benchmark mới (RULER, LongBench, InfiniteBench) test multi-hop reasoning, aggregation, ordering — nơi model thường fail dù NIAH 99%+.",
+          "NIAH: nhét 1 câu ngẫu nhiên vào context dài, hỏi lại → chỉ test retrieval. Nhưng use case thực: tổng hợp 5 điều khoản nằm ở chương 3, 7, 12, 18, 22. Benchmark mới (RULER, LongBench, InfiniteBench) test multi-hop reasoning, aggregation, ordering. nơi model thường fail dù NIAH 99%+.",
       },
       {
         question:
@@ -417,7 +417,7 @@ export default function LongContextTopic() {
           { answer: "O(N^2)", accept: ["quadratic", "n^2", "bình phương"] },
         ],
         explanation:
-          "Gemini 1.5 Pro và Claude (2025) hỗ trợ 1 million tokens context. Tuy nhiên, self-attention vẫn có complexity O(N^2), khiến KV cache và FLOPs trở thành bottleneck — đây là lý do cần Flash Attention, GQA, state-space models.",
+          "Gemini 1.5 Pro và Claude (2025) hỗ trợ 1 million tokens context. Tuy nhiên, self-attention vẫn có complexity O(N^2), khiến KV cache và FLOPs trở thành bottleneck. đây là lý do cần Flash Attention, GQA, state-space models.",
       },
     ],
     [],
@@ -435,10 +435,10 @@ export default function LongContextTopic() {
           options={[
             "Cắt nhỏ thành 100 phần, hỏi AI từng phần một",
             "Cho toàn bộ 500 trang vào context window của model hỗ trợ 1M tokens",
-            "Đọc thủ công — AI không xử lý được tài liệu dài",
+            "Đọc thủ công. AI không xử lý được tài liệu dài",
           ]}
           correct={1}
-          explanation="Long context models (Claude, Gemini) đọc cả 500 trang trong 1 lần — hiểu toàn cảnh, không bị mất context giữa các phần. Giống đọc nguyên cuốn sách thay vì đọc từng trang rời. Điều khoản ở trang 3 liên quan đến trang 487? Long context bắt được!"
+          explanation="Long context models (Claude, Gemini) đọc cả 500 trang trong 1 lần. hiểu toàn cảnh, không bị mất context giữa các phần. Giống đọc nguyên cuốn sách thay vì đọc từng trang rời. Điều khoản ở trang 3 liên quan đến trang 487? Long context bắt được!"
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
             <p className="mb-4 text-sm text-muted leading-relaxed">
@@ -507,7 +507,7 @@ export default function LongContextTopic() {
                       value={`${DOCUMENT.length - fittingCount} chương`}
                       hint={
                         DOCUMENT.length - fittingCount === 0
-                          ? "OK — toàn bộ fit"
+                          ? "OK. toàn bộ fit"
                           : "Phần đuôi bị cắt"
                       }
                     />
@@ -627,7 +627,7 @@ export default function LongContextTopic() {
                                   />
                                 </div>
                                 <span className="text-[9px] text-muted font-mono w-10 shrink-0 text-right">
-                                  {w > 0 ? w.toFixed(2) : "—"}
+                                  {w > 0 ? w.toFixed(2) : ":"}
                                 </span>
                               </div>
                             </div>
@@ -657,8 +657,7 @@ export default function LongContextTopic() {
                     </div>
                     <p className="text-muted leading-relaxed">
                       Training data dài + positional tricks (RoPE scaling, YaRN)
-                      + continued pretraining giúp attention phân bố đều hơn —
-                      chunk ở cuối tài liệu vẫn được nhìn thấy bởi query ở đầu.
+                      + continued pretraining giúp attention phân bố đều hơn. chunk ở cuối tài liệu vẫn được nhìn thấy bởi query ở đầu.
                     </p>
                   </div>
                 </div>
@@ -676,7 +675,7 @@ export default function LongContextTopic() {
                 Từ 4K tokens (5 trang) đến 1M tokens (1250 trang) chỉ trong 2
                 năm! Như từ đọc <strong>1 bài báo</strong> sang đọc{" "}
                 <strong>cả cuốn tiểu thuyết</strong> trong 1 lần. Long context
-                không chỉ là &apos;nhiều hơn&apos; — nó cho phép{" "}
+                không chỉ là &apos;nhiều hơn&apos;. nó cho phép{" "}
                 <strong>hiểu toàn cảnh</strong> thay vì ghép nhiều mảnh nhỏ.
               </p>
               <p className="mt-3 text-sm">
@@ -702,7 +701,7 @@ export default function LongContextTopic() {
                 "1 GPU nếu dùng quantization",
               ]}
               correct={1}
-              explanation="Weights 140GB + KV cache 80GB = 220GB. A100 80GB → cần 3 GPU minimum. KV cache là 'chi phí ẩn' của long context — tăng tuyến tính với seq_len. Giải pháp: GQA giảm KV 4-8x, quantized KV cache (INT8), PagedAttention giảm fragmentation."
+              explanation="Weights 140GB + KV cache 80GB = 220GB. A100 80GB → cần 3 GPU minimum. KV cache là 'chi phí ẩn' của long context. tăng tuyến tính với seq_len. Giải pháp: GQA giảm KV 4-8x, quantized KV cache (INT8), PagedAttention giảm fragmentation."
             />
             <div className="mt-4">
               <InlineChallenge
@@ -713,7 +712,7 @@ export default function LongContextTopic() {
                   "Không thể dùng lại vì mỗi request là stateless",
                 ]}
                 correct={1}
-                explanation="Anthropic prompt caching: khi prefix (document) lặp lại, phần cached tính giá 10% input tokens (read) hoặc 125% (write lần đầu). 50 queries trên 600K tokens: không cache = 30M tokens. Có cache: 600K write + 49 x 600K x 0.1 = ~3.5M — tiết kiệm ~88%."
+                explanation="Anthropic prompt caching: khi prefix (document) lặp lại, phần cached tính giá 10% input tokens (read) hoặc 125% (write lần đầu). 50 queries trên 600K tokens: không cache = 30M tokens. Có cache: 600K write + 49 x 600K x 0.1 = ~3.5M. tiết kiệm ~88%."
               />
             </div>
           </LessonSection>
@@ -722,7 +721,7 @@ export default function LongContextTopic() {
             <ExplanationSection>
               <p>
                 <strong>Long Context</strong> là khả năng model xử lý hàng trăm
-                nghìn đến hàng triệu tokens trong 1 lần — cho phép phân tích tài
+                nghìn đến hàng triệu tokens trong 1 lần. cho phép phân tích tài
                 liệu dài, codebase, video. Khái niệm mở rộng của{" "}
                 <TopicLink slug="context-window">context window</TopicLink>{" "}
                 truyền thống, thường đi kèm kiến trúc thay thế như{" "}
@@ -766,7 +765,7 @@ export default function LongContextTopic() {
                 </li>
               </ul>
 
-              <Callout variant="tip" title="Long context vs RAG — không loại trừ nhau">
+              <Callout variant="tip" title="Long context vs RAG. không loại trừ nhau">
                 Long context: đơn giản (dump all docs), tốt cho reasoning
                 across documents. RAG: scale tốt hơn (tỷ documents), chi phí
                 per-query thấp, freshness. Hybrid: RAG chọn top-50 documents →
@@ -783,7 +782,7 @@ export default function LongContextTopic() {
               <Callout variant="info" title="KV cache dominates">
                 Ở 1M tokens, KV cache thường lớn hơn cả model weights. Đây là
                 lý do cần GQA, MLA (Multi-head Latent Attention), quantized KV,
-                và PagedAttention — nếu không sẽ không bao giờ fit GPU.
+                và PagedAttention. nếu không sẽ không bao giờ fit GPU.
               </Callout>
 
               <Callout variant="warning" title="Cost realism">
@@ -793,7 +792,7 @@ export default function LongContextTopic() {
                 nếu query lặp lại.
               </Callout>
 
-              <CollapsibleDetail title="KV cache size — công thức chi tiết">
+              <CollapsibleDetail title="KV cache size. công thức chi tiết">
                 <p className="text-sm">Công thức tổng quát:</p>
                 <LaTeX block>
                   {
@@ -843,7 +842,7 @@ export default function LongContextTopic() {
                 </p>
               </CollapsibleDetail>
 
-              <CodeBlock language="python" title="Claude API context window — Python">
+              <CodeBlock language="python" title="Claude API context window. Python">
                 {`import anthropic
 
 client = anthropic.Anthropic()
@@ -899,7 +898,7 @@ client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-5"
 
 # ----------------------------------------------------------------------------
-# Count helpers — dùng API count_tokens để ước lượng chính xác theo tokenizer
+# Count helpers. dùng API count_tokens để ước lượng chính xác theo tokenizer
 # của Claude (khác tokenizer OpenAI, nên không dùng tiktoken).
 # ----------------------------------------------------------------------------
 
@@ -915,7 +914,7 @@ def fits_in_context(text: str, budget: int = 180_000) -> bool:
     return count_tokens(text) <= budget
 
 # ----------------------------------------------------------------------------
-# Chunking fallback — khi document > context window
+# Chunking fallback. Khi document > context window
 # Chia theo đoạn văn, tôn trọng biên đoạn để giữ semantic coherence.
 # ----------------------------------------------------------------------------
 
@@ -957,7 +956,7 @@ def chunk_for_rag(text: str, chunk_tokens: int = 2000) -> list[Chunk]:
     return chunks
 
 # ----------------------------------------------------------------------------
-# Strategy selector — chọn long context / hybrid / RAG theo kích thước
+# Strategy selector. chọn long context / hybrid / RAG theo kích thước
 # ----------------------------------------------------------------------------
 
 def choose_strategy(doc_path: str) -> str:
@@ -974,7 +973,7 @@ def choose_strategy(doc_path: str) -> str:
     return "pure-rag"
 
 # ----------------------------------------------------------------------------
-# Example run — áp dụng chiến lược đã chọn
+# Example run. áp dụng chiến lược đã chọn
 # ----------------------------------------------------------------------------
 
 def analyze(doc_path: str, question: str) -> str:
@@ -1176,7 +1175,7 @@ if __name__ == "__main__":
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               points={[
-                "Long context: từ 4K (2023) đến 1M tokens (2025) — đọc cả cuốn sách trong 1 lần.",
+                "Long context: từ 4K (2023) đến 1M tokens (2025). đọc cả cuốn sách trong 1 lần.",
                 "KV cache là bottleneck chính: tăng tuyến tính với seq_len, có thể lớn hơn model weights.",
                 "Attention vẫn O(N²) FLOPs: Flash Attention giảm memory O(N), SSM giảm FLOPs thực sự.",
                 "'Lost in the middle': model nhớ tốt đầu/cuối, yếu ở giữa; cần RULER/LongBench để đánh giá.",

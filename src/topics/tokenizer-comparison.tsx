@@ -17,7 +17,7 @@ export const metadata: TopicMeta = {
   title: "Tokenizer Comparison",
   titleVi: "So sánh Tokenizer",
   description:
-    "So sánh BPE, SentencePiece và WordPiece — ưu nhược điểm và ứng dụng của từng phương pháp",
+    "So sánh BPE, SentencePiece và WordPiece theo cách cắt token, chi phí và độ phù hợp với tiếng Việt.",
   category: "nlp",
   tags: ["bpe", "sentencepiece", "wordpiece"],
   difficulty: "advanced",
@@ -146,7 +146,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao SentencePiece tốt cho đa ngôn ngữ (multilingual)?",
     options: [
       "Vì được thiết kế cho tiếng Nhật",
-      "Vì xử lý ở mức BYTE — không cần pre-tokenize, hỗ trợ mọi script Unicode",
+      "Vì xử lý ở mức BYTE. không cần pre-tokenize, hỗ trợ mọi script Unicode",
       "Vì từ vựng lớn hơn",
       "Vì nhanh hơn BPE",
     ],
@@ -158,7 +158,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Từ 'Phở' bị tách thành 'Ph' + 'ở' bởi BPE của GPT. Tại sao?",
     options: [
       "Vì BPE lỗi",
-      "Vì GPT tokenizer huấn luyện chủ yếu trên tiếng Anh — 'Phở' hiếm nên bị chia nhỏ",
+      "Vì GPT tokenizer huấn luyện chủ yếu trên tiếng Anh. 'Phở' hiếm nên bị chia nhỏ",
       "Vì 'Phở' quá dài",
       "Vì BPE luôn chia thành 2 phần",
     ],
@@ -305,7 +305,7 @@ export default function TokenizerComparisonTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           <p>
-            Ba tokenizer đều là subword — chia từ hiếm thành mảnh nhỏ. Nhưng khác nhau ở cách đánh dấu khoảng trắng: BPE giữ dấu cách, WordPiece dùng ##, SentencePiece dùng ▁.
+            Ba tokenizer đều là subword. chia từ hiếm thành mảnh nhỏ. Nhưng khác nhau ở cách đánh dấu khoảng trắng: BPE giữ dấu cách, WordPiece dùng ##, SentencePiece dùng ▁.
           </p>
           <p className="text-sm text-muted mt-1">
             Quan trọng nhất: tokenizer phải được huấn luyện trên ngôn ngữ đúng! GPT tokenizer (tiếng Anh) chia {'"Phở"'} thành 2 token, PhoBERT tokenizer (tiếng Việt) giữ nguyên 1 token.
@@ -323,7 +323,7 @@ export default function TokenizerComparisonTopic() {
             "'##' là ký tự đặc biệt trong tiếng Việt",
           ]}
           correct={1}
-          explanation="## trong WordPiece đánh dấu: 'đây KHÔNG phải đầu từ mới, mà tiếp nối từ trước'. 'Việt' + '##Nam' = 'Việt Nam'. Giống mảnh ghép puzzle — ## cho biết mảnh này nối vào mảnh trước!"
+          explanation="## trong WordPiece đánh dấu: 'đây KHÔNG phải đầu từ mới, mà tiếp nối từ trước'. 'Việt' + '##Nam' = 'Việt Nam'. Giống mảnh ghép puzzle. ## cho biết mảnh này nối vào mảnh trước!"
         />
       </LessonSection>
 
@@ -366,7 +366,7 @@ export default function TokenizerComparisonTopic() {
             <TopicLink slug="gpt">GPT</TopicLink>
             {" "}trong khi WordPiece là lựa chọn của{" "}
             <TopicLink slug="bert">BERT</TopicLink>
-            {" "}— chọn sai tokenizer cho ngôn ngữ sẽ khiến số token tăng vọt và chi phí inference đắt hơn.
+            {" "}: chọn sai tokenizer cho ngôn ngữ sẽ khiến số token tăng vọt và chi phí inference đắt hơn.
           </p>
 
           <Callout variant="insight" title="BPE (Byte Pair Encoding)">

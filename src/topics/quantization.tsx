@@ -40,7 +40,7 @@ const TOTAL_STEPS = 9;
 //   FP32 = FP16 ≈ 5.68 (baseline)
 //   INT8 = 5.70 (+0.35%)
 //   INT4 (GPTQ) = 5.78 (+1.75%)
-//   INT2 = 7.80 (+37%) — thường không dùng được trực tiếp
+//   INT2 = 7.80 (+37%). thường không dùng được trực tiếp
 // ════════════════════════════════════════════════════════════════════════════
 
 type PrecisionSpec = {
@@ -66,7 +66,7 @@ const PRECISIONS: PrecisionSpec[] = [
     speed: 1.0,
     color: "#3b82f6",
     example: "3.14159265",
-    description: "32 bit IEEE 754 — baseline chính xác. Dùng để huấn luyện & kiểm chứng.",
+    description: "32 bit IEEE 754. baseline chính xác. Dùng để huấn luyện & kiểm chứng.",
     llama70bGB: 280,
   },
   {
@@ -78,7 +78,7 @@ const PRECISIONS: PrecisionSpec[] = [
     speed: 2.0,
     color: "#8b5cf6",
     example: "3.14160",
-    description: "16 bit half-precision — mất vài chữ số cuối. Mặc định huấn luyện hiện đại.",
+    description: "16 bit half-precision. mất vài chữ số cuối. Mặc định huấn luyện hiện đại.",
     llama70bGB: 140,
   },
   {
@@ -90,7 +90,7 @@ const PRECISIONS: PrecisionSpec[] = [
     speed: 3.5,
     color: "#f59e0b",
     example: "3.14",
-    description: "8 bit integer — dùng phổ biến cho inference. Hỗ trợ native GPU (Tensor Core).",
+    description: "8 bit integer. dùng phổ biến cho inference. Hỗ trợ native GPU (Tensor Core).",
     llama70bGB: 70,
   },
   {
@@ -102,7 +102,7 @@ const PRECISIONS: PrecisionSpec[] = [
     speed: 4.5,
     color: "#22c55e",
     example: "3.1",
-    description: "4 bit — chìa khoá chạy LLM trên consumer GPU. GPTQ/AWQ/NF4.",
+    description: "4 bit. chìa khoá chạy LLM trên consumer GPU. GPTQ/AWQ/NF4.",
     llama70bGB: 35,
   },
   {
@@ -114,7 +114,7 @@ const PRECISIONS: PrecisionSpec[] = [
     speed: 5.5,
     color: "#ef4444",
     example: "3.0",
-    description: "2 bit — thực nghiệm (AQLM, BitNet). Mất chất lượng đáng kể trừ khi dùng QAT đặc biệt.",
+    description: "2 bit. thực nghiệm (AQLM, BitNet). Mất chất lượng đáng kể trừ khi dùng QAT đặc biệt.",
     llama70bGB: 17.5,
   },
 ];
@@ -146,7 +146,7 @@ const METHODS: Method[] = [
     desc: "Lượng tử hoá sau khi đã train xong. Nhanh, đơn giản, không cần re-train.",
     good: [
       "Không cần dữ liệu huấn luyện gốc",
-      "Nhanh — vài phút cho 7B, vài giờ cho 70B",
+      "Nhanh. vài phút cho 7B, vài giờ cho 70B",
       "Không rủi ro overfitting",
     ],
     bad: [
@@ -218,7 +218,7 @@ const ALGOS: QuantAlgo[] = [
     ppl: 5.73,
     speed: "1.5-2x",
     color: "#22c55e",
-    desc: "NormalFloat 4-bit — dùng trong QLoRA. Chậm hơn khi inference, nhanh để fine-tune.",
+    desc: "NormalFloat 4-bit. dùng trong QLoRA. Chậm hơn khi inference, nhanh để fine-tune.",
   },
   {
     name: "GGUF (llama.cpp)",
@@ -243,7 +243,7 @@ const ALGOS: QuantAlgo[] = [
 ];
 
 // ════════════════════════════════════════════════════════════════════════════
-// QUIZ — 8 câu
+// QUIZ. 8 câu
 // ════════════════════════════════════════════════════════════════════════════
 
 const QUIZ: QuizQuestion[] = [
@@ -257,7 +257,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Trọng số neural network phân bố gần Gaussian — hầu hết tập trung quanh 0. 16 mức lượng tử (4-bit) đặt dày ở vùng này vẫn bao phủ phần lớn năng lượng signal. Thông tin bị mất chủ yếu ở outlier, và NN cũng không dùng outlier quan trọng lắm.",
+      "Trọng số neural network phân bố gần Gaussian. hầu hết tập trung quanh 0. 16 mức lượng tử (4-bit) đặt dày ở vùng này vẫn bao phủ phần lớn năng lượng signal. Thông tin bị mất chủ yếu ở outlier, và NN cũng không dùng outlier quan trọng lắm.",
   },
   {
     question: "Phân biệt PTQ và QAT:",
@@ -269,7 +269,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 0,
     explanation:
-      "PTQ (Post-Training Quantization) nhanh — chỉ cần calibration data. QAT (Quantization-Aware Training) có fake-quant node trong forward pass, loss chảy ngược qua straight-through estimator, model học cách bù lỗi quantization — chất lượng tốt hơn ở ≤4-bit.",
+      "PTQ (Post-Training Quantization) nhanh. chỉ cần calibration data. QAT (Quantization-Aware Training) có fake-quant node trong forward pass, loss chảy ngược qua straight-through estimator, model học cách bù lỗi quantization. chất lượng tốt hơn ở ≤4-bit.",
   },
   {
     question: "Mô hình Llama 3 70B ở FP16 chiếm 140GB. Quantize INT4 chiếm bao nhiêu?",
@@ -278,7 +278,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "FP16 = 16 bit/param, INT4 = 4 bit/param. Tỷ lệ = 4/16 = 1/4. Nên 140GB / 4 = 35GB — vừa đủ RTX 6000 Ada 48GB, hoặc RTX 4090 24GB với offloading.",
+      "FP16 = 16 bit/param, INT4 = 4 bit/param. Tỷ lệ = 4/16 = 1/4. Nên 140GB / 4 = 35GB. vừa đủ RTX 6000 Ada 48GB, hoặc RTX 4090 24GB với offloading.",
   },
   {
     type: "fill-blank",
@@ -313,7 +313,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "GPTQ coi mỗi layer linear là bài toán lstsq và tối ưu reconstruction error với Hessian khối. AWQ quan sát rằng chỉ 1% kênh (identify qua activation magnitude) mang thông tin — scale riêng các kênh này trước khi quantize. AWQ thường tốt hơn 0.2-0.5 PPL.",
+      "GPTQ coi mỗi layer linear là bài toán lstsq và tối ưu reconstruction error với Hessian khối. AWQ quan sát rằng chỉ 1% kênh (identify qua activation magnitude) mang thông tin. scale riêng các kênh này trước khi quantize. AWQ thường tốt hơn 0.2-0.5 PPL.",
   },
   {
     question: "Một dev muốn chạy Llama 13B trên MacBook M2. Format nào phù hợp nhất?",
@@ -330,14 +330,14 @@ const QUIZ: QuizQuestion[] = [
   {
     question: "Outlier trong activation LLM là vấn đề gì với quantization?",
     options: [
-      "Không phải vấn đề — chỉ là nhiễu",
-      "Vài kênh có magnitude 100-1000x kênh khác; nếu per-tensor quantize, scale bị outlier ép lớn làm bẹt các kênh thường — mất chất lượng nặng",
+      "Không phải vấn đề. chỉ là nhiễu",
+      "Vài kênh có magnitude 100-1000x kênh khác; nếu per-tensor quantize, scale bị outlier ép lớn làm bẹt các kênh thường. mất chất lượng nặng",
       "Outlier làm model chạy chậm hơn",
       "Outlier chỉ ảnh hưởng đến FP32",
     ],
     correct: 1,
     explanation:
-      "LLM 6B+ có 'emergent outlier channels' (Dettmers 2022) — vài kênh attention/FFN có activation magnitude cực lớn. Per-tensor INT8 làm model sụp. Giải pháp: per-channel quantize, SmoothQuant (scale input để đẩy outlier sang weight), hoặc mixed-precision (FP16 cho kênh outlier).",
+      "LLM 6B+ có 'emergent outlier channels' (Dettmers 2022). vài kênh attention/FFN có activation magnitude cực lớn. Per-tensor INT8 làm model sụp. Giải pháp: per-channel quantize, SmoothQuant (scale input để đẩy outlier sang weight), hoặc mixed-precision (FP16 cho kênh outlier).",
   },
 ];
 
@@ -410,18 +410,18 @@ export default function QuantizationTopic() {
       {/* ━━━ 1. HOOK ━━━ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Mô hình Llama 3 70B chiếm 140GB ở FP16 — cần 2 GPU A100 80GB. Có cách nào chạy trên 1 GPU 24GB?"
+          question="Mô hình Llama 3 70B chiếm 140GB ở FP16. cần 2 GPU A100 80GB. Có cách nào chạy trên 1 GPU 24GB?"
           options={[
-            "Không thể — cần mua thêm GPU",
-            "Giảm độ chính xác từ 16 bit xuống 4 bit — mô hình nhỏ đi 4 lần mà gần như không mất chất lượng",
+            "Không thể. cần mua thêm GPU",
+            "Giảm độ chính xác từ 16 bit xuống 4 bit. mô hình nhỏ đi 4 lần mà gần như không mất chất lượng",
             "Xoá bớt 75% tham số của mô hình",
             "Chạy trên CPU cho rẻ",
           ]}
           correct={1}
-          explanation="Lượng tử hoá giảm số bit biểu diễn mỗi tham số. Từ FP16 (16 bit) xuống INT4 (4 bit) = giảm 4x kích thước. 140GB → 35GB — vừa 1 GPU RTX 6000 Ada hoặc 2×RTX 4090!"
+          explanation="Lượng tử hoá giảm số bit biểu diễn mỗi tham số. Từ FP16 (16 bit) xuống INT4 (4 bit) = giảm 4x kích thước. 140GB → 35GB. vừa 1 GPU RTX 6000 Ada hoặc 2×RTX 4090!"
         >
           <p className="text-sm text-muted mt-2">
-            Giống như nén ảnh RAW 50MB thành JPEG 5MB — mắt thường không phân biệt được.
+            Giống như nén ảnh RAW 50MB thành JPEG 5MB. mắt thường không phân biệt được.
             Đây là chìa khoá giúp LLM từ &quot;đặc quyền datacenter&quot; trở thành
             &quot;chạy trên laptop&quot;.
           </p>
@@ -437,7 +437,7 @@ export default function QuantizationTopic() {
           <p className="text-sm text-muted leading-relaxed">
             Nhiệt kế điện tử hiển thị <strong>25.347°C</strong>. Nhiệt kế cơ học chỉ
             <strong>25°C</strong>. Bạn cần độ chính xác nào để quyết định bật quạt? Cả hai
-            đều được — não bạn chỉ quan tâm &quot;nóng hay lạnh&quot;. Con số thập phân sau
+            đều được. não bạn chỉ quan tâm &quot;nóng hay lạnh&quot;. Con số thập phân sau
             đâu tạo ra quyết định khác.
           </p>
 
@@ -469,7 +469,7 @@ export default function QuantizationTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
           <h3 className="text-base font-semibold text-foreground mb-1">
-            Lượng tử hoá — trực quan trên phân bố trọng số
+            Lượng tử hoá. trực quan trên phân bố trọng số
           </h3>
           <p className="text-sm text-muted mb-4">
             Phân bố trọng số (bell curve) + các mức quantization. Chọn mức bit để xem
@@ -588,7 +588,7 @@ export default function QuantizationTopic() {
 
               {/* Labels */}
               <text x="40" y="24" fill="var(--text-primary)" fontSize="11" fontWeight="bold">
-                {current.name} — {current.bins > 1000 ? "≥65k bin (gần như liên tục)" : `${current.bins} bin`}
+                {current.name}. {current.bins > 1000 ? "≥65k bin (gần như liên tục)" : `${current.bins} bin`}
               </text>
               <text x="620" y="24" textAnchor="end" fill={current.color} fontSize="11">
                 Chất lượng: {current.quality}%
@@ -596,16 +596,16 @@ export default function QuantizationTopic() {
             </svg>
 
             <p className="text-xs text-muted mt-2 leading-relaxed">
-              <strong>FP32/FP16:</strong>{" "}hầu như liên tục — mọi giá trị phân biệt được.
-              <strong>{" "}INT8:</strong>{" "}256 bin — đủ mịn, mất &lt;0.5% chất lượng.
+              <strong>FP32/FP16:</strong>{" "}hầu như liên tục. mọi giá trị phân biệt được.
+              <strong>{" "}INT8:</strong>{" "}256 bin. đủ mịn, mất &lt;0.5% chất lượng.
               <strong>{" "}INT4:</strong>{" "}chỉ 16 bin, mỗi giá trị được làm tròn tới 1
-              trong 16 mức — vẫn đủ tốt vì trọng số tập trung quanh 0.
-              <strong>{" "}INT2:</strong>{" "}chỉ 4 bin — mất nhiều thông tin, cần kỹ thuật
+              trong 16 mức. vẫn đủ tốt vì trọng số tập trung quanh 0.
+              <strong>{" "}INT2:</strong>{" "}chỉ 4 bin. mất nhiều thông tin, cần kỹ thuật
               QAT đặc biệt để dùng được.
             </p>
           </div>
 
-          {/* Bit progression — accuracy drop chart */}
+          {/* Bit progression. accuracy drop chart */}
           <div className="rounded-xl border border-border bg-background/40 p-4 mb-5">
             <p className="text-sm font-semibold text-foreground mb-3">
               Accuracy drop theo số bit (Llama-7B, c4 perplexity)
@@ -670,7 +670,7 @@ export default function QuantizationTopic() {
 
             <p className="text-xs text-muted mt-2 leading-relaxed">
               Chất lượng gần như không đổi từ FP32 xuống INT8. Mất nhẹ ở INT4 (~2.5%).
-              Vách đá rõ ở INT2 — cần QAT hoặc method đặc biệt (AQLM, BitNet) để
+              Vách đá rõ ở INT2. cần QAT hoặc method đặc biệt (AQLM, BitNet) để
               dùng được.
             </p>
           </div>
@@ -709,7 +709,7 @@ export default function QuantizationTopic() {
             </div>
             <p className="text-xs text-muted mt-3 leading-relaxed">
               Cùng mô hình 70B: từ 280GB (FP32, cần cluster) xuống 17.5GB (INT2, chạy
-              laptop). INT4 là sweet spot — 35GB vừa RTX 6000 Ada / 2×RTX 4090 với
+              laptop). INT4 là sweet spot. 35GB vừa RTX 6000 Ada / 2×RTX 4090 với
               chất lượng ~97.5%.
             </p>
           </div>
@@ -717,7 +717,7 @@ export default function QuantizationTopic() {
           {/* PTQ vs QAT comparison */}
           <div className="rounded-xl border border-border bg-background/40 p-4 mb-5">
             <p className="text-sm font-semibold text-foreground mb-3">
-              PTQ vs QAT — khi nào dùng cái nào?
+              PTQ vs QAT. Khi nào dùng cái nào?
             </p>
 
             <div className="flex gap-2 mb-4">
@@ -826,7 +826,7 @@ export default function QuantizationTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           Trọng số mạng nơ-ron không cần chính xác đến từng chữ số thập phân. Giống như
-          bạn không cần biết nhiệt độ phòng là 25.347°C — biết là 25°C là đủ để quyết
+          bạn không cần biết nhiệt độ phòng là 25.347°C. biết là 25°C là đủ để quyết
           định bật quạt. <strong>Lượng tử hoá</strong>{" "}khai thác chính điều này:
           giảm độ chính xác ở mức mà <strong>quyết định cuối cùng của model gần như
           không đổi</strong>, đổi lại 4x-8x bộ nhớ và tốc độ. Đó là lý do mô hình 70B
@@ -839,13 +839,13 @@ export default function QuantizationTopic() {
         <InlineChallenge
           question="Bạn có mô hình 13B ở FP16 (26GB). GPU của bạn 16GB VRAM. Lượng tử hoá nào nhỏ nhất mà vẫn dùng được?"
           options={[
-            "INT8 — 13GB, vừa đủ",
-            "INT4 — 6.5GB, dư nhiều",
-            "FP16 — chỉ cần nén dữ liệu khác",
+            "INT8. 13GB, vừa đủ",
+            "INT4. 6.5GB, dư nhiều",
+            "FP16. chỉ cần nén dữ liệu khác",
             "Cần mua GPU mới",
           ]}
           correct={0}
-          explanation="INT8 = 26GB / 2 = 13GB, vừa vặn 16GB VRAM. INT4 = 6.5GB cũng được nhưng mất thêm chất lượng không cần thiết. Quy tắc: chọn mức lượng tử hoá cao nhất mà VRAM cho phép — để tối đa chất lượng."
+          explanation="INT8 = 26GB / 2 = 13GB, vừa vặn 16GB VRAM. INT4 = 6.5GB cũng được nhưng mất thêm chất lượng không cần thiết. Quy tắc: chọn mức lượng tử hoá cao nhất mà VRAM cho phép. để tối đa chất lượng."
         />
       </LessonSection>
 
@@ -854,10 +854,10 @@ export default function QuantizationTopic() {
         <InlineChallenge
           question="Team bạn muốn deploy chatbot INT4 trên GPU server. Giữa GPTQ và AWQ, chọn cái nào và vì sao?"
           options={[
-            "GPTQ — vì là PTQ, không cần train",
-            "AWQ — chất lượng nhỉnh hơn GPTQ ~0.2-0.5 PPL vì bảo vệ kênh salient, ecosystem (vLLM) cũng hỗ trợ tốt",
-            "Cả hai đều không tốt — phải dùng GGUF",
-            "Không khác biệt — chọn ngẫu nhiên",
+            "GPTQ. vì là PTQ, không cần train",
+            "AWQ. chất lượng nhỉnh hơn GPTQ ~0.2-0.5 PPL vì bảo vệ kênh salient, ecosystem (vLLM) cũng hỗ trợ tốt",
+            "Cả hai đều không tốt. phải dùng GGUF",
+            "Không khác biệt. chọn ngẫu nhiên",
           ]}
           correct={1}
           explanation="Cả hai đều là PTQ 4-bit GPU. AWQ thường tốt hơn 0.2-0.5 PPL vì identify 1% kênh salient và scale bảo vệ. Cả hai được vLLM/TGI hỗ trợ. Khi ngang bằng, ưu tiên AWQ. GGUF chỉ khi cần chạy CPU/Mac."
@@ -902,7 +902,7 @@ export default function QuantizationTopic() {
           </p>
 
           <p className="mt-4">
-            <strong>Granularity — mức độ chia nhỏ scale:</strong>
+            <strong>Granularity. mức độ chia nhỏ scale:</strong>
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
@@ -915,12 +915,12 @@ export default function QuantizationTopic() {
             </li>
             <li>
               <strong>Per-group / Block-wise:</strong>{" "}1 scale cho mỗi block (ví dụ 32-128
-              giá trị). Cần cho INT4 — GPTQ, AWQ, NF4 đều dùng.
+              giá trị). Cần cho INT4. GPTQ, AWQ, NF4 đều dùng.
             </li>
           </ul>
 
           <p className="mt-4">
-            <strong>Hai cách tiếp cận chính — PTQ vs QAT:</strong>
+            <strong>Hai cách tiếp cận chính. PTQ vs QAT:</strong>
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
@@ -936,7 +936,7 @@ export default function QuantizationTopic() {
           </ul>
 
           <p className="mt-4">
-            <strong>GPTQ — lượng tử hoá layer-by-layer dùng Hessian:</strong>
+            <strong>GPTQ. lượng tử hoá layer-by-layer dùng Hessian:</strong>
           </p>
           <LaTeX block>
             {
@@ -950,7 +950,7 @@ export default function QuantizationTopic() {
           </p>
 
           <p className="mt-4">
-            <strong>AWQ — Activation-aware Weight Quantization:</strong>
+            <strong>AWQ. Activation-aware Weight Quantization:</strong>
           </p>
           <p className="text-sm">
             AWQ quan sát: chỉ ~1% kênh trọng số (identify qua <em>magnitude activation</em>,
@@ -960,7 +960,7 @@ export default function QuantizationTopic() {
           </p>
 
           <p className="mt-4">
-            <strong>Ví dụ code 1 — bitsandbytes quantize khi load:</strong>
+            <strong>Ví dụ code 1. bitsandbytes quantize khi load:</strong>
           </p>
           <CodeBlock language="python" title="bnb_quantize.py">{`# pip install "transformers>=4.41" "bitsandbytes>=0.43" accelerate
 import torch
@@ -996,17 +996,17 @@ print(tokenizer.decode(outputs[0]))
 # Muốn INT8 thay vì INT4? Dùng llm_int8:
 bnb_int8 = BitsAndBytesConfig(
     load_in_8bit=True,
-    llm_int8_threshold=6.0,  # outlier threshold — giữ FP16 cho kênh >6σ
+    llm_int8_threshold=6.0,  # outlier threshold. giữ FP16 cho kênh >6σ
 )
 model8 = AutoModelForCausalLM.from_pretrained(
     MODEL_ID,
     quantization_config=bnb_int8,
     device_map="auto",
 )
-# 70B INT8 ≈ 70GB — vừa 1×A100 80GB`}</CodeBlock>
+# 70B INT8 ≈ 70GB. vừa 1×A100 80GB`}</CodeBlock>
 
           <p className="mt-4">
-            <strong>Ví dụ code 2 — GPTQ với AutoGPTQ (production):</strong>
+            <strong>Ví dụ code 2. GPTQ với AutoGPTQ (production):</strong>
           </p>
           <CodeBlock language="python" title="gptq_quantize.py">{`# pip install auto-gptq>=0.7 transformers optimum
 import torch
@@ -1020,7 +1020,7 @@ OUT_DIR = "./llama3-8b-gptq-4bit"
 quantize_config = BaseQuantizeConfig(
     bits=4,                    # 2, 3, 4, 8 đều hỗ trợ
     group_size=128,            # block-wise; 128 là chuẩn
-    desc_act=True,             # activation order — tăng chất lượng
+    desc_act=True,             # activation order. tăng chất lượng
     damp_percent=0.1,          # Hessian dampening
 )
 
@@ -1046,7 +1046,7 @@ for i, sample in enumerate(data):
         "attention_mask": tokens.attention_mask[0],
     })
 
-# Bước 4: Quantize — chạy layer-by-layer, dùng Hessian
+# Bước 4: Quantize. chạy layer-by-layer, dùng Hessian
 model.quantize(examples)  # ~15 phút cho 8B trên A100
 
 # Bước 5: Lưu
@@ -1076,7 +1076,7 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             chúng ở FP16, quantize phần còn lại. Đó là trick giúp INT8 hoạt động với LLM.
           </Callout>
 
-          <Callout variant="tip" title="GPTQ vs AWQ vs GGUF — chọn theo hardware">
+          <Callout variant="tip" title="GPTQ vs AWQ vs GGUF. chọn theo hardware">
             <strong>GPU NVIDIA production:</strong>{" "}AWQ (nhỉnh hơn GPTQ) hoặc GPTQ
             (ecosystem lớn).{" "}
             <strong>Fine-tune rồi deploy:</strong>{" "}QLoRA (NF4) rồi merge & GPTQ/AWQ.
@@ -1085,11 +1085,11 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             Cần fine-tune mô hình đã lượng tử hoá, xem <TopicLink slug="qlora">QLoRA</TopicLink>.
           </Callout>
 
-          <Callout variant="warning" title="Outlier kills INT2 — QAT là bắt buộc">
+          <Callout variant="warning" title="Outlier kills INT2. QAT là bắt buộc">
             Ở 2-bit (4 bin/tensor), không có cách nào PTQ giữ chất lượng. AQLM dùng
             additive quantization + fine-tune calibration. BitNet b1.58 train từ đầu
             với trọng số {"{-1, 0, 1}"}. Nếu bạn đang cân nhắc INT2 mà không có resource
-            train lại, đừng — INT3 hoặc INT4 là sàn an toàn.
+            train lại, đừng. INT3 hoặc INT4 là sàn an toàn.
           </Callout>
 
           <Callout variant="tip" title="Quantize activation không chỉ weight">
@@ -1100,7 +1100,7 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
           </Callout>
 
           {/* 2 CollapsibleDetails */}
-          <CollapsibleDetail title="Quantization đối xứng vs bất đối xứng — khi nào dùng cái nào?">
+          <CollapsibleDetail title="Quantization đối xứng vs bất đối xứng. Khi nào dùng cái nào?">
             <p className="text-sm leading-relaxed">
               <strong>Symmetric (z=0):</strong>{" "}giả sử phân bố cân đối quanh 0. Scale đơn,
               decoder đơn giản (chỉ nhân <LaTeX>{"s"}</LaTeX>). Phù hợp weight (NN weight
@@ -1108,7 +1108,7 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             </p>
             <p className="text-sm leading-relaxed mt-2">
               <strong>Asymmetric (z≠0):</strong>{" "}hai tham số scale + zero_point. Chứa
-              được phân bố lệch (như output ReLU — chỉ ≥0). Decoder tốn thêm phép cộng.
+              được phân bố lệch (như output ReLU. chỉ ≥0). Decoder tốn thêm phép cộng.
               Phù hợp activation sau ReLU/GELU.
             </p>
             <p className="text-sm leading-relaxed mt-2">
@@ -1118,16 +1118,16 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Calibration dataset — bao nhiêu mẫu là đủ?">
+          <CollapsibleDetail title="Calibration dataset. bao nhiêu mẫu là đủ?">
             <p className="text-sm leading-relaxed">
               PTQ cần sample để đo range activation (cho scale factor). Thực nghiệm trên
               Llama-7B:
             </p>
             <ul className="list-disc list-inside space-y-1 pl-2 text-sm mt-2">
-              <li><strong>32 mẫu:</strong> không đủ — scale lệch, PPL tăng 5-10%.</li>
-              <li><strong>128 mẫu:</strong> sàn — PPL trong 2% FP16.</li>
-              <li><strong>512 mẫu:</strong> sweet spot — PPL gần tối ưu.</li>
-              <li><strong>2048+ mẫu:</strong> diminishing returns — không cải thiện đáng kể.</li>
+              <li><strong>32 mẫu:</strong> không đủ. scale lệch, PPL tăng 5-10%.</li>
+              <li><strong>128 mẫu:</strong> sàn. PPL trong 2% FP16.</li>
+              <li><strong>512 mẫu:</strong> sweet spot. PPL gần tối ưu.</li>
+              <li><strong>2048+ mẫu:</strong> diminishing returns. không cải thiện đáng kể.</li>
             </ul>
             <p className="text-sm leading-relaxed mt-2">
               Lưu ý domain: nếu model dùng trong tiếng Việt, calibrate bằng text tiếng
@@ -1136,13 +1136,13 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="FP8 — hướng đi cho H100 và tương lai">
+          <CollapsibleDetail title="FP8. hướng đi cho H100 và tương lai">
             <p className="text-sm leading-relaxed">
               FP8 (8-bit float) là định dạng tensor core mới trên H100. Có 2 variant:
             </p>
             <ul className="list-disc list-inside space-y-1 pl-2 text-sm mt-2">
-              <li><strong>E4M3:</strong>{" "}4 bit exponent, 3 bit mantissa — range rộng, precision thấp. Dùng cho weight và activation forward.</li>
-              <li><strong>E5M2:</strong>{" "}5 bit exponent, 2 bit mantissa — range rộng hơn, precision thấp hơn. Dùng cho gradient.</li>
+              <li><strong>E4M3:</strong>{" "}4 bit exponent, 3 bit mantissa. range rộng, precision thấp. Dùng cho weight và activation forward.</li>
+              <li><strong>E5M2:</strong>{" "}5 bit exponent, 2 bit mantissa. range rộng hơn, precision thấp hơn. Dùng cho gradient.</li>
             </ul>
             <p className="text-sm leading-relaxed mt-2">
               NVIDIA Transformer Engine tự động chuyển giữa FP16/FP8 theo loss stability.
@@ -1151,7 +1151,7 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Pipeline production — từ PyTorch checkpoint đến inference server">
+          <CollapsibleDetail title="Pipeline production. từ PyTorch checkpoint đến inference server">
             <p className="text-sm leading-relaxed">
               Quy trình chuẩn để deploy LLM đã quantize:
             </p>
@@ -1165,8 +1165,8 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
               <li>A/B test với FP16 baseline trên một phần traffic trước khi rollout full.</li>
             </ol>
             <p className="text-sm leading-relaxed mt-2">
-              Đừng skip step 4 và 7 — nhiều nhóm deploy thẳng mà không đo chất lượng, rồi
-              khách phàn nàn bot &quot;đần đi&quot;. Quantization không free — phải đo.
+              Đừng skip step 4 và 7. nhiều nhóm deploy thẳng mà không đo chất lượng, rồi
+              khách phàn nàn bot &quot;đần đi&quot;. Quantization không free. phải đo.
             </p>
           </CollapsibleDetail>
 
@@ -1191,7 +1191,7 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             </li>
             <li>
               <strong>Fine-tuning memory-constrained:</strong>{" "}QLoRA (NF4) cho phép
-              fine-tune 70B trên 1 GPU — xem <TopicLink slug="qlora">QLoRA</TopicLink>.
+              fine-tune 70B trên 1 GPU. xem <TopicLink slug="qlora">QLoRA</TopicLink>.
             </li>
             <li>
               <strong>Embedded device:</strong>{" "}BERT INT8 chạy được trên Raspberry Pi,
@@ -1231,7 +1231,7 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
             <li>
               <strong>Bỏ qua memory bandwidth:</strong>{" "}quantization giúp giảm memory
               bandwidth (chính là bottleneck LLM inference). Nếu kernel vẫn dequant sang
-              FP16 rồi matmul, bandwidth gain có thể nhỏ hơn kỳ vọng — đo trước khi kết luận.
+              FP16 rồi matmul, bandwidth gain có thể nhỏ hơn kỳ vọng. đo trước khi kết luận.
             </li>
           </ul>
         </ExplanationSection>
@@ -1242,9 +1242,9 @@ print(tokenizer.decode(output[0]))`}</CodeBlock>
         <MiniSummary
           title="Những điều cần nhớ về Quantization"
           points={[
-            "Lượng tử hoá giảm số bit/tham số: FP32 (100%) → FP16 (50%) → INT8 (25%) → INT4 (12.5%) → INT2 (6.25%). Chất lượng giảm theo hàm lồi — INT4 là sweet spot.",
+            "Lượng tử hoá giảm số bit/tham số: FP32 (100%) → FP16 (50%) → INT8 (25%) → INT4 (12.5%) → INT2 (6.25%). Chất lượng giảm theo hàm lồi. INT4 là sweet spot.",
             "PTQ nhanh (cần calibration data), QAT chậm hơn (train lại) nhưng chất lượng tốt hơn ở ≤4-bit. Hầu hết LLM open-source dùng PTQ.",
-            "INT4 giảm 8x kích thước so với FP32 mà chỉ mất ~2.5% chất lượng — chìa khoá để chạy LLM trên consumer GPU. Vách đá ở INT2 cần kỹ thuật đặc biệt (AQLM, BitNet).",
+            "INT4 giảm 8x kích thước so với FP32 mà chỉ mất ~2.5% chất lượng. chìa khoá để chạy LLM trên consumer GPU. Vách đá ở INT2 cần kỹ thuật đặc biệt (AQLM, BitNet).",
             "Thuật toán phổ biến: GPTQ (Hessian layer-by-layer), AWQ (bảo vệ 1% kênh salient), NF4 (QLoRA fine-tune), GGUF (llama.cpp CPU/Mac), SmoothQuant (INT8 outlier handling).",
             "Granularity quan trọng: per-tensor kém cho LLM do outlier; per-channel tốt cho INT8; group-wise (block 32-128) bắt buộc cho INT4.",
             "Chọn format theo hardware: GPTQ/AWQ cho GPU NVIDIA, GGUF cho CPU/Mac, FP8 cho H100. Luôn chọn mức bit cao nhất mà VRAM cho phép, và luôn benchmark chất lượng sau quantize.",

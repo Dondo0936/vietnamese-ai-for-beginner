@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "text-to-video",
   title: "Text-to-Video",
-  titleVi: "Tạo video từ văn bản — AI đạo diễn",
+  titleVi: "Tạo video từ văn bản. AI đạo diễn",
   description:
     "Mô hình AI tạo ra đoạn video liền mạch từ mô tả bằng ngôn ngữ tự nhiên, bao gồm cả chuyển động và âm thanh.",
   category: "multimodal",
@@ -69,13 +69,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Nhất quán thời gian (temporal consistency) là thách thức cốt lõi. Mỗi frame phải vừa đẹp riêng, vừa liền mạch với frame trước/sau — nhân vật không thay đổi hình dáng, vật lý phải đúng, chuyển động phải mượt.",
+      "Nhất quán thời gian (temporal consistency) là thách thức cốt lõi. Mỗi frame phải vừa đẹp riêng, vừa liền mạch với frame trước/sau. nhân vật không thay đổi hình dáng, vật lý phải đúng, chuyển động phải mượt.",
   },
   {
     question: "Sora (OpenAI) sử dụng kiến trúc nào thay vì U-Net truyền thống?",
     options: [
       "CNN 3D (3D Convolutional Neural Network)",
-      "Diffusion Transformer (DiT) — xử lý spacetime patches",
+      "Diffusion Transformer (DiT). xử lý spacetime patches",
       "GAN (Generative Adversarial Network)",
       "RNN (Recurrent Neural Network) cho mỗi frame",
     ],
@@ -97,12 +97,12 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     type: "fill-blank",
-    question: "Thách thức cốt lõi phân biệt text-to-video với text-to-image là chiều {blank} — mỗi {blank} phải vừa đẹp riêng, vừa nhất quán với các frame lân cận.",
+    question: "Thách thức cốt lõi phân biệt text-to-video với text-to-image là chiều {blank}. mỗi {blank} phải vừa đẹp riêng, vừa nhất quán với các frame lân cận.",
     blanks: [
       { answer: "thời gian", accept: ["temporal", "time", "temporal dimension", "chiều thời gian"] },
       { answer: "frame", accept: ["khung hình", "frames"] },
     ],
-    explanation: "Video thêm một chiều mới so với ảnh tĩnh: chiều thời gian (temporal). Mỗi frame phải vừa là một ảnh chất lượng riêng lẻ, vừa liền mạch với các frame trước/sau — đây là lý do cần temporal attention hoặc spacetime patches.",
+    explanation: "Video thêm một chiều mới so với ảnh tĩnh: chiều thời gian (temporal). Mỗi frame phải vừa là một ảnh chất lượng riêng lẻ, vừa liền mạch với các frame trước/sau. đây là lý do cần temporal attention hoặc spacetime patches.",
   },
 ];
 
@@ -210,8 +210,7 @@ export default function TextToVideoTopic() {
         <AhaMoment>
           Text-to-video không phải{" "}
           <strong>text-to-image chạy 240 lần</strong>. Nếu chỉ tạo từng frame độc lập, video sẽ nhảy giật như slideshow. Bí quyết là{" "}
-          <strong>temporal attention</strong>{" "}
-          — mỗi frame{" "}
+          <strong>temporal attention</strong>{" "}. mỗi frame{" "}
           <strong>nhìn vào các frame xung quanh</strong>{" "}
           để đảm bảo chuyển động liền mạch. Đây là chiều thứ ba mà text-to-image không cần: chiều thời gian.
         </AhaMoment>
@@ -222,10 +221,10 @@ export default function TextToVideoTopic() {
         <InlineChallenge
           question="Video AI tạo ra cho thấy một người bước đi nhưng đôi giày đổi từ đen sang trắng giữa chừng. Thách thức nào bị vi phạm?"
           options={[
-            "Tính vật lý — giày không nên đổi màu theo trọng lực",
-            "Nhất quán thời gian — thuộc tính đối tượng phải giữ nguyên giữa các frame",
-            "Tài nguyên tính toán — GPU không đủ mạnh nên bỏ sót chi tiết",
-            "Chuyển động phức tạp — camera di chuyển nên nhìn nhầm màu giày",
+            "Tính vật lý. giày không nên đổi màu theo trọng lực",
+            "Nhất quán thời gian. thuộc tính đối tượng phải giữ nguyên giữa các frame",
+            "Tài nguyên tính toán. GPU không đủ mạnh nên bỏ sót chi tiết",
+            "Chuyển động phức tạp. camera di chuyển nên nhìn nhầm màu giày",
           ]}
           correct={1}
           explanation="Đây là lỗi nhất quán thời gian (temporal consistency). Thuộc tính thị giác của đối tượng (màu giày, kiểu áo, khuôn mặt) phải được duy trì nhất quán xuyên suốt video. Mô hình cần temporal attention đủ mạnh để 'nhớ' giày đen ở frame đầu."
@@ -251,7 +250,7 @@ export default function TextToVideoTopic() {
               </p>
               <p>
                 <strong>2. Diffusion Transformer / DiT (Sora):</strong>{" "}
-                Chia video thành spacetime patches — mỗi patch là một vùng nhỏ trong không gian VÀ thời gian. Transformer xử lý tất cả patches cùng lúc, nắm bắt mối quan hệ xa.
+                Chia video thành spacetime patches. mỗi patch là một vùng nhỏ trong không gian VÀ thời gian. Transformer xử lý tất cả patches cùng lúc, nắm bắt mối quan hệ xa.
               </p>
             </div>
           </Callout>
@@ -308,7 +307,7 @@ export default function TextToVideoTopic() {
               </p>
               <p>
                 <strong>Thận trọng:</strong>{" "}
-                Cần cảnh giác với deepfake video — lừa đảo qua Zalo bằng video giả khuôn mặt người thân đang trở thành vấn nạn tại Việt Nam.
+                Cần cảnh giác với deepfake video. lừa đảo qua Zalo bằng video giả khuôn mặt người thân đang trở thành vấn nạn tại Việt Nam.
               </p>
             </div>
           </Callout>
@@ -323,7 +322,7 @@ export default function TextToVideoTopic() {
             "Hai kiến trúc: U-Net 3D (thêm temporal conv) và DiT/Sora (spacetime patches + Transformer).",
             "Bốn thách thức: nhất quán thời gian, vật lý đúng, chi phí tính toán, chuyển động phức tạp.",
             "Video AI 2025 đã khá tốt (4-60 giây) nhưng vẫn hay lỗi vật lý và bị giới hạn thời lượng.",
-            "Cảnh giác: công nghệ này cũng tạo ra deepfake video — cần hiểu để phòng tránh lừa đảo.",
+            "Cảnh giác: công nghệ này cũng tạo ra deepfake video. cần hiểu để phòng tránh lừa đảo.",
           ]}
         />
       </LessonSection>

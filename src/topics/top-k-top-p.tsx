@@ -23,7 +23,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "top-k-top-p",
   title: "Top-K & Top-P Sampling",
-  titleVi: "Top-K và Top-P — Lấy mẫu có chọn lọc",
+  titleVi: "Top-K và Top-P: lấy mẫu có chọn lọc",
   description:
     "Hai kỹ thuật lọc từ vựng trước khi chọn token tiếp theo, giúp kiểm soát chất lượng và đa dạng.",
   category: "llm-concepts",
@@ -94,7 +94,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "p", accept: ["P"] },
     ],
     explanation:
-      "Top-K lọc theo k (số lượng) token đầu bảng. Top-P (nucleus sampling) lọc theo ngưỡng xác suất tích lũy p — linh hoạt hơn vì số token giữ lại thay đổi tùy độ nhọn của phân phối.",
+      "Top-K lọc theo k (số lượng) token đầu bảng. Top-P (nucleus sampling) lọc theo ngưỡng xác suất tích lũy p. linh hoạt hơn vì số token giữ lại thay đổi tùy độ nhọn của phân phối.",
   },
 ];
 
@@ -131,12 +131,12 @@ export default function TopKTopPTopic() {
       <PredictionGate
         question="AI đang chọn từ tiếp theo. Có 50.000 từ trong từ điển. Nên cho AI chọn từ TẤT CẢ 50.000 từ hay chỉ từ vài từ xác suất cao nhất?"
         options={[
-          "Tất cả — để AI tự do sáng tạo",
-          "Chỉ vài từ xác suất cao — để tránh chọn từ vô nghĩa",
-          "Không quan trọng — kết quả như nhau",
+          "Tất cả. để AI tự do sáng tạo",
+          "Chỉ vài từ xác suất cao. để tránh chọn từ vô nghĩa",
+          "Không quan trọng. kết quả như nhau",
         ]}
         correct={1}
-        explanation="Nếu chọn từ tất cả 50.000, AI có thể chọn từ xác suất 0.001% — vô nghĩa! Top-K và Top-P lọc bớt, chỉ giữ nhóm từ hợp lý nhất. Giống như chọn nhà hàng: bạn không xem TẤT CẢ 10.000 quán trên Grab mà chỉ xem top đánh giá cao."
+        explanation="Nếu chọn từ tất cả 50.000, AI có thể chọn từ xác suất 0.001%. vô nghĩa! Top-K và Top-P lọc bớt, chỉ giữ nhóm từ hợp lý nhất. Giống như chọn nhà hàng: bạn không xem TẤT CẢ 10.000 quán trên Grab mà chỉ xem top đánh giá cao."
       >
         <p className="text-sm text-muted mt-4">
           Hãy kéo thanh trượt để xem Top-K và Top-P lọc từ như thế nào.
@@ -152,7 +152,7 @@ export default function TopKTopPTopic() {
           Lọc từ trước khi chọn
         </h3>
         <p className="text-sm text-muted mb-3">
-          Câu: &quot;Sáng nay tôi ăn ___&quot; — 10 từ ứng viên với xác suất khác nhau.
+          Câu: &quot;Sáng nay tôi ăn ___&quot;. 10 từ ứng viên với xác suất khác nhau.
         </p>
 
         {/* Toggle K vs P */}
@@ -275,13 +275,13 @@ export default function TopKTopPTopic() {
       <AhaMoment>
         <strong>Top-K</strong>{" "}giữ đúng K từ xác suất cao nhất (cố định).
         <strong> Top-P</strong>{" "}(nucleus sampling) giữ từ cho đến khi tổng xác suất ≥ P (linh hoạt).
-        Cả hai đều lọc bớt &quot;rác&quot; trước khi AI chọn — nhưng Top-P thông minh hơn vì
+        Cả hai đều lọc bớt &quot;rác&quot; trước khi AI chọn. Nhưng Top-P thông minh hơn vì
         tự điều chỉnh theo mức tự tin của model.
       </AhaMoment>
 
       </LessonSection>
 
-{/* ━━━ ĐI SÂU — So sánh K vs P ━━━ */}
+{/* ━━━ ĐI SÂU. So sánh K vs P ━━━ */}
       <LessonSection step={4} totalSteps={6} label="Đi sâu">
         <h3 className="text-base font-semibold text-foreground mb-3">
           Khi nào Top-K gặp vấn đề?
@@ -294,7 +294,7 @@ export default function TopKTopPTopic() {
             <div className="space-y-2">
               <p className="text-sm text-foreground">Phân phối: &quot;phở&quot; = 85%, &quot;cơm&quot; = 8%, &quot;bún&quot; = 4%, còn lại &lt; 1%</p>
               <p className="text-xs text-muted">
-                <strong>Top-K = 5:</strong>{" "}Giữ 5 từ — nhưng 3 từ cuối gần như vô nghĩa (0.5%, 0.3%...). Lãng phí!
+                <strong>Top-K = 5:</strong>{" "}Giữ 5 từ. Nhưng 3 từ cuối gần như vô nghĩa (0.5%, 0.3%...). Lãng phí!
               </p>
               <p className="text-xs text-accent">
                 <strong>Top-P = 0.9:</strong>{" "}Chỉ giữ &quot;phở&quot; (85% đã ≥ 90% → chỉ 1 từ). Hiệu quả!
@@ -305,14 +305,14 @@ export default function TopKTopPTopic() {
             <div className="space-y-2">
               <p className="text-sm text-foreground">Phân phối: &quot;phở&quot; = 15%, &quot;cơm&quot; = 14%, &quot;bún&quot; = 13%... đều nhau</p>
               <p className="text-xs text-muted">
-                <strong>Top-K = 5:</strong>{" "}Giữ 5 từ — nhưng bỏ sót nhiều từ xác suất gần bằng!
+                <strong>Top-K = 5:</strong>{" "}Giữ 5 từ. Nhưng bỏ sót nhiều từ xác suất gần bằng!
               </p>
               <p className="text-xs text-accent">
                 <strong>Top-P = 0.9:</strong>{" "}Giữ 7-8 từ (cần nhiều từ mới đạt 90%). Linh hoạt!
               </p>
             </div>
           }
-          description="Top-P tự điều chỉnh số từ tùy mức tự tin — ít từ khi chắc chắn, nhiều từ khi không chắc."
+          description="Top-P tự điều chỉnh số từ tùy mức tự tin. ít từ khi chắc chắn, nhiều từ khi không chắc."
         />
 
       </LessonSection>
@@ -320,11 +320,11 @@ export default function TopKTopPTopic() {
 {/* ━━━ THỬ THÁCH ━━━ */}
       <LessonSection step={5} totalSteps={6} label="Thử thách">
       <InlineChallenge
-        question="Trong thực tế, API như Claude và GPT thường dùng cả temperature LẪN top_p. Nếu đặt temperature = 0, top_p = 0.9 — cái nào thắng?"
+        question="Trong thực tế, API như Claude và GPT thường dùng cả temperature LẪN top_p. Nếu đặt temperature = 0, top_p = 0.9. cái nào thắng?"
         options={[
-          "Top-P thắng — vẫn chọn ngẫu nhiên trong 90%",
-          "Temperature thắng — temp = 0 luôn chọn từ xác suất cao nhất, bất kể top_p",
-          "Cả hai kết hợp — kết quả khác hoàn toàn",
+          "Top-P thắng. vẫn chọn ngẫu nhiên trong 90%",
+          "Temperature thắng. temp = 0 luôn chọn từ xác suất cao nhất, bất kể top_p",
+          "Cả hai kết hợp. kết quả khác hoàn toàn",
           "Chúng mâu thuẫn, API báo lỗi",
         ]}
         correct={1}
@@ -374,7 +374,7 @@ export default function TopKTopPTopic() {
               <tr>
                 <td className="py-2 pr-4">Ưu điểm</td>
                 <td className="py-2 pr-4">Đơn giản, dễ hiểu</td>
-                <td className="py-2">Thông minh hơn — tự điều chỉnh</td>
+                <td className="py-2">Thông minh hơn. tự điều chỉnh</td>
               </tr>
             </tbody>
           </table>
@@ -393,15 +393,15 @@ export default function TopKTopPTopic() {
         <Callout variant="tip" title="Khuyến nghị thực tế">
           Hầu hết trường hợp, chỉ cần chỉnh <strong>temperature</strong>.
           Nếu cần kiểm soát thêm, dùng <strong>top_p</strong>{" "}(linh hoạt hơn top_k).
-          Không nên chỉnh cả temperature lẫn top_p — chúng có thể xung đột.
+          Không nên chỉnh cả temperature lẫn top_p. chúng có thể xung đột.
         </Callout>
       </ExplanationSection>
 
       <MiniSummary
         points={[
-          "Top-K giữ đúng K từ xác suất cao nhất (cố định) — đơn giản nhưng cứng nhắc",
-          "Top-P (nucleus sampling) giữ từ đến khi tổng xác suất ≥ P — linh hoạt theo mức tự tin",
-          "Pipeline: Logits → Temperature → Top-K/P → Sampling — mỗi bước lọc thêm",
+          "Top-K giữ đúng K từ xác suất cao nhất (cố định). đơn giản nhưng cứng nhắc",
+          "Top-P (nucleus sampling) giữ từ đến khi tổng xác suất ≥ P. linh hoạt theo mức tự tin",
+          "Pipeline: Logits → Temperature → Top-K/P → Sampling. mỗi bước lọc thêm",
           "Thực tế: chỉnh temperature HOẶC top_p, không nên chỉnh cả hai cùng lúc",
         ]}
       />

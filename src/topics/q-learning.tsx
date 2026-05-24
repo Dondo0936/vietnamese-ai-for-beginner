@@ -1026,7 +1026,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
       </LessonSection>
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết mở rộng">
-        <ExplanationSection>
+        <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p>
             <strong>Markov Decision Process (MDP)</strong> là khung toán học
             của RL. Một MDP gồm 5 thành phần{" "}
@@ -1162,7 +1162,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
               Feedback) — ChatGPT, Claude học từ sở thích người dùng.
             </li>
           </ul>
-        </ExplanationSection>
+        </section>
       </LessonSection>
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">

@@ -198,7 +198,7 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
-    title: "LLM & NLP",
+    title: "LLM và NLP",
     slugs: [
       "prompt-engineering",
       "gpt",
@@ -213,7 +213,7 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
-    title: "Fine-tuning & Tối ưu",
+    title: "Fine-tuning và tối ưu",
     slugs: [
       "fine-tuning",
       "lora",
@@ -226,7 +226,7 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
-    title: "RAG & Agents",
+    title: "RAG và agent",
     slugs: [
       "rag",
       "agentic-rag",
@@ -247,7 +247,7 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
-    title: "Hạ tầng & Vận hành",
+    title: "Hạ tầng và vận hành",
     slugs: [
       "model-serving",
       "inference-optimization",
@@ -261,7 +261,7 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
-    title: "Đánh giá & Quan sát hệ thống AI",
+    title: "Đánh giá và quan sát hệ thống AI",
     slugs: [
       "llm-evaluation",
       "rag-evaluation",
@@ -273,7 +273,7 @@ const AI_ENGINEER_STAGES: Stage[] = [
     ],
   },
   {
-    title: "An toàn & Chất lượng",
+    title: "An toàn và chất lượng",
     slugs: ["guardrails", "red-teaming", "hallucination"],
   },
 ];

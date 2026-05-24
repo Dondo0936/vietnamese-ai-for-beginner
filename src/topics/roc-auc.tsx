@@ -23,7 +23,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "roc-auc",
   title: "ROC & AUC",
-  titleVi: "ROC & AUC — Đo khả năng phân biệt",
+  titleVi: "ROC & AUC. Đo khả năng phân biệt",
   description:
     "Đường cong ROC và diện tích AUC đo lường khả năng mô hình phân biệt lớp dương và lớp âm ở mọi ngưỡng quyết định.",
   category: "foundations",
@@ -46,7 +46,7 @@ const TOTAL_STEPS = 7;
 // Thiết kế tương tác gồm hai thanh trượt:
 //   - threshold  (2..98): ngưỡng cắt score.
 //   - separation (0..70): khoảng cách giữa hai trung bình phân phối; đại diện
-//     cho "chất lượng" của mô hình — tách càng xa thì AUC càng cao.
+//     cho "chất lượng" của mô hình. tách càng xa thì AUC càng cao.
 //
 // Các nút bổ sung:
 //   - So với random: vẽ đè đường chéo FPR=TPR làm baseline tham chiếu.
@@ -193,8 +193,8 @@ export default function RocAucTopic() {
       {
         question: "AUC = 0.5 có nghĩa là gì?",
         options: [
-          "Model tốt — đúng 50% trường hợp",
-          "Model KHÔNG HƠN đoán ngẫu nhiên — đường ROC nằm trên đường chéo, không có khả năng phân biệt",
+          "Model tốt. đúng 50% trường hợp",
+          "Model KHÔNG HƠN đoán ngẫu nhiên. đường ROC nằm trên đường chéo, không có khả năng phân biệt",
           "Model hoàn hảo cho binary classification",
         ],
         correct: 1,
@@ -210,13 +210,13 @@ export default function RocAucTopic() {
         ],
         correct: 1,
         explanation:
-          "Phát hiện gian lận (1% fraud): model predict 'không gian lận' cho tất cả → 99% accuracy nhưng KHÔNG phát hiện bất kỳ fraud nào! AUC = 0.5 (random). AUC đo: với MỌI threshold, model phân biệt fraud vs legit tốt thế nào — không bị tỷ lệ ảnh hưởng.",
+          "Phát hiện gian lận (1% fraud): model predict 'không gian lận' cho tất cả → 99% accuracy nhưng KHÔNG phát hiện bất kỳ fraud nào! AUC = 0.5 (random). AUC đo: với MỌI threshold, model phân biệt fraud vs legit tốt thế nào. không bị tỷ lệ ảnh hưởng.",
       },
       {
         question: "ROC curve nằm ở phía trên-trái là tốt hay xấu?",
         options: [
-          "Tốt — TPR cao (bắt nhiều positive) và FPR thấp (ít false alarm) = phân biệt giỏi",
-          "Xấu — model quá tự tin",
+          "Tốt. TPR cao (bắt nhiều positive) và FPR thấp (ít false alarm) = phân biệt giỏi",
+          "Xấu. model quá tự tin",
           "Không liên quan đến chất lượng",
         ],
         correct: 0,
@@ -240,7 +240,7 @@ export default function RocAucTopic() {
           "Model của bạn có AUC = 0.3. Nên làm gì?",
         options: [
           "Vứt model đi và train lại từ đầu",
-          "Đảo nhãn dự đoán — model đang học NGƯỢC, đảo nhãn sẽ cho AUC = 0.7",
+          "Đảo nhãn dự đoán. model đang học NGƯỢC, đảo nhãn sẽ cho AUC = 0.7",
           "Tăng threshold",
         ],
         correct: 1,
@@ -264,7 +264,7 @@ export default function RocAucTopic() {
           "Youden's J statistic dùng để làm gì?",
         options: [
           "Tính diện tích AUC",
-          "Tìm threshold tối ưu — ngưỡng maximize (TPR - FPR), tức cách xa nhất khỏi đường chéo random",
+          "Tìm threshold tối ưu. ngưỡng maximize (TPR - FPR), tức cách xa nhất khỏi đường chéo random",
           "Kiểm định ý nghĩa thống kê của AUC",
         ],
         correct: 1,
@@ -275,9 +275,9 @@ export default function RocAucTopic() {
         question:
           "Chọn model dựa trên AUC có phải lúc nào cũng đúng không?",
         options: [
-          "Có — AUC cao nhất luôn thắng",
-          "Không — AUC là chỉ số tổng thể; phải xét thêm calibration, chi phí lỗi, tính ổn định trên subgroup",
-          "Không — AUC không áp dụng cho classification",
+          "Có. AUC cao nhất luôn thắng",
+          "Không. AUC là chỉ số tổng thể; phải xét thêm calibration, chi phí lỗi, tính ổn định trên subgroup",
+          "Không. AUC không áp dụng cho classification",
         ],
         correct: 1,
         explanation:
@@ -337,9 +337,9 @@ export default function RocAucTopic() {
         <PredictionGate
           question="Model phát hiện gian lận ngân hàng: 10.000 giao dịch, 100 gian lận (1%). Model predict 'không gian lận' cho TẤT CẢ → accuracy 99%. Model này tốt không?"
           options={[
-            "Tốt — 99% accuracy rất cao",
-            "TỆ — 99% accuracy là giả tạo, model không phát hiện BẤT KỲ gian lận nào. Cần metric khác: ROC-AUC",
-            "Trung bình — cần cải thiện thêm",
+            "Tốt. 99% accuracy rất cao",
+            "TỆ. 99% accuracy là giả tạo, model không phát hiện BẤT KỲ gian lận nào. Cần metric khác: ROC-AUC",
+            "Trung bình. cần cải thiện thêm",
           ]}
           correct={1}
           explanation="Accuracy bị 'lừa' bởi imbalanced data! 99% accuracy nhưng 0% fraud detected = vô dụng. ROC-AUC đo khả năng phân biệt THỰC SỰ giữa fraud và legit tại MỌI ngưỡng. Model này có AUC = 0.5 (random) dù accuracy 99%."
@@ -350,7 +350,7 @@ export default function RocAucTopic() {
             label="Khám phá"
           >
             <p className="mb-4 text-sm text-muted leading-relaxed">
-              Hai phân phối điểm bên dưới đại diện cho hai lớp — lớp{" "}
+              Hai phân phối điểm bên dưới đại diện cho hai lớp. lớp{" "}
               <strong className="text-foreground">âm</strong> (giao dịch hợp
               lệ) và lớp <strong className="text-foreground">dương</strong>{" "}
               (gian lận). Kéo <strong className="text-foreground">ngưỡng
@@ -768,14 +768,14 @@ export default function RocAucTopic() {
                       </div>
                       <p className="text-xs text-muted mt-1">
                         {auc > 0.9
-                          ? "Xuất sắc — model phân biệt rất tốt."
+                          ? "Xuất sắc. model phân biệt rất tốt."
                           : auc > 0.8
-                            ? "Tốt — model chạy ổn ở phần lớn ngưỡng."
+                            ? "Tốt. model chạy ổn ở phần lớn ngưỡng."
                             : auc > 0.7
-                              ? "Khá — có thể cải thiện thêm."
+                              ? "Khá. có thể cải thiện thêm."
                               : auc > 0.6
-                                ? "Yếu — chỉ nhỉnh hơn random."
-                                : "Gần random — xem xét lại feature/model."}
+                                ? "Yếu. chỉ nhỉnh hơn random."
+                                : "Gần random. xem xét lại feature/model."}
                       </p>
                     </div>
 
@@ -807,7 +807,7 @@ export default function RocAucTopic() {
 
                     <div className="rounded-xl border border-border bg-card/40 p-3 text-xs text-muted">
                       Gợi ý: để <em>separation</em> về <strong>0</strong> rồi
-                      kéo threshold — bạn sẽ thấy ROC sát đường chéo và AUC
+                      kéo threshold. bạn sẽ thấy ROC sát đường chéo và AUC
                       ~0.5. Đó chính là <em>random classifier</em>.
                     </div>
                   </div>
@@ -824,12 +824,11 @@ export default function RocAucTopic() {
             <AhaMoment>
               <p>
                 Kéo ngưỡng qua-lại và để ý hai việc: (1) khi ngưỡng{" "}
-                <strong>tăng</strong>, cả TPR và FPR đều giảm — bạn bắt ít
+                <strong>tăng</strong>, cả TPR và FPR đều giảm. bạn bắt ít
                 gian lận hơn nhưng cũng báo động giả ít hơn; (2) khi hai
                 phân phối <strong>tách xa</strong>, vùng chồng lấn biến mất
                 và AUC tiến về 1.0 mà không cần chọn ngưỡng nào cụ thể. Đó
-                là lý do AUC được gọi là "chỉ số không phụ thuộc ngưỡng" —
-                nó tóm tắt <em>toàn bộ</em> đường cong ROC thành một con số
+                là lý do AUC được gọi là "chỉ số không phụ thuộc ngưỡng". nó tóm tắt <em>toàn bộ</em> đường cong ROC thành một con số
                 duy nhất.
               </p>
             </AhaMoment>
@@ -849,14 +848,14 @@ export default function RocAucTopic() {
                   "Dùng cả hai",
                 ]}
                 correct={1}
-                explanation="AUC đo overall, nhưng trong y tế: false negative (bỏ sót ung thư) = nguy hiểm. Model B với recall 0.98 chỉ bỏ sót 2% bệnh nhân. Model A AUC cao hơn nhưng tại threshold cụ thể, recall có thể thấp hơn. CONTEXT quyết định metric nào quan trọng — không có metric 'tốt nhất' cho mọi bài toán."
+                explanation="AUC đo overall, nhưng trong y tế: false negative (bỏ sót ung thư) = nguy hiểm. Model B với recall 0.98 chỉ bỏ sót 2% bệnh nhân. Model A AUC cao hơn nhưng tại threshold cụ thể, recall có thể thấp hơn. CONTEXT quyết định metric nào quan trọng. không có metric 'tốt nhất' cho mọi bài toán."
               />
 
               <InlineChallenge
                 question="Bạn có 1% spam trong hộp thư (imbalanced). Model X đạt AUC-ROC = 0.92 nhưng Precision-Recall AUC chỉ 0.35. Kết luận gì?"
                 options={[
                   "Model rất mạnh vì AUC-ROC cao",
-                  "Model bị đánh lừa bởi TN áp đảo — precision thực tế với email spam còn yếu. Cần xem PR-AUC để ra quyết định triển khai.",
+                  "Model bị đánh lừa bởi TN áp đảo. precision thực tế với email spam còn yếu. Cần xem PR-AUC để ra quyết định triển khai.",
                   "AUC-ROC và PR-AUC luôn bằng nhau",
                 ]}
                 correct={1}
@@ -901,7 +900,7 @@ export default function RocAucTopic() {
                   âm ngẫu nhiên
                 </strong>
                 . Nói cách khác, AUC đo khả năng "xếp hạng" các mẫu theo
-                điểm — không phụ thuộc ta cắt ngưỡng ở đâu.
+                điểm. không phụ thuộc ta cắt ngưỡng ở đâu.
               </p>
 
               <Callout variant="tip" title="Khi nào dùng AUC?">
@@ -913,9 +912,9 @@ export default function RocAucTopic() {
               </Callout>
 
               <Callout variant="info" title="Mẹo đọc nhanh một ROC">
-                Nhìn ROC cong về phía <strong>trên-trái</strong> — AUC cao.
-                Nhìn gần đường chéo — model chẳng khác gì tung xu. Nhìn cong
-                về phía <strong>dưới-phải</strong> — bạn đã đảo nhãn ở đâu
+                Nhìn ROC cong về phía <strong>trên-trái</strong>. AUC cao.
+                Nhìn gần đường chéo. model chẳng khác gì tung xu. Nhìn cong
+                về phía <strong>dưới-phải</strong>. bạn đã đảo nhãn ở đâu
                 đó; cứ flip và AUC sẽ lật thành 1 − AUC.
               </Callout>
 
@@ -929,7 +928,7 @@ export default function RocAucTopic() {
 
               <Callout variant="insight" title="AUC không quan tâm scale">
                 Nhân đôi tất cả score, hay áp logistic function vào score,
-                AUC không đổi — vì AUC chỉ quan tâm <em>thứ tự</em> chứ không
+                AUC không đổi. vì AUC chỉ quan tâm <em>thứ tự</em> chứ không
                 quan tâm giá trị tuyệt đối. Đây là lý do AUC đôi khi được
                 gọi là <em>ranking metric</em>.
               </Callout>
@@ -941,8 +940,7 @@ export default function RocAucTopic() {
                 (nguồn gốc của TP/FP/TN/FN) và{" "}
                 <TopicLink slug="logistic-regression">
                   logistic regression
-                </TopicLink>{" "}
-                — vì đây là mô hình đầu tiên xuất ra score xác suất. Khi
+                </TopicLink>{" "}. vì đây là mô hình đầu tiên xuất ra score xác suất. Khi
                 debug một AUC thấp, hãy xem lại khía cạnh{" "}
                 <TopicLink slug="bias-variance">bias-variance</TopicLink> của
                 model.
@@ -965,13 +963,13 @@ export default function RocAucTopic() {
                   </li>
                   <li>
                     Tổng diện tích = xác suất bất kỳ cặp (dương, âm) nào mà
-                    điểm dương lớn hơn điểm âm — đúng định nghĩa của
+                    điểm dương lớn hơn điểm âm. đúng định nghĩa của
                     Mann-Whitney U / Wilcoxon rank-sum.
                   </li>
                 </ul>
                 <p className="text-sm mt-2">
                   Đây cũng là lý do AUC có thể ước lượng không thiên lệch từ
-                  mẫu hữu hạn bằng cách đếm số cặp xếp đúng — một công thức
+                  mẫu hữu hạn bằng cách đếm số cặp xếp đúng. một công thức
                   rất dễ cài bằng tay.
                 </p>
               </CollapsibleDetail>
@@ -981,18 +979,18 @@ export default function RocAucTopic() {
               </p>
               <ul className="list-disc list-inside text-sm pl-2 space-y-1">
                 <li>
-                  <strong>ROC curve</strong>: FPR vs TPR — như bạn đang thấy
+                  <strong>ROC curve</strong>: FPR vs TPR. như bạn đang thấy
                   ở trên. Ổn cho dữ liệu cân bằng, dễ so sánh giữa các
                   model.
                 </li>
                 <li>
                   <strong>Precision-Recall curve</strong>: Recall vs
-                  Precision — phản ánh tốt hơn cho imbalanced datasets.
+                  Precision. phản ánh tốt hơn cho imbalanced datasets.
                   Thường đi kèm với PR-AUC hoặc Average Precision (AP).
                 </li>
                 <li>
                   <strong>Detection Error Tradeoff (DET)</strong>: FPR vs
-                  FNR trên trục log-log — hay dùng trong biometrics và
+                  FNR trên trục log-log. hay dùng trong biometrics và
                   speaker verification.
                 </li>
               </ul>
@@ -1006,7 +1004,7 @@ export default function RocAucTopic() {
                 }
               </LaTeX>
               <p className="text-sm text-muted">
-                Đây là ước lượng Mann-Whitney — duyệt qua mọi cặp (dương,
+                Đây là ước lượng Mann-Whitney. duyệt qua mọi cặp (dương,
                 âm) và đếm tỷ lệ điểm dương cao hơn điểm âm. Nếu bằng nhau
                 thì cho 0.5 điểm.
               </p>

@@ -20,13 +20,13 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA — giữ nguyên theo yêu cầu
+// METADATA. giữ nguyên theo yêu cầu
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
   slug: "reasoning-models",
   title: "Reasoning Models",
-  titleVi: "Mô hình suy luận — AI biết nghĩ sâu",
+  titleVi: "Mô hình suy luận. AI biết nghĩ sâu",
   description:
     "Thế hệ mô hình AI mới có khả năng suy luận từng bước, giải quyết các bài toán phức tạp đòi hỏi logic và tư duy.",
   category: "emerging",
@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
 };
 
 // ---------------------------------------------------------------------------
-// TYPES & DATA — bài toán minh họa và dấu vết suy luận
+// TYPES & DATA. bài toán minh họa và dấu vết suy luận
 // ---------------------------------------------------------------------------
 
 interface ReasoningTrace {
@@ -66,22 +66,22 @@ const PROBLEM_VI =
   "tổng doanh thu 4.620.000đ. Biết số ly pudding bằng tổng số ly trân châu và thạch. " +
   "Hỏi mỗi loại bán bao nhiêu ly?";
 
-// Standard LLM — trả lời trực tiếp, sai
+// Standard LLM. trả lời trực tiếp, sai
 const STANDARD_ANSWER = {
   answer:
-    "Khoảng 40 ly mỗi loại (vì tổng 120 ly chia đều ≈ 40). Doanh thu trung bình 4.620.000 / 120 ≈ 38.500đ/ly — gần với giá thạch, nên có thể thạch nhiều hơn.",
+    "Khoảng 40 ly mỗi loại (vì tổng 120 ly chia đều ≈ 40). Doanh thu trung bình 4.620.000 / 120 ≈ 38.500đ/ly. gần với giá thạch, nên có thể thạch nhiều hơn.",
   correct: false,
   note: "Đoán theo trực giác, không giải hệ phương trình. Kết quả số không khớp ràng buộc pudding = trân châu + thạch.",
 };
 
-// Reasoning model — dấu vết suy luận chi tiết
+// Reasoning model. dấu vết suy luận chi tiết
 const REASONING_TRACE: ReasoningTrace[] = [
   {
     id: "r1",
     step: 1,
     kind: "plan",
     content:
-      "Đặt biến: gọi x = số ly trân châu, y = số ly pudding, z = số ly thạch. Mình có 3 ràng buộc: tổng số ly, tổng doanh thu, và điều kiện pudding = trân châu + thạch. Đây là hệ 3 phương trình 3 ẩn — giải được.",
+      "Đặt biến: gọi x = số ly trân châu, y = số ly pudding, z = số ly thạch. Mình có 3 ràng buộc: tổng số ly, tổng doanh thu, và điều kiện pudding = trân châu + thạch. Đây là hệ 3 phương trình 3 ẩn. giải được.",
   },
   {
     id: "r2",
@@ -116,7 +116,7 @@ const REASONING_TRACE: ReasoningTrace[] = [
     step: 6,
     kind: "revise",
     content:
-      "Đáp án hợp lệ toán học nhưng z = 0 có vẻ lạ. Xem lại đề — không có ràng buộc mỗi loại > 0. Kết quả vẫn đúng; có thể hôm nay thạch hết từ sáng.",
+      "Đáp án hợp lệ toán học nhưng z = 0 có vẻ lạ. Xem lại đề. không có ràng buộc mỗi loại > 0. Kết quả vẫn đúng; có thể hôm nay thạch hết từ sáng.",
   },
   {
     id: "r7",
@@ -139,7 +139,7 @@ const MODELS: ModelProfile[] = [
     accGpqa: 50,
     latencySec: 2,
     costPerCall: 0.008,
-    note: "Trả lời trực tiếp — nhanh nhưng kém chính xác trên bài toán nhiều bước.",
+    note: "Trả lời trực tiếp. nhanh nhưng kém chính xác trên bài toán nhiều bước.",
   },
   {
     name: "OpenAI o1",
@@ -151,7 +151,7 @@ const MODELS: ModelProfile[] = [
     accGpqa: 77,
     latencySec: 45,
     costPerCall: 0.9,
-    note: "Thinking tokens ẩn — API trả summary. Train bằng large-scale RL trên reasoning traces.",
+    note: "Thinking tokens ẩn. API trả summary. Train bằng large-scale RL trên reasoning traces.",
   },
   {
     name: "OpenAI o3",
@@ -182,7 +182,7 @@ const MODELS: ModelProfile[] = [
 const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// QUIZ — 8 câu theo yêu cầu
+// QUIZ. 8 câu theo yêu cầu
 // ---------------------------------------------------------------------------
 
 function buildQuiz(): QuizQuestion[] {
@@ -198,20 +198,20 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Đặc trưng của reasoning model là dành token lúc INFERENCE để 'suy nghĩ' — thinking trace dài (hàng nghìn token) trước khi đưa ra câu trả lời cuối. Đây là test-time compute, không phải tăng parameter.",
+        "Đặc trưng của reasoning model là dành token lúc INFERENCE để 'suy nghĩ'. thinking trace dài (hàng nghìn token) trước khi đưa ra câu trả lời cuối. Đây là test-time compute, không phải tăng parameter.",
     },
     {
       question:
         "Scaling law cho reasoning model khác scaling law truyền thống thế nào?",
       options: [
-        "Không thêm yếu tố nào mới — chỉ là phiên bản mới",
+        "Không thêm yếu tố nào mới. chỉ là phiên bản mới",
         "Thêm trục test-time compute: chất lượng ∝ log(training compute) + log(test-time compute)",
         "Thay thế hoàn toàn training compute bằng test-time compute",
         "Chất lượng giảm khi tăng test-time compute",
       ],
       correct: 1,
       explanation:
-        "Paper o1 và các khảo sát 2024–2025 cho thấy: với cùng base model, thêm thinking tokens làm chất lượng tăng tuyến tính theo log của thinking budget. Hai trục độc lập — bạn có thể đánh đổi train compute với test-time compute.",
+        "Paper o1 và các khảo sát 2024–2025 cho thấy: với cùng base model, thêm thinking tokens làm chất lượng tăng tuyến tính theo log của thinking budget. Hai trục độc lập. bạn có thể đánh đổi train compute với test-time compute.",
     },
     {
       question: "Khi nào KHÔNG nên dùng reasoning model?",
@@ -223,7 +223,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Factual đơn giản không cần suy luận — model thường trả lời đúng ngay. Dùng reasoning model sẽ tốn 10–100× chi phí mà chất lượng không khác. Routing thông minh (cheap model cho câu dễ, reasoning cho câu khó) là chìa khoá kinh tế.",
+        "Factual đơn giản không cần suy luận. model thường trả lời đúng ngay. Dùng reasoning model sẽ tốn 10–100× chi phí mà chất lượng không khác. Routing thông minh (cheap model cho câu dễ, reasoning cho câu khó) là chìa khoá kinh tế.",
     },
     {
       question:
@@ -236,7 +236,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 0,
       explanation:
-        "ORM: reward = 1 nếu đáp án cuối đúng, 0 nếu sai — model có thể 'đoán đúng sai cách'. PRM: chấm điểm từng bước (bước nào logic, bước nào sai), dạy model 'suy nghĩ đúng cách'. PRM chất lượng hơn nhưng cần annotate từng bước — đắt.",
+        "ORM: reward = 1 nếu đáp án cuối đúng, 0 nếu sai. model có thể 'đoán đúng sai cách'. PRM: chấm điểm từng bước (bước nào logic, bước nào sai), dạy model 'suy nghĩ đúng cách'. PRM chất lượng hơn nhưng cần annotate từng bước. đắt.",
     },
     {
       question:
@@ -245,7 +245,7 @@ function buildQuiz(): QuizQuestion[] {
         "$0.0012 thinking + $0.00012 answer ≈ $0.0013",
         "$0.012 thinking + $0.0012 answer ≈ $0.013",
         "$1.20 thinking + $0.12 answer ≈ $1.32",
-        "Không tính được — tuỳ nhà cung cấp",
+        "Không tính được. tuỳ nhà cung cấp",
       ],
       correct: 1,
       explanation:
@@ -253,10 +253,10 @@ function buildQuiz(): QuizQuestion[] {
     },
     {
       question:
-        "DeepSeek-R1 dùng GRPO thay PPO — khác biệt chính là gì?",
+        "DeepSeek-R1 dùng GRPO thay PPO. khác biệt chính là gì?",
       options: [
         "GRPO tăng kích thước model",
-        "GRPO bỏ critic network — dùng nhóm output ranking làm advantage",
+        "GRPO bỏ critic network. dùng nhóm output ranking làm advantage",
         "GRPO không dùng reinforcement learning",
         "GRPO yêu cầu human feedback nhiều hơn",
       ],
@@ -268,7 +268,7 @@ function buildQuiz(): QuizQuestion[] {
       question: "Nguyên nhân chính khiến thinking trace tăng tính tin cậy?",
       options: [
         "Nó làm model chậm đi nên ít lỗi hơn",
-        "Mỗi bước phân tích là một token sequence, cho phép kiểm tra, backtrack và decompose — giảm nguy cơ sai một cú",
+        "Mỗi bước phân tích là một token sequence, cho phép kiểm tra, backtrack và decompose. giảm nguy cơ sai một cú",
         "Thinking trace được post-process bằng rule-based",
         "Thinking trace tự động được con người kiểm duyệt",
       ],
@@ -279,7 +279,7 @@ function buildQuiz(): QuizQuestion[] {
     {
       type: "fill-blank",
       question:
-        "Reasoning model sinh chuỗi {blank} nội bộ trước khi trả lời — quá trình này tiêu tốn {blank} compute, là một dạng scaling thứ hai bên cạnh training compute.",
+        "Reasoning model sinh chuỗi {blank} nội bộ trước khi trả lời. quá trình này tiêu tốn {blank} compute, là một dạng scaling thứ hai bên cạnh training compute.",
       blanks: [
         {
           answer: "chain-of-thought",
@@ -297,7 +297,7 @@ function buildQuiz(): QuizQuestion[] {
 }
 
 // ---------------------------------------------------------------------------
-// HELPER — phân loại màu theo kind
+// HELPER. phân loại màu theo kind
 // ---------------------------------------------------------------------------
 
 function kindLabel(kind: ReasoningTrace["kind"]): {
@@ -368,14 +368,14 @@ export default function ReasoningModelsTopic() {
   return (
     <>
       {/* ================================================================
-           BƯỚC 1 — DỰ ĐOÁN
+           BƯỚC 1. DỰ ĐOÁN
            ================================================================ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question="Bài toán: 'Có 5 người xếp hàng. An đứng sau Bình, Cường đứng trước An, Dung đứng cuối. Ai đứng thứ 2?' LLM thường trả lời trong 0.5s. Reasoning model nghĩ 30s. Ai đúng hơn?"
           options={[
-            "LLM thường — trả lời nhanh là hay",
-            "Reasoning model — bài logic cần phân tích từng bước, không đoán được",
+            "LLM thường. trả lời nhanh là hay",
+            "Reasoning model. bài logic cần phân tích từng bước, không đoán được",
             "Cả hai đều đúng vì bài đơn giản",
             "Phải có con người kiểm tra mới biết",
           ]}
@@ -391,26 +391,26 @@ export default function ReasoningModelsTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 2 — ẨN DỤ
+           BƯỚC 2. ẨN DỤ
            ================================================================ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ thực tế">
         <p>
           LLM thường giống một học sinh làm <strong>bài trắc nghiệm</strong>:
           đọc câu hỏi, chọn đáp án ngay. Tốc độ là ưu tiên; nhìn pattern tốt
           sẽ đúng nhanh. Nhưng với bài yêu cầu 5–10 bước suy luận, phương
-          pháp này giống như đoán — đôi khi may mắn, đôi khi sai tinh vi.
+          pháp này giống như đoán. đôi khi may mắn, đôi khi sai tinh vi.
         </p>
         <p>
           Reasoning model giống học sinh làm <strong>bài tự luận</strong>:
-          đọc đề, <em>viết nháp</em> — đặt biến, lập phương trình, tính từng
+          đọc đề, <em>viết nháp</em>. đặt biến, lập phương trình, tính từng
           bước, kiểm tra, sửa nếu sai, rồi mới viết đáp án. Bản nháp đó
-          không dài vì xấu — nó dài vì <em>cần thiết</em>. Giống một người
+          không dài vì xấu. nó dài vì <em>cần thiết</em>. Giống một người
           thợ mộc đo hai lần, cắt một lần.
         </p>
         <p>
           Một cách nhìn khác: hãy nghĩ tới <strong>một bác sĩ chẩn đoán</strong>.
-          Ca nhẹ (cảm cúm) — nhìn triệu chứng, kê đơn trong 2 phút. Ca phức
-          tạp (triệu chứng mâu thuẫn) — bác sĩ dừng lại, <em>nói to suy nghĩ
+          Ca nhẹ (cảm cúm). nhìn triệu chứng, kê đơn trong 2 phút. Ca phức
+          tạp (triệu chứng mâu thuẫn). bác sĩ dừng lại, <em>nói to suy nghĩ
           của mình</em>: "nếu là A thì phải thấy B, nhưng B không có, vậy
           không phải A; hoặc là C, kiểm tra lại bằng xét nghiệm...". Quá
           trình đó chính là chain-of-thought.
@@ -418,13 +418,13 @@ export default function ReasoningModelsTopic() {
         <p>
           Bước nhảy vọt của AI không phải là "biết nhiều hơn" mà là{" "}
           <strong>biết suy nghĩ</strong>. Và giống sinh viên giỏi, reasoning
-          model <em>không cần viết 10 trang cho câu hỏi đơn giản</em> — nó
+          model <em>không cần viết 10 trang cho câu hỏi đơn giản</em>. nó
           nên biết khi nào dừng. Đây chính là lý do routing (chọn model tuỳ
           độ khó) là chìa khoá kinh tế trong thực tế.
         </p>
         <p>
           Nếu không có khả năng suy luận, mô hình chỉ là một bộ nhớ khổng
-          lồ biết pattern — giỏi nhớ, dở tư duy. Reasoning models là bước
+          lồ biết pattern. giỏi nhớ, dở tư duy. Reasoning models là bước
           đầu tiên khiến AI có thể đối mặt với những vấn đề{" "}
           <em>ngoài phân bố</em> training data: các biến thể mới, các kết
           hợp chưa từng thấy, các bài toán olympic thật sự. Đó là thông điệp
@@ -433,7 +433,7 @@ export default function ReasoningModelsTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 3 — VISUALIZATION TƯƠNG TÁC
+           BƯỚC 3. VISUALIZATION TƯƠNG TÁC
            ================================================================ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
@@ -495,7 +495,7 @@ export default function ReasoningModelsTopic() {
                 <div className="mb-3 flex items-center gap-2">
                   <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-accent" />
                   <p className="text-sm font-semibold text-foreground">
-                    &lt;think&gt;...&lt;/think&gt; — dấu vết suy luận
+                    &lt;think&gt;...&lt;/think&gt;. dấu vết suy luận
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -522,9 +522,9 @@ export default function ReasoningModelsTopic() {
                   })}
                 </div>
                 <p className="mt-3 text-xs text-muted">
-                  Lưu ý bước 6 — model <em>tự nghi ngờ</em> đáp án z = 0, đọc
+                  Lưu ý bước 6. model <em>tự nghi ngờ</em> đáp án z = 0, đọc
                   lại đề, xác nhận không có ràng buộc z &gt; 0. Đó chính là
-                  self-verification — thứ LLM thường không làm.
+                  self-verification. thứ LLM thường không làm.
                 </p>
               </div>
             )}
@@ -532,7 +532,7 @@ export default function ReasoningModelsTopic() {
             {/* ── Test-time compute scaling curve ── */}
             <div className="rounded-lg border border-border bg-background/60 p-4">
               <p className="mb-3 text-sm font-semibold text-foreground">
-                Test-time compute scaling — thinking tokens vs accuracy
+                Test-time compute scaling. thinking tokens vs accuracy
               </p>
 
               <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -665,7 +665,7 @@ export default function ReasoningModelsTopic() {
                   fill="var(--text-secondary)"
                   fontSize="11"
                 >
-                  Accuracy ∝ log(test-time compute) — cùng model, thêm
+                  Accuracy ∝ log(test-time compute). cùng model, thêm
                   thinking = tốt hơn.
                 </text>
               </svg>
@@ -738,7 +738,7 @@ export default function ReasoningModelsTopic() {
                     <span className="text-muted">Tỷ lệ think/ans:</span>
                     <p className="font-mono text-amber-300">
                       {model.thinkTokens === 0
-                        ? "—"
+                        ? ":"
                         : (model.thinkTokens / model.answerTokens).toFixed(0) +
                           "×"}
                     </p>
@@ -774,7 +774,7 @@ export default function ReasoningModelsTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 4 — AHA MOMENT
+           BƯỚC 4. AHA MOMENT
            ================================================================ */}
       <LessonSection
         step={4}
@@ -788,25 +788,25 @@ export default function ReasoningModelsTopic() {
             tích, viết lời giải, kiểm tra lại). Bước nhảy vọt: AI không chỉ
             "biết nhiều" mà bắt đầu <strong>"biết suy nghĩ"</strong>. Nhưng
             giống một sinh viên giỏi, bí quyết là biết <em>khi nào</em> cần
-            dành 10 trang — và khi nào một câu là đủ.
+            dành 10 trang. Và khi nào một câu là đủ.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 5 — 2 INLINE CHALLENGE
+           BƯỚC 5. 2 INLINE CHALLENGE
            ================================================================ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách 1">
         <InlineChallenge
           question="Model reasoning sinh 2.000 thinking tokens + 200 answer tokens cho mỗi câu hỏi. Bạn phục vụ 10.000 requests/ngày. Thinking tokens tốn $0.15/1M, output tokens $0.60/1M. Chi phí thinking vs output?"
           options={[
-            "Thinking: $0.03/ngày. Output: $0.012/ngày — vài xu, bỏ qua",
+            "Thinking: $0.03/ngày. Output: $0.012/ngày. vài xu, bỏ qua",
             "Thinking: $3/ngày (71%). Output: $1.2/ngày (29%). Thinking chiếm phần lớn vì số lượng tokens lớn",
             "Output đắt hơn vì giá per token cao hơn",
             "Bằng nhau vì tổng bằng 2.200 tokens × ngày",
           ]}
           correct={1}
-          explanation="Thinking: 10.000 × 2.000 × $0.15 / 1M = $3. Output: 10.000 × 200 × $0.60 / 1M = $1.2. Thinking chiếm 71% chi phí dù giá per token rẻ hơn — vì SỐ LƯỢNG token lớn hơn 10×. Đây là lý do cần routing: chỉ dùng reasoning cho câu khó!"
+          explanation="Thinking: 10.000 × 2.000 × $0.15 / 1M = $3. Output: 10.000 × 200 × $0.60 / 1M = $1.2. Thinking chiếm 71% chi phí dù giá per token rẻ hơn. vì SỐ LƯỢNG token lớn hơn 10×. Đây là lý do cần routing: chỉ dùng reasoning cho câu khó!"
         />
       </LessonSection>
 
@@ -814,18 +814,18 @@ export default function ReasoningModelsTopic() {
         <InlineChallenge
           question="Bạn xây trợ lý học sinh. Khoảng 80% câu là Q&A factual đơn giản, 20% là bài toán nhiều bước. Chiến lược nào tối ưu chi phí × chất lượng?"
           options={[
-            "Dùng o3 cho tất cả — chất lượng cao nhất",
-            "Dùng GPT-4o cho tất cả — rẻ nhất",
+            "Dùng o3 cho tất cả. chất lượng cao nhất",
+            "Dùng GPT-4o cho tất cả. rẻ nhất",
             "Classifier nhẹ phân loại câu hỏi → GPT-4o cho câu factual, reasoning model (o1 / R1) cho câu cần suy luận",
             "Luôn chạy cả hai model song song và lấy đáp án dài hơn",
           ]}
           correct={2}
-          explanation="Routing là chiến lược chuẩn: (1) Một classifier nhẹ (embedding + vài rule / logistic) phân loại câu hỏi. (2) Câu factual dùng model rẻ. (3) Câu khó dùng reasoning. Kết quả: chi phí trung bình giảm 5–10×, chất lượng gần như không đổi vì 80% câu vốn không cần reasoning. 'Luôn dùng mạnh nhất' là anti-pattern — lãng phí tài nguyên và làm user phải chờ vô ích."
+          explanation="Routing là chiến lược chuẩn: (1) Một classifier nhẹ (embedding + vài rule / logistic) phân loại câu hỏi. (2) Câu factual dùng model rẻ. (3) Câu khó dùng reasoning. Kết quả: chi phí trung bình giảm 5–10×, chất lượng gần như không đổi vì 80% câu vốn không cần reasoning. 'Luôn dùng mạnh nhất' là anti-pattern. lãng phí tài nguyên và làm user phải chờ vô ích."
         />
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 6 — EXPLANATION SÂU
+           BƯỚC 6. EXPLANATION SÂU
            ================================================================ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích sâu">
         <ExplanationSection>
@@ -839,7 +839,7 @@ export default function ReasoningModelsTopic() {
             <TopicLink slug="chain-of-thought">chain-of-thought</TopicLink>{" "}
             nội bộ, rất dài (hàng nghìn đến hàng chục nghìn tokens), trước
             khi xuất đáp án cuối. DeepSeek-R1 còn được train bằng{" "}
-            <TopicLink slug="grpo">GRPO</TopicLink> — một biến thể PPO không
+            <TopicLink slug="grpo">GRPO</TopicLink>. một biến thể PPO không
             cần critic.
           </p>
 
@@ -884,8 +884,7 @@ export default function ReasoningModelsTopic() {
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <strong>Decomposition:</strong> chia bài lớn thành bài con —
-              giải hệ → đặt biến → viết phương trình → thế → rút.
+              <strong>Decomposition:</strong> chia bài lớn thành bài con. giải hệ → đặt biến → viết phương trình → thế → rút.
             </li>
             <li>
               <strong>Self-verification:</strong> kiểm tra đáp án vừa tính
@@ -904,7 +903,7 @@ export default function ReasoningModelsTopic() {
           <Callout variant="tip" title="Process vs Outcome Reward Model">
             <p>
               <strong>Outcome Reward Model (ORM):</strong> chỉ cho reward ở
-              đáp án cuối. Đơn giản, dễ thu data — nhưng model có thể "đoán
+              đáp án cuối. Đơn giản, dễ thu data. Nhưng model có thể "đoán
               đúng sai cách", trace kém chất lượng.
             </p>
             <p>
@@ -913,7 +912,7 @@ export default function ReasoningModelsTopic() {
               Nhưng data đắt: cần annotate từng bước trong trace.
             </p>
             <p>
-              Thực tế: kết hợp cả hai — ORM cho bulk data từ test suite, PRM
+              Thực tế: kết hợp cả hai. ORM cho bulk data từ test suite, PRM
               cho data chất lượng cao từ expert annotators.
             </p>
           </Callout>
@@ -922,7 +921,7 @@ export default function ReasoningModelsTopic() {
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <strong>"Luôn bật reasoning" là anti-pattern.</strong> Câu
-                hỏi factual đơn giản không cần — bạn sẽ tốn 10–100× chi phí
+                hỏi factual đơn giản không cần. bạn sẽ tốn 10–100× chi phí
                 mà không được gì.
               </li>
               <li>
@@ -933,12 +932,12 @@ export default function ReasoningModelsTopic() {
               <li>
                 <strong>Hallucination trong trace.</strong> Model có thể suy
                 luận rất mạch lạc tới một bước sai, rồi xây kết luận trên đó.
-                Trace dài <em>không</em> đảm bảo đúng — chỉ tăng xác suất.
+                Trace dài <em>không</em> đảm bảo đúng. chỉ tăng xác suất.
               </li>
             </ul>
           </Callout>
 
-          <Callout variant="info" title="GRPO vs PPO — điểm khác biệt">
+          <Callout variant="info" title="GRPO vs PPO. điểm khác biệt">
             DeepSeek-R1 dùng GRPO (Group Relative Policy Optimization) thay
             PPO. Thay vì huấn luyện một critic network riêng để ước lượng
             value, GRPO sample K output cho cùng 1 prompt, tính reward từng
@@ -952,7 +951,7 @@ export default function ReasoningModelsTopic() {
             R1 và o1 cho thấy những hành vi không được dạy trực tiếp: nhận
             ra "chờ đã, mình đang sai", dịch bài toán sang ngôn ngữ formal
             (algebra), thử nhiều approach song song rồi so sánh. DeepSeek
-            paper gọi hiện tượng này là <em>"aha moment"</em> — xuất hiện
+            paper gọi hiện tượng này là <em>"aha moment"</em>. xuất hiện
             tự nhiên trong quá trình RL khi reward dài hạn buộc model khám
             phá.
           </Callout>
@@ -967,25 +966,25 @@ export default function ReasoningModelsTopic() {
           </LaTeX>
           <p>
             Bước 1: <em>SFT</em> trên corpus thinking trace (có thể từ
-            expert, distilled từ model mạnh, hoặc R1-Zero style —{" "}
+            expert, distilled từ model mạnh, hoặc R1-Zero style.{" "}
             <em>không</em> có SFT, chỉ RL từ base). Bước 2: <em>RL</em> với
-            PRM/ORM — model tự khám phá chiến lược mới, xuất hiện hành vi
+            PRM/ORM. model tự khám phá chiến lược mới, xuất hiện hành vi
             phản xạ như "wait", "let me check", v.v.
           </p>
 
           <p>
-            <strong>Code mẫu 1 — Claude extended thinking API.</strong>
+            <strong>Code mẫu 1. Claude extended thinking API.</strong>
           </p>
           <CodeBlock
             language="python"
-            title="Anthropic SDK — extended thinking"
+            title="Anthropic SDK. extended thinking"
           >
             {`# pip install anthropic
 import anthropic
 
 client = anthropic.Anthropic()
 
-# Standard — trả lời nhanh
+# Standard. trả lời nhanh
 standard = client.messages.create(
     model="claude-sonnet-4-20250514",
     max_tokens=1024,
@@ -995,7 +994,7 @@ standard = client.messages.create(
 )
 # Latency ~1s, cost ~$0.01
 
-# Extended thinking — bật thinking budget
+# Extended thinking. bật thinking budget
 reasoning = client.messages.create(
     model="claude-sonnet-4-20250514",
     max_tokens=16000,
@@ -1022,7 +1021,7 @@ for block in reasoning.content:
           </CodeBlock>
 
           <p>
-            <strong>Code mẫu 2 — Routing thông minh.</strong> Trong production,
+            <strong>Code mẫu 2. Routing thông minh.</strong> Trong production,
             routing là đòn bẩy chi phí lớn nhất. Ví dụ heuristic đơn giản
             phân loại câu hỏi cần reasoning hay không:
           </p>
@@ -1069,7 +1068,7 @@ def answer(prompt: str) -> str:
 #   (embedding → logistic regression) để chính xác hơn.`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Chi tiết: GRPO — biến thể PPO không critic">
+          <CollapsibleDetail title="Chi tiết: GRPO. biến thể PPO không critic">
             <p>
               PPO truyền thống cần 4 model trong memory cùng lúc: policy,
               reference policy, reward model, critic. Rất tốn GPU. GRPO bỏ
@@ -1084,7 +1083,7 @@ def answer(prompt: str) -> str:
                 advantage.
               </li>
               <li>
-                Update policy với loss PPO-clip sử dụng A_i — không cần
+                Update policy với loss PPO-clip sử dụng A_i. không cần
                 critic ước lượng value.
               </li>
             </ol>
@@ -1107,7 +1106,7 @@ def answer(prompt: str) -> str:
               Ngạc nhiên là R1-Zero tự phát triển hành vi "aha": trong
               trace xuất hiện các phrase như <em>"wait"</em>, <em>"let me
               reconsider"</em>, <em>"that doesn't seem right"</em>. Những
-              hành vi này không có trong training data — xuất hiện tự nhiên
+              hành vi này không có trong training data. xuất hiện tự nhiên
               như policy tối ưu của môi trường RL mà reward đòi hỏi đáp án
               đúng cuối cùng.
             </p>
@@ -1120,7 +1119,7 @@ def answer(prompt: str) -> str:
           </CollapsibleDetail>
 
           <p>
-            <strong>Trong thực tế — ứng dụng:</strong>
+            <strong>Trong thực tế. ứng dụng:</strong>
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
@@ -1146,16 +1145,16 @@ def answer(prompt: str) -> str:
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              Câu hỏi factual đơn giản — Q&amp;A, trivia, ngày tháng, định
+              Câu hỏi factual đơn giản. Q&amp;A, trivia, ngày tháng, định
               nghĩa.
             </li>
-            <li>Summarization, translation, style transfer — không cần phân tích nhiều bước.</li>
+            <li>Summarization, translation, style transfer. không cần phân tích nhiều bước.</li>
             <li>
-              Latency SLA khắt khe (&lt; 2s) — reasoning model thường mất
+              Latency SLA khắt khe (&lt; 2s). reasoning model thường mất
               10–60s.
             </li>
             <li>
-              Streaming UX cần token đầu tiên nhanh — thinking làm TTFT
+              Streaming UX cần token đầu tiên nhanh. thinking làm TTFT
               (time to first token) tăng 10–100×.
             </li>
           </ul>
@@ -1177,7 +1176,7 @@ def answer(prompt: str) -> str:
               <li>
                 <strong>AIME 2024:</strong> GPT-4o ~9%, o1 ~74%, o3 ~96%,
                 DeepSeek-R1 ~79%. Đây là kỳ thi toán Mỹ mời 500 học sinh
-                giỏi nhất — o3 đã vượt ngưỡng top học sinh.
+                giỏi nhất. o3 đã vượt ngưỡng top học sinh.
               </li>
               <li>
                 <strong>MATH-500:</strong> GPT-4o ~76%, các reasoning models
@@ -1185,8 +1184,7 @@ def answer(prompt: str) -> str:
               </li>
               <li>
                 <strong>GPQA Diamond (PhD science):</strong> GPT-4o ~50%,
-                reasoning models 70–87%. Đây là benchmark "Google-proof"
-                — không thể tra ra đáp án.
+                reasoning models 70–87%. Đây là benchmark "Google-proof". không thể tra ra đáp án.
               </li>
               <li>
                 <strong>Codeforces rating:</strong> o3 ~ 2700+ (gần mức
@@ -1194,8 +1192,7 @@ def answer(prompt: str) -> str:
               </li>
             </ul>
             <p>
-              Khi chọn model cho production, đừng chỉ nhìn benchmark toán —
-              hãy đo trên đúng distribution nhiệm vụ của bạn. Một model mạnh
+              Khi chọn model cho production, đừng chỉ nhìn benchmark toán. hãy đo trên đúng distribution nhiệm vụ của bạn. Một model mạnh
               AIME có thể yếu trong domain pháp luật hoặc tư vấn khách hàng.
             </p>
           </CollapsibleDetail>
@@ -1215,7 +1212,7 @@ def answer(prompt: str) -> str:
                 progress hoặc loading state rõ ràng.
               </li>
               <li>
-                <strong>Cache aggressively:</strong> reasoning rất tốn — cache
+                <strong>Cache aggressively:</strong> reasoning rất tốn. cache
                 trên (query, context) là cách tiết kiệm dễ nhất.
               </li>
               <li>
@@ -1228,24 +1225,24 @@ def answer(prompt: str) -> str:
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 7 — TÓM TẮT (6 điểm)
+           BƯỚC 7. TÓM TẮT (6 điểm)
            ================================================================ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Những điều cần nhớ về Reasoning Models"
           points={[
             "Reasoning models (o1, o3, DeepSeek-R1) tăng test-time compute bằng cách sinh chain-of-thought nội bộ trước khi trả lời.",
-            "Scaling law mới: accuracy ∝ log(training compute) + log(test-time compute) — hai trục scaling độc lập.",
+            "Scaling law mới: accuracy ∝ log(training compute) + log(test-time compute). hai trục scaling độc lập.",
             "Thao tác cốt lõi của thinking trace: decomposition, self-verification, backtracking, analogical reasoning.",
-            "Process Reward Model (PRM) chấm từng bước suy luận — dạy model 'suy nghĩ đúng cách', khác ORM chỉ chấm đáp án.",
-            "GRPO của DeepSeek-R1 bỏ critic network — sample nhóm K output, normalize reward làm advantage, tiết kiệm 30–50% GPU.",
-            "Routing là chìa khoá kinh tế: câu dễ dùng GPT-4o, câu khó dùng reasoning — giảm 5–10× chi phí trung bình.",
+            "Process Reward Model (PRM) chấm từng bước suy luận. dạy model 'suy nghĩ đúng cách', khác ORM chỉ chấm đáp án.",
+            "GRPO của DeepSeek-R1 bỏ critic network. sample nhóm K output, normalize reward làm advantage, tiết kiệm 30–50% GPU.",
+            "Routing là chìa khoá kinh tế: câu dễ dùng GPT-4o, câu khó dùng reasoning. giảm 5–10× chi phí trung bình.",
           ]}
         />
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 8 — QUIZ (8 câu)
+           BƯỚC 8. QUIZ (8 câu)
            ================================================================ */}
       <QuizSection questions={quiz} />
     </>

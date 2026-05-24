@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "orchestration",
   title: "Orchestration",
-  titleVi: "Điều phối — Nhạc trưởng của hệ thống AI",
+  titleVi: "Orchestration: điều phối hệ thống AI",
   description:
     "Tầng quản lý luồng công việc, điều phối giữa các Agent, công cụ và dịch vụ trong hệ thống AI phức tạp.",
   category: "ai-agents",
@@ -37,7 +37,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tầng orchestration giải quyết vấn đề gì mà Agent đơn lẻ không xử lý được?",
     options: [
       "Tăng tốc LLM",
-      "Quản lý luồng giữa nhiều Agent/tools: định tuyến, trạng thái, xử lý lỗi, tối ưu tài nguyên — coordination phức tạp",
+      "Quản lý luồng giữa nhiều Agent/tools: định tuyến, trạng thái, xử lý lỗi, tối ưu tài nguyên. coordination phức tạp",
       "Cải thiện prompt",
       "Giảm chi phí token",
     ],
@@ -49,7 +49,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Graph-based orchestration (LangGraph) có lợi thế gì so với sequential chains?",
     options: [
       "Nhanh hơn",
-      "Cho phép branching (rẽ nhánh), looping (vòng lặp), conditional routing (đi nhánh nào tuỳ kết quả) — linh hoạt hơn chain cứng",
+      "Cho phép branching (rẽ nhánh), looping (vòng lặp), conditional routing (đi nhánh nào tuỳ kết quả). linh hoạt hơn chain cứng",
       "Dùng ít token hơn",
       "Không cần LLM",
     ],
@@ -90,8 +90,8 @@ export default function OrchestrationTopic() {
         <PredictionGate
           question="Hệ thống có 5 Agent, 10 công cụ, 3 database. Agent A cần kết quả Agent B trước khi chạy. Agent C và D chạy song song. Ai quản lý tất cả?"
           options={[
-            "Mỗi Agent tự quản lý — giao tiếp trực tiếp",
-            "Cần tầng ĐIỀU PHỐI riêng biệt — quản lý luồng, trạng thái, lỗi, và tài nguyên như nhạc trưởng quản lý dàn nhạc",
+            "Mỗi Agent tự quản lý. giao tiếp trực tiếp",
+            "Cần tầng ĐIỀU PHỐI riêng biệt. quản lý luồng, trạng thái, lỗi, và tài nguyên như nhạc trưởng quản lý dàn nhạc",
             "Người dùng tự chỉ đạo từng bước",
           ]}
           correct={1}
@@ -185,7 +185,7 @@ export default function OrchestrationTopic() {
       {/* ━━━ 3. AHA MOMENT ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
-          Orchestration không phải thêm 1 layer phức tạp — nó là thứ{" "}
+          Orchestration không phải thêm 1 layer phức tạp. nó là thứ{" "}
           <strong>biến hỗn loạn thành trật tự</strong>. Không có nhạc trưởng, 50 nhạc
           công chơi 50 bản khác nhau. Có nhạc trưởng, cùng 50 nhạc công tạo nên
           giao hưởng hoàn hảo. Khi mỗi{" "}
@@ -265,7 +265,7 @@ result = app.invoke({"task": "Viết API endpoint"})`}</CodeBlock>
           <Callout variant="insight" title="Graph vs Chain vs Agent-based">
             Chain: A → B → C (cố định, đơn giản). Agent-based: LLM tự quyết
             bước tiếp (linh hoạt, khó kiểm soát). Graph: nodes + conditional
-            edges (cân bằng — linh hoạt VÀ kiểm soát được). LangGraph là trend
+            edges (cân bằng. linh hoạt VÀ kiểm soát được). LangGraph là trend
             2024-2025.
           </Callout>
         </ExplanationSection>
@@ -277,7 +277,7 @@ result = app.invoke({"task": "Viết API endpoint"})`}</CodeBlock>
           title="Những điều cần nhớ về Orchestration"
           points={[
             "4 nhiệm vụ: Routing (ai xử lý?), State (đang ở đâu?), Error Handling (fail thì sao?), Resource (tối ưu chi phí/tốc độ).",
-            "Graph-based (LangGraph): nodes = actions, edges = transitions. Hỗ trợ branching, looping, conditional — linh hoạt hơn chain.",
+            "Graph-based (LangGraph): nodes = actions, edges = transitions. Hỗ trợ branching, looping, conditional. linh hoạt hơn chain.",
             "Error strategy: retry (có limit) → fallback (plan B) → escalate (human). Checkpoint để resume từ bước cuối thành công.",
             "Frameworks: LangGraph (graph), CrewAI (role-based), AutoGen (conversation). Chọn theo use case.",
           ]}

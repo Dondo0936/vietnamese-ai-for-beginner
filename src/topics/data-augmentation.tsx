@@ -661,7 +661,7 @@ export default function DataAugmentationTopic() {
               &quot;7&quot;, nhưng pixel hoàn toàn khác biệt.
             </p>
 
-            <VisualizationSection>
+            <section className="my-8 rounded-xl border border-border bg-card p-6">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-2">
                 {GALLERY_PRESETS.map((preset, i) => {
                   const result = applyAugmentation(
@@ -712,7 +712,7 @@ export default function DataAugmentationTopic() {
                 8 biến thể • cùng 1 nhãn • cùng 1 ảnh gốc. Với 100 ảnh gốc × 8 biến thể
                 mỗi epoch × 50 epoch = <strong>40.000 ví dụ</strong>{" "}mà mô hình đã thấy.
               </p>
-            </VisualizationSection>
+            </section>
           </LessonSection>
 
           {/* ─────────── STEP 4: CHART ACC ─────────── */}
@@ -726,7 +726,7 @@ export default function DataAugmentationTopic() {
               tăng và cao hơn ~15%.
             </p>
 
-            <VisualizationSection>
+            <section className="my-8 rounded-xl border border-border bg-card p-6">
               <svg
                 viewBox={`0 0 ${chartWidth} ${chartHeight}`}
                 className="w-full max-w-2xl mx-auto"
@@ -881,7 +881,7 @@ export default function DataAugmentationTopic() {
                   </p>
                 </div>
               </div>
-            </VisualizationSection>
+            </section>
           </LessonSection>
 
           {/* ─────────── STEP 5: AHA ─────────── */}

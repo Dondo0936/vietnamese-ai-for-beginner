@@ -20,7 +20,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA — giữ nguyên theo yêu cầu
+// METADATA. giữ nguyên theo yêu cầu
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -60,7 +60,7 @@ interface RerankerSpec {
 }
 
 // ---------------------------------------------------------------------------
-// DATA — danh sách ứng viên mô phỏng từ stage 1
+// DATA. danh sách ứng viên mô phỏng từ stage 1
 // ---------------------------------------------------------------------------
 
 const CANDIDATES: Candidate[] = [
@@ -84,7 +84,7 @@ const CANDIDATES: Candidate[] = [
   },
   {
     id: "D3",
-    title: "Quyền lợi và nghĩa vụ người lao động — Bộ luật 45/2019",
+    title: "Quyền lợi và nghĩa vụ người lao động. Bộ luật 45/2019",
     snippet:
       "Chương II nêu rõ 7 nhóm quyền cơ bản và 6 nghĩa vụ của người lao động, đi kèm ví dụ áp dụng...",
     biScore: 0.73,
@@ -111,7 +111,7 @@ const CANDIDATES: Candidate[] = [
   },
   {
     id: "D6",
-    title: "Giá vàng hôm nay tăng mạnh — người lao động khóc ròng",
+    title: "Giá vàng hôm nay tăng mạnh. người lao động khóc ròng",
     snippet:
       "Giá vàng SJC đạt đỉnh 85 triệu/lượng, ảnh hưởng tới tiền tiết kiệm của nhiều công nhân...",
     biScore: 0.66,
@@ -120,7 +120,7 @@ const CANDIDATES: Candidate[] = [
   },
   {
     id: "D7",
-    title: "Hợp đồng lao động — mẫu và hướng dẫn ký kết",
+    title: "Hợp đồng lao động. mẫu và hướng dẫn ký kết",
     snippet:
       "Mẫu hợp đồng theo thông tư mới kèm danh sách các điều khoản bắt buộc phải có...",
     biScore: 0.64,
@@ -157,7 +157,7 @@ const CANDIDATES: Candidate[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// DATA — so sánh các re-ranker phổ biến
+// DATA. so sánh các re-ranker phổ biến
 // ---------------------------------------------------------------------------
 
 const RERANKERS: RerankerSpec[] = [
@@ -168,7 +168,7 @@ const RERANKERS: RerankerSpec[] = [
     ndcg10: 0.745,
     multilingual: false,
     cost: "Tự host GPU",
-    note: "Generative scoring — decoder sinh token 'true'/'false', lấy log-prob làm score. Rất mạnh trên MS MARCO nhưng nặng.",
+    note: "Generative scoring. decoder sinh token 'true'/'false', lấy log-prob làm score. Rất mạnh trên MS MARCO nhưng nặng.",
   },
   {
     name: "Cohere Rerank v3.5",
@@ -202,7 +202,7 @@ const RERANKERS: RerankerSpec[] = [
 const TOTAL_STEPS = 9;
 
 // ---------------------------------------------------------------------------
-// QUIZ — 8 câu theo yêu cầu
+// QUIZ. 8 câu theo yêu cầu
 // ---------------------------------------------------------------------------
 
 function buildQuiz(): QuizQuestion[] {
@@ -212,13 +212,13 @@ function buildQuiz(): QuizQuestion[] {
         "Tại sao không dùng Cross-Encoder cho toàn bộ 10 triệu tài liệu trong kho?",
       options: [
         "Cross-Encoder không chính xác cho tập lớn",
-        "Cross-Encoder phải chạy 1 forward pass cho mỗi cặp (query, doc) — 10M cặp sẽ mất hàng giờ",
+        "Cross-Encoder phải chạy 1 forward pass cho mỗi cặp (query, doc). 10M cặp sẽ mất hàng giờ",
         "Cross-Encoder chỉ hoạt động với tiếng Anh",
         "Cross-Encoder không có sẵn model open-source",
       ],
       correct: 1,
       explanation:
-        "Cross-Encoder: O(N) mỗi query — không thể precompute vì phải xem cặp (q, d) cùng lúc. 10M docs × 10ms = 28 giờ. Vì vậy chỉ dùng cho top-100 từ stage 1: 100 × 10ms ≈ 1 giây.",
+        "Cross-Encoder: O(N) mỗi query. không thể precompute vì phải xem cặp (q, d) cùng lúc. 10M docs × 10ms = 28 giờ. Vì vậy chỉ dùng cho top-100 từ stage 1: 100 × 10ms ≈ 1 giây.",
     },
     {
       question:
@@ -256,7 +256,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 2,
       explanation:
-        "Re-ranker KHÔNG tìm kiếm mới — chỉ xếp hạng lại những gì stage 1 đưa. Nếu tài liệu vàng nằm hạng 18, mà bạn chỉ lấy top-10, bạn sẽ không bao giờ recover được. Thực tế: top-50 đến top-100 là vùng sweet spot.",
+        "Re-ranker KHÔNG tìm kiếm mới. chỉ xếp hạng lại những gì stage 1 đưa. Nếu tài liệu vàng nằm hạng 18, mà bạn chỉ lấy top-10, bạn sẽ không bao giờ recover được. Thực tế: top-50 đến top-100 là vùng sweet spot.",
     },
     {
       question: "Điểm khác biệt cốt lõi giữa MonoT5 và BGE-Reranker là gì?",
@@ -275,8 +275,8 @@ function buildQuiz(): QuizQuestion[] {
         "Một pipeline lấy top-100 từ stage 1 rồi re-rank. Bi-encoder mất 5 ms; re-ranker mất 10 ms/pair. Tổng latency xấp xỉ?",
       options: [
         "5 ms",
-        "105 ms — cộng dồn retrieval và 100 cặp × 10 ms = 1005 ms? Không, chạy song song thì khác",
-        "Khoảng 1 giây — do 100 cặp × 10 ms cộng với retrieval; có thể batch để giảm còn vài trăm ms",
+        "105 ms. cộng dồn retrieval và 100 cặp × 10 ms = 1005 ms? Không, chạy song song thì khác",
+        "Khoảng 1 giây. do 100 cặp × 10 ms cộng với retrieval; có thể batch để giảm còn vài trăm ms",
         "1 ms",
       ],
       correct: 2,
@@ -287,9 +287,9 @@ function buildQuiz(): QuizQuestion[] {
       question:
         "Bạn đang xây hệ thống tiếng Việt cho chatbot pháp luật. Lựa chọn re-ranker nào hợp lý nhất?",
       options: [
-        "ms-marco-MiniLM — vì nhẹ nhất",
-        "MonoT5-base tiếng Anh — rồi dịch qua lại",
-        "BGE-Reranker-v2-m3 hoặc Cohere Rerank v3.5 — cả hai hỗ trợ đa ngôn ngữ bao gồm tiếng Việt",
+        "ms-marco-MiniLM. vì nhẹ nhất",
+        "MonoT5-base tiếng Anh. rồi dịch qua lại",
+        "BGE-Reranker-v2-m3 hoặc Cohere Rerank v3.5. cả hai hỗ trợ đa ngôn ngữ bao gồm tiếng Việt",
         "Không cần re-rank nếu đã có semantic search",
       ],
       correct: 2,
@@ -315,13 +315,13 @@ function buildQuiz(): QuizQuestion[] {
         },
       ],
       explanation:
-        "Cross-encoder đưa [CLS] q [SEP] d [SEP] qua Transformer, nắm bắt tương tác chi tiết giữa query và document nên chính xác hơn bi-encoder. Nhưng O(N) mỗi query — vì vậy chỉ chạy trên top-K (50–100) từ stage 1 để giữ độ trễ dưới 1 giây.",
+        "Cross-encoder đưa [CLS] q [SEP] d [SEP] qua Transformer, nắm bắt tương tác chi tiết giữa query và document nên chính xác hơn bi-encoder. Nhưng O(N) mỗi query. vì vậy chỉ chạy trên top-K (50–100) từ stage 1 để giữ độ trễ dưới 1 giây.",
     },
   ];
 }
 
 // ---------------------------------------------------------------------------
-// HELPERS — sắp xếp ứng viên
+// HELPERS. sắp xếp ứng viên
 // ---------------------------------------------------------------------------
 
 function rankByBi(candidates: Candidate[]): Candidate[] {
@@ -362,7 +362,7 @@ export default function ReRankingTopic() {
   return (
     <>
       {/* ================================================================
-           BƯỚC 1 — DỰ ĐOÁN
+           BƯỚC 1. DỰ ĐOÁN
            ================================================================ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
@@ -385,31 +385,31 @@ export default function ReRankingTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 2 — ẨN DỤ THỰC TẾ
+           BƯỚC 2. ẨN DỤ THỰC TẾ
            ================================================================ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ thực tế">
         <p>
           Hãy tưởng tượng bạn đang tổ chức một{" "}
           <strong>cuộc thi tài năng 2 vòng</strong> cho một đài truyền hình. Có
           10 triệu người đăng ký. Bạn <em>không thể</em> để giám khảo chính
-          chấm từng người — ông ấy sẽ mất cả đời. Giải pháp: dùng một vòng sơ
+          chấm từng người. ông ấy sẽ mất cả đời. Giải pháp: dùng một vòng sơ
           loại nhanh để rút xuống 100 thí sinh, rồi giám khảo chính chỉ cần
           dành thời gian cho 100 người đó.
         </p>
         <p>
           <strong>Vòng sơ loại</strong> ở đây tương ứng với stage 1 của search
-          pipeline — BM25 hoặc semantic search bằng bi-encoder. Nhanh nhưng hơi
+          pipeline. BM25 hoặc semantic search bằng bi-encoder. Nhanh nhưng hơi
           hời hợt: nhìn tổng thể người đó có ở đúng thể loại không, có từ khóa
           không, giọng có tương đồng không. Thí sinh xếp đầu vòng sơ loại chưa
-          chắc là xuất sắc nhất — có thể chỉ là người có "profile" khớp tốt
+          chắc là xuất sắc nhất. có thể chỉ là người có "profile" khớp tốt
           với yêu cầu.
         </p>
         <p>
-          <strong>Vòng chung kết</strong> là stage 2 — re-ranking bằng
+          <strong>Vòng chung kết</strong> là stage 2. re-ranking bằng
           cross-encoder. Giám khảo chính <em>ngồi xem</em> từng thí sinh trình
           diễn, đối chiếu chi tiết với yêu cầu, đánh giá kỹ năng ẩn mà vòng sơ
           loại không phát hiện ra. Vì dành nhiều thời gian hơn, giám khảo chấm
-          chính xác hơn nhiều — và xếp hạng có thể đảo lộn hoàn toàn so với
+          chính xác hơn nhiều. Và xếp hạng có thể đảo lộn hoàn toàn so với
           vòng 1.
         </p>
         <p>
@@ -424,13 +424,13 @@ export default function ReRankingTopic() {
           liệu <em>trông</em> liên quan (nhiều từ khóa, embedding tương tự)
           nhưng <em>không thực sự</em> trả lời câu hỏi. Với RAG, điều đó dẫn
           tới LLM nhận context kém chất lượng, từ đó sinh ra hallucination
-          hoặc câu trả lời lạc đề. Re-ranking là van chất lượng — lọc lại
+          hoặc câu trả lời lạc đề. Re-ranking là van chất lượng. lọc lại
           trước khi đưa vào LLM.
         </p>
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 3 — VISUALIZATION TƯƠNG TÁC
+           BƯỚC 3. VISUALIZATION TƯƠNG TÁC
            ================================================================ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
@@ -553,7 +553,7 @@ export default function ReRankingTopic() {
                 fontSize="11"
                 fontWeight="bold"
               >
-                Stage 1 — Retrieve
+                Stage 1. Retrieve
               </text>
               <text x="365" y="183" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 Bi-encoder + ANN
@@ -591,7 +591,7 @@ export default function ReRankingTopic() {
                 fontSize="11"
                 fontWeight="bold"
               >
-                Stage 2 — Rerank
+                Stage 2. Rerank
               </text>
               <text x="565" y="183" textAnchor="middle" fill="#94a3b8" fontSize="11">
                 Cross-encoder
@@ -635,7 +635,7 @@ export default function ReRankingTopic() {
                 cho LLM
               </text>
 
-              {/* Candidate columns — vẽ theo stage */}
+              {/* Candidate columns. vẽ theo stage */}
               {stage === "retrieve" &&
                 biRanked.slice(0, 10).map((c, i) => (
                   <g key={c.id}>
@@ -716,7 +716,7 @@ export default function ReRankingTopic() {
                       strokeWidth="1"
                     />
                     <text x="16" y={250 + i * 16} fill="#4ade80" fontSize="11">
-                      {i + 1}. {c.id} — cross {c.crossScore.toFixed(2)}
+                      {i + 1}. {c.id}. cross {c.crossScore.toFixed(2)}
                     </text>
                   </g>
                 ))}
@@ -730,11 +730,11 @@ export default function ReRankingTopic() {
                 fontSize="11"
               >
                 {stage === "retrieve" &&
-                  "Top-10 theo bi-encoder — chú ý các tài liệu nhiễu (D2, D6, D9) vẫn lọt."}
+                  "Top-10 theo bi-encoder. chú ý các tài liệu nhiễu (D2, D6, D9) vẫn lọt."}
                 {stage === "rerank" &&
-                  "Cross-encoder đã chấm lại — D6, D9 bị đẩy xuống; D8, D10 leo lên."}
+                  "Cross-encoder đã chấm lại. D6, D9 bị đẩy xuống; D8, D10 leo lên."}
                 {stage === "final" &&
-                  "Top-5 cuối cùng — 4/5 là tài liệu vàng (gold). Chính xác hơn hẳn stage 1."}
+                  "Top-5 cuối cùng. 4/5 là tài liệu vàng (gold). Chính xác hơn hẳn stage 1."}
               </text>
 
               <defs>
@@ -929,7 +929,7 @@ export default function ReRankingTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 4 — AHA MOMENT
+           BƯỚC 4. AHA MOMENT
            ================================================================ */}
       <LessonSection
         step={4}
@@ -941,7 +941,7 @@ export default function ReRankingTopic() {
             Re-ranking giống <strong>cuộc thi tài năng 2 vòng</strong>: vòng
             sơ loại (stage 1) lọc nhanh 10M xuống 100, vòng chung kết (stage
             2) để giám khảo chính <strong>đánh giá kỹ</strong> từng người
-            trong 100. Kết quả: thí sinh thực sự giỏi nhất lên đầu — dù vòng
+            trong 100. Kết quả: thí sinh thực sự giỏi nhất lên đầu. dù vòng
             sơ loại có thể xếp hạng khác hoàn toàn. Bí quyết không phải là
             "mô hình mạnh hơn" mà là <strong>chia nhỏ vấn đề</strong>: tốc
             độ cho việc dễ, độ chính xác cho việc quan trọng.
@@ -950,19 +950,19 @@ export default function ReRankingTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 5 — 2 INLINE CHALLENGE
+           BƯỚC 5. 2 INLINE CHALLENGE
            ================================================================ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách 1">
         <InlineChallenge
           question="Stage 1 trả về top-20. Re-ranker chấm xong, tài liệu tốt nhất đứng hạng 18. Nếu stage 1 chỉ trả top-10, re-ranker có tìm được tài liệu đó không?"
           options={[
             "Có, re-ranker tìm thêm trong toàn bộ database",
-            "KHÔNG — re-ranker chỉ xếp hạng lại những gì stage 1 đưa. Top-K stage 1 quá nhỏ = mất kết quả tốt",
+            "KHÔNG. re-ranker chỉ xếp hạng lại những gì stage 1 đưa. Top-K stage 1 quá nhỏ = mất kết quả tốt",
             "Re-ranker tự động mở rộng top-K khi cần",
             "Có, nhưng với latency tăng gấp 2",
           ]}
           correct={1}
-          explanation="Re-ranker KHÔNG tìm kiếm mới — chỉ xếp hạng lại. Nếu stage 1 bỏ lỡ tài liệu tốt, re-ranker cũng không cứu được. Top-K stage 1 quá nhỏ = recall thấp. Thực tế: top-50 đến top-100 là vùng an toàn cho hầu hết pipeline."
+          explanation="Re-ranker KHÔNG tìm kiếm mới. chỉ xếp hạng lại. Nếu stage 1 bỏ lỡ tài liệu tốt, re-ranker cũng không cứu được. Top-K stage 1 quá nhỏ = recall thấp. Thực tế: top-50 đến top-100 là vùng an toàn cho hầu hết pipeline."
         />
       </LessonSection>
 
@@ -970,10 +970,10 @@ export default function ReRankingTopic() {
         <InlineChallenge
           question="Bạn đang xây một chatbot nội bộ bằng RAG, latency yêu cầu < 500 ms, corpus 2 triệu tài liệu, chủ yếu tiếng Việt. Pipeline nào hợp lý nhất?"
           options={[
-            "Chỉ BM25 — nhanh nhất",
+            "Chỉ BM25. nhanh nhất",
             "Stage 1: hybrid search (BM25 + embedding) → top-100. Stage 2: BGE-Reranker-v2-m3 hoặc Cohere Rerank → top-5",
             "Chạy Cross-Encoder thẳng lên 2M tài liệu",
-            "Bi-encoder thẳng không cần re-rank — vector đủ mạnh",
+            "Bi-encoder thẳng không cần re-rank. vector đủ mạnh",
           ]}
           correct={1}
           explanation="Hybrid search cân bằng recall (BM25 bắt từ khóa hiếm, embedding bắt ý nghĩa). Top-100 đủ rộng cho re-ranker. BGE-Reranker-v2-m3 hoặc Cohere hỗ trợ tiếng Việt tốt. Với 100 cặp × ~10 ms ≈ 100–200 ms (batch), cộng retrieval 50–100 ms → tổng dưới 500 ms. Chạy Cross-Encoder thẳng 2M là bất khả thi (hàng giờ); chỉ bi-encoder thì chất lượng thua 20% điểm NDCG."
@@ -981,7 +981,7 @@ export default function ReRankingTopic() {
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 6 — EXPLANATION SÂU
+           BƯỚC 6. EXPLANATION SÂU
            ================================================================ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích sâu">
         <ExplanationSection>
@@ -990,7 +990,7 @@ export default function ReRankingTopic() {
             1 (thường là{" "}
             <TopicLink slug="semantic-search">semantic search</TopicLink> hoặc
             <TopicLink slug="hybrid-search"> hybrid search</TopicLink>) bằng
-            một mô hình mạnh hơn — gần như luôn là một
+            một mô hình mạnh hơn. gần như luôn là một
             <em> cross-encoder</em> Transformer. Nó đưa kết quả liên quan nhất
             lên đầu và là bước chuẩn trong mọi pipeline{" "}
             <TopicLink slug="rag">RAG</TopicLink> chất lượng cao.
@@ -1008,10 +1008,9 @@ export default function ReRankingTopic() {
           <p className="text-sm text-muted">
             Query và document được concat rồi đi <em>cùng lúc</em> qua
             Transformer. Mỗi token query có thể attend đến mỗi token document
-            (và ngược lại), nắm bắt tương tác chi tiết mà bi-encoder bỏ lỡ —
-            ví dụ: q "quyền lao động" × d "Điều 5 quy định các quyền cơ bản
+            (và ngược lại), nắm bắt tương tác chi tiết mà bi-encoder bỏ lỡ. ví dụ: q "quyền lao động" × d "Điều 5 quy định các quyền cơ bản
             của người lao động" sẽ match rất mạnh, trong khi d "giá vàng tăng
-            mạnh — người lao động khóc ròng" match yếu.
+            mạnh. người lao động khóc ròng" match yếu.
           </p>
 
           <p>
@@ -1043,7 +1042,7 @@ export default function ReRankingTopic() {
               </p>
               <p>
                 <strong>Trade-off cốt lõi:</strong> precompute ⇔ interaction.
-                Không có free lunch — muốn tương tác chi tiết, phải trả bằng
+                Không có free lunch. muốn tương tác chi tiết, phải trả bằng
                 compute lúc query.
               </p>
             </div>
@@ -1101,7 +1100,7 @@ export default function ReRankingTopic() {
           </Callout>
 
           <p>
-            <strong>Code mẫu 1 — Cohere Rerank (API managed).</strong> Đây là
+            <strong>Code mẫu 1. Cohere Rerank (API managed).</strong> Đây là
             cách nhanh nhất để có một pipeline rerank hoạt động. Không cần
             GPU, không cần tải model; bạn chỉ truyền query và danh sách doc,
             service trả về score:
@@ -1116,8 +1115,8 @@ co = cohere.Client("YOUR_COHERE_API_KEY")
 query = "quyền lao động Việt Nam"
 documents = [
     "Luật lao động 2019 quy định quyền cơ bản của người lao động...",
-    "Giá vàng hôm nay tăng mạnh — người lao động khóc ròng",
-    "Hợp đồng lao động — mẫu và hướng dẫn ký kết",
+    "Giá vàng hôm nay tăng mạnh. người lao động khóc ròng",
+    "Hợp đồng lao động. mẫu và hướng dẫn ký kết",
     "Công ước ILO 87 và 98 về quyền tự do hiệp hội ở Việt Nam",
     # ... top-100 từ stage 1 (bi-encoder / BM25 / hybrid)
 ]
@@ -1137,12 +1136,12 @@ for hit in result.results:
 # Output (ví dụ):
 # 0.942   Luật lao động 2019 quy định quyền cơ bản của người...
 # 0.834   Công ước ILO 87 và 98 về quyền tự do hiệp hội...
-# 0.471   Hợp đồng lao động — mẫu và hướng dẫn ký kết
-# 0.041   Giá vàng hôm nay tăng mạnh — người lao động khóc...`}
+# 0.471   Hợp đồng lao động. mẫu và hướng dẫn ký kết
+# 0.041   Giá vàng hôm nay tăng mạnh. người lao động khóc...`}
           </CodeBlock>
 
           <p>
-            <strong>Code mẫu 2 — BGE-Reranker local (open-source).</strong>{" "}
+            <strong>Code mẫu 2. BGE-Reranker local (open-source).</strong>{" "}
             Khi bạn muốn tự kiểm soát (on-prem, nhạy cảm dữ liệu, chi phí dài
             hạn), một cross-encoder open-source như BGE-Reranker-v2-m3 là
             lựa chọn cân bằng giữa chất lượng và tốc độ. Chú ý batch để tận
@@ -1166,12 +1165,12 @@ model = CrossEncoder(
 query = "quyền lao động Việt Nam"
 candidates = [
     "Luật lao động 2019 quy định quyền cơ bản của người lao động...",
-    "Giá vàng hôm nay tăng mạnh — người lao động khóc ròng",
+    "Giá vàng hôm nay tăng mạnh. người lao động khóc ròng",
     "Công ước ILO 87 và 98 về quyền tự do hiệp hội ở Việt Nam",
     # ... top-100 từ stage 1
 ]
 
-# Tạo các cặp (query, doc) — batch tất cả vào 1 forward pass
+# Tạo các cặp (query, doc). batch tất cả vào 1 forward pass
 pairs = [(query, doc) for doc in candidates]
 
 # predict trả về logit thực. Sigmoid để về xác suất.
@@ -1191,10 +1190,10 @@ for doc, s in ranked:
 #   1. Luôn batch (batch_size 16–64 trên T4, 64–128 trên A100).
 #   2. Cache score cho (query, doc_id) nếu query lặp.
 #   3. Với max_length ngắn hơn (256), tốc độ tăng ~2x, chất lượng
-#      giảm nhẹ trên tài liệu dài — hãy A/B test trên data của bạn.`}
+#      giảm nhẹ trên tài liệu dài. hãy A/B test trên data của bạn.`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Chi tiết: tại sao cross-encoder chính xác hơn — góc nhìn attention">
+          <CollapsibleDetail title="Chi tiết: tại sao cross-encoder chính xác hơn. góc nhìn attention">
             <p>
               Trong một Transformer encoder, mỗi self-attention layer tính:
             </p>
@@ -1207,7 +1206,7 @@ for doc, s in ranked:
               Với bi-encoder, query và doc đi qua model{" "}
               <em>độc lập</em>, nên các token query không bao giờ "nhìn thấy"
               các token doc bên trong attention. Vector cuối cùng chỉ là một
-              tóm tắt cô lập — cosine similarity giữa hai tóm tắt mất mát thông
+              tóm tắt cô lập. cosine similarity giữa hai tóm tắt mất mát thông
               tin fine-grained (ví dụ: từ "quyền" trong query nên match với
               "quyền cơ bản" ở doc, nhưng không với "giá vàng").
             </p>
@@ -1215,13 +1214,13 @@ for doc, s in ranked:
               Với cross-encoder, query và doc được concat, nên mỗi lớp
               attention cho phép token query attend sang token doc và ngược
               lại. Đây là lý do cross-encoder bắt được các phrase match chính
-              xác và quan hệ ngữ pháp — chính điểm yếu của bi-encoder.
+              xác và quan hệ ngữ pháp. chính điểm yếu của bi-encoder.
             </p>
             <p>
               Trade-off thuần túy: <em>expressiveness</em> ⇔{" "}
               <em>precomputation</em>. Gần đây có những kiến trúc lai (ColBERT,
               SPLADE) cố gắng giữ một phần tương tác token-level mà vẫn
-              precompute được — đáng tham khảo nếu bạn đụng phải giới hạn
+              precompute được. đáng tham khảo nếu bạn đụng phải giới hạn
               latency của cross-encoder.
             </p>
           </CollapsibleDetail>
@@ -1256,7 +1255,7 @@ for doc, s in ranked:
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              RAG với LLM — context chất lượng trực tiếp quyết định chất lượng
+              RAG với LLM. context chất lượng trực tiếp quyết định chất lượng
               câu trả lời.
             </li>
             <li>
@@ -1264,7 +1263,7 @@ for doc, s in ranked:
               khiến embedding thuần không đủ tinh tế.
             </li>
             <li>
-              Bi-encoder của bạn chưa fine-tune — rerank có thể cứu 10–20%
+              Bi-encoder của bạn chưa fine-tune. rerank có thể cứu 10–20%
               NDCG ngay mà không cần train.
             </li>
           </ul>
@@ -1281,7 +1280,7 @@ for doc, s in ranked:
               Corpus bé (&lt; 10K) và bi-encoder đã fine-tune tốt trên domain.
             </li>
             <li>
-              Use case là autocomplete / suggest — người dùng gõ liên tục,
+              Use case là autocomplete / suggest. người dùng gõ liên tục,
               chi phí rerank nhân lên nhanh.
             </li>
           </ul>
@@ -1291,14 +1290,14 @@ for doc, s in ranked:
             2024–2025 trông như sau: <em>query rewrite</em> → <em>hybrid search (BM25 + bi-encoder)</em> → top-100 →{" "}
             <em>cross-encoder rerank</em> → top-5 → LLM. Chỉ chi phí và
             latency từ rerank thường chiếm 20–40% toàn pipeline, nhưng chất
-            lượng câu trả lời cuối cùng cải thiện rõ rệt — và đó là lý do nó
+            lượng câu trả lời cuối cùng cải thiện rõ rệt. Và đó là lý do nó
             trở thành mặc định.
           </p>
         </ExplanationSection>
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 7 — TÓM TẮT (6 điểm)
+           BƯỚC 7. TÓM TẮT (6 điểm)
            ================================================================ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
@@ -1306,16 +1305,16 @@ for doc, s in ranked:
           points={[
             "Re-ranking là stage 2 của pipeline: bi-encoder retrieve top-100 → cross-encoder rerank → top-5 cho LLM.",
             "Cross-encoder mã hóa (query, doc) CÙNG LÚC nên chính xác hơn 15–25% NDCG, đổi lại O(N) mỗi query.",
-            "Top-K stage 1 quyết định trần recall — quá nhỏ (10) sẽ đánh mất tài liệu tốt; mặc định an toàn là 50–100.",
+            "Top-K stage 1 quyết định trần recall. quá nhỏ (10) sẽ đánh mất tài liệu tốt; mặc định an toàn là 50–100.",
             "Ba họ reranker chính: generative (MonoT5), cross-encoder mở (BGE-Reranker, MiniLM), API managed (Cohere Rerank).",
-            "Với tiếng Việt: dùng BGE-Reranker-v2-m3 hoặc Cohere Rerank — tránh các model tiếng Anh thuần.",
-            "Luôn batch các cặp (q, d) trên GPU — đây là đòn bẩy đơn giản nhất để giảm latency 5–10 lần.",
+            "Với tiếng Việt: dùng BGE-Reranker-v2-m3 hoặc Cohere Rerank. tránh các model tiếng Anh thuần.",
+            "Luôn batch các cặp (q, d) trên GPU. đây là đòn bẩy đơn giản nhất để giảm latency 5–10 lần.",
           ]}
         />
       </LessonSection>
 
       {/* ================================================================
-           BƯỚC 9 — QUIZ (8 câu)
+           BƯỚC 9. QUIZ (8 câu)
            ================================================================ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quiz} />

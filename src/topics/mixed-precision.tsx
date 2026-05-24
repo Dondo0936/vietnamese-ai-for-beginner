@@ -59,7 +59,7 @@ const FORMATS: FormatSpec[] = [
     epsilon: 1.1920929e-7,
     color: "#3b82f6",
     accent: "bg-blue-500/15 border-blue-500/40 text-blue-800 dark:text-blue-300",
-    description: "Chuẩn IEEE 754 single — dải rộng, độ phân giải cao, dùng cho master weights.",
+    description: "Chuẩn IEEE 754 single. dải rộng, độ phân giải cao, dùng cho master weights.",
     useCase: "Lưu master weights, tích luỹ gradient, reduce-sum trong distributed training.",
   },
   {
@@ -75,7 +75,7 @@ const FORMATS: FormatSpec[] = [
     epsilon: 9.765625e-4,
     color: "#f59e0b",
     accent: "bg-amber-500/15 border-amber-500/40 text-amber-800 dark:text-amber-300",
-    description: "IEEE 754 half — dải hẹp (±65504), dễ underflow gradient, cần loss scaling.",
+    description: "IEEE 754 half. dải hẹp (±65504), dễ underflow gradient, cần loss scaling.",
     useCase: "Forward/backward trên Tensor Cores Volta/Turing/Ampere. Nhanh 2x vs FP32.",
   },
   {
@@ -91,7 +91,7 @@ const FORMATS: FormatSpec[] = [
     epsilon: 7.8125e-3,
     color: "#a855f7",
     accent: "bg-purple-500/15 border-purple-500/40 text-purple-800 dark:text-purple-300",
-    description: "Google Brain BF16 — 8 bit exponent như FP32 (dải rộng), 7 bit mantissa (độ phân giải thô hơn FP16).",
+    description: "Google Brain BF16. 8 bit exponent như FP32 (dải rộng), 7 bit mantissa (độ phân giải thô hơn FP16).",
     useCase: "LLM training từ Ampere trở đi. Gần như không cần loss scaling.",
   },
   {
@@ -107,7 +107,7 @@ const FORMATS: FormatSpec[] = [
     epsilon: 0.125,
     color: "#22c55e",
     accent: "bg-green-500/15 border-green-500/40 text-green-800 dark:text-green-300",
-    description: "Hopper/H100 FP8 — 4 bit exponent, 3 bit mantissa. Dùng cho forward activation.",
+    description: "Hopper/H100 FP8. 4 bit exponent, 3 bit mantissa. Dùng cho forward activation.",
     useCase: "Forward activations trong Transformer Engine. Nhanh ~2x so với BF16.",
   },
   {
@@ -123,7 +123,7 @@ const FORMATS: FormatSpec[] = [
     epsilon: 0.25,
     color: "#06b6d4",
     accent: "bg-cyan-500/15 border-cyan-500/40 text-cyan-800 dark:text-cyan-300",
-    description: "Hopper FP8 E5M2 — 5 bit exponent (giống FP16), 2 bit mantissa. Dải rộng hơn E4M3.",
+    description: "Hopper FP8 E5M2. 5 bit exponent (giống FP16), 2 bit mantissa. Dải rộng hơn E4M3.",
     useCase: "Backward gradients (cần dải rộng hơn để chứa gradient lớn và nhỏ).",
   },
   {
@@ -219,7 +219,7 @@ function encodeNumber(value: number, fmt: FormatSpec): EncodedResult {
   }
 
   if (absVal < fmt.minNormal) {
-    // underflow đơn giản hoá — coi như bị flush về 0 khi quá nhỏ
+    // underflow đơn giản hoá. coi như bị flush về 0 khi quá nhỏ
     if (absVal < fmt.minNormal * 2 ** -fmt.mantissa) {
       return {
         stored: 0,
@@ -272,11 +272,11 @@ interface GradientSample {
 
 const GRADIENT_SAMPLES: GradientSample[] = [
   { layer: "embedding.weight", raw: 3.2e-5, description: "Gradient nhỏ nhưng vẫn trong dải FP16." },
-  { layer: "attn.qkv.weight", raw: 8.1e-6, description: "Gradient attention — gần biên dưới FP16." },
+  { layer: "attn.qkv.weight", raw: 8.1e-6, description: "Gradient attention. gần biên dưới FP16." },
   { layer: "attn.out.weight", raw: 4.0e-7, description: "Gradient ra khỏi dải FP16 (1.5e-5 bị flush)." },
-  { layer: "mlp.fc1.weight", raw: 2.2e-8, description: "Gradient MLP rất nhỏ — sẽ underflow trong FP16." },
+  { layer: "mlp.fc1.weight", raw: 2.2e-8, description: "Gradient MLP rất nhỏ. sẽ underflow trong FP16." },
   { layer: "mlp.fc2.weight", raw: 6.3e-9, description: "Gradient cực nhỏ, cần loss scaling ≥1024." },
-  { layer: "lm_head.weight", raw: 1.1e-6, description: "Output head — borderline." },
+  { layer: "lm_head.weight", raw: 1.1e-6, description: "Output head. borderline." },
 ];
 
 interface ScaledRow {
@@ -348,13 +348,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "BF16 chia bit khác FP16: 1/8/7 thay vì 1/5/10. Dải biểu diễn rộng (~1e-38 đến 3e38) giúp gradient không underflow. Đổi lại mantissa thô hơn — nhưng forward/backward hiếm khi cần độ phân giải cao.",
+      "BF16 chia bit khác FP16: 1/8/7 thay vì 1/5/10. Dải biểu diễn rộng (~1e-38 đến 3e38) giúp gradient không underflow. Đổi lại mantissa thô hơn. Nhưng forward/backward hiếm khi cần độ phân giải cao.",
   },
   {
     question: "Tensor Core trên A100/H100 thực hiện phép gì khi bật autocast?",
     options: [
       "Nhân hai ma trận FP32 rồi cộng ra FP32.",
-      "Nhân ma trận FP16/BF16 rồi tích luỹ (accumulate) ra FP32 — vừa nhanh vừa tránh mất chính xác trong phép cộng.",
+      "Nhân ma trận FP16/BF16 rồi tích luỹ (accumulate) ra FP32. vừa nhanh vừa tránh mất chính xác trong phép cộng.",
       "Nhân FP32 rồi ép xuống FP16 ở đầu ra.",
       "Nhân INT8 rồi dequantize.",
     ],
@@ -464,7 +464,7 @@ export default function MixedPrecisionTopic() {
           question="Một mô hình 7B tham số train 4 ngày trên 8 GPU A100. Có cách nào giảm xuống ~2 ngày mà hầu như không mất chất lượng?"
           options={[
             "Thuê thêm 8 GPU nữa để train song song.",
-            "Dùng FP16/BF16 cho các phép tính nặng (forward, backward) và giữ FP32 cho bước cập nhật master weights — Tensor Cores tăng tốc 2-3x.",
+            "Dùng FP16/BF16 cho các phép tính nặng (forward, backward) và giữ FP32 cho bước cập nhật master weights. Tensor Cores tăng tốc 2-3x.",
             "Giảm dataset huấn luyện xuống còn một nửa để chạy nhanh hơn.",
           ]}
           correct={1}
@@ -478,7 +478,7 @@ export default function MixedPrecisionTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ━━━ 2. VISUALIZATION — PRECISION FORMAT COMPARATOR ━━━ */}
+      {/* ━━━ 2. VISUALIZATION. PRECISION FORMAT COMPARATOR ━━━ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá định dạng số">
         <VisualizationSection>
           <h3 className="text-base font-semibold text-foreground mb-1">
@@ -667,9 +667,9 @@ export default function MixedPrecisionTopic() {
         </VisualizationSection>
       </LessonSection>
 
-      {/* ━━━ 3. VISUALIZATION — LOSS SCALING / UNDERFLOW DEMO ━━━ */}
+      {/* ━━━ 3. VISUALIZATION. LOSS SCALING / UNDERFLOW DEMO ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Thử nghiệm Loss Scaling">
-        <VisualizationSection>
+        <section className="my-8 rounded-xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-1">
             Gradient underflow và cứu bởi loss scaling
           </h3>
@@ -798,10 +798,10 @@ export default function MixedPrecisionTopic() {
           </div>
 
           <p className="text-[11px] text-muted mt-3 italic">
-            Chú ý cột BF16 không bao giờ underflow — dải exponent của nó rộng như FP32
+            Chú ý cột BF16 không bao giờ underflow. dải exponent của nó rộng như FP32
             nên hầu như không cần loss scaling khi huấn luyện LLM.
           </p>
-        </VisualizationSection>
+        </section>
       </LessonSection>
 
       {/* ━━━ 4. AHA MOMENT ━━━ */}
@@ -809,10 +809,9 @@ export default function MixedPrecisionTopic() {
         <AhaMoment>
           <p>
             Không phải mọi phép tính đều cần chính xác như nhau!{" "}
-            <strong>Nhân ma trận</strong> (forward/backward) chịu được sai số nhỏ —
-            nên ta dùng FP16/BF16 để nhanh 2-3x trên Tensor Cores. Nhưng{" "}
+            <strong>Nhân ma trận</strong> (forward/backward) chịu được sai số nhỏ. nên ta dùng FP16/BF16 để nhanh 2-3x trên Tensor Cores. Nhưng{" "}
             <strong>cập nhật trọng số</strong> cần tích luỹ những thay đổi cực nhỏ
-            qua hàng triệu bước — phải dùng FP32 để không đánh mất từng hạt gradient.
+            qua hàng triệu bước. phải dùng FP32 để không đánh mất từng hạt gradient.
             Mixed Precision chính là chọn đúng precision cho đúng công việc.
           </p>
         </AhaMoment>
@@ -824,7 +823,7 @@ export default function MixedPrecisionTopic() {
           question="Gradient có giá trị 1e-8. Ngưỡng normal nhỏ nhất của FP16 là ~6.1e-5. Điều gì xảy ra khi ta lưu gradient này ở FP16 không có loss scaling?"
           options={[
             "Gradient được lưu chính xác (1e-8).",
-            "Gradient bị flush về 0 (underflow) — master weights không được cập nhật, lớp đó coi như 'đóng băng'.",
+            "Gradient bị flush về 0 (underflow). master weights không được cập nhật, lớp đó coi như 'đóng băng'.",
             "Gradient được làm tròn lên 6.1e-5.",
             "FP16 tự động chuyển sang FP32 để giữ giá trị.",
           ]}
@@ -884,8 +883,7 @@ export default function MixedPrecisionTopic() {
 
           <p>
             <strong>3. FP16 / BF16 Compute.</strong> Forward và backward chạy ở 16
-            bit trên Tensor Cores. Accumulator (phép cộng) vẫn ở FP32 — tức là
-            <code> D = A·B + C</code> với A, B ở FP16 và C, D ở FP32. Cách này giữ
+            bit trên Tensor Cores. Accumulator (phép cộng) vẫn ở FP32, tức là <code> D = A·B + C</code> với A, B ở FP16 và C, D ở FP32. Cách này giữ
             được độ chính xác khi tổng hàng nghìn phần tử.
           </p>
 
@@ -924,10 +922,10 @@ for epoch in range(num_epochs):
         scaler.update()`}
           </CodeBlock>
 
-          <Callout variant="insight" title="BF16 — tiêu chuẩn của LLM hiện đại">
+          <Callout variant="insight" title="BF16. tiêu chuẩn của LLM hiện đại">
             Từ Ampere (A100) trở đi, BF16 là mặc định cho pretraining LLM. Mantissa
             thô hơn FP16 không ảnh hưởng trong matmul lớn, nhưng dải exponent rộng
-            giúp loại bỏ gần như hoàn toàn overflow/underflow — huấn luyện ổn định,
+            giúp loại bỏ gần như hoàn toàn overflow/underflow. huấn luyện ổn định,
             không cần GradScaler động.
           </Callout>
 
@@ -966,8 +964,7 @@ for epoch in range(num_epochs):
               </p>
               <ol className="list-decimal list-inside space-y-1 text-muted pl-2">
                 <li>
-                  Khi gọi <code>scale(loss)</code>, nó chỉ là phép nhân vô hướng —
-                  không thêm chi phí đáng kể.
+                  Khi gọi <code>scale(loss)</code>, nó chỉ là phép nhân vô hướng. không thêm chi phí đáng kể.
                 </li>
                 <li>
                   Khi <code>backward()</code> chạy, gradient được tính với giá trị
@@ -990,7 +987,7 @@ for epoch in range(num_epochs):
               </ol>
               <p>
                 Chiến lược này tự tìm ra scale tối ưu cho từng pha của quá trình
-                train — đầu train gradient lớn, giữa train gradient nhỏ dần, scale
+                train. đầu train gradient lớn, giữa train gradient nhỏ dần, scale
                 sẽ tự tăng.
               </p>
             </div>
@@ -1012,11 +1009,11 @@ for epoch in range(num_epochs):
               </p>
               <p>
                 <strong>FP8 E4M3:</strong> 1 + 4 + 3. Max ~448, dùng cho weight và
-                activation — phân phối thường gọn. Epsilon 0.125.
+                activation. phân phối thường gọn. Epsilon 0.125.
               </p>
               <p>
                 <strong>FP8 E5M2:</strong> 1 + 5 + 2. Max ~57344, dải tương tự FP16,
-                dùng cho gradient — phân phối thường có đuôi dài.
+                dùng cho gradient. phân phối thường có đuôi dài.
               </p>
               <p>
                 Khi huấn luyện LLM hiện đại, công thức phổ biến là: forward ở
@@ -1036,9 +1033,9 @@ for epoch in range(num_epochs):
             "Mixed precision = FP16/BF16 cho forward+backward (nhanh 2-3x trên Tensor Cores) kết hợp FP32 cho master weights và update.",
             "FP16 có dải hẹp (6e-5 → 65504) nên cần loss scaling để gradient không underflow; BF16 có dải như FP32 nên gần như không cần.",
             "GradScaler động: nhân loss lên S trước backward, unscale trước update, tự điều chỉnh S khi phát hiện Inf/NaN.",
-            "Tensor Cores chạy matmul 16-bit nhưng accumulate 32-bit — nhờ đó giữ được độ chính xác khi tổng hàng nghìn phần tử.",
-            "FP8 trên Hopper dùng E4M3 cho activation và E5M2 cho gradient — tăng tốc thêm 2x so với BF16.",
-            "Một số op nhạy (softmax, layernorm, loss CE) nên giữ FP32 để tránh NaN — autocast PyTorch xử lý phần lớn tự động.",
+            "Tensor Cores chạy matmul 16-bit nhưng accumulate 32-bit. nhờ đó giữ được độ chính xác khi tổng hàng nghìn phần tử.",
+            "FP8 trên Hopper dùng E4M3 cho activation và E5M2 cho gradient. tăng tốc thêm 2x so với BF16.",
+            "Một số op nhạy (softmax, layernorm, loss CE) nên giữ FP32 để tránh NaN. autocast PyTorch xử lý phần lớn tự động.",
           ]}
         />
       </LessonSection>

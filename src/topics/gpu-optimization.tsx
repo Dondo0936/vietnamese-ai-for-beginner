@@ -28,9 +28,9 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "gpu-optimization",
   title: "GPU Optimization",
-  titleVi: "Tối ưu GPU — Profiler kéo sập bottleneck",
+  titleVi: "Tối ưu GPU: đọc profiler trước khi sửa",
   description:
-    "Mở profiler, quan sát từng lát cắt thời gian trên GPU: truyền dữ liệu HBM↔SRAM, tính toán matmul, chu kỳ idle. Bật FP16, gradient checkpointing, tensor cores, data parallel để xem throughput đổi thay.",
+    "Dùng profiler để thấy kernel, memory copy, idle gap và bottleneck trước khi chỉnh batch, dtype, tensor core hoặc data parallel.",
   category: "infrastructure",
   tags: ["gpu", "cuda", "profiler", "mixed-precision", "tensor-cores"],
   difficulty: "advanced",
@@ -90,7 +90,7 @@ interface ProfilerResult {
 //
 // Các con số này dựa trên một GPU tầm cỡ A100 80GB, sau đó scale xuống cho
 // dễ cảm nhận. Mục tiêu của mô phỏng không phải là chính xác tuyệt đối mà là
-// truyền đúng "trật tự độ lớn" — ai dùng GPU thật cũng sẽ nhận ra.
+// truyền đúng "trật tự độ lớn". Ai dùng GPU thật cũng sẽ nhận ra.
 
 const PEAK_TFLOPS_FP32 = 19.5; // theo datasheet A100 FP32
 const PEAK_TFLOPS_TENSOR_FP16 = 312; // Tensor Core FP16
@@ -141,7 +141,7 @@ function generateTimeline(scenario: ProfilerScenario): ProfilerResult {
   let commTime = 0;
   if (dataParallel) commTime = 12 + (fp16 ? -3 : 0); // fp16 gradient sync ít hơn
 
-  // Idle time — mọi thứ còn lại (data loader, kernel launch, sync)
+  // Idle time: mọi thứ còn lại (data loader, kernel launch, sync)
   // Không bao giờ bằng 0 trong thực tế, có sàn tối thiểu.
   const accounted = hbmTime + computeTime + commTime;
   let idleTime = Math.max(8, 100 - accounted);
@@ -169,7 +169,7 @@ function generateTimeline(scenario: ProfilerScenario): ProfilerResult {
   });
   cursor += load1;
 
-  // 2. QKV projection — matmul lớn
+  // 2. QKV projection: matmul lớn
   const qkv = computeTime * 0.35;
   events.push({
     kind: "compute",
@@ -273,7 +273,7 @@ function generateTimeline(scenario: ProfilerScenario): ProfilerResult {
 
   // ---- Bước 3: tính các chỉ số tổng hợp ----
 
-  // Throughput (samples/sec) — giả định 1 step = 10ms baseline, scale ngược
+  // Throughput (samples/sec): giả định 1 step = 10ms baseline, scale ngược
   // theo thời gian compute+memory thực tế. Thêm lợi ích data parallel.
   const baselineStepMs = 120;
   const actualStepMs = baselineStepMs * (hbmTime + computeTime) / 65;
@@ -321,7 +321,7 @@ function generateTimeline(scenario: ProfilerScenario): ProfilerResult {
 }
 
 // ---------------------------------------------------------------------------
-// COMPONENT CON — THANH TIMELINE
+// COMPONENT CON: THANH TIMELINE
 // ---------------------------------------------------------------------------
 
 const EVENT_COLORS: Record<EventKind, { bar: string; dot: string; label: string }> = {
@@ -387,7 +387,7 @@ function TimelineStream({ events, streamLabel }: TimelineProps) {
 }
 
 // ---------------------------------------------------------------------------
-// COMPONENT CON — TOGGLE
+// COMPONENT CON: TOGGLE
 // ---------------------------------------------------------------------------
 
 interface ToggleRowProps {
@@ -430,7 +430,7 @@ function ToggleRow({ label, hint, value, onChange }: ToggleRowProps) {
 }
 
 // ---------------------------------------------------------------------------
-// COMPONENT CON — METRIC CARD
+// COMPONENT CON: METRIC CARD
 // ---------------------------------------------------------------------------
 
 interface MetricCardProps {
@@ -473,7 +473,7 @@ function MetricCard({ label, value, unit, trend, subtitle }: MetricCardProps) {
 }
 
 // ---------------------------------------------------------------------------
-// COMPONENT CON — BOTTLENECK BADGE
+// COMPONENT CON: BOTTLENECK BADGE
 // ---------------------------------------------------------------------------
 
 function BottleneckBadge({
@@ -489,25 +489,25 @@ function BottleneckBadge({
       bg: "bg-emerald-100 dark:bg-emerald-900/30",
       text: "text-emerald-800 dark:text-emerald-200",
       label: "Compute-bound",
-      hint: "GPU đang chạy matmul hết công suất — tốt, nhưng muốn nhanh hơn phải tăng Tensor Core efficiency.",
+      hint: "GPU đang chạy matmul hết công suất. Tốt, nhưng muốn nhanh hơn phải tăng Tensor Core efficiency.",
     },
     memory: {
       bg: "bg-amber-100 dark:bg-amber-900/30",
       text: "text-amber-800 dark:text-amber-200",
       label: "Memory-bound",
-      hint: "Phần lớn thời gian chờ HBM — hãy giảm độ rộng tensor, dùng FP16, hoặc fuse kernel để ít roundtrip hơn.",
+      hint: "Phần lớn thời gian chờ HBM. Hãy giảm độ rộng tensor, dùng FP16, hoặc fuse kernel để ít roundtrip hơn.",
     },
     balanced: {
       bg: "bg-blue-100 dark:bg-blue-900/30",
       text: "text-blue-800 dark:text-blue-200",
       label: "Cân bằng",
-      hint: "Compute và memory share đều nhau — cấu hình tốt, phần lớn phép toán đang roofline optimal.",
+      hint: "Compute và memory share đều nhau. Cấu hình tốt, phần lớn phép toán đang roofline optimal.",
     },
     idle: {
       bg: "bg-rose-100 dark:bg-rose-900/30",
       text: "text-rose-800 dark:text-rose-200",
       label: "Idle-bound",
-      hint: "GPU chờ nhiều — nghi vấn data loader chậm, batch nhỏ, sync không cần thiết, hoặc CPU preprocessing.",
+      hint: "GPU chờ nhiều. Nghi vấn data loader chậm, batch nhỏ, sync không cần thiết, hoặc CPU preprocessing.",
     },
   };
   const c = config[kind];
@@ -591,10 +591,10 @@ export default function GPUOptimizationTopic() {
         question:
           "Profiler cho thấy kernel matmul chiếm 70% thời gian, HBM transfer chỉ 15%, idle 5%. Workload này là gì?",
         options: [
-          "Memory-bound — cần giảm kích thước tensor",
-          "Compute-bound — cần Tensor Core hoặc precision thấp hơn",
-          "Idle-bound — cần data loader nhanh hơn",
-          "Bandwidth-saturated — cần PCIe 5.0",
+          "Memory-bound. Cần giảm kích thước tensor",
+          "Compute-bound. Cần Tensor Core hoặc precision thấp hơn",
+          "Idle-bound. Cần data loader nhanh hơn",
+          "Bandwidth-saturated. Cần PCIe 5.0",
         ],
         correct: 1,
         explanation:
@@ -619,12 +619,12 @@ export default function GPUOptimizationTopic() {
         options: [
           "Đánh đổi thời gian compute lấy ít memory hơn (tính lại activation ở backward)",
           "Đánh đổi memory lấy ít compute hơn (cache activation tốt hơn)",
-          "Không đánh đổi gì — free lunch",
-          "Đánh đổi accuracy lấy tốc độ",
+          "Không đánh đổi gì. Không có free lunch",
+          "Đánh đổi độ chính xác lấy tốc độ",
         ],
         correct: 0,
         explanation:
-          "Thay vì lưu mọi activation của forward pass để backward dùng, gradient checkpointing chỉ lưu một subset và tính lại phần còn lại trong backward. Kết quả: memory giảm 50-70%, compute tăng ~30%. Đáng giá khi bạn muốn train model lớn hơn trên cùng GPU.",
+          "Thay vì lưu mọi activation của forward pass để backward dùng, gradient checkpointing chỉ lưu một subset và tính lại phần còn lại trong backward. Kết quả: memory giảm 50-70%, compute tăng ~30%. Đáng giá khi bạn muốn huấn luyện model lớn hơn trên cùng GPU.",
       },
       {
         question:
@@ -643,14 +643,14 @@ export default function GPUOptimizationTopic() {
         question:
           "Thuật ngữ 'roofline model' nghĩa là gì?",
         options: [
-          "Một architecture để train transformer nhanh hơn",
+          "Một architecture để huấn luyện transformer nhanh hơn",
           "Một biểu đồ cho biết workload bị giới hạn bởi compute hay memory bandwidth, dựa trên arithmetic intensity",
           "Phương pháp checkpoint cho long-context LLM",
           "Kỹ thuật nén gradient trong distributed training",
         ],
         correct: 1,
         explanation:
-          "Roofline model vẽ: trục x = arithmetic intensity (FLOPs per byte), trục y = performance (FLOPs/s). Đường 'mái' có hai đoạn: đoạn nghiêng = bandwidth-bound, đoạn ngang = compute-bound. Workload của bạn nằm dưới mái đó — khoảng cách đến mái cho biết còn bao nhiêu dư địa tối ưu.",
+          "Roofline model vẽ: trục x = arithmetic intensity (FLOPs per byte), trục y = performance (FLOPs/s). Đường 'mái' có hai đoạn: đoạn nghiêng = bandwidth-bound, đoạn ngang = compute-bound. Workload của bạn nằm dưới mái đó. Khoảng cách đến mái cho biết còn bao nhiêu dư địa tối ưu.",
       },
       {
         question:
@@ -672,7 +672,7 @@ export default function GPUOptimizationTopic() {
           "Tăng batch size để amortize overhead",
           "Kết hợp FP16/BF16 + gradient checkpointing + ZeRO/FSDP để shard state",
           "Giảm learning rate",
-          "Đổi sang CPU training",
+          "Đổi sang huấn luyện bằng CPU",
         ],
         correct: 1,
         explanation:
@@ -702,19 +702,19 @@ export default function GPUOptimizationTopic() {
   return (
     <>
       {/* ==================================================================
-          BƯỚC 1 — HOOK / DỰ ĐOÁN
+          BƯỚC 1: HOOK / DỰ ĐOÁN
           ================================================================== */}
 
       <PredictionGate
-        question="Một GPU A100 có thể đạt 312 TFLOPS khi chạy FP16 Tensor Core. Trong thực tế, một bài train LLM thường đạt bao nhiêu phần trăm con số đó?"
+        question="Một GPU A100 có thể đạt 312 TFLOPS khi chạy FP16 Tensor Core. Trong thực tế, một lượt huấn luyện LLM thường đạt bao nhiêu phần trăm con số đó?"
         options={[
-          "80-95% — hầu hết các thư viện đều tối ưu rất tốt",
-          "40-60% — còn rất nhiều dư địa để profiler phát hiện",
-          "10-25% — thường bị nghẽn memory, idle, hoặc kernel nhỏ",
-          "100% — miễn là bạn dùng PyTorch",
+          "80-95%. Hầu hết thư viện đã tối ưu rất tốt",
+          "40-60%. Vẫn còn nhiều dư địa để profiler phát hiện",
+          "10-25%. Thường nghẽn memory, idle hoặc kernel nhỏ",
+          "100%. Miễn là bạn dùng PyTorch",
         ]}
         correct={2}
-        explanation="Phần lớn training run đạt 15-30% peak FLOPS. Thủ phạm thường là: (1) memory bandwidth bottleneck, (2) kernel launch overhead cho batch nhỏ, (3) data loader chậm làm GPU idle. Profiler cho bạn bằng chứng cụ thể để biết gỡ chỗ nào trước."
+        explanation="Nhiều lượt huấn luyện chỉ đạt một phần nhỏ peak FLOPS. Thủ phạm thường là memory bandwidth, kernel launch overhead với batch nhỏ, hoặc data loader chậm làm GPU idle. Profiler cho bạn bằng chứng cụ thể để biết gỡ chỗ nào trước."
       >
         <p className="text-sm text-muted mt-2">
           Hôm nay bạn sẽ mở một profiler giả lập, bật/tắt từng tối ưu và thấy
@@ -723,12 +723,12 @@ export default function GPUOptimizationTopic() {
       </PredictionGate>
 
       {/* ==================================================================
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
+          BƯỚC 2: ẨN DỤ THỰC TẾ
           ================================================================== */}
 
       <p>
         Hãy hình dung một nhà máy cơ khí có <strong>hàng nghìn máy CNC</strong>
-        {" "}chạy song song — đó là GPU. Phía trong phân xưởng là{" "}
+        {" "}chạy song song. Đó là GPU. Phía trong phân xưởng là{" "}
         <strong>kho nguyên liệu nhỏ nhưng cực nhanh</strong> (SRAM, vài MB) và
         bên ngoài là <strong>kho tổng khổng lồ nhưng xa hơn</strong> (HBM, vài
         chục GB). Mỗi khi máy CNC cần thêm nguyên liệu, xe nâng phải chạy ra
@@ -740,14 +740,14 @@ export default function GPUOptimizationTopic() {
         <strong>vấn đề memory bandwidth</strong>: tốc độ tính toán của Tensor
         Core nhanh hơn tốc độ HBM khoảng 50-100 lần. Phần lớn công việc của
         kỹ sư tối ưu GPU là sắp xếp lại timeline sao cho xe nâng và máy CNC
-        không phải đợi nhau. Profiler là camera quan sát toàn bộ phân xưởng —
-        không có nó, bạn chỉ đang đoán.
+        không phải đợi nhau. Profiler là camera quan sát toàn bộ phân xưởng.
+        Không có nó, bạn chỉ đang đoán.
       </p>
       <p>
         Các tối ưu nổi tiếng đều có bóng dáng trong ẩn dụ này. Mixed precision
-        giống như dùng pallet nhẹ hơn — xe nâng chạy nhanh hơn. Gradient
+        giống như dùng pallet nhẹ hơn. Xe nâng chạy nhanh hơn. Gradient
         checkpointing là &quot;vứt bớt bán thành phẩm, tự gia công lại khi
-        cần&quot; — đánh đổi thời gian máy lấy không gian kho. Kernel fusion
+        cần&quot;. Nó đánh đổi thời gian máy lấy không gian kho. Kernel fusion
         (ví dụ FlashAttention) là &quot;làm xong cả 3 công đoạn trước khi trả
         pallet về kho tổng&quot;. Data parallelism là mở thêm nhà máy song
         song, nhưng đêm nào các nhà máy cũng phải họp để chia sẻ bản vẽ
@@ -757,11 +757,11 @@ export default function GPUOptimizationTopic() {
         Trong phần tiếp theo, bạn sẽ cầm lái profiler. Mỗi toggle bạn bật là
         một tinh chỉnh trên phân xưởng; timeline thay đổi ngay lập tức, và
         bottleneck badge cho biết đâu là chỗ nghẽn tiếp theo. Đừng chỉ nhìn
-        throughput tăng — quan trọng hơn là hiểu <em>tại sao</em>.
+        throughput tăng. Quan trọng hơn là hiểu <em>tại sao</em>.
       </p>
 
       {/* ==================================================================
-          BƯỚC 3 — VISUALIZATION: GPU PROFILER VIEW
+          BƯỚC 3: VISUALIZATION: GPU PROFILER VIEW
           ================================================================== */}
 
       <VisualizationSection topicSlug={metadata.slug}>
@@ -773,7 +773,7 @@ export default function GPUOptimizationTopic() {
                   Nsight-style timeline
                 </h3>
                 <p className="text-xs text-muted mt-0.5">
-                  Mỗi thanh là một event GPU trong 1 training step. Bật các
+                  Mỗi thanh là một event GPU trong 1 bước huấn luyện. Bật các
                   tối ưu bên dưới và quan sát.
                 </p>
               </div>
@@ -1023,7 +1023,7 @@ export default function GPUOptimizationTopic() {
             </div>
             <p className="text-xs text-muted leading-relaxed">
               Công thức roofline: hiệu năng là minimum của hai giới hạn. Nếu AI
-              quá thấp, dù Tensor Core có nhanh cũng vô ích — dữ liệu không về
+              quá thấp, dù Tensor Core có nhanh cũng vô ích. Dữ liệu không về
               kịp. Ngược lại nếu AI cao, workload compute-bound, và Tensor Core
               phát huy hết.
             </p>
@@ -1055,11 +1055,11 @@ export default function GPUOptimizationTopic() {
       </VisualizationSection>
 
       {/* ==================================================================
-          BƯỚC 4 — AHA MOMENT
+          BƯỚC 4: AHA MOMENT
           ================================================================== */}
 
       <AhaMoment>
-        Tối ưu GPU không phải là &quot;viết code chạy nhanh hơn&quot; — mà là{" "}
+        Tối ưu GPU không phải là &quot;viết code chạy nhanh hơn&quot;. Đó là{" "}
         <strong>dời dữ liệu ít nhất có thể</strong>, để Tensor Core không phải
         đợi HBM. Một phần lớn các kỹ thuật nổi tiếng (FP16, fused kernel,
         FlashAttention, KV-cache) đều là biến thể của cùng một ý tưởng: làm
@@ -1067,14 +1067,14 @@ export default function GPUOptimizationTopic() {
       </AhaMoment>
 
       {/* ==================================================================
-          BƯỚC 5 — INLINE CHALLENGE #1 & #2
+          BƯỚC 5: INLINE CHALLENGE #1 & #2
           ================================================================== */}
 
       <InlineChallenge
         question="Profiler cho thấy: compute 18%, HBM 52%, idle 30%. Bạn nên ưu tiên gỡ chỗ nào TRƯỚC TIÊN?"
         options={[
           "Bật Tensor Core để tăng compute",
-          "Sửa idle trước — 30% là lãng phí hoàn toàn, thường do data loader",
+          "Sửa idle trước. 30% là lãng phí hoàn toàn, thường do data loader",
           "Bật FP16 để giảm HBM",
           "Mua GPU mới",
         ]}
@@ -1083,7 +1083,7 @@ export default function GPUOptimizationTopic() {
       />
 
       <InlineChallenge
-        question="Bạn train Transformer 13B FP32 trên 1×A100 80GB thì OOM. Thứ tự bật tối ưu nào TỐI ƯU NHẤT về memory?"
+        question="Bạn huấn luyện Transformer 13B FP32 trên 1×A100 80GB thì OOM. Thứ tự bật tối ưu nào TỐI ƯU NHẤT về memory?"
         options={[
           "Data Parallel trước, FP16 sau",
           "FP16 → Gradient Checkpointing → ZeRO/FSDP (nếu cần >1 GPU)",
@@ -1091,11 +1091,11 @@ export default function GPUOptimizationTopic() {
           "Giảm batch size xuống 1",
         ]}
         correct={1}
-        explanation="Thứ tự 'rẻ tới đắt về công sức': FP16 cắt memory ~50% (1 flag PyTorch), checkpointing cắt thêm ~50% (1 flag nữa), sau đó mới đến FSDP nếu vẫn không đủ. Giảm batch xuống 1 là giải pháp cuối cùng vì nó ảnh hưởng đến chất lượng training."
+        explanation="Thứ tự 'rẻ tới đắt về công sức': FP16 cắt memory ~50% (1 flag PyTorch), checkpointing cắt thêm ~50% (1 flag nữa), sau đó mới đến FSDP nếu vẫn không đủ. Giảm batch xuống 1 là giải pháp cuối cùng vì nó ảnh hưởng đến chất lượng huấn luyện."
       />
 
       {/* ==================================================================
-          BƯỚC 6 — GIẢI THÍCH SÂU
+          BƯỚC 6: GIẢI THÍCH SÂU
           ================================================================== */}
 
       <ExplanationSection>
@@ -1106,8 +1106,8 @@ export default function GPUOptimizationTopic() {
           register). Phần lớn performance problem trong ML workload nằm ở lớp
           thứ hai. Lý do đơn giản: Tensor Core có thể tạo ra 312 TFLOPS, nhưng
           HBM chỉ cấp được 1555 GB/s. Nếu bạn cần 4 byte (một FP32) cho mỗi
-          FLOP, tức là cần 312 × 10¹² × 4 = 1248 TB/s băng thông — gấp 800 lần
-          những gì HBM có thể cấp. Do đó Tensor Core phải{" "}
+          FLOP, tức là cần 312 × 10¹² × 4 = 1248 TB/s băng thông.
+          Con số đó gấp 800 lần những gì HBM có thể cấp. Do đó Tensor Core phải{" "}
           <em>tái sử dụng</em> dữ liệu trong SRAM; nếu không, nó sẽ idle.
         </p>
 
@@ -1128,11 +1128,11 @@ export default function GPUOptimizationTopic() {
           </li>
           <li>
             <strong>PyTorch Profiler:</strong> wrapper tiện lợi, export sang
-            Chrome Tracing hoặc TensorBoard. Đủ tốt cho 80% use case training.
+            Chrome Tracing hoặc TensorBoard. Đủ tốt cho 80% bài toán huấn luyện.
           </li>
           <li>
             <strong>Nvidia-smi / DCGM:</strong> thống kê mức độ sử dụng GPU,
-            nhưng chỉ số &quot;GPU util&quot; gây hiểu lầm — nó chỉ nói có
+            nhưng chỉ số &quot;GPU util&quot; gây hiểu lầm. Nó chỉ nói có
             kernel chạy hay không, không phản ánh occupancy thật.
           </li>
         </ul>
@@ -1201,7 +1201,7 @@ for batch in dataloader:
           throughput matmul 8-16× so với CUDA core tiêu chuẩn. Để Tensor Core
           &quot;bắt&quot; được kernel, shape tensor phải là bội của 8 (cho
           FP16) hoặc 16 (cho FP8). Đây là lý do nhiều codebase dùng hidden
-          size 4096, 6144, 8192 — đều chia hết cho 8. Dùng 4095 sẽ vô tình
+          size 4096, 6144, 8192 vì chúng đều chia hết cho 8. Dùng 4095 sẽ vô tình
           đẩy kernel về CUDA core.
         </p>
 
@@ -1214,7 +1214,7 @@ for batch in dataloader:
 a = torch.randn(128, 4096, dtype=torch.float16, device="cuda")
 b = torch.randn(4096, 4096, dtype=torch.float16, device="cuda")
 
-# Bật TF32 cho matmul FP32 — tăng tốc ~2x, sai số ~1e-3
+# Bật TF32 cho matmul FP32: tăng tốc ~2x, sai số ~1e-3
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
 
@@ -1271,13 +1271,13 @@ out = a_bf @ b_bf  # tự động chạy trên Tensor Core
         </ul>
 
         <Callout variant="warning" title="Đo trước, tối ưu sau">
-          Đừng bao giờ bật distributed training khi chưa squeeze hết 1 GPU.
+          Đừng bao giờ bật distributed training khi chưa vắt hết hiệu năng của 1 GPU.
           Nhiều team thêm GPU khi vấn đề thực sự là data loader. Multi-GPU
           debug khó gấp 10 lần single-GPU; hãy tối ưu single-GPU tới khi nào
           chắc chắn đã chạm trần rồi mới scale ra.
         </Callout>
 
-        <CollapsibleDetail title="Roofline model — lý thuyết chính thức">
+        <CollapsibleDetail title="Roofline model: lý thuyết chính thức">
           <p>
             Roofline model do Williams et al. (Berkeley, 2009) đề xuất là một
             công cụ trực quan để xác định workload của bạn đang bị giới hạn
@@ -1366,23 +1366,23 @@ out = a_bf @ b_bf  # tự động chạy trên Tensor Core
       </ExplanationSection>
 
       {/* ==================================================================
-          BƯỚC 7 — MINI SUMMARY
+          BƯỚC 7: MINI SUMMARY
           ================================================================== */}
 
       <MiniSummary
         title="6 điểm chốt về tối ưu GPU"
         points={[
-          "Profile trước, tối ưu sau — Nsight Systems cho timeline, Nsight Compute cho kernel deep dive, PyTorch Profiler cho use case thường ngày.",
-          "Phân loại bottleneck bằng time share: compute-bound, memory-bound, idle-bound — mỗi loại có playbook tối ưu khác nhau.",
+          "Profile trước, tối ưu sau. Nsight Systems cho timeline, Nsight Compute cho kernel deep dive, PyTorch Profiler cho use case thường ngày.",
+          "Phân loại bottleneck bằng time share: compute-bound, memory-bound, idle-bound. Mỗi loại có playbook tối ưu khác nhau.",
           "FP16/BF16 + Tensor Cores là đòn bẩy đầu tiên: tăng throughput 2-8×, giảm memory 50%, gần như không rủi ro với BF16.",
-          "Gradient checkpointing đổi 30% compute lấy 50-70% memory — chỉ bật khi bạn thật sự cần memory.",
-          "Kernel fusion (FlashAttention, torch.compile) giảm HBM roundtrip — đặc biệt quan trọng cho attention và softmax.",
+          "Gradient checkpointing đổi 30% compute lấy 50-70% memory. Chỉ bật khi bạn thật sự cần memory.",
+          "Kernel fusion (FlashAttention, torch.compile) giảm HBM roundtrip. Nó đặc biệt quan trọng cho attention và softmax.",
           "Multi-GPU là phương án cuối cùng: DP → ZeRO/FSDP → TP → PP, theo thứ tự độ phức tạp tăng dần. Luôn tối ưu single-GPU trước.",
         ]}
       />
 
       {/* ==================================================================
-          BƯỚC 8 — QUIZ
+          BƯỚC 8: QUIZ
           ================================================================== */}
 
       <QuizSection questions={quizQuestions} />

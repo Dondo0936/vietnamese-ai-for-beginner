@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "vlm",
   title: "Vision-Language Models",
-  titleVi: "Mô hình Ngôn ngữ — Thị giác",
+  titleVi: "Mô hình Ngôn ngữ. Thị giác",
   description:
     "Mô hình AI có khả năng hiểu đồng thời cả hình ảnh và văn bản, cho phép hỏi đáp về nội dung hình ảnh.",
   category: "multimodal",
@@ -46,7 +46,7 @@ const TASKS = [
     id: "ocr",
     label: "Đọc chữ trong ảnh",
     input: "Ảnh biển hiệu quán phở",
-    output: "'Phở Thìn Bờ Hồ — Mở cửa 6h-22h — Giá từ 50.000đ'",
+    output: "'Phở Thìn Bờ Hồ. Mở cửa 6h-22h. Giá từ 50.000đ'",
     detail: "VLM nhận dạng ký tự (OCR) trực tiếp, không cần module OCR riêng biệt.",
   },
   {
@@ -93,11 +93,11 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Đây là suy luận thị giác — VLM không chỉ mô tả cái thấy mà còn rút ra kết luận, so sánh số liệu, và giải thích xu hướng. Đây là năng lực khó nhất và khác biệt nhất của VLM so với các mô hình thị giác truyền thống.",
+      "Đây là suy luận thị giác. VLM không chỉ mô tả cái thấy mà còn rút ra kết luận, so sánh số liệu, và giải thích xu hướng. Đây là năng lực khó nhất và khác biệt nhất của VLM so với các mô hình thị giác truyền thống.",
   },
   {
     type: "fill-blank",
-    question: "VLM là viết tắt của Vision-Language Model — kết hợp hai phương thức: {blank} (hình ảnh) và {blank} (ngôn ngữ tự nhiên) trong một kiến trúc duy nhất.",
+    question: "VLM là viết tắt của Vision-Language Model. kết hợp hai phương thức: {blank} (hình ảnh) và {blank} (ngôn ngữ tự nhiên) trong một kiến trúc duy nhất.",
     blanks: [
       { answer: "vision", accept: ["thị giác", "hình ảnh", "ảnh"] },
       { answer: "language", accept: ["ngôn ngữ", "văn bản", "text"] },
@@ -335,10 +335,10 @@ print(processor.decode(output[0], skip_special_tokens=True))
           title="Ghi nhớ về VLM"
           points={[
             "VLM = Vision Encoder + Projection Layer + LLM, kết hợp 'nhìn' và 'hiểu' trong một mô hình.",
-            "Projection Layer là cầu nối quan trọng nhất — chiếu vector ảnh sang không gian ngôn ngữ.",
+            "Projection Layer là cầu nối quan trọng nhất. chiếu vector ảnh sang không gian ngôn ngữ.",
             "VLM thực hiện được nhiều tác vụ: mô tả ảnh, hỏi đáp, OCR, suy luận thị giác.",
             "Hạn chế chính: ảo giác (hallucination) khi mô tả chi tiết không có trong ảnh.",
-            "Các VLM hàng đầu: GPT-4V, Claude 3, Gemini (đóng), LLaVA (mở) — đều hỗ trợ tiếng Việt.",
+            "Các VLM hàng đầu: GPT-4V, Claude 3, Gemini (đóng), LLaVA (mở). đều hỗ trợ tiếng Việt.",
           ]}
         />
       </LessonSection>

@@ -55,7 +55,7 @@ const quizQuestions: QuizQuestion[] = [
       "Vì 8 heads nhanh hơn 1 head",
       "Mỗi head học một kiểu quan hệ riêng (ngữ pháp, ngữ nghĩa, vị trí...) → phong phú hơn 1 head chỉ học 1 kiểu",
       "Vì 1 head không thể xử lý chuỗi dài",
-      "Không có lợi ích — chỉ là convention",
+      "Không có lợi ích. chỉ là convention",
     ],
     correct: 1,
     explanation: "Nghiên cứu cho thấy: Head 1 thường học cú pháp, Head 2 học đồng tham chiếu, Head 3 học vị trí gần... Một head lớn phải dùng chung không gian cho mọi kiểu quan hệ → kém đa dạng hơn.",
@@ -98,7 +98,7 @@ export default function MultiHeadAttentionTopic() {
         <PredictionGate
           question={`Câu "Tôi yêu Việt Nam". Self-attention chỉ dùng 1 bộ trọng số Q, K, V. Nó có thể vừa nắm cú pháp ("Tôi" → chủ ngữ), vừa nắm ngữ nghĩa ("yêu" → "Việt Nam"), vừa nắm vị trí? Có cách nào tốt hơn?`}
           options={[
-            "1 bộ attention là đủ — không cần thay đổi",
+            "1 bộ attention là đủ. không cần thay đổi",
             "Chạy nhiều bộ attention song song, mỗi bộ chuyên 1 kiểu quan hệ",
             "Tăng kích thước Q, K, V để chứa hết thông tin",
           ]}
@@ -107,7 +107,7 @@ export default function MultiHeadAttentionTopic() {
         />
       </LessonSection>
 
-      {/* ═══ Step 2: DISCOVER — Interactive Heads ═══ */}
+      {/* ═══ Step 2: DISCOVER. Interactive Heads ═══ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá các Head">
         <p className="text-sm text-foreground leading-relaxed mb-3">
           Hãy tưởng tượng bạn xem bóng đá trên TV. Camera 1 quay toàn cảnh (vị trí), Camera 2 zoom vào cầu thủ (chi tiết), Camera 3 quay khán đài (bối cảnh). Đạo diễn{" "}
@@ -189,7 +189,7 @@ export default function MultiHeadAttentionTopic() {
         </VisualizationSection>
 
         <p className="text-sm text-muted mt-3">
-          Bạn vừa thấy mỗi head nhìn cùng câu nhưng theo &quot;góc&quot; khác nhau. Head 3 (vị trí) chú ý từ gần nhất, Head 2 (ngữ nghĩa) chú ý từ liên quan nghĩa — dù xa. Kết hợp tất cả → hiểu đầy đủ!
+          Bạn vừa thấy mỗi head nhìn cùng câu nhưng theo &quot;góc&quot; khác nhau. Head 3 (vị trí) chú ý từ gần nhất, Head 2 (ngữ nghĩa) chú ý từ liên quan nghĩa. dù xa. Kết hợp tất cả → hiểu đầy đủ!
         </p>
       </LessonSection>
 
@@ -206,7 +206,7 @@ export default function MultiHeadAttentionTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Architecture Detail ═══ */}
+      {/* ═══ Step 4: DEEPEN. Architecture Detail ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Chi tiết kiến trúc">
           <svg viewBox="0 0 480 180" className="w-full rounded-lg border border-border bg-background">
             <text x={240} y={18} fontSize={11} fill="currentColor" className="text-foreground"

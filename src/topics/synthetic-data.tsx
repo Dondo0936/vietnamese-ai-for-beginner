@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "synthetic-data",
   title: "Synthetic Data",
-  titleVi: "Dữ liệu tổng hợp — AI tạo dữ liệu cho AI",
+  titleVi: "Dữ liệu tổng hợp. AI tạo dữ liệu cho AI",
   description:
     "Dữ liệu được tạo bằng AI hoặc mô phỏng, dùng để huấn luyện mô hình khi dữ liệu thật khan hiếm, đắt đỏ hoặc nhạy cảm.",
   category: "emerging",
@@ -52,11 +52,11 @@ export default function SyntheticDataTopic() {
       question: "Model collapse xảy ra khi nào?",
       options: [
         "Model quá lớn không vừa GPU",
-        "Train model trên dữ liệu SYNTHETIC của chính nó hoặc model tương tự — mất đa dạng, suy giảm chất lượng dần",
+        "Train model trên dữ liệu SYNTHETIC của chính nó hoặc model tương tự. mất đa dạng, suy giảm chất lượng dần",
         "Dữ liệu training quá nhiều",
       ],
       correct: 1,
-      explanation: "Model A sinh data → train Model B → Model B sinh data → train Model C... Qua mỗi thế hệ, dữ liệu mất đa dạng (mode collapse), lỗi được khuếch đại. Giống photocopy của photocopy — mỗi bản sao tệ hơn bản trước. Cần trộn dữ liệu thật + synthetic để tránh.",
+      explanation: "Model A sinh data → train Model B → Model B sinh data → train Model C... Qua mỗi thế hệ, dữ liệu mất đa dạng (mode collapse), lỗi được khuếch đại. Giống photocopy của photocopy. mỗi bản sao tệ hơn bản trước. Cần trộn dữ liệu thật + synthetic để tránh.",
     },
     {
       question: "Tại sao Phi-3 (Microsoft) dùng textbook-quality synthetic data thay vì web scraping?",
@@ -96,12 +96,12 @@ export default function SyntheticDataTopic() {
         <PredictionGate
           question="Bạn cần 100K cặp Q&A tiếng Việt về y tế để train chatbot. Thuê bác sĩ label: $30/cặp = $3 triệu, mất 6 tháng. Có cách nào rẻ hơn 100x và nhanh hơn 10x?"
           options={[
-            "Không — dữ liệu y tế phải do chuyên gia tạo",
+            "Không. dữ liệu y tế phải do chuyên gia tạo",
             "Dùng LLM sinh dữ liệu tổng hợp: $0.01/cặp = $1000, mất 1 ngày. Bác sĩ chỉ cần verify 10% sample",
             "Lấy dữ liệu từ internet là đủ",
           ]}
           correct={1}
-          explanation="Đúng! Synthetic data cách mạng hoá: LLM sinh 100K cặp Q&A, bác sĩ verify 10K sample (quality control). Chi phí giảm 3000x, thời gian giảm 180x. Giống buồng mô phỏng bay — phi công không cần bay thật để luyện tập!"
+          explanation="Đúng! Synthetic data cách mạng hoá: LLM sinh 100K cặp Q&A, bác sĩ verify 10K sample (quality control). Chi phí giảm 3000x, thời gian giảm 180x. Giống buồng mô phỏng bay. phi công không cần bay thật để luyện tập!"
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
@@ -176,10 +176,10 @@ export default function SyntheticDataTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            Synthetic data là <strong>buồng mô phỏng bay</strong>{" "}cho AI — tạo tình huống 'giả nhưng hữu ích'
+            Synthetic data là <strong>buồng mô phỏng bay</strong>{" "}cho AI. tạo tình huống 'giả nhưng hữu ích'
             khi dữ liệu thật khan hiếm, đắt, hoặc nhạy cảm. Phi-3 đã chứng minh:{" "}
             <strong>3.8B params + textbook synthetic data &gt; 175B params + web data</strong>.
-            Nhưng cẩn quyền: <strong>model collapse</strong>{" "}xảy ra nếu chỉ train trên synthetic — cần trộn dữ liệu thật!
+            Nhưng cẩn quyền: <strong>model collapse</strong>{" "}xảy ra nếu chỉ train trên synthetic. cần trộn dữ liệu thật!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -217,7 +217,7 @@ export default function SyntheticDataTopic() {
             <li><strong>Evol-Instruct:</strong>{" "}Bắt đầu từ instruction đơn giản, LLM tăng độ khó dần → đa dạng hơn</li>
           </ul>
 
-          <p><strong>Model Collapse — rủi ro lớn nhất:</strong></p>
+          <p><strong>Model Collapse. rủi ro lớn nhất:</strong></p>
           <LaTeX block>{"P_{n+1}(x) = \\int P_{\\text{model}}(x|\\theta_n) \\, d\\theta_n \\rightarrow \\text{mode collapse khi } n \\to \\infty"}</LaTeX>
           <p>
             Qua mỗi thế hệ, phân phối dữ liệu thu hẹp (mất tail), đa dạng giảm, lỗi khuếch đại.
@@ -229,7 +229,7 @@ export default function SyntheticDataTopic() {
 
           <p><strong>Quality control cho synthetic data:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Human verification:</strong>{" "}Verify 5-10% samples — phát hiện pattern lỗi</li>
+            <li><strong>Human verification:</strong>{" "}Verify 5-10% samples. phát hiện pattern lỗi</li>
             <li><strong>Diversity metrics:</strong>{" "}Đo n-gram diversity, embedding spread, topic coverage</li>
             <li><strong>Contamination check:</strong>{" "}Đảm bảo synthetic data không trùng với test set</li>
             <li><strong>Reward model filtering:</strong>{" "}Chỉ giữ samples có quality score cao</li>
@@ -280,7 +280,7 @@ high_quality = [p for p in pairs if score_quality(p) >= 8]
           </CodeBlock>
 
           <Callout variant="info" title="Synthetic data tại Việt Nam">
-            Tiếng Việt là 'low-resource language' — ít dữ liệu chất lượng. Nhiều team Việt dùng Claude/GPT-4 sinh dữ liệu tiếng Việt cho chatbot, NER, sentiment analysis. VinAI dùng synthetic data để train PhoGPT. Chi phí giảm 100x so với thuê người label.
+            Tiếng Việt là 'low-resource language'. ít dữ liệu chất lượng. Nhiều team Việt dùng Claude/GPT-4 sinh dữ liệu tiếng Việt cho chatbot, NER, sentiment analysis. VinAI dùng synthetic data để train PhoGPT. Chi phí giảm 100x so với thuê người label.
           </Callout>
         </ExplanationSection>
       </LessonSection>
@@ -288,7 +288,7 @@ high_quality = [p for p in pairs if score_quality(p) >= 8]
       {/* STEP 6: SUMMARY */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Synthetic data là 'buồng mô phỏng bay' — tạo dữ liệu 'giả nhưng hữu ích' khi dữ liệu thật khan hiếm hoặc đắt.",
+          "Synthetic data là 'buồng mô phỏng bay'. tạo dữ liệu 'giả nhưng hữu ích' khi dữ liệu thật khan hiếm hoặc đắt.",
           "3 phương pháp: LLM Distillation (85% quality), Self-Instruct (75%), Rule-based augment (70%).",
           "Model collapse: train nhiều thế hệ trên synthetic → mất đa dạng, lỗi khuếch đại. Cần trộn 10%+ dữ liệu thật.",
           "Quality control: human verify 5-10%, diversity metrics, reward model filtering.",

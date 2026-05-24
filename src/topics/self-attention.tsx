@@ -44,7 +44,7 @@ const T_COLORS = ["#3b82f6", "#8b5cf6", "#f97316", "#22c55e", "#ec4899"];
 
 /**
  * Ma trận vector Query (5 × 3). Mỗi dòng Q_i là "câu hỏi" của token i.
- * Con số chỉ mang tính minh hoạ — đủ để tích QK^T cho ra attention
+ * Con số chỉ mang tính minh hoạ. đủ để tích QK^T cho ra attention
  * mà người học có thể theo dõi bằng mắt thường.
  */
 const Q_MAT: number[][] = [
@@ -120,7 +120,7 @@ function computeAttention(
 
 /**
  * Self vs Cross attention: với cross-attention, Q xuất phát từ một
- * chuỗi khác — ở đây là ngữ cảnh dịch máy: "The black cat ..." →
+ * chuỗi khác. ở đây là ngữ cảnh dịch máy: "The black cat ..." →
  * Q vector đi từ decoder (câu dịch), còn K, V giữ nguyên từ encoder.
  */
 const Q_CROSS: number[][] = [
@@ -143,7 +143,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Mỗi token tạo ra 3 vector Q, K, V. Chúng đóng vai trò gì?",
     options: [
       "Q là input, K là output, V là hidden state",
-      "Q = 'tôi hỏi gì?', K = 'tôi chứa gì?', V = 'nội dung của tôi' — attention = softmax(QKᵀ/√d)·V",
+      "Q = 'tôi hỏi gì?', K = 'tôi chứa gì?', V = 'nội dung của tôi'. attention = softmax(QKᵀ/√d)·V",
       "Q là query SQL, K là primary key, V là value trong database",
       "Q, K, V chỉ là tên khác của embedding",
     ],
@@ -154,10 +154,10 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "Self-attention xử lý chuỗi n token. Độ phức tạp của một lớp là bao nhiêu?",
     options: [
-      "O(n) — mỗi token chỉ tính 1 lần",
-      "O(n²·d) — mỗi token phải tính attention với MỌI token khác",
-      "O(n·log n) — dùng thuật toán chia để trị",
-      "O(1) — song song hoàn toàn nên không phụ thuộc n",
+      "O(n). mỗi token chỉ tính 1 lần",
+      "O(n²·d). mỗi token phải tính attention với MỌI token khác",
+      "O(n·log n). dùng thuật toán chia để trị",
+      "O(1). song song hoàn toàn nên không phụ thuộc n",
     ],
     correct: 1,
     explanation:
@@ -167,9 +167,9 @@ const quizQuestions: QuizQuestion[] = [
     question: "Vì sao phải chia cho √d_k trong công thức attention?",
     options: [
       "Để giảm kích thước output",
-      "Để softmax không bị bão hoà — khi d_k lớn thì QKᵀ có phương sai lớn, softmax dồn hết xác suất vào 1 phần tử, gradient tắt",
+      "Để softmax không bị bão hoà. Khi d_k lớn thì QKᵀ có phương sai lớn, softmax dồn hết xác suất vào 1 phần tử, gradient tắt",
       "Để tương thích với positional encoding",
-      "Không có lý do cụ thể — chỉ là quy ước",
+      "Không có lý do cụ thể. chỉ là quy ước",
     ],
     correct: 1,
     explanation:
@@ -231,7 +231,7 @@ const quizQuestions: QuizQuestion[] = [
       "Transformer thường dùng multi-head attention thay vì một attention duy nhất. Lợi ích chính là gì?",
     options: [
       "Tăng tốc độ training",
-      "Cho phép mô hình nhìn chuỗi dưới NHIỀU 'góc quan hệ' song song — một head bắt cú pháp, head khác bắt đồng tham chiếu, head khác bắt ngữ nghĩa...",
+      "Cho phép mô hình nhìn chuỗi dưới NHIỀU 'góc quan hệ' song song. một head bắt cú pháp, head khác bắt đồng tham chiếu, head khác bắt ngữ nghĩa...",
       "Giảm bộ nhớ tiêu thụ",
       "Không cần chia √d_k nữa",
     ],
@@ -255,7 +255,7 @@ export default function SelfAttentionTopic() {
     return computeAttention(qUse, K_MAT);
   }, [mode]);
 
-  // Scores không chia √d_k — dùng khi người học tắt scaling để thấy
+  // Scores không chia √d_k. dùng khi người học tắt scaling để thấy
   // softmax bão hoà ra sao
   const { weights: weightsUnscaled } = useMemo(() => {
     const qUse = mode === "self" ? Q_MAT : Q_CROSS;
@@ -332,25 +332,25 @@ export default function SelfAttentionTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 1 — DỰ ĐOÁN
+       *  BƯỚC 1. DỰ ĐOÁN
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question={`Câu "Con mèo ngồi trên bàn". Khi não bạn đọc tới từ "bàn", bạn tự động nghĩ nhiều nhất đến từ nào trong câu?`}
           options={["Con", "mèo", "ngồi", "trên"]}
           correct={1}
-          explanation={`"Bàn" liên quan nhất đến "mèo" (chủ thể đang ngồi trên bàn) và "ngồi" (hành động gắn với bàn). Bạn vừa làm 'attention' bằng trực giác — tìm từ liên quan nhất để hiểu nghĩa. Self-attention trong Transformer làm đúng điều đó, nhưng cho MỌI từ, cùng lúc, trong một phép nhân ma trận.`}
+          explanation={`"Bàn" liên quan nhất đến "mèo" (chủ thể đang ngồi trên bàn) và "ngồi" (hành động gắn với bàn). Bạn vừa làm 'attention' bằng trực giác. tìm từ liên quan nhất để hiểu nghĩa. Self-attention trong Transformer làm đúng điều đó, nhưng cho MỌI từ, cùng lúc, trong một phép nhân ma trận.`}
         />
 
         <p className="mt-3 text-sm text-muted leading-relaxed">
           Bạn vừa chọn bằng trực giác. Ở phần tiếp theo bạn sẽ thấy chính con số
-          đó hiện ra như một hàng trong ma trận <LaTeX>{"QK^T"}</LaTeX> — đó chính là
+          đó hiện ra như một hàng trong ma trận <LaTeX>{"QK^T"}</LaTeX>. đó chính là
           cách máy &quot;chú ý&quot;.
         </p>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 2 — ẨN DỤ
+       *  BƯỚC 2. ẨN DỤ
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
         <div className="rounded-xl border border-border bg-card p-5 space-y-3">
@@ -376,14 +376,14 @@ export default function SelfAttentionTopic() {
           <p className="text-sm text-muted leading-relaxed">
             Bạn nhìn lướt tất cả bảng hiệu (tính <LaTeX>{"QK^T"}</LaTeX>), cho điểm độ liên
             quan, rồi phân chia &quot;sự chú ý&quot; của mình (softmax). Cuối
-            cùng bạn gom các món hàng theo tỷ lệ đó — đó là <em>output</em>{" "}
+            cùng bạn gom các món hàng theo tỷ lệ đó. Đó là <em>output</em>{" "}
             của attention cho từ &quot;bạn&quot;.
           </p>
         </div>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 3 — VISUALIZATION CHÍNH
+       *  BƯỚC 3. VISUALIZATION CHÍNH
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá Attention">
         <p className="text-sm text-foreground leading-relaxed mb-3">
@@ -432,7 +432,7 @@ export default function SelfAttentionTopic() {
             </span>
           </div>
 
-          {/* Khu vực SVG chính — attention từ token đang chọn */}
+          {/* Khu vực SVG chính. attention từ token đang chọn */}
           <svg
             viewBox="0 0 560 280"
             className="w-full rounded-lg border border-border bg-background"
@@ -695,7 +695,7 @@ export default function SelfAttentionTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 4 — AHA MOMENT
+       *  BƯỚC 4. AHA MOMENT
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
@@ -708,7 +708,7 @@ export default function SelfAttentionTopic() {
           <p className="text-sm text-muted mt-1">
             Khác với <TopicLink slug="rnn">RNN</TopicLink> phải truyền thông
             tin tuần tự qua thời gian, self-attention cho mọi từ đường đi O(1)
-            đến mọi từ khác — bất kể khoảng cách. &quot;Tôi&quot; ở đầu câu
+            đến mọi từ khác. bất kể khoảng cách. &quot;Tôi&quot; ở đầu câu
             vẫn có đường kết nối trực tiếp với &quot;tôi&quot; ở cuối câu. Đây
             là trái tim của <TopicLink slug="transformer">Transformer</TopicLink>,
             và khi được nhân bản song song h lần ta có{" "}
@@ -718,15 +718,15 @@ export default function SelfAttentionTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 5 — 2 INLINE CHALLENGES
+       *  BƯỚC 5. 2 INLINE CHALLENGES
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
           question="Một chuỗi dài 4096 token. Ma trận attention có bao nhiêu ô, và điều đó kéo theo vấn đề gì?"
           options={[
-            "4096 ô — mỗi token 1 score",
-            "4096² ≈ 16,7 triệu ô — tốn O(n²) bộ nhớ & tính toán, giới hạn độ dài context",
-            "4096 × 3 = 12.288 ô — Q, K, V cho mỗi token",
+            "4096 ô. mỗi token 1 score",
+            "4096² ≈ 16,7 triệu ô. tốn O(n²) bộ nhớ & tính toán, giới hạn độ dài context",
+            "4096 × 3 = 12.288 ô. Q, K, V cho mỗi token",
           ]}
           correct={1}
           explanation="Ma trận attention là n×n: 4096² ≈ 16,7 triệu ô, mỗi ô float32 = 4 bytes ≈ 67 MB chỉ cho MỘT head của MỘT layer. GPT-4 có hàng trăm layer × nhiều head → hàng GB chỉ để lưu attention. Đây là lý do Flash Attention, Sparse Attention, Ring Attention ra đời."
@@ -737,8 +737,8 @@ export default function SelfAttentionTopic() {
         <InlineChallenge
           question="Trong decoder của GPT, khi sinh token thứ 5 của chuỗi, attention của token đó có thể nhìn vào token thứ 6 (tương lai) không?"
           options={[
-            "Có — self-attention luôn cho nhìn mọi vị trí",
-            "Không — masked self-attention đặt các vị trí tương lai bằng -∞ trước softmax",
+            "Có. self-attention luôn cho nhìn mọi vị trí",
+            "Không. masked self-attention đặt các vị trí tương lai bằng -∞ trước softmax",
             "Có nhưng với trọng số nhỏ hơn",
           ]}
           correct={1}
@@ -747,7 +747,7 @@ export default function SelfAttentionTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 6 — EXPLANATION SECTION
+       *  BƯỚC 6. EXPLANATION SECTION
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích chi tiết">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -806,7 +806,7 @@ export default function SelfAttentionTopic() {
               sinh).{" "}
               <strong>Cross-attention:</strong> Q từ chuỗi A, còn K, V từ chuỗi
               B. Trong Transformer encoder-decoder, decoder dùng
-              cross-attention để &quot;đọc&quot; thông tin từ encoder — đây là
+              cross-attention để &quot;đọc&quot; thông tin từ encoder. đây là
               nơi thông tin nguồn được đưa vào câu đích.
             </p>
           </Callout>
@@ -827,7 +827,7 @@ export default function SelfAttentionTopic() {
           <Callout variant="tip" title="Song song hoá trên GPU">
             <p>
               Khác với RNN phải chạy tuần tự theo thời gian, self-attention là
-              một phép nhân ma trận lớn — ánh xạ gần như hoàn hảo lên GPU.
+              một phép nhân ma trận lớn. ánh xạ gần như hoàn hảo lên GPU.
               Đây là một trong những lý do chính khiến Transformer &quot;ăn&quot;
               dữ liệu nhanh hơn LSTM cùng kích thước.
             </p>
@@ -846,19 +846,19 @@ def softmax(x, axis=-1):
 
 def self_attention(X, Wq, Wk, Wv):
     """
-    X:   (n_tokens, d_model)   — embedding đầu vào
-    Wq:  (d_model, d_k)        — chiếu sang không gian Query
-    Wk:  (d_model, d_k)        — chiếu sang không gian Key
-    Wv:  (d_model, d_v)        — chiếu sang không gian Value
+    X:   (n_tokens, d_model). embedding đầu vào
+    Wq:  (d_model, d_k). chiếu sang không gian Query
+    Wk:  (d_model, d_k). chiếu sang không gian Key
+    Wv:  (d_model, d_v). chiếu sang không gian Value
     """
     Q = X @ Wq                            # (n, d_k)
     K = X @ Wk                            # (n, d_k)
     V = X @ Wv                            # (n, d_v)
 
     d_k = K.shape[-1]
-    scores  = Q @ K.T / np.sqrt(d_k)      # (n, n) — QK^T/√d_k
-    weights = softmax(scores, axis=-1)    # (n, n) — softmax theo hàng
-    output  = weights @ V                 # (n, d_v) — tổng có trọng số
+    scores  = Q @ K.T / np.sqrt(d_k)      # (n, n). QK^T/√d_k
+    weights = softmax(scores, axis=-1)    # (n, n). softmax theo hàng
+    output  = weights @ V                 # (n, d_v). tổng có trọng số
 
     return output, weights
 
@@ -871,7 +871,7 @@ Wv = rng.standard_normal((8, 4)) * 0.1
 
 out, attn = self_attention(X, Wq, Wk, Wv)
 print(out.shape)   # (5, 4)
-print(attn.shape)  # (5, 5) — tổng mỗi hàng ≈ 1
+print(attn.shape)  # (5, 5). tổng mỗi hàng ≈ 1
 print(attn.sum(axis=-1))  # [1. 1. 1. 1. 1.]`}
           </CodeBlock>
 
@@ -911,7 +911,7 @@ def cross_attention(dec_h, enc_out, Wq, Wk, Wv):
           <ul className="list-disc list-inside space-y-1.5 text-sm">
             <li>
               <strong>Mô hình ngôn ngữ (LLM).</strong> GPT, Claude, Llama, Gemini
-              đều dùng self-attention làm nền — mỗi token dự đoán được ngữ cảnh
+              đều dùng self-attention làm nền. mỗi token dự đoán được ngữ cảnh
               nhờ attention tới mọi token trước đó.
             </li>
             <li>
@@ -956,8 +956,7 @@ def cross_attention(dec_h, enc_out, Wq, Wk, Wv):
             </li>
             <li>
               <strong>Lẫn mask boolean với -inf.</strong> Trong framework, phải
-              thêm lượng lớn âm TRƯỚC softmax, không phải nhân với 0 SAU softmax
-              — nếu không các trọng số không còn tổng bằng 1.
+              thêm lượng lớn âm TRƯỚC softmax, không phải nhân với 0 SAU softmax. nếu không các trọng số không còn tổng bằng 1.
             </li>
             <li>
               <strong>Quên <TopicLink slug="positional-encoding">positional encoding</TopicLink>.</strong>{" "}
@@ -982,19 +981,19 @@ def cross_attention(dec_h, enc_out, Wq, Wk, Wv):
             </LaTeX>
             <p className="text-sm text-foreground/90 leading-relaxed">
               Vì vậy độ lệch chuẩn <LaTeX>{String.raw`\sqrt{d_k}`}</LaTeX>. Chia tích
-              cho <LaTeX>{String.raw`\sqrt{d_k}`}</LaTeX> đưa độ lệch chuẩn về 1 — softmax
+              cho <LaTeX>{String.raw`\sqrt{d_k}`}</LaTeX> đưa độ lệch chuẩn về 1. softmax
               không bị đẩy vào vùng bão hoà. Với d_k = 64, hiệu chỉnh này ảnh
               hưởng lớn đến chất lượng huấn luyện. Nếu bạn thay softmax bằng
-              ReLU hoặc kernel khác, hằng số scaling có thể khác — luôn nhìn
+              ReLU hoặc kernel khác, hằng số scaling có thể khác. luôn nhìn
               lại phương sai.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Mask: padding, causal, sliding-window — ba kiểu mask thông dụng">
+          <CollapsibleDetail title="Mask: padding, causal, sliding-window. ba kiểu mask thông dụng">
             <p className="text-sm text-foreground/90 leading-relaxed">
               Trong thực tế, một batch chứa các chuỗi có độ dài khác nhau, phải
               được pad tới cùng một độ dài. <strong>Padding mask</strong> đảm
-              bảo attention không &quot;chú ý&quot; vào token PAD — nếu không
+              bảo attention không &quot;chú ý&quot; vào token PAD. nếu không
               gradient sẽ bị nhiễu bởi các vector rác.
             </p>
             <LaTeX block>
@@ -1003,8 +1002,7 @@ def cross_attention(dec_h, enc_out, Wq, Wk, Wv):
             <p className="text-sm text-foreground/90 leading-relaxed mt-2">
               <strong>Causal mask</strong> (decoder-only): j &gt; i → -∞. Mô
               hình không được nhìn tương lai. <strong>Sliding-window
-              mask</strong> (Longformer, Mistral): chỉ cho phép |i − j| ≤ w —
-              giảm từ O(n²) xuống O(n·w). Khi kết hợp sliding-window với một
+              mask</strong> (Longformer, Mistral): chỉ cho phép |i − j| ≤ w. giảm từ O(n²) xuống O(n·w). Khi kết hợp sliding-window với một
               vài token &quot;global&quot; (CLS, SEP, hay vài vị trí đặc
               biệt), ta có recipe của nhiều long-context model hiện đại.
             </p>
@@ -1025,7 +1023,7 @@ def cross_attention(dec_h, enc_out, Wq, Wk, Wv):
             </p>
             <p className="text-sm text-foreground/90 leading-relaxed mt-2">
               Self-attention thì khác: đường đi từ token 1 đến token n luôn là
-              <em> 1 bước</em> — một phép nhân QK^T. Vì vậy gradient lan truyền
+              <em> 1 bước</em>. một phép nhân QK^T. Vì vậy gradient lan truyền
               thẳng, không bị suy giảm theo khoảng cách. Đổi lại, ta trả bằng
               chi phí O(n²). Tradeoff này là nền tảng của toàn bộ kỷ nguyên
               Transformer.
@@ -1043,14 +1041,14 @@ def cross_attention(dec_h, enc_out, Wq, Wk, Wv):
           </h3>
           <CodeBlock language="python" title="backward_attention.py">
             {`"""
-Ta không tự viết backward cho attention — autograd lo việc đó. Nhưng
+Ta không tự viết backward cho attention. autograd lo việc đó. Nhưng
 hiểu đường đi của gradient giúp bạn debug:
 
   ∂L/∂V     = weights.T @ ∂L/∂output
   ∂L/∂W_i,: = softmax_grad(scores_i,:) * (V @ ∂L/∂output_i)
   ∂L/∂Q,∂K  = đi ngược qua QK^T / sqrt(d_k)
 
-Đoạn PyTorch minh hoạ — nếu một trong các tensor không requires_grad,
+Đoạn PyTorch minh hoạ. nếu một trong các tensor không requires_grad,
 gradient sẽ chặn tại đó (điều hay xảy ra khi ta freeze embedding).
 """
 import torch, torch.nn.functional as F
@@ -1089,7 +1087,7 @@ print("‖∂L/∂Wq‖ =", Wq.grad.norm().item())
             </li>
             <li>
               <strong>Multi-Query Attention (MQA).</strong> Nhiều head chia sẻ
-              cùng một K, V — giảm mạnh chi phí KV cache trong inference LLM.
+              cùng một K, V. giảm mạnh chi phí KV cache trong inference LLM.
             </li>
             <li>
               <strong>Grouped-Query Attention (GQA).</strong> Dung hoà giữa
@@ -1108,7 +1106,7 @@ print("‖∂L/∂Wq‖ =", Wq.grad.norm().item())
             </li>
             <li>
               <strong>Mamba / State Space Models.</strong> Không phải
-              attention, nhưng cạnh tranh trực tiếp cho ngữ cảnh dài — xem{" "}
+              attention, nhưng cạnh tranh trực tiếp cho ngữ cảnh dài. xem{" "}
               <TopicLink slug="state-space-models">state space models</TopicLink>.
             </li>
           </ul>
@@ -1118,28 +1116,24 @@ print("‖∂L/∂Wq‖ =", Wq.grad.norm().item())
           </h3>
           <ul className="list-disc list-inside space-y-1 text-sm">
             <li>
-              <TopicLink slug="multi-head-attention">Multi-head attention</TopicLink>{" "}
-              — chạy h bản self-attention song song với các tham số khác nhau,
+              <TopicLink slug="multi-head-attention">Multi-head attention</TopicLink>{" "}. chạy h bản self-attention song song với các tham số khác nhau,
               rồi concat.
             </li>
             <li>
-              <TopicLink slug="positional-encoding">Positional encoding</TopicLink>{" "}
-              — thêm thông tin vị trí vào embedding vì self-attention không
+              <TopicLink slug="positional-encoding">Positional encoding</TopicLink>{" "}. thêm thông tin vị trí vào embedding vì self-attention không
               biết thứ tự. Gồm sinusoidal (gốc) và RoPE / ALiBi (hiện đại).
             </li>
             <li>
-              <TopicLink slug="flash-attention">Flash Attention</TopicLink> —
-              kỹ thuật tile-based giúp tính attention không hiện vật ma trận
+              <TopicLink slug="flash-attention">Flash Attention</TopicLink>. kỹ thuật tile-based giúp tính attention không hiện vật ma trận
               n×n đầy đủ, tiết kiệm bộ nhớ và nhanh hơn nhiều trên GPU.
             </li>
             <li>
-              <TopicLink slug="kv-cache">KV cache</TopicLink> — lưu K, V của
+              <TopicLink slug="kv-cache">KV cache</TopicLink>. lưu K, V của
               các token đã sinh, tránh tính lại khi generate từng token tiếp
               theo trong decoder.
             </li>
             <li>
-              <TopicLink slug="attention-mechanism">Attention mechanism</TopicLink>{" "}
-              — bài giới thiệu tổng quát cho attention (Bahdanau, Luong) trước
+              <TopicLink slug="attention-mechanism">Attention mechanism</TopicLink>{" "}. bài giới thiệu tổng quát cho attention (Bahdanau, Luong) trước
               khi vào self-attention.
             </li>
           </ul>
@@ -1147,16 +1141,16 @@ print("‖∂L/∂Wq‖ =", Wq.grad.norm().item())
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 7 — MINI SUMMARY
+       *  BƯỚC 7. MINI SUMMARY
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về Self-Attention"
           points={[
             "Mỗi token sinh ra 3 vector: Query (hỏi gì?), Key (chứa gì?), Value (nội dung). Attention = softmax(QKᵀ/√d_k) · V.",
-            "Mỗi token nối trực tiếp với mọi token khác — path length = 1, nắm bắt phụ thuộc xa tốt hơn RNN.",
-            "Tính được song song trên GPU thông qua một phép nhân ma trận — đây là lý do Transformer train nhanh hơn LSTM.",
-            "Nhược điểm O(n²) về bộ nhớ và tính toán — giới hạn context window; Flash Attention, Sparse Attention giải quyết phần nào.",
+            "Mỗi token nối trực tiếp với mọi token khác. path length = 1, nắm bắt phụ thuộc xa tốt hơn RNN.",
+            "Tính được song song trên GPU thông qua một phép nhân ma trận. đây là lý do Transformer train nhanh hơn LSTM.",
+            "Nhược điểm O(n²) về bộ nhớ và tính toán. giới hạn context window; Flash Attention, Sparse Attention giải quyết phần nào.",
             "Chia √d_k giữ softmax không bão hoà; masked attention chặn decoder nhìn tương lai; cross-attention đổi nguồn cho Q.",
             "Là trái tim của Transformer (GPT, BERT, Llama, Claude, Gemini, ViT) và bước mở rộng tự nhiên thành multi-head attention.",
           ]}
@@ -1164,7 +1158,7 @@ print("‖∂L/∂Wq‖ =", Wq.grad.norm().item())
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 8 — QUIZ
+       *  BƯỚC 8. QUIZ
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />
@@ -1194,7 +1188,7 @@ print("‖∂L/∂Wq‖ =", Wq.grad.norm().item())
  *     các ô của heatmap.
  *
  *  4. Component này không phụ thuộc API ngoài, không cần fetch
- *     — toàn bộ tính toán nằm trong useMemo và chạy đủ nhanh với
+ *. toàn bộ tính toán nằm trong useMemo và chạy đủ nhanh với
  *     chuỗi 5 token. Với chuỗi dài hơn, chuyển sang tính toán
  *     bên server hoặc dùng WebGL.
  * ────────────────────────────────────────────────────────────── */
