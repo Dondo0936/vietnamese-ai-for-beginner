@@ -7,6 +7,35 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "claude-code-hooks-guardrails",
+    title: "Claude Code Hooks. Guardrails của agent không chỉ là prompt.",
+    dek: "Một coding agent không chỉ trả lời bằng chữ. Nó có thể chạy Bash, sửa file, gọi MCP tool và đẩy thay đổi vào repo thật. Claude Code Hooks đặt điểm kiểm soát quanh Tool use: đọc JSON đầu vào, match đúng event, rồi cho chạy tiếp, hỏi lại, hoặc chặn. Bài viết giải thích vì sao guardrail cho AI engineer phải chạy ở runtime, có log, có test, và được review như production code.",
+    source: {
+      name: "Claude Code Docs · Hooks",
+      host: "code.claude.com",
+      url: "https://code.claude.com/docs/en/hooks",
+    },
+    date: "2026-05-30",
+    readingTime: "11 phút",
+    category: "agent",
+    tag: "guardrails",
+    lessonRefs: [
+      "agent-architecture",
+      "agentic-workflows",
+      "function-calling",
+      "model-context-protocol",
+      "guardrails",
+      "prompt-injection-defense",
+    ],
+    relatedArticles: [
+      "claude-controls-apps-adobe",
+      "claude-in-excel-how-it-works",
+      "operator-2-browser-agent",
+    ],
+    heroViz: "claude-code-hooks",
+    isLead: true,
+  },
+  {
     slug: "office-ai-biased-documents",
     title: "File cũ làm AI nói sai.",
     dek: "Bạn hỏi AI về chính sách hoàn tiền, quy trình nghỉ phép, hoặc bảng giá mới. Câu trả lời nghe tự tin, nhưng nếu kho Drive còn đầy template cũ, bản nháp chưa xoá và wiki lỗi thời, AI có thể viết theo nguồn sai. Một nghiên cứu Nature về cách ngôn ngữ lặp lại đi vào training data cho thấy bài học rộng hơn: model không tự phân biệt nguồn nào còn hiệu lực. Với nhân viên văn phòng, cách dùng an toàn là yêu cầu citation, kiểm ngày cập nhật, và coi AI là người viết nháp chứ không phải nguồn sự thật.",
@@ -146,7 +175,7 @@ export const articleList: ArticleMeta[] = [
     slug: "claude-controls-apps-adobe",
     title:
       "Claude điều khiển ứng dụng thế nào. Bộ Adobe Creative Cloud 2026 làm ví dụ.",
-    dek: "Bạn gõ một câu, Claude xoá price tag, đổi nền, xuất 80 ảnh sản phẩm. Ngày 28 tháng 4 năm 2026, Anthropic ship 9 connector cho công cụ sáng tạo, gồm Adobe for creativity với hơn 50 tool xuyên Photoshop, Premiere, Illustrator. Bài viết mổ xẻ ba cơ chế Claude dùng để điều khiển một desktop app: computer use (screenshot và toạ độ), MCP server (tool call có cấu trúc), UXP plugin (code chạy bên trong Photoshop). Khi nào dùng cái nào, mặt phẳng tấn công nào kèm theo, và đâu là cạm bẫy thực tế.",
+    dek: "Bạn gõ một câu, Claude xoá price tag, đổi nền, xuất 80 ảnh sản phẩm. Ngày 28 tháng 4 năm 2026, Anthropic ship 9 connector cho công cụ sáng tạo, gồm Adobe for creativity với hơn 50 tool xuyên Photoshop, Premiere, Illustrator. Bài viết mổ xẻ ba cơ chế Claude dùng để điều khiển một desktop app: computer use (screenshot và toạ độ), MCP server (Tool use có cấu trúc), UXP plugin (code chạy bên trong Photoshop). Khi nào dùng cái nào, mặt phẳng tấn công nào kèm theo, và đâu là cạm bẫy thực tế.",
     source: {
       name: "udemi · giải thích",
       host: "udemi.tech",

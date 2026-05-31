@@ -10,12 +10,13 @@ import { KvRotationViz } from "./turboquant-kv-cache-compression";
 import { TowerOfHanoiHeroViz } from "./neuro-symbolic-robots";
 import { ImageGenSplitHeroViz } from "./midjourney-vs-chatgpt-image-2";
 import { OfficeDocsBiasHeroViz } from "./office-ai-biased-documents";
+import { ClaudeHooksHeroViz } from "./claude-code-hooks-guardrails";
 
 /**
  * Map an article's `heroViz` frontmatter key to the same SVG the
  * article itself renders in its read-view hero. This lets the
  * landing lead card + /articles index lead card show the real
- * viz instead of a gradient placeholder — the visual hook the
+ * viz instead of a gradient placeholder, the visual hook the
  * user signed off on in V1.
  */
 const map: Record<string, ComponentType> = {
@@ -30,6 +31,7 @@ const map: Record<string, ComponentType> = {
   "tower-of-hanoi": TowerOfHanoiHeroViz,
   "image-gen-split": ImageGenSplitHeroViz,
   "office-docs-bias": OfficeDocsBiasHeroViz,
+  "claude-code-hooks": ClaudeHooksHeroViz,
 };
 
 export function getHeroViz(key: string | undefined): ComponentType | null {

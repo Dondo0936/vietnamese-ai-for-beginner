@@ -11,6 +11,9 @@ import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 
 const articleComponents: Record<string, ComponentType> = {
+  "claude-code-hooks-guardrails": dynamic(
+    () => import("@/articles/claude-code-hooks-guardrails"),
+  ),
   "office-ai-biased-documents": dynamic(
     () => import("@/articles/office-ai-biased-documents"),
   ),
