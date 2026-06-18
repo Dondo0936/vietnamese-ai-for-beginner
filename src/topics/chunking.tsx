@@ -55,6 +55,18 @@ const DOC_PARAGRAPHS: string[] = [
 
 const FULL_DOC = DOC_PARAGRAPHS.join(" ");
 
+// Ước lượng token cho tiếng Việt (≈0.75 token/ký tự với tokenizer GPT-4). chỉ để minh họa
+const TOKENS_PER_CHAR = 0.75;
+const estTokens = (chars: number) => Math.round(chars * TOKENS_PER_CHAR);
+
+// Đoạn siêu ngắn để người học xem MỘT lần cắt diễn ra trước khi vào phần tương tác
+const MICRO_PARAGRAPHS: string[] = [
+  "Thời gian thử việc tối đa là 180 ngày với người quản lý doanh nghiệp.",
+  "Trong thời gian này, lương ít nhất bằng 85% lương chính thức.",
+  "Hết thử việc mà đạt yêu cầu, hai bên ký hợp đồng chính thức trong 03 ngày.",
+];
+const MICRO_DOC = MICRO_PARAGRAPHS.join(" ");
+
 const STRATEGY_COLOR: Record<string, string> = {
   fixed: "#3b82f6",
   semantic: "#22c55e",
@@ -85,6 +97,38 @@ interface Chunk {
   overlapWithPrev?: number;
 }
 
+// Mức trùng lặp từ khóa (Jaccard) giữa 2 câu. proxy minh họa cho cosine similarity của embedding
+function wordSet(s: string): Set<string> {
+  return new Set(
+    s
+      .toLowerCase()
+      .replace(/[.,;:%]/g, "")
+      .split(/\s+/)
+      .filter((w) => w.length > 1),
+  );
+}
+
+function jaccard(a: string, b: string): number {
+  const sa = wordSet(a);
+  const sb = wordSet(b);
+  let inter = 0;
+  for (const w of sa) if (sb.has(w)) inter += 1;
+  const union = sa.size + sb.size - inter;
+  return union === 0 ? 0 : inter / union;
+}
+
+// Độ tương đồng giữa từng cặp câu liên tiếp (dùng cho hình minh họa semantic)
+function adjacentSimilarities(paragraphs: string[]): number[] {
+  const sims: number[] = [];
+  for (let i = 1; i < paragraphs.length; i++) {
+    sims.push(jaccard(paragraphs[i - 1], paragraphs[i]));
+  }
+  return sims;
+}
+
+// Ngưỡng minh họa: tương đồng tụt dưới mức này coi như chủ đề đổi → cắt
+const SEMANTIC_THRESHOLD = 0.1;
+
 function fixedChunking(
   text: string,
   size: number,
@@ -114,14 +158,18 @@ function semanticChunking(
   size: number,
   overlap: number,
 ): Chunk[] {
-  // Gom các câu liên quan theo chủ đề (giả lập: mỗi 2-3 câu một nhóm)
+  // Cắt khi chủ đề đổi (tương đồng với câu trước tụt dưới ngưỡng) hoặc khi nhóm đã quá dài
   const groups: string[][] = [];
   let buffer: string[] = [];
   let bufferChars = 0;
-  for (const p of paragraphs) {
-    if (bufferChars + p.length > size && buffer.length > 0) {
+  for (let i = 0; i < paragraphs.length; i++) {
+    const p = paragraphs[i];
+    const topicShift =
+      i > 0 && jaccard(paragraphs[i - 1], p) < SEMANTIC_THRESHOLD;
+    const tooBig = bufferChars + p.length > size;
+    if ((topicShift || tooBig) && buffer.length > 0) {
       groups.push(buffer);
-      // overlap. giữ lại câu cuối
+      // overlap. mang câu cuối của nhóm trước sang để giữ ngữ cảnh ở ranh giới
       buffer = overlap > 0 ? [buffer[buffer.length - 1]] : [];
       bufferChars = buffer.join(" ").length;
     }
@@ -130,13 +178,18 @@ function semanticChunking(
   }
   if (buffer.length > 0) groups.push(buffer);
 
-  return groups.map((group, id) => ({
-    id,
-    text: group.join(" "),
-    chars: group.join(" ").length,
-    strategy: "semantic",
-    overlapWithPrev: id === 0 ? 0 : overlap,
-  }));
+  return groups.map((group, id) => {
+    const text = group.join(" ");
+    // overlap thực = độ dài câu được mang sang từ nhóm trước (nếu có)
+    const carried = id > 0 && overlap > 0 ? group[0].length : 0;
+    return {
+      id,
+      text,
+      chars: text.length,
+      strategy: "semantic",
+      overlapWithPrev: carried,
+    };
+  });
 }
 
 function recursiveChunking(
@@ -188,22 +241,22 @@ function recursiveChunking(
 
   // Áp dụng overlap hậu xử lý
   if (overlap > 0) {
-    const withOverlap: string[] = [];
+    const withOverlap: { text: string; ov: number }[] = [];
     for (let i = 0; i < result.length; i++) {
       if (i === 0) {
-        withOverlap.push(result[i]);
+        withOverlap.push({ text: result[i], ov: 0 });
       } else {
         const prev = result[i - 1];
         const tail = prev.slice(Math.max(0, prev.length - overlap));
-        withOverlap.push(tail + " " + result[i]);
+        withOverlap.push({ text: tail + " " + result[i], ov: tail.length });
       }
     }
-    return withOverlap.map((text, id) => ({
+    return withOverlap.map((c, id) => ({
       id,
-      text,
-      chars: text.length,
+      text: c.text,
+      chars: c.text.length,
       strategy: "recursive",
-      overlapWithPrev: id === 0 ? 0 : overlap,
+      overlapWithPrev: c.ov,
     }));
   }
 
@@ -408,6 +461,10 @@ function ChunkStrip({
   const remaining = chunks.length - displayed.length;
   const strategy = chunks[0]?.strategy ?? "fixed";
   const color = STRATEGY_COLOR[strategy];
+  const avgChars = Math.round(
+    chunks.reduce((s, c) => s + c.chars, 0) / Math.max(1, chunks.length),
+  );
+  const hasOverlap = chunks.some((c) => (c.overlapWithPrev ?? 0) > 0);
 
   return (
     <div className="space-y-2">
@@ -417,47 +474,63 @@ function ChunkStrip({
           chunk
         </span>
         <span>
-          Trung bình{" "}
-          <strong className="text-foreground">
-            {Math.round(
-              chunks.reduce((s, c) => s + c.chars, 0) / Math.max(1, chunks.length),
-            )}
-          </strong>{" "}
-          ký tự/chunk
+          Trung bình <strong className="text-foreground">{avgChars}</strong> ký
+          tự <span className="text-muted">(≈ {estTokens(avgChars)} token)</span>
         </span>
       </div>
 
+      {hasOverlap && (
+        <p className="text-[11px] text-muted">
+          <mark className="rounded bg-accent/30 px-1 text-foreground">
+            Phần tô đậm
+          </mark>{" "}
+          là vùng overlap, lặp lại từ cuối chunk liền trước để không mất ý ở
+          ranh giới.
+        </p>
+      )}
+
       <div className="space-y-2">
-        {displayed.map((chunk) => (
-          <div
-            key={chunk.id}
-            className="rounded-lg border p-3 text-xs leading-relaxed"
-            style={{
-              borderColor: color + "60",
-              backgroundColor: color + "1a",
-            }}
-          >
-            <div className="mb-1 flex items-center justify-between">
-              <span
-                className="font-mono text-[10px] font-bold"
-                style={{ color }}
-              >
-                Chunk #{chunk.id + 1}
-              </span>
-              <span className="font-mono text-[10px] text-muted">
-                {chunk.chars} ký tự
-                {chunk.overlapWithPrev && chunk.overlapWithPrev > 0
-                  ? ` · overlap ${chunk.overlapWithPrev}`
-                  : ""}
-              </span>
+        {displayed.map((chunk) => {
+          const ov = chunk.overlapWithPrev ?? 0;
+          const overlapText = ov > 0 ? chunk.text.slice(0, ov) : "";
+          const restRaw = chunk.text.slice(ov);
+          const rest =
+            restRaw.length > 240 ? restRaw.slice(0, 240) + "…" : restRaw;
+          return (
+            <div
+              key={chunk.id}
+              className="rounded-lg border p-3 text-xs leading-relaxed"
+              style={{
+                borderColor: color + "60",
+                backgroundColor: color + "1a",
+              }}
+            >
+              <div className="mb-1 flex items-center justify-between">
+                <span
+                  className="font-mono text-[10px] font-bold"
+                  style={{ color }}
+                >
+                  Chunk #{chunk.id + 1}
+                </span>
+                <span className="font-mono text-[10px] text-muted">
+                  {chunk.chars} ký tự ≈ {estTokens(chunk.chars)} token
+                  {ov > 0 ? ` · overlap ${ov}` : ""}
+                </span>
+              </div>
+              <p className="text-foreground/90">
+                {overlapText && (
+                  <mark
+                    className="rounded bg-accent/30 px-0.5 text-foreground"
+                    title="Vùng overlap, lặp lại từ chunk trước"
+                  >
+                    {overlapText}
+                  </mark>
+                )}
+                {rest}
+              </p>
             </div>
-            <p className="text-foreground/90">
-              {chunk.text.length > 260
-                ? chunk.text.slice(0, 260) + "…"
-                : chunk.text}
-            </p>
-          </div>
-        ))}
+          );
+        })}
 
         {remaining > 0 && (
           <div className="rounded-lg border border-dashed border-border p-2 text-center text-xs text-muted">
@@ -465,6 +538,117 @@ function ChunkStrip({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMPONENT PHỤ. XEM MỘT LẦN CẮT (đoạn ngắn, trước phần tương tác)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function MicroExample() {
+  const fixed = fixedChunking(MICRO_DOC, 80, 20);
+  const recursive = recursiveChunking(MICRO_DOC, 80, 20);
+
+  return (
+    <div className="my-6 space-y-4 rounded-xl border border-border bg-card p-5">
+      <div>
+        <p className="text-sm font-semibold text-foreground">
+          Xem một lần cắt diễn ra
+        </p>
+        <p className="mt-1 text-xs text-muted">
+          Bắt đầu với một đoạn ngắn ({MICRO_DOC.length} ký tự, 3 câu). Cùng một
+          đoạn, hai cách cắt cho ra chunk rất khác nhau.
+        </p>
+      </div>
+
+      <div className="rounded-lg border border-border bg-surface/40 p-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
+          Văn bản gốc
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-foreground/90">
+          {MICRO_DOC}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <p className="text-xs font-semibold text-foreground">
+            Fixed-size (size 80, overlap 20)
+          </p>
+          <p className="text-[11px] text-muted">
+            Cắt đúng ở ký tự thứ 80 dù đang giữa từ hay giữa câu.
+          </p>
+          <ChunkStrip chunks={fixed} maxDisplay={6} />
+        </div>
+        <div className="space-y-2">
+          <p className="text-xs font-semibold text-foreground">
+            Recursive (ưu tiên ranh giới câu)
+          </p>
+          <p className="text-[11px] text-muted">
+            Thử cắt ở dấu chấm trước, nên mỗi chunk gọn trong một câu trọn ý.
+          </p>
+          <ChunkStrip chunks={recursive} maxDisplay={6} />
+        </div>
+      </div>
+
+      <p className="text-xs text-muted">
+        Nhìn cột Fixed-size: chỗ tô đậm ở đầu mỗi chunk là vùng overlap, vá lại
+        phần bị cắt ngang. Cột Recursive gần như không cần vá vì nó cắt đúng
+        ranh giới câu.
+      </p>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMPONENT PHỤ. THANH ĐỘ TƯƠNG ĐỒNG (chỉ dùng cho tab Semantic)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SemanticSimilarityStrip() {
+  const sims = adjacentSimilarities(DOC_PARAGRAPHS);
+  const max = Math.max(...sims, 0.01);
+
+  return (
+    <div className="rounded-lg border border-border bg-surface/40 p-3">
+      <p className="text-xs font-medium text-foreground">
+        Độ tương đồng giữa các câu liên tiếp{" "}
+        <span className="text-muted">
+          (minh họa bằng mức trùng lặp từ khóa, thay cho cosine similarity của
+          embedding)
+        </span>
+      </p>
+      <div className="mt-3 flex items-end gap-1" style={{ height: 64 }}>
+        {sims.map((s, i) => {
+          const isCut = s < SEMANTIC_THRESHOLD;
+          return (
+            <div
+              key={i}
+              className="flex flex-1 flex-col items-center justify-end"
+            >
+              <div
+                className="w-full rounded-t"
+                style={{
+                  height: `${Math.max(6, (s / max) * 44)}px`,
+                  backgroundColor: isCut
+                    ? "var(--color-muted)"
+                    : "var(--color-accent)",
+                }}
+                title={`Câu ${i + 1} ↔ ${i + 2}: ${s.toFixed(2)}`}
+              />
+              {isCut && (
+                <span className="mt-1 text-[10px] font-semibold text-accent">
+                  ✂ cắt
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-2 text-[11px] text-muted">
+        Cột thấp tức là hai câu ít liên quan (chủ đề đổi). Semantic chunking cắt
+        ngay tại đó. Ngưỡng minh họa: {SEMANTIC_THRESHOLD}.
+      </p>
     </div>
   );
 }
@@ -631,7 +815,10 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
         <div>
           <label className="flex items-center justify-between text-xs font-medium text-foreground">
             <span>Chunk size (ký tự)</span>
-            <span className="font-mono text-accent">{size}</span>
+            <span className="font-mono text-accent">
+              {size}{" "}
+              <span className="text-muted">≈ {estTokens(size)} token</span>
+            </span>
           </label>
           <input
             type="range"
@@ -675,6 +862,8 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
       </div>
 
       <QualityBoard score={score} />
+
+      {strategy === "semantic" && <SemanticSimilarityStrip />}
 
       <ChunkStrip chunks={chunks} maxDisplay={6} />
 
@@ -758,12 +947,36 @@ export default function ChunkingTopic() {
         → LLM đưa câu trả lời sai. Ngược lại, chunking khéo léo giúp mọi bước
         sau chạy trơn tru.
       </p>
+
+      <Callout variant="info" title="Trước khi bắt đầu: vì sao phải cắt nhỏ?">
+        <ul className="list-disc space-y-1 pl-4 text-sm">
+          <li>
+            <strong>Token</strong> (mảnh từ): model không đọc theo từng chữ cái
+            mà theo token. Một từ như &quot;thử việc&quot; thường là 2 đến 3
+            token.
+          </li>
+          <li>
+            <strong>Embedding</strong> (vector ý nghĩa): mỗi chunk được biến
+            thành một dãy số để máy so khớp theo ý nghĩa, không phải so từng
+            chữ.
+          </li>
+          <li>
+            <strong>Giới hạn độ dài</strong>: mỗi embedding model chỉ đọc tối đa
+            một số token trong một lần (ví dụ 512). Phần dài hơn bị cắt bỏ âm
+            thầm. Vì vậy tài liệu dài phải chia thành chunk vừa giới hạn rồi mới
+            embed.
+          </li>
+        </ul>
+      </Callout>
+
       <p>
         Ba chiến lược phổ biến nhất là Fixed-size (cắt đều), Semantic (cắt
         theo chủ đề), và Recursive (cắt theo ranh giới tự nhiên). Phần tương
         tác dưới đây cho bạn điều chỉnh chunk size, overlap và xem ngay điểm
         truy xuất thay đổi.
       </p>
+
+      <MicroExample />
 
       {/* ──────────────────────────────────────────────────────────────────
           3. VISUALIZATION. 3 tabs cho 3 chiến lược, sliders + điểm quality
