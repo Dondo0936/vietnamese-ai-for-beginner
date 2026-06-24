@@ -206,7 +206,57 @@ export default function ClaudeCodeHooksGuardrailsArticle() {
       </ArticleSection>
 
       <ArticleSection
-        eyebrow="08 · Checklist"
+        eyebrow="08 · Quy mô production"
+        heading="Công ty lớn không đặt một cổng. Họ xếp nhiều lớp guardrail"
+      >
+        <ArticleProse>
+          <p>
+            Hook bạn vừa viết canh một máy, một repo. Nhưng một hệ thống AI
+            phục vụ hàng triệu người dùng, ví dụ chatbot hỗ trợ, copilot trong
+            sản phẩm, hay agent tự động gọi API, thì không thể tin vào một
+            checkpoint duy nhất. Vì vậy các công ty lớn dựng guardrail theo kiểu
+            defense in depth: nhiều lớp xếp nối nhau, lớp sau bắt cái lớp trước
+            bỏ lọt.
+          </p>
+          <p>
+            Các lớp đó rơi vào ba nhóm. <b>Input guardrail</b> chạy trước khi
+            model đọc prompt: lọc nội dung độc hại, phát hiện{" "}
+            <Term slug="prompt-injection-defense">prompt injection</Term> và
+            jailbreak, che thông tin nhạy cảm như PII. <b>Output guardrail</b>{" "}
+            chạy trước khi câu trả lời đến tay người dùng hoặc hệ thống tiếp
+            theo: kiểm nội dung, validate đúng schema, đối chiếu câu trả lời với
+            nguồn để bắt hallucination, và redact dữ liệu lộ ra.{" "}
+            <b>Action guardrail</b> chạy ngay trước khi một tool thực thi. Đây
+            chính là ý tưởng của <code>PreToolUse</code> hook, nhưng ở quy mô
+            service và thường kèm một người duyệt cho thao tác rủi ro cao.
+          </p>
+          <p>
+            Điểm chung là họ coi guardrail như production code thật. Policy được
+            version trong repo, có eval suite chạy thử trên tập case đã gán nhãn,
+            có red team tấn công thử để tìm lỗ hổng, và có observability để theo
+            dõi khi đã chạy thật: log, trace, metric, và một đường báo sự cố khi
+            guardrail chặn nhầm hoặc bỏ lọt. Vài bộ công cụ phổ biến cho hướng
+            này là Llama Guard, NeMo Guardrails, OpenAI Moderation API,
+            Guardrails AI và Azure AI Content Safety.
+          </p>
+        </ArticleProse>
+        <ArticleCompare
+          before={{
+            label: "Một cổng",
+            value: "Hook trên máy bạn",
+            note: "Đủ cho một repo, một developer. Nhưng chỉ canh đúng điểm gọi tool, không thấy input độc hại hay output sai.",
+          }}
+          after={{
+            label: "Defense in depth",
+            value: "Nhiều lớp ở production",
+            note: "Input, output và action mỗi lớp một việc. Lớp sau bắt cái lớp trước bỏ lọt, và mọi lớp đều có log để audit.",
+          }}
+        />
+        <ProductionLayersViz />
+      </ArticleSection>
+
+      <ArticleSection
+        eyebrow="09 · Checklist"
         heading="Cách viết hook không tự làm hệ thống yếu đi"
       >
         <ArticleProse>
@@ -804,6 +854,76 @@ function TeamRolloutViz() {
             </p>
           </div>
         ))}
+      </div>
+    </ArticleViz>
+  );
+}
+
+function ProductionLayersViz() {
+  const layers = [
+    ["Input guard", "moderation, chặn prompt injection, lọc PII", "var(--turquoise-500)"],
+    ["Model", "LLM sinh câu trả lời hoặc tool call", "var(--graphite)"],
+    ["Output guard", "kiểm nội dung, validate schema, đối chiếu nguồn", "var(--peach-500)"],
+    ["Action guard", "gate tool, người duyệt cho thao tác rủi ro cao", "var(--clay)"],
+  ];
+
+  return (
+    <ArticleViz caption="Defense in depth: input, model, output, action là các lớp riêng. Observability chạy dưới tất cả.">
+      <div style={{ overflowX: "auto" }}>
+        <div
+          style={{
+            minWidth: 720,
+            display: "grid",
+            gridTemplateColumns: `repeat(${layers.length}, 1fr)`,
+            gap: 12,
+            alignItems: "stretch",
+          }}
+        >
+          {layers.map(([title, note, color], index) => (
+            <div
+              key={title}
+              style={{
+                minHeight: 150,
+                border: "1px solid var(--border)",
+                borderTop: `5px solid ${color}`,
+                borderRadius: 14,
+                background: "var(--bg-card)",
+                padding: 16,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  color: "var(--text-secondary)",
+                  marginBottom: 16,
+                }}
+              >
+                {String(index + 1).padStart(2, "0")}
+              </div>
+              <b style={{ color: "var(--text-primary)", fontSize: 19 }}>{title}</b>
+              <p style={{ margin: "8px 0 0", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                {note}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div
+        style={{
+          marginTop: 14,
+          border: "1px solid var(--border)",
+          borderRadius: 14,
+          background: "var(--paper-2)",
+          padding: 16,
+          color: "var(--text-primary)",
+        }}
+      >
+        <b>Observability chạy dưới mọi lớp:</b>{" "}
+        <span style={{ color: "var(--text-secondary)" }}>
+          log, trace, metric, eval suite trên case đã gán nhãn, và red team tìm
+          lỗ hổng trước khi user gặp.
+        </span>
       </div>
     </ArticleViz>
   );

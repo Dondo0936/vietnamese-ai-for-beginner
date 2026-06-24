@@ -16,7 +16,7 @@ export const articleList: ArticleMeta[] = [
       url: "https://code.claude.com/docs/en/hooks",
     },
     date: "2026-05-30",
-    readingTime: "11 phút",
+    readingTime: "13 phút",
     category: "agent",
     tag: "guardrails",
     lessonRefs: [
