@@ -282,7 +282,7 @@ export default function ContextWindowTopic() {
             "Đọc 200 trang xong tự chia ra, tóm tắt mỗi phần",
           ]}
           correct={1}
-          explanation="ChatGPT miễn phí dùng context window rất nhỏ (khoảng 4–8K token, tức 6–12 trang A4). Phần vượt quá bị cắt âm thầm, AI vẫn trả ra một bản tóm tắt, nhưng chỉ dựa trên phần đầu. Đây là vấn đề bạn không 'thấy' mà lại thường xuyên gặp."
+          explanation="ChatGPT miễn phí dùng context window rất nhỏ (khoảng 4-8K token, tức 6-12 trang A4). Phần vượt quá bị cắt âm thầm, AI vẫn trả ra một bản tóm tắt, nhưng chỉ dựa trên phần đầu. Đây là vấn đề bạn không 'thấy' mà lại thường xuyên gặp."
         >
           <p className="text-sm text-muted mt-4 leading-relaxed">
             Hôm nay bạn sẽ học chính xác AI có thể &quot;thấy&quot; được bao nhiêu chữ trong
@@ -324,7 +324,7 @@ export default function ContextWindowTopic() {
             <p className="text-sm text-foreground leading-relaxed">
               Đơn vị đo là <strong>token</strong>, một mẩu chữ nhỏ. Tiếng Việt thường
               tốn nhiều token hơn tiếng Anh vì có dấu. Một trang A4 điển hình khoảng{" "}
-              <strong>600–700 token</strong>.
+              <strong>600-700 token</strong>.
             </p>
           </div>
         </div>
@@ -338,7 +338,7 @@ export default function ContextWindowTopic() {
             </div>
             <div className="rounded bg-surface px-3 py-2">
               <div className="font-mono text-foreground">&quot;ngôi sao&quot;</div>
-              <div className="text-tertiary mt-1">≈ 2–3 token</div>
+              <div className="text-tertiary mt-1">≈ 2-3 token</div>
             </div>
             <div className="rounded bg-surface px-3 py-2">
               <div className="font-mono text-foreground">&quot;cà phê sữa đá&quot;</div>
@@ -346,7 +346,7 @@ export default function ContextWindowTopic() {
             </div>
             <div className="rounded bg-surface px-3 py-2">
               <div className="font-mono text-foreground">1 trang A4</div>
-              <div className="text-tertiary mt-1">≈ 600–700 token</div>
+              <div className="text-tertiary mt-1">≈ 600-700 token</div>
             </div>
           </div>
           <p className="mt-3">
@@ -533,7 +533,7 @@ export default function ContextWindowTopic() {
               childB={
                 <div className="text-sm leading-relaxed">
                   Khi tài liệu lên tới hàng trăm trang, AI đọc kỹ phần đầu và phần cuối,
-                  còn phần giữa dễ bị &quot;lơ&quot; (xuống tới 40–60% trong một số thử
+                  còn phần giữa dễ bị &quot;lơ&quot; (xuống tới 40-60% trong một số thử
                   nghiệm). <strong>Bí kíp: đặt câu hỏi quan trọng ở đầu hoặc cuối
                   prompt, đừng chôn ở giữa.</strong>
                 </div>
@@ -668,7 +668,7 @@ export default function ContextWindowTopic() {
                   min: 500,
                   max: 20_000,
                   step: 500,
-                  hint: "Phải có chỗ cho AI viết trả lời, thường 2–8K",
+                  hint: "Phải có chỗ cho AI viết trả lời, thường 2-8K",
                 },
               ].map((s) => (
                 <div key={s.label}>
@@ -835,7 +835,7 @@ export default function ContextWindowTopic() {
                 {
                   name: "1. Chia nhỏ (Chunking)",
                   when: "Khi có thể tóm từng phần rồi gộp",
-                  how: "Cắt tài liệu thành phần 20–50 trang, tóm mỗi phần, rồi gộp các bản tóm tắt thành tóm tắt cuối.",
+                  how: "Cắt tài liệu thành phần 20-50 trang, tóm mỗi phần, rồi gộp các bản tóm tắt thành tóm tắt cuối.",
                   pros: "Đơn giản, không cần công cụ đặc biệt.",
                   cons: "Có thể mất mối liên kết xuyên suốt giữa các phần.",
                   color: "#F59E0B",
@@ -843,7 +843,7 @@ export default function ContextWindowTopic() {
                 {
                   name: "2. Đổi mô hình context lớn",
                   when: "Khi cần đọc cả tài liệu trong một lần",
-                  how: "Chuyển sang Claude 3.5 (200K), Gemini 1.5 Pro (1–2M) hoặc Claude 1M beta.",
+                  how: "Chuyển sang Claude 3.5 (200K), Gemini 1.5 Pro (1-2M) hoặc Claude 1M beta.",
                   pros: "Đơn giản, AI có bối cảnh đầy đủ.",
                   cons: "Đắt hơn (theo token) và phần giữa vẫn dễ 'bị lơ'.",
                   color: "#8B5CF6",
@@ -859,7 +859,7 @@ export default function ContextWindowTopic() {
                 {
                   name: "4. Tóm tắt cuốn chiếu (Rolling summary)",
                   when: "Khi cuộc chat kéo dài nhiều tiếng, nhiều lượt",
-                  how: "Cứ sau mỗi 10–15 lượt, nhờ AI tóm lại bối cảnh đến giờ thành vài dòng, rồi dùng đoạn đó thay cho lịch sử gốc.",
+                  how: "Cứ sau mỗi 10-15 lượt, nhờ AI tóm lại bối cảnh đến giờ thành vài dòng, rồi dùng đoạn đó thay cho lịch sử gốc.",
                   pros: "Giữ được mạch ngữ cảnh mà không tràn ngân sách.",
                   cons: "Chi tiết nhỏ có thể rơi rụng sau mỗi lần tóm tắt.",
                   color: "#10B981",
@@ -903,9 +903,9 @@ export default function ContextWindowTopic() {
           <Callout variant="info" title="Tiếng Việt tốn token hơn tiếng Anh">
             Tokenizer của hầu hết mô hình được huấn luyện chủ yếu với tiếng Anh, nên
             các ký tự có dấu của tiếng Việt thường bị chia nhỏ hơn. Một câu tiếng
-            Việt 10 chữ thường ngốn khoảng 18–25 token, trong khi câu tiếng Anh cùng
-            nội dung chỉ 12–15 token. Quy đổi thô: ngân sách context &quot;thực
-            dùng&quot; cho tiếng Việt chỉ khoảng <strong>60–70% con số ghi trên
+            Việt 10 chữ thường ngốn khoảng 18-25 token, trong khi câu tiếng Anh cùng
+            nội dung chỉ 12-15 token. Quy đổi thô: ngân sách context &quot;thực
+            dùng&quot; cho tiếng Việt chỉ khoảng <strong>60-70% con số ghi trên
             nhãn</strong>.
           </Callout>
 

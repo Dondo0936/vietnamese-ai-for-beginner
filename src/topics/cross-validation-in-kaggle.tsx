@@ -488,7 +488,7 @@ function LeaderboardShockCard() {
       </div>
 
       <p className="text-xs text-muted italic leading-relaxed">
-        Đây là câu chuyện thật từ cuộc thi Kaggle 2015–2016. Đội X chọn model
+        Đây là câu chuyện thật từ cuộc thi Kaggle 2015-2016. Đội X chọn model
         dựa trên CV score cao thay vì public LB. Trong khi đó 1.484 đội phía
         trên đã overfit public LB và tụt hạng thảm hại khi private công bố.
       </p>

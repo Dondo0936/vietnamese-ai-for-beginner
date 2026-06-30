@@ -603,8 +603,8 @@ function LogTransformChart() {
 function BinningViz() {
   const bins = [
     { label: "rẻ", range: "< 200k", count: 2, color: "#10b981" },
-    { label: "vừa", range: "200k – 1M", count: 1, color: "#0ea5e9" },
-    { label: "khá", range: "1M – 5M", count: 1, color: "#a855f7" },
+    { label: "vừa", range: "200k-1M", count: 1, color: "#0ea5e9" },
+    { label: "khá", range: "1M-5M", count: 1, color: "#a855f7" },
     { label: "cao", range: "> 5M", count: 1, color: "#ef4444" },
   ];
   return (
@@ -1091,7 +1091,7 @@ export default function FeatureEngineeringTopic() {
           <p className="text-xs text-muted leading-relaxed">
             n<sub>x</sub> là số lần category x xuất hiện; ȳ<sub>x</sub> là
             trung bình target trong category; ȳ là trung bình toàn cục; m là
-            &ldquo;sức mạnh prior&rdquo; (thường 10 – 30). Category xuất hiện
+            &ldquo;sức mạnh prior&rdquo; (thường 10-30). Category xuất hiện
             nhiều &rArr; dùng giá trị riêng; category hiếm &rArr; kéo về
             trung bình toàn cục để chống overfit.
           </p>
@@ -1205,7 +1205,7 @@ function NumericalTab() {
         <MiniCard
           icon={Scale}
           title="Scaling"
-          body="StandardScaler (mean 0, std 1) hoặc MinMax (0 – 1). Bắt buộc cho linear / neural net."
+          body="StandardScaler (mean 0, std 1) hoặc MinMax (0-1). Bắt buộc cho linear / neural net."
           color="#0ea5e9"
         />
         <MiniCard

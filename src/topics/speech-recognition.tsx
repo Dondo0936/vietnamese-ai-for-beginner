@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "speech-recognition",
   title: "Speech Recognition",
-  titleVi: "Nhận dạng giọng nói. Tai nghe AI",
+  titleVi: "Nhận dạng giọng nói",
   description:
     "Công nghệ chuyển đổi giọng nói con người thành văn bản, là nền tảng cho trợ lý ảo và ghi chú tự động.",
   category: "multimodal",

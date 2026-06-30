@@ -208,7 +208,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "'Đơn #1234 đâu rồi' → intent = tra cứu đơn. Chatbot có thể tự động trả lời trạng thái mà không cần chuyển cho nhân viên. Đó là lý do Intercom / Zendesk tiết kiệm 30–45% thời gian phản hồi.",
+      "'Đơn #1234 đâu rồi' → intent = tra cứu đơn. Chatbot có thể tự động trả lời trạng thái mà không cần chuyển cho nhân viên. Đó là lý do Intercom / Zendesk tiết kiệm 30-45% thời gian phản hồi.",
   },
   {
     question: "Precision = 95%, Recall = 60%. Điều này nghĩa là gì với bộ lọc spam?",
@@ -666,7 +666,7 @@ export default function TextClassificationTopic() {
                   Mô hình học <strong>càng nhiều nhãn thật càng tốt</strong>.
                   Các công ty lớn chi hàng triệu đô để thuê &ldquo;data
                   labelers&rdquo; (người dán nhãn). Active learning giúp máy tự
-                  chọn những mẫu nó thấy <em>mơ hồ nhất</em> để hỏi con người, tiết kiệm 60–80% công dán nhãn.
+                  chọn những mẫu nó thấy <em>mơ hồ nhất</em> để hỏi con người, tiết kiệm 60-80% công dán nhãn.
                 </p>
               </Callout>
             </div>
@@ -731,7 +731,7 @@ export default function TextClassificationTopic() {
                 title: "Rule & Keyword",
                 subtitle: "Từ điển & biểu thức",
                 desc: "Kê danh sách từ cấm, regex. Nhanh, dễ giải thích, nhưng giòn (khách viết khác là sai).",
-                acc: "60–70%",
+                acc: "60-70%",
                 color: "#3b82f6",
               },
               {
@@ -739,7 +739,7 @@ export default function TextClassificationTopic() {
                 title: "ML cổ điển",
                 subtitle: "Naive Bayes, SVM, Logistic",
                 desc: "Học từ vài nghìn ví dụ có nhãn. Đủ tốt cho bộ lọc spam, phân chuyên mục báo, triage ticket đơn giản.",
-                acc: "80–90%",
+                acc: "80-90%",
                 color: "#a855f7",
               },
               {
@@ -747,7 +747,7 @@ export default function TextClassificationTopic() {
                 title: "BERT / LLM",
                 subtitle: "PhoBERT, XLM-R, GPT",
                 desc: "Hiểu ý định, đảo ngữ, viết tắt, emoji. Cần ít dữ liệu nhãn hơn nhờ pre-training.",
-                acc: "90–97%",
+                acc: "90-97%",
                 color: "#22c55e",
               },
             ].map((t) => (

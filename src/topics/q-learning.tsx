@@ -123,7 +123,7 @@ function selectAction(q: QTable, r: number, c: number, epsilon: number): number 
   return best;
 }
 
-/** Bước môi trường — trả về vị trí kế tiếp và reward. */
+/** Bước môi trường-trả về vị trí kế tiếp và reward. */
 function step(
   r: number,
   c: number,
@@ -133,12 +133,12 @@ function step(
   let nr = r + dr;
   let nc = c + dc;
 
-  // Chạm biên — đứng yên
+  // Chạm biên-đứng yên
   if (nr < 0 || nr >= GRID_SIZE || nc < 0 || nc >= GRID_SIZE) {
     nr = r;
     nc = c;
   }
-  // Chạm tường — đứng yên
+  // Chạm tường-đứng yên
   if (isWall(nr, nc)) {
     nr = r;
     nc = c;
@@ -406,7 +406,7 @@ export default function QLearningTopic() {
           "Khi state space quá lớn (ví dụ ảnh pixel), Q-table không dùng được. Giải pháp là gì?",
         options: [
           "Làm bảng Q khổng lồ",
-          "Xấp xỉ Q(s,a) bằng neural network (Deep Q-Network — DQN)",
+          "Xấp xỉ Q(s,a) bằng neural network (Deep Q-Network-DQN)",
           "Bỏ Q-Learning",
         ],
         correct: 1,
@@ -454,7 +454,7 @@ export default function QLearningTopic() {
           question="Grab cần tìm đường ngắn nhất cho tài xế. Mỗi ngã tư có nhiều hướng, không biết trước đường nào kẹt. Tài xế học bằng cách nào?"
           options={[
             "Lập trình mỗi ngã tư bằng tay",
-            "Thử nhiều đường, nhớ đường nào nhanh (reward cao), lần sau ưu tiên đường đó — đây là Q-Learning!",
+            "Thử nhiều đường, nhớ đường nào nhanh (reward cao), lần sau ưu tiên đường đó-đây là Q-Learning!",
             "Luôn đi thẳng",
           ]}
           correct={1}
@@ -731,7 +731,7 @@ export default function QLearningTopic() {
                 <p className="mt-3 text-[11px] text-muted leading-relaxed">
                   Màu xanh đậm = Q cao (ô &quot;tốt&quot;). Màu đỏ = Q âm (ô
                   &quot;xấu&quot;). Khi agent học, bạn sẽ thấy màu xanh lan
-                  dần từ đích về điểm xuất phát — Q values truyền ngược qua
+                  dần từ đích về điểm xuất phát-Q values truyền ngược qua
                   phương trình Bellman.
                 </p>
               </div>
@@ -756,8 +756,8 @@ export default function QLearningTopic() {
             Sau nhiều lần thử, agent{" "}
             <strong>học được bản đồ giá trị</strong> (Q-table): tại mỗi ô,
             biết đi hướng nào có giá trị cao nhất. Q values{" "}
-            <strong>lan ngược từ đích</strong> — ô gần đích có Q cao, ô xa
-            hơn thì Q thấp dần. Agent đi theo gradient của Q values — giống
+            <strong>lan ngược từ đích</strong>, ô gần đích có Q cao, ô xa
+            hơn thì Q thấp dần. Agent đi theo gradient của Q values-giống
             nước chảy từ núi xuống thung lũng!
           </p>
           <p className="mt-3">
@@ -771,7 +771,7 @@ export default function QLearningTopic() {
         <Callout variant="tip" title="Tại sao có chi phí sống (-0.1)?">
           Nếu mỗi ô không có goal đều cho reward = 0, agent có thể lang
           thang vô tận vì không bị phạt. Thêm -0.1 mỗi bước biến bài toán
-          thành &quot;đến đích càng nhanh càng tốt&quot; — đây là cách thiết
+          thành &quot;đến đích càng nhanh càng tốt&quot;, đây là cách thiết
           kế reward shaping đơn giản.
         </Callout>
       </LessonSection>
@@ -780,8 +780,8 @@ export default function QLearningTopic() {
         <InlineChallenge
           question="Agent có ε = 0.3. Sau 1000 episodes, nó đã học tốt. Nên giảm ε xuống 0.05 không?"
           options={[
-            "Không — giữ 0.3 để tiếp tục explore",
-            "CÓ — agent đã học → nên exploit nhiều hơn (0.05 = 95% chọn best action). Epsilon decay là chiến lược chuẩn",
+            "Không-giữ 0.3 để tiếp tục explore",
+            "CÓ-agent đã học → nên exploit nhiều hơn (0.05 = 95% chọn best action). Epsilon decay là chiến lược chuẩn",
             "Đặt ε = 0 (tắt explore hoàn toàn)",
           ]}
           correct={1}
@@ -806,13 +806,13 @@ export default function QLearningTopic() {
         <ExplanationSection>
           <p>
             <strong>Q-Learning</strong> là thuật toán RL học giá trị{" "}
-            <LaTeX>{"Q(s, a)"}</LaTeX> — &quot;hành động a tại state s tốt
-            đến đâu?&quot; — từ trải nghiệm (off-policy, model-free). Khi
+            <LaTeX>{"Q(s, a)"}</LaTeX>, &quot;hành động a tại state s tốt
+            đến đâu?&quot;, từ trải nghiệm (off-policy, model-free). Khi
             state space quá lớn (hình ảnh, game), Q-table được thay bằng
-            neural network — xem{" "}
+            neural network-xem{" "}
             <TopicLink slug="deep-q-network">Deep Q-Network (DQN)</TopicLink>
             . Một nhánh khác là học trực tiếp policy thay vì value function
-            — xem <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>
+           , xem <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>
             .
           </p>
 
@@ -833,19 +833,19 @@ export default function QLearningTopic() {
           <p>Trong đó:</p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <LaTeX>{"\\alpha"}</LaTeX> — learning rate, kiểm soát tốc độ
+              <LaTeX>{"\\alpha"}</LaTeX>, learning rate, kiểm soát tốc độ
               cập nhật.
             </li>
             <li>
-              <LaTeX>{"\\gamma"}</LaTeX> — discount factor, đo mức độ quan
+              <LaTeX>{"\\gamma"}</LaTeX>, discount factor, đo mức độ quan
               trọng của reward tương lai.
             </li>
             <li>
-              <LaTeX>{"r_t"}</LaTeX> — reward nhận được khi chuyển từ{" "}
+              <LaTeX>{"r_t"}</LaTeX>, reward nhận được khi chuyển từ{" "}
               <LaTeX>{"s_t"}</LaTeX> sang <LaTeX>{"s_{t+1}"}</LaTeX>.
             </li>
             <li>
-              <LaTeX>{"\\epsilon"}</LaTeX> — xác suất explore trong
+              <LaTeX>{"\\epsilon"}</LaTeX>, xác suất explore trong
               epsilon-greedy.
             </li>
           </ul>
@@ -855,7 +855,7 @@ export default function QLearningTopic() {
             action (max Q), không phải action thực sự đã thực hiện. Ưu điểm:
             học từ bất kỳ data nào (replay buffer, quan sát người chơi
             khác). Nhược điểm: có thể overestimate Q values (Double Q-Learning
-            khắc phục). SARSA là <strong>on-policy</strong> — update bằng
+            khắc phục). SARSA là <strong>on-policy</strong>, update bằng
             action thực tế sẽ được lấy ở bước tiếp theo, bảo thủ hơn khi có
             nguy hiểm.
           </Callout>
@@ -885,7 +885,7 @@ export default function QLearningTopic() {
             hội tụ nhưng thường vẫn work tốt.
           </p>
 
-          <CodeBlock language="python" title="Q-Learning với NumPy — grid world 5×5">
+          <CodeBlock language="python" title="Q-Learning với NumPy-grid world 5×5">
 {`import numpy as np
 
 GRID = 5
@@ -948,7 +948,7 @@ if __name__ == "__main__":
 
           <CodeBlock
             language="python"
-            title="Double Q-Learning — khắc phục overestimation bias"
+            title="Double Q-Learning-khắc phục overestimation bias"
           >
 {`import numpy as np
 
@@ -988,7 +988,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
                 {"\\mathbb{E}[\\max X] \\ge \\max \\mathbb{E}[X]"}
               </LaTeX>
               . Khi Q có nhiễu ước lượng (đương nhiên, do mẫu hữu hạn), max
-              trên các ước lượng nhiễu sẽ luôn nghiêng về phía lớn — đẩy Q
+              trên các ước lượng nhiễu sẽ luôn nghiêng về phía lớn-đẩy Q
               lên cao hơn giá trị thật. Càng nhiều action, bias càng nặng.
             </p>
             <p className="text-sm leading-relaxed mt-2">
@@ -1018,7 +1018,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
             </ul>
             <p className="text-sm leading-relaxed mt-2">
               Trong Atari, γ = 0.99 là chuẩn. Trong robotics dài hạn, người
-              ta dùng γ = 0.995-0.999. Trò chơi cờ — γ có thể bằng 1.0 vì
+              ta dùng γ = 0.995-0.999. Trò chơi cờ-γ có thể bằng 1.0 vì
               episode hữu hạn rõ ràng.
             </p>
           </CollapsibleDetail>
@@ -1035,30 +1035,30 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <LaTeX>{"\\mathcal{S}"}</LaTeX> — tập các state (ví dụ: toạ
+              <LaTeX>{"\\mathcal{S}"}</LaTeX>, tập các state (ví dụ: toạ
               độ ô trong mê cung).
             </li>
             <li>
-              <LaTeX>{"\\mathcal{A}"}</LaTeX> — tập các action (ví dụ: 4
+              <LaTeX>{"\\mathcal{A}"}</LaTeX>, tập các action (ví dụ: 4
               hướng di chuyển).
             </li>
             <li>
-              <LaTeX>{"P(s' \\mid s, a)"}</LaTeX> — xác suất chuyển state.
+              <LaTeX>{"P(s' \\mid s, a)"}</LaTeX>, xác suất chuyển state.
               Ở grid world tất định, P = 1 khi nước đi hợp lệ.
             </li>
             <li>
-              <LaTeX>{"R(s, a, s')"}</LaTeX> — reward nhận được khi chuyển
+              <LaTeX>{"R(s, a, s')"}</LaTeX>, reward nhận được khi chuyển
               từ s sang s' bằng action a.
             </li>
             <li>
-              <LaTeX>{"\\gamma \\in [0, 1)"}</LaTeX> — discount factor.
+              <LaTeX>{"\\gamma \\in [0, 1)"}</LaTeX>, discount factor.
             </li>
           </ul>
 
           <p>
             Agent muốn tìm <strong>chính sách tối ưu</strong>{" "}
-            <LaTeX>{"\\pi^{*}(s)"}</LaTeX> — hàm trả về action tốt nhất cho
-            mỗi state — sao cho kỳ vọng tổng reward tương lai (có chiết
+            <LaTeX>{"\\pi^{*}(s)"}</LaTeX>, hàm trả về action tốt nhất cho
+            mỗi state-sao cho kỳ vọng tổng reward tương lai (có chiết
             khấu) là lớn nhất:
           </p>
           <LaTeX block>
@@ -1134,7 +1134,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
             sai (agent tìm cách lách luật), quá ít episodes (chưa hội tụ),
             state không đủ Markov (agent không thấy thông tin cần thiết),
             hoặc simulator khác môi trường thật (sim-to-real gap). RL mạnh
-            nhưng brittle — luôn debug bằng cách in Q values và vẽ policy.
+            nhưng brittle-luôn debug bằng cách in Q values và vẽ policy.
           </Callout>
 
           <p>
@@ -1159,7 +1159,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
             </li>
             <li>
               <strong>LLM:</strong> RLHF (Reinforcement Learning from Human
-              Feedback) — ChatGPT, Claude học từ sở thích người dùng.
+              Feedback), ChatGPT, Claude học từ sở thích người dùng.
             </li>
           </ul>
         </section>
@@ -1190,7 +1190,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
           <TopicLink slug="deep-q-network">Deep Q-Network</TopicLink> để biết
           cách mở rộng Q-Learning cho state space liên tục, và{" "}
           <TopicLink slug="policy-gradient">Policy Gradient</TopicLink> cho
-          cách tiếp cận ngược lại — học thẳng chính sách.
+          cách tiếp cận ngược lại-học thẳng chính sách.
         </Callout>
       </LessonSection>
 

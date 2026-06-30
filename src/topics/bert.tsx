@@ -1047,7 +1047,7 @@ print(scores.argmax(dim=1))  # tensor([0, 1]), khớp đúng!
                   <li>Learning rate nhỏ: 1e-5 đến 5e-5.</li>
                   <li>Warmup linear 10% tổng số bước, rồi giảm tuyến tính.</li>
                   <li>Weight decay 0.01 cho các tham số không phải bias/LayerNorm.</li>
-                  <li>Chỉ 2–4 epoch là đủ cho dataset cỡ vài chục nghìn mẫu.</li>
+                  <li>Chỉ 2-4 epoch là đủ cho dataset cỡ vài chục nghìn mẫu.</li>
                 </ul>
               </Callout>
 
@@ -1236,7 +1236,7 @@ print(scores.argmax(dim=1))  # tensor([0, 1]), khớp đúng!
                   làm mất thông tin hình vị. PhoBERT dùng RDRSegmenter để tách từ trước khi
                   tokenize, giữ được ngữ nghĩa cấp độ từ tiếng Việt (vốn là ngôn ngữ đơn tiết
                   phân tách bằng dấu cách). Hầu hết benchmark tiếng Việt (VLSP, UIT-VSFC) đều
-                  cho thấy PhoBERT vượt mBERT 3–7 điểm F1.
+                  cho thấy PhoBERT vượt mBERT 3-7 điểm F1.
                 </p>
               </Callout>
             </ExplanationSection>

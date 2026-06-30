@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// PREFERENCE PAIR DATASET — mô phỏng 4 cặp (prompt, chosen, rejected)
+// PREFERENCE PAIR DATASET-mô phỏng 4 cặp (prompt, chosen, rejected)
 // ---------------------------------------------------------------------------
 
 interface PreferencePair {
@@ -98,7 +98,7 @@ const PAIRS: PreferencePair[] = [
     refLogpRejected: -5.8,
     policyLogpChosen: -7.5,
     policyLogpRejected: -11.0,
-    note: "π_ref ưu tiên câu bịa (nghe trôi chảy) — DPO đảo ngược ưu tiên này.",
+    note: "π_ref ưu tiên câu bịa (nghe trôi chảy), DPO đảo ngược ưu tiên này.",
   },
   {
     id: "pair-format",
@@ -111,12 +111,12 @@ const PAIRS: PreferencePair[] = [
     refLogpRejected: -7.1,
     policyLogpChosen: -6.5,
     policyLogpRejected: -9.8,
-    note: "Cặp về format — y_chosen đi đúng yêu cầu 'liệt kê 3'.",
+    note: "Cặp về format-y_chosen đi đúng yêu cầu 'liệt kê 3'.",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// QUIZ — 8 câu hỏi
+// QUIZ-8 câu hỏi
 // ---------------------------------------------------------------------------
 
 const QUIZ: QuizQuestion[] = [
@@ -151,7 +151,7 @@ const QUIZ: QuizQuestion[] = [
       "Tham số β trong DPO đóng vai trò gì?",
     options: [
       "Tốc độ học (learning rate) của optimizer",
-      "Hệ số kiểm soát mức độ mô hình được phép lệch khỏi π_ref — tương tự KL penalty trong RLHF",
+      "Hệ số kiểm soát mức độ mô hình được phép lệch khỏi π_ref-tương tự KL penalty trong RLHF",
       "Ngưỡng chấp nhận của reward model",
       "Kích thước batch trong mỗi step huấn luyện",
     ],
@@ -164,13 +164,13 @@ const QUIZ: QuizQuestion[] = [
       "Trong loss function của DPO, ký hiệu σ(·) là gì?",
     options: [
       "Hàm softmax đa lớp",
-      "Hàm sigmoid logistic — biến hiệu số reward ngầm thành xác suất mô hình 'hiểu đúng' cặp preference",
+      "Hàm sigmoid logistic-biến hiệu số reward ngầm thành xác suất mô hình 'hiểu đúng' cặp preference",
       "Phương sai của tập dữ liệu preference",
       "Hàm kích hoạt ReLU trong tầng cuối",
     ],
     correct: 1,
     explanation:
-      "σ là sigmoid. Hiệu số β·(log π_θ(y_w)/π_ref(y_w) − log π_θ(y_l)/π_ref(y_l)) được đưa qua sigmoid tạo xác suất. Log-sigmoid của số này chính là loss Bradley–Terry cho cặp so sánh.",
+      "σ là sigmoid. Hiệu số β·(log π_θ(y_w)/π_ref(y_w) − log π_θ(y_l)/π_ref(y_l)) được đưa qua sigmoid tạo xác suất. Log-sigmoid của số này chính là loss Bradley-Terry cho cặp so sánh.",
   },
   {
     question:
@@ -183,28 +183,28 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "π_ref (thường là bản sao SFT) đóng vai trò 'điểm neo' — DPO phạt các cập nhật khiến π_θ đi xa π_ref. Nhờ đó mô hình giữ được năng lực tổng quát và không bị reward hacking theo một pattern hẹp của preference data.",
+      "π_ref (thường là bản sao SFT) đóng vai trò 'điểm neo', DPO phạt các cập nhật khiến π_θ đi xa π_ref. Nhờ đó mô hình giữ được năng lực tổng quát và không bị reward hacking theo một pattern hẹp của preference data.",
   },
   {
     question:
       "Khi nào RLHF truyền thống vẫn có thể vượt trội so với DPO?",
     options: [
       "Khi preference data rất dồi dào và bao phủ toàn bộ không gian phản hồi",
-      "Khi cần khám phá không gian phản hồi rộng (exploration) — PPO sinh phản hồi mới và reward model chấm được, DPO chỉ học được từ những gì đã có trong dataset",
+      "Khi cần khám phá không gian phản hồi rộng (exploration), PPO sinh phản hồi mới và reward model chấm được, DPO chỉ học được từ những gì đã có trong dataset",
       "Khi ngân sách hạn chế và chỉ có 1 GPU",
       "Khi độ trễ huấn luyện là ưu tiên hàng đầu",
     ],
     correct: 1,
     explanation:
-      "DPO là offline supervised — bị giới hạn bởi dataset preference. RLHF với PPO là online RL — mô hình tự sinh phản hồi mới, reward model chấm, có thể khám phá những vùng dataset không cover. Với bài toán sáng tạo, RLHF vẫn có lợi thế.",
+      "DPO là offline supervised-bị giới hạn bởi dataset preference. RLHF với PPO là online RL-mô hình tự sinh phản hồi mới, reward model chấm, có thể khám phá những vùng dataset không cover. Với bài toán sáng tạo, RLHF vẫn có lợi thế.",
   },
   {
     question:
       "Bạn có 5.000 prompt, mỗi prompt có 4 phản hồi đã được con người xếp hạng đầy đủ. Số cặp preference tối đa DPO có thể dùng là bao nhiêu?",
     options: [
-      "5.000 cặp — mỗi prompt chỉ dùng 1 cặp (best vs worst)",
+      "5.000 cặp-mỗi prompt chỉ dùng 1 cặp (best vs worst)",
       "10.000 cặp",
-      "30.000 cặp — C(4,2) = 6 cặp mỗi prompt, nhân 5.000 prompt",
+      "30.000 cặp-C(4,2) = 6 cặp mỗi prompt, nhân 5.000 prompt",
       "20.000 cặp",
     ],
     correct: 2,
@@ -226,7 +226,7 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     question:
-      "KTO (Kahneman–Tversky Optimization) khác DPO chủ yếu ở dữ liệu đầu vào như thế nào?",
+      "KTO (Kahneman-Tversky Optimization) khác DPO chủ yếu ở dữ liệu đầu vào như thế nào?",
     options: [
       "KTO cần bộ ba (prompt, y_chosen, y_rejected) giống DPO",
       "KTO chỉ cần label nhị phân 'good' hoặc 'bad' cho từng phản hồi đơn lẻ, không cần cặp",
@@ -235,7 +235,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "KTO dựa trên hàm giá trị Kahneman–Tversky, nên chỉ cần biết mỗi phản hồi là 'tốt' hay 'xấu' — rẻ và dễ thu thập hơn nhiều so với đánh giá cặp. Nó đặc biệt hợp với production log (thumb-up / thumb-down) và cho kết quả sánh ngang DPO trong nhiều benchmark.",
+      "KTO dựa trên hàm giá trị Kahneman-Tversky, nên chỉ cần biết mỗi phản hồi là 'tốt' hay 'xấu', rẻ và dễ thu thập hơn nhiều so với đánh giá cặp. Nó đặc biệt hợp với production log (thumb-up / thumb-down) và cho kết quả sánh ngang DPO trong nhiều benchmark.",
   },
   {
     question:
@@ -248,19 +248,19 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "SimPO (Meng et al. 2024) định nghĩa reward ngầm là log π_θ(y|x) / |y| — tức log-prob trung bình theo token. Không cần π_ref nên tiết kiệm ~50% VRAM và nhanh hơn đáng kể, đồng thời tránh được vấn đề length bias ngầm của DPO. Hạn chế: mất 'điểm neo' KL, dễ drift nếu train lâu.",
+      "SimPO (Meng et al. 2024) định nghĩa reward ngầm là log π_θ(y|x) / |y|, tức log-prob trung bình theo token. Không cần π_ref nên tiết kiệm ~50% VRAM và nhanh hơn đáng kể, đồng thời tránh được vấn đề length bias ngầm của DPO. Hạn chế: mất 'điểm neo' KL, dễ drift nếu train lâu.",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// HELPER — tính DPO loss cho 1 cặp tại β cho trước
+// HELPER-tính DPO loss cho 1 cặp tại β cho trước
 // ---------------------------------------------------------------------------
 
 /**
  * Tính loss DPO cho một cặp preference.
  *   margin = β * [ (log π_θ(y_w) − log π_ref(y_w)) − (log π_θ(y_l) − log π_ref(y_l)) ]
  *   loss   = −log σ(margin)
- *   prob   = σ(margin)  — xác suất mô hình 'hiểu đúng' cặp
+ *   prob   = σ(margin) , xác suất mô hình 'hiểu đúng' cặp
  */
 function computeDPOLoss(pair: PreferencePair, beta: number) {
   const rChosen = pair.policyLogpChosen - pair.refLogpChosen;
@@ -286,7 +286,7 @@ export default function DPOTopic() {
   const [view, setView] = useState<"rlhf" | "dpo">("dpo");
   // cặp preference đang chọn để xem loss
   const [pairIdx, setPairIdx] = useState(0);
-  // β slider — tradeoff flexibility
+  // β slider-tradeoff flexibility
   const [beta, setBeta] = useState(0.1);
 
   const pair = PAIRS[pairIdx];
@@ -309,7 +309,7 @@ export default function DPOTopic() {
   return (
     <>
       {/* =================================================================
-          BƯỚC 1 — HOOK / DỰ ĐOÁN
+          BƯỚC 1-HOOK / DỰ ĐOÁN
           ================================================================= */}
 
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
@@ -318,10 +318,10 @@ export default function DPOTopic() {
           <PredictionGate
             question="RLHF cần 3 pha phức tạp (SFT → Reward Model → PPO) và thường mất hàng nghìn GPU-hour để stabilize. Liệu có cách nào đạt được cùng kết quả alignment chỉ bằng 1 pha supervised learning?"
             options={[
-              "Không — reward model và RL là bắt buộc, không thể rút gọn",
-              "Có — nếu biến bài toán RL thành classification trên preference data và khai thác nghiệm closed-form của RLHF",
-              "Có — chỉ cần nhân đôi lượng dữ liệu SFT là đủ thay thế RL",
-              "Có — nhưng sẽ mất chất lượng đáng kể so với RLHF",
+              "Không-reward model và RL là bắt buộc, không thể rút gọn",
+              "Có-nếu biến bài toán RL thành classification trên preference data và khai thác nghiệm closed-form của RLHF",
+              "Có-chỉ cần nhân đôi lượng dữ liệu SFT là đủ thay thế RL",
+              "Có-nhưng sẽ mất chất lượng đáng kể so với RLHF",
             ]}
             correct={1}
             explanation="DPO (Rafailov et al., 2023) chứng minh một kết quả kinh điển: bài toán tối ưu RLHF có nghiệm dạng đóng, trong đó reward ngầm được viết hoàn toàn qua log-ratio giữa policy và reference. Từ đó, ta có thể huấn luyện chỉ bằng một loss giống classification trên cặp preference, không cần reward model tách biệt."
@@ -335,7 +335,7 @@ export default function DPOTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
+          BƯỚC 2-ẨN DỤ THỰC TẾ
           ================================================================= */}
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
@@ -361,21 +361,21 @@ export default function DPOTopic() {
         <p>
           Cái hay của DPO là nó hé lộ một sự thật sâu sắc về alignment: toàn
           bộ vòng lặp RL phức tạp thực ra chỉ là cách gián tiếp để làm một
-          việc đơn giản — đẩy xác suất y_chosen lên và y_rejected xuống, có
+          việc đơn giản-đẩy xác suất y_chosen lên và y_rejected xuống, có
           kiểm soát bởi mô hình tham chiếu. Khi hiểu được cấu trúc ẩn này,
           chúng ta có thể làm thẳng thay vì vòng vo.
         </p>
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 3 — TRỰC QUAN HÓA TƯƠNG TÁC
+          BƯỚC 3-TRỰC QUAN HÓA TƯƠNG TÁC
           ================================================================= */}
 
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
           <LessonSection label="Pipeline" step={1}>
             <h3 className="text-base font-semibold text-foreground mb-1">
-              RLHF vs DPO — So sánh pipeline
+              RLHF vs DPO-So sánh pipeline
             </h3>
             <p className="text-sm text-muted mb-4">
               Chuyển đổi giữa hai phương pháp để thấy sự khác biệt về số
@@ -428,7 +428,7 @@ export default function DPOTopic() {
                     fontSize="12"
                     fontWeight="bold"
                   >
-                    RLHF — 3 pha, 3 mô hình, vòng lặp RL
+                    RLHF-3 pha, 3 mô hình, vòng lặp RL
                   </text>
                   {[
                     {
@@ -538,7 +538,7 @@ export default function DPOTopic() {
                     fontSize="12"
                     fontWeight="bold"
                   >
-                    DPO — 2 pha, ổn định như supervised learning
+                    DPO-2 pha, ổn định như supervised learning
                   </text>
                   {[
                     {
@@ -645,7 +645,7 @@ export default function DPOTopic() {
                 <p className="text-sm font-semibold text-red-700 dark:text-red-400">RLHF</p>
                 <ul className="text-xs text-muted space-y-1 mt-1 list-disc list-inside">
                   <li>3 pha, 3 mô hình (SFT, RM, Policy)</li>
-                  <li>Vòng lặp PPO — bất ổn, nhiều HP</li>
+                  <li>Vòng lặp PPO-bất ổn, nhiều HP</li>
                   <li>Có khả năng exploration online</li>
                   <li>Rủi ro reward hacking cao</li>
                 </ul>
@@ -664,7 +664,7 @@ export default function DPOTopic() {
 
           <LessonSection label="Tính loss trên cặp preference" step={2}>
             <h3 className="text-base font-semibold text-foreground mb-1">
-              Cho một cặp (prompt, y_chosen, y_rejected) — xem DPO tính loss
+              Cho một cặp (prompt, y_chosen, y_rejected), xem DPO tính loss
             </h3>
             <p className="text-sm text-muted mb-4">
               Chọn cặp bất kỳ và trượt β để quan sát cách DPO đo margin giữa
@@ -756,9 +756,9 @@ export default function DPOTopic() {
                 className="w-full accent-accent"
               />
               <div className="flex justify-between text-[10px] text-muted mt-1">
-                <span>0.01 — rất mềm, đẩy mạnh</span>
-                <span>0.1 — điển hình</span>
-                <span>1.0 — cứng, gần π_ref</span>
+                <span>0.01-rất mềm, đẩy mạnh</span>
+                <span>0.1-điển hình</span>
+                <span>1.0-cứng, gần π_ref</span>
               </div>
             </div>
 
@@ -819,8 +819,8 @@ export default function DPOTopic() {
             </div>
 
             <Callout variant="tip" title="Thử nghiệm">
-              Giảm β về 0.02 — mô hình được "mềm" hơn, margin co lại nhưng
-              loss cũng tăng chậm; tăng β lên 0.8 — margin phóng đại, loss cực
+              Giảm β về 0.02-mô hình được "mềm" hơn, margin co lại nhưng
+              loss cũng tăng chậm; tăng β lên 0.8-margin phóng đại, loss cực
               nhỏ trên cặp dễ nhưng với cặp khó (π_ref ưu tiên sai) loss có
               thể phình to.
             </Callout>
@@ -829,7 +829,7 @@ export default function DPOTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 4 — KHOẢNH KHẮC AHA
+          BƯỚC 4-KHOẢNH KHẮC AHA
           ================================================================= */}
 
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
@@ -838,13 +838,13 @@ export default function DPOTopic() {
           thực ra có <strong>nghiệm dạng đóng</strong> (closed-form). DPO khai
           thác nghiệm ấy: reward ngầm ẩn đã được mã hoá hoàn toàn trong{" "}
           <strong>tỷ lệ log-xác suất</strong> giữa policy và reference. Không
-          có reward model bí ẩn nào cả — chính mô hình là reward model của
+          có reward model bí ẩn nào cả-chính mô hình là reward model của
           chính nó.
         </AhaMoment>
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 5 — INLINE CHALLENGES (2 thách thức)
+          BƯỚC 5-INLINE CHALLENGES (2 thách thức)
           ================================================================= */}
 
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
@@ -857,7 +857,7 @@ export default function DPOTopic() {
             "π_ref được cập nhật song song để 'kéo' π_θ theo",
           ]}
           correct={0}
-          explanation="DPO đẩy xác suất y_chosen lên (r_w > 0) và xác suất y_rejected xuống (r_l < 0) so với π_ref. Khi r_w − r_l > 0 và đủ lớn, mô hình đã 'học' được cặp preference, π_ref đóng băng — không bao giờ được cập nhật."
+          explanation="DPO đẩy xác suất y_chosen lên (r_w > 0) và xác suất y_rejected xuống (r_l < 0) so với π_ref. Khi r_w − r_l > 0 và đủ lớn, mô hình đã 'học' được cặp preference, π_ref đóng băng-không bao giờ được cập nhật."
         />
 
         <div className="mt-4">
@@ -865,7 +865,7 @@ export default function DPOTopic() {
             question="Bạn đang train DPO và quan sát: với 2.000 step đầu, loss giảm đẹp; sau đó log π_θ(y_rejected) tiếp tục giảm mạnh xuống −40, −80, ... trong khi log π_θ(y_chosen) gần như không đổi. Điều gì đang xảy ra?"
             options={[
               "Mô hình đã hội tụ và đang 'polish' phản hồi",
-              "DPO đang overfit — nó chủ yếu đẩy y_rejected xuống thay vì kéo y_chosen lên, dẫn tới degenerate (mất năng lực tổng quát)",
+              "DPO đang overfit-nó chủ yếu đẩy y_rejected xuống thay vì kéo y_chosen lên, dẫn tới degenerate (mất năng lực tổng quát)",
               "Learning rate quá thấp, cần tăng lên",
               "β quá lớn, cần tăng thêm để ổn định hơn",
             ]}
@@ -876,7 +876,7 @@ export default function DPOTopic() {
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 6 — GIẢI THÍCH SÂU
+          BƯỚC 6-GIẢI THÍCH SÂU
           ================================================================= */}
 
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết">
@@ -907,9 +907,9 @@ export default function DPOTopic() {
           <LaTeX block>{"R(x,y) = \\beta\\,\\log\\frac{\\pi_\\theta(y|x)}{\\pi_{\\text{ref}}(y|x)} + \\beta\\,\\log Z(x)"}</LaTeX>
 
           <p>
-            Ghép với mô hình Bradley–Terry cho preference (xác suất y_w được ưa
+            Ghép với mô hình Bradley-Terry cho preference (xác suất y_w được ưa
             hơn y_l bằng sigmoid của hiệu reward), thành phần log Z(x) triệt
-            tiêu — và ta thu được{" "}
+            tiêu-và ta thu được{" "}
             <strong>hàm loss DPO cốt lõi</strong>:
           </p>
           <LaTeX block>{"\\mathcal{L}_{\\text{DPO}}(\\pi_\\theta;\\pi_{\\text{ref}}) = -\\,\\mathbb{E}_{(x,y_w,y_l)\\sim D}\\!\\left[\\log \\sigma\\!\\left(\\beta\\log\\tfrac{\\pi_\\theta(y_w|x)}{\\pi_{\\text{ref}}(y_w|x)} - \\beta\\log\\tfrac{\\pi_\\theta(y_l|x)}{\\pi_{\\text{ref}}(y_l|x)}\\right)\\right]"}</LaTeX>
@@ -928,11 +928,11 @@ export default function DPOTopic() {
             <li>
               <strong>β</strong> đóng vai trò KL coefficient, β nhỏ cho phép
               π_θ lệch mạnh khỏi π_ref; β lớn giữ chặt π_θ gần π_ref. Giá trị
-              điển hình là 0.1–0.5.
+              điển hình là 0.1-0.5.
             </li>
             <li>
               <strong>π_ref</strong> thường là bản sao đông cứng của checkpoint
-              SFT. Không được cập nhật — nó là "điểm neo" để loss có ý nghĩa KL.
+              SFT. Không được cập nhật-nó là "điểm neo" để loss có ý nghĩa KL.
             </li>
             <li>
               <strong>Gradient</strong> của loss có dạng trực quan: phần gradient
@@ -944,7 +944,7 @@ export default function DPOTopic() {
 
           <CollapsibleDetail title="Chứng minh ngắn: vì sao log Z(x) triệt tiêu trong loss DPO">
             <p>
-              Theo mô hình Bradley–Terry:{" "}
+              Theo mô hình Bradley-Terry:{" "}
               <LaTeX>{"P(y_w \\succ y_l \\mid x) = \\sigma(R(x,y_w) - R(x,y_l))"}</LaTeX>.
               Thay biểu thức <LaTeX>{"R(x,y) = \\beta\\log\\frac{\\pi_\\theta(y|x)}{\\pi_{\\text{ref}}(y|x)} + \\beta\\log Z(x)"}</LaTeX>
               {" "}vào hiệu:
@@ -953,7 +953,7 @@ export default function DPOTopic() {
             <p>
               Số hạng <LaTeX>{"\\beta\\log Z(x)"}</LaTeX> xuất hiện ở cả hai phía
               và tự triệt tiêu. Nhờ đó, ta không bao giờ cần tính partition
-              function Z(x) — vốn không có dạng đóng với LLM. Đây chính là lý
+              function Z(x), vốn không có dạng đóng với LLM. Đây chính là lý
               do DPO trở nên khả thi trong thực tế.
             </p>
           </CollapsibleDetail>
@@ -961,7 +961,7 @@ export default function DPOTopic() {
           <CollapsibleDetail title="Các biến thể hậu DPO: IPO, KTO, ORPO, SimPO (tổng quan)">
             <p>
               DPO khởi nguồn cho cả một họ thuật toán preference-direct. Vài
-              cái tên đáng chú ý — phần dưới sẽ đi sâu từng biến thể:
+              cái tên đáng chú ý-phần dưới sẽ đi sâu từng biến thể:
             </p>
             <ul className="list-disc list-inside space-y-2 pl-2 mt-2">
               <li>
@@ -970,8 +970,8 @@ export default function DPOTopic() {
                 dừng tự nhiên, ít overfit hơn khi dataset có noise.
               </li>
               <li>
-                <strong>KTO (Kahneman–Tversky Optimization):</strong> Không cần
-                cặp chosen/rejected — chỉ cần label nhị phân "good" hoặc "bad"
+                <strong>KTO (Kahneman-Tversky Optimization):</strong> Không cần
+                cặp chosen/rejected-chỉ cần label nhị phân "good" hoặc "bad"
                 trên từng phản hồi. Dễ thu thập dữ liệu hơn nhiều.
               </li>
               <li>
@@ -981,13 +981,13 @@ export default function DPOTopic() {
               </li>
               <li>
                 <strong>SimPO (Simple Preference Optimization):</strong> Loại
-                bỏ π_ref bằng cách chuẩn hoá log-prob theo độ dài phản hồi —
+                bỏ π_ref bằng cách chuẩn hoá log-prob theo độ dài phản hồi,
                 giảm chi phí bộ nhớ đi một nửa.
               </li>
             </ul>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="IPO chi tiết — vì sao bình phương margin giúp chống overfit">
+          <CollapsibleDetail title="IPO chi tiết-vì sao bình phương margin giúp chống overfit">
             <p>
               IPO (Azar et al. 2023) nhận thấy điểm yếu cốt lõi của DPO:
               log-sigmoid không bao giờ "no" khi margin đã lớn. Gradient tiếp
@@ -999,7 +999,7 @@ export default function DPOTopic() {
             <LaTeX block>{"\\mathcal{L}_{\\text{IPO}} = \\mathbb{E}_{(x,y_w,y_l)}\\!\\left[\\left(\\log\\tfrac{\\pi_\\theta(y_w|x)}{\\pi_{\\text{ref}}(y_w|x)} - \\log\\tfrac{\\pi_\\theta(y_l|x)}{\\pi_{\\text{ref}}(y_l|x)} - \\tfrac{1}{2\\beta}\\right)^2\\right]"}</LaTeX>
             <p>
               Đạo hàm của (z − c)² bằng 0 chính xác khi z = c. Nhờ vậy IPO có
-              điểm dừng tự nhiên — khi margin đạt 1/(2β), gradient bằng 0.
+              điểm dừng tự nhiên-khi margin đạt 1/(2β), gradient bằng 0.
               Trong thực tế dùng IPO với β = 0.1 cho margin mục tiêu ≈ 5, đủ
               để phân biệt cặp mà không cần phóng đại. IPO đặc biệt đáng dùng
               khi preference data có noise &gt; 10% (annotator bất đồng).
@@ -1007,12 +1007,12 @@ export default function DPOTopic() {
             <p>
               TRL hỗ trợ IPO bằng tham số{" "}
               <code>loss_type=&quot;ipo&quot;</code> trong <code>DPOConfig</code>
-              — không cần đổi dataset, không cần đổi pipeline. Chuyển đổi chỉ
+             , không cần đổi dataset, không cần đổi pipeline. Chuyển đổi chỉ
               mất 1 dòng code.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="KTO chi tiết — từ tâm lý học hành vi tới alignment">
+          <CollapsibleDetail title="KTO chi tiết-từ tâm lý học hành vi tới alignment">
             <p>
               KTO (Ethayarajh et al. 2024) lấy cảm hứng từ{" "}
               <em>prospect theory</em> của Kahneman và Tversky: con người
@@ -1024,26 +1024,26 @@ export default function DPOTopic() {
             <p>
               Điểm đột phá về mặt dữ liệu: KTO chỉ cần mỗi mẫu là cặp{" "}
               <em>(prompt, response, label ∈ {"{good, bad}"})</em>. Không
-              cần hai phản hồi ghép cặp nhau — rất hợp với log production
+              cần hai phản hồi ghép cặp nhau-rất hợp với log production
               (thumbs-up/thumbs-down) và feedback cực kỳ rẻ để thu thập.
             </p>
             <LaTeX block>{"\\mathcal{L}_{\\text{KTO}} = \\lambda_D \\mathbb{E}_{y_D}[1 - v(r(x,y_D) - z_0)]"}</LaTeX>
             <p>
-              Ở đây <LaTeX>{"v(\\cdot)"}</LaTeX> là hàm giá trị Kahneman–Tversky
+              Ở đây <LaTeX>{"v(\\cdot)"}</LaTeX> là hàm giá trị Kahneman-Tversky
               (sigmoid dịch chuyển), <LaTeX>{"z_0"}</LaTeX> là điểm neo xấp xỉ
               KL trung bình giữa π_θ và π_ref,{" "}
               <LaTeX>{"\\lambda_D"}</LaTeX> là trọng số khác nhau cho mẫu tốt
-              vs xấu — thường <LaTeX>{"\\lambda_{\\text{bad}} > \\lambda_{\\text{good}}"}</LaTeX>
+              vs xấu-thường <LaTeX>{"\\lambda_{\\text{bad}} > \\lambda_{\\text{good}}"}</LaTeX>
               để phản ánh loss aversion.
             </p>
             <p>
               Benchmark: trên UltraFeedback, KTO với chỉ 1 label/mẫu đạt
-              AlpacaEval2 ngang DPO với pair preference — tức là tiết kiệm
+              AlpacaEval2 ngang DPO với pair preference-tức là tiết kiệm
               được 50% chi phí annotation mà không mất chất lượng.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="SimPO chi tiết — bỏ π_ref, reward ngầm dựa độ dài">
+          <CollapsibleDetail title="SimPO chi tiết-bỏ π_ref, reward ngầm dựa độ dài">
             <p>
               SimPO (Meng et al. 2024) đặt câu hỏi: vì sao cần π_ref khi ta
               có thể chuẩn hoá log-prob theo độ dài phản hồi? Thay vì reward
@@ -1057,30 +1057,30 @@ export default function DPOTopic() {
               length bias vốn ngầm có trong DPO; (2) trừ một margin{" "}
               <LaTeX>{"\\gamma"}</LaTeX> cố định để tạo khoảng cách dương tối
               thiểu giữa chosen và rejected. Loss vẫn là log-sigmoid của hiệu
-              reward, nhưng <em>không cần mô hình tham chiếu</em> — tiết kiệm
+              reward, nhưng <em>không cần mô hình tham chiếu</em>, tiết kiệm
               ~50% VRAM.
             </p>
             <p>
               Điểm đánh đổi: không còn KL penalty tự động, nên phải cẩn thận
               với số epoch và learning rate. SimPO thường không chịu được
-              training dài như DPO — nhưng trong nhiều benchmark 2024, SimPO
+              training dài như DPO-nhưng trong nhiều benchmark 2024, SimPO
               tune tốt lại vượt DPO trên AlpacaEval và Arena-Hard. Llama-3-8B
               SimPO là một trong các open model mạnh nhất 8B tại thời điểm
               công bố.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="ORPO chi tiết — gộp SFT + preference vào một pha">
+          <CollapsibleDetail title="ORPO chi tiết-gộp SFT + preference vào một pha">
             <p>
               ORPO (Hong et al. 2024) nhận xét: pipeline DPO vẫn cần SFT
-              trước, rồi mới DPO — hai pha riêng. Vì sao không gộp? ORPO đề
+              trước, rồi mới DPO-hai pha riêng. Vì sao không gộp? ORPO đề
               xuất một loss duy nhất:
             </p>
             <LaTeX block>{"\\mathcal{L}_{\\text{ORPO}} = \\mathcal{L}_{\\text{SFT}}(y_w) + \\lambda \\cdot \\mathcal{L}_{\\text{OR}}(y_w, y_l)"}</LaTeX>
             <p>
               Trong đó{" "}
               <LaTeX>{"\\mathcal{L}_{\\text{OR}} = -\\log \\sigma(\\log \\text{odds}_\\theta(y_w|x) - \\log \\text{odds}_\\theta(y_l|x))"}</LaTeX>
-              — một dạng logistic regression trên <em>odds ratio</em> thay vì
+             , một dạng logistic regression trên <em>odds ratio</em> thay vì
               log-ratio probability. Ưu điểm: chỉ cần 1 mô hình (không cần
               π_ref), 1 pha huấn luyện, bắt đầu từ base model pretrained. Phù
               hợp khi bạn muốn alignment nhanh mà không có sẵn SFT checkpoint.
@@ -1127,10 +1127,10 @@ export default function DPOTopic() {
             <em>log π_θ(y_rejected)</em> rơi quá sâu (xuống dưới -30), chuyển
             sang <strong>IPO</strong>. Nếu VRAM căng, thử{" "}
             <strong>SimPO</strong>. Đừng nhảy ngay vào biến thể mới chỉ vì
-            paper hứa hẹn — 80% trường hợp DPO vẫn đủ tốt.
+            paper hứa hẹn-80% trường hợp DPO vẫn đủ tốt.
           </Callout>
 
-          <Callout variant="warning" title="Length bias — cái bẫy im lặng">
+          <Callout variant="warning" title="Length bias-cái bẫy im lặng">
             Một vấn đề ít được nói đến: DPO và các biến thể dựa log-prob có
             length bias ngầm. Do log-prob tổng giảm khi y dài hơn, mô hình
             dễ "hack" bằng cách sinh phản hồi ngắn để có log-prob cao. Nếu
@@ -1140,7 +1140,7 @@ export default function DPOTopic() {
             <LaTeX>{"|y|"}</LaTeX>.
           </Callout>
 
-          <CodeBlock language="python" title="dpo_trl_training.py — HuggingFace TRL">{`# Tham khảo: https://huggingface.co/docs/trl/dpo_trainer
+          <CodeBlock language="python" title="dpo_trl_training.py-HuggingFace TRL">{`# Tham khảo: https://huggingface.co/docs/trl/dpo_trainer
 import torch
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -1168,7 +1168,7 @@ training_args = DPOConfig(
     learning_rate=5e-7,
     lr_scheduler_type="cosine",
     warmup_ratio=0.1,
-    beta=0.1,                  # β của DPO — điển hình 0.1
+    beta=0.1,                  # β của DPO-điển hình 0.1
     loss_type="sigmoid",       # "sigmoid" = DPO gốc; "ipo" = IPO; "kto_pair" = KTO pair
     max_length=1024,
     max_prompt_length=512,
@@ -1178,7 +1178,7 @@ training_args = DPOConfig(
     report_to="tensorboard",
 )
 
-# 4. Trainer — không cần reward model, không cần PPO
+# 4. Trainer-không cần reward model, không cần PPO
 trainer = DPOTrainer(
     model=model,
     ref_model=ref_model,
@@ -1193,11 +1193,11 @@ trainer.save_model("./qwen-dpo/final")
 `}</CodeBlock>
 
           <Callout variant="warning" title="Sai lầm phổ biến khi huấn luyện DPO">
-            Ba lỗi hay gặp: (1) <strong>learning rate quá cao</strong> —
+            Ba lỗi hay gặp: (1) <strong>learning rate quá cao</strong>,
             5e-5 là quá lớn cho DPO, phải dùng 5e-7 đến 5e-6; (2){" "}
-            <strong>quên đóng băng π_ref</strong> — một số code mẫu copy model
+            <strong>quên đóng băng π_ref</strong>, một số code mẫu copy model
             không đúng cách, dẫn tới cả hai cùng cập nhật và loss trở nên vô
-            nghĩa; (3) <strong>preference data noise</strong> — nếu annotator
+            nghĩa; (3) <strong>preference data noise</strong>, nếu annotator
             không thống nhất, DPO học theo cả tín hiệu nhiễu, tốt hơn nên lọc
             cặp có agreement thấp trước khi train.
           </Callout>
@@ -1205,7 +1205,7 @@ trainer.save_model("./qwen-dpo/final")
           <p>
             <strong>Trong thực tế</strong>, DPO là lựa chọn mặc định cho hầu
             hết team alignment có dữ liệu preference sẵn. Llama 3, Zephyr,
-            Tulu 2, Mistral Instruct — tất cả đều dùng DPO hoặc biến thể của
+            Tulu 2, Mistral Instruct-tất cả đều dùng DPO hoặc biến thể của
             nó. RLHF với PPO chỉ còn giữ vai trò trong các bài toán thực sự
             cần exploration (ví dụ reasoning dài, code). Với mọi use case
             alignment tiêu chuẩn, DPO là lựa chọn đầu tiên nên thử.
@@ -1214,7 +1214,7 @@ trainer.save_model("./qwen-dpo/final")
           <Callout variant="info" title="So với GRPO và các phương pháp mới">
             <TopicLink slug="grpo">GRPO</TopicLink> (Group Relative Policy
             Optimization, Shao et al. 2024) khác DPO ở chỗ nó vẫn là online RL
-            nhưng không cần critic — thay vào đó nó sinh một nhóm response rồi
+            nhưng không cần critic-thay vào đó nó sinh một nhóm response rồi
             chuẩn hoá reward theo nhóm. GRPO trở thành nền tảng của
             DeepSeek-R1 và gợi ý rằng với reasoning, online-RL không cần phức
             tạp như PPO cổ điển.
@@ -1223,25 +1223,25 @@ trainer.save_model("./qwen-dpo/final")
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 7 — TÓM TẮT
+          BƯỚC 7-TÓM TẮT
           ================================================================= */}
 
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Những điều cần nhớ về DPO"
           points={[
-            "DPO biến pipeline RLHF 3 pha thành 2 pha (SFT → DPO) — không cần reward model riêng, không cần PPO.",
+            "DPO biến pipeline RLHF 3 pha thành 2 pha (SFT → DPO), không cần reward model riêng, không cần PPO.",
             "Dữ liệu: bộ ba (prompt, y_chosen, y_rejected) từ xếp hạng con người hoặc AI.",
             "Loss: log-sigmoid của margin giữa reward ngầm y_chosen và y_rejected, với reward ngầm là β·log(π_θ/π_ref).",
-            "β đóng vai trò KL coefficient: nhỏ → cập nhật mạnh, lớn → thận trọng; điển hình 0.1–0.5.",
-            "Thất bại tiêu biểu: đẩy log π(y_rejected) xuống −∞ khi train lâu — khắc phục bằng IPO, early stopping, lr thấp.",
+            "β đóng vai trò KL coefficient: nhỏ → cập nhật mạnh, lớn → thận trọng; điển hình 0.1-0.5.",
+            "Thất bại tiêu biểu: đẩy log π(y_rejected) xuống −∞ khi train lâu-khắc phục bằng IPO, early stopping, lr thấp.",
             "Nên chọn DPO khi có preference data sẵn; chọn RLHF/GRPO khi bài toán cần exploration thực sự (reasoning, code).",
           ]}
         />
       </LessonSection>
 
       {/* =================================================================
-          BƯỚC 8 — QUIZ
+          BƯỚC 8-QUIZ
           ================================================================= */}
 
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">

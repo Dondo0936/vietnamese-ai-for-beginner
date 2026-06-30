@@ -578,7 +578,7 @@ export default function BatchNormalizationTopic() {
           />
         </div>
         <PredictionGate
-          question="Lớp 1 chấm thang 100, lớp 2 thang 10, lớp 3 dùng chữ A–F. Muốn so sánh điểm công bằng, bạn làm gì?"
+          question="Lớp 1 chấm thang 100, lớp 2 thang 10, lớp 3 dùng chữ A-F. Muốn so sánh điểm công bằng, bạn làm gì?"
           options={[
             "So sánh trực tiếp, điểm là điểm",
             "Quy tất cả về cùng một thang (trung bình 0, độ lệch 1) rồi mới so sánh",

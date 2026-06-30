@@ -103,7 +103,7 @@ const CELL_COMPARISON: Array<{
     gates: "3 cổng: forget, input, output",
     memory: "Cell state c + hidden state h",
     params: "4 bộ (W_f, W_i, W_o, W_c), nhiều hơn ~4×",
-    strength: "Nhớ được ngữ cảnh dài 100–300 bước",
+    strength: "Nhớ được ngữ cảnh dài 100-300 bước",
     weakness: "Chậm hơn RNN, nhiều tham số hơn",
   },
   {
@@ -767,7 +767,7 @@ export default function RnnTopic() {
             <li>
               <strong>Đầu vào xₜ:</strong> vector biểu diễn cho token/điểm
               dữ liệu tại thời điểm t. Với văn bản thường là embedding
-              (dim 100–1024); với chuỗi số (giá cổ phiếu, sensor) có thể
+              (dim 100-1024); với chuỗi số (giá cổ phiếu, sensor) có thể
               chỉ vài chiều.
             </li>
             <li>
@@ -908,7 +908,7 @@ for epoch in range(num_epochs):
             <ul className="list-disc list-inside space-y-1 pl-2 mt-2">
               <li>
                 <strong>Gradient clipping</strong>. cắt norm gradient về
-                ngưỡng (thường 1–5). Chặn được exploding nhưng không hồi
+                ngưỡng (thường 1-5). Chặn được exploding nhưng không hồi
                 phục được vanishing.
               </li>
               <li>
@@ -927,7 +927,7 @@ for epoch in range(num_epochs):
               </li>
               <li>
                 <strong>Thiết bị biên (edge)</strong>: RAM và compute hạn
-                chế; RNN nhỏ 1–10MB dễ chạy hơn Transformer 100MB+.
+                chế; RNN nhỏ 1-10MB dễ chạy hơn Transformer 100MB+.
               </li>
               <li>
                 <strong>Chuỗi rất dài</strong>: attention O(T²) quá đắt;
@@ -964,7 +964,7 @@ for epoch in range(num_epochs):
               <LaTeX>{"\\le (\\sigma_{\\max}(W_{hh}))^{T-k}"}</LaTeX>. Nếu{" "}
               <LaTeX>{"\\sigma_{\\max}(W_{hh}) < 1"}</LaTeX>, tích co về 0
               theo cấp số nhân (vanishing). Nếu &gt; 1, bùng nổ. Đây là
-              định lý Pascanu–Mikolov–Bengio (2013), cơ sở lý thuyết cho
+              định lý Pascanu-Mikolov-Bengio (2013), cơ sở lý thuyết cho
               mọi biến thể RNN hiện đại.
             </p>
           </CollapsibleDetail>
@@ -1070,7 +1070,7 @@ for epoch in range(num_epochs):
             </li>
             <li>
               <strong>Machine translation</strong>. kiến trúc
-              encoder-decoder LSTM từng là state-of-the-art (2014–2017)
+              encoder-decoder LSTM từng là state-of-the-art (2014-2017)
               trước khi{" "}
               <TopicLink slug="transformer">Transformer</TopicLink>{" "}
               thay thế.
@@ -1109,7 +1109,7 @@ for epoch in range(num_epochs):
             "RNN truyền trạng thái ẩn hₜ qua mỗi bước thời gian, hₜ là 'cuốn sổ' tóm tắt mọi thứ đã thấy.",
             "Công thức cốt lõi: hₜ = tanh(W_xh·xₜ + W_hh·hₜ₋₁ + b). Weight sharing theo thời gian, tương đương CNN chia sẻ kernel theo không gian.",
             "Vanishing gradient là vấn đề kinh điển: gradient nhân qua T Jacobi co về 0. Triệu chứng: lớp đầu không học.",
-            "Gradient clipping (max_norm 1–5) là bắt buộc để tránh exploding gradient khi chuỗi dài.",
+            "Gradient clipping (max_norm 1-5) là bắt buộc để tránh exploding gradient khi chuỗi dài.",
             "LSTM và GRU khắc phục vanishing bằng cell state + cổng; Transformer giải quyết triệt để bằng attention nhưng mất lợi thế streaming.",
             "RNN vẫn hữu ích cho streaming, thiết bị biên, và là nền tảng lý thuyết cho State Space Models (Mamba) hiện đại.",
           ]}

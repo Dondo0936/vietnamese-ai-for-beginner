@@ -277,7 +277,7 @@ const quizQuestions: QuizQuestion[] = [
       "So sánh Batch GD, Mini-batch GD và SGD (theo lượng dữ liệu mỗi bước). Phương án nào được dùng phổ biến nhất trong deep learning ngày nay?",
     options: [
       "Batch GD: dùng toàn bộ tập dữ liệu mỗi bước",
-      "Mini-batch GD: dùng một lô nhỏ (thường 32–256 mẫu)",
+      "Mini-batch GD: dùng một lô nhỏ (thường 32-256 mẫu)",
       "SGD thuần: đúng 1 mẫu mỗi bước",
       "Không có phương án nào được dùng. Deep learning không dùng gradient descent",
     ],
@@ -1562,7 +1562,7 @@ function BatchTriad() {
     {
       name: "Mini-batch GD",
       icon: Sparkles,
-      dataPerStep: "Một lô nhỏ (thường 32–256 mẫu)",
+      dataPerStep: "Một lô nhỏ (thường 32-256 mẫu)",
       pros: "Cân bằng: gradient đủ chính xác, đủ nhanh, tận dụng GPU",
       cons: "Có nhiễu nhẹ, cần tinh chỉnh batch size",
       tint: "#10b981",
@@ -1845,7 +1845,7 @@ export default function GradientDescentTopic() {
                   Mini-batch SGD: dùng một lô nhỏ dữ liệu thay vì cả tập
                 </p>
                 <p className="text-xs text-muted">
-                  B là tập 32–256 mẫu random từ dataset. Gradient được tính
+                  B là tập 32-256 mẫu random từ dataset. Gradient được tính
                   trung bình trên B, không phải toàn bộ N mẫu.
                 </p>
               </div>
@@ -2061,7 +2061,7 @@ export default function GradientDescentTopic() {
           points={[
             "Gradient descent là vòng lặp ba dòng: tính loss → tính gradient → cập nhật weight theo θ ← θ − η·∇L. Toàn bộ huấn luyện là lặp vòng này hàng triệu lần.",
             "Vanilla GD hay zigzag trên thung lũng hẹp. Momentum thêm quán tính → đi mượt hơn. Adam tự thích nghi learning rate cho từng weight → mặc định trong deep learning hiện đại.",
-            "Mỗi bước ta dùng một MINI-BATCH (32–256 mẫu) thay vì toàn bộ dataset. Đó là cân bằng vàng giữa độ chính xác và tốc độ, tận dụng song song hoá GPU.",
+            "Mỗi bước ta dùng một MINI-BATCH (32-256 mẫu) thay vì toàn bộ dataset. Đó là cân bằng vàng giữa độ chính xác và tốc độ, tận dụng song song hoá GPU.",
           ]}
         />
 
@@ -2078,7 +2078,7 @@ export default function GradientDescentTopic() {
           <Callout variant="insight" title="Một sự thật nho nhỏ">
             Gradient descent có từ <strong>1847</strong>, do Augustin-Louis
             Cauchy phát minh để giải hệ phương trình thiên văn. Mãi đến
-            2006–2012 người ta mới tìm được cách <em>giữ gradient không
+            2006-2012 người ta mới tìm được cách <em>giữ gradient không
             chết</em> qua nhiều lớp (ReLU, dropout, khởi tạo Xavier/He, batch
             normalization) để ý tưởng cũ kỹ này hoạt động trên mạng sâu 100+
             lớp. Nhờ vậy toàn bộ kỷ nguyên deep learning hiện đại bùng nổ từ đó.

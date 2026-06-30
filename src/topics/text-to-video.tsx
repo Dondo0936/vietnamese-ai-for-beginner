@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "text-to-video",
   title: "Text-to-Video",
-  titleVi: "Tạo video từ văn bản. AI đạo diễn",
+  titleVi: "Tạo video từ văn bản",
   description:
     "Mô hình AI tạo ra đoạn video liền mạch từ mô tả bằng ngôn ngữ tự nhiên, bao gồm cả chuyển động và âm thanh.",
   category: "multimodal",

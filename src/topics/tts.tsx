@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "tts",
   title: "Text-to-Speech",
-  titleVi: "Tổng hợp giọng nói. AI biết nói",
+  titleVi: "Tổng hợp giọng nói",
   description:
     "Công nghệ chuyển đổi văn bản thành giọng nói tự nhiên, với khả năng kiểm soát ngữ điệu và cảm xúc.",
   category: "multimodal",

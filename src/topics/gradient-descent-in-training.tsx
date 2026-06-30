@@ -588,10 +588,10 @@ export default function GradientDescentInTraining() {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <CheatCard title="Loss giảm êm" tone="success" body="Giữ nguyên. Theo dõi accuracy và weight histogram để phát hiện sớm vấn đề. Đừng vội giảm η cho tới khi plateau rõ ràng." />
-              <CheatCard title="Loss răng cưa, dao động" tone="warning" body="Giảm η 1,5×–2×, hoặc tăng batch size 2× để giảm noise. Nếu vẫn dao động, tăng momentum để bước đi &ldquo;nặng&rdquo; hơn." />
-              <CheatCard title="Loss plateau, không giảm" tone="info" body="Có thể saddle point: bật / tăng momentum. Có thể η quá nhỏ: nhân η cho 2–3. Có thể dataset học hết: lúc dừng huấn luyện." />
+              <CheatCard title="Loss răng cưa, dao động" tone="warning" body="Giảm η 1,5×-2×, hoặc tăng batch size 2× để giảm noise. Nếu vẫn dao động, tăng momentum để bước đi &ldquo;nặng&rdquo; hơn." />
+              <CheatCard title="Loss plateau, không giảm" tone="info" body="Có thể saddle point: bật / tăng momentum. Có thể η quá nhỏ: nhân η cho 2-3. Có thể dataset học hết: lúc dừng huấn luyện." />
               <CheatCard title="Loss tăng dần (chưa NaN)" tone="warning" body="η hơi lớn, mỗi bước làm loss tăng. Giảm η ngay, hoặc rollback checkpoint. Nếu mới tăng vài bước, bật warmup có thể xử lý." />
-              <CheatCard title="Loss nổ / NaN đột ngột" tone="danger" body="Rollback checkpoint trước khi nổ. Giảm η 3–5×. Bật / siết gradient clipping. Kiểm tra batch gần nhất có bất thường không." />
+              <CheatCard title="Loss nổ / NaN đột ngột" tone="danger" body="Rollback checkpoint trước khi nổ. Giảm η 3-5×. Bật / siết gradient clipping. Kiểm tra batch gần nhất có bất thường không." />
               <CheatCard title="Accuracy tăng, loss phẳng" tone="info" body="Cross-entropy và độ chính xác đo hai thứ khác nhau. Mô hình vẫn học đúng, chỉ &ldquo;tự tin&rdquo; chưa đủ. Thường là tín hiệu ổn." />
             </div>
           </div>

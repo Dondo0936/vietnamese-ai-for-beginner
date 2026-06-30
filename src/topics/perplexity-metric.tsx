@@ -55,7 +55,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao KHÔNG THỂ so sánh perplexity giữa GPT (50K tokens) và BERT (30K tokens)?",
     options: [
       "Vì GPT lớn hơn BERT",
-      "Vì chúng dùng từ vựng KHÁC NHAU — perplexity chỉ so sánh được khi cùng vocabulary",
+      "Vì chúng dùng từ vựng KHÁC NHAU-perplexity chỉ so sánh được khi cùng vocabulary",
       "Vì BERT không tính được perplexity",
       "Vì GPT sinh text, BERT không",
     ],
@@ -67,7 +67,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Perplexity thấp luôn có nghĩa mô hình tốt hơn?",
     options: [
       "Đúng, luôn luôn",
-      "Không — PPL thấp có thể do overfitting, và PPL không đo chất lượng nội dung sinh ra",
+      "Không-PPL thấp có thể do overfitting, và PPL không đo chất lượng nội dung sinh ra",
       "Chỉ đúng cho GPT",
       "Chỉ đúng cho tiếng Anh",
     ],
@@ -77,7 +77,7 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     type: "fill-blank",
-    question: "Perplexity là {blank} (2 mũ) của cross-entropy trung bình trên mỗi token, và quy tắc vàng là {blank} — mô hình càng ít 'bối rối' trước văn bản thật thì càng tốt.",
+    question: "Perplexity là {blank} (2 mũ) của cross-entropy trung bình trên mỗi token, và quy tắc vàng là {blank}, mô hình càng ít 'bối rối' trước văn bản thật thì càng tốt.",
     blanks: [
       { answer: "exponent", accept: ["exponential", "lũy thừa", "mũ", "exponent of entropy"] },
       { answer: "lower is better", accept: ["càng thấp càng tốt", "thấp hơn là tốt hơn", "thấp là tốt"] },
@@ -105,7 +105,7 @@ export default function PerplexityMetricTopic() {
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử thách">
         <PredictionGate
           question={`Mô hình A đoán đúng 80% từ, mô hình B đoán đúng 40% từ. Mô hình nào "bối rối" hơn?`}
-          options={["Mô hình A (80%) — vì đoán quá giỏi nên bối rối", "Mô hình B (40%) — vì đoán kém nên bối rối hơn", "Không thể xác định"]}
+          options={["Mô hình A (80%), vì đoán quá giỏi nên bối rối", "Mô hình B (40%), vì đoán kém nên bối rối hơn", "Không thể xác định"]}
           correct={1}
           explanation={`Mô hình B đoán kém hơn → "bất ngờ" nhiều hơn → BỐI RỐI hơn. Perplexity đo chính xác điều này: mô hình bối rối đến mức nào khi gặp văn bản mới. Perplexity THẤP = tự tin, đúng. Perplexity CAO = bối rối, sai.`}
         />
@@ -170,7 +170,7 @@ export default function PerplexityMetricTopic() {
                 {perplexity < 2 ? "Cực kỳ tự tin! Mô hình gần như chắc chắn." :
                  perplexity < 3 ? "Rất tốt! Mô hình tự tin cao." :
                  perplexity < 5 ? "Khá tốt." :
-                 perplexity < 8 ? "Tạm ổn — mô hình hơi bối rối." :
+                 perplexity < 8 ? "Tạm ổn-mô hình hơi bối rối." :
                  "Bối rối nhiều! Mô hình cần cải thiện."}
               </p>
               <p className="text-xs text-muted mt-2">
@@ -235,9 +235,9 @@ export default function PerplexityMetricTopic() {
         <InlineChallenge
           question="Mô hình có từ vựng 50,000 từ. Nếu chọn NGẪU NHIÊN (phân phối đều), perplexity bằng bao nhiêu?"
           options={[
-            "50,000 — vì mỗi bước phân vân giữa tất cả 50K từ",
-            "1 — vì chọn ngẫu nhiên là đơn giản nhất",
-            "100 — giá trị trung bình",
+            "50,000-vì mỗi bước phân vân giữa tất cả 50K từ",
+            "1-vì chọn ngẫu nhiên là đơn giản nhất",
+            "100-giá trị trung bình",
           ]}
           correct={0}
           explanation="Chọn ngẫu nhiên: mỗi từ có xác suất 1/50,000 → PPL = 50,000. Bất kỳ mô hình nào có PPL < 50,000 đều tốt hơn chọn ngẫu nhiên! GPT-4 với PPL ≈ 8 tốt hơn 6,250 lần."

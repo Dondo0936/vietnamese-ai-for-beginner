@@ -27,7 +27,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "clip",
   title: "CLIP",
-  titleVi: "CLIP. Kết nối hình ảnh và ngôn ngữ",
+  titleVi: "CLIP",
   description:
     "Mô hình học cách liên kết hình ảnh và văn bản trong cùng một không gian vector, cho phép tìm kiếm ảnh bằng ngôn ngữ tự nhiên.",
   category: "multimodal",

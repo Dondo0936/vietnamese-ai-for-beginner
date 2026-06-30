@@ -57,7 +57,7 @@ const SCALES: { s: number; label: string }[] = [
   { s: 1.4, label: "lớn" },
 ];
 
-/* Màu sắc cho từng cặp (ratioIdx, scaleIdx) — tạo 9 màu distinct */
+/* Màu sắc cho từng cặp (ratioIdx, scaleIdx), tạo 9 màu distinct */
 const ANCHOR_PALETTE = [
   "#3b82f6", "#22c55e", "#f59e0b",
   "#a855f7", "#ec4899", "#14b8a6",
@@ -142,7 +142,7 @@ function iou(
 }
 
 /* ──────────────────────────────────────────────────────────────
- * Regression target — công thức Faster R-CNN.
+ * Regression target-công thức Faster R-CNN.
  *   t_x = (x - x_a) / w_a
  *   t_y = (y - y_a) / h_a
  *   t_w = log(w / w_a)
@@ -158,7 +158,7 @@ function regressionTarget(anchor: Anchor, gt: typeof GROUND_TRUTH) {
   };
 }
 
-/* Phân loại anchor theo IoU — chuẩn Faster R-CNN */
+/* Phân loại anchor theo IoU-chuẩn Faster R-CNN */
 function classifyAnchor(score: number): {
   label: string;
   color: string;
@@ -168,25 +168,25 @@ function classifyAnchor(score: number): {
     return {
       label: "Positive",
       color: "#22c55e",
-      description: "IoU ≥ 0.7 — Dùng cho huấn luyện, mô hình học offset ở đây",
+      description: "IoU ≥ 0.7-Dùng cho huấn luyện, mô hình học offset ở đây",
     };
   }
   if (score < 0.3) {
     return {
       label: "Negative",
       color: "#ef4444",
-      description: "IoU < 0.3 — Background, học để nói \"không có đối tượng\"",
+      description: "IoU < 0.3-Background, học để nói \"không có đối tượng\"",
     };
   }
   return {
     label: "Bỏ qua",
     color: "#94a3b8",
-    description: "0.3 ≤ IoU < 0.7 — Mơ hồ, không dùng cho training",
+    description: "0.3 ≤ IoU < 0.7-Mơ hồ, không dùng cho training",
   };
 }
 
 /* ──────────────────────────────────────────────────────────────
- * Bộ câu hỏi — 8 quiz questions phủ đa dạng khái niệm.
+ * Bộ câu hỏi-8 quiz questions phủ đa dạng khái niệm.
  * ────────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
@@ -271,13 +271,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Anchor nhỏ nhất trong Faster R-CNN là 64px — với object 15×15 px, IoU tối đa chỉ ~0.1. Giải pháp: FPN (Feature Pyramid Network) dùng feature map độ phân giải cao + anchor nhỏ để bắt object nhỏ.",
+      "Anchor nhỏ nhất trong Faster R-CNN là 64px-với object 15×15 px, IoU tối đa chỉ ~0.1. Giải pháp: FPN (Feature Pyramid Network) dùng feature map độ phân giải cao + anchor nhỏ để bắt object nhỏ.",
   },
   {
     question: "Anchor-free (YOLOv8) có hoàn toàn không còn hộp tham chiếu không?",
     options: [
       "Đúng, hoàn toàn không có hộp",
-      "Vẫn có grid cell — mỗi cell dự đoán khoảng cách đến 4 cạnh object. \"Anchor-free\" nghĩa là bỏ anchor với ratio/scale cố định",
+      "Vẫn có grid cell-mỗi cell dự đoán khoảng cách đến 4 cạnh object. \"Anchor-free\" nghĩa là bỏ anchor với ratio/scale cố định",
       "YOLOv8 vẫn là anchor-based",
       "Chỉ anchor-free khi dùng GPU",
     ],
@@ -308,7 +308,7 @@ export default function AnchorBoxesTopic() {
     [anchors],
   );
 
-  /* Anchor được hover — dùng cho bảng chi tiết regression target */
+  /* Anchor được hover-dùng cho bảng chi tiết regression target */
   const hoveredAnchor = useMemo(() => {
     if (hoveredAnchorId === null) return null;
     return anchorScores.find((a) => a.id === hoveredAnchorId) ?? null;
@@ -319,7 +319,7 @@ export default function AnchorBoxesTopic() {
     return regressionTarget(hoveredAnchor, GROUND_TRUTH);
   }, [hoveredAnchor]);
 
-  /* Anchor có IoU cao nhất — dùng để vẽ viền nổi bật "best match" */
+  /* Anchor có IoU cao nhất-dùng để vẽ viền nổi bật "best match" */
   const bestAnchorId = useMemo(() => {
     let bestId = 0;
     let bestIou = -1;
@@ -346,10 +346,10 @@ export default function AnchorBoxesTopic() {
       {/* ── 1. DỰ ĐOÁN ────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <PredictionGate
-          question="Object Detection cần dự đoán bounding box (x, y, w, h) cho mỗi đối tượng. Dự đoán 4 số từ đầu (from scratch) hay điều chỉnh từ 1 hộp mẫu có sẵn — cái nào dễ hơn?"
+          question="Object Detection cần dự đoán bounding box (x, y, w, h) cho mỗi đối tượng. Dự đoán 4 số từ đầu (from scratch) hay điều chỉnh từ 1 hộp mẫu có sẵn-cái nào dễ hơn?"
           options={[
-            "Dự đoán từ đầu — đơn giản hơn",
-            "Điều chỉnh từ hộp mẫu — chỉ cần offset nhỏ, dễ học hơn",
+            "Dự đoán từ đầu-đơn giản hơn",
+            "Điều chỉnh từ hộp mẫu-chỉ cần offset nhỏ, dễ học hơn",
             "Cả hai đều khó như nhau",
           ]}
           correct={1}
@@ -371,7 +371,7 @@ export default function AnchorBoxesTopic() {
               </h3>
               <p className="text-sm text-muted">
                 Di chuột lên từng hộp để xem IoU với ground truth và 4 giá trị{" "}
-                <LaTeX>{"(t_x, t_y, t_w, t_h)"}</LaTeX> — chính là thứ mô hình học.
+                <LaTeX>{"(t_x, t_y, t_w, t_h)"}</LaTeX>, chính là thứ mô hình học.
               </p>
             </div>
 
@@ -421,7 +421,7 @@ export default function AnchorBoxesTopic() {
                 {/* Nền tối giả lập image */}
                 <rect x="0" y="0" width={CANVAS_W} height={CANVAS_H} rx="8" fill="#0f172a" />
 
-                {/* Lưới mờ — chia 8×6 ô cho cảm giác spatial */}
+                {/* Lưới mờ-chia 8×6 ô cho cảm giác spatial */}
                 {Array.from({ length: 7 }, (_, i) => (
                   <line
                     key={`vline-${i}`}
@@ -473,7 +473,7 @@ export default function AnchorBoxesTopic() {
                   </g>
                 )}
 
-                {/* 9 anchor — vẽ xong hover được highlight */}
+                {/* 9 anchor-vẽ xong hover được highlight */}
                 {showAllAnchors &&
                   anchorScores.map((a) => {
                     const isHovered = hoveredAnchorId === a.id;
@@ -555,7 +555,7 @@ export default function AnchorBoxesTopic() {
               </svg>
             </div>
 
-            {/* Bảng 9 anchor — grid chọn nhanh */}
+            {/* Bảng 9 anchor-grid chọn nhanh */}
             <div className="grid grid-cols-3 gap-2 max-w-md mx-auto">
               {anchorScores.map((a) => {
                 const classification = classifyAnchor(a.iouScore);
@@ -674,7 +674,7 @@ export default function AnchorBoxesTopic() {
             Anchor box giống <strong>bản mẫu may quần áo</strong>: thay vì may từ vải
             trắng (dự đoán toạ độ từ 0), bạn chọn bản mẫu size gần nhất rồi chỉnh sửa
             nhẹ. Mô hình chỉ cần dự đoán 4 offset nhỏ{" "}
-            <LaTeX>{"(t_x, t_y, t_w, t_h)"}</LaTeX> thay vì 4 toạ độ tuyệt đối — và
+            <LaTeX>{"(t_x, t_y, t_w, t_h)"}</LaTeX> thay vì 4 toạ độ tuyệt đối-và
             chính vì offset gần 0, loss ổn định hơn, mô hình hội tụ nhanh hơn nhiều.
           </p>
         </AhaMoment>
@@ -690,7 +690,7 @@ export default function AnchorBoxesTopic() {
             "1,600 anchor boxes",
           ]}
           correct={1}
-          explanation="40 × 40 = 1,600 vị trí. Mỗi vị trí 9 anchors. Tổng = 14,400 anchor boxes! Đó là lý do cần NMS để lọc — hầu hết anchors là negative (không chứa đối tượng)."
+          explanation="40 × 40 = 1,600 vị trí. Mỗi vị trí 9 anchors. Tổng = 14,400 anchor boxes! Đó là lý do cần NMS để lọc-hầu hết anchors là negative (không chứa đối tượng)."
         />
 
         <InlineChallenge
@@ -698,11 +698,11 @@ export default function AnchorBoxesTopic() {
           options={[
             "Là positive, mô hình học offset tại đây",
             "Là negative, mô hình học class = background",
-            "Bị bỏ qua — không dùng cho training (IoU nằm trong 0.3–0.7)",
+            "Bị bỏ qua-không dùng cho training (IoU nằm trong 0.3-0.7)",
             "Được dùng 50% positive, 50% negative",
           ]}
           correct={2}
-          explanation="Ngưỡng Faster R-CNN: IoU ≥ 0.7 → positive, IoU < 0.3 → negative. Vùng 0.3–0.7 được coi là mơ hồ (không rõ có object hay không) nên bỏ qua để tránh nhiễu loss."
+          explanation="Ngưỡng Faster R-CNN: IoU ≥ 0.7 → positive, IoU < 0.3 → negative. Vùng 0.3-0.7 được coi là mơ hồ (không rõ có object hay không) nên bỏ qua để tránh nhiễu loss."
         />
       </LessonSection>
 
@@ -713,7 +713,7 @@ export default function AnchorBoxesTopic() {
             <strong>Anchor Boxes</strong> là tập hợp bounding box mẫu với tỷ lệ khung
             hình (aspect ratio) và kích thước (scale) xác định trước, đặt đều đặn
             trên lưới feature map. Chúng đóng vai trò <em>điểm khởi đầu</em> cho
-            regression — thay vì đoán (x, y, w, h) từ số 0, mô hình chỉ học dịch
+            regression-thay vì đoán (x, y, w, h) từ số 0, mô hình chỉ học dịch
             chuyển tương đối từ anchor gần nhất.
           </p>
 
@@ -731,7 +731,7 @@ export default function AnchorBoxesTopic() {
           </p>
 
           <p>
-            <strong>Gán nhãn (Anchor Assignment)</strong> — quyết định anchor nào
+            <strong>Gán nhãn (Anchor Assignment)</strong>, quyết định anchor nào
             được dùng cho training và dùng làm gì:
           </p>
 
@@ -747,7 +747,7 @@ export default function AnchorBoxesTopic() {
                 class = background, không tham gia regression loss.
               </li>
               <li>
-                <strong>Bỏ qua</strong>: 0.3 ≤ IoU &lt; 0.7 — không dùng cho training
+                <strong>Bỏ qua</strong>: 0.3 ≤ IoU &lt; 0.7-không dùng cho training
                 để tránh nhiễu loss ở vùng ranh giới.
               </li>
             </ul>
@@ -756,14 +756,14 @@ export default function AnchorBoxesTopic() {
           <Callout variant="warning" title="Anchor-based vs Anchor-free">
             <div className="space-y-2 text-sm">
               <p>
-                <strong>Anchor-based</strong> (Faster R-CNN, SSD, RetinaNet, YOLOv3–v5):
+                <strong>Anchor-based</strong> (Faster R-CNN, SSD, RetinaNet, YOLOv3-v5):
                 Đặt anchor với ratio/scale preset trước, dự đoán offset. Cần tune
-                kích thước anchor cho từng dataset — lớn với ảnh vệ tinh, nhỏ với
+                kích thước anchor cho từng dataset-lớn với ảnh vệ tinh, nhỏ với
                 face detection.
               </p>
               <p>
                 <strong>Anchor-free</strong> (FCOS, CenterNet, YOLOv8+): Dự đoán trực
-                tiếp từ mỗi điểm trên feature map — khoảng cách đến 4 cạnh object
+                tiếp từ mỗi điểm trên feature map-khoảng cách đến 4 cạnh object
                 hoặc center + size. Đơn giản hơn, ít hyperparameter hơn. Xu hướng
                 hiện đại, kết quả cạnh tranh với anchor-based trên COCO.
               </p>
@@ -775,13 +775,13 @@ export default function AnchorBoxesTopic() {
               <p>
                 Công thức <LaTeX>{"t_x = (x - x_a)/w_a"}</LaTeX> chia cho{" "}
                 <em>chiều rộng anchor</em>, không phải stride. Lợi ích: offset
-                normalize — anchor lớn dịch nhiều pixel vẫn cho t_x nhỏ, anchor nhỏ
+                normalize-anchor lớn dịch nhiều pixel vẫn cho t_x nhỏ, anchor nhỏ
                 dịch ít pixel vẫn cho t_x đủ lớn. Điều này giúp loss có cùng thang
                 đo cho mọi kích thước anchor.
               </p>
               <p>
                 YOLO v2/v3 dùng biến thể: <LaTeX>{"b_x = \\sigma(t_x) + c_x"}</LaTeX>{" "}
-                — sigmoid ép tâm anchor ở trong ô grid → tránh dịch quá xa.
+               , sigmoid ép tâm anchor ở trong ô grid → tránh dịch quá xa.
               </p>
             </div>
           </Callout>
@@ -800,7 +800,7 @@ export default function AnchorBoxesTopic() {
             <strong>Lịch sử ngắn</strong>: ý tưởng "hộp tham chiếu" xuất hiện trong{" "}
             <em>Selective Search</em> (Uijlings, 2013) rồi được chuẩn hoá trong R-CNN
             (Girshick, 2014). Tới Faster R-CNN (2015), anchor trở thành thành phần
-            end-to-end — RPN tự sinh proposals mà không cần bước region proposal rời
+            end-to-end-RPN tự sinh proposals mà không cần bước region proposal rời
             rạc. Sau đó SSD (2016) và YOLOv2 (2017) phổ biến anchor ra cộng đồng
             one-stage detector. Từ 2019, anchor-free (FCOS, CenterNet) bắt đầu thách
             thức và dần chiếm ưu thế trên nhiều benchmark.
@@ -813,7 +813,7 @@ def generate_base_anchors(
     scales=(64, 128, 256),       # kích thước anchor (px)
     ratios=(0.5, 1.0, 2.0),      # tỷ lệ w/h
 ):
-    """Sinh 9 anchor tại gốc (0, 0) — dạng (x1, y1, x2, y2)."""
+    """Sinh 9 anchor tại gốc (0, 0), dạng (x1, y1, x2, y2)."""
     anchors = []
     for s in scales:
         for r in ratios:
@@ -839,7 +839,7 @@ def tile_anchors(base, feat_size=(40, 40), stride=16):
 
 
 def bbox_regression_target(anchor, gt):
-    """Tính (t_x, t_y, t_w, t_h) — mục tiêu học của RPN."""
+    """Tính (t_x, t_y, t_w, t_h), mục tiêu học của RPN."""
     ax = (anchor[0] + anchor[2]) / 2
     ay = (anchor[1] + anchor[3]) / 2
     aw = anchor[2] - anchor[0]
@@ -904,7 +904,7 @@ def decode_boxes(anchors, deltas):
 
 
 class RPNLoss(nn.Module):
-    """Loss của Region Proposal Network — 2 thành phần:
+    """Loss của Region Proposal Network-2 thành phần:
 
     1. Classification: anchor có object hay không (BCE).
     2. Regression: chỉ tính trên positive anchor (Smooth L1).
@@ -922,7 +922,7 @@ class RPNLoss(nn.Module):
             cls_logits[valid], cls_targets[valid].float()
         )
 
-        # Regression chỉ trên positive — nhân với bbox_weights (1 hoặc 0)
+        # Regression chỉ trên positive-nhân với bbox_weights (1 hoặc 0)
         reg_loss = F.smooth_l1_loss(
             bbox_deltas * bbox_weights,
             bbox_targets * bbox_weights,
@@ -938,14 +938,14 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
 
     Tham số:
       images: tensor (B, 3, H, W)
-      gt_boxes_per_image: list các tensor (N_i, 4) — N object mỗi ảnh
+      gt_boxes_per_image: list các tensor (N_i, 4), N object mỗi ảnh
     """
     model.train()
     optimizer.zero_grad()
 
-    # 1. Forward — RPN đưa ra 2 output:
-    #    cls_logits: (B, A*H'*W') — điểm objectness
-    #    bbox_deltas: (B, A*H'*W'*4) — 4 offset cho mỗi anchor
+    # 1. Forward-RPN đưa ra 2 output:
+    #    cls_logits: (B, A*H'*W'), điểm objectness
+    #    bbox_deltas: (B, A*H'*W'*4), 4 offset cho mỗi anchor
     cls_logits, bbox_deltas, anchors = model(images)
 
     # 2. Matching anchor ↔ GT, tạo target
@@ -983,7 +983,7 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
 
           <p className="text-sm text-muted mt-2">
             Lưu ý: trong thực tế ta còn <em>sample</em> 256 anchor (128 positive,
-            128 negative) mỗi ảnh để tránh imbalance nặng — có thể có hàng chục
+            128 negative) mỗi ảnh để tránh imbalance nặng-có thể có hàng chục
             ngàn negative nhưng chỉ vài chục positive. Sampling đúng cách là chìa
             khoá để RPN hội tụ nhanh.
           </p>
@@ -1001,7 +1001,7 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
               </p>
               <p>
                 Khi inference, ta khôi phục bằng <LaTeX>{"w = w_a \\cdot e^{t_w}"}</LaTeX>{" "}
-                — luôn dương (không lo box có chiều rộng âm do số float).
+               , luôn dương (không lo box có chiều rộng âm do số float).
               </p>
             </div>
           </CollapsibleDetail>
@@ -1022,26 +1022,26 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
                 gần nhất. Mục tiêu: &gt; 0.6. Nếu thấp, tăng k hoặc thêm level FPN.
               </p>
               <p>
-                YOLOv2+ gọi đây là "anchor priors from K-Means" — một bước tiền xử
+                YOLOv2+ gọi đây là "anchor priors from K-Means", một bước tiền xử
                 lý quan trọng trước khi training thật.
               </p>
               <p>
                 <strong>Ví dụ thực tế</strong>: Face detection với ảnh khuôn mặt
                 320×320 px thường dùng anchor 16, 32, 64 (rất nhỏ) + ratios
-                0.7–1.3 (mặt người gần vuông). Aerial detection (ảnh vệ tinh) lại
-                dùng anchor 128, 256, 512 + ratios 0.3–3 để bắt đường, ô-tô, toà
+                0.7-1.3 (mặt người gần vuông). Aerial detection (ảnh vệ tinh) lại
+                dùng anchor 128, 256, 512 + ratios 0.3-3 để bắt đường, ô-tô, toà
                 nhà dài. Không có bộ anchor one-size-fits-all.
               </p>
             </div>
           </CollapsibleDetail>
 
-          <Callout variant="tip" title="Feature Pyramid Network — anchor theo nhiều độ phân giải">
+          <Callout variant="tip" title="Feature Pyramid Network-anchor theo nhiều độ phân giải">
             <div className="space-y-2 text-sm">
               <p>
                 1 feature map duy nhất không đủ cho object đa kích thước.{" "}
                 <strong>FPN</strong> kết hợp feature ở nhiều tầng (P3, P4, P5, P6,
                 P7) với stride tăng dần (8, 16, 32, 64, 128). Tầng càng thấp
-                (stride nhỏ) dùng anchor nhỏ — bắt object nhỏ. Tầng cao dùng
+                (stride nhỏ) dùng anchor nhỏ-bắt object nhỏ. Tầng cao dùng
                 anchor lớn.
               </p>
               <p>
@@ -1087,7 +1087,7 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
                     <LaTeX>{"t_w=\\log(w/w_a)/\\sigma_2"}</LaTeX>
                   </td>
                   <td className="p-2 border-b border-border text-muted">
-                    σ₁=0.1, σ₂=0.2 — chuẩn hoá loss
+                    σ₁=0.1, σ₂=0.2-chuẩn hoá loss
                   </td>
                 </tr>
                 <tr>
@@ -1132,12 +1132,12 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
           <p className="text-sm text-muted mt-2">
             Dù công thức khác nhau, điểm chung xuyên suốt là: <em>luôn dự đoán đại
             lượng tương đối</em> thay vì tuyệt đối. Đó là bài học chính rút ra từ
-            anchor box — áp dụng được cho cả pose estimation, 3D detection, và
+            anchor box-áp dụng được cho cả pose estimation, 3D detection, và
             segmentation bounding.
           </p>
 
           <p className="text-sm text-muted mt-4">
-            Xem thêm: <TopicLink slug="iou">IoU — chỉ số đo trùng khớp</TopicLink>,{" "}
+            Xem thêm: <TopicLink slug="iou">IoU-chỉ số đo trùng khớp</TopicLink>,{" "}
             <TopicLink slug="nms">Non-Maximum Suppression</TopicLink>,{" "}
             <TopicLink slug="object-detection">Object Detection tổng quan</TopicLink>.
           </p>
@@ -1150,11 +1150,11 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
           title="6 điều cần nhớ về Anchor Boxes"
           points={[
             "Anchor box = hộp mẫu đặt sẵn tại mỗi vị trí trên feature map, mỗi vị trí có 9 anchor (3 ratio × 3 scale).",
-            "Mô hình KHÔNG dự đoán toạ độ tuyệt đối — nó học 4 offset (tx, ty, tw, th) từ anchor gần nhất.",
+            "Mô hình KHÔNG dự đoán toạ độ tuyệt đối-nó học 4 offset (tx, ty, tw, th) từ anchor gần nhất.",
             "Gán nhãn: IoU ≥ 0.7 → positive (học offset), IoU < 0.3 → negative (background), khoảng giữa → bỏ qua.",
-            "tw/th dùng log để giữ w > 0 sau decode và để phân phối target đối xứng quanh 0 — loss ổn định hơn.",
+            "tw/th dùng log để giữ w > 0 sau decode và để phân phối target đối xứng quanh 0-loss ổn định hơn.",
             "Số anchor cực lớn (40×40×9 = 14,400 cho 1 ảnh). Cần sampling cân bằng + NMS để xử lý kết quả.",
-            "Xu hướng hiện đại: anchor-free (FCOS, YOLOv8) — dự đoán trực tiếp từ tâm, ít hyperparameter, kết quả ngang ngửa.",
+            "Xu hướng hiện đại: anchor-free (FCOS, YOLOv8), dự đoán trực tiếp từ tâm, ít hyperparameter, kết quả ngang ngửa.",
           ]}
         />
       </LessonSection>
@@ -1169,12 +1169,12 @@ def train_step(model, images, gt_boxes_per_image, optimizer, loss_fn):
         <div className="rounded-xl border border-border bg-card p-5 space-y-3">
           <div className="flex items-center gap-3">
             <ProgressSteps current={8} total={8} />
-            <span className="text-sm text-muted">Hoàn tất — bạn đã đi qua toàn bộ 8 bước.</span>
+            <span className="text-sm text-muted">Hoàn tất-bạn đã đi qua toàn bộ 8 bước.</span>
           </div>
           <p className="text-sm text-foreground">
             Anchor box là chiếc cầu đưa <em>regression không ràng buộc</em> (đoán
             4 số từ 0) về <em>regression có neo</em> (đoán offset nhỏ). Đây là một
-            trong những ý tưởng nền tảng trong object detection hiện đại — hiểu
+            trong những ý tưởng nền tảng trong object detection hiện đại-hiểu
             anchor giúp bạn đọc Faster R-CNN, SSD, YOLO, và cả RetinaNet dễ dàng.
           </p>
           <ul className="text-sm text-muted list-disc list-inside space-y-1">

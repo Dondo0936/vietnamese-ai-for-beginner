@@ -24,7 +24,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ai-for-science",
   title: "AI for Science",
-  titleVi: "AI cho Khoa học. Phòng thí nghiệm ảo",
+  titleVi: "AI cho Khoa học",
   description:
     "Ứng dụng AI để đẩy nhanh khám phá khoa học, từ dự đoán cấu trúc protein đến thiết kế vật liệu mới.",
   category: "emerging",
@@ -451,7 +451,7 @@ export default function AIForScienceTopic() {
           >
             <p className="mb-4 text-sm text-muted leading-relaxed">
               Bạn đang đứng trong một "phòng thí nghiệm ảo". Chọn một phân
-              tử ở danh sách bên dưới, quan sát đồ thị nguyên tử–liên kết,
+              tử ở danh sách bên dưới, quan sát đồ thị nguyên tử-liên kết,
               rồi bấm <strong className="text-foreground">Run AI</strong> để
               mô hình dự đoán điểm{" "}
               <em>binding affinity</em> với một protein mục tiêu giả lập. Sau
@@ -934,7 +934,7 @@ export default function AIForScienceTopic() {
               >
                 DFT (Density Functional Theory) mất hàng giờ cho 1 phân tử
                 nhỏ. ML potentials như MACE đạt độ chính xác tương đương
-                nhưng nhanh gấp 10³–10⁶ lần → mô phỏng được system lớn,
+                nhưng nhanh gấp 10³-10⁶ lần → mô phỏng được system lớn,
                 thời gian dài (dynamics), mở ra vật liệu mới.
               </Callout>
 

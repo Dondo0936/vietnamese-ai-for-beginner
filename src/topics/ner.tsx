@@ -105,7 +105,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Sơ đồ gán nhãn IOB là gì?",
     options: [
       "Một loại mô hình NER",
-      "B = Beginning, I = Inside, O = Outside — cách đánh dấu ranh giới thực thể",
+      "B = Beginning, I = Inside, O = Outside-cách đánh dấu ranh giới thực thể",
       "Input-Output-Backward",
       "Phương pháp tiền xử lý",
     ],
@@ -117,7 +117,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Mô hình nào cho kết quả NER tiếng Việt tốt nhất hiện nay?",
     options: [
       "Bag of Words + SVM",
-      "PhoBERT + CRF — mô hình Transformer pre-trained cho tiếng Việt",
+      "PhoBERT + CRF-mô hình Transformer pre-trained cho tiếng Việt",
       "Word2Vec + LSTM",
       "TF-IDF + Random Forest",
     ],
@@ -145,7 +145,7 @@ export default function NerTopic() {
           question={`Đọc tin: "Nguyễn Quang Hải ghi bàn cho CLB Hà Nội tại sân Mỹ Đình". Có bao nhiêu THỰC THỂ (tên riêng)?`}
           options={["2 thực thể", "3 thực thể", "4 thực thể"]}
           correct={1}
-          explanation={`Có 3 thực thể: "Nguyễn Quang Hải" (NGƯỜI), "CLB Hà Nội" (TỔ CHỨC), "Mỹ Đình" (ĐỊA ĐIỂM). Bạn vừa làm NER bằng tay! NER tự động hóa quá trình này — quét hàng triệu bài báo, tự gạch chân và phân loại tên người, địa điểm, tổ chức.`}
+          explanation={`Có 3 thực thể: "Nguyễn Quang Hải" (NGƯỜI), "CLB Hà Nội" (TỔ CHỨC), "Mỹ Đình" (ĐỊA ĐIỂM). Bạn vừa làm NER bằng tay! NER tự động hóa quá trình này-quét hàng triệu bài báo, tự gạch chân và phân loại tên người, địa điểm, tổ chức.`}
         />
       </LessonSection>
 
@@ -226,7 +226,7 @@ export default function NerTopic() {
         <AhaMoment>
           <p>
             <strong>NER</strong>{" "}
-            tự động {'"gạch chân"'} và phân loại tên người, địa điểm, tổ chức trong văn bản — giống biên tập viên báo chí đánh dấu bằng bút highlight!
+            tự động {'"gạch chân"'} và phân loại tên người, địa điểm, tổ chức trong văn bản-giống biên tập viên báo chí đánh dấu bằng bút highlight!
           </p>
           <p className="text-sm text-muted mt-1">
             Ứng dụng: xây dựng knowledge graph, hỗ trợ tìm kiếm, tự động phân loại tin tức, chatbot hiểu tên sản phẩm trên Shopee.
@@ -237,7 +237,7 @@ export default function NerTopic() {
       {/* ── Step 4: InlineChallenge ── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
-          question={`"Vinamilk công bố doanh thu tại Hà Nội" — IOB tagging cho "Vinamilk" và "Hà Nội" là gì?`}
+          question={`"Vinamilk công bố doanh thu tại Hà Nội", IOB tagging cho "Vinamilk" và "Hà Nội" là gì?`}
           options={[
             "Vinamilk = B-ORG, Hà = B-LOC, Nội = I-LOC",
             "Vinamilk = ORG, Hà Nội = LOC (không cần IOB)",
@@ -340,7 +340,7 @@ for ent in entities:
               Thách thức: tên người Việt 2-4 từ ({'"Nguyễn Quang Hải"'}), địa danh ghép ({'"Thành phố Hồ Chí Minh"'}). Dùng{" "}
               <strong>PhoBERT</strong>{" "}
               hoặc <strong>VnCoreNLP</strong>{" "}
-              cho kết quả tốt nhất. Dataset: PhoNER (VinAI) — 15K câu tiếng Việt đã gán nhãn.
+              cho kết quả tốt nhất. Dataset: PhoNER (VinAI), 15K câu tiếng Việt đã gán nhãn.
             </p>
           </Callout>
         </ExplanationSection>
@@ -352,7 +352,7 @@ for ent in entities:
           title="Ghi nhớ về NER"
           points={[
             "NER nhận dạng và phân loại thực thể: PER (người), LOC (nơi), ORG (tổ chức), DATE (thời gian).",
-            "IOB tagging: B = bắt đầu, I = bên trong, O = ngoài thực thể — xử lý thực thể nhiều từ.",
+            "IOB tagging: B = bắt đầu, I = bên trong, O = ngoài thực thể-xử lý thực thể nhiều từ.",
             "Kiến trúc hiện đại: BERT (hiểu ngữ cảnh) + CRF (đảm bảo nhãn hợp lệ).",
             "PhoBERT + CRF đạt F1 > 90% cho NER tiếng Việt.",
             "Ứng dụng: knowledge graph, tìm kiếm, chatbot, phân tích tin tức tự động.",

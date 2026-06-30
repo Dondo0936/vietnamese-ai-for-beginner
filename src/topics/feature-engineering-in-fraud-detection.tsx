@@ -110,7 +110,7 @@ interface Transaction {
   label: 0 | 1; // 1 = gian lận
   amount: number;
   merchant: string;
-  hour: number; // 0 – 23
+  hour: number; // 0-23
   velocity_10m: number; // số lần thẻ này thử trong 10 phút qua
   distance_km: number; // khoảng cách từ IP tới địa chỉ thanh toán
   amount_vs_avg: number; // số lần so với trung bình user

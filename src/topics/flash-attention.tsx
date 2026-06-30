@@ -59,7 +59,7 @@ const MEMORY_HIERARCHY: MemoryTier[] = [
     latency: "1 chu kỳ",
     color: "#facc15",
     description: "Nhanh nhất, nằm ngay trong lõi CUDA. Giữ các biến tạm trong kernel.",
-    note: "Không thể cấp phát lớn — compiler quyết định phân bổ.",
+    note: "Không thể cấp phát lớn-compiler quyết định phân bổ.",
   },
   {
     id: "sram",
@@ -69,7 +69,7 @@ const MEMORY_HIERARCHY: MemoryTier[] = [
     latency: "~20 chu kỳ",
     color: "#22c55e",
     description: "Bộ nhớ chia sẻ trong mỗi SM. Nhanh hơn HBM ~10 lần. Flash Attention giữ block Q, K, V ở đây.",
-    note: "Chỉ 192 KB / SM — vì vậy block size phải nhỏ.",
+    note: "Chỉ 192 KB / SM-vì vậy block size phải nhỏ.",
   },
   {
     id: "l2",
@@ -88,7 +88,7 @@ const MEMORY_HIERARCHY: MemoryTier[] = [
     bandwidth: "~2 TB/s",
     latency: "~400 chu kỳ",
     color: "#ef4444",
-    description: "Bộ nhớ chính GPU. Lớn, nhưng 'xa' — phần lớn thời gian GPU chờ HBM.",
+    description: "Bộ nhớ chính GPU. Lớn, nhưng 'xa', phần lớn thời gian GPU chờ HBM.",
     note: "Mọi tensor nằm đây giữa các kernel call.",
   },
   {
@@ -98,7 +98,7 @@ const MEMORY_HIERARCHY: MemoryTier[] = [
     bandwidth: "~50 GB/s (PCIe)",
     latency: "hàng µs",
     color: "#64748b",
-    description: "RAM hệ thống. Đi qua PCIe/NVLink — rất chậm so với GPU memory.",
+    description: "RAM hệ thống. Đi qua PCIe/NVLink-rất chậm so với GPU memory.",
     note: "Cần tránh data transfer host↔device trong hot path.",
   },
 ];
@@ -133,7 +133,7 @@ const BENCHMARK: BenchmarkPoint[] = [
     flashMs: 2.1,
     standardMemGB: 0.016,
     flashMemGB: 0.001,
-    note: "Chuỗi ngắn — cả hai chạy tốt, speedup ~2.2×.",
+    note: "Chuỗi ngắn-cả hai chạy tốt, speedup ~2.2×.",
   },
   {
     seqLen: "8K",
@@ -142,7 +142,7 @@ const BENCHMARK: BenchmarkPoint[] = [
     flashMs: 24,
     standardMemGB: 0.25,
     flashMemGB: 0.004,
-    note: "Sequence 8K — Flash nhanh ~3×; bộ nhớ giảm 60×.",
+    note: "Sequence 8K-Flash nhanh ~3×; bộ nhớ giảm 60×.",
   },
   {
     seqLen: "32K",
@@ -151,7 +151,7 @@ const BENCHMARK: BenchmarkPoint[] = [
     flashMs: 305,
     standardMemGB: 4,
     flashMemGB: 0.016,
-    note: "32K — Flash nhanh ~3.9×; bộ nhớ giảm 250×.",
+    note: "32K-Flash nhanh ~3.9×; bộ nhớ giảm 250×.",
   },
   {
     seqLen: "128K",
@@ -160,11 +160,11 @@ const BENCHMARK: BenchmarkPoint[] = [
     flashMs: 4600,
     standardMemGB: 64,
     flashMemGB: 0.064,
-    note: "128K — Standard gần hết VRAM A100; Flash tiết kiệm ~1000×.",
+    note: "128K-Standard gần hết VRAM A100; Flash tiết kiệm ~1000×.",
   },
 ];
 
-// Pseudocode của Flash Attention — chia tile và chạy online softmax.
+// Pseudocode của Flash Attention-chia tile và chạy online softmax.
 // Br = block row (Q), Bc = block col (K,V), d = head dim.
 // Trạng thái: O (output), l (sum exp), m (running max).
 
@@ -178,7 +178,7 @@ const APPLICATIONS: Array<{ name: string; detail: string }> = [
   {
     name: "Huấn luyện Llama / Mistral / Qwen",
     detail:
-      "Flash Attention 2 tăng throughput training ~2×, tiết kiệm ~40% memory — nghĩa là có thể fit batch lớn hơn hoặc sequence dài hơn trên cùng một cluster.",
+      "Flash Attention 2 tăng throughput training ~2×, tiết kiệm ~40% memory-nghĩa là có thể fit batch lớn hơn hoặc sequence dài hơn trên cùng một cluster.",
   },
   {
     name: "Serving vLLM, TGI, SGLang",
@@ -207,12 +207,12 @@ const PITFALLS: Array<{ name: string; detail: string }> = [
   {
     name: "Kỳ vọng Flash thần kỳ với chuỗi ngắn",
     detail:
-      "Dưới 1K tokens, Flash Attention có thể không nhanh hơn — compute đủ rẻ, overhead tile management chiếm tỷ trọng lớn. Speedup thực sự lộ ra khi N ≥ 4K.",
+      "Dưới 1K tokens, Flash Attention có thể không nhanh hơn-compute đủ rẻ, overhead tile management chiếm tỷ trọng lớn. Speedup thực sự lộ ra khi N ≥ 4K.",
   },
   {
     name: "Dùng sai dtype",
     detail:
-      "Flash Attention chính thức yêu cầu fp16 hoặc bf16. Nếu vô tình chạy fp32, PyTorch sẽ fallback về kernel thường — tưởng đã dùng Flash nhưng không. Luôn kiểm tra với profiler.",
+      "Flash Attention chính thức yêu cầu fp16 hoặc bf16. Nếu vô tình chạy fp32, PyTorch sẽ fallback về kernel thường-tưởng đã dùng Flash nhưng không. Luôn kiểm tra với profiler.",
   },
   {
     name: "Head dim > 128 không hỗ trợ",
@@ -222,7 +222,7 @@ const PITFALLS: Array<{ name: string; detail: string }> = [
   {
     name: "Mask phức tạp",
     detail:
-      "Custom attention mask (không phải causal/padding) khó tận dụng Flash. Dùng FlexAttention (PyTorch 2.5+) — compile mask thành kernel Flash tối ưu.",
+      "Custom attention mask (không phải causal/padding) khó tận dụng Flash. Dùng FlexAttention (PyTorch 2.5+), compile mask thành kernel Flash tối ưu.",
   },
 ];
 
@@ -231,33 +231,33 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "Standard attention tốn O(N²) bộ nhớ. Flash Attention giảm xuống bao nhiêu?",
     options: [
-      "O(N²) — không thay đổi bộ nhớ, chỉ nhanh hơn",
-      "O(N) — không cần lưu ma trận attention N×N đầy đủ, chỉ lưu từng block nhỏ",
-      "O(1) — không dùng bộ nhớ",
+      "O(N²), không thay đổi bộ nhớ, chỉ nhanh hơn",
+      "O(N), không cần lưu ma trận attention N×N đầy đủ, chỉ lưu từng block nhỏ",
+      "O(1), không dùng bộ nhớ",
       "O(log N)",
     ],
     correct: 1,
     explanation:
-      "Flash Attention tính attention từng block nhỏ trong SRAM (nhanh), không cần ghi ma trận N×N đầy đủ ra HBM (chậm). Bộ nhớ GPU giảm từ O(N²) xuống O(N). Với N=128K: tiết kiệm ~16 tỷ floats! Lưu ý: đây là memory cho attention matrix — KV cache vẫn O(N) và không được Flash giảm thêm.",
+      "Flash Attention tính attention từng block nhỏ trong SRAM (nhanh), không cần ghi ma trận N×N đầy đủ ra HBM (chậm). Bộ nhớ GPU giảm từ O(N²) xuống O(N). Với N=128K: tiết kiệm ~16 tỷ floats! Lưu ý: đây là memory cho attention matrix-KV cache vẫn O(N) và không được Flash giảm thêm.",
   },
   {
     question:
       "GPU có 2 loại bộ nhớ: HBM (lớn, chậm) và SRAM (nhỏ, nhanh). Standard attention tắc nghẽn ở đâu?",
     options: [
-      "Tắc ở tính toán (compute-bound) — GPU không đủ nhanh",
-      "Tắc ở bộ nhớ (memory-bound) — phải đọc/ghi ma trận N×N giữa HBM và SRAM nhiều lần",
-      "Tắc ở network — truyền dữ liệu giữa GPU",
+      "Tắc ở tính toán (compute-bound), GPU không đủ nhanh",
+      "Tắc ở bộ nhớ (memory-bound), phải đọc/ghi ma trận N×N giữa HBM và SRAM nhiều lần",
+      "Tắc ở network-truyền dữ liệu giữa GPU",
       "Tắc ở CPU",
     ],
     correct: 1,
     explanation:
-      "GPU A100: 312 TFLOPS compute nhưng chỉ 2 TB/s HBM bandwidth. Attention matrix N×N phải đọc từ HBM → SRAM, tính softmax, ghi lại HBM → nhiều trips. Flash Attention giữ data trong SRAM, giảm HBM trips → nhanh 2–4×. Đây là insight cốt lõi của paper Dao 2022.",
+      "GPU A100: 312 TFLOPS compute nhưng chỉ 2 TB/s HBM bandwidth. Attention matrix N×N phải đọc từ HBM → SRAM, tính softmax, ghi lại HBM → nhiều trips. Flash Attention giữ data trong SRAM, giảm HBM trips → nhanh 2-4×. Đây là insight cốt lõi của paper Dao 2022.",
   },
   {
     question: "Flash Attention dùng 'online softmax'. Tại sao cần kỹ thuật này?",
     options: [
       "Để softmax chính xác hơn",
-      "Vì softmax cần max(row) trước khi tính — nhưng ta chỉ có 1 block, chưa thấy cả hàng. Online softmax tích lũy max/sum dần → kết quả chính xác",
+      "Vì softmax cần max(row) trước khi tính-nhưng ta chỉ có 1 block, chưa thấy cả hàng. Online softmax tích lũy max/sum dần → kết quả chính xác",
       "Để giảm số phép tính",
       "Vì softmax dễ NaN",
     ],
@@ -268,13 +268,13 @@ const quizQuestions: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Flash Attention giảm {blank} (từ O(N²) xuống O(N)) bằng kỹ thuật {blank} — chia Q, K, V thành block nhỏ vừa SRAM, tính attention từng block tại chỗ.",
+      "Flash Attention giảm {blank} (từ O(N²) xuống O(N)) bằng kỹ thuật {blank}, chia Q, K, V thành block nhỏ vừa SRAM, tính attention từng block tại chỗ.",
     blanks: [
       { answer: "bộ nhớ", accept: ["memory", "VRAM", "RAM"] },
       { answer: "tiling", accept: ["Tiling", "chia block", "block"] },
     ],
     explanation:
-      "Flash Attention giảm bộ nhớ O(N²) → O(N) nhờ kỹ thuật tiling: không lưu ma trận attention N×N đầy đủ, chỉ tính từng tile/block trong SRAM nhanh. Online softmax đảm bảo kết quả chính xác khi ghép các block lại. Đây chính xác là 'exact attention' — không xấp xỉ.",
+      "Flash Attention giảm bộ nhớ O(N²) → O(N) nhờ kỹ thuật tiling: không lưu ma trận attention N×N đầy đủ, chỉ tính từng tile/block trong SRAM nhanh. Online softmax đảm bảo kết quả chính xác khi ghép các block lại. Đây chính xác là 'exact attention', không xấp xỉ.",
   },
   {
     question: "Flash Attention 2 (2023) cải thiện gì so với Flash Attention 1?",
@@ -286,7 +286,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "FA2 (Dao 2023): (1) đảo loop order để song song tốt hơn theo N chứ không chỉ theo head; (2) giảm các phép non-matmul (softmax, rescale) vốn đắt trên Tensor Core; (3) sharing warp work hợp lý hơn. Kết quả: 50–70% peak flops trên A100, gần 2× nhanh hơn FA1.",
+      "FA2 (Dao 2023): (1) đảo loop order để song song tốt hơn theo N chứ không chỉ theo head; (2) giảm các phép non-matmul (softmax, rescale) vốn đắt trên Tensor Core; (3) sharing warp work hợp lý hơn. Kết quả: 50-70% peak flops trên A100, gần 2× nhanh hơn FA1.",
   },
   {
     question: "Flash Attention 3 (2024) tận dụng đặc điểm nào của H100?",
@@ -298,7 +298,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 0,
     explanation:
-      "FA3 (Shah & Dao 2024) khai thác hardware H100: TMA giúp load tile không đồng bộ, WGMMA matmul cỡ warp-group, và FP8 giảm một nửa bandwidth. Kết quả: ~75% peak FP16 FLOPs, hoặc 1.2 PFLOPS FP8 — gần giới hạn vật lý GPU.",
+      "FA3 (Shah & Dao 2024) khai thác hardware H100: TMA giúp load tile không đồng bộ, WGMMA matmul cỡ warp-group, và FP8 giảm một nửa bandwidth. Kết quả: ~75% peak FP16 FLOPs, hoặc 1.2 PFLOPS FP8-gần giới hạn vật lý GPU.",
   },
   {
     question:
@@ -306,12 +306,12 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "~32 MB",
       "~128 MB",
-      "~16 GB (64K × 64K × 4 bytes × 8 heads — không fit A100 80GB nếu cộng activation khác)",
+      "~16 GB (64K × 64K × 4 bytes × 8 heads-không fit A100 80GB nếu cộng activation khác)",
       "~1 TB",
     ],
     correct: 2,
     explanation:
-      "64K × 64K × 4 bytes (fp32) = 16 GB cho 1 head. Với 8 heads và cần cả S và dS cho backward → gấp nhiều lần. Fp16 giảm một nửa nhưng vẫn hàng GB. Flash Attention bỏ hoàn toàn ma trận P — chỉ giữ running stats O(N). Đây là lý do context dài chỉ khả thi với Flash.",
+      "64K × 64K × 4 bytes (fp32) = 16 GB cho 1 head. Với 8 heads và cần cả S và dS cho backward → gấp nhiều lần. Fp16 giảm một nửa nhưng vẫn hàng GB. Flash Attention bỏ hoàn toàn ma trận P-chỉ giữ running stats O(N). Đây là lý do context dài chỉ khả thi với Flash.",
   },
   {
     question: "FlexAttention (PyTorch 2.5+) giúp gì?",
@@ -323,7 +323,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "FlexAttention (PyTorch 2.5) mở rộng Flash Attention cho mọi dạng mask/score custom (sliding window, ALiBi, relative pos bias, causal + padding kết hợp...). Bạn khai báo bằng Python, compile thành một Flash kernel duy nhất — giữ được tốc độ Flash mà không cần viết CUDA.",
+      "FlexAttention (PyTorch 2.5) mở rộng Flash Attention cho mọi dạng mask/score custom (sliding window, ALiBi, relative pos bias, causal + padding kết hợp...). Bạn khai báo bằng Python, compile thành một Flash kernel duy nhất-giữ được tốc độ Flash mà không cần viết CUDA.",
   },
 ];
 
@@ -334,7 +334,7 @@ const quizQuestions: QuizQuestion[] = [
 function computeTilingSchedule(matSize: number, blockSize: number): BlockState[][] {
   const blocks = matSize / blockSize;
   const steps: BlockState[][] = [];
-  // Duyệt block hàng trước rồi block cột (row-major) — giống FA2.
+  // Duyệt block hàng trước rồi block cột (row-major), giống FA2.
   for (let i = 0; i < blocks; i++) {
     for (let j = 0; j < blocks; j++) {
       const step: BlockState[] = [];
@@ -391,18 +391,18 @@ export default function FlashAttentionTopic() {
             "Xấp xỉ attention bằng ma trận thưa",
           ]}
           correct={1}
-          explanation="Flash Attention! Chia Q, K, V thành blocks nhỏ vừa SRAM (20MB, nhanh gấp 10–100× HBM). Tính attention từng block tại chỗ, dùng online softmax để tích lũy kết quả. Không cần lưu ma trận N×N → O(N) bộ nhớ thay vì O(N²). Và nhanh hơn 2–4× vì giảm IO! Quan trọng: kết quả CHÍNH XÁC, không xấp xỉ — thuật toán đồng nhất về toán học với standard attention, chỉ khác cách tính."
+          explanation="Flash Attention! Chia Q, K, V thành blocks nhỏ vừa SRAM (20MB, nhanh gấp 10-100× HBM). Tính attention từng block tại chỗ, dùng online softmax để tích lũy kết quả. Không cần lưu ma trận N×N → O(N) bộ nhớ thay vì O(N²). Và nhanh hơn 2-4× vì giảm IO! Quan trọng: kết quả CHÍNH XÁC, không xấp xỉ-thuật toán đồng nhất về toán học với standard attention, chỉ khác cách tính."
         />
       </LessonSection>
 
       {/* ─────────────── STEP 2: VISUALIZATION ─────────────── */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá — Bộ nhớ, tile, và speedup">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá-Bộ nhớ, tile, và speedup">
         <p className="text-sm text-foreground leading-relaxed mb-3">
           Hãy tưởng tượng bạn cần so sánh 1000 hồ sơ Shopee với nhau. Cách cũ (
           <TopicLink slug="self-attention">self-attention</TopicLink> gốc): trải hết 1000 hồ sơ
-          ra sàn nhà khổng lồ, so từng cặp — mất đất và mất thời gian vì phải chạy ra chạy vô.
+          ra sàn nhà khổng lồ, so từng cặp-mất đất và mất thời gian vì phải chạy ra chạy vô.
           Cách Flash: lấy ra 50 hồ sơ, so sánh trên bàn nhỏ (SRAM), ghi kết quả, cất lại, lấy 50
-          hồ sơ tiếp. Bàn nhỏ hơn nhiều mà kết quả chính xác — vì bạn tích lũy tổng chứ không bỏ
+          hồ sơ tiếp. Bàn nhỏ hơn nhiều mà kết quả chính xác-vì bạn tích lũy tổng chứ không bỏ
           hồ sơ nào!
         </p>
 
@@ -473,8 +473,8 @@ export default function FlashAttentionTopic() {
             <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 text-xs font-semibold text-foreground">
                 {mode === "standard"
-                  ? "Ma trận attention N×N — tất cả nằm trong HBM"
-                  : "Ma trận attention chia tile — mỗi lúc chỉ 1 tile trong SRAM"}
+                  ? "Ma trận attention N×N-tất cả nằm trong HBM"
+                  : "Ma trận attention chia tile-mỗi lúc chỉ 1 tile trong SRAM"}
               </div>
               <svg viewBox={`0 0 ${svgSize + 40} ${svgSize + 40}`} className="w-full">
                 {/* vẽ toàn bộ grid */}
@@ -571,7 +571,7 @@ export default function FlashAttentionTopic() {
             {/* Column 2: GPU memory hierarchy */}
             <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 text-xs font-semibold text-foreground">
-                Bộ nhớ đang dùng — hierarchy GPU
+                Bộ nhớ đang dùng-hierarchy GPU
               </div>
               <svg viewBox="0 0 320 320" className="w-full">
                 {/* Kim tự tháp memory */}
@@ -740,7 +740,7 @@ export default function FlashAttentionTopic() {
             </div>
           </div>
 
-          {/* Speedup chart — chọn sequence length */}
+          {/* Speedup chart-chọn sequence length */}
           <div className="mt-4 rounded-xl border border-border bg-background p-4">
             <div className="mb-3 flex items-center justify-between flex-wrap gap-2">
               <div className="text-xs font-semibold text-foreground">
@@ -888,7 +888,7 @@ export default function FlashAttentionTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            <strong>Flash Attention</strong> không thay đổi toán học — kết quả CHÍNH XÁC giống
+            <strong>Flash Attention</strong> không thay đổi toán học-kết quả CHÍNH XÁC giống
             standard attention. Nó chỉ thay đổi <strong>cách tính</strong>: chia thành blocks
             nhỏ, tính trong SRAM (nhanh), dùng online softmax để tích lũy. Giảm IO = giảm thời
             gian thật sự!
@@ -898,13 +898,13 @@ export default function FlashAttentionTopic() {
             (compute-bound). Tỷ lệ FLOPS/bandwidth của A100 là ~150; tức GPU có thể làm 150 phép
             nhân cho mỗi byte đọc. Attention chuẩn có arithmetic intensity thấp hơn giá trị đó
             → bỏ phí compute. Flash Attention nâng arithmetic intensity bằng cách &ldquo;tái
-            dùng&rdquo; data trong SRAM nhiều lần — gần đến peak compute của GPU.
+            dùng&rdquo; data trong SRAM nhiều lần-gần đến peak compute của GPU.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ─────────────── STEP 4: GPU MEMORY HIERARCHY ─────────────── */}
-      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Bộ nhớ GPU — chi tiết">
+      <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Bộ nhớ GPU-chi tiết">
         <div className="grid gap-3 md:grid-cols-2">
           {MEMORY_HIERARCHY.map((tier) => (
             <div
@@ -933,11 +933,11 @@ export default function FlashAttentionTopic() {
             Flash Attention không bỏ phần tử nào, không xấp xỉ. Nó chỉ thay đổi thứ tự tính toán:
             thay vì tính toàn bộ hàng softmax → tính từng block + cập nhật online softmax. Toán
             học tương đương, IO ít hơn → nhanh hơn. Điều này giống việc bạn cộng số trong Excel
-            theo từng cột rồi tổng lại — kết quả cuối giống hệt cộng tất cả cùng lúc.
+            theo từng cột rồi tổng lại-kết quả cuối giống hệt cộng tất cả cùng lúc.
           </p>
         </Callout>
 
-        <Callout variant="info" title="Arithmetic intensity — khái niệm then chốt">
+        <Callout variant="info" title="Arithmetic intensity-khái niệm then chốt">
           <p>
             Arithmetic intensity = FLOPs / bytes loaded. Một operation có AI cao nghĩa là mỗi byte
             load được tái dùng nhiều lần → gần peak compute. Attention chuẩn có AI thấp vì nó
@@ -948,7 +948,7 @@ export default function FlashAttentionTopic() {
       </LessonSection>
 
       {/* ─────────────── STEP 5: CHALLENGES ─────────────── */}
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách 1 — Tính toán bộ nhớ">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách 1-Tính toán bộ nhớ">
         <InlineChallenge
           question="Chuỗi 128K tokens. Standard attention cần 128K × 128K × 4 bytes ≈ 64GB cho attention matrix. Flash Attention cần bao nhiêu?"
           options={[
@@ -958,11 +958,11 @@ export default function FlashAttentionTopic() {
             "~8GB",
           ]}
           correct={1}
-          explanation="Flash Attention không lưu ma trận N×N. Chỉ cần 1 block Q, K, V (~100KB) và running stats O(N) cho online softmax (running max + running sum, mỗi cái N floats). Tổng vào khoảng 0.5–1 MB thay vì 64GB — giảm hơn 100,000 lần! Đây là lý do LLM có context window 128K+ tokens như GPT-4 Turbo hay Claude trở nên khả thi."
+          explanation="Flash Attention không lưu ma trận N×N. Chỉ cần 1 block Q, K, V (~100KB) và running stats O(N) cho online softmax (running max + running sum, mỗi cái N floats). Tổng vào khoảng 0.5-1 MB thay vì 64GB-giảm hơn 100,000 lần! Đây là lý do LLM có context window 128K+ tokens như GPT-4 Turbo hay Claude trở nên khả thi."
         />
       </LessonSection>
 
-      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách 2 — Chẩn đoán perf">
+      <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách 2-Chẩn đoán perf">
         <InlineChallenge
           question="Bạn train Llama với torch.compile + F.scaled_dot_product_attention nhưng GPU utilization chỉ 35%, profiler thấy nhiều _aten::attention native. Lỗi đâu?"
           options={[
@@ -982,23 +982,23 @@ export default function FlashAttentionTopic() {
           <p>
             <strong>Flash Attention</strong> (Dao et al., 2022) là thuật toán{" "}
             <em>IO-aware exact attention</em>. Không thay đổi toán học, chỉ tối ưu cách tính trên
-            hardware. Ý tưởng cốt lõi: phần lớn thời gian GPU không làm toán — nó đợi data đi
+            hardware. Ý tưởng cốt lõi: phần lớn thời gian GPU không làm toán-nó đợi data đi
             lại giữa HBM và SRAM. Tránh round-trip đó là thắng.
           </p>
 
           <p className="mt-3 font-semibold text-foreground">
-            Standard Attention — IO bottleneck
+            Standard Attention-IO bottleneck
           </p>
           <LaTeX block>
             {String.raw`S = QK^T \in \mathbb{R}^{N \times N} \xrightarrow{\text{write HBM}} P = \text{softmax}(S) \xrightarrow{\text{write HBM}} O = PV`}
           </LaTeX>
           <p className="text-sm text-muted">
             3 lần ghi/đọc HBM cho ma trận N×N. Memory = O(N²). Đây là HBM trip thứ 1 (ghi S),
-            thứ 2 (đọc S + ghi P), thứ 3 (đọc P + ghi O) — cộng dồn rất đáng kể khi N lớn.
+            thứ 2 (đọc S + ghi P), thứ 3 (đọc P + ghi O), cộng dồn rất đáng kể khi N lớn.
           </p>
 
           <p className="mt-3 font-semibold text-foreground">
-            Flash Attention — tiling + online softmax
+            Flash Attention-tiling + online softmax
           </p>
           <LaTeX block>
             {String.raw`\text{For each block } (Q_b, K_b, V_b): \quad O_b = \text{softmax}(Q_b K_b^T / \sqrt{d}) \cdot V_b`}
@@ -1008,7 +1008,7 @@ export default function FlashAttentionTopic() {
             Memory = O(N). Không có ma trận P cỡ N×N bao giờ xuất hiện trong HBM!
           </p>
 
-          <p className="mt-3 font-semibold text-foreground">Online softmax — kỹ thuật cốt lõi</p>
+          <p className="mt-3 font-semibold text-foreground">Online softmax-kỹ thuật cốt lõi</p>
           <p className="text-sm">
             Để tính softmax ổn định, ta cần <LaTeX>{"m = \\max(x)"}</LaTeX> rồi{" "}
             <LaTeX>{"s = \\sum e^{x - m}"}</LaTeX>. Online softmax cho phép tính dần khi chỉ thấy
@@ -1019,19 +1019,19 @@ export default function FlashAttentionTopic() {
           </LaTeX>
           <p className="text-sm text-muted">
             Output cũng được rescale tương ứng khi m thay đổi. Kết quả cuối cùng hoàn toàn chính
-            xác — không sai số so với tính một lần với toàn bộ hàng.
+            xác-không sai số so với tính một lần với toàn bộ hàng.
           </p>
 
           <Callout variant="info" title="Flash Attention 2 & 3">
             <p>
               <strong>FA2</strong> (Dao 2023): đảo loop order (outer loop theo Q block),
               song song hóa theo sequence length chứ không chỉ theo head/batch, giảm non-matmul
-              FLOPs → khoảng 2× nhanh hơn FA1. Đạt 50–70% peak A100 FP16 TFLOPs.
+              FLOPs → khoảng 2× nhanh hơn FA1. Đạt 50-70% peak A100 FP16 TFLOPs.
             </p>
             <p className="mt-1">
               <strong>FA3</strong> (Shah &amp; Dao 2024): thiết kế cho Hopper/H100. Tận dụng
               Tensor Memory Accelerator (TMA) cho async load, WGMMA warp-group matmul, FP8 cho
-              bandwidth 2× nữa. Kết quả: ~75% peak FP16 hoặc 1.2 PFLOPS FP8 — gần giới hạn vật lý
+              bandwidth 2× nữa. Kết quả: ~75% peak FP16 hoặc 1.2 PFLOPS FP8-gần giới hạn vật lý
               của GPU. Mọi LLM hiện đại (GPT-4, Claude, Llama, Gemini) đều dùng Flash Attention,
               thường kết hợp với <TopicLink slug="kv-cache">KV cache</TopicLink> và{" "}
               <TopicLink slug="transformer">Transformer</TopicLink> architecture.
@@ -1041,8 +1041,8 @@ export default function FlashAttentionTopic() {
           <Callout variant="warning" title="Không phải Linear Attention!">
             <p>
               Flash Attention KHÁC với Linear Attention, Performer, Linformer. Những cái đó là
-              <em> xấp xỉ</em> — dùng kernel trick hoặc low-rank projection để giảm O(N²) →
-              O(N). Flash Attention là <em>exact</em> — kết quả đồng nhất với standard. Bạn có
+              <em> xấp xỉ</em>, dùng kernel trick hoặc low-rank projection để giảm O(N²) →
+              O(N). Flash Attention là <em>exact</em>, kết quả đồng nhất với standard. Bạn có
               thể dùng Flash làm drop-in replacement mà không mất độ chính xác của mô hình.
             </p>
           </Callout>
@@ -1051,7 +1051,7 @@ export default function FlashAttentionTopic() {
             <p>
               Mặc định luôn dùng. PyTorch 2.0+ tự động chọn Flash khi có thể. Bạn chỉ cần đảm
               bảo: (1) dtype là fp16 hoặc bf16; (2) head_dim ≤ 128 (FA1/FA2) hoặc ≤ 256 (FA3);
-              (3) mask nằm trong các pattern hỗ trợ (causal, padding, sliding window) — nếu
+              (3) mask nằm trong các pattern hỗ trợ (causal, padding, sliding window), nếu
               custom, dùng FlexAttention.
             </p>
           </Callout>
@@ -1059,7 +1059,7 @@ export default function FlashAttentionTopic() {
           <Callout variant="insight" title="Impact trong cộng đồng">
             <p>
               Flash Attention là một trong những optimization có tác động lớn nhất trong hệ sinh
-              thái LLM. Nó cho phép training và serving context dài (32K–1M tokens) trở nên kinh
+              thái LLM. Nó cho phép training và serving context dài (32K-1M tokens) trở nên kinh
               tế. Không có Flash, Retrieval-Augmented Generation trên tài liệu dài, long-form
               writing, hoặc analyzing codebase đều sẽ đắt hơn hàng chục lần.
             </p>
@@ -1081,7 +1081,7 @@ v = torch.randn(1, 8, 4096, 64, device="cuda", dtype=torch.float16)
 # Tự động dùng Flash Attention nếu available
 output = F.scaled_dot_product_attention(q, k, v, is_causal=True)
 # Memory: O(N) thay vì O(N²)
-# Speed: 2–4× nhanh hơn naive implementation
+# Speed: 2-4× nhanh hơn naive implementation
 
 # Ép dùng Flash backend (báo lỗi nếu không được) để debug
 with sdpa_kernel(SDPBackend.FLASH_ATTENTION):
@@ -1109,7 +1109,7 @@ import torch
 def flash_attention_forward(Q, K, V, Br=64, Bc=64, causal=False):
     """
     Q, K, V: (N, d) tensors trên HBM
-    Trả về O: (N, d) — tương đương softmax(QK^T / sqrt(d)) V
+    Trả về O: (N, d), tương đương softmax(QK^T / sqrt(d)) V
     Bộ nhớ thêm: O(N) (running stats), KHÔNG phải O(N^2)
     """
     N, d = Q.shape
@@ -1126,7 +1126,7 @@ def flash_attention_forward(Q, K, V, Br=64, Bc=64, causal=False):
     # OUTER loop trên Q blocks (FA2 đổi thứ tự: outer là Q)
     for i in range(Tr):
         qi_s, qi_e = i * Br, min((i + 1) * Br, N)
-        Qi = Q[qi_s:qi_e]                        # (Br, d) — load SRAM
+        Qi = Q[qi_s:qi_e]                        # (Br, d), load SRAM
         Oi = torch.zeros(qi_e - qi_s, d, device=Q.device)
         li = torch.zeros(qi_e - qi_s, device=Q.device)
         mi = torch.full((qi_e - qi_s,), -float("inf"), device=Q.device)
@@ -1139,7 +1139,7 @@ def flash_attention_forward(Q, K, V, Br=64, Bc=64, causal=False):
             Kj = K[kj_s:kj_e]   # (Bc, d)
             Vj = V[kj_s:kj_e]   # (Bc, d)
 
-            # Attention scores cho tile này — hoàn toàn trong SRAM
+            # Attention scores cho tile này-hoàn toàn trong SRAM
             Sij = Qi @ Kj.transpose(0, 1) * scale  # (Br, Bc)
             if causal:
                 mask = torch.arange(kj_s, kj_e, device=Q.device) \
@@ -1166,11 +1166,11 @@ def flash_attention_forward(Q, K, V, Br=64, Bc=64, causal=False):
 `}
           </CodeBlock>
 
-          <CollapsibleDetail title="Backward pass — tại sao vẫn O(N) memory?">
+          <CollapsibleDetail title="Backward pass-tại sao vẫn O(N) memory?">
             <p className="text-sm">
               Standard backward cần lưu ma trận P = softmax(S) trong forward để tính gradient. Đó
               là O(N²). Flash Attention thay vào đó lưu chỉ <em>running stats</em> (l, m) kích
-              thước O(N). Ở backward, ta tính lại P tại chỗ cho từng block — đổi memory lấy
+              thước O(N). Ở backward, ta tính lại P tại chỗ cho từng block-đổi memory lấy
               compute thêm, nhưng compute đó diễn ra trong SRAM nên rẻ. Tổng thể, backward chỉ
               tốn O(N) memory phụ và nhanh tương đương hoặc nhanh hơn standard.
             </p>
@@ -1179,7 +1179,7 @@ def flash_attention_forward(Q, K, V, Br=64, Bc=64, causal=False):
           <CollapsibleDetail title="Liên hệ với Multi-Query / Grouped-Query Attention">
             <p className="text-sm">
               MQA và GQA giảm số K/V heads để tiết kiệm KV cache memory và bandwidth trong
-              decode. Flash Attention vẫn áp dụng được — thực tế, FA2+ còn thêm tối ưu đặc biệt
+              decode. Flash Attention vẫn áp dụng được-thực tế, FA2+ còn thêm tối ưu đặc biệt
               cho MQA/GQA khi broadcast K/V qua các query heads. Llama 2/3 dùng GQA + FA2, và
               Llama-3.1 405B với 128K context là kết quả trực tiếp của combo này.
             </p>
@@ -1217,10 +1217,10 @@ def flash_attention_forward(Q, K, V, Br=64, Bc=64, causal=False):
           points={[
             "Flash Attention = exact attention (không xấp xỉ) nhưng IO-efficient: chia thành blocks, tính trong SRAM nhanh gấp 10× HBM.",
             "Giảm bộ nhớ O(N²) → O(N): không lưu ma trận attention N×N đầy đủ, chỉ giữ running stats cho online softmax.",
-            "Nhanh hơn 2–4× nhờ giảm HBM IO trips. Insight: GPU tắc ở memory bandwidth, không phải compute — giảm IO quan trọng hơn giảm FLOPs.",
+            "Nhanh hơn 2-4× nhờ giảm HBM IO trips. Insight: GPU tắc ở memory bandwidth, không phải compute-giảm IO quan trọng hơn giảm FLOPs.",
             "Online softmax: cập nhật running max + running sum qua mỗi block, rescale output tương ứng → kết quả đồng nhất với softmax một lần.",
             "FA1 (2022) → FA2 (2023, 2× nhanh hơn, song song tốt hơn) → FA3 (2024, tận dụng H100 TMA/WGMMA/FP8, ~75% peak).",
-            "Mọi LLM hiện đại dùng Flash Attention — GPT-4, Claude, Llama, Mistral, Gemini. Cho phép context 128K–1M tokens kinh tế.",
+            "Mọi LLM hiện đại dùng Flash Attention-GPT-4, Claude, Llama, Mistral, Gemini. Cho phép context 128K-1M tokens kinh tế.",
           ]}
         />
       </LessonSection>

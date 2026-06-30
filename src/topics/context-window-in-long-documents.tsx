@@ -309,7 +309,7 @@ export default function ContextWindowInLongDocuments() {
                   <li>Ít nhất <strong>10 prompt riêng</strong> cho cùng một file</li>
                   <li>Mỗi phần AI không biết phần khác nói gì → dễ mâu thuẫn</li>
                   <li>Bạn phải tự làm &quot;biên tập viên&quot; gộp kết quả</li>
-                  <li>Mất 60–90 phút; dễ bỏ sót khi phần hay nằm ở giữa file</li>
+                  <li>Mất 60-90 phút; dễ bỏ sót khi phần hay nằm ở giữa file</li>
                 </ul>
               </div>
             }
@@ -327,7 +327,7 @@ export default function ContextWindowInLongDocuments() {
                   <li><strong>1 prompt duy nhất</strong>, AI đọc cả 500 trang</li>
                   <li>AI hiểu mạch liên kết giữa các chương, không mâu thuẫn</li>
                   <li>Bạn chỉ cần đọc và xác nhận bản tóm tắt cuối</li>
-                  <li>Mất 3–8 phút; có thể hỏi tiếp tự nhiên dựa trên cùng bối cảnh</li>
+                  <li>Mất 3-8 phút; có thể hỏi tiếp tự nhiên dựa trên cùng bối cảnh</li>
                 </ul>
               </div>
             }
@@ -390,7 +390,7 @@ export default function ContextWindowInLongDocuments() {
             />
           </div>
           <p>
-            <strong>Gemini 1.5 Pro nâng lên 1 triệu token (2024–2025).</strong>{" "}
+            <strong>Gemini 1.5 Pro nâng lên 1 triệu token (2024-2025).</strong>{" "}
             Google công bố Gemini 1.5 Pro hỗ trợ cửa sổ 1 triệu token (bản
             nghiên cứu thử nghiệm tới 2 triệu), cho phép phân tích:
           </p>
@@ -434,7 +434,7 @@ export default function ContextWindowInLongDocuments() {
           </div>
           <p>
             <strong>Claude Sonnet 4 / Opus 4.6 mở rộng 1 triệu token với giá cố
-            định (2025–2026).</strong> Anthropic mở rộng dòng Claude lên 1 triệu
+            định (2025-2026).</strong> Anthropic mở rộng dòng Claude lên 1 triệu
             token, với một điểm khác biệt quan trọng cho doanh nghiệp: giá mỗi
             token <em>không tăng</em> khi cửa sổ lớn hơn, token thứ 900.000 có
             giá bằng token thứ 100.
@@ -447,7 +447,7 @@ export default function ContextWindowInLongDocuments() {
               childA={
                 <div className="text-sm leading-relaxed">
                   Nhiều nhà cung cấp trước đây tính phí &quot;long context&quot;
-                  cao hơn 2–4 lần. Một tác vụ 500K token có thể mất{" "}
+                  cao hơn 2-4 lần. Một tác vụ 500K token có thể mất{" "}
                   <strong>vài USD mỗi lần chạy</strong>, không đủ rẻ để dùng
                   hằng ngày.
                 </div>
@@ -580,9 +580,9 @@ export default function ContextWindowInLongDocuments() {
           <Callout variant="tip" title="Mẹo dùng cho người Việt">
             <p>
               Cửa sổ 1M token &quot;hiệu quả&quot; cho tiếng Việt thường bằng
-              khoảng <strong>60–70%</strong> con số quảng cáo, vì tiếng Việt tốn
+              khoảng <strong>60-70%</strong> con số quảng cáo, vì tiếng Việt tốn
               thêm token cho dấu. Với Claude 1M, bạn có thể yên tâm thả{" "}
-              <strong>1.000–1.200 trang tiếng Việt</strong> vào mà không lo tràn.
+              <strong>1.000-1.200 trang tiếng Việt</strong> vào mà không lo tràn.
             </p>
           </Callout>
         </div>

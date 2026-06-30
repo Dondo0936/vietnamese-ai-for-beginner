@@ -22,7 +22,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────
-// METADATA — giữ nguyên, registry không cần đổi
+// METADATA-giữ nguyên, registry không cần đổi
 // ─────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "convolution",
@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────
-// DATA — Ma trận input 6×6 (ảnh xám giả lập). Các giá trị được chọn
+// DATA-Ma trận input 6×6 (ảnh xám giả lập). Các giá trị được chọn
 // sao cho các kernel preset cho ra feature map có pattern rõ ràng:
 // cột trái tối, cột phải sáng → sobel X rõ rệt;
 // hàng trên tối, hàng dưới sáng → sobel Y rõ rệt; v.v.
@@ -52,7 +52,7 @@ const INPUT_6x6: number[][] = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────
-// DATA — Các preset kernel. Mỗi kernel 3×3 tách rời nhau để dễ compare.
+// DATA-Các preset kernel. Mỗi kernel 3×3 tách rời nhau để dễ compare.
 // ─────────────────────────────────────────────────────────────────────
 type Kernel = {
   key: string;
@@ -72,7 +72,7 @@ const KERNELS: Kernel[] = [
       [-2, 0, 2],
       [-1, 0, 1],
     ],
-    desc: "Phát hiện cạnh dọc — đạo hàm theo trục x",
+    desc: "Phát hiện cạnh dọc-đạo hàm theo trục x",
   },
   {
     key: "sobel_y",
@@ -82,7 +82,7 @@ const KERNELS: Kernel[] = [
       [0, 0, 0],
       [1, 2, 1],
     ],
-    desc: "Phát hiện cạnh ngang — đạo hàm theo trục y",
+    desc: "Phát hiện cạnh ngang-đạo hàm theo trục y",
   },
   {
     key: "gaussian",
@@ -93,7 +93,7 @@ const KERNELS: Kernel[] = [
       [1, 2, 1],
     ],
     divisor: 16,
-    desc: "Làm mờ có trọng số — giữ cạnh tốt hơn trung bình đơn thuần",
+    desc: "Làm mờ có trọng số-giữ cạnh tốt hơn trung bình đơn thuần",
   },
   {
     key: "sharpen",
@@ -103,7 +103,7 @@ const KERNELS: Kernel[] = [
       [-1, 5, -1],
       [0, -1, 0],
     ],
-    desc: "Làm nét — khuếch đại điểm trung tâm, trừ lân cận",
+    desc: "Làm nét-khuếch đại điểm trung tâm, trừ lân cận",
   },
   {
     key: "laplacian",
@@ -113,7 +113,7 @@ const KERNELS: Kernel[] = [
       [1, -4, 1],
       [0, 1, 0],
     ],
-    desc: "Đạo hàm bậc 2 theo mọi hướng — phát hiện đỉnh và rìa",
+    desc: "Đạo hàm bậc 2 theo mọi hướng-phát hiện đỉnh và rìa",
   },
   {
     key: "identity",
@@ -123,12 +123,12 @@ const KERNELS: Kernel[] = [
       [0, 1, 0],
       [0, 0, 0],
     ],
-    desc: "Kernel đồng nhất — output = input (dùng để sanity check)",
+    desc: "Kernel đồng nhất-output = input (dùng để sanity check)",
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────
-// HELPER — Tính 1 ô output tại vị trí (row, col) của input với kernel.
+// HELPER-Tính 1 ô output tại vị trí (row, col) của input với kernel.
 // ─────────────────────────────────────────────────────────────────────
 function computeConv(
   input: number[][],
@@ -146,7 +146,7 @@ function computeConv(
   return sum / divisor;
 }
 
-// Tính toàn bộ feature map cho 1 kernel — input 6×6, kernel 3×3, stride 1,
+// Tính toàn bộ feature map cho 1 kernel-input 6×6, kernel 3×3, stride 1,
 // không padding → output 4×4.
 function computeFeatureMap(input: number[][], k: Kernel): number[][] {
   const H = input.length - 2;
@@ -163,7 +163,7 @@ function computeFeatureMap(input: number[][], k: Kernel): number[][] {
   return out;
 }
 
-// Chuẩn hoá để vẽ màu cho feature map — map giá trị về 0..1.
+// Chuẩn hoá để vẽ màu cho feature map-map giá trị về 0..1.
 function normalize(grid: number[][]): { min: number; max: number } {
   let min = Infinity;
   let max = -Infinity;
@@ -180,7 +180,7 @@ function normalize(grid: number[][]): { min: number; max: number } {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// QUIZ — 8 câu theo yêu cầu
+// QUIZ-8 câu theo yêu cầu
 // ─────────────────────────────────────────────────────────────────────
 const quizQuestions: QuizQuestion[] = [
   {
@@ -189,7 +189,7 @@ const quizQuestions: QuizQuestion[] = [
     options: ["6×6", "5×5", "4×4", "3×3"],
     correct: 2,
     explanation:
-      "Công thức: O = (W − K) / S + 1 = (6 − 3) / 1 + 1 = 4. Feature map 4×4 — nhỏ hơn input 2 pixel ở mỗi chiều vì mất 1 pixel ở mỗi rìa.",
+      "Công thức: O = (W − K) / S + 1 = (6 − 3) / 1 + 1 = 4. Feature map 4×4-nhỏ hơn input 2 pixel ở mỗi chiều vì mất 1 pixel ở mỗi rìa.",
   },
   {
     question:
@@ -202,7 +202,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mỗi kernel là một 'mắt' chuyên tìm một pattern. Kernel cạnh dọc tìm cạnh dọc, kernel góc tìm góc. Kết hợp 32–256 kernel → mô tả đầy đủ đặc trưng cục bộ của ảnh.",
+      "Mỗi kernel là một 'mắt' chuyên tìm một pattern. Kernel cạnh dọc tìm cạnh dọc, kernel góc tìm góc. Kết hợp 32-256 kernel → mô tả đầy đủ đặc trưng cục bộ của ảnh.",
   },
   {
     question: "Padding 'same' trong tích chập có tác dụng gì?",
@@ -225,15 +225,15 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "3", accept: ["3×3", "ba"] },
     ],
     explanation:
-      "(7 − 3 + 0) / 2 + 1 = 2 + 1 = 3. Output 3×3. Luôn kiểm tra chia hết — nếu không, cấu hình sai và phải chỉnh stride hoặc padding.",
+      "(7 − 3 + 0) / 2 + 1 = 2 + 1 = 3. Output 3×3. Luôn kiểm tra chia hết-nếu không, cấu hình sai và phải chỉnh stride hoặc padding.",
   },
   {
     question:
       "Sobel X kernel = [[-1,0,1],[-2,0,2],[-1,0,1]]. Nó phát hiện điều gì?",
     options: [
-      "Cạnh ngang — đạo hàm theo trục y",
-      "Cạnh dọc — sự chênh lệch giá trị giữa cột trái và cột phải",
-      "Vùng phẳng — nơi không có cạnh",
+      "Cạnh ngang-đạo hàm theo trục y",
+      "Cạnh dọc-sự chênh lệch giá trị giữa cột trái và cột phải",
+      "Vùng phẳng-nơi không có cạnh",
       "Góc nghiêng 45°",
     ],
     correct: 1,
@@ -244,10 +244,10 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Trong tích chập, weight sharing nghĩa là gì và mang lại lợi ích chính nào?",
     options: [
-      "Nhiều kernel dùng chung một input — giảm bộ nhớ ảnh",
-      "Cùng một kernel (với 9 tham số) được áp dụng ở mọi vị trí — giảm tham số so với fully-connected",
-      "Nhiều layer chia sẻ cùng bias — giảm phép nhân",
-      "GPU chia sẻ cache giữa các thread — tăng tốc",
+      "Nhiều kernel dùng chung một input-giảm bộ nhớ ảnh",
+      "Cùng một kernel (với 9 tham số) được áp dụng ở mọi vị trí-giảm tham số so với fully-connected",
+      "Nhiều layer chia sẻ cùng bias-giảm phép nhân",
+      "GPU chia sẻ cache giữa các thread-tăng tốc",
     ],
     correct: 1,
     explanation:
@@ -264,20 +264,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Nếu không chia, pixel trung bình sẽ bị nhân lên ~16 lần. Chia cho tổng trọng số (16) giữ giá trị output trong cùng khoảng với input — giữ cường độ trung bình của ảnh.",
+      "Nếu không chia, pixel trung bình sẽ bị nhân lên ~16 lần. Chia cho tổng trọng số (16) giữ giá trị output trong cùng khoảng với input-giữ cường độ trung bình của ảnh.",
   },
   {
     question:
       "Kernel Laplacian [[0,1,0],[1,-4,1],[0,1,0]] có tổng trọng số = 0. Tác dụng trên vùng phẳng (mọi pixel cùng giá trị) là gì?",
     options: [
       "Khuếch đại vùng phẳng thành màu trắng",
-      "Output bằng 0 — vùng phẳng bị loại bỏ, chỉ giữ lại cạnh/đỉnh",
+      "Output bằng 0-vùng phẳng bị loại bỏ, chỉ giữ lại cạnh/đỉnh",
       "Gây ra nhiễu ngẫu nhiên",
       "Giữ nguyên giá trị vùng phẳng",
     ],
     correct: 1,
     explanation:
-      "Vùng phẳng: 4v − 4v = 0. Mọi kernel có tổng trọng số = 0 đều triệt tiêu DC component (độ sáng trung bình), chỉ giữ lại biến thiên — lý do Laplacian, Sobel, Prewitt đều có tính chất này.",
+      "Vùng phẳng: 4v − 4v = 0. Mọi kernel có tổng trọng số = 0 đều triệt tiêu DC component (độ sáng trung bình), chỉ giữ lại biến thiên-lý do Laplacian, Sobel, Prewitt đều có tính chất này.",
   },
 ];
 
@@ -335,10 +335,10 @@ export default function ConvolutionTopic() {
     return parts;
   }, [pos, kernel]);
 
-  // Helper để tô màu input & feature map — sáng = giá trị cao
+  // Helper để tô màu input & feature map-sáng = giá trị cao
   const cellBg = (v: number, range: { min: number; max: number }) => {
     const t = (v - range.min) / (range.max - range.min || 1);
-    const shade = Math.round(t * 90 + 10); // 10–100%
+    const shade = Math.round(t * 90 + 10); // 10-100%
     return `hsl(210, 12%, ${shade}%)`;
   };
 
@@ -352,7 +352,7 @@ export default function ConvolutionTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 1 — HOOK: Dự đoán */}
+      {/* STEP 1-HOOK: Dự đoán */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <div className="mb-3">
@@ -382,7 +382,7 @@ export default function ConvolutionTopic() {
             "8×8 (lớn hơn)",
           ]}
           correct={1}
-          explanation="Output 4×4! Công thức O = (W − K) / S + 1 = (6 − 3)/1 + 1 = 4. Ở rìa, kernel không có đủ 3 pixel để ôm, nên mất 1 pixel mỗi rìa — 6 trừ đi 2 (hai rìa) = 4."
+          explanation="Output 4×4! Công thức O = (W − K) / S + 1 = (6 − 3)/1 + 1 = 4. Ở rìa, kernel không có đủ 3 pixel để ôm, nên mất 1 pixel mỗi rìa-6 trừ đi 2 (hai rìa) = 4."
         >
           <p className="text-sm text-muted mt-4">
             Bên dưới là một sandbox đầy đủ: 6 preset kernel (Sobel X/Y, Gaussian, Sharpen,
@@ -393,12 +393,12 @@ export default function ConvolutionTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 2 — VISUALIZATION: 2D Convolution Sandbox */}
+      {/* STEP 2-VISUALIZATION: 2D Convolution Sandbox */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Sandbox tích chập 2D">
         <VisualizationSection topicSlug={metadata.slug}>
           <h3 className="text-base font-semibold text-foreground mb-1">
-            Sandbox — input 6×6, kernel 3×3, feature map 4×4
+            Sandbox-input 6×6, kernel 3×3, feature map 4×4
           </h3>
           <p className="text-sm text-muted mb-4">
             Chọn một preset kernel. Ô vàng bên trái là vùng kernel đang ôm; ô đang tính ở
@@ -406,7 +406,7 @@ export default function ConvolutionTopic() {
             hoặc bật <strong>Auto</strong> để xem kernel đi hết ảnh.
           </p>
 
-          {/* Kernel picker — 6 preset */}
+          {/* Kernel picker-6 preset */}
           <div className="mb-4 flex flex-wrap gap-2">
             {KERNELS.map((k, i) => (
               <button
@@ -606,7 +606,7 @@ export default function ConvolutionTopic() {
             Hãy đặc biệt chú ý khi đổi qua <strong>Sobel X</strong> và <strong>Sobel Y</strong>:
             feature map sáng ở các vị trí khác nhau, cho thấy mỗi kernel thực sự phát hiện
             một loại cạnh riêng. <strong>Identity</strong> cho output gần bằng vùng trung tâm
-            của input — đúng như tên gọi.
+            của input-đúng như tên gọi.
           </p>
 
           {/* ────────────────────────────────────────────────────── */}
@@ -614,7 +614,7 @@ export default function ConvolutionTopic() {
           {/* ────────────────────────────────────────────────────── */}
           <div className="mt-6 pt-5 border-t border-border">
             <h4 className="text-sm font-semibold text-foreground mb-1">
-              Gallery — cùng input, 6 kernel, 6 feature map khác nhau
+              Gallery-cùng input, 6 kernel, 6 feature map khác nhau
             </h4>
             <p className="text-xs text-muted mb-3">
               Mỗi mini-card là feature map 4×4 của một kernel. Màu nóng = giá trị cao, lạnh
@@ -670,9 +670,9 @@ export default function ConvolutionTopic() {
             </div>
             <p className="mt-3 text-xs text-muted leading-relaxed">
               <strong>Quan sát:</strong> Sobel X và Sobel Y cho feature map gần như đối xứng
-              nhau — một bên nhạy với cạnh dọc, một bên với cạnh ngang. Gaussian cho ra toàn
+              nhau-một bên nhạy với cạnh dọc, một bên với cạnh ngang. Gaussian cho ra toàn
               giá trị trung bình (feature map khá &quot;phẳng&quot;). Sharpen khuếch đại
-              tương phản — giá trị min/max trải rất rộng. Laplacian thường có min âm mạnh ở
+              tương phản-giá trị min/max trải rất rộng. Laplacian thường có min âm mạnh ở
               các đỉnh. Identity gần như trùng với input gốc.
             </p>
           </div>
@@ -680,7 +680,7 @@ export default function ConvolutionTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 3 — AHA */}
+      {/* STEP 3-AHA */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
@@ -693,22 +693,22 @@ export default function ConvolutionTopic() {
           </p>
           <p className="text-sm text-muted mt-2">
             Điều kỳ diệu: CNN không cần được lập trình thủ công các kernel này. Nó{" "}
-            <em>tự học</em> ra các kernel tối ưu cho nhiệm vụ — nhận diện mèo, đọc biển số,
-            chẩn đoán X-quang — chỉ từ dữ liệu và backprop.
+            <em>tự học</em> ra các kernel tối ưu cho nhiệm vụ-nhận diện mèo, đọc biển số,
+            chẩn đoán X-quang-chỉ từ dữ liệu và backprop.
           </p>
         </AhaMoment>
 
         <Callout variant="tip" title="Đừng nhầm với tương quan chéo (cross-correlation)">
           Về mặt toán học, &quot;convolution&quot; thực sự yêu cầu lật kernel (flip 180°)
           trước khi nhân. Trong deep learning, các framework (PyTorch, TensorFlow) mặc định
-          làm <em>cross-correlation</em> — không lật kernel — vì nhanh hơn và dù sao CNN
+          làm <em>cross-correlation</em>, không lật kernel-vì nhanh hơn và dù sao CNN
           cũng tự học trọng số kernel, nên việc lật chỉ đổi dấu trọng số. Chúng ta gọi là
           &quot;tích chập&quot; theo thói quen ngành.
         </Callout>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 4 — ANALOGY: Ví dụ đời thường */}
+      {/* STEP 4-ANALOGY: Ví dụ đời thường */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Ví dụ đời thường">
         <div className="rounded-xl border border-border bg-card p-5">
@@ -728,7 +728,7 @@ export default function ConvolutionTopic() {
             độ giống&quot;. Đó chính là <strong>feature map</strong>.
           </p>
           <p className="text-sm text-muted">
-            Sau đó bạn dùng khuôn khác — khuôn phát hiện vết ố, khuôn tìm chỉ thưa, khuôn
+            Sau đó bạn dùng khuôn khác-khuôn phát hiện vết ố, khuôn tìm chỉ thưa, khuôn
             dò đường sọc. Mỗi khuôn cho một feature map riêng. Xếp chồng 32 feature map lên
             nhau, bạn có &quot;siêu-ảnh&quot; mô tả vải ở 32 khía cạnh khác nhau. Đây
             chính là output của một lớp conv trong CNN.
@@ -737,16 +737,16 @@ export default function ConvolutionTopic() {
 
         <Callout variant="info" title="Tại sao CNN mạnh cho ảnh?">
           Ba tính chất: (1){" "}
-          <strong>Tính cục bộ</strong> — pixel gần nhau liên quan nhau hơn pixel xa; (2){" "}
-          <strong>Chia sẻ trọng số</strong> — con mèo ở góc trái trông giống con mèo ở góc
+          <strong>Tính cục bộ</strong>, pixel gần nhau liên quan nhau hơn pixel xa; (2){" "}
+          <strong>Chia sẻ trọng số</strong>, con mèo ở góc trái trông giống con mèo ở góc
           phải, nên cùng kernel áp dụng mọi nơi; (3){" "}
-          <strong>Bất biến tịnh tiến</strong> — dịch ảnh vài pixel không đổi ý nghĩa.
+          <strong>Bất biến tịnh tiến</strong>, dịch ảnh vài pixel không đổi ý nghĩa.
           Fully-connected không có những tính chất này.
         </Callout>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 5 — CHALLENGE A */}
+      {/* STEP 5-CHALLENGE A */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách A">
         <InlineChallenge
@@ -758,21 +758,21 @@ export default function ConvolutionTopic() {
             "Không chia hết → cấu hình sai",
           ]}
           correct={0}
-          explanation="Công thức: O = (W − K + 2P) / S + 1 = (224 − 5 + 2·2) / 2 + 1 = 223/2 + 1 = 111.5 + 1. Cần làm tròn xuống: ⌊223/2⌋ + 1 = 111 + 1 = 112. Output 112×112 — đúng kích thước nửa input, thường thấy ở lớp đầu của ResNet."
+          explanation="Công thức: O = (W − K + 2P) / S + 1 = (224 − 5 + 2·2) / 2 + 1 = 223/2 + 1 = 111.5 + 1. Cần làm tròn xuống: ⌊223/2⌋ + 1 = 111 + 1 = 112. Output 112×112-đúng kích thước nửa input, thường thấy ở lớp đầu của ResNet."
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 6 — CHALLENGE B */}
+      {/* STEP 6-CHALLENGE B */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Thử thách B">
         <InlineChallenge
           question="Một lớp conv có input 32 kênh (RGB qua vài layer), output 64 kênh, kernel 3×3. Tổng số tham số (không tính bias) là bao nhiêu?"
           options={[
-            "9 — chỉ một kernel 3×3",
-            "3·3·32·64 = 18.432 — mỗi kernel output nhìn cả 32 kênh input",
-            "64 — mỗi feature map output 1 tham số",
-            "32·64 = 2.048 — chỉ cần tham số giữa kênh",
+            "9-chỉ một kernel 3×3",
+            "3·3·32·64 = 18.432-mỗi kernel output nhìn cả 32 kênh input",
+            "64-mỗi feature map output 1 tham số",
+            "32·64 = 2.048-chỉ cần tham số giữa kênh",
           ]}
           correct={1}
           explanation="Mỗi kernel output phải có đủ chiều để ôm hết 32 kênh input → kích thước 3×3×32 = 288 tham số / kernel. Có 64 kernel output → 288·64 = 18.432 tham số. Thêm 64 bias nếu tính → 18.496. Đó là lý do CNN hiện đại (ResNet, VGG) có hàng chục triệu tham số dù kernel nhỏ."
@@ -780,7 +780,7 @@ export default function ConvolutionTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 7 — EXPLANATION */}
+      {/* STEP 7-EXPLANATION */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Giải thích chi tiết">
         <ExplanationSection>
@@ -806,7 +806,7 @@ export default function ConvolutionTopic() {
           </LaTeX>
 
           <p className="text-sm text-muted mt-1">
-            Nếu bạn thấy phép chia không chia hết, cấu hình không hợp lệ — cần chỉnh padding
+            Nếu bạn thấy phép chia không chia hết, cấu hình không hợp lệ-cần chỉnh padding
             hoặc stride. Các framework thường tự làm tròn xuống và chỉ cảnh báo.
           </p>
 
@@ -815,7 +815,7 @@ export default function ConvolutionTopic() {
               <strong>Chia sẻ trọng số (weight sharing):</strong> kernel 3×3 có 9 tham số,
               dùng ở mọi vị trí trên ảnh 224×224 = 50.176 vị trí. Fully-connected giữa hai
               feature map 224×224 cần <LaTeX>{"224^4 \\approx 2.5"}</LaTeX> tỷ tham số.
-              Conv chỉ cần 9 — giảm 277 triệu lần, và vẫn học được các đặc trưng cục bộ tốt
+              Conv chỉ cần 9-giảm 277 triệu lần, và vẫn học được các đặc trưng cục bộ tốt
               hơn.
             </p>
           </Callout>
@@ -832,8 +832,8 @@ export default function ConvolutionTopic() {
           <Callout variant="warning" title="Cảnh giác với output size không chia hết">
             <p>
               Với <LaTeX>{"W=7, K=3, S=2, P=0"}</LaTeX>: <LaTeX>{"(7-3)/2 + 1 = 3"}</LaTeX>{" "}
-              — hợp lệ. Nhưng <LaTeX>{"W=8, K=3, S=2, P=0"}</LaTeX>:{" "}
-              <LaTeX>{"(8-3)/2 + 1 = 3.5"}</LaTeX> — framework làm tròn xuống còn 3. Hệ
+             , hợp lệ. Nhưng <LaTeX>{"W=8, K=3, S=2, P=0"}</LaTeX>:{" "}
+              <LaTeX>{"(8-3)/2 + 1 = 3.5"}</LaTeX>, framework làm tròn xuống còn 3. Hệ
               quả: 1 hàng/cột ở rìa bị bỏ! Luôn kiểm tra hoặc đặt padding để chia hết.
             </p>
           </Callout>
@@ -842,14 +842,14 @@ export default function ConvolutionTopic() {
             <p>
               Trong CNN hiện đại, kernel 3×3 gần như là mặc định (VGG, ResNet, EfficientNet).
               Lý do: hai lớp 3×3 chồng lên nhau cho <em>receptive field</em> tương đương
-              5×5 nhưng với 2·9 = 18 tham số thay vì 25 — rẻ hơn và còn có thêm 1 lớp phi
+              5×5 nhưng với 2·9 = 18 tham số thay vì 25-rẻ hơn và còn có thêm 1 lớp phi
               tuyến ở giữa. Kernel 1×1 dùng để trộn kênh mà không trộn không gian; kernel
               7×7 chỉ còn ở lớp đầu (stem) để nuốt nhanh ảnh thô.
             </p>
           </Callout>
 
           <CodeBlock language="python" title="conv2d_naive.py">
-{`"""Phép tích chập 2D viết tay — phiên bản dễ đọc nhất."""
+{`"""Phép tích chập 2D viết tay-phiên bản dễ đọc nhất."""
 import numpy as np
 
 def conv2d(image: np.ndarray, kernel: np.ndarray,
@@ -875,31 +875,31 @@ def conv2d(image: np.ndarray, kernel: np.ndarray,
 
     return output
 
-# Sobel X — phát hiện cạnh dọc
+# Sobel X-phát hiện cạnh dọc
 sobel_x = np.array([[-1, 0, 1],
                     [-2, 0, 2],
                     [-1, 0, 1]], dtype=np.float32)
 
-# Gaussian blur 3×3 — chia 16 để giữ cường độ
+# Gaussian blur 3×3-chia 16 để giữ cường độ
 gaussian = np.array([[1, 2, 1],
                      [2, 4, 2],
                      [1, 2, 1]], dtype=np.float32) / 16.0
 
-# Laplacian — phát hiện đỉnh và rìa, tổng trọng số = 0
+# Laplacian-phát hiện đỉnh và rìa, tổng trọng số = 0
 laplacian = np.array([[0,  1, 0],
                       [1, -4, 1],
                       [0,  1, 0]], dtype=np.float32)`}
           </CodeBlock>
 
           <p className="mt-4">
-            Trong thực tế, không ai viết vòng lặp Python cho conv — quá chậm. Các framework
+            Trong thực tế, không ai viết vòng lặp Python cho conv-quá chậm. Các framework
             dùng thủ thuật <strong>im2col</strong> để biến tích chập thành một phép nhân ma
             trận lớn, sau đó gọi BLAS / cuDNN. Một GPU hiện đại chạy phép nhân ma trận
             nhanh hơn vòng lặp Python hàng chục nghìn lần.
           </p>
 
           <CodeBlock language="python" title="conv2d_pytorch.py">
-{`"""Conv2D trong PyTorch — cách dùng thực tế."""
+{`"""Conv2D trong PyTorch-cách dùng thực tế."""
 import torch
 import torch.nn as nn
 
@@ -922,7 +922,7 @@ print(y.shape)   # torch.Size([8, 64, 224, 224])
 n_params = sum(p.numel() for p in conv.parameters())
 print(f"Tham số: {n_params}")  # 1792
 
-# Gradient flow tự động — backprop qua phép tích chập
+# Gradient flow tự động-backprop qua phép tích chập
 loss = y.mean()
 loss.backward()
 print(conv.weight.grad.shape)  # [64, 3, 3, 3]`}
@@ -937,12 +937,12 @@ print(conv.weight.grad.shape)  # [64, 3, 3, 3]`}
               {String.raw`(I * K)(i,j) = \sum_{m,n} I(i-m,\; j-n) \cdot K(m, n)`}
             </LaTeX>
             <p className="mt-2">
-              Các framework DL (PyTorch, TF, JAX, ONNX) đều bỏ qua bước lật — thực chất là
+              Các framework DL (PyTorch, TF, JAX, ONNX) đều bỏ qua bước lật-thực chất là
               <em>cross-correlation</em>. Lý do:
             </p>
             <ol className="list-decimal list-inside space-y-1 text-sm mt-2">
               <li>
-                <strong>Nhanh hơn:</strong> không phải lật kernel trong bộ nhớ — tiết kiệm
+                <strong>Nhanh hơn:</strong> không phải lật kernel trong bộ nhớ-tiết kiệm
                 thời gian và bộ nhớ trên GPU.
               </li>
               <li>
@@ -962,7 +962,7 @@ print(conv.weight.grad.shape)  # [64, 3, 3, 3]`}
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Separable convolution — nén tham số bằng cách tách kernel">
+          <CollapsibleDetail title="Separable convolution-nén tham số bằng cách tách kernel">
             <p>
               Nhiều kernel 2D có thể được <em>tách</em> thành tích ngoài của hai kernel 1D.
               Ví dụ Gaussian 3×3:
@@ -974,14 +974,14 @@ print(conv.weight.grad.shape)  # [64, 3, 3, 3]`}
             <p className="mt-2">
               Thay vì 1 tích chập 3×3 (9 phép nhân / vị trí), ta chạy 2 tích chập 1D (3 + 3
               = 6 phép nhân / vị trí). Với kernel <LaTeX>{"k \\times k"}</LaTeX>, tiết kiệm
-              từ <LaTeX>{"k^2"}</LaTeX> về <LaTeX>{"2k"}</LaTeX> — cực lớn khi k = 7, 11.
+              từ <LaTeX>{"k^2"}</LaTeX> về <LaTeX>{"2k"}</LaTeX>, cực lớn khi k = 7, 11.
             </p>
             <p className="mt-2">
               Kiến trúc <strong>MobileNet</strong> và{" "}
               <strong>Xception</strong> đẩy ý tưởng này xa hơn với{" "}
               <em>depthwise separable convolution</em>: tách tích chập không gian và tích
-              chập kênh thành hai bước riêng. Giảm 8–9 lần FLOPs so với conv thường, mất
-              không đáng kể độ chính xác — lý do các model này chạy được trên điện thoại.
+              chập kênh thành hai bước riêng. Giảm 8-9 lần FLOPs so với conv thường, mất
+              không đáng kể độ chính xác-lý do các model này chạy được trên điện thoại.
             </p>
           </CollapsibleDetail>
 
@@ -990,7 +990,7 @@ print(conv.weight.grad.shape)  # [64, 3, 3, 3]`}
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <strong>1D convolution</strong> cho chuỗi thời gian, âm thanh, văn bản — kernel
+              <strong>1D convolution</strong> cho chuỗi thời gian, âm thanh, văn bản-kernel
               trượt theo chiều thời gian, phát hiện pattern cục bộ (&quot;ba âm tiết lặp&quot;,
               &quot;tăng rồi giảm&quot;).
             </li>
@@ -999,12 +999,12 @@ print(conv.weight.grad.shape)  # [64, 3, 3, 3]`}
               (ba chiều không gian).
             </li>
             <li>
-              <strong>Graph convolution</strong> khái quát hoá lên đồ thị bất kỳ — tổng hợp
+              <strong>Graph convolution</strong> khái quát hoá lên đồ thị bất kỳ-tổng hợp
               thông tin từ lân cận trong mạng xã hội, phân tử hoá học, mạng giao thông.
             </li>
             <li>
               <strong>Dilated / atrous convolution</strong> mở rộng receptive field mà
-              không tăng tham số — chủ lực trong segmentation (DeepLab) và audio generation
+              không tăng tham số-chủ lực trong segmentation (DeepLab) và audio generation
               (WaveNet).
             </li>
           </ul>
@@ -1044,10 +1044,10 @@ for name, k in kernels.items():
     fm = conv2d(img, k)
     print(f"{name:<10} min={fm.min():6.1f}  max={fm.max():6.1f}  mean={fm.mean():6.1f}")
     # Quan sát: Sobel X có min âm mạnh ở cột trái, max dương mạnh ở cột phải
-    # — phản ánh gradient chuyển từ tối sang sáng theo chiều ngang.`}
+    #, phản ánh gradient chuyển từ tối sang sáng theo chiều ngang.`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Dilated convolution — mở rộng 'tầm nhìn' mà không tăng tham số">
+          <CollapsibleDetail title="Dilated convolution-mở rộng 'tầm nhìn' mà không tăng tham số">
             <p>
               Tích chập thường có một receptive field cố định: kernel 3×3 chỉ &quot;thấy&quot;
               3 pixel mỗi chiều. Để nhìn xa hơn, bạn có thể xếp chồng nhiều layer, nhưng
@@ -1056,7 +1056,7 @@ for name, k in kernels.items():
             <p className="mt-2">
               <strong>Dilated (atrous) convolution</strong> chèn khoảng trống giữa các điểm
               của kernel. Dilation rate = 2 biến kernel 3×3 thành một cửa sổ 5×5 nhưng vẫn
-              chỉ dùng 9 trọng số — bỏ qua các pixel xen giữa:
+              chỉ dùng 9 trọng số-bỏ qua các pixel xen giữa:
             </p>
             <LaTeX block>
               {String.raw`y(i,j) = \sum_{m,n} x(i + r \cdot m,\; j + r \cdot n) \cdot K(m,n)`}
@@ -1064,7 +1064,7 @@ for name, k in kernels.items():
             <p className="mt-2">
               Với <LaTeX>{"r = 2"}</LaTeX>, kernel nhảy 2 pixel mỗi bước. Ứng dụng nổi
               tiếng: <strong>WaveNet</strong> dùng dilation tăng theo cấp số nhân (1, 2, 4,
-              8, 16, …, 512) để mô hình hoá âm thanh — chỉ 10 layer mà receptive field
+              8, 16, …, 512) để mô hình hoá âm thanh-chỉ 10 layer mà receptive field
               phủ 1024 sample. <strong>DeepLab</strong> dùng dilation trong segmentation
               để giữ resolution không gian cao mà vẫn có tầm nhìn rộng.
             </p>
@@ -1075,7 +1075,7 @@ for name, k in kernels.items():
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <strong>Quên padding:</strong> feature map co dần qua mỗi layer → mất 10–20%
+              <strong>Quên padding:</strong> feature map co dần qua mỗi layer → mất 10-20%
               pixel ở rìa sau vài layer. Luôn đặt padding để giữ kích thước, hoặc tính toán
               trước output size.
             </li>
@@ -1085,12 +1085,12 @@ for name, k in kernels.items():
               debug.
             </li>
             <li>
-              <strong>Không chuẩn hoá input:</strong> pixel 0–255 qua conv sẽ cho activation
+              <strong>Không chuẩn hoá input:</strong> pixel 0-255 qua conv sẽ cho activation
               khổng lồ, gradient nổ. Luôn normalize về mean=0, std=1 (hoặc chia 255).
             </li>
             <li>
               <strong>Dùng kernel quá lớn:</strong> kernel 11×11 ở lớp đầu (AlexNet, 2012)
-              đã lỗi thời. Hiện đại dùng 3×3 stacked — rẻ hơn, sâu hơn, hiệu quả hơn.
+              đã lỗi thời. Hiện đại dùng 3×3 stacked-rẻ hơn, sâu hơn, hiệu quả hơn.
             </li>
             <li>
               <strong>Quên bias tương tác với BatchNorm:</strong> nếu layer sau là BN, bias
@@ -1100,7 +1100,7 @@ for name, k in kernels.items():
             <li>
               <strong>Áp dụng cùng kernel cho ảnh màu:</strong> Sobel cho ảnh xám cần 1 kênh
               kernel. Với RGB phải chạy kernel 3D (3 kênh) hoặc chuyển ảnh sang grayscale
-              trước. Sai số im lặng — model không báo lỗi mà kết quả chỉ &quot;kém&quot;.
+              trước. Sai số im lặng-model không báo lỗi mà kết quả chỉ &quot;kém&quot;.
             </li>
             <li>
               <strong>Bỏ qua kiểm tra output shape sau mỗi layer:</strong> khi thiết kế
@@ -1109,7 +1109,7 @@ for name, k in kernels.items():
             </li>
           </ul>
 
-          <Callout variant="insight" title="Receptive field — 'tầm nhìn' của một neuron">
+          <Callout variant="insight" title="Receptive field, 'tầm nhìn' của một neuron">
             <p>
               Một neuron ở lớp conv-1 chỉ thấy 3×3 pixel gốc. Neuron ở lớp conv-2 (chồng
               lên conv-1) thấy 5×5 pixel gốc. Qua càng nhiều layer, receptive field càng
@@ -1119,7 +1119,7 @@ for name, k in kernels.items():
               {String.raw`R_{l} = R_{l-1} + (k_{l} - 1) \cdot \prod_{i=1}^{l-1} s_{i}`}
             </LaTeX>
             <p className="mt-2">
-              Với ResNet-50, receptive field ở lớp cuối khoảng 483×483 — đủ để &quot;nhìn&quot;
+              Với ResNet-50, receptive field ở lớp cuối khoảng 483×483-đủ để &quot;nhìn&quot;
               cả một ảnh 224×224 nhiều lần. Đây là lý do feature ở tầng cuối mô tả được
               context toàn cục (loài chó, khung cảnh) thay vì chỉ cạnh/kết cấu cục bộ.
             </p>
@@ -1128,17 +1128,17 @@ for name, k in kernels.items():
           <Callout variant="warning" title="Conv không phải lúc nào cũng tốt hơn Transformer">
             <p>
               Từ 2020, Vision Transformer (ViT) và các biến thể (Swin, DeiT) cho thấy
-              self-attention có thể cạnh tranh với conv trên tác vụ thị giác — đặc biệt khi
+              self-attention có thể cạnh tranh với conv trên tác vụ thị giác-đặc biệt khi
               có nhiều dữ liệu. Bài học: inductive bias &quot;cục bộ&quot; của conv là lợi
               thế khi dữ liệu ít, nhưng giới hạn khi dữ liệu rất nhiều. Các kiến trúc hiện
-              đại (ConvNeXt, CoAtNet) kết hợp cả hai — lấy mạnh điểm của từng bên.
+              đại (ConvNeXt, CoAtNet) kết hợp cả hai-lấy mạnh điểm của từng bên.
             </p>
           </Callout>
 
-          <CollapsibleDetail title="Im2col — bí mật tốc độ của conv trên GPU">
+          <CollapsibleDetail title="Im2col-bí mật tốc độ của conv trên GPU">
             <p>
               Vòng lặp Python chạy conv 224×224 trên CPU mất vài giây. PyTorch làm việc đó
-              trong mili-giây. Bí quyết: <strong>im2col</strong> — biến tích chập thành
+              trong mili-giây. Bí quyết: <strong>im2col</strong>, biến tích chập thành
               phép nhân ma trận lớn, rồi gọi cuBLAS / cuDNN đã tối ưu tận răng cho GPU.
             </p>
             <p className="mt-2">
@@ -1164,16 +1164,16 @@ for name, k in kernels.items():
               </li>
             </ol>
             <p className="mt-2">
-              Chi phí bộ nhớ: ma trận X lớn gấp <LaTeX>{"k^2"}</LaTeX> lần input gốc — với
+              Chi phí bộ nhớ: ma trận X lớn gấp <LaTeX>{"k^2"}</LaTeX> lần input gốc-với
               kernel 3×3 là 9 lần. Đây là đánh đổi: dùng thêm bộ nhớ để tận dụng tốc độ
               matmul của GPU. Các kỹ thuật mới (Winograd, FFT-conv) giảm số FLOP nhưng cài
-              đặt phức tạp hơn — chỉ dùng khi kernel size phù hợp.
+              đặt phức tạp hơn-chỉ dùng khi kernel size phù hợp.
             </p>
           </CollapsibleDetail>
 
           <p className="mt-4">
             <strong>Mở rộng đọc thêm:</strong> sau khi hiểu convolution, bước kế tiếp là
-            học các khối xây dựng của CNN hiện đại — <TopicLink slug="pooling">pooling</TopicLink>{" "}
+            học các khối xây dựng của CNN hiện đại, <TopicLink slug="pooling">pooling</TopicLink>{" "}
             để downsample, <TopicLink slug="cnn">kiến trúc CNN</TopicLink> (LeNet → VGG →
             ResNet → EfficientNet), và so sánh với{" "}
             <TopicLink slug="self-attention">self-attention</TopicLink> của Transformer.
@@ -1184,16 +1184,16 @@ for name, k in kernels.items():
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 8 — MINI SUMMARY */}
+      {/* STEP 8-MINI SUMMARY */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="6 điều cần nhớ về phép tích chập"
           points={[
-            "Tích chập = trượt kernel qua input, nhân từng cặp (element-wise) rồi cộng — phát hiện đặc trưng cục bộ.",
+            "Tích chập = trượt kernel qua input, nhân từng cặp (element-wise) rồi cộng-phát hiện đặc trưng cục bộ.",
             "Mỗi kernel phát hiện một loại đặc trưng: Sobel → cạnh; Gaussian → làm mờ; Laplacian → đỉnh/rìa; Identity → giữ nguyên.",
             "Công thức output: O = ⌊(W − K + 2P) / S⌋ + 1. Stride lớn → output nhỏ; padding giữ kích thước.",
-            "Chia sẻ trọng số: kernel 3×3 có 9 tham số nhưng áp dụng mọi vị trí — tiết kiệm hàng triệu lần so với fully-connected.",
+            "Chia sẻ trọng số: kernel 3×3 có 9 tham số nhưng áp dụng mọi vị trí-tiết kiệm hàng triệu lần so với fully-connected.",
             "Multi-channel: kernel phải cùng số kênh với input; ảnh RGB + kernel 3×3 → kernel thực sự là 3×3×3 = 27 tham số.",
             "Framework DL dùng cross-correlation (không lật kernel) nhưng vẫn gọi là convolution theo thói quen ngành.",
           ]}
@@ -1202,13 +1202,13 @@ for name, k in kernels.items():
         <Callout variant="tip" title="Bài tập thực hành">
           Mở Colab, lấy một ảnh xám bất kỳ và áp dụng cả 5 kernel preset (Sobel X/Y, Gaussian,
           Sharpen, Laplacian). Quan sát: Sobel X có feature map sáng ở đâu? Gaussian có giữ
-          cạnh không? Laplacian ra sao ở vùng phẳng? Làm tay một lần để thấm — sau đó mới
+          cạnh không? Laplacian ra sao ở vùng phẳng? Làm tay một lần để thấm-sau đó mới
           học CNN cho tự động.
         </Callout>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════ */}
-      {/* STEP 9 — QUIZ */}
+      {/* STEP 9-QUIZ */}
       {/* ═══════════════════════════════════════════════════════════ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />

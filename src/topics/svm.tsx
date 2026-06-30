@@ -95,7 +95,7 @@ export default function SvmTopic() {
         "Giảm số support vectors",
       ],
       correct: 1,
-      explanation: "Kernel trick tính dot product trong không gian chiều cao MÀ KHÔNG thực sự chiếu. Ví dụ: RBF kernel ngầm chiếu dữ liệu lên không gian vô hạn chiều — dữ liệu hình tròn (không tách tuyến tính) trở thành tách được bằng siêu phẳng.",
+      explanation: "Kernel trick tính dot product trong không gian chiều cao MÀ KHÔNG thực sự chiếu. Ví dụ: RBF kernel ngầm chiếu dữ liệu lên không gian vô hạn chiều-dữ liệu hình tròn (không tách tuyến tính) trở thành tách được bằng siêu phẳng.",
     },
     {
       question: "Tham số C trong SVM (soft margin) kiểm soát gì?",
@@ -116,9 +116,9 @@ export default function SvmTopic() {
         <PredictionGate
           question="Trên sân trường, nhóm A đứng bên trái, nhóm B bên phải. Bạn cần kẻ một đường phân chia. Đường nào tốt nhất?"
           options={[
-            "Đường sát nhóm A — miễn là phân tách được",
-            "Đường cách đều hai nhóm nhất — tạo 'vùng đệm' rộng nhất",
-            "Bất kỳ đường nào chia đúng — không quan trọng vị trí",
+            "Đường sát nhóm A-miễn là phân tách được",
+            "Đường cách đều hai nhóm nhất-tạo 'vùng đệm' rộng nhất",
+            "Bất kỳ đường nào chia đúng-không quan trọng vị trí",
           ]}
           correct={1}
           explanation="Đường cách đều hai nhóm tạo 'vùng đệm' (margin) rộng nhất. Học sinh mới đứng trong vùng đệm vẫn được phân loại đúng. SVM tìm chính xác đường này!"
@@ -261,7 +261,7 @@ export default function SvmTopic() {
         <AhaMoment>
           <p>
             <strong>SVM</strong>{" "}
-            tìm ranh giới có margin LỚN NHẤT giữa hai lớp. Chỉ các điểm gần ranh giới nhất (support vectors) mới quyết định vị trí đường — các điểm xa không ảnh hưởng!
+            tìm ranh giới có margin LỚN NHẤT giữa hai lớp. Chỉ các điểm gần ranh giới nhất (support vectors) mới quyết định vị trí đường-các điểm xa không ảnh hưởng!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -271,9 +271,9 @@ export default function SvmTopic() {
         <InlineChallenge
           question="Dữ liệu nằm thành vòng tròn: lớp A ở giữa, lớp B bao quanh. Đường thẳng có thể phân tách không?"
           options={[
-            "Có — chỉ cần đường thẳng đúng vị trí",
-            "Không — nhưng kernel trick chiếu lên chiều cao hơn thì tách được",
-            "Không — SVM không xử lý được trường hợp này",
+            "Có-chỉ cần đường thẳng đúng vị trí",
+            "Không-nhưng kernel trick chiếu lên chiều cao hơn thì tách được",
+            "Không-SVM không xử lý được trường hợp này",
           ]}
           correct={1}
           explanation="Dữ liệu vòng tròn không tách tuyến tính! Kernel RBF ngầm chiếu dữ liệu lên không gian vô hạn chiều (ví dụ đơn giản: thêm chiều z = x² + y² → lớp A 'nổi' lên cao, lớp B ở thấp → tách bằng siêu phẳng). Thực tế, RBF kernel tính dot product trong không gian này mà không cần chiếu thật."
@@ -308,7 +308,7 @@ export default function SvmTopic() {
 
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Linear:</strong> <LaTeX>{"K(x, z) = x^T z"}</LaTeX></li>
-            <li><strong>RBF (Gaussian):</strong> <LaTeX>{"K(x, z) = e^{-\\gamma ||x-z||^2}"}</LaTeX> — phổ biến nhất</li>
+            <li><strong>RBF (Gaussian):</strong> <LaTeX>{"K(x, z) = e^{-\\gamma ||x-z||^2}"}</LaTeX>, phổ biến nhất</li>
             <li><strong>Polynomial:</strong> <LaTeX>{"K(x, z) = (x^T z + c)^d"}</LaTeX></li>
           </ul>
 
@@ -343,7 +343,7 @@ print(f"RBF SVM:    {cross_val_score(model_rbf, X, y, cv=5).mean():.1%}")`}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
           "SVM tìm siêu phẳng có margin LỚN NHẤT giữa hai lớp → generalize tốt.",
-          "Support vectors = điểm gần ranh giới nhất — chỉ chúng quyết định vị trí siêu phẳng.",
+          "Support vectors = điểm gần ranh giới nhất-chỉ chúng quyết định vị trí siêu phẳng.",
           "Kernel trick cho phép phân loại phi tuyến: RBF, polynomial, sigmoid.",
           "C: tradeoff margin rộng vs ít vi phạm, γ (RBF): kiểm soát phạm vi ảnh hưởng mỗi điểm.",
           "LUÔN chuẩn hoá dữ liệu trước khi dùng SVM! Tốt cho dữ liệu nhỏ, chiều cao.",

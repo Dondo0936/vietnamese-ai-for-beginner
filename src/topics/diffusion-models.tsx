@@ -23,7 +23,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA — giữ nguyên slug, category, tags
+// METADATA-giữ nguyên slug, category, tags
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 7;
 
 // ---------------------------------------------------------------------------
-// CONSTANTS — lưới hiển thị pixel và số bước timestep tối đa
+// CONSTANTS-lưới hiển thị pixel và số bước timestep tối đa
 // ---------------------------------------------------------------------------
 
 const GRID = 8;
@@ -51,7 +51,7 @@ const MAX_T = 10;
 const PIXELS_PER_STEP = Math.ceil(CELLS / MAX_T); // ~6.4 → 7
 
 // ---------------------------------------------------------------------------
-// SEEDED RNG — để kết quả reproducible giữa các lần render
+// SEEDED RNG-để kết quả reproducible giữa các lần render
 // ---------------------------------------------------------------------------
 
 function seededRng(seed: number) {
@@ -63,7 +63,7 @@ function seededRng(seed: number) {
 }
 
 // ---------------------------------------------------------------------------
-// NOISE HELPERS — xây lịch flip pixel cho forward process
+// NOISE HELPERS-xây lịch flip pixel cho forward process
 // ---------------------------------------------------------------------------
 
 /** Lập danh sách các chỉ số pixel sẽ bị flip tại mỗi timestep, có seed. */
@@ -101,7 +101,7 @@ function applyNoise(
   );
 }
 
-/** Sinh pattern ngẫu nhiên từ seed — dùng cho demo reverse "ảnh mới". */
+/** Sinh pattern ngẫu nhiên từ seed-dùng cho demo reverse "ảnh mới". */
 function randomPattern(seed: number): boolean[][] {
   const rng = seededRng(seed);
   return Array.from({ length: GRID }, () =>
@@ -158,7 +158,7 @@ function GridSVG({
 }
 
 // ---------------------------------------------------------------------------
-// MINI FRAME STRIP — 5 frames nhỏ để so sánh forward/reverse
+// MINI FRAME STRIP-5 frames nhỏ để so sánh forward/reverse
 // ---------------------------------------------------------------------------
 
 function FrameStrip({ frames, labels }: { frames: boolean[][][]; labels: string[] }) {
@@ -182,7 +182,7 @@ function FrameStrip({ frames, labels }: { frames: boolean[][][]; labels: string[
 }
 
 // ---------------------------------------------------------------------------
-// QUIZ — 8 câu trộn multiple choice + fill-blank
+// QUIZ-8 câu trộn multiple choice + fill-blank
 // ---------------------------------------------------------------------------
 
 const quizQuestions: QuizQuestion[] = [
@@ -226,7 +226,7 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "DDIM khác gì so với DDPM về cơ bản?",
     options: [
-      "DDIM dùng deterministic sampler, bỏ bớt noise ngẫu nhiên giữa các bước — cho phép giảm số step và consistent output",
+      "DDIM dùng deterministic sampler, bỏ bớt noise ngẫu nhiên giữa các bước-cho phép giảm số step và consistent output",
       "DDIM là mô hình hoàn toàn mới, không liên quan tới DDPM",
       "DDIM chạy trên GPU còn DDPM chỉ chạy CPU",
     ],
@@ -261,12 +261,12 @@ const quizQuestions: QuizQuestion[] = [
       "Guidance scale (w) quá cao (ví dụ w = 20) sẽ gây hiện tượng gì?",
     options: [
       "Ảnh sắc nét, bám prompt hoàn hảo",
-      "Ảnh quá bão hoà, colour clipping, artifact, thiếu đa dạng — 'over-guided'",
+      "Ảnh quá bão hoà, colour clipping, artifact, thiếu đa dạng, 'over-guided'",
       "Model crash",
     ],
     correct: 1,
     explanation:
-      "Tăng w làm output bám prompt chặt hơn nhưng cũng khuếch đại noise prediction error, gây oversaturated, bớt sáng tạo, artifact. Thực nghiệm: w = 5–9 tốt nhất cho SD 1.5, SDXL thì w = 4–7. Có kỹ thuật như 'dynamic thresholding' (Imagen) để giảm artifact khi w cao.",
+      "Tăng w làm output bám prompt chặt hơn nhưng cũng khuếch đại noise prediction error, gây oversaturated, bớt sáng tạo, artifact. Thực nghiệm: w = 5-9 tốt nhất cho SD 1.5, SDXL thì w = 4-7. Có kỹ thuật như 'dynamic thresholding' (Imagen) để giảm artifact khi w cao.",
   },
   {
     type: "fill-blank",
@@ -285,7 +285,7 @@ const quizQuestions: QuizQuestion[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// DDIM vs DDPM — bảng so sánh sampler
+// DDIM vs DDPM-bảng so sánh sampler
 // ---------------------------------------------------------------------------
 
 interface SamplerRow {
@@ -297,13 +297,13 @@ interface SamplerRow {
 const DDPM_VS_DDIM: SamplerRow[] = [
   {
     axis: "Số bước tiêu biểu",
-    ddpm: "1000 (có thể 250–4000)",
-    ddim: "20–50 step",
+    ddpm: "1000 (có thể 250-4000)",
+    ddim: "20-50 step",
   },
   {
     axis: "Tính ngẫu nhiên (η)",
     ddpm: "Stochastic: η = 1, mỗi lần sample khác nhau",
-    ddim: "Deterministic khi η = 0 — cùng noise → cùng ảnh",
+    ddim: "Deterministic khi η = 0-cùng noise → cùng ảnh",
   },
   {
     axis: "Quá trình ngược",
@@ -312,18 +312,18 @@ const DDPM_VS_DDIM: SamplerRow[] = [
   },
   {
     axis: "Tốc độ",
-    ddpm: "Chậm, ~30–60 giây/ảnh trên A100",
+    ddpm: "Chậm, ~30-60 giây/ảnh trên A100",
     ddim: "Nhanh ~10× với 50 step, chất lượng vẫn ổn",
   },
   {
     axis: "Ứng dụng",
     ddpm: "Research baseline, nghiên cứu lý thuyết",
-    ddim: "Production — Stable Diffusion mặc định",
+    ddim: "Production-Stable Diffusion mặc định",
   },
   {
     axis: "Tái hiện (reproducibility)",
-    ddpm: "Khó — do stochasticity giữa các bước",
-    ddim: "Dễ — seed cố định → ảnh cố định",
+    ddpm: "Khó-do stochasticity giữa các bước",
+    ddim: "Dễ-seed cố định → ảnh cố định",
   },
 ];
 
@@ -469,10 +469,10 @@ export default function DiffusionModelsTopic() {
 
   return (
     <>
-      {/* ═══ STEP 1: HOOK — PredictionGate ═════════════════════════════ */}
+      {/* ═══ STEP 1: HOOK-PredictionGate ═════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn xem video mực nhỏ vào nước — mực lan ra dần. Nếu quay ngược video, mực sẽ..."
+          question="Bạn xem video mực nhỏ vào nước-mực lan ra dần. Nếu quay ngược video, mực sẽ..."
           options={["Vẫn lan ra", "Tự gom lại thành giọt", "Biến mất"]}
           correct={1}
           explanation="Quay ngược khuếch tán = tái tạo cấu trúc từ hỗn loạn. Đó chính là cách Diffusion Models sinh ảnh!"
@@ -492,14 +492,14 @@ export default function DiffusionModelsTopic() {
             </p>
             <p className="mt-2 text-sm text-muted leading-relaxed">
               Điểm thú vị: model <strong>không ghi nhớ</strong> pho tượng cụ thể nào. Nó học một
-              quy luật tổng quát "cạnh này nên sắc hơn, vùng kia nên mịn hơn" — gọi là
+              quy luật tổng quát "cạnh này nên sắc hơn, vùng kia nên mịn hơn", gọi là
               <em> score function</em>. Prompt chỉ đơn giản là nói với người điêu khắc: "hôm nay
               hãy đục ra một con rồng đang bay trong mưa". Cùng một người, cùng bộ kỹ năng, nhưng
               prompt khác → kết quả khác hoàn toàn.
             </p>
           </div>
 
-          {/* ═══ STEP 2: DISCOVER — Paint → Noise → Denoise ═════════════ */}
+          {/* ═══ STEP 2: DISCOVER-Paint → Noise → Denoise ═════════════ */}
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
             <VisualizationSection topicSlug={metadata.slug}>
               {/* ── Phase A: Paint ──────────────────────── */}
@@ -543,7 +543,7 @@ export default function DiffusionModelsTopic() {
                 {paintDone && (
                   <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut" }} className="mt-6 space-y-3">
                     <h3 className="text-sm font-semibold text-foreground">Bước 2: Thêm nhiễu (Forward Process)</h3>
-                    <p className="text-sm text-muted">Kéo thanh trượt sang phải — xem hình của bạn dần biến thành nhiễu ngẫu nhiên.</p>
+                    <p className="text-sm text-muted">Kéo thanh trượt sang phải-xem hình của bạn dần biến thành nhiễu ngẫu nhiên.</p>
                     <div className="flex flex-col items-center gap-3">
                       <GridSVG grid={noisyGrid} label={`t = ${noiseT}`} />
                       <div className="w-full max-w-xs space-y-1">
@@ -554,15 +554,15 @@ export default function DiffusionModelsTopic() {
                         </div>
                       </div>
                       <p className="text-xs text-center text-accent font-medium">
-                        {noiseT === 0 && "Ảnh gốc của bạn — chưa có nhiễu."}
-                        {noiseT > 0 && noiseT <= 3 && "Vài pixel bị đảo — hình vẫn nhận ra được."}
-                        {noiseT > 3 && noiseT <= 7 && "Nhiễu tăng dần — hình bắt đầu mờ nhòe."}
-                        {noiseT > 7 && noiseT < 10 && "Gần như toàn nhiễu — rất khó nhận ra hình gốc."}
+                        {noiseT === 0 && "Ảnh gốc của bạn-chưa có nhiễu."}
+                        {noiseT > 0 && noiseT <= 3 && "Vài pixel bị đảo-hình vẫn nhận ra được."}
+                        {noiseT > 3 && noiseT <= 7 && "Nhiễu tăng dần-hình bắt đầu mờ nhòe."}
+                        {noiseT > 7 && noiseT < 10 && "Gần như toàn nhiễu-rất khó nhận ra hình gốc."}
                         {noiseT === 10 && "Nhiễu thuần túy! Không còn dấu vết của hình gốc."}
                       </p>
                     </div>
                     <Callout variant="info" title="Forward Process">
-                      Đây là quá trình thêm nhiễu dần dần — mỗi bước chỉ đảo vài pixel. Sau đủ bước, mọi ảnh đều thành nhiễu ngẫu nhiên giống nhau.
+                      Đây là quá trình thêm nhiễu dần dần-mỗi bước chỉ đảo vài pixel. Sau đủ bước, mọi ảnh đều thành nhiễu ngẫu nhiên giống nhau.
                     </Callout>
                   </motion.div>
                 )}
@@ -573,15 +573,15 @@ export default function DiffusionModelsTopic() {
                 {paintDone && noiseT === MAX_T && (
                   <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }} className="mt-6 space-y-3">
                     <h3 className="text-sm font-semibold text-foreground">Bước 3: Khử nhiễu (Reverse Process)</h3>
-                    <p className="text-sm text-muted">Bắt đầu từ nhiễu thuần — nhấn nút để khử nhiễu từng bước. Xem hình tái hiện!</p>
+                    <p className="text-sm text-muted">Bắt đầu từ nhiễu thuần-nhấn nút để khử nhiễu từng bước. Xem hình tái hiện!</p>
                     <div className="flex flex-col items-center gap-3">
                       <GridSVG grid={denoisedGrid} label={`t = ${denoiseT}`} />
                       <button type="button" onClick={handleDenoiseStep} disabled={denoiseT <= 0} className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-30 hover:enabled:opacity-90">
                         {denoiseT > 0 ? `Khử nhiễu: t=${denoiseT} → t=${denoiseT - 1}` : "Hoàn tất!"}
                       </button>
                       <p className="text-xs text-center text-accent font-medium">
-                        {denoiseT === MAX_T && "Nhiễu thuần túy — AI bắt đầu khử nhiễu..."}
-                        {denoiseT > 0 && denoiseT < MAX_T && `Đã khử ${MAX_T - denoiseT}/${MAX_T} bước — hình dần hiện ra!`}
+                        {denoiseT === MAX_T && "Nhiễu thuần túy-AI bắt đầu khử nhiễu..."}
+                        {denoiseT > 0 && denoiseT < MAX_T && `Đã khử ${MAX_T - denoiseT}/${MAX_T} bước-hình dần hiện ra!`}
                         {denoiseT === 0 && "Ảnh gốc đã tái tạo hoàn toàn! AI học cách 'quay ngược' nhiễu."}
                       </p>
                     </div>
@@ -744,8 +744,8 @@ export default function DiffusionModelsTopic() {
 
               <div className="mt-4">
                 <SplitView
-                  leftLabel="DDPM — Markovian, stochastic"
-                  rightLabel="DDIM — Non-Markovian, deterministic"
+                  leftLabel="DDPM-Markovian, stochastic"
+                  rightLabel="DDIM-Non-Markovian, deterministic"
                   left={
                     <ul className="space-y-2 text-xs text-muted">
                       {DDPM_VS_DDIM.map((row) => (
@@ -773,12 +773,12 @@ export default function DiffusionModelsTopic() {
             {/* ═══ CLASSIFIER-FREE GUIDANCE VISUALIZATION ═══════════════ */}
             <div className="mt-8">
               <h3 className="text-sm font-semibold text-foreground mb-3">
-                Classifier-Free Guidance — kéo slider để khám phá
+                Classifier-Free Guidance-kéo slider để khám phá
               </h3>
               <p className="text-sm text-muted leading-relaxed mb-3">
                 Guidance scale <strong>w</strong> điều khiển mức độ "bám prompt". Công thức:{" "}
                 <code>ε̂ = ε_uncond + w · (ε_cond − ε_uncond)</code>. Kéo slider để xem trạng thái
-                đầu ra — thấp thì lờ mờ không bám prompt, quá cao thì bão hoà, sweet spot ở
+                đầu ra-thấp thì lờ mờ không bám prompt, quá cao thì bão hoà, sweet spot ở
                 w ≈ 7.5.
               </p>
               <div className="rounded-xl border border-border bg-surface/40 p-4 space-y-4">
@@ -819,7 +819,7 @@ export default function DiffusionModelsTopic() {
                   <text x={60} y={52} fill="#60a5fa" fontSize={11} fontWeight="bold">Under-guided</text>
                   <text x={60} y={66} fill="#60a5fa" fontSize={11}>bỏ qua prompt</text>
                   <text x={210} y={52} fill="#22c55e" fontSize={11} fontWeight="bold">Sweet spot</text>
-                  <text x={210} y={66} fill="#22c55e" fontSize={11}>w=5–9 cho SD 1.5</text>
+                  <text x={210} y={66} fill="#22c55e" fontSize={11}>w=5-9 cho SD 1.5</text>
                   <text x={360} y={52} fill="#f59e0b" fontSize={11} fontWeight="bold">Over-guided</text>
                   <text x={360} y={66} fill="#f59e0b" fontSize={11}>oversaturated</text>
                   <text x={470} y={52} fill="#ef4444" fontSize={11} fontWeight="bold">Severe</text>
@@ -847,13 +847,13 @@ export default function DiffusionModelsTopic() {
                     }
                   >
                     {cfgArtifactLevel === "under-guided" &&
-                      "Under-guided — model gần như bỏ qua prompt, ảnh generic"}
+                      "Under-guided-model gần như bỏ qua prompt, ảnh generic"}
                     {cfgArtifactLevel === "sweet-spot" &&
-                      "Sweet spot — prompt được tôn trọng, ảnh đa dạng và sắc nét"}
+                      "Sweet spot-prompt được tôn trọng, ảnh đa dạng và sắc nét"}
                     {cfgArtifactLevel === "over-guided" &&
-                      "Over-guided — màu bão hoà, contrast gắt, giảm đa dạng"}
+                      "Over-guided-màu bão hoà, contrast gắt, giảm đa dạng"}
                     {cfgArtifactLevel === "severe-artifacts" &&
-                      "Severe artifacts — halo, oversaturation, deformity rõ rệt"}
+                      "Severe artifacts-halo, oversaturation, deformity rõ rệt"}
                   </strong>
                 </div>
               </div>
@@ -967,7 +967,7 @@ export default function DiffusionModelsTopic() {
               <p>
                 Quy trình <strong>Thêm nhiễu</strong> &rarr;{" "}
                 <strong>Học khử nhiễu</strong> &rarr; <strong>Sinh ảnh mới</strong> chính là{" "}
-                <strong>Diffusion Model</strong> — nền tảng của Stable Diffusion, DALL·E và
+                <strong>Diffusion Model</strong>, nền tảng của Stable Diffusion, DALL·E và
                 Midjourney! Bí mật không phải ở việc "nhớ" ảnh huấn luyện, mà là học một trường
                 vector <em>score function</em> chỉ đường về phân phối dữ liệu thật: mỗi bước chỉ
                 đi một đoạn ngắn theo hướng giảm nhiễu, và sau hàng chục bước, điểm bắt đầu ngẫu
@@ -980,13 +980,13 @@ export default function DiffusionModelsTopic() {
           <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
             <p className="text-sm text-muted leading-relaxed mb-3">
               So với <TopicLink slug="gan">GAN</TopicLink> chỉ cần 1 forward pass, diffusion phải
-              lặp lại nhiều bước — đây là trade-off giữa chất lượng và tốc độ.
+              lặp lại nhiều bước-đây là trade-off giữa chất lượng và tốc độ.
             </p>
             <InlineChallenge
               question="Diffusion model cần bao nhiêu bước để sinh 1 ảnh? (Thường là 20-1000 bước khử nhiễu). Đây là ưu điểm hay nhược điểm so với GAN?"
               options={[
-                "Ưu điểm — nhiều bước = chất lượng cao",
-                "Nhược điểm — nhiều bước = chậm",
+                "Ưu điểm-nhiều bước = chất lượng cao",
+                "Nhược điểm-nhiều bước = chậm",
                 "Không ảnh hưởng",
               ]}
               correct={1}
@@ -997,8 +997,8 @@ export default function DiffusionModelsTopic() {
               <InlineChallenge
                 question="Bạn nhận deliverable một mô hình SD fine-tune cho prompt 'Vietnamese food photography'. Team cần tái hiện chính xác một ảnh cho poster quảng cáo. Nên chọn sampler nào và vì sao?"
                 options={[
-                  "DDPM — vì có randomness nên đẹp hơn",
-                  "DDIM với η = 0 + fixed seed — deterministic, cùng seed → cùng ảnh, dễ tái hiện để in poster",
+                  "DDPM-vì có randomness nên đẹp hơn",
+                  "DDIM với η = 0 + fixed seed-deterministic, cùng seed → cùng ảnh, dễ tái hiện để in poster",
                   "Không sampler nào tái hiện được, phải train lại",
                 ]}
                 correct={1}
@@ -1017,7 +1017,7 @@ export default function DiffusionModelsTopic() {
                 <strong>forward</strong> dần phá huỷ thông tin bằng nhiễu Gaussian, và học một
                 quá trình <strong>reverse</strong> để tái tạo dữ liệu từ nhiễu thuần tuý. Diffusion
                 vượt trội GAN về độ ổn định huấn luyện, độ đa dạng (không mode collapse) và chất
-                lượng sinh — đồng thời dễ điều kiện hoá (conditional generation) cho{" "}
+                lượng sinh-đồng thời dễ điều kiện hoá (conditional generation) cho{" "}
                 <TopicLink slug="text-to-image">text-to-image</TopicLink>,{" "}
                 <TopicLink slug="text-to-video">text-to-video</TopicLink>, inpainting,
                 super-resolution, v.v.
@@ -1025,7 +1025,7 @@ export default function DiffusionModelsTopic() {
 
               {/* ── FORWARD PROCESS ───────────────────────────────────── */}
               <h3 className="text-base font-semibold text-foreground">
-                Forward Process — Thêm nhiễu có hệ thống
+                Forward Process-Thêm nhiễu có hệ thống
               </h3>
               <p>
                 Tại mỗi bước <em>t</em>, ta thêm nhiễu Gaussian theo schedule{" "}
@@ -1047,13 +1047,13 @@ export default function DiffusionModelsTopic() {
               </LaTeX>
               <p>
                 Khi <em>T</em> đủ lớn (thường 1000), <em>ᾱ_T → 0</em>, nên{" "}
-                <em>x_T ≈ 𝒩(0, I)</em> — nhiễu thuần Gaussian. Đây là điểm khởi đầu của reverse
+                <em>x_T ≈ 𝒩(0, I)</em>, nhiễu thuần Gaussian. Đây là điểm khởi đầu của reverse
                 process.
               </p>
 
               {/* ── REVERSE PROCESS ───────────────────────────────────── */}
               <h3 className="text-base font-semibold text-foreground mt-4">
-                Reverse Process — U-Net học khử nhiễu
+                Reverse Process-U-Net học khử nhiễu
               </h3>
               <p>
                 Ta muốn học <em>p_θ(x_{"{t-1}"} | x_t)</em>. Với β nhỏ, phân phối này xấp xỉ
@@ -1065,7 +1065,7 @@ export default function DiffusionModelsTopic() {
                 }
               </LaTeX>
               <p>
-                Ho et al. (2020) chứng minh reparametrisation sau đưa loss về dạng rất gọn — chỉ
+                Ho et al. (2020) chứng minh reparametrisation sau đưa loss về dạng rất gọn-chỉ
                 cần <strong>U-Net dự đoán nhiễu ε</strong> đã thêm:
               </p>
               <LaTeX block>
@@ -1075,7 +1075,7 @@ export default function DiffusionModelsTopic() {
               </LaTeX>
               <p>
                 Với <em>x_t = √ᾱ_t x_0 + √(1-ᾱ_t) ε, ε ∼ 𝒩(0, I)</em>. Ý nghĩa: training chỉ đơn
-                giản là cho U-Net xem ảnh đã thêm nhiễu và đoán lại nhiễu — rồi tối thiểu hoá MSE.
+                giản là cho U-Net xem ảnh đã thêm nhiễu và đoán lại nhiễu-rồi tối thiểu hoá MSE.
                 Không cần discriminator, không cần adversarial, không mode collapse.
               </p>
 
@@ -1102,12 +1102,12 @@ export default function DiffusionModelsTopic() {
               {/* ── CODE BLOCK 1: SIMPLE TRAINING LOOP ─────────────── */}
               <CodeBlock
                 language="python"
-                title="1. Training loop đơn giản — DDPM objective"
+                title="1. Training loop đơn giản-DDPM objective"
               >
                 {`import torch
 import torch.nn.functional as F
 
-# 1. Noise schedule (β_t) — thường dùng linear hoặc cosine
+# 1. Noise schedule (β_t), thường dùng linear hoặc cosine
 T = 1000
 betas = torch.linspace(1e-4, 0.02, T)  # linear schedule
 alphas = 1.0 - betas
@@ -1144,7 +1144,7 @@ for epoch in range(n_epochs):
               </CodeBlock>
 
               {/* ── CODE BLOCK 2: DDIM SAMPLING ───────────────────── */}
-              <CodeBlock language="python" title="2. DDIM sampling loop — deterministic & nhanh">
+              <CodeBlock language="python" title="2. DDIM sampling loop-deterministic & nhanh">
                 {`@torch.no_grad()
 def ddim_sample(unet, shape, timesteps=50, eta=0.0, device="cuda"):
     """DDIM sampling: non-Markovian, deterministic khi eta=0."""
@@ -1224,7 +1224,7 @@ image.save("pho.png")
               {/* ── CODE BLOCK 4: LATENT DIFFUSION ARCHITECTURE ───── */}
               <CodeBlock
                 language="python"
-                title="4. Kiến trúc Latent Diffusion (Stable Diffusion) — pseudo-code"
+                title="4. Kiến trúc Latent Diffusion (Stable Diffusion), pseudo-code"
               >
                 {`class StableDiffusion(nn.Module):
     def __init__(self):
@@ -1283,31 +1283,31 @@ image.save("pho.png")
                 lượng tương đương!
               </Callout>
 
-              <Callout variant="tip" title="DDIM — 'xương sống' của mọi pipeline production">
+              <Callout variant="tip" title="DDIM, 'xương sống' của mọi pipeline production">
                 Nếu bạn chỉ nhớ một sampler duy nhất: hãy nhớ DDIM. Song et al. (2021) chứng minh
                 rằng DDIM cho phép <em>skip step</em> mà chất lượng gần như không đổi, và khi
-                <em> η = 0</em> thì deterministic — cùng seed → cùng ảnh. Stable Diffusion,
+                <em> η = 0</em> thì deterministic-cùng seed → cùng ảnh. Stable Diffusion,
                 Midjourney, DALL·E 3 đều dùng DDIM hoặc biến thể (DPM-Solver, Euler Ancestral)
                 làm mặc định.
               </Callout>
 
               <Callout variant="warning" title="Cẩn thận với Guidance Scale quá cao">
-                Nhiều người mới nghĩ "w càng cao càng bám prompt, càng đẹp" — sai. Thực nghiệm cho
+                Nhiều người mới nghĩ "w càng cao càng bám prompt, càng đẹp", sai. Thực nghiệm cho
                 thấy <em>w &gt; 12</em> làm ảnh oversaturated, contrast gắt, mất đa dạng. Imagen
                 (Google) đề xuất <em>dynamic thresholding</em>: cắt các giá trị ngoài phân vị p
                 trước khi rescale, giúp dùng <em>w</em> cao mà không artifact.
               </Callout>
 
-              <Callout variant="insight" title="Score-based view — cái nhìn thống nhất">
+              <Callout variant="insight" title="Score-based view-cái nhìn thống nhất">
                 Song &amp; Ermon (2019) cho thấy diffusion là trường hợp riêng của{" "}
-                <em>score matching</em>: U-Net dự đoán <em>∇ log p(x_t)</em> — gradient của
+                <em>score matching</em>: U-Net dự đoán <em>∇ log p(x_t)</em>, gradient của
                 log-density. Công thức đẹp: <em>ε_θ ≈ −√(1-ᾱ) · ∇ log p(x_t)</em>. Điều này mở ra
-                một nhóm phương pháp SDE/ODE mới (score-SDE, EDM) tổng quát hơn DDPM/DDIM — cùng
+                một nhóm phương pháp SDE/ODE mới (score-SDE, EDM) tổng quát hơn DDPM/DDIM-cùng
                 một model có thể sample theo nhiều sampler khác nhau.
               </Callout>
 
               {/* ── 2 COLLAPSIBLE DETAILS ─────────────────────────── */}
-              <CollapsibleDetail title="Chi tiết: Noise schedule — linear, cosine, sigmoid, zero-SNR">
+              <CollapsibleDetail title="Chi tiết: Noise schedule-linear, cosine, sigmoid, zero-SNR">
                 <div className="space-y-2 text-sm">
                   <p>
                     Chọn schedule <em>β_t</em> (hoặc tương đương <em>ᾱ_t</em>) ảnh hưởng lớn tới
@@ -1317,11 +1317,11 @@ image.save("pho.png")
                     <li>
                       <strong>Linear</strong> (Ho 2020): <em>β_1 = 1e-4 → β_T = 0.02</em>. Đơn
                       giản, hoạt động tốt cho CIFAR-10, 32×32. Với ảnh lớn (256+), ᾱ_T ≫ 0 gây
-                      "information leak" — x_T vẫn còn tín hiệu ảnh gốc.
+                      "information leak", x_T vẫn còn tín hiệu ảnh gốc.
                     </li>
                     <li>
                       <strong>Cosine</strong> (Nichol &amp; Dhariwal 2021): <em>ᾱ_t = cos²((t/T + s)/(1 + s) · π/2)</em>.
-                      Đầu gần 1, cuối gần 0 — khắc phục leak. Là schedule mặc định cho nhiều model
+                      Đầu gần 1, cuối gần 0-khắc phục leak. Là schedule mặc định cho nhiều model
                       hiện đại.
                     </li>
                     <li>
@@ -1331,7 +1331,7 @@ image.save("pho.png")
                     <li>
                       <strong>Zero-SNR</strong> (Lin 2023): ép <em>ᾱ_T = 0</em> tuyệt đối, bắt
                       buộc x_T là nhiễu thuần. Cải thiện đáng kể dynamic range (hết bị grey shift)
-                      — áp dụng trong SD 2.1, SDXL.
+                     , áp dụng trong SD 2.1, SDXL.
                     </li>
                   </ul>
                   <p>
@@ -1342,7 +1342,7 @@ image.save("pho.png")
                 </div>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Chi tiết: Từ DDPM → DDIM → DPM-Solver → LCM — lịch sử 'tăng tốc' diffusion">
+              <CollapsibleDetail title="Chi tiết: Từ DDPM → DDIM → DPM-Solver → LCM-lịch sử 'tăng tốc' diffusion">
                 <div className="space-y-2 text-sm">
                   <p>
                     Một trong những hướng nghiên cứu nóng nhất là giảm số sampling step mà vẫn giữ
@@ -1358,20 +1358,20 @@ image.save("pho.png")
                     </li>
                     <li>
                       <strong>DPM-Solver (2022)</strong>: xem reverse diffusion là ODE, dùng
-                      higher-order solver (Runge-Kutta). 10–20 step là đủ.
+                      higher-order solver (Runge-Kutta). 10-20 step là đủ.
                     </li>
                     <li>
                       <strong>UniPC (2023)</strong>: predictor-corrector unified cho nhiều
-                      schedule. 8–12 step.
+                      schedule. 8-12 step.
                     </li>
                     <li>
-                      <strong>Consistency Models / LCM (2023)</strong>: distill U-Net để 1–4 step
+                      <strong>Consistency Models / LCM (2023)</strong>: distill U-Net để 1-4 step
                       là đủ cho preview chất lượng tương đối. Latent Consistency Model (LCM-LoRA)
                       đặc biệt hữu ích cho real-time editing (sinh ảnh 500ms/ảnh trên laptop).
                     </li>
                     <li>
                       <strong>SDXL Turbo &amp; SD3 (2023-2024)</strong>: Adversarial Diffusion
-                      Distillation — 1 step tạo ảnh 512×512 nhanh gần bằng GAN.
+                      Distillation-1 step tạo ảnh 512×512 nhanh gần bằng GAN.
                     </li>
                   </ul>
                   <p>
@@ -1397,13 +1397,13 @@ image.save("pho.png")
                 </li>
                 <li>
                   <strong>Text-to-video:</strong> Sora (OpenAI), Veo (Google), Runway Gen-3, Pika,
-                  Kling, Luma Dream Machine — dùng diffusion 3D (thêm chiều thời gian).
+                  Kling, Luma Dream Machine-dùng diffusion 3D (thêm chiều thời gian).
                 </li>
                 <li>
-                  <strong>Text-to-3D:</strong> DreamFusion, Magic3D — dùng SDS loss để guide NeRF.
+                  <strong>Text-to-3D:</strong> DreamFusion, Magic3D-dùng SDS loss để guide NeRF.
                 </li>
                 <li>
-                  <strong>Audio:</strong> Riffusion (nhạc), AudioLDM, Stable Audio — diffusion
+                  <strong>Audio:</strong> Riffusion (nhạc), AudioLDM, Stable Audio-diffusion
                   trên spectrogram hoặc latent audio.
                 </li>
                 <li>
@@ -1411,7 +1411,7 @@ image.save("pho.png")
                   AlphaFold 3 (cấu trúc protein-ligand), DiffDock (docking phân tử).
                 </li>
                 <li>
-                  <strong>Robotics:</strong> Diffusion Policy — sinh action sequence cho robot,
+                  <strong>Robotics:</strong> Diffusion Policy-sinh action sequence cho robot,
                   hơn hẳn MLP policy truyền thống.
                 </li>
                 <li>
@@ -1431,12 +1431,12 @@ image.save("pho.png")
                   schedule.
                 </li>
                 <li>
-                  <strong>CFG scale quá cao:</strong> w = 20 không phải "siêu bám prompt" — là
+                  <strong>CFG scale quá cao:</strong> w = 20 không phải "siêu bám prompt", là
                   artifact nặng. Giữ w ∈ [5, 9] cho SD.
                 </li>
                 <li>
                   <strong>Bỏ qua negative prompt:</strong> "low quality, blurry, deformed, extra
-                  fingers" — nâng chất lượng đáng kể miễn phí.
+                  fingers", nâng chất lượng đáng kể miễn phí.
                 </li>
                 <li>
                   <strong>VAE decode bị 'banding':</strong> dùng <em>fp16 decoder</em> gây artifact
@@ -1445,11 +1445,11 @@ image.save("pho.png")
                 <li>
                   <strong>Overfit khi fine-tune:</strong> LoRA/DreamBooth dễ học thuộc vài ảnh →
                   bị "memorise" (vi phạm bản quyền). Dùng augmentation, prior preservation loss,
-                  rank LoRA nhỏ (8–16).
+                  rank LoRA nhỏ (8-16).
                 </li>
                 <li>
                   <strong>Ignoring prompt weighting syntax:</strong> mỗi pipeline có cú pháp khác
-                  nhau — <code>(word:1.3)</code> trong Automatic1111, <code>word++</code> trong
+                  nhau, <code>(word:1.3)</code> trong Automatic1111, <code>word++</code> trong
                   ComfyUI. Học cú pháp đúng cho tool đang dùng.
                 </li>
                 <li>
@@ -1475,12 +1475,12 @@ image.save("pho.png")
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               points={[
-                "Forward Process thêm nhiễu Gaussian theo β_t schedule; sau T bước, x_T ≈ 𝒩(0, I) — nhiễu thuần.",
+                "Forward Process thêm nhiễu Gaussian theo β_t schedule; sau T bước, x_T ≈ 𝒩(0, I), nhiễu thuần.",
                 "Reverse Process dùng U-Net dự đoán ε (MSE loss đơn giản); sample lặp lại từ nhiễu về ảnh có nghĩa.",
-                "DDPM stochastic, 1000 step; DDIM non-Markovian, deterministic khi η=0, chỉ cần 20–50 step — production chuẩn.",
-                "Classifier-Free Guidance: ε̂ = ε_uncond + w·(ε_cond − ε_uncond). Sweet spot w ≈ 5–9; quá cao gây oversaturation.",
+                "DDPM stochastic, 1000 step; DDIM non-Markovian, deterministic khi η=0, chỉ cần 20-50 step-production chuẩn.",
+                "Classifier-Free Guidance: ε̂ = ε_uncond + w·(ε_cond − ε_uncond). Sweet spot w ≈ 5-9; quá cao gây oversaturation.",
                 "Stable Diffusion = VAE (nén 512→64) + U-Net (diffusion trên latent) + Text Encoder (CLIP/T5 + cross-attention).",
-                "Chất lượng cao, không mode collapse, dễ điều kiện hoá — nhưng chậm hơn GAN. DPM-Solver, LCM, SDXL Turbo đang đóng gap tốc độ.",
+                "Chất lượng cao, không mode collapse, dễ điều kiện hoá-nhưng chậm hơn GAN. DPM-Solver, LCM, SDXL Turbo đang đóng gap tốc độ.",
               ]}
             />
           </LessonSection>

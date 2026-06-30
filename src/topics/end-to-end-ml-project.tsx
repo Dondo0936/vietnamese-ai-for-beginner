@@ -1065,7 +1065,7 @@ export default function EndToEndMlProjectTopic() {
 
           <p className="leading-relaxed">
             Vòng tròn ở cuối nhắc bạn: không có ‘xong’. Một mô hình sống trung
-            bình 3–12 tháng trước khi cần retrain lớn. Nếu bạn chỉ làm đến
+            bình 3-12 tháng trước khi cần retrain lớn. Nếu bạn chỉ làm đến
             Deploy rồi dừng, mô hình sẽ thầm lặng ‘thối rữa’.
           </p>
 

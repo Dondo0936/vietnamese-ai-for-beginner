@@ -67,9 +67,9 @@ const BASELINE: VariantSnapshot = {
 };
 
 // Sinh snapshot cho candidate theo % canary. Ý tưởng:
-// – % càng thấp → variance càng cao (ít sample).
-// – Ở 0% (shadow) ta vẫn có log → số hiển thị dựa mẫu shadow.
-// – Ở 100% số ổn định về một mean đã định sẵn.
+//, % càng thấp → variance càng cao (ít sample).
+//, Ở 0% (shadow) ta vẫn có log → số hiển thị dựa mẫu shadow.
+//, Ở 100% số ổn định về một mean đã định sẵn.
 function computeCandidate(
   pct: number,
   noiseSeed: number,

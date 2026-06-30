@@ -544,7 +544,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
         topicSlug="sentiment-analysis-in-brand-monitoring"
       >
         <Metric
-          value="Độ chính xác 60–75% cho tiếng Anh, 80%+ cho tiếng Việt ở YouNet / Buzzmetrics (con người cũng chỉ đồng thuận ~80%)"
+          value="Độ chính xác 60-75% cho tiếng Anh, 80%+ cho tiếng Việt ở YouNet / Buzzmetrics (con người cũng chỉ đồng thuận ~80%)"
           sourceRef={2}
         />
         <Metric
@@ -633,7 +633,7 @@ export default function SentimentAnalysisInBrandMonitoring() {
             explanation="'Không một lời xin lỗi', 'không bao giờ bay lại', tiêu cực mạnh. Phủ định kép làm mức độ tiêu cực càng cao."
           />
           <InlineChallenge
-            question="Bài 3: 'Hãng Z vừa mở đường bay HN–ĐN, giá vé từ 1,2 triệu đồng.'"
+            question="Bài 3: 'Hãng Z vừa mở đường bay HN-ĐN, giá vé từ 1,2 triệu đồng.'"
             options={["Tích cực", "Tiêu cực", "Trung tính"]}
             correct={2}
             explanation="Thông tin khách quan, không có từ đánh giá. AI phải phân biệt tin tức với ý kiến."

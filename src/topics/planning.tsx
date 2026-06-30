@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "planning",
   title: "Planning",
-  titleVi: "Lập kế hoạch. AI biết chia để trị",
+  titleVi: "Lập kế hoạch",
   description:
     "Khả năng của AI Agent phân tách vấn đề phức tạp thành chuỗi bước nhỏ hơn và thực hiện có chiến lược.",
   category: "ai-agents",

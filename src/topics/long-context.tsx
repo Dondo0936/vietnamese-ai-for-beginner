@@ -23,7 +23,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "long-context",
   title: "Long Context",
-  titleVi: "Ngữ cảnh dài. AI đọc cả cuốn sách",
+  titleVi: "Ngữ cảnh dài",
   description:
     "Khả năng mô hình xử lý hàng trăm nghìn đến hàng triệu token trong một lần, cho phép phân tích tài liệu dài.",
   category: "emerging",

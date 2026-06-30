@@ -28,7 +28,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "constitutional-ai",
   title: "Constitutional AI",
-  titleVi: "AI Hiến pháp. Tự kiểm duyệt theo nguyên tắc",
+  titleVi: "AI Hiến pháp",
   description:
     "Phương pháp huấn luyện AI tự đánh giá và sửa đổi phản hồi dựa trên một bộ nguyên tắc đạo đức rõ ràng.",
   category: "ai-safety",

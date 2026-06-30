@@ -46,7 +46,7 @@ const STEP_LABELS = [
 ];
 
 /* ──────────────────────────────────────────────────────────────────────────
- * GRID WORLD — 8×8 môi trường Atari-like
+ * GRID WORLD-8×8 môi trường Atari-like
  * Cell có 4 loại: empty, goal, obstacle, start.
  * Agent thực hiện 4 action: up / right / down / left.
  * Q-table: mảng (64 cells × 4 actions) lưu ước lượng giá trị.
@@ -72,7 +72,7 @@ interface Transition {
   done: boolean;
 }
 
-// Bố cục cố định — chọn sao cho có ít nhất 1 đường đi qua.
+// Bố cục cố định-chọn sao cho có ít nhất 1 đường đi qua.
 const LAYOUT: CellKind[][] = [
   ["start", "empty", "empty", "obstacle", "empty", "empty", "empty", "empty"],
   ["empty", "obstacle", "empty", "empty", "empty", "obstacle", "empty", "empty"],
@@ -261,7 +261,7 @@ function doStep(state: AgentState, rand: () => number): AgentState {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
- * GRID VIEW — heatmap Q-values (V(s) = max_a Q(s,a))
+ * GRID VIEW-heatmap Q-values (V(s) = max_a Q(s,a))
  * ──────────────────────────────────────────────────────────────────────── */
 interface GridViewProps {
   agent: AgentState;
@@ -378,7 +378,7 @@ function GridView({ agent, size }: GridViewProps) {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
- * REPLAY BUFFER VIEW — mỗi transition là 1 ô; chấm màu cho phần vừa sample
+ * REPLAY BUFFER VIEW-mỗi transition là 1 ô; chấm màu cho phần vừa sample
  * ──────────────────────────────────────────────────────────────────────── */
 interface BufferViewProps {
   agent: AgentState;
@@ -402,7 +402,7 @@ function BufferView({ agent, width }: BufferViewProps) {
       aria-label="Replay buffer visualization"
     >
       <text x={4} y={12} fill="var(--text-secondary)" fontSize={11}>
-        Replay buffer — {agent.buffer.length}/{BUFFER_CAPACITY} transitions (ô
+        Replay buffer, {agent.buffer.length}/{BUFFER_CAPACITY} transitions (ô
         vàng = vừa được sample cho batch)
       </text>
       {Array.from({ length: BUFFER_CAPACITY }, (_, i) => {
@@ -518,7 +518,7 @@ export default function DeepQNetworkTopic() {
         ],
         correct: 1,
         explanation:
-          "Công thức DQN: y = r + γ·max_a' Q_target(s', a'). Toán tử max trên cùng ước lượng gây positive bias. Double DQN: a* = argmax Q_online(s', a'); y = r + γ · Q_target(s', a*). Thí nghiệm Atari giảm overestimation 30–50%, policy cải thiện.",
+          "Công thức DQN: y = r + γ·max_a' Q_target(s', a'). Toán tử max trên cùng ước lượng gây positive bias. Double DQN: a* = argmax Q_online(s', a'); y = r + γ · Q_target(s', a*). Thí nghiệm Atari giảm overestimation 30-50%, policy cải thiện.",
       },
       {
         question:
@@ -551,7 +551,7 @@ export default function DeepQNetworkTopic() {
           "Prioritized Experience Replay (Schaul et al. 2016) thay đổi gì?",
         options: [
           "Lấy mẫu đều như cũ nhưng nhanh hơn",
-          "Sample transitions với xác suất tỷ lệ với |TD error|^α, dùng importance-sampling weights để khử bias — học nhanh hơn trên những transitions quan trọng",
+          "Sample transitions với xác suất tỷ lệ với |TD error|^α, dùng importance-sampling weights để khử bias-học nhanh hơn trên những transitions quan trọng",
           "Dùng beta distribution thay vì uniform",
         ],
         correct: 1,
@@ -584,12 +584,12 @@ export default function DeepQNetworkTopic() {
         <PredictionGate
           question="Atari game Breakout có frame 210×160×3 pixels ≈ 100K giá trị mỗi ảnh. Nếu lưu Q-table cho toàn bộ state khả dĩ thì cần bao nhiêu entries?"
           options={[
-            "100,000 — bằng số pixel",
-            "256^100000 — một số lớn không thể lưu nổi; do đó Q-table không khả thi và cần neural network để tổng quát hoá",
+            "100,000-bằng số pixel",
+            "256^100000-một số lớn không thể lưu nổi; do đó Q-table không khả thi và cần neural network để tổng quát hoá",
             "1 triệu (khoảng 10⁶)",
           ]}
           correct={1}
-          explanation="Mỗi pixel ∈ {0,...,255} → mỗi state có 256^100000 giá trị khả dĩ. Dù giảm grayscale + 84×84 vẫn là 256^7056 — bất khả thi. DQN dùng CNN để 'học' hàm Q(s, a) thay vì lưu bảng, và chia sẻ tham số giữa state tương tự."
+          explanation="Mỗi pixel ∈ {0,...,255} → mỗi state có 256^100000 giá trị khả dĩ. Dù giảm grayscale + 84×84 vẫn là 256^7056-bất khả thi. DQN dùng CNN để 'học' hàm Q(s, a) thay vì lưu bảng, và chia sẻ tham số giữa state tương tự."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
             <p className="mb-4 text-sm text-muted leading-relaxed">
@@ -709,7 +709,7 @@ export default function DeepQNetworkTopic() {
                     Ở DQN thực, Q là một neural network; ở đây ta dùng Q-table
                     để dễ nhìn, nhưng cơ chế (replay + TD target) y hệt. Càng
                     chạy nhiều bước, ô gần đích sẽ sáng lên trước, rồi "lan" về
-                    phía xuất phát — đó là quá trình giá trị được{" "}
+                    phía xuất phát-đó là quá trình giá trị được{" "}
                     <em>backup</em> ngược qua phương trình Bellman.
                   </p>
                 </div>
@@ -729,7 +729,7 @@ export default function DeepQNetworkTopic() {
                 <strong>Target Network</strong>. Ba thành phần này không mới
                 riêng lẻ, nhưng kết hợp lại biến RL từ một đề tài thí nghiệm
                 nhỏ thành hệ thống đánh bại con người trên 49 trò Atari (Mnih
-                et al., Nature 2015). Đây là "AlexNet moment" của RL — mở ra
+                et al., Nature 2015). Đây là "AlexNet moment" của RL-mở ra
                 kỷ nguyên Deep Reinforcement Learning.
               </p>
             </AhaMoment>
@@ -737,8 +737,8 @@ export default function DeepQNetworkTopic() {
             <Callout variant="insight" title="Vì sao hai mẹo nhỏ lại đổi luật chơi">
               Trước 2013, người ta biết phối hợp Q-learning với neural
               network (Riedmiller 2005, Neural Fitted Q) nhưng training rất
-              không ổn định. DeepMind thêm đúng hai kỹ thuật — replay tái sử
-              dụng data và target network tách biệt — và hội tụ trở nên ổn
+              không ổn định. DeepMind thêm đúng hai kỹ thuật-replay tái sử
+              dụng data và target network tách biệt-và hội tụ trở nên ổn
               định cho CNN lớn. Bài học: đôi khi đột phá không phải ở kiến
               trúc mới, mà ở cách ổn định hoá quá trình học.
             </Callout>
@@ -765,7 +765,7 @@ export default function DeepQNetworkTopic() {
                   "Chuyển sang Monte Carlo",
                 ]}
                 correct={1}
-                explanation="Q explode là triệu chứng kinh điển của moving target kết hợp max bias. Luôn kiểm tra: (1) có target network chưa? (2) C đủ lớn chưa? (3) reward clip? (4) thử Double DQN — trong nhiều game giảm Q value trung bình xuống 30–50% và cải thiện policy."
+                explanation="Q explode là triệu chứng kinh điển của moving target kết hợp max bias. Luôn kiểm tra: (1) có target network chưa? (2) C đủ lớn chưa? (3) reward clip? (4) thử Double DQN-trong nhiều game giảm Q value trung bình xuống 30-50% và cải thiện policy."
               />
             </div>
           </LessonSection>
@@ -794,7 +794,7 @@ export default function DeepQNetworkTopic() {
               </p>
               <ol className="list-decimal list-inside space-y-1.5 text-sm pl-2">
                 <li>
-                  <strong>Experience Replay</strong>: buffer cỡ 10⁵–10⁶ lưu
+                  <strong>Experience Replay</strong>: buffer cỡ 10⁵-10⁶ lưu
                   transitions; mỗi bước sample mini-batch 32 i.i.d. Ưu điểm:
                   (i) phá tương quan, (ii) tái sử dụng data, (iii) cho phép
                   off-policy update.
@@ -820,7 +820,7 @@ export default function DeepQNetworkTopic() {
                 {"\\varepsilon_t = \\max\\left(\\varepsilon_{\\min}, \\varepsilon_0 - \\frac{t}{T_{\\text{anneal}}}\\right)"}
               </LaTeX>
 
-              <Callout variant="tip" title="Double DQN — sửa overestimation">
+              <Callout variant="tip" title="Double DQN-sửa overestimation">
                 DQN overestimate Q do toán tử max trên cùng một estimator bị
                 noise. Double DQN (van Hasselt 2016): dùng online net để{" "}
                 <em>chọn</em> action, dùng target net để <em>đánh giá</em>.
@@ -829,7 +829,7 @@ export default function DeepQNetworkTopic() {
                 . Thay đổi tối thiểu, gain rõ rệt.
               </Callout>
 
-              <Callout variant="info" title="Dueling DQN — tách Value và Advantage">
+              <Callout variant="info" title="Dueling DQN-tách Value và Advantage">
                 Kiến trúc hai nhánh: một nhánh xuất V(s), một nhánh xuất
                 A(s, a). Kết hợp:{" "}
                 <LaTeX>{"Q(s, a) = V(s) + \\left(A(s, a) - \\tfrac{1}{|\\mathcal{A}|}\\sum_{a'} A(s, a')\\right)"}</LaTeX>
@@ -882,7 +882,7 @@ class QNet(nn.Module):
 
 
 class ReplayBuffer:
-    """Uniform replay buffer — FIFO deque."""
+    """Uniform replay buffer-FIFO deque."""
 
     def __init__(self, capacity: int = 100_000):
         self.buf: Deque[Transition] = deque(maxlen=capacity)
@@ -1012,7 +1012,7 @@ def run_dqn(
 
 if __name__ == "__main__":
     _ = run_dqn()
-    # CartPole-v1 thường đạt return ~500 (max) sau ~50K–100K steps.`}
+    # CartPole-v1 thường đạt return ~500 (max) sau ~50K-100K steps.`}
               </CodeBlock>
 
               <p className="mt-3">
@@ -1040,11 +1040,11 @@ if __name__ == "__main__":
                 </li>
                 <li>
                   <strong>C51 / Distributional</strong>: học phân phối reward
-                  thay vì kỳ vọng — thêm tín hiệu cho network.
+                  thay vì kỳ vọng-thêm tín hiệu cho network.
                 </li>
                 <li>
                   <strong>Noisy Networks</strong>: thêm noise vào weights thay
-                  vì ε-greedy — exploration theo state.
+                  vì ε-greedy-exploration theo state.
                 </li>
                 <li>
                   <strong>Implicit Quantile Networks (IQN)</strong>: mở rộng
@@ -1066,7 +1066,7 @@ if __name__ == "__main__":
                   <p>
                     DQN "gần đúng" chiến lược này bằng target network cập nhật
                     mỗi C bước. Nếu C quá nhỏ, ta gần với TD online (θ<sub>-</sub>{" "}
-                    = θ) — moving target, dao động. Nếu C quá lớn, target lỗi
+                    = θ), moving target, dao động. Nếu C quá lớn, target lỗi
                     thời → học chậm. Thực nghiệm: C = 10K bước là sweet spot
                     cho Atari.
                   </p>
@@ -1091,7 +1091,7 @@ if __name__ == "__main__":
                       len(buf) &lt; batch_size → crash; dùng warmup steps.
                     </li>
                     <li>
-                      <strong>Không normalise state</strong>: pixel 0–255 hoặc
+                      <strong>Không normalise state</strong>: pixel 0-255 hoặc
                       feature không cùng scale → gradient bất ổn.
                     </li>
                     <li>
@@ -1120,7 +1120,7 @@ if __name__ == "__main__":
                     </li>
                     <li>
                       <strong>Không track running returns</strong>: khó biết
-                      agent có tiến bộ không — luôn log return trung bình 100
+                      agent có tiến bộ không-luôn log return trung bình 100
                       episode gần nhất.
                     </li>
                   </ul>
@@ -1141,16 +1141,16 @@ if __name__ == "__main__":
                   Bảng hyperparameter tham khảo (Atari DQN, Mnih 2015)
                 </p>
                 <ul className="list-disc list-inside space-y-1 pl-2">
-                  <li>Buffer capacity: 1,000,000 transitions (≈ 4–8 GB RAM)</li>
+                  <li>Buffer capacity: 1,000,000 transitions (≈ 4-8 GB RAM)</li>
                   <li>Batch size: 32</li>
                   <li>
                     Target update: mỗi 10,000 gradient steps (hard update)
                   </li>
                   <li>
-                    Discount γ: 0.99 — ưu tiên reward dài hạn, ngưỡng ổn định
+                    Discount γ: 0.99-ưu tiên reward dài hạn, ngưỡng ổn định
                   </li>
                   <li>
-                    Optimizer: RMSProp (lr 2.5e-4, momentum 0.95) — hoặc Adam
+                    Optimizer: RMSProp (lr 2.5e-4, momentum 0.95), hoặc Adam
                     với lr 1e-4 cho implementation hiện đại
                   </li>
                   <li>
@@ -1164,9 +1164,9 @@ if __name__ == "__main__":
                   <li>Tổng bước training: ~50M frames (~200M steps)</li>
                 </ul>
                 <p className="text-muted text-xs mt-2">
-                  Một ghi chú thực tế: training DQN trên Atari cần 1–2 tuần
+                  Một ghi chú thực tế: training DQN trên Atari cần 1-2 tuần
                   GPU đơn thời 2015. Với TPU/multi-GPU ngày nay, Rainbow có
-                  thể hoàn thành trong vài giờ — nhưng pipeline cơ bản vẫn
+                  thể hoàn thành trong vài giờ-nhưng pipeline cơ bản vẫn
                   giống hệt.
                 </p>
               </div>
@@ -1175,7 +1175,7 @@ if __name__ == "__main__":
                 <strong>Tại sao off-policy lại quan trọng?</strong> DQN có
                 thể học từ transitions được sinh ra bởi policy cũ hoặc cả
                 policy ngẫu nhiên. Điều này cho phép: (1) tái sử dụng buffer
-                khi policy thay đổi, (2) học từ demonstration (DQfD — Deep
+                khi policy thay đổi, (2) học từ demonstration (DQfD-Deep
                 Q-learning from Demonstrations), (3) offline RL (học hoàn
                 toàn từ dataset cố định, không tương tác môi trường). Các
                 phương pháp on-policy như A2C/PPO không có lợi thế này.
@@ -1183,7 +1183,7 @@ if __name__ == "__main__":
 
               <p className="mt-3">
                 <strong>Liên hệ với Q-Learning cổ điển.</strong> DQN không
-                phải là một thuật toán mới hoàn toàn — nó thực chất là
+                phải là một thuật toán mới hoàn toàn-nó thực chất là
                 Q-Learning với 3 thay đổi kỹ thuật: (1) hàm Q được tham số
                 hoá, (2) cập nhật bằng gradient thay vì look-up, (3) dữ liệu
                 được lưu và tái sử dụng. Cốt lõi vẫn là phương trình Bellman
@@ -1200,8 +1200,8 @@ if __name__ == "__main__":
                 "Experience Replay: buffer 1M transitions, sample mini-batch ngẫu nhiên để phá tương quan thời gian, tái sử dụng data, ổn định gradient.",
                 "Target Network: bản sao đóng băng θ⁻, cập nhật mỗi C=10K bước (hoặc soft-update τ=0.005). Tránh moving target khi bootstrap TD.",
                 "Double DQN sửa overestimation do max bias: online net chọn action, target net đánh giá giá trị. Dueling DQN tách Q = V + A.",
-                "Rainbow DQN gộp 6 cải tiến: Double, Dueling, Prioritized Replay, Multi-step, C51, Noisy Nets — score Atari gấp đôi DQN gốc.",
-                "Dấu ấn lịch sử: DQN (DeepMind 2015) đánh bại người chơi ở 49 game Atari — 'AlexNet moment' của RL, khởi đầu kỷ nguyên Deep RL.",
+                "Rainbow DQN gộp 6 cải tiến: Double, Dueling, Prioritized Replay, Multi-step, C51, Noisy Nets-score Atari gấp đôi DQN gốc.",
+                "Dấu ấn lịch sử: DQN (DeepMind 2015) đánh bại người chơi ở 49 game Atari, 'AlexNet moment' của RL, khởi đầu kỷ nguyên Deep RL.",
               ]}
             />
           </LessonSection>

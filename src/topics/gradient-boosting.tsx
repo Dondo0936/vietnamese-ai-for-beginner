@@ -34,7 +34,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ════════════════════════════════════════════════════════════
-   DỮ LIỆU MÔ PHỎNG — BÀI TOÁN HỒI QUY 1D
+   DỮ LIỆU MÔ PHỎNG-BÀI TOÁN HỒI QUY 1D
    Ý tưởng: ta có tập điểm (x, y) theo đường cong phi tuyến.
    5 cây nhỏ được thêm lần lượt, mỗi cây fit trên RESIDUAL
    của tổ hợp trước. Mỗi bước hiển thị:
@@ -84,7 +84,7 @@ function pieceTree(
 }
 
 /* Năm cây được thiết kế để lần lượt giảm residual.
-   Mỗi cây chỉ có 3–4 lá — nông, đúng "weak learner". */
+   Mỗi cây chỉ có 3-4 lá-nông, đúng "weak learner". */
 const WEAK_TREES: Array<(x: number) => number> = [
   pieceTree([2.5, 5.5, 8.0], [-2.2, 3.8, -2.6, 1.4]),
   pieceTree([1.5, 4.0, 7.0, 9.0], [-0.6, 1.8, -1.4, 0.9, -0.4]),
@@ -172,7 +172,7 @@ const LIBRARIES: LibRow[] = [
     speed: "Nhanh, ổn định",
     missing: "Học hướng đi riêng cho NaN",
     categorical: "Cần one-hot / target encoding",
-    bestFor: "Tổng quát — dữ liệu bảng nhiều loại",
+    bestFor: "Tổng quát-dữ liệu bảng nhiều loại",
   },
   {
     id: "lgbm",
@@ -190,10 +190,10 @@ const LIBRARIES: LibRow[] = [
     name: "CatBoost",
     color: "#8b5cf6",
     strategy: "Symmetric (oblivious) trees",
-    tree: "Ordered boosting — chống leakage",
-    speed: "Trung bình — chậm hơn LGBM",
+    tree: "Ordered boosting-chống leakage",
+    speed: "Trung bình-chậm hơn LGBM",
     missing: "Xử lý tự động",
-    categorical: "Tốt nhất — target stats ordered",
+    categorical: "Tốt nhất-target stats ordered",
     bestFor: "Nhiều feature dạng categorical",
   },
 ];
@@ -213,14 +213,14 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Random Forest tạo T cây độc lập trên các bootstrap sample rồi bỏ phiếu — mục tiêu giảm variance. Gradient Boosting xây từng cây một, cây m+1 học phần residual của tổ hợp F_m — mục tiêu giảm bias.",
+      "Random Forest tạo T cây độc lập trên các bootstrap sample rồi bỏ phiếu-mục tiêu giảm variance. Gradient Boosting xây từng cây một, cây m+1 học phần residual của tổ hợp F_m-mục tiêu giảm bias.",
   },
   {
     question:
       "Vì sao tên gọi lại có chữ 'Gradient' trong Gradient Boosting?",
     options: [
       "Vì thuật toán dùng GPU và tính gradient song song",
-      "Vì residual y − F(x) chính là GRADIENT ÂM của hàm loss bình phương — huấn luyện cây mới là một bước gradient descent trong không gian hàm",
+      "Vì residual y − F(x) chính là GRADIENT ÂM của hàm loss bình phương-huấn luyện cây mới là một bước gradient descent trong không gian hàm",
       "Vì mỗi cây được tối ưu bằng SGD",
       "Vì dùng hàm kích hoạt có gradient",
     ],
@@ -239,14 +239,14 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "η nhỏ là 'regularization by shrinkage' (Friedman). Mỗi cây đóng góp ít nên mô hình tổng tiến chậm và mượt — ít khả năng học noise. Trade-off: cần n_estimators lớn + early stopping.",
+      "η nhỏ là 'regularization by shrinkage' (Friedman). Mỗi cây đóng góp ít nên mô hình tổng tiến chậm và mượt-ít khả năng học noise. Trade-off: cần n_estimators lớn + early stopping.",
   },
   {
     question:
       "LightGBM có chiến lược phát triển cây 'leaf-wise'. Hệ quả phổ biến nhất?",
     options: [
       "Cây luôn cân bằng hoàn hảo",
-      "Cây có thể RẤT sâu, giảm loss nhanh nhưng dễ overfit trên dữ liệu nhỏ — cần hạn chế num_leaves / min_data_in_leaf",
+      "Cây có thể RẤT sâu, giảm loss nhanh nhưng dễ overfit trên dữ liệu nhỏ-cần hạn chế num_leaves / min_data_in_leaf",
       "Cây chỉ có 1 lá",
       "LightGBM không thể phát triển cây lớn",
     ],
@@ -259,7 +259,7 @@ const QUIZ: QuizQuestion[] = [
       "CatBoost nổi tiếng với 'ordered boosting'. Mục đích chính?",
     options: [
       "Sắp xếp dữ liệu theo thời gian trước khi train",
-      "Tránh TARGET LEAKAGE khi dùng target statistics cho feature categorical — dùng permutation để tính encode chỉ từ dữ liệu 'trước' mẫu đang xét",
+      "Tránh TARGET LEAKAGE khi dùng target statistics cho feature categorical-dùng permutation để tính encode chỉ từ dữ liệu 'trước' mẫu đang xét",
       "Làm cho cây luôn đối xứng",
       "Tăng tốc độ huấn luyện",
     ],
@@ -272,7 +272,7 @@ const QUIZ: QuizQuestion[] = [
       "Early stopping trong Gradient Boosting dựa trên gì?",
     options: [
       "Dừng khi training loss = 0",
-      "Theo dõi loss trên tập VALIDATION — dừng khi không giảm sau k round (tham số early_stopping_rounds)",
+      "Theo dõi loss trên tập VALIDATION-dừng khi không giảm sau k round (tham số early_stopping_rounds)",
       "Dừng khi learning rate giảm về 0",
       "Dừng ngẫu nhiên sau 100 round",
     ],
@@ -285,9 +285,9 @@ const QUIZ: QuizQuestion[] = [
       "Bạn dùng GBDT cho bài toán phân loại nhị phân. Loss function phù hợp nhất?",
     options: [
       "Mean Squared Error trên nhãn 0/1",
-      "Log-loss (binary cross-entropy) — gradient và hessian được dẫn xuất theo logit, hồi quy residual tương ứng",
+      "Log-loss (binary cross-entropy), gradient và hessian được dẫn xuất theo logit, hồi quy residual tương ứng",
       "Hinge loss của SVM",
-      "Không có loss — phân loại không cần loss",
+      "Không có loss-phân loại không cần loss",
     ],
     correct: 1,
     explanation:
@@ -300,7 +300,7 @@ const QUIZ: QuizQuestion[] = [
       "Khi cần mô hình mạnh nhất có thể",
       "Khi cần BASELINE nhanh, ít tune; dataset nhiễu nặng; hoặc cần mô hình robust với hyperparameter mặc định",
       "Khi dataset có hàng triệu dòng và cần tốc độ inference cực nhanh",
-      "Không bao giờ — GBDT luôn tốt hơn",
+      "Không bao giờ-GBDT luôn tốt hơn",
     ],
     correct: 1,
     explanation:
@@ -354,18 +354,18 @@ export default function GradientBoostingTopic() {
       {/* ═══════════════ STEP 1: PREDICTION GATE ═══════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn đoán giá nhà sai 30%. Một người khác nhìn đúng phần sai 30% đó và sửa — còn lệch 15%. Người thứ ba sửa tiếp phần 15% còn lại. Mỗi lượt sửa như thế, sai số tổng thể thay đổi thế nào?"
+          question="Bạn đoán giá nhà sai 30%. Một người khác nhìn đúng phần sai 30% đó và sửa-còn lệch 15%. Người thứ ba sửa tiếp phần 15% còn lại. Mỗi lượt sửa như thế, sai số tổng thể thay đổi thế nào?"
           options={[
-            "Sai số giảm dần mỗi lượt — tổng dự đoán tiến gần đáp án đúng",
-            "Sai số không đổi — mỗi người sửa một phần lại tạo ra lỗi mới",
+            "Sai số giảm dần mỗi lượt-tổng dự đoán tiến gần đáp án đúng",
+            "Sai số không đổi-mỗi người sửa một phần lại tạo ra lỗi mới",
             "Sai số tăng lên vì càng nhiều người sửa càng rối",
             "Không đủ thông tin để biết",
           ]}
           correct={0}
-          explanation="Đúng. Mỗi người chỉ tập trung vào RESIDUAL — phần sai còn sót lại sau bước trước. Đây chính là trực giác của Gradient Boosting: dự đoán cuối = tổng của mô hình gốc + các 'miếng vá' chuyên sửa sai."
+          explanation="Đúng. Mỗi người chỉ tập trung vào RESIDUAL-phần sai còn sót lại sau bước trước. Đây chính là trực giác của Gradient Boosting: dự đoán cuối = tổng của mô hình gốc + các 'miếng vá' chuyên sửa sai."
         >
           <p className="mt-2 text-sm text-muted">
-            Hãy ghi nhớ ý tưởng này — chỉ trong vài phút nữa bạn sẽ thấy nó
+            Hãy ghi nhớ ý tưởng này-chỉ trong vài phút nữa bạn sẽ thấy nó
             biến thành một thuật toán thắng hàng loạt cuộc thi Kaggle.
           </p>
 
@@ -377,11 +377,11 @@ export default function GradientBoostingTopic() {
               </p>
               <p className="text-sm text-muted leading-relaxed">
                 Hình dung một người thợ điêu khắc: đầu tiên đục khối đá thô
-                thành hình dáng chung (đây là <em>dự đoán gốc</em> — trung
+                thành hình dáng chung (đây là <em>dự đoán gốc</em>, trung
                 bình của tất cả y). Sau đó dùng đục nhỏ hơn chỉnh các đường
                 cong (cây thứ 1). Rồi dao tỉa nhỏ hơn nữa để ra chi tiết (cây
                 thứ 2). Cuối cùng là giấy nhám mịn (cây thứ 5). Mỗi công cụ
-                chỉ xử lý phần chưa hoàn thiện — không ai làm lại từ đầu.
+                chỉ xử lý phần chưa hoàn thiện-không ai làm lại từ đầu.
                 Gradient Boosting hoạt động đúng như vậy trên một tập điểm
                 dữ liệu.
               </p>
@@ -391,7 +391,7 @@ export default function GradientBoostingTopic() {
               <div className="space-y-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="text-base font-semibold text-foreground">
-                    5 cây yếu được thêm tuần tự — fit trên residual
+                    5 cây yếu được thêm tuần tự-fit trên residual
                   </h3>
                   <span className="text-xs text-muted">
                     η = {ETA}, {N_POINTS} điểm dữ liệu
@@ -878,7 +878,7 @@ export default function GradientBoostingTopic() {
                           Vòng 1:
                         </strong>{" "}
                         Cây đầu tiên fit trên residual ở vòng 0. Nó bắt
-                        được pha chính của đường sin — residual giảm mạnh.
+                        được pha chính của đường sin-residual giảm mạnh.
                       </>
                     )}
                     {round === 2 && (
@@ -887,7 +887,7 @@ export default function GradientBoostingTopic() {
                           Vòng 2:
                         </strong>{" "}
                         Cây thứ hai chỉ nhìn phần sai còn lại. Chú ý nó
-                        nông và chỉ chỉnh vài vùng — weak learner là vậy.
+                        nông và chỉ chỉnh vài vùng-weak learner là vậy.
                       </>
                     )}
                     {round === 3 && (
@@ -896,7 +896,7 @@ export default function GradientBoostingTopic() {
                           Vòng 3:
                         </strong>{" "}
                         Residual đã nhỏ. Cây 3 chỉ chỉnh biên độ vài vùng
-                        — đóng góp nhỏ hơn.
+                       , đóng góp nhỏ hơn.
                       </>
                     )}
                     {round === 4 && (
@@ -904,7 +904,7 @@ export default function GradientBoostingTopic() {
                         <strong className="text-foreground">
                           Vòng 4:
                         </strong>{" "}
-                        Gần như đã fit xong. Cây 4 tinh chỉnh thêm chút —
+                        Gần như đã fit xong. Cây 4 tinh chỉnh thêm chút,
                         learning rate η giữ cho nó không 'bồi đắp' quá
                         mạnh.
                       </>
@@ -933,11 +933,11 @@ export default function GradientBoostingTopic() {
           >
             <AhaMoment>
               <p>
-                <strong>Gradient Boosting</strong> xây mô hình NỐI TIẾP — mỗi
+                <strong>Gradient Boosting</strong> xây mô hình NỐI TIẾP-mỗi
                 cây mới chỉ học phần RESIDUAL của tổ hợp trước. Tên
                 &quot;Gradient&quot; xuất hiện vì với loss bình phương,
                 residual chính là <em>gradient âm</em> của loss theo dự đoán.
-                Thêm một cây là đi một bước gradient descent — nhưng trong
+                Thêm một cây là đi một bước gradient descent-nhưng trong
                 không gian <strong>hàm số</strong>, không phải trong không
                 gian tham số.
               </p>
@@ -956,13 +956,13 @@ export default function GradientBoostingTopic() {
                   "Training loss tăng sau một số vòng",
                 ]}
                 correct={1}
-                explanation="η = 1 nghĩa là tin tưởng tuyệt đối vào mỗi cây yếu — không 'shrinkage'. Training loss giảm nhanh, nhưng mô hình học cả noise. Thực tế dùng η ∈ [0.01, 0.1] và early stopping."
+                explanation="η = 1 nghĩa là tin tưởng tuyệt đối vào mỗi cây yếu-không 'shrinkage'. Training loss giảm nhanh, nhưng mô hình học cả noise. Thực tế dùng η ∈ [0.01, 0.1] và early stopping."
               />
 
               <InlineChallenge
                 question="Sau 3 cây, tập X có residual gần 0 nhưng tập test vẫn lỗi cao. Chỉ số nào đang cho tín hiệu?"
                 options={[
-                  "Bias quá lớn — cần cây sâu hơn",
+                  "Bias quá lớn-cần cây sâu hơn",
                   "Khoảng cách train-MSE vs validation-MSE đang lớn và càng mở rộng → dấu hiệu OVERFIT, nên dừng sớm hoặc giảm max_depth / tăng reg",
                   "Learning rate quá nhỏ",
                   "Dataset có bug",
@@ -994,7 +994,7 @@ export default function GradientBoostingTopic() {
                 log-odds cho phân loại), <LaTeX>{"h_m"}</LaTeX> là một
                 &quot;weak learner&quot; (thường là{" "}
                 <TopicLink slug="decision-trees">cây quyết định</TopicLink>{" "}
-                nông, độ sâu 3–8), và <LaTeX>{"\\eta"}</LaTeX> là{" "}
+                nông, độ sâu 3-8), và <LaTeX>{"\\eta"}</LaTeX> là{" "}
                 <em>learning rate</em> (còn gọi là shrinkage) kiểm soát đóng
                 góp của từng cây.
               </p>
@@ -1014,16 +1014,16 @@ export default function GradientBoostingTopic() {
                 Khi <LaTeX>{"L(y, F) = \\tfrac{1}{2}(y - F)^2"}</LaTeX>,
                 residual thông thường TRÙNG với gradient âm. Với các loss
                 khác (log-loss, Huber, Quantile…), ta dùng{" "}
-                <em>pseudo-residual</em> bằng gradient âm tương ứng — đó là
+                <em>pseudo-residual</em> bằng gradient âm tương ứng-đó là
                 lý do thuật toán vẫn được gọi là Gradient Boosting khi mở
                 rộng sang phân loại.
               </p>
 
               <Callout variant="tip" title="Ví dụ: dự giá nhà Hà Nội">
                 Vòng 0: dự đoán giá trung bình 3.5 tỷ cho mọi căn.
-                {"\n"}Vòng 1: cây 1 chia theo quận — nội thành +2 tỷ, ngoại
+                {"\n"}Vòng 1: cây 1 chia theo quận-nội thành +2 tỷ, ngoại
                 thành −1 tỷ. Residual giảm.
-                {"\n"}Vòng 2: cây 2 nhìn phần sai còn lại — căn có thang máy
+                {"\n"}Vòng 2: cây 2 nhìn phần sai còn lại-căn có thang máy
                 +0.4 tỷ, chung cư cũ −0.3 tỷ.
                 {"\n"}Vòng 3: cây 3 bắt được 'căn gần ga metro' +0.2 tỷ.
                 {"\n"}Mỗi vòng tinh chỉnh thêm, như thợ chỉnh đồng hồ từ thô
@@ -1036,7 +1036,7 @@ export default function GradientBoostingTopic() {
                 <LaTeX>{"\\theta_{t+1} = \\theta_t - \\eta \\nabla L"}</LaTeX>
                 . Trong Gradient Boosting, ta cập nhật HÀM số:{" "}
                 <LaTeX>{"F_{m} = F_{m-1} - \\eta \\cdot \\nabla L"}</LaTeX>,
-                nhưng không gian hàm là vô hạn chiều — nên ta{" "}
+                nhưng không gian hàm là vô hạn chiều-nên ta{" "}
                 <em>xấp xỉ</em> gradient bằng một cây quyết định khớp gần
                 nhất với các pseudo-residual.
               </p>
@@ -1056,14 +1056,14 @@ export default function GradientBoostingTopic() {
 
               <p>
                 Với <LaTeX>{"\\Omega(f) = \\gamma T + \\tfrac{1}{2} \\lambda \\|w\\|^2"}</LaTeX>
-                là regularization — phạt cây có nhiều lá và lá có giá trị
+                là regularization-phạt cây có nhiều lá và lá có giá trị
                 lớn. Đây là khác biệt kỹ thuật quan trọng giữa XGBoost và
                 GBM truyền thống.
               </p>
 
               <CodeBlock
                 language="python"
-                title="Ba cú pháp quen thuộc — XGBoost, LightGBM, CatBoost"
+                title="Ba cú pháp quen thuộc-XGBoost, LightGBM, CatBoost"
               >{`import xgboost as xgb
 import lightgbm as lgb
 from catboost import CatBoostRegressor
@@ -1083,7 +1083,7 @@ xgb_model = xgb.XGBRegressor(
     colsample_bytree=0.8,
     reg_alpha=0.1,       # L1 trên weight lá
     reg_lambda=1.0,      # L2 trên weight lá
-    tree_method="hist",  # histogram — nhanh
+    tree_method="hist",  # histogram-nhanh
     random_state=42,
     early_stopping_rounds=50,
 )
@@ -1094,7 +1094,7 @@ print("XGBoost MSE:", mean_squared_error(y_va, xgb_model.predict(X_va)))
 lgb_model = lgb.LGBMRegressor(
     n_estimators=2000,
     learning_rate=0.05,
-    num_leaves=63,       # leaf-wise — tham số CHÍNH
+    num_leaves=63,       # leaf-wise-tham số CHÍNH
     min_data_in_leaf=40,
     subsample=0.8,
     feature_fraction=0.8,
@@ -1143,7 +1143,7 @@ class GradientBoostingFromScratch:
         self.F0 = 0.0
 
     def fit(self, X, y):
-        # F0: dự đoán khởi tạo — trung bình tối ưu cho MSE
+        # F0: dự đoán khởi tạo-trung bình tối ưu cho MSE
         self.F0 = float(np.mean(y))
         F = np.full_like(y, self.F0, dtype=float)
 
@@ -1175,10 +1175,9 @@ class GradientBoostingFromScratch:
 
               <Callout
                 variant="insight"
-                title="Shrinkage — 'tin ít hơn' là 'học tốt hơn'"
+                title="Shrinkage, 'tin ít hơn' là 'học tốt hơn'"
               >
-                Friedman chứng minh empirically: học chậm với η nhỏ (0.01 –
-                0.1) và nhiều cây luôn generalize tốt hơn là học nhanh với η
+                Friedman chứng minh empirically: học chậm với η nhỏ (0.01-0.1) và nhiều cây luôn generalize tốt hơn là học nhanh với η
                 lớn. Trực giác: mỗi cây nhỏ là ước lượng NHIỄU của gradient,
                 cộng nhiều bước nhỏ trung bình sẽ triệt tiêu nhiễu; cộng một
                 bước lớn thì nhiễu giữ nguyên.
@@ -1188,7 +1187,7 @@ class GradientBoostingFromScratch:
                 variant="warning"
                 title="Ba tội đồ overfit phổ biến"
               >
-                (1) max_depth quá sâu → cây bắt nhiễu. Giữ 3–8.{"\n"}
+                (1) max_depth quá sâu → cây bắt nhiễu. Giữ 3-8.{"\n"}
                 (2) learning_rate quá lớn khi n_estimators nhỏ → mỗi cây
                 đóng góp mạnh, không có thời gian để trung bình.{"\n"}
                 (3) Không dùng validation + early stopping → mô hình chạy
@@ -1199,7 +1198,7 @@ class GradientBoostingFromScratch:
                 variant="info"
                 title="Tại sao không áp dụng Deep Learning thay luôn?"
               >
-                Trên dữ liệu BẢNG (tabular) cỡ 10k–1M hàng, GBDT hầu như
+                Trên dữ liệu BẢNG (tabular) cỡ 10k-1M hàng, GBDT hầu như
                 luôn thắng hoặc ngang neural net (benchmark của Shwartz-Ziv
                 & Armon 2022, Grinsztajn 2022). Lý do: GBDT xử lý feature
                 dạng số và categorical không đều mượt mà, không cần
@@ -1208,7 +1207,7 @@ class GradientBoostingFromScratch:
               </Callout>
 
               <p>
-                <strong>Ba biến thể phổ biến — khi nào chọn gì?</strong>{" "}
+                <strong>Ba biến thể phổ biến-khi nào chọn gì?</strong>{" "}
                 Chọn thư viện bên dưới để xem đối sánh chi tiết:
               </p>
 
@@ -1276,16 +1275,16 @@ class GradientBoostingFromScratch:
                 </ul>
               </div>
 
-              <CollapsibleDetail title="Đi sâu: Histogram binning — vì sao LightGBM nhanh bất thường?">
+              <CollapsibleDetail title="Đi sâu: Histogram binning-vì sao LightGBM nhanh bất thường?">
                 <p>
                   GBM gốc sắp xếp toàn bộ giá trị của mỗi feature để tìm
-                  điểm tách tối ưu — O(N log N) cho mỗi tách, với N =
+                  điểm tách tối ưu-O(N log N) cho mỗi tách, với N =
                   #samples. Khi N = 10 triệu, điều này rất tốn.
                 </p>
                 <p className="mt-2">
                   Histogram binning: nhóm giá trị feature vào{" "}
                   <em>k</em> bin (thường k = 255, vừa một byte). Tìm điểm
-                  tách chỉ cần quét qua k-1 ngưỡng — O(k) cho mỗi tách, K
+                  tách chỉ cần quét qua k-1 ngưỡng-O(k) cho mỗi tách, K
                   cố định. LightGBM còn dùng thêm:
                 </p>
                 <ul className="mt-2 list-disc list-inside space-y-1">
@@ -1303,7 +1302,7 @@ class GradientBoostingFromScratch:
                 </ul>
                 <p className="mt-2">
                   Kết hợp cả ba, LightGBM có thể huấn luyện trên 10M hàng ×
-                  100 cột trên một laptop trong vài phút — điều mà GBM
+                  100 cột trên một laptop trong vài phút-điều mà GBM
                   scikit-learn phải mất hàng giờ.
                 </p>
               </CollapsibleDetail>
@@ -1326,7 +1325,7 @@ class GradientBoostingFromScratch:
                 </p>
                 <p className="mt-2">
                   Tương tự <code>interaction_constraints</code> cho phép khai
-                  báo &quot;feature A chỉ được tương tác với B, C&quot; —
+                  báo &quot;feature A chỉ được tương tác với B, C&quot;,
                   hữu ích để ngăn mô hình tạo ra tương tác giả do noise và
                   dễ SHAP hoá về sau.
                 </p>
@@ -1388,7 +1387,7 @@ class GradientBoostingFromScratch:
                 <li>
                   <strong>Feature importance ảo:</strong> feature
                   high-cardinality (ID, zipcode) dễ &quot;hút&quot;
-                  importance vì cây tách được nhiều lần — dùng{" "}
+                  importance vì cây tách được nhiều lần-dùng{" "}
                   <em>permutation importance</em> hoặc SHAP để kiểm tra.
                 </li>
                 <li>
@@ -1411,12 +1410,12 @@ class GradientBoostingFromScratch:
             <MiniSummary
               title="6 điều cần nhớ về Gradient Boosting"
               points={[
-                "Mô hình tổng = F₀ + η · Σ cây — xây tuần tự, cây m học residual của cộng dồn F_{m-1}.",
+                "Mô hình tổng = F₀ + η · Σ cây-xây tuần tự, cây m học residual của cộng dồn F_{m-1}.",
                 "Residual = gradient âm của loss theo F → từ đó có tên 'Gradient' Boosting; mở rộng được cho log-loss, Huber, Quantile…",
                 "Learning rate η là shrinkage: η nhỏ + nhiều cây + early stopping = công thức tiêu chuẩn chống overfit.",
-                "XGBoost (level-wise + Newton + reg), LightGBM (leaf-wise + histogram + GOSS/EFB), CatBoost (ordered boosting + native categorical) — ba lựa chọn với thế mạnh khác nhau.",
-                "GBDT thắng áp đảo trên dữ liệu BẢNG cỡ trung (10k–10M) — là baseline cần vượt qua trước khi nói tới deep learning.",
-                "Random Forest (song song, robust, ít tune) vs Gradient Boosting (nối tiếp, chính xác hơn nhưng cần tune và validation) — chọn theo mục tiêu.",
+                "XGBoost (level-wise + Newton + reg), LightGBM (leaf-wise + histogram + GOSS/EFB), CatBoost (ordered boosting + native categorical), ba lựa chọn với thế mạnh khác nhau.",
+                "GBDT thắng áp đảo trên dữ liệu BẢNG cỡ trung (10k-10M), là baseline cần vượt qua trước khi nói tới deep learning.",
+                "Random Forest (song song, robust, ít tune) vs Gradient Boosting (nối tiếp, chính xác hơn nhưng cần tune và validation), chọn theo mục tiêu.",
               ]}
             />
           </LessonSection>

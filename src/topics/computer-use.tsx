@@ -860,7 +860,7 @@ function SceneWikiArticle() {
         stroke={COLORS.border}
       />
       {[
-        "Augusta Ada King, Countess of Lovelace (10 December 1815 –",
+        "Augusta Ada King, Countess of Lovelace (10 December 1815 -",
         "27 November 1852) was an English mathematician and writer,",
         "chiefly known for her work on Charles Babbage's proposed",
         "mechanical general-purpose computer, the Analytical Engine.",

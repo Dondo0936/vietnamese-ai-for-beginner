@@ -399,7 +399,7 @@ function EncodingLiveDemo() {
     <div className="space-y-3 rounded-xl border border-border bg-card p-5">
       <div>
         <label className="mb-1 block text-xs font-semibold text-muted">
-          Nhập chuỗi (chỉ A–F)
+          Nhập chuỗi (chỉ A-F)
         </label>
         <input
           type="text"

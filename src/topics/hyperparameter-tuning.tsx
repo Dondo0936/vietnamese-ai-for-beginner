@@ -24,7 +24,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "hyperparameter-tuning",
   title: "Hyperparameter Tuning",
-  titleVi: "Tinh chỉnh siêu tham số. Tìm công thức vàng",
+  titleVi: "Tinh chỉnh siêu tham số",
   description:
     "Quá trình tìm kiếm bộ siêu tham số tối ưu (learning rate, batch size, layers...) để mô hình đạt hiệu suất cao nhất.",
   category: "foundations",
@@ -449,7 +449,7 @@ function StrategyEfficiencyBars() {
     {
       name: "Bayesian Opt",
       description: "Surrogate model dự đoán vùng hứa hẹn",
-      trials: "~30–50 trials",
+      trials: "~30-50 trials",
       efficiency: 90,
       color: "#22c55e",
     },
@@ -667,7 +667,7 @@ export default function HyperparameterTuningTopic() {
         ],
         correct: 1,
         explanation:
-          "Bayesian Optimization fit một Gaussian Process lên (hyperparams → accuracy). Sau mỗi trial, GP được update và acquisition function (Expected Improvement, UCB) chọn điểm kế tiếp, vừa khai thác vùng tốt vừa khám phá vùng chưa chắc chắn. Thường hiệu quả gấp 3–5× random search.",
+          "Bayesian Optimization fit một Gaussian Process lên (hyperparams → accuracy). Sau mỗi trial, GP được update và acquisition function (Expected Improvement, UCB) chọn điểm kế tiếp, vừa khai thác vùng tốt vừa khám phá vùng chưa chắc chắn. Thường hiệu quả gấp 3-5× random search.",
       },
       {
         question:
@@ -692,7 +692,7 @@ export default function HyperparameterTuningTopic() {
         ],
         correct: 1,
         explanation:
-          "Learning rate thường trải 4–5 orders of magnitude. Uniform sampling trong [1e-5, 1e-1] sẽ hầu như luôn rơi vào vùng gần 0.1. Log-uniform sample đều trên thang log → coverage tốt cho mọi thập phân. Quy tắc: tham số liên tục, nhiều orders → log-uniform.",
+          "Learning rate thường trải 4-5 orders of magnitude. Uniform sampling trong [1e-5, 1e-1] sẽ hầu như luôn rơi vào vùng gần 0.1. Log-uniform sample đều trên thang log → coverage tốt cho mọi thập phân. Quy tắc: tham số liên tục, nhiều orders → log-uniform.",
       },
       {
         question:
@@ -711,7 +711,7 @@ export default function HyperparameterTuningTopic() {
         question: "Early stopping trong hyperparameter tuning nghĩa là gì?",
         options: [
           "Dừng training khi loss = 0",
-          "Dừng SỚM những trial kém hứa hẹn (ví dụ ASHA, Hyperband) để dồn budget cho trial tốt → tăng throughput 3–10×",
+          "Dừng SỚM những trial kém hứa hẹn (ví dụ ASHA, Hyperband) để dồn budget cho trial tốt → tăng throughput 3-10×",
           "Chỉ chạy 1 epoch cho mọi trial",
           "Không liên quan tới hyperparameter tuning",
         ],
@@ -759,12 +759,12 @@ export default function HyperparameterTuningTopic() {
           question="Bạn train một classifier: lr=0.1 → accuracy 70%, lr=0.01 → 85%, lr=0.001 → 80%. Còn 10 hyperparameter khác cần tune, mỗi trial mất 1 giờ. Cách nào tìm bộ tối ưu?"
           options={[
             "Thử tất cả tổ hợp (Grid Search), dù 10^10 trials là bất khả thi",
-            "Dùng Bayesian Optimization: surrogate model dự đoán vùng hứa hẹn → tìm near-optimal với 50–100 trials",
+            "Dùng Bayesian Optimization: surrogate model dự đoán vùng hứa hẹn → tìm near-optimal với 50-100 trials",
             "Random chọn 10 trials và chốt config tốt nhất thấy được",
             "Hỏi ChatGPT config nào tốt và dùng luôn",
           ]}
           correct={1}
-          explanation="Grid search: 10 giá trị × 10 hyperparams = 10 tỷ tổ hợp, hoàn toàn không khả thi. Random search: tốt hơn nhưng vẫn 'mù' theo nghĩa không học từ trials trước. Bayesian Optimization: GP học từ mỗi trial → dự đoán vùng nào hứa hẹn, đưa ra suggestion tiếp theo thông minh. 50–100 trials thường đủ tìm near-optimal."
+          explanation="Grid search: 10 giá trị × 10 hyperparams = 10 tỷ tổ hợp, hoàn toàn không khả thi. Random search: tốt hơn nhưng vẫn 'mù' theo nghĩa không học từ trials trước. Bayesian Optimization: GP học từ mỗi trial → dự đoán vùng nào hứa hẹn, đưa ra suggestion tiếp theo thông minh. 50-100 trials thường đủ tìm near-optimal."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
             <VisualizationSection topicSlug={metadata.slug}>
@@ -838,12 +838,12 @@ export default function HyperparameterTuningTopic() {
                 question="Bạn có budget 100 GPU-hours cho HP tuning. Mỗi trial mất 1 giờ. 5 hyperparameters cần tune. Grid cần 10^5 = 100K trials. Random cần ~300. Bayesian?"
                 options={[
                   "100 trials (1 trial mỗi GPU-hour)",
-                  "30–50 trials. Bayesian Opt hiệu quả hơn 3–5× random, tìm near-optimal với ~50 trials",
+                  "30-50 trials. Bayesian Opt hiệu quả hơn 3-5× random, tìm near-optimal với ~50 trials",
                   "Vẫn cần 100K trials như grid",
                   "Chỉ 5 trials, mỗi HP 1 trial",
                 ]}
                 correct={1}
-                explanation="Bayesian Opt thường đạt near-optimal trong 30–50 trials. Budget 100 GPU-hours: dùng 50 cho sweep, còn 50 để retrain final model với best config trên full data. Hiệu quả hơn random 3–5×, hơn grid vô hạn lần. Tools: Optuna, W&B Sweeps, Ray Tune."
+                explanation="Bayesian Opt thường đạt near-optimal trong 30-50 trials. Budget 100 GPU-hours: dùng 50 cho sweep, còn 50 để retrain final model với best config trên full data. Hiệu quả hơn random 3-5×, hơn grid vô hạn lần. Tools: Optuna, W&B Sweeps, Ray Tune."
               />
 
               <InlineChallenge
@@ -855,7 +855,7 @@ export default function HyperparameterTuningTopic() {
                   "Chọn lr=0.003, bs=32 là final, không tune nữa",
                 ]}
                 correct={1}
-                explanation="Sau giai đoạn explore, nên chuyển sang exploit. Bayesian Opt với prior tập trung quanh best config (hoặc narrow search range) sẽ tinh chỉnh thêm 1–2% accuracy. Optuna làm việc này tự động qua acquisition function."
+                explanation="Sau giai đoạn explore, nên chuyển sang exploit. Bayesian Opt với prior tập trung quanh best config (hoặc narrow search range) sẽ tinh chỉnh thêm 1-2% accuracy. Optuna làm việc này tự động qua acquisition function."
               />
             </div>
           </LessonSection>
@@ -894,7 +894,7 @@ export default function HyperparameterTuningTopic() {
 
               <p>
                 Với cùng T trials, random search cho mỗi hyperparameter T giá trị khác
-                nhau (grid chỉ cho |values_i| giá trị). Khi chỉ 1–2 hyperparameter thực
+                nhau (grid chỉ cho |values_i| giá trị). Khi chỉ 1-2 hyperparameter thực
                 sự quan trọng, random explore vùng có ích tốt hơn.
               </p>
 
@@ -1098,7 +1098,7 @@ study.optimize(
                   tưởng cho cluster.
                 </p>
                 <p>
-                  Kết quả: throughput tăng 3–10× so với no-pruning. Combine với Bayesian
+                  Kết quả: throughput tăng 3-10× so với no-pruning. Combine với Bayesian
                   sampling (Optuna cho phép TPE + Hyperband) → state-of-the-art cho HP
                   tuning deep learning.
                 </p>
@@ -1119,7 +1119,7 @@ study.optimize(
                 </li>
                 <li>
                   <code className="px-1 rounded bg-surface">weight_decay</code>:
-                  log-uniform [1e-6, 1e-1]. Với vision transformers, thường 0.05–0.1.
+                  log-uniform [1e-6, 1e-1]. Với vision transformers, thường 0.05-0.1.
                 </li>
                 <li>
                   <code className="px-1 rounded bg-surface">batch_size</code>:
@@ -1142,10 +1142,10 @@ study.optimize(
 
               <Callout variant="warning" title="Đừng tune mọi thứ cùng lúc">
                 Search space càng lớn, &quot;curse of dimensionality&quot; càng nặng.
-                Quy tắc: tune 3–5 hyperparameter quan trọng nhất trước, fix các HP còn
+                Quy tắc: tune 3-5 hyperparameter quan trọng nhất trước, fix các HP còn
                 lại ở default hợp lý. Sau khi có config tốt, tune nhóm HP thứ cấp nếu
                 còn budget. Tune 10 HP cùng lúc thường tốn gấp đôi nhưng cải thiện chỉ
-                ~1–2%.
+                ~1-2%.
               </Callout>
 
               <p>
@@ -1189,9 +1189,9 @@ study.optimize(
               points={[
                 "Hyperparameters (lr, batch_size, dropout, weight_decay...) được ĐẶT TRƯỚC training. Parameters (weights) được mô hình HỌC. Tuning = tìm hyperparameters tốt.",
                 "Grid Search bùng nổ tổ hợp (10^N). Random Search cùng budget thường tốt hơn vì coverage trên trục quan trọng cao hơn.",
-                "Bayesian Optimization (Optuna / TPE) học từ trials trước và gợi ý thông minh. 3–5× hiệu quả hơn random với cùng budget.",
+                "Bayesian Optimization (Optuna / TPE) học từ trials trước và gợi ý thông minh. 3-5× hiệu quả hơn random với cùng budget.",
                 "Thứ tự tune: learning rate → regularization → batch size → kiến trúc. Dùng log-uniform cho hyperparameters trải nhiều orders of magnitude.",
-                "Early stopping (ASHA/Hyperband) kill trials kém sớm, tăng throughput 3–10×, đặc biệt quan trọng với deep learning.",
+                "Early stopping (ASHA/Hyperband) kill trials kém sớm, tăng throughput 3-10×, đặc biệt quan trọng với deep learning.",
                 "TUYỆT ĐỐI không tune trên test set. Validation set cho tuning, test set chạm một lần duy nhất để báo cáo final.",
               ]}
             />

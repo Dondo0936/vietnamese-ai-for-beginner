@@ -99,7 +99,7 @@ function rewardForCell(cell: Cell): number {
 /**
  * Pre-computed V(s) field that grows linearly with Manhattan proximity to the
  * goal, then gets punched downward near pits. This is NOT a real learned
- * critic — it is a stylized version whose job is to look believable while the
+ * critic-it is a stylized version whose job is to look believable while the
  * user clicks through steps.
  */
 function critticValue(cell: Cell): number {
@@ -620,7 +620,7 @@ function ActorCriticDiagram() {
 }
 
 // ---------------------------------------------------------------------------
-// Telemetry sparkline — visualises advantage per step
+// Telemetry sparkline-visualises advantage per step
 // ---------------------------------------------------------------------------
 
 interface AdvantageSparklineProps {
@@ -642,7 +642,7 @@ function AdvantageSparkline({ steps }: AdvantageSparklineProps) {
           fill="var(--text-tertiary)"
           fontSize={11}
         >
-          Chưa có step nào — bấm &quot;Step&quot; để agent di chuyển.
+          Chưa có step nào-bấm &quot;Step&quot; để agent di chuyển.
         </text>
       </svg>
     );
@@ -933,13 +933,13 @@ export default function ActorCriticTopic() {
           "Trong A2C với n-step returns (n = 5), vì sao lại ưu việt hơn 1-step TD?",
         options: [
           "Không khác gì 1-step TD",
-          "5-step kết hợp nhiều reward thực → ít bias hơn nhưng variance nhỉnh cao hơn — thường là sweet spot cho on-policy",
+          "5-step kết hợp nhiều reward thực → ít bias hơn nhưng variance nhỉnh cao hơn-thường là sweet spot cho on-policy",
           "n-step luôn tệ hơn 1-step",
           "5-step chỉ dùng cho MCTS",
         ],
         correct: 1,
         explanation:
-          "1-step TD: advantage = r + γV(s′) − V(s) — bias thấp do V xấp xỉ nhưng variance thấp. Monte Carlo (n = ∞): dùng return thật — unbiased nhưng variance cao, n-step = tradeoff. GAE (Generalized Advantage Estimation) là trung bình trọng số của nhiều n-step.",
+          "1-step TD: advantage = r + γV(s′) − V(s), bias thấp do V xấp xỉ nhưng variance thấp. Monte Carlo (n = ∞): dùng return thật-unbiased nhưng variance cao, n-step = tradeoff. GAE (Generalized Advantage Estimation) là trung bình trọng số của nhiều n-step.",
       },
       {
         question:
@@ -965,7 +965,7 @@ export default function ActorCriticTopic() {
         ],
         correct: 1,
         explanation:
-          "Không có entropy bonus, policy có thể collapse về deterministic quá sớm — kẹt ở local optimum. Entropy bonus β·H(π) giữ xác suất các action không-best đủ lớn để tiếp tục explore, β thường 0.01 và decay dần khi agent đã học tốt.",
+          "Không có entropy bonus, policy có thể collapse về deterministic quá sớm-kẹt ở local optimum. Entropy bonus β·H(π) giữ xác suất các action không-best đủ lớn để tiếp tục explore, β thường 0.01 và decay dần khi agent đã học tốt.",
       },
       {
         question: "Vì sao A3C (async) từng phổ biến nhưng nay ít dùng hơn?",
@@ -988,7 +988,7 @@ export default function ActorCriticTopic() {
           { answer: "Critic", accept: ["critic", "đạo diễn"] },
         ],
         explanation:
-          "Actor học policy π(a|s) — quyết định hành động. Critic học value V(s) hoặc Q(s, a) — đánh giá xem state/action đó tốt xấu thế nào. Critic cung cấp baseline để giảm variance cho Actor.",
+          "Actor học policy π(a|s), quyết định hành động. Critic học value V(s) hoặc Q(s, a), đánh giá xem state/action đó tốt xấu thế nào. Critic cung cấp baseline để giảm variance cho Actor.",
       },
     ],
     [],
@@ -1016,7 +1016,7 @@ export default function ActorCriticTopic() {
         <PredictionGate
           question="REINFORCE (Policy Gradient) có variance cao vì chỉ dùng return làm tín hiệu học. DQN chỉ học value, không học policy trực tiếp. Có cách kết hợp ưu điểm cả hai?"
           options={[
-            "Không — phải chọn một trong hai",
+            "Không-phải chọn một trong hai",
             "Actor-Critic: Actor (policy) chọn action, Critic (value) đánh giá → variance thấp + policy trực tiếp",
             "Dùng model lớn hơn là đủ",
             "Chỉ cần reward shaping khéo léo",
@@ -1080,7 +1080,7 @@ export default function ActorCriticTopic() {
                 đạo diễn, đạo diễn học từ reward thật của khán giả (environment).
                 Kết hợp tạo ra một <strong>system ổn định và hiệu quả</strong>:
                 advantage của Critic giảm variance cho Actor, reward thực giữ Critic
-                grounded. <strong>PPO</strong> — biến thể được sử dụng nhiều nhất — là
+                grounded. <strong>PPO</strong>, biến thể được sử dụng nhiều nhất-là
                 thuật toán <strong>mặc định cho RLHF</strong> trong ChatGPT, Claude,
                 và Gemini.
               </p>
@@ -1128,7 +1128,7 @@ export default function ActorCriticTopic() {
             <ExplanationSection topicSlug={metadata.slug}>
               <p>
                 <strong>Actor-Critic</strong> kết hợp policy optimization (Actor) với
-                value estimation (Critic) — ổn định và hiệu quả hơn khi dùng riêng
+                value estimation (Critic), ổn định và hiệu quả hơn khi dùng riêng
                 lẻ. Về bản chất, Actor kế thừa ý tưởng từ{" "}
                 <TopicLink slug="policy-gradient">Policy Gradient</TopicLink>, còn
                 Critic học value function tương tự{" "}
@@ -1171,7 +1171,7 @@ export default function ActorCriticTopic() {
 
               <p>
                 Hệ số điển hình: c_v = 0.5, c_e = 0.01. Entropy bonus khuyến khích
-                policy giữ &quot;mềm&quot; — tránh collapse sớm vào suboptimal.
+                policy giữ &quot;mềm&quot;, tránh collapse sớm vào suboptimal.
               </p>
 
               <p>
@@ -1192,14 +1192,14 @@ export default function ActorCriticTopic() {
               </p>
 
               <Callout variant="tip" title="PPO = Default cho RLHF">
-                PPO ổn định, đơn giản implement (10–20 dòng khác biệt so với A2C),
+                PPO ổn định, đơn giản implement (10-20 dòng khác biệt so với A2C),
                 hiệu quả trên hàng loạt domain. GRPO (DeepSeek) là variant mới hơn
-                không cần Critic riêng — sinh nhiều responses cho mỗi prompt, rank
+                không cần Critic riêng-sinh nhiều responses cho mỗi prompt, rank
                 chúng, update policy theo relative advantage. Giảm memory và đơn giản
                 hoá pipeline RLHF.
               </Callout>
 
-              <Callout variant="info" title="GAE — Generalized Advantage Estimation">
+              <Callout variant="info" title="GAE-Generalized Advantage Estimation">
                 Thay vì chỉ dùng 1-step TD hay n-step return, GAE (Schulman 2016) tính
                 advantage là trung bình trọng số của tất cả k-step TD errors với hệ
                 số λ ∈ [0, 1], λ = 0 → 1-step TD (bias cao, variance thấp), λ = 1 →
@@ -1217,7 +1217,7 @@ export default function ActorCriticTopic() {
               <Callout variant="insight" title="Continuous action spaces">
                 Với action liên tục (robotics, locomotion), Actor xuất phân phối
                 (thường là Gaussian với mean + log_std học được): a ~ N(μ_θ(s),
-                σ_θ(s)). SAC (Soft Actor-Critic) thêm maximum entropy framework —
+                σ_θ(s)). SAC (Soft Actor-Critic) thêm maximum entropy framework,
                 tối đa hoá vừa reward vừa entropy của policy, rất ổn định cho
                 continuous control.
               </Callout>
@@ -1386,14 +1386,14 @@ def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
 `}
               </CodeBlock>
 
-              <CollapsibleDetail title="A2C vs A3C vs IMPALA vs PPO — một bảng tổng kết nhanh">
+              <CollapsibleDetail title="A2C vs A3C vs IMPALA vs PPO-một bảng tổng kết nhanh">
                 <p>
                   <strong>A3C</strong> (Asynchronous Advantage Actor-Critic, 2016):
                   nhiều worker async, mỗi worker có bản copy model, push gradient về
                   global model. Nổi tiếng nhưng khó reproduce vì non-determinism.
                 </p>
                 <p>
-                  <strong>A2C</strong>: synchronous version — các env chạy song song
+                  <strong>A2C</strong>: synchronous version-các env chạy song song
                   nhưng gradient update sync. Đơn giản, deterministic, tận dụng GPU
                   tốt. OpenAI khuyến nghị từ 2017.
                 </p>
@@ -1412,12 +1412,12 @@ def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
                 </p>
                 <p>
                   <strong>GRPO</strong> (DeepSeek 2024): Group Relative Policy
-                  Optimization — bỏ Critic, dùng reward tương đối giữa các responses
+                  Optimization-bỏ Critic, dùng reward tương đối giữa các responses
                   cho cùng prompt. Hiệu quả cho LLM RLHF.
                 </p>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Từ Q-Learning tới Actor-Critic — một con đường trực quan">
+              <CollapsibleDetail title="Từ Q-Learning tới Actor-Critic-một con đường trực quan">
                 <p>
                   Q-Learning học Q(s, a) → act greedy theo argmax. Hoạt động tốt với
                   action discrete nhỏ. Với action space lớn hoặc continuous, argmax
@@ -1445,32 +1445,32 @@ def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
               <p>
                 <strong>Triển khai thực tế</strong>: với các bài cartpole / lunar
                 lander, A2C đơn giản đủ hội tụ trong vài phút trên CPU. Với Atari hay
-                MuJoCo, PPO với vectorized envs (8–32 env song song) là lựa chọn mặc
-                định — libraries tham khảo: Stable Baselines3, CleanRL, RLlib.
+                MuJoCo, PPO với vectorized envs (8-32 env song song) là lựa chọn mặc
+                định-libraries tham khảo: Stable Baselines3, CleanRL, RLlib.
               </p>
 
               <p>
                 <strong>Hyperparameters quan trọng</strong> cho Actor-Critic: learning
                 rate (3e-4 với Adam là sweet spot), gamma (0.99), GAE lambda (0.95),
                 entropy coef (0.01, decay theo thời gian), value coef (0.5), clip
-                epsilon (0.2 cho PPO), batch size (64–256), epochs per rollout (4–10
+                epsilon (0.2 cho PPO), batch size (64-256), epochs per rollout (4-10
                 cho PPO).
               </p>
 
               <p>
                 <strong>Debug checklist</strong> khi Actor-Critic không học: (1)
-                Kiểm tra Critic loss có giảm không — nếu không, Critic có thể stuck.
-                (2) Kiểm tra entropy — nếu rớt về 0 quá nhanh, tăng entropy coef. (3)
-                Kiểm tra advantage scale — nên near-zero-mean, unit-variance sau
-                normalise. (4) Kiểm tra gradient norms — nếu explode, giảm lr hoặc
+                Kiểm tra Critic loss có giảm không-nếu không, Critic có thể stuck.
+                (2) Kiểm tra entropy-nếu rớt về 0 quá nhanh, tăng entropy coef. (3)
+                Kiểm tra advantage scale-nên near-zero-mean, unit-variance sau
+                normalise. (4) Kiểm tra gradient norms-nếu explode, giảm lr hoặc
                 clip mạnh hơn.
               </p>
 
               <p>
-                <strong>RLHF pipeline tổng quan</strong> cho LLM: (1) SFT — supervised
-                fine-tune base LLM trên (prompt, response). (2) Reward model —
+                <strong>RLHF pipeline tổng quan</strong> cho LLM: (1) SFT-supervised
+                fine-tune base LLM trên (prompt, response). (2) Reward model,
                 classifier trên (prompt, chosen, rejected) để predict preference.
-                (3) PPO — reward model làm environment, Actor = LLM policy,
+                (3) PPO-reward model làm environment, Actor = LLM policy,
                 Critic = value head; GAE + clip 0.2 + KL penalty để không drift khỏi
                 SFT. ChatGPT, Claude, Gemini đều dùng biến thể của pipeline này.
               </p>

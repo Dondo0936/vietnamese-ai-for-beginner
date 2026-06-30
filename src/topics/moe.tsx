@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "moe",
   title: "Mixture of Experts",
-  titleVi: "Hỗn hợp chuyên gia. Chia để trị",
+  titleVi: "Hỗn hợp chuyên gia",
   description:
     "Kiến trúc mô hình sử dụng nhiều mạng con chuyên biệt (chuyên gia), chỉ kích hoạt một vài chuyên gia cho mỗi đầu vào.",
   category: "emerging",

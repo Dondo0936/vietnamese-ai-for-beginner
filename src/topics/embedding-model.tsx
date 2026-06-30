@@ -161,7 +161,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mỗi số trong vector là một toạ độ trong không gian ngữ nghĩa nhiều chiều (thường 768–3072 chiều). Câu có nghĩa gần nhau → vector gần nhau. 'Phở ngon' và 'Bún chả tuyệt vời' sẽ có vector gần nhau hơn 'Python dễ học' rất nhiều.",
+      "Mỗi số trong vector là một toạ độ trong không gian ngữ nghĩa nhiều chiều (thường 768-3072 chiều). Câu có nghĩa gần nhau → vector gần nhau. 'Phở ngon' và 'Bún chả tuyệt vời' sẽ có vector gần nhau hơn 'Python dễ học' rất nhiều.",
   },
   {
     question:
@@ -180,7 +180,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Embedding model hiện đại thường tạo vector có bao nhiêu chiều?",
     options: [
       "2-3 chiều (dễ hình dung)",
-      "768 – 3072 chiều",
+      "768-3072 chiều",
       "Đúng 1 chiều (một số duy nhất)",
       "Tuỳ độ dài câu (mỗi từ 1 chiều)",
     ],
@@ -223,7 +223,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "chiều", accept: ["dimension", "chieu"] },
     ],
     explanation:
-      "Embedding = vector số trong không gian nhiều chiều (thường 384–3072 chiều). Mỗi chiều nắm bắt một khía cạnh ngữ nghĩa; câu có nghĩa gần nhau → vector gần nhau (đo bằng cosine similarity).",
+      "Embedding = vector số trong không gian nhiều chiều (thường 384-3072 chiều). Mỗi chiều nắm bắt một khía cạnh ngữ nghĩa; câu có nghĩa gần nhau → vector gần nhau (đo bằng cosine similarity).",
   },
   {
     question:
@@ -750,8 +750,8 @@ export default function EmbeddingModelTopic() {
           <div className="mt-4 rounded-lg border border-dashed border-border bg-surface/40 p-3">
             <p className="text-xs text-muted leading-relaxed">
               <strong className="text-foreground">Nhận xét:</strong> Cả hai
-              model đều bắt đúng các cặp gần nghĩa (vua–hoàng đế, mèo–chó,
-              xanh–đỏ). Model đa ngôn ngữ (Sentence-Transformers)
+              model đều bắt đúng các cặp gần nghĩa (vua-hoàng đế, mèo-chó,
+              xanh-đỏ). Model đa ngôn ngữ (Sentence-Transformers)
               có similarity cao hơn một chút ở các cặp đồng nghĩa vì được
               train đặc biệt trên dữ liệu đa ngôn ngữ. Trong thực tế,
               benchmark MTEB (Massive Text Embedding Benchmark) là nơi so
@@ -851,8 +851,7 @@ export default function EmbeddingModelTopic() {
         <ExplanationSection>
           <p>
             <strong>Embedding model</strong> chuyển đổi text (từ, câu, đoạn
-            văn) thành vector số trong không gian nhiều chiều (thường 384–
-            3072 chiều). Mỗi chiều đại diện một khía cạnh ý nghĩa mà model
+            văn) thành vector số trong không gian nhiều chiều (thường 384-3072 chiều). Mỗi chiều đại diện một khía cạnh ý nghĩa mà model
             đã học từ hàng tỷ câu văn trên Internet.
           </p>
 
@@ -1282,7 +1281,7 @@ print(f"\\n'{corpus[0]}' vs '{corpus[2]}' → {sim.item():.3f}")
 
         <MiniSummary
           points={[
-            "Embedding model chuyển text → vector số trong không gian nhiều chiều (384–3072 chiều).",
+            "Embedding model chuyển text → vector số trong không gian nhiều chiều (384-3072 chiều).",
             "Câu/từ giống nghĩa → vector gần nhau → cosine similarity cao (gần 1).",
             "Model đa ngôn ngữ (BGE-M3, Cohere, multilingual sentence-transformers) hiểu ngữ nghĩa xuyên ngôn ngữ.",
             "Cosine similarity là metric chuẩn; với vector đã normalize, cosine = dot product (rất nhanh).",

@@ -873,7 +873,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "NumPy lưu dữ liệu liên tiếp trong RAM và gọi code C đã biên dịch, không phải quay vòng trong Python interpreter. Với 10 triệu phần tử, bạn thường thấy 100–200 lần nhanh hơn. Đây là lý do mọi thư viện ML (scikit-learn, PyTorch, TensorFlow) đều xây trên nền NumPy.",
+      "NumPy lưu dữ liệu liên tiếp trong RAM và gọi code C đã biên dịch, không phải quay vòng trong Python interpreter. Với 10 triệu phần tử, bạn thường thấy 100-200 lần nhanh hơn. Đây là lý do mọi thư viện ML (scikit-learn, PyTorch, TensorFlow) đều xây trên nền NumPy.",
   },
   {
     question: "Broadcasting trong NumPy hoạt động thế nào khi bạn viết a + 10 với a có shape (4,)?",

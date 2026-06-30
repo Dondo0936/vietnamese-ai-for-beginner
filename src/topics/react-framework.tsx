@@ -102,7 +102,7 @@ const SCENARIOS: Scenario[] = [
       {
         kind: "thought",
         text:
-          "Tôi nhớ Hà Nội có khoảng 8 triệu người vào khoảng 2019–2020. Ngoại suy tuyến tính, có lẽ 2024 khoảng 8,2 triệu.",
+          "Tôi nhớ Hà Nội có khoảng 8 triệu người vào khoảng 2019-2020. Ngoại suy tuyến tính, có lẽ 2024 khoảng 8,2 triệu.",
       },
       {
         kind: "answer",
@@ -178,7 +178,7 @@ const SCENARIOS: Scenario[] = [
       {
         kind: "observation",
         text:
-          "API: 'Đà Nẵng, nhiều mây, mưa rào rải rác chiều tối, xác suất 65%, nhiệt độ 26–31°C.'",
+          "API: 'Đà Nẵng, nhiều mây, mưa rào rải rác chiều tối, xác suất 65%, nhiệt độ 26-31°C.'",
       },
       {
         kind: "thought",
@@ -188,7 +188,7 @@ const SCENARIOS: Scenario[] = [
       {
         kind: "answer",
         text:
-          "Hôm nay Đà Nẵng có mưa rào rải rác chiều tối (xác suất ~65%), nhiệt độ 26–31°C.",
+          "Hôm nay Đà Nẵng có mưa rào rải rác chiều tối (xác suất ~65%), nhiệt độ 26-31°C.",
       },
     ],
     cot: [
@@ -1129,7 +1129,7 @@ for step in result["intermediate_steps"]:
               có{" "}
               <LaTeX>{`P(y | q, o) \\geq P(y | q)`}</LaTeX> nếu <LaTeX>o</LaTeX>
               {" "}cung cấp thông tin đầy đủ liên quan tới <LaTeX>y</LaTeX>. Về
-              thực nghiệm, Yao et al. báo cáo ReAct giảm tỉ lệ ảo giác 20–40%
+              thực nghiệm, Yao et al. báo cáo ReAct giảm tỉ lệ ảo giác 20-40%
               so với CoT thuần tuý trên HotpotQA và Fever. Hai yếu tố chính:
               (1) observation chặn sai lệch tích luỹ trong chuỗi suy luận dài;
               (2) agent được khuyến khích nói &quot;tôi không biết&quot; khi

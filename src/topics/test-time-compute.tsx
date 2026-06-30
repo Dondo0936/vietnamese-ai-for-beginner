@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "test-time-compute",
   title: "Test-Time Compute",
-  titleVi: "Tính toán lúc suy luận. Nghĩ thêm khi cần",
+  titleVi: "Tính toán lúc suy luận",
   description:
     "Chiến lược sử dụng nhiều tài nguyên tính toán hơn tại thời điểm suy luận để cải thiện chất lượng câu trả lời.",
   category: "emerging",

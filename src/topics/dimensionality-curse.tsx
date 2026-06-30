@@ -24,7 +24,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "dimensionality-curse",
   title: "Curse of Dimensionality",
-  titleVi: "Lời nguyền chiều cao. Khi nhiều hơn lại tệ hơn",
+  titleVi: "Lời nguyền chiều cao",
   description:
     "Hiện tượng hiệu suất mô hình giảm khi số chiều đặc trưng tăng quá nhiều so với lượng dữ liệu có sẵn.",
   category: "foundations",
@@ -438,12 +438,12 @@ export default function DimensionalityCurseTopic() {
           "Rule of thumb tối thiểu về số samples trên mỗi feature cho mô hình tuyến tính?",
         options: [
           "1 sample / feature là đủ",
-          "Ít nhất 10–20 samples / feature để ước lượng hệ số ổn định",
+          "Ít nhất 10-20 samples / feature để ước lượng hệ số ổn định",
           "Luôn cần 1000 samples / feature",
         ],
         correct: 1,
         explanation:
-          "10 features → 100–200 samples. 1000 features → 10K–20K samples. Thiếu thì: (1) feature selection, (2) PCA/autoencoder, (3) regularization L1/L2, (4) augmentation.",
+          "10 features → 100-200 samples. 1000 features → 10K-20K samples. Thiếu thì: (1) feature selection, (2) PCA/autoencoder, (3) regularization L1/L2, (4) augmentation.",
       },
       {
         question:
@@ -508,7 +508,7 @@ export default function DimensionalityCurseTopic() {
           question="Bạn có 100 samples, 5 features → model đạt accuracy 90%. Tăng lên 500 features (giữ nguyên 100 samples). Accuracy kỳ vọng?"
           options={[
             "95%, nhiều features nghĩa là nhiều thông tin hơn",
-            "60–70%, quá nhiều features + ít data → overfit nặng, curse of dimensionality",
+            "60-70%, quá nhiều features + ít data → overfit nặng, curse of dimensionality",
             "Vẫn đúng 90%, không đổi",
           ]}
           correct={1}
@@ -713,11 +713,11 @@ export default function DimensionalityCurseTopic() {
               question="Dataset Shopee: 10K users, 50 features → accuracy 85%. Team thêm 200 features từ click behavior → 250 features. Accuracy giảm còn 72%. Chiến lược fix ưu tiên số 1?"
               options={[
                 "Tăng model complexity (thêm layers, tăng width)",
-                "Feature selection (top 30–50 theo mutual information) hoặc PCA 95% variance; tiếp theo thêm L1 regularization → accuracy về 85%+",
+                "Feature selection (top 30-50 theo mutual information) hoặc PCA 95% variance; tiếp theo thêm L1 regularization → accuracy về 85%+",
                 "Xoá toàn bộ 200 features mới, giữ 50 cũ",
               ]}
               correct={1}
-              explanation="250 features / 10K samples = 1:40. vẫn ổn cho mô hình tuyến tính, nhưng rõ ràng 200 features mới chứa nhiều noise. (1) Feature importance (gain của gradient boosting), (2) PCA → 50 components giữ 95% variance, (3) L1 Lasso tự động zero out. Xoá toàn bộ features mới là quá thô, khả năng cao có 20–30 tín hiệu tốt bên trong."
+              explanation="250 features / 10K samples = 1:40. vẫn ổn cho mô hình tuyến tính, nhưng rõ ràng 200 features mới chứa nhiều noise. (1) Feature importance (gain của gradient boosting), (2) PCA → 50 components giữ 95% variance, (3) L1 Lasso tự động zero out. Xoá toàn bộ features mới là quá thô, khả năng cao có 20-30 tín hiệu tốt bên trong."
             />
 
             <div className="mt-4">
@@ -725,7 +725,7 @@ export default function DimensionalityCurseTopic() {
                 question="kNN với k=5 trên embedding 2048-dim từ ResNet cho 1M ảnh. Query tốc độ chậm và kết quả 'hàng xóm' có vẻ không ý nghĩa. Nguyên nhân chính?"
                 options={[
                   "CPU không đủ mạnh, chỉ cần mua GPU",
-                  "Distance concentration ở D=2048 làm khoảng cách gần như bằng nhau + kNN O(N·D) quá chậm. Giải pháp: giảm chiều (PCA/UMAP) về ~64–128, dùng ANN (FAISS/HNSW)",
+                  "Distance concentration ở D=2048 làm khoảng cách gần như bằng nhau + kNN O(N·D) quá chậm. Giải pháp: giảm chiều (PCA/UMAP) về ~64-128, dùng ANN (FAISS/HNSW)",
                   "k quá nhỏ, tăng k=100",
                 ]}
                 correct={1}
@@ -1071,7 +1071,7 @@ if __name__ == "__main__":
                   <strong>Blessing of dimensionality</strong>: hiện tượng đối
                   nghịch, ở chiều rất cao, concentration of measure làm một
                   số thuật toán ngẫu nhiên trở nên đơn giản. VD:
-                  Johnson–Lindenstrauss cho phép random projection giữ khoảng
+                  Johnson-Lindenstrauss cho phép random projection giữ khoảng
                   cách trong sai số (1 ± ε) với chỉ O(log N / ε²) chiều, bất
                   kể D ban đầu.
                 </p>
@@ -1095,7 +1095,7 @@ if __name__ == "__main__":
                   concentration.
                 </p>
                 <p>
-                  <strong>Johnson–Lindenstrauss lemma</strong>: với bất kỳ tập
+                  <strong>Johnson-Lindenstrauss lemma</strong>: với bất kỳ tập
                   N điểm trong R<sup>D</sup>, tồn tại phép chiếu xuống R
                   <sup>k</sup> với k = O(log N / ε²) bảo toàn mọi khoảng cách
                   cặp trong sai số (1 ± ε). Kết quả: random projection là công
@@ -1193,7 +1193,7 @@ if __name__ == "__main__":
                 "Curse of dimensionality = nhiều features + ít data → không gian sparse → model overfit trên noise, accuracy GIẢM thay vì tăng.",
                 "Thêm 1 chiều = NHÂN thể tích (luỹ thừa). Ở D = 100, 99.997% thể tích hypercube nằm trong lớp vỏ ngoài dày 10%, lõi gần như rỗng.",
                 "Distance concentration: E[||X−Y||] ≈ √(D/6), σ/μ ~ 1/√D → 0. Ở D lớn, max/min khoảng cách gần như bằng nhau, kNN & clustering bằng Euclid thoái hoá.",
-                "Rule of thumb: 10–20 samples per feature cho mô hình tuyến tính. 100 features → cần ít nhất 1K–2K samples để ước lượng hệ số ổn định.",
+                "Rule of thumb: 10-20 samples per feature cho mô hình tuyến tính. 100 features → cần ít nhất 1K-2K samples để ước lượng hệ số ổn định.",
                 "Giải pháp đa tầng: Feature Selection (MI, L1), PCA / autoencoder, L1/L2 regularization, augmentation, pretraining + fine-tune, chọn mô hình ít nhạy với khoảng cách (tree-based).",
                 "Deep learning không miễn nhiễm, nhưng nhờ manifold hypothesis (ảnh thật chỉ sống trên manifold thấp chiều) và học representation tự động, DL giảm nhẹ curse trong thực tế, miễn là đủ data so với số tham số.",
               ]}

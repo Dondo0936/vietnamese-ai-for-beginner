@@ -28,7 +28,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "alignment",
   title: "AI Alignment",
-  titleVi: "Căn chỉnh AI. Dạy AI hiểu con người",
+  titleVi: "Căn chỉnh AI",
   description:
     "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người, thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
   category: "ai-safety",

@@ -23,7 +23,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "roc-auc",
   title: "ROC & AUC",
-  titleVi: "ROC & AUC. Đo khả năng phân biệt",
+  titleVi: "ROC & AUC",
   description:
     "Đường cong ROC và diện tích AUC đo lường khả năng mô hình phân biệt lớp dương và lớp âm ở mọi ngưỡng quyết định.",
   category: "foundations",

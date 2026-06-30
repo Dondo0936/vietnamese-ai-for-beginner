@@ -167,7 +167,7 @@ const PHASES: PhaseStep[] = [
     bookFlightExample:
       "Planning module xây chuỗi: search_flights → filter by price < 15M → rank by user_preference (Vietnam Airlines) → pick top 3 → ask_user_confirm.",
     metrics: [
-      { name: "Latency trung bình", value: "~1.5–4 s" },
+      { name: "Latency trung bình", value: "~1.5-4 s" },
       { name: "Tokens tiêu thụ", value: "Nhiều (chain-of-thought)" },
       { name: "Nguy cơ sai sót", value: "Trung bình, kế hoạch có thể thiếu bước" },
       { name: "Thành phần chính", value: "LLM + Long-term memory + Planning" },
@@ -184,7 +184,7 @@ const PHASES: PhaseStep[] = [
     bookFlightExample:
       "Agent gọi search_flights(from='SGN', to='HND', date='2024-05-02', max_price=15000000). API trả 18 chuyến, lưu vào scratchpad.",
     metrics: [
-      { name: "Latency trung bình", value: "~200 ms – 5 s (tuỳ tool)" },
+      { name: "Latency trung bình", value: "~200 ms-5 s (tuỳ tool)" },
       { name: "Tokens tiêu thụ", value: "Ít (JSON call)" },
       { name: "Nguy cơ sai sót", value: "Cao, tool có thể fail, trả lỗi" },
       { name: "Thành phần chính", value: "LLM + Tools + Short-term memory" },
@@ -201,7 +201,7 @@ const PHASES: PhaseStep[] = [
     bookFlightExample:
       "Agent kiểm tra: '18 chuyến tìm được, 3 chuyến Vietnam Airlines giá <15M. Chất lượng đủ để đề xuất người dùng.' Nếu 0 chuyến, Agent quay lại Plan với ngân sách mới.",
     metrics: [
-      { name: "Latency trung bình", value: "~800 ms – 2 s" },
+      { name: "Latency trung bình", value: "~800 ms-2 s" },
       { name: "Tokens tiêu thụ", value: "Vừa (self-critique)" },
       { name: "Nguy cơ sai sót", value: "Nguồn gốc loop vô hạn nếu reflection sai" },
       { name: "Thành phần chính", value: "LLM + Planning + Long-term memory" },
@@ -996,15 +996,15 @@ print(result)`}</CodeBlock>
           <CollapsibleDetail title="Chi phí & latency: con số thực tế">
             <p className="text-sm text-muted">
               Một Agent 4 pha trên GPT-4o, xử lý nhiệm vụ 5 bước, tiêu thụ
-              trung bình khoảng 15K–40K tokens. Với giá 2024 (~$5/1M input,
+              trung bình khoảng 15K-40K tokens. Với giá 2024 (~$5/1M input,
               $15/1M output), một phiên hoàn thành tốn khoảng{" "}
-              <strong>$0.15 – $0.40</strong>. Nhân lên 10K phiên/ngày = chi
-              phí LLM $1.5K – $4K/ngày.
+              <strong>$0.15-$0.40</strong>. Nhân lên 10K phiên/ngày = chi
+              phí LLM $1.5K-$4K/ngày.
             </p>
             <p className="mt-2 text-sm text-muted">
-              Latency: pha Plan (CoT) nặng nhất ~2–4s. Pha Act phụ thuộc
+              Latency: pha Plan (CoT) nặng nhất ~2-4s. Pha Act phụ thuộc
               tool (DB query ~100ms, web scrape ~2s, code sandbox ~5s).
-              Tổng phiên 5 bước thường 15–40 giây. Kỹ thuật giảm:{" "}
+              Tổng phiên 5 bước thường 15-40 giây. Kỹ thuật giảm:{" "}
               <TopicLink slug="kv-cache">KV cache</TopicLink>,{" "}
               streaming response, chạy song song các tool độc lập trong 1
               pha Act.
@@ -1013,7 +1013,7 @@ print(result)`}</CodeBlock>
               Tối ưu chi phí: dùng mô hình nhỏ (GPT-4o-mini, Claude Haiku)
               cho các bước đơn giản (parse, classify) và model lớn chỉ khi
               cần suy luận phức tạp. Kiến trúc &quot;cascade&quot; này có
-              thể giảm 70–80% chi phí mà giữ chất lượng gần tương đương.
+              thể giảm 70-80% chi phí mà giữ chất lượng gần tương đương.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>

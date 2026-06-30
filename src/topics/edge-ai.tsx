@@ -290,13 +290,13 @@ export default function EdgeAITopic() {
           "Thách thức lớn nhất khi triển khai LLM trên điện thoại là gì?",
         options: [
           "Không có GPU trên điện thoại",
-          "Bộ nhớ RAM hạn chế (6–12GB) không đủ cho model lớn",
+          "Bộ nhớ RAM hạn chế (6-12GB) không đủ cho model lớn",
           "Điện thoại không chạy được Python",
           "Apple không cho phép AI trên iPhone",
         ],
         correct: 1,
         explanation:
-          "Điện thoại hiện đại có NPU (Neural Processing Unit), nhưng RAM chỉ 6–12GB chia sẻ với hệ điều hành. Model 7B INT4 cần ~4GB, vừa đủ. Model 70B thì không thể. Đây là lý do quantization cực kỳ quan trọng cho Edge AI.",
+          "Điện thoại hiện đại có NPU (Neural Processing Unit), nhưng RAM chỉ 6-12GB chia sẻ với hệ điều hành. Model 7B INT4 cần ~4GB, vừa đủ. Model 70B thì không thể. Đây là lý do quantization cực kỳ quan trọng cho Edge AI.",
       },
       {
         question: "Federated Learning giúp Edge AI giải quyết vấn đề gì?",
@@ -360,7 +360,7 @@ export default function EdgeAITopic() {
         ],
         correct: 0,
         explanation:
-          "Quantize từ FP32 sang INT8 giảm 4x bộ nhớ (mỗi trọng số từ 4 byte xuống 1 byte). Quan trọng hơn, NPU Edge (ANE, Hexagon, Jetson) có instruction INT8 nhanh hơn FP32 gấp 4–8 lần. Accuracy thường chỉ giảm < 1%.",
+          "Quantize từ FP32 sang INT8 giảm 4x bộ nhớ (mỗi trọng số từ 4 byte xuống 1 byte). Quan trọng hơn, NPU Edge (ANE, Hexagon, Jetson) có instruction INT8 nhanh hơn FP32 gấp 4-8 lần. Accuracy thường chỉ giảm < 1%.",
       },
       {
         type: "fill-blank",
@@ -388,7 +388,7 @@ export default function EdgeAITopic() {
           },
         ],
         explanation:
-          "On-device inference giảm latency xuống 10–50ms (so với 200–500ms qua cloud), bảo mật dữ liệu và hoạt động offline. Quantization INT8/INT4 giảm model 4–8x để vừa RAM điện thoại/IoT.",
+          "On-device inference giảm latency xuống 10-50ms (so với 200-500ms qua cloud), bảo mật dữ liệu và hoạt động offline. Quantization INT8/INT4 giảm model 4-8x để vừa RAM điện thoại/IoT.",
       },
     ],
     [],
@@ -405,14 +405,14 @@ export default function EdgeAITopic() {
          ─────────────────────────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Camera AI ở ngã tư Hà Nội cần phát hiện xe vượt đèn đỏ trong 50ms. Internet 4G có latency 100–500ms. Giải pháp nào khả thi?"
+          question="Camera AI ở ngã tư Hà Nội cần phát hiện xe vượt đèn đỏ trong 50ms. Internet 4G có latency 100-500ms. Giải pháp nào khả thi?"
           options={[
             "Gửi video lên cloud server để xử lý",
             "Chạy model AI ngay trên chip trong camera (Edge AI)",
             "Đợi kết nối 5G ổn định rồi triển khai",
           ]}
           correct={1}
-          explanation="Khi latency là yêu cầu sống còn, Edge AI là giải pháp duy nhất. Xử lý ngay tại thiết bị: 30–50ms thay vì 100–500ms qua mạng. Giống nấu ăn tại nhà thay vì đặt ship, có ngay, không phụ thuộc ai!"
+          explanation="Khi latency là yêu cầu sống còn, Edge AI là giải pháp duy nhất. Xử lý ngay tại thiết bị: 30-50ms thay vì 100-500ms qua mạng. Giống nấu ăn tại nhà thay vì đặt ship, có ngay, không phụ thuộc ai!"
         >
           {/* =============================================================
              ANALOGY
@@ -774,7 +774,7 @@ export default function EdgeAITopic() {
                   "Không cho người dùng dùng khi không có mạng",
                 ]}
                 correct={1}
-                explanation="600ms RTT có nghĩa chưa tính inference đã vượt budget 300ms của bạn. Model nhỏ on-device (3B–7B quantize INT4) có thể chạy trong 150ms trên ANE / Snapdragon NPU. Pattern hybrid này, fallback thông minh giữa Edge và Cloud, là kiến trúc tiêu chuẩn cho sản phẩm Apple Intelligence, Google Translate Pro, và các app dịch cao cấp."
+                explanation="600ms RTT có nghĩa chưa tính inference đã vượt budget 300ms của bạn. Model nhỏ on-device (3B-7B quantize INT4) có thể chạy trong 150ms trên ANE / Snapdragon NPU. Pattern hybrid này, fallback thông minh giữa Edge và Cloud, là kiến trúc tiêu chuẩn cho sản phẩm Apple Intelligence, Google Translate Pro, và các app dịch cao cấp."
               />
             </div>
           </LessonSection>
@@ -838,7 +838,7 @@ export default function EdgeAITopic() {
               <p className="text-sm leading-relaxed">
                 Điểm hoà vốn (breakeven) phụ thuộc vào số request/tháng. Với 1
                 camera streaming 24/7, CAPEX $500 cho NPU Hailo-8 rẻ hơn sau
-                ~2–3 tháng so với streaming video về cloud.
+                ~2-3 tháng so với streaming video về cloud.
               </p>
 
               {/* ─── Callout 1 ─── */}
@@ -860,7 +860,7 @@ export default function EdgeAITopic() {
                   <strong>
                     <TopicLink slug="quantization">Quantization</TopicLink>:
                   </strong>{" "}
-                  INT8/INT4 giảm 4–8× model size, chip Edge có INT8
+                  INT8/INT4 giảm 4-8× model size, chip Edge có INT8
                   accelerator.
                 </li>
                 <li>

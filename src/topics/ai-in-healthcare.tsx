@@ -516,7 +516,7 @@ const DRUG_STAGES: DrugStage[] = [
       "AI dự đoán độc tính sớm, giảm số lượng thử nghiệm động vật không cần thiết.",
   },
   {
-    name: "Thử nghiệm lâm sàng pha 1–3",
+    name: "Thử nghiệm lâm sàng pha 1-3",
     traditionalYears: 7,
     aiYears: 5,
     description:
@@ -1140,7 +1140,7 @@ export default function AIInHealthcareTopic() {
                   </li>
                   <li>
                     <strong>Domain shift giữa các bệnh viện:</strong> Máy
-                    X-quang khác hãng, protocol chụp khác, dân số khác, mô hình tốt ở bệnh viện A có thể tụt accuracy 10–20%
+                    X-quang khác hãng, protocol chụp khác, dân số khác, mô hình tốt ở bệnh viện A có thể tụt accuracy 10-20%
                     tại bệnh viện B. Vì vậy cần validation trên từng cơ
                     sở trước triển khai.
                   </li>
@@ -1188,7 +1188,7 @@ export default function AIInHealthcareTopic() {
                 </ol>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="AI y tế sẽ phát triển ra sao 2025–2030?">
+              <CollapsibleDetail title="AI y tế sẽ phát triển ra sao 2025-2030?">
                 <p>
                   Các xu hướng đáng chú ý:
                 </p>

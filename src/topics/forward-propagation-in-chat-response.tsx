@@ -1134,7 +1134,7 @@ export default function ForwardPropagationInChatResponse() {
           sourceRef={3}
         />
         <Metric
-          value="Một câu trả lời trung bình 200 từ cần khoảng 250 – 300 lượt lan truyền thuận liên tiếp"
+          value="Một câu trả lời trung bình 200 từ cần khoảng 250-300 lượt lan truyền thuận liên tiếp"
           sourceRef={4}
         />
       </ApplicationMetrics>

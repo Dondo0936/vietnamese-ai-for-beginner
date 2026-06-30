@@ -281,7 +281,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 2,
       explanation:
-        "Thực tế batch 100 cặp trên GPU có thể thực thi gần song song, vì vậy latency đo được thường là 200–400 ms trên T4, chứ không phải 1000 ms nối tiếp. Điểm quan trọng: hãy benchmark, đừng ước lượng bằng phép nhân thuần.",
+        "Thực tế batch 100 cặp trên GPU có thể thực thi gần song song, vì vậy latency đo được thường là 200-400 ms trên T4, chứ không phải 1000 ms nối tiếp. Điểm quan trọng: hãy benchmark, đừng ước lượng bằng phép nhân thuần.",
     },
     {
       question:
@@ -299,7 +299,7 @@ function buildQuiz(): QuizQuestion[] {
     {
       type: "fill-blank",
       question:
-        "Kiến trúc dùng cho re-ranking là {blank}, encode query và document cùng lúc. Vì tốn kém, nó chỉ chấm {blank} tài liệu do stage 1 trả về (thường 50–100).",
+        "Kiến trúc dùng cho re-ranking là {blank}, encode query và document cùng lúc. Vì tốn kém, nó chỉ chấm {blank} tài liệu do stage 1 trả về (thường 50-100).",
       blanks: [
         {
           answer: "cross-encoder",
@@ -315,7 +315,7 @@ function buildQuiz(): QuizQuestion[] {
         },
       ],
       explanation:
-        "Cross-encoder đưa [CLS] q [SEP] d [SEP] qua Transformer, nắm bắt tương tác chi tiết giữa query và document nên chính xác hơn bi-encoder. Nhưng O(N) mỗi query, vì vậy chỉ chạy trên top-K (50–100) từ stage 1 để giữ độ trễ dưới 1 giây.",
+        "Cross-encoder đưa [CLS] q [SEP] d [SEP] qua Transformer, nắm bắt tương tác chi tiết giữa query và document nên chính xác hơn bi-encoder. Nhưng O(N) mỗi query, vì vậy chỉ chạy trên top-K (50-100) từ stage 1 để giữ độ trễ dưới 1 giây.",
     },
   ];
 }
@@ -378,7 +378,7 @@ export default function ReRankingTopic() {
         >
           <p className="mt-2 text-sm text-muted">
             Trong bài học này, bạn sẽ thấy pipeline 2 giai đoạn hoạt động như
-            thế nào, vì sao nó tăng chất lượng 20–40% cho RAG, và cách chọn
+            thế nào, vì sao nó tăng chất lượng 20-40% cho RAG, và cách chọn
             giữa MonoT5, Cohere Rerank và BGE-Reranker.
           </p>
         </PredictionGate>
@@ -919,7 +919,7 @@ export default function ReRankingTopic() {
                 </p>
                 <p className="text-xs text-muted">
                   Mã hóa CÙNG LÚC (query, doc). Attention qua cả hai → chính
-                  xác hơn 15–25% NDCG, nhưng O(N) mỗi query. Chỉ chạy trên
+                  xác hơn 15-25% NDCG, nhưng O(N) mỗi query. Chỉ chạy trên
                   top-K.
                 </p>
               </div>
@@ -976,7 +976,7 @@ export default function ReRankingTopic() {
             "Bi-encoder thẳng không cần re-rank, vector đủ mạnh",
           ]}
           correct={1}
-          explanation="Hybrid search cân bằng recall (BM25 bắt từ khóa hiếm, embedding bắt ý nghĩa). Top-100 đủ rộng cho re-ranker. BGE-Reranker-v2-m3 hoặc Cohere hỗ trợ tiếng Việt tốt. Với 100 cặp × ~10 ms ≈ 100–200 ms (batch), cộng retrieval 50–100 ms → tổng dưới 500 ms. Chạy Cross-Encoder thẳng 2M là bất khả thi (hàng giờ); chỉ bi-encoder thì chất lượng thua 20% điểm NDCG."
+          explanation="Hybrid search cân bằng recall (BM25 bắt từ khóa hiếm, embedding bắt ý nghĩa). Top-100 đủ rộng cho re-ranker. BGE-Reranker-v2-m3 hoặc Cohere hỗ trợ tiếng Việt tốt. Với 100 cặp × ~10 ms ≈ 100-200 ms (batch), cộng retrieval 50-100 ms → tổng dưới 500 ms. Chạy Cross-Encoder thẳng 2M là bất khả thi (hàng giờ); chỉ bi-encoder thì chất lượng thua 20% điểm NDCG."
         />
       </LessonSection>
 
@@ -1037,7 +1037,7 @@ export default function ReRankingTopic() {
               </p>
               <p>
                 <strong>Cross-Encoder:</strong> Encode cùng. 1 forward pass
-                mỗi cặp. Chính xác hơn 15–25% NDCG nhưng O(N) mỗi query. Dùng
+                mỗi cặp. Chính xác hơn 15-25% NDCG nhưng O(N) mỗi query. Dùng
                 cho re-ranking top-K.
               </p>
               <p>
@@ -1187,7 +1187,7 @@ for doc, s in ranked:
     print(f"{s:+.3f}\\t{doc[:60]}...")
 
 # Gợi ý production:
-#   1. Luôn batch (batch_size 16–64 trên T4, 64–128 trên A100).
+#   1. Luôn batch (batch_size 16-64 trên T4, 64-128 trên A100).
 #   2. Cache score cho (query, doc_id) nếu query lặp.
 #   3. Với max_length ngắn hơn (256), tốc độ tăng ~2x, chất lượng
 #      giảm nhẹ trên tài liệu dài, hãy A/B test trên data của bạn.`}
@@ -1234,7 +1234,7 @@ for doc, s in ranked:
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <strong>Pointwise:</strong> hỏi LLM từng cặp (q, d), cho điểm
-                0–10. Đơn giản nhưng tốn token.
+                0-10. Đơn giản nhưng tốn token.
               </li>
               <li>
                 <strong>Listwise / pairwise:</strong> cho LLM cả danh sách, yêu
@@ -1244,7 +1244,7 @@ for doc, s in ranked:
             </ul>
             <p>
               Chất lượng LLM-as-a-reranker có thể vượt cross-encoder truyền
-              thống, nhưng chi phí và latency cao hơn 10–100 lần. Hiện tại
+              thống, nhưng chi phí và latency cao hơn 10-100 lần. Hiện tại
               chỉ hợp lý cho các pipeline chất lượng cao (search enterprise,
               legal, medical) hoặc khi bạn đã có LLM ở downstream.
             </p>
@@ -1263,7 +1263,7 @@ for doc, s in ranked:
               khiến embedding thuần không đủ tinh tế.
             </li>
             <li>
-              Bi-encoder của bạn chưa fine-tune, rerank có thể cứu 10–20%
+              Bi-encoder của bạn chưa fine-tune, rerank có thể cứu 10-20%
               NDCG ngay mà không cần train.
             </li>
           </ul>
@@ -1287,9 +1287,9 @@ for doc, s in ranked:
 
           <p>
             <strong>Trong thực tế:</strong> một pipeline RAG điển hình năm
-            2024–2025 trông như sau: <em>query rewrite</em> → <em>hybrid search (BM25 + bi-encoder)</em> → top-100 →{" "}
+            2024-2025 trông như sau: <em>query rewrite</em> → <em>hybrid search (BM25 + bi-encoder)</em> → top-100 →{" "}
             <em>cross-encoder rerank</em> → top-5 → LLM. Chỉ chi phí và
-            latency từ rerank thường chiếm 20–40% toàn pipeline, nhưng chất
+            latency từ rerank thường chiếm 20-40% toàn pipeline, nhưng chất
             lượng câu trả lời cuối cùng cải thiện rõ rệt. Và đó là lý do nó
             trở thành mặc định.
           </p>
@@ -1304,11 +1304,11 @@ for doc, s in ranked:
           title="Những điều cần nhớ về Re-ranking"
           points={[
             "Re-ranking là stage 2 của pipeline: bi-encoder retrieve top-100 → cross-encoder rerank → top-5 cho LLM.",
-            "Cross-encoder mã hóa (query, doc) CÙNG LÚC nên chính xác hơn 15–25% NDCG, đổi lại O(N) mỗi query.",
-            "Top-K stage 1 quyết định trần recall, quá nhỏ (10) sẽ đánh mất tài liệu tốt; mặc định an toàn là 50–100.",
+            "Cross-encoder mã hóa (query, doc) CÙNG LÚC nên chính xác hơn 15-25% NDCG, đổi lại O(N) mỗi query.",
+            "Top-K stage 1 quyết định trần recall, quá nhỏ (10) sẽ đánh mất tài liệu tốt; mặc định an toàn là 50-100.",
             "Ba họ reranker chính: generative (MonoT5), cross-encoder mở (BGE-Reranker, MiniLM), API managed (Cohere Rerank).",
             "Với tiếng Việt: dùng BGE-Reranker-v2-m3 hoặc Cohere Rerank, tránh các model tiếng Anh thuần.",
-            "Luôn batch các cặp (q, d) trên GPU, đây là đòn bẩy đơn giản nhất để giảm latency 5–10 lần.",
+            "Luôn batch các cặp (q, d) trên GPU, đây là đòn bẩy đơn giản nhất để giảm latency 5-10 lần.",
           ]}
         />
       </LessonSection>

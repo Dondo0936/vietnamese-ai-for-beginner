@@ -173,7 +173,7 @@ const TOOL_MATRIX: ToolMatrixRow[] = [
   },
   {
     name: "ChatGPT Team / Enterprise",
-    tier: "$25–60 / user / tháng",
+    tier: "$25-60 / user / tháng",
     noTrain: "yes",
     dpa: "yes",
     vnResidency: "far",
@@ -200,7 +200,7 @@ const TOOL_MATRIX: ToolMatrixRow[] = [
   },
   {
     name: "Google Gemini for Workspace",
-    tier: "$20–30 / user / tháng",
+    tier: "$20-30 / user / tháng",
     noTrain: "yes",
     dpa: "yes",
     vnResidency: "near",

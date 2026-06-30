@@ -141,7 +141,7 @@ const SAMPLES: SampleImage[] = [
       { label: "Nhà gỗ", prob: 0.08 },
       { label: "Chuồng trại", prob: 0.05 },
     ],
-    note: "Top-1 đúng nhưng confidence chỉ 62% — mái ngói và tường trắng khiến mô hình cân nhắc cả 'biệt thự'.",
+    note: "Top-1 đúng nhưng confidence chỉ 62%-mái ngói và tường trắng khiến mô hình cân nhắc cả 'biệt thự'.",
   },
   {
     id: "s7",
@@ -269,7 +269,7 @@ const LAYERS = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
- * QUIZ — 8 câu kiểm tra kiến thức về Image Classification
+ * QUIZ-8 câu kiểm tra kiến thức về Image Classification
  * ───────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
@@ -331,7 +331,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Confusion matrix[i][j] = số lần nhãn thật là i nhưng mô hình dự đoán là j. Ô ngoài đường chéo cho thấy MÔ HÌNH NHẦM LỘN GIỮA 2 LỚP nào — rất hữu ích để debug (VD: mô hình luôn nhầm 'phở' thành 'mì soup' → cần thêm data phở).",
+      "Confusion matrix[i][j] = số lần nhãn thật là i nhưng mô hình dự đoán là j. Ô ngoài đường chéo cho thấy MÔ HÌNH NHẦM LỘN GIỮA 2 LỚP nào-rất hữu ích để debug (VD: mô hình luôn nhầm 'phở' thành 'mì soup' → cần thêm data phở).",
   },
   {
     question: "ViT (Vision Transformer) khác CNN ở điểm cốt lõi nào?",
@@ -355,13 +355,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "EfficientNet (Tan & Le 2019) tìm ra rằng scale 1 chiều duy nhất (ví dụ chỉ làm sâu hơn) không hiệu quả. Thay vào đó, cần scale ĐỒNG THỜI ba chiều (width, depth, resolution) với tỉ lệ φ nhất quán — gọi là compound scaling.",
+      "EfficientNet (Tan & Le 2019) tìm ra rằng scale 1 chiều duy nhất (ví dụ chỉ làm sâu hơn) không hiệu quả. Thay vào đó, cần scale ĐỒNG THỜI ba chiều (width, depth, resolution) với tỉ lệ φ nhất quán-gọi là compound scaling.",
   },
   {
     question: "Khi fine-tune một mô hình classification pretrained trên ảnh Việt Nam (món ăn, cảnh quan), bạn nên làm gì?",
     options: [
       "Train lại từ đầu với weights ngẫu nhiên",
-      "Freeze backbone, chỉ train lớp cuối (classifier head) với dữ liệu của bạn — hoặc fine-tune toàn bộ với learning rate thấp",
+      "Freeze backbone, chỉ train lớp cuối (classifier head) với dữ liệu của bạn-hoặc fine-tune toàn bộ với learning rate thấp",
       "Bỏ qua pretraining vì không liên quan",
       "Chỉ dùng ViT, không dùng CNN",
     ],
@@ -432,7 +432,7 @@ export default function ImageClassificationTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 1 — DỰ ĐOÁN (HOOK)
+       *  BƯỚC 1-DỰ ĐOÁN (HOOK)
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <div className="mb-4">
@@ -453,7 +453,7 @@ export default function ImageClassificationTopic() {
         </div>
 
         <PredictionGate
-          question="Bạn mở camera điện thoại, chĩa vào một chiếc xe máy trên phố Hà Nội. Ứng dụng hiện chữ 'Xe máy — 92%'. Nó đã làm gì?"
+          question="Bạn mở camera điện thoại, chĩa vào một chiếc xe máy trên phố Hà Nội. Ứng dụng hiện chữ 'Xe máy-92%'. Nó đã làm gì?"
           options={[
             "Tìm vị trí xe máy trong ảnh",
             "Gán 1 nhãn cho toàn bộ bức ảnh",
@@ -470,7 +470,7 @@ export default function ImageClassificationTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 2 — KHÁM PHÁ (Demo classifier + Confusion + Compare)
+       *  BƯỚC 2-KHÁM PHÁ (Demo classifier + Confusion + Compare)
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={8} label="Khám phá">
         <VisualizationSection>
@@ -478,7 +478,7 @@ export default function ImageClassificationTopic() {
             {/* ── Phần A: Demo 10 ảnh + top-5 ─────────────── */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                Trình phân loại tương tác — chọn 1 ảnh
+                Trình phân loại tương tác-chọn 1 ảnh
               </h3>
               <p className="text-sm text-muted mb-3">
                 Bấm vào bất kỳ ảnh nào bên dưới. Mô hình sẽ trả về 5 nhãn có xác suất cao
@@ -676,7 +676,7 @@ export default function ImageClassificationTopic() {
                   className="fill-tertiary"
                   fontSize="11"
                 >
-                  Kích thước không gian ↓, độ sâu kênh ↑ — đặc trưng từ đơn giản đến phức
+                  Kích thước không gian ↓, độ sâu kênh ↑, đặc trưng từ đơn giản đến phức
                   tạp
                 </text>
               </svg>
@@ -905,7 +905,7 @@ export default function ImageClassificationTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 3 — AHA
+       *  BƯỚC 3-AHA
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
@@ -914,19 +914,19 @@ export default function ImageClassificationTopic() {
             người hoạt động: lớp đầu bắt <strong>cạnh và góc</strong>, lớp giữa ghép thành
             <strong> bộ phận</strong> (bánh xe, mắt, đèn pha), lớp cuối tổ hợp tất cả
             thành <strong>đối tượng hoàn chỉnh</strong>. Bạn không hề dạy mạng đâu là
-            &quot;bánh xe&quot; — nó tự khám phá ra qua hàng triệu ảnh và backpropagation.
+            &quot;bánh xe&quot;, nó tự khám phá ra qua hàng triệu ảnh và backpropagation.
           </p>
           <p className="mt-3">
             Một cách nhìn khác:{" "}
             <em>phân loại ảnh = nén ảnh 224×224×3 ≈ 150 000 số thành 1 số nguyên</em>{" "}
-            (index lớp) — mất gần 100% thông tin pixel nhưng giữ đúng &quot;khái niệm&quot;.
+            (index lớp), mất gần 100% thông tin pixel nhưng giữ đúng &quot;khái niệm&quot;.
             Đó là sức mạnh của biểu diễn (representation learning).
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 4 — THỬ THÁCH 1
+       *  BƯỚC 4-THỬ THÁCH 1
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={8} label="Thử thách">
         <InlineChallenge
@@ -937,18 +937,18 @@ export default function ImageClassificationTopic() {
             "Ảnh quá lớn cho mô hình xử lý",
           ]}
           correct={1}
-          explanation="Mô hình chỉ tốt bằng dữ liệu huấn luyện. Nếu thiếu ảnh xe máy chở hàng từ phía sau, mô hình không học được đặc trưng đó. Đây là vấn đề distribution shift trong thực tế Việt Nam — gợi ý bổ sung ảnh từ camera giao thông địa phương."
+          explanation="Mô hình chỉ tốt bằng dữ liệu huấn luyện. Nếu thiếu ảnh xe máy chở hàng từ phía sau, mô hình không học được đặc trưng đó. Đây là vấn đề distribution shift trong thực tế Việt Nam-gợi ý bổ sung ảnh từ camera giao thông địa phương."
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 5 — GIẢI THÍCH SÂU
+       *  BƯỚC 5-GIẢI THÍCH SÂU
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
             <strong>Image Classification</strong> (Phân loại hình ảnh) là tác vụ cơ bản
-            nhất trong thị giác máy tính — gán <em>một</em> nhãn danh mục cho toàn bộ bức
+            nhất trong thị giác máy tính-gán <em>một</em> nhãn danh mục cho toàn bộ bức
             ảnh. Công thức chính thức:
           </p>
           <LaTeX block>
@@ -997,14 +997,14 @@ export default function ImageClassificationTopic() {
             <ul className="list-disc list-inside space-y-1">
               <li>
                 Nhận diện loại phương tiện trên camera giao thông (xe máy chiếm 80% phương
-                tiện) — phục vụ đếm lưu lượng, phân luồng.
+                tiện), phục vụ đếm lưu lượng, phân luồng.
               </li>
               <li>
                 Phân loại ảnh sản phẩm trên Shopee, Tiki theo danh mục (thời trang, điện
                 tử, đồ ăn…) để cải thiện tìm kiếm và gợi ý.
               </li>
               <li>
-                Phân loại ảnh CCCD/CMND trong hệ thống eKYC ngân hàng — phát hiện ảnh giả,
+                Phân loại ảnh CCCD/CMND trong hệ thống eKYC ngân hàng-phát hiện ảnh giả,
                 ảnh mờ, ảnh không đúng định dạng.
               </li>
               <li>
@@ -1028,7 +1028,7 @@ export default function ImageClassificationTopic() {
             </li>
             <li>
               <strong>VGGNet</strong> (2014): kiến trúc đơn giản, chỉ dùng conv 3×3 và max
-              pool 2×2 — sâu 16-19 lớp, đẹp về lý thuyết.
+              pool 2×2-sâu 16-19 lớp, đẹp về lý thuyết.
             </li>
             <li>
               <strong>GoogLeNet/Inception</strong> (2014): khối Inception với nhiều nhánh
@@ -1039,7 +1039,7 @@ export default function ImageClassificationTopic() {
               lớp mà không bị gradient tắt. Cột mốc quan trọng nhất.
             </li>
             <li>
-              <strong>DenseNet</strong> (2017): mỗi lớp nhận input từ tất cả lớp trước —
+              <strong>DenseNet</strong> (2017): mỗi lớp nhận input từ tất cả lớp trước,
               tận dụng feature tối đa.
             </li>
             <li>
@@ -1068,17 +1068,17 @@ export default function ImageClassificationTopic() {
                 EfficientNet-B4/B5 cho accuracy tốt hơn mà vẫn nhanh.
               </li>
               <li>
-                <strong>Tier cao — SOTA accuracy:</strong> ViT-L, Swin-L, ConvNeXt-L. Cần
+                <strong>Tier cao-SOTA accuracy:</strong> ViT-L, Swin-L, ConvNeXt-L. Cần
                 nhiều data (JFT hoặc LAION).
               </li>
               <li>
                 <strong>Data ít (&lt;10K ảnh):</strong> luôn fine-tune từ pretrained.
-                Không bao giờ train-from-scratch — sẽ overfit ngay.
+                Không bao giờ train-from-scratch-sẽ overfit ngay.
               </li>
             </ul>
           </Callout>
 
-          <Callout variant="info" title="Data Augmentation — vũ khí bí mật">
+          <Callout variant="info" title="Data Augmentation-vũ khí bí mật">
             <p className="text-sm">
               Một mô hình train chỉ 10 000 ảnh gốc có thể đạt accuracy của 1 triệu ảnh nếu
               dùng đúng augmentation. Các phép phổ biến:
@@ -1086,7 +1086,7 @@ export default function ImageClassificationTopic() {
             <ul className="list-disc list-inside space-y-1 text-sm pl-2 mt-2">
               <li>
                 <strong>RandomCrop + Resize:</strong> cắt ngẫu nhiên một vùng rồi phóng
-                về 224×224 — dạy mô hình bất biến theo vị trí/tỉ lệ.
+                về 224×224-dạy mô hình bất biến theo vị trí/tỉ lệ.
               </li>
               <li>
                 <strong>HorizontalFlip:</strong> lật ngang ngẫu nhiên (không áp dụng cho
@@ -1094,15 +1094,15 @@ export default function ImageClassificationTopic() {
               </li>
               <li>
                 <strong>ColorJitter:</strong> đổi brightness, contrast, saturation, hue
-                ±30% — chịu được ánh sáng khác nhau.
+                ±30%-chịu được ánh sáng khác nhau.
               </li>
               <li>
-                <strong>MixUp / CutMix:</strong> trộn 2 ảnh và 2 nhãn — giảm overfit cực
+                <strong>MixUp / CutMix:</strong> trộn 2 ảnh và 2 nhãn-giảm overfit cực
                 mạnh, tăng 1-2% accuracy.
               </li>
               <li>
                 <strong>RandAugment / AutoAugment:</strong> tự động chọn tổ hợp
-                augmentation tối ưu qua search — tiên tiến nhất hiện nay.
+                augmentation tối ưu qua search-tiên tiến nhất hiện nay.
               </li>
             </ul>
           </Callout>
@@ -1110,7 +1110,7 @@ export default function ImageClassificationTopic() {
           <CollapsibleDetail title="Chi tiết: Top-1 vs Top-5 accuracy">
             <div className="space-y-2 text-sm">
               <p>
-                Trên ImageNet có 1000 lớp và NHIỀU lớp rất giống nhau — ví dụ hàng trăm
+                Trên ImageNet có 1000 lớp và NHIỀU lớp rất giống nhau-ví dụ hàng trăm
                 giống chó (Labrador, Golden Retriever, Husky, Husky Alaska…). Con người
                 cũng khó phân biệt. Vì vậy ImageNet 2012 định nghĩa 2 metric:
               </p>
@@ -1127,7 +1127,7 @@ export default function ImageClassificationTopic() {
               </ul>
               <p>
                 Với dataset khách hàng (VD 10 lớp sản phẩm), Top-5 thường không có ý nghĩa
-                — dùng Top-1 và thêm F1-score (vì data thường mất cân bằng).
+               , dùng Top-1 và thêm F1-score (vì data thường mất cân bằng).
               </p>
             </div>
           </CollapsibleDetail>
@@ -1162,7 +1162,7 @@ export default function ImageClassificationTopic() {
               <p>
                 Với data Việt Nam (món ăn, phương tiện địa phương, chữ Nôm…), fine-tune
                 thường cho kết quả tốt hơn nhiều so với train-from-scratch, ngay cả khi
-                đích rất khác ImageNet — bởi &quot;cạnh&quot; và &quot;texture&quot; vẫn
+                đích rất khác ImageNet-bởi &quot;cạnh&quot; và &quot;texture&quot; vẫn
                 chung giữa mọi loại ảnh.
               </p>
             </div>
@@ -1354,7 +1354,7 @@ for epoch in range(20):
             </li>
             <li>
               <strong>Adversarial examples:</strong> thay đổi vài pixel có thể lừa mô hình
-              — quan trọng khi dùng cho bảo mật, eKYC. Xem topic{" "}
+             , quan trọng khi dùng cho bảo mật, eKYC. Xem topic{" "}
               <em>adversarial-robustness</em>.
             </li>
             <li>
@@ -1378,7 +1378,7 @@ for epoch in range(20):
             </li>
             <li>
               <strong>Multimodal (VLM):</strong> không chỉ ra 1 nhãn mà trả lời &quot;đây
-              là gì và tại sao&quot; — dùng GPT-4V, Gemini, Qwen-VL.
+              là gì và tại sao&quot;, dùng GPT-4V, Gemini, Qwen-VL.
             </li>
             <li>
               <strong>Few-shot learning:</strong> cho 5 ảnh/lớp là mô hình học ngay nhờ
@@ -1389,7 +1389,7 @@ for epoch in range(20):
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 6 — THỬ THÁCH 2
+       *  BƯỚC 6-THỬ THÁCH 2
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
@@ -1406,23 +1406,23 @@ for epoch in range(20):
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 7 — TÓM TẮT
+       *  BƯỚC 7-TÓM TẮT
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           points={[
-            "Image Classification gán DUY NHẤT 1 nhãn cho toàn bộ ảnh — không tìm vị trí, không đếm số lượng (đó là các task khác).",
+            "Image Classification gán DUY NHẤT 1 nhãn cho toàn bộ ảnh-không tìm vị trí, không đếm số lượng (đó là các task khác).",
             "CNN trích đặc trưng theo thứ bậc: cạnh → hình dạng → bộ phận → đối tượng; Softmax chuyển logits thành xác suất, Cross-Entropy tính loss.",
             "ImageNet (1000 lớp, 1.2M ảnh) là benchmark chuẩn. Mô hình hiện đại đạt Top-1 85-88%, Top-5 96-98%.",
             "Kiến trúc lớn: ResNet (2015, 76%), EfficientNet (2019, 84%), ViT (2020-21, 88%). Accuracy tăng đi kèm tham số và tính toán.",
-            "Confusion matrix cho thấy cặp lớp bị nhầm có hệ thống — công cụ debug quan trọng hơn chỉ nhìn accuracy.",
+            "Confusion matrix cho thấy cặp lớp bị nhầm có hệ thống-công cụ debug quan trọng hơn chỉ nhìn accuracy.",
             "Trong thực tế, luôn dùng transfer learning + data augmentation; cẩn trọng data leakage, class imbalance, domain shift.",
           ]}
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 8 — KIỂM TRA
+       *  BƯỚC 8-KIỂM TRA
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

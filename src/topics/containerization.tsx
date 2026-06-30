@@ -194,9 +194,9 @@ const ENVS: DeployEnv[] = [
   },
   {
     name: "Virtual Machine",
-    startup: "30–60 s",
+    startup: "30-60 s",
     size: "GB",
-    overhead: "15–20%",
+    overhead: "15-20%",
     isolation: "Cao (full OS)",
     gpu: "Cần passthrough",
     density: "~10 VM / host",
@@ -204,9 +204,9 @@ const ENVS: DeployEnv[] = [
   },
   {
     name: "Docker Container",
-    startup: "1–5 s",
-    size: "MB–GB",
-    overhead: "1–3%",
+    startup: "1-5 s",
+    size: "MB-GB",
+    overhead: "1-3%",
     isolation: "Tốt (namespace)",
     gpu: "NVIDIA Container Toolkit",
     density: "100+ / host",
@@ -214,7 +214,7 @@ const ENVS: DeployEnv[] = [
   },
   {
     name: "Serverless",
-    startup: "100ms–30s",
+    startup: "100ms-30s",
     size: "MB",
     overhead: "Biến đổi",
     isolation: "Cao",
@@ -727,7 +727,7 @@ export default function ContainerizationTopic() {
         ],
         correct: 0,
         explanation:
-          "Stage 1 build/compile (có compiler, headers, cache), stage 2 chỉ copy binary/package cần chạy. Image giảm 2–3×, ít bề mặt tấn công hơn.",
+          "Stage 1 build/compile (có compiler, headers, cache), stage 2 chỉ copy binary/package cần chạy. Image giảm 2-3×, ít bề mặt tấn công hơn.",
       },
       {
         question: "Pod trong Kubernetes là gì?",
@@ -918,7 +918,7 @@ export default function ContainerizationTopic() {
             <p>
               Container <strong>chia sẻ kernel</strong> với host (không boot OS
               riêng) → khởi động trong vài giây thay vì vài phút. Overhead chỉ
-              1–3% (VM: 15–20%). Chính vì thế 90% workload AI production hiện
+              1-3% (VM: 15-20%). Chính vì thế 90% workload AI production hiện
               chạy trên Docker + Kubernetes: nhẹ như app, cô lập như VM.
             </p>
           </AhaMoment>
@@ -950,8 +950,8 @@ export default function ContainerizationTopic() {
 
             <div className="rounded-lg border border-accent/30 bg-accent-light p-3 text-sm text-foreground">
               <strong>Điểm khác biệt cốt lõi:</strong> VM boot OS riêng (Guest
-              OS) trong mỗi hộp → hàng GB RAM và 30–60s khởi động. Container
-              chia sẻ kernel host → chỉ cần process namespace → MB và 1–5s.
+              OS) trong mỗi hộp → hàng GB RAM và 30-60s khởi động. Container
+              chia sẻ kernel host → chỉ cần process namespace → MB và 1-5s.
             </div>
 
             <div className="space-y-2">
@@ -1063,7 +1063,7 @@ export default function ContainerizationTopic() {
             />
 
             <InlineChallenge
-              question="Docker image cho model AI thường rất lớn (5–15GB) vì chứa CUDA, PyTorch, model weights. Cách nào giảm kích thước hiệu quả nhất?"
+              question="Docker image cho model AI thường rất lớn (5-15GB) vì chứa CUDA, PyTorch, model weights. Cách nào giảm kích thước hiệu quả nhất?"
               options={[
                 "Nén file image bằng ZIP",
                 "Multi-stage build: stage 1 build deps, stage 2 chỉ copy artifacts",
@@ -1071,7 +1071,7 @@ export default function ContainerizationTopic() {
                 "Tắt hết log",
               ]}
               correct={1}
-              explanation="Multi-stage build: stage 1 cài pip packages (cần compiler, headers), stage 2 base nhỏ gọn + copy chỉ packages đã build. Giảm image 2–3×. Kết hợp .dockerignore loại file thừa."
+              explanation="Multi-stage build: stage 1 cài pip packages (cần compiler, headers), stage 2 base nhỏ gọn + copy chỉ packages đã build. Giảm image 2-3×. Kết hợp .dockerignore loại file thừa."
             />
 
             <InlineChallenge
@@ -1153,7 +1153,7 @@ export default function ContainerizationTopic() {
 
             <Callout variant="info" title="12-Factor App & Immutable Infrastructure">
               Container hoá đẩy nhanh nguyên tắc 12-Factor: config qua env
-              vars, logs là stream, state ở backing services, build–release–
+              vars, logs là stream, state ở backing services, build-release,
               run tách biệt. Container là <em>immutable</em>: không SSH vào
               sửa; đổi code → build image mới → deploy.
             </Callout>
@@ -1328,7 +1328,7 @@ spec:
                 layer theo hash của lệnh + nội dung file liên quan. Nếu đặt{" "}
                 <code>COPY ./src</code> trước <code>RUN pip install</code>,
                 mỗi lần sửa code sẽ invalidate cache pip → build lại toàn bộ.
-                Thứ tự chuẩn: <em>hiếm thay đổi trước, hay thay đổi sau</em>. requirements.txt trước, src/ sau. Tiết kiệm 5–15 phút mỗi lần
+                Thứ tự chuẩn: <em>hiếm thay đổi trước, hay thay đổi sau</em>. requirements.txt trước, src/ sau. Tiết kiệm 5-15 phút mỗi lần
                 build.
               </p>
             </CollapsibleDetail>
@@ -1349,10 +1349,10 @@ spec:
           <MiniSummary
             points={[
               "Container đóng gói model + dependencies vào 'hộp' chuẩn, chạy giống nhau trên mọi máy có kernel tương thích.",
-              "Nhẹ hơn VM vì chia sẻ kernel (1–3% overhead); khởi động trong vài giây thay vì phút.",
+              "Nhẹ hơn VM vì chia sẻ kernel (1-3% overhead); khởi động trong vài giây thay vì phút.",
               "Dockerfile là bản thiết kế; Image là kết quả build bất biến; Container là instance runtime có namespace riêng.",
               "NVIDIA Container Toolkit cho phép container truy cập GPU mà không cần cài CUDA driver riêng.",
-              "Multi-stage build + .dockerignore + tách model weights ra volume giảm image 2–3× và cold-start đáng kể.",
+              "Multi-stage build + .dockerignore + tách model weights ra volume giảm image 2-3× và cold-start đáng kể.",
               "Kubernetes điều phối cluster: Pod là đơn vị deploy, Deployment giữ N replicas, HPA auto-scale, Service cân bằng tải.",
             ]}
           />

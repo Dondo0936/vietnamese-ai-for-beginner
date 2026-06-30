@@ -146,7 +146,7 @@ const RAW_POINTS: GpsPoint[] = [
 const quizQuestions: QuizQuestion[] = [
   {
     question:
-      "Vì sao tín hiệu GPS ở trung tâm thành phố hay bị lệch 20–50 m?",
+      "Vì sao tín hiệu GPS ở trung tâm thành phố hay bị lệch 20-50 m?",
     options: [
       "Điện thoại hết pin",
       "Hiệu ứng urban canyon: tín hiệu bật qua lại giữa các toà nhà cao tầng trước khi đến máy thu",
@@ -155,7 +155,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Urban canyon: tín hiệu vệ tinh bật qua các toà nhà cao tầng trước khi đến điện thoại. Thời gian di chuyển bị sai, nên vị trí tính ra lệch 20–50 m. Uber dùng map-matching (HMM) để 'kéo' điểm GPS về đoạn đường gần nhất. Hết pin chỉ làm mất tín hiệu, không gây lệch.",
+      "Urban canyon: tín hiệu vệ tinh bật qua các toà nhà cao tầng trước khi đến điện thoại. Thời gian di chuyển bị sai, nên vị trí tính ra lệch 20-50 m. Uber dùng map-matching (HMM) để 'kéo' điểm GPS về đoạn đường gần nhất. Hết pin chỉ làm mất tín hiệu, không gây lệch.",
   },
   {
     question:
@@ -194,7 +194,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20–30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các gap, giúp ETA chỉ lệch vài chục giây.",
+      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20-30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các gap, giúp ETA chỉ lệch vài chục giây.",
   },
   {
     question:
@@ -391,7 +391,7 @@ export default function DataPreprocessingInUberEta() {
             icon={Satellite}
             title="Urban canyon"
             color="#ef4444"
-            body="Tín hiệu vệ tinh bật qua các toà nhà cao tầng trước khi đến điện thoại. Vị trí lệch 20–50 m ở phố cổ hoặc khu đô thị mới."
+            body="Tín hiệu vệ tinh bật qua các toà nhà cao tầng trước khi đến điện thoại. Vị trí lệch 20-50 m ở phố cổ hoặc khu đô thị mới."
           />
           <ProblemCard
             icon={WifiOff}
@@ -403,7 +403,7 @@ export default function DataPreprocessingInUberEta() {
             icon={Layers}
             title="Điểm trùng lặp"
             color="#3b82f6"
-            body="Điện thoại gửi cùng toạ độ 2–3 lần do lỗi mạng hoặc retry. Nếu đếm cả điểm trùng, model nghĩ xe đang đứng yên."
+            body="Điện thoại gửi cùng toạ độ 2-3 lần do lỗi mạng hoặc retry. Nếu đếm cả điểm trùng, model nghĩ xe đang đứng yên."
           />
           <ProblemCard
             icon={Clock}
@@ -432,7 +432,7 @@ export default function DataPreprocessingInUberEta() {
             &ldquo;kéo&rdquo; mỗi điểm về đoạn đường gần nhất trong bản đồ.
             Hệ thống có hai tầng: online matcher chạy nhanh để hiển thị thời
             gian thực, và offline reprocess chạy kỹ hơn để sinh dữ liệu huấn
-            luyện sạch cho model. Bước này giảm sai số vị trí từ 50–100 m
+            luyện sạch cho model. Bước này giảm sai số vị trí từ 50-100 m
             xuống dưới 5 m.
           </p>
         </Beat>
@@ -776,7 +776,7 @@ gps["dist_bucket"]  = pd.cut(
           <MiniSummary
             title="Bốn điều Uber dạy cho pipeline tiền xử lý của bạn"
             points={[
-              "GPS thô bẩn hơn bạn tưởng. Map-matching kéo sai số vị trí từ 50–100 m xuống dưới 5 m.",
+              "GPS thô bẩn hơn bạn tưởng. Map-matching kéo sai số vị trí từ 50-100 m xuống dưới 5 m.",
               "Missing values không chỉ điền bằng mean. Sensor fusion là cách điền missing ở quy mô production.",
               "Rời rạc hoá đặc trưng (bucketing) không phải thủ thuật. DeepETA đo được độ chính xác tốt hơn so với dùng giá trị thô.",
               "Feature real-time qua Kafka: bước tiền xử lý không dừng khi huấn luyện xong, mà chạy liên tục khi serve.",
@@ -803,7 +803,7 @@ gps["dist_bucket"]  = pd.cut(
           sourceRef={1}
         />
         <Metric
-          value="Xử lý hàng tỷ điểm GPS mỗi ngày, sau khử nhiễu sai số giảm từ 50–100 m xuống dưới 5 m"
+          value="Xử lý hàng tỷ điểm GPS mỗi ngày, sau khử nhiễu sai số giảm từ 50-100 m xuống dưới 5 m"
           sourceRef={3}
         />
         <Metric

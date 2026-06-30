@@ -864,7 +864,7 @@ export default function CostOptimizationTopic() {
             <li>
               <strong>Semantic caching</strong>. encode câu hỏi thành
               embedding, tìm entry gần nhất trong vector DB. Hit khi similarity
-              vượt ngưỡng (thường 0.92–0.97).
+              vượt ngưỡng (thường 0.92-0.97).
             </li>
           </ul>
           <LaTeX block>

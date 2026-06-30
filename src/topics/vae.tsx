@@ -39,7 +39,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "VAE encoder xuất ra μ và σ thay vì z cố định. Tại sao?",
     options: [
       "Để tăng tốc huấn luyện",
-      "Để latent space thành phân bố liên tục — lấy mẫu bất kỳ đâu đều có nghĩa, cho phép sinh dữ liệu mới",
+      "Để latent space thành phân bố liên tục-lấy mẫu bất kỳ đâu đều có nghĩa, cho phép sinh dữ liệu mới",
       "Để giảm số tham số",
       "Vì μ và σ dễ tính gradient hơn z",
     ],
@@ -50,7 +50,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "KL divergence trong VAE loss có tác dụng gì?",
     options: [
       "Cải thiện chất lượng ảnh tái tạo",
-      "Ép phân bố latent gần N(0,1) — đảm bảo latent space có cấu trúc mượt, liên tục",
+      "Ép phân bố latent gần N(0,1), đảm bảo latent space có cấu trúc mượt, liên tục",
       "Tăng tốc gradient descent",
       "Giảm kích thước latent space",
     ],
@@ -66,18 +66,18 @@ const quizQuestions: QuizQuestion[] = [
       "Vì sampling từ N(μ, σ²) quá chậm",
     ],
     correct: 1,
-    explanation: "Backprop không thể đi qua phép 'sampling' (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường, ε chỉ là constant random — không cần gradient!",
+    explanation: "Backprop không thể đi qua phép 'sampling' (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường, ε chỉ là constant random-không cần gradient!",
   },
   {
     type: "fill-blank",
     question:
-      "VAE học biểu diễn trong {blank} (không gian tiềm ẩn) có cấu trúc xác suất. Loss gồm reconstruction + {blank} divergence — ép phân phối encoder gần N(0, 1).",
+      "VAE học biểu diễn trong {blank} (không gian tiềm ẩn) có cấu trúc xác suất. Loss gồm reconstruction + {blank} divergence-ép phân phối encoder gần N(0, 1).",
     blanks: [
       { answer: "latent space", accept: ["latent", "không gian tiềm ẩn", "latent-space"] },
       { answer: "KL", accept: ["kl", "Kullback-Leibler", "Kullback Leibler"] },
     ],
     explanation:
-      "VAE nén dữ liệu vào latent space có cấu trúc liên tục — mỗi ảnh thành (μ, σ) thay vì 1 điểm cố định. KL divergence D_KL(q(z|x) || p(z)) ép phân phối encoder gần N(0, I), đảm bảo latent space mượt và có thể sinh dữ liệu mới.",
+      "VAE nén dữ liệu vào latent space có cấu trúc liên tục-mỗi ảnh thành (μ, σ) thay vì 1 điểm cố định. KL divergence D_KL(q(z|x) || p(z)) ép phân phối encoder gần N(0, I), đảm bảo latent space mượt và có thể sinh dữ liệu mới.",
   },
 ];
 
@@ -136,8 +136,8 @@ export default function VaeTopic() {
         <PredictionGate
           question="Autoencoder nén ảnh mèo thành 1 điểm trong latent space, ảnh chó thành điểm khác. Nếu bạn lấy điểm GIỮA hai điểm đó và decode, kết quả sẽ là gì?"
           options={[
-            "Ảnh nửa mèo nửa chó — nội suy mượt",
-            "Ảnh vô nghĩa — vì giữa hai điểm là vùng 'trống' không có dữ liệu",
+            "Ảnh nửa mèo nửa chó-nội suy mượt",
+            "Ảnh vô nghĩa-vì giữa hai điểm là vùng 'trống' không có dữ liệu",
             "Ảnh mèo hoặc chó ngẫu nhiên",
           ]}
           correct={1}
@@ -154,15 +154,15 @@ export default function VaeTopic() {
         </PredictionGate>
       </LessonSection>
 
-      {/* ═══ Step 2: DISCOVER — Interactive Latent Space ═══ */}
+      {/* ═══ Step 2: DISCOVER-Interactive Latent Space ═══ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá Latent Space">
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bản đồ Google Maps. Autoencoder thường giống bản đồ chỉ có vài chấm thành phố — giữa chúng là biển trắng. VAE giống bản đồ liên tục — mỗi nơi đều có địa hình, bạn đi từ Sài Gòn ra Huế thấy cảnh thay đổi dần.
+          Hãy tưởng tượng bản đồ Google Maps. Autoencoder thường giống bản đồ chỉ có vài chấm thành phố-giữa chúng là biển trắng. VAE giống bản đồ liên tục-mỗi nơi đều có địa hình, bạn đi từ Sài Gòn ra Huế thấy cảnh thay đổi dần.
         </p>
 
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-muted mb-3">
-            Nhấn vào bất kỳ đâu trên latent space để &quot;lấy mẫu&quot;. Quan sát các điểm phân bố liên tục — không có vùng trống.
+            Nhấn vào bất kỳ đâu trên latent space để &quot;lấy mẫu&quot;. Quan sát các điểm phân bố liên tục-không có vùng trống.
           </p>
 
           <svg viewBox="0 0 500 280"
@@ -248,7 +248,7 @@ export default function VaeTopic() {
         </AhaMoment>
       </LessonSection>
 
-      {/* ═══ Step 4: DEEPEN — Reparameterization Trick ═══ */}
+      {/* ═══ Step 4: DEEPEN-Reparameterization Trick ═══ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Reparameterization Trick">
           <h3 className="text-sm font-semibold text-foreground mb-3">
             Vấn đề: Backprop không đi qua phép sampling
@@ -257,7 +257,7 @@ export default function VaeTopic() {
           <div className="space-y-3">
             <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4">
               <h4 className="text-sm font-semibold text-red-500 mb-1">Cách sai (không gradient)</h4>
-              <p className="text-xs text-muted">z ~ N(&mu;, &sigma;&sup2;) — phép sampling ngẫu nhiên, gradient không chảy qua được.</p>
+              <p className="text-xs text-muted">z ~ N(&mu;, &sigma;&sup2;), phép sampling ngẫu nhiên, gradient không chảy qua được.</p>
               <div className="flex items-center justify-center gap-2 mt-2 text-sm">
                 <span className="text-blue-500">&mu;, &sigma;</span>
                 <span className="text-red-500 font-bold">→ SAMPLE →</span>
@@ -334,7 +334,7 @@ export default function VaeTopic() {
               <strong>GAN:</strong>{" "}
               Ảnh sinh sắc nét, nhưng latent space không có cấu trúc rõ ràng, dễ bị mode collapse.{" "}
               <strong>Diffusion:</strong>{" "}
-              Kết hợp ưu điểm cả hai — latent tốt + ảnh sắc nét.
+              Kết hợp ưu điểm cả hai-latent tốt + ảnh sắc nét.
             </p>
           </Callout>
 

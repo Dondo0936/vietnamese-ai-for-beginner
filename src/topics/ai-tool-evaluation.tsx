@@ -122,7 +122,7 @@ const CRITERIA: Criterion[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
-   DATA, 5 công cụ phổ biến với điểm 0–5 theo 6 tiêu chí
+   DATA, 5 công cụ phổ biến với điểm 0-5 theo 6 tiêu chí
    ═══════════════════════════════════════════════════════════════════════ */
 
 interface Tool {
@@ -193,7 +193,7 @@ const TOOLS: Tool[] = [
     name: "Gemini",
     vendor: "Google",
     color: "#4285f4",
-    price: "Free · AI Premium $20 · Workspace $20–30/user",
+    price: "Free · AI Premium $20 · Workspace $20-30/user",
     scores: {
       quality: 4,
       price: 5,
@@ -913,18 +913,18 @@ export default function AiToolEvaluationTopic() {
       options: [
         "Không có tool {'tốt nhất'} chung, chỉ có tool phù hợp nhất với tác vụ và trọng số của bạn",
         "Benchmark công khai như MMLU là thước đo cuối cùng, không cần đánh giá thêm",
-        "Multi-model routing (Gemini Flash cho query đơn giản + Claude cho query phức tạp) tiết kiệm được 50–70% chi phí",
+        "Multi-model routing (Gemini Flash cho query đơn giản + Claude cho query phức tạp) tiết kiệm được 50-70% chi phí",
         "Tool rẻ nhất về giá API có thể đắt nhất về tổng chi phí khi tính cả công sức integrate và migrate",
       ],
       correct: 1,
       explanation:
-        "Benchmark công khai chỉ là proxy, không thay được việc đánh giá trên workload thật của bạn (domain, tiếng Việt, use case cụ thể). Nên xây một bộ eval set nội bộ 30–50 example từ công việc thật để so sánh head-to-head.",
+        "Benchmark công khai chỉ là proxy, không thay được việc đánh giá trên workload thật của bạn (domain, tiếng Việt, use case cụ thể). Nên xây một bộ eval set nội bộ 30-50 example từ công việc thật để so sánh head-to-head.",
     },
     {
       question:
         "Tại sao đánh giá AI tool phải bao gồm tiêu chí {'Hỗ trợ tiếng Việt'}?",
       options: [
-        "Vì đa số benchmark AI công khai dùng tiếng Anh, chất lượng output trên tiếng Việt có thể chênh 10–20% so với điểm benchmark",
+        "Vì đa số benchmark AI công khai dùng tiếng Anh, chất lượng output trên tiếng Việt có thể chênh 10-20% so với điểm benchmark",
         "Vì Việt Nam không có internet",
         "Không cần, mọi AI đều hỗ trợ tiếng Việt như nhau",
         "Vì chỉ tiếng Việt mới đánh dấu được",
@@ -964,13 +964,13 @@ export default function AiToolEvaluationTopic() {
         "Sếp yêu cầu bạn chọn AI cho toàn công ty trong 1 tuần. Cách làm ĐÚNG NHẤT là?",
       options: [
         "Đọc vài bài review trên YouTube/báo, chọn tool nổi tiếng nhất",
-        "Xây eval set 30–50 example từ workload thật, chạy 2–3 tool candidate, chấm điểm theo rubric, present kết quả có số liệu cho sếp",
+        "Xây eval set 30-50 example từ workload thật, chạy 2-3 tool candidate, chấm điểm theo rubric, present kết quả có số liệu cho sếp",
         "Chọn công cụ đang được nhắc nhiều trên Facebook",
         "Tự dùng 1 tuần, cảm giác nào ưng thì chọn",
       ],
       correct: 1,
       explanation:
-        "Eval-driven là cách chuyên nghiệp. Review bên thứ ba không phản ánh đúng workload của bạn. Cảm giác cá nhân cũng dễ lệch. Bộ eval set nhỏ (30–50 example) là đủ để thấy khác biệt rõ ràng. Nếu 2 tool sát nhau, câu trả lời đúng là {'multi-model routing'} thay vì chọn một vendor duy nhất.",
+        "Eval-driven là cách chuyên nghiệp. Review bên thứ ba không phản ánh đúng workload của bạn. Cảm giác cá nhân cũng dễ lệch. Bộ eval set nhỏ (30-50 example) là đủ để thấy khác biệt rõ ràng. Nếu 2 tool sát nhau, câu trả lời đúng là {'multi-model routing'} thay vì chọn một vendor duy nhất.",
     },
   ];
 
@@ -1120,10 +1120,10 @@ export default function AiToolEvaluationTopic() {
               </h3>
               <CriteriaDiagram />
               <Callout variant="info" title="Cách dùng framework">
-                Với mỗi tác vụ, cho điểm trọng số 0–5 cho mỗi tiêu chí (tổng không
+                Với mỗi tác vụ, cho điểm trọng số 0-5 cho mỗi tiêu chí (tổng không
                 bắt buộc là 15). Rồi tính điểm tổng cho từng công cụ: điểm mỗi
                 tiêu chí × trọng số, cộng lại. Công cụ điểm cao nhất là lựa chọn
-                hợp lý, nhưng luôn thử thực tế với 5–10 prompt trước khi chốt mua hoặc triển khai.
+                hợp lý, nhưng luôn thử thực tế với 5-10 prompt trước khi chốt mua hoặc triển khai.
               </Callout>
             </div>
 
@@ -1166,7 +1166,7 @@ export default function AiToolEvaluationTopic() {
               <div className="space-y-2 text-sm">
                 <p>
                   <strong>1. Chạy theo hype:</strong> Tool mới ra luôn được ca ngợi.
-                  Chờ 4–8 tuần, đợi benchmark độc lập và feedback cộng đồng trước khi
+                  Chờ 4-8 tuần, đợi benchmark độc lập và feedback cộng đồng trước khi
                   dùng cho production.
                 </p>
                 <p>
@@ -1196,7 +1196,7 @@ export default function AiToolEvaluationTopic() {
             "Không có tool tốt nhất, có tool phù hợp nhất. ChatGPT đa năng, Claude mạnh văn bản dài, Gemini rẻ + nhanh, Copilot gắn chặt M365, Perplexity research.",
             "Multi-tool stack thường hiệu quả hơn một công cụ duy nhất. Ví dụ: Claude (viết) + Perplexity (research) + ChatGPT (ảnh).",
             "Red flag: không có enterprise tier, không có DPA, chỉ có benchmark tự công bố, vendor mập mờ, tránh.",
-            "Trước khi chốt công cụ cho công ty, xây eval set 30–50 example từ workload thật, chạy head-to-head, chấm điểm theo rubric.",
+            "Trước khi chốt công cụ cho công ty, xây eval set 30-50 example từ workload thật, chạy head-to-head, chấm điểm theo rubric.",
           ]}
         />
         <p className="mt-4 text-sm text-muted leading-relaxed">

@@ -73,10 +73,10 @@ const DIGIT_3: number[][] = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-// Bộ lọc 3×3 — mỗi filter đại diện cho một "mẫu" mà lớp conv học được.
+// Bộ lọc 3×3-mỗi filter đại diện cho một "mẫu" mà lớp conv học được.
 // Conv1 (edges): phát hiện cạnh ngang/dọc/chéo bằng kernel giống Sobel.
 // Conv2 (shapes): tổ hợp edges thành cong trái/phải, giao cắt, chấm.
-// Conv3 (parts): bộ phận nét-số — móc trên, móc dưới, nút nối.
+// Conv3 (parts): bộ phận nét-số-móc trên, móc dưới, nút nối.
 type Filter = {
   id: string;
   name: string;
@@ -97,7 +97,7 @@ const CONV1_FILTERS: Filter[] = [
       [0, 0, 0],
       [1, 1, 1],
     ],
-    description: "Kích hoạt tại các pixel có gradient dọc — tức biên ngang",
+    description: "Kích hoạt tại các pixel có gradient dọc-tức biên ngang",
     pattern: "Giống bộ lọc Sobel ngang trong xử lý ảnh cổ điển.",
     tint: "#3b82f6",
     highlights: [
@@ -113,8 +113,8 @@ const CONV1_FILTERS: Filter[] = [
       [-1, 0, 1],
       [-1, 0, 1],
     ],
-    description: "Kích hoạt tại biên theo chiều dọc — nét thẳng đứng",
-    pattern: "Sobel dọc — phát hiện mọi nét thẳng đứng trong ảnh.",
+    description: "Kích hoạt tại biên theo chiều dọc-nét thẳng đứng",
+    pattern: "Sobel dọc-phát hiện mọi nét thẳng đứng trong ảnh.",
     tint: "#60a5fa",
     highlights: [
       [6, 4, 2, 14],
@@ -130,7 +130,7 @@ const CONV1_FILTERS: Filter[] = [
       [-1, 0, 1],
     ],
     description: "Kích hoạt tại các nét chéo từ trái-trên xuống phải-dưới",
-    pattern: "Gradient diagonal — building block cho các đường cong.",
+    pattern: "Gradient diagonal-building block cho các đường cong.",
     tint: "#2563eb",
     highlights: [
       [10, 9, 6, 4],
@@ -145,7 +145,7 @@ const CONV1_FILTERS: Filter[] = [
       [0, 0, 0],
       [1, 0, -1],
     ],
-    description: "Kích hoạt với nét chéo đảo — phải-trên xuống trái-dưới",
+    description: "Kích hoạt với nét chéo đảo-phải-trên xuống trái-dưới",
     pattern: "Bổ trợ cho \\, cùng nhau bao phủ mọi hướng cạnh.",
     tint: "#1d4ed8",
     highlights: [
@@ -164,7 +164,7 @@ const CONV2_FILTERS: Filter[] = [
       [-1, 0, 1],
       [-1, 0, 1],
     ],
-    description: "Tổ hợp các cạnh để phát hiện đường cong mở phải — như nửa trên số 3",
+    description: "Tổ hợp các cạnh để phát hiện đường cong mở phải-như nửa trên số 3",
     pattern: "Từ cạnh + cạnh chéo, lớp 2 dựng được cong trái/phải.",
     tint: "#a855f7",
     highlights: [[6, 3, 14, 8]],
@@ -177,7 +177,7 @@ const CONV2_FILTERS: Filter[] = [
       [1, 0, -1],
       [1, 0, -1],
     ],
-    description: "Đường cong mở trái — nửa dưới số 3 hoặc mặt trong chữ C",
+    description: "Đường cong mở trái-nửa dưới số 3 hoặc mặt trong chữ C",
     pattern: "Phản đối xứng của cong phải theo trục tung.",
     tint: "#9333ea",
     highlights: [[6, 14, 14, 8]],
@@ -190,7 +190,7 @@ const CONV2_FILTERS: Filter[] = [
       [1, 1, 1],
       [0, 1, 0],
     ],
-    description: "Phát hiện nơi hai nét giao nhau — dấu + hoặc nút thắt",
+    description: "Phát hiện nơi hai nét giao nhau-dấu + hoặc nút thắt",
     pattern: "Giúp phân biệt số 4, chữ T, giao điểm đường ray.",
     tint: "#c084fc",
     highlights: [[14, 10, 5, 5]],
@@ -203,8 +203,8 @@ const CONV2_FILTERS: Filter[] = [
       [1, 2, 1],
       [1, 1, 1],
     ],
-    description: "Vùng đặc/cụm pixel — dấu chấm, vòng tròn nhỏ, chấm trên chữ i",
-    pattern: "Gaussian blob — hữu ích cho số 0, mắt người, đồng tử.",
+    description: "Vùng đặc/cụm pixel-dấu chấm, vòng tròn nhỏ, chấm trên chữ i",
+    pattern: "Gaussian blob-hữu ích cho số 0, mắt người, đồng tử.",
     tint: "#7e22ce",
     highlights: [
       [9, 9, 4, 4],
@@ -222,7 +222,7 @@ const CONV3_FILTERS: Filter[] = [
       [1, 0, 1],
       [0, 1, 1],
     ],
-    description: "Vòng kín ở nửa trên — đặc trưng cốt lõi của số 3, 8, 9",
+    description: "Vòng kín ở nửa trên-đặc trưng cốt lõi của số 3, 8, 9",
     pattern: "Tổ hợp cong trái + cong phải thành một loop nhỏ.",
     tint: "#ec4899",
     highlights: [[7, 3, 13, 8]],
@@ -235,7 +235,7 @@ const CONV3_FILTERS: Filter[] = [
       [1, 0, 1],
       [1, 1, 1],
     ],
-    description: "Vòng kín ở nửa dưới — phân biệt 3 với 2, 8 với 0",
+    description: "Vòng kín ở nửa dưới-phân biệt 3 với 2, 8 với 0",
     pattern: "Đặc trưng bộ phận đã đủ nhận diện đối tượng riêng phần.",
     tint: "#db2777",
     highlights: [[7, 14, 13, 8]],
@@ -248,7 +248,7 @@ const CONV3_FILTERS: Filter[] = [
       [1, 1, 1],
       [0, 0, 0],
     ],
-    description: "Nét ngang nối nút trên và nút dưới — điểm thắt giữa số 3",
+    description: "Nét ngang nối nút trên và nút dưới-điểm thắt giữa số 3",
     pattern: "Không có nó, mạng dễ nhầm 3 thành E ngược.",
     tint: "#f472b6",
     highlights: [[10, 10, 8, 3]],
@@ -261,7 +261,7 @@ const CONV3_FILTERS: Filter[] = [
       [0, 1, 0],
       [1, 0, 0],
     ],
-    description: "Đầu mở — đuôi trên hoặc dưới của các chữ số",
+    description: "Đầu mở-đuôi trên hoặc dưới của các chữ số",
     pattern: "Phân biệt số 3 với 8 (8 kín hoàn toàn, 3 có 2 đầu mở).",
     tint: "#be185d",
     highlights: [
@@ -271,7 +271,7 @@ const CONV3_FILTERS: Filter[] = [
   },
 ];
 
-// Mức độ "hưng phấn" mà mỗi filter deep thích — phục vụ activation maximization.
+// Mức độ "hưng phấn" mà mỗi filter deep thích-phục vụ activation maximization.
 // Đây là ảnh tổng hợp (synthetic) tối đa hóa activation của một neuron.
 type ActivationPattern = {
   filterId: string;
@@ -329,7 +329,7 @@ const ACTIVATION_MAX: ActivationPattern[] = [
   },
 ];
 
-// Thông tin về các lớp — được dùng cho bảng Feature Hierarchy.
+// Thông tin về các lớp-được dùng cho bảng Feature Hierarchy.
 interface LayerInfo {
   name: string;
   depth: string;
@@ -392,7 +392,7 @@ const APPLICATIONS: Array<{ name: string; detail: string }> = [
   },
   {
     name: "Phân loại sản phẩm Shopee / Tiki",
-    detail: "ResNet / EfficientNet pretrained ImageNet, fine-tune thêm trên ảnh sản phẩm nội địa — giảm thời gian huấn luyện 90%.",
+    detail: "ResNet / EfficientNet pretrained ImageNet, fine-tune thêm trên ảnh sản phẩm nội địa-giảm thời gian huấn luyện 90%.",
   },
   {
     name: "Kiểm tra chất lượng vải dệt",
@@ -400,7 +400,7 @@ const APPLICATIONS: Array<{ name: string; detail: string }> = [
   },
   {
     name: "Chẩn đoán X-quang phổi",
-    detail: "CNN phát hiện nốt, đám mờ, xơ — đặc trưng bộ phận ở lớp sâu khớp với biểu hiện bệnh lý.",
+    detail: "CNN phát hiện nốt, đám mờ, xơ-đặc trưng bộ phận ở lớp sâu khớp với biểu hiện bệnh lý.",
   },
   {
     name: "Nhận dạng biển số xe",
@@ -416,7 +416,7 @@ const APPLICATIONS: Array<{ name: string; detail: string }> = [
 const PITFALLS: Array<{ name: string; detail: string }> = [
   {
     name: "Dead ReLU ở lớp nông",
-    detail: "Khi learning rate quá lớn, nhiều filter Conv1 có output = 0 trên mọi ảnh — coi như lớp conv biến mất một phần. Khắc phục: warmup, LeakyReLU, hoặc khởi tạo He.",
+    detail: "Khi learning rate quá lớn, nhiều filter Conv1 có output = 0 trên mọi ảnh-coi như lớp conv biến mất một phần. Khắc phục: warmup, LeakyReLU, hoặc khởi tạo He.",
   },
   {
     name: "Receptive field nhỏ hơn đối tượng",
@@ -432,14 +432,14 @@ const PITFALLS: Array<{ name: string; detail: string }> = [
   },
 ];
 
-// Câu hỏi kiểm tra — 8 câu bao phủ: hierarchy, receptive field, transfer learning,
+// Câu hỏi kiểm tra-8 câu bao phủ: hierarchy, receptive field, transfer learning,
 // activation maximization, translation invariance, và ứng dụng.
 const QUIZ: QuizQuestion[] = [
   {
     question: "Lớp đầu tiên của CNN thường học được đặc trưng gì?",
     options: [
       "Khuôn mặt hoàn chỉnh",
-      "Cạnh, góc, gradient màu sắc — đặc trưng đơn giản nhất",
+      "Cạnh, góc, gradient màu sắc-đặc trưng đơn giản nhất",
       "Bộ phận đối tượng (mắt, tai)",
       "Texture và pattern phức tạp",
     ],
@@ -451,13 +451,13 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao đặc trưng CNN có thể 'chuyển giao' (transfer) sang tác vụ khác?",
     options: [
       "Vì CNN luôn cho kết quả giống nhau",
-      "Vì các lớp đầu học đặc trưng chung (cạnh, texture) — hữu ích cho mọi ảnh",
+      "Vì các lớp đầu học đặc trưng chung (cạnh, texture), hữu ích cho mọi ảnh",
       "Vì CNN không cần huấn luyện",
       "Vì transfer learning miễn phí",
     ],
     correct: 1,
     explanation:
-      "Các lớp đầu học đặc trưng phổ quát (cạnh, kết cấu) áp dụng được cho mọi ảnh tự nhiên. Chỉ lớp cuối mới specific cho tác vụ. Đây là nền tảng Transfer Learning — bạn có thể lấy ResNet50 pretrained ImageNet, thay FC layer, fine-tune vài epoch là có mô hình tốt cho Shopee.",
+      "Các lớp đầu học đặc trưng phổ quát (cạnh, kết cấu) áp dụng được cho mọi ảnh tự nhiên. Chỉ lớp cuối mới specific cho tác vụ. Đây là nền tảng Transfer Learning-bạn có thể lấy ResNet50 pretrained ImageNet, thay FC layer, fine-tune vài epoch là có mô hình tốt cho Shopee.",
   },
   {
     question: "Receptive field tăng dần qua các lớp CNN có ý nghĩa gì?",
@@ -472,7 +472,7 @@ const QUIZ: QuizQuestion[] = [
       "Receptive field là vùng pixel trên ảnh gốc mà 1 neuron 'nhìn thấy'. Lớp sâu hơn có receptive field lớn hơn, nên có thể nhận biết cấu trúc lớn hơn (từ cạnh → bộ phận → đối tượng). Công thức truy hồi: RF_l = RF_{l-1} + (k_l-1) × ∏ s_i.",
   },
   {
-    question: "Bạn huấn luyện CNN nhưng lớp Conv1 chỉ học được filter ngẫu nhiên — không giống cạnh. Nguyên nhân nào khả dĩ nhất?",
+    question: "Bạn huấn luyện CNN nhưng lớp Conv1 chỉ học được filter ngẫu nhiên-không giống cạnh. Nguyên nhân nào khả dĩ nhất?",
     options: [
       "Dataset quá nhỏ hoặc learning rate quá cao gây dead ReLU",
       "Ảnh có quá nhiều màu",
@@ -487,13 +487,13 @@ const QUIZ: QuizQuestion[] = [
     question: "Activation maximization hiển thị điều gì về một neuron ở lớp sâu?",
     options: [
       "Ảnh test có loss cao nhất",
-      "Ảnh tối ưu hóa nhân tạo khiến neuron đó kích hoạt cực đại — tiết lộ 'khái niệm' mà neuron học",
+      "Ảnh tối ưu hóa nhân tạo khiến neuron đó kích hoạt cực đại-tiết lộ 'khái niệm' mà neuron học",
       "Trọng số của neuron",
       "Gradient của loss",
     ],
     correct: 1,
     explanation:
-      "Activation maximization (Erhan 2009, Olah 2017) tối ưu hóa ảnh đầu vào để một neuron cho activation cực đại. Ảnh thu được cho thấy neuron đang 'tìm' mẫu nào — ví dụ lớp sâu có thể lộ ra hình con chó, bánh xe, hoặc kết cấu lá cây.",
+      "Activation maximization (Erhan 2009, Olah 2017) tối ưu hóa ảnh đầu vào để một neuron cho activation cực đại. Ảnh thu được cho thấy neuron đang 'tìm' mẫu nào-ví dụ lớp sâu có thể lộ ra hình con chó, bánh xe, hoặc kết cấu lá cây.",
   },
   {
     question: "CNN bất biến với phép dịch chuyển (translation invariant) nhờ đâu?",
@@ -505,19 +505,19 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Weight sharing nghĩa là cùng một filter được áp dụng ở mọi vị trí. Nếu đối tượng di chuyển, filter vẫn kích hoạt — chỉ là ở vị trí khác. Max pooling sau đó gom activation, tạo invariance cục bộ. Đó là lý do CNN mạnh hơn MLP cho ảnh.",
+      "Weight sharing nghĩa là cùng một filter được áp dụng ở mọi vị trí. Nếu đối tượng di chuyển, filter vẫn kích hoạt-chỉ là ở vị trí khác. Max pooling sau đó gom activation, tạo invariance cục bộ. Đó là lý do CNN mạnh hơn MLP cho ảnh.",
   },
   {
     question: "Khi fine-tune ResNet50 cho 50 lớp sản phẩm Shopee, chiến lược nào hợp lý?",
     options: [
       "Xóa toàn bộ trọng số và huấn luyện lại",
-      "Freeze Conv1–Conv3, chỉ train Conv4 + FC, lr nhỏ cho lớp pretrained",
+      "Freeze Conv1-Conv3, chỉ train Conv4 + FC, lr nhỏ cho lớp pretrained",
       "Chỉ train Conv1",
       "Không cần thay lớp FC",
     ],
     correct: 1,
     explanation:
-      "Các lớp nông học đặc trưng phổ quát — không cần train lại. Freeze chúng, chỉ cập nhật lớp sâu + FC với lr nhỏ (1e-4) để không phá trọng số pretrained. Đây là chiến lược 'feature extraction + fine-tune' chuẩn mực cho transfer learning.",
+      "Các lớp nông học đặc trưng phổ quát-không cần train lại. Freeze chúng, chỉ cập nhật lớp sâu + FC với lr nhỏ (1e-4) để không phá trọng số pretrained. Đây là chiến lược 'feature extraction + fine-tune' chuẩn mực cho transfer learning.",
   },
   {
     question: "Grad-CAM làm gì?",
@@ -529,7 +529,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Grad-CAM (Selvaraju 2017) dùng gradient của lớp cuối để tạo heatmap. Nó cho thấy CNN 'nhìn' chỗ nào khi quyết định. Công cụ không thể thiếu để kiểm tra mô hình có bị học đặc trưng nền không — rất hữu ích cho ứng dụng y tế.",
+      "Grad-CAM (Selvaraju 2017) dùng gradient của lớp cuối để tạo heatmap. Nó cho thấy CNN 'nhìn' chỗ nào khi quyết định. Công cụ không thể thiếu để kiểm tra mô hình có bị học đặc trưng nền không-rất hữu ích cho ứng dụng y tế.",
   },
 ];
 
@@ -630,15 +630,15 @@ export default function FeatureExtractionCnnTopic() {
             "So sánh với mọi ảnh đã thấy từ trước",
           ]}
           correct={1}
-          explanation="Thị giác con người (và CNN) xử lý theo thứ bậc: từ cạnh/góc đơn giản → kết cấu/hình dạng → bộ phận → nhận ra đối tượng hoàn chỉnh. Hubel & Wiesel đã chứng minh điều này trong vỏ não thị giác mèo năm 1959 — các tế bào đơn giản phản ứng với cạnh, tế bào phức tạp phản ứng với pattern. CNN mô phỏng lại y hệt hệ thống này bằng các lớp xếp chồng. Đây là Feature Hierarchy!"
+          explanation="Thị giác con người (và CNN) xử lý theo thứ bậc: từ cạnh/góc đơn giản → kết cấu/hình dạng → bộ phận → nhận ra đối tượng hoàn chỉnh. Hubel & Wiesel đã chứng minh điều này trong vỏ não thị giác mèo năm 1959-các tế bào đơn giản phản ứng với cạnh, tế bào phức tạp phản ứng với pattern. CNN mô phỏng lại y hệt hệ thống này bằng các lớp xếp chồng. Đây là Feature Hierarchy!"
         >
           {/* ─────────────── STEP 2: VISUALIZATION ─────────────── */}
-          <LessonSection step={2} totalSteps={8} label="Khám phá — Xem từng lớp CNN nhìn gì">
+          <LessonSection step={2} totalSteps={8} label="Khám phá-Xem từng lớp CNN nhìn gì">
             <p className="text-sm text-foreground leading-relaxed mb-4">
               Tương tự{" "}
               <TopicLink slug="convolution">phép tích chập</TopicLink>{" "}
               nhưng có học: chúng ta đưa chữ số &ldquo;3&rdquo; kích thước 28×28 pixel vào CNN. Mỗi
-              lớp tích chập có nhiều <em>filter</em> — bạn bấm vào từng filter để thấy nó phản ứng
+              lớp tích chập có nhiều <em>filter</em>, bạn bấm vào từng filter để thấy nó phản ứng
               ở đâu trên ảnh, và feature map thu được trông ra sao. Ba lớp đầu học đặc trưng càng
               lúc càng trừu tượng; với lớp sâu ta dùng thêm <em>activation maximization</em> để
               &ldquo;lộ&rdquo; ra khái niệm mà neuron đang tìm.
@@ -649,9 +649,9 @@ export default function FeatureExtractionCnnTopic() {
               <div className="mb-4 flex flex-wrap gap-2">
                 {[
                   { id: "input" as const, label: "Ảnh gốc 28×28", tint: "#64748b" },
-                  { id: "conv1" as const, label: "Conv1 — cạnh", tint: LAYERS[0].color },
-                  { id: "conv2" as const, label: "Conv2 — hình dạng", tint: LAYERS[1].color },
-                  { id: "conv3" as const, label: "Conv3 — bộ phận", tint: LAYERS[2].color },
+                  { id: "conv1" as const, label: "Conv1-cạnh", tint: LAYERS[0].color },
+                  { id: "conv2" as const, label: "Conv2-hình dạng", tint: LAYERS[1].color },
+                  { id: "conv3" as const, label: "Conv3-bộ phận", tint: LAYERS[2].color },
                   { id: "actmax" as const, label: "Activation Max (deep)", tint: LAYERS[3].color },
                 ].map((t) => {
                   const active = tab === t.id;
@@ -682,7 +682,7 @@ export default function FeatureExtractionCnnTopic() {
                   <div className="space-y-3">
                     <p className="text-xs text-muted">
                       Ảnh đầu vào 28×28 pixel (MNIST-like). Di chuột lên các ô để xem tọa độ. Đây
-                      là dữ liệu thô mà CNN nhận được — không có bất kỳ feature nào được định
+                      là dữ liệu thô mà CNN nhận được-không có bất kỳ feature nào được định
                       nghĩa sẵn. Mạng tự học ra mọi thứ!
                     </p>
                     <svg viewBox="0 0 280 300" className="w-full max-w-md mx-auto">
@@ -719,7 +719,7 @@ export default function FeatureExtractionCnnTopic() {
                     </svg>
                     <div className="text-center text-xs text-muted">
                       {hoverPixel
-                        ? `Pixel (${hoverPixel[0]}, ${hoverPixel[1]}) — giá trị ${DIGIT_3[hoverPixel[1]][hoverPixel[0]]}`
+                        ? `Pixel (${hoverPixel[0]}, ${hoverPixel[1]}), giá trị ${DIGIT_3[hoverPixel[1]][hoverPixel[0]]}`
                         : "Di chuột lên pixel để xem tọa độ."}
                     </div>
                   </div>
@@ -831,7 +831,7 @@ export default function FeatureExtractionCnnTopic() {
                           )}
                         </svg>
                         <p className="mt-2 text-[11px] text-muted">
-                          Ô càng sáng — activation càng cao — tức filter &ldquo;thấy&rdquo; mẫu của
+                          Ô càng sáng-activation càng cao-tức filter &ldquo;thấy&rdquo; mẫu của
                           mình tại vị trí đó trên ảnh gốc.
                         </p>
                       </div>
@@ -843,7 +843,7 @@ export default function FeatureExtractionCnnTopic() {
                   <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
                     <div>
                       <div className="mb-2 text-xs font-semibold text-foreground">
-                        Ảnh tối ưu hóa activation — &ldquo;bộ não&rdquo; của neuron
+                        Ảnh tối ưu hóa activation, &ldquo;bộ não&rdquo; của neuron
                       </div>
                       <svg viewBox="0 0 260 260" className="w-full">
                         {actMaxGrid?.map((row, y) =>
@@ -872,16 +872,16 @@ export default function FeatureExtractionCnnTopic() {
                     <div className="space-y-3 text-xs">
                       <div className="rounded-lg border border-border bg-card p-3">
                         <div className="font-semibold text-foreground">
-                          Cách làm — activation maximization
+                          Cách làm-activation maximization
                         </div>
                         <ol className="mt-2 list-decimal list-inside space-y-1 text-muted">
                           <li>Khởi tạo ảnh x bằng nhiễu ngẫu nhiên.</li>
                           <li>
                             Đưa x qua CNN, lấy activation của neuron mục tiêu a = f(x).
                           </li>
-                          <li>Tính gradient ∂a/∂x — hướng cần dịch pixel để a tăng.</li>
-                          <li>x ← x + η · ∂a/∂x — gradient ASCENT (không descent!).</li>
-                          <li>Lặp 100–500 bước, thêm regularization (TV, jitter) tránh nhiễu.</li>
+                          <li>Tính gradient ∂a/∂x-hướng cần dịch pixel để a tăng.</li>
+                          <li>x ← x + η · ∂a/∂x-gradient ASCENT (không descent!).</li>
+                          <li>Lặp 100-500 bước, thêm regularization (TV, jitter) tránh nhiễu.</li>
                           <li>Ảnh thu được = &ldquo;khái niệm&rdquo; của neuron đó.</li>
                         </ol>
                       </div>
@@ -890,7 +890,7 @@ export default function FeatureExtractionCnnTopic() {
                           Tại sao phải dùng regularization?
                         </div>
                         <p className="mt-1 text-muted">
-                          Không regularize thì ảnh sẽ thành noise adversarial — activation cao
+                          Không regularize thì ảnh sẽ thành noise adversarial-activation cao
                           nhưng mắt người không nhận ra gì. Thêm smoothness prior (TV), jitter và
                           lọc tần số cao giúp ảnh &ldquo;giống người&rdquo; hơn, tiết lộ concept
                           thực sự mà neuron đại diện.
@@ -900,7 +900,7 @@ export default function FeatureExtractionCnnTopic() {
                   </div>
                 )}
 
-                {/* Danh sách filter — chỉ hiển thị khi tab là conv1/2/3/actmax */}
+                {/* Danh sách filter-chỉ hiển thị khi tab là conv1/2/3/actmax */}
                 {tab !== "input" && activeFilters.length > 0 && (
                   <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                     {activeFilters.map((f) => {
@@ -995,7 +995,7 @@ export default function FeatureExtractionCnnTopic() {
           <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
             <AhaMoment>
               <p>
-                CNN <strong>không được lập trình</strong> để phát hiện cạnh hay mắt mèo — nó{" "}
+                CNN <strong>không được lập trình</strong> để phát hiện cạnh hay mắt mèo-nó{" "}
                 <strong>tự học</strong> mọi thứ qua dữ liệu! Lớp 1 tự phát hiện cạnh vì cạnh là
                 đặc trưng hữu ích nhất để giảm loss. Từ cạnh, lớp tiếp tổ hợp thành kết cấu, rồi
                 bộ phận, rồi đối tượng.{" "}
@@ -1005,14 +1005,14 @@ export default function FeatureExtractionCnnTopic() {
                 Hubel &amp; Wiesel (Nobel 1981) khi khảo sát vỏ não thị giác mèo đã thấy V1 có
                 &ldquo;simple cells&rdquo; phản ứng với cạnh, V2/V4 phản ứng với pattern, IT
                 (inferotemporal) phản ứng với đối tượng. CNN được thiết kế mô phỏng hierarchy này
-                — và khi huấn luyện trên ImageNet, filter Conv1 hội tụ thành Gabor-like gần giống
+               , và khi huấn luyện trên ImageNet, filter Conv1 hội tụ thành Gabor-like gần giống
                 simple cells trong não mèo!
               </p>
             </AhaMoment>
           </LessonSection>
 
           {/* ─────────────── STEP 4: CHALLENGE 1 ─────────────── */}
-          <LessonSection step={4} totalSteps={8} label="Thử thách 1 — Transfer Learning">
+          <LessonSection step={4} totalSteps={8} label="Thử thách 1-Transfer Learning">
             <InlineChallenge
               question="Bạn có mô hình CNN huấn luyện trên ImageNet (phân loại 1000 lớp). Bạn muốn dùng nó để phân loại ảnh sản phẩm Shopee (50 lớp). Nên làm gì?"
               options={[
@@ -1021,22 +1021,22 @@ export default function FeatureExtractionCnnTopic() {
                 "Chỉ cần thay lớp Softmax từ 1000 thành 50",
               ]}
               correct={1}
-              explanation="Các lớp đầu học cạnh, texture — phổ quát cho mọi ảnh tự nhiên. Chỉ cần thay lớp cuối (FC + Softmax) cho 50 lớp mới và fine-tune. Đây là Transfer Learning — tiết kiệm 90% thời gian huấn luyện và cho accuracy tốt hơn nếu dataset đích nhỏ. Lưu ý: phải dùng learning rate nhỏ (1e-4) cho lớp pretrained, lr thường cho lớp mới, để không phá trọng số đã học."
+              explanation="Các lớp đầu học cạnh, texture-phổ quát cho mọi ảnh tự nhiên. Chỉ cần thay lớp cuối (FC + Softmax) cho 50 lớp mới và fine-tune. Đây là Transfer Learning-tiết kiệm 90% thời gian huấn luyện và cho accuracy tốt hơn nếu dataset đích nhỏ. Lưu ý: phải dùng learning rate nhỏ (1e-4) cho lớp pretrained, lr thường cho lớp mới, để không phá trọng số đã học."
             />
           </LessonSection>
 
           {/* ─────────────── STEP 4b: CHALLENGE 2 ─────────────── */}
-          <LessonSection step={4} totalSteps={8} label="Thử thách 2 — Receptive field">
+          <LessonSection step={4} totalSteps={8} label="Thử thách 2-Receptive field">
             <InlineChallenge
               question="Mạng có 4 lớp conv 3×3 liên tiếp, stride=1, không pooling. Một neuron ở lớp 4 'nhìn' vùng bao nhiêu pixel trên ảnh gốc?"
               options={[
-                "3×3 pixel — giống kernel",
-                "9×9 pixel — tổng kích thước các kernel",
+                "3×3 pixel-giống kernel",
+                "9×9 pixel-tổng kích thước các kernel",
                 "9×9 pixel theo công thức RF_l = RF_{l-1} + (k_l - 1) × ∏ s_i",
                 "12×12 pixel",
               ]}
               correct={2}
-              explanation="RF_1 = 3. RF_2 = 3 + (3-1)·1 = 5. RF_3 = 5 + 2·1 = 7. RF_4 = 7 + 2·1 = 9. Stride = 1 nên tích strides trước đó = 1. Với 4 lớp conv 3×3, mỗi neuron lớp 4 'nhìn' 9×9 pixel của ảnh gốc. Nếu thêm pooling stride 2 thì RF tăng nhanh hơn nhiều — đó là lý do các CNN thực tế dùng pooling để tăng RF hiệu quả."
+              explanation="RF_1 = 3. RF_2 = 3 + (3-1)·1 = 5. RF_3 = 5 + 2·1 = 7. RF_4 = 7 + 2·1 = 9. Stride = 1 nên tích strides trước đó = 1. Với 4 lớp conv 3×3, mỗi neuron lớp 4 'nhìn' 9×9 pixel của ảnh gốc. Nếu thêm pooling stride 2 thì RF tăng nhanh hơn nhiều-đó là lý do các CNN thực tế dùng pooling để tăng RF hiệu quả."
             />
           </LessonSection>
 
@@ -1053,11 +1053,11 @@ export default function FeatureExtractionCnnTopic() {
               <Callout variant="insight" title="Feature Hierarchy (Thứ bậc đặc trưng)">
                 <ol className="list-decimal list-inside space-y-1 text-sm">
                   <li>
-                    <strong>Low-level (Conv1–Conv2):</strong> cạnh, góc, gradient — phổ quát cho
+                    <strong>Low-level (Conv1-Conv2):</strong> cạnh, góc, gradient-phổ quát cho
                     mọi ảnh tự nhiên. Filter hội tụ thành Gabor-like / Sobel-like.
                   </li>
                   <li>
-                    <strong>Mid-level (Conv3–Conv4):</strong> kết cấu, hình dạng, pattern lặp.
+                    <strong>Mid-level (Conv3-Conv4):</strong> kết cấu, hình dạng, pattern lặp.
                     Bắt đầu có ý nghĩa ngữ nghĩa hạn chế (sọc vằn, da dê, hoa văn).
                   </li>
                   <li>
@@ -1074,12 +1074,12 @@ export default function FeatureExtractionCnnTopic() {
               <p className="text-sm text-muted">
                 Với <LaTeX>{"k_l"}</LaTeX> là kích thước kernel và <LaTeX>{"s_i"}</LaTeX> là
                 stride ở lớp i. Receptive field lớn hơn cho phép nhận biết cấu trúc lớn hơn trên
-                ảnh gốc. Nếu ảnh đầu vào có đối tượng lớn hơn RF hiệu dụng, mạng sẽ mất context —
+                ảnh gốc. Nếu ảnh đầu vào có đối tượng lớn hơn RF hiệu dụng, mạng sẽ mất context,
                 giải pháp là tăng depth, dùng dilated convolution, hoặc pooling sớm.
               </p>
 
               <p className="mt-3">
-                <strong>Weight sharing</strong> — cùng một kernel được trượt qua toàn ảnh — đem
+                <strong>Weight sharing</strong>, cùng một kernel được trượt qua toàn ảnh-đem
                 lại hai thứ: (1) giảm số tham số (cần cho ảnh lớn), và (2){" "}
                 <em>translation equivariance</em>: nếu đối tượng dịch chuyển, feature map cũng
                 dịch chuyển tương ứng. Kết hợp với max pooling, CNN đạt{" "}
@@ -1090,7 +1090,7 @@ export default function FeatureExtractionCnnTopic() {
                 {"(f * g)(x, y) = \\sum_{u=-k}^{k} \\sum_{v=-k}^{k} f(x+u, y+v) \\cdot g(u, v)"}
               </LaTeX>
 
-              <Callout variant="warning" title="Transfer Learning — Sức mạnh của đặc trưng CNN">
+              <Callout variant="warning" title="Transfer Learning-Sức mạnh của đặc trưng CNN">
                 <p className="text-sm">
                   Đặc trưng CNN học được có thể <strong>chuyển giao</strong> sang tác vụ khác.
                   Các lớp đầu (đặc trưng chung) được giữ nguyên, chỉ fine-tune lớp cuối cho tác
@@ -1114,7 +1114,7 @@ export default function FeatureExtractionCnnTopic() {
                   Đừng bao giờ deploy CNN mà không visualize! Grad-CAM tạo heatmap trên ảnh gốc,
                   cho thấy vùng nào ảnh hưởng đến dự đoán. Nó tiết lộ CNN có đang nhìn đúng đối
                   tượng không, hay đang học đặc trưng nền (ví dụ: mô hình phân loại &ldquo;chó
-                  husky&rdquo; hóa ra chỉ nhìn tuyết sau lưng — paper nổi tiếng của Ribeiro 2016).
+                  husky&rdquo; hóa ra chỉ nhìn tuyết sau lưng-paper nổi tiếng của Ribeiro 2016).
                 </p>
               </Callout>
 
@@ -1167,11 +1167,11 @@ optimizer = torch.optim.AdamW([
 
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=30)
 
-# Training loop chuẩn — 5–20 epoch là đủ vì pretrained đã mạnh
+# Training loop chuẩn-5-20 epoch là đủ vì pretrained đã mạnh
 `}
               </CodeBlock>
 
-              <CodeBlock language="python" title="Activation Maximization — tiết lộ khái niệm của neuron">
+              <CodeBlock language="python" title="Activation Maximization-tiết lộ khái niệm của neuron">
 {`import torch
 import torch.nn.functional as F
 from torchvision import models
@@ -1198,22 +1198,22 @@ for step in range(300):
     _ = model(x)
     # GRADIENT ASCENT: maximize activation trung bình
     loss = -activation.mean()
-    # Total variation regularization — giúp ảnh mượt, giống người
+    # Total variation regularization-giúp ảnh mượt, giống người
     tv = ((x[:, :, :, 1:] - x[:, :, :, :-1]).abs().mean()
         + (x[:, :, 1:, :] - x[:, :, :-1, :]).abs().mean())
     (loss + 1e-2 * tv).backward()
     optimizer.step()
 
-    # Jitter nhỏ — phá regularity lặp
+    # Jitter nhỏ-phá regularity lặp
     with torch.no_grad():
         x.data = torch.roll(x.data, shifts=(1, 1), dims=(2, 3))
 
 handle.remove()
-# x bây giờ là ảnh tối ưu hóa — visualize nó sẽ lộ "khái niệm" mà filter 243 tìm
+# x bây giờ là ảnh tối ưu hóa-visualize nó sẽ lộ "khái niệm" mà filter 243 tìm
 `}
               </CodeBlock>
 
-              <CollapsibleDetail title="Mở rộng — Gradient-weighted Class Activation Map (Grad-CAM)">
+              <CollapsibleDetail title="Mở rộng-Gradient-weighted Class Activation Map (Grad-CAM)">
                 <p className="text-sm">
                   Grad-CAM lấy gradient của class score y^c đối với feature map A^k của một lớp
                   conv (thường là lớp conv cuối):
@@ -1232,7 +1232,7 @@ handle.remove()
                 </p>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Mở rộng — Khi nào KHÔNG nên transfer learning?">
+              <CollapsibleDetail title="Mở rộng-Khi nào KHÔNG nên transfer learning?">
                 <p className="text-sm">
                   Transfer learning gần như luôn thắng khi dataset đích nhỏ/vừa (&lt;50K ảnh) và
                   domain không quá xa ImageNet (ảnh tự nhiên, sản phẩm, y tế nhẹ). Nhưng nó có
@@ -1240,17 +1240,17 @@ handle.remove()
                 </p>
                 <ul className="mt-1 list-disc list-inside space-y-1 text-sm text-muted">
                   <li>
-                    Domain rất khác — ví dụ ảnh siêu âm, radar SAR, hình ảnh hiển vi — pretrained
+                    Domain rất khác-ví dụ ảnh siêu âm, radar SAR, hình ảnh hiển vi-pretrained
                     có thể gây &ldquo;negative transfer&rdquo;. Thử DINO/MAE self-supervised
                     pretraining trên chính domain của bạn.
                   </li>
                   <li>
-                    Dataset đích rất lớn (&gt;1M ảnh, cân bằng) — training from scratch có thể
+                    Dataset đích rất lớn (&gt;1M ảnh, cân bằng), training from scratch có thể
                     đạt chất lượng tương đương và không bị ràng buộc kiến trúc pretrained.
                   </li>
                   <li>
                     Tác vụ không phải classification thuần (ví dụ: reconstruction, image-to-image)
-                    — khi đó U-Net-like backbone từ đầu thường tốt hơn.
+                   , khi đó U-Net-like backbone từ đầu thường tốt hơn.
                   </li>
                 </ul>
               </CollapsibleDetail>
@@ -1285,12 +1285,12 @@ handle.remove()
             <MiniSummary
               title="Ghi nhớ về Feature Extraction trong CNN"
               points={[
-                "CNN trích xuất đặc trưng theo thứ bậc: cạnh → kết cấu → bộ phận → đối tượng. Mọi thứ emergent từ backpropagation — không cần thiết kế thủ công.",
-                "Lớp nông (Conv1–2) học đặc trưng phổ quát; lớp sâu học đặc trưng specific cho tác vụ. Đây là nền tảng của transfer learning.",
-                "Receptive field tăng dần theo công thức RF_l = RF_{l-1} + (k_l-1)·∏s_i — lớp sâu nhìn vùng ảnh gốc lớn hơn, bắt được context rộng hơn.",
-                "Weight sharing + pooling mang lại translation invariance — lý do CNN thắng MLP cho ảnh tự nhiên.",
-                "Activation maximization và Grad-CAM là hai công cụ cốt lõi để hiểu CNN học gì — luôn dùng chúng trước khi deploy.",
-                "Pitfall phổ biến: dead ReLU Conv1, receptive field không đủ, texture bias, overfitting trên đặc trưng nền — Grad-CAM giúp phát hiện sớm.",
+                "CNN trích xuất đặc trưng theo thứ bậc: cạnh → kết cấu → bộ phận → đối tượng. Mọi thứ emergent từ backpropagation-không cần thiết kế thủ công.",
+                "Lớp nông (Conv1-2) học đặc trưng phổ quát; lớp sâu học đặc trưng specific cho tác vụ. Đây là nền tảng của transfer learning.",
+                "Receptive field tăng dần theo công thức RF_l = RF_{l-1} + (k_l-1)·∏s_i-lớp sâu nhìn vùng ảnh gốc lớn hơn, bắt được context rộng hơn.",
+                "Weight sharing + pooling mang lại translation invariance-lý do CNN thắng MLP cho ảnh tự nhiên.",
+                "Activation maximization và Grad-CAM là hai công cụ cốt lõi để hiểu CNN học gì-luôn dùng chúng trước khi deploy.",
+                "Pitfall phổ biến: dead ReLU Conv1, receptive field không đủ, texture bias, overfitting trên đặc trưng nền-Grad-CAM giúp phát hiện sớm.",
               ]}
             />
           </LessonSection>
@@ -1306,7 +1306,7 @@ handle.remove()
               <p>
                 Bạn đã thấy CNN &ldquo;mổ xẻ&rdquo; ảnh ra sao: từ những đường cạnh vô danh ở
                 lớp đầu, tổ hợp thành hình dạng, rồi bộ phận, và cuối cùng là đối tượng hoàn
-                chỉnh. Điều kỳ diệu là toàn bộ hierarchy này <em>không được lập trình</em> — nó{" "}
+                chỉnh. Điều kỳ diệu là toàn bộ hierarchy này <em>không được lập trình</em>, nó{" "}
                 <em>mọc ra</em> từ dữ liệu qua backpropagation.
               </p>
               <p className="mt-2 text-muted">

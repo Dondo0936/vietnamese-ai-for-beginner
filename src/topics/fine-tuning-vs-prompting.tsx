@@ -79,14 +79,14 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
     bgColor: "bg-blue-50 dark:bg-blue-900/15",
     borderColor: "border-blue-300 dark:border-blue-700",
     description:
-      "Đưa 2–10 ví dụ mẫu ngay trong prompt, model bắt chước pattern mà không cần huấn luyện.",
+      "Đưa 2-10 ví dụ mẫu ngay trong prompt, model bắt chước pattern mà không cần huấn luyện.",
     whenToUse:
       "Dưới 20 ví dụ, task phổ biến (phân loại, trích xuất, viết lại), không cần domain quá chuyên sâu.",
     cost: "Gần như miễn phí, chỉ tốn token input",
     quality: "Tốt cho task phổ biến, trung bình cho domain hẹp",
     time: "Setup trong vài phút",
-    dataNeeded: "2–10 cặp (input, output)",
-    latency: "Chậm hơn bình thường ~10–30% do prompt dài",
+    dataNeeded: "2-10 cặp (input, output)",
+    latency: "Chậm hơn bình thường ~10-30% do prompt dài",
     example: "Phân loại sentiment tiếng Việt từ 5 ví dụ mẫu.",
     pros: [
       "Không cần GPU, không huấn luyện",
@@ -110,11 +110,11 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
       "Tìm kiếm tài liệu liên quan bằng vector database, đưa kết quả vào prompt trước khi LLM trả lời.",
     whenToUse:
       "Kho tài liệu lớn (100+ trang) cập nhật thường xuyên, câu hỏi dựa trên kiến thức có tài liệu.",
-    cost: "$50–$500/tháng cho vector DB + embedding API",
+    cost: "$50-$500/tháng cho vector DB + embedding API",
     quality: "Rất tốt cho Q&A, trích dẫn, tài liệu nội bộ",
     time: "Vài ngày setup + ingestion pipeline",
     dataNeeded: "Kho tài liệu, không cần label",
-    latency: "Thêm 100–500ms cho retrieval step",
+    latency: "Thêm 100-500ms cho retrieval step",
     example:
       "Chatbot nội bộ trả lời từ 10.000 trang policy công ty, cập nhật policy không cần re-train.",
     pros: [
@@ -138,11 +138,11 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
     description:
       "Huấn luyện thêm một lớp nhỏ (low-rank adapter) thay vì toàn bộ model, chỉ tinh chỉnh ~1% tham số.",
     whenToUse:
-      "500–10.000 ví dụ chuẩn hóa, task chuyên sâu hơn mà prompting không đủ, budget GPU vừa phải.",
-    cost: "$50–$2.000 cho một lần train trên cloud GPU",
+      "500-10.000 ví dụ chuẩn hóa, task chuyên sâu hơn mà prompting không đủ, budget GPU vừa phải.",
+    cost: "$50-$2.000 cho một lần train trên cloud GPU",
     quality: "Gần bằng full fine-tune với ~1% chi phí",
     time: "Vài giờ đến 1 ngày train",
-    dataNeeded: "500–10.000 cặp chuẩn hóa",
+    dataNeeded: "500-10.000 cặp chuẩn hóa",
     latency: "Như base model, adapter rất nhỏ",
     example:
       "Adapter riêng cho mỗi khách hàng enterprise, mỗi adapter chỉ vài MB, dễ quản lý.",
@@ -168,7 +168,7 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
       "Huấn luyện lại toàn bộ trọng số của model trên dataset riêng, model học sâu hành vi mới.",
     whenToUse:
       "Trên 10.000 ví dụ chất lượng cao, domain cực kỳ chuyên biệt (y tế, luật, tài chính), budget lớn.",
-    cost: "$1.000–$100.000+ mỗi lần train",
+    cost: "$1.000-$100.000+ mỗi lần train",
     quality: "Cao nhất cho domain chuyên sâu",
     time: "Vài ngày đến vài tuần",
     dataNeeded: "10.000+ cặp chất lượng cao, đa dạng",
@@ -216,12 +216,12 @@ const QUESTIONS: DecisionQuestion[] = [
         weight: { "few-shot": 3, rag: 1, lora: -2, "full-ft": -3 },
       },
       {
-        label: "10–500 ví dụ",
+        label: "10-500 ví dụ",
         value: "small",
         weight: { "few-shot": 2, rag: 2, lora: 1, "full-ft": -2 },
       },
       {
-        label: "500–10.000 ví dụ",
+        label: "500-10.000 ví dụ",
         value: "medium",
         weight: { "few-shot": 0, rag: 1, lora: 3, "full-ft": 1 },
       },
@@ -275,7 +275,7 @@ const QUESTIONS: DecisionQuestion[] = [
         weight: { "few-shot": 2, rag: 2, lora: 1, "full-ft": -1 },
       },
       {
-        label: "$500 – $5.000/tháng",
+        label: "$500-$5.000/tháng",
         value: "mid",
         weight: { "few-shot": 0, rag: 2, lora: 3, "full-ft": 1 },
       },
@@ -342,7 +342,7 @@ const quizQuestions: QuizQuestion[] = [
       "Bạn có 100 ví dụ (input, output) cho một task phổ biến. Bước đầu tiên nên làm gì?",
     options: [
       "Bắt đầu fine-tuning ngay. 100 ví dụ đủ cho SFT cơ bản",
-      "Thử few-shot prompting 5–10 ví dụ trước, nếu đã đạt yêu cầu thì khỏi fine-tune",
+      "Thử few-shot prompting 5-10 ví dụ trước, nếu đã đạt yêu cầu thì khỏi fine-tune",
       "Phải thu thêm 1.000 ví dụ rồi mới bắt đầu",
       "Dùng RAG ngay, luôn tốt hơn mọi chiến lược",
     ],
@@ -747,10 +747,10 @@ function ComparisonTable() {
     {
       criterion: "Chi phí setup",
       values: {
-        "few-shot": "$0 – $10",
-        rag: "$50 – $500/tháng",
-        lora: "$50 – $2.000",
-        "full-ft": "$1.000 – $100.000+",
+        "few-shot": "$0-$10",
+        rag: "$50-$500/tháng",
+        lora: "$50-$2.000",
+        "full-ft": "$1.000-$100.000+",
       },
     },
     {
@@ -758,16 +758,16 @@ function ComparisonTable() {
       values: {
         "few-shot": "Vài phút",
         rag: "Vài ngày",
-        lora: "Vài giờ – 1 ngày",
-        "full-ft": "Vài ngày – vài tuần",
+        lora: "Vài giờ-1 ngày",
+        "full-ft": "Vài ngày-vài tuần",
       },
     },
     {
       criterion: "Dữ liệu cần",
       values: {
-        "few-shot": "2–10 ví dụ",
+        "few-shot": "2-10 ví dụ",
         rag: "Kho tài liệu",
-        lora: "500–10.000 ví dụ",
+        lora: "500-10.000 ví dụ",
         "full-ft": "10.000+ ví dụ",
       },
     },
@@ -792,8 +792,8 @@ function ComparisonTable() {
     {
       criterion: "Độ trễ inference",
       values: {
-        "few-shot": "+10–30% (prompt dài)",
-        rag: "+100–500ms",
+        "few-shot": "+10-30% (prompt dài)",
+        rag: "+100-500ms",
         lora: "Như base",
         "full-ft": "Như base",
       },
@@ -914,7 +914,7 @@ export default function FineTuningVsPromptingTopic() {
         <Callout variant="tip" title="Quy tắc leo thang (Escalation ladder)">
           <ol className="list-decimal list-inside space-y-1 text-sm">
             <li>Zero-shot prompting (không có ví dụ), đủ chưa?</li>
-            <li>Few-shot prompting (2–10 ví dụ), đủ chưa?</li>
+            <li>Few-shot prompting (2-10 ví dụ), đủ chưa?</li>
             <li>RAG (nếu có tài liệu tham khảo), đủ chưa?</li>
             <li>LoRA / PEFT fine-tuning, đủ chưa?</li>
             <li>Full fine-tuning (bước cuối cùng)</li>
@@ -1032,7 +1032,7 @@ export default function FineTuningVsPromptingTopic() {
             cần ví dụ.
           </p>
           <p>
-            <strong>Few-shot prompting</strong>: đưa 2–10 cặp (input, output)
+            <strong>Few-shot prompting</strong>: đưa 2-10 cặp (input, output)
             làm mẫu. Model nhìn vào pattern để suy ra cách trả lời câu mới.
             Đây gọi là{" "}
             <TopicLink slug="in-context-learning">in-context learning</TopicLink>
@@ -1068,13 +1068,13 @@ export default function FineTuningVsPromptingTopic() {
             trong đó A có shape <LaTeX>{String.raw`d \times r`}</LaTeX>, B có
             shape <LaTeX>{String.raw`r \times d`}</LaTeX>, và{" "}
             <LaTeX>{String.raw`r \ll d`}</LaTeX> (thường r = 4, 8, 16). Số tham
-            số train giảm ~100–1000×, bộ nhớ GPU giảm tương ứng.
+            số train giảm ~100-1000×, bộ nhớ GPU giảm tương ứng.
           </p>
 
           <Callout variant="info" title="Khi nào dùng LoRA thay full fine-tune?">
             <p>
               Hầu như luôn luôn, trừ khi bạn có tài nguyên gần không giới hạn.
-              LoRA đạt 90–98% chất lượng của full FT với 1–5% chi phí. Ngoài
+              LoRA đạt 90-98% chất lượng của full FT với 1-5% chi phí. Ngoài
               ra, bạn có thể duy trì nhiều adapter cho cùng một base model
               (mỗi khách hàng enterprise một adapter), tiết kiệm đáng kể chi
               phí deploy.
@@ -1112,7 +1112,7 @@ export default function FineTuningVsPromptingTopic() {
           <CollapsibleDetail title="Pipeline đề xuất cho dự án thực tế">
             <ol className="list-decimal list-inside space-y-1 text-sm">
               <li>
-                Xây <strong>eval set</strong> chuẩn. 50–500 ví dụ
+                Xây <strong>eval set</strong> chuẩn. 50-500 ví dụ
                 gold-standard, được con người đánh giá. Đây là &quot;ground
                 truth&quot; để so sánh mọi chiến lược.
               </li>
@@ -1128,7 +1128,7 @@ export default function FineTuningVsPromptingTopic() {
                 embeddings) rồi mới thêm re-ranking.
               </li>
               <li>
-                Nếu vẫn chưa đạt, thu thập 500–2.000 ví dụ chất lượng, thử{" "}
+                Nếu vẫn chưa đạt, thu thập 500-2.000 ví dụ chất lượng, thử{" "}
                 <strong>LoRA</strong>. Luôn có baseline prompting để so sánh.
               </li>
               <li>
@@ -1161,7 +1161,7 @@ export default function FineTuningVsPromptingTopic() {
             </li>
           </ul>
           <p>
-            Điểm hòa vốn thường rơi vào khoảng 100.000 – 10 triệu request. Dưới
+            Điểm hòa vốn thường rơi vào khoảng 100.000-10 triệu request. Dưới
             mức này, prompting luôn rẻ hơn dù tính cả token cost.
           </p>
 
@@ -1325,7 +1325,7 @@ for volume in [1_000, 100_000, 10_000_000]:
             Sai lầm tai hại nhất: fine-tune (hoặc chỉnh prompt) mà không có
             eval set chuẩn. Bạn không có cách nào biết thay đổi có tốt hơn hay
             không, tất cả chỉ là cảm giác. Trước mọi quyết định tùy chỉnh
-            model, hãy xây 50–500 ví dụ eval gold-standard, được con người
+            model, hãy xây 50-500 ví dụ eval gold-standard, được con người
             kiểm tra, và đo chất lượng trên eval set này cho mọi chiến lược.
           </p>
         </Callout>
@@ -1519,7 +1519,7 @@ trainer.train()
             "4 chiến lược: few-shot prompting → RAG → LoRA → full fine-tuning. Leo thang từ rẻ đến đắt.",
             "Prompting: nhanh, rẻ, dễ đổi model mới. Fine-tuning: chất lượng cao hơn cho domain chuyên sâu, nhưng gắn chặt với model cụ thể.",
             "RAG phù hợp khi có kho tài liệu cần cập nhật, không cần train lại khi tài liệu thay đổi.",
-            "LoRA đạt 90–98% chất lượng full fine-tune với 1–5% chi phí, lựa chọn mặc định khi cần fine-tune.",
+            "LoRA đạt 90-98% chất lượng full fine-tune với 1-5% chi phí, lựa chọn mặc định khi cần fine-tune.",
             "Luôn xây eval set gold-standard TRƯỚC. Không có eval thì mọi quyết định tùy chỉnh chỉ là đoán mò.",
             "Chi phí ẩn lớn nhất của fine-tuning: khi model mới ra (GPT-5, Claude 5) phải train lại từ đầu. Prompting không có chi phí này.",
           ]}

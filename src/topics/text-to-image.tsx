@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "text-to-image",
   title: "Text-to-Image",
-  titleVi: "Tạo ảnh từ văn bản. AI hoạ sĩ",
+  titleVi: "Tạo ảnh từ văn bản",
   description:
     "Mô hình AI tạo ra hình ảnh chất lượng cao từ mô tả bằng ngôn ngữ tự nhiên.",
   category: "multimodal",

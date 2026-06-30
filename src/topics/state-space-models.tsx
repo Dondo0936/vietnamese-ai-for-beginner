@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "state-space-models",
   title: "State Space Models",
-  titleVi: "Mô hình không gian trạng thái. Đối thủ của Transformer",
+  titleVi: "Mô hình không gian trạng thái",
   description:
     "Kiến trúc mô hình tuần tự hiệu quả dựa trên lý thuyết hệ thống điều khiển, xử lý chuỗi dài nhanh hơn Transformer.",
   category: "emerging",

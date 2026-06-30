@@ -25,7 +25,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "world-models",
   title: "World Models",
-  titleVi: "Mô hình thế giới. AI biết tưởng tượng",
+  titleVi: "Mô hình thế giới",
   description:
     "Mô hình AI xây dựng biểu diễn nội tại về thế giới, có thể dự đoán hậu quả hành động trước khi thực hiện.",
   category: "emerging",

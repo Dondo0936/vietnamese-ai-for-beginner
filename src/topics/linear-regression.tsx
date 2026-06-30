@@ -1068,7 +1068,7 @@ export default function LinearRegressionTopic() {
             Hồi quy tuyến tính cũng có hạn chế: nó chỉ vẽ được <em>đường thẳng</em>. Nếu dữ liệu
             thực sự có dạng cong, bạn cần{" "}
             <TopicLink slug="polynomial-regression">hồi quy đa thức</TopicLink>. Nếu đầu ra là xác
-            suất 0–1, bạn cần{" "}
+            suất 0-1, bạn cần{" "}
             <TopicLink slug="logistic-regression">hồi quy logistic</TopicLink>. Nếu có quá nhiều
             biến, người ta thêm regularization để tránh overfit.
           </p>

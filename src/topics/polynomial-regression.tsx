@@ -117,10 +117,10 @@ export default function PolynomialRegressionTopic() {
     setUserPoints((prev) => [...prev, { x, y }]);
   }, []);
 
-  const degreeLabel = degree === 1 ? "Bậc 1 — đường thẳng"
-    : degree <= 3 ? `Bậc ${degree} — vừa phải`
-    : degree <= 5 ? `Bậc ${degree} — phức tạp`
-    : `Bậc ${degree} — quá khớp!`;
+  const degreeLabel = degree === 1 ? "Bậc 1-đường thẳng"
+    : degree <= 3 ? `Bậc ${degree}, vừa phải`
+    : degree <= 5 ? `Bậc ${degree}, phức tạp`
+    : `Bậc ${degree}, quá khớp!`;
 
   const degreeColor = degree <= 3 ? "#3b82f6" : degree <= 5 ? "#f59e0b" : "#ef4444";
 
@@ -133,7 +133,7 @@ export default function PolynomialRegressionTopic() {
     },
     {
       question: "Mô hình bậc 20 khớp hoàn hảo 10 điểm huấn luyện. Dự đoán trên dữ liệu mới có tốt không?",
-      options: ["Rất tốt vì training error = 0", "Thường rất tệ — đây là overfitting", "Tuỳ vào dữ liệu"],
+      options: ["Rất tốt vì training error = 0", "Thường rất tệ-đây là overfitting", "Tuỳ vào dữ liệu"],
       correct: 1,
       explanation: "Training error = 0 không có nghĩa mô hình tốt! Bậc quá cao học thuộc noise thay vì pattern thật → dự đoán tệ trên dữ liệu mới. Đây chính là overfitting.",
     },
@@ -152,18 +152,18 @@ export default function PolynomialRegressionTopic() {
         <PredictionGate
           question="Doanh thu quán cà phê theo tháng: Tháng 1 thấp, tháng 6 cao nhất, tháng 12 lại thấp. Bạn muốn dự đoán doanh thu tháng 8. Dùng đường thẳng có ổn không?"
           options={[
-            "Dùng đường thẳng được — cứ nối hai điểm đầu cuối",
-            "Không — dữ liệu cong như parabol, cần đường cong",
+            "Dùng đường thẳng được-cứ nối hai điểm đầu cuối",
+            "Không-dữ liệu cong như parabol, cần đường cong",
             "Cần mô hình AI phức tạp, đường cong đơn giản không đủ",
           ]}
           correct={1}
-          explanation="Doanh thu lên rồi xuống — hình parabol! Đường thẳng sẽ bỏ lỡ đỉnh tháng 6. Đây chính là lúc cần hồi quy đa thức."
+          explanation="Doanh thu lên rồi xuống-hình parabol! Đường thẳng sẽ bỏ lỡ đỉnh tháng 6. Đây chính là lúc cần hồi quy đa thức."
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Kéo thanh trượt bậc đa thức từ 1 đến 7. Quan sát đường cong thay đổi — và chú ý khi nào nó bắt đầu &quot;ngoằn ngoèo&quot; vô lý.
+          Kéo thanh trượt bậc đa thức từ 1 đến 7. Quan sát đường cong thay đổi-và chú ý khi nào nó bắt đầu &quot;ngoằn ngoèo&quot; vô lý.
           <strong className="text-foreground">{" "}Nhấp vào canvas để thêm điểm.</strong>
         </p>
 
@@ -245,7 +245,7 @@ export default function PolynomialRegressionTopic() {
         <AhaMoment>
           <p>
             <strong>Hồi quy đa thức</strong>{" "}
-            nới lỏng ràng buộc đường thẳng — cho phép đường cong uốn lượn. Nhưng bạn vừa thấy: bậc quá cao thì đường cong ngoằn ngoèo qua từng điểm — nó &quot;học thuộc&quot; thay vì &quot;hiểu&quot; dữ liệu!
+            nới lỏng ràng buộc đường thẳng-cho phép đường cong uốn lượn. Nhưng bạn vừa thấy: bậc quá cao thì đường cong ngoằn ngoèo qua từng điểm-nó &quot;học thuộc&quot; thay vì &quot;hiểu&quot; dữ liệu!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -260,7 +260,7 @@ export default function PolynomialRegressionTopic() {
             "Thuật toán không giải được",
           ]}
           correct={1}
-          explanation="Đa thức bậc n-1 luôn khớp hoàn hảo n điểm (nội suy Lagrange). Training MSE = 0 nhưng giữa các điểm, đường cong dao động mạnh — đây là overfitting điển hình!"
+          explanation="Đa thức bậc n-1 luôn khớp hoàn hảo n điểm (nội suy Lagrange). Training MSE = 0 nhưng giữa các điểm, đường cong dao động mạnh-đây là overfitting điển hình!"
         />
       </LessonSection>
 
@@ -275,12 +275,12 @@ export default function PolynomialRegressionTopic() {
           <LaTeX block>{"\\hat{y} = w_0 + w_1 x + w_2 x^2 + \\cdots + w_d x^d"}</LaTeX>
 
           <p>
-            Đây thực chất vẫn là hồi quy tuyến tính — tuyến tính theo <strong>tham số</strong>{" "}
+            Đây thực chất vẫn là hồi quy tuyến tính-tuyến tính theo <strong>tham số</strong>{" "}
             w, chỉ phi tuyến theo x. Ta tạo feature mới <LaTeX>{"x^2, x^3, \\ldots"}</LaTeX> rồi áp dụng OLS bình thường.
           </p>
 
           <Callout variant="tip" title="Ví dụ thực tế: giá xe máy cũ">
-            Giá xe Honda Wave theo tuổi xe: năm đầu mất giá nhanh, rồi chậm dần, rồi gần như không đổi. Đường thẳng không mô tả được — đa thức bậc 2-3 khớp tốt hơn nhiều.
+            Giá xe Honda Wave theo tuổi xe: năm đầu mất giá nhanh, rồi chậm dần, rồi gần như không đổi. Đường thẳng không mô tả được-đa thức bậc 2-3 khớp tốt hơn nhiều.
           </Callout>
 
           <p>
@@ -315,7 +315,7 @@ print(f"Bậc 5 Ridge - R²: {model_5.score(X, y):.3f}")`}
           </CodeBlock>
 
           <Callout variant="warning" title="Bias-Variance tradeoff">
-            Bậc thấp = bias cao (underfitting). Bậc cao = variance cao (overfitting). Mục tiêu là tìm &quot;điểm ngọt&quot; ở giữa — đủ phức tạp để nắm pattern, đủ đơn giản để không học noise.
+            Bậc thấp = bias cao (underfitting). Bậc cao = variance cao (overfitting). Mục tiêu là tìm &quot;điểm ngọt&quot; ở giữa-đủ phức tạp để nắm pattern, đủ đơn giản để không học noise.
           </Callout>
         </ExplanationSection>
       </LessonSection>
@@ -324,10 +324,10 @@ print(f"Bậc 5 Ridge - R²: {model_5.score(X, y):.3f}")`}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
           "Hồi quy đa thức thêm x², x³, ... vào hồi quy tuyến tính để khớp dữ liệu phi tuyến.",
-          "Training MSE luôn giảm khi tăng bậc — nhưng đừng bị lừa! MSE trên dữ liệu mới mới quan trọng.",
+          "Training MSE luôn giảm khi tăng bậc-nhưng đừng bị lừa! MSE trên dữ liệu mới mới quan trọng.",
           "Bậc quá cao → overfitting: đường cong ngoằn ngoèo, học thuộc noise thay vì pattern.",
           "Cross-validation giúp chọn bậc tối ưu, Regularization (Ridge/Lasso) giúp kiểm soát overfitting.",
-          "Ví dụ thực tế: giá xe cũ, doanh thu theo mùa, tốc độ tăng trưởng — dữ liệu cong cần đa thức.",
+          "Ví dụ thực tế: giá xe cũ, doanh thu theo mùa, tốc độ tăng trưởng-dữ liệu cong cần đa thức.",
         ]} />
       </LessonSection>
 

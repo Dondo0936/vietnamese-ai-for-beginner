@@ -985,7 +985,7 @@ export default function BiasVarianceTopic() {
           </div>
 
           <p className="leading-relaxed">
-            Công thức thứ hai đáng nhớ là <strong>phân rã Bias–Variance cho một điểm dự đoán</strong>.
+            Công thức thứ hai đáng nhớ là <strong>phân rã Bias-Variance cho một điểm dự đoán</strong>.
             Hai thành phần Bias² và Variance cạnh tranh nhau qua &ldquo;cái nút&rdquo; độ phức tạp:
           </p>
 

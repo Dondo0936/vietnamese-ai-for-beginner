@@ -682,7 +682,7 @@ export default function HybridSearchTopic() {
 
       <LessonSection step={4} totalSteps={9} label="Thử thách 1">
         <InlineChallenge
-          question="BM25 trả score 0–10, Dense trả cosine 0–1. Bạn cộng thẳng hai số và sort. Chuyện gì xảy ra?"
+          question="BM25 trả score 0-10, Dense trả cosine 0-1. Bạn cộng thẳng hai số và sort. Chuyện gì xảy ra?"
           options={[
             "Ổn, miễn là cả hai đều dương",
             "BM25 sẽ luôn áp đảo vì thang lớn hơn, tài liệu top chỉ còn phản ánh BM25, nhánh dense bị vô hiệu",
@@ -768,7 +768,7 @@ export default function HybridSearchTopic() {
                 . Với <LaTeX>{"w_i = 1"}</LaTeX> ta có RRF thuần; có thể đặt{" "}
                 <LaTeX>{"w_i"}</LaTeX> khác để &quot;tin&quot; nhánh chất lượng cao hơn
                 (ví dụ SPLADE cao hơn BM25). Khi N tăng, RRF càng ổn định, đây là lý
-                do Vespa, Vald cho phép 4–5 nhánh fuse.
+                do Vespa, Vald cho phép 4-5 nhánh fuse.
               </p>
             </div>
           </Callout>
@@ -802,7 +802,7 @@ export default function HybridSearchTopic() {
               RRF mất thông tin khoảng cách: nếu BM25 top-1 = 50 và top-2 = 2 (top-1
               áp đảo tuyệt đối), RRF vẫn cho top-2 điểm gần top-1. Trong các bài
               factual retrieval (câu hỏi có một đáp án duy nhất), gap score lớn là
-              tín hiệu mạnh → convex ăn RRF 2–4% NDCG. Nhưng trong open-domain
+              tín hiệu mạnh → convex ăn RRF 2-4% NDCG. Nhưng trong open-domain
               question answering, nhiều đáp án cùng tốt, RRF lại thắng vì stable hơn.
               Lựa chọn nên dựa trên bài toán, không phải công thức.
             </p>
@@ -831,7 +831,7 @@ export default function HybridSearchTopic() {
               <li>Quên chuẩn hoá BM25 và cosine trước convex → nhánh scale lớn áp đảo, dense gần như vô dụng</li>
               <li>Dùng cùng một HNSW index cho cả hai nhánh → sparse không dùng được HNSW, phải có inverted index</li>
               <li>Lấy top-10 mỗi nhánh rồi fuse → nếu tài liệu tốt nằm ở rank 15 của nhánh kia thì bị rớt, nên lấy top-100 rồi fuse xuống top-10</li>
-              <li>Đặt α cố định cho mọi query, query-dependent fusion bằng LLM classifier thường tăng 3–8% NDCG</li>
+              <li>Đặt α cố định cho mọi query, query-dependent fusion bằng LLM classifier thường tăng 3-8% NDCG</li>
               <li>Bỏ qua bước re-ranking, hybrid chỉ là <em>recall</em>, cross-encoder mới cho <em>precision</em></li>
             </ul>
           </Callout>
@@ -978,13 +978,13 @@ export default function HybridSearchTopic() {
                 <strong>3. Cohere Rerank 3.</strong> Managed API, multilingual, window
                 dài 4096 tokens. Tính phí $2/1k search. Ưu điểm: không cần tự host,
                 chất lượng SOTA trên BEIR. Nhược: phụ thuộc provider, latency mạng
-                50–150ms. Phù hợp MVP hoặc team không có MLOps.
+                50-150ms. Phù hợp MVP hoặc team không có MLOps.
               </p>
               <p>
                 <strong>4. ColBERTv2 (stanford-futuredata/ColBERTv2).</strong> Late
                 interaction: lưu embedding cho mỗi token trong passage, match bằng
                 MaxSim. Không phải cross-encoder thuần nhưng mạnh hơn bi-encoder nhiều.
-                Index 3–5x dense thông thường nhưng latency re-rank chỉ ~3ms/candidate
+                Index 3-5x dense thông thường nhưng latency re-rank chỉ ~3ms/candidate
                 trên GPU. Phù hợp khi index size không bị giới hạn. PLAID engine tối
                 ưu thêm bằng product quantization.
               </p>
@@ -1104,7 +1104,7 @@ export default function HybridSearchTopic() {
                 <strong>Ví dụ router đơn giản bằng GPT-4o-mini với prompt caching:</strong> input là
                 query, output là một trong {"{"} "LEXICAL" (α = 0.2), "BALANCED" (α = 0.5), "SEMANTIC"
                 (α = 0.8) {"}"}. Prompt có ví dụ few-shot, cache prefix cố định. Latency thêm ~60ms
-                per query nhưng cải thiện 3–8% NDCG trên query log Zalo AI.
+                per query nhưng cải thiện 3-8% NDCG trên query log Zalo AI.
               </p>
               <p>
                 <strong>Rule-based fallback:</strong>{" "}Nếu query chứa tỷ lệ token không thuộc

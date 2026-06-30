@@ -872,7 +872,7 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
           <strong className="text-foreground">Mẹo:</strong> thử kéo chunk size
           thật nhỏ (dưới 150), bạn sẽ thấy điểm Context richness tụt xuống.
           Ngược lại, chunk quá lớn (1200+) làm Precision giảm vì chunk chứa quá
-          nhiều nhiễu. Sweet spot thường rơi vào khoảng 400–800 ký tự.
+          nhiều nhiễu. Sweet spot thường rơi vào khoảng 400-800 ký tự.
         </p>
       </div>
 

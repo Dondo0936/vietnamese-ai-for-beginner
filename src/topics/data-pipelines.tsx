@@ -1173,7 +1173,7 @@ if not result.success:
                 </li>
                 <li>
                   <strong>Quá nhiều small files:</strong> 100k file 1MB ở S3 → đọc cực chậm. Compact
-                  lại thành file 128MB–1GB (Parquet, ORC).
+                  lại thành file 128MB-1GB (Parquet, ORC).
                 </li>
                 <li>
                   <strong>Bỏ qua cost monitoring:</strong> job dbt nhỏ nhưng scan 20TB mỗi lần chạy,

@@ -12,7 +12,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "multi-agent",
   title: "Multi-Agent Systems",
-  titleVi: "Hệ thống đa Agent. Đội ngũ AI phối hợp",
+  titleVi: "Hệ thống đa Agent",
   description:
     "Nhiều AI Agent chuyên biệt cùng phối hợp để giải quyết các bài toán phức tạp mà một Agent đơn lẻ khó xử lý.",
   category: "ai-agents",
@@ -636,7 +636,7 @@ export default function MultiAgentTopic() {
             <li>
               <strong>Ngang hàng (Peer-to-Peer):</strong> Agent giao tiếp trực
               tiếp. Linh hoạt nhưng phức tạp <LaTeX>{"O(n^2)"}</LaTeX>. Phù hợp
-              debate pattern (2–3 agent tranh luận) hoặc swarm intelligence.
+              debate pattern (2-3 agent tranh luận) hoặc swarm intelligence.
             </li>
             <li>
               <strong>Phân cấp (Hierarchical):</strong> Tổ chức theo cây.
@@ -673,7 +673,7 @@ export default function MultiAgentTopic() {
               hơn chi phí coordination. Tác vụ đơn giản: 1 agent đủ tốt. Một
               nguyên tắc thực nghiệm: nếu single-agent + chain-of-thought đã
               đạt 85% độ chính xác, việc nâng lên 92% bằng multi-agent có thể
-              tốn 5–10× chi phí, tính kỹ ROI.
+              tốn 5-10× chi phí, tính kỹ ROI.
             </p>
           </Callout>
 
@@ -898,14 +898,14 @@ print(final["draft"])`}
               <p>
                 <strong>Setup</strong>: Agent A (proposer) trả lời câu hỏi.
                 Agent B (critic) đọc câu trả lời và tìm lỗi logic, thiếu sót,
-                nguồn sai. Sau đó A phản hồi lại B. Lặp 2–3 vòng.
+                nguồn sai. Sau đó A phản hồi lại B. Lặp 2-3 vòng.
               </p>
               <p>
                 <strong>Tại sao giảm hallucination</strong>: LLM có xu hướng
                 đồng ý với câu lệnh. Khi bạn bắt 1 LLM đóng vai &quot;critic
                 khắt khe&quot;, nó có mandate mới để tìm lỗi. Nhiều nghiên
                 cứu (Du et al. 2023, Madaan et al. 2023) cho thấy debate +
-                self-refine cải thiện 5–15% trên các benchmark reasoning.
+                self-refine cải thiện 5-15% trên các benchmark reasoning.
               </p>
               <p>
                 <strong>Lưu ý</strong>: Debate có thể rơi vào loop vô hạn nếu
@@ -1090,7 +1090,7 @@ print(final["draft"])`}
           </LaTeX>
           <p className="text-sm text-muted">
             Với <LaTeX>{"N"}</LaTeX> là tổng số LLM call (tính cả message lẫn
-            processing step). Overhead coordination thường thêm 20–40% so với
+            processing step). Overhead coordination thường thêm 20-40% so với
             single-agent cho cùng chất lượng đầu ra. Nếu bài toán của bạn không
             cần chất lượng cao hơn đáng kể, single-agent + prompt engineering
             tốt vẫn là lựa chọn kinh tế hơn.

@@ -25,7 +25,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "ensemble-methods",
   title: "Ensemble Methods",
-  titleVi: "Phương pháp kết hợp. Đồng tay vỗ nên kêu",
+  titleVi: "Phương pháp kết hợp",
   description:
     "Kỹ thuật kết hợp nhiều mô hình yếu lại thành một mô hình mạnh hơn bất kỳ thành viên đơn lẻ nào.",
   category: "foundations",
@@ -1304,7 +1304,7 @@ print(f"Stacking AUC: {roc_auc_score(y_test, proba):.4f}")`}
                 <p className="mt-2 text-sm text-muted leading-relaxed">
                   <strong>Kết nối exponential loss:</strong> AdaBoost chính
                   là gradient descent trên L(y, F) = exp(−y·F). Kết quả
-                  của Friedman–Hastie–Tibshirani (2000) tổng quát hoá cho
+                  của Friedman-Hastie-Tibshirani (2000) tổng quát hoá cho
                   mọi loss differentiable (MSE, log-loss, quantile, custom)
                   → Gradient Boosting.
                 </p>

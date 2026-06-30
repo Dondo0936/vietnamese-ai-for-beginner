@@ -56,7 +56,7 @@ type ShotDemo = {
   label: string;
   examples: Array<{ review: string; label: string }>;
   aiAnswer: string;
-  quality: number; // 0–100, phần trăm "đúng ý bạn"
+  quality: number; // 0-100, phần trăm "đúng ý bạn"
   note: string;
   hit: boolean;
 };
@@ -156,7 +156,7 @@ const MODE_PANELS = [
   },
   {
     key: "few",
-    title: "Few-shot, 3–5 ví dụ",
+    title: "Few-shot, 3-5 ví dụ",
     subtitle: "Phủ đủ mọi trường hợp",
     emoji: <ClipboardCheck className="h-5 w-5" />,
     accent: "border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-700/60",
@@ -164,7 +164,7 @@ const MODE_PANELS = [
     bullets: [
       "Sweet spot cho hầu hết việc văn phòng.",
       "Cần phủ mọi nhãn bạn muốn AI trả về.",
-      "Chất lượng tăng nhanh, sau 5–8 ví dụ tăng chậm.",
+      "Chất lượng tăng nhanh, sau 5-8 ví dụ tăng chậm.",
     ],
     example:
       "Mẫu 1: \"Dịch vụ tệ\" → Tiêu cực\nMẫu 2: \"Rất hài lòng!\" → Tích cực\nMẫu 3: \"Bình thường\" → Trung tính\n\nGiờ phân loại: \"…\"",
@@ -176,9 +176,9 @@ const MODE_PANELS = [
 // ─────────────────────────────────────────────────────────────────────────────
 const TASK_EXAMPLE_PAIRS = [
   { left: "Tóm tắt email dài thành 3 gạch đầu dòng", right: "0 ví dụ (zero-shot) là đủ" },
-  { left: "Viết email theo đúng tone công ty bạn", right: "2–3 ví dụ email cũ của bạn" },
-  { left: "Trích xuất 5 trường từ hoá đơn Việt", right: "3–5 ví dụ đầy đủ trường" },
-  { left: "Phân loại phản hồi thành 4 nhãn hiếm gặp", right: "5–8 ví dụ phủ đủ mọi nhãn" },
+  { left: "Viết email theo đúng tone công ty bạn", right: "2-3 ví dụ email cũ của bạn" },
+  { left: "Trích xuất 5 trường từ hoá đơn Việt", right: "3-5 ví dụ đầy đủ trường" },
+  { left: "Phân loại phản hồi thành 4 nhãn hiếm gặp", right: "5-8 ví dụ phủ đủ mọi nhãn" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -209,7 +209,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đây là few-shot ICL điển hình: 3 ví dụ là đủ để AI bắt chước tone. Không tốn một đồng huấn luyện, không chờ đợi. Nếu 3 ví dụ chưa đủ, bạn có thể thêm 1–2 ví dụ nữa, nhưng thường 3 là đẹp rồi.",
+      "Đây là few-shot ICL điển hình: 3 ví dụ là đủ để AI bắt chước tone. Không tốn một đồng huấn luyện, không chờ đợi. Nếu 3 ví dụ chưa đủ, bạn có thể thêm 1-2 ví dụ nữa, nhưng thường 3 là đẹp rồi.",
   },
   {
     question:
@@ -222,7 +222,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Sau 5–8 ví dụ tốt, lợi ích tăng thêm rất nhỏ (diminishing returns). Bạn chỉ tốn thêm tiền mà không tốt hơn bao nhiêu. 3–5 ví dụ đa dạng thường là điểm cân bằng tốt.",
+      "Sau 5-8 ví dụ tốt, lợi ích tăng thêm rất nhỏ (diminishing returns). Bạn chỉ tốn thêm tiền mà không tốt hơn bao nhiêu. 3-5 ví dụ đa dạng thường là điểm cân bằng tốt.",
   },
   {
     question:
@@ -283,7 +283,7 @@ export default function InContextLearningTopic() {
             "Tốt hơn rõ rệt, AI bắt chước tone của bạn ngay.",
           ]}
           correct={2}
-          explanation="Đây chính là trải nghiệm hầu hết người dùng công sở bất ngờ nhất: chỉ cần 2–3 ví dụ dán vào chat, AI bắt được giọng viết của bạn. Kỹ thuật này có tên riêng, in-context learning, và nó là món quà miễn phí đi kèm mọi mô hình AI hiện đại."
+          explanation="Đây chính là trải nghiệm hầu hết người dùng công sở bất ngờ nhất: chỉ cần 2-3 ví dụ dán vào chat, AI bắt được giọng viết của bạn. Kỹ thuật này có tên riêng, in-context learning, và nó là món quà miễn phí đi kèm mọi mô hình AI hiện đại."
         >
           <p className="text-sm text-muted mt-4">
             Hôm nay bạn sẽ thấy cùng một AI, cùng một câu hỏi, nhưng kết quả đổi khác hoàn toàn khi
@@ -570,7 +570,7 @@ mỗi thùng là 85.000 đồng. Tổng cộng là
 
             <Callout variant="insight" title="Quy luật trích xuất">
               Khi bạn cần AI trả về đúng một bảng/JSON/format cứng, <strong>luôn luôn</strong> cho
-              2–3 ví dụ. Mô tả bằng lời &ldquo;hãy trích ra các trường&rdquo; gần như không bao giờ
+              2-3 ví dụ. Mô tả bằng lời &ldquo;hãy trích ra các trường&rdquo; gần như không bao giờ
               đủ, AI cần <em>thấy</em> chứ không chỉ <em>nghe tả</em>.
             </Callout>
           </LessonSection>
@@ -701,11 +701,11 @@ mỗi thùng là 85.000 đồng. Tổng cộng là
             <ol className="space-y-2.5 text-sm">
               {[
                 "Viết 1 câu mô tả nhiệm vụ ở đầu prompt, AI cần biết đang làm gì.",
-                "Chọn 2–3 ví dụ đa dạng, phủ đủ mọi nhãn/trường hợp bạn muốn AI trả về.",
+                "Chọn 2-3 ví dụ đa dạng, phủ đủ mọi nhãn/trường hợp bạn muốn AI trả về.",
                 "Copy ví dụ chính xác từng ký tự, kể cả dấu câu, format phải nhất quán.",
                 "Che dữ liệu nhạy cảm bằng tên/số giả trước khi dán lên.",
                 "Đặt câu hỏi thật ở cuối prompt, với cùng format như ví dụ (vd: \"Câu mới: … →\").",
-                "Thử 5–10 câu thật, đếm xem AI đúng mấy lần, nếu sai nhiều, sửa ví dụ chứ không tăng số ví dụ.",
+                "Thử 5-10 câu thật, đếm xem AI đúng mấy lần, nếu sai nhiều, sửa ví dụ chứ không tăng số ví dụ.",
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-white text-[11px] font-bold">
@@ -757,7 +757,7 @@ mỗi thùng là 85.000 đồng. Tổng cộng là
           title="Năm điều cần nhớ về học trong ngữ cảnh"
           points={[
             "Bạn “dạy” AI bằng cách dán vài ví dụ vào prompt, không cần upload, không cần huấn luyện, miễn phí.",
-            "0 ví dụ (zero-shot) hợp việc quen; 3–5 ví dụ (few-shot) là điểm cân bằng tốt cho đa số việc văn phòng; nhiều hơn 8 thường không tốt hơn nữa.",
+            "0 ví dụ (zero-shot) hợp việc quen; 3-5 ví dụ (few-shot) là điểm cân bằng tốt cho đa số việc văn phòng; nhiều hơn 8 thường không tốt hơn nữa.",
             "Chất lượng ví dụ quan trọng hơn số lượng, 3 ví dụ đa dạng ăn đứt 10 ví dụ na ná nhau.",
             "Ví dụ phải phủ mọi nhãn/trường hợp bạn muốn AI trả về, format tuyệt đối nhất quán.",
             "AI quên ngay khi đóng chat, muốn dùng lại, hãy lưu prompt mẫu trong Notion/Google Docs.",

@@ -1184,7 +1184,7 @@ export default function GptTopic() {
             "T=2.0, top-k=50. để thử nhiều hướng",
           ]}
           correct={1}
-          explanation="Code cần đúng (syntax + logic), không cần sáng tạo. Greedy hoặc T≈0.1 giảm khả năng model chọn token kỳ lạ. GitHub Copilot dùng T≈0.2–0.3. Ngược lại, creative writing (thơ, truyện) nên T≈0.8–1.0 với top-p=0.9 để tránh lặp lại."
+          explanation="Code cần đúng (syntax + logic), không cần sáng tạo. Greedy hoặc T≈0.1 giảm khả năng model chọn token kỳ lạ. GitHub Copilot dùng T≈0.2-0.3. Ngược lại, creative writing (thơ, truyện) nên T≈0.8-1.0 với top-p=0.9 để tránh lặp lại."
         />
       </LessonSection>
 
@@ -1212,7 +1212,7 @@ export default function GptTopic() {
             <LaTeX block>{`\\mathcal{L}(\\theta) = \\sum_{t=1}^{T} \\log P(w_t \\mid w_1, w_2, \\ldots, w_{t-1}; \\theta)`}</LaTeX>
             <p className="mt-2 text-sm">
               Với mỗi token, model xuất ra phân phối xác suất trên toàn bộ
-              vocab (50K–100K tokens). Loss là cross-entropy giữa distribution
+              vocab (50K-100K tokens). Loss là cross-entropy giữa distribution
               dự đoán và one-hot ground truth. Gradient truyền ngược qua mọi
               layer.
             </p>

@@ -792,7 +792,7 @@ function ScenarioWalkthrough() {
               </span>
             </div>
             <p className="text-[11px] text-foreground/85 mt-2 leading-relaxed">
-              App gợi ý Minh nên đặt lịch khám bác sĩ trong vòng 1–2 ngày, uống nhiều nước
+              App gợi ý Minh nên đặt lịch khám bác sĩ trong vòng 1-2 ngày, uống nhiều nước
               và nghỉ ngơi. Nếu sốt trên 39 °C hoặc khó thở thì đi cấp cứu ngay.
             </p>
           </div>

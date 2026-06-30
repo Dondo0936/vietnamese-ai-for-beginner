@@ -510,7 +510,7 @@ function BoundaryOnlyDemo() {
               ))}
             </svg>
             <p className="text-[11px] text-muted text-center leading-relaxed">
-              k = 1 → biên lởm chởm, nhạy với từng điểm, k = 15–21 → biên mượt, đôi chỗ
+              k = 1 → biên lởm chởm, nhạy với từng điểm, k = 15-21 → biên mượt, đôi chỗ
               nuốt mất cụm nhỏ.
             </p>
           </div>
@@ -674,7 +674,7 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     question:
-      "Bạn chạy k-NN trên dữ liệu y tế có hai đặc trưng: 'tuổi' (0–100) và 'thu nhập' (0–10⁹ VNĐ). Quên chuẩn hoá. Chuyện gì xảy ra?",
+      "Bạn chạy k-NN trên dữ liệu y tế có hai đặc trưng: 'tuổi' (0-100) và 'thu nhập' (0-10⁹ VNĐ). Quên chuẩn hoá. Chuyện gì xảy ra?",
     options: [
       "k-NN tự cân bằng thang đo, không sao cả",
       "Đặc trưng thu nhập chi phối khoảng cách, 'tuổi' gần như bị bỏ qua",

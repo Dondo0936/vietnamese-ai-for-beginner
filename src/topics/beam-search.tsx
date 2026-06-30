@@ -249,7 +249,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "P(câu) = Π P(token). Càng nhiều token (mỗi < 1) → tích càng nhỏ → điểm càng thấp. Không có length penalty, beam search luôn chọn câu ngắn, score/|Y|^α với α ≈ 0.6–1.0 cân bằng lại.",
+      "P(câu) = Π P(token). Càng nhiều token (mỗi < 1) → tích càng nhỏ → điểm càng thấp. Không có length penalty, beam search luôn chọn câu ngắn, score/|Y|^α với α ≈ 0.6-1.0 cân bằng lại.",
   },
   {
     question: "ChatGPT dùng beam search hay sampling cho phản hồi hội thoại? Tại sao?",
@@ -900,11 +900,11 @@ export default function BeamSearchTopic() {
                 Không penalty. Raw log-prob. Câu ngắn (1 token) luôn thắng vì
                 càng ít phép nhân, tích càng cao.
               </Callout>
-              <Callout variant="tip" title="α ≈ 0.6–0.8">
+              <Callout variant="tip" title="α ≈ 0.6-0.8">
                 Sweet spot cho dịch máy (Google NMT paper). Công bằng giữa câu
                 dài và ngắn.
               </Callout>
-              <Callout variant="info" title="α = 1.5 – 2">
+              <Callout variant="info" title="α = 1.5-2">
                 Ép câu dài hơn. Dùng khi muốn output không bị cắt quá sớm.
                 Quá cao → câu dài vô nghĩa.
               </Callout>
@@ -928,7 +928,7 @@ export default function BeamSearchTopic() {
           </p>
           <p className="text-sm text-muted mt-1">
             k = 1 → Greedy (nhanh, kém), k → ∞ → exhaustive (chậm, tối ưu).
-            k = 4–10 thường là sweet spot cho dịch máy, k = 1 + sampling là
+            k = 4-10 thường là sweet spot cho dịch máy, k = 1 + sampling là
             chuẩn cho chatbot.
           </p>
         </AhaMoment>
@@ -984,7 +984,7 @@ export default function BeamSearchTopic() {
             <div className="space-y-2">
               <LaTeX block>{`\\text{score}(Y) = \\frac{1}{|Y|^{\\alpha}} \\sum_{t=1}^{|Y|} \\log P(y_t \\mid y_{<t}, X)`}</LaTeX>
               <p className="text-sm">
-                Với <LaTeX>{`\\alpha`}</LaTeX> = length penalty (0.6–1.0 phổ
+                Với <LaTeX>{`\\alpha`}</LaTeX> = length penalty (0.6-1.0 phổ
                 biến). <LaTeX>{`\\alpha = 0`}</LaTeX> → không penalty, thiên
                 vị câu ngắn. <LaTeX>{`\\alpha = 1`}</LaTeX> → trung bình log-prob
                 mỗi token.
@@ -1053,7 +1053,7 @@ beam = model.generate(
     max_new_tokens=20,
     num_beams=5,
     do_sample=False,
-    length_penalty=0.8,          # 0.6–1.0 là phổ biến
+    length_penalty=0.8,          # 0.6-1.0 là phổ biến
     early_stopping=True,          # dừng khi đủ k beam đạt <eos>
     no_repeat_ngram_size=3,       # chặn lặp 3-gram (tránh mode collapse)
     num_return_sequences=3,       # trả về 3 beam tốt nhất
@@ -1232,8 +1232,8 @@ def beam_search_decode(
           title="Ghi nhớ về Beam Search"
           points={[
             "Beam Search giữ k ứng viên tốt nhất song song (k = beam width / num_beams).",
-            "k = 1 → Greedy (nhanh, kém), k = 4–10 → sweet spot cho dịch máy, tóm tắt, k → ∞ → exhaustive (chậm).",
-            "Length penalty chia score cho |Y|^α để tránh thiên vị câu ngắn; α ≈ 0.6–1.0 phổ biến.",
+            "k = 1 → Greedy (nhanh, kém), k = 4-10 → sweet spot cho dịch máy, tóm tắt, k → ∞ → exhaustive (chậm).",
+            "Length penalty chia score cho |Y|^α để tránh thiên vị câu ngắn; α ≈ 0.6-1.0 phổ biến.",
             "Dịch máy / tóm tắt / captioning → beam search. ChatGPT / kể chuyện → sampling (top-p + temperature).",
             "Beam search deterministic (cùng input → cùng output); sampling tạo đa dạng, mỗi lần một khác.",
             "Diverse BS giảm mode collapse; constrained BS cho phép ép/cấm cụm từ cụ thể.",

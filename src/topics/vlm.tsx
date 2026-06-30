@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "vlm",
   title: "Vision-Language Models",
-  titleVi: "Mô hình Ngôn ngữ. Thị giác",
+  titleVi: "Mô hình Ngôn ngữ-Thị giác",
   description:
     "Mô hình AI có khả năng hiểu đồng thời cả hình ảnh và văn bản, cho phép hỏi đáp về nội dung hình ảnh.",
   category: "multimodal",

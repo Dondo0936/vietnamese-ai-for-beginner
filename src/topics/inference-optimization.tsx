@@ -140,7 +140,7 @@ const TOGGLES: ToggleDef[] = [
     key: "batching",
     labelVi: "Continuous Batching",
     description: "Ghép nhiều request vào cùng một GPU batch.",
-    speedupLabel: "throughput ×4–8",
+    speedupLabel: "throughput ×4-8",
   },
   {
     key: "quantization",
@@ -401,7 +401,7 @@ export default function InferenceOptimizationTopic() {
         ],
         correct: 1,
         explanation:
-          "KV cache cấp phát liên tục (contiguous) lãng phí tới 60% bộ nhớ do reserve cho max_seq_len. PagedAttention chia KV thành các page nhỏ (mỗi page 16 token), cấp phát theo nhu cầu, giảm waste xuống ~4%, tăng batch size 2–4×.",
+          "KV cache cấp phát liên tục (contiguous) lãng phí tới 60% bộ nhớ do reserve cho max_seq_len. PagedAttention chia KV thành các page nhỏ (mỗi page 16 token), cấp phát theo nhu cầu, giảm waste xuống ~4%, tăng batch size 2-4×.",
       },
       {
         type: "fill-blank",
@@ -412,7 +412,7 @@ export default function InferenceOptimizationTopic() {
           { answer: "throughput", accept: ["thông lượng", "req/s", "requests per second"] },
         ],
         explanation:
-          "Interactive chatbot cần latency thấp (<200 ms p50) nên dùng batch nhỏ. Batch job (tóm tắt hàng triệu tài liệu) ưu tiên throughput nên dùng batch lớn (64–256). Không có cấu hình 'tốt nhất' cho mọi use case, chọn điểm trên Pareto frontier phù hợp SLA.",
+          "Interactive chatbot cần latency thấp (<200 ms p50) nên dùng batch nhỏ. Batch job (tóm tắt hàng triệu tài liệu) ưu tiên throughput nên dùng batch lớn (64-256). Không có cấu hình 'tốt nhất' cho mọi use case, chọn điểm trên Pareto frontier phù hợp SLA.",
       },
       {
         question:
@@ -447,7 +447,7 @@ export default function InferenceOptimizationTopic() {
             "Kết hợp KV cache + speculative + batching + quantization trên cùng hạ tầng",
           ]}
           correct={2}
-          explanation="Tối ưu software (KV cache, speculative, continuous batching, quantization) có thể giảm chi phí 10–50× mà KHÔNG phải đổi model hay thêm GPU. Đây là cách các nền tảng lớn (OpenAI, Anthropic, vLLM-based services tại VN) serving thực tế."
+          explanation="Tối ưu software (KV cache, speculative, continuous batching, quantization) có thể giảm chi phí 10-50× mà KHÔNG phải đổi model hay thêm GPU. Đây là cách các nền tảng lớn (OpenAI, Anthropic, vLLM-based services tại VN) serving thực tế."
         >
           <p className="text-sm text-muted mt-3">
             Tiếp tục để khám phá cách mỗi giai đoạn trong pipeline đóng góp vào latency, và cách các kỹ thuật tối ưu tác động lên chúng.
@@ -760,7 +760,7 @@ export default function InferenceOptimizationTopic() {
             </div>
 
             <Callout variant="tip" title="Quan sát">
-              Khi batch tăng 64×, throughput không tăng đúng 64×. chỉ khoảng 45–55×. Overhead
+              Khi batch tăng 64×, throughput không tăng đúng 64×. chỉ khoảng 45-55×. Overhead
               đến từ memory bandwidth và SM occupancy bão hoà. Đây là lý do điểm
               "batch=256" thường rớt khỏi Pareto frontier do out-of-memory.
             </Callout>
@@ -925,7 +925,7 @@ export default function InferenceOptimizationTopic() {
             "Chỉ quantization INT4, giảm bộ nhớ là đủ",
           ]}
           correct={1}
-          explanation="Kết hợp KV + INT8 + speculative giảm decode (stage chiếm ~70%) đáng kể, ước tính latency còn 130–170 ms. Batch=4 tăng throughput 4× mà không đẩy latency vượt SLA. Batch=64 (đáp án A) sẽ đẩy p95 lên 400+ ms → vi phạm SLA dù throughput cao. Chỉ INT4 (C) không đủ, decode vẫn là bottleneck."
+          explanation="Kết hợp KV + INT8 + speculative giảm decode (stage chiếm ~70%) đáng kể, ước tính latency còn 130-170 ms. Batch=4 tăng throughput 4× mà không đẩy latency vượt SLA. Batch=64 (đáp án A) sẽ đẩy p95 lên 400+ ms → vi phạm SLA dù throughput cao. Chỉ INT4 (C) không đủ, decode vẫn là bottleneck."
         />
 
         <div className="mt-6">
@@ -956,7 +956,7 @@ export default function InferenceOptimizationTopic() {
           <p>
             Mỗi token mới phải đi qua toàn bộ model, forward pass của model N tầng
             có độ phức tạp O(N · d²) với d là hidden size. Với Llama-70B, mỗi token mất
-            ~2–5 ms trên A100. Sinh 512 token → 1–2.5 giây trần.
+            ~2-5 ms trên A100. Sinh 512 token → 1-2.5 giây trần.
             Và không thể song song hoá vì token t+1 cần token t đã sinh (autoregressive).
           </p>
 
@@ -1005,8 +1005,8 @@ export default function InferenceOptimizationTopic() {
             {"\\mathbb{E}[\\text{tokens per step}] = 1 + \\sum_{i=1}^{k} \\prod_{j=1}^{i} \\alpha_j"}
           </LaTeX>
           <p>
-            với α<sub>j</sub> là xác suất draft token thứ j được accept. Thực nghiệm cho thấy α ≈ 0.7–0.85,
-            dẫn tới speedup 2–3×.
+            với α<sub>j</sub> là xác suất draft token thứ j được accept. Thực nghiệm cho thấy α ≈ 0.7-0.85,
+            dẫn tới speedup 2-3×.
           </p>
 
           <p>
@@ -1029,7 +1029,7 @@ export default function InferenceOptimizationTopic() {
           <Callout variant="tip" title="PagedAttention (vLLM)">
             Cấp phát KV cache contiguous reserve max_seq_len, lãng phí ~60% khi sequence ngắn.
             PagedAttention chia KV cache thành page 16-token, cấp phát theo nhu cầu như virtual memory.
-            Kết quả: waste 4%, batch size ×2–4, throughput ×3–5.
+            Kết quả: waste 4%, batch size ×2-4, throughput ×3-5.
           </Callout>
 
           <p>
@@ -1043,7 +1043,7 @@ export default function InferenceOptimizationTopic() {
           </LaTeX>
           <p>
             Techniques: GPTQ, AWQ, SmoothQuant. Chất lượng thường giảm &lt; 1% với INT8,
-            1–3% với INT4. Chi tiết tại <TopicLink slug="quantization">Quantization</TopicLink>.
+            1-3% với INT4. Chi tiết tại <TopicLink slug="quantization">Quantization</TopicLink>.
           </p>
 
           <Callout variant="warning" title="Đánh đổi chất lượng">
@@ -1060,13 +1060,13 @@ export default function InferenceOptimizationTopic() {
           </p>
           <ul className="list-disc pl-6 text-sm text-muted space-y-1 my-2">
             <li>
-              <strong>Interactive chat</strong>: p95 latency &lt; 300 ms → batch nhỏ (1–4), KV cache, speculative.
+              <strong>Interactive chat</strong>: p95 latency &lt; 300 ms → batch nhỏ (1-4), KV cache, speculative.
             </li>
             <li>
-              <strong>Batch job</strong> (tóm tắt tài liệu): ưu tiên throughput → batch 64–128, INT4.
+              <strong>Batch job</strong> (tóm tắt tài liệu): ưu tiên throughput → batch 64-128, INT4.
             </li>
             <li>
-              <strong>Edge device</strong> (điện thoại): ưu tiên bộ nhớ → INT4, model nhỏ (3B–7B).
+              <strong>Edge device</strong> (điện thoại): ưu tiên bộ nhớ → INT4, model nhỏ (3B-7B).
             </li>
             <li>
               <strong>RAG pipeline</strong>: prefill là bottleneck (prompt dài) → FlashAttention + prefix caching.
@@ -1124,7 +1124,7 @@ outputs = llm.generate(prompts, params)
 
 # Metrics thực tế trên 2×A100 80GB:
 #   - Baseline naive FP16:  ~200 tokens/s total
-#   - Với vLLM + AWQ + spec: ~2000–3000 tokens/s total
+#   - Với vLLM + AWQ + spec: ~2000-3000 tokens/s total
 #   - Chi phí giảm ~15× so với HuggingFace pipeline ngây thơ`}
           </CodeBlock>
 
@@ -1191,10 +1191,10 @@ python benchmarks/benchmark_serving.py \\
           points={[
             "Latency của 1 request LLM = tokenization + prefill + KV lookup + decoding. Decoding chiếm ~68% vì autoregressive.",
             "KV cache lưu attention đã tính → giảm decoding từ O(N²) xuống O(N), tăng tốc ~2.5×.",
-            "Speculative decoding dùng draft model nhỏ đề xuất, target model verify song song → ×2–3 khi acceptance rate cao.",
-            "Continuous batching tăng throughput ×5–10 mà KHÔNG giảm latency; PagedAttention (vLLM) giảm waste KV cache từ 60% xuống 4%.",
-            "Quantization INT8/INT4 giảm bộ nhớ 4–8× và tăng tốc 1.5–2×. sweet spot INT8 cho chất lượng, INT4 cho tiết kiệm.",
-            "Pareto frontier latency ↔ throughput: không có config tốt nhất, chọn theo SLA. Kết hợp 4 kỹ thuật có thể giảm chi phí 10–50×.",
+            "Speculative decoding dùng draft model nhỏ đề xuất, target model verify song song → ×2-3 khi acceptance rate cao.",
+            "Continuous batching tăng throughput ×5-10 mà KHÔNG giảm latency; PagedAttention (vLLM) giảm waste KV cache từ 60% xuống 4%.",
+            "Quantization INT8/INT4 giảm bộ nhớ 4-8× và tăng tốc 1.5-2×. sweet spot INT8 cho chất lượng, INT4 cho tiết kiệm.",
+            "Pareto frontier latency ↔ throughput: không có config tốt nhất, chọn theo SLA. Kết hợp 4 kỹ thuật có thể giảm chi phí 10-50×.",
           ]}
         />
 

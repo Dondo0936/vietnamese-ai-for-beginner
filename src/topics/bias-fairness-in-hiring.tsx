@@ -94,7 +94,7 @@ export const metadata: TopicMeta = {
     },
     {
       title:
-        "Diversity in the High Tech Workforce and Sector 2014–2022",
+        "Diversity in the High Tech Workforce and Sector 2014-2022",
       publisher: "U.S. Equal Employment Opportunity Commission",
       url: "https://www.eeoc.gov/sites/default/files/2024-09/20240910_Diversity%20in%20the%20High%20Tech%20Workforce%20and%20Sector%202014-2022.pdf",
       date: "2024-09",
@@ -758,7 +758,7 @@ export default function BiasFairnessInHiring() {
           sourceRef={4}
         />
         <Metric
-          value="Đội ngũ khoảng 12 kỹ sư làm việc trong 3 năm (2014–2017) trước khi dự án bị huỷ"
+          value="Đội ngũ khoảng 12 kỹ sư làm việc trong 3 năm (2014-2017) trước khi dự án bị huỷ"
           sourceRef={1}
         />
       </ApplicationMetrics>

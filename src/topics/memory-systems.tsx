@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "memory-systems",
   title: "Memory Systems",
-  titleVi: "Hệ thống bộ nhớ. Trí nhớ của AI Agent",
+  titleVi: "Hệ thống bộ nhớ",
   description:
     "Các cơ chế lưu trữ thông tin giúp AI Agent nhớ bối cảnh, kinh nghiệm và kiến thức qua nhiều phiên làm việc.",
   category: "ai-agents",

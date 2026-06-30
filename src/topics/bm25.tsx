@@ -375,7 +375,7 @@ export default function BM25Topic() {
                     <label className="text-sm font-semibold text-amber-700 dark:text-amber-400">
                       <LaTeX>{"k_1"}</LaTeX> = {k1.toFixed(2)}
                     </label>
-                    <span className="text-[10px] text-muted">bão hoà TF (1.2–2.0)</span>
+                    <span className="text-[10px] text-muted">bão hoà TF (1.2-2.0)</span>
                   </div>
                   <input
                     type="range"
@@ -395,7 +395,7 @@ export default function BM25Topic() {
                     <label className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
                       <LaTeX>{"b"}</LaTeX> = {b.toFixed(2)}
                     </label>
-                    <span className="text-[10px] text-muted">length norm (0–1)</span>
+                    <span className="text-[10px] text-muted">length norm (0-1)</span>
                   </div>
                   <input
                     type="range"

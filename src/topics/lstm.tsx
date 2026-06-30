@@ -222,7 +222,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Ba cổng sigmoid chỉ cần kiểm soát 'bao nhiêu' (0–1). Candidate phải là giá trị MỚI với dấu, tanh ∈ [−1, 1] cho phép vừa cộng thêm vừa trừ bớt khỏi cell state.",
+      "Ba cổng sigmoid chỉ cần kiểm soát 'bao nhiêu' (0-1). Candidate phải là giá trị MỚI với dấu, tanh ∈ [−1, 1] cho phép vừa cộng thêm vừa trừ bớt khỏi cell state.",
   },
   {
     question:
@@ -260,7 +260,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Điểm nghẽn của LSTM là tính tuần tự: phải đợi hₜ₋₁ mới tính được hₜ. Trên GPU hiện đại, Transformer tính self-attention toàn bộ chuỗi song song → huấn luyện nhanh hơn 10–100× ở chuỗi dài.",
+      "Điểm nghẽn của LSTM là tính tuần tự: phải đợi hₜ₋₁ mới tính được hₜ. Trên GPU hiện đại, Transformer tính self-attention toàn bộ chuỗi song song → huấn luyện nhanh hơn 10-100× ở chuỗi dài.",
   },
   {
     type: "fill-blank",
@@ -360,7 +360,7 @@ export default function LstmTopic() {
           }
           options={[
             "RNN nhớ tốt 100+ từ, không cần cải tiến",
-            "RNN chỉ nhớ tốt ~10–20 từ gần nhất, cần cơ chế đặc biệt để nhớ xa hơn",
+            "RNN chỉ nhớ tốt ~10-20 từ gần nhất, cần cơ chế đặc biệt để nhớ xa hơn",
             "RNN không nhớ được gì cả",
           ]}
           correct={1}
@@ -612,7 +612,7 @@ export default function LstmTopic() {
 
         <p className="text-sm text-muted mt-3">
           4 khối màu tương ứng 4 phép tính song song trong 1 ô LSTM. 3 cổng
-          (đỏ/xanh lá/xanh dương) dùng sigmoid để &quot;mở–đóng&quot; từ
+          (đỏ/xanh lá/xanh dương) dùng sigmoid để &quot;mở-đóng&quot; từ
           0 đến 1. Candidate (cam) dùng tanh để đề xuất giá trị MỚI.
         </p>
       </LessonSection>
@@ -948,7 +948,7 @@ export default function LstmTopic() {
           </motion.div>
 
           <p className="text-sm text-muted mt-3">
-            RNN thường đã quên &quot;Huế&quot; sau 5–6 bước. LSTM giữ được
+            RNN thường đã quên &quot;Huế&quot; sau 5-6 bước. LSTM giữ được
             nhờ cell state truyền thẳng, phép nhân với forget gate ≈ 1 =
             coi như không đổi.
           </p>

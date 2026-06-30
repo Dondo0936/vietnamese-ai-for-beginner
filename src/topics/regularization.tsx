@@ -67,43 +67,43 @@ const REG_CONFIG: Record<RegType, RegInfo> = {
   none: {
     label: "Không regularization",
     color: "#64748b",
-    desc: "Trọng số tự do — dễ overfitting với mạng lớn và dữ liệu nhỏ.",
+    desc: "Trọng số tự do-dễ overfitting với mạng lớn và dữ liệu nhỏ.",
     famille: "norm",
   },
   l1: {
     label: "L1 (Lasso)",
     color: "#3b82f6",
-    desc: "Đẩy trọng số nhỏ về đúng 0 — tạo sparsity, tự động feature selection.",
+    desc: "Đẩy trọng số nhỏ về đúng 0-tạo sparsity, tự động feature selection.",
     famille: "norm",
   },
   l2: {
     label: "L2 (Ridge)",
     color: "#22c55e",
-    desc: "Thu nhỏ tất cả trọng số đều đặn — phân bổ đều vai trò, hiếm khi về 0.",
+    desc: "Thu nhỏ tất cả trọng số đều đặn-phân bổ đều vai trò, hiếm khi về 0.",
     famille: "norm",
   },
   elasticnet: {
     label: "ElasticNet (L1 + L2)",
     color: "#0ea5e9",
-    desc: "Kết hợp L1 (sparsity) và L2 (stability) — phù hợp khi feature có tương quan.",
+    desc: "Kết hợp L1 (sparsity) và L2 (stability), phù hợp khi feature có tương quan.",
     famille: "norm",
   },
   dropout: {
     label: "Dropout",
     color: "#f59e0b",
-    desc: "Tắt ngẫu nhiên p% nơ-ron mỗi bước train — buộc mạng không phụ thuộc nơ-ron đơn lẻ.",
+    desc: "Tắt ngẫu nhiên p% nơ-ron mỗi bước train-buộc mạng không phụ thuộc nơ-ron đơn lẻ.",
     famille: "stochastic",
   },
   dropconnect: {
     label: "DropConnect",
     color: "#d97706",
-    desc: "Tắt ngẫu nhiên p% kết nối (weight) thay vì nơ-ron — tổng quát hơn Dropout.",
+    desc: "Tắt ngẫu nhiên p% kết nối (weight) thay vì nơ-ron-tổng quát hơn Dropout.",
     famille: "stochastic",
   },
   batchnorm: {
     label: "BatchNorm",
     color: "#8b5cf6",
-    desc: "Chuẩn hoá activation theo batch — có hiệu ứng regularization nhẹ do noise từ batch statistics.",
+    desc: "Chuẩn hoá activation theo batch-có hiệu ứng regularization nhẹ do noise từ batch statistics.",
     famille: "normalization",
   },
   augment: {
@@ -115,13 +115,13 @@ const REG_CONFIG: Record<RegType, RegInfo> = {
   earlystop: {
     label: "Early Stopping",
     color: "#14b8a6",
-    desc: "Dừng train khi val loss tăng — ngăn model vào vùng overfit.",
+    desc: "Dừng train khi val loss tăng-ngăn model vào vùng overfit.",
     famille: "schedule",
   },
   labelsmoothing: {
     label: "Label Smoothing",
     color: "#a855f7",
-    desc: "Giảm độ tự tin của target (1 → 0.9) — ngăn output quá extreme.",
+    desc: "Giảm độ tự tin của target (1 → 0.9), ngăn output quá extreme.",
     famille: "loss",
   },
 };
@@ -147,7 +147,7 @@ function seededNoise(i: number, salt: number): number {
   return Math.abs(Math.sin(i * 7.3 + salt * 0.17 + 0.5));
 }
 
-// Tính trọng số sau khi áp dụng regularization — cho các kỹ thuật
+// Tính trọng số sau khi áp dụng regularization-cho các kỹ thuật
 // ảnh hưởng trực tiếp lên weights (L1, L2, ElasticNet, Dropout, DropConnect).
 function applyReg(
   baseWeights: number[],
@@ -209,7 +209,7 @@ function applyReg(
     }
 
     if (regType === "earlystop") {
-      // Early stopping giữ weights ở trạng thái "còn sớm" — ít extreme hơn
+      // Early stopping giữ weights ở trạng thái "còn sớm", ít extreme hơn
       return w * (1 - strength * 0.2);
     }
 
@@ -250,7 +250,7 @@ const DATASETS: Dataset[] = [
   },
 ];
 
-// Dropout visualization — neuron grid
+// Dropout visualization-neuron grid
 interface NeuronGrid {
   rows: number;
   cols: number;
@@ -267,9 +267,9 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       "L1 regularization tạo ra trọng số thưa (sparse). Điều này có lợi gì?",
     options: [
       "Mô hình chạy nhanh hơn vì nhiều trọng số = 0 (phép nhân bằng 0 bỏ qua)",
-      "Mô hình tự động chọn feature quan trọng — feature không cần thiết có trọng số = 0",
+      "Mô hình tự động chọn feature quan trọng-feature không cần thiết có trọng số = 0",
       "Cả hai lợi ích trên đều đúng",
-      "Không có lợi gì — sparsity là nhược điểm",
+      "Không có lợi gì-sparsity là nhược điểm",
     ],
     correct: 2,
     explanation:
@@ -285,7 +285,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mỗi training step, 50% nơ-ron bị 'tắt' (output = 0). Bước tiếp theo, bộ nơ-ron bị tắt lại khác. Khi inference (model.eval()), TẤT CẢ nơ-ron đều hoạt động và output được chia cho (1-p) để bù (inverted dropout — PyTorch mặc định).",
+      "Mỗi training step, 50% nơ-ron bị 'tắt' (output = 0). Bước tiếp theo, bộ nơ-ron bị tắt lại khác. Khi inference (model.eval()), TẤT CẢ nơ-ron đều hoạt động và output được chia cho (1-p) để bù (inverted dropout-PyTorch mặc định).",
   },
   {
     question:
@@ -298,14 +298,14 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Kỹ thuật {blank} (Lasso) thêm λ·Σ|w| vào loss, đẩy trọng số về đúng 0 tạo sparsity. Kỹ thuật {blank} (Ridge) thêm λ·Σw² — thu nhỏ đều tất cả trọng số. {blank} kết hợp cả hai.",
+      "Kỹ thuật {blank} (Lasso) thêm λ·Σ|w| vào loss, đẩy trọng số về đúng 0 tạo sparsity. Kỹ thuật {blank} (Ridge) thêm λ·Σw²-thu nhỏ đều tất cả trọng số. {blank} kết hợp cả hai.",
     blanks: [
       { answer: "L1", accept: ["l1", "Lasso", "lasso"] },
       { answer: "L2", accept: ["l2", "Ridge", "ridge"] },
       { answer: "ElasticNet", accept: ["elastic net", "elasticnet", "elastic-net"] },
     ],
     explanation:
-      "L1 (Lasso) dùng giá trị tuyệt đối — tạo mô hình thưa, tự động feature selection. L2 (Ridge / weight decay) dùng bình phương — thu nhỏ đều trọng số, hiếm khi về 0. ElasticNet = α·L1 + (1-α)·L2, vừa sparsity vừa stability khi feature tương quan.",
+      "L1 (Lasso) dùng giá trị tuyệt đối-tạo mô hình thưa, tự động feature selection. L2 (Ridge / weight decay) dùng bình phương-thu nhỏ đều trọng số, hiếm khi về 0. ElasticNet = α·L1 + (1-α)·L2, vừa sparsity vừa stability khi feature tương quan.",
   },
   {
     question:
@@ -333,7 +333,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       "BatchNorm có hiệu ứng regularization. Tại sao?",
     options: [
       "Vì nó làm giảm số parameter",
-      "Vì statistics (mean, var) được tính trên mini-batch ngẫu nhiên — tạo noise khác batch khác, tương tự Dropout",
+      "Vì statistics (mean, var) được tính trên mini-batch ngẫu nhiên-tạo noise khác batch khác, tương tự Dropout",
       "Vì nó thay thế hoàn toàn L2",
       "Vì nó làm activation luôn bằng 0",
     ],
@@ -346,9 +346,9 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       "Label smoothing với α=0.1 làm gì cho target one-hot [0, 0, 1, 0]?",
     options: [
       "Không đổi, vẫn là [0, 0, 1, 0]",
-      "[0.033, 0.033, 0.9, 0.033] — phân bổ 10% xác suất ra các class khác đều nhau",
-      "[0, 0, 0.1, 0] — giảm target class",
-      "[1, 1, 0, 1] — flip toàn bộ",
+      "[0.033, 0.033, 0.9, 0.033], phân bổ 10% xác suất ra các class khác đều nhau",
+      "[0, 0, 0.1, 0], giảm target class",
+      "[1, 1, 0, 1], flip toàn bộ",
     ],
     correct: 1,
     explanation:
@@ -393,7 +393,7 @@ export default function RegularizationTopic() {
     [datasetId],
   );
 
-  // Dropout visualization — deterministic pattern per step
+  // Dropout visualization-deterministic pattern per step
   const dropoutMask = useMemo(() => {
     const total = DROPOUT_GRID.rows * DROPOUT_GRID.cols;
     return Array.from({ length: total }, (_, i) => {
@@ -413,16 +413,16 @@ export default function RegularizationTopic() {
   return (
     <>
       {/* ──────────────────────────────────────────────────────
-       * STEP 1 — PREDICTION GATE
+       * STEP 1-PREDICTION GATE
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <PredictionGate
           question="Đội bóng có 1 ngôi sao ghi 90% bàn thắng. Khi ngôi sao chấn thương, đội thua liên tục. Huấn luyện viên nên làm gì?"
           options={[
             "Tìm ngôi sao mới giỏi hơn",
-            "Bắt cả đội tập đều nhau, không ai được 'ôm' quá nhiều bóng — ai cũng phải biết ghi bàn",
+            "Bắt cả đội tập đều nhau, không ai được 'ôm' quá nhiều bóng-ai cũng phải biết ghi bàn",
             "Cho ngôi sao chơi nhiều hơn để bù",
-            "Không làm gì — phụ thuộc ngôi sao là bình thường",
+            "Không làm gì-phụ thuộc ngôi sao là bình thường",
           ]}
           correct={1}
           explanation="Buộc mọi cầu thủ đóng góp đều = Regularization! Trong mạng nơ-ron, nó ngăn vài trọng số quá lớn ('ngôi sao') chi phối toàn bộ mô hình."
@@ -437,7 +437,7 @@ export default function RegularizationTopic() {
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 2 — VISUALIZATION
+       * STEP 2-VISUALIZATION
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={2} totalSteps={8} label="Khám phá">
         <VisualizationSection>
@@ -509,7 +509,7 @@ export default function RegularizationTopic() {
               role="img"
               aria-label={`Biểu đồ 12 trọng số với ${REG_CONFIG[regType].label}${regType !== "none" ? `, cường độ ${strength.toFixed(2)}` : ""}. ${weights.filter(w => Math.abs(w) < 0.01).length} trọng số bị đẩy về 0.`}
             >
-              <title>{REG_CONFIG[regType].label}{regType !== "none" ? ` λ=${strength.toFixed(2)}` : ""} — {weights.filter(w => Math.abs(w) < 0.01).length}/12 trọng số = 0</title>
+              <title>{REG_CONFIG[regType].label}{regType !== "none" ? ` λ=${strength.toFixed(2)}` : ""}, {weights.filter(w => Math.abs(w) < 0.01).length}/12 trọng số = 0</title>
               <text
                 x={SVG_W / 2}
                 y={15}
@@ -628,7 +628,7 @@ export default function RegularizationTopic() {
             <div className="rounded-xl border border-border bg-card p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-foreground">
-                  L1 vs L2 vs ElasticNet — sparse vs smooth
+                  L1 vs L2 vs ElasticNet-sparse vs smooth
                 </p>
                 <div className="flex gap-2">
                   {DATASETS.map((d) => (
@@ -725,11 +725,11 @@ export default function RegularizationTopic() {
               </p>
             </div>
 
-            {/* Dropout visualization — neuron grid */}
+            {/* Dropout visualization-neuron grid */}
             <div className="rounded-xl border border-border bg-card p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-foreground">
-                  Dropout visualization — nơ-ron bị tắt ngẫu nhiên mỗi bước
+                  Dropout visualization-nơ-ron bị tắt ngẫu nhiên mỗi bước
                 </p>
                 <button
                   type="button"
@@ -790,7 +790,7 @@ export default function RegularizationTopic() {
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 3 — AHA MOMENT
+       * STEP 3-AHA MOMENT
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
@@ -807,24 +807,24 @@ export default function RegularizationTopic() {
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 4 — INLINE CHALLENGE 1
+       * STEP 4-INLINE CHALLENGE 1
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={4} totalSteps={8} label="Thử thách 1">
         <InlineChallenge
           question="Bạn dùng Dropout(0.5) khi huấn luyện. Khi deploy mô hình cho người dùng (inference), Dropout hoạt động thế nào?"
           options={[
-            "Vẫn tắt ngẫu nhiên 50% nơ-ron — giống lúc train",
+            "Vẫn tắt ngẫu nhiên 50% nơ-ron-giống lúc train",
             "TẤT CẢ nơ-ron hoạt động; trong inverted dropout (PyTorch default), output đã được scale sẵn ở train nên eval không cần làm gì",
             "Tắt 50% nơ-ron cố định (không ngẫu nhiên nữa)",
             "Toàn bộ model phải retrain",
           ]}
           correct={1}
-          explanation="Khi inference (model.eval()), Dropout TẮT — mọi nơ-ron đều chạy. PyTorch dùng inverted dropout: ở train, output của neuron CÒN LẠI nhân với 1/(1-p); ở eval, không làm gì. Điều này đảm bảo expected output khớp giữa train và eval."
+          explanation="Khi inference (model.eval()), Dropout TẮT-mọi nơ-ron đều chạy. PyTorch dùng inverted dropout: ở train, output của neuron CÒN LẠI nhân với 1/(1-p); ở eval, không làm gì. Điều này đảm bảo expected output khớp giữa train và eval."
         />
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 5 — EXPLANATION
+       * STEP 5-EXPLANATION
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={5} totalSteps={8} label="Giải thích chi tiết">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -832,7 +832,7 @@ export default function RegularizationTopic() {
             <strong>Regularization</strong> là tập hợp kỹ thuật thêm{" "}
             <em>ràng buộc</em> vào quá trình huấn luyện để ngăn mô hình học
             quá sát với dữ liệu train (overfitting). Nguyên lý chung: đánh
-            đổi một chút bias lấy rất nhiều variance giảm — theo lý thuyết{" "}
+            đổi một chút bias lấy rất nhiều variance giảm-theo lý thuyết{" "}
             <TopicLink slug="overfitting-underfitting">
               bias-variance tradeoff
             </TopicLink>
@@ -863,7 +863,7 @@ export default function RegularizationTopic() {
           </LaTeX>
           <p className="text-sm text-muted">
             Gradient của <LaTeX>{"|w|"}</LaTeX> là{" "}
-            <LaTeX>{"\\text{sign}(w)"}</LaTeX> — không phụ thuộc độ lớn. Điều
+            <LaTeX>{"\\text{sign}(w)"}</LaTeX>, không phụ thuộc độ lớn. Điều
             này tạo áp lực <strong>cố định</strong> đẩy mọi trọng số về 0, kể
             cả trọng số nhỏ. Kết quả: sparsity (nhiều <LaTeX>{"w_i = 0"}</LaTeX>
             ), mô hình tự động{" "}
@@ -885,7 +885,7 @@ export default function RegularizationTopic() {
           </LaTeX>
           <p className="text-sm text-muted">
             Gradient của <LaTeX>{"\\tfrac{1}{2}w^2"}</LaTeX> là{" "}
-            <LaTeX>{"w"}</LaTeX> — càng lớn càng bị kéo. Cập nhật có dạng
+            <LaTeX>{"w"}</LaTeX>, càng lớn càng bị kéo. Cập nhật có dạng
             multiplicative decay:
           </p>
           <LaTeX block>
@@ -913,7 +913,7 @@ export default function RegularizationTopic() {
             ElasticNet giữ cả nhóm và thu nhỏ đều.
           </p>
 
-          <Callout variant="insight" title="L1 vs L2 vs ElasticNet — khi nào dùng cái nào">
+          <Callout variant="insight" title="L1 vs L2 vs ElasticNet-khi nào dùng cái nào">
             <div className="space-y-1.5">
               <p>
                 <strong>Sparse problem:</strong> chỉ 1 phần nhỏ feature thực sự
@@ -946,11 +946,11 @@ export default function RegularizationTopic() {
           </LaTeX>
           <p className="text-sm text-muted">
             Mỗi forward pass ở train, mask ngẫu nhiên{" "}
-            <LaTeX>{"m"}</LaTeX> được sample — <LaTeX>{"p"}</LaTeX> phần nơ-ron
+            <LaTeX>{"m"}</LaTeX> được sample, <LaTeX>{"p"}</LaTeX> phần nơ-ron
             bị tắt (output = 0). Ở inference, mọi nơ-ron bật. Để expected
             output khớp, PyTorch dùng <em>inverted dropout</em>: chia cho{" "}
             <LaTeX>{"(1-p)"}</LaTeX> ở train thay vì nhân ở eval. Dropout
-            tương đương trung bình cộng của <LaTeX>{"2^n"}</LaTeX> mạng con —
+            tương đương trung bình cộng của <LaTeX>{"2^n"}</LaTeX> mạng con,
             một dạng <em>model averaging</em> cực lớn và rẻ.
           </p>
 
@@ -968,7 +968,7 @@ export default function RegularizationTopic() {
             chuẩn hoá activation theo batch để giảm internal covariate shift.
             Hiệu ứng regularization đến từ việc{" "}
             <LaTeX>{"\\mu_B, \\sigma_B"}</LaTeX> được tính trên batch ngẫu
-            nhiên — batch khác cho statistics hơi khác, tạo noise injection
+            nhiên-batch khác cho statistics hơi khác, tạo noise injection
             nhẹ vào mỗi forward pass. Đây là dropout-like noise, nên thường
             khi dùng BN có thể giảm dropout rate.
           </p>
@@ -986,7 +986,7 @@ export default function RegularizationTopic() {
             Với ảnh: flip, crop, rotate, color jitter, cutout, mixup, CutMix.
             Với audio: pitch shift, time stretch, SpecAugment. Với text:
             synonym replacement, back-translation. Đây có thể là kỹ thuật
-            regularization MẠNH nhất — với coverage data đủ, nhiều khi không
+            regularization MẠNH nhất-với coverage data đủ, nhiều khi không
             cần L2 hoặc dropout.
           </p>
 
@@ -1001,7 +1001,7 @@ export default function RegularizationTopic() {
           <p className="text-sm text-muted">
             Theo dõi val loss mỗi epoch; dừng train khi val loss không giảm
             nữa (với patience). Về mặt lý thuyết, early stopping tương đương
-            L2 implicit — train time giới hạn = capacity giới hạn.
+            L2 implicit-train time giới hạn = capacity giới hạn.
           </p>
 
           <p>
@@ -1019,11 +1019,11 @@ export default function RegularizationTopic() {
             (logit → ∞), cải thiện calibration và generalization. Phổ biến
             trong CV (ResNet, Vision Transformer) và NLP (Transformer). Khi
             dùng cross-entropy với one-hot target, model có xu hướng đẩy logit
-            về ±∞ để gradient đạt 0 — điều này không ổn định trong finite
+            về ±∞ để gradient đạt 0-điều này không ổn định trong finite
             precision.
           </p>
 
-          <Callout variant="insight" title="Bảng tổng hợp — các kỹ thuật và khi nào dùng">
+          <Callout variant="insight" title="Bảng tổng hợp-các kỹ thuật và khi nào dùng">
             <div className="space-y-1 text-sm">
               <p>
                 <strong>L1:</strong> sparse problem, feature selection, mô
@@ -1050,11 +1050,11 @@ export default function RegularizationTopic() {
                 Transformer/RNN.
               </p>
               <p>
-                <strong>Data Augmentation:</strong> luôn dùng khi có thể —
+                <strong>Data Augmentation:</strong> luôn dùng khi có thể,
                 mạnh nhất trong CV.
               </p>
               <p>
-                <strong>Early Stopping:</strong> luôn dùng — rẻ, an toàn.
+                <strong>Early Stopping:</strong> luôn dùng-rẻ, an toàn.
               </p>
               <p>
                 <strong>Label Smoothing:</strong> classification với nhiều
@@ -1072,7 +1072,7 @@ from torchvision import transforms
 
 # ───────────────────────────────────────────────────────────────
 # 1) L2 weight decay: thêm vào optimizer
-#    (Adam + weight decay đúng cách = AdamW — decoupled WD)
+#    (Adam + weight decay đúng cách = AdamW-decoupled WD)
 # ───────────────────────────────────────────────────────────────
 optimizer = torch.optim.AdamW(
     model.parameters(),
@@ -1184,10 +1184,10 @@ for epoch in range(100):
 # ───────────────────────────────────────────────────────────────
 # 7) Label Smoothing
 # ───────────────────────────────────────────────────────────────
-# Cách 1 — có sẵn trong PyTorch 1.10+
+# Cách 1-có sẵn trong PyTorch 1.10+
 criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
 
-# Cách 2 — tự viết (dùng được cho custom loss)
+# Cách 2-tự viết (dùng được cho custom loss)
 def smooth_cross_entropy(logits, target, smoothing=0.1):
     n_classes = logits.size(-1)
     log_probs = F.log_softmax(logits, dim=-1)
@@ -1199,7 +1199,7 @@ def smooth_cross_entropy(logits, target, smoothing=0.1):
     return -(true_dist * log_probs).sum(dim=-1).mean()
 
 # ───────────────────────────────────────────────────────────────
-# 8) DropConnect (không có trong PyTorch — tự implement)
+# 8) DropConnect (không có trong PyTorch-tự implement)
 # ───────────────────────────────────────────────────────────────
 class DropConnectLinear(nn.Module):
     def __init__(self, in_features, out_features, p=0.3):
@@ -1223,7 +1223,7 @@ class DropConnectLinear(nn.Module):
               là {'"'}six-pack{'"'} tiêu chuẩn cho CNN/Transformer lớn. Mỗi kỹ
               thuật regularize theo một kênh khác nhau (weight magnitude,
               activation noise, input diversity, training time, output
-              sharpness) — chúng KHÔNG thay thế nhau, mà hỗ trợ nhau.
+              sharpness), chúng KHÔNG thay thế nhau, mà hỗ trợ nhau.
             </p>
           </Callout>
 
@@ -1234,25 +1234,25 @@ class DropConnectLinear(nn.Module):
                 dùng đủ kỹ thuật, nguyên nhân thường là:
               </p>
               <p>
-                1. <strong>Data không đủ</strong> — đi thu thập thêm, đó là
+                1. <strong>Data không đủ</strong>, đi thu thập thêm, đó là
                 {" "}&quot;regularization&quot; mạnh nhất.
               </p>
               <p>
-                2. <strong>Model quá lớn</strong> — giảm depth/width; không
+                2. <strong>Model quá lớn</strong>, giảm depth/width; không
                 phải bài toán nào cũng cần ResNet-152.
               </p>
               <p>
-                3. <strong>Data leakage</strong> — val set bị rò rỉ vào train
+                3. <strong>Data leakage</strong>, val set bị rò rỉ vào train
                 (duplicates, feature lookahead).
               </p>
               <p>
-                4. <strong>Distribution mismatch</strong> — train và val/test
+                4. <strong>Distribution mismatch</strong>, train và val/test
                 không cùng distribution; regularization không sửa được.
               </p>
             </div>
           </Callout>
 
-          <CollapsibleDetail title="Đi sâu — Tại sao L1 tạo sparsity còn L2 thì không?">
+          <CollapsibleDetail title="Đi sâu-Tại sao L1 tạo sparsity còn L2 thì không?">
             <div className="space-y-3 text-sm">
               <p>
                 Xét optimization với constraint (dạng Lagrangian tương đương
@@ -1272,23 +1272,23 @@ class DropConnectLinear(nn.Module):
               </p>
               <p>
                 Diamond có <strong>đỉnh (corner)</strong> trên các trục toạ độ
-                — đó là nơi một số <LaTeX>{"w_i = 0"}</LaTeX>. Khi contour của
+               , đó là nơi một số <LaTeX>{"w_i = 0"}</LaTeX>. Khi contour của
                 loss tiếp xúc với diamond, xác suất cao tiếp xúc ở corner →
                 sparsity. Hình tròn không có corner → tiếp xúc ở bất kỳ điểm
                 nào, thường không có <LaTeX>{"w_i = 0"}</LaTeX>.
               </p>
               <p>
                 Nhìn từ gradient: <LaTeX>{"\\partial |w| / \\partial w"}</LaTeX>{" "}
-                là <LaTeX>{"\\text{sign}(w)"}</LaTeX> (hằng số ±1) — lực đẩy
+                là <LaTeX>{"\\text{sign}(w)"}</LaTeX> (hằng số ±1), lực đẩy
                 không đổi dù <LaTeX>{"w"}</LaTeX> nhỏ. Trái lại,{" "}
-                <LaTeX>{"\\partial w^2 / \\partial w = 2w"}</LaTeX> — lực đẩy
+                <LaTeX>{"\\partial w^2 / \\partial w = 2w"}</LaTeX>, lực đẩy
                 giảm tuyến tính. Khi <LaTeX>{"w"}</LaTeX> nhỏ, L1 vẫn đẩy bằng
                 lực cũ nên đưa về 0; L2 chỉ đẩy nhẹ nên dừng ở số nhỏ khác 0.
               </p>
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Đi sâu — Dropout là Bayesian approximation">
+          <CollapsibleDetail title="Đi sâu-Dropout là Bayesian approximation">
             <div className="space-y-3 text-sm">
               <p>
                 Gal & Ghahramani (2016) chứng minh: một mạng với Dropout áp
@@ -1297,7 +1297,7 @@ class DropConnectLinear(nn.Module):
                 với prior Gaussian.
               </p>
               <p>
-                Từ góc nhìn này, Dropout không chỉ là trick — nó là một phép
+                Từ góc nhìn này, Dropout không chỉ là trick-nó là một phép
                 gần đúng của{" "}
                 <LaTeX>{"p(y | x) = \\int p(y | x, \\theta) p(\\theta | D) d\\theta"}</LaTeX>
                 . Hệ quả:
@@ -1315,7 +1315,7 @@ class DropConnectLinear(nn.Module):
                 medical AI và active learning.
               </p>
               <p>
-                Tuy nhiên, MC Dropout không thay thế được Bayesian đầy đủ —
+                Tuy nhiên, MC Dropout không thay thế được Bayesian đầy đủ,
                 chỉ approximate một họ prior cụ thể. Khi cần uncertainty
                 chất lượng cao, nên dùng Deep Ensembles hoặc SWAG.
               </p>
@@ -1350,12 +1350,12 @@ class DropConnectLinear(nn.Module):
             </div>
           </Callout>
 
-          <Callout variant="warning" title="Pitfalls — sai lầm phổ biến">
+          <Callout variant="warning" title="Pitfalls-sai lầm phổ biến">
             <div className="space-y-1">
               <p>
                 <strong>Regularize BN params:</strong> Không nên weight decay
                 các tham số <LaTeX>{"\\gamma, \\beta"}</LaTeX> của BatchNorm
-                hay LayerNorm — dùng param group riêng với wd=0.
+                hay LayerNorm-dùng param group riêng với wd=0.
               </p>
               <p>
                 <strong>Dropout trước softmax:</strong> Không. Dropout ở output
@@ -1363,7 +1363,7 @@ class DropConnectLinear(nn.Module):
                 layer.
               </p>
               <p>
-                <strong>Quên model.eval():</strong> Rất phổ biến — inference
+                <strong>Quên model.eval():</strong> Rất phổ biến-inference
                 với dropout bật = output ngẫu nhiên, accuracy giảm vô lý.
               </p>
               <p>
@@ -1386,15 +1386,15 @@ class DropConnectLinear(nn.Module):
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 6 — INLINE CHALLENGE 2
+       * STEP 6-INLINE CHALLENGE 2
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={6} totalSteps={8} label="Thử thách 2">
         <InlineChallenge
           question="Bạn có 100 features nhưng nghi ngờ chỉ 10 features thực sự hữu ích. Nên dùng regularization nào?"
           options={[
-            "L2 — thu nhỏ tất cả đều nhau",
-            "L1 (Lasso) — tự động đẩy 90 features thừa về trọng số = 0, giữ lại ~10 quan trọng (feature selection)",
-            "Dropout — tắt ngẫu nhiên features",
+            "L2-thu nhỏ tất cả đều nhau",
+            "L1 (Lasso), tự động đẩy 90 features thừa về trọng số = 0, giữ lại ~10 quan trọng (feature selection)",
+            "Dropout-tắt ngẫu nhiên features",
             "Chỉ Early Stopping",
           ]}
           correct={1}
@@ -1403,24 +1403,24 @@ class DropConnectLinear(nn.Module):
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 7 — MINI SUMMARY
+       * STEP 7-MINI SUMMARY
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
-          title="Regularization — Điểm chốt"
+          title="Regularization-Điểm chốt"
           points={[
             "Regularization = thêm ràng buộc vào quá trình train để ngăn overfitting, đánh đổi ít bias lấy nhiều variance giảm.",
             "L1 (Lasso): sparse, feature selection. L2 (Ridge/weight decay): smooth, mặc định. ElasticNet: kết hợp khi feature có tương quan.",
             "Dropout: tắt ngẫu nhiên p% nơ-ron khi train, mọi nơ-ron bật khi inference. DropConnect: tắt weight thay vì neuron.",
             "BatchNorm có hiệu ứng regularization nhẹ nhờ noise từ batch statistics. Data Augmentation là regularization MẠNH nhất qua input.",
-            "Early Stopping dừng train khi val loss tăng — tương đương L2 implicit. Label Smoothing ngăn output quá confident, cải thiện calibration.",
-            "Combo chuẩn: AdamW(wd=1e-4) + Dropout(0.1-0.3) + BN + Augmentation + EarlyStopping + LabelSmoothing(0.1) — các kỹ thuật hỗ trợ chứ không thay thế nhau.",
+            "Early Stopping dừng train khi val loss tăng-tương đương L2 implicit. Label Smoothing ngăn output quá confident, cải thiện calibration.",
+            "Combo chuẩn: AdamW(wd=1e-4) + Dropout(0.1-0.3) + BN + Augmentation + EarlyStopping + LabelSmoothing(0.1), các kỹ thuật hỗ trợ chứ không thay thế nhau.",
           ]}
         />
       </LessonSection>
 
       {/* ──────────────────────────────────────────────────────
-       * STEP 8 — QUIZ
+       * STEP 8-QUIZ
        * ────────────────────────────────────────────────────── */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={QUIZ_QUESTIONS} />

@@ -38,21 +38,21 @@ const QUIZ: QuizQuestion[] = [
   {
     question: "Mô hình có confidence = 90% nhưng chỉ đúng 60% trường hợp. Vấn đề này gọi là gì?",
     options: [
-      "Hallucination — mô hình bịa câu trả lời",
-      "Overconfidence (quá tự tin) — miscalibration giữa confidence và accuracy thực tế",
-      "Underfitting — mô hình quá đơn giản",
-      "Overfitting — mô hình quá phức tạp",
+      "Hallucination-mô hình bịa câu trả lời",
+      "Overconfidence (quá tự tin), miscalibration giữa confidence và accuracy thực tế",
+      "Underfitting-mô hình quá đơn giản",
+      "Overfitting-mô hình quá phức tạp",
     ],
     correct: 1,
     explanation:
-      "Đây là miscalibration — confidence score không phản ánh đúng xác suất trả lời chính xác. Calibration tốt nghĩa là khi mô hình nói 'tôi chắc 90%' thì 90% câu trả lời đó phải đúng. ECE (Expected Calibration Error) đo mức sai lệch này.",
+      "Đây là miscalibration-confidence score không phản ánh đúng xác suất trả lời chính xác. Calibration tốt nghĩa là khi mô hình nói 'tôi chắc 90%' thì 90% câu trả lời đó phải đúng. ECE (Expected Calibration Error) đo mức sai lệch này.",
   },
   {
     question: "Bạn dùng AI tư vấn y tế. Mô hình trả lời với confidence = 35%. Bạn nên làm gì?",
     options: [
       "Tin tưởng vì AI thường đúng",
       "Bỏ qua hoàn toàn câu trả lời",
-      "Coi đây là tham khảo ban đầu và BẮT BUỘC xác minh với bác sĩ — confidence thấp ở lĩnh vực y tế = rủi ro cao",
+      "Coi đây là tham khảo ban đầu và BẮT BUỘC xác minh với bác sĩ-confidence thấp ở lĩnh vực y tế = rủi ro cao",
       "Hỏi lại câu hỏi cùng mô hình để xem có thay đổi không",
     ],
     correct: 2,
@@ -62,7 +62,7 @@ const QUIZ: QuizQuestion[] = [
   {
     question: "Cách nào giúp cải thiện calibration của LLM?",
     options: [
-      "Tăng kích thước mô hình — mô hình lớn hơn luôn calibrate tốt hơn",
+      "Tăng kích thước mô hình-mô hình lớn hơn luôn calibrate tốt hơn",
       "Temperature scaling: điều chỉnh phân phối xác suất đầu ra, kết hợp verbalized confidence và self-consistency",
       "Chỉ cần thêm câu 'Bạn có chắc không?' vào prompt",
       "Dùng greedy decoding thay vì sampling",
@@ -88,19 +88,19 @@ export default function TLMTopic() {
         <PredictionGate
           question="Bạn hỏi AI 'Phản ứng giữa NaOH và HCl tạo ra gì?' và AI trả lời tự tin 95%: 'Tạo ra H2SO4'. Đây là vấn đề gì?"
           options={[
-            "Không có vấn đề — AI tự tin nên chắc đúng",
-            "Hallucination — AI bịa câu trả lời, nhưng ít nhất nó biết mình sai",
-            "Overconfidence — AI CỰC KỲ tự tin nhưng SAI hoàn toàn, đây là dạng nguy hiểm nhất",
+            "Không có vấn đề-AI tự tin nên chắc đúng",
+            "Hallucination-AI bịa câu trả lời, nhưng ít nhất nó biết mình sai",
+            "Overconfidence-AI CỰC KỲ tự tin nhưng SAI hoàn toàn, đây là dạng nguy hiểm nhất",
           ]}
           correct={2}
-          explanation="Đây là vấn đề overconfidence — dạng nguy hiểm nhất của mô hình thiếu tin cậy. NaOH + HCl tạo NaCl + H2O (KHÔNG phải H2SO4). Nhưng AI nói 'chắc 95%', khiến người dùng dễ tin. TLM giải quyết bằng cách đảm bảo confidence PHẢN ÁNH ĐÚNG xác suất trả lời chính xác."
+          explanation="Đây là vấn đề overconfidence-dạng nguy hiểm nhất của mô hình thiếu tin cậy. NaOH + HCl tạo NaCl + H2O (KHÔNG phải H2SO4). Nhưng AI nói 'chắc 95%', khiến người dùng dễ tin. TLM giải quyết bằng cách đảm bảo confidence PHẢN ÁNH ĐÚNG xác suất trả lời chính xác."
         />
       </LessonSection>
 
       {/* ── Step 2: Interactive Confidence Explorer ── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Hãy chọn các câu hỏi khác nhau. Quan sát confidence score — mô hình đáng tin cậy sẽ cho điểm CAO khi biết chắc và THẤP khi không chắc.
+          Hãy chọn các câu hỏi khác nhau. Quan sát confidence score-mô hình đáng tin cậy sẽ cho điểm CAO khi biết chắc và THẤP khi không chắc.
         </p>
 
         <VisualizationSection>
@@ -151,7 +151,7 @@ export default function TLMTopic() {
               {/* Correctness */}
               <rect x={20} y={135} width={580} height={30} rx={6} fill={ex.correct ? "#22c55e" : "#ef4444"} opacity={0.15} />
               <text x={30} y={155} fill={ex.correct ? "#22c55e" : "#ef4444"} fontSize={11} fontWeight="bold">
-                {ex.correct ? "Chính xác" : "SAI — Cần kiểm chứng!"}
+                {ex.correct ? "Chính xác" : "SAI-Cần kiểm chứng!"}
                 {!ex.correct && " (Confidence cao nhưng đáp án sai = miscalibration!)"}
               </text>
 
@@ -172,7 +172,7 @@ export default function TLMTopic() {
         <AhaMoment>
           Mô hình{" "}
           <strong>đáng tin cậy</strong>{" "}
-          không phải mô hình luôn đúng — mà là mô hình{" "}
+          không phải mô hình luôn đúng-mà là mô hình{" "}
           <strong>biết khi nào mình sai</strong>. Giống như bác sĩ giỏi: nói{" "}
           <strong>{'"Tôi chắc chắn đây là cảm cúm"'}</strong>{" "}
           khi biết rõ, nhưng nói{" "}
@@ -186,9 +186,9 @@ export default function TLMTopic() {
         <InlineChallenge
           question="Mô hình A trả lời đúng 90% nhưng luôn nói 'chắc chắn 99%'. Mô hình B trả lời đúng 80% nhưng confidence phản ánh chính xác accuracy. Mô hình nào đáng tin cậy hơn?"
           options={[
-            "Mô hình A — vì đúng 90% cao hơn",
-            "Mô hình B — vì biết khi nào sai (calibration tốt hơn) nên người dùng biết khi nào cần kiểm chứng",
-            "Bằng nhau — accuracy mới quan trọng",
+            "Mô hình A-vì đúng 90% cao hơn",
+            "Mô hình B-vì biết khi nào sai (calibration tốt hơn) nên người dùng biết khi nào cần kiểm chứng",
+            "Bằng nhau-accuracy mới quan trọng",
             "Không thể so sánh",
           ]}
           correct={1}
@@ -222,7 +222,7 @@ export default function TLMTopic() {
             </div>
           </Callout>
 
-          <p>Expected Calibration Error (ECE) — thước đo calibration:</p>
+          <p>Expected Calibration Error (ECE), thước đo calibration:</p>
           <LaTeX block>{"\\text{ECE} = \\sum_{m=1}^{M} \\frac{|B_m|}{n} \\left| \\text{acc}(B_m) - \\text{conf}(B_m) \\right|"}</LaTeX>
           <p className="text-sm text-muted">
             Chia tất cả dự đoán thành M bins theo confidence. Với mỗi bin <LaTeX>{"B_m"}</LaTeX>, so sánh accuracy thực tế với confidence trung bình. ECE = 0 là calibration hoàn hảo.
@@ -285,7 +285,7 @@ result = get_confidence("AI có ý thức không?")
             <div className="space-y-1">
               <p>
                 <strong>Y tế:</strong>{" "}
-                AI tư vấn triệu chứng PHẢI có confidence. {'"Có thể là sốt xuất huyết (confidence: 40%) — hãy đến bệnh viện ngay"'}.
+                AI tư vấn triệu chứng PHẢI có confidence. {'"Có thể là sốt xuất huyết (confidence: 40%), hãy đến bệnh viện ngay"'}.
               </p>
               <p>
                 <strong>Tài chính:</strong>{" "}
@@ -329,7 +329,7 @@ result = get_confidence("AI có ý thức không?")
             "ECE đo chất lượng calibration. ECE = 0 là hoàn hảo: nói 80% chắc thì 80% phải đúng.",
             "Ba kỹ thuật: temperature scaling (điều chỉnh logits), verbalized confidence, self-consistency.",
             "Overconfidence nguy hiểm hơn underconfidence: sai mà tự tin khiến người dùng không kiểm chứng.",
-            "Bắt buộc trong domain rủi ro cao: y tế, tài chính, pháp luật — luôn cần cảnh báo khi không chắc.",
+            "Bắt buộc trong domain rủi ro cao: y tế, tài chính, pháp luật-luôn cần cảnh báo khi không chắc.",
           ]}
         />
       </LessonSection>

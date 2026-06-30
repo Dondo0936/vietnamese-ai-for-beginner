@@ -88,7 +88,7 @@ const QUERIES: QueryCase[] = [
         source: "shopee-vn/help/return-methods",
         title: "Các hình thức hoàn tiền",
         content:
-          "Hoàn tiền qua ShopeePay trong vòng 24 giờ sau khi bên bán xác nhận. Hoàn về ngân hàng 3–7 ngày làm việc.",
+          "Hoàn tiền qua ShopeePay trong vòng 24 giờ sau khi bên bán xác nhận. Hoàn về ngân hàng 3-7 ngày làm việc.",
         relevant: true,
       },
     ],
@@ -111,7 +111,7 @@ const QUERIES: QueryCase[] = [
     results: {
       none: {
         answer:
-          "Theo quy định hiện hành của Shopee VN, bạn có 15 ngày kể từ ngày nhận hàng để yêu cầu hoàn tiền khi hàng lỗi hoặc không đúng mô tả. Tiền sẽ về ShopeePay trong 24 giờ hoặc ngân hàng trong 3–7 ngày làm việc.",
+          "Theo quy định hiện hành của Shopee VN, bạn có 15 ngày kể từ ngày nhận hàng để yêu cầu hoàn tiền khi hàng lỗi hoặc không đúng mô tả. Tiền sẽ về ShopeePay trong 24 giờ hoặc ngân hàng trong 3-7 ngày làm việc.",
         faithfulness: 96,
         answerRelevance: 94,
         contextRelevance: 92,
@@ -180,7 +180,7 @@ const QUERIES: QueryCase[] = [
       {
         source: "gdt.gov.vn/tndn",
         title: "Thuế thu nhập doanh nghiệp",
-        content: "Mức phổ thông 20%, ưu đãi 10–17% cho một số khu vực.",
+        content: "Mức phổ thông 20%, ưu đãi 10-17% cho một số khu vực.",
         relevant: false,
       },
     ],
@@ -196,7 +196,7 @@ const QUERIES: QueryCase[] = [
       },
       "bad-retrieval": {
         answer:
-          "Tôi có dữ liệu về thuế TNCN (5–35%) và TNDN (20%), nhưng không tìm thấy VAT cụ thể. Vui lòng tham chiếu Tổng cục Thuế.",
+          "Tôi có dữ liệu về thuế TNCN (5-35%) và TNDN (20%), nhưng không tìm thấy VAT cụ thể. Vui lòng tham chiếu Tổng cục Thuế.",
         faithfulness: 88,
         answerRelevance: 28,
         contextRelevance: 12,
@@ -391,7 +391,7 @@ const QUERIES: QueryCase[] = [
       },
       {
         source: "uit.edu.vn/schedule/ma004-hk2-2026",
-        title: "Lịch mở MA004 học kỳ 2/2025–2026",
+        title: "Lịch mở MA004 học kỳ 2/2025-2026",
         content:
           "MA004 mở 4 lớp học lại vào HK2, tuần bắt đầu 03/03/2026. Học phí 720k/tín chỉ × 3TC = 2.160k.",
         relevant: true,
@@ -416,7 +416,7 @@ const QUERIES: QueryCase[] = [
     results: {
       none: {
         answer:
-          "Sinh viên UIT có điểm D+ trở xuống ở MA004 được đăng ký học lại. Đăng ký mở tuần 12 của học kỳ, đóng sau 7 ngày. HK2/2025–2026 mở 4 lớp, bắt đầu 03/03/2026. Học phí 720k/TC × 3TC = 2.160k.",
+          "Sinh viên UIT có điểm D+ trở xuống ở MA004 được đăng ký học lại. Đăng ký mở tuần 12 của học kỳ, đóng sau 7 ngày. HK2/2025-2026 mở 4 lớp, bắt đầu 03/03/2026. Học phí 720k/TC × 3TC = 2.160k.",
         faithfulness: 97,
         answerRelevance: 95,
         contextRelevance: 93,
@@ -1001,11 +1001,11 @@ export default function RagEvaluationTopic() {
           </Callout>
 
           <Callout variant="insight" title="Golden retrieval set, tài sản không thể mua">
-            Một bộ <code>(query, gold_docs, gold_answer)</code> 50–200 mẫu
+            Một bộ <code>(query, gold_docs, gold_answer)</code> 50-200 mẫu
             được chọn kỹ, đại diện cho use case quan trọng, là{" "}
             <strong>tài sản vận hành</strong> của team RAG. Nó cho phép đo
             reference-based chính xác và dựng CI gate. Cập nhật golden set
-            mỗi 2–4 tuần bằng cách sample từ production log, đừng để nó lỗi
+            mỗi 2-4 tuần bằng cách sample từ production log, đừng để nó lỗi
             thời. Xem thêm <TopicLink slug="rag">RAG</TopicLink> và{" "}
             <TopicLink slug="agentic-rag">Agentic RAG</TopicLink> để hiểu kiến
             trúc đang đo.
@@ -1301,7 +1301,7 @@ reporting:
               <li>
                 <strong>Reference-based</strong>: cần tập{" "}
                 <code>(query, gold_docs, gold_answer)</code>. Dùng ROUGE/BLEU
-                cho answer, Recall@k/MRR cho retrieval. Chính xác nhưng đắt, tạo gold tốn 15–30 phút/mẫu × hàng trăm mẫu. Dùng cho:
+                cho answer, Recall@k/MRR cho retrieval. Chính xác nhưng đắt, tạo gold tốn 15-30 phút/mẫu × hàng trăm mẫu. Dùng cho:
                 benchmark nội bộ, regression gate, so sánh pipeline.
               </li>
               <li>
@@ -1313,7 +1313,7 @@ reporting:
               </li>
             </ul>
             <p className="text-sm mt-3">
-              Team trưởng thành: 50–200 gold reference-based → regression
+              Team trưởng thành: 50-200 gold reference-based → regression
               gate CI. Full production traffic → reference-free sampling
               (~5%) → dashboard drift. Calibrate judge định kỳ bằng human
               eval 30 mẫu/tuần.
@@ -1377,7 +1377,7 @@ reporting:
             "Bộ ba cốt lõi: Faithfulness (bám nguồn), Context Relevance (doc liên quan), Answer Relevance (đúng câu hỏi). Đo CẢ BA, không gộp.",
             "Chẩn đoán: Context Rel đỏ → fix retrieval (embedding, chunk, rerank). Faithfulness đỏ → fix generation (prompt chặt, đổi model, cite-check). Answer Rel đỏ → fix prompt/intent.",
             "Framework 2026: RAGAS (mặc định), TruLens, ARES, DeepEval. Tất cả hỗ trợ reference-free LLM-as-judge + reference trace để debug.",
-            "Golden retrieval set 50–200 mẫu là tài sản vận hành, cập nhật mỗi 2–4 tuần từ production log, dùng làm CI gate.",
+            "Golden retrieval set 50-200 mẫu là tài sản vận hành, cập nhật mỗi 2-4 tuần từ production log, dùng làm CI gate.",
             "Multilingual gotcha VN: embedding đa ngôn ngữ yếu hay kéo doc sai ngôn ngữ. Dùng embedding chuyên VN (bge-m3) hoặc hybrid BM25.",
           ]}
         />

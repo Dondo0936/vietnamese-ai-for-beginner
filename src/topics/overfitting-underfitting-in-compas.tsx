@@ -310,9 +310,9 @@ export default function OverfittingUnderfittingInCompas() {
         </Beat>
         <Beat step={4}>
           <p>
-            <strong>Con người cũng chỉ đạt 63–67%.</strong> Cùng nghiên cứu
+            <strong>Con người cũng chỉ đạt 63-67%.</strong> Cùng nghiên cứu
             đó, 400 tình nguyện viên không chuyên dự đoán tái phạm dựa trên mô
-            tả ngắn. Họ cũng đạt 63–67%. Điều này lộ ra giới hạn nội tại của
+            tả ngắn. Họ cũng đạt 63-67%. Điều này lộ ra giới hạn nội tại của
             bài toán: dự đoán tái phạm cá nhân có trần tự nhiên khoảng 67%.
             Mọi đặc trưng thêm vào không phá được trần đó. Nó chỉ làm model
             phức tạp hơn và overfit nhiều hơn.
@@ -450,7 +450,7 @@ export default function OverfittingUnderfittingInCompas() {
           sourceRef={3}
         />
         <Metric
-          value="Tình nguyện viên không chuyên đạt 63–67%, ngang COMPAS"
+          value="Tình nguyện viên không chuyên đạt 63-67%, ngang COMPAS"
           sourceRef={2}
         />
       </ApplicationMetrics>

@@ -27,12 +27,12 @@ const quizQuestions: QuizQuestion[] = [
     question: "NeRF nhận input (x, y, z, θ, φ) và output (r, g, b, σ). Tại sao cần hướng nhìn (θ, φ)?",
     options: [
       "Để tăng tốc render",
-      "Vì cùng 1 điểm nhìn từ góc khác nhau có màu khác nhau (phản xạ, bóng sáng) — view-dependent effects",
+      "Vì cùng 1 điểm nhìn từ góc khác nhau có màu khác nhau (phản xạ, bóng sáng), view-dependent effects",
       "Để biết camera ở đâu",
-      "Không cần — chỉ là thừa",
+      "Không cần-chỉ là thừa",
     ],
     correct: 1,
-    explanation: "Mặt nước phản chiếu: nhìn từ trên → xanh, nhìn xiên → phản chiếu trời. Kim loại bóng: nhìn thẳng → sáng, nhìn xiên → tối. (θ, φ) cho phép NeRF mô tả hiệu ứng phụ thuộc góc nhìn — tạo ảnh thực hơn.",
+    explanation: "Mặt nước phản chiếu: nhìn từ trên → xanh, nhìn xiên → phản chiếu trời. Kim loại bóng: nhìn thẳng → sáng, nhìn xiên → tối. (θ, φ) cho phép NeRF mô tả hiệu ứng phụ thuộc góc nhìn-tạo ảnh thực hơn.",
   },
   {
     question: "NeRF dùng positional encoding cho input (x,y,z). Tại sao?",
@@ -48,7 +48,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "NeRF gốc render 1 ảnh mất ~30 giây. Instant-NGP giảm xuống bao nhiêu?",
     options: [
       "~10 giây (nhanh hơn 3×)",
-      "~5ms — nhanh hơn ~6000× nhờ hash encoding thay PE + CUDA optimizations",
+      "~5ms-nhanh hơn ~6000× nhờ hash encoding thay PE + CUDA optimizations",
       "~1 phút (chậm hơn vì phức tạp hơn)",
     ],
     correct: 1,
@@ -76,16 +76,16 @@ export default function NerfTopic() {
           options={[
             "Chụp thêm ảnh ở góc đó",
             "Dùng AI xây dựng mô hình 3D từ 50 ảnh, rồi render ảnh mới từ góc bất kỳ",
-            "Không thể — chỉ xem được góc đã chụp",
+            "Không thể-chỉ xem được góc đã chụp",
           ]}
           correct={1}
-          explanation="NeRF! Nó học một 'hàm 3D': cho mọi điểm (x,y,z) và hướng nhìn (θ,φ), trả về màu (RGB) và mật độ (σ). Từ đó render ảnh từ BẤT KỲ góc nhìn nào — như bạn có camera ảo bay quanh cảnh."
+          explanation="NeRF! Nó học một 'hàm 3D': cho mọi điểm (x,y,z) và hướng nhìn (θ,φ), trả về màu (RGB) và mật độ (σ). Từ đó render ảnh từ BẤT KỲ góc nhìn nào-như bạn có camera ảo bay quanh cảnh."
         />
       </LessonSection>
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá NeRF">
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bạn dùng Google Maps để xem phố cổ Hội An. Từ ảnh 2D đã chụp, AI xây dựng &quot;thế giới 3D&quot; — bạn &quot;bay&quot; quanh, zoom vào ngóc ngách chưa ai chụp. Đó là công nghệ đằng sau{" "}
+          Hãy tưởng tượng bạn dùng Google Maps để xem phố cổ Hội An. Từ ảnh 2D đã chụp, AI xây dựng &quot;thế giới 3D&quot;, bạn &quot;bay&quot; quanh, zoom vào ngóc ngách chưa ai chụp. Đó là công nghệ đằng sau{" "}
           <strong>NeRF</strong>.
         </p>
 
@@ -188,7 +188,7 @@ export default function NerfTopic() {
         <AhaMoment>
           <p>
             <strong>NeRF</strong>{" "}
-            biến bài toán 3D thành bài toán hàm số: F(x,y,z,&theta;,&phi;) &rarr; (r,g,b,&sigma;). Một MLP đơn giản mã hóa TOÀN BỘ cảnh 3D! Không cần mesh, point cloud, hay voxel — chỉ cần weights của neural network.
+            biến bài toán 3D thành bài toán hàm số: F(x,y,z,&theta;,&phi;) &rarr; (r,g,b,&sigma;). Một MLP đơn giản mã hóa TOÀN BỘ cảnh 3D! Không cần mesh, point cloud, hay voxel-chỉ cần weights của neural network.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -214,7 +214,7 @@ export default function NerfTopic() {
           question="Render ảnh 800×800 từ NeRF. Mỗi pixel bắn 1 tia, lấy 64 mẫu/tia. MLP được gọi bao nhiêu lần?"
           options={[
             "800 × 800 = 640.000 lần",
-            "800 × 800 × 64 = ~41 triệu lần — đây là lý do NeRF gốc chậm!",
+            "800 × 800 × 64 = ~41 triệu lần-đây là lý do NeRF gốc chậm!",
             "64 lần (mỗi mẫu 1 lần)",
           ]}
           correct={1}
@@ -226,7 +226,7 @@ export default function NerfTopic() {
         <ExplanationSection>
           <p>
             <strong>NeRF</strong>{" "}
-            (Mildenhall et al., 2020) biểu diễn cảnh 3D bằng continuous function mã hóa trong MLP — khác với cách mô hình sinh như{" "}
+            (Mildenhall et al., 2020) biểu diễn cảnh 3D bằng continuous function mã hóa trong MLP-khác với cách mô hình sinh như{" "}
             <TopicLink slug="vae">VAE</TopicLink>{" "}nén cảnh vào latent vector rời rạc, NeRF giữ cảnh như một hàm liên tục trên không gian 3D.
           </p>
           <LaTeX block>{String.raw`F_\Theta: (\mathbf{x}, \mathbf{d}) \rightarrow (\mathbf{c}, \sigma)`}</LaTeX>

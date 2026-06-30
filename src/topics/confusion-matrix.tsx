@@ -49,7 +49,7 @@ export const metadata: TopicMeta = {
 
 type Patient = {
   id: number;
-  score: number;   // điểm nguy cơ mô hình đưa ra (0 – 1)
+  score: number;   // điểm nguy cơ mô hình đưa ra (0-1)
   isSick: boolean; // sự thật
 };
 
@@ -886,7 +886,7 @@ export default function ConfusionMatrixTopic() {
           </Callout>
 
           <Callout variant="info" title="Nhiều lớp, không chỉ 2 × 2">
-            Với K lớp (ví dụ phân loại chữ số 0–9), ma trận là K × K. Mỗi hàng là lớp thực tế, mỗi
+            Với K lớp (ví dụ phân loại chữ số 0-9), ma trận là K × K. Mỗi hàng là lớp thực tế, mỗi
             cột là lớp dự đoán. Precision/Recall/F1 tính riêng cho mỗi lớp, rồi tổng hợp bằng{" "}
             <em>macro-average</em> (trung bình đều) hoặc <em>weighted-average</em> (có trọng số theo
             số mẫu).

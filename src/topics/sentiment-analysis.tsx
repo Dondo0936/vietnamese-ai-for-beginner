@@ -269,7 +269,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "tiêu cực", accept: ["negative", "tieu cuc"] },
     ],
     explanation:
-      "Ba lớp kinh điển: tích cực / tiêu cực / trung tính. Nâng cao hơn có: 1–5 sao, phân tích theo khía cạnh (đồ ăn tích cực, dịch vụ tiêu cực), hoặc 6 cảm xúc (vui, buồn, giận, sợ, ngạc nhiên, ghê tởm).",
+      "Ba lớp kinh điển: tích cực / tiêu cực / trung tính. Nâng cao hơn có: 1-5 sao, phân tích theo khía cạnh (đồ ăn tích cực, dịch vụ tiêu cực), hoặc 6 cảm xúc (vui, buồn, giận, sợ, ngạc nhiên, ghê tởm).",
   },
 ];
 
@@ -398,7 +398,7 @@ export default function SentimentAnalysisTopic() {
               Một trang Facebook của ngân hàng có thể nhận 30.000 bình luận/ngày.
               Một thương hiệu Shopee top 100 có 500.000 review đang tồn. Không đội
               nhân sự nào đọc nổi. AI làm việc{" "}
-              <strong>gom nhóm khen–chê theo giờ</strong> để bạn biết lúc nào cần
+              <strong>gom nhóm khen-chê theo giờ</strong> để bạn biết lúc nào cần
               vào cứu lửa.
             </p>
           </Callout>
@@ -885,7 +885,7 @@ export default function SentimentAnalysisTopic() {
                 Tốt hơn từ điển, vẫn chưa hiểu ngữ cảnh.
               </p>
               <div className="text-[10px] text-muted">
-                <p><strong>Độ chính xác 75–85%</strong> trong lĩnh vực quen.</p>
+                <p><strong>Độ chính xác 75-85%</strong> trong lĩnh vực quen.</p>
               </div>
             </div>
 
@@ -901,7 +901,7 @@ export default function SentimentAnalysisTopic() {
                 GPT-4 đa ngôn ngữ.
               </p>
               <div className="text-[10px] text-muted">
-                <p><strong>85–95%</strong>, tốt nhất hiện nay.</p>
+                <p><strong>85-95%</strong>, tốt nhất hiện nay.</p>
               </div>
             </div>
           </div>
@@ -1109,7 +1109,7 @@ export default function SentimentAnalysisTopic() {
             "AI đọc bình luận rồi gán tích cực / tiêu cực / trung tính, giống bạn lướt Facebook, nhưng chạy ở quy mô triệu bình luận.",
             "Aspect-based tách riêng từng khía cạnh (món ăn, ship, giá), giúp biết chỗ nào cần sửa trước.",
             "Từ điển đếm từ rẻ nhưng sai với đảo ngữ (‘không tệ’), mỉa mai, emoji.",
-            "BERT / PhoBERT / LLM đọc cả câu, đạt 85–95%, mạnh nhất hiện nay với tiếng Việt.",
+            "BERT / PhoBERT / LLM đọc cả câu, đạt 85-95%, mạnh nhất hiện nay với tiếng Việt.",
             "Ứng dụng văn phòng: giám sát thương hiệu, đánh giá chiến dịch, phân tích khảo sát, cảnh báo khủng hoảng.",
           ]}
         />

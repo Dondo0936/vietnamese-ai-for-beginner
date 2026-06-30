@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "synthetic-data",
   title: "Synthetic Data",
-  titleVi: "Dữ liệu tổng hợp. AI tạo dữ liệu cho AI",
+  titleVi: "Dữ liệu tổng hợp",
   description:
     "Dữ liệu được tạo bằng AI hoặc mô phỏng, dùng để huấn luyện mô hình khi dữ liệu thật khan hiếm, đắt đỏ hoặc nhạy cảm.",
   category: "emerging",

@@ -26,7 +26,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "reasoning-models",
   title: "Reasoning Models",
-  titleVi: "Mô hình suy luận. AI biết nghĩ sâu",
+  titleVi: "Mô hình suy luận",
   description:
     "Thế hệ mô hình AI mới có khả năng suy luận từng bước, giải quyết các bài toán phức tạp đòi hỏi logic và tư duy.",
   category: "emerging",
@@ -211,7 +211,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Paper o1 và các khảo sát 2024–2025 cho thấy: với cùng base model, thêm thinking tokens làm chất lượng tăng tuyến tính theo log của thinking budget. Hai trục độc lập, bạn có thể đánh đổi train compute với test-time compute.",
+        "Paper o1 và các khảo sát 2024-2025 cho thấy: với cùng base model, thêm thinking tokens làm chất lượng tăng tuyến tính theo log của thinking budget. Hai trục độc lập, bạn có thể đánh đổi train compute với test-time compute.",
     },
     {
       question: "Khi nào KHÔNG nên dùng reasoning model?",
@@ -223,7 +223,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Factual đơn giản không cần suy luận, model thường trả lời đúng ngay. Dùng reasoning model sẽ tốn 10–100× chi phí mà chất lượng không khác. Routing thông minh (cheap model cho câu dễ, reasoning cho câu khó) là chìa khoá kinh tế.",
+        "Factual đơn giản không cần suy luận, model thường trả lời đúng ngay. Dùng reasoning model sẽ tốn 10-100× chi phí mà chất lượng không khác. Routing thông minh (cheap model cho câu dễ, reasoning cho câu khó) là chìa khoá kinh tế.",
     },
     {
       question:
@@ -249,7 +249,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Thinking: 8.000 × $0.15 / 1.000.000 = $0.0012. Answer: 200 × $0.60 / 1.000.000 = $0.00012. Lưu ý câu này là thí dụ đơn vị /1M; chi phí thực tế với o1/o3 cao hơn nhiều vì giá thinking ~ $3–60/1M tuỳ tier.",
+        "Thinking: 8.000 × $0.15 / 1.000.000 = $0.0012. Answer: 200 × $0.60 / 1.000.000 = $0.00012. Lưu ý câu này là thí dụ đơn vị /1M; chi phí thực tế với o1/o3 cao hơn nhiều vì giá thinking ~ $3-60/1M tuỳ tier.",
     },
     {
       question:
@@ -262,7 +262,7 @@ function buildQuiz(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "GRPO (Group Relative Policy Optimization) không train critic model riêng. Thay vào đó, sample K output cho cùng 1 prompt, tính reward từng output, normalize trong nhóm → dùng làm advantage. Đơn giản hơn PPO, tiết kiệm 30–50% GPU.",
+        "GRPO (Group Relative Policy Optimization) không train critic model riêng. Thay vào đó, sample K output cho cùng 1 prompt, tính reward từng output, normalize trong nhóm → dùng làm advantage. Đơn giản hơn PPO, tiết kiệm 30-50% GPU.",
     },
     {
       question: "Nguyên nhân chính khiến thinking trace tăng tính tin cậy?",
@@ -397,7 +397,7 @@ export default function ReasoningModelsTopic() {
         <p>
           LLM thường giống một học sinh làm <strong>bài trắc nghiệm</strong>:
           đọc câu hỏi, chọn đáp án ngay. Tốc độ là ưu tiên; nhìn pattern tốt
-          sẽ đúng nhanh. Nhưng với bài yêu cầu 5–10 bước suy luận, phương
+          sẽ đúng nhanh. Nhưng với bài yêu cầu 5-10 bước suy luận, phương
           pháp này giống như đoán, đôi khi may mắn, đôi khi sai tinh vi.
         </p>
         <p>
@@ -428,7 +428,7 @@ export default function ReasoningModelsTopic() {
           đầu tiên khiến AI có thể đối mặt với những vấn đề{" "}
           <em>ngoài phân bố</em> training data: các biến thể mới, các kết
           hợp chưa từng thấy, các bài toán olympic thật sự. Đó là thông điệp
-          lớn nhất của o1, o3 và DeepSeek-R1 trong làn sóng 2024–2025.
+          lớn nhất của o1, o3 và DeepSeek-R1 trong làn sóng 2024-2025.
         </p>
       </LessonSection>
 
@@ -763,8 +763,8 @@ export default function ReasoningModelsTopic() {
                   Reasoning LLM
                 </p>
                 <p className="text-xs text-muted">
-                  Sinh thinking trace (100s–1000s tokens) rồi mới answer.
-                  Chậm, đắt hơn 10–100×, nhưng vượt trội trên toán, code
+                  Sinh thinking trace (100s-1000s tokens) rồi mới answer.
+                  Chậm, đắt hơn 10-100×, nhưng vượt trội trên toán, code
                   phức tạp, logic, planning.
                 </p>
               </div>
@@ -820,7 +820,7 @@ export default function ReasoningModelsTopic() {
             "Luôn chạy cả hai model song song và lấy đáp án dài hơn",
           ]}
           correct={2}
-          explanation="Routing là chiến lược chuẩn: (1) Một classifier nhẹ (embedding + vài rule / logistic) phân loại câu hỏi. (2) Câu factual dùng model rẻ. (3) Câu khó dùng reasoning. Kết quả: chi phí trung bình giảm 5–10×, chất lượng gần như không đổi vì 80% câu vốn không cần reasoning. 'Luôn dùng mạnh nhất' là anti-pattern, lãng phí tài nguyên và làm user phải chờ vô ích."
+          explanation="Routing là chiến lược chuẩn: (1) Một classifier nhẹ (embedding + vài rule / logistic) phân loại câu hỏi. (2) Câu factual dùng model rẻ. (3) Câu khó dùng reasoning. Kết quả: chi phí trung bình giảm 5-10×, chất lượng gần như không đổi vì 80% câu vốn không cần reasoning. 'Luôn dùng mạnh nhất' là anti-pattern, lãng phí tài nguyên và làm user phải chờ vô ích."
         />
       </LessonSection>
 
@@ -921,7 +921,7 @@ export default function ReasoningModelsTopic() {
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <strong>"Luôn bật reasoning" là anti-pattern.</strong> Câu
-                hỏi factual đơn giản không cần, bạn sẽ tốn 10–100× chi phí
+                hỏi factual đơn giản không cần, bạn sẽ tốn 10-100× chi phí
                 mà không được gì.
               </li>
               <li>
@@ -943,7 +943,7 @@ export default function ReasoningModelsTopic() {
             value, GRPO sample K output cho cùng 1 prompt, tính reward từng
             output bằng rule-based (đáp án đúng/sai, format đúng/sai),
             normalize trong nhóm → dùng làm advantage. Không cần critic →
-            tiết kiệm 30–50% memory và compute. Bất ngờ: chất lượng gần
+            tiết kiệm 30-50% memory và compute. Bất ngờ: chất lượng gần
             ngang PPO trên nhiều benchmark.
           </Callout>
 
@@ -1088,7 +1088,7 @@ def answer(prompt: str) -> str:
               </li>
             </ol>
             <p>
-              Kết quả: tiết kiệm 30–50% memory và compute, code đơn giản
+              Kết quả: tiết kiệm 30-50% memory và compute, code đơn giản
               hơn nhiều, và DeepSeek chứng minh chất lượng ngang PPO trên
               reasoning tasks. Đây là một trong những lý do R1 huấn luyện
               được với budget thấp hơn OpenAI nhiều.
@@ -1151,11 +1151,11 @@ def answer(prompt: str) -> str:
             <li>Summarization, translation, style transfer, không cần phân tích nhiều bước.</li>
             <li>
               Latency SLA khắt khe (&lt; 2s), reasoning model thường mất
-              10–60s.
+              10-60s.
             </li>
             <li>
               Streaming UX cần token đầu tiên nhanh, thinking làm TTFT
-              (time to first token) tăng 10–100×.
+              (time to first token) tăng 10-100×.
             </li>
           </ul>
 
@@ -1166,7 +1166,7 @@ def answer(prompt: str) -> str:
             (Qwen-Reasoning, Llama-Reasoning) sẽ khép khoảng cách với o-series.
           </p>
 
-          <CollapsibleDetail title="Benchmark tham khảo 2024–2025">
+          <CollapsibleDetail title="Benchmark tham khảo 2024-2025">
             <p>
               Để có bức tranh định lượng, đây là một vài con số hay gặp
               trong các paper cuối 2024 / đầu 2025 (các số có thể lệch nhẹ
@@ -1184,11 +1184,11 @@ def answer(prompt: str) -> str:
               </li>
               <li>
                 <strong>GPQA Diamond (PhD science):</strong> GPT-4o ~50%,
-                reasoning models 70–87%. Đây là benchmark "Google-proof", không thể tra ra đáp án.
+                reasoning models 70-87%. Đây là benchmark "Google-proof", không thể tra ra đáp án.
               </li>
               <li>
                 <strong>Codeforces rating:</strong> o3 ~ 2700+ (gần mức
-                International Grandmaster). GPT-4o ~ 900–1100.
+                International Grandmaster). GPT-4o ~ 900-1100.
               </li>
             </ul>
             <p>
@@ -1217,7 +1217,7 @@ def answer(prompt: str) -> str:
               </li>
               <li>
                 <strong>Budget cap:</strong> luôn đặt max thinking tokens
-                hợp lý (thường 4–10K) để tránh runaway cost.
+                hợp lý (thường 4-10K) để tránh runaway cost.
               </li>
             </ul>
           </CollapsibleDetail>
@@ -1235,8 +1235,8 @@ def answer(prompt: str) -> str:
             "Scaling law mới: accuracy ∝ log(training compute) + log(test-time compute), hai trục scaling độc lập.",
             "Thao tác cốt lõi của thinking trace: decomposition, self-verification, backtracking, analogical reasoning.",
             "Process Reward Model (PRM) chấm từng bước suy luận, dạy model 'suy nghĩ đúng cách', khác ORM chỉ chấm đáp án.",
-            "GRPO của DeepSeek-R1 bỏ critic network, sample nhóm K output, normalize reward làm advantage, tiết kiệm 30–50% GPU.",
-            "Routing là chìa khoá kinh tế: câu dễ dùng GPT-4o, câu khó dùng reasoning, giảm 5–10× chi phí trung bình.",
+            "GRPO của DeepSeek-R1 bỏ critic network, sample nhóm K output, normalize reward làm advantage, tiết kiệm 30-50% GPU.",
+            "Routing là chìa khoá kinh tế: câu dễ dùng GPT-4o, câu khó dùng reasoning, giảm 5-10× chi phí trung bình.",
           ]}
         />
       </LessonSection>

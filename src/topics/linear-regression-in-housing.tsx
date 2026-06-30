@@ -118,7 +118,7 @@ const housingQuizQuestions: QuizQuestion[] = [
       "Một chuyên viên môi giới ngồi xem từng tin",
       "Công thức linear regression học từ hàng chục nghìn giao dịch thực, máy thay đặc điểm của căn vào công thức rồi cho ra giá",
       "Giá trung bình của toàn TP.HCM",
-      "Hệ thống sinh ngẫu nhiên trong khoảng 5–10 tỷ",
+      "Hệ thống sinh ngẫu nhiên trong khoảng 5-10 tỷ",
     ],
     correct: 1,
     explanation:
@@ -139,7 +139,7 @@ const housingQuizQuestions: QuizQuestion[] = [
   },
   {
     question:
-      "Bạn dùng mô hình giá nhà học trên căn 30–200m² để ước giá một biệt thự 800m². Có nên tin con số mô hình đưa ra không?",
+      "Bạn dùng mô hình giá nhà học trên căn 30-200m² để ước giá một biệt thự 800m². Có nên tin con số mô hình đưa ra không?",
     options: [
       "Có, vì máy luôn đúng",
       "Không. Đây là extrapolation, tức là dự đoán ra ngoài khoảng dữ liệu đã học, kết quả không đáng tin cậy",
@@ -196,7 +196,7 @@ const DISTRICTS: District[] = [
 /* ═══════════════════════════════════════════════════════════════════
    CÔNG THỨC GIÁ NHÀ MÔ PHỎNG
    Giá (tỷ VNĐ) = a·diện_tích + b·số_phòng + c·hệ_số_quận − d·tuổi_nhà + ε
-   Các hệ số đã chọn để cho ra giá hợp lý ở khoảng 2–25 tỷ.
+   Các hệ số đã chọn để cho ra giá hợp lý ở khoảng 2-25 tỷ.
    ═══════════════════════════════════════════════════════════════════ */
 
 const COEF_AREA = 0.006; // tỷ VNĐ / m² cho mỗi triệu của location_coef
@@ -862,7 +862,7 @@ export default function LinearRegressionInHousing() {
                 question="Khách hỏi: 'Căn 400m² biệt thự ngoại thành của tôi nên bao nhiêu?'. Mô hình trả lời 18 tỷ. Bạn có nên tin?"
                 options={[
                   "Có, vì mô hình đã học từ triệu giao dịch",
-                  "Không chắc. Mô hình huấn luyện chủ yếu trên căn 30–200m² ở quận trung tâm, một căn 400m² ngoại thành nằm NGOÀI khoảng dữ liệu. Kết quả rất khó tin",
+                  "Không chắc. Mô hình huấn luyện chủ yếu trên căn 30-200m² ở quận trung tâm, một căn 400m² ngoại thành nằm NGOÀI khoảng dữ liệu. Kết quả rất khó tin",
                   "Có, hồi quy tuyến tính luôn đúng",
                   "Không, mô hình chỉ biết HCM",
                 ]}
@@ -914,7 +914,7 @@ export default function LinearRegressionInHousing() {
         topicSlug="linear-regression-in-housing"
       >
         <Metric
-          value="Giá trung bình căn hộ TP.HCM Quận 2 (Thủ Đức) khoảng 60–90 triệu/m² đầu 2024"
+          value="Giá trung bình căn hộ TP.HCM Quận 2 (Thủ Đức) khoảng 60-90 triệu/m² đầu 2024"
           sourceRef={1}
         />
         <Metric

@@ -28,7 +28,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "adversarial-robustness",
   title: "Adversarial Robustness",
-  titleVi: "Bền vững trước tấn công. AI không dễ bị lừa",
+  titleVi: "Bền vững trước tấn công",
   description:
     "Khả năng của mô hình AI duy trì hiệu suất chính xác khi đối mặt với dữ liệu đầu vào bị thao túng có chủ đích.",
   category: "ai-safety",
