@@ -22,7 +22,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ───────────────────────────────────────────────────────────────────────────
- * METADATA. giữ nguyên để hệ thống đề xuất & sitemap nhận diện đúng topic
+ * METADATA, giữ nguyên để hệ thống đề xuất & sitemap nhận diện đúng topic
  * ───────────────────────────────────────────────────────────────────────── */
 
 export const metadata: TopicMeta = {
@@ -30,7 +30,7 @@ export const metadata: TopicMeta = {
   title: "Bag of Words",
   titleVi: "Bag of Words - Túi từ",
   description:
-    "Phương pháp biểu diễn văn bản đơn giản bằng cách đếm tần suất xuất hiện của mỗi từ, bỏ qua thứ tự. nền tảng của mọi kỹ thuật NLP cổ điển.",
+    "Phương pháp biểu diễn văn bản đơn giản bằng cách đếm tần suất xuất hiện của mỗi từ, bỏ qua thứ tự, nền tảng của mọi kỹ thuật NLP cổ điển.",
   category: "nlp",
   tags: ["nlp", "text-representation", "feature-extraction", "sparse-vector"],
   difficulty: "beginner",
@@ -79,7 +79,7 @@ const SAMPLE_DOCS: {
 // Người dùng có thể gõ lại trong input.
 const DEFAULT_QUERY = "phở ngon phục vụ nhanh";
 
-/* ───── HÀM TOÁN HỌC. tokenize / build vocab / vectorize / cosine ───── */
+/* ───── HÀM TOÁN HỌC, tokenize / build vocab / vectorize / cosine ───── */
 
 function tokenize(text: string): string[] {
   return text
@@ -120,7 +120,7 @@ function cosineSim(a: number[], b: number[]): number {
   return dot(a, b) / (na * nb);
 }
 
-// Jaccard. chỉ để hiển thị trong callout "so sánh các độ đo khác"
+// Jaccard, chỉ để hiển thị trong callout "so sánh các độ đo khác"
 function jaccardSim(a: number[], b: number[]): number {
   let inter = 0;
   let uni = 0;
@@ -182,19 +182,19 @@ const QUIZ: QuizQuestion[] = [
       "Khi so sánh độ tương đồng giữa hai vector BoW, ta thường dùng độ đo nào?",
     options: [
       "Độ đo Euclidean",
-      "Cosine similarity. tỉ số góc giữa hai vector",
+      "Cosine similarity, tỉ số góc giữa hai vector",
       "Manhattan distance",
       "Jaccard similarity",
     ],
     correct: 1,
     explanation:
-      "Cosine similarity cos(θ) = (A·B)/(||A||·||B||) không bị ảnh hưởng bởi độ dài tài liệu. tài liệu dài và ngắn cùng chủ đề vẫn có cosine cao. Euclidean sẽ ưu ái tài liệu ngắn (vector nhỏ).",
+      "Cosine similarity cos(θ) = (A·B)/(||A||·||B||) không bị ảnh hưởng bởi độ dài tài liệu, tài liệu dài và ngắn cùng chủ đề vẫn có cosine cao. Euclidean sẽ ưu ái tài liệu ngắn (vector nhỏ).",
   },
   {
     question:
       "Câu 'Tôi không thích phim này' được BoW xếp vào nhóm tích cực hay tiêu cực (nếu huấn luyện với từ 'thích' = tích cực)?",
     options: [
-      "Tiêu cực. mô hình nhìn thấy 'không'",
+      "Tiêu cực, mô hình nhìn thấy 'không'",
       "Tích cực. BoW bỏ mất ngữ cảnh 'không thích', chỉ thấy 'thích'",
       "Trung tính",
       "Phụ thuộc vào mô hình",
@@ -335,7 +335,7 @@ export default function BagOfWordsTopic() {
   // Giai đoạn xây dựng vocabulary: ẩn ban đầu, người dùng bấm nút thì hiện
   const [vocabBuilt, setVocabBuilt] = useState(false);
 
-  // Tài liệu query. người dùng có thể gõ để so sánh với corpus
+  // Tài liệu query, người dùng có thể gõ để so sánh với corpus
   const [query, setQuery] = useState(DEFAULT_QUERY);
 
   // Tài liệu được chọn để highlight
@@ -363,7 +363,7 @@ export default function BagOfWordsTopic() {
     return Array.from(new Set([...base, ...bigrams])).sort();
   }, [useBigram]);
 
-  // Giới hạn hiển thị 24 chiều. chọn theo tổng tần suất
+  // Giới hạn hiển thị 24 chiều, chọn theo tổng tần suất
   const displayedVocab = useMemo(() => {
     const totals = vocab.map((w) => {
       let s = 0;
@@ -440,7 +440,7 @@ export default function BagOfWordsTopic() {
 
   const bestMatch = similarities.indexOf(Math.max(...similarities));
 
-  // Từ nào của query xuất hiện trong vocab. để highlight
+  // Từ nào của query xuất hiện trong vocab, để highlight
   const queryHighlight = useMemo(() => {
     const set = new Set<number>();
     queryVector.forEach((v, i) => {
@@ -449,7 +449,7 @@ export default function BagOfWordsTopic() {
     return set;
   }, [queryVector]);
 
-  // Danh sách token của query bị OOV (không có trong vocab). để cảnh báo
+  // Danh sách token của query bị OOV (không có trong vocab), để cảnh báo
   const oovTokens = useMemo(() => {
     const vocabSet = new Set(vocab);
     return tokenize(query).filter((t) => !vocabSet.has(t));
@@ -519,10 +519,10 @@ export default function BagOfWordsTopic() {
         </div>
 
         <PredictionGate
-          question={`Hai câu "Tôi yêu mèo" và "Mèo yêu tôi". nếu máy tính CHỈ ĐẾM TỪ (bỏ qua thứ tự), chúng có vector giống hay khác nhau?`}
+          question={`Hai câu "Tôi yêu mèo" và "Mèo yêu tôi", nếu máy tính CHỈ ĐẾM TỪ (bỏ qua thứ tự), chúng có vector giống hay khác nhau?`}
           options={["Khác nhau", "Giống nhau", "Không thể xác định"]}
           correct={1}
-          explanation={`Cả hai câu đều chứa: "tôi" = 1 lần, "yêu" = 1 lần, "mèo" = 1 lần. Nếu chỉ đếm tần suất mà bỏ qua thứ tự, chúng hoàn toàn giống nhau! Đây chính là ý tưởng cốt lõi (và cả hạn chế) của Bag of Words. đổ từ vào "túi", xóc lên, đếm.`}
+          explanation={`Cả hai câu đều chứa: "tôi" = 1 lần, "yêu" = 1 lần, "mèo" = 1 lần. Nếu chỉ đếm tần suất mà bỏ qua thứ tự, chúng hoàn toàn giống nhau! Đây chính là ý tưởng cốt lõi (và cả hạn chế) của Bag of Words, đổ từ vào "túi", xóc lên, đếm.`}
         >
           <p className="text-sm text-muted mt-4">
             Bây giờ hãy xem máy tính biến 3 tài liệu tiếng Việt thành vector số
@@ -531,7 +531,7 @@ export default function BagOfWordsTopic() {
           </p>
         </PredictionGate>
 
-        {/* Ẩn dụ ngắn để đặt tên "túi". giúp người học nhớ lâu hơn */}
+        {/* Ẩn dụ ngắn để đặt tên "túi", giúp người học nhớ lâu hơn */}
         <Callout variant="info" title="Ẩn dụ: cái túi của đầu bếp">
           <p>
             Tưởng tượng bạn đưa đầu bếp một cái <strong>túi</strong> chứa nguyên
@@ -736,7 +736,7 @@ export default function BagOfWordsTopic() {
                   ))}
                 </div>
 
-                {/* Cosine similarity matrix. visualises full pairwise sim */}
+                {/* Cosine similarity matrix, visualises full pairwise sim */}
                 <div className="rounded-xl border border-border bg-card/50 p-3">
                   <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">
                     Ma trận cosine giữa 3 tài liệu
@@ -753,10 +753,10 @@ export default function BagOfWordsTopic() {
                   </p>
                 </div>
 
-                {/* Jaccard matrix đặt cạnh. so sánh song song */}
+                {/* Jaccard matrix đặt cạnh, so sánh song song */}
                 <details className="rounded-xl border border-border bg-card/30 p-3">
                   <summary className="text-xs font-semibold text-muted uppercase tracking-wide cursor-pointer">
-                    Bonus. ma trận Jaccard (so sánh song song)
+                    Bonus, ma trận Jaccard (so sánh song song)
                   </summary>
                   <div className="mt-2">
                     <CosineMatrix
@@ -808,7 +808,7 @@ export default function BagOfWordsTopic() {
                 {/* Cosine similarity ranking */}
                 <div className="rounded-xl border border-border bg-card/50 p-3">
                   <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-                    Cosine similarity. độ tương đồng query ↔ doc
+                    Cosine similarity, độ tương đồng query ↔ doc
                   </p>
                   <div className="space-y-2">
                     {SAMPLE_DOCS.map((d, i) => {
@@ -971,7 +971,7 @@ export default function BagOfWordsTopic() {
           </ol>
         </Callout>
 
-        <CollapsibleDetail title="Cosine similarity. vì sao là 'đúng' metric cho BoW?">
+        <CollapsibleDetail title="Cosine similarity, vì sao là 'đúng' metric cho BoW?">
           <div className="space-y-3 text-sm text-muted">
             <p>
               Hai vector BoW cùng chủ đề nhưng khác độ dài (ví dụ một tweet 10
@@ -987,7 +987,7 @@ export default function BagOfWordsTopic() {
             </LaTeX>
             <p>
               Kết quả trong khoảng [-1, 1] (với BoW thực tế là [0, 1] vì không
-              có giá trị âm). cos = 1 → cùng hướng (rất giống nhau). cos = 0 →
+              có giá trị âm), cos = 1 → cùng hướng (rất giống nhau), cos = 0 →
               vuông góc (không chia sẻ từ chung nào). Đây là lý do mọi hệ
               thống tìm kiếm truyền thống (Lucene, Elasticsearch) dùng cosine
               làm baseline scoring.
@@ -996,7 +996,7 @@ export default function BagOfWordsTopic() {
               Có một bonus hay: sau khi <strong>chuẩn hóa L2</strong> (chia
               vector cho norm của nó), tích vô hướng giữa 2 vector chuẩn hóa{" "}
               <em>chính là</em> cosine của chúng. Nên nhiều vector DB chỉ lưu
-              vector đã normalize và tính dot product. rất nhanh.
+              vector đã normalize và tính dot product, rất nhanh.
             </p>
             <p>
               Ứng dụng thực tế: bật checkbox <em>L2 normalize</em> phía trên để
@@ -1015,23 +1015,23 @@ export default function BagOfWordsTopic() {
               từ vựng có thể &gt; 200.000 từ sau khi chuẩn hóa, nhưng một bài
               báo 1000 từ chỉ chứa ~300-500 từ duy nhất. Tỉ lệ không-zero ~
               0.1-0.25%. Nếu lưu ma trận dày (dense) thì N × V = 1 triệu tài
-              liệu × 200.000 chiều = 200 tỷ số float. khoảng 800 GB bộ nhớ.
+              liệu × 200.000 chiều = 200 tỷ số float, khoảng 800 GB bộ nhớ.
               Không khả thi!
             </p>
             <p>
               Giải pháp: lưu ở dạng <strong>sparse matrix</strong> (scipy
-              CSR/CSC/COO). chỉ lưu các cặp (hàng, cột, giá trị) khác 0. Cùng
+              CSR/CSC/COO), chỉ lưu các cặp (hàng, cột, giá trị) khác 0. Cùng
               corpus trên chỉ tốn &lt; 5 GB. Các phép toán (dot product, cosine)
               cũng có phiên bản sparse đặc biệt (BLAS-1 spmv) chạy rất nhanh.
             </p>
             <p>
               Đây là lý do sklearn.feature_extraction.text.CountVectorizer trả
-              về scipy.sparse.csr_matrix theo mặc định. đừng gọi .toarray()
+              về scipy.sparse.csr_matrix theo mặc định, đừng gọi .toarray()
               nếu không thực sự cần.
             </p>
             <p>
               Mẹo debug: nếu lỡ gọi <code>X.toarray()</code> trên ma trận lớn
-              và Python đứng im, hãy <kbd>Ctrl+C</kbd> ngay. khả năng cao là
+              và Python đứng im, hãy <kbd>Ctrl+C</kbd> ngay, khả năng cao là
               đang cấp phát hàng chục GB RAM. Luôn kiểm tra{" "}
               <code>X.shape</code> và <code>X.nnz</code> trước khi dense-hoá.
             </p>
@@ -1095,12 +1095,12 @@ export default function BagOfWordsTopic() {
           <InlineChallenge
             question={`"Phim này không hay". BoW xếp câu này vào nhóm tích cực hay tiêu cực nếu mô hình được huấn luyện rằng "hay" = tích cực? (Gợi ý: BoW đếm từ riêng lẻ)`}
             options={[
-              "Tiêu cực. vì có từ 'không'",
-              "Tích cực. vì BoW thấy từ 'hay' (tích cực) mà bỏ qua ngữ cảnh 'không hay'",
+              "Tiêu cực, vì có từ 'không'",
+              "Tích cực, vì BoW thấy từ 'hay' (tích cực) mà bỏ qua ngữ cảnh 'không hay'",
               "Trung tính",
             ]}
             correct={1}
-            explanation="BoW đếm từ riêng lẻ: 'hay' ở bất cứ đâu đều được cộng điểm tích cực. Nó không hiểu 'không hay' = tiêu cực vì đã bỏ mất thứ tự từ. Đây là nhược điểm lớn nhất của BoW. giải pháp: dùng bigram (ngram_range=(1,2)) hoặc chuyển sang embeddings + transformer."
+            explanation="BoW đếm từ riêng lẻ: 'hay' ở bất cứ đâu đều được cộng điểm tích cực. Nó không hiểu 'không hay' = tiêu cực vì đã bỏ mất thứ tự từ. Đây là nhược điểm lớn nhất của BoW, giải pháp: dùng bigram (ngram_range=(1,2)) hoặc chuyển sang embeddings + transformer."
           />
 
           <InlineChallenge
@@ -1158,7 +1158,7 @@ export default function BagOfWordsTopic() {
               </li>
               <li>
                 <strong>Dễ diễn giải</strong>: mỗi feature = 1 từ cụ thể. Nhìn
-                trọng số là biết model đang dựa vào từ nào để quyết định. điều mà BERT không làm được.
+                trọng số là biết model đang dựa vào từ nào để quyết định, điều mà BERT không làm được.
               </li>
               <li>
                 <strong>Đủ tốt cho nhiều bài toán</strong>: spam filter, phân
@@ -1203,7 +1203,7 @@ export default function BagOfWordsTopic() {
                 <strong>Bước 2. Build vocabulary:</strong> V = tập hợp tất cả
                 từ duy nhất trong corpus. Có thể áp dụng{" "}
                 <code>min_df=2</code> (loại từ xuất hiện &lt; 2 tài liệu),{" "}
-                <code>max_df=0.95</code> (loại từ xuất hiện &gt; 95% tài liệu. quá phổ biến, không thông tin).
+                <code>max_df=0.95</code> (loại từ xuất hiện &gt; 95% tài liệu, quá phổ biến, không thông tin).
               </p>
               <p>
                 <strong>Bước 3. Vectorize:</strong> với mỗi tài liệu, đếm số
@@ -1282,7 +1282,7 @@ print("\\n|V| với bigram:", X_bigram.shape[1])`}</CodeBlock>
             Cài đặt tay không thư viện (CodeBlock #2)
           </h3>
           <p>
-            Để chắc rằng mình hiểu từng bước, sau đây là cài đặt thuần Python. chính là thuật toán mà demo phía trên đang chạy. Độ phức tạp
+            Để chắc rằng mình hiểu từng bước, sau đây là cài đặt thuần Python, chính là thuật toán mà demo phía trên đang chạy. Độ phức tạp
             O(N · L) với L là độ dài trung bình của mỗi tài liệu.
           </p>
 
@@ -1344,7 +1344,7 @@ for i, a in enumerate(X, 1):
                 Cần model nhẹ, triển khai trên edge / mobile không có GPU.
               </li>
               <li>
-                Cần diễn giải được feature. ví dụ trong domain y tế, tài
+                Cần diễn giải được feature, ví dụ trong domain y tế, tài
                 chính.
               </li>
             </ul>
@@ -1357,11 +1357,11 @@ for i, a in enumerate(X, 1):
                 tạp.
               </li>
               <li>
-                Có nhiều dữ liệu và GPU. nên dùng BERT/transformer để đạt
+                Có nhiều dữ liệu và GPU, nên dùng BERT/transformer để đạt
                 SOTA.
               </li>
               <li>
-                Dữ liệu đa ngôn ngữ hoặc có từ mới. embeddings xử lý OOV tốt
+                Dữ liệu đa ngôn ngữ hoặc có từ mới, embeddings xử lý OOV tốt
                 hơn.
               </li>
             </ul>
@@ -1387,7 +1387,7 @@ for i, a in enumerate(X, 1):
               </li>
               <li>
                 <strong>Không kiểm tra sparsity:</strong> nếu &lt; 90% có nghĩa
-                là vocab quá nhỏ hoặc data quá đặc. nên điều tra.
+                là vocab quá nhỏ hoặc data quá đặc, nên điều tra.
               </li>
             </ul>
           </Callout>
@@ -1398,7 +1398,7 @@ for i, a in enumerate(X, 1):
           <ul className="list-disc pl-5 space-y-1">
             <li>
               <strong>Spam filter:</strong> Naive Bayes + BoW vẫn là backend
-              chuẩn của nhiều hệ thống email filter. nhanh, rẻ, đủ tốt.
+              chuẩn của nhiều hệ thống email filter, nhanh, rẻ, đủ tốt.
             </li>
             <li>
               <strong>Phân loại tin tức:</strong> Logistic Regression + BoW
@@ -1431,11 +1431,11 @@ for i, a in enumerate(X, 1):
               là stopword nhưng cực kỳ quan trọng cho phủ định.
             </li>
             <li>
-              Để <code>max_features</code> quá nhỏ với corpus lớn. mất hết
+              Để <code>max_features</code> quá nhỏ với corpus lớn, mất hết
               từ có ý nghĩa.
             </li>
             <li>
-              So sánh model có vocab khác nhau bằng chỉ số tuyệt đối. cosine
+              So sánh model có vocab khác nhau bằng chỉ số tuyệt đối, cosine
               chỉ có ý nghĩa khi vocab giống nhau.
             </li>
             <li>
@@ -1452,7 +1452,7 @@ for i, a in enumerate(X, 1):
             <TopicLink slug="tf-idf">TF-IDF</TopicLink> (giảm trọng số từ phổ
             biến) →{" "}
             <TopicLink slug="word-embeddings">Word Embeddings</TopicLink>{" "}
-            (word2vec, GloVe. từ thành vector dày có nghĩa) →{" "}
+            (word2vec, GloVe, từ thành vector dày có nghĩa) →{" "}
             <TopicLink slug="attention-mechanism">Attention</TopicLink> →{" "}
             <TopicLink slug="transformer">Transformer</TopicLink> → BERT, GPT.
             Mỗi bước tiến đều giải quyết một hạn chế của BoW: TF-IDF giảm
@@ -1463,7 +1463,7 @@ for i, a in enumerate(X, 1):
             Dù vậy, BoW vẫn xứng đáng là &quot;bài học đầu tiên&quot; của NLP:
             nó dạy bạn tư duy biến văn bản thành số, tư duy vector hóa, tư duy
             sparse matrix, và tư duy similarity. Mọi mô hình hiện đại đều kế
-            thừa các ý tưởng này. chỉ là đổi cách đếm (count → embed → attend)
+            thừa các ý tưởng này, chỉ là đổi cách đếm (count → embed → attend)
             và đổi không gian (sparse V-chiều → dense 768-chiều).
           </p>
         </ExplanationSection>
@@ -1476,10 +1476,10 @@ for i, a in enumerate(X, 1):
         <MiniSummary
           title="Ghi nhớ về Bag of Words"
           points={[
-            "BoW biến văn bản thành vector bằng cách ĐẾM TẦN SUẤT từ. bỏ hoàn toàn thứ tự (vì thế gọi là 'túi').",
+            "BoW biến văn bản thành vector bằng cách ĐẾM TẦN SUẤT từ, bỏ hoàn toàn thứ tự (vì thế gọi là 'túi').",
             "Mỗi vector BoW có chiều = |V| (kích thước từ vựng) và thường rất thưa (sparse). > 99% số 0 trong thực tế.",
-            "Cosine similarity là metric chuẩn: cos(θ) = (A·B)/(‖A‖·‖B‖). không bị ảnh hưởng bởi độ dài tài liệu.",
-            "Ưu điểm: đơn giản, nhanh, diễn giải được. vẫn là baseline cạnh tranh cho phân loại văn bản (spam, sentiment).",
+            "Cosine similarity là metric chuẩn: cos(θ) = (A·B)/(‖A‖·‖B‖), không bị ảnh hưởng bởi độ dài tài liệu.",
+            "Ưu điểm: đơn giản, nhanh, diễn giải được, vẫn là baseline cạnh tranh cho phân loại văn bản (spam, sentiment).",
             "Nhược điểm kinh điển: mất thứ tự ('không hay' ≈ 'hay không'), không ngữ nghĩa ('phở' xa 'bún'), vấn đề OOV với từ mới.",
             "TF-IDF cải thiện BoW bằng cách giảm trọng số từ phổ biến; word embeddings và transformer là những bước tiến xa hơn.",
           ]}

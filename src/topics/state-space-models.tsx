@@ -39,7 +39,7 @@ export default function StateSpaceModelsTopic() {
       question: "Tại sao SSM có độ phức tạp O(N) thay vì O(N^2) như Transformer?",
       options: [
         "SSM dùng GPU mạnh hơn",
-        "SSM nén toàn bộ lịch sử vào hidden state cố định, mỗi token mới chỉ cần cập nhật state. không cần xem lại toàn bộ chuỗi",
+        "SSM nén toàn bộ lịch sử vào hidden state cố định, mỗi token mới chỉ cần cập nhật state, không cần xem lại toàn bộ chuỗi",
         "SSM bỏ qua một số token để giảm compute",
       ],
       correct: 1,
@@ -49,7 +49,7 @@ export default function StateSpaceModelsTopic() {
       question: "Mamba khác SSM cổ điển (S4) ở điểm nào?",
       options: [
         "Dùng attention thay vì recurrence",
-        "Tham số A, B, C THAY ĐỔI theo input (input-dependent). selective state space",
+        "Tham số A, B, C THAY ĐỔI theo input (input-dependent), selective state space",
         "Có nhiều layer hơn S4",
       ],
       correct: 1,
@@ -59,7 +59,7 @@ export default function StateSpaceModelsTopic() {
       question: "Hybrid architectures (Jamba, Mamba-2) kết hợp SSM + Transformer để làm gì?",
       options: [
         "Chạy nhanh hơn SSM thuần",
-        "SSM xử lý context dài hiệu quả, Transformer attention xử lý in-context retrieval tốt. bổ sung cho nhau",
+        "SSM xử lý context dài hiệu quả, Transformer attention xử lý in-context retrieval tốt, bổ sung cho nhau",
         "Giảm số tham số model",
       ],
       correct: 1,
@@ -72,7 +72,7 @@ export default function StateSpaceModelsTopic() {
         { answer: "Mamba", accept: ["mamba"] },
         { answer: "O(N)", accept: ["tuyến tính", "linear", "O(n)"] },
       ],
-      explanation: "Mamba (Gu & Dao, 2023) là SSM selective với độ phức tạp O(N). tuyến tính theo sequence length, so với O(N^2) của Transformer attention. Với 100K tokens, Mamba nhanh hơn khoảng 10.000x về FLOPs.",
+      explanation: "Mamba (Gu & Dao, 2023) là SSM selective với độ phức tạp O(N), tuyến tính theo sequence length, so với O(N^2) của Transformer attention. Với 100K tokens, Mamba nhanh hơn khoảng 10.000x về FLOPs.",
     },
   ], []);
 
@@ -83,12 +83,12 @@ export default function StateSpaceModelsTopic() {
         <PredictionGate
           question="Transformer attention tốn O(N^2) theo sequence length. Với context 1M tokens, chi phí attention tăng 1000000^2 = 1 nghìn tỷ phép tính. Có kiến trúc nào đạt chất lượng tương đương mà chỉ O(N)?"
           options={[
-            "Không. attention là cần thiết, không có gì thay thế",
+            "Không, attention là cần thiết, không có gì thay thế",
             "State Space Models (Mamba): nén lịch sử vào state cố định, mỗi token chỉ O(1) compute",
             "RNN cũ (LSTM) đã giải quyết rồi",
           ]}
           correct={1}
-          explanation="SSM (đặc biệt Mamba) là đối thủ thực sự của Transformer! Nén toàn bộ chuỗi vào hidden state. giống ghi chú thay vì đọc lại toàn bộ sách mỗi lần. O(N) thay vì O(N^2), inference nhanh 5x cho chuỗi dài. Nhưng trade-off: kém hơn Transformer ở in-context retrieval."
+          explanation="SSM (đặc biệt Mamba) là đối thủ thực sự của Transformer! Nén toàn bộ chuỗi vào hidden state, giống ghi chú thay vì đọc lại toàn bộ sách mỗi lần. O(N) thay vì O(N^2), inference nhanh 5x cho chuỗi dài. Nhưng trade-off: kém hơn Transformer ở in-context retrieval."
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
@@ -178,8 +178,8 @@ export default function StateSpaceModelsTopic() {
         <InlineChallenge
           question="SSM Mamba nén 100K tokens vào hidden state 1024 dims. Bạn hỏi: 'Số điện thoại được nhắc ở đoạn 3 là gì?' SSM có thể trả lời chính xác không?"
           options={[
-            "Có. state chứa tất cả thông tin",
-            "Khó. state nén mất chi tiết cụ thể (lossy compression). Transformer attention lookup chính xác hơn",
+            "Có, state chứa tất cả thông tin",
+            "Khó, state nén mất chi tiết cụ thể (lossy compression). Transformer attention lookup chính xác hơn",
             "Không bao giờ. SSM không thể xử lý retrieval",
           ]}
           correct={1}
@@ -211,13 +211,13 @@ export default function StateSpaceModelsTopic() {
           <LaTeX block>{"\\text{SSM: } h_t = f(h_{t-1}, x_t) \\quad \\rightarrow O(N \\cdot d)"}</LaTeX>
 
           <Callout variant="tip" title="Mamba: Selective State Space">
-            Mamba (Gu &amp; Dao, 2023) biến SSM cố định thành input-dependent: tham số B, C, delta phụ thuộc vào input x_t. Model có thể &quot;chọn lọc&quot; thông tin. giống attention nhưng O(N). Sử dụng hardware-aware scan algorithm cho tốc độ thực tế nhanh gấp 5x.
+            Mamba (Gu &amp; Dao, 2023) biến SSM cố định thành input-dependent: tham số B, C, delta phụ thuộc vào input x_t. Model có thể &quot;chọn lọc&quot; thông tin, giống attention nhưng O(N). Sử dụng hardware-aware scan algorithm cho tốc độ thực tế nhanh gấp 5x.
           </Callout>
 
           <p><strong>Dual form: Recurrence vs Convolution</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Recurrence mode:</strong>{" "}O(1) per token. cho inference (autoregressive generation)</li>
-            <li><strong>Convolution mode:</strong>{" "}Parallelizable trên GPU. cho training</li>
+            <li><strong>Recurrence mode:</strong>{" "}O(1) per token, cho inference (autoregressive generation)</li>
+            <li><strong>Convolution mode:</strong>{" "}Parallelizable trên GPU, cho training</li>
           </ul>
           <LaTeX block>{"\\text{Recurrence: } h_t = \\bar{A}h_{t-1} + \\bar{B}x_t \\quad (\\text{sequential, inference})"}</LaTeX>
           <LaTeX block>{"\\text{Convolution: } y = K * x, \\quad K_i = C\\bar{A}^i\\bar{B} \\quad (\\text{parallel, training})"}</LaTeX>
@@ -226,13 +226,13 @@ export default function StateSpaceModelsTopic() {
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Jamba (AI21):</strong>{" "}Xen kẽ Mamba layers + Attention layers. Throughput 3x, context 256K</li>
             <li><strong>Mamba-2:</strong>{" "}Kết hợp structured state space + attention trong 1 framework</li>
-            <li><strong>Zamba:</strong>{" "}SSM backbone + shared attention layers. parameter efficient</li>
+            <li><strong>Zamba:</strong>{" "}SSM backbone + shared attention layers, parameter efficient</li>
           </ul>
 
           <CodeBlock language="python" title="Mamba model inference">
 {`from mamba_ssm import Mamba
 
-# Mamba block. thay thế Transformer attention + FFN
+# Mamba block, thay thế Transformer attention + FFN
 mamba = Mamba(
     d_model=2048,      # Hidden dimension
     d_state=128,       # State dimension (ghi chú)

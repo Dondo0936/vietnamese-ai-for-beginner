@@ -66,7 +66,7 @@ const quizQuestions: QuizQuestion[] = [
       "Vì sampling từ N(μ, σ²) quá chậm",
     ],
     correct: 1,
-    explanation: "Backprop không thể đi qua phép 'sampling' (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường. ε chỉ là constant random — không cần gradient!",
+    explanation: "Backprop không thể đi qua phép 'sampling' (random operation). Trick: z = μ + σ × ε tách random ra biến ε riêng. Gradient chảy qua μ và σ bình thường, ε chỉ là constant random — không cần gradient!",
   },
   {
     type: "fill-blank",

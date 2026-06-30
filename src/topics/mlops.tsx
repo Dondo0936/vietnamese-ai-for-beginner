@@ -58,7 +58,7 @@ export default function MLOpsTopic() {
         "ML không cần CI/CD",
       ],
       correct: 1,
-      explanation: "DevOps quản lý code changes. MLOps phải quản lý thêm data changes, model versioning, experiment tracking, data drift. Model có thể 'hỏng' dù code không đổi. chỉ vì data thay đổi.",
+      explanation: "DevOps quản lý code changes. MLOps phải quản lý thêm data changes, model versioning, experiment tracking, data drift. Model có thể 'hỏng' dù code không đổi, chỉ vì data thay đổi.",
     },
     {
       question: "Feature Store giải quyết vấn đề gì?",
@@ -103,7 +103,7 @@ export default function MLOpsTopic() {
             "Model bị hỏng file khi copy SCP",
           ]}
           correct={1}
-          explanation="Đúng! Không có MLOps = không biết model version nào đang chạy, data nào đã train, khi nào model bắt đầu kém. Giống xây nhà không có bản vẽ. mọi thứ rối khi cần sửa."
+          explanation="Đúng! Không có MLOps = không biết model version nào đang chạy, data nào đã train, khi nào model bắt đầu kém. Giống xây nhà không có bản vẽ, mọi thứ rối khi cần sửa."
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
@@ -190,7 +190,7 @@ export default function MLOpsTopic() {
             87% model ML không bao giờ lên production! Lý do chính: thiếu MLOps.
             Data scientist giỏi train model nhưng không biết deploy, monitor, retrain.{" "}
             <strong>MLOps chính là cầu nối</strong>{" "}
-            giữa notebook thí nghiệm và sản phẩm thực tế. giống DevOps đã cách mạng hoá software, MLOps đang cách mạng hoá ML.
+            giữa notebook thí nghiệm và sản phẩm thực tế, giống DevOps đã cách mạng hoá software, MLOps đang cách mạng hoá ML.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -229,11 +229,11 @@ export default function MLOpsTopic() {
 
           <p><strong>5 trụ cột MLOps:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Data Management:</strong>{" "}Versioning (DVC), lineage tracking, quality checks. xem thêm <TopicLink slug="data-pipelines">data pipelines</TopicLink></li>
+            <li><strong>Data Management:</strong>{" "}Versioning (DVC), lineage tracking, quality checks, xem thêm <TopicLink slug="data-pipelines">data pipelines</TopicLink></li>
             <li><strong>Experiment Tracking:</strong>{" "}Log metrics, params, artifacts (MLflow, W&B)</li>
             <li><strong>Model Registry:</strong>{" "}Version models, staging/production promotion</li>
             <li><strong>CI/CD for ML:</strong>{" "}Auto test data quality, model performance trước deploy, triển khai qua <TopicLink slug="containerization">container</TopicLink></li>
-            <li><strong>Monitoring:</strong>{" "}Phát hiện data drift, model degradation. chi tiết ở <TopicLink slug="monitoring">giám sát AI</TopicLink>, trigger retrain</li>
+            <li><strong>Monitoring:</strong>{" "}Phát hiện data drift, model degradation, chi tiết ở <TopicLink slug="monitoring">giám sát AI</TopicLink>, trigger retrain</li>
           </ul>
 
           <Callout variant="tip" title="Training-Serving Skew">
@@ -242,7 +242,7 @@ export default function MLOpsTopic() {
 
           <p><strong>Deployment strategies:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-            <li><strong>Shadow:</strong>{" "}Model mới chạy song song, chỉ log không serve. an toàn nhất</li>
+            <li><strong>Shadow:</strong>{" "}Model mới chạy song song, chỉ log không serve, an toàn nhất</li>
             <li><strong>Canary:</strong>{" "}Chuyển 5% traffic sang model mới, tăng dần nếu OK</li>
             <li><strong>Blue-Green:</strong>{" "}Hai môi trường, switch traffic nguyên khối</li>
             <li><strong>A/B Test:</strong>{" "}Chia user thành nhóm, đo business metric khác biệt</li>
@@ -296,7 +296,7 @@ jobs:
           "MLOps tự động hoá vòng đời ML: data → train → evaluate → deploy → monitor → retrain.",
           "Khác DevOps vì ML có thêm chiều data: model 'hỏng' dù code không đổi (data drift).",
           "4 mức trưởng thành: từ notebook thủ công (Level 0) đến tự động hoàn toàn (Level 3).",
-          "Feature Store ngăn training-serving skew. lỗi phổ biến nhất khi deploy ML.",
+          "Feature Store ngăn training-serving skew, lỗi phổ biến nhất khi deploy ML.",
           "Deploy strategies: Shadow → Canary → Blue-Green, tăng dần risk tolerance.",
         ]} />
       </LessonSection>

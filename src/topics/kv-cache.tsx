@@ -50,8 +50,8 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "KV Cache tốn bao nhiêu bộ nhớ GPU cho Llama 70B, context 4K token?",
     options: [
-      "Vài MB. không đáng kể",
-      "~2-5 GB. đáng kể, chiếm phần lớn VRAM",
+      "Vài MB, không đáng kể",
+      "~2-5 GB, đáng kể, chiếm phần lớn VRAM",
       "Bằng kích thước model (140 GB)",
       "Không tốn bộ nhớ",
     ],
@@ -62,7 +62,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Kỹ thuật nào giúp giảm bộ nhớ KV Cache?",
     options: [
       "Tăng model size",
-      "Multi-Query Attention (MQA). chia sẻ K,V giữa các head",
+      "Multi-Query Attention (MQA), chia sẻ K,V giữa các head",
       "Tăng context window",
       "Dùng temperature cao hơn",
     ],
@@ -78,7 +78,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "memory", accept: ["bộ nhớ", "VRAM", "RAM", "vram"] },
     ],
     explanation:
-      "KV Cache tránh tính lại Key/Value cho token đã sinh bằng cách lưu (cached) chúng. đổi thêm bộ nhớ (memory/VRAM) lấy tốc độ inference cao hơn.",
+      "KV Cache tránh tính lại Key/Value cho token đã sinh bằng cách lưu (cached) chúng, đổi thêm bộ nhớ (memory/VRAM) lấy tốc độ inference cao hơn.",
   },
 ];
 
@@ -96,8 +96,8 @@ export default function KVCacheTopic() {
       <PredictionGate
         question="LLM sinh text từng token một. Khi sinh token thứ 100, nó cần tính attention giữa token 100 với tất cả 99 token trước. Phải tính LẠI attention cho 99 token cũ không?"
         options={[
-          "Phải. tính lại TẤT CẢ mỗi lần sinh token mới",
-          "Không. lưu kết quả cũ lại (cache), chỉ tính cho token mới",
+          "Phải, tính lại TẤT CẢ mỗi lần sinh token mới",
+          "Không, lưu kết quả cũ lại (cache), chỉ tính cho token mới",
           "Không cần attention sau token đầu tiên",
         ]}
         correct={1}
@@ -202,7 +202,7 @@ export default function KVCacheTopic() {
       <LessonSection step={3} totalSteps={6} label="Khám phá">
       <AhaMoment>
         <strong>KV Cache</strong>{" "}lưu Key và Value đã tính cho mọi token cũ. Khi sinh token mới,
-        chỉ cần tính K,V cho token đó rồi &quot;look up&quot; cache. không tính lại 99 token trước!
+        chỉ cần tính K,V cho token đó rồi &quot;look up&quot; cache, không tính lại 99 token trước!
         Tiết kiệm tới <strong>99%</strong>{" "}phép tính ở token thứ 100.
       </AhaMoment>
 
@@ -256,7 +256,7 @@ export default function KVCacheTopic() {
             </p>
             <LaTeX block>{"\\text{Attention}_N = \\text{softmax}\\left(\\frac{Q_N \\cdot [K_1, ..., K_N]^T}{\\sqrt{d_k}}\\right) \\cdot [V_1, ..., V_N]"}</LaTeX>
             <div className="mt-2 rounded bg-card border border-border p-2 text-xs text-center">
-              Cache: [K₁, V₁, ..., Kₙ, Vₙ]. tăng dần mỗi bước
+              Cache: [K₁, V₁, ..., Kₙ, Vₙ], tăng dần mỗi bước
             </div>
           </div>
         </StepReveal>
@@ -269,7 +269,7 @@ export default function KVCacheTopic() {
         question="KV Cache tăng dần mỗi token → tốn bộ nhớ. Context 200K token sẽ tốn cache rất lớn. Giải pháp nào được dùng phổ biến?"
         options={[
           "Giới hạn context nhỏ (4K)",
-          "Multi-Query/Grouped-Query Attention. chia sẻ K,V giữa nhiều attention head",
+          "Multi-Query/Grouped-Query Attention, chia sẻ K,V giữa nhiều attention head",
           "Tắt KV Cache khi context dài",
           "Dùng CPU thay GPU để lưu cache",
         ]}
@@ -300,7 +300,7 @@ export default function KVCacheTopic() {
 
         <Callout variant="warning" title="Đánh đổi: tốc độ vs bộ nhớ">
           KV Cache đổi bộ nhớ lấy tốc độ. Với Llama 70B, 128K context, KV cache có thể tốn 10-20 GB VRAM.
-          Đây là lý do chính khiến LLM inference cần GPU VRAM lớn. không chỉ model weights!
+          Đây là lý do chính khiến LLM inference cần GPU VRAM lớn, không chỉ model weights!
         </Callout>
 
         <CodeBlock language="python" title="kv_cache_concept.py">{`# Pseudocode minh họa KV Cache
@@ -328,8 +328,8 @@ for token in generated_tokens:
       <MiniSummary
         points={[
           "KV Cache lưu Key và Value đã tính, tránh tính lại khi sinh token mới",
-          "Giảm từ O(n²) xuống O(n) phép tính. tiết kiệm ~99% ở token thứ 100",
-          "Đánh đổi: tốn bộ nhớ GPU. cache tăng dần theo context length",
+          "Giảm từ O(n²) xuống O(n) phép tính, tiết kiệm ~99% ở token thứ 100",
+          "Đánh đổi: tốn bộ nhớ GPU, cache tăng dần theo context length",
           "GQA/MQA giảm cache 4-8 lần bằng cách chia sẻ K,V giữa attention heads",
         ]}
       />

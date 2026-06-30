@@ -345,7 +345,7 @@ print(f"RBF SVM:    {cross_val_score(model_rbf, X, y, cv=5).mean():.1%}")`}
           "SVM tìm siêu phẳng có margin LỚN NHẤT giữa hai lớp → generalize tốt.",
           "Support vectors = điểm gần ranh giới nhất — chỉ chúng quyết định vị trí siêu phẳng.",
           "Kernel trick cho phép phân loại phi tuyến: RBF, polynomial, sigmoid.",
-          "C: tradeoff margin rộng vs ít vi phạm. γ (RBF): kiểm soát phạm vi ảnh hưởng mỗi điểm.",
+          "C: tradeoff margin rộng vs ít vi phạm, γ (RBF): kiểm soát phạm vi ảnh hưởng mỗi điểm.",
           "LUÔN chuẩn hoá dữ liệu trước khi dùng SVM! Tốt cho dữ liệu nhỏ, chiều cao.",
         ]} />
       </LessonSection>

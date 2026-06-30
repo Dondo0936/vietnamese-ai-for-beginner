@@ -847,7 +847,7 @@ const quizQuestions: QuizQuestion[] = [
     options: ["(6,)", "(2, 3)", "(3, 2)", "Lỗi vì không thể reshape"],
     correct: 1,
     explanation:
-      "reshape(2, 3) yêu cầu mảng có 2 hàng × 3 cột = 6 phần tử. Con số đó khớp với 6 phần tử ban đầu, nên hợp lệ. shape trả về (2, 3). Nếu bạn muốn (3, 2) thì phải gọi reshape(3, 2).",
+      "reshape(2, 3) yêu cầu mảng có 2 hàng × 3 cột = 6 phần tử. Con số đó khớp với 6 phần tử ban đầu, nên hợp lệ, shape trả về (2, 3). Nếu bạn muốn (3, 2) thì phải gọi reshape(3, 2).",
   },
   {
     question:
@@ -860,7 +860,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "df[\"diem\"] >= 8.0 trả về Series gồm True/False cho từng hàng. Truyền Series đó làm chỉ mục cho df thì chỉ những hàng True được giữ. Đây là boolean mask. df gốc không đổi, kết quả là một DataFrame mới.",
+      "df[\"diem\"] >= 8.0 trả về Series gồm True/False cho từng hàng. Truyền Series đó làm chỉ mục cho df thì chỉ những hàng True được giữ. Đây là boolean mask, df gốc không đổi, kết quả là một DataFrame mới.",
   },
   {
     question:
@@ -898,14 +898,14 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "groupby chia df thành các nhóm dựa trên giá trị cột lop. agg áp dụng phép mean lên cột diem cho mỗi nhóm, đặt tên kết quả là tb. Kết quả là một DataFrame nhỏ gọn, mỗi hàng là một lớp, mỗi cột là một số liệu tổng hợp. Đây chính là PivotTable của Pandas.",
+      "groupby chia df thành các nhóm dựa trên giá trị cột lop, agg áp dụng phép mean lên cột diem cho mỗi nhóm, đặt tên kết quả là tb. Kết quả là một DataFrame nhỏ gọn, mỗi hàng là một lớp, mỗi cột là một số liệu tổng hợp. Đây chính là PivotTable của Pandas.",
   },
   {
     question:
       "Khi bạn viết hs.merge(gv, on=\"lop\", how=\"left\"), cái gì quyết định các hàng xuất hiện trong kết quả?",
     options: [
       "Số hàng của bảng bên phải (gv)",
-      "Số hàng của bảng bên trái (hs). hs giữ nguyên mọi hàng, gv nối vào theo cột lop",
+      "Số hàng của bảng bên trái (hs), hs giữ nguyên mọi hàng, gv nối vào theo cột lop",
       "Tổng số hàng của hs và gv cộng lại",
       "Giao (intersection) của hai bảng, tức là chỉ giữ hàng nào có lop ở cả hai",
     ],
@@ -1164,7 +1164,7 @@ export default function PythonForMlTopic() {
             </div>
           </div>
           <InlineChallenge
-            question="NumPy broadcasting: a = np.array([1, 2, 3]) có shape (3,). M = np.array([[10,10,10],[20,20,20]]) có shape (2, 3). a + M sẽ cho shape gì và giá trị ra sao?"
+            question="NumPy broadcasting: a = np.array([1, 2, 3]) có shape (3,). M = np.array([[10,10,10],[20,20,20]]) có shape (2, 3), a + M sẽ cho shape gì và giá trị ra sao?"
             options={[
               "Lỗi ValueError, shape (3,) không broadcast được với (2, 3)",
               "Shape (2, 3), giá trị [[11,12,13],[21,22,23]], a được phát ra thành 2 hàng",
@@ -1172,7 +1172,7 @@ export default function PythonForMlTopic() {
               "Shape (6,), giá trị [11,12,13,20,20,20], nối 2 mảng lại",
             ]}
             correct={1}
-            explanation="Quy tắc broadcasting: so sánh shape từ phải sang trái. a là (3,), M là (2, 3). Chiều cuối cùng khớp (3 = 3). Chiều còn lại của a thiếu thì được thêm bằng 1, tức là a được coi như shape (1, 3), sau đó phát ra (2, 3) bằng cách lặp hàng. Kết quả: [[1+10, 2+10, 3+10], [1+20, 2+20, 3+20]] = [[11,12,13],[21,22,23]]. Broadcasting chỉ hoạt động khi mỗi chiều hoặc bằng nhau, hoặc một trong hai bằng 1."
+            explanation="Quy tắc broadcasting: so sánh shape từ phải sang trái, a là (3,), M là (2, 3). Chiều cuối cùng khớp (3 = 3). Chiều còn lại của a thiếu thì được thêm bằng 1, tức là a được coi như shape (1, 3), sau đó phát ra (2, 3) bằng cách lặp hàng. Kết quả: [[1+10, 2+10, 3+10], [1+20, 2+20, 3+20]] = [[11,12,13],[21,22,23]]. Broadcasting chỉ hoạt động khi mỗi chiều hoặc bằng nhau, hoặc một trong hai bằng 1."
           />
           <Callout variant="warning" title="Quy tắc broadcasting: học thuộc 3 câu này">
             (1) So sánh shape từ <strong>phải sang trái</strong>. (2) Hai chiều tương thích khi{" "}

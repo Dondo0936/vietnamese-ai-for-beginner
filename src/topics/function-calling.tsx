@@ -20,7 +20,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ═══════════════════════════════════════════════════════════════════════════
-// METADATA. giữ nguyên để hệ thống điều hướng nhận diện chủ đề
+// METADATA, giữ nguyên để hệ thống điều hướng nhận diện chủ đề
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const metadata: TopicMeta = {
@@ -134,11 +134,11 @@ const STEP_ACTORS = [
   "Mô hình ngôn ngữ (LLM)",
 ];
 
-// Mô tả dài của từng bước. hiển thị bên dưới sơ đồ khi người dùng chọn.
+// Mô tả dài của từng bước, hiển thị bên dưới sơ đồ khi người dùng chọn.
 const STEP_DESCRIPTIONS = [
   "Người dùng gõ một câu hỏi bằng ngôn ngữ tự nhiên. Câu hỏi này đi vào cửa sổ ngữ cảnh cùng với danh sách công cụ có sẵn.",
   "LLM đọc câu hỏi và mô tả của từng công cụ. Nó quyết định: trả lời trực tiếp, hay cần gọi một (hoặc vài) công cụ để lấy dữ liệu mới.",
-  "Nếu cần công cụ, LLM sinh một đoạn JSON gồm tên hàm và tham số. Đây là dạng structured output. không phải lời nói chuyện với người dùng.",
+  "Nếu cần công cụ, LLM sinh một đoạn JSON gồm tên hàm và tham số. Đây là dạng structured output, không phải lời nói chuyện với người dùng.",
   "Ứng dụng của bạn (không phải LLM) parse JSON và gọi API thật. Kết quả trả về được đóng gói lại thành thông điệp tool role.",
   "LLM đọc kết quả từ công cụ, viết lại thành câu trả lời bằng ngôn ngữ tự nhiên cho người dùng. Vòng lặp có thể lặp nhiều lần nếu cần nhiều công cụ.",
 ];
@@ -166,7 +166,7 @@ const QUIZ: QuizQuestion[] = [
       "Vì sao function calling lại là nền tảng để xây dựng AI Agent?",
     options: [
       "Vì nó giúp AI có giao diện chat đẹp hơn.",
-      "Vì nó cho phép AI tương tác với thế giới thực. lấy dữ liệu mới, thực hiện hành động. vượt qua giới hạn kiến thức huấn luyện tĩnh.",
+      "Vì nó cho phép AI tương tác với thế giới thực, lấy dữ liệu mới, thực hiện hành động, vượt qua giới hạn kiến thức huấn luyện tĩnh.",
       "Vì nó làm cho inference rẻ hơn 10 lần.",
       "Vì nó buộc AI phải nói tiếng Anh.",
     ],
@@ -178,14 +178,14 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Khi LLM nhận danh sách 10 công cụ, điều gì dễ xảy ra nếu mô tả công cụ viết kém?",
     options: [
-      "LLM chọn sai công cụ hoặc truyền sai tham số. dẫn đến kết quả sai.",
+      "LLM chọn sai công cụ hoặc truyền sai tham số, dẫn đến kết quả sai.",
       "LLM tự động viết lại mô tả cho rõ hơn.",
       "Không ảnh hưởng. LLM đủ thông minh để đoán đúng.",
       "LLM sẽ từ chối dùng tất cả công cụ cho chắc.",
     ],
     correct: 0,
     explanation:
-      "LLM chọn công cụ bằng cách so khớp câu hỏi của người dùng với mô tả của từng công cụ. Nếu mô tả mơ hồ (ví dụ: chỉ ghi \"hàm tiện ích\"), LLM có thể gọi nhầm search thay vì calculator, hoặc truyền thiếu tham số. Viết mô tả công cụ là một dạng prompt engineering. rõ ràng, cụ thể, có ví dụ.",
+      "LLM chọn công cụ bằng cách so khớp câu hỏi của người dùng với mô tả của từng công cụ. Nếu mô tả mơ hồ (ví dụ: chỉ ghi \"hàm tiện ích\"), LLM có thể gọi nhầm search thay vì calculator, hoặc truyền thiếu tham số. Viết mô tả công cụ là một dạng prompt engineering, rõ ràng, cụ thể, có ví dụ.",
   },
   {
     type: "fill-blank",
@@ -221,7 +221,7 @@ const QUIZ: QuizQuestion[] = [
       "1 lần duy nhất với tham số \"Da Nang, Hue\".",
       "2 lần song song: get_weather(\"Da Nang\") và get_weather(\"Hue\").",
       "0. AI tự trả lời từ trí nhớ.",
-      "Tuỳ. có thể 1 hoặc 2 tuỳ mô hình.",
+      "Tuỳ, có thể 1 hoặc 2 tuỳ mô hình.",
     ],
     correct: 3,
     explanation:
@@ -335,7 +335,7 @@ export default function FunctionCallingTopic() {
         <div className="mt-6">
           <VisualizationSection>
             <h3 className="text-base font-semibold text-foreground mb-1">
-              Vòng lặp gọi hàm 5 bước. chọn công cụ và bước qua từng pha
+              Vòng lặp gọi hàm 5 bước, chọn công cụ và bước qua từng pha
             </h3>
             <p className="text-sm text-muted mb-4">
               Chọn một trong ba công cụ bên dưới, rồi nhấn &quot;Bước tiếp theo&quot;
@@ -585,12 +585,12 @@ export default function FunctionCallingTopic() {
           question={'Bạn có hai tool: search_kb(query) (tìm trong knowledge base nội bộ) và search_web(query) (tìm Google). Mô tả cả hai đều là "tìm kiếm thông tin". Điều gì sẽ xảy ra?'}
           options={[
             "LLM luôn chọn đúng vì biết rõ ngữ cảnh bạn muốn.",
-            "LLM chọn ngẫu nhiên, hoặc luôn chọn tool đầu tiên trong danh sách. vì không phân biệt được.",
+            "LLM chọn ngẫu nhiên, hoặc luôn chọn tool đầu tiên trong danh sách, vì không phân biệt được.",
             "LLM từ chối gọi tool nào cả.",
             "LLM tự sửa tên tool cho bạn.",
           ]}
           correct={1}
-          explanation={'Mô tả trùng lặp là một trong những lỗi thiết kế phổ biến nhất. LLM không đọc được suy nghĩ. nó dựa vào mô tả để phân biệt. Giải pháp: viết rõ ranh giới. search_kb("tìm trong tài liệu nội bộ công ty, ưu tiên khi câu hỏi về quy trình hoặc sản phẩm của công ty"), search_web("tìm thông tin công khai trên Internet, dùng khi câu hỏi không liên quan tới công ty"). Càng cụ thể, càng ít nhầm lẫn.'}
+          explanation={'Mô tả trùng lặp là một trong những lỗi thiết kế phổ biến nhất. LLM không đọc được suy nghĩ, nó dựa vào mô tả để phân biệt. Giải pháp: viết rõ ranh giới, search_kb("tìm trong tài liệu nội bộ công ty, ưu tiên khi câu hỏi về quy trình hoặc sản phẩm của công ty"), search_web("tìm thông tin công khai trên Internet, dùng khi câu hỏi không liên quan tới công ty"). Càng cụ thể, càng ít nhầm lẫn.'}
         />
       </LessonSection>
 
@@ -821,7 +821,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
             file <code>.env</code> (thêm <code>.env</code> vào{" "}
             <code>.gitignore</code>) và đọc bằng <code>python-dotenv</code>.
             Mất key công khai trên GitHub có thể khiến bạn mất vài triệu đồng
-            trong vài giờ. bot quét leak key rất nhanh.
+            trong vài giờ, bot quét leak key rất nhanh.
           </Callout>
 
           {/* ──────────────────────────────────────────────────────── */}
@@ -855,7 +855,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
           <Callout variant="insight" title="Chất lượng mô tả công cụ = Chất lượng agent">
             Mô tả tool là nơi developer &quot;dạy&quot; LLM về công cụ
             của mình. Một mô tả 3 dòng rõ ràng, có ví dụ, nói rõ khi nào
-            nên dùng và khi nào KHÔNG nên. tốt hơn 30 dòng code xử lý
+            nên dùng và khi nào KHÔNG nên, tốt hơn 30 dòng code xử lý
             lỗi sau đó. Đây là điểm khác biệt giữa agent amateur và agent
             production.
           </Callout>
@@ -874,11 +874,11 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
                 array | object.
               </li>
               <li>
-                <code>description</code>: mô tả ý nghĩa. quan trọng hơn
+                <code>description</code>: mô tả ý nghĩa, quan trọng hơn
                 bạn tưởng, LLM dùng nó để truyền đúng giá trị.
               </li>
               <li>
-                <code>enum</code>: danh sách giá trị hợp lệ. ràng buộc
+                <code>enum</code>: danh sách giá trị hợp lệ, ràng buộc
                 LLM chọn một trong số đó.
               </li>
               <li>
@@ -950,7 +950,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
               <strong>Trợ lý nội bộ doanh nghiệp:</strong> gọi tool truy vấn
-              CRM, HR system, tra cứu chính sách công ty. thay thế một
+              CRM, HR system, tra cứu chính sách công ty, thay thế một
               phần tổng đài.
             </li>
             <li>
@@ -972,7 +972,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
             </li>
             <li>
               <strong>Thương mại điện tử:</strong> tool đặt hàng, kiểm tra
-              tồn kho, tính phí ship. chatbot mua hàng thay vì form
+              tồn kho, tính phí ship, chatbot mua hàng thay vì form
               truyền thống.
             </li>
           </ul>
@@ -988,7 +988,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
               <strong>Quên vòng lặp thứ hai:</strong> gọi LLM 1 lần, thấy
               tool_call, thực thi, rồi quên gọi LLM lại để tổng hợp. Kết
               quả: người dùng thấy JSON thô hoặc không thấy gì. Khắc phục:
-              luôn viết logic vòng lặp từ đầu. kiểm tra{" "}
+              luôn viết logic vòng lặp từ đầu, kiểm tra{" "}
               <code>msg.tool_calls</code>, nếu có thì thực thi, append
               role=&quot;tool&quot;, rồi gọi LLM thêm một lượt nữa.
             </li>
@@ -1013,7 +1013,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
               <strong>Tin tham số mà LLM sinh ra:</strong> luôn validate
               ở phía ứng dụng (type check, whitelist giá trị, sanitize).
               LLM có thể &quot;ảo giác&quot; tên bảng, tên cột,
-              email. không bao giờ truyền thẳng vào SQL hay shell.
+              email, không bao giờ truyền thẳng vào SQL hay shell.
               Đặc biệt nguy hiểm khi tool chạm vào OS, network, hay
               database có quyền ghi.
             </li>
@@ -1027,7 +1027,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
             <li>
               <strong>Bỏ qua human-in-the-loop cho hành động
               nguy hiểm:</strong> xoá database, gửi tiền, gửi email đại
-              trà. phải có bước xác nhận của con người, đừng để
+              trà, phải có bước xác nhận của con người, đừng để
               AI tự quyết. Cách tiếp cận thực dụng: phân tool thành 3
               tier. <em>read-only</em> (tự chạy),{" "}
               <em>ghi tái tạo được</em> (tự chạy nhưng có undo),{" "}
@@ -1044,7 +1044,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
               <strong>Không test tool call với input cạnh (edge case):</strong>{" "}
               tool có hoạt động đúng khi tham số là chuỗi rỗng? Tiếng
               Nhật? Emoji? Giá trị âm? Viết unit test cho tool handler
-              riêng biệt. không phụ thuộc LLM. để tool luôn đúng
+              riêng biệt, không phụ thuộc LLM, để tool luôn đúng
               hợp đồng.
             </li>
           </ul>
@@ -1061,7 +1061,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
               mô tả rõ ràng hoạt động tốt hơn 30 tool mô tả mơ hồ.
             </li>
             <li>
-              <strong>Một tool. một trách nhiệm:</strong> đừng gộp{" "}
+              <strong>Một tool, một trách nhiệm:</strong> đừng gộp{" "}
               <code>manage_user</code> làm cả create/update/delete.
               Tách thành <code>create_user</code>, <code>update_user</code>,
               <code>delete_user</code>. LLM chọn dễ hơn và bạn debug
@@ -1092,7 +1092,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
             <li>
               <strong>Versioned tool:</strong> khi đổi schema của
               tool trong production, đặt tên mới (<code>get_weather_v2</code>)
-              thay vì sửa tại chỗ. tránh mô hình đang chạy bị lỗi
+              thay vì sửa tại chỗ, tránh mô hình đang chạy bị lỗi
               giữa chừng.
             </li>
           </ol>
@@ -1132,14 +1132,14 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
             <li>
               <strong>Các framework trung gian</strong> như LangChain,
               LlamaIndex, Vercel AI SDK, Mastra cung cấp abstraction
-              chung. bạn viết tool một lần, chạy với nhiều nhà cung
+              chung, bạn viết tool một lần, chạy với nhiều nhà cung
               cấp. Đánh đổi: thêm một lớp phụ thuộc.
             </li>
             <li>
               <strong>Mô hình open-source</strong> (Llama 3.1+,
               Mistral, Qwen 2.5, DeepSeek) cũng hỗ trợ function
               calling, nhưng định dạng và chất lượng khác nhau. Nếu
-              tự host, đọc kỹ tài liệu của từng model card. có thể
+              tự host, đọc kỹ tài liệu của từng model card, có thể
               cần template prompt riêng.
             </li>
           </ul>
@@ -1157,7 +1157,7 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
           <ol className="list-decimal list-inside space-y-2 pl-2">
             <li>
               <strong>Xem ngữ cảnh thật mà LLM thấy:</strong> in toàn
-              bộ <code>messages</code> gửi vào API. bao gồm system
+              bộ <code>messages</code> gửi vào API, bao gồm system
               prompt, lịch sử chat, mô tả tool. Nhiều lỗi đến từ việc
               system prompt xung đột với mô tả tool.
             </li>
@@ -1191,10 +1191,10 @@ print(call_with_tools("Thời tiết Đà Nẵng?", tools, tool_fns))`}</CodeBlo
         <MiniSummary
           title="Sáu điểm cần nhớ về Function Calling"
           points={[
-            "AI không tự thực thi hàm. nó chỉ sinh JSON mô tả ý định gọi hàm. Hệ thống bên ngoài mới là bên thực thi, rồi đưa kết quả lại cho AI tổng hợp.",
+            "AI không tự thực thi hàm, nó chỉ sinh JSON mô tả ý định gọi hàm. Hệ thống bên ngoài mới là bên thực thi, rồi đưa kết quả lại cho AI tổng hợp.",
             "Vòng lặp chuẩn có 5 pha: nhận câu hỏi → LLM phân tích → sinh JSON tool_call → hệ thống thực thi → LLM tổng hợp. Cần gọi LLM HAI LẦN trong một vòng.",
-            "Mỗi tool được khai báo bằng JSON Schema (name, description, parameters). Chất lượng mô tả quyết định LLM chọn đúng hay sai. viết như dạy intern.",
-            "Function calling là nền tảng để xây AI Agent: mở cánh cửa cho LLM tương tác API, database, email, file. vượt qua giới hạn kiến thức huấn luyện.",
+            "Mỗi tool được khai báo bằng JSON Schema (name, description, parameters). Chất lượng mô tả quyết định LLM chọn đúng hay sai, viết như dạy intern.",
+            "Function calling là nền tảng để xây AI Agent: mở cánh cửa cho LLM tương tác API, database, email, file, vượt qua giới hạn kiến thức huấn luyện.",
             "Parallel tool calls cho phép LLM gọi nhiều tool trong một lượt; thực thi song song giảm độ trễ. Chain of tools dùng khi hàm sau phụ thuộc kết quả hàm trước.",
             "Cảnh giác prompt injection qua tool input, luôn validate tham số ở phía ứng dụng, giới hạn số lượt lặp, và đặt human-in-the-loop cho hành động không hồi phục được.",
           ]}

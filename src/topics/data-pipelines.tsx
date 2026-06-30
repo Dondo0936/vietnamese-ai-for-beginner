@@ -21,7 +21,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA. giữ nguyên, không chỉnh slug/category
+// METADATA, giữ nguyên, không chỉnh slug/category
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -38,7 +38,7 @@ export const metadata: TopicMeta = {
 };
 
 // ---------------------------------------------------------------------------
-// TYPES & DATA. kiểu dữ liệu cho minh hoạ pipeline ETL
+// TYPES & DATA, kiểu dữ liệu cho minh hoạ pipeline ETL
 // ---------------------------------------------------------------------------
 
 /** Mỗi giai đoạn trong pipeline: trạng thái, thời lượng, số record vào/ra. */
@@ -144,8 +144,8 @@ const BATCH_VS_STREAMING: ComparisonRow[] = [
   },
   {
     axis: "Độ phức tạp",
-    batch: "Thấp. job có điểm đầu/cuối rõ ràng",
-    streaming: "Cao. state management, watermark, exactly-once",
+    batch: "Thấp, job có điểm đầu/cuối rõ ràng",
+    streaming: "Cao, state management, watermark, exactly-once",
   },
   {
     axis: "Khả năng backfill",
@@ -154,8 +154,8 @@ const BATCH_VS_STREAMING: ComparisonRow[] = [
   },
   {
     axis: "Chi phí vận hành",
-    batch: "Thấp. cluster chạy theo lịch",
-    streaming: "Cao. luôn online, tài nguyên 24/7",
+    batch: "Thấp, cluster chạy theo lịch",
+    streaming: "Cao, luôn online, tài nguyên 24/7",
   },
 ];
 
@@ -248,7 +248,7 @@ export default function DataPipelinesTopic() {
         ],
         correct: 1,
         explanation:
-          "Validate sớm bắt lỗi sớm: schema violations, missing values, outliers. Validate trước serve đảm bảo data sạch cho model. 'Garbage in, garbage out'. model tốt nhất cũng cho kết quả tệ nếu data bẩn.",
+          "Validate sớm bắt lỗi sớm: schema violations, missing values, outliers. Validate trước serve đảm bảo data sạch cho model. 'Garbage in, garbage out', model tốt nhất cũng cho kết quả tệ nếu data bẩn.",
       },
       {
         question: "Apache Airflow dùng để làm gì trong data pipeline?",
@@ -259,7 +259,7 @@ export default function DataPipelinesTopic() {
         ],
         correct: 1,
         explanation:
-          "Airflow là orchestrator, không xử lý data trực tiếp. Nó lên lịch chạy các task (DAG), quản lý dependencies giữa các bước, retry khi fail, alert khi error. Tương tự như 'quản lý nhà máy'. không tự tay làm mà điều phối.",
+          "Airflow là orchestrator, không xử lý data trực tiếp. Nó lên lịch chạy các task (DAG), quản lý dependencies giữa các bước, retry khi fail, alert khi error. Tương tự như 'quản lý nhà máy', không tự tay làm mà điều phối.",
       },
       {
         question:
@@ -279,7 +279,7 @@ export default function DataPipelinesTopic() {
         options: [
           "Cứng nhắc chạy đúng 2h, bỏ batch nếu thiếu file",
           "Dùng sensor/trigger đợi file tới, kèm timeout 4h, alert nếu quá hạn",
-          "Chạy ngay cả khi thiếu file. sau đó điền null",
+          "Chạy ngay cả khi thiếu file, sau đó điền null",
         ],
         correct: 1,
         explanation:
@@ -295,19 +295,19 @@ export default function DataPipelinesTopic() {
         ],
         correct: 1,
         explanation:
-          "Feature store lưu feature đã tính sẵn ở hai chế độ: offline (parquet cho training) và online (Redis/DynamoDB cho inference millisecond). Một định nghĩa feature duy nhất, dùng ở cả 2 nơi → tránh train-serve skew. lỗi kinh điển của ML production.",
+          "Feature store lưu feature đã tính sẵn ở hai chế độ: offline (parquet cho training) và online (Redis/DynamoDB cho inference millisecond). Một định nghĩa feature duy nhất, dùng ở cả 2 nơi → tránh train-serve skew, lỗi kinh điển của ML production.",
       },
       {
         question:
           "Bạn đang xây pipeline real-time phát hiện gian lận thẻ tín dụng. Kiến trúc hợp lý nhất?",
         options: [
-          "Airflow chạy batch mỗi giờ. đủ nhanh",
+          "Airflow chạy batch mỗi giờ, đủ nhanh",
           "Kafka ingest event → Flink/Spark Streaming tính feature → model score → alert trong giây",
           "Chạy SQL trên warehouse mỗi 5 phút",
         ],
         correct: 1,
         explanation:
-          "Fraud detection yêu cầu độ trễ sub-second. Kafka làm message bus (pub/sub, bền bỉ qua replay log), Flink/Spark Streaming tính feature cửa sổ trượt (rolling window), model inference in-stream, rồi publish cảnh báo. Batch 1h là quá trễ. tiền đã mất.",
+          "Fraud detection yêu cầu độ trễ sub-second. Kafka làm message bus (pub/sub, bền bỉ qua replay log), Flink/Spark Streaming tính feature cửa sổ trượt (rolling window), model inference in-stream, rồi publish cảnh báo. Batch 1h là quá trễ, tiền đã mất.",
       },
       {
         type: "fill-blank",
@@ -340,7 +340,7 @@ export default function DataPipelinesTopic() {
             "Model tự biết tìm data mình cần",
           ]}
           correct={1}
-          explanation="Đúng! Data Pipeline là 'nhà máy chế biến' tự động. nguyên liệu thô (raw data) từ nhiều nguồn được thu thập, làm sạch, biến đổi, và giao đến model sẵn sàng sử dụng. Không có pipeline = data stale, model tệ!"
+          explanation="Đúng! Data Pipeline là 'nhà máy chế biến' tự động, nguyên liệu thô (raw data) từ nhiều nguồn được thu thập, làm sạch, biến đổi, và giao đến model sẵn sàng sử dụng. Không có pipeline = data stale, model tệ!"
         >
           {/* ═══ ANALOGY BLOCK ═══════════════════════════════════════════ */}
           <div className="my-6 rounded-2xl border border-border bg-surface/40 p-5">
@@ -370,10 +370,10 @@ export default function DataPipelinesTopic() {
               </li>
             </ul>
             <p className="mt-3 text-sm text-muted leading-relaxed">
-              Có <strong>quản đốc</strong> đứng điều phối cả nhà máy. đó chính là{" "}
+              Có <strong>quản đốc</strong> đứng điều phối cả nhà máy, đó chính là{" "}
               <em>orchestrator</em> (Airflow, Dagster, Prefect). Quản đốc không trực tiếp ép trái cây,
               nhưng quyết định dây chuyền nào chạy lúc nào, báo động khi máy hỏng, và ghi nhật ký để
-              truy vết lỗi. Không có quản đốc, các dây chuyền không biết thứ tự chạy. chaos.
+              truy vết lỗi. Không có quản đốc, các dây chuyền không biết thứ tự chạy, chaos.
             </p>
           </div>
 
@@ -608,7 +608,7 @@ export default function DataPipelinesTopic() {
                       fontSize={11}
                       fontWeight="bold"
                     >
-                      Orchestrator: Apache Airflow · Dagster · Prefect. điều phối thứ tự, retry, alert
+                      Orchestrator: Apache Airflow · Dagster · Prefect, điều phối thứ tự, retry, alert
                     </text>
                   </g>
                 </svg>
@@ -659,7 +659,7 @@ export default function DataPipelinesTopic() {
                   >
                     Đây là dấu hiệu dữ liệu thượng nguồn có vấn đề: schema drift, null
                     bất thường, giá trị ngoài miền cho phép. Pipeline nên emit metric
-                    này lên dashboard (Datadog, Grafana) và cảnh báo khi vượt ngưỡng. ví dụ &gt; 5% thì chặn bước Transform để tránh "đầu độc" feature store.
+                    này lên dashboard (Datadog, Grafana) và cảnh báo khi vượt ngưỡng, ví dụ &gt; 5% thì chặn bước Transform để tránh "đầu độc" feature store.
                   </Callout>
                 )}
 
@@ -676,7 +676,7 @@ export default function DataPipelinesTopic() {
             {/* ═══ BATCH vs STREAMING COMPARISON ════════════════════════ */}
             <div className="mt-6">
               <h4 className="text-sm font-semibold text-foreground mb-2">
-                Batch vs Streaming. hai triết lý xử lý dữ liệu
+                Batch vs Streaming, hai triết lý xử lý dữ liệu
               </h4>
               <p className="text-sm text-muted leading-relaxed mb-3">
                 Cùng kiến trúc ETL nhưng tần suất khác nhau dẫn đến công cụ, độ phức tạp và chi phí
@@ -832,8 +832,8 @@ export default function DataPipelinesTopic() {
               <InlineChallenge
                 question="Team ML thấy online metric của model tụt 20% sau deploy, dù offline metric vẫn tốt. Pipeline training dùng feature A = AVG(last_30_days), serving dùng feature A = AVG(last_7_days). Đây là lỗi gì?"
                 options={[
-                  "Overfitting. train quá kỹ",
-                  "Train-serve skew. định nghĩa feature khác nhau giữa training và serving",
+                  "Overfitting, train quá kỹ",
+                  "Train-serve skew, định nghĩa feature khác nhau giữa training và serving",
                   "Vanishing gradient trong mạng neural",
                 ]}
                 correct={1}
@@ -848,7 +848,7 @@ export default function DataPipelinesTopic() {
               {/* ── ĐỊNH NGHĨA ─────────────────────────────────────────── */}
               <p>
                 <strong>Data Pipeline</strong> là quy trình tự động hoá thu thập, xử lý và chuẩn bị
-                dữ liệu từ nguồn đến đích. thành phần không thể thiếu trong mọi hệ thống AI/ML, là
+                dữ liệu từ nguồn đến đích, thành phần không thể thiếu trong mọi hệ thống AI/ML, là
                 nền tảng cho <TopicLink slug="mlops">MLOps</TopicLink> hoàn chỉnh. Một pipeline tốt
                 đảm bảo dữ liệu đến đúng nơi, đúng lúc, đúng chất lượng, và có thể truy vết (data
                 lineage) khi có sự cố.
@@ -886,7 +886,7 @@ export default function DataPipelinesTopic() {
 
               {/* ── LATEX: BATCH vs STREAMING ─────────────────────────── */}
               <p>
-                <strong>Công thức độ tươi dữ liệu</strong> (data freshness). chỉ số quan trọng
+                <strong>Công thức độ tươi dữ liệu</strong> (data freshness), chỉ số quan trọng
                 đánh giá pipeline:
               </p>
               <LaTeX block>
@@ -905,7 +905,7 @@ export default function DataPipelinesTopic() {
               </LaTeX>
 
               {/* ── CODE BLOCK 1: AIRFLOW DAG ─────────────────────────── */}
-              <CodeBlock language="python" title="1. Airflow DAG. orchestrate pipeline theo lịch">
+              <CodeBlock language="python" title="1. Airflow DAG, orchestrate pipeline theo lịch">
                 {`from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.sensors.filesystem import FileSensor
@@ -967,7 +967,7 @@ with DAG(
         python_callable=run_dbt_models,
     )
 
-    # --- Bước 4: fan-out. ghi feature store và trigger training ---
+    # --- Bước 4: fan-out, ghi feature store và trigger training ---
     write_feature = PythonOperator(
         task_id="write_feature_store",
         python_callable=materialize_feast_features,
@@ -985,7 +985,7 @@ with DAG(
               {/* ── CODE BLOCK 2: GREAT EXPECTATIONS ──────────────────── */}
               <CodeBlock
                 language="python"
-                title="2. Great Expectations. tầng bảo vệ data quality"
+                title="2. Great Expectations, tầng bảo vệ data quality"
               >
                 {`import great_expectations as gx
 
@@ -994,7 +994,7 @@ context = gx.get_context()
 source = context.sources.add_pandas("orders")
 asset = source.add_dataframe_asset("raw_orders")
 
-# 2. Expectation Suite. khai báo "kỳ vọng" về dữ liệu
+# 2. Expectation Suite, khai báo "kỳ vọng" về dữ liệu
 suite = context.add_expectation_suite("orders_suite")
 validator = context.get_validator(
     batch_request=asset.build_batch_request(dataframe=df),
@@ -1031,16 +1031,16 @@ if not result.success:
               </CodeBlock>
 
               {/* ── 4 CALLOUTS ─────────────────────────────────────────── */}
-              <Callout variant="tip" title="ETL vs ELT. chọn sao cho đúng?">
+              <Callout variant="tip" title="ETL vs ELT, chọn sao cho đúng?">
                 <strong>ETL</strong> (Extract-Transform-Load): transform trên pipeline server trước
-                khi lưu. phù hợp khi warehouse yếu hoặc data nhạy cảm cần làm sạch ở vùng tin cậy.
+                khi lưu, phù hợp khi warehouse yếu hoặc data nhạy cảm cần làm sạch ở vùng tin cậy.
                 <strong> ELT</strong> (Extract-Load-Transform): load raw trước, transform trong
-                warehouse (BigQuery, Snowflake, Databricks) bằng SQL/dbt. xu hướng hiện đại vì
+                warehouse (BigQuery, Snowflake, Databricks) bằng SQL/dbt, xu hướng hiện đại vì
                 warehouse có compute cực mạnh, separation of storage &amp; compute, phân quyền
                 tốt hơn.
               </Callout>
 
-              <Callout variant="info" title="Idempotency. chạy lại nhiều lần phải ra kết quả giống nhau">
+              <Callout variant="info" title="Idempotency, chạy lại nhiều lần phải ra kết quả giống nhau">
                 Mọi task trong pipeline nên <em>idempotent</em>: chạy lần 1 và lần 2 cho kết quả
                 giống hệt. Cách làm: partition theo ngày (<code>WHERE date = &#39;2024-01-15&#39;</code>),
                 dùng <code>MERGE INTO</code> thay <code>INSERT</code>, lưu watermark trong metadata
@@ -1054,7 +1054,7 @@ if not result.success:
                 Schema Registry) để enforce compatibility rules (backward/forward compatible).
               </Callout>
 
-              <Callout variant="insight" title="Data lineage. truy vết gốc gác mỗi feature">
+              <Callout variant="insight" title="Data lineage, truy vết gốc gác mỗi feature">
                 Khi model cho dự đoán kỳ lạ, câu hỏi đầu tiên là "feature này tính từ nguồn nào,
                 biến đổi qua những bước gì?". Công cụ lineage (OpenLineage, Marquez, DataHub) vẽ
                 đồ thị phụ thuộc từ model → feature → transform → table → column gốc. Bắt buộc cho
@@ -1062,7 +1062,7 @@ if not result.success:
               </Callout>
 
               {/* ── 2 COLLAPSIBLE DETAILS ─────────────────────────────── */}
-              <CollapsibleDetail title="Chi tiết: Airflow vs Dagster vs Prefect. chọn orchestrator nào?">
+              <CollapsibleDetail title="Chi tiết: Airflow vs Dagster vs Prefect, chọn orchestrator nào?">
                 <div className="space-y-2 text-sm">
                   <p>
                     <strong>Airflow</strong> (2014, Airbnb): thư viện lâu đời nhất, cộng đồng lớn
@@ -1072,7 +1072,7 @@ if not result.success:
                     cồng kềnh.
                   </p>
                   <p>
-                    <strong>Dagster</strong> (2019, Elementl): triết lý software-defined assets. thay vì nghĩ theo task, nghĩ theo "dataset" (asset) và pipeline materialize
+                    <strong>Dagster</strong> (2019, Elementl): triết lý software-defined assets, thay vì nghĩ theo task, nghĩ theo "dataset" (asset) và pipeline materialize
                     asset. Tích hợp sâu với dbt, Pandas, Polars. Mạnh về type system, testing,
                     observability. Nhược: đường học hơi dốc, cộng đồng nhỏ hơn.
                   </p>

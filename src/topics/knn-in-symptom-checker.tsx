@@ -759,8 +759,8 @@ function ScenarioWalkthrough() {
             ))}
           </ol>
           <p className="text-xs text-foreground/80 leading-relaxed">
-            Khoảng cách Hamming đếm số triệu chứng KHÁC biệt. d = 1 nghĩa là ca tham chiếu
-            có 7/8 triệu chứng giống hệt Minh. k = 5 ca gần nhất sẽ được dùng để bỏ phiếu.
+            Khoảng cách Hamming đếm số triệu chứng KHÁC biệt, d = 1 nghĩa là ca tham chiếu
+            có 7/8 triệu chứng giống hệt Minh, k = 5 ca gần nhất sẽ được dùng để bỏ phiếu.
           </p>
         </div>,
         <div key="s3" className="rounded-xl border border-border bg-surface/60 p-4 space-y-2">
@@ -876,7 +876,7 @@ export default function KnnInSymptomChecker() {
         <Beat step={3}>
           <p>
             <strong>Chọn k ca gần nhất.</strong> Lấy k ca (thường 5, 7 hoặc 11, là các
-            số lẻ để tránh hoà phiếu). k quá nhỏ thì nhạy với ca cá biệt, k quá lớn thì
+            số lẻ để tránh hoà phiếu), k quá nhỏ thì nhạy với ca cá biệt, k quá lớn thì
             bỏ qua bệnh hiếm. Trong y tế, k được tinh chỉnh qua cross-validation trên
             dữ liệu ca đã biết.
           </p>

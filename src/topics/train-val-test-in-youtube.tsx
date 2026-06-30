@@ -267,7 +267,7 @@ export default function TrainValTestInYoutube() {
           </StepReveal>
         </div>
 
-        {/* DEEPEN. offline vs online metric divergence */}
+        {/* DEEPEN, offline vs online metric divergence */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <AlertTriangle size={16} className="text-amber-500" />
@@ -450,7 +450,7 @@ export default function TrainValTestInYoutube() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  LOCAL HELPERS. visual components
+ *  LOCAL HELPERS, visual components
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 function RandomVsTimeHook() {
@@ -697,7 +697,7 @@ function ABStage({ stage, title, color, desc, visual }: ABStageProps) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   TwoStageArchitecture. visualize YouTube's candidate + ranking pipeline
+   TwoStageArchitecture, visualize YouTube's candidate + ranking pipeline
    ───────────────────────────────────────────────────────────────────────── */
 function TwoStageArchitecture() {
   return (
@@ -822,7 +822,7 @@ function TwoStageArchitecture() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   OfflineOnlineDivergence. three scenarios showing metric divergence
+   OfflineOnlineDivergence, three scenarios showing metric divergence
    ───────────────────────────────────────────────────────────────────────── */
 function OfflineOnlineDivergence() {
   const scenarios = [

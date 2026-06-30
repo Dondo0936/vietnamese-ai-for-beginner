@@ -96,7 +96,7 @@ const STAGES: Stage[] = [
     flowFrom: "π_SFT + R_φ",
     flowTo: "π_RLHF (aligned policy)",
     detail:
-      "Đây là vòng RL: policy hiện tại sinh response, reward model chấm điểm, PPO cập nhật trọng số để tăng reward. KL divergence với SFT giữ mô hình không 'chạy quá đà' sang vùng bị reward hacking. β điều khiển mức độ trung thành với bản SFT.",
+      "Đây là vòng RL: policy hiện tại sinh response, reward model chấm điểm, PPO cập nhật trọng số để tăng reward. KL divergence với SFT giữ mô hình không 'chạy quá đà' sang vùng bị reward hacking, β điều khiển mức độ trung thành với bản SFT.",
   },
 ];
 
@@ -242,7 +242,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Hàm mục tiêu RLHF: max_θ E_{x~D, y~π_θ} [R_φ(x, y) − β · KL(π_θ(·|x) ‖ π_SFT(·|x))]. Thành phần đầu kéo mô hình lên reward cao; thành phần KL giữ gần SFT baseline. β là hyperparameter (thường 0.01–0.2).",
+      "Hàm mục tiêu RLHF: max_θ E_{x~D, y~π_θ} [R_φ(x, y) − β · KL(π_θ(·|x) ‖ π_SFT(·|x))]. Thành phần đầu kéo mô hình lên reward cao; thành phần KL giữ gần SFT baseline, β là hyperparameter (thường 0.01–0.2).",
   },
   {
     question:
@@ -907,7 +907,7 @@ export default function RLHFTopic() {
             Thành phần KL penalty (β · log π_θ/π_SFT) tương đương{" "}
             <LaTeX>{String.raw`\beta \cdot D_{\text{KL}}(\pi_\theta \| \pi_{\text{SFT}})`}</LaTeX>{" "}
             khi lấy kỳ vọng. Đây là reward shaping per-token: reward thực tế mỗi
-            token là R_φ (ở token cuối) minus β · KL cục bộ. β kiểm soát trade-off
+            token là R_φ (ở token cuối) minus β · KL cục bộ, β kiểm soát trade-off
             giữa &quot;tối đa reward&quot; và &quot;giữ gần SFT&quot;.
           </p>
 
@@ -1228,7 +1228,7 @@ for epoch in range(num_epochs):
           points={[
             "Pipeline 3 giai đoạn: SFT (học format từ demo) → Reward Model (học preference con người) → PPO (tối ưu policy theo RM + KL penalty).",
             "RM thay mặt con người chấm điểm hàng triệu response — giải quyết nút cổ chai tốc độ của human feedback. Loss Bradley-Terry trên preference pairs (chosen vs rejected).",
-            "Objective PPO cốt lõi: max E[R_φ(x, y) − β · KL(π_θ ‖ π_SFT)]. β kiểm soát trade-off giữa tối đa reward và trung thành với SFT.",
+            "Objective PPO cốt lõi: max E[R_φ(x, y) − β · KL(π_θ ‖ π_SFT)], β kiểm soát trade-off giữa tối đa reward và trung thành với SFT.",
             "KL penalty là phanh chống reward hacking — nếu không có, policy sẽ tìm ngóc ngách của RM (nịnh bợ, xả văn, off-topic) để thổi điểm.",
             "RLHF không dạy kiến thức mới — nó dạy giá trị (helpful, honest, harmless). Mã hóa giá trị qua preference pairs của annotator.",
             "Biến thể: RLAIF (AI annotator), DPO (bỏ RM+PPO), GRPO (bỏ value net), Constitutional AI (hiến pháp + RLAIF), RLVR (verifiable rewards). DPO đang dần phổ biến do đơn giản hơn.",

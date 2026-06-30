@@ -230,8 +230,8 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     question: "Beam width = 1 tương đương thuật toán nào?",
     options: [
-      "Exhaustive search. duyệt toàn bộ cây",
-      "Greedy search. luôn chọn token có xác suất cao nhất ở mỗi bước",
+      "Exhaustive search, duyệt toàn bộ cây",
+      "Greedy search, luôn chọn token có xác suất cao nhất ở mỗi bước",
       "Random sampling",
       "Temperature sampling",
     ],
@@ -249,14 +249,14 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "P(câu) = Π P(token). Càng nhiều token (mỗi < 1) → tích càng nhỏ → điểm càng thấp. Không có length penalty, beam search luôn chọn câu ngắn. score/|Y|^α với α ≈ 0.6–1.0 cân bằng lại.",
+      "P(câu) = Π P(token). Càng nhiều token (mỗi < 1) → tích càng nhỏ → điểm càng thấp. Không có length penalty, beam search luôn chọn câu ngắn, score/|Y|^α với α ≈ 0.6–1.0 cân bằng lại.",
   },
   {
     question: "ChatGPT dùng beam search hay sampling cho phản hồi hội thoại? Tại sao?",
     options: [
-      "Beam search. vì chất lượng cao nhất",
-      "Sampling (top-p / temperature). vì cần sự đa dạng, sáng tạo trong hội thoại",
-      "Greedy search. vì đơn giản nhất",
+      "Beam search, vì chất lượng cao nhất",
+      "Sampling (top-p / temperature), vì cần sự đa dạng, sáng tạo trong hội thoại",
+      "Greedy search, vì đơn giản nhất",
       "Không dùng thuật toán giải mã cụ thể",
     ],
     correct: 1,
@@ -272,7 +272,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       { answer: "1", accept: ["một", "one"] },
     ],
     explanation:
-      "beam width (k, hay num_beams trong HuggingFace) = số ứng viên giữ song song. k = 1 đồng nghĩa greedy search (luôn chọn token xác suất cao nhất). k càng lớn, càng khám phá nhiều nhánh nhưng càng tốn tính toán.",
+      "beam width (k, hay num_beams trong HuggingFace) = số ứng viên giữ song song, k = 1 đồng nghĩa greedy search (luôn chọn token xác suất cao nhất), k càng lớn, càng khám phá nhiều nhánh nhưng càng tốn tính toán.",
   },
   {
     question:
@@ -305,7 +305,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       "Khi nào nên ưu tiên beam search hơn sampling?",
     options: [
       "Khi làm chatbot hội thoại cần đa dạng",
-      "Khi cần output deterministic, ổn định, gần optimum. ví dụ dịch máy, tóm tắt, code completion",
+      "Khi cần output deterministic, ổn định, gần optimum, ví dụ dịch máy, tóm tắt, code completion",
       "Khi muốn model sáng tạo",
       "Khi batch size rất nhỏ",
     ],
@@ -691,9 +691,9 @@ export default function BeamSearchTopic() {
         <PredictionGate
           question='GPT sinh câu từ prompt "Tôi yêu ___". Bước 1 có 5 ứng viên: "em" (42%), "gia đình" (24%), "cà phê" (20%), "Việt Nam" (8%), "mèo" (6%). Nếu chỉ giữ 1 từ tốt nhất thì sao?'
           options={[
-            'Greedy: chỉ giữ "em". nhanh, nhưng có thể bỏ lỡ "Tôi yêu gia đình vô cùng"',
+            'Greedy: chỉ giữ "em", nhanh, nhưng có thể bỏ lỡ "Tôi yêu gia đình vô cùng"',
             "Giữ cả 5. chắc chắn tìm được câu tốt nhất",
-            'Giữ 3 ứng viên tốt nhất: "em", "gia đình", "cà phê". cân bằng giữa chất lượng và chi phí',
+            'Giữ 3 ứng viên tốt nhất: "em", "gia đình", "cà phê", cân bằng giữa chất lượng và chi phí',
           ]}
           correct={2}
           explanation='Giữ 3 ứng viên (beam width = 3): "em", "gia đình", "cà phê". Cả ba tiếp tục mở rộng song song. Có thể "Tôi yêu gia đình vô cùng." hay hơn "Tôi yêu em nhiều lắm." vì từ "vô cùng" có xác suất điều kiện 72%. Beam Search không đặt hết trứng vào một giỏ.'
@@ -859,7 +859,7 @@ export default function BeamSearchTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="So sánh ba chiến lược">
         <p className="mb-3 text-sm text-foreground leading-relaxed">
           Cùng một prompt, ba chiến lược giải mã cho ra câu khác nhau. Xem bảng
-          dưới. lưu ý rằng beam search đôi khi tìm được xác suất tổng cao hơn
+          dưới, lưu ý rằng beam search đôi khi tìm được xác suất tổng cao hơn
           greedy, và sampling cho ra câu khác hoàn toàn.
         </p>
         <DecodingStrategyCards beamWidth={beamWidth} />
@@ -921,13 +921,13 @@ export default function BeamSearchTopic() {
           <p>
             <strong>Beam Search</strong> giữ k con đường tốt nhất{" "}
             <em>song song</em>, không “đặt cược” vào 1 lựa chọn duy nhất. Giống
-            đội thám hiểm chia nhóm. nhóm nào tìm được đường tốt nhất thì
+            đội thám hiểm chia nhóm, nhóm nào tìm được đường tốt nhất thì
             thắng. Điều kỳ diệu: một ứng viên token có xác suất thấp ở bước 1
             (ví dụ “gia đình” chỉ 24%) vẫn có thể dẫn đến câu tốt nhất, nếu
             các token tiếp theo của nó có xác suất điều kiện cao.
           </p>
           <p className="text-sm text-muted mt-1">
-            k = 1 → Greedy (nhanh, kém). k → ∞ → exhaustive (chậm, tối ưu).
+            k = 1 → Greedy (nhanh, kém), k → ∞ → exhaustive (chậm, tối ưu).
             k = 4–10 thường là sweet spot cho dịch máy, k = 1 + sampling là
             chuẩn cho chatbot.
           </p>
@@ -943,7 +943,7 @@ export default function BeamSearchTopic() {
             question="Beam search luôn cho kết quả GIỐNG NHAU cùng input. ChatGPT thì mỗi lần trả lời khác. ChatGPT dùng gì?"
             options={[
               "Beam search với beam rất lớn",
-              "Sampling (top-p / nucleus). chọn ngẫu nhiên từ phân phối xác suất → đa dạng",
+              "Sampling (top-p / nucleus), chọn ngẫu nhiên từ phân phối xác suất → đa dạng",
               "Greedy search + random seed",
             ]}
             correct={1}
@@ -992,7 +992,7 @@ export default function BeamSearchTopic() {
             </div>
           </Callout>
 
-          <Callout variant="info" title="Nucleus Sampling (Top-p). người anh em stochastic">
+          <Callout variant="info" title="Nucleus Sampling (Top-p), người anh em stochastic">
             <p>Thay vì chọn top-k, top-p chọn tập nhỏ nhất đạt xác suất tích lũy ≥ p:</p>
             <LaTeX block>{`V_p = \\min \\Big\\{ V' \\subseteq V : \\sum_{w \\in V'} p(w) \\geq p \\Big\\}`}</LaTeX>
             <LaTeX block>{`p'(w) = \\frac{p(w) \\cdot \\mathbb{1}[w \\in V_p]}{\\sum_{w' \\in V_p} p(w')}`}</LaTeX>
@@ -1017,7 +1017,7 @@ export default function BeamSearchTopic() {
                 → nhàm chán. Dùng sampling.
               </li>
               <li>
-                <strong>Chi phí O(k × V)</strong> mỗi bước. với vocab lớn và
+                <strong>Chi phí O(k × V)</strong> mỗi bước, với vocab lớn và
                 k lớn là tốn bộ nhớ.
               </li>
             </ul>
@@ -1194,7 +1194,7 @@ def beam_search_decode(
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Constrained Beam Search. ép từ bắt buộc hoặc cấm">
+          <CollapsibleDetail title="Constrained Beam Search, ép từ bắt buộc hoặc cấm">
             <div className="space-y-2 text-sm">
               <p>
                 Trong dịch máy, bạn có thể cần ép một cụm từ cụ thể xuất hiện
@@ -1232,7 +1232,7 @@ def beam_search_decode(
           title="Ghi nhớ về Beam Search"
           points={[
             "Beam Search giữ k ứng viên tốt nhất song song (k = beam width / num_beams).",
-            "k = 1 → Greedy (nhanh, kém). k = 4–10 → sweet spot cho dịch máy, tóm tắt. k → ∞ → exhaustive (chậm).",
+            "k = 1 → Greedy (nhanh, kém), k = 4–10 → sweet spot cho dịch máy, tóm tắt, k → ∞ → exhaustive (chậm).",
             "Length penalty chia score cho |Y|^α để tránh thiên vị câu ngắn; α ≈ 0.6–1.0 phổ biến.",
             "Dịch máy / tóm tắt / captioning → beam search. ChatGPT / kể chuyện → sampling (top-p + temperature).",
             "Beam search deterministic (cùng input → cùng output); sampling tạo đa dạng, mỗi lần một khác.",
@@ -1252,7 +1252,7 @@ def beam_search_decode(
 }
 
 /* ============================================================================
- *  END OF FILE. beam-search.tsx
+ *  END OF FILE, beam-search.tsx
  *
  *  Maintainer notes:
  *   - TOKEN_TREE is hand-crafted so greedy and beam produce different
@@ -1273,6 +1273,6 @@ def beam_search_decode(
  *   - The from-scratch beam search is simplified (batch size 1, single
  *     sequence, no KV cache). Production implementations (e.g. HF's
  *     BeamSearchScorer) track much more state for performance and
- *     correctness. pointers for interested readers.
+ *     correctness, pointers for interested readers.
  * ============================================================================
  */

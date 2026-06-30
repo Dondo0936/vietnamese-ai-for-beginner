@@ -123,7 +123,7 @@ function computeCandidate(
 
 type Injection = "none" | "latency" | "halluc" | "cost";
 
-// Sparkline 20 điểm. sinh theo % + seed + injection.
+// Sparkline 20 điểm, sinh theo % + seed + injection.
 function computeSpark(pct: number, seed: number, injection: Injection): number[] {
   const out: number[] = [];
   for (let i = 0; i < 20; i += 1) {
@@ -170,7 +170,7 @@ function checkGuardrails(cand: VariantSnapshot): GuardCheck[] {
   ];
 }
 
-// Timeline 7 checkpoint. mỗi mốc gắn với một preset.
+// Timeline 7 checkpoint, mỗi mốc gắn với một preset.
 interface Checkpoint {
   day: number;
   label: string;
@@ -250,7 +250,7 @@ export default function CanaryReleasesLLMTopic() {
   }, []);
 
   // ──────────────────────────────────────────────────────────────────
-  // DIAL. toạ độ và góc
+  // DIAL, toạ độ và góc
   // ──────────────────────────────────────────────────────────────────
   const DIAL_SIZE = 240;
   const DIAL_CX = DIAL_SIZE / 2;
@@ -291,7 +291,7 @@ export default function CanaryReleasesLLMTopic() {
           "Shadow traffic khác canary release ở điểm cốt lõi nào?",
         options: [
           "Shadow nhanh hơn canary",
-          "Shadow chạy song song v_candidate nhưng KHÔNG trả output cho user. chỉ log để so sánh offline; canary trả output thật cho một tỷ lệ user",
+          "Shadow chạy song song v_candidate nhưng KHÔNG trả output cho user, chỉ log để so sánh offline; canary trả output thật cho một tỷ lệ user",
           "Shadow và canary là hai tên của cùng một kỹ thuật",
           "Shadow chỉ dùng cho batch, canary chỉ dùng cho online",
         ],
@@ -317,7 +317,7 @@ export default function CanaryReleasesLLMTopic() {
           "Bạn chạy canary 10% cho candidate. Goal metric (CSAT) +4pp, guardrail metric (p95 latency) +25%. Làm gì?",
         options: [
           "Rollout lên 50% vì CSAT cải thiện",
-          "Rollback hoặc pause. guardrail bị vi phạm (vượt ngưỡng 1.1×). Nguyên tắc: chỉ rollout khi goal tốt lên VÀ guardrail không xấu đi",
+          "Rollback hoặc pause, guardrail bị vi phạm (vượt ngưỡng 1.1×). Nguyên tắc: chỉ rollout khi goal tốt lên VÀ guardrail không xấu đi",
           "Tăng ngưỡng guardrail lên 1.5× cho xong",
           "Bỏ qua latency, user chưa phàn nàn là được",
         ],
@@ -340,16 +340,16 @@ export default function CanaryReleasesLLMTopic() {
           },
         ],
         explanation:
-          "Welch t-test là mở rộng Student's t-test, không đòi hỏi variance bằng nhau giữa hai nhánh. phù hợp cho LLM vì v_candidate thường có variance khác v_current. Nhớ: p-value một mình không đủ, cần effect size + confidence interval để quyết định ra hướng.",
+          "Welch t-test là mở rộng Student's t-test, không đòi hỏi variance bằng nhau giữa hai nhánh, phù hợp cho LLM vì v_candidate thường có variance khác v_current. Nhớ: p-value một mình không đủ, cần effect size + confidence interval để quyết định ra hướng.",
       },
       {
         question:
           "Tại sao A/B test LLM cần sample size LỚN HƠN A/B test UI truyền thống?",
         options: [
           "Vì LLM chậm hơn",
-          "Vì output LLM không deterministic. cùng input có thể ra output khác → variance cao hơn → cần nhiều mẫu hơn để đạt cùng power thống kê. Dùng sequential testing hoặc CUPED để giảm sample size",
+          "Vì output LLM không deterministic, cùng input có thể ra output khác → variance cao hơn → cần nhiều mẫu hơn để đạt cùng power thống kê. Dùng sequential testing hoặc CUPED để giảm sample size",
           "Vì LLM đắt hơn",
-          "Không khác gì. vẫn dùng sample size formula thường",
+          "Không khác gì, vẫn dùng sample size formula thường",
         ],
         correct: 1,
         explanation:
@@ -370,10 +370,10 @@ export default function CanaryReleasesLLMTopic() {
       },
       {
         question:
-          "Feature flag cho model version. lợi ích chính so với deploy mới?",
+          "Feature flag cho model version, lợi ích chính so với deploy mới?",
         options: [
           "Không cần test",
-          "Đổi model mà KHÔNG cần deploy lại code. config reload nóng; ramp/rollback tính bằng giây thay vì phút; A/B theo segment user dễ dàng",
+          "Đổi model mà KHÔNG cần deploy lại code, config reload nóng; ramp/rollback tính bằng giây thay vì phút; A/B theo segment user dễ dàng",
           "Flag chạy nhanh hơn code",
           "Flag thay thế hoàn toàn quy trình CI/CD",
         ],
@@ -393,7 +393,7 @@ export default function CanaryReleasesLLMTopic() {
           },
         ],
         explanation:
-          "Pattern quan trọng nhất trong rollout: tách 2 loại metric. Goal (north-star). để chọn candidate tốt hơn. Guardrail. để đảm bảo không gây hại ở chiều khác. Một candidate có goal tốt nhưng guardrail xấu = rollback. Đây là 'do no harm' dịch sang ngôn ngữ metric.",
+          "Pattern quan trọng nhất trong rollout: tách 2 loại metric. Goal (north-star), để chọn candidate tốt hơn. Guardrail, để đảm bảo không gây hại ở chiều khác. Một candidate có goal tốt nhưng guardrail xấu = rollback. Đây là 'do no harm' dịch sang ngôn ngữ metric.",
       },
     ],
     [],
@@ -408,7 +408,7 @@ export default function CanaryReleasesLLMTopic() {
       <div className="flex items-center justify-between mb-2">
         <div>
           <p className="text-sm font-bold text-foreground">
-            Rollout dial. kéo tay quay để đổi % canary
+            Rollout dial, kéo tay quay để đổi % canary
           </p>
           <p className="text-[11px] text-muted">
             0% = shadow (log nhưng không trả output). 100% = full cutover.
@@ -480,7 +480,7 @@ export default function CanaryReleasesLLMTopic() {
             </text>
           </g>
         ))}
-        {/* Handle (tay quay). xoay theo pct */}
+        {/* Handle (tay quay), xoay theo pct */}
         <motion.g
           animate={{ rotate: handleAngle }}
           transition={{ type: "spring", stiffness: 140, damping: 18 }}
@@ -730,7 +730,7 @@ export default function CanaryReleasesLLMTopic() {
   const renderInjectors = () => (
     <div className="rounded-xl border border-border bg-card p-3">
       <p className="text-xs font-bold text-foreground mb-2">
-        Inject fault. thấy auto-rollback chạy thế nào
+        Inject fault, thấy auto-rollback chạy thế nào
       </p>
       <div className="grid grid-cols-2 gap-2">
         <button
@@ -790,7 +790,7 @@ export default function CanaryReleasesLLMTopic() {
             "Chờ 1 năm xem ai khác bị lỗi trước rồi mới đổi",
           ]}
           correct={1}
-          explanation="Flip env var = 'big bang', không có rollback nhanh khi LLM mới vi phạm SLO. A/B 50/50 ngay lập tức đưa 50% user vào vùng chưa kiểm chứng. rủi ro cao. Chờ 1 năm thì vendor đã release model mới hơn. Đáp án đúng: gradient rollout. shadow để kiểm crash/format, rồi 1% canary để bắt tín hiệu thật ở cỡ mẫu an toàn, rồi ramp dần với guardrail."
+          explanation="Flip env var = 'big bang', không có rollback nhanh khi LLM mới vi phạm SLO. A/B 50/50 ngay lập tức đưa 50% user vào vùng chưa kiểm chứng, rủi ro cao. Chờ 1 năm thì vendor đã release model mới hơn. Đáp án đúng: gradient rollout, shadow để kiểm crash/format, rồi 1% canary để bắt tín hiệu thật ở cỡ mẫu an toàn, rồi ramp dần với guardrail."
         >
           {/* ───────────── 2. VISUALIZATION ───────────── */}
           <LessonSection
@@ -820,7 +820,7 @@ export default function CanaryReleasesLLMTopic() {
                         AUTO-ROLLBACK TRIGGERED
                       </p>
                       <p className="text-[11px] text-red-900/80 dark:text-red-200/80 mt-0.5">
-                        Một guardrail SLO bị vi phạm. traffic weight về
+                        Một guardrail SLO bị vi phạm, traffic weight về
                         0%, feature flag tắt candidate, trang on-call.
                       </p>
                     </motion.div>
@@ -881,12 +881,12 @@ export default function CanaryReleasesLLMTopic() {
             <div className="space-y-3">
               <Callout variant="tip" title="Gọi tên đúng: shadow, canary, blue-green, progressive delivery">
                 <strong>Shadow / Dark launch</strong>: chạy song song 2
-                model, chỉ log v_candidate. không trả cho user. Dùng
+                model, chỉ log v_candidate, không trả cho user. Dùng
                 trước canary để bắt crash/format diff.{" "}
                 <strong>Canary</strong>: một % user nhận v_candidate
                 thật, ramp dần với guardrail (1% → 5% → 25% → 50% →
                 100%). <strong>Blue-green</strong>: 2 môi trường song
-                song, flip tức thời. cần capacity gấp đôi, nhưng cutover
+                song, flip tức thời, cần capacity gấp đôi, nhưng cutover
                 nguyên tử. <strong>Rolling</strong>: thay từng instance
                 một, phù hợp infra hơn chiến lược model.{" "}
                 <strong>Progressive delivery</strong> = canary + feature
@@ -895,14 +895,14 @@ export default function CanaryReleasesLLMTopic() {
 
               <Callout
                 variant="warning"
-                title="A/B test LLM cần sample lớn hơn. dùng sequential testing hoặc CUPED"
+                title="A/B test LLM cần sample lớn hơn, dùng sequential testing hoặc CUPED"
               >
                 Output LLM có variance cao hơn UI A/B truyền thống
                 nhiều. Công thức sample size{" "}
                 <code>n ∝ σ²/δ²</code> nghĩa là variance gấp 4× cần
                 sample gấp 4×. Hai cách cắt ngắn:{" "}
                 <strong>sequential testing</strong> (alpha spending kiểu
-                Always Valid Inference của Netflix/Optimizely. cho
+                Always Valid Inference của Netflix/Optimizely, cho
                 phép peek dữ liệu mà không bị false positive) và{" "}
                 <strong>CUPED</strong> (dùng pre-period covariate để
                 giảm variance 30-50%). Nếu không áp dụng, bạn sẽ kết
@@ -919,7 +919,7 @@ export default function CanaryReleasesLLMTopic() {
                 bảng so sánh. Sau 1-2 ngày bạn có: (1) bằng chứng
                 candidate không crash, (2) phân phối diff format,
                 (3) estimate cost và latency. Chi phí: tăng 2× inference
-                trong giai đoạn shadow. đáng vì tránh incident
+                trong giai đoạn shadow, đáng vì tránh incident
                 production.
               </Callout>
 
@@ -930,7 +930,7 @@ export default function CanaryReleasesLLMTopic() {
                 LaunchDarkly, Unleash, hoặc tự làm trên Postgres +
                 config reload. Ý tưởng: tách <em>chọn model</em> khỏi{" "}
                 <em>deploy binary</em>. Rollout trở thành thao tác
-                config. update một hàng trong bảng{" "}
+                config, update một hàng trong bảng{" "}
                 <code>model_routing</code> với weight theo segment, hot
                 reload ở service layer. Rollback tính bằng giây, A/B
                 theo tenant/user/region cực dễ. Đây là nền của mọi
@@ -945,8 +945,8 @@ export default function CanaryReleasesLLMTopic() {
               <InlineChallenge
                 question="Bạn đang canary 10% candidate. Quan sát: cost tăng 15% nhưng CSAT tăng 8%. Ngưỡng guardrail cost = 1.2× baseline. Rollback hay tiếp tục ramp?"
                 options={[
-                  "Rollback. cost tăng 15% là tệ",
-                  "Tiếp tục ramp. cost 15% < ngưỡng 20%, CSAT tốt hơn rõ rệt. Nhưng cần tính lifetime: nếu cost tăng nền 15% và CSAT không quy ra revenue đủ bù, cần escalate quyết định lên PM",
+                  "Rollback, cost tăng 15% là tệ",
+                  "Tiếp tục ramp, cost 15% < ngưỡng 20%, CSAT tốt hơn rõ rệt. Nhưng cần tính lifetime: nếu cost tăng nền 15% và CSAT không quy ra revenue đủ bù, cần escalate quyết định lên PM",
                   "Tăng ngưỡng cost lên 1.5× rồi ramp tiếp",
                   "Chạy luôn 100% vì CSAT dương",
                 ]}
@@ -958,12 +958,12 @@ export default function CanaryReleasesLLMTopic() {
                 question="Shadow traffic 1 ngày: v_candidate ĐÔI KHI output JSON khác format (thiếu field optional). Downstream parser fail 0.4% request. Bạn làm gì?"
                 options={[
                   "Bỏ qua. 0.4% là thấp",
-                  "BLOCK canary cho đến khi fix. Lỗi format ở shadow = lỗi format ở canary với user thật. Sửa 1 trong 2 chiều: (a) prompt cứng thêm 'output đầy đủ mọi field kể cả null', hoặc (b) parser tolerant với field missing. rồi test lại shadow",
+                  "BLOCK canary cho đến khi fix. Lỗi format ở shadow = lỗi format ở canary với user thật. Sửa 1 trong 2 chiều: (a) prompt cứng thêm 'output đầy đủ mọi field kể cả null', hoặc (b) parser tolerant với field missing, rồi test lại shadow",
                   "Rollout candidate luôn, parser tự sửa sau",
                   "Tăng traffic candidate lên 5% để có sample lớn hơn",
                 ]}
                 correct={1}
-                explanation="Đây chính là lý do có bước shadow. Lỗi format JSON ở shadow = incident thật ở canary vì downstream vẫn parse cùng cách. Pattern chuẩn: (1) gate canary start bằng 'shadow must be clean 48h', (2) dùng structured output / JSON schema với retry khi parse fail, (3) parser bên downstream tolerant với schema evolve. Đừng bao giờ ramp một format bug. nó không tự hết khi tăng %."
+                explanation="Đây chính là lý do có bước shadow. Lỗi format JSON ở shadow = incident thật ở canary vì downstream vẫn parse cùng cách. Pattern chuẩn: (1) gate canary start bằng 'shadow must be clean 48h', (2) dùng structured output / JSON schema với retry khi parse fail, (3) parser bên downstream tolerant với schema evolve. Đừng bao giờ ramp một format bug, nó không tự hết khi tăng %."
               />
             </div>
           </LessonSection>
@@ -1041,7 +1041,7 @@ export default function CanaryReleasesLLMTopic() {
                       <td className="p-2">1× + buffer</td>
                       <td className="p-2">Tự động theo SLO</td>
                       <td className="p-2">
-                        Canary + flag + auto-rollback. mẫu chuẩn LLM
+                        Canary + flag + auto-rollback, mẫu chuẩn LLM
                       </td>
                     </tr>
                   </tbody>
@@ -1061,11 +1061,11 @@ export default function CanaryReleasesLLMTopic() {
               <p className="text-xs text-muted">
                 Trong đó <code>X̄</code> là mean metric (vd task
                 success rate) mỗi variant, <code>s²</code> là variance
-                mẫu, <code>n</code> là sample size. p-value tính từ
+                mẫu, <code>n</code> là sample size, p-value tính từ
                 phân phối t với bậc tự do theo công thức
                 Welch-Satterthwaite. Nhớ rằng với LLM: (1){" "}
                 <em>peeking</em> (nhìn kết quả sớm rồi quyết định) làm
-                phát sinh false positive. dùng{" "}
+                phát sinh false positive, dùng{" "}
                 <strong>sequential testing</strong>; (2) variance của
                 temp &gt; 0 khá cao. <strong>CUPED</strong>{" "}
                 (control with pre-experiment data) giúp giảm 30-50%
@@ -1078,7 +1078,7 @@ export default function CanaryReleasesLLMTopic() {
               </p>
               <ul className="list-disc list-inside space-y-2 pl-2">
                 <li>
-                  <strong>Goal metric</strong> (a.k.a. north-star,
+                  <strong>Goal metric</strong> (a.k.a, north-star,
                   primary): để <em>chọn</em> v_candidate có đáng
                   rollout hay không. Ví dụ: task success rate, CSAT,
                   revenue per session, số lượt chuyển đổi.
@@ -1099,7 +1099,7 @@ export default function CanaryReleasesLLMTopic() {
 
               <CodeBlock
                 language="python"
-                title="canary_controller.py. per-request sampling + SLO check + rollback"
+                title="canary_controller.py, per-request sampling + SLO check + rollback"
               >
                 {`import random
 import time
@@ -1147,7 +1147,7 @@ class CanaryController:
     def _check_slos(self) -> None:
         n = len(self.candidate_stats.get("success", []))
         if n < self.min_sample_for_slo:
-            return  # chưa đủ sample. bỏ qua vòng này
+            return  # chưa đủ sample, bỏ qua vòng này
         for slo in self.slos:
             if not slo.check(self.candidate_stats, self.baseline_stats):
                 self._rollback(f"SLO {slo.name!r} vi phạm: {slo.rule_desc}")
@@ -1171,7 +1171,7 @@ class CanaryController:
 
 
 def stable_hash(s: str) -> int:
-    # Ổn định. một user luôn rơi vào cùng bucket trong suốt canary.
+    # Ổn định, một user luôn rơi vào cùng bucket trong suốt canary.
     import hashlib
     return int(hashlib.md5(s.encode()).hexdigest(), 16)
 
@@ -1227,7 +1227,7 @@ spec:
     stepWeight: 5         # tăng 5% mỗi vòng
     stepWeights: [1, 5, 10, 25, 50]
 
-    # Metric tuỳ chỉnh. hỏi Prometheus theo query chứa model version
+    # Metric tuỳ chỉnh, hỏi Prometheus theo query chứa model version
     metrics:
       - name: llm-task-success
         thresholdRange:
@@ -1294,7 +1294,7 @@ spec:
                   <li>
                     <strong>Sequential testing</strong> (alpha
                     spending): peek dữ liệu liên tục mà vẫn kiểm soát
-                    false positive. dừng sớm khi có tín hiệu mạnh.
+                    false positive, dừng sớm khi có tín hiệu mạnh.
                   </li>
                   <li>
                     <strong>Stratified sampling</strong>: chia segment
@@ -1317,7 +1317,7 @@ spec:
                 <p className="text-sm mt-2">Phù hợp khi:</p>
                 <ul className="list-disc list-inside text-sm pl-2 space-y-1">
                   <li>
-                    Goal metric đo được nhanh (vd click, thumbs-up). không phải retention tuần sau.
+                    Goal metric đo được nhanh (vd click, thumbs-up), không phải retention tuần sau.
                   </li>
                   <li>
                     Nhiều hơn 2 variant (3-10 model / prompt). A/B
@@ -1333,20 +1333,20 @@ spec:
                 <ul className="list-disc list-inside text-sm pl-2 space-y-1">
                   <li>
                     Cần báo cáo thống kê chính thức (compliance, y
-                    khoa). bandit khó giải trình p-value.
+                    khoa), bandit khó giải trình p-value.
                   </li>
                   <li>
                     Delayed reward (feedback đến sau hàng giờ/ngày).
                   </li>
                   <li>
-                    Guardrail nghiêm ngặt. bandit có thể đẩy traffic
+                    Guardrail nghiêm ngặt, bandit có thể đẩy traffic
                     vào nhánh nhất thời tốt nhưng safety kém.
                   </li>
                 </ul>
               </CollapsibleDetail>
 
               <p className="text-sm mt-4">
-                Canary không đứng một mình. nó phụ thuộc vào hệ thống
+                Canary không đứng một mình, nó phụ thuộc vào hệ thống
                 đo đạc. Xem{" "}
                 <TopicLink slug="llm-evaluation">llm-evaluation</TopicLink>{" "}
                 để thiết kế bộ metric offline/online,{" "}
@@ -1452,7 +1452,7 @@ spec:
                 &quot;Model xịn hơn&quot; không phải lúc nào cũng
                 thắng trong production. Đo toàn hệ metric (goal +
                 guardrail), đừng chỉ so chất lượng. Đôi khi giải pháp
-                là giữ model cũ với prompt đã học từ model mới. rẻ
+                là giữ model cũ với prompt đã học từ model mới, rẻ
                 hơn, ổn hơn, và vẫn cải thiện. Canary không chỉ dùng
                 để deploy, mà còn để <em>học xem candidate có đáng
                 deploy không</em>.
@@ -1467,9 +1467,9 @@ spec:
               points={[
                 "LLM không deterministic → rollout gradient (shadow → canary 1% → ramp) là cách duy nhất an toàn để đổi model trong production.",
                 "Shadow = log cả hai output, user chỉ nhận baseline; canary = một % user thật nhận candidate. Dùng shadow TRƯỚC canary để bắt crash/format.",
-                "Goal metric (CSAT, success) để chọn; guardrail metric (latency, cost, safety) để chặn. Rollout khi goal tốt VÀ guardrail pass. không đánh đổi.",
+                "Goal metric (CSAT, success) để chọn; guardrail metric (latency, cost, safety) để chặn. Rollout khi goal tốt VÀ guardrail pass, không đánh đổi.",
                 "Auto-rollback: flip feature flag về 0% trong giây, giữ artifact để postmortem, page on-call. Dùng Flagger/Argo Rollouts hoặc tự viết CanaryController.",
-                "A/B LLM cần sample lớn hơn UI A/B vì output variance cao. dùng Welch t-test, sequential testing, hoặc CUPED để rút ngắn thời gian.",
+                "A/B LLM cần sample lớn hơn UI A/B vì output variance cao, dùng Welch t-test, sequential testing, hoặc CUPED để rút ngắn thời gian.",
                 "Pattern 'model version as feature flag' (LaunchDarkly/Unleash/Postgres): tách chọn model khỏi deploy code, rollback tính bằng giây.",
               ]}
             />

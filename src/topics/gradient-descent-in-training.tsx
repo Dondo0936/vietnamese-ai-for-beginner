@@ -1067,7 +1067,7 @@ function WarmupSketch() {
 
   return (
     <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Learning rate tăng tuyến tính trong giai đoạn warmup">
-      <title>Warmup. η tăng tuyến tính từ 0 tới đỉnh trong khoảng 375 triệu token đầu.</title>
+      <title>Warmup, η tăng tuyến tính từ 0 tới đỉnh trong khoảng 375 triệu token đầu.</title>
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <rect x={toPX(0)} y={20} width={toPX(warmupEnd) - toPX(0)} height={plotH - 44} fill="#0ea5e9" opacity={0.08} />
@@ -1095,7 +1095,7 @@ function DecaySketch() {
 
   return (
     <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Learning rate decay theo cosine xuống 10% giá trị đỉnh">
-      <title>Cosine decay. η giảm dần về cuối huấn luyện.</title>
+      <title>Cosine decay, η giảm dần về cuối huấn luyện.</title>
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={toPY(peak * 0.1)} x2={plotW - 20} y2={toPY(peak * 0.1)} stroke="#22c55e" strokeWidth={1} strokeDasharray="3,3" opacity={0.6} />

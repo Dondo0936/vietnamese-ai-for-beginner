@@ -364,7 +364,7 @@ export default function DbscanTopic() {
         ],
         correct: 1,
         explanation:
-          "ε lớn → vùng lân cận rộng → mọi điểm là neighbor của nhau → gộp hết thành 1 cụm. ε nhỏ → mỗi điểm cô lập → toàn noise. Cần ε 'vừa đủ'!",
+          "ε lớn → vùng lân cận rộng → mọi điểm là neighbor của nhau → gộp hết thành 1 cụm, ε nhỏ → mỗi điểm cô lập → toàn noise. Cần ε 'vừa đủ'!",
       },
       {
         question: "DBSCAN gặp khó khăn khi nào?",
@@ -436,7 +436,7 @@ export default function DbscanTopic() {
         ],
         correct: 1,
         explanation:
-          "Tra cứu láng giềng nhiều lần. Với k-d tree hoặc ball tree, có thể giảm xuống O(n log n) trong không gian chiều thấp. scikit-learn tự chọn cấu trúc phù hợp.",
+          "Tra cứu láng giềng nhiều lần. Với k-d tree hoặc ball tree, có thể giảm xuống O(n log n) trong không gian chiều thấp, scikit-learn tự chọn cấu trúc phù hợp.",
       },
     ],
     [],
@@ -1084,7 +1084,7 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
                   </p>
                   <p>
                     <strong>Với k-d tree (2D-3D):</strong> Tra cứu range O(log n), tổng
-                    thuật toán O(n log n). scikit-learn mặc định chọn k-d tree nếu
+                    thuật toán O(n log n), scikit-learn mặc định chọn k-d tree nếu
                     D &lt; 20.
                   </p>
                   <p>

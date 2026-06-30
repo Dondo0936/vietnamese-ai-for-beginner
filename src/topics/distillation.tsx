@@ -22,7 +22,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA. giữ nguyên khai báo gốc để routing / sidebar hoạt động đúng
+// METADATA, giữ nguyên khai báo gốc để routing / sidebar hoạt động đúng
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -41,20 +41,20 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ---------------------------------------------------------------------------
-// DỮ LIỆU MÔ PHỎNG. một bài toán phân loại nhỏ 4 lớp để trực quan hoá
+// DỮ LIỆU MÔ PHỎNG, một bài toán phân loại nhỏ 4 lớp để trực quan hoá
 // teacher / student. Teacher là mô hình "giáo sư": xác suất sắc nét, hiểu rõ
 // mối quan hệ giữa các lớp. Student là mô hình "học trò": ban đầu còn yếu.
 // ---------------------------------------------------------------------------
 
 const WORDS = ["mèo", "chó", "thỏ", "cá"] as const;
 
-/** Phân bố "thô" (chưa chia nhiệt) của teacher. rất tự tin ở lớp mèo. */
+/** Phân bố "thô" (chưa chia nhiệt) của teacher, rất tự tin ở lớp mèo. */
 const TEACHER_PROBS = [0.7, 0.15, 0.1, 0.05] as const;
 
-/** Phân bố của student khi chưa qua distillation. sai lệch đáng kể. */
+/** Phân bố của student khi chưa qua distillation, sai lệch đáng kể. */
 const STUDENT_BASE_PROBS = [0.48, 0.22, 0.18, 0.12] as const;
 
-/** Phân bố của student sau khi đã distill. gần teacher hơn. */
+/** Phân bố của student sau khi đã distill, gần teacher hơn. */
 const STUDENT_DISTILL_PROBS = [0.66, 0.18, 0.11, 0.05] as const;
 
 /** Accuracy giả định trên test set cho 3 cấu hình khác nhau (điểm minh hoạ). */
@@ -107,13 +107,13 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao student học từ soft labels tốt hơn hard labels?",
     options: [
       "Soft labels có nhiều dữ liệu hơn",
-      "Soft labels chứa 'dark knowledge'. mối quan hệ giữa các lớp mà hard labels không có",
+      "Soft labels chứa 'dark knowledge', mối quan hệ giữa các lớp mà hard labels không có",
       "Soft labels nhanh hơn khi huấn luyện",
       "Soft labels không bao giờ sai",
     ],
     correct: 1,
     explanation:
-      "Hard label chỉ nói 'đây là mèo'. Soft label nói '70% mèo, 15% chó, 10% thỏ'. student học được rằng mèo và chó có đặc điểm tương tự nhau. Thông tin này (dark knowledge) rất quý giá vì nó tiết lộ cấu trúc của không gian lớp.",
+      "Hard label chỉ nói 'đây là mèo'. Soft label nói '70% mèo, 15% chó, 10% thỏ', student học được rằng mèo và chó có đặc điểm tương tự nhau. Thông tin này (dark knowledge) rất quý giá vì nó tiết lộ cấu trúc của không gian lớp.",
   },
   {
     question: "Temperature T trong distillation có vai trò gì?",
@@ -125,7 +125,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 0,
     explanation:
-      "Khi T = 1: phân bố sắc nét (gần hard label). Khi T cao (4-20): phân bố phẳng hơn, tiết lộ nhiều mối quan hệ giữa các lớp. T quá cao thì tín hiệu yếu. thường T = 3-10 là tốt nhất trong thực tế.",
+      "Khi T = 1: phân bố sắc nét (gần hard label). Khi T cao (4-20): phân bố phẳng hơn, tiết lộ nhiều mối quan hệ giữa các lớp. T quá cao thì tín hiệu yếu, thường T = 3-10 là tốt nhất trong thực tế.",
   },
   {
     question:
@@ -149,20 +149,20 @@ const QUIZ: QuizQuestion[] = [
       { answer: "student", accept: ["học sinh", "trò"] },
     ],
     explanation:
-      "Teacher (lớn, chính xác) chạy inference tạo soft labels chứa dark knowledge. Student (nhỏ, nhanh) học từ cả soft labels lẫn hard labels. bắt chước không chỉ đáp án mà cả quá trình suy luận của teacher.",
+      "Teacher (lớn, chính xác) chạy inference tạo soft labels chứa dark knowledge. Student (nhỏ, nhanh) học từ cả soft labels lẫn hard labels, bắt chước không chỉ đáp án mà cả quá trình suy luận của teacher.",
   },
   {
     question:
       "Nếu tăng T quá cao (ví dụ T = 50) thì hiện tượng gì xảy ra với tín hiệu học?",
     options: [
-      "Phân bố gần như đều. student khó phân biệt lớp đúng và lớp sai, tín hiệu gradient rất yếu",
+      "Phân bố gần như đều, student khó phân biệt lớp đúng và lớp sai, tín hiệu gradient rất yếu",
       "Student học nhanh gấp đôi",
       "Gradient bùng nổ do T^2 trong loss",
       "Không có gì thay đổi nếu α = 0.5",
     ],
     correct: 0,
     explanation:
-      "Khi T rất lớn, softmax(logits/T) gần như phân bố đồng đều. mọi lớp xấp xỉ 1/K. Student không còn phân biệt được tín hiệu 'dark knowledge' vì tất cả đã bị làm phẳng quá mức. Dù ta nhân T^2 để bù gradient, tỷ lệ thông tin vẫn suy giảm nhanh.",
+      "Khi T rất lớn, softmax(logits/T) gần như phân bố đồng đều, mọi lớp xấp xỉ 1/K. Student không còn phân biệt được tín hiệu 'dark knowledge' vì tất cả đã bị làm phẳng quá mức. Dù ta nhân T^2 để bù gradient, tỷ lệ thông tin vẫn suy giảm nhanh.",
   },
   {
     question:
@@ -175,19 +175,19 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Logit distillation chỉ nhìn vào output cuối (soft labels). Pattern distillation (TinyBERT, MobileBERT) thêm các loss phụ buộc student khớp hidden state, attention map ở nhiều tầng. giúp student học cách 'suy luận' chứ không chỉ 'dự đoán'.",
+      "Logit distillation chỉ nhìn vào output cuối (soft labels). Pattern distillation (TinyBERT, MobileBERT) thêm các loss phụ buộc student khớp hidden state, attention map ở nhiều tầng, giúp student học cách 'suy luận' chứ không chỉ 'dự đoán'.",
   },
   {
     question: "Ưu điểm lớn nhất của distillation so với pruning là gì?",
     options: [
       "Distillation luôn cho accuracy cao hơn pruning trong mọi trường hợp",
-      "Student có kiến trúc tự do. có thể thay đổi depth/width, không bị ràng buộc vào cấu trúc teacher; còn pruning phải giữ nguyên kiến trúc gốc",
+      "Student có kiến trúc tự do, có thể thay đổi depth/width, không bị ràng buộc vào cấu trúc teacher; còn pruning phải giữ nguyên kiến trúc gốc",
       "Distillation không cần dữ liệu huấn luyện",
       "Distillation chỉ chạy trên GPU, pruning chạy mọi nơi",
     ],
     correct: 1,
     explanation:
-      "Với distillation bạn có thể thiết kế student hoàn toàn mới. ví dụ CNN lấy kiến thức từ ViT, hoặc student 6 tầng học từ teacher 24 tầng. Pruning bị khoá vào kiến trúc gốc. Điểm đánh đổi: distillation cần huấn luyện lại, còn pruning có thể áp dụng post-hoc.",
+      "Với distillation bạn có thể thiết kế student hoàn toàn mới, ví dụ CNN lấy kiến thức từ ViT, hoặc student 6 tầng học từ teacher 24 tầng. Pruning bị khoá vào kiến trúc gốc. Điểm đánh đổi: distillation cần huấn luyện lại, còn pruning có thể áp dụng post-hoc.",
   },
   {
     question:
@@ -205,7 +205,7 @@ const QUIZ: QuizQuestion[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// HELPERS. softmax có nhiệt độ, khoảng cách giữa hai phân bố
+// HELPERS, softmax có nhiệt độ, khoảng cách giữa hai phân bố
 // ---------------------------------------------------------------------------
 
 /**
@@ -234,7 +234,7 @@ function klDivergence(p: number[], q: number[]): number {
   return kl;
 }
 
-/** Entropy H(p). càng cao, phân bố càng "phẳng" / nhiều bất định. */
+/** Entropy H(p), càng cao, phân bố càng "phẳng" / nhiều bất định. */
 function entropy(p: number[]): number {
   return -p.reduce((acc, x) => acc + (x > 0 ? x * Math.log(x) : 0), 0);
 }
@@ -257,7 +257,7 @@ export default function DistillationTopic() {
     [temperature],
   );
 
-  // Soft labels của student "đã distill". cũng bị làm mềm cùng T
+  // Soft labels của student "đã distill", cũng bị làm mềm cùng T
   const studentSoft = useMemo(
     () => temperedSoftmax(STUDENT_DISTILL_PROBS, temperature),
     [temperature],
@@ -286,7 +286,7 @@ export default function DistillationTopic() {
             question="Mô hình GPT-4 rất giỏi nhưng quá lớn để chạy trên điện thoại. Cách nào tốt nhất để tạo phiên bản nhỏ mà vẫn giữ được phần lớn năng lực?"
             options={[
               "Xoá bớt lớp và tham số ngẫu nhiên cho tới khi đủ nhỏ",
-              "Dạy mô hình nhỏ bắt chước cách suy nghĩ của mô hình lớn. không chỉ đáp án mà cả quá trình suy luận",
+              "Dạy mô hình nhỏ bắt chước cách suy nghĩ của mô hình lớn, không chỉ đáp án mà cả quá trình suy luận",
               "Huấn luyện mô hình nhỏ từ đầu trên cùng dữ liệu của mô hình lớn",
               "Chuyển mô hình lớn sang INT4 là đủ, không cần gì khác",
             ]}
@@ -330,16 +330,16 @@ export default function DistillationTopic() {
           Knowledge Distillation chính là cách thứ hai, áp dụng vào mạng
           nơ-ron. Teacher (mô hình lớn đã được huấn luyện tốt) không chỉ cung
           cấp label đúng, mà còn cung cấp toàn bộ phân bố xác suất trên mọi
-          lớp. mỗi con số nhỏ trong phân bố là một gợi ý về cách nhìn thế
+          lớp, mỗi con số nhỏ trong phân bố là một gợi ý về cách nhìn thế
           giới của teacher. Student hấp thụ các gợi ý đó và đạt tới năng lực
-          vượt xa việc học hard label thông thường. dù kích thước chỉ bằng
+          vượt xa việc học hard label thông thường, dù kích thước chỉ bằng
           một nửa, một phần ba hay thậm chí một phần mười.
         </p>
         <p>
           Cái đẹp của ẩn dụ này là ta có thể đẩy nó đi xa hơn: teacher không
           chỉ "thì thầm đáp án", mà có thể <strong>chỉ cả cách làm</strong>. ánh mắt họ nhìn vào đâu, họ chú ý đến chi tiết nào (tương tự như
           attention map), họ đã tinh chỉnh qua những tầng suy nghĩ nào (tương
-          tự hidden state trung gian). Khi student khớp cả quá trình đó. không chỉ output cuối. ta gọi là <em>pattern distillation</em>,
+          tự hidden state trung gian). Khi student khớp cả quá trình đó, không chỉ output cuối, ta gọi là <em>pattern distillation</em>,
           một phát triển mạnh mẽ hơn distillation gốc.
         </p>
       </LessonSection>
@@ -382,7 +382,7 @@ export default function DistillationTopic() {
               Student (25M tham số · 5 tầng)
             </text>
 
-            {/* Các tầng teacher. cột trái */}
+            {/* Các tầng teacher, cột trái */}
             {TEACHER_LAYERS.map((layer, i) => {
               const y = 40 + i * 36;
               return (
@@ -412,7 +412,7 @@ export default function DistillationTopic() {
               );
             })}
 
-            {/* Các tầng student. cột phải */}
+            {/* Các tầng student, cột phải */}
             {STUDENT_LAYERS.map((layer, i) => {
               const y = 70 + i * 52;
               return (
@@ -462,7 +462,7 @@ export default function DistillationTopic() {
                 );
               })}
 
-            {/* Logit distillation. luôn có: head → head */}
+            {/* Logit distillation, luôn có: head → head */}
             <line
               x1={200}
               y1={40 + 7 * 36 + 13}
@@ -490,8 +490,8 @@ export default function DistillationTopic() {
               fontSize="11"
             >
               {patternOn
-                ? "Pattern distillation: ĐANG BẬT. khớp hidden states trung gian"
-                : "Pattern distillation: TẮT. chỉ khớp output"}
+                ? "Pattern distillation: ĐANG BẬT, khớp hidden states trung gian"
+                : "Pattern distillation: TẮT, chỉ khớp output"}
             </text>
 
             <defs>
@@ -523,7 +523,7 @@ export default function DistillationTopic() {
 
           <Callout variant="tip" title="Quan sát">
             Khi bật pattern distillation, student không chỉ học từ output cuối
-            mà còn phải khớp các biểu diễn trung gian của teacher. điều này
+            mà còn phải khớp các biểu diễn trung gian của teacher, điều này
             nâng accuracy thêm 2-4% nhưng tốn thêm ~25% thời gian huấn luyện.
           </Callout>
 
@@ -714,10 +714,10 @@ export default function DistillationTopic() {
           <div className="rounded-lg bg-background/50 border border-border p-3 text-center">
             <p className="text-sm text-muted">
               {temperature <= 3
-                ? "Nhiệt độ thấp: Soft labels gần giống hard labels. student học ít dark knowledge."
+                ? "Nhiệt độ thấp: Soft labels gần giống hard labels, student học ít dark knowledge."
                 : temperature <= 10
-                  ? "Nhiệt độ vừa: Phân bố mềm hơn. student học được mối quan hệ giữa các lớp."
-                  : "Nhiệt độ cao: Phân bố rất phẳng. nhiều dark knowledge nhưng tín hiệu yếu."}
+                  ? "Nhiệt độ vừa: Phân bố mềm hơn, student học được mối quan hệ giữa các lớp."
+                  : "Nhiệt độ cao: Phân bố rất phẳng, nhiều dark knowledge nhưng tín hiệu yếu."}
             </p>
           </div>
 
@@ -835,13 +835,13 @@ export default function DistillationTopic() {
             </p>
             <p className="text-xs text-muted">
               {highlightScenario === 0 &&
-                "Teacher. mô hình lớn, chuẩn. Accuracy gần tối đa nhưng quá nặng để triển khai trên thiết bị cuối."}
+                "Teacher, mô hình lớn, chuẩn. Accuracy gần tối đa nhưng quá nặng để triển khai trên thiết bị cuối."}
               {highlightScenario === 1 &&
-                "Student huấn luyện từ đầu. chỉ dùng hard labels, không có signal từ teacher. Accuracy rơi mạnh vì dung lượng nhỏ không đủ để khám phá mọi pattern."}
+                "Student huấn luyện từ đầu, chỉ dùng hard labels, không có signal từ teacher. Accuracy rơi mạnh vì dung lượng nhỏ không đủ để khám phá mọi pattern."}
               {highlightScenario === 2 &&
-                "Student + KD logit. thêm soft labels từ teacher vào loss. Accuracy tăng 12 điểm so với train from scratch."}
+                "Student + KD logit, thêm soft labels từ teacher vào loss. Accuracy tăng 12 điểm so với train from scratch."}
               {highlightScenario === 3 &&
-                "Student + KD logit + feature. thêm pattern distillation ở các tầng trung gian. Chỉ thua teacher 2.4 điểm nhưng nhỏ hơn ~4.4 lần."}
+                "Student + KD logit + feature, thêm pattern distillation ở các tầng trung gian. Chỉ thua teacher 2.4 điểm nhưng nhỏ hơn ~4.4 lần."}
             </p>
           </div>
         </VisualizationSection>
@@ -854,12 +854,12 @@ export default function DistillationTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           Khi teacher nói &quot;70% mèo, 15% chó, 10% thỏ&quot;, student không
-          chỉ biết đáp án là mèo. mà còn biết{" "}
+          chỉ biết đáp án là mèo, mà còn biết{" "}
           <strong>mèo và chó giống nhau hơn mèo và cá</strong>. Thông tin
           &quot;ẩn&quot; này (<strong>dark knowledge</strong>) chính là lý do
           distillation hiệu quả hơn dạy bằng hard label thông thường. Điều
           đáng kinh ngạc: <em>chính những xác suất nhỏ bị bỏ qua</em> mới là
-          phần quý giá nhất của teacher. chúng mô tả cấu trúc hình học của
+          phần quý giá nhất của teacher, chúng mô tả cấu trúc hình học của
           không gian lớp. Hard label làm ta mù trước cấu trúc đó.
         </AhaMoment>
       </LessonSection>
@@ -886,12 +886,12 @@ export default function DistillationTopic() {
             question="Bạn huấn luyện student với α = 0 (chỉ soft loss, không dùng hard label). Sau 10 epoch, student bắt đầu phạm các lỗi 'bịa' mà teacher không hề có. Vấn đề gì?"
             options={[
               "Không có vấn đề gì, student đang hội tụ bình thường",
-              "Khi α = 0, student bắt chước hoàn hảo mọi thiên lệch của teacher. bao gồm cả sai lầm. Cần α > 0 để ground truth neo student lại",
+              "Khi α = 0, student bắt chước hoàn hảo mọi thiên lệch của teacher, bao gồm cả sai lầm. Cần α > 0 để ground truth neo student lại",
               "Temperature quá thấp, cần tăng lên T = 50",
               "Student đang học tốt hơn teacher, đây là Born-Again Network",
             ]}
             correct={1}
-            explanation="Teacher không hoàn hảo. nó có bias, có trường hợp nó sai. Nếu α = 0, student sẽ học sạch cả sai lầm đó mà không có hard label neo lại. Công thức cân bằng phổ biến: α = 0.5, đảm bảo cả hai nguồn tín hiệu cùng có mặt."
+            explanation="Teacher không hoàn hảo, nó có bias, có trường hợp nó sai. Nếu α = 0, student sẽ học sạch cả sai lầm đó mà không có hard label neo lại. Công thức cân bằng phổ biến: α = 0.5, đảm bảo cả hai nguồn tín hiệu cùng có mặt."
           />
         </div>
       </LessonSection>
@@ -921,7 +921,7 @@ export default function DistillationTopic() {
             Trong đó <LaTeX>{"T"}</LaTeX> là temperature,{" "}
             <LaTeX>{"z_t, z_s"}</LaTeX> là logits của teacher và student,{" "}
             <LaTeX>{"\\alpha"}</LaTeX> cân bằng giữa hard và soft loss. Nhân{" "}
-            <LaTeX>{"T^2"}</LaTeX> để gradient không bị thu nhỏ khi T tăng. đây là chi tiết kỹ thuật Hinton đưa ra ngay trong paper gốc.
+            <LaTeX>{"T^2"}</LaTeX> để gradient không bị thu nhỏ khi T tăng, đây là chi tiết kỹ thuật Hinton đưa ra ngay trong paper gốc.
           </p>
 
           <p>Quy trình distillation cơ bản gồm ba bước:</p>
@@ -958,7 +958,7 @@ def distillation_loss(
         student_logits: output thô của student (chưa softmax), shape (B, C)
         teacher_logits: output thô của teacher, shape (B, C)
         labels:         ground truth hard labels, shape (B,)
-        T:              temperature. càng cao, phân bố càng mềm
+        T:              temperature, càng cao, phân bố càng mềm
         alpha:          trọng số hard loss vs soft loss
 
     Trả về scalar loss để backprop.
@@ -992,7 +992,7 @@ for batch in loader:
 
           <p>
             Với các biến thể pattern distillation (TinyBERT, MobileBERT,
-            DistilBERT), ta bổ sung thêm các loss trung gian. ví dụ buộc
+            DistilBERT), ta bổ sung thêm các loss trung gian, ví dụ buộc
             student khớp hidden state và attention map của teacher tại một số
             tầng tương ứng:
           </p>
@@ -1067,7 +1067,7 @@ class PatternDistiller(torch.nn.Module):
           </Callout>
 
           <Callout variant="warning" title="Cẩn thận với bias của teacher">
-            Distillation không chỉ truyền kiến thức. nó còn truyền sai lầm.
+            Distillation không chỉ truyền kiến thức, nó còn truyền sai lầm.
             Nếu teacher có bias về giới tính, chủng tộc, hay văn phong, student
             sẽ kế thừa. Cần kiểm tra teacher cẩn thận trước khi dùng làm nguồn
             signal. Đây là lý do chính vì sao <em>constitutional AI</em> và{" "}
@@ -1078,7 +1078,7 @@ class PatternDistiller(torch.nn.Module):
             Furlanello et al. (2018) phát hiện một điều lạ: nếu ta distill
             student với kiến trúc y hệt teacher, lặp đi lặp lại nhiều đời, đôi
             khi student sẽ <em>vượt</em> teacher vài điểm accuracy. Hiện tượng
-            này gọi là Born-Again Network. có thể xem như một dạng tự-ensemble
+            này gọi là Born-Again Network, có thể xem như một dạng tự-ensemble
             qua nhiều thế hệ. Nó minh chứng rằng distillation không chỉ nén,
             mà còn có vai trò regularization.
           </Callout>
@@ -1090,7 +1090,7 @@ class PatternDistiller(torch.nn.Module):
               chia cho T, gradient tổng scale như <LaTeX>{"1/T^2"}</LaTeX>.
               Khi T tăng, cường độ tín hiệu giảm mạnh. Nhân lại{" "}
               <LaTeX>{"T^2"}</LaTeX> để giữ độ lớn gradient tương đương giữa
-              soft loss và hard loss. nếu không, soft loss sẽ gần như vô
+              soft loss và hard loss, nếu không, soft loss sẽ gần như vô
               hình trong tổng loss khi T &gt; 3. Đây là một chi tiết kỹ thuật
               nhỏ nhưng cực kỳ quan trọng, Hinton đưa vào đoạn nhỏ ở phụ lục
               paper 2015 và nhiều implementation lơ là đã gặp rắc rối vì bỏ
@@ -1107,17 +1107,17 @@ class PatternDistiller(torch.nn.Module):
             <ul className="list-disc list-inside space-y-2 pl-2 mt-2">
               <li>
                 <strong>FitNets (Romero 2015):</strong> Student khớp
-                feature map ở một tầng trung gian của teacher. mở đường cho
+                feature map ở một tầng trung gian của teacher, mở đường cho
                 pattern distillation.
               </li>
               <li>
                 <strong>Attention Transfer (Zagoruyko 2017):</strong> Khớp
-                "attention map". tổng bình phương feature theo kênh. giữa
+                "attention map", tổng bình phương feature theo kênh, giữa
                 teacher và student. Dễ triển khai hơn FitNets.
               </li>
               <li>
                 <strong>TinyBERT (Jiao 2020):</strong> Distill bốn loại signal
-                đồng thời: embedding, attention, hidden state, và prediction. đạt 96.8% hiệu suất BERT với 1/7 tham số.
+                đồng thời: embedding, attention, hidden state, và prediction, đạt 96.8% hiệu suất BERT với 1/7 tham số.
               </li>
               <li>
                 <strong>DistilBERT (Sanh 2019):</strong> Distill logit + triple
@@ -1137,7 +1137,7 @@ class PatternDistiller(torch.nn.Module):
               <li>
                 <strong>Minillm (2023):</strong> Dùng reverse KL{" "}
                 <LaTeX>{"D_{\\text{KL}}(q_s \\| p_t)"}</LaTeX> thay vì forward
-                KL. student học mode quan trọng thay vì cố phủ mọi mode.
+                KL, student học mode quan trọng thay vì cố phủ mọi mode.
               </li>
             </ul>
           </CollapsibleDetail>
@@ -1159,16 +1159,16 @@ class PatternDistiller(torch.nn.Module):
             </li>
             <li>
               <strong>Edge computing:</strong> Student 1-3M tham số triển khai
-              trên microcontroller cho IoT. teacher có thể là mô hình cloud.
+              trên microcontroller cho IoT, teacher có thể là mô hình cloud.
             </li>
             <li>
               <strong>Ensemble compression:</strong> Distill một ensemble 10
-              mô hình thành một mô hình đơn. giữ 95% năng lực mà chi phí
+              mô hình thành một mô hình đơn, giữ 95% năng lực mà chi phí
               inference chỉ bằng 1/10.
             </li>
             <li>
               <strong>Privacy-preserving training:</strong> Teacher train trên
-              dữ liệu nhạy cảm; student chỉ học qua soft labels. tránh rò rỉ
+              dữ liệu nhạy cảm; student chỉ học qua soft labels, tránh rò rỉ
               dữ liệu gốc.
             </li>
           </ul>
@@ -1185,10 +1185,10 @@ class PatternDistiller(torch.nn.Module):
             <li>
               <strong>Capacity gap quá lớn:</strong> Teacher 100B → student
               100M quá xa; soft labels trở nên "quá phức tạp" so với dung
-              lượng student. Cách khắc phục: dùng <em>teacher assistant</em>{" "}. một mô hình trung gian (ví dụ 10B) làm cầu nối.
+              lượng student. Cách khắc phục: dùng <em>teacher assistant</em>,{" "}một mô hình trung gian (ví dụ 10B) làm cầu nối.
             </li>
             <li>
-              <strong>Quên đóng băng teacher:</strong> Một lỗi phổ biến. teacher không được set <code>requires_grad = False</code>, dẫn
+              <strong>Quên đóng băng teacher:</strong> Một lỗi phổ biến, teacher không được set <code>requires_grad = False</code>, dẫn
               tới cả hai cùng cập nhật và loss trở nên vô nghĩa.
             </li>
             <li>
@@ -1204,7 +1204,7 @@ class PatternDistiller(torch.nn.Module):
             <li>
               <strong>Dữ liệu distillation kém chất lượng:</strong> Nếu chỉ
               dùng dữ liệu gốc, dark knowledge bị giới hạn. Dùng thêm dữ liệu
-              không nhãn (unlabeled). teacher tạo label cho nó. thường cải
+              không nhãn (unlabeled), teacher tạo label cho nó, thường cải
               thiện mạnh.
             </li>
           </ul>
@@ -1231,12 +1231,12 @@ class PatternDistiller(torch.nn.Module):
         <MiniSummary
           title="Những điều cần nhớ về Knowledge Distillation"
           points={[
-            "Distillation dạy student bắt chước teacher qua soft labels. không chỉ đáp án mà cả quá trình suy luận qua phân bố xác suất.",
+            "Distillation dạy student bắt chước teacher qua soft labels, không chỉ đáp án mà cả quá trình suy luận qua phân bố xác suất.",
             "Dark knowledge: thông tin ẩn trong xác suất nhỏ (15% chó, 10% thỏ) giúp student tổng quát hoá tốt hơn hard labels.",
             "Temperature T kiểm soát độ mềm: T thấp (1-3) = sắc nét, T vừa (4-10) = cân bằng tốt nhất, T cao (>10) = tín hiệu yếu.",
-            "Loss = α·CE(hard) + (1-α)·T²·KL(soft_t || soft_s). Nhân T² để bù gradient. chi tiết kỹ thuật quan trọng.",
-            "Pattern distillation (TinyBERT, MobileBERT) khớp cả hidden state và attention. cải thiện 2-4% so với logit-only.",
-            "DistilBERT: nhỏ hơn 40%, nhanh hơn 60%, giữ 97% hiệu suất. minh chứng sức mạnh của distillation ở quy mô công nghiệp.",
+            "Loss = α·CE(hard) + (1-α)·T²·KL(soft_t || soft_s). Nhân T² để bù gradient, chi tiết kỹ thuật quan trọng.",
+            "Pattern distillation (TinyBERT, MobileBERT) khớp cả hidden state và attention, cải thiện 2-4% so với logit-only.",
+            "DistilBERT: nhỏ hơn 40%, nhanh hơn 60%, giữ 97% hiệu suất, minh chứng sức mạnh của distillation ở quy mô công nghiệp.",
           ]}
         />
       </LessonSection>

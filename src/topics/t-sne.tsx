@@ -112,7 +112,7 @@ export default function TsneTopic() {
             "Dùng K-Means trước rồi tô màu",
           ]}
           correct={1}
-          explanation="PCA tuyến tính nên nhiều cụm chồng nhau trong 2D. t-SNE phi tuyến — giữ quan hệ 'gần-xa' giữa các điểm → chữ số giống nhau tạo cụm rõ ràng trên 2D!"
+          explanation="PCA tuyến tính nên nhiều cụm chồng nhau trong 2D, t-SNE phi tuyến — giữ quan hệ 'gần-xa' giữa các điểm → chữ số giống nhau tạo cụm rõ ràng trên 2D!"
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}

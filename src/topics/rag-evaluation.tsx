@@ -65,7 +65,7 @@ interface QueryCase {
   question: string;
   /** Docs khi retrieval đúng (dùng cho none / ignore-context / off-topic) */
   goodDocs: DocSnippet[];
-  /** Docs khi retrieval hỏng. chỉ dùng cho bad-retrieval */
+  /** Docs khi retrieval hỏng, chỉ dùng cho bad-retrieval */
   badDocs: DocSnippet[];
   results: Record<FaultMode, ScenarioResult>;
 }
@@ -134,7 +134,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 86,
         contextRelevance: 92,
         diagnosis:
-          "LLM bịa từ trí nhớ (7 ngày / 14 ngày) thay vì dùng context (15 ngày). Faithfulness sụp. answer nghe hợp lý nhưng sai nguồn.",
+          "LLM bịa từ trí nhớ (7 ngày / 14 ngày) thay vì dùng context (15 ngày). Faithfulness sụp, answer nghe hợp lý nhưng sai nguồn.",
       },
       "off-topic": {
         answer:
@@ -143,7 +143,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 22,
         contextRelevance: 92,
         diagnosis:
-          "LLM lan man quảng bá thay vì trả lời số ngày. Answer Relevance sụp. context đúng nhưng output không chạm câu hỏi.",
+          "LLM lan man quảng bá thay vì trả lời số ngày. Answer Relevance sụp, context đúng nhưng output không chạm câu hỏi.",
       },
     },
   },
@@ -192,7 +192,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 96,
         contextRelevance: 94,
         diagnosis:
-          "Trọn vẹn ba đỉnh. có trích nghị quyết, liệt kê mức, phân loại đúng.",
+          "Trọn vẹn ba đỉnh, có trích nghị quyết, liệt kê mức, phân loại đúng.",
       },
       "bad-retrieval": {
         answer:
@@ -264,7 +264,7 @@ const QUERIES: QueryCase[] = [
     results: {
       none: {
         answer:
-          "Hai cách chính thức: (1) Tải installer universal từ python.org, chạy .pkg. tự chọn arm64 cho M-series. (2) Homebrew: `brew install python@3.13`, binary ở /opt/homebrew/bin/python3.",
+          "Hai cách chính thức: (1) Tải installer universal từ python.org, chạy .pkg, tự chọn arm64 cho M-series. (2) Homebrew: `brew install python@3.13`, binary ở /opt/homebrew/bin/python3.",
         faithfulness: 97,
         answerRelevance: 95,
         contextRelevance: 93,
@@ -287,7 +287,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 78,
         contextRelevance: 92,
         diagnosis:
-          "apt-get, Microsoft Store, PowerPC. model bịa lẫn nền tảng. Faithfulness gần 0.",
+          "apt-get, Microsoft Store, PowerPC, model bịa lẫn nền tảng. Faithfulness gần 0.",
       },
       "off-topic": {
         answer:
@@ -345,7 +345,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 93,
         contextRelevance: 94,
         diagnosis:
-          "Ba đỉnh đều khoẻ. trả lời đúng, phân biệt máy/pin, có Care+.",
+          "Ba đỉnh đều khoẻ, trả lời đúng, phân biệt máy/pin, có Care+.",
       },
       "bad-retrieval": {
         answer:
@@ -363,7 +363,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 82,
         contextRelevance: 94,
         diagnosis:
-          "Model nói 24 tháng + pin đủ. sai cả hai so với 12/6 trong context. Faithfulness sụp.",
+          "Model nói 24 tháng + pin đủ, sai cả hai so với 12/6 trong context. Faithfulness sụp.",
       },
       "off-topic": {
         answer:
@@ -421,7 +421,7 @@ const QUERIES: QueryCase[] = [
         answerRelevance: 95,
         contextRelevance: 93,
         diagnosis:
-          "Đầy đủ điều kiện + lịch + học phí. ba đỉnh đều cao.",
+          "Đầy đủ điều kiện + lịch + học phí, ba đỉnh đều cao.",
       },
       "bad-retrieval": {
         answer:
@@ -469,7 +469,7 @@ const FAULT_OPTIONS: {
   {
     value: "none",
     label: "Không lỗi (baseline)",
-    hint: "RAG chạy bình thường. ba đỉnh cùng cao.",
+    hint: "RAG chạy bình thường, ba đỉnh cùng cao.",
     breaks: "none",
   },
   {
@@ -524,7 +524,7 @@ export default function RagEvaluationTopic() {
 
   const resetFault = useCallback(() => setFault("none"), []);
 
-  // Hình học tam giác. mỗi đỉnh co về tâm khi metric tương ứng thấp.
+  // Hình học tam giác, mỗi đỉnh co về tâm khi metric tương ứng thấp.
   const triSize = 320;
   const cx = triSize / 2;
   const cy = triSize / 2 + 14;
@@ -574,15 +574,15 @@ export default function RagEvaluationTopic() {
         ],
         correct: 1,
         explanation:
-          "Faithfulness = # atomic claims được support / # atomic claims tổng. Đo xem LLM có BỊA THÊM ngoài context không. Không phải copy-paste. paraphrase vẫn faithful nếu giữ ý đúng.",
+          "Faithfulness = # atomic claims được support / # atomic claims tổng. Đo xem LLM có BỊA THÊM ngoài context không. Không phải copy-paste, paraphrase vẫn faithful nếu giữ ý đúng.",
       },
       {
         question:
           "Context Relevance 18%, Faithfulness 88%, Answer Relevance 32%. Đâu là khâu hỏng?",
         options: [
-          "Generation. tại vì Answer Relevance thấp",
-          "Retrieval. doc lấy về không liên quan, nên LLM dù trung thành với context cũng không trả lời được câu hỏi thật",
-          "Prompting. cần thêm few-shot",
+          "Generation, tại vì Answer Relevance thấp",
+          "Retrieval, doc lấy về không liên quan, nên LLM dù trung thành với context cũng không trả lời được câu hỏi thật",
+          "Prompting, cần thêm few-shot",
           "Không đủ dữ liệu",
         ],
         correct: 1,
@@ -594,9 +594,9 @@ export default function RagEvaluationTopic() {
           "User hỏi tiếng Việt, retriever (embedding multilingual rẻ) trả về docs tiếng Anh, LLM dịch rồi trả lời. Metric nào tụt rõ nhất?",
         options: [
           "Latency",
-          "Context Relevance. embedding multilingual yếu khiến doc tiếng Anh bị lấy về dù doc VN tồn tại; và/hoặc Faithfulness do sai lệch qua dịch",
+          "Context Relevance, embedding multilingual yếu khiến doc tiếng Anh bị lấy về dù doc VN tồn tại; và/hoặc Faithfulness do sai lệch qua dịch",
           "Cost",
-          "Answer Relevance. luôn luôn",
+          "Answer Relevance, luôn luôn",
         ],
         correct: 1,
         explanation:
@@ -630,7 +630,7 @@ export default function RagEvaluationTopic() {
         options: [
           "Cả hai chỉ chạy offline và cần ground-truth labels",
           "Cả hai đều cung cấp reference-free metrics dùng LLM-as-judge cho Faithfulness / Answer Relevance / Context Relevance",
-          "TruLens không hỗ trợ RAG. chỉ chatbot thuần",
+          "TruLens không hỗ trợ RAG, chỉ chatbot thuần",
           "RAGAS không dùng LLM-as-judge",
         ],
         correct: 1,
@@ -639,7 +639,7 @@ export default function RagEvaluationTopic() {
       },
       {
         question:
-          "Team bạn bật rerank bằng Cohere Rerank v3. context relevance tăng từ 0.52 → 0.81. Faithfulness giữ nguyên, Answer Relevance +6 điểm. Đây là dấu hiệu gì?",
+          "Team bạn bật rerank bằng Cohere Rerank v3, context relevance tăng từ 0.52 → 0.81. Faithfulness giữ nguyên, Answer Relevance +6 điểm. Đây là dấu hiệu gì?",
         options: [
           "Rerank lãng phí vì không tăng faithfulness",
           "Rerank đang làm đúng việc của nó: lọc context nhiễu → context sạch hơn → LLM dễ trả đúng hơn. Xem re-ranking để hiểu cơ chế",
@@ -717,7 +717,7 @@ export default function RagEvaluationTopic() {
           {[fTop, fBL, fBR].map((p, i) => (
             <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="var(--border)" strokeOpacity={0.3} />
           ))}
-          {/* Tam giác giá trị. animate */}
+          {/* Tam giác giá trị, animate */}
           <motion.polygon
             points={`${pTop.x},${pTop.y} ${pBL.x},${pBL.y} ${pBR.x},${pBR.y}`}
             fill="rgba(99, 102, 241, 0.20)" stroke="#6366f1" strokeWidth={2}
@@ -837,9 +837,9 @@ export default function RagEvaluationTopic() {
         <PredictionGate
           question="Bạn build RAG trên Confluence nội bộ. Chatbot trả lời rất mượt, nguồn có đủ. Nhưng người dùng report 'sai'. Lỗi có thể đến từ đâu nhất?"
           options={[
-            "Retrieval. doc lấy về không liên quan",
+            "Retrieval, doc lấy về không liên quan",
             "Generation. LLM lờ context, trả từ trí nhớ",
-            "Prompt. hướng dẫn LLM không buộc trích dẫn chặt",
+            "Prompt, hướng dẫn LLM không buộc trích dẫn chặt",
             "CẢ BA. Và bạn cần đo tách riêng mới biết khâu nào hỏng",
           ]}
           correct={3}
@@ -978,14 +978,14 @@ export default function RagEvaluationTopic() {
             <strong>TruLens</strong> (feedback functions + feedback app),{" "}
             <strong>ARES</strong> (training a classifier judge với synthetic data),{" "}
             <strong>DeepEval</strong> (pytest-style assertions cho LLM). RAGAS
-            là lựa chọn mặc định cho đa số team. nó có cả offline batch và
+            là lựa chọn mặc định cho đa số team, nó có cả offline batch và
             online streaming, tích hợp LangChain/LlamaIndex sẵn.
           </Callout>
 
           <Callout variant="warning" title="Bẫy 'chỉ đo answer quality'">
             Rất nhiều team mở đầu bằng một LLM-judge chấm &quot;câu trả lời có
             tốt không&quot; (0-5 sao) rồi deploy. Hậu quả:{" "}
-            <strong>không biết khâu nào hỏng</strong>. Hôm nay chatbot tệ. tại retriever hay tại model? Không tách ra = không fix được. Bộ
+            <strong>không biết khâu nào hỏng</strong>. Hôm nay chatbot tệ, tại retriever hay tại model? Không tách ra = không fix được. Bộ
             ba metric bắt buộc tách <em>generation</em> khỏi{" "}
             <em>retrieval</em> thành ba con số riêng biệt.
           </Callout>
@@ -1000,12 +1000,12 @@ export default function RagEvaluationTopic() {
             con số, bạn biết chính xác câu nào trong answer là bịa.
           </Callout>
 
-          <Callout variant="insight" title="Golden retrieval set. tài sản không thể mua">
+          <Callout variant="insight" title="Golden retrieval set, tài sản không thể mua">
             Một bộ <code>(query, gold_docs, gold_answer)</code> 50–200 mẫu
             được chọn kỹ, đại diện cho use case quan trọng, là{" "}
             <strong>tài sản vận hành</strong> của team RAG. Nó cho phép đo
             reference-based chính xác và dựng CI gate. Cập nhật golden set
-            mỗi 2–4 tuần bằng cách sample từ production log. đừng để nó lỗi
+            mỗi 2–4 tuần bằng cách sample từ production log, đừng để nó lỗi
             thời. Xem thêm <TopicLink slug="rag">RAG</TopicLink> và{" "}
             <TopicLink slug="agentic-rag">Agentic RAG</TopicLink> để hiểu kiến
             trúc đang đo.
@@ -1019,10 +1019,10 @@ export default function RagEvaluationTopic() {
           <InlineChallenge
             question="Bạn chạy eval: Context Relevance = 92%, Faithfulness = 45%, Answer Relevance = 80%. Nguyên nhân gốc có khả năng cao nhất?"
             options={[
-              "Retrieval hỏng. cần đổi embedding model",
-              "LLM lờ context, trả lời từ pretrained memory. cần siết prompt (buộc 'chỉ dựa vào CONTEXT ở trên') hoặc đổi model chịu bám nguồn hơn",
-              "Chunk quá nhỏ. tăng chunk_size",
-              "Database index chậm. thêm ANN",
+              "Retrieval hỏng, cần đổi embedding model",
+              "LLM lờ context, trả lời từ pretrained memory, cần siết prompt (buộc 'chỉ dựa vào CONTEXT ở trên') hoặc đổi model chịu bám nguồn hơn",
+              "Chunk quá nhỏ, tăng chunk_size",
+              "Database index chậm, thêm ANN",
             ]}
             correct={1}
             explanation="Context tốt (92%) → retrieval khỏe. Answer Relevance khá → model hiểu câu hỏi. Nhưng Faithfulness thấp → model có context đúng mà vẫn trả lời từ trí nhớ cũ. Đây là hallucination ở tầng generation. Fix: prompt chặt hơn ('ONLY use CONTEXT'), hoặc đổi model, hoặc thêm cite-check layer. Xem thêm hallucination."
@@ -1031,10 +1031,10 @@ export default function RagEvaluationTopic() {
           <InlineChallenge
             question="User hỏi tiếng Việt: 'Học phí UIT ngành Trí tuệ Nhân tạo là bao nhiêu?'. Retriever (multilingual-e5 rẻ) trả về 4 doc tiếng Anh về AI programs ở Stanford. LLM dịch rồi trả lời theo đó. Metric nào tụt rõ nhất?"
             options={[
-              "Chỉ Faithfulness. vì dịch thuật",
+              "Chỉ Faithfulness, vì dịch thuật",
               "Context Relevance tụt mạnh nhất (docs không liên quan tới UIT/VN); Answer Relevance cũng tụt (trả lời không đúng trường hỏi); Faithfulness có thể cao giả tạo vì model trung thành với context sai",
               "Chỉ Answer Relevance",
-              "Không metric nào. vì LLM vẫn tạo được câu trả lời",
+              "Không metric nào, vì LLM vẫn tạo được câu trả lời",
             ]}
             correct={1}
             explanation="Đây là multilingual gotcha kinh điển. Embedding đa ngôn ngữ không đủ mạnh để phân biệt 'UIT VN' vs 'Stanford AI program' khi query tiếng Việt còn doc tiếng Anh. Context Rel đáy. Answer Rel tụt theo. Faithfulness cao là ILLUSION (trung thành với sai). Fix: embedding chuyên tiếng Việt (bge-m3, vietnamese-embedding), hybrid với BM25 VN, hoặc query rewrite sang tiếng Anh chủ động."
@@ -1054,7 +1054,7 @@ export default function RagEvaluationTopic() {
           </p>
 
           <h4 className="text-sm font-bold text-foreground mt-4">
-            1. Faithfulness. câu trả lời có bám nguồn không?
+            1. Faithfulness, câu trả lời có bám nguồn không?
           </h4>
           <p>
             Chia answer <em>A</em> thành tập atomic claims (những mệnh đề đơn
@@ -1073,7 +1073,7 @@ export default function RagEvaluationTopic() {
           </p>
 
           <h4 className="text-sm font-bold text-foreground mt-4">
-            2. Context Relevance. doc lấy về có liên quan không?
+            2. Context Relevance, doc lấy về có liên quan không?
           </h4>
           <p>
             Với context <em>C</em> (có thể gồm nhiều đoạn/câu <em>s</em>), đếm
@@ -1093,7 +1093,7 @@ export default function RagEvaluationTopic() {
           </p>
 
           <h4 className="text-sm font-bold text-foreground mt-4">
-            3. Answer Relevance. câu trả lời có đúng câu hỏi không?
+            3. Answer Relevance, câu trả lời có đúng câu hỏi không?
           </h4>
           <p>
             Có hai kỹ thuật phổ biến:
@@ -1136,7 +1136,7 @@ export default function RagEvaluationTopic() {
                 <tr>
                   <td className="px-3 py-2 text-red-700 dark:text-red-400 font-mono">Faithfulness</td>
                   <td className="px-3 py-2">Generation bịa (hallucination)</td>
-                  <td className="px-3 py-2">Prompt chặt (&quot;only use CONTEXT&quot;), cite-required, đổi model. xem <TopicLink slug="hallucination">hallucination</TopicLink></td>
+                  <td className="px-3 py-2">Prompt chặt (&quot;only use CONTEXT&quot;), cite-required, đổi model, xem <TopicLink slug="hallucination">hallucination</TopicLink></td>
                 </tr>
                 <tr>
                   <td className="px-3 py-2 text-purple-700 dark:text-purple-400 font-mono">Answer Rel</td>
@@ -1149,7 +1149,7 @@ export default function RagEvaluationTopic() {
 
           <CodeBlock
             language="python"
-            title="rag_evaluator.py. triad computation với LLM-as-judge"
+            title="rag_evaluator.py, triad computation với LLM-as-judge"
           >
             {`from dataclasses import dataclass
 from statistics import mean
@@ -1162,7 +1162,7 @@ class RAGSample:
     answer: str                      # câu trả lời cuối của LLM
 
 class RAGEvaluator:
-    """Bộ ba RAG Triad. reference-free, dùng LLM-as-judge."""
+    """Bộ ba RAG Triad, reference-free, dùng LLM-as-judge."""
 
     def __init__(self, judge_llm, embedder, n_generated: int = 3):
         self.judge = judge_llm
@@ -1301,7 +1301,7 @@ reporting:
               <li>
                 <strong>Reference-based</strong>: cần tập{" "}
                 <code>(query, gold_docs, gold_answer)</code>. Dùng ROUGE/BLEU
-                cho answer, Recall@k/MRR cho retrieval. Chính xác nhưng đắt. tạo gold tốn 15–30 phút/mẫu × hàng trăm mẫu. Dùng cho:
+                cho answer, Recall@k/MRR cho retrieval. Chính xác nhưng đắt, tạo gold tốn 15–30 phút/mẫu × hàng trăm mẫu. Dùng cho:
                 benchmark nội bộ, regression gate, so sánh pipeline.
               </li>
               <li>
@@ -1345,7 +1345,7 @@ reporting:
             <li>Answer Relevance: <span className="text-emerald-700 dark:text-emerald-400 font-mono">88%</span>. đi vào trọng tâm.</li>
           </ul>
           <p>
-            <strong className="text-foreground">Chẩn đoán.</strong> Context Rel yếu nhất → khâu retrieval bệnh. Hai giả thuyết: (1) embedding multilingual không đủ mạnh cho tiếng Việt chuyên ngành, (2) chunk 200 tokens cắt vụn ngữ cảnh. câu đầu ở chunk A, câu giải thích ở chunk B, retriever không lấy đủ.
+            <strong className="text-foreground">Chẩn đoán.</strong> Context Rel yếu nhất → khâu retrieval bệnh. Hai giả thuyết: (1) embedding multilingual không đủ mạnh cho tiếng Việt chuyên ngành, (2) chunk 200 tokens cắt vụn ngữ cảnh, câu đầu ở chunk A, câu giải thích ở chunk B, retriever không lấy đủ.
           </p>
           <p><strong className="text-foreground">Thử nghiệm.</strong> 4 variant song song trên golden set 150 câu:</p>
           <ul className="list-disc list-inside pl-2 space-y-1">
@@ -1377,7 +1377,7 @@ reporting:
             "Bộ ba cốt lõi: Faithfulness (bám nguồn), Context Relevance (doc liên quan), Answer Relevance (đúng câu hỏi). Đo CẢ BA, không gộp.",
             "Chẩn đoán: Context Rel đỏ → fix retrieval (embedding, chunk, rerank). Faithfulness đỏ → fix generation (prompt chặt, đổi model, cite-check). Answer Rel đỏ → fix prompt/intent.",
             "Framework 2026: RAGAS (mặc định), TruLens, ARES, DeepEval. Tất cả hỗ trợ reference-free LLM-as-judge + reference trace để debug.",
-            "Golden retrieval set 50–200 mẫu là tài sản vận hành. cập nhật mỗi 2–4 tuần từ production log, dùng làm CI gate.",
+            "Golden retrieval set 50–200 mẫu là tài sản vận hành, cập nhật mỗi 2–4 tuần từ production log, dùng làm CI gate.",
             "Multilingual gotcha VN: embedding đa ngôn ngữ yếu hay kéo doc sai ngôn ngữ. Dùng embedding chuyên VN (bge-m3) hoặc hybrid BM25.",
           ]}
         />

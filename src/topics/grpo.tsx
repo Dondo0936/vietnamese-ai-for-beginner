@@ -761,7 +761,7 @@ export default function GRPOTopic() {
                         <p className="text-muted leading-relaxed">
                           β · D<sub>KL</sub>(π<sub>θ</sub> ∥ π<sub>ref</sub>
                           ) neo policy gần mô hình SFT gốc → chống reward
-                          hacking, giữ độ đa dạng ngôn ngữ. β điển hình
+                          hacking, giữ độ đa dạng ngôn ngữ, β điển hình
                           0.02–0.1.
                         </p>
                       </div>
@@ -940,7 +940,7 @@ export default function GRPOTopic() {
                   "Không phản hồi nào — vì mean ≠ 0",
                 ]}
                 correct={0}
-                explanation="Â_i = (r − 0.625) / 0.484. r = 1 → Â ≈ +0.77 (dương, tăng P). r = 0 → Â ≈ −1.29 (âm, giảm P). 5 phản hồi đúng được tăng, 3 sai bị giảm xác suất trong bước gradient."
+                explanation="Â_i = (r − 0.625) / 0.484. r = 1 → Â ≈ +0.77 (dương, tăng P), r = 0 → Â ≈ −1.29 (âm, giảm P). 5 phản hồi đúng được tăng, 3 sai bị giảm xác suất trong bước gradient."
               />
 
               <InlineChallenge

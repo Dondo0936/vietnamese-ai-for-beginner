@@ -248,7 +248,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đây là z-score của kiểm định nhị thức (one-proportion z-test). Dưới giả thuyết H0 'văn bản không có watermark', số green tokens ~ Binomial(T, gamma) → mean = T·gamma, variance = T·gamma·(1−gamma). Z-score đo 'số green lệch khỏi kỳ vọng bao nhiêu độ lệch chuẩn'. z > 4 tương ứng p-value < 3 × 10^-5.",
+      "Đây là z-score của kiểm định nhị thức (one-proportion z-test). Dưới giả thuyết H0 'văn bản không có watermark', số green tokens ~ Binomial(T, gamma) → mean = T·gamma, variance = T·gamma·(1−gamma). Z-score đo 'số green lệch khỏi kỳ vọng bao nhiêu độ lệch chuẩn', z > 4 tương ứng p-value < 3 × 10^-5.",
   },
   {
     question:
@@ -1296,7 +1296,7 @@ if __name__ == "__main__":
           title="Ghi nhớ về AI Watermarking"
           points={[
             "Watermark văn bản chia từ vựng thành green/red list sinh từ hash(token trước), cộng bias delta vào logits green khi sinh. Văn bản có watermark có tỷ lệ green cao bất thường.",
-            "Phát hiện bằng z-score one-proportion test: z = (|g| - γT) / √(γ(1-γ)T). z > 4 ⇔ p < 3×10⁻⁵ — gần như chắc chắn có watermark.",
+            "Phát hiện bằng z-score one-proportion test: z = (|g| - γT) / √(γ(1-γ)T), z > 4 ⇔ p < 3×10⁻⁵ — gần như chắc chắn có watermark.",
             "Paraphrase là tấn công hiệu quả nhất: viết lại 30-40% câu có thể giảm z-score đáng kể. Giải pháp lâu dài là semantic watermark và content provenance (C2PA).",
             "Tiếng Việt bị BPE fragment → effective vocab nhỏ → cần đoạn dài hơn (200-300 tokens) và chịu watermark yếu hơn tương đối so với tiếng Anh.",
             "Watermark cryptographic (SynthID-Text, Aaronson) dùng PRF với khoá bí mật, cho phép distortion-free và chống tấn công mạnh hơn, nhưng cần quản lý khoá.",

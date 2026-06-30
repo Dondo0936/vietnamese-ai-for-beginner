@@ -556,7 +556,7 @@ export default function DeepQNetworkTopic() {
         ],
         correct: 1,
         explanation:
-          "Transitions có TD-error lớn chứa nhiều thông tin mới. PER ưu tiên chúng. Công thức: p_i = (|δ_i| + ε)^α; sample P(i) = p_i / Σp. Vì không uniform, cần IS weight w_i = (1/(N·P(i)))^β để giữ kỳ vọng gradient đúng. β được anneal 0.4 → 1.",
+          "Transitions có TD-error lớn chứa nhiều thông tin mới. PER ưu tiên chúng. Công thức: p_i = (|δ_i| + ε)^α; sample P(i) = p_i / Σp. Vì không uniform, cần IS weight w_i = (1/(N·P(i)))^β để giữ kỳ vọng gradient đúng, β được anneal 0.4 → 1.",
       },
       {
         question:

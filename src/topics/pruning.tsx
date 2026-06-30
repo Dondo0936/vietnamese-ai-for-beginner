@@ -44,11 +44,11 @@ const QUIZ: QuizQuestion[] = [
       "Unstructured xoá từng trọng số lẻ (tạo ma trận thưa); Structured xoá toàn bộ neuron/filter (giảm kích thước thực sự)",
       "Unstructured tốt hơn structured trong mọi trường hợp",
       "Structured pruning chỉ dùng cho CNN, không dùng cho LLM",
-      "Không có sự khác biệt. cả hai cho kết quả giống nhau",
+      "Không có sự khác biệt, cả hai cho kết quả giống nhau",
     ],
     correct: 0,
     explanation:
-      "Unstructured pruning tạo ma trận thưa. cần phần cứng chuyên biệt để tận dụng. Structured pruning xoá toàn bộ cấu trúc (neuron, attention head). giảm kích thước thật sự trên phần cứng tiêu chuẩn.",
+      "Unstructured pruning tạo ma trận thưa, cần phần cứng chuyên biệt để tận dụng. Structured pruning xoá toàn bộ cấu trúc (neuron, attention head), giảm kích thước thật sự trên phần cứng tiêu chuẩn.",
   },
   {
     question: "Lottery Ticket Hypothesis (giả thuyết vé số) nói gì?",
@@ -60,7 +60,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Frankle & Carlin (2019) chứng minh: mạng lớn chứa 'mạng con trúng thưởng' (winning ticket). một tập con nhỏ mà nếu huấn luyện riêng với cùng khởi tạo ban đầu, đạt hiệu suất ngang mạng gốc.",
+      "Frankle & Carlin (2019) chứng minh: mạng lớn chứa 'mạng con trúng thưởng' (winning ticket), một tập con nhỏ mà nếu huấn luyện riêng với cùng khởi tạo ban đầu, đạt hiệu suất ngang mạng gốc.",
   },
   {
     question: "Quy trình pruning tối ưu thường theo thứ tự nào?",
@@ -107,8 +107,8 @@ export default function PruningTopic() {
         <PredictionGate
           question="Nghiên cứu cho thấy có thể xoá đến 90% trọng số của một mạng nơ-ron. Kết quả sẽ ra sao?"
           options={[
-            "Mô hình sẽ hoàn toàn vô dụng. mất 90% = mất hết",
-            "Chất lượng chỉ giảm dưới 2%. phần lớn trọng số gần 0 không đóng góp gì",
+            "Mô hình sẽ hoàn toàn vô dụng, mất 90% = mất hết",
+            "Chất lượng chỉ giảm dưới 2%, phần lớn trọng số gần 0 không đóng góp gì",
             "Tốc độ sẽ giảm vì mạng thưa khó tính toán",
           ]}
           correct={1}
@@ -211,7 +211,7 @@ export default function PruningTopic() {
           Mạng nơ-ron giống khu rừng um tùm: phần lớn cành lá nhỏ không đóng góp gì
           cho tán cây. <strong>Pruning</strong>{" "}phát hiện rằng chỉ một{" "}
           <strong>tập con nhỏ</strong>{" "}trọng số thực sự quan trọng (Lottery Ticket
-          Hypothesis). cắt bỏ phần còn lại không chỉ giảm kích thước mà còn có thể{" "}
+          Hypothesis), cắt bỏ phần còn lại không chỉ giảm kích thước mà còn có thể{" "}
           <strong>cải thiện tổng quát hoá</strong>{" "}vì giảm overfitting.
         </AhaMoment>
       </LessonSection>
@@ -221,7 +221,7 @@ export default function PruningTopic() {
         <InlineChallenge
           question="Bạn pruning 80% trọng số (unstructured). Mô hình nhỏ hơn 80% trên đĩa nhưng tốc độ inference KHÔNG nhanh hơn. Tại sao?"
           options={[
-            "Vì GPU không thể tận dụng ma trận thưa. vẫn phải tính toán qua các vị trí zero",
+            "Vì GPU không thể tận dụng ma trận thưa, vẫn phải tính toán qua các vị trí zero",
             "Vì bạn pruning sai lớp",
             "Vì cần quantize thêm mới nhanh được",
             "Vì 80% là chưa đủ",
@@ -245,7 +245,7 @@ export default function PruningTopic() {
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
               <strong>Unstructured Pruning:</strong>{" "}Xoá từng trọng số riêng lẻ. Tỷ lệ
-              cắt tỉa cao (90%+) nhưng tạo ma trận thưa. cần phần cứng chuyên biệt.
+              cắt tỉa cao (90%+) nhưng tạo ma trận thưa, cần phần cứng chuyên biệt.
             </li>
             <li>
               <strong>Structured Pruning:</strong>{" "}Xoá toàn bộ neuron, filter CNN, hoặc
@@ -255,10 +255,10 @@ export default function PruningTopic() {
 
           <CodeBlock language="python" title="pruning_example.py">{`import torch.nn.utils.prune as prune
 
-# Unstructured pruning. xoá 50% trọng số nhỏ nhất
+# Unstructured pruning, xoá 50% trọng số nhỏ nhất
 prune.l1_unstructured(model.layer1, name="weight", amount=0.5)
 
-# Structured pruning. xoá 30% filter kém quan trọng nhất
+# Structured pruning, xoá 30% filter kém quan trọng nhất
 prune.ln_structured(model.conv1, name="weight", amount=0.3, n=2, dim=0)
 
 # Quy trình: Train → Prune → Fine-tune → (Lặp lại)
@@ -281,10 +281,10 @@ for round in range(3):
         <MiniSummary
           title="Những điều cần nhớ về Pruning"
           points={[
-            "Pruning loại bỏ trọng số/neuron ít quan trọng. có thể cắt 90% mà chỉ mất <2% chất lượng.",
+            "Pruning loại bỏ trọng số/neuron ít quan trọng, có thể cắt 90% mà chỉ mất <2% chất lượng.",
             "Unstructured: cắt từng trọng số (tỷ lệ cao, cần phần cứng thưa). Structured: cắt toàn bộ neuron/head (tăng tốc thật sự trên GPU tiêu chuẩn).",
             "Quy trình: Huấn luyện → Cắt tỉa → Fine-tune lại → Lặp. Iterative pruning cho kết quả tốt nhất.",
-            "Lottery Ticket Hypothesis: mạng lớn chứa mạng con nhỏ đạt hiệu suất tương đương. pruning tìm ra mạng con đó.",
+            "Lottery Ticket Hypothesis: mạng lớn chứa mạng con nhỏ đạt hiệu suất tương đương, pruning tìm ra mạng con đó.",
           ]}
         />
       </LessonSection>

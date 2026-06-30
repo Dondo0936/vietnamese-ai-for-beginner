@@ -37,10 +37,10 @@ export const metadata: TopicMeta = {
 /* ──────────────────────────────────────────────────────────────
  *  LATENCY BREAKDOWN MODEL
  *  Mỗi request LLM đi qua 4 giai đoạn chính:
- *    1) Tokenization. chuyển text → token IDs (CPU)
- *    2) Prefill. encode toàn bộ prompt cùng lúc (GPU)
- *    3) KV-cache lookup. truy cập attention cache (GPU memory)
- *    4) Decoding. sinh từng token một (GPU, autoregressive)
+ *    1) Tokenization, chuyển text → token IDs (CPU)
+ *    2) Prefill, encode toàn bộ prompt cùng lúc (GPU)
+ *    3) KV-cache lookup, truy cập attention cache (GPU memory)
+ *    4) Decoding, sinh từng token một (GPU, autoregressive)
  *
  *  Baseline (FP16, batch=1, không tối ưu) cho prompt 512 token,
  *  sinh 128 token trên GPU A100 với model 13B params:
@@ -95,7 +95,7 @@ const BASELINE_STAGES: LatencyStage[] = [
  *  Mỗi kỹ thuật có hệ số nhân (multiplier) lên từng stage:
  *    - KV caching:        decode÷2.8, kv÷1.4 (khi seq_len tăng)
  *    - Speculative:       decode÷2.2 (draft model suggest k token)
- *    - Batching(size):    prefill & decode chia sẻ GPU. throughput tăng
+ *    - Batching(size):    prefill & decode chia sẻ GPU, throughput tăng
  *                         nhưng latency/request không giảm (thậm chí tăng nhẹ)
  *    - Quantization INT8: prefill÷1.7, decode÷1.9, kv÷2.0
  * ────────────────────────────────────────────────────────────── */
@@ -337,9 +337,9 @@ export default function InferenceOptimizationTopic() {
         question:
           "Trong một request LLM điển hình (prompt 512 token, sinh 128 token), giai đoạn nào chiếm nhiều latency nhất?",
         options: [
-          "Tokenization. vì text rất dài",
-          "Decoding. vì phải sinh từng token tuần tự",
-          "Prefill. vì phải encode toàn bộ prompt",
+          "Tokenization, vì text rất dài",
+          "Decoding, vì phải sinh từng token tuần tự",
+          "Prefill, vì phải encode toàn bộ prompt",
         ],
         correct: 1,
         explanation:
@@ -396,35 +396,35 @@ export default function InferenceOptimizationTopic() {
           "PagedAttention (vLLM) giải quyết vấn đề gì của KV cache?",
         options: [
           "Làm cho KV cache nhỏ hơn bằng cách nén",
-          "Quản lý KV cache như virtual memory. giảm internal fragmentation",
+          "Quản lý KV cache như virtual memory, giảm internal fragmentation",
           "Tính lại KV khi cần thay vì lưu",
         ],
         correct: 1,
         explanation:
-          "KV cache cấp phát liên tục (contiguous) lãng phí tới 60% bộ nhớ do reserve cho max_seq_len. PagedAttention chia KV thành các page nhỏ (mỗi page 16 token), cấp phát theo nhu cầu. giảm waste xuống ~4%, tăng batch size 2–4×.",
+          "KV cache cấp phát liên tục (contiguous) lãng phí tới 60% bộ nhớ do reserve cho max_seq_len. PagedAttention chia KV thành các page nhỏ (mỗi page 16 token), cấp phát theo nhu cầu, giảm waste xuống ~4%, tăng batch size 2–4×.",
       },
       {
         type: "fill-blank",
         question:
-          "Hai trục của Pareto frontier trong inference serving thường là {blank} (thấp = tốt) và {blank} (cao = tốt). Không có điểm nào tối ưu cả hai. phải đánh đổi.",
+          "Hai trục của Pareto frontier trong inference serving thường là {blank} (thấp = tốt) và {blank} (cao = tốt). Không có điểm nào tối ưu cả hai, phải đánh đổi.",
         blanks: [
           { answer: "latency", accept: ["độ trễ", "thời gian phản hồi"] },
           { answer: "throughput", accept: ["thông lượng", "req/s", "requests per second"] },
         ],
         explanation:
-          "Interactive chatbot cần latency thấp (<200 ms p50) nên dùng batch nhỏ. Batch job (tóm tắt hàng triệu tài liệu) ưu tiên throughput nên dùng batch lớn (64–256). Không có cấu hình 'tốt nhất' cho mọi use case. chọn điểm trên Pareto frontier phù hợp SLA.",
+          "Interactive chatbot cần latency thấp (<200 ms p50) nên dùng batch nhỏ. Batch job (tóm tắt hàng triệu tài liệu) ưu tiên throughput nên dùng batch lớn (64–256). Không có cấu hình 'tốt nhất' cho mọi use case, chọn điểm trên Pareto frontier phù hợp SLA.",
       },
       {
         question:
           "Công ty bạn phục vụ chatbot với SLA: p95 latency < 300 ms. Cấu hình nào phù hợp nhất?",
         options: [
-          "Batch=64, INT4, speculative. để tối đa throughput",
-          "Batch=1, KV cache, INT8, speculative. cân bằng latency thấp",
-          "Batch=256, FP16, không speculative. để 'safe'",
+          "Batch=64, INT4, speculative, để tối đa throughput",
+          "Batch=1, KV cache, INT8, speculative, cân bằng latency thấp",
+          "Batch=256, FP16, không speculative, để 'safe'",
         ],
         correct: 1,
         explanation:
-          "SLA latency ưu tiên batch nhỏ. KV cache + INT8 + speculative giảm latency/request nhiều nhất. Batch lớn đẩy latency p95 vượt SLA. Batch=256 FP16 vừa chậm (do FP16) vừa có latency cao (do batch lớn). tệ nhất cho chatbot.",
+          "SLA latency ưu tiên batch nhỏ. KV cache + INT8 + speculative giảm latency/request nhiều nhất. Batch lớn đẩy latency p95 vượt SLA. Batch=256 FP16 vừa chậm (do FP16) vừa có latency cao (do batch lớn), tệ nhất cho chatbot.",
       },
     ],
     []
@@ -440,7 +440,7 @@ export default function InferenceOptimizationTopic() {
           <ProgressSteps current={currentStep} total={TOTAL_STEPS} labels={LESSON_LABELS} />
         </div>
         <PredictionGate
-          question="Model Llama-3 70B trên GPU A100 (80GB) mất 500 ms/request. Bạn cần phục vụ 10.000 người dùng đồng thời với ngân sách cố định. đâu là cách hiệu quả nhất?"
+          question="Model Llama-3 70B trên GPU A100 (80GB) mất 500 ms/request. Bạn cần phục vụ 10.000 người dùng đồng thời với ngân sách cố định, đâu là cách hiệu quả nhất?"
           options={[
             "Mua thêm 10 GPU A100 để chạy song song",
             "Giảm số tham số xuống 7B và chấp nhận chất lượng thấp hơn",
@@ -459,7 +459,7 @@ export default function InferenceOptimizationTopic() {
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label={LESSON_LABELS[1]}>
         <p className="mb-4 text-sm text-muted leading-relaxed">
           Một request LLM đi qua bốn giai đoạn. Pie chart bên dưới hiển thị
-          <strong className="text-foreground"> tỉ lệ thời gian</strong> mỗi stage chiếm trong tổng latency. con số trên mỗi lát là mili-giây thực tế với cấu hình hiện tại.
+          <strong className="text-foreground"> tỉ lệ thời gian</strong> mỗi stage chiếm trong tổng latency, con số trên mỗi lát là mili-giây thực tế với cấu hình hiện tại.
         </p>
 
         <VisualizationSection>
@@ -475,7 +475,7 @@ export default function InferenceOptimizationTopic() {
                   const y2 = r * Math.sin(slice.end);
                   const largeArc = slice.sweep > Math.PI ? 1 : 0;
 
-                  // label position. middle of arc
+                  // label position, middle of arc
                   const midAngle = (slice.start + slice.end) / 2;
                   const lr = r * 0.6;
                   const lx = lr * Math.cos(midAngle);
@@ -683,7 +683,7 @@ export default function InferenceOptimizationTopic() {
       {/* STEP 4: BATCHING THROUGHPUT */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label={LESSON_LABELS[3]}>
         <p className="mb-4 text-sm text-muted leading-relaxed">
-          Batching không giảm latency/request. nó tăng
+          Batching không giảm latency/request, nó tăng
           <strong className="text-foreground"> throughput</strong> (req/s).
           Chọn batch size để so sánh throughput ở batch 1, 4, 16, 64.
         </p>
@@ -773,7 +773,7 @@ export default function InferenceOptimizationTopic() {
         <p className="mb-4 text-sm text-muted leading-relaxed">
           <strong className="text-foreground">Pareto frontier</strong> là tập điểm
           không thể cải thiện một trục (latency hoặc throughput) mà không hy sinh trục còn lại.
-          Các điểm KHÔNG trên frontier là tối ưu kém. có cấu hình tốt hơn ở cả hai trục.
+          Các điểm KHÔNG trên frontier là tối ưu kém, có cấu hình tốt hơn ở cả hai trục.
         </p>
 
         <section className="my-8 rounded-xl border border-border bg-card p-6">
@@ -896,7 +896,7 @@ export default function InferenceOptimizationTopic() {
 
             <Callout variant="info" title="Cách đọc chart">
               Trục X: latency (thấp = tốt, bên trái). Trục Y: throughput (cao = tốt, bên trên).
-              Điểm xanh nằm trên đường gạch = Pareto optimal. Điểm đỏ bị thống trị. luôn có config xanh vừa nhanh hơn vừa throughput cao hơn hoặc bằng.
+              Điểm xanh nằm trên đường gạch = Pareto optimal. Điểm đỏ bị thống trị, luôn có config xanh vừa nhanh hơn vừa throughput cao hơn hoặc bằng.
             </Callout>
           </div>
         </section>
@@ -906,11 +906,11 @@ export default function InferenceOptimizationTopic() {
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label={LESSON_LABELS[5]}>
         <AhaMoment>
           <p>
-            Bốn kỹ thuật không cộng. chúng <strong>nhân</strong>. KV cache ×2.5,
+            Bốn kỹ thuật không cộng, chúng <strong>nhân</strong>. KV cache ×2.5,
             speculative ×2.2, quantization ×1.8. kết hợp cho ~10× chỉ trên decoding.
             Thêm batching nâng throughput ×50 mà không cần GPU mới.
             Đây là lý do <strong>model 70B có thể serve tại $0.0003/1K token</strong>{" "}
-            trên hạ tầng cloud thương mại. điều tưởng chừng không thể nếu chỉ nhìn vào "baseline FP32".
+            trên hạ tầng cloud thương mại, điều tưởng chừng không thể nếu chỉ nhìn vào "baseline FP32".
           </p>
         </AhaMoment>
       </LessonSection>
@@ -920,24 +920,24 @@ export default function InferenceOptimizationTopic() {
         <InlineChallenge
           question="Chatbot của bạn có SLA: p95 latency < 250 ms. Hiện tại baseline FP16 batch=1 cho 500 ms. Kế hoạch nào giúp đạt SLA mà vẫn giữ throughput cao nhất?"
           options={[
-            "Batch=64 + INT4. tối đa throughput, latency chắc sẽ thấp",
+            "Batch=64 + INT4, tối đa throughput, latency chắc sẽ thấp",
             "KV cache + INT8 + speculative + batch=4. giảm latency xuống ~150 ms, throughput 4×",
-            "Chỉ quantization INT4. giảm bộ nhớ là đủ",
+            "Chỉ quantization INT4, giảm bộ nhớ là đủ",
           ]}
           correct={1}
-          explanation="Kết hợp KV + INT8 + speculative giảm decode (stage chiếm ~70%) đáng kể. ước tính latency còn 130–170 ms. Batch=4 tăng throughput 4× mà không đẩy latency vượt SLA. Batch=64 (đáp án A) sẽ đẩy p95 lên 400+ ms → vi phạm SLA dù throughput cao. Chỉ INT4 (C) không đủ. decode vẫn là bottleneck."
+          explanation="Kết hợp KV + INT8 + speculative giảm decode (stage chiếm ~70%) đáng kể, ước tính latency còn 130–170 ms. Batch=4 tăng throughput 4× mà không đẩy latency vượt SLA. Batch=64 (đáp án A) sẽ đẩy p95 lên 400+ ms → vi phạm SLA dù throughput cao. Chỉ INT4 (C) không đủ, decode vẫn là bottleneck."
         />
 
         <div className="mt-6">
           <InlineChallenge
             question="Model 70B FP16 = 140 GB. GPU A100 có 80 GB. Dùng quantization nào để fit trên 1 GPU duy nhất?"
             options={[
-              "FP16. giữ nguyên, dùng CPU offload",
-              "INT8. giảm còn 70 GB, fit 80 GB",
-              "INT4. giảm còn 35 GB, còn dư cho KV cache",
+              "FP16, giữ nguyên, dùng CPU offload",
+              "INT8, giảm còn 70 GB, fit 80 GB",
+              "INT4, giảm còn 35 GB, còn dư cho KV cache",
             ]}
             correct={2}
-            explanation="INT4 giảm 8× so với FP32 (hay 4× so với FP16): 140 GB → 35 GB. Còn lại 45 GB cho KV cache, activation, và overhead. đủ chạy batch lớn. INT8 (70 GB) fit nhưng chỉ còn 10 GB cho KV cache → batch rất nhỏ. Đây là lý do INT4 phổ biến cho serving model lớn."
+            explanation="INT4 giảm 8× so với FP32 (hay 4× so với FP16): 140 GB → 35 GB. Còn lại 45 GB cho KV cache, activation, và overhead, đủ chạy batch lớn. INT8 (70 GB) fit nhưng chỉ còn 10 GB cho KV cache → batch rất nhỏ. Đây là lý do INT4 phổ biến cho serving model lớn."
           />
         </div>
       </LessonSection>
@@ -947,21 +947,21 @@ export default function InferenceOptimizationTopic() {
         <ExplanationSection>
           <p>
             <strong>Tối ưu suy luận (Inference Optimization)</strong> là nghệ thuật
-            serving model AI với latency thấp, throughput cao, và chi phí nhỏ. mà KHÔNG đổi kiến trúc model hay huấn luyện lại.
+            serving model AI với latency thấp, throughput cao, và chi phí nhỏ, mà KHÔNG đổi kiến trúc model hay huấn luyện lại.
           </p>
 
           <p>
             <strong>1. Tại sao decoding chậm?</strong>
           </p>
           <p>
-            Mỗi token mới phải đi qua toàn bộ model. forward pass của model N tầng
+            Mỗi token mới phải đi qua toàn bộ model, forward pass của model N tầng
             có độ phức tạp O(N · d²) với d là hidden size. Với Llama-70B, mỗi token mất
             ~2–5 ms trên A100. Sinh 512 token → 1–2.5 giây trần.
             Và không thể song song hoá vì token t+1 cần token t đã sinh (autoregressive).
           </p>
 
           <p>
-            <strong>2. KV Cache. giảm O(N²) xuống O(N)</strong>
+            <strong>2. KV Cache, giảm O(N²) xuống O(N)</strong>
           </p>
           <p>
             Self-attention ở mỗi layer:
@@ -986,19 +986,19 @@ export default function InferenceOptimizationTopic() {
             <p className="text-sm text-muted leading-relaxed">
               Ví dụ Llama-2 70B: 80 layers, 64 heads, 128 d_head, seq=4096, batch=1, FP16 (2 bytes).
               <br />
-              KV = 2 × 80 × 64 × 128 × 4096 × 1 × 2 ≈ 10.7 GB. chỉ cho 1 request!
+              KV = 2 × 80 × 64 × 128 × 4096 × 1 × 2 ≈ 10.7 GB, chỉ cho 1 request!
               <br />
               Đây là lý do batch lớn rất tốn bộ nhớ. Và là động lực cho PagedAttention.
             </p>
           </CollapsibleDetail>
 
           <p>
-            <strong>3. Speculative Decoding. dự đoán trước</strong>
+            <strong>3. Speculative Decoding, dự đoán trước</strong>
           </p>
           <p>
             Ý tưởng (Leviathan et al., 2023): dùng một <em>draft model</em> nhỏ
             (ví dụ 1B params) sinh k token liên tiếp. Sau đó <em>target model</em>{" "}
-            lớn (70B) verify k token trong MỘT forward pass. đây là khâu song song hoá được.
+            lớn (70B) verify k token trong MỘT forward pass, đây là khâu song song hoá được.
             Nếu accept m ≤ k token, speedup ≈ m.
           </p>
           <LaTeX block>
@@ -1027,7 +1027,7 @@ export default function InferenceOptimizationTopic() {
           </LaTeX>
 
           <Callout variant="tip" title="PagedAttention (vLLM)">
-            Cấp phát KV cache contiguous reserve max_seq_len. lãng phí ~60% khi sequence ngắn.
+            Cấp phát KV cache contiguous reserve max_seq_len, lãng phí ~60% khi sequence ngắn.
             PagedAttention chia KV cache thành page 16-token, cấp phát theo nhu cầu như virtual memory.
             Kết quả: waste 4%, batch size ×2–4, throughput ×3–5.
           </Callout>
@@ -1053,10 +1053,10 @@ export default function InferenceOptimizationTopic() {
           </Callout>
 
           <p>
-            <strong>6. Pareto frontier. chọn config phù hợp</strong>
+            <strong>6. Pareto frontier, chọn config phù hợp</strong>
           </p>
           <p>
-            Không có "config tốt nhất". chỉ có config tốt nhất cho một use case:
+            Không có "config tốt nhất", chỉ có config tốt nhất cho một use case:
           </p>
           <ul className="list-disc pl-6 text-sm text-muted space-y-1 my-2">
             <li>
@@ -1073,7 +1073,7 @@ export default function InferenceOptimizationTopic() {
             </li>
           </ul>
 
-          <CollapsibleDetail title="Pareto optimality. định nghĩa toán học">
+          <CollapsibleDetail title="Pareto optimality, định nghĩa toán học">
             <p className="text-sm text-muted leading-relaxed">
               Một config x được gọi là Pareto-optimal nếu không tồn tại config y sao cho:
             </p>
@@ -1112,7 +1112,7 @@ params = SamplingParams(
     max_tokens=512,
 )
 
-# Gửi nhiều request cùng lúc. vLLM sẽ batch tự động
+# Gửi nhiều request cùng lúc, vLLM sẽ batch tự động
 prompts = [
     "Giải thích AI cho học sinh lớp 5",
     "Viết đoạn code Python đọc CSV",
@@ -1194,7 +1194,7 @@ python benchmarks/benchmark_serving.py \\
             "Speculative decoding dùng draft model nhỏ đề xuất, target model verify song song → ×2–3 khi acceptance rate cao.",
             "Continuous batching tăng throughput ×5–10 mà KHÔNG giảm latency; PagedAttention (vLLM) giảm waste KV cache từ 60% xuống 4%.",
             "Quantization INT8/INT4 giảm bộ nhớ 4–8× và tăng tốc 1.5–2×. sweet spot INT8 cho chất lượng, INT4 cho tiết kiệm.",
-            "Pareto frontier latency ↔ throughput: không có config tốt nhất. chọn theo SLA. Kết hợp 4 kỹ thuật có thể giảm chi phí 10–50×.",
+            "Pareto frontier latency ↔ throughput: không có config tốt nhất, chọn theo SLA. Kết hợp 4 kỹ thuật có thể giảm chi phí 10–50×.",
           ]}
         />
 

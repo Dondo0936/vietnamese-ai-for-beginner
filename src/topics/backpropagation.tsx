@@ -1171,7 +1171,7 @@ export default function BackpropagationTopic() {
                 </span>
               </div>
               <p className="text-[11px] text-tertiary mt-1 text-center italic">
-                η nhỏ thì học chậm. η vừa thì mượt. η lớn thì dao động hoặc phân kỳ.
+                η nhỏ thì học chậm, η vừa thì mượt, η lớn thì dao động hoặc phân kỳ.
               </p>
             </div>
 
@@ -1431,7 +1431,7 @@ export default function BackpropagationTopic() {
               phase={5}
               numbers={deepenNumbers}
             >
-              Tiếp chain rule. σ&prime;(z) = h·(1−h) ={" "}
+              Tiếp chain rule, σ&prime;(z) = h·(1−h) ={" "}
               {deepenNumbers.dH_dZ.toFixed(3)} (đạo hàm sigmoid ở lớp ẩn). Với
               w₁ₐ (nối x₁ → h): nhân thêm x₁ = {deepenNumbers.x1} ra{" "}
               <strong>{deepenNumbers.dL_dW1a.toFixed(3)}</strong>. Với w₁_b (nối
@@ -1448,7 +1448,7 @@ export default function BackpropagationTopic() {
               phase={6}
               numbers={deepenNumbers}
             >
-              Áp dụng công thức gradient descent cho từng weight. w₂ mới ={" "}
+              Áp dụng công thức gradient descent cho từng weight, w₂ mới ={" "}
               {deepenNumbers.w2} − 0.8 · {deepenNumbers.dL_dW2.toFixed(3)} ={" "}
               <strong>{deepenNumbers.w2New.toFixed(3)}</strong>. w₁ₐ mới ={" "}
               <strong>{deepenNumbers.w1aNew.toFixed(3)}</strong>, w₁_b mới ={" "}

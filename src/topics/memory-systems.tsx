@@ -33,11 +33,11 @@ const MEMORY_TYPES = [
     tech: "In-context, system prompt, chat history" },
   { id: "long", label: "Bộ nhớ dài hạn", color: "#8b5cf6",
     items: ["Vector database (Pinecone, Chroma)", "Tóm tắt cuộc trò chuyện cũ", "Sở thích & hồ sơ người dùng"],
-    limit: "Gần như vô hạn. lưu trên disk/cloud",
+    limit: "Gần như vô hạn, lưu trên disk/cloud",
     tech: "RAG, embedding, vector similarity search" },
   { id: "episodic", label: "Bộ nhớ sự kiện", color: "#22c55e",
     items: ["Kinh nghiệm thành công / thất bại", "Kịch bản tương tự đã gặp", "Bài học từ phản hồi người dùng"],
-    limit: "Lưu trữ có chọn lọc. chỉ sự kiện quan trọng",
+    limit: "Lưu trữ có chọn lọc, chỉ sự kiện quan trọng",
     tech: "Few-shot retrieval, experience replay" },
 ];
 
@@ -46,7 +46,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao AI Agent cần bộ nhớ dài hạn khi LLM đã có context window?",
     options: [
       "Để tăng tốc xử lý",
-      "Vì context window có giới hạn. không thể chứa toàn bộ lịch sử. Bộ nhớ dài hạn lưu thông tin qua nhiều phiên",
+      "Vì context window có giới hạn, không thể chứa toàn bộ lịch sử. Bộ nhớ dài hạn lưu thông tin qua nhiều phiên",
       "Vì LLM không có khả năng nhớ",
       "Để giảm chi phí API",
     ],
@@ -70,7 +70,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Kỹ thuật nào phổ biến nhất để triển khai bộ nhớ dài hạn cho Agent?",
     options: [
       "Lưu toàn bộ text trong file",
-      "RAG. embed thông tin thành vector, lưu trong vector DB, truy xuất bằng similarity search khi cần",
+      "RAG, embed thông tin thành vector, lưu trong vector DB, truy xuất bằng similarity search khi cần",
       "Fine-tune mô hình mỗi khi có thông tin mới",
       "Tăng context window lên vô hạn",
     ],
@@ -165,8 +165,8 @@ export default function MemorySystemsTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           Bộ nhớ Agent hoạt động giống <strong>bộ nhớ con người</strong>:
-          ngắn hạn (bảng trắng. ghi nhanh xoá nhanh), dài hạn (nhật ký. lưu mãi),
-          sự kiện (album ảnh. nhớ trải nghiệm cụ thể). LLM mặc định chỉ có
+          ngắn hạn (bảng trắng, ghi nhanh xoá nhanh), dài hạn (nhật ký, lưu mãi),
+          sự kiện (album ảnh, nhớ trải nghiệm cụ thể). LLM mặc định chỉ có
           &quot;bảng trắng&quot;. Thêm &quot;nhật ký&quot; và &quot;album ảnh&quot; biến nó
           thành Agent có trí nhớ thực sự.
         </AhaMoment>
@@ -177,9 +177,9 @@ export default function MemorySystemsTopic() {
         <InlineChallenge
           question="Agent trợ lý lập trình nhớ rằng lần trước gợi ý dùng thư viện X nhưng user phàn nàn X chậm. Lần này user hỏi tương tự. Agent nên dùng loại bộ nhớ nào?"
           options={[
-            "Bộ nhớ ngắn hạn. context hiện tại",
-            "Bộ nhớ sự kiện. retrieve kinh nghiệm 'X chậm' và gợi ý thư viện Y thay thế",
-            "Bộ nhớ dài hạn. tìm tài liệu về thư viện",
+            "Bộ nhớ ngắn hạn, context hiện tại",
+            "Bộ nhớ sự kiện, retrieve kinh nghiệm 'X chậm' và gợi ý thư viện Y thay thế",
+            "Bộ nhớ dài hạn, tìm tài liệu về thư viện",
             "Không cần bộ nhớ. LLM tự biết",
           ]}
           correct={1}
@@ -227,14 +227,14 @@ export default function MemorySystemsTopic() {
 
     def recall(self, query, k=5):
         """Truy xuất thông tin liên quan"""
-        # Bộ nhớ ngắn hạn. luôn có
+        # Bộ nhớ ngắn hạn, luôn có
         context = self.short_term[-10:]
 
-        # Bộ nhớ dài hạn. semantic search
+        # Bộ nhớ dài hạn, semantic search
         relevant = self.vector_db.search(query, k=k)
         context.extend(relevant)
 
-        # Bộ nhớ sự kiện. tìm kinh nghiệm tương tự
+        # Bộ nhớ sự kiện, tìm kinh nghiệm tương tự
         similar_episodes = self.find_similar_episodes(query)
         context.extend(similar_episodes)
 

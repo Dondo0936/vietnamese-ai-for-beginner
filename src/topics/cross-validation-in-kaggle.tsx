@@ -248,7 +248,7 @@ export default function CrossValidationInKaggle() {
           </StepReveal>
         </div>
 
-        {/* DEEPEN. drift chart public → private scatter */}
+        {/* DEEPEN, drift chart public → private scatter */}
         <div className="not-prose mt-6">
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <AlertTriangle size={16} className="text-amber-500" />

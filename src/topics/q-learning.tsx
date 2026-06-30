@@ -387,7 +387,7 @@ export default function QLearningTopic() {
         ],
         correct: 0,
         explanation:
-          "TD error δ = r + γ·max_{a'} Q(s',a') − Q(s,a). Nó đo lường mức độ &quot;ngạc nhiên&quot; của agent so với kỳ vọng. Update = Q + α·δ, kéo Q về gần target. α nhỏ → học chậm nhưng ổn định; α lớn → học nhanh nhưng dao động.",
+          "TD error δ = r + γ·max_{a'} Q(s',a') − Q(s,a). Nó đo lường mức độ &quot;ngạc nhiên&quot; của agent so với kỳ vọng. Update = Q + α·δ, kéo Q về gần target, α nhỏ → học chậm nhưng ổn định; α lớn → học nhanh nhưng dao động.",
       },
       {
         question:
@@ -547,7 +547,7 @@ export default function QLearningTopic() {
               </div>
               <div className="rounded-xl border border-border bg-card/60 p-3 text-center">
                 <p className="text-[10px] uppercase tracking-wide text-muted">
-                  Cumul. reward
+                  Cumul, reward
                 </p>
                 <p className="text-xl font-bold text-foreground">
                   {cumulativeReward.toFixed(1)}
@@ -785,7 +785,7 @@ export default function QLearningTopic() {
             "Đặt ε = 0 (tắt explore hoàn toàn)",
           ]}
           correct={1}
-          explanation="Epsilon decay: ban đầu explore nhiều (0.3-1.0) để khám phá, sau đó giảm dần (0.05-0.01) để khai thác kiến thức. ε = 0 nguy hiểm: môi trường thay đổi thì agent không adapt được. Giữ ε khoảng 0.01-0.05 là cân bằng tốt."
+          explanation="Epsilon decay: ban đầu explore nhiều (0.3-1.0) để khám phá, sau đó giảm dần (0.05-0.01) để khai thác kiến thức, ε = 0 nguy hiểm: môi trường thay đổi thì agent không adapt được. Giữ ε khoảng 0.01-0.05 là cân bằng tốt."
         />
 
         <div className="mt-5">
@@ -1002,7 +1002,7 @@ def policy_from_double_q(qa: np.ndarray, qb: np.ndarray) -> np.ndarray:
           <CollapsibleDetail title="Chi tiết: chọn γ thế nào?">
             <p className="text-sm leading-relaxed">
               Discount factor γ ∈ [0, 1) quyết định &quot;tầm nhìn xa&quot;
-              của agent. γ = 0 → chỉ quan tâm reward ngay; γ → 1 → lên kế
+              của agent, γ = 0 → chỉ quan tâm reward ngay; γ → 1 → lên kế
               hoạch dài hạn. Ảnh hưởng thực tế:
             </p>
             <ul className="list-disc list-inside text-sm space-y-1 mt-2">

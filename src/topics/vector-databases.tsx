@@ -76,7 +76,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "ANN", accept: ["Approximate Nearest Neighbor", "approximate nearest neighbor"] },
       { answer: "HNSW", accept: ["Hierarchical Navigable Small World", "hnsw"] },
     ],
-    explanation: "ANN chấp nhận giảm chút recall (95-99%) để tăng tốc hàng nghìn lần. HNSW (Hierarchical Navigable Small World) xây đồ thị nhiều tầng: tầng cao nhảy xa, tầng thấp tinh chỉnh. nhanh và chính xác, được Pinecone, Qdrant, Weaviate dùng mặc định.",
+    explanation: "ANN chấp nhận giảm chút recall (95-99%) để tăng tốc hàng nghìn lần. HNSW (Hierarchical Navigable Small World) xây đồ thị nhiều tầng: tầng cao nhảy xa, tầng thấp tinh chỉnh, nhanh và chính xác, được Pinecone, Qdrant, Weaviate dùng mặc định.",
   },
 ];
 

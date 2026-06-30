@@ -249,7 +249,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "LAB dựa trên mô hình thị giác người (CIE 1976), không gắn với bất kỳ thiết bị nào. sRGB, Adobe RGB, Display-P3 đều là device-dependent (phụ thuộc đặc tính monitor). CMYK phụ thuộc mực và giấy. Vì vậy LAB là không gian trung gian lý tưởng khi cần chuyển đổi chính xác giữa các thiết bị.",
+      "LAB dựa trên mô hình thị giác người (CIE 1976), không gắn với bất kỳ thiết bị nào, sRGB, Adobe RGB, Display-P3 đều là device-dependent (phụ thuộc đặc tính monitor). CMYK phụ thuộc mực và giấy. Vì vậy LAB là không gian trung gian lý tưởng khi cần chuyển đổi chính xác giữa các thiết bị.",
   },
   {
     question:
@@ -719,7 +719,7 @@ export default function ColorSpacesTopic() {
                   })()}
                 </svg>
                 <p className="text-[10px] text-muted leading-snug">
-                  a* = {fmt(A, 1)} (đỏ-xanh lá). b* = {fmt(B, 1)}{" "}
+                  a* = {fmt(A, 1)} (đỏ-xanh lá), b* = {fmt(B, 1)}{" "}
                   (vàng-xanh dương). L = {fmt(L, 1)} (độ sáng 0-100).
                 </p>
               </div>

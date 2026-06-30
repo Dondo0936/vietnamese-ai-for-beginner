@@ -857,7 +857,7 @@ export default function DPOTopic() {
             "π_ref được cập nhật song song để 'kéo' π_θ theo",
           ]}
           correct={0}
-          explanation="DPO đẩy xác suất y_chosen lên (r_w > 0) và xác suất y_rejected xuống (r_l < 0) so với π_ref. Khi r_w − r_l > 0 và đủ lớn, mô hình đã 'học' được cặp preference. π_ref đóng băng — không bao giờ được cập nhật."
+          explanation="DPO đẩy xác suất y_chosen lên (r_w > 0) và xác suất y_rejected xuống (r_l < 0) so với π_ref. Khi r_w − r_l > 0 và đủ lớn, mô hình đã 'học' được cặp preference, π_ref đóng băng — không bao giờ được cập nhật."
         />
 
         <div className="mt-4">
@@ -926,7 +926,7 @@ export default function DPOTopic() {
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
-              <strong>β</strong> đóng vai trò KL coefficient. β nhỏ cho phép
+              <strong>β</strong> đóng vai trò KL coefficient, β nhỏ cho phép
               π_θ lệch mạnh khỏi π_ref; β lớn giữ chặt π_θ gần π_ref. Giá trị
               điển hình là 0.1–0.5.
             </li>

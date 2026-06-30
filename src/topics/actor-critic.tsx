@@ -939,7 +939,7 @@ export default function ActorCriticTopic() {
         ],
         correct: 1,
         explanation:
-          "1-step TD: advantage = r + γV(s′) − V(s) — bias thấp do V xấp xỉ nhưng variance thấp. Monte Carlo (n = ∞): dùng return thật — unbiased nhưng variance cao. n-step = tradeoff. GAE (Generalized Advantage Estimation) là trung bình trọng số của nhiều n-step.",
+          "1-step TD: advantage = r + γV(s′) − V(s) — bias thấp do V xấp xỉ nhưng variance thấp. Monte Carlo (n = ∞): dùng return thật — unbiased nhưng variance cao, n-step = tradeoff. GAE (Generalized Advantage Estimation) là trung bình trọng số của nhiều n-step.",
       },
       {
         question:
@@ -965,7 +965,7 @@ export default function ActorCriticTopic() {
         ],
         correct: 1,
         explanation:
-          "Không có entropy bonus, policy có thể collapse về deterministic quá sớm — kẹt ở local optimum. Entropy bonus β·H(π) giữ xác suất các action không-best đủ lớn để tiếp tục explore. β thường 0.01 và decay dần khi agent đã học tốt.",
+          "Không có entropy bonus, policy có thể collapse về deterministic quá sớm — kẹt ở local optimum. Entropy bonus β·H(π) giữ xác suất các action không-best đủ lớn để tiếp tục explore, β thường 0.01 và decay dần khi agent đã học tốt.",
       },
       {
         question: "Vì sao A3C (async) từng phổ biến nhưng nay ít dùng hơn?",
@@ -1107,7 +1107,7 @@ export default function ActorCriticTopic() {
                   "Để model hội tụ nhanh hơn",
                 ]}
                 correct={1}
-                explanation="Trust region: policy landscape phức tạp, thay đổi lớn có thể 'nhảy' từ vùng tốt sang vùng tệ. PPO giới hạn mỗi step → đảm bảo cải thiện dần dần. ε = 0.2 là sweet spot: đủ nhanh để học, đủ nhỏ để ổn định. Đây là lý do PPO là default cho RLHF."
+                explanation="Trust region: policy landscape phức tạp, thay đổi lớn có thể 'nhảy' từ vùng tốt sang vùng tệ. PPO giới hạn mỗi step → đảm bảo cải thiện dần dần, ε = 0.2 là sweet spot: đủ nhanh để học, đủ nhỏ để ổn định. Đây là lý do PPO là default cho RLHF."
               />
 
               <InlineChallenge
@@ -1202,8 +1202,8 @@ export default function ActorCriticTopic() {
               <Callout variant="info" title="GAE — Generalized Advantage Estimation">
                 Thay vì chỉ dùng 1-step TD hay n-step return, GAE (Schulman 2016) tính
                 advantage là trung bình trọng số của tất cả k-step TD errors với hệ
-                số λ ∈ [0, 1]. λ = 0 → 1-step TD (bias cao, variance thấp). λ = 1 →
-                Monte Carlo (bias thấp, variance cao). λ = 0.95 là sweet spot phổ
+                số λ ∈ [0, 1], λ = 0 → 1-step TD (bias cao, variance thấp), λ = 1 →
+                Monte Carlo (bias thấp, variance cao), λ = 0.95 là sweet spot phổ
                 biến. PPO mặc định dùng GAE.
               </Callout>
 

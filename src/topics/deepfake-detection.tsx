@@ -72,7 +72,7 @@ const FACES: FaceProfile[] = [
     detectorProb: 0.08,
     skinTone: "#f6d9c3",
     story:
-      "Ảnh chụp từ camera DSLR, có EXIF gốc. rPPG phát hiện nhịp tim 74 bpm từ thay đổi màu da vùng trán.",
+      "Ảnh chụp từ camera DSLR, có EXIF gốc, rPPG phát hiện nhịp tim 74 bpm từ thay đổi màu da vùng trán.",
     artifacts: [
       "Có lỗ chân lông tự nhiên, phân bố ngẫu nhiên",
       "Hai mắt phản chiếu CÙNG nguồn sáng (cửa sổ bên trái)",

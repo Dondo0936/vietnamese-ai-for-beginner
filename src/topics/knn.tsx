@@ -510,7 +510,7 @@ function BoundaryOnlyDemo() {
               ))}
             </svg>
             <p className="text-[11px] text-muted text-center leading-relaxed">
-              k = 1 → biên lởm chởm, nhạy với từng điểm. k = 15–21 → biên mượt, đôi chỗ
+              k = 1 → biên lởm chởm, nhạy với từng điểm, k = 15–21 → biên mượt, đôi chỗ
               nuốt mất cụm nhỏ.
             </p>
           </div>
@@ -695,7 +695,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "k = 1 nhạy nhiễu (overfit). k bằng N thì mô hình chỉ đoán lớp đa số. Khởi điểm hợp lý là k ≈ √N, rồi dùng k-fold CV để chọn chính xác; k lẻ giúp tránh hoà phiếu khi 2 lớp.",
+      "k = 1 nhạy nhiễu (overfit), k bằng N thì mô hình chỉ đoán lớp đa số. Khởi điểm hợp lý là k ≈ √N, rồi dùng k-fold CV để chọn chính xác; k lẻ giúp tránh hoà phiếu khi 2 lớp.",
   },
 ];
 
@@ -762,7 +762,7 @@ export default function KnnTopic() {
               </span>
             </div>
             <p className="text-xs text-foreground/80 leading-relaxed">
-              Tập các điểm đã biết nhãn. k-NN không &ldquo;học&rdquo; gì cả. Nó chỉ giữ
+              Tập các điểm đã biết nhãn, k-NN không &ldquo;học&rdquo; gì cả. Nó chỉ giữ
               lại toàn bộ tập này.
             </p>
           </div>
@@ -786,7 +786,7 @@ export default function KnnTopic() {
               </span>
             </div>
             <p className="text-xs text-foreground/80 leading-relaxed">
-              k = 1 cho dự đoán cực sát nhưng dễ bị nhiễu. k lớn thì mượt nhưng dễ nuốt
+              k = 1 cho dự đoán cực sát nhưng dễ bị nhiễu, k lớn thì mượt nhưng dễ nuốt
               cụm nhỏ. Thông thường k ≈ √N và dùng cross-validation để chọn.
             </p>
           </div>
@@ -874,7 +874,7 @@ export default function KnnTopic() {
               Nói bằng tiếng Việt đời thường: &ldquo;Đo đường chim bay từ điểm này đến
               điểm kia trong không gian d chiều&rdquo;. Trong 2D bạn đã học từ cấp 3:{" "}
               <em>d = √( (x₁ − x₂)² + (y₁ − y₂)² )</em>. k-NN 2D dùng chính công thức
-              đó. k-NN trên 100 đặc trưng thì cộng thêm các bình phương nữa.
+              đó, k-NN trên 100 đặc trưng thì cộng thêm các bình phương nữa.
             </p>
             <EuclidMiniVisual />
           </div>
@@ -1003,7 +1003,7 @@ export default function KnnTopic() {
               Đặc trưng không đồng đơn vị và không chuẩn hoá được.
             </li>
             <li>
-              Dữ liệu lớp mất cân bằng nặng. k-NN thiên về lớp đa số (dùng{" "}
+              Dữ liệu lớp mất cân bằng nặng, k-NN thiên về lớp đa số (dùng{" "}
               <code>class_weight</code> hoặc oversampling).
             </li>
           </ul>
@@ -1033,7 +1033,7 @@ export default function KnnTopic() {
           title="4 điều cần nhớ về k-NN"
           points={[
             "k-NN là bỏ phiếu đa số của k điểm gần nhất. Không có bước huấn luyện, 'model' chính là dữ liệu.",
-            "k nhỏ cho biên lởm chởm, nhạy nhiễu. k lớn cho biên mượt nhưng bỏ qua cụm nhỏ. Chọn k ≈ √N rồi tinh chỉnh bằng cross-validation.",
+            "k nhỏ cho biên lởm chởm, nhạy nhiễu, k lớn cho biên mượt nhưng bỏ qua cụm nhỏ. Chọn k ≈ √N rồi tinh chỉnh bằng cross-validation.",
             "LUÔN chuẩn hoá đặc trưng trước khi dùng. Nếu không, đặc trưng thang lớn sẽ nuốt các đặc trưng khác.",
             "Nhanh cho dữ liệu vừa phải (d < 20, N vừa). Với N triệu hoặc d lớn, dùng KD-tree, Ball-tree, HNSW hoặc đổi sang cây quyết định.",
           ]}

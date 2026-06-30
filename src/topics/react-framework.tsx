@@ -22,7 +22,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ────────────────────────────────────────────────────────────────────────────
-// Metadata (giữ nguyên. dùng cho router và trang tổng hợp)
+// Metadata (giữ nguyên, dùng cho router và trang tổng hợp)
 // ────────────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "react-framework",
@@ -112,7 +112,7 @@ const SCENARIOS: Scenario[] = [
     cotOutcome: "hallucinated",
     reactOutcome: "correct",
     note:
-      "CoT đoán theo ký ức cũ và ngoại suy. sai. ReAct tra cứu nguồn chính thức. đúng.",
+      "CoT đoán theo ký ức cũ và ngoại suy, sai. ReAct tra cứu nguồn chính thức, đúng.",
   },
   {
     id: "math",
@@ -249,7 +249,7 @@ const SCENARIOS: Scenario[] = [
       {
         kind: "answer",
         text:
-          "Đạo diễn là Jonathan Demme, trong phim 'Philadelphia' (1993). vai diễn mang về Oscar Nam chính đầu tiên cho Tom Hanks.",
+          "Đạo diễn là Jonathan Demme, trong phim 'Philadelphia' (1993), vai diễn mang về Oscar Nam chính đầu tiên cho Tom Hanks.",
       },
     ],
     cot: [
@@ -317,12 +317,12 @@ const SCENARIOS: Scenario[] = [
     cotOutcome: "hallucinated",
     reactOutcome: "correct",
     note:
-      "CoT đoán giá gần đúng nhưng không phản ánh số liệu hôm qua. ReAct tra API rồi dùng calculator. chính xác tới đơn vị đồng.",
+      "CoT đoán giá gần đúng nhưng không phản ánh số liệu hôm qua. ReAct tra API rồi dùng calculator, chính xác tới đơn vị đồng.",
   },
 ];
 
 // ────────────────────────────────────────────────────────────────────────────
-// Bảng so sánh nhanh ReAct vs các pattern khác. dùng trong phần lý thuyết
+// Bảng so sánh nhanh ReAct vs các pattern khác, dùng trong phần lý thuyết
 // ────────────────────────────────────────────────────────────────────────────
 interface PatternRow {
   name: string;
@@ -352,7 +352,7 @@ const PATTERN_TABLE: PatternRow[] = [
   {
     name: "ReAct",
     reasoning: "Có",
-    acting: "Có. gọi tool mỗi vòng",
+    acting: "Có, gọi tool mỗi vòng",
     grounding: "strong",
     useCase:
       "QA thực tế, đa bước, cần tra cứu/tính toán. Pattern chủ đạo cho agent hiện đại.",
@@ -426,7 +426,7 @@ function PatternTable() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Các "bẫy thiết kế" (anti-patterns). dùng trong CollapsibleDetail
+// Các "bẫy thiết kế" (anti-patterns), dùng trong CollapsibleDetail
 // ────────────────────────────────────────────────────────────────────────────
 const ANTI_PATTERNS: { title: string; body: string }[] = [
   {
@@ -489,7 +489,7 @@ const STEP_STYLES: Record<
 };
 
 // ────────────────────────────────────────────────────────────────────────────
-// 8 câu quiz. đa dạng: multiple-choice, fill-blank, tình huống thực tế
+// 8 câu quiz, đa dạng: multiple-choice, fill-blank, tình huống thực tế
 // ────────────────────────────────────────────────────────────────────────────
 const QUIZ: QuizQuestion[] = [
   {
@@ -514,13 +514,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Observation là kết quả THỰC từ bên ngoài: API trả về, search engine trả kết quả, code chạy xong. Đây là 'grounding'. buộc AI làm việc với dữ liệu thật thay vì tưởng tượng.",
+      "Observation là kết quả THỰC từ bên ngoài: API trả về, search engine trả kết quả, code chạy xong. Đây là 'grounding', buộc AI làm việc với dữ liệu thật thay vì tưởng tượng.",
   },
   {
     question: "Khi nào ReAct agent nên DỪNG vòng lặp?",
     options: [
       "Sau đúng 3 vòng",
-      "Khi AI có đủ thông tin để trả lời chính xác. hoặc khi vượt quá số bước tối đa (timeout)",
+      "Khi AI có đủ thông tin để trả lời chính xác, hoặc khi vượt quá số bước tối đa (timeout)",
       "Khi hết công cụ để gọi",
       "Khi observation trùng lặp",
     ],
@@ -543,7 +543,7 @@ const QUIZ: QuizQuestion[] = [
       },
     ],
     explanation:
-      "ReAct = Reason + Act. Pha Reason (Thought) là suy luận nội bộ, pha Act là hành động cụ thể như gọi API, tra cứu, chạy code. kết quả trả về thành Observation cho vòng lặp tiếp theo.",
+      "ReAct = Reason + Act. Pha Reason (Thought) là suy luận nội bộ, pha Act là hành động cụ thể như gọi API, tra cứu, chạy code, kết quả trả về thành Observation cho vòng lặp tiếp theo.",
   },
   {
     question:
@@ -563,7 +563,7 @@ const QUIZ: QuizQuestion[] = [
       "Trong prompt ReAct, vì sao ta bắt LLM xuất ra cụm 'Thought:' và 'Action:' rõ ràng theo dòng?",
     options: [
       "Để LLM chạy nhanh hơn",
-      "Để parser dễ bóc tách. cần biết đoạn nào là suy luận, đoạn nào là tool call để thực thi",
+      "Để parser dễ bóc tách, cần biết đoạn nào là suy luận, đoạn nào là tool call để thực thi",
       "Để người dùng đọc đẹp hơn",
       "Vì LLM yêu cầu format đó để hiểu câu hỏi",
     ],
@@ -701,7 +701,7 @@ export default function ReActFrameworkTopic() {
           question="AI bịa đặt (hallucinate) khi trả lời câu hỏi cần dữ liệu thực tế. Cách tốt nhất để giảm ảo giác?"
           options={[
             "Huấn luyện trên nhiều dữ liệu hơn",
-            "Cho AI kiểm chứng thông tin trong quá trình suy nghĩ. suy luận → tra cứu → suy luận tiếp",
+            "Cho AI kiểm chứng thông tin trong quá trình suy nghĩ, suy luận → tra cứu → suy luận tiếp",
             "Thêm câu 'Hãy trả lời chính xác' vào prompt",
           ]}
           correct={1}
@@ -936,12 +936,12 @@ export default function ReActFrameworkTopic() {
       {/* ═══════════════════════ 3. Aha moment ═══════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
-          Con người không giải quyết vấn đề chỉ bằng suy nghĩ thuần tuý. ta{" "}
+          Con người không giải quyết vấn đề chỉ bằng suy nghĩ thuần tuý, ta{" "}
           <strong>nghĩ rồi làm, quan sát kết quả, rồi nghĩ tiếp</strong>. ReAct
           dạy AI cùng phương pháp: xen kẽ <em>reasoning</em> với <em>acting</em>
           {" "}qua{" "}
           <TopicLink slug="function-calling">function calling</TopicLink>. Mỗi
-          Observation từ thế giới thực điều chỉnh suy luận. giảm ảo giác có
+          Observation từ thế giới thực điều chỉnh suy luận, giảm ảo giác có
           cấu trúc, và là vòng lặp lõi của{" "}
           <TopicLink slug="agent-architecture">kiến trúc agent</TopicLink>{" "}
           hiện đại.
@@ -985,7 +985,7 @@ export default function ReActFrameworkTopic() {
           <Callout variant="warning" title="Cẩn thận">
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
-                Không đặt <strong>max_steps</strong> quá lớn. chi phí LLM tăng
+                Không đặt <strong>max_steps</strong> quá lớn, chi phí LLM tăng
                 tuyến tính theo số vòng.
               </li>
               <li>
@@ -1002,14 +1002,14 @@ export default function ReActFrameworkTopic() {
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 Gộp Observation dài thành bản tóm tắt trước khi đưa lại vào
-                context. tiết kiệm token.
+                context, tiết kiệm token.
               </li>
               <li>
                 Ghi log từng bước Thought/Action/Observation để debug khi agent
                 ra kết quả lạ.
               </li>
               <li>
-                Đặt <strong>whitelist</strong> công cụ rõ ràng. đừng để LLM tự
+                Đặt <strong>whitelist</strong> công cụ rõ ràng, đừng để LLM tự
                 bịa tên tool.
               </li>
             </ul>
@@ -1021,7 +1021,7 @@ export default function ReActFrameworkTopic() {
                 ích.
               </li>
               <li>
-                Tác vụ đã có pipeline cứng (classify đơn giản). dùng prompt
+                Tác vụ đã có pipeline cứng (classify đơn giản), dùng prompt
                 một lượt sẽ rẻ hơn.
               </li>
               <li>
@@ -1050,7 +1050,7 @@ export default function ReActFrameworkTopic() {
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
               <strong>Thought:</strong> AI phân tích tình huống, lập kế hoạch
-              bước tiếp. Reasoning trace giải thích quyết định. cực kỳ hữu ích
+              bước tiếp. Reasoning trace giải thích quyết định, cực kỳ hữu ích
               khi debug.
             </li>
             <li>
@@ -1076,7 +1076,7 @@ export default function ReActFrameworkTopic() {
             action đặc biệt <LaTeX>{`a_t = \\text{finish}`}</LaTeX>.
           </p>
 
-          <CodeBlock language="python" title="react_agent_langchain.py">{`# LangChain ReAct agent. phiên bản gần với sản xuất
+          <CodeBlock language="python" title="react_agent_langchain.py">{`# LangChain ReAct agent, phiên bản gần với sản xuất
 from langchain.agents import create_react_agent, AgentExecutor
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_experimental.tools import PythonREPLTool
@@ -1197,7 +1197,7 @@ for step in result["intermediate_steps"]:
         />
       </LessonSection>
 
-      {/* ═══════════════════════ 8. Mã nguồn mẫu. low-level ═══════════════════════ */}
+      {/* ═══════════════════════ 8. Mã nguồn mẫu, low-level ═══════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tự cài đặt">
         <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p className="text-sm text-muted mb-3">
@@ -1268,7 +1268,7 @@ def react_loop(question: str, llm: Callable[[str], str], max_steps: int = 6) -> 
           title="Những điều cần nhớ về ReAct"
           points={[
             "ReAct = Reasoning + Acting: vòng lặp Thought → Action → Observation cho tới khi có đủ thông tin.",
-            "Observation từ bên ngoài (API, search, code_exec) 'grounding' suy luận. giảm hallucination một cách cấu trúc.",
+            "Observation từ bên ngoài (API, search, code_exec) 'grounding' suy luận, giảm hallucination một cách cấu trúc.",
             "Khác CoT: CoT chỉ suy nghĩ nội bộ, ReAct còn kiểm chứng mỗi bước bằng dữ liệu thật từ thế giới bên ngoài.",
             "Luôn đặt max_iterations, whitelist tool, và fallback để tránh vòng lặp vô hạn hay gọi tool không hợp lệ.",
             "Trong sản xuất, ưu tiên phiên bản function-calling: LLM trả JSON theo schema, ít lỗi parse hơn so với regex.",

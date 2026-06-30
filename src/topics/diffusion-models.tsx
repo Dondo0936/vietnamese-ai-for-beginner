@@ -243,7 +243,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "CFG (Ho & Salimans 2022) loại bỏ nhu cầu classifier riêng. Trong training, random drop prompt 10% để model học cả phân phối conditional p(x|c) lẫn unconditional p(x). Khi inference, nội suy tuyến tính giữa hai prediction với hệ số w > 1 để 'khuếch đại' hướng prompt. w = 7.5 là sweet spot cho Stable Diffusion.",
+      "CFG (Ho & Salimans 2022) loại bỏ nhu cầu classifier riêng. Trong training, random drop prompt 10% để model học cả phân phối conditional p(x|c) lẫn unconditional p(x). Khi inference, nội suy tuyến tính giữa hai prediction với hệ số w > 1 để 'khuếch đại' hướng prompt, w = 7.5 là sweet spot cho Stable Diffusion.",
   },
   {
     question: "Trong Stable Diffusion, VAE đóng vai trò gì?",

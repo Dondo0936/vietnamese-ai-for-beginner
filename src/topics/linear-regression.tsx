@@ -121,7 +121,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "w0", accept: ["w_0", "b", "c", "intercept", "bias"] },
     ],
     explanation:
-      "ŷ = w1·x + w0 là dạng chuẩn. w1 cho biết x tăng 1 đơn vị thì ŷ tăng bao nhiêu; w0 là giá trị ŷ khi x = 0.",
+      "ŷ = w1·x + w0 là dạng chuẩn, w1 cho biết x tăng 1 đơn vị thì ŷ tăng bao nhiêu; w0 là giá trị ŷ khi x = 0.",
   },
   {
     question:

@@ -199,7 +199,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "nf4", accept: ["normalfloat", "normalfloat4", "NF4"] },
     ],
     explanation:
-      "QLoRA dùng NF4 (NormalFloat 4-bit). kiểu dữ liệu 4 bit tối ưu cho phân bố Gaussian. Kết quả: giảm 4x VRAM so với FP16, fine-tune mô hình 65B trên 1 GPU 48GB.",
+      "QLoRA dùng NF4 (NormalFloat 4-bit), kiểu dữ liệu 4 bit tối ưu cho phân bố Gaussian. Kết quả: giảm 4x VRAM so với FP16, fine-tune mô hình 65B trên 1 GPU 48GB.",
   },
   {
     question: "Vì sao QLoRA chậm hơn LoRA thuần khoảng 30-50%?",
@@ -217,7 +217,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Khi nào nên chọn QLoRA thay vì LoRA thuần?",
     options: [
       "Khi bạn có cluster 8×A100 và cần tốc độ tối đa",
-      "Khi VRAM là nút cổ chai. ví dụ fine-tune 70B trên 1 GPU 48GB, hoặc 13B trên RTX 4090 24GB",
+      "Khi VRAM là nút cổ chai, ví dụ fine-tune 70B trên 1 GPU 48GB, hoặc 13B trên RTX 4090 24GB",
       "Khi dataset rất nhỏ (<1000 mẫu)",
       "Khi cần chất lượng tuyệt đối 100%",
     ],
@@ -235,7 +235,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Paper gốc huấn luyện Guanaco 65B bằng QLoRA trên 1 GPU 48GB trong 24 giờ, đạt 99.3% ChatGPT trên Vicuna benchmark. Đây là bằng chứng QLoRA không phải 'nén bẩn'. chất lượng giữ được khi pipeline đúng.",
+      "Paper gốc huấn luyện Guanaco 65B bằng QLoRA trên 1 GPU 48GB trong 24 giờ, đạt 99.3% ChatGPT trên Vicuna benchmark. Đây là bằng chứng QLoRA không phải 'nén bẩn', chất lượng giữ được khi pipeline đúng.",
   },
 ];
 
@@ -313,13 +313,13 @@ export default function QLoRATopic() {
         <PredictionGate
           question="Mô hình 70 tỷ tham số ở FP16 chiếm 140GB VRAM cho inference. Full fine-tuning cần ~840GB. Bạn chỉ có 1 GPU 48GB. Có thể fine-tune được không?"
           options={[
-            "Không thể. phải mua thêm 15 GPU nữa",
-            "Có thể. nén mô hình xuống 4-bit rồi fine-tune bằng LoRA adapter",
-            "Có thể. chỉ cần giảm batch size xuống 1",
-            "Có thể. chuyển sang fine-tune trên CPU",
+            "Không thể, phải mua thêm 15 GPU nữa",
+            "Có thể, nén mô hình xuống 4-bit rồi fine-tune bằng LoRA adapter",
+            "Có thể, chỉ cần giảm batch size xuống 1",
+            "Có thể, chuyển sang fine-tune trên CPU",
           ]}
           correct={1}
-          explanation="QLoRA nén 70B từ 140GB xuống ~35GB bằng lượng tử hoá NF4, rồi fine-tune bằng LoRA adapter ở BF16. Paged optimizer xử lý spike. Tổng chỉ ~48GB. vừa 1 GPU!"
+          explanation="QLoRA nén 70B từ 140GB xuống ~35GB bằng lượng tử hoá NF4, rồi fine-tune bằng LoRA adapter ở BF16. Paged optimizer xử lý spike. Tổng chỉ ~48GB, vừa 1 GPU!"
         >
           <p className="text-sm text-muted mt-2">
             Đây là bước đột phá giúp cá nhân và startup fine-tune được mô hình cỡ GPT-3
@@ -344,7 +344,7 @@ export default function QLoRATopic() {
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-lg border border-border bg-background/40 p-3">
               <p className="text-sm font-semibold text-foreground mb-1">
-                Full Fine-tuning. sơn lại mọi bức
+                Full Fine-tuning, sơn lại mọi bức
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Bạn mang từng bức tranh gốc về phòng, sơn lại, rồi trả về. Cần kho lớn
@@ -353,7 +353,7 @@ export default function QLoRATopic() {
             </div>
             <div className="rounded-lg border border-border bg-background/40 p-3">
               <p className="text-sm font-semibold text-foreground mb-1">
-                LoRA. đặt tấm kính lên mỗi bức
+                LoRA, đặt tấm kính lên mỗi bức
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Bạn không sửa bức gốc. Thay vào đó, đặt một lớp kính mỏng trong suốt lên
@@ -363,7 +363,7 @@ export default function QLoRATopic() {
             </div>
             <div className="rounded-lg border border-border bg-background/40 p-3">
               <p className="text-sm font-semibold text-foreground mb-1">
-                QLoRA. chụp ảnh nhỏ bức gốc + kính
+                QLoRA, chụp ảnh nhỏ bức gốc + kính
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Bạn chụp ảnh 4K (NF4) của mỗi bức để tham khảo, giữ bức gốc trong kho
@@ -384,7 +384,7 @@ export default function QLoRATopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khám phá">
         <VisualizationSection>
           <h3 className="text-base font-semibold text-foreground mb-1">
-            Phân tích bộ nhớ QLoRA. tương tác
+            Phân tích bộ nhớ QLoRA, tương tác
           </h3>
           <p className="text-sm text-muted mb-4">
             Chọn phương pháp, kích thước mô hình, và GPU. Xem cột bộ nhớ thay đổi và
@@ -544,7 +544,7 @@ export default function QLoRATopic() {
           {/* Interactive: adjust model size, see fit */}
           <div className="rounded-xl border border-border bg-background/40 p-4 mb-5">
             <p className="text-sm font-semibold text-foreground mb-2">
-              Thử kích thước mô hình & GPU. xem có vừa không
+              Thử kích thước mô hình & GPU, xem có vừa không
             </p>
 
             <div className="flex flex-wrap gap-2 mb-3">
@@ -699,7 +699,7 @@ export default function QLoRATopic() {
                   );
                 })}
 
-                {/* INT4 ticks. 16 levels đều. để so sánh */}
+                {/* INT4 ticks. 16 levels đều, để so sánh */}
                 {Array.from({ length: 16 }, (_, i) => {
                   const v = -1 + (i / 15) * 2;
                   const scaled = v * 2.5;
@@ -722,7 +722,7 @@ export default function QLoRATopic() {
           <div className="rounded-xl border border-border bg-background/40 p-4">
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-semibold text-foreground">
-                Double Quantization. nén luôn hằng số scale
+                Double Quantization, nén luôn hằng số scale
               </p>
               <button
                 onClick={() => setUseDoubleQuant(!useDoubleQuant)}
@@ -782,7 +782,7 @@ export default function QLoRATopic() {
             "NF4 dùng ít bit hơn INT4",
           ]}
           correct={1}
-          explanation="Trọng số neural network gần phân bố chuẩn (bell curve). NF4 đặt nhiều mức lượng tử hoá hơn ở vùng mật độ cao (gần 0), ít mức hơn ở đuôi. bảo toàn thông tin tốt hơn INT4 đều đặn với cùng 4 bit."
+          explanation="Trọng số neural network gần phân bố chuẩn (bell curve). NF4 đặt nhiều mức lượng tử hoá hơn ở vùng mật độ cao (gần 0), ít mức hơn ở đuôi, bảo toàn thông tin tốt hơn INT4 đều đặn với cùng 4 bit."
         />
       </LessonSection>
 
@@ -791,10 +791,10 @@ export default function QLoRATopic() {
         <InlineChallenge
           question="Bạn muốn fine-tune Llama 33B bằng QLoRA. VRAM tối thiểu cần là bao nhiêu?"
           options={[
-            "Khoảng 8 GB. hợp mọi GPU consumer",
-            "Khoảng 24 GB. vừa RTX 4090/3090",
-            "Khoảng 66 GB. vẫn cần A100 80GB",
-            "Khoảng 150 GB. cần cluster",
+            "Khoảng 8 GB, hợp mọi GPU consumer",
+            "Khoảng 24 GB, vừa RTX 4090/3090",
+            "Khoảng 66 GB, vẫn cần A100 80GB",
+            "Khoảng 150 GB, cần cluster",
           ]}
           correct={1}
           explanation="33B × 4-bit ≈ 17GB weights, + LoRA adapter + gradient + paged optimizer + activation ≈ 24GB. Vừa vặn RTX 4090 24GB. Đây là cột mốc dân chủ hoá: fine-tune 33B trên GPU gaming consumer."
@@ -828,7 +828,7 @@ export default function QLoRATopic() {
           </ol>
 
           <p className="mt-4">
-            <strong>Công thức. bộ nhớ lưu trọng số sau NF4:</strong>
+            <strong>Công thức, bộ nhớ lưu trọng số sau NF4:</strong>
           </p>
           <LaTeX block>
             {
@@ -910,7 +910,7 @@ model = prepare_model_for_kbit_training(
     model, use_gradient_checkpointing=True
 )
 
-# Bước 4: Gắn LoRA adapter ở BF16. chỉ phần này có gradient
+# Bước 4: Gắn LoRA adapter ở BF16, chỉ phần này có gradient
 lora_config = LoraConfig(
     r=16,                    # rank; 8-64 là phổ biến
     lora_alpha=32,           # thường = 2 × r
@@ -926,14 +926,14 @@ model = get_peft_model(model, lora_config)
 model.print_trainable_parameters()
 # trainable: ~30M (0.04% của 70B) → gradient + optimizer rất nhẹ
 
-# Bước 5: Training args. dùng paged optimizer
+# Bước 5: Training args, dùng paged optimizer
 training_args = TrainingArguments(
     output_dir="./qlora-llama3-70b",
     per_device_train_batch_size=1,
     gradient_accumulation_steps=16,
     learning_rate=2e-4,              # LR cao hơn full FT vì adapter nhỏ
     max_steps=1000,
-    optim="paged_adamw_8bit",        # PAGED. trick tránh OOM
+    optim="paged_adamw_8bit",        # PAGED, trick tránh OOM
     lr_scheduler_type="cosine",
     warmup_ratio=0.03,
     bf16=True,                       # tính toán BF16
@@ -957,7 +957,7 @@ trainer = SFTTrainer(
 )
 trainer.train()
 
-# Bước 7: Lưu. chỉ adapter ~100MB
+# Bước 7: Lưu, chỉ adapter ~100MB
 model.save_pretrained("./qlora-adapter")
 # Inference sau này: load base model (có thể 4-bit) + merge adapter`}</CodeBlock>
 
@@ -971,14 +971,14 @@ from bitsandbytes.functional import quantize_nf4, dequantize_nf4
 # Giả lập 1 layer linear weight 4096x4096 (giống Llama hidden size)
 W_fp16 = torch.randn(4096, 4096, dtype=torch.float16, device="cuda") * 0.02
 
-# Quantize sang NF4. block size 64
+# Quantize sang NF4, block size 64
 W_nf4, quant_state = quantize_nf4(W_fp16, blocksize=64)
 
 print(f"FP16 size: {W_fp16.nelement() * 2 / 1e6:.2f} MB")
 print(f"NF4 size:  {W_nf4.nelement() / 2 / 1e6:.2f} MB (chia 2 vì pack 2 val/byte)")
 print(f"→ Tỉ lệ nén: {2 * W_fp16.nelement() / W_nf4.nelement():.2f}x")
 
-# Dequantize lại. chỉ dùng khi cần tính toán
+# Dequantize lại, chỉ dùng khi cần tính toán
 W_recon = dequantize_nf4(W_nf4, quant_state)
 err = (W_fp16 - W_recon).abs().mean().item()
 print(f"Sai số trung bình |W - W_recon|: {err:.5f}")
@@ -1000,7 +1000,7 @@ layer = bnb.nn.Linear4bit(
 layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</CodeBlock>
 
           {/* 4 callouts */}
-          <Callout variant="info" title="NF4 có info-theoretic optimal. với điều kiện">
+          <Callout variant="info" title="NF4 có info-theoretic optimal, với điều kiện">
             Paper chứng minh NF4 là optimal cho tensor có phân bố chuẩn zero-mean, khi chia
             block và chuẩn hoá theo max-abs trong block. Nếu trọng số không Gaussian (ví dụ
             LayerNorm weight thường gần 1), dùng FP4 hoặc giữ FP16 sẽ tốt hơn. Đó là lý do{" "}
@@ -1010,7 +1010,7 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
           <Callout variant="warning" title="Hạn chế: tốc độ huấn luyện">
             QLoRA chậm hơn LoRA thuần 30-50% vì mỗi forward/backward phải dequantize
             NF4 → BF16. Trên H100 với FP8 tensor core, overhead này giảm đáng kể. Nếu bạn
-            đã dư VRAM, LoRA thuần (FP16 base) nhanh hơn. đừng ép buộc dùng QLoRA.
+            đã dư VRAM, LoRA thuần (FP16 base) nhanh hơn, đừng ép buộc dùng QLoRA.
           </Callout>
 
           <Callout variant="tip" title="Merge adapter sau khi train">
@@ -1020,7 +1020,7 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
             production deploy, cách (2) thường đáng.
           </Callout>
 
-          <Callout variant="tip" title="Guanaco. chứng minh thực nghiệm">
+          <Callout variant="tip" title="Guanaco, chứng minh thực nghiệm">
             Dettmers et al. huấn luyện Guanaco 65B bằng QLoRA trên 1 GPU 48GB trong 24
             giờ. Guanaco đạt 99.3% chất lượng ChatGPT trên Vicuna benchmark. Đây là bằng
             chứng QLoRA không phải &quot;nén bẩn&quot;. nếu pipeline đúng (NF4 + DQ +
@@ -1031,7 +1031,7 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
           <CollapsibleDetail title="Chi tiết: tại sao block-wise quantization quan trọng?">
             <p className="text-sm leading-relaxed">
               Nếu bạn quantize toàn bộ tensor bằng 1 scale duy nhất (per-tensor), các
-              giá trị outlier ở đuôi sẽ ép scale lớn và làm &quot;bẹt&quot; phần trung tâm. mất chính xác cho đa số trọng số. Block-wise (ví dụ block size 64) chia
+              giá trị outlier ở đuôi sẽ ép scale lớn và làm &quot;bẹt&quot; phần trung tâm, mất chính xác cho đa số trọng số. Block-wise (ví dụ block size 64) chia
               tensor thành nhiều khối nhỏ, mỗi khối có scale riêng.
             </p>
             <p className="text-sm leading-relaxed mt-2">
@@ -1043,11 +1043,11 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
             <p className="text-sm leading-relaxed mt-2">
               Một điểm tinh tế: <strong>outlier channels</strong>{" "}trong LLM (đặc biệt ở
               attention projection) có magnitude lớn hơn 100x trung bình. SmoothQuant và
-              AWQ xử lý outlier bằng cách scale input tensor trước; QLoRA đơn giản hơn. block size nhỏ đã đủ vì mỗi block tự co giãn.
+              AWQ xử lý outlier bằng cách scale input tensor trước; QLoRA đơn giản hơn, block size nhỏ đã đủ vì mỗi block tự co giãn.
             </p>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="So sánh NF4 vs FP4 vs INT4. số liệu paper">
+          <CollapsibleDetail title="So sánh NF4 vs FP4 vs INT4, số liệu paper">
             <p className="text-sm leading-relaxed">
               Paper QLoRA (Table 2) so sánh perplexity trên LLaMA-7B sau 4-bit quantization
               (không fine-tune):
@@ -1066,7 +1066,7 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
             </p>
             <p className="text-sm leading-relaxed mt-2">
               Sau fine-tune bằng QLoRA (adapter r=64 lên tất cả linear), khoảng cách
-              perplexity càng thu hẹp. thường dưới 0.3% giữa QLoRA và full FT. Đây là lý
+              perplexity càng thu hẹp, thường dưới 0.3% giữa QLoRA và full FT. Đây là lý
               do cộng đồng open-source gần như mặc định chọn QLoRA cho mọi SFT trên model
               ≥7B: không có lý do thực tế để chi gấp 10 lần tiền thuê GPU.
             </p>
@@ -1095,12 +1095,12 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
               <li>
                 <strong>H100 với FP8 tensor core:</strong>{" "}FP8 mixed precision training
                 (Transformer Engine) có thể đạt hiệu suất tương đương QLoRA về VRAM mà
-                không chậm. kiểm tra nếu có sẵn H100.
+                không chậm, kiểm tra nếu có sẵn H100.
               </li>
             </ul>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Paged Optimizer. cơ chế bên trong">
+          <CollapsibleDetail title="Paged Optimizer, cơ chế bên trong">
             <p className="text-sm leading-relaxed">
               NVIDIA Unified Memory cho phép cấp phát bộ nhớ được GPU và CPU cùng thấy.
               Driver tự migrate page (4KB-2MB) khi cần. Paged Optimizer của bitsandbytes
@@ -1139,7 +1139,7 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
               </li>
               <li>
                 <strong>AQLM (2024):</strong>{" "}Additive Quantization đạt 2-bit per weight
-                với chất lượng gần NF4. mở đường cho QLoRA-2bit.
+                với chất lượng gần NF4, mở đường cho QLoRA-2bit.
               </li>
             </ul>
             <p className="text-sm leading-relaxed mt-2">
@@ -1165,12 +1165,12 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
               lớn mà không chờ queue cluster.
             </li>
             <li>
-              <strong>Domain adapter hub:</strong>{" "}mỗi adapter chỉ ~100MB. có thể host
+              <strong>Domain adapter hub:</strong>{" "}mỗi adapter chỉ ~100MB, có thể host
               hàng ngàn adapter chuyên biệt trên 1 base model.
             </li>
             <li>
               <strong>Instruction tuning:</strong>{" "}Guanaco, OpenAssistant, Alpaca-style
-              dataset. hầu hết open-source đều train bằng QLoRA.
+              dataset, hầu hết open-source đều train bằng QLoRA.
             </li>
           </ul>
 
@@ -1191,7 +1191,7 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
             </li>
             <li>
               <strong>Dùng SDPA sai kernel:</strong>{" "}flash-attention-2 không hỗ trợ 4-bit
-              trực tiếp. phải dùng fallback. Đo speed trước khi ép buộc attention backend.
+              trực tiếp, phải dùng fallback. Đo speed trước khi ép buộc attention backend.
             </li>
             <li>
               <strong>Merge adapter sai cách:</strong>{" "}merge vào base NF4 sẽ mất chất
@@ -1210,9 +1210,9 @@ layer.weight.data = W_fp16  # trước khi .cuda() được tự quantize`}</Cod
         <MiniSummary
           title="Những điều cần nhớ về QLoRA"
           points={[
-            "QLoRA = Quantize base model xuống NF4 (4-bit) + LoRA adapter BF16. tiết kiệm ~70% VRAM so với LoRA FP16, ~90% so với full fine-tuning.",
+            "QLoRA = Quantize base model xuống NF4 (4-bit) + LoRA adapter BF16, tiết kiệm ~70% VRAM so với LoRA FP16, ~90% so với full fine-tuning.",
             "Ba đổi mới cốt lõi: NF4 (info-theoretic optimal cho Gaussian), Double Quantization (~0.37 bit/param extra), Paged Optimizers (chống OOM spike).",
-            "Cho phép fine-tune 70B trên 1 GPU 48GB, 33B trên RTX 4090 24GB. dân chủ hoá fine-tuning LLM lớn cho cá nhân và startup.",
+            "Cho phép fine-tune 70B trên 1 GPU 48GB, 33B trên RTX 4090 24GB, dân chủ hoá fine-tuning LLM lớn cho cá nhân và startup.",
             "Trade-off: chậm hơn LoRA thuần 30-50% do dequant-on-the-fly, nhưng chất lượng gần tương đương full FT (Guanaco 65B đạt 99.3% ChatGPT).",
             "Pipeline chuẩn: BitsAndBytesConfig(load_in_4bit, nf4, double_quant, bf16 compute) + prepare_model_for_kbit_training + LoRA(r=16) + paged_adamw_8bit.",
             "Pitfall: quên prepare k-bit training, target modules thiếu MLP, LR quá thấp (dùng 2e-4 chứ không phải 1e-5), merge adapter vào base NF4.",

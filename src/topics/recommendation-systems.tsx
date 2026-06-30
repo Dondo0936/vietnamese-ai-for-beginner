@@ -73,7 +73,7 @@ const SIM_MOVIES: SimMovie[] = [
   { id: "hai", title: "Nhà Bà Nữ", tone: "Hài gia đình", icon: "🎭" },
 ];
 
-// Ratings đã có sẵn. null = chưa xem.
+// Ratings đã có sẵn, null = chưa xem.
 const SIM_INITIAL: Array<Array<number | null>> = [
   // phim:     kiem  ha    hanh  lang  hai
   /* An   */ [5, 5, 4, 2, 3],

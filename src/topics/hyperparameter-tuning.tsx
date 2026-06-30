@@ -56,7 +56,7 @@ const LEARNING_RATES: LearningRate[] = [0.0001, 0.001, 0.003, 0.01, 0.03, 0.1];
 const BATCH_SIZES: BatchSize[] = [8, 16, 32, 64, 128, 256];
 
 /**
- * Synthetic validation-accuracy landscape. peaks around lr=0.003, bs=32 and
+ * Synthetic validation-accuracy landscape, peaks around lr=0.003, bs=32 and
  * degrades as we move toward the corners. The shape is smooth so the
  * heatmap reads intuitively while still rewarding careful search.
  */
@@ -434,14 +434,14 @@ function StrategyEfficiencyBars() {
   const strategies = [
     {
       name: "Grid Search",
-      description: "Thử tất cả tổ hợp. bùng nổ tổ hợp",
+      description: "Thử tất cả tổ hợp, bùng nổ tổ hợp",
       trials: "10^N (thường không khả thi)",
       efficiency: 20,
       color: "#ef4444",
     },
     {
       name: "Random Search",
-      description: "Sampling đều. coverage tốt",
+      description: "Sampling đều, coverage tốt",
       trials: "~100 trials",
       efficiency: 55,
       color: "#f59e0b",
@@ -465,7 +465,7 @@ function StrategyEfficiencyBars() {
         fontSize={12}
         fontWeight="bold"
       >
-        3 chiến lược Hyperparameter Tuning. hiệu quả/budget
+        3 chiến lược Hyperparameter Tuning, hiệu quả/budget
       </text>
 
       {strategies.map((s, idx) => {
@@ -649,7 +649,7 @@ export default function HyperparameterTuningTopic() {
         question: "Grid Search vs Random Search: cái nào thường tốt hơn?",
         options: [
           "Grid Search vì thử tất cả tổ hợp chắc chắn không bỏ sót",
-          "Random Search. với cùng budget, thường tìm config tốt hơn vì explore nhiều giá trị của mỗi hyperparameter hơn",
+          "Random Search, với cùng budget, thường tìm config tốt hơn vì explore nhiều giá trị của mỗi hyperparameter hơn",
           "Hai cái hoàn toàn tương đương về mặt toán học",
           "Grid Search chỉ tốt khi mô hình có ít hơn 2 hyperparameters",
         ],
@@ -667,16 +667,16 @@ export default function HyperparameterTuningTopic() {
         ],
         correct: 1,
         explanation:
-          "Bayesian Optimization fit một Gaussian Process lên (hyperparams → accuracy). Sau mỗi trial, GP được update và acquisition function (Expected Improvement, UCB) chọn điểm kế tiếp. vừa khai thác vùng tốt vừa khám phá vùng chưa chắc chắn. Thường hiệu quả gấp 3–5× random search.",
+          "Bayesian Optimization fit một Gaussian Process lên (hyperparams → accuracy). Sau mỗi trial, GP được update và acquisition function (Expected Improvement, UCB) chọn điểm kế tiếp, vừa khai thác vùng tốt vừa khám phá vùng chưa chắc chắn. Thường hiệu quả gấp 3–5× random search.",
       },
       {
         question:
           "Bạn thấy mô hình train loss rất thấp nhưng validation accuracy kém. Hyperparameter nào nên tune TRƯỚC?",
         options: [
-          "Learning rate. vì lr luôn là hung thủ số một",
-          "Regularization (weight decay, dropout). vấn đề là overfitting, không phải tốc độ học",
-          "Số epochs. train thêm nhiều epoch nữa",
-          "Batch size. batch size nhỏ hơn sẽ giảm overfitting",
+          "Learning rate, vì lr luôn là hung thủ số một",
+          "Regularization (weight decay, dropout), vấn đề là overfitting, không phải tốc độ học",
+          "Số epochs, train thêm nhiều epoch nữa",
+          "Batch size, batch size nhỏ hơn sẽ giảm overfitting",
         ],
         correct: 1,
         explanation:
@@ -685,7 +685,7 @@ export default function HyperparameterTuningTopic() {
       {
         question: "Khi nào nên dùng log-uniform thay vì uniform cho learning rate?",
         options: [
-          "Luôn uniform. đơn giản hơn",
+          "Luôn uniform, đơn giản hơn",
           "Khi hyperparameter trải nhiều orders of magnitude (ví dụ lr từ 1e-5 đến 1e-1), log-uniform cho phép sample đều trên mỗi thập phân",
           "Chỉ dùng log-uniform cho batch size",
           "Log-uniform chỉ dùng cho model nhỏ",
@@ -699,7 +699,7 @@ export default function HyperparameterTuningTopic() {
           "Team bạn có 4 GPU. Mỗi trial mất ~8 giờ. Deadline 2 ngày. Chiến lược tuning nào?",
         options: [
           "Grid search đầy đủ trên 5 hyperparameters",
-          "Bayesian Opt song song (async) ~24 trials (4 GPU × 6 vòng × 8h ≈ 2 ngày). song song tốt nhất với sequential-suggest-async",
+          "Bayesian Opt song song (async) ~24 trials (4 GPU × 6 vòng × 8h ≈ 2 ngày), song song tốt nhất với sequential-suggest-async",
           "Tune tay theo cảm tính",
           "Chỉ chạy 1 trial với config default",
         ],
@@ -758,13 +758,13 @@ export default function HyperparameterTuningTopic() {
         <PredictionGate
           question="Bạn train một classifier: lr=0.1 → accuracy 70%, lr=0.01 → 85%, lr=0.001 → 80%. Còn 10 hyperparameter khác cần tune, mỗi trial mất 1 giờ. Cách nào tìm bộ tối ưu?"
           options={[
-            "Thử tất cả tổ hợp (Grid Search). dù 10^10 trials là bất khả thi",
+            "Thử tất cả tổ hợp (Grid Search), dù 10^10 trials là bất khả thi",
             "Dùng Bayesian Optimization: surrogate model dự đoán vùng hứa hẹn → tìm near-optimal với 50–100 trials",
             "Random chọn 10 trials và chốt config tốt nhất thấy được",
             "Hỏi ChatGPT config nào tốt và dùng luôn",
           ]}
           correct={1}
-          explanation="Grid search: 10 giá trị × 10 hyperparams = 10 tỷ tổ hợp. hoàn toàn không khả thi. Random search: tốt hơn nhưng vẫn 'mù' theo nghĩa không học từ trials trước. Bayesian Optimization: GP học từ mỗi trial → dự đoán vùng nào hứa hẹn, đưa ra suggestion tiếp theo thông minh. 50–100 trials thường đủ tìm near-optimal."
+          explanation="Grid search: 10 giá trị × 10 hyperparams = 10 tỷ tổ hợp, hoàn toàn không khả thi. Random search: tốt hơn nhưng vẫn 'mù' theo nghĩa không học từ trials trước. Bayesian Optimization: GP học từ mỗi trial → dự đoán vùng nào hứa hẹn, đưa ra suggestion tiếp theo thông minh. 50–100 trials thường đủ tìm near-optimal."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
             <VisualizationSection topicSlug={metadata.slug}>
@@ -772,7 +772,7 @@ export default function HyperparameterTuningTopic() {
                 <p className="text-sm text-muted">
                   Heatmap bên dưới là landscape validation accuracy trên lưới 6×6 của{" "}
                   <code className="px-1 rounded bg-surface">learning_rate × batch_size</code>.
-                  Click từng cell để &quot;chạy&quot; thí nghiệm. màu sẽ hiện ra dựa trên
+                  Click từng cell để &quot;chạy&quot; thí nghiệm, màu sẽ hiện ra dựa trên
                   accuracy thật. Thử random 5 trials và so sánh với việc phải grid-search
                   đầy đủ 36 cells.
                 </p>
@@ -795,7 +795,7 @@ export default function HyperparameterTuningTopic() {
                   <p className="text-sm text-muted mb-3">
                     Grid search (trái) dành toàn bộ budget cho 8 combination cố định trên
                     2 giá trị batch size. Random search (phải) với cùng 8 trials phân bố
-                    khắp không gian. coverage trên trục learning rate (trục &quot;quan
+                    khắp không gian, coverage trên trục learning rate (trục &quot;quan
                     trọng&quot;) tốt hơn hẳn.
                   </p>
 
@@ -813,7 +813,7 @@ export default function HyperparameterTuningTopic() {
             <AhaMoment>
               <p>
                 Bayesian Optimization giống <strong>GPS thông minh</strong> cho không gian
-                hyperparameter. mỗi lần thử xong, nó <strong>học</strong> một bản đồ xấp
+                hyperparameter, mỗi lần thử xong, nó <strong>học</strong> một bản đồ xấp
                 xỉ và <strong>dự đoán</strong> vùng nào có thể cho kết quả tốt hơn. Tìm
                 near-optimal với 50 trials thay vì 10.000 trials random.{" "}
                 <strong>Optuna</strong> là tool miễn phí tốt nhất hiện nay cho Bayesian HP
@@ -840,7 +840,7 @@ export default function HyperparameterTuningTopic() {
                   "100 trials (1 trial mỗi GPU-hour)",
                   "30–50 trials. Bayesian Opt hiệu quả hơn 3–5× random, tìm near-optimal với ~50 trials",
                   "Vẫn cần 100K trials như grid",
-                  "Chỉ 5 trials. mỗi HP 1 trial",
+                  "Chỉ 5 trials, mỗi HP 1 trial",
                 ]}
                 correct={1}
                 explanation="Bayesian Opt thường đạt near-optimal trong 30–50 trials. Budget 100 GPU-hours: dùng 50 cho sweep, còn 50 để retrain final model với best config trên full data. Hiệu quả hơn random 3–5×, hơn grid vô hạn lần. Tools: Optuna, W&B Sweeps, Ray Tune."
@@ -850,7 +850,7 @@ export default function HyperparameterTuningTopic() {
                 question="Sau 20 trials random search, best accuracy = 88% tại lr=0.003, bs=32. Bạn muốn tinh chỉnh thêm. Chiến lược nào tốt nhất?"
                 options={[
                   "Tiếp tục random search thêm 20 trials nữa với cùng range rộng",
-                  "Bayesian Opt tập trung vào vùng quanh (lr=0.003, bs=32). exploitation gần vùng tốt",
+                  "Bayesian Opt tập trung vào vùng quanh (lr=0.003, bs=32), exploitation gần vùng tốt",
                   "Bỏ hết, grid search từ đầu",
                   "Chọn lr=0.003, bs=32 là final, không tune nữa",
                 ]}
@@ -866,7 +866,7 @@ export default function HyperparameterTuningTopic() {
                 <strong>Hyperparameter Tuning</strong> là quá trình tìm bộ siêu tham số
                 (learning rate, batch size, weight decay, kiến trúc...) tối ưu cho một
                 nhiệm vụ và dataset cụ thể. Không có bộ &quot;default&quot; tốt cho mọi
-                bài toán. tuning là bắt buộc khi triển khai nghiêm túc.
+                bài toán, tuning là bắt buộc khi triển khai nghiêm túc.
               </p>
 
               <p>
@@ -878,7 +878,7 @@ export default function HyperparameterTuningTopic() {
               </LaTeX>
 
               <p>
-                Với N hyperparameter mỗi cái 10 giá trị, lưới có 10^N điểm. bất khả thi
+                Với N hyperparameter mỗi cái 10 giá trị, lưới có 10^N điểm, bất khả thi
                 khi N &gt; 3. Grid search cũng &quot;phí&quot; budget vì nhiều chiều thực
                 ra không quan trọng.
               </p>
@@ -933,7 +933,7 @@ export default function HyperparameterTuningTopic() {
               <Callout variant="info" title="Đừng quên seed">
                 Kết quả mỗi trial phụ thuộc vào random seed (init weights, data
                 shuffle). Trong tuning nghiêm túc, mỗi config nên được chạy với 3 seed
-                khác nhau và lấy trung bình. nếu không, bạn có thể đang tune cho
+                khác nhau và lấy trung bình, nếu không, bạn có thể đang tune cho
                 &quot;may mắn&quot;.
               </Callout>
 
@@ -1067,7 +1067,7 @@ study.optimize(
 
               <CollapsibleDetail title="Vì sao TPE (Tree-structured Parzen Estimator) phổ biến hơn GP trong Optuna?">
                 <p>
-                  Gaussian Process có scaling O(n³) theo số trials. chậm khi bạn chạy
+                  Gaussian Process có scaling O(n³) theo số trials, chậm khi bạn chạy
                   hàng trăm trials. TPE thay vào đó mô hình hoá hai phân phối:
                   p(θ | y &lt; y*) (vùng tốt) và p(θ | y ≥ y*) (vùng tệ), rồi chọn θ
                   tối đa hoá tỷ lệ p_tốt / p_tệ. TPE scale tuyến tính theo trials, xử
@@ -1081,7 +1081,7 @@ study.optimize(
                 </p>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="ASHA, Hyperband & Successive Halving. pruning chiến lược">
+              <CollapsibleDetail title="ASHA, Hyperband & Successive Halving, pruning chiến lược">
                 <p>
                   Trong deep learning, learning curve của một trial thường có thể dự
                   đoán sớm: nếu sau 3 epochs trial X đã kém bottom-half, khả năng cao
@@ -1094,7 +1094,7 @@ study.optimize(
                   (n, r) khác nhau để hedge giữa &quot;nhiều trials ngắn&quot; và
                   &quot;ít trials dài&quot;. <strong>ASHA</strong> (Async Successive
                   Halving) là version song song: không cần synchronize tất cả trials
-                  tại mỗi rung. trial nào xong rung là được xét promote/kill ngay. Lý
+                  tại mỗi rung, trial nào xong rung là được xét promote/kill ngay. Lý
                   tưởng cho cluster.
                 </p>
                 <p>
@@ -1191,7 +1191,7 @@ study.optimize(
                 "Grid Search bùng nổ tổ hợp (10^N). Random Search cùng budget thường tốt hơn vì coverage trên trục quan trọng cao hơn.",
                 "Bayesian Optimization (Optuna / TPE) học từ trials trước và gợi ý thông minh. 3–5× hiệu quả hơn random với cùng budget.",
                 "Thứ tự tune: learning rate → regularization → batch size → kiến trúc. Dùng log-uniform cho hyperparameters trải nhiều orders of magnitude.",
-                "Early stopping (ASHA/Hyperband) kill trials kém sớm. tăng throughput 3–10×, đặc biệt quan trọng với deep learning.",
+                "Early stopping (ASHA/Hyperband) kill trials kém sớm, tăng throughput 3–10×, đặc biệt quan trọng với deep learning.",
                 "TUYỆT ĐỐI không tune trên test set. Validation set cho tuning, test set chạm một lần duy nhất để báo cáo final.",
               ]}
             />

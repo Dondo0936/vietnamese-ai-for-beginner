@@ -86,7 +86,7 @@ export default function TestTimeComputeTopic() {
         { answer: "reasoning", accept: ["suy luận", "chain-of-thought"] },
         { answer: "tokens", accept: ["token"] },
       ],
-      explanation: "Test-time compute scaling chủ yếu biểu hiện qua việc model sinh nhiều reasoning tokens hơn. nghĩ sâu và dài hơn trước khi đưa ra đáp án cuối.",
+      explanation: "Test-time compute scaling chủ yếu biểu hiện qua việc model sinh nhiều reasoning tokens hơn, nghĩ sâu và dài hơn trước khi đưa ra đáp án cuối.",
     },
   ], []);
 
@@ -97,12 +97,12 @@ export default function TestTimeComputeTopic() {
         <PredictionGate
           question="Model 8B (nhỏ) trả lời bài toán IMO đúng 10%. Model 70B (lớn) đúng 30%. Nhưng nếu cho model 8B 'suy nghĩ' gấp 100 lần (test-time compute), kết quả sẽ thế nào?"
           options={[
-            "Vẫn chỉ 10%. model nhỏ là nhỏ, không thể cải thiện",
+            "Vẫn chỉ 10%, model nhỏ là nhỏ, không thể cải thiện",
             "Model 8B + test-time compute có thể đạt 40-50%, VƯỢT model 70B dùng 1-pass",
             "Đạt 100% vì compute đủ nhiều",
           ]}
           correct={1}
-          explanation="Nghiên cứu cho thấy: model nhỏ + test-time compute scaling có thể VƯỢT model lớn hơn 14x dùng 1-pass! Giống sinh viên trung bình được suy nghĩ 3 tiếng vs thiên tài chỉ có 5 phút. thời gian suy nghĩ bù đắp cho năng lực nền."
+          explanation="Nghiên cứu cho thấy: model nhỏ + test-time compute scaling có thể VƯỢT model lớn hơn 14x dùng 1-pass! Giống sinh viên trung bình được suy nghĩ 3 tiếng vs thiên tài chỉ có 5 phút, thời gian suy nghĩ bù đắp cho năng lực nền."
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
@@ -166,7 +166,7 @@ export default function TestTimeComputeTopic() {
           <p>
             Hai cách làm AI giỏi hơn: <strong>train lâu hơn</strong>{" "}(1 lần, fix) hoặc{" "}
             <strong>nghĩ lâu hơn</strong>{" "}(mỗi query, linh hoạt).
-            Test-time compute giống cho thí sinh <strong>thêm thời gian làm bài</strong>{" "}. câu dễ xong nhanh, câu khó nghĩ kỹ. Linh hoạt hơn nhiều so với tăng kích thước model!
+            Test-time compute giống cho thí sinh <strong>thêm thời gian làm bài</strong>,{" "}câu dễ xong nhanh, câu khó nghĩ kỹ. Linh hoạt hơn nhiều so với tăng kích thước model!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -214,7 +214,7 @@ export default function TestTimeComputeTopic() {
           </ul>
 
           <Callout variant="tip" title="Compute-optimal Allocation">
-            Không phải mọi câu đều cần nhiều compute. Nghiên cứu (Snell et al. 2024) chỉ ra: chiến lược tối ưu là phân bổ compute dựa trên ĐỘ KHÓ. câu dễ 1-pass, câu trung bình best-of-4, câu khó tree search. Hiệu quả hơn 5-10x so với compute đều cho mọi câu.
+            Không phải mọi câu đều cần nhiều compute. Nghiên cứu (Snell et al. 2024) chỉ ra: chiến lược tối ưu là phân bổ compute dựa trên ĐỘ KHÓ, câu dễ 1-pass, câu trung bình best-of-4, câu khó tree search. Hiệu quả hơn 5-10x so với compute đều cho mọi câu.
           </Callout>
 
           <p><strong>Verifier / Reward Models:</strong></p>
@@ -272,7 +272,7 @@ Score (number only):"""}
       {/* STEP 6: SUMMARY */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Test-time compute: tăng compute PER QUERY thay vì tăng model size. linh hoạt, chỉ tốn khi cần.",
+          "Test-time compute: tăng compute PER QUERY thay vì tăng model size, linh hoạt, chỉ tốn khi cần.",
           "Model 8B + 100x test-time compute có thể VƯỢT model 70B dùng 1-pass.",
           "5 chiến lược: Best-of-N, Majority Vote, Iterative Refine, Tree Search, Adaptive Compute.",
           "Adaptive allocation: phân loại độ khó → câu dễ 1-pass, câu khó tree search. Hiệu quả 5-10x.",

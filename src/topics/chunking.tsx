@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DỮ LIỆU MẪU. đoạn văn dài giả lập tài liệu nghiệp vụ tiếng Việt
+// DỮ LIỆU MẪU, đoạn văn dài giả lập tài liệu nghiệp vụ tiếng Việt
 // ─────────────────────────────────────────────────────────────────────────────
 
 const DOC_PARAGRAPHS: string[] = [
@@ -55,7 +55,7 @@ const DOC_PARAGRAPHS: string[] = [
 
 const FULL_DOC = DOC_PARAGRAPHS.join(" ");
 
-// Ước lượng token cho tiếng Việt (≈0.75 token/ký tự với tokenizer GPT-4). chỉ để minh họa
+// Ước lượng token cho tiếng Việt (≈0.75 token/ký tự với tokenizer GPT-4), chỉ để minh họa
 const TOKENS_PER_CHAR = 0.75;
 const estTokens = (chars: number) => Math.round(chars * TOKENS_PER_CHAR);
 
@@ -84,7 +84,7 @@ const QUERY_TERMS = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// LOGIC CHIA CHUNK (thuần hóa theo ký tự. đủ cho minh họa)
+// LOGIC CHIA CHUNK (thuần hóa theo ký tự, đủ cho minh họa)
 // ─────────────────────────────────────────────────────────────────────────────
 
 type Strategy = "fixed" | "semantic" | "recursive";
@@ -97,7 +97,7 @@ interface Chunk {
   overlapWithPrev?: number;
 }
 
-// Mức trùng lặp từ khóa (Jaccard) giữa 2 câu. proxy minh họa cho cosine similarity của embedding
+// Mức trùng lặp từ khóa (Jaccard) giữa 2 câu, proxy minh họa cho cosine similarity của embedding
 function wordSet(s: string): Set<string> {
   return new Set(
     s
@@ -169,7 +169,7 @@ function semanticChunking(
     const tooBig = bufferChars + p.length > size;
     if ((topicShift || tooBig) && buffer.length > 0) {
       groups.push(buffer);
-      // overlap. mang câu cuối của nhóm trước sang để giữ ngữ cảnh ở ranh giới
+      // overlap, mang câu cuối của nhóm trước sang để giữ ngữ cảnh ở ranh giới
       buffer = overlap > 0 ? [buffer[buffer.length - 1]] : [];
       bufferChars = buffer.join(" ").length;
     }
@@ -207,7 +207,7 @@ function recursiveChunking(
       return;
     }
     if (depth >= separators.length) {
-      // Không thể chia nhỏ hơn. cắt cơ học
+      // Không thể chia nhỏ hơn, cắt cơ học
       let i = 0;
       const step = Math.max(1, size - overlap);
       while (i < segment.length) {
@@ -228,7 +228,7 @@ function recursiveChunking(
         if (buffer) result.push(buffer);
         buffer = part;
         if (buffer.length > size) {
-          // Đoạn đơn vẫn quá dài. đệ quy sâu hơn
+          // Đoạn đơn vẫn quá dài, đệ quy sâu hơn
           split(buffer, depth + 1);
           buffer = "";
         }
@@ -285,7 +285,7 @@ function runStrategy(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ĐIỂM CHẤT LƯỢNG TRUY XUẤT. mô phỏng RAG retrieval quality
+// ĐIỂM CHẤT LƯỢNG TRUY XUẤT, mô phỏng RAG retrieval quality
 // ─────────────────────────────────────────────────────────────────────────────
 
 function retrievalScore(chunks: Chunk[]): {
@@ -344,13 +344,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Chunk 'Học sâu dùng mạng nơ-ron' quá ngắn. embedding không biết đang nói về AI hay sinh học. Cần đủ ngữ cảnh (256-1024 token) để embedding có ý nghĩa.",
+      "Chunk 'Học sâu dùng mạng nơ-ron' quá ngắn, embedding không biết đang nói về AI hay sinh học. Cần đủ ngữ cảnh (256-1024 token) để embedding có ý nghĩa.",
   },
   {
     question: "Tại sao cần overlap (chồng lấp) giữa các chunk?",
     options: [
       "Để tăng kích thước database",
-      "Để thông tin ở ranh giới chunk không bị mất. câu nằm giữa 2 chunk vẫn được bảo toàn",
+      "Để thông tin ở ranh giới chunk không bị mất, câu nằm giữa 2 chunk vẫn được bảo toàn",
       "Để embedding model chạy nhanh hơn",
       "Để giảm số chunk",
     ],
@@ -381,7 +381,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Recursive splitter thử chia từ ranh giới lớn nhất (\\n\\n) xuống nhỏ nhất (space). Giữ càng nhiều ngữ cảnh tự nhiên càng tốt. chỉ cắt cơ học khi không còn lựa chọn.",
+      "Recursive splitter thử chia từ ranh giới lớn nhất (\\n\\n) xuống nhỏ nhất (space). Giữ càng nhiều ngữ cảnh tự nhiên càng tốt, chỉ cắt cơ học khi không còn lựa chọn.",
   },
   {
     type: "fill-blank",
@@ -403,20 +403,20 @@ const QUIZ: QuizQuestion[] = [
       },
     ],
     explanation:
-      "chunk_size giới hạn độ dài mỗi đoạn để vừa với embedding model. chunk_overlap (10-20%) cho phép câu nằm giữa 2 chunk vẫn xuất hiện đầy đủ ở một trong hai, giảm rủi ro mất ngữ cảnh ở ranh giới.",
+      "chunk_size giới hạn độ dài mỗi đoạn để vừa với embedding model, chunk_overlap (10-20%) cho phép câu nằm giữa 2 chunk vẫn xuất hiện đầy đủ ở một trong hai, giảm rủi ro mất ngữ cảnh ở ranh giới.",
   },
   {
     question:
       "Bạn có một tài liệu kỹ thuật 500 trang gồm nhiều mục/tiểu mục rõ ràng. Chiến lược chunking nào là lựa chọn đầu tiên nên thử?",
     options: [
-      "Fixed-size 512 token. đơn giản và đều đặn",
-      "Recursive. tận dụng cấu trúc sẵn có (heading, paragraph)",
-      "Semantic. luôn cho kết quả tốt nhất bất chấp chi phí",
+      "Fixed-size 512 token, đơn giản và đều đặn",
+      "Recursive, tận dụng cấu trúc sẵn có (heading, paragraph)",
+      "Semantic, luôn cho kết quả tốt nhất bất chấp chi phí",
       "Chia theo từng ký tự riêng lẻ",
     ],
     correct: 1,
     explanation:
-      "Tài liệu có cấu trúc rõ ràng nên ưu tiên Recursive. splitter thử cắt ở ranh giới tự nhiên (tiêu đề, đoạn) trước, chỉ khi không còn lựa chọn mới cắt giữa câu. Fixed-size cắt cơ học sẽ phá vỡ cấu trúc logic.",
+      "Tài liệu có cấu trúc rõ ràng nên ưu tiên Recursive, splitter thử cắt ở ranh giới tự nhiên (tiêu đề, đoạn) trước, chỉ khi không còn lựa chọn mới cắt giữa câu. Fixed-size cắt cơ học sẽ phá vỡ cấu trúc logic.",
   },
   {
     question:
@@ -429,7 +429,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mỗi embedding model có giới hạn context cứng. Vượt quá sẽ bị truncate. thông tin bị mất âm thầm mà không báo lỗi. Luôn đặt chunk_size ≤ max_seq_length của model bạn dùng.",
+      "Mỗi embedding model có giới hạn context cứng. Vượt quá sẽ bị truncate, thông tin bị mất âm thầm mà không báo lỗi. Luôn đặt chunk_size ≤ max_seq_length của model bạn dùng.",
   },
   {
     question:
@@ -442,7 +442,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 0,
     explanation:
-      "Chunk nhỏ (~100-200 token) cho embedding precision cao. Nhưng LLM cần nhiều context để reason. nên retrieve parent chunk lớn hơn (500-2000 token) chứa chunk nhỏ đó. Best of both worlds.",
+      "Chunk nhỏ (~100-200 token) cho embedding precision cao. Nhưng LLM cần nhiều context để reason, nên retrieve parent chunk lớn hơn (500-2000 token) chứa chunk nhỏ đó. Best of both worlds.",
   },
 ];
 
@@ -732,7 +732,7 @@ function QualityBoard({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PANEL CHO TỪNG CHIẾN LƯỢC. dùng chung trong TabView
+// PANEL CHO TỪNG CHIẾN LƯỢC, dùng chung trong TabView
 // ─────────────────────────────────────────────────────────────────────────────
 
 function StrategyPanel({ strategy }: { strategy: Strategy }) {
@@ -760,7 +760,7 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
       tagline:
         "Chia văn bản thành các đoạn có độ dài cố định (theo ký tự hoặc token). Đơn giản, nhanh, nhưng có thể cắt giữa câu hoặc giữa ý.",
       pros: [
-        "Cực kỳ đơn giản. chỉ cần 1 vòng lặp",
+        "Cực kỳ đơn giản, chỉ cần 1 vòng lặp",
         "Tốc độ xử lý nhanh, dễ song song hóa",
         "Kích thước chunk đồng đều → dễ quản lý bộ nhớ",
       ],
@@ -870,7 +870,7 @@ function StrategyPanel({ strategy }: { strategy: Strategy }) {
       <div className="rounded-lg border border-border bg-surface/40 p-3">
         <p className="text-xs text-muted">
           <strong className="text-foreground">Mẹo:</strong> thử kéo chunk size
-          thật nhỏ (dưới 150). bạn sẽ thấy điểm Context richness tụt xuống.
+          thật nhỏ (dưới 150), bạn sẽ thấy điểm Context richness tụt xuống.
           Ngược lại, chunk quá lớn (1200+) làm Precision giảm vì chunk chứa quá
           nhiều nhiễu. Sweet spot thường rơi vào khoảng 400–800 ký tự.
         </p>
@@ -910,13 +910,13 @@ export default function ChunkingTopic() {
   return (
     <>
       {/* ──────────────────────────────────────────────────────────────────
-          1. PREDICTION GATE. kích hoạt tò mò
+          1. PREDICTION GATE, kích hoạt tò mò
       ────────────────────────────────────────────────────────────────── */}
       <PredictionGate
         question="Bạn có Bộ luật Lao động 200 trang. Embedding model chỉ xử lý tối đa 512 token/lần. Nhét cả 200 trang vào 1 lần được không?"
         options={[
           "Được, model sẽ tự xử lý",
-          "KHÔNG. cần chia thành các đoạn nhỏ (chunk) vừa với giới hạn 512 token",
+          "KHÔNG, cần chia thành các đoạn nhỏ (chunk) vừa với giới hạn 512 token",
           "Chỉ embed trang đầu tiên",
         ]}
         correct={1}
@@ -924,7 +924,7 @@ export default function ChunkingTopic() {
       />
 
       {/* ──────────────────────────────────────────────────────────────────
-          2. ẨN DỤ. móc treo cho kiến thức mới
+          2. ẨN DỤ, móc treo cho kiến thức mới
       ────────────────────────────────────────────────────────────────── */}
       <p>
         Hãy tưởng tượng bạn đang biên tập một cuốn sách dày 500 trang để đưa
@@ -936,7 +936,7 @@ export default function ChunkingTopic() {
       <p>
         <strong>Chunking</strong> là nghệ thuật chia văn bản dài thành các
         đoạn vừa vặn: đủ nhỏ để máy xử lý được, đủ lớn để vẫn mang trọn một ý
-        hoàn chỉnh. Giống như cắt bánh mì. cắt quá dày thì khó ăn, cắt quá
+        hoàn chỉnh. Giống như cắt bánh mì, cắt quá dày thì khó ăn, cắt quá
         mỏng thì vụn và mất mùi vị.
       </p>
       <p>
@@ -1017,7 +1017,7 @@ export default function ChunkingTopic() {
       </VisualizationSection>
 
       {/* ──────────────────────────────────────────────────────────────────
-          4. AHA MOMENT. đóng đinh insight chính
+          4. AHA MOMENT, đóng đinh insight chính
       ────────────────────────────────────────────────────────────────── */}
       <AhaMoment>
         <p>
@@ -1026,7 +1026,7 @@ export default function ChunkingTopic() {
           dấu 1 đoạn ý hoàn chỉnh. Chunk quá nhỏ = bookmark mỗi dòng (thiếu ngữ
           cảnh). Chunk quá lớn = bookmark mỗi chương (khó tìm chính xác).{" "}
           <strong>256-512 token là sweet spot</strong> cho hầu hết bài toán
-          RAG. đủ dài để nắm một ý, đủ ngắn để embedding tập trung.
+          RAG, đủ dài để nắm một ý, đủ ngắn để embedding tập trung.
         </p>
       </AhaMoment>
 
@@ -1056,7 +1056,7 @@ export default function ChunkingTopic() {
       />
 
       {/* ──────────────────────────────────────────────────────────────────
-          6. EXPLANATION SECTION. lý thuyết đầy đủ
+          6. EXPLANATION SECTION, lý thuyết đầy đủ
       ────────────────────────────────────────────────────────────────── */}
       <ExplanationSection>
         <p>
@@ -1069,7 +1069,7 @@ export default function ChunkingTopic() {
         </p>
 
         <p>
-          Nhìn thoáng qua thì chunking đơn giản. chỉ là cắt chuỗi. Nhưng chất
+          Nhìn thoáng qua thì chunking đơn giản, chỉ là cắt chuỗi. Nhưng chất
           lượng chunking quyết định chất lượng toàn hệ thống RAG: chunk cắt
           kém → embedding thiếu ngữ cảnh → search trả chunk không liên quan →
           LLM hallucinate hoặc trả lời thiếu chính xác. Nghiên cứu thực nghiệm
@@ -1110,15 +1110,15 @@ export default function ChunkingTopic() {
           {"\\text{chunk\\_size} \\leq \\text{max\\_seq\\_length}_{\\text{model}}"}
         </LaTeX>
         <p className="text-sm text-muted">
-          all-MiniLM-L6-v2: max 256 token. text-embedding-3-small: max 8192
-          token. bge-m3: max 8192 token. Thực tế, 256-1024 token/chunk thường
+          all-MiniLM-L6-v2: max 256 token, text-embedding-3-small: max 8192
+          token, bge-m3: max 8192 token. Thực tế, 256-1024 token/chunk thường
           cho kết quả tốt nhất cho RAG.
         </p>
 
         <p>
           <strong>Overlap giữa các chunk</strong> giúp bảo toàn ngữ cảnh ở
           ranh giới. Nếu một câu quan trọng nằm vắt ngang 2 chunk, không có
-          overlap thì nó bị chia đôi. cả 2 chunk đều mất ý. Với overlap O ký
+          overlap thì nó bị chia đôi, cả 2 chunk đều mất ý. Với overlap O ký
           tự, câu đó xuất hiện trong ít nhất một chunk đầy đủ (miễn là câu
           ngắn hơn O). Công thức số chunk:
         </p>
@@ -1144,7 +1144,7 @@ export default function ChunkingTopic() {
 
         <Callout variant="warning" title="Pitfall 2. Chunk quá nhỏ hoặc quá lớn">
           <p>
-            Chunk &lt; 100 token thường thiếu ngữ cảnh. embedding model
+            Chunk &lt; 100 token thường thiếu ngữ cảnh, embedding model
             không nắm được &quot;đoạn này nói về cái gì&quot;. Chunk &gt; 1500
             token bị dilution: tín hiệu của một ý quan trọng bị pha loãng bởi
             nhiều ý khác cùng nằm trong vector. Luôn đo retrieval quality
@@ -1183,7 +1183,7 @@ export default function ChunkingTopic() {
             HTML, pháp lý, sách kỹ thuật).{" "}
             <strong>Semantic:</strong> tài liệu dài, nhiều chủ đề đan xen
             (báo cáo nghiên cứu, blog post dài, podcast transcript). Chi phí
-            embedding phụ trợ đáng kể. chỉ dùng khi chất lượng là ưu tiên
+            embedding phụ trợ đáng kể, chỉ dùng khi chất lượng là ưu tiên
             tuyệt đối.
           </p>
         </Callout>
@@ -1271,7 +1271,7 @@ retriever.add_documents(docs)
 
         <CollapsibleDetail title="Chi tiết: chọn chunk_size tối ưu bằng grid search">
           <p className="text-sm">
-            Không có chunk_size &quot;tốt nhất&quot; phổ quát. luôn phụ
+            Không có chunk_size &quot;tốt nhất&quot; phổ quát, luôn phụ
             thuộc vào embedding model, domain, và query distribution. Cách
             thực tế là grid search trên một eval set nhỏ (50-200 query) đã
             biết đáp án đúng:
@@ -1349,7 +1349,7 @@ print(df.head())`}
           <li>
             <strong>Nghiên cứu học thuật:</strong> chunking paper PDF, cho
             phép Semantic Scholar trả lời câu hỏi cụ thể thay vì chỉ list
-            paper. chunk theo section (Abstract, Methods, Results).
+            paper, chunk theo section (Abstract, Methods, Results).
           </li>
           <li>
             <strong>Ngân hàng:</strong> chunking hợp đồng tín dụng + T&amp;C;
@@ -1358,12 +1358,12 @@ print(df.head())`}
           </li>
           <li>
             <strong>E-commerce:</strong> chunking mô tả sản phẩm + review để
-            xây dựng semantic search cho website. khách tìm &quot;áo khoác
+            xây dựng semantic search cho website, khách tìm &quot;áo khoác
             chống nước đi phượt&quot; sẽ trúng đúng sản phẩm.
           </li>
           <li>
             <strong>Giáo dục:</strong> chunking giáo trình, bài giảng để xây
-            tutor AI. học sinh hỏi &quot;định lý Pythagoras áp dụng thế
+            tutor AI, học sinh hỏi &quot;định lý Pythagoras áp dụng thế
             nào?&quot;, bot trích đúng ví dụ trong sách giáo khoa.
           </li>
         </ul>
@@ -1387,7 +1387,7 @@ print(df.head())`}
             embedding model hoặc thêm loại tài liệu mới.
           </li>
           <li>
-            Bỏ qua bảng, công thức, code block. các đoạn này cần chiến lược
+            Bỏ qua bảng, công thức, code block, các đoạn này cần chiến lược
             riêng (giữ nguyên khối, không cắt).
           </li>
         </ul>
@@ -1402,8 +1402,8 @@ print(df.head())`}
           "Chunking chia tài liệu dài thành đoạn nhỏ vừa giới hạn embedding model (thường 256-1024 token).",
           "Ba chiến lược chính: Fixed-size (đơn giản), Recursive (mặc định LangChain, tôn trọng cấu trúc), Semantic (cắt theo chủ đề).",
           "Overlap 10-20% chunk_size đảm bảo thông tin ở ranh giới không bị mất.",
-          "Parent-child chunking: index chunk nhỏ cho precision, retrieve parent lớn cho context. kết hợp cả hai ưu điểm.",
-          "Đo bằng số thật (recall, precision trên eval set). không chọn chunk_size theo cảm tính.",
+          "Parent-child chunking: index chunk nhỏ cho precision, retrieve parent lớn cho context, kết hợp cả hai ưu điểm.",
+          "Đo bằng số thật (recall, precision trên eval set), không chọn chunk_size theo cảm tính.",
           "Luôn lưu kèm metadata (nguồn, trang, section) để trả lời có trích nguồn và audit được.",
         ]}
       />

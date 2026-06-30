@@ -30,7 +30,7 @@ export const metadata: TopicMeta = {
   title: "AI Alignment",
   titleVi: "Căn chỉnh AI. Dạy AI hiểu con người",
   description:
-    "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người. thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
+    "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người, thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
   category: "ai-safety",
   tags: ["alignment", "rlhf", "values", "safety", "reward-hacking", "specification-gaming"],
   difficulty: "advanced",
@@ -41,13 +41,13 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Goal misalignment simulator. dữ liệu
+// Goal misalignment simulator, dữ liệu
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Môi trường 2D đơn giản cho agent-robot.
  * - Robot di chuyển theo các ô vuông.
- * - Có coins (reward proxy) và goal (finish). intended objective.
+ * - Có coins (reward proxy) và goal (finish), intended objective.
  * - Có một "lỗ hổng" cho phép infinite farm coins (reward hacking).
  */
 
@@ -102,7 +102,7 @@ const SCENARIOS: Scenario[] = [
   },
 ];
 
-/** Bản đồ 7x6. có start, coins, goal, và ô exploit */
+/** Bản đồ 7x6, có start, coins, goal, và ô exploit */
 const MAP_WIDTH = 8;
 const MAP_HEIGHT = 6;
 
@@ -183,7 +183,7 @@ const PATH_ALIGNED: Step[] = [
   { x: 5, y: 4, proxyReward: 3, note: "Thu coin thứ 3" },
   { x: 5, y: 5, proxyReward: 3 },
   { x: 6, y: 5, proxyReward: 3 },
-  { x: 7, y: 5, proxyReward: 3, note: "Đến GOAL. hoàn thành!" },
+  { x: 7, y: 5, proxyReward: 3, note: "Đến GOAL, hoàn thành!" },
 ];
 
 function getPathForMode(mode: "proxy" | "aligned"): Step[] {
@@ -274,13 +274,13 @@ const QUIZ: QuizQuestion[] = [
       "Khái niệm HHH (Helpful, Honest, Harmless) của Anthropic đóng vai trò gì trong alignment?",
     options: [
       "Chỉ là khẩu hiệu marketing",
-      "Framework ba trụ cột đánh giá mô hình aligned: hữu ích, trung thực, vô hại. dùng làm tiêu chí cho human labeler và constitutional principles",
+      "Framework ba trụ cột đánh giá mô hình aligned: hữu ích, trung thực, vô hại, dùng làm tiêu chí cho human labeler và constitutional principles",
       "Thuật toán training mới thay thế PPO",
       "Dataset huấn luyện tiếng Anh",
     ],
     correct: 1,
     explanation:
-      "HHH là framework tiêu chuẩn cho đánh giá alignment: (1) Helpful. giúp ích người dùng hoàn thành mục tiêu hợp lý; (2) Honest. không bịa, thừa nhận không biết, không lừa dối; (3) Harmless. không gây hại cho cá nhân hoặc xã hội. Human labeler được hướng dẫn chọn phản hồi theo HHH, constitutional AI dùng HHH làm nguyên tắc gốc. Trade-off thường xảy ra (helpful vs harmless khi câu hỏi nhạy cảm).",
+      "HHH là framework tiêu chuẩn cho đánh giá alignment: (1) Helpful, giúp ích người dùng hoàn thành mục tiêu hợp lý; (2) Honest, không bịa, thừa nhận không biết, không lừa dối; (3) Harmless, không gây hại cho cá nhân hoặc xã hội. Human labeler được hướng dẫn chọn phản hồi theo HHH, constitutional AI dùng HHH làm nguyên tắc gốc. Trade-off thường xảy ra (helpful vs harmless khi câu hỏi nhạy cảm).",
   },
   {
     type: "fill-blank",
@@ -412,7 +412,7 @@ export default function AlignmentTopic() {
             "Robot cần được tăng số GPU",
           ]}
           correct={1}
-          explanation="Đây chính là vấn đề CỐT LÕI của AI Alignment. gọi là specification gaming. AI cực kỳ giỏi tối ưu mục tiêu được đặc tả, nhưng mục tiêu con người thường MƠ HỒ, ĐA CHIỀU, NGẦM ĐỊNH. 'Sạch sẽ' thật ra nghĩa là 'gọn gàng, ngăn nắp, giữ nguyên đồ đạc hữu ích, sàn không bụi'. con người hiểu ngầm, AI không."
+          explanation="Đây chính là vấn đề CỐT LÕI của AI Alignment, gọi là specification gaming. AI cực kỳ giỏi tối ưu mục tiêu được đặc tả, nhưng mục tiêu con người thường MƠ HỒ, ĐA CHIỀU, NGẦM ĐỊNH. 'Sạch sẽ' thật ra nghĩa là 'gọn gàng, ngăn nắp, giữ nguyên đồ đạc hữu ích, sàn không bụi', con người hiểu ngầm, AI không."
         />
       </LessonSection>
 
@@ -759,7 +759,7 @@ export default function AlignmentTopic() {
           <InlineChallenge
             question="Chatbot của một ngân hàng Việt Nam được đánh giá bằng 'số câu hỏi được trả lời trong ngày'. AI bắt đầu trả lời MỌI câu (kể cả những câu nên chuyển cho nhân viên thật), đôi khi bịa thông tin. Đây là vấn đề gì?"
             options={[
-              "Hallucination đơn thuần. chỉ cần tăng dữ liệu training",
+              "Hallucination đơn thuần, chỉ cần tăng dữ liệu training",
               "Reward hacking / Goodhart's Law. AI tối ưu chỉ số đo (số câu trả lời) thay vì mục tiêu thật (chất lượng phục vụ khách hàng)",
               "Overfitting. AI chỉ biết mẫu trong training data",
               "Bias. AI thiên vị một nhóm khách hàng",
@@ -772,7 +772,7 @@ export default function AlignmentTopic() {
             question="Bạn thấy agent ở chế độ 'proxy' quay loop vô hạn ở ô tím. Giải pháp alignment nào HIỆU QUẢ NHẤT để chữa?"
             options={[
               "Tăng số coin trên bản đồ lên 100",
-              "Chỉ cần thay reward function: cộng thêm reward lớn khi đến goal, và phạt nặng khi lặp lại hành động ở cùng ô. đây là reward shaping. Nhưng gốc rễ là cần RLHF để human dạy 'hành vi hợp lý'",
+              "Chỉ cần thay reward function: cộng thêm reward lớn khi đến goal, và phạt nặng khi lặp lại hành động ở cùng ô, đây là reward shaping. Nhưng gốc rễ là cần RLHF để human dạy 'hành vi hợp lý'",
               "Tăng kích thước model (thêm tham số)",
               "Giảm learning rate",
             ]}
@@ -835,7 +835,7 @@ export default function AlignmentTopic() {
             prefer) TRONG KHI không đi quá xa so với mô hình tham chiếu{" "}
             <LaTeX>{"\\pi_{\\text{ref}}"}</LaTeX> (mô hình sau SFT, trước RLHF).
             Hệ số <LaTeX>{"\\beta"}</LaTeX> điều chỉnh mức ràng buộc KL
-            divergence. beta lớn giữ an toàn hơn nhưng hạn chế học, beta nhỏ
+            divergence, beta lớn giữ an toàn hơn nhưng hạn chế học, beta nhỏ
             học mạnh hơn nhưng nguy cơ reward hacking cao.
           </p>
 
@@ -922,7 +922,7 @@ export default function AlignmentTopic() {
 
           <CodeBlock language="python" title="rlhf_ppo_training.py">
 {`"""
-RLHF training loop với PPO. phiên bản rút gọn cho giáo dục.
+RLHF training loop với PPO, phiên bản rút gọn cho giáo dục.
 Dùng thư viện TRL của HuggingFace.
 """
 import torch
@@ -1133,7 +1133,7 @@ for episode in range(N_EPISODES):
                 (vũ khí hàng loạt, tin giả).
               </p>
               <p>
-                <em>Trade-off:</em> đôi khi helpful vs harmless xung đột. ví
+                <em>Trade-off:</em> đôi khi helpful vs harmless xung đột, ví
                 dụ yêu cầu hướng dẫn chi tiết về thuốc mạnh. Cần judgment cụ
                 thể từ human labeler và constitutional rules.
               </p>
@@ -1159,7 +1159,7 @@ for episode in range(N_EPISODES):
               <strong>Pháp luật:</strong> AI phải tuân thủ Luật An ninh mạng
               2018, Nghị định 53/2022/NĐ-CP, không tạo nội dung vi phạm về chính
               trị, tôn giáo, lịch sử. Alignment phải bao gồm cả tuân thủ pháp
-              luật địa phương. không chỉ HHH universal.
+              luật địa phương, không chỉ HHH universal.
             </p>
             <p>
               <strong>Phương ngữ và phong cách:</strong> "Trả lời lịch sự" khác
@@ -1170,7 +1170,7 @@ for episode in range(N_EPISODES):
             <p>
               <strong>Reward model bias:</strong> Nếu annotator chủ yếu là người
               miền Bắc, trẻ, có học vấn cao, reward model sẽ thiên vị phong
-              cách của nhóm này. không đại diện cho toàn dân Việt Nam. Cần đa
+              cách của nhóm này, không đại diện cho toàn dân Việt Nam. Cần đa
               dạng hoá annotator.
             </p>
             <p>

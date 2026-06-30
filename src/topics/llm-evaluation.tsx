@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 // ──────────────────────────────────────────────────────────────────────
 // DỮ LIỆU: 4 mô hình × 7 metric × 2 regime (offline / online)
 // Số liệu được hard-code thực tế-tương-đối; mục đích là kể câu chuyện
-// "offline ≠ online". chứ không phải leaderboard thật.
+// "offline ≠ online", chứ không phải leaderboard thật.
 // ──────────────────────────────────────────────────────────────────────
 
 type ModelId = "gpt-4o" | "claude-sonnet-4-6" | "gemini-2-5-pro" | "llama-3-3-70b";
@@ -72,7 +72,7 @@ const METRICS: Metric[] = [
     unit: "%",
     higherIsBetter: true,
     tooltip:
-      "Tỷ lệ mẫu model đáp ứng đầy đủ yêu cầu theo rubric. chấm tự động hoặc bởi judge. Đây là metric cơ bản nhất.",
+      "Tỷ lệ mẫu model đáp ứng đầy đủ yêu cầu theo rubric, chấm tự động hoặc bởi judge. Đây là metric cơ bản nhất.",
   },
   {
     key: "winRate",
@@ -126,7 +126,7 @@ const METRICS: Metric[] = [
     unit: "$",
     higherIsBetter: false,
     tooltip:
-      "Chi phí token trung bình mỗi tác vụ. Đơn vị so sánh nên là $/task, không phải $/1K-token. vì mô hình dài dòng bị phạt đúng chỗ.",
+      "Chi phí token trung bình mỗi tác vụ. Đơn vị so sánh nên là $/task, không phải $/1K-token, vì mô hình dài dòng bị phạt đúng chỗ.",
   },
 ];
 
@@ -310,7 +310,7 @@ export default function LlmEvaluationTopic() {
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
-        // Không cho xoá hết. cần ít nhất 1 row để viz có nghĩa.
+        // Không cho xoá hết, cần ít nhất 1 row để viz có nghĩa.
         if (next.size > 1) next.delete(id);
       } else {
         next.add(id);
@@ -328,7 +328,7 @@ export default function LlmEvaluationTopic() {
     [],
   );
 
-  // Tổng trọng số. hiển thị để người học thấy khi vượt/hụt 1.0.
+  // Tổng trọng số, hiển thị để người học thấy khi vượt/hụt 1.0.
   const weightSum = useMemo(
     () =>
       Object.values(weights).reduce((s, v) => s + v, 0),
@@ -417,14 +417,14 @@ export default function LlmEvaluationTopic() {
         ],
         correct: 1,
         explanation:
-          "Hai bias chính: (1) self-preference. GPT-4 chấm output GPT-4 cao hơn Claude, (2) positional. đưa A trước B thường được chấm cao hơn. Cách giảm: shuffle order, dùng 2 judge khác họ lấy trung bình, calibrate bằng human eval 30-50 mẫu/tuần.",
+          "Hai bias chính: (1) self-preference. GPT-4 chấm output GPT-4 cao hơn Claude, (2) positional, đưa A trước B thường được chấm cao hơn. Cách giảm: shuffle order, dùng 2 judge khác họ lấy trung bình, calibrate bằng human eval 30-50 mẫu/tuần.",
       },
       {
         question:
           "Bạn pass 95% golden nhưng CSAT production tụt 12 điểm sau 2 tuần. Hành động đầu tiên là gì?",
         options: [
           "Retrain model",
-          "Bật online sampling + so sánh phân phối intent giữa golden và prod; gần như chắc chắn golden không đại diện. cập nhật golden từ conversation sampling",
+          "Bật online sampling + so sánh phân phối intent giữa golden và prod; gần như chắc chắn golden không đại diện, cập nhật golden từ conversation sampling",
           "Tăng temperature",
           "Chuyển sang model khác",
         ],
@@ -437,7 +437,7 @@ export default function LlmEvaluationTopic() {
           "Công thức nào dùng để tổng hợp win-rate pairwise thành một điểm đơn (rating)?",
         options: [
           "BLEU",
-          "Elo rating: E_A = 1 / (1 + 10^((R_B − R_A) / 400)). mượn từ cờ vua, dùng trong Chatbot Arena",
+          "Elo rating: E_A = 1 / (1 + 10^((R_B − R_A) / 400)), mượn từ cờ vua, dùng trong Chatbot Arena",
           "F1 score",
           "ROC-AUC",
         ],
@@ -449,14 +449,14 @@ export default function LlmEvaluationTopic() {
         question:
           "Composite score tổng hợp 7 metric. Khi nào bạn PHẢI chỉnh trọng số khác mặc định?",
         options: [
-          "Không bao giờ. mặc định luôn đúng",
+          "Không bao giờ, mặc định luôn đúng",
           "Khi use case có ràng buộc đặc thù: chatbot y tế nâng trọng số hallucination + factuality, hệ thống low-latency giảm cost hạ format compliance, pipeline đọc JSON nâng format compliance lên hàng đầu",
           "Chỉ khi dùng model open-source",
           "Chỉ khi có ít hơn 3 model để so sánh",
         ],
         correct: 1,
         explanation:
-          "Trọng số = phát biểu business priority. Copy weights từ paper mà không điều chỉnh = để paper author quyết định sản phẩm của bạn. Viết trọng số xong mới biết team có đồng thuận không. đây là bài tập alignment với stakeholder.",
+          "Trọng số = phát biểu business priority. Copy weights từ paper mà không điều chỉnh = để paper author quyết định sản phẩm của bạn. Viết trọng số xong mới biết team có đồng thuận không, đây là bài tập alignment với stakeholder.",
       },
       {
         type: "fill-blank",
@@ -480,7 +480,7 @@ export default function LlmEvaluationTopic() {
           "Trong CI/CD, 'regression gate' cho LLM eval là gì?",
         options: [
           "Lint code Python",
-          "Một ngưỡng cứng trên golden set (vd success ≥ 0.85, hallucination ≤ 0.02, format ≥ 0.95). nếu PR đẩy metric xuống dưới ngưỡng thì build fail và không merge được",
+          "Một ngưỡng cứng trên golden set (vd success ≥ 0.85, hallucination ≤ 0.02, format ≥ 0.95), nếu PR đẩy metric xuống dưới ngưỡng thì build fail và không merge được",
           "Tên một mô hình",
           "Một tính năng của GitHub Copilot",
         ],
@@ -629,7 +629,7 @@ export default function LlmEvaluationTopic() {
             Trọng số metric (business priority)
           </p>
           <p className="text-[11px] text-muted">
-            Kéo slider. leaderboard tự sắp xếp lại. Tổng trọng số được chuẩn hoá
+            Kéo slider, leaderboard tự sắp xếp lại. Tổng trọng số được chuẩn hoá
             về 1 trước khi tính composite.
           </p>
         </div>
@@ -681,7 +681,7 @@ export default function LlmEvaluationTopic() {
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="text-sm font-bold text-foreground">
-            Composite score. xếp hạng theo trọng số hiện tại
+            Composite score, xếp hạng theo trọng số hiện tại
           </p>
           <p className="text-[11px] text-muted">
             Regime: <strong>{regime === "offline" ? "Offline (golden set)" : "Online (shadow traffic)"}</strong>
@@ -747,13 +747,13 @@ export default function LlmEvaluationTopic() {
         <PredictionGate
           question="Bạn chọn một LLM vì nó đứng #1 HumanEval (offline benchmark nổi tiếng). Deploy ra prod, CSAT của khách hàng tụt 40% so với model cũ. Lý do hợp lý nhất là gì?"
           options={[
-            "Model bị lỗi kỹ thuật. gọi API sai",
+            "Model bị lỗi kỹ thuật, gọi API sai",
             "Benchmark offline không đại diện phân phối người dùng thật; eval không thể là một con số duy nhất trên một dataset duy nhất",
-            "Người dùng chưa quen model mới. chờ thêm vài tuần là ổn",
+            "Người dùng chưa quen model mới, chờ thêm vài tuần là ổn",
             "Cần tăng nhiệt độ sampling lên 1.2",
           ]}
           correct={1}
-          explanation="HumanEval đo code completion trên bài toán học thuật. CSAT đo trải nghiệm trò chuyện của khách hàng. Hai phân phối khác nhau hoàn toàn. 'Một số duy nhất để rank LLM' là ảo tưởng. phải nghĩ theo MA TRẬN metric × regime × use case."
+          explanation="HumanEval đo code completion trên bài toán học thuật. CSAT đo trải nghiệm trò chuyện của khách hàng. Hai phân phối khác nhau hoàn toàn. 'Một số duy nhất để rank LLM' là ảo tưởng, phải nghĩ theo MA TRẬN metric × regime × use case."
         >
           {/* ───────────── 2. VISUALIZATION ───────────── */}
           <LessonSection
@@ -818,7 +818,7 @@ export default function LlmEvaluationTopic() {
                   không có một số duy nhất đánh giá LLM
                 </strong>
                 . Thay vào đó là một <strong>ma trận metric × regime × use case</strong>,
-                và <em>trọng số</em> là thứ ép business phải ra quyết định. không phải thuật toán. Khi bạn đổi trọng số, bạn đang nói với
+                và <em>trọng số</em> là thứ ép business phải ra quyết định, không phải thuật toán. Khi bạn đổi trọng số, bạn đang nói với
                 tổ chức <em>ưu tiên kinh doanh của chúng ta là gì</em>. Đó
                 cũng là lý do tại sao chọn LLM khó hơn chọn thư viện
                 open-source.
@@ -846,7 +846,7 @@ export default function LlmEvaluationTopic() {
                 <strong>TruthfulQA</strong> (bẫy misconception),{" "}
                 <strong>HumanEval</strong> (code generation),{" "}
                 <strong>Chatbot Arena</strong> (win-rate người dùng thật xếp
-                bằng Elo). Mỗi cái đo một lát cắt. không có cái nào đại diện
+                bằng Elo). Mỗi cái đo một lát cắt, không có cái nào đại diện
                 cho use case của <em>bạn</em>. Dùng chúng như tín hiệu sàng
                 lọc, không phải quyết định cuối.
               </Callout>
@@ -857,7 +857,7 @@ export default function LlmEvaluationTopic() {
                 Crawl 2024, khiến điểm cao mà khả năng thật không tương xứng.
                 Giảm bằng: (1) giữ 10-20% golden riêng tư không công khai,
                 (2) sinh biến thể (paraphrase) test set định kỳ,
-                (3) theo dõi gap giữa public benchmark và private eval của bạn. nếu gap giãn rộng, có mùi contamination.
+                (3) theo dõi gap giữa public benchmark và private eval của bạn, nếu gap giãn rộng, có mùi contamination.
               </Callout>
 
               <Callout variant="info" title="LLM-as-judge không phải ‘free accuracy’">
@@ -879,7 +879,7 @@ export default function LlmEvaluationTopic() {
                   sample 200-500 conversation production mỗi 2 tuần → phân cụm
                   intent → bổ sung vào golden
                 </strong>
-                . Đánh dấu version (v1, v2…) và log lại khi gate thay đổi. vì
+                . Đánh dấu version (v1, v2…) và log lại khi gate thay đổi, vì
                 ngưỡng pass trên v1 không so sánh trực tiếp với v2 được. Đây
                 là vòng đời mà nhiều team bỏ qua, rồi ngạc nhiên vì sao
                 production incident không bị bắt.
@@ -904,18 +904,18 @@ export default function LlmEvaluationTopic() {
                 options={[
                   "Chọn A. vì #1 overall luôn là lựa chọn an toàn",
                   "Route khác nhau: C cho VIP, A cho số còn lại. Và giám sát kỹ segment VIP vì giá trị business cao hơn trung bình",
-                  "Chọn C cho tất cả. để tối ưu segment quan trọng nhất",
-                  "Không đủ dữ liệu. cần retrain",
+                  "Chọn C cho tất cả, để tối ưu segment quan trọng nhất",
+                  "Không đủ dữ liệu, cần retrain",
                 ]}
                 correct={1}
-                explanation="Aggregate che mất phân phối. Revenue concentration thường 80/20, nên một model #3 ở segment 5% top revenue có thể gây hại lớn hơn lợi ích của việc #1 overall. Model routing hoặc segment-specific prompt là giải pháp tiêu chuẩn. xem Chatbot Arena slice theo category (code, writing, reasoning) là lấy từ đúng nguyên tắc này."
+                explanation="Aggregate che mất phân phối. Revenue concentration thường 80/20, nên một model #3 ở segment 5% top revenue có thể gây hại lớn hơn lợi ích của việc #1 overall. Model routing hoặc segment-specific prompt là giải pháp tiêu chuẩn, xem Chatbot Arena slice theo category (code, writing, reasoning) là lấy từ đúng nguyên tắc này."
               />
 
               <InlineChallenge
                 question="Golden pass 95%. Nhưng user complaint tăng 3x trong 10 ngày. Bạn bật công cụ đo nào TRƯỚC TIÊN để điều tra?"
                 options={[
                   "Tăng golden set lên 10x",
-                  "Online sampling (lấy 500 conversation prod gần nhất) + phân cụm intent để so sánh phân phối intent giữa golden và prod. nếu lệch thì golden stale",
+                  "Online sampling (lấy 500 conversation prod gần nhất) + phân cụm intent để so sánh phân phối intent giữa golden và prod, nếu lệch thì golden stale",
                   "Chuyển model khác thử 1 ngày",
                   "Reset weight composite về mặc định",
                 ]}
@@ -984,7 +984,7 @@ export default function LlmEvaluationTopic() {
                 Offline chạy trên dataset cố định (golden set, benchmark công
                 khai), lặp được, rẻ, làm gate cho CI. Online đo trên traffic
                 thật qua shadow traffic (chạy song song không ảnh hưởng user),
-                A/B test, hoặc interleaving. Team chín luôn có cả hai. vì
+                A/B test, hoặc interleaving. Team chín luôn có cả hai, vì
                 offline pass không chứng minh prod ổn (bạn đã thấy ở viz).
                 Ngoài ra, một <strong>golden set nhỏ 50-200 mẫu</strong> nên
                 chạy hàng ngày như canary, alert khi pass rate sụt &gt; 3%.
@@ -1044,7 +1044,7 @@ export default function LlmEvaluationTopic() {
                 preference.
               </p>
 
-              <CodeBlock language="python" title="eval_harness.py. khung eval tối giản">
+              <CodeBlock language="python" title="eval_harness.py, khung eval tối giản">
                 {`from dataclasses import dataclass, field
 from typing import Callable
 from statistics import mean
@@ -1126,7 +1126,7 @@ class EvalHarness:
 
 on:
   schedule:
-    - cron: "0 18 * * *"    # 01h sáng VN. chạy sau deploy cuối ngày
+    - cron: "0 18 * * *"    # 01h sáng VN, chạy sau deploy cuối ngày
   pull_request:
     paths:
       - "prompts/**"
@@ -1263,7 +1263,7 @@ jobs:
                 <TopicLink slug="rag-evaluation">
                   đánh giá RAG
                 </TopicLink>{" "}
-                (faithfulness, context precision / recall). chủ đề riêng vì
+                (faithfulness, context precision / recall), chủ đề riêng vì
                 RAG có nguồn ngữ cảnh nên cần metric khác.
               </p>
             </ExplanationSection>
@@ -1313,7 +1313,7 @@ jobs:
               <ul className="list-disc list-inside pl-2 space-y-1 mt-2 border-t border-border pt-3">
                 <li>
                   <strong>Bài học 1.</strong> Offline pass không bảo chứng
-                  online. phải bật online sampling TỪ NGÀY 1, không đợi có
+                  online, phải bật online sampling TỪ NGÀY 1, không đợi có
                   vấn đề.
                 </li>
                 <li>
@@ -1336,12 +1336,12 @@ jobs:
             <MiniSummary
               title="Sáu điều cần nhớ về LLM Evaluation"
               points={[
-                "Đánh giá LLM là MA TRẬN metric × regime × use case. không có một con số duy nhất nào đủ để xếp hạng mô hình cho production.",
-                "Luôn chạy CẢ offline (gate CI) và online (shadow traffic, A/B). offline pass không chứng minh prod ổn; Tiki case study là ví dụ kinh điển.",
-                "Golden set phải được cập nhật định kỳ (2-4 tuần/lần) qua vòng sampling → cluster intent → gán reference. nếu không, sẽ stale và tạo cảm giác an toàn giả.",
-                "LLM-as-judge scale tốt nhưng có self-preference / positional / verbose bias. calibrate 30-50 mẫu/tuần bằng human eval để giữ Cohen's kappa > 0.6.",
-                "Composite score S = Σ w_i · m̂_i là cách ép business chọn trọng số. viết weights ra là một bài tập alignment với stakeholder, không phải tối ưu kỹ thuật.",
-                "Gate trong CI (GitHub Actions + BigQuery/MLflow/Langfuse reporting) biến eval từ 'decor' thành ràng buộc cứng. không gate, eval mất tác dụng sau 2 tháng.",
+                "Đánh giá LLM là MA TRẬN metric × regime × use case, không có một con số duy nhất nào đủ để xếp hạng mô hình cho production.",
+                "Luôn chạy CẢ offline (gate CI) và online (shadow traffic, A/B), offline pass không chứng minh prod ổn; Tiki case study là ví dụ kinh điển.",
+                "Golden set phải được cập nhật định kỳ (2-4 tuần/lần) qua vòng sampling → cluster intent → gán reference, nếu không, sẽ stale và tạo cảm giác an toàn giả.",
+                "LLM-as-judge scale tốt nhưng có self-preference / positional / verbose bias, calibrate 30-50 mẫu/tuần bằng human eval để giữ Cohen's kappa > 0.6.",
+                "Composite score S = Σ w_i · m̂_i là cách ép business chọn trọng số, viết weights ra là một bài tập alignment với stakeholder, không phải tối ưu kỹ thuật.",
+                "Gate trong CI (GitHub Actions + BigQuery/MLflow/Langfuse reporting) biến eval từ 'decor' thành ràng buộc cứng, không gate, eval mất tác dụng sau 2 tháng.",
               ]}
             />
           </LessonSection>

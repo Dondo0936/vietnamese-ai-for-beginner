@@ -1792,7 +1792,7 @@ export default function GradientDescentTopic() {
                   Vanilla Gradient Descent: công thức gốc
                 </p>
                 <p className="text-xs text-muted">
-                  θ là vector toàn bộ weight. η là learning rate. ∇L(θ) là
+                  θ là vector toàn bộ weight, η là learning rate. ∇L(θ) là
                   gradient của loss theo θ.
                 </p>
               </div>
@@ -1933,7 +1933,7 @@ export default function GradientDescentTopic() {
                 </p>
                 <p className="text-xs text-muted">
                   v là velocity, tức tổng luỹ kế có chiết khấu của gradient cũ
-                  cộng gradient mới. β thường là 0.9, giữ lại 90 % đà cũ mỗi
+                  cộng gradient mới, β thường là 0.9, giữ lại 90 % đà cũ mỗi
                   bước (bước hiệu quả ổn định ≈ η / (1 − β)).
                 </p>
               </div>

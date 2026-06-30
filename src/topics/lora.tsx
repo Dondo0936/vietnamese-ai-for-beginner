@@ -124,7 +124,7 @@ const QUIZ: QuizQuestion[] = [
     options: [
       "r lớn hơn luôn tốt hơn vì biểu diễn nhiều hơn",
       "r nhỏ hơn luôn tốt hơn vì ít overfit hơn",
-      "r lớn cho phép biểu diễn thay đổi phức tạp hơn nhưng tốn nhiều tham số hơn. cần cân bằng",
+      "r lớn cho phép biểu diễn thay đổi phức tạp hơn nhưng tốn nhiều tham số hơn, cần cân bằng",
       "r không ảnh hưởng đến kết quả cuối cùng, chỉ ảnh hưởng tốc độ",
     ],
     correct: 2,
@@ -165,7 +165,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "QLoRA = LoRA + 4-bit NF4 quantization cho W gốc + double quantization (lượng tử hóa cả scaling factor) + paged optimizer (CPU offload cho optimizer state). Cả ba kỹ thuật cộng lại giúp fine-tune Llama 65B trên 1x A100 48GB. trước đây cần 8x A100.",
+      "QLoRA = LoRA + 4-bit NF4 quantization cho W gốc + double quantization (lượng tử hóa cả scaling factor) + paged optimizer (CPU offload cho optimizer state). Cả ba kỹ thuật cộng lại giúp fine-tune Llama 65B trên 1x A100 48GB, trước đây cần 8x A100.",
   },
   {
     question:
@@ -178,7 +178,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "B khởi tạo 0 → ΔW = BA = 0 → W' = W (mô hình gốc). A khởi tạo Gaussian để khi gradient flow tới, B học được hướng thay đổi có ý nghĩa. Nếu cả hai đều 0 thì gradient cũng 0 (chết). Nếu cả hai ngẫu nhiên thì mô hình ban đầu đã lệch khỏi pre-train. hại kiến thức nền.",
+      "B khởi tạo 0 → ΔW = BA = 0 → W' = W (mô hình gốc). A khởi tạo Gaussian để khi gradient flow tới, B học được hướng thay đổi có ý nghĩa. Nếu cả hai đều 0 thì gradient cũng 0 (chết). Nếu cả hai ngẫu nhiên thì mô hình ban đầu đã lệch khỏi pre-train, hại kiến thức nền.",
   },
   {
     question:
@@ -191,14 +191,14 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "W' = W + (α/r) · BA. Nhờ chia cho r, khi bạn thử nhiều giá trị r khác nhau thì tác động gần như bằng nhau. tiết kiệm hyperparameter tuning. Thông thường đặt α = 16 hoặc α = 2r.",
+      "W' = W + (α/r) · BA. Nhờ chia cho r, khi bạn thử nhiều giá trị r khác nhau thì tác động gần như bằng nhau, tiết kiệm hyperparameter tuning. Thông thường đặt α = 16 hoặc α = 2r.",
   },
   {
     question:
       "Khi triển khai production, ưu điểm nào của LoRA là quan trọng nhất với dịch vụ phục vụ nhiều khách hàng khác nhau?",
     options: [
       "Giảm thời gian inference xuống một nửa",
-      "Có thể chia sẻ một mô hình nền duy nhất trên GPU, swap adapter (vài MB) cho từng khách hàng/tác vụ. không cần deploy nhiều bản sao mô hình 7B",
+      "Có thể chia sẻ một mô hình nền duy nhất trên GPU, swap adapter (vài MB) cho từng khách hàng/tác vụ, không cần deploy nhiều bản sao mô hình 7B",
       "Tự động sinh dữ liệu huấn luyện",
       "Không cần GPU để inference",
     ],
@@ -312,10 +312,10 @@ export default function LoRATopic() {
         <PredictionGate
           question="Mô hình Llama 3 có 8 tỷ tham số. Bạn muốn fine-tune nó trên laptop GPU 8GB. Cần tối thiểu bao nhiêu tham số phải huấn luyện để đạt chất lượng gần full fine-tune?"
           options={[
-            "Phải huấn luyện cả 8 tỷ tham số. không có cách nào khác",
+            "Phải huấn luyện cả 8 tỷ tham số, không có cách nào khác",
             "Chỉ cần huấn luyện khoảng 0.1% (~8 triệu tham số) là đủ",
             "Cần ít nhất 50% (~4 tỷ tham số)",
-            "Khoảng 1 tỷ (~12%). phần còn lại là embedding",
+            "Khoảng 1 tỷ (~12%), phần còn lại là embedding",
           ]}
           correct={1}
           explanation="LoRA cho phép fine-tune hiệu quả với chỉ 0.01-0.1% tổng tham số! Bí quyết: các thay đổi trọng số có ích thực sự nằm trong một không gian hạng thấp, không cần cập nhật toàn bộ W khổng lồ."
@@ -339,7 +339,7 @@ export default function LoRATopic() {
             hưởng đến số tham số, bộ nhớ và cấu trúc ma trận.
           </p>
 
-          {/* Preset chips. quick jumps between common configs */}
+          {/* Preset chips, quick jumps between common configs */}
           <div className="mb-4 flex flex-wrap gap-2">
             <button
               onClick={() => applyPreset("tiny")}
@@ -598,7 +598,7 @@ export default function LoRATopic() {
               ×
             </text>
 
-            {/* B matrix (d x r). tall and narrow */}
+            {/* B matrix (d x r), tall and narrow */}
             <g>
               <rect
                 x="285"
@@ -651,7 +651,7 @@ export default function LoRATopic() {
               ×
             </text>
 
-            {/* A matrix (r x d). short and wide */}
+            {/* A matrix (r x d), short and wide */}
             <g>
               <rect
                 x={310 + rankBarWidth + 18}
@@ -819,7 +819,7 @@ export default function LoRATopic() {
               </div>
             </div>
             <p className="mt-3 text-xs text-muted">
-              Chưa tính activations và gradient checkpointing. thực tế có thể
+              Chưa tính activations và gradient checkpointing, thực tế có thể
               tiết kiệm thêm 30-50%.
             </p>
           </div>
@@ -835,7 +835,7 @@ export default function LoRATopic() {
           bắt được bản chất. <strong>LoRA</strong> khai thác điều này: thay vì
           cập nhật ma trận khổng lồ W, chỉ cần học hai ma trận mỏng A và B mà
           tích của chúng xấp xỉ thay đổi cần thiết. Hàm tri thức đã học sẵn
-          trong W₀ không bị đụng vào. nó chỉ được &quot;bẻ lái&quot; bằng một
+          trong W₀ không bị đụng vào, nó chỉ được &quot;bẻ lái&quot; bằng một
           cú hích hạng thấp.
         </AhaMoment>
       </LessonSection>
@@ -876,14 +876,14 @@ export default function LoRATopic() {
             và <LaTeX>{"A \\in \\mathbb{R}^{r \\times d_{in}}"}</LaTeX> là hai
             ma trận huấn luyện được, với <LaTeX>{"r \\ll \\min(d_{in}, d_{out})"}</LaTeX>.
             Hệ số <LaTeX>{"\\alpha"}</LaTeX> kiểm soát độ lớn của đóng góp
-            adapter. chia cho r để tổng tác động không phụ thuộc nhiều vào r.
+            adapter, chia cho r để tổng tác động không phụ thuộc nhiều vào r.
           </p>
 
           <p>Quy trình LoRA gồm ba bước cốt lõi:</p>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
               <strong>Đóng băng W gốc:</strong> Ma trận pre-train không bị
-              thay đổi. bảo toàn toàn bộ kiến thức nền đã học được.
+              thay đổi, bảo toàn toàn bộ kiến thức nền đã học được.
             </li>
             <li>
               <strong>Thêm adapter:</strong> Khởi tạo A ngẫu nhiên (Gaussian),
@@ -899,7 +899,7 @@ export default function LoRATopic() {
 
           <Callout variant="insight" title="Giả thuyết intrinsic rank">
             Bài báo LoRA (Hu et al. 2021) chứng minh rằng với nhiều tác vụ
-            downstream, rank của ΔW thực tế rất thấp. thậm chí r = 1 hoặc r
+            downstream, rank của ΔW thực tế rất thấp, thậm chí r = 1 hoặc r
             = 2 vẫn cho kết quả cạnh tranh với full fine-tune. Điều này là
             ngạc nhiên: ta tưởng phải &quot;cập nhật&quot; hàng triệu chiều,
             nhưng thực ra hầu hết đã có sẵn trong W₀.
@@ -910,13 +910,13 @@ export default function LoRATopic() {
               Khi khởi tạo A ~ N(0, 1/r) và B = 0, kỳ vọng{" "}
               <LaTeX>{"\\|BA\\|_F^2"}</LaTeX> tỷ lệ với r. Nếu không chia cho
               r, tăng r sẽ làm delta lớn bất thường và phá pre-train. Chia cho
-              r đảm bảo độ lớn ổn định. bạn có thể grid-search các r khác
+              r đảm bảo độ lớn ổn định, bạn có thể grid-search các r khác
               nhau mà không phải tune lại learning rate hay alpha.
             </p>
             <p>
               Cụ thể, với scale s = α/r, update rule là W&#x27; = W + s·BA.
               Khi r gấp đôi, s giảm một nửa, tổng tác động vẫn giữ nguyên về
-              mặt norm. chỉ khả năng biểu diễn tăng lên.
+              mặt norm, chỉ khả năng biểu diễn tăng lên.
             </p>
           </CollapsibleDetail>
 
@@ -934,7 +934,7 @@ base_model = AutoModelForCausalLM.from_pretrained(
 # 2. Cấu hình LoRA
 config = LoraConfig(
     task_type=TaskType.CAUSAL_LM,
-    r=8,                    # Rank. trade-off giữa chất lượng/chi phí
+    r=8,                    # Rank, trade-off giữa chất lượng/chi phí
     lora_alpha=16,          # Scaling: W' = W + (16/8)·BA = W + 2·BA
     target_modules=[        # Áp dụng cho attention projections
         "q_proj", "v_proj", # Tối thiểu: Q và V
@@ -969,7 +969,7 @@ model = model.merge_and_unload()  # W' = W + BA, xoá adapter`}
 
           <Callout variant="warning" title="Đừng quên lưu adapter riêng">
             Mặc định PEFT chỉ lưu A và B (vài MB). Nếu bạn save_pretrained()
-            toàn bộ PeftModel thì vẫn chỉ có adapter. đừng ngạc nhiên khi
+            toàn bộ PeftModel thì vẫn chỉ có adapter, đừng ngạc nhiên khi
             thư mục nhỏ. Để deploy một-file, dùng merge_and_unload() rồi save.
           </Callout>
         </ExplanationSection>
@@ -989,7 +989,7 @@ model = model.merge_and_unload()  # W' = W + BA, xoá adapter`}
             Nếu LoRA đã tiết kiệm 99% tham số huấn luyện, tại sao vẫn cần
             QLoRA? Câu trả lời: LoRA vẫn phải giữ{" "}
             <strong>W gốc ở fp16 trên GPU</strong>. Với mô hình 65B, bạn cần
-            130GB VRAM chỉ để load W₀. vẫn quá tải cho consumer GPU.{" "}
+            130GB VRAM chỉ để load W₀, vẫn quá tải cho consumer GPU.{" "}
             <strong>QLoRA = LoRA + quantization 4-bit</strong> để cắt 4×
             footprint của base model.
           </p>
@@ -1057,7 +1057,7 @@ model = model.merge_and_unload()  # W' = W + BA, xoá adapter`}
               </li>
               <li>
                 <strong>Paged optimizer:</strong> khi VRAM đầy, tự động
-                offload Adam state sang RAM CPU qua NVIDIA unified memory. tránh OOM khi gặp peak activation.
+                offload Adam state sang RAM CPU qua NVIDIA unified memory, tránh OOM khi gặp peak activation.
               </li>
             </ol>
           </Callout>
@@ -1073,13 +1073,13 @@ model = model.merge_and_unload()  # W' = W + BA, xoá adapter`}
               </li>
               <li>
                 <strong>Thay đổi kiến trúc:</strong> nếu bạn cần thêm token
-                mới vào vocab hoặc thay đổi hidden size, LoRA không đủ. cần
+                mới vào vocab hoặc thay đổi hidden size, LoRA không đủ, cần
                 full fine-tune lớp embedding/output head.
               </li>
               <li>
                 <strong>Fine-tune cực nhỏ dữ liệu (&lt; 100 mẫu):</strong>{" "}
                 prefix tuning hoặc prompt tuning có thể tốt hơn, vì LoRA với
-                r=8 vẫn có ~4M tham số. quá nhiều cho 100 mẫu.
+                r=8 vẫn có ~4M tham số, quá nhiều cho 100 mẫu.
               </li>
             </ul>
           </CollapsibleDetail>
@@ -1182,7 +1182,7 @@ model.save_pretrained("./qlora-llama3-adapter")`}
             <strong>S-LoRA</strong>, bạn có thể load 1 base Llama-70B + hàng
             trăm adapter LoRA cùng lúc, mỗi request chọn adapter tương ứng.
             Điều này biến LoRA thành cơ chế chính cho multi-tenant LLM
-            serving ở quy mô production. một công ty SaaS có thể fine-tune
+            serving ở quy mô production, một công ty SaaS có thể fine-tune
             riêng cho từng khách hàng với chi phí GPU gần như không đổi.
           </Callout>
         </section>
@@ -1199,7 +1199,7 @@ model.save_pretrained("./qlora-llama3-adapter")`}
             "Không thể fine-tune Llama-3 13B trên 24GB bằng cách nào",
           ]}
           correct={2}
-          explanation="Full FT 13B cần ~80GB (weights+grads+optimizer). LoRA thuần vẫn giữ base fp16 = 26GB. không fit! QLoRA hạ base xuống ~7GB (4-bit), adapter+optimizer thêm ~3GB, còn dư VRAM cho activations. Đây chính là case QLoRA thắng rõ nhất."
+          explanation="Full FT 13B cần ~80GB (weights+grads+optimizer). LoRA thuần vẫn giữ base fp16 = 26GB, không fit! QLoRA hạ base xuống ~7GB (4-bit), adapter+optimizer thêm ~3GB, còn dư VRAM cho activations. Đây chính là case QLoRA thắng rõ nhất."
         />
       </LessonSection>
 
@@ -1208,10 +1208,10 @@ model.save_pretrained("./qlora-llama3-adapter")`}
         <MiniSummary
           title="Những điều cần nhớ về LoRA"
           points={[
-            "LoRA đóng băng W gốc, chỉ học hai ma trận hạng thấp A (r × d_in) và B (d_out × r). giảm >99% tham số huấn luyện.",
+            "LoRA đóng băng W gốc, chỉ học hai ma trận hạng thấp A (r × d_in) và B (d_out × r), giảm >99% tham số huấn luyện.",
             "Rank r là tham số quan trọng nhất: r = 4-16 đủ cho hầu hết tác vụ; r = 32-64 khi cần biểu diễn mạnh hơn.",
             "Khởi tạo B = 0, A ~ Gaussian → mô hình ban đầu hoạt động như cũ; scale α/r giúp ổn định khi đổi r.",
-            "Sau huấn luyện gộp W' = W + (α/r)·BA. không tăng latency khi triển khai.",
+            "Sau huấn luyện gộp W' = W + (α/r)·BA, không tăng latency khi triển khai.",
             "QLoRA = LoRA + 4-bit NF4 base + double quant + paged optimizer → fit được model 65B trên 1 GPU 48GB.",
             "Cho phép multi-tenant serving: 1 base model + N adapter (vài MB/cái) thay cho N bản sao model 14GB.",
           ]}

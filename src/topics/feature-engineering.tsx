@@ -164,13 +164,13 @@ df["gen"] = pd.cut(
     column: "price",
     label: "Biến đổi log",
     idea:
-      "Giá từ 65k đến 8.5M kéo dài 2 bậc thập phân. log(giá) ép phân phối về gần đối xứng. Nhờ vậy model tuyến tính dễ học hơn.",
+      "Giá từ 65k đến 8.5M kéo dài 2 bậc thập phân, log(giá) ép phân phối về gần đối xứng. Nhờ vậy model tuyến tính dễ học hơn.",
     code: `import numpy as np
 
 df["log_price"] = np.log1p(df["price"])`,
     derivedKeys: ["log_price"],
     explain:
-      "Phân phối lệch phải (long tail) là bệnh kinh điển của giá tiền, thu nhập, lượt view. log1p(x) = log(1+x) nén đuôi dài mà không làm đổi thứ tự, giúp sai số MSE không bị một vài outlier nuốt chửng cả tổng.",
+      "Phân phối lệch phải (long tail) là bệnh kinh điển của giá tiền, thu nhập, lượt view, log1p(x) = log(1+x) nén đuôi dài mà không làm đổi thứ tự, giúp sai số MSE không bị một vài outlier nuốt chửng cả tổng.",
   },
   {
     id: "address-split",
@@ -838,7 +838,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Phân phối log-normal là bệnh kinh điển của giá cả. log1p ép về gần Gaussian mà không đổi thứ tự, giúp MSE không bị outlier kéo lệch. Tree-based (XGBoost) ít cần hơn vì chia bằng threshold.",
+      "Phân phối log-normal là bệnh kinh điển của giá cả, log1p ép về gần Gaussian mà không đổi thứ tự, giúp MSE không bị outlier kéo lệch. Tree-based (XGBoost) ít cần hơn vì chia bằng threshold.",
   },
   {
     question:
@@ -1017,7 +1017,7 @@ export default function FeatureEngineeringTopic() {
             "Độ dài user_id tính bằng ký tự",
           ]}
           correct={2}
-          explanation="RFM (Recency, Frequency, Monetary) là bộ ba feature kinh điển cho dự đoán hành vi mua. Thêm tuổi tài khoản (ngày đăng ký → số ngày) để phân biệt khách mới với khách lâu năm. user_id và độ dài chuỗi không phải feature, chỉ là định danh và nhiễu."
+          explanation="RFM (Recency, Frequency, Monetary) là bộ ba feature kinh điển cho dự đoán hành vi mua. Thêm tuổi tài khoản (ngày đăng ký → số ngày) để phân biệt khách mới với khách lâu năm, user_id và độ dài chuỗi không phải feature, chỉ là định danh và nhiễu."
         />
       </LessonSection>
 
@@ -1060,7 +1060,7 @@ export default function FeatureEngineeringTopic() {
           </h4>
           <p className="leading-relaxed text-sm">
             Khi một cột số có phân phối lệch phải mạnh (giá, thu nhập, lượt
-            view), ta thường dùng log(1 + x) thay cho x. log1p an toàn với 0,
+            view), ta thường dùng log(1 + x) thay cho x, log1p an toàn với 0,
             và nén đuôi dài về gần đối xứng:
           </p>
           <LaTeX block>

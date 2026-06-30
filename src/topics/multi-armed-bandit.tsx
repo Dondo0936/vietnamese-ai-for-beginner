@@ -845,7 +845,7 @@ export default function MultiArmedBanditTopic() {
                 "Không thay đổi",
               ]}
               correct={1}
-              explanation="c điều chỉnh trade-off explore/exploit. c quá lớn → bonus lấn át mean → thuật toán như random explore, regret cao. c quá nhỏ → hành xử như greedy, kẹt ở arm tồi. c=√2 (theoretical) hoặc c≈2 (practical) thường tốt."
+              explanation="c điều chỉnh trade-off explore/exploit, c quá lớn → bonus lấn át mean → thuật toán như random explore, regret cao, c quá nhỏ → hành xử như greedy, kẹt ở arm tồi, c=√2 (theoretical) hoặc c≈2 (practical) thường tốt."
             />
           </LessonSection>
 
@@ -890,7 +890,7 @@ export default function MultiArmedBanditTopic() {
               <p>
                 Với <LaTeX>{"\\mu^{*}"}</LaTeX> là mean reward của arm tối ưu.
                 UCB và Thompson Sampling có regret <LaTeX>{"O(\\log T)"}</LaTeX>{" "}
-                — coi như tối ưu theo định lý Lai–Robbins. ε-Greedy với ε cố
+                — coi như tối ưu theo định lý Lai–Robbins, ε-Greedy với ε cố
                 định có regret <LaTeX>{"\\Theta(T)"}</LaTeX> — tệ hơn nhiều về
                 dài hạn.
               </p>

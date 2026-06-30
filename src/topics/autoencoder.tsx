@@ -1309,7 +1309,7 @@ class DenoisingAE(nn.Module):
 
 
 def add_gaussian_noise(x: torch.Tensor, sigma: float = 0.3) -> torch.Tensor:
-    """Thêm nhiễu Gaussian. sigma lớn → nhiễu mạnh."""
+    """Thêm nhiễu Gaussian, sigma lớn → nhiễu mạnh."""
     return (x + sigma * torch.randn_like(x)).clamp(0, 1)
 
 

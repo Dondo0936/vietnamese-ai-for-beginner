@@ -57,7 +57,7 @@ interface SpanRecord {
   outputPreview: string;
   status: SpanStatus;
   errorNote?: string;
-  // child span. dùng cho retry khi tool lỗi.
+  // child span, dùng cho retry khi tool lỗi.
   child?: SpanRecord;
 }
 
@@ -129,7 +129,7 @@ const BASE_SPANS: SpanRecord[] = [
   },
 ];
 
-// Áp dụng fault injection. trả về span list biến thể.
+// Áp dụng fault injection, trả về span list biến thể.
 function applyFault(spans: SpanRecord[], fault: FaultMode): SpanRecord[] {
   if (fault === "none") return spans;
   const next = spans.map((s) => ({ ...s }));
@@ -139,8 +139,8 @@ function applyFault(spans: SpanRecord[], fault: FaultMode): SpanRecord[] {
     const idx = next.findIndex((s) => s.id === "retrieve.vector_search");
     next[idx] = {
       ...next[idx], durationMs: 3500, status: "error",
-      errorNote: "DeadlineExceeded sau 3500ms. pgvector pool cạn connection, query xếp hàng.",
-      outputPreview: "timeout. không có chunks",
+      errorNote: "DeadlineExceeded sau 3500ms, pgvector pool cạn connection, query xếp hàng.",
+      outputPreview: "timeout, không có chunks",
     };
     const shift = 3500 - 220;
     for (let i = idx + 1; i < next.length; i += 1) next[i].startMs += shift;
@@ -152,7 +152,7 @@ function applyFault(spans: SpanRecord[], fault: FaultMode): SpanRecord[] {
       durationMs: next[idx].durationMs + add,
       ttftMs: (next[idx].ttftMs ?? 0) + 900,
       status: "warn",
-      errorNote: "Decode chậm. model bị throttle hoặc input context quá dài. p95 chạm SLO.",
+      errorNote: "Decode chậm, model bị throttle hoặc input context quá dài, p95 chạm SLO.",
     };
     for (let i = idx + 1; i < next.length; i += 1) next[i].startMs += add;
   } else if (fault === "tool_5xx") {
@@ -291,10 +291,10 @@ export default function ObservabilityForAiTopic() {
         question:
           "Ba trụ cột của observability là gì và vai trò từng cái ra sao?",
         options: [
-          "Traces, Metrics, Dashboards. cả ba đều đo hiệu suất",
-          "Traces (chuỗi span mô tả một request), Metrics (đếm/đo tổng hợp theo thời gian), Logs (event chi tiết). mỗi cái trả lời một câu hỏi khác nhau",
-          "Logs, Alerts, Graphs. tập trung vào cảnh báo",
-          "Prompts, Completions, Embeddings. dành riêng cho LLM",
+          "Traces, Metrics, Dashboards, cả ba đều đo hiệu suất",
+          "Traces (chuỗi span mô tả một request), Metrics (đếm/đo tổng hợp theo thời gian), Logs (event chi tiết), mỗi cái trả lời một câu hỏi khác nhau",
+          "Logs, Alerts, Graphs, tập trung vào cảnh báo",
+          "Prompts, Completions, Embeddings, dành riêng cho LLM",
         ],
         correct: 1,
         explanation:
@@ -305,7 +305,7 @@ export default function ObservabilityForAiTopic() {
           "Vì sao APM truyền thống (DataDog, New Relic) chưa đủ cho LLM app, dù đã có tracing?",
         options: [
           "APM truyền thống chậm hơn",
-          "APM truyền thống không hiểu prompt, token, model version, retrieval chunks, tool call. cần AI-native observability (Langfuse, Phoenix, LangSmith) bổ sung",
+          "APM truyền thống không hiểu prompt, token, model version, retrieval chunks, tool call, cần AI-native observability (Langfuse, Phoenix, LangSmith) bổ sung",
           "APM truyền thống không hỗ trợ Python",
           "APM truyền thống quá đắt",
         ],
@@ -318,13 +318,13 @@ export default function ObservabilityForAiTopic() {
           "Vì sao p95 latency quan trọng hơn mean cho LLM app đối diện người dùng?",
         options: [
           "Vì mean khó tính hơn",
-          "Vì phân phối latency LLM lệch phải (long tail). mean bị che bởi đuôi chậm, p95 phản ánh trải nghiệm của người dùng tệ nhất 5%",
+          "Vì phân phối latency LLM lệch phải (long tail), mean bị che bởi đuôi chậm, p95 phản ánh trải nghiệm của người dùng tệ nhất 5%",
           "Vì p95 luôn thấp hơn mean",
           "Vì p95 chính xác hơn về mặt thống kê",
         ],
         correct: 1,
         explanation:
-          "Latency LLM có long tail do model throttle, context dài, retrieval chậm. Mean = 2s trông ổn, nhưng p95 = 12s nghĩa là 5% user chờ 12 giây. họ rời app. SLO production luôn viết theo p95/p99, không theo mean.",
+          "Latency LLM có long tail do model throttle, context dài, retrieval chậm. Mean = 2s trông ổn, nhưng p95 = 12s nghĩa là 5% user chờ 12 giây, họ rời app. SLO production luôn viết theo p95/p99, không theo mean.",
       },
       {
         type: "fill-blank",
@@ -342,7 +342,7 @@ export default function ObservabilityForAiTopic() {
           "Vì sao log prompt và output LLM cần redaction (che mờ PII) trước khi gửi đi storage?",
         options: [
           "Để tiết kiệm dung lượng",
-          "Vì prompt + output có thể chứa email, số điện thoại, CCCD, thông tin y tế. lưu nguyên bản vi phạm quy định bảo mật và tăng bề mặt tấn công khi kho log bị lộ",
+          "Vì prompt + output có thể chứa email, số điện thoại, CCCD, thông tin y tế, lưu nguyên bản vi phạm quy định bảo mật và tăng bề mặt tấn công khi kho log bị lộ",
           "Vì log không nén được nếu có PII",
           "Vì prompt không phải dữ liệu người dùng",
         ],
@@ -355,7 +355,7 @@ export default function ObservabilityForAiTopic() {
           "Head sampling và tail sampling khác nhau ở điểm nào, và khi nào chọn tail?",
         options: [
           "Không có khác biệt, chỉ là tên gọi",
-          "Head sampling quyết định giữ/bỏ trace ngay khi span đầu bắt đầu (rẻ, mất trace lỗi hiếm); tail sampling đợi trace xong rồi quyết định (đắt nhưng luôn giữ trace lỗi/chậm). chọn tail khi cần debug tail latency",
+          "Head sampling quyết định giữ/bỏ trace ngay khi span đầu bắt đầu (rẻ, mất trace lỗi hiếm); tail sampling đợi trace xong rồi quyết định (đắt nhưng luôn giữ trace lỗi/chậm), chọn tail khi cần debug tail latency",
           "Head sampling dành cho frontend, tail cho backend",
           "Head sampling chậm hơn tail sampling",
         ],
@@ -372,7 +372,7 @@ export default function ObservabilityForAiTopic() {
           { answer: "golden trace", accept: ["golden set", "golden", "canary"] },
         ],
         explanation:
-          "Data drift phát hiện bằng PSI/KL; concept drift cần ground-truth (thường trễ). Golden trace là vài chục request nominal lưu sẵn, chạy mỗi sáng. nếu latency/token/output khác baseline > ngưỡng, alert ngay, giúp phát hiện drift sớm hơn nhiều so với chờ user báo.",
+          "Data drift phát hiện bằng PSI/KL; concept drift cần ground-truth (thường trễ). Golden trace là vài chục request nominal lưu sẵn, chạy mỗi sáng, nếu latency/token/output khác baseline > ngưỡng, alert ngay, giúp phát hiện drift sớm hơn nhiều so với chờ user báo.",
       },
       {
         question:
@@ -392,7 +392,7 @@ export default function ObservabilityForAiTopic() {
   );
 
   // ──────────────────────────────────────────────────────────────────
-  // RENDER. trace waterfall
+  // RENDER, trace waterfall
   // ──────────────────────────────────────────────────────────────────
 
   const renderWaterfall = () => {
@@ -754,7 +754,7 @@ export default function ObservabilityForAiTopic() {
         </svg>
         <p className="text-[10px] text-muted mt-1 leading-snug">
           Mỗi lần inject fault, giá trị wall-clock của request kế tiếp sẽ được
-          đẩy vào chuỗi. quan sát p95 phản ứng thế nào so với p50.
+          đẩy vào chuỗi, quan sát p95 phản ứng thế nào so với p50.
         </p>
       </div>
     );
@@ -785,9 +785,9 @@ export default function ObservabilityForAiTopic() {
         <PredictionGate
           question="Production LLM app của bạn đang chậm. Dashboard APM (DataDog) cho thấy 'POST /chat p95 = 8s'. Bạn làm gì tiếp theo?"
           options={[
-            "Scale up. thêm replica để giảm hàng đợi",
-            "Thêm cache. memoize theo prompt hash",
-            "Thêm tracing tới từng span (retrieve, LLM, tool) vì APM truyền thống không hiểu nội bộ LLM pipeline. phải biết bước nào chậm trước khi sửa",
+            "Scale up, thêm replica để giảm hàng đợi",
+            "Thêm cache, memoize theo prompt hash",
+            "Thêm tracing tới từng span (retrieve, LLM, tool) vì APM truyền thống không hiểu nội bộ LLM pipeline, phải biết bước nào chậm trước khi sửa",
             "Rollback về phiên bản tuần trước",
           ]}
           correct={2}
@@ -879,7 +879,7 @@ export default function ObservabilityForAiTopic() {
                 Một request LLM nhìn bên ngoài là{" "}
                 <code>POST /chat = 4.5s</code>, nhưng bên trong là{" "}
                 <strong>một distributed system tí hon</strong>: router, embed,
-                vector DB, reranker, LLM, tool. mỗi thứ có latency, cost,
+                vector DB, reranker, LLM, tool, mỗi thứ có latency, cost,
                 model version, và prompt riêng. APM truyền thống chỉ thấy
                 lớp ngoài cùng; muốn debug thật sự bạn cần{" "}
                 <strong>AI-native observability</strong>. tracing biết về
@@ -894,7 +894,7 @@ export default function ObservabilityForAiTopic() {
               <Callout variant="tip" title="Công cụ phổ biến. Và đánh đổi SaaS vs self-hosted">
                 Bức tranh 2026:{" "}
                 <strong>Langfuse</strong> (open-source, có cả SaaS và Docker
-                Compose tự triển khai. phổ biến cho team Việt Nam),{" "}
+                Compose tự triển khai, phổ biến cho team Việt Nam),{" "}
                 <strong>Phoenix/Arize</strong> (mạnh về eval + drift, có bản
                 chạy local cho dev),{" "}
                 <strong>LangSmith</strong> (SaaS của LangChain, đẹp nhưng
@@ -906,13 +906,13 @@ export default function ObservabilityForAiTopic() {
                 được rời hạ tầng nội bộ.
               </Callout>
 
-              <Callout variant="warning" title="PII trong prompt và output. cần redaction trước khi log">
-                Prompt LLM thường là dữ liệu người dùng dán nguyên văn vào. email, số điện thoại, CCCD, hồ sơ y tế, hợp đồng. Lưu nguyên
+              <Callout variant="warning" title="PII trong prompt và output, cần redaction trước khi log">
+                Prompt LLM thường là dữ liệu người dùng dán nguyên văn vào, email, số điện thoại, CCCD, hồ sơ y tế, hợp đồng. Lưu nguyên
                 bản sang vendor SaaS là bề mặt tấn công khổng lồ. Pattern
                 tối thiểu: (1) regex mask ở SDK cho
                 email/phone/credit-card/CCCD trước khi gửi đi,
                 (2) presidio hoặc rule engine cho PII phức tạp,
-                (3) sampling. giữ 100% trace metadata nhưng chỉ 1-5% body,
+                (3) sampling, giữ 100% trace metadata nhưng chỉ 1-5% body,
                 (4) retention ngắn (7-30 ngày) cho vùng chứa bản gốc.
               </Callout>
 
@@ -926,11 +926,11 @@ export default function ObservabilityForAiTopic() {
                 <code>gen_ai.response.finish_reason</code>,{" "}
                 <code>gen_ai.operation.name</code>. Dùng đúng semantic
                 conventions cho phép swap backend (Langfuse ↔ Phoenix ↔
-                Helicone) mà không đổi code instrumentation. tương tự như
+                Helicone) mà không đổi code instrumentation, tương tự như
                 SQL chuẩn giúp swap Postgres ↔ MySQL.
               </Callout>
 
-              <Callout variant="insight" title="Golden trace. baseline để on-call không phải đoán">
+              <Callout variant="insight" title="Golden trace, baseline để on-call không phải đoán">
                 Lưu sẵn 30-100 request{" "}
                 <em>nominal</em> đại diện (short answer, long answer, tool
                 call, retrieval-heavy...) rồi replay mỗi giờ. Mỗi lần pager
@@ -948,20 +948,20 @@ export default function ObservabilityForAiTopic() {
               <InlineChallenge
                 question="Dashboard cho thấy /chat p95 = 6.5s (vượt SLO 5s) nhưng kênh support không có phàn nàn và CSAT tuần này thậm chí còn tăng. Bạn giải thích và hành động ra sao?"
                 options={[
-                  "Tắt alert. rõ ràng p95 là đo sai",
+                  "Tắt alert, rõ ràng p95 là đo sai",
                   "Xem cohort: p95 có thể bị kéo bởi một nhóm request hiếm (long context / research mode) mà user của nhóm đó chấp nhận chờ lâu. Kiểm tra breakdown theo intent + so với trace golden, nếu cohort chính vẫn dưới SLO thì giữ alert nhưng nới ngưỡng riêng cho long-context",
-                  "Rollback ngay. p95 vượt là luôn nguy hiểm",
+                  "Rollback ngay, p95 vượt là luôn nguy hiểm",
                   "Không làm gì, bỏ qua",
                 ]}
                 correct={1}
-                explanation="p95 aggregate che mất cohort. Một tính năng 'deep research' trả sau 15s nhưng user vui vẻ chấp nhận có thể kéo p95 tổng mà không ảnh hưởng UX. Observability tốt phải slice theo intent, route, user tier. không chỉ dashboard tổng. SLO chia theo cohort là practice production trưởng thành."
+                explanation="p95 aggregate che mất cohort. Một tính năng 'deep research' trả sau 15s nhưng user vui vẻ chấp nhận có thể kéo p95 tổng mà không ảnh hưởng UX. Observability tốt phải slice theo intent, route, user tier, không chỉ dashboard tổng. SLO chia theo cohort là practice production trưởng thành."
               />
 
               <InlineChallenge
                 question="Wall-clock trace của một request = 4.5s, nhưng tổng duration cộng lại của 8 span = 6.2s. Vì sao không khớp. Và điều này gợi ý gì?"
                 options={[
-                  "Bug trong instrumentation. span bị đếm sai",
-                  "Có parallelism: một số span chạy song song (ví dụ embed + policy lookup), nên sum(durations) > wall-clock. Ngược lại, nếu sum < wall-clock thì có khoảng gap không được instrument (queue/waiting không được bọc span). cần thêm span cho khoảng đó",
+                  "Bug trong instrumentation, span bị đếm sai",
+                  "Có parallelism: một số span chạy song song (ví dụ embed + policy lookup), nên sum(durations) > wall-clock. Ngược lại, nếu sum < wall-clock thì có khoảng gap không được instrument (queue/waiting không được bọc span), cần thêm span cho khoảng đó",
                   "Clock skew giữa các service",
                   "Retry làm sai wall-clock",
                 ]}
@@ -980,8 +980,8 @@ export default function ObservabilityForAiTopic() {
                 từ <em>tín hiệu bên ngoài</em> mà nó phát ra. Khác với{" "}
                 <em>monitoring</em> (biết trước bạn sẽ đo gì), observability
                 để bạn đặt câu hỏi mới sau khi hệ thống đã chạy. Với LLM
-                app. nơi hành vi phi tất định, phụ thuộc prompt, phụ
-                thuộc phiên bản model. observability không phải một tính
+                app, nơi hành vi phi tất định, phụ thuộc prompt, phụ
+                thuộc phiên bản model, observability không phải một tính
                 năng mà là tiền đề để sống sót trong production.
               </p>
 
@@ -1026,7 +1026,7 @@ export default function ObservabilityForAiTopic() {
               <p>
                 <strong>Vì sao p95 quan trọng hơn mean?</strong> Phân phối
                 latency LLM lệch phải nặng do throttling, context dài, và
-                cold start. Mean bị che bởi đuôi. p95 (percentile thứ 95)
+                cold start. Mean bị che bởi đuôi, p95 (percentile thứ 95)
                 là ngưỡng mà <em>5% request tệ nhất</em> vượt qua, tức là &quot;ngưỡng tệ nhất của trải nghiệm người dùng thông
                 thường&quot;:
               </p>
@@ -1052,7 +1052,7 @@ export default function ObservabilityForAiTopic() {
                 </strong>{" "}
                 OTel đã chuẩn hóa attribute cho LLM dưới namespace{" "}
                 <code>gen_ai.*</code>. Dùng đúng semantic conventions là
-                cách rẻ nhất để khóa chặt code instrumentation với backend. bạn có thể đổi Langfuse → Phoenix → Helicone mà không
+                cách rẻ nhất để khóa chặt code instrumentation với backend, bạn có thể đổi Langfuse → Phoenix → Helicone mà không
                 phải viết lại SDK. Các attribute cốt lõi cần biết:
               </p>
 
@@ -1109,7 +1109,7 @@ GENAI_SYSTEM = "anthropic"
 MODEL = "claude-sonnet-4.7"
 
 def redact_pii(text: str) -> str:
-    # tối giản. production dùng presidio hoặc rule engine đầy đủ
+    # tối giản, production dùng presidio hoặc rule engine đầy đủ
     import re
     text = re.sub(r"\\b\\d{9,12}\\b", "<ID>", text)
     text = re.sub(r"[\\w.+-]+@[\\w-]+\\.[\\w.-]+", "<EMAIL>", text)
@@ -1152,12 +1152,12 @@ def answer(query: str, tenant_id: str) -> str:
               </CodeBlock>
 
               <p>
-                Backend observability cần một điểm thu nhận chung. thường
+                Backend observability cần một điểm thu nhận chung, thường
                 là <strong>OTel Collector</strong> đứng giữa ứng dụng và
                 các backend cụ thể. Cấu hình tối giản cho Langfuse + sampling:
               </p>
 
-              <CodeBlock language="yaml" title="otel-collector.yaml. sampling + Langfuse">
+              <CodeBlock language="yaml" title="otel-collector.yaml, sampling + Langfuse">
                 {`receivers:
   otlp:
     protocols:
@@ -1167,7 +1167,7 @@ def answer(query: str, tenant_id: str) -> str:
         endpoint: 0.0.0.0:4317
 
 processors:
-  # Tail sampling. quyết định sau khi trace xong
+  # Tail sampling, quyết định sau khi trace xong
   tail_sampling:
     decision_wait: 10s
     num_traces: 50000
@@ -1182,7 +1182,7 @@ processors:
         type: probabilistic
         probabilistic: { sampling_percentage: 5 }
 
-  # Chặn PII ở cạnh collector. tầng phòng thủ thứ hai
+  # Chặn PII ở cạnh collector, tầng phòng thủ thứ hai
   attributes/redact:
     actions:
       - key: user.query_preview
@@ -1222,7 +1222,7 @@ service:
                 backend (Langfuse, Phoenix, Grafana Tempo...).
               </Callout>
 
-              <CollapsibleDetail title="Sampling. head vs tail khi trace 1 triệu request/ngày">
+              <CollapsibleDetail title="Sampling, head vs tail khi trace 1 triệu request/ngày">
                 <p className="text-sm">
                   Ở scale production, lưu 100% trace là không thực tế
                   (chi phí storage + egress). Hai chiến lược chính:
@@ -1240,7 +1240,7 @@ service:
                     trace lại, đợi một khoảng (5-30s), rồi quyết định
                     dựa trên policy (status = ERROR, duration &gt; p95,
                     tenant quan trọng). Đắt về CPU/RAM nhưng{" "}
-                    <em>luôn giữ</em> trace lỗi và trace chậm. đúng cái
+                    <em>luôn giữ</em> trace lỗi và trace chậm, đúng cái
                     cần để debug.
                   </li>
                   <li>
@@ -1257,10 +1257,10 @@ service:
                 </p>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Drift detection. data drift vs concept drift, khi nào alert">
+              <CollapsibleDetail title="Drift detection, data drift vs concept drift, khi nào alert">
                 <p className="text-sm">
                   LLM app không đứng im. Phân phối câu hỏi, ngữ cảnh,
-                  thậm chí phiên bản model. đều trôi. Hai loại drift:
+                  thậm chí phiên bản model, đều trôi. Hai loại drift:
                 </p>
                 <ul className="list-disc list-inside text-sm space-y-1 pl-2 mt-2">
                   <li>
@@ -1295,7 +1295,7 @@ service:
                 <TopicLink slug="cost-latency-tokens">
                   cost, latency, tokens
                 </TopicLink>
-                . Muốn hiểu tầng dưới. nơi các span LLM thật sự được
+                . Muốn hiểu tầng dưới, nơi các span LLM thật sự được
                 phục vụ? Xem{" "}
                 <TopicLink slug="model-serving">model serving</TopicLink>.
                 Observability là lớp <em>nhìn xuyên</em> các lớp đó.
@@ -1317,7 +1317,7 @@ service:
               <p>
                 <strong className="text-foreground">Đoán mò (thất bại).</strong>{" "}
                 Team thử scale replica × 3 (không đổi), bật Redis cache
-                trên prompt hash (hit rate 2%. prompt y tế đa dạng), đổi
+                trên prompt hash (hit rate 2%, prompt y tế đa dạng), đổi
                 model từ claude-sonnet-4.7 sang haiku (CSAT tụt thêm).
                 Ba ngày, không fix được.
               </p>
@@ -1333,7 +1333,7 @@ service:
                   <code>retrieve.vector_search</code> = 0.4s (ổn).
                 </li>
                 <li>
-                  <code>retrieve.rerank</code> = 4.1s (bất thường. model
+                  <code>retrieve.rerank</code> = 4.1s (bất thường, model
                   rerank chạy trên CPU, batch size 1).
                 </li>
                 <li>
@@ -1352,7 +1352,7 @@ service:
               </p>
               <p>
                 <strong className="text-foreground">Bài học.</strong>{" "}
-                Không có trace, debug latency là đoán mò. scale,
+                Không có trace, debug latency là đoán mò, scale,
                 cache, đổi model đều là giả thuyết không bằng chứng.
                 Một trace tốt biến câu hỏi &quot;vì sao chậm?&quot;
                 thành một <em>đồ thị trực quan với đáp án nhìn thấy được
@@ -1368,11 +1368,11 @@ service:
             <MiniSummary
               title="Những điều cần nhớ về Observability cho AI"
               points={[
-                "LLM app là distributed system tí hon. một request = 5-10 span. APM HTTP truyền thống không đủ; cần AI-native observability hiểu prompt, token, model, tool.",
-                "Ba trụ cột: Traces (đường đi của MỘT request), Metrics (hành vi tổng hợp), Logs (event chi tiết). mỗi cái trả lời một câu hỏi, bổ sung không thay thế.",
+                "LLM app là distributed system tí hon, một request = 5-10 span. APM HTTP truyền thống không đủ; cần AI-native observability hiểu prompt, token, model, tool.",
+                "Ba trụ cột: Traces (đường đi của MỘT request), Metrics (hành vi tổng hợp), Logs (event chi tiết), mỗi cái trả lời một câu hỏi, bổ sung không thay thế.",
                 "p95 > mean cho LLM vì phân phối latency lệch phải; SLO production luôn viết theo p95 hoặc p99 kèm cửa sổ thời gian, thường chia theo cohort/intent.",
-                "OpenTelemetry semantic conventions cho GenAI (gen_ai.*) là ngôn ngữ chung. dùng đúng để swap backend (Langfuse ↔ Phoenix ↔ Helicone) không phải viết lại SDK.",
-                "Prompt và output chứa PII. redact ở SDK (regex, presidio) + tầng hai ở OTel Collector, kết hợp sampling và retention ngắn cho vùng chứa bản gốc.",
+                "OpenTelemetry semantic conventions cho GenAI (gen_ai.*) là ngôn ngữ chung, dùng đúng để swap backend (Langfuse ↔ Phoenix ↔ Helicone) không phải viết lại SDK.",
+                "Prompt và output chứa PII, redact ở SDK (regex, presidio) + tầng hai ở OTel Collector, kết hợp sampling và retention ngắn cho vùng chứa bản gốc.",
                 "Golden trace + tail sampling là cặp đôi vận hành: golden replay mỗi giờ để bắt drift sớm, tail sampling giữ 100% trace lỗi/chậm để debug khi bị pager.",
               ]}
             />

@@ -1098,7 +1098,7 @@ export default function InstanceSegmentationTopic() {
                 <strong>AR/VR:</strong>{" "}
                 Tách nền video thời gian thực để thay background (Meet, Zoom) — thường dùng
                 mô hình nhẹ như MediaPipe SelfieSegmentation nhưng về bản chất vẫn là instance
-                seg. với 1 lớp.
+                seg, với 1 lớp.
               </li>
             </ul>
           </Callout>

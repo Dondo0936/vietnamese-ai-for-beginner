@@ -41,7 +41,7 @@ const TOTAL_STEPS = 7;
  * Dataset & learner definitions for the VisualizationSection
  *
  * We generate a deterministic 2-class scatter (two noisy gaussians) and
- * define 5 weak learners. each is simply a line boundary defined by
+ * define 5 weak learners, each is simply a line boundary defined by
  * a slope and intercept, plus a confidence weight w_i.
  *
  * Ensemble boundary aggregates sign(score_i(x,y)) × w_i across ACTIVE
@@ -107,8 +107,8 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     question: "Bagging giảm gì: bias hay variance?",
     options: [
-      "BIAS. vì mỗi model yếu được làm cho mạnh lên",
-      "VARIANCE. train nhiều models trên random subsets, average giảm variance (overfitting)",
+      "BIAS, vì mỗi model yếu được làm cho mạnh lên",
+      "VARIANCE, train nhiều models trên random subsets, average giảm variance (overfitting)",
       "Cả hai cùng lúc như nhau",
     ],
     correct: 1,
@@ -118,8 +118,8 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     question: "Boosting giảm gì: bias hay variance?",
     options: [
-      "BIAS. mỗi model mới focus vào lỗi còn lại, dần giảm bias",
-      "VARIANCE. nhiều model giúp cân bằng dự đoán",
+      "BIAS, mỗi model mới focus vào lỗi còn lại, dần giảm bias",
+      "VARIANCE, nhiều model giúp cân bằng dự đoán",
       "Không giảm gì đáng kể",
     ],
     correct: 0,
@@ -150,7 +150,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     question:
       "3 models độc lập, accuracy lần lượt 80%, 82%, 85%. Majority voting. Ensemble có thể đạt bao nhiêu?",
     options: [
-      "85%. không vượt model tốt nhất được",
+      "85%, không vượt model tốt nhất được",
       "87-92%. Khi lỗi DIVERSE, ensemble thường tốt hơn model tốt nhất vài điểm %",
       "100% nếu kết hợp đúng cách",
     ],
@@ -167,7 +167,7 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "VotingClassifier: kết hợp output theo quy tắc đơn giản (hard/soft vote). StackingClassifier: base models → đầu ra của chúng được làm feature cho meta-learner (thường LogReg). meta-learner tự học trọng số tối ưu. Stacking linh hoạt hơn, nhưng dễ overfit, cần CV cẩn thận.",
+      "VotingClassifier: kết hợp output theo quy tắc đơn giản (hard/soft vote). StackingClassifier: base models → đầu ra của chúng được làm feature cho meta-learner (thường LogReg), meta-learner tự học trọng số tối ưu. Stacking linh hoạt hơn, nhưng dễ overfit, cần CV cẩn thận.",
   },
   {
     question:
@@ -185,13 +185,13 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     question:
       "Dataset cực imbalanced (99% negative, 1% positive). Chọn ensemble nào?",
     options: [
-      "RandomForest với mặc định. ensemble luôn giải quyết mọi thứ",
-      "XGBoost với scale_pos_weight hoặc BalancedRandomForest + threshold tuning. ensemble không tự xử lý imbalance",
+      "RandomForest với mặc định, ensemble luôn giải quyết mọi thứ",
+      "XGBoost với scale_pos_weight hoặc BalancedRandomForest + threshold tuning, ensemble không tự xử lý imbalance",
       "Bỏ ensemble, dùng logistic regression đơn thuần",
     ],
     correct: 1,
     explanation:
-      "Ensemble không magic. vẫn cần xử lý imbalance: (1) class weights (scale_pos_weight trong XGBoost, class_weight='balanced' trong RF); (2) oversampling SMOTE / undersampling; (3) threshold tuning dựa trên precision-recall curve thay vì default 0.5.",
+      "Ensemble không magic, vẫn cần xử lý imbalance: (1) class weights (scale_pos_weight trong XGBoost, class_weight='balanced' trong RF); (2) oversampling SMOTE / undersampling; (3) threshold tuning dựa trên precision-recall curve thay vì default 0.5.",
   },
 ];
 
@@ -302,7 +302,7 @@ export default function EnsembleMethodsTopic() {
         <PredictionGate
           question="Bạn hỏi 100 người dự đoán thời tiết ngày mai. Mỗi người đúng 70%, và sai độc lập. Nếu lấy đa số phiếu, độ chính xác sẽ thế nào?"
           options={[
-            "Vẫn 70%. không thể vượt trung bình cá nhân",
+            "Vẫn 70%, không thể vượt trung bình cá nhân",
             "Cao hơn nhiều. ~97% vì lỗi của từng người triệt tiêu nhau khi kết hợp",
             "Thấp hơn 70% vì nhiều ý kiến trái chiều",
           ]}
@@ -484,7 +484,7 @@ export default function EnsembleMethodsTopic() {
                     {mode === "bagging" &&
                       "mỗi learner một phiếu bằng nhau (equal vote). Càng nhiều learner DIVERSE, variance càng giảm."}
                     {mode === "boosting" &&
-                      "learner có trọng số khác nhau. learner sau được tăng trọng số nếu sửa được lỗi của learner trước. Bias giảm dần."}
+                      "learner có trọng số khác nhau, learner sau được tăng trọng số nếu sửa được lỗi của learner trước. Bias giảm dần."}
                     {mode === "stacking" &&
                       "trọng số = (accuracy - 0.5) × 2. gần giống meta-learner đơn giản học cách kết hợp base models."}
                   </p>
@@ -530,8 +530,8 @@ export default function EnsembleMethodsTopic() {
             <InlineChallenge
               question="Model A accuracy 85%, Model B 82%, Model C 80%. Ensemble (voting) có thể đạt bao nhiêu?"
               options={[
-                "85% (bằng model tốt nhất). không thể vượt ceiling này",
-                "87-90%. ensemble thường tốt hơn model tốt nhất 2-5% vì lỗi khác nhau triệt tiêu",
+                "85% (bằng model tốt nhất), không thể vượt ceiling này",
+                "87-90%, ensemble thường tốt hơn model tốt nhất 2-5% vì lỗi khác nhau triệt tiêu",
                 "100% nếu kết hợp đủ nhiều model",
               ]}
               correct={1}
@@ -547,7 +547,7 @@ export default function EnsembleMethodsTopic() {
                   "Chỉ cải thiện khi dữ liệu có noise",
                 ]}
                 correct={1}
-                explanation="Nguyên lý cốt lõi: ensemble giảm variance qua TRIỆT TIÊU noise ĐỘC LẬP. Nếu models giống hệt nhau, errors tương quan 100% → không có gì để trung bình. Random Forest chèn randomness (bootstrap + random features) chính vì vậy. để tạo diversity."
+                explanation="Nguyên lý cốt lõi: ensemble giảm variance qua TRIỆT TIÊU noise ĐỘC LẬP. Nếu models giống hệt nhau, errors tương quan 100% → không có gì để trung bình. Random Forest chèn randomness (bootstrap + random features) chính vì vậy, để tạo diversity."
               />
             </div>
           </LessonSection>
@@ -557,7 +557,7 @@ export default function EnsembleMethodsTopic() {
             <ExplanationSection>
               <p>
                 <strong>Ensemble Methods</strong> kết hợp nhiều models thành
-                1 model mạnh hơn. nguyên lý cơ bản nhất để tăng accuracy
+                1 model mạnh hơn, nguyên lý cơ bản nhất để tăng accuracy
                 sau preprocessing. Trong thực tế, hầu hết các mô hình sản
                 xuất (production) và các mô hình thắng Kaggle đều là
                 ensemble. Xem thêm{" "}
@@ -612,7 +612,7 @@ export default function EnsembleMethodsTopic() {
                 K base models dự đoán, output của chúng trở thành feature
                 đầu vào cho 1 meta-learner <em>g</em> (thường là
                 LogisticRegression hoặc LinearRegression). Meta-learner tự
-                học trọng số tối ưu. linh hoạt hơn voting cố định nhưng
+                học trọng số tối ưu, linh hoạt hơn voting cố định nhưng
                 cũng dễ overfit hơn.
               </p>
 
@@ -677,7 +677,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 rf = RandomForestClassifier(
-    n_estimators=300,          # số cây. càng nhiều càng tốt, tới lúc bão hoà
+    n_estimators=300,          # số cây, càng nhiều càng tốt, tới lúc bão hoà
     max_depth=None,             # None = cây sâu tối đa (giảm bias)
     min_samples_leaf=2,         # chống overfit trên lá quá nhỏ
     max_features="sqrt",        # randomness giữa các split
@@ -693,7 +693,7 @@ print(f"CV AUC = {scores.mean():.3f} ± {scores.std():.3f}")
 rf.fit(X_train, y_train)
 print("Test AUC:", rf.score(X_test, y_test))
 
-# Feature importance. điểm cộng của RF
+# Feature importance, điểm cộng của RF
 import pandas as pd
 imp = pd.Series(rf.feature_importances_, index=X_train.columns)
 print(imp.sort_values(ascending=False).head(10))`}
@@ -744,7 +744,7 @@ print("Stacking test AUC:", stack.score(X_test, y_test))
                   Giả sử bạn có B models độc lập cùng variance σ². Trung
                   bình B models có variance σ²/B (theo công thức cơ bản của
                   Var(mean)). Khi B → ∞, variance → 0. Thực tế, các model
-                  trên bootstrap samples KHÔNG hoàn toàn độc lập. chúng
+                  trên bootstrap samples KHÔNG hoàn toàn độc lập, chúng
                   thấy cùng dataset gốc → correlation ρ &gt; 0.
                 </p>
                 <p className="mt-2 text-sm text-muted leading-relaxed">
@@ -833,7 +833,7 @@ print("Stacking test AUC:", stack.score(X_test, y_test))
               <ol className="mt-2 list-decimal list-inside space-y-1 pl-2 text-sm">
                 <li>Baseline: LogisticRegression + basic features.</li>
                 <li>
-                  RandomForest mặc định. đã thường vượt baseline rõ.
+                  RandomForest mặc định, đã thường vượt baseline rõ.
                 </li>
                 <li>
                   LightGBM tuned kỹ (learning_rate, num_leaves, depth,
@@ -909,7 +909,7 @@ print("Stacking test AUC:", stack.score(X_test, y_test))
               <p>
                 Công thức tổng error = bias² + variance + irreducible
                 noise. Bagging tấn công term thứ hai, boosting tấn công
-                term thứ nhất. vì vậy cả hai được coi là bổ sung nhau.
+                term thứ nhất, vì vậy cả hai được coi là bổ sung nhau.
               </p>
 
               <CodeBlock
@@ -959,7 +959,7 @@ clf3 = KNeighborsClassifier(n_neighbors=7)
 
 vote = VotingClassifier(
     estimators=[("lr", clf1), ("dt", clf2), ("knn", clf3)],
-    voting="soft",   # dùng xác suất. thường tốt hơn hard voting
+    voting="soft",   # dùng xác suất, thường tốt hơn hard voting
     weights=[2, 1, 1],  # linear model mạnh hơn trong trường hợp này
 )
 
@@ -1052,7 +1052,7 @@ print("Voting ensemble AUC:", vote.score(X_test, y_test))`}
               {/* ── XGBOOST CODEBLOCK ── */}
               <CodeBlock
                 language="python"
-                title="XGBoost. baseline thực chiến + early stopping + hyperparameter quan trọng"
+                title="XGBoost, baseline thực chiến + early stopping + hyperparameter quan trọng"
               >
                 {`import xgboost as xgb
 from sklearn.model_selection import train_test_split
@@ -1105,7 +1105,7 @@ for name, score in imp:
               {/* ── LIGHTGBM CODEBLOCK ── */}
               <CodeBlock
                 language="python"
-                title="LightGBM. histogram-based GBDT, nhanh nhất cho dataset lớn"
+                title="LightGBM, histogram-based GBDT, nhanh nhất cho dataset lớn"
               >
                 {`import lightgbm as lgb
 from sklearn.model_selection import StratifiedKFold
@@ -1167,7 +1167,7 @@ print(f"OOF overall:  {roc_auc_score(y_train, oof):.4f}")
               {/* ── CATBOOST CODEBLOCK ── */}
               <CodeBlock
                 language="python"
-                title="CatBoost. xử lý categorical tự động, ít overfit nhất"
+                title="CatBoost, xử lý categorical tự động, ít overfit nhất"
               >
                 {`from catboost import CatBoostClassifier, Pool
 
@@ -1203,10 +1203,10 @@ print(f"Best iteration: {model.get_best_iteration()}")
 print(f"Val AUC: {model.get_best_score()['validation']['AUC']:.4f}")
 
 # CatBoost strengths:
-# 1. Categorical gốc. không cần OneHot, không cần target encoding tự viết.
+# 1. Categorical gốc, không cần OneHot, không cần target encoding tự viết.
 # 2. Symmetric trees → inference CỰC NHANH (O(depth) thay O(n_leaves)).
 # 3. Ordered boosting → giảm prediction shift (gần như cross-validation built-in).
-# 4. Ít overfit hơn XGBoost/LightGBM với default params. tốt cho người mới.`}
+# 4. Ít overfit hơn XGBoost/LightGBM với default params, tốt cho người mới.`}
               </CodeBlock>
 
               {/* ── STACKING CHI TIẾT ── */}
@@ -1224,7 +1224,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
 # ── BASE MODELS đa dạng ──
-# Lý tưởng: mỗi base có "góc nhìn" khác nhau. linear, tree, non-parametric.
+# Lý tưởng: mỗi base có "góc nhìn" khác nhau, linear, tree, non-parametric.
 estimators = [
     ("rf", RandomForestClassifier(
         n_estimators=300, max_features="sqrt", n_jobs=-1, random_state=42,
@@ -1239,7 +1239,7 @@ estimators = [
 ]
 
 # ── META LEARNER ──
-# LogReg regularised là lựa chọn an toàn nhất. ít overfit output base.
+# LogReg regularised là lựa chọn an toàn nhất, ít overfit output base.
 meta = LogisticRegressionCV(
     Cs=[0.01, 0.1, 1.0, 10.0],
     cv=5,
@@ -1287,7 +1287,7 @@ print(f"Stacking AUC: {roc_auc_score(y_test, proba):.4f}")`}
                   {"\\epsilon_m = \\frac{\\sum_i w_i^{(m)} \\mathbb{1}[y_i \\neq f_m(x_i)]}{\\sum_i w_i^{(m)}}"}
                 </LaTeX>
                 <ol className="list-decimal list-inside space-y-1 text-sm text-muted" start={3}>
-                  <li>Trọng số model α_m. càng nhỏ ε_m thì α_m càng lớn:</li>
+                  <li>Trọng số model α_m, càng nhỏ ε_m thì α_m càng lớn:</li>
                 </ol>
                 <LaTeX block>
                   {"\\alpha_m = \\tfrac{1}{2} \\ln\\!\\left(\\tfrac{1 - \\epsilon_m}{\\epsilon_m}\\right)"}
@@ -1321,7 +1321,7 @@ print(f"Stacking AUC: {roc_auc_score(y_test, proba):.4f}")`}
                 <p className="text-sm text-muted leading-relaxed">
                   Gradient Boosting (Friedman 2001) tổng quát hoá AdaBoost
                   cho bất kỳ loss differentiable. Mỗi round fit trên{" "}
-                  <strong className="text-foreground">pseudo-residual</strong>{" "}. đạo hàm âm của loss theo prediction.
+                  <strong className="text-foreground">pseudo-residual</strong>,{" "}đạo hàm âm của loss theo prediction.
                 </p>
                 <p className="mt-2 text-sm text-muted leading-relaxed">
                   Objective tổng: F* = argmin_F Σ L(y_i, F(x_i)). Khởi tạo
@@ -1379,7 +1379,7 @@ print(f"Stacking AUC: {roc_auc_score(y_test, proba):.4f}")`}
                 ensemble của dân Kaggle.
               </Callout>
 
-              <Callout variant="warning" title="Pitfall. target leakage khi stack">
+              <Callout variant="warning" title="Pitfall, target leakage khi stack">
                 Nếu base model thấy target trong FE (vd target encoding
                 không CV), stacking amplifies leak. Mọi transform phụ
                 thuộc y phải fit trong CV fold, không fit trên toàn train.
@@ -1423,7 +1423,7 @@ print(f"Stacking AUC: {roc_auc_score(y_test, proba):.4f}")`}
               points={[
                 "Ensemble kết hợp nhiều model yếu → model mạnh. 'Đồng tay vỗ nên kêu.'",
                 "Bagging (Random Forest): giảm variance. Boosting (XGBoost, LightGBM): giảm bias. Stacking: kết hợp cả hai.",
-                "Hiệu quả khi models DIVERSE. sai ở những chỗ khác nhau → triệt tiêu lỗi.",
+                "Hiệu quả khi models DIVERSE, sai ở những chỗ khác nhau → triệt tiêu lỗi.",
                 "XGBoost/LightGBM vẫn thắng deep learning cho tabular data (80%+ Kaggle competitions).",
                 "Key: diversity > individual accuracy. 3 models 80% diverse > 3 models 90% giống nhau.",
                 "Đừng lạm dụng stacking. LightGBM tuned tốt + feature engineering kỹ đã đi được 90% đường.",

@@ -1544,7 +1544,7 @@ export default function GruTopic() {
               </p>
               <p>
                 <strong>Stacked GRU</strong>: nhiều lớp GRU chồng lên nhau,
-                output của lớp dưới là input của lớp trên. num_layers={"{"}2-3
+                output của lớp dưới là input của lớp trên, num_layers={"{"}2-3
                 {"}"} thường đủ; sâu hơn ít khi có lợi.
               </p>
             </div>

@@ -149,7 +149,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "cosine", accept: ["cos", "cosine similarity", "cô-sin"] },
       { answer: "gần 1", accept: ["cao", "lớn", "gần +1", "~1"] },
     ],
-    explanation: "Cosine similarity không quan tâm độ dài vector, chỉ đo hướng — phù hợp với embeddings chuẩn hoá. cosine = 1 là cùng hướng (đồng nghĩa), cosine = 0 là vuông góc (không liên quan), cosine = -1 là ngược hướng (trái nghĩa, hiếm gặp).",
+    explanation: "Cosine similarity không quan tâm độ dài vector, chỉ đo hướng — phù hợp với embeddings chuẩn hoá, cosine = 1 là cùng hướng (đồng nghĩa), cosine = 0 là vuông góc (không liên quan), cosine = -1 là ngược hướng (trái nghĩa, hiếm gặp).",
   },
 ];
 
@@ -461,7 +461,7 @@ export default function WordEmbeddingsTopic() {
               <p>Cosine similarity đo góc giữa 2 vector (từ -1 đến 1):</p>
               <LaTeX block>{`\\text{cosine}(\\mathbf{u}, \\mathbf{v}) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|}`}</LaTeX>
               <p className="text-sm">
-                cosine({'"phở"'}, {'"bún chả"'}) = 0.85 (rất gần). cosine({'"phở"'}, {'"xe máy"'}) = 0.12 (rất xa).
+                cosine({'"phở"'}, {'"bún chả"'}) = 0.85 (rất gần), cosine({'"phở"'}, {'"xe máy"'}) = 0.12 (rất xa).
               </p>
             </div>
           </Callout>

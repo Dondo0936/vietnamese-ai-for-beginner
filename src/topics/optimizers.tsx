@@ -58,22 +58,22 @@ const OPT_CONFIG: Record<OptimizerName, { color: string; label: string; desc: st
   sgd: {
     color: "#64748b",
     label: "SGD",
-    desc: "Đi theo gradient thuần. zig-zag chậm trên thung lũng hẹp",
+    desc: "Đi theo gradient thuần, zig-zag chậm trên thung lũng hẹp",
   },
   momentum: {
     color: "#3b82f6",
     label: "Momentum",
-    desc: "Tích lũy đà như viên bi lăn. lao thẳng hơn, ít zig-zag",
+    desc: "Tích lũy đà như viên bi lăn, lao thẳng hơn, ít zig-zag",
   },
   rmsprop: {
     color: "#f59e0b",
     label: "RMSProp",
-    desc: "Chia LR theo lịch sử gradient². bước ngắn chiều dao động, bước dài chiều ổn",
+    desc: "Chia LR theo lịch sử gradient², bước ngắn chiều dao động, bước dài chiều ổn",
   },
   adam: {
     color: "#22c55e",
     label: "Adam",
-    desc: "Momentum + RMSProp + bias correction. mặc định phổ biến nhất",
+    desc: "Momentum + RMSProp + bias correction, mặc định phổ biến nhất",
   },
 };
 
@@ -236,7 +236,7 @@ export default function OptimizersTopic() {
       question: "AdamW khác Adam ở điểm nào?",
       options: [
         "AdamW dùng learning rate lớn hơn",
-        "AdamW tách weight decay ra khỏi gradient update. regularization chính xác hơn",
+        "AdamW tách weight decay ra khỏi gradient update, regularization chính xác hơn",
         "AdamW không có bias correction",
         "AdamW chỉ cho CNN, Adam chỉ cho Transformer",
       ],
@@ -266,7 +266,7 @@ export default function OptimizersTopic() {
           options={[
             "Tăng tốc (tăng LR). Nhưng sẽ zig-zag mạnh hơn",
             "Tích lũy đà theo hướng nhất quán (momentum) + tự động giảm tốc chiều dao động",
-            "Đi ngẫu nhiên. may ra tìm đường tắt",
+            "Đi ngẫu nhiên, may ra tìm đường tắt",
             "Dừng lại và đi bộ",
           ]}
           correct={1}
@@ -484,7 +484,7 @@ export default function OptimizersTopic() {
             <strong>Adam = Momentum + RMSProp + Bias Correction.</strong>{" "}
             Momentum tích lũy đà (đi nhanh hướng nhất quán). RMSProp chia LR
             cho chiều dao động (bước ngắn ở trục zig-zag). Bias correction sửa
-            sai lệch ban đầu. Kết quả: hội tụ nhanh + ổn định. như Grab car có
+            sai lệch ban đầu. Kết quả: hội tụ nhanh + ổn định, như Grab car có
             GPS tự động né đường tắc!
           </p>
         </AhaMoment>
@@ -575,7 +575,7 @@ export default function OptimizersTopic() {
                   <td className="py-2 pr-3 font-medium">AdamW</td>
                   <td className="py-2 pr-3">0.001</td>
                   <td className="py-2">
-                    Transformer (GPT, BERT, ViT). weight decay tách riêng
+                    Transformer (GPT, BERT, ViT), weight decay tách riêng
                   </td>
                 </tr>
                 <tr>
@@ -608,7 +608,7 @@ scheduler = optim.lr_scheduler.CosineAnnealingLR(
           </CodeBlock>
 
           <Callout variant="tip" title="Quy tắc chọn optimizer">
-            <strong>Bắt đầu với AdamW(lr=1e-3, weight_decay=0.01)</strong>{" "}. hoạt động tốt cho hầu hết bài toán. Nếu cần squeeze thêm accuracy cho
+            <strong>Bắt đầu với AdamW(lr=1e-3, weight_decay=0.01)</strong>,{" "}hoạt động tốt cho hầu hết bài toán. Nếu cần squeeze thêm accuracy cho
             vision: thử SGD + Momentum + Cosine Annealing. Transformer: bắt buộc AdamW
             + warmup. Nhớ điều chỉnh{" "}
             <TopicLink slug="learning-rate">learning rate</TopicLink>{" "}
@@ -622,9 +622,9 @@ scheduler = optim.lr_scheduler.CosineAnnealingLR(
         <InlineChallenge
           question="Bạn huấn luyện GPT-3 (175B tham số). Nên dùng optimizer nào?"
           options={[
-            "SGD. đơn giản, ít bộ nhớ",
-            "Adam. mặc định tốt",
-            "AdamW + warmup + cosine decay. chuẩn cho LLM",
+            "SGD, đơn giản, ít bộ nhớ",
+            "Adam, mặc định tốt",
+            "AdamW + warmup + cosine decay, chuẩn cho LLM",
           ]}
           correct={2}
           explanation="LLM dùng AdamW (weight decay tách riêng) + warmup (tránh gradient explosion ban đầu) + cosine decay (LR giảm mượt). Lưu ý: Adam cần 2× bộ nhớ so với SGD (lưu m và v cho mỗi tham số)."
@@ -637,7 +637,7 @@ scheduler = optim.lr_scheduler.CosineAnnealingLR(
           title="Optimizers. Điểm chốt"
           points={[
             "Momentum tích lũy đà → ít zig-zag. RMSProp chia LR theo lịch sử gradient² → tự cân bằng trục.",
-            "Adam = Momentum + RMSProp + Bias Correction. mặc định phổ biến nhất.",
+            "Adam = Momentum + RMSProp + Bias Correction, mặc định phổ biến nhất.",
             "AdamW tách weight decay riêng → regularization chính xác hơn, bắt buộc cho Transformer.",
             "SGD + Momentum + LR scheduling cho generalization tốt nhất trên vision tasks.",
             "Adam cần 2× bộ nhớ so với SGD (lưu m, v). Với mô hình 175B tham số, đây là vấn đề thực tế.",
