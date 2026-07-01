@@ -4059,12 +4059,12 @@ export const topicList: TopicMeta[] = [
     title: "Data Preprocessing in Uber ETA",
     titleVi: "Tiền xử lý trong ETA của Uber",
     description:
-      "Uber nhận về hàng tỷ điểm GPS mỗi ngày. Tín hiệu bẩn, lệch, mất sóng, múi giờ lộn xộn. Đi qua từng bước dọn dẹp để thấy một vệt GPS biến từ chấm loạn thành đường đi thật.",
+      "Bạn mở Grab, thấy 'Tài xế đến trong 4 phút'. Grab, Be, Gojek đều giải bài toán này; Uber là hãng công bố chi tiết nhất. Đi qua từng bước dọn dữ liệu GPS để thấy vệt chấm loạn biến thành đường đi thật.",
     category: "foundations",
     tags: ["preprocessing", "eta-prediction", "application"],
     difficulty: "intermediate",
     relatedSlugs: ["data-preprocessing"],
-    vizType: "static",
+    vizType: "interactive",
     applicationOf: "data-preprocessing",
     featuredApp: {
       name: "Uber",

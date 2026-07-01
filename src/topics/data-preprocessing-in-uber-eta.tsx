@@ -40,7 +40,7 @@ export const metadata: TopicMeta = {
   title: "Data Preprocessing in Uber ETA",
   titleVi: "Tiền xử lý trong ETA của Uber",
   description:
-    "Uber nhận về hàng tỷ điểm GPS mỗi ngày. Tín hiệu bẩn, lệch, mất sóng, múi giờ lộn xộn. Đi qua từng bước dọn dẹp để thấy một vệt GPS biến từ chấm loạn thành đường đi thật.",
+    "Bạn mở Grab, thấy 'Tài xế đến trong 4 phút'. Grab, Be, Gojek đều giải bài toán này; Uber là hãng công bố chi tiết nhất. Đi qua từng bước dọn dữ liệu GPS để thấy vệt chấm loạn biến thành đường đi thật.",
   category: "foundations",
   tags: ["preprocessing", "eta-prediction", "application"],
   difficulty: "intermediate",
@@ -98,46 +98,64 @@ export const metadata: TopicMeta = {
    Mỗi "bước dọn dẹp" chiếu một lớp khác lên cùng một tập điểm.
    ──────────────────────────────────────────────────────────── */
 
-type GpsPoint = {
-  t: number;        // timestamp tương đối (giây)
-  lat: number;      // toạ độ x trên SVG (đơn vị tự chọn)
-  lon: number;      // toạ độ y trên SVG
-  dup?: boolean;    // điểm trùng (ping 2 lần)
-  gap?: boolean;    // mất tín hiệu trước điểm này
-  tz?: "UTC" | "local"; // minh hoạ cho bước đổi múi giờ
+/* Một điểm trên bản đồ SVG (đơn vị: pixel trong viewBox 460×300). */
+type XY = { x: number; y: number };
+
+/* Đường đi "thật" trên bản đồ — mục tiêu sau khi làm sạch. */
+const CLEAN_PATH: XY[] = [
+  { x: 60, y: 260 },
+  { x: 90, y: 240 },
+  { x: 125, y: 218 },
+  { x: 160, y: 200 },
+  { x: 195, y: 180 },
+  { x: 228, y: 160 },
+  { x: 262, y: 142 },
+  { x: 295, y: 122 },
+  { x: 328, y: 102 },
+  { x: 362, y: 82 },
+  { x: 395, y: 68 },
+];
+
+/* Loại vấn đề của một điểm GPS thô. */
+type ObsKind = "ok" | "dup" | "tz" | "outlier" | "fill";
+
+/* Một lần "ping" GPS thô từ điện thoại tài xế.
+   x, y   = vị trí thô (nhiễu) đo được trên bản đồ
+   cx, cy = vị trí đúng trên đường sau map-matching
+   t      = thời điểm THẬT (giây tính từ đầu chuyến)
+   tRep   = thời điểm điện thoại BÁO (lệch nếu sai múi giờ) */
+type Obs = {
+  id: string;
+  t: number;
+  tRep: number;
+  x: number;
+  y: number;
+  cx: number;
+  cy: number;
+  kind: ObsKind;
 };
 
-/* Đường đi "thật": sạch, là mục tiêu cuối */
-const CLEAN_PATH: GpsPoint[] = [
-  { t: 0, lat: 60, lon: 260 },
-  { t: 15, lat: 90, lon: 240 },
-  { t: 30, lat: 125, lon: 218 },
-  { t: 45, lat: 160, lon: 200 },
-  { t: 60, lat: 195, lon: 180 },
-  { t: 75, lat: 228, lon: 160 },
-  { t: 90, lat: 262, lon: 142 },
-  { t: 105, lat: 295, lon: 122 },
-  { t: 120, lat: 328, lon: 102 },
-  { t: 135, lat: 362, lon: 82 },
-  { t: 150, lat: 395, lon: 68 },
+/* Vệt GPS thô của một cuốc xe trong nội thành: có nhiễu, một điểm
+   trùng, một khoảng mất tín hiệu, hai điểm sai múi giờ và một ngoại lai. */
+const RAW_OBS: Obs[] = [
+  { id: "p0",  t: 0,   tRep: 0,   x: 74,  y: 248, cx: 60,  cy: 260, kind: "ok" },
+  { id: "p1",  t: 15,  tRep: 15,  x: 78,  y: 252, cx: 90,  cy: 240, kind: "ok" },
+  { id: "p1b", t: 15,  tRep: 15,  x: 84,  y: 246, cx: 90,  cy: 240, kind: "dup" },
+  { id: "p2",  t: 30,  tRep: 30,  x: 140, y: 206, cx: 125, cy: 218, kind: "ok" },
+  { id: "p3",  t: 45,  tRep: 165, x: 148, y: 214, cx: 160, cy: 200, kind: "tz" },
+  { id: "p4",  t: 60,  tRep: 60,  x: 210, y: 192, cx: 195, cy: 180, kind: "ok" },
+  { id: "p5",  t: 75,  tRep: 180, x: 216, y: 148, cx: 228, cy: 160, kind: "tz" },
+  // Khoảng mất tín hiệu: không có ping ở t=90 và t=105 (hầm / đường ngầm).
+  { id: "p8",  t: 120, tRep: 120, x: 342, y: 114, cx: 328, cy: 102, kind: "ok" },
+  { id: "p9",  t: 135, tRep: 135, x: 350, y: 90,  cx: 362, cy: 82,  kind: "ok" },
+  { id: "p10", t: 150, tRep: 150, x: 408, y: 80,  cx: 395, cy: 68,  kind: "ok" },
+  { id: "pX",  t: 150, tRep: 150, x: 452, y: 32,  cx: 395, cy: 68,  kind: "outlier" },
 ];
 
-/* Dữ liệu GPS thô: đã thêm nhiễu, trùng, gap, timezone sai */
-const RAW_POINTS: GpsPoint[] = [
-  { t: 0, lat: 60, lon: 260, tz: "local" },
-  { t: 3, lat: 75, lon: 278, tz: "local" },             // nhiễu urban canyon
-  { t: 15, lat: 90, lon: 240, tz: "UTC" },               // múi giờ khác
-  { t: 15, lat: 90, lon: 240, dup: true, tz: "UTC" },    // duplicate
-  { t: 30, lat: 122, lon: 205, tz: "UTC" },
-  { t: 45, lat: 154, lon: 210, tz: "UTC" },              // lệch
-  { t: 60, lat: 190, lon: 188, tz: "UTC" },
-  { t: 75, lat: 215, lon: 188, tz: "local" },            // lệch
-  { t: 105, lat: 295, lon: 122, gap: true, tz: "local" },// mất 30 s
-  { t: 120, lat: 330, lon: 95, tz: "local" },            // nhiễu
-  { t: 135, lat: 360, lon: 84, tz: "local" },
-  { t: 150, lat: 395, lon: 68, tz: "local" },
-  { t: 150, lat: 480, lon: 20, tz: "local" },            // outlier cực đoan
-];
+/* Điểm nội suy được CHÈN ở bước "interp" để lấp khoảng mất tín hiệu. */
+const FILL_OBS: Obs = {
+  id: "fill", t: 97, tRep: 97, x: 279, y: 131, cx: 295, cy: 122, kind: "fill",
+};
 
 /* ────────────────────────────────────────────────────────────
    Quiz: ≥ 3 câu tiếng Việt, giải thích chi tiết
@@ -226,7 +244,7 @@ const STEP_META: Record<
 > = {
   raw: {
     label: "Raw",
-    subtitle: "GPS thô: 13 điểm, loạn và lệch",
+    subtitle: "GPS thô: loạn, lệch, trùng, mất sóng",
     color: "#ef4444",
     icon: Satellite,
   },
@@ -244,7 +262,7 @@ const STEP_META: Record<
   },
   tz: {
     label: "Convert TZ",
-    subtitle: "Đưa mọi timestamp về 1 múi giờ",
+    subtitle: "Sửa múi giờ: xếp lại đúng thứ tự thời gian",
     color: "#8b5cf6",
     icon: Clock,
   },
@@ -262,70 +280,63 @@ export default function DataPreprocessingInUberEta() {
     "hour",
   );
 
-  const pointsToShow = useMemo(() => {
+  /* Trạng thái hiển thị của vệt GPS ở từng bước.
+     Mỗi điểm GIỮ NGUYÊN id qua các bước, nên framer-motion tween vị trí
+     (điểm trượt mượt) thay vì biến mất rồi hiện lại chỗ khác. Mỗi bước
+     xử lý đúng MỘT loại lỗi nên lúc nào bấm cũng thấy có gì đó thay đổi:
+       dedupe → điểm trùng mờ đi
+       interp → điểm nội suy hiện ra lấp khoảng trống
+       tz     → đường nối hết gấp khúc (sắp lại đúng thứ tự thời gian)
+       snap   → mọi điểm trượt về đúng đường, ngoại lai bay về chỗ */
+  const view = useMemo(() => {
     const idx = STEP_ORDER.indexOf(step);
-    let points = [...RAW_POINTS];
+    const afterDedupe = idx >= 1;
+    const afterInterp = idx >= 2;
+    const afterTz = idx >= 3;
+    const afterSnap = idx >= 4;
 
-    if (idx >= 1) {
-      points = points.filter((p, i, arr) => {
-        if (!p.dup) return true;
-        return (
-          arr.findIndex((q) => q.t === p.t && q.lat === p.lat && !q.dup) === -1
-        );
-      });
+    const base = [...RAW_OBS];
+    if (afterInterp) {
+      // Chèn điểm nội suy vào đúng vị trí thời gian (sau p5, trước p8).
+      base.splice(7, 0, FILL_OBS);
     }
 
-    if (idx >= 2) {
-      const filled: GpsPoint[] = [];
-      for (let i = 0; i < points.length; i++) {
-        filled.push(points[i]);
-        const next = points[i + 1];
-        if (next && next.t - points[i].t > 20) {
-          filled.push({
-            t: (points[i].t + next.t) / 2,
-            lat: (points[i].lat + next.lat) / 2,
-            lon: (points[i].lon + next.lon) / 2,
-            tz: next.tz,
-          });
-        }
-      }
-      points = filled;
-    }
+    const rendered = base
+      .filter((o) => !(afterDedupe && o.kind === "dup"))
+      .map((o) => {
+        const x = afterSnap ? o.cx : o.x;
+        const y = afterSnap ? o.cy : o.y;
 
-    if (idx >= 3) {
-      points = points.map((p) => ({ ...p, tz: "local" as const }));
-    }
+        // Viền cảnh báo cho lỗi CHƯA được xử lý ở bước hiện tại.
+        let ring = "#ffffff";
+        if (!afterDedupe && o.kind === "dup") ring = "#f59e0b";
+        else if (!afterTz && o.kind === "tz") ring = "#8b5cf6";
+        else if (!afterSnap && o.kind === "outlier") ring = "#ef4444";
+        else if (o.kind === "fill") ring = "#10b981";
 
-    if (idx >= 4) {
-      points = points.map((p) => {
-        const closest = CLEAN_PATH.reduce((best, c) => {
-          const dBest =
-            (best.lat - p.lat) ** 2 + (best.lon - p.lon) ** 2;
-          const dNow = (c.lat - p.lat) ** 2 + (c.lon - p.lon) ** 2;
-          return dNow < dBest ? c : best;
-        }, CLEAN_PATH[0]);
+        // Đường nối vẽ theo thứ tự thời gian: sai múi giờ → sai thứ tự → gấp khúc.
+        const order = afterTz ? o.t : o.tRep;
         return {
-          ...p,
-          lat: closest.lat,
-          lon: closest.lon,
+          id: o.id,
+          x,
+          y,
+          ring,
+          kind: o.kind,
+          isFill: o.kind === "fill",
+          order,
         };
-      });
-      points = points.filter(
-        (p, i, arr) =>
-          i === 0 ||
-          p.lat !== arr[i - 1].lat ||
-          p.lon !== arr[i - 1].lon,
-      );
-    }
+      })
+      .sort((a, b) => a.order - b.order);
 
-    return points;
+    return {
+      rendered,
+      pointCount: rendered.length,
+      dupCount: rendered.filter((r) => r.kind === "dup").length,
+      tzMixed: !afterTz,
+    };
   }, [step]);
 
-  /* Thống kê để hiển thị ở banner bên dưới */
-  const pointCount = pointsToShow.length;
-  const dupCount = pointsToShow.filter((p) => p.dup).length;
-  const tzMixed =
-    new Set(pointsToShow.map((p) => p.tz ?? "local")).size > 1;
+  const { rendered, pointCount, dupCount, tzMixed } = view;
 
   /* ETA giả lập: sai số giảm dần theo số bước */
   const etaError = useMemo(() => {
@@ -348,7 +359,7 @@ export default function DataPreprocessingInUberEta() {
           <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1">
             <Car size={14} className="text-emerald-600" />
             <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
-              Uber · DeepETA
+              Grab · Be · Gojek
             </span>
           </div>
           <div className="flex items-center gap-2 rounded-full bg-sky-500/10 border border-sky-500/30 px-3 py-1">
@@ -366,16 +377,18 @@ export default function DataPreprocessingInUberEta() {
         </div>
 
         <p>
-          Bạn mở ứng dụng Uber. Màn hình hiện &ldquo;Tài xế đến trong 4
-          phút.&rdquo; Con số đó không phải đoán mò. Nó đến từ DeepETA, hệ
-          thống deep learning của Uber, phục vụ hàng triệu chuyến đi mỗi
-          ngày ở hơn 10.000 thành phố.
+          Bạn mở Grab. Màn hình hiện &ldquo;Tài xế đến trong 4 phút.&rdquo;
+          Con số đó không phải đoán mò. Grab, Be hay Gojek đều có một hệ thống
+          ước lượng thời gian đến (ETA) chạy phía sau. Uber là hãng công bố
+          chi tiết nhất, hệ thống DeepETA của họ phục vụ hàng triệu chuyến mỗi
+          ngày ở hơn 10.000 thành phố, nên trong bài này ta mổ xẻ hệ thống của
+          Uber để hiểu cách mọi app gọi xe làm sạch dữ liệu GPS.
         </p>
         <p>
-          Trước khi bất kỳ model nào chạy, Uber phải giải bài toán &ldquo;rửa
-          rau&rdquo; trước. Dữ liệu GPS từ hàng triệu điện thoại bị nhiễu,
-          toạ độ nhảy giữa các toà nhà cao tầng, mất tín hiệu trong hầm, múi
-          giờ lộn xộn giữa các chuyến. Không có bước tiền xử lý, ETA có thể
+          Trước khi bất kỳ model nào chạy, các app gọi xe phải giải bài toán
+          &ldquo;rửa rau&rdquo; trước. Dữ liệu GPS từ hàng triệu điện thoại bị
+          nhiễu, toạ độ nhảy giữa các toà nhà cao tầng, mất tín hiệu trong hầm,
+          múi giờ lộn xộn giữa các chuyến. Không có bước tiền xử lý, ETA có thể
           sai hàng chục phút.
         </p>
       </ApplicationHero>
@@ -383,7 +396,7 @@ export default function DataPreprocessingInUberEta() {
       {/* ━━━ PROBLEM ━━━ */}
       <ApplicationProblem topicSlug="data-preprocessing-in-uber-eta">
         <p>
-          Mỗi chiếc điện thoại trong chuyến đi liên tục gửi toạ độ về Uber.
+          Mỗi chiếc điện thoại trong chuyến đi liên tục gửi toạ độ về máy chủ.
           Nhưng tín hiệu thô cực kỳ bẩn:
         </p>
         <div className="not-prose my-4 grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -477,10 +490,13 @@ export default function DataPreprocessingInUberEta() {
               Sandbox 1. Chạy lại từng bước làm sạch một vệt GPS
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
-              Bấm qua các tab dưới đây. Mỗi lần bấm, vệt GPS từ
-              &ldquo;loạn xạ&rdquo; dần dần gọn lại thành một đường đi có
-              thật. Quan sát số điểm, số duplicate và sai số ETA thay đổi
-              ra sao.
+              Đây là vệt GPS thô của một cuốc xe Grab trong nội thành. Bấm lần
+              lượt qua từng tab, mỗi bước sửa đúng một loại lỗi:{" "}
+              <strong>Dedupe</strong> làm mờ điểm ping trùng,{" "}
+              <strong>Interpolate</strong> chèn điểm mới (viền xanh) lấp đoạn
+              mất sóng, <strong>Convert TZ</strong> xếp lại đường nối cho hết
+              gấp khúc, và <strong>Map-match</strong> kéo mọi điểm trượt về đúng
+              lòng đường xanh. Để ý số điểm, số duplicate và sai số ETA đổi theo.
             </p>
 
             {/* Thanh chọn bước */}
@@ -540,8 +556,7 @@ export default function DataPreprocessingInUberEta() {
               </div>
 
               <GpsMap
-                raw={step === "raw" ? RAW_POINTS : null}
-                current={pointsToShow}
+                points={rendered}
                 showClean={step === "snap"}
                 color={STEP_META[step].color}
               />
@@ -873,21 +888,27 @@ function ProblemCard({
 }
 
 function GpsMap({
-  raw,
-  current,
+  points,
   showClean,
   color,
 }: {
-  raw: GpsPoint[] | null;
-  current: GpsPoint[];
+  points: {
+    id: string;
+    x: number;
+    y: number;
+    ring: string;
+    kind: ObsKind;
+    isFill: boolean;
+  }[];
   showClean: boolean;
   color: string;
 }) {
   const W = 460;
   const H = 300;
+  const line = points.map((p) => `${p.x},${p.y}`).join(" ");
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full rounded-lg bg-surface/40">
-      {/* Đường phố giả lập (grid) */}
+      {/* Đường phố giả lập (lưới) */}
       {[60, 110, 160, 210, 260].map((y) => (
         <line
           key={`h-${y}`}
@@ -915,81 +936,81 @@ function GpsMap({
         />
       ))}
 
-      {/* Đường đi sạch (ground truth): luôn có, mờ mờ */}
+      {/* Đường đi thật (ground truth): luôn hiện mờ, rõ hẳn ở bước map-match */}
       <polyline
-        points={CLEAN_PATH.map((p) => `${p.lat},${p.lon}`).join(" ")}
+        points={CLEAN_PATH.map((p) => `${p.x},${p.y}`).join(" ")}
         fill="none"
         stroke="#10b981"
         strokeWidth={2}
         strokeLinecap="round"
-        opacity={showClean ? 0.9 : 0.18}
-        strokeDasharray={showClean ? undefined : "4,4"}
+        strokeLinejoin="round"
+        opacity={showClean ? 0.9 : 0.16}
+        strokeDasharray={showClean ? undefined : "5,5"}
       />
 
-      {/* Raw points mờ nền: chỉ ở bước raw */}
-      {raw?.map((p, i) => (
-        <circle
-          key={`raw-${i}`}
-          cx={p.lat}
-          cy={p.lon}
-          r={4}
-          fill="#94a3b8"
-          opacity={0.3}
-        />
-      ))}
-
-      {/* Current cleaned points: chuyển mượt */}
-      <AnimatePresence>
-        {current.map((p, i) => (
-          <motion.circle
-            key={`cur-${i}-${p.lat}-${p.lon}`}
-            initial={{ opacity: 0, scale: 0.2 }}
-            animate={{ opacity: p.dup ? 0.35 : 0.95, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, delay: i * 0.015 }}
-            cx={p.lat}
-            cy={p.lon}
-            r={p.dup ? 6 : 4.5}
-            fill={color}
-            stroke="white"
-            strokeWidth={1}
-          />
-        ))}
-      </AnimatePresence>
-
-      {/* Line qua các current points */}
+      {/* Đường nối các điểm hiện tại — vẽ lại mỗi bước để thấy thứ tự đổi */}
       <motion.polyline
-        points={current.map((p) => `${p.lat},${p.lon}`).join(" ")}
+        key={line}
+        points={line}
         fill="none"
         stroke={color}
-        strokeWidth={1.5}
+        strokeWidth={1.75}
         strokeLinecap="round"
-        opacity={0.55}
+        strokeLinejoin="round"
+        opacity={0.5}
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
         transition={{ duration: 0.6 }}
       />
 
-      {/* Legend */}
-      <g transform={`translate(20, ${H - 14})`}>
-        <circle cx={0} cy={0} r={3} fill="#94a3b8" opacity={0.4} />
-        <text x={8} y={3} fontSize={11} fill="var(--text-tertiary)">
-          Điểm GPS thô
-        </text>
-        <circle cx={100} cy={0} r={3} fill={color} />
-        <text x={108} y={3} fontSize={11} fill="var(--text-tertiary)">
-          Sau {STEP_META.snap.label === (raw ? "?" : "?") ? "" : ""}bước hiện tại
+      {/* Các điểm GPS — key theo id nên vị trí được tween (trượt) khi đổi bước */}
+      <AnimatePresence>
+        {points.map((p) => (
+          <motion.circle
+            key={p.id}
+            r={5}
+            fill={color}
+            stroke={p.ring}
+            strokeWidth={p.ring === "#ffffff" ? 1 : 2.5}
+            initial={{ opacity: 0 }}
+            animate={{
+              cx: p.x,
+              cy: p.y,
+              opacity: p.kind === "dup" ? 0.5 : 0.95,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              cx: { type: "spring", stiffness: 210, damping: 24 },
+              cy: { type: "spring", stiffness: 210, damping: 24 },
+              opacity: { duration: 0.3 },
+            }}
+          />
+        ))}
+      </AnimatePresence>
+
+      {/* Chú giải */}
+      <g transform={`translate(20, ${H - 12})`}>
+        <circle
+          cx={0}
+          cy={0}
+          r={4}
+          fill={color}
+          stroke="#ffffff"
+          strokeWidth={1}
+        />
+        <text x={10} y={3} fontSize={11} fill="var(--text-tertiary)">
+          Điểm GPS
         </text>
         <line
-          x1={230}
-          x2={245}
+          x1={92}
+          x2={110}
           y1={0}
           y2={0}
           stroke="#10b981"
           strokeWidth={2}
-          strokeDasharray={showClean ? undefined : "4,4"}
+          strokeDasharray={showClean ? undefined : "5,5"}
         />
-        <text x={250} y={3} fontSize={11} fill="var(--text-tertiary)">
+        <text x={116} y={3} fontSize={11} fill="var(--text-tertiary)">
           Đường đi thật trên bản đồ
         </text>
       </g>
