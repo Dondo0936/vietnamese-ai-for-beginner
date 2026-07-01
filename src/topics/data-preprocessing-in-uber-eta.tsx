@@ -212,7 +212,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20–30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các gap, giúp ETA chỉ lệch vài chục giây.",
+      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20-30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các đoạn mất tín hiệu, giúp ETA chỉ lệch vài chục giây.",
   },
   {
     question:
@@ -768,7 +768,7 @@ export default function DataPreprocessingInUberEta() {
                   key="5"
                   color="#10b981"
                   title="Rời rạc hoá feature"
-                  body="Khoảng cách → bucket. Giờ → bucket 30 phút. Toạ độ → lưới đa phân giải. Đây là bước cuối trước khi đưa dữ liệu vào model."
+                  body="Khoảng cách → bucket. Giờ → bucket 2 giờ. Toạ độ → lưới đa phân giải. Đây là bước cuối trước khi đưa dữ liệu vào model."
                 />,
                 <PipelineStage
                   key="6"
@@ -828,7 +828,7 @@ gps["dist_bucket"]  = pd.cut(
 
             <div className="mt-4">
               <InlineChallenge
-                question="DeepETA biến cột 'giờ đặt chuyến' thành 48 bucket (mỗi bucket 30 phút). Lợi ích quan trọng nhất?"
+                question="DeepETA biến cột 'giờ đặt chuyến' thành 12 bucket (mỗi bucket 2 giờ). Lợi ích quan trọng nhất?"
                 options={[
                   "Giảm kích thước model",
                   "Model học được pattern giờ cao điểm ổn định hơn so với giá trị float, đồng thời bớt nhạy với nhiễu nhỏ (17:02 và 17:05 cùng rơi vào một bucket)",
