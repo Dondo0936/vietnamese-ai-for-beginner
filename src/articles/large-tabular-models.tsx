@@ -33,8 +33,10 @@ export default function LargeTabularModelsArticle() {
             Quy trình đó đã thống trị dữ liệu bảng — tabular data — suốt
             hơn một thập kỷ. Nhưng đầu năm 2025, một dạng model mới xuất
             hiện trên <i>Nature</i> đã bắt đầu thay đổi nó. Nhóm tác giả
-            gọi nó là <b>large tabular model</b> (LTM) — đại diện tiêu
-            biểu là TabPFN v2. Khác biệt lớn nhất: bạn không train gì cả.
+            gọi nó là <b>tabular foundation model</b> — model nền cho dữ
+            liệu bảng; giới thực hành hay gọi chung nhóm này là{" "}
+            <b>large tabular model</b> (LTM). Đại diện tiêu biểu là TabPFN
+            v2. Khác biệt lớn nhất: bạn không train gì cả.
             Chỉ đưa 500 dòng đó cho model đã được pretrained, rồi bảo nó
             đoán giùm.
           </p>
