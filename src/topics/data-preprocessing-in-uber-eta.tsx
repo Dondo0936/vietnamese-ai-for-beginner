@@ -105,6 +105,9 @@ type GpsPoint = {
   dup?: boolean;    // điểm trùng (ping 2 lần)
   gap?: boolean;    // mất tín hiệu trước điểm này
   tz?: "UTC" | "local"; // minh hoạ cho bước đổi múi giờ
+  inferred?: boolean;   // điểm được nội suy để lấp gap
+  rawLat?: number;      // toạ độ trước map-match
+  rawLon?: number;
 };
 
 /* Đường đi "thật": sạch, là mục tiêu cuối */
@@ -136,7 +139,7 @@ const RAW_POINTS: GpsPoint[] = [
   { t: 120, lat: 330, lon: 95, tz: "local" },            // nhiễu
   { t: 135, lat: 360, lon: 84, tz: "local" },
   { t: 150, lat: 395, lon: 68, tz: "local" },
-  { t: 150, lat: 480, lon: 20, tz: "local" },            // outlier cực đoan
+  { t: 150, lat: 430, lon: 35, tz: "local" },            // outlier cực đoan
 ];
 
 /* ────────────────────────────────────────────────────────────
@@ -175,7 +178,7 @@ const quizQuestions: QuizQuestion[] = [
       "Uber chia giá trị liên tục (khoảng cách, giờ trong ngày) thành nhóm (bucket) trước khi đưa vào DeepETA. Lý do chính?",
     options: [
       "Để tiết kiệm bộ nhớ",
-      "Giúp model học pattern tốt hơn và giảm ảnh hưởng của ngoại lai. Giờ 17:00 và 17:05 cùng nằm trong nhóm 'giờ cao điểm'",
+      "Giúp model học mẫu ổn định hơn và giảm ảnh hưởng của ngoại lai. Giờ 17:00 và 17:05 cùng nằm trong nhóm 'giờ cao điểm'",
       "Vì model không đọc được số thực",
       "Vì Python không hỗ trợ số thực trên GPU",
     ],
@@ -194,7 +197,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20-30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các gap, giúp ETA chỉ lệch vài chục giây.",
+      "Đây là nền tảng của mọi hệ thống ML production: model chỉ tốt bằng dữ liệu vào. Nhiễu GPS 50 m lặp lại mỗi giây thành hàng triệu điểm sai, kéo theo ETA lệch 20-30 phút. Ngược lại, pipeline sạch đưa sai số vị trí xuống dưới 5 m và lấp luôn các đoạn mất tín hiệu, giúp ETA chỉ lệch vài chục giây.",
   },
   {
     question:
@@ -222,38 +225,100 @@ const STEP_ORDER: CleanStep[] = ["raw", "dedupe", "interp", "tz", "snap"];
 
 const STEP_META: Record<
   CleanStep,
-  { label: string; subtitle: string; color: string; icon: typeof MapPin }
+  {
+    label: string;
+    subtitle: string;
+    detail: string;
+    color: string;
+    icon: typeof MapPin;
+  }
 > = {
   raw: {
     label: "Raw",
-    subtitle: "GPS thô: 13 điểm, loạn và lệch",
+    subtitle: "GPS thô: 13 điểm, có trùng, lệch, mất tín hiệu và múi giờ lẫn lộn",
+    detail:
+      "Đây là dữ liệu ban đầu từ điện thoại. Model chưa nên học trực tiếp từ chuỗi này vì có lỗi ở cả vị trí lẫn thời gian.",
     color: "#ef4444",
     icon: Satellite,
   },
   dedupe: {
     label: "Dedupe",
     subtitle: "Bỏ điểm trùng cùng timestamp",
+    detail:
+      "Bước này chủ yếu đổi số điểm, không đổi hình dạng đường đi. Nếu không bỏ trùng, model có thể hiểu nhầm xe đang đứng yên lâu hơn thực tế.",
     color: "#f59e0b",
     icon: Layers,
   },
   interp: {
     label: "Interpolate",
     subtitle: "Lấp chỗ mất tín hiệu bằng nội suy",
+    detail:
+      "Điểm vòng trắng là điểm được ước lượng giữa hai lần GPS bắt được tín hiệu. Nó giúp chuỗi không bị đứt đoạn trước khi map-match.",
     color: "#3b82f6",
     icon: WifiOff,
   },
   tz: {
     label: "Convert TZ",
     subtitle: "Đưa mọi timestamp về 1 múi giờ",
+    detail:
+      "Bước này sửa metadata thời gian, nên bản đồ gần như không đổi. Thứ cần nhìn là trạng thái múi giờ chuyển từ lẫn lộn sang đồng nhất.",
     color: "#8b5cf6",
     icon: Clock,
   },
   snap: {
     label: "Map-match",
     subtitle: "Kéo mỗi điểm về đoạn đường gần nhất",
+    detail:
+      "Các đường nét đứt cho thấy mỗi điểm được kéo từ vị trí GPS quan sát về đường đi hợp lý trên bản đồ.",
     color: "#10b981",
     icon: MapPin,
   },
+};
+
+const STEP_CHANGE_COPY: Record<
+  CleanStep,
+  { before: string; action: string; after: string; note: string }
+> = {
+  raw: {
+    before: "13 ping GPS",
+    action: "Đánh dấu lỗi",
+    after: "Chưa đưa vào model",
+    note: "Bản đồ hiển thị các lỗi đầu vào: điểm trùng, đoạn mất tín hiệu, điểm lệch và múi giờ lẫn lộn.",
+  },
+  dedupe: {
+    before: "13 điểm, 1 điểm trùng",
+    action: "Bỏ ping cùng t=15s",
+    after: "12 điểm, duplicate = 0",
+    note: "Hình dạng đường gần như giữ nguyên, nhưng chuỗi thời gian không còn làm model tưởng xe đứng yên.",
+  },
+  interp: {
+    before: "Mất tín hiệu 30s",
+    action: "Thêm điểm t=90s",
+    after: "Chuỗi liền mạch hơn",
+    note: "Điểm vòng trắng là dữ liệu ước lượng. Nó không phải GPS thật, nhưng giúp model thấy xe vẫn đang di chuyển.",
+  },
+  tz: {
+    before: "UTC + giờ local",
+    action: "Chuẩn hoá timestamp",
+    after: "Tất cả cùng 1 múi giờ",
+    note: "Bản đồ không nên đổi ở bước này. Phần đổi nằm ở cột thời gian, nên mini timeline được đưa lên mặt bản đồ.",
+  },
+  snap: {
+    before: "GPS lệch khỏi đường",
+    action: "Map-match",
+    after: "Điểm nằm trên tuyến hợp lý",
+    note: "Đây mới là bước hình học lớn: toạ độ được kéo về đoạn đường gần nhất.",
+  },
+};
+
+const STEP_OBSERVATION: Record<CleanStep, string> = {
+  raw: "Bước raw cho thấy vấn đề gốc: chuỗi GPS có lỗi vị trí, lỗi thời gian và đoạn mất tín hiệu cùng lúc. Nếu đưa thẳng vào model, ETA dễ lệch mạnh.",
+  dedupe:
+    "Dedupe là bước nhỏ nhưng quan trọng: bỏ ping trùng cùng timestamp. Bản đồ không đổi nhiều, nhưng bộ đếm duplicate về 0 và chuỗi thời gian bớt gây hiểu nhầm.",
+  interp:
+    "Interpolate thêm một điểm ước lượng giữa hai ping cách nhau 30 giây. Người học cần thấy đây là dữ liệu được tạo ra để lấp khoảng trống, không phải GPS thật.",
+  tz: "Convert TZ không sửa vị trí. Nó sửa ý nghĩa của thời gian: 17:05 UTC và 17:05 giờ địa phương là hai thời điểm rất khác nhau nếu dùng để học giờ cao điểm.",
+  snap: "Map-match là bước làm thay đổi hình học rõ nhất: các điểm GPS lệch được kéo về đường hợp lý, nên sai số ETA giảm mạnh nhất ở cuối pipeline.",
 };
 
 export default function DataPreprocessingInUberEta() {
@@ -286,6 +351,7 @@ export default function DataPreprocessingInUberEta() {
             lat: (points[i].lat + next.lat) / 2,
             lon: (points[i].lon + next.lon) / 2,
             tz: next.tz,
+            inferred: true,
           });
         }
       }
@@ -306,6 +372,8 @@ export default function DataPreprocessingInUberEta() {
         }, CLEAN_PATH[0]);
         return {
           ...p,
+          rawLat: p.lat,
+          rawLon: p.lon,
           lat: closest.lat,
           lon: closest.lon,
         };
@@ -372,11 +440,11 @@ export default function DataPreprocessingInUberEta() {
           ngày ở hơn 10.000 thành phố.
         </p>
         <p>
-          Trước khi bất kỳ model nào chạy, Uber phải giải bài toán &ldquo;rửa
-          rau&rdquo; trước. Dữ liệu GPS từ hàng triệu điện thoại bị nhiễu,
-          toạ độ nhảy giữa các toà nhà cao tầng, mất tín hiệu trong hầm, múi
-          giờ lộn xộn giữa các chuyến. Không có bước tiền xử lý, ETA có thể
-          sai hàng chục phút.
+          Trước khi bất kỳ model nào chạy, Uber phải làm sạch dữ liệu đầu
+          vào. Dữ liệu GPS từ hàng triệu điện thoại bị nhiễu, toạ độ nhảy
+          giữa các toà nhà cao tầng, mất tín hiệu trong hầm, múi giờ lộn xộn
+          giữa các chuyến. Không có bước tiền xử lý, ETA có thể sai hàng chục
+          phút.
         </p>
       </ApplicationHero>
 
@@ -397,7 +465,7 @@ export default function DataPreprocessingInUberEta() {
             icon={WifiOff}
             title="Mất tín hiệu"
             color="#f59e0b"
-            body="Hầm đỗ xe, garage ngầm, đường hầm: GPS mất hàng chục giây. Chuỗi toạ độ xuất hiện 'lỗ đen' mà model không biết cách xử lý."
+            body="Hầm đỗ xe, garage ngầm, đường hầm: GPS mất hàng chục giây. Chuỗi toạ độ bị đứt đoạn, khiến model không biết xe đã đi qua đâu."
           />
           <ProblemCard
             icon={Layers}
@@ -453,7 +521,7 @@ export default function DataPreprocessingInUberEta() {
             trong ngày, ngày trong tuần đều được gộp thành bucket (nhóm).
             Toạ độ (lat, lon) được mã hoá vào lưới đa phân giải. Trung tâm
             Manhattan cần ô lưới nhỏ, còn vùng ngoại ô dùng ô to. Thực nghiệm
-            của Uber cho thấy bucketing giúp model học pattern tốt hơn so
+            của Uber cho thấy bucketing giúp model học mẫu ổn định hơn so
             với giá trị thô.
           </p>
         </Beat>
@@ -477,10 +545,9 @@ export default function DataPreprocessingInUberEta() {
               Sandbox 1. Chạy lại từng bước làm sạch một vệt GPS
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
-              Bấm qua các tab dưới đây. Mỗi lần bấm, vệt GPS từ
-              &ldquo;loạn xạ&rdquo; dần dần gọn lại thành một đường đi có
-              thật. Quan sát số điểm, số duplicate và sai số ETA thay đổi
-              ra sao.
+              Bấm qua từng bước để xem lỗi nào được sửa. Có bước đổi hình
+              dạng đường đi, có bước chỉ đổi số điểm hoặc metadata thời gian,
+              nên phần mô tả dưới bản đồ sẽ nói rõ điều vừa xảy ra.
             </p>
 
             {/* Thanh chọn bước */}
@@ -515,7 +582,7 @@ export default function DataPreprocessingInUberEta() {
               className="rounded-xl border-2 bg-card p-4"
               style={{ borderColor: STEP_META[step].color + "66" }}
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
                     Bản đồ nội thành (giản lược)
@@ -523,15 +590,18 @@ export default function DataPreprocessingInUberEta() {
                   <p className="text-sm font-semibold text-foreground">
                     {STEP_META[step].subtitle}
                   </p>
+                  <p className="mt-1 max-w-2xl text-xs leading-relaxed text-muted">
+                    {STEP_META[step].detail}
+                  </p>
                 </div>
-                <div className="text-right">
+                <div className="sm:text-right">
                   <p className="text-[10px] text-tertiary">Sai số ETA mô phỏng</p>
                   <motion.p
                     key={etaError}
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-xl font-bold tabular-nums"
+                    className="whitespace-nowrap text-xl font-bold tabular-nums"
                     style={{ color: STEP_META[step].color }}
                   >
                     ± {etaError} phút
@@ -539,10 +609,13 @@ export default function DataPreprocessingInUberEta() {
                 </div>
               </div>
 
+              <StepChangeStrip step={step} color={STEP_META[step].color} />
+
               <GpsMap
-                raw={step === "raw" ? RAW_POINTS : null}
+                raw={step === "raw" ? null : RAW_POINTS}
                 current={pointsToShow}
                 showClean={step === "snap"}
+                step={step}
                 color={STEP_META[step].color}
               />
 
@@ -575,11 +648,8 @@ export default function DataPreprocessingInUberEta() {
               </div>
             </div>
 
-            <Callout variant="insight" title="Điều cần quan sát">
-              Ở bước <code>raw</code>, sai số ETA lên tới ±23 phút. Đây là lý do
-              các app giao hàng những năm 2010 liên tục &ldquo;đánh lừa&rdquo;
-              khách. Khi toàn bộ pipeline chạy xong, sai số rớt còn ±2 phút,
-              gần sát con số Uber công bố trên blog DeepETA.
+            <Callout variant="insight" title="Điều cần quan sát ở bước này">
+              {STEP_OBSERVATION[step]}
             </Callout>
           </div>
 
@@ -589,9 +659,9 @@ export default function DataPreprocessingInUberEta() {
               Sandbox 2. Feature engineering trên từng chuyến đi
             </h3>
             <p className="text-sm text-muted mb-3 leading-relaxed">
-              Chọn một đặc trưng, xem Uber rời rạc hoá giá trị liên tục thành
-              nhóm thế nào. Mỗi cột là một bucket. Số chuyến đi được đếm vào
-              ô tương ứng.
+              Chọn một đặc trưng để thấy giá trị thô được đưa vào bucket nào.
+              Biểu đồ bên dưới cho biết dữ liệu huấn luyện có bao nhiêu chuyến
+              trong từng bucket.
             </p>
 
             <div className="flex flex-wrap gap-2 mb-3">
@@ -630,7 +700,7 @@ export default function DataPreprocessingInUberEta() {
               Giờ 17:02 và 17:05 chẳng khác gì nhau về mặt giao thông. Cả hai
               đều thuộc &ldquo;giờ cao điểm&rdquo;. Gộp thành bucket giúp model
               ổn định hơn trước nhiễu nhỏ và đếm đủ dữ liệu mỗi nhóm để học
-              pattern. Ngược lại, toạ độ trung tâm Manhattan cần bucket nhỏ
+              mẫu ổn định. Ngược lại, toạ độ trung tâm Manhattan cần bucket nhỏ
               vì mật độ chuyến đi rất cao, nên Uber dùng lưới đa phân giải.
             </Callout>
           </div>
@@ -748,7 +818,7 @@ gps["dist_bucket"]  = pd.cut(
                 question="DeepETA biến cột 'giờ đặt chuyến' thành 48 bucket (mỗi bucket 30 phút). Lợi ích quan trọng nhất?"
                 options={[
                   "Giảm kích thước model",
-                  "Model học được pattern giờ cao điểm ổn định hơn so với giá trị float, đồng thời bớt nhạy với nhiễu nhỏ (17:02 và 17:05 cùng rơi vào một bucket)",
+                  "Model học được mẫu giờ cao điểm ổn định hơn so với giá trị float, đồng thời bớt nhạy với nhiễu nhỏ (17:02 và 17:05 cùng rơi vào một bucket)",
                   "Tránh phải dùng GPU",
                   "Bỏ qua bước quan trọng khác",
                 ]}
@@ -776,7 +846,7 @@ gps["dist_bucket"]  = pd.cut(
           <MiniSummary
             title="Bốn điều Uber dạy cho pipeline tiền xử lý của bạn"
             points={[
-              "GPS thô bẩn hơn bạn tưởng. Map-matching kéo sai số vị trí từ 50-100 m xuống dưới 5 m.",
+              "GPS thô có nhiều lỗi hơn vẻ ngoài của nó. Map-matching kéo sai số vị trí từ 50-100 m xuống dưới 5 m.",
               "Missing values không chỉ điền bằng mean. Sensor fusion là cách điền missing ở quy mô production.",
               "Rời rạc hoá đặc trưng (bucketing) không phải thủ thuật. DeepETA đo được độ chính xác tốt hơn so với dùng giá trị thô.",
               "Feature real-time qua Kafka: bước tiền xử lý không dừng khi huấn luyện xong, mà chạy liên tục khi serve.",
@@ -825,8 +895,8 @@ gps["dist_bucket"]  = pd.cut(
           Bỏ qua bước tiền xử lý, GPS nhiễu sẽ khiến model nghĩ tài xế đang ở
           toà nhà bên cạnh thay vì trên đường. ETA có thể sai hàng chục phút.
           Ngoại lai (tốc độ 300 km/h do GPS nhảy) kéo lệch mọi thống kê trung
-          bình. Dữ liệu thiếu trong hầm và garage tạo &ldquo;lỗ đen&rdquo;,
-          khiến model không thể tính thời gian qua đoạn.
+          bình. Dữ liệu thiếu trong hầm và garage làm đứt chuỗi toạ độ, khiến
+          model không thể tính thời gian qua đoạn.
         </p>
         <p>
           Tiền xử lý biến dữ liệu thô đầy nhiễu thành đầu vào sạch: map
@@ -872,19 +942,72 @@ function ProblemCard({
   );
 }
 
+function StepChangeStrip({
+  step,
+  color,
+}: {
+  step: CleanStep;
+  color: string;
+}) {
+  const copy = STEP_CHANGE_COPY[step];
+  const parts = [
+    { label: "Trước", value: copy.before },
+    { label: "Thao tác", value: copy.action },
+    { label: "Sau", value: copy.after },
+  ];
+
+  return (
+    <div className="mb-3 border-y border-border/70 py-3">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-stretch">
+        {parts.map((part, index) => (
+          <div key={part.label} className="contents">
+            {index > 0 && (
+              <div className="hidden items-center justify-center px-1 text-tertiary sm:flex">
+                →
+              </div>
+            )}
+            <div className="rounded-md border border-border bg-surface/50 px-3 py-2">
+              <p className="text-[9px] font-semibold uppercase tracking-wide text-tertiary">
+                {part.label}
+              </p>
+              <p className="mt-0.5 text-xs font-semibold text-foreground">
+                {part.value}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p
+        className="mt-2 border-l-2 pl-2 text-xs leading-relaxed text-muted"
+        style={{ borderColor: color }}
+      >
+        {copy.note}
+      </p>
+    </div>
+  );
+}
+
 function GpsMap({
   raw,
   current,
   showClean,
+  step,
   color,
 }: {
   raw: GpsPoint[] | null;
   current: GpsPoint[];
   showClean: boolean;
+  step: CleanStep;
   color: string;
 }) {
   const W = 460;
   const H = 300;
+  const duplicatePoint = RAW_POINTS.find((p) => p.dup);
+  const rawGapStart = RAW_POINTS.find((p) => p.t === 75);
+  const rawGapEnd = RAW_POINTS.find((p) => p.gap);
+  const inferredPoint = current.find((p) => p.inferred);
+  const outlierPoint = RAW_POINTS[RAW_POINTS.length - 1];
+
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full rounded-lg bg-surface/40">
       {/* Đường phố giả lập (grid) */}
@@ -926,7 +1049,7 @@ function GpsMap({
         strokeDasharray={showClean ? undefined : "4,4"}
       />
 
-      {/* Raw points mờ nền: chỉ ở bước raw */}
+      {/* Raw points mờ nền: giữ lại để so sánh sau mỗi bước */}
       {raw?.map((p, i) => (
         <circle
           key={`raw-${i}`}
@@ -934,28 +1057,117 @@ function GpsMap({
           cy={p.lon}
           r={4}
           fill="#94a3b8"
-          opacity={0.3}
+          opacity={0.22}
         />
       ))}
 
-      {/* Current cleaned points: chuyển mượt */}
-      <AnimatePresence>
-        {current.map((p, i) => (
-          <motion.circle
-            key={`cur-${i}-${p.lat}-${p.lon}`}
-            initial={{ opacity: 0, scale: 0.2 }}
-            animate={{ opacity: p.dup ? 0.35 : 0.95, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, delay: i * 0.015 }}
-            cx={p.lat}
-            cy={p.lon}
-            r={p.dup ? 6 : 4.5}
-            fill={color}
-            stroke="white"
-            strokeWidth={1}
+      {step === "raw" && rawGapStart && rawGapEnd && (
+        <>
+          <circle
+            cx={duplicatePoint?.lat ?? 90}
+            cy={duplicatePoint?.lon ?? 240}
+            r={10}
+            fill="none"
+            stroke="#ef4444"
+            strokeWidth={2}
+            strokeDasharray="3,2"
           />
-        ))}
-      </AnimatePresence>
+          <line
+            x1={rawGapStart.lat}
+            y1={rawGapStart.lon}
+            x2={rawGapEnd.lat}
+            y2={rawGapEnd.lon}
+            stroke="#f59e0b"
+            strokeWidth={8}
+            strokeLinecap="round"
+            strokeDasharray="6,5"
+            opacity={0.36}
+          />
+          <circle
+            cx={outlierPoint.lat}
+            cy={outlierPoint.lon}
+            r={9}
+            fill="#ef4444"
+            opacity={0.18}
+          />
+        </>
+      )}
+
+      {step === "dedupe" && duplicatePoint && (
+        <>
+          <circle
+            cx={duplicatePoint.lat}
+            cy={duplicatePoint.lon}
+            r={12}
+            fill="#f59e0b"
+            opacity={0.14}
+          />
+          <line
+            x1={duplicatePoint.lat - 7}
+            y1={duplicatePoint.lon - 7}
+            x2={duplicatePoint.lat + 7}
+            y2={duplicatePoint.lon + 7}
+            stroke="#f59e0b"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+          />
+          <line
+            x1={duplicatePoint.lat + 7}
+            y1={duplicatePoint.lon - 7}
+            x2={duplicatePoint.lat - 7}
+            y2={duplicatePoint.lon + 7}
+            stroke="#f59e0b"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+          />
+        </>
+      )}
+
+      {step === "interp" && rawGapStart && rawGapEnd && inferredPoint && (
+        <>
+          <line
+            x1={rawGapStart.lat}
+            y1={rawGapStart.lon}
+            x2={rawGapEnd.lat}
+            y2={rawGapEnd.lon}
+            stroke="#3b82f6"
+            strokeWidth={7}
+            strokeLinecap="round"
+            strokeDasharray="8,6"
+            opacity={0.32}
+          />
+          <circle
+            cx={inferredPoint.lat}
+            cy={inferredPoint.lon}
+            r={14}
+            fill="#3b82f6"
+            opacity={0.12}
+          />
+        </>
+      )}
+
+      {step === "tz" && (
+        <g transform="translate(24, 28)">
+          <rect
+            width={170}
+            height={62}
+            rx={10}
+            fill="var(--bg-card)"
+            stroke="#8b5cf6"
+            strokeWidth={1.4}
+            opacity={0.96}
+          />
+          <text x={12} y={20} fontSize={10} fontWeight={700} fill="#8b5cf6">
+            TIME NORMALIZATION
+          </text>
+          <text x={12} y={38} fontSize={11} fill="var(--text-primary)">
+            UTC + local → local
+          </text>
+          <text x={12} y={54} fontSize={10} fill="var(--text-tertiary)">
+            5 timestamp UTC đã đổi
+          </text>
+        </g>
+      )}
 
       {/* Line qua các current points */}
       <motion.polyline
@@ -970,6 +1182,71 @@ function GpsMap({
         transition={{ duration: 0.6 }}
       />
 
+      {/* Đường kéo điểm GPS về road segment khi map-match */}
+      {current.map((p, i) => {
+        if (
+          p.rawLat == null ||
+          p.rawLon == null ||
+          (p.rawLat === p.lat && p.rawLon === p.lon)
+        ) {
+          return null;
+        }
+
+        return (
+          <motion.line
+            key={`snap-${i}-${p.rawLat}-${p.rawLon}`}
+            x1={p.rawLat}
+            y1={p.rawLon}
+            x2={p.lat}
+            y2={p.lon}
+            stroke={color}
+            strokeWidth={1.4}
+            strokeDasharray="3,4"
+            opacity={0.45}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.35, delay: i * 0.015 }}
+          />
+        );
+      })}
+
+      {/* Current cleaned points: chuyển mượt */}
+      <AnimatePresence>
+        {current.map((p, i) => (
+          <motion.circle
+            key={`cur-${i}-${p.lat}-${p.lon}-${p.inferred ? "i" : "o"}`}
+            initial={{ opacity: 0, scale: 0.2 }}
+            animate={{ opacity: p.dup ? 0.35 : 0.95, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, delay: i * 0.015 }}
+            cx={p.lat}
+            cy={p.lon}
+            r={p.inferred ? 6 : p.dup ? 6 : 4.5}
+            fill={p.inferred ? "var(--bg-card)" : color}
+            stroke={p.inferred ? color : "white"}
+            strokeWidth={p.inferred ? 2 : 1}
+            strokeDasharray={p.inferred ? "3,2" : undefined}
+          />
+        ))}
+      </AnimatePresence>
+
+      {step === "raw" && (
+        <>
+          <IssueTag x={102} y={225} color="#ef4444" label="trùng t=15s" />
+          <IssueTag x={235} y={145} color="#f59e0b" label="mất 30s" />
+          <IssueTag x={332} y={48} color="#ef4444" label="outlier" />
+          <IssueTag x={142} y={198} color="#8b5cf6" label="UTC lẫn local" />
+        </>
+      )}
+
+      {step === "dedupe" && (
+        <IssueTag x={106} y={226} color="#f59e0b" label="đã bỏ 1 ping" />
+      )}
+
+      {step === "interp" && (
+        <IssueTag x={266} y={138} color="#3b82f6" label="thêm t=90s" />
+      )}
+
       {/* Legend */}
       <g transform={`translate(20, ${H - 14})`}>
         <circle cx={0} cy={0} r={3} fill="#94a3b8" opacity={0.4} />
@@ -978,7 +1255,7 @@ function GpsMap({
         </text>
         <circle cx={100} cy={0} r={3} fill={color} />
         <text x={108} y={3} fontSize={11} fill="var(--text-tertiary)">
-          Sau {STEP_META.snap.label === (raw ? "?" : "?") ? "" : ""}bước hiện tại
+          Sau bước hiện tại
         </text>
         <line
           x1={230}
@@ -994,6 +1271,42 @@ function GpsMap({
         </text>
       </g>
     </svg>
+  );
+}
+
+function IssueTag({
+  x,
+  y,
+  color,
+  label,
+}: {
+  x: number;
+  y: number;
+  color: string;
+  label: string;
+}) {
+  const width = Math.max(56, label.length * 6.4 + 18);
+  return (
+    <g transform={`translate(${x}, ${y})`}>
+      <rect
+        width={width}
+        height={18}
+        rx={9}
+        fill={color}
+        opacity={0.16}
+        stroke={color}
+        strokeWidth={1}
+      />
+      <text
+        x={9}
+        y={12}
+        fontSize={10}
+        fontWeight={700}
+        fill={color}
+      >
+        {label}
+      </text>
+    </g>
   );
 }
 
@@ -1031,6 +1344,51 @@ function FeatureBuckets({
 }: {
   choice: "hour" | "dow" | "dist";
 }) {
+  const transformCopy = {
+    hour: {
+      rawLabel: "Giá trị thô",
+      rawValue: "17:05",
+      bucketLabel: "Bucket",
+      bucketValue: "16-18",
+      modelLabel: "Model nhận",
+      modelValue: "giờ cao điểm chiều",
+      note:
+        "17:02, 17:05 và 17:20 khác nhau vài phút, nhưng tín hiệu giao thông gần giống nhau. Gộp vào một bucket giúp model học xu hướng thay vì ghi nhớ từng phút.",
+    },
+    dow: {
+      rawLabel: "Giá trị thô",
+      rawValue: "Thứ Sáu",
+      bucketLabel: "Bucket",
+      bucketValue: "Sáu",
+      modelLabel: "Model nhận",
+      modelValue: "nhu cầu cuối tuần",
+      note:
+        "Ngày trong tuần là tín hiệu rời rạc tự nhiên. Chuyến tối thứ Sáu thường giống nhau hơn so với một ngày làm việc bình thường.",
+    },
+    dist: {
+      rawLabel: "Giá trị thô",
+      rawValue: "2,4 km",
+      bucketLabel: "Bucket",
+      bucketValue: "1-3 km",
+      modelLabel: "Model nhận",
+      modelValue: "chuyến ngắn",
+      note:
+        "2,1 km và 2,8 km không cần là hai tín hiệu hoàn toàn khác nhau. Bucket khoảng cách giảm nhiễu và làm dữ liệu trong mỗi nhóm đủ dày để học.",
+    },
+  } satisfies Record<
+    "hour" | "dow" | "dist",
+    {
+      rawLabel: string;
+      rawValue: string;
+      bucketLabel: string;
+      bucketValue: string;
+      modelLabel: string;
+      modelValue: string;
+      note: string;
+    }
+  >;
+  const copy = transformCopy[choice];
+
   /* Dữ liệu minh hoạ: 1 ngày chuyến đi giả lập */
   const buckets: { label: string; count: number; highlight?: boolean }[] = (() => {
     if (choice === "hour") {
@@ -1071,33 +1429,67 @@ function FeatureBuckets({
   const maxCount = Math.max(...buckets.map((b) => b.count));
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-end gap-2 h-48">
+    <div className="space-y-4">
+      <div className="border-b border-border pb-3">
+        <div className="grid grid-cols-1 gap-2 text-xs sm:flex sm:flex-wrap sm:items-center">
+          {[
+            { label: copy.rawLabel, value: copy.rawValue },
+            { label: copy.bucketLabel, value: copy.bucketValue },
+            { label: copy.modelLabel, value: copy.modelValue },
+          ].map((item, index) => (
+            <div key={item.label} className="flex items-start gap-2">
+              {index > 0 && (
+                <span className="hidden px-1 pt-4 text-tertiary sm:inline" aria-hidden="true">
+                  →
+                </span>
+              )}
+              <div className="min-w-[112px]">
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-tertiary">
+                  {item.label}
+                </p>
+                <p className="text-sm font-semibold text-foreground">
+                  {item.value}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-muted">{copy.note}</p>
+      </div>
+
+      <div className="flex h-48 items-end gap-2">
         {buckets.map((b) => {
           const h = (b.count / maxCount) * 100;
+          const selected = b.label === copy.bucketValue;
           return (
             <div
               key={b.label}
-              className="flex-1 flex flex-col items-center justify-end"
+              className="flex h-full flex-1 flex-col items-center justify-end"
             >
               <span className="text-[10px] text-muted tabular-nums mb-1">
                 {b.count}
               </span>
-              <motion.div
-                layout
-                initial={{ height: 0 }}
-                animate={{ height: `${h}%` }}
-                transition={{
-                  type: "spring",
-                  stiffness: 160,
-                  damping: 18,
-                }}
-                style={{
-                  backgroundColor: b.highlight ? "#3b82f6" : "#94a3b8",
-                  opacity: b.highlight ? 1 : 0.55,
-                }}
-                className="w-full rounded-t-md"
-              />
+              <div className="flex h-36 w-full items-end">
+                <motion.div
+                  layout
+                  initial={{ height: 0 }}
+                  animate={{ height: `${h}%` }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 160,
+                    damping: 18,
+                  }}
+                  style={{
+                    backgroundColor: selected
+                      ? "#2563eb"
+                      : b.highlight
+                        ? "#0f766e"
+                        : "#94a3b8",
+                    opacity: selected || b.highlight ? 1 : 0.55,
+                  }}
+                  className="min-h-0.5 w-full rounded-t-md"
+                />
+              </div>
               <span className="text-[9px] text-tertiary mt-1 whitespace-nowrap">
                 {b.label}
               </span>
@@ -1105,14 +1497,18 @@ function FeatureBuckets({
           );
         })}
       </div>
-      <div className="flex items-center gap-4 text-[11px] text-muted">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-muted">
         <span className="flex items-center gap-1">
-          <span className="inline-block h-2 w-2 rounded-sm bg-blue-500" />
-          Bucket giờ cao điểm / ngày cuối tuần / khoảng cách thường gặp
+          <span className="inline-block h-2 w-2 rounded-sm bg-blue-600" />
+          Bucket của ví dụ đang xét
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="inline-block h-2 w-2 rounded-sm bg-teal-700" />
+          Bucket có nhiều dữ liệu huấn luyện
         </span>
         <span className="flex items-center gap-1">
           <AlertTriangle size={10} className="text-amber-500" />
-          Model học &ldquo;giờ cao điểm&rdquo; chứ không phải &ldquo;17:02&rdquo;
+          Model học nhóm tín hiệu, không ghi nhớ từng giá trị nhỏ lẻ
         </span>
       </div>
     </div>
