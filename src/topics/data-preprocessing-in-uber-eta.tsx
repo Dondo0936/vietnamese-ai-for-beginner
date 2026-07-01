@@ -755,7 +755,7 @@ export default function DataPreprocessingInUberEta() {
                   key="5"
                   color="#10b981"
                   title="Rời rạc hoá feature"
-                  body="Khoảng cách → bucket. Giờ → bucket 30 phút. Toạ độ → lưới đa phân giải. Đây là bước cuối trước khi đưa dữ liệu vào model."
+                  body="Khoảng cách → bucket. Giờ → bucket 2 giờ. Toạ độ → lưới đa phân giải. Đây là bước cuối trước khi đưa dữ liệu vào model."
                 />,
                 <PipelineStage
                   key="6"
@@ -815,7 +815,7 @@ gps["dist_bucket"]  = pd.cut(
 
             <div className="mt-4">
               <InlineChallenge
-                question="DeepETA biến cột 'giờ đặt chuyến' thành 48 bucket (mỗi bucket 30 phút). Lợi ích quan trọng nhất?"
+                question="DeepETA biến cột 'giờ đặt chuyến' thành 12 bucket (mỗi bucket 2 giờ). Lợi ích quan trọng nhất?"
                 options={[
                   "Giảm kích thước model",
                   "Model học được mẫu giờ cao điểm ổn định hơn so với giá trị float, đồng thời bớt nhạy với nhiễu nhỏ (17:02 và 17:05 cùng rơi vào một bucket)",
