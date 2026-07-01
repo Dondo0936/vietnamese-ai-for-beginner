@@ -95,8 +95,8 @@ type ModelEntry = {
   icon: typeof Film;
   color: string;
   rmse: number;
-  biasLevel: number; // 0–100 (100 = very biased)
-  varianceLevel: number; // 0–100
+  biasLevel: number; // 0-100 (100 = very biased)
+  varianceLevel: number; // 0-100
   description: string;
   whyLikeThis: string;
 };
@@ -381,7 +381,7 @@ function BlendVisualization({ values }: { values: Record<string, number> }) {
               hình riêng
             </>
           ) : (
-            <>Hãy thử tỉ lệ khác. Vùng 40–60% thường cho kết quả tốt nhất.</>
+            <>Hãy thử tỉ lệ khác. Vùng 40-60% thường cho kết quả tốt nhất.</>
           )}
         </div>
       </div>
@@ -767,7 +767,7 @@ export default function BiasVarianceInNetflixPrize() {
         </h3>
         <p className="text-sm text-muted leading-relaxed mb-4">
           Kéo thanh để quyết định bao nhiêu phần trăm trọng số đổ cho Deep MF, phần còn lại cho cây
-          quyết định. Quan sát: thường <strong>một tỉ lệ 40–60%</strong> cho RMSE thấp hơn cả hai mô
+          quyết định. Quan sát: thường <strong>một tỉ lệ 40-60%</strong> cho RMSE thấp hơn cả hai mô
           hình riêng. Đây chính là nguyên lý ensemble cơ bản nhất.
         </p>
 

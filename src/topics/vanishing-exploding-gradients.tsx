@@ -68,7 +68,7 @@ export default function VanishingExplodingGradientsTopic() {
       };
     if (multiplier <= 1.2)
       return {
-        text: "Gradient ổn định — tất cả các lớp đều nhận được tín hiệu đủ mạnh để học.",
+        text: "Gradient ổn định-tất cả các lớp đều nhận được tín hiệu đủ mạnh để học.",
         color: "#22c55e",
       };
     return {
@@ -104,20 +104,20 @@ export default function VanishingExplodingGradientsTopic() {
         "Gradient clipping giải quyết vấn đề nào?",
       options: [
         "Vanishing gradient",
-        "Exploding gradient — cắt gradient không cho vượt ngưỡng",
+        "Exploding gradient-cắt gradient không cho vượt ngưỡng",
         "Cả vanishing và exploding",
         "Overfitting",
       ],
       correct: 1,
       explanation:
-        "Gradient clipping giới hạn norm của gradient (ví dụ max_norm=1.0). Nếu ||g|| > 1.0, thu nhỏ g về 1.0. Chỉ chống exploding — vanishing cần giải pháp khác (ReLU, skip connections).",
+        "Gradient clipping giới hạn norm của gradient (ví dụ max_norm=1.0). Nếu ||g|| > 1.0, thu nhỏ g về 1.0. Chỉ chống exploding-vanishing cần giải pháp khác (ReLU, skip connections).",
     },
     {
       question:
         "ResNet (Residual Network) dùng kỹ thuật gì để huấn luyện mạng 152 lớp?",
       options: [
         "Dùng learning rate cực nhỏ",
-        "Skip connections — cho gradient 'đi tắt' qua các lớp, tránh triệt tiêu",
+        "Skip connections-cho gradient 'đi tắt' qua các lớp, tránh triệt tiêu",
         "Không dùng hàm kích hoạt",
         "Huấn luyện từng lớp riêng lẻ",
       ],
@@ -128,7 +128,7 @@ export default function VanishingExplodingGradientsTopic() {
     {
       type: "fill-blank",
       question:
-        "Trong mạng {blank} (deep networks), gradient lan truyền ngược qua nhiều lớp bằng {blank} rule — tích N hệ số nhỏ hơn 1 sẽ triệt tiêu về 0.",
+        "Trong mạng {blank} (deep networks), gradient lan truyền ngược qua nhiều lớp bằng {blank} rule-tích N hệ số nhỏ hơn 1 sẽ triệt tiêu về 0.",
       blanks: [
         { answer: "sâu", accept: ["deep"] },
         { answer: "chain", accept: ["dây chuyền"] },
@@ -145,10 +145,10 @@ export default function VanishingExplodingGradientsTopic() {
         <PredictionGate
           question="Trò chơi 'truyền tin' qua 10 người: mỗi người thì thầm lại cho người kế tiếp. Nếu mỗi người chỉ nghe được 50% rồi truyền lại, người thứ 10 nghe được bao nhiêu % tin gốc?"
           options={[
-            "50% — chỉ giảm 1 lần",
-            "Khoảng 0.1% — giảm theo cấp số nhân (0.5^10)",
-            "5% — giảm dần đều",
-            "0% — mất hoàn toàn sau 3-4 người",
+            "50%-chỉ giảm 1 lần",
+            "Khoảng 0.1%-giảm theo cấp số nhân (0.5^10)",
+            "5%-giảm dần đều",
+            "0%-mất hoàn toàn sau 3-4 người",
           ]}
           correct={1}
           explanation="0.5^10 ≈ 0.001 = 0.1%! Đây chính là vanishing gradient: qua 10 lớp với hệ số < 1, gradient gần như biến mất. Lớp đầu không nhận được tín hiệu lỗi!"
@@ -342,9 +342,9 @@ export default function VanishingExplodingGradientsTopic() {
         <InlineChallenge
           question="Đạo hàm sigmoid tối đa = 0.25. Qua 20 lớp sigmoid, gradient còn bao nhiêu % so với ban đầu?"
           options={[
-            "25% — chỉ giảm 1 lần",
-            "0.25^20 ≈ 9.1 × 10⁻¹³ — gần bằng 0, mạng KHÔNG THỂ HỌC",
-            "5% — giảm dần tuyến tính",
+            "25%-chỉ giảm 1 lần",
+            "0.25^20 ≈ 9.1 × 10⁻¹³-gần bằng 0, mạng KHÔNG THỂ HỌC",
+            "5%-giảm dần tuyến tính",
           ]}
           correct={1}
           explanation="0.25^20 ≈ 10^-12! Gradient nhỏ hơn 1 phần nghìn tỷ. Lớp đầu hoàn toàn không cập nhật được. Đây là lý do sigmoid bị thay bằng ReLU (đạo hàm = 1 ở vùng dương)."
@@ -466,7 +466,7 @@ class ResBlock(nn.Module):
           </CodeBlock>
 
           <Callout variant="insight" title="Skip connection là đột phá lớn nhất">
-            ResNet (2015) cho thấy skip connection cho phép huấn luyện mạng 152 lớp — trước đó
+            ResNet (2015) cho thấy skip connection cho phép huấn luyện mạng 152 lớp-trước đó
             chỉ 20-30 lớp là giới hạn. Transformer cũng dùng skip connections ở mọi lớp attention.
             Nếu chỉ nhớ một giải pháp: <strong>skip connections + ReLU + BatchNorm</strong>.
           </Callout>
@@ -478,7 +478,7 @@ class ResBlock(nn.Module):
         <InlineChallenge
           question="Loss đột ngột trở thành NaN ở epoch 50. Nguyên nhân có thể nhất là gì?"
           options={[
-            "Underfitting — mô hình quá đơn giản",
+            "Underfitting-mô hình quá đơn giản",
             "Exploding gradient → trọng số tràn số → NaN. Thử gradient clipping hoặc giảm learning rate",
             "Bug trong code forward pass",
           ]}
@@ -490,12 +490,12 @@ class ResBlock(nn.Module):
       {/* ===== STEP 7: MINI SUMMARY ===== */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
-          title="Vanishing & Exploding Gradients — Điểm chốt"
+          title="Vanishing & Exploding Gradients-Điểm chốt"
           points={[
             "Gradient qua N lớp = tích N hệ số. Hệ số < 1 → triệt tiêu (0.5^10 ≈ 0.001). Hệ số > 1 → bùng nổ (2^10 = 1024).",
             "Sigmoid/Tanh có đạo hàm ≤ 0.25 → nguyên nhân chính gây vanishing. ReLU (đạo hàm = 1) giải quyết.",
-            "Skip connections (ResNet) cho gradient đi tắt qua '+x' — đột phá cho mạng sâu 100+ lớp.",
-            "Gradient clipping cắt norm gradient tối đa — first aid cho exploding gradient.",
+            "Skip connections (ResNet) cho gradient đi tắt qua '+x', đột phá cho mạng sâu 100+ lớp.",
+            "Gradient clipping cắt norm gradient tối đa-first aid cho exploding gradient.",
             "Combo: ReLU + BatchNorm + He Init + Skip Connections = mạng sâu ổn định.",
           ]}
         />

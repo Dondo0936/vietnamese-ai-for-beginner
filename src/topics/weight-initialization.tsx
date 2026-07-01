@@ -181,10 +181,10 @@ export default function WeightInitializationTopic() {
       question:
         "Bạn dùng ReLU cho mọi lớp ẩn. Nên chọn initialization nào?",
       options: [
-        "Zeros. đơn giản nhất",
-        "Xavier. phổ biến nhất",
-        "He/Kaiming. thiết kế riêng cho ReLU",
-        "Random lớn. tạo đa dạng",
+        "Zeros, đơn giản nhất",
+        "Xavier, phổ biến nhất",
+        "He/Kaiming, thiết kế riêng cho ReLU",
+        "Random lớn, tạo đa dạng",
       ],
       correct: 2,
       explanation:
@@ -210,10 +210,10 @@ export default function WeightInitializationTopic() {
         <PredictionGate
           question="10 vận động viên chuẩn bị chạy đua. Nếu TẤT CẢ đứng chung một vạch xuất phát chính xác cùng vị trí, kết quả sẽ thế nào?"
           options={[
-            "Công bằng. ai cũng khởi đầu như nhau",
-            "Tất cả chạy giống hệt nhau, không ai vượt lên. vì không có sự khác biệt ban đầu",
+            "Công bằng, ai cũng khởi đầu như nhau",
+            "Tất cả chạy giống hệt nhau, không ai vượt lên, vì không có sự khác biệt ban đầu",
             "Người nhanh nhất vẫn sẽ thắng",
-            "Không ảnh hưởng. chỉ tốc độ mới quan trọng",
+            "Không ảnh hưởng, chỉ tốc độ mới quan trọng",
           ]}
           correct={1}
           explanation="Giống trọng số = 0: tất cả nơ-ron cùng lớp nhận cùng input, tính cùng output, nhận cùng gradient → giống hệt nhau vĩnh viễn! Cần khởi tạo KHÁC NHAU nhưng hợp lý."
@@ -433,7 +433,7 @@ export default function WeightInitializationTopic() {
             <strong>Weight initialization</strong>{" "}
             chọn &quot;vạch xuất phát&quot; cho mạng. Zeros = tất cả đứng cùng chỗ (symmetry).
             Random lớn = nhảy hỗn loạn (exploding). Xavier/He = phân bổ hợp lý để phương sai
-            ổn định qua mọi lớp. giống cách sắp xếp chỗ ngồi trên xe buýt: đều nhau,
+            ổn định qua mọi lớp, giống cách sắp xếp chỗ ngồi trên xe buýt: đều nhau,
             không ai quá chật, không ai quá thoải mái!
           </p>
         </AhaMoment>
@@ -446,7 +446,7 @@ export default function WeightInitializationTopic() {
           options={[
             "Hoàn hảo. He tốt cho mọi activation",
             "Phương sai quá lớn cho tanh → output bão hòa ở ±1 → vanishing gradient. Nên dùng Xavier (Var = 1/fan_in)",
-            "Không ảnh hưởng. initialization không quan trọng",
+            "Không ảnh hưởng, initialization không quan trọng",
           ]}
           correct={1}
           explanation="He nhân 2 để bù ReLU tắt 50%. Tanh không tắt → phương sai quá lớn → tanh bão hòa → gradient gần 0. Quy tắc: ReLU → He, Sigmoid/Tanh → Xavier."
@@ -458,7 +458,7 @@ export default function WeightInitializationTopic() {
         <ExplanationSection>
           <p>
             <strong>Mục tiêu:</strong>{" "}
-            giữ phương sai ổn định qua các lớp. không tăng (bùng nổ) cũng
+            giữ phương sai ổn định qua các lớp, không tăng (bùng nổ) cũng
             không giảm (triệt tiêu){" "}
             (xem{" "}
             <TopicLink slug="vanishing-exploding-gradients">
@@ -483,7 +483,7 @@ export default function WeightInitializationTopic() {
 
           <p>
             Hệ số 2 trong He bù đắp việc ReLU &quot;tắt&quot; 50% output (max(0,x) loại bỏ
-            một nửa phân phối). chọn init phụ thuộc vào{" "}
+            một nửa phân phối), chọn init phụ thuộc vào{" "}
             <TopicLink slug="activation-functions">hàm kích hoạt</TopicLink>.
           </p>
 
@@ -528,11 +528,11 @@ with torch.no_grad():
           question="Fan_in = 10000 (lớp đầu tiên của mạng xử lý ảnh lớn). Xavier init cho Var = 1/10000 = 0.0001. Trọng số sẽ rất nhỏ. Có vấn đề gì không?"
           options={[
             "Trọng số nhỏ = tốt, mạng khiêm tốn ban đầu",
-            "Không vấn đề. variance output vẫn ổn vì nhân 10000 trọng số, tổng bù lại",
-            "Vấn đề lớn. trọng số gần 0, gradient gần 0, mạng không học",
+            "Không vấn đề, variance output vẫn ổn vì nhân 10000 trọng số, tổng bù lại",
+            "Vấn đề lớn, trọng số gần 0, gradient gần 0, mạng không học",
           ]}
           correct={1}
-          explanation="Var(output) = fan_in × Var(w) × Var(input) = 10000 × 0.0001 × 1 = 1. Phương sai output vẫn = 1 dù mỗi trọng số rất nhỏ. đó chính là ý nghĩa của công thức Xavier!"
+          explanation="Var(output) = fan_in × Var(w) × Var(input) = 10000 × 0.0001 × 1 = 1. Phương sai output vẫn = 1 dù mỗi trọng số rất nhỏ, đó chính là ý nghĩa của công thức Xavier!"
         />
       </LessonSection>
 
@@ -545,7 +545,7 @@ with torch.no_grad():
             "Xavier (Var=1/fan_in): giữ phương sai ổn định cho sigmoid/tanh.",
             "He (Var=2/fan_in): bù ReLU tắt 50% → tiêu chuẩn cho ReLU. Nhân 2 so với Xavier.",
             "Quy tắc: ReLU → He, Sigmoid/Tanh → Xavier. Với BatchNorm, init ít quan trọng hơn.",
-            "PyTorch mặc định dùng Kaiming. thường không cần thay đổi trừ khi debug gradient.",
+            "PyTorch mặc định dùng Kaiming, thường không cần thay đổi trừ khi debug gradient.",
           ]}
         />
       </LessonSection>

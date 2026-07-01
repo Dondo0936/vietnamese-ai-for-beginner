@@ -490,8 +490,8 @@ function HiddenSystemPromptDiagram() {
             ràng, không nói dài
           </div>
           <div>
-            <span className="text-purple-600">+</span> Cấu trúc: mở thư – thân
-            thư – kết thư
+            <span className="text-purple-600">+</span> Cấu trúc: mở thư-thân
+            thư-kết thư
           </div>
           <div>
             <span className="text-purple-600">+</span> Ràng buộc: tránh sáo

@@ -253,7 +253,7 @@ const MATCH_PAIRS = [
   },
   {
     left: "Token (mảnh chữ)",
-    right: "Đơn vị nhỏ mà LLM đọc, một từ tiếng Việt thường là 2–3 token.",
+    right: "Đơn vị nhỏ mà LLM đọc, một từ tiếng Việt thường là 2-3 token.",
   },
   {
     left: "Context window (cửa sổ ngữ cảnh)",
@@ -322,7 +322,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "từ", accept: ["token", "chữ", "mảnh chữ"] },
     ],
     explanation:
-      "Token là đơn vị nhỏ nhất mà LLM xử lý. Một từ tiếng Việt có dấu thường tốn 2–3 token. Tiếng Anh một chữ có khi chỉ tốn 1 token, có khi tốn 3.",
+      "Token là đơn vị nhỏ nhất mà LLM xử lý. Một từ tiếng Việt có dấu thường tốn 2-3 token. Tiếng Anh một chữ có khi chỉ tốn 1 token, có khi tốn 3.",
   },
   {
     question:
@@ -335,7 +335,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Nếu hợp đồng vượt quá cửa sổ ngữ cảnh, model sẽ 'quên' phần đầu hoặc phần cuối. Hiện nay Claude, Gemini có ngữ cảnh 200K–2M token, đủ cho hợp đồng dài, nhưng vẫn nên chia nhỏ để an toàn.",
+      "Nếu hợp đồng vượt quá cửa sổ ngữ cảnh, model sẽ 'quên' phần đầu hoặc phần cuối. Hiện nay Claude, Gemini có ngữ cảnh 200K-2M token, đủ cho hợp đồng dài, nhưng vẫn nên chia nhỏ để an toàn.",
   },
   {
     question:
@@ -704,7 +704,7 @@ export default function LLMOverviewTopic() {
 
             <Callout variant="tip" title="Gợi ý thực tế">
               Khi soạn <strong>hợp đồng, báo cáo số liệu</strong>, để temperature
-              thấp (dưới 0.3). Khi nghĩ <strong>tên chiến dịch, lời quảng cáo</strong>, kéo lên 0.8–1.1 cho ý tưởng đỡ giống nhau.
+              thấp (dưới 0.3). Khi nghĩ <strong>tên chiến dịch, lời quảng cáo</strong>, kéo lên 0.8-1.1 cho ý tưởng đỡ giống nhau.
             </Callout>
           </LessonSection>
 
@@ -774,7 +774,7 @@ export default function LLMOverviewTopic() {
 
             <Callout variant="info" title="Mẹo đo trong thực tế">
               Một trang Word (~300 từ tiếng Việt) rơi vào khoảng{" "}
-              <strong>600–900 token</strong>. Hợp đồng 50 trang ≈ 40K token, hầu hết model hiện nay nuốt trọn không vấn đề.
+              <strong>600-900 token</strong>. Hợp đồng 50 trang ≈ 40K token, hầu hết model hiện nay nuốt trọn không vấn đề.
             </Callout>
           </LessonSection>
 

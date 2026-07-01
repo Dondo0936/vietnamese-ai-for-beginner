@@ -27,7 +27,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ============================================================================
- * CONSTANTS — Ví dụ câu tiếng Việt 5 token
+ * CONSTANTS-Ví dụ câu tiếng Việt 5 token
  * ==========================================================================*/
 
 const TOTAL_STEPS = 8;
@@ -36,7 +36,7 @@ const TOTAL_STEPS = 8;
 const TOKENS = ["Tôi", "yêu", "Việt", "Nam", "quá"] as const;
 type TokenIndex = 0 | 1 | 2 | 3 | 4;
 
-// Ma trận điểm "thô" (logits) trước softmax — dạng Q · K^T
+// Ma trận điểm "thô" (logits) trước softmax-dạng Q · K^T
 // Hàng i = attention của token i hướng ra 5 token khác.
 // Giá trị được chọn sao cho phản ánh ngữ nghĩa hợp lý trong tiếng Việt:
 //  - "Tôi"  chú ý vào chính nó + "yêu"
@@ -54,17 +54,17 @@ const RAW_SCORES: number[][] = [
 
 // Vector "value" 3-chiều giả lập cho mỗi token (chỉ để vẽ vector tổng hợp)
 const VALUE_VECS: number[][] = [
-  [0.9, 0.1, 0.2], // Tôi    — nhân vật
-  [0.3, 0.9, 0.2], // yêu    — cảm xúc
-  [0.1, 0.2, 0.9], // Việt   — địa danh
-  [0.1, 0.1, 0.9], // Nam    — địa danh
-  [0.2, 0.7, 0.4], // quá    — mức độ
+  [0.9, 0.1, 0.2], // Tôi   , nhân vật
+  [0.3, 0.9, 0.2], // yêu   , cảm xúc
+  [0.1, 0.2, 0.9], // Việt  , địa danh
+  [0.1, 0.1, 0.9], // Nam   , địa danh
+  [0.2, 0.7, 0.4], // quá   , mức độ
 ];
 
 const VALUE_LABELS = ["người", "cảm xúc", "địa danh"];
 
 /* ============================================================================
- * QUIZ — 8 câu
+ * QUIZ-8 câu
  * ==========================================================================*/
 
 const QUIZ: QuizQuestion[] = [
@@ -73,13 +73,13 @@ const QUIZ: QuizQuestion[] = [
       "Attention weights cho 'Nam' trên câu 'Tôi yêu Việt Nam quá' là [0.02, 0.04, 0.55, 0.36, 0.03]. Điều này nói lên điều gì?",
     options: [
       "Mô hình đang bỏ qua hoàn toàn câu nguồn.",
-      "Khi xử lí 'Nam', mô hình chú ý nhiều nhất vào 'Việt' và 'Nam' — hai thành phần của cụm 'Việt Nam'.",
+      "Khi xử lí 'Nam', mô hình chú ý nhiều nhất vào 'Việt' và 'Nam', hai thành phần của cụm 'Việt Nam'.",
       "Mô hình chú ý đều nhau vào mọi token.",
-      "Đây là lỗi — attention luôn phải là one-hot.",
+      "Đây là lỗi-attention luôn phải là one-hot.",
     ],
     correct: 1,
     explanation:
-      "Tổng 0.55 + 0.36 = 0.91 dồn vào 'Việt' và 'Nam' — vì hai token này cùng tạo thành cụm từ ghép 'Việt Nam'. Đây chính là bản chất của attention: mỗi token tự chọn ai đáng để 'nhìn'.",
+      "Tổng 0.55 + 0.36 = 0.91 dồn vào 'Việt' và 'Nam', vì hai token này cùng tạo thành cụm từ ghép 'Việt Nam'. Đây chính là bản chất của attention: mỗi token tự chọn ai đáng để 'nhìn'.",
   },
   {
     question: "Attention giải quyết vấn đề nào của Seq2Seq cổ điển?",
@@ -97,7 +97,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Trong scaled dot-product attention, tại sao phải chia cho √d_k?",
     options: [
       "Để tăng tốc GPU.",
-      "Để giữ phương sai của dot-product ổn định — nếu không, gradient softmax gần như bằng 0.",
+      "Để giữ phương sai của dot-product ổn định-nếu không, gradient softmax gần như bằng 0.",
       "Để đảm bảo tổng attention bằng 1.",
       "Chỉ là thói quen, không có ý nghĩa.",
     ],
@@ -110,14 +110,14 @@ const QUIZ: QuizQuestion[] = [
     options: ["0", "0.5", "1", "Tùy ngữ cảnh"],
     correct: 2,
     explanation:
-      "Softmax biến điểm thành phân phối xác suất — tổng luôn = 1. Giống chia 100% sự chú ý cho các vị trí nguồn.",
+      "Softmax biến điểm thành phân phối xác suất-tổng luôn = 1. Giống chia 100% sự chú ý cho các vị trí nguồn.",
   },
   {
     question:
       "Khi tăng temperature T trong softmax (score / T), phân phối attention sẽ thay đổi thế nào?",
     options: [
-      "Sắc nét hơn — dồn vào một token duy nhất.",
-      "Phẳng hơn — attention dàn đều ra mọi token.",
+      "Sắc nét hơn-dồn vào một token duy nhất.",
+      "Phẳng hơn-attention dàn đều ra mọi token.",
       "Không đổi.",
       "Đảo ngược thành argmin.",
     ],
@@ -135,7 +135,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "value", accept: ["Value", "V", "giá trị"] },
     ],
     explanation:
-      "Công thức Attention(Q, K, V) = softmax(QK^T / √d_k) · V — hạt nhân của Transformer.",
+      "Công thức Attention(Q, K, V) = softmax(QK^T / √d_k) · V-hạt nhân của Transformer.",
   },
   {
     question:
@@ -161,7 +161,7 @@ const QUIZ: QuizQuestion[] = [
 ];
 
 /* ============================================================================
- * UTILITIES — softmax, color scale
+ * UTILITIES-softmax, color scale
  * ==========================================================================*/
 
 function softmax(scores: number[], temperature: number): number[] {
@@ -242,7 +242,7 @@ export default function AttentionMechanismTopic() {
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 1 — HOOK: dự đoán ai chú ý vào ai
+       * STEP 1-HOOK: dự đoán ai chú ý vào ai
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử thách mở đầu">
         <p className="text-sm text-foreground leading-relaxed mb-3">
@@ -254,17 +254,17 @@ export default function AttentionMechanismTopic() {
         <PredictionGate
           question={`Khi dịch token "Nam", não bạn ưu tiên NHÌN VÀO đâu nhất trong câu nguồn?`}
           options={[
-            '"Tôi" — vì đứng đầu câu, là chủ ngữ.',
-            '"Việt" — vì ghép với "Nam" tạo thành tên riêng "Việt Nam".',
-            '"quá" — vì nó bổ nghĩa cho cả câu.',
+            '"Tôi", vì đứng đầu câu, là chủ ngữ.',
+            '"Việt", vì ghép với "Nam" tạo thành tên riêng "Việt Nam".',
+            '"quá", vì nó bổ nghĩa cho cả câu.',
           ]}
           correct={1}
-          explanation={`Chính xác! Để dịch "Nam" thành "Vietnam", não bạn phải đọc kèm "Việt" — hai token này tạo thành một đơn vị ngữ nghĩa. Attention trong neural network làm đúng việc đó: nó học ra rằng token "Nam" nên "nhìn" vào "Việt" với trọng số cao.`}
+          explanation={`Chính xác! Để dịch "Nam" thành "Vietnam", não bạn phải đọc kèm "Việt", hai token này tạo thành một đơn vị ngữ nghĩa. Attention trong neural network làm đúng việc đó: nó học ra rằng token "Nam" nên "nhìn" vào "Việt" với trọng số cao.`}
         />
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 2 — DISCOVER: Interactive Attention Heatmap
+       * STEP 2-DISCOVER: Interactive Attention Heatmap
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá ma trận chú ý">
         <div className="mb-3 flex items-center justify-between flex-wrap gap-2">
@@ -526,7 +526,7 @@ export default function AttentionMechanismTopic() {
                 }`}
               >
                 <p className="text-[11px] font-semibold text-amber-500 mb-2">
-                  ② α<sub>ij</sub> = softmax(e<sub>ij</sub>) — tổng = 1
+                  ② α<sub>ij</sub> = softmax(e<sub>ij</sub>), tổng = 1
                 </p>
                 <div className="flex gap-1">
                   {attentionRow.map((w, j) => (
@@ -608,7 +608,7 @@ export default function AttentionMechanismTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 3 — AHA MOMENT
+       * STEP 3-AHA MOMENT
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
@@ -621,22 +621,22 @@ export default function AttentionMechanismTopic() {
           </p>
           <p className="text-sm text-muted mt-2">
             Đây là lí do cơ chế này giải bài toán phụ thuộc xa (long-range
-            dependency) mà RNN vật vã suốt thập kỉ — bất kể hai token cách nhau
+            dependency) mà RNN vật vã suốt thập kỉ-bất kể hai token cách nhau
             bao xa, attention chỉ mất một phép nhân ma trận để kết nối chúng.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 4 — FIRST CHALLENGE
+       * STEP 4-FIRST CHALLENGE
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh 1">
         <InlineChallenge
           question="Một hàng attention weights cộng lại bằng 1.07. Điều gì đã sai?"
           options={[
-            "Bình thường — đôi khi softmax cho tổng hơi lớn.",
-            "Chắc chắn có lỗi — softmax luôn cho tổng chính xác bằng 1 theo định nghĩa.",
-            "Đúng rồi — tổng không nhất thiết phải bằng 1.",
+            "Bình thường-đôi khi softmax cho tổng hơi lớn.",
+            "Chắc chắn có lỗi-softmax luôn cho tổng chính xác bằng 1 theo định nghĩa.",
+            "Đúng rồi-tổng không nhất thiết phải bằng 1.",
           ]}
           correct={1}
           explanation="Softmax định nghĩa là exp(x_i) / Σ exp(x_j). Dù điểm thô thế nào, mẫu số chuẩn hoá → tổng phải bằng 1 chính xác (bỏ qua lỗi float). 1.07 → lỗi implementation."
@@ -644,7 +644,7 @@ export default function AttentionMechanismTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 5 — 3-STEP PROCESS với công thức
+       * STEP 5-3-STEP PROCESS với công thức
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Quy trình 3 bước">
         <div className="space-y-3">
@@ -657,7 +657,7 @@ export default function AttentionMechanismTopic() {
             },
             {
               step: "2. Softmax (Normalize)",
-              desc: "Biến điểm thành phân phối xác suất — tổng = 1.",
+              desc: "Biến điểm thành phân phối xác suất-tổng = 1.",
               formula:
                 "\\alpha_{ij} = \\frac{\\exp(e_{ij})}{\\sum_k \\exp(e_{ik})}",
               color: "#f59e0b",
@@ -698,7 +698,7 @@ export default function AttentionMechanismTopic() {
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 6 — EXPLANATION + Callouts + Collapsibles + CodeBlock
+       * STEP 6-EXPLANATION + Callouts + Collapsibles + CodeBlock
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Lý thuyết sâu">
         <ExplanationSection>
@@ -721,17 +721,17 @@ export default function AttentionMechanismTopic() {
               <p>
                 <strong>Additive (Bahdanau 2014):</strong>{" "}
                 <LaTeX>{`\\text{score}(s, h) = v^{\\top} \\tanh(W_1 s + W_2 h)`}</LaTeX>
-                {" "}— học qua mạng MLP nhỏ, linh hoạt nhưng chậm.
+                ,{" "}học qua mạng MLP nhỏ, linh hoạt nhưng chậm.
               </p>
               <p>
                 <strong>Dot-product (Luong 2015):</strong>{" "}
                 <LaTeX>{`\\text{score}(s, h) = s^{\\top} h`}</LaTeX>
-                {" "}— đơn giản, nhanh, nhưng không ổn định khi d lớn.
+                ,{" "}đơn giản, nhanh, nhưng không ổn định khi d lớn.
               </p>
               <p>
                 <strong>Scaled dot-product (Transformer 2017):</strong>{" "}
                 <LaTeX>{`\\text{score}(Q, K) = \\frac{Q K^{\\top}}{\\sqrt{d_k}}`}</LaTeX>
-                {" "}— chia √d_k giải quyết vấn đề variance bùng nổ.
+                ,{" "}chia √d_k giải quyết vấn đề variance bùng nổ.
               </p>
             </div>
           </Callout>
@@ -743,7 +743,7 @@ export default function AttentionMechanismTopic() {
                 encoder. Gọi là <em>cross-attention</em>.
               </p>
               <p>
-                <strong>Self-Attention:</strong> Q, K, V đều từ cùng một chuỗi —
+                <strong>Self-Attention:</strong> Q, K, V đều từ cùng một chuỗi,
                 mỗi token nhìn vào tất cả token khác trong chính nó.
               </p>
               <p>
@@ -767,9 +767,9 @@ export default function AttentionMechanismTopic() {
           <Callout variant="tip" title="Debug attention trong thực tế">
             <p>
               Khi mô hình dịch sai, visualize ma trận attention là bước đầu
-              tiên. Nếu thấy mô hình chú ý sai chỗ — ví dụ khi dịch
+              tiên. Nếu thấy mô hình chú ý sai chỗ-ví dụ khi dịch
               &quot;bank&quot; (ngân hàng) mà attention dồn vào
-              &quot;river&quot; thay vì &quot;money&quot; — bạn biết vấn đề
+              &quot;river&quot; thay vì &quot;money&quot;, bạn biết vấn đề
               nằm ở chỗ học, không phải ở decoder. BertViz và các công cụ như
               <code> exbert </code> hay <code>attention-viewer</code> cho phép
               &quot;mổ&quot; từng đầu attention của các mô hình pre-trained.
@@ -781,7 +781,7 @@ export default function AttentionMechanismTopic() {
             truy vấn cơ sở dữ liệu mềm</strong>. Query giống như câu truy vấn
             SQL. Key giống như chỉ mục (index) của mỗi hàng. Value là nội
             dung. Khác biệt duy nhất: thay vì trả về một hàng duy nhất khớp
-            chính xác, attention trả về một <em>hỗn hợp mờ</em> — trọng số
+            chính xác, attention trả về một <em>hỗn hợp mờ</em>, trọng số
             theo độ khớp giữa query và key.
           </p>
 
@@ -801,7 +801,7 @@ export default function AttentionMechanismTopic() {
               dung&quot; sẵn sàng được tổng hợp.
             </li>
             <li>
-              Ba ma trận W_Q, W_K, W_V được học qua backprop — mạng tự quyết
+              Ba ma trận W_Q, W_K, W_V được học qua backprop-mạng tự quyết
               định thế nào là &quot;khớp&quot;.
             </li>
           </ul>
@@ -828,13 +828,13 @@ export default function AttentionMechanismTopic() {
               </p>
               <p>
                 Thử thực nghiệm (trong paper gốc Transformer): train không
-                chia √d_k trên d_k = 512 — loss gần như không giảm sau epoch
+                chia √d_k trên d_k = 512-loss gần như không giảm sau epoch
                 1. Thêm scale → loss giảm mượt từ epoch đầu.
               </p>
               <LaTeX block>{`\\text{Var}(Q \\cdot K) = d_k \\;\\implies\\; \\text{Var}\\!\\left(\\frac{Q \\cdot K}{\\sqrt{d_k}}\\right) = 1`}</LaTeX>
               <p className="text-muted">
                 Một câu hỏi hay: tại sao không dùng LayerNorm lên logits?
-                Trả lời: được — một số biến thể (NormFormer, SubFormer) làm
+                Trả lời: được-một số biến thể (NormFormer, SubFormer) làm
                 vậy. Nhưng chia √d_k rẻ hơn nhiều và đủ ổn với khởi tạo
                 Xavier / He.
               </p>
@@ -846,7 +846,7 @@ export default function AttentionMechanismTopic() {
               <p>
                 Một đầu attention duy nhất bị ép phải học một &quot;kiểu&quot;
                 quan hệ. Ví dụ, đầu có thể học cú pháp chủ-vị nhưng bỏ qua
-                quan hệ đồng quy chiếu (coreference), hoặc ngược lại — và
+                quan hệ đồng quy chiếu (coreference), hoặc ngược lại-và
                 không có cách nào ép nó làm cả hai cùng lúc một cách cân bằng.
               </p>
               <p>
@@ -865,7 +865,7 @@ export default function AttentionMechanismTopic() {
                 </li>
                 <li>
                   <strong>Đầu C</strong> nhìn vào token kế liền (copy
-                  pattern — kiểu n-gram).
+                  pattern-kiểu n-gram).
                 </li>
                 <li>
                   <strong>Đầu D</strong> chú ý vào token đặc biệt như [CLS],
@@ -873,7 +873,7 @@ export default function AttentionMechanismTopic() {
                 </li>
                 <li>
                   <strong>Đầu E</strong> chú ý theo khoảng cách cố định (chu
-                  kì — giống convolution).
+                  kì-giống convolution).
                 </li>
               </ul>
               <p>
@@ -886,7 +886,7 @@ export default function AttentionMechanismTopic() {
               <p className="text-muted">
                 Một nghịch lí thú vị: các nghiên cứu gần đây (Michel et al.
                 2019) cho thấy nhiều đầu có thể <em>prune</em> đi mà model
-                hầu như không giảm chất lượng — gợi ý rằng multi-head thực
+                hầu như không giảm chất lượng-gợi ý rằng multi-head thực
                 chất đóng vai trò như một dạng regularization / over-parameter
                 giúp model dễ train hơn.
               </p>
@@ -980,7 +980,7 @@ if __name__ == "__main__":
           <p className="mt-4">
             Một điểm thú vị nữa: trong các mô hình ngôn ngữ lớn hiện đại (GPT-4,
             Claude, Gemini), attention không chỉ được dùng để kết nối các
-            token trong cùng một câu — nó còn kết nối các <strong>đoạn văn
+            token trong cùng một câu-nó còn kết nối các <strong>đoạn văn
             bản cách xa hàng nghìn token</strong>. Khi model đọc một tài liệu
             dài và trả lời câu hỏi về đoạn đầu, về mặt cơ học thì attention
             của token trả lời <em>phải</em> nhìn được về token của đoạn đầu.
@@ -992,7 +992,7 @@ if __name__ == "__main__":
             Tuy nhiên, chất lượng attention không đều trên mọi khoảng cách.
             Các thí nghiệm &quot;needle in a haystack&quot; (tìm kim trong
             đống rơm) cho thấy nhiều mô hình có độ chính xác giảm đáng kể ở
-            giữa context dài — hiện tượng gọi là <em>&quot;lost in the
+            giữa context dài-hiện tượng gọi là <em>&quot;lost in the
             middle&quot;</em> (Liu et al. 2023). Nghiên cứu hiện nay tập trung
             vào cải thiện positional encoding (RoPE, ALiBi), attention
             sparsity, và training strategy để attention phân bố đều hơn.
@@ -1011,7 +1011,7 @@ def plot_attention(attn_matrix, tokens):
         attn_matrix.cpu().detach(),
         xticklabels=tokens,
         yticklabels=tokens,
-        cmap="YlOrBr",      # amber scale — giống UI của bài này
+        cmap="YlOrBr",      # amber scale-giống UI của bài này
         annot=True,
         fmt=".2f",
         cbar_kws={"label": "attention weight"},
@@ -1045,7 +1045,7 @@ def attention_for_sentence(model, tokenizer, sentence):
 
 # ─── Bonus: so sánh attention ở các layer khác nhau ───
 def attention_across_layers(model, tokenizer, sentence):
-    """Tạo subplot cho mỗi layer — xem attention evolving theo chiều sâu."""
+    """Tạo subplot cho mỗi layer-xem attention evolving theo chiều sâu."""
     tokens = tokenizer.tokenize(sentence)
     ids = torch.tensor([tokenizer.convert_tokens_to_ids(tokens)])
 
@@ -1104,7 +1104,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 6.5 — Historical & conceptual appendix
+       * STEP 6.5-Historical & conceptual appendix
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection
         step={6}
@@ -1119,7 +1119,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 p-3">
               <p className="text-xs font-semibold text-blue-500 mb-1">
-                2014 — Bahdanau Attention
+                2014-Bahdanau Attention
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Bổ sung attention vào Seq2Seq RNN. Điểm số dùng MLP nhỏ
@@ -1130,18 +1130,18 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
 
             <div className="rounded-lg border border-purple-500/30 bg-purple-500/10 p-3">
               <p className="text-xs font-semibold text-purple-500 mb-1">
-                2015 — Luong Attention
+                2015-Luong Attention
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Đơn giản hoá thành dot-product (nhanh hơn). Đề xuất
-                global vs local attention — local chỉ nhìn cửa sổ nhỏ quanh
+                global vs local attention-local chỉ nhìn cửa sổ nhỏ quanh
                 từ hiện tại.
               </p>
             </div>
 
             <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
               <p className="text-xs font-semibold text-amber-500 mb-1">
-                2017 — Transformer (Attention is All You Need)
+                2017-Transformer (Attention is All You Need)
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Xoá RNN hoàn toàn. Chỉ dùng self-attention + multi-head +
@@ -1151,7 +1151,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
 
             <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3">
               <p className="text-xs font-semibold text-green-500 mb-1">
-                2018-2020 — BERT, GPT-2, T5
+                2018-2020-BERT, GPT-2, T5
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Ba kiến trúc chính: encoder-only (BERT), decoder-only (GPT),
@@ -1161,7 +1161,7 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
 
             <div className="rounded-lg border border-pink-500/30 bg-pink-500/10 p-3">
               <p className="text-xs font-semibold text-pink-500 mb-1">
-                2022 — FlashAttention
+                2022-FlashAttention
               </p>
               <p className="text-xs text-muted leading-relaxed">
                 Tổ chức lại memory access để giảm I/O giữa HBM và SRAM của
@@ -1172,10 +1172,10 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
 
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3">
               <p className="text-xs font-semibold text-red-500 mb-1">
-                2023+ — Linear &amp; Sparse Attention
+                2023+, Linear &amp; Sparse Attention
               </p>
               <p className="text-xs text-muted leading-relaxed">
-                Mamba (SSM), RWKV, Hyena, Longformer — các kiến trúc thay
+                Mamba (SSM), RWKV, Hyena, Longformer-các kiến trúc thay
                 thế attention bằng cơ chế O(n) hoặc O(n log n) để mở rộng
                 context hàng triệu token.
               </p>
@@ -1187,21 +1187,21 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
             tim</strong> của gần như mọi LLM thương mại. Các cải tiến tập
             trung vào <em>tối ưu</em> (FlashAttention, paged attention trong
             vLLM) hoặc <em>lai ghép</em> (attention cho context ngắn, SSM
-            cho context dài — như Jamba, Griffin).
+            cho context dài-như Jamba, Griffin).
           </p>
         </div>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 7 — SECOND CHALLENGE + MINI SUMMARY
+       * STEP 7-SECOND CHALLENGE + MINI SUMMARY
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Thử thách nhanh 2 + Tóm tắt">
         <InlineChallenge
           question="Bạn có 1 head attention và 1 câu 1024 token. Trên GPU với 24GB VRAM, chuyện gì hay xảy ra?"
           options={[
-            "Chạy mượt — 1024 chưa đáng kể.",
+            "Chạy mượt-1024 chưa đáng kể.",
             "Có thể OOM nếu dùng fp32, vì ma trận attention 1024² × 4 byte ≈ 4MB mỗi mẫu, nhân với batch × layers × heads là rất lớn.",
-            "Không bao giờ OOM — attention rất nhẹ.",
+            "Không bao giờ OOM-attention rất nhẹ.",
           ]}
           correct={1}
           explanation="Attention O(n²) × batch × heads × layers cộng dồn rất nhanh. FlashAttention và gradient checkpointing giúp tiết kiệm VRAM đáng kể. Đây là lí do LLM hiện đại dùng context window có giới hạn và đầu tư vào sparse attention."
@@ -1216,14 +1216,14 @@ def temperature_sweep(raw_scores, tokens, temperatures=(0.2, 1.0, 5.0)):
               "Chia √d_k giữ variance của điểm thô ~ 1 để softmax không bão hoà.",
               "Softmax temperature nhỏ → quyết đoán (one-hot); lớn → dàn đều.",
               "Multi-head = h đầu song song; mỗi đầu học một loại quan hệ khác.",
-              "Độ phức tạp O(n²) là rào cản context dài — FlashAttention / sparse attention giải quyết.",
+              "Độ phức tạp O(n²) là rào cản context dài-FlashAttention / sparse attention giải quyết.",
             ]}
           />
         </div>
       </LessonSection>
 
       {/* ══════════════════════════════════════════════════════════════════════
-       * STEP 8 — QUIZ
+       * STEP 8-QUIZ
        * ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra hiểu biết">
         <QuizSection questions={QUIZ} />

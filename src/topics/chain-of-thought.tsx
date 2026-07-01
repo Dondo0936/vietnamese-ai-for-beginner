@@ -307,7 +307,7 @@ interface PromptTemplate {
 const PROMPT_TEMPLATES: PromptTemplate[] = [
   {
     tag: "Báo cáo tài chính",
-    title: "Khi cần tách – cộng nhiều khoản",
+    title: "Khi cần tách-cộng nhiều khoản",
     icon: FileText,
     tone: "info",
     situation:
@@ -391,7 +391,7 @@ function ZeroVsFewShotDiagram() {
           <span className="rounded-full bg-accent-light px-2 py-0.5 text-xs font-semibold text-accent-dark">
             Few-shot CoT
           </span>
-          <span className="text-xs text-muted">Kèm 1–2 ví dụ mẫu</span>
+          <span className="text-xs text-muted">Kèm 1-2 ví dụ mẫu</span>
         </div>
         <p className="mb-3 text-sm text-foreground/90 leading-relaxed">
           Bạn cho AI thấy trước một bài mẫu đã trình bày theo đúng style bạn
@@ -872,7 +872,7 @@ export default function ChainOfThoughtTopic() {
               {
                 left: "Few-shot CoT",
                 right:
-                  "Cho AI thấy trước 1–2 ví dụ đã trình bày theo style bạn muốn",
+                  "Cho AI thấy trước 1-2 ví dụ đã trình bày theo style bạn muốn",
               },
               {
                 left: "Token",
@@ -922,7 +922,7 @@ export default function ChainOfThoughtTopic() {
           />
         </div>
 
-        <Callout variant="warning" title="Cảnh báo chi phí – thời gian">
+        <Callout variant="warning" title="Cảnh báo chi phí-thời gian">
           Chain-of-Thought <strong>làm câu trả lời dài hơn</strong>, nên AI
           cũng tính nhiều token hơn (với bản trả phí) và đợi lâu hơn vài
           giây. Chỉ bật CoT cho những việc thực sự nhiều bước. Với câu hỏi
@@ -950,7 +950,7 @@ export default function ChainOfThoughtTopic() {
           "Chain-of-Thought là cách ĐẶT CÂU HỎI, bắt AI viết nháp từng bước thay vì nhảy thẳng tới đáp án.",
           "Dùng khi việc có nhiều bước: lương thưởng, thuế, so sánh lựa chọn, lên lịch, báo cáo nhiều đề mục.",
           "Không dùng cho câu hỏi một bước như chào hỏi, tra cứu, dịch câu ngắn, sẽ tốn thời gian vô ích.",
-          "Zero-shot CoT: thêm câu 'Hãy suy nghĩ từng bước'. Few-shot CoT: kèm 1–2 ví dụ mẫu theo đúng format bạn muốn.",
+          "Zero-shot CoT: thêm câu 'Hãy suy nghĩ từng bước'. Few-shot CoT: kèm 1-2 ví dụ mẫu theo đúng format bạn muốn.",
           "Đánh đổi: câu trả lời dài hơn, tốn token hơn, đợi lâu hơn, nhưng đúng hơn ở những việc nhiều mắt xích.",
         ]}
       />

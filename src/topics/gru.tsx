@@ -96,7 +96,7 @@ const COMPARE: CompareRow[] = [
 ];
 
 /* ════════════════════════════════════════════════════════════
-   QUIZ — 8 CÂU HỎI
+   QUIZ-8 CÂU HỎI
    ════════════════════════════════════════════════════════════ */
 const quizQuestions: QuizQuestion[] = [
   {
@@ -115,7 +115,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Khi nào nên chọn GRU thay vì LSTM?",
     options: [
       "Khi dataset rất lớn (>1M mẫu)",
-      "Khi dataset nhỏ hoặc cần tốc độ — ít tham số → ít overfitting, train nhanh hơn",
+      "Khi dataset nhỏ hoặc cần tốc độ-ít tham số → ít overfitting, train nhanh hơn",
       "Khi chuỗi rất dài (>1000 bước)",
       "Khi cần sinh text",
     ],
@@ -141,20 +141,20 @@ const quizQuestions: QuizQuestion[] = [
     options: ["0.25P", "0.5P", "0.75P", "1.5P"],
     correct: 2,
     explanation:
-      "GRU có 3 ma trận trọng số (Wr, Wz, W) thay vì 4 (Wf, Wi, Wo, Wc) của LSTM — tỷ lệ ~3/4 = 0.75P. Đây là lý do GRU nhẹ hơn ~25%.",
+      "GRU có 3 ma trận trọng số (Wr, Wz, W) thay vì 4 (Wf, Wi, Wo, Wc) của LSTM-tỷ lệ ~3/4 = 0.75P. Đây là lý do GRU nhẹ hơn ~25%.",
   },
   {
     question:
       "Tại sao GRU dùng biểu thức (1-zₜ) thay vì một cổng riêng biệt?",
     options: [
       "Để tiết kiệm bộ nhớ GPU",
-      "Để ép ràng buộc zₜ + (1-zₜ) = 1 — giữ cũ và thêm mới luôn tổng 100%",
-      "Vì lịch sử — Cho et al. thích số 1",
+      "Để ép ràng buộc zₜ + (1-zₜ) = 1-giữ cũ và thêm mới luôn tổng 100%",
+      "Vì lịch sử-Cho et al. thích số 1",
       "Để không cần hàm sigmoid",
     ],
     correct: 1,
     explanation:
-      "LSTM cho phép forget gate và input gate độc lập — tổng có thể >1 hoặc <1. GRU ép ràng buộc chặt: nếu giữ 70% cũ thì tự động thêm 30% mới. Ít tham số hơn mà ổn định hơn trong nhiều trường hợp.",
+      "LSTM cho phép forget gate và input gate độc lập-tổng có thể >1 hoặc <1. GRU ép ràng buộc chặt: nếu giữ 70% cũ thì tự động thêm 30% mới. Ít tham số hơn mà ổn định hơn trong nhiều trường hợp.",
   },
   {
     question:
@@ -174,7 +174,7 @@ const quizQuestions: QuizQuestion[] = [
       "GRU có thể giải quyết hoàn toàn vanishing gradient như Transformer không?",
     options: [
       "Có, GRU tốt hơn Transformer",
-      "Không hoàn toàn — vẫn có thể vanishing với chuỗi rất dài (>500 bước)",
+      "Không hoàn toàn-vẫn có thể vanishing với chuỗi rất dài (>500 bước)",
       "Có, chỉ khi dùng tanh",
       "Không bao giờ có vanishing gradient",
     ],
@@ -187,13 +187,13 @@ const quizQuestions: QuizQuestion[] = [
       "Khi zₜ = 0.5 đều đặn, GRU hoạt động giống mô hình nào nhất?",
     options: [
       "RNN thuần túy",
-      "Trung bình trượt có trọng số giữa hₜ₋₁ và h̃ₜ — giống moving average với α=0.5",
+      "Trung bình trượt có trọng số giữa hₜ₋₁ và h̃ₜ-giống moving average với α=0.5",
       "Transformer với 1 head",
       "Không có gì tương đương",
     ],
     correct: 1,
     explanation:
-      "hₜ = 0.5·hₜ₋₁ + 0.5·h̃ₜ — đây chính là exponential moving average (EMA) với hệ số 0.5. Điều hay là GRU HỌC được giá trị zₜ phù hợp cho từng bước, từng chiều — không phải α cố định.",
+      "hₜ = 0.5·hₜ₋₁ + 0.5·h̃ₜ-đây chính là exponential moving average (EMA) với hệ số 0.5. Điều hay là GRU HỌC được giá trị zₜ phù hợp cho từng bước, từng chiều-không phải α cố định.",
   },
 ];
 
@@ -221,14 +221,14 @@ export default function GruTopic() {
   );
 
   /* ──────────────────────────────────────────────────────────
-     TÍNH TOÁN GRU CELL — Live values từ slider
+     TÍNH TOÁN GRU CELL-Live values từ slider
      Dùng giá trị trọng số giả để demo ý tưởng
      ────────────────────────────────────────────────────────── */
   const cellValues = useMemo(() => {
     const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
     const tanh = (x: number) => Math.tanh(x);
 
-    /* Trọng số giả — được chọn để ví dụ "đẹp" */
+    /* Trọng số giả-được chọn để ví dụ "đẹp" */
     const Wr = 0.9;
     const Ur = 0.4;
     const br = -0.2;
@@ -266,7 +266,7 @@ export default function GruTopic() {
   }, [xInput, hPrev]);
 
   /* ──────────────────────────────────────────────────────────
-     TÍNH TOÁN SỐ THAM SỐ — GRU vs LSTM
+     TÍNH TOÁN SỐ THAM SỐ-GRU vs LSTM
      ────────────────────────────────────────────────────────── */
   const paramCount = useMemo(() => {
     /* Giả định input_size=128, hidden_size=256 */
@@ -294,13 +294,13 @@ export default function GruTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
-          STEP 1 — HOOK
+          STEP 1-HOOK
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
           question="LSTM có 3 cổng và cell state riêng → mạnh nhưng nặng. Nếu bạn muốn đơn giản hóa mà vẫn giữ khả năng nhớ xa, bạn sẽ gộp hoặc bỏ gì?"
           options={[
-            "Bỏ hết cổng — quay về RNN đơn giản",
+            "Bỏ hết cổng-quay về RNN đơn giản",
             "Gộp forget + input thành 1 cổng, bỏ cell state riêng → chỉ cần 2 cổng",
             "Giữ nguyên 3 cổng nhưng giảm hidden size",
           ]}
@@ -310,7 +310,7 @@ export default function GruTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 2 — KHÁM PHÁ — Interactive GRU Cell Internals
+          STEP 2-KHÁM PHÁ-Interactive GRU Cell Internals
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Nội tạng ô GRU">
         <div className="mb-4">
@@ -334,7 +334,7 @@ export default function GruTopic() {
 
         <p className="text-sm text-foreground leading-relaxed mb-3">
           Nếu LSTM là chiếc xe máy Honda Wave đầy đủ tính năng, thì GRU là chiếc{" "}
-          <strong>Wave Alpha</strong> — bỏ bớt vài tính năng ít dùng, nhẹ hơn,
+          <strong>Wave Alpha</strong>, bỏ bớt vài tính năng ít dùng, nhẹ hơn,
           tiết kiệm xăng hơn, mà đi vẫn tốt. Hãy mổ xẻ ô GRU và xem từng cổng
           làm gì.
         </p>
@@ -343,7 +343,7 @@ export default function GruTopic() {
           <div className="mb-4 space-y-3">
             <p className="text-sm text-muted">
               Nhấn vào cổng để xem chi tiết. Kéo slider để thay đổi input
-              xₜ và hₜ₋₁ — xem ô GRU tính toán thế nào.
+              xₜ và hₜ₋₁-xem ô GRU tính toán thế nào.
             </p>
 
             {/* Slider điều khiển input */}
@@ -401,7 +401,7 @@ export default function GruTopic() {
             viewBox="0 0 560 360"
             className="w-full rounded-lg border border-border bg-background"
           >
-            {/* Hidden state highway — không có cell state riêng! */}
+            {/* Hidden state highway-không có cell state riêng! */}
             <line
               x1={30}
               y1={90}
@@ -484,7 +484,7 @@ export default function GruTopic() {
               fontWeight={500}
               opacity={0.8}
             >
-              Không có cell state riêng — đơn giản hơn LSTM!
+              Không có cell state riêng-đơn giản hơn LSTM!
             </text>
 
             {/* ══════ RESET GATE ══════ */}
@@ -742,7 +742,7 @@ export default function GruTopic() {
               xₜ = {xInput.toFixed(2)} (Input hiện tại)
             </text>
 
-            {/* Gate detail explanation — shows at bottom when active */}
+            {/* Gate detail explanation-shows at bottom when active */}
             {activeGate && (
               <g>
                 <rect
@@ -775,7 +775,7 @@ export default function GruTopic() {
                   fontWeight={600}
                 >
                   {activeGate === "reset" &&
-                    `rₜ × hₜ₋₁ = ${cellValues.r.toFixed(2)} × ${hPrev.toFixed(2)} = ${cellValues.rTimesH.toFixed(3)} — lọc quá khứ trước khi tính candidate`}
+                    `rₜ × hₜ₋₁ = ${cellValues.r.toFixed(2)} × ${hPrev.toFixed(2)} = ${cellValues.rTimesH.toFixed(3)}, lọc quá khứ trước khi tính candidate`}
                   {activeGate === "update" &&
                     `hₜ = ${cellValues.z.toFixed(2)}·${hPrev.toFixed(2)} + ${(1 - cellValues.z).toFixed(2)}·${cellValues.hTilde.toFixed(2)} = ${cellValues.hNew.toFixed(3)}`}
                   {activeGate === "candidate" &&
@@ -849,14 +849,14 @@ export default function GruTopic() {
         </VisualizationSection>
 
         <p className="text-sm text-muted mt-3">
-          Chỉ 2 cổng thay vì 3 — nhưng cổng update kiêm luôn vai trò forget và
+          Chỉ 2 cổng thay vì 3-nhưng cổng update kiêm luôn vai trò forget và
           input. Thử kéo xₜ về -1 và hₜ₋₁ lên 1 xem update gate phản ứng thế
           nào.
         </p>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 3 — TÍNH TOÁN TAY
+          STEP 3-TÍNH TOÁN TAY
           ═══════════════════════════════════════════════════════ */}
       <LessonSection
         step={3}
@@ -901,7 +901,7 @@ export default function GruTopic() {
               </LaTeX>
               <p className="text-xs text-muted">
                 Cũng trong [0, 1]. Đây là cổng &quot;thông minh nhất&quot; của
-                GRU — kiểm soát tỷ lệ giữ/thay.
+                GRU-kiểm soát tỷ lệ giữ/thay.
               </p>
             </div>
           </div>
@@ -918,7 +918,7 @@ export default function GruTopic() {
                 {String.raw`\tilde{h}_t = \tanh(W x_t + U (r_t \odot h_{t-1}) + b)`}
               </LaTeX>
               <p className="text-xs text-muted">
-                Đây là &quot;đề xuất hidden state mới&quot; — chưa được áp dụng
+                Đây là &quot;đề xuất hidden state mới&quot;, chưa được áp dụng
                 ngay. Lưu ý rₜ nhân theo phần tử với hₜ₋₁ trước khi vào tanh.
               </p>
             </div>
@@ -952,7 +952,7 @@ export default function GruTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 4 — SO SÁNH LSTM VS GRU
+          STEP 4-SO SÁNH LSTM VS GRU
           ═══════════════════════════════════════════════════════ */}
       <LessonSection
         step={4}
@@ -960,7 +960,7 @@ export default function GruTopic() {
         label="So sánh LSTM vs GRU"
       >
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Cùng bài toán, cùng dữ liệu — LSTM và GRU thường cho kết quả gần giống
+          Cùng bài toán, cùng dữ liệu-LSTM và GRU thường cho kết quả gần giống
           nhau. Khác biệt nằm ở <strong>tham số</strong>,{" "}
           <strong>tốc độ train</strong>, và một vài tình huống ngoại lệ.
         </p>
@@ -1301,7 +1301,7 @@ export default function GruTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 5 — THAM SỐ VISUALIZATION
+          STEP 5-THAM SỐ VISUALIZATION
           ═══════════════════════════════════════════════════════ */}
       <LessonSection
         step={5}
@@ -1382,13 +1382,13 @@ export default function GruTopic() {
             Ít tham số → <strong>train nhanh hơn</strong> (ít phép nhân ma
             trận), <strong>tốn ít VRAM hơn</strong> (đặc biệt khi batch lớn),
             và <strong>ít overfitting</strong> (khi data khan hiếm). Đổi lại
-            GRU hơi kém LSTM khi chuỗi cực dài — một đánh đổi hợp lý.
+            GRU hơi kém LSTM khi chuỗi cực dài-một đánh đổi hợp lý.
           </p>
         </Callout>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 6 — AHA MOMENT
+          STEP 6-AHA MOMENT
           ═══════════════════════════════════════════════════════ */}
       <LessonSection
         step={6}
@@ -1403,13 +1403,13 @@ export default function GruTopic() {
             </LaTeX>
             . Khi <LaTeX>{"z_t \\to 1"}</LaTeX>: giữ nguyên cũ (forget). Khi{" "}
             <LaTeX>{"z_t \\to 0"}</LaTeX>: lấy hoàn toàn mới (input). Một
-            cổng, hai vai trò — tổng luôn bằng 1, ràng buộc tự nhiên!
+            cổng, hai vai trò-tổng luôn bằng 1, ràng buộc tự nhiên!
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 7 — THỬ THÁCH (2 challenges)
+          STEP 7-THỬ THÁCH (2 challenges)
           ═══════════════════════════════════════════════════════ */}
       <LessonSection
         step={7}
@@ -1420,30 +1420,30 @@ export default function GruTopic() {
           <InlineChallenge
             question="GRU update gate: hₜ = zₜ × hₜ₋₁ + (1-zₜ) × h̃ₜ. Nếu zₜ = 0.9 cho mọi bước, GRU sẽ hoạt động thế nào?"
             options={[
-              "Như RNN thường — mỗi bước ghi đè hoàn toàn",
-              "Như bộ nhớ cực dài — giữ 90% cũ, chỉ thêm 10% mới mỗi bước",
-              "Không hoạt động — zₜ phải bằng 0.5",
+              "Như RNN thường-mỗi bước ghi đè hoàn toàn",
+              "Như bộ nhớ cực dài-giữ 90% cũ, chỉ thêm 10% mới mỗi bước",
+              "Không hoạt động-zₜ phải bằng 0.5",
             ]}
             correct={1}
-            explanation="Khi zₜ = 0.9: hₜ = 0.9 × hₜ₋₁ + 0.1 × h̃ₜ. Hidden state thay đổi rất chậm — giữ 90% quá khứ mỗi bước. Sau 10 bước, thông tin ban đầu vẫn còn 0.9¹⁰ ≈ 35%! Đây là cách GRU nhớ xa."
+            explanation="Khi zₜ = 0.9: hₜ = 0.9 × hₜ₋₁ + 0.1 × h̃ₜ. Hidden state thay đổi rất chậm-giữ 90% quá khứ mỗi bước. Sau 10 bước, thông tin ban đầu vẫn còn 0.9¹⁰ ≈ 35%! Đây là cách GRU nhớ xa."
           />
 
           <InlineChallenge
             question="Nếu reset gate rₜ = 0 liên tục, candidate h̃ₜ lúc đó phụ thuộc vào gì?"
             options={[
-              "Chỉ hₜ₋₁ — bỏ qua xₜ",
-              "Chỉ xₜ hiện tại — bỏ qua quá khứ hoàn toàn",
+              "Chỉ hₜ₋₁-bỏ qua xₜ",
+              "Chỉ xₜ hiện tại-bỏ qua quá khứ hoàn toàn",
               "Cả hai, nhưng có thêm bias",
               "Luôn bằng 0",
             ]}
             correct={1}
-            explanation="h̃ₜ = tanh(W·xₜ + U·(rₜ·hₜ₋₁)). Khi rₜ = 0: rₜ·hₜ₋₁ = 0 → h̃ₜ = tanh(W·xₜ). Candidate chỉ còn phụ thuộc xₜ — GRU 'quên sạch' để làm lại từ đầu. Hữu ích khi bắt đầu câu mới trong dịch máy."
+            explanation="h̃ₜ = tanh(W·xₜ + U·(rₜ·hₜ₋₁)). Khi rₜ = 0: rₜ·hₜ₋₁ = 0 → h̃ₜ = tanh(W·xₜ). Candidate chỉ còn phụ thuộc xₜ-GRU 'quên sạch' để làm lại từ đầu. Hữu ích khi bắt đầu câu mới trong dịch máy."
           />
         </div>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 8 — GIẢI THÍCH CHI TIẾT + CODE
+          STEP 8-GIẢI THÍCH CHI TIẾT + CODE
           ═══════════════════════════════════════════════════════ */}
       <LessonSection
         step={8}
@@ -1478,7 +1478,7 @@ export default function GruTopic() {
           <Callout variant="insight" title="Sự thông minh của (1 - zₜ)">
             <p>
               <TopicLink slug="lstm">LSTM</TopicLink> dùng forget gate (fₜ) và
-              input gate (iₜ) độc lập — tổng không cần bằng 1. GRU ép tổng
+              input gate (iₜ) độc lập-tổng không cần bằng 1. GRU ép tổng
               luôn bằng 1: zₜ + (1-zₜ) = 1. Nghĩa là &quot;giữ nhiều cũ&quot;
               tự động = &quot;thêm ít mới&quot;. Ít tham số hơn mà ràng buộc
               chặt hơn!
@@ -1488,7 +1488,7 @@ export default function GruTopic() {
           <Callout variant="tip" title="GRU giải vanishing gradient thế nào?">
             <p>
               Đạo hàm riêng <LaTeX>{String.raw`\partial h_t / \partial h_{t-1}`}</LaTeX>{" "}
-              có một thành phần là zₜ — có thể gần 1. Khi backprop qua nhiều
+              có một thành phần là zₜ-có thể gần 1. Khi backprop qua nhiều
               bước, gradient không nhân liên tục các số nhỏ (như RNN thường)
               mà &quot;đi thẳng&quot; qua cổng update. Đây là lý do GRU (và
               LSTM) tránh được vanishing gradient tốt hơn RNN thường.
@@ -1510,7 +1510,7 @@ export default function GruTopic() {
                 Với GRU:{" "}
                 <LaTeX>{String.raw`h_t = z_t h_{t-1} + (1-z_t) \tilde{h}_t`}</LaTeX>
                 . Đạo hàm gồm <LaTeX>{"z_t"}</LaTeX> cộng với các thành phần
-                khác. Nếu zₜ gần 1 (nhớ lâu), gradient gần như đi thẳng qua —
+                khác. Nếu zₜ gần 1 (nhớ lâu), gradient gần như đi thẳng qua,
                 không bị nhân với số nhỏ. Mạng học được &quot;đóng cổng
                 forget&quot; cho chiều nào cần giữ lâu.
               </p>
@@ -1518,7 +1518,7 @@ export default function GruTopic() {
                 Thực nghiệm: GRU và{" "}
                 <TopicLink slug="lstm">LSTM</TopicLink> xử lý ổn chuỗi dài
                 cỡ vài trăm bước. Với chuỗi hàng nghìn bước, cả hai vẫn gặp
-                khó khăn — đó là lúc <TopicLink slug="transformer">Transformer</TopicLink>{" "}
+                khó khăn-đó là lúc <TopicLink slug="transformer">Transformer</TopicLink>{" "}
                 thay thế.
               </p>
             </div>
@@ -1533,18 +1533,18 @@ export default function GruTopic() {
               </p>
               <p>
                 <strong>Coupled input-forget LSTM</strong>: biến thể LSTM dùng
-                cùng ý tưởng (1-fₜ) cho input gate — giống GRU nhưng vẫn giữ
+                cùng ý tưởng (1-fₜ) cho input gate-giống GRU nhưng vẫn giữ
                 cell state.
               </p>
               <p>
                 <strong>Bidirectional GRU (BiGRU)</strong>: chạy GRU từ trái
                 sang phải và phải sang trái, nối kết quả. Hiệu quả cho NER,
-                sentiment analysis — những bài toán cần cả context trước và
+                sentiment analysis-những bài toán cần cả context trước và
                 sau.
               </p>
               <p>
                 <strong>Stacked GRU</strong>: nhiều lớp GRU chồng lên nhau,
-                output của lớp dưới là input của lớp trên. num_layers={"{"}2-3
+                output của lớp dưới là input của lớp trên, num_layers={"{"}2-3
                 {"}"} thường đủ; sâu hơn ít khi có lợi.
               </p>
             </div>
@@ -1558,7 +1558,7 @@ export default function GruTopic() {
             {`import torch
 import torch.nn as nn
 
-# GRU — đơn giản hơn
+# GRU-đơn giản hơn
 gru = nn.GRU(
     input_size=128,
     hidden_size=256,
@@ -1568,7 +1568,7 @@ gru = nn.GRU(
     bidirectional=False,
 )
 
-# LSTM — để so sánh
+# LSTM-để so sánh
 lstm = nn.LSTM(
     input_size=128,
     hidden_size=256,
@@ -1611,13 +1611,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class GRUCellManual(nn.Module):
-    """GRU cell viết tay — khớp với công thức trong bài."""
+    """GRU cell viết tay-khớp với công thức trong bài."""
     def __init__(self, input_size: int, hidden_size: int):
         super().__init__()
         self.hidden_size = hidden_size
 
         # 3 ma trận trọng số (thay vì 4 của LSTM)
-        # W_r, W_z, W — mỗi cái xử lý (input + hidden) nối lại
+        # W_r, W_z, W-mỗi cái xử lý (input + hidden) nối lại
         self.W_r = nn.Linear(input_size + hidden_size, hidden_size)
         self.W_z = nn.Linear(input_size + hidden_size, hidden_size)
         self.W   = nn.Linear(input_size + hidden_size, hidden_size)
@@ -1626,15 +1626,15 @@ class GRUCellManual(nn.Module):
         # Nối input và hidden trước đó
         combined = torch.cat([x_t, h_prev], dim=-1)
 
-        # Reset gate và Update gate — đều dùng cùng combined
+        # Reset gate và Update gate-đều dùng cùng combined
         r_t = torch.sigmoid(self.W_r(combined))
         z_t = torch.sigmoid(self.W_z(combined))
 
-        # Candidate — reset gate nhân theo phần tử với h_prev
+        # Candidate-reset gate nhân theo phần tử với h_prev
         combined_reset = torch.cat([x_t, r_t * h_prev], dim=-1)
         h_tilde = torch.tanh(self.W(combined_reset))
 
-        # Trộn cũ và mới — đây là phép "magic" của GRU
+        # Trộn cũ và mới-đây là phép "magic" của GRU
         h_t = z_t * h_prev + (1 - z_t) * h_tilde
         return h_t
 
@@ -1654,24 +1654,24 @@ for t in range(seq_len):
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 9 — TÓM TẮT
+          STEP 9-TÓM TẮT
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="6 điểm nhớ về GRU"
           points={[
             "GRU đơn giản hóa LSTM: 2 cổng (reset, update) thay vì 3, gộp cell state vào hidden state.",
-            "Update gate kiêm cả forget + input: hₜ = zₜ·hₜ₋₁ + (1-zₜ)·h̃ₜ. Tổng luôn bằng 1 — ràng buộc chặt hơn LSTM.",
+            "Update gate kiêm cả forget + input: hₜ = zₜ·hₜ₋₁ + (1-zₜ)·h̃ₜ. Tổng luôn bằng 1-ràng buộc chặt hơn LSTM.",
             "Reset gate cho phép 'quên sạch' quá khứ khi cần bắt đầu context mới: h̃ₜ = tanh(W·xₜ + U·(rₜ·hₜ₋₁)).",
             "Ít tham số hơn ~25% → train nhanh hơn ~15-20%, ít overfitting hơn trên dataset nhỏ.",
-            "Hiệu suất thường ngang LSTM — chọn tùy bài toán (nhỏ → GRU, lớn → LSTM, NLP → Transformer).",
+            "Hiệu suất thường ngang LSTM-chọn tùy bài toán (nhỏ → GRU, lớn → LSTM, NLP → Transformer).",
             "Giải vanishing gradient nhờ đường đi 'thẳng' qua zₜ, nhưng vẫn hạn chế với chuỗi >1000 bước.",
           ]}
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 10 — QUIZ
+          STEP 10-QUIZ
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={quizQuestions} />

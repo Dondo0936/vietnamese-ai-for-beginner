@@ -606,7 +606,7 @@ export default function TemperatureInCreativeWriting() {
           sourceRef={1}
         />
         <Metric
-          value="Temperature 0,7–0,9 được khuyến nghị phổ biến nhất cho tác vụ sáng tạo"
+          value="Temperature 0,7-0,9 được khuyến nghị phổ biến nhất cho tác vụ sáng tạo"
           sourceRef={2}
         />
         <Metric
@@ -637,7 +637,7 @@ export default function TemperatureInCreativeWriting() {
           <AnimatedCounter
             target={90}
             suffix="%"
-            label="Số tác vụ văn phòng chỉ cần T trong khoảng 0 – 1"
+            label="Số tác vụ văn phòng chỉ cần T trong khoảng 0-1"
             color="#ef4444"
           />
         </div>

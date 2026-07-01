@@ -351,7 +351,7 @@ const APPLICATION_CELLS: AppCell[] = [
     value: "34",
     effect: "boost",
     reason:
-      "Khoảng tuổi 30–45 được xem là ổn định về sự nghiệp và thu nhập.",
+      "Khoảng tuổi 30-45 được xem là ổn định về sự nghiệp và thu nhập.",
   },
   {
     label: "Nghề nghiệp",

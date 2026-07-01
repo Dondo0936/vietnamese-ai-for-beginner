@@ -72,7 +72,7 @@ interface TreeInfo {
   /** prediction giả lập cho 1 test point mới */
   vote: 0 | 1;
   confidence: number;
-  /** các sample KHÔNG có trong bootstrap — dùng cho OOB */
+  /** các sample KHÔNG có trong bootstrap-dùng cho OOB */
   oobIds: number[];
   /** độ chính xác OOB giả lập của riêng cây này */
   oobAcc: number;
@@ -163,7 +163,7 @@ function majorityVoteAccuracy(n: number, p: number): number {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   HÌNH ẢNH CÂY QUYẾT ĐỊNH NHỎ — SVG
+   HÌNH ẢNH CÂY QUYẾT ĐỊNH NHỎ-SVG
    ══════════════════════════════════════════════════════════════ */
 
 function MiniTreeSvg({
@@ -544,7 +544,7 @@ function FeatureImportanceChart() {
       </div>
       <p className="text-[11px] leading-relaxed text-muted">
         Nhận xét: &quot;giá&quot; và &quot;đánh giá&quot; là hai feature
-        mạnh nhất. Voucher đóng góp ít — có thể bỏ mà không ảnh hưởng nhiều
+        mạnh nhất. Voucher đóng góp ít-có thể bỏ mà không ảnh hưởng nhiều
         tới accuracy.
       </p>
     </div>
@@ -593,7 +593,7 @@ function OOBErrorPanel() {
           <span className="font-mono font-bold">
             {(avgOob * 100).toFixed(1)}%
           </span>{" "}
-          — thường rất gần cross-validation 5-fold nhưng tốn 0 đồng tính
+         , thường rất gần cross-validation 5-fold nhưng tốn 0 đồng tính
           toán thêm.
         </p>
       </div>
@@ -638,7 +638,7 @@ export default function RandomForestsTopic() {
         ],
         correct: 1,
         explanation:
-          "Hai nguồn ngẫu nhiên chính: (1) Bootstrap sampling cho dữ liệu, và (2) Random feature subset ở mỗi nút chia (thường √d features). Kết hợp hai yếu tố này làm các cây khác nhau đáng kể — điều kiện để bỏ phiếu hiệu quả.",
+          "Hai nguồn ngẫu nhiên chính: (1) Bootstrap sampling cho dữ liệu, và (2) Random feature subset ở mỗi nút chia (thường √d features). Kết hợp hai yếu tố này làm các cây khác nhau đáng kể-điều kiện để bỏ phiếu hiệu quả.",
       },
       {
         question: "OOB (Out-of-Bag) error là gì?",
@@ -663,7 +663,7 @@ export default function RandomForestsTopic() {
         ],
         correct: 1,
         explanation:
-          "Thêm cây làm giảm variance và thường tăng accuracy, nhưng có quy luật bão hoà — sau 100-500 cây, lợi ích nhỏ dần. Đổi lại, chi phí huấn luyện và inference tăng tỉ lệ thuận. Random Forest KHÔNG dễ overfit khi tăng n_estimators.",
+          "Thêm cây làm giảm variance và thường tăng accuracy, nhưng có quy luật bão hoà-sau 100-500 cây, lợi ích nhỏ dần. Đổi lại, chi phí huấn luyện và inference tăng tỉ lệ thuận. Random Forest KHÔNG dễ overfit khi tăng n_estimators.",
       },
       {
         question:
@@ -688,7 +688,7 @@ export default function RandomForestsTopic() {
         ],
         correct: 1,
         explanation:
-          "Mean Decrease in Impurity (MDI): với mỗi nút split trên feature f, cộng dồn (impurity giảm × số sample đi qua nút). Chuẩn hoá cho tổng = 1. Một thước đo khác là Permutation Importance — xáo trộn feature và đo accuracy rớt bao nhiêu.",
+          "Mean Decrease in Impurity (MDI): với mỗi nút split trên feature f, cộng dồn (impurity giảm × số sample đi qua nút). Chuẩn hoá cho tổng = 1. Một thước đo khác là Permutation Importance-xáo trộn feature và đo accuracy rớt bao nhiêu.",
       },
       {
         question: "Khi nào NÊN dùng Gradient Boosting thay vì Random Forest?",
@@ -700,14 +700,14 @@ export default function RandomForestsTopic() {
         ],
         correct: 1,
         explanation:
-          "Gradient Boosting (XGBoost, LightGBM, CatBoost) thường cho accuracy cao hơn Random Forest trên dữ liệu bảng, nhưng cần tune learning_rate, max_depth, subsample cẩn thận để tránh overfit. Random Forest 'works out of the box' — chọn khi thời gian tune hạn chế.",
+          "Gradient Boosting (XGBoost, LightGBM, CatBoost) thường cho accuracy cao hơn Random Forest trên dữ liệu bảng, nhưng cần tune learning_rate, max_depth, subsample cẩn thận để tránh overfit. Random Forest 'works out of the box', chọn khi thời gian tune hạn chế.",
       },
       {
         question:
           "Nếu tất cả cây trong Random Forest đều giống hệt nhau, điều gì xảy ra?",
         options: [
           "Rừng luôn tốt hơn vì có nhiều cây",
-          "Bỏ phiếu trở nên vô nghĩa — N cây giống nhau = 1 cây được lặp N lần, không giảm variance",
+          "Bỏ phiếu trở nên vô nghĩa-N cây giống nhau = 1 cây được lặp N lần, không giảm variance",
           "Accuracy tăng gấp N lần",
           "Rừng tự động biến thành Gradient Boosting",
         ],
@@ -721,13 +721,13 @@ export default function RandomForestsTopic() {
 
   return (
     <>
-      {/* ───── STEP 1: HOOK — PredictionGate ───────────────────── */}
+      {/* ───── STEP 1: HOOK-PredictionGate ───────────────────── */}
       <PredictionGate
-        question="Bạn muốn mua xe máy cũ. Hỏi 1 người bạn — có thể nhận lời khuyên sai. Hỏi 9 người bạn, mỗi người xem xét vài tiêu chí khác nhau, rồi nghe đa số. Cách nào đáng tin hơn?"
+        question="Bạn muốn mua xe máy cũ. Hỏi 1 người bạn-có thể nhận lời khuyên sai. Hỏi 9 người bạn, mỗi người xem xét vài tiêu chí khác nhau, rồi nghe đa số. Cách nào đáng tin hơn?"
         options={[
-          "Hỏi 1 chuyên gia giỏi nhất — chất lượng hơn số lượng",
-          "Hỏi 9 người rồi bỏ phiếu — nhiều góc nhìn bù trừ sai sót",
-          "Không khác biệt — xác suất đúng như nhau",
+          "Hỏi 1 chuyên gia giỏi nhất-chất lượng hơn số lượng",
+          "Hỏi 9 người rồi bỏ phiếu-nhiều góc nhìn bù trừ sai sót",
+          "Không khác biệt-xác suất đúng như nhau",
         ]}
         correct={1}
         explanation="Đây là 'trí tuệ đám đông'. Giả sử mỗi người đúng 72%, xác suất đa số của 9 người đúng xấp xỉ 90%. Random Forest áp dụng chính xác ý tưởng này: nhiều cây 'trung bình' nhưng đa dạng sẽ tạo thành một rừng mạnh."
@@ -739,7 +739,7 @@ export default function RandomForestsTopic() {
           </p>
           <p className="text-sm leading-relaxed text-muted">
             Một huấn luyện viên có gu riêng, đôi khi chấm lệch. Nhưng khi 4
-            HLV cùng bỏ phiếu, các thiên kiến cá nhân bù trừ nhau — kết quả
+            HLV cùng bỏ phiếu, các thiên kiến cá nhân bù trừ nhau-kết quả
             chung công bằng hơn. Random Forest hoạt động y hệt: mỗi{" "}
             <TopicLink slug="decision-trees">cây quyết định</TopicLink> được
             huấn luyện trên một &quot;trải nghiệm&quot; khác nhau (bootstrap
@@ -835,7 +835,7 @@ export default function RandomForestsTopic() {
               <p className="mt-3 text-[11px] leading-relaxed text-muted">
                 Nhấp vào cây khác ở bảng trên để xem bootstrap của nó. Các
                 ô có số trên góc là sample bị lặp lại (bootstrap = lấy mẫu{" "}
-                <strong>có hoàn lại</strong>). Các ô mờ là OOB — cây này
+                <strong>có hoàn lại</strong>). Các ô mờ là OOB-cây này
                 không thấy chúng khi train.
               </p>
             </div>
@@ -863,8 +863,8 @@ export default function RandomForestsTopic() {
         <InlineChallenge
           question="Nếu bạn tạo 9 cây NHƯNG tất cả dùng cùng dữ liệu và cùng features, rừng có tốt hơn 1 cây không?"
           options={[
-            "Có — 9 cây luôn tốt hơn 1 cây",
-            "Không — 9 cây giống hệt nhau sẽ cùng sai ở cùng chỗ, bỏ phiếu không giúp được gì",
+            "Có-9 cây luôn tốt hơn 1 cây",
+            "Không-9 cây giống hệt nhau sẽ cùng sai ở cùng chỗ, bỏ phiếu không giúp được gì",
             "Tuỳ dữ liệu",
           ]}
           correct={1}
@@ -873,7 +873,7 @@ export default function RandomForestsTopic() {
 
         {/* ───── STEP 5: InlineChallenge #2 ───────────────────── */}
         <InlineChallenge
-          question="Bạn cần train Random Forest với 500 cây nhưng máy chỉ có 1 CPU — vẫn khả thi? Còn Gradient Boosting 500 cây thì sao?"
+          question="Bạn cần train Random Forest với 500 cây nhưng máy chỉ có 1 CPU-vẫn khả thi? Còn Gradient Boosting 500 cây thì sao?"
           options={[
             "Cả hai đều khả thi và song song được y như nhau",
             "Random Forest song song được (các cây độc lập); Gradient Boosting phải train tuần tự vì cây sau phụ thuộc cây trước",
@@ -946,7 +946,7 @@ export default function RandomForestsTopic() {
           <p>
             Với <LaTeX>{"T = 9, p = 0.72"}</LaTeX>, tính ra xác suất ≈ 0.90.
             Nếu các cây thật sự độc lập và tốt hơn random (<LaTeX>{"p > 0.5"}</LaTeX>), xác suất này tiến tới 1 khi{" "}
-            <LaTeX>{"T \\to \\infty"}</LaTeX> — định lý của Condorcet về bồi
+            <LaTeX>{"T \\to \\infty"}</LaTeX>, định lý của Condorcet về bồi
             thẩm đoàn (1785).
           </p>
 
@@ -970,7 +970,7 @@ export default function RandomForestsTopic() {
           {/* Code sklearn */}
           <CodeBlock
             language="python"
-            title="Random Forest với scikit-learn — end-to-end"
+            title="Random Forest với scikit-learn-end-to-end"
           >
 {`from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import load_breast_cancer
@@ -1049,7 +1049,7 @@ print("Best params:", grid.best_params_)
 print(f"Best CV AUC:  {grid.best_score_:.4f}")
 print(f"Test AUC:     {grid.score(X_test, y_test):.4f}")
 
-# Permutation importance — chính xác hơn feature_importances_
+# Permutation importance-chính xác hơn feature_importances_
 from sklearn.inspection import permutation_importance
 
 result = permutation_importance(
@@ -1070,11 +1070,11 @@ for i in result.importances_mean.argsort()[::-1][:5]:
               </li>
               <li>
                 Tăng <code>n_estimators</code> tới khi OOB error bão hoà
-                (thường 300-1000) rồi dừng — thêm cây sau đó chỉ làm chậm,
+                (thường 300-1000) rồi dừng-thêm cây sau đó chỉ làm chậm,
                 không cải thiện rõ rệt.
               </li>
               <li>
-                Random Forest <strong>không yêu cầu scale feature</strong> —
+                Random Forest <strong>không yêu cầu scale feature</strong>,
                 cây so sánh &quot;giá {"<"} 2.5&quot; hoạt động như nhau dù
                 scale cỡ nào.
               </li>
@@ -1137,7 +1137,7 @@ for i in result.importances_mean.argsort()[::-1][:5]:
             </p>
             <p className="text-sm leading-relaxed">
               Thay thế tốt hơn:{" "}
-              <strong>Permutation Importance</strong> — xáo trộn ngẫu nhiên
+              <strong>Permutation Importance</strong>, xáo trộn ngẫu nhiên
               feature, đo accuracy rớt bao nhiêu. Không thiên vị theo
               cardinality, nhưng chậm hơn. Hoặc SHAP values để giải thích ở
               cấp sample.
@@ -1167,7 +1167,7 @@ for i in result.importances_mean.argsort()[::-1][:5]:
                 Trong Random Forest, ở MỖI nút ta chỉ thử{" "}
                 <LaTeX>{"m = \\sqrt{d}"}</LaTeX> features ngẫu nhiên chứ
                 không phải tất cả <LaTeX>{"d"}</LaTeX> features. Điều này
-                ép cây &quot;chấp nhận&quot; các split dưới-tối-ưu — nghe
+                ép cây &quot;chấp nhận&quot; các split dưới-tối-ưu-nghe
                 có vẻ xấu, nhưng lại tạo ĐA DẠNG giữa các cây, làm giảm
                 correlation <LaTeX>{"\\rho"}</LaTeX> và do đó giảm variance
                 tổng hợp.
@@ -1179,7 +1179,7 @@ for i in result.importances_mean.argsort()[::-1][:5]:
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="Chi tiết: Extra Trees — biến thể 'ngẫu nhiên hơn' của RF">
+          <CollapsibleDetail title="Chi tiết: Extra Trees-biến thể 'ngẫu nhiên hơn' của RF">
             <div className="space-y-2 text-sm leading-relaxed">
               <p>
                 <strong>Extremely Randomized Trees (Extra Trees)</strong>{" "}
@@ -1199,7 +1199,7 @@ for i in result.importances_mean.argsort()[::-1][:5]:
                   đó.
                 </li>
                 <li>
-                  Extra Trees thường KHÔNG dùng bootstrap — mỗi cây thấy
+                  Extra Trees thường KHÔNG dùng bootstrap-mỗi cây thấy
                   toàn bộ dữ liệu nhưng split điểm ngẫu nhiên bù lại.
                 </li>
               </ul>
@@ -1234,15 +1234,15 @@ for i in result.importances_mean.argsort()[::-1][:5]:
             </li>
             <li>
               <strong>Remote sensing (viễn thám):</strong> phân loại ảnh vệ
-              tinh theo pixel — loại rừng, đất nông nghiệp, đô thị.
+              tinh theo pixel-loại rừng, đất nông nghiệp, đô thị.
             </li>
             <li>
               <strong>Kaggle tabular baseline:</strong> RF luôn là baseline
-              trong nhiều cuộc thi — nhanh, không cần tune, cho benchmark
+              trong nhiều cuộc thi-nhanh, không cần tune, cho benchmark
               tin cậy trước khi thử XGBoost/LightGBM.
             </li>
             <li>
-              <strong>Dự báo nhu cầu:</strong> retail, supply chain — RF
+              <strong>Dự báo nhu cầu:</strong> retail, supply chain-RF
               regressor dự báo doanh số theo tuần dựa trên feature lịch sử,
               giá, khuyến mãi.
             </li>
@@ -1281,7 +1281,7 @@ for i in result.importances_mean.argsort()[::-1][:5]:
               <strong>Extrapolation:</strong> cây chỉ dự đoán trong range của
               training data. Với regression ngoài range (ví dụ: doanh số
               tháng tương lai vượt mọi giá trị training), RF sẽ predict sai
-              — cân nhắc mô hình tuyến tính hoặc deep learning.
+             , cân nhắc mô hình tuyến tính hoặc deep learning.
             </li>
             <li>
               <strong>Inference chậm trên edge device:</strong> 500 cây ×
@@ -1290,7 +1290,7 @@ for i in result.importances_mean.argsort()[::-1][:5]:
             </li>
             <li>
               <strong>Categorical feature cardinality cao:</strong> sklearn
-              yêu cầu one-hot — với feature có 1000 giá trị, tạo 1000 cột.
+              yêu cầu one-hot-với feature có 1000 giá trị, tạo 1000 cột.
               Dùng CatBoost hoặc LightGBM xử lý native.
             </li>
             <li>

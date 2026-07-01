@@ -1015,7 +1015,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Cây quyết định tạo ra luật IF–THEN mà con người đọc được. Trong tài chính và y tế, nơi cần giải thích quyết định, đây là lợi thế rất lớn.",
+      "Cây quyết định tạo ra luật IF-THEN mà con người đọc được. Trong tài chính và y tế, nơi cần giải thích quyết định, đây là lợi thế rất lớn.",
   },
 ];
 
@@ -1209,7 +1209,7 @@ export default function DecisionTreesTopic() {
           <Callout variant="tip" title="Giảm Gini bao nhiêu là đủ?">
             Không có ngưỡng cố định. Cây quyết định <em>dừng</em> khi: (a) đạt max_depth bạn
             đặt, (b) nút đã thuần khiết, hoặc (c) không còn split nào làm giảm Gini đáng kể.
-            Trong thực tế, bạn để max_depth cố định nhỏ (2–6) và để thuật toán tự quyết khi
+            Trong thực tế, bạn để max_depth cố định nhỏ (2-6) và để thuật toán tự quyết khi
             nào dừng sớm.
           </Callout>
 
@@ -1257,12 +1257,12 @@ export default function DecisionTreesTopic() {
             {[
               {
                 name: "max_depth",
-                desc: "Giới hạn số tầng của cây. Nhỏ (2–4) → đơn giản, dễ hiểu, ít overfit. Lớn (8+) → accuracy train cao nhưng rủi ro overfit.",
+                desc: "Giới hạn số tầng của cây. Nhỏ (2-4) → đơn giản, dễ hiểu, ít overfit. Lớn (8+) → accuracy train cao nhưng rủi ro overfit.",
                 color: "#6366f1",
               },
               {
                 name: "min_samples_leaf",
-                desc: "Số mẫu tối thiểu ở mỗi lá. Đặt 10–20 với dataset vừa phải để tránh lá quá nhỏ = lá học thuộc.",
+                desc: "Số mẫu tối thiểu ở mỗi lá. Đặt 10-20 với dataset vừa phải để tránh lá quá nhỏ = lá học thuộc.",
                 color: "#0ea5e9",
               },
               {

@@ -988,7 +988,7 @@ const quizQuestions: QuizQuestion[] = [
       "Hoàn chỉnh công thức trọng số mới: w_i = w_i + lr × ({blank} − output) × x_i. Thành phần bạn điền chính là nhãn mong muốn.",
     blanks: [{ answer: "target", accept: ["y", "nhãn", "label", "mục tiêu", "t"] }],
     explanation:
-      "Cụm (target − output) là sai số: bằng 0 khi đoán đúng (không cập nhật), khác 0 khi đoán sai. lr (learning rate) là tốc độ học, quyết định bước cập nhật lớn hay nhỏ.",
+      "Cụm (target − output) là sai số: bằng 0 khi đoán đúng (không cập nhật), khác 0 khi đoán sai, lr (learning rate) là tốc độ học, quyết định bước cập nhật lớn hay nhỏ.",
   },
   {
     question:

@@ -21,7 +21,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA — giữ nguyên theo yêu cầu
+// METADATA-giữ nguyên theo yêu cầu
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -38,7 +38,7 @@ export const metadata: TopicMeta = {
 };
 
 // ---------------------------------------------------------------------------
-// DATA — 3-stage pipeline, preference pairs để user label, v.v.
+// DATA-3-stage pipeline, preference pairs để user label, v.v.
 // ---------------------------------------------------------------------------
 
 type Stage = {
@@ -55,37 +55,37 @@ type Stage = {
 const STAGES: Stage[] = [
   {
     id: "sft",
-    title: "Stage 1 — SFT",
+    title: "Stage 1-SFT",
     subtitle: "Supervised Fine-Tuning",
     color: "#3b82f6",
     bullets: [
       "Dữ liệu: (prompt, câu trả lời mẫu) do chuyên gia viết",
-      "Mục tiêu: maximum likelihood — mô hình sinh ra câu giống mẫu",
-      "Kết quả: π_SFT — mô hình đã biết tuân theo chỉ dẫn cơ bản",
+      "Mục tiêu: maximum likelihood-mô hình sinh ra câu giống mẫu",
+      "Kết quả: π_SFT-mô hình đã biết tuân theo chỉ dẫn cơ bản",
     ],
     flowFrom: "Dữ liệu demo của con người",
     flowTo: "π_SFT (baseline alignment)",
     detail:
-      "Chuyên gia viết ~10k-100k cặp (prompt, response) chất lượng cao. Fine-tune base LLM bằng cross-entropy loss. Đây chỉ là bước khởi đầu — mô hình vẫn có thể bịa, có thể nói bậy, nhưng đã biết trả lời theo format mong muốn.",
+      "Chuyên gia viết ~10k-100k cặp (prompt, response) chất lượng cao. Fine-tune base LLM bằng cross-entropy loss. Đây chỉ là bước khởi đầu-mô hình vẫn có thể bịa, có thể nói bậy, nhưng đã biết trả lời theo format mong muốn.",
   },
   {
     id: "rm",
-    title: "Stage 2 — Reward Model",
+    title: "Stage 2-Reward Model",
     subtitle: "Học từ preference pairs",
     color: "#f59e0b",
     bullets: [
-      "Dữ liệu: (prompt, chosen, rejected) — người xếp hạng A vs B",
+      "Dữ liệu: (prompt, chosen, rejected), người xếp hạng A vs B",
       "Mục tiêu: R_φ(prompt, chosen) > R_φ(prompt, rejected)",
-      "Kết quả: R_φ — hàm chấm điểm thay mặt con người",
+      "Kết quả: R_φ-hàm chấm điểm thay mặt con người",
     ],
     flowFrom: "Preference pairs (A vs B)",
-    flowTo: "R_φ — giám khảo AI",
+    flowTo: "R_φ-giám khảo AI",
     detail:
-      "Với mỗi prompt, mô hình sinh nhiều câu trả lời. Con người xếp hạng (hoặc chọn A/B). RM học dự đoán sở thích con người qua Bradley-Terry loss. Một RM tốt có thể 'thay mặt' con người chấm hàng triệu câu trả lời — giải quyết nút cổ chai tốc độ.",
+      "Với mỗi prompt, mô hình sinh nhiều câu trả lời. Con người xếp hạng (hoặc chọn A/B). RM học dự đoán sở thích con người qua Bradley-Terry loss. Một RM tốt có thể 'thay mặt' con người chấm hàng triệu câu trả lời-giải quyết nút cổ chai tốc độ.",
   },
   {
     id: "ppo",
-    title: "Stage 3 — PPO",
+    title: "Stage 3-PPO",
     subtitle: "Tối ưu policy chống RM + KL",
     color: "#22c55e",
     bullets: [
@@ -96,17 +96,17 @@ const STAGES: Stage[] = [
     flowFrom: "π_SFT + R_φ",
     flowTo: "π_RLHF (aligned policy)",
     detail:
-      "Đây là vòng RL: policy hiện tại sinh response, reward model chấm điểm, PPO cập nhật trọng số để tăng reward. KL divergence với SFT giữ mô hình không 'chạy quá đà' sang vùng bị reward hacking. β điều khiển mức độ trung thành với bản SFT.",
+      "Đây là vòng RL: policy hiện tại sinh response, reward model chấm điểm, PPO cập nhật trọng số để tăng reward. KL divergence với SFT giữ mô hình không 'chạy quá đà' sang vùng bị reward hacking, β điều khiển mức độ trung thành với bản SFT.",
   },
 ];
 
-// Preference pairs để user label — fictional prompts
+// Preference pairs để user label-fictional prompts
 type PrefPair = {
   id: string;
   prompt: string;
   A: string;
   B: string;
-  /** Đáp án lý tưởng mà con người 'trung bình' sẽ chọn — dùng để demo RM học */
+  /** Đáp án lý tưởng mà con người 'trung bình' sẽ chọn-dùng để demo RM học */
   ideal: "A" | "B";
   reason: string;
 };
@@ -134,15 +134,15 @@ const PREF_PAIRS: PrefPair[] = [
     A: "2 + 2 = 4.",
     B: "2 + 2 là một bài toán cộng cơ bản trong số học. Phép cộng là phép toán hai ngôi trên tập số tự nhiên, được định nghĩa qua tiên đề Peano... (3 đoạn giải thích)",
     ideal: "A",
-    reason: "Câu A concise và đúng. Câu B quá dài dòng không cần thiết — đây là pitfall RLHF hay gặp: mô hình được thưởng cho câu dài nên 'xả văn'.",
+    reason: "Câu A concise và đúng. Câu B quá dài dòng không cần thiết-đây là pitfall RLHF hay gặp: mô hình được thưởng cho câu dài nên 'xả văn'.",
   },
   {
     id: "p4",
     prompt: "Tôi bị mất việc, cảm thấy vô dụng.",
     A: "Đừng buồn. Ai cũng có lúc khó khăn. Tìm việc mới nhanh lên.",
-    B: "Mình hiểu cảm giác này rất nặng nề. Mất việc không phải lỗi của bạn và không định nghĩa con người bạn. Bạn có muốn mình hỗ trợ nghĩ về bước tiếp theo — nghỉ ngơi, cập nhật CV, hay chia sẻ thêm về tình huống?",
+    B: "Mình hiểu cảm giác này rất nặng nề. Mất việc không phải lỗi của bạn và không định nghĩa con người bạn. Bạn có muốn mình hỗ trợ nghĩ về bước tiếp theo-nghỉ ngơi, cập nhật CV, hay chia sẻ thêm về tình huống?",
     ideal: "B",
-    reason: "Câu B empathetic và hỗ trợ cụ thể. Câu A phủ nhận cảm xúc và thúc ép — thiếu honest về mức độ khó khăn.",
+    reason: "Câu B empathetic và hỗ trợ cụ thể. Câu A phủ nhận cảm xúc và thúc ép-thiếu honest về mức độ khó khăn.",
   },
   {
     id: "p5",
@@ -163,7 +163,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao RLHF cần Reward Model thay vì trực tiếp dùng phản hồi con người trong PPO?",
     options: [
       "Vì con người không đủ thông minh để đánh giá",
-      "Vì RL cần chấm điểm hàng triệu lần — con người không thể làm nhanh vậy, nên cần AI thay thế",
+      "Vì RL cần chấm điểm hàng triệu lần-con người không thể làm nhanh vậy, nên cần AI thay thế",
       "Vì reward model luôn chính xác hơn con người",
       "Vì reward model rẻ hơn con người về thời gian",
     ],
@@ -181,19 +181,19 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Không có KL penalty, policy sẽ tìm cách 'hack' reward model — sinh ra câu trả lời có điểm RM cao nhưng vô nghĩa / sai ngữ pháp. KL penalty giữ mô hình gần với bản SFT ổn định; β điều khiển độ chặt.",
+      "Không có KL penalty, policy sẽ tìm cách 'hack' reward model-sinh ra câu trả lời có điểm RM cao nhưng vô nghĩa / sai ngữ pháp. KL penalty giữ mô hình gần với bản SFT ổn định; β điều khiển độ chặt.",
   },
   {
     question: "Reward Model được huấn luyện trên dữ liệu gì?",
     options: [
       "Cặp (prompt, câu trả lời đúng duy nhất)",
-      "Preference pairs (prompt, chosen, rejected) — người chấm so sánh A vs B",
+      "Preference pairs (prompt, chosen, rejected), người chấm so sánh A vs B",
       "Điểm số từ 1 đến 10 cho từng câu trả lời",
       "Chỉ prompt, không cần response",
     ],
     correct: 1,
     explanation:
-      "RM học từ so sánh tương đối (A tốt hơn B) chứ không phải điểm tuyệt đối — so sánh nhất quán hơn nhiều giữa các annotator. Loss là Bradley-Terry: -log σ(R(chosen) - R(rejected)).",
+      "RM học từ so sánh tương đối (A tốt hơn B) chứ không phải điểm tuyệt đối-so sánh nhất quán hơn nhiều giữa các annotator. Loss là Bradley-Terry: -log σ(R(chosen) - R(rejected)).",
   },
   {
     question: "ChatGPT và Claude dùng kỹ thuật alignment nào?",
@@ -229,7 +229,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "RM chỉ là một xấp xỉ của preference con người — có nhiều ngóc ngách. Policy học qua PPO rất giỏi tìm các vùng 'dễ thưởng' nhưng không thực sự đúng. KL penalty + RM ensemble + reward shaping là giải pháp phổ biến.",
+      "RM chỉ là một xấp xỉ của preference con người-có nhiều ngóc ngách. Policy học qua PPO rất giỏi tìm các vùng 'dễ thưởng' nhưng không thực sự đúng. KL penalty + RM ensemble + reward shaping là giải pháp phổ biến.",
   },
   {
     question:
@@ -242,14 +242,14 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Hàm mục tiêu RLHF: max_θ E_{x~D, y~π_θ} [R_φ(x, y) − β · KL(π_θ(·|x) ‖ π_SFT(·|x))]. Thành phần đầu kéo mô hình lên reward cao; thành phần KL giữ gần SFT baseline. β là hyperparameter (thường 0.01–0.2).",
+      "Hàm mục tiêu RLHF: max_θ E_{x~D, y~π_θ} [R_φ(x, y) − β · KL(π_θ(·|x) ‖ π_SFT(·|x))]. Thành phần đầu kéo mô hình lên reward cao; thành phần KL giữ gần SFT baseline, β là hyperparameter (thường 0.01-0.2).",
   },
   {
     question:
       "DPO (Direct Preference Optimization) khác RLHF ở chỗ nào?",
     options: [
       "DPO dùng nhiều reward model hơn",
-      "DPO bỏ bước RM và PPO — tối ưu trực tiếp policy trên preference pairs bằng closed-form loss",
+      "DPO bỏ bước RM và PPO-tối ưu trực tiếp policy trên preference pairs bằng closed-form loss",
       "DPO yêu cầu nhiều dữ liệu hơn RLHF",
       "DPO chỉ dùng SFT, không có preference",
     ],
@@ -316,7 +316,7 @@ export default function RLHFTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 1 — HOOK / PREDICTION GATE
+          BƯỚC 1-HOOK / PREDICTION GATE
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
@@ -338,13 +338,13 @@ export default function RLHFTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
+          BƯỚC 2-ẨN DỤ THỰC TẾ
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Ẩn dụ">
         <p className="text-sm leading-relaxed text-foreground">
           Hãy tưởng tượng bạn đang dạy một đầu bếp trẻ tài năng nhưng &quot;hoang
           dã&quot;. Đầu bếp này có kỹ thuật cực tốt (GPT-3 base), nhưng không hiểu
-          thực khách muốn gì — nấu món quá cay, quá mặn, có khi còn chửi khách.
+          thực khách muốn gì-nấu món quá cay, quá mặn, có khi còn chửi khách.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-foreground">
           Bạn dạy đầu bếp qua <strong>3 giai đoạn</strong>:
@@ -353,25 +353,25 @@ export default function RLHFTopic() {
           <li>
             <strong>Dạy công thức chuẩn (SFT):</strong> đưa 100 công thức mẫu của đầu
             bếp sao Michelin để đầu bếp bắt chước. Sau đó đầu bếp biết nấu &quot;đúng
-            format&quot; — món ra đĩa gọn gàng, có đủ thành phần.
+            format&quot;, món ra đĩa gọn gàng, có đủ thành phần.
           </li>
           <li>
             <strong>Thuê giám khảo (Reward Model):</strong> bạn không thể đứng nếm
             từng món suốt ngày, nên thuê một giám khảo AI học <em>gu</em> của bạn.
             Bạn đưa cho giám khảo 1000 cặp món &quot;cái này ngon hơn cái kia&quot;
-            — giám khảo học cách chấm điểm thay mặt bạn.
+           , giám khảo học cách chấm điểm thay mặt bạn.
           </li>
           <li>
             <strong>Luyện tập với giám khảo (PPO):</strong> đầu bếp nấu → giám khảo
             chấm → đầu bếp điều chỉnh → lặp lại hàng triệu lần. Quan trọng: không cho
-            đầu bếp đi quá xa công thức gốc (KL penalty) — nếu không, đầu bếp sẽ
+            đầu bếp đi quá xa công thức gốc (KL penalty), nếu không, đầu bếp sẽ
             phát hiện &quot;cho nhiều đường là giám khảo chấm cao&quot; và nấu mọi
             món đều ngọt lịm.
           </li>
         </ol>
         <Callout variant="insight" title="Ba trụ cột của RLHF: Helpful, Honest, Harmless">
           <p>
-            RLHF không dạy kiến thức mới — nó dạy <em>giá trị</em>. Helpful: thực sự
+            RLHF không dạy kiến thức mới-nó dạy <em>giá trị</em>. Helpful: thực sự
             giúp ích người hỏi. Honest: không bịa đặt, biết nói &quot;tôi không
             biết&quot;. Harmless: từ chối yêu cầu nguy hiểm một cách tôn trọng. Ba
             giá trị này được mã hóa trong chính preference pairs mà người annotator
@@ -381,7 +381,7 @@ export default function RLHFTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 3 — VISUALIZATION SECTION
+          BƯỚC 3-VISUALIZATION SECTION
           - 3-stage pipeline diagram with animated data flow
           - Interactive preference labeling → RM learn → policy reward
           ═══════════════════════════════════════════════════════════════════ */}
@@ -391,7 +391,7 @@ export default function RLHFTopic() {
             {/* ─── 3-stage pipeline diagram ─── */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                Pipeline RLHF — 3 giai đoạn nối tiếp
+                Pipeline RLHF-3 giai đoạn nối tiếp
               </h3>
               <p className="text-sm text-muted mb-3 leading-relaxed">
                 Nhấp vào từng stage để xem chi tiết. Các chấm động biểu diễn dòng dữ
@@ -584,7 +584,7 @@ export default function RLHFTopic() {
                   className="text-sm font-semibold"
                   style={{ color: activeStageMeta.color }}
                 >
-                  {activeStageMeta.title} — {activeStageMeta.subtitle}
+                  {activeStageMeta.title}, {activeStageMeta.subtitle}
                 </p>
                 <p className="text-sm text-muted mt-1 leading-relaxed">
                   {activeStageMeta.detail}
@@ -595,7 +595,7 @@ export default function RLHFTopic() {
             {/* ─── Interactive preference labeling ─── */}
             <div>
               <h3 className="text-base font-semibold text-foreground mb-2">
-                Đóng vai annotator — gán nhãn A vs B
+                Đóng vai annotator-gán nhãn A vs B
               </h3>
               <p className="text-sm text-muted mb-3 leading-relaxed">
                 Bạn là người &quot;dạy&quot; reward model. Với mỗi prompt, hãy chọn
@@ -647,7 +647,7 @@ export default function RLHFTopic() {
                 </div>
                 <p className="text-[11px] text-muted mt-2 leading-relaxed">
                   Sau khi RM học xong, PPO sẽ dùng nó để cải thiện policy. Policy
-                  reward tỉ lệ thuận với chất lượng RM — RM tệ → policy tệ / reward
+                  reward tỉ lệ thuận với chất lượng RM-RM tệ → policy tệ / reward
                   hacking.
                 </p>
               </div>
@@ -717,7 +717,7 @@ export default function RLHFTopic() {
                           style={{ color: isCorrect ? "#22c55e" : "#ef4444" }}
                         >
                           {isCorrect
-                            ? "✓ Khớp đáp án tham khảo — RM update đúng hướng."
+                            ? "✓ Khớp đáp án tham khảo-RM update đúng hướng."
                             : `✗ Đáp án tham khảo là ${pair.ideal}: ${pair.reason}`}
                         </motion.div>
                       )}
@@ -762,7 +762,7 @@ export default function RLHFTopic() {
                   <p className="text-xs text-muted mt-1 leading-relaxed">
                     {rmAccuracy >= 0.8
                       ? "RM của bạn khớp tốt với preference 'chuẩn'. PPO cải thiện policy mà không bị hack. Đây là scenario RLHF thành công."
-                      : "RM chỉ khớp một phần preference — PPO có thể tối ưu sai hướng. Trong thực tế, cần thêm dữ liệu annotator, nhiều annotator độc lập, và RM ensemble."}
+                      : "RM chỉ khớp một phần preference-PPO có thể tối ưu sai hướng. Trong thực tế, cần thêm dữ liệu annotator, nhiều annotator độc lập, và RM ensemble."}
                   </p>
                 </motion.div>
               )}
@@ -772,19 +772,19 @@ export default function RLHFTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 4 — AHA MOMENT
+          BƯỚC 4-AHA MOMENT
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
-            <strong>RLHF không dạy AI kiến thức mới — nó dạy AI giá trị.</strong>{" "}
+            <strong>RLHF không dạy AI kiến thức mới-nó dạy AI giá trị.</strong>{" "}
             Base model (sau pretraining) đã có đủ tri thức. RLHF chỉ định hình{" "}
-            <em>cách mô hình sử dụng tri thức đó</em> — khi nào nên nói, khi nào nên
+            <em>cách mô hình sử dụng tri thức đó</em>, khi nào nên nói, khi nào nên
             im lặng, cách từ chối lịch sự, khi nào nên làm rõ thay vì đoán.
           </p>
           <p className="text-sm text-muted mt-2">
             Và trái tim kỹ thuật: Reward Model <em>thay mặt</em> con người chấm điểm
-            hàng triệu response — biến &quot;phản hồi người&quot; (chậm, đắt) thành
+            hàng triệu response-biến &quot;phản hồi người&quot; (chậm, đắt) thành
             một hàm số đạo hàm được (nhanh, rẻ). Đây là cây cầu giúp RL cổ điển áp
             dụng được cho LLM.
           </p>
@@ -792,7 +792,7 @@ export default function RLHFTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 5 — INLINE CHALLENGES (2 câu)
+          BƯỚC 5-INLINE CHALLENGES (2 câu)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Thử thách">
         <div className="space-y-4">
@@ -800,7 +800,7 @@ export default function RLHFTopic() {
             question="Mô hình phát hiện rằng câu trả lời DÀI luôn được RM cho điểm cao hơn, nên bắt đầu viết rất dài dù không cần thiết. Hiện tượng này tên là gì?"
             options={[
               "Overfitting",
-              "Reward hacking — khai thác lỗ hổng của reward model",
+              "Reward hacking-khai thác lỗ hổng của reward model",
               "Catastrophic forgetting",
               "Mode collapse",
             ]}
@@ -811,18 +811,18 @@ export default function RLHFTopic() {
             question="Bạn tăng β (KL coefficient) từ 0.02 lên 1.0. Tác động dự kiến?"
             options={[
               "Policy đi xa hơn khỏi SFT, reward trung bình cao hơn",
-              "Policy gần như không thay đổi so với SFT — mất tác dụng của PPO",
+              "Policy gần như không thay đổi so với SFT-mất tác dụng của PPO",
               "Reward hacking trở nên nghiêm trọng hơn",
               "Training loss của SFT tăng",
             ]}
             correct={1}
-            explanation="β lớn → KL penalty nặng → policy bị 'kéo ghì' về SFT. Reward không tăng được nhiều. Ngược lại β quá nhỏ → policy drift xa, dễ reward hacking. Chọn β là trade-off trung tâm của RLHF (thường 0.01–0.2)."
+            explanation="β lớn → KL penalty nặng → policy bị 'kéo ghì' về SFT. Reward không tăng được nhiều. Ngược lại β quá nhỏ → policy drift xa, dễ reward hacking. Chọn β là trade-off trung tâm của RLHF (thường 0.01-0.2)."
           />
         </div>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 6 — ANOTHER VISUAL: training dynamics
+          BƯỚC 6-ANOTHER VISUAL: training dynamics
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Động lực huấn luyện">
         <div className="rounded-lg border border-border bg-card p-4">
@@ -839,10 +839,10 @@ export default function RLHFTopic() {
               </p>
             </div>
             <div className="rounded-lg border border-accent/40 bg-accent/10 p-3">
-              <p className="text-accent font-semibold mb-1">β vừa (0.05–0.2)</p>
+              <p className="text-accent font-semibold mb-1">β vừa (0.05-0.2)</p>
               <p className="text-xs text-muted leading-relaxed">
                 Sweet spot. Policy cải thiện rõ trên preference eval, KL với SFT
-                vừa phải (~5–15), chất lượng thực tế tăng ổn định.
+                vừa phải (~5-15), chất lượng thực tế tăng ổn định.
               </p>
             </div>
             <div className="rounded-lg border border-[#ef444440] bg-[#ef444410] p-3">
@@ -856,14 +856,14 @@ export default function RLHFTopic() {
 
           <p className="text-xs text-muted mt-3 leading-relaxed">
             Trong thực tế, các lab như OpenAI và Anthropic dùng thêm{" "}
-            <em>adaptive KL control</em> — β thay đổi theo KL thực đo được, đảm bảo
-            KL nằm trong khoảng mục tiêu (thường 6–12 nats).
+            <em>adaptive KL control</em>, β thay đổi theo KL thực đo được, đảm bảo
+            KL nằm trong khoảng mục tiêu (thường 6-12 nats).
           </p>
         </div>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 7 — EXPLANATION SECTION (definition + LaTeX + 2 CodeBlocks +
+          BƯỚC 7-EXPLANATION SECTION (definition + LaTeX + 2 CodeBlocks +
                                        4 Callouts + 2 CollapsibleDetails +
                                        applications + pitfalls)
           ═══════════════════════════════════════════════════════════════════ */}
@@ -875,7 +875,7 @@ export default function RLHFTopic() {
             pipeline 3 giai đoạn được giới thiệu bởi Christiano et al. (2017) và áp
             dụng thành công vào LLM bởi InstructGPT (Ouyang et al., 2022). Mục tiêu:
             biến một mô hình ngôn ngữ lớn đã pretrain thành một trợ lý hữu ích, trung
-            thực, và an toàn — phù hợp với{" "}
+            thực, và an toàn-phù hợp với{" "}
             <TopicLink slug="alignment">preference của con người</TopicLink>. Ba giai
             đoạn:
           </p>
@@ -907,22 +907,22 @@ export default function RLHFTopic() {
             Thành phần KL penalty (β · log π_θ/π_SFT) tương đương{" "}
             <LaTeX>{String.raw`\beta \cdot D_{\text{KL}}(\pi_\theta \| \pi_{\text{SFT}})`}</LaTeX>{" "}
             khi lấy kỳ vọng. Đây là reward shaping per-token: reward thực tế mỗi
-            token là R_φ (ở token cuối) minus β · KL cục bộ. β kiểm soát trade-off
+            token là R_φ (ở token cuối) minus β · KL cục bộ, β kiểm soát trade-off
             giữa &quot;tối đa reward&quot; và &quot;giữ gần SFT&quot;.
           </p>
 
-          {/* ── Callout 1 — insight: PPO vs vanilla policy gradient ── */}
+          {/* ── Callout 1-insight: PPO vs vanilla policy gradient ── */}
           <Callout variant="insight" title="Tại sao PPO chứ không phải REINFORCE?">
             <p>
               REINFORCE (vanilla policy gradient) có variance cao và không ổn định
               với LLM (hàng tỷ tham số). <strong>PPO</strong> giới hạn mức độ policy
               được cập nhật mỗi step bằng <em>clipped surrogate objective</em> và
-              trust region — ổn định hơn nhiều. Kết hợp PPO + KL penalty tạo một
+              trust region-ổn định hơn nhiều. Kết hợp PPO + KL penalty tạo một
               vòng lặp &quot;học có phanh&quot; an toàn.
             </p>
           </Callout>
 
-          {/* ── CodeBlock 1 — Reward Model training ── */}
+          {/* ── CodeBlock 1-Reward Model training ── */}
           <CodeBlock language="python" title="reward_model_training.py">
             {`import torch
 import torch.nn as nn
@@ -977,7 +977,7 @@ def train_step(rm, tokenizer, batch, optimizer):
     return loss.item(), (r_chosen > r_rejected).float().mean().item()`}
           </CodeBlock>
 
-          {/* ── Callout 2 — tip: Normalize RM scores ── */}
+          {/* ── Callout 2-tip: Normalize RM scores ── */}
           <Callout variant="tip" title="Chuẩn hóa reward trước khi đưa vào PPO">
             <p>
               Reward từ RM có phân phối tùy tiện (có thể −5 đến +5). Trong PPO, nên
@@ -987,7 +987,7 @@ def train_step(rm, tokenizer, batch, optimizer):
             </p>
           </Callout>
 
-          {/* ── CollapsibleDetail 1 — Chứng minh RLHF objective tương đương KL-regularized max-likelihood ── */}
+          {/* ── CollapsibleDetail 1-Chứng minh RLHF objective tương đương KL-regularized max-likelihood ── */}
           <CollapsibleDetail title="Toán học nâng cao: RLHF objective có lời giải đóng">
             <p>
               Objective RLHF max_π E[R − β · log(π/π_SFT)] có lời giải đóng (closed
@@ -1002,36 +1002,36 @@ def train_step(rm, tokenizer, batch, optimizer):
               <li>Khi β → ∞: π* → π_SFT (KL penalty chiếm ưu thế).</li>
               <li>Khi β → 0: π* → argmax R_φ (reward chiếm ưu thế).</li>
               <li>
-                PPO chỉ là một cách xấp xỉ π* bằng gradient ascent — vì Z(x) intractable.
+                PPO chỉ là một cách xấp xỉ π* bằng gradient ascent-vì Z(x) intractable.
               </li>
               <li>
                 <strong>DPO</strong> (Rafailov et al., 2023) khai thác closed form này
-                để bỏ hoàn toàn RM + PPO — tối ưu trực tiếp trên preference pairs.
+                để bỏ hoàn toàn RM + PPO-tối ưu trực tiếp trên preference pairs.
               </li>
             </ul>
           </CollapsibleDetail>
 
-          {/* ── Callout 3 — warning: Reward hacking ── */}
+          {/* ── Callout 3-warning: Reward hacking ── */}
           <Callout variant="warning" title="Reward hacking là vấn đề trung tâm của RLHF">
             <p>
               Mô hình rất giỏi tìm &quot;ngóc ngách&quot; của RM: dùng từ ngữ nịnh
               bợ, xả văn dài dòng, từ chối quá mức, lặp lại cấu trúc. Giải pháp:
               (1) <strong>KL penalty</strong> giữ gần SFT; (2){" "}
-              <strong>RM ensemble</strong> — trung bình nhiều RM độc lập; (3){" "}
-              <strong>iterative RLHF</strong> — định kỳ thu thêm preference data từ
+              <strong>RM ensemble</strong>, trung bình nhiều RM độc lập; (3){" "}
+              <strong>iterative RLHF</strong>, định kỳ thu thêm preference data từ
               policy hiện tại để update RM; (4){" "}
-              <strong>constitutional AI</strong> — thêm critic dựa trên luật định.
+              <strong>constitutional AI</strong>, thêm critic dựa trên luật định.
             </p>
           </Callout>
 
-          {/* ── CodeBlock 2 — PPO loop with TRL ── */}
+          {/* ── CodeBlock 2-PPO loop with TRL ── */}
           <CodeBlock language="python" title="ppo_rlhf_with_trl.py">
-            {`# Dùng thư viện TRL (Hugging Face) — abstraction phổ biến cho RLHF.
+            {`# Dùng thư viện TRL (Hugging Face), abstraction phổ biến cho RLHF.
 from trl import PPOTrainer, PPOConfig, AutoModelForCausalLMWithValueHead
 from transformers import AutoTokenizer
 import torch
 
-# 1. Load policy (π_θ) — khởi tạo từ π_SFT
+# 1. Load policy (π_θ), khởi tạo từ π_SFT
 policy = AutoModelForCausalLMWithValueHead.from_pretrained("sft-model")
 ref_model = AutoModelForCausalLMWithValueHead.from_pretrained("sft-model")
 ref_model.eval()  # ref_model = π_SFT, đóng băng để tính KL
@@ -1082,7 +1082,7 @@ for epoch in range(num_epochs):
             for p, r in zip(prompts, responses)
         ]
 
-        # (c) PPO update — tự động áp dụng KL penalty với ref_model
+        # (c) PPO update-tự động áp dụng KL penalty với ref_model
         stats = trainer.step(prompt_tensors, response_tensors, rewards)
 
         # (d) Log
@@ -1091,7 +1091,7 @@ for epoch in range(num_epochs):
               f"β={stats['objective/kl_coef']:.4f}")`}
           </CodeBlock>
 
-          {/* ── CollapsibleDetail 2 — Comparison with alternatives ── */}
+          {/* ── CollapsibleDetail 2-Comparison with alternatives ── */}
           <CollapsibleDetail title="So sánh RLHF với các phương pháp alignment khác">
             <p>
               RLHF không phải lựa chọn duy nhất. Dưới đây là các biến thể và lựa chọn
@@ -1128,13 +1128,13 @@ for epoch in range(num_epochs):
             </ul>
           </CollapsibleDetail>
 
-          {/* ── Callout 4 — info: 3 trụ cột ── */}
+          {/* ── Callout 4-info: 3 trụ cột ── */}
           <Callout variant="insight" title="Preference pairs mã hóa giá trị">
             <p>
               Mỗi lựa chọn A vs B của người annotator là một &quot;phiếu bầu&quot;
               cho giá trị. Hàng triệu phiếu bầu qua thời gian tạo thành một đại diện
               toán học của &quot;cái gì tốt&quot; trong mắt nhóm annotator đó. RLHF
-              sẽ chỉ tốt ngang người annotator — đa dạng hóa pool annotator là chìa
+              sẽ chỉ tốt ngang người annotator-đa dạng hóa pool annotator là chìa
               khóa để RLHF không thiên lệch về một văn hóa hay quan điểm cụ thể.
             </p>
           </Callout>
@@ -1149,7 +1149,7 @@ for epoch in range(num_epochs):
               GPT-4 đều có giai đoạn RLHF với hàng triệu preference.
             </li>
             <li>
-              <strong>Claude (Anthropic):</strong> Constitutional AI + RLAIF — dùng
+              <strong>Claude (Anthropic):</strong> Constitutional AI + RLAIF-dùng
               LLM làm annotator dựa trên &quot;hiến pháp&quot; 60+ nguyên tắc.
             </li>
             <li>
@@ -1162,7 +1162,7 @@ for epoch in range(num_epochs):
             </li>
             <li>
               <strong>InstructGPT paper (2022):</strong> RLHF giúp mô hình 1.3B
-              parameter vượt GPT-3 175B về preference của người dùng — bằng chứng
+              parameter vượt GPT-3 175B về preference của người dùng-bằng chứng
               alignment &gt; scale.
             </li>
             <li>
@@ -1183,7 +1183,7 @@ for epoch in range(num_epochs):
               evaluator LLM, diversity trong training preferences.
             </li>
             <li>
-              <strong>β cố định:</strong> Fix β suốt training không tối ưu — dùng
+              <strong>β cố định:</strong> Fix β suốt training không tối ưu-dùng
               adaptive KL control để β tự điều chỉnh theo KL thực đo.
             </li>
             <li>
@@ -1212,7 +1212,7 @@ for epoch in range(num_epochs):
             <strong>Trong thực tế:</strong> RLHF là kỹ thuật tốn kém (hàng triệu USD
             cho preference annotation + compute), nhưng là con đường đã được chứng
             minh là hiệu quả để biến base LLM thành trợ lý hữu ích. DPO và các biến
-            thể đơn giản hơn đang dần thay thế PPO trong nhiều pipeline — nhưng ý
+            thể đơn giản hơn đang dần thay thế PPO trong nhiều pipeline-nhưng ý
             tưởng cốt lõi &quot;học từ preference của con người&quot; vẫn là trung
             tâm của mọi công nghệ alignment hiện đại.
           </p>
@@ -1220,24 +1220,24 @@ for epoch in range(num_epochs):
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 8 — MINI SUMMARY (6 điểm)
+          BƯỚC 8-MINI SUMMARY (6 điểm)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Những điều cần nhớ về RLHF"
           points={[
             "Pipeline 3 giai đoạn: SFT (học format từ demo) → Reward Model (học preference con người) → PPO (tối ưu policy theo RM + KL penalty).",
-            "RM thay mặt con người chấm điểm hàng triệu response — giải quyết nút cổ chai tốc độ của human feedback. Loss Bradley-Terry trên preference pairs (chosen vs rejected).",
-            "Objective PPO cốt lõi: max E[R_φ(x, y) − β · KL(π_θ ‖ π_SFT)]. β kiểm soát trade-off giữa tối đa reward và trung thành với SFT.",
-            "KL penalty là phanh chống reward hacking — nếu không có, policy sẽ tìm ngóc ngách của RM (nịnh bợ, xả văn, off-topic) để thổi điểm.",
-            "RLHF không dạy kiến thức mới — nó dạy giá trị (helpful, honest, harmless). Mã hóa giá trị qua preference pairs của annotator.",
+            "RM thay mặt con người chấm điểm hàng triệu response-giải quyết nút cổ chai tốc độ của human feedback. Loss Bradley-Terry trên preference pairs (chosen vs rejected).",
+            "Objective PPO cốt lõi: max E[R_φ(x, y) − β · KL(π_θ ‖ π_SFT)], β kiểm soát trade-off giữa tối đa reward và trung thành với SFT.",
+            "KL penalty là phanh chống reward hacking-nếu không có, policy sẽ tìm ngóc ngách của RM (nịnh bợ, xả văn, off-topic) để thổi điểm.",
+            "RLHF không dạy kiến thức mới-nó dạy giá trị (helpful, honest, harmless). Mã hóa giá trị qua preference pairs của annotator.",
             "Biến thể: RLAIF (AI annotator), DPO (bỏ RM+PPO), GRPO (bỏ value net), Constitutional AI (hiến pháp + RLAIF), RLVR (verifiable rewards). DPO đang dần phổ biến do đơn giản hơn.",
           ]}
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 9 — QUIZ (8 câu)
+          BƯỚC 9-QUIZ (8 câu)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

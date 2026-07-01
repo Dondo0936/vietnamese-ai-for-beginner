@@ -82,7 +82,7 @@ export default function TsneTopic() {
       question: "Perplexity trong t-SNE ảnh hưởng gì?",
       options: [
         "Tốc độ chạy thuật toán",
-        "Số láng giềng hiệu quả — perplexity thấp = focus cấu trúc cục bộ, cao = cấu trúc toàn cục",
+        "Số láng giềng hiệu quả-perplexity thấp = focus cấu trúc cục bộ, cao = cấu trúc toàn cục",
         "Số chiều output",
       ],
       correct: 1,
@@ -92,7 +92,7 @@ export default function TsneTopic() {
       question: "Chạy t-SNE 2 lần trên cùng dữ liệu. Kết quả có giống nhau không?",
       options: [
         "Luôn giống nhau",
-        "Khác nhau — vì khởi tạo ngẫu nhiên và gradient descent không convex",
+        "Khác nhau-vì khởi tạo ngẫu nhiên và gradient descent không convex",
         "Giống nếu dùng cùng perplexity",
       ],
       correct: 1,
@@ -105,14 +105,14 @@ export default function TsneTopic() {
       {/* STEP 1: PREDICTION GATE */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn có 10.000 ảnh chữ số viết tay (0-9), mỗi ảnh 784 pixel. Muốn vẽ lên biểu đồ 2D để xem các chữ số tạo cụm hay không. PCA đưa từ 784D xuống 2D — nhưng cụm chồng chéo. Có cách nào tốt hơn?"
+          question="Bạn có 10.000 ảnh chữ số viết tay (0-9), mỗi ảnh 784 pixel. Muốn vẽ lên biểu đồ 2D để xem các chữ số tạo cụm hay không. PCA đưa từ 784D xuống 2D-nhưng cụm chồng chéo. Có cách nào tốt hơn?"
           options={[
-            "PCA 2D là tốt nhất rồi — không thể cải thiện",
+            "PCA 2D là tốt nhất rồi-không thể cải thiện",
             "Dùng t-SNE: phi tuyến, giữ cấu trúc láng giềng → cụm tách rõ hơn",
             "Dùng K-Means trước rồi tô màu",
           ]}
           correct={1}
-          explanation="PCA tuyến tính nên nhiều cụm chồng nhau trong 2D. t-SNE phi tuyến — giữ quan hệ 'gần-xa' giữa các điểm → chữ số giống nhau tạo cụm rõ ràng trên 2D!"
+          explanation="PCA tuyến tính nên nhiều cụm chồng nhau trong 2D, t-SNE phi tuyến-giữ quan hệ 'gần-xa' giữa các điểm → chữ số giống nhau tạo cụm rõ ràng trên 2D!"
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
@@ -209,7 +209,7 @@ export default function TsneTopic() {
         <AhaMoment>
           <p>
             <strong>t-SNE</strong>{" "}
-            &quot;kéo&quot; điểm giống nhau lại gần và &quot;đẩy&quot; điểm khác nhau ra xa — tối ưu dần từ vị trí ngẫu nhiên. Kết quả: cấu trúc cụm ẩn trong 784 chiều hiện rõ trên 2D!
+            &quot;kéo&quot; điểm giống nhau lại gần và &quot;đẩy&quot; điểm khác nhau ra xa-tối ưu dần từ vị trí ngẫu nhiên. Kết quả: cấu trúc cụm ẩn trong 784 chiều hiện rõ trên 2D!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -219,12 +219,12 @@ export default function TsneTopic() {
         <InlineChallenge
           question="Trên biểu đồ t-SNE, cụm A cách cụm B gấp 3 lần cụm C. Kết luận gì?"
           options={[
-            "A khác B hơn khác C — khoảng cách t-SNE phản ánh tương đồng",
-            "KHÔNG kết luận được — khoảng cách giữa cụm t-SNE không có ý nghĩa tuyệt đối",
+            "A khác B hơn khác C-khoảng cách t-SNE phản ánh tương đồng",
+            "KHÔNG kết luận được-khoảng cách giữa cụm t-SNE không có ý nghĩa tuyệt đối",
             "A và C rất giống nhau",
           ]}
           correct={1}
-          explanation="Đây là bẫy phổ biến! t-SNE chỉ giữ cấu trúc CỤC BỘ (gần vẫn gần, xa vẫn xa). Khoảng cách TUYỆT ĐỐI giữa các cụm phụ thuộc vào perplexity và quá trình tối ưu — KHÔNG nên so sánh."
+          explanation="Đây là bẫy phổ biến! t-SNE chỉ giữ cấu trúc CỤC BỘ (gần vẫn gần, xa vẫn xa). Khoảng cách TUYỆT ĐỐI giữa các cụm phụ thuộc vào perplexity và quá trình tối ưu-KHÔNG nên so sánh."
         />
       </LessonSection>
 
@@ -236,10 +236,10 @@ export default function TsneTopic() {
             (t-distributed Stochastic Neighbor Embedding) giảm chiều bằng cách giữ quan hệ &quot;láng giềng&quot;:
           </p>
 
-          <p><strong>Bước 1: Không gian cao chiều</strong>{" "}— xác suất &quot;láng giềng&quot; bằng Gaussian:</p>
+          <p><strong>Bước 1: Không gian cao chiều</strong>,{" "}xác suất &quot;láng giềng&quot; bằng Gaussian:</p>
           <LaTeX block>{"p_{j|i} = \\frac{\\exp(-||x_i - x_j||^2 / 2\\sigma_i^2)}{\\sum_{k \\neq i}\\exp(-||x_i - x_k||^2 / 2\\sigma_i^2)}"}</LaTeX>
 
-          <p><strong>Bước 2: Không gian thấp (2D)</strong>{" "}— xác suất bằng Student-t (đuôi nặng):</p>
+          <p><strong>Bước 2: Không gian thấp (2D)</strong>,{" "}xác suất bằng Student-t (đuôi nặng):</p>
           <LaTeX block>{"q_{ij} = \\frac{(1 + ||y_i - y_j||^2)^{-1}}{\\sum_{k \\neq l}(1 + ||y_k - y_l||^2)^{-1}}"}</LaTeX>
 
           <p><strong>Bước 3: Tối thiểu KL divergence</strong>{" "}bằng gradient descent:</p>
@@ -285,7 +285,7 @@ plt.savefig("tsne_digits.png", dpi=150)`}
           <Callout variant="warning" title="3 lỗi phổ biến khi dùng t-SNE">
             1. So sánh khoảng cách giữa cụm → SAI (chỉ cấu trúc cục bộ có ý nghĩa).{"\n"}
             2. Kết luận từ 1 lần chạy → SAI (chạy nhiều lần, thử nhiều perplexity).{"\n"}
-            3. Dùng t-SNE features cho ML → SAI (stochastic, không deterministic — dùng PCA cho pipeline).
+            3. Dùng t-SNE features cho ML → SAI (stochastic, không deterministic-dùng PCA cho pipeline).
           </Callout>
         </ExplanationSection>
       </LessonSection>
@@ -296,7 +296,7 @@ plt.savefig("tsne_digits.png", dpi=150)`}
           "t-SNE giảm chiều PHI TUYẾN: giữ cấu trúc láng giềng, cụm tách rõ trên 2D.",
           "Gaussian (chiều cao) + Student-t (chiều thấp) + KL divergence → tối ưu bằng gradient descent.",
           "Perplexity = số láng giềng hiệu quả. Thấp = cục bộ, cao = toàn cục. Thử nhiều giá trị!",
-          "CHỈ dùng để trực quan hoá — khoảng cách giữa cụm không có ý nghĩa tuyệt đối.",
+          "CHỈ dùng để trực quan hoá-khoảng cách giữa cụm không có ý nghĩa tuyệt đối.",
           "PCA cho pipeline ML, t-SNE cho visualization. UMAP nhanh hơn t-SNE và giữ cấu trúc toàn cục tốt hơn.",
         ]} />
       </LessonSection>

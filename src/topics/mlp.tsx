@@ -506,7 +506,7 @@ export default function MlpTopic() {
             "Phụ thuộc ngẫu nhiên",
           ]}
           correct={1}
-          explanation="Perceptron đơn chỉ đẻ ra một đường thẳng. Hai vầng trăng xếp xen kẽ không có đường thẳng nào chia được đúng. Tối đa khoảng 50–70% tuỳ vị trí đường. Muốn vẽ đường cong bao quanh, bạn phải xếp nhiều perceptron thành nhiều lớp."
+          explanation="Perceptron đơn chỉ đẻ ra một đường thẳng. Hai vầng trăng xếp xen kẽ không có đường thẳng nào chia được đúng. Tối đa khoảng 50-70% tuỳ vị trí đường. Muốn vẽ đường cong bao quanh, bạn phải xếp nhiều perceptron thành nhiều lớp."
         >
           <div className="mt-4 space-y-2 text-sm text-muted leading-relaxed">
             <p>
@@ -757,7 +757,7 @@ export default function MlpTopic() {
               <div key="s1" className="rounded-lg border border-border bg-surface/60 p-4">
                 <p className="text-sm text-foreground leading-relaxed">
                   Dữ liệu thô đi vào lớp đầu vào. Ví dụ bài phân loại ảnh 28×28: mỗi
-                  pixel là một nơ-ron, tất cả có 784 con số đầu vào trong khoảng 0–1.
+                  pixel là một nơ-ron, tất cả có 784 con số đầu vào trong khoảng 0-1.
                   Lớp đầu vào không làm phép tính, chỉ là nơi đặt dữ liệu.
                 </p>
               </div>,
@@ -778,7 +778,7 @@ export default function MlpTopic() {
               <div key="s4" className="rounded-lg border border-border bg-surface/60 p-4">
                 <p className="text-sm text-foreground leading-relaxed">
                   Lớp đầu ra: tổ hợp &ldquo;hình dạng&rdquo; thành câu trả lời cuối.
-                  Với phân loại 0–9: 10 nơ-ron, mỗi nơ-ron cho một xác suất. Nơ-ron
+                  Với phân loại 0-9: 10 nơ-ron, mỗi nơ-ron cho một xác suất. Nơ-ron
                   có xác suất cao nhất chính là dự đoán của mạng.
                 </p>
               </div>,
@@ -848,7 +848,7 @@ export default function MlpTopic() {
           </h4>
           <ol className="list-decimal list-inside space-y-2 text-sm pl-1">
             <li className="leading-relaxed">
-              <strong>Bắt đầu từ 1–2 lớp ẩn</strong>, mỗi lớp cỡ bằng (hoặc gấp đôi)
+              <strong>Bắt đầu từ 1-2 lớp ẩn</strong>, mỗi lớp cỡ bằng (hoặc gấp đôi)
               chiều đầu vào. Chỉ tăng chiều sâu khi kết quả chưa đủ tốt.
             </li>
             <li className="leading-relaxed">
@@ -923,7 +923,7 @@ export default function MlpTopic() {
           points={[
             "Một perceptron là một đường thẳng. MLP xếp nhiều perceptron thành nhiều lớp nên vẽ được đường cong tuỳ ý.",
             "Hàm kích hoạt phi tuyến (ReLU, tanh, sigmoid) là BẮT BUỘC ở giữa các lớp. Không có nó, cả mạng sụp thành một phép tuyến tính.",
-            "Perceptron đơn KHÔNG giải được XOR. MLP với 1 lớp ẩn 2–4 nơ-ron giải được ngay, mở đường cho deep learning.",
+            "Perceptron đơn KHÔNG giải được XOR. MLP với 1 lớp ẩn 2-4 nơ-ron giải được ngay, mở đường cho deep learning.",
             "Số tham số giữa hai lớp bằng (nơ-ron lớp trước) × (nơ-ron lớp sau) cộng bias. Lớp đầu tiên thường nặng ký nhất.",
             "MLP là điểm xuất phát lý tưởng cho dữ liệu bảng; ảnh và chuỗi dùng CNN hoặc Transformer sẽ hiệu quả hơn.",
           ]}
@@ -1057,7 +1057,7 @@ function MlpBuilder() {
 
       <Callout variant="insight" title="Quan sát chính">
         Khi <strong>số nơ-ron là 1 và số lớp là 1</strong>, mạng không hơn perceptron
-        đơn: đường biên vẫn thẳng. Chỉ cần bật lên <strong>2–3 lớp × 4–8 nơ-ron
+        đơn: đường biên vẫn thẳng. Chỉ cần bật lên <strong>2-3 lớp × 4-8 nơ-ron
         </strong>, đường biên đã uốn cong bao lấy từng vầng trăng, đúng như lời
         hứa của Universal Approximation Theorem. Bấm &ldquo;Khởi tạo lại trọng
         số&rdquo; để thấy: cùng kiến trúc nhưng trọng số khác sẽ cho đường biên

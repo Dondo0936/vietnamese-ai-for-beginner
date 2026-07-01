@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
-   RANDOM. seeded noise so arrows/fits stay stable across renders
+   RANDOM, seeded noise so arrows/fits stay stable across renders
    ──────────────────────────────────────────────────────────── */
 function seededRng(seed: number) {
   let s = seed >>> 0;
@@ -300,7 +300,7 @@ const quizQuestions: QuizQuestion[] = [
       "Thêm dữ liệu huấn luyện",
       "Tăng độ phức tạp của mô hình",
       "Cải thiện chất lượng đo đạc dữ liệu (cảm biến tốt hơn, định nghĩa chặt hơn, loại outlier)",
-      "Không thể giảm. σ² là hằng số của vũ trụ.",
+      "Không thể giảm, σ² là hằng số của vũ trụ.",
     ],
     correct: 2,
     explanation:
@@ -985,7 +985,7 @@ export default function BiasVarianceTopic() {
           </div>
 
           <p className="leading-relaxed">
-            Công thức thứ hai đáng nhớ là <strong>phân rã Bias–Variance cho một điểm dự đoán</strong>.
+            Công thức thứ hai đáng nhớ là <strong>phân rã Bias-Variance cho một điểm dự đoán</strong>.
             Hai thành phần Bias² và Variance cạnh tranh nhau qua &ldquo;cái nút&rdquo; độ phức tạp:
           </p>
 

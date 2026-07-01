@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "text-to-image",
   title: "Text-to-Image",
-  titleVi: "Tạo ảnh từ văn bản. AI hoạ sĩ",
+  titleVi: "Tạo ảnh từ văn bản",
   description:
     "Mô hình AI tạo ra hình ảnh chất lượng cao từ mô tả bằng ngôn ngữ tự nhiên.",
   category: "multimodal",
@@ -30,7 +30,7 @@ const TOTAL_STEPS = 8;
 const PIPELINE_STEPS = [
   { label: "Nhập prompt", desc: "'Phố cổ Hà Nội mùa thu, lá vàng rơi, xe đạp'", color: "#3b82f6", detail: "Người dùng mô tả bức ảnh mong muốn bằng ngôn ngữ tự nhiên." },
   { label: "Mã hoá văn bản", desc: "CLIP text encoder chuyển prompt thành vector", color: "#8b5cf6", detail: "Bộ mã hoá CLIP biến câu mô tả thành vector 768 chiều, nắm bắt ý nghĩa ngữ nghĩa." },
-  { label: "Khởi tạo nhiễu", desc: "Tạo tensor ngẫu nhiên trong không gian latent", color: "#ef4444", detail: "Bắt đầu từ nhiễu Gaussian thuần tuý. giống trang giấy trắng đầy hạt mưa ngẫu nhiên." },
+  { label: "Khởi tạo nhiễu", desc: "Tạo tensor ngẫu nhiên trong không gian latent", color: "#ef4444", detail: "Bắt đầu từ nhiễu Gaussian thuần tuý, giống trang giấy trắng đầy hạt mưa ngẫu nhiên." },
   { label: "Khử nhiễu có hướng dẫn", desc: "U-Net lặp 20-50 bước, dẫn dắt bởi prompt", color: "#f59e0b", detail: "Mỗi bước, U-Net dự đoán nhiễu cần loại bỏ. Classifier-Free Guidance khuếch đại ảnh hưởng của prompt." },
   { label: "Giải mã ảnh", desc: "VAE decoder chuyển latent thành ảnh pixel", color: "#22c55e", detail: "Bước cuối: ảnh trong không gian latent (64x64) được giải mã thành ảnh pixel (512x512)." },
 ];
@@ -63,10 +63,10 @@ const QUIZ: QuizQuestion[] = [
   {
     question: "Bạn muốn tạo ảnh 'Chùa Một Cột dưới ánh trăng, phong cách tranh sơn dầu'. Thành phần nào chịu trách nhiệm hiểu phong cách 'sơn dầu'?",
     options: [
-      "VAE Decoder. giải mã ảnh theo phong cách",
-      "U-Net. vì nó khử nhiễu theo phong cách",
-      "CLIP Text Encoder. mã hoá ý nghĩa 'sơn dầu' vào vector, sau đó dẫn dắt U-Net",
-      "Scheduler. lên lịch khử nhiễu theo phong cách",
+      "VAE Decoder, giải mã ảnh theo phong cách",
+      "U-Net, vì nó khử nhiễu theo phong cách",
+      "CLIP Text Encoder, mã hoá ý nghĩa 'sơn dầu' vào vector, sau đó dẫn dắt U-Net",
+      "Scheduler, lên lịch khử nhiễu theo phong cách",
     ],
     correct: 2,
     explanation:
@@ -328,9 +328,9 @@ image.save("pho-co-ha-noi.png")`}
           points={[
             "Text-to-image bắt đầu từ nhiễu ngẫu nhiên, khử nhiễu dần dưới sự dẫn dắt của prompt.",
             "Kiến trúc: CLIP encoder (hiểu prompt) → U-Net (khử nhiễu) → VAE decoder (tạo pixel).",
-            "CFG scale điều chỉnh mức bám sát prompt. quá cao sẽ thiếu tự nhiên, quá thấp sẽ bỏ qua prompt.",
+            "CFG scale điều chỉnh mức bám sát prompt, quá cao sẽ thiếu tự nhiên, quá thấp sẽ bỏ qua prompt.",
             "Latent diffusion xử lý trong không gian nhỏ (64x64) rồi giải mã ra ảnh lớn (512-1024px).",
-            "Prompt chi tiết là kỹ năng quan trọng nhất. mô tả càng cụ thể, kết quả càng chính xác.",
+            "Prompt chi tiết là kỹ năng quan trọng nhất, mô tả càng cụ thể, kết quả càng chính xác.",
           ]}
         />
       </LessonSection>

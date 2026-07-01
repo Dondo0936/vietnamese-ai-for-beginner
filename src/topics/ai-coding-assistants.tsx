@@ -622,7 +622,7 @@ const QUIZ: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "Ba công cụ tiêu biểu của thế hệ AI coding 2021–2024 là {blank}, {blank} và {blank}.",
+      "Ba công cụ tiêu biểu của thế hệ AI coding 2021-2024 là {blank}, {blank} và {blank}.",
     blanks: [
       { answer: "Copilot", accept: ["GitHub Copilot", "github copilot", "copilot"] },
       { answer: "Cursor", accept: ["cursor"] },

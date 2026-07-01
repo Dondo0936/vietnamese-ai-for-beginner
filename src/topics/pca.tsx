@@ -59,7 +59,7 @@ const TOTAL_STEPS = 7;
 /* ═══════════════ MAIN ═══════════════ */
 export default function PcaTopic() {
   const [angle, setAngle] = useState(35);
-  // Pilot: click to add, drag to move — PC1 tối ưu tự cập nhật theo cloud.
+  // Pilot: click to add, drag to move-PC1 tối ưu tự cập nhật theo cloud.
   const [points, setPoints] = useState<Pt[]>(DATA);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -109,7 +109,7 @@ export default function PcaTopic() {
       question: "PCA chọn thành phần chính đầu tiên (PC1) theo tiêu chí nào?",
       options: [
         "Hướng có tổng khoảng cách đến gốc nhỏ nhất",
-        "Hướng có phương sai (variance) lớn nhất — giữ nhiều thông tin nhất",
+        "Hướng có phương sai (variance) lớn nhất-giữ nhiều thông tin nhất",
         "Hướng ngẫu nhiên",
       ],
       correct: 1,
@@ -118,7 +118,7 @@ export default function PcaTopic() {
     {
       question: "Dữ liệu 100 chiều, PCA giữ 10 PC đầu giải thích 95% variance. Có mất thông tin không?",
       options: [
-        "Không mất gì — 95% là đủ",
+        "Không mất gì-95% là đủ",
         "Mất 5% thông tin, nhưng giảm từ 100 xuống 10 chiều là tradeoff rất tốt",
         "Mất 90 chiều = mất 90% thông tin",
       ],
@@ -128,7 +128,7 @@ export default function PcaTopic() {
     {
       question: "Trước khi chạy PCA, bước tiền xử lý nào BẮT BUỘC?",
       options: [
-        "Chuẩn hoá dữ liệu (StandardScaler) — đưa về mean=0, std=1",
+        "Chuẩn hoá dữ liệu (StandardScaler), đưa về mean=0, std=1",
         "Loại bỏ outlier",
         "One-hot encoding",
       ],
@@ -144,9 +144,9 @@ export default function PcaTopic() {
         <PredictionGate
           question="Bạn chụp ảnh bóng một vật 3D lên tường. Muốn bóng giữ nhiều chi tiết nhất, bạn chiếu từ góc nào?"
           options={[
-            "Chiếu từ phía trước — bóng phẳng nhất",
-            "Chiếu từ góc mà bóng 'trải ra' rộng nhất — giữ nhiều hình dạng nhất",
-            "Không quan trọng — mọi góc cho cùng bóng",
+            "Chiếu từ phía trước-bóng phẳng nhất",
+            "Chiếu từ góc mà bóng 'trải ra' rộng nhất-giữ nhiều hình dạng nhất",
+            "Không quan trọng-mọi góc cho cùng bóng",
           ]}
           correct={1}
           explanation="Góc chiếu cho bóng rộng nhất = giữ nhiều thông tin nhất. PCA làm y hệt: tìm 'góc chiếu' (hướng) mà dữ liệu trải ra nhiều nhất khi giảm chiều!"
@@ -294,9 +294,9 @@ export default function PcaTopic() {
         <InlineChallenge
           question="Dữ liệu 3 chiều: x, y hoàn toàn ngẫu nhiên, z = 2x + 3y (phụ thuộc tuyến tính). PCA giảm xuống mấy chiều mà không mất thông tin?"
           options={[
-            "1 chiều — chỉ cần 1 PC",
-            "2 chiều — z phụ thuộc nên chỉ có 2 chiều 'thật'",
-            "Không giảm được — 3 chiều đều quan trọng",
+            "1 chiều-chỉ cần 1 PC",
+            "2 chiều-z phụ thuộc nên chỉ có 2 chiều 'thật'",
+            "Không giảm được-3 chiều đều quan trọng",
           ]}
           correct={1}
           explanation="z = 2x + 3y → chiều z nằm hoàn toàn trên mặt phẳng (x, y). Dữ liệu 3D thực chất chỉ nằm trên mặt phẳng 2D. PCA phát hiện điều này → PC1 + PC2 giải thích 100% variance!"
@@ -316,7 +316,7 @@ export default function PcaTopic() {
           <LaTeX block>{"\\Sigma = \\frac{1}{n}\\tilde{\\mathbf{X}}^T\\tilde{\\mathbf{X}}, \\quad \\Sigma \\mathbf{v}_k = \\lambda_k \\mathbf{v}_k"}</LaTeX>
 
           <p className="text-sm text-muted">
-            Phép trừ trung bình <LaTeX>{"\\boldsymbol{\\mu}"}</LaTeX> đảm bảo phương sai được tính quanh tâm dữ liệu, chứ không quanh gốc toạ độ — nếu bỏ qua bước này ta sẽ thu được ma trận mô-men bậc hai, không phải hiệp phương sai.
+            Phép trừ trung bình <LaTeX>{"\\boldsymbol{\\mu}"}</LaTeX> đảm bảo phương sai được tính quanh tâm dữ liệu, chứ không quanh gốc toạ độ-nếu bỏ qua bước này ta sẽ thu được ma trận mô-men bậc hai, không phải hiệp phương sai.
           </p>
 
           <p>
@@ -376,7 +376,7 @@ print(f"Cần {pca_auto.n_components_} PC cho 95% variance")`}
           "PCA tìm hướng phương sai cực đại → chiếu dữ liệu lên hướng đó để giảm chiều.",
           "Eigenvectors = hướng chính, eigenvalues = phương sai trên hướng đó.",
           "Chọn k PC đầu sao cho giải thích ≥ 90-95% tổng variance.",
-          "LUÔN chuẩn hoá (StandardScaler) trước PCA — features khác thang sẽ lệch kết quả.",
+          "LUÔN chuẩn hoá (StandardScaler) trước PCA-features khác thang sẽ lệch kết quả.",
           "Dùng cho: giảm chiều trước ML, trực quan hoá, nén nhiễu, eigenfaces.",
         ]} />
       </LessonSection>

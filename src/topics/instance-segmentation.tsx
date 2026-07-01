@@ -37,7 +37,7 @@ const CANVAS_H = 340;
  * segmentation tô MÀU RIÊNG cho từng đối tượng), polygon mask,
  * bounding box (x1, y1, x2, y2) và điểm đặt label.
  * Chú ý: 2 người (instance 3 và 4) CHE KHUẤT một phần để minh hoạ
- * occlusion — một trong những điểm mà Mask R-CNN xử lý khéo léo. */
+ * occlusion-một trong những điểm mà Mask R-CNN xử lý khéo léo. */
 interface Instance {
   id: number;
   label: string;
@@ -102,7 +102,7 @@ const INSTANCES: Instance[] = [
   },
 ];
 
-/* Tên 4 stage của pipeline Mask R-CNN — dùng để animate tuần tự. */
+/* Tên 4 stage của pipeline Mask R-CNN-dùng để animate tuần tự. */
 const PIPELINE_STAGES = [
   { id: 0, name: "Backbone + FPN", short: "Backbone", color: "#0ea5e9",
     desc: "CNN (ResNet + FPN) trích xuất feature đa tỷ lệ" },
@@ -114,7 +114,7 @@ const PIPELINE_STAGES = [
     desc: "Classification + BBox regression + Binary Mask" },
 ];
 
-/* Bảng so sánh 4 tác vụ CV chính — để contextualize Instance Seg. */
+/* Bảng so sánh 4 tác vụ CV chính-để contextualize Instance Seg. */
 const CV_TASKS = [
   { key: "cls", name: "Classification", vi: "Phân loại ảnh",
     desc: "1 nhãn cho cả ảnh", color: "#3b82f6",
@@ -131,7 +131,7 @@ const CV_TASKS = [
 ];
 
 /* ==============================================================
- * BỘ 8 CÂU HỎI QUIZ — phủ từ nền tảng đến nâng cao.
+ * BỘ 8 CÂU HỎI QUIZ-phủ từ nền tảng đến nâng cao.
  * Phân bổ:
  *   1 câu định nghĩa bản chất
  *   2 câu về kiến trúc Mask R-CNN
@@ -236,7 +236,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Panoptic = Semantic + Instance. Pixel thuộc 'things' (người, xe — đếm được) có instance ID; pixel thuộc 'stuff' (trời, đường — không đếm được) chỉ có class label. Mọi pixel đều được gán nhãn, không có 'lỗ'.",
+      "Panoptic = Semantic + Instance. Pixel thuộc 'things' (người, xe-đếm được) có instance ID; pixel thuộc 'stuff' (trời, đường-không đếm được) chỉ có class label. Mọi pixel đều được gán nhãn, không có 'lỗ'.",
   },
 ];
 
@@ -283,7 +283,7 @@ export default function InstanceSegmentationTopic() {
   /* Điều chỉnh opacity mask để nhìn ảnh gốc phía sau rõ hơn */
   const [maskOpacity, setMaskOpacity] = useState<number>(0.55);
 
-  /* Stage advance/back — dùng useCallback để tránh re-render không cần. */
+  /* Stage advance/back-dùng useCallback để tránh re-render không cần. */
   const nextStage = useCallback(() => {
     setStage((s) => Math.min(s + 1, PIPELINE_STAGES.length - 1));
   }, []);
@@ -292,7 +292,7 @@ export default function InstanceSegmentationTopic() {
   }, []);
   const resetStages = useCallback(() => setStage(0), []);
 
-  /* Số instance detect tại stage hiện tại — tăng dần theo stage để
+  /* Số instance detect tại stage hiện tại-tăng dần theo stage để
    * minh hoạ quá trình “proposals → detections”. */
   const visibleInstances = useMemo(() => {
     if (stage === 0) return [];              // mới qua backbone, chưa có detection
@@ -342,9 +342,9 @@ export default function InstanceSegmentationTopic() {
   return (
     <>
       {/* ============================================================
-          BƯỚC 1 — HOOK / DỰ ĐOÁN
+          BƯỚC 1-HOOK / DỰ ĐOÁN
           Khởi động bằng PredictionGate đặt ra ngữ cảnh giao thông
-          — nơi 3 chiếc xe máy đỗ sát nhau là case kinh điển mà
+         , nơi 3 chiếc xe máy đỗ sát nhau là case kinh điển mà
           Semantic Segmentation bị "kẹt".
           ============================================================ */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
@@ -359,7 +359,7 @@ export default function InstanceSegmentationTopic() {
             "Không thể phân biệt được khi xe sát nhau",
           ]}
           correct={1}
-          explanation="Instance Segmentation tô MÀU RIÊNG cho từng xe: xe #1 xanh dương, xe #2 xanh lá, xe #3 vàng. Mỗi thể hiện (instance) có mask pixel-level riêng biệt — không chỉ đúng lớp, mà còn đúng đối tượng nào trong lớp!"
+          explanation="Instance Segmentation tô MÀU RIÊNG cho từng xe: xe #1 xanh dương, xe #2 xanh lá, xe #3 vàng. Mỗi thể hiện (instance) có mask pixel-level riêng biệt-không chỉ đúng lớp, mà còn đúng đối tượng nào trong lớp!"
         >
           <p className="mt-2 text-sm text-muted">
             Hãy tiếp tục để thấy tại sao <strong>mask pixel-level riêng cho từng đối tượng</strong>{" "}
@@ -369,16 +369,16 @@ export default function InstanceSegmentationTopic() {
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 2 — ẨN DỤ THỰC TẾ
-          Kết nối khái niệm với "điểm danh học sinh" — ai cũng mặc
+          BƯỚC 2-ẨN DỤ THỰC TẾ
+          Kết nối khái niệm với "điểm danh học sinh", ai cũng mặc
           đồng phục (cùng lớp) nhưng GV vẫn điểm danh từng người.
           ============================================================ */}
       <LessonSection step={2} totalSteps={8} label="Ẩn dụ">
         <p>
           Hãy tưởng tượng bạn là cô giáo nhìn vào lớp học: tất cả học sinh đều mặc áo đồng phục
           trắng. <strong>Semantic Segmentation</strong> giống như nói "có áo trắng ở đây, đây và
-          đây" — đúng lớp nhưng không biết ai là ai. <strong>Instance Segmentation</strong> lại
-          đi thêm một bước: gắn tên riêng cho từng học sinh — "đây là Nam, đây là Lan, đây là Tú".
+          đây", đúng lớp nhưng không biết ai là ai. <strong>Instance Segmentation</strong> lại
+          đi thêm một bước: gắn tên riêng cho từng học sinh, "đây là Nam, đây là Lan, đây là Tú".
         </p>
         <p>
           Trong thế giới AI/CV, điều này có nghĩa là mỗi đối tượng nhận được{" "}
@@ -394,7 +394,7 @@ export default function InstanceSegmentationTopic() {
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 3 — TRỰC QUAN HOÁ TƯƠNG TÁC
+          BƯỚC 3-TRỰC QUAN HOÁ TƯƠNG TÁC
           Hiển thị ảnh với 4 instance chồng lấn. Người học có thể:
             • Click từng instance → highlight mask + bbox
             • Toggle semantic vs instance view
@@ -629,10 +629,10 @@ export default function InstanceSegmentationTopic() {
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 4 — AHA MOMENT
+          BƯỚC 4-AHA MOMENT
           Một câu đóng đinh insight chính: Instance Segmentation
           = Detection + Segmentation, và mỗi đối tượng có nhãn + box
-          + MASK RIÊNG — như điểm danh bằng cách tô màu riêng.
+          + MASK RIÊNG-như điểm danh bằng cách tô màu riêng.
           ============================================================ */}
       <LessonSection step={4} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
@@ -640,15 +640,15 @@ export default function InstanceSegmentationTopic() {
             Instance Segmentation = <strong>Object Detection</strong>{" "}
             (tìm từng đối tượng) + <strong>Semantic Segmentation</strong>{" "}
             (mask pixel-level). Mỗi đối tượng có{" "}
-            <strong>bounding box + nhãn lớp + mask pixel riêng biệt</strong> —{" "}
+            <strong>bounding box + nhãn lớp + mask pixel riêng biệt</strong>,{" "}
             giống như điểm danh từng học sinh trong lớp <em>bằng cách tô màu riêng</em>!
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 5 — THỬ THÁCH TRONG LUỒNG (1)
-          Về occlusion — case quan trọng, gắn ngay sau aha moment.
+          BƯỚC 5-THỬ THÁCH TRONG LUỒNG (1)
+          Về occlusion-case quan trọng, gắn ngay sau aha moment.
           ============================================================ */}
       <LessonSection step={5} totalSteps={8} label="Thử thách 1">
         <InlineChallenge
@@ -664,7 +664,7 @@ export default function InstanceSegmentationTopic() {
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 6 — PIPELINE MASK R-CNN (interactive sub-viz)
+          BƯỚC 6-PIPELINE MASK R-CNN (interactive sub-viz)
           Cho phép người học bước qua 4 stage: Backbone → RPN →
           RoIAlign → Heads. Mỗi stage hiển thị nhãn + mô tả ngắn +
           hiệu ứng visual khác nhau trên ảnh để thấy "hạt giống"
@@ -712,7 +712,7 @@ export default function InstanceSegmentationTopic() {
             >
               <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} rx={8} fill="#0f172a" />
 
-              {/* Stage 0 — chỉ hiện feature map giả lập bằng lưới điểm */}
+              {/* Stage 0-chỉ hiện feature map giả lập bằng lưới điểm */}
               {stage === 0 && (
                 <g>
                   {Array.from({ length: 24 }, (_, i) => i).flatMap((i) =>
@@ -739,7 +739,7 @@ export default function InstanceSegmentationTopic() {
                 </g>
               )}
 
-              {/* Stage 1 — hiện ~6 proposals xung quanh object thật */}
+              {/* Stage 1-hiện ~6 proposals xung quanh object thật */}
               {stage === 1 && (
                 <g>
                   {visibleInstances.flatMap((inst, k) =>
@@ -776,7 +776,7 @@ export default function InstanceSegmentationTopic() {
                 </g>
               )}
 
-              {/* Stage 2 — hiện các bbox sau NMS, cắt feature cho mỗi bbox */}
+              {/* Stage 2-hiện các bbox sau NMS, cắt feature cho mỗi bbox */}
               {stage === 2 && (
                 <g>
                   {visibleInstances.map((inst) => (
@@ -829,7 +829,7 @@ export default function InstanceSegmentationTopic() {
                 </g>
               )}
 
-              {/* Stage 3 — hiện đầy đủ: mask + bbox + class + score */}
+              {/* Stage 3-hiện đầy đủ: mask + bbox + class + score */}
               {stage === 3 && (
                 <g>
                   {visibleInstances.map((inst) => (
@@ -902,8 +902,8 @@ export default function InstanceSegmentationTopic() {
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 7 — THỬ THÁCH TRONG LUỒNG (2)
-          Về RoIAlign — chi tiết kỹ thuật quan trọng nhất của
+          BƯỚC 7-THỬ THÁCH TRONG LUỒNG (2)
+          Về RoIAlign-chi tiết kỹ thuật quan trọng nhất của
           Mask R-CNN, thường bị bỏ qua khi chỉ đọc lướt.
           ============================================================ */}
       <LessonSection step={7} totalSteps={8} label="Thử thách 2">
@@ -911,17 +911,17 @@ export default function InstanceSegmentationTopic() {
           question="Khi thay RoIPool bằng RoIAlign trong Mask R-CNN, mAP mask tăng đáng kể. Lý do chính là gì?"
           options={[
             "RoIAlign chạy nhanh hơn nhiều lần",
-            "RoIAlign bỏ bước làm tròn (quantization) và dùng bilinear interpolation — giữ chính xác pixel, cực quan trọng cho mask",
+            "RoIAlign bỏ bước làm tròn (quantization) và dùng bilinear interpolation-giữ chính xác pixel, cực quan trọng cho mask",
             "RoIAlign tự động học anchor box",
             "RoIAlign thay thế luôn cho RPN",
           ]}
           correct={1}
-          explanation="RoIPool có 2 bước quantization: (1) làm tròn tọa độ RoI về lưới feature map, (2) chia RoI thành bins và làm tròn. Gây lệch pixel — box vẫn OK, mask thì thảm. RoIAlign bỏ quantization, lấy mẫu bilinear 4 điểm mỗi bin. Cải thiện mAP mask ~10% trên COCO."
+          explanation="RoIPool có 2 bước quantization: (1) làm tròn tọa độ RoI về lưới feature map, (2) chia RoI thành bins và làm tròn. Gây lệch pixel-box vẫn OK, mask thì thảm. RoIAlign bỏ quantization, lấy mẫu bilinear 4 điểm mỗi bin. Cải thiện mAP mask ~10% trên COCO."
         />
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 8 — GIẢI THÍCH SÂU
+          BƯỚC 8-GIẢI THÍCH SÂU
           Nơi trình bày lý thuyết chính xác, công thức, code ví dụ.
           ============================================================ */}
       <LessonSection step={8} totalSteps={8} label="Giải thích sâu">
@@ -929,7 +929,7 @@ export default function InstanceSegmentationTopic() {
           <p>
             <strong>Instance Segmentation</strong> kết hợp phát hiện đối tượng và phân đoạn ngữ
             nghĩa ở cấp pixel. Không chỉ tô màu theo danh mục, mô hình còn{" "}
-            <strong>phân biệt từng thể hiện riêng lẻ</strong> — điều mà semantic segmentation
+            <strong>phân biệt từng thể hiện riêng lẻ</strong>, điều mà semantic segmentation
             đơn thuần không làm được.
           </p>
 
@@ -940,7 +940,7 @@ export default function InstanceSegmentationTopic() {
             <ol className="list-decimal list-inside space-y-1 mt-2 text-sm">
               <li>
                 <strong>Backbone + FPN:</strong>{" "}
-                ResNet-50/101 trích xuất feature map đa tỷ lệ (P2–P6), giúp bắt vật nhỏ lẫn lớn
+                ResNet-50/101 trích xuất feature map đa tỷ lệ (P2-P6), giúp bắt vật nhỏ lẫn lớn
               </li>
               <li>
                 <strong>RPN:</strong>{" "}
@@ -948,13 +948,13 @@ export default function InstanceSegmentationTopic() {
               </li>
               <li>
                 <strong>RoIAlign:</strong>{" "}
-                Cắt feature map cho mỗi ROI (7×7 cho box head, 14×14 cho mask head) —{" "}
+                Cắt feature map cho mỗi ROI (7×7 cho box head, 14×14 cho mask head),{" "}
                 <em>không làm tròn</em>, dùng bilinear interpolation
               </li>
               <li>
                 <strong>3 nhánh song song:</strong>{" "}
                 Box regression (4 số), Classification (K+1 lớp), và <strong>Binary Mask</strong>{" "}
-                K×28×28 — mỗi lớp 1 mask riêng
+                K×28×28-mỗi lớp 1 mask riêng
               </li>
             </ol>
           </Callout>
@@ -1009,7 +1009,7 @@ export default function InstanceSegmentationTopic() {
             </li>
             <li>
               <strong>SAM (2023):</strong>{" "}
-              Segment Anything — foundation model zero-shot. Prompt bằng click/box/text, phân
+              Segment Anything-foundation model zero-shot. Prompt bằng click/box/text, phân
               đoạn mọi đối tượng không cần fine-tune.
             </li>
             <li>
@@ -1034,7 +1034,7 @@ export default function InstanceSegmentationTopic() {
             <ul className="list-disc list-inside space-y-1 mt-1 text-sm">
               <li>Mỗi lớp có mask riêng, không "tranh chỗ" với lớp khác.</li>
               <li>
-                Decouple classification và segmentation — classification đã có lớp head riêng.
+                Decouple classification và segmentation-classification đã có lớp head riêng.
               </li>
               <li>
                 Empirically cho mAP cao hơn (He et al. chứng minh trong ablation study).
@@ -1042,7 +1042,7 @@ export default function InstanceSegmentationTopic() {
             </ul>
             <p className="text-sm mt-1">
               Một cách nhìn khác: nhánh mask trở thành "vẽ hình dáng prototype cho từng lớp"
-              — nhánh class chỉ cần chọn prototype nào dùng.
+             , nhánh class chỉ cần chọn prototype nào dùng.
             </p>
           </CollapsibleDetail>
 
@@ -1075,7 +1075,7 @@ export default function InstanceSegmentationTopic() {
             <ul className="list-disc list-inside space-y-1">
               <li>
                 <strong>Robot công nghiệp:</strong>{" "}
-                Gắp đồ vật trên dây chuyền — cần mask chính xác từng vật để tính lực kẹp.
+                Gắp đồ vật trên dây chuyền-cần mask chính xác từng vật để tính lực kẹp.
               </li>
               <li>
                 <strong>Thương mại điện tử:</strong>{" "}
@@ -1091,21 +1091,21 @@ export default function InstanceSegmentationTopic() {
               </li>
               <li>
                 <strong>Xe tự lái:</strong>{" "}
-                Phân biệt từng người đi bộ, từng xe — cần thiết để dự đoán quỹ đạo riêng cho
+                Phân biệt từng người đi bộ, từng xe-cần thiết để dự đoán quỹ đạo riêng cho
                 từng đối tượng.
               </li>
               <li>
                 <strong>AR/VR:</strong>{" "}
-                Tách nền video thời gian thực để thay background (Meet, Zoom) — thường dùng
+                Tách nền video thời gian thực để thay background (Meet, Zoom), thường dùng
                 mô hình nhẹ như MediaPipe SelfieSegmentation nhưng về bản chất vẫn là instance
-                seg. với 1 lớp.
+                seg, với 1 lớp.
               </li>
             </ul>
           </Callout>
 
-          {/* CODE BLOCK 1 — Detectron2 */}
+          {/* CODE BLOCK 1-Detectron2 */}
           <p>
-            <strong>Code ví dụ 1 — Detectron2 (Facebook AI Research):</strong>{" "}
+            <strong>Code ví dụ 1-Detectron2 (Facebook AI Research):</strong>{" "}
             Mask R-CNN production-ready chỉ vài dòng.
           </p>
           <CodeBlock language="python" title="Instance Segmentation với Detectron2">
@@ -1163,9 +1163,9 @@ if len(instances) > 0:
 `}
           </CodeBlock>
 
-          {/* CODE BLOCK 2 — SAM prompt-based */}
+          {/* CODE BLOCK 2-SAM prompt-based */}
           <p>
-            <strong>Code ví dụ 2 — SAM (Segment Anything):</strong>{" "}
+            <strong>Code ví dụ 2-SAM (Segment Anything):</strong>{" "}
             Zero-shot segmentation chỉ cần 1 click.
           </p>
           <CodeBlock language="python" title="Instance Segmentation với SAM">
@@ -1214,7 +1214,7 @@ refined_masks, refined_scores, _ = predictor.predict(
     multimask_output=False,
 )
 
-# 6) Automatic mask generation — phân đoạn MỌI đối tượng trong ảnh
+# 6) Automatic mask generation-phân đoạn MỌI đối tượng trong ảnh
 from segment_anything import SamAutomaticMaskGenerator
 mask_gen = SamAutomaticMaskGenerator(sam)
 auto_masks = mask_gen.generate(image_rgb)
@@ -1257,14 +1257,14 @@ for i, m in enumerate(auto_masks[:5]):
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 9 — TÓM TẮT (MiniSummary 6 điểm)
+          BƯỚC 9-TÓM TẮT (MiniSummary 6 điểm)
           ============================================================ */}
       <LessonSection step={8} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           title="Những điều cần nhớ về Instance Segmentation"
           points={[
             "Instance Segmentation = Object Detection + Semantic Segmentation: mỗi đối tượng có bounding box + nhãn + MASK PIXEL RIÊNG.",
-            "Khác Semantic (cùng lớp = cùng màu), Instance tô MÀU RIÊNG cho từng thể hiện — phân biệt người #1, người #2 cùng lớp.",
+            "Khác Semantic (cùng lớp = cùng màu), Instance tô MÀU RIÊNG cho từng thể hiện-phân biệt người #1, người #2 cùng lớp.",
             "Mask R-CNN = Faster R-CNN + nhánh mask K×28×28 song song, dùng RoIAlign thay RoIPool để giữ chính xác pixel.",
             "Loss = L_cls + L_box + L_mask; L_mask chỉ tính cho lớp GT (class-specific sigmoid, không cạnh tranh giữa lớp).",
             "YOLACT/SOLOv2 cho real-time; SAM/SAM2 zero-shot qua prompt (click, box, text); Mask2Former thống nhất semantic+instance+panoptic.",
@@ -1274,7 +1274,7 @@ for i, m in enumerate(auto_masks[:5]):
       </LessonSection>
 
       {/* ============================================================
-          BƯỚC 10 — QUIZ CUỐI BÀI (8 câu hỏi)
+          BƯỚC 10-QUIZ CUỐI BÀI (8 câu hỏi)
           ============================================================ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

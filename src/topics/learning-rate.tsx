@@ -216,10 +216,10 @@ export default function LearningRateTopic() {
   // Status assessment
   const status = useMemo(() => {
     if (lr < 0.08)
-      return { text: "Quá chậm — mất rất nhiều bước mới gần cực tiểu", color: "#f59e0b" };
+      return { text: "Quá chậm-mất rất nhiều bước mới gần cực tiểu", color: "#f59e0b" };
     if (lr <= 0.5) return { text: "Tốt! Hội tụ ổn định về cực tiểu", color: "#22c55e" };
     if (lr <= 0.85)
-      return { text: "Dao động mạnh quanh cực tiểu — khó hội tụ", color: "#f59e0b" };
+      return { text: "Dao động mạnh quanh cực tiểu-khó hội tụ", color: "#f59e0b" };
     return { text: "Phân kỳ! Bước quá lớn, nhảy qua cực tiểu liên tục", color: "#ef4444" };
   }, [lr]);
 
@@ -244,7 +244,7 @@ export default function LearningRateTopic() {
     [rangeTestCurve]
   );
 
-  // "Steepest descent point" — the recommended LR from the range test
+  // "Steepest descent point", the recommended LR from the range test
   const rangeTestOptimal = useMemo(() => {
     let best = rangeTestCurve[0];
     let bestSlope = 0;
@@ -307,7 +307,7 @@ export default function LearningRateTopic() {
     };
   }, [bowlLr]);
 
-  /* Quiz — 8 questions */
+  /* Quiz-8 questions */
   const quizQuestions: QuizQuestion[] = [
     {
       question: "Learning rate = 0.001 là mặc định phổ biến cho optimizer nào?",
@@ -326,14 +326,14 @@ export default function LearningRateTopic() {
       ],
       correct: 0,
       explanation:
-        "Warmup bắt đầu với LR rất nhỏ, tăng dần lên giá trị mục tiêu trong vài epoch đầu. Tránh cập nhật quá mạnh khi trọng số chưa ổn định — đặc biệt quan trọng với Transformer.",
+        "Warmup bắt đầu với LR rất nhỏ, tăng dần lên giá trị mục tiêu trong vài epoch đầu. Tránh cập nhật quá mạnh khi trọng số chưa ổn định-đặc biệt quan trọng với Transformer.",
     },
     {
       question:
         "Loss giảm nhanh ban đầu rồi dao động lên xuống. Nguyên nhân có thể nhất là gì?",
       options: [
         "Dữ liệu quá ít",
-        "Learning rate tốt ban đầu nhưng quá lớn khi gần cực tiểu — cần LR scheduling",
+        "Learning rate tốt ban đầu nhưng quá lớn khi gần cực tiểu-cần LR scheduling",
         "Mô hình quá nhỏ",
         "Bug trong code",
       ],
@@ -346,7 +346,7 @@ export default function LearningRateTopic() {
         "Trong LR Range Test (Leslie Smith), đâu là learning rate tốt nhất để chọn?",
       options: [
         "LR tại điểm loss thấp nhất trên biểu đồ",
-        "LR tại điểm loss giảm dốc nhất (steepest descent) — thường thấp hơn điểm min một chút",
+        "LR tại điểm loss giảm dốc nhất (steepest descent), thường thấp hơn điểm min một chút",
         "LR nhỏ nhất trong khoảng thử",
         "LR trung bình cộng của khoảng thử",
       ],
@@ -359,7 +359,7 @@ export default function LearningRateTopic() {
         "Vì sao trên một hàm loss có các hướng dốc không đều (ill-conditioned), LR lớn lại gây ra hiện tượng zig-zag?",
       options: [
         "Vì optimizer bị lỗi",
-        "Vì cùng một LR quá lớn với hướng rất dốc nhưng vẫn vừa với hướng thoải — nên dao động trong hướng dốc",
+        "Vì cùng một LR quá lớn với hướng rất dốc nhưng vẫn vừa với hướng thoải-nên dao động trong hướng dốc",
         "Vì gradient bị chặn cắt (clipped)",
         "Vì dữ liệu không chuẩn hóa",
       ],
@@ -378,7 +378,7 @@ export default function LearningRateTopic() {
       ],
       correct: 0,
       explanation:
-        "OneCycle: warmup → đạt max_lr → anneal sâu hơn nhiều so với cosine. Mục tiêu là 'super-convergence' — huấn luyện nhanh gấp 5-10 lần trên một số bài toán.",
+        "OneCycle: warmup → đạt max_lr → anneal sâu hơn nhiều so với cosine. Mục tiêu là 'super-convergence', huấn luyện nhanh gấp 5-10 lần trên một số bài toán.",
     },
     {
       question: "Tại sao không nên dùng LR quá nhỏ 'cho an toàn'?",
@@ -414,9 +414,9 @@ export default function LearningRateTopic() {
         <PredictionGate
           question="Bạn đi Grab bike về nhà. Tài xế biết hướng đi nhưng phải chọn tốc độ. Nếu chạy quá nhanh trên đường hẹp, điều gì xảy ra?"
           options={[
-            "Về nhanh hơn — tốc độ luôn tốt",
-            "Vượt qua ngõ rẽ, phải quay lại, rồi lại vượt — lặp vô hạn",
-            "Không ảnh hưởng — chỉ cần biết hướng",
+            "Về nhanh hơn-tốc độ luôn tốt",
+            "Vượt qua ngõ rẽ, phải quay lại, rồi lại vượt-lặp vô hạn",
+            "Không ảnh hưởng-chỉ cần biết hướng",
             "Xe tự động giảm tốc",
           ]}
           correct={1}
@@ -473,7 +473,7 @@ export default function LearningRateTopic() {
 
             {/* Loss landscape */}
             <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full max-w-2xl mx-auto" role="img" aria-label={`Đồ thị loss landscape gradient descent: learning rate ${lr.toFixed(2)}, bước ${animStep}, ${status.text}`}>
-              <title>Gradient descent với lr={lr.toFixed(2)}, bước {animStep} — {status.text}</title>
+              <title>Gradient descent với lr={lr.toFixed(2)}, bước {animStep}, {status.text}</title>
               <line
                 x1={PAD}
                 y1={SVG_H - PAD}
@@ -644,7 +644,7 @@ export default function LearningRateTopic() {
           options={[
             "Tăng learning rate để hội tụ nhanh hơn",
             "Giảm learning rate (hoặc dùng LR scheduling) để bước nhỏ hơn khi gần cực tiểu",
-            "Không làm gì — đây là hành vi bình thường",
+            "Không làm gì-đây là hành vi bình thường",
           ]}
           correct={1}
           explanation="Dao động quanh cực tiểu = bước quá lớn khi gần đích. Giảm LR (hoặc dùng cosine annealing, step decay) giúp bước nhỏ dần, hội tụ chính xác hơn."
@@ -665,7 +665,7 @@ export default function LearningRateTopic() {
           <section className="my-8 rounded-xl border border-border bg-card p-6">
             <div className="space-y-3">
               <p className="text-sm text-muted text-center">
-                Trục hoành: log(learning rate) — trục tung: loss sau ít bước huấn luyện
+                Trục hoành: log(learning rate), trục tung: loss sau ít bước huấn luyện
               </p>
               <svg viewBox="0 0 500 260" className="w-full max-w-2xl mx-auto">
                 {/* axes */}
@@ -754,11 +754,11 @@ export default function LearningRateTopic() {
           </p>
           <ul>
             <li>
-              <strong>Vùng bên trái (LR quá nhỏ)</strong>: loss gần như phẳng — mô hình
+              <strong>Vùng bên trái (LR quá nhỏ)</strong>: loss gần như phẳng-mô hình
               không học được gì đáng kể.
             </li>
             <li>
-              <strong>Vùng giữa (dốc xuống)</strong>: loss giảm nhanh — đây là nơi{" "}
+              <strong>Vùng giữa (dốc xuống)</strong>: loss giảm nhanh-đây là nơi{" "}
               <em>nên chọn</em>. Cụ thể: điểm có slope âm nhất, thường ngay trước khi
               biểu đồ bắt đầu đi ngang.
             </li>
@@ -799,7 +799,7 @@ export default function LearningRateTopic() {
         <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p>
             Một LR tốt ở đầu thường quá lớn ở cuối. Giải pháp: <strong>LR scheduler</strong>{" "}
-            — một hàm thay đổi LR theo số bước/epoch. Dưới đây là 4 chiến lược phổ biến
+           , một hàm thay đổi LR theo số bước/epoch. Dưới đây là 4 chiến lược phổ biến
             nhất, hãy so sánh hình dáng:
           </p>
 
@@ -933,7 +933,7 @@ export default function LearningRateTopic() {
             {"\\alpha_t = \\alpha_0 \\cdot \\frac{1}{2}\\left(1 + \\cos\\left(\\frac{\\pi \\cdot t}{T}\\right)\\right)"}
           </LaTeX>
           <p className="text-sm text-muted text-center">
-            Cosine Annealing — LR giảm mượt mà theo đường cosine
+            Cosine Annealing-LR giảm mượt mà theo đường cosine
           </p>
 
           <div className="overflow-x-auto">
@@ -987,7 +987,7 @@ export default function LearningRateTopic() {
             tìm LR tốt nhất.
           </Callout>
 
-          <CodeBlock language="python" title="lr_scheduling.py — 4 scheduler thực chiến">
+          <CodeBlock language="python" title="lr_scheduling.py-4 scheduler thực chiến">
             {`import torch
 import torch.optim as optim
 
@@ -1015,7 +1015,7 @@ sched_wc = optim.lr_scheduler.SequentialLR(
     milestones=[10],
 )
 
-# ---- 4) OneCycle (Leslie Smith — super-convergence) ----
+# ---- 4) OneCycle (Leslie Smith-super-convergence) ----
 sched_one = optim.lr_scheduler.OneCycleLR(
     optimizer,
     max_lr=1e-3,
@@ -1054,7 +1054,7 @@ for epoch in range(100):
             trọng số được khởi tạo ngẫu nhiên, LayerNorm chưa có statistics ổn định, và
             attention softmax có thể &quot;saturate&quot; (một head hút hết attention về
             chính nó). Một update đầy đủ kích thước ngay lập tức sẽ đẩy mô hình ra khỏi
-            vùng có gradient hữu ích. Warmup là &quot;liều an thần&quot; — tăng dần LR
+            vùng có gradient hữu ích. Warmup là &quot;liều an thần&quot;, tăng dần LR
             từ gần 0 lên giá trị mục tiêu trong vài phần trăm đầu.
           </p>
 
@@ -1167,7 +1167,7 @@ for epoch in range(100):
             </p>
           </CollapsibleDetail>
 
-          <CodeBlock language="python" title="warmup_scheduler.py — custom warmup với Hugging Face">
+          <CodeBlock language="python" title="warmup_scheduler.py-custom warmup với Hugging Face">
             {`from transformers import get_linear_schedule_with_warmup
 from torch.optim import AdamW
 
@@ -1198,13 +1198,13 @@ for batch in train_loader:
 #     optimizer,
 #     num_warmup_steps=warmup_steps,
 #     num_training_steps=total_steps,
-#     num_cycles=0.5,  # nửa chu kỳ cosine — về 0 ở cuối
+#     num_cycles=0.5,  # nửa chu kỳ cosine-về 0 ở cuối
 # )`}
           </CodeBlock>
         </section>
       </LessonSection>
 
-      {/* ===== STEP 8: 2D LANDSCAPE — CONVERGENCE PATHS ===== */}
+      {/* ===== STEP 8: 2D LANDSCAPE-CONVERGENCE PATHS ===== */}
       <LessonSection step={8} totalSteps={10} label="Đường hội tụ 2D">
         <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p>
@@ -1342,7 +1342,7 @@ for batch in train_loader:
 
               <p className="text-xs text-muted text-center">
                 Các vòng là đường đồng mức của loss. Bowl này dốc theo trục y gấp 6 lần
-                trục x — nên đường đỏ dao động dữ dội theo trục y trước khi tiến chậm
+                trục x-nên đường đỏ dao động dữ dội theo trục y trước khi tiến chậm
                 theo trục x.
               </p>
             </div>
@@ -1350,7 +1350,7 @@ for batch in train_loader:
 
           <Callout variant="info" title="Đây là lý do ra đời momentum và Adam">
             Khi các trục có độ cong khác nhau, SGD + LR cố định sẽ hoặc{" "}
-            <em>chậm theo trục thoải</em> hoặc <em>dao động theo trục dốc</em> — không có
+            <em>chậm theo trục thoải</em> hoặc <em>dao động theo trục dốc</em>, không có
             LR nào vừa cho cả hai. <strong>Momentum</strong> trung bình hóa dao động;{" "}
             <strong>Adam/RMSProp</strong> chia gradient cho căn bậc hai của moment 2 →
             tự động cân bằng các trục. Xem thêm{" "}
@@ -1378,9 +1378,9 @@ for batch in train_loader:
         <InlineChallenge
           question="Bạn chuyển từ SGD (lr=0.1) sang Adam. Nên đặt lr cho Adam bằng bao nhiêu?"
           options={[
-            "Giữ nguyên 0.1 — optimizer không ảnh hưởng LR",
-            "Giảm xuống 0.001 — Adam tự điều chỉnh nên cần LR nhỏ hơn nhiều",
-            "Tăng lên 1.0 — Adam cần LR lớn hơn SGD",
+            "Giữ nguyên 0.1-optimizer không ảnh hưởng LR",
+            "Giảm xuống 0.001-Adam tự điều chỉnh nên cần LR nhỏ hơn nhiều",
+            "Tăng lên 1.0-Adam cần LR lớn hơn SGD",
           ]}
           correct={1}
           explanation="Adam có adaptive learning rate riêng cho từng tham số, nên LR cơ bản cần nhỏ hơn SGD ~10-100 lần. SGD lr=0.1 → Adam lr=0.001 là chuyển đổi phổ biến."
@@ -1388,14 +1388,14 @@ for batch in train_loader:
 
         <div className="mt-6">
           <MiniSummary
-            title="Learning Rate — Điểm chốt"
+            title="Learning Rate-Điểm chốt"
             points={[
               "LR là siêu tham số quan trọng nhất: w_mới = w_cũ - α × gradient. Chọn sai LR = huấn luyện thất bại bất kể kiến trúc.",
               "Quá nhỏ → hội tụ chậm, có thể kẹt saddle. Quá lớn → dao động hoặc phân kỳ. Vừa phải → hội tụ ổn định và tổng quát tốt.",
               "LR Range Test (Leslie Smith): sweep LR từ nhỏ đến lớn, chọn điểm dốc nhất trên biểu đồ loss vs log(LR).",
               "Scheduler là bắt buộc: step/cosine/onecycle. Bước lớn lúc đầu (khám phá), bước nhỏ lúc cuối (hội tụ chính xác).",
-              "Warmup 5-10% bước đầu là bắt buộc cho Transformer — tránh gradient explosion khi LayerNorm và attention chưa ổn định.",
-              "Khi loss surface ill-conditioned (các trục có độ cong rất khác), cần momentum hoặc adaptive LR (Adam) — một LR duy nhất không đủ.",
+              "Warmup 5-10% bước đầu là bắt buộc cho Transformer-tránh gradient explosion khi LayerNorm và attention chưa ổn định.",
+              "Khi loss surface ill-conditioned (các trục có độ cong rất khác), cần momentum hoặc adaptive LR (Adam), một LR duy nhất không đủ.",
             ]}
           />
         </div>

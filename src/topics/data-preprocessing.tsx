@@ -666,8 +666,8 @@ df_clean = df[df["x"].between(lo, hi)]`}
               content: (
                 <div className="space-y-4">
                   <p className="text-sm text-foreground/85 leading-relaxed">
-                    Khi &ldquo;tuổi&rdquo; nằm trong 0–100 mà &ldquo;thu
-                    nhập&rdquo; trong 5–500, KNN và gradient descent sẽ bị
+                    Khi &ldquo;tuổi&rdquo; nằm trong 0-100 mà &ldquo;thu
+                    nhập&rdquo; trong 5-500, KNN và gradient descent sẽ bị
                     &ldquo;thu nhập&rdquo; lấn át. Scaling đưa mọi cột về cùng
                     thang đo.
                   </p>
@@ -823,7 +823,7 @@ df["cap_bac"] = enc.fit_transform(df[["cap_bac"]])`}
 
         <div className="mt-4">
           <InlineChallenge
-            question="Bạn có cột 'thu_nhập' range 5–500 triệu và cột 'tuổi' range 18–65. Bạn dùng KNN để phân loại. Vấn đề?"
+            question="Bạn có cột 'thu_nhập' range 5-500 triệu và cột 'tuổi' range 18-65. Bạn dùng KNN để phân loại. Vấn đề?"
             options={[
               "Không có vấn đề gì",
               "KNN tính khoảng cách bằng Euclidean. Thu_nhập (max 500) lấn át tuổi (max 65), kết quả chỉ dựa trên thu nhập",
@@ -1156,7 +1156,7 @@ function ScaleComparisonSvg({ values }: { values: number[] }) {
   const m = mean(values);
   const s = std(values);
   const rows: { label: string; points: number[]; color: string; hint: string }[] = [
-    { label: "Gốc", points: values, color: "#94a3b8", hint: `range ${mn}–${mx}` },
+    { label: "Gốc", points: values, color: "#94a3b8", hint: `range ${mn}-${mx}` },
     {
       label: "Min-Max",
       points: values.map((v) => (v - mn) / (mx - mn)),

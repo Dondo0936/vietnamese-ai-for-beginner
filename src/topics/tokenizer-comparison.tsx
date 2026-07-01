@@ -146,7 +146,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao SentencePiece tốt cho đa ngôn ngữ (multilingual)?",
     options: [
       "Vì được thiết kế cho tiếng Nhật",
-      "Vì xử lý ở mức BYTE. không cần pre-tokenize, hỗ trợ mọi script Unicode",
+      "Vì xử lý ở mức BYTE, không cần pre-tokenize, hỗ trợ mọi script Unicode",
       "Vì từ vựng lớn hơn",
       "Vì nhanh hơn BPE",
     ],
@@ -305,7 +305,7 @@ export default function TokenizerComparisonTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           <p>
-            Ba tokenizer đều là subword. chia từ hiếm thành mảnh nhỏ. Nhưng khác nhau ở cách đánh dấu khoảng trắng: BPE giữ dấu cách, WordPiece dùng ##, SentencePiece dùng ▁.
+            Ba tokenizer đều là subword, chia từ hiếm thành mảnh nhỏ. Nhưng khác nhau ở cách đánh dấu khoảng trắng: BPE giữ dấu cách, WordPiece dùng ##, SentencePiece dùng ▁.
           </p>
           <p className="text-sm text-muted mt-1">
             Quan trọng nhất: tokenizer phải được huấn luyện trên ngôn ngữ đúng! GPT tokenizer (tiếng Anh) chia {'"Phở"'} thành 2 token, PhoBERT tokenizer (tiếng Việt) giữ nguyên 1 token.

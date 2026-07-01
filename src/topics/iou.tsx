@@ -19,7 +19,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ──────────────────────────────────────────────────────────────
- * METADATA — giữ nguyên như bản gốc để hệ thống topic catalog
+ * METADATA-giữ nguyên như bản gốc để hệ thống topic catalog
  * có thể nhận diện bài học này. Không thay đổi slug/category/tags
  * vì các route, breadcrumb, và progress-tracker đều dựa vào đây.
  * ────────────────────────────────────────────────────────────── */
@@ -37,7 +37,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ──────────────────────────────────────────────────────────────
- * TYPES — định nghĩa bounding box và các cấu trúc phụ trợ cho
+ * TYPES-định nghĩa bounding box và các cấu trúc phụ trợ cho
  * phần giải thích mAP. Vì đây là file client-only nên ta ưu tiên
  * type lightweight, không cần export ra ngoài.
  * ────────────────────────────────────────────────────────────── */
@@ -66,7 +66,7 @@ type DragTarget =
   | null;
 
 /* ──────────────────────────────────────────────────────────────
- * HẰNG SỐ CANVAS — giữ tọa độ trong hệ SVG 600×360 để khi vẽ
+ * HẰNG SỐ CANVAS-giữ tọa độ trong hệ SVG 600×360 để khi vẽ
  * lên màn hình nhỏ (điện thoại) vẫn giữ được tỷ lệ. Giới hạn
  * kéo/drag dựa trên padding 10px để tránh box bị ép sát cạnh.
  * ────────────────────────────────────────────────────────────── */
@@ -75,13 +75,13 @@ const CANVAS_H = 360;
 const PAD = 10;
 const MIN_SIDE = 40;
 
-const COLOR_GT = "#3b82f6"; // xanh dương — ground truth
-const COLOR_PRED = "#22c55e"; // xanh lá — dự đoán
-const COLOR_INTER = "#f59e0b"; // vàng — diện tích giao
-const COLOR_ENCLOSE = "#a855f7"; // tím — enclosing box (GIoU)
+const COLOR_GT = "#3b82f6"; // xanh dương-ground truth
+const COLOR_PRED = "#22c55e"; // xanh lá-dự đoán
+const COLOR_INTER = "#f59e0b"; // vàng-diện tích giao
+const COLOR_ENCLOSE = "#a855f7"; // tím-enclosing box (GIoU)
 
 /* ──────────────────────────────────────────────────────────────
- * BỘ CASE MINH HỌA mAP — 6 cặp (GT, Pred) với IoU phủ đủ dải
+ * BỘ CASE MINH HỌA mAP-6 cặp (GT, Pred) với IoU phủ đủ dải
  * từ 0.12 đến 0.92. Người học sẽ thấy rõ cùng một tập dự đoán
  * có thể biến thành True-Positive hay False-Positive hoàn toàn
  * phụ thuộc vào ngưỡng IoU đang chọn.
@@ -92,47 +92,47 @@ const CASES: DetectionCase[] = [
     label: "Xe máy trùng gần như hoàn hảo",
     gt: { x: 60, y: 60, w: 160, h: 120 },
     pred: { x: 66, y: 64, w: 158, h: 118 },
-    note: "Dự đoán chỉ lệch vài pixel — IoU rất cao.",
+    note: "Dự đoán chỉ lệch vài pixel-IoU rất cao.",
   },
   {
     id: "c2",
     label: "Người đi bộ, lệch nhẹ sang phải",
     gt: { x: 260, y: 80, w: 100, h: 160 },
     pred: { x: 278, y: 86, w: 100, h: 158 },
-    note: "Lệch tâm ~18px, tỷ lệ vẫn giữ — IoU trung bình cao.",
+    note: "Lệch tâm ~18px, tỷ lệ vẫn giữ-IoU trung bình cao.",
   },
   {
     id: "c3",
     label: "Biển báo, box to quá",
     gt: { x: 420, y: 60, w: 80, h: 80 },
     pred: { x: 400, y: 40, w: 130, h: 130 },
-    note: "Pred chứa cả GT nhưng dư thừa — union phình to.",
+    note: "Pred chứa cả GT nhưng dư thừa-union phình to.",
   },
   {
     id: "c4",
     label: "Ô tô, chỉ bắt được nửa thân",
     gt: { x: 80, y: 230, w: 200, h: 100 },
     pred: { x: 180, y: 240, w: 180, h: 100 },
-    note: "Vùng giao chỉ bằng một nửa — IoU quanh 0.35.",
+    note: "Vùng giao chỉ bằng một nửa-IoU quanh 0.35.",
   },
   {
     id: "c5",
     label: "Đèn giao thông, lệch hẳn",
     gt: { x: 340, y: 260, w: 70, h: 70 },
     pred: { x: 420, y: 250, w: 80, h: 90 },
-    note: "Chạm góc nhưng hầu hết là miss — IoU thấp.",
+    note: "Chạm góc nhưng hầu hết là miss-IoU thấp.",
   },
   {
     id: "c6",
     label: "Cây bên đường, box vừa lệch vừa co",
     gt: { x: 500, y: 230, w: 80, h: 110 },
     pred: { x: 470, y: 210, w: 70, h: 120 },
-    note: "Lệch cả vị trí lẫn kích thước — IoU ~ 0.45.",
+    note: "Lệch cả vị trí lẫn kích thước-IoU ~ 0.45.",
   },
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * UTILITY — hàm toán học tách riêng cho gọn phần render. Không
+ * UTILITY-hàm toán học tách riêng cho gọn phần render. Không
  * dùng thư viện ngoài vì logic rất nhẹ và giúp người đọc dễ
  * đối chiếu với công thức LaTeX trong ExplanationSection.
  * ────────────────────────────────────────────────────────────── */
@@ -200,14 +200,14 @@ function qualityOf(iou: number) {
 }
 
 /* ──────────────────────────────────────────────────────────────
- * QUIZ — 8 câu phủ 4 lớp nhận thức: định nghĩa, ứng dụng, biến
+ * QUIZ-8 câu phủ 4 lớp nhận thức: định nghĩa, ứng dụng, biến
  * thể GIoU/DIoU/CIoU, và pitfalls như IoU=0 gradient=0.
  * ────────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
     question: "IoU = 0.75 có nghĩa là gì?",
     options: [
-      "Hai box trùng khớp 75% — diện tích giao chiếm 75% diện tích hợp",
+      "Hai box trùng khớp 75%-diện tích giao chiếm 75% diện tích hợp",
       "Box dự đoán nhỏ hơn ground truth 75%",
       "Mô hình đúng 75% thời gian",
       "Ảnh có 75% pixel thuộc đối tượng",
@@ -238,7 +238,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Khi 2 box không giao: IoU = 0, gradient = 0 — mô hình không học được! GIoU xét thêm diện tích enclosing box, cho gradient khác 0 để mô hình biết cần di chuyển box về phía nào.",
+      "Khi 2 box không giao: IoU = 0, gradient = 0-mô hình không học được! GIoU xét thêm diện tích enclosing box, cho gradient khác 0 để mô hình biết cần di chuyển box về phía nào.",
   },
   {
     question:
@@ -284,7 +284,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "A tìm ra vật thể hơi tốt hơn nhưng box lỏng. B định vị chặt hơn — khoảng cách giữa hai ngưỡng hẹp. Ứng dụng cần độ chính xác hình học cao (y tế, xe tự lái) nên chọn B.",
+      "A tìm ra vật thể hơi tốt hơn nhưng box lỏng. B định vị chặt hơn-khoảng cách giữa hai ngưỡng hẹp. Ứng dụng cần độ chính xác hình học cao (y tế, xe tự lái) nên chọn B.",
   },
   {
     question:
@@ -302,7 +302,7 @@ const QUIZ: QuizQuestion[] = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
- * COMPONENT: IoUCalculator — trung tâm của VisualizationSection.
+ * COMPONENT: IoUCalculator-trung tâm của VisualizationSection.
  * Quản lý 2 box có thể kéo góc, tính IoU/Union/Intersection real-
  * time, đồng thời giữ slider ngưỡng để chuyển đổi giữa quyết định
  * TP/FP. Dùng pointer events để hỗ trợ cả mouse lẫn cảm ứng.
@@ -488,7 +488,7 @@ function IoUCalculator() {
           </defs>
           <rect width={CANVAS_W} height={CANVAS_H} fill="url(#iou-grid)" />
 
-          {/* Enclosing box (GIoU) — vẽ trước để nằm dưới */}
+          {/* Enclosing box (GIoU), vẽ trước để nằm dưới */}
           {showEnclose && (
             <rect
               x={enclose.x}
@@ -503,7 +503,7 @@ function IoUCalculator() {
             />
           )}
 
-          {/* Intersection — vàng, fill bán trong suốt */}
+          {/* Intersection-vàng, fill bán trong suốt */}
           {inter && (
             <rect
               x={inter.x}
@@ -515,7 +515,7 @@ function IoUCalculator() {
             />
           )}
 
-          {/* Box A — Ground Truth */}
+          {/* Box A-Ground Truth */}
           <rect
             x={boxA.x}
             y={boxA.y}
@@ -558,7 +558,7 @@ function IoUCalculator() {
             style={{ cursor: "nwse-resize" }}
           />
 
-          {/* Box B — Prediction */}
+          {/* Box B-Prediction */}
           <rect
             x={boxB.x}
             y={boxB.y}
@@ -652,7 +652,7 @@ function IoUCalculator() {
             fill="var(--text-tertiary)"
             fontSize={11}
           >
-            Kéo góc để thay đổi kích thước — kéo thân box để di chuyển
+            Kéo góc để thay đổi kích thước-kéo thân box để di chuyển
           </text>
         </svg>
       </div>
@@ -765,8 +765,8 @@ function IoUCalculator() {
         </div>
         <p className="text-center text-xs text-muted">
           Hiện tại: IoU = <strong className="text-foreground">{iou.toFixed(3)}</strong>{" "}
-          — ngưỡng = <strong className="text-foreground">{threshold.toFixed(2)}</strong>{" "}
-          — quyết định ={" "}
+         , ngưỡng = <strong className="text-foreground">{threshold.toFixed(2)}</strong>{" "}
+         , quyết định ={" "}
           <strong style={{ color: classColor }}>{classification}</strong>
         </p>
       </div>
@@ -797,7 +797,7 @@ function IoUCalculator() {
           </div>
         </div>
         <p className="mt-2 text-xs text-muted">
-          GIoU ∈ [−1, 1]. Khi 2 box tách hẳn, IoU = 0 nhưng GIoU &lt; 0 — gradient
+          GIoU ∈ [−1, 1]. Khi 2 box tách hẳn, IoU = 0 nhưng GIoU &lt; 0-gradient
           vẫn có thông tin hướng dịch chuyển.
         </p>
       </div>
@@ -806,9 +806,9 @@ function IoUCalculator() {
 }
 
 /* ──────────────────────────────────────────────────────────────
- * COMPONENT: MAPComparison — bảng TP/FP cho 6 case ở hai ngưỡng
+ * COMPONENT: MAPComparison-bảng TP/FP cho 6 case ở hai ngưỡng
  * 0.5 và 0.75. Người học thấy rõ vì sao "cùng một mô hình mà mAP
- * giảm mạnh ở ngưỡng khắt khe" — đó là bản chất của COCO metric.
+ * giảm mạnh ở ngưỡng khắt khe", đó là bản chất của COCO metric.
  * ────────────────────────────────────────────────────────────── */
 function MAPComparison() {
   const rows = useMemo(
@@ -910,14 +910,14 @@ function MAPComparison() {
 /* ──────────────────────────────────────────────────────────────
  * MAIN COMPONENT
  * Chia bài thành 8 step theo kiến trúc chuẩn của codebase:
- *   1) Dự đoán (PredictionGate) — kích hoạt prior knowledge
- *   2) Khám phá (VisualizationSection) — IoU calculator tương tác
- *   3) Aha moment — chốt ý tưởng cốt lõi
- *   4) Thử thách — InlineChallenge lần 1
- *   5) Thử thách — InlineChallenge lần 2
- *   6) Giải thích sâu (ExplanationSection) — LaTeX + code + callouts
- *   7) Tóm tắt (MiniSummary) — 6 ý chính
- *   8) Quiz — 8 câu kiểm tra
+ *   1) Dự đoán (PredictionGate), kích hoạt prior knowledge
+ *   2) Khám phá (VisualizationSection), IoU calculator tương tác
+ *   3) Aha moment-chốt ý tưởng cốt lõi
+ *   4) Thử thách-InlineChallenge lần 1
+ *   5) Thử thách-InlineChallenge lần 2
+ *   6) Giải thích sâu (ExplanationSection), LaTeX + code + callouts
+ *   7) Tóm tắt (MiniSummary), 6 ý chính
+ *   8) Quiz-8 câu kiểm tra
  * ────────────────────────────────────────────────────────────── */
 export default function IoUTopic() {
   const [mountedAt] = useState<number>(() => Date.now());
@@ -937,7 +937,7 @@ export default function IoUTopic() {
 
   return (
     <>
-      {/* ────────── STEP 1 — DỰ ĐOÁN ────────── */}
+      {/* ────────── STEP 1-DỰ ĐOÁN ────────── */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <PredictionGate
           question="Mô hình dự đoán bounding box cho chiếc xe máy. Box dự đoán lệch sang phải một chút so với box thật. Làm sao đo mức chính xác?"
@@ -949,10 +949,10 @@ export default function IoUTopic() {
           correct={1}
           explanation="IoU = Giao / Hợp. Đo cả VỊ TRÍ lẫn KÍCH THƯỚC: 2 box trùng hoàn hảo → IoU = 1.0, không chạm nhau → IoU = 0. Đơn giản, trực giác, và scale-invariant!"
         >
-          {/* ────────── ANALOGY — THẺ BÀI THI ────────── */}
+          {/* ────────── ANALOGY-THẺ BÀI THI ────────── */}
           <div className="mb-4 rounded-xl border border-border bg-card p-4">
             <p className="text-sm font-semibold text-foreground">
-              Liên hệ đời thường — chấm điểm bài kiểm tra
+              Liên hệ đời thường-chấm điểm bài kiểm tra
             </p>
             <p className="mt-1 text-sm text-muted leading-relaxed">
               Hãy tưởng tượng giáo viên đang chấm một câu vẽ hình chữ nhật. Đáp án
@@ -963,11 +963,11 @@ export default function IoUTopic() {
               bét. Nếu chỉ đo chiều rộng, vị trí sai cũng bị bỏ qua. Cách{" "}
               <strong className="text-foreground">công bằng nhất</strong> là hỏi:{" "}
               <em>“Phần hai khung giao nhau chiếm bao nhiêu phần trăm của tổng diện
-              tích mà cả hai phủ lên?”</em> — đó chính là IoU.
+              tích mà cả hai phủ lên?”</em>, đó chính là IoU.
             </p>
           </div>
 
-          {/* ────────── STEP 2 — KHÁM PHÁ ────────── */}
+          {/* ────────── STEP 2-KHÁM PHÁ ────────── */}
           <LessonSection step={2} totalSteps={8} label="Khám phá">
             <VisualizationSection>
               <div className="space-y-5">
@@ -986,19 +986,19 @@ export default function IoUTopic() {
                     <ul className="mt-2 space-y-1 text-xs text-muted">
                       <li>
                         <span className="inline-block h-3 w-3 rounded-sm bg-blue-500 mr-2 align-middle" />
-                        Ground truth (A) — hộp nét liền
+                        Ground truth (A), hộp nét liền
                       </li>
                       <li>
                         <span className="inline-block h-3 w-3 rounded-sm bg-green-500 mr-2 align-middle" />
-                        Prediction (B) — hộp nét đứt
+                        Prediction (B), hộp nét đứt
                       </li>
                       <li>
                         <span className="inline-block h-3 w-3 rounded-sm bg-amber-500 mr-2 align-middle" />
-                        Intersection — vùng giao nhau
+                        Intersection-vùng giao nhau
                       </li>
                       <li>
                         <span className="inline-block h-3 w-3 rounded-sm bg-purple-500 mr-2 align-middle" />
-                        Enclosing box — khung bao quanh cả hai (dùng cho GIoU)
+                        Enclosing box-khung bao quanh cả hai (dùng cho GIoU)
                       </li>
                     </ul>
                   </div>
@@ -1009,7 +1009,7 @@ export default function IoUTopic() {
                     <ul className="mt-2 space-y-1 text-xs text-muted">
                       <li>• Nhấn “Trùng hoàn hảo” để kiểm tra IoU = 1.000.</li>
                       <li>
-                        • Nhấn “Tách rời” để thấy IoU = 0 nhưng GIoU &lt; 0 — đây
+                        • Nhấn “Tách rời” để thấy IoU = 0 nhưng GIoU &lt; 0-đây
                         là lý do GIoU được dùng làm loss.
                       </li>
                       <li>
@@ -1024,7 +1024,7 @@ export default function IoUTopic() {
             </VisualizationSection>
           </LessonSection>
 
-          {/* ────────── STEP 3 — AHA MOMENT ────────── */}
+          {/* ────────── STEP 3-AHA MOMENT ────────── */}
           <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
             <AhaMoment>
               <p>
@@ -1032,7 +1032,7 @@ export default function IoUTopic() {
                 trong đoạn [0, 1]. Giống như <strong>chấm bài thi vẽ hình</strong>:
                 IoU &ge; 0.5 là <strong>đạt</strong> (PASCAL VOC), IoU &ge; 0.75 là{" "}
                 <strong>giỏi</strong>, IoU = 1.0 là <strong>hoàn hảo</strong>.
-                Đặc biệt, IoU là <em>scale-invariant</em> — box to hay nhỏ đều được
+                Đặc biệt, IoU là <em>scale-invariant</em>, box to hay nhỏ đều được
                 đánh giá công bằng, vì cả tử (giao) và mẫu (hợp) đều co giãn cùng tỷ
                 lệ. Đó cũng là lý do IoU trở thành metric chuẩn của ngành
                 object-detection suốt 15 năm qua.
@@ -1040,35 +1040,35 @@ export default function IoUTopic() {
             </AhaMoment>
           </LessonSection>
 
-          {/* ────────── STEP 4 — THỬ THÁCH 1 ────────── */}
+          {/* ────────── STEP 4-THỬ THÁCH 1 ────────── */}
           <LessonSection step={4} totalSteps={8} label="Thử thách 1">
             <InlineChallenge
-              question="2 box không giao nhau (IoU = 0). Nếu dùng IoU làm loss function, gradient = 0 — mô hình không học được! Giải pháp?"
+              question="2 box không giao nhau (IoU = 0). Nếu dùng IoU làm loss function, gradient = 0-mô hình không học được! Giải pháp?"
               options={[
                 "Dùng L1 loss thay vì IoU loss",
                 "Dùng GIoU: xét thêm diện tích enclosing box để có gradient khác 0",
                 "Tăng learning rate lên rất cao",
               ]}
               correct={1}
-              explanation="GIoU = IoU − (diện tích phần thừa trong enclosing box) / (diện tích enclosing box). Khi 2 box tách xa, GIoU âm nhưng gradient khác 0 — mô hình biết cần kéo box lại gần nhau!"
+              explanation="GIoU = IoU − (diện tích phần thừa trong enclosing box) / (diện tích enclosing box). Khi 2 box tách xa, GIoU âm nhưng gradient khác 0-mô hình biết cần kéo box lại gần nhau!"
             />
           </LessonSection>
 
-          {/* ────────── STEP 5 — THỬ THÁCH 2 ────────── */}
+          {/* ────────── STEP 5-THỬ THÁCH 2 ────────── */}
           <LessonSection step={5} totalSteps={8} label="Thử thách 2">
             <InlineChallenge
               question="Mô hình A đạt mAP@0.5 = 0.80 còn mô hình B đạt mAP@0.5 = 0.72. Nhưng ở ngưỡng khắt khe hơn, mô hình A chỉ còn mAP@0.75 = 0.35, trong khi B giữ mAP@0.75 = 0.60. Bạn chọn mô hình nào cho xe tự lái?"
               options={[
-                "A — vì mAP@0.5 cao hơn rõ rệt",
-                "B — vì B định vị box chính xác hơn ở ngưỡng khắt khe",
-                "Không phân biệt được — nên lấy trung bình hai ngưỡng",
+                "A-vì mAP@0.5 cao hơn rõ rệt",
+                "B-vì B định vị box chính xác hơn ở ngưỡng khắt khe",
+                "Không phân biệt được-nên lấy trung bình hai ngưỡng",
               ]}
               correct={1}
-              explanation="A tìm ra vật thể hơi tốt hơn nhưng box lỏng. B định vị chặt hơn — sụt giảm giữa hai ngưỡng của B chỉ 0.12, của A lên tới 0.45. Ứng dụng cần độ chính xác hình học cao (y tế, xe tự lái) nên chọn B."
+              explanation="A tìm ra vật thể hơi tốt hơn nhưng box lỏng. B định vị chặt hơn-sụt giảm giữa hai ngưỡng của B chỉ 0.12, của A lên tới 0.45. Ứng dụng cần độ chính xác hình học cao (y tế, xe tự lái) nên chọn B."
             />
           </LessonSection>
 
-          {/* ────────── STEP 6 — EXPLANATION SECTION ────────── */}
+          {/* ────────── STEP 6-EXPLANATION SECTION ────────── */}
           <LessonSection step={6} totalSteps={8} label="Giải thích sâu">
             <ExplanationSection>
               <p>
@@ -1093,7 +1093,7 @@ export default function IoUTopic() {
                 {"\\begin{aligned} x_1 &= \\max(A.x_1, B.x_1), \\quad y_1 = \\max(A.y_1, B.y_1) \\\\ x_2 &= \\min(A.x_2, B.x_2), \\quad y_2 = \\min(A.y_2, B.y_2) \\\\ \\text{Inter} &= \\max(0, x_2 - x_1) \\cdot \\max(0, y_2 - y_1) \\\\ \\text{Union} &= \\text{Area}(A) + \\text{Area}(B) - \\text{Inter} \\end{aligned}"}
               </LaTeX>
 
-              {/* ───────── Callout 1 — Biến thể ───────── */}
+              {/* ───────── Callout 1-Biến thể ───────── */}
               <Callout variant="insight" title="Các biến thể IoU dùng làm Loss">
                 <div className="space-y-2">
                   <p>
@@ -1123,20 +1123,20 @@ export default function IoUTopic() {
                     <LaTeX>
                       {"v = \\frac{4}{\\pi^2}\\bigl(\\arctan\\tfrac{w^{gt}}{h^{gt}} - \\arctan\\tfrac{w^{p}}{h^{p}}\\bigr)^2"}
                     </LaTeX>{" "}
-                    — phạt nặng nếu aspect ratio hai box lệch nhau.
+                   , phạt nặng nếu aspect ratio hai box lệch nhau.
                   </p>
                 </div>
               </Callout>
 
-              {/* ───────── Callout 2 — Benchmark ───────── */}
+              {/* ───────── Callout 2-Benchmark ───────── */}
               <Callout variant="warning" title="IoU trong đánh giá mô hình">
                 <ul className="list-disc list-inside space-y-1">
                   <li>
-                    <strong>PASCAL VOC:</strong> mAP@0.5 — detection đúng khi IoU
+                    <strong>PASCAL VOC:</strong> mAP@0.5-detection đúng khi IoU
                     &ge; 0.5
                   </li>
                   <li>
-                    <strong>COCO:</strong> mAP@[0.5 : 0.05 : 0.95] — trung bình 10
+                    <strong>COCO:</strong> mAP@[0.5 : 0.05 : 0.95], trung bình 10
                     ngưỡng, khắt khe hơn
                   </li>
                   <li>
@@ -1158,7 +1158,7 @@ export default function IoUTopic() {
                 </ul>
               </Callout>
 
-              {/* ───────── CodeBlock 1 — tính IoU từ đầu ───────── */}
+              {/* ───────── CodeBlock 1-tính IoU từ đầu ───────── */}
               <CodeBlock language="python" title="Tính IoU từ đầu bằng NumPy">
 {`import numpy as np
 
@@ -1194,7 +1194,7 @@ pred = np.array([120, 80, 300, 220], dtype=float)
 print(f"IoU = {iou_xyxy(gt, pred):.3f}")  # ~ 0.658`}
               </CodeBlock>
 
-              {/* ───────── CodeBlock 2 — torchvision ops ───────── */}
+              {/* ───────── CodeBlock 2-torchvision ops ───────── */}
               <CodeBlock language="python" title="Dùng torchvision.ops cho production">
 {`import torch
 from torchvision.ops import (
@@ -1209,7 +1209,7 @@ from torchvision.ops import (
 gt = torch.tensor([[100, 60, 280, 200]], dtype=torch.float)
 pred = torch.tensor([[120, 80, 300, 220]], dtype=torch.float)
 
-# IoU cơ bản — ma trận N×M
+# IoU cơ bản-ma trận N×M
 iou_mat = box_iou(gt, pred)
 print(f"IoU: {iou_mat.item():.3f}")
 
@@ -1221,7 +1221,7 @@ diou = distance_box_iou(gt, pred)
 ciou = complete_box_iou(gt, pred)
 ciou_loss = 1 - ciou.diag()      # tốt nhất cho bbox regression
 
-# NMS — lọc trùng
+# NMS-lọc trùng
 detections = torch.tensor([
     [100, 60, 280, 200],
     [110, 70, 285, 205],   # trùng với box 0
@@ -1232,7 +1232,7 @@ keep = nms(detections, scores, iou_threshold=0.5)
 print("Giữ index:", keep.tolist())  # [0, 2]`}
               </CodeBlock>
 
-              {/* ───────── Callout 3 — Pitfalls ───────── */}
+              {/* ───────── Callout 3-Pitfalls ───────── */}
               <Callout variant="warning" title="Những cạm bẫy thường gặp">
                 <ul className="list-disc list-inside space-y-1">
                   <li>
@@ -1241,7 +1241,7 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                   </li>
                   <li>
                     <strong>Box rỗng:</strong> khi w hoặc h âm/bằng 0, IoU không định
-                    nghĩa — phải clip hoặc skip.
+                    nghĩa-phải clip hoặc skip.
                   </li>
                   <li>
                     <strong>Rotated boxes:</strong> IoU cho box xoay (ví dụ ảnh vệ
@@ -1257,13 +1257,13 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                   </li>
                   <li>
                     <strong>IoU = 0 nhưng box gần nhau:</strong> L1 loss giữa tọa độ
-                    còn có gradient — nhiều detector dùng <em>kết hợp</em> CIoU loss
+                    còn có gradient-nhiều detector dùng <em>kết hợp</em> CIoU loss
                     + L1 loss để bootstrap huấn luyện.
                   </li>
                 </ul>
               </Callout>
 
-              {/* ───────── Callout 4 — Ngoài object detection ───────── */}
+              {/* ───────── Callout 4-Ngoài object detection ───────── */}
               <Callout variant="tip" title="IoU ngoài object detection">
                 <ul className="list-disc list-inside space-y-1">
                   <li>
@@ -1273,7 +1273,7 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                   </li>
                   <li>
                     <strong>Instance segmentation:</strong> Mask-IoU thay cho Box-IoU
-                    trong COCO-mask — đánh giá chính xác hình dạng, không chỉ khung.
+                    trong COCO-mask-đánh giá chính xác hình dạng, không chỉ khung.
                   </li>
                   <li>
                     <strong>Tracking:</strong> IoU cross-frame dùng trong{" "}
@@ -1282,7 +1282,7 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                   </li>
                   <li>
                     <strong>3D IoU:</strong> KITTI dùng IoU cho các hình hộp 3D trong
-                    bài toán detection ô tô từ LiDAR — phức tạp hơn vì có thêm chiều
+                    bài toán detection ô tô từ LiDAR-phức tạp hơn vì có thêm chiều
                     sâu và góc xoay.
                   </li>
                 </ul>
@@ -1308,7 +1308,7 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                   </LaTeX>
                   <p>
                     Tính chất này đặc biệt quan trọng khi dataset chứa vật thể ở
-                    nhiều khoảng cách (xe gần vs xe xa) — IoU công bằng cho cả hai.
+                    nhiều khoảng cách (xe gần vs xe xa), IoU công bằng cho cả hai.
                   </p>
                 </div>
               </CollapsibleDetail>
@@ -1345,7 +1345,7 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                   </ol>
                   <p>
                     Chính vì có bước “GT đã claim không dùng lại” nên hai detection
-                    trùng nhau cùng vật thể sẽ bị tính một TP + một FP — NMS trước
+                    trùng nhau cùng vật thể sẽ bị tính một TP + một FP-NMS trước
                     đó đã dọn bớt để tránh hạ điểm oan.
                   </p>
                 </div>
@@ -1358,12 +1358,12 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
               <ul className="list-disc list-inside space-y-1">
                 <li>
                   <strong>Xe tự lái:</strong> Tesla, Waymo, Mobileye đều dùng IoU
-                  ngưỡng cao (≥ 0.7) cho bộ detector phát hiện xe và người đi bộ —
+                  ngưỡng cao (≥ 0.7) cho bộ detector phát hiện xe và người đi bộ,
                   sai vài pixel trong không gian 3D có thể gây tai nạn.
                 </li>
                 <li>
                   <strong>Y tế:</strong> phân đoạn khối u trong CT/MRI dùng mIoU
-                  (còn gọi là <em>Dice-adjacent</em>) — Dice = 2·IoU/(1+IoU), tương
+                  (còn gọi là <em>Dice-adjacent</em>), Dice = 2·IoU/(1+IoU), tương
                   đương IoU nhưng phân phối khác.
                 </li>
                 <li>
@@ -1373,12 +1373,12 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
                 </li>
                 <li>
                   <strong>Robot kho Amazon:</strong> pick-and-place dùng IoU 2D trên
-                  ảnh top-down để xác định vị trí túi hàng — threshold 0.6 là cân
+                  ảnh top-down để xác định vị trí túi hàng-threshold 0.6 là cân
                   bằng giữa độ chính xác và tốc độ.
                 </li>
                 <li>
                   <strong>Nông nghiệp chính xác:</strong> đếm cây từ ảnh drone, đo
-                  tán lá — IoU giữa mask dự đoán và mask chuyên gia đánh dấu.
+                  tán lá-IoU giữa mask dự đoán và mask chuyên gia đánh dấu.
                 </li>
               </ul>
 
@@ -1388,20 +1388,20 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
               </p>
               <ol className="list-decimal list-inside space-y-1">
                 <li>
-                  Không dùng IoU thô làm loss nếu box có thể không giao —{" "}
+                  Không dùng IoU thô làm loss nếu box có thể không giao,{" "}
                   <em>dùng GIoU/DIoU/CIoU</em>.
                 </li>
                 <li>
                   Không so sánh mAP giữa hai benchmark khác nhau (VOC@0.5 vs
-                  COCO@[.5:.95]) — luôn khớp thiết lập trước khi công bố.
+                  COCO@[.5:.95]), luôn khớp thiết lập trước khi công bố.
                 </li>
                 <li>
                   Với vật thể nhỏ (&lt; 32px), một lệch vài pixel đã kéo IoU xuống
-                  mạnh — COCO định nghĩa riêng mAP_small, mAP_medium, mAP_large.
+                  mạnh-COCO định nghĩa riêng mAP_small, mAP_medium, mAP_large.
                 </li>
                 <li>
                   NMS với ngưỡng IoU quá cao (0.9) sẽ giữ nhiều box trùng; quá thấp
-                  (0.3) sẽ mất box gần nhau — tune theo use-case.
+                  (0.3) sẽ mất box gần nhau-tune theo use-case.
                 </li>
                 <li>
                   IoU không tính đến class: hai box cùng chỗ nhưng khác class (người
@@ -1411,21 +1411,21 @@ print("Giữ index:", keep.tolist())  # [0, 2]`}
             </ExplanationSection>
           </LessonSection>
 
-          {/* ────────── STEP 7 — MINI SUMMARY ────────── */}
+          {/* ────────── STEP 7-MINI SUMMARY ────────── */}
           <LessonSection step={7} totalSteps={8} label="Tóm tắt">
             <MiniSummary
               points={[
-                "IoU = Giao / Hợp — đo trùng khớp 2 box trong 1 con số thuộc [0, 1]; 0 = tách rời, 1 = trùng hoàn hảo.",
+                "IoU = Giao / Hợp-đo trùng khớp 2 box trong 1 con số thuộc [0, 1]; 0 = tách rời, 1 = trùng hoàn hảo.",
                 "Scale-invariant: phóng to cả 2 box cùng tỷ lệ không làm IoU đổi, nên công bằng cho vật thể lớn và nhỏ.",
                 "Ngưỡng quy ước: IoU ≥ 0.5 đạt (VOC), ≥ 0.75 giỏi (COCO), ≥ 0.9 khắt khe cho y tế/xe tự lái.",
-                "Biến thể làm loss: GIoU (enclosing box), DIoU (khoảng cách tâm), CIoU (+ aspect ratio) — giải quyết vấn đề gradient=0 khi box tách rời.",
+                "Biến thể làm loss: GIoU (enclosing box), DIoU (khoảng cách tâm), CIoU (+ aspect ratio), giải quyết vấn đề gradient=0 khi box tách rời.",
                 "Ứng dụng: đánh giá mAP (VOC, COCO, LVIS), Non-Max Suppression, gán anchor, tracking, segmentation (mIoU).",
                 "Pitfall: nhầm [x,y,w,h] vs [x1,y1,x2,y2], box rỗng, rotated boxes, và so sánh mAP khác benchmark.",
               ]}
             />
           </LessonSection>
 
-          {/* ────────── STEP 8 — QUIZ ────────── */}
+          {/* ────────── STEP 8-QUIZ ────────── */}
           <LessonSection step={8} totalSteps={8} label="Kiểm tra">
             <QuizSection questions={QUIZ} />
           </LessonSection>

@@ -42,7 +42,7 @@ export const metadata: TopicMeta = {
   title: "K-Means Clustering",
   titleVi: "Phân cụm k-means",
   description:
-    "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên: từ đặt kho hàng Grab đến phân khúc khách hàng.",
+    "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm, k-means tìm các tụ điểm tự nhiên: từ đặt kho hàng Grab đến phân khúc khách hàng.",
   category: "classic-ml",
   tags: ["clustering", "unsupervised-learning"],
   difficulty: "intermediate",
@@ -408,7 +408,7 @@ export default function KMeansTopic() {
             Chưa có ai dán nhãn &ldquo;cụm bắc&rdquo; hay &ldquo;cụm
             nam&rdquo; cho 30 cửa hàng. Nhưng dữ liệu thường{" "}
             <em>tự gom nhóm</em>: cửa hàng gần nhau thì về địa lý đã
-            &ldquo;đồng nhóm&rdquo; rồi. k-means là cách để máy tính tìm
+            &ldquo;đồng nhóm&rdquo; rồi, k-means là cách để máy tính tìm
             ra những tụ điểm tự nhiên đó mà không cần ai nói trước.
           </p>
         </PredictionGate>
@@ -837,7 +837,7 @@ export default function KMeansTopic() {
         <InlineChallenge
           question="Bạn có n điểm. Chạy k-means với k = 1 và k = n (số cụm bằng số điểm). Chuyện gì xảy ra?"
           options={[
-            "k = 1: mọi điểm chung một cụm, tâm là trung bình cả tập. k = n: mỗi điểm là một cụm riêng, inertia = 0 nhưng vô nghĩa.",
+            "k = 1: mọi điểm chung một cụm, tâm là trung bình cả tập, k = n: mỗi điểm là một cụm riêng, inertia = 0 nhưng vô nghĩa.",
             "Cả hai trường hợp đều báo lỗi",
             "k = 1 cho kết quả tốt, k = n cho kết quả kém",
             "Không có gì khác thường, k-means vẫn xử lý bình thường",
@@ -920,7 +920,7 @@ export default function KMeansTopic() {
               <li>
                 <strong>Khởi tạo tồi:</strong> k-means rất nhạy với vị
                 trí tâm ban đầu. Dùng <em>k-means++</em> (chọn tâm xa nhau)
-                thay vì ngẫu nhiên. scikit-learn mặc định đã bật sẵn.
+                thay vì ngẫu nhiên, scikit-learn mặc định đã bật sẵn.
               </li>
               <li>
                 <strong>Cụm hình không phải cầu:</strong> k-means giả định

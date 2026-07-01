@@ -63,7 +63,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Tại sao Max Pooling phổ biến hơn Average Pooling trong CNN phân loại ảnh?",
     options: [
       "Vì Max Pooling nhanh hơn",
-      "Vì nó giữ đặc trưng nổi bật nhất — activation cao nhất nghĩa là pattern được phát hiện mạnh nhất",
+      "Vì nó giữ đặc trưng nổi bật nhất-activation cao nhất nghĩa là pattern được phát hiện mạnh nhất",
       "Vì Average Pooling không giảm kích thước",
       "Vì Max Pooling có nhiều tham số hơn",
     ],
@@ -120,15 +120,15 @@ export default function PoolingTopic() {
         />
       </LessonSection>
 
-      {/* ═══ Step 2: DISCOVER — Interactive Pooling ═══ */}
+      {/* ═══ Step 2: DISCOVER-Interactive Pooling ═══ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá Pooling">
         <VisualizationSection topicSlug={metadata.slug}>
           <p className="text-sm text-foreground leading-relaxed mb-3">
             Hãy tưởng tượng bạn tóm tắt đánh giá món phở trên Shopee Food. Thay vì đọc 100 review, bạn chỉ lấy{" "}
             <strong>điểm cao nhất</strong>{" "}
-            (max pooling — &quot;quán này có review 5 sao!&quot;) hoặc{" "}
+            (max pooling, &quot;quán này có review 5 sao!&quot;) hoặc{" "}
             <strong>điểm trung bình</strong>{" "}
-            (average pooling — &quot;trung bình 4.2 sao&quot;).
+            (average pooling, &quot;trung bình 4.2 sao&quot;).
           </p>
 
           <p className="text-sm text-muted mb-3">
@@ -250,7 +250,7 @@ export default function PoolingTopic() {
           </div>
 
           <p className="text-sm text-muted mt-3">
-            Bạn vừa thấy ảnh 4×4 giảm xuống 2×2 — kích thước giảm 4 lần mà thông tin quan trọng vẫn được giữ lại. Đây là lý do CNN có thể xử lý ảnh hàng triệu pixel.
+            Bạn vừa thấy ảnh 4×4 giảm xuống 2×2-kích thước giảm 4 lần mà thông tin quan trọng vẫn được giữ lại. Đây là lý do CNN có thể xử lý ảnh hàng triệu pixel.
           </p>
         </VisualizationSection>
       </LessonSection>
@@ -260,11 +260,11 @@ export default function PoolingTopic() {
         <AhaMoment>
           <p>
             <strong>Pooling</strong>{" "}
-            là &quot;bộ tóm tắt&quot; — giảm kích thước dữ liệu nhưng giữ bản chất. Giống bạn đọc tóm tắt sách thay vì đọc hết 500 trang — nhanh hơn mà vẫn nắm được nội dung chính!
+            là &quot;bộ tóm tắt&quot;, giảm kích thước dữ liệu nhưng giữ bản chất. Giống bạn đọc tóm tắt sách thay vì đọc hết 500 trang-nhanh hơn mà vẫn nắm được nội dung chính!
           </p>
           <p className="text-sm text-muted mt-1">
             Bonus: pooling tạo tính <strong>bất biến dịch chuyển nhỏ</strong>{" "}
-            — dù con mèo dịch sang trái/phải vài pixel, max value trong vùng 2×2 vẫn giống nhau.
+           , dù con mèo dịch sang trái/phải vài pixel, max value trong vùng 2×2 vẫn giống nhau.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -299,7 +299,7 @@ export default function PoolingTopic() {
             <Callout variant="info" title="Xu hướng hiện đại">
               <p>
                 Nhiều kiến trúc mới dùng <strong>strided convolution</strong>{" "}
-                (conv với stride=2) thay cho pooling — giảm kích thước nhưng vẫn có tham số học được. ResNet và EfficientNet đều dùng cách này. Global Average Pooling thay thế Flatten + FC ở cuối mạng.
+                (conv với stride=2) thay cho pooling-giảm kích thước nhưng vẫn có tham số học được. ResNet và EfficientNet đều dùng cách này. Global Average Pooling thay thế Flatten + FC ở cuối mạng.
               </p>
             </Callout>
           </div>
@@ -324,7 +324,7 @@ export default function PoolingTopic() {
         <ExplanationSection>
           <p>
             <strong>Pooling</strong>{" "}
-            giảm kích thước không gian (spatial dimensions) của feature map, giữ lại thông tin quan trọng. Không có tham số học được — chỉ là phép toán cố định.
+            giảm kích thước không gian (spatial dimensions) của feature map, giữ lại thông tin quan trọng. Không có tham số học được-chỉ là phép toán cố định.
           </p>
 
           <p className="mt-3 font-semibold text-foreground">Max Pooling:</p>
@@ -360,7 +360,7 @@ pool = nn.MaxPool2d(kernel_size=2, stride=2)
 # Average Pooling
 avg_pool = nn.AvgPool2d(kernel_size=2, stride=2)
 
-# Global Average Pooling — thay thế Flatten + FC
+# Global Average Pooling-thay thế Flatten + FC
 gap = nn.AdaptiveAvgPool2d(1)
 # Input: (batch, 512, 7, 7)
 # Output: (batch, 512, 1, 1) → squeeze → (batch, 512)
@@ -391,9 +391,9 @@ class ModernCNN(nn.Module):
           title="Ghi nhớ về Pooling"
           points={[
             "Pooling giảm kích thước feature map: 2×2 pooling giảm mỗi chiều một nửa → tổng giảm 4 lần.",
-            "Max Pooling giữ đặc trưng nổi bật nhất — phổ biến nhất cho phân loại ảnh.",
-            "Average Pooling giữ thông tin tổng quát — Global Average Pooling thay thế FC layer ở cuối CNN hiện đại.",
-            "Pooling không có tham số học được — chỉ là phép toán cố định (max hoặc trung bình).",
+            "Max Pooling giữ đặc trưng nổi bật nhất-phổ biến nhất cho phân loại ảnh.",
+            "Average Pooling giữ thông tin tổng quát-Global Average Pooling thay thế FC layer ở cuối CNN hiện đại.",
+            "Pooling không có tham số học được-chỉ là phép toán cố định (max hoặc trung bình).",
             "Lợi ích: giảm tính toán, tạo bất biến dịch chuyển nhỏ, chống overfitting.",
           ]}
         />

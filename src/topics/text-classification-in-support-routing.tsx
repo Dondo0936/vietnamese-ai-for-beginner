@@ -315,7 +315,7 @@ export default function TextClassificationInSupportRouting() {
 
         <Beat step={4}>
           <p>
-            <strong>Chatbot tự xử lý được 40–60%.</strong> Những ticket đơn
+            <strong>Chatbot tự xử lý được 40-60%.</strong> Những ticket đơn
             giản (reset password, tra cứu đơn, hỏi giờ mở cửa) được Intercom
             Fin / FPT.AI Chat giải quyết luôn bằng câu trả lời từ cơ sở tri
             thức, không chạm tới con người. Con người chỉ vào những ca phức
@@ -327,7 +327,7 @@ export default function TextClassificationInSupportRouting() {
           <p>
             <strong>Học liên tục từ phản hồi.</strong> Khi nhân viên chỉnh
             nhãn (vì AI đoán sai), hệ thống ghi nhận và huấn luyện lại. Qua vài tuần,
-            mô hình đặc thù cho công ty tăng độ chính xác từ 75% lên 92–95%, đủ tốt để tin gần như hoàn toàn.
+            mô hình đặc thù cho công ty tăng độ chính xác từ 75% lên 92-95%, đủ tốt để tin gần như hoàn toàn.
           </p>
         </Beat>
       </ApplicationMechanism>
@@ -687,7 +687,7 @@ export default function TextClassificationInSupportRouting() {
           {[
             { icon: Clock, title: "Nhanh hơn", desc: "Phản hồi trong 30 phút thay vì 4 tiếng.", color: "#3b82f6" },
             { icon: TrendingUp, title: "Đúng hơn", desc: "94% ticket đến đúng đội, thay vì 72% làm tay.", color: "#22c55e" },
-            { icon: Sparkles, title: "Rẻ hơn", desc: "Mỗi ticket ~$0.10 cho AI triage, so với $2–3 làm tay.", color: "#a855f7" },
+            { icon: Sparkles, title: "Rẻ hơn", desc: "Mỗi ticket ~$0.10 cho AI triage, so với $2-3 làm tay.", color: "#a855f7" },
           ].map((c) => (
             <div
               key={c.title}

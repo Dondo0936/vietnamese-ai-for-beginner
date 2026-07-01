@@ -111,7 +111,7 @@ export const metadata: TopicMeta = {
  * ════════════════════════════════════════════════════════════════════ */
 interface Applicant {
   income: number; // triệu VND / tháng
-  debtRatio: number; // tỉ lệ nợ/thu nhập, 0–1
+  debtRatio: number; // tỉ lệ nợ/thu nhập, 0-1
   hasLatePayment: boolean; // có trễ hạn > 30 ngày trong 2 năm qua
   yearsOfHistory: number; // thời gian có tín dụng (năm)
 }

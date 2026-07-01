@@ -21,7 +21,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// Metadata — DO NOT CHANGE. Used by the topic indexer at build time.
+// Metadata-DO NOT CHANGE. Used by the topic indexer at build time.
 // ---------------------------------------------------------------------------
 export const metadata: TopicMeta = {
   slug: "multi-armed-bandit",
@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 };
 
 // ---------------------------------------------------------------------------
-// Cấu hình 5 máy đánh bạc — reward thật sự ẩn với người chơi
+// Cấu hình 5 máy đánh bạc-reward thật sự ẩn với người chơi
 // ---------------------------------------------------------------------------
 const TOTAL_STEPS = 7;
 
@@ -78,7 +78,7 @@ const MAX_REGRET_POINTS = 200;
 // Toán cho các chiến lược
 // ---------------------------------------------------------------------------
 function selectGreedy(estimates: ReadonlyArray<number>, counts: ReadonlyArray<number>): number {
-  // Ưu tiên arm chưa thử — tránh chia 0 khi tất cả đều 0
+  // Ưu tiên arm chưa thử-tránh chia 0 khi tất cả đều 0
   for (let i = 0; i < counts.length; i += 1) {
     if (counts[i] === 0) return i;
   }
@@ -135,7 +135,7 @@ function computeInstantRegret(arm: number): number {
 }
 
 // ---------------------------------------------------------------------------
-// Quiz — 8 câu theo yêu cầu
+// Quiz-8 câu theo yêu cầu
 // ---------------------------------------------------------------------------
 function buildQuizQuestions(): QuizQuestion[] {
   return [
@@ -148,7 +148,7 @@ function buildQuizQuestions(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Ví dụ: bạn biết quán Phở A ngon (exploit). Nhưng có quán B chưa thử — có thể ngon hơn! Nếu chỉ exploit → miss Phở B. Nếu chỉ explore → lãng phí thời gian thử nhiều quán tệ. Epsilon-greedy: 90% chọn tốt nhất, 10% thử random.",
+        "Ví dụ: bạn biết quán Phở A ngon (exploit). Nhưng có quán B chưa thử-có thể ngon hơn! Nếu chỉ exploit → miss Phở B. Nếu chỉ explore → lãng phí thời gian thử nhiều quán tệ. Epsilon-greedy: 90% chọn tốt nhất, 10% thử random.",
     },
     {
       question: "UCB (Upper Confidence Bound) tốt hơn epsilon-greedy thế nào?",
@@ -181,7 +181,7 @@ function buildQuizQuestions(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "Regret R(T) = T · μ* − Σ μ_{a_t}. UCB có regret O(log T), Thompson Sampling có regret O(log T) với constant nhỏ hơn. Epsilon-greedy với ε cố định có regret linear — không tối ưu. Thuật toán 'no-regret' là thuật toán mà regret/T → 0.",
+        "Regret R(T) = T · μ* − Σ μ_{a_t}. UCB có regret O(log T), Thompson Sampling có regret O(log T) với constant nhỏ hơn. Epsilon-greedy với ε cố định có regret linear-không tối ưu. Thuật toán 'no-regret' là thuật toán mà regret/T → 0.",
     },
     {
       question: "Thompson Sampling hoạt động thế nào?",
@@ -499,7 +499,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
         fill="#0f172a"
         stroke="#1e293b"
       />
-      {/* trục y — gridlines */}
+      {/* trục y-gridlines */}
       {[0, 0.25, 0.5, 0.75, 1].map((frac) => {
         const y = height - paddingY - (height - 2 * paddingY) * frac;
         return (
@@ -535,7 +535,7 @@ function RegretChart({ history, strategy }: RegretChartProps) {
         fontSize={11}
         fontWeight="bold"
       >
-        Cumulative regret — {strategyLabel}
+        Cumulative regret, {strategyLabel}
       </text>
       <text
         x={width - paddingX}
@@ -678,7 +678,7 @@ export default function MultiArmedBanditTopic() {
           options={[
             "Kéo mãi 1 máy ngẫu nhiên",
             "Thử mỗi máy 20 lần rồi kéo máy tốt nhất",
-            "Cân bằng explore (thử máy mới) và exploit (kéo máy đã biết tốt) — đây là Multi-Armed Bandit!",
+            "Cân bằng explore (thử máy mới) và exploit (kéo máy đã biết tốt), đây là Multi-Armed Bandit!",
           ]}
           correct={2}
           explanation="Nếu chỉ exploit (1 máy) → có thể kẹt ở máy tệ. Nếu explore đều → lãng phí lượt cho máy tệ. Chiến lược tối ưu: lúc đầu explore nhiều, dần exploit khi đã có đủ thông tin. Đây là bài toán cơ bản của RL."
@@ -816,7 +816,7 @@ export default function MultiArmedBanditTopic() {
                 exploit. Epsilon-greedy: 90% chọn tốt nhất, 10% random. UCB:
                 explore arms có <strong>uncertainty cao</strong> (chưa thử
                 nhiều). Thompson Sampling: model uncertainty bằng{" "}
-                <strong>phân phối xác suất</strong> — thông minh nhất! Shopee,
+                <strong>phân phối xác suất</strong>, thông minh nhất! Shopee,
                 Netflix, Grab đều dùng Bandit hàng ngày.
               </p>
             </AhaMoment>
@@ -841,11 +841,11 @@ export default function MultiArmedBanditTopic() {
               question="Chạy UCB với c rất lớn (ví dụ c=100). Dự đoán regret curve?"
               options={[
                 "Regret giảm nhanh hơn",
-                "Regret TĂNG — vì bonus lớn khiến thuật toán cứ explore mãi, không exploit đủ arm tốt",
+                "Regret TĂNG-vì bonus lớn khiến thuật toán cứ explore mãi, không exploit đủ arm tốt",
                 "Không thay đổi",
               ]}
               correct={1}
-              explanation="c điều chỉnh trade-off explore/exploit. c quá lớn → bonus lấn át mean → thuật toán như random explore, regret cao. c quá nhỏ → hành xử như greedy, kẹt ở arm tồi. c=√2 (theoretical) hoặc c≈2 (practical) thường tốt."
+              explanation="c điều chỉnh trade-off explore/exploit, c quá lớn → bonus lấn át mean → thuật toán như random explore, regret cao, c quá nhỏ → hành xử như greedy, kẹt ở arm tồi, c=√2 (theoretical) hoặc c≈2 (practical) thường tốt."
             />
           </LessonSection>
 
@@ -853,7 +853,7 @@ export default function MultiArmedBanditTopic() {
             <ExplanationSection>
               <p>
                 <strong>Multi-Armed Bandit</strong> là bài toán cân bằng
-                explore (thử mới) và exploit (dùng tốt nhất) — cơ bản nhất
+                explore (thử mới) và exploit (dùng tốt nhất), cơ bản nhất
                 của RL. Khi thêm state và transition, bandit mở rộng thành
                 full RL như{" "}
                 <TopicLink slug="q-learning">Q-Learning</TopicLink> hoặc{" "}
@@ -880,7 +880,7 @@ export default function MultiArmedBanditTopic() {
               </LaTeX>
 
               <p>
-                <strong>Regret — thước đo chất lượng:</strong>
+                <strong>Regret-thước đo chất lượng:</strong>
               </p>
               <LaTeX block>
                 {
@@ -890,8 +890,8 @@ export default function MultiArmedBanditTopic() {
               <p>
                 Với <LaTeX>{"\\mu^{*}"}</LaTeX> là mean reward của arm tối ưu.
                 UCB và Thompson Sampling có regret <LaTeX>{"O(\\log T)"}</LaTeX>{" "}
-                — coi như tối ưu theo định lý Lai–Robbins. ε-Greedy với ε cố
-                định có regret <LaTeX>{"\\Theta(T)"}</LaTeX> — tệ hơn nhiều về
+               , coi như tối ưu theo định lý Lai-Robbins, ε-Greedy với ε cố
+                định có regret <LaTeX>{"\\Theta(T)"}</LaTeX>, tệ hơn nhiều về
                 dài hạn.
               </p>
 
@@ -934,7 +934,7 @@ export default function MultiArmedBanditTopic() {
 
               <CodeBlock
                 language="python"
-                title="NumPy — UCB cho 5-armed bandit"
+                title="NumPy-UCB cho 5-armed bandit"
               >
                 {`import numpy as np
 
@@ -947,7 +947,7 @@ class UCB:
         self.t = 0
 
     def select_arm(self) -> int:
-        # Ưu tiên arm chưa thử — tránh chia 0
+        # Ưu tiên arm chưa thử-tránh chia 0
         for a in range(self.n_arms):
             if self.counts[a] == 0:
                 return a
@@ -979,7 +979,7 @@ for t in range(1, 2001):
 print(f"final regret  = {regret[-1]:.2f}")
 print(f"pull dist     = {ucb.counts}")
 print(f"best arm est  = {np.argmax(ucb.sums / np.maximum(1, ucb.counts))}")
-# Regret tăng theo log(t) — đặc trưng của UCB`}
+# Regret tăng theo log(t), đặc trưng của UCB`}
               </CodeBlock>
 
               <CodeBlock language="python" title="Thompson Sampling cho A/B/C test">
@@ -1024,15 +1024,15 @@ print(f"est CTR = {ts.alpha / (ts.alpha + ts.beta)}")`}
                   <LaTeX>{"a"}</LaTeX>, hoặc (1) upper bound của a đã vượt{" "}
                   <LaTeX>{"\\mu^{*}"}</LaTeX> (trường hợp hiếm theo bất đẳng
                   thức Hoeffding), hoặc (2) số lượt kéo a còn quá ít khiến
-                  bonus lớn. Phân tích của Auer–Cesa-Bianchi–Fischer (2002)
+                  bonus lớn. Phân tích của Auer-Cesa-Bianchi-Fischer (2002)
                   cho thấy mỗi suboptimal arm chỉ bị kéo nhiều nhất{" "}
                   <LaTeX>{"O(\\log T / \\Delta_a^{2})"}</LaTeX> lần, với{" "}
                   <LaTeX>{"\\Delta_a = \\mu^{*} - \\mu_a"}</LaTeX>. Tổng regret
                   là <LaTeX>{"O\\left(\\sum_a \\log T / \\Delta_a\\right)"}</LaTeX>{" "}
-                  — sub-linear.
+                 , sub-linear.
                 </p>
                 <p>
-                  Lai–Robbins (1985) chứng minh cận dưới lý thuyết cũng là{" "}
+                  Lai-Robbins (1985) chứng minh cận dưới lý thuyết cũng là{" "}
                   <LaTeX>{"\\Omega(\\log T)"}</LaTeX> nên UCB đạt <em>order
                   optimal</em>. Thompson Sampling đạt cùng order nhưng constant
                   factor tốt hơn trên phần lớn benchmark (Chapelle &amp; Li 2011).
@@ -1048,9 +1048,9 @@ print(f"est CTR = {ts.alpha / (ts.alpha + ts.beta)}")`}
                   . Sau khi quan sát 1 thành công, likelihood là{" "}
                   <LaTeX>{"\\theta"}</LaTeX>, posterior{" "}
                   <LaTeX>{"\\propto \\theta^{\\alpha}(1-\\theta)^{\\beta-1}"}</LaTeX>{" "}
-                  — đúng là <LaTeX>{"\\text{Beta}(\\alpha+1, \\beta)"}</LaTeX>
+                 , đúng là <LaTeX>{"\\text{Beta}(\\alpha+1, \\beta)"}</LaTeX>
                   . Đó là lý do update Thompson Sampling chỉ là{" "}
-                  <code>α += 1</code> hoặc <code>β += 1</code> — không cần
+                  <code>α += 1</code> hoặc <code>β += 1</code>, không cần
                   tính tích phân.
                 </p>
                 <p>
@@ -1069,7 +1069,7 @@ print(f"est CTR = {ts.alpha / (ts.alpha + ts.beta)}")`}
                 </p>
                 <p>
                   <strong>Ad selection:</strong> Google Ads dùng Thompson
-                  Sampling để quyết định ad nào hiển thị — đặc biệt cho keyword
+                  Sampling để quyết định ad nào hiển thị-đặc biệt cho keyword
                   mới không đủ data cho ML lớn.
                 </p>
                 <p>
@@ -1126,7 +1126,7 @@ print(f"est CTR = {ts.alpha / (ts.alpha + ts.beta)}")`}
                 <strong>Off-policy evaluation (OPE):</strong> khi muốn
                 thử thuật toán mới mà không risk cho user, ta dùng dữ liệu đã
                 log từ thuật toán cũ. Inverse Propensity Scoring (IPS) và
-                Doubly Robust là hai kỹ thuật chuẩn — cho phép ước lượng
+                Doubly Robust là hai kỹ thuật chuẩn-cho phép ước lượng
                 "Thuật toán mới sẽ tốt thế nào?" chỉ từ log, không cần deploy.
                 Đây là cầu nối giữa bandit và{" "}
                 <TopicLink slug="supervised-unsupervised-rl">
@@ -1161,7 +1161,7 @@ print(f"est CTR = {ts.alpha / (ts.alpha + ts.beta)}")`}
                 "Multi-Armed Bandit: bài toán cân bằng EXPLORE (thử arm mới) và EXPLOIT (dùng arm đã biết tốt nhất).",
                 "3 chiến lược kinh điển: ε-Greedy (đơn giản), UCB (khai thác uncertainty), Thompson Sampling (Bayesian, thường mạnh nhất).",
                 "Regret R(T) = T·μ* − Σ μ_{a_t} là thước đo chất lượng; UCB/TS đạt O(log T), ε-Greedy cố định chỉ O(T).",
-                "Contextual bandit thêm feature vector — nền tảng recommendation hiện đại (Netflix, TikTok, YouTube).",
+                "Contextual bandit thêm feature vector-nền tảng recommendation hiện đại (Netflix, TikTok, YouTube).",
                 "Bandit ≠ A/B test: Bandit adaptive, ít user bị ảnh hưởng bởi variant tệ → ethical + efficient hơn.",
                 "Khi action làm thay đổi state dài hạn → không đủ, cần full RL (Q-learning, Policy Gradient).",
               ]}

@@ -136,26 +136,26 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Khi inference, batch có thể chỉ 1 mẫu. không thể tính mean/variance ổn định. Nên BN dùng running statistics (EMA) tích lũy từ lúc train. model.eval() trong PyTorch tự chuyển sang dùng running stats.",
+      "Khi inference, batch có thể chỉ 1 mẫu, không thể tính mean/variance ổn định. Nên BN dùng running statistics (EMA) tích lũy từ lúc train, model.eval() trong PyTorch tự chuyển sang dùng running stats.",
   },
   {
     question: "Tại sao BatchNorm có tham số γ (scale) và β (shift) học được?",
     options: [
-      "Để mạng tự quyết định có cần chuẩn hóa hay không. nếu γ=σ và β=μ thì BN bị triệt tiêu, khôi phục phân phối cũ",
+      "Để mạng tự quyết định có cần chuẩn hóa hay không, nếu γ=σ và β=μ thì BN bị triệt tiêu, khôi phục phân phối cũ",
       "Chỉ để tăng số tham số cho mạng mạnh hơn",
       "Để thay thế learning rate trong optimizer",
       "γ và β là cố định, không học được",
     ],
     correct: 0,
     explanation:
-      "Nếu chuẩn hóa về (0,1) là tối ưu, mạng sẽ học γ=1, β=0. Nhưng nếu phân phối khác tốt hơn, mạng có thể ‘undo’ BN bằng cách học γ=σ_cũ, β=μ_cũ. γ và β đem lại tính biểu diễn tối đa. không hy sinh khả năng học.",
+      "Nếu chuẩn hóa về (0,1) là tối ưu, mạng sẽ học γ=1, β=0. Nhưng nếu phân phối khác tốt hơn, mạng có thể ‘undo’ BN bằng cách học γ=σ_cũ, β=μ_cũ, γ và β đem lại tính biểu diễn tối đa, không hy sinh khả năng học.",
   },
   {
     question:
       "Layer Normalization (LN) chuẩn hóa theo chiều nào? Và vì sao Transformer dùng LN thay vì BN?",
     options: [
-      "LN chuẩn hóa theo batch. giống BN chỉ đổi tên",
-      "LN chuẩn hóa theo features của TỪNG mẫu. không phụ thuộc batch size, phù hợp sequence có độ dài thay đổi",
+      "LN chuẩn hóa theo batch, giống BN chỉ đổi tên",
+      "LN chuẩn hóa theo features của TỪNG mẫu, không phụ thuộc batch size, phù hợp sequence có độ dài thay đổi",
       "LN không chuẩn hóa, chỉ scale và shift",
       "Transformer dùng cả BN và LN song song",
     ],
@@ -403,7 +403,7 @@ function LossCurveChart({
         stroke="currentColor"
         className="text-border"
       />
-      {/* without BN. red */}
+      {/* without BN, red */}
       <motion.path
         d={mkPath(withoutBN)}
         fill="none"
@@ -413,7 +413,7 @@ function LossCurveChart({
         animate={{ pathLength: 1 }}
         transition={{ duration: 0.9 }}
       />
-      {/* with BN. accent */}
+      {/* with BN, accent */}
       <motion.path
         d={mkPath(withBN)}
         fill="none"
@@ -510,9 +510,9 @@ export default function BatchNormalizationTopic() {
 
   const displayLabel =
     bnStep === 0
-      ? "Trước BN. phân phối gốc"
+      ? "Trước BN, phân phối gốc"
       : bnStep === 1
-        ? "Sau chuẩn hóa. μ≈0, σ≈1"
+        ? "Sau chuẩn hóa, μ≈0, σ≈1"
         : `Sau γ=${gamma.toFixed(2)}, β=${beta.toFixed(2)}`;
 
   /* Loss curves for the training demo */
@@ -525,7 +525,7 @@ export default function BatchNormalizationTopic() {
     [epochs],
   );
 
-  /* Running stats simulation (EMA). for inference explanation */
+  /* Running stats simulation (EMA), for inference explanation */
   const runningStats = useMemo(() => {
     let runMu = 0;
     let runVar = 1;
@@ -578,21 +578,21 @@ export default function BatchNormalizationTopic() {
           />
         </div>
         <PredictionGate
-          question="Lớp 1 chấm thang 100, lớp 2 thang 10, lớp 3 dùng chữ A–F. Muốn so sánh điểm công bằng, bạn làm gì?"
+          question="Lớp 1 chấm thang 100, lớp 2 thang 10, lớp 3 dùng chữ A-F. Muốn so sánh điểm công bằng, bạn làm gì?"
           options={[
-            "So sánh trực tiếp. điểm là điểm",
+            "So sánh trực tiếp, điểm là điểm",
             "Quy tất cả về cùng một thang (trung bình 0, độ lệch 1) rồi mới so sánh",
             "Bỏ qua lớp có thang khác",
             "Chỉ lấy điểm trung bình của mỗi lớp",
           ]}
           correct={1}
-          explanation="Chuẩn hóa về cùng thang. đó chính là tinh thần của Batch Normalization. Trong mạng nơ-ron, mỗi lớp có phân phối activation khác nhau; BN chuẩn hóa về (μ=0, σ=1) để lớp sau luôn nhận input ổn định, bất kể các lớp trước đã thay đổi ra sao."
+          explanation="Chuẩn hóa về cùng thang, đó chính là tinh thần của Batch Normalization. Trong mạng nơ-ron, mỗi lớp có phân phối activation khác nhau; BN chuẩn hóa về (μ=0, σ=1) để lớp sau luôn nhận input ổn định, bất kể các lớp trước đã thay đổi ra sao."
         >
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Khi phân phối đầu vào thay đổi liên tục giữa các lớp (hiện tượng{" "}
             <em>internal covariate shift</em>), mạng phải liên tục{" "}
             <strong>thích nghi lại</strong> thay vì học điều mới. BN giải quyết
-            bằng cách chuẩn hóa tại mỗi lớp. đồng thời giảm nhẹ vấn đề{" "}
+            bằng cách chuẩn hóa tại mỗi lớp, đồng thời giảm nhẹ vấn đề{" "}
             <TopicLink slug="vanishing-exploding-gradients">
               vanishing/exploding gradients
             </TopicLink>
@@ -918,11 +918,11 @@ export default function BatchNormalizationTopic() {
         <AhaMoment>
           <p>
             <strong>Batch Normalization</strong> không chỉ là phép{" "}
-            “trừ trung bình, chia độ lệch”. nó còn có{" "}
+            “trừ trung bình, chia độ lệch”, nó còn có{" "}
             <strong>γ và β học được</strong>. Nếu chuẩn hóa là tối ưu, mạng
             giữ γ=1, β=0. Nếu không, mạng có thể học γ=σ, β=μ để{" "}
             <em>triệt tiêu BN</em>. Nghĩa là: BN không bao giờ hạn chế khả
-            năng biểu diễn. nó chỉ mở thêm lựa chọn dễ học hơn.
+            năng biểu diễn, nó chỉ mở thêm lựa chọn dễ học hơn.
           </p>
           <p className="text-sm text-muted mt-1">
             Đó là lý do BN (và các biến thể LN, GN, IN) gần như luôn có mặt
@@ -971,7 +971,7 @@ export default function BatchNormalizationTopic() {
             Ý tưởng cốt lõi: trong một mini-batch{" "}
             <LaTeX>{`\\mathcal{B} = \\{x_1, \\dots, x_m\\}`}</LaTeX>, tính
             thống kê của chính batch và dùng chúng để chuẩn hóa mỗi activation.
-            Sau đó scale bằng γ và shift bằng β. hai tham số học được cho phép
+            Sau đó scale bằng γ và shift bằng β, hai tham số học được cho phép
             mạng tự quyết định muốn chuẩn hóa đến đâu.
           </p>
 
@@ -1242,10 +1242,10 @@ for m in model.modules():
           points={[
             "BN chuẩn hóa mỗi mini-batch về μ ≈ 0, σ ≈ 1 rồi scale bằng γ và shift bằng β học được.",
             "Hiệu ứng: ổn định gradient, cho phép learning rate lớn hơn, hội tụ nhanh hơn, regularization nhẹ.",
-            "Khi inference BN dùng running mean/variance (EMA). nhớ gọi model.eval() trước khi predict.",
+            "Khi inference BN dùng running mean/variance (EMA), nhớ gọi model.eval() trước khi predict.",
             "Batch quá nhỏ → μ, σ² ồn → model dễ diverge. Chuyển sang GroupNorm hoặc tăng effective batch.",
             "BN dùng cho CNN; LayerNorm cho Transformer/RNN; GroupNorm cho batch nhỏ; InstanceNorm cho style transfer.",
-            "γ=σ và β=μ sẽ ‘undo’ BN. chứng tỏ BN không hy sinh khả năng biểu diễn, chỉ nới thêm lựa chọn.",
+            "γ=σ và β=μ sẽ ‘undo’ BN, chứng tỏ BN không hy sinh khả năng biểu diễn, chỉ nới thêm lựa chọn.",
           ]}
         />
       </LessonSection>
@@ -1261,7 +1261,7 @@ for m in model.modules():
 }
 
 /* ============================================================================
- *  END OF FILE. batch-normalization.tsx
+ *  END OF FILE, batch-normalization.tsx
  *
  *  Notes for future maintainers:
  *   - All text is Vietnamese on purpose (UX language).
@@ -1269,12 +1269,12 @@ for m in model.modules():
  *     too specific to this topic to promote to /components/interactive.
  *   - If you add more interactive bits, keep TOTAL_STEPS in sync with the
  *     ProgressSteps labels array at the top of the main component.
- *   - Running stats table is illustrative. real PyTorch BN updates happen
+ *   - Running stats table is illustrative, real PyTorch BN updates happen
  *     inside the C++ kernel; we simulate the math here only to make the idea
  *     visible to learners.
  *   - γ/β sliders intentionally extend to values large enough that learners
  *     can see the "undo BN" case (γ=σ, β=μ) by clicking the button.
- *   - The loss simulation is a toy (exponential decay + noise). it is NOT a
+ *   - The loss simulation is a toy (exponential decay + noise), it is NOT a
  *     replacement for a real benchmark. Its purpose is to show the *shape* of
  *     the effect (faster convergence, less wobble), not precise numbers.
  * ============================================================================

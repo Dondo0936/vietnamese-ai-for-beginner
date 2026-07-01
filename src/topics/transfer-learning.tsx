@@ -22,7 +22,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ────────────────────────────────────────────────────────────────────────────
-// Metadata (giữ nguyên — giữ router và card trang tổng hợp khớp backend)
+// Metadata (giữ nguyên-giữ router và card trang tổng hợp khớp backend)
 // ────────────────────────────────────────────────────────────────────────────
 export const metadata: TopicMeta = {
   slug: "transfer-learning",
@@ -91,7 +91,7 @@ const LAYERS: NetLayer[] = [
     shortName: "Conv1",
     kind: "conv",
     params: "~9 K",
-    role: "Phát hiện cạnh, gradient màu, kết cấu cực nông — gần như universal.",
+    role: "Phát hiện cạnh, gradient màu, kết cấu cực nông-gần như universal.",
     depth: 1,
   },
   {
@@ -154,7 +154,7 @@ const LAYERS: NetLayer[] = [
     shortName: "Head",
     kind: "head",
     params: "~10 K",
-    role: "Lớp phân loại riêng cho bài toán mới — luôn được huấn luyện lại.",
+    role: "Lớp phân loại riêng cho bài toán mới-luôn được huấn luyện lại.",
     depth: 6,
   },
 ];
@@ -162,7 +162,7 @@ const LAYERS: NetLayer[] = [
 // ────────────────────────────────────────────────────────────────────────────
 // 3 chiến lược: Feature extraction / Fine-tune 3 lớp cuối / Fine-tune all
 // trainable[] song song với LAYERS[]. Đường cong accuracy (validation) theo
-// 10 epochs — số liệu được thiết kế để phản ánh đúng xu hướng kỳ vọng.
+// 10 epochs-số liệu được thiết kế để phản ánh đúng xu hướng kỳ vọng.
 // ────────────────────────────────────────────────────────────────────────────
 const STRATEGIES: Record<StrategyId, Strategy> = {
   feature: {
@@ -182,7 +182,7 @@ const STRATEGIES: Record<StrategyId, Strategy> = {
       false, // fc
       true, // head
     ],
-    dataNeeded: "Rất ít (vài trăm – 1K ảnh)",
+    dataNeeded: "Rất ít (vài trăm-1K ảnh)",
     timeNeeded: "Vài phút trên 1 GPU",
     riskOverfit: "low",
     notes:
@@ -209,8 +209,8 @@ const STRATEGIES: Record<StrategyId, Strategy> = {
       true, // fc
       true, // head
     ],
-    dataNeeded: "Trung bình (1K – 10K ảnh)",
-    timeNeeded: "1–2 giờ trên 1 GPU",
+    dataNeeded: "Trung bình (1K-10K ảnh)",
+    timeNeeded: "1-2 giờ trên 1 GPU",
     riskOverfit: "mid",
     notes:
       "Kết hợp tốt giữa tốc độ và linh hoạt. Dùng learning rate rất nhỏ cho block pretrained để không phá trọng số.",
@@ -260,7 +260,7 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Bạn có 200 ảnh chó/mèo. Nên dùng chiến lược transfer learning nào?",
     options: [
-      "Train CNN từ đầu — 200 ảnh là đủ",
+      "Train CNN từ đầu-200 ảnh là đủ",
       "Feature extraction: đóng băng ResNet pretrained, chỉ train lớp FC cuối",
       "Full fine-tuning: train lại toàn bộ ResNet",
       "Bỏ qua transfer learning, dùng k-NN trên pixel",
@@ -274,9 +274,9 @@ const QUIZ: QuizQuestion[] = [
       "Tại sao fine-tuning dùng learning rate nhỏ hơn training từ đầu?",
     options: [
       "Vì GPU yếu hơn",
-      "Vì trọng số pretrained đã gần tối ưu — LR lớn sẽ phá hỏng kiến thức đã học",
+      "Vì trọng số pretrained đã gần tối ưu-LR lớn sẽ phá hỏng kiến thức đã học",
       "Vì dataset nhỏ hơn nên cần LR nhỏ",
-      "Không cần — dùng LR bình thường",
+      "Không cần-dùng LR bình thường",
     ],
     correct: 1,
     explanation:
@@ -317,7 +317,7 @@ const QUIZ: QuizQuestion[] = [
       "Vì sao lớp nông (conv1, conv2) thường đáng được đóng băng hơn lớp sâu?",
     options: [
       "Vì lớp nông có nhiều tham số hơn",
-      "Vì đặc trưng lớp nông (cạnh, màu) gần như universal giữa các bài toán ảnh — rất khó cải thiện thêm từ dữ liệu mới ít ỏi",
+      "Vì đặc trưng lớp nông (cạnh, màu) gần như universal giữa các bài toán ảnh-rất khó cải thiện thêm từ dữ liệu mới ít ỏi",
       "Vì lớp nông chạy nhanh hơn",
       "Không có lý do, đây chỉ là quy ước",
     ],
@@ -329,8 +329,8 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Một bác sĩ muốn phân loại ảnh X-quang phổi (khác rất xa ảnh ImageNet). Điều gì đúng?",
     options: [
-      "Vẫn nên feature extraction thuần — luôn tốt nhất",
-      "Nên fine-tune nhiều lớp hơn (ít nhất 3–5 block cuối) vì domain lệch xa, đặc trưng sâu cần điều chỉnh mạnh",
+      "Vẫn nên feature extraction thuần-luôn tốt nhất",
+      "Nên fine-tune nhiều lớp hơn (ít nhất 3-5 block cuối) vì domain lệch xa, đặc trưng sâu cần điều chỉnh mạnh",
       "Phải train từ đầu, không tận dụng được pretrained",
       "Dùng ResNet cho ảnh X-quang là sai hoàn toàn",
     ],
@@ -552,7 +552,7 @@ function TrainingCurves({ active }: { active: StrategyId }) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Bảng so sánh — tóm tắt nhanh để người học đối chiếu
+// Bảng so sánh-tóm tắt nhanh để người học đối chiếu
 // ────────────────────────────────────────────────────────────────────────────
 function StrategyComparisonTable({ active }: { active: StrategyId }) {
   const riskBadge = (r: Strategy["riskOverfit"]) => {
@@ -778,7 +778,7 @@ export default function TransferLearningTopic() {
         <AhaMoment>
           <p>
             <strong>Transfer Learning</strong> = tận dụng kiến thức đã học. Lớp
-            nông (cạnh, kết cấu) là <strong>universal</strong> — dùng được cho
+            nông (cạnh, kết cấu) là <strong>universal</strong>, dùng được cho
             mọi bài toán ảnh. Chỉ lớp sâu (vật thể cụ thể) cần thay đổi. Tiết
             kiệm 99% thời gian và dữ liệu! Cùng ý tưởng áp dụng cho
             {" "}<TopicLink slug="transformer">Transformer</TopicLink>{" "}(BERT,
@@ -800,7 +800,7 @@ export default function TransferLearningTopic() {
           <Callout variant="tip" title="Dữ liệu ít + hơi khác pretrain">
             <p className="text-sm">
               Ví dụ: ảnh sản phẩm bán hàng, biển báo Việt Nam. Dùng{" "}
-              <strong>Fine-tune 2–3 lớp cuối</strong> với LR rất nhỏ (1e-5 đến
+              <strong>Fine-tune 2-3 lớp cuối</strong> với LR rất nhỏ (1e-5 đến
               1e-4) để điều chỉnh nhẹ đặc trưng sâu mà không phá lớp nông.
             </p>
           </Callout>
@@ -816,7 +816,7 @@ export default function TransferLearningTopic() {
             <p className="text-sm">
               Val loss tăng trong khi train loss giảm → overfit. Giảm LR, tăng
               weight decay, thêm augmentation, đóng băng thêm lớp, hoặc dùng
-              early stopping. Không tin cao nhất chỉ sau 1 epoch — luôn xác
+              early stopping. Không tin cao nhất chỉ sau 1 epoch-luôn xác
               minh bằng nhiều seed.
             </p>
           </Callout>
@@ -851,7 +851,7 @@ export default function TransferLearningTopic() {
 
           <Callout variant="insight" title="Tại sao hiệu quả?">
             <p>
-              Lớp nông CNN học đặc trưng tổng quát (cạnh, kết cấu, màu sắc) —
+              Lớp nông CNN học đặc trưng tổng quát (cạnh, kết cấu, màu sắc),
               dùng được cho MỌI bài toán ảnh. LLM pretrain học &quot;hiểu ngôn
               ngữ&quot; tổng quát. Kiến thức nền tảng này là{" "}
               <strong>universal</strong>, chỉ lớp cuối cần task-specific.
@@ -876,7 +876,7 @@ export default function TransferLearningTopic() {
           <p>
             Hệ số <LaTeX>\lambda</LaTeX> lớn tương đương đóng băng; nhỏ tương
             đương fine-tune tự do. Learning rate nhỏ là một cách ngầm để đạt
-            hiệu ứng tương tự — gradient nhỏ giữ{" "}
+            hiệu ứng tương tự-gradient nhỏ giữ{" "}
             <LaTeX>\theta</LaTeX> gần <LaTeX>{`\\theta^*`}</LaTeX>.
           </p>
 
@@ -888,7 +888,7 @@ from torch.utils.data import DataLoader
 NUM_CLASSES = 10  # bài toán mới
 
 # ──────────────────────────────────────────────────────────────
-# 1. Feature extraction — đóng băng toàn bộ backbone
+# 1. Feature extraction-đóng băng toàn bộ backbone
 # ──────────────────────────────────────────────────────────────
 def build_feature_extractor() -> nn.Module:
     model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)
@@ -900,7 +900,7 @@ def build_feature_extractor() -> nn.Module:
     return model
 
 # ──────────────────────────────────────────────────────────────
-# 2. Fine-tune 3 lớp cuối — mở khoá layer4 + fc
+# 2. Fine-tune 3 lớp cuối-mở khoá layer4 + fc
 # ──────────────────────────────────────────────────────────────
 def build_last3_finetune() -> nn.Module:
     model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)
@@ -913,7 +913,7 @@ def build_last3_finetune() -> nn.Module:
     return model
 
 # ──────────────────────────────────────────────────────────────
-# 3. Full fine-tune — mở khoá toàn bộ
+# 3. Full fine-tune-mở khoá toàn bộ
 # ──────────────────────────────────────────────────────────────
 def build_full_finetune() -> nn.Module:
     model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)
@@ -968,7 +968,7 @@ def train(model, loader: DataLoader, optim, epochs: int = 10, device="cuda"):
         print(f"epoch {epoch+1}: loss={running / len(loader.dataset):.4f}")
     return model`}</CodeBlock>
 
-          <CollapsibleDetail title="Yosinski et al. 2014 — 'How transferable are features?'">
+          <CollapsibleDetail title="Yosinski et al. 2014, 'How transferable are features?'">
             <p className="text-sm">
               Công trình kinh điển về transferability của đặc trưng trong deep
               nets. Các phát hiện chính: (1) Đặc trưng lớp nông rất chung,
@@ -976,7 +976,7 @@ def train(model, loader: DataLoader, optim, epochs: int = 10, device="cuda"):
               Đặc trưng lớp sâu càng chuyên biệt theo task gốc, khả năng
               transfer giảm dần. (3) Fine-tune giải quyết hiện tượng này bằng
               cách cho phép lớp sâu điều chỉnh. (4) Thậm chí khi task rất khác,
-              khởi tạo từ pretrained vẫn thường tốt hơn khởi tạo ngẫu nhiên —
+              khởi tạo từ pretrained vẫn thường tốt hơn khởi tạo ngẫu nhiên,
               hiệu ứng &quot;generalization boost&quot;.
             </p>
           </CollapsibleDetail>
@@ -984,25 +984,25 @@ def train(model, loader: DataLoader, optim, epochs: int = 10, device="cuda"):
           <CollapsibleDetail title="Foundation models và paradigm 'pretrain once, fine-tune many'">
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
-                <strong>NLP:</strong> BERT, GPT, T5, LLaMA — pretrain trên
+                <strong>NLP:</strong> BERT, GPT, T5, LLaMA-pretrain trên
                 hàng trăm tỷ token, fine-tune cho từng nhiệm vụ (phân loại,
                 tóm tắt, dịch, chatbot).
               </li>
               <li>
                 <strong>Vision:</strong> ResNet, EfficientNet, ViT, DINO,
-                CLIP — pretrain trên ImageNet hoặc dữ liệu web quy mô lớn.
+                CLIP-pretrain trên ImageNet hoặc dữ liệu web quy mô lớn.
               </li>
               <li>
-                <strong>Multimodal:</strong> CLIP, SigLIP, Flamingo — học
+                <strong>Multimodal:</strong> CLIP, SigLIP, Flamingo-học
                 đồng thời ngôn ngữ và ảnh, fine-tune cho VQA, retrieval.
               </li>
               <li>
-                <strong>Audio:</strong> Whisper, wav2vec — pretrain tự giám
+                <strong>Audio:</strong> Whisper, wav2vec-pretrain tự giám
                 sát trên vài trăm ngàn giờ âm thanh, fine-tune cho ASR/dịch
                 nói.
               </li>
               <li>
-                <strong>Code:</strong> CodeLlama, StarCoder — pretrain trên
+                <strong>Code:</strong> CodeLlama, StarCoder-pretrain trên
                 kho code khổng lồ, fine-tune cho ngôn ngữ/công ty cụ thể.
               </li>
             </ul>
@@ -1021,7 +1021,7 @@ def train(model, loader: DataLoader, optim, epochs: int = 10, device="cuda"):
             "Giảm số epoch, bật early stopping theo val loss",
           ]}
           correct={2}
-          explanation="Đây là overfit rõ ràng (train cao, val thấp). Các biện pháp đúng: augmentation, giảm năng lực mô hình (đóng băng thêm), early stopping, weight decay. Tăng LR lên 10 lần chỉ làm suy luận thêm bất ổn và phá trọng số pretrained — không giải quyết overfit."
+          explanation="Đây là overfit rõ ràng (train cao, val thấp). Các biện pháp đúng: augmentation, giảm năng lực mô hình (đóng băng thêm), early stopping, weight decay. Tăng LR lên 10 lần chỉ làm suy luận thêm bất ổn và phá trọng số pretrained-không giải quyết overfit."
         />
       </LessonSection>
 
@@ -1030,7 +1030,7 @@ def train(model, loader: DataLoader, optim, epochs: int = 10, device="cuda"):
         <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
           <p className="text-sm text-muted mb-3">
             Trong thực tế, kỹ thuật quan trọng nhất khi fine-tune là{" "}
-            <strong>differential learning rate</strong> — chia mạng thành
+            <strong>differential learning rate</strong>, chia mạng thành
             nhiều nhóm, mỗi nhóm có LR riêng. Lớp càng nông, LR càng nhỏ.
           </p>
 
@@ -1075,10 +1075,10 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
               <li>Chọn pretrained phù hợp domain (ImageNet cho ảnh tự nhiên, MedCLIP/CheXNet cho y tế, v.v.).</li>
               <li>Thay classifier head trước khi load weights vào, hoặc sau khi load rồi khởi tạo lại.</li>
               <li>Quyết định chiến lược: feature / last-k / full dựa vào lượng data và độ lệch domain.</li>
-              <li>Dùng differential LR + cosine schedule + warmup 5–10% bước đầu.</li>
+              <li>Dùng differential LR + cosine schedule + warmup 5-10% bước đầu.</li>
               <li>Data augmentation phù hợp: không lật ảnh y tế, nhưng rotate được; mixup/cutmix cho ảnh tự nhiên.</li>
               <li>Early stopping trên val loss, lưu checkpoint theo val metric (F1/AUC), không theo loss nếu mất cân bằng.</li>
-              <li>Đừng quên freeze BatchNorm stats (eval mode trên các block đóng băng) — đây là bug cực kỳ phổ biến.</li>
+              <li>Đừng quên freeze BatchNorm stats (eval mode trên các block đóng băng), đây là bug cực kỳ phổ biến.</li>
             </ol>
           </Callout>
         </section>
@@ -1090,11 +1090,11 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
           title="Ghi nhớ về Transfer Learning"
           points={[
             "Tận dụng pretrained model → tiết kiệm 99% dữ liệu và thời gian. Paradigm 'pretrain once, fine-tune many'.",
-            "Feature extraction: đóng băng toàn bộ backbone, chỉ train head — phù hợp khi data rất ít và domain gần ImageNet.",
-            "Fine-tune 2–3 lớp cuối: cân bằng tốt giữa linh hoạt và ổn định — lựa chọn mặc định cho đa số project thực tế.",
-            "Full fine-tune: linh hoạt nhất nhưng tốn data và dễ overfit — dùng khi domain khác xa pretrain hoặc data lớn.",
+            "Feature extraction: đóng băng toàn bộ backbone, chỉ train head-phù hợp khi data rất ít và domain gần ImageNet.",
+            "Fine-tune 2-3 lớp cuối: cân bằng tốt giữa linh hoạt và ổn định-lựa chọn mặc định cho đa số project thực tế.",
+            "Full fine-tune: linh hoạt nhất nhưng tốn data và dễ overfit-dùng khi domain khác xa pretrain hoặc data lớn.",
             "Lớp nông = đặc trưng universal (cạnh, kết cấu); lớp sâu = task-specific. Luôn giữ LR cho backbone rất nhỏ (1e-5 đến 1e-4).",
-            "Paradigm chủ đạo của AI hiện đại: ResNet/ViT cho ảnh, BERT/GPT/LLaMA cho NLP, CLIP cho multimodal — đều là foundation model + fine-tune.",
+            "Paradigm chủ đạo của AI hiện đại: ResNet/ViT cho ảnh, BERT/GPT/LLaMA cho NLP, CLIP cho multimodal-đều là foundation model + fine-tune.",
           ]}
         />
       </LessonSection>

@@ -298,7 +298,7 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     question:
-      "Tác vụ nào sau đây phù hợp nhất với temperature khoảng 1.0 – 1.2?",
+      "Tác vụ nào sau đây phù hợp nhất với temperature khoảng 1.0-1.2?",
     options: [
       "Trích xuất thông tin từ CV ứng viên",
       "Tạo 10 tiêu đề khác nhau cho cùng một bài blog",
@@ -391,7 +391,7 @@ export default function TemperatureTopic() {
             <div className="rounded-xl border border-sky-200 bg-sky-50 dark:bg-sky-900/20 dark:border-sky-800 p-4 space-y-1">
               <div className="flex items-center gap-2 text-sky-700 dark:text-sky-300">
                 <Snowflake size={16} />
-                <span className="text-sm font-semibold">Vặn thấp (0 – 0.3)</span>
+                <span className="text-sm font-semibold">Vặn thấp (0-0.3)</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 Như đọc thông báo. Cùng câu hỏi → cùng câu trả lời. An toàn, lặp lại được.
@@ -400,7 +400,7 @@ export default function TemperatureTopic() {
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-900/20 dark:border-emerald-800 p-4 space-y-1">
               <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
                 <ShieldCheck size={16} />
-                <span className="text-sm font-semibold">Vặn vừa (0.4 – 0.9)</span>
+                <span className="text-sm font-semibold">Vặn vừa (0.4-0.9)</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 Như nói chuyện tự nhiên. Đủ chắc chắn, đủ linh hoạt. Mặc định cho email, tóm tắt,
@@ -410,7 +410,7 @@ export default function TemperatureTopic() {
             <div className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-800 p-4 space-y-1">
               <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
                 <Flame size={16} />
-                <span className="text-sm font-semibold">Vặn cao (1.0 – 1.4)</span>
+                <span className="text-sm font-semibold">Vặn cao (1.0-1.4)</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 Như brainstorm. Mỗi lần ra một ý khác nhau. Hữu ích khi cần đa dạng.
@@ -633,23 +633,23 @@ export default function TemperatureTopic() {
               pairs={[
                 {
                   left: "Kiểm tra lỗi chính tả hợp đồng",
-                  right: "T = 0 – 0.2, cần nhất quán, kiểm toán được",
+                  right: "T = 0-0.2, cần nhất quán, kiểm toán được",
                 },
                 {
                   left: "Brainstorm 10 tên sản phẩm mới",
-                  right: "T = 1.0 – 1.3, cần đa dạng, chấp nhận phương án dở",
+                  right: "T = 1.0-1.3, cần đa dạng, chấp nhận phương án dở",
                 },
                 {
                   left: "Viết email gửi khách hàng",
-                  right: "T = 0.5 – 0.8, cần lịch sự tự nhiên, không máy móc",
+                  right: "T = 0.5-0.8, cần lịch sự tự nhiên, không máy móc",
                 },
                 {
                   left: "Tóm tắt biên bản họp",
-                  right: "T = 0.2 – 0.4, cần trung thành với sự thật",
+                  right: "T = 0.2-0.4, cần trung thành với sự thật",
                 },
                 {
                   left: "Viết caption cho bài đăng mạng xã hội",
-                  right: "T = 0.8 – 1.1, cần có hồn, có cá tính",
+                  right: "T = 0.8-1.1, cần có hồn, có cá tính",
                 },
               ]}
             />
@@ -676,7 +676,7 @@ export default function TemperatureTopic() {
           options={[
             "T = 0, để câu nào cũng giống nhau cho đỡ rối",
             "T = 0.2, gần như cố định, chỉ đổi vài từ",
-            "T = 0.9 – 1.2, cần đa dạng giữa các phiên bản để giám đốc chọn",
+            "T = 0.9-1.2, cần đa dạng giữa các phiên bản để giám đốc chọn",
             "T = 2.0, càng cao càng tốt",
           ]}
           correct={2}
@@ -810,42 +810,42 @@ export default function TemperatureTopic() {
               {
                 icon: Search,
                 title: "Hỏi đáp có đáp án",
-                temp: "0 – 0.3",
+                temp: "0-0.3",
                 desc: "Tra cứu thông tin, dịch chính xác, trả lời câu hỏi có sự thật.",
                 color: "#0ea5e9",
               },
               {
                 icon: FileText,
                 title: "Trích xuất & tóm tắt",
-                temp: "0.2 – 0.5",
+                temp: "0.2-0.5",
                 desc: "Lấy số liệu từ tài liệu, tóm tắt báo cáo, phân loại email.",
                 color: "#10b981",
               },
               {
                 icon: MessageCircle,
                 title: "Email & hội thoại",
-                temp: "0.5 – 0.8",
+                temp: "0.5-0.8",
                 desc: "Viết email, trả lời khách hàng, đủ tự nhiên, không máy móc.",
                 color: "#22c55e",
               },
               {
                 icon: Sparkles,
                 title: "Viết nội dung dài",
-                temp: "0.7 – 1.0",
+                temp: "0.7-1.0",
                 desc: "Bài blog, bài đăng mạng xã hội, nội dung marketing có cá tính.",
                 color: "#f59e0b",
               },
               {
                 icon: Lightbulb,
                 title: "Brainstorm & sáng tạo",
-                temp: "1.0 – 1.3",
+                temp: "1.0-1.3",
                 desc: "Đặt tên sản phẩm, slogan, ý tưởng chiến dịch, cần đa dạng tối đa.",
                 color: "#ef4444",
               },
               {
                 icon: Code2,
                 title: "Viết / sửa code",
-                temp: "0 – 0.2",
+                temp: "0-0.2",
                 desc: "Code cần chính xác cú pháp. Temperature cao thường sinh ra bug lạ.",
                 color: "#6366f1",
               },
@@ -933,7 +933,7 @@ export default function TemperatureTopic() {
                 <p className="text-sm text-foreground leading-relaxed">
                   <strong>Nếu kết quả quá nhàm</strong> &rArr; tăng 0.2 (thành 0.9, 1.1).{" "}
                   <strong>Nếu kết quả bịa hoặc lạc đề</strong> &rArr; giảm 0.3 (thành 0.4, 0.1).
-                  Hiếm khi bạn cần ra ngoài khoảng 0 – 1.3 cho công việc văn phòng thật.
+                  Hiếm khi bạn cần ra ngoài khoảng 0-1.3 cho công việc văn phòng thật.
                 </p>
               </div>,
             ]}
@@ -984,8 +984,8 @@ export default function TemperatureTopic() {
           title="4 điều cần nhớ về temperature"
           points={[
             "Temperature là nút chỉnh mức độ ngẫu nhiên của AI, không phải nút chỉnh độ thông minh.",
-            "Cần sự thật, sự ổn định, sự lặp lại &rArr; vặn thấp (0 – 0.3). Cần đa dạng, sáng tạo &rArr; vặn cao (0.9 – 1.3).",
-            "Với 90% việc văn phòng (email, tóm tắt, hỏi đáp), T = 0.5 – 0.8 là vừa đủ.",
+            "Cần sự thật, sự ổn định, sự lặp lại &rArr; vặn thấp (0-0.3). Cần đa dạng, sáng tạo &rArr; vặn cao (0.9-1.3).",
+            "Với 90% việc văn phòng (email, tóm tắt, hỏi đáp), T = 0.5-0.8 là vừa đủ.",
             "Temperature cao trên câu hỏi có sự thật &rArr; tăng nguy cơ AI bịa chi tiết. Luôn hạ xuống dưới 0.3 khi cần tra cứu.",
             "Khi công cụ không cho chỉnh temperature, hãy điều khiển bằng prompt: 'ngắn gọn, chính xác' thay cho thấp; 'sáng tạo, nhiều phương án' thay cho cao.",
           ]}

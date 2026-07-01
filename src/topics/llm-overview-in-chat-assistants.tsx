@@ -354,7 +354,7 @@ function LaunchTimeline() {
 function BeforeAfterEmail() {
   const beforeSteps = [
     { icon: Clock, text: "Mở Google, gõ 'mẫu email xin nghỉ phép'" },
-    { icon: FileSearch, text: "Lướt qua 7–8 trang blog, cóp ghép vài câu" },
+    { icon: FileSearch, text: "Lướt qua 7-8 trang blog, cóp ghép vài câu" },
     { icon: Mail, text: "Sửa tên, ngày, chức danh cho phù hợp với sếp" },
     { icon: Clock, text: "Đọc lại lần ba, vẫn thấy giọng văn cứng đơ" },
     {

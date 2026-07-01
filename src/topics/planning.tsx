@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "planning",
   title: "Planning",
-  titleVi: "Lập kế hoạch. AI biết chia để trị",
+  titleVi: "Lập kế hoạch",
   description:
     "Khả năng của AI Agent phân tách vấn đề phức tạp thành chuỗi bước nhỏ hơn và thực hiện có chiến lược.",
   category: "ai-agents",
@@ -58,7 +58,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Task decomposition (phân rã nhiệm vụ) giúp gì cho Agent?",
     options: [
       "Giảm chi phí API",
-      "Biến bài toán phức tạp thành chuỗi bước nhỏ mà LLM có thể giải quyết. mỗi bước đủ đơn giản để thực hiện chính xác",
+      "Biến bài toán phức tạp thành chuỗi bước nhỏ mà LLM có thể giải quyết, mỗi bước đủ đơn giản để thực hiện chính xác",
       "Tăng tốc độ trả lời",
       "Giảm hallucination",
     ],
@@ -76,7 +76,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Agent tốt có khả năng reflection: phân tích lý do thất bại (sai công cụ? thiếu dữ liệu?) → replan (thay đổi chiến lược) → thử lại. Đây là adaptive planning. khả năng tự điều chỉnh.",
+      "Agent tốt có khả năng reflection: phân tích lý do thất bại (sai công cụ? thiếu dữ liệu?) → replan (thay đổi chiến lược) → thử lại. Đây là adaptive planning, khả năng tự điều chỉnh.",
   },
 ];
 
@@ -112,7 +112,7 @@ export default function PlanningTopic() {
             "Tìm kiếm trên Google tất cả cùng lúc",
           ]}
           correct={1}
-          explanation="Lập kế hoạch trước khi hành động. giống đầu bếp đọc công thức trước khi nấu. Agent phân rã nhiệm vụ lớn thành bước nhỏ, xác định thứ tự và phụ thuộc, rồi mới thực hiện."
+          explanation="Lập kế hoạch trước khi hành động, giống đầu bếp đọc công thức trước khi nấu. Agent phân rã nhiệm vụ lớn thành bước nhỏ, xác định thứ tự và phụ thuộc, rồi mới thực hiện."
         >
           <p className="text-sm text-muted mt-2">
             Hãy thử tự mình lập kế hoạch và theo dõi tiến trình!
@@ -172,7 +172,7 @@ export default function PlanningTopic() {
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
           LLM giải <strong>bài toán nhỏ</strong>{" "}chính xác hơn nhiều so với bài toán lớn.
-          Planning biến 1 nhiệm vụ khó thành 5 bước dễ. mỗi bước đủ đơn giản để LLM
+          Planning biến 1 nhiệm vụ khó thành 5 bước dễ, mỗi bước đủ đơn giản để LLM
           thực hiện chính xác. Giống ông bà ta nói: <strong>chia để trị</strong>.
           Thêm khả năng <em>phản ánh</em>{" "}(tự đánh giá và điều chỉnh) = Agent thực sự thông minh.
         </AhaMoment>
@@ -183,8 +183,8 @@ export default function PlanningTopic() {
         <InlineChallenge
           question="Agent lập kế hoạch: (1) Search A, (2) Search B, (3) So sánh A và B. Bước 1 và 2 có thể chạy song song không?"
           options={[
-            "Không. phải tuần tự",
-            "Có. bước 1 và 2 độc lập nhau, chỉ bước 3 phụ thuộc kết quả cả hai",
+            "Không, phải tuần tự",
+            "Có, bước 1 và 2 độc lập nhau, chỉ bước 3 phụ thuộc kết quả cả hai",
             "Tuỳ thuộc vào công cụ",
             "Song song luôn tốt hơn tuần tự",
           ]}
@@ -255,7 +255,7 @@ export default function PlanningTopic() {
           points={[
             "Task decomposition: chia bài toán lớn thành bước nhỏ. LLM giải bước nhỏ chính xác hơn.",
             "Plan-then-Execute: lập kế hoạch trước, phù hợp bài toán rõ ràng. Adaptive: lập từng bước, phù hợp bài toán mở.",
-            "Reflection (phản ánh): Agent tự đánh giá kết quả, phát hiện lỗi, replan. khả năng tự điều chỉnh.",
+            "Reflection (phản ánh): Agent tự đánh giá kết quả, phát hiện lỗi, replan, khả năng tự điều chỉnh.",
             "Tối ưu: phân tích dependency graph, song song hoá bước độc lập, tuần tự bước phụ thuộc.",
           ]}
         />

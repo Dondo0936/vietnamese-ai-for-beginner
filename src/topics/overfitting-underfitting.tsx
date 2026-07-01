@@ -578,7 +578,7 @@ export default function OverfittingUnderfittingTopic() {
               />
               <div className="flex justify-between text-[10px] text-tertiary">
                 <span>1 (underfit)</span>
-                <span>3–5 (good)</span>
+                <span>3-5 (good)</span>
                 <span>20 (overfit)</span>
               </div>
 

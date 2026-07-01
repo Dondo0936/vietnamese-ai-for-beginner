@@ -25,7 +25,7 @@ export const metadata: TopicMeta = {
 /* ─────────────────────────────────────────────────────────────
  * DỮ LIỆU: Ảnh 10×10 pixel (hình chữ thập đơn giản)
  * Giá trị từ 0 (đen) đến 255 (trắng).
- * Hình dạng: khối sáng ở giữa, nền tối xung quanh — đủ để
+ * Hình dạng: khối sáng ở giữa, nền tối xung quanh-đủ để
  * thấy rõ các hiệu ứng khi áp dụng các kernel khác nhau.
  * ───────────────────────────────────────────────────────────── */
 const IMAGE_10x10: number[][] = [
@@ -42,7 +42,7 @@ const IMAGE_10x10: number[][] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
- * PRESET KERNELS — Các ma trận 3×3 kinh điển trong xử lý ảnh.
+ * PRESET KERNELS-Các ma trận 3×3 kinh điển trong xử lý ảnh.
  *
  *  • Identity      : không đổi
  *  • Edge Detect   : phát hiện mọi cạnh (Laplacian kiểu 8-neighbor)
@@ -70,7 +70,7 @@ const PRESETS: Record<string, KernelPreset> = {
     ],
     divisor: 1,
     offset: 0,
-    description: "Không đổi — trả lại đúng ảnh gốc. Dùng để kiểm tra rằng pipeline tích chập chạy đúng.",
+    description: "Không đổi-trả lại đúng ảnh gốc. Dùng để kiểm tra rằng pipeline tích chập chạy đúng.",
   },
   edge: {
     name: "Edge Detection",
@@ -147,7 +147,7 @@ const PRESETS: Record<string, KernelPreset> = {
     ],
     divisor: 1,
     offset: 128,
-    description: "Đạo hàm bậc hai — nhạy với điểm thay đổi cường độ đột ngột (chi tiết nhỏ, nhiễu).",
+    description: "Đạo hàm bậc hai-nhạy với điểm thay đổi cường độ đột ngột (chi tiết nhỏ, nhiễu).",
   },
   boxBlur: {
     name: "Box Blur",
@@ -169,7 +169,7 @@ const PRESETS: Record<string, KernelPreset> = {
     ],
     divisor: 3,
     offset: 0,
-    description: "Làm mờ chuyển động theo đường chéo — mô phỏng camera rung hoặc vật thể di chuyển. Kernel thực tế thường dài 9×9 hoặc hơn.",
+    description: "Làm mờ chuyển động theo đường chéo-mô phỏng camera rung hoặc vật thể di chuyển. Kernel thực tế thường dài 9×9 hoặc hơn.",
   },
   embossStrong: {
     name: "Emboss++",
@@ -233,7 +233,7 @@ function convolve(
 }
 
 /* ─────────────────────────────────────────────────────────────
- * QUIZ — 8 câu hỏi bám sát các khái niệm đã trình bày.
+ * QUIZ-8 câu hỏi bám sát các khái niệm đã trình bày.
  * ───────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
@@ -246,7 +246,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Kernel TRƯỢT (slide) qua từng vị trí của ảnh. Tại mỗi vị trí: nhân element-wise giữa kernel và cửa sổ 3×3 bên dưới, rồi cộng 9 tích lại thành 1 giá trị đầu ra — đây là định nghĩa chính xác của tích chập 2D.",
+      "Kernel TRƯỢT (slide) qua từng vị trí của ảnh. Tại mỗi vị trí: nhân element-wise giữa kernel và cửa sổ 3×3 bên dưới, rồi cộng 9 tích lại thành 1 giá trị đầu ra-đây là định nghĩa chính xác của tích chập 2D.",
   },
   {
     question: "Tại sao kernel phát hiện cạnh (edge) có tâm +8 và xung quanh -1?",
@@ -258,7 +258,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Tổng +8 + 8×(-1) = 0. Trên vùng pixel đồng nhất, nhân rồi cộng sẽ ra xấp xỉ 0 (đen). Chỉ nơi có cạnh — nơi pixel trung tâm khác lân cận — mới tạo ra giá trị lớn. Đây là cơ chế cốt lõi của mọi edge detector.",
+      "Tổng +8 + 8×(-1) = 0. Trên vùng pixel đồng nhất, nhân rồi cộng sẽ ra xấp xỉ 0 (đen). Chỉ nơi có cạnh-nơi pixel trung tâm khác lân cận-mới tạo ra giá trị lớn. Đây là cơ chế cốt lõi của mọi edge detector.",
   },
   {
     question: "Trong CNN hiện đại (ResNet, ViT-Conv, EfficientNet…), giá trị kernel được tạo ra ra sao?",
@@ -276,7 +276,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Kernel Gaussian Blur chia kết quả cho 16 (tổng kernel). Tại sao?",
     options: [
       "Để kết quả không vượt quá 255",
-      "Để giữ nguyên độ sáng trung bình của ảnh — nếu không chia, ảnh sẽ sáng lên 16 lần",
+      "Để giữ nguyên độ sáng trung bình của ảnh-nếu không chia, ảnh sẽ sáng lên 16 lần",
       "Vì 16 là kích thước kernel",
       "Để tăng tốc độ tính toán",
     ],
@@ -306,7 +306,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Không padding: ảnh H×W qua kernel 3×3 cho đầu ra (H-2)×(W-2) — mất biên. Padding bằng 0 quanh ảnh giúp kernel vẫn 'đặt' được ở các pixel biên, giữ kích thước output = input. Đây là padding='same' trong TensorFlow/PyTorch.",
+      "Không padding: ảnh H×W qua kernel 3×3 cho đầu ra (H-2)×(W-2), mất biên. Padding bằng 0 quanh ảnh giúp kernel vẫn 'đặt' được ở các pixel biên, giữ kích thước output = input. Đây là padding='same' trong TensorFlow/PyTorch.",
   },
   {
     question: "Stride = 2 (bước nhảy 2) khi tích chập có tác dụng gì?",
@@ -324,7 +324,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Nếu áp dụng kernel Identity ([[0,0,0],[0,1,0],[0,0,0]]) lên ảnh, kết quả là gì?",
     options: [
       "Ảnh toàn màu đen",
-      "Ảnh y hệt ảnh gốc — vì chỉ pixel trung tâm được giữ với hệ số 1, lân cận nhân 0",
+      "Ảnh y hệt ảnh gốc-vì chỉ pixel trung tâm được giữ với hệ số 1, lân cận nhân 0",
       "Ảnh bị dịch 1 pixel về bên phải",
       "Ảnh bị đảo ngược màu",
     ],
@@ -418,7 +418,7 @@ export default function ImageKernelsTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 1 — DỰ ĐOÁN
+       *  BƯỚC 1-DỰ ĐOÁN
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={8} label="Dự đoán">
         <div className="mb-4">
@@ -456,7 +456,7 @@ export default function ImageKernelsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 2 — KHÁM PHÁ (Kernel Playground)
+       *  BƯỚC 2-KHÁM PHÁ (Kernel Playground)
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={8} label="Khám phá">
         <VisualizationSection>
@@ -497,7 +497,7 @@ export default function ImageKernelsTopic() {
                 </button>
               </div>
               <p className="text-xs text-tertiary mt-2">
-                <span className="font-semibold text-accent">{activePreset.name}</span> — {activePreset.description}
+                <span className="font-semibold text-accent">{activePreset.name}</span>, {activePreset.description}
               </p>
             </div>
 
@@ -723,14 +723,14 @@ export default function ImageKernelsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 3 — AHA
+       *  BƯỚC 3-AHA
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={8} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
             Kernel là <strong>bộ lọc có thể học</strong>. Trong xử lý ảnh truyền thống, kỹ sư ngồi
             thiết kế từng giá trị bằng tay: Sobel, Prewitt, Laplacian, Gaussian… Nhưng CNN hiện đại
-            đi xa hơn — nó <strong>để backpropagation tự tìm</strong> những kernel tối ưu cho
+            đi xa hơn-nó <strong>để backpropagation tự tìm</strong> những kernel tối ưu cho
             từng tác vụ cụ thể. Một lớp Conv trong ResNet có 64 kernel; mỗi kernel học phát hiện
             một đặc trưng khác nhau: cạnh dọc, cạnh ngang, đốm tròn, texture da, biên màu…
           </p>
@@ -743,13 +743,13 @@ export default function ImageKernelsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 4 — THỬ THÁCH 1
+       *  BƯỚC 4-THỬ THÁCH 1
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={8} label="Thử thách">
         <InlineChallenge
           question="Kernel Gaussian Blur có các giá trị [[1,2,1],[2,4,2],[1,2,1]] và chia cho 16. Tại sao tâm lại có giá trị 4 (lớn nhất)?"
           options={[
-            "Vì pixel trung tâm là pixel quan trọng nhất, nên cho trọng số lớn nhất — giống như trung bình có trọng số, càng xa tâm càng ít ảnh hưởng",
+            "Vì pixel trung tâm là pixel quan trọng nhất, nên cho trọng số lớn nhất-giống như trung bình có trọng số, càng xa tâm càng ít ảnh hưởng",
             "Vì 4 là số lớn nhất có thể trong một kernel 3×3",
             "Vì Gaussian là tên một nhà toán học người Đức",
             "Vì 4 + 4×2 + 4×1 = 16 nên chia được cho 16",
@@ -760,13 +760,13 @@ export default function ImageKernelsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 5 — GIẢI THÍCH
+       *  BƯỚC 5-GIẢI THÍCH
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={8} label="Giải thích sâu">
         <ExplanationSection>
           <p>
             <strong>Image Kernel</strong> (còn gọi là filter, mask, convolution matrix) là một ma
-            trận nhỏ — thường 3×3, 5×5, hoặc 7×7 — thực hiện phép <strong>tích chập 2D</strong>{" "}
+            trận nhỏ-thường 3×3, 5×5, hoặc 7×7-thực hiện phép <strong>tích chập 2D</strong>{" "}
             với ảnh. Đây là thao tác cốt lõi của mạng nơ-ron tích chập (CNN) và mọi thuật toán
             xử lý ảnh truyền thống từ 1960s đến nay.
           </p>
@@ -787,13 +787,13 @@ export default function ImageKernelsTopic() {
           <Callout variant="insight" title="Các loại kernel kinh điển">
             <div className="space-y-2 text-sm">
               <p>
-                <strong>Identity:</strong> [[0,0,0],[0,1,0],[0,0,0]]. Giữ nguyên ảnh — dùng để kiểm tra pipeline.
+                <strong>Identity:</strong> [[0,0,0],[0,1,0],[0,0,0]]. Giữ nguyên ảnh-dùng để kiểm tra pipeline.
               </p>
               <p>
                 <strong>Edge Detection (Laplacian 8-neighbor):</strong> tâm +8, xung quanh -1. Tổng = 0 → vùng phẳng ra 0, chỉ cạnh ra giá trị lớn.
               </p>
               <p>
-                <strong>Sobel X/Y:</strong> phát hiện cạnh theo trục — cơ sở của edge detection Canny. Kết hợp √(Gx² + Gy²) cho edge magnitude tổng hợp.
+                <strong>Sobel X/Y:</strong> phát hiện cạnh theo trục-cơ sở của edge detection Canny. Kết hợp √(Gx² + Gy²) cho edge magnitude tổng hợp.
               </p>
               <p>
                 <strong>Gaussian Blur:</strong> xấp xỉ phân phối chuẩn 2D. Làm mượt ảnh, giảm nhiễu, là bước tiền xử lý trước edge detection.
@@ -802,7 +802,7 @@ export default function ImageKernelsTopic() {
                 <strong>Sharpen (Unsharp Mask):</strong> khuếch đại sai biệt giữa pixel và lân cận, làm chi tiết rõ nét hơn.
               </p>
               <p>
-                <strong>Emboss:</strong> hiệu ứng chạm nổi — thấy ảnh như điêu khắc 3D bằng cách nhấn mạnh gradient theo một hướng.
+                <strong>Emboss:</strong> hiệu ứng chạm nổi-thấy ảnh như điêu khắc 3D bằng cách nhấn mạnh gradient theo một hướng.
               </p>
             </div>
           </Callout>
@@ -817,7 +817,7 @@ export default function ImageKernelsTopic() {
               Trong CNN hiện đại (AlexNet 2012, VGG, ResNet, EfficientNet, ConvNeXt…), kernel là{" "}
               <strong>parameter được học qua backpropagation</strong>. Khởi tạo ngẫu nhiên, sau
               đó SGD/Adam tự điều chỉnh từng giá trị để giảm loss. Mạng tự tìm bộ lọc tối ưu.
-              ResNet-50 có hơn 23 triệu parameter kernel — không cách nào thiết kế thủ công!
+              ResNet-50 có hơn 23 triệu parameter kernel-không cách nào thiết kế thủ công!
             </p>
           </Callout>
 
@@ -830,14 +830,14 @@ export default function ImageKernelsTopic() {
                 <strong>Stride:</strong> bước nhảy của kernel. Stride = 1 (mặc định): quét mọi vị trí. Stride = 2: bỏ qua 1 vị trí, output nhỏ hơn ~1/2.
               </p>
               <p>
-                <strong>Receptive field:</strong> vùng pixel gốc mà một neuron ở lớp sâu &quot;nhìn&quot; được. Càng xếp chồng nhiều lớp Conv, receptive field càng rộng — lớp sâu có thể &quot;thấy&quot; cả khuôn mặt, lớp đầu chỉ thấy vài pixel.
+                <strong>Receptive field:</strong> vùng pixel gốc mà một neuron ở lớp sâu &quot;nhìn&quot; được. Càng xếp chồng nhiều lớp Conv, receptive field càng rộng-lớp sâu có thể &quot;thấy&quot; cả khuôn mặt, lớp đầu chỉ thấy vài pixel.
               </p>
             </div>
           </Callout>
 
           <Callout variant="tip" title="Mẹo thực hành">
             <ul className="list-disc list-inside space-y-1 text-sm pl-2">
-              <li>Với blur để giảm nhiễu, thử Gaussian 5×5 sigma=1.0 — tốt hơn 3×3.</li>
+              <li>Với blur để giảm nhiễu, thử Gaussian 5×5 sigma=1.0-tốt hơn 3×3.</li>
               <li>Trước edge detection, luôn blur nhẹ trước để tránh nhận cạnh giả do nhiễu.</li>
               <li>Kernel sắc (sharpen) mạnh tay có thể gây halo artifact ở cạnh.</li>
               <li>Muốn phát hiện cạnh mạnh hơn Sobel? Thử Scharr hoặc Canny.</li>
@@ -860,7 +860,7 @@ export default function ImageKernelsTopic() {
                 {"(I \\star K)[i,j] = \\sum_{m} \\sum_{n} I[i+m,\\, j+n] \\cdot K[m,n]"}
               </LaTeX>
               <p>
-                Tuy nhiên trong deep learning, hầu hết framework (PyTorch, TensorFlow) dùng cross-correlation nhưng vẫn gọi là &quot;convolution&quot;. Vì kernel được học, việc lật hay không không ảnh hưởng kết quả — mạng tự học luôn dạng đã-lật hoặc chưa-lật. Quen thuộc thì cứ dùng thuật ngữ convolution, nhưng biết khác biệt toán học là quan trọng khi đọc paper cũ.
+                Tuy nhiên trong deep learning, hầu hết framework (PyTorch, TensorFlow) dùng cross-correlation nhưng vẫn gọi là &quot;convolution&quot;. Vì kernel được học, việc lật hay không không ảnh hưởng kết quả-mạng tự học luôn dạng đã-lật hoặc chưa-lật. Quen thuộc thì cứ dùng thuật ngữ convolution, nhưng biết khác biệt toán học là quan trọng khi đọc paper cũ.
               </p>
             </div>
           </CollapsibleDetail>
@@ -993,7 +993,7 @@ for step in range(100):
     loss.backward()      # ← BACKPROP điều chỉnh kernel weights
     optimizer.step()
 
-# Sau training, conv.weight đã thay đổi — mạng đã "học" ra
+# Sau training, conv.weight đã thay đổi-mạng đã "học" ra
 # những kernel tối ưu cho bài toán, KHÔNG CẦN thiết kế thủ công.`}
           </CodeBlock>
 
@@ -1024,26 +1024,26 @@ for step in range(100):
                 <tr className="border-b border-border/50">
                   <td className="py-2 px-3">Cần dữ liệu?</td>
                   <td className="py-2 px-3">Không</td>
-                  <td className="py-2 px-3">Có — nhiều càng tốt (thường 10K+ ảnh)</td>
+                  <td className="py-2 px-3">Có-nhiều càng tốt (thường 10K+ ảnh)</td>
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="py-2 px-3">Tổng quát hoá</td>
-                  <td className="py-2 px-3">Cố định — không thích nghi</td>
+                  <td className="py-2 px-3">Cố định-không thích nghi</td>
                   <td className="py-2 px-3">Rất tốt với task đã huấn luyện</td>
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="py-2 px-3">Khả năng diễn giải</td>
-                  <td className="py-2 px-3">Dễ — nhìn giá trị là hiểu</td>
-                  <td className="py-2 px-3">Khó — phải dùng Grad-CAM, feature viz…</td>
+                  <td className="py-2 px-3">Dễ-nhìn giá trị là hiểu</td>
+                  <td className="py-2 px-3">Khó-phải dùng Grad-CAM, feature viz…</td>
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="py-2 px-3">Hiệu năng trên task phức tạp</td>
-                  <td className="py-2 px-3">Thấp — không học được khái niệm cao cấp</td>
-                  <td className="py-2 px-3">Cao — học được mắt, mũi, bánh xe, khuôn mặt…</td>
+                  <td className="py-2 px-3">Thấp-không học được khái niệm cao cấp</td>
+                  <td className="py-2 px-3">Cao-học được mắt, mũi, bánh xe, khuôn mặt…</td>
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="py-2 px-3">Chi phí tính toán</td>
-                  <td className="py-2 px-3">Rất rẻ — chỉ một phép filter</td>
+                  <td className="py-2 px-3">Rất rẻ-chỉ một phép filter</td>
                   <td className="py-2 px-3">Tốn GPU khi training, inference vẫn nhẹ</td>
                 </tr>
                 <tr>
@@ -1056,10 +1056,10 @@ for step in range(100):
           </div>
 
           <h3 className="text-base font-semibold text-foreground mt-6 mb-2">
-            Đi sâu: 1×1 Convolution — kernel kỳ lạ nhưng cực mạnh
+            Đi sâu: 1×1 Convolution-kernel kỳ lạ nhưng cực mạnh
           </h3>
           <p>
-            Một kernel 1×1 có vẻ vô nghĩa — nó chỉ nhân pixel với một số. Nhưng trong CNN với nhiều kênh,
+            Một kernel 1×1 có vẻ vô nghĩa-nó chỉ nhân pixel với một số. Nhưng trong CNN với nhiều kênh,
             1×1 convolution thực sự là một phép{" "}
             <strong>combine các feature map</strong>: với input C kênh và C&apos; kernel 1×1, mỗi kernel
             là một vector trọng số C chiều, thực hiện linear combination của C feature map input
@@ -1083,7 +1083,7 @@ for step in range(100):
           <ul className="list-disc list-inside space-y-1 text-sm pl-2">
             <li>
               <strong>Tổng = 1:</strong> giữ độ sáng trung bình (Identity, Gaussian sau khi chia, Sharpen).
-              Đây là kernel &quot;bảo toàn năng lượng&quot; — ảnh không sáng lên/tối đi tổng thể.
+              Đây là kernel &quot;bảo toàn năng lượng&quot;, ảnh không sáng lên/tối đi tổng thể.
             </li>
             <li>
               <strong>Tổng &gt; 1:</strong> làm ảnh sáng lên (hiếm dùng trực tiếp).
@@ -1092,7 +1092,7 @@ for step in range(100):
               <strong>Tổng &lt; 1 nhưng &gt; 0:</strong> làm ảnh tối đi.
             </li>
             <li>
-              <strong>Tổng = 0:</strong> highlight sự thay đổi — vùng đồng nhất cho 0 (đen),
+              <strong>Tổng = 0:</strong> highlight sự thay đổi-vùng đồng nhất cho 0 (đen),
               chỉ cạnh/biên mới cho giá trị khác 0. Tất cả edge detector đều có tổng = 0.
             </li>
             <li>
@@ -1118,7 +1118,7 @@ for step in range(100):
               <LaTeX block>{"K_{2D} = v \\cdot h^T"}</LaTeX>
               <p>
                 Ví dụ, Gaussian 2D = Gaussian 1D dọc ⊗ Gaussian 1D ngang. Thay vì tích chập 2D tốn{" "}
-                <strong>k² phép nhân mỗi pixel</strong>, ta tích chập 1D hai lần — chỉ tốn{" "}
+                <strong>k² phép nhân mỗi pixel</strong>, ta tích chập 1D hai lần-chỉ tốn{" "}
                 <strong>2k phép nhân</strong>. Với kernel 5×5: 25 → 10 (tiết kiệm 60%). Với 7×7: 49 → 14 (72%).
               </p>
               <p>
@@ -1154,7 +1154,7 @@ G2d = np.outer(g1, g1)           # shape (5,5), sum = 1
 # ── 2) Kiểm tra rank bằng SVD: kernel separable nếu rank=1 ─
 U, S, Vt = np.linalg.svd(G2d)
 print("Giá trị kỳ dị:", S.round(4))   # chỉ S[0] khác 0 đáng kể
-print("Tỉ lệ S[1]/S[0]:", S[1] / S[0]) # ~ 1e-16 — separable!
+print("Tỉ lệ S[1]/S[0]:", S[1] / S[0]) # ~ 1e-16-separable!
 
 # ── 3) Cách "ngây thơ": conv2D trực tiếp O(k²) ────────────
 img = np.random.rand(512, 512)
@@ -1187,8 +1187,8 @@ print(f"Max diff = {diff:.2e}")   # ~ 1e-14, gần như = 0
           </h3>
           <p>
             Depthwise-separable là một phát minh của MobileNet (2017): tách một conv chuẩn thành 2
-            bước — <em>depthwise</em> (mỗi kênh input có 1 kernel riêng) và <em>pointwise</em>{" "}
-            (conv 1×1 để trộn kênh). Tổng chi phí giảm ~8–9× so với conv chuẩn.
+            bước, <em>depthwise</em> (mỗi kênh input có 1 kernel riêng) và <em>pointwise</em>{" "}
+            (conv 1×1 để trộn kênh). Tổng chi phí giảm ~8-9× so với conv chuẩn.
           </p>
 
           <CodeBlock language="python" title="Depthwise separable conv trong PyTorch">
@@ -1207,14 +1207,14 @@ print("Standard params:", sum(p.numel() for p in standard_conv.parameters()))
 class DepthwiseSeparable(nn.Module):
     def __init__(self, in_ch, out_ch, k=3):
         super().__init__()
-        # 1) Depthwise — mỗi kênh input 1 kernel riêng (groups = in_ch)
+        # 1) Depthwise-mỗi kênh input 1 kernel riêng (groups = in_ch)
         self.depthwise = nn.Conv2d(
             in_ch, in_ch,
             kernel_size=k, padding=k // 2,
             groups=in_ch,           # ← mấu chốt
             bias=False,
         )
-        # 2) Pointwise — conv 1×1 để trộn kênh từ in_ch → out_ch
+        # 2) Pointwise-conv 1×1 để trộn kênh từ in_ch → out_ch
         self.pointwise = nn.Conv2d(
             in_ch, out_ch,
             kernel_size=1,
@@ -1240,7 +1240,7 @@ print("DW-Sep params:", sum(p.numel() for p in dsc.parameters() if p.requires_gr
 
 x = torch.randn(1, 32, 56, 56)
 print(standard_conv(x).shape)   # [1, 64, 56, 56]
-print(dsc(x).shape)             # [1, 64, 56, 56] — cùng output shape`}
+print(dsc(x).shape)             # [1, 64, 56, 56], cùng output shape`}
           </CodeBlock>
 
           <p className="mt-3">
@@ -1250,7 +1250,7 @@ print(dsc(x).shape)             # [1, 64, 56, 56] — cùng output shape`}
             hợp lý.
           </p>
 
-          <CollapsibleDetail title="Biến đổi Fourier của kernel — góc nhìn tần số">
+          <CollapsibleDetail title="Biến đổi Fourier của kernel-góc nhìn tần số">
             <div className="space-y-2 text-sm">
               <p>
                 Một cái nhìn sâu xa về kernel: mọi phép tích chập có thể <strong>diễn đạt trong miền
@@ -1265,12 +1265,12 @@ print(dsc(x).shape)             # [1, 64, 56, 56] — cùng output shape`}
               <ul className="list-disc list-inside space-y-1 pl-2">
                 <li>
                   <strong>Gaussian blur</strong> có DFT là một đường cong &quot;hình chuông&quot; tập
-                  trung quanh tần số 0 — đây là <em>low-pass filter</em>: chỉ cho tần số thấp qua,
+                  trung quanh tần số 0-đây là <em>low-pass filter</em>: chỉ cho tần số thấp qua,
                   chặn tần số cao → mượt ảnh, loại nhiễu.
                 </li>
                 <li>
                   <strong>Edge detect (Laplacian 8-neighbor)</strong> có DFT giá trị nhỏ ở tâm, lớn ở
-                  rìa — <em>high-pass filter</em>: cho tần số cao qua (cạnh, góc, chi tiết) và chặn
+                  rìa, <em>high-pass filter</em>: cho tần số cao qua (cạnh, góc, chi tiết) và chặn
                   tần số thấp (vùng phẳng, nền).
                 </li>
                 <li>
@@ -1280,7 +1280,7 @@ print(dsc(x).shape)             # [1, 64, 56, 56] — cùng output shape`}
                 <li>
                   <strong>Sobel X/Y</strong> là <em>band-pass</em> theo hướng: DFT của Sobel X gần 0
                   dọc trục <LaTeX>{"\\omega_x = 0"}</LaTeX> và lớn khi{" "}
-                  <LaTeX>{"\\omega_x"}</LaTeX> lớn — chọn tần số theo trục ngang.
+                  <LaTeX>{"\\omega_x"}</LaTeX> lớn-chọn tần số theo trục ngang.
                 </li>
               </ul>
 
@@ -1359,7 +1359,7 @@ plt.show()`}
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 6 — THỬ THÁCH 2
+       *  BƯỚC 6-THỬ THÁCH 2
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={8} label="Thử thách">
         <InlineChallenge
@@ -1380,23 +1380,23 @@ plt.show()`}
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 7 — TÓM TẮT
+       *  BƯỚC 7-TÓM TẮT
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={8} label="Tóm tắt">
         <MiniSummary
           points={[
-            "Image kernel là ma trận nhỏ (3×3, 5×5) trượt trên ảnh, thực hiện nhân element-wise rồi cộng — tạo ra pixel đầu ra mới.",
+            "Image kernel là ma trận nhỏ (3×3, 5×5) trượt trên ảnh, thực hiện nhân element-wise rồi cộng-tạo ra pixel đầu ra mới.",
             "Các kernel kinh điển: Identity (giữ nguyên), Edge (phát hiện cạnh), Sobel X/Y (cạnh theo trục), Gaussian (làm mờ), Sharpen (làm sắc), Emboss (chạm nổi), Laplacian (đạo hàm 2).",
             "Tổng kernel quyết định: tổng = 1 → giữ độ sáng; tổng = 0 → highlight thay đổi; chia divisor để chuẩn hoá; cộng offset khi có giá trị âm.",
-            "Padding giữ kích thước output, stride điều khiển độ phân giải output — cả hai đều có trong mọi framework deep learning.",
-            "Xử lý ảnh truyền thống: kernel thiết kế thủ công (OpenCV). CNN hiện đại: kernel HỌC qua backpropagation — mạng tự tìm bộ lọc tối ưu cho tác vụ.",
-            "Kernel 3×3 xếp chồng tạo receptive field lớn mà vẫn ít tham số — đó là lý do kiến trúc như ResNet, EfficientNet đều chủ yếu dùng 3×3.",
+            "Padding giữ kích thước output, stride điều khiển độ phân giải output-cả hai đều có trong mọi framework deep learning.",
+            "Xử lý ảnh truyền thống: kernel thiết kế thủ công (OpenCV). CNN hiện đại: kernel HỌC qua backpropagation-mạng tự tìm bộ lọc tối ưu cho tác vụ.",
+            "Kernel 3×3 xếp chồng tạo receptive field lớn mà vẫn ít tham số-đó là lý do kiến trúc như ResNet, EfficientNet đều chủ yếu dùng 3×3.",
           ]}
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-       *  BƯỚC 8 — KIỂM TRA
+       *  BƯỚC 8-KIỂM TRA
        * ═══════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={8} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

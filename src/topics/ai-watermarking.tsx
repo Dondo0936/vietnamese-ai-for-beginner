@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 8;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Constants — nội dung trình diễn watermark thống kê
+// Constants-nội dung trình diễn watermark thống kê
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -114,7 +114,7 @@ interface SentenceCase {
 const SENTENCE_CASES: SentenceCase[] = [
   {
     id: "ai-vinh-ha-long",
-    title: "Câu AI #1 — Vịnh Hạ Long",
+    title: "Câu AI #1-Vịnh Hạ Long",
     source: "ai",
     tokens: SENTENCE_A,
     description:
@@ -122,7 +122,7 @@ const SENTENCE_CASES: SentenceCase[] = [
   },
   {
     id: "ai-cuoc-song",
-    title: "Câu AI #2 — Ý nghĩa cuộc sống",
+    title: "Câu AI #2-Ý nghĩa cuộc sống",
     source: "ai",
     tokens: SENTENCE_B,
     description:
@@ -130,7 +130,7 @@ const SENTENCE_CASES: SentenceCase[] = [
   },
   {
     id: "human-cho-ben-thanh",
-    title: "Câu người thật — Ghé chợ Bến Thành",
+    title: "Câu người thật-Ghé chợ Bến Thành",
     source: "human",
     tokens: SENTENCE_HUMAN,
     description:
@@ -185,7 +185,7 @@ function formatPValue(p: number): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Quiz — 8 câu hỏi
+// Quiz-8 câu hỏi
 // ─────────────────────────────────────────────────────────────────────────────
 
 const QUIZ: QuizQuestion[] = [
@@ -193,18 +193,18 @@ const QUIZ: QuizQuestion[] = [
     question: "Watermark cho văn bản AI (Kirchenbauer et al., 2023) hoạt động cốt lõi bằng cách nào?",
     options: [
       "Chèn ký tự Unicode vô hình (zero-width) vào giữa các từ",
-      "Chia từ vựng thành green/red list dựa trên hash của token trước, cộng bias vào logits của green — tỷ lệ green cao bất thường chính là dấu hiệu",
+      "Chia từ vựng thành green/red list dựa trên hash của token trước, cộng bias vào logits của green-tỷ lệ green cao bất thường chính là dấu hiệu",
       "Gắn metadata EXIF vào file .txt chứa văn bản",
       "Thay đổi kiểu font chữ thành một font bí mật",
     ],
     correct: 1,
     explanation:
-      "Đây là phương pháp watermark thống kê dựa trên logits. Green/red list được sinh từ hash(token[i-1]) — deterministic nhưng trông ngẫu nhiên. Bias delta cộng vào logits green trước softmax làm LLM ưu tiên chọn từ green. Phát hiện sau đó là bài toán thống kê thuần: nếu tỷ lệ green lệch khỏi gamma (thường 0.5) thì có watermark.",
+      "Đây là phương pháp watermark thống kê dựa trên logits. Green/red list được sinh từ hash(token[i-1]), deterministic nhưng trông ngẫu nhiên. Bias delta cộng vào logits green trước softmax làm LLM ưu tiên chọn từ green. Phát hiện sau đó là bài toán thống kê thuần: nếu tỷ lệ green lệch khỏi gamma (thường 0.5) thì có watermark.",
   },
   {
     question: "Kẻ xấu paraphrase (viết lại) 30% câu trong văn bản AI để xoá watermark. Điều gì xảy ra?",
     options: [
-      "Watermark biến mất hoàn toàn — paraphrase là phương pháp xoá tuyệt đối",
+      "Watermark biến mất hoàn toàn-paraphrase là phương pháp xoá tuyệt đối",
       "Phần 70% chưa bị viết lại vẫn mang watermark; nếu đoạn văn đủ dài, z-score vẫn vượt ngưỡng nhưng confidence giảm",
       "Watermark tự khôi phục sau vài giây",
       "Phụ thuộc vào ngôn ngữ đích",
@@ -248,7 +248,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đây là z-score của kiểm định nhị thức (one-proportion z-test). Dưới giả thuyết H0 'văn bản không có watermark', số green tokens ~ Binomial(T, gamma) → mean = T·gamma, variance = T·gamma·(1−gamma). Z-score đo 'số green lệch khỏi kỳ vọng bao nhiêu độ lệch chuẩn'. z > 4 tương ứng p-value < 3 × 10^-5.",
+      "Đây là z-score của kiểm định nhị thức (one-proportion z-test). Dưới giả thuyết H0 'văn bản không có watermark', số green tokens ~ Binomial(T, gamma) → mean = T·gamma, variance = T·gamma·(1−gamma). Z-score đo 'số green lệch khỏi kỳ vọng bao nhiêu độ lệch chuẩn', z > 4 tương ứng p-value < 3 × 10^-5.",
   },
   {
     question:
@@ -268,13 +268,13 @@ const QUIZ: QuizQuestion[] = [
       "Điều gì KHÔNG PHẢI là một giả định của phương pháp watermark thống kê Kirchenbauer?",
     options: [
       "Kẻ tấn công không có quyền truy cập seed/khoá sinh green list",
-      "Phân bố token trong văn bản không có watermark xấp xỉ đều trên vocab — điều này THƯỜNG KHÔNG đúng với ngôn ngữ tự nhiên có entropy thấp",
+      "Phân bố token trong văn bản không có watermark xấp xỉ đều trên vocab-điều này THƯỜNG KHÔNG đúng với ngôn ngữ tự nhiên có entropy thấp",
       "Mô hình có ít nhất ~100 token đầu ra để đạt confidence thống kê",
       "Người kiểm tra có quyền truy cập tokenizer của mô hình gốc",
     ],
     correct: 1,
     explanation:
-      "Một critique phổ biến: green/red test giả định phân bố token 'đủ đa dạng' để bias tạo lệch có thể đo. Với code, công thức, hoặc văn bản entropy thấp (ví dụ HTML), tỷ lệ token 'bắt buộc' (như '<', '>', ';') quá lớn — bias không đẩy được chúng đi đâu. Giả định 'entropy đủ lớn' không phải lúc nào cũng thoả.",
+      "Một critique phổ biến: green/red test giả định phân bố token 'đủ đa dạng' để bias tạo lệch có thể đo. Với code, công thức, hoặc văn bản entropy thấp (ví dụ HTML), tỷ lệ token 'bắt buộc' (như '<', '>', ';') quá lớn-bias không đẩy được chúng đi đâu. Giả định 'entropy đủ lớn' không phải lúc nào cũng thoả.",
   },
   {
     type: "fill-blank",
@@ -367,7 +367,7 @@ export default function AIWatermarkingTopic() {
   return (
     <>
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 1 — Dự đoán                                                 */}
+      {/* STEP 1-Dự đoán                                                 */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <div className="mb-3">
@@ -389,7 +389,7 @@ export default function AIWatermarkingTopic() {
         <PredictionGate
           question="Một sinh viên nộp bài luận dài 500 chữ. Làm sao giáo viên biết bài do AI viết mà KHÔNG cần đọc nội dung, không cần so sánh với corpus, chỉ dùng phân tích toán học?"
           options={[
-            "Không thể biết nếu không đọc — đây là điều bất khả thi",
+            "Không thể biết nếu không đọc-đây là điều bất khả thi",
             "Phân tích thống kê: AI watermark nhúng pattern ẩn vào phân phối từ; phát hiện bằng toán học, không cần đọc nội dung",
             "Kiểm tra metadata file docx/pdf để xem trường 'Author'",
             "Đếm số từ tiếng Anh chen vào văn bản tiếng Việt",
@@ -400,7 +400,7 @@ export default function AIWatermarkingTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 2 — Khám phá: visualizer watermark thống kê                  */}
+      {/* STEP 2-Khám phá: visualizer watermark thống kê                  */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
@@ -582,7 +582,7 @@ export default function AIWatermarkingTopic() {
                   fill="var(--text-tertiary)"
                   fontWeight="bold"
                 >
-                  Phân tích thống kê — gamma={params.gamma.toFixed(2)}, delta=
+                  Phân tích thống kê-gamma={params.gamma.toFixed(2)}, delta=
                   {params.delta.toFixed(1)}, ngưỡng z={params.zThreshold.toFixed(1)}
                 </text>
 
@@ -706,7 +706,7 @@ export default function AIWatermarkingTopic() {
                   htmlFor="slider-gamma"
                   className="block text-[11px] font-semibold text-muted mb-1"
                 >
-                  Gamma (tỷ lệ green list) — {params.gamma.toFixed(2)}
+                  Gamma (tỷ lệ green list), {params.gamma.toFixed(2)}
                 </label>
                 <input
                   id="slider-gamma"
@@ -728,7 +728,7 @@ export default function AIWatermarkingTopic() {
                   htmlFor="slider-delta"
                   className="block text-[11px] font-semibold text-muted mb-1"
                 >
-                  Delta (cường độ bias) — {params.delta.toFixed(1)}
+                  Delta (cường độ bias), {params.delta.toFixed(1)}
                 </label>
                 <input
                   id="slider-delta"
@@ -750,7 +750,7 @@ export default function AIWatermarkingTopic() {
                   htmlFor="slider-threshold"
                   className="block text-[11px] font-semibold text-muted mb-1"
                 >
-                  Ngưỡng z — {params.zThreshold.toFixed(1)}
+                  Ngưỡng z, {params.zThreshold.toFixed(1)}
                 </label>
                 <input
                   id="slider-threshold"
@@ -836,44 +836,44 @@ export default function AIWatermarkingTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 3 — A-ha moment                                             */}
+      {/* STEP 3-A-ha moment                                             */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
           Watermark AI giống{" "}
-          <strong>tiền giả với dải bảo mật nhúng UV</strong> — mắt thường đọc
+          <strong>tiền giả với dải bảo mật nhúng UV</strong>, mắt thường đọc
           văn bản bình thường, nhưng <strong>phân tích thống kê dưới 'đèn UV'</strong>{" "}
           phát hiện pattern ẩn. Với {totalTokens} tokens và tỷ lệ green{" "}
           {Math.round(greenRatio * 100)}% thay vì 50% ngẫu nhiên, xác suất xảy
           ra tự nhiên là <strong>{formatPValue(pValue)}</strong>. Nếu z-score
           vượt ngưỡng {params.zThreshold.toFixed(1)}, ta gần như{" "}
-          <strong>chắc chắn văn bản do AI sinh ra</strong> — và không cần đọc một
+          <strong>chắc chắn văn bản do AI sinh ra</strong>, và không cần đọc một
           chữ nào!
         </AhaMoment>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 4 — Inline challenges                                       */}
+      {/* STEP 4-Inline challenges                                       */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <div className="space-y-4">
           <InlineChallenge
             question="Một sinh viên dùng ChatGPT viết bài 500 từ, rồi paraphrase (viết lại bằng từ đồng nghĩa) 30% số câu. Watermark còn phát hiện được không?"
             options={[
-              "Không — paraphrase xoá sạch watermark, văn bản coi như do người viết",
+              "Không-paraphrase xoá sạch watermark, văn bản coi như do người viết",
               "Phát hiện được phần 70% chưa bị viết lại; nếu đoạn đủ dài, z-score vẫn có thể vượt ngưỡng nhưng độ tin cậy giảm",
               "Phát hiện 100% vì watermark bất biến với mọi biến đổi",
               "Chỉ phát hiện nếu sinh viên dùng đúng mô hình ChatGPT phiên bản gốc",
             ]}
             correct={1}
-            explanation="Paraphrase phá huỷ watermark trong câu bị viết lại (chuỗi token mới không còn tuân hash cũ), nhưng 70% còn lại vẫn mang dấu hiệu. Với đoạn văn >200 tokens và delta = 2.0, z-score thường vẫn vượt 3 — đủ báo động. Đây là điểm yếu rõ của watermark statistical: khắc phục bằng semantic watermark (nhúng vào nghĩa, không token)."
+            explanation="Paraphrase phá huỷ watermark trong câu bị viết lại (chuỗi token mới không còn tuân hash cũ), nhưng 70% còn lại vẫn mang dấu hiệu. Với đoạn văn >200 tokens và delta = 2.0, z-score thường vẫn vượt 3-đủ báo động. Đây là điểm yếu rõ của watermark statistical: khắc phục bằng semantic watermark (nhúng vào nghĩa, không token)."
           />
 
           <InlineChallenge
             question="Văn bản chỉ có 20 tokens, tỷ lệ green là 15/20 = 75%. Có thể kết luận chắc chắn là AI viết không?"
             options={[
-              "Có — 75% cao hơn 50% nhiều nên chắc chắn là AI",
-              "Không — 20 tokens quá ít để đạt z-score đủ lớn; dễ false positive do biến động ngẫu nhiên",
+              "Có-75% cao hơn 50% nhiều nên chắc chắn là AI",
+              "Không-20 tokens quá ít để đạt z-score đủ lớn; dễ false positive do biến động ngẫu nhiên",
               "Phụ thuộc vào nội dung văn bản",
               "Chỉ cần tỷ lệ >60% là đủ kết luận",
             ]}
@@ -884,7 +884,7 @@ export default function AIWatermarkingTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 5 — Lý thuyết                                               */}
+      {/* STEP 5-Lý thuyết                                               */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection topicSlug={metadata.slug}>
@@ -905,13 +905,13 @@ export default function AIWatermarkingTopic() {
               <p>
                 <strong>1. Chia từ vựng:</strong> Dùng hash(token[i-1]) để chia
                 toàn bộ từ vựng thành <em>green list</em> (tỷ lệ gamma, thường
-                0.5) và <em>red list</em>. Chia ngẫu nhiên nhưng deterministic —
+                0.5) và <em>red list</em>. Chia ngẫu nhiên nhưng deterministic,
                 cùng prev token luôn cho cùng chia.
               </p>
               <p>
                 <strong>2. Thiên vị khi sinh:</strong> Cộng bias delta (thường
                 2.0) vào logits của green tokens trước khi softmax. LLM sẽ ưu
-                tiên chọn từ green, nhưng không ép buộc — nếu red token quá mạnh
+                tiên chọn từ green, nhưng không ép buộc-nếu red token quá mạnh
                 về ngữ nghĩa thì vẫn có thể được chọn.
               </p>
               <p>
@@ -922,7 +922,7 @@ export default function AIWatermarkingTopic() {
               </p>
               <p>
                 <strong>4. False positive rate:</strong> Với z &gt; 4, xác suất
-                false positive là p &lt; 3×10⁻⁵ — tức là chưa đến 1 trên 30.000
+                false positive là p &lt; 3×10⁻⁵-tức là chưa đến 1 trên 30.000
                 văn bản con người viết bị gắn nhầm nhãn "AI".
               </p>
             </div>
@@ -954,14 +954,14 @@ export default function AIWatermarkingTopic() {
               </p>
               <p>
                 <strong>Ảnh AI:</strong> Watermark cho ảnh (Stable Diffusion,
-                DALL-E, Midjourney) nhúng vào miền tần số không gian DFT/DCT —
+                DALL-E, Midjourney) nhúng vào miền tần số không gian DFT/DCT,
                 bền hơn với chỉnh sửa, crop, resize. Phương pháp khác hẳn văn
                 bản.
               </p>
               <p>
                 <strong>Tin giả:</strong> Mạng xã hội Việt Nam bùng nổ
                 deepfake chính trị; watermark chỉ phát hiện nội dung do mô hình
-                có watermark sinh ra — mô hình open-source không watermark vẫn
+                có watermark sinh ra-mô hình open-source không watermark vẫn
                 là lỗ hổng.
               </p>
             </div>
@@ -996,7 +996,7 @@ export default function AIWatermarkingTopic() {
               </ul>
               <p>
                 Ví dụ: SynthID-Text của Google DeepMind dùng "tournament
-                sampling" — mỗi token được chọn qua một cây đấu loại nhiều vòng,
+                sampling", mỗi token được chọn qua một cây đấu loại nhiều vòng,
                 mỗi vòng đánh giá bằng PRF. Phân bố đầu ra gần LLM gốc
                 (distortion-free), nhưng tín hiệu watermark đủ mạnh để phát
                 hiện.
@@ -1035,7 +1035,7 @@ export default function AIWatermarkingTopic() {
                 câu, xoá câu. Nếu đủ nhiều, z-score giảm đáng kể.
               </p>
               <p>
-                Đây là cuộc chạy đua giữa watermark và paraphrase — mỗi bước
+                Đây là cuộc chạy đua giữa watermark và paraphrase-mỗi bước
                 tiến của bên này kéo theo bước tiến của bên kia. Giải pháp lâu
                 dài là <em>semantic watermark</em> (nhúng vào embedding
                 space) và content provenance (C2PA chuẩn).
@@ -1171,7 +1171,7 @@ class WatermarkLogitsProcessor(LogitsProcessor):
         self._cache: dict[int, torch.Tensor] = {}
 
     def _green_mask(self, prev_token: int, device: torch.device) -> torch.Tensor:
-        """Trả về mask nhị phân (vocab_size,) — 1 cho green, 0 cho red."""
+        """Trả về mask nhị phân (vocab_size,), 1 cho green, 0 cho red."""
         if prev_token in self._cache:
             return self._cache[prev_token].to(device)
 
@@ -1194,8 +1194,8 @@ class WatermarkLogitsProcessor(LogitsProcessor):
         input_ids: torch.LongTensor,
         scores: torch.FloatTensor,
     ) -> torch.FloatTensor:
-        # input_ids: (batch, seq_len) — seq_len có thể khác nhau giữa batch
-        # scores: (batch, vocab_size) — logits cho token tiếp theo
+        # input_ids: (batch, seq_len), seq_len có thể khác nhau giữa batch
+        # scores: (batch, vocab_size), logits cho token tiếp theo
         for i in range(input_ids.shape[0]):
             prev = int(input_ids[i, -1].item())
             mask = self._green_mask(prev, scores.device)
@@ -1251,7 +1251,7 @@ if __name__ == "__main__":
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 6 — Ứng dụng                                                */}
+      {/* STEP 6-Ứng dụng                                                */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Ứng dụng">
         <Callout variant="tip" title="Watermark trong thực tế tại Việt Nam">
@@ -1272,7 +1272,7 @@ if __name__ == "__main__":
               <strong>Pháp luật & chính sách:</strong> EU AI Act (điều 50) yêu
               cầu ghi nhãn "nội dung sinh bởi AI". Nghị định 53/2022/NĐ-CP về
               an ninh mạng của Việt Nam đang được cập nhật để bao gồm nội dung
-              tổng hợp — watermark là giải pháp kỹ thuật khả thi.
+              tổng hợp-watermark là giải pháp kỹ thuật khả thi.
             </p>
             <p>
               <strong>Mạng xã hội:</strong> Facebook, TikTok đang thí điểm gắn
@@ -1289,14 +1289,14 @@ if __name__ == "__main__":
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 7 — Tóm tắt                                                 */}
+      {/* STEP 7-Tóm tắt                                                 */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về AI Watermarking"
           points={[
             "Watermark văn bản chia từ vựng thành green/red list sinh từ hash(token trước), cộng bias delta vào logits green khi sinh. Văn bản có watermark có tỷ lệ green cao bất thường.",
-            "Phát hiện bằng z-score one-proportion test: z = (|g| - γT) / √(γ(1-γ)T). z > 4 ⇔ p < 3×10⁻⁵ — gần như chắc chắn có watermark.",
+            "Phát hiện bằng z-score one-proportion test: z = (|g| - γT) / √(γ(1-γ)T), z > 4 ⇔ p < 3×10⁻⁵-gần như chắc chắn có watermark.",
             "Paraphrase là tấn công hiệu quả nhất: viết lại 30-40% câu có thể giảm z-score đáng kể. Giải pháp lâu dài là semantic watermark và content provenance (C2PA).",
             "Tiếng Việt bị BPE fragment → effective vocab nhỏ → cần đoạn dài hơn (200-300 tokens) và chịu watermark yếu hơn tương đối so với tiếng Anh.",
             "Watermark cryptographic (SynthID-Text, Aaronson) dùng PRF với khoá bí mật, cho phép distortion-free và chống tấn công mạnh hơn, nhưng cần quản lý khoá.",
@@ -1306,7 +1306,7 @@ if __name__ == "__main__":
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────────────────── */}
-      {/* STEP 8 — Quiz                                                    */}
+      {/* STEP 8-Quiz                                                    */}
       {/* ─────────────────────────────────────────────────────────────── */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

@@ -156,7 +156,7 @@ const STEPS = 6;
 const TOTAL_STEPS = 7;
 
 /* ════════════════════════════════════════════════════════════
-   QUIZ — 8 câu
+   QUIZ-8 câu
    ──────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
@@ -164,7 +164,7 @@ const QUIZ: QuizQuestion[] = [
       "Điểm khác biệt CỐT LÕI giữa GRPO và PPO chuẩn dùng trong RLHF là gì?",
     options: [
       "GRPO chạy nhanh hơn vì dùng GPU tốt hơn",
-      "GRPO BỎ critic/value function — thay nó bằng trung bình reward của một NHÓM G phản hồi cho cùng prompt",
+      "GRPO BỎ critic/value function-thay nó bằng trung bình reward của một NHÓM G phản hồi cho cùng prompt",
       "GRPO chỉ dùng được cho bài dịch thuật",
       "GRPO là supervised learning, không phải RL",
     ],
@@ -177,7 +177,7 @@ const QUIZ: QuizQuestion[] = [
       "Loại bài toán nào GRPO phù hợp nhất?",
     options: [
       "Bài toán viết thơ sáng tạo",
-      "Bài toán có VERIFIABLE REWARD — đáp án có thể kiểm tra tự động (toán, code, logic, game)",
+      "Bài toán có VERIFIABLE REWARD-đáp án có thể kiểm tra tự động (toán, code, logic, game)",
       "Bài toán dịch thuật tự do",
       "Bài toán tổng hợp tin tức mà chất lượng do con người đánh giá",
     ],
@@ -190,7 +190,7 @@ const QUIZ: QuizQuestion[] = [
       "Với G = 8 phản hồi, advantage của phản hồi i được tính thế nào trong GRPO?",
     options: [
       "Â_i = r_i (dùng reward thô)",
-      "Â_i = (r_i − mean(r)) / std(r) — chuẩn hoá trong nhóm",
+      "Â_i = (r_i − mean(r)) / std(r), chuẩn hoá trong nhóm",
       "Â_i = r_i − r_max",
       "Â_i = r_i / Σ r",
     ],
@@ -216,7 +216,7 @@ const QUIZ: QuizQuestion[] = [
       "Clipping min(ρ · Â, clip(ρ, 1−ε, 1+ε) · Â) trong GRPO có ý nghĩa gì?",
     options: [
       "Giới hạn reward tối đa",
-      "Ngăn TỶ LỆ IMPORTANCE ρ = π_new/π_old thay đổi quá mạnh trong một bước — giữ update 'trust region' như PPO",
+      "Ngăn TỶ LỆ IMPORTANCE ρ = π_new/π_old thay đổi quá mạnh trong một bước-giữ update 'trust region' như PPO",
       "Cắt các phản hồi quá dài",
       "Normalise advantage",
     ],
@@ -229,9 +229,9 @@ const QUIZ: QuizQuestion[] = [
       "Với dataset 10k prompt và G = 16, GRPO phải sinh BAO NHIÊU phản hồi mỗi epoch?",
     options: [
       "10.000",
-      "160.000 — đó là chi phí inference chính của GRPO; cần hệ thống rollout song song (vLLM, SGLang) để đủ nhanh",
+      "160.000-đó là chi phí inference chính của GRPO; cần hệ thống rollout song song (vLLM, SGLang) để đủ nhanh",
       "1.600",
-      "Không cần sinh — chỉ cần forward pass",
+      "Không cần sinh-chỉ cần forward pass",
     ],
     correct: 1,
     explanation:
@@ -248,20 +248,20 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 0,
     explanation:
-      "Khi mọi r_i bằng nhau, r_i − mean = 0 và std ≈ 0 → advantage 0. Group không cung cấp tín hiệu phân biệt. Đó là lý do curriculum learning và prompt selection rất quan trọng với GRPO — tránh prompt quá khó (mọi sample sai) hoặc quá dễ (mọi sample đúng).",
+      "Khi mọi r_i bằng nhau, r_i − mean = 0 và std ≈ 0 → advantage 0. Group không cung cấp tín hiệu phân biệt. Đó là lý do curriculum learning và prompt selection rất quan trọng với GRPO-tránh prompt quá khó (mọi sample sai) hoặc quá dễ (mọi sample đúng).",
   },
   {
     question:
       "So với DPO, GRPO có ưu thế chính nào?",
     options: [
       "GRPO đơn giản hơn DPO",
-      "GRPO cho phép EXPLORATION qua sampling nhiều phản hồi và dùng được VERIFIABLE reward (cho toán/code) — DPO yêu cầu cặp chosen/rejected do người gán",
+      "GRPO cho phép EXPLORATION qua sampling nhiều phản hồi và dùng được VERIFIABLE reward (cho toán/code), DPO yêu cầu cặp chosen/rejected do người gán",
       "GRPO không cần tính toán gì cả",
       "GRPO chỉ cần một prompt duy nhất",
     ],
     correct: 1,
     explanation:
-      "DPO là offline trên cặp preference cố định: (x, y_w, y_l). Mạnh khi đã có data preference, nhưng không khám phá thêm. GRPO là online — mô hình tự sinh các đáp án mới, reward tự động → tốt cho lĩnh vực có verifier và cần cải thiện vượt ngoài phân phối dữ liệu gán sẵn.",
+      "DPO là offline trên cặp preference cố định: (x, y_w, y_l). Mạnh khi đã có data preference, nhưng không khám phá thêm. GRPO là online-mô hình tự sinh các đáp án mới, reward tự động → tốt cho lĩnh vực có verifier và cần cải thiện vượt ngoài phân phối dữ liệu gán sẵn.",
   },
 ];
 
@@ -296,10 +296,10 @@ export default function GRPOTopic() {
         <PredictionGate
           question="RLHF truyền thống cần reward model (tốn kém). DPO cần dữ liệu cặp sở thích do người gán (khó thu thập ở quy mô lớn). Có cách alignment nào tránh được CẢ HAI nút cổ chai đó không?"
           options={[
-            "Không — phải chọn giữa reward model hoặc preference pair",
-            "Có — sinh NHIỀU phản hồi cho cùng một prompt, chấm bằng một hàm reward đơn giản, rồi SO SÁNH các phản hồi trong nhóm với nhau",
-            "Có — chỉ cần supervised fine-tuning (SFT) là đủ",
-            "Có — dùng người đánh giá trực tiếp mỗi lần inference",
+            "Không-phải chọn giữa reward model hoặc preference pair",
+            "Có-sinh NHIỀU phản hồi cho cùng một prompt, chấm bằng một hàm reward đơn giản, rồi SO SÁNH các phản hồi trong nhóm với nhau",
+            "Có-chỉ cần supervised fine-tuning (SFT) là đủ",
+            "Có-dùng người đánh giá trực tiếp mỗi lần inference",
           ]}
           correct={1}
           explanation="GRPO: cho prompt x, mô hình sinh G phản hồi y_1…y_G; chấm điểm bằng reward function (VD: verifier toán học); lấy mean nhóm làm baseline; advantage = (r − mean) / std. Không cần reward model, không cần preference pair. Đây là cách DeepSeek-R1 đạt kết quả reasoning ngang o1 với ngân sách rất khác biệt."
@@ -323,7 +323,7 @@ export default function GRPOTopic() {
                 sai thì trừ (verifier đơn giản). Sau đó tất cả nhìn lên
                 bảng: &quot;lớp mình trung bình đang được 0.6 điểm&quot;.
                 Học sinh làm hơn trung bình → khen nhiều hơn; dưới trung
-                bình → nhắc nhở. Không cần giám khảo trọng tài — lớp tự so
+                bình → nhắc nhở. Không cần giám khảo trọng tài-lớp tự so
                 với chính mình. Đó là tinh thần GRPO.
               </p>
             </div>
@@ -761,8 +761,8 @@ export default function GRPOTopic() {
                         <p className="text-muted leading-relaxed">
                           β · D<sub>KL</sub>(π<sub>θ</sub> ∥ π<sub>ref</sub>
                           ) neo policy gần mô hình SFT gốc → chống reward
-                          hacking, giữ độ đa dạng ngôn ngữ. β điển hình
-                          0.02–0.1.
+                          hacking, giữ độ đa dạng ngôn ngữ, β điển hình
+                          0.02-0.1.
                         </p>
                       </div>
                     </div>
@@ -792,7 +792,7 @@ export default function GRPOTopic() {
                     Đặt lại
                   </button>
                   <span className="ml-2 text-xs text-muted">
-                    Bước {step + 1}/{STEPS} —{" "}
+                    Bước {step + 1}/{STEPS}-{" "}
                     {
                       [
                         "Prompt",
@@ -849,7 +849,7 @@ export default function GRPOTopic() {
                               ["Advantage", "(r − mean) / std"],
                               ["Bộ nhớ", "~1× model (chỉ policy + ref)"],
                               ["Exploration", "Qua sampling G mẫu với temperature > 0"],
-                              ["Reward", "Verifiable (toán/code) hoặc RM — cả hai đều được"],
+                              ["Reward", "Verifiable (toán/code) hoặc RM-cả hai đều được"],
                               [
                                 "Chi phí chính",
                                 "Inference rollout (G mẫu × #prompt)",
@@ -861,7 +861,7 @@ export default function GRPOTopic() {
                               ],
                             ]
                           : [
-                              ["Critic/value net", "CÓ — network riêng ước lượng V(s)"],
+                              ["Critic/value net", "CÓ-network riêng ước lượng V(s)"],
                               [
                                 "Baseline",
                                 "V(s) học cùng policy (GAE / TD)",
@@ -918,9 +918,9 @@ export default function GRPOTopic() {
               <p>
                 GRPO thay thế <strong>giám khảo chuyên nghiệp</strong>{" "}
                 (reward model + critic) bằng{" "}
-                <strong>so sánh trong nhóm</strong>: cho mô hình sinh 8–64
+                <strong>so sánh trong nhóm</strong>: cho mô hình sinh 8-64
                 bài, bài nào vượt trung bình thì khen, dưới thì giảm. Baseline
-                không phải một mạng thần kinh — mà chính là{" "}
+                không phải một mạng thần kinh-mà chính là{" "}
                 <em>mean của chính nhóm đó</em>. Nhờ vậy GRPO bỏ được critic,
                 giữ nguyên tinh thần trust-region của PPO, và vẫn ổn định
                 nhờ clipping + KL.
@@ -937,10 +937,10 @@ export default function GRPOTopic() {
                   "Chỉ những phản hồi có reward = 1 (ở các vị trí 1, 3, 4, 6, 8)",
                   "Tất cả 8 phản hồi đều dương",
                   "Chỉ phản hồi đầu tiên",
-                  "Không phản hồi nào — vì mean ≠ 0",
+                  "Không phản hồi nào-vì mean ≠ 0",
                 ]}
                 correct={0}
-                explanation="Â_i = (r − 0.625) / 0.484. r = 1 → Â ≈ +0.77 (dương, tăng P). r = 0 → Â ≈ −1.29 (âm, giảm P). 5 phản hồi đúng được tăng, 3 sai bị giảm xác suất trong bước gradient."
+                explanation="Â_i = (r − 0.625) / 0.484. r = 1 → Â ≈ +0.77 (dương, tăng P), r = 0 → Â ≈ −1.29 (âm, giảm P). 5 phản hồi đúng được tăng, 3 sai bị giảm xác suất trong bước gradient."
               />
 
               <InlineChallenge
@@ -980,11 +980,11 @@ export default function GRPOTopic() {
                 phản hồi <LaTeX>{"\\{y_1, \\dots, y_G\\}"}</LaTeX>. Một hàm
                 reward <LaTeX>{"R(x, y)"}</LaTeX> cho điểm mỗi phản hồi (có
                 thể là verifier toán, test code, rule-based, hay reward
-                model — bất kể nguồn).
+                model-bất kể nguồn).
               </p>
 
               <p>
-                <strong>Bước 1 — Group advantage.</strong> Tính mean và std
+                <strong>Bước 1-Group advantage.</strong> Tính mean và std
                 trong nhóm, rồi chuẩn hoá:
               </p>
               <LaTeX block>
@@ -995,12 +995,12 @@ export default function GRPOTopic() {
 
               <p>
                 Chú ý <LaTeX>{"\\hat{A}_i"}</LaTeX> phụ thuộc HOÀN TOÀN vào
-                group — không có value network V(s) học song song, khác với
+                group-không có value network V(s) học song song, khác với
                 PPO.
               </p>
 
               <p>
-                <strong>Bước 2 — Policy objective.</strong> Dùng PPO-style
+                <strong>Bước 2-Policy objective.</strong> Dùng PPO-style
                 clipped objective, nhưng với advantage theo group:
               </p>
               <LaTeX block>
@@ -1017,7 +1017,7 @@ export default function GRPOTopic() {
                   }
                 </LaTeX>{" "}
                 là importance ratio; <LaTeX>{"\\epsilon"}</LaTeX> ≈ 0.2;
-                <LaTeX>{"\\beta"}</LaTeX> ≈ 0.02–0.1. Mục tiêu tổng: khuyến
+                <LaTeX>{"\\beta"}</LaTeX> ≈ 0.02-0.1. Mục tiêu tổng: khuyến
                 khích phản hồi có advantage dương, nhưng không cho chính
                 sách thay đổi quá mạnh trong một bước (clipping) và phải
                 giữ gần mô hình reference (KL).
@@ -1025,7 +1025,7 @@ export default function GRPOTopic() {
 
               <Callout
                 variant="insight"
-                title="Verifiable reward — chìa khoá bắt đầu từ DeepSeek-Math"
+                title="Verifiable reward-chìa khoá bắt đầu từ DeepSeek-Math"
               >
                 Với toán có đáp án số, ta lấy{" "}
                 <LaTeX>{"R = 1"}</LaTeX> nếu trích xuất đúng đáp án,{" "}
@@ -1040,7 +1040,7 @@ export default function GRPOTopic() {
                 variant="tip"
                 title="Vì sao bỏ được critic?"
               >
-                Trong PPO, critic V(s) để giảm variance gradient — nó ước
+                Trong PPO, critic V(s) để giảm variance gradient-nó ước
                 tính &quot;phản hồi trung bình sẽ được thưởng bao nhiêu&quot;
                 rồi lấy advantage = r − V(s). Nhưng critic cũng là mạng thần
                 kinh cần học, thêm 2x VRAM và thường dao động.{"\n"}
@@ -1053,10 +1053,10 @@ export default function GRPOTopic() {
                 variant="warning"
                 title="Khi nào GRPO KHÔNG phù hợp"
               >
-                (1) Tác vụ chủ quan (thơ, dịch văn, trò chuyện) — reward
-                hard-coded khó xây.{"\n"}(2) Tài nguyên hạn chế — sinh G
+                (1) Tác vụ chủ quan (thơ, dịch văn, trò chuyện), reward
+                hard-coded khó xây.{"\n"}(2) Tài nguyên hạn chế-sinh G
                 phản hồi/prompt rất tốn nếu không có inference engine tối
-                ưu.{"\n"}(3) Prompt quá dễ/quá khó — group toàn bằng nhau →
+                ưu.{"\n"}(3) Prompt quá dễ/quá khó-group toàn bằng nhau →
                 gradient = 0, không học được gì.
               </Callout>
 
@@ -1070,7 +1070,7 @@ export default function GRPOTopic() {
 
               <CodeBlock
                 language="python"
-                title="grpo_core.py — pseudocode ngắn gọn"
+                title="grpo_core.py-pseudocode ngắn gọn"
               >{`import torch
 import torch.nn.functional as F
 
@@ -1078,7 +1078,7 @@ def grpo_step(
     prompt_batch,          # list of prompts
     policy,                # π_θ, sinh + log-prob
     policy_old,            # π_old (lưu tạm trước step)
-    policy_ref,            # π_ref (mô hình SFT) — KL anchor
+    policy_ref,            # π_ref (mô hình SFT), KL anchor
     reward_fn,             # reward(prompt, response) -> float
     G: int = 16,           # group size
     epsilon: float = 0.2,
@@ -1129,7 +1129,7 @@ def grpo_step(
 
               <CodeBlock
                 language="python"
-                title="Verifiable reward thực tế — toán và code"
+                title="Verifiable reward thực tế-toán và code"
               >{`import re, subprocess, tempfile, os
 
 # ── Toán: trích xuất <answer>…</answer>, so khớp đáp án số ──
@@ -1179,7 +1179,7 @@ def combined_reward(prompt, response, meta):
                   nhiều bước, nhiễu tích tụ.
                 </p>
                 <p className="mt-2">
-                  GRPO thay V(s) bằng mean group — ước tính{" "}
+                  GRPO thay V(s) bằng mean group-ước tính{" "}
                   <em>Monte Carlo không lệch</em> của phần thưởng kỳ vọng.
                   Phương sai có thể cao hơn V(s) học tốt, nhưng với G ≥ 8
                   đã đủ nhỏ. Quan trọng hơn: không còn mạng thần kinh phụ
@@ -1187,8 +1187,8 @@ def combined_reward(prompt, response, meta):
                 </p>
                 <p className="mt-2">
                   Ngoài ra, DeepSeek dùng{" "}
-                  <em>reward normalization per prompt group</em> — tức là
-                  chia theo std riêng từng group — nên prompt dễ (group có
+                  <em>reward normalization per prompt group</em>, tức là
+                  chia theo std riêng từng group-nên prompt dễ (group có
                   variance nhỏ) không bị khuếch đại bởi gradient lớn. Tính
                   chất này rất hữu ích trong curriculum: các prompt dễ tự
                   nhiên &quot;ngủ yên&quot;, prompt khó đóng góp nhiều
@@ -1222,7 +1222,7 @@ def combined_reward(prompt, response, meta):
                   bộ nhớ và rất nhạy với tune.
                 </p>
                 <p className="mt-2">
-                  Kinh nghiệm 2024–2025: với reasoning task và verifier rõ
+                  Kinh nghiệm 2024-2025: với reasoning task và verifier rõ
                   ràng, GRPO thường cho sample-efficiency tốt hơn PPO-RLHF
                   ở cùng ngân sách tính toán. Với tác vụ chatty tổng quát
                   (helpful + harmless), RLHF-PPO hoặc DPO + IPO vẫn là
@@ -1236,7 +1236,7 @@ def combined_reward(prompt, response, meta):
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>
                   <strong>Reasoning models:</strong> DeepSeek-R1,
-                  DeepSeek-Math, Qwen2.5-Math — dùng GRPO với verifier
+                  DeepSeek-Math, Qwen2.5-Math-dùng GRPO với verifier
                   toán/code; đạt SOTA trên MATH, AIME, Codeforces.
                 </li>
                 <li>
@@ -1250,7 +1250,7 @@ def combined_reward(prompt, response, meta):
                 </li>
                 <li>
                   <strong>Game & simulation:</strong> reward trực tiếp từ
-                  môi trường — GRPO thay thế PPO trong một số baseline RL
+                  môi trường-GRPO thay thế PPO trong một số baseline RL
                   mới.
                 </li>
                 <li>
@@ -1279,7 +1279,7 @@ def combined_reward(prompt, response, meta):
                 </li>
                 <li>
                   <strong>Chi phí rollout:</strong> G × #prompt × tokens →
-                  dễ tốn gấp 10–30 lần SFT. Bắt buộc dùng inference engine
+                  dễ tốn gấp 10-30 lần SFT. Bắt buộc dùng inference engine
                   tối ưu (vLLM, SGLang, TensorRT-LLM) và có thể fix seed để
                   reproducible.
                 </li>
@@ -1295,8 +1295,8 @@ def combined_reward(prompt, response, meta):
                 </li>
                 <li>
                   <strong>Group size quá nhỏ:</strong> G = 2 làm baseline
-                  dao động mạnh, giống REINFORCE. Mặc định G = 8–16, mạnh
-                  hơn có thể G = 32–64.
+                  dao động mạnh, giống REINFORCE. Mặc định G = 8-16, mạnh
+                  hơn có thể G = 32-64.
                 </li>
               </ul>
             </ExplanationSection>
@@ -1307,11 +1307,11 @@ def combined_reward(prompt, response, meta):
             <MiniSummary
               title="6 điều cần nhớ về GRPO"
               points={[
-                "GRPO sinh G phản hồi cho cùng prompt, chấm reward, rồi dùng mean/std của NHÓM làm baseline — không cần critic/value network.",
+                "GRPO sinh G phản hồi cho cùng prompt, chấm reward, rồi dùng mean/std của NHÓM làm baseline-không cần critic/value network.",
                 "Advantage Â_i = (r_i − mean(r)) / std(r) → mẫu vượt trung bình được tăng P, dưới trung bình bị giảm P.",
                 "Kế thừa từ PPO: importance ratio ρ = π_new/π_old, clipping ε ≈ 0.2 giữ trust region, KL penalty β neo gần mô hình reference để chống reward hacking.",
-                "Đặc biệt mạnh với VERIFIABLE REWARD (toán, code, logic) — DeepSeek-R1, DeepSeek-Math dùng GRPO đạt SOTA reasoning mà không cần reward model.",
-                "Chi phí chính ở giai đoạn ROLLOUT (G × #prompt) — cần inference engine tối ưu (vLLM, SGLang) để ngân sách thực tế.",
+                "Đặc biệt mạnh với VERIFIABLE REWARD (toán, code, logic), DeepSeek-R1, DeepSeek-Math dùng GRPO đạt SOTA reasoning mà không cần reward model.",
+                "Chi phí chính ở giai đoạn ROLLOUT (G × #prompt), cần inference engine tối ưu (vLLM, SGLang) để ngân sách thực tế.",
                 "Không phù hợp tác vụ chủ quan, tác vụ mà group dễ toàn sai/toàn đúng (advantage = 0); chọn DPO hoặc PPO-RLHF khi thích hợp hơn.",
               ]}
             />

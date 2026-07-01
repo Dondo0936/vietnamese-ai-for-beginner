@@ -249,7 +249,7 @@ class OrderIn(BaseModel):
 def predict(o: OrderIn):
     return {"p": float(clf.predict_proba([o.dict()])[0, 1])}`,
     codeExplain:
-      "joblib lưu nguyên Pipeline (gồm preprocessing và model) vào một file .pkl. Việc này quan trọng vì khi load lại, preprocessing tự chạy đúng. FastAPI dựng endpoint chỉ vài dòng. pydantic kiểm tra input để không bị lỗi schema. Lưu ý an toàn: chỉ joblib.load hoặc pickle.load trên file do chính bạn tạo hoặc nguồn đã xác minh. File .pkl lạ có thể chạy code tuỳ ý khi load. Dùng picklescan hoặc convert sang safetensors trước.",
+      "joblib lưu nguyên Pipeline (gồm preprocessing và model) vào một file .pkl. Việc này quan trọng vì khi load lại, preprocessing tự chạy đúng. FastAPI dựng endpoint chỉ vài dòng, pydantic kiểm tra input để không bị lỗi schema. Lưu ý an toàn: chỉ joblib.load hoặc pickle.load trên file do chính bạn tạo hoặc nguồn đã xác minh. File .pkl lạ có thể chạy code tuỳ ý khi load. Dùng picklescan hoặc convert sang safetensors trước.",
   },
   {
     id: 8,
@@ -1065,7 +1065,7 @@ export default function EndToEndMlProjectTopic() {
 
           <p className="leading-relaxed">
             Vòng tròn ở cuối nhắc bạn: không có ‘xong’. Một mô hình sống trung
-            bình 3–12 tháng trước khi cần retrain lớn. Nếu bạn chỉ làm đến
+            bình 3-12 tháng trước khi cần retrain lớn. Nếu bạn chỉ làm đến
             Deploy rồi dừng, mô hình sẽ thầm lặng ‘thối rữa’.
           </p>
 

@@ -432,7 +432,7 @@ export default function MlpInCreditScoringTopic() {
         <Beat step={1}>
           <p>
             <strong>Thu thập đặc trưng đa chiều.</strong> Hệ thống lấy về
-            khoảng 100–1.600 biến số từ hồ sơ người vay: thu nhập, tỉ lệ nợ,
+            khoảng 100-1.600 biến số từ hồ sơ người vay: thu nhập, tỉ lệ nợ,
             số tháng làm công việc hiện tại, trình độ học vấn, địa điểm cư
             trú, lịch sử giao dịch qua ngân hàng, thậm chí cả số lần mở-đóng
             ví điện tử. Tất cả được chuẩn hoá (normalize) về khoảng 0..1 để
@@ -441,7 +441,7 @@ export default function MlpInCreditScoringTopic() {
         </Beat>
         <Beat step={2}>
           <p>
-            <strong>Lan truyền qua các lớp ẩn.</strong> Dữ liệu chảy qua 2–4
+            <strong>Lan truyền qua các lớp ẩn.</strong> Dữ liệu chảy qua 2-4
             lớp ẩn. <em>Lớp ẩn 1</em> học các khái niệm trung gian kiểu
             &ldquo;ổn định công việc&rdquo;, &ldquo;khả năng trả&rdquo;,
             &ldquo;gánh nặng nợ hiện tại&rdquo;. <em>Lớp ẩn 2</em> tổ hợp
@@ -803,8 +803,8 @@ function ApprovalFlowReveal() {
             key="s1"
             icon={Briefcase}
             title="Nhập hồ sơ"
-            time="1–3 phút"
-            body="Khách điền 5–10 ô trên app: thu nhập, công việc, số tiền vay, kỳ hạn. App đọc thêm dữ liệu ngân hàng liên kết (lịch sử giao dịch, ví điện tử) để lấy hàng trăm biến phụ."
+            time="1-3 phút"
+            body="Khách điền 5-10 ô trên app: thu nhập, công việc, số tiền vay, kỳ hạn. App đọc thêm dữ liệu ngân hàng liên kết (lịch sử giao dịch, ví điện tử) để lấy hàng trăm biến phụ."
             color="#0ea5e9"
           />,
           <ApprovalStep
@@ -820,7 +820,7 @@ function ApprovalFlowReveal() {
             icon={Wallet}
             title="MLP chấm rủi ro"
             time="~100 mili giây"
-            body="Toàn bộ hàng trăm biến chảy qua mạng 2–4 lớp ẩn. Đầu ra: xác suất vỡ nợ + danh sách các yếu tố đóng góp lớn nhất (để phục vụ giải thích và kiểm toán)."
+            body="Toàn bộ hàng trăm biến chảy qua mạng 2-4 lớp ẩn. Đầu ra: xác suất vỡ nợ + danh sách các yếu tố đóng góp lớn nhất (để phục vụ giải thích và kiểm toán)."
             color="#10b981"
           />,
           <ApprovalStep
@@ -828,7 +828,7 @@ function ApprovalFlowReveal() {
             icon={AlertTriangle}
             title="Áp dụng chính sách"
             time="< 1 giây"
-            body="Ngân hàng có các ngưỡng: rủi ro < 0,22 thì duyệt tự động; 0,22–0,5 thì chuyển chuyên viên xem thêm tài liệu; > 0,5 thì từ chối. Các quy định chống phân biệt cũng được áp ở đây."
+            body="Ngân hàng có các ngưỡng: rủi ro < 0,22 thì duyệt tự động; 0,22-0,5 thì chuyển chuyên viên xem thêm tài liệu; > 0,5 thì từ chối. Các quy định chống phân biệt cũng được áp ở đây."
             color="#f59e0b"
           />,
           <ApprovalStep
@@ -995,7 +995,7 @@ function ApplicationLearnMoreBlock() {
   const summaryPoints = useMemo(
     () => [
       "MLP là nhiều perceptron xếp thành nhiều lớp, đủ linh hoạt để bắt quan hệ phi tuyến giữa hàng trăm biến.",
-      "Quy trình: nhập hồ sơ → chuẩn hoá → lan truyền qua 2–4 lớp ẩn → sigmoid → xác suất vỡ nợ → áp chính sách.",
+      "Quy trình: nhập hồ sơ → chuẩn hoá → lan truyền qua 2-4 lớp ẩn → sigmoid → xác suất vỡ nợ → áp chính sách.",
       "Lợi thế: duyệt thêm ~27% hồ sơ, lãi suất trung bình thấp hơn 16% so với chỉ dùng FICO (số liệu Upstart 2021).",
       "Rủi ro lớn: hộp đen cộng định kiến dữ liệu. Cần SHAP/LIME để giải thích, kiểm tra disparate impact, và loại biến nhạy cảm.",
       "MLP không thay thế chuyên viên tín dụng. Nó mở rộng phạm vi ngân hàng tiếp cận đúng khách hàng.",

@@ -497,7 +497,7 @@ const TOOL_USAGE_MATRIX: ToolUsage[] = [
     origin: "global",
     role: "teacher",
     usage: "Soạn giáo án Toán lớp 8, tạo 20 câu hỏi trắc nghiệm theo Bloom.",
-    impact: "Tiết kiệm 3–5 giờ/tuần soạn tài liệu.",
+    impact: "Tiết kiệm 3-5 giờ/tuần soạn tài liệu.",
   },
   {
     tool: "Khanmigo",
@@ -546,7 +546,7 @@ const TOOL_USAGE_MATRIX: ToolUsage[] = [
     tool: "MindX",
     origin: "vietnam",
     role: "student",
-    usage: "Dạy lập trình cho học sinh 6–18 tuổi, có AI gợi ý sửa code.",
+    usage: "Dạy lập trình cho học sinh 6-18 tuổi, có AI gợi ý sửa code.",
     impact: "Hơn 150 trung tâm, đưa STEM + AI vào chương trình bổ trợ.",
   },
   {
@@ -569,7 +569,7 @@ const TOOL_USAGE_MATRIX: ToolUsage[] = [
     origin: "vietnam",
     role: "parent",
     usage: "Nhận báo cáo tuần về tiến độ con, cảnh báo sớm môn yếu.",
-    impact: "Cầu nối nhà trường – gia đình liền mạch hơn.",
+    impact: "Cầu nối nhà trường-gia đình liền mạch hơn.",
   },
   {
     tool: "Violympic / IOE",
@@ -776,7 +776,7 @@ export default function AIInEducationTopic() {
       },
       {
         question:
-          "Bộ GD-ĐT Việt Nam có quan điểm chính thức nào về AI trong giáo dục giai đoạn 2024–2025?",
+          "Bộ GD-ĐT Việt Nam có quan điểm chính thức nào về AI trong giáo dục giai đoạn 2024-2025?",
         options: [
           "Cấm tuyệt đối mọi công cụ AI trong trường học",
           "Khuyến khích ứng dụng AI có kiểm soát: đưa AI/dữ liệu vào chương trình, hướng dẫn sử dụng AI có trách nhiệm, nhưng yêu cầu trường có quy chế chống gian lận",
@@ -785,7 +785,7 @@ export default function AIInEducationTopic() {
         ],
         correct: 1,
         explanation:
-          "Các văn bản và đề án năm 2024–2025 của Bộ GD-ĐT nghiêng về hướng tích hợp có điều kiện: đưa nội dung AI vào chương trình (đặc biệt cấp THPT), thí điểm trợ giảng ảo, nhưng yêu cầu nhà trường xây quy chế kiểm tra đánh giá để chống gian lận. Nhiều sở GD-ĐT (TP.HCM, Hà Nội) đã ban hành hướng dẫn riêng.",
+          "Các văn bản và đề án năm 2024-2025 của Bộ GD-ĐT nghiêng về hướng tích hợp có điều kiện: đưa nội dung AI vào chương trình (đặc biệt cấp THPT), thí điểm trợ giảng ảo, nhưng yêu cầu nhà trường xây quy chế kiểm tra đánh giá để chống gian lận. Nhiều sở GD-ĐT (TP.HCM, Hà Nội) đã ban hành hướng dẫn riêng.",
       },
       {
         question:
@@ -805,7 +805,7 @@ export default function AIInEducationTopic() {
           "Thầy Nam dạy Toán lớp 9 muốn dùng AI để giảm giờ soạn bài. Ba cách dùng AN TOÀN và hiệu quả nhất là gì?",
         options: [
           "Cho AI chấm tất cả bài của học sinh không cần review",
-          "(1) Sinh 30 bài tập phân tầng độ khó, (2) Dịch và điều chỉnh tài liệu tiếng Anh sang tiếng Việt phù hợp lớp 9, (3) Tạo kịch bản hỏi–đáp Socratic để dẫn dắt học sinh, luôn kiểm tra lại trước khi dùng",
+          "(1) Sinh 30 bài tập phân tầng độ khó, (2) Dịch và điều chỉnh tài liệu tiếng Anh sang tiếng Việt phù hợp lớp 9, (3) Tạo kịch bản hỏi-đáp Socratic để dẫn dắt học sinh, luôn kiểm tra lại trước khi dùng",
           "Dùng AI thay hoàn toàn cho sách giáo khoa",
           "Tải toàn bộ điểm học sinh lên ChatGPT bản miễn phí",
         ],
@@ -851,7 +851,7 @@ export default function AIInEducationTopic() {
             "Tất cả những việc trên, AI là trợ lý đa năng, không thay thế giáo viên",
           ]}
           correct={4}
-          explanation="Khảo sát năm 2024–2025 của các tờ báo giáo dục và Bộ GD-ĐT cho thấy giáo viên Việt Nam dùng AI ở cả bốn mục đích: soạn bài (phổ biến nhất), gợi ý chấm bài, tìm ý tưởng dạy học, và trợ lý ngoài giờ. Đặc điểm chung: AI là trợ lý, không phải người quyết định, giáo viên vẫn kiểm duyệt trước khi giao cho học sinh."
+          explanation="Khảo sát năm 2024-2025 của các tờ báo giáo dục và Bộ GD-ĐT cho thấy giáo viên Việt Nam dùng AI ở cả bốn mục đích: soạn bài (phổ biến nhất), gợi ý chấm bài, tìm ý tưởng dạy học, và trợ lý ngoài giờ. Đặc điểm chung: AI là trợ lý, không phải người quyết định, giáo viên vẫn kiểm duyệt trước khi giao cho học sinh."
         >
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Bối cảnh">
             <div className="space-y-3 text-sm leading-relaxed">
@@ -870,7 +870,7 @@ export default function AIInEducationTopic() {
                 <strong>&ldquo;hiệu ứng 2 sigma&rdquo;</strong>: học sinh được
                 kèm riêng giỏi hơn 98% các bạn học lớp thường. Vấn đề là{" "}
                 <em>gia sư riêng đắt tiền</em>, một buổi kèm Toán 12 ở TP.HCM
-                là 300–500 nghìn. AI mở ra khả năng đưa trải nghiệm &ldquo;gia
+                là 300-500 nghìn. AI mở ra khả năng đưa trải nghiệm &ldquo;gia
                 sư riêng&rdquo; đến mọi em, từ Quận 1 đến Mộc Châu, Cà Mau.
               </p>
               <p>
@@ -1001,7 +1001,7 @@ export default function AIInEducationTopic() {
                 <UseCaseCard
                   icon={PencilLine}
                   title="2. Chấm bài tự động"
-                  description="Chấm trắc nghiệm chính xác 100%; chấm tự luận sơ bộ 70–85% khớp giáo viên. Nên dùng để chấm NHÁP + giáo viên review final, đặc biệt với môn Văn, Sử, Địa."
+                  description="Chấm trắc nghiệm chính xác 100%; chấm tự luận sơ bộ 70-85% khớp giáo viên. Nên dùng để chấm NHÁP + giáo viên review final, đặc biệt với môn Văn, Sử, Địa."
                   color="#f59e0b"
                 />
                 <UseCaseCard
@@ -1049,7 +1049,7 @@ export default function AIInEducationTopic() {
                   </li>
                   <li>
                     <strong>MindX</strong>: hơn 150 trung tâm dạy lập trình cho
-                    học sinh 6–18, AI gợi ý sửa code.
+                    học sinh 6-18, AI gợi ý sửa code.
                   </li>
                   <li>
                     <strong>VnEdu</strong>: sổ liên lạc điện tử có module AI
@@ -1122,7 +1122,7 @@ export default function AIInEducationTopic() {
                 <div className="mb-2 flex items-center gap-2">
                   <Landmark className="h-4 w-4 text-accent" />
                   <span className="text-sm font-semibold text-foreground">
-                    Quan điểm chính sách, Bộ GD-ĐT (2024–2025)
+                    Quan điểm chính sách, Bộ GD-ĐT (2024-2025)
                   </span>
                 </div>
                 <div className="space-y-2 text-[13px] leading-relaxed text-foreground">
@@ -1226,18 +1226,18 @@ export default function AIInEducationTopic() {
                 description="Cùng tiết Toán lớp 9, phân bổ thời gian của giáo viên"
                 childA={
                   <div className="space-y-1.5 text-[13px] leading-relaxed">
-                    <p><strong>Trước giờ (3–5 giờ)</strong>: soạn giáo án tay, chọn ví dụ từ sách.</p>
+                    <p><strong>Trước giờ (3-5 giờ)</strong>: soạn giáo án tay, chọn ví dụ từ sách.</p>
                     <p><strong>Trong giờ (45 phút)</strong>: giảng đều cho cả lớp, vài em lên bảng.</p>
-                    <p><strong>Sau giờ (2–3 giờ)</strong>: chấm 40 bài tay, không kịp phân tích lớp yếu ở đâu.</p>
-                    <p className="italic text-muted">Tổng: 5–8 giờ công cho 45 phút lớp.</p>
+                    <p><strong>Sau giờ (2-3 giờ)</strong>: chấm 40 bài tay, không kịp phân tích lớp yếu ở đâu.</p>
+                    <p className="italic text-muted">Tổng: 5-8 giờ công cho 45 phút lớp.</p>
                   </div>
                 }
                 childB={
                   <div className="space-y-1.5 text-[13px] leading-relaxed">
-                    <p><strong>Trước giờ (1–2 giờ)</strong>: AI sinh 30 bài tập phân tầng, cô chọn 15 bài, thêm ví dụ địa phương.</p>
+                    <p><strong>Trước giờ (1-2 giờ)</strong>: AI sinh 30 bài tập phân tầng, cô chọn 15 bài, thêm ví dụ địa phương.</p>
                     <p><strong>Trong giờ (45 phút)</strong>: giảng 15 phút chung, 30 phút học sinh tự làm với AI Tutor; cô kèm em yếu.</p>
                     <p><strong>Sau giờ (1 giờ)</strong>: AI chấm nháp, cô review 10 bài chênh lệch lớn, xem dashboard.</p>
-                    <p className="italic text-muted">Tổng: 2–3 giờ, chất lượng cá nhân hoá cao hơn.</p>
+                    <p className="italic text-muted">Tổng: 2-3 giờ, chất lượng cá nhân hoá cao hơn.</p>
                   </div>
                 }
               />
@@ -1249,10 +1249,10 @@ export default function AIInEducationTopic() {
               points={[
                 "AI trong giáo dục phục vụ 5 nhóm: cá nhân hoá, chấm bài, tạo nội dung, trợ giảng 24/7, phân tích học tập.",
                 "Mỗi học sinh, một con đường: cùng bài phương trình bậc 2, AI đưa ba dạng bài khác nhau cho ba trình độ.",
-                "Chấm tự luận bằng AI: tốt để chấm nháp (70–85% khớp giáo viên), không nên là giám khảo duy nhất vì có điểm mù với bài sáng tạo.",
+                "Chấm tự luận bằng AI: tốt để chấm nháp (70-85% khớp giáo viên), không nên là giám khảo duy nhất vì có điểm mù với bài sáng tạo.",
                 "Việt Nam có sẵn hệ sinh thái: Topica (2014), FUNiX, MindX, Hocmai, VnEdu, Violympic, Got It AI.",
                 "Cạm bẫy: liêm chính học thuật, bất bình đẳng hạ tầng, rủi ro dữ liệu học sinh, giáo viên chưa được đào tạo.",
-                "Bộ GD-ĐT (2024–2025) chọn hướng tích hợp có điều kiện: đưa AI vào chương trình + thí điểm trợ giảng + yêu cầu quy chế chống gian lận.",
+                "Bộ GD-ĐT (2024-2025) chọn hướng tích hợp có điều kiện: đưa AI vào chương trình + thí điểm trợ giảng + yêu cầu quy chế chống gian lận.",
                 "AI không thay giáo viên, giáo viên có AI sẽ thay giáo viên không có AI. Vai trò chuyển sang thiết kế, cố vấn, phản biện.",
               ]}
             />

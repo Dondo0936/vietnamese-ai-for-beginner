@@ -10,7 +10,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 /* ─────────────────────────────────────────────────────────────
-   METADATA — GloVe topic
+   METADATA-GloVe topic
    Giữ nguyên slug, chỉ mở rộng mô tả học thuật cho phần tóm tắt
    ───────────────────────────────────────────────────────────── */
 export const metadata: TopicMeta = {
@@ -27,7 +27,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   CONSTANTS — Bộ dữ liệu tiếng Việt 10×10
+   CONSTANTS-Bộ dữ liệu tiếng Việt 10×10
    Ý tưởng: chọn 10 từ phổ biến thuộc 3 cụm ngữ nghĩa:
      • Ẩm thực miền Bắc: phở, bún, chả, ngon
      • Địa danh / giao thông: Hà Nội, xe máy, đường phố
@@ -38,19 +38,19 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 10;
 
 const WORDS = [
-  "phở",         // 0  — món ăn
-  "bún",         // 1  — món ăn
-  "chả",         // 2  — món ăn (đi với bún)
-  "ngon",        // 3  — tính từ đánh giá món ăn
-  "Hà Nội",      // 4  — địa danh
-  "xe máy",      // 5  — phương tiện
-  "đường phố",   // 6  — địa điểm đô thị
-  "tuyệt",       // 7  — tính từ cảm xúc
-  "thích",       // 8  — động từ cảm xúc
-  "đông",        // 9  — tính từ mật độ
+  "phở",         // 0 , món ăn
+  "bún",         // 1 , món ăn
+  "chả",         // 2 , món ăn (đi với bún)
+  "ngon",        // 3 , tính từ đánh giá món ăn
+  "Hà Nội",      // 4 , địa danh
+  "xe máy",      // 5 , phương tiện
+  "đường phố",   // 6 , địa điểm đô thị
+  "tuyệt",       // 7 , tính từ cảm xúc
+  "thích",       // 8 , động từ cảm xúc
+  "đông",        // 9 , tính từ mật độ
 ] as const;
 
-// Ma trận đồng xuất hiện đối xứng — X[i][j] = X[j][i]
+// Ma trận đồng xuất hiện đối xứng-X[i][j] = X[j][i]
 // Đường chéo = 0 (không tính từ với chính nó)
 const COOC: number[][] = [
   // phở  bún  chả  ngon HN   xe   đg   tuyệt thích đông
@@ -66,12 +66,12 @@ const COOC: number[][] = [
   [   5,   4,   2,   3,  23,  18,  27,   4,   2,   0], // đông
 ];
 
-// Màu cụm ngữ nghĩa — hiển thị embedding 2D
+// Màu cụm ngữ nghĩa-hiển thị embedding 2D
 const CLUSTER = [0, 0, 0, 0, 1, 1, 1, 2, 2, 1];
 const CLUSTER_COLOR = ["#f59e0b", "#3b82f6", "#ef4444"];
 const CLUSTER_NAME = ["Ẩm thực", "Đô thị / Giao thông", "Cảm xúc"];
 
-// Embedding 2D mô phỏng — kết quả sau khi GloVe hội tụ
+// Embedding 2D mô phỏng-kết quả sau khi GloVe hội tụ
 // (thực tế vector có 50-300 chiều, đây là phép chiếu PCA/t-SNE giả)
 const EMBED_2D: [number, number][] = [
   [ 0.82, -0.41], // phở
@@ -132,7 +132,7 @@ const ANALOGY_QUERIES: AnalogyResult[] = [
     gloveScore: 0.84,
     w2vResult: "bé",
     w2vScore: 0.82,
-    note: "Quan hệ phản nghĩa — cả hai đều vững.",
+    note: "Quan hệ phản nghĩa-cả hai đều vững.",
   },
   {
     query: "đi − chạy + bay",
@@ -156,7 +156,7 @@ function weightFn(x: number): number {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   QUIZ — 8 câu đa dạng mức độ
+   QUIZ-8 câu đa dạng mức độ
    ───────────────────────────────────────────────────────────── */
 const QUIZ: QuizQuestion[] = [
   {
@@ -169,7 +169,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Word2Vec nhìn từng cửa sổ cục bộ (local). GloVe xây ma trận đồng xuất hiện toàn cục (global) rồi phân tích — kết hợp ưu điểm cả hai trường phái.",
+      "Word2Vec nhìn từng cửa sổ cục bộ (local). GloVe xây ma trận đồng xuất hiện toàn cục (global) rồi phân tích-kết hợp ưu điểm cả hai trường phái.",
   },
   {
     question:
@@ -182,7 +182,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Ma trận X_ij đếm số lần hai từ xuất hiện cùng cửa sổ trên TOÀN BỘ corpus. 22 là giá trị cao — phản ánh 'bún chả' là cụm từ cực kỳ phổ biến trong tiếng Việt.",
+      "Ma trận X_ij đếm số lần hai từ xuất hiện cùng cửa sổ trên TOÀN BỘ corpus. 22 là giá trị cao-phản ánh 'bún chả' là cụm từ cực kỳ phổ biến trong tiếng Việt.",
   },
   {
     question: "GloVe tối ưu hàm mất mát nào?",
@@ -237,7 +237,7 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Cho vector('Hà Nội') − vector('Việt Nam') + vector('Pháp') ≈ ?",
     options: [
-      "vector('Paris') — GloVe bắt được quan hệ thủ đô",
+      "vector('Paris'), GloVe bắt được quan hệ thủ đô",
       "vector('phở')",
       "vector trung bình của corpus",
       "Không xác định",
@@ -251,18 +251,18 @@ const QUIZ: QuizQuestion[] = [
       "Hạn chế lớn nhất của GloVe (so với BERT, GPT) là gì?",
     options: [
       "Chậm hơn BERT khi inference",
-      "Mỗi từ chỉ có DUY NHẤT một vector — không phân biệt được 'đá' (stone) vs 'đá' (kick) trong các ngữ cảnh khác nhau",
+      "Mỗi từ chỉ có DUY NHẤT một vector-không phân biệt được 'đá' (stone) vs 'đá' (kick) trong các ngữ cảnh khác nhau",
       "Không hỗ trợ tiếng Việt",
       "Không chạy trên GPU",
     ],
     correct: 1,
     explanation:
-      "GloVe là static embedding: 1 từ = 1 vector bất kể ngữ cảnh. BERT/GPT là contextual — 'đá' trong 'cục đá' và 'đá bóng' có vector khác nhau. Đây là lý do NLP hiện đại chuyển sang contextual.",
+      "GloVe là static embedding: 1 từ = 1 vector bất kể ngữ cảnh. BERT/GPT là contextual, 'đá' trong 'cục đá' và 'đá bóng' có vector khác nhau. Đây là lý do NLP hiện đại chuyển sang contextual.",
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   HELPER — Tính cosine similarity để hiển thị live
+   HELPER-Tính cosine similarity để hiển thị live
    ───────────────────────────────────────────────────────────── */
 function cosine(a: [number, number], b: [number, number]): number {
   const dot = a[0] * b[0] + a[1] * b[1];
@@ -337,7 +337,7 @@ export default function GloveTopic() {
   return (
     <>
       {/* ─────────────────────────────────────────────────
-          STEP 1 — PredictionGate: khởi động trực giác
+          STEP 1-PredictionGate: khởi động trực giác
           ───────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Thử thách">
         <PredictionGate
@@ -348,7 +348,7 @@ export default function GloveTopic() {
             '"đường phố" và "tuyệt"',
           ]}
           correct={1}
-          explanation={`"Bún chả" là món ăn nổi tiếng — hai từ này gần như luôn đi cùng nhau trong văn bản ẩm thực! GloVe dựa trên chính ý tưởng này: đếm tần suất ĐI CÙNG NHAU của mọi cặp từ trên toàn bộ dữ liệu, rồi dùng thống kê đó để tạo word embeddings. "Bún chả" sẽ có similarity cực cao trong không gian vector.`}
+          explanation={`"Bún chả" là món ăn nổi tiếng-hai từ này gần như luôn đi cùng nhau trong văn bản ẩm thực! GloVe dựa trên chính ý tưởng này: đếm tần suất ĐI CÙNG NHAU của mọi cặp từ trên toàn bộ dữ liệu, rồi dùng thống kê đó để tạo word embeddings. "Bún chả" sẽ có similarity cực cao trong không gian vector.`}
         />
         <div className="mt-4">
           <ProgressSteps
@@ -371,7 +371,7 @@ export default function GloveTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 2 — Visualization chính: ma trận 10×10
+          STEP 2-Visualization chính: ma trận 10×10
                     + matrix factorization X ≈ W × W^T
           ───────────────────────────────────────────────── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
@@ -517,12 +517,12 @@ export default function GloveTopic() {
                 <p className="text-sm text-muted">
                   Di chuột qua ô để xem{" "}
                   <LaTeX>{`X_{ij}`}</LaTeX> và{" "}
-                  <LaTeX>{`\\log X_{ij}`}</LaTeX> — giá trị mà GloVe muốn khớp.
+                  <LaTeX>{`\\log X_{ij}`}</LaTeX>, giá trị mà GloVe muốn khớp.
                 </p>
               )}
             </div>
 
-            {/* ── Matrix factorization — thanh trượt 5 bước ── */}
+            {/* ── Matrix factorization-thanh trượt 5 bước ── */}
             <div className="rounded-lg border border-border bg-background/40 p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-muted uppercase tracking-wide">
@@ -625,7 +625,7 @@ export default function GloveTopic() {
             {/* ── Vector embedding 2D của từ được chọn ── */}
             <div className="rounded-lg border border-border bg-background/40 p-4">
               <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-                Embedding 2D (phép chiếu mô phỏng) —{" "}
+                Embedding 2D (phép chiếu mô phỏng),{" "}
                 <span className="text-accent">{WORDS[selectedWord]}</span>
               </p>
               <div className="relative w-full aspect-square max-w-sm mx-auto rounded bg-surface/40 border border-border">
@@ -763,7 +763,7 @@ export default function GloveTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 3 — AhaMoment
+          STEP 3-AhaMoment
           ───────────────────────────────────────────────── */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc A-ha">
         <AhaMoment>
@@ -778,13 +778,13 @@ export default function GloveTopic() {
             Giống thám tử: Word2Vec theo dõi từng cuộc gặp riêng lẻ (mỗi cửa sổ
             là một "lần quan sát"), GloVe lập bảng tổng hợp{" "}
             {'"ai gặp ai bao nhiêu lần trong cả năm"'} rồi phân tích mối quan hệ
-            một cách tổng thể — nhanh hơn, ổn định hơn, dễ song song hơn.
+            một cách tổng thể-nhanh hơn, ổn định hơn, dễ song song hơn.
           </p>
         </AhaMoment>
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 4 — InlineChallenge #1
+          STEP 4-InlineChallenge #1
           ───────────────────────────────────────────────── */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách nhanh">
         <InlineChallenge
@@ -800,7 +800,7 @@ export default function GloveTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 5 — So sánh GloVe vs Word2Vec qua analogy
+          STEP 5-So sánh GloVe vs Word2Vec qua analogy
           ───────────────────────────────────────────────── */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="So sánh">
         <p className="text-sm text-foreground leading-relaxed mb-4">
@@ -905,7 +905,7 @@ export default function GloveTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 6 — Weighted cost function f(x)
+          STEP 6-Weighted cost function f(x)
           ───────────────────────────────────────────────── */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Hàm trọng số">
         <p className="text-sm text-foreground leading-relaxed mb-4">
@@ -922,7 +922,7 @@ export default function GloveTopic() {
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-background/40 p-4">
               <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2 text-center">
-                Đường cong f(x) — Weighting function
+                Đường cong f(x), Weighting function
               </p>
               <p className="text-center mb-3">
                 <LaTeX block>{`f(x) = \\begin{cases} (x/x_{\\max})^{\\alpha} & \\text{nếu } x < x_{\\max} \\\\ 1 & \\text{nếu } x \\geq x_{\\max} \\end{cases}`}</LaTeX>
@@ -1120,7 +1120,7 @@ export default function GloveTopic() {
                   <LaTeX>{`\\mathbf{w}_i^{\\top} \\tilde{\\mathbf{w}}_k = \\log X_{ik} - \\log X_i`}</LaTeX>
                   . Phần <LaTeX>{`\\log X_i`}</LaTeX> được hấp thụ vào bias term. Kết quả cuối cùng:{" "}
                   <LaTeX>{`\\mathbf{w}_i^{\\top} \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j = \\log X_{ij}`}</LaTeX>
-                  . Đây là lý do tại sao log là lựa chọn tự nhiên — không phải ad hoc!
+                  . Đây là lý do tại sao log là lựa chọn tự nhiên-không phải ad hoc!
                 </p>
               </div>
             </CollapsibleDetail>
@@ -1129,15 +1129,15 @@ export default function GloveTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 7 — InlineChallenge #2
+          STEP 7-InlineChallenge #2
           ───────────────────────────────────────────────── */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Thử thách nâng cao">
         <InlineChallenge
           question="Một corpus có X(của, là) = 2,000,000 (cực phổ biến) và X(phở, ngon) = 80. Hàm f với x_max = 100 xử lý ra sao?"
           options={[
-            "f(2,000,000) = 1, f(80) ≈ (80/100)^0.75 ≈ 0.84 — cả hai đều được tính gần như bằng nhau",
-            "f(2,000,000) = 2000, f(80) = 80 — cặp phổ biến thống trị loss",
-            "f(2,000,000) = 0, f(80) = 0 — bỏ qua cả hai",
+            "f(2,000,000) = 1, f(80) ≈ (80/100)^0.75 ≈ 0.84-cả hai đều được tính gần như bằng nhau",
+            "f(2,000,000) = 2000, f(80) = 80-cặp phổ biến thống trị loss",
+            "f(2,000,000) = 0, f(80) = 0-bỏ qua cả hai",
           ]}
           correct={0}
           explanation="Đây chính là lý do f bão hoà ở x_max: cặp 'của là' không còn chi phối gradient dù xuất hiện 2 triệu lần. Cặp 'phở ngon' (80 lần) vẫn được đánh trọng số đầy đủ (0.84). Nhờ vậy GloVe học được quan hệ ngữ nghĩa thay vì chỉ memorize stop words."
@@ -1145,7 +1145,7 @@ export default function GloveTopic() {
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 8 — Explanation đầy đủ
+          STEP 8-Explanation đầy đủ
           ───────────────────────────────────────────────── */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Lý thuyết">
         <ExplanationSection>
@@ -1173,19 +1173,19 @@ export default function GloveTopic() {
             </p>
           </Callout>
 
-          <Callout variant="info" title="Hàm trọng số f(x) — ba tính chất bắt buộc">
+          <Callout variant="info" title="Hàm trọng số f(x), ba tính chất bắt buộc">
             <LaTeX block>{`f(x) = \\begin{cases} (x/x_{\\max})^{\\alpha} & \\text{nếu } x < x_{\\max} \\\\ 1 & \\text{nếu } x \\geq x_{\\max} \\end{cases}`}</LaTeX>
             <ol className="list-decimal pl-5 space-y-1 text-sm mt-2">
               <li>
-                <strong>f(0) = 0</strong> — bỏ qua cặp không đồng xuất hiện
+                <strong>f(0) = 0</strong>, bỏ qua cặp không đồng xuất hiện
                 (tránh log 0).
               </li>
               <li>
-                <strong>Không giảm</strong> — cặp thường gặp không bị đánh trọng
+                <strong>Không giảm</strong>, cặp thường gặp không bị đánh trọng
                 số nhỏ hơn cặp hiếm.
               </li>
               <li>
-                <strong>Bão hoà</strong> — cặp cực phổ biến ("của", "là") không
+                <strong>Bão hoà</strong>, cặp cực phổ biến ("của", "là") không
                 chi phối gradient.
               </li>
             </ol>
@@ -1197,7 +1197,7 @@ export default function GloveTopic() {
               ổn định, có sẵn pre-trained (glove.6B, glove.42B, glove.840B), dễ
               song song hoá trên cluster. <strong>Word2Vec:</strong> Dữ liệu
               nhỏ-vừa, cần huấn luyện tuỳ chỉnh, dùng Skip-gram cho từ hiếm.
-              Thực tế: kết quả hai model rất gần nhau trên các benchmark — chọn
+              Thực tế: kết quả hai model rất gần nhau trên các benchmark-chọn
               cái nào tiện hơn cho pipeline của bạn.
             </p>
           </Callout>
@@ -1205,8 +1205,8 @@ export default function GloveTopic() {
           <Callout variant="warning" title="Hạn chế chung của static embeddings">
             <p>
               Cả GloVe lẫn Word2Vec đều là <strong>static</strong>: một từ chỉ
-              có MỘT vector bất kể ngữ cảnh. "Con đá" và "đá bóng" — từ "đá" có
-              nghĩa hoàn toàn khác — nhưng GloVe không phân biệt được. Đây là
+              có MỘT vector bất kể ngữ cảnh. "Con đá" và "đá bóng", từ "đá" có
+              nghĩa hoàn toàn khác-nhưng GloVe không phân biệt được. Đây là
               động lực chính để ngành NLP chuyển sang{" "}
               <strong>contextual embeddings</strong>: ELMo (2018), BERT (2018),
               GPT-2 (2019). Mỗi lần gặp "đá" trong ngữ cảnh mới, model tạo một
@@ -1304,9 +1304,9 @@ def cosine_sim(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-8)
 
 # ─── So sánh các cặp nổi tiếng ───
-print(cosine_sim(embeddings["king"], embeddings["queen"]))    # 0.75 — rất gần
-print(cosine_sim(embeddings["king"], embeddings["man"]))      # 0.53 — gần
-print(cosine_sim(embeddings["king"], embeddings["car"]))      # 0.15 — xa
+print(cosine_sim(embeddings["king"], embeddings["queen"]))    # 0.75-rất gần
+print(cosine_sim(embeddings["king"], embeddings["man"]))      # 0.53-gần
+print(cosine_sim(embeddings["king"], embeddings["car"]))      # 0.15-xa
 
 # ─── Analogy kinh điển ───
 target = embeddings["king"] - embeddings["man"] + embeddings["woman"]
@@ -1328,24 +1328,24 @@ target = embeddings["paris"] - embeddings["france"] + embeddings["vietnam"]
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 9 — MiniSummary (6 điểm)
+          STEP 9-MiniSummary (6 điểm)
           ───────────────────────────────────────────────── */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="Ghi nhớ về GloVe"
           points={[
-            "GloVe xây ma trận đồng xuất hiện TOÀN CỤC X_ij — đếm số lần mọi cặp từ đi cùng nhau trên toàn corpus (không chỉ window cục bộ).",
-            "Mục tiêu cốt lõi: w_i · ~w_j + b_i + ~b_j ≈ log(X_ij) — tích vô hướng vector xấp xỉ log đồng xuất hiện, có trọng số f(X_ij).",
-            "Hàm f(x) = (x/x_max)^α (α=0.75, x_max=100) bão hoà ở 1 — giảm ảnh hưởng cặp hiếm (nhiễu) và cặp quá phổ biến ('của', 'là').",
+            "GloVe xây ma trận đồng xuất hiện TOÀN CỤC X_ij-đếm số lần mọi cặp từ đi cùng nhau trên toàn corpus (không chỉ window cục bộ).",
+            "Mục tiêu cốt lõi: w_i · ~w_j + b_i + ~b_j ≈ log(X_ij), tích vô hướng vector xấp xỉ log đồng xuất hiện, có trọng số f(X_ij).",
+            "Hàm f(x) = (x/x_max)^α (α=0.75, x_max=100) bão hoà ở 1-giảm ảnh hưởng cặp hiếm (nhiễu) và cặp quá phổ biến ('của', 'là').",
             "Kết hợp ưu điểm LSA (toàn cục) + Word2Vec (cục bộ) → embeddings ổn định, song song hoá dễ, kết quả analogy mạnh.",
-            "Pre-trained GloVe Stanford: glove.6B (400K từ, 50-300d), glove.42B (1.9M từ), glove.840B (2.2M từ) — tải miễn phí.",
+            "Pre-trained GloVe Stanford: glove.6B (400K từ, 50-300d), glove.42B (1.9M từ), glove.840B (2.2M từ), tải miễn phí.",
             "Hạn chế: mỗi từ chỉ có 1 vector cố định (không phân biệt nghĩa theo ngữ cảnh) → BERT/GPT giải quyết bằng contextual embeddings.",
           ]}
         />
       </LessonSection>
 
       {/* ─────────────────────────────────────────────────
-          STEP 10 — Quiz (8 câu)
+          STEP 10-Quiz (8 câu)
           ───────────────────────────────────────────────── */}
       <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Kiểm tra">
         <QuizSection questions={QUIZ} />

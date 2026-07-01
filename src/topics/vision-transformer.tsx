@@ -43,7 +43,7 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: "ViT cần bao nhiêu dữ liệu để vượt CNN (ResNet)?",
     options: [
-      "Ít hơn CNN — ViT hiệu quả hơn",
+      "Ít hơn CNN-ViT hiệu quả hơn",
       "ImageNet (1.4M) là đủ",
       "Rất nhiều: JFT-300M (300 triệu ảnh). Với ít data, CNN thắng nhờ inductive bias cục bộ",
     ],
@@ -68,7 +68,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "16", accept: ["16"] },
       { answer: "patch", accept: ["Patch", "mảnh"] },
     ],
-    explanation: "ViT-Base dùng patch 16×16 pixel. Với ảnh 224×224, ta được (224/16)² = 196 patch, mỗi patch flatten thành vector 16×16×3 = 768 chiều — giống word embedding trong NLP.",
+    explanation: "ViT-Base dùng patch 16×16 pixel. Với ảnh 224×224, ta được (224/16)² = 196 patch, mỗi patch flatten thành vector 16×16×3 = 768 chiều-giống word embedding trong NLP.",
   },
 ];
 
@@ -82,9 +82,9 @@ export default function VisionTransformerTopic() {
     <>
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Transformer thống trị NLP (text). Nhưng ảnh không phải chuỗi từ — làm sao áp dụng Transformer cho ảnh?"
+          question="Transformer thống trị NLP (text). Nhưng ảnh không phải chuỗi từ-làm sao áp dụng Transformer cho ảnh?"
           options={[
-            "Không thể — Transformer chỉ cho text",
+            "Không thể-Transformer chỉ cho text",
             "Chia ảnh thành mảnh nhỏ (patches), mỗi patch = 1 'từ', rồi dùng Transformer bình thường!",
             "Chuyển ảnh thành text mô tả rồi dùng Transformer",
           ]}
@@ -95,7 +95,7 @@ export default function VisionTransformerTopic() {
 
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá ViT">
         <p className="text-sm text-foreground leading-relaxed mb-3">
-          Hãy tưởng tượng bạn có tấm ảnh chụp phố cổ Hội An và cắt thành 9 mảnh ghép (jigsaw). Mỗi mảnh tự hỏi: &quot;Mảnh nào liên quan đến tôi?&quot; — đó là self-attention! Mảnh có đèn lồng sẽ &quot;chú ý&quot; đến mảnh có phố — dù chúng cách xa nhau.
+          Hãy tưởng tượng bạn có tấm ảnh chụp phố cổ Hội An và cắt thành 9 mảnh ghép (jigsaw). Mỗi mảnh tự hỏi: &quot;Mảnh nào liên quan đến tôi?&quot;, đó là self-attention! Mảnh có đèn lồng sẽ &quot;chú ý&quot; đến mảnh có phố-dù chúng cách xa nhau.
         </p>
 
         <VisualizationSection topicSlug={metadata.slug}>
@@ -179,7 +179,7 @@ export default function VisionTransformerTopic() {
         <AhaMoment>
           <p>
             <strong>ViT</strong>{" "}
-            coi ảnh là chuỗi patches, giống Transformer coi văn bản là chuỗi tokens. Patches = tokens! Self-attention cho mỗi patch &quot;nhìn&quot; toàn bộ ảnh ngay từ lớp đầu tiên — CNN phải xếp nhiều lớp mới &quot;nhìn xa&quot; được.
+            coi ảnh là chuỗi patches, giống Transformer coi văn bản là chuỗi tokens. Patches = tokens! Self-attention cho mỗi patch &quot;nhìn&quot; toàn bộ ảnh ngay từ lớp đầu tiên-CNN phải xếp nhiều lớp mới &quot;nhìn xa&quot; được.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -221,7 +221,7 @@ export default function VisionTransformerTopic() {
             "12 tokens (1 cho mỗi lớp Transformer)",
           ]}
           correct={1}
-          explanation="14 × 14 = 196 patches. Thêm 1 [CLS] token = 197. Attention matrix: 197 × 197 = ~39K elements — rất nhẹ! So sánh: nếu mỗi pixel 1 token → 50K tokens → attention 2,5 tỷ elements. Patches là cách brilliant để giữ sequence ngắn."
+          explanation="14 × 14 = 196 patches. Thêm 1 [CLS] token = 197. Attention matrix: 197 × 197 = ~39K elements-rất nhẹ! So sánh: nếu mỗi pixel 1 token → 50K tokens → attention 2,5 tỷ elements. Patches là cách brilliant để giữ sequence ngắn."
         />
       </LessonSection>
 

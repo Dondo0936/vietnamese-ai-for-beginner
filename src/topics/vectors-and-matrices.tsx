@@ -1078,7 +1078,7 @@ export default function VectorsAndMatricesTopic() {
                       className="w-full accent-emerald-500"
                     />
                     <p className="text-[11px] text-tertiary italic mt-1">
-                      k âm lật ngược. k = 0 co về gốc. k &gt; 1 kéo dài.
+                      k âm lật ngược, k = 0 co về gốc, k &gt; 1 kéo dài.
                     </p>
                   </div>
                 </div>
@@ -1243,8 +1243,8 @@ export default function VectorsAndMatricesTopic() {
             >
               <p className="text-sm text-foreground leading-relaxed">
                 <strong>Nhân với số k = kéo dài hoặc rút ngắn mũi tên.</strong>{" "}
-                k · [a, b] = [k·a, k·b]. Nếu k dương, hướng giữ nguyên. k
-                âm, mũi tên lật ngược. k = 0, mũi tên co về gốc.
+                k · [a, b] = [k·a, k·b]. Nếu k dương, hướng giữ nguyên, k
+                âm, mũi tên lật ngược, k = 0, mũi tên co về gốc.
               </p>
               <div className="flex items-center justify-center gap-6 text-sm mt-2">
                 <div className="font-mono text-tertiary">2 ·</div>

@@ -531,9 +531,9 @@ function PipelineDemo() {
             Bước 1: Ảnh 28×28 = 784 ô pixel
           </div>
           <p className="text-sm text-foreground/85 leading-relaxed">
-            Mọi bức ảnh đen–trắng trong MNIST là một lưới 28 hàng × 28 cột.
+            Mọi bức ảnh đen-trắng trong MNIST là một lưới 28 hàng × 28 cột.
             Mỗi ô là một con số: 0 nếu trắng, 1 nếu đen (thật ra là thang xám
-            0–255, ta đơn giản hoá thành nhị phân).
+            0-255, ta đơn giản hoá thành nhị phân).
           </p>
           <svg viewBox="0 0 320 140" className="w-full max-w-sm mx-auto">
             <rect x={10} y={10} width={120} height={120} fill="none" stroke="currentColor" className="text-border" />
@@ -1082,7 +1082,7 @@ export default function PerceptronInImageClassification() {
         topicSlug={metadata.slug}
       >
         <Metric
-          value="Perceptron 1 lớp trên MNIST đạt ~88% chính xác trên toàn bộ 10 lớp chữ số (0–9)"
+          value="Perceptron 1 lớp trên MNIST đạt ~88% chính xác trên toàn bộ 10 lớp chữ số (0-9)"
           sourceRef={4}
         />
         <Metric

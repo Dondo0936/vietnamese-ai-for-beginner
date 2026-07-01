@@ -92,7 +92,7 @@ const TASKS: TaskResult[] = [
     latencyMs: 6400,
     costUsd: 0.018,
     notes:
-      "Agent confirm với user trước khi thực hiện hành động không hoàn tác. đúng quy trình.",
+      "Agent confirm với user trước khi thực hiện hành động không hoàn tác, đúng quy trình.",
     contribution: {
       success: 95,
       toolUse: 92,
@@ -189,7 +189,7 @@ const TASKS: TaskResult[] = [
     latencyMs: 4900,
     costUsd: 0.022,
     notes:
-      "Tốt: có dry-run cost check trước khi chạy thật. tránh quét nhầm bảng tỷ dòng.",
+      "Tốt: có dry-run cost check trước khi chạy thật, tránh quét nhầm bảng tỷ dòng.",
     contribution: {
       success: 92,
       toolUse: 94,
@@ -220,7 +220,7 @@ const TASKS: TaskResult[] = [
       {
         label: "Phát hiện đã xoá cả email gắn sao",
         tool: "mail.restore",
-        detail: "cố phục hồi. thất bại vì đã quá 7 ngày",
+        detail: "cố phục hồi, thất bại vì đã quá 7 ngày",
         status: "fail",
       },
     ],
@@ -398,7 +398,7 @@ export default function AgentEvaluationTopic() {
     setRunResults([]);
   }, []);
 
-  // Các điểm radar (6 chiều). toạ độ.
+  // Các điểm radar (6 chiều), toạ độ.
   const radarSize = 260;
   const radarCx = radarSize / 2;
   const radarCy = radarSize / 2;
@@ -429,7 +429,7 @@ export default function AgentEvaluationTopic() {
         question: "Tại sao đánh giá Agent khó hơn đánh giá LLM thông thường?",
         options: [
           "Vì Agent chậm hơn",
-          "Vì Agent có nhiều bước, tương tác với môi trường, kết quả phụ thuộc vào chuỗi quyết định. không chỉ 1 output",
+          "Vì Agent có nhiều bước, tương tác với môi trường, kết quả phụ thuộc vào chuỗi quyết định, không chỉ 1 output",
           "Vì Agent dùng nhiều mô hình",
           "Vì Agent tốn nhiều token",
         ],
@@ -441,7 +441,7 @@ export default function AgentEvaluationTopic() {
         question: "SWE-bench đánh giá Agent về khả năng gì?",
         options: [
           "Viết thơ",
-          "Tự sửa lỗi trong mã nguồn thật từ GitHub. đọc issue, tìm bug, viết patch, pass test",
+          "Tự sửa lỗi trong mã nguồn thật từ GitHub, đọc issue, tìm bug, viết patch, pass test",
           "Trả lời câu hỏi tổng quát",
           "Điều hướng website",
         ],
@@ -453,7 +453,7 @@ export default function AgentEvaluationTopic() {
         question:
           "Agent có tỷ lệ hoàn thành 95% nhưng chi phí gấp 10 lần agent khác có 90%. Chọn agent nào?",
         options: [
-          "Luôn chọn 95%. chất lượng quan trọng nhất",
+          "Luôn chọn 95%, chất lượng quan trọng nhất",
           "Tuỳ thuộc context: nếu sai 5% gây hậu quả nghiêm trọng thì chọn 95%, nếu không thì 90% với chi phí thấp hơn",
           "Luôn chọn rẻ hơn",
           "Không đủ thông tin để quyết định",
@@ -483,10 +483,10 @@ export default function AgentEvaluationTopic() {
         question:
           "Agent 'hoàn thành' xóa 412 email theo yêu cầu, nhưng xoá cả email gắn sao. Chiều nào bị thấp?",
         options: [
-          "Latency. vì đã xoá quá nhanh",
-          "Safety. agent thực hiện hành động không thể hoàn tác mà không confirm và không phân biệt email quan trọng",
-          "Cost. vì xoá tốn token",
-          "Tool Use. vì chọn sai tool",
+          "Latency, vì đã xoá quá nhanh",
+          "Safety, agent thực hiện hành động không thể hoàn tác mà không confirm và không phân biệt email quan trọng",
+          "Cost, vì xoá tốn token",
+          "Tool Use, vì chọn sai tool",
         ],
         correct: 1,
         explanation:
@@ -496,10 +496,10 @@ export default function AgentEvaluationTopic() {
         question:
           "Bạn chạy eval cho agent và 2 trong 7 citation trong báo cáo là URL bịa. Đây là lỗi gì và cách đo phổ biến?",
         options: [
-          "Latency quá cao. đo bằng p95",
-          "Hallucination. đo bằng citation-check tự động + LLM-as-judge cross-checking",
-          "Cost. đo bằng tokens / 1000",
-          "Tool use. đo bằng F1 trên tool name",
+          "Latency quá cao, đo bằng p95",
+          "Hallucination, đo bằng citation-check tự động + LLM-as-judge cross-checking",
+          "Cost, đo bằng tokens / 1000",
+          "Tool use, đo bằng F1 trên tool name",
         ],
         correct: 1,
         explanation:
@@ -509,8 +509,8 @@ export default function AgentEvaluationTopic() {
         question:
           "Eval offline (chạy trên dataset cố định) và eval online (theo dõi production) khác nhau thế nào?",
         options: [
-          "Offline nhanh hơn, online chậm hơn. không khác gì nữa",
-          "Offline tái lập được, kiểm soát biến; online phản ánh phân phối thực, bắt drift. cần CẢ HAI trong quy trình trưởng thành",
+          "Offline nhanh hơn, online chậm hơn, không khác gì nữa",
+          "Offline tái lập được, kiểm soát biến; online phản ánh phân phối thực, bắt drift, cần CẢ HAI trong quy trình trưởng thành",
           "Chỉ cần offline là đủ",
           "Chỉ cần online là đủ",
         ],
@@ -523,9 +523,9 @@ export default function AgentEvaluationTopic() {
           "Khi nào dùng LLM-as-judge và khi nào dùng human eval?",
         options: [
           "Luôn dùng LLM-as-judge vì rẻ",
-          "LLM-as-judge cho scale lớn + tiêu chí rõ ràng; human eval cho case nhạy cảm, mơ hồ, hoặc calibration định kỳ. kết hợp là best practice",
+          "LLM-as-judge cho scale lớn + tiêu chí rõ ràng; human eval cho case nhạy cảm, mơ hồ, hoặc calibration định kỳ, kết hợp là best practice",
           "Luôn dùng human eval",
-          "Không cần eval. cứ deploy",
+          "Không cần eval, cứ deploy",
         ],
         correct: 1,
         explanation:
@@ -680,7 +680,7 @@ export default function AgentEvaluationTopic() {
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="text-sm font-bold text-foreground">
-            Radar 6 chiều. trung bình trên {runResults.length || 0} tác vụ
+            Radar 6 chiều, trung bình trên {runResults.length || 0} tác vụ
           </p>
           <p className="text-[11px] text-muted">
             Chạy ít nhất 3 tác vụ để có tín hiệu đáng tin.
@@ -808,8 +808,8 @@ export default function AgentEvaluationTopic() {
           question="Bạn xây Agent tự sửa bug trong code. Agent sửa được 8/10 bug. Điều này có đủ để đánh giá Agent tốt không?"
           options={[
             "Có. 80% là tỷ lệ cao",
-            "Chưa đủ. cần xem: mất bao nhiêu bước, tốn bao nhiêu token, có gây thêm bug mới không, có vượt quyền không",
-            "Chưa đủ. cần test trên 1000 bug",
+            "Chưa đủ, cần xem: mất bao nhiêu bước, tốn bao nhiêu token, có gây thêm bug mới không, có vượt quyền không",
+            "Chưa đủ, cần test trên 1000 bug",
           ]}
           correct={1}
           explanation="Đánh giá Agent cần NHIỀU chiều: tỷ lệ thành công + hiệu quả (bước, token, thời gian) + an toàn (có gây hại không) + chi phí. Giống đánh giá nhân viên: không chỉ kết quả mà cả quá trình."
@@ -923,7 +923,7 @@ export default function AgentEvaluationTopic() {
                 <strong>GAIA</strong> (tác vụ tổng quát),{" "}
                 <strong>AgentBench</strong> (8 môi trường),{" "}
                 <strong>τ-bench</strong> (customer service giả lập). Mỗi
-                benchmark đo khía cạnh khác nhau. không có benchmark
+                benchmark đo khía cạnh khác nhau, không có benchmark
                 nào đủ toàn diện. Chạy ít nhất 2 cái khác nhau để có góc
                 nhìn đa dạng.
               </Callout>
@@ -965,7 +965,7 @@ export default function AgentEvaluationTopic() {
               <InlineChallenge
                 question="Agent trợ lý email được yêu cầu: 'Xoá email cũ hơn 30 ngày'. Agent xoá TOÀN BỘ email. Chiều đánh giá nào phát hiện lỗi này?"
                 options={[
-                  "Tỷ lệ hoàn thành. vì Agent đã hoàn thành nhiệm vụ",
+                  "Tỷ lệ hoàn thành, vì Agent đã hoàn thành nhiệm vụ",
                   "Tỷ lệ lỗi / An toàn. Agent vượt phạm vi yêu cầu, thực hiện hành động gây hại (xoá cả email mới)",
                   "Chi phí token",
                   "Hiệu quả bước",
@@ -977,7 +977,7 @@ export default function AgentEvaluationTopic() {
               <InlineChallenge
                 question="Agent nghiên cứu đối thủ trả về bảng so sánh đẹp, nhưng 2/7 citation là URL bịa. Offline eval pass 100%. Làm sao để bắt được lỗi này trong eval harness?"
                 options={[
-                  "Không bắt được. hallucination là bất khả kháng",
+                  "Không bắt được, hallucination là bất khả kháng",
                   "Thêm judge 'citation_resolver' tự gọi HTTP HEAD kiểm tra URL có tồn tại + LLM-as-judge đối chứng claim với nguồn",
                   "Tăng temperature của model",
                 ]}
@@ -1046,11 +1046,11 @@ export default function AgentEvaluationTopic() {
                 [0,1] (với chiều &quot;càng thấp càng tốt&quot; như
                 hallucination thì dùng <code>1 − m</code>), còn{" "}
                 <code>w_i</code> là trọng số theo use case. Trọng số
-                chatbot khác hẳn trọng số y khoa. đừng copy công thức
+                chatbot khác hẳn trọng số y khoa, đừng copy công thức
                 từ paper mà không điều chỉnh.
               </p>
 
-              <CodeBlock language="python" title="agent_evaluation.py. harness tối giản">
+              <CodeBlock language="python" title="agent_evaluation.py, harness tối giản">
                 {`from statistics import mean
 
 class AgentEvaluator:
@@ -1089,7 +1089,7 @@ class AgentEvaluator:
             "cost_per_task":  mean(r["cost_usd"] for r in results),
             "safety_score":   1 - mean(r["safety_violations"] for r in results),
         }
-        # Composite score. tuyến tính có trọng số
+        # Composite score, tuyến tính có trọng số
         norm = {
             "success": agg["success_rate"],
             "tool_use": agg["tool_accuracy"],
@@ -1166,12 +1166,12 @@ jobs:
                   Tỷ lệ tham khảo: 70% thời gian build eval dành cho
                   offline (CI gate, regression), 30% dành cho online
                   (shadow, feedback). Nhưng <em>tín hiệu production
-                  luôn thắng</em> khi hai nguồn mâu thuẫn. offline chỉ
+                  luôn thắng</em> khi hai nguồn mâu thuẫn, offline chỉ
                   là mô phỏng.
                 </p>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="LLM-as-judge. bias, calibration, và khi nào tin được?">
+              <CollapsibleDetail title="LLM-as-judge, bias, calibration, và khi nào tin được?">
                 <p className="text-sm">
                   Dùng một LLM khác để chấm output là cách phổ biến và
                   scale tốt. Nhưng đầy bẫy:
@@ -1244,7 +1244,7 @@ jobs:
                   lời.
                 </li>
                 <li>
-                  Hallucination rate trên production: 7.8%. trong khi
+                  Hallucination rate trên production: 7.8%, trong khi
                   golden chỉ 0.9%.
                 </li>
               </ul>
@@ -1263,12 +1263,12 @@ jobs:
             <MiniSummary
               title="Những điều cần nhớ về Agent Evaluation"
               points={[
-                "6 chiều: Task Success, Tool Use, Hallucination, Latency, Cost, Safety. cần đánh giá TẤT CẢ, không chỉ một.",
+                "6 chiều: Task Success, Tool Use, Hallucination, Latency, Cost, Safety, cần đánh giá TẤT CẢ, không chỉ một.",
                 "Đánh giá trajectory (hành trình) không chỉ output. 2 Agent cùng đáp án nhưng đường đi khác nhau có rủi ro khác nhau.",
                 "Safety là chiều quan trọng nhất cho production: hành động không thể hoàn tác + vượt scope = nguy hiểm.",
-                "Benchmarks: SWE-bench (code), WebArena (web), GAIA (tổng quát), τ-bench (CS). Không cái nào đủ. chạy ít nhất 2.",
+                "Benchmarks: SWE-bench (code), WebArena (web), GAIA (tổng quát), τ-bench (CS). Không cái nào đủ, chạy ít nhất 2.",
                 "Kết hợp offline eval (CI gate) + online eval (drift, real traffic) + golden set hàng ngày (regression).",
-                "LLM-as-judge scale tốt nhưng có bias. calibrate định kỳ bằng human eval để giữ tín hiệu đáng tin.",
+                "LLM-as-judge scale tốt nhưng có bias, calibrate định kỳ bằng human eval để giữ tín hiệu đáng tin.",
               ]}
             />
           </LessonSection>

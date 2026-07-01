@@ -1135,7 +1135,7 @@ export default function SemanticSearchTopic() {
                 <strong>nDCG@k:</strong> điểm có trọng số theo vị trí, thưởng kết quả đúng ở hạng cao. Chuẩn tìm kiếm web.
               </li>
               <li>
-                <strong>Latency p95/p99:</strong> đuôi độ trễ. p99 &lt; 300ms cho UX chấp nhận được.
+                <strong>Latency p95/p99:</strong> đuôi độ trễ, p99 &lt; 300ms cho UX chấp nhận được.
               </li>
             </ul>
           </CollapsibleDetail>

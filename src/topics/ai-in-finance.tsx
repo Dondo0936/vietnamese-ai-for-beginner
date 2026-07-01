@@ -199,7 +199,7 @@ function FraudSimulator() {
           Demo 1, Phát hiện gian lận thời gian thực
         </h3>
         <p className="text-sm text-muted">
-          AI chấm điểm rủi ro cho từng giao dịch (0–100). Giao dịch có điểm
+          AI chấm điểm rủi ro cho từng giao dịch (0-100). Giao dịch có điểm
           vượt ngưỡng sẽ bị chặn hoặc yêu cầu xác thực thêm. Hãy kéo thanh
           ngưỡng để thấy AI bắt được fraud, và chặn nhầm người dùng, như
           thế nào.
@@ -699,7 +699,7 @@ function VietnameseBankMap() {
           Tám ngân hàng hàng đầu Việt Nam đều đã triển khai AI, nhưng mỗi
           nhà tập trung vào mảng khác nhau. Thử ghép cặp xem bạn đoán đúng
           bao nhiêu. Đây là các thông tin đã được các ngân hàng công bố
-          công khai giai đoạn 2024–2025.
+          công khai giai đoạn 2024-2025.
         </p>
       </div>
       <MatchPairs
@@ -763,7 +763,7 @@ export default function AIInFinanceTopic() {
         ],
         correct: 1,
         explanation:
-          "Chatbot ngân hàng 2024–2025 xử lý tốt các câu hỏi lặp đi lặp lại: tra cứu số dư, hướng dẫn mở thẻ, giải thích phí, hỗ trợ reset mật khẩu. Các ca phức tạp hơn, khiếu nại giao dịch, thương thảo lãi vay, tư vấn đầu tư lớn, vẫn chuyển cho nhân viên. Mô hình 'human-in-the-loop' này giảm 40–60% tải tổng đài mà không làm giảm chất lượng dịch vụ.",
+          "Chatbot ngân hàng 2024-2025 xử lý tốt các câu hỏi lặp đi lặp lại: tra cứu số dư, hướng dẫn mở thẻ, giải thích phí, hỗ trợ reset mật khẩu. Các ca phức tạp hơn, khiếu nại giao dịch, thương thảo lãi vay, tư vấn đầu tư lớn, vẫn chuyển cho nhân viên. Mô hình 'human-in-the-loop' này giảm 40-60% tải tổng đài mà không làm giảm chất lượng dịch vụ.",
       },
       {
         question:
@@ -963,7 +963,7 @@ export default function AIInFinanceTopic() {
                       AI chấm điểm rủi ro tức thời cho từng giao dịch, dựa
                       trên hành vi lịch sử của chủ tài khoản. Giao dịch lệch
                       pattern sẽ bị chặn hoặc yêu cầu xác thực thêm.{" "}
-                      <strong>Ví dụ VN 2024–2025:</strong> VPBank công bố
+                      <strong>Ví dụ VN 2024-2025:</strong> VPBank công bố
                       giảm hơn 60% thiệt hại do gian lận thẻ sau khi nâng
                       cấp hệ thống AI; Techcombank vận hành trung tâm giám
                       sát 24/7 với AI làm tầng lọc đầu tiên.
@@ -1048,7 +1048,7 @@ export default function AIInFinanceTopic() {
                 </Callout>
               </div>
 
-              <h3>Bối cảnh pháp lý Việt Nam 2024–2025</h3>
+              <h3>Bối cảnh pháp lý Việt Nam 2024-2025</h3>
               <p>
                 AI trong ngân hàng không tự do phát triển, nó nằm trong một
                 mạng lưới văn bản pháp lý đan xen nhau. Hiểu đúng bối cảnh
@@ -1131,7 +1131,7 @@ export default function AIInFinanceTopic() {
                 ]}
               />
 
-              <h3>Ba câu chuyện thực tế đáng nhớ 2024–2025</h3>
+              <h3>Ba câu chuyện thực tế đáng nhớ 2024-2025</h3>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <StoryCard
                   bank="Techcombank"
@@ -1254,7 +1254,7 @@ export default function AIInFinanceTopic() {
                 "Mọi ứng dụng đều xoay quanh đánh đổi giữa hai loại sai lầm, chi phí của sai kiểu A so với sai kiểu B quyết định ngưỡng tối ưu, không phải accuracy.",
                 "AI trong ngân hàng không thay thế con người, nó lọc và gợi ý, con người vẫn là người ký tên cuối cùng.",
                 "Khung pháp lý VN: Luật PCRT 2022, Nghị định 13/2023 về dữ liệu cá nhân, Thông tư 09/2023 về quản trị rủi ro, cùng các chuẩn Basel III và FATF.",
-                "Các ví dụ thực tế 2024–2025: Techcombank chấm điểm tức thời, VPBank chống fraud, MB Buddy trả lời 24/7, VPBank/Techcombank giám sát AML.",
+                "Các ví dụ thực tế 2024-2025: Techcombank chấm điểm tức thời, VPBank chống fraud, MB Buddy trả lời 24/7, VPBank/Techcombank giám sát AML.",
                 "Quyền khách hàng: được giải thích khi bị từ chối vay, được xác thực thêm thay vì chặn cứng, được khiếu nại với logging đầy đủ.",
               ]}
             />

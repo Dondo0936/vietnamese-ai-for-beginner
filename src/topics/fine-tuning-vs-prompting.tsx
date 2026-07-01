@@ -79,14 +79,14 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
     bgColor: "bg-blue-50 dark:bg-blue-900/15",
     borderColor: "border-blue-300 dark:border-blue-700",
     description:
-      "Đưa 2–10 ví dụ mẫu ngay trong prompt. model bắt chước pattern mà không cần huấn luyện.",
+      "Đưa 2-10 ví dụ mẫu ngay trong prompt, model bắt chước pattern mà không cần huấn luyện.",
     whenToUse:
       "Dưới 20 ví dụ, task phổ biến (phân loại, trích xuất, viết lại), không cần domain quá chuyên sâu.",
-    cost: "Gần như miễn phí. chỉ tốn token input",
+    cost: "Gần như miễn phí, chỉ tốn token input",
     quality: "Tốt cho task phổ biến, trung bình cho domain hẹp",
     time: "Setup trong vài phút",
-    dataNeeded: "2–10 cặp (input, output)",
-    latency: "Chậm hơn bình thường ~10–30% do prompt dài",
+    dataNeeded: "2-10 cặp (input, output)",
+    latency: "Chậm hơn bình thường ~10-30% do prompt dài",
     example: "Phân loại sentiment tiếng Việt từ 5 ví dụ mẫu.",
     pros: [
       "Không cần GPU, không huấn luyện",
@@ -110,20 +110,20 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
       "Tìm kiếm tài liệu liên quan bằng vector database, đưa kết quả vào prompt trước khi LLM trả lời.",
     whenToUse:
       "Kho tài liệu lớn (100+ trang) cập nhật thường xuyên, câu hỏi dựa trên kiến thức có tài liệu.",
-    cost: "$50–$500/tháng cho vector DB + embedding API",
+    cost: "$50-$500/tháng cho vector DB + embedding API",
     quality: "Rất tốt cho Q&A, trích dẫn, tài liệu nội bộ",
     time: "Vài ngày setup + ingestion pipeline",
-    dataNeeded: "Kho tài liệu. không cần label",
-    latency: "Thêm 100–500ms cho retrieval step",
+    dataNeeded: "Kho tài liệu, không cần label",
+    latency: "Thêm 100-500ms cho retrieval step",
     example:
-      "Chatbot nội bộ trả lời từ 10.000 trang policy công ty. cập nhật policy không cần re-train.",
+      "Chatbot nội bộ trả lời từ 10.000 trang policy công ty, cập nhật policy không cần re-train.",
     pros: [
       "Cập nhật kiến thức không cần huấn luyện lại",
       "Dễ kiểm toán: biết model dựa vào tài liệu nào",
       "Giảm hallucination nhờ grounding vào nguồn thật",
     ],
     cons: [
-      "Chất lượng phụ thuộc retrieval. retrieval tệ thì câu trả lời tệ",
+      "Chất lượng phụ thuộc retrieval, retrieval tệ thì câu trả lời tệ",
       "Cần xây pipeline: chunking, embedding, indexing, re-ranking",
       "Phức tạp hơn prompting thuần",
     ],
@@ -136,19 +136,19 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
     bgColor: "bg-purple-50 dark:bg-purple-900/15",
     borderColor: "border-purple-300 dark:border-purple-700",
     description:
-      "Huấn luyện thêm một lớp nhỏ (low-rank adapter) thay vì toàn bộ model. chỉ tinh chỉnh ~1% tham số.",
+      "Huấn luyện thêm một lớp nhỏ (low-rank adapter) thay vì toàn bộ model, chỉ tinh chỉnh ~1% tham số.",
     whenToUse:
-      "500–10.000 ví dụ chuẩn hóa, task chuyên sâu hơn mà prompting không đủ, budget GPU vừa phải.",
-    cost: "$50–$2.000 cho một lần train trên cloud GPU",
+      "500-10.000 ví dụ chuẩn hóa, task chuyên sâu hơn mà prompting không đủ, budget GPU vừa phải.",
+    cost: "$50-$2.000 cho một lần train trên cloud GPU",
     quality: "Gần bằng full fine-tune với ~1% chi phí",
     time: "Vài giờ đến 1 ngày train",
-    dataNeeded: "500–10.000 cặp chuẩn hóa",
-    latency: "Như base model. adapter rất nhỏ",
+    dataNeeded: "500-10.000 cặp chuẩn hóa",
+    latency: "Như base model, adapter rất nhỏ",
     example:
-      "Adapter riêng cho mỗi khách hàng enterprise. mỗi adapter chỉ vài MB, dễ quản lý.",
+      "Adapter riêng cho mỗi khách hàng enterprise, mỗi adapter chỉ vài MB, dễ quản lý.",
     pros: [
       "Tiết kiệm 90%+ GPU so với full fine-tune",
-      "Nhiều adapter cho cùng base model. phục vụ nhiều khách hàng",
+      "Nhiều adapter cho cùng base model, phục vụ nhiều khách hàng",
       "Dễ rollback: bỏ adapter là quay lại model gốc",
     ],
     cons: [
@@ -165,10 +165,10 @@ const STRATEGIES: Record<Strategy, StrategyInfo> = {
     bgColor: "bg-rose-50 dark:bg-rose-900/15",
     borderColor: "border-rose-300 dark:border-rose-700",
     description:
-      "Huấn luyện lại toàn bộ trọng số của model trên dataset riêng. model học sâu hành vi mới.",
+      "Huấn luyện lại toàn bộ trọng số của model trên dataset riêng, model học sâu hành vi mới.",
     whenToUse:
       "Trên 10.000 ví dụ chất lượng cao, domain cực kỳ chuyên biệt (y tế, luật, tài chính), budget lớn.",
-    cost: "$1.000–$100.000+ mỗi lần train",
+    cost: "$1.000-$100.000+ mỗi lần train",
     quality: "Cao nhất cho domain chuyên sâu",
     time: "Vài ngày đến vài tuần",
     dataNeeded: "10.000+ cặp chất lượng cao, đa dạng",
@@ -208,7 +208,7 @@ const QUESTIONS: DecisionQuestion[] = [
   {
     id: "dataset",
     question: "Bạn có bao nhiêu ví dụ (input, output) chất lượng?",
-    hint: "Đây là tín hiệu quan trọng nhất. ít dữ liệu thì không thể fine-tune hiệu quả.",
+    hint: "Đây là tín hiệu quan trọng nhất, ít dữ liệu thì không thể fine-tune hiệu quả.",
     options: [
       {
         label: "Dưới 10 ví dụ",
@@ -216,12 +216,12 @@ const QUESTIONS: DecisionQuestion[] = [
         weight: { "few-shot": 3, rag: 1, lora: -2, "full-ft": -3 },
       },
       {
-        label: "10–500 ví dụ",
+        label: "10-500 ví dụ",
         value: "small",
         weight: { "few-shot": 2, rag: 2, lora: 1, "full-ft": -2 },
       },
       {
-        label: "500–10.000 ví dụ",
+        label: "500-10.000 ví dụ",
         value: "medium",
         weight: { "few-shot": 0, rag: 1, lora: 3, "full-ft": 1 },
       },
@@ -238,17 +238,17 @@ const QUESTIONS: DecisionQuestion[] = [
     hint: "Thuật ngữ, phong cách, kiến thức chuyên ngành càng nhiều thì càng cần fine-tune.",
     options: [
       {
-        label: "Phổ biến. tóm tắt, dịch, viết email",
+        label: "Phổ biến, tóm tắt, dịch, viết email",
         value: "common",
         weight: { "few-shot": 3, rag: 0, lora: -1, "full-ft": -2 },
       },
       {
-        label: "Trung bình. domain doanh nghiệp thông thường",
+        label: "Trung bình, domain doanh nghiệp thông thường",
         value: "mid",
         weight: { "few-shot": 1, rag: 2, lora: 1, "full-ft": 0 },
       },
       {
-        label: "Chuyên sâu. y tế, luật, tài chính, khoa học",
+        label: "Chuyên sâu, y tế, luật, tài chính, khoa học",
         value: "specialized",
         weight: { "few-shot": -2, rag: 1, lora: 2, "full-ft": 3 },
       },
@@ -275,12 +275,12 @@ const QUESTIONS: DecisionQuestion[] = [
         weight: { "few-shot": 2, rag: 2, lora: 1, "full-ft": -1 },
       },
       {
-        label: "$500 – $5.000/tháng",
+        label: "$500-$5.000/tháng",
         value: "mid",
         weight: { "few-shot": 0, rag: 2, lora: 3, "full-ft": 1 },
       },
       {
-        label: "Trên $5.000/tháng. team ML đầy đủ",
+        label: "Trên $5.000/tháng, team ML đầy đủ",
         value: "high",
         weight: { "few-shot": -1, rag: 1, lora: 2, "full-ft": 3 },
       },
@@ -292,17 +292,17 @@ const QUESTIONS: DecisionQuestion[] = [
     hint: "Prompt dài + retrieval step có thể làm chậm response đáng kể.",
     options: [
       {
-        label: "Rất nhanh. chatbot realtime, autocomplete",
+        label: "Rất nhanh, chatbot realtime, autocomplete",
         value: "realtime",
         weight: { "few-shot": -2, rag: -1, lora: 2, "full-ft": 3 },
       },
       {
-        label: "Bình thường. chat thông thường",
+        label: "Bình thường, chat thông thường",
         value: "normal",
         weight: { "few-shot": 1, rag: 1, lora: 2, "full-ft": 1 },
       },
       {
-        label: "Có thể chờ. batch processing, báo cáo",
+        label: "Có thể chờ, batch processing, báo cáo",
         value: "batch",
         weight: { "few-shot": 3, rag: 3, lora: 0, "full-ft": 0 },
       },
@@ -314,7 +314,7 @@ const QUESTIONS: DecisionQuestion[] = [
     hint: "Output strict (JSON, XML) thì prompting khó; output linh hoạt thì prompting đủ.",
     options: [
       {
-        label: "Linh hoạt. văn bản tự nhiên",
+        label: "Linh hoạt, văn bản tự nhiên",
         value: "loose",
         weight: { "few-shot": 3, rag: 2, lora: 1, "full-ft": 1 },
       },
@@ -324,7 +324,7 @@ const QUESTIONS: DecisionQuestion[] = [
         weight: { "few-shot": 2, rag: 2, lora: 2, "full-ft": 1 },
       },
       {
-        label: "Rất nghiêm ngặt. format công ty, schema phức tạp",
+        label: "Rất nghiêm ngặt, format công ty, schema phức tạp",
         value: "strict",
         weight: { "few-shot": -1, rag: 0, lora: 3, "full-ft": 3 },
       },
@@ -342,9 +342,9 @@ const quizQuestions: QuizQuestion[] = [
       "Bạn có 100 ví dụ (input, output) cho một task phổ biến. Bước đầu tiên nên làm gì?",
     options: [
       "Bắt đầu fine-tuning ngay. 100 ví dụ đủ cho SFT cơ bản",
-      "Thử few-shot prompting 5–10 ví dụ trước. nếu đã đạt yêu cầu thì khỏi fine-tune",
+      "Thử few-shot prompting 5-10 ví dụ trước, nếu đã đạt yêu cầu thì khỏi fine-tune",
       "Phải thu thêm 1.000 ví dụ rồi mới bắt đầu",
-      "Dùng RAG ngay. luôn tốt hơn mọi chiến lược",
+      "Dùng RAG ngay, luôn tốt hơn mọi chiến lược",
     ],
     correct: 1,
     explanation:
@@ -360,32 +360,32 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Fine-tuning gắn chặt với một phiên bản model cụ thể. Khi provider ra model mới mạnh hơn, bạn phải thu lại dataset, train lại, eval lại. Prompting thì chỉ cần đổi model name trong API call. bạn được hưởng lợi từ model mới ngay lập tức.",
+      "Fine-tuning gắn chặt với một phiên bản model cụ thể. Khi provider ra model mới mạnh hơn, bạn phải thu lại dataset, train lại, eval lại. Prompting thì chỉ cần đổi model name trong API call, bạn được hưởng lợi từ model mới ngay lập tức.",
   },
   {
     question: "RAG (Retrieval-Augmented Generation) thuộc nhóm chiến lược nào?",
     options: [
-      "Fine-tuning. vì nó thay đổi trọng số model",
-      "Prompting. vì nó đưa tài liệu vào context window, không thay đổi model",
-      "Không thuộc nhóm nào. là kỹ thuật riêng",
-      "Cả hai. vừa thay đổi model vừa chỉnh prompt",
+      "Fine-tuning, vì nó thay đổi trọng số model",
+      "Prompting, vì nó đưa tài liệu vào context window, không thay đổi model",
+      "Không thuộc nhóm nào, là kỹ thuật riêng",
+      "Cả hai, vừa thay đổi model vừa chỉnh prompt",
     ],
     correct: 1,
     explanation:
-      "RAG hoạt động bằng cách tìm tài liệu liên quan (retrieval) rồi nhét vào prompt trước khi model trả lời. Trọng số model KHÔNG thay đổi. Vì vậy RAG được xem như prompting nâng cao. có thể cập nhật knowledge base bất cứ lúc nào mà không cần train lại.",
+      "RAG hoạt động bằng cách tìm tài liệu liên quan (retrieval) rồi nhét vào prompt trước khi model trả lời. Trọng số model KHÔNG thay đổi. Vì vậy RAG được xem như prompting nâng cao, có thể cập nhật knowledge base bất cứ lúc nào mà không cần train lại.",
   },
   {
     question:
       "Công ty bạn có 50.000 case y tế đã được bác sĩ gán nhãn, cần model chuyên sâu về bệnh tim mạch. Chiến lược phù hợp nhất?",
     options: [
-      "Few-shot prompting. chỉ cần 10 ví dụ trong prompt",
+      "Few-shot prompting, chỉ cần 10 ví dụ trong prompt",
       "RAG từ 50.000 case",
-      "Full fine-tuning. đủ dữ liệu, domain cực chuyên sâu, công ty lớn",
-      "Không làm gì. dùng ChatGPT trực tiếp là được",
+      "Full fine-tuning, đủ dữ liệu, domain cực chuyên sâu, công ty lớn",
+      "Không làm gì, dùng ChatGPT trực tiếp là được",
     ],
     correct: 2,
     explanation:
-      "Đây là tình huống điển hình cho full fine-tuning: dataset lớn (50k), chất lượng cao (bác sĩ gán nhãn), domain chuyên sâu (tim mạch), và công ty có budget. LoRA cũng là lựa chọn tốt. rẻ hơn mà chất lượng gần tương đương.",
+      "Đây là tình huống điển hình cho full fine-tuning: dataset lớn (50k), chất lượng cao (bác sĩ gán nhãn), domain chuyên sâu (tim mạch), và công ty có budget. LoRA cũng là lựa chọn tốt, rẻ hơn mà chất lượng gần tương đương.",
   },
   {
     question: "LoRA khác full fine-tuning ở điểm nào?",
@@ -401,29 +401,29 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     question:
-      "Team bạn cần chatbot nội bộ trả lời dựa trên 10.000 trang tài liệu HR. tài liệu được cập nhật hàng tuần. Chiến lược?",
+      "Team bạn cần chatbot nội bộ trả lời dựa trên 10.000 trang tài liệu HR, tài liệu được cập nhật hàng tuần. Chiến lược?",
     options: [
       "Full fine-tune hàng tuần trên tài liệu mới",
       "Few-shot prompting với 10 ví dụ",
-      "RAG. tài liệu nhiều + cập nhật thường xuyên = use case kinh điển của RAG",
+      "RAG, tài liệu nhiều + cập nhật thường xuyên = use case kinh điển của RAG",
       "Hard-code câu trả lời vào code",
     ],
     correct: 2,
     explanation:
-      "RAG sáng lên ở đây: (1) 10k trang quá lớn cho prompt, (2) fine-tune hàng tuần không khả thi, (3) RAG cho phép cập nhật index khi tài liệu mới. model không cần train lại. Đây là lý do RAG phổ biến cho chatbot nội bộ doanh nghiệp.",
+      "RAG sáng lên ở đây: (1) 10k trang quá lớn cho prompt, (2) fine-tune hàng tuần không khả thi, (3) RAG cho phép cập nhật index khi tài liệu mới, model không cần train lại. Đây là lý do RAG phổ biến cho chatbot nội bộ doanh nghiệp.",
   },
   {
     question:
       "Prompt của bạn hiện dài 8.000 tokens (rất nhiều few-shot examples). Chi phí mỗi request tăng cao. Giải pháp?",
     options: [
       "Thêm nhiều ví dụ nữa cho chắc ăn",
-      "Fine-tune (LoRA hoặc full). model học xong pattern, prompt ngắn lại, tiết kiệm dài hạn",
+      "Fine-tune (LoRA hoặc full), model học xong pattern, prompt ngắn lại, tiết kiệm dài hạn",
       "Dùng model nhỏ hơn để tiết kiệm",
       "Không có cách nào",
     ],
     correct: 1,
     explanation:
-      "Khi prompt quá dài, mỗi inference đều tốn token. Fine-tuning một lần tốn tiền, nhưng sau đó prompt rất ngắn. tiết kiệm về dài hạn nếu bạn có nhiều request. Đây là một lý do business quan trọng để chuyển từ prompting sang fine-tuning.",
+      "Khi prompt quá dài, mỗi inference đều tốn token. Fine-tuning một lần tốn tiền, nhưng sau đó prompt rất ngắn, tiết kiệm về dài hạn nếu bạn có nhiều request. Đây là một lý do business quan trọng để chuyển từ prompting sang fine-tuning.",
   },
   {
     question: "Điểm chung giữa cả 4 chiến lược (few-shot, RAG, LoRA, full-FT)?",
@@ -435,7 +435,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Bất kể chiến lược nào, bạn LUÔN cần test set gold-standard để đo lường. Không có eval thì không biết đang tiến bộ hay thụt lùi. Đây là phần thường bị bỏ qua. nhiều team fine-tune nhưng không có eval, dẫn đến ảo tưởng chất lượng.",
+      "Bất kể chiến lược nào, bạn LUÔN cần test set gold-standard để đo lường. Không có eval thì không biết đang tiến bộ hay thụt lùi. Đây là phần thường bị bỏ qua, nhiều team fine-tune nhưng không có eval, dẫn đến ảo tưởng chất lượng.",
   },
 ];
 
@@ -747,10 +747,10 @@ function ComparisonTable() {
     {
       criterion: "Chi phí setup",
       values: {
-        "few-shot": "$0 – $10",
-        rag: "$50 – $500/tháng",
-        lora: "$50 – $2.000",
-        "full-ft": "$1.000 – $100.000+",
+        "few-shot": "$0-$10",
+        rag: "$50-$500/tháng",
+        lora: "$50-$2.000",
+        "full-ft": "$1.000-$100.000+",
       },
     },
     {
@@ -758,16 +758,16 @@ function ComparisonTable() {
       values: {
         "few-shot": "Vài phút",
         rag: "Vài ngày",
-        lora: "Vài giờ – 1 ngày",
-        "full-ft": "Vài ngày – vài tuần",
+        lora: "Vài giờ-1 ngày",
+        "full-ft": "Vài ngày-vài tuần",
       },
     },
     {
       criterion: "Dữ liệu cần",
       values: {
-        "few-shot": "2–10 ví dụ",
+        "few-shot": "2-10 ví dụ",
         rag: "Kho tài liệu",
-        lora: "500–10.000 ví dụ",
+        lora: "500-10.000 ví dụ",
         "full-ft": "10.000+ ví dụ",
       },
     },
@@ -792,8 +792,8 @@ function ComparisonTable() {
     {
       criterion: "Độ trễ inference",
       values: {
-        "few-shot": "+10–30% (prompt dài)",
-        rag: "+100–500ms",
+        "few-shot": "+10-30% (prompt dài)",
+        rag: "+100-500ms",
         lora: "Như base",
         "full-ft": "Như base",
       },
@@ -861,7 +861,7 @@ export default function FineTuningVsPromptingTopic() {
           question="Công ty bạn muốn AI viết email khách hàng theo đúng giọng văn thương hiệu. Bạn có 20 email mẫu. Bước đầu tiên nên làm gì?"
           options={[
             "Fine-tune luôn. 20 email là đủ, và fine-tune luôn tốt hơn",
-            "Thử few-shot prompting với 5 ví dụ trong prompt. nếu đủ tốt thì khỏi fine-tune, nếu chưa thì mới leo thang",
+            "Thử few-shot prompting với 5 ví dụ trong prompt, nếu đủ tốt thì khỏi fine-tune, nếu chưa thì mới leo thang",
             "Bỏ cuộc. 20 email quá ít cho bất cứ gì",
             "Thuê người viết email, không dùng AI",
           ]}
@@ -884,26 +884,26 @@ export default function FineTuningVsPromptingTopic() {
         <ul className="list-disc list-inside space-y-2 pl-2">
           <li>
             <strong>Few-shot prompting</strong> = thuê đầu bếp giỏi sẵn rồi đưa
-            công thức phở của bạn trước mỗi ca làm. rẻ, linh hoạt, nhưng công
+            công thức phở của bạn trước mỗi ca làm, rẻ, linh hoạt, nhưng công
             thức phải đủ ngắn và rõ.
           </li>
           <li>
             <strong>RAG</strong> = đầu bếp có cuốn sổ công thức, khi khách gọi
-            món lạ thì giở sổ tra. cập nhật sổ dễ, nhưng cần thời gian tra cứu.
+            món lạ thì giở sổ tra, cập nhật sổ dễ, nhưng cần thời gian tra cứu.
           </li>
           <li>
             <strong>LoRA</strong> = cho đầu bếp đi học thêm khóa ngắn về phở
-            Hà Nội. học đủ sâu mà không cần đào tạo lại từ đầu.
+            Hà Nội, học đủ sâu mà không cần đào tạo lại từ đầu.
           </li>
           <li>
             <strong>Full fine-tuning</strong> = tuyển một đầu bếp mới, dạy phở
-            từ con số 0 trong 3 năm. tốn kém, nhưng giỏi phở nhất.
+            từ con số 0 trong 3 năm, tốn kém, nhưng giỏi phở nhất.
           </li>
         </ul>
         <p>
           Trong AI, 4 cấp độ này khác nhau về chi phí, thời gian, dữ liệu cần,
           và độ chính xác. Chọn sai cấp độ sẽ làm lãng phí hàng chục triệu đồng
-          và vài tháng của team. không khác gì tuyển nhầm đầu bếp.
+          và vài tháng của team, không khác gì tuyển nhầm đầu bếp.
         </p>
         <p>
           Nguyên tắc: luôn thử cấp thấp trước. Thử prompting, đánh giá, nếu chưa
@@ -913,10 +913,10 @@ export default function FineTuningVsPromptingTopic() {
 
         <Callout variant="tip" title="Quy tắc leo thang (Escalation ladder)">
           <ol className="list-decimal list-inside space-y-1 text-sm">
-            <li>Zero-shot prompting (không có ví dụ). đủ chưa?</li>
-            <li>Few-shot prompting (2–10 ví dụ). đủ chưa?</li>
-            <li>RAG (nếu có tài liệu tham khảo). đủ chưa?</li>
-            <li>LoRA / PEFT fine-tuning. đủ chưa?</li>
+            <li>Zero-shot prompting (không có ví dụ), đủ chưa?</li>
+            <li>Few-shot prompting (2-10 ví dụ), đủ chưa?</li>
+            <li>RAG (nếu có tài liệu tham khảo), đủ chưa?</li>
+            <li>LoRA / PEFT fine-tuning, đủ chưa?</li>
             <li>Full fine-tuning (bước cuối cùng)</li>
           </ol>
         </Callout>
@@ -952,12 +952,12 @@ export default function FineTuningVsPromptingTopic() {
             <strong>Prompting</strong> = &quot;dạy AI bằng hướng dẫn&quot;
             (nhanh, rẻ, linh hoạt).{" "}
             <strong>Fine-tuning</strong> = &quot;đào tạo AI chuyên gia&quot;
-            (tốn kém, mạnh cho domain specific). Luôn leo thang từ rẻ đến đắt. đừng bao giờ nhảy thẳng vào fine-tuning mà chưa thử prompting.
+            (tốn kém, mạnh cho domain specific). Luôn leo thang từ rẻ đến đắt, đừng bao giờ nhảy thẳng vào fine-tuning mà chưa thử prompting.
           </p>
           <p className="text-sm text-muted mt-2">
             Insight quan trọng: chi phí ẩn lớn nhất của fine-tuning là khi model
             mới ra (GPT-5, Claude 5). Prompting thì đổi model trong 1 dòng
-            code; fine-tuning thì phải train lại từ đầu. có thể tốn hàng chục
+            code; fine-tuning thì phải train lại từ đầu, có thể tốn hàng chục
             triệu và vài tuần.
           </p>
         </AhaMoment>
@@ -967,7 +967,7 @@ export default function FineTuningVsPromptingTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Chi tiết">
         <Callout variant="insight" title="Vì sao bắt đầu từ prompting?">
           <p>
-            Prompting có 3 ưu điểm lớn: (1) cực rẻ, (2) debug dễ. chỉ chỉnh
+            Prompting có 3 ưu điểm lớn: (1) cực rẻ, (2) debug dễ, chỉ chỉnh
             prompt, không train lại, (3) tự động hưởng lợi khi model base mạnh
             lên. 70% dự án thực tế dừng lại ở prompting, không cần leo thang.
           </p>
@@ -1000,8 +1000,8 @@ export default function FineTuningVsPromptingTopic() {
         <InlineChallenge
           question="GPT-5 vừa ra mắt, mạnh hơn GPT-4 rõ rệt. Bạn đã fine-tune GPT-4 cho task phân loại hồ sơ khách hàng. Muốn hưởng lợi từ GPT-5, bạn cần làm gì?"
           options={[
-            "Chỉ cần đổi model name trong API. fine-tuning tự động chuyển sang GPT-5",
-            "Phải fine-tune LẠI trên GPT-5 từ đầu. mất thêm thời gian, tiền, và phải eval lại",
+            "Chỉ cần đổi model name trong API, fine-tuning tự động chuyển sang GPT-5",
+            "Phải fine-tune LẠI trên GPT-5 từ đầu, mất thêm thời gian, tiền, và phải eval lại",
             "GPT-5 tự động giỏi hơn trong mọi task, không cần làm gì",
             "Không thể dùng GPT-5 nếu đã fine-tune GPT-4. phải chờ fine-tune phiên bản riêng",
           ]}
@@ -1023,7 +1023,7 @@ export default function FineTuningVsPromptingTopic() {
           </p>
 
           <h4 className="text-base font-semibold text-foreground mt-4">
-            1. Prompting. điều khiển model qua input
+            1. Prompting, điều khiển model qua input
           </h4>
           <p>
             <strong>Zero-shot prompting</strong>: chỉ đưa hướng dẫn, không có ví
@@ -1032,7 +1032,7 @@ export default function FineTuningVsPromptingTopic() {
             cần ví dụ.
           </p>
           <p>
-            <strong>Few-shot prompting</strong>: đưa 2–10 cặp (input, output)
+            <strong>Few-shot prompting</strong>: đưa 2-10 cặp (input, output)
             làm mẫu. Model nhìn vào pattern để suy ra cách trả lời câu mới.
             Đây gọi là{" "}
             <TopicLink slug="in-context-learning">in-context learning</TopicLink>
@@ -1041,7 +1041,7 @@ export default function FineTuningVsPromptingTopic() {
           </p>
 
           <h4 className="text-base font-semibold text-foreground mt-4">
-            2. RAG. prompting tăng cường bằng retrieval
+            2. RAG, prompting tăng cường bằng retrieval
           </h4>
           <p>
             RAG tách kiến thức khỏi model: lưu tài liệu trong vector database,
@@ -1057,7 +1057,7 @@ export default function FineTuningVsPromptingTopic() {
           </p>
 
           <h4 className="text-base font-semibold text-foreground mt-4">
-            3. LoRA / PEFT. fine-tuning hiệu quả
+            3. LoRA / PEFT, fine-tuning hiệu quả
           </h4>
           <p>
             <strong>LoRA (Low-Rank Adaptation)</strong> chỉ huấn luyện hai ma
@@ -1068,13 +1068,13 @@ export default function FineTuningVsPromptingTopic() {
             trong đó A có shape <LaTeX>{String.raw`d \times r`}</LaTeX>, B có
             shape <LaTeX>{String.raw`r \times d`}</LaTeX>, và{" "}
             <LaTeX>{String.raw`r \ll d`}</LaTeX> (thường r = 4, 8, 16). Số tham
-            số train giảm ~100–1000×, bộ nhớ GPU giảm tương ứng.
+            số train giảm ~100-1000×, bộ nhớ GPU giảm tương ứng.
           </p>
 
           <Callout variant="info" title="Khi nào dùng LoRA thay full fine-tune?">
             <p>
-              Hầu như luôn luôn. trừ khi bạn có tài nguyên gần không giới hạn.
-              LoRA đạt 90–98% chất lượng của full FT với 1–5% chi phí. Ngoài
+              Hầu như luôn luôn, trừ khi bạn có tài nguyên gần không giới hạn.
+              LoRA đạt 90-98% chất lượng của full FT với 1-5% chi phí. Ngoài
               ra, bạn có thể duy trì nhiều adapter cho cùng một base model
               (mỗi khách hàng enterprise một adapter), tiết kiệm đáng kể chi
               phí deploy.
@@ -1082,7 +1082,7 @@ export default function FineTuningVsPromptingTopic() {
           </Callout>
 
           <h4 className="text-base font-semibold text-foreground mt-4">
-            4. Full fine-tuning. cập nhật toàn bộ trọng số
+            4. Full fine-tuning, cập nhật toàn bộ trọng số
           </h4>
           <p>
             Huấn luyện lại toàn bộ model trên dataset riêng. Chi phí cao (GPU,
@@ -1112,15 +1112,15 @@ export default function FineTuningVsPromptingTopic() {
           <CollapsibleDetail title="Pipeline đề xuất cho dự án thực tế">
             <ol className="list-decimal list-inside space-y-1 text-sm">
               <li>
-                Xây <strong>eval set</strong> chuẩn. 50–500 ví dụ
+                Xây <strong>eval set</strong> chuẩn. 50-500 ví dụ
                 gold-standard, được con người đánh giá. Đây là &quot;ground
                 truth&quot; để so sánh mọi chiến lược.
               </li>
               <li>
-                Thử <strong>zero-shot prompting</strong> với prompt rõ ràng. đo chất lượng trên eval set.
+                Thử <strong>zero-shot prompting</strong> với prompt rõ ràng, đo chất lượng trên eval set.
               </li>
               <li>
-                Nếu chưa đạt, thử <strong>few-shot</strong> với 3, 5, 10 ví dụ. so sánh trade-off giữa token cost và chất lượng.
+                Nếu chưa đạt, thử <strong>few-shot</strong> với 3, 5, 10 ví dụ, so sánh trade-off giữa token cost và chất lượng.
               </li>
               <li>
                 Nếu task cần kiến thức external, thêm <strong>RAG</strong>.
@@ -1128,7 +1128,7 @@ export default function FineTuningVsPromptingTopic() {
                 embeddings) rồi mới thêm re-ranking.
               </li>
               <li>
-                Nếu vẫn chưa đạt, thu thập 500–2.000 ví dụ chất lượng, thử{" "}
+                Nếu vẫn chưa đạt, thu thập 500-2.000 ví dụ chất lượng, thử{" "}
                 <strong>LoRA</strong>. Luôn có baseline prompting để so sánh.
               </li>
               <li>
@@ -1161,7 +1161,7 @@ export default function FineTuningVsPromptingTopic() {
             </li>
           </ul>
           <p>
-            Điểm hòa vốn thường rơi vào khoảng 100.000 – 10 triệu request. Dưới
+            Điểm hòa vốn thường rơi vào khoảng 100.000-10 triệu request. Dưới
             mức này, prompting luôn rẻ hơn dù tính cả token cost.
           </p>
 
@@ -1264,7 +1264,7 @@ for volume in [1_000, 100_000, 10_000_000]:
         print(f"  {s:12} = \${cost:>12,.0f}")
 
 # Output tiêu biểu:
-# Volume: 1,000/month. prompting rẻ nhất ($120)
+# Volume: 1,000/month, prompting rẻ nhất ($120)
 # Volume: 100,000/month. LoRA bắt đầu cạnh tranh
 # Volume: 10,000,000/month. Full FT rẻ nhất về tổng thể`}
           </CodeBlock>
@@ -1273,7 +1273,7 @@ for volume in [1_000, 100_000, 10_000_000]:
             <p>
               Chỉ khi cả 4 điều kiện đều đúng: (1) dataset 10.000+ ví dụ chất
               lượng cao, (2) domain cực chuyên biệt, (3) volume request rất
-              lớn (10M+/tháng). đủ để hòa vốn chi phí setup, (4) có team
+              lớn (10M+/tháng), đủ để hòa vốn chi phí setup, (4) có team
               MLOps để maintain. Thiếu 1 trong 4 điều kiện → nên dùng LoRA
               thay.
             </p>
@@ -1308,10 +1308,10 @@ for volume in [1_000, 100_000, 10_000_000]:
         <InlineChallenge
           question="Dự án: chatbot hỏi đáp về 10.000 trang tài liệu nội bộ công ty, được cập nhật hàng tuần. Chiến lược?"
           options={[
-            "Full fine-tune hàng tuần trên tài liệu mới. luôn up-to-date",
-            "Few-shot prompting với 10 ví dụ. đủ cho hầu hết câu hỏi",
-            "RAG. tài liệu nhiều + cập nhật thường xuyên là use case kinh điển của RAG",
-            "LoRA. cân bằng giữa chất lượng và chi phí",
+            "Full fine-tune hàng tuần trên tài liệu mới, luôn up-to-date",
+            "Few-shot prompting với 10 ví dụ, đủ cho hầu hết câu hỏi",
+            "RAG, tài liệu nhiều + cập nhật thường xuyên là use case kinh điển của RAG",
+            "LoRA, cân bằng giữa chất lượng và chi phí",
           ]}
           correct={2}
           explanation="RAG là lựa chọn tối ưu: (1) 10k trang vượt context window dù model mạnh nhất, (2) cập nhật tài liệu = cập nhật index, không cần train lại, (3) dễ trích dẫn nguồn (quan trọng cho compliance), (4) giảm hallucination. Fine-tune hàng tuần là không khả thi về chi phí và vận hành."
@@ -1324,8 +1324,8 @@ for volume in [1_000, 100_000, 10_000_000]:
           <p>
             Sai lầm tai hại nhất: fine-tune (hoặc chỉnh prompt) mà không có
             eval set chuẩn. Bạn không có cách nào biết thay đổi có tốt hơn hay
-            không. tất cả chỉ là cảm giác. Trước mọi quyết định tùy chỉnh
-            model, hãy xây 50–500 ví dụ eval gold-standard, được con người
+            không, tất cả chỉ là cảm giác. Trước mọi quyết định tùy chỉnh
+            model, hãy xây 50-500 ví dụ eval gold-standard, được con người
             kiểm tra, và đo chất lượng trên eval set này cho mọi chiến lược.
           </p>
         </Callout>
@@ -1336,7 +1336,7 @@ for volume in [1_000, 100_000, 10_000_000]:
             (&quot;suy luận từng bước&quot;), role assignment (&quot;Bạn là
             chuyên gia...&quot;), structured output (JSON schema), constraint
             injection (&quot;tối đa 50 từ&quot;), few-shot ordering (ví dụ khó
-            trước). Một prompt tốt có thể hơn một LoRA tệ. đừng xem nhẹ prompt
+            trước). Một prompt tốt có thể hơn một LoRA tệ, đừng xem nhẹ prompt
             engineering.
           </p>
         </Callout>
@@ -1353,7 +1353,7 @@ for volume in [1_000, 100_000, 10_000_000]:
               label: "Few-shot",
               content: (
                 <CodeBlock language="python" title="few_shot.py">
-{`# Few-shot prompting. không train gì
+{`# Few-shot prompting, không train gì
 # Chỉ cần prompt tốt + vài ví dụ mẫu
 
 prompt = """Phân loại sentiment của bình luận tiếng Việt.
@@ -1380,7 +1380,7 @@ print(response.content[0].text)  # "positive"`}
               label: "RAG",
               content: (
                 <CodeBlock language="python" title="rag.py">
-{`# RAG. truy xuất tài liệu trước khi gọi LLM
+{`# RAG, truy xuất tài liệu trước khi gọi LLM
 from sentence_transformers import SentenceTransformer
 import chromadb
 
@@ -1419,7 +1419,7 @@ answer = rag_answer("Chính sách nghỉ phép của công ty?")`}
               label: "LoRA",
               content: (
                 <CodeBlock language="python" title="lora.py">
-{`# LoRA. fine-tune hiệu quả, chỉ ~0.3% tham số
+{`# LoRA, fine-tune hiệu quả, chỉ ~0.3% tham số
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import LoraConfig, get_peft_model, TaskType
 from trl import SFTTrainer
@@ -1464,7 +1464,7 @@ model.save_pretrained("./my-lora-adapter")`}
               label: "Full FT",
               content: (
                 <CodeBlock language="python" title="full_ft.py">
-{`# Full fine-tuning. tốn kém, chỉ khi thật cần
+{`# Full fine-tuning, tốn kém, chỉ khi thật cần
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -1518,8 +1518,8 @@ trainer.train()
           points={[
             "4 chiến lược: few-shot prompting → RAG → LoRA → full fine-tuning. Leo thang từ rẻ đến đắt.",
             "Prompting: nhanh, rẻ, dễ đổi model mới. Fine-tuning: chất lượng cao hơn cho domain chuyên sâu, nhưng gắn chặt với model cụ thể.",
-            "RAG phù hợp khi có kho tài liệu cần cập nhật. không cần train lại khi tài liệu thay đổi.",
-            "LoRA đạt 90–98% chất lượng full fine-tune với 1–5% chi phí. lựa chọn mặc định khi cần fine-tune.",
+            "RAG phù hợp khi có kho tài liệu cần cập nhật, không cần train lại khi tài liệu thay đổi.",
+            "LoRA đạt 90-98% chất lượng full fine-tune với 1-5% chi phí, lựa chọn mặc định khi cần fine-tune.",
             "Luôn xây eval set gold-standard TRƯỚC. Không có eval thì mọi quyết định tùy chỉnh chỉ là đoán mò.",
             "Chi phí ẩn lớn nhất của fine-tuning: khi model mới ra (GPT-5, Claude 5) phải train lại từ đầu. Prompting không có chi phí này.",
           ]}

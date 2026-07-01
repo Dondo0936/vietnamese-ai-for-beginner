@@ -60,7 +60,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao Word2Vec dùng Negative Sampling thay vì tính softmax đầy đủ?",
     options: [
       "Vì softmax chính xác hơn",
-      "Vì softmax trên từ vựng lớn (hàng triệu từ) quá chậm — Negative Sampling chỉ cần vài từ âm tính",
+      "Vì softmax trên từ vựng lớn (hàng triệu từ) quá chậm-Negative Sampling chỉ cần vài từ âm tính",
       "Vì Negative Sampling cho embeddings tốt hơn",
       "Vì Word2Vec không dùng neural network",
     ],
@@ -70,12 +70,12 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     type: "fill-blank",
-    question: "Word2Vec có hai kiến trúc chính: {blank} dự đoán từ trung tâm dựa vào các từ ngữ cảnh xung quanh, còn {blank} làm ngược lại — dự đoán ngữ cảnh từ một từ trung tâm cho trước.",
+    question: "Word2Vec có hai kiến trúc chính: {blank} dự đoán từ trung tâm dựa vào các từ ngữ cảnh xung quanh, còn {blank} làm ngược lại-dự đoán ngữ cảnh từ một từ trung tâm cho trước.",
     blanks: [
       { answer: "CBOW", accept: ["cbow", "Continuous Bag of Words"] },
       { answer: "Skip-gram", accept: ["skip-gram", "skipgram", "Skip Gram"] },
     ],
-    explanation: "CBOW (Continuous Bag of Words) nhận nhiều từ ngữ cảnh và dự đoán 1 từ trung tâm — nhanh, phù hợp tập lớn. Skip-gram nhận 1 từ trung tâm và dự đoán nhiều từ ngữ cảnh — chậm hơn nhưng tốt với từ hiếm và tập nhỏ.",
+    explanation: "CBOW (Continuous Bag of Words) nhận nhiều từ ngữ cảnh và dự đoán 1 từ trung tâm-nhanh, phù hợp tập lớn. Skip-gram nhận 1 từ trung tâm và dự đoán nhiều từ ngữ cảnh-chậm hơn nhưng tốt với từ hiếm và tập nhỏ.",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function Word2VecTopic() {
           question={`Câu "Tôi thích ăn ___ Hà Nội vào buổi sáng". Dựa vào các từ xung quanh, từ nào điền vào chỗ trống?`}
           options={['"xe máy"', '"phở"', '"toán"']}
           correct={1}
-          explanation={`Bạn vừa dùng các từ xung quanh ("ăn", "Hà Nội", "buổi sáng") để đoán từ ở giữa! Word2Vec học chính xác theo cách này — nó hiểu nghĩa từ bằng cách nhìn "hàng xóm" của từ đó.`}
+          explanation={`Bạn vừa dùng các từ xung quanh ("ăn", "Hà Nội", "buổi sáng") để đoán từ ở giữa! Word2Vec học chính xác theo cách này-nó hiểu nghĩa từ bằng cách nhìn "hàng xóm" của từ đó.`}
         />
       </LessonSection>
 
@@ -199,10 +199,10 @@ export default function Word2VecTopic() {
         <AhaMoment>
           <p>
             <strong>Word2Vec</strong>{" "}
-            học nghĩa từ bằng cách dự đoán {'"hàng xóm"'} — giống câu nói {'"Hãy cho tôi biết bạn chơi với ai, tôi sẽ nói bạn là ai"'}!
+            học nghĩa từ bằng cách dự đoán {'"hàng xóm"'}, giống câu nói {'"Hãy cho tôi biết bạn chơi với ai, tôi sẽ nói bạn là ai"'}!
           </p>
           <p className="text-sm text-muted mt-1">
-            Skip-gram: cho 1 từ, đoán ngữ cảnh. CBOW: cho ngữ cảnh, đoán 1 từ. Cả hai đều tạo ra word embeddings chất lượng — chỉ khác hướng dự đoán.
+            Skip-gram: cho 1 từ, đoán ngữ cảnh. CBOW: cho ngữ cảnh, đoán 1 từ. Cả hai đều tạo ra word embeddings chất lượng-chỉ khác hướng dự đoán.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -212,9 +212,9 @@ export default function Word2VecTopic() {
         <InlineChallenge
           question="Từ 'phở' và 'bún chả' có vector gần nhau vì Word2Vec thấy chúng xuất hiện với ngữ cảnh giống nhau. Nhưng 'phở' và 'pizza' thì sao?"
           options={[
-            "Rất xa nhau — vì khác ngôn ngữ",
-            "Gần nhau vừa phải — vì đều là MÓN ĂN, dù khác nhau",
-            "Giống hệt — vì đều là đồ ăn",
+            "Rất xa nhau-vì khác ngôn ngữ",
+            "Gần nhau vừa phải-vì đều là MÓN ĂN, dù khác nhau",
+            "Giống hệt-vì đều là đồ ăn",
           ]}
           correct={1}
           explanation="'Phở' và 'pizza' đều xuất hiện cùng 'ăn', 'ngon', 'nhà hàng' → gần nhau ở chiều 'ẩm thực'. Nhưng khác nhau ở chiều 'văn hóa' (Việt vs Ý). Embeddings nắm bắt CẢ HAI khía cạnh!"
@@ -226,7 +226,7 @@ export default function Word2VecTopic() {
         <ToggleCompare
           labelA="Skip-gram"
           labelB="CBOW"
-          description="Hai kiến trúc của Word2Vec — cùng mục tiêu (tạo embeddings), khác cách huấn luyện."
+          description="Hai kiến trúc của Word2Vec-cùng mục tiêu (tạo embeddings), khác cách huấn luyện."
           childA={
             <div className="space-y-3 p-3">
               <div className="flex items-center justify-center gap-2 text-sm">
@@ -287,7 +287,7 @@ export default function Word2VecTopic() {
             </div>
           </Callout>
 
-          <Callout variant="info" title="Negative Sampling — mẹo tăng tốc">
+          <Callout variant="info" title="Negative Sampling-mẹo tăng tốc">
             <p>
               Tính softmax trên cả từ vựng V (hàng triệu từ) quá chậm. Negative Sampling chỉ cần phân biệt từ đúng với k từ {'"nhiễu"'} ngẫu nhiên:
             </p>

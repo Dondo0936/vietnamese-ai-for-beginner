@@ -83,7 +83,7 @@ const QUIZ: QuizQuestion[] = [
   {
     question: "Tokenization trong unified multimodal model khác gì so với LLM thuần văn bản?",
     options: [
-      "Không khác gì — vẫn dùng BPE",
+      "Không khác gì-vẫn dùng BPE",
       "Mỗi phương thức có tokenizer riêng rồi nối tất cả token vào cùng một chuỗi cho Transformer xử lý",
       "Unified model không dùng token",
       "Chỉ tokenize văn bản, các phương thức khác xử lý riêng",
@@ -94,7 +94,7 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     type: "fill-blank",
-    question: "Unified multimodal model xử lý {blank} (text, ảnh, audio, video) trong một kiến trúc duy nhất, cho phép khả năng {blank} — bất kỳ đầu vào đổi sang bất kỳ đầu ra.",
+    question: "Unified multimodal model xử lý {blank} (text, ảnh, audio, video) trong một kiến trúc duy nhất, cho phép khả năng {blank}, bất kỳ đầu vào đổi sang bất kỳ đầu ra.",
     blanks: [
       { answer: "nhiều phương thức", accept: ["multiple modalities", "đa phương thức", "nhiều modality"] },
       { answer: "any-to-any", accept: ["any to any", "bất kỳ sang bất kỳ", "any-any"] },
@@ -118,12 +118,12 @@ export default function UnifiedMultimodalTopic() {
         <PredictionGate
           question="Bạn muốn AI xem video clip du lịch Đà Nẵng và viết bài review kèm ảnh minh hoạ. Cần bao nhiêu mô hình AI riêng biệt?"
           options={[
-            "1 mô hình — AI thống nhất có thể hiểu video, viết bài, và tạo ảnh",
-            "3 mô hình — video understanding + LLM + image generation",
-            "5 mô hình — video → frame extraction → caption → LLM → image gen",
+            "1 mô hình-AI thống nhất có thể hiểu video, viết bài, và tạo ảnh",
+            "3 mô hình-video understanding + LLM + image generation",
+            "5 mô hình-video → frame extraction → caption → LLM → image gen",
           ]}
           correct={0}
-          explanation="Với mô hình đa phương thức thống nhất (như Gemini hoặc GPT-4o), CHỈ CẦN MỘT mô hình! Nó nhận video đầu vào, hiểu nội dung thị giác + âm thanh, sinh bài viết văn bản, và có thể tạo ảnh minh hoạ — tất cả trong cùng một kiến trúc. Đây là sức mạnh của any-to-any!"
+          explanation="Với mô hình đa phương thức thống nhất (như Gemini hoặc GPT-4o), CHỈ CẦN MỘT mô hình! Nó nhận video đầu vào, hiểu nội dung thị giác + âm thanh, sinh bài viết văn bản, và có thể tạo ảnh minh hoạ-tất cả trong cùng một kiến trúc. Đây là sức mạnh của any-to-any!"
         />
       </LessonSection>
 
@@ -232,7 +232,7 @@ export default function UnifiedMultimodalTopic() {
         <AhaMoment>
           Mô hình thống nhất giống như{" "}
           <strong>bộ não con người</strong>{" "}
-          — không có module riêng cho mắt, tai, và miệng. Tất cả giác quan được xử lý trong{" "}
+         , không có module riêng cho mắt, tai, và miệng. Tất cả giác quan được xử lý trong{" "}
           <strong>cùng một mạng nơ-ron</strong>{" "}
           với biểu diễn chung. Nhờ đó, khi nghe tiếng {'"sủa"'}, não tự động hình dung con chó. Any-to-any là bước đầu tiên hướng tới AI có{" "}
           <strong>giác quan tổng hợp</strong>{" "}
@@ -245,13 +245,13 @@ export default function UnifiedMultimodalTopic() {
         <InlineChallenge
           question="GPT-4o (omni) nghe giọng nói người dùng buồn rầu và phản hồi bằng giọng an ủi nhẹ nhàng. Pipeline truyền thống (ASR → LLM → TTS) có làm được điều này không?"
           options={[
-            "Có — ASR nhận dạng được cảm xúc trong giọng nói",
-            "Không — ASR chỉ chuyển giọng nói thành văn bản, mất hết thông tin ngữ điệu và cảm xúc",
-            "Có — LLM có thể suy luận cảm xúc từ nội dung văn bản",
-            "Không — TTS không thể tạo giọng an ủi",
+            "Có-ASR nhận dạng được cảm xúc trong giọng nói",
+            "Không-ASR chỉ chuyển giọng nói thành văn bản, mất hết thông tin ngữ điệu và cảm xúc",
+            "Có-LLM có thể suy luận cảm xúc từ nội dung văn bản",
+            "Không-TTS không thể tạo giọng an ủi",
           ]}
           correct={1}
-          explanation="Pipeline ASR → LLM → TTS tạo bottleneck tại bước ASR: ngữ điệu, cảm xúc, nhịp thở bị mất khi chuyển thành text. GPT-4o xử lý audio natively — hiểu cả nội dung LẪN cảm xúc trong giọng nói, rồi sinh phản hồi audio phù hợp. Đây là lý do unified model mạnh hơn."
+          explanation="Pipeline ASR → LLM → TTS tạo bottleneck tại bước ASR: ngữ điệu, cảm xúc, nhịp thở bị mất khi chuyển thành text. GPT-4o xử lý audio natively-hiểu cả nội dung LẪN cảm xúc trong giọng nói, rồi sinh phản hồi audio phù hợp. Đây là lý do unified model mạnh hơn."
         />
       </LessonSection>
 
@@ -280,7 +280,7 @@ export default function UnifiedMultimodalTopic() {
               </p>
               <p>
                 <strong>Multimodal decoder:</strong>{" "}
-                Đầu ra có thể là bất kỳ loại token nào — sinh văn bản, ảnh, hoặc audio tuỳ yêu cầu.
+                Đầu ra có thể là bất kỳ loại token nào-sinh văn bản, ảnh, hoặc audio tuỳ yêu cầu.
               </p>
             </div>
           </Callout>
@@ -353,7 +353,7 @@ response = model.generate_content([
             <div className="space-y-2">
               <p>
                 <strong>Robotics:</strong>{" "}
-                Unified model điều khiển robot: nhìn (camera), nghe (microphone), nói (speaker), hành động (motor) — tất cả trong một mô hình.
+                Unified model điều khiển robot: nhìn (camera), nghe (microphone), nói (speaker), hành động (motor), tất cả trong một mô hình.
               </p>
               <p>
                 <strong>Metaverse/AR:</strong>{" "}

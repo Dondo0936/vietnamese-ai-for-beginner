@@ -104,7 +104,7 @@ function buildCurve(
 
 const PRESETS: Array<{ label: string; split: Split; note: string }> = [
   { label: "60 / 20 / 20", split: { train: 60, val: 20, test: 20 }, note: "Dữ liệu ít. Cần val/test đủ lớn để đánh giá đáng tin." },
-  { label: "70 / 15 / 15", split: { train: 70, val: 15, test: 15 }, note: "Mặc định phổ biến cho dataset vừa (10k–100k)." },
+  { label: "70 / 15 / 15", split: { train: 70, val: 15, test: 15 }, note: "Mặc định phổ biến cho dataset vừa (10k-100k)." },
   { label: "80 / 10 / 10", split: { train: 80, val: 10, test: 10 }, note: "Dataset lớn (&gt;1M). 10% đủ tin cậy cho val/test." },
 ];
 
@@ -761,17 +761,17 @@ export default function TrainValTestTopic() {
                   <td className="py-2">Hold-out quá nhiễu</td>
                 </tr>
                 <tr className="border-b border-border/50">
-                  <td className="py-2 pr-3">1.000–10.000</td>
+                  <td className="py-2 pr-3">1.000-10.000</td>
                   <td className="py-2 pr-3">60/20/20</td>
                   <td className="py-2">Cần val/test đủ lớn (≥ 200 mẫu)</td>
                 </tr>
                 <tr className="border-b border-border/50">
-                  <td className="py-2 pr-3">10.000–100.000</td>
+                  <td className="py-2 pr-3">10.000-100.000</td>
                   <td className="py-2 pr-3">70/15/15</td>
                   <td className="py-2">Phổ biến, cân bằng</td>
                 </tr>
                 <tr className="border-b border-border/50">
-                  <td className="py-2 pr-3">100.000–1.000.000</td>
+                  <td className="py-2 pr-3">100.000-1.000.000</td>
                   <td className="py-2 pr-3">80/10/10</td>
                   <td className="py-2">10% đã đủ tin cậy</td>
                 </tr>
@@ -831,7 +831,7 @@ export default function TrainValTestTopic() {
           <CollapsibleDetail title="Bao nhiêu test mẫu là đủ để báo cáo đáng tin?">
             <p className="text-sm leading-relaxed">
               Quy tắc: với sai số mong muốn ±2% và độ tin cậy 95%, cần khoảng{" "}
-              <strong>~1.000–2.500 mẫu test</strong>. Công thức xấp xỉ:{" "}
+              <strong>~1.000-2.500 mẫu test</strong>. Công thức xấp xỉ:{" "}
               <code>n &ge; 1.96² × p(1-p) / &epsilon;²</code>. Với p ≈ 0.9, &epsilon; = 0.02,
               ra khoảng 864 mẫu. Nếu dataset tổng &lt; 2.000 mẫu, hãy dùng cross-validation
               thay vì hold-out. Con số &ldquo;độ chính xác 92%&rdquo; trên test 100 mẫu có

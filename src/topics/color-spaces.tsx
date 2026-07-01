@@ -35,7 +35,7 @@ export const metadata: TopicMeta = {
 };
 
 /* ────────────────────────────────────────────────────────────
- * Helpers toán học — chuyển đổi giữa các không gian màu
+ * Helpers toán học-chuyển đổi giữa các không gian màu
  * ──────────────────────────────────────────────────────────── */
 
 // Chuyển RGB (0-255) → HSL (H: 0-360, S: 0-1, L: 0-1)
@@ -165,18 +165,18 @@ interface ColorPreset {
 }
 
 const PRESETS: ColorPreset[] = [
-  { id: "red", label: "Đỏ (đèn dừng)", rgb: [230, 45, 45], note: "H ≈ 0° — lý tưởng để lọc trong HSV." },
-  { id: "green-leaf", label: "Xanh lá non", rgb: [120, 200, 80], note: "H ≈ 90° — phân biệt lá khoẻ/bệnh." },
-  { id: "blue-sky", label: "Xanh da trời", rgb: [80, 160, 230], note: "H ≈ 210° — xanh dương sáng." },
+  { id: "red", label: "Đỏ (đèn dừng)", rgb: [230, 45, 45], note: "H ≈ 0°, lý tưởng để lọc trong HSV." },
+  { id: "green-leaf", label: "Xanh lá non", rgb: [120, 200, 80], note: "H ≈ 90°, phân biệt lá khoẻ/bệnh." },
+  { id: "blue-sky", label: "Xanh da trời", rgb: [80, 160, 230], note: "H ≈ 210°, xanh dương sáng." },
   { id: "yellow-sick", label: "Vàng lá bệnh", rgb: [220, 190, 60], note: "Dùng LAB để so sánh tinh tế." },
   { id: "skin", label: "Da người VN", rgb: [210, 170, 130], note: "YCrCb tốt cho skin detection." },
-  { id: "traffic-yellow", label: "Vàng biển báo", rgb: [245, 200, 30], note: "H ≈ 48° — tách khỏi nền." },
+  { id: "traffic-yellow", label: "Vàng biển báo", rgb: [245, 200, 30], note: "H ≈ 48°, tách khỏi nền." },
   { id: "purple", label: "Tím hoa sim", rgb: [140, 90, 180], note: "Ít gặp trong tự nhiên VN." },
-  { id: "grey", label: "Xám trung tính", rgb: [128, 128, 128], note: "S = 0 — nằm trên trục của HSV/HSL." },
+  { id: "grey", label: "Xám trung tính", rgb: [128, 128, 128], note: "S = 0-nằm trên trục của HSV/HSL." },
 ];
 
 /* ────────────────────────────────────────────────────────────
- * Quiz — 8 câu hỏi theo yêu cầu
+ * Quiz-8 câu hỏi theo yêu cầu
  * ──────────────────────────────────────────────────────────── */
 
 const QUIZ: QuizQuestion[] = [
@@ -184,19 +184,19 @@ const QUIZ: QuizQuestion[] = [
     question: "Tại sao HSV tốt hơn RGB cho bài toán phát hiện đèn đỏ giao thông?",
     options: [
       "HSV có nhiều kênh hơn RGB",
-      "HSV tách biệt sắc màu (Hue) khỏi độ sáng — lọc 'màu đỏ' dễ dàng bất kể sáng/tối",
+      "HSV tách biệt sắc màu (Hue) khỏi độ sáng-lọc 'màu đỏ' dễ dàng bất kể sáng/tối",
       "HSV nhanh hơn RGB khi xử lý",
       "HSV có độ phân giải cao hơn",
     ],
     correct: 1,
     explanation:
-      "Trong RGB, 'đỏ sáng' (255,50,50) và 'đỏ tối' (120,20,20) có giá trị rất khác nhau trên cả 3 kênh — khó viết ngưỡng. Trong HSV, cả 2 đều có H ≈ 0-10° hoặc 350-360°. Chỉ cần lọc theo Hue là xong.",
+      "Trong RGB, 'đỏ sáng' (255,50,50) và 'đỏ tối' (120,20,20) có giá trị rất khác nhau trên cả 3 kênh-khó viết ngưỡng. Trong HSV, cả 2 đều có H ≈ 0-10° hoặc 350-360°. Chỉ cần lọc theo Hue là xong.",
   },
   {
     question: "Ảnh y tế thường chuyển sang LAB trước khi so sánh màu. Tại sao?",
     options: [
       "LAB nhẹ hơn RGB khi xử lý",
-      "LAB đồng đều tri giác — khoảng cách Euclidean phản ánh đúng sự khác biệt mắt người thấy",
+      "LAB đồng đều tri giác-khoảng cách Euclidean phản ánh đúng sự khác biệt mắt người thấy",
       "LAB có nhiều màu hơn RGB",
       "LAB không cần chuyển đổi",
     ],
@@ -205,7 +205,7 @@ const QUIZ: QuizQuestion[] = [
       "Trong RGB, 2 cặp màu có cùng khoảng cách Euclidean có thể trông rất khác hoặc rất giống. LAB được thiết kế để ΔE = khác biệt tri giác. Quan trọng cho ảnh y tế, kiểm tra chất lượng in ấn, thiết kế màu.",
   },
   {
-    question: "Chuyển ảnh sang Grayscale bằng công thức Y = 0.299R + 0.587G + 0.114B — trọng số xanh lá cao nhất. Vì sao?",
+    question: "Chuyển ảnh sang Grayscale bằng công thức Y = 0.299R + 0.587G + 0.114B-trọng số xanh lá cao nhất. Vì sao?",
     options: [
       "Ngẫu nhiên, không có ý nghĩa",
       "Vì mắt người nhạy với ánh sáng xanh lá nhất (tế bào nón M peak ở ~530nm), đỏ kế đó, xanh dương ít nhất",
@@ -221,7 +221,7 @@ const QUIZ: QuizQuestion[] = [
     options: [
       "RGB trực tiếp",
       "Grayscale",
-      "YCrCb — kênh Cr (133-173) và Cb (77-127) ổn định cho da, bất kể điều kiện sáng",
+      "YCrCb-kênh Cr (133-173) và Cb (77-127) ổn định cho da, bất kể điều kiện sáng",
       "CMYK",
     ],
     correct: 2,
@@ -240,7 +240,7 @@ const QUIZ: QuizQuestion[] = [
       "H = Hue (0° đỏ, 120° xanh lá, 240° xanh dương). S = Saturation (0 = xám, 1 = bão hoà). V = Value (0 = đen, 1 = sáng). HSL thì thay V bằng L (Lightness: 0 = đen, 0.5 = màu thuần, 1 = trắng).",
   },
   {
-    question: "Không gian màu nào KHÔNG phụ thuộc thiết bị (device-independent) — nghĩa là cùng một giá trị LAB trên mọi màn hình đều biểu thị cùng một màu vật lý?",
+    question: "Không gian màu nào KHÔNG phụ thuộc thiết bị (device-independent), nghĩa là cùng một giá trị LAB trên mọi màn hình đều biểu thị cùng một màu vật lý?",
     options: [
       "sRGB",
       "CMYK",
@@ -249,7 +249,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "LAB dựa trên mô hình thị giác người (CIE 1976), không gắn với bất kỳ thiết bị nào. sRGB, Adobe RGB, Display-P3 đều là device-dependent (phụ thuộc đặc tính monitor). CMYK phụ thuộc mực và giấy. Vì vậy LAB là không gian trung gian lý tưởng khi cần chuyển đổi chính xác giữa các thiết bị.",
+      "LAB dựa trên mô hình thị giác người (CIE 1976), không gắn với bất kỳ thiết bị nào, sRGB, Adobe RGB, Display-P3 đều là device-dependent (phụ thuộc đặc tính monitor). CMYK phụ thuộc mực và giấy. Vì vậy LAB là không gian trung gian lý tưởng khi cần chuyển đổi chính xác giữa các thiết bị.",
   },
   {
     question:
@@ -257,19 +257,19 @@ const QUIZ: QuizQuestion[] = [
     options: [
       "Chuyển sang grayscale để bỏ màu",
       "Chuyển sang HSV và chuẩn hoá kênh V (hoặc dùng chỉ H, S) để giảm phụ thuộc ánh sáng",
-      "Không làm gì — CNN tự học được",
+      "Không làm gì-CNN tự học được",
       "Tăng độ sáng toàn bộ ảnh lên 2 lần",
     ],
     correct: 1,
     explanation:
-      "Grayscale mất thông tin màu — chính là tín hiệu quan trọng cho bệnh thực vật. Để CNN tự học được cần dataset khổng lồ. Giải pháp trung gian: HSV, chuẩn hoá V (hoặc CLAHE trên V) để giảm biến thiên ánh sáng, giữ nguyên H + S. Đây là kỹ thuật cổ điển vẫn hiệu quả cho dataset nhỏ.",
+      "Grayscale mất thông tin màu-chính là tín hiệu quan trọng cho bệnh thực vật. Để CNN tự học được cần dataset khổng lồ. Giải pháp trung gian: HSV, chuẩn hoá V (hoặc CLAHE trên V) để giảm biến thiên ánh sáng, giữ nguyên H + S. Đây là kỹ thuật cổ điển vẫn hiệu quả cho dataset nhỏ.",
   },
   {
     question:
       "ΔE trong LAB = 1 được coi là 'vừa đủ phân biệt' bởi mắt người. ΔE = 5 trong LAB nghĩa là gì?",
     options: [
       "Hai màu giống nhau tuyệt đối",
-      "Sự khác biệt dễ thấy — quan trọng với kiểm tra in ấn, thiết kế thương hiệu",
+      "Sự khác biệt dễ thấy-quan trọng với kiểm tra in ấn, thiết kế thương hiệu",
       "Hai màu đen khác nhau",
       "ΔE không có ý nghĩa thực tế",
     ],
@@ -319,22 +319,22 @@ export default function ColorSpacesTopic() {
       {/* ──────────────── STEP 1: PREDICTION ──────────────── */}
       <LessonSection step={1} totalSteps={10} label="Dự đoán">
         <PredictionGate
-          question="Bạn cần phát hiện đèn đỏ giao thông. Trong ảnh RGB, 'đỏ sáng' có R=255, G=50, B=50 nhưng 'đỏ tối' có R=150, G=20, B=20 — giá trị rất khác nhau! Làm sao lọc dễ dàng hơn?"
+          question="Bạn cần phát hiện đèn đỏ giao thông. Trong ảnh RGB, 'đỏ sáng' có R=255, G=50, B=50 nhưng 'đỏ tối' có R=150, G=20, B=20-giá trị rất khác nhau! Làm sao lọc dễ dàng hơn?"
           options={[
             "Tăng độ sáng toàn bộ ảnh rồi dùng RGB",
-            "Chuyển sang HSV — chỉ lọc theo Hue (sắc đỏ), bỏ qua sáng/tối",
+            "Chuyển sang HSV-chỉ lọc theo Hue (sắc đỏ), bỏ qua sáng/tối",
             "Dùng ảnh đen trắng (grayscale)",
           ]}
           correct={1}
-          explanation="HSV tách sắc màu (Hue) khỏi độ sáng (Value). 'Đỏ sáng' và 'đỏ tối' đều có H gần 0-10° hoặc 350-360° — chỉ cần lọc 1 kênh Hue thay vì ngưỡng 3 kênh RGB phức tạp! Đây là lý do OpenCV có hàm cv2.cvtColor(img, cv2.COLOR_BGR2HSV) — nó là bước preprocessing hầu như bắt buộc cho segmentation theo màu."
+          explanation="HSV tách sắc màu (Hue) khỏi độ sáng (Value). 'Đỏ sáng' và 'đỏ tối' đều có H gần 0-10° hoặc 350-360°, chỉ cần lọc 1 kênh Hue thay vì ngưỡng 3 kênh RGB phức tạp! Đây là lý do OpenCV có hàm cv2.cvtColor(img, cv2.COLOR_BGR2HSV), nó là bước preprocessing hầu như bắt buộc cho segmentation theo màu."
         />
       </LessonSection>
 
       {/* ──────────────── STEP 2: VISUALIZATION ──────────────── */}
-      <LessonSection step={2} totalSteps={10} label="Khám phá — Color Space Converter">
+      <LessonSection step={2} totalSteps={10} label="Khám phá-Color Space Converter">
         <p className="text-sm text-foreground leading-relaxed mb-4">
           Kéo 3 slider R / G / B bên dưới. Các ô bên phải sẽ cập nhật LIVE
-          sang HSV, HSL, LAB và Grayscale — kèm hình minh hoạ (bánh xe HSV,
+          sang HSV, HSL, LAB và Grayscale-kèm hình minh hoạ (bánh xe HSV,
           xi-lanh HSL, mặt phẳng a*b* của LAB).
         </p>
 
@@ -488,7 +488,7 @@ export default function ColorSpacesTopic() {
               {/* HSV wheel */}
               <div className="rounded-xl border border-border bg-background/40 p-3 space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wide text-accent">
-                  HSV — bánh xe màu
+                  HSV-bánh xe màu
                 </h4>
                 <svg viewBox="0 0 160 160" className="w-full">
                   <defs>
@@ -569,7 +569,7 @@ export default function ColorSpacesTopic() {
               {/* HSL cylinder */}
               <div className="rounded-xl border border-border bg-background/40 p-3 space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wide text-accent">
-                  HSL — xi-lanh màu
+                  HSL-xi-lanh màu
                 </h4>
                 <svg viewBox="0 0 160 160" className="w-full">
                   {/* thân xi-lanh */}
@@ -676,7 +676,7 @@ export default function ColorSpacesTopic() {
               {/* LAB plane (a*b*) */}
               <div className="rounded-xl border border-border bg-background/40 p-3 space-y-2">
                 <h4 className="text-xs font-bold uppercase tracking-wide text-accent">
-                  LAB — mặt phẳng a*b*
+                  LAB-mặt phẳng a*b*
                 </h4>
                 <svg viewBox="0 0 160 160" className="w-full">
                   {/* Nền gradient đơn giản hoá mặt phẳng a*b* ở L ≈ 50 */}
@@ -719,7 +719,7 @@ export default function ColorSpacesTopic() {
                   })()}
                 </svg>
                 <p className="text-[10px] text-muted leading-snug">
-                  a* = {fmt(A, 1)} (đỏ-xanh lá). b* = {fmt(B, 1)}{" "}
+                  a* = {fmt(A, 1)} (đỏ-xanh lá), b* = {fmt(B, 1)}{" "}
                   (vàng-xanh dương). L = {fmt(L, 1)} (độ sáng 0-100).
                 </p>
               </div>
@@ -760,7 +760,7 @@ export default function ColorSpacesTopic() {
                       {fmt(valHsv * 100, 0)}%
                     </td>
                     <td className="px-3 py-2 text-muted">
-                      Dễ lọc theo sắc — tốt cho segmentation.
+                      Dễ lọc theo sắc-tốt cho segmentation.
                     </td>
                   </tr>
                   <tr>
@@ -783,7 +783,7 @@ export default function ColorSpacesTopic() {
                       L={fmt(L, 1)} · a={fmt(A, 1)} · b={fmt(B, 1)}
                     </td>
                     <td className="px-3 py-2 text-muted">
-                      Đồng đều tri giác — khoảng cách ≈ khác biệt thị giác.
+                      Đồng đều tri giác-khoảng cách ≈ khác biệt thị giác.
                     </td>
                   </tr>
                   <tr>
@@ -830,13 +830,13 @@ export default function ColorSpacesTopic() {
         <InlineChallenge
           question="Bạn cần so sánh màu da trong ảnh y tế để phát hiện tổn thương (vết nám, viêm). RGB cho kết quả không ổn định vì ảnh hưởng bởi ánh sáng chụp. Dùng không gian màu nào?"
           options={[
-            "Grayscale — đơn giản nhất",
-            "LAB — đồng đều tri giác, khoảng cách phản ánh đúng sự khác biệt mắt người thấy",
-            "HSV — tách sắc khỏi sáng",
-            "CMYK — chuẩn in ấn",
+            "Grayscale-đơn giản nhất",
+            "LAB-đồng đều tri giác, khoảng cách phản ánh đúng sự khác biệt mắt người thấy",
+            "HSV-tách sắc khỏi sáng",
+            "CMYK-chuẩn in ấn",
           ]}
           correct={1}
-          explanation="LAB được thiết kế để khoảng cách Euclidean = sự khác biệt tri giác. 2 màu 'cách nhau 10 đơn vị' trong LAB luôn trông khác nhau cùng mức, bất kể vùng màu nào. Quan trọng cho ứng dụng y tế! HSV cũng tách sắc khỏi sáng nhưng không đồng đều tri giác (khoảng cách trong HSV không tương ứng 1-1 với cảm giác). Grayscale mất thông tin màu — chính là tín hiệu cần đo."
+          explanation="LAB được thiết kế để khoảng cách Euclidean = sự khác biệt tri giác. 2 màu 'cách nhau 10 đơn vị' trong LAB luôn trông khác nhau cùng mức, bất kể vùng màu nào. Quan trọng cho ứng dụng y tế! HSV cũng tách sắc khỏi sáng nhưng không đồng đều tri giác (khoảng cách trong HSV không tương ứng 1-1 với cảm giác). Grayscale mất thông tin màu-chính là tín hiệu cần đo."
         />
       </LessonSection>
 
@@ -848,7 +848,7 @@ export default function ColorSpacesTopic() {
             màu sắc. Mỗi không gian phù hợp với mục đích khác nhau trong xử
             lý ảnh và thị giác máy tính. Bản thân 'màu' là cảm giác chủ
             quan do não bộ tạo ra khi photon kích thích 3 loại tế bào nón
-            (L/M/S) — vì vậy mọi biểu diễn đều là xấp xỉ.
+            (L/M/S), vì vậy mọi biểu diễn đều là xấp xỉ.
           </p>
 
           <Callout variant="insight" title="5 không gian màu quan trọng nhất">
@@ -865,12 +865,12 @@ export default function ColorSpacesTopic() {
               </p>
               <p>
                 <strong>HSL (Hue, Saturation, Lightness):</strong> Giống HSV
-                nhưng L khác V — trong HSL, L=1 là trắng (S=0), trong HSV V=1
+                nhưng L khác V-trong HSL, L=1 là trắng (S=0), trong HSV V=1
                 có thể vẫn là màu thuần. HSL phổ biến trong CSS & thiết kế UI.
               </p>
               <p>
                 <strong>LAB (CIE L*a*b*):</strong> Đồng đều tri giác. Khoảng
-                cách Euclidean = sự khác biệt thị giác (ΔE). Device-independent —
+                cách Euclidean = sự khác biệt thị giác (ΔE). Device-independent,
                 chuẩn trao đổi giữa thiết bị.
               </p>
               <p>
@@ -927,7 +927,7 @@ export default function ColorSpacesTopic() {
             <ul className="list-disc list-inside space-y-1 text-sm">
               <li>
                 <strong>Camera giao thông TP.HCM / HN:</strong> HSV để phát
-                hiện đèn đỏ, biển báo theo màu (xanh, đỏ, vàng) — robust
+                hiện đèn đỏ, biển báo theo màu (xanh, đỏ, vàng), robust
                 với đèn đường ban đêm.
               </li>
               <li>
@@ -958,13 +958,13 @@ export default function ColorSpacesTopic() {
 import numpy as np
 
 # -------------------------------------------------------
-# 1. Đọc ảnh — OpenCV mặc định đọc theo BGR (không phải RGB!)
+# 1. Đọc ảnh-OpenCV mặc định đọc theo BGR (không phải RGB!)
 # -------------------------------------------------------
 img_bgr = cv2.imread("den_giao_thong.jpg")
 print("Shape:", img_bgr.shape)  # (H, W, 3)
 
 # -------------------------------------------------------
-# 2. Chuyển sang HSV — lọc đèn đỏ
+# 2. Chuyển sang HSV-lọc đèn đỏ
 # -------------------------------------------------------
 hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
 
@@ -983,13 +983,13 @@ for c in contours:
         cv2.rectangle(img_bgr, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
 # -------------------------------------------------------
-# 3. Chuyển sang LAB — so sánh màu chính xác tri giác
+# 3. Chuyển sang LAB-so sánh màu chính xác tri giác
 # -------------------------------------------------------
 lab = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2LAB)
 # OpenCV LAB: L in [0, 255], a in [0, 255] (offset 128), b in [0, 255]
 
 def delta_e76(lab1, lab2):
-    """ΔE*76 — khoảng cách Euclidean trong LAB."""
+    """ΔE*76-khoảng cách Euclidean trong LAB."""
     return np.sqrt(np.sum((lab1.astype(float) - lab2.astype(float))**2))
 
 pixel1 = lab[100, 100]
@@ -997,13 +997,13 @@ pixel2 = lab[200, 200]
 print(f"ΔE giữa hai điểm: {delta_e76(pixel1, pixel2):.2f}")
 
 # -------------------------------------------------------
-# 4. Chuyển sang Grayscale — OCR, edge detection
+# 4. Chuyển sang Grayscale-OCR, edge detection
 # -------------------------------------------------------
 gray  = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 edges = cv2.Canny(gray, 100, 200)  # Canny edge detector
 
 # -------------------------------------------------------
-# 5. YCrCb — tốt cho skin detection (eKYC VN)
+# 5. YCrCb-tốt cho skin detection (eKYC VN)
 # -------------------------------------------------------
 ycrcb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2YCrCb)
 # Vùng da tiêu chuẩn (Chai & Ngan, 1999): Cr 133-173, Cb 77-127
@@ -1015,10 +1015,10 @@ skin_mask = cv2.morphologyEx(skin_mask, cv2.MORPH_OPEN,  kernel)
 skin_mask = cv2.morphologyEx(skin_mask, cv2.MORPH_CLOSE, kernel)
 
 # -------------------------------------------------------
-# 6. HSV normalization — robust với điều kiện sáng khác
+# 6. HSV normalization-robust với điều kiện sáng khác
 # -------------------------------------------------------
 def normalize_brightness(img_bgr):
-    """Chuẩn hoá V trong HSV bằng CLAHE — giảm phụ thuộc ánh sáng."""
+    """Chuẩn hoá V trong HSV bằng CLAHE-giảm phụ thuộc ánh sáng."""
     hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
@@ -1059,7 +1059,7 @@ print("Xong.")`}
                   </p>
                   <p>
                     <strong>Nhược điểm:</strong> Phụ thuộc mạnh vào ánh sáng
-                    chụp. 'Đỏ sáng' và 'đỏ tối' khác nhau cả 3 kênh — khó
+                    chụp. 'Đỏ sáng' và 'đỏ tối' khác nhau cả 3 kênh-khó
                     viết ngưỡng. Không đồng đều tri giác.
                   </p>
                   <p>
@@ -1081,7 +1081,7 @@ print("Xong.")`}
                   </p>
                   <p>
                     <strong>Nhược điểm:</strong> Hue là không gian tròn
-                    (0° = 360° = đỏ) — cần xử lý riêng. Không đồng đều tri
+                    (0° = 360° = đỏ), cần xử lý riêng. Không đồng đều tri
                     giác tuyệt đối. Nhạy cảm với noise khi S thấp.
                   </p>
                   <p>
@@ -1097,8 +1097,8 @@ print("Xong.")`}
               content: (
                 <div className="space-y-2 text-sm leading-relaxed">
                   <p>
-                    <strong>Ưu điểm:</strong> Đồng đều tri giác — khoảng
-                    cách Euclidean ≈ khác biệt mắt người thấy. Device-independent —
+                    <strong>Ưu điểm:</strong> Đồng đều tri giác-khoảng
+                    cách Euclidean ≈ khác biệt mắt người thấy. Device-independent,
                     cùng giá trị LAB = cùng màu vật lý trên mọi thiết bị.
                     Gamut lớn hơn RGB và CMYK.
                   </p>
@@ -1121,13 +1121,13 @@ print("Xong.")`}
                 <div className="space-y-2 text-sm leading-relaxed">
                   <p>
                     <strong>Ưu điểm:</strong> Tách luminance (Y) khỏi
-                    chrominance (Cr, Cb) — cho phép nén chrominance mạnh
+                    chrominance (Cr, Cb), cho phép nén chrominance mạnh
                     (mắt ít nhạy), Y giữ nguyên. Chuẩn cho nén video (JPEG,
                     MPEG, H.264 đều dùng YCbCr nội bộ).
                   </p>
                   <p>
                     <strong>Nhược điểm:</strong> Ít trực quan hơn HSV. Có
-                    nhiều biến thể (BT.601, BT.709, BT.2020) — dễ nhầm hệ
+                    nhiều biến thể (BT.601, BT.709, BT.2020), dễ nhầm hệ
                     số.
                   </p>
                   <p>
@@ -1202,7 +1202,7 @@ print("Xong.")`}
             </div>
           </CollapsibleDetail>
 
-          <CollapsibleDetail title="sRGB, Adobe RGB, DCI-P3 — khác gì nhau?">
+          <CollapsibleDetail title="sRGB, Adobe RGB, DCI-P3-khác gì nhau?">
             <div className="space-y-2 text-sm leading-relaxed">
               <p>
                 Cùng tên 'RGB' nhưng thực ra có nhiều 'RGB' khác nhau, khác
@@ -1266,11 +1266,11 @@ print("Xong.")`}
         <MiniSummary
           title="Ghi nhớ về không gian màu"
           points={[
-            "RGB là chuẩn lưu trữ (3 kênh 0-255) nhưng phụ thuộc ánh sáng — khó lọc theo màu trực tiếp.",
-            "HSV / HSL tách Hue (sắc) khỏi Value/Lightness (sáng) — lý tưởng cho segmentation theo màu (đèn giao thông, trái chín). Chú ý Hue là không gian tròn.",
-            "LAB đồng đều tri giác — khoảng cách Euclidean ≈ khác biệt mắt người. Device-independent. Dùng cho y tế, in ấn, kiểm tra chất lượng màu (ΔE).",
+            "RGB là chuẩn lưu trữ (3 kênh 0-255) nhưng phụ thuộc ánh sáng-khó lọc theo màu trực tiếp.",
+            "HSV / HSL tách Hue (sắc) khỏi Value/Lightness (sáng), lý tưởng cho segmentation theo màu (đèn giao thông, trái chín). Chú ý Hue là không gian tròn.",
+            "LAB đồng đều tri giác-khoảng cách Euclidean ≈ khác biệt mắt người. Device-independent. Dùng cho y tế, in ấn, kiểm tra chất lượng màu (ΔE).",
             "Grayscale bỏ màu giữ cấu trúc, nhanh 3x. Chuẩn cho edge detection, OCR, feature matching; không phân biệt được màu cùng độ sáng.",
-            "YCrCb tách luminance khỏi chrominance — chuẩn cho nén video/JPEG, tốt cho skin detection (Cr 133-173, Cb 77-127).",
+            "YCrCb tách luminance khỏi chrominance-chuẩn cho nén video/JPEG, tốt cho skin detection (Cr 133-173, Cb 77-127).",
             "Quy tắc ngón tay cái: hiển thị/lưu → RGB; lọc màu → HSV; so sánh chính xác → LAB; tốc độ/OCR → Grayscale; skin/video → YCrCb.",
           ]}
         />

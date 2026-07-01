@@ -22,13 +22,13 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// Metadata. giữ nguyên theo yêu cầu
+// Metadata, giữ nguyên theo yêu cầu
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
   slug: "adversarial-robustness",
   title: "Adversarial Robustness",
-  titleVi: "Bền vững trước tấn công. AI không dễ bị lừa",
+  titleVi: "Bền vững trước tấn công",
   description:
     "Khả năng của mô hình AI duy trì hiệu suất chính xác khi đối mặt với dữ liệu đầu vào bị thao túng có chủ đích.",
   category: "ai-safety",
@@ -41,7 +41,7 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 10;
 
 // ---------------------------------------------------------------------------
-// FGSM Simulator. lưới pixel 16×16
+// FGSM Simulator, lưới pixel 16×16
 // ---------------------------------------------------------------------------
 
 const GRID_SIZE = 16;
@@ -106,7 +106,7 @@ function buildCatPixels(): number[][] {
 }
 
 /**
- * Giả lập "sign of gradient". một ma trận tiền tính đủ hỗn tạp để trông
+ * Giả lập "sign of gradient", một ma trận tiền tính đủ hỗn tạp để trông
  * giống adversarial perturbation thật khi nhân với epsilon.
  */
 function buildSignGradient(): number[][] {
@@ -115,7 +115,7 @@ function buildSignGradient(): number[][] {
   );
   for (let y = 0; y < GRID_SIZE; y += 1) {
     for (let x = 0; x < GRID_SIZE; x += 1) {
-      // Pattern giả xoắn. không đều, có dấu dương và âm
+      // Pattern giả xoắn, không đều, có dấu dương và âm
       const v =
         Math.sin(x * 0.9 + y * 1.1) +
         Math.cos((x + y) * 0.7) +
@@ -195,14 +195,14 @@ const QUIZ: QuizQuestion[] = [
     question:
       "Camera an ninh tại sân bay Nội Bài dùng AI nhận dạng khuôn mặt. Kẻ xấu đeo kính có hoạ tiết đặc biệt khiến AI không nhận ra. Đây là loại tấn công gì?",
     options: [
-      "Jailbreak. lừa AI bằng prompt văn bản",
-      "Physical adversarial attack. adversarial perturbation trong thế giới vật lý (kính, sticker, áo)",
-      "Prompt injection. chèn lệnh ẩn vào đầu vào",
-      "Data poisoning. tiêm dữ liệu độc vào training set",
+      "Jailbreak, lừa AI bằng prompt văn bản",
+      "Physical adversarial attack, adversarial perturbation trong thế giới vật lý (kính, sticker, áo)",
+      "Prompt injection, chèn lệnh ẩn vào đầu vào",
+      "Data poisoning, tiêm dữ liệu độc vào training set",
     ],
     correct: 1,
     explanation:
-      "Đây là physical adversarial attack: adversarial perturbation được in ra vật thể thật (kính, áo, sticker). Nguy hiểm hơn digital attack vì hoạt động trong thế giới thực. ảnh hưởng xe tự lái, camera an ninh, nhận dạng khuôn mặt, và không cần truy cập hệ thống.",
+      "Đây là physical adversarial attack: adversarial perturbation được in ra vật thể thật (kính, áo, sticker). Nguy hiểm hơn digital attack vì hoạt động trong thế giới thực, ảnh hưởng xe tự lái, camera an ninh, nhận dạng khuôn mặt, và không cần truy cập hệ thống.",
   },
   {
     question: "Adversarial training (huấn luyện đối kháng) cải thiện robustness bằng cách nào?",
@@ -225,7 +225,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "perturbation", accept: ["nhiễu", "noise"] },
     ],
     explanation:
-      "Adversarial example = input gốc cộng thêm perturbation nhỏ theo sign của gradient. đủ để lừa mô hình nhưng không thay đổi nhận thức của con người.",
+      "Adversarial example = input gốc cộng thêm perturbation nhỏ theo sign của gradient, đủ để lừa mô hình nhưng không thay đổi nhận thức của con người.",
   },
   {
     question: "PGD (Projected Gradient Descent) mạnh hơn FGSM vì sao?",
@@ -249,7 +249,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Certified defense (Randomized Smoothing, IBP) chứng minh bằng toán: với mọi nhiễu |δ| ≤ ε, output không đổi. Adversarial training chỉ mạnh với attack đã thấy. có thể thua adaptive attack mới. Trade-off: certified chậm hơn và thường có bound lỏng.",
+      "Certified defense (Randomized Smoothing, IBP) chứng minh bằng toán: với mọi nhiễu |δ| ≤ ε, output không đổi. Adversarial training chỉ mạnh với attack đã thấy, có thể thua adaptive attack mới. Trade-off: certified chậm hơn và thường có bound lỏng.",
   },
   {
     question: "Tại sao dự đoán đúng với accuracy 99% trên test set chưa đủ để coi là an toàn?",
@@ -261,7 +261,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Clean accuracy đo trên phân phối tự nhiên. Adversarial examples không lấy mẫu từ phân phối tự nhiên. chúng được tối ưu để lừa mô hình. Một mô hình 99% accuracy có thể rớt còn 0-5% dưới PGD attack. An toàn thực sự cần đo adversarial accuracy.",
+      "Clean accuracy đo trên phân phối tự nhiên. Adversarial examples không lấy mẫu từ phân phối tự nhiên, chúng được tối ưu để lừa mô hình. Một mô hình 99% accuracy có thể rớt còn 0-5% dưới PGD attack. An toàn thực sự cần đo adversarial accuracy.",
   },
   {
     question:
@@ -274,12 +274,12 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Defense in depth: không có biện pháp đơn lẻ nào đủ. Nhiều lớp độc lập (adversarial training trong mô hình + preprocessing bên ngoài + ensemble nhiều mô hình + fallback sang cảm biến khác khi confidence thấp) làm kẻ tấn công phải xuyên qua tất cả. chi phí tăng theo cấp số nhân.",
+      "Defense in depth: không có biện pháp đơn lẻ nào đủ. Nhiều lớp độc lập (adversarial training trong mô hình + preprocessing bên ngoài + ensemble nhiều mô hình + fallback sang cảm biến khác khi confidence thấp) làm kẻ tấn công phải xuyên qua tất cả, chi phí tăng theo cấp số nhân.",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Component phụ. lưới pixel với overlay perturbation
+// Component phụ, lưới pixel với overlay perturbation
 // ---------------------------------------------------------------------------
 
 interface PixelGridProps {
@@ -339,7 +339,7 @@ function PixelGrid({
 }
 
 // ---------------------------------------------------------------------------
-// Component phụ. ô hiển thị dự đoán
+// Component phụ, ô hiển thị dự đoán
 // ---------------------------------------------------------------------------
 
 interface PredictionCardProps {
@@ -373,7 +373,7 @@ function PredictionCard({
         <span className="text-sm text-foreground">({confidence}%)</span>
       </div>
       <div className="text-[11px] mt-1" style={{ color }}>
-        {correct ? "Đúng" : "SAI. mô hình bị lừa"}
+        {correct ? "Đúng" : "SAI, mô hình bị lừa"}
       </div>
     </div>
   );
@@ -408,16 +408,16 @@ export default function AdversarialRobustnessTopic() {
 
   // Cảnh báo động cho người học
   const attackStatus = useMemo(() => {
-    if (epsilon === 0) return "Chưa có nhiễu. mô hình nhìn ảnh gốc.";
+    if (epsilon === 0) return "Chưa có nhiễu, mô hình nhìn ảnh gốc.";
     if (prediction.correct) {
       return advTraining
-        ? "Adversarial training đang hoạt động. mô hình vẫn giữ dự đoán đúng dù có nhiễu."
-        : "Nhiễu còn rất nhỏ. mô hình chưa bị ảnh hưởng.";
+        ? "Adversarial training đang hoạt động, mô hình vẫn giữ dự đoán đúng dù có nhiễu."
+        : "Nhiễu còn rất nhỏ, mô hình chưa bị ảnh hưởng.";
     }
     if (prediction.confidence < 75) {
-      return "Mô hình đã bị lật sang nhãn sai. đây là ranh giới nguy hiểm.";
+      return "Mô hình đã bị lật sang nhãn sai, đây là ranh giới nguy hiểm.";
     }
-    return "Mô hình bị lừa HOÀN TOÀN. tự tin cao vào nhãn sai.";
+    return "Mô hình bị lừa HOÀN TOÀN, tự tin cao vào nhãn sai.";
   }, [epsilon, prediction, advTraining]);
 
   return (
@@ -432,8 +432,8 @@ export default function AdversarialRobustnessTopic() {
         <PredictionGate
           question="Bạn thêm nhiễu CỰC NHỎ (mắt người không thấy) vào ảnh con mèo. AI nhận dạng sẽ thế nào?"
           options={[
-            "Vẫn nhận ra mèo. nhiễu nhỏ thì ảnh hưởng nhỏ, đây là tính chất trơn của mạng neural",
-            "CÓ THỂ nhận nhầm hoàn toàn thành vật khác. đây là adversarial attack, nhiễu nhỏ nhưng được thiết kế theo gradient để lừa AI",
+            "Vẫn nhận ra mèo, nhiễu nhỏ thì ảnh hưởng nhỏ, đây là tính chất trơn của mạng neural",
+            "CÓ THỂ nhận nhầm hoàn toàn thành vật khác, đây là adversarial attack, nhiễu nhỏ nhưng được thiết kế theo gradient để lừa AI",
             "AI sẽ báo 'không biết' vì phát hiện ra nhiễu bất thường trong đầu vào",
           ]}
           correct={1}
@@ -533,7 +533,7 @@ export default function AdversarialRobustnessTopic() {
               <div className="rounded-xl border border-border bg-card px-4 py-3">
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-semibold text-foreground">
-                    Epsilon (ε). biên độ nhiễu
+                    Epsilon (ε), biên độ nhiễu
                   </label>
                   <span className="text-sm font-mono text-accent">
                     {epsilonDisplay}
@@ -625,7 +625,7 @@ export default function AdversarialRobustnessTopic() {
             </div>
             <p className="text-muted">
               <strong>BẬT</strong> adversarial training, lặp lại. So sánh
-              ngưỡng lật nhãn. mô hình đã bền vững hơn bao nhiêu lần?
+              ngưỡng lật nhãn, mô hình đã bền vững hơn bao nhiêu lần?
             </p>
           </div>
         </div>
@@ -642,7 +642,7 @@ export default function AdversarialRobustnessTopic() {
           Adversarial attack không phải <strong>thêm nhiễu ngẫu nhiên</strong>
           {" "}: nó là <strong>nhiễu được thiết kế có mục đích</strong> dựa
           trên gradient. AI nhìn theo hàng nghìn chiều trong không gian
-          feature. nhiễu nhỏ ở <em>mỗi</em> chiều cộng lại đủ để đẩy
+          feature, nhiễu nhỏ ở <em>mỗi</em> chiều cộng lại đủ để đẩy
           quyết định <strong>vượt qua ranh giới phân loại</strong>. Với
           người, ảnh không đổi; với mô hình, feature vector đã dịch
           chuyển xa.
@@ -668,14 +668,14 @@ export default function AdversarialRobustnessTopic() {
           <ul className="list-disc pl-5 mt-2 space-y-1 text-sm">
             <li>
               Gradient được tính theo <strong>input</strong> (không phải theo
-              weights). cùng engine autograd đã có trong PyTorch.
+              weights), cùng engine autograd đã có trong PyTorch.
             </li>
             <li>
-              <code>sign()</code> chỉ giữ dấu. mỗi pixel thay đổi đúng ±ε,
+              <code>sign()</code> chỉ giữ dấu, mỗi pixel thay đổi đúng ±ε,
               tối ưu hoá tăng loss dưới ràng buộc L∞.
             </li>
             <li>
-              Chi phí: 1 forward + 1 backward. rẻ hơn 1 epoch training
+              Chi phí: 1 forward + 1 backward, rẻ hơn 1 epoch training
               vài triệu lần.
             </li>
           </ul>
@@ -716,8 +716,8 @@ export default function AdversarialRobustnessTopic() {
         <InlineChallenge
           question="Xe tự lái dùng camera nhận dạng biển báo giao thông. Kẻ xấu dán sticker nhỏ lên biển 'DỪNG LẠI' khiến AI đọc thành 'Tốc độ 120 km/h'. Hậu quả nguy hiểm nhất là gì?"
           options={[
-            "Xe chạy nhanh hơn một chút. không nguy hiểm",
-            "Xe KHÔNG DỪNG tại nơi phải dừng. có thể gây tai nạn chết người. Physical adversarial attack cực kỳ nguy hiểm!",
+            "Xe chạy nhanh hơn một chút, không nguy hiểm",
+            "Xe KHÔNG DỪNG tại nơi phải dừng, có thể gây tai nạn chết người. Physical adversarial attack cực kỳ nguy hiểm!",
             "Camera sẽ phát hiện sticker bất thường và cảnh báo cho lái xe",
             "Xe sẽ chuyển sang dùng GPS thay camera nên không ảnh hưởng",
           ]}
@@ -810,8 +810,8 @@ export default function AdversarialRobustnessTopic() {
             {"\\min_{\\theta} \\; \\mathbb{E}_{(x,y)}\\left[\\max_{\\|\\delta\\|_\\infty \\le \\epsilon} \\mathcal{L}(\\theta, x+\\delta, y)\\right]"}
           </LaTeX>
           <p className="text-sm text-muted">
-            Vòng trong (max) là attack. tìm nhiễu tồi tệ nhất. Vòng
-            ngoài (min) là training. cập nhật trọng số để robust với
+            Vòng trong (max) là attack, tìm nhiễu tồi tệ nhất. Vòng
+            ngoài (min) là training, cập nhật trọng số để robust với
             nhiễu đó. Xấp xỉ vòng trong bằng PGD K-bước → được gọi là{" "}
             <em>PGD adversarial training</em>.
           </p>
@@ -836,7 +836,7 @@ from cleverhans.torch.attacks.projected_gradient_descent import projected_gradie
 # ---------------------------------------------------------------------
 
 def fgsm_attack(model: nn.Module, x: torch.Tensor, y: torch.Tensor, eps: float = 0.03):
-    """1 bước FGSM. rẻ, hữu ích làm baseline."""
+    """1 bước FGSM, rẻ, hữu ích làm baseline."""
     model.eval()
     # CleverHans API: fast_gradient_method(model, x, eps, norm, ...)
     x_adv = fast_gradient_method(
@@ -886,7 +886,7 @@ def train_robust(
     for x, y in loader:
         x, y = x.to(device), y.to(device)
 
-        # (a) Sinh adversarial batch. mỗi step train đều có attack mới
+        # (a) Sinh adversarial batch, mỗi step train đều có attack mới
         x_adv = pgd_attack(model, x, y, eps=eps, alpha=eps/4, steps=steps)
         model.train()  # pgd_attack gọi model.eval()
 
@@ -919,7 +919,7 @@ def clean_accuracy(model, loader, device):
 
 
 def pgd_accuracy(model, loader, device, eps=0.03, steps=20):
-    """Robust accuracy. dùng PGD mạnh (nhiều bước) để đánh giá."""
+    """Robust accuracy, dùng PGD mạnh (nhiều bước) để đánh giá."""
     model.eval()
     correct, total = 0, 0
     for x, y in loader:
@@ -947,7 +947,7 @@ def pgd_accuracy(model, loader, device, eps=0.03, steps=20):
               </p>
               <p>
                 Chatbot tiếng Việt có thể bị ép sai qua homoglyph (thay
-                chữ Latin bằng chữ Cyrillic trông giống). adversarial
+                chữ Latin bằng chữ Cyrillic trông giống), adversarial
                 attack cho NLP.
               </p>
               <p>
@@ -958,7 +958,7 @@ def pgd_accuracy(model, loader, device, eps=0.03, steps=20):
           </Callout>
 
           <h3 className="text-base font-semibold text-foreground mt-5 mb-2">
-            Demo tấn công với CleverHans. chạy được ngay
+            Demo tấn công với CleverHans, chạy được ngay
           </h3>
           <p>
             Đoạn code dưới đây là demo tối thiểu: tải một mô hình CNN đã
@@ -989,7 +989,7 @@ transform = tv.transforms.Compose([
 testset = tv.datasets.CIFAR10(root="./data", train=False, download=True, transform=transform)
 loader = torch.utils.data.DataLoader(testset, batch_size=128, shuffle=False)
 
-# 2. Tải mô hình. ví dụ ResNet-18 từ torchvision hub
+# 2. Tải mô hình, ví dụ ResNet-18 từ torchvision hub
 model = torch.hub.load("chenyaofo/pytorch-cifar-models",
                        "cifar10_resnet20", pretrained=True).to(device)
 model.eval()
@@ -1035,7 +1035,7 @@ eval_attack(
           </CodeBlock>
 
           <h3 className="text-base font-semibold text-foreground mt-5 mb-2">
-            White-box, Black-box, Gray-box. ba mô hình mối đe doạ
+            White-box, Black-box, Gray-box, ba mô hình mối đe doạ
           </h3>
           <p>
             Khi đánh giá robustness, ta phân loại theo mức quyền truy cập
@@ -1045,7 +1045,7 @@ eval_attack(
             <li>
               <strong>White-box:</strong> kẻ tấn công biết toàn bộ kiến
               trúc, trọng số, và gradient. FGSM / PGD / CW đều là
-              white-box. Kịch bản tệ nhất. dùng để đánh giá upper bound.
+              white-box. Kịch bản tệ nhất, dùng để đánh giá upper bound.
             </li>
             <li>
               <strong>Black-box:</strong> chỉ truy vấn qua API, không
@@ -1062,7 +1062,7 @@ eval_attack(
           <p className="mt-4">
             Transferability là hiện tượng đáng lo ngại: adversarial
             examples tạo cho mô hình A thường lừa được cả mô hình B có
-            kiến trúc khác. Đây là lý do ensemble đơn thuần không đủ. cần ensemble <em>đa dạng</em> (khác kiến trúc, khác data
+            kiến trúc khác. Đây là lý do ensemble đơn thuần không đủ, cần ensemble <em>đa dạng</em> (khác kiến trúc, khác data
             augmentation, khác training objective).
           </p>
 
@@ -1079,7 +1079,7 @@ eval_attack(
                   Bài học: khi báo cáo robust accuracy, phải dùng{" "}
                   <em>adaptive attack</em>. attack biết defense là gì và
                   tuỳ biến theo nó. Chuẩn đánh giá hiện tại: AutoAttack
-                  (Croce & Hein, 2020). ensemble 4 attack mạnh.
+                  (Croce & Hein, 2020), ensemble 4 attack mạnh.
                 </p>
                 <p>
                   Nếu defense của bạn chỉ đánh giá với FGSM default, con
@@ -1115,7 +1115,7 @@ eval_attack(
         </Callout>
 
         <div className="mt-4">
-          <Callout variant="warning" title="Defense in depth. nhiều lớp độc lập">
+          <Callout variant="warning" title="Defense in depth, nhiều lớp độc lập">
             <p>
               Không có biện pháp đơn lẻ nào đủ. Kiến trúc bền vững đi
               theo nguyên tắc <em>Defense in Depth</em>:
@@ -1150,7 +1150,7 @@ eval_attack(
           <ProgressSteps current={8} total={TOTAL_STEPS} />
         </div>
         <InlineChallenge
-          question="Một startup Việt Nam triển khai AI nhận dạng chữ ký cho ngân hàng. Họ đo clean accuracy 99%. Bạn là security reviewer. đâu là yêu cầu BẮT BUỘC?"
+          question="Một startup Việt Nam triển khai AI nhận dạng chữ ký cho ngân hàng. Họ đo clean accuracy 99%. Bạn là security reviewer, đâu là yêu cầu BẮT BUỘC?"
           options={[
             "Chỉ cần tăng test set lên 10x là đủ",
             "Phải đo robust accuracy dưới PGD / AutoAttack, áp dụng adversarial training, và thêm anomaly detector + human review khi confidence thấp",
@@ -1172,7 +1172,7 @@ eval_attack(
         <Callout variant="info" title="Checklist đo robustness cho mô hình production">
           <ul className="list-disc pl-5 space-y-1 text-sm">
             <li>
-              <strong>Không</strong> chỉ báo cáo accuracy dưới FGSM default. dễ cho kết quả ảo.
+              <strong>Không</strong> chỉ báo cáo accuracy dưới FGSM default, dễ cho kết quả ảo.
             </li>
             <li>
               Dùng <strong>PGD-50 + AutoAttack</strong> (ensemble APGD-CE,
@@ -1184,14 +1184,14 @@ eval_attack(
             </li>
             <li>
               Thử <strong>adaptive attack</strong> biết rõ defense của
-              bạn. đây mới là bài kiểm tra thật.
+              bạn, đây mới là bài kiểm tra thật.
             </li>
             <li>
               Với LLM / NLP: đo robustness với paraphrase, homoglyph,
               unicode confusable, prompt injection.
             </li>
             <li>
-              Công khai weights + attack script. không có robustness nào
+              Công khai weights + attack script, không có robustness nào
               tồn tại dưới "security through obscurity".
             </li>
           </ul>
@@ -1206,7 +1206,7 @@ eval_attack(
               ε = 8/255 (L∞)
             </div>
             <p className="text-[12px] text-muted mt-1">
-              Chuẩn CIFAR-10 / ImageNet. Nhiễu ≈ 3% mỗi pixel. mắt người
+              Chuẩn CIFAR-10 / ImageNet. Nhiễu ≈ 3% mỗi pixel, mắt người
               không thấy.
             </p>
           </div>
@@ -1250,9 +1250,9 @@ eval_attack(
           points={[
             "Adversarial attack = nhiễu CỰC NHỎ nhưng thiết kế theo gradient, đủ để lừa AI hoàn toàn.",
             "FGSM: 1 bước, nhanh. PGD: nhiều bước + projection, mạnh hơn. CW: optimization-based, khó phát hiện nhất.",
-            "Physical attacks (sticker biển báo, kính, áo hoạ tiết) nguy hiểm hơn digital. hoạt động trong thế giới thực.",
+            "Physical attacks (sticker biển báo, kính, áo hoạ tiết) nguy hiểm hơn digital, hoạt động trong thế giới thực.",
             "Adversarial training (min-max) hiệu quả nhất nhưng tốn 3-10x thời gian và giảm clean accuracy 1-3%.",
-            "Defense in depth: preprocessing + adversarial training + ensemble + fallback. không biện pháp đơn lẻ nào đủ.",
+            "Defense in depth: preprocessing + adversarial training + ensemble + fallback, không biện pháp đơn lẻ nào đủ.",
             "BẮT BUỘC đánh giá bằng PGD-50 + AutoAttack + adaptive attack trước khi claim robustness cho production.",
           ]}
         />
@@ -1275,7 +1275,7 @@ eval_attack(
               robustness with AutoAttack.
             </li>
             <li>
-              RobustBench (robustbench.github.io). leaderboard chuẩn cho
+              RobustBench (robustbench.github.io), leaderboard chuẩn cho
               robust accuracy trên CIFAR / ImageNet.
             </li>
           </ul>

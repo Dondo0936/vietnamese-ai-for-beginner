@@ -177,7 +177,7 @@ const GOALS: Goal[] = [
       },
       {
         name: "Claude",
-        why: "Dịch Anh–Việt giữ giọng văn gốc rất tốt, đặc biệt với văn bản hợp đồng hoặc học thuật.",
+        why: "Dịch Anh-Việt giữ giọng văn gốc rất tốt, đặc biệt với văn bản hợp đồng hoặc học thuật.",
         tone: "Văn dài",
       },
     ],
@@ -268,7 +268,7 @@ type Task = {
 const TASKS: Task[] = [
   { label: "Viết email 150 từ", icon: FileText, manual: 15, withAi: 3 },
   { label: "Tóm tắt báo cáo 20 trang", icon: BarChart3, manual: 60, withAi: 8 },
-  { label: "Dịch 1000 từ Anh–Việt", icon: Languages, manual: 90, withAi: 10 },
+  { label: "Dịch 1000 từ Anh-Việt", icon: Languages, manual: 90, withAi: 10 },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1265,7 +1265,7 @@ export default function GettingStartedWithAiTopic() {
           <ul className="list-disc list-inside space-y-1.5 pl-2">
             <li>Viết nháp email khó (báo tin xấu, từ chối, đàm phán giá).</li>
             <li>Tóm tắt một báo cáo/PDF dài thành 5-7 gạch đầu dòng.</li>
-            <li>Dịch tài liệu Anh–Việt / Việt–Anh, giữ giọng chuyên nghiệp.</li>
+            <li>Dịch tài liệu Anh-Việt / Việt-Anh, giữ giọng chuyên nghiệp.</li>
             <li>Brainstorm 15 ý tưởng cho campaign rồi chọn 3 ý mạnh nhất.</li>
             <li>Soạn dàn ý cho cuộc họp: mục tiêu, agenda, câu hỏi chính.</li>
             <li>Viết lại đoạn văn cho gọn hơn, lịch sự hơn, hoặc đơn giản hơn.</li>

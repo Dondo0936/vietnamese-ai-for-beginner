@@ -46,12 +46,12 @@ const NOISE_LABEL = -2;
 const UNVISITED = -1;
 
 const COLORS = [
-  "#3b82f6", // blue — cluster 0
-  "#22c55e", // green — cluster 1
-  "#f97316", // orange — cluster 2
-  "#8b5cf6", // purple — cluster 3
-  "#ec4899", // pink — cluster 4
-  "#14b8a6", // teal — cluster 5
+  "#3b82f6", // blue-cluster 0
+  "#22c55e", // green-cluster 1
+  "#f97316", // orange-cluster 2
+  "#8b5cf6", // purple-cluster 3
+  "#ec4899", // pink-cluster 4
+  "#14b8a6", // teal-cluster 5
 ];
 
 const NOISE_COLOR = "#94a3b8";
@@ -61,14 +61,14 @@ function dist(a: Pt, b: Pt) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
- * DATASET 1 — 40 points: 3 natural clusters + 5 noise
+ * DATASET 1-40 points: 3 natural clusters + 5 noise
  *   Cluster A: dense top-left blob (~15 points)
  *   Cluster B: crescent bottom-middle (~12 points)
  *   Cluster C: tight right-side group (~8 points)
  *   Noise: 5 scattered points
  * ═══════════════════════════════════════════════════════════════════ */
 const DATA: Pt[] = [
-  /* Cluster A — 15 points dense top-left */
+  /* Cluster A-15 points dense top-left */
   { x: 70, y: 70 },
   { x: 85, y: 60 },
   { x: 95, y: 80 },
@@ -85,7 +85,7 @@ const DATA: Pt[] = [
   { x: 85, y: 85 },
   { x: 100, y: 65 },
 
-  /* Cluster B — 12 points crescent bottom middle */
+  /* Cluster B-12 points crescent bottom middle */
   { x: 180, y: 220 },
   { x: 205, y: 235 },
   { x: 230, y: 245 },
@@ -99,7 +99,7 @@ const DATA: Pt[] = [
   { x: 300, y: 225 },
   { x: 335, y: 215 },
 
-  /* Cluster C — 8 points tight right */
+  /* Cluster C-8 points tight right */
   { x: 410, y: 90 },
   { x: 430, y: 110 },
   { x: 400, y: 120 },
@@ -109,7 +109,7 @@ const DATA: Pt[] = [
   { x: 435, y: 135 },
   { x: 455, y: 95 },
 
-  /* Noise — 5 scattered outliers */
+  /* Noise-5 scattered outliers */
   { x: 250, y: 45 },
   { x: 460, y: 260 },
   { x: 30, y: 260 },
@@ -118,14 +118,14 @@ const DATA: Pt[] = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
- * DATASET 2 — Moons (for comparison with K-Means)
- *   Two interleaving half-circles — the classic "DBSCAN wins" case.
+ * DATASET 2-Moons (for comparison with K-Means)
+ *   Two interleaving half-circles-the classic "DBSCAN wins" case.
  * ═══════════════════════════════════════════════════════════════════ */
 function generateMoons(n: number = 60): Pt[] {
   const pts: Pt[] = [];
   const half = Math.floor(n / 2);
 
-  // Upper moon — half circle from 0 to π, radius 80, center (160, 140)
+  // Upper moon-half circle from 0 to π, radius 80, center (160, 140)
   for (let i = 0; i < half; i++) {
     const t = (i / (half - 1)) * Math.PI;
     const r = 80 + (Math.sin(i * 1.7) * 6);
@@ -135,7 +135,7 @@ function generateMoons(n: number = 60): Pt[] {
     });
   }
 
-  // Lower moon — shifted and flipped
+  // Lower moon-shifted and flipped
   for (let i = 0; i < half; i++) {
     const t = (i / (half - 1)) * Math.PI;
     const r = 80 + (Math.cos(i * 1.3) * 6);
@@ -216,11 +216,11 @@ function runDBSCAN(pts: Pt[], eps: number, minPts: number): DBSCANResult {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
- * K-MEANS — simple fixed-K implementation for moons comparison
+ * K-MEANS-simple fixed-K implementation for moons comparison
  * ═══════════════════════════════════════════════════════════════════ */
 function runKMeans(pts: Pt[], k: number, iters: number = 20): number[] {
   if (pts.length === 0) return [];
-  // Deterministic init — pick k points spread apart
+  // Deterministic init-pick k points spread apart
   const centroids: Pt[] = [];
   const step = Math.floor(pts.length / k);
   for (let i = 0; i < k; i++) centroids.push({ ...pts[i * step] });
@@ -338,7 +338,7 @@ export default function DbscanTopic() {
   }, []);
 
   /* ═══════════════════════════════════════════════════════════════════
-   * QUIZ — 8 questions
+   * QUIZ-8 questions
    * ═══════════════════════════════════════════════════════════════════ */
   const quizQuestions: QuizQuestion[] = useMemo(
     () => [
@@ -364,7 +364,7 @@ export default function DbscanTopic() {
         ],
         correct: 1,
         explanation:
-          "ε lớn → vùng lân cận rộng → mọi điểm là neighbor của nhau → gộp hết thành 1 cụm. ε nhỏ → mỗi điểm cô lập → toàn noise. Cần ε 'vừa đủ'!",
+          "ε lớn → vùng lân cận rộng → mọi điểm là neighbor của nhau → gộp hết thành 1 cụm, ε nhỏ → mỗi điểm cô lập → toàn noise. Cần ε 'vừa đủ'!",
       },
       {
         question: "DBSCAN gặp khó khăn khi nào?",
@@ -394,13 +394,13 @@ export default function DbscanTopic() {
         question: "Tại sao phải chuẩn hoá dữ liệu trước DBSCAN?",
         options: [
           "Để thuật toán chạy nhanh hơn",
-          "Vì DBSCAN dùng khoảng cách — feature có scale lớn sẽ lấn át",
+          "Vì DBSCAN dùng khoảng cách-feature có scale lớn sẽ lấn át",
           "Chuẩn hoá không cần thiết cho DBSCAN",
           "Để giảm số chiều dữ liệu",
         ],
         correct: 1,
         explanation:
-          "Nếu feature 'lương' có giá trị hàng triệu, feature 'tuổi' chỉ vài chục — khoảng cách Euclidean sẽ gần như chỉ phụ thuộc vào lương. StandardScaler hoặc MinMaxScaler là bắt buộc.",
+          "Nếu feature 'lương' có giá trị hàng triệu, feature 'tuổi' chỉ vài chục-khoảng cách Euclidean sẽ gần như chỉ phụ thuộc vào lương. StandardScaler hoặc MinMaxScaler là bắt buộc.",
       },
       {
         question: "k-distance plot được dùng để làm gì?",
@@ -412,7 +412,7 @@ export default function DbscanTopic() {
         ],
         correct: 1,
         explanation:
-          "Sắp xếp khoảng cách đến láng giềng thứ k của mọi điểm theo thứ tự tăng. Đồ thị có một 'khuỷu tay' rõ rệt — đó chính là giá trị ε hợp lý.",
+          "Sắp xếp khoảng cách đến láng giềng thứ k của mọi điểm theo thứ tự tăng. Đồ thị có một 'khuỷu tay' rõ rệt-đó chính là giá trị ε hợp lý.",
       },
       {
         question: "Với dữ liệu Moons (2 hình bán nguyệt đan xen), thuật toán nào phù hợp hơn?",
@@ -429,14 +429,14 @@ export default function DbscanTopic() {
       {
         question: "DBSCAN có nhược điểm gì về độ phức tạp?",
         options: [
-          "O(n log n) — nhanh hơn K-Means",
-          "O(n²) trong trường hợp xấu — chậm trên n lớn nếu không có index không gian",
-          "O(nk) — giống K-Means",
-          "O(1) — cực nhanh",
+          "O(n log n), nhanh hơn K-Means",
+          "O(n²) trong trường hợp xấu-chậm trên n lớn nếu không có index không gian",
+          "O(nk), giống K-Means",
+          "O(1), cực nhanh",
         ],
         correct: 1,
         explanation:
-          "Tra cứu láng giềng nhiều lần. Với k-d tree hoặc ball tree, có thể giảm xuống O(n log n) trong không gian chiều thấp. scikit-learn tự chọn cấu trúc phù hợp.",
+          "Tra cứu láng giềng nhiều lần. Với k-d tree hoặc ball tree, có thể giảm xuống O(n log n) trong không gian chiều thấp, scikit-learn tự chọn cấu trúc phù hợp.",
       },
     ],
     [],
@@ -468,12 +468,12 @@ export default function DbscanTopic() {
         <PredictionGate
           question="Nhìn bản đồ Hà Nội ban đêm từ vệ tinh: có cụm đèn sáng (khu dân cư), vùng tối (đồng ruộng), và vài đèn lẻ (nhà riêng). Bạn muốn phân nhóm các đèn. Dùng K-Means có ổn không?"
           options={[
-            "Dùng K-Means được — chọn K = số khu dân cư",
-            "Không — vì cụm có hình dạng bất kỳ, số cụm chưa biết, và có đèn lẻ (noise)",
-            "K-Means luôn tốt — không cần thuật toán khác",
+            "Dùng K-Means được-chọn K = số khu dân cư",
+            "Không-vì cụm có hình dạng bất kỳ, số cụm chưa biết, và có đèn lẻ (noise)",
+            "K-Means luôn tốt-không cần thuật toán khác",
           ]}
           correct={1}
-          explanation="K-Means cần biết K trước và chỉ tìm cụm hình cầu. Khu dân cư có hình dạng bất kỳ, đèn lẻ là noise. DBSCAN tìm cụm dựa trên MẬT ĐỘ — hoàn hảo cho bài toán này!"
+          explanation="K-Means cần biết K trước và chỉ tìm cụm hình cầu. Khu dân cư có hình dạng bất kỳ, đèn lẻ là noise. DBSCAN tìm cụm dựa trên MẬT ĐỘ-hoàn hảo cho bài toán này!"
         >
           {/* ═══ STEP 2: INTERACTIVE DBSCAN SIMULATOR ═══ */}
           <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
@@ -486,7 +486,7 @@ export default function DbscanTopic() {
 
             <VisualizationSection>
               <div className="space-y-4">
-                {/* Main scatter — 40 points */}
+                {/* Main scatter-40 points */}
                 <svg
                   viewBox="0 0 500 320"
                   className="w-full rounded-lg border border-border bg-background"
@@ -512,7 +512,7 @@ export default function DbscanTopic() {
                     />
                   )}
 
-                  {/* Connection lines — hovered point's ε-neighbors */}
+                  {/* Connection lines-hovered point's ε-neighbors */}
                   {hoveredIdx >= 0 &&
                     DATA.map((p, j) => {
                       if (j === hoveredIdx) return null;
@@ -532,7 +532,7 @@ export default function DbscanTopic() {
                       );
                     })}
 
-                  {/* Data points — hide if in animation mode and not yet revealed */}
+                  {/* Data points-hide if in animation mode and not yet revealed */}
                   {DATA.map((p, i) => {
                     const cluster = labels[i];
                     const isNoise = cluster < 0;
@@ -747,13 +747,13 @@ export default function DbscanTopic() {
                           return (
                             <span>
                               Điểm #{evt.point} là <strong>core</strong> của cụm{" "}
-                              {evt.cluster} — bắt đầu lan toả.
+                              {evt.cluster}, bắt đầu lan toả.
                             </span>
                           );
                         return (
                           <span>
                             Điểm #{evt.point} là <strong>border</strong> của cụm{" "}
-                            {evt.cluster} — thêm vào vùng rìa.
+                            {evt.cluster}, thêm vào vùng rìa.
                           </span>
                         );
                       })()}
@@ -832,13 +832,13 @@ export default function DbscanTopic() {
                 >
                   {compareMode === "dbscan"
                     ? "DBSCAN tách đúng 2 bán nguyệt"
-                    : "K-Means cắt ngang — sai hoàn toàn"}
+                    : "K-Means cắt ngang-sai hoàn toàn"}
                 </text>
               </svg>
 
               <p className="mt-2 text-xs text-muted">
                 Bạn thấy không? K-Means vẽ đường phân chia{" "}
-                <strong>thẳng</strong> ở giữa — luôn tạo ranh giới lồi quanh centroid.
+                <strong>thẳng</strong> ở giữa-luôn tạo ranh giới lồi quanh centroid.
                 DBSCAN không quan tâm đến hình dạng, chỉ quan tâm các điểm có{" "}
                 <strong>&quot;liên thông mật độ&quot;</strong> hay không.
               </p>
@@ -858,14 +858,14 @@ export default function DbscanTopic() {
             </AhaMoment>
           </LessonSection>
 
-          {/* ═══ STEP 4: CHALLENGE — 2 inline ═══ */}
+          {/* ═══ STEP 4: CHALLENGE-2 inline ═══ */}
           <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
             <div className="space-y-4">
               <InlineChallenge
                 question="Dữ liệu có 2 cụm: cụm A rất dày (100 điểm/cm²), cụm B rất thưa (5 điểm/cm²). DBSCAN với 1 giá trị ε có phân được cả hai không?"
                 options={[
-                  "Có — DBSCAN xử lý tốt mọi mật độ",
-                  "Không — ε nhỏ bỏ sót cụm B, ε lớn gộp cả hai. Cần HDBSCAN",
+                  "Có-DBSCAN xử lý tốt mọi mật độ",
+                  "Không-ε nhỏ bỏ sót cụm B, ε lớn gộp cả hai. Cần HDBSCAN",
                   "Tuỳ vào minPts",
                 ]}
                 correct={1}
@@ -875,7 +875,7 @@ export default function DbscanTopic() {
                 question="Bạn đang phân cụm giao dịch ngân hàng để phát hiện gian lận. Giao dịch 'lạ' chỉ xuất hiện rất ít. DBSCAN xử lý các giao dịch lạ này như thế nào?"
                 options={[
                   "DBSCAN bỏ sót chúng vì số lượng ít",
-                  "DBSCAN đánh dấu chúng là noise — và đó chính là tín hiệu gian lận!",
+                  "DBSCAN đánh dấu chúng là noise-và đó chính là tín hiệu gian lận!",
                   "DBSCAN gộp chúng vào cụm 'giao dịch bình thường'",
                 ]}
                 correct={1}
@@ -889,7 +889,7 @@ export default function DbscanTopic() {
             <ExplanationSection>
               <p>
                 <strong>DBSCAN</strong>{" "}
-                (Density-Based Spatial Clustering of Applications with Noise — Ester,
+                (Density-Based Spatial Clustering of Applications with Noise-Ester,
                 Kriegel, Sander, Xu 1996) phân cụm dựa trên hai tham số:
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
@@ -909,7 +909,7 @@ export default function DbscanTopic() {
               <ol className="list-decimal list-inside space-y-1 pl-2 text-sm">
                 <li>
                   <strong>Core point:</strong>{" "}
-                  <LaTeX>{"|N_\\varepsilon(p)| \\geq \\text{minPts}"}</LaTeX> — có đủ
+                  <LaTeX>{"|N_\\varepsilon(p)| \\geq \\text{minPts}"}</LaTeX>, có đủ
                   láng giềng trong vùng ε
                 </li>
                 <li>
@@ -918,7 +918,7 @@ export default function DbscanTopic() {
                 </li>
                 <li>
                   <strong>Noise point:</strong> Không phải core cũng không phải border
-                  — đánh nhãn −1
+                 , đánh nhãn −1
                 </li>
               </ol>
 
@@ -964,7 +964,7 @@ export default function DbscanTopic() {
               <Callout variant="tip" title="Chọn ε bằng k-distance plot">
                 Tính khoảng cách đến láng giềng thứ k (k = minPts) cho mỗi điểm. Sắp
                 xếp tăng dần và vẽ đồ thị. Điểm &quot;khuỷu tay&quot; (elbow) chính là
-                ε tối ưu — đó là ngưỡng giữa &quot;bên trong cụm&quot; và &quot;ra
+                ε tối ưu-đó là ngưỡng giữa &quot;bên trong cụm&quot; và &quot;ra
                 ngoài&quot;.
               </Callout>
 
@@ -980,7 +980,7 @@ export default function DbscanTopic() {
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>
-                  <strong>HDBSCAN:</strong> Hierarchical DBSCAN — tự điều chỉnh ε theo
+                  <strong>HDBSCAN:</strong> Hierarchical DBSCAN-tự điều chỉnh ε theo
                   từng vùng mật độ, cho kết quả ổn định hơn nhiều
                 </li>
                 <li>
@@ -1036,7 +1036,7 @@ from sklearn.metrics import adjusted_rand_score, silhouette_score
 print(f"Silhouette: {silhouette_score(X_scaled, labels):.3f}")`}
               </CodeBlock>
 
-              <Callout variant="warning" title="DBSCAN vs K-Means — chọn đúng công cụ">
+              <Callout variant="warning" title="DBSCAN vs K-Means-chọn đúng công cụ">
                 <strong>K-Means:</strong> cần K, chỉ cụm hình cầu/lồi, gán mọi điểm vào
                 một cụm, nhanh O(nkT). <strong>DBSCAN:</strong> tự tìm K, cụm hình bất
                 kỳ, phát hiện noise, chậm O(n²) hoặc O(n log n) với index. Dùng K-Means
@@ -1048,14 +1048,14 @@ print(f"Silhouette: {silhouette_score(X_scaled, labels):.3f}")`}
                 (1) Luôn chuẩn hoá dữ liệu trước. (2) Thử HDBSCAN trước khi tune DBSCAN
                 thủ công. (3) Với dữ liệu nhiều chiều (D &gt; 10), DBSCAN yếu vì{" "}
                 <TopicLink slug="dimensionality-curse">&quot;lời nguyền chiều cao&quot;</TopicLink>{" "}
-                — khoảng cách mất ý nghĩa. Dùng{" "}
+               , khoảng cách mất ý nghĩa. Dùng{" "}
                 <TopicLink slug="pca">PCA</TopicLink> hoặc{" "}
                 <TopicLink slug="t-sne">t-SNE</TopicLink> để giảm chiều trước.
               </Callout>
 
               <CodeBlock language="python" title="Ứng dụng: phát hiện bất thường">
                 {`# DBSCAN làm anomaly detector
-# Các điểm có label == -1 là "lạ" — không giống bất kỳ pattern nào
+# Các điểm có label == -1 là "lạ", không giống bất kỳ pattern nào
 from sklearn.cluster import DBSCAN
 import pandas as pd
 
@@ -1084,7 +1084,7 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
                   </p>
                   <p>
                     <strong>Với k-d tree (2D-3D):</strong> Tra cứu range O(log n), tổng
-                    thuật toán O(n log n). scikit-learn mặc định chọn k-d tree nếu
+                    thuật toán O(n log n), scikit-learn mặc định chọn k-d tree nếu
                     D &lt; 20.
                   </p>
                   <p>
@@ -1104,20 +1104,20 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
                 </div>
               </CollapsibleDetail>
 
-              <CollapsibleDetail title="Tại sao có 'border point' lại lạ — và vấn đề non-determinism">
+              <CollapsibleDetail title="Tại sao có 'border point' lại lạ-và vấn đề non-determinism">
                 <div className="space-y-2 text-sm">
                   <p>
                     Một{" "}
                     <em>border point</em>{" "}
                     có thể nằm trong ε-neighbourhood của nhiều core point thuộc các
                     cụm khác nhau. DBSCAN gán nó vào{" "}
-                    <strong>cụm nào gặp trước</strong> trong quá trình duyệt — tức là
+                    <strong>cụm nào gặp trước</strong> trong quá trình duyệt-tức là
                     kết quả phụ thuộc thứ tự điểm trong tập dữ liệu!
                   </p>
                   <p>
                     Điều này trái với K-Means (kết quả chỉ phụ thuộc init) và làm
                     DBSCAN khó tái tạo hoàn toàn. HDBSCAN sửa vấn đề này bằng cách xây
-                    dựng cây phân cấp và chọn cụm &quot;ổn định nhất&quot; — kết quả
+                    dựng cây phân cấp và chọn cụm &quot;ổn định nhất&quot;, kết quả
                     xác định hơn.
                   </p>
                   <p>
@@ -1139,7 +1139,7 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
             </ExplanationSection>
           </LessonSection>
 
-          {/* ═══ STEP 6: MINI SUMMARY — 6 points ═══ */}
+          {/* ═══ STEP 6: MINI SUMMARY-6 points ═══ */}
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               points={[
@@ -1148,12 +1148,12 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
                 "Ba loại điểm: core (đủ láng giềng), border (gần core nhưng tự không đủ), noise (lẻ loi, nhãn −1).",
                 "Ưu: tìm cụm hình dạng bất kỳ, phát hiện outlier tự nhiên, không cần K. Hoàn hảo cho anomaly detection.",
                 "Nhược: nhạy với ε khi mật độ cụm không đều; yếu trong chiều cao; cần chuẩn hoá dữ liệu.",
-                "Thực chiến: dùng HDBSCAN (tự điều chỉnh ε) thay cho DBSCAN thuần — thường ổn định và dễ dùng hơn.",
+                "Thực chiến: dùng HDBSCAN (tự điều chỉnh ε) thay cho DBSCAN thuần-thường ổn định và dễ dùng hơn.",
               ]}
             />
           </LessonSection>
 
-          {/* ═══ STEP 7: QUIZ — 8 questions ═══ */}
+          {/* ═══ STEP 7: QUIZ-8 questions ═══ */}
           <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Kiểm tra">
             <QuizSection questions={quizQuestions} />
           </LessonSection>
@@ -1164,7 +1164,7 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
 }
 
 /* ═══════════════════════════════════════════════════════════════════
- * END OF FILE — dbscan.tsx
+ * END OF FILE-dbscan.tsx
  *
  * Design notes:
  *   - Preserves the original SVG visualization & ε-hover interaction
@@ -1207,7 +1207,7 @@ print(f"Found {len(suspicious)} suspicious transactions out of {len(df)}")
  *
  * `generateMoons(n)` produces two interleaving half-circles of n/2
  * points each. A small sinusoidal jitter is added so the boundary
- * between moons is not perfectly clean — otherwise K-Means would
+ * between moons is not perfectly clean-otherwise K-Means would
  * sometimes "get lucky" near the inflection points. The jitter also
  * makes the visualisation feel more organic.
  *

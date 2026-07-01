@@ -39,7 +39,7 @@ export const metadata: TopicMeta = {
 };
 
 // ---------------------------------------------------------------------------
-// DỮ LIỆU GIÁ MODEL (USD / 1K tokens). cập nhật theo bảng giá phổ biến 2025
+// DỮ LIỆU GIÁ MODEL (USD / 1K tokens), cập nhật theo bảng giá phổ biến 2025
 // Đây là giá tham khảo dùng cho calculator. Khi triển khai thật, hãy đồng bộ
 // với bảng giá hiện hành trên trang chính thức của nhà cung cấp.
 // ---------------------------------------------------------------------------
@@ -98,7 +98,7 @@ const MODEL_CATALOG: ModelPricing[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// CÁC HỆ SỐ TỐI ƯU. mỗi toggle sẽ nhân vào chi phí gốc
+// CÁC HỆ SỐ TỐI ƯU, mỗi toggle sẽ nhân vào chi phí gốc
 // ---------------------------------------------------------------------------
 
 interface OptimizationToggles {
@@ -193,7 +193,7 @@ function computeCost(input: CalcInput): CalcOutput {
   let effectiveMonthly = baselineMonthly;
   const breakdown: CalcOutput["breakdown"] = [];
 
-  // 1) Context compression. giảm input token trước khi tính.
+  // 1) Context compression, giảm input token trước khi tính.
   let effectiveInput = input.avgInputTokens;
   if (input.toggles.contextCompression) {
     effectiveInput = input.avgInputTokens * (1 - SAVINGS.contextCompression);
@@ -210,7 +210,7 @@ function computeCost(input: CalcInput): CalcOutput {
   });
   effectiveMonthly = costAfterCompression;
 
-  // 2) Small model routing. một phần request chạy model nhỏ.
+  // 2) Small model routing, một phần request chạy model nhỏ.
   if (input.toggles.smallRouting) {
     const costSmall = costOfOne(effectiveInput, input.avgOutputTokens, small);
     const costBig = costOfOne(effectiveInput, input.avgOutputTokens, big);
@@ -232,7 +232,7 @@ function computeCost(input: CalcInput): CalcOutput {
     });
   }
 
-  // 3) Caching. giảm một tỉ lệ toàn bộ chi phí còn lại.
+  // 3) Caching, giảm một tỉ lệ toàn bộ chi phí còn lại.
   if (input.toggles.caching) {
     const saved = effectiveMonthly * SAVINGS.caching;
     breakdown.push({
@@ -249,7 +249,7 @@ function computeCost(input: CalcInput): CalcOutput {
     });
   }
 
-  // 4) Batch API. một phần workload đổi thành batch, giảm 50% cho phần đó.
+  // 4) Batch API, một phần workload đổi thành batch, giảm 50% cho phần đó.
   if (input.toggles.batchAPI) {
     const savedBatch =
       effectiveMonthly * SAVINGS.batchAPIShare * SAVINGS.batchAPI;
@@ -386,13 +386,13 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
       "Công ty quyết định giảm output token trung bình từ 500 xuống 200 bằng cách yêu cầu 'trả lời ngắn gọn'. Đây là tối ưu gì?",
     options: [
       "Không ảnh hưởng chi phí",
-      "Tối ưu prompt. output token thường đắt gấp 3 lần input, giảm output = giảm chi phí + giảm latency",
+      "Tối ưu prompt, output token thường đắt gấp 3 lần input, giảm output = giảm chi phí + giảm latency",
       "Chỉ là trick giao diện",
       "Làm giảm chất lượng 50%",
     ],
     correct: 1,
     explanation:
-      "Với GPT-4o, output $0.015/1K vs input $0.005/1K. gấp 3 lần. Cắt output dài thừa (dùng JSON schema chặt, max_tokens, system prompt 'ngắn gọn') vừa giảm tiền vừa tăng tốc độ phản hồi.",
+      "Với GPT-4o, output $0.015/1K vs input $0.005/1K, gấp 3 lần. Cắt output dài thừa (dùng JSON schema chặt, max_tokens, system prompt 'ngắn gọn') vừa giảm tiền vừa tăng tốc độ phản hồi.",
   },
 ];
 
@@ -475,8 +475,8 @@ export default function CostOptimizationTopic() {
         <PredictionGate
           question="Startup Việt Nam chạy chatbot GPT-4o, 100K request/ngày, hoá đơn $90K/tháng. CEO yêu cầu giảm còn $20K mà không hy sinh chất lượng rõ rệt. Khả thi không?"
           options={[
-            "Không. muốn rẻ thì phải cắt tính năng hoặc hạn chế user",
-            "Có. kết hợp routing, caching, compression và batch có thể giảm 70-80%",
+            "Không, muốn rẻ thì phải cắt tính năng hoặc hạn chế user",
+            "Có, kết hợp routing, caching, compression và batch có thể giảm 70-80%",
             "Chỉ giảm được 10-20% bằng cách viết prompt ngắn hơn",
             "Phải đợi OpenAI giảm giá chính thức",
           ]}
@@ -486,7 +486,7 @@ export default function CostOptimizationTopic() {
           <p className="mt-3 text-sm text-muted leading-relaxed">
             Mục tiêu của bài hôm nay: trao cho bạn một{" "}
             <strong className="text-foreground">bộ công cụ hệ thống</strong> để
-            cắt chi phí AI một cách có phương pháp. không phải đoán mò, không
+            cắt chi phí AI một cách có phương pháp, không phải đoán mò, không
             phải cắt tính năng.
           </p>
         </PredictionGate>
@@ -499,7 +499,7 @@ export default function CostOptimizationTopic() {
         <p className="leading-relaxed">
           Hãy tưởng tượng hệ thống AI của bạn giống một{" "}
           <strong>nhà hàng cao cấp</strong>. Mỗi request đến là một bàn đặt
-          món. Đầu bếp chính (GPT-4o) làm được mọi món nhưng đắt. lương cao,
+          món. Đầu bếp chính (GPT-4o) làm được mọi món nhưng đắt, lương cao,
           quầy đặc biệt. Phụ bếp (Haiku/Flash) làm được 70% món đơn giản (salad,
           mì gói, bánh mì) với chi phí chỉ bằng 1/20.
         </p>
@@ -776,7 +776,7 @@ export default function CostOptimizationTopic() {
             nhất". Đó là một <strong>cascade nhiều lớp</strong>: đầu tiên{" "}
             <em>đừng hỏi những gì có thể cache lại</em>, kế đến{" "}
             <em>hỏi model nhỏ trước, model lớn sau nếu cần</em>, và cuối cùng{" "}
-            <em>khi phải gọi. hãy gọi với ít token nhất có thể</em>.
+            <em>khi phải gọi, hãy gọi với ít token nhất có thể</em>.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -801,12 +801,12 @@ export default function CostOptimizationTopic() {
           question="Team của bạn đang cache HTTP response 1 giờ cho /chat endpoint. User report: 'Chatbot trả lời sai thông tin sản phẩm mới'. Nguyên nhân gì?"
           options={[
             "Model bị hỏng",
-            "Cache giữ response cũ, dữ liệu product đã đổi. cần invalidate cache theo sự kiện (thay vì chỉ TTL)",
+            "Cache giữ response cũ, dữ liệu product đã đổi, cần invalidate cache theo sự kiện (thay vì chỉ TTL)",
             "Cần tăng TTL lên 24 giờ",
             "Phải bỏ cache vĩnh viễn",
           ]}
           correct={1}
-          explanation="Cache có hai chiến lược: TTL (time-to-live) + invalidation theo sự kiện. Chỉ TTL thì dữ liệu cũ vẫn tồn tại cho đến hết giờ. Với dữ liệu động (giá, tồn kho, tin tức) phải invalidate khi nguồn thay đổi. hoặc không cache."
+          explanation="Cache có hai chiến lược: TTL (time-to-live) + invalidation theo sự kiện. Chỉ TTL thì dữ liệu cũ vẫn tồn tại cho đến hết giờ. Với dữ liệu động (giá, tồn kho, tin tức) phải invalidate khi nguồn thay đổi, hoặc không cache."
         />
       </LessonSection>
 
@@ -818,8 +818,8 @@ export default function CostOptimizationTopic() {
           <p>
             <strong>Tối ưu chi phí LLM</strong> là tập hợp các kỹ thuật{" "}
             <em>giảm chi tiêu</em> trên một hệ thống AI mà{" "}
-            <em>vẫn duy trì chất lượng</em> (đo bằng các metric nội dung. accuracy,
-            user rating, task success rate. chứ không chỉ bằng latency).
+            <em>vẫn duy trì chất lượng</em> (đo bằng các metric nội dung, accuracy,
+            user rating, task success rate, chứ không chỉ bằng latency).
           </p>
 
           <p>
@@ -864,7 +864,7 @@ export default function CostOptimizationTopic() {
             <li>
               <strong>Semantic caching</strong>. encode câu hỏi thành
               embedding, tìm entry gần nhất trong vector DB. Hit khi similarity
-              vượt ngưỡng (thường 0.92–0.97).
+              vượt ngưỡng (thường 0.92-0.97).
             </li>
           </ul>
           <LaTeX block>
@@ -930,7 +930,7 @@ export default function CostOptimizationTopic() {
           <Callout variant="tip" title="Thứ tự áp dụng tối ưu">
             Theo kinh nghiệm thực tế, thứ tự ROI cao → thấp:{" "}
             <strong>caching → routing → prompt engineering → compression →
-            batch</strong>. Bắt đầu từ cái đơn giản nhất (caching. chỉ cần
+            batch</strong>. Bắt đầu từ cái đơn giản nhất (caching, chỉ cần
             Redis) trước khi đụng đến routing (cần classifier).
           </Callout>
 
@@ -949,7 +949,7 @@ export default function CostOptimizationTopic() {
 
           <CodeBlock
             language="python"
-            title="token_counter.py. ước lượng chi phí trước khi gọi API"
+            title="token_counter.py, ước lượng chi phí trước khi gọi API"
           >
             {`"""Đếm token và ước lượng chi phí trước khi gọi LLM API.
 
@@ -970,7 +970,7 @@ from typing import Iterable
 import tiktoken  # pip install tiktoken
 
 
-# Bảng giá USD / 1K token. đồng bộ với bảng chính thức trước khi dùng prod.
+# Bảng giá USD / 1K token, đồng bộ với bảng chính thức trước khi dùng prod.
 MODEL_PRICES = {
     "gpt-4o":          {"in": 0.005,    "out": 0.015},
     "gpt-4o-mini":     {"in": 0.00015,  "out": 0.00060},
@@ -1085,7 +1085,7 @@ if __name__ == "__main__":
             <strong>Code mẫu 2. semantic cache + model router đơn giản:</strong>
           </p>
 
-          <CodeBlock language="python" title="router_cache.py. cache + routing">
+          <CodeBlock language="python" title="router_cache.py, cache + routing">
             {`"""Pipeline tối ưu chi phí cho chatbot:
     1) Semantic cache (Redis + embedding).
     2) Classifier định tuyến small vs flagship model.
@@ -1123,7 +1123,7 @@ def semantic_cache_lookup(query: str) -> Optional[str]:
     """Tìm câu trả lời gần nhất trong cache. Trả None nếu miss."""
     query_emb = _embed(query).astype(np.float32)
 
-    # Quét tối đa 200 entry gần nhất. production nên dùng FAISS / pgvector.
+    # Quét tối đa 200 entry gần nhất, production nên dùng FAISS / pgvector.
     for key in CACHE.scan_iter(match="cache:*", count=200):
         raw = CACHE.get(key)
         if raw is None:
@@ -1147,7 +1147,7 @@ def semantic_cache_store(query: str, response: str, ttl: int = 3600) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Classifier định tuyến. trong thực tế có thể là logistic regression, small
+# Classifier định tuyến, trong thực tế có thể là logistic regression, small
 # LM, hoặc gọi một API rẻ (Haiku). Ở đây mô phỏng bằng heuristic độ dài.
 # ---------------------------------------------------------------------------
 
@@ -1208,7 +1208,7 @@ if __name__ == "__main__":
             Redis. Từ $50K → $5-7K/tháng mà chất lượng giảm dưới 3%.
           </Callout>
 
-          <CollapsibleDetail title="Chi tiết kỹ thuật. prompt caching OpenAI vs Anthropic">
+          <CollapsibleDetail title="Chi tiết kỹ thuật, prompt caching OpenAI vs Anthropic">
             <p>
               Hai nhà cung cấp có cơ chế khác nhau mặc dù ý tưởng giống nhau:
             </p>
@@ -1263,7 +1263,7 @@ if __name__ == "__main__":
             </ul>
             <p className="mt-2 text-sm">
               Quy tắc cũ của Donald Knuth vẫn đúng: "Premature optimization is
-              the root of all evil". ngay cả với LLM.
+              the root of all evil", ngay cả với LLM.
             </p>
           </CollapsibleDetail>
 
@@ -1295,10 +1295,10 @@ if __name__ == "__main__":
         <MiniSummary
           title="Những điều cần nhớ về tối ưu chi phí LLM"
           points={[
-            "Output token đắt hơn input token 2-4 lần. cắt output bằng JSON schema và max_tokens là ROI cao nhất / công sức thấp nhất.",
+            "Output token đắt hơn input token 2-4 lần, cắt output bằng JSON schema và max_tokens là ROI cao nhất / công sức thấp nhất.",
             "Caching là layer tối ưu đầu tiên: prompt caching giảm 50% input cho prefix chung, semantic caching bắt cả câu hỏi tương tự.",
             "Model routing 70/30 (nhỏ/lớn) dựa trên classifier giảm 60-80% chi phí với chất lượng giảm chưa tới 2% trên workload điển hình.",
-            "Context compression (LLMLingua, re-rank top-k) giảm 30-40% input token. thắng lớn trên RAG và tài liệu dài.",
+            "Context compression (LLMLingua, re-rank top-k) giảm 30-40% input token, thắng lớn trên RAG và tài liệu dài.",
             "Batch API giảm 50% giá cho workload offline (embedding, phân loại hàng loạt, gán nhãn dataset).",
             "Đo trước khi tối ưu: log request_id, model, tokens, latency, cost, user_id. Không có dashboard thì đang tối ưu trong bóng tối.",
           ]}

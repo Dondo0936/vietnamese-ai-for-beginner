@@ -50,7 +50,7 @@ export const metadata: TopicMeta = {
   sources: [
     {
       title:
-        "Variation in False-Negative Rate of Reverse Transcriptase Polymerase Chain Reaction–Based SARS-CoV-2 Tests by Time Since Exposure",
+        "Variation in False-Negative Rate of Reverse Transcriptase Polymerase Chain Reaction-Based SARS-CoV-2 Tests by Time Since Exposure",
       publisher: "Annals of Internal Medicine (Kucirka et al.)",
       url: "https://www.acpjournals.org/doi/10.7326/M20-1495",
       date: "2020-08",
@@ -548,7 +548,7 @@ export default function ConfusionMatrixInMedicalTesting() {
           <p>
             <strong>Độ nhạy (sensitivity).</strong> Trong 100 người thật sự nhiễm bệnh,
             xét nghiệm bắt đúng bao nhiêu? Với RT-PCR COVID-19, con số này dao động từ
-            70% đến 98% tuỳ thời điểm lấy mẫu. Khi lấy mẫu sớm quá (ngày 1–2) hoặc muộn
+            70% đến 98% tuỳ thời điểm lấy mẫu. Khi lấy mẫu sớm quá (ngày 1-2) hoặc muộn
             quá (ngày 14+), độ nhạy tụt nhanh. Vì vậy bác sĩ thường yêu cầu xét nghiệm
             lại sau 48 giờ nếu còn nghi ngờ.
           </p>
@@ -557,7 +557,7 @@ export default function ConfusionMatrixInMedicalTesting() {
           <p>
             <strong>Độ đặc hiệu (specificity).</strong> Trong 100 người thật sự khoẻ mạnh,
             xét nghiệm xác nhận đúng bao nhiêu người khoẻ? RT-PCR có độ đặc hiệu rất cao,
-            khoảng 99,1% đến 99,8%. Nghĩa là cứ 1 000 người khoẻ đi xét nghiệm, chỉ 2–9
+            khoảng 99,1% đến 99,8%. Nghĩa là cứ 1 000 người khoẻ đi xét nghiệm, chỉ 2-9
             người nhận kết quả dương tính giả. Nghe rất tốt. Tuy nhiên chính con số nhỏ
             này lại là nguồn gốc của nghịch lý.
           </p>
@@ -782,7 +782,7 @@ export default function ConfusionMatrixInMedicalTesting() {
           </div>
 
           <Callout variant="info" title="Vì sao bác sĩ thường yêu cầu làm lại xét nghiệm sau 48 giờ?">
-            Nhìn biểu đồ: ngày 1–3 độ nhạy rất thấp (virus chưa đủ). Ngày 7–9 đạt đỉnh (thời điểm vàng).
+            Nhìn biểu đồ: ngày 1-3 độ nhạy rất thấp (virus chưa đủ). Ngày 7-9 đạt đỉnh (thời điểm vàng).
             Sau ngày 14 độ nhạy tụt nhanh vì virus bắt đầu bị miễn dịch tiêu diệt. Một xét nghiệm âm
             tính ngày 2 và một xét nghiệm âm tính ngày 8 có <em>ý nghĩa khác hẳn</em>, dù cùng dòng
             chữ &ldquo;âm tính&rdquo; trên tờ kết quả.
@@ -816,7 +816,7 @@ export default function ConfusionMatrixInMedicalTesting() {
             Trong giai đoạn dịch yếu, xét nghiệm đại trà có thể gây hại nhiều hơn lợi: người lo
             lắng, cơ quan mất nguồn lực điều tra các ca dương tính giả. Khi dịch bùng phát, cùng bộ
             xét nghiệm trở nên rất đáng tin. Đây là lý do WHO thay đổi khuyến cáo nhiều lần trong
-            giai đoạn 2020–2022.
+            giai đoạn 2020-2022.
           </Callout>
         </div>
 
@@ -877,7 +877,7 @@ export default function ConfusionMatrixInMedicalTesting() {
         topicSlug="confusion-matrix-in-medical-testing"
       >
         <Metric
-          value="Sensitivity RT-PCR dao động 70–98% tuỳ thời điểm lấy mẫu"
+          value="Sensitivity RT-PCR dao động 70-98% tuỳ thời điểm lấy mẫu"
           sourceRef={1}
         />
         <Metric
@@ -885,7 +885,7 @@ export default function ConfusionMatrixInMedicalTesting() {
           sourceRef={1}
         />
         <Metric
-          value="Specificity rất cao: dương tính giả chỉ 0,2–0,9%"
+          value="Specificity rất cao: dương tính giả chỉ 0,2-0,9%"
           sourceRef={3}
         />
         <Metric

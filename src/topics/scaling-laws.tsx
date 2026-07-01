@@ -23,7 +23,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA — giữ nguyên để không phá liên kết nội bộ
+// METADATA-giữ nguyên để không phá liên kết nội bộ
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -49,7 +49,7 @@ export const metadata: TopicMeta = {
 // Ở đây ta dùng các tham số lấy từ paper Chinchilla.
 
 const CHINCHILLA = {
-  E: 1.69, // Irreducible loss — giới hạn dưới lý thuyết
+  E: 1.69, // Irreducible loss-giới hạn dưới lý thuyết
   A: 406.4,
   B: 410.7,
   alpha: 0.34,
@@ -111,7 +111,7 @@ const MODELS: ModelPoint[] = [
     tokensB: 300,
     year: "2020",
     tag: "undertrained",
-    note: "Ratio D/N ≈ 1.7 — quá ít data so với model lớn.",
+    note: "Ratio D/N ≈ 1.7-quá ít data so với model lớn.",
     color: "#ef4444",
   },
   {
@@ -129,7 +129,7 @@ const MODELS: ModelPoint[] = [
     tokensB: 1400,
     year: "2022",
     tag: "balanced",
-    note: "D/N ≈ 20 — cân bằng theo rule Hoffmann. Thắng Gopher dù nhỏ hơn 4×.",
+    note: "D/N ≈ 20-cân bằng theo rule Hoffmann. Thắng Gopher dù nhỏ hơn 4×.",
     color: "#22c55e",
   },
   {
@@ -138,7 +138,7 @@ const MODELS: ModelPoint[] = [
     tokensB: 1400,
     year: "2023",
     tag: "balanced",
-    note: "Tương tự Chinchilla — nhưng open, khởi đầu làn sóng LLM mở.",
+    note: "Tương tự Chinchilla-nhưng open, khởi đầu làn sóng LLM mở.",
     color: "#22c55e",
   },
   {
@@ -147,7 +147,7 @@ const MODELS: ModelPoint[] = [
     tokensB: 2000,
     year: "2023",
     tag: "overtrained",
-    note: "D/N ≈ 28 — 'overtrained' CÓ CHỦ Ý: đổi compute lấy inference rẻ.",
+    note: "D/N ≈ 28, 'overtrained' CÓ CHỦ Ý: đổi compute lấy inference rẻ.",
     color: "#3b82f6",
   },
   {
@@ -156,7 +156,7 @@ const MODELS: ModelPoint[] = [
     tokensB: 15000,
     year: "2024",
     tag: "overtrained",
-    note: "D/N ≈ 1875 — cực kỳ overtrained để có model nhỏ mà chất lượng cao.",
+    note: "D/N ≈ 1875-cực kỳ overtrained để có model nhỏ mà chất lượng cao.",
     color: "#3b82f6",
   },
   {
@@ -165,13 +165,13 @@ const MODELS: ModelPoint[] = [
     tokensB: 15000,
     year: "2024",
     tag: "overtrained",
-    note: "D/N ≈ 214 — vẫn là chiến lược overtrain cho inference tiết kiệm.",
+    note: "D/N ≈ 214-vẫn là chiến lược overtrain cho inference tiết kiệm.",
     color: "#3b82f6",
   },
 ];
 
 // ---------------------------------------------------------------------------
-// QUIZ — 8 câu theo yêu cầu
+// QUIZ-8 câu theo yêu cầu
 // ---------------------------------------------------------------------------
 
 const quizQuestions: QuizQuestion[] = [
@@ -179,14 +179,14 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "Theo scaling laws của Kaplan et al., gấp đôi số tham số N (giữ nguyên data và compute phân bổ) sẽ giảm loss bao nhiêu?",
     options: [
-      "Giảm 50% — tỷ lệ nghịch với N.",
-      "Giảm khoảng 5–7% — đây là power law với α ≈ 0.076, diminishing returns.",
-      "Giảm 100% — loss về 0.",
-      "Không giảm — loss chỉ phụ thuộc dữ liệu.",
+      "Giảm 50%-tỷ lệ nghịch với N.",
+      "Giảm khoảng 5-7%-đây là power law với α ≈ 0.076, diminishing returns.",
+      "Giảm 100%-loss về 0.",
+      "Không giảm-loss chỉ phụ thuộc dữ liệu.",
     ],
     correct: 1,
     explanation:
-      "Kaplan scaling law: L ∝ N^(-0.076). Gấp đôi N → loss nhân với 2^(-0.076) ≈ 0.95. Tức là giảm ~5%. Đây là diminishing returns kinh điển — mỗi lần gấp đôi ngày càng ít giá trị.",
+      "Kaplan scaling law: L ∝ N^(-0.076). Gấp đôi N → loss nhân với 2^(-0.076) ≈ 0.95. Tức là giảm ~5%. Đây là diminishing returns kinh điển-mỗi lần gấp đôi ngày càng ít giá trị.",
   },
   {
     question: "Chinchilla paper (Hoffmann et al., 2022) đã chỉ ra điều gì quan trọng?",
@@ -198,7 +198,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Chinchilla chứng minh rằng GPT-3, Gopher và các model đương thời là 'undertrained' — có compute đủ để huấn luyện N tham số nhưng không có đủ data. Tỷ lệ compute-optimal là D* ≈ 20 · N*. Chinchilla 70B vượt Gopher 280B dù nhỏ hơn 4× vì được train trên 1.4T token thay vì 300B.",
+      "Chinchilla chứng minh rằng GPT-3, Gopher và các model đương thời là 'undertrained', có compute đủ để huấn luyện N tham số nhưng không có đủ data. Tỷ lệ compute-optimal là D* ≈ 20 · N*. Chinchilla 70B vượt Gopher 280B dù nhỏ hơn 4× vì được train trên 1.4T token thay vì 300B.",
   },
   {
     question:
@@ -211,14 +211,14 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Chinchilla compute-optimal: với C cố định, loss là tối thiểu khi N* ∝ C^0.5 và D* ∝ C^0.5, với tỷ lệ D*/N* ≈ 20. Chọn quá lệch phía N hay D đều lãng phí compute — loss cao hơn mức tối ưu.",
+      "Chinchilla compute-optimal: với C cố định, loss là tối thiểu khi N* ∝ C^0.5 và D* ∝ C^0.5, với tỷ lệ D*/N* ≈ 20. Chọn quá lệch phía N hay D đều lãng phí compute-loss cao hơn mức tối ưu.",
   },
   {
     question:
       "Tại sao LLaMA 3 8B được train trên 15T token, dù Chinchilla rule chỉ yêu cầu 160B token?",
     options: [
       "Meta không biết Chinchilla rule.",
-      "Chinchilla chỉ tối ưu cho chi phí HUẤN LUYỆN; khi dùng model hàng tỷ lần, người ta cố tình overtrain để có model nhỏ — rẻ khi inference.",
+      "Chinchilla chỉ tối ưu cho chi phí HUẤN LUYỆN; khi dùng model hàng tỷ lần, người ta cố tình overtrain để có model nhỏ-rẻ khi inference.",
       "Vì data miễn phí nên cứ đổ vào.",
       "Vì LLaMA 3 không phải là LLM.",
     ],
@@ -231,13 +231,13 @@ const quizQuestions: QuizQuestion[] = [
       "Công thức L(N, D) = E + A/N^α + B/D^β có ba số hạng. 'E' là gì?",
     options: [
       "Sai số đo lường khi đánh giá.",
-      "Irreducible loss — giới hạn dưới lý thuyết, tương ứng entropy của ngôn ngữ tự nhiên.",
+      "Irreducible loss-giới hạn dưới lý thuyết, tương ứng entropy của ngôn ngữ tự nhiên.",
       "Kích thước embedding.",
       "Hằng số Euler trong tối ưu.",
     ],
     correct: 1,
     explanation:
-      "E (~1.69 theo Chinchilla) là loss không thể giảm được dù có vô hạn tham số và vô hạn data. Nó tương ứng với entropy Shannon của phân phối văn bản — giới hạn lý thuyết. A/N^α và B/D^β là hai thành phần có thể giảm bằng cách tăng N hoặc D.",
+      "E (~1.69 theo Chinchilla) là loss không thể giảm được dù có vô hạn tham số và vô hạn data. Nó tương ứng với entropy Shannon của phân phối văn bản-giới hạn lý thuyết. A/N^α và B/D^β là hai thành phần có thể giảm bằng cách tăng N hoặc D.",
   },
   {
     question:
@@ -250,20 +250,20 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "C = 6 · 70e9 · 15e12 = 6.3 · 10^24 FLOPs. Để so sánh: một H100 cho ~10^15 FLOPs/giây ở FP16. Dù 16.000 H100 chạy full-util, vẫn cần khoảng 5 ngày — chưa tính overhead giao tiếp.",
+      "C = 6 · 70e9 · 15e12 = 6.3 · 10^24 FLOPs. Để so sánh: một H100 cho ~10^15 FLOPs/giây ở FP16. Dù 16.000 H100 chạy full-util, vẫn cần khoảng 5 ngày-chưa tính overhead giao tiếp.",
   },
   {
     question:
       "Emergent abilities (khả năng 'đột nhiên xuất hiện' ở quy mô lớn) thách thức gì cho scaling laws?",
     options: [
       "Chúng chứng minh scaling laws là giả.",
-      "Chúng cho thấy loss (perplexity) có thể smooth nhưng hiệu suất trên bài toán cụ thể lại có bước nhảy — một số người lập luận đây là ảo giác do metric.",
+      "Chúng cho thấy loss (perplexity) có thể smooth nhưng hiệu suất trên bài toán cụ thể lại có bước nhảy-một số người lập luận đây là ảo giác do metric.",
       "Chúng cho phép model nhỏ mạnh hơn model lớn.",
       "Chúng không liên quan đến scaling laws.",
     ],
     correct: 1,
     explanation:
-      "Scaling laws mô tả perplexity/loss — đại lượng smooth. Nhưng trên bài toán cụ thể (vd cộng số nhiều chữ số) ta thấy bước nhảy đột ngột ở quy mô nhất định. Schaeffer et al. (2023) lập luận 'emergence' phần lớn do chọn metric gián đoạn (accuracy đúng/sai) — nếu đổi sang metric liên tục thì vẫn smooth. Dù vậy, quan điểm chưa thống nhất.",
+      "Scaling laws mô tả perplexity/loss-đại lượng smooth. Nhưng trên bài toán cụ thể (vd cộng số nhiều chữ số) ta thấy bước nhảy đột ngột ở quy mô nhất định. Schaeffer et al. (2023) lập luận 'emergence' phần lớn do chọn metric gián đoạn (accuracy đúng/sai), nếu đổi sang metric liên tục thì vẫn smooth. Dù vậy, quan điểm chưa thống nhất.",
   },
   {
     type: "fill-blank",
@@ -298,7 +298,7 @@ export default function ScalingLawsTopic() {
 
   const TOTAL_STEPS = 8;
 
-  // Hàm render visualization cho SliderGroup — người dùng chọn C, nhận N*, D*.
+  // Hàm render visualization cho SliderGroup-người dùng chọn C, nhận N*, D*.
   const budgetViz = useCallback((values: Record<string, number>) => {
     const log10C = values.compute; // slider theo log
     const C = Math.pow(10, log10C);
@@ -360,7 +360,7 @@ export default function ScalingLawsTopic() {
           </p>
           <p className="text-muted mt-1">
             Nếu bạn chọn D/N &lt; 20 → model đói data (undertrained). Nếu
-            D/N &gt; 20 → overtrained — vẫn ổn nếu bạn tối ưu cho inference.
+            D/N &gt; 20 → overtrained-vẫn ổn nếu bạn tối ưu cho inference.
           </p>
         </div>
       </div>
@@ -382,7 +382,7 @@ export default function ScalingLawsTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 1 — DỰ ĐOÁN
+          BƯỚC 1-DỰ ĐOÁN
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
@@ -390,14 +390,14 @@ export default function ScalingLawsTopic() {
             "GPT-3 có 175 tỷ tham số. GPT-4 có ~1.700 tỷ (gấp 10 lần). GPT-4 giỏi hơn GPT-3 bao nhiêu lần (theo loss)?"
           }
           options={[
-            "Giỏi hơn 10 lần — tỷ lệ thuận với số tham số.",
-            "Giỏi hơn khoảng 30–50% — loss giảm theo power law, diminishing returns.",
-            "Giống nhau — số tham số không quan trọng.",
+            "Giỏi hơn 10 lần-tỷ lệ thuận với số tham số.",
+            "Giỏi hơn khoảng 30-50%-loss giảm theo power law, diminishing returns.",
+            "Giống nhau-số tham số không quan trọng.",
             "Giỏi hơn 100 lần nhờ hiệu ứng emergent.",
           ]}
           correct={1}
           explanation={
-            "Gấp 10× tham số KHÔNG cho gấp 10× hiệu suất! Scaling laws là power law: với α ≈ 0.076 (Kaplan) hoặc α ≈ 0.34 (Chinchilla sau khi đã trừ data term), gấp 10× N → loss giảm vài chục phần trăm — không phải 10×. Hiểu quy luật này giúp các lab AI quyết định đầu tư compute một cách thông minh, không đơn thuần 'xây model to hơn'."
+            "Gấp 10× tham số KHÔNG cho gấp 10× hiệu suất! Scaling laws là power law: với α ≈ 0.076 (Kaplan) hoặc α ≈ 0.34 (Chinchilla sau khi đã trừ data term), gấp 10× N → loss giảm vài chục phần trăm-không phải 10×. Hiểu quy luật này giúp các lab AI quyết định đầu tư compute một cách thông minh, không đơn thuần 'xây model to hơn'."
           }
         >
           <p className="text-sm text-muted mt-4">
@@ -409,9 +409,9 @@ export default function ScalingLawsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 2 — ẨN DỤ + VISUALIZATION CHÍNH (Chinchilla plot)
+          BƯỚC 2-ẨN DỤ + VISUALIZATION CHÍNH (Chinchilla plot)
           ═══════════════════════════════════════════════════════════════════ */}
-      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá — Biểu đồ Chinchilla">
+      <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá-Biểu đồ Chinchilla">
         <p className="text-sm text-foreground leading-relaxed mb-2">
           Hãy tưởng tượng bạn có <strong>một ngân sách xây nhà</strong>.
           Bạn có thể dồn tiền vào diện tích (rộng nhưng sơ sài), hoặc vào
@@ -463,7 +463,7 @@ export default function ScalingLawsTopic() {
             >
               {/* Tiêu đề */}
               <text x={310} y={22} textAnchor="middle" fontSize={12} fontWeight={600} className="fill-foreground">
-                Biểu đồ Chinchilla — compute vs {viewAxis === "N" ? "model size" : "training tokens"}
+                Biểu đồ Chinchilla-compute vs {viewAxis === "N" ? "model size" : "training tokens"}
               </text>
 
               {/* Khu vực vẽ: x trong [80, 580], y trong [40, 310] */}
@@ -649,7 +649,7 @@ export default function ScalingLawsTopic() {
             Tự chọn compute budget của bạn
           </h4>
           <p className="text-sm text-muted mb-3">
-            Kéo thanh trượt theo log10(C) — từ 10^20 FLOPs (model đồ chơi)
+            Kéo thanh trượt theo log10(C), từ 10^20 FLOPs (model đồ chơi)
             đến 10^26 FLOPs (siêu cluster). Xem N*, D* tối ưu.
           </p>
           <SliderGroup
@@ -670,13 +670,13 @@ export default function ScalingLawsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 3 — AHA MOMENT
+          BƯỚC 3-AHA MOMENT
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
         <AhaMoment>
           <p>
             Hiệu suất của LLM <strong>không phải là nghệ thuật huyền
-            bí</strong> — nó tuân theo một công thức toán học mà bạn có thể
+            bí</strong>, nó tuân theo một công thức toán học mà bạn có thể
             viết lên bảng. Biết công thức này, các lab AI có thể{" "}
             <em>tính trước</em> loss cho model trị giá nhiều triệu đô{" "}
             <strong>trước khi</strong> bỏ một đồng đầu tư.
@@ -690,53 +690,53 @@ export default function ScalingLawsTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 4 — INLINE CHALLENGE #1 (Chinchilla vs GPT-3)
+          BƯỚC 4-INLINE CHALLENGE #1 (Chinchilla vs GPT-3)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection
         step={4}
         totalSteps={TOTAL_STEPS}
-        label="Thử thách #1 — Cân bằng đánh bại khổng lồ"
+        label="Thử thách #1-Cân bằng đánh bại khổng lồ"
       >
         <InlineChallenge
           question="Chinchilla (70B tham số, 1.4T token) vs GPT-3 (175B tham số, 300B token). Ai có loss thấp hơn trên benchmark chung?"
           options={[
-            "GPT-3 — lớn hơn 2.5× nên đương nhiên giỏi hơn.",
-            "Chinchilla — nhỏ hơn nhưng train trên gần 5× data, cân bằng tốt hơn.",
-            "Hòa — khác model khác data nên không so sánh được.",
-            "GPT-3 — ra trước nên đã được tinh chỉnh kỹ hơn.",
+            "GPT-3-lớn hơn 2.5× nên đương nhiên giỏi hơn.",
+            "Chinchilla-nhỏ hơn nhưng train trên gần 5× data, cân bằng tốt hơn.",
+            "Hòa-khác model khác data nên không so sánh được.",
+            "GPT-3-ra trước nên đã được tinh chỉnh kỹ hơn.",
           ]}
           correct={1}
           explanation={
-            "Chinchilla thắng rõ rệt trên hầu hết benchmark. Lý do: với ~5.76 · 10^23 FLOPs compute chung, GPT-3 dùng compute để tăng N (175B) nhưng thiếu data (300B, D/N ≈ 1.7 — undertrained); Chinchilla dùng compute để cân bằng N (70B) với D (1.4T, D/N ≈ 20). Kết quả: loss Chinchilla thấp hơn, knowledge broader hơn."
+            "Chinchilla thắng rõ rệt trên hầu hết benchmark. Lý do: với ~5.76 · 10^23 FLOPs compute chung, GPT-3 dùng compute để tăng N (175B) nhưng thiếu data (300B, D/N ≈ 1.7-undertrained); Chinchilla dùng compute để cân bằng N (70B) với D (1.4T, D/N ≈ 20). Kết quả: loss Chinchilla thấp hơn, knowledge broader hơn."
           }
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 5 — INLINE CHALLENGE #2 (Overtrain cho inference)
+          BƯỚC 5-INLINE CHALLENGE #2 (Overtrain cho inference)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection
         step={5}
         totalSteps={TOTAL_STEPS}
-        label="Thử thách #2 — Tại sao overtrain?"
+        label="Thử thách #2-Tại sao overtrain?"
       >
         <InlineChallenge
-          question="Meta train LLaMA 3 8B trên 15T token — tỷ lệ D/N ~1875, cao hơn nhiều mức Chinchilla 20. Tại sao họ lại 'lãng phí' compute như vậy?"
+          question="Meta train LLaMA 3 8B trên 15T token-tỷ lệ D/N ~1875, cao hơn nhiều mức Chinchilla 20. Tại sao họ lại 'lãng phí' compute như vậy?"
           options={[
             "Họ không biết Chinchilla rule.",
-            "Họ muốn inference rẻ hơn — model nhỏ + data nhiều = chất lượng cao mà phục vụ user tiết kiệm.",
+            "Họ muốn inference rẻ hơn-model nhỏ + data nhiều = chất lượng cao mà phục vụ user tiết kiệm.",
             "Vì GPU quá rẻ.",
             "Vì 15T token là yêu cầu pháp lý.",
           ]}
           correct={1}
           explanation={
-            "Chinchilla tối ưu cho chi phí HUẤN LUYỆN. Nhưng khi một model phục vụ hàng tỷ request, chi phí inference áp đảo. Overtrain model nhỏ → chất lượng cao như model lớn + inference rẻ hơn hẳn. Đây là 'inference-aware scaling' — một hướng đi mới sau Chinchilla, được Meta, Mistral, Anthropic áp dụng rộng rãi từ 2024."
+            "Chinchilla tối ưu cho chi phí HUẤN LUYỆN. Nhưng khi một model phục vụ hàng tỷ request, chi phí inference áp đảo. Overtrain model nhỏ → chất lượng cao như model lớn + inference rẻ hơn hẳn. Đây là 'inference-aware scaling', một hướng đi mới sau Chinchilla, được Meta, Mistral, Anthropic áp dụng rộng rãi từ 2024."
           }
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 6 — GIẢI THÍCH CHI TIẾT
+          BƯỚC 6-GIẢI THÍCH CHI TIẾT
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Giải thích chi tiết">
         <ExplanationSection>
@@ -761,16 +761,16 @@ export default function ScalingLawsTopic() {
           </p>
           <ul className="list-disc list-inside space-y-2 pl-2">
             <li>
-              <strong>E — irreducible loss:</strong> giới hạn dưới lý
+              <strong>E-irreducible loss:</strong> giới hạn dưới lý
               thuyết, tương ứng entropy Shannon của văn bản tự nhiên. Dù
               có vô hạn N và D, bạn không giảm loss xuống dưới E được.
             </li>
             <li>
-              <strong>A/N^α — model-size term:</strong> giảm khi tăng N.
+              <strong>A/N^α-model-size term:</strong> giảm khi tăng N.
               Với α ≈ 0.34, gấp đôi N giảm term này ~22%.
             </li>
             <li>
-              <strong>B/D^β — data-size term:</strong> giảm khi tăng D.
+              <strong>B/D^β-data-size term:</strong> giảm khi tăng D.
               Với β ≈ 0.28, gấp đôi D giảm term này ~18%.
             </li>
           </ul>
@@ -778,34 +778,34 @@ export default function ScalingLawsTopic() {
           {/* -------- Công thức compute -------- */}
           <p>
             Compute budget xấp xỉ bằng <LaTeX>{"C \\approx 6 \\cdot N \\cdot D"}</LaTeX>{" "}
-            FLOPs — hằng số 6 đến từ: 2 FLOPs/param cho forward × 3 (forward
+            FLOPs-hằng số 6 đến từ: 2 FLOPs/param cho forward × 3 (forward
             + backward qua Transformer tiêu chuẩn). Đây là công thức giúp
             ta biến bài toán tối ưu <em>L(N, D)</em> với ràng buộc C thành
             một bài toán Lagrange đơn giản.
           </p>
 
           {/* -------- Công thức Kaplan -------- */}
-          <Callout variant="insight" title="Phiên bản Kaplan (2020) — đơn giản hơn">
+          <Callout variant="insight" title="Phiên bản Kaplan (2020), đơn giản hơn">
             <LaTeX block>
               {String.raw`L(N) \approx \left(\frac{N_c}{N}\right)^{\alpha_N}, \quad \alpha_N \approx 0.076`}
             </LaTeX>
             <p className="text-sm mt-2">
               Kaplan et al. (OpenAI) phát hiện ra scaling laws trước
               Chinchilla 2 năm. Công thức đơn giản hơn vì chỉ xét N, giả
-              định D luôn dồi dào. Tuy nhiên kết luận của Kaplan — "tăng N
-              quan trọng hơn tăng D" — đã bị Chinchilla chứng minh là sai
+              định D luôn dồi dào. Tuy nhiên kết luận của Kaplan, "tăng N
+              quan trọng hơn tăng D", đã bị Chinchilla chứng minh là sai
               ở chế độ compute hữu hạn.
             </p>
           </Callout>
 
           {/* -------- Compute-optimal -------- */}
-          <Callout variant="tip" title="Chinchilla rule — D* ≈ 20 · N*">
+          <Callout variant="tip" title="Chinchilla rule-D* ≈ 20 · N*">
             <LaTeX block>
               {String.raw`N^*(C) \propto C^{\frac{\beta}{\alpha + \beta}}, \quad D^*(C) \propto C^{\frac{\alpha}{\alpha + \beta}}`}
             </LaTeX>
             <p className="text-sm mt-2">
               Với α ≈ 0.34 và β ≈ 0.28, hai số mũ gần bằng nhau → cả N*
-              và D* đều ∝ C^0.5. Hệ số tỷ lệ cho ra ratio D*/N* ≈ 20 —
+              và D* đều ∝ C^0.5. Hệ số tỷ lệ cho ra ratio D*/N* ≈ 20,
               đây chính là "Chinchilla rule" được lặp lại khắp mọi bài
               blog về LLM.
             </p>
@@ -820,7 +820,7 @@ export default function ScalingLawsTopic() {
 
           <CodeBlock
             language="python"
-            title="fit_scaling_law.py — fit Chinchilla L(N,D) từ data thực nghiệm"
+            title="fit_scaling_law.py-fit Chinchilla L(N,D) từ data thực nghiệm"
           >
 {`"""
 Fit hàm L(N, D) = E + A/N^alpha + B/D^beta vào các điểm thực nghiệm.
@@ -829,8 +829,8 @@ Dữ liệu thực tế thường có dạng:
         (N_params_in_billions, D_tokens_in_billions, final_loss),
         ...
     ]
-Mỗi điểm là một lần huấn luyện riêng biệt — rất tốn kém, nên các lab
-thường chỉ fit với 30–100 điểm trải trên vài quy mô.
+Mỗi điểm là một lần huấn luyện riêng biệt-rất tốn kém, nên các lab
+thường chỉ fit với 30-100 điểm trải trên vài quy mô.
 """
 import numpy as np
 from scipy.optimize import curve_fit
@@ -850,7 +850,7 @@ def fit_scaling_law(runs):
     runs: list of (N_in_billions, D_in_billions, loss)
     Trả về các hệ số đã fit.
     """
-    # Chuyển về đơn vị tuyệt đối (N và D tính theo 'đơn vị' — ở đây là B).
+    # Chuyển về đơn vị tuyệt đối (N và D tính theo 'đơn vị', ở đây là B).
     N_arr = np.array([r[0] for r in runs], dtype=float)
     D_arr = np.array([r[1] for r in runs], dtype=float)
     L_arr = np.array([r[2] for r in runs], dtype=float)
@@ -860,7 +860,7 @@ def fit_scaling_law(runs):
     # Khởi tạo gần đúng (lấy từ Chinchilla paper)
     p0 = [1.69, 406.4, 410.7, 0.34, 0.28]
 
-    # curve_fit dùng Levenberg-Marquardt theo mặc định — ổn với
+    # curve_fit dùng Levenberg-Marquardt theo mặc định-ổn với
     # bài toán này vì Jacobian tính được analytical.
     popt, pcov = curve_fit(
         chinchilla_loss, X, L_arr, p0=p0, maxfev=10000
@@ -921,7 +921,7 @@ if __name__ == "__main__":
 
           <CodeBlock
             language="python"
-            title="allocate_compute.py — phân bổ compute tối ưu theo Chinchilla"
+            title="allocate_compute.py-phân bổ compute tối ưu theo Chinchilla"
           >
 {`"""
 Cho compute budget C (FLOPs) và ràng buộc C = 6·N·D,
@@ -1003,7 +1003,7 @@ if __name__ == "__main__":
             <p>
               Một số bài báo (Wei et al. 2022) cho rằng ở quy mô đủ lớn
               (thường &gt; 10^23 FLOPs), LLM "đột nhiên" có khả năng
-              chain-of-thought, few-shot, cộng số nhiều chữ số — gọi là{" "}
+              chain-of-thought, few-shot, cộng số nhiều chữ số-gọi là{" "}
               <strong>emergent abilities</strong>. Nhưng Schaeffer et al.
               (2023) phản biện: "emergence" chủ yếu là ảo giác do chọn
               metric gián đoạn (accuracy); đổi sang metric liên tục thì
@@ -1061,11 +1061,11 @@ if __name__ == "__main__":
             </p>
             <ol className="list-decimal list-inside space-y-1 pl-2 text-sm mt-2">
               <li>
-                Train 30–100 model nhỏ (10M–1B params) với (N, D) đa dạng
-                — trải N từ 10⁷ đến 10⁹, D từ 10⁸ đến 10¹¹.
+                Train 30-100 model nhỏ (10M-1B params) với (N, D) đa dạng
+               , trải N từ 10⁷ đến 10⁹, D từ 10⁸ đến 10¹¹.
               </li>
               <li>
-                Chạy đủ lâu để loss bão hòa — không được early-stop trong
+                Chạy đủ lâu để loss bão hòa-không được early-stop trong
                 pha huấn luyện training runs for fitting.
               </li>
               <li>
@@ -1079,7 +1079,7 @@ if __name__ == "__main__":
                 range đã fit.
               </li>
               <li>
-                Lặp lại quá trình cho mỗi kiến trúc mới — MoE, SSM, mixed
+                Lặp lại quá trình cho mỗi kiến trúc mới-MoE, SSM, mixed
                 precision... đều cho các hằng số khác.
               </li>
             </ol>
@@ -1149,7 +1149,7 @@ if __name__ == "__main__":
                   </td>
                   <td className="px-3 py-2 text-muted">&lt; 10</td>
                   <td className="px-3 py-2 text-muted">
-                    (Lịch sử) — hạn chế data
+                    (Lịch sử), hạn chế data
                   </td>
                   <td className="px-3 py-2 text-muted">
                     GPT-3 (1.7), Gopher (1.1)
@@ -1205,7 +1205,7 @@ if __name__ == "__main__":
               gradient sync.
             </li>
             <li>
-              <strong>Fit scaling law chỉ trên 3–5 điểm</strong>: quá ít
+              <strong>Fit scaling law chỉ trên 3-5 điểm</strong>: quá ít
               để tin cậy. Nên &gt; 30 điểm trải trên 3+ bậc N, D.
             </li>
             <li>
@@ -1233,7 +1233,7 @@ if __name__ == "__main__":
             <li>
               <strong>Báo cáo tiến bộ học thuật</strong>: paper LLM mới
               thường báo cáo "scaling law của chúng tôi có alpha tốt hơn"
-              — kiểu đo lường chuẩn mực.
+             , kiểu đo lường chuẩn mực.
             </li>
             <li>
               <strong>Định giá compute</strong>: AWS/GCP dựa vào scaling
@@ -1261,39 +1261,39 @@ if __name__ == "__main__":
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 7 — MINI SUMMARY (6 điểm)
+          BƯỚC 7-MINI SUMMARY (6 điểm)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary
           title="6 điều cần nhớ về Scaling Laws"
           points={[
             "Scaling laws là power law: L(N, D) = E + A/N^α + B/D^β. Loss giảm dự đoán được khi tăng N, D, C.",
-            "Diminishing returns: gấp 10× tham số chỉ giảm loss vài chục phần trăm — không bao giờ là 10×.",
+            "Diminishing returns: gấp 10× tham số chỉ giảm loss vài chục phần trăm-không bao giờ là 10×.",
             "Chinchilla rule: D* ≈ 20 · N* cho compute-optimal. GPT-3 và Gopher là undertrained vì D/N quá thấp.",
             "C ≈ 6·N·D là công thức vàng để biến tối ưu hai biến thành một biến duy nhất.",
-            "LLaMA 3 và xu hướng hiện đại: overtrain có chủ đích để tiết kiệm inference — đánh đổi training cost lấy serving cost.",
+            "LLaMA 3 và xu hướng hiện đại: overtrain có chủ đích để tiết kiệm inference-đánh đổi training cost lấy serving cost.",
             "Scaling laws không phải định luật vật lý: hằng số phụ thuộc kiến trúc, data, tokenizer. Kiểm chứng bằng thực nghiệm.",
           ]}
         />
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          BƯỚC 8 — QUIZ (8 câu)
+          BƯỚC 8-QUIZ (8 câu)
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="Kiểm tra cuối bài">
         <QuizSection questions={quizQuestions} />
       </LessonSection>
 
       {/* ===================================================================
-          Sandbox bổ sung — so sánh hai model A/B với cùng compute budget
+          Sandbox bổ sung-so sánh hai model A/B với cùng compute budget
           =================================================================== */}
       <details className="mt-10 rounded-xl border border-border bg-card/30 p-4">
         <summary className="cursor-pointer text-sm font-semibold text-foreground">
-          Sandbox bổ sung — so sánh hai chiến lược phân bổ compute
+          Sandbox bổ sung-so sánh hai chiến lược phân bổ compute
         </summary>
         <div className="mt-4 space-y-3">
           <p className="text-sm text-muted">
-            Hai model dưới đây dùng chung compute (~5.76 · 10²³ FLOPs —
+            Hai model dưới đây dùng chung compute (~5.76 · 10²³ FLOPs,
             cỡ Chinchilla paper). Phía trái là "kiểu GPT-3", phía phải là
             "kiểu Chinchilla". Xem sự khác biệt về loss.
           </p>

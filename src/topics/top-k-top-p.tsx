@@ -94,7 +94,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "p", accept: ["P"] },
     ],
     explanation:
-      "Top-K lọc theo k (số lượng) token đầu bảng. Top-P (nucleus sampling) lọc theo ngưỡng xác suất tích lũy p. linh hoạt hơn vì số token giữ lại thay đổi tùy độ nhọn của phân phối.",
+      "Top-K lọc theo k (số lượng) token đầu bảng. Top-P (nucleus sampling) lọc theo ngưỡng xác suất tích lũy p, linh hoạt hơn vì số token giữ lại thay đổi tùy độ nhọn của phân phối.",
   },
 ];
 
@@ -131,12 +131,12 @@ export default function TopKTopPTopic() {
       <PredictionGate
         question="AI đang chọn từ tiếp theo. Có 50.000 từ trong từ điển. Nên cho AI chọn từ TẤT CẢ 50.000 từ hay chỉ từ vài từ xác suất cao nhất?"
         options={[
-          "Tất cả. để AI tự do sáng tạo",
-          "Chỉ vài từ xác suất cao. để tránh chọn từ vô nghĩa",
-          "Không quan trọng. kết quả như nhau",
+          "Tất cả, để AI tự do sáng tạo",
+          "Chỉ vài từ xác suất cao, để tránh chọn từ vô nghĩa",
+          "Không quan trọng, kết quả như nhau",
         ]}
         correct={1}
-        explanation="Nếu chọn từ tất cả 50.000, AI có thể chọn từ xác suất 0.001%. vô nghĩa! Top-K và Top-P lọc bớt, chỉ giữ nhóm từ hợp lý nhất. Giống như chọn nhà hàng: bạn không xem TẤT CẢ 10.000 quán trên Grab mà chỉ xem top đánh giá cao."
+        explanation="Nếu chọn từ tất cả 50.000, AI có thể chọn từ xác suất 0.001%, vô nghĩa! Top-K và Top-P lọc bớt, chỉ giữ nhóm từ hợp lý nhất. Giống như chọn nhà hàng: bạn không xem TẤT CẢ 10.000 quán trên Grab mà chỉ xem top đánh giá cao."
       >
         <p className="text-sm text-muted mt-4">
           Hãy kéo thanh trượt để xem Top-K và Top-P lọc từ như thế nào.
@@ -312,7 +312,7 @@ export default function TopKTopPTopic() {
               </p>
             </div>
           }
-          description="Top-P tự điều chỉnh số từ tùy mức tự tin. ít từ khi chắc chắn, nhiều từ khi không chắc."
+          description="Top-P tự điều chỉnh số từ tùy mức tự tin, ít từ khi chắc chắn, nhiều từ khi không chắc."
         />
 
       </LessonSection>
@@ -322,9 +322,9 @@ export default function TopKTopPTopic() {
       <InlineChallenge
         question="Trong thực tế, API như Claude và GPT thường dùng cả temperature LẪN top_p. Nếu đặt temperature = 0, top_p = 0.9. cái nào thắng?"
         options={[
-          "Top-P thắng. vẫn chọn ngẫu nhiên trong 90%",
-          "Temperature thắng. temp = 0 luôn chọn từ xác suất cao nhất, bất kể top_p",
-          "Cả hai kết hợp. kết quả khác hoàn toàn",
+          "Top-P thắng, vẫn chọn ngẫu nhiên trong 90%",
+          "Temperature thắng, temp = 0 luôn chọn từ xác suất cao nhất, bất kể top_p",
+          "Cả hai kết hợp, kết quả khác hoàn toàn",
           "Chúng mâu thuẫn, API báo lỗi",
         ]}
         correct={1}
@@ -374,7 +374,7 @@ export default function TopKTopPTopic() {
               <tr>
                 <td className="py-2 pr-4">Ưu điểm</td>
                 <td className="py-2 pr-4">Đơn giản, dễ hiểu</td>
-                <td className="py-2">Thông minh hơn. tự điều chỉnh</td>
+                <td className="py-2">Thông minh hơn, tự điều chỉnh</td>
               </tr>
             </tbody>
           </table>
@@ -393,15 +393,15 @@ export default function TopKTopPTopic() {
         <Callout variant="tip" title="Khuyến nghị thực tế">
           Hầu hết trường hợp, chỉ cần chỉnh <strong>temperature</strong>.
           Nếu cần kiểm soát thêm, dùng <strong>top_p</strong>{" "}(linh hoạt hơn top_k).
-          Không nên chỉnh cả temperature lẫn top_p. chúng có thể xung đột.
+          Không nên chỉnh cả temperature lẫn top_p, chúng có thể xung đột.
         </Callout>
       </ExplanationSection>
 
       <MiniSummary
         points={[
-          "Top-K giữ đúng K từ xác suất cao nhất (cố định). đơn giản nhưng cứng nhắc",
+          "Top-K giữ đúng K từ xác suất cao nhất (cố định), đơn giản nhưng cứng nhắc",
           "Top-P (nucleus sampling) giữ từ đến khi tổng xác suất ≥ P. linh hoạt theo mức tự tin",
-          "Pipeline: Logits → Temperature → Top-K/P → Sampling. mỗi bước lọc thêm",
+          "Pipeline: Logits → Temperature → Top-K/P → Sampling, mỗi bước lọc thêm",
           "Thực tế: chỉnh temperature HOẶC top_p, không nên chỉnh cả hai cùng lúc",
         ]}
       />

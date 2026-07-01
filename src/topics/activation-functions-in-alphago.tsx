@@ -805,7 +805,7 @@ export default function ActivationFunctionsInAlphaGo() {
                   DeepMind · 3/2016 · Seoul
                 </p>
                 <h3 className="text-lg font-semibold text-foreground">
-                  AlphaGo thắng Lee Sedol 4 – 1
+                  AlphaGo thắng Lee Sedol 4-1
                 </h3>
               </div>
             </div>

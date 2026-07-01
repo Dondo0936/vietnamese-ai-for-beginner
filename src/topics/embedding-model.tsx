@@ -60,17 +60,17 @@ type WordPoint = {
 };
 
 const WORDS: WordPoint[] = [
-  // Cụm quyền lực. xuất hiện cùng ngữ cảnh triều đình, chính trị
+  // Cụm quyền lực, xuất hiện cùng ngữ cảnh triều đình, chính trị
   { id: "w1", word: "vua", x: 78, y: 58, group: "quyền-lực", color: "#7C3AED", note: "Chức danh tối cao thời phong kiến" },
   { id: "w2", word: "hoàng đế", x: 92, y: 66, group: "quyền-lực", color: "#7C3AED", note: "Đồng nghĩa với vua, cấp bậc cao hơn" },
-  { id: "w3", word: "nữ hoàng", x: 70, y: 84, group: "quyền-lực", color: "#7C3AED", note: "Vua nữ. cùng ngữ nghĩa, giới tính khác" },
+  { id: "w3", word: "nữ hoàng", x: 70, y: 84, group: "quyền-lực", color: "#7C3AED", note: "Vua nữ, cùng ngữ nghĩa, giới tính khác" },
   { id: "w4", word: "thủ tướng", x: 110, y: 54, group: "quyền-lực", color: "#7C3AED", note: "Chức danh chính trị hiện đại, gần 'vua' về trục quyền lực" },
 
   // Cụm động vật nuôi
   { id: "w5", word: "mèo", x: 188, y: 248, group: "động-vật", color: "#D97706", note: "Vật nuôi phổ biến" },
   { id: "w6", word: "chó", x: 202, y: 262, group: "động-vật", color: "#D97706", note: "Vật nuôi phổ biến, gần 'mèo'" },
-  { id: "w7", word: "thú cưng", x: 195, y: 232, group: "động-vật", color: "#D97706", note: "Từ khái quát. trung tâm cụm" },
-  { id: "w8", word: "cún con", x: 214, y: 278, group: "động-vật", color: "#D97706", note: "Con của 'chó'. rất gần" },
+  { id: "w7", word: "thú cưng", x: 195, y: 232, group: "động-vật", color: "#D97706", note: "Từ khái quát, trung tâm cụm" },
+  { id: "w8", word: "cún con", x: 214, y: 278, group: "động-vật", color: "#D97706", note: "Con của 'chó', rất gần" },
 
   // Cụm màu sắc
   { id: "w9", word: "xanh", x: 300, y: 220, group: "màu-sắc", color: "#0D9488", note: "Màu sắc cơ bản" },
@@ -86,7 +86,7 @@ const WORDS: WordPoint[] = [
 
   // Cụm cảm xúc
   { id: "w17", word: "vui", x: 80, y: 200, group: "cảm-xúc", color: "#DC2626", note: "Cảm xúc tích cực" },
-  { id: "w18", word: "buồn", x: 64, y: 218, group: "cảm-xúc", color: "#DC2626", note: "Cảm xúc tiêu cực. đối nghĩa với 'vui'" },
+  { id: "w18", word: "buồn", x: 64, y: 218, group: "cảm-xúc", color: "#DC2626", note: "Cảm xúc tiêu cực, đối nghĩa với 'vui'" },
   { id: "w19", word: "hạnh phúc", x: 100, y: 188, group: "cảm-xúc", color: "#DC2626", note: "Cảm xúc tích cực mạnh, gần 'vui'" },
   { id: "w20", word: "giận", x: 54, y: 232, group: "cảm-xúc", color: "#DC2626", note: "Cảm xúc tiêu cực, gần 'buồn'" },
 ];
@@ -98,7 +98,7 @@ function euclid(a: WordPoint, b: WordPoint): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-// Cosine similarity giả lập. suy từ khoảng cách 2D (gần → similarity cao)
+// Cosine similarity giả lập, suy từ khoảng cách 2D (gần → similarity cao)
 function fakeCosine(a: WordPoint, b: WordPoint): number {
   const d = euclid(a, b);
   // Map d ∈ [0, ~450] → similarity ∈ [1.0, 0.05]
@@ -108,13 +108,13 @@ function fakeCosine(a: WordPoint, b: WordPoint): number {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SO SÁNH MODEL: OpenAI text-embedding-3 vs sentence-transformers (multilingual)
-// Dữ liệu ma trận cosine giả lập. thể hiện cùng cặp từ cho ra similarity khác nhau
+// Dữ liệu ma trận cosine giả lập, thể hiện cùng cặp từ cho ra similarity khác nhau
 // tuỳ model (model đa ngôn ngữ tốt hơn với tiếng Việt)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const HEATMAP_WORDS = ["vua", "hoàng đế", "mèo", "chó", "xanh", "đỏ"] as const;
 
-// Ma trận 6x6. cosine similarity giả lập cho OpenAI text-embedding-3-small
+// Ma trận 6x6, cosine similarity giả lập cho OpenAI text-embedding-3-small
 const OPENAI_MATRIX: number[][] = [
   [1.00, 0.89, 0.12, 0.14, 0.09, 0.11],
   [0.89, 1.00, 0.11, 0.13, 0.08, 0.10],
@@ -124,7 +124,7 @@ const OPENAI_MATRIX: number[][] = [
   [0.11, 0.10, 0.19, 0.21, 0.74, 1.00],
 ];
 
-// Ma trận 6x6. cosine similarity giả lập cho sentence-transformers multilingual
+// Ma trận 6x6, cosine similarity giả lập cho sentence-transformers multilingual
 // Model đa ngôn ngữ bắt được liên kết giữa "vua" và "hoàng đế" mạnh hơn một chút
 const ST_MATRIX: number[][] = [
   [1.00, 0.93, 0.15, 0.16, 0.11, 0.12],
@@ -155,13 +155,13 @@ const quizQuestions: QuizQuestion[] = [
       "Embedding chuyển 'Phở ngon' thành vector [0.82, 0.15, 0.03, ...]. Các số này đại diện cho gì?",
     options: [
       "Mã ASCII của các ký tự trong câu",
-      "Vị trí trong không gian ngữ nghĩa. mỗi chiều đại diện một khía cạnh ý nghĩa",
+      "Vị trí trong không gian ngữ nghĩa, mỗi chiều đại diện một khía cạnh ý nghĩa",
       "Số lần xuất hiện của từng từ",
       "Điểm đánh giá độ hay của câu",
     ],
     correct: 1,
     explanation:
-      "Mỗi số trong vector là một toạ độ trong không gian ngữ nghĩa nhiều chiều (thường 768–3072 chiều). Câu có nghĩa gần nhau → vector gần nhau. 'Phở ngon' và 'Bún chả tuyệt vời' sẽ có vector gần nhau hơn 'Python dễ học' rất nhiều.",
+      "Mỗi số trong vector là một toạ độ trong không gian ngữ nghĩa nhiều chiều (thường 768-3072 chiều). Câu có nghĩa gần nhau → vector gần nhau. 'Phở ngon' và 'Bún chả tuyệt vời' sẽ có vector gần nhau hơn 'Python dễ học' rất nhiều.",
   },
   {
     question:
@@ -180,7 +180,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Embedding model hiện đại thường tạo vector có bao nhiêu chiều?",
     options: [
       "2-3 chiều (dễ hình dung)",
-      "768 – 3072 chiều",
+      "768-3072 chiều",
       "Đúng 1 chiều (một số duy nhất)",
       "Tuỳ độ dài câu (mỗi từ 1 chiều)",
     ],
@@ -193,13 +193,13 @@ const quizQuestions: QuizQuestion[] = [
       "Tại sao embedding model đa ngôn ngữ có thể so sánh 'Phở bò Hà Nội' với 'Beef pho from Hanoi' và ra similarity > 0.8?",
     options: [
       "Model dịch ngầm sang tiếng Anh rồi so sánh từng chữ",
-      "Model học trên dữ liệu song ngữ và align không gian vector giữa các ngôn ngữ. câu cùng nghĩa → vector gần nhau bất kể ngôn ngữ",
+      "Model học trên dữ liệu song ngữ và align không gian vector giữa các ngôn ngữ, câu cùng nghĩa → vector gần nhau bất kể ngôn ngữ",
       "Model đếm số ký tự Unicode trùng nhau",
       "Model dùng Google Translate làm bước tiền xử lý",
     ],
     correct: 1,
     explanation:
-      "Multilingual embedding (Cohere multilingual, BGE-M3, LaBSE, E5-multilingual) được train trên cặp câu song ngữ. Nhờ vậy không gian vector của các ngôn ngữ được 'align' lại. câu cùng nghĩa rơi vào vùng gần nhau dù khác ngôn ngữ hoàn toàn.",
+      "Multilingual embedding (Cohere multilingual, BGE-M3, LaBSE, E5-multilingual) được train trên cặp câu song ngữ. Nhờ vậy không gian vector của các ngôn ngữ được 'align' lại, câu cùng nghĩa rơi vào vùng gần nhau dù khác ngôn ngữ hoàn toàn.",
   },
   {
     question:
@@ -223,7 +223,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "chiều", accept: ["dimension", "chieu"] },
     ],
     explanation:
-      "Embedding = vector số trong không gian nhiều chiều (thường 384–3072 chiều). Mỗi chiều nắm bắt một khía cạnh ngữ nghĩa; câu có nghĩa gần nhau → vector gần nhau (đo bằng cosine similarity).",
+      "Embedding = vector số trong không gian nhiều chiều (thường 384-3072 chiều). Mỗi chiều nắm bắt một khía cạnh ngữ nghĩa; câu có nghĩa gần nhau → vector gần nhau (đo bằng cosine similarity).",
   },
   {
     question:
@@ -306,7 +306,7 @@ export default function EmbeddingModelTopic() {
         <PredictionGate
           question="Máy tính chỉ hiểu số. Làm sao để nó biết 'vua' và 'hoàng đế' có nghĩa GIỐNG nhau, trong khi 'vua' và 'mèo' thì KHÁC nhau?"
           options={[
-            "So sánh từng chữ cái. giống chữ = giống nghĩa",
+            "So sánh từng chữ cái, giống chữ = giống nghĩa",
             "Chuyển mỗi từ thành một dãy số (vector), từ giống nghĩa → vector gần nhau",
             "Dịch sang tiếng Anh rồi so sánh",
           ]}
@@ -365,7 +365,7 @@ export default function EmbeddingModelTopic() {
               />
             ))}
 
-            {/* Vùng cụm. ellipse mờ */}
+            {/* Vùng cụm, ellipse mờ */}
             <ellipse cx={88} cy={66} rx={50} ry={26} fill="#7C3AED" opacity={0.08} />
             <text x={88} y={36} textAnchor="middle" fontSize={11} fill="#7C3AED" fontWeight={600}>
               Quyền lực
@@ -492,7 +492,7 @@ export default function EmbeddingModelTopic() {
           <p className="mt-3 text-xs text-muted">
             Chú ý: &quot;vua&quot; và &quot;hoàng đế&quot; nằm sát nhau,
             &quot;mèo&quot; và &quot;chó&quot; cũng sát nhau. Đây không phải
-            là &quot;tô màu&quot; thủ công. embedding model học vị trí này
+            là &quot;tô màu&quot; thủ công, embedding model học vị trí này
             từ hàng tỷ câu văn trên Internet.
           </p>
         </VisualizationSection>
@@ -613,7 +613,7 @@ export default function EmbeddingModelTopic() {
       <LessonSection step={4} totalSteps={6} label="So sánh model">
         <section className="my-8 rounded-xl border border-border bg-card p-6">
           <h3 className="text-base font-semibold text-foreground mb-1">
-            Heatmap cosine similarity. hai embedding model
+            Heatmap cosine similarity, hai embedding model
           </h3>
           <p className="text-sm text-muted mb-4">
             Cùng 6 từ tiếng Việt, hai model cho ra ma trận similarity hơi
@@ -741,7 +741,7 @@ export default function EmbeddingModelTopic() {
               <strong>
                 &quot;{HEATMAP_WORDS[hoverCell[0]]}&quot; ↔ &quot;
                 {HEATMAP_WORDS[hoverCell[1]]}&quot;
-              </strong>{" "}. similarity = {matrix[hoverCell[0]][hoverCell[1]].toFixed(2)}.
+              </strong>,{" "}similarity = {matrix[hoverCell[0]][hoverCell[1]].toFixed(2)}.
               {hoverCell[0] === hoverCell[1] &&
                 " (Đường chéo luôn = 1.00 vì đo với chính nó.)"}
             </div>
@@ -750,8 +750,8 @@ export default function EmbeddingModelTopic() {
           <div className="mt-4 rounded-lg border border-dashed border-border bg-surface/40 p-3">
             <p className="text-xs text-muted leading-relaxed">
               <strong className="text-foreground">Nhận xét:</strong> Cả hai
-              model đều bắt đúng các cặp gần nghĩa (vua–hoàng đế, mèo–chó,
-              xanh–đỏ). Model đa ngôn ngữ (Sentence-Transformers)
+              model đều bắt đúng các cặp gần nghĩa (vua-hoàng đế, mèo-chó,
+              xanh-đỏ). Model đa ngôn ngữ (Sentence-Transformers)
               có similarity cao hơn một chút ở các cặp đồng nghĩa vì được
               train đặc biệt trên dữ liệu đa ngôn ngữ. Trong thực tế,
               benchmark MTEB (Massive Text Embedding Benchmark) là nơi so
@@ -779,12 +779,12 @@ export default function EmbeddingModelTopic() {
 
         <div className="mt-6 space-y-4">
           <InlineChallenge
-            question="'Phở bò Hà Nội' và 'Beef pho from Hanoi'. cosine similarity sẽ như thế nào với một embedding model đa ngôn ngữ?"
+            question="'Phở bò Hà Nội' và 'Beef pho from Hanoi', cosine similarity sẽ như thế nào với một embedding model đa ngôn ngữ?"
             options={[
-              "Rất thấp (< 0.3). vì khác ngôn ngữ hoàn toàn",
-              "Rất cao (> 0.8). vì cùng nghĩa, embedding model đa ngôn ngữ hiểu ngữ nghĩa không phụ thuộc ngôn ngữ",
+              "Rất thấp (< 0.3), vì khác ngôn ngữ hoàn toàn",
+              "Rất cao (> 0.8), vì cùng nghĩa, embedding model đa ngôn ngữ hiểu ngữ nghĩa không phụ thuộc ngôn ngữ",
               "Đúng 0. vì không có chữ nào giống nhau",
-              "Không so sánh được. cần cùng ngôn ngữ",
+              "Không so sánh được, cần cùng ngôn ngữ",
             ]}
             correct={1}
             explanation="Multilingual embedding models (Cohere multilingual, BGE-M3, LaBSE, E5-multilingual) hiểu ngữ nghĩa XUYÊN ngôn ngữ. 'Phở bò Hà Nội' và 'Beef pho from Hanoi' sẽ có vector rất gần nhau dù khác ngôn ngữ. Đây là lợi thế lớn khi xây hệ thống search hoặc RAG cho người dùng đa ngôn ngữ."
@@ -794,7 +794,7 @@ export default function EmbeddingModelTopic() {
             question="Bạn có 1 triệu document và muốn tìm document gần nhất với mỗi query. So sánh cosine với TẤT CẢ 1 triệu mỗi lần query thì quá chậm. Giải pháp đúng là gì?"
             options={[
               "Bỏ embedding, chuyển sang keyword search",
-              "Dùng vector database với thuật toán ANN (Approximate Nearest Neighbor) như HNSW. trả kết quả gần đúng nhưng nhanh hơn 100-1000 lần",
+              "Dùng vector database với thuật toán ANN (Approximate Nearest Neighbor) như HNSW, trả kết quả gần đúng nhưng nhanh hơn 100-1000 lần",
               "Tính trước cosine của MỌI cặp có thể có rồi lưu lại",
               "Chỉ so sánh với 100 document đầu tiên cho nhanh",
             ]}
@@ -818,7 +818,7 @@ export default function EmbeddingModelTopic() {
             variant="warning"
             title="Đừng trộn embedding từ nhiều model"
           >
-            Mỗi model có không gian vector riêng. không so sánh được
+            Mỗi model có không gian vector riêng, không so sánh được
             embedding của OpenAI với embedding của BGE-M3 trực tiếp. Nếu đổi
             model, phải re-embed toàn bộ corpus.
           </Callout>
@@ -840,7 +840,7 @@ export default function EmbeddingModelTopic() {
             >
               MTEB leaderboard
             </a>{" "}
-            trên HuggingFace. bảng xếp hạng embedding model trên 50+ task.
+            trên HuggingFace, bảng xếp hạng embedding model trên 50+ task.
             Lọc theo ngôn ngữ, kích thước, task type.
           </Callout>
         </div>
@@ -851,8 +851,7 @@ export default function EmbeddingModelTopic() {
         <ExplanationSection>
           <p>
             <strong>Embedding model</strong> chuyển đổi text (từ, câu, đoạn
-            văn) thành vector số trong không gian nhiều chiều (thường 384–
-            3072 chiều). Mỗi chiều đại diện một khía cạnh ý nghĩa mà model
+            văn) thành vector số trong không gian nhiều chiều (thường 384-3072 chiều). Mỗi chiều đại diện một khía cạnh ý nghĩa mà model
             đã học từ hàng tỷ câu văn trên Internet.
           </p>
 
@@ -970,7 +969,7 @@ export default function EmbeddingModelTopic() {
             </table>
           </div>
 
-          <CodeBlock language="python" title="openai_embeddings.py. gọi API OpenAI và tính similarity">
+          <CodeBlock language="python" title="openai_embeddings.py, gọi API OpenAI và tính similarity">
 {`"""
 Ví dụ: gọi API OpenAI để tạo embedding cho nhiều câu,
 sau đó tính cosine similarity giữa các cặp.
@@ -997,7 +996,7 @@ texts = [
     "Chó là bạn thân của con người",   # 6
 ]
 
-# 2) Gọi API batch. tạo tất cả embedding trong 1 request (rẻ & nhanh)
+# 2) Gọi API batch, tạo tất cả embedding trong 1 request (rẻ & nhanh)
 response = client.embeddings.create(
     model="text-embedding-3-small",   # 1536 chiều
     input=texts,
@@ -1052,7 +1051,7 @@ for rank, (idx, sim) in enumerate(ranked[:3], 1):
 
           <CodeBlock
             language="python"
-            title="sentence_transformers_local.py. chạy embedding LOCAL không cần API"
+            title="sentence_transformers_local.py, chạy embedding LOCAL không cần API"
           >
 {`"""
 Chạy embedding hoàn toàn local bằng sentence-transformers.
@@ -1102,7 +1101,7 @@ print(f"Query: '{query}'")
 for rank, idx in enumerate(top_k_idx, 1):
     print(f"  #{rank}  [{similarities[idx]:.3f}]  {corpus[idx]}")
 
-# 3) Lưu corpus embeddings ra disk. reload nhanh cho lần sau
+# 3) Lưu corpus embeddings ra disk, reload nhanh cho lần sau
 np.save("corpus_embeddings.npy", corpus_embeddings)
 # Lần sau:
 #   corpus_embeddings = np.load("corpus_embeddings.npy")
@@ -1143,7 +1142,7 @@ print(f"\\n'{corpus[0]}' vs '{corpus[2]}' → {sim.item():.3f}")
                 </li>
                 <li>
                   <strong>Pooling</strong>: gộp tất cả token vector thành
-                  một vector duy nhất. thường dùng[CLS] token hoặc mean
+                  một vector duy nhất, thường dùng[CLS] token hoặc mean
                   pooling (trung bình cộng).
                 </li>
                 <li>
@@ -1203,7 +1202,7 @@ print(f"\\n'{corpus[0]}' vs '{corpus[2]}' → {sim.item():.3f}")
               <ol className="list-decimal list-inside space-y-1 pl-2">
                 <li>
                   Bi-encoder (embedding) tìm top-100 document từ 1 triệu
-                  document (bằng ANN). nhanh.
+                  document (bằng ANN), nhanh.
                 </li>
                 <li>
                   Cross-encoder (reranker như{" "}
@@ -1262,16 +1261,16 @@ print(f"\\n'{corpus[0]}' vs '{corpus[2]}' → {sim.item():.3f}")
           </p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li>
-              <TopicLink slug="vector-databases">Vector Databases</TopicLink>{" "}. cách lưu và query hàng triệu vector với ANN.
+              <TopicLink slug="vector-databases">Vector Databases</TopicLink>,{" "}cách lưu và query hàng triệu vector với ANN.
             </li>
             <li>
-              <TopicLink slug="semantic-search">Semantic Search</TopicLink>{" "}. xây search engine dựa trên embedding.
+              <TopicLink slug="semantic-search">Semantic Search</TopicLink>,{" "}xây search engine dựa trên embedding.
             </li>
             <li>
-              <TopicLink slug="word-embeddings">Word Embeddings</TopicLink>{" "}. tiền thân: Word2Vec, GloVe, FastText.
+              <TopicLink slug="word-embeddings">Word Embeddings</TopicLink>,{" "}tiền thân: Word2Vec, GloVe, FastText.
             </li>
             <li>
-              <TopicLink slug="self-attention">Self-Attention</TopicLink>{" "}. cơ chế cốt lõi giúp Transformer tạo ra embedding tốt.
+              <TopicLink slug="self-attention">Self-Attention</TopicLink>,{" "}cơ chế cốt lõi giúp Transformer tạo ra embedding tốt.
             </li>
             <li>
               <TopicLink slug="rag">RAG</TopicLink>. ứng dụng số 1 của
@@ -1282,7 +1281,7 @@ print(f"\\n'{corpus[0]}' vs '{corpus[2]}' → {sim.item():.3f}")
 
         <MiniSummary
           points={[
-            "Embedding model chuyển text → vector số trong không gian nhiều chiều (384–3072 chiều).",
+            "Embedding model chuyển text → vector số trong không gian nhiều chiều (384-3072 chiều).",
             "Câu/từ giống nghĩa → vector gần nhau → cosine similarity cao (gần 1).",
             "Model đa ngôn ngữ (BGE-M3, Cohere, multilingual sentence-transformers) hiểu ngữ nghĩa xuyên ngôn ngữ.",
             "Cosine similarity là metric chuẩn; với vector đã normalize, cosine = dot product (rất nhanh).",

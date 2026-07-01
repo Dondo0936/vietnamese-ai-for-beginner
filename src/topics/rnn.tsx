@@ -23,7 +23,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// METADATA. giữ nguyên như phiên bản trước để không phá liên kết nội bộ
+// METADATA, giữ nguyên như phiên bản trước để không phá liên kết nội bộ
 // ---------------------------------------------------------------------------
 
 export const metadata: TopicMeta = {
@@ -47,7 +47,7 @@ export const metadata: TopicMeta = {
 
 const SENTENCE: string[] = ["Tôi", "yêu", "mèo"];
 
-// Một bộ embedding 4 chiều giả định cho từng từ. đủ để minh họa phép nhân
+// Một bộ embedding 4 chiều giả định cho từng từ, đủ để minh họa phép nhân
 // ma trận mà không cần công thức quá nặng. Các con số được chọn để kết quả
 // forward pass nằm trong khoảng tanh dễ nhìn.
 const TOKEN_EMBEDDINGS: Record<string, number[]> = {
@@ -72,13 +72,13 @@ const W_HH: number[][] = [
 
 const B_H: number[] = [0.02, -0.01, 0.03];
 
-// Mô tả "bộ nhớ" mà RNN tích lũy tại mỗi bước. giúp người học cảm nhận
+// Mô tả "bộ nhớ" mà RNN tích lũy tại mỗi bước, giúp người học cảm nhận
 // ý nghĩa của hidden state thay vì chỉ thấy các con số.
 const HIDDEN_DESC: string[] = [
-  "h₀: chưa có ký ức. khởi tạo bằng vector 0.",
-  "h₁: đã 'nghe' từ 'Tôi'. biết có một chủ thể đang nói về mình.",
-  "h₂: đã 'nghe' 'Tôi yêu'. biết đang nói về cảm xúc yêu thương.",
-  "h₃: đã 'nghe' 'Tôi yêu mèo'. hiểu trọn vẹn câu và chủ đề là mèo.",
+  "h₀: chưa có ký ức, khởi tạo bằng vector 0.",
+  "h₁: đã 'nghe' từ 'Tôi', biết có một chủ thể đang nói về mình.",
+  "h₂: đã 'nghe' 'Tôi yêu', biết đang nói về cảm xúc yêu thương.",
+  "h₃: đã 'nghe' 'Tôi yêu mèo', hiểu trọn vẹn câu và chủ đề là mèo.",
 ];
 
 // Bảng so sánh RNN vs LSTM vs GRU cho phần ExplanationSection.
@@ -102,15 +102,15 @@ const CELL_COMPARISON: Array<{
     name: "LSTM",
     gates: "3 cổng: forget, input, output",
     memory: "Cell state c + hidden state h",
-    params: "4 bộ (W_f, W_i, W_o, W_c). nhiều hơn ~4×",
-    strength: "Nhớ được ngữ cảnh dài 100–300 bước",
+    params: "4 bộ (W_f, W_i, W_o, W_c), nhiều hơn ~4×",
+    strength: "Nhớ được ngữ cảnh dài 100-300 bước",
     weakness: "Chậm hơn RNN, nhiều tham số hơn",
   },
   {
     name: "GRU",
     gates: "2 cổng: reset, update",
     memory: "Chỉ có hidden state h (gộp cell + hidden)",
-    params: "3 bộ. gọn hơn LSTM ~25%",
+    params: "3 bộ, gọn hơn LSTM ~25%",
     strength: "Cân bằng giữa LSTM và RNN, ít tham số",
     weakness: "Hơi kém LSTM với chuỗi siêu dài",
   },
@@ -131,9 +131,9 @@ const VARIANTS: Array<{
 ];
 
 // ---------------------------------------------------------------------------
-// HÀM HỖ TRỢ. forward pass thủ công
+// HÀM HỖ TRỢ, forward pass thủ công
 // ---------------------------------------------------------------------------
-// Không dùng thư viện toán học nào. chỉ cần JS thuần để minh họa đúng công
+// Không dùng thư viện toán học nào, chỉ cần JS thuần để minh họa đúng công
 // thức. Mọi thứ đều deterministic, không random, để học viên có thể so sánh
 // kết quả giữa các bước.
 
@@ -150,7 +150,7 @@ function tanhVec(v: number[]): number[] {
 }
 
 // Tính tất cả hidden state h_0, h_1, ..., h_T cùng một lúc để visualization
-// có thể tham chiếu trực tiếp. h_0 = vector 0.
+// có thể tham chiếu trực tiếp, h_0 = vector 0.
 function rollForward(sentence: string[]): number[][] {
   const hiddenStates: number[][] = [];
   let h = [0, 0, 0];
@@ -233,7 +233,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Backprop qua thời gian (BPTT) tạo ra tích của T ma trận Jacobi. Nếu spectral radius của W_hh · diag(tanh') < 1, tích này co lại theo cấp số nhân khi T lớn, tín hiệu xa bị xóa sổ. Ngược lại > 1 gây exploding gradient. thường chặn bằng gradient clipping.",
+      "Backprop qua thời gian (BPTT) tạo ra tích của T ma trận Jacobi. Nếu spectral radius của W_hh · diag(tanh') < 1, tích này co lại theo cấp số nhân khi T lớn, tín hiệu xa bị xóa sổ. Ngược lại > 1 gây exploding gradient, thường chặn bằng gradient clipping.",
   },
   {
     question:
@@ -253,7 +253,7 @@ const quizQuestions: QuizQuestion[] = [
       "GRU khác LSTM ở điểm nào quan trọng nhất?",
     options: [
       "GRU không có phi tuyến.",
-      "GRU gộp cell state và hidden state, chỉ còn 2 cổng (reset, update). ít tham số hơn LSTM.",
+      "GRU gộp cell state và hidden state, chỉ còn 2 cổng (reset, update), ít tham số hơn LSTM.",
       "GRU chỉ dùng cho ảnh, không dùng cho văn bản.",
       "GRU chạy song song như Transformer.",
     ],
@@ -264,7 +264,7 @@ const quizQuestions: QuizQuestion[] = [
   {
     type: "fill-blank",
     question:
-      "RNN duy trì một {blank} truyền qua mỗi bước thời gian; khi backprop qua nhiều bước, gradient bị nhân lặp và thu nhỏ dần. hiện tượng {blank}. LSTM khắc phục nhờ một đường {blank} đi qua các bước với phép cộng có điều khiển.",
+      "RNN duy trì một {blank} truyền qua mỗi bước thời gian; khi backprop qua nhiều bước, gradient bị nhân lặp và thu nhỏ dần, hiện tượng {blank}. LSTM khắc phục nhờ một đường {blank} đi qua các bước với phép cộng có điều khiển.",
     blanks: [
       { answer: "hidden state", accept: ["trạng thái ẩn", "h", "trạng thái ẩn hₜ"] },
       {
@@ -274,7 +274,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "cell state", accept: ["cₜ", "cell", "trạng thái ô", "trạng thái ô cₜ"] },
     ],
     explanation:
-      "Hidden state hₜ tích lũy ngữ cảnh. Khi BPTT, gradient nhân lặp với các ma trận có norm < 1 → tín hiệu xa biến mất. LSTM thêm cell state cₜ đi qua các bước bằng phép cộng có cổng. tạo 'đường cao tốc' gradient.",
+      "Hidden state hₜ tích lũy ngữ cảnh. Khi BPTT, gradient nhân lặp với các ma trận có norm < 1 → tín hiệu xa biến mất. LSTM thêm cell state cₜ đi qua các bước bằng phép cộng có cổng, tạo 'đường cao tốc' gradient.",
   },
 ];
 
@@ -327,7 +327,7 @@ export default function RnnTopic() {
           BƯỚC 1. DỰ ĐOÁN (PredictionGate)
           Mục tiêu: kích hoạt tò mò. Người học phải commit một câu trả lời
           trước khi vào nội dung chính. Câu hỏi gợi ý nhu cầu "bộ nhớ" cho
-          chuỗi. chính là bài toán mà RNN ra đời để giải.
+          chuỗi, chính là bài toán mà RNN ra đời để giải.
           ═══════════════════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
@@ -335,7 +335,7 @@ export default function RnnTopic() {
           options={[
             "Chỉ nhìn từ cuối 'yêu' là đủ để đoán.",
             "Phải nhớ cả hai từ 'Tôi yêu' để có ngữ cảnh.",
-            "Không cần nhớ gì. đoán ngẫu nhiên theo xác suất nền.",
+            "Không cần nhớ gì, đoán ngẫu nhiên theo xác suất nền.",
             "Phải biết cả bài văn trước đó mới đoán được.",
           ]}
           correct={1}
@@ -351,7 +351,7 @@ export default function RnnTopic() {
 
       {/* ═══════════════════════════════════════════════════════════════════
           BƯỚC 2. ẨN DỤ + VISUALIZATION
-          Ẩn dụ: đọc truyện kể. Bạn có một "cuốn sổ nhỏ". mỗi khi đọc thêm
+          Ẩn dụ: đọc truyện kể. Bạn có một "cuốn sổ nhỏ", mỗi khi đọc thêm
           1 từ, bạn cập nhật sổ; chính cuốn sổ đó là hidden state.
           Visualization: unrolled RNN với câu "Tôi yêu mèo". Mỗi bước hiển
           thị công thức W_h · h_{t-1} + W_x · x_t + b → tanh → h_t.
@@ -360,14 +360,14 @@ export default function RnnTopic() {
         <p className="text-sm text-foreground leading-relaxed mb-2">
           Hãy tưởng tượng bạn đọc một truyện ngắn, tay cầm cuốn{" "}
           <strong>sổ nhỏ</strong>. Sau mỗi từ, bạn không viết lại cả câu vào
-          sổ. chỉ cập nhật <em>vài dòng ngắn</em> ghi lại "ý chính đến lúc
+          sổ, chỉ cập nhật <em>vài dòng ngắn</em> ghi lại "ý chính đến lúc
           này". Cuốn sổ ấy chính là <strong>trạng thái ẩn hₜ</strong> của
           RNN. Cùng một bàn tay (cùng bộ trọng số) cập nhật cuốn sổ ở mọi
           bước; chỉ có nội dung cuốn sổ là thay đổi.
         </p>
         <p className="text-sm text-muted leading-relaxed mb-4">
           Khi mở cuộn (unroll) mạng theo thời gian, một ô RNN "lặp lại" trở
-          thành nhiều bản sao nối tiếp nhau. tất cả cùng dùng chung W_xh,
+          thành nhiều bản sao nối tiếp nhau, tất cả cùng dùng chung W_xh,
           W_hh và b. Hình bên dưới cho bạn thấy điều đó diễn ra với câu{" "}
           <strong>"Tôi yêu mèo"</strong>. Hãy bấm <em>Bước tiếp</em> hoặc{" "}
           <em>Tự động chạy</em> để quan sát hₜ truyền từ trái sang phải.
@@ -684,7 +684,7 @@ export default function RnnTopic() {
             yêu mèo" như một cái máy ghi âm. Nó có <em>một cuốn sổ nhỏ</em>{" "}
             cố định chiều (hₜ) và một <em>cây bút cố định</em> (W_xh, W_hh,
             b). Cây bút đó viết lại cuốn sổ sau mỗi từ; chính cuốn sổ mới là
-            "ký ức". không phải danh sách từng từ.
+            "ký ức", không phải danh sách từng từ.
           </p>
           <p className="text-sm text-muted mt-2">
             Đó là lý do RNN có thể xử lý chuỗi <strong>bất kỳ độ dài</strong>:
@@ -702,13 +702,13 @@ export default function RnnTopic() {
         <InlineChallenge
           question="RNN xử lý câu 6 từ cần 6 bước tuần tự. Transformer xử lý cùng câu đó cần tối đa mấy bước?"
           options={[
-            "6 bước tuần tự. giống RNN.",
-            "1 bước. self-attention nhìn tất cả từ cùng lúc, tính song song được.",
-            "12 bước. gấp đôi vì phức tạp hơn.",
+            "6 bước tuần tự, giống RNN.",
+            "1 bước, self-attention nhìn tất cả từ cùng lúc, tính song song được.",
+            "12 bước, gấp đôi vì phức tạp hơn.",
             "Không xác định được vì phụ thuộc vào độ dài từ.",
           ]}
           correct={1}
-          explanation={`Transformer dùng self-attention để mọi token nhìn mọi token khác trong cùng một phép nhân ma trận. song song hóa được trên GPU. RNN bắt buộc tuần tự: phải có h₁ rồi mới tính h₂, có h₂ rồi mới tính h₃... Đó là một trong các lý do chính Transformer thay thế RNN trong hầu hết bài toán NLP hiện đại.`}
+          explanation={`Transformer dùng self-attention để mọi token nhìn mọi token khác trong cùng một phép nhân ma trận, song song hóa được trên GPU. RNN bắt buộc tuần tự: phải có h₁ rồi mới tính h₂, có h₂ rồi mới tính h₃... Đó là một trong các lý do chính Transformer thay thế RNN trong hầu hết bài toán NLP hiện đại.`}
         />
       </LessonSection>
 
@@ -720,13 +720,13 @@ export default function RnnTopic() {
         <InlineChallenge
           question="Bạn huấn luyện RNN thuần trên câu dài 100 từ, loss giảm rất chậm và gradient ở các tầng đầu gần bằng 0. Nguyên nhân phù hợp nhất là gì?"
           options={[
-            "Learning rate quá nhỏ. tăng lên sẽ hết.",
-            "Mạng quá nhỏ. tăng chiều hidden lên gấp đôi là đủ.",
+            "Learning rate quá nhỏ, tăng lên sẽ hết.",
+            "Mạng quá nhỏ, tăng chiều hidden lên gấp đôi là đủ.",
             "Gradient bị nhân qua rất nhiều bước với ma trận có norm < 1 → co về 0 (vanishing gradient). Cần LSTM/GRU hoặc cơ chế khác.",
-            "Dữ liệu bị hỏng. phải thu thập lại.",
+            "Dữ liệu bị hỏng, phải thu thập lại.",
           ]}
           correct={2}
-          explanation={`Khi backprop qua 100 bước, gradient bị nhân với 100 ma trận Jacobi liên tiếp. Nếu phần lớn có norm < 1, kết quả co về 0 theo cấp số nhân. tín hiệu học ở các bước đầu biến mất. LSTM/GRU giải quyết bằng cách tạo một "đường cao tốc" gradient qua cell state; Transformer giải quyết triệt để bằng attention trực tiếp giữa mọi cặp vị trí.`}
+          explanation={`Khi backprop qua 100 bước, gradient bị nhân với 100 ma trận Jacobi liên tiếp. Nếu phần lớn có norm < 1, kết quả co về 0 theo cấp số nhân, tín hiệu học ở các bước đầu biến mất. LSTM/GRU giải quyết bằng cách tạo một "đường cao tốc" gradient qua cell state; Transformer giải quyết triệt để bằng attention trực tiếp giữa mọi cặp vị trí.`}
         />
       </LessonSection>
 
@@ -741,7 +741,7 @@ export default function RnnTopic() {
             là một họ kiến trúc xử lý chuỗi bằng cách duy trì một vector{" "}
             <em>trạng thái ẩn</em> hₜ và cập nhật nó tuần tự qua các bước
             thời gian. Tại mỗi bước, đầu vào xₜ và trạng thái ẩn cũ hₜ₋₁
-            được đưa vào cùng một ô (cell). ô này có chung bộ trọng số ở
+            được đưa vào cùng một ô (cell), ô này có chung bộ trọng số ở
             mọi bước (weight sharing theo thời gian).
           </p>
 
@@ -767,7 +767,7 @@ export default function RnnTopic() {
             <li>
               <strong>Đầu vào xₜ:</strong> vector biểu diễn cho token/điểm
               dữ liệu tại thời điểm t. Với văn bản thường là embedding
-              (dim 100–1024); với chuỗi số (giá cổ phiếu, sensor) có thể
+              (dim 100-1024); với chuỗi số (giá cổ phiếu, sensor) có thể
               chỉ vài chiều.
             </li>
             <li>
@@ -790,7 +790,7 @@ export default function RnnTopic() {
             chia sẻ kernel ở mọi vị trí không gian (translational
             equivariance), RNN chia sẻ ma trận trọng số ở mọi bước thời
             gian (temporal equivariance). Nhờ đó RNN xử lý được chuỗi có
-            độ dài bất kỳ. điều mà MLP truyền thống không làm được.
+            độ dài bất kỳ, điều mà MLP truyền thống không làm được.
           </Callout>
 
           {/* -------- Code #1: PyTorch RNN -------- */}
@@ -812,7 +812,7 @@ class SimpleRNNCell(nn.Module):
     def __init__(self, input_dim: int, hidden_dim: int):
         super().__init__()
         # Khởi tạo theo Xavier để tránh vanishing/exploding gradient
-        # ngay từ bước đầu. nn.Linear chỉ là tiện nghi cho W·x + b.
+        # ngay từ bước đầu, nn.Linear chỉ là tiện nghi cho W·x + b.
         self.W_xh = nn.Linear(input_dim, hidden_dim, bias=True)
         self.W_hh = nn.Linear(hidden_dim, hidden_dim, bias=False)
 
@@ -838,7 +838,7 @@ class SimpleRNN(nn.Module):
 
         h = h0
         hs = []
-        # Vòng lặp tuần tự theo thời gian. đây chính là lý do RNN
+        # Vòng lặp tuần tự theo thời gian, đây chính là lý do RNN
         # KHÔNG song song hóa được giữa các bước (t và t+1).
         for t in range(T):
             h = self.cell(x[:, t, :], h)
@@ -869,7 +869,7 @@ if __name__ == "__main__":
 
           <CodeBlock
             language="python"
-            title="train_rnn.py. vòng lặp huấn luyện với gradient clipping"
+            title="train_rnn.py, vòng lặp huấn luyện với gradient clipping"
           >
 {`import torch
 import torch.nn as nn
@@ -882,7 +882,7 @@ loss_fn = nn.CrossEntropyLoss()
 
 for epoch in range(num_epochs):
     for batch_x, batch_y in train_loader:
-        # batch_x: (B, T, 50); batch_y: (B, T). chỉ số token đích
+        # batch_x: (B, T, 50); batch_y: (B, T), chỉ số token đích
         out, _ = model(batch_x)          # (B, T, 128)
         logits = head(out)               # (B, T, V)
         loss = loss_fn(logits.reshape(-1, vocab_size), batch_y.reshape(-1))
@@ -908,7 +908,7 @@ for epoch in range(num_epochs):
             <ul className="list-disc list-inside space-y-1 pl-2 mt-2">
               <li>
                 <strong>Gradient clipping</strong>. cắt norm gradient về
-                ngưỡng (thường 1–5). Chặn được exploding nhưng không hồi
+                ngưỡng (thường 1-5). Chặn được exploding nhưng không hồi
                 phục được vanishing.
               </li>
               <li>
@@ -927,7 +927,7 @@ for epoch in range(num_epochs):
               </li>
               <li>
                 <strong>Thiết bị biên (edge)</strong>: RAM và compute hạn
-                chế; RNN nhỏ 1–10MB dễ chạy hơn Transformer 100MB+.
+                chế; RNN nhỏ 1-10MB dễ chạy hơn Transformer 100MB+.
               </li>
               <li>
                 <strong>Chuỗi rất dài</strong>: attention O(T²) quá đắt;
@@ -937,7 +937,7 @@ for epoch in range(num_epochs):
           </Callout>
 
           {/* -------- Callout #4: BPTT cắt đoạn -------- */}
-          <Callout variant="tip" title="Truncated BPTT. kỹ thuật thực chiến">
+          <Callout variant="tip" title="Truncated BPTT, kỹ thuật thực chiến">
             <p>
               Khi chuỗi quá dài (vd 10.000 bước), backprop qua toàn bộ sẽ
               tốn bộ nhớ khổng lồ. Giải pháp:{" "}
@@ -964,7 +964,7 @@ for epoch in range(num_epochs):
               <LaTeX>{"\\le (\\sigma_{\\max}(W_{hh}))^{T-k}"}</LaTeX>. Nếu{" "}
               <LaTeX>{"\\sigma_{\\max}(W_{hh}) < 1"}</LaTeX>, tích co về 0
               theo cấp số nhân (vanishing). Nếu &gt; 1, bùng nổ. Đây là
-              định lý Pascanu–Mikolov–Bengio (2013). cơ sở lý thuyết cho
+              định lý Pascanu-Mikolov-Bengio (2013), cơ sở lý thuyết cho
               mọi biến thể RNN hiện đại.
             </p>
           </CollapsibleDetail>
@@ -983,7 +983,7 @@ for epoch in range(num_epochs):
             </ul>
             <p className="text-sm mt-2">
               Trong đó <strong>Bidirectional RNN</strong> chạy hai RNN một
-              chiều ngược nhau rồi nối trạng thái. hữu ích khi bạn có
+              chiều ngược nhau rồi nối trạng thái, hữu ích khi bạn có
               toàn bộ chuỗi (không streaming). <strong>Stacked RNN</strong>{" "}
               xếp nhiều tầng: đầu ra của tầng dưới làm đầu vào cho tầng
               trên, giúp học biểu diễn phân cấp.
@@ -1070,7 +1070,7 @@ for epoch in range(num_epochs):
             </li>
             <li>
               <strong>Machine translation</strong>. kiến trúc
-              encoder-decoder LSTM từng là state-of-the-art (2014–2017)
+              encoder-decoder LSTM từng là state-of-the-art (2014-2017)
               trước khi{" "}
               <TopicLink slug="transformer">Transformer</TopicLink>{" "}
               thay thế.
@@ -1106,10 +1106,10 @@ for epoch in range(num_epochs):
         <MiniSummary
           title="6 điều cần nhớ về RNN"
           points={[
-            "RNN truyền trạng thái ẩn hₜ qua mỗi bước thời gian. hₜ là 'cuốn sổ' tóm tắt mọi thứ đã thấy.",
+            "RNN truyền trạng thái ẩn hₜ qua mỗi bước thời gian, hₜ là 'cuốn sổ' tóm tắt mọi thứ đã thấy.",
             "Công thức cốt lõi: hₜ = tanh(W_xh·xₜ + W_hh·hₜ₋₁ + b). Weight sharing theo thời gian, tương đương CNN chia sẻ kernel theo không gian.",
             "Vanishing gradient là vấn đề kinh điển: gradient nhân qua T Jacobi co về 0. Triệu chứng: lớp đầu không học.",
-            "Gradient clipping (max_norm 1–5) là bắt buộc để tránh exploding gradient khi chuỗi dài.",
+            "Gradient clipping (max_norm 1-5) là bắt buộc để tránh exploding gradient khi chuỗi dài.",
             "LSTM và GRU khắc phục vanishing bằng cell state + cổng; Transformer giải quyết triệt để bằng attention nhưng mất lợi thế streaming.",
             "RNN vẫn hữu ích cho streaming, thiết bị biên, và là nền tảng lý thuyết cho State Space Models (Mamba) hiện đại.",
           ]}
@@ -1124,16 +1124,16 @@ for epoch in range(num_epochs):
       </LessonSection>
 
       {/* ===================================================================
-          Ngoài khung 8 bước. nhánh phụ "Sandbox" cho ai muốn thử nghiệm
+          Ngoài khung 8 bước, nhánh phụ "Sandbox" cho ai muốn thử nghiệm
           thêm. Ẩn mặc định, bấm ToggleCompare để hiện.
           =================================================================== */}
       <details className="mt-10 rounded-xl border border-border bg-card/30 p-4">
         <summary className="cursor-pointer text-sm font-semibold text-foreground">
-          Sandbox bổ sung. thử nghiệm chiều hidden state (nâng cao)
+          Sandbox bổ sung, thử nghiệm chiều hidden state (nâng cao)
         </summary>
         <div className="mt-4 space-y-3">
           <p className="text-sm text-muted">
-            Kéo thanh trượt dưới đây để mô phỏng việc tăng chiều hₜ. quan sát số phép nhân ma trận tăng theo O(d²). Đây là lý do
+            Kéo thanh trượt dưới đây để mô phỏng việc tăng chiều hₜ, quan sát số phép nhân ma trận tăng theo O(d²). Đây là lý do
             RNN chiều lớn rất đắt.
           </p>
           <SliderGroup

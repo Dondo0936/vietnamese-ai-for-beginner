@@ -88,7 +88,7 @@ function seededBool(round: number, salt: number): boolean {
 }
 
 /* ============================================================
- * PixelGrid — renders an 8x8 pattern as SVG
+ * PixelGrid-renders an 8x8 pattern as SVG
  * ============================================================ */
 function PixelGrid({
   data,
@@ -129,7 +129,7 @@ function PixelGrid({
 }
 
 /* ============================================================
- * QUIZ QUESTIONS — 8 total
+ * QUIZ QUESTIONS-8 total
  * ============================================================ */
 const quizQuestions: QuizQuestion[] = [
   {
@@ -142,7 +142,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Generator nhận vector nhiễu z ~ N(0,1) và biến đổi nó thành dữ liệu giả. Nó không bao giờ thấy ảnh thật — chỉ học gián tiếp qua gradient từ Discriminator.",
+      "Generator nhận vector nhiễu z ~ N(0,1) và biến đổi nó thành dữ liệu giả. Nó không bao giờ thấy ảnh thật-chỉ học gián tiếp qua gradient từ Discriminator.",
   },
   {
     question: "Khi GAN đạt cân bằng Nash, Discriminator cho kết quả gì?",
@@ -154,7 +154,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "Khi Generator hoàn hảo, Discriminator không thể phân biệt thật/giả nên cho xác suất 0.5 — tương đương đoán ngẫu nhiên.",
+      "Khi Generator hoàn hảo, Discriminator không thể phân biệt thật/giả nên cho xác suất 0.5-tương đương đoán ngẫu nhiên.",
   },
   {
     question: "Diffusion Models đang dần thay thế GAN vì lý do gì?",
@@ -193,7 +193,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Mode collapse xảy ra khi Generator 'lười' học — tìm được một vài mẫu có thể lừa Discriminator và lặp lại mãi. Kết quả: ảnh tạo ra thiếu đa dạng dù loss trông ổn.",
+      "Mode collapse xảy ra khi Generator 'lười' học-tìm được một vài mẫu có thể lừa Discriminator và lặp lại mãi. Kết quả: ảnh tạo ra thiếu đa dạng dù loss trông ổn.",
   },
   {
     question:
@@ -206,7 +206,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "WGAN đo khoảng cách Wasserstein giữa phân phối thật và giả — loss mượt hơn, gradient không bị vanish, và mode collapse hiếm xảy ra hơn nhiều.",
+      "WGAN đo khoảng cách Wasserstein giữa phân phối thật và giả-loss mượt hơn, gradient không bị vanish, và mode collapse hiếm xảy ra hơn nhiều.",
   },
   {
     question:
@@ -219,14 +219,14 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "cGAN học p(x | y). Đưa label y vào cả G và D giúp ta nói 'tạo cho tôi một ảnh số 7' hoặc 'tạo ảnh chó' — sinh có điều kiện, rất hữu ích cho ứng dụng thực tế.",
+      "cGAN học p(x | y). Đưa label y vào cả G và D giúp ta nói 'tạo cho tôi một ảnh số 7' hoặc 'tạo ảnh chó', sinh có điều kiện, rất hữu ích cho ứng dụng thực tế.",
   },
   {
     question:
       "Đi dạo trong latent space (latent space walk) của StyleGAN cho ta thấy điều gì?",
     options: [
       "Ảnh bị nhiễu ngẫu nhiên",
-      "Các ảnh láng giềng thay đổi mượt mà theo chiều đi — Generator đã học được manifold có ý nghĩa",
+      "Các ảnh láng giềng thay đổi mượt mà theo chiều đi-Generator đã học được manifold có ý nghĩa",
       "Discriminator bị sai",
       "Tập dữ liệu gốc",
     ],
@@ -238,7 +238,7 @@ const quizQuestions: QuizQuestion[] = [
 
 /* ============================================================
  * LATENT SPACE GENERATOR
- * Fake but plausible — lerp between two PATTERNS using noise
+ * Fake but plausible-lerp between two PATTERNS using noise
  * ============================================================ */
 function lerpPattern(a: number[], b: number[], t: number, jitter: number) {
   const result = new Array(64).fill(0);
@@ -352,7 +352,7 @@ function ModeCollapseViz({
 }
 
 /* ============================================================
- * LOSS CURVE — oscillating G/D losses
+ * LOSS CURVE-oscillating G/D losses
  * ============================================================ */
 function lossSeries(steps: number) {
   const gen: number[] = [];
@@ -445,7 +445,7 @@ function LossCurve({ step, total }: { step: number; total: number }) {
 
 /* ============================================================
  * CONDITIONAL GAN DEMO
- * Pick a class label — generator outputs pixel art of that class
+ * Pick a class label-generator outputs pixel art of that class
  * ============================================================ */
 function CGanDemo() {
   const [label, setLabel] = useState(0);
@@ -920,7 +920,7 @@ export default function GanTopic() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════
-          STEP 1 — HOOK
+          STEP 1-HOOK
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <ProgressSteps current={1} total={TOTAL_STEPS} />
@@ -933,27 +933,27 @@ export default function GanTopic() {
               "Không thể vì AI giỏi hơn người",
             ]}
             correct={1}
-            explanation="AI sinh ảnh ngày nay rất giỏi — nhờ GAN, nơi AI 'giả mạo' và AI 'thám tử' cạnh tranh nhau!"
+            explanation="AI sinh ảnh ngày nay rất giỏi-nhờ GAN, nơi AI 'giả mạo' và AI 'thám tử' cạnh tranh nhau!"
           >
             <p className="text-sm text-foreground/90 leading-relaxed">
               Bài học này sẽ đưa bạn vào vai trò của
               <strong> Discriminator</strong>: một thám tử phải phân biệt ảnh
               thật và ảnh giả. Qua 8 vòng chơi, bạn sẽ cảm nhận được điều mà một
-              mạng neural thực sự đối mặt — đối thủ ngày càng tinh vi hơn.
+              mạng neural thực sự đối mặt-đối thủ ngày càng tinh vi hơn.
             </p>
           </PredictionGate>
         </div>
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 2 — DISCOVER (User IS the Discriminator)
+          STEP 2-DISCOVER (User IS the Discriminator)
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Chơi làm Discriminator">
         <VisualizationSection topicSlug={metadata.slug}>
           {!gameStarted && !gameFinished && (
             <div className="text-center space-y-4">
               <p className="text-sm text-foreground leading-relaxed">
-                Bạn sắp đóng vai <strong>Discriminator</strong> — thám tử phân
+                Bạn sắp đóng vai <strong>Discriminator</strong>, thám tử phân
                 biệt thật/giả.
                 <br />
                 Mỗi vòng bạn thấy 2 bức pixel art. Hãy chọn bức nào là{" "}
@@ -997,10 +997,10 @@ export default function GanTopic() {
 
               <p className="text-xs text-muted text-center">
                 {gameRound < 2
-                  ? "Generator mới bắt đầu học — dễ phát hiện"
+                  ? "Generator mới bắt đầu học-dễ phát hiện"
                   : gameRound < 5
                     ? "Generator đang cải thiện..."
-                    : "Generator gần hoàn hảo — rất khó phân biệt!"}
+                    : "Generator gần hoàn hảo-rất khó phân biệt!"}
               </p>
 
               <div className="flex items-center justify-center gap-6 flex-wrap">
@@ -1091,7 +1091,7 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 3 — AHA MOMENT
+          STEP 3-AHA MOMENT
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc vỡ lẽ">
         <AhaMoment>
@@ -1104,7 +1104,7 @@ export default function GanTopic() {
 
         <div className="mt-4">
           <Callout variant="info" title="Mẹo quan trọng">
-            GAN không cần nhãn thật/giả do con người gắn — nó{" "}
+            GAN không cần nhãn thật/giả do con người gắn-nó{" "}
             <strong>tự sinh</strong> nhãn: mọi thứ G tạo ra đều là &quot;giả&quot;, mọi thứ
             từ tập dữ liệu đều là &quot;thật&quot;. Đây là lý do GAN được xếp vào học
             không giám sát (unsupervised).
@@ -1113,7 +1113,7 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 4 — TRAINING DYNAMICS + LOSS CURVE
+          STEP 4-TRAINING DYNAMICS + LOSS CURVE
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Loss dao động">
         <h3 className="text-base font-semibold text-foreground mb-2">
@@ -1170,7 +1170,7 @@ export default function GanTopic() {
             </button>
           </div>
           <p className="text-xs text-muted text-center">
-            Step {lossStep + 1}/{TOTAL_LOSS_STEPS} — quan sát 2 đường dao động
+            Step {lossStep + 1}/{TOTAL_LOSS_STEPS}, quan sát 2 đường dao động
             ngược pha.
           </p>
         </div>
@@ -1185,15 +1185,15 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 5 — MODE COLLAPSE
+          STEP 5-MODE COLLAPSE
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Mode collapse">
         <h3 className="text-base font-semibold text-foreground mb-2">
-          Khi Generator chọn đường &quot;dễ&quot; — mode collapse
+          Khi Generator chọn đường &quot;dễ&quot;, mode collapse
         </h3>
         <p className="text-sm text-muted mb-3">
           Nếu G tìm được một mẫu nào đó lừa được D, nó có thể &quot;lười&quot; và sinh
-          mẫu đó mãi. Dữ liệu thật có 4 modes (cụm), nhưng G chỉ phủ 1 — thiếu
+          mẫu đó mãi. Dữ liệu thật có 4 modes (cụm), nhưng G chỉ phủ 1-thiếu
           đa dạng hoàn toàn.
         </p>
 
@@ -1233,7 +1233,7 @@ export default function GanTopic() {
           <CollapsibleDetail title="Tại sao mode collapse lại xảy ra?">
             <ul className="list-disc list-inside space-y-1 text-sm text-foreground/90">
               <li>
-                Cân bằng minimax rất bất ổn — G có thể kẹt ở &quot;điểm chiến thắng
+                Cân bằng minimax rất bất ổn-G có thể kẹt ở &quot;điểm chiến thắng
                 cục bộ&quot; (chỉ cần lừa D một pattern).
               </li>
               <li>
@@ -1241,7 +1241,7 @@ export default function GanTopic() {
                 còn lại.
               </li>
               <li>
-                D không đủ mạnh hoặc cập nhật quá chậm — nó không phạt được G
+                D không đủ mạnh hoặc cập nhật quá chậm-nó không phạt được G
                 khi bỏ mode.
               </li>
             </ul>
@@ -1249,7 +1249,7 @@ export default function GanTopic() {
           <CollapsibleDetail title="Cách giảm mode collapse">
             <ul className="list-disc list-inside space-y-1 text-sm text-foreground/90">
               <li>
-                Dùng <strong>WGAN-GP</strong> — Wasserstein loss cho gradient
+                Dùng <strong>WGAN-GP</strong>, Wasserstein loss cho gradient
                 mượt.
               </li>
               <li>
@@ -1267,9 +1267,9 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 6 — CONDITIONAL GAN (cGAN)
+          STEP 6-CONDITIONAL GAN (cGAN)
           ═══════════════════════════════════════════════════════ */}
-      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="cGAN — sinh có điều kiện">
+      <LessonSection step={6} totalSteps={TOTAL_STEPS} label="cGAN-sinh có điều kiện">
         <h3 className="text-base font-semibold text-foreground mb-2">
           Conditional GAN: nói cho G biết muốn tạo gì
         </h3>
@@ -1303,7 +1303,7 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 7 — STYLEGAN LATENT WALK
+          STEP 7-STYLEGAN LATENT WALK
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={7} totalSteps={TOTAL_STEPS} label="Latent space walk">
         <h3 className="text-base font-semibold text-foreground mb-2">
@@ -1325,7 +1325,7 @@ export default function GanTopic() {
             question="StyleGAN nổi bật nhờ điểm gì so với GAN gốc?"
             options={[
               "Không cần GPU",
-              "Style-based generator với AdaIN và mapping network — disentangle các thuộc tính ở nhiều độ phân giải",
+              "Style-based generator với AdaIN và mapping network-disentangle các thuộc tính ở nhiều độ phân giải",
               "Huấn luyện không cần loss",
               "Dùng ít dữ liệu hơn",
             ]}
@@ -1336,7 +1336,7 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 8 — DCGAN vs WGAN
+          STEP 8-DCGAN vs WGAN
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={8} totalSteps={TOTAL_STEPS} label="DCGAN vs WGAN">
         <h3 className="text-base font-semibold text-foreground mb-2">
@@ -1344,7 +1344,7 @@ export default function GanTopic() {
         </h3>
         <p className="text-sm text-muted mb-3">
           DCGAN (2015) là baseline CNN mạnh nhưng unstable. WGAN (2017) thay
-          loss bằng Wasserstein distance — ổn định hơn nhiều, đổi lại tốc độ
+          loss bằng Wasserstein distance-ổn định hơn nhiều, đổi lại tốc độ
           huấn luyện chậm hơn.
         </p>
 
@@ -1358,13 +1358,13 @@ export default function GanTopic() {
               <li>Thay FC bằng strided convolutions (D) + fractional-strided conv (G).</li>
               <li>Dùng BatchNorm ở cả G và D (trừ output layer).</li>
               <li>G dùng ReLU + Tanh ở output; D dùng LeakyReLU.</li>
-              <li>Không dùng pooling — chỉ strided conv.</li>
+              <li>Không dùng pooling-chỉ strided conv.</li>
             </ul>
           </CollapsibleDetail>
           <CollapsibleDetail title="WGAN-GP trick: Gradient Penalty">
             <p className="text-sm text-foreground/90 mb-2">
               WGAN gốc dùng weight clipping (|w| ≤ 0.01) để đảm bảo Lipschitz
-              — đơn giản nhưng làm giảm capacity của D.
+             , đơn giản nhưng làm giảm capacity của D.
             </p>
             <p className="text-sm text-foreground/90">
               WGAN-GP thay bằng penalty:
@@ -1383,7 +1383,7 @@ export default function GanTopic() {
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 9 — TRAINING LOOP + CODE
+          STEP 9-TRAINING LOOP + CODE
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={9} totalSteps={TOTAL_STEPS} label="Giải thích & mã nguồn">
         <ExplanationSection>
@@ -1413,7 +1413,7 @@ export default function GanTopic() {
           <p className="mt-3">
             <strong>Vòng huấn luyện:</strong> Mỗi bước, ta huấn luyện D trước
             (cố định G), rồi huấn luyện G (cố định D). Hai mạng luân phiên cải
-            thiện cho đến khi đạt cân bằng — hoặc phân kỳ nếu không cẩn thận.
+            thiện cho đến khi đạt cân bằng-hoặc phân kỳ nếu không cẩn thận.
           </p>
 
           <CodeBlock language="python" title="Training loop cơ bản (DCGAN)">
@@ -1440,7 +1440,7 @@ export default function GanTopic() {
         optimizer_G.step()`}
           </CodeBlock>
 
-          <CodeBlock language="python" title="WGAN-GP — biến thể ổn định hơn">
+          <CodeBlock language="python" title="WGAN-GP-biến thể ổn định hơn">
             {`def gradient_penalty(D, real, fake):
     alpha = torch.rand(real.size(0), 1, 1, 1, device=real.device)
     interp = alpha * real + (1 - alpha) * fake
@@ -1488,23 +1488,23 @@ for epoch in range(epochs):
           </p>
           <ul className="list-disc list-inside space-y-1 text-sm">
             <li>
-              <strong>StyleGAN</strong> — kiểm soát phong cách ở nhiều mức (tóc,
+              <strong>StyleGAN</strong>, kiểm soát phong cách ở nhiều mức (tóc,
               khuôn mặt, nền). Tạo khuôn mặt siêu thực.
             </li>
             <li>
-              <strong>CycleGAN</strong> — chuyển đổi phong cách không cần cặp ảnh
+              <strong>CycleGAN</strong>, chuyển đổi phong cách không cần cặp ảnh
               (ngựa &harr; ngựa vằn, ảnh &harr; tranh Monet).
             </li>
             <li>
-              <strong>Pix2Pix</strong> — biến đổi ảnh theo cặp (bản phác &rarr;
+              <strong>Pix2Pix</strong>, biến đổi ảnh theo cặp (bản phác &rarr;
               ảnh thật, nhãn &rarr; ảnh đường phố).
             </li>
             <li>
-              <strong>BigGAN / StyleGAN-XL</strong> — scale lên hàng trăm triệu
+              <strong>BigGAN / StyleGAN-XL</strong>, scale lên hàng trăm triệu
               tham số, ảnh 1024×1024 chất lượng cao.
             </li>
             <li>
-              <strong>GigaGAN</strong> — biến thể lớn cho text-to-image, cạnh
+              <strong>GigaGAN</strong>, biến thể lớn cho text-to-image, cạnh
               tranh với diffusion về chất lượng nhưng nhanh hơn.
             </li>
           </ul>
@@ -1515,7 +1515,7 @@ for epoch in range(epochs):
             (DALL-E 2, Stable Diffusion, Midjourney) đang dần thay thế GAN cho
             nhiều tác vụ sinh ảnh. Lý do: huấn luyện ổn định hơn, không bị mode
             collapse, và cho kết quả đa dạng hơn. Tuy nhiên GAN vẫn nhanh hơn ở
-            inference — quan trọng cho ứng dụng thời gian thực. So sánh với{" "}
+            inference-quan trọng cho ứng dụng thời gian thực. So sánh với{" "}
             <TopicLink slug="vae">VAE</TopicLink>: VAE có latent space mượt
             nhưng ảnh mờ; GAN sắc nét nhưng khó train.
           </Callout>
@@ -1601,7 +1601,7 @@ for epoch in range(epochs):
                 0.9 như bình thường).
               </li>
               <li>
-                Label smoothing: thay vì target 1.0 cho ảnh thật, dùng 0.9 —
+                Label smoothing: thay vì target 1.0 cho ảnh thật, dùng 0.9,
                 giảm quá tự tin của D.
               </li>
               <li>
@@ -1609,7 +1609,7 @@ for epoch in range(epochs):
                 khác nhau, thường lr_D &lt; lr_G.
               </li>
               <li>
-                Theo dõi chất lượng bằng FID/IS, không chỉ loss — loss GAN
+                Theo dõi chất lượng bằng FID/IS, không chỉ loss-loss GAN
                 không luôn phản ánh chất lượng.
               </li>
             </ul>
@@ -1621,7 +1621,7 @@ for epoch in range(epochs):
             question="Nếu Generator quá giỏi nhưng chỉ tạo được MỘT loại ảnh (luôn là mèo), vấn đề gì xảy ra?"
             options={[
               "Không vấn đề gì",
-              "Mode collapse — thiếu đa dạng",
+              "Mode collapse-thiếu đa dạng",
               "Discriminator thắng",
             ]}
             correct={1}
@@ -1631,16 +1631,16 @@ for epoch in range(epochs):
       </LessonSection>
 
       {/* ═══════════════════════════════════════════════════════
-          STEP 10 — SUMMARY + QUIZ
+          STEP 10-SUMMARY + QUIZ
           ═══════════════════════════════════════════════════════ */}
       <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Tóm tắt & kiểm tra">
         <MiniSummary
           title="Những điều cần nhớ về GAN"
           points={[
             "GAN gồm Generator (tạo dữ liệu giả từ z ~ N(0,1)) và Discriminator (phân biệt thật/giả), huấn luyện đối kháng.",
-            "Mục tiêu minimax V(D,G): G cố lừa D, D cố phát hiện G — cân bằng Nash khi D(x) = 0.5 với mọi x.",
-            "Loss G và D dao động ngược pha; không bao giờ giảm mượt như mạng bình thường — đừng hoảng khi thấy loss lên xuống.",
-            "Thách thức lớn nhất: mode collapse — G chỉ học 1 pattern 'an toàn'. WGAN-GP giảm đáng kể rủi ro này.",
+            "Mục tiêu minimax V(D,G): G cố lừa D, D cố phát hiện G-cân bằng Nash khi D(x) = 0.5 với mọi x.",
+            "Loss G và D dao động ngược pha; không bao giờ giảm mượt như mạng bình thường-đừng hoảng khi thấy loss lên xuống.",
+            "Thách thức lớn nhất: mode collapse-G chỉ học 1 pattern 'an toàn'. WGAN-GP giảm đáng kể rủi ro này.",
             "cGAN thêm label y vào cả G và D để điều khiển loại ảnh; StyleGAN thêm mapping network cho latent disentangled.",
             "Biến thể phổ biến: DCGAN (baseline CNN), WGAN-GP (ổn định), CycleGAN, Pix2Pix, BigGAN, StyleGAN. Diffusion Models đang dần thay thế GAN cho text-to-image.",
           ]}

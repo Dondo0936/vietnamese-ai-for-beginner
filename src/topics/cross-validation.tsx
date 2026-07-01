@@ -36,7 +36,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "cross-validation",
   title: "Cross-Validation",
-  titleVi: "Kiểm định chéo. Xoay vòng 5 đề thi thử",
+  titleVi: "Kiểm định chéo",
   description:
     "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần rồi xoay vòng. Đó là kiểm định chéo.",
   category: "classic-ml",

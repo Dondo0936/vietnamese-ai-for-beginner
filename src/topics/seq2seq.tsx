@@ -36,19 +36,19 @@ const QUIZ: QuizQuestion[] = [
     question: "Nút thắt cổ chai (bottleneck) của Seq2Seq là gì?",
     options: [
       "Encoder quá chậm",
-      "Toàn bộ câu đầu vào bị nén vào MỘT vector cố định — câu dài sẽ mất thông tin",
+      "Toàn bộ câu đầu vào bị nén vào MỘT vector cố định-câu dài sẽ mất thông tin",
       "Decoder không thể sinh token",
       "Seq2Seq chỉ dùng cho tiếng Anh",
     ],
     correct: 1,
     explanation:
-      "Context vector có kích thước cố định, nhưng câu đầu vào có độ dài bất kỳ. Như nhét 1000 trang sách vào 1 trang giấy — chắc chắn mất thông tin!",
+      "Context vector có kích thước cố định, nhưng câu đầu vào có độ dài bất kỳ. Như nhét 1000 trang sách vào 1 trang giấy-chắc chắn mất thông tin!",
   },
   {
     question: "Seq2Seq sinh output theo cách nào?",
     options: [
       "Sinh tất cả từ cùng lúc",
-      "Sinh từng từ một (autoregressive) — từ trước là input cho từ sau",
+      "Sinh từng từ một (autoregressive), từ trước là input cho từ sau",
       "Chọn ngẫu nhiên từ trong từ vựng",
       "Copy trực tiếp từ input",
     ],
@@ -60,7 +60,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Cơ chế nào được phát triển để giải quyết bottleneck của Seq2Seq?",
     options: [
       "Dùng encoder lớn hơn",
-      "Attention — cho decoder nhìn trực tiếp vào TẤT CẢ trạng thái encoder",
+      "Attention-cho decoder nhìn trực tiếp vào TẤT CẢ trạng thái encoder",
       "Tăng kích thước context vector",
       "Dùng nhiều context vector",
     ],
@@ -106,7 +106,7 @@ export default function Seq2SeqTopic() {
       {/* ── Step 2: Interactive Viz ── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Hãy bấm {'"Tiếp"'} để xem Seq2Seq dịch {'"Tôi yêu Việt Nam"'} sang tiếng Anh — từng bước một!
+          Hãy bấm {'"Tiếp"'} để xem Seq2Seq dịch {'"Tôi yêu Việt Nam"'} sang tiếng Anh-từng bước một!
         </p>
 
         <VisualizationSection>
@@ -227,7 +227,7 @@ export default function Seq2SeqTopic() {
             = Encoder (mã hóa input → context vector) + Decoder (giải mã context → output). Giống phiên dịch viên: nghe hết → nhớ ý chính → dịch từng từ!
           </p>
           <p className="text-sm text-muted mt-1">
-            Nhưng có vấn đề: context vector có kích thước cố định. Câu dài 100 từ bị nén vào cùng kích thước với câu 5 từ — như nhét cả quyển sách vào 1 tờ giấy nhớ!
+            Nhưng có vấn đề: context vector có kích thước cố định. Câu dài 100 từ bị nén vào cùng kích thước với câu 5 từ-như nhét cả quyển sách vào 1 tờ giấy nhớ!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -238,7 +238,7 @@ export default function Seq2SeqTopic() {
           question={`Seq2Seq dịch câu 5 từ tốt, nhưng câu 50 từ lại kém. Tại sao?`}
           options={[
             "Decoder quá chậm",
-            "Context vector có kích thước CỐ ĐỊNH — câu dài bị mất thông tin (bottleneck)",
+            "Context vector có kích thước CỐ ĐỊNH-câu dài bị mất thông tin (bottleneck)",
             "Encoder không đọc được câu dài",
           ]}
           correct={1}
@@ -371,7 +371,7 @@ class Decoder(nn.Module):
             "Decoder sinh từng token một (autoregressive): output t-1 → input t.",
             "Bottleneck: context vector cố định không đủ chứa thông tin câu dài.",
             "Attention giải quyết bottleneck bằng cách cho decoder nhìn mọi vị trí encoder.",
-            "Ứng dụng: dịch máy, tóm tắt, chatbot — tiền thân của kiến trúc Transformer.",
+            "Ứng dụng: dịch máy, tóm tắt, chatbot-tiền thân của kiến trúc Transformer.",
           ]}
         />
       </LessonSection>

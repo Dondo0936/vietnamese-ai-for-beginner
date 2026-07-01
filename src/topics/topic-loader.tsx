@@ -1,4 +1,4 @@
-// Server Component — importing topic modules here statically preserves
+// Server Component-importing topic modules here statically preserves
 // code-splitting (via next/dynamic) while letting Next.js SSR each topic
 // into the initial HTML. Do NOT add "use client" to this file.
 
@@ -7,7 +7,7 @@ import type { ComponentType } from "react";
 import type { TopicMeta } from "@/lib/types";
 import TopicLayout from "@/components/topic/TopicLayout";
 
-// Static component registry — one entry per topic .tsx file under src/topics/.
+// Static component registry-one entry per topic .tsx file under src/topics/.
 // Using literal import paths (not a template string) so Turbopack/webpack can
 // statically resolve each chunk and SSR the correct module on the server. A
 // previous template-literal dynamic import caused BAILOUT_TO_CLIENT_SIDE_RENDERING

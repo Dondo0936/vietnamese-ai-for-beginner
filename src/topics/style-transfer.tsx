@@ -35,8 +35,8 @@ export const metadata: TopicMeta = {
 };
 
 /* ── Color grid data ───────────────────────────────────────── */
-// 4×4 grid representing the "content image" — architectural pattern
-// (think: a window grid with warm accent). Each cell is [r,g,b] in 0–255.
+// 4×4 grid representing the "content image", architectural pattern
+// (think: a window grid with warm accent). Each cell is [r,g,b] in 0-255.
 const CONTENT_GRID: [number, number, number][][] = [
   [
     [40, 60, 90],
@@ -64,7 +64,7 @@ const CONTENT_GRID: [number, number, number][][] = [
   ],
 ];
 
-// 4×4 grid representing the "style image" — Van Gogh Starry Night swirls
+// 4×4 grid representing the "style image", Van Gogh Starry Night swirls
 // (deep blue background, yellow/orange swirl highlights)
 const STYLE_GRID: [number, number, number][][] = [
   [
@@ -273,7 +273,7 @@ export default function StyleTransferTopic() {
   const styleGram = useMemo(() => computeGram(STYLE_GRID), []);
   const blendedGram = useMemo(() => computeGram(blended), [blended]);
 
-  // Compute a "style loss" — MSE between blended gram and style gram
+  // Compute a "style loss", MSE between blended gram and style gram
   const styleLoss = useMemo(() => {
     let s = 0;
     for (let i = 0; i < 4; i++) {
@@ -285,7 +285,7 @@ export default function StyleTransferTopic() {
     return s / 16;
   }, [blendedGram, styleGram]);
 
-  // Content loss — MSE between blended grid and content grid (RGB)
+  // Content loss-MSE between blended grid and content grid (RGB)
   const contentLoss = useMemo(() => {
     let s = 0;
     let n = 0;
@@ -321,13 +321,13 @@ export default function StyleTransferTopic() {
         question: "Gram matrix biểu diễn 'style' bằng cách nào?",
         options: [
           "Lưu trữ vị trí từng nét cọ",
-          "Tính tương quan giữa các feature map — nắm bắt kết cấu và pattern lặp lại",
+          "Tính tương quan giữa các feature map-nắm bắt kết cấu và pattern lặp lại",
           "Đo độ sáng trung bình của ảnh",
           "Đếm số màu khác nhau",
         ],
         correct: 1,
         explanation:
-          "Gram matrix G = F · F^T: mỗi phần tử G[i,j] đo tương quan giữa feature map i và j. Tương quan cao giữa 'cạnh nghiêng' và 'màu vàng' ≈ nét cọ vàng nghiêng. Gram nắm bắt style độc lập với vị trí — đó là lý do kết quả giữ kết cấu mà không chép nguyên vị trí.",
+          "Gram matrix G = F · F^T: mỗi phần tử G[i,j] đo tương quan giữa feature map i và j. Tương quan cao giữa 'cạnh nghiêng' và 'màu vàng' ≈ nét cọ vàng nghiêng. Gram nắm bắt style độc lập với vị trí-đó là lý do kết quả giữ kết cấu mà không chép nguyên vị trí.",
       },
       {
         question: "Phương pháp gốc (Gatys 2015) chậm vì lý do gì?",
@@ -339,14 +339,14 @@ export default function StyleTransferTopic() {
         ],
         correct: 1,
         explanation:
-          "Gatys: khởi tạo từ ảnh noise, chạy gradient descent hàng trăm iteration để minimize content + style loss cho TỪNG cặp ảnh. Feed-forward (Johnson 2016) huấn luyện mạng một lần, inference tức thì — đánh đổi tính linh hoạt lấy tốc độ.",
+          "Gatys: khởi tạo từ ảnh noise, chạy gradient descent hàng trăm iteration để minimize content + style loss cho TỪNG cặp ảnh. Feed-forward (Johnson 2016) huấn luyện mạng một lần, inference tức thì-đánh đổi tính linh hoạt lấy tốc độ.",
       },
       {
         question:
           "Total loss của Neural Style Transfer (Gatys) có công thức nào?",
         options: [
           "L = L_content",
-          "L = α·L_content + β·L_style — tỉ số α/β quyết định cân bằng giữa giữ nội dung và áp phong cách",
+          "L = α·L_content + β·L_style-tỉ số α/β quyết định cân bằng giữa giữ nội dung và áp phong cách",
           "L = L_style / L_content",
           "L = cross-entropy giữa hai ảnh",
         ],
@@ -372,13 +372,13 @@ export default function StyleTransferTopic() {
           "Bạn tăng style weight β lên rất cao và content weight α rất thấp. Kết quả sẽ thế nào?",
         options: [
           "Ảnh giữ nguyên content",
-          "Content biến mất — ảnh trở thành texture thuần giống style, không còn nhận ra Hồ Gươm",
+          "Content biến mất-ảnh trở thành texture thuần giống style, không còn nhận ra Hồ Gươm",
           "Chất lượng ảnh tăng",
           "Thuật toán dừng hoạt động",
         ],
         correct: 1,
         explanation:
-          "Khi β ≫ α, optimizer chỉ quan tâm khớp Gram matrix — kết quả là 'texture synthesis' thuần (Gatys 2015 texture). Đây là cách phát hiện bug tham số khi chạy style transfer.",
+          "Khi β ≫ α, optimizer chỉ quan tâm khớp Gram matrix-kết quả là 'texture synthesis' thuần (Gatys 2015 texture). Đây là cách phát hiện bug tham số khi chạy style transfer.",
       },
       {
         question: "AdaIN (Adaptive Instance Normalization) khác Gatys ở điểm nào?",
@@ -427,7 +427,7 @@ export default function StyleTransferTopic() {
               Kéo <strong className="text-foreground">slider</strong> bên dưới
               để trộn dần phong cách từ 0 (thuần content) đến 1 (thuần style).
               Hai ma trận Gram 4×4 thể hiện <em>kết cấu</em> của ảnh content,
-              ảnh style, và ảnh blend — quan sát cách Gram matrix của output
+              ảnh style, và ảnh blend-quan sát cách Gram matrix của output
               dịch chuyển dần về phía Gram của style.
             </p>
 
@@ -547,7 +547,7 @@ export default function StyleTransferTopic() {
                         fill="var(--text-secondary)"
                         fontSize={11}
                       >
-                        Gram matrix G[i,j] = ⟨F_i, F_j⟩ / N — tương quan giữa
+                        Gram matrix G[i,j] = ⟨F_i, F_j⟩ / N-tương quan giữa
                         feature maps, nắm bắt kết cấu không phụ thuộc vị trí
                       </text>
                       <text
@@ -557,7 +557,7 @@ export default function StyleTransferTopic() {
                         fill="var(--text-tertiary)"
                         fontSize={11}
                       >
-                        Khi α → 1, Gram(blend) tiệm cận Gram(style) — style
+                        Khi α → 1, Gram(blend) tiệm cận Gram(style), style
                         loss giảm dần.
                       </text>
                     </>
@@ -727,7 +727,7 @@ export default function StyleTransferTopic() {
             <Callout variant="tip" title="Mô hình rút gọn, ý tưởng không đổi">
               <div className="space-y-2 text-sm">
                 <p>
-                  Style transfer thật không blend pixel trực tiếp — nó tối ưu
+                  Style transfer thật không blend pixel trực tiếp-nó tối ưu
                   ảnh output sao cho feature map của nó (từ VGG) vừa giống
                   content (lớp sâu) vừa có Gram matrix giống style (nhiều
                   lớp).
@@ -761,7 +761,7 @@ export default function StyleTransferTopic() {
 
           <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách 1">
             <InlineChallenge
-              question="Bạn chạy style transfer nhưng kết quả quá 'loạn' — nét cọ Van Gogh che hết nội dung Hồ Gươm. Cần điều chỉnh gì?"
+              question="Bạn chạy style transfer nhưng kết quả quá 'loạn', nét cọ Van Gogh che hết nội dung Hồ Gươm. Cần điều chỉnh gì?"
               options={[
                 "Tăng learning rate",
                 "Giảm trọng số style loss (hoặc tăng trọng số content loss)",
@@ -775,7 +775,7 @@ export default function StyleTransferTopic() {
           <LessonSection step={5} totalSteps={TOTAL_STEPS} label="Lý thuyết">
             <ExplanationSection>
               <p>
-                <strong>Neural Style Transfer</strong> (Gatys, Ecker, Bethge —
+                <strong>Neural Style Transfer</strong> (Gatys, Ecker, Bethge,
                 2015) là bước ngoặt: lần đầu có công thức toán học rõ ràng để
                 tách content và style, dùng feature map của CNN pretrained
                 (thường VGG-19).
@@ -802,7 +802,7 @@ export default function StyleTransferTopic() {
                 <strong>Style representation.</strong> Style là cái gì lặp đi
                 lặp lại nhưng không có vị trí cố định: nét cọ xoáy, màu đối
                 lập, texture. Gram matrix của feature map đúng là thứ lột tả
-                điều này — mỗi phần tử là tương quan giữa hai filter:
+                điều này-mỗi phần tử là tương quan giữa hai filter:
               </p>
 
               <LaTeX block>
@@ -836,21 +836,21 @@ export default function StyleTransferTopic() {
                   <p>
                     <strong>Feed-forward (Johnson 2016):</strong> huấn luyện
                     mạng generator cho <em>một</em> style cụ thể (ví dụ:
-                    Starry Night). Inference tức thì — 1 mạng = 1 style.
+                    Starry Night). Inference tức thì-1 mạng = 1 style.
                   </p>
                   <p>
                     <strong>AdaIN (Huang & Belongie 2017):</strong> Adaptive
                     Instance Normalization. 1 mạng cho BẤT KỲ style nào bằng
-                    cách match mean/variance feature map — real-time.
+                    cách match mean/variance feature map-real-time.
                   </p>
                   <p>
                     <strong>WCT (2017):</strong> Whitening & Coloring
-                    Transform — phương pháp không cần huấn luyện, chỉ thao
+                    Transform-phương pháp không cần huấn luyện, chỉ thao
                     tác trên feature map.
                   </p>
                   <p>
                     <strong>Diffusion + ControlNet / IP-Adapter (2023+):</strong>{" "}
-                    inject style qua cross-attention — chất lượng hàng đầu,
+                    inject style qua cross-attention-chất lượng hàng đầu,
                     kết hợp text prompt và style image cùng lúc.
                   </p>
                 </div>
@@ -869,7 +869,7 @@ from PIL import Image
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-# 1. Feature extractor — VGG-19 pretrained ImageNet
+# 1. Feature extractor-VGG-19 pretrained ImageNet
 vgg = models.vgg19(weights=models.VGG19_Weights.DEFAULT).features.eval().to(device)
 for p in vgg.parameters():
     p.requires_grad_(False)
@@ -892,7 +892,7 @@ def extract_features(x, layer_ids):
     return feats
 
 def gram_matrix(feat):
-    """Gram = F · F^T / (C·H·W) — tương quan feature map."""
+    """Gram = F · F^T / (C·H·W), tương quan feature map."""
     b, c, h, w = feat.size()
     F = feat.view(b, c, h * w)
     G = torch.bmm(F, F.transpose(1, 2))
@@ -910,7 +910,7 @@ preprocess = T.Compose([
 content_img = preprocess(Image.open("ho_guom.jpg")).unsqueeze(0).to(device)
 style_img = preprocess(Image.open("starry_night.jpg")).unsqueeze(0).to(device)
 
-# 4. Ảnh output — biến số của optimization
+# 4. Ảnh output-biến số của optimization
 #    Khởi tạo từ content để converge nhanh
 output = content_img.clone().requires_grad_(True)
 
@@ -938,14 +938,14 @@ def closure():
     all_layers = {**CONTENT_LAYERS, **STYLE_LAYERS}
     feats = extract_features(output, all_layers)
 
-    # Content loss — MSE trên feature map lớp sâu
+    # Content loss-MSE trên feature map lớp sâu
     c_loss = 0.0
     for name in CONTENT_LAYERS:
         c_loss = c_loss + nn.functional.mse_loss(
             feats[name], content_target[name]
         )
 
-    # Style loss — MSE trên Gram matrix, có trọng số theo lớp
+    # Style loss-MSE trên Gram matrix, có trọng số theo lớp
     s_loss = 0.0
     for name in STYLE_LAYERS:
         g_out = gram_matrix(feats[name])
@@ -990,7 +990,7 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
                   <p>
                     Ví dụ: filter A phát hiện "nét cong", filter B phát hiện
                     "vàng sáng". Nếu chúng thường xuyên cùng bật mạnh ở các
-                    vị trí → G[A,B] lớn → ảnh có "những đường cong vàng" —
+                    vị trí → G[A,B] lớn → ảnh có "những đường cong vàng",
                     đặc trưng Van Gogh.
                   </p>
                   <p>
@@ -1015,13 +1015,13 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
                   </p>
                   <p>
                     <strong>Content-style imbalance:</strong> nếu β quá cao,
-                    xuất hiện "psychedelic" — màu rực nhưng không còn nhận
+                    xuất hiện "psychedelic", màu rực nhưng không còn nhận
                     ra ảnh. Nếu α quá cao, style nhạt gần như không thay đổi.
                   </p>
                   <p>
                     <strong>Flat regions:</strong> vùng trời/nước trong ảnh
                     content đôi khi bị style làm "bẩn". Giải pháp: semantic
-                    style transfer — gán vùng content với vùng style tương
+                    style transfer-gán vùng content với vùng style tương
                     ứng (trời ↔ trời).
                   </p>
                   <p>
@@ -1043,19 +1043,19 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
             <InlineChallenge
               question="Bạn muốn app mobile áp dụng Van Gogh style cho video selfie theo thời gian thực (30 FPS). Phương pháp nào phù hợp?"
               options={[
-                "Gatys gốc — chạy tối ưu cho mỗi frame",
-                "Feed-forward network (Johnson 2016) hoặc AdaIN — huấn luyện 1 lần, inference một bước, đạt tốc độ real-time",
+                "Gatys gốc-chạy tối ưu cho mỗi frame",
+                "Feed-forward network (Johnson 2016) hoặc AdaIN-huấn luyện 1 lần, inference một bước, đạt tốc độ real-time",
                 "Không thể làm được",
               ]}
               correct={1}
-              explanation="Gatys cần hàng trăm iteration/ảnh (~vài giây). Feed-forward/AdaIN: huấn luyện offline một lần, tại runtime chỉ là 1 forward pass của generator — dễ dàng 30+ FPS trên điện thoại hiện đại. Đây là công nghệ đằng sau các app như Prisma, Clipdrop."
+              explanation="Gatys cần hàng trăm iteration/ảnh (~vài giây). Feed-forward/AdaIN: huấn luyện offline một lần, tại runtime chỉ là 1 forward pass của generator-dễ dàng 30+ FPS trên điện thoại hiện đại. Đây là công nghệ đằng sau các app như Prisma, Clipdrop."
             />
           </LessonSection>
 
           <LessonSection
             step={7}
             totalSteps={TOTAL_STEPS}
-            label="Mở rộng — Timeline"
+            label="Mở rộng-Timeline"
           >
             <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
@@ -1064,40 +1064,40 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>
-                  <strong>2015 — Gatys et al.:</strong> Neural style transfer
+                  <strong>2015-Gatys et al.:</strong> Neural style transfer
                   với VGG-19 + Gram matrix. Gốc rễ của mọi phương pháp sau
                   này.
                 </li>
                 <li>
-                  <strong>2016 — Johnson et al.:</strong> Perceptual losses
+                  <strong>2016-Johnson et al.:</strong> Perceptual losses
                   + feed-forward network. 1000× nhanh hơn Gatys.
                 </li>
                 <li>
-                  <strong>2016 — Ulyanov et al.:</strong> Instance
-                  normalization — cải thiện chất lượng và ổn định.
+                  <strong>2016-Ulyanov et al.:</strong> Instance
+                  normalization-cải thiện chất lượng và ổn định.
                 </li>
                 <li>
-                  <strong>2017 — AdaIN (Huang & Belongie):</strong> arbitrary
+                  <strong>2017-AdaIN (Huang & Belongie):</strong> arbitrary
                   style qua feature statistics matching.
                 </li>
                 <li>
-                  <strong>2017 — WCT (Li et al.):</strong> whitening &
+                  <strong>2017-WCT (Li et al.):</strong> whitening &
                   coloring transform, zero-shot.
                 </li>
                 <li>
-                  <strong>2019 — SANet:</strong> attention-based style
+                  <strong>2019-SANet:</strong> attention-based style
                   transfer, spatially-aware.
                 </li>
                 <li>
-                  <strong>2022 — Stable Diffusion:</strong> text-to-image đưa
+                  <strong>2022-Stable Diffusion:</strong> text-to-image đưa
                   "style" thành một phần của prompt.
                 </li>
                 <li>
-                  <strong>2023 — ControlNet, IP-Adapter:</strong> điều khiển
+                  <strong>2023-ControlNet, IP-Adapter:</strong> điều khiển
                   style và cấu trúc chi tiết cho diffusion.
                 </li>
                 <li>
-                  <strong>2024 — Style transfer trong video diffusion:</strong>{" "}
+                  <strong>2024-Style transfer trong video diffusion:</strong>{" "}
                   nhất quán tạm thời qua nhiều frame.
                 </li>
               </ul>
@@ -1142,7 +1142,7 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
           <LessonSection
             step={8}
             totalSteps={TOTAL_STEPS}
-            label="Phụ lục — Debug loss"
+            label="Phụ lục-Debug loss"
           >
             <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
@@ -1152,49 +1152,49 @@ T.ToPILImage()(final.squeeze().cpu()).save("ho_guom_vangogh.jpg")`}
               </p>
 
               <p>
-                <strong>Dấu hiệu #1 — Ảnh output gần như identical với
+                <strong>Dấu hiệu #1-Ảnh output gần như identical với
                 content:</strong>
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>β quá nhỏ so với α. Tăng β lên 10× và thử lại.</li>
                 <li>
-                  Style layers chọn sai — chỉ lấy lớp quá sâu → thiếu texture
+                  Style layers chọn sai-chỉ lấy lớp quá sâu → thiếu texture
                   chi tiết.
                 </li>
                 <li>Learning rate quá nhỏ với optimizer Adam.</li>
               </ul>
 
               <p>
-                <strong>Dấu hiệu #2 — Ảnh output noise/loạn:</strong>
+                <strong>Dấu hiệu #2-Ảnh output noise/loạn:</strong>
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
-                <li>β quá lớn — giảm β hoặc thêm TV loss.</li>
+                <li>β quá lớn-giảm β hoặc thêm TV loss.</li>
                 <li>
                   Khởi tạo từ noise + chạy ít iterations → chưa converge.
                 </li>
                 <li>
-                  Style image có texture cực mạnh (ví dụ: noise pattern) —
+                  Style image có texture cực mạnh (ví dụ: noise pattern),
                   chọn style khác.
                 </li>
               </ul>
 
               <p>
-                <strong>Dấu hiệu #3 — Ảnh bị "lửa" / artefact màu:</strong>
+                <strong>Dấu hiệu #3-Ảnh bị "lửa" / artefact màu:</strong>
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>Quên clamp giá trị pixel → giá trị lệch khỏi [0,1].</li>
                 <li>
-                  De-normalize sai mean/std — kiểm tra giá trị ImageNet
+                  De-normalize sai mean/std-kiểm tra giá trị ImageNet
                   chuẩn.
                 </li>
                 <li>
-                  Gradient explode — giảm LR hoặc dùng L-BFGS thay Adam.
+                  Gradient explode-giảm LR hoặc dùng L-BFGS thay Adam.
                 </li>
               </ul>
 
               <CodeBlock
                 language="python"
-                title="Instrumentation — trace loss cho style transfer"
+                title="Instrumentation-trace loss cho style transfer"
               >
 {`import matplotlib.pyplot as plt
 from collections import defaultdict
@@ -1256,7 +1256,7 @@ plt.savefig("loss_curves.png")`}
               <p>
                 <strong>Kiểm tra Gram matrix thủ công.</strong> Trước khi
                 chạy tối ưu dài, in ra một vài số đại diện của Gram
-                target/output — đảm bảo chúng không NaN, không inf, và có
+                target/output-đảm bảo chúng không NaN, không inf, và có
                 cùng thang độ.
               </p>
 
@@ -1282,7 +1282,7 @@ with torch.no_grad():
             <section className="my-8 space-y-4 text-foreground/90 leading-relaxed">
               <p>
                 Style transfer liên quan mật thiết tới các chủ đề khác trong
-                deep learning thị giác — hãy xâu chuỗi:
+                deep learning thị giác-hãy xâu chuỗi:
               </p>
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>
@@ -1313,9 +1313,9 @@ with torch.no_grad():
               points={[
                 "Style Transfer = Content (đối tượng, bố cục) từ ảnh A + Style (nét cọ, kết cấu, màu) từ ảnh B.",
                 "Content loss: MSE feature map lớp sâu của VGG-19 (thường conv4_2).",
-                "Style loss: MSE giữa các Gram matrix trên nhiều lớp — Gram = F·F^T nắm bắt tương quan feature, không phụ thuộc vị trí.",
+                "Style loss: MSE giữa các Gram matrix trên nhiều lớp-Gram = F·F^T nắm bắt tương quan feature, không phụ thuộc vị trí.",
                 "Total loss = α·L_content + β·L_style; tỉ số α/β quyết định cân bằng content ↔ style.",
-                "Gatys 2015: tối ưu pixel trực tiếp — chậm nhưng linh hoạt. Feed-forward (Johnson 2016) và AdaIN (2017): 1-shot real-time.",
+                "Gatys 2015: tối ưu pixel trực tiếp-chậm nhưng linh hoạt. Feed-forward (Johnson 2016) và AdaIN (2017): 1-shot real-time.",
                 "Diffusion 2023+ (ControlNet, IP-Adapter): chất lượng hàng đầu; style trở thành một 'điều kiện' của quá trình sinh ảnh.",
               ]}
             />

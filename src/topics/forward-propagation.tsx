@@ -1059,7 +1059,7 @@ export default function ForwardPropagationTopic() {
           question="Nếu bạn đổi bias của nơ-ron thứ hai từ 1 thành 5 (các số khác giữ nguyên), đầu ra mới là gì?"
           options={["[8, 0]", "[8, 3]", "[12, 3]", "[0, 3]"]}
           correct={1}
-          explanation="Chỉ bias thay đổi, không đụng W. z[2] mới = (-1)·2 + 0·3 + 5 = 3. ReLU(3) = 3 vì đã dương. z[1] và a[1] không đổi (vẫn 8). Vậy a mới = [8, 3]. Bias giúp nơ-ron 'ra khỏi vùng bị ReLU cắt' mà không cần thay đổi đầu vào."
+          explanation="Chỉ bias thay đổi, không đụng W. z[2] mới = (-1)·2 + 0·3 + 5 = 3. ReLU(3) = 3 vì đã dương, z[1] và a[1] không đổi (vẫn 8). Vậy a mới = [8, 3]. Bias giúp nơ-ron 'ra khỏi vùng bị ReLU cắt' mà không cần thay đổi đầu vào."
         />
       </LessonSection>
 

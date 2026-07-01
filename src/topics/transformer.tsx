@@ -53,7 +53,7 @@ const quizQuestions: QuizQuestion[] = [
     question: "Tại sao Transformer cần Positional Encoding?",
     options: ["Để giảm số tham số", "Vì self-attention không biết thứ tự từ", "Để tăng tốc huấn luyện", "Để mã hóa ngữ nghĩa của từ"],
     correct: 1,
-    explanation: "Self-attention xử lý tất cả từ cùng lúc. nó không phân biệt 'Tôi yêu mèo' với 'mèo yêu Tôi'. Positional Encoding thêm thông tin vị trí vào embedding.",
+    explanation: "Self-attention xử lý tất cả từ cùng lúc, nó không phân biệt 'Tôi yêu mèo' với 'mèo yêu Tôi'. Positional Encoding thêm thông tin vị trí vào embedding.",
   },
   {
     question: "GPT, BERT, T5 đều dùng Transformer. Sự khác biệt chính là gì?",
@@ -86,12 +86,12 @@ const quizQuestions: QuizQuestion[] = [
     question: "PhoBERT (VinAI) là biến thể Transformer cho tiếng Việt. Nó thuộc loại nào?",
     options: [
       "Decoder-only, giống GPT",
-      "Encoder-only, giống BERT. dùng cho phân loại văn bản, NER, trả lời câu hỏi tiếng Việt",
+      "Encoder-only, giống BERT, dùng cho phân loại văn bản, NER, trả lời câu hỏi tiếng Việt",
       "Encoder-Decoder, giống T5",
       "Không phải Transformer",
     ],
     correct: 1,
-    explanation: "PhoBERT là BERT cho tiếng Việt. encoder-only, được huấn luyện trên corpus tiếng Việt lớn (~20GB). Dùng để fine-tune các bài toán hiểu văn bản: UIT-VSFC (phân loại cảm xúc sinh viên), NER tiếng Việt, trả lời câu hỏi. Khác với GPT (decoder-only, sinh text).",
+    explanation: "PhoBERT là BERT cho tiếng Việt, encoder-only, được huấn luyện trên corpus tiếng Việt lớn (~20GB). Dùng để fine-tune các bài toán hiểu văn bản: UIT-VSFC (phân loại cảm xúc sinh viên), NER tiếng Việt, trả lời câu hỏi. Khác với GPT (decoder-only, sinh text).",
   },
   {
     question: "Tại sao self-attention có độ phức tạp O(n²) theo độ dài chuỗi n?",
@@ -102,11 +102,11 @@ const quizQuestions: QuizQuestion[] = [
       "Vì Positional Encoding tốn O(n²)",
     ],
     correct: 1,
-    explanation: "Ma trận attention là n×n (mỗi hàng i là phân bố attention của token i lên mọi token j). Tính và lưu ma trận này tốn O(n²). Đây là nút cổ chai cho long-context. lý do ra đời Flash Attention, sparse attention, linear attention.",
+    explanation: "Ma trận attention là n×n (mỗi hàng i là phân bố attention của token i lên mọi token j). Tính và lưu ma trận này tốn O(n²). Đây là nút cổ chai cho long-context, lý do ra đời Flash Attention, sparse attention, linear attention.",
   },
   {
     type: "fill-blank",
-    question: "Hai biến thể cho tiếng Việt: {blank} của VinAI (encoder-only, fine-tune cho phân loại/NER) và {blank} (multilingual, Google). đều dùng được cho dataset {blank} về phân loại cảm xúc sinh viên.",
+    question: "Hai biến thể cho tiếng Việt: {blank} của VinAI (encoder-only, fine-tune cho phân loại/NER) và {blank} (multilingual, Google), đều dùng được cho dataset {blank} về phân loại cảm xúc sinh viên.",
     blanks: [
       { answer: "PhoBERT", accept: ["phobert", "Phobert"] },
       { answer: "mBERT", accept: ["multilingual BERT", "mBert", "multilingual-bert"] },
@@ -155,10 +155,10 @@ export default function TransformerTopic() {
     <>
       {/* ── Step 1: HOOK ── */}
       <PredictionGate
-        question={`Câu "Tôi ăn phở bò ở quán quen". từ "quán" liên quan nhất đến từ nào?`}
+        question={`Câu "Tôi ăn phở bò ở quán quen", từ "quán" liên quan nhất đến từ nào?`}
         options={["Tôi", "ăn", "phở", "quen"]}
         correct={3}
-        explanation={`"quán quen". bạn vừa thực hiện attention! Não bạn tự tìm từ liên quan nhất. Transformer làm điều này cho MỌI từ cùng lúc.`}
+        explanation={`"quán quen", bạn vừa thực hiện attention! Não bạn tự tìm từ liên quan nhất. Transformer làm điều này cho MỌI từ cùng lúc.`}
       />
 
       <div className="mt-6 space-y-3 text-sm leading-relaxed">
@@ -175,12 +175,12 @@ export default function TransformerTopic() {
           đại:</strong>{" "}
           Google cũ: bắt chính xác từ khoá. Google hiện đại: hiểu ý bạn. &quot;quán cà phê yên tĩnh gần hồ&quot; trả về đúng quán dù không
           có cụm từ này trong mô tả. Đây là &quot;attention&quot; ở cấp độ
-          truy vấn. đo mức độ liên quan ngữ nghĩa, không phải trùng lặp từ.
+          truy vấn, đo mức độ liên quan ngữ nghĩa, không phải trùng lặp từ.
         </p>
         <p>
           <strong>Liên tưởng 3. Người phiên dịch ở Hội nghị APEC:</strong>{" "}
           Khi dịch tiếng Việt sang tiếng Anh, người phiên dịch không dịch
-          từng từ tuần tự. họ &quot;nhìn lại&quot; ngữ cảnh toàn câu trước
+          từng từ tuần tự, họ &quot;nhìn lại&quot; ngữ cảnh toàn câu trước
           khi chọn từ dịch. Transformer encoder-decoder mô phỏng đúng quá
           trình này: encoder hiểu toàn bộ câu nguồn, decoder dùng attention
           để tham chiếu phần liên quan khi sinh từ đích.
@@ -191,7 +191,7 @@ export default function TransformerTopic() {
           &quot;con&quot; đầu là danh từ (mèo con), &quot;con&quot; sau là
           tính từ sở hữu. Cách duy nhất để phân biệt là nhìn ngữ cảnh hai
           bên. Self-attention chính là cơ chế đó: mỗi từ được hiểu lại tuỳ
-          theo các từ xung quanh. khác hoàn toàn với word embedding cố định
+          theo các từ xung quanh, khác hoàn toàn với word embedding cố định
           Word2Vec.
         </p>
       </div>
@@ -290,7 +290,7 @@ export default function TransformerTopic() {
                 ))}
               </div>
               <p className="text-xs text-muted text-center mt-2">
-                Mỗi từ được tách thành token. đơn vị nhỏ nhất mà mô hình xử lý</p>
+                Mỗi từ được tách thành token, đơn vị nhỏ nhất mà mô hình xử lý</p>
             </div>
 
             {/* 2. Embedding */}
@@ -310,7 +310,7 @@ export default function TransformerTopic() {
                 ))}
               </div>
               <p className="text-xs text-muted text-center mt-2">
-                Mỗi token → vector số (embedding). biểu diễn nghĩa trong không gian nhiều chiều</p>
+                Mỗi token → vector số (embedding), biểu diễn nghĩa trong không gian nhiều chiều</p>
             </div>
 
             {/* 3. Positional Encoding */}
@@ -331,7 +331,7 @@ export default function TransformerTopic() {
                 ))}
               </div>
               <p className="text-xs text-muted text-center mt-2">
-                Cộng thêm vector vị trí. để mô hình biết &quot;Tôi&quot; ở đầu khác &quot;tôi&quot; ở cuối</p>
+                Cộng thêm vector vị trí, để mô hình biết &quot;Tôi&quot; ở đầu khác &quot;tôi&quot; ở cuối</p>
             </div>
 
             {/* 4. Self-Attention */}
@@ -375,7 +375,7 @@ export default function TransformerTopic() {
                 ))}
               </div>
               <p className="text-xs text-muted text-center mt-2">
-                Mỗi token đi qua Feed-Forward Network riêng (2 lớp tuyến tính + ReLU). xử lý độc lập</p>
+                Mỗi token đi qua Feed-Forward Network riêng (2 lớp tuyến tính + ReLU), xử lý độc lập</p>
             </div>
 
             {/* 6. Add & Norm */}
@@ -397,7 +397,7 @@ export default function TransformerTopic() {
                 <text x="350" y="44" fontSize="11" fill="var(--text-secondary)">output</text>
               </svg>
               <p className="text-xs text-muted text-center mt-2">
-                Residual connection (cộng input gốc) + LayerNorm. giúp gradient chảy tốt qua nhiều lớp</p>
+                Residual connection (cộng input gốc) + LayerNorm, giúp gradient chảy tốt qua nhiều lớp</p>
             </div>
 
             {/* 7. Stack 6x */}
@@ -411,7 +411,7 @@ export default function TransformerTopic() {
                 ))}
               </div>
               <p className="text-xs text-muted text-center mt-2">
-                Xếp chồng 6 khối (Attention + FFN + Add&Norm). mỗi lớp tinh chỉnh biểu diễn thêm một bậc</p>
+                Xếp chồng 6 khối (Attention + FFN + Add&Norm), mỗi lớp tinh chỉnh biểu diễn thêm một bậc</p>
             </div>
 
             {/* 8. Output */}
@@ -454,7 +454,7 @@ export default function TransformerTopic() {
           question={`Bạn huấn luyện Transformer cho câu tiếng Việt: "Tôi ăn phở ở quán." và "Ở quán, tôi ăn phở." Nếu bỏ Positional Encoding, mô hình xử lý hai câu này như thế nào?`}
           options={[
             "Vẫn phân biệt được vì self-attention nhớ thứ tự",
-            "Coi hai câu là TƯƠNG ĐƯƠNG vì attention không phân biệt vị trí token. mỗi từ chỉ là một bag-of-words có trọng số",
+            "Coi hai câu là TƯƠNG ĐƯƠNG vì attention không phân biệt vị trí token, mỗi từ chỉ là một bag-of-words có trọng số",
             "Báo lỗi vì độ dài khác nhau",
             "Xử lý nhanh hơn vì ít tham số hơn",
           ]}
@@ -468,7 +468,7 @@ export default function TransformerTopic() {
           question="Ngữ cảnh GPT-3 175B tham số, n=2048 tokens. Nếu bạn tăng context lên n=32000, độ phức tạp attention tăng bao nhiêu lần?"
           options={[
             "~16 lần (tỷ lệ n)",
-            "~256 lần (tỷ lệ n²). từ 2048² = ~4M lên 32000² = ~1 tỷ. lý do mọi LLM phải có kỹ thuật tối ưu (Flash Attention, sparse)",
+            "~256 lần (tỷ lệ n²), từ 2048² = ~4M lên 32000² = ~1 tỷ, lý do mọi LLM phải có kỹ thuật tối ưu (Flash Attention, sparse)",
             "Không đổi",
             "Giảm đi vì ít bước hơn",
           ]}
@@ -520,15 +520,15 @@ export default function TransformerTopic() {
           <div className="space-y-3 text-sm">
             <div className="rounded-lg border border-border p-3 space-y-1">
               <p className="font-semibold text-blue-500">Encoder-only: BERT</p>
-              <p className="text-muted">Nhìn cả hai chiều (bidirectional). Giỏi hiểu ngữ cảnh. phân loại văn bản, NER, trả lời câu hỏi.</p>
+              <p className="text-muted">Nhìn cả hai chiều (bidirectional). Giỏi hiểu ngữ cảnh, phân loại văn bản, NER, trả lời câu hỏi.</p>
             </div>
             <div className="rounded-lg border border-border p-3 space-y-1">
               <p className="font-semibold text-green-500">Decoder-only: GPT</p>
-              <p className="text-muted">Chỉ nhìn từ trái sang phải (autoregressive). Giỏi sinh text. chatbot, viết code, sáng tạo.</p>
+              <p className="text-muted">Chỉ nhìn từ trái sang phải (autoregressive). Giỏi sinh text, chatbot, viết code, sáng tạo.</p>
             </div>
             <div className="rounded-lg border border-border p-3 space-y-1">
               <p className="font-semibold text-purple-500">Encoder-Decoder: T5, mBART</p>
-              <p className="text-muted">Encoder hiểu đầu vào, decoder sinh đầu ra. Giỏi biến đổi. dịch máy, tóm tắt, text-to-text.</p>
+              <p className="text-muted">Encoder hiểu đầu vào, decoder sinh đầu ra. Giỏi biến đổi, dịch máy, tóm tắt, text-to-text.</p>
             </div>
           </div>
         </CollapsibleDetail>
@@ -555,7 +555,7 @@ def softmax(x, axis=-1):
 
         <Callout variant="info" title={`Bài báo gốc: "Attention Is All You Need"`}>
           <p>
-            Vaswani et al. (Google Brain, 2017). bài báo mở đầu kỷ nguyên Transformer. Tiêu đề
+            Vaswani et al. (Google Brain, 2017), bài báo mở đầu kỷ nguyên Transformer. Tiêu đề
             nói lên tất cả: chỉ cần attention là đủ, không cần RNN hay CNN. Đến nay đã được trích
             dẫn hơn 100.000 lần và là nền tảng của GPT, BERT, LLaMA, Claude, và mọi LLM hiện đại.
           </p>
@@ -587,7 +587,7 @@ def preprocess(batch):
 
 ds = ds.map(preprocess, batched=True)
 
-# 4. Fine-tune. attention + FFN học từ dữ liệu cảm xúc có nhãn
+# 4. Fine-tune, attention + FFN học từ dữ liệu cảm xúc có nhãn
 args = TrainingArguments(output_dir="./phobert-vsfc", num_train_epochs=3,
                          per_device_train_batch_size=16, learning_rate=2e-5)
 trainer = Trainer(model=model, args=args,
@@ -607,17 +607,17 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
             <p>
               Ma trận attention có kích thước n × n, nên tính và lưu tốn{" "}
               O(n²) thời gian + O(n²) bộ nhớ. Với n = 32.000 token, đây là
-              ~1 tỷ phép toán cho một layer. vậy mà LLM hiện đại có hàng
+              ~1 tỷ phép toán cho một layer, vậy mà LLM hiện đại có hàng
               chục layer.
             </p>
             <p>Bốn hướng tối ưu chính:</p>
             <ul className="list-disc list-inside space-y-1 pl-2">
               <li>
                 <strong>Flash Attention</strong> (Tri Dao, 2022): tối ưu
-                IO/tile, giảm số lần đọc/ghi HBM. nhanh 2-4× nhưng vẫn O(n²).
+                IO/tile, giảm số lần đọc/ghi HBM, nhanh 2-4× nhưng vẫn O(n²).
               </li>
               <li>
-                <strong>Sparse attention:</strong> Longformer, BigBird. chỉ
+                <strong>Sparse attention:</strong> Longformer, BigBird, chỉ
                 chú ý các vị trí lân cận + một số token toàn cục, giảm còn
                 O(n log n) hoặc O(n).
               </li>
@@ -655,7 +655,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
             <strong>Dịch máy (Google Translate, DeepL):</strong>{" "}
             encoder-decoder Transformer đã thay thế hoàn toàn RNN/LSTM trong
             sản phẩm thương mại từ 2018. Chất lượng dịch Việt-Anh tăng đột
-            phá. gần mức &quot;human parity&quot; cho các domain phổ biến.
+            phá, gần mức &quot;human parity&quot; cho các domain phổ biến.
           </li>
           <li>
             <strong>Chatbot &amp; LLM (ChatGPT, Claude, Gemini):</strong>{" "}
@@ -670,7 +670,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
           <li>
             <strong>Sinh học tính toán (AlphaFold 2):</strong>{" "}
             dùng attention để dự đoán cấu trúc 3D của protein từ chuỗi
-            amino acid. đoạt giải Nobel Hoá học 2024.
+            amino acid, đoạt giải Nobel Hoá học 2024.
           </li>
           <li>
             <strong>Âm thanh (Whisper, AudioLM):</strong>{" "}
@@ -679,7 +679,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
           </li>
           <li>
             <strong>Mã nguồn (GitHub Copilot, Code Llama):</strong>{" "}
-            sinh code từ prompt. hoạt động tốt trên cú pháp bất kỳ ngôn
+            sinh code từ prompt, hoạt động tốt trên cú pháp bất kỳ ngôn
             ngữ lập trình nào.
           </li>
         </ul>
@@ -694,7 +694,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
           State Space Models).
         </Callout>
 
-        <CollapsibleDetail title="Huấn luyện Transformer từ đầu. những thách thức thực tế">
+        <CollapsibleDetail title="Huấn luyện Transformer từ đầu, những thách thức thực tế">
           <div className="space-y-3 text-sm leading-relaxed">
             <p>
               Train Transformer từ đầu (không pretrained) cho task cụ thể là
@@ -731,7 +731,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
               </li>
             </ul>
             <p>
-              Trong thực tế, hiếm ai train Transformer từ đầu. bạn fine-tune
+              Trong thực tế, hiếm ai train Transformer từ đầu, bạn fine-tune
               checkpoint có sẵn. Nhưng hiểu những chi tiết này giúp bạn
               debug khi training không hội tụ.
             </p>
@@ -743,7 +743,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
           khổng lồ (O(n²) attention); (2) yêu cầu dataset khổng lồ để đạt
           hiệu năng tốt (hàng tỷ token cho model lớn); (3) thiếu inductive
           bias. CNN tự động xử lý tính translation-equivariant của ảnh,
-          Transformer phải học từ dữ liệu; (4) hallucination khi là LLM. sinh ra thông tin sai một cách thuyết phục. Đây là lý do các kiến
+          Transformer phải học từ dữ liệu; (4) hallucination khi là LLM, sinh ra thông tin sai một cách thuyết phục. Đây là lý do các kiến
           trúc thay thế (Mamba, RWKV, Hyena) đang được nghiên cứu tích cực.
         </Callout>
 
@@ -762,7 +762,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
           <li>
             <strong>Relative position encoding (T5, Transformer-XL):</strong>{" "}
             dựa trên khoảng cách tương đối giữa các token thay vì vị trí
-            tuyệt đối. tổng quát hoá tốt hơn.
+            tuyệt đối, tổng quát hoá tốt hơn.
           </li>
           <li>
             <strong>RoPE (Rotary Position Embedding. LLaMA, GPT-NeoX):</strong>{" "}
@@ -778,7 +778,7 @@ print(["negative", "neutral", "positive"][logits.argmax().item()])
           </li>
         </ul>
 
-        <CodeBlock language="python" title="multi_head_self_attention.py. numpy từ A-Z">
+        <CodeBlock language="python" title="multi_head_self_attention.py, numpy từ A-Z">
 {`import numpy as np
 
 def softmax(x, axis=-1):
@@ -787,7 +787,7 @@ def softmax(x, axis=-1):
     return e / e.sum(axis=axis, keepdims=True)
 
 def multi_head_attention(X, n_heads=8):
-    """X: (seq_len, d_model). input embeddings
+    """X: (seq_len, d_model), input embeddings
     Trả output cùng kích thước sau khi đã tích hợp ngữ cảnh."""
     seq_len, d_model = X.shape
     d_k = d_model // n_heads   # kích thước mỗi head
@@ -848,10 +848,10 @@ print("Output shape:", out.shape)   # (5, 64)`}
           </li>
         </ul>
 
-        <Callout variant="tip" title="KV cache. bí kíp inference nhanh LLM">
+        <Callout variant="tip" title="KV cache, bí kíp inference nhanh LLM">
           Khi sinh text token-by-token, bạn không cần tính lại Q·K·V cho
           toàn bộ context mỗi bước. KV cache lưu K và V của các token đã sinh,
-          chỉ tính mới cho token hiện tại. giảm inference từ O(n²) xuống
+          chỉ tính mới cho token hiện tại, giảm inference từ O(n²) xuống
           O(n) cho mỗi bước. Đây là kỹ thuật bắt buộc cho mọi LLM production.
           Quant hoá KV cache (INT8, INT4) còn giúp giảm thêm 2-4× VRAM.
         </Callout>
@@ -871,7 +871,7 @@ print("Output shape:", out.shape)   # (5, 64)`}
             VinAI Research phát hành PhoBERT (2020). BERT pretrain trên
             20GB corpus tiếng Việt. Kết quả: state-of-the-art cho UIT-VSFC
             (cảm xúc), PhoNER-COVID19 (NER), ViQuAD (QA). ViT5 (2022) là
-            encoder-decoder Transformer cho các task sinh text tiếng Việt. tóm tắt, dịch, trả lời dạng paragraph. Cả hai đều mở trên Hugging
+            encoder-decoder Transformer cho các task sinh text tiếng Việt, tóm tắt, dịch, trả lời dạng paragraph. Cả hai đều mở trên Hugging
             Face, là nền tảng cho 100+ ứng dụng downstream.
           </p>
         </div>
@@ -906,12 +906,12 @@ print("Output shape:", out.shape)   # (5, 64)`}
       <MiniSummary
         title="Ghi nhớ về Transformer"
         points={[
-          "Self-Attention cho mỗi từ nhìn trực tiếp đến mọi từ khác. nắm bắt quan hệ xa tốt hơn RNN.",
-          "Xử lý song song toàn bộ câu cùng lúc. nhanh hơn RNN nhiều lần trên GPU.",
+          "Self-Attention cho mỗi từ nhìn trực tiếp đến mọi từ khác, nắm bắt quan hệ xa tốt hơn RNN.",
+          "Xử lý song song toàn bộ câu cùng lúc, nhanh hơn RNN nhiều lần trên GPU.",
           "Positional Encoding thêm thông tin vị trí, vì attention không phân biệt thứ tự.",
           "Kiến trúc gồm: Embedding → (Self-Attention + FFN + Add&Norm) × N lớp → Output.",
-          "Ba biến thể: Encoder-only (BERT), Decoder-only (GPT), Encoder-Decoder (T5). nền tảng mọi LLM hiện đại.",
-          "Attention là O(n²). long-context cần Flash Attention / sparse / SSM; tiếng Việt có PhoBERT, ViT5, UIT-VSFC làm nền.",
+          "Ba biến thể: Encoder-only (BERT), Decoder-only (GPT), Encoder-Decoder (T5), nền tảng mọi LLM hiện đại.",
+          "Attention là O(n²), long-context cần Flash Attention / sparse / SSM; tiếng Việt có PhoBERT, ViT5, UIT-VSFC làm nền.",
         ]}
       />
 

@@ -114,7 +114,7 @@ const GATES = [
     desc: "Đề xuất giá trị MỚI có thể ghi vào cell state",
     formula: "g̃ₜ = tanh(Wg·[hₜ₋₁, xₜ] + bg)",
     analogy: "Bản nháp ghi chú trước khi duyệt",
-    role: "tanh đảm bảo giá trị nằm trong [−1, 1]. không làm cell state nổ.",
+    role: "tanh đảm bảo giá trị nằm trong [−1, 1], không làm cell state nổ.",
   },
   {
     id: "output",
@@ -125,7 +125,7 @@ const GATES = [
     desc: "Quyết định XUẤT phần nào của bộ nhớ làm hidden state",
     formula: "oₜ = σ(Wo·[hₜ₋₁, xₜ] + bo)",
     analogy: "Chọn phần nào trong vở để trả lời câu hỏi hiện tại",
-    role: "hₜ = oₜ ⊙ tanh(Cₜ). output luôn là một 'lát cắt' của cell state.",
+    role: "hₜ = oₜ ⊙ tanh(Cₜ), output luôn là một 'lát cắt' của cell state.",
   },
 ];
 
@@ -177,9 +177,9 @@ const quizQuestions: QuizQuestion[] = [
     question:
       "LSTM có 4 'nhóm' tính toán (3 cổng sigmoid + 1 candidate tanh). Nhóm nào cho phép 'nhớ' thông tin qua hàng trăm bước?",
     options: [
-      "Cổng xuất (Output Gate). vì nó tạo output",
+      "Cổng xuất (Output Gate), vì nó tạo output",
       "Cổng quên (Forget Gate). Khi f ≈ 1, cell state truyền thẳng qua",
-      "Cổng nhập (Input Gate). vì nó thêm thông tin mới",
+      "Cổng nhập (Input Gate), vì nó thêm thông tin mới",
       "Không nhóm nào. LSTM vẫn bị vanishing gradient",
     ],
     correct: 1,
@@ -196,7 +196,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Cell state C là 'băng chuyền' bộ nhớ dài hạn. chỉ bị thay đổi bởi phép nhân/cộng nhẹ. Hidden state h = tanh(C) × output gate là phiên bản 'lọc' của cell state, dùng cho output và truyền sang bước tiếp.",
+      "Cell state C là 'băng chuyền' bộ nhớ dài hạn, chỉ bị thay đổi bởi phép nhân/cộng nhẹ. Hidden state h = tanh(C) × output gate là phiên bản 'lọc' của cell state, dùng cho output và truyền sang bước tiếp.",
   },
   {
     question:
@@ -216,13 +216,13 @@ const quizQuestions: QuizQuestion[] = [
       "Tại sao candidate g̃ₜ dùng tanh thay vì sigmoid như các cổng khác?",
     options: [
       "Vì tanh tính nhanh hơn",
-      "Vì candidate là giá trị cần CỘNG vào cell state. cần nằm trong [−1, 1] để vừa có thể tăng vừa có thể giảm C",
+      "Vì candidate là giá trị cần CỘNG vào cell state, cần nằm trong [−1, 1] để vừa có thể tăng vừa có thể giảm C",
       "Vì tanh là mặc định trong PyTorch",
       "Vì sigmoid bị vanishing gradient",
     ],
     correct: 1,
     explanation:
-      "Ba cổng sigmoid chỉ cần kiểm soát 'bao nhiêu' (0–1). Candidate phải là giá trị MỚI với dấu. tanh ∈ [−1, 1] cho phép vừa cộng thêm vừa trừ bớt khỏi cell state.",
+      "Ba cổng sigmoid chỉ cần kiểm soát 'bao nhiêu' (0-1). Candidate phải là giá trị MỚI với dấu, tanh ∈ [−1, 1] cho phép vừa cộng thêm vừa trừ bớt khỏi cell state.",
   },
   {
     question:
@@ -260,7 +260,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Điểm nghẽn của LSTM là tính tuần tự: phải đợi hₜ₋₁ mới tính được hₜ. Trên GPU hiện đại, Transformer tính self-attention toàn bộ chuỗi song song → huấn luyện nhanh hơn 10–100× ở chuỗi dài.",
+      "Điểm nghẽn của LSTM là tính tuần tự: phải đợi hₜ₋₁ mới tính được hₜ. Trên GPU hiện đại, Transformer tính self-attention toàn bộ chuỗi song song → huấn luyện nhanh hơn 10-100× ở chuỗi dài.",
   },
   {
     type: "fill-blank",
@@ -359,13 +359,13 @@ export default function LstmTopic() {
             'Câu: "Tôi sinh ở Huế, học ở Sài Gòn, làm việc ở Hà Nội, nên tôi thích ăn bún bò ___". Từ cuối liên quan đến từ nào cách xa 15 từ? RNN thường nhớ nổi chuỗi bao dài?'
           }
           options={[
-            "RNN nhớ tốt 100+ từ. không cần cải tiến",
-            "RNN chỉ nhớ tốt ~10–20 từ gần nhất, cần cơ chế đặc biệt để nhớ xa hơn",
+            "RNN nhớ tốt 100+ từ, không cần cải tiến",
+            "RNN chỉ nhớ tốt ~10-20 từ gần nhất, cần cơ chế đặc biệt để nhớ xa hơn",
             "RNN không nhớ được gì cả",
           ]}
           correct={1}
           explanation={
-            'Đúng! RNN bị vanishing gradient → quên thông tin xa. "Huế" cách "___" 15 từ, RNN gần như quên mất. LSTM giải quyết bằng cách thêm "bộ nhớ dài hạn" (cell state). một đường truyền thẳng cho gradient không bị suy giảm.'
+            'Đúng! RNN bị vanishing gradient → quên thông tin xa. "Huế" cách "___" 15 từ, RNN gần như quên mất. LSTM giải quyết bằng cách thêm "bộ nhớ dài hạn" (cell state), một đường truyền thẳng cho gradient không bị suy giảm.'
           }
         />
 
@@ -392,7 +392,7 @@ export default function LstmTopic() {
       >
         <p className="text-sm text-foreground leading-relaxed mb-3">
           Hãy tưởng tượng bạn đang ghi chép trong lớp học với{" "}
-          <strong>cuốn vở</strong> (cell state. bộ nhớ dài hạn). Tại mỗi
+          <strong>cuốn vở</strong> (cell state, bộ nhớ dài hạn). Tại mỗi
           thời điểm, bạn cần 4 quyết định: <strong>tẩy</strong> (cổng
           quên), <strong>nháp</strong> (candidate),{" "}
           <strong>duyệt viết</strong> (cổng nhập), <strong>đọc lại</strong>{" "}
@@ -612,7 +612,7 @@ export default function LstmTopic() {
 
         <p className="text-sm text-muted mt-3">
           4 khối màu tương ứng 4 phép tính song song trong 1 ô LSTM. 3 cổng
-          (đỏ/xanh lá/xanh dương) dùng sigmoid để &quot;mở–đóng&quot; từ
+          (đỏ/xanh lá/xanh dương) dùng sigmoid để &quot;mở-đóng&quot; từ
           0 đến 1. Candidate (cam) dùng tanh để đề xuất giá trị MỚI.
         </p>
       </LessonSection>
@@ -766,7 +766,7 @@ export default function LstmTopic() {
 
           <p className="text-xs text-muted mt-3">
             Thử đặt fₜ về gần 1 (bằng cách tăng xₜ lên ~1.0): bạn sẽ thấy
-            cell state chủ yếu giữ lại Cₜ₋₁. đây là cơ chế &quot;nhớ
+            cell state chủ yếu giữ lại Cₜ₋₁, đây là cơ chế &quot;nhớ
             lâu&quot; cốt lõi của LSTM.
           </p>
         </section>
@@ -793,7 +793,7 @@ export default function LstmTopic() {
         <AhaMoment>
           <p>
             <strong>Cell state</strong> là &quot;đường cao tốc&quot; cho
-            thông tin. chạy thẳng qua mà chỉ bị thay đổi nhẹ nhàng bởi
+            thông tin, chạy thẳng qua mà chỉ bị thay đổi nhẹ nhàng bởi
             phép nhân/cộng. Gradient cũng chảy thẳng qua đường này → không
             bị vanishing!
           </p>
@@ -948,8 +948,8 @@ export default function LstmTopic() {
           </motion.div>
 
           <p className="text-sm text-muted mt-3">
-            RNN thường đã quên &quot;Huế&quot; sau 5–6 bước. LSTM giữ được
-            nhờ cell state truyền thẳng. phép nhân với forget gate ≈ 1 =
+            RNN thường đã quên &quot;Huế&quot; sau 5-6 bước. LSTM giữ được
+            nhờ cell state truyền thẳng, phép nhân với forget gate ≈ 1 =
             coi như không đổi.
           </p>
         </section>
@@ -985,7 +985,7 @@ export default function LstmTopic() {
 
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="rounded-lg border border-red-500/40 bg-red-500/10 p-3">
-              <p className="text-xs text-muted">RNN. gradient ≈</p>
+              <p className="text-xs text-muted">RNN, gradient ≈</p>
               <p className="text-xl font-mono font-bold text-red-500">
                 {gradientComparison.rnn.toExponential(2)}
               </p>
@@ -994,7 +994,7 @@ export default function LstmTopic() {
               </p>
             </div>
             <div className="rounded-lg border border-green-500/40 bg-green-500/10 p-3">
-              <p className="text-xs text-muted">LSTM. gradient ≈</p>
+              <p className="text-xs text-muted">LSTM, gradient ≈</p>
               <p className="text-xl font-mono font-bold text-green-500">
                 {gradientComparison.lstm.toExponential(2)}
               </p>
@@ -1085,9 +1085,9 @@ export default function LstmTopic() {
 
         <Callout variant="insight" title="Tại sao 0.95ᴺ rất chậm so với 0.25ᴺ">
           <p>
-            0.25¹⁰⁰ ≈ 10⁻⁶⁰. coi như 0. 0.95¹⁰⁰ ≈ 0.006. nhỏ nhưng
+            0.25¹⁰⁰ ≈ 10⁻⁶⁰, coi như 0. 0.95¹⁰⁰ ≈ 0.006. nhỏ nhưng
             không biến mất. Đó là lý do LSTM vẫn học được phụ thuộc dài
-            hạn trong khi RNN thì không. Nhưng LSTM cũng không hoàn hảo. ở 500+ bước, LSTM vẫn gặp khó, và đó là cửa ngõ để Transformer
+            hạn trong khi RNN thì không. Nhưng LSTM cũng không hoàn hảo, ở 500+ bước, LSTM vẫn gặp khó, và đó là cửa ngõ để Transformer
             bước vào.
           </p>
         </Callout>
@@ -1194,7 +1194,7 @@ export default function LstmTopic() {
               hiểu ngữ cảnh đầy đủ hơn. <strong>Stacked LSTM:</strong>{" "}
               xếp nhiều lớp LSTM → biểu diễn phức tạp hơn.{" "}
               <strong>ConvLSTM:</strong> thay phép nhân ma trận bằng tích
-              chập. dùng cho video.
+              chập, dùng cho video.
             </p>
           </Callout>
 
@@ -1211,8 +1211,8 @@ export default function LstmTopic() {
           <Callout variant="tip" title="Khi nào dùng LSTM thay vì Transformer?">
             <p>
               LSTM vẫn vượt trội cho: (a) dữ liệu streaming thời gian
-              thực. xử lý token-theo-token, không cần nhìn cả chuỗi; (b)
-              thiết bị edge với RAM hạn chế. ít tham số hơn Transformer;
+              thực, xử lý token-theo-token, không cần nhìn cả chuỗi; (b)
+              thiết bị edge với RAM hạn chế, ít tham số hơn Transformer;
               (c) chuỗi CỰC DÀI có tính chất Markov (time-series tài
               chính, cảm biến IoT).
             </p>
@@ -1256,13 +1256,13 @@ class LSTMClassifier(nn.Module):
 # Tổng tham số ≈ 4× RNN cùng hidden size, nhưng nhớ xa hơn rất nhiều.`}
           </CodeBlock>
 
-          <CodeBlock language="python" title="lstm_manual.py. triển khai thủ công">
+          <CodeBlock language="python" title="lstm_manual.py, triển khai thủ công">
 {`import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 class LSTMCellManual(nn.Module):
-    """LSTM cell viết tay. dạy học & debug. KHÔNG nhanh hơn nn.LSTM."""
+    """LSTM cell viết tay, dạy học & debug. KHÔNG nhanh hơn nn.LSTM."""
 
     def __init__(self, input_size, hidden_size):
         super().__init__()
@@ -1321,7 +1321,7 @@ outputs = torch.stack(outputs)  # (seq_len, batch, hidden)`}
               <p>
                 Nếu các <LaTeX>{"f_t"}</LaTeX> đều gần 1, tích này xấp xỉ
                 1 ngay cả khi <LaTeX>{"T = 1000"}</LaTeX>. Đây là điểm
-                khác biệt sống còn so với RNN. nơi đạo hàm nhân với{" "}
+                khác biệt sống còn so với RNN, nơi đạo hàm nhân với{" "}
                 <LaTeX>{String.raw`W^T \cdot \text{diag}(\tanh') \approx 0.25^T`}</LaTeX>.
               </p>
               <p>
@@ -1403,7 +1403,7 @@ outputs = torch.stack(outputs)  # (seq_len, batch, hidden)`}
           points={[
             "LSTM giải quyết vanishing gradient bằng cell state. 'đường cao tốc' cho gradient truyền thẳng qua phép nhân với forget gate.",
             "4 khối tính toán song song: forget gate (xóa gì), input gate (ghi bao nhiêu), candidate (giá trị mới), output gate (xuất gì).",
-            "Cell state C = bộ nhớ dài hạn (truyền trực tiếp); hidden state h = tanh(C) × output gate. phiên bản 'lọc' dùng cho output.",
+            "Cell state C = bộ nhớ dài hạn (truyền trực tiếp); hidden state h = tanh(C) × output gate, phiên bản 'lọc' dùng cho output.",
             "Tham số gấp ~4× RNN (4 bộ trọng số riêng), nhưng đổi lại nhớ xa hàng trăm bước. Khởi tạo bias forget = 1 để mặc định nhớ.",
             "Biến thể: Bidirectional (2 chiều), Stacked (nhiều lớp), GRU (đơn giản hơn, 3× params), ConvLSTM (video).",
             "Ngày nay Transformer thay thế LSTM trong NLP, nhưng LSTM vẫn dùng cho time-series, streaming và thiết bị edge.",

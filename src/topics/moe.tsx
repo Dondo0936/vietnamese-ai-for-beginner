@@ -14,7 +14,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "moe",
   title: "Mixture of Experts",
-  titleVi: "Hỗn hợp chuyên gia. Chia để trị",
+  titleVi: "Hỗn hợp chuyên gia",
   description:
     "Kiến trúc mô hình sử dụng nhiều mạng con chuyên biệt (chuyên gia), chỉ kích hoạt một vài chuyên gia cho mỗi đầu vào.",
   category: "emerging",
@@ -102,9 +102,9 @@ export default function MoETopic() {
       {/* STEP 1: PREDICTION GATE */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Bạn muốn model có kiến thức rộng (nhiều tham số) nhưng inference nhanh (ít compute). Hai mục tiêu mâu thuẫn. có cách nào được cả hai?"
+          question="Bạn muốn model có kiến thức rộng (nhiều tham số) nhưng inference nhanh (ít compute). Hai mục tiêu mâu thuẫn, có cách nào được cả hai?"
           options={[
-            "Không thể. nhiều tham số = nhiều compute, đó là quy luật",
+            "Không thể, nhiều tham số = nhiều compute, đó là quy luật",
             "Dùng Mixture of Experts: nhiều tham số tổng nhưng chỉ kích hoạt 2/8 expert mỗi token",
             "Giảm kích thước model xuống nhỏ nhất có thể",
           ]}
@@ -210,7 +210,7 @@ export default function MoETopic() {
             MoE phá vỡ quy luật &quot;nhiều tham số = nhiều compute&quot;.
             Mixtral 8x7B: <strong>47B tham số</strong>{" "}(kiến thức rộng) nhưng mỗi token chỉ kích hoạt <strong>13B</strong>{" "}
             (compute thấp). Kết quả: chất lượng gần GPT-3.5, chi phí chạy bằng model 13B.
-            Giống bệnh viện 100 bác sĩ. mỗi lần khám chỉ tốn chi phí 2 bác sĩ!
+            Giống bệnh viện 100 bác sĩ, mỗi lần khám chỉ tốn chi phí 2 bác sĩ!
           </p>
         </AhaMoment>
       </LessonSection>
@@ -258,13 +258,13 @@ export default function MoETopic() {
           </p>
 
           <Callout variant="tip" title="Expert Parallelism">
-            MoE serving cần strategy riêng: Expert Parallelism. mỗi GPU hold subset experts. Token được route đến đúng GPU chứa expert đó. Cần all-to-all communication. bottleneck chính trên cluster lớn.
+            MoE serving cần strategy riêng: Expert Parallelism, mỗi GPU hold subset experts. Token được route đến đúng GPU chứa expert đó. Cần all-to-all communication, bottleneck chính trên cluster lớn.
           </Callout>
 
           <CodeBlock language="python" title="Serving MoE model với vLLM">
 {`from vllm import LLM, SamplingParams
 
-# Mixtral 8x7B. vLLM tự xử lý expert routing
+# Mixtral 8x7B, vLLM tự xử lý expert routing
 llm = LLM(
     model="mistralai/Mixtral-8x7B-Instruct-v0.1",
     tensor_parallel_size=2,  # 2 GPU (47B FP16 = 94GB)
@@ -273,7 +273,7 @@ llm = LLM(
     # vLLM auto: expert parallelism, continuous batching
 )
 
-# Inference. user không cần biết MoE internals
+# Inference, user không cần biết MoE internals
 params = SamplingParams(temperature=0.7, max_tokens=512)
 output = llm.generate(["Giải thích MoE cho sinh viên Việt Nam"], params)
 
@@ -291,7 +291,7 @@ output = llm.generate(["Giải thích MoE cho sinh viên Việt Nam"], params)
           "MoE = nhiều expert chuyên biệt, router chọn top-K (thường 2) cho mỗi token.",
           "Phá vỡ trade-off: 47B params (kiến thức rộng) nhưng compute chỉ 13B (inference nhanh).",
           "Router = linear layer nhỏ, quyết định expert nào xử lý token nào dựa trên hidden state.",
-          "Load balancing loss ép dùng tất cả experts đều. tránh expert collapse.",
+          "Load balancing loss ép dùng tất cả experts đều, tránh expert collapse.",
           "Trade-off: compute thấp nhưng MEMORY cao (phải load tất cả experts). Quantization giải quyết.",
         ]} />
       </LessonSection>

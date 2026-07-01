@@ -389,7 +389,7 @@ export const topicList: TopicMeta[] = [
     slug: "k-means",
     title: "K-Means Clustering",
     titleVi: "Phân cụm k-means",
-    description: "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm. k-means tìm các tụ điểm tự nhiên: từ đặt kho hàng Grab đến phân khúc khách hàng.",
+    description: "Chưa ai dán nhãn, nhưng dữ liệu thường tự gom nhóm, k-means tìm các tụ điểm tự nhiên: từ đặt kho hàng Grab đến phân khúc khách hàng.",
     category: "classic-ml",
     tags: ["clustering", "unsupervised", "centroids"],
     difficulty: "intermediate",
@@ -454,7 +454,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "cross-validation",
     title: "Cross-Validation",
-    titleVi: "Kiểm định chéo. Xoay vòng 5 đề thi thử",
+    titleVi: "Kiểm định chéo",
     description: "Một đề thi thử may rủi không nói lên gì. Chia đề thành nhiều phần rồi xoay vòng. Đó là kiểm định chéo.",
     category: "classic-ml",
     tags: ["evaluation", "k-fold", "validation"],
@@ -694,7 +694,7 @@ export const topicList: TopicMeta[] = [
     slug: "bag-of-words",
     title: "Bag of Words",
     titleVi: "Bag of Words - Túi từ",
-    description: "Phương pháp biểu diễn văn bản đơn giản bằng cách đếm tần suất xuất hiện của mỗi từ, bỏ qua thứ tự. nền tảng của mọi kỹ thuật NLP cổ điển.",
+    description: "Phương pháp biểu diễn văn bản đơn giản bằng cách đếm tần suất xuất hiện của mỗi từ, bỏ qua thứ tự, nền tảng của mọi kỹ thuật NLP cổ điển.",
     category: "nlp",
     tags: ["text-representation", "frequency", "simple"],
     difficulty: "beginner",
@@ -1362,7 +1362,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "planning",
     title: "Planning",
-    titleVi: "Lập kế hoạch. AI biết chia để trị",
+    titleVi: "Lập kế hoạch",
     description: "Khả năng của AI Agent phân tách vấn đề phức tạp thành chuỗi bước nhỏ hơn và thực hiện có chiến lược.",
     category: "ai-agents",
     tags: ["decomposition", "task-planning", "strategy"],
@@ -1373,7 +1373,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "memory-systems",
     title: "Memory Systems",
-    titleVi: "Hệ thống bộ nhớ. Trí nhớ của AI Agent",
+    titleVi: "Hệ thống bộ nhớ",
     description: "Các cơ chế lưu trữ thông tin giúp AI Agent nhớ bối cảnh, kinh nghiệm và kiến thức qua nhiều phiên làm việc.",
     category: "ai-agents",
     tags: ["short-term", "long-term", "retrieval"],
@@ -1384,7 +1384,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "multi-agent",
     title: "Multi-Agent Systems",
-    titleVi: "Hệ thống đa Agent. Đội ngũ AI phối hợp",
+    titleVi: "Hệ thống đa Agent",
     description: "Nhiều AI Agent chuyên biệt cùng phối hợp để giải quyết các bài toán phức tạp mà một Agent đơn lẻ khó xử lý.",
     category: "ai-agents",
     tags: ["collaboration", "multi-agent", "coordination"],
@@ -1432,7 +1432,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "vlm",
     title: "Vision-Language Models",
-    titleVi: "Mô hình Ngôn ngữ. Thị giác",
+    titleVi: "Mô hình Ngôn ngữ-Thị giác",
     description: "Mô hình AI có khả năng hiểu đồng thời cả hình ảnh và văn bản, cho phép hỏi đáp về nội dung hình ảnh.",
     category: "multimodal",
     tags: ["vision", "language", "multimodal"],
@@ -1443,7 +1443,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "text-to-image",
     title: "Text-to-Image Generation",
-    titleVi: "Tạo ảnh từ văn bản. AI hoạ sĩ",
+    titleVi: "Tạo ảnh từ văn bản",
     description: "Mô hình AI tạo ra hình ảnh chất lượng cao từ mô tả bằng ngôn ngữ tự nhiên.",
     category: "multimodal",
     tags: ["generation", "diffusion", "creative"],
@@ -1454,7 +1454,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "text-to-video",
     title: "Text-to-Video Generation",
-    titleVi: "Tạo video từ văn bản. AI đạo diễn",
+    titleVi: "Tạo video từ văn bản",
     description: "Mô hình AI tạo ra đoạn video liền mạch từ mô tả bằng ngôn ngữ tự nhiên, bao gồm cả chuyển động và âm thanh.",
     category: "multimodal",
     tags: ["video", "generation", "temporal"],
@@ -1465,7 +1465,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "speech-recognition",
     title: "Speech Recognition",
-    titleVi: "Nhận dạng giọng nói. Tai nghe AI",
+    titleVi: "Nhận dạng giọng nói",
     description: "Công nghệ chuyển đổi giọng nói con người thành văn bản, là nền tảng cho trợ lý ảo và ghi chú tự động.",
     category: "multimodal",
     tags: ["audio", "transcription", "whisper"],
@@ -1476,7 +1476,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "tts",
     title: "Text-to-Speech",
-    titleVi: "Tổng hợp giọng nói. AI biết nói",
+    titleVi: "Tổng hợp giọng nói",
     description: "Công nghệ chuyển đổi văn bản thành giọng nói tự nhiên, với khả năng kiểm soát ngữ điệu và cảm xúc.",
     category: "multimodal",
     tags: ["audio", "synthesis", "voice"],
@@ -1487,7 +1487,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "clip",
     title: "CLIP & Contrastive Learning",
-    titleVi: "CLIP. Kết nối hình ảnh và ngôn ngữ",
+    titleVi: "CLIP",
     description: "Mô hình học cách liên kết hình ảnh và văn bản trong cùng một không gian vector, cho phép tìm kiếm ảnh bằng ngôn ngữ tự nhiên.",
     category: "multimodal",
     tags: ["contrastive", "image-text", "openai"],
@@ -1524,8 +1524,8 @@ export const topicList: TopicMeta[] = [
   {
     slug: "alignment",
     title: "AI Alignment",
-    titleVi: "Căn chỉnh AI. Dạy AI hiểu con người",
-    description: "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người. thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
+    titleVi: "Căn chỉnh AI",
+    description: "Quá trình đảm bảo mô hình AI hành động đúng theo ý định, giá trị và mong muốn của con người, thông qua mô phỏng trực quan về goal misalignment và reward hacking.",
     category: "ai-safety",
     tags: ["safety", "values", "goals"],
     difficulty: "advanced",
@@ -1579,7 +1579,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "constitutional-ai",
     title: "Constitutional AI",
-    titleVi: "AI Hiến pháp. Tự kiểm duyệt theo nguyên tắc",
+    titleVi: "AI Hiến pháp",
     description: "Phương pháp huấn luyện AI tự đánh giá và sửa đổi phản hồi dựa trên một bộ nguyên tắc đạo đức rõ ràng.",
     category: "ai-safety",
     tags: ["critique", "revision", "principles"],
@@ -1601,7 +1601,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "adversarial-robustness",
     title: "Adversarial Robustness",
-    titleVi: "Bền vững trước tấn công. AI không dễ bị lừa",
+    titleVi: "Bền vững trước tấn công",
     description: "Khả năng của mô hình AI duy trì hiệu suất chính xác khi đối mặt với dữ liệu đầu vào bị thao túng có chủ đích.",
     category: "ai-safety",
     tags: ["robustness", "perturbation", "defense"],
@@ -1708,7 +1708,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "reasoning-models",
     title: "Reasoning Models",
-    titleVi: "Mô hình suy luận. AI biết nghĩ sâu",
+    titleVi: "Mô hình suy luận",
     description: "Thế hệ mô hình AI mới có khả năng suy luận từng bước, giải quyết các bài toán phức tạp đòi hỏi logic và tư duy.",
     category: "emerging",
     tags: ["reasoning", "o1", "thinking"],
@@ -1719,7 +1719,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "test-time-compute",
     title: "Test-Time Compute",
-    titleVi: "Tính toán lúc suy luận. Nghĩ thêm khi cần",
+    titleVi: "Tính toán lúc suy luận",
     description: "Chiến lược sử dụng nhiều tài nguyên tính toán hơn tại thời điểm suy luận để cải thiện chất lượng câu trả lời.",
     category: "emerging",
     tags: ["compute", "scaling", "inference"],
@@ -1730,7 +1730,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "moe",
     title: "Mixture of Experts",
-    titleVi: "Hỗn hợp chuyên gia. Chia để trị",
+    titleVi: "Hỗn hợp chuyên gia",
     description: "Kiến trúc mô hình sử dụng nhiều mạng con chuyên biệt (chuyên gia), chỉ kích hoạt một vài chuyên gia cho mỗi đầu vào.",
     category: "emerging",
     tags: ["routing", "sparse", "efficiency"],
@@ -1741,7 +1741,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "state-space-models",
     title: "State Space Models (Mamba)",
-    titleVi: "Mô hình không gian trạng thái. Đối thủ của Transformer",
+    titleVi: "Mô hình không gian trạng thái",
     description: "Kiến trúc mô hình tuần tự hiệu quả dựa trên lý thuyết hệ thống điều khiển, xử lý chuỗi dài nhanh hơn Transformer.",
     category: "emerging",
     tags: ["mamba", "linear", "sequence"],
@@ -1752,7 +1752,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "small-language-models",
     title: "Small Language Models",
-    titleVi: "Mô hình ngôn ngữ nhỏ. Nhỏ mà có võ",
+    titleVi: "Mô hình ngôn ngữ nhỏ",
     description: "Mô hình ngôn ngữ dưới 10B tham số được tối ưu để chạy trên thiết bị cá nhân với chất lượng ngày càng tiệm cận mô hình lớn.",
     category: "emerging",
     tags: ["small", "efficient", "on-device"],
@@ -1763,7 +1763,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "synthetic-data",
     title: "Synthetic Data",
-    titleVi: "Dữ liệu tổng hợp. AI tạo dữ liệu cho AI",
+    titleVi: "Dữ liệu tổng hợp",
     description: "Dữ liệu được tạo bằng AI hoặc mô phỏng, dùng để huấn luyện mô hình khi dữ liệu thật khan hiếm, đắt đỏ hoặc nhạy cảm.",
     category: "emerging",
     tags: ["data-generation", "augmentation", "privacy"],
@@ -1774,7 +1774,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "world-models",
     title: "World Models",
-    titleVi: "Mô hình thế giới. AI biết tưởng tượng",
+    titleVi: "Mô hình thế giới",
     description: "Mô hình AI xây dựng biểu diễn nội tại về thế giới, có thể dự đoán hậu quả hành động trước khi thực hiện.",
     category: "emerging",
     tags: ["simulation", "prediction", "environment"],
@@ -1785,7 +1785,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "long-context",
     title: "Long Context",
-    titleVi: "Ngữ cảnh dài. AI đọc cả cuốn sách",
+    titleVi: "Ngữ cảnh dài",
     description: "Khả năng mô hình xử lý hàng trăm nghìn đến hàng triệu token trong một lần, cho phép phân tích tài liệu dài.",
     category: "emerging",
     tags: ["context-length", "attention", "scaling"],
@@ -1796,7 +1796,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ai-for-science",
     title: "AI for Science",
-    titleVi: "AI cho Khoa học. Phòng thí nghiệm ảo",
+    titleVi: "AI cho Khoa học",
     description: "Ứng dụng AI để đẩy nhanh khám phá khoa học, từ dự đoán cấu trúc protein đến thiết kế vật liệu mới.",
     category: "emerging",
     tags: ["science", "discovery", "research"],
@@ -1844,7 +1844,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "roc-auc",
     title: "ROC & AUC",
-    titleVi: "ROC & AUC. Đo khả năng phân biệt",
+    titleVi: "ROC & AUC",
     description: "Đường cong ROC và diện tích AUC đo lường khả năng mô hình phân biệt lớp dương và lớp âm ở mọi ngưỡng quyết định.",
     category: "foundations",
     tags: ["evaluation", "classification", "threshold"],
@@ -1855,7 +1855,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "ensemble-methods",
     title: "Ensemble Methods",
-    titleVi: "Phương pháp kết hợp. Đồng tay vỗ nên kêu",
+    titleVi: "Phương pháp kết hợp",
     description: "Kỹ thuật kết hợp nhiều mô hình yếu lại thành một mô hình mạnh hơn bất kỳ thành viên đơn lẻ nào.",
     category: "foundations",
     tags: ["bagging", "boosting", "stacking"],
@@ -1866,7 +1866,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "dimensionality-curse",
     title: "Curse of Dimensionality",
-    titleVi: "Lời nguyền chiều cao. Khi nhiều hơn lại tệ hơn",
+    titleVi: "Lời nguyền chiều cao",
     description: "Hiện tượng hiệu suất mô hình giảm khi số chiều đặc trưng tăng quá nhiều so với lượng dữ liệu có sẵn.",
     category: "foundations",
     tags: ["dimensions", "sparsity", "high-dimensional"],
@@ -1877,7 +1877,7 @@ export const topicList: TopicMeta[] = [
   {
     slug: "hyperparameter-tuning",
     title: "Hyperparameter Tuning",
-    titleVi: "Tinh chỉnh siêu tham số. Tìm công thức vàng",
+    titleVi: "Tinh chỉnh siêu tham số",
     description: "Quá trình tìm kiếm bộ siêu tham số tối ưu (learning rate, batch size, layers...) để mô hình đạt hiệu suất cao nhất.",
     category: "foundations",
     tags: ["grid-search", "random-search", "bayesian"],

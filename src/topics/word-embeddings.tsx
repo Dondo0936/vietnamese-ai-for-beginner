@@ -92,7 +92,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Word Embeddings có ưu điểm gì so với BoW và TF-IDF?",
     options: [
       "Nhanh hơn",
-      "Hiểu được ngữ nghĩa — từ tương tự có vector gần nhau",
+      "Hiểu được ngữ nghĩa-từ tương tự có vector gần nhau",
       "Dùng ít bộ nhớ hơn",
       "Không cần dữ liệu huấn luyện",
     ],
@@ -102,7 +102,7 @@ const QUIZ: QuizQuestion[] = [
   },
   {
     type: "fill-blank",
-    question: "Word embeddings là một dạng {blank} (biểu diễn phân tán) của từ, trong đó các từ có ngữ nghĩa tương đồng sẽ có vector gần nhau — đây chính là cách nắm bắt {blank} giữa các từ.",
+    question: "Word embeddings là một dạng {blank} (biểu diễn phân tán) của từ, trong đó các từ có ngữ nghĩa tương đồng sẽ có vector gần nhau-đây chính là cách nắm bắt {blank} giữa các từ.",
     blanks: [
       { answer: "distributed representation", accept: ["biểu diễn phân tán", "distributed"] },
       { answer: "semantic similarity", accept: ["ngữ nghĩa", "tương đồng ngữ nghĩa", "độ tương đồng ngữ nghĩa"] },
@@ -113,23 +113,23 @@ const QUIZ: QuizQuestion[] = [
     question: "Vector('phở') và vector('bún chả') có cosine = 0.85. Vector('phở') và vector('xe máy') có cosine = 0.12. Có thể kết luận gì?",
     options: [
       "'Phở' và 'xe máy' không tồn tại trong vocabulary",
-      "'Phở' gần 'bún chả' hơn nhiều so với 'xe máy' — đúng với kỳ vọng ngữ nghĩa (cùng là món ăn)",
+      "'Phở' gần 'bún chả' hơn nhiều so với 'xe máy', đúng với kỳ vọng ngữ nghĩa (cùng là món ăn)",
       "Cosine 0.85 nghĩa là hai từ là đồng nghĩa hoàn toàn",
       "Không có ý nghĩa vì cosine không đo được tiếng Việt",
     ],
     correct: 1,
-    explanation: "Cosine đo độ tương đồng ngữ nghĩa — giá trị càng cao càng gần. 0.85 là rất cao (gần = đồng ngữ cảnh), 0.12 là gần như không liên quan. Nhưng đồng nghĩa hoàn toàn yêu cầu cosine ≈ 1.0 và cần bối cảnh khớp hoàn toàn.",
+    explanation: "Cosine đo độ tương đồng ngữ nghĩa-giá trị càng cao càng gần. 0.85 là rất cao (gần = đồng ngữ cảnh), 0.12 là gần như không liên quan. Nhưng đồng nghĩa hoàn toàn yêu cầu cosine ≈ 1.0 và cần bối cảnh khớp hoàn toàn.",
   },
   {
     question: "Bạn huấn luyện Word2Vec trên một corpus chỉ có 1.000 câu. Kết quả embedding có vấn đề gì?",
     options: [
       "Quá lớn để chạy",
-      "Quá ít dữ liệu — embedding không học được pattern tổng quát, từ hiếm bị sai hoàn toàn. Word2Vec thường cần ít nhất hàng triệu đến hàng tỷ token.",
+      "Quá ít dữ liệu-embedding không học được pattern tổng quát, từ hiếm bị sai hoàn toàn. Word2Vec thường cần ít nhất hàng triệu đến hàng tỷ token.",
       "Cho kết quả hoàn hảo vì dữ liệu sạch",
       "Chỉ hoạt động với tiếng Anh",
     ],
     correct: 1,
-    explanation: "Word embeddings học từ đồng xuất hiện (co-occurrence). Với chỉ 1.000 câu, hầu hết từ xuất hiện <10 lần — thống kê quá thưa để học ngữ nghĩa đáng tin cậy. Pre-trained models (GloVe, fastText, PhoBERT) được train trên hàng tỷ token chính vì lý do này.",
+    explanation: "Word embeddings học từ đồng xuất hiện (co-occurrence). Với chỉ 1.000 câu, hầu hết từ xuất hiện <10 lần-thống kê quá thưa để học ngữ nghĩa đáng tin cậy. Pre-trained models (GloVe, fastText, PhoBERT) được train trên hàng tỷ token chính vì lý do này.",
   },
   {
     question: "Word embeddings (Word2Vec/GloVe) gán MỘT vector cố định cho mỗi từ. Hạn chế lớn nhất là gì?",
@@ -149,7 +149,7 @@ const QUIZ: QuizQuestion[] = [
       { answer: "cosine", accept: ["cos", "cosine similarity", "cô-sin"] },
       { answer: "gần 1", accept: ["cao", "lớn", "gần +1", "~1"] },
     ],
-    explanation: "Cosine similarity không quan tâm độ dài vector, chỉ đo hướng — phù hợp với embeddings chuẩn hoá. cosine = 1 là cùng hướng (đồng nghĩa), cosine = 0 là vuông góc (không liên quan), cosine = -1 là ngược hướng (trái nghĩa, hiếm gặp).",
+    explanation: "Cosine similarity không quan tâm độ dài vector, chỉ đo hướng-phù hợp với embeddings chuẩn hoá, cosine = 1 là cùng hướng (đồng nghĩa), cosine = 0 là vuông góc (không liên quan), cosine = -1 là ngược hướng (trái nghĩa, hiếm gặp).",
   },
 ];
 
@@ -176,39 +176,39 @@ export default function WordEmbeddingsTopic() {
           question={`Trong "bản đồ từ ngữ", từ nào sẽ nằm GẦN "phở" nhất?`}
           options={['"xe máy"', '"bún chả"', '"toán học"']}
           correct={1}
-          explanation={`"Phở" và "bún chả" đều là món ăn Việt Nam — chúng xuất hiện trong ngữ cảnh giống nhau (nhà hàng, ngon, Hà Nội...). Word Embeddings biến từ thành TỌA ĐỘ trên bản đồ — từ có nghĩa gần thì nằm gần nhau!`}
+          explanation={`"Phở" và "bún chả" đều là món ăn Việt Nam-chúng xuất hiện trong ngữ cảnh giống nhau (nhà hàng, ngon, Hà Nội...). Word Embeddings biến từ thành TỌA ĐỘ trên bản đồ-từ có nghĩa gần thì nằm gần nhau!`}
         />
 
         <div className="mt-6 space-y-3 text-sm leading-relaxed">
           <p>
-            <strong>Liên tưởng 1 — Cách bạn sắp xếp kệ sách:</strong>{" "}
+            <strong>Liên tưởng 1-Cách bạn sắp xếp kệ sách:</strong>{" "}
             Khi bạn sắp kệ sách ở nhà, bạn đặt sách cùng chủ đề gần nhau:
             tiểu thuyết gần tiểu thuyết, sách kỹ thuật gần sách kỹ thuật. Bạn
-            không cần ai bảo — bạn &quot;cảm&quot; được từ nội dung. Word
+            không cần ai bảo-bạn &quot;cảm&quot; được từ nội dung. Word
             embedding là bản đồ tự sắp xếp như vậy cho từ ngữ: &quot;phở&quot;
             gần &quot;bún chả&quot;, không phải vì ai dán nhãn, mà vì chúng
             cùng xuất hiện trong các ngữ cảnh về ẩm thực.
           </p>
           <p>
-            <strong>Liên tưởng 2 — Map định vị Sài Gòn:</strong>{" "}
+            <strong>Liên tưởng 2-Map định vị Sài Gòn:</strong>{" "}
             Trên bản đồ Sài Gòn, Bến Thành gần phố Tây (Phạm Ngũ Lão), xa quận
             9. Bạn đo khoảng cách bằng km. Trong word embedding, mỗi từ là
             một toạ độ trong không gian 300 chiều. Bạn đo &quot;độ giống
             nghĩa&quot; bằng cosine similarity giữa hai vector.
           </p>
           <p>
-            <strong>Liên tưởng 3 — &quot;Vua - đàn ông + phụ nữ =
+            <strong>Liên tưởng 3, &quot;Vua - đàn ông + phụ nữ =
             hoàng hậu&quot;:</strong>{" "}
             Đây là đẳng thức kinh điển thể hiện word embedding không chỉ là
-            &quot;gần/xa&quot; — nó còn biểu diễn được các mối quan hệ trừu
+            &quot;gần/xa&quot;, nó còn biểu diễn được các mối quan hệ trừu
             tượng như &quot;giới tính&quot;, &quot;số ít/số nhiều&quot;,
             &quot;thủ đô-quốc gia&quot;, &quot;nguyên thể-quá khứ&quot;.
             Việc này gần như phép thuật khi công bố (Mikolov, 2013).
           </p>
           <p>
-            <strong>Liên tưởng 4 — Tìm kiếm ngữ nghĩa trên Shopee:</strong>{" "}
+            <strong>Liên tưởng 4-Tìm kiếm ngữ nghĩa trên Shopee:</strong>{" "}
             Khi bạn gõ &quot;quần jean&quot;, Shopee cũng hiện &quot;quần
-            bò&quot;, &quot;quần tây&quot; — dù bạn không gõ. Đằng sau hậu
+            bò&quot;, &quot;quần tây&quot;, dù bạn không gõ. Đằng sau hậu
             trường là embedding: các từ này có vector gần nhau. Đây là một
             trong những ứng dụng công nghiệp sớm nhất của word embedding.
           </p>
@@ -218,7 +218,7 @@ export default function WordEmbeddingsTopic() {
       {/* ── Step 2: Interactive Viz ── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Bản đồ bên dưới cho thấy các từ trong không gian 2D. Di chuột qua từng từ để xem — bạn sẽ thấy {'"phở"'} nằm gần {'"bún chả"'}, và {'"xe máy"'} nằm gần {'"Grab"'}!
+          Bản đồ bên dưới cho thấy các từ trong không gian 2D. Di chuột qua từng từ để xem-bạn sẽ thấy {'"phở"'} nằm gần {'"bún chả"'}, và {'"xe máy"'} nằm gần {'"Grab"'}!
         </p>
 
         <VisualizationSection>
@@ -323,7 +323,7 @@ export default function WordEmbeddingsTopic() {
             khoảng cách Euclid thông thường?</strong>{" "}
             Trong word embedding, độ dài vector phụ thuộc vào tần suất từ
             xuất hiện. Nếu dùng Euclid, từ hiếm sẽ &quot;xa&quot; tất cả vì
-            norm nhỏ. Cosine similarity bỏ qua độ dài, chỉ đo hướng — phù
+            norm nhỏ. Cosine similarity bỏ qua độ dài, chỉ đo hướng-phù
             hợp hơn cho đo độ tương đồng ngữ nghĩa.
           </p>
 
@@ -341,27 +341,27 @@ export default function WordEmbeddingsTopic() {
               </thead>
               <tbody className="text-muted">
                 <tr className="border-b border-border/50">
-                  <td className="py-2">phở — bún chả</td>
+                  <td className="py-2">phở-bún chả</td>
                   <td className="text-right py-2 font-mono">0.86</td>
                   <td className="pl-4 py-2">Cùng chủ đề ẩm thực</td>
                 </tr>
                 <tr className="border-b border-border/50">
-                  <td className="py-2">Hà Nội — Sài Gòn</td>
+                  <td className="py-2">Hà Nội-Sài Gòn</td>
                   <td className="text-right py-2 font-mono">0.79</td>
                   <td className="pl-4 py-2">Đều là thành phố lớn</td>
                 </tr>
                 <tr className="border-b border-border/50">
-                  <td className="py-2">vui — hạnh phúc</td>
+                  <td className="py-2">vui-hạnh phúc</td>
                   <td className="text-right py-2 font-mono">0.72</td>
                   <td className="pl-4 py-2">Cảm xúc tích cực</td>
                 </tr>
                 <tr className="border-b border-border/50">
-                  <td className="py-2">phở — máy tính</td>
+                  <td className="py-2">phở-máy tính</td>
                   <td className="text-right py-2 font-mono">0.11</td>
                   <td className="pl-4 py-2">Khác chủ đề hoàn toàn</td>
                 </tr>
                 <tr>
-                  <td className="py-2">vui — buồn</td>
+                  <td className="py-2">vui-buồn</td>
                   <td className="text-right py-2 font-mono">0.42</td>
                   <td className="pl-4 py-2">
                     Trái nghĩa nhưng cùng domain cảm xúc &rArr; cosine vừa
@@ -400,9 +400,9 @@ export default function WordEmbeddingsTopic() {
         <InlineChallenge
           question="Nếu vector('Hà Nội') - vector('phở') + vector('cơm tấm'), kết quả sẽ gần vector nào nhất?"
           options={[
-            "vector('phở') — vì phở là đặc sản",
-            "vector('Sài Gòn') — vì cơm tấm là đặc sản Sài Gòn",
-            "vector('xe máy') — vì Sài Gòn nhiều xe máy",
+            "vector('phở'), vì phở là đặc sản",
+            "vector('Sài Gòn'), vì cơm tấm là đặc sản Sài Gòn",
+            "vector('xe máy'), vì Sài Gòn nhiều xe máy",
           ]}
           correct={1}
           explanation="Hà Nội - phở = khái niệm 'thành phố'. Cộng cơm tấm = thành phố + đặc sản cơm tấm = Sài Gòn! Embeddings mã hóa cả quan hệ địa lý-ẩm thực."
@@ -412,13 +412,13 @@ export default function WordEmbeddingsTopic() {
           <InlineChallenge
             question={`Từ "đá" có thể là động từ ("đá bóng") hoặc danh từ ("hòn đá"). Word2Vec gán MỘT vector duy nhất cho "đá". Điều gì xảy ra?`}
             options={[
-              "Vector 'đá' sẽ rất chính xác — tách biệt hai nghĩa hoàn hảo",
+              "Vector 'đá' sẽ rất chính xác-tách biệt hai nghĩa hoàn hảo",
               "Vector 'đá' là trung bình của cả hai nghĩa → gần 'bóng' một chút VÀ gần 'hòn' một chút, nhưng không nghĩa nào rõ ràng",
               "Word2Vec sẽ báo lỗi và từ chối huấn luyện",
               "Vector 'đá' bằng 0",
             ]}
             correct={1}
-            explanation={`Đây là vấn đề polysemy (đa nghĩa) của embeddings cố định. Vector 'đá' là hỗn hợp của mọi ngữ cảnh mà 'đá' xuất hiện. Giải pháp: BERT và các contextual embeddings gán vector KHÁC NHAU tuỳ theo câu chứa "đá" — đây là lý do NLP hiện đại đã chuyển sang Transformer.`}
+            explanation={`Đây là vấn đề polysemy (đa nghĩa) của embeddings cố định. Vector 'đá' là hỗn hợp của mọi ngữ cảnh mà 'đá' xuất hiện. Giải pháp: BERT và các contextual embeddings gán vector KHÁC NHAU tuỳ theo câu chứa "đá", đây là lý do NLP hiện đại đã chuyển sang Transformer.`}
           />
         </div>
 
@@ -461,7 +461,7 @@ export default function WordEmbeddingsTopic() {
               <p>Cosine similarity đo góc giữa 2 vector (từ -1 đến 1):</p>
               <LaTeX block>{`\\text{cosine}(\\mathbf{u}, \\mathbf{v}) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\| \\|\\mathbf{v}\\|}`}</LaTeX>
               <p className="text-sm">
-                cosine({'"phở"'}, {'"bún chả"'}) = 0.85 (rất gần). cosine({'"phở"'}, {'"xe máy"'}) = 0.12 (rất xa).
+                cosine({'"phở"'}, {'"bún chả"'}) = 0.85 (rất gần), cosine({'"phở"'}, {'"xe máy"'}) = 0.12 (rất xa).
               </p>
             </div>
           </Callout>
@@ -503,7 +503,7 @@ print(model.similarity("pho", "car"))     # 0.08`}
 from gensim.models import Word2Vec
 from pyvi import ViTokenizer
 
-# 1. Chuẩn bị corpus — list câu, mỗi câu là list từ (đã tokenize)
+# 1. Chuẩn bị corpus-list câu, mỗi câu là list từ (đã tokenize)
 raw_sentences = [
     "Tôi ăn phở mỗi sáng ở Hà Nội",
     "Bún chả là đặc sản Hà Nội nổi tiếng",
@@ -529,12 +529,12 @@ model = Word2Vec(
 print(model.wv.most_similar("phở", topn=3))
 # [('bún_chả', 0.85), ('cơm_tấm', 0.79), ('bánh_mì', 0.72)]
 
-# 4. Phép toán vector — king-queen trên tiếng Việt
+# 4. Phép toán vector-king-queen trên tiếng Việt
 result = model.wv.most_similar(
     positive=["Sài_Gòn", "phở"],
     negative=["Hà_Nội"],
 )
-print(result[0])  # Gần 'cơm_tấm' — đặc sản Sài Gòn`}
+print(result[0])  # Gần 'cơm_tấm', đặc sản Sài Gòn`}
           </CodeBlock>
 
           <CollapsibleDetail title="Skip-gram vs CBOW (cơ chế huấn luyện Word2Vec)">
@@ -550,13 +550,13 @@ print(result[0])  # Gần 'cơm_tấm' — đặc sản Sài Gòn`}
                 <em>&quot;phở&quot;</em>. Nhanh, phù hợp corpus lớn, từ phổ biến.
               </p>
               <p>
-                <strong>Skip-gram:</strong> ngược lại — dùng từ trung tâm
+                <strong>Skip-gram:</strong> ngược lại-dùng từ trung tâm
                 để dự đoán các từ ngữ cảnh. Từ <em>&quot;phở&quot;</em> → dự đoán{" "}
                 [&quot;Tôi&quot;, &quot;ăn&quot;, &quot;ở&quot;, &quot;Hà Nội&quot;]. Chậm hơn nhưng tốt hơn cho
                 từ hiếm.
               </p>
               <p>
-                <strong>Negative sampling:</strong> kỹ thuật tăng tốc —
+                <strong>Negative sampling:</strong> kỹ thuật tăng tốc,
                 thay vì softmax trên toàn bộ vocabulary (triệu từ), chỉ cập
                 nhật với vài từ &quot;giả&quot; (negative samples). Giảm chi phí từ
                 O(V) xuống O(k) với k = 5-20.
@@ -569,11 +569,11 @@ print(result[0])  # Gần 'cơm_tấm' — đặc sản Sài Gòn`}
             </div>
           </CollapsibleDetail>
 
-          <Callout variant="warning" title="Embeddings có bias — cẩn trọng khi triển khai">
+          <Callout variant="warning" title="Embeddings có bias-cẩn trọng khi triển khai">
             Word embeddings phản ánh bias trong corpus huấn luyện. Ví dụ
             nổi tiếng: <code>vector(&quot;lập trình viên&quot;) − vector(&quot;đàn ông&quot;) +
             vector(&quot;phụ nữ&quot;)</code> có thể cho ra{" "}
-            <em>&quot;nội trợ&quot;</em> thay vì &quot;lập trình viên&quot; — vì corpus
+            <em>&quot;nội trợ&quot;</em> thay vì &quot;lập trình viên&quot;, vì corpus
             chứa thiên kiến giới. Khi triển khai cho hệ thống tuyển dụng,
             tín dụng, tư pháp, bạn BẮT BUỘC phải kiểm tra và giảm thiểu
             bias (debias techniques).
@@ -656,8 +656,8 @@ for score, idx in zip(top3.values, top3.indices):
 
           <Callout variant="insight" title="Word embedding vẫn chưa chết">
             Mặc dù BERT/GPT đã thay thế Word2Vec cho hầu hết task hiện đại,
-            word embedding cổ điển vẫn hữu ích: (1) lightweight — chạy được
-            trên CPU cho edge device; (2) giải thích tốt — vẫn là ví dụ số 1
+            word embedding cổ điển vẫn hữu ích: (1) lightweight-chạy được
+            trên CPU cho edge device; (2) giải thích tốt-vẫn là ví dụ số 1
             cho sinh viên học NLP; (3) nền tảng toán học cho các embedding
             hiện đại (cùng dùng cosine, cùng triết lý distributional). Đừng
             nhảy thẳng sang Transformer mà bỏ qua nền móng này.
@@ -680,7 +680,7 @@ for score, idx in zip(top3.values, top3.indices):
             </li>
             <li>
               <strong>fastText (Bojanowski, 2017):</strong>{" "}
-              dùng n-gram ký tự — xử lý được từ hiếm và OOV. Hoạt động tốt
+              dùng n-gram ký tự-xử lý được từ hiếm và OOV. Hoạt động tốt
               với các ngôn ngữ có hình thái phong phú (morphology-rich
               languages).
             </li>
@@ -691,7 +691,7 @@ for score, idx in zip(top3.values, top3.indices):
             </li>
             <li>
               <strong>BERT (Devlin, 2018):</strong>{" "}
-              contextual embedding dùng Transformer — chuẩn vàng cho NLP
+              contextual embedding dùng Transformer-chuẩn vàng cho NLP
               hiện đại.
             </li>
           </ul>
@@ -756,7 +756,7 @@ for score, idx in zip(top3.values, top3.indices):
 
           <Callout variant="tip" title="Lời khuyên cho team nhỏ">
             Nếu bạn chỉ có &lt;10K documents và không có GPU, đừng tự host.
-            Dùng OpenAI text-embedding-3-small qua API — chi phí rất thấp
+            Dùng OpenAI text-embedding-3-small qua API-chi phí rất thấp
             (&lt;$5 cho 1M token), chất lượng cao, không phải quản lý
             infra. Chỉ self-host khi số lượng query/ngày hoặc data
             sensitivity biện minh được thời gian kỹ sư bỏ ra.
@@ -792,12 +792,12 @@ for score, idx in zip(top3.values, top3.indices):
         <MiniSummary
           title="Ghi nhớ về Word Embeddings"
           points={[
-            "Embeddings biến từ thành vector dense (100-300 chiều) — nắm bắt ngữ nghĩa.",
+            "Embeddings biến từ thành vector dense (100-300 chiều), nắm bắt ngữ nghĩa.",
             "Từ tương tự nằm gần nhau: 'phở' gần 'bún chả', xa 'xe máy'.",
             "Phép tính vector có ý nghĩa: vua - đàn ông + phụ nữ ≈ hoàng hậu.",
             "Cosine similarity đo mức tương đồng giữa hai từ (từ -1 đến 1).",
             "Nền tảng cho mọi mô hình NLP hiện đại: Word2Vec → GloVe → BERT → GPT.",
-            "Hạn chế: không xử lý đa nghĩa (polysemy) và thừa kế bias từ corpus — cần debias khi triển khai.",
+            "Hạn chế: không xử lý đa nghĩa (polysemy) và thừa kế bias từ corpus-cần debias khi triển khai.",
           ]}
         />
       </LessonSection>

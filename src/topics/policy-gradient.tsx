@@ -21,7 +21,7 @@ import type { QuizQuestion } from "@/components/topic/QuizSection";
 import type { TopicMeta } from "@/lib/types";
 
 // ---------------------------------------------------------------------------
-// Metadata — DO NOT CHANGE. The routing layer reads this at build time to
+// Metadata-DO NOT CHANGE. The routing layer reads this at build time to
 // register the topic with the learning-path index.
 // ---------------------------------------------------------------------------
 export const metadata: TopicMeta = {
@@ -121,7 +121,7 @@ function updatePolicy(
     G = trajectory[t].reward + gamma * G;
     returns[t] = G;
   }
-  // baseline: mean return — giảm variance mà không lệch kỳ vọng gradient
+  // baseline: mean return-giảm variance mà không lệch kỳ vọng gradient
   const mean = returns.reduce((a, b) => a + b, 0) / Math.max(1, returns.length);
   const advantage = returns.map((g) => g - mean);
 
@@ -148,7 +148,7 @@ function updatePolicy(
 }
 
 // ---------------------------------------------------------------------------
-// Bộ câu hỏi — tổng cộng 8 quiz theo yêu cầu
+// Bộ câu hỏi-tổng cộng 8 quiz theo yêu cầu
 // ---------------------------------------------------------------------------
 function buildQuizQuestions(): QuizQuestion[] {
   return [
@@ -156,7 +156,7 @@ function buildQuizQuestions(): QuizQuestion[] {
       question: "Policy Gradient khác Q-Learning ở điểm nào cơ bản?",
       options: [
         "Dùng nhiều GPU hơn",
-        "Q-Learning học VALUE function rồi suy ra policy. Policy Gradient học TRỰC TIẾP policy π(a|s) — mapping state→action probabilities",
+        "Q-Learning học VALUE function rồi suy ra policy. Policy Gradient học TRỰC TIẾP policy π(a|s), mapping state→action probabilities",
         "Không khác",
       ],
       correct: 1,
@@ -190,7 +190,7 @@ function buildQuizQuestions(): QuizQuestion[] {
         "Baseline trong REINFORCE có vai trò gì với expected gradient?",
       options: [
         "Làm expected gradient đổi hướng",
-        "KHÔNG làm lệch expected gradient (unbiased), nhưng giảm variance — vì E[∇ log π · b] = 0 với b độc lập action",
+        "KHÔNG làm lệch expected gradient (unbiased), nhưng giảm variance-vì E[∇ log π · b] = 0 với b độc lập action",
         "Chỉ là kỹ thuật tăng tốc GPU",
       ],
       correct: 1,
@@ -207,7 +207,7 @@ function buildQuizQuestions(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "DQN mạnh với action rời rạc nhỏ (Atari 4–18 nút bấm). Với action liên tục (góc xoay, lực đẩy) hoặc trường hợp cần policy ngẫu nhiên (rock-paper-scissors, poker), Policy Gradient và các biến thể (DDPG, SAC, PPO) là lựa chọn chuẩn.",
+        "DQN mạnh với action rời rạc nhỏ (Atari 4-18 nút bấm). Với action liên tục (góc xoay, lực đẩy) hoặc trường hợp cần policy ngẫu nhiên (rock-paper-scissors, poker), Policy Gradient và các biến thể (DDPG, SAC, PPO) là lựa chọn chuẩn.",
     },
     {
       question: "On-policy khác off-policy ở điểm gì?",
@@ -218,7 +218,7 @@ function buildQuizQuestions(): QuizQuestion[] {
       ],
       correct: 1,
       explanation:
-        "REINFORCE là on-policy vì công thức gradient yêu cầu hành vi lấy mẫu theo π hiện tại. Nếu tái sử dụng dữ liệu cũ không hiệu chỉnh, gradient bị sai lệch. Off-policy như DQN, SAC có thể tái sử dụng replay buffer — sample-efficient hơn nhưng tricky hơn để ổn định.",
+        "REINFORCE là on-policy vì công thức gradient yêu cầu hành vi lấy mẫu theo π hiện tại. Nếu tái sử dụng dữ liệu cũ không hiệu chỉnh, gradient bị sai lệch. Off-policy như DQN, SAC có thể tái sử dụng replay buffer-sample-efficient hơn nhưng tricky hơn để ổn định.",
     },
     {
       question:
@@ -241,7 +241,7 @@ function buildQuizQuestions(): QuizQuestion[] {
         { answer: "reward", accept: ["return", "g_t", "phần thưởng"] },
       ],
       explanation:
-        "Công thức cốt lõi: ∇_θ J(θ) = E[∇_θ log π_θ(a|s) · G_t]. Đây chính là gradient ascent trên expected reward — tăng xác suất của action tốt, giảm xác suất action xấu.",
+        "Công thức cốt lõi: ∇_θ J(θ) = E[∇_θ log π_θ(a|s) · G_t]. Đây chính là gradient ascent trên expected reward-tăng xác suất của action tốt, giảm xác suất action xấu.",
     },
   ];
 }
@@ -320,7 +320,7 @@ function CorridorVisual({ position, isRunning }: CorridorProps) {
         fontSize={11}
         fontWeight="bold"
       >
-        Agent trong hành lang 1D — ô {GOAL_POSITION} là goal
+        Agent trong hành lang 1D-ô {GOAL_POSITION} là goal
       </text>
       <text
         x={280}
@@ -444,7 +444,7 @@ function GradientArrow({ direction, magnitude }: GradientArrowProps) {
         : "#64748b";
   const label =
     direction === "none"
-      ? "Chưa có gradient — hãy chạy episode"
+      ? "Chưa có gradient-hãy chạy episode"
       : direction === "right"
         ? "Gradient đẩy policy sang RIGHT"
         : "Gradient đẩy policy sang LEFT";
@@ -609,7 +609,7 @@ function useREINFORCE() {
 }
 
 // ===========================================================================
-// Bảng ghi lịch sử episodes — tối đa 8 dòng gần nhất
+// Bảng ghi lịch sử episodes-tối đa 8 dòng gần nhất
 // ===========================================================================
 interface EpisodeLogProps {
   episodes: ReadonlyArray<EpisodeRecord>;
@@ -620,7 +620,7 @@ function EpisodeLog({ episodes }: EpisodeLogProps) {
   if (recent.length === 0) {
     return (
       <p className="text-xs text-muted italic">
-        Chưa có episode nào — hãy "Chạy episode" rồi "Cập nhật policy".
+        Chưa có episode nào-hãy "Chạy episode" rồi "Cập nhật policy".
       </p>
     );
   }
@@ -692,10 +692,10 @@ export default function PolicyGradientTopic() {
     <>
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Robot cần điều khiển cánh tay (góc xoay 0–360 độ — liên tục). Q-Learning cần discretize thành 36 bins → mất độ chính xác. Có cách nào tốt hơn?"
+          question="Robot cần điều khiển cánh tay (góc xoay 0-360 độ-liên tục). Q-Learning cần discretize thành 36 bins → mất độ chính xác. Có cách nào tốt hơn?"
           options={[
             "Discretize nhiều hơn (3600 bins)",
-            "Policy Gradient: học TRỰC TIẾP phân phối xác suất trên action liên tục — output mean và std của Gaussian",
+            "Policy Gradient: học TRỰC TIẾP phân phối xác suất trên action liên tục-output mean và std của Gaussian",
             "Không thể dùng RL cho action liên tục",
           ]}
           correct={1}
@@ -715,7 +715,7 @@ export default function PolicyGradientTopic() {
                   <em>Take Action</em> để agent đi một bước theo π(a|s). Bấm{" "}
                   <em>Chạy episode</em> để agent tự đi tối đa{" "}
                   {MAX_STEPS_PER_EPISODE} bước. Sau đó bấm{" "}
-                  <em>Cập nhật policy</em> để REINFORCE chạy gradient ascent —
+                  <em>Cập nhật policy</em> để REINFORCE chạy gradient ascent,
                   bạn sẽ thấy phân phối π dịch chuyển.
                 </p>
 
@@ -799,7 +799,7 @@ export default function PolicyGradientTopic() {
                 <EpisodeLog episodes={episodes} />
 
                 <Callout variant="tip" title="Quan sát gì ở đây?">
-                  Sau vài lần lặp, bar <strong>Right</strong> sẽ cao dần lên —
+                  Sau vài lần lặp, bar <strong>Right</strong> sẽ cao dần lên,
                   vì mọi trajectory đi sang phải đều mang lại reward dương khi
                   chạm ô {GOAL_POSITION}. Đó chính xác là gradient ascent trên{" "}
                   <LaTeX>{"J(\\theta)"}</LaTeX>.
@@ -850,7 +850,7 @@ export default function PolicyGradientTopic() {
                 "Dùng nhiều episodes hơn",
               ]}
               correct={1}
-              explanation="Baseline subtraction: thay vì gradient = G_t · ∇ log π, dùng (G_t − b) · ∇ log π. Nếu b = mean(G), action tốt hơn trung bình → gradient dương (tăng xác suất). Action tệ → gradient âm (giảm). Không thay đổi expected gradient nhưng variance giảm 50–90%!"
+              explanation="Baseline subtraction: thay vì gradient = G_t · ∇ log π, dùng (G_t − b) · ∇ log π. Nếu b = mean(G), action tốt hơn trung bình → gradient dương (tăng xác suất). Action tệ → gradient âm (giảm). Không thay đổi expected gradient nhưng variance giảm 50-90%!"
             />
             <InlineChallenge
               question="Chính sách hội tụ về π(right)=0.98. Bạn có nên xoá hẳn p(left) = 0 không?"
@@ -860,7 +860,7 @@ export default function PolicyGradientTopic() {
                 "Ngẫu nhiên 50/50 mãi",
               ]}
               correct={1}
-              explanation="Khi p(action) tiến sát 1 thì gradient của action còn lại gần bằng 0 — policy không thể thoát khỏi cực trị cục bộ. Thực hành tốt: cộng thêm entropy bonus β · H(π) vào objective để giữ một chút exploration, đặc biệt khi môi trường non-stationary."
+              explanation="Khi p(action) tiến sát 1 thì gradient của action còn lại gần bằng 0-policy không thể thoát khỏi cực trị cục bộ. Thực hành tốt: cộng thêm entropy bonus β · H(π) vào objective để giữ một chút exploration, đặc biệt khi môi trường non-stationary."
           />
           </LessonSection>
 
@@ -936,7 +936,7 @@ export default function PolicyGradientTopic() {
 
               <CodeBlock
                 language="python"
-                title="REINFORCE với PyTorch — bản đầy đủ"
+                title="REINFORCE với PyTorch-bản đầy đủ"
               >
                 {`import torch
 import torch.nn as nn
@@ -987,7 +987,7 @@ def train(env, episodes: int = 1000, gamma: float = 0.99, lr: float = 3e-4):
         # Baseline subtraction: trừ mean + chuẩn hoá → variance reduction
         returns_t = (returns_t - returns_t.mean()) / (returns_t.std() + 1e-8)
 
-        # Policy gradient loss — dấu âm vì ta gradient-DESCENT trên -J
+        # Policy gradient loss-dấu âm vì ta gradient-DESCENT trên -J
         loss = -(torch.stack(log_probs) * returns_t).sum()
 
         optim.zero_grad()
@@ -1000,7 +1000,7 @@ def train(env, episodes: int = 1000, gamma: float = 0.99, lr: float = 3e-4):
                   f"len={len(rewards):3d} grad_norm_clipped=1.0")`}
               </CodeBlock>
 
-              <CodeBlock language="python" title="NumPy — REINFORCE đồ chơi cho corridor">
+              <CodeBlock language="python" title="NumPy-REINFORCE đồ chơi cho corridor">
                 {`import numpy as np
 
 def run_episode(policy, corridor_len=11, goal=5, max_steps=20):
@@ -1055,7 +1055,7 @@ for ep in range(200):
                 Nhờ đó ta có thể sample action theo policy, lấy gradient của
                 log-prob rồi cân bằng bằng weight (chính là return hoặc
                 advantage). Đây là cách duy nhất để huấn luyện khi environment
-                không khả vi — tức gần như mọi bài toán RL thực tế (game
+                không khả vi-tức gần như mọi bài toán RL thực tế (game
                 engines, simulators vật lý, LLM decoding, ...).
               </p>
 
@@ -1079,7 +1079,7 @@ for ep in range(200):
                   variance. Baseline tối ưu (variance-minimising) có dạng
                   weighted average các returns, thường được xấp xỉ bằng một
                   value-network <LaTeX>{"V_\\phi(s)"}</LaTeX> học song song với
-                  policy — chính là Actor-Critic.
+                  policy-chính là Actor-Critic.
                 </p>
               </CollapsibleDetail>
 
@@ -1087,7 +1087,7 @@ for ep in range(200):
                 <p>
                   <strong>REINFORCE</strong> là bản gốc: dùng Monte Carlo
                   return, update 1 lần/episode, variance rất cao, sample ít.
-                  Ưu điểm duy nhất là công thức đơn giản — bạn có thể viết
+                  Ưu điểm duy nhất là công thức đơn giản-bạn có thể viết
                   lại chỉ với NumPy như ví dụ phía trên.
                 </p>
                 <p>
@@ -1110,7 +1110,7 @@ for ep in range(200):
                 </p>
                 <p>
                   <strong>GRPO</strong> (DeepSeek 2024): variant của PPO dành
-                  cho RLHF/LLM — bỏ critic, dùng group-mean làm baseline. Đơn
+                  cho RLHF/LLM-bỏ critic, dùng group-mean làm baseline. Đơn
                   giản hơn, ít memory hơn, phù hợp khi sample theo prompt.
                   DeepSeek R1, Qwen 2.5, và nhiều mô hình mở khác hiện dùng
                   GRPO thay cho PPO truyền thống.
@@ -1119,7 +1119,7 @@ for ep in range(200):
                   <strong>TRPO</strong> (Schulman 2015) là tiền thân của PPO:
                   dùng trust region dựa trên KL-divergence, giải bằng
                   conjugate gradient. Tốt về lý thuyết nhưng phức tạp triển
-                  khai — PPO đơn giản hoá bằng cách chỉ clip ratio thay vì
+                  khai-PPO đơn giản hoá bằng cách chỉ clip ratio thay vì
                   giải toán tối ưu có ràng buộc.
                 </p>
               </CollapsibleDetail>
@@ -1138,7 +1138,7 @@ for ep in range(200):
 
               <p className="mt-4">
                 <strong>Khi nào Policy Gradient thất bại?</strong> Khi reward
-                cực kỳ thưa thớt (ví dụ Montezuma's Revenge — phần thưởng chỉ
+                cực kỳ thưa thớt (ví dụ Montezuma's Revenge-phần thưởng chỉ
                 xuất hiện sau hàng trăm bước), mean return ≈ 0, advantage cũng
                 ≈ 0, và policy không có tín hiệu để học. Giải pháp: thêm
                 intrinsic reward (curiosity), hierarchical RL, hoặc imitation
@@ -1156,13 +1156,13 @@ for ep in range(200):
 
               <p>
                 <strong>Tại sao không dùng thẳng gradient của reward?</strong>{" "}
-                Reward thường không khả vi theo <LaTeX>{"\\theta"}</LaTeX> —
+                Reward thường không khả vi theo <LaTeX>{"\\theta"}</LaTeX>,
                 environment là hộp đen. Ta chỉ quan sát <em>samples</em> chứ
                 không có <LaTeX>{"\\nabla_\\theta R(s,a)"}</LaTeX>. Policy
                 Gradient Theorem là mẹo toán để đẩy gradient vào trong kỳ
                 vọng: <LaTeX>{"\\nabla \\mathbb{E}_\\pi[R] = \\mathbb{E}_\\pi[\\nabla \\log \\pi \\cdot R]"}</LaTeX>
                 . Mẹo này còn gọi là "log-derivative trick" hoặc "score function
-                estimator" — xuất hiện ở khắp nơi: variational inference,
+                estimator", xuất hiện ở khắp nơi: variational inference,
                 reparameterization trick, REBAR, Gumbel-softmax...
               </p>
 
@@ -1172,7 +1172,7 @@ for ep in range(200):
                 LLM: InstructGPT paper, DeepSeek-R1 technical report, và
                 "Secrets of RLHF" series. Nếu thích thực hành, CleanRL (repo
                 của Shengyi Huang) có các file single-file cho REINFORCE,
-                PPO, GRPO — đọc một lần hiểu toàn bộ pipeline.
+                PPO, GRPO-đọc một lần hiểu toàn bộ pipeline.
               </p>
 
               <p>
@@ -1189,11 +1189,11 @@ for ep in range(200):
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               points={[
-                "Policy Gradient học TRỰC TIẾP π(a|s), không qua Q-value — tự nhiên cho action liên tục.",
+                "Policy Gradient học TRỰC TIẾP π(a|s), không qua Q-value-tự nhiên cho action liên tục.",
                 "REINFORCE: sample episode → tính return G_t → update θ theo ∇ log π · G_t.",
-                "Baseline subtraction: trừ mean return, giảm variance 50–90% mà KHÔNG thay đổi expected gradient.",
-                "On-policy: mỗi gradient step chỉ dùng dữ liệu từ policy hiện tại — kém sample-efficient hơn off-policy (DQN).",
-                "Actor-Critic: dùng Critic V_φ(s) làm baseline — biến REINFORCE thành A2C/PPO, ổn định hơn nhiều.",
+                "Baseline subtraction: trừ mean return, giảm variance 50-90% mà KHÔNG thay đổi expected gradient.",
+                "On-policy: mỗi gradient step chỉ dùng dữ liệu từ policy hiện tại-kém sample-efficient hơn off-policy (DQN).",
+                "Actor-Critic: dùng Critic V_φ(s) làm baseline-biến REINFORCE thành A2C/PPO, ổn định hơn nhiều.",
                 "PPO/GRPO (với clipping và trust-region) là xương sống của RLHF hiện đại cho ChatGPT, Claude, Gemini.",
               ]}
             />

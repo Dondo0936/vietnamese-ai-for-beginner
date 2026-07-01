@@ -1059,7 +1059,7 @@ export default function EpochsBatchesTopic() {
 
             <p className="text-sm text-muted leading-relaxed">
               Nói bằng tiếng Việt: trọng số mới bằng trọng số cũ trừ đi một bước
-              nhỏ theo hướng <em>trung bình</em> của độ dốc trên B mẫu. η là{" "}
+              nhỏ theo hướng <em>trung bình</em> của độ dốc trên B mẫu, η là{" "}
               <TopicLink slug="learning-rate">learning rate</TopicLink>, tức là
               độ dài mỗi bước. B càng lớn, trung bình càng &ldquo;đại diện&rdquo; cho
               toàn dataset, nhờ vậy đường loss càng mượt. B càng nhỏ, trung bình chỉ

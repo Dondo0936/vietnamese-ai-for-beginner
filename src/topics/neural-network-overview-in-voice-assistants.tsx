@@ -150,7 +150,7 @@ const STAGES: StageConfig[] = [
     bgTint: "bg-amber-50 dark:bg-amber-900/20",
     summary: "Rút gọn ảnh nhiệt thành vài chục con số mô tả tiếng.",
     detail:
-      "Ảnh nhiệt vẫn quá chi tiết. Thuật toán chọn 40–80 con số quan trọng nhất, đủ để phân biệt âm /a/, /b/, /ngh/ mà không cần hình ảnh đầy đủ.",
+      "Ảnh nhiệt vẫn quá chi tiết. Thuật toán chọn 40-80 con số quan trọng nhất, đủ để phân biệt âm /a/, /b/, /ngh/ mà không cần hình ảnh đầy đủ.",
   },
   {
     key: "phoneme",

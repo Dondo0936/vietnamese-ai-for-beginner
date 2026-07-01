@@ -327,7 +327,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "nprobe = số cụm được scan. nprobe=1 là nhanh nhất nhưng recall thấp (nhất là khi query gần biên cụm). nprobe cao → quét nhiều cụm → recall gần 100% nhưng chậm. Người ta thường sweep nprobe ∈ {1,4,8,16,32} và vẽ đường cong Recall@k vs Latency để chọn điểm 'knee'.",
+      "nprobe = số cụm được scan, nprobe=1 là nhanh nhất nhưng recall thấp (nhất là khi query gần biên cụm), nprobe cao → quét nhiều cụm → recall gần 100% nhưng chậm. Người ta thường sweep nprobe ∈ {1,4,8,16,32} và vẽ đường cong Recall@k vs Latency để chọn điểm 'knee'.",
   },
   {
     question:
@@ -340,7 +340,7 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      "HNSW có hai họ tham số: build-time (M, efConstruction) và query-time (efSearch). efSearch là độ rộng beam search tại layer 0. ef=k cho recall thấp, ef=200 cho recall gần 100%. Lưu ý ef phải ≥ k, không thể lấy top-10 với ef=5.",
+      "HNSW có hai họ tham số: build-time (M, efConstruction) và query-time (efSearch), efSearch là độ rộng beam search tại layer 0. ef=k cho recall thấp, ef=200 cho recall gần 100%. Lưu ý ef phải ≥ k, không thể lấy top-10 với ef=5.",
   },
   {
     question:
@@ -904,7 +904,7 @@ export default function FAISSTopic() {
                 "Chuyển sang Flat để chính xác 100%",
               ]}
               correct={1}
-              explanation="Query ở biên cụm thường có top-k chia đều 2-3 cụm. nprobe=1 sẽ bỏ lỡ các điểm ở cụm kế bên. Tăng nprobe là cách đơn giản và rẻ nhất; chỉ khi nprobe=16 vẫn không đủ thì mới cân nhắc đổi sang IVF-HNSW hoặc HNSW thuần."
+              explanation="Query ở biên cụm thường có top-k chia đều 2-3 cụm, nprobe=1 sẽ bỏ lỡ các điểm ở cụm kế bên. Tăng nprobe là cách đơn giản và rẻ nhất; chỉ khi nprobe=16 vẫn không đủ thì mới cân nhắc đổi sang IVF-HNSW hoặc HNSW thuần."
             />
           </LessonSection>
 

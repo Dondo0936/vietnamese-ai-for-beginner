@@ -588,10 +588,10 @@ export default function GradientDescentInTraining() {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <CheatCard title="Loss giảm êm" tone="success" body="Giữ nguyên. Theo dõi accuracy và weight histogram để phát hiện sớm vấn đề. Đừng vội giảm η cho tới khi plateau rõ ràng." />
-              <CheatCard title="Loss răng cưa, dao động" tone="warning" body="Giảm η 1,5×–2×, hoặc tăng batch size 2× để giảm noise. Nếu vẫn dao động, tăng momentum để bước đi &ldquo;nặng&rdquo; hơn." />
-              <CheatCard title="Loss plateau, không giảm" tone="info" body="Có thể saddle point: bật / tăng momentum. Có thể η quá nhỏ: nhân η cho 2–3. Có thể dataset học hết: lúc dừng huấn luyện." />
+              <CheatCard title="Loss răng cưa, dao động" tone="warning" body="Giảm η 1,5×-2×, hoặc tăng batch size 2× để giảm noise. Nếu vẫn dao động, tăng momentum để bước đi &ldquo;nặng&rdquo; hơn." />
+              <CheatCard title="Loss plateau, không giảm" tone="info" body="Có thể saddle point: bật / tăng momentum. Có thể η quá nhỏ: nhân η cho 2-3. Có thể dataset học hết: lúc dừng huấn luyện." />
               <CheatCard title="Loss tăng dần (chưa NaN)" tone="warning" body="η hơi lớn, mỗi bước làm loss tăng. Giảm η ngay, hoặc rollback checkpoint. Nếu mới tăng vài bước, bật warmup có thể xử lý." />
-              <CheatCard title="Loss nổ / NaN đột ngột" tone="danger" body="Rollback checkpoint trước khi nổ. Giảm η 3–5×. Bật / siết gradient clipping. Kiểm tra batch gần nhất có bất thường không." />
+              <CheatCard title="Loss nổ / NaN đột ngột" tone="danger" body="Rollback checkpoint trước khi nổ. Giảm η 3-5×. Bật / siết gradient clipping. Kiểm tra batch gần nhất có bất thường không." />
               <CheatCard title="Accuracy tăng, loss phẳng" tone="info" body="Cross-entropy và độ chính xác đo hai thứ khác nhau. Mô hình vẫn học đúng, chỉ &ldquo;tự tin&rdquo; chưa đủ. Thường là tín hiệu ổn." />
             </div>
           </div>
@@ -1067,7 +1067,7 @@ function WarmupSketch() {
 
   return (
     <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Learning rate tăng tuyến tính trong giai đoạn warmup">
-      <title>Warmup. η tăng tuyến tính từ 0 tới đỉnh trong khoảng 375 triệu token đầu.</title>
+      <title>Warmup, η tăng tuyến tính từ 0 tới đỉnh trong khoảng 375 triệu token đầu.</title>
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <rect x={toPX(0)} y={20} width={toPX(warmupEnd) - toPX(0)} height={plotH - 44} fill="#0ea5e9" opacity={0.08} />
@@ -1095,7 +1095,7 @@ function DecaySketch() {
 
   return (
     <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full" role="img" aria-label="Learning rate decay theo cosine xuống 10% giá trị đỉnh">
-      <title>Cosine decay. η giảm dần về cuối huấn luyện.</title>
+      <title>Cosine decay, η giảm dần về cuối huấn luyện.</title>
       <line x1={40} y1={plotH - 24} x2={plotW - 20} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={20} x2={40} y2={plotH - 24} stroke="var(--border)" strokeWidth={1} />
       <line x1={40} y1={toPY(peak * 0.1)} x2={plotW - 20} y2={toPY(peak * 0.1)} stroke="#22c55e" strokeWidth={1} strokeDasharray="3,3" opacity={0.6} />

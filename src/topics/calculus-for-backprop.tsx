@@ -165,7 +165,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đạo hàm đo tốc độ thay đổi. dL/dw = -4 nghĩa là theo tương quan tuyến tính hiện tại, tăng w thêm 1 sẽ làm loss giảm 4. Dấu âm cho biết tăng w sẽ làm loss giảm. Vì vậy gradient descent sẽ tăng w để loss nhỏ hơn.",
+      "Đạo hàm đo tốc độ thay đổi, dL/dw = -4 nghĩa là theo tương quan tuyến tính hiện tại, tăng w thêm 1 sẽ làm loss giảm 4. Dấu âm cho biết tăng w sẽ làm loss giảm. Vì vậy gradient descent sẽ tăng w để loss nhỏ hơn.",
   },
   {
     question:

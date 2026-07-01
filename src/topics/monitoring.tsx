@@ -102,7 +102,7 @@ export default function MonitoringTopic() {
         { answer: "drift", accept: ["trôi", "troi", "shift"] },
         { answer: "metric", accept: ["metrics", "chỉ số", "chi so"] },
       ],
-      explanation: "Data drift là khi P(X) production khác P(X) training. Metric (chỉ số) như PSI, KL divergence, accuracy được log liên tục. alert tự động khi vượt ngưỡng để trigger retrain.",
+      explanation: "Data drift là khi P(X) production khác P(X) training. Metric (chỉ số) như PSI, KL divergence, accuracy được log liên tục, alert tự động khi vượt ngưỡng để trigger retrain.",
     },
   ], []);
 
@@ -114,11 +114,11 @@ export default function MonitoringTopic() {
           question="Model gợi ý sản phẩm của Shopee cho accuracy 95% khi deploy tháng 1. Đến tháng 6, không ai thay đổi code gì cả, nhưng user phàn nàn gợi ý ngày càng tệ. Chuyện gì xảy ra?"
           options={[
             "GPU server bị quá tải, cần thêm phần cứng",
-            "Model bị 'lão hoá' vì data thực tế thay đổi (data drift). cần monitoring để phát hiện sớm",
+            "Model bị 'lão hoá' vì data thực tế thay đổi (data drift), cần monitoring để phát hiện sớm",
             "User quá khó tính, model vẫn tốt",
           ]}
           correct={1}
-          explanation="Chính xác! Model AI 'lão hoá' theo thời gian dù code không đổi. Mùa hè khác mùa đông, trend thời trang thay đổi, sản phẩm mới xuất hiện. Monitoring phát hiện sớm để retrain kịp thời. giống bảo dưỡng xe định kỳ!"
+          explanation="Chính xác! Model AI 'lão hoá' theo thời gian dù code không đổi. Mùa hè khác mùa đông, trend thời trang thay đổi, sản phẩm mới xuất hiện. Monitoring phát hiện sớm để retrain kịp thời, giống bảo dưỡng xe định kỳ!"
         >
 
       {/* STEP 2: INTERACTIVE VIZ */}
@@ -229,7 +229,7 @@ export default function MonitoringTopic() {
           <p>
             Model AI không phải &quot;deploy xong là xong&quot;. chúng <strong>lão hoá</strong>{" "}
             theo thời gian! Dữ liệu thực tế thay đổi liên tục (mùa vụ, trend, hành vi user),
-            nhưng model vẫn &quot;nhớ&quot; patterns cũ. Monitoring giống <strong>bác sĩ khám định kỳ</strong>{" "}. phát hiện &quot;bệnh&quot; sớm trước khi model &quot;sụp đổ&quot;.
+            nhưng model vẫn &quot;nhớ&quot; patterns cũ. Monitoring giống <strong>bác sĩ khám định kỳ</strong>,{" "}phát hiện &quot;bệnh&quot; sớm trước khi model &quot;sụp đổ&quot;.
           </p>
         </AhaMoment>
       </LessonSection>
@@ -237,14 +237,14 @@ export default function MonitoringTopic() {
       {/* STEP 4: CHALLENGE */}
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Thử thách">
         <InlineChallenge
-          question="Model phân loại email spam. Accuracy trên test set = 98%. Sau 3 tháng deploy, user báo nhiều email quan trọng bị đánh spam. Ground-truth accuracy thật sự? Không biết. vì user không report email spam lọt qua. Đây gọi là gì?"
+          question="Model phân loại email spam. Accuracy trên test set = 98%. Sau 3 tháng deploy, user báo nhiều email quan trọng bị đánh spam. Ground-truth accuracy thật sự? Không biết, vì user không report email spam lọt qua. Đây gọi là gì?"
           options={[
             "Overfitting trên test set",
-            "Label bias. chỉ có negative feedback (false positive), không có positive feedback (false negative)",
+            "Label bias, chỉ có negative feedback (false positive), không có positive feedback (false negative)",
             "Model quá mạnh nên phân loại sai",
           ]}
           correct={1}
-          explanation="Feedback loop bias! User chỉ report khi email tốt bị spam (false positive), nhưng email spam lọt qua thì không biết (false negative). Monitoring cần measure cả hai chiều. dùng sampling strategy hoặc human review random emails."
+          explanation="Feedback loop bias! User chỉ report khi email tốt bị spam (false positive), nhưng email spam lọt qua thì không biết (false negative). Monitoring cần measure cả hai chiều, dùng sampling strategy hoặc human review random emails."
         />
       </LessonSection>
 
@@ -273,14 +273,14 @@ export default function MonitoringTopic() {
           </p>
 
           <Callout variant="warning" title="Silent Failure">
-            Nguy hiểm nhất là model degradation từ từ mà không ai biết. Accuracy giảm 0.5%/tuần. sau 3 tháng giảm 6%. Không có monitoring = không biết cho đến khi user phàn nàn ồ ạt.
+            Nguy hiểm nhất là model degradation từ từ mà không ai biết. Accuracy giảm 0.5%/tuần, sau 3 tháng giảm 6%. Không có monitoring = không biết cho đến khi user phàn nàn ồ ạt.
           </Callout>
 
           <p><strong>4 tầng monitoring:</strong></p>
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
             <li><strong>Infrastructure:</strong>{" "}GPU utilization, latency, memory, error rate</li>
             <li><strong>Data Quality:</strong>{" "}Missing values, schema violations, distribution shift</li>
-            <li><strong>Model Performance:</strong>{" "}Accuracy, precision, recall, prediction distribution. với LLM còn cần đo <TopicLink slug="hallucination">ảo giác (hallucination)</TopicLink>{" "}và vi phạm <TopicLink slug="guardrails">guardrails</TopicLink></li>
+            <li><strong>Model Performance:</strong>{" "}Accuracy, precision, recall, prediction distribution, với LLM còn cần đo <TopicLink slug="hallucination">ảo giác (hallucination)</TopicLink>{" "}và vi phạm <TopicLink slug="guardrails">guardrails</TopicLink></li>
             <li><strong>Business Metrics:</strong>{" "}Conversion rate, user satisfaction, revenue impact</li>
           </ul>
 
@@ -317,7 +317,7 @@ print(f"Drift detected: {drift_detected}")`}
           </CodeBlock>
 
           <Callout variant="info" title="Alerting Pipeline">
-            Monitoring mà không alert = vô nghĩa. Setup alert qua Slack/PagerDuty: PSI &gt; 0.25 → warning, accuracy &lt; threshold → critical. On-call engineer investigate và quyết định retrain hay rollback. khép kín vòng lặp <TopicLink slug="mlops">MLOps</TopicLink>.
+            Monitoring mà không alert = vô nghĩa. Setup alert qua Slack/PagerDuty: PSI &gt; 0.25 → warning, accuracy &lt; threshold → critical. On-call engineer investigate và quyết định retrain hay rollback, khép kín vòng lặp <TopicLink slug="mlops">MLOps</TopicLink>.
           </Callout>
         </ExplanationSection>
       </LessonSection>
@@ -325,7 +325,7 @@ print(f"Drift detected: {drift_detected}")`}
       {/* STEP 6: SUMMARY */}
       <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
         <MiniSummary points={[
-          "Model AI 'lão hoá' dù code không đổi. data drift và concept drift làm giảm chất lượng dần.",
+          "Model AI 'lão hoá' dù code không đổi, data drift và concept drift làm giảm chất lượng dần.",
           "Data drift: P(X) thay đổi. Concept drift: P(Y|X) thay đổi. Phát hiện bằng PSI, KL divergence.",
           "4 tầng monitoring: Infrastructure → Data Quality → Model Performance → Business Metrics.",
           "Silent failure nguy hiểm nhất: accuracy giảm từ từ mà không ai biết cho đến khi quá muộn.",

@@ -84,13 +84,13 @@ const QUIZ: QuizQuestion[] = [
       { answer: "vocabulary", accept: ["từ vựng", "vocab"] },
     ],
     explanation:
-      "BPE (Byte Pair Encoding) là thuật toán subword tokenization. chia từ lạ thành các mảnh đã có trong vocabulary, giải quyết vấn đề OOV.",
+      "BPE (Byte Pair Encoding) là thuật toán subword tokenization, chia từ lạ thành các mảnh đã có trong vocabulary, giải quyết vấn đề OOV.",
   },
   {
     question: "Bạn gọi OpenAI API với prompt 2.000 ký tự tiếng Việt. Hoá đơn tính theo TOKEN, không phải ký tự. Điều gì có thể xảy ra?",
     options: [
       "2.000 ký tự = 2.000 token, hoá đơn cố định",
-      "Tiếng Việt thường tốn NHIỀU token hơn tiếng Anh vì BPE của GPT được train chủ yếu trên tiếng Anh. một từ tiếng Việt có thể tách thành 2-4 token",
+      "Tiếng Việt thường tốn NHIỀU token hơn tiếng Anh vì BPE của GPT được train chủ yếu trên tiếng Anh, một từ tiếng Việt có thể tách thành 2-4 token",
       "Tiếng Việt tốn ÍT token hơn vì ngắn",
       "API không hoạt động với tiếng Việt",
     ],
@@ -114,13 +114,13 @@ const QUIZ: QuizQuestion[] = [
     question: "Câu 'I love cats' tách theo BPE (GPT-2) cho 3 token. Câu 'Tôi yêu mèo' tách cho 5 token. Điều này đúng với tính chất nào của tokenizer?",
     options: [
       "Tokenizer luôn cho cùng số token cho câu cùng nghĩa",
-      "Tokenizer thiên vị ngôn ngữ huấn luyện. tiếng Anh nén tốt hơn, ngôn ngữ khác cần nhiều token hơn để biểu diễn cùng một ý",
+      "Tokenizer thiên vị ngôn ngữ huấn luyện, tiếng Anh nén tốt hơn, ngôn ngữ khác cần nhiều token hơn để biểu diễn cùng một ý",
       "Tiếng Việt luôn dùng ít token hơn tiếng Anh",
       "BPE không áp dụng được cho tiếng Việt",
     ],
     correct: 1,
     explanation:
-      "Đây là 'tokenizer bias'. mô hình GPT-2 được train chủ yếu trên tiếng Anh, nên BPE học được rằng 'love' = 1 token, 'cats' = 1 token. Nhưng các dấu phụ tiếng Việt xuất hiện ít, nên 'yêu' và 'mèo' bị tách thành nhiều mảnh nhỏ.",
+      "Đây là 'tokenizer bias', mô hình GPT-2 được train chủ yếu trên tiếng Anh, nên BPE học được rằng 'love' = 1 token, 'cats' = 1 token. Nhưng các dấu phụ tiếng Việt xuất hiện ít, nên 'yêu' và 'mèo' bị tách thành nhiều mảnh nhỏ.",
   },
   {
     type: "fill-blank",
@@ -186,14 +186,14 @@ export default function TokenizationTopic() {
             nhà), miếng nhỏ (16 miếng cho khách đến chúc Tết), hoặc xắt vụn để
             chấm muối vừng. Mỗi cách cắt phục vụ mục đích khác nhau.
             Tokenization cũng vậy: word-level (miếng to), subword (miếng vừa),
-            character-level (xắt vụn). không có cách &quot;đúng&quot; tuyệt
+            character-level (xắt vụn), không có cách &quot;đúng&quot; tuyệt
             đối, chỉ có lựa chọn phù hợp với ứng dụng.
           </p>
           <p>
             <strong>Liên tưởng 2. Người đọc báo đọc nhanh:</strong>{" "}
             Khi đọc báo tiếng Việt, bạn không đánh vần từng chữ cái. Não bạn
             tự động nhóm các ký tự thành từ (&quot;phở&quot;, &quot;bún
-            chả&quot;). LLM cũng cần bước nhóm này. nếu nhìn từng ký tự,
+            chả&quot;). LLM cũng cần bước nhóm này, nếu nhìn từng ký tự,
             chuỗi quá dài và &quot;ngữ nghĩa&quot; bị loãng. Tokenization là
             bước &quot;nhóm mắt&quot; của máy tính.
           </p>
@@ -208,7 +208,7 @@ export default function TokenizationTopic() {
           </p>
           <p>
             <strong>Liên tưởng 4. Chi phí API tính theo token:</strong>{" "}
-            Khi bạn trả tiền OpenAI cho mỗi request, bill tính bằng token. không phải ký tự, không phải từ. Một tin nhắn 500 ký tự tiếng
+            Khi bạn trả tiền OpenAI cho mỗi request, bill tính bằng token, không phải ký tự, không phải từ. Một tin nhắn 500 ký tự tiếng
             Việt có thể là 300-700 token tuỳ tokenizer. Hiểu tokenization là
             hiểu cách tối ưu chi phí LLM của bạn.
           </p>
@@ -218,7 +218,7 @@ export default function TokenizationTopic() {
       {/* ── Step 2: Bridge + Interactive Viz ── */}
       <LessonSection step={2} totalSteps={TOTAL_STEPS} label="Khám phá">
         <p className="text-sm text-foreground leading-relaxed mb-4">
-          Bạn vừa thấy cách cắt đơn giản nhất. Nhưng có nhiều cách cắt khác nhau. mỗi cách cho kết quả khác nhau đáng ngạc nhiên. Hãy thử cả ba cách bên dưới!
+          Bạn vừa thấy cách cắt đơn giản nhất. Nhưng có nhiều cách cắt khác nhau, mỗi cách cho kết quả khác nhau đáng ngạc nhiên. Hãy thử cả ba cách bên dưới!
         </p>
 
         <VisualizationSection>
@@ -301,7 +301,7 @@ export default function TokenizationTopic() {
         <AhaMoment>
           <p>
             <strong>Tokenization</strong>{" "}
-            là bước chia văn bản thành các mảnh nhỏ (token) để máy tính xử lý được. Không có cách tách nào hoàn hảo. mỗi cách là một sự đánh đổi giữa kích thước từ vựng và độ dài chuỗi!
+            là bước chia văn bản thành các mảnh nhỏ (token) để máy tính xử lý được. Không có cách tách nào hoàn hảo, mỗi cách là một sự đánh đổi giữa kích thước từ vựng và độ dài chuỗi!
           </p>
           <p className="text-sm text-muted mt-1">
             Giống như cắt phở: cắt sợi to thì nhanh nhưng khó ăn, cắt sợi nhỏ thì nhiều mảnh hơn nhưng vừa miệng hơn.
@@ -315,7 +315,7 @@ export default function TokenizationTopic() {
           question="Từ 'Tokenization' chưa có trong từ vựng. Phương pháp nào xử lý được mà KHÔNG cần thêm từ mới?"
           options={[
             "Tách theo từ (word-level)",
-            "Tách theo từ phụ (subword). chia thành 'Token' + 'ization'",
+            "Tách theo từ phụ (subword), chia thành 'Token' + 'ization'",
             "Bỏ qua từ đó",
           ]}
           correct={1}
@@ -327,12 +327,12 @@ export default function TokenizationTopic() {
             question={`Khi bạn gọi LLM qua API với max_tokens=500, giới hạn 500 áp dụng cho gì?`}
             options={[
               "Số ký tự của phản hồi",
-              "Số TOKEN của phản hồi. với tiếng Việt (tokenizer tiếng Anh), 500 token ≈ 200-300 từ, KHÔNG phải 500 từ",
+              "Số TOKEN của phản hồi, với tiếng Việt (tokenizer tiếng Anh), 500 token ≈ 200-300 từ, KHÔNG phải 500 từ",
               "Số từ tiếng Anh",
               "Số byte trong UTF-8",
             ]}
             correct={1}
-            explanation="Giới hạn luôn tính bằng token. đơn vị mà mô hình xử lý nội bộ. Với tokenizer thiên về tiếng Anh, 500 token = ~375 từ tiếng Anh hoặc ~200-300 từ tiếng Việt. Nếu bạn đặt max_tokens=500 rồi ngạc nhiên vì phản hồi ngắn. hãy ước lượng theo token, không phải từ."
+            explanation="Giới hạn luôn tính bằng token, đơn vị mà mô hình xử lý nội bộ. Với tokenizer thiên về tiếng Anh, 500 token = ~375 từ tiếng Anh hoặc ~200-300 từ tiếng Việt. Nếu bạn đặt max_tokens=500 rồi ngạc nhiên vì phản hồi ngắn, hãy ước lượng theo token, không phải từ."
           />
         </div>
 
@@ -340,8 +340,8 @@ export default function TokenizationTopic() {
           <InlineChallenge
             question="Team của bạn fine-tune một Transformer trên corpus tiếng Việt 100GB. Sau đó nhảy thẳng sang dùng tokenizer của LLaMA (train trên tiếng Anh). Điều gì có khả năng xảy ra?"
             options={[
-              "Model hoạt động tốt. tokenizer không quan trọng",
-              "Model hỏng. embedding của token không khớp, tiếng Việt bị chẻ vụn tăng ~2-3× số token, context window bị tiêu phí",
+              "Model hoạt động tốt, tokenizer không quan trọng",
+              "Model hỏng, embedding của token không khớp, tiếng Việt bị chẻ vụn tăng ~2-3× số token, context window bị tiêu phí",
               "Model nhanh hơn",
               "Tokenizer tự động train lại",
             ]}
@@ -415,7 +415,7 @@ print(f"Token IDs: {ids}")
 
           <Callout variant="tip" title="Tokenization cho tiếng Việt">
             <p>
-              Tiếng Việt là ngôn ngữ đơn lập (isolating language). ranh giới từ phức tạp hơn tiếng Anh. Ví dụ {'"Việt Nam"'} là 1 từ nhưng 2 token khi tách theo khoảng trắng. Các công cụ như{" "}
+              Tiếng Việt là ngôn ngữ đơn lập (isolating language), ranh giới từ phức tạp hơn tiếng Anh. Ví dụ {'"Việt Nam"'} là 1 từ nhưng 2 token khi tách theo khoảng trắng. Các công cụ như{" "}
               <strong>VnCoreNLP</strong>{" "}
               và <strong>RDRSegmenter</strong>{" "}
               giúp tách từ tiếng Việt chính xác hơn.
@@ -433,7 +433,7 @@ print("GPT BPE:", gpt.tokenize(text))
 # ['Token', 'ization', 'Ġl', 'à', 'Ġn', 'á»\\x81n', 'Ġt', 'á»\\x91ng', ...]
 # Ký tự Ġ = space mở đầu token
 
-# BERT multilingual. dùng WordPiece
+# BERT multilingual, dùng WordPiece
 bert = AutoTokenizer.from_pretrained("bert-base-multilingual-cased")
 print("BERT WP:", bert.tokenize(text))
 # ['Token', '##ization', 'là', 'nền', 'tảng', 'của', ...]
@@ -446,13 +446,13 @@ pho = AutoTokenizer.from_pretrained("vinai/phobert-base", use_fast=False)
 print("PhoBERT:", pho.tokenize(segmented))
 # Ít token hơn đáng kể vì tokenizer train riêng cho tiếng Việt
 
-# Đếm token. thường dùng để ước lượng chi phí API
+# Đếm token, thường dùng để ước lượng chi phí API
 print(f"GPT tokens:    {len(gpt.tokenize(text))}")
 print(f"BERT tokens:   {len(bert.tokenize(text))}")
 print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
           </CodeBlock>
 
-          <CollapsibleDetail title="Thuật toán BPE. huấn luyện từng bước (nâng cao)">
+          <CollapsibleDetail title="Thuật toán BPE, huấn luyện từng bước (nâng cao)">
             <div className="space-y-3 text-sm leading-relaxed">
               <p>
                 BPE (Sennrich et al., 2016) là thuật toán tham lam (greedy):
@@ -492,7 +492,7 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
               </p>
               <p>
                 <strong>SentencePiece</strong> (dùng trong T5, LLaMA) khác
-                ở chỗ không cần pre-tokenization. coi cả văn bản là chuỗi
+                ở chỗ không cần pre-tokenization, coi cả văn bản là chuỗi
                 Unicode, kể cả dấu cách. Phù hợp cho ngôn ngữ không dùng
                 khoảng trắng (tiếng Nhật, tiếng Trung).
               </p>
@@ -547,13 +547,13 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
               </ul>
               <p className="text-muted">
                 Trong thực tế, hầu hết team dùng tokenizer của model tiền
-                huấn luyện (pre-trained). không train lại.
+                huấn luyện (pre-trained), không train lại.
               </p>
             </div>
           </CollapsibleDetail>
 
           <p>
-            <strong>Đo chi phí token. bài toán thực tế với LLM tiếng Việt:</strong>{" "}
+            <strong>Đo chi phí token, bài toán thực tế với LLM tiếng Việt:</strong>{" "}
             Một chatbot CSKH tiếng Việt gọi GPT-4 với context 2.500 ký tự mỗi
             lượt (system prompt + lịch sử + câu hỏi). Với tokenizer GPT-4, dự
             kiến: ~2.000 token input + ~400 token output = ~2.400 token/lượt.
@@ -580,11 +580,11 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
 
           <ul className="list-disc list-inside space-y-1 pl-2 text-sm leading-relaxed">
             <li>
-              <code>[CLS]</code> / <code>[SEP]</code> (BERT). mở đầu chuỗi
+              <code>[CLS]</code> / <code>[SEP]</code> (BERT), mở đầu chuỗi
               và phân tách câu.
             </li>
             <li>
-              <code>[MASK]</code> (BERT). vị trí cần dự đoán trong masked
+              <code>[MASK]</code> (BERT), vị trí cần dự đoán trong masked
               language modeling.
             </li>
             <li>
@@ -592,12 +592,12 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
               đồng đều chiều dài).
             </li>
             <li>
-              <code>&lt;|endoftext|&gt;</code> (GPT-2). đánh dấu kết thúc
+              <code>&lt;|endoftext|&gt;</code> (GPT-2), đánh dấu kết thúc
               document. GPT-4 dùng <code>&lt;|im_start|&gt;</code>,{" "}
               <code>&lt;|im_end|&gt;</code> cho chat template.
             </li>
             <li>
-              <code>&lt;s&gt;</code> / <code>&lt;/s&gt;</code> (LLaMA, T5). tương ứng BOS (beginning of sequence) và EOS (end of sequence).
+              <code>&lt;s&gt;</code> / <code>&lt;/s&gt;</code> (LLaMA, T5), tương ứng BOS (beginning of sequence) và EOS (end of sequence).
             </li>
           </ul>
 
@@ -605,7 +605,7 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
             Nếu bạn để user input chứa chuỗi ký tự giống special token (ví dụ
             &quot;&lt;|im_end|&gt;&quot; trong chat GPT-4), kẻ tấn công có
             thể làm &quot;đóng&quot; prompt hệ thống và chèn chỉ thị riêng.
-            Luôn sanitize input người dùng trước khi ghép vào prompt. đặc
+            Luôn sanitize input người dùng trước khi ghép vào prompt, đặc
             biệt với các ứng dụng công cộng (chatbot, Q&amp;A trên trang chủ).
           </Callout>
         </ExplanationSection>
@@ -642,7 +642,7 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
             <li>
               <strong>Nhiều từ Hán-Việt:</strong>{" "}
               &quot;phân phối&quot;, &quot;xác suất&quot;, &quot;tích phân&quot;
-              là các từ gốc Hán. nếu BPE không có corpus tiếng Việt đủ lớn,
+              là các từ gốc Hán, nếu BPE không có corpus tiếng Việt đủ lớn,
               chúng bị chẻ vụn.
             </li>
           </ol>
@@ -674,7 +674,7 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
                 <tr className="border-b border-border/50">
                   <td className="py-2">mBERT WordPiece</td>
                   <td className="text-right py-2">~18</td>
-                  <td className="pl-4 py-2">Multilingual. khá hợp lý</td>
+                  <td className="pl-4 py-2">Multilingual, khá hợp lý</td>
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="py-2">PhoBERT BPE</td>
@@ -689,7 +689,7 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
               </tbody>
             </table>
             <p className="text-xs text-muted italic">
-              (Số liệu xấp xỉ. chạy thực tế sẽ dao động ±2 token tuỳ phiên bản.)
+              (Số liệu xấp xỉ, chạy thực tế sẽ dao động ±2 token tuỳ phiên bản.)
             </p>
           </div>
 
@@ -767,7 +767,7 @@ print(f"PhoBERT tokens:{len(pho.tokenize(segmented))}")`}
         <MiniSummary
           title="Ghi nhớ về Tokenization"
           points={[
-            "Tokenization là bước ĐẦU TIÊN trong NLP. chia văn bản thành token để máy tính xử lý.",
+            "Tokenization là bước ĐẦU TIÊN trong NLP, chia văn bản thành token để máy tính xử lý.",
             "Word-level: đơn giản nhưng từ vựng lớn, không xử lý được từ mới (OOV).",
             "Character-level: từ vựng nhỏ, không OOV, nhưng chuỗi quá dài và mất ngữ nghĩa.",
             "Subword (BPE/WordPiece): chuẩn hiện đại. GPT dùng BPE, BERT dùng WordPiece.",

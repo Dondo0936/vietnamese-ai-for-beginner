@@ -25,7 +25,7 @@ import type { TopicMeta } from "@/lib/types";
 export const metadata: TopicMeta = {
   slug: "world-models",
   title: "World Models",
-  titleVi: "Mô hình thế giới. AI biết tưởng tượng",
+  titleVi: "Mô hình thế giới",
   description:
     "Mô hình AI xây dựng biểu diễn nội tại về thế giới, có thể dự đoán hậu quả hành động trước khi thực hiện.",
   category: "emerging",
@@ -38,14 +38,14 @@ export const metadata: TopicMeta = {
 const TOTAL_STEPS = 7;
 
 // ---------------------------------------------------------------------------
-// Bản đồ đầy đủ (ground truth). agent không thấy hết, phải suy luận
+// Bản đồ đầy đủ (ground truth), agent không thấy hết, phải suy luận
 // ---------------------------------------------------------------------------
 const MAP_ROWS = 8;
 const MAP_COLS = 10;
 
 type Terrain = "grass" | "tree" | "water" | "rock" | "goal" | "start";
 
-// Bản đồ tĩnh. đủ đa dạng để thấy 'imagination' khác ground truth
+// Bản đồ tĩnh, đủ đa dạng để thấy 'imagination' khác ground truth
 const TRUE_MAP: Terrain[][] = [
   ["grass", "grass", "tree", "grass", "grass", "water", "water", "grass", "tree", "grass"],
   ["grass", "tree", "tree", "grass", "grass", "water", "grass", "grass", "grass", "rock"],
@@ -75,7 +75,7 @@ const TERRAIN_LABELS: Record<Terrain, string> = {
   start: "Điểm bắt đầu",
 };
 
-// Quỹ đạo agent đi qua (tạo sẵn. không cho người dùng điều khiển để tập trung
+// Quỹ đạo agent đi qua (tạo sẵn, không cho người dùng điều khiển để tập trung
 // vào concept partial observability).
 const AGENT_TRAJECTORY: Array<[number, number]> = [
   [3, 0],
@@ -125,7 +125,7 @@ export default function WorldModelsTopic() {
   const agentPos = AGENT_TRAJECTORY[Math.min(timeStep, AGENT_TRAJECTORY.length - 1)];
 
   // Tập hợp ô đã được agent NHÌN THẤY trực tiếp (3×3 quanh mỗi vị trí trong
-  // quá khứ). đây là "memory" của agent không có world model.
+  // quá khứ), đây là "memory" của agent không có world model.
   const observedCells = useMemo(() => {
     const seen = new Set<string>();
     for (let t = 0; t <= timeStep && t < AGENT_TRAJECTORY.length; t++) {
@@ -143,7 +143,7 @@ export default function WorldModelsTopic() {
     return seen;
   }, [timeStep]);
 
-  // Bản đồ 'tưởng tượng' của agent có world model. điền địa hình có vẻ hợp lý
+  // Bản đồ 'tưởng tượng' của agent có world model, điền địa hình có vẻ hợp lý
   // dựa trên các ô đã thấy. Demo: nếu thấy 'water' gần đó → có thể hồ nước lớn;
   // thấy 'tree' → có thể là rừng. Thực tế world model dùng neural net; ở đây
   // giả lập bằng noisy ground truth.
@@ -155,7 +155,7 @@ export default function WorldModelsTopic() {
         if (observedCells.has(`${r},${c}`)) {
           row.push(TRUE_MAP[r][c]);
         } else {
-          // Noise model: 75% đúng, 25% nhầm thành 'grass'. đơn giản hoá
+          // Noise model: 75% đúng, 25% nhầm thành 'grass', đơn giản hoá
           const truth = TRUE_MAP[r][c];
           const distToAgent = Math.min(
             ...AGENT_TRAJECTORY.slice(0, timeStep + 1).map(([ar, ac]) => {
@@ -202,18 +202,18 @@ export default function WorldModelsTopic() {
         ],
         correct: 1,
         explanation:
-          "LLM thường dự đoán token tiếp theo dựa trên pattern ngôn ngữ. World model xây dựng 'mô hình thu nhỏ' của thế giới. hiểu vật lý, nhân quả, xã hội. Có thể 'tưởng tượng' hậu quả trước khi hành động.",
+          "LLM thường dự đoán token tiếp theo dựa trên pattern ngôn ngữ. World model xây dựng 'mô hình thu nhỏ' của thế giới, hiểu vật lý, nhân quả, xã hội. Có thể 'tưởng tượng' hậu quả trước khi hành động.",
       },
       {
         question: "Sora (OpenAI) được coi là world model vì lý do gì?",
         options: [
           "Tạo video đẹp",
-          "Học được các quy luật vật lý (trọng lực, va chạm, ánh sáng) từ video. có thể dự đoán cách vật thể tương tác",
+          "Học được các quy luật vật lý (trọng lực, va chạm, ánh sáng) từ video, có thể dự đoán cách vật thể tương tác",
           "Dùng nhiều GPU",
         ],
         correct: 1,
         explanation:
-          "Sora không chỉ 'vẽ' video. nó học được vật lý: vật rơi xuống, nước chảy, ánh phản chiếu. Đây là dấu hiệu của world model: hiểu cách thế giới vận hành, không chỉ copy pattern.",
+          "Sora không chỉ 'vẽ' video, nó học được vật lý: vật rơi xuống, nước chảy, ánh phản chiếu. Đây là dấu hiệu của world model: hiểu cách thế giới vận hành, không chỉ copy pattern.",
       },
       {
         question: "Tại sao xe tự lái VinFast cần world model?",
@@ -242,12 +242,12 @@ export default function WorldModelsTopic() {
           "Trong visualization trên, 'imagined map' khác 'observed cells' ở điểm nào?",
         options: [
           "Imagined map giống hệt ground truth",
-          "Imagined map điền các ô chưa thấy dựa trên prediction của world model. có thể sai",
+          "Imagined map điền các ô chưa thấy dựa trên prediction của world model, có thể sai",
           "Imagined map chỉ hiển thị ô agent hiện đang đứng",
         ],
         correct: 1,
         explanation:
-          "Observed cells = agent nhìn thấy trực tiếp (chắc chắn đúng). Imagined map = world model tự điền ô chưa thấy bằng prediction. có thể sai nhưng cho agent cái nhìn toàn cảnh để lập kế hoạch.",
+          "Observed cells = agent nhìn thấy trực tiếp (chắc chắn đúng). Imagined map = world model tự điền ô chưa thấy bằng prediction, có thể sai nhưng cho agent cái nhìn toàn cảnh để lập kế hoạch.",
       },
       {
         question:
@@ -265,13 +265,13 @@ export default function WorldModelsTopic() {
         question:
           "Partial observability (quan sát một phần) tại sao quan trọng với world model?",
         options: [
-          "Không quan trọng. world model luôn thấy mọi thứ",
-          "Thế giới thật hầu hết là partial. robot chỉ thấy những gì camera bắt được. World model giúp 'điền' phần còn lại",
+          "Không quan trọng, world model luôn thấy mọi thứ",
+          "Thế giới thật hầu hết là partial, robot chỉ thấy những gì camera bắt được. World model giúp 'điền' phần còn lại",
           "Làm cho mô hình đơn giản hơn",
         ],
         correct: 1,
         explanation:
-          "Hầu hết agent thật chỉ có quan sát giới hạn (camera, cảm biến). World model giúp duy trì 'niềm tin' (belief state) về phần chưa thấy. như cách bạn biết có căn phòng sau cánh cửa dù chưa mở.",
+          "Hầu hết agent thật chỉ có quan sát giới hạn (camera, cảm biến). World model giúp duy trì 'niềm tin' (belief state) về phần chưa thấy, như cách bạn biết có căn phòng sau cánh cửa dù chưa mở.",
       },
       {
         question:
@@ -283,7 +283,7 @@ export default function WorldModelsTopic() {
         ],
         correct: 1,
         explanation:
-          "Latent (JEPA): nén observation thành vector, dự đoán vector tiếp theo. nhanh, khái quát hoá tốt, không cần chi tiết không cần thiết. Pixel (Sora): dự đoán từng pixel. đẹp mắt nhưng tốn tài nguyên và dễ 'hallucinate'.",
+          "Latent (JEPA): nén observation thành vector, dự đoán vector tiếp theo, nhanh, khái quát hoá tốt, không cần chi tiết không cần thiết. Pixel (Sora): dự đoán từng pixel, đẹp mắt nhưng tốn tài nguyên và dễ 'hallucinate'.",
       },
     ],
     []
@@ -348,7 +348,7 @@ export default function WorldModelsTopic() {
           <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc Aha">
             <AhaMoment>
               <p>
-                Con người <strong>không cần thử mọi thứ để hiểu thế giới</strong>{" "}. bạn biết lửa nóng, đá trơn, cốc rơi. Đây là vì não có{" "}
+                Con người <strong>không cần thử mọi thứ để hiểu thế giới</strong>,{" "}bạn biết lửa nóng, đá trơn, cốc rơi. Đây là vì não có{" "}
                 <strong>world model</strong>. AI đang học cách tương tự: Sora học
                 vật lý từ video, Dreamer tự chơi trong 'giấc mơ' để luyện chính
                 sách, GAIA mô phỏng giao thông. Đây là bước tiến từ 'AI biết nói'
@@ -375,7 +375,7 @@ export default function WorldModelsTopic() {
                 options={[
                   "Chạy ngẫu nhiên đến khi dọn hết",
                   "Xây world model: ghép các quan sát local thành bản đồ toàn cục, dự đoán vùng chưa dọn, lập kế hoạch tối ưu",
-                  "Không làm được. robot phải có camera 360°",
+                  "Không làm được, robot phải có camera 360°",
                 ]}
                 correct={1}
                 explanation="SLAM + world model: robot ghép các quan sát partial thành bản đồ (map building), sau đó dùng world model dự đoán phần chưa đi qua. Đây chính là nguyên lý Roborock, iRobot, Ecovacs."
@@ -387,7 +387,7 @@ export default function WorldModelsTopic() {
             <ExplanationSection>
               <p>
                 <strong>World Models</strong> là AI xây dựng biểu diễn nội tại
-                về cách thế giới vận hành. có thể dự đoán hậu quả hành động
+                về cách thế giới vận hành, có thể dự đoán hậu quả hành động
                 trước khi thực hiện. Đây là bước tiến bổ sung cho{" "}
                 <TopicLink slug="reasoning-models">reasoning models</TopicLink>{" "}
                 (suy luận bằng ngôn ngữ) và là 'simulator tưởng tượng' cho các
@@ -423,7 +423,7 @@ export default function WorldModelsTopic() {
               </LaTeX>
 
               <Callout variant="tip" title="Video Generation = World Modeling">
-                Sora không chỉ tạo video đẹp. nó học được vật lý: vật rơi do
+                Sora không chỉ tạo video đẹp, nó học được vật lý: vật rơi do
                 trọng lực, nước chảy theo địa hình, ánh phản chiếu. Đây là dấu
                 hiệu của world model mới: học physics từ pixel thay vì phương
                 trình. Ý nghĩa lâu dài: có thể dùng 'video world model' làm
@@ -432,22 +432,22 @@ export default function WorldModelsTopic() {
 
               <Callout variant="tip" title="Dream-based training (Dreamer)">
                 Dreamer v3 của DeepMind: (1) thu thập ít data thật, (2) train
-                world model, (3) policy học hoàn toàn BÊN TRONG imagination. rollout trajectory tưởng tượng. Nhờ vậy đạt SOTA trên 150+ task
+                world model, (3) policy học hoàn toàn BÊN TRONG imagination, rollout trajectory tưởng tượng. Nhờ vậy đạt SOTA trên 150+ task
                 Atari/DMC với ít sample hơn hàng chục lần so với model-free RL.
               </Callout>
 
               <Callout variant="warning" title="Giới hạn: compounding error">
                 World model không hoàn hảo. Khi rollout nhiều bước, sai số tích
-                luỹ. bước 1 sai chút → bước 2 sai nhiều hơn → bước 50 hoàn toàn
+                luỹ, bước 1 sai chút → bước 2 sai nhiều hơn → bước 50 hoàn toàn
                 vô nghĩa. Đây là 'compounding error', lý do agent dựa 100% vào
                 'dream' sẽ thất bại. Thường phải mix dream + real world data.
               </Callout>
 
               <Callout variant="info" title="World model ≠ Simulator cổ điển">
                 Simulator truyền thống (PyBullet, CARLA) dùng phương trình vật
-                lý viết tay. World model học từ data. có thể mô phỏng cả những
+                lý viết tay. World model học từ data, có thể mô phỏng cả những
                 hiện tượng khó lập trình (chuyển động quần áo, nước, đám đông).
-                Nhược điểm: 'hallucination'. tạo ra thế giới trông hợp lý nhưng
+                Nhược điểm: 'hallucination', tạo ra thế giới trông hợp lý nhưng
                 sai vật lý (vật biến mất, người có 3 tay).
               </Callout>
 
@@ -540,7 +540,7 @@ for epoch in range(10_000):
     opt_wm.zero_grad(); loss_wm.backward(); opt_wm.step()
 
     # ----- GIAI ĐOẠN 3: TRAIN POLICY TRONG 'GIẤC MƠ' -----
-    # Không gọi env thật. tất cả diễn ra bên trong world model!
+    # Không gọi env thật, tất cả diễn ra bên trong world model!
     dream_states = [sample_start_state(replay_buffer)]
     log_probs, rewards = [], []
     for _ in range(horizon := 15):
@@ -559,7 +559,7 @@ for epoch in range(10_000):
 
               <CollapsibleDetail title="Chi tiết: JEPA và học không cần pixel">
                 <p className="text-sm leading-relaxed mt-2">
-                  Yann LeCun lập luận: dự đoán từng pixel là lãng phí. quá
+                  Yann LeCun lập luận: dự đoán từng pixel là lãng phí, quá
                   nhiều chi tiết không quan trọng (hình dáng chính xác của mỗi
                   chiếc lá). Joint Embedding Predictive Architecture (JEPA)
                   encode observation thành vector trừu tượng, rồi dự đoán vector
@@ -599,7 +599,7 @@ for epoch in range(10_000):
                 </li>
                 <li>
                   <strong>2023. DreamerV3:</strong> Giải Minecraft không cần
-                  reward shaping thủ công. lần đầu một agent tự học thu thập
+                  reward shaping thủ công, lần đầu một agent tự học thu thập
                   kim cương.
                 </li>
                 <li>
@@ -608,7 +608,7 @@ for epoch in range(10_000):
                 </li>
                 <li>
                   <strong>Tương lai:</strong> Foundation world model đa modal
-                  (text + image + video + action). backbone chung cho robot,
+                  (text + image + video + action), backbone chung cho robot,
                   agent, sim-to-real.
                 </li>
               </ul>
@@ -626,9 +626,9 @@ for epoch in range(10_000):
           <LessonSection step={6} totalSteps={TOTAL_STEPS} label="Tóm tắt">
             <MiniSummary
               points={[
-                "World model = biểu diễn nội tại về cách thế giới vận hành. dự đoán hậu quả hành động trước khi thực hiện.",
+                "World model = biểu diễn nội tại về cách thế giới vận hành, dự đoán hậu quả hành động trước khi thực hiện.",
                 "Giải quyết partial observability: agent chỉ thấy một phần, world model 'điền' phần còn lại.",
-                "Dream-based training: train policy trong 'tưởng tượng' của world model. tiết kiệm data thật.",
+                "Dream-based training: train policy trong 'tưởng tượng' của world model, tiết kiệm data thật.",
                 "Hai nhánh chính: pixel-level (Sora) vs latent (JEPA, DreamerV3). Đánh đổi giữa chi tiết và tốc độ.",
                 "Ứng dụng: xe tự lái (dự đoán hành vi), robot (lập kế hoạch), game engine (Genie), sinh video (Sora).",
                 "Giới hạn: compounding error khi rollout dài, hallucination, khó đánh giá 'độ đúng vật lý' của mô phỏng.",
@@ -914,7 +914,7 @@ function WorldModelViz({
           </svg>
           <p className="text-[11px] text-muted leading-relaxed">
             Ô viền cyan = agent đã quan sát trực tiếp. Ô mờ = world model
-            tưởng tượng. có thể sai nhưng giúp lập kế hoạch toàn cục.
+            tưởng tượng, có thể sai nhưng giúp lập kế hoạch toàn cục.
           </p>
         </div>
       </div>
@@ -1060,7 +1060,7 @@ function WorldModelViz({
           </defs>
         </svg>
         <p className="text-xs text-muted text-center">
-          Policy được cải thiện chủ yếu nhờ rollout trong 'dream'. chỉ cần
+          Policy được cải thiện chủ yếu nhờ rollout trong 'dream', chỉ cần
           lượng nhỏ data thật để giữ world model chính xác.
         </p>
       </div>
@@ -1142,10 +1142,10 @@ function WorldModelViz({
           </li>
           <li>
             <span className="text-foreground font-semibold">2020:</span>{" "}
-            Hafner công bố Dreamer. backprop xuyên qua latent dynamics.
+            Hafner công bố Dreamer, backprop xuyên qua latent dynamics.
           </li>
           <li>
-            <span className="text-foreground font-semibold">2022:</span> DayDreamer. robot vật lý học bơi/đi trong thế giới thật chỉ với vài giờ kinh
+            <span className="text-foreground font-semibold">2022:</span> DayDreamer, robot vật lý học bơi/đi trong thế giới thật chỉ với vài giờ kinh
             nghiệm nhờ dream-based RL.
           </li>
           <li>
@@ -1155,7 +1155,7 @@ function WorldModelViz({
           </li>
           <li>
             <span className="text-foreground font-semibold">2024:</span> Sora,
-            Veo, Genie. world model khổng lồ xử lý video + có action
+            Veo, Genie, world model khổng lồ xử lý video + có action
             controllable.
           </li>
           <li>
@@ -1192,15 +1192,15 @@ function WorldModelViz({
               </tr>
               <tr>
                 <td className="py-2 pr-3 text-foreground">Dễ train policy</td>
-                <td className="py-2 pr-3">Dễ. không gian nhỏ</td>
-                <td className="py-2">Khó. không gian lớn</td>
+                <td className="py-2 pr-3">Dễ, không gian nhỏ</td>
+                <td className="py-2">Khó, không gian lớn</td>
               </tr>
               <tr>
                 <td className="py-2 pr-3 text-foreground">
                   Tương tác với con người
                 </td>
                 <td className="py-2 pr-3">Khó trực quan hoá</td>
-                <td className="py-2">Dễ. ra video xem được</td>
+                <td className="py-2">Dễ, ra video xem được</td>
               </tr>
               <tr>
                 <td className="py-2 pr-3 text-foreground">

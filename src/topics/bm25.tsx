@@ -194,7 +194,7 @@ export default function BM25Topic() {
         ],
         correct: 1,
         explanation:
-          "b kiểm soát length normalization. b=1: tài liệu dài gấp đôi trung bình bị phạt nặng (vì nhiều từ hơn tự nhiên chứa query terms). b=0: bỏ qua độ dài. Mặc định b=0.75 là cân bằng tốt.",
+          "b kiểm soát length normalization, b=1: tài liệu dài gấp đôi trung bình bị phạt nặng (vì nhiều từ hơn tự nhiên chứa query terms), b=0: bỏ qua độ dài. Mặc định b=0.75 là cân bằng tốt.",
       },
       {
         question: "Tại sao BM25 vẫn quan trọng dù đã có semantic search?",
@@ -218,7 +218,7 @@ export default function BM25Topic() {
         ],
         correct: 0,
         explanation:
-          "k1 = 0 → BM25 chỉ dùng IDF (không quan tâm tần suất). k1 = ∞ → TF tuyến tính. Mặc định k1 = 1.2 đến 2.0. Tuỳ corpus, bạn có thể tune: corpus spam-heavy cần k1 thấp (tránh keyword stuffing), corpus cần k1 cao khi TF thực sự mang tín hiệu.",
+          "k1 = 0 → BM25 chỉ dùng IDF (không quan tâm tần suất), k1 = ∞ → TF tuyến tính. Mặc định k1 = 1.2 đến 2.0. Tuỳ corpus, bạn có thể tune: corpus spam-heavy cần k1 thấp (tránh keyword stuffing), corpus cần k1 cao khi TF thực sự mang tín hiệu.",
       },
       {
         question: "IDF trong BM25 khác với IDF cổ điển thế nào?",
@@ -375,7 +375,7 @@ export default function BM25Topic() {
                     <label className="text-sm font-semibold text-amber-700 dark:text-amber-400">
                       <LaTeX>{"k_1"}</LaTeX> = {k1.toFixed(2)}
                     </label>
-                    <span className="text-[10px] text-muted">bão hoà TF (1.2–2.0)</span>
+                    <span className="text-[10px] text-muted">bão hoà TF (1.2-2.0)</span>
                   </div>
                   <input
                     type="range"
@@ -387,7 +387,7 @@ export default function BM25Topic() {
                     className="mt-2 w-full accent-amber-500"
                   />
                   <p className="mt-1 text-[11px] text-muted">
-                    k₁ cao → từ lặp vẫn tăng điểm. k₁ thấp → bão hoà sớm, 3 lần gần = 10 lần.
+                    k₁ cao → từ lặp vẫn tăng điểm, k₁ thấp → bão hoà sớm, 3 lần gần = 10 lần.
                   </p>
                 </div>
                 <div className="rounded-lg border border-border bg-background/60 p-3">
@@ -395,7 +395,7 @@ export default function BM25Topic() {
                     <label className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
                       <LaTeX>{"b"}</LaTeX> = {b.toFixed(2)}
                     </label>
-                    <span className="text-[10px] text-muted">length norm (0–1)</span>
+                    <span className="text-[10px] text-muted">length norm (0-1)</span>
                   </div>
                   <input
                     type="range"
@@ -407,7 +407,7 @@ export default function BM25Topic() {
                     className="mt-2 w-full accent-emerald-500"
                   />
                   <p className="mt-1 text-[11px] text-muted">
-                    b=1 phạt doc dài nặng. b=0 bỏ qua độ dài. Mặc định 0.75 cân bằng tốt.
+                    b=1 phạt doc dài nặng, b=0 bỏ qua độ dài. Mặc định 0.75 cân bằng tốt.
                   </p>
                 </div>
               </div>

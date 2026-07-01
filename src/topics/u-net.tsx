@@ -50,7 +50,7 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       "Chỉ dùng upsampling (nearest neighbor) là đủ",
       "Transposed convolution ('Conv ngược') hoặc bilinear upsampling + conv, kết hợp skip features từ encoder",
-      "Không thể phóng to lại — chỉ output 16×16",
+      "Không thể phóng to lại-chỉ output 16×16",
     ],
     correct: 1,
     explanation: "Decoder dùng transposed conv (learnable upsampling) hoặc bilinear upsample + conv để tăng kích thước. Nhưng upsampling mất chi tiết → skip connections concat feature map từ encoder cùng cấp → khôi phục chi tiết pixel-level!",
@@ -63,7 +63,7 @@ const quizQuestions: QuizQuestion[] = [
       { answer: "decoder", accept: ["Decoder", "giải mã"] },
       { answer: "skip connections", accept: ["skip connection", "kết nối tắt", "skip"] },
     ],
-    explanation: "Encoder nén dần độ phân giải (giảm kích thước, tăng channel). Decoder làm ngược lại. Skip connections concat feature map cùng cấp từ encoder sang decoder — giúp decoder có cả thông tin toàn cục (bottleneck) lẫn chi tiết cục bộ (encoder feature).",
+    explanation: "Encoder nén dần độ phân giải (giảm kích thước, tăng channel). Decoder làm ngược lại. Skip connections concat feature map cùng cấp từ encoder sang decoder-giúp decoder có cả thông tin toàn cục (bottleneck) lẫn chi tiết cục bộ (encoder feature).",
   },
 ];
 
@@ -85,8 +85,8 @@ export default function UNetTopic() {
         <PredictionGate
           question="Bạn cần gán nhãn MỖI pixel trong ảnh (ví dụ: pixel này là đường, pixel kia là xe). Autoencoder nén ảnh rồi giải nén, nhưng chi tiết pixel bị mất. Làm sao khắc phục?"
           options={[
-            "Không nén ảnh — xử lý trực tiếp",
-            "Nén nhưng truyền chi tiết từ encoder sang decoder qua skip connections — giữ cả ngữ cảnh lẫn chi tiết",
+            "Không nén ảnh-xử lý trực tiếp",
+            "Nén nhưng truyền chi tiết từ encoder sang decoder qua skip connections-giữ cả ngữ cảnh lẫn chi tiết",
             "Dùng autoencoder lớn hơn",
           ]}
           correct={1}
@@ -186,9 +186,9 @@ export default function UNetTopic() {
           <Callout variant="insight" title="U-Net trong Stable Diffusion">
             <p>
               Stable Diffusion dùng U-Net với 3 bổ sung: (1) <strong>Timestep embedding</strong>{" "}
-              — cho U-Net biết đang ở bước khử nhiễu nào. (2) <strong>Cross-attention</strong>{" "}
-              — nhận text embedding từ CLIP, cho phép sinh ảnh theo mô tả. (3) <strong>Latent space</strong>{" "}
-              — hoạt động trên latent 64×64 thay vì pixel 512×512.
+             , cho U-Net biết đang ở bước khử nhiễu nào. (2) <strong>Cross-attention</strong>{" "}
+             , nhận text embedding từ CLIP, cho phép sinh ảnh theo mô tả. (3) <strong>Latent space</strong>{" "}
+             , hoạt động trên latent 64×64 thay vì pixel 512×512.
             </p>
           </Callout>
       </LessonSection>

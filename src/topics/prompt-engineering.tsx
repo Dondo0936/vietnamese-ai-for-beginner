@@ -88,7 +88,7 @@ const PROMPT_COMPONENTS: PromptComponent[] = [
     label: "Định dạng",
     icon: ListChecks,
     snippet:
-      "Định dạng: mở đầu – lý do – cam kết bàn giao – kết thư. Mỗi đoạn 1-2 câu.",
+      "Định dạng: mở đầu-lý do-cam kết bàn giao-kết thư. Mỗi đoạn 1-2 câu.",
     weight: 12,
     color: "#D97706",
   },
@@ -805,7 +805,7 @@ export default function PromptEngineeringTopic() {
           question="Sếp vừa nhờ bạn gửi bản tóm tắt cuộc họp 30 phút sáng nay. Bạn muốn AI viết giúp. Prompt nào là tốt nhất?"
           options={[
             "“Tóm tắt cuộc họp”",
-            "“Bạn là thư ký cuộc họp. Tóm tắt đoạn ghi âm dưới thành biên bản: 3 phần (quyết định chính – công việc giao – mốc thời gian). Dưới 200 từ, giọng trực tiếp.”",
+            "“Bạn là thư ký cuộc họp. Tóm tắt đoạn ghi âm dưới thành biên bản: 3 phần (quyết định chính-công việc giao-mốc thời gian). Dưới 200 từ, giọng trực tiếp.”",
             "“Tóm tắt meeting này ngắn gọn”",
             "“Giúp tôi viết tóm tắt cuộc họp, làm sao cho hay”",
           ]}

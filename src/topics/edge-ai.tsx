@@ -46,15 +46,15 @@ export const metadata: TopicMeta = {
    HẰNG SỐ & DỮ LIỆU SO SÁNH
    =========================================================================
    Ta xây dựng một mô hình "đồ chơi" để so sánh hai lựa chọn triển khai:
-     (A) Cloud AI. gửi dữ liệu lên server, nhận kết quả về
-     (B) Edge AI. chạy model ngay trên chip của thiết bị
+     (A) Cloud AI, gửi dữ liệu lên server, nhận kết quả về
+     (B) Edge AI, chạy model ngay trên chip của thiết bị
 
    Mỗi lựa chọn có 5 trục đánh giá:
-     1. Latency. độ trễ end-to-end (ms)
-     2. Bandwidth. băng thông phải dùng (KB/request)
-     3. Privacy. điểm bảo mật dữ liệu (0-10)
-     4. Cost. chi phí vận hành tại quy mô lớn ($/tháng/1K req)
-     5. Battery. tiêu thụ pin (mW trung bình trong 1 request)
+     1. Latency, độ trễ end-to-end (ms)
+     2. Bandwidth, băng thông phải dùng (KB/request)
+     3. Privacy, điểm bảo mật dữ liệu (0-10)
+     4. Cost, chi phí vận hành tại quy mô lớn ($/tháng/1K req)
+     5. Battery, tiêu thụ pin (mW trung bình trong 1 request)
 
    Người học kéo thanh "chất lượng mạng" để thấy Cloud phụ thuộc mạng
    thế nào, còn Edge gần như không đổi.
@@ -81,9 +81,9 @@ const EXAMPLES: DeviceExample[] = [
     icon: "⌨️",
     chip: "Apple Neural Engine / Google Tensor",
     taskVi:
-      "Gợi ý từ tiếp theo khi bạn đang gõ. cần trả kết quả trong 1 frame (16ms) để không giật.",
+      "Gợi ý từ tiếp theo khi bạn đang gõ, cần trả kết quả trong 1 frame (16ms) để không giật.",
     edgeWins: [
-      "Độ trễ < 16ms. gõ không cảm thấy lag",
+      "Độ trễ < 16ms, gõ không cảm thấy lag",
       "Tin nhắn riêng tư không rời máy",
       "Hoạt động khi máy bay (airplane mode)",
       "Không tốn data 4G",
@@ -103,7 +103,7 @@ const EXAMPLES: DeviceExample[] = [
       "Phát hiện xe vượt đèn đỏ ở ngã tư Hà Nội. 30 FPS, không gián đoạn kể cả khi mạng đứt.",
     edgeWins: [
       "30 FPS ổn định không phụ thuộc 4G",
-      "Bandwidth tiết kiệm. chỉ gửi metadata (JSON), không gửi video",
+      "Bandwidth tiết kiệm, chỉ gửi metadata (JSON), không gửi video",
       "Hoạt động ngay cả khi mất mạng (nhiều ngã tư không có fiber)",
       "Chi phí bandwidth giảm 1000x so với streaming video về trung tâm",
     ],
@@ -119,7 +119,7 @@ const EXAMPLES: DeviceExample[] = [
     icon: "🍎",
     chip: "Apple A17 Pro ANE (35 TOPS)",
     taskVi:
-      "Mở khoá iPhone bằng khuôn mặt. so khớp 3D depth map với template an toàn trong Secure Enclave.",
+      "Mở khoá iPhone bằng khuôn mặt, so khớp 3D depth map với template an toàn trong Secure Enclave.",
     edgeWins: [
       "< 100ms từ nhìn vào điện thoại đến mở khoá",
       "Template khuôn mặt KHÔNG BAO GIỜ rời thiết bị",
@@ -137,12 +137,12 @@ const EXAMPLES: DeviceExample[] = [
     icon: "⌚",
     chip: "Apple S9 Neural Engine (4-core)",
     taskVi:
-      "Phát hiện nhịp tim bất thường (AFib) real-time. phải chạy 24/7 mà không huỷ pin.",
+      "Phát hiện nhịp tim bất thường (AFib) real-time, phải chạy 24/7 mà không huỷ pin.",
     edgeWins: [
       "Liên tục theo dõi 24/7 không cần bật màn hình",
       "Dữ liệu y tế không rời cổ tay người dùng",
       "Không yêu cầu kết nối với iPhone lúc cảnh báo",
-      "Tiết kiệm pin. không phải gửi 100Hz ECG signal qua Bluetooth",
+      "Tiết kiệm pin, không phải gửi 100Hz ECG signal qua Bluetooth",
     ],
     cloudWins: [
       "Phân tích xu hướng dài hạn có thể làm ở cloud",
@@ -155,7 +155,7 @@ const EXAMPLES: DeviceExample[] = [
     icon: "🎧",
     chip: "H2 chip + iPhone NPU",
     taskVi:
-      "Phiên dịch Anh ↔ Việt trong hội thoại. độ trễ phải < 500ms để không phá nhịp đối thoại.",
+      "Phiên dịch Anh ↔ Việt trong hội thoại, độ trễ phải < 500ms để không phá nhịp đối thoại.",
     edgeWins: [
       "Không phụ thuộc mạng khi đi du lịch nước ngoài",
       "Không data roaming tốn kém",
@@ -230,7 +230,7 @@ export default function EdgeAITopic() {
 
   const example = EXAMPLES[activeExample];
 
-  /* Điều chỉnh "độ nặng tác vụ" theo ví dụ. keyboard nhẹ hơn camera */
+  /* Điều chỉnh "độ nặng tác vụ" theo ví dụ, keyboard nhẹ hơn camera */
   const taskWeight = useMemo(() => {
     switch (example.id) {
       case "keyboard": return 0.3;
@@ -283,20 +283,20 @@ export default function EdgeAITopic() {
         ],
         correct: 1,
         explanation:
-          "Camera giám sát cháy rừng cần: phản hồi tức thì (latency thấp), hoạt động ngoại tuyến (không có mạng), xử lý tại chỗ (không gửi video lên cloud). Training, big data analytics, và sinh video 4K đều là workload nặng cần GPU farm. thuộc phạm vi của cloud.",
+          "Camera giám sát cháy rừng cần: phản hồi tức thì (latency thấp), hoạt động ngoại tuyến (không có mạng), xử lý tại chỗ (không gửi video lên cloud). Training, big data analytics, và sinh video 4K đều là workload nặng cần GPU farm, thuộc phạm vi của cloud.",
       },
       {
         question:
           "Thách thức lớn nhất khi triển khai LLM trên điện thoại là gì?",
         options: [
           "Không có GPU trên điện thoại",
-          "Bộ nhớ RAM hạn chế (6–12GB) không đủ cho model lớn",
+          "Bộ nhớ RAM hạn chế (6-12GB) không đủ cho model lớn",
           "Điện thoại không chạy được Python",
           "Apple không cho phép AI trên iPhone",
         ],
         correct: 1,
         explanation:
-          "Điện thoại hiện đại có NPU (Neural Processing Unit), nhưng RAM chỉ 6–12GB chia sẻ với hệ điều hành. Model 7B INT4 cần ~4GB. vừa đủ. Model 70B thì không thể. Đây là lý do quantization cực kỳ quan trọng cho Edge AI.",
+          "Điện thoại hiện đại có NPU (Neural Processing Unit), nhưng RAM chỉ 6-12GB chia sẻ với hệ điều hành. Model 7B INT4 cần ~4GB, vừa đủ. Model 70B thì không thể. Đây là lý do quantization cực kỳ quan trọng cho Edge AI.",
       },
       {
         question: "Federated Learning giúp Edge AI giải quyết vấn đề gì?",
@@ -308,14 +308,14 @@ export default function EdgeAITopic() {
         ],
         correct: 1,
         explanation:
-          "Federated Learning: mỗi thiết bị huấn luyện cục bộ, chỉ gửi gradient (không phải dữ liệu) lên server để tổng hợp. Dữ liệu nhạy cảm (ảnh khuôn mặt, tin nhắn) không rời thiết bị. đảm bảo quyền riêng tư.",
+          "Federated Learning: mỗi thiết bị huấn luyện cục bộ, chỉ gửi gradient (không phải dữ liệu) lên server để tổng hợp. Dữ liệu nhạy cảm (ảnh khuôn mặt, tin nhắn) không rời thiết bị, đảm bảo quyền riêng tư.",
       },
       {
         question:
           "Khi người dùng ở vùng mạng yếu (RTT ~500ms), điều gì xảy ra với Cloud AI?",
         options: [
           "Latency tổng cộng tăng vọt và trải nghiệm người dùng kém",
-          "Không ảnh hưởng gì. cloud luôn trả lời trong 100ms",
+          "Không ảnh hưởng gì, cloud luôn trả lời trong 100ms",
           "Model tự động nhỏ hơn",
           "Bảo mật tăng lên",
         ],
@@ -334,14 +334,14 @@ export default function EdgeAITopic() {
         ],
         correct: 1,
         explanation:
-          "ANE là một NPU (Neural Processing Unit) chuyên biệt. khoảng 35 TOPS trên A17 Pro. Thiết kế để tăng tốc phép nhân ma trận (GEMM) và convolution với hiệu quả năng lượng cao hơn GPU khoảng 10x. Chính ANE giúp Face ID, Apple Intelligence, Camera AI chạy mà không làm nóng máy.",
+          "ANE là một NPU (Neural Processing Unit) chuyên biệt, khoảng 35 TOPS trên A17 Pro. Thiết kế để tăng tốc phép nhân ma trận (GEMM) và convolution với hiệu quả năng lượng cao hơn GPU khoảng 10x. Chính ANE giúp Face ID, Apple Intelligence, Camera AI chạy mà không làm nóng máy.",
       },
       {
         question:
           "Tại sao smart camera giám sát giao thông thường chạy Edge AI thay vì stream video về trung tâm?",
         options: [
           "Vì Edge AI luôn chính xác hơn Cloud AI",
-          "Vì bandwidth + latency + độ tin cậy. stream 30fps từ 1000 camera sẽ nghẽn mạng và tốn chi phí khổng lồ",
+          "Vì bandwidth + latency + độ tin cậy, stream 30fps từ 1000 camera sẽ nghẽn mạng và tốn chi phí khổng lồ",
           "Vì luật bắt buộc",
           "Vì không có GPU trên cloud",
         ],
@@ -360,7 +360,7 @@ export default function EdgeAITopic() {
         ],
         correct: 0,
         explanation:
-          "Quantize từ FP32 sang INT8 giảm 4x bộ nhớ (mỗi trọng số từ 4 byte xuống 1 byte). Quan trọng hơn, NPU Edge (ANE, Hexagon, Jetson) có instruction INT8 nhanh hơn FP32 gấp 4–8 lần. Accuracy thường chỉ giảm < 1%.",
+          "Quantize từ FP32 sang INT8 giảm 4x bộ nhớ (mỗi trọng số từ 4 byte xuống 1 byte). Quan trọng hơn, NPU Edge (ANE, Hexagon, Jetson) có instruction INT8 nhanh hơn FP32 gấp 4-8 lần. Accuracy thường chỉ giảm < 1%.",
       },
       {
         type: "fill-blank",
@@ -388,7 +388,7 @@ export default function EdgeAITopic() {
           },
         ],
         explanation:
-          "On-device inference giảm latency xuống 10–50ms (so với 200–500ms qua cloud), bảo mật dữ liệu và hoạt động offline. Quantization INT8/INT4 giảm model 4–8x để vừa RAM điện thoại/IoT.",
+          "On-device inference giảm latency xuống 10-50ms (so với 200-500ms qua cloud), bảo mật dữ liệu và hoạt động offline. Quantization INT8/INT4 giảm model 4-8x để vừa RAM điện thoại/IoT.",
       },
     ],
     [],
@@ -405,14 +405,14 @@ export default function EdgeAITopic() {
          ─────────────────────────────────────────────────────────────────── */}
       <LessonSection step={1} totalSteps={TOTAL_STEPS} label="Dự đoán">
         <PredictionGate
-          question="Camera AI ở ngã tư Hà Nội cần phát hiện xe vượt đèn đỏ trong 50ms. Internet 4G có latency 100–500ms. Giải pháp nào khả thi?"
+          question="Camera AI ở ngã tư Hà Nội cần phát hiện xe vượt đèn đỏ trong 50ms. Internet 4G có latency 100-500ms. Giải pháp nào khả thi?"
           options={[
             "Gửi video lên cloud server để xử lý",
             "Chạy model AI ngay trên chip trong camera (Edge AI)",
             "Đợi kết nối 5G ổn định rồi triển khai",
           ]}
           correct={1}
-          explanation="Khi latency là yêu cầu sống còn, Edge AI là giải pháp duy nhất. Xử lý ngay tại thiết bị: 30–50ms thay vì 100–500ms qua mạng. Giống nấu ăn tại nhà thay vì đặt ship. có ngay, không phụ thuộc ai!"
+          explanation="Khi latency là yêu cầu sống còn, Edge AI là giải pháp duy nhất. Xử lý ngay tại thiết bị: 30-50ms thay vì 100-500ms qua mạng. Giống nấu ăn tại nhà thay vì đặt ship, có ngay, không phụ thuộc ai!"
         >
           {/* =============================================================
              ANALOGY
@@ -430,7 +430,7 @@ export default function EdgeAITopic() {
               <br />
               <strong>Edge AI</strong> như tự nấu trong bếp nhà: nấu nhanh hơn
               (latency thấp), riêng tư (dữ liệu không rời nhà), không tốn phí
-              ship hằng tháng. Đổi lại, bếp nhỏ hơn. phải chọn công thức đơn
+              ship hằng tháng. Đổi lại, bếp nhỏ hơn, phải chọn công thức đơn
               giản (model sau khi quantize). Thực tế thường kết hợp cả hai:
               bữa ăn hằng ngày tự nấu, dịp đặc biệt gọi nhà hàng.
             </p>
@@ -711,7 +711,7 @@ export default function EdgeAITopic() {
                       (không có iPhone bên cạnh). Camera quan sát rừng quốc
                       gia không có fiber nhưng vẫn báo cháy qua LoRa khi phát
                       hiện khói. Đây là vùng Edge AI{" "}
-                      <strong>buộc phải</strong> thắng. không có lựa chọn
+                      <strong>buộc phải</strong> thắng, không có lựa chọn
                       Cloud.
                     </p>
                   </div>
@@ -730,7 +730,7 @@ export default function EdgeAITopic() {
           >
             <AhaMoment>
               <p>
-                Edge AI không thay thế Cloud AI. chúng{" "}
+                Edge AI không thay thế Cloud AI, chúng{" "}
                 <strong>bổ sung cho nhau</strong>. Mô hình phổ biến nhất là
                 <em> hybrid</em>: Edge xử lý những gì cần tức thì và riêng tư
                 (gõ phím, nhận diện khuôn mặt, phát hiện chuyển động), Cloud xử
@@ -774,7 +774,7 @@ export default function EdgeAITopic() {
                   "Không cho người dùng dùng khi không có mạng",
                 ]}
                 correct={1}
-                explanation="600ms RTT có nghĩa chưa tính inference đã vượt budget 300ms của bạn. Model nhỏ on-device (3B–7B quantize INT4) có thể chạy trong 150ms trên ANE / Snapdragon NPU. Pattern hybrid này. fallback thông minh giữa Edge và Cloud. là kiến trúc tiêu chuẩn cho sản phẩm Apple Intelligence, Google Translate Pro, và các app dịch cao cấp."
+                explanation="600ms RTT có nghĩa chưa tính inference đã vượt budget 300ms của bạn. Model nhỏ on-device (3B-7B quantize INT4) có thể chạy trong 150ms trên ANE / Snapdragon NPU. Pattern hybrid này, fallback thông minh giữa Edge và Cloud, là kiến trúc tiêu chuẩn cho sản phẩm Apple Intelligence, Google Translate Pro, và các app dịch cao cấp."
               />
             </div>
           </LessonSection>
@@ -787,7 +787,7 @@ export default function EdgeAITopic() {
               {/* ─── Định nghĩa ─── */}
               <p>
                 <strong>Edge AI</strong> (AI biên) là việc triển khai mô hình
-                machine learning <em>trực tiếp trên thiết bị đầu cuối</em>. điện thoại, camera, cảm biến IoT, xe hơi, tai nghe. thay vì
+                machine learning <em>trực tiếp trên thiết bị đầu cuối</em>. điện thoại, camera, cảm biến IoT, xe hơi, tai nghe, thay vì
                 gửi dữ liệu lên cloud để xử lý. Từ <em>&quot;biên&quot;</em>{" "}
                 (edge) đối lập với <em>&quot;trung tâm&quot;</em> (core/cloud):
                 tính toán diễn ra ở rìa mạng, gần nơi dữ liệu được sinh ra.
@@ -802,10 +802,10 @@ export default function EdgeAITopic() {
                   network round-trip (ms thay vì giây).
                 </li>
                 <li>
-                  <strong>Bảo mật dữ liệu:</strong> Dữ liệu không rời thiết bị. tuân thủ GDPR, HIPAA, PDPA.
+                  <strong>Bảo mật dữ liệu:</strong> Dữ liệu không rời thiết bị, tuân thủ GDPR, HIPAA, PDPA.
                 </li>
                 <li>
-                  <strong>Hoạt động offline:</strong> Không phụ thuộc internet. quan trọng cho nông thôn, nhà máy, y tế di động.
+                  <strong>Hoạt động offline:</strong> Không phụ thuộc internet, quan trọng cho nông thôn, nhà máy, y tế di động.
                 </li>
               </ul>
 
@@ -822,7 +822,7 @@ export default function EdgeAITopic() {
               <p className="text-sm leading-relaxed">
                 Trong điều kiện mạng kém hoặc tác vụ nhỏ, thành phần{" "}
                 <LaTeX>{String.raw`t_{\text{upload}} + t_{\text{download}}`}</LaTeX>{" "}
-                thường lấn át tất cả. khiến Cloud AI không thể cạnh tranh với
+                thường lấn át tất cả, khiến Cloud AI không thể cạnh tranh với
                 Edge dù server có GPU mạnh hơn.
               </p>
 
@@ -838,7 +838,7 @@ export default function EdgeAITopic() {
               <p className="text-sm leading-relaxed">
                 Điểm hoà vốn (breakeven) phụ thuộc vào số request/tháng. Với 1
                 camera streaming 24/7, CAPEX $500 cho NPU Hailo-8 rẻ hơn sau
-                ~2–3 tháng so với streaming video về cloud.
+                ~2-3 tháng so với streaming video về cloud.
               </p>
 
               {/* ─── Callout 1 ─── */}
@@ -846,7 +846,7 @@ export default function EdgeAITopic() {
                 VinAI triển khai Edge AI trên xe VinFast (nhận diện biển báo,
                 người đi bộ, lane assist). Camera giám sát giao thông ở Hà Nội
                 và TP.HCM dùng chip AI để đếm xe, phát hiện tai nạn real-time
-                mà không cần bandwidth lớn. thường kết hợp với{" "}
+                mà không cần bandwidth lớn, thường kết hợp với{" "}
                 <TopicLink slug="model-serving">model serving</TopicLink>{" "}
                 ở cloud cho các tác vụ phức tạp.
               </Callout>
@@ -860,7 +860,7 @@ export default function EdgeAITopic() {
                   <strong>
                     <TopicLink slug="quantization">Quantization</TopicLink>:
                   </strong>{" "}
-                  INT8/INT4 giảm 4–8× model size, chip Edge có INT8
+                  INT8/INT4 giảm 4-8× model size, chip Edge có INT8
                   accelerator.
                 </li>
                 <li>
@@ -868,7 +868,7 @@ export default function EdgeAITopic() {
                     Knowledge{" "}
                     <TopicLink slug="distillation">Distillation</TopicLink>:
                   </strong>{" "}
-                  Model lớn (teacher) dạy model nhỏ (student). giữ 95%
+                  Model lớn (teacher) dạy model nhỏ (student), giữ 95%
                   accuracy.
                 </li>
                 <li>
@@ -906,11 +906,11 @@ export default function EdgeAITopic() {
               <ul className="list-disc list-inside space-y-1 pl-2 text-sm">
                 <li>
                   <strong>Apple Neural Engine (ANE):</strong> 16-core NPU, 35
-                  TOPS trên A17 Pro. chạy Stable Diffusion XL trên iPhone 15
+                  TOPS trên A17 Pro, chạy Stable Diffusion XL trên iPhone 15
                   Pro, Face ID, Apple Intelligence.
                 </li>
                 <li>
-                  <strong>Google Tensor G3:</strong> TPU on-chip cho Pixel. real-time translation, Magic Eraser, Night Sight.
+                  <strong>Google Tensor G3:</strong> TPU on-chip cho Pixel, real-time translation, Magic Eraser, Night Sight.
                 </li>
                 <li>
                   <strong>NVIDIA Jetson Orin:</strong> GPU nhỏ gọn (275 TOPS)
@@ -1004,7 +1004,7 @@ model.eval()
 example_input = torch.rand(1, 3, 224, 224)
 traced = torch.jit.trace(model, example_input)
 
-# 2) Convert. quantize weights FP16 để vừa ANE
+# 2) Convert, quantize weights FP16 để vừa ANE
 mlmodel = ct.convert(
     traced,
     inputs=[ct.ImageType(
@@ -1048,7 +1048,7 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
               </Callout>
 
               {/* ─── CollapsibleDetail 1: Federated Learning ─── */}
-              <CollapsibleDetail title="Chi tiết: Federated Learning. train trên nhiều thiết bị mà dữ liệu không rời máy">
+              <CollapsibleDetail title="Chi tiết: Federated Learning, train trên nhiều thiết bị mà dữ liệu không rời máy">
                 <div className="space-y-2 text-sm leading-relaxed">
                   <p>
                     <strong>Federated Learning (FL)</strong> giải quyết một
@@ -1100,7 +1100,7 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
               </CollapsibleDetail>
 
               {/* ─── CollapsibleDetail 2: Roofline model ─── */}
-              <CollapsibleDetail title="Chi tiết: Mô hình Roofline. tại sao NPU không phải lúc nào cũng nhanh hơn CPU">
+              <CollapsibleDetail title="Chi tiết: Mô hình Roofline, tại sao NPU không phải lúc nào cũng nhanh hơn CPU">
                 <div className="space-y-2 text-sm leading-relaxed">
                   <p>
                     <strong>Roofline model</strong> là công cụ giúp hiểu xem
@@ -1153,7 +1153,7 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
                 </li>
                 <li>
                   <strong>Face ID / Windows Hello:</strong> nhận diện 3D depth
-                  map trong Secure Enclave. template không rời chip.
+                  map trong Secure Enclave, template không rời chip.
                 </li>
                 <li>
                   <strong>Apple Watch AFib / ECG:</strong> phát hiện nhịp tim
@@ -1165,7 +1165,7 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
                 </li>
                 <li>
                   <strong>Xe tự lái (VinFast, Tesla):</strong> perception
-                  pipeline chạy toàn bộ on-board. an toàn khi mất mạng.
+                  pipeline chạy toàn bộ on-board, an toàn khi mất mạng.
                 </li>
                 <li>
                   <strong>Drone nông nghiệp:</strong> phát hiện sâu bệnh trên
@@ -1173,7 +1173,7 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
                 </li>
                 <li>
                   <strong>AR kính thông minh (Meta Ray-Ban, Apple Vision
-                  Pro):</strong> tracking 90Hz. chỉ Edge mới đủ nhanh.
+                  Pro):</strong> tracking 90Hz, chỉ Edge mới đủ nhanh.
                 </li>
               </ul>
 
@@ -1200,7 +1200,7 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
                 <li>
                   <strong>Không thể update nhanh:</strong> Cloud có thể
                   hot-deploy model mới trong phút. Edge phải qua App Store
-                  review + người dùng tải update. chậm hàng ngày/tuần.
+                  review + người dùng tải update, chậm hàng ngày/tuần.
                 </li>
                 <li>
                   <strong>Debug khó:</strong> Không có log server. Cần
@@ -1223,10 +1223,10 @@ mlmodel_int4.save("MobileClassifier.mlpackage")
             <MiniSummary
               title="Sáu điều cần nhớ về Edge AI"
               points={[
-                "Edge AI chạy model ngay trên thiết bị. latency cực thấp, bảo mật cao, hoạt động offline.",
+                "Edge AI chạy model ngay trên thiết bị, latency cực thấp, bảo mật cao, hoạt động offline.",
                 "Không thay thế Cloud AI mà bổ sung (hybrid): Edge xử lý nhanh tại chỗ, Cloud xử lý tác vụ phức tạp cần tri thức toàn cục.",
                 "Quantization + Distillation + Pruning + NAS giúp model nhỏ gọn chạy được trên chip có RAM hạn chế.",
-                "NPU (Apple ANE, Google Tensor, Qualcomm Hexagon, Jetson) ngày càng mạnh. model 7B đã chạy được trên điện thoại.",
+                "NPU (Apple ANE, Google Tensor, Qualcomm Hexagon, Jetson) ngày càng mạnh, model 7B đã chạy được trên điện thoại.",
                 "5 trục đánh giá: latency, bandwidth, privacy, cost, battery. Edge thường thắng 4/5 khi mạng kém.",
                 "Ứng dụng Việt Nam: camera giao thông Hà Nội/TP.HCM, xe tự lái VinFast, nhận diện khuôn mặt chấm công, drone nông nghiệp.",
               ]}

@@ -632,7 +632,7 @@ export default function LossFunctionsInRecommendation() {
           <MetricTile
             label="Mức độ phù hợp trung bình top 3"
             value={avgTrueTop3.toFixed(2)}
-            hint="Điểm sở thích thật 0–10"
+            hint="Điểm sở thích thật 0-10"
             color={LOSS_META[activeLoss].color}
           />
           <MetricTile

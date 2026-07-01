@@ -81,7 +81,7 @@ const COMPONENTS: ComponentNode[] = [
     color: "#3b82f6",
     role: "Phân tích yêu cầu người dùng, suy luận từng bước, quyết định gọi công cụ nào và tổng hợp kết quả cuối cùng.",
     analogy:
-      "Như vỏ não trước (prefrontal cortex) của con người. nơi diễn ra suy luận, ra quyết định và lập ngôn ngữ.",
+      "Như vỏ não trước (prefrontal cortex) của con người, nơi diễn ra suy luận, ra quyết định và lập ngôn ngữ.",
     bookFlightRole:
       "Đọc câu lệnh 'Đặt vé TP.HCM → Tokyo ngày 2/5 dưới 15 triệu', hiểu ý định, chia nhỏ thành các yêu cầu con: tìm chuyến, so sánh giá, đặt chỗ, xuất vé.",
   },
@@ -94,7 +94,7 @@ const COMPONENTS: ComponentNode[] = [
     color: "#a855f7",
     role: "Lưu trữ thông tin trong phiên hiện tại: lịch sử hội thoại, kết quả tool call, ghi chú trung gian. Bị giới hạn bởi context window của LLM.",
     analogy:
-      "Như bộ nhớ làm việc (working memory). mảng nhớ tạm giúp bạn nhớ số điện thoại đủ lâu để quay.",
+      "Như bộ nhớ làm việc (working memory), mảng nhớ tạm giúp bạn nhớ số điện thoại đủ lâu để quay.",
     bookFlightRole:
       "Giữ kết quả search chuyến bay (20 chuyến), thông tin thẻ tín dụng người dùng, trạng thái 'đã chọn chuyến B', các số tiền đang tính toán.",
   },
@@ -107,7 +107,7 @@ const COMPONENTS: ComponentNode[] = [
     color: "#7c3aed",
     role: "Lưu trữ vĩnh viễn: sở thích người dùng, các chuyến đi trước, kiến thức miền. Truy vấn qua embedding + semantic search.",
     analogy:
-      "Như trí nhớ dài hạn. bạn vẫn nhớ lần đầu đi máy bay dù đã nhiều năm. Agent dùng vector DB để 'nhớ' xuyên qua nhiều phiên.",
+      "Như trí nhớ dài hạn, bạn vẫn nhớ lần đầu đi máy bay dù đã nhiều năm. Agent dùng vector DB để 'nhớ' xuyên qua nhiều phiên.",
     bookFlightRole:
       "Truy vấn hồ sơ: 'Người dùng thường bay Vietnam Airlines, thích ghế cạnh cửa sổ, tránh chuyến quá cảnh lâu hơn 4 giờ.' Nhờ đó Agent ưu tiên lọc phù hợp.",
   },
@@ -120,7 +120,7 @@ const COMPONENTS: ComponentNode[] = [
     color: "#22c55e",
     role: "Các hành động Agent có thể thực hiện: gọi API, truy vấn DB, chạy code, duyệt web, gửi email. Mỗi tool có schema rõ ràng (tên, tham số, mô tả).",
     analogy:
-      "Như đôi tay và giác quan. biến 'suy nghĩ' thành 'hành động' trong thế giới thực.",
+      "Như đôi tay và giác quan, biến 'suy nghĩ' thành 'hành động' trong thế giới thực.",
     bookFlightRole:
       "search_flights(from='SGN', to='HND', date='2024-05-02'), compare_prices(ids=[...]), book_flight(id='VN-301', passenger={...}), send_confirmation_email().",
   },
@@ -133,7 +133,7 @@ const COMPONENTS: ComponentNode[] = [
     color: "#f59e0b",
     role: "Chia bài toán lớn thành chuỗi bước nhỏ, giám sát tiến độ, phát hiện lệch hướng và điều chỉnh (replan) khi cần.",
     analogy:
-      "Như người quản lý dự án. giữ bản kế hoạch, đánh dấu những gì đã xong, biết lúc nào phải đổi chiến thuật.",
+      "Như người quản lý dự án, giữ bản kế hoạch, đánh dấu những gì đã xong, biết lúc nào phải đổi chiến thuật.",
     bookFlightRole:
       "Kế hoạch 4 bước: [1] Tìm chuyến phù hợp ngân sách → [2] So sánh giá + giờ bay → [3] Đặt chỗ → [4] Xuất email xác nhận. Nếu bước 1 không tìm được chuyến dưới 15tr, chuyển sang Plan B: hỏi người dùng có nới ngân sách không.",
   },
@@ -152,7 +152,7 @@ const PHASES: PhaseStep[] = [
     metrics: [
       { name: "Latency trung bình", value: "~80 ms" },
       { name: "Tokens tiêu thụ", value: "input tokens" },
-      { name: "Nguy cơ sai sót", value: "Thấp. chỉ là đọc hiểu" },
+      { name: "Nguy cơ sai sót", value: "Thấp, chỉ là đọc hiểu" },
       { name: "Thành phần chính", value: "LLM + Short-term memory" },
       { name: "Đầu ra", value: "Intent đã parse + entities" },
     ],
@@ -167,9 +167,9 @@ const PHASES: PhaseStep[] = [
     bookFlightExample:
       "Planning module xây chuỗi: search_flights → filter by price < 15M → rank by user_preference (Vietnam Airlines) → pick top 3 → ask_user_confirm.",
     metrics: [
-      { name: "Latency trung bình", value: "~1.5–4 s" },
+      { name: "Latency trung bình", value: "~1.5-4 s" },
       { name: "Tokens tiêu thụ", value: "Nhiều (chain-of-thought)" },
-      { name: "Nguy cơ sai sót", value: "Trung bình. kế hoạch có thể thiếu bước" },
+      { name: "Nguy cơ sai sót", value: "Trung bình, kế hoạch có thể thiếu bước" },
       { name: "Thành phần chính", value: "LLM + Long-term memory + Planning" },
       { name: "Đầu ra", value: "Danh sách bước cụ thể (có tên tool)" },
     ],
@@ -184,9 +184,9 @@ const PHASES: PhaseStep[] = [
     bookFlightExample:
       "Agent gọi search_flights(from='SGN', to='HND', date='2024-05-02', max_price=15000000). API trả 18 chuyến, lưu vào scratchpad.",
     metrics: [
-      { name: "Latency trung bình", value: "~200 ms – 5 s (tuỳ tool)" },
+      { name: "Latency trung bình", value: "~200 ms-5 s (tuỳ tool)" },
       { name: "Tokens tiêu thụ", value: "Ít (JSON call)" },
-      { name: "Nguy cơ sai sót", value: "Cao. tool có thể fail, trả lỗi" },
+      { name: "Nguy cơ sai sót", value: "Cao, tool có thể fail, trả lỗi" },
       { name: "Thành phần chính", value: "LLM + Tools + Short-term memory" },
       { name: "Đầu ra", value: "Observation (kết quả tool)" },
     ],
@@ -201,7 +201,7 @@ const PHASES: PhaseStep[] = [
     bookFlightExample:
       "Agent kiểm tra: '18 chuyến tìm được, 3 chuyến Vietnam Airlines giá <15M. Chất lượng đủ để đề xuất người dùng.' Nếu 0 chuyến, Agent quay lại Plan với ngân sách mới.",
     metrics: [
-      { name: "Latency trung bình", value: "~800 ms – 2 s" },
+      { name: "Latency trung bình", value: "~800 ms-2 s" },
       { name: "Tokens tiêu thụ", value: "Vừa (self-critique)" },
       { name: "Nguy cơ sai sót", value: "Nguồn gốc loop vô hạn nếu reflection sai" },
       { name: "Thành phần chính", value: "LLM + Planning + Long-term memory" },
@@ -215,13 +215,13 @@ const QUIZ: QuizQuestion[] = [
     question: "Thành phần nào KHÔNG thể thiếu trong mọi AI Agent?",
     options: [
       "Bộ nhớ dài hạn",
-      "LLM (bộ não). trung tâm suy luận và ra quyết định",
+      "LLM (bộ não), trung tâm suy luận và ra quyết định",
       "Trình duyệt web",
       "Giao diện người dùng",
     ],
     correct: 1,
     explanation:
-      "LLM là 'bộ não' không thể thiếu. mọi Agent đều cần nó để suy luận và ra quyết định. Bộ nhớ, công cụ, planning đều quan trọng nhưng Agent đơn giản có thể hoạt động không có chúng.",
+      "LLM là 'bộ não' không thể thiếu, mọi Agent đều cần nó để suy luận và ra quyết định. Bộ nhớ, công cụ, planning đều quan trọng nhưng Agent đơn giản có thể hoạt động không có chúng.",
   },
   {
     question: "Agent vòng lặp (agentic loop) hoạt động theo mô hình nào?",
@@ -239,7 +239,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Sự khác biệt cốt lõi giữa AI Agent và chatbot thông thường?",
     options: [
       "Agent có giao diện đẹp hơn",
-      "Agent có khả năng TỰ CHỦ hành động. lập kế hoạch, sử dụng công cụ, tự điều chỉnh. thay vì chỉ phản hồi câu hỏi",
+      "Agent có khả năng TỰ CHỦ hành động, lập kế hoạch, sử dụng công cụ, tự điều chỉnh, thay vì chỉ phản hồi câu hỏi",
       "Agent dùng mô hình lớn hơn",
       "Agent chạy nhanh hơn chatbot",
     ],
@@ -269,13 +269,13 @@ const QUIZ: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      "Đây là 'loop death'. thường do Reflection yếu hoặc thiếu. Agent phải tự hỏi: 'Đã tiến bộ chưa? Tool gọi lần này khác lần trước không?' Kết hợp max_steps (giới hạn) + reflection (đánh giá) giải quyết triệt để.",
+      "Đây là 'loop death', thường do Reflection yếu hoặc thiếu. Agent phải tự hỏi: 'Đã tiến bộ chưa? Tool gọi lần này khác lần trước không?' Kết hợp max_steps (giới hạn) + reflection (đánh giá) giải quyết triệt để.",
   },
   {
     question: "Tại sao Tools được mô tả bằng JSON Schema?",
     options: [
       "Để giảm token",
-      "Để LLM hiểu chính xác tên hàm, tham số, kiểu dữ liệu, và biết khi nào/gọi thế nào. chuẩn hoá giao diện giữa LLM và thế giới thực",
+      "Để LLM hiểu chính xác tên hàm, tham số, kiểu dữ liệu, và biết khi nào/gọi thế nào, chuẩn hoá giao diện giữa LLM và thế giới thực",
       "JSON bắt buộc bởi IEEE",
       "Không có lý do cụ thể",
     ],
@@ -287,7 +287,7 @@ const QUIZ: QuizQuestion[] = [
     question: "Planning module thêm giá trị gì ngoài việc 'chia nhỏ nhiệm vụ'?",
     options: [
       "Chỉ làm chậm hệ thống",
-      "Giám sát tiến độ + phát hiện lệch hướng + replan khi bước thất bại. giúp Agent resilient với lỗi",
+      "Giám sát tiến độ + phát hiện lệch hướng + replan khi bước thất bại, giúp Agent resilient với lỗi",
       "Thay thế LLM",
       "Tăng độ sáng tạo",
     ],
@@ -349,14 +349,14 @@ export default function AgentArchitectureTopic() {
           question="Bạn muốn xây AI có thể: tìm vé máy bay, so sánh giá, đặt vé, và tự điều chỉnh khi chuyến bị đầy. Agent này cần tối thiểu bao nhiêu thành phần?"
           options={[
             "1. chỉ cần LLM đủ mạnh là đủ",
-            "4. LLM (suy luận), Memory (nhớ), Tools (gọi API), Planning (điều phối). giống con người có não, trí nhớ, đôi tay, và khả năng lập kế hoạch",
+            "4. LLM (suy luận), Memory (nhớ), Tools (gọi API), Planning (điều phối), giống con người có não, trí nhớ, đôi tay, và khả năng lập kế hoạch",
             "2. LLM + kết nối API đã đủ dùng",
           ]}
           correct={1}
           explanation="Một AI Agent thật sự cần 4 thành phần cốt lõi: LLM (bộ não suy luận), Memory (bộ nhớ ngắn + dài hạn), Tools (hành động ra thế giới thực), Planning (chia bài toán + phản ánh). Thiếu bất kỳ thành phần nào Agent sẽ bị giới hạn nghiêm trọng trong các nhiệm vụ nhiều bước."
         >
           <p className="text-sm text-muted mt-2">
-            Trong bài này, bạn sẽ mổ xẻ một Agent đang đặt vé máy bay. từng
+            Trong bài này, bạn sẽ mổ xẻ một Agent đang đặt vé máy bay, từng
             thành phần bật sáng theo đúng pha nó hoạt động.
           </p>
         </PredictionGate>
@@ -656,7 +656,7 @@ export default function AgentArchitectureTopic() {
       {/* ━━━ 3. AHA MOMENT ━━━ */}
       <LessonSection step={3} totalSteps={TOTAL_STEPS} label="Khoảnh khắc aha">
         <AhaMoment>
-          AI Agent không phải là LLM được bọc thêm API. nó là một{" "}
+          AI Agent không phải là LLM được bọc thêm API, nó là một{" "}
           <strong>hệ thống nhận thức-hành động</strong> có vòng lặp kiểu{" "}
           <TopicLink slug="react-framework">ReAct</TopicLink>: nhận thức → suy
           luận → hành động (qua{" "}
@@ -676,7 +676,7 @@ export default function AgentArchitectureTopic() {
             "Chỉ LLM và Tools",
             "Cả 4: LLM (suy luận), Planning (chia 3 bước), Tools (search + email), Memory (lưu kết quả trung gian giữa các bước)",
             "Chỉ Tools và Planning",
-            "Chỉ LLM. đủ thông minh để tự làm",
+            "Chỉ LLM, đủ thông minh để tự làm",
           ]}
           correct={1}
           explanation="Planning chia 3 bước (search → summarize → email). Tools thực hiện search web và send email. LLM tóm tắt và suy luận. Memory lưu kết quả tìm kiếm để tổng hợp ở bước cuối. Thiếu Memory → Agent mất ngữ cảnh giữa các lần gọi tool."
@@ -706,7 +706,7 @@ export default function AgentArchitectureTopic() {
               <TopicLink slug="embedding-model">embedding</TopicLink>.
             </li>
             <li>
-              <strong>Công cụ:</strong> Mở rộng khả năng hành động. search
+              <strong>Công cụ:</strong> Mở rộng khả năng hành động, search
               web, code execution, API calls, DB queries, trình duyệt, file
               system. Mô tả bằng JSON Schema để LLM biết cách gọi.
             </li>
@@ -867,7 +867,7 @@ result = agent.invoke({
             Agent đi chệch.
           </Callout>
 
-          <CodeBlock language="python" title="agent_architecture_crewai.py (CrewAI. cách tiếp cận declarative)">{`# CrewAI cho bạn định nghĩa Agent ở mức cao hơn, không cần tự viết graph.
+          <CodeBlock language="python" title="agent_architecture_crewai.py (CrewAI, cách tiếp cận declarative)">{`# CrewAI cho bạn định nghĩa Agent ở mức cao hơn, không cần tự viết graph.
 from crewai import Agent, Task, Crew, Process
 from crewai.memory import ShortTermMemory, LongTermMemory
 from crewai_tools import SerperDevTool
@@ -888,7 +888,7 @@ flight_planner = Agent(
     long_term_memory=LongTermMemory(),
     allow_delegation=False,
     verbose=True,
-    max_iter=8,               # max_steps. chặn loop vô hạn
+    max_iter=8,               # max_steps, chặn loop vô hạn
     max_rpm=20,               # rate limit API
 )
 
@@ -915,7 +915,7 @@ crew = Crew(
 result = crew.kickoff()
 print(result)`}</CodeBlock>
 
-          <CollapsibleDetail title="Tại sao LLM + Tool không đủ. vai trò thực của Memory">
+          <CollapsibleDetail title="Tại sao LLM + Tool không đủ, vai trò thực của Memory">
             <p className="text-sm text-muted">
               Nhiều bài blog đơn giản hoá Agent thành &quot;LLM + Tool&quot;,
               nhưng khi Agent chạy nhiều bước, context window (khoảng 128K
@@ -931,7 +931,7 @@ print(result)`}</CodeBlock>
               (các phiên trước, lưu dạng chunk + embedding), và{" "}
               <strong>semantic memory</strong> (kiến thức nền, profile người
               dùng, domain facts). Mỗi loại dùng công cụ khác nhau để truy
-              xuất. nên kiến trúc Agent thực sự là &quot;LLM + Tools +
+              xuất, nên kiến trúc Agent thực sự là &quot;LLM + Tools +
               Memory(3 tầng) + Planning&quot;.
             </p>
           </CollapsibleDetail>
@@ -996,15 +996,15 @@ print(result)`}</CodeBlock>
           <CollapsibleDetail title="Chi phí & latency: con số thực tế">
             <p className="text-sm text-muted">
               Một Agent 4 pha trên GPT-4o, xử lý nhiệm vụ 5 bước, tiêu thụ
-              trung bình khoảng 15K–40K tokens. Với giá 2024 (~$5/1M input,
+              trung bình khoảng 15K-40K tokens. Với giá 2024 (~$5/1M input,
               $15/1M output), một phiên hoàn thành tốn khoảng{" "}
-              <strong>$0.15 – $0.40</strong>. Nhân lên 10K phiên/ngày = chi
-              phí LLM $1.5K – $4K/ngày.
+              <strong>$0.15-$0.40</strong>. Nhân lên 10K phiên/ngày = chi
+              phí LLM $1.5K-$4K/ngày.
             </p>
             <p className="mt-2 text-sm text-muted">
-              Latency: pha Plan (CoT) nặng nhất ~2–4s. Pha Act phụ thuộc
+              Latency: pha Plan (CoT) nặng nhất ~2-4s. Pha Act phụ thuộc
               tool (DB query ~100ms, web scrape ~2s, code sandbox ~5s).
-              Tổng phiên 5 bước thường 15–40 giây. Kỹ thuật giảm:{" "}
+              Tổng phiên 5 bước thường 15-40 giây. Kỹ thuật giảm:{" "}
               <TopicLink slug="kv-cache">KV cache</TopicLink>,{" "}
               streaming response, chạy song song các tool độc lập trong 1
               pha Act.
@@ -1013,7 +1013,7 @@ print(result)`}</CodeBlock>
               Tối ưu chi phí: dùng mô hình nhỏ (GPT-4o-mini, Claude Haiku)
               cho các bước đơn giản (parse, classify) và model lớn chỉ khi
               cần suy luận phức tạp. Kiến trúc &quot;cascade&quot; này có
-              thể giảm 70–80% chi phí mà giữ chất lượng gần tương đương.
+              thể giảm 70-80% chi phí mà giữ chất lượng gần tương đương.
             </p>
           </CollapsibleDetail>
         </ExplanationSection>
@@ -1064,10 +1064,10 @@ print(result)`}</CodeBlock>
         <InlineChallenge
           question="Agent đặt vé đã tìm được 3 chuyến phù hợp trong pha Act. Pha nào tiếp theo chịu trách nhiệm quyết định 'đề xuất cho user hay tìm thêm'?"
           options={[
-            "Perceive. đọc lại yêu cầu gốc",
-            "Reflect. đánh giá kết quả hiện tại và quyết định bước tiếp theo",
-            "Plan. tạo kế hoạch mới từ đầu",
-            "Act. gọi thêm tool nữa",
+            "Perceive, đọc lại yêu cầu gốc",
+            "Reflect, đánh giá kết quả hiện tại và quyết định bước tiếp theo",
+            "Plan, tạo kế hoạch mới từ đầu",
+            "Act, gọi thêm tool nữa",
           ]}
           correct={1}
           explanation="Reflect là pha so sánh kết quả thực tế với mục tiêu. Tại đây Agent quyết định: kết quả đủ tốt → dừng và trả lời; kết quả chưa đủ → quay lại Plan với chiến lược mới; hoặc thực hiện thêm Act nếu chỉ thiếu một tool call đơn giản."
@@ -1079,12 +1079,12 @@ print(result)`}</CodeBlock>
         <MiniSummary
           title="Những điều cần nhớ về Agent Architecture"
           points={[
-            "4 thành phần cốt lõi: LLM (bộ não suy luận), Memory (ngắn hạn context + dài hạn vector DB), Tools (API/code/DB. mô tả bằng JSON Schema), Planning (chia bước + reflection).",
+            "4 thành phần cốt lõi: LLM (bộ não suy luận), Memory (ngắn hạn context + dài hạn vector DB), Tools (API/code/DB, mô tả bằng JSON Schema), Planning (chia bước + reflection).",
             "Agent hoạt động theo vòng lặp 4 pha: Perceive (nhận thức) → Plan (lập kế hoạch) → Act (hành động) → Reflect (phản ánh) → lặp lại.",
             "Khác chatbot: Agent TỰ CHỦ thực hiện nhiều bước với môi trường thực, thay vì chỉ phản hồi 1 lượt hội thoại.",
             "Long-term memory qua vector DB cho phép Agent nhớ sở thích người dùng xuyên phiên; short-term dùng context window cho phiên hiện tại.",
             "Bẫy phổ biến: loop vô hạn, gọi sai tool, mất ngữ cảnh. Luôn có max_steps, guardrails, và logging từng bước.",
-            "Framework chuẩn: LangGraph (graph-based, rõ state), CrewAI (declarative role/task), AutoGen (multi-agent chat). chọn theo nhu cầu cụ thể.",
+            "Framework chuẩn: LangGraph (graph-based, rõ state), CrewAI (declarative role/task), AutoGen (multi-agent chat), chọn theo nhu cầu cụ thể.",
           ]}
         />
       </LessonSection>
@@ -1098,7 +1098,7 @@ print(result)`}</CodeBlock>
       <LessonSection step={10} totalSteps={TOTAL_STEPS} label="Đi tiếp">
         <div className="rounded-lg border border-border bg-card p-4 text-sm text-muted">
           <p className="mb-2 font-semibold text-foreground">
-            Bạn đã nắm kiến trúc tổng thể. bước tiếp theo:
+            Bạn đã nắm kiến trúc tổng thể, bước tiếp theo:
           </p>
           <ul className="list-disc list-inside space-y-1">
             <li>
@@ -1146,7 +1146,7 @@ print(result)`}</CodeBlock>
             </li>
             <li>
               <strong>Audit log:</strong> mỗi tool call + tham số + kết quả
-              ghi vào log có thể truy vết. tối thiểu 30 ngày.
+              ghi vào log có thể truy vết, tối thiểu 30 ngày.
             </li>
             <li>
               <strong>Human-in-the-loop:</strong> các hành động không đảo
@@ -1165,7 +1165,7 @@ print(result)`}</CodeBlock>
             </li>
             <li>
               <strong>Observability:</strong> dùng LangSmith, Langfuse hoặc
-              Arize. trực quan hoá graph run, xem token flow, đánh giá chất
+              Arize, trực quan hoá graph run, xem token flow, đánh giá chất
               lượng qua LLM judge.
             </li>
           </ul>
