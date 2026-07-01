@@ -240,38 +240,103 @@ const STEP_ORDER: CleanStep[] = ["raw", "dedupe", "interp", "tz", "snap"];
 
 const STEP_META: Record<
   CleanStep,
-  { label: string; subtitle: string; color: string; icon: typeof MapPin }
+  {
+    label: string;
+    subtitle: string;
+    detail: string;
+    color: string;
+    icon: typeof MapPin;
+  }
 > = {
   raw: {
     label: "Raw",
     subtitle: "GPS thô: loạn, lệch, trùng, mất sóng",
+    detail:
+      "Dữ liệu ban đầu từ điện thoại tài xế Grab. Có lỗi ở cả vị trí lẫn thời gian, model chưa nên học trực tiếp từ chuỗi này.",
     color: "#ef4444",
     icon: Satellite,
   },
   dedupe: {
     label: "Dedupe",
     subtitle: "Bỏ điểm trùng cùng timestamp",
+    detail:
+      "Bước này chủ yếu đổi số điểm, không đổi hình dạng đường đi. Không bỏ điểm trùng thì model dễ tưởng xe đứng yên lâu hơn thực tế.",
     color: "#f59e0b",
     icon: Layers,
   },
   interp: {
     label: "Interpolate",
     subtitle: "Lấp chỗ mất tín hiệu bằng nội suy",
+    detail:
+      "Điểm viền xanh là điểm ước lượng giữa hai lần GPS bắt được tín hiệu. Nó không phải GPS thật, nhưng giúp chuỗi không đứt đoạn trước khi map-match.",
     color: "#3b82f6",
     icon: WifiOff,
   },
   tz: {
     label: "Convert TZ",
     subtitle: "Sửa múi giờ: xếp lại đúng thứ tự thời gian",
+    detail:
+      "Vài ping bị ghi sai múi giờ nên rơi nhầm thứ tự thời gian, làm đường nối gấp khúc. Bước này chuẩn hoá timestamp và xếp lại chuỗi cho đúng thứ tự; vị trí các điểm không đổi.",
     color: "#8b5cf6",
     icon: Clock,
   },
   snap: {
     label: "Map-match",
     subtitle: "Kéo mỗi điểm về đoạn đường gần nhất",
+    detail:
+      "Đây mới là bước hình học lớn nhất: mỗi điểm được kéo từ vị trí GPS lệch về đúng lòng đường trên bản đồ.",
     color: "#10b981",
     icon: MapPin,
   },
+};
+
+/* Cụm "Trước → Thao tác → Sau" cho mỗi bước, kèm một câu ghi chú.
+   Các bước không đổi hình học (dedupe, tz) cần chú thích rõ điều vừa xảy ra,
+   nếu không bản đồ trông như đứng yên. */
+const STEP_CHANGE_COPY: Record<
+  CleanStep,
+  { before: string; action: string; after: string; note: string }
+> = {
+  raw: {
+    before: "11 ping GPS",
+    action: "Đánh dấu lỗi",
+    after: "Chưa đưa vào model",
+    note: "Bản đồ đang chỉ ra các lỗi đầu vào: điểm trùng, đoạn mất tín hiệu, điểm lệch và ping sai múi giờ.",
+  },
+  dedupe: {
+    before: "11 điểm, 1 trùng",
+    action: "Bỏ ping trùng t=15s",
+    after: "10 điểm, duplicate = 0",
+    note: "Hình dạng đường gần như giữ nguyên, nhưng chuỗi thời gian không còn làm model tưởng xe đứng yên.",
+  },
+  interp: {
+    before: "Mất tín hiệu ~45s",
+    action: "Thêm 1 điểm nội suy",
+    after: "Chuỗi liền mạch hơn",
+    note: "Điểm viền xanh là dữ liệu ước lượng. Nó không phải GPS thật, nhưng giúp model thấy xe vẫn đang di chuyển.",
+  },
+  tz: {
+    before: "UTC + giờ local",
+    action: "Chuẩn hoá timestamp",
+    after: "Đúng thứ tự thời gian",
+    note: "Vị trí các điểm giữ nguyên; đường nối hết gấp khúc vì các ping sai múi giờ đã về đúng chỗ trong chuỗi.",
+  },
+  snap: {
+    before: "GPS lệch khỏi đường",
+    action: "Map-match",
+    after: "Điểm nằm trên tuyến hợp lý",
+    note: "Đây là bước hình học lớn nhất: toạ độ được kéo về đoạn đường gần nhất, nên sai số ETA giảm mạnh nhất.",
+  },
+};
+
+const STEP_OBSERVATION: Record<CleanStep, string> = {
+  raw: "Bước raw cho thấy vấn đề gốc: chuỗi GPS có lỗi vị trí, lỗi thời gian và đoạn mất tín hiệu cùng lúc. Đưa thẳng vào model thì ETA dễ lệch mạnh.",
+  dedupe:
+    "Dedupe là bước nhỏ nhưng quan trọng: bỏ ping trùng cùng timestamp. Bản đồ không đổi nhiều, nhưng bộ đếm duplicate về 0 và chuỗi thời gian bớt gây hiểu nhầm.",
+  interp:
+    "Interpolate thêm một điểm ước lượng vào đoạn mất tín hiệu. Cần thấy rõ đây là dữ liệu được tạo ra để lấp khoảng trống, không phải GPS thật.",
+  tz: "Convert TZ không kéo điểm trên bản đồ, nó sửa ý nghĩa của thời gian. Vài ping bị ghi sai múi giờ nên rơi nhầm thứ tự; chuẩn hoá xong, đường nối theo thời gian hết gấp khúc.",
+  snap: "Map-match là bước làm đổi hình học rõ nhất: các điểm GPS lệch trượt về đúng đường, nên sai số ETA giảm mạnh nhất ở cuối pipeline.",
 };
 
 export default function DataPreprocessingInUberEta() {
@@ -531,7 +596,7 @@ export default function DataPreprocessingInUberEta() {
               className="rounded-xl border-2 bg-card p-4"
               style={{ borderColor: STEP_META[step].color + "66" }}
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <p className="text-[11px] font-semibold text-tertiary uppercase tracking-wide">
                     Bản đồ nội thành (giản lược)
@@ -539,15 +604,18 @@ export default function DataPreprocessingInUberEta() {
                   <p className="text-sm font-semibold text-foreground">
                     {STEP_META[step].subtitle}
                   </p>
+                  <p className="mt-1 max-w-2xl text-xs leading-relaxed text-muted">
+                    {STEP_META[step].detail}
+                  </p>
                 </div>
-                <div className="text-right">
+                <div className="sm:text-right">
                   <p className="text-[10px] text-tertiary">Sai số ETA mô phỏng</p>
                   <motion.p
                     key={etaError}
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-xl font-bold tabular-nums"
+                    className="whitespace-nowrap text-xl font-bold tabular-nums"
                     style={{ color: STEP_META[step].color }}
                   >
                     ± {etaError} phút
@@ -555,8 +623,11 @@ export default function DataPreprocessingInUberEta() {
                 </div>
               </div>
 
+              <StepChangeStrip step={step} color={STEP_META[step].color} />
+
               <GpsMap
                 points={rendered}
+                step={step}
                 showClean={step === "snap"}
                 color={STEP_META[step].color}
               />
@@ -590,11 +661,8 @@ export default function DataPreprocessingInUberEta() {
               </div>
             </div>
 
-            <Callout variant="insight" title="Điều cần quan sát">
-              Ở bước <code>raw</code>, sai số ETA lên tới ±23 phút. Đây là lý do
-              các app giao hàng những năm 2010 liên tục &ldquo;đánh lừa&rdquo;
-              khách. Khi toàn bộ pipeline chạy xong, sai số rớt còn ±2 phút,
-              gần sát con số Uber công bố trên blog DeepETA.
+            <Callout variant="insight" title="Điều cần quan sát ở bước này">
+              {STEP_OBSERVATION[step]}
             </Callout>
           </div>
 
@@ -889,6 +957,7 @@ function ProblemCard({
 
 function GpsMap({
   points,
+  step,
   showClean,
   color,
 }: {
@@ -900,6 +969,7 @@ function GpsMap({
     kind: ObsKind;
     isFill: boolean;
   }[];
+  step: CleanStep;
   showClean: boolean;
   color: string;
 }) {
@@ -948,6 +1018,31 @@ function GpsMap({
         strokeDasharray={showClean ? undefined : "5,5"}
       />
 
+      {/* Bảng chú thích cho bước sửa múi giờ: đây là thao tác trên metadata
+          thời gian, nên nhấn mạnh "vị trí không đổi, thứ tự thì có". */}
+      {step === "tz" && (
+        <g transform="translate(24, 28)">
+          <rect
+            width={176}
+            height={62}
+            rx={10}
+            fill="var(--bg-card)"
+            stroke="#8b5cf6"
+            strokeWidth={1.4}
+            opacity={0.96}
+          />
+          <text x={12} y={20} fontSize={10} fontWeight={700} fill="#8b5cf6">
+            TIME NORMALIZATION
+          </text>
+          <text x={12} y={38} fontSize={11} fill="var(--text-primary)">
+            UTC + local → local
+          </text>
+          <text x={12} y={54} fontSize={10} fill="var(--text-tertiary)">
+            2 ping sai giờ đã về đúng chỗ
+          </text>
+        </g>
+      )}
+
       {/* Đường nối các điểm hiện tại — vẽ lại mỗi bước để thấy thứ tự đổi */}
       <motion.polyline
         key={line}
@@ -988,6 +1083,22 @@ function GpsMap({
         ))}
       </AnimatePresence>
 
+      {/* Nhãn chỉ rõ lỗi/thao tác đang diễn ra, đặt trên các điểm */}
+      {step === "raw" && (
+        <>
+          <IssueTag x={90} y={258} color="#f59e0b" label="trùng t=15s" />
+          <IssueTag x={250} y={108} color="#f59e0b" label="mất tín hiệu" />
+          <IssueTag x={386} y={44} color="#ef4444" label="outlier" />
+          <IssueTag x={150} y={224} color="#8b5cf6" label="UTC lẫn local" />
+        </>
+      )}
+      {step === "dedupe" && (
+        <IssueTag x={92} y={258} color="#f59e0b" label="đã bỏ 1 ping" />
+      )}
+      {step === "interp" && (
+        <IssueTag x={250} y={108} color="#3b82f6" label="điểm nội suy" />
+      )}
+
       {/* Chú giải */}
       <g transform={`translate(20, ${H - 12})`}>
         <circle
@@ -1015,6 +1126,80 @@ function GpsMap({
         </text>
       </g>
     </svg>
+  );
+}
+
+function StepChangeStrip({
+  step,
+  color,
+}: {
+  step: CleanStep;
+  color: string;
+}) {
+  const copy = STEP_CHANGE_COPY[step];
+  const parts = [
+    { label: "Trước", value: copy.before },
+    { label: "Thao tác", value: copy.action },
+    { label: "Sau", value: copy.after },
+  ];
+  return (
+    <div className="mb-3 border-y border-border/70 py-3">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-stretch">
+        {parts.map((part, index) => (
+          <div key={part.label} className="contents">
+            {index > 0 && (
+              <div className="hidden items-center justify-center px-1 text-tertiary sm:flex">
+                →
+              </div>
+            )}
+            <div className="rounded-md border border-border bg-surface/50 px-3 py-2">
+              <p className="text-[9px] font-semibold uppercase tracking-wide text-tertiary">
+                {part.label}
+              </p>
+              <p className="mt-0.5 text-xs font-semibold text-foreground">
+                {part.value}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p
+        className="mt-2 border-l-2 pl-2 text-xs leading-relaxed text-muted"
+        style={{ borderColor: color }}
+      >
+        {copy.note}
+      </p>
+    </div>
+  );
+}
+
+function IssueTag({
+  x,
+  y,
+  color,
+  label,
+}: {
+  x: number;
+  y: number;
+  color: string;
+  label: string;
+}) {
+  const width = Math.max(56, label.length * 6.4 + 18);
+  return (
+    <g transform={`translate(${x}, ${y})`}>
+      <rect
+        width={width}
+        height={18}
+        rx={9}
+        fill="var(--bg-card)"
+        opacity={0.95}
+        stroke={color}
+        strokeWidth={1.3}
+      />
+      <text x={9} y={12.5} fontSize={10} fontWeight={700} fill={color}>
+        {label}
+      </text>
+    </g>
   );
 }
 
