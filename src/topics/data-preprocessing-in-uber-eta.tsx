@@ -279,6 +279,7 @@ const STEP_CHANGE_COPY: Record<
   CleanStep,
   { before: string; action: string; after: string; note: string }
 > = {
+  // Non-geometric cleanup steps need explicit before/action/after cues, otherwise the map looks unchanged.
   raw: {
     before: "13 ping GPS",
     action: "Đánh dấu lỗi",
