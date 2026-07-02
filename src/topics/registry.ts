@@ -2128,6 +2128,38 @@ export const topicList: TopicMeta[] = [
     vizType: "interactive",
   },
   {
+    slug: "ai-for-paperwork",
+    title: "AI for Paperwork",
+    titleVi: "AI điền form và giấy tờ",
+    description:
+      "Đưa mẫu đơn và dữ kiện cho AI để có bản nháp đúng khuôn, chặn thói quen tự bịa và che thông tin nhạy cảm trước khi gửi.",
+    category: "applied-ai",
+    tags: ["paperwork", "forms", "practical", "office", "privacy"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "getting-started-with-ai",
+      "ai-for-excel-cleaning",
+      "ai-for-writing",
+    ],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-for-excel-cleaning",
+    title: "AI for Excel Cleaning",
+    titleVi: "AI làm sạch dữ liệu Excel",
+    description:
+      "Dán vài dòng mẫu cho AI để nhận công thức TRIM, PROPER, TEXT và các bước sửa lỗi, rồi áp dụng trên bản sao và kiểm tra lại.",
+    category: "applied-ai",
+    tags: ["excel", "data-cleaning", "spreadsheet", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: [
+      "ai-for-data-analysis",
+      "ai-for-paperwork",
+      "prompt-engineering",
+    ],
+    vizType: "interactive",
+  },
+  {
     slug: "ai-tool-evaluation",
     title: "AI Tool Evaluation",
     titleVi: "Chọn AI tool bằng bảng tiêu chí",
