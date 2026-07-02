@@ -147,6 +147,8 @@ const OFFICE_STAGES: Stage[] = [
   {
     title: "Ứng dụng thực tế",
     slugs: [
+      "ai-for-paperwork",
+      "ai-for-excel-cleaning",
       "rag",
       "semantic-search",
       "ai-coding-assistants",
