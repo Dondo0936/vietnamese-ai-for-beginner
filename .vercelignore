@@ -1,0 +1,9 @@
+local-artifacts/
+.codex/
+.playwright-mcp/
+*.mp4
+*.mov
+*.webm
+frame-*.png
+*-banner.png
+*-creative.png

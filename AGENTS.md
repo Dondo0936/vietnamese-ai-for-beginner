@@ -52,9 +52,10 @@ When you change a primitive, the audit applies to **every topic that imports it*
 
 GitHub → Vercel auto-sync on this project is unreliable. Every time you ship:
 
-1. `git push origin main` (or whatever branch is being shipped).
-2. Immediately after, run `vercel deploy --prod --yes` from the repo root to force a production deploy.
-3. Verify the deploy landed by curling a known route on `udemi.tech` (e.g. `curl -sS -o /dev/null -w "%{http_code}\n" https://udemi.tech/`) and expecting `200`. Grep the response body for a string you know is new in this ship to confirm the content matches HEAD, not a stale build.
-4. Report both SHAs + the Vercel deployment URL back to the user.
+1. Before pushing, run `pnpm run build` (or at minimum `npx tsc --noEmit`) and `npm test` locally and get a green result. This is a documentation-only guard: `vercel deploy --prod --yes` builds the local working tree through the CLI, including gitignored local-only files such as `remotion/Lesson*.tsx`, so a green git-integration deploy does not prove the forced CLI redeploy will succeed.
+2. `git push origin main` (or whatever branch is being shipped).
+3. Immediately after, run `vercel deploy --prod --yes` from the repo root to force a production deploy.
+4. Verify the deploy landed by curling a known route on `udemi.tech` (e.g. `curl -sS -o /dev/null -w "%{http_code}\n" https://udemi.tech/`) and expecting `200`. Grep the response body for a string you know is new in this ship to confirm the content matches HEAD, not a stale build.
+5. Report both SHAs + the Vercel deployment URL back to the user.
 
 Never assume the git push alone is enough. Never skip step 3 — the production URL is the source of truth for "is it live."

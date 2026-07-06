@@ -66,3 +66,9 @@ next-env.d.ts
 /remotion/Lesson*.tsx
 /public/lesson-*.mp4
 /public/lesson-*.png
+
+# Local-only secrets and generated voiceover/caption assets
+/.elevenlabs-key
+/.viettel-token
+/public/lesson-*.mp3
+/remotion/captions/
