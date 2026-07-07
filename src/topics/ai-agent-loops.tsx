@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   CalendarClock,
@@ -43,9 +44,24 @@ export const metadata: TopicMeta = {
   difficulty: "beginner",
   relatedSlugs: ["agentic-workflows", "ai-coding-assistants", "getting-started-with-ai"],
   vizType: "interactive",
+  sources: [
+    {
+      title: "Getting started with loops",
+      publisher: "Anthropic (Claude blog)",
+      url: "https://claude.com/blog/getting-started-with-loops",
+      date: "2026-06",
+      kind: "engineering-blog",
+    },
+  ],
 };
 
 const TOTAL_STEPS = 8;
+
+const figureDimensions: Record<string, { width: number; height: number }> = {
+  "agentic-loop.png": { width: 2024, height: 1012 },
+  "goal-evaluator.png": { width: 2024, height: 1050 },
+  "proactive-loop.png": { width: 2024, height: 1072 },
+};
 
 const summaryPairs = [
   {
@@ -221,6 +237,33 @@ const quizQuestions: QuizQuestion[] = [
       "Chủ động hợp với dòng việc đến đều và có tiêu chí xử lý rõ. Nếu việc mơ hồ hoặc rủi ro cao, cần giữ người duyệt trong vòng.",
   },
 ];
+
+function FigureCard({
+  src,
+  alt,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+}) {
+  const filename = src.slice(src.lastIndexOf("/") + 1);
+  const dimensions = figureDimensions[filename];
+
+  return (
+    <figure className="rounded-xl border border-border bg-card p-3">
+      <Image
+        src={src}
+        alt={alt}
+        width={dimensions.width}
+        height={dimensions.height}
+        sizes="(max-width: 1024px) 100vw, 960px"
+        className="h-auto w-full rounded-lg"
+      />
+      <p className="mt-2 text-xs leading-relaxed text-muted">{caption}</p>
+    </figure>
+  );
+}
 
 function LoopTypeGrid() {
   return (
@@ -402,6 +445,11 @@ export default function AiAgentLoopsTopic() {
             loại việc phù hợp.
           </p>
           <LoopTypeGrid />
+          <FigureCard
+            src="/loops-guide/proactive-loop.png"
+            alt="Sơ đồ vòng lặp chủ động trên cloud với /schedule, agent chính, agent review và người quyết định cuối"
+            caption="Vòng lặp chủ động chạy trên cloud: /schedule theo dõi Slack hoặc GitHub, agent chính lặp đến khi bài kiểm tra đạt, agent thứ hai review, bạn là người quyết định gộp. Minh họa của Anthropic."
+          />
           <Callout variant="info" title="Lưu ý sản phẩm">
             `/goal` cần Claude Code bản mới, v2.1.139 trở lên. Model đánh giá
             của `/goal` chỉ đọc hội thoại, không tự chạy lệnh, nên điều kiện
@@ -415,12 +463,22 @@ export default function AiAgentLoopsTopic() {
       <LessonSection step={4} totalSteps={TOTAL_STEPS} label="Vòng lặp lõi">
         <div className="space-y-5">
           <AgenticLoopReveal />
+          <FigureCard
+            src="/loops-guide/agentic-loop.png"
+            alt="Sơ đồ vòng lặp của agent: prompt, thu thập ngữ cảnh, hành động, kiểm tra, trả lời"
+            caption="Vòng lặp lõi của agent theo minh họa của Anthropic: nhận yêu cầu, thu thập ngữ cảnh, hành động, tự kiểm tra, rồi trả lời."
+          />
           <Callout variant="insight" title="Model đánh giá không thay bạn đoán">
             Với `/goal`, mỗi lần agent định dừng, một model đánh giá sẽ kiểm tra
             điều kiện. Nếu chưa đạt, agent bị gửi quay lại làm tiếp. Vì vậy tiêu
             chí đo đếm được như số test đạt hoặc điểm số hiệu quả hơn tiêu chí
             cảm tính.
           </Callout>
+          <FigureCard
+            src="/loops-guide/goal-evaluator.png"
+            alt="Sơ đồ /goal: Claude làm việc, model đánh giá kiểm tra điều kiện, vòng lặp kết thúc khi mục tiêu đạt hoặc hết lượt"
+            caption="Chu trình /goal: agent định dừng, model đánh giá kiểm tra điều kiện, chưa đạt thì quay lại làm tiếp. Minh họa của Anthropic."
+          />
           <AhaMoment>
             Thứ bạn giao cho agent không phải là từng bước làm. Thứ bạn giao là{" "}
             <strong>điều kiện dừng</strong>.

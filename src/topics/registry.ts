@@ -1414,6 +1414,15 @@ export const topicList: TopicMeta[] = [
     difficulty: "beginner",
     relatedSlugs: ["agentic-workflows", "ai-coding-assistants", "getting-started-with-ai"],
     vizType: "interactive",
+    sources: [
+      {
+        title: "Getting started with loops",
+        publisher: "Anthropic (Claude blog)",
+        url: "https://claude.com/blog/getting-started-with-loops",
+        date: "2026-06",
+        kind: "engineering-blog",
+      },
+    ],
   },
   {
     slug: "agent-evaluation",
