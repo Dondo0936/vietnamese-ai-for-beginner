@@ -24,6 +24,7 @@ const topicComponents: Record<string, ComponentType> = {
   "agent-evaluation": dynamic(() => import("@/topics/agent-evaluation")),
   "agentic-rag": dynamic(() => import("@/topics/agentic-rag")),
   "agentic-workflows": dynamic(() => import("@/topics/agentic-workflows")),
+  "ai-agent-loops": dynamic(() => import("@/topics/ai-agent-loops")),
   "ai-coding-assistants": dynamic(() => import("@/topics/ai-coding-assistants")),
   "ai-for-data-analysis": dynamic(() => import("@/topics/ai-for-data-analysis")),
   "ai-for-excel-cleaning": dynamic(() => import("@/topics/ai-for-excel-cleaning")),

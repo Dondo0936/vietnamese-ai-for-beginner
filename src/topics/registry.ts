@@ -1324,7 +1324,7 @@ export const topicList: TopicMeta[] = [
   },
 
   // ═══════════════════════════════════════════════════════
-  // Category 9: ai-agents (9 topics)
+  // Category 9: ai-agents (10 topics)
   // ═══════════════════════════════════════════════════════
   {
     slug: "function-calling",
@@ -1401,6 +1401,18 @@ export const topicList: TopicMeta[] = [
     tags: ["workflow", "patterns", "automation"],
     difficulty: "intermediate",
     relatedSlugs: ["agent-architecture", "multi-agent", "orchestration"],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-agent-loops",
+    title: "AI Agent Loops",
+    titleVi: "Vòng lặp agent: giao việc cho AI tự chạy đến khi xong",
+    description:
+      "Bốn kiểu vòng lặp giúp AI agent tự lặp lại công việc đến khi đạt điều kiện dừng: theo lượt, theo mục tiêu, theo lịch và chủ động. Kèm cách giữ chất lượng và quản lý token.",
+    category: "ai-agents",
+    tags: ["agents", "loops", "automation", "claude-code", "workflow"],
+    difficulty: "beginner",
+    relatedSlugs: ["agentic-workflows", "ai-coding-assistants", "getting-started-with-ai"],
     vizType: "interactive",
   },
   {
