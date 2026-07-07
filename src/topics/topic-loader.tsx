@@ -29,6 +29,7 @@ const topicComponents: Record<string, ComponentType> = {
   "ai-for-excel-cleaning": dynamic(() => import("@/topics/ai-for-excel-cleaning")),
   "ai-for-paperwork": dynamic(() => import("@/topics/ai-for-paperwork")),
   "ai-for-science": dynamic(() => import("@/topics/ai-for-science")),
+  "ai-for-social-media": dynamic(() => import("@/topics/ai-for-social-media")),
   "ai-for-writing": dynamic(() => import("@/topics/ai-for-writing")),
   "ai-governance": dynamic(() => import("@/topics/ai-governance")),
   "ai-governance-in-enterprise": dynamic(() => import("@/topics/ai-governance-in-enterprise")),

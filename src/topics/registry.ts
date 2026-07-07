@@ -2144,6 +2144,18 @@ export const topicList: TopicMeta[] = [
     vizType: "interactive",
   },
   {
+    slug: "ai-for-social-media",
+    title: "AI for Social Media",
+    titleVi: "AI đăng bài nhiều kênh: một nội dung, năm nền tảng",
+    description:
+      "Dùng AI biến một nội dung thành năm bản đăng riêng cho Facebook, Threads, X, YouTube và LinkedIn. Kèm quy trình kiểm tra giúp bắt bài đăng lỗi ngay cả khi hệ thống báo thành công.",
+    category: "applied-ai",
+    tags: ["social-media", "automation", "practical", "office", "workflow"],
+    difficulty: "beginner",
+    relatedSlugs: ["ai-for-writing", "ai-for-paperwork", "getting-started-with-ai"],
+    vizType: "interactive",
+  },
+  {
     slug: "ai-for-excel-cleaning",
     title: "AI for Excel Cleaning",
     titleVi: "AI làm sạch dữ liệu Excel",
