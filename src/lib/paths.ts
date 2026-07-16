@@ -149,6 +149,11 @@ const OFFICE_STAGES: Stage[] = [
     slugs: [
       "ai-for-paperwork",
       "ai-for-excel-cleaning",
+      "ai-for-customer-replies",
+      "ai-for-meeting-notes",
+      "ai-for-product-listings",
+      "ai-doc-summary",
+      "ai-for-market-research",
       "rag",
       "semantic-search",
       "ai-coding-assistants",

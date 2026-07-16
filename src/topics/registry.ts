@@ -5061,6 +5061,66 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["mlops", "model-serving", "llm-evaluation", "observability-for-ai", "agent-evaluation"],
     vizType: "interactive",
   },
+  {
+    slug: "ai-for-customer-replies",
+    title: "AI for Customer Replies",
+    titleVi: "AI trả lời tin nhắn khách hàng nhanh và đúng",
+    description:
+      "Soạn tin nhắn trả lời khách đến bất kể giờ nào, giữ đúng giọng shop và chốt đơn tự nhiên, không cứng nhắc như trả lời tự động.",
+    category: "applied-ai",
+    tags: ["customer-service", "messaging", "practical", "shop"],
+    difficulty: "beginner",
+    relatedSlugs: ["ai-for-writing", "prompt-engineering", "getting-started-with-ai"],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-for-meeting-notes",
+    title: "AI for Meeting Notes",
+    titleVi: "AI viết biên bản họp trong 5 phút",
+    description:
+      "Biến bản ghi cuộc họp thô thành biên bản rõ ràng: quyết định chính và việc cần làm kèm người phụ trách.",
+    category: "applied-ai",
+    tags: ["meeting-notes", "summarization", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: ["ai-for-writing", "ai-for-customer-replies", "getting-started-with-ai"],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-for-product-listings",
+    title: "AI for Product Listings",
+    titleVi: "AI viết mô tả sản phẩm cho 30 món trong 1 giờ",
+    description:
+      "Biến vài dòng thông tin thô thành mô tả sản phẩm bán hàng, đủ điểm nổi bật và lời kêu gọi mua, cho từng món trong shop.",
+    category: "applied-ai",
+    tags: ["product-listing", "copywriting", "practical", "shop"],
+    difficulty: "beginner",
+    relatedSlugs: ["ai-for-writing", "ai-for-customer-replies", "getting-started-with-ai"],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-doc-summary",
+    title: "AI for Document Summaries",
+    titleVi: "AI tóm tắt tài liệu dài, nắm ý chính trong 10 phút",
+    description:
+      "Rút điểm quan trọng và rủi ro từ báo cáo dài bằng AI, đủ nhanh để đọc trước một cuộc họp mà không cần đọc hết tài liệu.",
+    category: "applied-ai",
+    tags: ["summarization", "reports", "practical", "office"],
+    difficulty: "beginner",
+    relatedSlugs: ["ai-for-meeting-notes", "ai-for-writing", "hallucination"],
+    vizType: "interactive",
+  },
+  {
+    slug: "ai-for-market-research",
+    title: "AI for Market Research",
+    titleVi: "Khảo sát đối thủ trong 1 buổi tối bằng AI",
+    description:
+      "Dùng AI so sánh giá, mô hình và điểm yếu của đối thủ rồi chỉ ra khoảng trống thị trường, kèm danh sách con số bạn phải tự kiểm chứng trước khi tin.",
+    category: "applied-ai",
+    tags: ["market-research", "small-business", "practical", "startup"],
+    difficulty: "beginner",
+    relatedSlugs: ["sentiment-analysis-in-brand-monitoring", "ai-for-writing", "getting-started-with-ai"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
