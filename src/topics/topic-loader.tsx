@@ -67,6 +67,7 @@ const topicComponents: Record<string, ComponentType> = {
   "chain-of-thought": dynamic(() => import("@/topics/chain-of-thought")),
   "chain-of-thought-in-reasoning-models": dynamic(() => import("@/topics/chain-of-thought-in-reasoning-models")),
   "chunking": dynamic(() => import("@/topics/chunking")),
+  "claude-code-apps-script": dynamic(() => import("@/topics/claude-code-apps-script")),
   "clip": dynamic(() => import("@/topics/clip")),
   "cnn": dynamic(() => import("@/topics/cnn")),
   "color-spaces": dynamic(() => import("@/topics/color-spaces")),

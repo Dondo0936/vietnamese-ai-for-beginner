@@ -5121,6 +5121,18 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["sentiment-analysis-in-brand-monitoring", "ai-for-writing", "getting-started-with-ai"],
     vizType: "interactive",
   },
+  {
+    slug: "claude-code-apps-script",
+    title: "Claude Code + Google Apps Script",
+    titleVi: "Dựng web app đặt món bằng Claude Code và 3 lệnh clasp",
+    description:
+      "Claude Code viết code Google Apps Script rồi tạo, đẩy và publish web app đặt món bằng clasp ngay trong terminal. Đơn hàng rơi thẳng vào Google Sheet, sửa code xong link vẫn giữ nguyên.",
+    category: "applied-ai",
+    tags: ["claude-code", "apps-script", "clasp", "automation", "cli"],
+    difficulty: "intermediate",
+    relatedSlugs: ["ai-coding-assistants", "agentic-workflows", "ai-for-market-research"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
