@@ -155,6 +155,7 @@ const OFFICE_STAGES: Stage[] = [
       "ai-doc-summary",
       "ai-for-market-research",
       "claude-code-apps-script",
+      "claude-code-excel",
       "rag",
       "semantic-search",
       "ai-coding-assistants",

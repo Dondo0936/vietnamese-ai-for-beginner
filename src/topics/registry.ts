@@ -5133,6 +5133,18 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["ai-coding-assistants", "agentic-workflows", "ai-for-market-research"],
     vizType: "interactive",
   },
+  {
+    slug: "claude-code-excel",
+    title: "Claude Code + Excel",
+    titleVi: "Dọn sổ bán hàng lộn xộn và làm báo cáo bằng Claude Code",
+    description:
+      "Claude Code đọc file Excel xuất từ máy POS, tự phát hiện dữ liệu bẩn (ngày 3 định dạng, tiền gõ chữ, dòng trùng), dọn sạch và xuất báo cáo doanh thu kèm biểu đồ ngay trong Excel 2019 thường, không cần Copilot.",
+    category: "applied-ai",
+    tags: ["claude-code", "excel", "openpyxl", "automation", "data-cleaning"],
+    difficulty: "intermediate",
+    relatedSlugs: ["claude-code-apps-script", "ai-for-data-analysis", "ai-coding-assistants"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
