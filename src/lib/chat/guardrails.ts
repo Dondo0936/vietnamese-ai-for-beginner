@@ -1,6 +1,5 @@
 import Fuse from "fuse.js";
 import { categories, topicList } from "@/topics/registry";
-import { initSearch, searchTopics } from "@/lib/search";
 import type { TopicMeta } from "@/lib/types";
 
 interface CorpusEntry {
@@ -112,19 +111,62 @@ export function classifyMessage(text: string): ClassifyResult {
   return { allowed };
 }
 
-let relatedSearchInitialized = false;
+interface ScoredTopic {
+  topic: TopicMeta;
+  score: number;
+}
+
+let topicWordSetCache: Map<string, Set<string>> | null = null;
+
+// Word SETS, not raw substrings — plain `.includes()` on joined text matches
+// "rag" inside "average", ranking an unrelated pooling topic above the
+// actual RAG topic for the query "RAG là gì". tokenize() already splits on
+// word boundaries, so set membership avoids that class of false positive.
+function getTopicWords(topic: TopicMeta): Set<string> {
+  if (!topicWordSetCache) {
+    topicWordSetCache = new Map(
+      topicList.map((t) => [
+        t.slug,
+        new Set(
+          tokenize(
+            `${t.title} ${t.titleVi} ${t.slug.replace(/-/g, " ")} ${t.tags.join(" ")}`
+          )
+        ),
+      ])
+    );
+  }
+  return topicWordSetCache.get(topic.slug) ?? new Set();
+}
 
 /**
  * Suggests topic pages related to an on-topic question, for the "related
- * lessons" widget under a chat reply. Deliberately reuses search.ts's
- * whole-message Fuse config (lenient, tuned for short search-bar queries)
- * rather than classifyMessage's strict token-level one — a loose-but-wrong
- * suggestion is a fine outcome here, unlike for the topic gate.
+ * lessons" widget under a chat reply.
+ *
+ * Originally reused search.ts's whole-message Fuse config, but that's tuned
+ * for short search-bar queries and fails the same way classifyMessage did
+ * before its rewrite: fuzzy-matching a full sentence like "RAG là gì" as one
+ * contiguous string against long topic text scores too low even when "RAG"
+ * is an exact, obvious match — searchTopics("RAG là gì") returned zero
+ * results in production. Token-level substring matching (same tokenize()
+ * used for the topic gate) against title+titleVi+slug+tags fixes it: each
+ * query content-word is checked independently, topics are ranked by how
+ * many tokens they match. Wrong-but-plausible suggestions are an acceptable
+ * failure mode here (unlike the strict topic gate), so this deliberately
+ * skips GENERIC_DENYLIST and stays lenient.
  */
 export function findRelatedTopics(text: string, limit = 4): TopicMeta[] {
-  if (!relatedSearchInitialized) {
-    initSearch(topicList);
-    relatedSearchInitialized = true;
-  }
-  return searchTopics(text).slice(0, limit);
+  const tokens = tokenize(text);
+  if (tokens.length === 0) return [];
+
+  const scored: ScoredTopic[] = topicList.map((topic) => {
+    const words = getTopicWords(topic);
+    const score = tokens.filter((tok) => words.has(tok)).length;
+    return { topic, score };
+  });
+
+  return scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.topic);
 }
