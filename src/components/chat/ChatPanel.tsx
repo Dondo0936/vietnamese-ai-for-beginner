@@ -142,7 +142,16 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
   useEffect(() => {
     if (!open) return;
     previousFocusRef.current = document.activeElement as HTMLElement | null;
-    const id = window.setTimeout(() => dialogRef.current?.focus(), 0);
+    const id = window.setTimeout(() => {
+      if (!dialogRef.current) return;
+      // Land on the first real focusable control (e.g. the header's close
+      // button), not the dialog wrapper itself — the wrapper's tabIndex=-1
+      // excludes it from getFocusableElements(), so focusing it directly
+      // left a gap where the very first Shift+Tab escaped the trap below
+      // before ever landing on a first/last boundary it recognizes.
+      const focusable = getFocusableElements(dialogRef.current);
+      (focusable[0] ?? dialogRef.current).focus();
+    }, 0);
     return () => {
       window.clearTimeout(id);
       previousFocusRef.current?.focus?.();
