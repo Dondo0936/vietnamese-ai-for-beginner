@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Markdown from "react-markdown";
 import { X, Send, Loader2, LogIn } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
@@ -14,13 +15,56 @@ interface ChatPanelProps {
   onClose: () => void;
 }
 
+interface RelatedTopic {
+  slug: string;
+  title: string;
+  titleVi: string;
+}
+
 const MAX_INPUT_LENGTH = 2000;
+
+const MARKDOWN_COMPONENTS = {
+  p: (props: React.ComponentProps<"p">) => (
+    <p className="mb-1.5 last:mb-0" {...props} />
+  ),
+  ul: (props: React.ComponentProps<"ul">) => (
+    <ul className="mb-1.5 list-disc space-y-0.5 pl-4 last:mb-0" {...props} />
+  ),
+  ol: (props: React.ComponentProps<"ol">) => (
+    <ol
+      className="mb-1.5 list-decimal space-y-0.5 pl-4 last:mb-0"
+      {...props}
+    />
+  ),
+  a: ({ children, ...props }: React.ComponentProps<"a">) => (
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-accent underline"
+      {...props}
+    >
+      {children}
+    </a>
+  ),
+  code: (props: React.ComponentProps<"code">) => (
+    <code
+      className="rounded bg-foreground/10 px-1 py-0.5 text-[12px] font-mono"
+      {...props}
+    />
+  ),
+};
 
 function extractText(message: UIMessage): string {
   return message.parts
     .filter((p): p is { type: "text"; text: string } => p.type === "text")
     .map((p) => p.text)
     .join("");
+}
+
+function extractRelatedTopics(message: UIMessage): RelatedTopic[] {
+  const part = message.parts.find((p) => p.type === "data-relatedTopics");
+  const data = (part as { data?: unknown } | undefined)?.data;
+  return Array.isArray(data) ? (data as RelatedTopic[]) : [];
 }
 
 /**
@@ -67,10 +111,9 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
 
   return createPortal(
     <div className="fixed inset-0 z-[100]">
-      <div
-        onClick={onClose}
-        className="absolute inset-0 cmd-backdrop md:bg-transparent md:backdrop-blur-none"
-      />
+      {/* Invisible click-outside-to-close catcher — no dimming/blur, chat
+          floats over the page like a docked panel rather than a modal. */}
+      <div onClick={onClose} className="absolute inset-0" />
 
       <div
         role="dialog"
@@ -201,18 +244,44 @@ function ChatPanelInner({
             Hỏi mình bất cứ điều gì về AI/ML trong chương trình học nhé!
           </p>
         )}
-        {messages.map((m) => (
-          <div
-            key={m.id}
-            className={`my-1.5 max-w-[85%] rounded-[var(--r-lg)] px-3 py-2 text-[13px] leading-relaxed ${
-              m.role === "user"
-                ? "ml-auto bg-accent text-white"
-                : "bg-surface text-foreground"
-            }`}
-          >
-            {extractText(m)}
-          </div>
-        ))}
+        {messages.map((m) => {
+          const relatedTopics =
+            m.role === "assistant" ? extractRelatedTopics(m) : [];
+          return (
+            <div key={m.id}>
+              <div
+                className={`my-1.5 max-w-[85%] rounded-[var(--r-lg)] px-3 py-2 text-[13px] leading-relaxed ${
+                  m.role === "user"
+                    ? "ml-auto bg-accent text-white"
+                    : "bg-surface text-foreground"
+                }`}
+              >
+                {m.role === "assistant" ? (
+                  <Markdown components={MARKDOWN_COMPONENTS}>
+                    {extractText(m)}
+                  </Markdown>
+                ) : (
+                  extractText(m)
+                )}
+              </div>
+              {relatedTopics.length > 0 && (
+                <div className="mb-2 flex gap-1.5 overflow-x-auto pb-1">
+                  {relatedTopics.map((t) => (
+                    <a
+                      key={t.slug}
+                      href={`/topics/${t.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 whitespace-nowrap rounded-[var(--r-md)] border border-border bg-background px-2.5 py-1 text-[11px] text-muted transition-colors hover:border-accent hover:text-accent"
+                    >
+                      {t.titleVi || t.title}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
         {status === "submitted" && (
           <div className="my-1.5 flex max-w-[85%] items-center gap-1 rounded-[var(--r-lg)] bg-surface px-3 py-2 text-tertiary">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current" />

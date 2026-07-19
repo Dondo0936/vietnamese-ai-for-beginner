@@ -29,6 +29,7 @@ import {
   convertToModelMessages,
   createUIMessageStream,
   createUIMessageStreamResponse,
+  toUIMessageStream,
   type UIMessage,
 } from "ai";
 import { groq } from "@ai-sdk/groq";
@@ -36,7 +37,7 @@ import {
   createServerClientWithCookies,
   createServiceClient,
 } from "@/lib/supabase-server";
-import { classifyMessage } from "@/lib/chat/guardrails";
+import { classifyMessage, findRelatedTopics } from "@/lib/chat/guardrails";
 import {
   buildSystemPrompt,
   CANNED_REFUSAL,
@@ -50,6 +51,11 @@ const CONTEXT_MESSAGE_LIMIT = 12;
 const HISTORY_LIMIT = 50;
 const ANON_TURN_CAP = 2;
 const DAILY_TURN_CAP = 100;
+const RELATED_TOPICS_LIMIT = 4;
+// ~100 words of Vietnamese output; generous headroom since Vietnamese
+// diacritics tokenize denser than English. Backstop for the system prompt's
+// own length instruction, not the primary control.
+const MAX_OUTPUT_TOKENS = 350;
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
 interface ChatMessageRow {
@@ -197,14 +203,18 @@ export async function POST(req: Request) {
     model: groq(GROQ_MODEL),
     system: buildSystemPrompt(),
     messages: await convertToModelMessages(trustedContext),
-    maxOutputTokens: 800,
+    maxOutputTokens: MAX_OUTPUT_TOKENS,
     abortSignal: req.signal,
     onError: (event) => {
       console.error("[api/chat] groq stream error", event.error);
     },
   });
 
-  return result.toUIMessageStreamResponse({
+  const relatedTopics = findRelatedTopics(text, RELATED_TOPICS_LIMIT).map(
+    (t) => ({ slug: t.slug, title: t.title, titleVi: t.titleVi })
+  );
+
+  const stream = createUIMessageStream({
     originalMessages: trustedContext,
     onError: () => CANNED_ERROR_APOLOGY,
     onEnd: async ({ responseMessage, isAborted }) => {
@@ -218,7 +228,14 @@ export async function POST(req: Request) {
         blocked: false,
       });
     },
+    execute({ writer }) {
+      if (relatedTopics.length > 0) {
+        writer.write({ type: "data-relatedTopics", data: relatedTopics });
+      }
+      writer.merge(toUIMessageStream({ stream: result.stream }));
+    },
   });
+  return createUIMessageStreamResponse({ stream });
 }
 
 export async function GET() {

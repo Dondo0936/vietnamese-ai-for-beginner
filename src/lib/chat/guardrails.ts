@@ -1,5 +1,7 @@
 import Fuse from "fuse.js";
 import { categories, topicList } from "@/topics/registry";
+import { initSearch, searchTopics } from "@/lib/search";
+import type { TopicMeta } from "@/lib/types";
 
 interface CorpusEntry {
   text: string;
@@ -108,4 +110,21 @@ export function classifyMessage(text: string): ClassifyResult {
   const fuse = getFuse();
   const allowed = tokens.some((token) => fuse.search(token).length > 0);
   return { allowed };
+}
+
+let relatedSearchInitialized = false;
+
+/**
+ * Suggests topic pages related to an on-topic question, for the "related
+ * lessons" widget under a chat reply. Deliberately reuses search.ts's
+ * whole-message Fuse config (lenient, tuned for short search-bar queries)
+ * rather than classifyMessage's strict token-level one — a loose-but-wrong
+ * suggestion is a fine outcome here, unlike for the topic gate.
+ */
+export function findRelatedTopics(text: string, limit = 4): TopicMeta[] {
+  if (!relatedSearchInitialized) {
+    initSearch(topicList);
+    relatedSearchInitialized = true;
+  }
+  return searchTopics(text).slice(0, limit);
 }

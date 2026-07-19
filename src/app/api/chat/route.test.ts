@@ -168,7 +168,11 @@ describe("POST /api/chat", () => {
     );
     vi.mocked(createServiceClient).mockReturnValue(service as never);
     vi.mocked(streamText).mockReturnValue({
-      toUIMessageStreamResponse: vi.fn(() => new Response("ok")),
+      stream: new ReadableStream({
+        start(controller) {
+          controller.close();
+        },
+      }),
     } as never);
 
     const res = await POST(
