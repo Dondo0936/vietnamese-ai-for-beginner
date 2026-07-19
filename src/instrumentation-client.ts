@@ -24,5 +24,9 @@ initBotId({
       path: "/api/ensure-session",
       method: "POST",
     },
+    {
+      path: "/api/chat",
+      method: "POST",
+    },
   ],
 });

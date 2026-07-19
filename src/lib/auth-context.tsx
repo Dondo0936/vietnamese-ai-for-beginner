@@ -38,6 +38,24 @@ const DEFAULT: AuthContextValue = {
 const AuthContext = createContext<AuthContextValue>(DEFAULT);
 
 const PENDING_PASSWORD_PREFIX = "pending-password-";
+const PENDING_ANON_MERGE_KEY = "pending-anon-merge-token";
+
+// Best-effort: reassigns an anonymous visitor's chat history to the account
+// they just signed into. Only meaningful for a real identity switch
+// (password sign-in to an *existing* account, or Google sign-in to one) —
+// signUp/signUpGoogle upgrade the same anonymous user id in place, so they
+// never need this.
+async function mergeAnonymousHistory(oldAccessToken: string) {
+  try {
+    await fetch("/api/chat/merge-anonymous", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ oldAccessToken }),
+    });
+  } catch {
+    // Losing chat history on a failed merge isn't fatal — no-op.
+  }
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -98,11 +116,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const supabase = createClient();
     if (!supabase) return { error: "Supabase chưa được cấu hình." };
 
+    const {
+      data: { session: oldSession },
+    } = await supabase.auth.getSession();
+    const wasAnonymous = oldSession?.user.is_anonymous === true;
+    const oldAccessToken = oldSession?.access_token;
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) return { error: mapAuthError(error) };
+
+    if (wasAnonymous && oldAccessToken) {
+      await mergeAnonymousHistory(oldAccessToken);
+    }
     return {};
   }, []);
 
@@ -121,6 +149,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInGoogle = useCallback(async () => {
     const supabase = createClient();
     if (!supabase) return { error: "Supabase chưa được cấu hình." };
+
+    // Redirect-based — stash the anonymous token now so the callback page
+    // can complete the merge once the new session lands (mirrors the
+    // PENDING_PASSWORD_PREFIX pattern above).
+    const {
+      data: { session: oldSession },
+    } = await supabase.auth.getSession();
+    if (oldSession?.user.is_anonymous) {
+      try {
+        sessionStorage.setItem(PENDING_ANON_MERGE_KEY, oldSession.access_token);
+      } catch {
+        // sessionStorage unavailable — merge will simply be skipped.
+      }
+    }
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",

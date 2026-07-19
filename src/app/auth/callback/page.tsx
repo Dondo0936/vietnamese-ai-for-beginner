@@ -9,6 +9,7 @@ import { mapAuthError } from "@/lib/auth-errors";
 type Status = "exchanging" | "needs-password" | "done" | "error";
 
 const PENDING_PASSWORD_PREFIX = "pending-password-";
+const PENDING_ANON_MERGE_KEY = "pending-anon-merge-token";
 
 function CallbackContent() {
   const router = useRouter();
@@ -58,6 +59,25 @@ function CallbackContent() {
       }
 
       const session = sessionData.session;
+
+      // If this OAuth return followed a signInGoogle() from an anonymous
+      // session (auth-context.tsx stashed the old token before redirecting),
+      // reassign that anonymous history now. signUpGoogle (linkIdentity)
+      // never sets this key since it upgrades the same user id in place.
+      try {
+        const pendingMergeToken = sessionStorage.getItem(PENDING_ANON_MERGE_KEY);
+        if (pendingMergeToken) {
+          sessionStorage.removeItem(PENDING_ANON_MERGE_KEY);
+          fetch("/api/chat/merge-anonymous", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ oldAccessToken: pendingMergeToken }),
+          }).catch(() => {});
+        }
+      } catch {
+        // sessionStorage unavailable — merge silently skipped.
+      }
+
       const email = session.user.email ?? "";
       const key = PENDING_PASSWORD_PREFIX + email.toLowerCase();
       let pending: string | null = null;

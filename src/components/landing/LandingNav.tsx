@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AuthProvider } from "@/lib/auth-context";
 import AuthModal from "@/components/auth/AuthModal";
 
 /**
@@ -19,14 +18,6 @@ import AuthModal from "@/components/auth/AuthModal";
  * instead of bleeding through.
  */
 export function LandingNav() {
-  return (
-    <AuthProvider>
-      <LandingNavInner />
-    </AuthProvider>
-  );
-}
-
-function LandingNavInner() {
   const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
