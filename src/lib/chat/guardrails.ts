@@ -14,6 +14,10 @@ const ALLOWLIST_PATTERNS: RegExp[] = [
   /\b(udemi|khoá học|khóa học|chủ đề|bài học|trang này|website này|app này|ứng dụng này)\b/i,
   /\b(cảm ơn|thanks|thank you)\b/i,
   /\b(bạn là ai|who are you|bạn giúp được gì|what can you do)\b/i,
+  // Standalone 2-letter AI/ML acronyms — tokenize()'s length>=3 floor drops
+  // these before they ever reach Fuse, so "AI là gì" / "ML là gì" would
+  // otherwise fall through to zero tokens and get rejected.
+  /\b(ai|ml)\b/i,
 ];
 
 // Function words stripped before token-level matching, so a sentence made of
@@ -34,10 +38,14 @@ const STOPWORDS = new Set([
 // Standalone English words that are substrings of real ML jargon (e.g.
 // "world" from the "world-models" topic slug) but carry zero on-topic
 // signal by themselves — without this, "who won the world cup" would match.
+// "application"/"applications" is here because it's used as a generic tag
+// on 80+ unrelated topics (see topics/registry.ts) — common enough that
+// "application deadline for university" was matching through it alone.
 const GENERIC_DENYLIST = new Set([
   "world", "data", "value", "values", "system", "systems", "general",
   "basic", "real", "new", "old", "good", "bad", "big", "small", "state",
   "states", "case", "cases", "type", "types", "user", "users",
+  "application", "applications",
 ]);
 
 function tokenize(text: string): string[] {
@@ -111,31 +119,79 @@ export function classifyMessage(text: string): ClassifyResult {
   return { allowed };
 }
 
+// Strips diacritics (Vietnamese and otherwise) so an unaccented query like
+// "hoc tang cuong" matches topic text written as "học tăng cường". Combining
+// marks come off via NFD decomposition; "đ"/"Đ" don't decompose that way so
+// they're folded explicitly.
+function stripDiacritics(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+}
+
+// Crude singular/plural fold ("transformers" -> "transformer") so a plural
+// query still hits a topic's singular title token. Deliberately simple
+// (trailing "s" only) rather than a real stemmer — good enough for the
+// English ML jargon in this corpus without false-folding short words.
+function normalizeToken(w: string): string {
+  const stripped = stripDiacritics(w);
+  return stripped.length > 4 && stripped.endsWith("s") && !stripped.endsWith("ss")
+    ? stripped.slice(0, -1)
+    : stripped;
+}
+
 interface ScoredTopic {
   topic: TopicMeta;
   score: number;
 }
 
-let topicWordSetCache: Map<string, Set<string>> | null = null;
+interface TopicWordInfo {
+  // title + slug — a hit here is a strong, specific signal.
+  strong: Set<string>;
+  // titleVi + tags — looser prose/label matches, weighted lower since they
+  // pull in generic Vietnamese syllables and shared tags more easily.
+  weak: Set<string>;
+}
 
-// Word SETS, not raw substrings — plain `.includes()` on joined text matches
-// "rag" inside "average", ranking an unrelated pooling topic above the
-// actual RAG topic for the query "RAG là gì". tokenize() already splits on
-// word boundaries, so set membership avoids that class of false positive.
-function getTopicWords(topic: TopicMeta): Set<string> {
-  if (!topicWordSetCache) {
-    topicWordSetCache = new Map(
-      topicList.map((t) => [
-        t.slug,
-        new Set(
-          tokenize(
-            `${t.title} ${t.titleVi} ${t.slug.replace(/-/g, " ")} ${t.tags.join(" ")}`
-          )
-        ),
-      ])
+let topicWordCache: Map<string, TopicWordInfo> | null = null;
+let tokenDocFreqCache: Map<string, number> | null = null;
+
+// A token that shows up in many topics (e.g. "hình" from "mô hình" / model,
+// which appears across dozens of unrelated Vietnamese titles) carries little
+// discriminative signal on its own — without down-weighting it, a query
+// built entirely from generic words ranks topics by coincidence rather than
+// relevance. Threshold picked empirically against this corpus's ~260 topics.
+const GENERIC_TOKEN_TOPIC_THRESHOLD = 8;
+
+function buildTopicWordCaches(): void {
+  const wordCache = new Map<string, TopicWordInfo>();
+  const freq = new Map<string, number>();
+
+  for (const t of topicList) {
+    const strong = new Set(
+      tokenize(`${t.title} ${t.slug.replace(/-/g, " ")}`).map(normalizeToken)
     );
+    const weak = new Set(
+      tokenize(`${t.titleVi} ${t.tags.join(" ")}`).map(normalizeToken)
+    );
+    wordCache.set(t.slug, { strong, weak });
+    for (const w of new Set([...strong, ...weak])) {
+      freq.set(w, (freq.get(w) ?? 0) + 1);
+    }
   }
-  return topicWordSetCache.get(topic.slug) ?? new Set();
+
+  topicWordCache = wordCache;
+  tokenDocFreqCache = freq;
+}
+
+function getTopicWordCaches(): {
+  words: Map<string, TopicWordInfo>;
+  freq: Map<string, number>;
+} {
+  if (!topicWordCache || !tokenDocFreqCache) buildTopicWordCaches();
+  return { words: topicWordCache!, freq: tokenDocFreqCache! };
 }
 
 /**
@@ -147,20 +203,31 @@ function getTopicWords(topic: TopicMeta): Set<string> {
  * before its rewrite: fuzzy-matching a full sentence like "RAG là gì" as one
  * contiguous string against long topic text scores too low even when "RAG"
  * is an exact, obvious match — searchTopics("RAG là gì") returned zero
- * results in production. Token-level substring matching (same tokenize()
- * used for the topic gate) against title+titleVi+slug+tags fixes it: each
- * query content-word is checked independently, topics are ranked by how
- * many tokens they match. Wrong-but-plausible suggestions are an acceptable
- * failure mode here (unlike the strict topic gate), so this deliberately
- * skips GENERIC_DENYLIST and stays lenient.
+ * results in production. Token-level matching (same tokenize() used for the
+ * topic gate, plus diacritic-stripping and plural-folding via
+ * normalizeToken()) against title+titleVi+slug+tags fixes it: each query
+ * content-word is checked independently, topics are ranked by weighted
+ * match count (title/slug hits count more than titleVi/tag hits, and
+ * corpus-wide-common tokens are down-weighted so a query built only from
+ * generic words returns nothing rather than an arbitrary tied set).
+ * Wrong-but-plausible suggestions are still an acceptable failure mode here
+ * (unlike the strict topic gate), so this deliberately skips
+ * GENERIC_DENYLIST and stays lenient overall.
  */
 export function findRelatedTopics(text: string, limit = 4): TopicMeta[] {
-  const tokens = tokenize(text);
+  const tokens = Array.from(new Set(tokenize(text).map(normalizeToken)));
   if (tokens.length === 0) return [];
 
+  const { words, freq } = getTopicWordCaches();
+
   const scored: ScoredTopic[] = topicList.map((topic) => {
-    const words = getTopicWords(topic);
-    const score = tokens.filter((tok) => words.has(tok)).length;
+    const info = words.get(topic.slug) ?? { strong: new Set<string>(), weak: new Set<string>() };
+    let score = 0;
+    for (const tok of tokens) {
+      const isGeneric = (freq.get(tok) ?? 0) > GENERIC_TOKEN_TOPIC_THRESHOLD;
+      if (info.strong.has(tok)) score += isGeneric ? 1 : 3;
+      else if (info.weak.has(tok)) score += isGeneric ? 0 : 1;
+    }
     return { topic, score };
   });
 

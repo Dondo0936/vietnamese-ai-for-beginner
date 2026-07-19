@@ -18,6 +18,7 @@ import {
 } from "@/lib/supabase-server";
 import { checkBotId } from "botid/server";
 import { streamText } from "ai";
+import { CANNED_ERROR_APOLOGY } from "@/lib/chat/system-prompt";
 
 const MOCK_USER = { id: "user-1", is_anonymous: true };
 
@@ -69,6 +70,27 @@ function chatRequest(body: unknown) {
 
 function userMessage(text: string) {
   return { id: "m1", role: "user", parts: [{ type: "text", text }] };
+}
+
+// Parses the SSE body a UI-message-stream Response sends ("data: {...}\n\n"
+// per chunk, "data: [DONE]\n\n" as the sentinel) back into the chunk objects.
+async function readSseChunks(res: Response): Promise<Array<{ type: string; [k: string]: unknown }>> {
+  const text = await res.text();
+  return text
+    .split("\n\n")
+    .filter((block) => block.startsWith("data: ") && block !== "data: [DONE]")
+    .map((block) => JSON.parse(block.slice("data: ".length)));
+}
+
+function fakeModelStream(
+  parts: Array<Record<string, unknown>>
+): ReadableStream<unknown> {
+  return new ReadableStream({
+    start(controller) {
+      for (const p of parts) controller.enqueue(p);
+      controller.close();
+    },
+  });
 }
 
 beforeEach(() => {
@@ -181,6 +203,86 @@ describe("POST /api/chat", () => {
 
     expect(streamText).toHaveBeenCalledTimes(1);
     expect(res.status).toBe(200);
+  });
+
+  it("emits data-relatedTopics before the model text and persists it with the reply", async () => {
+    const service = makeServiceClient();
+    vi.mocked(createServerClientWithCookies).mockResolvedValue(
+      makeUserClient({
+        rpcResult: {
+          data: { id: "row-1", role: "user", content: "x", blocked: false },
+          error: null,
+        },
+      }) as never
+    );
+    vi.mocked(createServiceClient).mockReturnValue(service as never);
+    vi.mocked(streamText).mockReturnValue({
+      stream: fakeModelStream([
+        { type: "start" },
+        { type: "text-start", id: "t1" },
+        { type: "text-delta", id: "t1", text: "Xin chào" },
+        { type: "text-end", id: "t1" },
+        {
+          type: "finish",
+          finishReason: "stop",
+          rawFinishReason: undefined,
+          totalUsage: {},
+        },
+      ]),
+    } as never);
+
+    const res = await POST(
+      chatRequest({ id: "c1", message: userMessage("Perceptron là gì?") })
+    );
+    const chunks = await readSseChunks(res);
+
+    const dataIdx = chunks.findIndex((c) => c.type === "data-relatedTopics");
+    const firstTextDeltaIdx = chunks.findIndex((c) => c.type === "text-delta");
+    expect(dataIdx).toBeGreaterThanOrEqual(0);
+    expect(dataIdx).toBeLessThan(firstTextDeltaIdx);
+    expect(chunks.filter((c) => c.type === "data-relatedTopics")).toHaveLength(1);
+    expect(
+      (chunks[dataIdx].data as Array<{ slug: string }>).map((t) => t.slug)
+    ).toContain("perceptron");
+
+    const builder = service.from.mock.results[0].value;
+    expect(builder.insert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        role: "assistant",
+        content: "Xin chào",
+        blocked: false,
+        related_topics: expect.arrayContaining([
+          expect.objectContaining({ slug: "perceptron" }),
+        ]),
+      })
+    );
+  });
+
+  it("streams the canned apology, not the SDK's generic default, on a provider stream error", async () => {
+    const service = makeServiceClient();
+    vi.mocked(createServerClientWithCookies).mockResolvedValue(
+      makeUserClient({
+        rpcResult: {
+          data: { id: "row-1", role: "user", content: "x", blocked: false },
+          error: null,
+        },
+      }) as never
+    );
+    vi.mocked(createServiceClient).mockReturnValue(service as never);
+    vi.mocked(streamText).mockReturnValue({
+      stream: fakeModelStream([
+        { type: "start" },
+        { type: "error", error: new Error("groq upstream boom") },
+      ]),
+    } as never);
+
+    const res = await POST(
+      chatRequest({ id: "c1", message: userMessage("Perceptron là gì?") })
+    );
+    const chunks = await readSseChunks(res);
+
+    const errorChunk = chunks.find((c) => c.type === "error");
+    expect(errorChunk?.errorText).toBe(CANNED_ERROR_APOLOGY);
   });
 });
 

@@ -58,12 +58,19 @@ const RELATED_TOPICS_LIMIT = 4;
 const MAX_OUTPUT_TOKENS = 350;
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
+interface RelatedTopicPayload {
+  slug: string;
+  title: string;
+  titleVi: string;
+}
+
 interface ChatMessageRow {
   id: string;
   role: "user" | "assistant";
   content: string;
   blocked: boolean;
   created_at: string;
+  related_topics?: RelatedTopicPayload[] | null;
 }
 
 function extractText(message: unknown): string {
@@ -82,12 +89,27 @@ function extractText(message: unknown): string {
     .trim();
 }
 
+// Text-only — used to reconstruct trusted model context (never render
+// history). Keeping this separate from rowToDisplayUIMessage means a
+// data-relatedTopics part never has to flow through convertToModelMessages.
 function rowToUIMessage(row: ChatMessageRow): UIMessage {
   return {
     id: row.id,
     role: row.role,
     parts: [{ type: "text", text: row.content }],
   };
+}
+
+// Used for GET /api/chat history hydration — includes the persisted
+// data-relatedTopics part (if any) so the "related lessons" chips survive a
+// panel close/reopen or a page reload, matching the live-stream shape.
+function rowToDisplayUIMessage(row: ChatMessageRow): UIMessage {
+  const parts: UIMessage["parts"] = [];
+  if (row.related_topics && row.related_topics.length > 0) {
+    parts.push({ type: "data-relatedTopics", data: row.related_topics });
+  }
+  parts.push({ type: "text", text: row.content });
+  return { id: row.id, role: row.role, parts };
 }
 
 export async function POST(req: Request) {
@@ -226,13 +248,24 @@ export async function POST(req: Request) {
         role: "assistant",
         content: replyText,
         blocked: false,
+        related_topics: relatedTopics.length > 0 ? relatedTopics : null,
       });
     },
     execute({ writer }) {
       if (relatedTopics.length > 0) {
         writer.write({ type: "data-relatedTopics", data: relatedTopics });
       }
-      writer.merge(toUIMessageStream({ stream: result.stream }));
+      writer.merge(
+        toUIMessageStream({
+          stream: result.stream,
+          // Without this, a Groq stream error surfaces as the SDK's own
+          // generic English default ("An error occurred.") instead of the
+          // app's Vietnamese canned apology — the outer stream's onError
+          // only covers errors from createUIMessageStream's own execute(),
+          // not ones converted inside the merged inner stream.
+          onError: () => CANNED_ERROR_APOLOGY,
+        })
+      );
     },
   });
   return createUIMessageStreamResponse({ stream });
@@ -255,7 +288,7 @@ export async function GET() {
 
   const { data: rows } = await userClient
     .from("chat_messages")
-    .select("id, role, content, blocked, created_at")
+    .select("id, role, content, blocked, created_at, related_topics")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(HISTORY_LIMIT);
@@ -263,7 +296,7 @@ export async function GET() {
   const messages = (rows ?? [])
     .slice()
     .reverse()
-    .map((r) => rowToUIMessage(r as ChatMessageRow));
+    .map((r) => rowToDisplayUIMessage(r as ChatMessageRow));
 
   return NextResponse.json({ messages });
 }

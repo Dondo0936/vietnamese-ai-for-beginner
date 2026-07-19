@@ -52,6 +52,10 @@ const MARKDOWN_COMPONENTS = {
       {...props}
     />
   ),
+  // Model output is untrusted (prompt injection risk) — an `![x](url)`
+  // markdown image would otherwise render as a real <img>, letting a
+  // crafted response fire tracking requests or spoof content. Drop it.
+  img: () => null,
 };
 
 function extractText(message: UIMessage): string {
@@ -67,6 +71,14 @@ function extractRelatedTopics(message: UIMessage): RelatedTopic[] {
   return Array.isArray(data) ? (data as RelatedTopic[]) : [];
 }
 
+function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+  ).filter((el) => el.offsetParent !== null);
+}
+
 /**
  * Fetches history before mounting the useChat-backed inner panel — useChat's
  * `messages` option only seeds initial state once at mount, so we can't
@@ -77,6 +89,12 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
   const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(
     null
   );
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  // Set by ChatPanelInner when it opens/closes the nested AuthModal (its own
+  // portal + Escape handler) so the Tab-trap below doesn't fight it for
+  // focus while it's on top.
+  const authModalOpenRef = useRef(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -92,11 +110,44 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || authModalOpenRef.current || !dialogRef.current) {
+        return;
+      }
+      const focusable = getFocusableElements(dialogRef.current);
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
+
+  // Initial focus + focus restoration: move focus into the dialog on open,
+  // give it back to whatever launched the panel (the FAB) on close, so
+  // keyboard users aren't dropped or left tabbing through hidden content.
+  useEffect(() => {
+    if (!open) return;
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    const id = window.setTimeout(() => dialogRef.current?.focus(), 0);
+    return () => {
+      window.clearTimeout(id);
+      previousFocusRef.current?.focus?.();
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -116,10 +167,12 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
       <div onClick={onClose} className="absolute inset-0" />
 
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="chat-panel-title"
-        className="fixed inset-x-0 bottom-0 z-[101] flex h-[85vh] flex-col rounded-t-[var(--r-xl)] border border-border bg-card shadow-lg md:inset-x-auto md:bottom-24 md:right-6 md:h-[600px] md:max-h-[80vh] md:w-[400px] md:rounded-[var(--r-xl)]"
+        tabIndex={-1}
+        className="fixed inset-x-0 bottom-0 z-[101] flex h-[85vh] flex-col rounded-t-[var(--r-xl)] border border-border bg-card shadow-lg outline-none md:inset-x-auto md:bottom-24 md:right-6 md:h-[600px] md:max-h-[80vh] md:w-[400px] md:rounded-[var(--r-xl)]"
       >
         <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
           <div>
@@ -148,7 +201,10 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
             <Loader2 size={22} className="animate-spin text-tertiary" />
           </div>
         ) : (
-          <ChatPanelInner initialMessages={initialMessages} />
+          <ChatPanelInner
+            initialMessages={initialMessages}
+            authModalOpenRef={authModalOpenRef}
+          />
         )}
       </div>
     </div>,
@@ -158,8 +214,10 @@ export default function ChatPanel({ open, onClose }: ChatPanelProps) {
 
 function ChatPanelInner({
   initialMessages,
+  authModalOpenRef,
 }: {
   initialMessages: UIMessage[];
+  authModalOpenRef: React.RefObject<boolean>;
 }) {
   const { user, isAuthenticated } = useAuth();
   const [input, setInput] = useState("");
@@ -170,6 +228,13 @@ function ChatPanelInner({
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const ensuredSessionRef = useRef(!!user);
   const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    authModalOpenRef.current = authModalOpen;
+    return () => {
+      authModalOpenRef.current = false;
+    };
+  }, [authModalOpen, authModalOpenRef]);
 
   const transport = useState(
     () =>

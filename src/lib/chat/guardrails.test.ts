@@ -14,6 +14,22 @@ describe("classifyMessage", () => {
     expect(classifyMessage("RAG là gì, dùng để làm gì").allowed).toBe(true);
   });
 
+  it("allows standalone 2-letter AI/ML acronyms", () => {
+    // Regression: tokenize()'s length>=3 floor drops "ai"/"ml" entirely,
+    // leaving zero tokens for the fuzzy matcher — these need the explicit
+    // allowlist pattern, not the corpus.
+    expect(classifyMessage("AI là gì?").allowed).toBe(true);
+    expect(classifyMessage("ML là gì?").allowed).toBe(true);
+  });
+
+  it("rejects a generic tag word used outside its AI/ML context", () => {
+    // Regression: "application" is a tag on 80+ unrelated AI/ML topics, so
+    // it fuzzy-matched an off-topic sentence that merely contains the word.
+    expect(
+      classifyMessage("application deadline for university").allowed
+    ).toBe(false);
+  });
+
   it("allows greetings and app-help questions", () => {
     expect(classifyMessage("Chào bạn").allowed).toBe(true);
     expect(classifyMessage("Hello!").allowed).toBe(true);
@@ -79,5 +95,32 @@ describe("findRelatedTopics", () => {
   it("respects the limit parameter", () => {
     const results = findRelatedTopics("transformer attention model", 2);
     expect(results.length).toBeLessThanOrEqual(2);
+  });
+
+  it("folds plural query tokens onto a topic's singular title", () => {
+    // Regression: "transformers" (plural) didn't match the "transformer"
+    // topic title/slug at all without stemming.
+    const slugs = findRelatedTopics("transformers là gì").map((t) => t.slug);
+    expect(slugs).toContain("transformer");
+  });
+
+  it("matches an accent-stripped Vietnamese query via diacritic normalization", () => {
+    // Regression: an unaccented query ("hoc" for "học") tokenized to a
+    // different string than the corpus's accented "học", so a common
+    // no-Vietnamese-keyboard query matched nothing.
+    const slugs = findRelatedTopics("toc do hoc la gi").map((t) => t.slug);
+    expect(slugs).toContain("learning-rate");
+  });
+
+  it("suppresses corpus-wide-generic tokens instead of returning arbitrary ties", () => {
+    // Regression: "mô hình" (model) reduces to the single token "hình",
+    // which occurs across dozens of unrelated topics — it used to rank an
+    // arbitrary 4 of them. A query built only from such generic tokens
+    // should surface nothing rather than a misleading suggestion.
+    expect(findRelatedTopics("mô hình là gì")).toEqual([]);
+    // Similarly "mạng" (network) alone is too generic to point at any one
+    // topic — "internet" isn't in the corpus, so this should stay empty
+    // rather than wrongly surfacing neural-network lessons.
+    expect(findRelatedTopics("mạng internet là gì")).toEqual([]);
   });
 });
