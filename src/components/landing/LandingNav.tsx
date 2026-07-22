@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import AuthModal from "@/components/auth/AuthModal";
+import AuthButton from "@/components/auth/AuthButton";
+import { useAuth } from "@/lib/auth-context";
 
 /**
  * Landing nav — sticky, scroll-aware liquid-glass header.
@@ -18,6 +20,7 @@ import AuthModal from "@/components/auth/AuthModal";
  * instead of bleeding through.
  */
 export function LandingNav() {
+  const { isAuthenticated, user, loading, signOut } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -73,13 +76,19 @@ export function LandingNav() {
           </a>
         </nav>
         <div className="ld-nav__actions">
-          <button
-            type="button"
-            onClick={() => setAuthOpen(true)}
-            className="ld-btn ld-btn--ghost"
-          >
-            Đăng nhập
-          </button>
+          {loading ? (
+            <div className="w-[74px] h-9" aria-hidden />
+          ) : isAuthenticated && user ? (
+            <AuthButton />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setAuthOpen(true)}
+              className="ld-btn ld-btn--ghost"
+            >
+              Đăng nhập
+            </button>
+          )}
           <Link href="/browse" className="ld-btn ld-btn--primary">
             Mở app →
           </Link>
@@ -121,16 +130,29 @@ export function LandingNav() {
             GitHub ↗
           </a>
           <div className="mn-drawer__cta">
-            <button
-              type="button"
-              onClick={() => {
-                setDrawerOpen(false);
-                setAuthOpen(true);
-              }}
-              className="ld-btn"
-            >
-              Đăng nhập
-            </button>
+            {loading ? null : isAuthenticated ? (
+              <button
+                type="button"
+                onClick={async () => {
+                  setDrawerOpen(false);
+                  await signOut();
+                }}
+                className="ld-btn"
+              >
+                Đăng xuất
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setDrawerOpen(false);
+                  setAuthOpen(true);
+                }}
+                className="ld-btn"
+              >
+                Đăng nhập
+              </button>
+            )}
             <Link
               href="/browse"
               className="ld-btn ld-btn--primary"
