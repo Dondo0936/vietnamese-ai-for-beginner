@@ -5145,6 +5145,18 @@ export const topicList: TopicMeta[] = [
     relatedSlugs: ["claude-code-apps-script", "ai-for-data-analysis", "ai-coding-assistants"],
     vizType: "interactive",
   },
+  {
+    slug: "claude-code-word",
+    title: "Claude Code + Word",
+    titleVi: "Điền hàng loạt báo giá Word bằng Claude Code",
+    description:
+      "Claude Code dùng Python điền một mẫu báo giá Word từ danh sách 20 khách và xuất mỗi khách một file riêng. Lần chạy đầu vấp hai lỗi ẩn của Word (chỗ đánh dấu bị cắt mảnh, chữ trong bảng nằm ở nhánh riêng), rồi chẩn đúng bệnh, sửa và nghiệm thu ngay trong Word 2019 thường.",
+    category: "applied-ai",
+    tags: ["claude-code", "word", "python-docx", "automation", "mail-merge"],
+    difficulty: "intermediate",
+    relatedSlugs: ["claude-code-excel", "claude-code-apps-script", "ai-for-writing"],
+    vizType: "interactive",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────
