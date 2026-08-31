@@ -1,0 +1,19 @@
+Bạn gõ "ô tô" vào ô tìm kiếm, nhưng bài viết bạn cần lại ghi "xe hơi". Máy không trả về gì. Với máy, hai chuỗi ký tự này khác nhau hoàn toàn.
+
+Cách sửa không phải là so chữ kỹ hơn. Mà là cho mỗi từ một toạ độ.
+
+Word embedding biến mỗi từ thành một điểm. Điểm đó nằm trong không gian nhiều chiều. Những từ hay xuất hiện cùng ngữ cảnh sẽ nằm gần nhau.
+
+Nhìn bản đồ này. Phở, bún chả, bánh mì, cơm tấm chụm về một góc. Xe máy, Grab, ô tô nằm ở góc khác hẳn. Không ai dán nhãn cả. Máy học được điều đó từ hàng tỷ từ tiếng Việt.
+
+Độ gần đo bằng cosine. Phở với bún chả, không phẩy tám sáu. Hà Nội với Sài Gòn, không phẩy bảy chín. Phở với máy tính, chỉ không phẩy một một.
+
+Đó là lý do bạn gõ "quần jean", sàn bán hàng vẫn hiện "quần bò".
+
+Và đây mới là chỗ gây sốc. Lấy toạ độ Hà Nội, trừ phở, cộng cơm tấm. Điểm rơi ra đúng vào Sài Gòn.
+
+Phép trừ vector đã tách ra một khái niệm, món đặc trưng của thành phố. Embedding không chỉ nhớ từ nào giống từ nào. Nó mã hoá cả quan hệ giữa các từ.
+
+Nhưng đừng tin tuyệt đối. Vui và buồn có cosine tới không phẩy bốn hai, dù là trái nghĩa. Vì cả hai đều nằm trong câu nói về cảm xúc. Embedding đo ngữ cảnh giống nhau, chứ không đo nghĩa giống nhau.
+
+Kéo thử bản đồ từ ngữ trong bài Word Embeddings, trên udemi chấm tech.
