@@ -11,6 +11,7 @@ import { TowerOfHanoiHeroViz } from "./neuro-symbolic-robots";
 import { ImageGenSplitHeroViz } from "./midjourney-vs-chatgpt-image-2";
 import { OfficeDocsBiasHeroViz } from "./office-ai-biased-documents";
 import { ClaudeHooksHeroViz } from "./claude-code-hooks-guardrails";
+import { SpecDecodeHeroViz } from "./speculative-decoding-2026";
 
 /**
  * Map an article's `heroViz` frontmatter key to the same SVG the
@@ -32,6 +33,7 @@ const map: Record<string, ComponentType> = {
   "image-gen-split": ImageGenSplitHeroViz,
   "office-docs-bias": OfficeDocsBiasHeroViz,
   "claude-code-hooks": ClaudeHooksHeroViz,
+  "spec-decode": SpecDecodeHeroViz,
 };
 
 export function getHeroViz(key: string | undefined): ComponentType | null {

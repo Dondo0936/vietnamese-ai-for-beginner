@@ -7,6 +7,34 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "speculative-decoding-2026",
+    title: "Cùng một model, chatbot nhanh gấp ba. Bên trong speculative decoding.",
+    dek: "Bạn chạy cùng một model mã mở trên hai nhà cung cấp và thấy chênh nhau tới ba lần tốc độ. Khác biệt không nằm ở trọng số, nó nằm ở cách token rời khỏi GPU. Speculative decoding cho một model nhỏ đoán trước vài token, rồi bắt model lớn kiểm tra cả xâu đoán trong đúng một lượt tính. Luật chấp nhận được thiết kế để phân phối đầu ra không đổi một chút nào, nên đây là tốc độ miễn phí chứ không phải đánh đổi chất lượng. Bài viết mổ xẻ vì sao duyệt năm token gần như rẻ bằng sinh một token, vì sao tốc độ phụ thuộc vào việc bạn hỏi gì, và ba nâng cấp năm 2026 gồm tree drafting, block verification và drafter rẻ hơn đang đẩy con số này đi tới đâu.",
+    source: {
+      name: "udemi · giải thích",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/speculative-decoding-2026",
+    },
+    date: "2026-09-03",
+    readingTime: "11 phút",
+    category: "infra",
+    tag: "giải thích",
+    lessonRefs: [
+      "inference-optimization",
+      "kv-cache",
+      "cost-latency-tokens",
+      "model-serving",
+      "tokenization",
+    ],
+    relatedArticles: [
+      "turboquant-kv-cache-compression",
+      "response-streaming",
+      "mixture-of-depths",
+    ],
+    heroViz: "spec-decode",
+    isLead: true,
+  },
+  {
     slug: "claude-code-hooks-guardrails",
     title: "Claude Code Hooks. Guardrails của agent không chỉ là prompt.",
     dek: "Một coding agent không chỉ trả lời bằng chữ. Nó có thể chạy Bash, sửa file, gọi MCP tool và đẩy thay đổi vào repo thật. Claude Code Hooks đặt điểm kiểm soát quanh Tool use: đọc JSON đầu vào, match đúng event, rồi cho chạy tiếp, hỏi lại, hoặc chặn. Bài viết giải thích vì sao guardrail cho AI engineer phải chạy ở runtime, có log, có test, và được review như production code.",
