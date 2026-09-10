@@ -124,6 +124,8 @@ describe("TopicLayout", () => {
       "href",
       "https://thejackedvibecoder.gumroad.com/l/humanize-ai-writing"
     );
+    expect(also.closest(".tp-skill__item")).not.toBeNull();
+    expect(also.closest(".tp-skill")).not.toBeNull();
   });
 
   it("calls markTopicRead when mark-complete button is clicked", async () => {

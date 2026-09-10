@@ -320,7 +320,7 @@
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ash);
+  color: var(--graphite);
   margin: 0 0 8px;
 }
 .tp-skill__h {
@@ -350,24 +350,30 @@
 }
 .tp-skill__list li {
   display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+.tp-skill__item {
+  display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
   min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--pure-white);
+}
+.tp-skill__item:hover {
+  border-color: var(--ink);
 }
 .tp-skill__card {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-height: 100%;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--pure-white);
+  flex: 1;
   text-decoration: none;
   color: inherit;
-}
-.tp-skill__card:hover {
-  border-color: var(--ink);
 }
 .tp-skill__price {
   font-family: var(--font-mono);
@@ -392,7 +398,6 @@
   color: var(--turquoise-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-  padding: 0 4px;
 }
 .tp-skill__also:hover {
   color: var(--turquoise-600);
@@ -676,7 +681,7 @@
   border-color: var(--border);
 }
 .dark .tp-skill__kicker {
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 }
 .dark .tp-skill__h,
 .dark .tp-skill__title {
@@ -686,11 +691,11 @@
 .dark .tp-skill__body {
   color: var(--text-secondary);
 }
-.dark .tp-skill__card {
+.dark .tp-skill__item {
   background: var(--bg-surface);
   border-color: var(--border);
 }
-.dark .tp-skill__card:hover {
+.dark .tp-skill__item:hover {
   border-color: var(--text-primary);
 }
 .dark .tp-skill__price {

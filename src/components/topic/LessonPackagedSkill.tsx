@@ -15,26 +15,28 @@ export default function LessonPackagedSkill({
       <ul className="tp-skill__list">
         {block.offers.map((offer) => (
           <li key={offer.href}>
-            <a
-              href={offer.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="tp-skill__card"
-            >
-              <span className="tp-skill__price">{offer.price}</span>
-              <span className="tp-skill__title">{offer.title}</span>
-              <span className="tp-skill__body">{offer.body}</span>
-            </a>
-            {offer.also ? (
+            <div className="tp-skill__item">
               <a
-                href={offer.also.href}
+                href={offer.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="tp-skill__also"
+                className="tp-skill__card"
               >
-                {offer.also.label}
+                <span className="tp-skill__price">{offer.price}</span>
+                <span className="tp-skill__title">{offer.title}</span>
+                <span className="tp-skill__body">{offer.body}</span>
               </a>
-            ) : null}
+              {offer.also ? (
+                <a
+                  href={offer.also.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="tp-skill__also"
+                >
+                  {offer.also.label}
+                </a>
+              ) : null}
+            </div>
           </li>
         ))}
       </ul>
