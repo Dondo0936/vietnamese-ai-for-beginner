@@ -531,11 +531,6 @@ export default function AiForSocialMediaTopic() {
             </TopicLink>
             .
           </p>
-          <p className="text-sm leading-relaxed text-muted">
-            Quy trình này cũng có bản đóng gói thành một agent skill, tức bộ kỹ
-            năng đóng gói cho tác nhân AI, dành cho người muốn dùng sẵn trong
-            vận hành thật.
-          </p>
         </div>
       </LessonSection>
 

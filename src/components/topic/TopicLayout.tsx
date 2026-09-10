@@ -19,6 +19,8 @@ import TopicTOC, { DEFAULT_TOC_SECTIONS } from "./TopicTOC";
 import { SectionDuplicateGuard } from "./SectionDuplicateGuard";
 import OfficeVisualBrief from "./OfficeVisualBrief";
 import PathVisualBrief from "./PathVisualBrief";
+import LessonPackagedSkill from "./LessonPackagedSkill";
+import { getLessonSkill } from "@/lib/lesson-skills";
 import "./topic-layout.css";
 
 interface TopicLayoutProps {
@@ -164,6 +166,8 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
     [meta.relatedSlugs]
   );
 
+  const lessonSkill = getLessonSkill(meta.slug);
+
   return (
     <>
       <ReadingProgressBar />
@@ -272,6 +276,8 @@ export default function TopicLayout({ meta, children }: TopicLayoutProps) {
             <SectionDuplicateGuard>
               <div>{children}</div>
             </SectionDuplicateGuard>
+
+            {lessonSkill ? <LessonPackagedSkill block={lessonSkill} /> : null}
 
             {/* Forward link to application topic, shown AFTER reading the concept */}
             {applicationTopic?.featuredApp && (

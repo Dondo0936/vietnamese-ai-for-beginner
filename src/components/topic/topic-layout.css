@@ -307,6 +307,97 @@
 }
 .tp-app a:hover { color: var(--turquoise-600); }
 
+/* --- Packaged skill after matching lessons. Not a homepage ad. --- */
+.tp-skill {
+  margin-top: 40px;
+  padding: 20px 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+}
+.tp-skill__kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin: 0 0 8px;
+}
+.tp-skill__h {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+.tp-skill__intro {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--graphite);
+  margin: 0 0 16px;
+}
+.tp-skill__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+@media (min-width: 720px) {
+  .tp-skill__list {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+.tp-skill__list li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.tp-skill__card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--pure-white);
+  text-decoration: none;
+  color: inherit;
+}
+.tp-skill__card:hover {
+  border-color: var(--ink);
+}
+.tp-skill__price {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--turquoise-700);
+}
+.tp-skill__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.tp-skill__body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--graphite);
+}
+.tp-skill__also {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--turquoise-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0 4px;
+}
+.tp-skill__also:hover {
+  color: var(--turquoise-600);
+}
+
 /* --- Mark complete --- */
 .tp-complete {
   display: flex;
@@ -579,4 +670,32 @@
   background: var(--bg-surface);
   border-color: var(--text-primary);
   color: var(--text-primary);
+}
+.dark .tp-skill {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+.dark .tp-skill__kicker {
+  color: var(--text-tertiary);
+}
+.dark .tp-skill__h,
+.dark .tp-skill__title {
+  color: var(--text-primary);
+}
+.dark .tp-skill__intro,
+.dark .tp-skill__body {
+  color: var(--text-secondary);
+}
+.dark .tp-skill__card {
+  background: var(--bg-surface);
+  border-color: var(--border);
+}
+.dark .tp-skill__card:hover {
+  border-color: var(--text-primary);
+}
+.dark .tp-skill__price {
+  color: var(--accent-dark);
+}
+.dark .tp-skill__also {
+  color: var(--accent-dark);
 }

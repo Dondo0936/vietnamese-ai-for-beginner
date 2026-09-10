@@ -93,6 +93,39 @@ describe("TopicLayout", () => {
     expect(btn).toBeInTheDocument();
   });
 
+  it("does not show a Gumroad next-step on unaligned lessons", () => {
+    render(<TopicLayout meta={testMeta}><p>content</p></TopicLayout>);
+    expect(
+      screen.queryByLabelText("Bước tiếp theo trên bản làm việc của bạn")
+    ).toBeNull();
+    expect(screen.queryByRole("link", { name: /Vietnamese Authentic Writing/i })).toBeNull();
+  });
+
+  it("shows the Vietnamese writing skill after ai-for-writing", () => {
+    render(
+      <TopicLayout meta={{ ...testMeta, slug: "ai-for-writing" }}>
+        <p>content</p>
+      </TopicLayout>
+    );
+    expect(
+      screen.getByLabelText("Bước tiếp theo trên bản làm việc của bạn")
+    ).toBeInTheDocument();
+    const link = screen.getByRole("link", {
+      name: /Vietnamese Authentic Writing/i,
+    });
+    expect(link).toHaveAttribute(
+      "href",
+      "https://thejackedvibecoder.gumroad.com/l/vietnamese-authentic-writing"
+    );
+    const also = screen.getByRole("link", {
+      name: /Authentic English Writing, \$19/,
+    });
+    expect(also).toHaveAttribute(
+      "href",
+      "https://thejackedvibecoder.gumroad.com/l/humanize-ai-writing"
+    );
+  });
+
   it("calls markTopicRead when mark-complete button is clicked", async () => {
     const user = userEvent.setup();
     render(<TopicLayout meta={testMeta}><p>content</p></TopicLayout>);
