@@ -12,6 +12,7 @@ import { ImageGenSplitHeroViz } from "./midjourney-vs-chatgpt-image-2";
 import { OfficeDocsBiasHeroViz } from "./office-ai-biased-documents";
 import { ClaudeHooksHeroViz } from "./claude-code-hooks-guardrails";
 import { SpecDecodeHeroViz } from "./speculative-decoding-2026";
+import { GrokOpenclawSplitHeroViz } from "./grok-bot-vs-openclaw";
 
 /**
  * Map an article's `heroViz` frontmatter key to the same SVG the
@@ -34,6 +35,7 @@ const map: Record<string, ComponentType> = {
   "office-docs-bias": OfficeDocsBiasHeroViz,
   "claude-code-hooks": ClaudeHooksHeroViz,
   "spec-decode": SpecDecodeHeroViz,
+  "grok-openclaw-split": GrokOpenclawSplitHeroViz,
 };
 
 export function getHeroViz(key: string | undefined): ComponentType | null {

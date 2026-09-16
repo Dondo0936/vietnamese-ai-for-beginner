@@ -1324,7 +1324,7 @@ export const topicList: TopicMeta[] = [
   },
 
   // ═══════════════════════════════════════════════════════
-  // Category 9: ai-agents (10 topics)
+  // Category 9: ai-agents (11 topics)
   // ═══════════════════════════════════════════════════════
   {
     slug: "function-calling",
@@ -1402,6 +1402,53 @@ export const topicList: TopicMeta[] = [
     difficulty: "intermediate",
     relatedSlugs: ["agent-architecture", "multi-agent", "orchestration"],
     vizType: "interactive",
+  },
+  {
+    slug: "grok-bot",
+    title: "Grok Bot",
+    titleVi: "Grok Bot: máy ảo luôn bật cho đội agent",
+    description:
+      "Grok Bot là 1 máy ảo Linux luôn bật. Mỗi Bot là một vai trò chạy trên cùng máy đó. File, cookie và đăng nhập dùng chung cho cả tài khoản.",
+    category: "ai-agents",
+    tags: ["agents", "grok", "automation", "computer-use", "workflow"],
+    difficulty: "intermediate",
+    relatedSlugs: [
+      "agentic-workflows",
+      "computer-use",
+      "ai-agent-loops",
+      "multi-agent",
+    ],
+    vizType: "interactive",
+    sources: [
+      {
+        title: "Introducing Grok Bot",
+        publisher: "xAI",
+        url: "https://x.ai/news/introducing-grok-bot",
+        date: "2026-08",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Designing Grok Bot for a world of persistent agents",
+        publisher: "xAI",
+        url: "https://x.ai/news/designing-grok-bot",
+        date: "2026-09",
+        kind: "engineering-blog",
+      },
+      {
+        title: "Grok Bot is now included with more plans",
+        publisher: "xAI",
+        url: "https://x.ai/news/grok-bot-more-plans",
+        date: "2026-08",
+        kind: "news",
+      },
+      {
+        title: "Grok Bot 101",
+        publisher: "xAI",
+        url: "https://x.ai/bot/guides/grok-bot-101",
+        date: "2026-09",
+        kind: "documentation",
+      },
+    ],
   },
   {
     slug: "ai-agent-loops",

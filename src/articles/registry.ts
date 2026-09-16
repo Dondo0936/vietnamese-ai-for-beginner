@@ -7,6 +7,34 @@ import type { ArticleMeta } from "@/lib/article-types";
  */
 export const articleList: ArticleMeta[] = [
   {
+    slug: "grok-bot-vs-openclaw",
+    title: "Grok Bot cho bạn cái máy. OpenClaw cho bạn cái cổng.",
+    dek: "Tháng 8 năm 2026, Grok Bot và OpenClaw 2.0 cùng hứa một máy không ngủ. Grok Bot cấp sẵn một máy ảo Linux cho cả tài khoản, mọi Bot dùng chung file, cookie và đăng nhập. OpenClaw cấp một Gateway, tức cổng tự chạy, trên laptop hay VPS của bạn, model là plugin, sandbox tắt mặc định. Bài viết so sánh máy được xAI giữ hộ với cổng bạn tự chạy, chỗ tách của từng bên, và lúc nào nên chọn bên nào.",
+    source: {
+      name: "udemi.tech · phân tích so sánh",
+      host: "udemi.tech",
+      url: "https://udemi.tech/articles/grok-bot-vs-openclaw",
+    },
+    date: "2026-09-16",
+    readingTime: "9 phút",
+    category: "agent",
+    tag: "hot",
+    lessonRefs: [
+      "grok-bot",
+      "computer-use",
+      "agent-architecture",
+      "agentic-workflows",
+      "ai-agent-loops",
+    ],
+    relatedArticles: [
+      "operator-2-browser-agent",
+      "claude-code-hooks-guardrails",
+      "claude-controls-apps-adobe",
+    ],
+    heroViz: "grok-openclaw-split",
+    isLead: true,
+  },
+  {
     slug: "speculative-decoding-2026",
     title: "Cùng một model, chatbot nhanh gấp ba. Bên trong speculative decoding.",
     dek: "Bạn chạy cùng một model mã mở trên hai nhà cung cấp và thấy chênh nhau tới ba lần tốc độ. Khác biệt không nằm ở trọng số, nó nằm ở cách token rời khỏi GPU. Speculative decoding cho một model nhỏ đoán trước vài token, rồi bắt model lớn kiểm tra cả xâu đoán trong đúng một lượt tính. Luật chấp nhận được thiết kế để phân phối đầu ra không đổi một chút nào, nên đây là tốc độ miễn phí chứ không phải đánh đổi chất lượng. Bài viết mổ xẻ vì sao duyệt năm token gần như rẻ bằng sinh một token, vì sao tốc độ phụ thuộc vào việc bạn hỏi gì, và ba nâng cấp năm 2026 gồm tree drafting, block verification và drafter rẻ hơn đang đẩy con số này đi tới đâu.",

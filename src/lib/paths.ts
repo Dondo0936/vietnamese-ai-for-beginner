@@ -161,6 +161,7 @@ const OFFICE_STAGES: Stage[] = [
       "semantic-search",
       "ai-coding-assistants",
       "agentic-workflows",
+      "grok-bot",
       "ai-for-writing",
       "ai-for-data-analysis",
       "ai-privacy-security",

@@ -127,6 +127,7 @@ const topicComponents: Record<string, ComponentType> = {
   "gradient-descent": dynamic(() => import("@/topics/gradient-descent")),
   "gradient-descent-in-training": dynamic(() => import("@/topics/gradient-descent-in-training")),
   "gradient-intuition": dynamic(() => import("@/topics/gradient-intuition")),
+  "grok-bot": dynamic(() => import("@/topics/grok-bot")),
   "grpo": dynamic(() => import("@/topics/grpo")),
   "gru": dynamic(() => import("@/topics/gru")),
   "guardrails": dynamic(() => import("@/topics/guardrails")),
